@@ -19,17 +19,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MDBOOK_VERSION: 0.4.52
+      MDBOOK_MERMAID_VERSION: 0.15.0
+      MDBOOK_KATEX_VERSION: 0.9.4
     steps:
       - uses: actions/checkout@v4
       
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          
       - name: Cache Rust dependencies
         uses: actions/cache@v4
         with:
@@ -49,40 +46,14 @@ jobs:
           if ! command -v mdbook &> /dev/null || ! mdbook --version | grep -q "$MDBOOK_VERSION"; then
             cargo install --version ${MDBOOK_VERSION} mdbook
           fi
-          # Check if mdbook-katex is already installed
-          if ! command -v mdbook-katex &> /dev/null; then
-            cargo install mdbook-katex
+          # Check if mdbook-katex is already installed and has the correct version
+          if ! command -v mdbook-katex &> /dev/null || ! mdbook-katex --version 2>&1 | grep -q "$MDBOOK_KATEX_VERSION"; then
+            cargo install --version ${MDBOOK_KATEX_VERSION} mdbook-katex
           fi
-          # Check if mdbook-mermaid is already installed
-          if ! command -v mdbook-mermaid &> /dev/null; then
-            cargo install mdbook-mermaid
+          # Check if mdbook-mermaid is already installed and has the correct version
+          if ! command -v mdbook-mermaid &> /dev/null || ! mdbook-mermaid --version 2>&1 | grep -q "$MDBOOK_MERMAID_VERSION"; then
+            cargo install --version ${MDBOOK_MERMAID_VERSION} mdbook-mermaid
           fi
-          
-      - name: Install system dependencies for mermaid-cli
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libnss3 \
-            libatk-bridge2.0-0 \
-            libdrm2 \
-            libxkbcommon0 \
-            libxcomposite1 \
-            libxdamage1 \
-            libxfixes3 \
-            libxrandr2 \
-            libgbm1 \
-            libasound2
-            
-      - name: Install mermaid-cli
-        run: |
-          npm install -g @mermaid-js/mermaid-cli
-          mmdc --version
-          
-      - name: Verify mdbook-mermaid installation
-        run: |
-          mdbook-mermaid --version || echo "mdbook-mermaid version check failed"
-          which mmdc || echo "mmdc not found in PATH"
-          
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
