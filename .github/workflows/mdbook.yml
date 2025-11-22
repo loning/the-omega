@@ -58,9 +58,31 @@ jobs:
             cargo install mdbook-mermaid
           fi
           
+      - name: Install system dependencies for mermaid-cli
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libnss3 \
+            libatk-bridge2.0-0 \
+            libdrm2 \
+            libxkbcommon0 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxfixes3 \
+            libxrandr2 \
+            libgbm1 \
+            libasound2
+            
       - name: Install mermaid-cli
         run: |
           npm install -g @mermaid-js/mermaid-cli
+          mmdc --version
+          
+      - name: Verify mdbook-mermaid installation
+        run: |
+          mdbook-mermaid --version || echo "mdbook-mermaid version check failed"
+          which mmdc || echo "mmdc not found in PATH"
+          
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
