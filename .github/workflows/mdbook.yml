@@ -38,23 +38,6 @@ jobs:
             ${{ runner.os }}-cargo-${{ env.MDBOOK_VERSION }}-
             ${{ runner.os }}-cargo-
             
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      
-      - name: Install mermaid-cli
-        run: |
-          npm install -g @mermaid-js/mermaid-cli
-          # Verify installation
-          if command -v mmdc &> /dev/null; then
-            echo "mmdc found at: $(which mmdc)"
-            mmdc --version || echo "mmdc version check failed, but binary exists"
-          else
-            echo "ERROR: mmdc not found in PATH"
-            exit 1
-          fi
-      
       - name: Install mdBook
         run: |
           # Check if mdbook is already installed and has the correct version
@@ -64,10 +47,6 @@ jobs:
           # Check if mdbook-katex is already installed
           if ! command -v mdbook-katex &> /dev/null; then
             cargo install mdbook-katex
-          fi
-          # Check if mdbook-mermaid is already installed
-          if ! command -v mdbook-mermaid &> /dev/null; then
-            cargo install mdbook-mermaid
           fi
       - name: Setup Pages
         id: pages
