@@ -55,31 +55,31 @@ We map physical phenomenology directly to mathematical structures. This eliminat
 
 This work is organized into five volumes, tracing the derivation from abstract axioms to experimental verification.
 
-### Volume 1: Discrete Ontology ([CN](docs/books/book-foundation-of-phys-in-geo-and-info/volume01-discrete-ontology/index.md) | [EN](docs/books/book-foundation-of-phys-in-geo-and-info/volume01-discrete-ontology/index_en.md))
+### Volume 1: Discrete Ontology ([CN](docs/books/book-foundation-of-phys-in-geo-and-info/index.md) | [EN](docs/books/book-foundation-of-phys-in-geo-and-info/index_en.md))
 *Establishes the fundamental QCA lattice and the emergence of the continuum.*
 - **Finite Information Axioms**: Holographic Principle & It-from-Bit.
 - **Discrete Dynamics**: QCA definitions, Causal Locality.
 - **Continuum Emergence**: Deriving the Dirac Equation from path integrals.
 
-### Volume 2: Time Emergence ([CN](docs/books/book-foundation-of-phys-in-geo-and-info/volume02-time-emergence/index.md) | [EN](docs/books/book-foundation-of-phys-in-geo-and-info/volume02-time-emergence/index_en.md))
+### Volume 2: Time Emergence ([CN](docs/books/book-foundation-of-phys-in-geo-and-info/index.md) | [EN](docs/books/book-foundation-of-phys-in-geo-and-info/index_en.md))
 *Derives Time not as a parameter, but as an operator observable.*
 - **Microscopic Time**: Scattering time delay & Pauli Theorem.
 - **Thermodynamic Time**: The origin of the arrow of time.
 - **Time Crystals**: Spontaneous symmetry breaking in temporal logic.
 
-### Volume 3: Gravity & Entropy ([CN](docs/books/book-foundation-of-phys-in-geo-and-info/volume03-gravity-entropy-origin/index.md) | [EN](docs/books/book-foundation-of-phys-in-geo-and-info/volume03-gravity-entropy-origin/index_en.md))
+### Volume 3: Gravity & Entropy ([CN](docs/books/book-foundation-of-phys-in-geo-and-info/index.md) | [EN](docs/books/book-foundation-of-phys-in-geo-and-info/index_en.md))
 *Geometrizes information content into curvature.*
 - **Geometric Dynamics**: Causal diamonds & Generalized Entropy.
 - **Entropic Gravity**: Deriving Einstein Equations from entanglement equilibrium.
 - **Black Holes**: Microscopic counting of Bekenstein-Hawking entropy.
 
-### Volume 4: Physics of Agency ([CN](docs/books/book-foundation-of-phys-in-geo-and-info/volume04-physics-agency-observer-complex-systems/index.md) | [EN](docs/books/book-foundation-of-phys-in-geo-and-info/volume04-physics-agency-observer-complex-systems/index_en.md))
+### Volume 4: Physics of Agency ([CN](docs/books/book-foundation-of-phys-in-geo-and-info/index.md) | [EN](docs/books/book-foundation-of-phys-in-geo-and-info/index_en.md))
 *The core of the theory: Defining the Observer.*
 - **Algebraic Structure**: The Observer as a Finite Von Neumann Algebra.
 - **Self-Reference**: Predictive coding & The Free Energy Principle.
 - **Topological Consciousness**: Consciousness as a $Z_2$ Holonomy invariant.
 
-### Volume 5: Metatheory & Verification ([CN](docs/books/book-foundation-of-phys-in-geo-and-info/volume05-metatheory-logic-computation-experimental-verification/index.md) | [EN](docs/books/book-foundation-of-phys-in-geo-and-info/volume05-metatheory-logic-computation-experimental-verification/index_en.md))
+### Volume 5: Metatheory & Verification ([CN](docs/books/book-foundation-of-phys-in-geo-and-info/index.md) | [EN](docs/books/book-foundation-of-phys-in-geo-and-info/index_en.md))
 *Mathematical foundations and experimental predictions.*
 - **Categorical QM**: Symmetric Monoidal Categories & String Diagrams.
 - **Computational Optimality**: Landauer's Principle & Golden Ratio.
