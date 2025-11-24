@@ -6,7 +6,7 @@
   <img src="./architecture.png" alt="The Omega Architecture" width="100%">
 </p>
 
-[📥 下载 PDF 版本](./Information_Geometry_Agency.pdf) | [▶️ 视频](https://youtu.be/W5uPFhyYD_k)
+[📥 下载 PDF 版本](./Information_Geometry_Agency.pdf) | [▶️ 中文视频](https://youtu.be/iRbAAPmnFFg) | [▶️ 英文视频](https://youtu.be/W5uPFhyYD_k)
 
 ## 前言
 

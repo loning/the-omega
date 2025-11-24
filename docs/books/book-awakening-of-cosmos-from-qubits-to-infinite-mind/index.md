@@ -6,7 +6,7 @@
   <img src="./architecture.png" alt="The Omega Architecture" width="100%">
 </p>
 
-[📥 下载 PDF 版本](./Physics_Consciousness_Code.pdf) | [▶️ 视频](https://youtu.be/Uhmt40HAFb4)
+[📥 下载 PDF 版本](./Physics_Consciousness_Code.pdf) | [▶️ 中文视频](https://youtu.be/tghTz3DB5mM) | [▶️ 英文视频](https://youtu.be/Uhmt40HAFb4)
 
 ## 序言
 

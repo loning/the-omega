@@ -6,7 +6,7 @@
   <img src="./architecture.png" alt="The Omega Architecture" width="100%">
 </p>
 
-[📥 下载 PDF 版本](./Reality_Bug_Report_and_System_Update.pdf) | [▶️ 视频](https://youtu.be/KHp50f6SHdc)
+[📥 下载 PDF 版本](./Reality_Bug_Report_and_System_Update.pdf) | [▶️ 中文视频](https://youtu.be/xoed5FZyM6c) | [▶️ 英文视频](https://youtu.be/KHp50f6SHdc)
 
 ## 前言
 
