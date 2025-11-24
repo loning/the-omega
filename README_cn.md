@@ -26,7 +26,7 @@
 > *"宇宙不是模拟。它是一个自引用的数学证明。"*
 
 <p align="center">
-  <img src="https://omega.dw.cash/assets/img/cover.png" alt="觉醒的拓扑学" width="100%">
+  <img src="docs/assets/img/cover.png" alt="觉醒的拓扑学" width="100%">
   <br>
   <em>图 1：觉醒的拓扑学。可视化 QCA 格点折叠成自指结（意识）的时刻。</em>
 </p>
@@ -58,7 +58,7 @@
 ## 🧩 核心映射（源代码）
 
 <p align="center">
-  <img src="https://omega.dw.cash/books/book-foundation-of-phys-in-geo-and-info/architecture.png" alt="The Omega 架构" width="100%">
+  <img src="docs/books/book-foundation-of-phys-in-geo-and-info/architecture.png" alt="The Omega 架构" width="100%">
 </p>
 
 我们将物理现象直接映射到数学结构。这消除了"神秘"，并用"计算"取而代之。

@@ -26,7 +26,7 @@ Crucially, this model provides a rigorous physical definition for **Consciousnes
 > *"The Universe is not a simulation. It is a self-referencing mathematical proof."*
 
 <p align="center">
-  <img src="https://omega.dw.cash/assets/img/cover.png" alt="The Topology of Awakening" width="100%">
+  <img src="docs/assets/img/cover.png" alt="The Topology of Awakening" width="100%">
   <br>
   <em>Figure 1: The Topology of Awakening. Visualizing the moment where the QCA Lattice folds into a Self-Referential Knot (Consciousness).</em>
 </p>
@@ -58,7 +58,7 @@ We have subjected this framework to rigorous analysis by next-generation reasoni
 ## 🧩 The Core Mapping (Source Code)
 
 <p align="center">
-  <img src="https://omega.dw.cash/books/book-foundation-of-phys-in-geo-and-info/architecture.png" alt="The Omega Architecture" width="100%">
+  <img src="docs/books/book-foundation-of-phys-in-geo-and-info/architecture.png" alt="The Omega Architecture" width="100%">
 </p>
 
 We map physical phenomenology directly to mathematical structures. This eliminates the "Mystery" and replaces it with "Computation".
