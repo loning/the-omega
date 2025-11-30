@@ -2,7 +2,7 @@
 
 **The Scattering of Time**
 
-**副标题：从比特到宇宙的几何重构**
+**副标题**：从比特到宇宙的几何重构
 
 **Geometric Reconstruction: From Bits to the Universe**
 
