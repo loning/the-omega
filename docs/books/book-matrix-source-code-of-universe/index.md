@@ -59,6 +59,45 @@
 - [5.1 熵限 (Entropy Limits)](volume05-system-logs/chapter05-01-entropy-limits/chapter05-01-entropy-limits.md)
 - [5.2 时间之箭 (The Arrow of Time)](volume05-system-logs/chapter05-02-the-arrow-of-time/chapter05-02-the-arrow-of-time.md)
 
+### 卷六：引力与流量控制 (Volume 06: Gravity & Traffic Control)
+
+#### 第六章：视界即瓶颈
+
+- [6.1 视界即瓶颈 (Horizons as Bottlenecks)](volume06-gravity-and-traffic-control/chapter06-01-horizons-as-bottlenecks/chapter06-01-horizons-as-bottlenecks.md)
+- [6.2 涌现时空 (Emergent Spacetime)](volume06-gravity-and-traffic-control/chapter06-02-emergent-spacetime/chapter06-02-emergent-spacetime.md)
+
+### 卷七：计算与复杂度 (Volume 07: Computation & Complexity)
+
+#### 第七章：模拟假说
+
+- [7.1 模拟假说 (The Simulation Hypothesis)](volume07-computation-and-complexity/chapter07-01-the-simulation-hypothesis/chapter07-01-the-simulation-hypothesis.md)
+- [7.2 量子行走 (Quantum Walks)](volume07-computation-and-complexity/chapter07-02-quantum-walks/chapter07-02-quantum-walks.md)
+
+### 卷八：观察者与意识 (Volume 08: The Observer & Consciousness)
+
+#### 第八章：生物优化
+
+- [8.1 生物优化 (Biological Optimization)](volume08-the-observer-and-consciousness/chapter08-01-biological-optimization/chapter08-01-biological-optimization.md)
+- [8.2 时钟同步 (Clock Synchronization)](volume08-the-observer-and-consciousness/chapter08-02-clock-synchronization/chapter08-02-clock-synchronization.md)
+
+## 附录 (Appendices)
+
+### 附录 A：开发者工具箱 (Appendix A: The Developer's Kit)
+
+- [A.1 FS-API 参考手册 (The FS-API Reference)](appendix-a-developers-kit/appendix-a-01-fs-api-reference/appendix-a-01-fs-api-reference.md)
+
+### 附录 B：扩展编写指南 (Appendix B: Writing Extensions)
+
+- [B.1 如何定义新的物理扇区 (How to Define New Physical Sectors)](appendix-b-writing-extensions/appendix-b-01-how-to-define-new-physical-sectors/appendix-b-01-how-to-define-new-physical-sectors.md)
+
+### 附录 C：已知问题与待解决事项 (Appendix C: Known Bugs & Unsolved Issues)
+
+- [C.1 宇宙 Issue 追踪器 (The Universe Issue Tracker)](appendix-c-known-bugs-and-unsolved-issues/appendix-c-01-the-universe-issue-tracker/appendix-c-01-the-universe-issue-tracker.md)
+
+### 附录 D：参考文献与致谢 (Appendix D: References & Acknowledgments)
+
+- [D.1 核心代码库与依赖项 (The Kernel Source & Dependencies)](appendix-d-references-and-acknowledgments/appendix-d-01-the-kernel-source-and-dependencies/appendix-d-01-the-kernel-source-and-dependencies.md)
+
 ---
 
 > **System Status: Initializing...**

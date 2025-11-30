@@ -59,6 +59,45 @@
 - [5.1 Entropy Limits](volume05-system-logs/chapter05-01-entropy-limits/chapter05-01-entropy-limits_en.md)
 - [5.2 The Arrow of Time](volume05-system-logs/chapter05-02-the-arrow-of-time/chapter05-02-the-arrow-of-time_en.md)
 
+### Volume 06: Gravity & Traffic Control
+
+#### Chapter 6: Horizons as Bottlenecks
+
+- [6.1 Horizons as Bottlenecks](volume06-gravity-and-traffic-control/chapter06-01-horizons-as-bottlenecks/chapter06-01-horizons-as-bottlenecks_en.md)
+- [6.2 Emergent Spacetime](volume06-gravity-and-traffic-control/chapter06-02-emergent-spacetime/chapter06-02-emergent-spacetime_en.md)
+
+### Volume 07: Computation & Complexity
+
+#### Chapter 7: The Simulation Hypothesis
+
+- [7.1 The Simulation Hypothesis](volume07-computation-and-complexity/chapter07-01-the-simulation-hypothesis/chapter07-01-the-simulation-hypothesis_en.md)
+- [7.2 Quantum Walks](volume07-computation-and-complexity/chapter07-02-quantum-walks/chapter07-02-quantum-walks_en.md)
+
+### Volume 08: The Observer & Consciousness
+
+#### Chapter 8: Biological Optimization
+
+- [8.1 Biological Optimization](volume08-the-observer-and-consciousness/chapter08-01-biological-optimization/chapter08-01-biological-optimization_en.md)
+- [8.2 Clock Synchronization](volume08-the-observer-and-consciousness/chapter08-02-clock-synchronization/chapter08-02-clock-synchronization_en.md)
+
+## Appendices
+
+### Appendix A: The Developer's Kit
+
+- [A.1 The FS-API Reference](appendix-a-developers-kit/appendix-a-01-fs-api-reference/appendix-a-01-fs-api-reference_en.md)
+
+### Appendix B: Writing Extensions
+
+- [B.1 How to Define New Physical Sectors](appendix-b-writing-extensions/appendix-b-01-how-to-define-new-physical-sectors/appendix-b-01-how-to-define-new-physical-sectors_en.md)
+
+### Appendix C: Known Bugs & Unsolved Issues
+
+- [C.1 The Universe Issue Tracker](appendix-c-known-bugs-and-unsolved-issues/appendix-c-01-the-universe-issue-tracker/appendix-c-01-the-universe-issue-tracker_en.md)
+
+### Appendix D: References & Acknowledgments
+
+- [D.1 The Kernel Source & Dependencies](appendix-d-references-and-acknowledgments/appendix-d-01-the-kernel-source-and-dependencies/appendix-d-01-the-kernel-source-and-dependencies_en.md)
+
 ---
 
 > **System Status: Initializing...**
