@@ -71,7 +71,61 @@
 - [8.2 停留即存在](part03-knots-of-time/chapter08-resonance-as-residence/08-02-residence-is-existence.md)
 - [8.3 几何饱和](part03-knots-of-time/chapter08-resonance-as-residence/08-03-geometric-saturation.md)
 
+### 第四部：几何的驱力 (Part IV: The Drive of Geometry)
+
+我们已经搭建好了宇宙的静态结构：希尔伯特空间是舞台，光速是带宽，粒子是打结的像素。现在，我们需要让这个世界动起来。为什么物体会相互吸引？为什么会有"趋势"和"方向"？我们将发现，所谓的"力"，并不是一只看不见的手，而是几何结构本身的一种**倾斜**。
+
+#### 第九章：力的统一定义 (Chapter 9: The Unified Definition of Force)
+
+- [9.1 坡度](part04-drive-of-geometry/chapter09-unified-definition-of-force/09-01-the-slope.md)
+- [9.2 向往的几何学](part04-drive-of-geometry/chapter09-unified-definition-of-force/09-02-geometry-of-longing.md)
+- [9.3 熵力的视角](part04-drive-of-geometry/chapter09-unified-definition-of-force/09-03-entropic-perspective.md)
+
+#### 第十章：平庸吸引子 (Chapter 10: The Mediocre Attractor)
+
+- [10.1 观察者的陷阱](part04-drive-of-geometry/chapter10-mediocre-attractor/10-01-observer-trap.md)
+- [10.2 奇异环](part04-drive-of-geometry/chapter10-mediocre-attractor/10-02-strange-loop.md)
+- [10.3 自我的引力](part04-drive-of-geometry/chapter10-mediocre-attractor/10-03-gravity-of-ego.md)
+
+#### 第十一章：与真我的距离 (Chapter 11: Distance to the True Self)
+
+- [11.1 真我轨道](part04-drive-of-geometry/chapter11-distance-to-true-self/11-01-orbit-of-true-self.md)
+- [11.2 觉醒的物理学](part04-drive-of-geometry/chapter11-distance-to-true-self/11-02-physics-of-awakening.md)
+- [11.3 破环机制](part04-drive-of-geometry/chapter11-distance-to-true-self/11-03-mechanism-of-breaking-loop.md)
+
+### 第五部：无限展开 (Part V: Infinite Unfolding)
+
+在前面的章节中，我们已经构建了一个完整的几何宇宙模型。现在，我们将面对这个模型最深刻的含义：观察者与宇宙本体的关系。我们将发现，宇宙并不是一个外在的容器，而是一个内在的、正在被我们"解压缩"的全息图。
+
+#### 第十二章：真空的噪音 (Chapter 12: Noise of Vacuum)
+
+- [12.1 暗能量：信息的灰烬](part05-infinite-unfolding/chapter12-noise-of-vacuum/12-01-dark-energy-ashes-of-information.md)
+- [12.2 $10^{-123}$ 的启示](part05-infinite-unfolding/chapter12-noise-of-vacuum/12-02-revelation-of-10-123.md)
+
+#### 第十三章：种子展开 (Chapter 13: Seed Expansion)
+
+- [13.1 观察者即种子](part05-infinite-unfolding/chapter13-seed-expansion/13-01-observer-as-seed.md)
+- [13.2 维度的生长](part05-infinite-unfolding/chapter13-seed-expansion/13-02-growth-of-dimensions.md)
+- [13.3 多重宇宙的几何解释](part05-infinite-unfolding/chapter13-seed-expansion/13-03-geometric-explanation-of-multiverse.md)
+
+#### 终章：沉默的几何 (Epilogue: The Silent Geometry)
+
+- [14.1 没有大爆炸](part05-infinite-unfolding/chapter14-silent-geometry/14-01-no-big-bang.md)
+- [14.2 永恒的回响](part05-infinite-unfolding/chapter14-silent-geometry/14-02-eternal-echo.md)
+
+## 附录：技术重构
+
+**(Technical Appendices)**
+
+在前文中，为了保持叙事的流畅，我们使用了大量的隐喻——"预算"、"带宽"、"结"。在这里，我们将脱去文学的外衣，展示支撑这些隐喻的坚硬数学骨架。这些推导主要基于 Fubini-Study 几何、谱理论和量子元胞自动机（QCA）的形式化公理体系。
+
+- [附录 A：从几何演化圆重构闵可夫斯基线元](appendix/appendix-a-minkowski-from-geometric-evolution.md)
+- [附录 B：Dirac-QCA 模型的色散关系与洛伦兹破坏](appendix/appendix-b-dirac-qca-dispersion-lorentz-violation.md)
+- [附录 C：散射时间延迟 $\kappa(\omega)$ 的证明](appendix/appendix-c-kappa-function-proof.md)
+- [附录 D：观察者互信息的相对论界限](appendix/appendix-d-observer-mutual-information-relativistic-bound.md)
+- [附录 E：Fubini-Study 距离与泛化力场](appendix/appendix-e-fubini-study-distance-generalized-force.md)
+
 ---
 
-*本书正在创作中*
+*（全书完）*
 

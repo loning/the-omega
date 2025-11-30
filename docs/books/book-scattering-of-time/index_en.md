@@ -67,7 +67,59 @@ In this part, we will no longer view time as a continuously flowing river, but a
 - [8.2 Residence is Existence](part03-knots-of-time/chapter08-resonance-as-residence/08-02-residence-is-existence_en.md)
 - [8.3 Geometric Saturation](part03-knots-of-time/chapter08-resonance-as-residence/08-03-geometric-saturation_en.md)
 
+### Part IV: The Drive of Geometry
+
+We have built the universe's static structure: Hilbert Space is the stage, light speed is bandwidth, particles are knotted pixels. Now, we need to make this world move. Why do objects attract each other? Why are there "trends" and "directions"? We will discover that so-called "forces" are not invisible hands, but a kind of **tilt** of geometric structure itself.
+
+#### Chapter 9: The Unified Definition of Force
+
+- [9.1 The Slope](part04-drive-of-geometry/chapter09-unified-definition-of-force/09-01-the-slope_en.md)
+- [9.2 The Geometry of Longing](part04-drive-of-geometry/chapter09-unified-definition-of-force/09-02-geometry-of-longing_en.md)
+- [9.3 The Entropic Perspective](part04-drive-of-geometry/chapter09-unified-definition-of-force/09-03-entropic-perspective_en.md)
+
+#### Chapter 10: The Mediocre Attractor
+
+- [10.1 The Observer's Trap](part04-drive-of-geometry/chapter10-mediocre-attractor/10-01-observer-trap_en.md)
+- [10.2 Strange Loop](part04-drive-of-geometry/chapter10-mediocre-attractor/10-02-strange-loop_en.md)
+- [10.3 The Gravity of the Ego](part04-drive-of-geometry/chapter10-mediocre-attractor/10-03-gravity-of-ego_en.md)
+
+#### Chapter 11: Distance to the True Self
+
+- [11.1 The Orbit of the True Self](part04-drive-of-geometry/chapter11-distance-to-true-self/11-01-orbit-of-true-self_en.md)
+- [11.2 The Physics of Awakening](part04-drive-of-geometry/chapter11-distance-to-true-self/11-02-physics-of-awakening_en.md)
+- [11.3 The Mechanism of Breaking the Loop](part04-drive-of-geometry/chapter11-distance-to-true-self/11-03-mechanism-of-breaking-loop_en.md)
+
+### Part V: Infinite Unfolding
+
+In the previous chapters, we have built a complete geometric universe model. Now, we will face the deepest implications of this model: the relationship between observers and the cosmic noumenon. We will discover that the universe is not an external container, but an internal hologram being "decompressed" by us.
+
+#### Chapter 12: Noise of Vacuum
+
+- [12.1 Dark Energy: The Ashes of Information](part05-infinite-unfolding/chapter12-noise-of-vacuum/12-01-dark-energy-ashes-of-information_en.md)
+- [12.2 The Revelation of $10^{-123}$](part05-infinite-unfolding/chapter12-noise-of-vacuum/12-02-revelation-of-10-123_en.md)
+
+#### Chapter 13: Seed Expansion
+
+- [13.1 The Observer as Seed](part05-infinite-unfolding/chapter13-seed-expansion/13-01-observer-as-seed_en.md)
+- [13.2 The Growth of Dimensions](part05-infinite-unfolding/chapter13-seed-expansion/13-02-growth-of-dimensions_en.md)
+- [13.3 The Geometric Explanation of Multiverse](part05-infinite-unfolding/chapter13-seed-expansion/13-03-geometric-explanation-of-multiverse_en.md)
+
+#### Epilogue: The Silent Geometry
+
+- [14.1 No Big Bang](part05-infinite-unfolding/chapter14-silent-geometry/14-01-no-big-bang_en.md)
+- [14.2 The Eternal Echo](part05-infinite-unfolding/chapter14-silent-geometry/14-02-eternal-echo_en.md)
+
+## Technical Appendices
+
+In the previous chapters, to maintain narrative flow, we used many metaphors—"budget," "bandwidth," "knots." Here, we remove the literary veil and reveal the hard mathematical skeleton supporting these metaphors. These derivations are primarily based on Fubini-Study geometry, spectral theory, and the formal axiomatic system of Quantum Cellular Automata (QCA).
+
+- [Appendix A: Reconstruction of Minkowski Metric from Geometric Evolution Circle](appendix/appendix-a-minkowski-from-geometric-evolution_en.md)
+- [Appendix B: Dispersion Relation and Lorentz Violation in Dirac-QCA](appendix/appendix-b-dirac-qca-dispersion-lorentz-violation_en.md)
+- [Appendix C: Proof of Scattering Time Delay $\kappa(\omega)$](appendix/appendix-c-kappa-function-proof_en.md)
+- [Appendix D: Relativistic Bound on Observer Mutual Information](appendix/appendix-d-observer-mutual-information-relativistic-bound_en.md)
+- [Appendix E: Fubini-Study Distance and Generalized Force](appendix/appendix-e-fubini-study-distance-generalized-force_en.md)
+
 ---
 
-*This book is currently being written*
+*（End of Book）*
 
