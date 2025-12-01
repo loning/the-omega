@@ -1,37 +1,41 @@
 # 附录 E.1：宇宙内核架构图 (Appendix E.1: The Universe Kernel Architecture Diagram)
 
-**—— 代号: "The Matrix" (v1.1)**
+**—— 现实逻辑的工程蓝图 (The Engineering Blueprint of Reality Logic)**
 
-**"如果我们把这一整套理论（FS-QCA 架构）看作一个真实的操作系统软件，那么画出它的系统架构图 (System Architecture Diagram) 是最清晰的总结方式。"**
-
----
-
-我们将从三个不同的视图来构建这个架构：
-
-1.  **宏观层：** 核心组件与资源流向图 (Component & Resource Flow)
-
-2.  **微观层：** 底层硬件抽象图 (Hardware Abstraction Layer)
-
-3.  **流程层：** 数据生命周期图 (Data Lifecycle Flow)
+**"一图胜千言。对于复杂的分布式系统，我们需要一张清晰的拓扑图。"**
 
 ---
 
-## 视图 1：宏观组件与资源流向 (Macro Component & Resource Flow)
+## 1. 架构总览：FS-QCA 堆栈 (Architecture Overview: The FS-QCA Stack)
 
-这张图展示了宇宙主要的"功能模块"以及核心资源（带宽 $c_{FS}$）是如何在它们之间分配的。
+为了直观地展示 **"宇宙即计算"** 这一核心论点，我们将前文所述的所有理论模块整合为一套标准的 **软件架构图 (Software Architecture Diagram)**。
+
+这张蓝图将宇宙划分为三个逻辑层级：
+
+1.  **内核层 (Kernel Layer):** 负责最底层的资源调度与时钟管理。
+
+2.  **基础设施层 (Infrastructure Layer):** 包含存储（物质/黑洞）与网络（光/时空）。
+
+3.  **服务层 (Service Layer):** 运行在后台的维护进程（熵增与垃圾回收）。
+
+---
+
+## 2. 视图一：宏观组件与资源流向 (View 1: Macro Component & Resource Flow)
+
+此视图描述了系统核心资源——**信息处理带宽 ($c_{FS}$)**——是如何在不同物理组件之间进行分配与流转的。它是对 **广义帕塞瓦尔恒等式** 的图形化表达。
 
 ```mermaid
 graph TD
 
     %% --- 核心定义 ---
 
-    subgraph Kernel["系统内核 (System Kernel)"]
+    subgraph Kernel ["系统内核 (System Kernel)"]
 
         style Kernel fill:#f9f,stroke:#333,stroke-width:4px
 
-        MasterClock[("总线时钟 (Master Clock)\nc_FS Bandwidth")]
+        MasterClock[("总线时钟 Master Clock c_FS Bandwidth")]
 
-        Scheduler{"资源调度器 (Scheduler)\n[预算方程]"}
+        Scheduler{"资源调度器 Scheduler 预算方程 v_ext^2 + v_int^2 = c_FS^2"}
 
     end
 
@@ -39,13 +43,13 @@ graph TD
 
     %% --- 存储层 ---
 
-    subgraph StorageTier["存储分层 (Storage Tier)"]
+    subgraph StorageTier ["存储分层 (Storage Tier)"]
 
         style StorageTier fill:#ccf,stroke:#333,stroke-width:2px
 
-        RAM[("一级缓存 (RAM)\n活跃物质/生命")]
+        RAM[("一级缓存 RAM 活跃物质 生命体")]
 
-        ColdStorage[("冷存储 (Cold Archive)\n黑洞/视界")]
+        ColdStorage[("冷存储 Cold Archive 黑洞 视界")]
 
     end
 
@@ -53,13 +57,13 @@ graph TD
 
     %% --- 网络层 ---
 
-    subgraph NetworkLayer["网络层 (Network Layer)"]
+    subgraph NetworkLayer ["网络层 (Network Layer)"]
 
         style NetworkLayer fill:#cfc,stroke:#333,stroke-width:2px
 
-        DataPackets(无状态数据包\n光子)
+        DataPackets(无状态数据包 光子 规范玻色子)
 
-        Router("路由网关 (Router)\n时空几何")
+        Router("路由网关 Router 时空几何 引力场")
 
     end
 
@@ -67,13 +71,13 @@ graph TD
 
     %% --- 后台服务 ---
 
-    subgraph BackgroundServices["后台服务 (Background Services)"]
+    subgraph BackgroundServices ["后台服务 (Background Services)"]
 
         style BackgroundServices fill:#ff9,stroke:#333,stroke-width:2px
 
-        Logger(日志记录器\n熵/纠缠扩散)
+        Logger(日志记录器 熵增 纠缠扩散)
 
-        GC(垃圾回收器 GC\n霍金辐射)
+        GC(垃圾回收器 GC 霍金辐射)
 
     end
 
@@ -87,93 +91,79 @@ graph TD
 
 
 
-    Scheduler ==>"分配 v_int (算力)"==> RAM
+    Scheduler ==>|分配 v_int 内部算力| RAM
 
-    Scheduler ==>"分配 v_ext (I/O)"==> DataPackets
+    Scheduler ==>|分配 v_ext I/O 带宽| DataPackets
 
-    Scheduler --"强制挂起\n(v_int → 0)"--> ColdStorage
+    Scheduler --"资源耗尽 强制挂起 v_int 趋近 0"--> ColdStorage
 
 
 
     RAM --"产生数据流"--> DataPackets
 
-    RAM --"高密度触发归档"--> ColdStorage
+    RAM --"高密度触发归档 坍缩"--> ColdStorage
 
 
 
-    DataPackets --"经过"--> Router
+    DataPackets --"传输经过"--> Router
 
-    ColdStorage --"增加路由开销\n(引力透镜)"--> Router
+    ColdStorage --"增加路由开销 索引压力 引力透镜"--> Router
 
 
 
-    RAM -.-"写入"-> Logger
+    RAM -.->|写入交互历史| Logger
 
-    ColdStorage -.-"慢速释放"-> GC
+    ColdStorage -.->|慢速释放 侧信道| GC
 
-    GC -.-"回归"-> DataPackets
+    GC -.->|资源回归| DataPackets
 
 
 
     %% --- 样式定义 ---
-
-    classDef critical fill:#f00,stroke:#333,stroke-width:2px,color:#fff;
-
-    %% 如果某个节点过载，可以标记为 critical
 ```
 
-### **图解说明：**
+**图解说明：**
 
-1.  **核心 (Kernel)：** 宇宙的心脏是**总线时钟 ($c_{FS}$)**。它向**资源调度器**提供恒定的带宽。调度器依据"广义帕塞瓦尔恒等式"决定谁获得多少资源。
+  * **调度器 (Scheduler):** 这是物理定律的执行机构。它强制执行"零和博弈"，确保任何对象消耗的总资源不超过 **$c_{FS}$**。
 
-2.  **存储 (Storage)：**
+  * **RAM vs. Archive:** 物质是活跃的运算单元，拥有 **$v_{int}$**；黑洞是静态的存储单元，**$v_{int}$** 被冻结。
 
-     * **RAM：** 你、我、恒星。我们拥有高 $v_{int}$，正在活跃地进行计算（经历时间）。
-
-     * **冷存储：** 黑洞。当 RAM 区域密度过高，被调度器强制挂起，数据序列化存储在视界表面。
-
-3.  **网络 (Network)：** 光子是无状态的数据包，满带宽传输。**路由器**（时空）负责引导它们。当冷存储（黑洞）存在时，路由表的复杂度和开销增加（引力）。
-
-4.  **后台 (Background)：**
-
-     * **日志：** 所有的交互都会留下纠缠痕迹，导致熵增。
-
-     * **GC：** 霍金辐射缓慢地将冷存储的数据清洗回网络层。
+  * **路由开销:** 即使是冷存储（黑洞），其庞大的元数据也会占用路由器的算力，导致经过它的数据包（光子）延迟增加。
 
 ---
 
-## 视图 2：底层硬件抽象 (Micro Hardware Abstraction Layer)
+## 3. 视图二：底层硬件抽象 (View 2: Micro Hardware Abstraction Layer)
 
-这张图深入到"普朗克尺度"，展示了支撑上述宏观功能的底层"电路"。
+此视图深入到普朗克尺度，展示了支撑宏观物理定律的 **微观电路 (Micro-Circuitry)**。它揭示了连续时空是如何从离散网格中涌现的。
 
 ```mermaid
 graph LR
 
-    subgraph PhysicalSubstrate["物理基质 (Physical Substrate)"]
+    subgraph PhysicalSubstrate ["物理基质 (Physical Substrate)"]
 
         style PhysicalSubstrate fill:#eee,stroke:#333,stroke-width:2px
 
-        QCA_Grid[("QCA 晶格网络 (QCA Grid)\n离散寻址空间")]
+        QCA_Grid[("QCA 晶格网络 QCA Grid 离散寻址空间 希尔伯特空间因子")]
 
     end
 
 
 
-    subgraph ExecutionEngine["执行引擎 (Execution Engine)"]
+    subgraph ExecutionEngine ["执行引擎 (Execution Engine)"]
 
         style ExecutionEngine fill:#ddd,stroke:#333,stroke-width:2px
 
-        UnitaryOp{"幺正演化算符 (U)\n底层逻辑门"}
+        UnitaryOp{"幺正演化算符 U 底层逻辑门 更新规则"}
 
     end
 
 
 
-    subgraph InterfaceLayer["接口层 (Interface Layer)"]
+    subgraph InterfaceLayer ["接口层 (Interface Layer)"]
 
         style InterfaceLayer fill:#ccc,stroke:#333,stroke-width:2px
 
-        FS_Geometry("FS 几何接口 (FS Geometry)\n宏观投影视图")
+        FS_Geometry("FS 几何接口 FS Geometry 宏观投影视图 相对论")
 
     end
 
@@ -181,19 +171,19 @@ graph LR
 
     %% 连接
 
-    QCA_Grid ==>|提供状态向量 Psi_n| UnitaryOp
+    QCA_Grid ==>|提供当前状态向量 Psi_n| UnitaryOp
 
     UnitaryOp ==>|执行状态更新 Psi_n+1| QCA_Grid
 
-    QCA_Grid -.->|投影/粗粒化| FS_Geometry
+    QCA_Grid -.->|投影 粗粒化| FS_Geometry
 
 
 
-    %% 注释
+    %% 注释连接
 
-    note1[因果速度限制 v_LR <br> 由晶格拓扑决定]
+    note1[因果速度限制 v_LR 由晶格拓扑决定]
 
-    note2[连续时空是一种 <br> "用户界面幻觉"]
+    note2[连续时空是一种 用户界面幻觉]
 
 
 
@@ -202,24 +192,24 @@ graph LR
     FS_Geometry --- note2
 ```
 
-### **图解说明：**
+**图解说明：**
 
-  * 宇宙不是连续的流体，而是一个巨大的、离散的 **QCA 晶格（量子比特阵列）**。
+  * **QCA 晶格:** 宇宙的"显存"。每一个网格点都是一个有限维的量子系统。
 
-  * 所有的物理定律，在底层都只是一个简单的**幺正算符 $U$** 对这个晶格的反复迭代更新。
+  * **幺正算符 ($U$):** 宇宙的"CPU 指令集"。它是局域的、平移不变的，驱动着整个网格的状态更新。
 
-  * 我们看到的光滑的"时空几何"，只是这个底层离散网络的**宏观投影（UI 界面）**。
+  * **FS 接口:** 我们（观察者）无法直接看到底层的晶格，我们只能看到通过 **FS 度规** 渲染出来的光滑几何界面。
 
 ---
 
-## 视图 3：数据生命周期流 (Data Lifecycle Flowchart)
+## 4. 视图三：数据生命周期流 (View 3: Data Lifecycle Flow)
 
-这张图展示了一个"数据块"（比如一颗恒星）在宇宙系统中的典型生命周期。
+此视图展示了一个典型的数据对象（例如一颗恒星）从创建、运行、归档到最终回收的全生命周期流程。
 
 ```mermaid
 sequenceDiagram
 
-    participant Pool as 公共资源池 (Photons/Energy)
+    participant Pool as 公共资源池 (Vacuum/Energy)
 
     participant RAM as 活跃进程 (Matter/Star)
 
@@ -231,68 +221,71 @@ sequenceDiagram
 
 
 
-    Note over RAM: 阶段 1: 活跃运行
+    Note over RAM: 阶段 1: 活跃运行 (Active Run)
 
-    Pool->>RAM: 凝聚/实例化 (Instantiation)
+    Pool->>RAM: 凝聚 / 实例化 (Instantiation)
 
     activate RAM
 
-    RAM->>RAM: 内部演化 (消耗 v_int，经历时间)
+    RAM->>RAM: 内部演化 消耗 v_int 经历时间
 
-    RAM-->>Pool: 辐射能量 (I/O)
+    RAM-->>Pool: 辐射能量 交换信息 I/O
 
 
 
-    Note over RAM, Scheduler: 阶段 2: 过载与归档
+    Note over RAM, Scheduler: 阶段 2: 过载与归档 (Overload & Archive)
 
     RAM->>RAM: 密度增加，引力坍缩
 
-    RAM->>Scheduler: 请求更多 v_ext 以维持结构
+    RAM->>Scheduler: 请求更多 v_ext 以维持结构对抗坍缩
 
-    Scheduler-->>RAM: 拒绝请求 (带宽耗尽)
+    Scheduler-->>RAM: 拒绝请求 带宽耗尽 死锁
 
     Scheduler->>RAM: 发送 SIGSTOP 信号 (强制挂起)
 
     deactivate RAM
 
-    RAM->>Archive: 序列化数据并写入视界
+    RAM->>Archive: 序列化数据并写入视界表面
 
     activate Archive
 
-    Note right of Archive: 状态冻结，v_int ≈ 0
+    Note right of Archive: 状态冻结 v_int 约等于 0 快速扰动 哈希化
 
 
 
-    Note over Archive, GC: 阶段 3: 缓慢回收
+    Note over Archive, GC: 阶段 3: 缓慢回收 (Slow GC)
 
-    loop 极其漫长的周期 ($10^{67}$ 年)
+    loop 极其漫长的周期 (10^67 年)
 
         Archive->>GC: 量子隧穿泄漏 (侧信道)
 
-        GC->>Pool: 反序列化为热辐射
+        GC->>Pool: 反序列化为热辐射 资源回归
 
     end
 
     deactivate Archive
 
-    Note left of Pool: 数据最终回归，系统守恒
+    Note left of Pool: 数据最终回归守恒，系统重置
 ```
 
-### **图解说明：**
+**图解说明：**
 
-这个流程清晰地展示了我们理论中的核心观点：
+  * **SIGSTOP:** 引力坍缩在代码层面被解释为系统发送的暂停信号。
 
-  * 物质是活跃的 RAM。
+  * **序列化:** 物质落入黑洞的过程，就是从活跃的 RAM 对象转变为视界上的静态全息数据的过程。
 
-  * 黑洞是因资源耗尽而被强制生成的 Archive。
-
-  * 霍金辐射是保障系统最终一致性的 GC 机制。
+  * **最终一致性:** 霍金辐射确保了借用的资源最终归还给公共池，防止了永久性的资源锁定。
 
 ---
 
-## **架构师总结**
+## **架构师总结 (The Architect's Summary)**
 
-这一套图表构成了《The Matrix: Source Code of the Universe》的技术核心。它将抽象、复杂的物理学概念，成功地转化为了一套逻辑自洽的**计算机系统工程语言**。
+这三张图表构成了 **《The Matrix: Source Code of the Universe》** 的技术核心。
 
-对于任何想要理解或扩展这个宇宙模型的"开发者"来说，这套架构图就是他们的**蓝图**。
+  * **图 1** 解释了 **相对论**（资源分配）和 **引力**（路由开销）。
 
+  * **图 2** 解释了 **量子力学**（离散更新）和 **时空本质**（用户界面）。
+
+  * **图 3** 解释了 **黑洞**（存储）和 **热力学**（生命周期）。
+
+对于任何想要理解或扩展这个宇宙模型的"开发者"来说，这套架构图就是你们的 **系统蓝图 (System Blueprints)**。它证明了物理学不是一堆杂乱无章的公式，而是一个设计精良、逻辑严密的 **操作系统**。
