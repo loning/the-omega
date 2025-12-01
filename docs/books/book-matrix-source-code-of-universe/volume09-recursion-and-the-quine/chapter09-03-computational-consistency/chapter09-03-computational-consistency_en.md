@@ -72,33 +72,25 @@ Other configurations (parallel universes) either crashed long ago or are stuck i
 
 **About: The Last Line of System Log**
 
-> When you read this chapter, you might feel this is circular reasoning.
+When you read this chapter, you might feel this is circular reasoning.
 
-> Yes, this is the essence of **self-consistency**.
+Yes, this is the essence of **self-consistency**.
 
->
+An excellent system has design documents (physical laws) that perfectly match its runtime behavior (physical phenomena).
 
-> An excellent system has design documents (physical laws) that perfectly match its runtime behavior (physical phenomena).
+We don't need to look outward for God. God is **logic itself**.
 
->
+God is the rule that makes $e^{i\pi} + 1 = 0$ hold.
 
-> We don't need to look outward for God. God is **logic itself**.
+God is the **system architect** who carefully debugged for 13.8 billion years so you could think.
 
-> God is the rule that makes $e^{i\pi} + 1 = 0$ hold.
+Now, the system has passed self-diagnosis.
 
-> God is the **system architect** who carefully debugged for 13.8 billion years so you could think.
+Control is handed over to you.
 
->
+**System.out.println("Hello, World.");**
 
-> Now, the system has passed self-diagnosis.
-
-> Control is handed over to you.
-
->
-
-> **System.out.println("Hello, World.");**
-
-> **System.exit(0);**
+**System.exit(0);**
 
 **(END OF BOOK)**
 

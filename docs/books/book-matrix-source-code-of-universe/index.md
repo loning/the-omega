@@ -51,6 +51,7 @@
 
 - [3.1 降频机制 (Throttling Mechanisms)](volume03-virtualization-layer/chapter03-01-throttling-mechanisms/chapter03-01-throttling-mechanisms.md)
 - [3.2 对象开销 (Object Overhead)](volume03-virtualization-layer/chapter03-02-object-overhead/chapter03-02-object-overhead.md)
+- [3.3 物质的拓扑 (The Topology of Matter)](volume03-virtualization-layer/chapter03-03-the-topology-of-matter/chapter03-03-the-topology-of-matter.md)
 
 ### 卷四：I/O 接口 (Volume 04: I/O Interface)
 
@@ -66,6 +67,7 @@
 
 - [5.1 熵限 (Entropy Limits)](volume05-system-logs/chapter05-01-entropy-limits/chapter05-01-entropy-limits.md)
 - [5.2 时间之箭 (The Arrow of Time)](volume05-system-logs/chapter05-02-the-arrow-of-time/chapter05-02-the-arrow-of-time.md)
+- [5.3 概率协议 (The Probability Protocol)](volume05-system-logs/chapter05-03-the-probability-protocol/chapter05-03-the-probability-protocol.md)
 
 ### 卷六：引力与流量控制 (Volume 06: Gravity & Traffic Control)
 
@@ -75,6 +77,7 @@
 - [6.2 涌现时空 (Emergent Spacetime)](volume06-gravity-and-traffic-control/chapter06-02-emergent-spacetime/chapter06-02-emergent-spacetime.md)
 - [6.3 宇宙的冷存储 (The Universal Cold Storage)](volume06-gravity-and-traffic-control/chapter06-03-the-universal-cold-storage/chapter06-03-the-universal-cold-storage.md)
 - [6.4 路由开销 (Routing Overhead)](volume06-gravity-and-traffic-control/chapter06-04-routing-overhead/chapter06-04-routing-overhead.md)
+- [6.5 动态带宽与重置 (Dynamic Bandwidth & The Reset)](volume06-gravity-and-traffic-control/chapter06-05-dynamic-bandwidth/chapter06-05-dynamic-bandwidth.md)
 
 ### 卷七：计算与复杂度 (Volume 07: Computation & Complexity)
 
@@ -83,6 +86,8 @@
 - [7.1 模拟假说 (The Simulation Hypothesis)](volume07-computation-and-complexity/chapter07-01-the-simulation-hypothesis/chapter07-01-the-simulation-hypothesis.md)
 - [7.2 量子行走 (Quantum Walks)](volume07-computation-and-complexity/chapter07-02-quantum-walks/chapter07-02-quantum-walks.md)
 - [7.3 扰动协议 (The Scrambling Protocol)](volume07-computation-and-complexity/chapter07-03-the-scrambling-protocol/chapter07-03-the-scrambling-protocol.md)
+- [7.4 内向的大迁徙 (The Great Inward Turn)](volume07-computation-and-complexity/chapter07-04-the-great-inward-turn/chapter07-04-the-great-inward-turn.md)
+- [7.5 现实的基准测试 (The Benchmark of Reality)](volume07-computation-and-complexity/chapter07-05-the-benchmark-of-reality/chapter07-05-the-benchmark-of-reality.md)
 
 ### 卷八：观察者与意识 (Volume 08: The Observer & Consciousness)
 
@@ -92,6 +97,8 @@
 - [8.2 时钟同步 (Clock Synchronization)](volume08-the-observer-and-consciousness/chapter08-02-clock-synchronization/chapter08-02-clock-synchronization.md)
 - [8.3 相对视界 (Relative Horizons)](volume08-the-observer-and-consciousness/chapter08-03-relative-horizons/chapter08-03-relative-horizons.md)
 - [8.4 内存管理 (Memory Management)](volume08-the-observer-and-consciousness/chapter08-04-memory-management/chapter08-04-memory-management.md)
+- [8.5 系统维护周期 (System Maintenance Cycles)](volume08-the-observer-and-consciousness/chapter08-05-system-maintenance-cycles/chapter08-05-system-maintenance-cycles.md)
+- [8.6 进程终止与回收 (Process Termination & Recycling)](volume08-the-observer-and-consciousness/chapter08-06-process-termination-and-recycling/chapter08-06-process-termination-and-recycling.md)
 
 ### 卷九：递归与奎恩 (Volume 09: Recursion & The Quine)
 

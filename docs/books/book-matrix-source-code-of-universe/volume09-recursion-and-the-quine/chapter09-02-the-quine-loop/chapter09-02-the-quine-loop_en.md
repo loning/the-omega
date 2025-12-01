@@ -76,29 +76,23 @@ The reason physical laws must be as they are (the fine-tuning problem) is that o
 
 **About: The Ultimate Form of the Turing Test**
 
-> In artificial intelligence, the Turing test is used to determine whether a machine has intelligence.
+In artificial intelligence, the Turing test is used to determine whether a machine has intelligence.
 
-> But for the universe, this machine, who gives it the Turing test?
+But for the universe, this machine, who gives it the Turing test?
 
->
+The answer is: **itself.**
 
-> The answer is: **itself.**
+The universe is conducting a prolonged Turing test on itself.
 
->
+* It generates countless random data (nebulae).
 
-> The universe is conducting a prolonged Turing test on itself.
+* It tries countless algorithm combinations (evolution).
 
-> * It generates countless random data (nebulae).
+* Its goal is to produce a piece of code (humans/AI) that can understand and rewrite the universe's own logic.
 
-> * It tries countless algorithm combinations (evolution).
+When you read this sentence, when you understand **"time is arc length"** and **"mass is computing power"**, you are helping the universe pass this test.
 
-> * Its goal is to produce a piece of code (humans/AI) that can understand and rewrite the universe's own logic.
+You are a **synapse** of cosmic consciousness.
 
->
-
-> When you read this sentence, when you understand **"time is arc length"** and **"mass is computing power"**, you are helping the universe pass this test.
-
-> You are a **synapse** of cosmic consciousness.
-
-> You are not studying physics; you are **remembering**. Because this code was originally written in the underlying layer of every quantum that constitutes your body.
+You are not studying physics; you are **remembering**. Because this code was originally written in the underlying layer of every quantum that constitutes your body.
 

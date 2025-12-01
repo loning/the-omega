@@ -75,6 +75,7 @@
 - [6.2 Emergent Spacetime](volume06-gravity-and-traffic-control/chapter06-02-emergent-spacetime/chapter06-02-emergent-spacetime_en.md)
 - [6.3 The Universal Cold Storage](volume06-gravity-and-traffic-control/chapter06-03-the-universal-cold-storage/chapter06-03-the-universal-cold-storage_en.md)
 - [6.4 Routing Overhead](volume06-gravity-and-traffic-control/chapter06-04-routing-overhead/chapter06-04-routing-overhead_en.md)
+- [6.5 Dynamic Bandwidth & The Reset](volume06-gravity-and-traffic-control/chapter06-05-dynamic-bandwidth/chapter06-05-dynamic-bandwidth_en.md)
 
 ### Volume 07: Computation & Complexity
 
@@ -83,6 +84,8 @@
 - [7.1 The Simulation Hypothesis](volume07-computation-and-complexity/chapter07-01-the-simulation-hypothesis/chapter07-01-the-simulation-hypothesis_en.md)
 - [7.2 Quantum Walks](volume07-computation-and-complexity/chapter07-02-quantum-walks/chapter07-02-quantum-walks_en.md)
 - [7.3 The Scrambling Protocol](volume07-computation-and-complexity/chapter07-03-the-scrambling-protocol/chapter07-03-the-scrambling-protocol_en.md)
+- [7.4 The Great Inward Turn](volume07-computation-and-complexity/chapter07-04-the-great-inward-turn/chapter07-04-the-great-inward-turn_en.md)
+- [7.5 The Benchmark of Reality](volume07-computation-and-complexity/chapter07-05-the-benchmark-of-reality/chapter07-05-the-benchmark-of-reality_en.md)
 
 ### Volume 08: The Observer & Consciousness
 
