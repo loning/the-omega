@@ -10,6 +10,14 @@
 
 **Status:** Rolling Release
 
+## System Architecture Diagram
+
+![System Architecture Diagram](architecture.png)
+
+## Complete Documentation
+
+- [Refactoring Physics Source Code - PDF Download](Refactoring_Physics_Source_Code.pdf)
+
 ## Foreword
 
 - [Foreword: The Architect's Manifesto](foreword_en.md)
@@ -115,6 +123,9 @@
 ### Appendix E: System Architecture
 
 - [E.1 The Universe Kernel Architecture Diagram](appendices/appendix-e-01-the-universe-kernel-architecture-diagram_en.md)
+
+## Epilogue
+
 - [Epilogue: The I/O of The Universe](epilogue/epilogue_en.md)
 
 ---

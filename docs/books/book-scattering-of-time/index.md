@@ -8,6 +8,14 @@
 
 这是一段关于重新审视宇宙本体的旅程。既然我们要以《时间简史》的风格来书写，那么我们将不仅通过方程，更通过隐喻和直觉，去触碰那些隐藏在现实表象之下的深层结构。
 
+## 系统架构图
+
+![系统架构图](architecture.png)
+
+## 完整文档
+
+- [宇宙即几何 (The Universe Is Geometry) - PDF下载](The_Universe_Is_Geometry.pdf)
+
 ## 序言
 
 - [序言：光与棱镜](foreword.md)

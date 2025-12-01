@@ -4,6 +4,14 @@
 
 This is a journey about re-examining the ontology of the universe. Since we are writing in the style of *A Brief History of Time*, we will touch upon those deep structures hidden beneath the appearance of reality not only through equations, but also through metaphors and intuition.
 
+## System Architecture Diagram
+
+![System Architecture Diagram](architecture.png)
+
+## Complete Documentation
+
+- [The Universe Is Geometry - PDF Download](The_Universe_Is_Geometry.pdf)
+
 ## Preface
 
 - [Preface: The Light and The Prism](foreword_en.md)

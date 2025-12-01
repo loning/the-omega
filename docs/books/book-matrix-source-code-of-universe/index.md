@@ -10,6 +10,14 @@
 
 **Status:** Rolling Release (滚动更新)
 
+## 系统架构图
+
+![系统架构图](architecture.png)
+
+## 完整文档
+
+- [物理源代码重构 (Refactoring Physics Source Code) - PDF下载](Refactoring_Physics_Source_Code.pdf)
+
 ## 前言
 
 - [前言：架构师的宣言](foreword.md)
