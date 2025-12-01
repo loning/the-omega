@@ -10,7 +10,8 @@ This is a journey about re-examining the ontology of the universe. Since we are 
 
 ## Complete Documentation
 
-- [The Universe Is Geometry - PDF Download](The_Universe_Is_Geometry.pdf)
+- 📄 [The Universe Is Geometry - PDF Download](The_Universe_Is_Geometry.pdf)
+- 🎥 [Related Video](https://youtu.be/KHq3qbc0HW4)
 
 ## Preface
 

@@ -16,7 +16,8 @@
 
 ## Complete Documentation
 
-- [Refactoring Physics Source Code - PDF Download](Refactoring_Physics_Source_Code.pdf)
+- 📄 [Refactoring Physics Source Code - PDF Download](Refactoring_Physics_Source_Code.pdf)
+- 🎥 [Related Video](https://youtu.be/2yBycpdg2Os)
 
 ## Foreword
 

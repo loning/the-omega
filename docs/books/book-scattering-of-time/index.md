@@ -14,7 +14,8 @@
 
 ## 完整文档
 
-- [宇宙即几何 (The Universe Is Geometry) - PDF下载](The_Universe_Is_Geometry.pdf)
+- 📄 [宇宙即几何 (The Universe Is Geometry) - PDF下载](The_Universe_Is_Geometry.pdf)
+- 🎥 [相关视频 (Related Video)](https://youtu.be/KHq3qbc0HW4)
 
 ## 序言
 

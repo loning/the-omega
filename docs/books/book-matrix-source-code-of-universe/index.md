@@ -16,7 +16,8 @@
 
 ## 完整文档
 
-- [物理源代码重构 (Refactoring Physics Source Code) - PDF下载](Refactoring_Physics_Source_Code.pdf)
+- 📄 [物理源代码重构 (Refactoring Physics Source Code) - PDF下载](Refactoring_Physics_Source_Code.pdf)
+- 🎥 [相关视频 (Related Video)](https://youtu.be/2yBycpdg2Os)
 
 ## 前言
 
