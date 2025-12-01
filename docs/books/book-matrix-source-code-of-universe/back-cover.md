@@ -1,6 +1,6 @@
 # 封底：系统规格说明书 (Back Cover: System Specifications)
 
-**—— 宇宙内核 v1.0 发行说明 (Release Notes for Universe Kernel v1.0)**
+**—— 宇宙内核 v2.0 发行说明 (Release Notes for Universe Kernel v2.0)**
 
 -----
 
@@ -92,7 +92,7 @@
 $ git clone https://universe.source/kernel.git
 $ cd kernel
 $ make install_reality
-> Building Universe v1.0... [Done]
+> Building Universe v2.0... [Done]
 > Welcome to the Matrix.
 ```
 

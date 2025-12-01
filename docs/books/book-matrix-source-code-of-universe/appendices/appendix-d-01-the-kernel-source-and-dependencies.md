@@ -10,7 +10,7 @@
 
 本书的核心理论架构、数学推导及主要定理（包括广义帕塞瓦尔恒等式、FS 速度与 Wigner-Smith 延迟的关系、FS-Levinson 关系等）直接源于以下基础文档。这是本"重构项目"的初始 Commit。
 
-* **[Kernel v1.0]** **Ma, Haobo.** "Time as Fubini-Study Arc-Length: A Unified Geometric Capacity Framework for Quantum, Relativistic, and Scattering Time Scales." *AELF PTE LTD., Singapore*, Dec 1, 2025.
+* **[Kernel v2.0]** **Ma, Haobo.** "Time as Fubini-Study Arc-Length: A Unified Geometric Capacity Framework for Quantum, Relativistic, and Scattering Time Scales." *AELF PTE LTD., Singapore*, Dec 1, 2025.
 
   * *说明：* 本书是该论文的扩充与工程化诠释。所有关于 $v_{ext}^2 + v_{int}^2 = c_{FS}^2$ 的推导及 QCA 微观实现的细节均基于此工作。
 

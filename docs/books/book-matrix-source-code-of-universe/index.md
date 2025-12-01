@@ -4,7 +4,7 @@
 
 ## 版本信息
 
-**Kernel Version:** 1.0 LTS (Long Term Support)
+**Kernel Version:** 2.0 LTS (Long Term Support)
 
 **Architecture:** Fubini-Study / QCA Hybrid
 
@@ -83,6 +83,7 @@
 - [8.1 生物优化 (Biological Optimization)](volume08-the-observer-and-consciousness/chapter08-01-biological-optimization/chapter08-01-biological-optimization.md)
 - [8.2 时钟同步 (Clock Synchronization)](volume08-the-observer-and-consciousness/chapter08-02-clock-synchronization/chapter08-02-clock-synchronization.md)
 - [8.3 相对视界 (Relative Horizons)](volume08-the-observer-and-consciousness/chapter08-03-relative-horizons/chapter08-03-relative-horizons.md)
+- [8.4 内存管理 (Memory Management)](volume08-the-observer-and-consciousness/chapter08-04-memory-management/chapter08-04-memory-management.md)
 
 ### 卷九：递归与奎恩 (Volume 09: Recursion & The Quine)
 
@@ -91,6 +92,7 @@
 - [9.1 硬件观察者 (The Hardware Observer)](volume09-recursion-and-the-quine/chapter09-01-the-hardware-observer/chapter09-01-the-hardware-observer.md)
 - [9.2 奎恩闭环 (The Quine Loop)](volume09-recursion-and-the-quine/chapter09-02-the-quine-loop/chapter09-02-the-quine-loop.md)
 - [9.3 计算一致性 (Computational Consistency)](volume09-recursion-and-the-quine/chapter09-03-computational-consistency/chapter09-03-computational-consistency.md)
+- [9.4 超越三角 (The Transcendental Triad)](volume09-recursion-and-the-quine/chapter09-04-the-transcendental-triad/chapter09-04-the-transcendental-triad.md)
 
 ## 附录 (Appendices)
 
@@ -114,11 +116,15 @@
 
 - [E.1 宇宙内核架构图 (The Universe Kernel Architecture Diagram)](appendices/appendix-e-01-the-universe-kernel-architecture-diagram.md)
 
+## 终章 (Epilogue)
+
+- [终章：宇宙的 I/O (Epilogue: The I/O of The Universe)](epilogue/epilogue.md)
+
 ---
 
 **System Status: Initializing...**
 
-**Documentation Version: 1.0 LTS**
+**Documentation Version: 2.0 LTS**
 
 **Last Updated: Rolling Release**
 

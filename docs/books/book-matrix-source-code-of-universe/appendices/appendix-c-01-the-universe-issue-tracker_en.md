@@ -8,11 +8,11 @@
 
 ## 1. Overview: System Stability Report
 
-Although the FS-QCA architecture (Fubini-Study Geometry + Quantum Cellular Automata) successfully reconstructed major parts of special relativity, quantum mechanics, and thermodynamics, and eliminated serious errors like ultraviolet divergences, the current universe version (v1.1) is not flawless.
+Although the FS-QCA architecture (Fubini-Study Geometry + Quantum Cellular Automata) successfully reconstructed major parts of special relativity, quantum mechanics, and thermodynamics, and eliminated serious errors like ultraviolet divergences, the current universe version (v2.0) is not flawless.
 
 As honest architects, we list here the current **Known Issues**. These are the most stubborn mysteries at the frontiers of physics, and are **Bounty Tasks** left for future developers (that is, you reading this book).
 
-**Note:** In the v1.1 incremental patch, we have re-evaluated the status of some Issues. Certain phenomena long marked as "serious errors" have been reclassified as design features based on the new storage/computation separation architecture.
+**Note:** In the v2.0 incremental patch, we have re-evaluated the status of some Issues. Certain phenomena long marked as "serious errors" have been reclassified as design features based on the new storage/computation separation architecture.
 
 ---
 
@@ -90,7 +90,7 @@ As honest architects, we list here the current **Known Issues**. These are the m
 
 ## 5. Issue #EventHorizon: The Information Loss Paradox
 
-**—— Tags:** `WONTFIX` `By Design` `v1.1 Status Update`
+**—— Tags:** `WONTFIX` `By Design` `v2.0 Status Update`
 
 **—— Status Update:** `OPEN` $\to$ `WONTFIX` (By Design)
 
@@ -116,7 +116,7 @@ As honest architects, we list here the current **Known Issues**. These are the m
 
 ## 6. Issue #Singularity: The Singularity
 
-**—— Tags:** `MONITORED` `Managed Exception` `v1.1 Status Update`
+**—— Tags:** `MONITORED` `Managed Exception` `v2.0 Status Update`
 
 **—— Status Update:** `CRITICAL` $\to$ `MONITORED` (Managed Exception)
 

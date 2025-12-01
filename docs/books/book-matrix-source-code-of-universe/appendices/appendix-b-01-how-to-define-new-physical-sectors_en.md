@@ -56,7 +56,7 @@ According to Axiom I, total bandwidth **$c_{FS}$** is locked. Introducing new ph
 
 $$v_{ext}^2 + v_{int}^2 + v_{env}^2 = c_{FS}^2$$
 
-**New Kernel (v1.1):**
+**New Kernel (v2.0):**
 
 $$v_{ext}^2 + v_{int}^2 + v_{env}^2 + \mathbf{v_{new}^2} = c_{FS}^2$$
 

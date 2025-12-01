@@ -8,11 +8,11 @@
 
 ## 1. 概览：系统稳定性报告 (Overview: System Stability Report)
 
-虽然 FS-QCA 架构（Fubini-Study 几何 + 量子元胞自动机）成功重构了狭义相对论、量子力学和热力学的主要部分，并消除了紫外发散等严重错误，但目前的宇宙版本（v1.1）并非完美无瑕。
+虽然 FS-QCA 架构（Fubini-Study 几何 + 量子元胞自动机）成功重构了狭义相对论、量子力学和热力学的主要部分，并消除了紫外发散等严重错误，但目前的宇宙版本（v2.0）并非完美无瑕。
 
 作为诚实的架构师，我们在此列出当前的 **已知问题 (Known Issues)**。这些是物理学前沿最顽固的谜题，也是留给未来开发者（也就是正在阅读本书的你）的 **赏金任务 (Bounty Tasks)**。
 
-**注意：** 在 v1.1 增量补丁中，我们重新评估了部分 Issue 的状态。某些长期被标记为"严重错误"的现象，基于新的存储/计算分离架构，已被重新分类为设计特性。
+**注意：** 在 v2.0 增量补丁中，我们重新评估了部分 Issue 的状态。某些长期被标记为"严重错误"的现象，基于新的存储/计算分离架构，已被重新分类为设计特性。
 
 ---
 
@@ -90,7 +90,7 @@
 
 ## 5. Issue #EventHorizon: 信息丢失悖论 (The Information Loss Paradox)
 
-**—— 标签：** `WONTFIX` `By Design` `v1.1 Status Update`
+**—— 标签：** `WONTFIX` `By Design` `v2.0 Status Update`
 
 **—— 状态更新：** `OPEN` $\to$ `WONTFIX` (By Design)
 
@@ -116,7 +116,7 @@
 
 ## 6. Issue #Singularity: 奇点 (The Singularity)
 
-**—— 标签：** `MONITORED` `Managed Exception` `v1.1 Status Update`
+**—— 标签：** `MONITORED` `Managed Exception` `v2.0 Status Update`
 
 **—— 状态更新：** `CRITICAL` $\to$ `MONITORED` (Managed Exception)
 

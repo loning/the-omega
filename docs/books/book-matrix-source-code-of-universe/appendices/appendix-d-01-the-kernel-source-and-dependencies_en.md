@@ -10,7 +10,7 @@
 
 The core theoretical architecture, mathematical derivations, and main theorems of this book (including the Generalized Parseval Identity, the relationship between FS speed and Wigner-Smith delay, FS-Levinson relation, etc.) directly originate from the following foundational document. This is the initial Commit of this "refactoring project."
 
-* **[Kernel v1.0]** **Ma, Haobo.** "Time as Fubini-Study Arc-Length: A Unified Geometric Capacity Framework for Quantum, Relativistic, and Scattering Time Scales." *AELF PTE LTD., Singapore*, Dec 1, 2025.
+* **[Kernel v2.0]** **Ma, Haobo.** "Time as Fubini-Study Arc-Length: A Unified Geometric Capacity Framework for Quantum, Relativistic, and Scattering Time Scales." *AELF PTE LTD., Singapore*, Dec 1, 2025.
 
   * *Note:* This book is an expansion and engineering interpretation of that paper. All derivations regarding $v_{ext}^2 + v_{int}^2 = c_{FS}^2$ and details of QCA microscopic implementation are based on this work.
 

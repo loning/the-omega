@@ -4,7 +4,7 @@
 
 ## Version Information
 
-**Kernel Version:** 1.0 LTS (Long Term Support)
+**Kernel Version:** 2.0 LTS (Long Term Support)
 
 **Architecture:** Fubini-Study / QCA Hybrid
 
@@ -83,6 +83,7 @@
 - [8.1 Biological Optimization](volume08-the-observer-and-consciousness/chapter08-01-biological-optimization/chapter08-01-biological-optimization_en.md)
 - [8.2 Clock Synchronization](volume08-the-observer-and-consciousness/chapter08-02-clock-synchronization/chapter08-02-clock-synchronization_en.md)
 - [8.3 Relative Horizons](volume08-the-observer-and-consciousness/chapter08-03-relative-horizons/chapter08-03-relative-horizons_en.md)
+- [8.4 Memory Management](volume08-the-observer-and-consciousness/chapter08-04-memory-management/chapter08-04-memory-management_en.md)
 
 ### Volume 09: Recursion & The Quine
 
@@ -91,6 +92,7 @@
 - [9.1 The Hardware Observer](volume09-recursion-and-the-quine/chapter09-01-the-hardware-observer/chapter09-01-the-hardware-observer_en.md)
 - [9.2 The Quine Loop](volume09-recursion-and-the-quine/chapter09-02-the-quine-loop/chapter09-02-the-quine-loop_en.md)
 - [9.3 Computational Consistency](volume09-recursion-and-the-quine/chapter09-03-computational-consistency/chapter09-03-computational-consistency_en.md)
+- [9.4 The Transcendental Triad](volume09-recursion-and-the-quine/chapter09-04-the-transcendental-triad/chapter09-04-the-transcendental-triad_en.md)
 
 ## Appendices
 
@@ -113,12 +115,13 @@
 ### Appendix E: System Architecture
 
 - [E.1 The Universe Kernel Architecture Diagram](appendices/appendix-e-01-the-universe-kernel-architecture-diagram_en.md)
+- [Epilogue: The I/O of The Universe](epilogue/epilogue_en.md)
 
 ---
 
 **System Status: Initializing...**
 
-**Documentation Version: 1.0 LTS**
+**Documentation Version: 2.0 LTS**
 
 **Last Updated: Rolling Release**
 

@@ -1,6 +1,6 @@
 # Back Cover: System Specifications
 
-**—— Release Notes for Universe Kernel v1.0**
+**—— Release Notes for Universe Kernel v2.0**
 
 -----
 
@@ -92,7 +92,7 @@ Think. Derive. Fork.
 $ git clone https://universe.source/kernel.git
 $ cd kernel
 $ make install_reality
-> Building Universe v1.0... [Done]
+> Building Universe v2.0... [Done]
 > Welcome to the Matrix.
 ```
 
