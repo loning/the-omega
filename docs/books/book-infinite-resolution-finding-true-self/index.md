@@ -4,6 +4,12 @@
 
 本书探讨全息解压理论，揭示宇宙膨胀作为信息解压过程的本质，以及分辨率如何决定我们对实在的感知。
 
+<p align="center">
+  <img src="./architecture.png" alt="无限的分辨率架构图" width="100%">
+</p>
+
+[📥 下载 PDF 版本](./Code_to_Creator.pdf) | [▶️ 视频](https://youtu.be/BTGD4qdSJc0)
+
 ## 序言
 
 - [序言：幻象的背面](foreword.md)

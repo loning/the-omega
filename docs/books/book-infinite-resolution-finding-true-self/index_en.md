@@ -4,6 +4,12 @@
 
 This book explores holographic decompression theory, revealing the essence of cosmic expansion as an information decompression process, and how resolution determines our perception of reality.
 
+<p align="center">
+  <img src="./architecture.png" alt="The Infinite Resolution Architecture" width="100%">
+</p>
+
+[📥 Download PDF Version](./Code_to_Creator.pdf) | [▶️ Video](https://youtu.be/BTGD4qdSJc0)
+
 ## Foreword
 
 - [Foreword: The Backside of Illusion](foreword_en.md)

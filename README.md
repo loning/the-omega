@@ -128,6 +128,11 @@ This project hosts eleven core texts, tracing the derivation from abstract axiom
 
 ### [📓 Book 6: The Infinite Resolution: Finding the True Self](https://omega.dw.cash/books/book-infinite-resolution-finding-true-self/index_en.html)
 *Exploring holographic decompression theory, revealing cosmic expansion as information decompression, and how resolution determines our perception of reality.*
+[📥 PDF](https://omega.dw.cash/books/book-infinite-resolution-finding-true-self/Code_to_Creator.pdf) | [▶️ Video](https://youtu.be/BTGD4qdSJc0)
+
+<p align="center">
+  <img src="docs/books/book-infinite-resolution-finding-true-self/architecture-thumb.png" alt="Book 6 Architecture" width="50%">
+</p>
 
 **Volumes**: Fractal Ontology → Geometry of the Heart → Alchemy of the Soul → The Loop of True Self → Physical Forms of Consciousness → Fractal Destiny
 

@@ -58,7 +58,7 @@
 ## 🧩 核心映射（源代码）
 
 <p align="center">
-  <img src="docs/books/book-foundation-of-phys-in-geo-and-info/architecture-thumb.png" alt="The Omega 架构" width="100%">
+  <img src="docs/books/book-foundation-of-phys-in-geo-and-info/architecture.png" alt="The Omega 架构" width="100%">
 </p>
 
 我们将物理现象直接映射到数学结构。这消除了"神秘"，并用"计算"取而代之。
@@ -128,6 +128,11 @@
 
 ### [📓 第六部：无限的分辨率——找回真我](https://omega.dw.cash/books/book-infinite-resolution-finding-true-self/index.html)
 *探讨全息解压理论，揭示宇宙膨胀作为信息解压过程的本质，以及分辨率如何决定我们对实在的感知。*
+[📥 PDF](https://omega.dw.cash/books/book-infinite-resolution-finding-true-self/Code_to_Creator.pdf) | [▶️ 视频](https://youtu.be/BTGD4qdSJc0)
+
+<p align="center">
+  <img src="docs/books/book-infinite-resolution-finding-true-self/architecture-thumb.png" alt="第六部架构图" width="50%">
+</p>
 
 **卷次**：分形本体论 → 心的几何学 → 灵魂的炼金术 → 真我的闭环 → 意识的物理形态 → 分形的归宿
 
