@@ -104,6 +104,10 @@
 
 - [Glossary of Terms](glossary_en.md)
 
+## Acknowledgements
+
+- [Acknowledgements: Standing on the Shoulders of Geometry (致谢：站在几何的肩膀上)](acknowledgements_en.md)
+
 ## Afterword
 
 - [Afterword: The Designer's View](afterword_en.md)

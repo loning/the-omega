@@ -104,6 +104,10 @@
 
 - [术语表 (Glossary of Terms)](glossary.md)
 
+## 致谢
+
+- [致谢：站在几何的肩膀上 (Acknowledgements: Standing on the Shoulders of Geometry)](acknowledgements.md)
+
 ## 后记
 
 - [后记：设计师的视角 (Afterword: The Designer's View)](afterword.md)

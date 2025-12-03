@@ -1,0 +1,52 @@
+# Acknowledgements: Shoulders of Giants
+
+The birth of this book is not the product of my personal fabrication, but a reweaving of the wisdom accumulated by human civilization over thousands of years in physics, mathematics, and philosophy.
+
+The grand vision of **Vector Cosmology** is built upon the shoulders of a group of intellectual giants. Here, I pay my deepest respects to these pioneers.
+
+## The Foundation of Mathematics and Geometry
+
+First, I thank **Guido Fubini** and **Eduard Study**. It was their definition of the **Fubini-Study metric** a century ago that provided the most fundamental geometric stage for this book. Without this metric, we could not quantify the cost of "change," nor derive that Pythagorean identity that governs everything.
+
+I thank **Norman Levinson**. His **Levinson's theorem** is the mathematical soul of this book's view that "matter is counting." He showed us how topology transforms ethereal phases into indestructible particles.
+
+I thank **Mark Naimark**. His **dilation theorem** provided the ultimate geometric redemption for the second book, allowing us to rigorously prove mathematically that "spiral is the great circle," thereby reconciling the contradiction between evolution and conservation.
+
+## Beacons of Physics
+
+In the field of physics, my gratitude is beyond words:
+
+* **Paul Dirac**: His equation predicted antimatter, and his name is used by us to name that geometric circle connecting mass and energy (the **Dirac circle**).
+
+* **John Wheeler**: His profound insights about the "participatory universe" and "it from bit" are the spiritual guidance for this book's chapters on consciousness and observation.
+
+* **Ted Jacobson** and **Erik Verlinde**: Their revolutionary work on "gravity as entropy force" provided the thermodynamic pivot for this book's reconstruction of general relativity.
+
+* **E. H. Lieb** and **D. W. Robinson**: Their **Lieb-Robinson bound** provided solid evidence for the speed-of-light limit of this book's microscopic engine (QCA).
+
+## Echoes of Philosophy
+
+Finally, I thank those thinkers who transcend time and space, who gave warmth to cold formulas:
+
+* **Laozi**: Two thousand five hundred years ago, he used the language of "Tao" and "circle" to prophesy the ultimate truth we attempt to describe with quantum mechanics today.
+
+* **Douglas Hofstadter**: His *Gödel, Escher, Bach* inspired this book's discussion of consciousness as a "strange loop."
+
+* **Lewis Carroll**: Thanks to his Red Queen, who provided the most vivid metaphor for describing the existential anxiety in an expanding universe.
+
+## To the Universe
+
+Finally, I thank the universe itself.
+
+Thank it for providing the generous budget of $c_{FS}$, allowing us to exist.
+
+Thank it for designing the game between $v_{ext}$ and $v_{int}$, allowing us to experience time and mass.
+
+Thank it for leaving the gap between $\pi$ and $\varphi$, allowing us to seek freedom within conservation, to seek ascension within cycles.
+
+This book does not belong to me; it belongs to that unique, eternally rotating vector. I am merely a record it left at this time and place, through a brief self-reference of neurons.
+
+May every reader, at the moment of closing this book, feel their deep connection with that great circle.
+
+**Thank you.**
+
