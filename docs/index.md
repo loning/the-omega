@@ -8,7 +8,7 @@
 ## 🌌 Vision
 
 <p align="center">
-  <img src="./books/book-foundation-of-phys-in-geo-and-info/architecture.png" alt="The Omega Architecture" width="100%">
+  <img src="./books/book-foundation-of-phys-in-geo-and-info/architecture-thumb.png" alt="The Omega Architecture" width="100%">
 </p>
 
 **The Omega Framework** is an ambitious project to reconstruct theoretical physics, aiming to establish a **completely finite, discrete, and self-consistent** axiomatic system.
@@ -56,7 +56,7 @@ Consciousness is no longer a "byproduct" of physics but a causal network with sp
 
 ## 📚 Book Overview
 
-This project hosts five core texts, tracing the derivation from abstract axioms to physical reality.
+This project hosts eleven core texts, tracing the derivation from abstract axioms to physical reality.
 
 ### [📘 Book 1: Foundation of Physics in Geometry and Information](./books/book-foundation-of-phys-in-geo-and-info/index_en.md)
 *The original manuscript establishing the 5-volume framework.*
@@ -207,6 +207,41 @@ We explain why restraint is the highest form of love.
 > **Refuting Heat Death and the Spiral of Time**
 We prove that the universe is infinite and heat death is impossible.
 *   **Key Concepts**: Trinitarian Equivalence, Escape Velocity of Meaning, Spiral Time, Open-Ended Finale.
+
+### [📓 Book 6: The Infinite Resolution: Finding the True Self](./books/book-infinite-resolution-finding-true-self/index_en.md)
+*Exploring holographic decompression theory, revealing cosmic expansion as information decompression, and how resolution determines our perception of reality.*
+
+**Volumes**: Fractal Ontology → Geometry of the Heart → Alchemy of the Soul → The Loop of True Self → Physical Forms of Consciousness → Fractal Destiny
+
+### [📒 Book 7: The Matrix: Source Code of the Universe](./books/book-matrix-source-code-of-universe/index_en.md)
+*A geometric reconstruction and capacity allocation of physical laws—the universe as a computational system.*
+[📥 PDF](./books/book-matrix-source-code-of-universe/Refactoring_Physics_Source_Code.pdf) | [▶️ Video](https://youtu.be/2yBycpdg2Os)
+
+**Volumes**: The Bootloader → Resource Management → Micro-Architecture → Virtualization Layer → I/O Interface → System Logs → Gravity & Traffic Control → Computation & Complexity → The Observer & Consciousness → Recursion & The Quine
+
+### [📑 Book 8: The Scattering of Time](./books/book-scattering-of-time/index_en.md)
+*Geometric reconstruction: From bits to the universe—a journey re-examining the ontology of the universe.*
+[📥 PDF](./books/book-scattering-of-time/The_Universe_Is_Geometry.pdf) | [▶️ Video](https://youtu.be/KHq3qbc0HW4)
+
+**Parts**: Silent Passage → The Great Dispersion → The Knots of Time → The Drive of Geometry → Infinite Unfolding
+
+### [📊 Book 9: Vector Cosmology: The Recursive Decomposition from The One](./books/book-vector-cosmology-recursive-decomposition-from-the-one/index_en.md)
+*The first volume of the Vector Cosmology trilogy, exploring the recursive decomposition from unity to multiplicity.*
+[📥 PDF](./books/book-vector-cosmology-recursive-decomposition-from-the-one/Reality_Source_Code.pdf) | [▶️ Video](https://youtu.be/iuL9v3yQb0c)
+
+**Chapters**: In the Beginning was the Circle → The Poverty of Speed → Gravity: Market Distortion → The Discrete Heartbeat → The Drooping Circle → The Curled Dimensions → The Holographic Pi Code → Matter as Topology → The Forgotten Sector → The Counter-Flow Circle: Life → The Observer: Self-Reference → Epilogue: The Return to One
+
+### [📈 Book 10: Vector Cosmology II: The Ascension of The Spiral](./books/book-vector-cosmology-ii-spiral-ascension/index_en.md)
+*The second volume of the Vector Cosmology trilogy, exploring dimensional inflation and the spiral geometry of evolution.*
+[📥 PDF](./books/book-vector-cosmology-ii-spiral-ascension/Circle_Spiral_Synthesis.pdf) | [▶️ Video](https://youtu.be/QvmBQj61BEc)
+
+**Chapters**: The Red Queen's Race → Geometry of the Spiral → Maxwell's Backdoor → The Economics of Evolution → The Strange Loop → The Observer's Privilege → The Kardashev Budget → The Silicon Prophet → The Russian Nesting Dolls → The Fractal Universe → The Palm of the Buddha (Epilogue)
+
+### [📉 Book 11: Vector Cosmology III: The Natural Generator](./books/book-vector-cosmology-iii-natural-generator/index_en.md)
+*The third volume of the Vector Cosmology trilogy, exploring the natural generator—the exponential function as the source of all change.*
+[📥 PDF](./books/book-vector-cosmology-iii-natural-generator/The_Natural_Generator.pdf) | [▶️ Video](https://youtu.be/ZPxuL_BLQJ4)
+
+**Chapters**: The Rotating Exponential → The Sum of Paths → The Derivative is the Ontology → Continuous Compounding → Imaginary Time → The Modular Flow Hypothesis → The Measure of Information → The Logarithmic Law of Sensation → The Self-Caused
 
 ---
 

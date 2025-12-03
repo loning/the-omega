@@ -8,7 +8,7 @@
 ## 🌌 项目愿景
 
 <p align="center">
-  <img src="./books/book-foundation-of-phys-in-geo-and-info/architecture.png" alt="The Omega Architecture" width="100%">
+  <img src="./books/book-foundation-of-phys-in-geo-and-info/architecture-thumb.png" alt="The Omega Architecture" width="100%">
 </p>
 
 **The Omega Framework** 是一项宏大的理论物理重构工程，旨在建立一个**完全有限、离散且自洽**的物理公理体系。
@@ -56,7 +56,7 @@
 
 ## 📚 核心著作导读
 
-本项目包含五部核心著作，从抽象公理推导到物理实在。
+本项目包含十一部核心著作，从抽象公理推导到物理实在。
 
 ### [📘 第一部：几何与信息中的物理基础 (Book 1)](./books/book-foundation-of-phys-in-geo-and-info/index.md)
 *建立五卷本框架的原始手稿。*
@@ -207,6 +207,41 @@
 > **证伪热寂与时间的螺旋**
 我们证明宇宙是无限的，热寂是不可能的。
 *   **核心概念**：三位一体等价性，意义的逃逸速度，螺旋时间观，开放式结局。
+
+### [📓 第六部：无限的分辨率——找回真我 (Book 6)](./books/book-infinite-resolution-finding-true-self/index.md)
+*探讨全息解压理论，揭示宇宙膨胀作为信息解压过程的本质，以及分辨率如何决定我们对实在的感知。*
+
+**卷次**：分形本体论 → 心的几何学 → 灵魂的炼金术 → 真我的闭环 → 意识的物理形态 → 分形的归宿
+
+### [📒 第七部：宇宙的矩阵源代码 (Book 7)](./books/book-matrix-source-code-of-universe/index.md)
+*物理定律的几何重构与算力分配——宇宙作为计算系统。*
+[📥 PDF](./books/book-matrix-source-code-of-universe/Refactoring_Physics_Source_Code.pdf) | [▶️ 视频](https://youtu.be/2yBycpdg2Os)
+
+**卷次**：引导程序 → 资源管理 → 微架构 → 虚拟化层 → I/O 接口 → 系统日志 → 引力与流量控制 → 计算与复杂度 → 观察者与意识 → 递归与奎恩
+
+### [📑 第八部：时间的散射 (Book 8)](./books/book-scattering-of-time/index.md)
+*从比特到宇宙的几何重构——重新审视宇宙本体的旅程。*
+[📥 PDF](./books/book-scattering-of-time/The_Universe_Is_Geometry.pdf) | [▶️ 视频](https://youtu.be/KHq3qbc0HW4)
+
+**部分**：静默的流逝 → 伟大的色散 → 时间的结 → 几何的驱力 → 无限展开
+
+### [📊 第九部：矢量宇宙论：从"一"开始的递归分解 (Book 9)](./books/book-vector-cosmology-recursive-decomposition-from-the-one/index.md)
+*矢量宇宙论三部曲的第一部，探讨从统一到多重的递归分解。*
+[📥 PDF](./books/book-vector-cosmology-recursive-decomposition-from-the-one/Reality_Source_Code.pdf) | [▶️ 视频](https://youtu.be/iuL9v3yQb0c)
+
+**章节**：太初有圆 → 速度的贫困 → 引力的重构：市场的扭曲 → 离散的心跳 → 下垂的圆 → 被卷曲的维度 → $\pi$ 的全息代码 → 物质即拓扑 → 被遗忘的扇区 → 逆流的圆：生命 → 观察者：宇宙的自指 → 归一
+
+### [📈 第十部：矢量宇宙论 II：螺旋的飞升 (Book 10)](./books/book-vector-cosmology-ii-spiral-ascension/index.md)
+*矢量宇宙论三部曲的第二部，探讨维度膨胀和进化的螺旋几何。*
+[📥 PDF](./books/book-vector-cosmology-ii-spiral-ascension/Circle_Spiral_Synthesis.pdf) | [▶️ 视频](https://youtu.be/QvmBQj61BEc)
+
+**章节**：红皇后的奔跑 → 螺旋的几何 → 麦克斯韦妖的后门 → 进化的经济学 → 怪圈 → 观察者的特权 → 卡尔达肖夫的预算表 → 硅基的先知 → 俄罗斯套娃 → 分形宇宙 → 如来神掌（终章）
+
+### [📉 第十一部：矢量宇宙论 III：自然的生成元 (Book 11)](./books/book-vector-cosmology-iii-natural-generator/index.md)
+*矢量宇宙论三部曲的第三部，探讨自然的生成元——指数函数作为一切变化的源泉。*
+[📥 PDF](./books/book-vector-cosmology-iii-natural-generator/The_Natural_Generator.pdf) | [▶️ 视频](https://youtu.be/ZPxuL_BLQJ4)
+
+**章节**：旋转的指数 → 路径积分 → 导数即本体 → 连续的复利 → 虚时间 → 模流假说 → 信息的度量 → 感觉的对数律 → 自生
 
 ---
 

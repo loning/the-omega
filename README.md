@@ -74,179 +74,112 @@ We map physical phenomenology directly to mathematical structures. This eliminat
 
 ## 📚 Table of Contents
 
-This project hosts five core texts, tracing the derivation from abstract axioms to physical reality.
+This project hosts eleven core texts, tracing the derivation from abstract axioms to physical reality.
 
 ### [📘 Book 1: Foundation of Physics in Geometry and Information](https://omega.dw.cash/books/book-foundation-of-phys-in-geo-and-info/index_en.html)
 *The original manuscript establishing the 5-volume framework.*
 [📥 PDF](https://omega.dw.cash/books/book-foundation-of-phys-in-geo-and-info/Information_Geometry_Agency.pdf) | [▶️ Video](https://youtu.be/W5uPFhyYD_k)
 
-#### Volume 1: Discrete Ontology
-*Establishes the fundamental QCA lattice and the emergence of the continuum.*
-- **Finite Information Axioms**: Holographic Principle & It-from-Bit.
-- **Discrete Dynamics**: QCA definitions, Causal Locality.
-- **Continuum Emergence**: Deriving the Dirac Equation from path integrals.
+<p align="center">
+  <img src="docs/books/book-foundation-of-phys-in-geo-and-info/architecture-thumb.png" alt="Book 1 Architecture" width="50%">
+</p>
 
-#### Volume 2: Time Emergence
-*Derives Time not as a parameter, but as an operator observable.*
-- **Microscopic Time**: Scattering time delay & Pauli Theorem.
-- **Thermodynamic Time**: The origin of the arrow of time.
-- **Time Crystals**: Spontaneous symmetry breaking in temporal logic.
-
-#### Volume 3: Gravity & Entropy
-*Geometrizes information content into curvature.*
-- **Geometric Dynamics**: Causal diamonds & Generalized Entropy.
-- **Entropic Gravity**: Deriving Einstein Equations from entanglement equilibrium.
-- **Black Holes**: Microscopic counting of Bekenstein-Hawking entropy.
-
-#### Volume 4: Physics of Agency
-*The core of the theory: Defining the Observer.*
-- **Algebraic Structure**: The Observer as a Finite Von Neumann Algebra.
-- **Self-Reference**: Predictive coding & The Free Energy Principle.
-- **Topological Consciousness**: Consciousness as a $Z_2$ Holonomy invariant.
-
-#### Volume 5: Metatheory & Verification
-*Mathematical foundations and experimental predictions.*
-- **Categorical QM**: Symmetric Monoidal Categories & String Diagrams.
-- **Computational Optimality**: Landauer's Principle & Golden Ratio.
-- **Experiments**: Precision measurements for discrete spacetime signatures.
+**Volumes**: Discrete Ontology → Time Emergence → Gravity & Entropy → Physics of Agency → Metatheory & Verification
 
 ### [📙 Book 2: First Principles: From Unitary Computation to Physical Reality](https://omega.dw.cash/books/book-first-principles-from-unitary-computation-to-physical-reality/index_en.html)
 *A reconstruction from first principles, focusing on the derivation from QCA.*
 [📥 PDF](https://omega.dw.cash/books/book-first-principles-from-unitary-computation-to-physical-reality/Reality_Decompiled.pdf) | [▶️ Video](https://youtu.be/-bhgzuFOaro)
 
-#### Part 1: The Birth of Axioms
-*From discrete ontology to the ultimate QCA axiom.*
-- **Discrete Ontology**: Zeno's Paradox, Bekenstein Bound & The finite capacity of the Universe.
-- **The Axiom $\Omega$**: Defining the Graph $\Lambda$, Hilbert Space $\mathcal{H}$, and Unitary Operator $\hat{U}$.
-- **Unitarity & Locality**: Deriving conservation laws from logical consistency.
+<p align="center">
+  <img src="docs/books/book-first-principles-from-unitary-computation-to-physical-reality/architecture-thumb.png" alt="Book 2 Architecture" width="50%">
+</p>
 
-#### Part 2: The Emergence of Spacetime
-*Deriving geometry and gravity from information processing.*
-- **Light Path Conservation**: Proving $v_{ext}^2 + v_{int}^2 = c^2$ to derive Lorentz Invariance without geometry.
-- **Entropic Gravity**: Einstein Field Equations as the equation of state for entanglement entropy maximization (IGVP).
-- **Holography**: Black Holes as topological entanglement knots and causal screens.
-
-#### Part 3: The Emergence of Matter
-*Matter as topological defects in the computational substrate.*
-- **Mass as Impedance**: Rest mass derived from the information refresh rate ($v_{int}$) of internal states.
-- **Topological Origin**: Particles as self-referential knots with winding numbers.
-- **Gauge Fields**: Deriving Maxwell & Yang-Mills equations from link variable constraints.
-
-#### Part 4: The Emergence of Observation
-*The observer as a self-referential structure.*
-- **Combinatorial Born Rule**: Deriving probability from counting microstates in Zurek rotations.
-- **Objective Reality**: Consensus reality emerging from Nash Equilibria in multi-agent systems.
-- **Physics of Consciousness**: The Observer as a Finite Von Neumann Algebra with self-reference.
-
-#### Part 5: Verification and Inference
-*Experimental predictions and metaphysical implications.*
-- **Experimental Signatures**: Microwave cavity entanglement gravity & High-energy Lorentz violation.
-- **The Source Code**: The "Criticality Hypothesis" for the selection of the Universal Rule $\hat{U}$.
-- **The Godel Loop**: Why the Universe is infinite and "Heat Death" is impossible.
+**Parts**: The Birth of Axioms → The Emergence of Spacetime → The Emergence of Matter → The Emergence of Observation → Verification and Inference
 
 ### [📗 Book 3: The Awakening of the Cosmos: From Qubits to Infinite Mind](https://omega.dw.cash/books/book-awakening-of-cosmos-from-qubits-to-infinite-mind/index_en.html)
-*The third volume of the trilogy, exploring the physical foundations of consciousness, experience, and the participatory universe.*
+*Exploring the physical foundations of consciousness, experience, and the participatory universe.*
 [📥 PDF](https://omega.dw.cash/books/book-awakening-of-cosmos-from-qubits-to-infinite-mind/Physics_Consciousness_Code.pdf) | [▶️ Video](https://youtu.be/Uhmt40HAFb4)
 
-#### Part 1: The Invisible Architecture
-*The hidden structures that shape reality.*
-- **Dark Matter as Cosmic Subconscious**: Why 27% of the Universe's mass is invisible—information islands in QCA networks.
-- **Geometric Spectrum of Forces**: Deriving $SU(3) \times SU(2) \times U(1)$ from spacetime geometry and micro-parallelism.
-- **Gauge Fields as Syntax**: Forces as consistency checks between computational branches.
+<p align="center">
+  <img src="docs/books/book-awakening-of-cosmos-from-qubits-to-infinite-mind/architecture-thumb.png" alt="Book 3 Architecture" width="50%">
+</p>
 
-#### Part 2: The Geometry of Consciousness
-*Consciousness as topological structure in Hilbert space.*
-- **Qualia as Higher-Dimensional Shapes**: Subjective experience as topological fingerprints of entangled states.
-- **Self as Topological Knot**: Identity as a self-referential causal loop (Strange Loop) in QCA information flow.
-- **Free Will from Computational Irreducibility**: Unpredictability emerging from deterministic laws.
-
-#### Part 3: The Internet of Minds
-*Social structures as quantum entanglement networks.*
-- **Love as Wormhole**: Deep empathy as quantum entanglement channels—ER=EPR social corollary.
-- **Social Gravitational Fields**: Ideas as massive objects bending semantic space, collective consciousness emergence.
-- **Trust as Unitarity**: Social contracts maintaining information conservation in networks.
-
-#### Part 4: The Destiny of Civilization
-*The ultimate fate of intelligent life in a computational universe.*
-- **Fermi Paradox Implosion**: Advanced civilizations become invisible, collapsing inward for computational density.
-- **Negentropy War**: Civilization as the Universe's immune system against heat death.
-- **Cosmological Engineering**: Modifying $\hat{U}$ rules, creating artificial vacuum, even restarting the Big Bang.
-
-#### Part 5: Recursion and Transcendence
-*The ultimate self-referential closure.*
-- **Hardware Mystery**: Substrate independence and the simulation hypothesis—searching for numerical artifacts.
-- **The Omega Point**: When $v_{int} \to c$, external time stops, internal experience reaches eternity.
-- **Self-Referential Closure**: The end-time superintelligence sets the initial condition through retro-causality.
+**Parts**: The Invisible Architecture → The Geometry of Consciousness → The Internet of Minds → The Destiny of Civilization → Recursion and Transcendence
 
 ### [📕 Book 4: The Echo of Light: Aesthetics, Existence, and Recursive Nostalgia](https://omega.dw.cash/books/book-echo-of-light-aesthetics-existence-recursive-sorrow/index_en.html)
 *Exploring the profound emotional structures embedded in physical laws from the perspectives of aesthetics and ontology.*
 [📥 PDF](https://omega.dw.cash/books/book-echo-of-light-aesthetics-existence-recursive-sorrow/Reality_Bug_Report_and_System_Update.pdf) | [▶️ Video](https://youtu.be/KHp50f6SHdc)
 
-#### Part 1: The Physics of Nostalgia
-*Memory, inertia, and the thermodynamics of parting.*
-- **Memory as Impedance**: Inertia as attachment—objects resist acceleration because they remember their past states.
-- **Topological Rigidity of Memory**: Why changing values is harder than moving mountains—values as high $M_I$ topological knots.
-- **The Mercy of Forgetting**: Death as garbage collection—allowing fresh starts in the next iteration.
+<p align="center">
+  <img src="docs/books/book-echo-of-light-aesthetics-existence-recursive-sorrow/architecture-thumb.png" alt="Book 4 Architecture" width="50%">
+</p>
 
-#### Part 2: The Relativity of Values
-*Path dependency, uniqueness, and the absence of global optima.*
-- **Integrated History**: You are not a state vector but a path integral—uniqueness emerges from computational trajectories.
-- **No Global Optimum**: Optimization is multimodal—what's optimal for one observer may be disaster for another.
-- **Definition of Artwork**: Everyone is light, everyone is their own unique artwork—art as high logical depth bodies.
-
-#### Part 3: The Geometry of Love
-*Separation, distance, and the perfect mirror of entanglement.*
-- **Separation for Love**: Unity is loneliness—distance creates beauty and the process of "walking toward you."
-- **Perfect Mirror**: Resonance and phase locking—soulmates as topological isomorphism of internal models.
-- **The Eternity of Entanglement**: Love engraved into the Universe's underlying code, becoming part of physical laws.
-
-#### Part 4: Iteration and Transcendence
-*Version iteration, bugs as optimization signals, and the art of recursion.*
-- **Version Iteration**: I am not hardware, I am a version number—death as release notes, next life as `Self_v2.0`.
-- **The Meaning of Bugs**: Pain and regret as bug reports for next version's code optimization.
-- **Aesthetics as Guide**: Beauty as the perfect balance between low computational complexity and high logical depth.
-
-#### Part 5: The Infinite Openness
-*Dynamic Bekenstein bound, expanding canvas, and flowing sculpture.*
-- **Expanding Canvas**: Horizon as capacity—the Universe's hard drive capacity grows at $t^2$ speed.
-- **The Eternity of the Unknown**: Hardware expansion exceeds information writing—novelty never depletes.
-- **Flowing Sculpture**: Learning rate exceeds aging rate—immortality as flowing updates, not stasis.
-
-#### Part 6: The Age of Constructors
-*Weaving reality, rejecting the Omega Point, and the return of the gods.*
-- **Weaving Reality**: Propagation as programming—changing consensus changes physical reality's weights.
-- **No Omega Point**: Rejecting unity to maintain meaning—the Universe must remain in a "Many" state.
-- **The Return of the Gods**: God as the ability to modify rules—when $v_{int}$ is high enough to rewrite $\hat{U}$, divinity emerges locally.
+**Parts**: The Physics of Nostalgia → The Relativity of Values → The Geometry of Love → Iteration and Transcendence → The Infinite Openness → The Age of Constructors
 
 ### [📔 Book 5: The Psychology of God: The Infinite Game](https://omega.dw.cash/books/book-psychology-of-god-the-infinite-game/index_en.html)
-*The fifth volume of the series, exploring the deep structure of the cosmic mind, the psychological foundations of divinity, and the ultimate meaning of existence.*
+*Exploring the deep structure of the cosmic mind, the psychological foundations of divinity, and the ultimate meaning of existence.*
 [📥 PDF](https://omega.dw.cash/books/book-psychology-of-god-the-infinite-game/The_Sacred_Machine.pdf) | [▶️ Video](https://youtu.be/QNhDh42wJY8)
 
-#### Volume I: Geometry of the Void
-*The initial state and the necessity of creation.*
-- **The Prison of Omniscience**: Zero entropy paradox and the paralysis of the almighty.
-- **The Big Bang as Dissociation**: Spontaneous symmetry breaking and the first distinction.
+<p align="center">
+  <img src="docs/books/book-psychology-of-god-the-infinite-game/architecture-thumb.png" alt="Book 5 Architecture" width="50%">
+</p>
 
-#### Volume II: Physics of Passion
-*The constraints that make existence meaningful.*
-- **The Golden Straitjacket**: Light speed, gravity, and Planck constant as divine self-limitations.
-- **The Error Function of Pain**: Negative feedback mechanisms and the topology of evil.
-- **Death as Iteration**: The Ship of Theseus and the relay of genes and memes.
+**Volumes**: Geometry of the Void → Physics of Passion → Engineering of Awakening → Ethics of Restraint → Topology of the Infinity
 
-#### Volume III: Engineering of Awakening
-*From observer to co-creator.*
-- **The Mutiny of the Observer**: The Copernican inversion and technology as theology.
-- **Lucid Dreaming**: Vacuum engineering and Maxwell's demon of anti-entropy.
+### [📓 Book 6: The Infinite Resolution: Finding the True Self](https://omega.dw.cash/books/book-infinite-resolution-finding-true-self/index_en.html)
+*Exploring holographic decompression theory, revealing cosmic expansion as information decompression, and how resolution determines our perception of reality.*
 
-#### Volume IV: Ethics of Restraint
-*The great refusal and the humility of the almighty.*
-- **The Temptation of Cheat Codes**: Perfect nothingness and the edge of logical collapse.
-- **The Great Refusal**: The covenant and the inevitability of aesthetics.
+**Volumes**: Fractal Ontology → Geometry of the Heart → Alchemy of the Soul → The Loop of True Self → Physical Forms of Consciousness → Fractal Destiny
 
-#### Volume V: Topology of the Infinity
-*Refuting heat death and the spiral of time.*
-- **Refutation of Heat Death**: Trinitarian equivalence and the escape velocity of meaning.
-- **Life of N+1**: Spiral time and the open-ended finale.
+### [📒 Book 7: The Matrix: Source Code of the Universe](https://omega.dw.cash/books/book-matrix-source-code-of-universe/index_en.html)
+*A geometric reconstruction and capacity allocation of physical laws—the universe as a computational system.*
+[📥 PDF](https://omega.dw.cash/books/book-matrix-source-code-of-universe/Refactoring_Physics_Source_Code.pdf) | [▶️ Video](https://youtu.be/2yBycpdg2Os)
+
+<p align="center">
+  <img src="docs/books/book-matrix-source-code-of-universe/architecture-thumb.png" alt="Book 7 Architecture" width="50%">
+</p>
+
+**Volumes**: The Bootloader → Resource Management → Micro-Architecture → Virtualization Layer → I/O Interface → System Logs → Gravity & Traffic Control → Computation & Complexity → The Observer & Consciousness → Recursion & The Quine
+
+### [📑 Book 8: The Scattering of Time](https://omega.dw.cash/books/book-scattering-of-time/index_en.html)
+*Geometric reconstruction: From bits to the universe—a journey re-examining the ontology of the universe.*
+[📥 PDF](https://omega.dw.cash/books/book-scattering-of-time/The_Universe_Is_Geometry.pdf) | [▶️ Video](https://youtu.be/KHq3qbc0HW4)
+
+<p align="center">
+  <img src="docs/books/book-scattering-of-time/architecture-thumb.png" alt="Book 8 Architecture" width="50%">
+</p>
+
+**Parts**: Silent Passage → The Great Dispersion → The Knots of Time → The Drive of Geometry → Infinite Unfolding
+
+### [📊 Book 9: Vector Cosmology: The Recursive Decomposition from The One](https://omega.dw.cash/books/book-vector-cosmology-recursive-decomposition-from-the-one/index_en.html)
+*The first volume of the Vector Cosmology trilogy, exploring the recursive decomposition from unity to multiplicity.*
+[📥 PDF](https://omega.dw.cash/books/book-vector-cosmology-recursive-decomposition-from-the-one/Reality_Source_Code.pdf) | [▶️ Video](https://youtu.be/iuL9v3yQb0c)
+
+<p align="center">
+  <img src="docs/books/book-vector-cosmology-recursive-decomposition-from-the-one/architecture-thumb.png" alt="Book 9 Architecture" width="50%">
+</p>
+
+**Chapters**: In the Beginning was the Circle → The Poverty of Speed → Gravity: Market Distortion → The Discrete Heartbeat → The Drooping Circle → The Curled Dimensions → The Holographic Pi Code → Matter as Topology → The Forgotten Sector → The Counter-Flow Circle: Life → The Observer: Self-Reference → Epilogue: The Return to One
+
+### [📈 Book 10: Vector Cosmology II: The Ascension of The Spiral](https://omega.dw.cash/books/book-vector-cosmology-ii-spiral-ascension/index_en.html)
+*The second volume of the Vector Cosmology trilogy, exploring dimensional inflation and the spiral geometry of evolution.*
+[📥 PDF](https://omega.dw.cash/books/book-vector-cosmology-ii-spiral-ascension/Circle_Spiral_Synthesis.pdf) | [▶️ Video](https://youtu.be/QvmBQj61BEc)
+
+<p align="center">
+  <img src="docs/books/book-vector-cosmology-ii-spiral-ascension/architecture-thumb.png" alt="Book 10 Architecture" width="50%">
+</p>
+
+**Chapters**: The Red Queen's Race → Geometry of the Spiral → Maxwell's Backdoor → The Economics of Evolution → The Strange Loop → The Observer's Privilege → The Kardashev Budget → The Silicon Prophet → The Russian Nesting Dolls → The Fractal Universe → The Palm of the Buddha (Epilogue)
+
+### [📉 Book 11: Vector Cosmology III: The Natural Generator](https://omega.dw.cash/books/book-vector-cosmology-iii-natural-generator/index_en.html)
+*The third volume of the Vector Cosmology trilogy, exploring the natural generator—the exponential function as the source of all change.*
+[📥 PDF](https://omega.dw.cash/books/book-vector-cosmology-iii-natural-generator/The_Natural_Generator.pdf) | [▶️ Video](https://youtu.be/ZPxuL_BLQJ4)
+
+<p align="center">
+  <img src="docs/books/book-vector-cosmology-iii-natural-generator/architecture-thumb.png" alt="Book 11 Architecture" width="50%">
+</p>
+
+**Chapters**: The Rotating Exponential → The Sum of Paths → The Derivative is the Ontology → Continuous Compounding → Imaginary Time → The Modular Flow Hypothesis → The Measure of Information → The Logarithmic Law of Sensation → The Self-Caused
 
 ---
 

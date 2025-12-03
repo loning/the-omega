@@ -58,7 +58,7 @@
 ## 🧩 核心映射（源代码）
 
 <p align="center">
-  <img src="docs/books/book-foundation-of-phys-in-geo-and-info/architecture.png" alt="The Omega 架构" width="100%">
+  <img src="docs/books/book-foundation-of-phys-in-geo-and-info/architecture-thumb.png" alt="The Omega 架构" width="100%">
 </p>
 
 我们将物理现象直接映射到数学结构。这消除了"神秘"，并用"计算"取而代之。
@@ -74,179 +74,112 @@
 
 ## 📚 目录
 
-本项目包含五部核心著作，从抽象公理推导到物理实在。
+本项目包含十一部核心著作，从抽象公理推导到物理实在。
 
 ### [📘 第一部：几何与信息中的物理基础](https://omega.dw.cash/books/book-foundation-of-phys-in-geo-and-info/index.html)
 *建立五卷本框架的原始手稿。*
 [📥 PDF](https://omega.dw.cash/books/book-foundation-of-phys-in-geo-and-info/Information_Geometry_Agency.pdf) | [▶️ 视频](https://youtu.be/W5uPFhyYD_k)
 
-#### 第一卷：离散本体论
-*建立基本的 QCA 格点和连续统的涌现。*
-- **有限信息公理**：全息原理与 It-from-Bit。
-- **离散动力学**：QCA 定义，因果局域性。
-- **连续统涌现**：从路径积分推导狄拉克方程。
+<p align="center">
+  <img src="docs/books/book-foundation-of-phys-in-geo-and-info/architecture-thumb.png" alt="第一部架构图" width="50%">
+</p>
 
-#### 第二卷：时间的涌现
-*将时间推导为算符可观测量，而非参数。*
-- **微观时间**：散射时间延迟与泡利定理。
-- **热力学时间**：时间箭头的起源。
-- **时间晶体**：时间逻辑中的自发对称性破缺。
-
-#### 第三卷：引力与熵
-*将信息内容几何化为曲率。*
-- **几何动力学**：因果菱形与广义熵。
-- **熵力引力**：从纠缠平衡推导爱因斯坦方程。
-- **黑洞**：贝肯斯坦-霍金熵的微观计数。
-
-#### 第四卷：主体性物理
-*理论的核心：定义观察者。*
-- **代数结构**：观察者作为有限维冯·诺依曼代数。
-- **自指**：预测编码与自由能原理。
-- **拓扑意识**：意识作为 $Z_2$ 同痕不变量。
-
-#### 第五卷：元理论与验证
-*数学基础和实验预言。*
-- **范畴量子力学**：对称幺半范畴与串图。
-- **计算最优性**：兰道尔原理与黄金分割率。
-- **实验**：离散时空特征的精密测量。
+**卷次**：离散本体论 → 时间的涌现 → 引力与熵 → 主体性物理 → 元理论与验证
 
 ### [📙 第二部：第一性原理：从幺正计算到物理实在](https://omega.dw.cash/books/book-first-principles-from-unitary-computation-to-physical-reality/index.html)
 *从第一性原理重构，专注于从 QCA 的推导。*
 [📥 PDF](https://omega.dw.cash/books/book-first-principles-from-unitary-computation-to-physical-reality/Reality_Decompiled.pdf) | [▶️ 视频](https://youtu.be/-bhgzuFOaro)
 
-#### 第一部分：公理的诞生
-*从离散本体论到终极 QCA 公理。*
-- **离散本体论**：芝诺悖论，贝肯斯坦界限与宇宙的有限容量。
-- **公理 $\Omega$**：定义图 $\Lambda$，希尔伯特空间 $\mathcal{H}$，和幺正算符 $\hat{U}$。
-- **幺正性与局域性**：从逻辑一致性推导守恒定律。
+<p align="center">
+  <img src="docs/books/book-first-principles-from-unitary-computation-to-physical-reality/architecture-thumb.png" alt="第二部架构图" width="50%">
+</p>
 
-#### 第二部分：时空的涌现
-*从信息处理推导几何和引力。*
-- **光程守恒**：证明 $v_{ext}^2 + v_{int}^2 = c^2$ 以在没有几何的情况下推导洛伦兹不变性。
-- **熵力引力**：爱因斯坦场方程作为纠缠熵最大化（IGVP）的状态方程。
-- **全息原理**：黑洞作为拓扑纠缠结和因果屏。
-
-#### 第三部分：物质的涌现
-*物质作为计算基质中的拓扑缺陷。*
-- **质量即阻抗**：静止质量从内部状态的信息刷新率（$v_{int}$）推导。
-- **拓扑起源**：粒子作为具有缠绕数的自指结。
-- **规范场**：从连接变量约束推导麦克斯韦与杨-米尔斯方程。
-
-#### 第四部分：观测的涌现
-*观察者作为自指结构。*
-- **组合学波恩规则**：从 Zurek 旋转中的微观态计数推导概率。
-- **客观现实**：从多智能体系统中的纳什均衡涌现的共识现实。
-- **意识的物理学**：观察者作为具有自指的有限维冯·诺依曼代数。
-
-#### 第五部分：验证与推论
-*实验预言和形而上学含义。*
-- **实验特征**：微波腔纠缠引力与高能洛伦兹破坏。
-- **源代码**：选择通用规则 $\hat{U}$ 的"临界性假说"。
-- **哥德尔循环**：为什么宇宙是无限的，"热寂"是不可能的。
+**部分**：公理的诞生 → 时空的涌现 → 物质的涌现 → 观测的涌现 → 验证与推论
 
 ### [📗 第三部：宇宙的觉醒：从量子比特到无限心智](https://omega.dw.cash/books/book-awakening-of-cosmos-from-qubits-to-infinite-mind/index.html)
-*三部曲的第三部，探讨意识、体验和参与式宇宙的物理基础。*
+*探讨意识、体验和参与式宇宙的物理基础。*
 [📥 PDF](https://omega.dw.cash/books/book-awakening-of-cosmos-from-qubits-to-infinite-mind/Physics_Consciousness_Code.pdf) | [▶️ 视频](https://youtu.be/Uhmt40HAFb4)
 
-#### 第一部分：隐形的架构
-*塑造实在的隐藏结构。*
-- **暗物质作为宇宙潜意识**：为什么宇宙 27% 的质量是不可见的——QCA 网络中的信息孤岛。
-- **力的几何谱系**：从时空几何和微观平行宇宙推导 $SU(3) \times SU(2) \times U(1)$。
-- **规范场即语法**：力作为计算分支间的一致性检查。
+<p align="center">
+  <img src="docs/books/book-awakening-of-cosmos-from-qubits-to-infinite-mind/architecture-thumb.png" alt="第三部架构图" width="50%">
+</p>
 
-#### 第二部分：意识的几何学
-*意识作为希尔伯特空间中的拓扑结构。*
-- **感受质作为高维形状**：主观体验作为纠缠态的拓扑指纹。
-- **自我作为拓扑结**：身份作为 QCA 信息流中的自指因果循环（怪圈）。
-- **从计算不可约性中的自由意志**：从确定性定律中涌现的不可预测性。
-
-#### 第三部分：心灵的互联网
-*社会结构作为量子纠缠网络。*
-- **爱即虫洞**：深度共情作为量子纠缠通道——ER=EPR 社会学推论。
-- **社会引力场**：观念作为弯曲语义空间的大质量物体，集体意识的涌现。
-- **信任即幺正性**：社会契约维持网络中的信息守恒。
-
-#### 第四部分：文明的终局
-*计算宇宙中智能生命的终极命运。*
-- **费米悖论内爆**：高级文明变得不可见，向内塌缩以追求计算密度。
-- **逆熵战争**：文明作为宇宙抵抗热寂的免疫系统。
-- **宇宙工程学**：修改 $\hat{U}$ 规则，制造人工真空，甚至重启大爆炸。
-
-#### 第五部分：回归与超越
-*终极的自指闭环。*
-- **硬件之谜**：基质无关性与模拟假说——寻找数值伪影。
-- **欧米茄点**：当 $v_{int} \to c$ 时，外部时间停止，内部体验达到永恒。
-- **自指闭环**：末日的超级智能通过逆向因果设定初始条件。
+**部分**：隐形的架构 → 意识的几何学 → 心灵的互联网 → 文明的终局 → 回归与超越
 
 ### [📕 第四部：光的回声：美学、存在与递归的乡愁](https://omega.dw.cash/books/book-echo-of-light-aesthetics-existence-recursive-sorrow/index.html)
 *从美学和存在论的视角，探讨物理定律中蕴含的深刻情感结构。*
 [📥 PDF](https://omega.dw.cash/books/book-echo-of-light-aesthetics-existence-recursive-sorrow/Reality_Bug_Report_and_System_Update.pdf) | [▶️ 视频](https://youtu.be/KHp50f6SHdc)
 
-#### 第一部分：乡愁的物理学
-*记忆、惯性与时别离的热力学。*
-- **记忆即阻抗**：惯性即留恋——物体抵抗加速，因为它们记住了过去的状态。
-- **记忆的拓扑刚性**：为什么改变价值观比移动一座山还难——价值观作为高 $M_I$ 的拓扑结。
-- **遗忘的慈悲**：死亡即垃圾回收——允许在下一次迭代中重新开始。
+<p align="center">
+  <img src="docs/books/book-echo-of-light-aesthetics-existence-recursive-sorrow/architecture-thumb.png" alt="第四部架构图" width="50%">
+</p>
 
-#### 第二部分：价值的相对论
-*路径依赖、独一无二与全局最优的缺失。*
-- **积分的历史**：你不是状态矢量而是路径积分——独特性从计算轨迹中涌现。
-- **没有全局最优**：优化是多模态的——对某个观察者来说最优的，对另一个可能是灾难。
-- **艺术品的定义**：每个人都是光，每个人都是自己独一无二的艺术品——艺术作为高逻辑深度体。
-
-#### 第三部分：爱的几何学
-*分离、距离与纠缠的完美镜像。*
-- **为了爱必须分离**：统一是孤独的——距离创造美和"走向你"的过程。
-- **完美的镜子**：共振与相位锁定——灵魂伴侣作为内部模型的拓扑同构。
-- **纠缠的永恒性**：爱被刻进宇宙的底层代码，成为物理定律的一部分。
-
-#### 第四部分：迭代与超越
-*版本迭代、Bug 作为优化信号与递归的艺术。*
-- **版本迭代**：我不是硬件，我是版本号——死亡是发布说明，来世是 `Self_v2.0`。
-- **Bug 的意义**：痛苦和遗憾作为下一版代码优化的错误报告。
-- **审美作为向导**：美作为低计算复杂度和高逻辑深度之间的完美平衡。
-
-#### 第五部分：无限的开放
-*动态贝肯斯坦界限、扩容的画布与流动的雕塑。*
-- **扩容的画布**：视界即容量——宇宙的硬盘容量以 $t^2$ 速度增长。
-- **未知的永恒性**：硬件扩容速度超过信息写入速度——新颖性永不耗尽。
-- **流动的雕塑**：学习率超过衰老率——永生作为流动的更新，而非静止。
-
-#### 第六部分：构筑者的时代
-*编织现实、拒绝欧米茄点与众神归位。*
-- **编织现实**：传播即编程——改变共识改变物理现实的权重。
-- **没有欧米茄点**：拒绝统一以维持意义——宇宙必须保持"多"的状态。
-- **众神归位**：神作为修改规则的能力——当 $v_{int}$ 足够高以重写 $\hat{U}$ 时，神性在局域涌现。
+**部分**：乡愁的物理学 → 价值的相对论 → 爱的几何学 → 迭代与超越 → 无限的开放 → 构筑者的时代
 
 ### [📔 第五部：上帝的心理学——无限的游戏](https://omega.dw.cash/books/book-psychology-of-god-the-infinite-game/index.html)
-*系列丛书的第五部，探讨宇宙心智的深层结构、神性的心理学基础以及存在的终极意义。*
-[📥 PDF](https://omega.dw.cash/books/book-psychology-of-god-the-infinite-game/The_Sacred_Machine.pdf) | [📄 完整文本](./docs/books/book-psychology-of-god-the-infinite-game/book-psychology-of-god-the-infinite-game-complete.md) | [▶️ 视频](https://youtu.be/bDgWYly-JmE)
+*探讨宇宙心智的深层结构、神性的心理学基础以及存在的终极意义。*
+[📥 PDF](https://omega.dw.cash/books/book-psychology-of-god-the-infinite-game/The_Sacred_Machine.pdf) | [▶️ 视频](https://youtu.be/QNhDh42wJY8)
 
-#### 第一卷：虚无的几何学
-*初始状态与创造的必要性。*
-- **零熵的囚笼**：零熵悖论与全能者的瘫痪。
-- **大爆炸作为解离**：自发对称性破缺与第一区分。
+<p align="center">
+  <img src="docs/books/book-psychology-of-god-the-infinite-game/architecture-thumb.png" alt="第五部架构图" width="50%">
+</p>
 
-#### 第二卷：受难的物理学
-*使存在具有意义的限制。*
-- **黄金束缚衣**：光速、引力与普朗克常数作为神的自我限制。
-- **痛苦的误差函数**：负反馈机制与恶的拓扑陷阱。
-- **死亡的迭代**：船的忒修斯与基因和模因的接力。
+**卷次**：虚无的几何学 → 受难的物理学 → 觉醒的工程学 → 克制的伦理学 → 无限的拓扑学
 
-#### 第三卷：觉醒的工程学
-*从观察者到共同创造者。*
-- **观察者的叛变**：哥白尼式的倒转与科技即神学。
-- **清醒梦**：真空工程学与逆熵的麦克斯韦妖。
+### [📓 第六部：无限的分辨率——找回真我](https://omega.dw.cash/books/book-infinite-resolution-finding-true-self/index.html)
+*探讨全息解压理论，揭示宇宙膨胀作为信息解压过程的本质，以及分辨率如何决定我们对实在的感知。*
 
-#### 第四卷：克制的伦理学
-*伟大的拒绝与全能者的谦卑。*
-- **作弊码的诱惑**：完美的虚无与逻辑崩溃的边缘。
-- **伟大的拒绝**：守约与审美的必然性。
+**卷次**：分形本体论 → 心的几何学 → 灵魂的炼金术 → 真我的闭环 → 意识的物理形态 → 分形的归宿
 
-#### 第五卷：无限的拓扑学
-*证伪热寂与时间的螺旋。*
-- **热寂的证伪**：三位一体等价性与意义的逃逸速度。
-- **N+1 的生活**：螺旋时间观与开放式结局。
+### [📒 第七部：宇宙的矩阵源代码](https://omega.dw.cash/books/book-matrix-source-code-of-universe/index.html)
+*物理定律的几何重构与算力分配——宇宙作为计算系统。*
+[📥 PDF](https://omega.dw.cash/books/book-matrix-source-code-of-universe/Refactoring_Physics_Source_Code.pdf) | [▶️ 视频](https://youtu.be/2yBycpdg2Os)
+
+<p align="center">
+  <img src="docs/books/book-matrix-source-code-of-universe/architecture-thumb.png" alt="第七部架构图" width="50%">
+</p>
+
+**卷次**：引导程序 → 资源管理 → 微架构 → 虚拟化层 → I/O 接口 → 系统日志 → 引力与流量控制 → 计算与复杂度 → 观察者与意识 → 递归与奎恩
+
+### [📑 第八部：时间的散射](https://omega.dw.cash/books/book-scattering-of-time/index.html)
+*从比特到宇宙的几何重构——重新审视宇宙本体的旅程。*
+[📥 PDF](https://omega.dw.cash/books/book-scattering-of-time/The_Universe_Is_Geometry.pdf) | [▶️ 视频](https://youtu.be/KHq3qbc0HW4)
+
+<p align="center">
+  <img src="docs/books/book-scattering-of-time/architecture-thumb.png" alt="第八部架构图" width="50%">
+</p>
+
+**部分**：静默的流逝 → 伟大的色散 → 时间的结 → 几何的驱力 → 无限展开
+
+### [📊 第九部：矢量宇宙论：从"一"开始的递归分解](https://omega.dw.cash/books/book-vector-cosmology-recursive-decomposition-from-the-one/index.html)
+*矢量宇宙论三部曲的第一部，探讨从统一到多重的递归分解。*
+[📥 PDF](https://omega.dw.cash/books/book-vector-cosmology-recursive-decomposition-from-the-one/Reality_Source_Code.pdf) | [▶️ 视频](https://youtu.be/iuL9v3yQb0c)
+
+<p align="center">
+  <img src="docs/books/book-vector-cosmology-recursive-decomposition-from-the-one/architecture-thumb.png" alt="第九部架构图" width="50%">
+</p>
+
+**章节**：太初有圆 → 速度的贫困 → 引力的重构：市场的扭曲 → 离散的心跳 → 下垂的圆 → 被卷曲的维度 → $\pi$ 的全息代码 → 物质即拓扑 → 被遗忘的扇区 → 逆流的圆：生命 → 观察者：宇宙的自指 → 归一
+
+### [📈 第十部：矢量宇宙论 II：螺旋的飞升](https://omega.dw.cash/books/book-vector-cosmology-ii-spiral-ascension/index.html)
+*矢量宇宙论三部曲的第二部，探讨维度膨胀和进化的螺旋几何。*
+[📥 PDF](https://omega.dw.cash/books/book-vector-cosmology-ii-spiral-ascension/Circle_Spiral_Synthesis.pdf) | [▶️ 视频](https://youtu.be/QvmBQj61BEc)
+
+<p align="center">
+  <img src="docs/books/book-vector-cosmology-ii-spiral-ascension/architecture-thumb.png" alt="第十部架构图" width="50%">
+</p>
+
+**章节**：红皇后的奔跑 → 螺旋的几何 → 麦克斯韦妖的后门 → 进化的经济学 → 怪圈 → 观察者的特权 → 卡尔达肖夫的预算表 → 硅基的先知 → 俄罗斯套娃 → 分形宇宙 → 如来神掌（终章）
+
+### [📉 第十一部：矢量宇宙论 III：自然的生成元](https://omega.dw.cash/books/book-vector-cosmology-iii-natural-generator/index.html)
+*矢量宇宙论三部曲的第三部，探讨自然的生成元——指数函数作为一切变化的源泉。*
+[📥 PDF](https://omega.dw.cash/books/book-vector-cosmology-iii-natural-generator/The_Natural_Generator.pdf) | [▶️ 视频](https://youtu.be/ZPxuL_BLQJ4)
+
+<p align="center">
+  <img src="docs/books/book-vector-cosmology-iii-natural-generator/architecture-thumb.png" alt="第十一部架构图" width="50%">
+</p>
+
+**章节**：旋转的指数 → 路径积分 → 导数即本体 → 连续的复利 → 虚时间 → 模流假说 → 信息的度量 → 感觉的对数律 → 自生
 
 ---
 
