@@ -1,0 +1,36 @@
+# Preface: In Search of the Missing Geometry
+
+We are at a perplexing moment in the history of physics.
+
+Over the past century, we have built two magnificent towers: one is **General Relativity**, which describes the grand dance of galaxies and gravity with curved spacetime geometry; the other is **Quantum Mechanics**, which describes the microscopic transitions of atoms and photons with probability wave functions. These two towers have each achieved remarkable success in their domains, but between them lies an unfathomable chasm.
+
+The sharpest contradiction centers on the understanding of **"time"**.
+
+In quantum mechanics, time is an external parameter, the ticking clock on the laboratory wall that coldly records the evolution of wave functions. In relativity, time is dynamic and local; each observer possesses their own private "proper time," stretching and contracting with motion state and gravitational fields. Moreover, in scattering theory, time transforms into phase delay that varies with energy; in thermodynamics, time becomes the irreversible arrow of entropy increase.
+
+Facing this "multiplicity of time," we cannot help but ask: Does the universe really need so many different clocks to maintain its operation? Or are these seemingly contradictory concepts of time actually projections unified by some deeper geometric structure?
+
+This book—**Vector Cosmology**—was born to answer this question.
+
+Our starting point is an extremely simple yet profoundly subversive assumption: **There is only one time in the universe, and that is the geometric arc length in projective Hilbert space.**
+
+We model the universe as a single pure state vector $|\Psi\rangle$ moving in infinite-dimensional quantum state space. In this abstract geometric space, we introduce a core axiom: the universe's evolution is constrained by a constant "capacity"—we call it **Fubini-Study (FS) Capacity ($c_{FS}$)**.
+
+Based on this single axiom, we no longer need to assume constant light speed or curved spacetime. All physical laws naturally emerge from this vector's **"recursive orthogonal decomposition"**:
+
+* **Special Relativity** is no longer the foundation of mechanics but a **budget allocation scheme** for information processing capacity: external motion ($v_{ext}$) and internal evolution ($v_{int}$) share the same $c_{FS}$ budget. Time dilation is merely the inevitable scarcity after budget misappropriation.
+
+* **Matter** is no longer a hard entity but **topological knots** tied by wave functions in energy space. We will see how Levinson's theorem links particle existence to counting the circle constant $\pi$.
+
+* **Causality** is no longer a metaphysical assumption but the maximum signal propagation speed of the underlying microscopic engine—**Quantum Cellular Automaton (QCA)**—operating on discrete lattices.
+
+This book is not merely an attempt at grand unification in physics; it is a philosophical journey of "disenchantment" of physics.
+
+We will discover that the "uncertainty" that has long troubled us is actually the perspective limitation that observers, as subsystems within the universe, necessarily face; that cruel "thermodynamic arrow" is actually the geometric inevitability of information escaping toward the high-dimensional environment sector ($v_{env}$) we cannot reach.
+
+Ultimately, all these derivations lead us to that ancient Eastern wisdom: **The Dao is the Circle.** All phenomena in the universe are merely holographic projections of that unique, eternally rotating vector after countless self-divisions.
+
+I invite you to set aside your inherent preconceptions about "particles" and "fields" and follow us into this pure geometric world constructed by the **FS metric**. Here, there is only one entity—the vector; only one law—conservation; only one destiny—return.
+
+This is **Vector Cosmology**. Let us begin from that undivided "One."
+

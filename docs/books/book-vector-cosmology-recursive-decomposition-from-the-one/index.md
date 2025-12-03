@@ -8,6 +8,10 @@
 
 **Status:** Initial Release
 
+## 前言
+
+- [前言：寻找缺失的几何 (Preface: In Search of the Missing Geometry)](preface.md)
+
 ## 序言
 
 - [序言：无极](prologue.md)
@@ -99,6 +103,10 @@
 ## 术语表
 
 - [术语表 (Glossary of Terms)](glossary.md)
+
+## 后记
+
+- [后记：设计师的视角 (Afterword: The Designer's View)](afterword.md)
 
 ---
 

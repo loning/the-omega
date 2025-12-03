@@ -8,6 +8,10 @@
 
 **Status:** Initial Release
 
+## Preface
+
+- [Preface: In Search of the Missing Geometry](preface_en.md)
+
 ## Prologue
 
 - [Prologue: The Wuji](prologue_en.md)
@@ -99,6 +103,10 @@
 ## Glossary
 
 - [Glossary of Terms](glossary_en.md)
+
+## Afterword
+
+- [Afterword: The Designer's View](afterword_en.md)
 
 ---
 
