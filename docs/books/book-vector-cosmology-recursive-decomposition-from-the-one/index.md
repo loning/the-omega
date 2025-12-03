@@ -108,6 +108,10 @@
 
 - [后记：设计师的视角 (Afterword: The Designer's View)](afterword.md)
 
+## 番外篇
+
+- [番外篇：轮回与升维——圆还是螺旋？ (Bonus Chapter: Samsara and Ascension — Circle or Spiral?)](bonus-samsara-and-ascension.md)
+
 ---
 
 **Documentation Version: 1.0**

@@ -108,6 +108,10 @@
 
 - [Afterword: The Designer's View](afterword_en.md)
 
+## Bonus Chapter
+
+- [Bonus Chapter: Samsara and Ascension — Circle or Spiral?](bonus-samsara-and-ascension_en.md)
+
 ---
 
 **Documentation Version: 1.0**

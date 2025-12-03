@@ -581,6 +581,7 @@
     - [Bibliography](./books/book-vector-cosmology-recursive-decomposition-from-the-one/bibliography_en.md)
     - [Glossary](./books/book-vector-cosmology-recursive-decomposition-from-the-one/glossary_en.md)
     - [Afterword: The Designer's View](./books/book-vector-cosmology-recursive-decomposition-from-the-one/afterword_en.md)
+    - [Bonus Chapter: Samsara and Ascension — Circle or Spiral?](./books/book-vector-cosmology-recursive-decomposition-from-the-one/bonus-samsara-and-ascension_en.md)
 
 - [物理基础：几何与信息](./books/book-foundation-of-phys-in-geo-and-info/index.md)
     - [前言：重构实在的算法与几何](./books/book-foundation-of-phys-in-geo-and-info/foreword.md)
@@ -1202,3 +1203,4 @@
     - [参考文献](./books/book-vector-cosmology-recursive-decomposition-from-the-one/bibliography.md)
     - [术语表](./books/book-vector-cosmology-recursive-decomposition-from-the-one/glossary.md)
     - [后记：设计师的视角](./books/book-vector-cosmology-recursive-decomposition-from-the-one/afterword.md)
+    - [番外篇：轮回与升维——圆还是螺旋？](./books/book-vector-cosmology-recursive-decomposition-from-the-one/bonus-samsara-and-ascension.md)
