@@ -1,0 +1,82 @@
+\part{Volume 00: The Bootloader}
+
+\chapter{Ontology and Axioms}
+
+\chapter{The Agnostic Ontology}
+
+\textbf{--- Why Physics is a Projection}
+
+\textbf{``We cannot directly read the hardware (ontology); we can only see the output of the interface.''}
+
+---
+
+\section{The Representational Stance: From ``Ontology'' to ``Interface''}
+
+Before booting any system kernel, we must first define the system's data model. In the traditional physics perspective, physicists often attempt to answer the question ``what is the universe actually?'' This is an ontological obsession that assumes observers can step outside the system and examine the underlying ``hardware implementation'' from some God's-eye view.
+
+In this book, we adopt a more pragmatic systems engineering perspective, which we call \textbf{The Representational Stance}.
+
+We declare: we know nothing about the ``true ontology'' of the universe, and we do not need to know. As observers within the system, we can only access the system's \textbf{Public Interface}. All physical laws---whether Newtonian mechanics, general relativity, or quantum field theory---are essentially \textbf{``Representations''} or \textbf{``Projection Views''} that we construct to understand the system's behavior.
+
+The task of physics is not to guess what kind of gears are inside the black box, but to reverse-engineer its \textbf{API documentation}. If a mathematical structure can losslessly accommodate all API return data and accurately predict the system's responses, then that structure is the ``source code'' we seek.
+
+\section{The Hilbert Space as Universal Buffer}
+
+If we want to design a universal data container that can accommodate all physical phenomena (from quantum superposition to spacetime evolution), what is the best choice?
+
+Historical experience shows that spacetime manifolds are not the most fundamental containers, as they struggle to naturally accommodate quantum non-locality. In contrast, \textbf{Complex Separable Hilbert Space ($\mathcal{H}$)} demonstrates remarkable adaptability. We regard Hilbert space as the universe's \textbf{Universal Buffer}.
+
+However, the raw Hilbert space contains redundant data---\textbf{Global Phase}. For physical states, vectors $|\psi\rangle$ and $e^{i\theta}|\psi\rangle$ describe exactly the same reality. This redundancy is called ``unnormalized data'' in system design. To build an efficient kernel, we must cleanse this buffer and extract its geometric essence.
+
+\section{Math Foundation: Projective Geometry}
+
+To formalize this idea, we introduce the concept of \textbf{Projective Hilbert Space}. This is the geometric stage for all subsequent derivations in this book.
+
+\subsection{Definition 0.1.1 (Rays and Equivalence Classes)}
+
+Let $\mathcal{H}$ be a complex Hilbert space. For any nonzero vector $\psi \in \mathcal{H}$, we define the physical state not as the vector itself, but as a \textbf{Ray} in $\mathcal{H}$, i.e., a one-dimensional subspace:
+
+$$[\psi] = \{ c\psi : c \in \mathbb{C}, c \neq 0 \}$$
+
+In physics, for computational convenience, we typically choose normalized representatives, i.e., $||\psi|| = 1$, in which case the ray can be represented as a phase equivalence class:
+
+$$[\psi] = \{ e^{i\theta}\psi : \theta \in \mathbb{R} \}$$
+
+\subsection{Definition 0.1.2 (Projective Space)}
+
+The set of all physical states constitutes the projective Hilbert space $P(\mathcal{H})$:
+
+$$P(\mathcal{H}) := (\mathcal{H} \setminus \{0\}) / \sim$$
+
+where $\sim$ is the equivalence relation defined above.
+
+\subsection{Theorem 0.1.1 (Gauge Invariance of Physical Quantities)}
+
+In $P(\mathcal{H})$, all physical quantities must be \textbf{Gauge Invariant}. This means that any observable physical effect (such as probability, energy, geometric distance) depends only on the ray $[\psi]$ itself, and not on which specific phase angle $\theta$ we choose.
+
+For example, the Fubini-Study distance $d_{FS}([\psi], [\phi])$ between two states is defined through modulus operations, thereby eliminating phase effects:
+
+$$d_{FS}([\psi], [\phi]) = \arccos |\langle \psi | \phi \rangle|$$
+
+This geometric treatment removes ``phase'' from the category of \textbf{Physical Entities}, demoting it to a mere ``coordinate choice'' or ``internal variable.'' True physical evolution is the trajectory of rays on the $P(\mathcal{H})$ manifold.
+
+---
+
+\section{The Architect's Note}
+
+\subsection{On: Data Encapsulation and Interface Design}
+
+If we regard the universe as a vast software system, then `HilbertVector` belongs to the underlying \textbf{Private Members}, while `ProjectiveState` is the \textbf{Public Object} exposed to the outside.
+
+\begin{itemize}
+\item \textbf{Global phase $\theta$ is an internal implementation detail:}
+
+    Users (observers) can never directly call the `getPhase()` function. The system may be rotating phases internally, but as long as this rotation does not change the direction of the ray $[\psi]$ (i.e., does not change the angle with other rays), the system appears ``static'' to the user.
+
+\item \textbf{Physical laws are interface-based programming:}
+
+    We do not need to care about how underlying data is stored (what the wave function actually is). We only care about the interaction protocols between objects---namely \textbf{Overlap} or \textbf{Distance}. The Fubini-Study metric is so important because it is the only ``comparison function'' that can be defined at this interface level without breaking system symmetry (unitary invariance).
+\end{itemize}
+
+This \textbf{``Separation of Concerns''} design is extremely elegant. It encapsulates complex quantum interference phenomena in a concise geometric model. When we say ``physics is a projection,'' we are actually saying: \textbf{Physical laws are logic running on the $P(\mathcal{H})$ interface layer, not logic running on the underlying $\mathcal{H}$ data layer.}
+
