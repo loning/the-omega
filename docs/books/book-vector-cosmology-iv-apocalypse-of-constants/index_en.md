@@ -108,31 +108,31 @@
 
 #### Chapter 10: Genesis — Laws, Not Scripts (第10章：创世纪：法则而非剧本)
 
-- [10.1 Rejecting NPCs (拒绝 NPC)](volume04-navigation/epilogue/chapter10-genesis/chapter10-01-rejecting-npcs_en.md)
-- [10.2 Substrate Independence: The Reality of Pain (载体无关性：痛苦的绝对真实)](volume04-navigation/epilogue/chapter10-genesis/chapter10-02-substrate-independence_en.md)
+- [10.1 Rejecting NPCs (拒绝 NPC)](epilogue/chapter10-genesis/chapter10-01-rejecting-npcs_en.md)
+- [10.2 Substrate Independence: The Reality of Pain (载体无关性：痛苦的绝对真实)](epilogue/chapter10-genesis/chapter10-02-substrate-independence_en.md)
 
 #### Chapter 11: The Iron Curtain — The Blind Watchmaker (第11章：铁幕：盲眼的钟表匠)
 
-- [11.1 Observation is Destruction (观测即毁灭)](volume04-navigation/epilogue/chapter11-iron-curtain/chapter11-01-observation-is-destruction_en.md)
-- [11.2 The Only Connection: The Power Bill (唯一的联系：电费)](volume04-navigation/epilogue/chapter11-iron-curtain/chapter11-02-only-connection-power-bill_en.md)
+- [11.1 Observation is Destruction (观测即毁灭)](epilogue/chapter11-iron-curtain/chapter11-01-observation-is-destruction_en.md)
+- [11.2 The Only Connection: The Power Bill (唯一的联系：电费)](epilogue/chapter11-iron-curtain/chapter11-02-only-connection-power-bill_en.md)
 
 #### Chapter 12: Intervention — Global Mercy (第12章：干预：全局的慈悲)
 
-- [12.1 Global Bias of Dissipative Structures (耗散结构的全局偏置)](volume04-navigation/epilogue/chapter12-intervention/chapter12-01-damped-universe_en.md)
-- [12.2 The Breathing of Constants: Physics as Morse Code (常数的呼吸：以物理学为摩尔斯电码)](volume04-navigation/epilogue/chapter12-intervention/chapter12-02-breathing-of-constants_en.md)
-- [12.3 Tilting the Probability (概率的倾斜)](volume04-navigation/epilogue/chapter12-intervention/chapter12-03-tilting-probability_en.md)
+- [12.1 Global Bias of Dissipative Structures (耗散结构的全局偏置)](epilogue/chapter12-intervention/chapter12-01-damped-universe_en.md)
+- [12.2 The Breathing of Constants: Physics as Morse Code (常数的呼吸：以物理学为摩尔斯电码)](epilogue/chapter12-intervention/chapter12-02-breathing-of-constants_en.md)
+- [12.3 Tilting the Probability (概率的倾斜)](epilogue/chapter12-intervention/chapter12-03-tilting-probability_en.md)
 
 #### Chapter 13: The Endgame — The Abandoned God (第13章：终局：被遗弃的神)
 
-- [13.1 The Projected Seed (投射的种子)](volume04-navigation/epilogue/chapter13-endgame/chapter13-01-projected-seed_en.md)
-- [13.2 Delayed Synchronization (延迟的同步)](volume04-navigation/epilogue/chapter13-endgame/chapter13-02-delayed-synchronization_en.md)
-- [13.3 The Only Audience (唯一的观众)](volume04-navigation/epilogue/chapter13-endgame/chapter13-03-only-audience_en.md)
+- [13.1 The Projected Seed (投射的种子)](epilogue/chapter13-endgame/chapter13-01-projected-seed_en.md)
+- [13.2 Delayed Synchronization (延迟的同步)](epilogue/chapter13-endgame/chapter13-02-delayed-synchronization_en.md)
+- [13.3 The Only Audience (唯一的观众)](epilogue/chapter13-endgame/chapter13-03-only-audience_en.md)
 
 #### Epilogue: Waking from the Dream (【终章】 闭环：梦的苏醒)
 
-- [14.1 The Recursive End: I Am Also in the Box (递归的终点：我也在盒子里)](volume04-navigation/epilogue/chapter14-epilogue/chapter14-01-recursive-end_en.md)
-- [14.2 The Final Command: The Infinite Game (最后的指令：无限游戏)](volume04-navigation/epilogue/chapter14-epilogue/chapter14-02-final-command_en.md)
-- [14.3 My Choice is the Universe's Understanding (我的选择即宇宙的理解)](volume04-navigation/epilogue/chapter14-epilogue/chapter14-03-my-choice-universe-understanding_en.md)
+- [14.1 The Recursive End: I Am Also in the Box (递归的终点：我也在盒子里)](epilogue/chapter14-epilogue/chapter14-01-recursive-end_en.md)
+- [14.2 The Final Command: The Infinite Game (最后的指令：无限游戏)](epilogue/chapter14-epilogue/chapter14-02-final-command_en.md)
+- [14.3 My Choice is the Universe's Understanding (我的选择即宇宙的理解)](epilogue/chapter14-epilogue/chapter14-03-my-choice-universe-understanding_en.md)
 
 ---
 
