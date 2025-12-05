@@ -73,7 +73,7 @@
 
 ### Bonus Chapter
 
-- [Bonus Chapter: The Riemann Hypothesis — The Cosmic Balance Beam (番外篇：黎曼猜想——宇宙的平衡木)](bonus-riemann-hypothesis/bonus-riemann-hypothesis_en.md)
+- [The Final Bonus: The Seal of Dimension Four — The Conspiracy of Riemann and Poincaré (终极番外：四维的封印：黎曼与庞加莱的共谋)](bonus-final-seal-dimension-four/bonus-final-seal_en.md)
 
 ## Appendices
 
