@@ -82,3 +82,4 @@ Since our senses are logarithmic, is the core operating logic of the brain that 
 
 This leads to the theme of the next section: **The Geometry of Cognition**. We will see that not only sensation, but even our "understanding" itself is a projection operation that forcibly flattens high-dimensional manifolds onto low-dimensional tangent planes.
 
+

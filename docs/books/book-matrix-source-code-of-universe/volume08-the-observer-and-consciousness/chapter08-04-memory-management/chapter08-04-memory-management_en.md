@@ -79,3 +79,4 @@ Life can maintain low entropy and vitality because it masters **I/O balance**. I
 Only by learning to **`DELETE`** can you more efficiently **`INSERT`**.
 
 
+

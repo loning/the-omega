@@ -92,3 +92,4 @@ When $e^{\text{Dao}}$ runs to infinity, will it stop? Or will it become some ult
 
 This leads to the final section of the book, and the final chapter of the trilogy: **The Ultimate State**. We will reveal what form the universe will take when this formula self-refers and self-iterates to the extreme.
 
+

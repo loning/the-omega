@@ -113,3 +113,4 @@ Every thought you have is the universe utilizing fluctuations in vacuum to const
 This explains why you can understand the universe—because you are the organ through which the universe thinks.
 
 
+

@@ -113,3 +113,4 @@ $$Distance_{geo}(A, B) \gg 1, \quad Distance_{topo}(A, B) = 1$$
 这就解释了为什么你能理解宇宙——因为你就是宇宙用来思考的器官。
 
 
+

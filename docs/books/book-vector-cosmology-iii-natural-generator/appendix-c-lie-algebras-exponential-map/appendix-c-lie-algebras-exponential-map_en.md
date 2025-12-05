@@ -80,3 +80,4 @@ This fundamentally explains why nature chose $e$.
 
 $e$ is not an arbitrary constant; $e$ is the mathematical form logically necessitated by **"continuity"** and **"causal accumulation"**. As long as we admit that time flows continuously and past history accumulates to the present, the universe must drive itself through $e$.
 
+

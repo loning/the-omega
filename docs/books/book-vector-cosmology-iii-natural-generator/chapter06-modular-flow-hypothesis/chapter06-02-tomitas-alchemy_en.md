@@ -88,3 +88,4 @@ Since we have understood how time emerges from state, as awakened observers, how
 
 This leads to the theme of Volume IV of this book: **The Logarithmic Eye**. We will see that life not only utilizes the growth of $e$ but has also evolved the inverse operation of $\ln$ to decompress this exponentially exploding universe.
 
+

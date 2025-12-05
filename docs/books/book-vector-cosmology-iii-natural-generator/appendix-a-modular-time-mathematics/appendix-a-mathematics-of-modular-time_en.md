@@ -74,3 +74,4 @@ $$\text{Physical Time} = \text{Modular Flow Parameter} \times \text{Temperature}
 
 This mathematically strictly proves our assertion in Chapter 5 of the main text: **Time is complex temperature.** The higher the temperature, the faster the modular flow rotates, and the faster the subjective rate of physical time passage. This is why the concept of time undergoes a phase transition at the Planck temperature of the Big Bang—because the geometric radius of the modular flow contracts to the limit.
 
+

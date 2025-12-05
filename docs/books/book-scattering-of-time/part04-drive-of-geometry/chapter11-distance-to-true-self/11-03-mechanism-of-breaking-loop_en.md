@@ -77,3 +77,4 @@ It's time to enter the book's final part—**Part V: Infinite Unfolding**. There
 *（Next, we will enter Part V "Infinite Unfolding," starting from Chapter 12 "The Noise of Vacuum," exploring cosmology's ultimate picture.）*
 
 
+

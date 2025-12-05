@@ -66,3 +66,4 @@
 
     In the ultimate formula $|\Psi\rangle = e^{\text{Dao}}$, the Dao is the operator located in the **Exponent** position. It is unmanifested potential, rules, and generators, which manifest as all things in the universe we see through the mechanism of $e$.
 
+

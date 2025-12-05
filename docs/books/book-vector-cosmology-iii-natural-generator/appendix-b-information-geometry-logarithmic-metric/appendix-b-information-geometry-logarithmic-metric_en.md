@@ -70,3 +70,4 @@ This derivation proves: **Biological sensation intensity is strictly equal to th
 
 The two are isomorphic in mathematical structure. This again confirms the core view of the entire book: **Life is an isomorphic mapping of the universe's geometric structure.** The reason we perceive the world as logarithmic is because our brains, unconsciously, are constantly performing extremely precise information geometric measurements.
 
+

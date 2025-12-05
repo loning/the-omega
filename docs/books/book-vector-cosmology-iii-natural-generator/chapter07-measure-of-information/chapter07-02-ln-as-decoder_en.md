@@ -96,3 +96,4 @@ Since our perception is constructed logarithmically, does this mathematical stru
 
 This leads to the theme of the next chapter: **The Logarithmic Law of Sensation**. We will leave abstract mathematics and enter the realm of biology to verify the direct projection of this cosmic law onto neurons.
 
+
