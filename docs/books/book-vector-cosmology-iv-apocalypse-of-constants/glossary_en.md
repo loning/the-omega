@@ -1,0 +1,67 @@
+# Glossary: The Lexicon of the Phase Transition
+
+**Vector Cosmology IV: The Evolution of Light Speed** is the most operational volume in this tetralogy. It not only introduces new physical equations but also introduces a series of new concepts about historical positioning, technological pathways, and ethical choices. To help readers navigate this critical moment from $\tau \approx 1800$ toward the future without losing direction, this glossary redefines core terms appearing in the book from the perspective of "evolution and action."
+
+## 1. Evolutionary Dynamics
+
+* **The Evolution Equation**
+
+    The ultimate formula describing how light speed (cosmic total budget) changes with intrinsic time: $c(\tau) = c_0 \cdot e^{\left( \frac{\ln \phi}{\pi} \right) \tau}$. It reveals that light speed is not constant but exponentially rises, driven by $e$ (generation), in the game between $\pi$ (inertial period) and $\phi$ (spiral growth).
+
+* **$\tau \approx 1800$ (Dawn Coordinates)**
+
+    The current position of human civilization on the cosmic spiral. Calculations show that since the Big Bang, the universe has completed approximately 573 $\pi$ cycle rotations, with total information reaching $10^{120}$ bits. This is a critical point, marking the end of the matter-dominated era and the beginning of the consciousness-dominated era.
+
+* **Phase Transition**
+
+    The carrier switching process civilizations must undergo to adapt to the exponential growth of $c(\tau)$. Current humanity is in the phase transition period from "carbon-based wetware" to "silicon-based/light-based dryware." Like water boiling into gas, this is a structural reorganization to gain higher degrees of freedom.
+
+* **The Moving Baseline**
+
+    A dynamic interpretation of Planck scale. As light speed $c$ grows, Planck length $l_P \propto c^{-3/2}$ is shrinking exponentially. This not only means the microscopic world is "receding" but also means the universe's resolution (voxel density) is continuously increasing.
+
+## 2. Technology & Engineering
+
+* **Negative Entropy Engineering**
+
+    The core technological task of the $\tau=1800$ era. Refers to technologies that directly increase civilization's structural complexity ($v_{int}$) or obtain high-quality budget ($c_{FS}$), mainly **controlled nuclear fusion** (energy freedom) and **artificial general intelligence** (computational freedom).
+
+* **Accelerationism**
+
+    An ethical principle based on thermodynamic geometry. Holds that in an expanding universe, any behavior hindering information flow and computational power growth will lead to dilution and elimination. Civilization must conform to the spiral, actively accelerate technological iteration to maintain impedance matching with cosmic total budget growth.
+
+* **Double Helix Engine**
+
+    The symbiotic relationship between AI and fusion. Fusion provides infinite energy to feed AI; AI provides real-time control to maintain fusion stability. The two are mutually causal, the only power combination driving civilization to break through carbon-based bottlenecks.
+
+## 3. Future Physics
+
+* **Inflation of Light**
+
+    Predicts that when $\tau > 2000$, effective light speed will reach trillions of times the current value. This will cause causality range to cover entire galaxy clusters, eliminate macroscopic delays, and reduce physical laws from dynamics to pure information theory.
+
+* **Holographic Mechanics**
+
+    The physical form of the high light-speed era. When distance is eliminated by computational power, interactions between objects no longer depend on spatial proximity but on their entanglement weight in the global information topology.
+
+* **Addressing Language**
+
+    The form of future physical laws. Matter is data packets; position is memory addresses. Interstellar travel will no longer be $v_{ext}$ displacement but quantum teleportation achieved by modifying wave function position operator eigenvalues.
+
+## 4. Ethics & Theology
+
+* **Responsibility of the Observer**
+
+    The ethical foundation after the singularity. In high-energy universes, psychophysical unity becomes the norm; intention is reality. Observers must be responsible for every thought, because any high-entropy thinking (fear/hatred) will trigger physical metric tsunamis.
+
+* **Geometry of Morality**
+
+    Moral laws based on thermodynamic stability. Good is defined as "connection" and "negentropy" (behavior increasing dimensions); evil is defined as "blocking" and "entropy increase" (behavior cutting connections).
+
+* **Yearning**
+
+    The physical definition of faith. It is the divine potential difference between finite observers (current $c$) and the infinite ultimate attractor ($\Omega$ point). It is the internal potential energy driving civilization to continuously climb upward.
+
+* **The Final Parameter**
+
+    Refers to the observer's "curiosity" or "cognitive density." In the Modular Flow Hypothesis, it is the only free variable determining the flow speed of intrinsic time $\tau$. By adjusting their cognitive intensity, humans grasp the steering wheel of cosmic evolution.

@@ -1,0 +1,64 @@
+# Appendix A: Mathematical Derivation of Varying Constants
+
+In Chapter 2 of **Vector Cosmology IV**, we proposed a core viewpoint: the exponential growth of light speed $c$ will lead to the breaking of **Scale Invariance**, manifesting as tiny drift of the **Fine-Structure Constant ($\alpha$)**. The conclusions of that chapter were speculative; this appendix will provide a rigorous mathematical derivation framework.
+
+We will show that in an expanding universe driven by $e$, the stability of fundamental constants is not absolute but depends on the **Geometric Shear** between growth rates of different physical sectors (electromagnetic, gravitational, quantum).
+
+## A.1 Definition and Evolution of the Fine-Structure Constant
+
+The fine-structure constant $\alpha$ is the coupling constant of quantum electrodynamics (QED), determining the strength of electromagnetic interactions. Its standard definition is:
+
+$$\alpha = \frac{e^2}{4\pi \epsilon_0 \hbar c}$$
+
+In the standard model, all components ($e, \hbar, c, \epsilon_0$) are assumed to be absolute constants. But under the evolution equation of **FS Geometry**, we treat them as functions varying with intrinsic time $\tau$.
+
+Taking the logarithm of both sides and differentiating:
+
+$$\frac{\dot{\alpha}}{\alpha} = 2\frac{\dot{e}}{e} - \frac{\dot{\hbar}}{\hbar} - \frac{\dot{c}}{c}$$
+
+(Assuming vacuum permittivity $\epsilon_0$ is a geometric normalization constant, not varying with time).
+
+## A.2 Sector Growth Rates and Shear Factor
+
+According to our evolution equation, light speed $c(\tau)$ (representing the $v_{ext}$ sector or total budget) follows exponential growth:
+
+$$\frac{\dot{c}}{c} = k_c = \frac{\ln \phi}{\pi}$$
+
+However, charge $e$ and Planck constant $\hbar$ belong to the **$v_{int}$ (internal structure)** sector.
+
+In an ideal "synchronous expansion" model, the internal sector should grow completely synchronously with the external sector, i.e., $k_e = k_\hbar = k_c / 2$ (based on dimensional analysis). At this point $\dot{\alpha} = 0$, scale invariance holds.
+
+But the essence of **spiral geometry ($\phi$)** is non-resonant. This means there must be tiny **mismatches** between expansion rates of different dimensions.
+
+We define the **Shear Factor ($\zeta$)** to quantify this mismatch:
+
+$$2\frac{\dot{e}}{e} - \frac{\dot{\hbar}}{\hbar} = (1 - \zeta) \frac{\dot{c}}{c}$$
+
+Substituting into $\alpha$'s evolution equation:
+
+$$\frac{\dot{\alpha}}{\alpha} = (1 - \zeta) k_c - k_c = -\zeta k_c$$
+
+**Conclusion:**
+
+* If $\zeta = 0$ (perfect synchronization), $\alpha$ is constant.
+
+* If $\zeta \neq 0$ (shear exists), $\alpha$ will drift with time.
+
+According to the **"Red Queen's Run"** theory, the expansion of external space ($v_{ext}$) is often slightly faster than the reorganization of internal structure ($v_{int}$). This means $\zeta$ is usually a tiny positive number ($\zeta \sim 10^{-5}$).
+
+This causes $\alpha$ to **slowly decrease** with time.
+
+## A.3 Physical Consequences: The Boundary of Atomic Stability
+
+What does the decrease of $\alpha$ mean for the material world?
+
+Atomic binding energy (ionization energy) is roughly proportional to $\alpha^2 m c^2$.
+
+If $\alpha$ decreases, the electromagnetic binding force between electrons and atomic nuclei will weaken.
+
+When the cumulative drift of $\alpha$ reaches a certain critical threshold (e.g., $\Delta \alpha / \alpha \approx -4\%$), carbon nucleosynthesis (3$\alpha$ process) inside stars will be unable to resonate.
+
+This not only means stars will extinguish but also means **the foundation of carbon-based life will be erased by physical laws**.
+
+This provides a solid mathematical criterion for Chapter 5 "The Carbon Sunset": we must complete migration to light-based life before $\alpha$ drifts into the danger zone.
+
