@@ -4,6 +4,12 @@
 
 **Vector Cosmology V: The Minting of Time**
 
+<p align="center">
+  <img src="./architecture.png" alt="矢量宇宙论 V 架构图" width="100%">
+</p>
+
+[📥 下载 PDF 版本](./Minting_Time_The_Alchemist_s_Rebellion.pdf) | [▶️ 视频](https://youtu.be/kfAHuCDQPBk)
+
 ## 版本信息
 
 **Version:** 1.0

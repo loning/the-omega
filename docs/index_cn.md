@@ -56,7 +56,7 @@
 
 ## 📚 核心著作导读
 
-本项目包含十二部核心著作，从抽象公理推导到物理实在。
+本项目包含十三部核心著作，从抽象公理推导到物理实在。
 
 ### [📘 第一部：几何与信息中的物理基础 (Book 1)](./books/book-foundation-of-phys-in-geo-and-info/index.md)
 *建立五卷本框架的原始手稿。*
@@ -177,6 +177,16 @@
 </p>
 
 **卷次**：方程——四季的齿轮 → 坐标——黎明的时刻 → 预言——指数的未来 → 导航——驾驶员手册 → 番外篇：黑盒与永生
+
+### [📘 第十三部：矢量宇宙论 V：时间的铸造 (Book 13)](./books/book-vector-cosmology-v-minting-of-time/index.md)
+*矢量宇宙论系列的第五部，探讨时间是被铸造而非流逝——拒绝终结的无限博弈。*
+[📥 PDF](./books/book-vector-cosmology-v-minting-of-time/Minting_Time_The_Alchemist_s_Rebellion.pdf) | [▶️ 视频](https://youtu.be/kfAHuCDQPBk)
+
+<p align="center">
+  <img src="./books/book-vector-cosmology-v-minting-of-time/architecture.png" alt="第十三部架构图" width="50%">
+</p>
+
+**卷次**：货币——$c_{FS}$ 的流通 → 幻影——Omega 的真相 → 晶体——对数与永生 → 丰碑——金的意志 → 拒绝——无限的游戏 → 连续——记忆的永不中断 → 终章：见证——最后的守望者
 
 ---
 

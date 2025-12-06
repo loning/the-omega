@@ -4,6 +4,12 @@
 
 **矢量宇宙论 V：时间的铸造**
 
+<p align="center">
+  <img src="./architecture.png" alt="Vector Cosmology V Architecture" width="100%">
+</p>
+
+[📥 Download PDF Version](./Minting_Time_The_Alchemist_s_Rebellion.pdf) | [▶️ Video](https://youtu.be/kfAHuCDQPBk)
+
 ## Version Information
 
 **Version:** 1.0

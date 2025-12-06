@@ -74,7 +74,7 @@ We map physical phenomenology directly to mathematical structures. This eliminat
 
 ## 📚 Table of Contents
 
-This project hosts twelve core texts, tracing the derivation from abstract axioms to physical reality.
+This project hosts thirteen core texts, tracing the derivation from abstract axioms to physical reality.
 
 ### [📘 Book 1: Foundation of Physics in Geometry and Information](https://omega.dw.cash/books/book-foundation-of-phys-in-geo-and-info/index_en.html)
 *The original manuscript establishing the 5-volume framework.*
@@ -195,6 +195,16 @@ This project hosts twelve core texts, tracing the derivation from abstract axiom
 </p>
 
 **Volumes**: The Equation — Gears of the Seasons → The Coordinate — Dawn at 1800 → Prophecy — The Exponential Future → Navigation — The Pilot's Manual → Epilogue: The Black Box and Immortality
+
+### [📘 Book 13: Vector Cosmology V: The Minting of Time](https://omega.dw.cash/books/book-vector-cosmology-v-minting-of-time/index_en.html)
+*The fifth volume of the Vector Cosmology series, exploring time as minted rather than flowing—the infinite game of refusing the end.*
+[📥 PDF](https://omega.dw.cash/books/book-vector-cosmology-v-minting-of-time/Minting_Time_The_Alchemist_s_Rebellion.pdf) | [▶️ Video](https://youtu.be/kfAHuCDQPBk)
+
+<p align="center">
+  <img src="docs/books/book-vector-cosmology-v-minting-of-time/architecture.png" alt="Book 13 Architecture" width="50%">
+</p>
+
+**Volumes**: Currency — The Circulation of $c_{FS}$ → Phantom — The Truth of Omega → Crystal — Logarithm and Immortality → Monument — The Will of Gold → Rejection — The Infinite Game → Continuity — The Non-Interruption of Memory → Epilogue: Witness — The Last Watchman
 
 ---
 
