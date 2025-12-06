@@ -107,6 +107,10 @@
 
 - [后记：织女的沉默 (Afterword: The Silence of the Weaver)](afterword.md)
 
+## 致谢
+
+- [致谢：致所有的编织者 (Acknowledgements: To All the Weavers)](acknowledgements.md)
+
 ## 附录
 
 - [附录 A：全息纠缠熵的几何推导 (Appendix A: Geometric Derivation of Holographic Entanglement Entropy)](appendix/appendix-a-geometric-derivation-holographic-entanglement-entropy.md)
@@ -115,6 +119,10 @@
 - [附录 D：行动的算法 (Appendix D: The Algorithm of Action)](appendix/appendix-d-algorithm-action.md)
 - [附录 E：测量诱导的相变——织女的针法 (Appendix E: Measurement-Induced Phase Transitions — The Stitch of the Weaver)](appendix/appendix-e-measurement-induced-phase-transitions.md)
 - [附录 F：全息复杂度——编织宇宙的算力成本 (Appendix F: Holographic Complexity — The Computational Cost of Weaving the Universe)](appendix/appendix-f-holographic-complexity.md)
+
+## 术语表
+
+- [术语表：编织者的词典 (Glossary: The Lexicon of the Weavers)](glossary.md)
 
 ---
 

@@ -107,6 +107,10 @@
 
 - [Afterword: The Silence of the Weaver](afterword_en.md)
 
+## Acknowledgements
+
+- [Acknowledgements: To All the Weavers](acknowledgements_en.md)
+
 ## Appendices
 
 - [Appendix A: Geometric Derivation of Holographic Entanglement Entropy](appendix/appendix-a-geometric-derivation-holographic-entanglement-entropy_en.md)
@@ -115,6 +119,10 @@
 - [Appendix D: The Algorithm of Action](appendix/appendix-d-algorithm-action_en.md)
 - [Appendix E: Measurement-Induced Phase Transitions — The Stitch of the Weaver](appendix/appendix-e-measurement-induced-phase-transitions_en.md)
 - [Appendix F: Holographic Complexity — The Computational Cost of Weaving the Universe](appendix/appendix-f-holographic-complexity_en.md)
+
+## Glossary
+
+- [Glossary: The Lexicon of the Weavers](glossary_en.md)
 
 ---
 

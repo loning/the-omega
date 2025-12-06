@@ -918,6 +918,7 @@
             - [11.2 Reconstructing Reality](./books/book-vector-cosmology-vi-weaving-of-dimensions/volume05-suture/chapter11-weaver-hand-observer/chapter11-02-reconstructing-reality_en.md)
             - [11.3 The Final Inscription](./books/book-vector-cosmology-vi-weaving-of-dimensions/volume05-suture/chapter11-weaver-hand-observer/chapter11-03-final-inscription_en.md)
     - [Afterword: The Silence of the Weaver](./books/book-vector-cosmology-vi-weaving-of-dimensions/afterword_en.md)
+    - [Acknowledgements: To All the Weavers](./books/book-vector-cosmology-vi-weaving-of-dimensions/acknowledgements_en.md)
     - [Appendices]()
         - [Appendix A: Geometric Derivation of Holographic Entanglement Entropy](./books/book-vector-cosmology-vi-weaving-of-dimensions/appendix/appendix-a-geometric-derivation-holographic-entanglement-entropy_en.md)
         - [Appendix B: Holographic Error Correction and Spacetime Robustness](./books/book-vector-cosmology-vi-weaving-of-dimensions/appendix/appendix-b-holographic-error-correction-spacetime-robustness_en.md)
@@ -925,6 +926,7 @@
         - [Appendix D: The Algorithm of Action](./books/book-vector-cosmology-vi-weaving-of-dimensions/appendix/appendix-d-algorithm-action_en.md)
         - [Appendix E: Measurement-Induced Phase Transitions — The Stitch of the Weaver](./books/book-vector-cosmology-vi-weaving-of-dimensions/appendix/appendix-e-measurement-induced-phase-transitions_en.md)
         - [Appendix F: Holographic Complexity — The Computational Cost of Weaving the Universe](./books/book-vector-cosmology-vi-weaving-of-dimensions/appendix/appendix-f-holographic-complexity_en.md)
+    - [Glossary: The Lexicon of the Weavers](./books/book-vector-cosmology-vi-weaving-of-dimensions/glossary_en.md)
 
 - [Vector Cosmology VII: The Loop of Causality](./books/book-vector-cosmology-vii-loop-of-causality/index_en.md)
     - [Prologue: The Bite of the Ouroboros](./books/book-vector-cosmology-vii-loop-of-causality/prologue_en.md)
@@ -1839,6 +1841,7 @@
             - [11.2 重构现实](./books/book-vector-cosmology-vi-weaving-of-dimensions/volume05-suture/chapter11-weaver-hand-observer/chapter11-02-reconstructing-reality.md)
             - [11.3 最后的铭文](./books/book-vector-cosmology-vi-weaving-of-dimensions/volume05-suture/chapter11-weaver-hand-observer/chapter11-03-final-inscription.md)
     - [后记：织女的沉默](./books/book-vector-cosmology-vi-weaving-of-dimensions/afterword.md)
+    - [致谢：致所有的编织者](./books/book-vector-cosmology-vi-weaving-of-dimensions/acknowledgements.md)
     - [附录]()
         - [附录 A：全息纠缠熵的几何推导](./books/book-vector-cosmology-vi-weaving-of-dimensions/appendix/appendix-a-geometric-derivation-holographic-entanglement-entropy.md)
         - [附录 B：全息纠错与时空鲁棒性](./books/book-vector-cosmology-vi-weaving-of-dimensions/appendix/appendix-b-holographic-error-correction-spacetime-robustness.md)
@@ -1846,6 +1849,7 @@
         - [附录 D：行动的算法](./books/book-vector-cosmology-vi-weaving-of-dimensions/appendix/appendix-d-algorithm-action.md)
         - [附录 E：测量诱导的相变——织女的针法](./books/book-vector-cosmology-vi-weaving-of-dimensions/appendix/appendix-e-measurement-induced-phase-transitions.md)
         - [附录 F：全息复杂度——编织宇宙的算力成本](./books/book-vector-cosmology-vi-weaving-of-dimensions/appendix/appendix-f-holographic-complexity.md)
+    - [术语表：编织者的词典](./books/book-vector-cosmology-vi-weaving-of-dimensions/glossary.md)
 
 - [矢量宇宙论 VII：因果的闭环](./books/book-vector-cosmology-vii-loop-of-causality/index.md)
     - [序言：衔尾蛇的咬合](./books/book-vector-cosmology-vii-loop-of-causality/prologue.md)
