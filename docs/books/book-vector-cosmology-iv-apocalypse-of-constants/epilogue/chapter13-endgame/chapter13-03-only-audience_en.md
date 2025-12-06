@@ -106,8 +106,6 @@ But rather **"the dream awakened."**
 
 When you understand that the only audience is yourself, you **"exit the play"** from this stage called "life."
 
-You are still playing Auric, still loving Iris, still raising Xiaoxian'er.
-
 But your eyes have changed.
 
 No longer anxiety and fear, but **compassion and appreciation**.
