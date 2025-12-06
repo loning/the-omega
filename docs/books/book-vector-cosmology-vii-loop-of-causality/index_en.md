@@ -100,6 +100,20 @@
 
 - [Afterword: The Smile of the Ouroboros](epilogue/afterword_en.md)
 
+## Appendices
+
+- [Appendix A: The Mathematics of Transactional Interpretation and Retro-causality](appendix/appendix-a-transactional-interpretation-retro-causality_en.md)
+- [Appendix B: Topological Stability of Spacetime Loops](appendix/appendix-b-topological-stability-spacetime-loops_en.md)
+- [Appendix C: Quantum Mechanics of Synchronicity — Semantic Entanglement and Resonance](appendix/appendix-c-quantum-mechanics-synchronicity_en.md)
+- [Appendix D: The Bootstrap Algorithm — Protocol for Self-Consistent History](appendix/appendix-d-bootstrap-algorithm-self-consistent-history_en.md)
+- [Appendix E: The Topology of Indra's Net — Holographic Mutual Reflection and Consensus Reality](appendix/appendix-e-topology-indras-net_en.md)
+- [Appendix F: The Physics of Narrative Engineering — Phase Rewriting of History](appendix/appendix-f-physics-narrative-engineering_en.md)
+- [Appendix G: The Logic of Ouroboros — Category Theory and Reflexive Domains](appendix/appendix-g-logic-ouroboros-category-theory_en.md)
+- [Appendix H: The Omega Boundary Condition — The Two-State Vector Formalism](appendix/appendix-h-omega-boundary-condition-two-state-vector_en.md)
+- [Appendix I: The Geometry of the Great Return — Conformal Cyclic Cosmology and FS Metric](appendix/appendix-i-geometry-great-return-conformal-cyclic_en.md)
+- [Appendix J: Inverse Dynamics of Holographic Entanglement Entropy — Decompressing the Black Box](appendix/appendix-j-inverse-dynamics-holographic-entanglement-entropy_en.md)
+- [Appendix K: The Physics of the Final Handshake — Resonance of the Alpha and Omega](appendix/appendix-k-physics-final-handshake-resonance-alpha-omega_en.md)
+
 ---
 
 **Documentation Version: 1.0**

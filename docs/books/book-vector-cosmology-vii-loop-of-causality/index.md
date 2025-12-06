@@ -102,6 +102,20 @@
 
 - [后记：衔尾蛇的微笑 (Afterword: The Smile of the Ouroboros)](epilogue/afterword.md)
 
+## 附录 (Appendices)
+
+- [附录 A：交易诠释与逆因果的数学 (Appendix A: The Mathematics of Transactional Interpretation and Retro-causality)](appendix/appendix-a-transactional-interpretation-retro-causality.md)
+- [附录 B：时空闭环的拓扑稳定性 (Appendix B: Topological Stability of Spacetime Loops)](appendix/appendix-b-topological-stability-spacetime-loops.md)
+- [附录 C：共时性的量子力学——语义纠缠与共振 (Appendix C: Quantum Mechanics of Synchronicity — Semantic Entanglement and Resonance)](appendix/appendix-c-quantum-mechanics-synchronicity.md)
+- [附录 D：引导自举算法——自洽历史的协议 (Appendix D: The Bootstrap Algorithm — Protocol for Self-Consistent History)](appendix/appendix-d-bootstrap-algorithm-self-consistent-history.md)
+- [附录 E：因陀罗网的拓扑学——全息互映与共识现实 (Appendix E: The Topology of Indra's Net — Holographic Mutual Reflection and Consensus Reality)](appendix/appendix-e-topology-indras-net.md)
+- [附录 F：叙事工程学的物理原理——历史的相位重写 (Appendix F: The Physics of Narrative Engineering — Phase Rewriting of History)](appendix/appendix-f-physics-narrative-engineering.md)
+- [附录 G：衔尾蛇的逻辑——范畴论与自反域 (Appendix G: The Logic of Ouroboros — Category Theory and Reflexive Domains)](appendix/appendix-g-logic-ouroboros-category-theory.md)
+- [附录 H：$\Omega$ 边界条件——双重时间态矢量形式 (Appendix H: The Omega Boundary Condition — The Two-State Vector Formalism)](appendix/appendix-h-omega-boundary-condition-two-state-vector.md)
+- [附录 I：大回归的几何学——共形循环与 FS 度量 (Appendix I: The Geometry of the Great Return — Conformal Cyclic Cosmology and FS Metric)](appendix/appendix-i-geometry-great-return-conformal-cyclic.md)
+- [附录 J：全息纠缠熵的逆向动力学——黑盒的解压 (Appendix J: Inverse Dynamics of Holographic Entanglement Entropy — Decompressing the Black Box)](appendix/appendix-j-inverse-dynamics-holographic-entanglement-entropy.md)
+- [附录 K：终极握手的物理学——始与终的共振 (Appendix K: The Physics of the Final Handshake — Resonance of the Alpha and Omega)](appendix/appendix-k-physics-final-handshake-resonance-alpha-omega.md)
+
 ---
 
 **Documentation Version: 1.0**
