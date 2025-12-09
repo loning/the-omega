@@ -10,6 +10,8 @@ In our geometric reconstruction, modern physics—especially quantum field theor
 
 ## The Illusion of Continuity
 
+![Discrete vs Continuous](../../assets/discrete_vs_continuous.png)
+
 As we showed in Chapter 6, the universe's foundation is likely a discrete Quantum Cellular Automaton (QCA) grid. But as macroscopic observers, our senses and instrument resolution are extremely limited. We cannot track every Planck pixel's jumping; we can only see their macroscopic average effects.
 
 To describe these macroscopic effects, we invented **calculus**. We use continuous fields (Field) and smooth wave functions (Wavefunction) to approximate underlying discrete states.
