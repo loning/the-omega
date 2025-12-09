@@ -160,13 +160,18 @@ Create a main `.tex` file (e.g., `book-name.tex`) with the following structure:
 
 % Cover page (if assets/cover.png exists)
 \IfFileExists{assets/cover.png}{
-  \newpage
   \thispagestyle{empty}
+  \newpage
+  \newgeometry{left=0cm,right=0cm,top=0cm,bottom=0cm}
+  \vspace*{0pt}
+  \vfill
   \centering
   \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{assets/cover.png}
+  \vfill
+  \vspace*{0pt}
+  \restoregeometry
   \newpage
 }{}
-
 \frontmatter
 
 % Table of contents
@@ -219,7 +224,7 @@ Create a main `.tex` file (e.g., `book-name.tex`) with the following structure:
 - Use `\input{}` for chapter subsections
 - Ensure all paths are relative to the main `.tex` file location
 - Do NOT use `\subtitle{}` command (not standard in `book` class)
-- **Cover image**: If `assets/cover.png` exists in the book directory, it will be automatically included as a cover page in PDF after the title page. For EPUB, use `--epub-cover-image=assets/cover.png` option with pandoc.
+- **Cover image**: If `assets/cover.png` exists in the book directory, it will be automatically included as a cover page in PDF after the title page. The cover page uses `\newgeometry` to temporarily remove margins for full-page display, then `\restoregeometry` to restore normal margins. For EPUB, use `--epub-cover-image=assets/cover.png` option with pandoc.
 
 ### Step 4: Compile PDF
 
