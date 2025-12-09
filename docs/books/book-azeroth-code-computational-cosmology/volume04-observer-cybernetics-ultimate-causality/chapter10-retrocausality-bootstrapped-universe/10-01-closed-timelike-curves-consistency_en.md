@@ -2,6 +2,8 @@
 
 **(The Loop Legend - Closed Timelike Curves and Consistency)**
 
+![Novikov Self-Consistency: Logical Closed Loop](../../assets/images/chapter10/novikov-loop.png)
+
 > **"Causality doesn't always point from past to future. In the code world, loops and recursion are basic syntax. The universe is not a ray heading toward nothingness, but a huge ouroboros. The future's endpoint ($\Omega$) designed the past's starting point ($\alpha$), like game ending determines opening animation."**
 
 The first nine chapters built the entire game world. But there's still an ultimate question: **Which designer filled in the initial values?**

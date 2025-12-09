@@ -2,6 +2,8 @@
 
 **(The Global Server State - Global Unitary Model)**
 
+![Global Server State: Block Universe Archive](../../assets/images/chapter02/global-server-state.png)
+
 > **"In the server's database, there is no 'if.' You got this item not only because you rolled 100, but because in some version snapshot of the database, that data was already written. The real puzzle is not why you rolled 100, but why you cannot see the other 99 parallel universes of yourself."**
 
 This chapter will expound the core of the "Code of Azeroth" theory—**the Holographic Equivalence Principle**. To prove this, we need to understand two endpoints: one is the world as seen by Blizzard's server (God's perspective/global model), and the other is the world as seen by players (local perspective/client model).

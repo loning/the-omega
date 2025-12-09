@@ -2,6 +2,8 @@
 
 **(Loot Exists Only When Dropped - Computable Definition of Existence)**
 
+![Existence as Loot: Instantiation and Persistence](../../assets/images/chapter01/computable-existence-loot.png)
+
 > **"Only when the mouse hovers over it and shows the Tooltip is that equipment truly real. Before that, it's just a line of code in the loot table."**
 
 After dealing with the video memory limit (Axiom 1.1) and the physics engine (Axiom 1.2), we still need to solve the final BOSS of Volume I: **What exactly is 'existence'?**

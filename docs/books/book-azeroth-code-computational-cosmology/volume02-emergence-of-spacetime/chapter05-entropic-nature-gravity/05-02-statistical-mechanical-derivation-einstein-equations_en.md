@@ -2,6 +2,8 @@
 
 **(The Physics Engine Rules - Statistical Mechanical Derivation of Einstein Equations)**
 
+![Unruh Effect: Information Loss from Acceleration](../../assets/images/chapter05/unruh-effect.png)
+
 > **"Einstein's field equations are not divine oracles; they are the server's equation of state. Like gas's PV=nRT, they are macroscopic laws emerging from bottom-layer pixels in statistical equilibrium. Gravity is the thermal effect of information."**
 
 In classical physics, Einstein's field equations are regarded as truth. But in our theory, they are a **corollary**.
@@ -40,6 +42,8 @@ Now we substitute the above physical quantities into formulas.
 *   **Right side (geometry/area)**: Area change is determined by geometric curvature (Riemann curvature).
 
 After complex mathematical derivation (omitting ten thousand words here), when we apply this simple thermal balance condition to every point in spacetime, we surprisingly find that only **Einstein's field equations** can satisfy this requirement:
+
+![Einstein Field Equations: Load Balancing Monitor](../../assets/images/chapter05/einstein-status.png)
 
 $$ R_{\mu\nu} - \frac{1}{2}Rg_{\mu\nu} = 8\pi G T_{\mu\nu} $$
 

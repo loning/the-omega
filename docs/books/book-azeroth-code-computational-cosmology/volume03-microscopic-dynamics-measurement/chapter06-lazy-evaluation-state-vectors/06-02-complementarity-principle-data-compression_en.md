@@ -2,6 +2,10 @@
 
 **(Textures vs Models - Complementarity Principle and Data Compression)**
 
+![Wave-Particle Duality: Data Compression and Decompression](../../assets/images/chapter06/wave-particle-zip.png)
+
+![Double-Slit Experiment: Decoder Selection](../../assets/images/chapter06/double-slit-decoder.png)
+
 > **"Waves and particles are not two properties of matter, but two formats of the same data. Like game files are compressed packages (waves) on hard drive, but decompressed files (particles) in running memory. The universe dynamically switches data formats based on whether you want to 'transmit' or 'interact'."**
 
 In section 6.1, we discussed that Heisenberg's principle is resolution limitation. This leads to another big question: **Wave-particle duality**.

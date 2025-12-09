@@ -72,7 +72,24 @@ For each `*_en.md` file, convert it to a corresponding `.tex` file using LLM con
 
 - Markdown: `![alt](path/to/image.png)`
 - LaTeX: `\begin{figure}[h]\centering\includegraphics[width=0.8\textwidth]{path/to/image.png}\caption{alt}\end{figure}`
-- Adjust paths relative to the main `.tex` file location
+
+**Critical: Image Path Resolution**
+
+When converting images from Markdown to LaTeX, **image paths must be relative to the main LaTeX file location**, NOT relative to the individual `.tex` file being converted.
+
+**Common Issue**: Markdown files often use paths like `../../assets/images/chapter01/image.png` which are relative to the Markdown file's location. When converting to LaTeX, these paths must be adjusted to be relative to the main `.tex` file.
+
+**Example**:
+- If main LaTeX file is at: `book-name/book-name.tex`
+- If images are at: `book-name/assets/images/chapter01/image.png`
+- If chapter file is at: `book-name/volume01/chapter01/01-01-section_en.tex`
+
+Then in the `.tex` file, use: `assets/images/chapter01/image.png` (NOT `../../assets/images/chapter01/image.png`)
+
+**Conversion Rule**:
+- Replace `../../assets/images/` → `assets/images/` (or adjust based on actual directory structure)
+- Always verify paths are correct relative to where the main `.tex` file will be located
+- Use `\graphicspath{{./}}` in the preamble to set the base path for images
 
 #### 2.4 List Conversion
 
@@ -217,6 +234,12 @@ Create a main `.tex` file (e.g., `book-name.tex`) with the following structure:
 - **Missing $ inserted**: Ensure math mode is properly closed, or escape underscores in text
 - **Extra }, or forgotten $**: Check for unclosed math mode or mismatched braces
 - **Command invalid in math mode**: Ensure `\item`, `\end{itemize}`, etc. are outside math mode
+- **Package pdftex.def Error: File `...` not found**: This indicates image path errors
+  - **Cause**: Image paths in `\includegraphics{}` are incorrect relative to the main `.tex` file
+  - **Fix**: Update all image paths in `.tex` files to be relative to the main `.tex` file location
+  - **Example**: Change `../../assets/images/chapter01/image.png` to `assets/images/chapter01/image.png`
+  - **Verification**: Check that PDF file size increases significantly after fixing (images are embedded)
+  - **Quick fix script**: Use regex to replace `../../assets/images/` with `assets/images/` in all `*_en.tex` files
 
 ### Step 5: Compile EPUB
 
@@ -290,7 +313,11 @@ Create a main `.tex` file (e.g., `book-name.tex`) with the following structure:
 ### Path Handling
 
 - All `\input{}` and `\include{}` paths should be relative to the main `.tex` file
-- Image paths in `\includegraphics{}` should be relative to the main `.tex` file or use `\graphicspath{{./}}`
+- **Image paths in `\includegraphics{}` must be relative to the main `.tex` file location**
+  - When converting from Markdown, paths like `../../assets/images/` need to be changed to `assets/images/`
+  - The path is resolved from the main `.tex` file's directory, not from individual chapter `.tex` files
+  - Use `\graphicspath{{./}}` in the preamble to set the base search path for images
+  - **Common mistake**: Using paths relative to the chapter file (e.g., `../../assets/`) instead of relative to the main file (e.g., `assets/`)
 
 ### Content Preservation
 
@@ -310,6 +337,9 @@ Before finalizing, verify:
 - [ ] EPUB file is generated successfully and has reasonable size (> 50KB for a complete book)
 - [ ] MathML property is correctly declared in OPF manifest (use `fix_epub_mathml.sh` if needed)
 - [ ] All images are included (if any)
+  - [ ] Verify image paths are correct relative to main `.tex` file
+  - [ ] Check PDF file size is reasonable (should be larger if images are embedded)
+  - [ ] No "File not found" errors in compilation log for images
 - [ ] Mathematical formulas render correctly
 - [ ] Special characters are properly escaped
 

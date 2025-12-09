@@ -2,6 +2,8 @@
 
 **(User Interface (UI) - Qualia)**
 
+![Qualia: The Brain's Rendering Engine](../../assets/images/chapter08/qualia-renderer.png)
+
 > **"For programmers, 'red' is code RGB(255, 0, 0); but for players, 'red' is danger alert. Qualia—the pain, itch, sourness, pleasure you feel—is not mysterious soul sparks; it's the graphical user interface (GUI) rendered by the brain's graphics card. Its only purpose: Let you understand that complex physical data in 0.1 seconds."**
 
 In section 8.1, we said consciousness is the player. What does the player use to see the game?

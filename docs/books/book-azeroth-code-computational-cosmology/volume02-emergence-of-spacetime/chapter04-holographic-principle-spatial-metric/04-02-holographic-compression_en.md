@@ -2,6 +2,8 @@
 
 **(Resource Compression - Holographic Compression)**
 
+![Holographic Compression: Black Holes as Ultimate Compression](../../assets/images/chapter04/black-hole-compression.png)
+
 > **"Without compression, a 1:1 real-scale Azeroth would burst the Titans' host. Nature is an ultimate minimalist programmer; it discovered that most places in three-dimensional space are empty. The real universe is a two-dimensional 'membrane,' and the deep space we perceive is just the decompression and projection of holographic data on this membrane."**
 
 The previous section discussed that space is projection. This section discusses **why** this is done.

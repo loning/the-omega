@@ -2,6 +2,8 @@
 
 **(Distributed Consensus - Objectivity as Nash Equilibrium)**
 
+![Distributed Consensus: Synchronized World](../../assets/images/chapter09/multiplayer-consensus.png)
+
 > **"If the world is generated for you, why is the red light I see also your red light? Because objective reality is not a single truth, but consensus reached by countless players in interaction. Physical laws are that huge distributed ledger."**
 
 We said earlier that the world is generated for you (UI theory). But this has a big Bug: **Solipsism**.

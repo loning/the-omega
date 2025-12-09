@@ -2,6 +2,8 @@
 
 **(Entering the Zone - Collapse as Instantiation)**
 
+![Wave Function Collapse: Class and Instance](../../assets/images/chapter07/collapse-instantiation.png)
+
 > **"Wave functions never 'collapse'; they're just 'instantiated.' Like classes in code never disappear because you created an object. Schrödinger's cat is not both dead and alive; it's uninitialized data."**
 
 Quantum mechanics' biggest puzzle is: Why are microscopic particles probabilistic (waves), while the macroscopic world is deterministic (particles)?
@@ -45,6 +47,8 @@ When an electron interacts with macroscopic environment (like your retina, or St
 To the observer, the wave function instantly contracts to that point. But at the system bottom layer, this is just **generating specific values from probability table**.
 
 ### 7.1.3 JIT Physics
+
+![JIT Physics: On-Demand Rendering](../../assets/images/chapter07/jit-physics.png)
 
 Modern game engines widely use **Just-In-Time Compilation (JIT)** technology: Resources are only loaded when they're about to enter player's view.
 

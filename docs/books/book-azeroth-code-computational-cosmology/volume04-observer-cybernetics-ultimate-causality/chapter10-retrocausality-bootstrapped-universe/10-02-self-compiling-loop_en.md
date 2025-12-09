@@ -2,6 +2,8 @@
 
 **(System Bootstrap - The Self-Compiling Loop)**
 
+![Universe Quine: Self-Compiling Program](../../assets/images/chapter10/universe-quine.png)
+
 > **"There's only one type of program whose output is its own source code. This program is called 'self-reproducing program' (Quine). Our universe is a grand Quine. It's not a machine that makes stars; it's a machine designed to compute and reconstruct its own source code."**
 
 Section 10.1 said future endpoint determines starting point. This raises a deeper question:
