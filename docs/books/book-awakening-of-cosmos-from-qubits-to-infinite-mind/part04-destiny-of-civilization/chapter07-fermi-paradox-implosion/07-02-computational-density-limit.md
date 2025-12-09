@@ -101,3 +101,4 @@ $$\nu_{max} \le \frac{2E}{\pi \hbar}$$
 
 
 
+

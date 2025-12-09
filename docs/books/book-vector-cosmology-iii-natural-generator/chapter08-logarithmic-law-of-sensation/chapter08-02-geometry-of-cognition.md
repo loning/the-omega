@@ -83,3 +83,4 @@ $$T_{psy} \propto \ln(e^{\lambda \tau}) = \lambda \tau$$
 
 
 
+
