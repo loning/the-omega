@@ -2,6 +2,8 @@
 
 **(The Mana Cap - Axiom of Finite Information)**
 
+![Titan Blueprint: Discrete Grid World](../../assets/images/chapter01/finite-information-grid.png)
+
 > **"The Titans' server does not support infinite data. If you hear anyone discussing 'infinity,' they must be trying to bypass computational limits with tricks. When such approximations are treated as truth, the entire physics engine crashes."**
 
 In the first step of constructing our "Code of Azeroth" model, we must confront one of the biggest misconceptions in classical physics: the **continuity assumption**. This assumption holds that if you zoom in close enough, you can infinitely magnify the image, never seeing pixels.

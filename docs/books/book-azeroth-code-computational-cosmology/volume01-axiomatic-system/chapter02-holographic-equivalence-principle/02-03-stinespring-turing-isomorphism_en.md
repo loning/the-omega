@@ -2,6 +2,8 @@
 
 **(The Interface Protocol - Stinespring-Turing Isomorphism)**
 
+![Stinespring Isomorphism: From Multiverse to Random Numbers](../../assets/images/chapter02/stinespring-isomorphism.png)
+
 > **"Randomness is the shadow cast beyond the field of view. So-called 'collapse' is nothing but packet loss and compression when huge server data streams squeeze through your thin network cable. This section will prove that 'multiverse' and 'free will' are actually the same thing, just viewed from the server or from the client."**
 
 In sections 2.1 and 2.2, we established two models:

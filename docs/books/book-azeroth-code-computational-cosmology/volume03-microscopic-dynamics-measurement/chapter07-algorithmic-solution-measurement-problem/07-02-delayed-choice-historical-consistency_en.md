@@ -2,6 +2,8 @@
 
 **(Loot Roll - Delayed Choice and Historical Consistency)**
 
+![Delayed Choice: Wheeler's Dragon](../../assets/images/chapter07/delayed-choice-dragon.png)
+
 > **"History is not a read-only file written on hard drive, but a log dynamically generated based on your current query request. The past didn't determine the present; it's when you check the loot table that the system retroactively generates the BOSS's drop history."**
 
 In section 7.1, we said measurement is instantiation. This immediately raises a logical question: If you only now decide whether this cat is dead or alive, was it dead or alive in the past hour? Did we change the past?
@@ -46,6 +48,8 @@ Wheeler used a **"dragon"** metaphor:
 *   **Dragon body** (intermediate process): Is a cloud of **probability smoke**. The system never calculated how the dragon body flew; only when the dragon head bites does the system casually draw a line connecting them.
 
 ### 7.2.3 Quantum Erasure: Database Rollback
+
+![Quantum Eraser: Database Rollback](../../assets/images/chapter07/quantum-eraser.png)
 
 **Quantum erasure experiments** demonstrate the system's **editing permissions** on history.
 

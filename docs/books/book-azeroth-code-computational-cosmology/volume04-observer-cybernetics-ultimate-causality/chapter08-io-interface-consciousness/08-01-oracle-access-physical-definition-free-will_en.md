@@ -2,6 +2,8 @@
 
 **(The Player Behind the Screen - Oracle Access and Free Will)**
 
+![Free Will: System Interrupt](../../assets/images/chapter08/free-will-interrupt.png)
+
 > **"Without connecting players, Azeroth is just empty-running code. NPC behavior is predetermined (algorithmic), but player behavior is unpredictable. Free will is not magic; it's an interface the system leaves for external input sources to break algorithmic dead loops."**
 
 The first three volumes built the world, but still lack the most important thing: **User**.

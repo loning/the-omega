@@ -2,6 +2,8 @@
 
 **(Resolution Limits - Arithmetic Roots of Heisenberg's Uncertainty)**
 
+![Heisenberg Uncertainty: Resolution Limit](../../assets/images/chapter06/heisenberg-pixelation.png)
+
 > **"God doesn't play dice, but he does use finite-precision floating-point numbers. The uncertainty principle is not mysterious magic; it's a blurry jpg image. When you zoom to pixel level, you naturally can't see details; this is the iron law of any discrete system."**
 
 In the first two volumes, we discussed macroscopic servers and networks. Now, we zoom in to see Azeroth's microscopic pixels—**quantum mechanics**.

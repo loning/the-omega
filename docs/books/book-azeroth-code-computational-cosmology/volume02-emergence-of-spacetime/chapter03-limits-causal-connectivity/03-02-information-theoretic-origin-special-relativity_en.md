@@ -2,6 +2,10 @@
 
 **(Raid Synchronization - The Information-Theoretic Origin of Special Relativity)**
 
+![Time Dilation: CPU Resource Allocation](../../assets/images/chapter03/time-dilation-cpu.png)
+
+![Length Contraction: Dynamic Downsampling](../../assets/images/chapter03/length-contraction.png)
+
 > **"Relativity is not magic about 'speed,' but a protocol about 'synchronization.' When your latency (ping) is high, your screen naturally slows down. Time dilation is not profound philosophy; it's simply lag."**
 
 In section 3.1, we learned that light speed $c$ is actually the server's maximum bandwidth. In classical physics, Einstein proposed special relativity. But in our "Code of Azeroth" system, we don't need assumptions; we can derive it directly.

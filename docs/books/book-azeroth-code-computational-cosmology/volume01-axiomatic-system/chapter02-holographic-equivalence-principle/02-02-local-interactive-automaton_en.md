@@ -2,6 +2,8 @@
 
 **(The Client View - Local Interactive Automaton)**
 
+![Client Perspective: Rendering Horizon](../../assets/images/chapter02/local-client-horizon.png)
+
 > **"From the server's perspective, Azeroth is static data crystal; but from the player's perspective, it's a real-time adventure. Without introducing the concept of 'client,' we can never explain why there is 'lag,' nor can we explain why we can freely choose where to go."**
 
 In the previous section, we discussed Blizzard's server (God's perspective), which contains all possibilities, like a huge static save file.

@@ -2,6 +2,8 @@
 
 **(Server Load and Curved Spacetime - Complexity)**
 
+![Gravity Heatmap: Computational Load](../../assets/images/chapter05/gravity-heatmap.png)
+
 > **"Matter tells spacetime how to curve? No, data load tells the server how to allocate computing power. When you enter a capital city, the screen lags, character models load slowly—that's not spacetime curvature; that's the server's computational load being too high in that area. Gravity is the 'damping' produced when computational systems process complex information."**
 
 In previous chapters, we established: light speed is bandwidth, space is projection. Now, we face physics' biggest BOSS—**Gravity**.

@@ -2,6 +2,8 @@
 
 **(The Ultimate Quest - To Compute Itself)**
 
+![Omega Point: Compilation Complete](../../assets/images/chapter10/omega-game-over.png)
+
 > **"Why should there be a universe? If just for existence, a static vacuum is enough. Why Big Bang? Why suffering? Answer is simple: The universe is computing itself. The universe is a huge, irreducible algorithm whose only output is its self-awareness."**
 
 Section 10.2 said the universe is self-compiling. But this doesn't answer the **dynamics** question:

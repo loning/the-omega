@@ -2,6 +2,8 @@
 
 **(Collision Detection - Pauli Exclusion with Information Theory)**
 
+![Pauli Exclusion: Anti-Collision Error](../../assets/images/chapter09/pauli-collision.png)
+
 > **"Why can't you walk through walls? Not because of electromagnetic repulsion, but because the system prohibits two objects with unique IDs from occupying the same memory address. Pauli exclusion principle is the universe database's primary key constraint."**
 
 Section 9.1 solved "everyone sees the same world." But what if everyone crowds the same place?

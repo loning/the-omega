@@ -2,6 +2,8 @@
 
 **(The Engine of Creation - Turing Completeness of Physical Systems)**
 
+![The Engine of Creation: Codification of Physical Laws](../../assets/images/chapter01/engine-of-creation.png)
+
 > **"If there is a spell effect that cannot be described by any macro command or script, then it is not magic, it is cheating. The Titans do not allow cheating."**
 
 After establishing that Azeroth's resources are finite (Axiom of Finite Information), the second question we face is: How does this world move? In other words, what does the **driving engine** that turns present Azeroth into the next second's Azeroth look like?

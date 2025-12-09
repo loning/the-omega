@@ -2,6 +2,8 @@
 
 **(Max Transfer Rate - Lieb-Robinson Bound and the Speed of Light)**
 
+![Lieb-Robinson Bound: Causal Light Cone](../../assets/images/chapter03/lieb-robinson-bound.png)
+
 > **"The speed of light is not about how fast light travels, but about the server's maximum data transmission bandwidth limit. You think spacetime is an empty box, but actually it's a local area network woven from countless network cables."**
 
 In Volume I, we established the "world as code" axiomatic system. Now, we need to make this code run.
