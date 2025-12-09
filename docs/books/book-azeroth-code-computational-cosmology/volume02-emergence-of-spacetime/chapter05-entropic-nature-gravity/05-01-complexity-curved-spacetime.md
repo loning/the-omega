@@ -31,6 +31,8 @@ $$ V \sim \text{Complexity} $$
 
 因此，**弯曲时空**实际上是一幅**“服务器负载热力图”（Heatmap of Computational Load）**。
 
+![引力热力图：计算负载](../../assets/images/chapter05/gravity-heatmap.png)
+
 ### 5.1.3 负载过高导致的时钟变慢
 
 现在我们可以回答：为什么大质量物体（恒星/黑洞）会扭曲时空？

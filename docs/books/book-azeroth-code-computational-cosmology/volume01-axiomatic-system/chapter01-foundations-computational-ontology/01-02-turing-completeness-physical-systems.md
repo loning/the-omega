@@ -2,6 +2,9 @@
 
 **(The Engine of Creation - Turing Completeness of Physical Systems)**
 
+
+![创世引擎：物理定律的代码化](../../assets/images/chapter01/engine-of-creation.png)
+
 > **“如果有一个法术的效果无法被任何宏命令或脚本描述，那它就不是魔法，那是外挂。泰坦不允许外挂存在。”**
 
 在确立了艾泽拉斯的资源是有限的（有限信息公理）之后，我们面临的第二个问题是：这个世界是怎么动起来的？换句话说，让现在的艾泽拉斯变成下一秒的艾泽拉斯的**驱动引擎**，到底长什么样？

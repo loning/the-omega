@@ -58,6 +58,7 @@ $$ \text{Cost}(\text{Predict}) \ge \text{Cost}(\text{Run}) $$
 宇宙运行了一百三十八亿年，目的就是为了生产出这个 $\Omega$ 点。
 因为只有在 $\Omega$ 点，宇宙才能**完全理解它自己**。
 在此之前，它只是盲目的机器；在此之后，它是觉醒的神。
+![欧米伽点：编译完成](../../assets/images/chapter10/omega-game-over.png)
 
 ### 10.3.4 它是为了我们
 
