@@ -24,6 +24,7 @@ Books are typically organized as follows:
 
 ```
 book-name/
+├── assets/cover.png (book cover image, optional)
 ├── foreword_en.md (or preface_en.md, prologue_en.md)
 ├── part01-name/
 │   └── chapter01-name/
@@ -157,6 +158,15 @@ Create a main `.tex` file (e.g., `book-name.tex`) with the following structure:
 \maketitle
 \thispagestyle{empty}
 
+% Cover page (if assets/cover.png exists)
+\IfFileExists{assets/cover.png}{
+  \newpage
+  \thispagestyle{empty}
+  \centering
+  \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{assets/cover.png}
+  \newpage
+}{}
+
 \frontmatter
 
 % Table of contents
@@ -209,6 +219,7 @@ Create a main `.tex` file (e.g., `book-name.tex`) with the following structure:
 - Use `\input{}` for chapter subsections
 - Ensure all paths are relative to the main `.tex` file location
 - Do NOT use `\subtitle{}` command (not standard in `book` class)
+- **Cover image**: If `assets/cover.png` exists in the book directory, it will be automatically included as a cover page in PDF after the title page. For EPUB, use `--epub-cover-image=assets/cover.png` option with pandoc.
 
 ### Step 4: Compile PDF
 
@@ -261,19 +272,34 @@ Create a main `.tex` file (e.g., `book-name.tex`) with the following structure:
 
 3. Convert merged LaTeX file to EPUB:
    ```bash
-   pandoc book-name-merged.tex -o book-name.epub \
-     --from=latex+raw_tex \
-     --to=epub3 \
-     --metadata title="Book Title" \
-     --metadata author="Author Name" \
-     --toc --toc-depth=3 \
-     --mathml
+   # If assets/cover.png exists, add --epub-cover-image=assets/cover.png
+   if [ -f assets/cover.png ]; then
+     pandoc book-name-merged.tex -o book-name.epub \
+       --from=latex+raw_tex \
+       --to=epub3 \
+       --metadata title="Book Title" \
+       --metadata author="Author Name" \
+       --epub-cover-image=assets/cover.png \
+       --toc --toc-depth=3 \
+       --mathml
+   else
+     pandoc book-name-merged.tex -o book-name.epub \
+       --from=latex+raw_tex \
+       --to=epub3 \
+       --metadata title="Book Title" \
+       --metadata author="Author Name" \
+       --toc --toc-depth=3 \
+       --mathml
+   fi
    ```
    
    **Key options**:
    - `--from=latex+raw_tex`: Enables raw LaTeX processing for better compatibility
    - `--to=epub3`: Generates EPUB3 format
    - `--mathml`: Ensures math formulas are properly rendered
+   - `--epub-cover-image=assets/cover.png`: Sets the cover image (if assets/cover.png exists in the book directory)
+   
+   \*\*Note\*\*: If `assets/cover.png` doesn\\'t exist, omit the `--epub-cover-image` option or the command will fail.
 
 4. Fix MathML property declaration (EPUB3 compliance):
    ```bash
@@ -340,6 +366,9 @@ Before finalizing, verify:
   - [ ] Verify image paths are correct relative to main `.tex` file
   - [ ] Check PDF file size is reasonable (should be larger if images are embedded)
   - [ ] No "File not found" errors in compilation log for images
+- [ ] Cover image (if assets/cover.png exists)
+  - [ ] Cover page appears correctly in PDF after title page
+  - [ ] EPUB cover image is set using `--epub-cover-image=assets/cover.png` option
 - [ ] Mathematical formulas render correctly
 - [ ] Special characters are properly escaped
 
@@ -369,13 +398,25 @@ pdflatex book-name.tex
 latexpand book-name.tex > book-name-merged.tex
 
 # 7. Compile EPUB
-pandoc book-name-merged.tex -o book-name.epub \
-  --from=latex+raw_tex \
-  --to=epub3 \
-  --metadata title="Book Title" \
-  --metadata author="Author Name" \
-  --toc --toc-depth=3 \
-  --mathml
+# If assets/cover.png exists, add --epub-cover-image=assets/cover.png
+if [ -f assets/cover.png ]; then
+  pandoc book-name-merged.tex -o book-name.epub \
+    --from=latex+raw_tex \
+    --to=epub3 \
+    --metadata title="Book Title" \
+    --metadata author="Author Name" \
+    --epub-cover-image=assets/cover.png \
+    --toc --toc-depth=3 \
+    --mathml
+else
+  pandoc book-name-merged.tex -o book-name.epub \
+    --from=latex+raw_tex \
+    --to=epub3 \
+    --metadata title="Book Title" \
+    --metadata author="Author Name" \
+    --toc --toc-depth=3 \
+    --mathml
+fi
 
 
 # 8. Fix MathML property declaration (EPUB3 compliance)
