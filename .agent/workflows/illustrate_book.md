@@ -1,8 +1,8 @@
 ---
-description: How to illustrate a book project by generating, managing, and embedding AI images.
+description: How to illustrate a book project by generating and managing AI images.
 ---
 
-This workflow outlines the process for illustrating a book project using AI-generated images. It covers preparation, planning, generation, and embedding.
+This workflow outlines the process for illustrating a book project using AI-generated images. It covers preparation, planning, and generation.
 
 # Phase 1: Preparation & Discovery
 
@@ -14,12 +14,10 @@ This workflow outlines the process for illustrating a book project using AI-gene
 2.  **Initialize Task Tracking**:
     - Create or update `task.md` in the brain directory.
     - List all parts and chapters as checklist items.
-    - Add subtasks for "Plan Prompts", "Generate Images", and "Embed Images" for each section.
+    - Add subtasks for "Plan Prompts" and "Generate Images" for each section.
 
 3.  **Analyze Art Style**:
-    - Check the book root directory for existing visual assets like `architecture.png`.
-    - If available, analyze its visual style (color palette, line weight, mood) to maintain consistency throughout the book.
-    - Use this analysis to inform the Style Guide in Phase 2.
+    - 赛博科幻未来时间与光
 
 # Phase 2: Planning Prompts
 
@@ -49,9 +47,9 @@ This workflow outlines the process for illustrating a book project using AI-gene
 
 2.  **Move Images to Assets**:
     - Use `run_command` to move generated images from the brain directory to the book's `assets` folder.
-    - Example: `mv /path/to/brain/image.png /path/to/book/assets/chapter-[n]/[n.n]-image.png`
+    - Example: `mv /path/to/brain/image.png /path/to/book/assets/chapter-[n]/[n.n.n]-position-image.png`
 
-6.  **Update Task List**:
+3.  **Update Task List**:
     - Use `multi_replace_file_content` to mark the completed items in `task.md` as `[x]`.
 
 # Phase 4: Finalization
@@ -59,7 +57,7 @@ This workflow outlines the process for illustrating a book project using AI-gene
 1.  **Special Sections**:
     - Repeat the process for the `Foreword`, `Introduction`, and `Appendices`.
 
-3.  **Cover Image**:
+2.  **Cover Image**:
     - **Prompt Strategy**: Design a **B5 Ebook Cover (Center Safe)**.
     - **Format Requirements**:
         - **Source Canvas**: Square (1024x1024).
@@ -76,8 +74,6 @@ This workflow outlines the process for illustrating a book project using AI-gene
         - **Post-Process (Center Crop to B5)**:
             - Use the Python script to crop the sides.
             - Command: `python3 .agent/scripts/crop_cover.py assets/cover.png 724 1024`
-        - Embed it at the top of the root `index.md`.
 
 3.  **Final Review**:
-    - Verify all links are correct.
     - Ensure all tasks in `task.md` are marked complete.
