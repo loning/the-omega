@@ -19,7 +19,27 @@ This workflow outlines the process for illustrating a book project using AI-gene
 3.  **Art Style**:
     - 赛博科幻未来时间与光
 
-# Phase 2: Illustration Loop
+# Phase 2: Cover Image
+
+2.  **Cover Image**:
+    - **Prompt Strategy**: Design a **B5 Ebook Cover (Center Safe)**.
+    - **Format Requirements**:
+        - **Source Canvas**: Square (1024x1024).
+        - **Safe Zone**: **CRITICAL**: The B5 cut is the central 724px.
+        - **Instruction**: "Ensure ALL text and key art are strictly in the central 74%. The side 12% edges must be **seamless background extensions** (e.g., continuing the stars/void)."
+        - **Negative Prompt**: **NO vertical dividing lines, NO frames, NO visible borders, NO sidebars.** The image must look like one continuous scene, not a strip cut out of a page.
+    - **Content Requirements**:
+        - **Title**: High contrast, centered, fully inside the safe zone.
+        - **Subtitle**: Centered, safe from edges.
+        - **Metadata**: Centered at bottom.
+        - **Design**: "Vertical Composition", "Center-Heavy", "Seamless Bleed".
+    - **Process**:
+        - Generate the image with 8k resolution. Save as `assets/cover.png`.
+        - **Post-Process (Center Crop to B5)**:
+            - Use the Python script to crop the sides.
+            - Command: `python3 .agent/scripts/crop_cover.py assets/cover.png 724 1024`
+
+# Phase 3: Illustration Loop
 
 *Repeat this cycle for each Chapter or Section.*
 
@@ -44,28 +64,10 @@ This workflow outlines the process for illustrating a book project using AI-gene
         - Rename pattern: `mv /path/to/brain/image.png /path/to/book/assets/chapter-[n]/[n-n-n]-position-image.png`
     - **Update Task List**: Use `multi_replace_file_content` to mark the completed items in `task.md` as `[x]`.
 
-# Phase 3: Finalization
+# Phase 4: Finalization
 
 1.  **Special Sections**:
     - Repeat the process for the `Foreword`, `Introduction`, and `Appendices`.
 
-2.  **Cover Image**:
-    - **Prompt Strategy**: Design a **B5 Ebook Cover (Center Safe)**.
-    - **Format Requirements**:
-        - **Source Canvas**: Square (1024x1024).
-        - **Safe Zone**: **CRITICAL**: The B5 cut is the central 724px.
-        - **Instruction**: "Ensure ALL text and key art are strictly in the central 72%. The side 14% edges must be **seamless background extensions** (e.g., continuing the stars/void)."
-        - **Negative Prompt**: **NO vertical dividing lines, NO frames, NO visible borders, NO sidebars.** The image must look like one continuous scene, not a strip cut out of a page.
-    - **Content Requirements**:
-        - **Title**: High contrast, centered, fully inside the safe zone.
-        - **Subtitle**: Centered, safe from edges.
-        - **Metadata**: Centered at bottom.
-        - **Design**: "Vertical Composition", "Center-Heavy", "Seamless Bleed".
-    - **Process**:
-        - Generate the image with 8k resolution. Save as `cover.png`.
-        - **Post-Process (Center Crop to B5)**:
-            - Use the Python script to crop the sides.
-            - Command: `python3 .agent/scripts/crop_cover.py assets/cover.png 724 1024`
-
-3.  **Final Review**:
+2.  **Final Review**:
     - Ensure all tasks in `task.md` are marked complete.
