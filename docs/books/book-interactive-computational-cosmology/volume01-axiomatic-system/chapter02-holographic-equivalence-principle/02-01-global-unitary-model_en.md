@@ -14,6 +14,8 @@ This chapter will expound the core theorem of Interactive Computational Cosmolog
 
 **(全局幺正演化模型)**
 
+![Global Unitary Crystal](../../assets/global_qtm_crystal.png)
+
 In Chapter 1, we established the finiteness and computability of physical reality. Based on this, we can construct a complete mathematical model describing the entire universe (including all matter, energy, and observers). In this model, we treat the universe as a **Quantum Turing Machine (QTM)** that is isolated from the outside world and runs self-consistently.
 
 This model represents the ideal objective perspective pursued by physics—the ontology of the universe after removing all subjective observational effects. We will see that from this perspective, the universe is a strictly deterministic, information-conserving, static structure containing all historical branches.

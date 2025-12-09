@@ -30,7 +30,8 @@ This workflow outlines the process for illustrating a book project using AI-gene
 
 2.  **Design Prompts**:
     - **Style Guide**: Create a consistent style guide (e.g., "Abstract scientific illustration, clean lines, golden/blue color palette").
-    - **General Prompts**: Draft specific prompts for each file, combining the style guide with the specific concept.
+    - **Content Relevance**: Ensure the image reflects the **specific details** of the content (specific metaphors, objects, or descriptions), avoiding valid but generic representations.
+    - **General Prompts**: Draft specific prompts for each file, combining the style guide with the specific detailed concepts.
     - **Explanatory Images**: For identified complex concepts/formulas, design "Diagrammatic" or "Explanatory" prompts.
         - *Goal*: Explain the logic/structure visually.
         - *Keywords*: Use terms like "infographic," "diagram," "schematic," "exploded view," "visual breakdown," "annotated structure."
@@ -48,7 +49,7 @@ This workflow outlines the process for illustrating a book project using AI-gene
 
 2.  **Move Images to Assets**:
     - Use `run_command` to move generated images from the brain directory to the book's `assets` folder.
-    - Example: `mv /path/to/brain/image.png /path/to/book/assets/image.png`
+    - Example: `mv /path/to/brain/image.png /path/to/book/assets/chapter-[n]/image.png`
 
 3.  **Embed Images**:
     - For each generated image, embed it into ALL of the following files if they exist:
@@ -56,31 +57,7 @@ This workflow outlines the process for illustrating a book project using AI-gene
     - **A. Chinese Markdown (`.md`)**:
         - Use `replace_file_content`.
         - Insert after the H1 title or relevant section header.
-        - Format: `![Alt Text](../../assets/image_name.png)`
-    
-    - **B. English Markdown (`_en.md`)**:
-        - Use `replace_file_content`.
-        - Insert after the H1 title or relevant section header.
-        - Format: `![Alt Text](../../assets/image_name.png)`
-    
-    - **C. English LaTeX (`_en.tex`)**:
-        - Use `replace_file_content`.
-        - Locate the relevant `\section{...}` or `\chapter{...}`.
-        - Insert standard LaTeX figure code **using relative path from the root .tex file** (usually `assets/image_name.png`).
-        - Format:
-          ```latex
-          \begin{figure}[h]
-              \centering
-              \includegraphics[width=\textwidth]{assets/image_name.png}
-              \caption{Image Title}
-              \label{fig:image_name}
-          \end{figure}
-          ```
-    
-    - **D. Chinese LaTeX (`.tex`)**:
-        - Same logic as English LaTeX.
-        - Look for the file ending in `.tex` (without `_en`).
-        - Insert the same LaTeX figure code.
+        - Format: `![Alt Text](../../assets/chapter-[n]/image_name.png)`
 
 6.  **Update Task List**:
     - Use `multi_replace_file_content` to mark the completed items in `task.md` as `[x]`.
@@ -103,7 +80,7 @@ This workflow outlines the process for illustrating a book project using AI-gene
         - **Metadata**: Centered at bottom.
         - **Design**: "Vertical Composition", "Center-Heavy", "Seamless Bleed".
     - **Process**:
-        - Generate the image. Save as `cover.png`.
+        - Generate the image with 8k resolution. Save as `cover.png`.
         - **Post-Process (Center Crop to B5)**:
             - Use the Python script to crop the sides.
             - Command: `python3 .agent/scripts/crop_cover.py assets/cover.png 724 1024`

@@ -10,6 +10,8 @@
 
 **(Lieb-Robinson Bound and the Speed of Light)**
 
+![Lieb-Robinson Cone](../../assets/lieb_robinson_cone.png)
+
 > **"光速并非物体运动的速度上限，而是因果关系在计算网络中传播的带宽极限。时空不是一个预先存在的容器，而是由局域相互作用编织而成的动态图。"**
 
 在第一卷中，我们确立了物理实在的计算本体论：宇宙是一个在有限希尔伯特空间上运行的交互式计算系统。然而，为了让这个抽象的代数结构呈现为我们所感知的、具有几何广延性的物理世界，系统必须具备一种**拓扑结构（Topological Structure）**。

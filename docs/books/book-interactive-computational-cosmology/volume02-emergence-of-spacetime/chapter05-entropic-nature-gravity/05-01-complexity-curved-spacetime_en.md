@@ -10,6 +10,8 @@
 
 **(复杂性与弯曲时空)**
 
+![Gravity Complexity](../../assets/gravity_complexity.png)
+
 > **"Matter tells spacetime how to curve, spacetime tells matter how to move. This famous saying of general relativity gains new interpretation in computational cosmology: data load tells processors how to allocate computational power, and processing delay defines the transmission path of information. Gravity is not some fundamental force; it is the 'damping' exhibited by computational systems when processing high-complexity information."**
 
 In the previous chapters of this book, we have established the emergent nature of spacetime: the speed of light is a system bandwidth limit, and spatial geometry is a holographic projection of quantum entanglement. Now, we will face the grandest and most mysterious phenomenon in physics—**Gravity**.

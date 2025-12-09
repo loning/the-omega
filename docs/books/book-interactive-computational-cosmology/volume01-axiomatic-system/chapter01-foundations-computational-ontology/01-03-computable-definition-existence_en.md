@@ -10,6 +10,8 @@
 
 **(存在性的可计算定义)**
 
+![Lazy Loading Reality](../../assets/lazy_loading_reality.png)
+
 > **"To exist is to be computed. If an object cannot be generated, indexed, or persisted by a Turing machine within finite steps, then it is physically equivalent to nothingness. Reality is not some metaphysical quality, but a topological stability of information in computational processes."**
 
 After establishing the finiteness of physical reality (Axiom 1.1) and the Turing completeness of dynamics (Axiom 1.2), we need to address the last and most fundamental ontological question in the axiomatic framework of this volume: **What is "Existence"?**

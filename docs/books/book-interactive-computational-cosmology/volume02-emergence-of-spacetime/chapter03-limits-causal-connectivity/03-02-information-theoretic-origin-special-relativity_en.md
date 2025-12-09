@@ -10,6 +10,8 @@
 
 **(狭义相对论的信息论起源)**
 
+![Relativity Bandwidth](../../assets/relativity_bandwidth.png)
+
 > **"Relativity is not a theory about 'motion,' but a protocol about 'information synchronization.' When a distributed computing system must maintain data consistency under finite bandwidth constraints, Lorentz transformations are the only mathematically legitimate coordinate transformation scheme. Time dilation is not magic; it is resource throttling enforced by the system to prevent data overflow."**
 
 In section 3.1, we established the physical essence of the speed of light $c$ as system bus bandwidth. In classical physics, special relativity is usually built on Einstein's two postulates: the principle of relativity and the constancy of the speed of light. However, in the axiomatic framework of Interactive Computational Cosmology (ICC), we cannot accept "postulates"; we must derive these phenomena from underlying computational mechanisms.

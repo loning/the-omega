@@ -10,6 +10,8 @@
 
 **(纠缠熵面积律)**
 
+![Area Law Hologram](../../assets/area_law_hologram.png)
+
 > **"Space is not a container holding objects, but an emergent picture of mutual entanglement between objects. Distance is decorrelation, geometry is information. When we deeply explore the microscopic structure of space, we find that the three-dimensional volume is merely a holographic projection of entanglement information on a two-dimensional boundary."**
 
 In Chapter 3, we derived the spacetime kinematics of special relativity by analyzing bandwidth limits of information propagation (speed of light). However, a deeper question remains unanswered: **How does "space" itself, as a stage, exist?**

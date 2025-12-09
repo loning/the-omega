@@ -1,6 +1,6 @@
-# Preface: The Computational Turn in Natural Philosophy
+# **(Preface: The Computational Turn in Natural Philosophy)**
 
-**(前言：自然哲学的计算转向)**
+![The Computational Turn](assets/preface_glitch.png)*(前言：自然哲学的计算转向)**
 
 ### The Dissolution of Substance and the Rise of Process
 

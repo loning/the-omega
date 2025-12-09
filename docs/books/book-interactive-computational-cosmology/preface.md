@@ -2,6 +2,8 @@
 
 **(Preface: The Computational Turn in Natural Philosophy)**
 
+![The Computational Turn](assets/preface_glitch.png)
+
 ### 实体的消解与过程的兴起
 
 长久以来，物理学一直致力于回答一个古老的本体论问题："世界是由什么构成的？"从德谟克利特的原子，到牛顿的质点，再到标准模型的量子场，我们习惯于将实在（Reality）锚定在某种坚硬的、静态的"实体"（Substance）之上。我们假设，在现象的背后，总有一个不依赖于观测者的、绝对客观的物质基底。

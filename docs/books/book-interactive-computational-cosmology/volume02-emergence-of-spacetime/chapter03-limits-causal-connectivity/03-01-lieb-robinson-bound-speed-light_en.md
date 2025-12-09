@@ -10,6 +10,8 @@
 
 **(李-罗宾逊速度与光速)**
 
+![Lieb-Robinson Cone](../../assets/lieb_robinson_cone.png)
+
 > **"The speed of light is not the upper limit of object motion, but the bandwidth limit of causal relationships propagating in computational networks. Spacetime is not a pre-existing container, but a dynamic graph woven by local interactions."**
 
 In Volume I, we established the computational ontology of physical reality: the universe is an interactive computational system running on finite Hilbert space. However, for this abstract algebraic structure to manifest as the geometrically extended physical world we perceive, the system must possess a **Topological Structure**.

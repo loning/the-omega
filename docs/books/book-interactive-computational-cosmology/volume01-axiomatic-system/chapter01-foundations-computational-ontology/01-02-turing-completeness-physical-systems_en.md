@@ -10,6 +10,8 @@
 
 **(物理系统的图灵完备性)**
 
+![Cosmic Turing Machine](../../assets/cosmic_turing.png)
+
 > **"If physical laws allow processes that cannot be simulated by a universal computer, then physics ceases to be a predictive science and degenerates into theology. Conversely, if physical reality is essentially computable, then the universe itself is a computer."**
 
 After establishing the finiteness of physical reality (Axiom of Finite Information), we face the second fundamental ontological question: How does this finite physical reality evolve? In other words, what is the mathematical essence of the dynamical rules that drive the transition of the universe's state from $S_t$ to $S_{t+1}$?

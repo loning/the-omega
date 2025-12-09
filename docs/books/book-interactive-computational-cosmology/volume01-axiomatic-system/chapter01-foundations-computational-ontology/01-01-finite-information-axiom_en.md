@@ -10,6 +10,8 @@
 
 **(有限信息公理)**
 
+![Finite Information Limit](../../assets/finite_info_bound.png)
+
 > **"Physical reality does not contain infinities. Infinities are merely mathematical approximations we introduce for computational convenience. When these approximations are mistaken for ontology, physics falls into pathology."**
 
 In the first step of constructing an interactive computational cosmology model, we must confront the greatest ontological assumption in classical physics and quantum field theory: the Continuum Hypothesis. This assumption holds that spacetime is infinitely divisible, and physical fields are defined at arbitrarily small scales. However, it is precisely this assumption that leads to the endless ultraviolet divergences (UV Divergence) and singularity problems in modern physics.

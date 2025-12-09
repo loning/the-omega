@@ -10,6 +10,8 @@
 
 **(信息的全息压缩)**
 
+![Holographic Compression](../../assets/holographic_compression.png)
+
 > **"If we want to construct a universe, the most foolish approach would be to allocate memory for every point in space. Nature is an ultimate minimalist programmer, discovering that the vast majority of data in three-dimensional space is redundant. The true universe is a two-dimensional 'membrane,' and the deep space we perceive is merely the decompression and projection of holographic data on this membrane."**
 
 In the previous section, we revealed the profound connection between spatial geometry and quantum entanglement through the area law of entanglement entropy. This discovery raises a more disruptive computational question: since the maximum information capacity of a three-dimensional region depends only on its surface area, this means the **Underlying Data Structure** of physical reality does not possess three-dimensional attributes.

@@ -10,6 +10,8 @@
 
 **(局域交互自动机模型)**
 
+![Local Interactive Horizon](../../assets/local_citm_render.png)
+
 > **"In God's perspective, the universe is a static crystal; but in the player's perspective, the universe is a dynamic game. Without introducing a local model constrained by horizons and equipped with input interfaces, physics can never explain the flowing sense of 'now,' nor can it accommodate the observer's free will."**
 
 In the previous section, we established the Global Unitary Model (QTM), which describes a deterministic block universe containing all possible histories. However, this model has a fatal flaw: it cannot describe the subjective experience of observers **embedded within the universe**. For us—finite agents embedded in this universe—we do not see superpositions of dead and alive cats, nor do we see future scripts. We see a continuously collapsing, single, uncertainty-filled reality.

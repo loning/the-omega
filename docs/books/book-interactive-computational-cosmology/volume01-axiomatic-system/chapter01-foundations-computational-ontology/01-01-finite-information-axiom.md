@@ -10,6 +10,8 @@
 
 **(Axiom of Finite Information)**
 
+![Finite Information Limit](../../assets/finite_info_bound.png)
+
 > **"物理实在并不包含无穷大。无穷大只是我们为了方便计算而引入的数学近似，当这种近似被误认为本体时，物理学便陷入了病态。"**
 
 在构建交互式计算宇宙模型的第一步，我们必须直面经典物理学与量子场论中最大的本体论假设：连续统假设（Continuum Hypothesis）。这一假设认为，时空是无限可分的，物理场在任意微小的尺度上都有定义。然而，正是这一假设导致了现代物理学中无穷无尽的紫外发散（UV Divergence）与奇点问题。

@@ -10,6 +10,8 @@
 
 **(斯泰恩斯普林-图灵同构定理)**
 
+![Holographic Duality](../../assets/holographic_duality.png)
+
 > **"Randomness is the shadow cast by local horizons. What we call 'collapse' is merely the projection of global unitary entanglement onto the finite computational bandwidth of local observers. This section will prove that physics' two greatest opposing paradigms—deterministic many-worlds and non-deterministic free will—are mathematically two isomorphic expressions of the same structure."**
 
 In sections 2.1 and 2.2, we defined two fundamentally different computational models describing the universe: one is the omniscient, deterministic, all-histories-containing **Global Unitary Model (QTM)**; the other is the local, non-deterministic, single-history **Classical Interactive Automaton Model (CITM)**.

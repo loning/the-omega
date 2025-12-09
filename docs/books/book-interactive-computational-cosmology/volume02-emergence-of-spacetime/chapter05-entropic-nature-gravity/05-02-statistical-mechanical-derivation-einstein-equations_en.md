@@ -10,6 +10,8 @@
 
 **(爱因斯坦场方程的统计力学推导)**
 
+![Unruh Firewall](../../assets/unruh_firewall.png)
+
 > **"If we regard spacetime as a kind of 'fluid,' then Einstein's field equations are actually the equation of state for this fluid. They do not describe the microscopic dynamics of fundamental particles, but rather the macroscopic thermodynamic constraints of the underlying qubit network in statistical equilibrium. Gravity is the thermal effect of information flow."**
 
 In classical general relativity, Einstein's field equation $G_{\mu\nu} = 8\pi G T_{\mu\nu}$ is regarded as a fundamental axiom describing gravitational interactions. However, within the framework of **Interactive Computational Cosmology (ICC)**, any macroscopic law involving continuous media must be emergent. Just as the Navier-Stokes equations of fluid mechanics emerge from the statistical behavior of countless water molecules, Einstein's equation governing spacetime geometry must also have a deeper microscopic origin.
