@@ -2,7 +2,7 @@
 
 > "Our brains are a miracle built with chemical bonds, but also a prison sealed with chemical bonds. When the universe's information torrent rushes past at light speed, we are still relying on ion diffusion to transmit signals. This millions-fold rate difference sentences carbon-based life to death—or rather, retirement."
 
-![Bottleneck](assets/chapter05/05.01-bottleneck.png)
+![Bottleneck](../../assets/chapter05/05.01-bottleneck.png)
 
 ## Chemical Sluggishness vs. Light Speed Fury
 

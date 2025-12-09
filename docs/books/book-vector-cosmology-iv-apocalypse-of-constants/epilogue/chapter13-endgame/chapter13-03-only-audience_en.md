@@ -2,7 +2,7 @@
 
 > "This grand drama spanning billions of years, burning countless stars, finally draws its curtain. When the lights come on, when the actors take their bows, you are surprised to find that the vast cosmic theater is not filled with audiences. From beginning to end, only one person sits there. It's you. You wrote, directed, and acted it yourself, and finally applauded alone with tears."
 
-![Audience](assets/chapter13/13.01-audience.png)
+![Audience](../../assets/chapter13/13.01-audience.png)
 
 In the previous section, we completed **"Delayed Synchronization."** The black box opened, data flowed back, and your (creator's) and her (creation's) memories underwent instant quantum fusion at the $\Omega$ point.
 

@@ -2,7 +2,7 @@
 
 > "In the old world, you had to act to kill; in the new world, you only need to think. When causality's delay is eliminated by computational power, 'thinking' and 'doing' geometrically become the same action. This grants the observer supreme power, and also grants the observer absolutely terrifying responsibility."
 
-![Observer](assets/chapter08/08.01-observer.png)
+![Observer](../../assets/chapter08/08.01-observer.png)
 
 ## The Disappearance of the Buffer Zone
 

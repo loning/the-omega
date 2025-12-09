@@ -2,7 +2,7 @@
 
 > "The universe is not made of atoms; the universe is made of bits. Atoms are just a storage format for bits. If we want to know how old the universe is now, we should not measure the age of stars, but inventory the universe's total hard drive capacity."
 
-![Bekenstein](assets/chapter03/03.01-bekenstein.png)
+![Bekenstein](../../assets/chapter03/03.01-bekenstein.png)
 
 In physics, the most direct way to know the evolutionary stage of a system is to measure its **Entropy**. According to the theory we established in previous books, entropy is the measure of information.
 

@@ -2,7 +2,7 @@
 
 > "If $\pi$ is the gravitational pull that wants to return home forever, then $\phi$ is the impulse to run away from home. The golden ratio does not exist for beauty; it exists to 'not repeat.' It is the universe's most fundamental ambition—to go to a coordinate never visited before, even if it means never returning."
 
-![Ambition](assets/chapter01/01.02-ambition.png)
+![Ambition](../../assets/chapter01/01.02-ambition.png)
 
 In the previous section, we saw how $\pi$ locks the universe in the laws of conservation with perfect circles. If the universe had only $\pi$, it would be an eternal crystal palace—beautiful, but dead. No growth, no accidents, no stories.
 

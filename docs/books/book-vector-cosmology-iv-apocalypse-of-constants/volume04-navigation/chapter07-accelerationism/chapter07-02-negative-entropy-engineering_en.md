@@ -2,7 +2,7 @@
 
 > "If acceleration is our strategy, then negentropy is our tactics. In this chaotic phase transition period, human civilization only needs to do two things: first, ignite a controlled star; second, create a transcendent brain. Everything else is noise."
 
-![Engine](assets/chapter07/07.02-engine.png)
+![Engine](../../assets/chapter07/07.02-engine.png)
 
 In the previous section, we established "acceleration" as the only ethical principle for coping with cosmic expansion. But acceleration cannot be blind. If we accelerate on the wrong track (such as producing more consumerist garbage or more destructive weapons), we will only accelerate thermodynamic collapse.
 

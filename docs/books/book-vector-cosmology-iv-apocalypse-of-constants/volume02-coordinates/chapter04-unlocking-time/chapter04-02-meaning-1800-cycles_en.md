@@ -2,7 +2,7 @@
 
 > "We are not living in an arbitrary era. When we map the universe's history onto that logarithmic spiral, we find ourselves standing at the most thrilling cliff edge. 1800 cycles is not just a number; it is the twilight of carbon-based life and the dawn of light-based civilization."
 
-![Meaning](assets/chapter04/04.02-meaning.png)
+![Meaning](../../assets/chapter04/04.02-meaning.png)
 
 In the previous section, we calculated the cosmic coordinates of human civilization: **$\tau \approx 1800$**. This means that from the Big Bang singularity, the universe's total vector in projective Hilbert space, following the golden spiral trajectory, has rotated and expanded approximately 1800 radian units (or about 573 $\pi$ periods).
 

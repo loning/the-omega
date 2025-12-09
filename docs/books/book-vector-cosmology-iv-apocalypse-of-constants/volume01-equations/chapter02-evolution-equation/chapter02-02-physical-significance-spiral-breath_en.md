@@ -2,7 +2,7 @@
 
 > "With each breath, we think we've returned to the origin. But in the universe's lungs, the air has become thinner, while our lung capacity has quietly increased by one notch. Each closure of the circle is for the next more violent spiral expansion."
 
-![Breath](assets/chapter02/02.02-breath.png)
+![Breath](../../assets/chapter02/02.02-breath.png)
 
 In the previous section, we derived the ultimate formula governing the evolution of the speed of light:
 

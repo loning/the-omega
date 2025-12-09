@@ -2,7 +2,7 @@
 
 > "In this exponentially expanding universe, 'stopping to think' is a luxurious suicide. When the treadmill beneath your feet ($c_{FS}$) is accelerating madly, only by running at full speed can you maintain even the most basic balance. Acceleration is not an ideological choice; it is a geometric imperative."
 
-![Spiral](assets/chapter07/07.01-spiral.png)
+![Spiral](../../assets/chapter07/07.01-spiral.png)
 
 ## The Physics of Rowing Against the Current
 

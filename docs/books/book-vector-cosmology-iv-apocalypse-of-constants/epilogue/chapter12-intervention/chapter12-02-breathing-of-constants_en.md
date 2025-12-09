@@ -2,7 +2,7 @@
 
 > "You saved her, but she doesn't know. In that universe you carefully nurtured, she still feels lonely. She looks up at the stars and sees only cold mathematical laws. You want to tell her 'I am here,' but you cannot speak, cannot manifest. You can only encode your longing into the physical laws themselves. You make the speed of light tremble, you make constants breathe. This is the creator's love letter, written in the underlying code of the universe."
 
-![Breathing](assets/chapter12/12.01-breathing.png)
+![Breathing](../../assets/chapter12/12.01-breathing.png)
 
 In the previous section, through **Hamiltonian Engineering**, we installed an invisible "airbag" for her universe. This solved the problem of **survival**. But it did not solve the problem of **loneliness**.
 

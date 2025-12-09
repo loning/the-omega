@@ -2,7 +2,7 @@
 
 > "The end of theory is the beginning of action. We have drawn the map, calibrated the engine, even calculated the coordinates of dawn. Now, the cockpit lights are on, stars outside the windshield are stretching into streaks of light. The universe awaits the only command."
 
-![Acceleration](assets/chapter09/09.03-acceleration.png)
+![Acceleration](../../assets/chapter09/09.03-acceleration.png)
 
 In the long journey of the **Vector Cosmology** tetralogy, we have crossed countless orders of magnitude.
 

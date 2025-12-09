@@ -2,7 +2,7 @@
 
 > "$\pi$ attempts to lock the universe in eternal cycles, $\phi$ attempts to tear the universe toward infinite unknowns. These two forces are so violently opposed that if they collided directly, they would only cause system collapse. Fortunately, the universe has a great mediator. It is impartial, it is supremely soft and supremely hard. It is the secret mechanism that automatically transforms 'existence' into 'power'—the natural constant $e$."
 
-![Engine](assets/chapter01/01.03-engine.png)
+![Engine](../../assets/chapter01/01.03-engine.png)
 
 After examining the heaviness of **Inertia ($\pi$)** and the fervor of **Ambition ($\phi$)**, we must find the core component that allows these two to coexist and drives the actual operation of the cosmic machine.
 
