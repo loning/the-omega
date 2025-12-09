@@ -45,12 +45,26 @@ This workflow outlines the process for illustrating a book project using AI-gene
     - Use `run_command` to move generated images from the brain directory to the book's `assets` folder.
     - Example: `mv /path/to/brain/image.png /path/to/book/assets/image.png`
 
-3.  **Embed Images**:
+3.  **Embed Images (Markdown)**:
     - Use `replace_file_content` to insert the image markdown link into the corresponding chapter file.
-    - Convention: Insert after the H1 title.
-    - Format: `![Alt Text](../../assets/image_name.png)` (Adjust relative path as needed).
+    - **Chinese File**: Insert after the H1 title. Format: `![Alt Text](../../assets/image_name.png)`
+    - **English File**: Same logic. Locate the `_en.md` file and insert the same link.
 
-4.  **Update Task List**:
+5.  **Embed Images (LaTeX)**:
+    - Locate the corresponding `.tex` file (e.g., `chapter_en.tex`).
+    - Use `replace_file_content` to insert the image code.
+    - **Format** (Standard LaTeX with relative path):
+      ```latex
+      \begin{figure}[h]
+          \centering
+          \includegraphics[width=\textwidth]{assets/image_name.png}
+          \caption{Image Title}
+          \label{fig:image_name}
+      \end{figure}
+      ```
+    - Insert this code after the Chapter Title (`\chapter{...}`) or Section Title depending on context.
+
+6.  **Update Task List**:
     - Use `multi_replace_file_content` to mark the completed items in `task.md` as `[x]`.
 
 # Phase 4: Finalization
