@@ -1,5 +1,7 @@
 # 4.1 The Geometric Origin of Mass
 
+![The Geometric Origin of Mass](../../assets/geometric_origin_of_mass.png)
+
 We usually think that "mass" is the most essential property of objects. A stone is heavy because it is filled with "matter"; an electron has mass because it is a real particle. In our intuition, mass represents the "weight of existence."
 
 But in our geometric reconstruction, this intuition is wrong.

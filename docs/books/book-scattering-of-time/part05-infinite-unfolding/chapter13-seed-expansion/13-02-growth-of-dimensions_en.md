@@ -1,4 +1,6 @@
 # 13.2 The Growth of Dimensions
+![The Growth of Dimensions](../../assets/growth_of_dimensions.png)
+
 
 If I ask you: how many dimensions does the universe have? You might answer without thinking: three spatial dimensions plus one temporal dimension, four in total. Or, if you've read popular science books on string theory, you might say ten or eleven dimensions.
 

@@ -1,4 +1,6 @@
 # 13.3 The Geometric Explanation of Multiverse
+![The Geometric Explanation of Multiverse](../../assets/geometric_explanation_of_multiverse.png)
+
 
 In science fiction films, "multiverse" usually means parallel worlds: in that world, you had bread instead of cereal for breakfast, or the Nazis won World War II. This is exciting imagination, but in physics, it often leads to ontological confusion. If there are infinitely many universes, does "reality" still exist?
 

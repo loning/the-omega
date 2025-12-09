@@ -1,5 +1,7 @@
 # 4.2 The Nature of Inertia
 
+![The Nature of Inertia](../../assets/nature_of_inertia.png)
+
 When you try to push a stalled truck, you feel a tremendous resistance. Newton told us to respect this resistance, calling it **inertia** (Inertia). In his first law, he wrote: Unless acted upon by an external force, objects will remain at rest or in uniform linear motion.
 
 But Newton did not tell us *why*. Why are objects in the universe so stubborn? Why is it so difficult to change an object's state of motion?

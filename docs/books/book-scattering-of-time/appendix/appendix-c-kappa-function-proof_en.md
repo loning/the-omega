@@ -1,4 +1,6 @@
 # Appendix C: Proof of Scattering Time Delay Function $\kappa(\omega)$
+![Scattering Time Delay](../assets/time_as_winding.png)
+
 
 This appendix proves that the "residence time" of microscopic particles in interaction regions is equivalent to the spectral density of geometric paths, i.e., the mathematical construction of the $\kappa(\omega)$ function.
 

@@ -1,4 +1,6 @@
 # 13.1 The Observer as Seed
+![The Observer as Seed](../../assets/observer_as_seed.png)
+
 
 Since Copernicus moved Earth from the center of the universe, science has been teaching us humility. Astronomy tells us we are but dust-like beings on a dust-like planet; physics tells us we are merely accidental arrangements of atoms. In the vast river of time, we seem insignificant.
 

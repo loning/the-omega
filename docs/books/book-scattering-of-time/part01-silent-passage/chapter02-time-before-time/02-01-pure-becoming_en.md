@@ -1,5 +1,7 @@
 # 2.1 Pure Becoming
 
+![Pure Becoming](../../assets/pure_becoming.png)
+
 In a universe where even space has not yet been "created," talking about time seems absurd.
 
 The time we experience in daily life is always bound to change: the clock hand moves one tick, the sun sets behind the mountain, or a hot cup of coffee cools down. For us, time is a container of events, the order in which all things happen. If the universe were empty, with no events occurring, would time still exist?

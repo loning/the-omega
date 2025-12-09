@@ -1,4 +1,6 @@
 # Appendix B: Dispersion Relation and Lorentz Violation in Dirac-QCA
+![Dirac-QCA Model](../assets/quantum_lattice.png)
+
 
 This appendix demonstrates how Lorentz invariance emerges as a low-energy approximation when we discretize continuous spacetime into a Quantum Cellular Automaton (QCA), and the origin of higher-order correction terms ($O(p^4)$).
 

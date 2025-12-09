@@ -1,5 +1,7 @@
 # 7.3 Symmetry as Backup
 
+![Symmetry as Backup](../../assets/symmetry_as_backup.png)
+
 When we examine the Standard Model—that physics edifice describing all known elementary particles—we find it built on strange mathematical groups: $SU(3) \times SU(2) \times U(1)$. Physicists call these "gauge groups."
 
 Usually, these groups are seen as parameters arbitrarily set by God. But in our geometric reconstruction, they are not arbitrary; they are **inevitable corollaries of capacity conservation**.

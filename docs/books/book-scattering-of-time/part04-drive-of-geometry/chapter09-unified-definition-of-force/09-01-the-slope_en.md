@@ -1,5 +1,7 @@
 # 9.1 The Slope
 
+![The Slope](../../assets/the_slope.png)
+
 If you ask a child: "Why does the apple fall?" They will tell you: "Because the Earth is pulling it."
 
 If you ask a Newtonian physicist, they will say: "Because universal gravitation is acting."

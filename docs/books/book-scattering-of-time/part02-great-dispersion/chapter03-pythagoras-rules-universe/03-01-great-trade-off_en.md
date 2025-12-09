@@ -1,5 +1,7 @@
 # 3.1 The Great Trade-off
 
+![The Great Trade-off](../../assets/great_trade_off.png)
+
 If I ask you, who rules the universe? You might answer gravity, quantum fields, or the second law of thermodynamics. But in our geometric reconstruction, the true ruler of the universe is an ancient Greek who lived 2,500 years ago—Pythagoras.
 
 Or more accurately, it is the truth about right triangles he discovered: $a^2 + b^2 = c^2$.

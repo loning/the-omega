@@ -1,4 +1,6 @@
 # 11.2 The Physics of Awakening
+![The Physics of Awakening](../../assets/physics_of_awakening.png)
+
 
 If you put your hand on a hot stove, you feel intense pain and immediately withdraw. This pain is beneficial; it's a protective feedback mechanism.
 

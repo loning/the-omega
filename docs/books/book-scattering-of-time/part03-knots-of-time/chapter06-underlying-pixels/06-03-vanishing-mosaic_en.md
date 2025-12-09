@@ -1,5 +1,7 @@
 # 6.3 The Vanishing Mosaic
 
+![The Vanishing Mosaic](../../assets/vanishing_mosaic.png)
+
 If the universe is really composed of discrete pixels (QCA grids), then logically, we should easily discover it.
 
 Imagine walking on graph paper. If you want to go from point A to point B, and B is diagonally opposite, you cannot walk directly diagonally (because there are only grids); you must walk zigzag "stair steps." This means on grids, the "hypotenuse" length does not equal the sum of squares of legs. This is the conflict between so-called "Manhattan distance" and "Euclidean distance."

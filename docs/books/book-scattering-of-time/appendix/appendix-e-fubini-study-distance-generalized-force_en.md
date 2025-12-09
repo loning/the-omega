@@ -1,4 +1,6 @@
 # Appendix E: Fubini-Study Distance and Generalized Force
+![Fubini-Study Distance](../assets/landscape_of_desire.png)
+
 
 This appendix formalizes "force is the gradient of distance" from the main text as a variational principle.
 

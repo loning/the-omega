@@ -1,4 +1,6 @@
 # 14.2 The Eternal Echo
+![The Eternal Echo](../../assets/eternal_echo.png)
+
 
 Now, let us close the book and re-examine the world before us.
 

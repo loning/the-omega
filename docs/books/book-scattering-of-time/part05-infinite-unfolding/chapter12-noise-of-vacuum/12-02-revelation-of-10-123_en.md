@@ -1,4 +1,6 @@
 # 12.2 The Revelation of $10^{-123}$
+![The Revelation of 10⁻¹²³](../../assets/revelation_of_10_123.png)
+
 
 In the hall of physics hangs a massive, unsettling number: $10^{-123}$.
 

@@ -1,4 +1,6 @@
 # 14.1 No Big Bang
+![No Big Bang](../../assets/no_big_bang.png)
+
 
 In the standard narrative of modern cosmology, the universe began with a bang. About 13.8 billion years ago, all matter and energy were squeezed into an infinitely small singularity, then suddenly—*bang*! Time and space were born, and the universe began expanding like a balloon.
 

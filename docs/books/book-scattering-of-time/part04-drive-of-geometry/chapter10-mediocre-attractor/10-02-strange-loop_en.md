@@ -1,4 +1,6 @@
 # 10.2 Strange Loop
+![Strange Loop](../../assets/strange_loop.png)
+
 
 In M.C. Escher's famous print *Drawing Hands*, two hands are drawing each other on paper: the left hand draws the right hand, while the right hand simultaneously draws the left hand. This forms a **Strange Loop**.
 

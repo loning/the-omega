@@ -1,5 +1,7 @@
 # 5.1 The Cost of Immortality
 
+![The Cost of Immortality](../../assets/cost_of_immortality.png)
+
 Humans have dreamed of immortality since ancient times. Heroes in myths seek the fountain of youth; wealthy people in science fiction freeze their bodies. We yearn to stop time's wheel from turning on us, to transform moments into eternity.
 
 In the world of physics, there indeed exists a state of "immortality." But this is not God's gift; it is a cold geometric transaction. Its cost is beyond any poet's imagination.

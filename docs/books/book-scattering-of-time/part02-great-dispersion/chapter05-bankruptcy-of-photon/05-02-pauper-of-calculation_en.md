@@ -1,5 +1,7 @@
 # 5.2 The Pauper of Calculation
 
+![The Pauper of Calculation](../../assets/pauper_of_calculation.png)
+
 Why did I name this chapter "The Bankruptcy of the Photon"? This sounds like an emotional metaphor, but in our geometric reconstruction, this is a precise physical description.
 
 In our model, the universe is a resource-limited computational system. Total bandwidth $c$ represents the "computational ability" the universe grants every entity. Having resources means having the ability to process information—to change states, to record history, to perform complex internal cycles.

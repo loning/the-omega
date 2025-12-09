@@ -1,5 +1,7 @@
 # 2.3 The Rosetta Stone
 
+![The Rosetta Stone](../../assets/rosetta_stone.png)
+
 In 1799, Napoleon's soldiers discovered a black basalt stone tablet in Egypt inscribed with three scripts: the Rosetta Stone. It was through this stone that Champollion deciphered the lost ancient Egyptian hieroglyphs. He succeeded because he realized: those seemingly mysterious graphic symbols (hieroglyphs) actually described **the same content** as the mundane Greek text.
 
 In physics, we face the same situation.

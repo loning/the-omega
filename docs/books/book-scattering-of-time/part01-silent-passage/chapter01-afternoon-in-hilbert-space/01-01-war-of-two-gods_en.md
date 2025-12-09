@@ -1,5 +1,7 @@
 # 1.1 The War of Two Gods
 
+![The War of Two Gods](../../assets/war_of_two_gods.png)
+
 If physics is a religion describing the universe, then for the past century, we have actually been serving two gods with vastly different temperaments.
 
 The first god dwells in the macrocosmic temple, and his name is **Albert Einstein**. The world he created—**General Relativity**—is exquisitely smooth, elegant, and deterministic. In this world, space and time are not some rigid background stage, but a soft fabric. When you place a massive object (like the Sun) on this fabric, it bends and sags. Planets are not orbiting the Sun under the pull of some mysterious force; they are simply sliding along the "straightest-looking" paths on this curved fabric.

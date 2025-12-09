@@ -1,5 +1,7 @@
 # 6.2 Causality as Connection Speed
 
+![Causality as Connection Speed](../../assets/causality_as_connection_speed.png)
+
 In classical physics, causality is a philosophical concept: causes must precede effects. But in Einstein's relativity, causality becomes a geometric concept: the light cone (Light Cone). Any event can only affect the future within its light cone; any connection beyond the light cone is impossible.
 
 But this still sounds like an arbitrary prohibition. Why $c$? Why not infinitely fast? If the universe is just an empty stage, why can't events at one end instantly reach the other?

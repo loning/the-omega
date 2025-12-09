@@ -1,4 +1,6 @@
 # 11.3 The Mechanism of Breaking the Loop
+![The Mechanism of Breaking the Loop](../../assets/mechanism_of_breaking_loop.png)
+
 
 If you're trapped in a maze with walls on all sides, what do you do?
 
