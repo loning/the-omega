@@ -1,5 +1,7 @@
 # 11.1 真我轨道
 
+![真我轨道](../../assets/orbit_of_true_self.png)
+
 **(The Orbit of the True Self)**
 
 "做你自己。"

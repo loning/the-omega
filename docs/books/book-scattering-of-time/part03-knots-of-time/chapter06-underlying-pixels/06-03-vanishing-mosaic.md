@@ -1,5 +1,7 @@
 # 6.3 消失的马赛克
 
+![消失的马赛克](../../assets/vanishing_mosaic.png)
+
 **(The Vanishing Mosaic)**
 
 如果宇宙真的是由离散的像素（QCA网格）构成的，那么按理说，我们应该很容易发现它。

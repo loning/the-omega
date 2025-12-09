@@ -1,5 +1,7 @@
 # 9.2 向往的几何学
 
+![向往的几何学](../../assets/geometry_of_longing.png)
+
 **(The Geometry of Longing)**
 
 在上一节中，我们将物理上的力定义为"坡度"——物体自然而然地滑向时间密度更高（$v_{int}$ 更大）的地方。这解释了为什么苹果会落地。

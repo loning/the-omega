@@ -1,5 +1,7 @@
 # 附录 C：散射时间延迟 $\kappa(\omega)$ 的证明
 
+![散射时间延迟](../assets/time_as_winding.png)
+
 **(Proof of Scattering Time Delay Function)**
 
 本附录证明微观粒子在相互作用区的"滞留时间"与几何路径的谱密度是等价的，即 $\kappa(\omega)$ 函数的数学构造。

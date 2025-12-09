@@ -1,5 +1,7 @@
 # 11.3 破环机制
 
+![破环机制](../../assets/mechanism_of_breaking_loop.png)
+
 **(The Mechanism of Breaking the Loop)**
 
 如果你被困在一个迷宫里，前后左右都是墙壁，你该怎么办？

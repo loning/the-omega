@@ -1,5 +1,7 @@
 # 附录 D：观察者互信息的相对论界限
 
+![观察者互信息](../assets/relativistic_bandwidth.png)
+
 **(Relativistic Bound on Observer Mutual Information)**
 
 本附录从信息论角度推导狭义相对论对观察者认知能力的限制。

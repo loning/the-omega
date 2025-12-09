@@ -1,5 +1,7 @@
 # 9.3 熵力的视角
 
+![熵力的视角](../../assets/entropic_perspective.png)
+
 **(The Entropic Perspective)**
 
 在上一节中，我们将力定义为"缩短距离的趋势"。这听起来很美，但它留下了一个悬而未决的问题：**为什么**？

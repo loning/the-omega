@@ -1,5 +1,7 @@
 # 附录 E：Fubini-Study 距离与泛化力场
 
+![Fubini-Study距离](../assets/landscape_of_desire.png)
+
 **(Fubini-Study Distance and Generalized Force)**
 
 本附录将正文中"力是距离的梯度"形式化为变分原理。

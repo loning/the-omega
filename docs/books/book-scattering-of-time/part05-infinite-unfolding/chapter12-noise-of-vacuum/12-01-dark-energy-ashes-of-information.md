@@ -1,5 +1,7 @@
 # 12.1 暗能量：信息的灰烬
 
+![暗能量：信息的灰烬](../../assets/dark_energy_ashes_of_information.png)
+
 **(Dark Energy: The Ashes of Information)**
 
 当我们仰望夜空，我们看到的是星辰。但天文学家告诉我们，那些发光的恒星、巨大的星系、甚至弥漫的星云，加起来只占宇宙总能量的不到 5%。

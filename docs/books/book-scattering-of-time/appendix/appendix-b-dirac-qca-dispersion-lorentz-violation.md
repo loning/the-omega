@@ -1,5 +1,7 @@
 # 附录 B：Dirac-QCA 模型的色散关系与洛伦兹破坏
 
+![Dirac-QCA模型](../assets/quantum_lattice.png)
+
 **(Dispersion Relation and Lorentz Violation in Dirac-QCA)**
 
 本附录展示当我们将连续时空离散化为量子元胞自动机（QCA）时，洛伦兹不变性如何作为一种低能近似涌现，以及高阶修正项（$O(p^4)$）的来源。

@@ -1,5 +1,7 @@
 # 13.3 多重宇宙的几何解释
 
+![多重宇宙的几何解释](../../assets/geometric_explanation_of_multiverse.png)
+
 **(The Geometric Explanation of Multiverse)**
 
 在科幻电影中，"多重宇宙"通常意味着平行世界：在那个世界里，你早餐吃了面包而不是麦片，或者是纳粹赢得了二战。这是一种令人兴奋的想象，但在物理学上，这往往导致了本体论的混乱。如果宇宙有无限多个，那么"真实"还存在吗？

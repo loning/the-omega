@@ -1,5 +1,7 @@
 # 4.3 能量的锁死
 
+![能量的锁死](../../assets/locking_of_energy.png)
+
 **(The Locking of Energy)**
 
 在人类文明的所有方程中，没有任何一个比 $E=mc^2$ 更具图腾意义。

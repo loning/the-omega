@@ -1,5 +1,7 @@
 # 11.2 觉醒的物理学
 
+![觉醒的物理学](../../assets/physics_of_awakening.png)
+
 **(The Physics of Awakening)**
 
 如果你把手放在滚烫的炉子上，你会感到剧痛并立刻缩手。这种疼痛是有益的，它是一个保护性的反馈机制。

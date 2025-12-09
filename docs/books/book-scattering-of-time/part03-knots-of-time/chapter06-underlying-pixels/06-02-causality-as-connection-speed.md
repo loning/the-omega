@@ -1,5 +1,7 @@
 # 6.2 因果律即网速
 
+![因果律即网速](../../assets/causality_as_connection_speed.png)
+
 **(Causality as Connection Speed)**
 
 在经典物理学中，因果律是一个哲学概念：原因必须先于结果。但在爱因斯坦的相对论中，因果律变成了一个几何概念：光锥（Light Cone）。任何事件都只能影响它光锥内部的未来，任何超越光锥的联系都是不可能的。

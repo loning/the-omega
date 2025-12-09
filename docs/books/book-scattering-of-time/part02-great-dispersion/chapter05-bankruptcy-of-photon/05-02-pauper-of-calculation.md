@@ -1,5 +1,7 @@
 # 5.2 计算上的赤贫者
 
+![计算上的赤贫者](../../assets/pauper_of_calculation.png)
+
 **(The Pauper of Calculation)**
 
 为什么我把这一章命名为"光子的破产"？这听起来像是一个情感化的比喻，但在我们的几何重构中，这是一个精确的物理描述。

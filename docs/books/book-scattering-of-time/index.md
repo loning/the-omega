@@ -1,5 +1,8 @@
 # 时间的散射
 
+![封面](assets/cover.png)
+
+
 **The Scattering of Time**
 
 **副标题**：从比特到宇宙的几何重构

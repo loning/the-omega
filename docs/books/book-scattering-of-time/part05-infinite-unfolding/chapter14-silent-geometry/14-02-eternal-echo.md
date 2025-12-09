@@ -1,5 +1,7 @@
 # 14.2 永恒的回响
 
+![永恒的回响](../../assets/eternal_echo.png)
+
 **(The Eternal Echo)**
 
 现在，让我们合上书，重新审视我们眼前的世界。

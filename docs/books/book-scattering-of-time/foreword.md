@@ -1,5 +1,7 @@
 # 序言：光与棱镜
 
+![光与棱镜](../assets/the_universal_prism.png)
+
 **(Preface: The Light and The Prism)**
 
 我们通常认为，宇宙是一个充满了"东西"的地方。

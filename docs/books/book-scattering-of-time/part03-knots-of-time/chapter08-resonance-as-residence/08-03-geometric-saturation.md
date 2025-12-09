@@ -1,5 +1,7 @@
 # 8.3 几何饱和
 
+![几何饱和](../../assets/geometric_saturation.png)
+
 **(Geometric Saturation)**
 
 物理学家最害怕的东西是什么？不是黑洞，不是暗物质，而是**无穷大**。

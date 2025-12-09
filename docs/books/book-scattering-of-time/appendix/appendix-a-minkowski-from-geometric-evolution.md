@@ -1,5 +1,7 @@
 # 附录 A：从几何演化圆重构闵可夫斯基线元
 
+![几何演化圆](../assets/geometric_origin_of_relativity.png)
+
 **(Reconstruction of Minkowski Metric from Geometric Evolution Circle)**
 
 本附录旨在证明：狭义相对论的核心几何结构（闵可夫斯基度规），可以被严格地推导为 Fubini-Study 几何中"扇区 Parseval 恒等式"的一个特例。

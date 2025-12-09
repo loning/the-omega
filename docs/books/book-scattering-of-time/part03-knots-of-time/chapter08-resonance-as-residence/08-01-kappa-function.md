@@ -1,5 +1,7 @@
 # 8.1 $\kappa(\omega)$ 函数：连接微观与宏观的桥梁
 
+![kappa函数](../../assets/kappa_function.png)
+
 **(The $\kappa(\omega)$ Function: Bridge Between Micro and Macro)**
 
 在宏观世界里，我们习惯用秒表来测量时间。时间是线性的、均匀的流逝。但在微观的量子世界里，时间展现出了它极其诡异的一面：它变成了一种可以被"堆积"和"拉伸"的频谱。
