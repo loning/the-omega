@@ -29,7 +29,7 @@ This workflow outlines the process for illustrating a book project using AI-gene
     - **Identify Complex Concepts**: Specifically look for complex mathematical formulas, abstract theories, or dense logic that requires visual decoding.
 
 2.  **Design Prompts**:
-    - **Style Guide**: Create a consistent style guide (e.g., "Abstract scientific illustration, clean lines, golden/blue color palette, 8k resolution").
+    - **Style Guide**: Create a consistent style guide (e.g., "Abstract scientific illustration, clean lines, golden/blue color palette").
     - **General Prompts**: Draft specific prompts for each file, combining the style guide with the specific concept.
     - **Explanatory Images**: For identified complex concepts/formulas, design "Diagrammatic" or "Explanatory" prompts.
         - *Goal*: Explain the logic/structure visually.
