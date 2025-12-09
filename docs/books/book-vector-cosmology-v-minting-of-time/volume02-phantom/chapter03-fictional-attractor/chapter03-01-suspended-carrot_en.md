@@ -1,5 +1,7 @@
 # 3.1 The Suspended Carrot
 
+![Suspended Goal](../../assets/chapter03-fictional-attractor/ch03-01-suspended-goal.png)
+
 > "The reason a donkey can pull a millstone all day is because a carrot is suspended before its eyes. It thinks it is approaching the carrot, but in reality, the distance between the carrot and it never changes. The evolution of the universe is the same. That endpoint called 'completion' is not meant to be reached; it is meant to drive steps."
 
 ## The Physics of Asymptotes

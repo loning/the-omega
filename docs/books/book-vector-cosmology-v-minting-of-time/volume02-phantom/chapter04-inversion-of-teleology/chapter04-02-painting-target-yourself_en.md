@@ -1,5 +1,7 @@
 # 4.2 Painting the Target Yourself
 
+![Painting Target](../../assets/chapter04-inversion-of-teleology/ch04-02-painting-target.png)
+
 > "Only a poor archer finds the target first and then shoots, because he will always miss. A great archer shoots the arrow into the void first, then draws the bull's-eye where the arrow lands. In the logic of vector cosmology, there is no such thing as 'destiny.' All meaning is a geometric interpretation retroactively assigned by the observer after the event occurs."
 
 In the previous section, we overturned the illusion that "the future is pulling us" and established that motivation comes from the pressure of internal will. This leaves a huge void: If there is no target ahead (predetermined meaning), where should we aim? If the universe has no preset purpose, aren't we just shooting randomly without meaning?

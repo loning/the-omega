@@ -1,5 +1,7 @@
 # 附录 A：黄金时间公式的数学推导
 
+![Golden Formula](../assets/appendix/app-a-golden-formula.png)
+
 在《矢量宇宙论 V》的正文第 2 章中，我们提出了一个重新定义生命的公式：**时间不是线性的流逝，而是价值的对数**。
 
 \[\tau = \pi \cdot \log_{\phi} \left( \frac{V}{V_0} \right)\]

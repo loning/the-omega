@@ -1,5 +1,7 @@
 # 5.1 The Revelation of Weber-Fechner
 
+![Logarithmic Shield](../../assets/chapter05-logarithmic-law/ch05-01-logarithmic-shield.png)
+
 > "Why in childhood, a summer vacation feels as long as a lifetime; while in old age, ten years pass like sand through fingers? This is not just psychology; this is geometry. Our consciousness is a logarithmic ruler; it compresses not only light and sound, but also time itself. It is precisely this compression that allows us to maintain a linear dignity when facing an exponentially exploding universe."
 
 ## The Mathematical Signature of Physiology

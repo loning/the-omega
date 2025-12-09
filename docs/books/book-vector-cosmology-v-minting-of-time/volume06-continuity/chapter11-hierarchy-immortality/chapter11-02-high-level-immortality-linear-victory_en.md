@@ -1,5 +1,7 @@
 # 11.2 High-level Immortality: The Victory of Linearity
 
+![Biological Reboot](../../assets/chapter11-hierarchy-immortality/ch11-02-biological-reboot.png)
+
 > "Biology taught us how to update systems through death, but information science taught us how to repair systems while they are running. If we have sufficient computational budget, we no longer need to format the entire hard drive to clear errors. High-level immortality is not magic; it is an engineering necessity: as long as the error correction speed exceeds the entropy increase speed, the river of memory can flow infinitely, never drying up."
 
 In the previous section, we examined the essence of "low-level immortality"—system reboot through death and reproduction. It is a compromise based on **$\pi$ (circle)**, preserving the species' genes but sacrificing individual memory.

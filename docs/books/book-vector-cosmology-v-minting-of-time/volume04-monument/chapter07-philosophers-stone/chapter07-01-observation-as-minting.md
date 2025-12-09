@@ -1,5 +1,7 @@
 # 7.1 观测即铸造 (Observation as Minting)
 
+![Minting Moment](../../assets/chapter07-philosophers-stone/ch07-01-minting-moment.png)
+
 > "炼金术士寻找的贤者之石，并不是一种能把铅变成金子的粉末。它是一种 **'视角'**。当你用绝对确定的目光凝视混沌时，混沌就被迫坍缩成了秩序。你的决断，就是那道点石成金的目光。"
 
 ## 强测量的几何学

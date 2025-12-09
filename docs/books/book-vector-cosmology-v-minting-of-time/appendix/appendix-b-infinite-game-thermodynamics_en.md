@@ -1,5 +1,7 @@
 # Appendix B: Thermodynamic Proof of Infinite Games
 
+![Thermodynamics](../assets/appendix/app-b-thermodynamics.png)
+
 In Volume V "Rejection: The Infinite Game" of the main text, we proposed a seemingly counterintuitive claim that violates classical physical common sense: **The universe's evolution has no endpoint, and civilizations can play an infinite game that never ends.**
 
 The greatest challenge to this view comes from the **Second Law of Thermodynamics**. The classical "Heat Death" theory predicts that as entropy continuously increases, the universe will eventually reach a uniform, disordered, work-incapable thermal equilibrium state. If this is true, then any game---no matter how brilliant---will eventually be forced to end due to energy exhaustion.

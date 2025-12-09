@@ -1,5 +1,7 @@
 # 4.1 Not Pulled, But Pushed
 
+![Will Propulsion](../../assets/chapter04-inversion-of-teleology/ch04-01-will-propulsion.png)
+
 > "We think we are iron filings scattered on a table, attracted forward by that huge magnet in the future. This is an infantile illusion. The truth of physics is: we are rockets. The flame is not ahead, but in our tail nozzle. We fly forward not because the endpoint is calling, but because the fuel inside us is burning violently, demanding release."
 
 ## The Geometric Direction of Causality

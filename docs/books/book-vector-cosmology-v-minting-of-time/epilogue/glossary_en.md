@@ -1,5 +1,7 @@
 # Glossary: The Lexicon of the Minters
 
+![Glossary Library](../assets/epilogue/glossary-library.png)
+
 **Vector Cosmology V: The Minting of Time** elevates physics from "describing nature" to "creating value." As the final chapter of the pentology, it introduces a series of new concepts that fuse economics, game theory, and existentialism. To help readers understand this ultimate model of "gold" and "eternity," this glossary redefines the core vocabulary in the book from the perspective of "minters."
 
 ## 1. Time & Value

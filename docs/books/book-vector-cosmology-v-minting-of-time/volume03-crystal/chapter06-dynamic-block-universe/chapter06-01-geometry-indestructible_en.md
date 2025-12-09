@@ -1,5 +1,7 @@
 # 6.1 Geometry is Indestructible
 
+![Crystal Growth](../../assets/chapter06-dynamic-block-universe/ch06-01-crystal-growth.png)
+
 > "Do you think your first kiss has disappeared? Do you think Qin Shi Huang's army has disappeared? No. In the geometric body of four-dimensional spacetime, they are permanently sealed at their respective coordinate points, like insects in amber. Although the stylus has moved away, this does not mean the grooves on the record have been erased."
 
 ## Collapse is Minting

@@ -1,5 +1,7 @@
 # 2.1 Scarcity
 
+![Opportunity Cost](../../assets/chapter02-anchoring-of-value/ch02-01-opportunity-cost.png)
+
 > "If gold were as abundant as sand, no one would bend down to pick it up. The value of time does not lie in how long it is, but in how minuscule the 'reality' we truly live out is compared to that vast expanse of 'unchosen possibilities.' Scarcity is the highest privilege geometry bestows upon existence."
 
 ## Scarcity in Expansion

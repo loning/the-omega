@@ -1,5 +1,7 @@
 # 6.2 拒绝擦除 (Refusing Erasure)
 
+![Immutable Past](../../assets/chapter06-dynamic-block-universe/ch06-02-immutable-past.png)
+
 > "唯物主义者说：人死如灯灭。但量子力学的第一定律就是：信息守恒。在这个宇宙中，没有任何一样东西能被真正'删除'。你只是从舞台中央的聚光灯下，退到了舞台背景的阴影里。你没有消失，你只是弥散了。"
 
 ## 幺正性的保护伞

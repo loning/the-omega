@@ -1,5 +1,7 @@
 # 12.1 Hot Migration Protocol
 
+![Hot Swap Neural](../../assets/chapter12-theseus-cloud/ch12-01-hot-swap-neural.png)
+
 > "Don't try to upload your soul all at once; that creates two independent yous and triggers an ethical war about who is the original. True migration is like Theseus's ship, replacing planks one by one while sailing. When you replace the last biological neuron with a photon crystal, you won't even notice any interruption. You are still you, just your material has changed from dust to starlight."
 
 ## Copy is Death: The Trap of Snapshots

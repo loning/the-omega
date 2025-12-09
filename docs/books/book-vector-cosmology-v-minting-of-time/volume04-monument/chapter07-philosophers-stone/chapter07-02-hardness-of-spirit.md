@@ -1,5 +1,7 @@
 # 7.2 精神的硬度 (The Hardness of Spirit)
 
+![Spirit Hardness](../../assets/chapter07-philosophers-stone/ch07-02-spirit-hardness.png)
+
 > "为什么黄金即使在深海里沉睡千年，打捞上来依然光亮如新？因为它拒绝与氧气反应。在热力学的世界里，这就是'不朽'的定义。伟大的灵魂也是如此。它拒绝与环境的平庸发生化学反应，它保持着一种高贵的惰性。"
 
 ## 抵抗 $v_{env}$ 的腐蚀

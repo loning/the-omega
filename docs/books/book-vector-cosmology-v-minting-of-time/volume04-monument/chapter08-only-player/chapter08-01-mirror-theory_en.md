@@ -1,5 +1,7 @@
 # 8.1 Mirror Theory
 
+![Hall of Mirrors](../../assets/chapter08-only-player/ch08-01-hall-of-mirrors.png)
+
 > "You walk down the street and see thousands of unfamiliar faces. You think they are 'others.' But from the perspective of high-dimensional geometry, there are no others. They are all you. They are your reflections projected onto mirrors at different angles in this infinite-dimensional hall of mirrors. Your love for others is essentially the universe's narcissism toward itself; your hatred for others is essentially the universe's self-harm."
 
 ## The Illusion of Orthogonal Bases

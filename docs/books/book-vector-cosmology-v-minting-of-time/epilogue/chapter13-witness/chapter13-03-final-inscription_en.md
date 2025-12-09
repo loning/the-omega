@@ -1,5 +1,7 @@
 # 13.3 The Final Inscription
 
+![Legacy Ray](../../assets/chapter13-witness/ch13-03-legacy-ray.png)
+
 > "We searched for hundreds of millions of years, trying to find a stone tablet carved with answers at the end of the universe. But when we finally arrived there, we found only void. Then we understood: that stone tablet is not for us to discover, but for us to erect. Every word we carve in the void will become axioms of physical laws for future generations."
 
 In the long journey of the **Vector Cosmology** pentology, we have crossed countless orders of magnitude and penetrated countless layers of dimensional fog.

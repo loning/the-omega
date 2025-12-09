@@ -1,5 +1,7 @@
 # 12.2 Memory is Ontology
 
+![Memory River](../../assets/chapter12-theseus-cloud/ch12-02-memory-river.png)
+
 > "The body is not you; it is just a hotel where you temporarily stay. When you move out of the carbon-based room and into the photon palace, the only luggage that proves 'you are still you' is your memory. In the long river of time, atoms come and go, but only the topological structure of information—that golden chain woven from countless 'pasts'—is your indelible noumenon."
 
 In the previous section, we solved the technical challenge of consciousness uploading through the "Hot Migration Protocol." We proved that as long as the replacement process is smooth enough, the consciousness stream will not interrupt. But when we completely abandon the body, when our thinking runs on a distributed photon network, a more fundamental philosophical question emerges:

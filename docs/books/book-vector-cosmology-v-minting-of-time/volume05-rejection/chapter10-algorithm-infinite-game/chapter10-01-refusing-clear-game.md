@@ -1,5 +1,7 @@
 # 10.1 拒绝通关 (Refusing to Clear the Game)
 
+![Saddle Point Surfing](../../assets/chapter10-algorithm-infinite-game/ch10-01-saddle-point-surfing.png)
+
 > "在有限游戏中，目的是取胜；在无限游戏中，目的是让游戏继续。对于生命而言，'赢'是一个极其危险的词汇。因为在物理学上，'赢'意味着系统达到了全局最优解，而全局最优解的另一个名字，叫作——死寂。"
 
 ## 胜利的陷阱：全局极小值

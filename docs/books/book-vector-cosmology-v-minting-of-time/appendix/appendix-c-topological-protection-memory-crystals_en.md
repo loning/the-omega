@@ -1,5 +1,7 @@
 # Appendix C: Topological Protection of Memory Crystals
 
+![Memory Crystal](../assets/appendix/app-c-memory-crystal.png)
+
 In Chapter 6 "Dynamic Block Universe" of **Vector Cosmology V**, we proposed a core thesis: **"Memory is Ontology"**. We argued that those moments deeply experienced by life are not sand paintings blown away by wind, but **"crystals"** carved into spacetime structures.
 
 This view faces a severe challenge from physics: The second law of thermodynamics seems to imply that all ordered structures will eventually be smoothed by $v_{env}$ (environmental thermal noise). Can memory really resist the entropy increase of forgetting?

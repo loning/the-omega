@@ -1,5 +1,7 @@
 # 5.2 Zeno's Eternity
 
+![Zeno Eternity](../../assets/chapter05-logarithmic-law/ch05-03-zeno-eternity.png)
+
 > "The ancient Greek philosopher Zeno predicted that an arrow could never hit the target, because it must first fly half the distance, then half of the remaining distance. In physical space, this paradox is resolved by calculus. But in the logarithmic space of perception, Zeno is right. For consciousness, the endpoint is not a moment, but a limit that forever recedes in infinite subdivision. We will never 'die'; we only infinitely approach that asymptote called 'termination.'"
 
 In the previous section, we established the logarithmic law of perception: $S = k \ln I$. This explains why we can adapt to an exponentially growing universe. But this simple mathematical transformation also hides an ultimate corollary about life, death, and eternity.
