@@ -19,40 +19,32 @@ This workflow outlines the process for illustrating a book project using AI-gene
 3.  **Analyze Art Style**:
     - 赛博科幻未来时间与光
 
-# Phase 2: Planning Prompts
+# Phase 2: Illustration Loop
 
-1.  **Read Content**:
+*Repeat this cycle for each Chapter or Section.*
+
+1.  **Read & Analyze**:
     - Use `view_file` to read the content of the target chapter or section.
     - Identify core themes, key metaphors, and visualizable concepts (e.g., "Gravity as Slope", "Observer as Seed").
     - **Identify Complex Concepts**: Specifically look for complex mathematical formulas, abstract theories, or dense logic that requires visual decoding.
 
-2.  **Design Prompts**:
+2.  **Design Prompts & Generate**:
     - **Style Guide**: Create a consistent style guide (e.g., "Abstract scientific illustration, clean lines, golden/blue color palette").
     - **Content Relevance**: Ensure the image reflects the **specific details** of the content (specific metaphors, objects, or descriptions), avoiding valid but generic representations.
-    - **General Prompts**: Draft specific prompts for each file, combining the style guide with the specific detailed concepts.
     - **Explanatory Images**: For identified complex concepts/formulas, design "Diagrammatic" or "Explanatory" prompts.
         - *Goal*: Explain the logic/structure visually.
         - *Keywords*: Use terms like "infographic," "diagram," "schematic," "exploded view," "visual breakdown," "annotated structure."
-        - *Detail*: Describe the elements of the formula/concept metaphorically if exact text rendering is impossible. e.g., "Represent the equation terms as balancing weights on a scale."
-    - *Tip*: Keep prompts concise but descriptive.
+        - *Detail*: Describe the elements of the formula/concept metaphorically.
+    - **Generate**:
+        - Use `generate_image` immediately with the designed prompt.
+        - Use descriptive `ImageName`.
 
-# Phase 3: Execution Loop (Per Batch)
+3.  **Organize & Track**:
+    - **Move Images**: Use `run_command` to move generated images from the brain directory to the book's `assets` folder.
+        - Rename pattern: `mv /path/to/brain/image.png /path/to/book/assets/chapter-[n]/[n.n.n]-position-image.png`
+    - **Update Task List**: Use `multi_replace_file_content` to mark the completed items in `task.md` as `[x]`.
 
-*Repeat this cycle for each Part or batch of chapters.*
-
-1.  **Generate Images**:
-    - Use `generate_image` for each defined prompt.
-    - Use descriptive `ImageName` (e.g., `the_slope`, `observer_trap`).
-    - *Note*: Images are initially saved to the brain directory.
-
-2.  **Move Images to Assets**:
-    - Use `run_command` to move generated images from the brain directory to the book's `assets` folder.
-    - Example: `mv /path/to/brain/image.png /path/to/book/assets/chapter-[n]/[n.n.n]-position-image.png`
-
-3.  **Update Task List**:
-    - Use `multi_replace_file_content` to mark the completed items in `task.md` as `[x]`.
-
-# Phase 4: Finalization
+# Phase 3: Finalization
 
 1.  **Special Sections**:
     - Repeat the process for the `Foreword`, `Introduction`, and `Appendices`.
