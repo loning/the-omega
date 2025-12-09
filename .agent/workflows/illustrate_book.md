@@ -50,24 +50,37 @@ This workflow outlines the process for illustrating a book project using AI-gene
     - Use `run_command` to move generated images from the brain directory to the book's `assets` folder.
     - Example: `mv /path/to/brain/image.png /path/to/book/assets/image.png`
 
-3.  **Embed Images (Markdown)**:
-    - Use `replace_file_content` to insert the image markdown link into the corresponding chapter file.
-    - **Chinese File**: Insert after the H1 title. Format: `![Alt Text](../../assets/image_name.png)`
-    - **English File**: Same logic. Locate the `_en.md` file and insert the same link.
-
-5.  **Embed Images (LaTeX)**:
-    - Locate the corresponding `.tex` file (e.g., `chapter_en.tex`).
-    - Use `replace_file_content` to insert the image code.
-    - **Format** (Standard LaTeX with relative path):
-      ```latex
-      \begin{figure}[h]
-          \centering
-          \includegraphics[width=\textwidth]{assets/image_name.png}
-          \caption{Image Title}
-          \label{fig:image_name}
-      \end{figure}
-      ```
-    - Insert this code after the Chapter Title (`\chapter{...}`) or Section Title depending on context.
+3.  **Embed Images**:
+    - For each generated image, embed it into ALL of the following files if they exist:
+    
+    - **A. Chinese Markdown (`.md`)**:
+        - Use `replace_file_content`.
+        - Insert after the H1 title or relevant section header.
+        - Format: `![Alt Text](../../assets/image_name.png)`
+    
+    - **B. English Markdown (`_en.md`)**:
+        - Use `replace_file_content`.
+        - Insert after the H1 title or relevant section header.
+        - Format: `![Alt Text](../../assets/image_name.png)`
+    
+    - **C. English LaTeX (`_en.tex`)**:
+        - Use `replace_file_content`.
+        - Locate the relevant `\section{...}` or `\chapter{...}`.
+        - Insert standard LaTeX figure code **using relative path from the root .tex file** (usually `assets/image_name.png`).
+        - Format:
+          ```latex
+          \begin{figure}[h]
+              \centering
+              \includegraphics[width=\textwidth]{assets/image_name.png}
+              \caption{Image Title}
+              \label{fig:image_name}
+          \end{figure}
+          ```
+    
+    - **D. Chinese LaTeX (`.tex`)**:
+        - Same logic as English LaTeX.
+        - Look for the file ending in `.tex` (without `_en`).
+        - Insert the same LaTeX figure code.
 
 6.  **Update Task List**:
     - Use `multi_replace_file_content` to mark the completed items in `task.md` as `[x]`.

@@ -30,13 +30,15 @@ In a smooth ocean, waves dissipate over time. But if you tie a knot in a rope, n
 
 In our geometric reconstruction, elementary particles (such as electrons, quarks) are **topologically non-trivial classes** in Hilbert Space evolution vector fields.
 
-* **Vacuum** is trivial; evolution vectors uniformly point in the same direction (pure time flow).
+*   **Vacuum** is trivial; evolution vectors uniformly point in the same direction (pure time flow).
 
-* **Particles** are twisted; evolution vectors locally form a vortex or knot.
+*   **Particles** are twisted; evolution vectors locally form a vortex or knot.
 
 Because of topological protection, this knot cannot be untied through continuous deformation. This is why electrons are extremely stable, their lifetime even longer than the universe's current age. They don't want to disintegrate; geometry forbids it.
 
 ## Creation and Annihilation
+
+![Pair Production Knots](../../assets/pair_production_knots.png)
 
 This model perfectly explains another magical phenomenon in physics: **pair production and annihilation**.
 
