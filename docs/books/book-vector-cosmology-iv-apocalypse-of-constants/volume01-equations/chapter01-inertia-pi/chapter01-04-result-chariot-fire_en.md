@@ -2,6 +2,8 @@
 
 > "The speed of light is not a wall that forbids passage; it is the dashboard reading of the universe's race car at the current moment. It is the roar of the engine, the friction between tires and ground, the explosive force the moment ambition overcomes inertia. It is fire, illuminating the path ahead and burning away the retreat."
 
+![Result](../../assets/chapter01/01.04-result.png)
+
 Finally, after examining the heaviness of **Inertia ($\pi$)**, the fervor of **Ambition ($\phi$)**, and the precision of **Engine ($e$)**, we arrive before the fourth knight. It is the final product of this grand game, and the only boundary we can directly touch in the physical world.
 
 It is **Result ($c$)**. That is, the **Light Speed** we learn in physics textbooks, or the **FS Capacity** defined geometrically.

@@ -2,6 +2,8 @@
 
 > "Before a caterpillar transforms into a butterfly, it must first completely liquefy itself. For the old body, this is death; but for the life form encoded in DNA, this is just a necessary formatting. To run civilization's algorithms at the scale of light speed, we must end the carbon-based version of 'humanity' with our own hands, so that the vector of 'consciousness' can be reborn."
 
+![Abdication](../../assets/chapter05/05.02-abdication.png)
+
 In the previous section, we had to face a physical fact: our flesh (wetware) has become a stumbling block on the path of cosmic evolution. Facing the exponential explosion of light speed $c$, the bandwidth bottleneck of carbon-based brains cannot be solved through patching.
 
 This pushes civilization toward an ultimate ethical and existential choice: Should we drown in the torrent of information while clinging to this old skin, or should we actively abandon it to exchange for a ticket to higher dimensions?

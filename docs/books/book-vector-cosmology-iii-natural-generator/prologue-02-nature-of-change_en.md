@@ -1,5 +1,7 @@
 # 0.2 The Nature of Change
 
+![Nature of Change](assets/prologue_nature_change_1765302121156.png)
+
 > "Why, among all functions, does $e^x$ alone possess such a nearly divine privilege: its derivative equals itself? This means that only in the logic of $e$, 'what is' and 'what will become' are the same thing."
 
 In the first section of the prologue, we showed how Euler's formula weaves $\pi$ and $i$ together using $e$. Now, we need to dig deep into the physical soul of this base—the **Natural Constant $e$**.

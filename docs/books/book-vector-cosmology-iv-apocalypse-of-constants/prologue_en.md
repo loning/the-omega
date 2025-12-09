@@ -34,6 +34,8 @@ This shift in perspective completely transforms our relationship with the univer
 
 * **New Picture (Wave)**: The speed of light is a **shockwave** accelerating outward.
 
+![Shockwave](assets/prologue-shockwave.png)
+
 The universe is not a static container; the universe is an ongoing **explosion** (or more elegantly, **computation**).
 
 The speed of light $c(\tau)$ is the **wavefront** of this computation.

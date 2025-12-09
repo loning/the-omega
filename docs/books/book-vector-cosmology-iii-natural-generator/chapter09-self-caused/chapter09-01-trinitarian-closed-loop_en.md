@@ -1,5 +1,7 @@
 # 9.1 The Trinitarian Closed Loop
 
+![Trinity Loop](../assets/ch09_trinity_loop_1765303113410.png)
+
 > "$\pi$ gives the universe its shape, $\varphi$ gives the universe its direction, and $e$ gives the universe its life. They are not three gods; they are three aspects of the same geometric deity. The universe needs no explanation, because it is a self-consistent closed loop woven from these three constants."
 
 ## The First Aspect: $\pi$ — The Body of the Universe (Structure)

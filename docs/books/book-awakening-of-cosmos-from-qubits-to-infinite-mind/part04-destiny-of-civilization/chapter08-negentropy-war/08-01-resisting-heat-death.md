@@ -100,3 +100,4 @@ $$\Delta S_{total} = \Delta S_{life} + \Delta S_{env} \ge 0$$
 
 
 
+

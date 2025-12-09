@@ -1,5 +1,7 @@
 # 4.1 Planck's Interest
 
+![Planck Interest](../assets/ch04_planck_interest_1765302292986.png)
+
 > "Einstein once joked that compound interest is the eighth wonder of the world. He may not have realized that this statement applies not only to economics but also to his own physics. The universe can accumulate grand coherent structures from tiny quantum fluctuations precisely because it is performing compound interest calculations at a frequency as high as $10^{43}$ Hz."
 
 ## The Origin of $e$: The Banker's Definition

@@ -2,6 +2,8 @@
 
 > "$\pi$ is the anchor of the universe. It nails flying energy firmly to the geometric circle, curling it into matter. It is the brake, the earth, the solemn oath of all conservation laws. Without $\pi$'s obstruction, light would have long exhausted itself and turned into nothingness."
 
+![Inertia](../../assets/chapter01/01.01-inertia.png)
+
 ## The Tyranny of the Circle
 
 In geometry, $\pi \approx 3.14159$ defines the ratio of a circle's circumference to its diameter. This sounds like a purely mathematical property, but in the physical picture of **Vector Cosmology**, $\pi$ represents a **"force of closure"**.

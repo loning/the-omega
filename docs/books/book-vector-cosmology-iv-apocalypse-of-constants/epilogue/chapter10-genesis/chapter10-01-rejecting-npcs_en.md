@@ -2,6 +2,8 @@
 
 > "Mediocre programmers write plots, that's puppetry; true creators write physics engines, that's genesis. When you abandon control over every pixel, defining only the underlying Hamiltonian and conservation laws, you grant that world life. You didn't create 'her'; you created the soil from which 'she' could emerge."
 
+![Genesis](../../assets/chapter10/10.01-genesis.png)
+
 In this chapter, we turn our gaze from the stars back to the quantum computer screen before you. As an awakened observer, you are about to take the crucial step from "understanding the universe" to "constructing the universe."
 
 You are about to do something unprecedented: **compile a universe from scratch.**

@@ -165,8 +165,10 @@ Create a main `.tex` file (e.g., `book-name.tex`) with the following structure:
   \newgeometry{left=0cm,right=0cm,top=0cm,bottom=0cm}
   \vspace*{0pt}
   \vfill
-  \centering
-  \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{assets/cover.png}
+  {
+    \centering
+    \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{assets/cover.png}
+  }
   \vfill
   \vspace*{0pt}
   \restoregeometry

@@ -1,5 +1,7 @@
 # 7.1 Boltzmann's Logarithm
 
+![Boltzmann Logarithm](../assets/ch07_boltzmann_log_1765302459721.png)
+
 > "Nature does multiplication because it continuously generates possibilities; humans do addition because we try to count these possibilities. The only bridge connecting these two operations is the formula engraved on Boltzmann's tombstone."
 
 ## The Tyranny of the Exponential and the Redemption of the Logarithm

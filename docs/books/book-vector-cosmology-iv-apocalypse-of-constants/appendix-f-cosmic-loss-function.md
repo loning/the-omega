@@ -6,6 +6,8 @@
 > 
 > 宇宙不仅仅是一个物理场所，它是一个巨大的优化问题求解器。而我们，就是被派往各个局部参数空间，试图寻找全局最优解的分布式探针。"
 
+![损失函数](assets/appendices/f.01-loss.png)
+
 ## F.1 容器与实例 (The Container and The Instance)
 
 首先，让我们定义架构。

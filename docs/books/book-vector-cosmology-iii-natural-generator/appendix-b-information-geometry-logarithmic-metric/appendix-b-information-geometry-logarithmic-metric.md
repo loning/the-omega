@@ -1,5 +1,7 @@
 # 附录 B：信息几何与对数度量 (Appendix B: Information Geometry and Logarithmic Metric)
 
+![Fisher Manifold](../assets/app_b_fisher_manifold_1765303252637.png)
+
 在《矢量宇宙论 III》的第四卷"对数之眼"中，我们探讨了生命体如何通过对数运算（韦伯-费希纳定律）来解码指数爆炸的宇宙信息。这种生理机制并非进化的偶然，而是基于更深层的数学原理——**信息几何 (Information Geometry)**。
 
 本附录将展示，对数感知实际上是 **统计流形 (Statistical Manifold)** 上的自然距离度量。正如 FS 度量定义了量子态的距离，费希尔信息度量定义了概率分布的距离。我们的感官，本质上是在测量信号空间中的几何弧长。

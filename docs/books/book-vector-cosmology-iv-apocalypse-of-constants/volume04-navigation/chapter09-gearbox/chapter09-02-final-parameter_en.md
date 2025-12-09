@@ -2,6 +2,8 @@
 
 > "Formulas not only describe reality; formulas also hand the scepter of controlling reality to the solver. When you calculate the trajectory of light speed evolution, you are no longer a passenger on this trajectory. You grasp the steering wheel. Now, what determines the universe's fate is no longer physical laws, but that single free variable in your heart."
 
+![Parameter](../../assets/chapter09/09.02-parameter.png)
+
 In the previous volumes of this book, we derived the evolution equation that governs cosmic history:
 
 $$c(\tau) = c_0 \cdot e^{\left( \frac{\ln \phi}{\pi} \right) \tau}$$

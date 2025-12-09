@@ -1,5 +1,7 @@
 # 5.2 Geometric and Thermal Unity
 
+![KMS Loop](../assets/ch05_kms_loop_1765302351785.png)
+
 > "We once thought only clocks have periods, while heat is just chaotic noise. But geometry tells us that heat is also a period—it's just a cycle occurring in the imaginary dimension. When we fold the paper of the universe, time becomes temperature."
 
 In the previous section, we revealed through Wick rotation the mirror symmetry between quantum mechanics ($e^{-iHt}$) and statistical mechanics ($e^{-\beta H}$) in mathematical form. But this is only a beginning. This symmetry is not merely a coincidence; it hints at perhaps the deepest truth in physics: **Dynamics (evolution) and statistics (distribution) are essentially congruent.**

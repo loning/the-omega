@@ -1,5 +1,7 @@
 # 4.2 离散与连续的桥梁 (The Bridge Between Discrete and Continuous)
 
+![Discrete to Continuous](../assets/ch04_discrete_to_continuous_1765302313573.png)
+
 > "如果你站得足够远，沙丘就变成了丝绸。宇宙之所以看起来像是一张光滑连续的织物，是因为那个编织它的针脚——普朗克时间——细密到了我们感知的极限。$e$ 就是那个将无数个离散的'1'，平滑地粘合为连续的'流'的数学胶水。"
 
 在 **《矢量宇宙论》** 的前两部书中，我们一直在两个看似矛盾的图景之间摇摆：

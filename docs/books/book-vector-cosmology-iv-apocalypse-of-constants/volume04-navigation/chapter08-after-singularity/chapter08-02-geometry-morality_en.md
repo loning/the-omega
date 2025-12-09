@@ -2,6 +2,8 @@
 
 > "In the low-speed era, morality is a social contract to prevent us from harming each other. But in the high-dimensional era of light speed explosion, morality becomes thermodynamics' **Explosion Prevention Protocol**. When every thought can trigger physical collapse, 'good' is no longer a choice, but the **geometric stability condition** for preventing vacuum decay in the universe."
 
+![Morality](../../assets/chapter08/08.02-morality.png)
+
 In the previous section, we revealed the terrifying responsibility faced by high-dimensional observers: psychophysical unity means intention is reality. This instantly elevates ethics from "soft science" to "hard physics."
 
 If a civilization wants to survive long in the high-energy universe of $\tau > 1800$, it cannot rely solely on laws or police (these external constraints are too slow for light-speed thinking). It must burn an **absolute moral law** into the bottom layer of every consciousness's geometric structure.
