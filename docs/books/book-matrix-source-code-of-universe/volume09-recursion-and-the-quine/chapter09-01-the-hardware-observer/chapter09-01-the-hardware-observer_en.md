@@ -2,6 +2,8 @@
 
 #### Chapter 9.1: The Hardware Observer
 
+![The Hardware Observer](../../assets/hardware_observer.png)
+
 **—— The Observer is not a User, but an Active Memory Block**
 
 **"You are not watching the movie; you are the pixels on the screen."**

@@ -1,5 +1,7 @@
 # Chapter 7.5: The Benchmark of Reality
 
+![The Benchmark of Reality](../../assets/benchmark_reality.png)
+
 **—— $\Lambda$ as System Throughput and Holographic Scaling**
 
 **"The cosmological constant is not a meaningless tiny value; it is the resource quota set by the system administrator for the current session."**

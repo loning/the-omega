@@ -1,5 +1,7 @@
 # Chapter 7.2: Quantum Walks
 
+![Quantum Walks](../../assets/quantum_walks.png)
+
 **—— Prediction: Experimental Verification of the Information-Velocity Circle**
 
 **"Simulating the universe's underlying logic on silicon chips, verifying the projection of the Pythagorean theorem in information space."**

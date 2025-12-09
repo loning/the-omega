@@ -1,5 +1,7 @@
 # Chapter 7.1: The Simulation Hypothesis
 
+![The Simulation Hypothesis](../../assets/simulation_hypothesis.png)
+
 **—— If the Substrate is QCA, Is the Universe a Computer?**
 
 **"Physical laws are not truths carved in stone; they are algorithms running on hardware."**

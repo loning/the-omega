@@ -1,5 +1,7 @@
 # Chapter 8.1: Biological Optimization
 
+![Biological Optimization](../../assets/biological_optimization.png)
+
 **—— Local Algorithms for Reverse Entropy Flow**
 
 **"Life is not a substance; it is an error-checking process the system runs to combat data decay."**

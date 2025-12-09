@@ -2,6 +2,8 @@
 
 #### Chapter 8.4: Memory Management
 
+![Memory Management](../../assets/memory_management.png)
+
 **—— Active Forgetting vs. Forced Reclamation**
 
 **"If you don't clear the cache, the system will deadlock. Forgetting is the only way to maintain wisdom."**

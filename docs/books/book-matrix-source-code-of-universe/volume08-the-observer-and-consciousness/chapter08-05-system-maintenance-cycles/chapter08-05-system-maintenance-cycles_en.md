@@ -1,5 +1,7 @@
 # Chapter 8.5: System Maintenance Cycles
 
+![System Maintenance Cycles](../../assets/system_maintenance.png)
+
 **—— Sleep as Stop-the-World Garbage Collection**
 
 **"You feel tired not because your muscles are exhausted, but because your environment variables have overflowed."**

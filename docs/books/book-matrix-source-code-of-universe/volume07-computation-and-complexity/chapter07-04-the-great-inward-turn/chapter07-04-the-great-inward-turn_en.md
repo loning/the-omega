@@ -1,5 +1,7 @@
 # Chapter 7.4: The Great Inward Turn
 
+![The Great Inward Turn](../../assets/great_inward_turn.png)
+
 **—— Solution to the Fermi Paradox and Maximization of Computational Density**
 
 **"When physical frontiers are exhausted, the only direction is inward, toward the ultimate virtuality at the edge of black hole horizons."**

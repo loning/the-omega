@@ -2,6 +2,8 @@
 
 #### Chapter 9.2: The Quine Loop
 
+![The Quine Loop](../../assets/quine_loop.png)
+
 **—— The Universe as a Self-Reproducing Program**
 
 **"The ultimate purpose of code is not to compute results, but to output its own source code."**

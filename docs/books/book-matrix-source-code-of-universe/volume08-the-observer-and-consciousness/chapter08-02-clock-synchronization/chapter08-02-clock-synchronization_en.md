@@ -1,5 +1,7 @@
 # Chapter 8.2: Clock Synchronization
 
+![Clock Synchronization](../../assets/clock_synchronization.png)
+
 **—— Entanglement-Induced Local Clock Slowing Effect**
 
 **"Connection has a cost. When you try to synchronize with the world, your own time slows down."**

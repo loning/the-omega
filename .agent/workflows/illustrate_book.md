@@ -26,10 +26,15 @@ This workflow outlines the process for illustrating a book project using AI-gene
 1.  **Read Content**:
     - Use `view_file` to read the content of the target chapter or section.
     - Identify core themes, key metaphors, and visualizable concepts (e.g., "Gravity as Slope", "Observer as Seed").
+    - **Identify Complex Concepts**: Specifically look for complex mathematical formulas, abstract theories, or dense logic that requires visual decoding.
 
 2.  **Design Prompts**:
-    - Create a consistent style guide (e.g., "Abstract scientific illustration, clean lines, golden/blue color palette, 8k resolution").
-    - Draft specific prompts for each file, combining the style guide with the specific concept.
+    - **Style Guide**: Create a consistent style guide (e.g., "Abstract scientific illustration, clean lines, golden/blue color palette, 8k resolution").
+    - **General Prompts**: Draft specific prompts for each file, combining the style guide with the specific concept.
+    - **Explanatory Images**: For identified complex concepts/formulas, design "Diagrammatic" or "Explanatory" prompts.
+        - *Goal*: Explain the logic/structure visually.
+        - *Keywords*: Use terms like "infographic," "diagram," "schematic," "exploded view," "visual breakdown," "annotated structure."
+        - *Detail*: Describe the elements of the formula/concept metaphorically if exact text rendering is impossible. e.g., "Represent the equation terms as balancing weights on a scale."
     - *Tip*: Keep prompts concise but descriptive.
 
 # Phase 3: Execution Loop (Per Batch)

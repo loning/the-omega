@@ -2,6 +2,8 @@
 
 #### Chapter 7.3: The Scrambling Protocol
 
+![The Scrambling Protocol](../../assets/scrambling_protocol.png)
+
 **—— Black Hole Accretion as Computational Complexity Merging**
 
 **"Black holes are the fastest hash functions in the universe. They devour structure, spit out randomness, and redirect pointers to the surface."**

@@ -1,5 +1,7 @@
 # Chapter 8.6: Process Termination & Recycling
 
+![Process Termination & Recycling](../../assets/process_termination.png)
+
 **—— Death as Decentralization and Return to the Object Pool**
 
 **"Death is not the annihilation of information, but a phase transition from 'exclusive mode' to 'broadcast mode'."**

@@ -2,6 +2,8 @@
 
 #### Chapter 9.4: The Transcendental Triad
 
+![The Transcendental Triad](../../assets/transcendental_triad.png)
+
 **—— The Unified Architecture of Wormholes, Fluctuations, and Consciousness**
 
 **"Consciousness is global synchronization constructed through micro-wormhole networks in the ocean of quantum fluctuations."**

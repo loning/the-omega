@@ -2,6 +2,8 @@
 
 #### Chapter 8.3: Relative Horizons
 
+![Relative Horizons](../../assets/relative_horizons.png)
+
 **—— Observer Permissions and View Differences**
 
 **"A firewall is an insurmountable boundary for ordinary users, but for Root administrators, it's just a log checkpoint."**

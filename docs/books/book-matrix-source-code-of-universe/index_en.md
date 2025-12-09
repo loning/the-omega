@@ -1,5 +1,7 @@
 # THE MATRIX: SOURCE CODE OF THE UNIVERSE
 
+![Cover Image](assets/cover.png)
+
 **Subtitle: A Geometric Reconstruction and Capacity Allocation of Physical Laws**
 
 ## Version Information

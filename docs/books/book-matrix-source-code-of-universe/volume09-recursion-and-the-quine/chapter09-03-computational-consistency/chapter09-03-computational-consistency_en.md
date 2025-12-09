@@ -2,6 +2,8 @@
 
 #### Chapter 9.3: Computational Consistency
 
+![Computational Consistency](../../assets/computational_consistency.png)
+
 **—— Why are Physical Laws the Way They Are?**
 
 **"It's not because God chose beauty, but because the system chose not to crash."**
