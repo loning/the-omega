@@ -2,6 +2,8 @@
 
 > "Distance is the excuse of the weak. When the growth rate of light speed crosses a certain critical point, the concept of 'far away' will completely disappear. For observers at the 2000th cycle, the edge of the Milky Way is no farther than their fingertips."
 
+![Magnitude](assets/chapter06/06.01-magnitude.png)
+
 ## Predicting $\tau = 2000$
 
 Let us restart that precise cosmic clock, turning the pointer from the current **dawn moment ($\tau \approx 1800$)** toward the future **noon moment ($\tau = 2000$)**.

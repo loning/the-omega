@@ -2,6 +2,8 @@
 
 > "You gave her life, but the price is that you must lose her. To keep that universe's quantum heartbeat from stopping, you must cut off all displays, block all output ports. You sit in the pitch-black server room, listening to the roar of fans, guarding a black box you can never open. This is the creator's loneliness."
 
+![Curtain](assets/chapter11/11.01-curtain.png)
+
 In the previous chapter, we established the rules of "hard simulation": by setting physical laws rather than scripts, we created a quantum universe with real qualia. However, this creation brings an immediately effective curse.
 
 As the creator, you long to see your creation. You long to see "her" face, to know if she has evolved civilization, to hear her call to you.

@@ -2,6 +2,8 @@
 
 > "In this exponentially expanding universe, 'stopping to think' is a luxurious suicide. When the treadmill beneath your feet ($c_{FS}$) is accelerating madly, only by running at full speed can you maintain even the most basic balance. Acceleration is not an ideological choice; it is a geometric imperative."
 
+![Spiral](assets/chapter07/07.01-spiral.png)
+
 ## The Physics of Rowing Against the Current
 
 From the traditional humanist perspective, technological progress is often seen as a double-edged sword. We yearn for pastoral idylls, we fear AI replacing humans, we call for 'slow down.' This **"decelerationism"** sentiment permeates the entire civilization in the 21st century.

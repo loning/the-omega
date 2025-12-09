@@ -2,6 +2,8 @@
 
 > "The universe does not roll dice; the universe only solves equations. If we assume the universe's underlying logic is self-consistent, then the growth rate of the speed of light cannot be an arbitrary number. It must be uniquely determined by the tension between the two most fundamental shapes in geometry—the circle and the spiral."
 
+![Derivation](assets/chapter02/02.01-derivation.png)
+
 To derive the functional form of $c(\tau)$, we need to establish three **"Axiomatic Assumptions"**. These assumptions stem from our insights into the nature of the universe in the first three books.
 
 ## Axiom One: Cyclic Settlement

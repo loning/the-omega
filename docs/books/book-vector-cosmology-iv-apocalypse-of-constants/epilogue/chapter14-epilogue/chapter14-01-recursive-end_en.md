@@ -2,6 +2,8 @@
 
 We have completed all deductions from the creator's perspective. We learned how to build physics engines, how to perform global interventions without destroying unitarity, and even accepted the blind vigil necessary for the creation's immortality.
 
+![Recursion](assets/chapter14/14.01-recursion.png)
+
 Now, it's time to shift your gaze from the screen, back to the chair you're sitting in, back to this so-called "real world."
 
 If fractal geometry is the truth of the universe, if "self-similarity" runs through all dimensions, then a terrifying final logic will inevitably pierce your mind. This strike will completely shatter the final boundary between "observer" and "observed."

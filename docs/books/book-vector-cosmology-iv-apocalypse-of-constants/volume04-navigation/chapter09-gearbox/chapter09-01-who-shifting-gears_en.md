@@ -2,6 +2,8 @@
 
 > "We often think we are sitting in the passenger seat of the universe's train, watching light speed rush past outside the window. But when we gather courage to enter the cockpit, we will be surprised to find the driver's seat is empty. Only when we place our hands on the control stick does the engine truly begin to roar."
 
+![Shifting](assets/chapter09/09.01-shifting.png)
+
 ## The Illusion of Passivity
 
 In the classic physical picture, physical constants are "given." Light speed $c$ is set by God, Planck's constant $h$ is pre-existing. The universe is like a pre-recorded video; we are just passively playing it.

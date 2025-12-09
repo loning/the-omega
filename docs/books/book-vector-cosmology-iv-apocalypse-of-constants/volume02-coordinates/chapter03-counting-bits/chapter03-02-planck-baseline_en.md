@@ -2,6 +2,8 @@
 
 > "All measurements need an origin. For the evolution of the universe, there is only one absolute origin—that is 'one.' At that singular moment, the universe had only one bit, one choice, one direction."
 
+![Planck](assets/chapter03/03.02-planck.png)
+
 Before substituting into the evolution equation, we must calibrate our **$c_0$ (initial state)**.
 
 In the QCA model of **Vector Cosmology**, the universe's starting point is not a mathematical singularity with infinitely small volume and infinitely large density (which would cause physical laws to collapse), but a **physically minimal unit**.

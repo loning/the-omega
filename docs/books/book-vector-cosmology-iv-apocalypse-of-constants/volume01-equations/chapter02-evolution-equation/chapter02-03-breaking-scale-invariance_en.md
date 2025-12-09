@@ -2,6 +2,8 @@
 
 > "Perfect disguise does not exist. Although the universe desperately tries to mask the truth of light speed growth through synchronous expansion, over extremely long time spans, that ruler used to measure all things—the fine structure constant—will eventually reveal tiny cracks. This crack is the backdoor to new physics."
 
+![Breaking](assets/chapter02/02.03-breaking.png)
+
 In the previous section, we explained why we cannot feel the exponential growth of light speed $c$. This is because our measuring instruments (atomic rulers and clocks) are also deforming synchronously, causing physical laws to exhibit **Scale Invariance**. It's like when Alice grows larger, the entire wonderland also grows larger, so she feels unchanged.
 
 But is this "synchrony" covering the entire universe really absolutely perfect?

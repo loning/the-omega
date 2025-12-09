@@ -2,6 +2,8 @@
 
 > "When speed is fast enough to ignore distance, 'position' is no longer a physical quantity, but just a memory address. In the universe of $\tau = 2000$, Newton's mechanics and Einstein's relativity are not overthrown; they are 'dimensionally reduced.' They become outdated syntax in that grander holographic operating system, applicable only to low-speed subroutines."
 
+![Holographic](assets/chapter06/06.02-holographic.png)
+
 In the previous section, we predicted that at $\tau = 2000$, effective light speed will explode by $10^{13}$ times. This means the Milky Way is causally compressed into a single quantum state with instant response capability.
 
 This order-of-magnitude change is not merely parameter adjustment; it is **physical picture reconstruction**.

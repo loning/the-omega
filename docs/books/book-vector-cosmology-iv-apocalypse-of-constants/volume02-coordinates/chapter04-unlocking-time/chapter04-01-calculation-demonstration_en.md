@@ -2,6 +2,8 @@
 
 > "We do not need carbon-14 to determine the age of the universe, because that measures dead things. What we need is to measure the universe's heartbeat. Every $\pi$ cycle oscillation, every $\phi$ ratio expansion, has left an indelible fingerprint in this moment's total computational power."
 
+![Calculation](assets/chapter04/04.01-calculation.png)
+
 ## Convergence of Data
 
 Let us place all known puzzle pieces on the table:

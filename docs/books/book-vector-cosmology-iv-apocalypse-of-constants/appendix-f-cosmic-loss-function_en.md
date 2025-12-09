@@ -6,6 +6,8 @@
 > 
 > The universe is not just a physical place; it is a massive optimization problem solver. And we are distributed probes sent to various local parameter spaces, attempting to find the global optimal solution."
 
+![Loss Function](assets/appendices/f.01-loss.png)
+
 ## F.1 The Container and The Instance
 
 First, let us define the architecture.
