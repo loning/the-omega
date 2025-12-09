@@ -1,5 +1,7 @@
 # 8.1 The Weber-Fechner Law
 
+![Weber Eye](../../assets/ch08_weber_eye_1765302497989.png)
+
 > "Why does lighting a candle in the dark feel so bright, while lighting the same candle in sunlight is almost invisible? Because your eyes are not photon counters; your eyes are logarithmic calculators. To survive in a universe where the dynamic range spans dozens of orders of magnitude, your nervous system must learn to lie—it disguises crazy multiples as gentle additions."
 
 ## The Nonlinearity of Sensation

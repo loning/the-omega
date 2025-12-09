@@ -1,5 +1,7 @@
 # 5.1 Wick Rotation
 
+![Wick Rotation](../../assets/ch05_wick_rotation_1765302332460.png)
+
 > "If we rotate the time axis 90 degrees on the complex plane, that quantum world that was oscillating incessantly suddenly quiets down and freezes into a statistical thermodynamic world. This is not a mathematical game; this is the geometric secret passage to grand unification."
 
 ## Coincidence of Two Formulas?

@@ -1,5 +1,7 @@
 # Appendix D: The Evolution Equation and Cosmic Coordinates
 
+![Cosmic Gears](../../assets/app_d_cosmic_gears_1765303291425.png)
+
 At the end of the main text of *Vector Cosmology III*, we described the universe as a self-consistent closed loop woven from natural constants. However, this is not merely a static philosophical picture. If we place this picture into dynamic evolution, these four constants—**$c$ (speed of light/budget), $\pi$ (circle/inertia), $\phi$ (spiral/growth), $e$ (generator)**—will mesh together to form a precise cosmic clock.
 
 This appendix will derive the operating equation of this clock, and based on the currently observed physical constants, calculate the precise coordinates of human civilization at this moment in the cosmic spiral.

@@ -1,5 +1,7 @@
 # 9.1 三位一体的闭环 (The Trinitarian Closed Loop)
 
+![Trinity Loop](../../assets/ch09_trinity_loop_1765303113410.png)
+
 > "$\pi$ 给了宇宙以形状，$\varphi$ 给了宇宙以方向，而 $e$ 给了宇宙以生命。它们不是三个神，它们是同一个几何真神的三个侧面。宇宙不需要解释，因为它是由这就这三个常数编织而成的自洽闭环。"
 
 ## 第一侧面：$\pi$ —— 宇宙的【身】 (The Body: Structure)

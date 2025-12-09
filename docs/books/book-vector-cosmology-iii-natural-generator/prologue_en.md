@@ -1,5 +1,7 @@
 # Prologue: Euler's God Formula
 
+![Euler's Map](assets/prologue_euler_map_1765302100917.png)
+
 In the first two books of **Vector Cosmology**, we have climbed two perilous peaks.
 
 The first book, *The Conservation of the Circle*, led us to appreciate the static majesty of **$\pi$**. We saw how the universe is enclosed in a perfect geometric circle, constrained by Pythagorean conservation laws, where all things are merely phase counting.

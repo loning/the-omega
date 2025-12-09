@@ -1,5 +1,7 @@
 # 3.1 The Power of the Instant
 
+![Instant Power](../../assets/ch03_instant_power_1765302212917.png)
+
 > "On the curve of $e^x$, you cannot find a stationary point. Because the height of every point precisely defines its slope. At the foundation of the universe, 'what I am' and 'where I am going' are different expressions of the same question."
 
 ## The Miracle of Derivatives

@@ -1,5 +1,7 @@
 # 1.2 Imaginary is Orthogonal
 
+![Imaginary Rotation](../../assets/ch01_imaginary_rotation_1765302158631.png)
+
 > "If the universe were merely an exponential function, it would have long since self-destructed. That unassuming imaginary number $i$ in the exponent is physics' greatest brake pad. It forcibly twists the direction of growth, taming a destined collapse into an eternally elegant rotation."
 
 In the previous section, we praised the compound interest mechanism of $e$. It revealed that the universe is a "self-driven" system. But if this were the complete truth, we would face a great trouble.
