@@ -1,5 +1,7 @@
 # 1.1 存在的租金 (The Rent of Existence)
 
+![Rent of Existence](../../assets/chapter01-payment-gateway/ch01-01-rent-of-existence.png)
+
 > "并没有免费的'我'。你以为你拥有你的身体，拥有你的意识。但实际上，你只是在租用它们。每一秒钟的心跳，都是你在向热力学柜台支付的一笔租金。一旦停止支付，你的结构就会被宇宙收回，熔化为背景的噪音。"
 
 ## 结构的维护费

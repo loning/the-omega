@@ -1,5 +1,7 @@
 # 2.1 稀缺性 (Scarcity)
 
+![Opportunity Cost](../../assets/chapter02-anchoring-of-value/ch02-01-opportunity-cost.png)
+
 > "如果黄金像沙子一样多，没人会弯腰去捡它。时间的价值，并不在于它有多长，而在于相对于那个浩瀚无垠的'未被选择的可能性'，被我们真正活出来的'现实'是多么的微乎其微。稀缺，是几何学赋予存在的最高特权。"
 
 ## 膨胀中的匮乏

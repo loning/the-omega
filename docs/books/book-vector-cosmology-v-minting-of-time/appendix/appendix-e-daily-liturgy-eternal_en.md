@@ -1,5 +1,7 @@
 # Appendix E: Daily Liturgy of the Eternal
 
+![Liturgy Sunrise](../assets/appendix/app-e-liturgy-sunrise.png)
+
 At the end of the **Vector Cosmology** pentology, we no longer need more theory; we need **practice**.
 
 If time is minted, then ``life'' is no longer an auto-playing process, but a **precision craft**. Every awakened observer (alchemist) needs a set of **``Standard Operating Procedures'' (SOP)** that can resist daily entropy increase and maintain $v_{int}$ structural stability.

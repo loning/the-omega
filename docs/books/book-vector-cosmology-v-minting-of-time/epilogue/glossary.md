@@ -1,5 +1,7 @@
 # 术语表：铸造者的词典 (Glossary: The Lexicon of the Minters)
 
+![Glossary Library](../assets/epilogue/glossary-library.png)
+
 **《矢量宇宙论 V：时间的铸造》** 将物理学从"描述自然"提升到了"创造价值"的高度。作为五部曲的终章，它引入了一系列融合了经济学、博弈论与存在主义的全新概念。为了帮助读者理解这个关于"金"与"永恒"的终极模型，本术语表对书中的核心词汇进行了基于"铸造者"视角的重新定义。
 
 ## 1. 时间与价值 (Time & Value)

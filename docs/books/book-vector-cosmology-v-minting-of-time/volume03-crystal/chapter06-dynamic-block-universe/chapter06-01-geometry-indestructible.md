@@ -1,5 +1,7 @@
 # 6.1 几何不灭 (Geometry is Indestructible)
 
+![Crystal Growth](../../assets/chapter06-dynamic-block-universe/ch06-01-crystal-growth.png)
+
 > "你以为你的初吻消失了吗？你以为秦始皇的军队消失了吗？不。在四维时空的几何体中，它们就像琥珀里的昆虫一样，被永久地封存在了各自的坐标点上。唱针虽然移走了，但这并不代表唱片上的沟槽被抹平了。"
 
 ## 坍缩即铸造

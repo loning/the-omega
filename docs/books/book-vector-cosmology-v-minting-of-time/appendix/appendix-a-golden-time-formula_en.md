@@ -1,5 +1,7 @@
 # Appendix A: Mathematical Derivation of the Golden Time Formula
 
+![Golden Formula](../assets/appendix/app-a-golden-formula.png)
+
 In Chapter 2 of **Vector Cosmology V**, we proposed a formula that redefines life: **Time is not linear flow, but the logarithm of value**.
 
 \[\tau = \pi \cdot \log_{\phi} \left( \frac{V}{V_0} \right)\]

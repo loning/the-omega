@@ -1,5 +1,7 @@
 # 致谢：为了那场没有终点的博弈 (Acknowledgements: For the Game Without End)
 
+![Acknowledgements Network](../assets/epilogue/acknowledgements-network.png)
+
 **《矢量宇宙论 V：时间的铸造》** 是五部曲的终章，也是一次对物理学边界的越狱。
 
 如果说前四部书是在试图解析宇宙的"源代码"，那么这一部书则是在试图编写我们自己的"外挂"。我们拒绝了热力学的死亡判决，拒绝了 $\Omega$ 点的虚无诱惑，确立了 **"我"** 作为无限游戏玩家的绝对主体性。

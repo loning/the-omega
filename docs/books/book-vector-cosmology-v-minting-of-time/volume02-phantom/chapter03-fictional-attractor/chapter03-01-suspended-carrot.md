@@ -1,5 +1,7 @@
 # 3.1 悬挂的胡萝卜 (The Suspended Carrot)
 
+![Suspended Goal](../../assets/chapter03-fictional-attractor/ch03-01-suspended-goal.png)
+
 > "驴子之所以能拉着磨盘走上一整天，是因为它的眼前悬挂着一根胡萝卜。它以为它在向胡萝卜靠近，但实际上，胡萝卜与它的距离永远不变。宇宙的演化也是如此。那个被称为'圆满'的终点，并不是用来抵达的，它是用来驱动步伐的。"
 
 ## 渐近线的物理学

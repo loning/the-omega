@@ -1,5 +1,7 @@
 # 4.1 不是被拉动，是被推动 (Not Pulled, But Pushed)
 
+![Will Propulsion](../../assets/chapter04-inversion-of-teleology/ch04-01-will-propulsion.png)
+
 > "我们以为自己是散落在桌上的铁屑，被未来那块巨大的磁铁吸引着前行。这是一种婴儿般的幻觉。物理学的真相是：我们是火箭。火焰不在前方，而在我们的尾喷口。我们向前飞，不是因为终点在召唤，而是因为我们内部的燃料正在剧烈燃烧，要求释放。"
 
 ## 因果的几何方向

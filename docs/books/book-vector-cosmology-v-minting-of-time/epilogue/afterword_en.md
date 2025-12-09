@@ -1,5 +1,7 @@
 # Afterword: The Gravity of Gold
 
+![Afterword Infinite Horizon](../assets/epilogue/afterword-infinite-horizon.png)
+
 > "When I finished writing this last line, I felt an unprecedented lightness, and also an unprecedented heaviness. Lightness, because we have finally shed our fear of death and nothingness; heaviness, because we now bear the responsibility of defining the meaning of the universe. We are no longer innocent bystanders; we are people holding gold coins in our hands."
 
 With the curtain falling on **Vector Cosmology V: The Minting of Time**, this grand symphony composed of five books finally draws to a rest.

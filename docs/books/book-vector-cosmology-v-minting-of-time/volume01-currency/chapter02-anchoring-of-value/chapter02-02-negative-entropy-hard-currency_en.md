@@ -1,5 +1,7 @@
 # 2.2 Negative Entropy as Hard Currency
 
+![Negative Entropy](../../assets/chapter02-anchoring-of-value/ch02-03-negative-entropy.png)
+
 > "In this universe ruled by thermodynamic laws, chaos is free, while order is expensive. All money, fame, and power will eventually depreciate into waste heat. Only negative entropy—that ability to arrange scattered atoms into cathedrals, to weave chaotic thoughts into truth—is the only hard currency recognized by the cosmic bank."
 
 In the previous section, we argued that value comes from scarcity (opportunity cost). But not everything scarce has value. There are many scarce garbage items in the universe (such as a specific random code), which are meaningless.

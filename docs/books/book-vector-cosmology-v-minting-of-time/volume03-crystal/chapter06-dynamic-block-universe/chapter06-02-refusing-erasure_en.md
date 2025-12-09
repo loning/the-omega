@@ -1,5 +1,7 @@
 # 6.2 Refusing Erasure
 
+![Immutable Past](../../assets/chapter06-dynamic-block-universe/ch06-02-immutable-past.png)
+
 > "Materialists say: death is like a lamp extinguished. But the first law of quantum mechanics is: information conservation. In this universe, nothing can be truly 'deleted.' You have just retreated from the spotlight at the center of the stage to the shadows of the stage background. You have not disappeared; you have only diffused."
 
 ## The Umbrella of Unitarity

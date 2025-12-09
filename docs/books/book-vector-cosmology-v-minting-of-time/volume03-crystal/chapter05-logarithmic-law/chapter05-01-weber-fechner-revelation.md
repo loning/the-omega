@@ -1,5 +1,7 @@
 # 5.1 韦伯-费希纳的启示 (The Revelation of Weber-Fechner)
 
+![Logarithmic Shield](../../assets/chapter05-logarithmic-law/ch05-01-logarithmic-shield.png)
+
 > "为什么在孩童时期，一个暑假漫长得像一辈子；而在暮年，十年光阴却像指间流沙？这不仅是心理学，这是几何学。我们的意识是一把对数尺，它不仅压缩了光和声音，它也压缩了时间本身。正是这种压缩，让我们在面对指数爆炸的宇宙时，依然能保持一种线性的尊严。"
 
 ## 生理学的数学签名

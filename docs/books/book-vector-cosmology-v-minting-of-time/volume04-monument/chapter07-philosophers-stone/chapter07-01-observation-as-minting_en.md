@@ -1,5 +1,7 @@
 # 7.1 Observation as Minting
 
+![Minting Moment](../../assets/chapter07-philosophers-stone/ch07-01-minting-moment.png)
+
 > "The philosopher's stone that alchemists seek is not a powder that can turn lead into gold. It is a **'perspective'**. When you gaze at chaos with absolute certainty, chaos is forced to collapse into order. Your decision is that gaze that turns stone into gold."
 
 ## The Geometry of Strong Measurement

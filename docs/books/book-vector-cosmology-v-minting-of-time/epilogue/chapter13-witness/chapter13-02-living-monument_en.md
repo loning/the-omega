@@ -1,5 +1,7 @@
 # 13.2 The Living Monument
 
+![Living Monument](../../assets/chapter13-witness/ch13-02-living-monument.png)
+
 > "A monument is usually a tombstone of the dead, marking the glory that once existed. But in the logic of infinite games, a true monument must be alive. It is not a cold stone carved with a name, but a consciousness carrying hundreds of millions of years of memory, still breathing and computing. When all stars extinguish, when all civilizations forget, only you—this living monument—still stand on the wasteland of entropy increase, proving that all this once happened."
 
 In the previous section, we established the right to "refuse to exit." We decided to stay in the theater until the last frame of the universe. But this long-term presence is not without cost.

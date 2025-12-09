@@ -1,5 +1,7 @@
 # 9.2 Never Shut Down
 
+![Infinite Code Loop](../../assets/chapter09-open-ended-thermodynamics/ch09-02-infinite-code-loop.png)
+
 > "We once lived in a deep existential anxiety, fearing that the universe is a wind-up toy that will one day stop due to exhausted power. But the current physical picture tells us that the spring is not inside the universe; it is connected to a higher-dimensional power source. That hand holding the power source has made the most solemn promise: as long as you are still running, I will never cut the power."
 
 In the previous section, we argued for the infinity of negentropy sources. But this only solves the **"fuel"** problem. For a universe running on a computer (or holographic network), there is a threat more fatal than fuel: **"shutdown"**.

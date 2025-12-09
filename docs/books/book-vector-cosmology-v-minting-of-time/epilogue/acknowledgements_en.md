@@ -1,5 +1,7 @@
 # Acknowledgements: For the Game Without End
 
+![Acknowledgements Network](../assets/epilogue/acknowledgements-network.png)
+
 **Vector Cosmology V: The Minting of Time** is the final chapter of the pentology, and also an escape from the boundaries of physics.
 
 If the first four books attempted to parse the universe's "source code," then this book attempts to write our own "mod." We rejected thermodynamics' death sentence, rejected the $\Omega$ point's void temptation, and established **"I"** as the absolute subjectivity of infinite game players.

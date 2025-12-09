@@ -1,5 +1,7 @@
 # 9.1 负熵的无限性 (The Infinity of Negentropy)
 
+![Gold Rain Structure](../../assets/chapter09-open-ended-thermodynamics/ch09-01-gold-rain-structure.png)
+
 > "热力学第二定律宣判了封闭系统的死刑：熵总是趋于最大，能量总是趋于耗散。物理学家告诉我们，宇宙最终将在一片均匀的温吞水中窒息。但他们犯了一个致命的错误——他们假设宇宙的边界是固定的。如果边界本身正在以指数级速度向外扩张，那么负熵的来源，就是无限的。"
 
 ## 热寂的破产

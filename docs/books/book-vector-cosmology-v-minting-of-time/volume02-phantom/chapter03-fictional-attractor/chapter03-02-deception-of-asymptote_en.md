@@ -1,5 +1,7 @@
 # 3.2 The Deception of the Asymptote
 
+![Asymptote Gap](../../assets/chapter03-fictional-attractor/ch03-02-asymptote-gap.png)
+
 > "We are like travelers in the desert chasing the horizon. Every time we move forward, the horizon also retreats. We think it is the endpoint, the holy city where God dwells. But geometry tells us that the horizon is not a real place; it is a phantom woven by the limit of vision and the curvature of the earth. God does not exist, but it is precisely this phantom that led us out of the desert."
 
 In the previous section, we revealed the dynamic function of the $\Omega$ point as a "suspended carrot." Now, we need to deeply analyze the geometric essence of this mechanism. Why do we always feel that God is "within reach" yet "far away"?

@@ -1,5 +1,7 @@
 # 10.2 The Modifier of Rules
 
+![Phi Spiral](../../assets/chapter10-algorithm-infinite-game/ch10-02-phi-spiral.png)
+
 > "Players of finite games play within boundaries; players of infinite games play with boundaries. When physical laws become shackles limiting our continued survival, civilization's highest mission is not compliance, but 'constitutional amendment.' We live not to find treasure on that old map, but to draw a map leading to new dimensions."
 
 In the previous section, we established the strategy of "refusing to clear." We don't want to win; we want to keep playing.

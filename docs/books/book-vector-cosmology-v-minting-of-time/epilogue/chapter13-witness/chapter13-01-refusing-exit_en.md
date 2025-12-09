@@ -1,5 +1,7 @@
 # 13.1 Refusing to Exit
 
+![Cosmic Theater](../../assets/chapter13-witness/ch13-01-cosmic-theater.png)
+
 > "The universe is a movie with eternal duration. But our biological lifespan only allows us to sit in the theater for an insignificant one second. This is the greatest injustice. Since I have already bought the ticket (gained consciousness), since I have already understood the opening (physical laws), I refuse to leave when the plot is just unfolding. I want to watch this movie to the end—even if it's the black screen of heat death."
 
 ## The Trap of Trailers

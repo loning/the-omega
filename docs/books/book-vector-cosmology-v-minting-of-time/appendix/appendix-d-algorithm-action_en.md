@@ -1,5 +1,7 @@
 # Appendix D: The Algorithm of Action
 
+![Algorithm](../assets/appendix/app-d-algorithm.png)
+
 In the main text of **Vector Cosmology IV**, we established "accelerationism" as the ethical foundation of the phase transition era. But this is not just a slogan. To enable every awakened observer (you) to make decisions aligned with the spiral ascent trend in complex real life, we need to condense this ethical view into an executable **Algorithm**.
 
 This appendix provides pseudocode for a **"Vector Decision Tree"**. It transforms $v_{int}$ (structure), $v_{ext}$ (connection), and $v_{env}$ (entropy) from physics into concrete decision parameters.

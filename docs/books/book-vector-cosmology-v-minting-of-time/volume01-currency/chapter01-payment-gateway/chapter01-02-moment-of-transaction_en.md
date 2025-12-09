@@ -1,5 +1,7 @@
 # 1.2 The Moment of Transaction
 
+![Transaction Moment](../../assets/chapter01-payment-gateway/ch01-02-transaction-moment.png)
+
 > "Time is not a continuously flowing river; time is a series of crisp sounds at the cash register. Every time you make a choice, every time you take action, you are making an irreversible transaction: you pay 'possibility' and buy back 'reality.'"
 
 In the previous section, we established "the rent of existence": to maintain life structures, we must passively pay maintenance fees. But this is only the baseline of survival. As alchemists of **"Auric"**, we are more concerned with how to **appreciate**.

@@ -1,5 +1,7 @@
 # 7.2 The Hardness of Spirit
 
+![Spirit Hardness](../../assets/chapter07-philosophers-stone/ch07-02-spirit-hardness.png)
+
 > "Why does gold remain bright and new even after sleeping in the deep sea for a thousand years? Because it refuses to react with oxygen. In the world of thermodynamics, this is the definition of 'immortality.' Great souls are the same. They refuse to chemically react with environmental mediocrity; they maintain a noble inertia."
 
 ## Resisting the Corrosion of $v_{env}$

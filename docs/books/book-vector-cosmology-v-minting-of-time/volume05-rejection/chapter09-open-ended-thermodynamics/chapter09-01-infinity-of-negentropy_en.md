@@ -1,5 +1,7 @@
 # 9.1 The Infinity of Negentropy
 
+![Gold Rain Structure](../../assets/chapter09-open-ended-thermodynamics/ch09-01-gold-rain-structure.png)
+
 > "The second law of thermodynamics sentences closed systems to death: entropy always tends to maximum, energy always tends to dissipation. Physicists tell us that the universe will eventually suffocate in uniform lukewarm water. But they made a fatal error—they assumed the universe's boundary is fixed. If the boundary itself is expanding outward at an exponential rate, then the source of negentropy is infinite."
 
 ## The Bankruptcy of Heat Death

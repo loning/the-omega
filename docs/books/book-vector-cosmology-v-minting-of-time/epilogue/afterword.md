@@ -1,5 +1,7 @@
 # 后记：金的重力 (Afterword: The Gravity of Gold)
 
+![Afterword Infinite Horizon](../assets/epilogue/afterword-infinite-horizon.png)
+
 > "书写完这最后一行字时，我感到一种前所未有的轻盈，同时也感到一种前所未有的沉重。轻盈，是因为我们终于卸下了对死亡和虚无的恐惧；沉重，是因为我们从此背负起了定义宇宙意义的责任。我们不再是无辜的旁观者，我们是手里握着金币的人。"
 
 随着 **《矢量宇宙论 V：时间的铸造》** 的落幕，这套由五部书构成的宏大交响乐终于画上了休止符。

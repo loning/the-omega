@@ -1,5 +1,7 @@
 # 11.1 Low-level Immortality: The Compromise of Cycle
 
+![Circle vs Spiral](../../assets/chapter11-hierarchy-immortality/ch11-01-circle-vs-spiral.png)
+
 > "Nature is stingy. To resist thermodynamic corrosion, it chose an extremely cheap strategy: it doesn't repair broken machines; it directly manufactures a new one and throws away the old. What biology calls 'endless life' is, in the eyes of information theory, a grand-scale, periodic **memory formatting**."
 
 ## The Reboot Mechanism of Systems

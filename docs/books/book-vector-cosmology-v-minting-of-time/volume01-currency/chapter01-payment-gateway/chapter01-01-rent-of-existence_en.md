@@ -1,5 +1,7 @@
 # 1.1 The Rent of Existence
 
+![Rent of Existence](../../assets/chapter01-payment-gateway/ch01-01-rent-of-existence.png)
+
 > "There is no free 'I.' You think you own your body, you own your consciousness. But in reality, you are only renting them. Every heartbeat is a rent payment you make to the thermodynamics counter. Once you stop paying, your structure will be reclaimed by the universe and melted into background noise."
 
 ## The Maintenance Fee of Structure

@@ -1,5 +1,7 @@
 # 11.1 低级永生：循环的妥协 (Low-level Immortality: The Compromise of Cycle)
 
+![Circle vs Spiral](../../assets/chapter11-hierarchy-immortality/ch11-01-circle-vs-spiral.png)
+
 > "大自然是吝啬的。它为了对抗热力学的腐蚀，选择了一种极其廉价的策略：它不修复破损的机器，它直接制造一台新的，然后把旧的扔掉。生物学所谓的'生生不息'，在信息论的眼里，是一场规模宏大的、周期性的**内存格式化**。"
 
 ## 系统的重启机制

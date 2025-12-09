@@ -1,5 +1,7 @@
 # 8.2 The Sublimation of Loneliness
 
+![Empathy Resonance](../../assets/chapter08-only-player/ch08-02-empathy-resonance.png)
+
 > "We fear loneliness because we misunderstand loneliness. From a low-dimensional perspective, loneliness is 'lack'; but from a high-dimensional perspective, loneliness is 'completeness.' When all mirrors are broken, when all others return to the noumenon, you will face the vast void alone. At that moment, what you feel is no longer solitude, but All-One."
 
 In the previous section, we established the geometric fact that "others are me" through mirror theory. While this brings great compassion ethically, it also brings an emotionally difficult corollary: **If there is only me, isn't that too lonely?**

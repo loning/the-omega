@@ -1,5 +1,7 @@
 # 10.1 Refusing to Clear the Game
 
+![Saddle Point Surfing](../../assets/chapter10-algorithm-infinite-game/ch10-01-saddle-point-surfing.png)
+
 > "In finite games, the purpose is to win; in infinite games, the purpose is to keep the game going. For life, 'winning' is an extremely dangerous word. Because in physics, 'winning' means the system has reached the global optimum, and another name for the global optimum is—death."
 
 ## The Trap of Victory: Global Minimum
