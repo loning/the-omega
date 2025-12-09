@@ -1,6 +1,6 @@
 # 附录 C：李代数与指数映射 (Appendix C: Lie Algebras and the Exponential Map)
 
-![Lie Wrapping](../../assets/app_c_lie_wrapping_1765303271466.png)
+![Lie Wrapping](../assets/app_c_lie_wrapping_1765303271466.png)
 
 在《矢量宇宙论 III》的第二卷"生成元"中，我们将哈密顿量 $H$ 描述为宇宙演化的"种子"，将 $e$ 描述为将这颗种子展开为时间长河的"机器"。这一物理图像背后的数学结构，是现代数学中最为宏伟的大厦之一——**李群与李代数 (Lie Groups and Lie Algebras)**。
 

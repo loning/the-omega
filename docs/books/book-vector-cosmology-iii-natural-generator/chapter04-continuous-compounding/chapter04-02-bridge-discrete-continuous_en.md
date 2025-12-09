@@ -1,6 +1,6 @@
 # 4.2 The Bridge Between Discrete and Continuous
 
-![Discrete to Continuous](../../assets/ch04_discrete_to_continuous_1765302313573.png)
+![Discrete to Continuous](../assets/ch04_discrete_to_continuous_1765302313573.png)
 
 > "If you stand far enough away, sand dunes become silk. The universe appears as a smooth continuous fabric because the stitches weaving it—Planck time—are so fine they exceed the limits of our perception. $e$ is the mathematical glue that smoothly bonds countless discrete '1's into a continuous 'flow'."
 

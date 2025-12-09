@@ -1,6 +1,6 @@
 # 6.2 托米塔的炼金术 (Tomita's Alchemy)
 
-![Tomita Alchemy](../../assets/ch06_tomita_alchemy_1765302388187.png)
+![Tomita Alchemy](../assets/ch06_tomita_alchemy_1765302388187.png)
 
 > "古代炼金术士试图从铅中提炼黄金，而现代数学物理学家完成了一项更伟大的壮举：他们从静止的量子态中，提炼出了流动的时光。这不再是魔法，这是托米塔-竹崎理论的严密逻辑。"
 

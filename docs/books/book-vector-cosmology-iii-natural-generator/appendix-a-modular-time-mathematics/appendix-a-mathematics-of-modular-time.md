@@ -1,6 +1,6 @@
 # 附录 A：模时间的数学原理 (Appendix A: The Mathematics of Modular Time)
 
-![Modular Refinery](../../assets/app_a_modular_refinery_1765303236105.png)
+![Modular Refinery](../assets/app_a_modular_refinery_1765303236105.png)
 
 在《矢量宇宙论 III》的正文第 6 章"模流假说"中，我们提出了一个极具颠覆性的物理观点：时间不是外部的参数，而是由量子态本身的纠缠结构所生成的内禀属性。这一观点基于代数量子场论中深奥的 **托米塔-竹崎理论 (Tomita-Takesaki Theory)**。
 

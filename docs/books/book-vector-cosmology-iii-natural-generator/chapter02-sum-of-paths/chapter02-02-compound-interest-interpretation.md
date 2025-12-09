@@ -1,6 +1,6 @@
 # 2.2 最小作用量的复利解释 (The Compound Interest Interpretation of Least Action)
 
-![Stationary Phase](../../assets/ch02_stationary_phase_1765302196563.png)
+![Stationary Phase](../assets/ch02_stationary_phase_1765302196563.png)
 
 > "光子并不是精打细算的会计师，它并不真的去计算哪条路成本最低。它只是一个疯狂的投资者，在所有的路径上都下了注。但只有在'最小作用量'的那条赛道上，它的投资产生了正向的复利，而在其他所有赛道上，收益都相互抵消了。"
 

@@ -1,6 +1,6 @@
 # 3.2 The Generation of Lie Algebra
 
-![Lie Algebra Tangent](../../assets/ch03_lie_algebra_tangent_1765302230654.png)
+![Lie Algebra Tangent](../assets/ch03_lie_algebra_tangent_1765302230654.png)
 
 > "Give me a fulcrum, and I can move the Earth. Give me a generator, and I can rotate the entire universe. Those dazzling symmetries of the macroscopic world—rotation, translation, gauge groups of elementary particles—are actually all folded in an infinitesimal tangent space. You don't need to draw the entire circle; you only need to define the tangent at one point on the circle, and the exponential function $e$ will automatically complete the rest for you."
 

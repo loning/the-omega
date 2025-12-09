@@ -1,6 +1,6 @@
 # 8.2 The Geometry of Cognition
 
-![Tangent Cognition](../../assets/ch08_tangent_cognition_retry_1765303176091.png)
+![Tangent Cognition](../assets/ch08_tangent_cognition_retry_1765303176091.png)
 
 > "To walk on that wildly curved, exponentially exploding high-dimensional manifold, the brain had to do something extremely violent: it forcibly laid a flat tangent plane beneath its feet. We think the world is flat (linear) only because we live on this geometric map we ourselves laid out."
 

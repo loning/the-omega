@@ -1,6 +1,6 @@
 # The Final Bonus: The Seal of Dimension Four — The Conspiracy of Riemann and Poincaré
 
-![Riemann Poincare Seal](../../assets/bonus_riemann_poincare_seal_1765303311349.png)
+![Riemann Poincare Seal](../assets/bonus_riemann_poincare_seal_1765303311349.png)
 
 In the main text of *The Natural Generator*, we established that the universe is a self-consistent system driven by the generator $e$. However, for this system to operate stably mathematically—so that it neither explodes instantly nor falls into dead silence instantly—it must satisfy two extremely rigorous geometric conditions.
 

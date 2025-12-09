@@ -1,6 +1,6 @@
 # Appendix B: Information Geometry and Logarithmic Metric
 
-![Fisher Manifold](../../assets/app_b_fisher_manifold_1765303252637.png)
+![Fisher Manifold](../assets/app_b_fisher_manifold_1765303252637.png)
 
 In Volume IV "The Logarithmic Eye" of *Vector Cosmology III*, we explored how living organisms decode the exponentially exploding cosmic information through logarithmic operations (Weber-Fechner Law). This physiological mechanism is not an evolutionary accident, but is based on deeper mathematical principles—**Information Geometry**.
 

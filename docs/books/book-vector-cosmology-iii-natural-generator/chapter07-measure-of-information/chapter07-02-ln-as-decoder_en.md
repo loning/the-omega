@@ -1,6 +1,6 @@
 # 7.2 $\ln$ as Decoder
 
-![Observer Decoder](../../assets/ch07_observer_decoder_1765302478191.png)
+![Observer Decoder](../assets/ch07_observer_decoder_1765302478191.png)
 
 > "The universe roars with exponential functions, while we listen with logarithmic functions. Without the filter of $\ln$, even the quantum history of a single grain of dust would be enough to shatter our reason. The reason we can see a linearly flowing world is because our brains are precise logarithmic decoding machines."
 

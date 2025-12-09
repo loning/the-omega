@@ -1,6 +1,6 @@
 # 1.2 虚数即正交 (Imaginary is Orthogonal)
 
-![Imaginary Rotation](../../assets/ch01_imaginary_rotation_1765302158631.png)
+![Imaginary Rotation](../assets/ch01_imaginary_rotation_1765302158631.png)
 
 > "如果宇宙只是一个指数函数，它早就应该自我毁灭了。那个在指数上不起眼的虚数 $i$，是物理学中最伟大的刹车片。它强行扭转了增长的方向，将一场注定崩溃的爆炸，驯化成了一场永恒优雅的旋转。"
 

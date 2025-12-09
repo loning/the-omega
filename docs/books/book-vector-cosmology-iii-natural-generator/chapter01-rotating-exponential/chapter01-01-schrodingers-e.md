@@ -1,6 +1,6 @@
 # 1.1 薛定谔的 $e$ (Schrödinger's $e$)
 
-![Continuous Compounding](../../assets/ch01_continuous_compounding_1765302141350.png)
+![Continuous Compounding](../assets/ch01_continuous_compounding_1765302141350.png)
 
 > "为什么宇宙不仅允许时间叠加，还要求这种叠加必须转化为状态的乘积？因为在 $e$ 的逻辑中，每一秒不仅仅是加在上一秒之后，它是从上一秒中'生长'出来的。"
 

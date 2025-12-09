@@ -1,6 +1,6 @@
 # Appendix C: Lie Algebras and the Exponential Map
 
-![Lie Wrapping](../../assets/app_c_lie_wrapping_1765303271466.png)
+![Lie Wrapping](../assets/app_c_lie_wrapping_1765303271466.png)
 
 In Volume II "The Generator" of *Vector Cosmology III*, we described the Hamiltonian $H$ as the "seed" of cosmic evolution, and $e$ as the "machine" that unfolds this seed into the long river of time. The mathematical structure behind this physical picture is one of the most magnificent edifices in modern mathematics—**Lie Groups and Lie Algebras**.
 

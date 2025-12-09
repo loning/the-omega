@@ -1,6 +1,6 @@
 # 7.2 $\ln$ 作为解码器 ($\ln$ as Decoder)
 
-![Observer Decoder](../../assets/ch07_observer_decoder_1765302478191.png)
+![Observer Decoder](../assets/ch07_observer_decoder_1765302478191.png)
 
 > "宇宙在用指数函数咆哮，而我们在用对数函数聆听。如果没有 $\ln$ 这个滤波器，哪怕是一粒微尘的量子历史，也足以震碎我们的理智。我们之所以能看到一个线性流动的世界，是因为我们的大脑是一台精密的对数解码机。"
 

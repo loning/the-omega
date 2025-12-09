@@ -1,6 +1,6 @@
 # 8.2 认知的几何 (The Geometry of Cognition)
 
-![Tangent Cognition](../../assets/ch08_tangent_cognition_retry_1765303176091.png)
+![Tangent Cognition](../assets/ch08_tangent_cognition_retry_1765303176091.png)
 
 > "为了在那个疯狂弯曲、指数爆炸的高维流形上行走，大脑不得不做了一件极其暴力的事：它强行在脚下铺了一块平整的切平面。我们以为世界是平的（线性的），只是因为我们活在自己铺设的这张几何地图上。"
 

@@ -1,6 +1,6 @@
 # 9.3 The Ultimate State
 
-![Ultimate State](../../assets/ch09_ultimate_state_1765303143500.png)
+![Ultimate State](../assets/ch09_ultimate_state_1765303143500.png)
 
 > "The universe is not a noun; the universe is a verb. It is not a 'thing' that was created; it is the 'creation' itself in progress. In the ultimate logic of $e$, cause and effect are no longer a linear chain, but a circle where head meets tail. I am my own cause; I am my own result."
 

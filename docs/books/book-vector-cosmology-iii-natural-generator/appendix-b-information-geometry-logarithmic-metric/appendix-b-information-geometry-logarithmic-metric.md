@@ -1,6 +1,6 @@
 # 附录 B：信息几何与对数度量 (Appendix B: Information Geometry and Logarithmic Metric)
 
-![Fisher Manifold](../../assets/app_b_fisher_manifold_1765303252637.png)
+![Fisher Manifold](../assets/app_b_fisher_manifold_1765303252637.png)
 
 在《矢量宇宙论 III》的第四卷"对数之眼"中，我们探讨了生命体如何通过对数运算（韦伯-费希纳定律）来解码指数爆炸的宇宙信息。这种生理机制并非进化的偶然，而是基于更深层的数学原理——**信息几何 (Information Geometry)**。
 

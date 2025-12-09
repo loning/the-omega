@@ -1,6 +1,6 @@
 # 9.2 The Final Formula
 
-![Final Formula](../../assets/ch09_final_formula_1765303128753.png)
+![Final Formula](../assets/ch09_final_formula_1765303128753.png)
 
 > "The Dao that can be spoken is not the eternal Dao. Language can only describe the shadows of things, but formulas can capture the skeleton of things. If we must write the ultimate true name of the universe in one line of mathematical symbols, it will be an exponential function that transcends all physical constants."
 

@@ -1,6 +1,6 @@
 # 2.2 The Compound Interest Interpretation of Least Action
 
-![Stationary Phase](../../assets/ch02_stationary_phase_1765302196563.png)
+![Stationary Phase](../assets/ch02_stationary_phase_1765302196563.png)
 
 > "A photon is not a meticulous accountant; it doesn't really calculate which path has the lowest cost. It is just a crazy investor who bets on all paths. But only on the track of 'least action' does its investment generate positive compound interest, while on all other tracks, returns cancel each other out."
 

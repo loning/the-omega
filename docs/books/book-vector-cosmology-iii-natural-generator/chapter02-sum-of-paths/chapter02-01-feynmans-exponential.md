@@ -1,6 +1,6 @@
 # 2.1 费曼的指数 (Feynman's Exponential)
 
-![Path Integral Web](../../assets/ch02_path_integral_web_1765302176656.png)
+![Path Integral Web](../assets/ch02_path_integral_web_1765302176656.png)
 
 > "历史不是一条单行道，历史是一张由无数条细线编织而成的网。每一条线都是一个'可能发生的宇宙'。我们所经历的现实，并不是其中某一条线的独奏，而是所有这些线在一起发出的共鸣。"
 

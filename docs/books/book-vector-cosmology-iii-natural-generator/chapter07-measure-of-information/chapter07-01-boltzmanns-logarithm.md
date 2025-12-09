@@ -1,6 +1,6 @@
 # 7.1 玻尔兹曼的对数 (Boltzmann's Logarithm)
 
-![Boltzmann Logarithm](../../assets/ch07_boltzmann_log_1765302459721.png)
+![Boltzmann Logarithm](../assets/ch07_boltzmann_log_1765302459721.png)
 
 > "自然界在做乘法，因为它在不断地生成可能性；而人类在做加法，因为我们试图去计数这些可能性。连接这两种运算的唯一桥梁，就是刻在玻尔兹曼墓碑上的那个公式。"
 

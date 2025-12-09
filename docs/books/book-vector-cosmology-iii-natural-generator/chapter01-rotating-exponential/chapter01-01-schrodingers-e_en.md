@@ -1,6 +1,6 @@
 # 1.1 Schrödinger's $e$
 
-![Continuous Compounding](../../assets/ch01_continuous_compounding_1765302141350.png)
+![Continuous Compounding](../assets/ch01_continuous_compounding_1765302141350.png)
 
 > "Why does the universe not only allow time superposition but also require that this superposition must transform into state multiplication? Because in the logic of $e$, each second is not merely added after the previous second; it 'grows' from the previous second."
 

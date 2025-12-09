@@ -1,6 +1,6 @@
 # 3.2 李代数的生成 (The Generation of Lie Algebra)
 
-![Lie Algebra Tangent](../../assets/ch03_lie_algebra_tangent_1765302230654.png)
+![Lie Algebra Tangent](../assets/ch03_lie_algebra_tangent_1765302230654.png)
 
 > "给我一个支点，我可以撬动地球。给我一个生成元，我可以旋转整个宇宙。宏观世界那些令人眼花缭乱的对称性——旋转、平移、基本粒子的规范群——实际上都折叠在一个无穷小的切空间里。你不需要描绘整个圆，你只需要定义圆上一点的切线，剩下的，指数函数 $e$ 会自动替你完成。"
 

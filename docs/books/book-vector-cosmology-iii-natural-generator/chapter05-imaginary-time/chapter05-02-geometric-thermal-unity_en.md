@@ -1,6 +1,6 @@
 # 5.2 Geometric and Thermal Unity
 
-![KMS Loop](../../assets/ch05_kms_loop_1765302351785.png)
+![KMS Loop](../assets/ch05_kms_loop_1765302351785.png)
 
 > "We once thought only clocks have periods, while heat is just chaotic noise. But geometry tells us that heat is also a period—it's just a cycle occurring in the imaginary dimension. When we fold the paper of the universe, time becomes temperature."
 

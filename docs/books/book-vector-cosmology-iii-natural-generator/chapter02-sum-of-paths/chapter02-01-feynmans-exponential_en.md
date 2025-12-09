@@ -1,6 +1,6 @@
 # 2.1 Feynman's Exponential
 
-![Path Integral Web](../../assets/ch02_path_integral_web_1765302176656.png)
+![Path Integral Web](../assets/ch02_path_integral_web_1765302176656.png)
 
 > "History is not a one-way street; history is a web woven from countless threads. Each thread is a 'possible universe.' The reality we experience is not the solo of one thread, but the resonance of all these threads together."
 

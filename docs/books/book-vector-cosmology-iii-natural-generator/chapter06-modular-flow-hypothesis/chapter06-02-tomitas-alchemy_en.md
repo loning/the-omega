@@ -1,6 +1,6 @@
 # 6.2 Tomita's Alchemy
 
-![Tomita Alchemy](../../assets/ch06_tomita_alchemy_1765302388187.png)
+![Tomita Alchemy](../assets/ch06_tomita_alchemy_1765302388187.png)
 
 > "Ancient alchemists tried to extract gold from lead, while modern mathematical physicists accomplished an even greater feat: they extracted flowing time from static quantum states. This is no longer magic; this is the rigorous logic of Tomita-Takesaki Theory."
 

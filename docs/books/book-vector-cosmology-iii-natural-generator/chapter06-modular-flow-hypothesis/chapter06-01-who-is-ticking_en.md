@@ -1,6 +1,6 @@
 # 6.1 Who is Ticking?
 
-![Modular Flow Observer](../../assets/ch06_modular_flow_observer_1765302371336.png)
+![Modular Flow Observer](../assets/ch06_modular_flow_observer_1765302371336.png)
 
 > "We always ask: 'What time is it?' as if time were an entity independent of us. But the deep algebra of quantum mechanics tells us there is no universal clock. It is you—as an unbalanced quantum state—who creates time yourself in the process of having to flow to find balance."
 

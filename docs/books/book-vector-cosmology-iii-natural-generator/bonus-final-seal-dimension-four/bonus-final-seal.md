@@ -2,7 +2,7 @@
 
 **(The Final Bonus: The Seal of Dimension Four — The Conspiracy of Riemann and Poincaré)**
 
-![Riemann Poincare Seal](../../assets/bonus_riemann_poincare_seal_1765303311349.png)
+![Riemann Poincare Seal](../assets/bonus_riemann_poincare_seal_1765303311349.png)
 
 在《自然的生成元》的正文中，我们确立了宇宙是由生成元 $e$ 驱动的自洽系统。然而，为了让这个系统在数学上能够稳定运转——为了让它既不瞬间爆炸，也不瞬间死寂——它必须满足两个极其苛刻的几何条件。
 

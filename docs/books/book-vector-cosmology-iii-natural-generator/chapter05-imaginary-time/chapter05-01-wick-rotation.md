@@ -1,6 +1,6 @@
 # 5.1 威克转动 (Wick Rotation)
 
-![Wick Rotation](../../assets/ch05_wick_rotation_1765302332460.png)
+![Wick Rotation](../assets/ch05_wick_rotation_1765302332460.png)
 
 > "如果我们把时间轴在复平面上旋转 90 度，那个原本震荡不休的量子世界，就会突然安静下来，冻结成一个统计的热力学世界。这并不是数学游戏，这是通往大统一的几何暗门。"
 

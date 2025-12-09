@@ -1,6 +1,6 @@
 # 9.3 终极状态 (The Ultimate State)
 
-![Ultimate State](../../assets/ch09_ultimate_state_1765303143500.png)
+![Ultimate State](../assets/ch09_ultimate_state_1765303143500.png)
 
 > "宇宙不是一个名词，宇宙是一个动词。它不是被创造出来的'东西'，它是正在进行中的'创造'本身。在 $e$ 的终极逻辑里，因与果不再是线性的链条，而是一个首尾相接的圆环。我是我自己的原因，我是我自己的结果。"
 
