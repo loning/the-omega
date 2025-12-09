@@ -1,5 +1,7 @@
 # 8.2 Residence is Existence
 
+![Residence is Existence](../../assets/residence_is_existence.png)
+
 In everyday language, when we say an object "exists" somewhere, we usually mean it occupies that spatial position. But in our geometric reconstruction, space is only a secondary projection. In the underlying ontology of Hilbert Space, the only truth is the **rate** of evolution.
 
 If everything is flying at light speed $c$, if all things are flowing, then how does "existence"—this seemingly static, stable state—arise?

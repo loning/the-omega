@@ -1,5 +1,7 @@
 # 7.1 Topological Knots
 
+![Topological Knots](../../assets/topological_knots.png)
+
 When we imagine an electron, we usually picture a tiny, glowing sphere suspended in empty space. This is a very classical intuition: space is the stage, particles are actors. Actors can move freely on the stage; stage and actors are completely separate.
 
 But in our Quantum Cellular Automaton (QCA) universe, this distinction disappears.

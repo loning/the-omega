@@ -1,5 +1,7 @@
 # 2.2 The Art of Projection
 
+![The Art of Projection](../../assets/art_of_projection.png)
+
 If the universe's ontology is truly that "final object" silently rotating in Hilbert Space, then the question arises: Why have we never seen it?
 
 We have never felt ourselves living in an infinite-dimensional vector ocean, nor have we directly experienced that pure "becoming." Instead, we see three-dimensional space, feel flowing time, and touch solid objects. The world in our eyes is full of concrete limitations: objects cannot be both here and there, time cannot return once it has passed.

@@ -1,5 +1,7 @@
 # 8.1 The $\kappa(\omega)$ Function: Bridge Between Micro and Macro
 
+![The κ Function](../../assets/kappa_function.png)
+
 In the macroscopic world, we are accustomed to measuring time with stopwatches. Time flows linearly and uniformly. But in the microscopic quantum world, time reveals its extremely bizarre side: it becomes a spectrum that can be "accumulated" and "stretched."
 
 To understand this, we need to introduce the most hardcore, but also most beautiful mathematical object in this book: the **$\kappa(\omega)$ function**.

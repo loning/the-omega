@@ -1,5 +1,7 @@
 # 7.2 Compression Residuals
 
+![Compression Residuals](../../assets/compression_residuals.png)
+
 When we take a complex photo with a phone and save it as JPEG format, what happens? The phone's algorithm discards high-frequency details imperceptible to human eyes, approximating complex textures with smooth color blocks. This is **lossy compression**. Usually, this compression is very perfect. But if you photograph a black-and-white checkerboard image full of sharp edges and intense contrast, the compression algorithm collapses. At black-white boundaries, strange noise and artifacts appear.
 
 These artifacts are not real objects; they are **residuals** (Residuals) inevitably produced when **describing discrete reality with smooth language**.

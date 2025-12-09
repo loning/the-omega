@@ -1,4 +1,6 @@
 # Appendix A: Reconstruction of Minkowski Metric from Geometric Evolution Circle
+![Geometric Evolution Circle](../assets/geometric_origin_of_relativity.png)
+
 
 This appendix aims to prove that the core geometric structure of special relativity (Minkowski metric) can be strictly derived as a special case of the "sector Parseval identity" in Fubini-Study geometry.
 

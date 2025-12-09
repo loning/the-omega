@@ -1,5 +1,7 @@
 # 8.3 Geometric Saturation
 
+![Geometric Saturation](../../assets/geometric_saturation.png)
+
 What do physicists fear most? Not black holes, not dark matter, but **infinity**.
 
 In standard quantum field theory, when we calculate interaction forces between two particles approaching infinitely close, or calculate a point electron's self-energy, equations often give absurd results: infinity. This means theory fails at extremely microscopic scales. To patch this hole, physicists invented a complex mathematical magic called "renormalization" (Renormalization), essentially manually subtracting these infinities to get finite observed values.

@@ -1,4 +1,6 @@
 # 10.1 The Observer's Trap
+![The Observer's Trap](../../assets/observer_trap.png)
+
 
 If force is geometric slope, and objects always slide toward lowest energy, then for conscious observers, where is this "lowest point"?
 

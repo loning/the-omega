@@ -1,5 +1,7 @@
 # 3.2 The Bankruptcy of the Photon
 
+![The Bankruptcy of the Photon](../../assets/bankruptcy_of_photon.png)
+
 In the previous section, we established the universe's supreme financial law: $v_{ext}^2 + v_{int}^2 = c^2$. Every object, whether you, me, or distant stars, carefully balances its expenses within this formula. We reserve part of the budget for internal evolution (allowing us to experience time and sustain life), using only a small remaining portion to purchase spatial movement. We are cautious investors.
 
 But in the universe, there exists an extreme entity that rejects this balance. It stakes all its chips—that total budget of $c$—all-in on the "spatial movement" side.

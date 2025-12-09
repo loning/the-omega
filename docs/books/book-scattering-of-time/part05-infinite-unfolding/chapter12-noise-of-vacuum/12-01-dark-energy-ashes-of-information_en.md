@@ -1,4 +1,6 @@
 # 12.1 Dark Energy: The Ashes of Information
+![Dark Energy: The Ashes of Information](../../assets/dark_energy_ashes_of_information.png)
+
 
 When we look up at the night sky, we see stars. But astronomers tell us that those glowing stars, massive galaxies, even diffuse nebulae, together account for less than 5% of the universe's total energy.
 

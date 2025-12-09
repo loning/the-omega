@@ -1,4 +1,6 @@
 # 11.1 The Orbit of the True Self
+![The Orbit of the True Self](../../assets/orbit_of_true_self.png)
+
 
 "Be yourself."
 

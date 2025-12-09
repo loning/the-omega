@@ -1,4 +1,6 @@
 # 9.3 The Entropic Perspective
+![The Entropic Perspective](../../assets/entropic_perspective.png)
+
 
 In the previous section, we defined force as "tendency to shorten distance." This sounds beautiful, but it leaves an unresolved question: **Why**?
 

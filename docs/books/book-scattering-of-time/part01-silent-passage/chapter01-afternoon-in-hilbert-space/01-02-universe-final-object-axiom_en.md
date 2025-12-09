@@ -1,5 +1,7 @@
 # 1.2 The Universe Final Object ($\mathfrak U$) and the Single Axiom
 
+![The Universe Final Object](../../assets/universe_final_object.png)
+
 If we no longer believe that Einstein's curved spacetime is the ultimate truth, nor that Bohr's probabilistic dice is the foundation of the world, then what exactly is the universe?
 
 Let us perform a bold thought experiment. Try to remove everything from the universe—remove stars, planets, atoms, even remove space and time themselves. What remains is not emptiness, but a pure mathematical structure, a vast container holding all possibilities.

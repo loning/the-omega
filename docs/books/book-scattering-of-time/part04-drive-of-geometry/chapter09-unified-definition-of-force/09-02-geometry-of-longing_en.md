@@ -1,4 +1,6 @@
 # 9.2 The Geometry of Longing
+![The Geometry of Longing](../../assets/geometry_of_longing.png)
+
 
 In the previous section, we defined physical force as "slope"—objects naturally slide toward places of higher time density (larger $v_{int}$). This explains why apples fall.
 

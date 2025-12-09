@@ -1,4 +1,6 @@
 # 10.3 The Gravity of the Ego
+![The Gravity of the Ego](../../assets/gravity_of_ego.png)
+
 
 If "strange loops" are cages observers build for themselves, what force makes this cage so strong, even making those inside fall in love with it?
 

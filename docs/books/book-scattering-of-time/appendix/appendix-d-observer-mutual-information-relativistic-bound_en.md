@@ -1,4 +1,6 @@
 # Appendix D: Relativistic Bound on Observer Mutual Information
+![Observer Mutual Information](../assets/relativistic_bandwidth.png)
+
 
 This appendix derives the constraints of special relativity on observer cognitive capacity from an information-theoretic perspective.
 

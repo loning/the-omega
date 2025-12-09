@@ -1,5 +1,7 @@
 # 4.3 The Locking of Energy
 
+![The Locking of Energy](../../assets/locking_of_energy.png)
+
 Of all equations in human civilization, none carries more totemic significance than $E=mc^2$.
 
 It appears on T-shirts, in comics, and has even become synonymous with genius. Albert Einstein told us that energy ($E$) and mass ($m$) are interchangeable. More chillingly, because the conversion coefficient $c^2$ (the square of the speed of light) is an enormous number ($9 \times 10^{16}$), this means that extremely tiny masses contain devastating energy.
