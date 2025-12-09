@@ -90,10 +90,24 @@ This workflow outlines the process for illustrating a book project using AI-gene
 1.  **Special Sections**:
     - Repeat the process for the `Foreword`, `Introduction`, and `Appendices`.
 
-2.  **Cover Image**:
-    - Design a premium cover image that encapsulates the book's entire theme.
-    - Generate it and save it as `cover.png` in `assets`.
-    - Embed it at the top of the root `index.md`.
+3.  **Cover Image**:
+    - **Prompt Strategy**: Design a **B5 Ebook Cover (Center Safe)**.
+    - **Format Requirements**:
+        - **Source Canvas**: Square (1024x1024).
+        - **Safe Zone**: **CRITICAL**: The B5 cut is the central 724px.
+        - **Instruction**: "Ensure ALL text and key art are strictly in the central 72%. The side 14% edges must be **seamless background extensions** (e.g., continuing the stars/void)."
+        - **Negative Prompt**: **NO vertical dividing lines, NO frames, NO visible borders, NO sidebars.** The image must look like one continuous scene, not a strip cut out of a page.
+    - **Content Requirements**:
+        - **Title**: High contrast, centered, fully inside the safe zone.
+        - **Subtitle**: Centered, safe from edges.
+        - **Metadata**: Centered at bottom.
+        - **Design**: "Vertical Composition", "Center-Heavy", "Seamless Bleed".
+    - **Process**:
+        - Generate the image. Save as `cover.png`.
+        - **Post-Process (Center Crop to B5)**:
+            - Use the Python script to crop the sides.
+            - Command: `python3 .agent/scripts/crop_cover.py assets/cover.png 724 1024`
+        - Embed it at the top of the root `index.md`.
 
 3.  **Final Review**:
     - Verify all links are correct.
