@@ -48,6 +48,8 @@
 正是因为唯一性约束，电子被迫**排队（堆叠）**：
 *   1号电子占了 $1s$ 轨道（地址 `0x001`）。
 *   2号电子想进，系统报错：`Error: Address Occupied`。
+![泡利不相容：防穿模错误](../../assets/images/chapter09/pauli-collision.png)
+
 *   2号被迫去 $2s$ 轨道（`0x002`）。
 
 **结论**：

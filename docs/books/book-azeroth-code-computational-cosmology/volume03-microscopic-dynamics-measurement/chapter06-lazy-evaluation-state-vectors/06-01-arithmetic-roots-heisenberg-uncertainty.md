@@ -2,6 +2,9 @@
 
 **(Resolution Limits - Arithmetic Roots of Heisenberg's Uncertainty)**
 
+
+![海森堡不确定性：分辨率极限](../../assets/images/chapter06/heisenberg-pixelation.png)
+
 > **“上帝不掷骰子，但他确实使用了有限精度的浮点数。测不准原理不是什么神秘的魔法，它就是一张模糊的jpg图片。当你放大到像素级别时，你自然看不清细节，这是任何离散系统的铁律。”**
 
 在前两卷，我们讲了宏观的服务器和网络。现在，我们要把镜头拉近，看看艾泽拉斯的微观像素——**量子力学**。

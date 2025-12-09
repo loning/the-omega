@@ -2,6 +2,9 @@
 
 **(Loot Exists Only When Dropped - Computable Definition of Existence)**
 
+
+![存在即掉落：实例化与持久化](../../assets/images/chapter01/computable-existence-loot.png)
+
 > **“只有当鼠标移上去显示出Tooltip的时候，那个装备才是真实存在的。在此之前，它只是掉落列表里的一行代码。”**
 
 在搞定了显存上限（公理 1.1）和物理引擎（公理 1.2）之后，我们还需要解决第一卷最后一关的BOSS：**到底什么是“存在”？**

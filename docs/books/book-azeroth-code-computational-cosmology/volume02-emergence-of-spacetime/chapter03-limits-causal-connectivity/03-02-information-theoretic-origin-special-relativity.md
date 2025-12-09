@@ -2,6 +2,9 @@
 
 **(Raid Synchronization - The Information-Theoretic Origin of Special Relativity)**
 
+
+![时间膨胀：CPU资源分配](../../assets/images/chapter03/time-dilation-cpu.png)
+
 > **“相对论不是关于‘速度’的魔法，而是关于‘同步’的协议。当你的延迟（Ping）很高时，你的画面自然会变慢。时间膨胀不是什么深奥的哲学，它就是单纯的卡顿（Lag）。”**
 
 在 3.1 节中，我们知道了光速 $c$ 实际上是服务器的最大带宽。在经典物理学中，爱因斯坦提出了狭义相对论。但在我们的“艾泽拉斯代码”体系里，我们不需要假设，我们可以直接推导出来。
@@ -50,6 +53,8 @@ $$ v_{ext}^2 + v_{int}^2 = c^2 $$
 这是一种**系统级的卡顿（Lag）**。
 
 ### 3.2.3 尺缩效应：为了流畅而降低画质
+
+![尺缩效应：动态降采样](../../assets/images/chapter03/length-contraction.png)
 
 长度收缩（Length Contraction）通常被误解为物体真的被压扁了。在信息论视角下，这实际上是一种**降采样（Downsampling）**。
 

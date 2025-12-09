@@ -26,6 +26,7 @@
 
 客观现实既不是上帝视角，也不是你的私有视角。
 客观现实是所有玩家视角的**最大公约数（交集）**。
+![分布式共识：同步的世界](../../assets/images/chapter09/multiplayer-consensus.png)
 
 $$ Real = \text{View}_{\text{A}} \cap \text{View}_{\text{B}} \cap \text{View}_{\text{C}} \dots $$
 

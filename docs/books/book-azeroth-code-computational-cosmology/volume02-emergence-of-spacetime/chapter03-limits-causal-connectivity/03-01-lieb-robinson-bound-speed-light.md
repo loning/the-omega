@@ -2,6 +2,9 @@
 
 **(Max Transfer Rate - Lieb-Robinson Bound and the Speed of Light)**
 
+
+![李-罗宾逊界限：因果光锥](../../assets/images/chapter03/lieb-robinson-bound.png)
+
 > **“光速不是指光跑得有多快，而是指服务器处理数据的带宽上限。你以为时空是一个空盒子，其实它是由无数根网线编织成的局域网。”**
 
 在第一卷，我们建立了“世界即代码”的公理体系。现在，我们要让这个代码跑起来。

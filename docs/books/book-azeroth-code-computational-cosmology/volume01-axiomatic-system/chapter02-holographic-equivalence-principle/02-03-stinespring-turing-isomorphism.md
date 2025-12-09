@@ -2,6 +2,9 @@
 
 **(The Interface Protocol - Stinespring-Turing Isomorphism)**
 
+
+![斯泰恩斯普林同构：从多重宇宙到随机数](../../assets/images/chapter02/stinespring-isomorphism.png)
+
 > **“随机性就是视野范围外投下的阴影。所谓的‘坍缩’，不过是庞大的服务器数据流挤过你那根细细的网线时发生的丢包和压缩。本节将证明，‘多重宇宙’和‘自由意志’其实是一回事，只是从服务器看还是从客户端看的区别。”**
 
 在 2.1 节和 2.2 节中，我们建立了两个模型：
