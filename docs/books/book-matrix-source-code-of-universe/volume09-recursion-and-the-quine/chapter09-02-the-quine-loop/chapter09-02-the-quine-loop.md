@@ -2,6 +2,8 @@
 
 #### 第9.2章：奎恩闭环 (Chapter 9.2: The Quine Loop)
 
+![The Quine Loop](../../assets/quine_loop.png)
+
 **—— 宇宙作为自产生程序 (The Universe as a Self-Reproducing Program)**
 
 **"代码的终极目的不是计算结果，而是输出它自己的源代码。"**

@@ -1,5 +1,7 @@
 # 第8.2章：时钟同步 (Chapter 8.2: Clock Synchronization)
 
+![Clock Synchronization](../../assets/clock_synchronization.png)
+
 **—— 纠缠导致的本地时钟变慢效应 (Entanglement-Induced Local Clock Slowing Effect)**
 
 **"连接是有代价的。当你试图与世界同步时，你自己的时间就会变慢。"**

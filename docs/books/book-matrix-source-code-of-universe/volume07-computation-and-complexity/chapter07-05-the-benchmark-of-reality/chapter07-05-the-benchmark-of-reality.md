@@ -1,5 +1,7 @@
 # 第7.5章：现实的基准测试 (Chapter 7.5: The Benchmark of Reality)
 
+![The Benchmark of Reality](../../assets/benchmark_reality.png)
+
 **—— $\Lambda$ 决定的系统算力与全息缩放 ($\Lambda$ as System Throughput and Holographic Scaling)**
 
 **"宇宙常数不是一个无意义的极小值，它是系统管理员为当前会话设定的资源配额。"**

@@ -2,6 +2,8 @@
 
 #### 第9.3章：计算一致性 (Chapter 9.3: Computational Consistency)
 
+![Computational Consistency](../../assets/computational_consistency.png)
+
 **—— 为什么物理定律是现在这个样子？ (Why are Physical Laws the Way They Are?)**
 
 **"这不是因为上帝选择了美，而是因为系统选择了不崩溃。"**

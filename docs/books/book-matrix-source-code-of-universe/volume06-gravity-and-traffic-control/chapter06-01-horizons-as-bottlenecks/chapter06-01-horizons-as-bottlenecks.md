@@ -1,5 +1,7 @@
 # 第6.1章：视界即瓶颈 (Chapter 6.1: Horizons as Bottlenecks)
 
+![Horizons as Bottlenecks](../../assets/horizons_bottlenecks.png)
+
 **—— 视界处的 FS 容量死锁与拥塞控制 (FS Capacity Deadlock at Horizons and Congestion Control)**
 
 **"引力不是一种力，它是网络负载过高时系统的流量整形策略。"**

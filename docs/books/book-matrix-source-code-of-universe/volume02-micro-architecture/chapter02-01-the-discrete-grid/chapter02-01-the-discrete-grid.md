@@ -1,5 +1,7 @@
 # 第2.1章：离散网格 (Chapter 2.1: The Discrete Grid)
 
+![The Discrete Grid](../../assets/discrete_grid.png)
+
 **—— 量子元胞自动机作为机器码 (Quantum Cellular Automata as Machine Code)**
 
 **"没有无限，只有网格。连续性只是高分辨率下的错觉。"**

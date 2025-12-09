@@ -1,5 +1,7 @@
 # 第5.1章：熵限 (Chapter 5.1: Entropy Limits)
 
+![Entropy Limits](../../assets/entropy_limits.png)
+
 **—— 熵速限制与信息擦除代价 (The Entropic Speed Limit and the Cost of Erasure)**
 
 **"系统产生混乱的速率并非无限，它受限于总线带宽。"**

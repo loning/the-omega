@@ -2,6 +2,8 @@
 
 #### 第7.3章：扰动协议 (Chapter 7.3: The Scrambling Protocol)
 
+![The Scrambling Protocol](../../assets/scrambling_protocol.png)
+
 **—— 黑洞吞噬作为计算复杂性的合并 (Black Hole Accretion as Computational Complexity Merging)**
 
 **"黑洞是宇宙中最快的哈希函数。它吞噬结构，吐出随机性，并将指针重定向到表面。"**

@@ -1,5 +1,7 @@
 # 第6.5章：动态带宽与重置 (Chapter 6.5: Dynamic Bandwidth & The Reset)
 
+![Dynamic Bandwidth](../../assets/dynamic_bandwidth.png)
+
 **—— 从真空老化到标度丢失与系统重启 (From Vacuum Aging to Scale Loss and System Reboot)**
 
 **"光速不是永恒的常量，它是系统负载的实时函数。当所有数据被擦除，标度丢失，系统自动重启。"**

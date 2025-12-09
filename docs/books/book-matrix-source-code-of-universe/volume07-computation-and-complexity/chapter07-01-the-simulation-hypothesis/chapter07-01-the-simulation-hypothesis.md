@@ -1,5 +1,7 @@
 # 第7.1章：模拟假说 (Chapter 7.1: The Simulation Hypothesis)
 
+![The Simulation Hypothesis](../../assets/simulation_hypothesis.png)
+
 **—— 如果底层是 QCA，宇宙是否是一台计算机？ (If the Substrate is QCA, Is the Universe a Computer?)**
 
 **"物理定律不是刻在石头上的真理，它们是运行在硬件上的算法。"**

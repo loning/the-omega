@@ -1,5 +1,7 @@
 # 第3.1章：降频机制 (Chapter 3.1: Throttling Mechanisms)
 
+![Throttling Mechanisms](../../assets/throttling_mechanisms.png)
+
 **—— 狭义相对论的资源调度重构 (Reconstructing Special Relativity as Capacity Allocation)**
 
 **"时间膨胀不是魔法，它是系统为了防止带宽溢出而执行的强制降频。"**

@@ -2,6 +2,8 @@
 
 #### 第9.1章：硬件观察者 (Chapter 9.1: The Hardware Observer)
 
+![The Hardware Observer](../../assets/hardware_observer.png)
+
 **—— 观察者不是用户，而是活跃的内存块 (The Observer is not a User, but an Active Memory Block)**
 
 **"你不是在看电影，你就是屏幕上的像素。"**

@@ -2,6 +2,8 @@
 
 #### 第6.4章：路由开销 (Chapter 6.4: Routing Overhead)
 
+![Routing Overhead](../../assets/routing_overhead.png)
+
 **—— 为什么归档数据依然阻塞网络？ (Why Archived Data Still Clogs the Network?)**
 
 **"服务器并没有在运行那个大文件，但光是索引它的位置，就耗尽了路由器的算力。"**

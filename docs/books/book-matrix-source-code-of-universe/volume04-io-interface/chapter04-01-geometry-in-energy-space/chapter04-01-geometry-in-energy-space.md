@@ -1,5 +1,7 @@
 # 第4.1章：能量空间几何 (Chapter 4.1: Geometry in Energy Space)
 
+![Geometry in Energy Space](../../assets/energy_geometry.png)
+
 **—— Wigner-Smith 算符与延迟方差 (The Wigner-Smith Operator and Delay Variance)**
 
 **"每一次交互都是一次带延迟的网络请求。延迟的抖动，定义了你在能量空间中的移动速度。"**

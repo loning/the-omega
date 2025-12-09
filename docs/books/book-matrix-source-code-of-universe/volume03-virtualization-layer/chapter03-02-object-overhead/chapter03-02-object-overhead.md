@@ -1,5 +1,7 @@
 # 第3.2章：对象开销 (Chapter 3.2: Object Overhead)
 
+![Object Overhead](../../assets/object_overhead.png)
+
 **—— 质量作为内部计算成本 (Mass as Internal Computation Cost)**
 
 **"质量不是物质的重量，它是系统为了维持对象'存在'而支付的持续算力。"**

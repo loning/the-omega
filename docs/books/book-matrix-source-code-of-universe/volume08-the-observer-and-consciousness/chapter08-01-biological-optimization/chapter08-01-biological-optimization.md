@@ -1,5 +1,7 @@
 # 第8.1章：生物优化 (Chapter 8.1: Biological Optimization)
 
+![Biological Optimization](../../assets/biological_optimization.png)
+
 **—— 逆熵流的局部算法 (Local Algorithms for Reverse Entropy Flow)**
 
 **"生命不是一种物质，它是系统为了对抗数据腐烂而运行的错误校验进程。"**

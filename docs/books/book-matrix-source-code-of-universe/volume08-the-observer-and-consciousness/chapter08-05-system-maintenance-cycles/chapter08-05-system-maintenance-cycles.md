@@ -1,5 +1,7 @@
 # 第8.5章：系统维护周期 (Chapter 8.5: System Maintenance Cycles)
 
+![System Maintenance Cycles](../../assets/system_maintenance.png)
+
 **—— 睡眠作为全停顿垃圾回收 (Sleep as Stop-the-World Garbage Collection)**
 
 **"你感到疲惫，不是因为肌肉累了，而是因为你的环境变量溢出了。"**

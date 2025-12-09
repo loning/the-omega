@@ -1,5 +1,7 @@
 # 第0.2章：有限带宽公理 (Chapter 0.2: The Axiom of Finite Capacity)
 
+![The Axiom of Finite Capacity](../../assets/finite_capacity.png)
+
 **—— 定义系统时钟 (Defining the System Clock)**
 
 **"时间不是一条流动的河，它是状态更新的计数器。"**

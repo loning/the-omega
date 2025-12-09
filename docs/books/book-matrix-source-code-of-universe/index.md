@@ -1,5 +1,7 @@
 # THE MATRIX: SOURCE CODE OF THE UNIVERSE
 
+![Cover Image](assets/cover.png)
+
 **副标题：物理定律的几何重构与算力分配 (A Geometric Reconstruction and Capacity Allocation of Physical Laws)**
 
 ## 版本信息

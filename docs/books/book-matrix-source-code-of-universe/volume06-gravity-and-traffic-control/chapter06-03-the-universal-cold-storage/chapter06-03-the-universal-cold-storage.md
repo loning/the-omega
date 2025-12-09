@@ -2,6 +2,8 @@
 
 #### 第6.3章：宇宙的冷存储 (Chapter 6.3: The Universal Cold Storage)
 
+![The Universal Cold Storage](../../assets/universal_cold_storage.png)
+
 **—— 黑洞作为挂载的全息硬盘与垃圾回收 (Black Holes as Mounted Holographic Drives and Garbage Collection)**
 
 **"黑洞不是吞噬一切的怪兽，它是系统崩溃时自动生成的'核心转储' (Core Dump) 文件。"**

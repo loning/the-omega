@@ -2,6 +2,8 @@
 
 #### 第9.4章：超越三角 (Chapter 9.4: The Transcendental Triad)
 
+![The Transcendental Triad](../../assets/transcendental_triad.png)
+
 **—— 虫洞、涨落与意识的统一架构 (The Unified Architecture of Wormholes, Fluctuations, and Consciousness)**
 
 **"意识是在量子涨落的海洋中，通过微型虫洞网络构建的全局同步。"**

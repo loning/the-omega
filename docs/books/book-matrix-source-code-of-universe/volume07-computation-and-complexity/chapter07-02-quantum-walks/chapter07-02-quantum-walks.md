@@ -1,5 +1,7 @@
 # 第7.2章：量子行走 (Chapter 7.2: Quantum Walks)
 
+![Quantum Walks](../../assets/quantum_walks.png)
+
 **—— 预测：信息-速度圆的实验验证 (Prediction: Experimental Verification of the Information-Velocity Circle)**
 
 **"在硅基芯片上模拟宇宙的底层逻辑，验证勾股定理在信息空间中的投影。"**

@@ -1,5 +1,7 @@
 # 第1.1章：预算方程 (Chapter 1.1: The Budget Equation)
 
+![The Budget Equation](../../assets/budget_equation.png)
+
 **—— 广义帕塞瓦尔恒等式 (The Generalized Parseval Identity)**
 
 **"系统总吞吐量是恒定的。每一次位移，都是对计算资源的劫持。"**

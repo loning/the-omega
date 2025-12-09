@@ -1,5 +1,7 @@
 # 第4.2章：数据保真度 (Chapter 4.2: Data Fidelity)
 
+![Data Fidelity](../../assets/data_fidelity.png)
+
 **—— 延迟-保真度权衡协议 (The Delay-Fidelity Trade-off Protocol)**
 
 **"任何偏离基准时钟的响应，无论是迟到还是早退，都是对原始信号的扭曲。"**

@@ -2,6 +2,8 @@
 
 #### 第8.4章：内存管理 (Chapter 8.4: Memory Management)
 
+![Memory Management](../../assets/memory_management.png)
+
 **—— 主动遗忘与强制回收 (Active Forgetting vs. Forced Reclamation)**
 
 **"如果不清理缓存，系统就会死锁。遗忘是保持智慧的唯一方式。"**

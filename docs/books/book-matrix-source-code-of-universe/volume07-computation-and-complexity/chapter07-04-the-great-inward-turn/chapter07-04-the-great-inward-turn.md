@@ -1,5 +1,7 @@
 # 第7.4章：内向的大迁徙 (Chapter 7.4: The Great Inward Turn)
 
+![The Great Inward Turn](../../assets/great_inward_turn.png)
+
 **—— 费米悖论的解与计算密度最大化 (Solution to the Fermi Paradox and Maximization of Computational Density)**
 
 **"当物理疆域被探索殆尽，唯一的方向就是向内，走向黑洞视界边缘的极致虚拟。"**

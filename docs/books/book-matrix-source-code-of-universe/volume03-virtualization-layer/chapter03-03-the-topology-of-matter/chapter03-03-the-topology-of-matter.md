@@ -1,5 +1,7 @@
 # 第3.3章：物质的拓扑 (Chapter 3.3: The Topology of Matter)
 
+![The Topology of Matter](../../assets/topology_matter.png)
+
 **—— 质量的自指结构与旋量双覆盖 (Self-Referential Structure of Mass and Spinor Double Cover)**
 
 **"电子不是一个点，它是光在底层网格上打的一个死结。如果不解开这个结，它就永远无法停止旋转。"**

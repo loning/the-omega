@@ -1,5 +1,7 @@
 # 第2.2章：延迟与截断 (Chapter 2.2: Latency & Cutoffs)
 
+![Latency & Cutoffs](../../assets/latency_cutoffs.png)
+
 **—— 信号完整性与自然正则化 (Signal Integrity and Natural Regularization)**
 
 **"因果律不是哲学的铁律，它是局域网络传播的物理延迟。"**

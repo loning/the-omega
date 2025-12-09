@@ -1,5 +1,7 @@
 # 第8.6章：进程终止与回收 (Chapter 8.6: Process Termination & Recycling)
 
+![Process Termination & Recycling](../../assets/process_termination.png)
+
 **—— 死亡作为去中心化与回归对象池 (Death as Decentralization and Return to the Object Pool)**
 
 **"死亡不是信息的湮灭，而是从'独占模式'切换到'广播模式'的相变。"**

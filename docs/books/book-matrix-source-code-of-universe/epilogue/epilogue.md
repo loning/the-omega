@@ -1,5 +1,7 @@
 ### 终章：宇宙的 I/O (Epilogue: The I/O of The Universe)
 
+![Epilogue I/O](../assets/epilogue_io.png)
+
 **—— 关于系统边界的终极问答 (The Ultimate Q&A Regarding System Boundaries)**
 
 **"程序无法看见 CPU，它只能看见时钟周期。但程序本身，就是 CPU 运算的结果。"**

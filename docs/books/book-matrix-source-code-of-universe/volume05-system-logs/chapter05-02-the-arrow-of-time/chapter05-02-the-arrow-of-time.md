@@ -1,5 +1,7 @@
 # 第5.2章：时间之箭 (Chapter 5.2: The Arrow of Time)
 
+![The Arrow of Time](../../assets/arrow_of_time.png)
+
 **—— 微观可逆性与宏观不可逆性 (Micro-Reversibility vs. Macro-Irreversibility)**
 
 **"底层指令是可撤销的，但系统日志只能追加，不可重写。"**

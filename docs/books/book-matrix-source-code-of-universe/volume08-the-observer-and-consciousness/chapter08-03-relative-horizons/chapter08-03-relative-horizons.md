@@ -2,6 +2,8 @@
 
 #### 第8.3章：相对视界 (Chapter 8.3: Relative Horizons)
 
+![Relative Horizons](../../assets/relative_horizons.png)
+
 **—— 观察者权限与视图差异 (Observer Permissions and View Differences)**
 
 **"防火墙对于普通用户是不可逾越的边界，但对于 Root 管理员来说，它只是一个日志检查点。"**

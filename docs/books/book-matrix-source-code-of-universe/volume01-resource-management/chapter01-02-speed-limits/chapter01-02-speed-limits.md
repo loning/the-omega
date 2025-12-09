@@ -1,5 +1,7 @@
 # 第1.2章：速度限制 (Chapter 1.2: Speed Limits)
 
+![Speed Limits](../../assets/speed_limits.png)
+
 **—— 作为系统约束的量子速度限制 (Quantum Speed Limits as System Constraints)**
 
 **"不确定性不是测量的误差，它是驱动演化的燃料。"**

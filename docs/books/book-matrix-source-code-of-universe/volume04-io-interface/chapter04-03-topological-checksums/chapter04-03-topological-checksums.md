@@ -1,5 +1,7 @@
 # 第4.3章：拓扑校验和 (Chapter 4.3: Topological Checksums)
 
+![Topological Checksums](../../assets/topological_checksums.png)
+
 **—— FS-Levinson 关系与束缚态计数 (The FS-Levinson Relation and Bound State Counting)**
 
 **"几何测量的是误差，而拓扑测量的是存在。它是系统防止数据丢失的循环冗余校验 (CRC)。"**

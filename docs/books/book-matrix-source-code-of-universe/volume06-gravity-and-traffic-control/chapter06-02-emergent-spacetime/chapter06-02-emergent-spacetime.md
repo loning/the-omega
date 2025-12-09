@@ -1,5 +1,7 @@
 # 第6.2章：涌现时空 (Chapter 6.2: Emergent Spacetime)
 
+![Emergent Spacetime](../../assets/emergent_spacetime.png)
+
 **—— 从量子纠缠网络重构爱因斯坦方程 (Reconstructing Einstein Equations from Quantum Entanglement Networks)**
 
 **"时空不是承载物质的容器，它是物质之间纠缠关系的'可视化视图'。"**

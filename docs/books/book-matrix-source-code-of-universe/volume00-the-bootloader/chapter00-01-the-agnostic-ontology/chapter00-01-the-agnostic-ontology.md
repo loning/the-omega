@@ -1,5 +1,7 @@
 # 第0.1章：不可知论本体 (Chapter 0.1: The Agnostic Ontology)
 
+![The Agnostic Ontology](../../assets/agnostic_ontology.png)
+
 **—— 为什么物理学是一种投影 (Why Physics is a Projection)**
 
 **"我们无法直接读取硬件（本体），我们只能看到接口（Interface）的输出。"**

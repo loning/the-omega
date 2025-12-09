@@ -1,5 +1,7 @@
 # 第5.3章：概率协议 (Chapter 5.3: The Probability Protocol)
 
+![The Probability Protocol](../../assets/probability_protocol.png)
+
 **—— 微观计数与自定位 (Micro-Counting and Self-Location)**
 
 **"上帝不掷骰子，是玩家迷失在了服务器的海量分区里。"**
