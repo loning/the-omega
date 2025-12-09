@@ -12,6 +12,8 @@ However, **Vector Cosmology** provides a shortcut. Since our theory is based on 
 
 We call this—**The Information-Velocity Circle Experiment**.
 
+![IVC Experiment](../assets/chapter05-drooping-circle/05-02-ivc-experiment.png)
+
 #### Building Blocks of Simulated Universe: Quantum Walk
 
 We don't need to actually disassemble spacetime; we can "run" spacetime.

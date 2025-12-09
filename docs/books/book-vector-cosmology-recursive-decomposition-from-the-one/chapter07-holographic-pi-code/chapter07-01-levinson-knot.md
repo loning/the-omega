@@ -8,6 +8,8 @@
 
 我们即将看到，莱文森定理 (Levinson's Theorem) 不仅仅是一个散射理论公式，它是宇宙将"存在"编码为"数字"的底层协议。
 
+![莱文森之结](../assets/chapter07-holographic-pi-code/07-01-levinson-knot.png)
+
 ## 7.1 莱文森之结 (The Levinson Knot)
 
 > "物质不是静止的石头，物质是流动的死结。存在即是计数：我们在虚空中数了多少个 $\pi$，就创造了多少个粒子。"

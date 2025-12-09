@@ -8,6 +8,8 @@
 
 我们称这种现象为——**"下垂" (Droop)**。
 
+![晶格下垂](../assets/chapter05-drooping-circle/05-01-lattice-droop.png)
+
 ## 5.1 洛伦兹对称性的破缺 (The Breaking of Lorentz Symmetry)
 
 > "相对论不是真理的全部，它是真理在低分辨率下的模糊投影。"

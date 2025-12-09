@@ -8,6 +8,8 @@ Einstein's most famous formula $E=mc^2$ tells us that mass is energy. But this i
 
 In **Vector Cosmology**, the answer lies hidden in a perfect geometric figure—we call it **"The Dirac Circle"**.
 
+![Dirac Circle](../assets/chapter02-speed-poverty/02-02-dirac-circle.png)
+
 #### The Pythagorean Theorem of Energy
 
 Let us rewrite the core equation governing all relativistic particles—the dispersion relation. For a free particle with momentum $p$ and rest mass $m$, its total energy $E$ satisfies:

@@ -8,6 +8,8 @@ Now, we merge these two concepts to arrive at the most fundamental definition of
 
 Everything we see—you, me, stars, dust—is essentially a continuous counting operation that the universe performs on **$\pi$** along the energy axis.
 
+![Matter as Counting](../assets/chapter07-holographic-pi-code/07-03-matter-counting.png)
+
 #### 7.3.1 The Universal Counter
 
 In the macroscopic world, we are accustomed to quantifying matter by "weighing": here is a kilogram of iron, there is a ton of water. But from the microscopic geometric perspective of **Vector Cosmology**, the universe does not care about weight; the universe only cares about **winding numbers**.

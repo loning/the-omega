@@ -8,6 +8,8 @@ In writing **Vector Cosmology**, I often cannot help but imagine that metaphoric
 
 Through the derivations in this book, we see a clear answer: **Extreme frugality, and extreme generosity.**
 
+![The Designer's Circle](assets/afterword/afterword-designer-circle.png)
+
 ## The Minimalist Core
 
 The designer is **frugal**. They refuse to create redundant concepts.

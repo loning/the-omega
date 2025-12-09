@@ -4,6 +4,8 @@
 
 本附录将基于量子信息理论中的连续性界限，给出这一公理的严格数学证明。我们将展示，热力学时间之箭的飞行速度，是如何被底层的 FS 几何结构所锁定的。
 
+![熵速节流](../assets/appendix/appendix-c-entropic-throttle.png)
+
 ## C.1 从几何距离到统计距离
 
 考虑一个复合量子系统，其希尔伯特空间分解为"系统"与"环境"两部分：$\mathcal{H} = \mathcal{H}_{sys} \otimes \mathcal{H}_{env}$。假设系统具有有限的维度 $d_{sys}$（这符合 QCA 的有限性假设）。

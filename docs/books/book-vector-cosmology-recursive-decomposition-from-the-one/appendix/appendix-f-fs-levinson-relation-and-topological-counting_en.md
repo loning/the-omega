@@ -4,6 +4,8 @@ In Chapter 7 "The Holographic Pi Code" of the main text, we defined the existenc
 
 This appendix will briefly outline the mathematical proof of this relationship. We will show how to transform traditional scattering phase shift formulas into an inequality between **FS Geometric Length** and **Topological Winding Number** in projective Hilbert space. This provides solid mathematical support for the philosophical proposition that "matter is counting."
 
+![Levinson Winding](../assets/appendix/appendix-f-levinson-winding.png)
+
 ## F.1 Scattering Phase and Spectral Shift
 
 Consider a perturbed Hamiltonian $H = H_0 + V$, where $H_0$ is a free Hamiltonian with absolutely continuous spectrum, and $V$ is a potential term that decays sufficiently fast at infinity.

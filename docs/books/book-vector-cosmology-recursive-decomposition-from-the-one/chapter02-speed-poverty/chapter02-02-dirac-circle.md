@@ -8,6 +8,8 @@
 
 在 **《矢量宇宙论》** 中，答案隐藏在一个完美的几何图形中——我们称之为 **"狄拉克圆" (The Dirac Circle)**。
 
+![狄拉克圆](../assets/chapter02-speed-poverty/02-02-dirac-circle.png)
+
 #### 能量的毕达哥拉斯定理
 
 让我们重写那个支配所有相对论粒子的核心方程——色散关系（Dispersion Relation）。对于一个动量为 $p$、静止质量为 $m$ 的自由粒子，其总能量 $E$ 满足：

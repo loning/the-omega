@@ -8,6 +8,8 @@
 
 在广义相对论中，这被称为"时空弯曲"。但在 **《矢量宇宙论》** 的经济学视角下，这应当被更精确地描述为一场 **"市场垄断" (Market Monopoly)**。
 
+![垄断者](../assets/chapter03-gravity-market-distortion/03-01-the-monopolist.png)
+
 ## 3.1 垄断者 (The Monopolist)
 
 如果说光子是自由的流浪者，那么像地球或太阳这样的大质量天体，就是宇宙中顶级的 **寡头垄断者**。

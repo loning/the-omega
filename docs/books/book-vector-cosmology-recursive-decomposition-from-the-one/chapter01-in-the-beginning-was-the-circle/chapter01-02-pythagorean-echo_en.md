@@ -6,6 +6,8 @@ The name of this constraint is **geometry**.
 
 When we gaze at the most fundamental equation governing spacetime and matter, we are surprised to discover that it is actually the sacred echo of the oldest theorem we learned in elementary mathematics—the Pythagorean theorem—in the quantum dimension.
 
+![Pythagorean Echo](../assets/chapter01-in-the-beginning-was-the-circle/01-02-pythagorean-echo.png)
+
 #### The Cost of Perpendicularity
 
 Why must the universe obey conservation laws? Why can't we simultaneously have infinite speed and infinite mass? The answer lies hidden in the Riemannian structure of the Fubini-Study metric.

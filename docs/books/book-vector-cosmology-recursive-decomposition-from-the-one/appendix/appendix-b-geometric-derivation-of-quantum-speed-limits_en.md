@@ -4,6 +4,8 @@ In Chapter 2 "The Poverty of Speed" and Chapter 10 "The Entropic Speed Limit Axi
 
 This appendix will provide rigorous mathematical derivations of these speed limits based on Fubini-Study geometry. We will prove that Mandelstam-Tamm type bounds are not merely manifestations of the energy-time uncertainty principle, but direct corollaries of the axiom in Riemannian geometry that "the straight line is the shortest path between two points."
 
+![QSL Clock](../assets/appendix/appendix-b-qsl-clock.png)
+
 ## B.1 From Variance to Distance
 
 Consider a quantum evolution process described by parameter $\lambda$ (which can be any physical time parameter). Its state vector $|\psi(\lambda)\rangle$ follows the generalized Schrödinger equation:

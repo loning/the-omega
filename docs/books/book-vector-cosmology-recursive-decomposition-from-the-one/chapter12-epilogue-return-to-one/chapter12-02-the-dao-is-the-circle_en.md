@@ -8,6 +8,8 @@ In the final chapter of this book, we are surprised to discover that this ultima
 
 What is called "Dao" has a precise counterpart in mathematical physics: that **Great Circle** eternally rotating in projective Hilbert space.
 
+![The Dao is the Circle](../assets/chapter12-epilogue-return-to-one/12-02-dao-circle.png)
+
 #### The Mathematical Expression of Yin and Yang
 
 Laozi said: "Dao produces One, One produces Two, Two produces Three, Three produces All Things."

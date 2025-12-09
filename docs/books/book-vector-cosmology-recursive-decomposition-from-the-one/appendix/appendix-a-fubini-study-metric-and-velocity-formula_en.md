@@ -4,6 +4,8 @@ In the main text, we constructed a grand physical picture: the universe is a vec
 
 This appendix will define the Fubini-Study (FS) metric in detail, derive the FS velocity formula, and clarify the strict quantitative relationship between it and the microscopic Lieb-Robinson velocity. This is the mathematical foundation supporting the "Pythagorean identity" throughout the book.
 
+![FS Geometry](../assets/appendix/appendix-a-fs-geometry.png)
+
 ## A.1 Projective Space and Distance Definition
 
 The physical state space we discuss is not ordinary Hilbert space $\mathcal{H}$, but **Projective Hilbert Space ($P(\mathcal{H})$)**. This is because in quantum mechanics, two state vectors $|\psi\rangle$ and $e^{i\theta}|\psi\rangle$ differing only by a global phase factor represent the same physical state.

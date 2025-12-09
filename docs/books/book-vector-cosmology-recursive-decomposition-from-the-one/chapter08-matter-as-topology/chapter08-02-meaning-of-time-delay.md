@@ -8,6 +8,8 @@
 
 当一个粒子在散射过程中表现出"时间延迟"时，这意味着宇宙唯一的矢量在射影希尔伯特空间中，正在以极高的速度进行着复杂的旋转和演化。延迟，本质上是 **内部几何路程的积累**。
 
+![延迟距离](../assets/chapter08-matter-as-topology/08-02-delay-distance.png)
+
 #### 8.2.1 Wigner-Smith 算符：时间的几何探针
 
 为了量化这种延迟，物理学家尤金·维格纳 (Eugene Wigner) 和费利克斯·史密斯 (Felix Smith) 引入了一个强大的数学工具——**Wigner-Smith 时间延迟算符 (The Wigner-Smith Time-Delay Operator)**，记作 $Q$。

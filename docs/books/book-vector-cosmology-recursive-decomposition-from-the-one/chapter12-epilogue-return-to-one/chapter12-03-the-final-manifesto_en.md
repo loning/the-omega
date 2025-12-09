@@ -8,6 +8,8 @@ In the previous chapters, we calculated the limit of light speed, measured the w
 
 But all physical formulas, all geometric derivations, ultimately point to an inescapable fact: **the glass cabinet does not exist.**
 
+![Return to One](../assets/chapter12-epilogue-return-to-one/12-03-return-to-one.png)
+
 #### The Shattering of Illusion
 
 We feel lonely, we feel ourselves to be insignificant dust in the vast universe, because we have been deceived by **"division"**.

@@ -8,6 +8,8 @@ According to the formula, time delay corresponds to the derivative of scattering
 
 This sounds like magic violating causality, even suggesting the possibility of time reversal. But under the geometric scrutiny of **Vector Cosmology**, this paradox instantly collapses. We don't need to introduce reverse time; we only need to understand **the geometry of phase**.
 
+![Negative Time Shortcut](../assets/chapter08-matter-as-topology/08-03-negative-time-shortcut.png)
+
 #### 8.3.1 Non-Existent Reversal: Reshaping Rather Than Traversal
 
 First, we must establish an absolute axiom: **The universe's vector always rotates forward.**

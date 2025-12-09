@@ -8,6 +8,8 @@ However, this is not merely a mathematical game. This equation forces us to rede
 
 In Newtonian mechanics, mass is regarded as an intrinsic property of matter, representing the "amount of matter." But from the perspective of **Vector Cosmology**, this static definition is completely shattered. Mass is no longer a noun but a consequence of a **verb**.
 
+![Frozen Assets](../assets/chapter02-speed-poverty/02-03-frozen-assets.png)
+
 #### Static Budget and the Origin of Inertia
 
 If we view the universe as an economy, then **$c_{FS}$ (FS capacity)** is the cash flow you must spend at each moment. You cannot save it; you must let it flow—either to external space ($v_{ext}$) or to internal structure ($v_{int}$).

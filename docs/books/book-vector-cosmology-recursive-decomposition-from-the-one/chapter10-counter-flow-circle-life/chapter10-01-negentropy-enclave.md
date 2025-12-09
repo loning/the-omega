@@ -10,6 +10,8 @@
 
 本章将揭示生命的物理本质。在 **《矢量宇宙论》** 的框架下，生命不是奇迹，也不是对物理定律的违背。生命是一种能够主动操控 $c_{FS}$ 预算分配的特殊算法。它是宇宙在这条通往无序的单行道上，顽强建立起的一个个 **负熵飞地 (Negentropy Enclave)**。
 
+![负熵飞地](../assets/chapter10-counter-flow-circle-life/10-01-negentropy-enclave.png)
+
 ## 10.1 负熵飞地 (The Negentropy Enclave)
 
 > "生命之所以能活着，不是因为它逃避了税收，而是因为它找到了极其聪明的办法，让太阳替它买单。"

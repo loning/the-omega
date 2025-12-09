@@ -8,6 +8,8 @@
 
 所谓的"道"，在数学物理中有一个精确的对应物：那个在射影希尔伯特空间中永恒旋转的 **大圆 (The Great Circle)**。
 
+![道即是圆](../assets/chapter12-epilogue-return-to-one/12-02-dao-circle.png)
+
 #### 阴阳的数学表达
 
 老子说："道生一，一生二，二生三，三生万物。"

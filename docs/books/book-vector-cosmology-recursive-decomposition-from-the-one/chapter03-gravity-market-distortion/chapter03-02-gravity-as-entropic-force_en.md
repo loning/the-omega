@@ -10,6 +10,8 @@ Since monopolists (like black holes or stars) have extremely high "transaction c
 
 To answer this question, we need to introduce a concept in physics that is even more fundamental than energy—**Entropy**. In **Vector Cosmology**, gravity is no longer a fundamental interaction force; it is a **"statistical tendency"**, an **Entropic Force** produced by the universe to maximize information flow.
 
+![Entropic Gravity](../assets/chapter03-gravity-market-distortion/03-02-entropic-gravity.png)
+
 #### 3.2.1 The Invisible Hand: Thermodynamics' Geometric Disguise
 
 In economics, Adam Smith proposed the "invisible hand": individual behavior pursuing profit maximization automatically leads to efficient allocation of market resources. In physics, this "invisible hand" is the **Second Law of Thermodynamics**.

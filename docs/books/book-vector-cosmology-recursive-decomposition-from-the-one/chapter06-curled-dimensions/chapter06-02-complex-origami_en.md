@@ -8,6 +8,8 @@ Physicists are often puzzled by why the universe needs so many strange quantum n
 
 The universe did not invent "charge"; the universe merely folded that unique vector into a circle in a specific dimension and let the vector rotate along it.
 
+![Complex Origami](../assets/chapter06-curled-dimensions/06-02-complex-origami.png)
+
 #### Topological Structure of Internal Space
 
 If we imagine the universe's total vector $|\Psi\rangle$ as a flat sheet of paper, then **orthogonal decomposition** is drawing lines on the paper. And the **Standard Model** is an extremely complex **folding** of this paper at microscopic scales.

@@ -4,6 +4,8 @@
 
 本附录将对这一结论提供详细的数学推导。我们将计算一个高斯波包经过散射后的重叠积分（可见度），并证明在小延迟极限下，FS 距离严格正比于 Wigner-Smith 时间延迟与能量带宽的乘积。
 
+![延迟距离](../assets/appendix/appendix-e-delay-distance.png)
+
 ## E.1 散射重叠积分
 
 考虑一个单通道散射问题，其散射矩阵为纯相位形式 $S(\omega) = e^{2i\delta(\omega)}$。

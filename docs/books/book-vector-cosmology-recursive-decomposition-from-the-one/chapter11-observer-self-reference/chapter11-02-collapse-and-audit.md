@@ -8,6 +8,8 @@
 
 观察者，就是那个拿着计算器、铁面无私的宇宙审计员。
 
+![坍缩审计](../assets/chapter11-observer-self-reference/11-02-collapse-audit.png)
+
 #### 11.2.1 叠加态：预算的风险对冲
 
 首先，我们需要理解什么是 **叠加态**。

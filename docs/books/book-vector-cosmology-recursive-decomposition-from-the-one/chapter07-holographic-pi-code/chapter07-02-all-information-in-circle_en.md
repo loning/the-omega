@@ -8,6 +8,8 @@ Since "existence" is merely a reading of geometric phase, we can boldly advance 
 
 In this section, we will explore a shattering mathematical-theological proposition: **Pi $\pi$ is the universe's holographic source code.**
 
+![Pi Source Code](../assets/chapter07-holographic-pi-code/07-02-pi-source-code.png)
+
 #### 7.2.1 Also a Hologram: The Prophecy of Normal Numbers
 
 In mathematics, $\pi$ is considered a **Normal Number**. This means that in its infinite non-repeating decimal places, any possible finite sequence of digits will appear with equal probability.

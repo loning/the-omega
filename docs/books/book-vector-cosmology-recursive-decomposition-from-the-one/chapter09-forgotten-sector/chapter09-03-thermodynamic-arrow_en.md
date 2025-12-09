@@ -12,6 +12,8 @@ If there is no arrow in the underlying geometry, where does this "arrow" that pi
 
 In **Vector Cosmology**, the answer lies not in time but in **dimension**. The arrow of time is not a fundamental force; it is a **statistical geometric illusion** arising from our inability, as local observers, to track that $v_{env}$ component escaping into the infinite-dimensional environment sector.
 
+![Thermodynamic Arrow](../assets/chapter09-forgotten-sector/09-03-thermodynamic-arrow.png)
+
 #### 9.3.1 The Statistical Illusion: Not Just Forgetting, But Orthogonalization
 
 To understand this paradox, we must again distinguish two concepts: **Intrinsic Time ($\tau$)** and **Thermodynamic Time ($t_{th}$)**.

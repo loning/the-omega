@@ -4,6 +4,8 @@
 
 本附录将详细定义 Fubini-Study (FS) 度量，推导 FS 速度公式，并阐明它与微观 Lieb-Robinson 速度之间的严格数量关系。这是支撑全书"毕达哥拉斯恒等式"的数学基石。
 
+![FS几何](../assets/appendix/appendix-a-fs-geometry.png)
+
 ## A.1 射影空间与距离定义
 
 我们所讨论的物理状态空间并非普通的希尔伯特空间 $\mathcal{H}$，而是 **射影希尔伯特空间 (Projective Hilbert Space, $P(\mathcal{H})$)**。这是因为在量子力学中，两个仅相差全局相位因子的状态矢量 $|\psi\rangle$ 和 $e^{i\theta}|\psi\rangle$ 代表的是同一个物理状态。

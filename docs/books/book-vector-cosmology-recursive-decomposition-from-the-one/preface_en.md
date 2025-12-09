@@ -12,6 +12,8 @@ Facing this "multiplicity of time," we cannot help but ask: Does the universe re
 
 This book—**Vector Cosmology**—was born to answer this question.
 
+![The Missing Geometry](assets/preface/preface-01-missing-geometry.png)
+
 Our starting point is an extremely simple yet profoundly subversive assumption: **There is only one time in the universe, and that is the geometric arc length in projective Hilbert space.**
 
 We model the universe as a single pure state vector $|\Psi\rangle$ moving in infinite-dimensional quantum state space. In this abstract geometric space, we introduce a core axiom: the universe's evolution is constrained by a constant "capacity"—we call it **Fubini-Study (FS) Capacity ($c_{FS}$)**.

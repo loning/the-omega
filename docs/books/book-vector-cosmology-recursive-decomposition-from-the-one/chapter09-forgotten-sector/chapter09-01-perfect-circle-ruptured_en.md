@@ -8,6 +8,8 @@ Our world is full of broken teacups, extinguished fires, and forgotten memories.
 
 This chapter will unveil that third dimension we have long ignored. We will see that the perfect circle has not truly disappeared; it has merely ruptured in a higher dimension, opening a gate to an invisible "shadow sector."
 
+![Ruptured Circle](../assets/chapter09-forgotten-sector/09-01-ruptured-circle.png)
+
 ## 9.1 The Perfect Circle Ruptured
 
 > "The universe not only has 'internal' and 'external'; the universe also has a bottomless pocket. We call it 'environment,' but it is actually a backdoor to infinite dimensions."

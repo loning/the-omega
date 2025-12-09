@@ -14,6 +14,8 @@ In the intuition of classical physics, space is considered infinitely divisible.
 
 But in the microscopic engine room of **Vector Cosmology**, this continuity is declared a macroscopic illusion.
 
+![The Pixelated World](../assets/chapter04-discrete-heartbeat/04-01-pixelated-world.png)
+
 #### The End of Continuity
 
 Why must continuity end?
