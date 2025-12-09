@@ -10,6 +10,8 @@
 
 本章将揭示，$v_{int}$ 绝非终点，它只是一个通向更深层几何迷宫的入口。
 
+![递归级联](../assets/chapter06-curled-dimensions/06-01-recursive-cascade.png)
+
 ## 6.1 递归的级联 (The Recursive Cascade)
 
 > "道生一，一生二，二生三，三生万物。这不仅是哲学，这是宇宙底层的运算逻辑。"

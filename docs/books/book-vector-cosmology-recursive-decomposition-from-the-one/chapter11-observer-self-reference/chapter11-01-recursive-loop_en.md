@@ -6,6 +6,8 @@ In classical physics, observers are carefully excluded from the equations. Scien
 
 In **Vector Cosmology**, we must take a more radical step. We cannot simply add observers back into the equations; we must acknowledge: **observers are a special solution of the equations themselves.**
 
+![Recursive Observer](../assets/chapter11-observer-self-reference/11-01-recursive-observer.png)
+
 ## 11.1 The Recursive Loop
 
 > "The universe is not a machine with only inputs. When the complexity of internal structure reaches a critical point, the output data is reconnected to the input. This loop is 'I'."

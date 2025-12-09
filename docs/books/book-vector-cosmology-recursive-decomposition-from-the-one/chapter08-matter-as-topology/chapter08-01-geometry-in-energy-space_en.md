@@ -14,6 +14,8 @@ In classical mechanics, scattering is intuitive: two rigid balls collide and bou
 
 We must abandon the "billiard ball" image and establish the "phase space trajectory" image.
 
+![Geometry in Energy Space](../assets/chapter08-matter-as-topology/08-01-energy-geometry.png)
+
 #### Trajectories on the Energy Axis
 
 Let us consider a single-particle scattering process (for example, an electron passing through the potential field near an atomic nucleus). In this process, the most crucial parameter is not time $t$ but **energy $\omega$**.

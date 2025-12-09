@@ -4,6 +4,8 @@
 
 本附录将基于 Fubini-Study 几何，给出这些速度极限的严格数学推导。我们将证明，曼德尔斯坦-塔姆 (Mandelstam-Tamm) 类型的界限不仅仅是能量-时间不确定性原理的体现，更是黎曼几何中"两点之间直线最短"这一公理的直接推论。
 
+![QSL时钟](../assets/appendix/appendix-b-qsl-clock.png)
+
 ## B.1 从方差到距离
 
 考虑一个由参数 $\lambda$（可以是任意物理时间参数）描述的量子演化过程。其状态矢量 $|\psi(\lambda)\rangle$ 遵循广义薛定谔方程：

@@ -4,6 +4,8 @@ In Chapter 8 "Matter as Topology" of the main text, we proposed a revolutionary 
 
 This appendix will provide detailed mathematical derivations for this conclusion. We will calculate the overlap integral (visibility) of a Gaussian wave packet after scattering and prove that in the small delay limit, FS distance is strictly proportional to the product of Wigner-Smith time delay and energy bandwidth.
 
+![Delay Distance](../assets/appendix/appendix-e-delay-distance.png)
+
 ## E.1 Scattering Overlap Integral
 
 Consider a single-channel scattering problem with a pure phase scattering matrix $S(\omega) = e^{2i\delta(\omega)}$.

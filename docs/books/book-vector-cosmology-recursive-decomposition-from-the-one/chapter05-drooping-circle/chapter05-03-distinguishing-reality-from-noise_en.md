@@ -16,6 +16,8 @@ Even if spacetime were a perfect continuum (no lattice droop), as long as enviro
 
 If both noise and lattice effects cause "circle shrinkage," how do we distinguish which one is the truth of the universe and which one is experimental error?
 
+![Signal vs Noise](../assets/chapter05-drooping-circle/05-03-signal-vs-noise.png)
+
 #### Geometric Fingerprints: Determinism vs. Randomness
 
 Fortunately, in the framework of **Vector Cosmology**, these two have completely different **"geometric fingerprints"**.

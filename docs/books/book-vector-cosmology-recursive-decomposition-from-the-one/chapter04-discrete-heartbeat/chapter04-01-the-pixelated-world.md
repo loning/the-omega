@@ -14,6 +14,8 @@
 
 但在 **《矢量宇宙论》** 的微观引擎室里，这种连续性被宣告为一种宏观的幻觉。
 
+![像素化的世界](../assets/chapter04-discrete-heartbeat/04-01-pixelated-world.png)
+
 #### 连续性的终结
 
 为什么连续性必须终结？

@@ -14,6 +14,8 @@ On a high-speed spacecraft, astronauts' heartbeats slow down, atomic vibrations 
 
 But under the **information-velocity decomposition** framework of Vector Cosmology, the truth is much more straightforward and harsh: **Your time slows down because you don't have enough budget to pay for the passage of time.**
 
+![Budget Exhaustion](../assets/chapter02-speed-poverty/02-01-budget-exhaustion.png)
+
 #### Internal Velocity as Time Flow Rate
 
 Recall our core formula:

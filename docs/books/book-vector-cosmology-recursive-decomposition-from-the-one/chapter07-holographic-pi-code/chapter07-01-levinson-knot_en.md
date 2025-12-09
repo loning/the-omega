@@ -8,6 +8,8 @@ This chapter will reveal the deepest mathematical secret of this book: **Matter 
 
 We are about to see that Levinson's Theorem is not merely a scattering theory formula; it is the underlying protocol by which the universe encodes "existence" as "numbers."
 
+![Levinson Knot](../assets/chapter07-holographic-pi-code/07-01-levinson-knot.png)
+
 ## 7.1 The Levinson Knot
 
 > "Matter is not stationary stone; matter is flowing dead knots. Existence is counting: how many $\pi$ we count in the void, that many particles we create."

@@ -8,6 +8,8 @@ In the Copenhagen interpretation, this is seen as an artificial assertion. But f
 
 The observer is that universe's auditor, holding a calculator, impartial and unyielding.
 
+![Collapse and Audit](../assets/chapter11-observer-self-reference/11-02-collapse-audit.png)
+
 #### 11.2.1 Superposition: Budget Risk Hedging
 
 First, we need to understand what **superposition** is.

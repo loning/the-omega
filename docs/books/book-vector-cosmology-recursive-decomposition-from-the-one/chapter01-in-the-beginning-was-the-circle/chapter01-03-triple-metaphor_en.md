@@ -6,6 +6,8 @@ However, mathematical formulas, though precise, often appear cold and abstract. 
 
 In this section, we will construct the worldview of **Vector Cosmology** through three metaphors: **geometry**, **computation**, and **economics**. These three languages, seemingly disparate, are actually describing three facets of the same physical reality.
 
+![Triple Metaphor](../assets/chapter01-in-the-beginning-was-the-circle/01-03-triple-metaphor.png)
+
 #### Metaphor One: Geometry—The Division of the Great Circle
 
 The most intuitive perspective comes from geometry, which is precisely the origin of the Fubini-Study metric.

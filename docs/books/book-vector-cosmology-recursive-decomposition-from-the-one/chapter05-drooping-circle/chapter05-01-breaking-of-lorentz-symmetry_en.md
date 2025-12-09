@@ -8,6 +8,8 @@ In the macroscopic world, Einstein's relativity tells us that no matter how fast
 
 We call this phenomenon—**"Droop"**.
 
+![Lattice Droop](../assets/chapter05-drooping-circle/05-01-lattice-droop.png)
+
 ## 5.1 The Breaking of Lorentz Symmetry
 
 > "Relativity is not the whole truth; it is a blurry projection of truth at low resolution."

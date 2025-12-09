@@ -6,6 +6,8 @@ In the previous section, we witnessed the rupture of the perfect circle and intr
 
 In this section, we will reveal the geometric essence of **Quantum Decoherence** and **Entropy Increase**. In the ledger of **Vector Cosmology**, they are neither chaos nor destruction; they are the **"Invisible Tax"** that every physical transaction must mandatorily pay.
 
+![Invisible Tax](../assets/chapter09-forgotten-sector/09-02-invisible-tax.png)
+
 #### 9.2.1 The Orthogonal Great Escape of Information
 
 When we say a system has "lost information" or "entropy has increased," has this information really disappeared?

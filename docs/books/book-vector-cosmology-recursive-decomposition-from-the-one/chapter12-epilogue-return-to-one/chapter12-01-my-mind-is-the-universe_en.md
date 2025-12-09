@@ -10,6 +10,8 @@ But that most fundamental question remains unanswered: **What is this machine?**
 
 In this chapter, we will no longer look outward, but inward. We will discover that the ultimate answer to all physics is not hidden in quasars billions of light-years away, but in the heart of "you" who is thinking about this question.
 
+![My Mind is the Universe](../assets/chapter12-epilogue-return-to-one/12-01-mind-is-universe.png)
+
 ## 12.1 My Mind is the Universe
 
 > "You are not a grain of dust in the universe. You are a knot tied locally by the entire universe to see itself. When you think, the universe is performing self-reference through your neurons."

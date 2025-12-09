@@ -4,6 +4,8 @@
 
 本附录将给出 QCA 的严格数学定义，并引入 **Lieb-Robinson 界 (Lieb-Robinson Bounds)**。这是数学物理学中的一个里程碑式定理，它证明了即使在非相对论性的量子格点系统中，局部相互作用也会自动涌现出一个"光锥"般的因果边界。
 
+![QCA晶格](../assets/appendix/appendix-d-qca-lattice.png)
+
 ## D.1 微观网格的数学定义
 
 考虑一个 $d$ 维的正则晶格 $\Lambda$（例如 $\mathbb{Z}^d$）。在晶格的每一个节点 $x \in \Lambda$ 上，都附着一个有限维的希尔伯特空间 $\mathcal{H}_{cell}$（例如一个二能级的量子比特，$\mathcal{H}_{cell} \simeq \mathbb{C}^2$）。

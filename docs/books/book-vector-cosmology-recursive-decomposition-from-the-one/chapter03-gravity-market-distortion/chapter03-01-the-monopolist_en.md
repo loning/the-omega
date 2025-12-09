@@ -8,6 +8,8 @@ However, the universe is not alone. When countless particles gather together—f
 
 In general relativity, this is called "spacetime curvature." But from the economic perspective of **Vector Cosmology**, this should be more precisely described as a **"Market Monopoly"**.
 
+![The Monopolist](../assets/chapter03-gravity-market-distortion/03-01-the-monopolist.png)
+
 ## 3.1 The Monopolist
 
 If photons are free wanderers, then massive celestial bodies like Earth or the Sun are the universe's top **oligopolistic monopolists**.

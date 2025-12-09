@@ -6,6 +6,8 @@ In special relativity, the speed of light $c$ is revered as a sacred and inviola
 
 In the microscopic engine room of **Vector Cosmology**, we can finally lift the veil on this constant. The speed of light is not a parameter arbitrarily set by God; it is the **hardware performance indicator** of the universe's underlying discrete structure.
 
+![Light Speed Origin](../assets/chapter04-discrete-heartbeat/04-02-light-speed-origin.png)
+
 #### The Jump Limit of Information
 
 In the previous section, we established that the universe's substrate is a **Quantum Cellular Automata (QCA)** lattice. In this discrete world, there is no true "continuous motion." What we call motion is essentially the transmission and replication of information between adjacent grid points.

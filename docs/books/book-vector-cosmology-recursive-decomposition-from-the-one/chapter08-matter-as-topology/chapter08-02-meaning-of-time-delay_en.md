@@ -8,6 +8,8 @@ But in the quantum scattering picture of **Vector Cosmology**, time delay has a 
 
 When a particle exhibits "time delay" during scattering, it means the universe's unique vector is performing complex rotations and evolution at extremely high speed in projective Hilbert space. Delay is essentially **accumulation of internal geometric distance**.
 
+![Delay Distance](../assets/chapter08-matter-as-topology/08-02-delay-distance.png)
+
 #### 8.2.1 Wigner-Smith Operator: The Geometric Probe of Time
 
 To quantify this delay, physicists Eugene Wigner and Felix Smith introduced a powerful mathematical tool—**The Wigner-Smith Time-Delay Operator**, denoted $Q$.

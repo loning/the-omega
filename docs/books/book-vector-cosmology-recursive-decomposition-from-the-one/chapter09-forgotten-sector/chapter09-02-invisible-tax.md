@@ -6,6 +6,8 @@
 
 在本节中，我们将揭示 **量子退相干 (Quantum Decoherence)** 与 **熵增 (Entropy Increase)** 的几何本质。在 **《矢量宇宙论》** 的账本上，它们既不是混乱，也不是毁灭，它们是每一笔物理交易都必须强制缴纳的 **"隐形税收" (Invisible Tax)**。
 
+![隐形税收](../assets/chapter09-forgotten-sector/09-02-invisible-tax.png)
+
 #### 9.2.1 信息的正交大逃亡
 
 当我们说一个系统"丢失了信息"或者"熵增加了"的时候，这些信息真的消失了吗？

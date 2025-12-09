@@ -10,6 +10,8 @@ From the microscopic perspective of **Vector Cosmology**, we no longer need this
 
 By introducing Quantum Cellular Automata (QCA) as the universe's underlying architecture, we not only explain the origin of light speed but also thoroughly **"deny infinity"**. In this discrete universe, singularities disappear, divergences terminate, and everything returns to elegant finiteness.
 
+![The Denial of Infinity](../assets/chapter04-discrete-heartbeat/04-03-denial-of-infinity.png)
+
 #### The Curse of Continuity: Ultraviolet Divergence
 
 Why does traditional physics encounter infinity? The culprit lies in our obsession with **"continuous space"**.

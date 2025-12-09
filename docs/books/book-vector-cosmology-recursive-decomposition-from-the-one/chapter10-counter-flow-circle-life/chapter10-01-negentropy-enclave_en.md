@@ -10,6 +10,8 @@ This phenomenon is called **Life**.
 
 This chapter will reveal the physical essence of life. Under the framework of **Vector Cosmology**, life is not a miracle nor a violation of physical laws. Life is a special algorithm capable of actively manipulating $c_{FS}$ budget allocation. It is the **Negentropy Enclave** stubbornly established by the universe on this one-way street to disorder.
 
+![Negentropy Enclave](../assets/chapter10-counter-flow-circle-life/10-01-negentropy-enclave.png)
+
 ## 10.1 The Negentropy Enclave
 
 > "Life survives not because it evades taxes, but because it has found an extremely clever way to make the sun pay the bill."

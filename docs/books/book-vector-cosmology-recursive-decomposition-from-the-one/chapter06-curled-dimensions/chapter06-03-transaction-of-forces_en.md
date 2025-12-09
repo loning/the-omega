@@ -10,6 +10,8 @@ In classical physics, this correlation is called **"Force"**. Newton told us tha
 
 Interaction is essentially the **transfer mechanism** in the universe.
 
+![Transaction of Forces](../assets/chapter06-curled-dimensions/06-03-transaction-of-forces.png)
+
 #### Sector Collision: When Circles Meet
 
 Imagine two vectors evolving independently in projective Hilbert space—say, an electron and a proton. As long as they are far apart, they remain safe under their respective $c_{FS}$ budget constraints.

@@ -6,6 +6,8 @@
 
 在本节中，我们将通过 **几何**、**计算** 与 **经济** 这三重隐喻，立体地构建 **《矢量宇宙论》** 的世界观。这三种语言看似迥异，实则是在描述同一个物理现实的三个侧面。
 
+![三重隐喻](../assets/chapter01-in-the-beginning-was-the-circle/01-03-triple-metaphor.png)
+
 #### 隐喻一：几何——大圆的切分 (Geometry: The Division of the Great Circle)
 
 最直观的视角来自几何学，这也正是 Fubini-Study 度量的本源。

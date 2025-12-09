@@ -4,6 +4,8 @@ In Chapter 10 "The Counter-Flow Circle" of the main text, we introduced the **En
 
 This appendix will provide a rigorous mathematical proof of this axiom based on continuity bounds in quantum information theory. We will show how the flight speed of the thermodynamic arrow of time is locked by the underlying FS geometric structure.
 
+![Entropic Throttle](../assets/appendix/appendix-c-entropic-throttle.png)
+
 ## C.1 From Geometric Distance to Statistical Distance
 
 Consider a composite quantum system whose Hilbert space decomposes into "system" and "environment" parts: $\mathcal{H} = \mathcal{H}_{sys} \otimes \mathcal{H}_{env}$. Assume the system has finite dimension $d_{sys}$ (consistent with QCA's finiteness assumption).

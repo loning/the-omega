@@ -12,6 +12,8 @@
 
 我们称之为——**信息速度圆实验**。
 
+![IVC实验](../assets/chapter05-drooping-circle/05-02-ivc-experiment.png)
+
 #### 模拟宇宙的乐高：量子行走 (Quantum Walk)
 
 我们不需要真的去拆解时空，我们可以"运行"时空。

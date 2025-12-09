@@ -16,6 +16,8 @@ If we are to describe this whole in the most precise mathematical language, then
 
 We call it: **The Global Pure State Vector ($|\Psi\rangle$)**.
 
+![The One Vector](assets/prologue/prologue-01-the-one-vector.png)
+
 Imagine a space with infinite dimensions. In this space, each dimension does not represent a physical direction (such as length, width, height), but rather the "amplitude" of a possibility. This is the stage of quantum mechanics—Hilbert space. Here, the entire universe—including all galaxies, all atoms, all histories of past and future—is collapsed into a single, isolated data point.
 
 This point is $|\Psi\rangle$.

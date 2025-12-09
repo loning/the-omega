@@ -10,6 +10,8 @@ The answer lies in **Recursion**.
 
 This chapter will reveal that $v_{int}$ is by no means the end; it is merely an entrance to a deeper geometric maze.
 
+![Recursive Cascade](../assets/chapter06-curled-dimensions/06-01-recursive-cascade.png)
+
 ## 6.1 The Recursive Cascade
 
 > "The Tao gives birth to one, one gives birth to two, two gives birth to three, three gives birth to all things. This is not just philosophy; this is the computational logic of the universe's underlying structure."

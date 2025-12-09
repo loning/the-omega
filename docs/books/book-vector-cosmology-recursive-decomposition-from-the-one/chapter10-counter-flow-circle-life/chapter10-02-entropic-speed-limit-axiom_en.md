@@ -10,6 +10,8 @@ In classical thermodynamics, the direction of entropy increase is determined ($\
 
 In **Vector Cosmology**, we derive from geometry an ultimate barrier that protects life—**The Entropic Speed Limit Axiom**.
 
+![Decay Speed Limit](../assets/chapter10-counter-flow-circle-life/10-02-decay-speed-limit.png)
+
 #### 10.2.1 The Bandwidth Limit of Chaos
 
 Let us return to the geometry of Hilbert space. The increase of entropy corresponds geometrically to the system's state vector deflecting from ordered low-dimensional subspaces into high-dimensional environmental subspaces. This deflection process requires changing the vector's angle.

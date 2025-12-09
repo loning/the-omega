@@ -4,6 +4,8 @@ In Volume II "The Microscopic Engine" of the main text, we proposed that the uni
 
 This appendix will provide a rigorous mathematical definition of QCA and introduce **Lieb-Robinson Bounds**. This is a milestone theorem in mathematical physics that proves that even in non-relativistic quantum lattice systems, local interactions automatically give rise to a causal boundary like a "light cone."
 
+![QCA Lattice](../assets/appendix/appendix-d-qca-lattice.png)
+
 ## D.1 Mathematical Definition of Microscopic Lattice
 
 Consider a $d$-dimensional regular lattice $\Lambda$ (e.g., $\mathbb{Z}^d$). At each node $x \in \Lambda$ of the lattice, a finite-dimensional Hilbert space $\mathcal{H}_{cell}$ is attached (e.g., a two-level qubit, $\mathcal{H}_{cell} \simeq \mathbb{C}^2$).

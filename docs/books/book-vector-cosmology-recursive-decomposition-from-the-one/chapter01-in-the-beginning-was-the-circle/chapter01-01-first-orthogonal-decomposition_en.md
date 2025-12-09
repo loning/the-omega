@@ -16,6 +16,8 @@ Imagine an arrow pointing toward the sky (representing a vector). We can decompo
 
 The creation of the universe is such a process of orthogonally projecting the omnipotent $c_{FS}$. We define this division as the **First Orthogonal Decomposition**: splitting the universe's total rate of change into **external motion ($v_{ext}$)** and **internal evolution ($v_{int}$)**.
 
+![Orthogonal Decomposition](../assets/chapter01-in-the-beginning-was-the-circle/01-01-orthogonal-decomposition.png)
+
 #### The Tearing of Dimensions: External and Internal
 
 Mathematically, this process manifests as the splitting of the tangent space ($T_{[\psi]}P(\mathcal{H})$) of projective Hilbert space. We decompose the global tangent vector $\dot{\psi}$ into two mutually perpendicular components:
