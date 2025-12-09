@@ -10,6 +10,8 @@
 
 **(客观性的纳什均衡)**
 
+![Reality Consensus](../../assets/reality_consensus.png)
+
 > **"If everyone possesses an independent oracle (consciousness), if each observer can collapse wave functions to different branches through interaction, then why aren't we living in isolated illusion bubbles? Why is my 'red light' also your 'red light'? Objective reality is not some absolute truth; it is a Nash Equilibrium reached by countless interactive Turing machines in the Bekenstein game. Physical laws are this massive distributed consensus protocol."**
 
 In previous chapters, we established an **Interactive Computational Cosmology (ICC)** model based on a single observer. We proved that for a single player (CITM), the world is generated on demand. However, this model immediately faces the most severe challenge—the trap of **Solipsism**.

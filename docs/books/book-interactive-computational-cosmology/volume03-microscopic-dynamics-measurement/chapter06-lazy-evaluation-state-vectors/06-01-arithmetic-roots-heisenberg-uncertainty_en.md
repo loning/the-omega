@@ -10,6 +10,8 @@
 
 **(海森堡不确定性的算术根源)**
 
+![Heisenberg Bandwidth](../../assets/heisenberg_bandwidth.png)
+
 > **"God does not play dice, but he does use finite-precision floating-point numbers. Heisenberg's uncertainty principle is not some mysterious fuzziness of nature, but an arithmetic bandwidth theorem that any finite discrete signal processing system must obey when converting between time and frequency domains."**
 
 In the previous two volumes, we explored the emergence mechanisms of macroscopic spacetime. Now, we turn our attention to the microscopic world, delving into the kernel code of **Interactive Computational Cosmology (ICC)**.

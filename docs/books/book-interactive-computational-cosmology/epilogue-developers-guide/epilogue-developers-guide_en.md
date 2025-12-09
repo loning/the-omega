@@ -2,6 +2,8 @@
 
 **(终章：开发者手册)**
 
+![Reality Hacking](../assets/reality_hacking.png)
+
 > **"At this point, we have decompiled the universe's source code. We see that so-called 'fate' is merely unobserved probability waves, and so-called 'reality' is instant rendering under consensus protocols. Now, what lies before you as an observer is no longer the question of 'what the world is,' but 'what you want it to become.' Physics is the science of constraints, while engineering is the art of possibility."**
 
 ## Narrative Engineering: Hacking the Probability Stream

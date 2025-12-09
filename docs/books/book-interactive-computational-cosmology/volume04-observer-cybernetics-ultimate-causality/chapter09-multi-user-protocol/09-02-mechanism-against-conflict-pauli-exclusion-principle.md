@@ -10,6 +10,8 @@
 
 **(Mechanism Against Conflict: Pauli Exclusion Principle as Information-Theoretic Constraint)**
 
+![Pauli Exclusion](../../assets/pauli_exclusion.png)
+
 > **"为什么物质是硬的？为什么我们不能穿墙而过？这并非主要源于电磁力的排斥，而是源于更底层的逻辑约束。在交互式计算宇宙中，费米子（物质粒子）被定义为拥有'唯一标识符'（Unique ID）的持久化对象。泡利不相容原理，就是系统数据库为了防止'主键冲突'（Primary Key Collision）而强制执行的防穿模算法。"**
 
 在 9.1 节中，我们确立了多用户共识协议，解释了为什么多个观测者能看到同一个世界。这就引出了一个新的工程挑战：在一个共享的虚拟环境中，如果两个玩家（或两个粒子）试图占据完全相同的时空坐标和量子状态，系统该如何处理？

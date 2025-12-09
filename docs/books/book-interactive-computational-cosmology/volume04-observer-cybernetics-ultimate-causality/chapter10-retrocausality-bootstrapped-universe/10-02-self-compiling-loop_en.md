@@ -10,6 +10,8 @@
 
 **(宇宙的自编译循环)**
 
+![Quine Universe](../../assets/quine_universe.png)
+
 > **"In computer science, there exists a peculiar type of program whose only output is its own source code. Such programs are called 'Quines.' Interactive Computational Cosmology reveals a profound truth: our universe is precisely such a grand Quine. It is not a machine designed to manufacture stars and galaxies; it is a machine designed to compute and reconstruct its own source code."**
 
 In Section 10.1, we solved the self-consistency problem of initial boundary conditions (Big Bang parameters) through retrocausal chains and fixed-point theorems. This raises a deeper question about system structure: if the universe's endpoint ($\Omega$) determines its starting point ($\alpha$), how did this entire system "boot up"? Where is the boundary between hardware and software?

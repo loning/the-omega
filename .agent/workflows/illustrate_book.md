@@ -49,15 +49,7 @@ This workflow outlines the process for illustrating a book project using AI-gene
 
 2.  **Move Images to Assets**:
     - Use `run_command` to move generated images from the brain directory to the book's `assets` folder.
-    - Example: `mv /path/to/brain/image.png /path/to/book/assets/chapter-[n]/image.png`
-
-3.  **Embed Images**:
-    - For each generated image, embed it into ALL of the following files if they exist:
-    
-    - **A. Chinese Markdown (`.md`)**:
-        - Use `replace_file_content`.
-        - Insert after the H1 title or relevant section header.
-        - Format: `![Alt Text](../../assets/chapter-[n]/image_name.png)`
+    - Example: `mv /path/to/brain/image.png /path/to/book/assets/chapter-[n]/[n.n]-image.png`
 
 6.  **Update Task List**:
     - Use `multi_replace_file_content` to mark the completed items in `task.md` as `[x]`.

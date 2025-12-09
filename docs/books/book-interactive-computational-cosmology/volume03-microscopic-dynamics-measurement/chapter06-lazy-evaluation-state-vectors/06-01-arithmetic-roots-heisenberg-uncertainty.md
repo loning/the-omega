@@ -10,6 +10,8 @@
 
 **(Arithmetic Roots of Heisenberg's Uncertainty)**
 
+![Heisenberg Bandwidth](../../assets/heisenberg_bandwidth.png)
+
 > **"上帝不掷骰子，但他确实使用了有限精度的浮点数。海森堡不确定性原理并非大自然的某种神秘模糊性，而是任何有限离散信号处理系统在时域与频域之间进行转换时，必须遵守的算术带宽定理。"**
 
 在前两卷中，我们探讨了宏观时空的涌现机制。现在，我们将目光转向微观世界，深入 **交互式计算宇宙学（ICC）** 的内核代码。

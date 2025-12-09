@@ -10,6 +10,8 @@
 
 **(坍缩即实例化)**
 
+![Collapse Instantiation](../../assets/collapse_instantiation.png)
+
 > **"Wave functions never 'collapse,' just as source code never 'destroys' itself by being compiled. In the runtime of physical computation, what we observe is merely the process of abstract data types (ADT) being just-in-time compiled (JIT) into concrete instances under interaction requests. Schrödinger's cat is not both dead and alive; it is an uninstantiated class."**
 
 The greatest mystery in quantum mechanics—the Measurement Problem—has puzzled physicists for nearly a century. Von Neumann formulated it as a logical break between Process I (non-unitary collapse) and Process II (unitary evolution). Why do microscopic particles follow linear superposition laws, while the macroscopic world appears as a definite single state?

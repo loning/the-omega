@@ -10,6 +10,8 @@
 
 **(闭合类时曲线与自洽性)**
 
+![Retrocausal Loop](../../assets/retrocausal_loop.png)
+
 > **"The arrow of causality does not always point in the direction of entropy increase. In computational theory, recursion and feedback are the cornerstones of building complex systems. The universe is not a unidirectional ray blindly shooting from the Big Bang toward nothingness, but a massive self-referential loop. The future endpoint ($\Omega$) and the past starting point ($\alpha$) lock each other through closed timelike curves, jointly defining the boundary conditions of physical reality."**
 
 In the previous nine chapters, we constructed a complete physical picture based on **Interactive Computational Cosmology (ICC)**: from the underlying bit ontology, through the middle layer of spacetime emergence, to the top layer of multi-observer consensus. However, this model still faces one final ultimate question: **Who set the system's initial parameters?**

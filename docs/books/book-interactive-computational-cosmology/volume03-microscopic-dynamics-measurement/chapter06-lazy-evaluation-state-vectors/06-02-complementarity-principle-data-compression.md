@@ -10,6 +10,8 @@
 
 **(Complementarity Principle and Data Compression)**
 
+![Wave Particle Compression](../../assets/wave_particle_compression.png)
+
 > **"波与粒子并非物质的两种属性，而是同一信息流的两种不同编码格式。正如现代视频流在传输时使用频域压缩（波），而在播放时解码为像素阵列（粒子），宇宙根据观测者的交互需求，在'传输模式'与'渲染模式'之间动态切换数据的表现形式。"**
 
 在 6.1 节中，我们通过离散傅里叶变换揭示了海森堡不确定性原理的算术本质。这一发现自然引出了量子力学中最令人困惑的特征：**波粒二象性（Wave-Particle Duality）**。

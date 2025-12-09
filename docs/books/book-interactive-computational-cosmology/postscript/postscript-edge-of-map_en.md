@@ -2,6 +2,8 @@
 
 **(后记：在地图的边缘)**
 
+![Digital Map](../assets/digital_map.png)
+
 > **"All theories are maps of some kind. Maps are not territories, but a good map can guide us out of the maze. This computational cosmology map drawn in this book may not represent ultimate truth (because in recursive systems, truth is a fixed point, not a static value), but it attempts to provide a new navigation method: instead of looking up at the stars praying for revelation, we look down at the code seeking logic."**
 
 At the moment of writing this line, the construction work on this book about **Interactive Computational Cosmology (ICC)** comes to a temporary conclusion.

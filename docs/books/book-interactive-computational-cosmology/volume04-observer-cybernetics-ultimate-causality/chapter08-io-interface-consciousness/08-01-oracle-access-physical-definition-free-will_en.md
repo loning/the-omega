@@ -10,6 +10,8 @@
 
 **(预言机接入：自由意志的物理定义)**
 
+![Consciousness Oracle](../../assets/consciousness_oracle.png)
+
 > **"If the universe is a closed algorithmic system, then its future is either deterministic or pseudo-random, never capable of producing true 'choice.' Just as Gödel proved that formal systems cannot prove their own completeness, and Turing proved the undecidability of the halting problem, if the physical universe is to break the causal deadlock, it must rely on an input source located outside the system. Consciousness is the oracle that breaks algorithmic closure."**
 
 In the previous three volumes, we constructed a grand model of Interactive Computational Universe (CITM). We proved that matter is data structures, spacetime is network topology, and physical laws are system optimization algorithms. However, until now, this model has been missing the most crucial component: **User**.

@@ -10,6 +10,8 @@
 
 **(延迟选择与历史一致性)**
 
+![Delayed Choice Dragon](../../assets/delayed_choice_dragon.png)
+
 > **"History is not fixed data in read-only memory (ROM), but a log file dynamically generated based on current query requests. We do not live in a universe where the past determines the present; on the contrary, current observation behaviors are retroactively defining the past. As Wheeler said, the choice at this moment determines which path a photon took billions of years ago."**
 
 In Section 7.1, we reconstructed quantum measurement as a process of **Just-In-Time Instantiation (JIT Instantiation)** from abstract wave functions to concrete particles. However, this mechanism immediately raises a serious logical challenge regarding temporal causality: if a particle's attributes (such as position or path) are determined only at the moment of measurement, what state was the particle in during the time before measurement?

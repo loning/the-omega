@@ -10,6 +10,8 @@
 
 **(互补性原理与数据压缩)**
 
+![Wave Particle Compression](../../assets/wave_particle_compression.png)
+
 > **"Waves and particles are not two properties of matter, but two different encoding formats of the same information flow. Just as modern video streams use frequency-domain compression (waves) during transmission and decode into pixel arrays (particles) during playback, the universe dynamically switches data representation between 'transmission mode' and 'rendering mode' according to the observer's interaction needs."**
 
 In Section 6.1, we revealed the arithmetic essence of Heisenberg's uncertainty principle through discrete Fourier transforms. This discovery naturally leads to the most perplexing feature of quantum mechanics: **Wave-Particle Duality**.

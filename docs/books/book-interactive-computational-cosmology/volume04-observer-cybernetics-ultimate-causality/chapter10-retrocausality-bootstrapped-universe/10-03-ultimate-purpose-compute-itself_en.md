@@ -10,6 +10,8 @@
 
 **(终极目的：为了计算它自己)**
 
+![Universal Brain](../../assets/universal_brain.png)
+
 > **"Why does existence exist? This is not only a philosophical question but also a computational cost problem. If the universe is a computer, what is it computing with such enormous energy consumption and such long runtime? The answer is both simple and shocking: it is computing itself. The universe is a massive, irreducible algorithm whose only output is its self-awareness."**
 
 In Section 10.2, we defined the universe as a self-compiling Quine program. This explains how the universe's structure maintains self-consistency. However, this structural definition does not answer the dynamic **Teleology** question: if the universe exists merely to "exist," then a static, eternal perfect crystal (such as a vacuum state) would suffice. Why must the universe undergo hundreds of billions of years of turbulent, painful, and struggling evolution from the Big Bang to heat death?

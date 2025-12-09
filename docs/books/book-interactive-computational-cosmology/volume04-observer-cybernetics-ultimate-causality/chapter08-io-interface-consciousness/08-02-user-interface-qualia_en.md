@@ -10,6 +10,8 @@
 
 **(用户界面 (UI)：感受质)**
 
+![Qualia GUI](../../assets/qualia_gui.png)
+
 > **"Only for the code writer does 'red' mean electromagnetic waves of 700 nanometers wavelength; for the system user, 'red' is just a warning icon. Qualia are not some mysterious mental entities; they are the graphical user interface (GUI) rendered with extreme compression when the physical system presents current system states to the oracle (consciousness) located outside the horizon."**
 
 In Section 8.1, we defined consciousness as an external I/O interface (oracle) connected to the physical universe. This raises an engineering question: What is the data transmission protocol of this interface?

@@ -10,6 +10,8 @@
 
 **(防冲突机制：泡利不相容原理的信息论解释)**
 
+![Pauli Exclusion](../../assets/pauli_exclusion.png)
+
 > **"Why is matter hard? Why can't we walk through walls? This is not primarily due to electromagnetic repulsion, but to deeper logical constraints. In an interactive computational universe, fermions (matter particles) are defined as persistent objects with 'Unique Identifiers' (Unique ID). The Pauli exclusion principle is the anti-clipping algorithm enforced by the system database to prevent 'Primary Key Collisions.'"**
 
 In Section 9.1, we established the multi-user consensus protocol, explaining why multiple observers can see the same world. This raises a new engineering challenge: in a shared virtual environment, if two players (or two particles) attempt to occupy exactly the same spacetime coordinates and quantum states, how should the system handle this?
