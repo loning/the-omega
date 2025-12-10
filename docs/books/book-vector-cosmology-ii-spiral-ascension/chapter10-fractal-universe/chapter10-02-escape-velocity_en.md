@@ -1,5 +1,7 @@
 #### 10.2 Escape Velocity
 
+![Escape Velocity](../assets/chapter10/10-02-escape-velocity.png)
+
 > "We once thought freedom meant flying to the end of the stars. But when we truly arrive there, we find only colder void. True freedom lies not in how far you run, but in whether you can jump out of this running plane and go to the dimension above."
 
 In classical astronautics, escape velocity is the minimum speed required for an object to break free from gravitational binding (approximately 11.2 km/s at Earth's surface). But in the fractal universe model of **Vector Cosmology**, this concept acquires a dizzying new definition.

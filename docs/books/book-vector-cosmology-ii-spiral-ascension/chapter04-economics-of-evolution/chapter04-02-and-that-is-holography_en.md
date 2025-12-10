@@ -1,5 +1,7 @@
 # Chapter 4: The Economics of Evolution
 
+![And That Is Holography](../assets/chapter04/04-02-and-that-is-holography.png)
+
 ## 4.2 And That Is Holography
 
 > "A drop of water can reflect the entire sun not because water is magical, but because light has already established a holographic connection between them. Evolution's ultimate ambition is not merely to survive in this universe, but to 'install' the entire universe into its own head."

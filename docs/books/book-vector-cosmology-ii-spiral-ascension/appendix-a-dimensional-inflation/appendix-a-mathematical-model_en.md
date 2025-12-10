@@ -1,5 +1,7 @@
 # Appendix A: Mathematical Model of Dimensional Inflation
 
+![Appendix A](../assets/appendices/appendix-a.png)
+
 In the main text of *Vector Cosmology II*, we proposed a revolutionary hypothesis: the universe's total budget $c_{FS}$ is not constant, but undergoes exponential inflation with the passage of intrinsic time $\tau$. This hypothesis explains the origin of dark energy and the inevitable growth of complexity.
 
 This appendix provides a rigorous mathematical formulation for this "Red Queen's race." We will derive the modified FS capacity equation under dimensional inflation and show how it naturally leads to a cosmological constant-like term.

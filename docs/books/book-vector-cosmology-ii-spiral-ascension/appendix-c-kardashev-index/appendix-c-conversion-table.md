@@ -1,5 +1,7 @@
 # 附录 C：卡尔达肖夫指数与信息密度的换算表 (Appendix C: Kardashev Index and Information Density Conversion Table)
 
+![Appendix C](../assets/appendices/appendix-c.png)
+
 在《矢量宇宙论 II》的第四卷"工程"中，我们重新定义了文明的等级：不仅仅是能量消耗的指数增长，更是 **$c_{FS}$ 预算利用率** 的几何级数攀升。传统的基于瓦特（Watts）的卡尔达肖夫指数显得过于粗糙，无法描述高维计算文明（如 III 型）的本质特征。
 
 本附录将提供一套基于 **信息-速度几何** 的修正版文明度量标准。我们将能量消耗率转换为 **信息处理密度 (Information Processing Density)**，并给出一个定量的计算公式，用于衡量一个文明在螺旋宇宙中的演化位阶。

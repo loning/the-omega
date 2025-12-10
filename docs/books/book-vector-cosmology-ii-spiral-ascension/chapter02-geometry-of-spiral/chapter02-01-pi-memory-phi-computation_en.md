@@ -1,5 +1,7 @@
 # Chapter 2: Geometry of the Spiral
 
+![Pi Memory Phi Computation](../assets/chapter02/02-01-pi-memory-phi-computation.png)
+
 We have seen through the illusion of synchronous inflation and heard the Red Queen's ultimatum. Now, we must delve deep into the interior of this wildly growing cosmic machine to find its core code.
 
 If the universe is not merely maintaining conservation but pursuing growth, then the geometric logic it follows must change.

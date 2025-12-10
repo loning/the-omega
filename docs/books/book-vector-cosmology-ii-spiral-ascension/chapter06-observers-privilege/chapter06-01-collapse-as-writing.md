@@ -1,5 +1,7 @@
 # 第6章 观察者的特权 (The Observer's Privilege)
 
+![Collapse as Writing](../assets/chapter06/06-01-collapse-as-writing.png)
+
 在上一章中，我们看到意识如何在时间的长河中建立起了一个名为"现在"的驻波。我们不再是被时间冲刷的死物，我们是冲浪者。
 
 但这仅仅是防御性的。我们仅仅是在维持自己的存在。

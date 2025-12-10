@@ -1,5 +1,7 @@
 # 后记：未完的螺旋 (Afterword: The Unfinished Spiral)
 
+![Afterword](assets/afterword/afterword-unfinished-spiral.png)
+
 > "书写这本书本身，就是一次递归。我在试图用有限的语言（$\pi$），去捕捉那个无限展开的直觉（$\varphi$）。现在，文字到了尽头，但螺旋才刚刚开始。"
 
 在 **《矢量宇宙论》** 的第一部中，我们赞美了对称性。我们把宇宙描绘成一颗晶莹剔透的钻石，由 Fubini-Study 度量和毕达哥拉斯恒等式切割得完美无瑕。

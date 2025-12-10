@@ -1,5 +1,7 @@
 # Preface: The Crack in the Circle
 
+![Preface](assets/preface/preface.png)
+
 In the first book of **Vector Cosmology**, *The Conservation of the Circle*, we built together a magnificent geometric edifice.
 
 That was a comforting universe. We used Fubini-Study metrics as bricks and the Pythagorean theorem as mortar, erecting walls of indestructible conservation. In that world, $v_{ext}^2 + v_{int}^2 = c_{FS}^2$ was the supreme law; matter was an eternal dead knot on the energy axis; and time was merely the elegant arc traced by that unique vector on a closed sphere.

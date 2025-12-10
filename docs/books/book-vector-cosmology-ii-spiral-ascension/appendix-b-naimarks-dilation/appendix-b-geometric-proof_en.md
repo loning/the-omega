@@ -1,5 +1,7 @@
 # Appendix B: Geometric Proof of Naimark's Dilation
 
+![Appendix B](../assets/appendices/appendix-b.png)
+
 In the final chapter of *Vector Cosmology II*, we presented an ultimate vision full of Zen: the spiral is not the opposite of the circle; the spiral is merely a projection of a higher-dimensional great circle onto a lower-dimensional subspace. This view is not literary rhetoric in mathematics, but a direct physical application of **Naimark's Dilation Theorem** in functional analysis.
 
 This appendix will provide a rigorous geometric proof of this "great circle containing small circle" structure, starting from operator theory in Hilbert space. We will show that any seemingly open, dissipative, or non-unitary evolution trajectory must be a **Contraction** or **Projection** of some higher-dimensional closed system's unitary evolution.

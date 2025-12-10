@@ -1,5 +1,7 @@
 # 第1章 红皇后的奔跑 (The Red Queen's Race)
 
+![Synchronous Inflation](../assets/chapter01/01-01-synchronous-inflation.png)
+
 我们已经大胆地推开了通往螺旋宇宙的门缝。我们在序言中宣称，那个被我们在第一部书中奉为圭臬的恒定预算 $c_{FS}$，实际上正在经历一场漫长而隐秘的通货膨胀。
 
 但这立刻引来了一个尖锐的反驳，来自我们最直观的经验：

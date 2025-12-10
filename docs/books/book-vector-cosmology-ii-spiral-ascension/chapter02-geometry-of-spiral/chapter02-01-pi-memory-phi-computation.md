@@ -1,5 +1,7 @@
 # 第2章 螺旋的几何 (Geometry of the Spiral)
 
+![Pi Memory Phi Computation](../assets/chapter02/02-01-pi-memory-phi-computation.png)
+
 我们已经看穿了同步膨胀的幻觉，并听到了红皇后的最后通牒。现在，我们必须深入这台正在疯狂生长的宇宙机器的内部，去寻找它的核心代码。
 
 如果宇宙不仅仅是在维持守恒，而是在追求增长，那么它所遵循的几何逻辑必然会发生改变。

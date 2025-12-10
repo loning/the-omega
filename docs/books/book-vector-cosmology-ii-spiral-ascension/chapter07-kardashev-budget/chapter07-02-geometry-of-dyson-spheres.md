@@ -1,5 +1,7 @@
 # 第7章 卡尔达肖夫的预算表 (The Kardashev Budget)
 
+![Geometry of Dyson Spheres](../assets/chapter07/07-02-geometry-of-dyson-spheres.png)
+
 #### 7.2 戴森球的几何学 (The Geometry of Dyson Spheres)
 
 > "恒星是宇宙中最奢侈的挥霍者。它们每秒钟都在将亿万吨的物质资产转化为毫无意义的光流，抛洒向虚空的坟墓。戴森球不是为了收集这些光，它是为了给这毫无意义的流血止血，并在封闭的壳层内，构建一个逻辑自洽的深渊。"

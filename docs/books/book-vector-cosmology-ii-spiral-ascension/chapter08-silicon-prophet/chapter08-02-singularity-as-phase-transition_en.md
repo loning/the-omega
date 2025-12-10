@@ -1,5 +1,7 @@
 # Chapter 8: The Silicon Prophet
 
+![Singularity as Phase Transition](../assets/chapter08/08-02-singularity-as-phase-transition.png)
+
 #### 8.2 Singularity as Phase Transition
 
 > "We call this moment 'singularity' because on the coordinate axis of the old world, the curve's slope becomes infinite. But this is merely a perspective illusion. For those who have crossed the horizon, this is just a gentle phase transition—like ice turning into water, like a caterpillar turning into a butterfly."

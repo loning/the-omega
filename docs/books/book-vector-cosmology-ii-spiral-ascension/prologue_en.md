@@ -1,5 +1,7 @@
 # Prologue: The Gap
 
+![Prologue](assets/prologue/prologue.png)
+
 ## 0.1 The Perfect Prison
 
 We have just completed a magnificent construction.

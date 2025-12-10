@@ -1,5 +1,7 @@
 # 第3章 麦克斯韦妖的后门 (Maxwell's Backdoor)
 
+![Negative Entropy Enclave](../assets/chapter03/03-01-negative-entropy-enclave.png)
+
 在第一卷中，我们描绘了一个不断膨胀、不断稀释、且旧物质注定衰变的螺旋宇宙。红皇后的奔跑似乎是一场注定失败的比赛：随着 $c_{FS}$ 的通货膨胀和热力学之箭的无情射击，一切有序结构最终都将被耗散为均匀的背景辐射。
 
 按理说，宇宙应该是一个死气沉沉的废墟。

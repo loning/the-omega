@@ -1,5 +1,7 @@
 # Chapter 4: The Economics of Evolution
 
+![Survival is Computing Power](../assets/chapter04/04-01-survival-is-computing-power.png)
+
 In the previous chapter, we revealed the microscopic mechanism of life: it is a machine that uses Maxwell's Demon algorithms to pump information. This explains how **individual organisms** survive. But when we zoom out and see billions of species on Earth fighting, symbiotizing, and replacing each other, we face a grander dynamical problem.
 
 Why does life become increasingly complex? Why do single cells evolve into multicellular organisms? Why did dinosaurs go extinct while mammals rose?

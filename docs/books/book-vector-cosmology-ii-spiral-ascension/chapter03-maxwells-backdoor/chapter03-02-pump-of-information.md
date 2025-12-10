@@ -1,5 +1,7 @@
 # 第3章 麦克斯韦妖的后门 (Maxwell's Backdoor)
 
+![Pump of Information](../assets/chapter03/03-02-pump-of-information.png)
+
 ## 3.2 信息的泵 (The Pump of Information)
 
 > "如果能量是燃烧的燃料，那么信息就是那台精密的引擎。如果没有图纸，燃料只会制造一场毫无意义的爆炸；只有在信息的约束下，爆炸才能转化为向上的推力。"

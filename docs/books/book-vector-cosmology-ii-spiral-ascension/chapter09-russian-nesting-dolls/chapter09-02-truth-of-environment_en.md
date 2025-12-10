@@ -1,5 +1,7 @@
 ## 9.2 The Truth of the Environment
 
+![Truth of Environment](../assets/chapter09/09-02-truth-of-environment.png)
+
 > "We once treated the environment as a trash can, entropy increase as irreversible loss. That was our arrogance as frogs at the bottom of a well. When we climb out of the well, we discover that what we dumped as 'waste' is actually a staircase leading to the ocean."
 
 In the first book, the **environmental sector ($v_{env}$)** played the role of a villain. It was the greedy tax collector, the bottomless pit devouring information. According to the extended capacity identity $v_{ext}^2 + v_{int}^2 + v_{env}^2 = c_{FS}^2$, any budget flowing into $v_{env}$ seemed to permanently leave our ordered world, becoming useless thermal noise.

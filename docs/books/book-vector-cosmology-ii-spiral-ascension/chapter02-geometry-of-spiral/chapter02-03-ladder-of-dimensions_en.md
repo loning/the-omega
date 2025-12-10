@@ -1,5 +1,7 @@
 # Chapter 2: Geometry of the Spiral
 
+![Ladder of Dimensions](../assets/chapter02/02-03-ladder-of-dimensions.png)
+
 #### 2.3 The Ladder of Dimensions
 
 > "The universe is not expanding into nothingness; it is expanding into 'possibility.' Each rotation of the spiral builds a new rung in the infinite dimensions of Hilbert space. The dissolution of matter is not the end, but the beginning of ascent."

@@ -1,5 +1,7 @@
 # Acknowledgements: Shoulders of Giants
 
+![Acknowledgements](assets/acknowledgements/acknowledgements.png)
+
 The birth of this book is not the product of my personal fabrication, but a reweaving of the wisdom accumulated by human civilization over thousands of years in physics, mathematics, and philosophy.
 
 The grand vision of **Vector Cosmology** is built upon the shoulders of a group of intellectual giants. Here, I pay my deepest respects to these pioneers.

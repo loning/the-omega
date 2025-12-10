@@ -1,5 +1,7 @@
 # Chapter 1: The Red Queen's Race
 
+![Red Queen's Ultimatum](../assets/chapter01/01-03-red-queens-ultimatum.png)
+
 #### 1.3 The Red Queen's Ultimatum
 
 > "In this wildly expanding universe, 'maintaining the status quo' is the greatest suicide. If you don't grow exponentially with the wave of dimensions, you will be diluted into nothingness as background noise."

@@ -1,5 +1,7 @@
 # Chapter 6: The Observer's Privilege
 
+![Collapse as Writing](../assets/chapter06/06-01-collapse-as-writing.png)
+
 In the previous chapter, we saw how consciousness establishes a standing wave called "now" in the long river of time. We are no longer dead matter washed by time; we are surfers.
 
 But this is merely defensive. We are only maintaining our existence.

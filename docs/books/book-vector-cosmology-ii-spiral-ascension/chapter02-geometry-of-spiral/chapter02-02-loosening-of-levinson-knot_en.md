@@ -1,5 +1,7 @@
 # Chapter 2: Geometry of the Spiral
 
+![Loosening of Levinson Knot](../assets/chapter02/02-02-loosening-of-levinson-knot.png)
+
 #### 2.2 The Loosening of the Levinson Knot
 
 > "Diamonds are not eternal. On the long time axis of geometry, even the most stable proton is merely a fleeting bubble on water's surface. When the spiral's tension becomes great enough, all dead knots must loosen, allowing energy to flow to higher places."

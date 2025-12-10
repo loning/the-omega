@@ -1,5 +1,7 @@
 # 第6章 观察者的特权 (The Observer's Privilege)
 
+![Participatory Universe](../assets/chapter06/06-02-participatory-universe.png)
+
 #### 6.2 参与式宇宙 (The Participatory Universe)
 
 > "宇宙并不是在那儿冷漠地等着被发现。宇宙是一个巨大的问号，直到我们通过观察做出了回答，它才变成了一个感叹号。我们不是这出戏的观众，我们是舞台本身。"
