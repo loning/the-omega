@@ -2,7 +2,7 @@
 
 > "When logical contradictions cannot be resolved by geometric structures, what will the universe do? It will not collapse; it will 'freeze.' At the singularity, all tensor network connections disconnect, all physical laws reset to zero. There is no time, no space, only bare, uncompiled raw qubits. That is the blue screen of death of physics."
 
-![Singularity BSOD](../../../assets/chapter-08/08-02-01-singularity-bsod.png)
+![Singularity BSOD](../../assets/chapter-08/08-02-01-singularity-bsod.png)
 
 In the previous section, we witnessed the rise of the firewall. This is the result of the spacetime network having to cut entanglement to maintain unitarity (information conservation). Now, let us pass through that firewall to see the ultimate existence wrapped at its center—**Singularity**.
 

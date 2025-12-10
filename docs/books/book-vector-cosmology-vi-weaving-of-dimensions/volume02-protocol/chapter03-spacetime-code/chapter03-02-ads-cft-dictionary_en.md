@@ -2,7 +2,7 @@
 
 > "Plato believed that we are prisoners trapped in a cave, only able to see shadows cast by firelight on the wall. He thought the shadows were illusory, and the objects behind were real. But in the physics of the holographic universe, the truth is exactly the opposite: the shadows on the wall (boundary code) are the only 'noumenon' containing all information, while the three-dimensional, gravitational world we perceive is merely the 'holographic illusion' projected when these codes run."
 
-![AdS/CFT Holography](../../../assets/chapter-03/03-02-01-ads-cft-holography.png)
+![AdS/CFT Holography](../../assets/chapter-03/03-02-01-ads-cft-holography.png)
 
 In the previous section, we established the concept of "spacetime as error-correcting code," pointing out that the universe gains robustness by smearing information on the boundary. Now, we need a **"dictionary"**.
 

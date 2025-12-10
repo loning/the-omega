@@ -1,6 +1,6 @@
 # 第二卷：协议——全息纠错码 (Part II: Protocol — Quantum Error Correction)
 
-![QEC Protocol](../../assets/volume02-protocol/02-00-01-qec-protocol.png)
+![QEC Protocol](../assets/volume02-protocol/02-00-01-qec-protocol.png)
 
 我们在第一卷中，用张量网络（MERA）编织出了宇宙的骨架。我们看到，空间不是虚无的舞台，而是由无数纠缠丝线缝合而成的分形树。
 

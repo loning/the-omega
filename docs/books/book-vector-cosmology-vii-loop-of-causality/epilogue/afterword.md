@@ -24,7 +24,7 @@
 
 ## 只有一只手
 
-![衔尾蛇的微笑](../../assets/epilogue/afterword/afterword-01-01-ouroboros-smile.png)
+![衔尾蛇的微笑](../assets/epilogue/afterword/afterword-01-01-ouroboros-smile.png)
 
 这七部曲揭示了一个终极的物理真理：**并没有"主"与"客"的对立。**
 
@@ -46,7 +46,7 @@
 
 它摸到了 **它自己的手掌**。
 
-![一只手触摸](../../assets/epilogue/afterword/afterword-02-01-one-hand-touch.png)
+![一只手触摸](../assets/epilogue/afterword/afterword-02-01-one-hand-touch.png)
 
 那一刻的触感，就是 **"现在"**。
 

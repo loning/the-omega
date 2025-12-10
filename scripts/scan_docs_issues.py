@@ -157,6 +157,17 @@ class DocScanner:
         except Exception as e:
             print(f"✗ 读取文件错误 {tex_file}: {e}")
     
+    def _find_book_root(self, doc_file: Path) -> Path:
+        """找到文档文件所属的 book 根目录"""
+        current = doc_file.parent
+        # 向上查找，直到找到 book-* 目录或到达 docs/books 目录
+        while current != self.docs_dir and current.parent != self.docs_dir:
+            if current.name.startswith('book-'):
+                return current
+            current = current.parent
+        # 如果没有找到 book-* 目录，返回 docs/books 目录
+        return self.docs_dir / 'books'
+    
     def _resolve_image_path(self, doc_file: Path, img_path: str) -> str:
         """解析图片路径（相对于文档文件）"""
         # 处理相对路径
@@ -171,25 +182,36 @@ class DocScanner:
             # doc_file 已经是绝对路径（从 rglob 返回）
             doc_dir = doc_file.parent
             
-            # 解析图片路径
-            if img_path_clean.startswith('../'):
-                # 向上级目录
-                parts = img_path_clean.split('/')
-                up_levels = 0
-                for part in parts:
-                    if part == '..':
-                        up_levels += 1
-                    else:
-                        break
-                # 计算实际路径
-                current_dir = doc_dir
-                for _ in range(up_levels):
-                    if current_dir == self.docs_dir:
-                        break  # 不能超过 docs 目录
-                    current_dir = current_dir.parent
-                img_abs_path = current_dir / '/'.join(parts[up_levels:])
+            # 对于 .tex 文件，图片路径是相对于 book 根目录的
+            if doc_file.suffix == '.tex':
+                book_root = self._find_book_root(doc_file)
+                img_abs_path = book_root / img_path_clean
             else:
-                img_abs_path = doc_dir / img_path_clean
+                # 对于 .md 文件，图片路径是相对于当前文件的
+                # 处理 `books/assets/...` 这种格式（可能是错误的，尝试修复）
+                if img_path_clean.startswith('books/assets/'):
+                    # 这可能是错误的路径格式，尝试找到 book 根目录的 assets
+                    book_root = self._find_book_root(doc_file)
+                    img_abs_path = book_root / 'assets' / img_path_clean[12:]  # 移除 'books/assets/'，保留后面的路径
+                elif img_path_clean.startswith('../'):
+                    # 向上级目录
+                    parts = img_path_clean.split('/')
+                    up_levels = 0
+                    for part in parts:
+                        if part == '..':
+                            up_levels += 1
+                        else:
+                            break
+                    # 计算实际路径
+                    current_dir = doc_dir
+                    for _ in range(up_levels):
+                        if current_dir == self.docs_dir:
+                            break  # 不能超过 docs 目录
+                        current_dir = current_dir.parent
+                    img_abs_path = current_dir / '/'.join(parts[up_levels:])
+                else:
+                    # 相对于当前文件目录
+                    img_abs_path = doc_dir / img_path_clean
             
             # 转换为相对于 docs_dir 的路径
             try:

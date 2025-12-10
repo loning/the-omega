@@ -24,7 +24,7 @@ Now, let us stand at the interface of this closed loop and look back at the path
 
 ## Only One Hand
 
-![The Smile of the Ouroboros](../../assets/epilogue/afterword/afterword-01-01-ouroboros-smile.png)
+![The Smile of the Ouroboros](../assets/epilogue/afterword/afterword-01-01-ouroboros-smile.png)
 
 These seven volumes reveal an ultimate physical truth: **There is no opposition between "subject" and "object."**
 
@@ -46,7 +46,7 @@ What did it finally touch?
 
 It touched **its own palm**.
 
-![One Hand Touch](../../assets/epilogue/afterword/afterword-02-01-one-hand-touch.png)
+![One Hand Touch](../assets/epilogue/afterword/afterword-02-01-one-hand-touch.png)
 
 That moment of touch is **"now"**.
 

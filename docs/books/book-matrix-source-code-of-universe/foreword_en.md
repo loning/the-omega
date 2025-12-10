@@ -1,6 +1,6 @@
 # Preface: The Architect's Manifesto
 
-![Refactoring Legacy Code](../assets/foreword_refactoring.png)
+![Refactoring Legacy Code](assets/foreword_refactoring.png)
 
 **"Physics is no longer a grand edifice, but a pile of unmaintained legacy code. We need refactoring."**
 

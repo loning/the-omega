@@ -12,7 +12,7 @@ Space is not a stage; space is **"the embrace of the actors"**.
 
 > "If you hold an infinitely precise microscope and keep magnifying the void before you, what will you see? You won't see smaller grids, nor smooth fluid. You will see space suddenly disappear in an instant, replaced by an extremely complex spider web made of pure logic and correlations. There is no distinction between 'here' and 'there', only the connection between 'this thread' and 'that thread'."
 
-![Entanglement Network](../assets/prologue/00-01-01-entanglement-network.png)
+![Entanglement Network](assets/prologue/00-01-01-entanglement-network.png)
 
 ### The Pixelation of Space: The Bottom Layer of QCA
 
@@ -90,7 +90,7 @@ This leads to the theme of the next section: **The Weaver's Needle**. We will se
 
 > "If space is a piece of fabric, who is weaving it? There is no external weaver. The universe is that single, infinitely long golden thread, frantically shuttling, knotting, and self-entangling in the void. The three-dimensional world we see is nothing but the texture formed by the extremely dense stitches of this golden thread at the microscopic scale."
 
-![Weaver's Needle](../assets/prologue/00-02-01-weavers-needle.png)
+![Weaver's Needle](assets/prologue/00-02-01-weavers-needle.png)
 
 In the previous section, we dismantled the continuity of space, reducing it to discrete quantum logic gates. But this leaves a huge question: How do these discrete points connect into surfaces? What force "stitches" together isolated qubits, making them constitute solid reality?
 

@@ -1,6 +1,6 @@
 # 序言：光与棱镜
 
-![光与棱镜](../assets/the_universal_prism.png)
+![光与棱镜](assets/the_universal_prism.png)
 
 **(Preface: The Light and The Prism)**
 

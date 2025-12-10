@@ -2,7 +2,7 @@
 
 > "为什么要把几千吨重的飞船加速到光速？那是对能量的极大浪费。真正重要的不是飞船的原子，而是原子的排列组合——也就是信息。如果你能把一艘飞船的信息提取出来，你就不需要运输它，你只需要在目的地把它'打印'出来。宇宙不是物流公司，宇宙是传真机。"
 
-![Quantum Teleportation](../../../assets/chapter-10/10-01-01-quantum-teleportation.png)
+![Quantum Teleportation](../../assets/chapter-10/10-01-01-quantum-teleportation.png)
 
 ## 放弃 $v_{ext}$，拥抱 $v_{int}$
 

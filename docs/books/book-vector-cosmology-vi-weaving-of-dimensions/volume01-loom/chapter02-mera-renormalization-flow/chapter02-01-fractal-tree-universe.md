@@ -2,7 +2,7 @@
 
 > "当你凝视一片森林时，你看到的是无数树叶组成的绿色天蓬。但支撑这片天蓬的，是深埋在地下的庞大根系和粗壮的树干。宇宙也是如此。我们所感知的现实时空，只是这棵巨大的量子分形树最外层的叶子。而真正的物理过程，发生在那些不可见的、跨越尺度的树枝分叉处。"
 
-![Fractal Tree MERA](../../../assets/chapter-02/02-01-01-fractal-tree-mera.png)
+![Fractal Tree MERA](../../assets/chapter-02/02-01-01-fractal-tree-mera.png)
 
 ## 粗粒化：从像素到图像
 

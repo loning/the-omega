@@ -2,7 +2,7 @@
 
 > "Einstein said: 'Matter tells spacetime how to curve.' But this is only half the truth. At the bottom layer of quantum information, matter is not a lead ball pressing on a bedsheet; matter is a data black hole frantically consuming bandwidth. Spacetime curves not because it is 'heavy,' but because it is 'congested.' Gravity is the geometric deformation produced by the cosmic network to alleviate local information overload."
 
-![Info Pressure](../../../assets/chapter-05/05-02-01-info-pressure.png)
+![Info Pressure](../../assets/chapter-05/05-02-01-info-pressure.png)
 
 In the previous section, we defined gravity as the "tension" of entanglement threads. But this only explains why objects attract each other (to restore maximum entanglement entropy). It has not yet explained the most core geometric phenomenon in general relativity—**Spacetime Curvature**.
 

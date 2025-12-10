@@ -2,7 +2,7 @@
 
 > "两个粒子之所以即使相隔光年也能瞬间感应，并不是因为信号传得太快，而是因为在更底层的几何结构中，它们从来就没有分开过。纠缠不是一种超距作用，纠缠是空间的'胶水'。正是无数个这样的胶水分子，将离散的像素粘合成了一个连续的宇宙。"
 
-![Stitched Bell Pairs](../../../assets/chapter-01/01-01-01-stitched-bell-pairs.png)
+![Stitched Bell Pairs](../../assets/chapter-01/01-01-01-stitched-bell-pairs.png)
 
 ## 最小的空间单元
 

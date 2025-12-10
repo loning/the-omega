@@ -2,7 +2,7 @@
 
 在序言中，我们确立了空间的新图景：空间不是容器，而是由波函数编织而成的织物。现在，我们要深入这台织布机的内部，看看它是如何工作的。
 
-![Tensor Loom](../../assets/volume01-introduction/01-00-01-tensor-loom.png)
+![Tensor Loom](../assets/volume01-introduction/01-00-01-tensor-loom.png)
 
 如果说空间是一块布，那么这台织布机就是 **张量网络 (Tensor Network)**。
 

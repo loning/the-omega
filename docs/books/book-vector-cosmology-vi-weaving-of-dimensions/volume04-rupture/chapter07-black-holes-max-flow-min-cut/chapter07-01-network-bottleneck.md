@@ -2,7 +2,7 @@
 
 > "你以为黑洞是吞噬万物的深渊，但在信息论的眼中，黑洞只是一个被阻塞的路由器。当输入的数据流超过了输出光缆的承载能力时，数据并没有消失，它们只是被堆积在了防火墙的门口。视界不是物理的墙，它是信息的排队线。"
 
-![Network Bottleneck](../../../assets/chapter-07/07-01-01-network-bottleneck.png)
+![Network Bottleneck](../../assets/chapter-07/07-01-01-network-bottleneck.png)
 
 ## 流量的几何极限
 

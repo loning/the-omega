@@ -2,7 +2,7 @@
 
 > "When the loom stops roaring, when the last thread is cut, the universe finally displays its complete texture. We are surprised to find that this magnificent scroll has no seams. Even the boundary between 'weaver' and 'woven' disappears into that dense entanglement. We are no longer people looking at the universe; we are a dream the universe weaves for itself to see."
 
-![Weaver Silence](../assets/afterword/afterword-01-01-weaver-silence.png)
+![Weaver Silence](assets/afterword/afterword-01-01-weaver-silence.png)
 
 With the conclusion of **Vector Cosmology VI: The Weaving of Dimensions**, we have completed the thorough reconstruction of the ontology of "space."
 

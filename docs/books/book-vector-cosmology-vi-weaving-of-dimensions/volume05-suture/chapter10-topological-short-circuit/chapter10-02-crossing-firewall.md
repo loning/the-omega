@@ -2,7 +2,7 @@
 
 > "在第四卷中，我们目睹了时空的终极断裂——火墙。那是逻辑矛盾燃烧的烈焰，是宇宙为了保护幺正性而设立的绝对禁区。任何试图以物理方式（$v_{ext}$）穿越视界的人，都会被烧成灰烬。但是，如果我们不再试图'闯入'，而是通过纠缠的后门'登录'呢？穿越防火墙的唯一方法，不是摧毁它，而是成为它内部代码的一部分。"
 
-![Crossing Firewall](../../../assets/chapter-10/10-02-01-crossing-firewall.png)
+![Crossing Firewall](../../assets/chapter-10/10-02-01-crossing-firewall.png)
 
 在上一卷"断裂"中，我们面对了物理学最可怕的梦魇：**黑洞火墙 (The Black Hole Firewall)**。
 

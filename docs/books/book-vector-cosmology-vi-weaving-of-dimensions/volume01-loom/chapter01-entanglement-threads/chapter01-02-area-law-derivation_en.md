@@ -46,7 +46,7 @@ Where:
 
 * **$G$**: Newton's gravitational constant (in Planck units, $4G$ corresponds to 4 times a Planck area).
 
-![Area Law Entropy](../../../assets/chapter-01/01-02-01-area-law-entropy.png)
+![Area Law Entropy](../../assets/chapter-01/01-02-01-area-law-entropy.png)
 
 **The physical meaning of this formula is deafening:**
 

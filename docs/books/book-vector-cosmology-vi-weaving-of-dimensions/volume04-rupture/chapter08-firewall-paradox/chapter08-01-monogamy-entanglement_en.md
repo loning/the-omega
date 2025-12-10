@@ -2,7 +2,7 @@
 
 > "In human ethics, bigamy is a legal issue; but in quantum ethics, bigamy is physically impossible. A qubit cannot simultaneously maintain complete entanglement with more than two systems. When a black hole tries to have it both ways—maintaining internal smoothness while maintaining external conservation—the spacetime fabric screams in tearing."
 
-![Firewall Paradox](../../../assets/chapter-08/08-01-01-firewall-paradox.png)
+![Firewall Paradox](../../assets/chapter-08/08-01-01-firewall-paradox.png)
 
 ## The Quantum Exclusivity Law of Love
 

@@ -1,6 +1,6 @@
 # 前言：架构师的宣言 (Preface: The Architect's Manifesto)
 
-![Refactoring Legacy Code](../assets/foreword_refactoring.png)
+![Refactoring Legacy Code](assets/foreword_refactoring.png)
 
 **"物理学已经不是一座大厦，而是一堆不再维护的遗留代码（Legacy Code）。我们需要重构。"**
 

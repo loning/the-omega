@@ -2,7 +2,7 @@
 
 > "Newton thought gravity was divine attraction; Einstein thought gravity was a geometric slide. But at the bottom layer of quantum information, gravity is neither divine nor smooth. It is rough, statistical, and full of elasticity. Just as stretching a rubber band feels a recoil force, when you try to pull apart two entangled objects, you are not fighting universal gravitation, but the 'Hooke's law' of the cosmic entanglement network."
 
-![Hooke's Law Universe](../../../assets/chapter-05/05-01-01-hookes-law-universe.png)
+![Hooke's Law Universe](../../assets/chapter-05/05-01-01-hookes-law-universe.png)
 
 ## The Rubber Band Universe
 

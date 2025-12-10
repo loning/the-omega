@@ -2,7 +2,7 @@
 
 > "为什么苹果不会突然变成橘子？为什么能量不会凭空消失？物理学家说这是因为'对称性'。但在信息论的视角下，对称性就是'冗余'。物理定律是一套严密的杀毒软件，它时刻扫描着宇宙的每一个角落，一旦发现不符合守恒律的'非法状态'，就立刻将其视为错误并予以纠正。"
 
-![Laws as Checksums](../../../assets/chapter-04/04-01-01-laws-as-checksums.png)
+![Laws as Checksums](../../assets/chapter-04/04-01-01-laws-as-checksums.png)
 
 ## 脆弱的比特与坚固的世界
 

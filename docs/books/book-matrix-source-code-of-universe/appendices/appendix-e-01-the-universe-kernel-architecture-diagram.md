@@ -1,6 +1,6 @@
 # 附录 E.1：宇宙内核架构图 (Appendix E.1: The Universe Kernel Architecture Diagram)
 
-![Kernel Architecture Diagram](../../assets/kernel_architecture.png)
+![Kernel Architecture Diagram](../assets/kernel_architecture.png)
 
 **—— 现实逻辑的工程蓝图 (The Engineering Blueprint of Reality Logic)**
 
