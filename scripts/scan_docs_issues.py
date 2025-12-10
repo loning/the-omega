@@ -404,11 +404,13 @@ class DocScanner:
         referenced_images = set()
         for img_paths in image_refs.values():
             referenced_images.update(img_paths)
-        
+
         unreferenced = []
         for img_file in all_images:
             if img_file not in referenced_images:
-                unreferenced.append(img_file)
+                # 排除 architecture.png 和 architecture-thumb.png（封面图片不需要引用）
+                if not (img_file.endswith('architecture.png') or img_file.endswith('architecture-thumb.png')):
+                    unreferenced.append(img_file)
         return sorted(unreferenced)
     
     def scan(self, output_file: Path = None):
