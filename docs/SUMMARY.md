@@ -907,8 +907,8 @@
 
 - [Vector Cosmology VI: The Weaving of Dimensions](./books/book-vector-cosmology-vi-weaving-of-dimensions/index_en.md)
     - [Prologue: Pixels of the Void](./books/book-vector-cosmology-vi-weaving-of-dimensions/prologue_en.md)
-        - [0.1 There is No "Here"](./books/book-vector-cosmology-vi-weaving-of-dimensions/prologue_en.md#01-并不存在的这里-there-is-no-here)
-        - [0.2 The Weaver's Needle](./books/book-vector-cosmology-vi-weaving-of-dimensions/prologue_en.md#02-编织者的针-the-weavers-needle)
+        - [0.1 There is No "Here"](./books/book-vector-cosmology-vi-weaving-of-dimensions/prologue_en.md#01-there-is-no-here)
+        - [0.2 The Weaver's Needle](./books/book-vector-cosmology-vi-weaving-of-dimensions/prologue_en.md#02-the-weavers-needle)
     - [Part I: The Loom — The Geometry of Entanglement]()
         - [Part I Introduction](./books/book-vector-cosmology-vi-weaving-of-dimensions/volume01-loom/volume01-introduction_en.md)
         - [Chapter 1: The Threads of Entanglement]()
