@@ -61,7 +61,7 @@ This workflow outlines the process for illustrating a book project using AI-gene
 
 3.  **Organize & Track**:
     - **Move Images**: Use `run_command` to move generated images from the brain directory to the book's `assets` folder.
-        - Rename pattern: `mv /path/to/brain/image.png /path/to/book/assets/chapter-[n]/[n-n-n]-position-image.png`
+        - Rename pattern: `mv /path/to/brain/image.png /path/to/book/assets/chapter-[n]/[n-n]-position-image.png`
     - **Update Task List**: Use `multi_replace_file_content` to mark the completed items in `task.md` as `[x]`.
 
 # Phase 4: Finalization
