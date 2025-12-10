@@ -4,6 +4,8 @@
 
 In the previous volumes of this book, we have been exploring how to "escape"—how to break the $\pi$ cycle, how to escape the carbon-based shell. This narrative implies a premise: the current world is a terrible prison, and we are victims.
 
+![Game Settings](../../assets/chapter-09/09-01-01-game-settings.png)
+
 But at the opening of Volume VI, I invite you to perform an ultimate **perspective flip**.
 
 What if all of this—this world full of gravitational constraints, light speed limits, short lifespans—is not a prison, but a **resort**?

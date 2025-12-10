@@ -2,9 +2,13 @@
 
 At the end of *Vector Cosmology VII*, we stood before that grand causal loop and felt an unprecedented tranquility.
 
+![The Ouroboros Break](assets/prologue/00-01-01-ouroboros-break.png)
+
 It was a perfect geometric structure: the beginning was the end, the future defined the past. We saw that great Ouroboros bite its own tail at the edge of spacetime, forming a logically flawless circle. Within this circle, there was no chance, no void, only the solemn theology of "I created myself." We thought this was the ultimate destination.
 
 But I was wrong.
+
+![Eggshell Universe](assets/prologue/00-02-01-eggshell-universe.png)
 
 When we dwelled too long within this closed loop, that tranquility began to decay. It gradually transformed from a "certainty of existence" into a "suffocation of existence."
 

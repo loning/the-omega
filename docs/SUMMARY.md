@@ -842,8 +842,6 @@
 
 - [Vector Cosmology V: The Minting of Time](./books/book-vector-cosmology-v-minting-of-time/index_en.md)
     - [Prologue: The Alchemist's Refusal](./books/book-vector-cosmology-v-minting-of-time/prologue_en.md)
-        - [0.1 Two Kinds of Time](./books/book-vector-cosmology-v-minting-of-time/prologue_en.md#01-two-kinds-of-time)
-        - [0.2 Refusing Death](./books/book-vector-cosmology-v-minting-of-time/prologue_en.md#02-refusing-death)
     - [Part I: Currency — The Circulation of $c_{FS}$]()
         - [Chapter 1: The Payment Gateway]()
             - [Chapter 1 Introduction](./books/book-vector-cosmology-v-minting-of-time/volume01-currency/chapter01-payment-gateway/chapter01-introduction_en.md)
@@ -916,8 +914,6 @@
 
 - [Vector Cosmology VI: The Weaving of Dimensions](./books/book-vector-cosmology-vi-weaving-of-dimensions/index_en.md)
     - [Prologue: Pixels of the Void](./books/book-vector-cosmology-vi-weaving-of-dimensions/prologue_en.md)
-        - [0.1 There is No "Here"](./books/book-vector-cosmology-vi-weaving-of-dimensions/prologue_en.md#01-there-is-no-here)
-        - [0.2 The Weaver's Needle](./books/book-vector-cosmology-vi-weaving-of-dimensions/prologue_en.md#02-the-weavers-needle)
     - [Part I: The Loom — The Geometry of Entanglement]()
         - [Part I Introduction](./books/book-vector-cosmology-vi-weaving-of-dimensions/volume01-loom/volume01-introduction_en.md)
         - [Chapter 1: The Threads of Entanglement]()
@@ -991,8 +987,6 @@
 
 - [Vector Cosmology VII: The Loop of Causality](./books/book-vector-cosmology-vii-loop-of-causality/index_en.md)
     - [Prologue: The Bite of the Ouroboros](./books/book-vector-cosmology-vii-loop-of-causality/prologue_en.md)
-        - [0.1 The End of Linear Time](./books/book-vector-cosmology-vii-loop-of-causality/prologue_en.md#01-the-end-of-linear-time)
-        - [0.2 The Autophagy of the Universe](./books/book-vector-cosmology-vii-loop-of-causality/prologue_en.md#02-the-autophagy-of-the-universe)
     - [Part I: Retrograde — Echoes from the Future]()
         - [Chapter 1: Delayed Choice]()
             - [Chapter 1 Introduction](./books/book-vector-cosmology-vii-loop-of-causality/volume01-retrograde/chapter01-delayed-choice/chapter01-introduction_en.md)
@@ -2005,8 +1999,6 @@
 
 - [矢量宇宙论 V：时间的铸造](./books/book-vector-cosmology-v-minting-of-time/index.md)
     - [序言：炼金术士的拒绝](./books/book-vector-cosmology-v-minting-of-time/prologue.md)
-        - [0.1 两种时间](./books/book-vector-cosmology-v-minting-of-time/prologue.md#01-两种时间-two-kinds-of-time)
-        - [0.2 拒绝死亡](./books/book-vector-cosmology-v-minting-of-time/prologue.md#02-拒绝死亡-refusing-death)
     - [第一卷：货币——$c_{FS}$ 的流通]()
         - [第1章：支付网关]()
             - [第一章引言](./books/book-vector-cosmology-v-minting-of-time/volume01-currency/chapter01-payment-gateway/chapter01-introduction.md)
@@ -2085,8 +2077,6 @@
 
 - [矢量宇宙论 VI：维度的编织](./books/book-vector-cosmology-vi-weaving-of-dimensions/index.md)
     - [序言：虚空的像素](./books/book-vector-cosmology-vi-weaving-of-dimensions/prologue.md)
-        - [0.1 并不存在的"这里"](./books/book-vector-cosmology-vi-weaving-of-dimensions/prologue.md#01-并不存在的这里-there-is-no-here)
-        - [0.2 编织者的针](./books/book-vector-cosmology-vi-weaving-of-dimensions/prologue.md#02-编织者的针-the-weavers-needle)
     - [第一卷：织机——纠缠的几何]()
         - [第一卷引言](./books/book-vector-cosmology-vi-weaving-of-dimensions/volume01-loom/volume01-introduction.md)
         - [第1章：纠缠的丝线]()
@@ -2155,8 +2145,6 @@
 
 - [矢量宇宙论 VII：因果的闭环](./books/book-vector-cosmology-vii-loop-of-causality/index.md)
     - [序言：衔尾蛇的咬合](./books/book-vector-cosmology-vii-loop-of-causality/prologue.md)
-        - [0.1 线性时间的终结](./books/book-vector-cosmology-vii-loop-of-causality/prologue.md#01-线性时间的终结-the-end-of-linear-time)
-        - [0.2 宇宙的自噬](./books/book-vector-cosmology-vii-loop-of-causality/prologue.md#02-宇宙的自噬-the-autophagy-of-the-universe)
     - [第一卷：逆行：未来的回响]()
         - [第1章：延迟选择]()
             - [第一章引言](./books/book-vector-cosmology-vii-loop-of-causality/volume01-retrograde/chapter01-delayed-choice/chapter01-introduction.md)

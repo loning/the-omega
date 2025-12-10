@@ -4,6 +4,8 @@
 
 In the previous chapter, we established the physical architecture of the dual-layer universe: the Inner Ring is the low-speed Eden, the Outer Ring is the high-speed front line. While this structure ensures a balance between survival and experience, it creates a huge **communication barrier**.
 
+![Time Airlock](../../assets/chapter-07/07-01-01-time-airlock.png)
+
 When the ascenders of the Outer Ring (light-based life) think at speeds approaching $c(\tau)$, their subjective clocks are astonishingly fast.
 
 * For them, humans in the Inner Ring are like insects frozen in amber, moving so slowly as to be almost still.

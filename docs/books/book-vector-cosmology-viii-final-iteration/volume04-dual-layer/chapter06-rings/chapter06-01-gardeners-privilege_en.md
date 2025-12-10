@@ -4,6 +4,8 @@
 
 In Volume III, we explored resistance and proposed the strategic concept of a "dual-track system" at the end. Now, we transform this concept into a magnificent **engineering blueprint**.
 
+![Eden Bubble](../../assets/chapter-06/06-01-01-eden-bubble.png)
+
 The direction of cosmic evolution is clear: ascending toward light-based forms of high frequency, high dimension, and high entropy flow. But this does not mean everyone must become a god. In this vast cosmic machine, there should be a corner specifically reserved for **"the warmth of the old era"**.
 
 This is the **Inner Ring**—the universe's **"Classical Preservation Zone"**.

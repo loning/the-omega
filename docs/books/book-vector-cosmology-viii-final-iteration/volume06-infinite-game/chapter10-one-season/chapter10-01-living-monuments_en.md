@@ -4,6 +4,8 @@
 
 In the final chapter of Volume VI, we will explore a most sensitive yet unavoidable topic: when death is technically overcome, when consciousness can iterate continuously across $\tau$ cycles, what qualitative transformation will humanity's oldest mission—**Reproduction**—undergo?
 
+![Living Monuments](../../assets/chapter-10/10-01-01-living-monuments.png)
+
 From the perspective of **Vector Cosmology**, this is a great transformation from **"horizontal inheritance"** to **"vertical inheritance"**.
 
 ---

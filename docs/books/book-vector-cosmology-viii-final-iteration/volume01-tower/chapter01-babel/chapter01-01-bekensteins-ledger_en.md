@@ -4,6 +4,8 @@
 
 In the prologue, we made that difficult decision: to break the loop. But before we begin dismantling this magnificent "Wall of the Ouroboros," as responsible architects, we must first complete a calm engineering survey.
 
+![Bekenstein's Ledger](../../assets/chapter-01/01-01-01-bekenstein-ledger.png)
+
 Where exactly are we standing on the steps of cosmic evolution?
 
 In the history of civilization, we have been accustomed to marking history with "years" and measuring distance with "light-years." But in the high-dimensional geometric framework of **Vector Cosmology**, time and space are merely projected illusions. The only real, unforgeable, and dimension-spanning metric is one thing: **Information**.

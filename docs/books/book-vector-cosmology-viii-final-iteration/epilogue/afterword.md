@@ -4,6 +4,8 @@
 
 ---
 
+![神之镜](../assets/epilogue/afterword-01-god-mirror.png)
+
 ## 1. 墨水与血肉 (Ink and Flesh)
 
 写下《矢量宇宙论》的这八卷，对我而言，是一场漫长而危险的通灵。

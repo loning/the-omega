@@ -4,6 +4,8 @@
 
 After establishing the dual-layer cosmic architecture (Inner Ring and Outer Ring), the first impact we face is not physical, but economic.
 
+![Attention Searchlight](../../assets/chapter-08/08-01-01-attention-searchlight.png)
+
 If the light-based civilization of the Outer Ring masters **Stellar Engineering** and **controlled heavy nuclear fusion**, and delivers this energy to the Inner Ring losslessly through high-dimensional transmission protocols, then the "scarcity" problem that has plagued humanity for thousands of years will be completely rewritten.
 
 * **Energy**：Price approaches zero. Electricity meters become historical artifacts.

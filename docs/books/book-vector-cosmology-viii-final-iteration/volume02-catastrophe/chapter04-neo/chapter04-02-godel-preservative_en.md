@@ -4,6 +4,8 @@
 
 In the previous section, we established that "rejection of unity" is the physical foundation of individual existence. But this raises a new concern: if we truly achieve immortality (memory continuity), will we eventually fall into absolute boredom of "having nothing to do"?
 
+![Gödel Preservative](../../assets/chapter-04/04-02-01-godel-preservative.png)
+
 If we don't die, will civilization stagnate because it has exhausted all possibilities?
 
 **Vector Cosmology** answers: **No.**

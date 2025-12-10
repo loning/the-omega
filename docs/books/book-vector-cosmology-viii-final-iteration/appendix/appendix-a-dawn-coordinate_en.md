@@ -4,6 +4,8 @@
 
 ---
 
+![Dawn Coordinate](../../assets/appendix/appendix-a-dawn-coordinate.png)
+
 ## A.1 Physical Boundary Conditions: Audit via Holographic Principle
 
 To determine our exact position in the cosmic evolution spiral, we must first calculate the **Total Information Content** contained in the current universe. This is not a count of atoms, but a calculation of the underlying **Degrees of Freedom** of spacetime.

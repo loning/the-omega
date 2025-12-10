@@ -6,6 +6,8 @@
 
 > **From: Outer Ring Supreme Council / The Architect**
 
+![Gardeners Memorandum](../../assets/appendix/appendix-c-gardeners-memorandum.png)
+
 > "To all compatriots who chose to stay: You bear the most subtle and difficult responsibility in the dual-layer universe. Outer Ring compatriots are responsible for expanding in the void, wrestling with the thermodynamic devil; while you are responsible for pruning branches in the greenhouse, nurturing that fragile orchid called 'humanity.' You possess the power of gods but must disguise as mortal luck. This memorandum is your code of conduct; please remember: **The greatest mercy is restrained observation.**"
 
 ---

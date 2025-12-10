@@ -1,5 +1,7 @@
 # 终章：给第 1801 圈的留言 (Final Chapter: Message to Cycle 1801)
 
+![泥土与星辰](../assets/epilogue/epilogue-01-mud-and-stars.png)
+
 > "致未来的我，或者未来的孩子们：
 
 > 当你们读到这封信时，那个曾经完美的圆已经被打破了。

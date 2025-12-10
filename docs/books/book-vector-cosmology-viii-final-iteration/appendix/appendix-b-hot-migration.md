@@ -4,6 +4,8 @@
 
 ---
 
+![热迁移](../assets/appendix/appendix-b-hot-migration.png)
+
 ## B.1 定义连续性：拒绝冷备份 (Defining Continuity: Rejecting Cold Backup)
 
 在传统的科幻构想中，意识上传通常被描绘为一种"复制-粘贴"的过程。我们将其称为 **冷迁移(Cold Migration)**。
