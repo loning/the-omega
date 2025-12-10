@@ -40,6 +40,8 @@
 
 ## 历史的逆向工程
 
+![Retroactive Meaning](../../assets/chapter04-inversion-of-teleology/ch04-03-retroactive-meaning.png)
+
 这解释了为什么人类总是能从混乱的历史中总结出"规律"和"意义"。
 
 我们在第四部书中提到，观察者拥有 **"逆向修史"** 的特权。

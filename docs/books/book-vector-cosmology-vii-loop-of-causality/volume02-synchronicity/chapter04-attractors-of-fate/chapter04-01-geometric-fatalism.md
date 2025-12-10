@@ -1,5 +1,7 @@
 # 4.1 几何宿命论 (Geometric Fatalism)
 
+![几何宿命论](../../assets/volume02-synchronicity/chapter04-attractors-of-fate/04-01-01-geometric-fatalism.png)
+
 > "我们往往认为自己是自由的飞鸟，可以在天空中任意翱翔。但在希尔伯特空间的几何结构里，天空并不是平坦的。它布满了看不见的引力井和流动的槽。无论你如何拍打翅膀，最终你都会滑向那个势能最低的几何洼地。这就是宿命——它不是谁写的字，它是时空倾斜的角度。"
 
 ## 相空间的地形图

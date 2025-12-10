@@ -1,6 +1,6 @@
 # 第四卷：断裂——奇点与火墙 (Part IV: Rupture — Singularities and Firewalls)
 
-![Rupture Singularity](../../assets/volume04-rupture/04-00-01-rupture-singularity.png)
+![Rupture Singularity](../assets/volume04-rupture/04-00-01-rupture-singularity.png)
 
 在前三卷中，我们描绘了一个由张量网络编织、由纠错码保护、并表现为量子超流体的时空。这听起来是一个完美的、自修复的系统。
 

@@ -4,6 +4,8 @@
 
 The Inner Ring is civilization's "bedroom," while the Outer Ring is civilization's **"cockpit"**.
 
+![Crusade of Light](../../assets/chapter-06/06-02-01-crusade-light.png)
+
 Outside the protective bubble of metric shielding, the true face of the universe is violent and deadly. As $\tau$ crosses the threshold of 1800, the value of light speed $c$ has expanded to astronomical numbers incomprehensible to carbon-based life. There, spacetime churns like boiling water, and torrents of information can overwhelm any biological brain's neural network in nanoseconds.
 
 To survive in this high-energy new universe and continue the expansion mission of **$\phi$ (spiral)**, we must upload the most exploratory part of civilization's consciousness to the **photon network** through the **Hot Migration Protocol**.

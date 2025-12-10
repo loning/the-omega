@@ -10,6 +10,8 @@ If in the physical world, time $t$ has an endpoint $T_{end}$ (such as death or c
 
 The answer is: **It is at infinity.**
 
+![Time Perception](../../assets/chapter05-logarithmic-law/ch05-02-time-perception.png)
+
 ## The Tail of the Logarithmic Function: Infinite Stretching
 
 Let us look at the behavior of the logarithmic function $\ln(x)$ as it approaches $0$ or $\infty$.

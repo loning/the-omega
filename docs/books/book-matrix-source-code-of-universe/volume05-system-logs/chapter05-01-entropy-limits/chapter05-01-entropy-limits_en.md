@@ -1,5 +1,7 @@
 # Chapter 5.1: Entropy Limits
 
+![Entropy Limits](../../assets/entropy_limits.png)
+
 **—— The Entropic Speed Limit and the Cost of Erasure**
 
 **"The rate at which a system generates chaos is not infinite; it is limited by bus bandwidth."**

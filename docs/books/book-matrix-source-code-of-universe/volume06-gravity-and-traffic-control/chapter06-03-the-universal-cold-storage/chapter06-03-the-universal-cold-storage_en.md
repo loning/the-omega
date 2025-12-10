@@ -2,6 +2,8 @@
 
 #### Chapter 6.3: The Universal Cold Storage
 
+![The Universal Cold Storage](../../assets/universal_cold_storage.png)
+
 **—— Black Holes as Mounted Holographic Drives and Garbage Collection**
 
 **"Black holes are not monsters that devour everything; they are 'core dump' files automatically generated when the system crashes."**

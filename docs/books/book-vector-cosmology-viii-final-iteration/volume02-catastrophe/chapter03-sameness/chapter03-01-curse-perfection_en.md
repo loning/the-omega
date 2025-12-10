@@ -4,6 +4,8 @@
 
 In Volume I, we explained through the "Fractal Big Bang" theory that the universe's evolution is a continuous shell breaking of dimensions. But there is a core dynamical question left unanswered: **why must the universe "explode" periodically?**
 
+![Curse of Perfection](../../assets/chapter-03/03-01-01-curse-of-perfection.png)
+
 Is it because there is too much energy? Is it because spacetime is insufficient?
 
 **Vector Cosmology** gives a revolutionary answer: **because there is "too little difference."**

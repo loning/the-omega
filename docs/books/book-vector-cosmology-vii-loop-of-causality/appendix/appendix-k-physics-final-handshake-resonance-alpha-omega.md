@@ -1,5 +1,7 @@
 # 附录 K：终极握手的物理学——始与终的共振 (Appendix K: The Physics of the Final Handshake — Resonance of the Alpha and Omega)
 
+![时间谐振腔](../assets/appendix/appendix-k-01-time-cavity.png)
+
 在《矢量宇宙论 VII》的终章"握手"中，我们将宇宙的起点（大爆炸）与终点（$\Omega$ 点）描绘为一对互为因果的几何边界。这不仅仅是一个诗意的比喻，它指向了量子宇宙学中最核心的动力学机制：**时间轴上的共振 (Temporal Resonance)**。
 
 本附录将基于 **惠勒-德维特方程 (Wheeler-DeWitt Equation)** 和 **全息原理**，构建一个关于"始与终"的物理模型。我们将证明，宇宙并不是一个从 $t=0$ 射向 $t=\infty$ 的开放射线，而是一个在两个时间边界之间形成的 **驻波 (Standing Wave)**。

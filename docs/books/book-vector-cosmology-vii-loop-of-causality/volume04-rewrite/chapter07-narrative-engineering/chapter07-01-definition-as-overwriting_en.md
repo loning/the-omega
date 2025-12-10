@@ -1,5 +1,7 @@
 # 7.1 Definition as Overwriting
 
+![Pruning Timeline](../../assets/volume04-rewrite/chapter07-narrative-engineering/07-01-01-pruning-timeline.png)
+
 > "History is not an inscription carved in stone; history is a material library stored in the cloud. Materials (Facts) are dead, but editing (Narrative) is alive. When you stand downstream in time, looking back at those rapids and reefs upstream, you have supreme power to redefine their properties. You can define 'disaster' as 'foreshadowing,' define 'destruction' as 'restart.' This is not self-deception; this is phase rewriting. When you change the meaning of the past, you physically change its thrust on the future."
 
 ## Material and Editing: Separation of $v_{ext}$ and $v_{int}$

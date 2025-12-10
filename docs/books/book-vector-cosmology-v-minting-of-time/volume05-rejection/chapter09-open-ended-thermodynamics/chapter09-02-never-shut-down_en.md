@@ -102,5 +102,7 @@ Then, in this universe, the only thing limiting us is our own **imagination**.
 
 Since the game will not end, what strategy should we adopt to play this infinite game? If we don't need to "clear levels," what is the meaning of every action, every choice we make?
 
+![Dark Energy Injection](../../assets/chapter09-open-ended-thermodynamics/ch09-03-dark-energy-injection.png)
+
 This leads to the theme of the next chapter: **The Algorithm of the Infinite Game**. We will rewrite the underlying code of civilization, shifting from "pursuing victory" to "pursuing continuation".
 

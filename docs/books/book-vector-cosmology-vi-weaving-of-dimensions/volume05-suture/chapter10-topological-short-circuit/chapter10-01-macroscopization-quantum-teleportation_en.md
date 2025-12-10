@@ -2,7 +2,7 @@
 
 > "Why accelerate a spaceship weighing thousands of tons to light speed? That is an enormous waste of energy. What really matters is not the atoms of the spaceship, but the arrangement of atoms—that is, information. If you can extract the information of a spaceship, you don't need to transport it; you just need to 'print' it at the destination. The universe is not a logistics company; the universe is a fax machine."
 
-![Quantum Teleportation](../../../assets/chapter-10/10-01-01-quantum-teleportation.png)
+![Quantum Teleportation](../../assets/chapter-10/10-01-01-quantum-teleportation.png)
 
 ## Abandoning $v_{ext}$, Embracing $v_{int}$
 

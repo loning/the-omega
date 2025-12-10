@@ -2,7 +2,7 @@
 
 > "我们习惯于把宇宙看作一盒散落的玻璃珠（原子），被装在一个透明的盒子（空间）里。这是一种婴儿般的错觉。物理学的真相是：没有玻璃珠，也没有盒子。只有一张巨大、震颤、自我交织的网。所谓的'粒子'，只是这张网上纠缠最密集的线结；所谓的'真空'，只是纠缠相对稀疏的网眼。除了连接，一无所有。"
 
-![Only Connection Real](../../../assets/chapter-11/11-01-01-only-connection-real.png)
+![Only Connection Real](../../assets/chapter-11/11-01-01-only-connection-real.png)
 
 ## 粒子的消解：结而非珠
 

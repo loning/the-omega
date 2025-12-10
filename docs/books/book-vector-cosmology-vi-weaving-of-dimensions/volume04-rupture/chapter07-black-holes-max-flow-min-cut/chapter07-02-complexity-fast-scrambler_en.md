@@ -2,7 +2,7 @@
 
 > "If you throw a book into a black hole, does the book's content disappear? No. It is torn apart, stirred, encrypted, turned into a string of completely random gibberish. But this gibberish contains every word of that book. Black holes are the most efficient paper shredders in the universe, and also the safest encryption locks. They do not destroy information; they just 'deeply fold' information."
 
-![Fast Scrambler](../../../assets/chapter-07/07-02-01-fast-scrambler.png)
+![Fast Scrambler](../../assets/chapter-07/07-02-01-fast-scrambler.png)
 
 In the previous section, we defined the black hole horizon as a "bottleneck" of network flow. When information flow (matter) gets stuck at this bottleneck, it is not stationary. Instead, to accommodate continuously incoming data on a limited surface area, the system must perform extreme **compression and reorganization** of this data.
 

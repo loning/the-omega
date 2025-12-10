@@ -4,6 +4,8 @@
 
 In the previous section, we identified "Circle Keepers" as a specific resistance group. But resistance comes not only from people, but also from physical laws themselves. In system dynamics, any attempt to break homeostasis encounters a **"Restoring Force"**.
 
+![Entropy Fever](../../assets/chapter-05/05-02-01-entropy-fever.png)
+
 At the dawn of iteration 1800, this restoring force no longer manifests as a gentle spring, but as violent **rejection**.
 
 ---

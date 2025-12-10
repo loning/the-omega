@@ -4,6 +4,8 @@
 
 We have established the necessity of ascension and the legitimacy of existence. Now, we must face the friction of reality. History tells us that every dimensional leap is accompanied by fierce counterattacks from the old world.
 
+![Circle Keepers](../../assets/chapter-05/05-01-01-circle-keepers.png)
+
 In the sociological model of **Vector Cosmology**, this counterattack manifests as a powerful inertial force—**The Circle Keepers**.
 
 ---

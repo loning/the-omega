@@ -40,6 +40,8 @@ It is you who, through **"Interpretation"**, sublimates a random physical collap
 
 ## The Reverse Engineering of History
 
+![Retroactive Meaning](../../assets/chapter04-inversion-of-teleology/ch04-03-retroactive-meaning.png)
+
 This explains why humans can always extract "laws" and "meaning" from chaotic history.
 
 In the fourth book, we mentioned that observers possess the privilege of **"reverse historiography"**.

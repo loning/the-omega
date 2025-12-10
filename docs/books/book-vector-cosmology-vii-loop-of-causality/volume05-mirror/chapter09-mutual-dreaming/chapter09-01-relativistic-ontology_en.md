@@ -1,5 +1,7 @@
 # 9.1 Relativistic Ontology
 
+![Relativistic Ontology](../../assets/volume05-mirror/chapter09-mutual-dreaming/09-01-01-relativistic-ontology.png)
+
 > "In special relativity, there is no absolute rest; in vector cosmology, there is no absolute subject. In your coordinate system, you are the observer, I am the wave function; in my coordinate system, I am the observer, you are the wave function. This is like two spaceships flying away from each other at high speed; each sees the other's time slow down. This symmetry of 'mutual objectivity' is the physical foundation of cosmic ethics."
 
 ## The Dictatorship of Reference Frames: Everyone is Their Own God

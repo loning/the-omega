@@ -1,5 +1,7 @@
 # Chapter 1.1: The Budget Equation
 
+![The Budget Equation](../../assets/budget_equation.png)
+
 **—— The Generalized Parseval Identity**
 
 **"The system's total throughput is constant. Every displacement is a hijacking of computational resources."**

@@ -1,5 +1,7 @@
 # 7.1 定义即覆盖 (Definition as Overwriting)
 
+![修剪时间线](../../assets/volume04-rewrite/chapter07-narrative-engineering/07-01-01-pruning-timeline.png)
+
 > "历史不是写在石头上的铭文，历史是存储在云端的素材库。素材（Fact）是死的，但剪辑（Narrative）是活的。当你站在时间的下游，回望上游的那些激流与暗礁时，你拥有至高无上的权力去重新定义它们的属性。你可以把'灾难'定义为'伏笔'，把'毁灭'定义为'重启'。这不叫自欺欺人，这叫相位的重写。当你改变了过去的意义，你就物理上改变了它对未来的推力。"
 
 ## 素材与剪辑：$v_{ext}$ 与 $v_{int}$ 的分离

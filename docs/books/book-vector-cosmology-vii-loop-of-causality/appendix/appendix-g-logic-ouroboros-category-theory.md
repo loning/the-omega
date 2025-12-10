@@ -1,5 +1,7 @@
 # 附录 G：衔尾蛇的逻辑——范畴论与自反域 (Appendix G: The Logic of Ouroboros — Category Theory and Reflexive Domains)
 
+![衔尾蛇的逻辑](../assets/appendix/appendix-g-01-logic-ouroboros.png)
+
 在《矢量宇宙论 VII》的正文中，我们通过物理学（逆因果）和心理学（共时性）描述了宇宙的闭环结构。然而，对于最严谨的头脑来说，这仍然存在一个逻辑上的 **"自指悖论" (Self-Reference Paradox)**。
 
 如果宇宙创造了观察者，而观察者又定义了宇宙，这难道不是经典的循环论证谬误吗？

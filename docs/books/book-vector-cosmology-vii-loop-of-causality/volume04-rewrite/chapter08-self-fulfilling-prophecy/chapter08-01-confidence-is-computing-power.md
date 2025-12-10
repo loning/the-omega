@@ -1,5 +1,7 @@
 # 8.1 信心即算力 (Confidence is Computing Power)
 
+![信心峰值](../../assets/volume04-rewrite/chapter08-self-fulfilling-prophecy/08-01-01-confidence-spike.png)
+
 > "为什么那些极度自信的人——无论是疯子还是天才——往往能改变世界？这不是因为他们运气好，而是因为他们的确信度本身就是一种物理力量。在量子力学的概率云中，'相信'就是一种高强度的测量。当你死死盯着某个特定的未来不放时，你就是在为那个可能的世界注入巨大的振幅，直到它从幻影变成实体。"
 
 ## 波函数的权重分配

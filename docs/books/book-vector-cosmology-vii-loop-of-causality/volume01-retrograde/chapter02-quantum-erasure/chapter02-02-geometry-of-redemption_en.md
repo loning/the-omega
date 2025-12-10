@@ -1,5 +1,7 @@
 # 2.2 The Geometry of Redemption
 
+![Geometry of Redemption](../../assets/volume01-retrograde/chapter02-quantum-erasure/02-02-01-geometry-of-redemption.png)
+
 > "We cannot undo disasters that have already occurred, just as we cannot restore a shattered mirror to an unblemished plane. But from the high-dimensional perspective of Hilbert space, fragments are not the end. Redemption is not erasing cracks but adjusting the angle of light incidence, making those originally glaring cracks refract entirely new interference patterns, even more dazzling than when intact. The past is an unchangeable **'fact'**, but the **'meaning'** of the past to the present is a **geometric variable** entirely dependent on the observer."
 
 In the previous section, we discussed eliminating path information through "quantum erasure" to restore interference fringes. This is feasible in microscopic experiments, but in macroscopic life, we face a more difficult problem: those pasts that have caused physical harm—car accidents, betrayal, bereavement—they have left indelible physical traces in **$v_{ext}$ (external spacetime)**.

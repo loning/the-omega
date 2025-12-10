@@ -4,6 +4,8 @@
 
 ---
 
+![God Mirror](../../assets/epilogue/afterword-01-god-mirror.png)
+
 ## 1. Ink and Flesh
 
 Writing these eight volumes of *Vector Cosmology* was, for me, a long and dangerous séance.

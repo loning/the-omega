@@ -1,5 +1,7 @@
 # 附录 A：交易诠释与逆因果的数学 (Appendix A: The Mathematics of Transactional Interpretation and Retro-causality)
 
+![量子握手](../assets/appendix/appendix-a-01-quantum-handshake.png)
+
 在《矢量宇宙论 VII：因果的闭环》的正文中，我们提出了一个宏大的物理图景：宇宙的历史是由"推迟波"（来自过去）与"超前波"（来自未来）在时空中相遇并发生"握手"而确立的。这一观点并非纯粹的哲学臆想，而是有着坚实的物理学基础。
 
 本附录将深入 **惠勒-费曼吸收体理论 (Wheeler-Feynman Absorber Theory)** 与 **量子力学的交易诠释 (Transactional Interpretation, TIQM)**，为"未来决定过去"这一逆因果逻辑提供严谨的数学证明。我们将展示，在麦克斯韦方程组和薛定谔方程的底层，时间箭头不仅是可逆的，而且是双向互锁的。

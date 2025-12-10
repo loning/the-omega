@@ -4,6 +4,8 @@
 
 In this chapter's conclusion, we will discuss **Vector Cosmology**'s most radical subversion of the concept of time. We have not only reconstructed reproduction (Section 10.1), but also **"aging"** and **"cycles"**.
 
+![Eternal Summer](../../assets/chapter-10/10-02-01-eternal-summer.png)
+
 Human civilization has lived in the shadow of **$\pi$ (pi)** for the past ten thousand years.
 
 $\pi$ represents cycles. Sunrise and sunset, tides rise and fall, dynasties rise and fall, birth, aging, sickness, and death.

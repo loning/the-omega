@@ -1,5 +1,7 @@
 # Chapter 3.3: The Topology of Matter
 
+![The Topology of Matter](../../assets/topology_matter.png)
+
 **—— Self-Referential Structure of Mass and Spinor Double Cover**
 
 **"An electron is not a point; it is a dead knot that light ties on the underlying grid. Without untying this knot, it can never stop rotating."**

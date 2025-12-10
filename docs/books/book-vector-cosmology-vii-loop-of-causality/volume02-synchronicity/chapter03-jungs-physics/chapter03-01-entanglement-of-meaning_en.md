@@ -1,5 +1,7 @@
 # 3.1 Entanglement of Meaning
 
+![Entanglement of Meaning](../../assets/volume02-synchronicity/chapter03-jungs-physics/03-01-01-meaning-entanglement.png)
+
 > "Why does the phone often ring when we intensely miss someone? Why do two unrelated people generate the same inspiration at the same moment? This is not a joke of probability; it is because deep in Hilbert space, 'meaning' itself is a kind of gravitation. Similar geometric structures, no matter how far apart in physical space, are always tightly adjacent topologically."
 
 ## The Dialogue Between Pauli and Jung

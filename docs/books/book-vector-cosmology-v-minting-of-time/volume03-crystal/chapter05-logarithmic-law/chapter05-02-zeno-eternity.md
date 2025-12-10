@@ -10,6 +10,8 @@
 
 答案是：**它在无穷远处。**
 
+![Time Perception](../../assets/chapter05-logarithmic-law/ch05-02-time-perception.png)
+
 ## 对数函数的尾巴：无限的拉伸
 
 让我们看看对数函数 $\ln(x)$ 在接近 $0$ 或接近 $\infty$ 时的行为。

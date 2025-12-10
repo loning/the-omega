@@ -2,7 +2,7 @@
 
 > "We are accustomed to viewing the universe as a box of scattered glass beads (atoms) contained in a transparent box (space). This is an infantile illusion. The truth of physics is: there are no glass beads, nor boxes. There is only a huge, trembling, self-interweaving web. What we call 'particles' are just the most densely entangled knots on this web; what we call 'vacuum' is just relatively sparse mesh. Nothing exists except connections."
 
-![Only Connection Real](../../../assets/chapter-11/11-01-01-only-connection-real.png)
+![Only Connection Real](../../assets/chapter-11/11-01-01-only-connection-real.png)
 
 ## The Dissolution of Particles: Knots, Not Beads
 

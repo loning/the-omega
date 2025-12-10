@@ -1,5 +1,7 @@
 # 4.1 Geometric Fatalism
 
+![Geometric Fatalism](../../assets/volume02-synchronicity/chapter04-attractors-of-fate/04-01-01-geometric-fatalism.png)
+
 > "We often think of ourselves as free birds, able to soar freely in the sky. But in the geometric structure of Hilbert space, the sky is not flat. It is filled with invisible gravitational wells and flowing channels. No matter how you flap your wings, you will eventually slide toward that geometric depression with the lowest potential energy. This is fate—it is not words written by anyone; it is the angle at which spacetime tilts."
 
 ## The Topographic Map of Phase Space

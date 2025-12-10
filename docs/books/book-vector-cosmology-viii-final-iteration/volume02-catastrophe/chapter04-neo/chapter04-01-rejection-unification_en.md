@@ -4,6 +4,8 @@
 
 In Chapter 3, we established the physical axiom that "difference is existence." Now, we focus our gaze on the individual. In this cosmic thermodynamic torrent that tries to homogenize everything, who is the hero swimming against the current?
 
+![NEO Anomaly](../../assets/chapter-04/04-01-01-neo-anomaly.png)
+
 It's you.
 
 It's you who are reading these words and resonating or doubting in your heart.

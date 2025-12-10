@@ -14,6 +14,8 @@ This book—**Vector Cosmology V: The Minting of Time**—is an ultimate rebelli
 
 ## 0.1 Two Kinds of Time
 
+![Chronos vs Kairos](assets/prologue/prologue-01-chronos-vs-kairos.png)
+
 > "Physicists only see the marks on the clock, but the ancient Greeks saw the divinity behind the marks. Chronos is the tyrant who devours his own children, while Kairos is the god of opportunity who can only be grasped by the hair. The task of life is to refine the flowing Chronos into the eternal Kairos."
 
 ### The Poverty of Physical Time: Chronos
@@ -58,6 +60,8 @@ When an observer, through intense conscious activity, **collapses** a flowing wa
 
 ### The Essence of Alchemy: Minting Gold Coins
 
+![Minting Machine](assets/prologue/prologue-02-minting-machine.png)
+
 This is the core metaphor of this book: **The Minting of Time**.
 
 We are not slaves of time; we are the **mint** of time.
@@ -91,6 +95,8 @@ But there is still a more terrifying question hanging overhead: Even if we mint 
 This leads to the theme of the next section: **Refusing Death**. We will see that in the eyes of alchemists, death is not an end; it is only a recalibration of the horizon.
 
 ## 0.2 Refusing Death
+
+![Death Dispersion](assets/prologue/prologue-03-death-dispersion.png)
 
 > "Physics textbooks tell us that entropy increase is irreversible, heat death is the fate of the universe, and death is the end of the individual. This is a verdict based on the perspective of 'flowing.' But as minters of time, we have the right to appeal. In the eyes of alchemists, there is no true annihilation, only **Recalibration of the Horizon**."
 

@@ -1,5 +1,7 @@
 # Chapter 0.1: The Agnostic Ontology
 
+![The Agnostic Ontology](../../assets/agnostic_ontology.png)
+
 **—— Why Physics is a Projection**
 
 **"We cannot directly read the hardware (ontology); we can only see the output of the interface."**

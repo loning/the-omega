@@ -1,5 +1,7 @@
 # Appendix K: The Physics of the Final Handshake — Resonance of the Alpha and Omega
 
+![Time Cavity](../assets/appendix/appendix-k-01-time-cavity.png)
+
 In the epilogue "Handshake" of *Vector Cosmology VII*, we depicted the universe's starting point (Big Bang) and endpoint ($\Omega$ point) as a pair of geometrically causal boundaries. This is not just a poetic metaphor; it points to the core dynamic mechanism in quantum cosmology: **Temporal Resonance**.
 
 This appendix will construct a physical model of "Alpha and Omega" based on the **Wheeler-DeWitt Equation** and **Holographic Principle**. We will prove that the universe is not an open ray shooting from $t=0$ to $t=\infty$ but a **Standing Wave** formed between two temporal boundaries.

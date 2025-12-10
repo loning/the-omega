@@ -72,6 +72,8 @@
 
 ## 3. 对抗贬值：为什么金是金？
 
+![Crystallized Past](../../assets/chapter02-anchoring-of-value/ch02-02-crystallized-past.png)
+
 这带我们回到了五行的隐喻：**金 (Metal)**。
 
 为什么人类选择黄金作为货币？因为它化学性质稳定，不生锈，不腐烂。

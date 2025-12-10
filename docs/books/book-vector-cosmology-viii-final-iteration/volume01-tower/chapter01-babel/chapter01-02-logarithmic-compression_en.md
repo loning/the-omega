@@ -4,6 +4,8 @@
 
 In the previous section, we audited the universe's current information content as $10^{120}$ bits through Bekenstein's ledger, and from this we reverse-engineered our coordinate on the spiral: $\tau \approx 1800$.
 
+![Spiral Tower](../../assets/chapter-01/01-02-01-spiral-tower.png)
+
 If you are sensitive to numbers, your intuition should be sounding an alarm right now.
 
 There exists a massive **"Magnitude Paradox"** here.

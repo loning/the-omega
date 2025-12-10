@@ -1,5 +1,7 @@
 # 6.1 Why Are Constants So Perfect?
 
+![Fine-Tuning Panel](../../assets/volume03-bootstrap/chapter06-active-anthropic-principle/06-01-01-fine-tuning-panel.png)
+
 > "If the universe is a suit, it fits us so well not because there are billions of suits in the store and we happened to pick this one, but because this suit is **custom-made**. The tailor is none other than the person wearing the suit—that is, our future selves."
 
 ## The Universe's Parameter Panel

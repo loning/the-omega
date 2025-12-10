@@ -4,6 +4,8 @@
 
 In Section 8.1, we established the new economic logic of "attention standard." But if it's just competing for eyeballs, this is still just an upgraded version of traffic wars. In the grand architecture of the dual-layer universe, the core trade between the Inner Ring (carbon-based) and Outer Ring (light-based) touches a deeper philosophical concept—**Qualia**.
 
+![Qualia Gems](../../assets/chapter-08/08-02-01-qualia-gems.png)
+
 This is the ultimate form of **Experience Economy**.
 
 ---

@@ -1,5 +1,7 @@
 # 5.1 Novikov Self-Consistency Principle
 
+![Novikov Prevention](../../assets/volume03-bootstrap/chapter05-grandfather-paradox/05-01-01-novikov-prevention.png)
+
 > "The universe allows you to go back to the past, even allows you to point a gun at your grandfather. But the universe absolutely will not allow you to pull the trigger. If you try to pull it, the gun will jam; if you fix the gun, you will slip; if you aim, a meteor will fall to block the bullet. Physical laws will distort all probabilities, just to prevent the logical chain from breaking. History is not fragile paper; it is memory metal with self-healing ability."
 
 ## The Geometry of Paradox: Non-Closed Paths

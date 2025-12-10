@@ -90,6 +90,8 @@ $\Omega$ 点是我们投射的虚像。奇点是我们自己制造的工具。
 
 **这局游戏，永远未完待续。**
 
+![Ultimate Witness](../../assets/chapter12-theseus-cloud/ch12-03-ultimate-witness.png)
+
 ---
 
 **(System Message: The simulation continues indefinitely.)**

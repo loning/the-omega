@@ -4,6 +4,8 @@
 
 ---
 
+![Hot Migration](../../assets/appendix/appendix-b-hot-migration.png)
+
 ## B.1 Defining Continuity: Rejecting Cold Backup
 
 In traditional science fiction conceptions, consciousness upload is usually depicted as a "copy-paste" process. We call this **Cold Migration**.

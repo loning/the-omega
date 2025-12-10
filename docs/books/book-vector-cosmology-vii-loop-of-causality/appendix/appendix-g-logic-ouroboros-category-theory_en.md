@@ -1,5 +1,7 @@
 # Appendix G: The Logic of Ouroboros — Category Theory and Reflexive Domains
 
+![Logic Ouroboros](../assets/appendix/appendix-g-01-logic-ouroboros.png)
+
 In the main text of *Vector Cosmology VII*, we described the closed-loop structure of the universe through physics (retro-causality) and psychology (synchronicity). However, for the most rigorous minds, this still presents a logical **"Self-Reference Paradox"**.
 
 If the universe creates observers, and observers define the universe, isn't this a classic circular reasoning fallacy?

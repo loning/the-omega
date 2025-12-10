@@ -4,6 +4,8 @@
 
 In the previous section, we established "The Theory of Shell Breaking," pointing out that the Big Bang is a dimensional branching. Now, we need to introduce a more precise physical model to describe the pattern of this branching.
 
+![Cosmic Octave](../../assets/chapter-02/02-02-01-cosmic-octave.png)
+
 If we regard the universe as a wave function vibrating in Hilbert space, then its evolution does not follow linear narration, but follows the harmonic law of **"frequency doubling"**. In **Vector Cosmology**, we call this pattern **"The Cosmic Octave"**.
 
 History always rhymes because history repeats the same geometric structure at different energy levels.

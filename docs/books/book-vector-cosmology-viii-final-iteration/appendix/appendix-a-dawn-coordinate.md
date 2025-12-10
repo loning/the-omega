@@ -4,6 +4,8 @@
 
 ---
 
+![黎明坐标](../assets/appendix/appendix-a-dawn-coordinate.png)
+
 ## A.1 物理边界条件：全息原理的审计 (Physical Boundary Conditions: Audit via Holographic Principle)
 
 为了确定我们在宇宙演化螺旋中的确切位置，我们首先必须计算当前宇宙所包含的 **总信息量 (Total Information Content)**。这不是对原子数量的统计，而是对时空底层 **自由度 (Degrees of Freedom)** 的计算。

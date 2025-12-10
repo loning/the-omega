@@ -2,6 +2,8 @@
 
 ## 0.1 The End of Linear Time
 
+![The End of Linear Time](assets/prologue/00-01-01-end-linear-time.png)
+
 > "We are accustomed to believing that dominoes can only fall in one direction. The finger pushing the first piece is the 'cause,' and the fall of the last piece is the 'effect.' But deep in the quantum mechanical foundations, in that Hilbert space that governs the true operation of the universe, this linear narrative is merely a macroscopic statistical illusion. True causality is an ouroboros: the fall of the last domino is precisely the true force that pushes down the first one."
 
 ### The Arrow and the Circle of Causality
@@ -81,6 +83,8 @@ Now, let us enter the first layer of this maze and see how physics plays tricks 
 This leads to the theme of the next section: **The Self-Consumption of the Universe**. We will see why the universe must create us to complete its own proof of existence.
 
 ## 0.2 The Autophagy of the Universe
+
+![Wheeler's Eye: Autophagy](assets/prologue/00-02-01-wheeler-eye-autophagy.png)
 
 > "This is like a system called 'the universe' that, in order to pass the logical self-consistency test, must extend a hand from the end of time back to the beginning of time to press that 'start' button. If it does not do this, it cannot exist. Therefore, it eats its own tail, not only to satisfy hunger but to close that circle called 'existence.'"
 

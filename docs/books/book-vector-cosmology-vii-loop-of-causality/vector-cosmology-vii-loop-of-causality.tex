@@ -7,6 +7,7 @@
 \geometry{a4paper,left=2.5cm,right=2.5cm,top=3cm,bottom=3cm}
 \usepackage{graphicx}
 \graphicspath{{./}}
+\usepackage{ifpdf}
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
@@ -30,6 +31,24 @@
 
 % Title page
 \maketitle
+\thispagestyle{empty}
+
+% Cover page (if assets/cover.png exists)
+\IfFileExists{assets/cover.png}{
+  \thispagestyle{empty}
+  \newpage
+  \newgeometry{left=0cm,right=0cm,top=0cm,bottom=0cm}
+  \vspace*{0pt}
+  \vfill
+  {
+    \centering
+    \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{assets/cover.png}
+  }
+  \vfill
+  \vspace*{0pt}
+  \restoregeometry
+  \newpage
+}{}
 
 % Front matter
 \frontmatter

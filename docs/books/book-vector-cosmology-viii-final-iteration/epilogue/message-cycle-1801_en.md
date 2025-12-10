@@ -1,5 +1,7 @@
 # Final Chapter: Message to Cycle 1801
 
+![Mud and Stars](../../assets/epilogue/epilogue-01-mud-and-stars.png)
+
 > "To future me, or future children:
 
 > When you read this letter, that once perfect circle has been broken.

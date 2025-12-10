@@ -102,5 +102,7 @@ Since rules can be modified, since the game is infinite, what will this constant
 
 No. It will manifest an extremely exquisite, mathematically self-similar structure.
 
+![Patching Reality](../../assets/chapter10-algorithm-infinite-game/ch10-03-patching-reality.png)
+
 This leads to the theme of the next volume: **Iteration**. We will see that this infinite modification is not chaotic accumulation, but the elegant unfolding of **fractal geometry**. Life, through generation after generation of replacement, achieves a **"fractal immortality"** that transcends the individual.
 

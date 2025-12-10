@@ -1,5 +1,7 @@
 # 1.1 Wheeler's Dragon
 
+![Wheeler's Dragon](../../assets/volume01-retrograde/chapter01-delayed-choice/01-01-01-wheelers-dragon.png)
+
 > "There is no fixed past waiting for us to discover. The past is like a dragon: the dragon's tail is pinned to the particle source at the starting point, the dragon's mouth bites the detector at the endpoint, but the dragon's body—that intermediate history—is a blurry cloud of smoke. Only when we decide what kind of camera to set up at this end of the fog does the dragon in the smoke reveal its specific shape." — John Archibald Wheeler
 
 In the hall of classical physics, time is a one-way street. The past is hardened cement, solid and unchangeable; the present is the moment being poured; the future is unformed fluid. We take it for granted that what happened yesterday caused today's results, and the arrow of causality always points forward.

@@ -2,7 +2,7 @@
 
 > "Physicists spent half a century searching for a quantization scheme for gravity, only to be surprised to discover that general relativity might not be a fundamental microscopic theory at all, but a macroscopic effective theory like fluid dynamics. You cannot 'quantize' water waves, because water waves are statistical averages of water molecules. Similarly, you cannot 'quantize' gravity, because gravity is the statistical flow of spacetime atoms."
 
-![Spacetime Fluid](../../../assets/chapter-06/06-01-01-spacetime-fluid.png)
+![Spacetime Fluid](../../assets/chapter-06/06-01-01-spacetime-fluid.png)
 
 ## Damour's Discovery: Horizon is a Fluid Membrane
 

@@ -1,5 +1,7 @@
 # 9.2 Indra's Net
 
+![Indra's Net](../../assets/volume05-mirror/chapter09-mutual-dreaming/09-02-01-indras-net.png)
+
 > "In this universe, no single pearl can shine alone. The light of each pearl comes from reflections of thousands of surrounding pearls on its surface. If you remove one and try to examine its brilliance alone, you will find it instantly dims. Because its light is their light. This is Indra's Net—we are mutual mirrors, mutual light sources, mutual proofs of existence."
 
 In the previous section, we established "relativistic ontology": everyone is the protagonist of their own universe and also supporting characters in others' universes. This symmetry resolves the arrogance of solipsism, but it raises a new geometric question:

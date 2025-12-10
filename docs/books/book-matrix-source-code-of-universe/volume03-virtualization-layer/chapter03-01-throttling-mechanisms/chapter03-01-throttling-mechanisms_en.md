@@ -1,5 +1,7 @@
 # Chapter 3.1: Throttling Mechanisms
 
+![Throttling Mechanisms](../../assets/throttling_mechanisms.png)
+
 **—— Reconstructing Special Relativity as Capacity Allocation**
 
 **"Time dilation is not magic; it is forced throttling executed by the system to prevent bandwidth overflow."**

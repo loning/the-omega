@@ -50,6 +50,8 @@ If you have refined yourself into gold, then death is just an **"archiving"** fo
 
 You, as the most precious asset in the universe, are stored in the eternal safe.
 
+![Soul Storage](../../assets/chapter07-philosophers-stone/ch07-03-soul-storage.png)
+
 Since we have mastered the method of minting golden bodies, what is our relationship with other players (also fragments of God) in this infinite game, besides perfecting ourselves?
 
 Are we competitors or teammates?

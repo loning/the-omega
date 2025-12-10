@@ -1,5 +1,7 @@
 ### Epilogue: The I/O of The Universe
 
+![Epilogue I/O](../assets/epilogue_io.png)
+
 **—— The Ultimate Q&A Regarding System Boundaries**
 
 **"A program cannot see the CPU; it can only see clock cycles. But the program itself is the result of CPU computation."**

@@ -1,5 +1,7 @@
 # 5.1 诺维科夫自洽性原则 (Novikov Self-Consistency Principle)
 
+![诺维科夫预防](../../assets/volume03-bootstrap/chapter05-grandfather-paradox/05-01-01-novikov-prevention.png)
+
 > "宇宙允许你回到过去，甚至允许你把枪口对准你的祖父。但是，宇宙绝不允许你扣动扳机。如果你试图扣动，枪会卡壳；如果你修好了枪，你会滑倒；如果你瞄准了，一颗流星会砸下来挡住子弹。物理定律会扭曲一切概率，只为了阻止逻辑链条的断裂。历史不是脆弱的纸，它是拥有自我修复能力的记忆金属。"
 
 ## 悖论的几何学：不闭合的路径

@@ -1,5 +1,7 @@
 # Chapter 5.2: The Arrow of Time
 
+![The Arrow of Time](../../assets/arrow_of_time.png)
+
 **—— Micro-Reversibility vs. Macro-Irreversibility**
 
 **"Underlying instructions are reversible, but system logs can only be appended, not rewritten."**

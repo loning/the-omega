@@ -1,5 +1,7 @@
 # Appendix E.1: The Universe Kernel Architecture Diagram
 
+![Kernel Architecture Diagram](../assets/kernel_architecture.png)
+
 **—— The Engineering Blueprint of Reality Logic**
 
 **"A picture is worth a thousand words. For complex distributed systems, we need a clear topology diagram."**

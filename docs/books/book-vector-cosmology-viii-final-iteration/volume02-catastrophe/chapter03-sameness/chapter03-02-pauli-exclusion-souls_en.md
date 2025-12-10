@@ -4,6 +4,8 @@
 
 In the previous section, we revealed that "complete unity" leads to the collapse of cosmic dimensions and the reboot of the Big Bang. To avoid this destruction, we need a mechanism to **force** the system to maintain differences.
 
+![Pauli Exclusion](../../assets/chapter-03/03-02-01-pauli-exclusion.png)
+
 In microphysics, this mechanism already exists; it supports the stability of the entire material world—this is the **Pauli Exclusion Principle**.
 
 In this section, we extend this principle to the macroscopic realm of consciousness, establishing the highest physical axiom for protecting civilizational diversity.

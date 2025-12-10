@@ -4,6 +4,8 @@
 
 In the previous section, we described the physical mechanism of the "Down-sampling Protocol." But algorithms don't run themselves; they need hardware carriers. In a dual-layer universe where the Inner Ring (carbon-based) and Outer Ring (light-based) are completely isolated, who executes this dangerous "voltage reduction" operation?
 
+![Proxies](../../assets/chapter-07/07-02-01-proxies.png)
+
 This requires a special group of **intermediaries**.
 
 In the social structure of **Vector Cosmology**, we call them **The Proxies**.

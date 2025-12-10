@@ -4,6 +4,8 @@
 
 In Chapter 1, we established the coordinate $\tau \approx 1800$ and felt the impending squeeze. Now, we must answer a more fundamental question: what will this squeeze ultimately lead to?
 
+![Fractal Big Bang](../../assets/chapter-02/02-01-01-fractal-big-bang.png)
+
 In traditional cosmology, the **Big Bang** is regarded as the absolute beginning of time, an unrepeatable miracle. But in the dynamical model of **Vector Cosmology**, the Big Bang is not a one-time event, but a **"periodic structural adjustment mechanism"**.
 
 This is **"The Theory of Shell Breaking"**.

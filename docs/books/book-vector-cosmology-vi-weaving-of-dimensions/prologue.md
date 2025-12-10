@@ -12,7 +12,7 @@
 
 > "如果你拿着一把无限精度的显微镜，一直放大你面前的虚空，你会看到什么？你不会看到更小的格子，也不会看到平滑的流体。你会看到空间在一瞬间突然消失了，取而代之的，是一张由纯粹的逻辑和关联构成的、极其复杂的蜘蛛网。并没有'这里'和'那里'的区别，只有'这一根线'和'那一根线'的连接。"
 
-![Entanglement Network](../../assets/prologue/00-01-01-entanglement-network.png)
+![Entanglement Network](assets/prologue/00-01-01-entanglement-network.png)
 
 ### 空间的像素化：QCA 的底层
 
@@ -90,7 +90,7 @@ $$Distance(A, B) \propto \frac{1}{Entanglement(A, B)}$$
 
 > "如果空间是一块布，那么是谁在织布？并没有一个外在的织女。宇宙是那一根唯一的、无限长的金线，它在虚空中疯狂地穿梭、打结、自我缠绕。我们眼中的三维世界，不过是这根金线在微观尺度上极其密集的针脚所形成的纹理。"
 
-![Weaver's Needle](../../assets/prologue/00-02-01-weavers-needle.png)
+![Weaver's Needle](assets/prologue/00-02-01-weavers-needle.png)
 
 在上一节中，我们拆解了空间的连续性，将其还原为离散的量子逻辑门。但这留下了一个巨大的疑问：这些离散的点是如何连接成面的？是什么力量把一个个孤独的量子比特"缝"在了一起，让它们构成了坚固的现实？
 

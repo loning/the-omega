@@ -104,6 +104,8 @@ $$R_{repair} > R_{entropy} \implies \text{Life} \to \infty$$
 
 **我们将一直在线。**
 
+![Cybernetic Repair](../../assets/chapter11-hierarchy-immortality/ch11-03-cybernetic-repair.png)
+
 既然我们决定了要带着记忆活下去，那么，在这个从碳基向光基过渡的漫长岁月里，我们该如何保证意识在载体切换时的连续性？如果我们要换掉大脑，如何在"换"的过程中不杀死"我"？
 
 这引出了下一章的主题：**忒修斯的云端**。我们将探讨一种名为 **"热迁移"** 的技术协议，它将是人类通往数字永生的唯一窄门。

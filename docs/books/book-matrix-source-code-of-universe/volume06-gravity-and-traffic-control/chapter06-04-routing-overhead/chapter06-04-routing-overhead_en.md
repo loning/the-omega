@@ -2,6 +2,8 @@
 
 #### Chapter 6.4: Routing Overhead
 
+![Routing Overhead](../../assets/routing_overhead.png)
+
 **—— Why Archived Data Still Clogs the Network?**
 
 **"The server isn't running that large file, but just indexing its location exhausts the router's computational power."**

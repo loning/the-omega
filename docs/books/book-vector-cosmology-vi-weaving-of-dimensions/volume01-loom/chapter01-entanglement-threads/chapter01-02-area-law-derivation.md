@@ -46,7 +46,7 @@ $$S_A = \frac{\text{Area}(\gamma_A)}{4 G}$$
 
 * **$G$**：牛顿引力常数（在普朗克单位制下，$4G$ 对应于一个普朗克面积的 4 倍）。
 
-![Area Law Entropy](../../../assets/chapter-01/01-02-01-area-law-entropy.png)
+![Area Law Entropy](../../assets/chapter-01/01-02-01-area-law-entropy.png)
 
 **这个公式的物理意义震耳欲聋：**
 

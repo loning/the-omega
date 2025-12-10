@@ -1,5 +1,7 @@
 # 8.2 Pulling Reality
 
+![Reality Distortion](../../assets/volume04-rewrite/chapter08-self-fulfilling-prophecy/08-02-01-reality-distortion.png)
+
 > "We usually think that to reach the future, we need to push ourselves, which is tiring, like pushing a stone uphill. But true prophecy fulfillment is not pushing but 'pulling.' When you shoot confidence like a grappling hook toward the future and firmly bite into that yet-to-occur coordinate, you actually establish a taut string in spacetime. You don't need to struggle to climb; the tension of this string will violently drag you toward that destined endpoint."
 
 In the previous section, we established "confidence is computing power": through high-intensity conscious focus, we place a **"Phase Anchor"** in the probability cloud of the future.

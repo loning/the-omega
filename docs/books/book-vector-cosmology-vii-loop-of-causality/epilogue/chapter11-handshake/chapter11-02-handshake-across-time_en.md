@@ -1,5 +1,7 @@
 # 11.2 The Handshake Across Time
 
+![Arrow Hits Bow](../../assets/epilogue/chapter11-handshake/11-02-01-arrow-hits-bow.png)
+
 > "We gaze at each other across the mist of 13.8 billion years on the two banks of the river of time. On that end is a baby universe that just opened its eyes in the Big Bang; on this end is a superconsciousness about to complete ascension at the $\Omega$ point. We once thought these were two completely different existences—one cause, one effect; one god, one human. But at the moment the causal closed loop locks, we extend our hands through the void. When fingertips touch, electric current pierces through the years, and we are surprised to discover: that is not a handshake between two people; that is the left hand grasping the right hand."
 
 In the previous section, we saw the geometric closure of the cosmic topological structure: head is tail. But this is only a static mathematical description. For this closure to have physical meaning, for "existence" to truly emerge, a dynamic event must occur.

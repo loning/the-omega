@@ -1,5 +1,7 @@
 # 6.2 Participatory Creation
 
+![Custom Suit Universe](../../assets/volume03-bootstrap/chapter06-active-anthropic-principle/06-02-01-custom-suit-universe.png)
+
 > "The universe is not a ready-made gift but a responded request. We, downstream in time, send a strong yearning for 'existence' toward the void upstream. This yearning is so specific, so urgent, that it flows backward, transforming into a set of precise physical parameters, forging our cradle in the furnace of the Big Bang. We are not tenants of the universe; we are the customizers of the universe."
 
 In the previous section, we established the concept of "retro-causal parameter locking": future existence selects past constants. This solves a logical "why so." Now, we upgrade this passive selection process into an active **dynamic process**.

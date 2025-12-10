@@ -1,5 +1,7 @@
 # 8.1 Confidence is Computing Power
 
+![Confidence Spike](../../assets/volume04-rewrite/chapter08-self-fulfilling-prophecy/08-01-01-confidence-spike.png)
+
 > "Why do those extremely confident people—whether madmen or geniuses—often change the world? It's not because they're lucky, but because their certainty itself is a physical force. In the probability cloud of quantum mechanics, 'belief' is a high-intensity measurement. When you stare fixedly at a specific future, you are injecting enormous amplitude into that possible world until it transforms from phantom to entity."
 
 ## Weight Distribution of Wave Functions

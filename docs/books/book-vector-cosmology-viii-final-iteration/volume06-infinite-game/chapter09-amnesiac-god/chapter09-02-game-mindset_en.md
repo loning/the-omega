@@ -4,6 +4,8 @@
 
 In Section 9.1, we revealed an astonishing fact: the universe's physical parameters were set by ourselves; we are "gods" who actively chose amnesia and descended here. This realization will completely reconstruct our life philosophy.
 
+![Game Mindset](../../assets/chapter-09/09-02-01-game-mindset.png)
+
 In the past, we thought life was a **suffering practice**, or a **random survival competition**.
 
 Now we understand: life is an **Immersive Sim**.

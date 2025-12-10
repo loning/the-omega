@@ -2,7 +2,7 @@
 
 > "If you want to tell a secret to the wind, but fear the wind will scatter it, what should you do? You cannot write it on a piece of paper. You must break it apart, split every word into countless fragments again, and then 'smear' these fragments across the entire sky. Only in this way, even if a storm tears apart half the sky, the remaining clouds can still piece together that complete secret."
 
-![Redundancy Cloud](../../../assets/chapter-03/03-01-01-redundancy-cloud.png)
+![Redundancy Cloud](../../assets/chapter-03/03-01-01-redundancy-cloud.png)
 
 ## Fragile Quantum and Solid Reality
 
