@@ -1,6 +1,6 @@
 # Final Chapter: Message to Cycle 1801
 
-![Mud and Stars](../../assets/epilogue/epilogue-01-mud-and-stars.png)
+![Mud and Stars](../assets/epilogue/epilogue-01-mud-and-stars.png)
 
 > "To future me, or future children:
 

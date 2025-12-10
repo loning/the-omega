@@ -4,7 +4,7 @@
 
 ---
 
-![Dawn Coordinate](../../assets/appendix/appendix-a-dawn-coordinate.png)
+![Dawn Coordinate](../assets/appendix/appendix-a-dawn-coordinate.png)
 
 ## A.1 Physical Boundary Conditions: Audit via Holographic Principle
 

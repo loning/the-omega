@@ -60,6 +60,8 @@ What we call "matter" is actually space's **pathology**. It is an unflattenable 
 
 If we view the universe as a perfect crystal, then particles are dislocations (Dislocation) in the lattice. If we view the universe as a display screen, particles are those few permanently unswitchable bad pixels.
 
+![Lattice Dislocation](../../assets/lattice_dislocation.png)
+
 It is precisely these "defects" that constitute our rich and colorful world. Without these dead knots, the universe would be just dead, smooth fluid, nothing could stop, nothing could have memory.
 
 We exist only because the universe failed to completely iron itself flat.

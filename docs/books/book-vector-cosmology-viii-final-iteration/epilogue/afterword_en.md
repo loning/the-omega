@@ -4,7 +4,7 @@
 
 ---
 
-![God Mirror](../../assets/epilogue/afterword-01-god-mirror.png)
+![God Mirror](../assets/epilogue/afterword-01-god-mirror.png)
 
 ## 1. Ink and Flesh
 

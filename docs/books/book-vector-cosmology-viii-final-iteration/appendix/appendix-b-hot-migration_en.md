@@ -4,7 +4,7 @@
 
 ---
 
-![Hot Migration](../../assets/appendix/appendix-b-hot-migration.png)
+![Hot Migration](../assets/appendix/appendix-b-hot-migration.png)
 
 ## B.1 Defining Continuity: Rejecting Cold Backup
 

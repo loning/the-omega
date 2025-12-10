@@ -91,11 +91,18 @@ class DocScanner:
         """查找所有文档文件（.md 和 .tex）"""
         return self.find_all_markdown_files() | self.find_all_tex_files()
     
-    def find_all_image_files(self) -> Set[Path]:
+    def find_all_image_files(self) -> Set[str]:
         """查找所有图片文件"""
         image_extensions = {'.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp'}
         image_files = set()
+        assets_dir = self.docs_dir / 'assets'
         for img_file in self.docs_dir.rglob('*'):
+            # 忽略 docs/assets 目录
+            try:
+                if assets_dir in img_file.parents or img_file.parent == assets_dir:
+                    continue
+            except (ValueError, AttributeError):
+                pass
             if img_file.suffix.lower() in image_extensions:
                 try:
                     rel_path = img_file.relative_to(self.docs_dir)
@@ -179,7 +186,9 @@ class DocScanner:
         
         # 如果是相对路径，需要相对于当前文件解析
         if not img_path_clean.startswith('/'):
-            # doc_file 已经是绝对路径（从 rglob 返回）
+            # 确保 doc_file 是绝对路径
+            if not doc_file.is_absolute():
+                doc_file = (self.docs_dir / doc_file).resolve()
             doc_dir = doc_file.parent
             
             # 对于 .tex 文件，图片路径可能是相对于文件目录或 book 根目录的
@@ -193,14 +202,14 @@ class DocScanner:
                     book_root = self._find_book_root(doc_file)
                     img_abs_path = book_root / img_path_clean
             else:
-                # 对于 .md 文件，图片路径是相对于当前文件的
+                # 对于 .md 文件，图片路径是相对于当前文件的，必须使用绝对路径解析
                 # 处理 `books/assets/...` 这种格式（可能是错误的，尝试修复）
                 if img_path_clean.startswith('books/assets/'):
                     # 这可能是错误的路径格式，尝试找到 book 根目录的 assets
                     book_root = self._find_book_root(doc_file)
                     img_abs_path = book_root / 'assets' / img_path_clean[12:]  # 移除 'books/assets/'，保留后面的路径
                 elif img_path_clean.startswith('../'):
-                    # 向上级目录
+                    # 向上级目录 - 对于 .md 文件，必须严格按照相对路径解析
                     parts = img_path_clean.split('/')
                     up_levels = 0
                     for part in parts:
@@ -209,20 +218,61 @@ class DocScanner:
                         else:
                             break
                     # 计算实际路径
+                    # 手动向上遍历目录，避免 resolve() 的规范化问题
                     current_dir = doc_dir
                     for _ in range(up_levels):
-                        if current_dir == self.docs_dir:
-                            break  # 不能超过 docs 目录
+                        if current_dir == self.docs_dir or current_dir.parent == current_dir:
+                            break  # 不能超过 docs 目录或到达根目录
                         current_dir = current_dir.parent
-                    img_abs_path = current_dir / '/'.join(parts[up_levels:])
+                    # 使用 Path 对象拼接剩余路径部分
+                    remaining_parts = parts[up_levels:]
+                    if remaining_parts:
+                        img_abs_path = current_dir
+                        for part in remaining_parts:
+                            img_abs_path = img_abs_path / part
+                    else:
+                        img_abs_path = current_dir
                 else:
                     # 相对于当前文件目录
                     img_abs_path = doc_dir / img_path_clean
             
             # 转换为相对于 docs_dir 的路径
             try:
-                img_rel_path = img_abs_path.relative_to(self.docs_dir)
+                # 确保使用绝对路径进行比较
+                docs_dir_abs = self.docs_dir.resolve() if not self.docs_dir.is_absolute() else self.docs_dir
+                img_abs_path_resolved = img_abs_path.resolve() if img_abs_path.exists() else img_abs_path
+                img_rel_path = img_abs_path_resolved.relative_to(docs_dir_abs)
                 img_rel_path = str(img_rel_path).replace('\\', '/')
+                
+                # 对于 .tex 文件，如果路径不存在，尝试使用 book 根目录作为备选
+                if doc_file.suffix == '.tex' and not img_abs_path.exists():
+                    # 尝试使用 book 根目录
+                    book_root = self._find_book_root(doc_file)
+                    # 解析剩余路径部分
+                    if img_path_clean.startswith('../'):
+                        # 从相对路径中提取剩余部分
+                        path_parts = img_path_clean.split('/')
+                        up_count = sum(1 for p in path_parts if p == '..')
+                        remaining_parts = path_parts[up_count:]
+                    elif img_path_clean.startswith('./'):
+                        remaining_parts = img_path_clean[2:].split('/')
+                    else:
+                        remaining_parts = img_path_clean.split('/')
+                    
+                    if remaining_parts:
+                        alt_img_abs_path = book_root
+                        for part in remaining_parts:
+                            if part:  # 跳过空字符串
+                                alt_img_abs_path = alt_img_abs_path / part
+                        if alt_img_abs_path.exists():
+                            try:
+                                alt_img_rel_path = alt_img_abs_path.relative_to(self.docs_dir)
+                                return str(alt_img_rel_path).replace('\\', '/')
+                            except ValueError:
+                                pass
+                
+                # 对于 .md 文件，必须使用绝对路径，不使用备选路径
+                # 直接返回解析的路径（无论是否存在，让调用者检查）
                 return img_rel_path
             except ValueError:
                 # 如果路径不在 docs_dir 下，跳过
@@ -366,7 +416,14 @@ class DocScanner:
                 if current_dir == self.docs_dir:
                     break
                 current_dir = current_dir.parent
-            ref_abs_path = current_dir / '/'.join(parts[up_levels:])
+            # 使用 Path 对象拼接剩余路径部分
+            remaining_parts = parts[up_levels:]
+            if remaining_parts:
+                ref_abs_path = current_dir
+                for part in remaining_parts:
+                    ref_abs_path = ref_abs_path / part
+            else:
+                ref_abs_path = current_dir
         else:
             ref_abs_path = doc_dir / ref_path
         
@@ -413,6 +470,9 @@ class DocScanner:
 
         unreferenced = []
         for img_file in all_images:
+            # 忽略 docs/assets 目录下的图片
+            if img_file.startswith('assets/'):
+                continue
             if img_file not in referenced_images:
                 # 排除 architecture.png 和 architecture-thumb.png（封面图片不需要引用）
                 if not (img_file.endswith('architecture.png') or img_file.endswith('architecture-thumb.png')):

@@ -30,6 +30,8 @@ This is not just physical rupture—we must break the inertia of $\pi$, break th
 
 In this volume—**Vector Cosmology VIII: The Final Iteration**—we will explore the physics of this "uncoiling."
 
+![Vector Cosmology: The Physics of Ascension](assets/vectory-cosmology-the-physics-of-ascension.png)
+
 We will prove that seemingly perfect circle is not the truth of the universe, but a **"shell that exists for hatching"**.
 
 The previous seven volumes were the process of building this shell.

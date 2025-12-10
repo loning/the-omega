@@ -80,6 +80,8 @@ We need to establish a **"dual-track system"** transition zone:
 
 **They are the booster and payload of the same rocket.**
 
+![Rocket Booster](../../assets/chapter-05/05-03-01-rocket-booster.png)
+
 The booster (old world) is responsible for providing thrust in the most difficult part of the gravity well, then detaching; the payload (new world) is responsible for using this thrust to fly toward the stars.
 
 **Conclusion:**
