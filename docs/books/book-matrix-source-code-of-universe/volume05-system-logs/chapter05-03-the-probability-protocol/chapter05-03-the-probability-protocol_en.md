@@ -1,5 +1,7 @@
 # Chapter 5.3: The Probability Protocol
 
+![The Probability Protocol](../../assets/probability_protocol.png)
+
 **—— Micro-Counting and Self-Location**
 
 **"God does not play dice; players are lost in the massive partitions of the server."**

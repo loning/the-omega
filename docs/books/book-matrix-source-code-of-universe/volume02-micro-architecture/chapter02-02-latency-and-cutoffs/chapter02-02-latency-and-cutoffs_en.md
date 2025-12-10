@@ -1,5 +1,7 @@
 # Chapter 2.2: Latency & Cutoffs
 
+![Latency & Cutoffs](../../assets/latency_cutoffs.png)
+
 **—— Signal Integrity and Natural Regularization**
 
 **"Causality is not a philosophical iron law; it is the physical latency of local network propagation."**

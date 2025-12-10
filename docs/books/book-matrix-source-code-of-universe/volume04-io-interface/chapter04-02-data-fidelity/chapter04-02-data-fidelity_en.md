@@ -1,5 +1,7 @@
 # Chapter 4.2: Data Fidelity
 
+![Data Fidelity](../../assets/data_fidelity.png)
+
 **—— The Delay-Fidelity Trade-off Protocol**
 
 **"Any response deviating from the reference clock, whether late or early, is a distortion of the original signal."**

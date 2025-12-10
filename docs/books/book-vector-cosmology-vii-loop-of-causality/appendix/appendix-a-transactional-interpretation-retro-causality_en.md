@@ -1,5 +1,7 @@
 # Appendix A: The Mathematics of Transactional Interpretation and Retro-causality
 
+![Quantum Handshake](../assets/appendix/appendix-a-01-quantum-handshake.png)
+
 In the main text of *Vector Cosmology VII: The Loop of Causality*, we proposed a grand physical picture: the history of the universe is established by "retarded waves" (from the past) and "advanced waves" (from the future) meeting in spacetime and performing a "handshake." This view is not pure philosophical speculation but has a solid physical foundation.
 
 This appendix will delve into **Wheeler-Feynman Absorber Theory** and **Transactional Interpretation of Quantum Mechanics (TIQM)**, providing rigorous mathematical proof for the retro-causal logic that "the future determines the past." We will show that at the foundation of Maxwell's equations and Schrödinger's equation, the arrow of time is not only reversible but bidirectionally interlocked.

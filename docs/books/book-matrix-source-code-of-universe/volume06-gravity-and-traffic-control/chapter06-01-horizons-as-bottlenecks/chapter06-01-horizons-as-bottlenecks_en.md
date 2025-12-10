@@ -1,5 +1,7 @@
 # Chapter 6.1: Horizons as Bottlenecks
 
+![Horizons as Bottlenecks](../../assets/horizons_bottlenecks.png)
+
 **—— FS Capacity Deadlock at Horizons and Congestion Control**
 
 **"Gravity is not a force; it is the system's traffic shaping strategy when network load is too high."**

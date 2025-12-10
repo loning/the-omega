@@ -1,5 +1,7 @@
 # Chapter 6.2: Emergent Spacetime
 
+![Emergent Spacetime](../../assets/emergent_spacetime.png)
+
 **—— Reconstructing Einstein Equations from Quantum Entanglement Networks**
 
 **"Spacetime is not a container carrying matter; it is the 'visualization view' of entanglement relationships between matter."**

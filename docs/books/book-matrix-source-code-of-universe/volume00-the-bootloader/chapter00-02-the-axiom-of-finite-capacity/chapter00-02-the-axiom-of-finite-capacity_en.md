@@ -1,5 +1,7 @@
 # Chapter 0.2: The Axiom of Finite Capacity
 
+![The Axiom of Finite Capacity](../../assets/finite_capacity.png)
+
 **—— Defining the System Clock**
 
 **"Time is not a flowing river; it is a counter of state updates."**

@@ -1,5 +1,7 @@
 # Chapter 6.5: Dynamic Bandwidth & The Reset
 
+![Dynamic Bandwidth](../../assets/dynamic_bandwidth.png)
+
 **—— From Vacuum Aging to Scale Loss and System Reboot**
 
 **"The speed of light is not an eternal constant; it is a real-time function of system load. When all data is erased and scale is lost, the system automatically reboots."**

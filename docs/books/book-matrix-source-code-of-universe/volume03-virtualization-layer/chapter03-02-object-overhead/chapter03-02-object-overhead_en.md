@@ -1,5 +1,7 @@
 # Chapter 3.2: Object Overhead
 
+![Object Overhead](../../assets/object_overhead.png)
+
 **—— Mass as Internal Computation Cost**
 
 **"Mass is not the weight of matter; it is the continuous computational power the system pays to maintain an object's 'existence'."**

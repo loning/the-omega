@@ -1,5 +1,7 @@
 # Chapter 1.2: Speed Limits
 
+![Speed Limits](../../assets/speed_limits.png)
+
 **—— Quantum Speed Limits as System Constraints**
 
 **"Uncertainty is not measurement error; it is the fuel that drives evolution."**

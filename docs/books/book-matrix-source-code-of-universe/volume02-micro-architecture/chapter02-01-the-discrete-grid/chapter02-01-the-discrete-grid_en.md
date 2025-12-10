@@ -1,5 +1,7 @@
 # Chapter 2.1: The Discrete Grid
 
+![The Discrete Grid](../../assets/discrete_grid.png)
+
 **—— Quantum Cellular Automata as Machine Code**
 
 **"There is no infinity, only grids. Continuity is an illusion at high resolution."**

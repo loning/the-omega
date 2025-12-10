@@ -1,5 +1,7 @@
 # Chapter 4.1: Geometry in Energy Space
 
+![Geometry in Energy Space](../../assets/energy_geometry.png)
+
 **—— The Wigner-Smith Operator and Delay Variance**
 
 **"Every interaction is a network request with latency. The jitter of delay defines your movement speed in energy space."**

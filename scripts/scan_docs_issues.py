@@ -182,10 +182,16 @@ class DocScanner:
             # doc_file 已经是绝对路径（从 rglob 返回）
             doc_dir = doc_file.parent
             
-            # 对于 .tex 文件，图片路径是相对于 book 根目录的
+            # 对于 .tex 文件，图片路径可能是相对于文件目录或 book 根目录的
             if doc_file.suffix == '.tex':
-                book_root = self._find_book_root(doc_file)
-                img_abs_path = book_root / img_path_clean
+                # 先尝试相对于文件目录解析
+                if img_path_clean.startswith('../') or img_path_clean.startswith('./'):
+                    # 相对路径，相对于文件目录
+                    img_abs_path = (doc_dir / img_path_clean).resolve()
+                else:
+                    # 绝对路径（相对于 book 根目录）
+                    book_root = self._find_book_root(doc_file)
+                    img_abs_path = book_root / img_path_clean
             else:
                 # 对于 .md 文件，图片路径是相对于当前文件的
                 # 处理 `books/assets/...` 这种格式（可能是错误的，尝试修复）
@@ -413,8 +419,13 @@ class DocScanner:
                     unreferenced.append(img_file)
         return sorted(unreferenced)
     
-    def scan(self, output_file: Path = None):
-        """执行完整扫描"""
+    def scan(self, output_file: Path = None, verbose: bool = False):
+        """执行完整扫描
+        
+        Args:
+            output_file: 输出文件路径（可选）
+            verbose: 是否输出详细信息（显示所有结果，不限制数量）
+        """
         output_lines = []
         
         def print_and_save(*args, **kwargs):
@@ -449,9 +460,10 @@ class DocScanner:
         missing_links = self.check_missing_links(summary_links)
         if missing_links:
             print_and_save(f"   ✗ 发现 {len(missing_links)} 个缺失的链接:")
-            for link in missing_links[:20]:  # 只显示前20个
+            display_count = len(missing_links) if verbose else min(20, len(missing_links))
+            for link in missing_links[:display_count]:
                 print_and_save(f"      - {link}")
-            if len(missing_links) > 20:
+            if not verbose and len(missing_links) > 20:
                 print_and_save(f"      ... 还有 {len(missing_links) - 20} 个")
         else:
             print_and_save("   ✓ 所有链接都有效")
@@ -462,9 +474,10 @@ class DocScanner:
         unlisted_files = self.check_unlisted_files(summary_links, all_md_files)
         if unlisted_files:
             print_and_save(f"   ⚠️  发现 {len(unlisted_files)} 个未收录的文件:")
-            for file in unlisted_files[:30]:  # 只显示前30个
+            display_count = len(unlisted_files) if verbose else min(30, len(unlisted_files))
+            for file in unlisted_files[:display_count]:
                 print_and_save(f"      - {file}")
-            if len(unlisted_files) > 30:
+            if not verbose and len(unlisted_files) > 30:
                 print_and_save(f"      ... 还有 {len(unlisted_files) - 30} 个")
         else:
             print_and_save("   ✓ 所有文件都已收录")
@@ -488,9 +501,10 @@ class DocScanner:
         missing_images = self.check_missing_images(image_refs)
         if missing_images:
             print_and_save(f"   ✗ 发现 {len(missing_images)} 个缺失的图片:")
-            for md_file, img_path in missing_images[:20]:  # 只显示前20个
+            display_count = len(missing_images) if verbose else min(20, len(missing_images))
+            for md_file, img_path in missing_images[:display_count]:
                 print_and_save(f"      - {md_file}: {img_path}")
-            if len(missing_images) > 20:
+            if not verbose and len(missing_images) > 20:
                 print_and_save(f"      ... 还有 {len(missing_images) - 20} 个")
         else:
             print_and_save("   ✓ 所有引用的图片都存在")
@@ -501,9 +515,10 @@ class DocScanner:
         unreferenced_images = self.check_unreferenced_images(image_refs, all_images)
         if unreferenced_images:
             print_and_save(f"   ⚠️  发现 {len(unreferenced_images)} 个未引用的图片:")
-            for img_file in unreferenced_images[:30]:  # 只显示前30个
+            display_count = len(unreferenced_images) if verbose else min(30, len(unreferenced_images))
+            for img_file in unreferenced_images[:display_count]:
                 print_and_save(f"      - {img_file}")
-            if len(unreferenced_images) > 30:
+            if not verbose and len(unreferenced_images) > 30:
                 print_and_save(f"      ... 还有 {len(unreferenced_images) - 30} 个")
         else:
             print_and_save("   ✓ 所有图片都被引用")
@@ -527,9 +542,10 @@ class DocScanner:
         
         if missing_tex_refs:
             print_and_save(f"   ✗ 发现 {len(missing_tex_refs)} 个缺失的文件引用:")
-            for tex_file, ref_path in missing_tex_refs[:20]:  # 只显示前20个
+            display_count = len(missing_tex_refs) if verbose else min(20, len(missing_tex_refs))
+            for tex_file, ref_path in missing_tex_refs[:display_count]:
                 print_and_save(f"      - {tex_file}: {ref_path}")
-            if len(missing_tex_refs) > 20:
+            if not verbose and len(missing_tex_refs) > 20:
                 print_and_save(f"      ... 还有 {len(missing_tex_refs) - 20} 个")
         else:
             print_and_save("   ✓ 所有引用的文件都存在")
@@ -540,15 +556,18 @@ class DocScanner:
         md_tex_image_mismatches = self.check_md_tex_image_consistency(image_refs)
         if md_tex_image_mismatches:
             print_and_save(f"   ⚠️  发现 {len(md_tex_image_mismatches)} 个不一致的文件对:")
-            for md_file, tex_file, md_images, tex_images in md_tex_image_mismatches[:20]:
+            display_count = len(md_tex_image_mismatches) if verbose else min(20, len(md_tex_image_mismatches))
+            for md_file, tex_file, md_images, tex_images in md_tex_image_mismatches[:display_count]:
                 print_and_save(f"      - {md_file} <-> {tex_file}")
                 only_in_md = md_images - tex_images
                 only_in_tex = tex_images - md_images
                 if only_in_md:
-                    print_and_save(f"        仅在 .md 中: {', '.join(list(only_in_md)[:3])}")
+                    img_list = sorted(only_in_md) if verbose else list(only_in_md)[:3]
+                    print_and_save(f"        仅在 .md 中: {', '.join(img_list)}")
                 if only_in_tex:
-                    print_and_save(f"        仅在 .tex 中: {', '.join(list(only_in_tex)[:3])}")
-            if len(md_tex_image_mismatches) > 20:
+                    img_list = sorted(only_in_tex) if verbose else list(only_in_tex)[:3]
+                    print_and_save(f"        仅在 .tex 中: {', '.join(img_list)}")
+            if not verbose and len(md_tex_image_mismatches) > 20:
                 print_and_save(f"      ... 还有 {len(md_tex_image_mismatches) - 20} 个")
         else:
             print_and_save("   ✓ 所有对应的文件对都有一致的图片引用")
@@ -572,25 +591,6 @@ class DocScanner:
                 f.write('\n'.join(output_lines))
             print(f"✓ 结果已保存到: {output_file}")
         
-        # 11. 检查对应的 .md 和 .tex 文件的图片引用一致性
-        print_and_save("11. 检查对应的 .md 和 .tex 文件的图片引用一致性...")
-        md_tex_image_mismatches = self.check_md_tex_image_consistency(image_refs)
-        if md_tex_image_mismatches:
-            print_and_save(f"   ⚠️  发现 {len(md_tex_image_mismatches)} 个不一致的文件对:")
-            for md_file, tex_file, md_images, tex_images in md_tex_image_mismatches[:20]:
-                print_and_save(f"      - {md_file} <-> {tex_file}")
-                only_in_md = md_images - tex_images
-                only_in_tex = tex_images - md_images
-                if only_in_md:
-                    print_and_save(f"        仅在 .md 中: {', '.join(list(only_in_md)[:3])}")
-                if only_in_tex:
-                    print_and_save(f"        仅在 .tex 中: {', '.join(list(only_in_tex)[:3])}")
-            if len(md_tex_image_mismatches) > 20:
-                print_and_save(f"      ... 还有 {len(md_tex_image_mismatches) - 20} 个")
-        else:
-            print_and_save("   ✓ 所有对应的文件对都有一致的图片引用")
-        print_and_save()
-        
         # 返回是否有问题
         has_issues = bool(missing_links or missing_images or missing_tex_refs)
         return 1 if has_issues else 0
@@ -601,6 +601,7 @@ def main():
     
     parser = argparse.ArgumentParser(description='扫描文档问题')
     parser.add_argument('-o', '--output', type=str, help='将结果保存到文件')
+    parser.add_argument('-v', '--verbose', action='store_true', help='输出详细信息（显示所有结果，不限制数量）')
     args = parser.parse_args()
     
     # 获取脚本所在目录的父目录（项目根目录）
@@ -616,7 +617,7 @@ def main():
     
     scanner = DocScanner(docs_dir, summary_file)
     output_file = Path(args.output) if args.output else None
-    exit_code = scanner.scan(output_file=output_file)
+    exit_code = scanner.scan(output_file=output_file, verbose=args.verbose)
     sys.exit(exit_code)
 
 

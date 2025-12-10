@@ -1,5 +1,7 @@
 # Chapter 4.3: Topological Checksums
 
+![Topological Checksums](../../assets/topological_checksums.png)
+
 **—— The FS-Levinson Relation and Bound State Counting**
 
 **"Geometry measures error, while topology measures existence. It is the system's cyclic redundancy check (CRC) preventing data loss."**
