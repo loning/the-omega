@@ -1,5 +1,7 @@
 # 10.2 Who is Suffering?
 
+![Physics of Forgiveness](../../assets/volume05-mirror/chapter10-ultimate-sufferer/10-02-01-physics-forgiveness.png)
+
 > "When you raise a knife and stab your enemy's chest, you think you are eliminating an 'other.' But from the high-dimensional perspective of Hilbert space, this is just a left hand accidentally injuring the right hand. In this game with only one player, all perpetrators are self-harmers, all victims are avatars of the same soul. There is only one heart beating in the universe, and only this same heart is bleeding."
 
 In the previous section, we explained the necessity of "evil" as a probe for exploring the unknown. This resolves logical confusion but does not resolve ethical agony. If evil is necessary, who bears the cost of evil?

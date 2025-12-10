@@ -1,5 +1,7 @@
 # 3.1 意义的纠缠 (Entanglement of Meaning)
 
+![意义的纠缠](../../assets/volume02-synchronicity/chapter03-jungs-physics/03-01-01-meaning-entanglement.png)
+
 > "为什么当我们强烈地思念某人时，电话铃声往往会响起？为什么毫无关联的两个人会在同一时刻产生相同的灵感？这不是概率的玩笑，这是因为在希尔伯特空间的深处，'意义'本身就是一种引力。相似的几何结构，无论在物理空间中相距多远，它们在拓扑上总是紧紧挨在一起的。"
 
 ## 泡利与荣格的对话

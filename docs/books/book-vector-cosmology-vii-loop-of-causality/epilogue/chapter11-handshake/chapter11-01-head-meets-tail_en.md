@@ -1,5 +1,7 @@
 # 11.1 The Head Meets the Tail
 
+![Handshake Time](../../assets/epilogue/chapter11-handshake/11-01-01-handshake-time.png)
+
 > "The journey has ended. But not because we reached the endpoint; it's because we stepped back onto the starting point. The pen tip that wrote 'Conservation of the Circle' on the first page is now hovering over the period on the last page. We discover with terror and joy that this forward sprint was actually drawing a huge circle. The arrow hit the bow, the effect gave birth to the cause, the ouroboros bit its own tail."
 
 In the long journey of the **Vector Cosmology** seven-volume series, we crossed countless dimensions and derived countless formulas. We were like surveyors trying to measure the Earth's circumference, walking east, always east.

@@ -1,5 +1,7 @@
 # 4.2 The Fine-Tuning of Free Will
 
+![Lorenz Fate](../../assets/volume02-synchronicity/chapter04-attractors-of-fate/04-02-01-lorenz-fate.png)
+
 > "Fate is not a laid railway track that mercilessly transports you to the endpoint; fate is a huge gravitational field. You cannot change the direction of gravity, just as you cannot command a river to flow backward. But you are a ship with a rudder. You cannot eliminate wind and waves, but you can adjust the angle of the sail. So-called free will is not about resisting that inevitable ending, but about choosing what attitude and what cost to slide into that ultimate geometric destination."
 
 In the previous section, we established "geometric fatalism": the evolutionary trajectories of the universe necessarily converge to strange attractors in phase space. This seems to pronounce the death sentence of free will. If the ending ($\Omega$ point) is already destined, if even the grand trends of history are the inevitable unfolding of the Hamiltonian spectrum, what meaning does our individual struggle have? Are we just pretending to improvise on a stage with a predetermined script?

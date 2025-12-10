@@ -1,5 +1,7 @@
 # 2.1 The Physics of Modifying Memory
 
+![Quantum Eraser Memory](../../assets/volume01-retrograde/chapter02-quantum-erasure/02-01-01-quantum-eraser-memory.png)
+
 > "If there is a moment when you wish everything had never happened, wish time could flow back to the fork in the road, physics usually gives you the answer 'impossible.' But in the world of quantum erasure, if you can completely destroy the record of 'which path,' then the universe will really pretend you never chose that path. Forgetting is not just psychological self-protection; forgetting is a physical operation that can reset causality."
 
 ## The Scully-Drühl Experiment: Proof of the Existence of Regret Medicine

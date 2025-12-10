@@ -1,5 +1,7 @@
 # 6.1 为什么常数如此完美？ (Why Are Constants So Perfect?)
 
+![精细调节面板](../../assets/volume03-bootstrap/chapter06-active-anthropic-principle/06-01-01-fine-tuning-panel.png)
+
 > "如果宇宙是一套西装，它穿在我们身上如此合身，不是因为商店里有亿万套西装而我们恰好挑中了这一套，而是因为这套西装是 **量身定做** 的。裁缝不是别人，正是那个穿西装的人——也就是未来的我们自己。"
 
 ## 宇宙的参数面板

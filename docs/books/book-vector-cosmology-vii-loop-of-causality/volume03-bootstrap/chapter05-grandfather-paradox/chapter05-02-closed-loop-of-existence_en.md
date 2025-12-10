@@ -1,5 +1,7 @@
 # 5.2 The Closed Loop of Existence
 
+![Bootstrap Loop](../../assets/volume03-bootstrap/chapter05-grandfather-paradox/05-02-01-bootstrap-loop.png)
+
 > "We have been desperately searching for the first mover of the universe, trying to find the finger that pressed the start button. But when we traverse the mist of spacetime and finally grasp that hand, we are surprised to find: it is our own hand. The universe is not a straight line shot from the past to the future; it is a circle that gives birth to itself. You are both effect and cause."
 
 In the previous section, the Novikov self-consistency principle tells us: you cannot change the past because the past has already happened. This sounds like a limitation. But if we reverse this logic, it becomes a **"privilege of creation"**.

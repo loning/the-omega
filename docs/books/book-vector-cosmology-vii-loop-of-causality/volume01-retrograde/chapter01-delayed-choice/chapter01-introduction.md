@@ -1,5 +1,7 @@
 # 第1章 延迟选择 (Chapter 1: Delayed Choice)
 
+![延迟选择](../../assets/volume01-retrograde/chapter01-delayed-choice/01-00-01-delayed-choice.png)
+
 在序言中，我们确立了因果闭环的几何结构：时间不是单向的箭，而是咬住自己尾巴的蛇。现在，我们将这个抽象的理论推向实验台，去见证量子力学如何在实验室里重写历史。
 
 **延迟选择实验 (Delayed Choice Experiment)** 是量子力学最令人困惑的实验之一。它向我们展示了，现在的观测不仅能决定现在，它甚至能逆流而上，**定义** 亿万年前的历史。

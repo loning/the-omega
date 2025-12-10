@@ -1,5 +1,7 @@
 # 7.2 Changing Weights: Pruning the Timeline
 
+![Aerodynamics of Soul](../../assets/volume04-rewrite/chapter07-narrative-engineering/07-02-01-aerodynamics-soul.png)
+
 > "We often say 'the past is like smoke,' but for many people, the past is more like lead blocks. Those painful memories occupy excessive amplitude in our wave functions, slowing our flight toward the future. As an observer with administrator privileges, although you cannot physically delete these lead blocks, you can modify their 'gravitational mass.' This is not forgetting; this is 'renormalization.' By adjusting attention allocation, you compress those heavy histories into negligible background noise."
 
 In the previous section, we learned to overwrite the meaning of history through "redefinition." But this solves the problem of **Phase** (whether positive or negative).

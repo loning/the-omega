@@ -1,5 +1,7 @@
 # 3.2 Like Attracts Like
 
+![Coincidence Projection](../../assets/volume02-synchronicity/chapter03-jungs-physics/03-02-01-coincidence-projection.png)
+
 > "We often say 'birds of a feather flock together,' thinking this is just a sociological observation. But in the underlying geometry of the holographic universe, this is a hardcore physical law. In Hilbert space, there is no spatial distance, only 'structural distance.' Two existences with similar internal geometric structures, no matter how far apart in three-dimensional space, are tightly adjacent topologically."
 
 In the previous section, we introduced the concept of "semantic distance" and explained how synchronicity occurs through entanglement of meaning. Now, we concretize this mechanism into a cosmic dynamic principle: **Like Attracts Like**.

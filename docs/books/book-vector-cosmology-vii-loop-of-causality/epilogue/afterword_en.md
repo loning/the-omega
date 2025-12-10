@@ -24,6 +24,8 @@ Now, let us stand at the interface of this closed loop and look back at the path
 
 ## Only One Hand
 
+![The Smile of the Ouroboros](../../assets/epilogue/afterword/afterword-01-01-ouroboros-smile.png)
+
 These seven volumes reveal an ultimate physical truth: **There is no opposition between "subject" and "object."**
 
 We once thought we were lonely observers thrown into this cold universe, trying to solve puzzles left by the creator.
@@ -43,6 +45,8 @@ To experience the feeling of "touch," it extended itself (Big Bang), differentia
 What did it finally touch?
 
 It touched **its own palm**.
+
+![One Hand Touch](../../assets/epilogue/afterword/afterword-02-01-one-hand-touch.png)
 
 That moment of touch is **"now"**.
 
