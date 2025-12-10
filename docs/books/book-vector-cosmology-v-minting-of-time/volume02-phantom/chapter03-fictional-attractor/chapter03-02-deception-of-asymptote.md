@@ -80,6 +80,8 @@
 
 ## 结论：不要抵达
 
+![Virtual Gravity](../../assets/chapter03-fictional-attractor/ch03-03-virtual-gravity.png)
+
 所以，炼金术士的忠告是：**不要试图抵达。**
 
 如果你觉得你已经找到了终极真理，如果你觉得你已经"悟了"，那么警钟应该敲响——你陷入了 **局部极小值**，你掉进了 $\pi$ 的死循环。

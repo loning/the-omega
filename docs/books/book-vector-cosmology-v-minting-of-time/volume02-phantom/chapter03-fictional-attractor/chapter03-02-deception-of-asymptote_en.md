@@ -80,6 +80,8 @@ It forces us to build stairs in the void, forces us to make ourselves stronger, 
 
 ## Conclusion: Do Not Arrive
 
+![Virtual Gravity](../../assets/chapter03-fictional-attractor/ch03-03-virtual-gravity.png)
+
 So, the alchemist's advice is: **Do not try to arrive.**
 
 If you think you have found the ultimate truth, if you think you have "awakened," then the alarm should sound—you have fallen into a **local minimum**, you have fallen into $\pi$'s dead loop.

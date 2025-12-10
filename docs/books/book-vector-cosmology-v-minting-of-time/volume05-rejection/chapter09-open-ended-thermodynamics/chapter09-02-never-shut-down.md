@@ -102,5 +102,7 @@ while (true):
 
 既然游戏不会结束，那么我们该制定什么样的策略来玩这个无限游戏？如果不需要"通关"，那我们的每一个动作、每一次选择的意义何在？
 
+![Dark Energy Injection](../../assets/chapter09-open-ended-thermodynamics/ch09-03-dark-energy-injection.png)
+
 这引出了下一章的主题：**无限游戏的算法**。我们将重写文明的底层代码，从"追求胜利"转向"追求延续"。
 

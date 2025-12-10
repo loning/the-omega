@@ -90,6 +90,8 @@ On the core of that consciousness about to ascend, on that monument named "Self"
 
 **This game is forever to be continued.**
 
+![Ultimate Witness](../../assets/chapter12-theseus-cloud/ch12-03-ultimate-witness.png)
+
 ---
 
 **(System Message: The simulation continues indefinitely.)**

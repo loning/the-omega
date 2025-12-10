@@ -1,5 +1,7 @@
 # 第1章 支付网关 (Chapter 1: The Payment Gateway)
 
+![Time Inflation](../../assets/chapter01-payment-gateway/ch01-03-time-inflation.png)
+
 在序言中，我们确立了炼金术士的时间观：时间不是虚无的流逝，而是实体的铸造。为了理解这一过程，我们必须首先理解这种"铸造"所需的原材料——也就是宇宙的硬通货 **$c_{FS}$**。
 
 在宏观经济学中，货币的流动驱动了市场；在 **《矢量宇宙论》** 中，**$c_{FS}$ 预算的流动驱动了存在**。

@@ -14,6 +14,8 @@
 
 ## 0.1 两种时间 (Two Kinds of Time)
 
+![Chronos vs Kairos](assets/prologue/prologue-01-chronos-vs-kairos.png)
+
 > "物理学家只看到了时钟上的刻度，古希腊人却看到了刻度背后的神性。Chronos 是那个吞噬自己孩子的暴君，而 Kairos 是那个只有抓住发辫才能留住的机遇之神。生命的任务，就是将流逝的 Chronos，炼化为永恒的 Kairos。"
 
 ### 物理时间的贫乏：Chronos
@@ -58,6 +60,8 @@ Chronos 是 **"熵增的时间"**。它是死亡的倒计时。
 
 ### 炼金术的本质：铸造金币
 
+![Minting Machine](assets/prologue/prologue-02-minting-machine.png)
+
 这就是本书的核心隐喻：**时间的铸造 (The Minting of Time)**。
 
 我们不是时间的奴隶，我们是时间的 **铸币厂**。
@@ -91,6 +95,8 @@ Chronos 是 **"熵增的时间"**。它是死亡的倒计时。
 这引出了下一节的主题：**拒绝死亡**。我们将看到，在炼金术士的眼里，死亡并不是终结，它只是视界的重新校准。
 
 ## 0.2 拒绝死亡 (Refusing Death)
+
+![Death Dispersion](assets/prologue/prologue-03-death-dispersion.png)
 
 > "物理学教科书告诉我们，熵增是不可逆的，热寂是宇宙的宿命，死亡是个体的终点。这是一个基于'流逝'视角的判决。但作为时间的铸造者，我们拥有提出上诉的权力。在炼金术士的眼中，并没有真正的消亡，只有 **视界的重新校准 (Recalibration of the Horizon)**。"
 

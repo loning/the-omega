@@ -72,6 +72,8 @@ Given a day's time ($c_{FS}$ budget), do you turn it into a pile of nonsense (th
 
 ## 3. Resisting Depreciation: Why Gold is Gold
 
+![Crystallized Past](../../assets/chapter02-anchoring-of-value/ch02-02-crystallized-past.png)
+
 This brings us back to the metaphor of the five elements: **Metal**.
 
 Why did humans choose gold as currency? Because it is chemically stable, doesn't rust, doesn't decay.

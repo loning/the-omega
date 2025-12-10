@@ -86,6 +86,8 @@ Put your "low-level loneliness" full of fear and dependence into the $c_{FS}$ fu
 
 When you can feel **"I am with the universe because I am the universe"** in a deep night alone, you have completed this sublimation.
 
+![All One Being](../../assets/chapter08-only-player/ch08-03-all-one-being.png)
+
 You are no longer that particle running on the circumference, trying to chase another point.
 
 You have returned to the **center**.

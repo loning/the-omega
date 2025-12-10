@@ -54,6 +54,8 @@ In this ocean, Caesar's ambition, Beethoven's notes, and your dream last night a
 
 **We do not die; we just change storage format.**
 
+![RAM to ROM](../../assets/chapter06-dynamic-block-universe/ch06-03-ram-to-rom.png)
+
 We are written from active processes in **RAM (memory)** into permanent archives in **ROM (hard disk)**.
 
 Since the past is solid, since information is indestructible, then in this process from life to death, from memory to hard disk, what is the key action that determines our value? What force transforms flowing perception into immortal gold?

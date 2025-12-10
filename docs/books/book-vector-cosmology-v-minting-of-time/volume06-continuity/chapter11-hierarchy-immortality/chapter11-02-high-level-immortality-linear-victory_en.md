@@ -104,6 +104,8 @@ If physical laws limit us, we'll modify the laws.
 
 **We will always be online.**
 
+![Cybernetic Repair](../../assets/chapter11-hierarchy-immortality/ch11-03-cybernetic-repair.png)
+
 Since we have decided to live with memory, then, in this long transition from carbon-based to light-based, how do we ensure continuity of consciousness during carrier switching? If we need to replace the brain, how do we not kill "me" during the "replacement" process?
 
 This leads to the theme of the next chapter: **Theseus's Cloud**. We will explore a technical protocol called **"Hot Migration"**, which will be the only narrow gate for humanity to digital immortality.
