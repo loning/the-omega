@@ -1,5 +1,7 @@
 # Appendix C: The Topology of High-Speed Causal Graphs
 
+![Causal Topology](../assets/appendix/appendix-c-01-causal-topology.png)
+
 In Chapter 6 "The Explosion of Light Speed" of **Vector Cosmology IV**, we predicted that when light speed $c(\tau)$ grows exponentially, the physical universe will evolve from a "local area network" with huge delays to a "fully connected graph" with instantaneous responses. This conclusion is crucial for understanding why Type III civilizations no longer need interstellar spaceships and why "everything is connected" is a physical necessity.
 
 This appendix will provide the geometric and topological proof of this phase transition. We will show how, as the light cone angle expands, the spacetime topological structure of the universe will evolve from **Lattice** to **Small-World Network**, and finally to **Holographic Monolith**.

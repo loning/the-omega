@@ -1,5 +1,7 @@
 # Part IV: Rupture — Singularities and Firewalls
 
+![Rupture Singularity](../assets/volume04-rupture/04-00-01-rupture-singularity.png)
+
 In the first three volumes, we depicted a spacetime woven from tensor networks, protected by error-correcting codes, and manifesting as a quantum superfluid. This sounds like a perfect, self-repairing system.
 
 However, any physical material has its **Yield Strength**. Any network has its **Max Bandwidth**.

@@ -2,6 +2,8 @@
 
 > "Why don't apples suddenly turn into oranges? Why doesn't energy disappear out of thin air? Physicists say this is because of 'symmetry.' But from the perspective of information theory, symmetry is 'redundancy.' Physical laws are a rigorous antivirus software that constantly scans every corner of the universe. Once it discovers an 'illegal state' that violates conservation laws, it immediately treats it as an error and corrects it."
 
+![Laws as Checksums](../../../assets/chapter-04/04-01-01-laws-as-checksums.png)
+
 ## Fragile Bits and Solid World
 
 In quantum computing theory, if you want to build a stable logical qubit from unstable physical qubits, you must use **Quantum Error Correction (QEC)**.

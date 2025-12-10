@@ -1,5 +1,7 @@
 # 第三卷：张力——引力的热力学 (Part III: Tension — The Thermodynamics of Gravity)
 
+![Entropic Force](../../assets/volume03-tension/03-00-01-entropic-force.png)
+
 我们在前两卷中编织了空间的骨架（张量网络），并验证了它的坚固性（量子纠错）。现在，我们要在这个静态的几何结构上，施加 **力**。
 
 当我们把一个巨大的质量（比如恒星）扔进这张由纠缠丝线编织的网里时，会发生什么？

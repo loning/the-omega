@@ -2,6 +2,8 @@
 
 > "If the universe is flowing, why doesn't it splash around like water? Because in this fluid, there exists an extremely tiny but absolutely non-negligible friction. This friction prevents spacetime turbulence and ensures the smoothness of causality. The name of this friction is Planck's constant."
 
+![Spacetime Viscosity](../../../assets/chapter-06/06-02-01-spacetime-viscosity.png)
+
 In the previous section, we reconstructed spacetime as a **quantum superfluid**. But this raises a dangerous question: if spacetime were a perfect fluid (zero viscosity), any tiny perturbation would propagate infinitely, causing the entire universe to fall into chaotic turbulence.
 
 For the universe to remain stable, this fluid must have a little **"stickiness"**.

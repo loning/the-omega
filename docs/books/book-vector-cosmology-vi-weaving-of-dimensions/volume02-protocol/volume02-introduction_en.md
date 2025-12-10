@@ -1,5 +1,7 @@
 # Part II: Protocol — Quantum Error Correction
 
+![QEC Protocol](../assets/volume02-protocol/02-00-01-qec-protocol.png)
+
 In Volume I, we wove the skeleton of the universe using tensor networks (MERA). We saw that space is not an empty stage, but a fractal tree stitched together by countless entanglement threads.
 
 However, this brings a huge engineering vulnerability: **Fragility**.

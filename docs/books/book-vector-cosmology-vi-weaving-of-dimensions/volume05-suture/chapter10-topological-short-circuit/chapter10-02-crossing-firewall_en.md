@@ -2,6 +2,8 @@
 
 > "In Volume IV, we witnessed the ultimate rupture of spacetime—the firewall. That is the flame burning from logical contradictions, an absolute forbidden zone set by the universe to protect unitarity. Anyone trying to cross the horizon physically ($v_{ext}$) will be burned to ashes. But what if we no longer try to 'break in,' but 'log in' through the entanglement backdoor? The only way to cross the firewall is not to destroy it, but to become part of its internal code."
 
+![Crossing Firewall](../../../assets/chapter-10/10-02-01-crossing-firewall.png)
+
 In the previous volume "Rupture," we faced physics' most terrifying nightmare: **The Black Hole Firewall**.
 
 When a black hole evaporates past halfway, to maintain information conservation (unitarity), the entanglement structure at the horizon is forced to undergo **"monogamy rupture"**. The originally smooth spacetime interface becomes a wall of photons with infinite energy density.
