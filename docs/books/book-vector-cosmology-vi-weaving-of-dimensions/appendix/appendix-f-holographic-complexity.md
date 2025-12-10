@@ -1,5 +1,7 @@
 # 附录 F：全息复杂度——编织宇宙的算力成本 (Appendix F: Holographic Complexity — The Computational Cost of Weaving the Universe)
 
+![Complexity Volume](../assets/appendix/appendix-f-01-complexity-volume.png)
+
 在《矢量宇宙论 VI》的正文与前几个附录中，我们确立了"空间是张量网络"的静态结构。但我们还没回答一个关键的动力学问题：**为什么空间会存在？为什么它不会塌缩回零？**
 
 本附录将引入全息原理中最前沿的 **"全息复杂度" (Holographic Complexity)** 理论（源自伦纳德·萨斯坎德）。
@@ -55,6 +57,8 @@ $$\mathcal{C} \approx \frac{V}{G l_P}$$
 **空间是"时间（计算过程）"的化石。**
 
 我们脚下的每一寸土地，都是由过去的 $c_{FS}$ 预算转化而来的"已执行代码"。
+
+![Holographic Complexity](../assets/appendix/appendix-f-01-holographic-complexity.png)
 
 ## F.3 劳埃德界限与黑洞计算机 (The Lloyd Bound and the Black Hole Computer)
 

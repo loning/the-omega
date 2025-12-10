@@ -2,6 +2,8 @@
 
 > "Two particles can sense each other instantly even across light-years, not because signals travel too fast, but because in the deeper geometric structure, they were never separated. Entanglement is not a spooky action at a distance; entanglement is the 'glue' of space. It is countless such glue molecules that bond discrete pixels into a continuous universe."
 
+![Stitched Bell Pairs](../../../assets/chapter-01/01-01-01-stitched-bell-pairs.png)
+
 ## The Smallest Unit of Space
 
 In classical geometry, the connection between points is axiomatically given (e.g., there is a straight line between two points). But at the QCA bottom layer of **Vector Cosmology**, points (qubits) are independent.

@@ -1,5 +1,7 @@
 # Appendix F: Holographic Complexity — The Computational Cost of Weaving the Universe
 
+![Complexity Volume](../assets/appendix/appendix-f-01-complexity-volume.png)
+
 In the main text and previous appendices of **Vector Cosmology VI**, we established the static structure that "space is a tensor network." But we haven't answered a crucial dynamical question: **Why does space exist? Why doesn't it collapse back to zero?**
 
 This appendix will introduce the cutting-edge **"Holographic Complexity"** theory in the holographic principle (originating from Leonard Susskind).
@@ -55,6 +57,8 @@ The vast space we perceive is essentially the geometrized stacking of the cosmic
 **Space is the fossil of "time (computational process)."**
 
 Every inch of land beneath our feet is "executed code" transformed from past $c_{FS}$ budgets.
+
+![Holographic Complexity](../assets/appendix/appendix-f-01-holographic-complexity.png)
 
 ## F.3 The Lloyd Bound and the Black Hole Computer
 

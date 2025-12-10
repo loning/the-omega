@@ -1,5 +1,7 @@
 # Appendix A: Geometric Derivation of Holographic Entanglement Entropy
 
+![Ryu-Takayanagi](../assets/appendix/appendix-a-01-ryu-takayanagi.png)
+
 In Volume I "The Loom" of **Vector Cosmology VI**, we proposed a core viewpoint: **Space is woven from entanglement**. In particular, we cited the famous **Ryu-Takayanagi Formula**, stating that the entanglement entropy $S_A$ of a region equals the area $\text{Area}(\gamma_A)$ of the minimal surface in its holographic dual space divided by $4G$.
 
 This appendix will provide the mathematical derivation framework behind this holy grail of physics. We will show how, starting from pure quantum information theory (von Neumann entropy), through the **Replica Trick** and **path integrals**, we naturally derive the geometric area law in general relativity.

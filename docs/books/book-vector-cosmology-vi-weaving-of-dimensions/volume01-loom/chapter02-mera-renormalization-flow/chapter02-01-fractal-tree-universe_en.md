@@ -2,6 +2,8 @@
 
 > "When you gaze at a forest, you see a green canopy composed of countless leaves. But supporting this canopy are the vast roots buried deep underground and the thick trunk. The universe is the same. The spacetime reality we perceive is only the outermost leaves of this giant quantum fractal tree. The real physical processes occur at those invisible branch forks that span scales."
 
+![Fractal Tree MERA](../../../assets/chapter-02/02-01-01-fractal-tree-mera.png)
+
 ## Coarse-graining: From Pixels to Images
 
 In information theory, there is a core operation called **"Coarse-graining"**.

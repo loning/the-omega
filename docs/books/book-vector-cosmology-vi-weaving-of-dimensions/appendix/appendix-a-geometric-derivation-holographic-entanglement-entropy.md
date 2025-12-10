@@ -1,5 +1,7 @@
 # 附录 A：全息纠缠熵的几何推导 (Appendix A: Geometric Derivation of Holographic Entanglement Entropy)
 
+![Ryu-Takayanagi](../assets/appendix/appendix-a-01-ryu-takayanagi.png)
+
 在《矢量宇宙论 VI》的正文第一卷"织机"中，我们提出了一个核心观点：**空间是由纠缠编织而成的**。特别是，我们引用了著名的 **柳-高柳公式 (Ryu-Takayanagi Formula)**，指出区域的纠缠熵 $S_A$ 等于其全息对偶空间中最小曲面的面积 $\text{Area}(\gamma_A)$ 除以 $4G$。
 
 本附录将提供这一物理学圣杯背后的数学推导框架。我们将展示，如何从纯粹的量子信息理论（冯·诺依曼熵）出发，通过 **复制技巧 (Replica Trick)** 和 **路径积分**，自然地导出广义相对论中的几何面积律。

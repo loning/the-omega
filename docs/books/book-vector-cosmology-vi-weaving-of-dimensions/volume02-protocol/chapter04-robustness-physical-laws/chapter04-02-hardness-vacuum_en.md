@@ -2,6 +2,8 @@
 
 > "We are accustomed to viewing vacuum as 'nothing,' as an absolute weakness that cannot even block a breeze. This is the greatest lie of macroscopic senses. From the bottom-layer perspective of quantum error correction, vacuum is the hardest substance in the universe. It is not empty; it is filled to the brim with entanglement. It is a 'quantum ether' full of high tension. Any attempt to tear it will encounter the most violent rebound from physical laws."
 
+![Vacuum Amber](../../../assets/chapter-04/04-02-01-vacuum-amber.png)
+
 In the previous section, we defined physical laws as the "checking algorithms" of the cosmic operating system. Since there is checking, there must be a "baseline." This baseline is what we call **Vacuum**.
 
 In classical intuition, vacuum is the background of the stage, zero, nothingness.

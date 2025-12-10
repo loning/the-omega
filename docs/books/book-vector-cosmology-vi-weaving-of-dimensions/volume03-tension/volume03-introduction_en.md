@@ -1,5 +1,7 @@
 # Part III: Tension — The Thermodynamics of Gravity
 
+![Entropic Force](../assets/volume03-tension/03-00-01-entropic-force.png)
+
 In the first two volumes, we wove the skeleton of space (tensor networks) and verified its solidity (quantum error correction). Now, we must apply **force** to this static geometric structure.
 
 When we throw a huge mass (such as a star) into this net woven from entanglement threads, what happens?

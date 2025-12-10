@@ -2,6 +2,8 @@
 
 > "You think black holes are abysses that devour everything, but in the eyes of information theory, a black hole is just a blocked router. When the input data stream exceeds the carrying capacity of the output cable, the data does not disappear; they are just piled up at the firewall gate. The horizon is not a physical wall; it is the queuing line of information."
 
+![Network Bottleneck](../../../assets/chapter-07/07-01-01-network-bottleneck.png)
+
 ## The Geometric Limit of Flow
 
 In computer network theory, there is a famous **Max-Flow Min-Cut Theorem**.

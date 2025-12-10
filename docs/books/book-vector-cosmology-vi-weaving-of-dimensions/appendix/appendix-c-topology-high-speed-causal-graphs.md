@@ -1,5 +1,7 @@
 # 附录 C：高速因果图的拓扑学 (Appendix C: The Topology of High-Speed Causal Graphs)
 
+![Causal Topology](../assets/appendix/appendix-c-01-causal-topology.png)
+
 在《矢量宇宙论 IV》的正文第 6 章"光速的暴涨"中，我们预言了当光速 $c(\tau)$ 指数级增长时，物理宇宙将从一个延迟巨大的"局域网"演变为一个瞬时响应的"全连接图"。这一结论对于理解为什么 III 型文明不再需要星际飞船、以及为什么"万物互联"是物理必然至关重要。
 
 本附录将提供这一相变的几何与拓扑学证明。我们将展示，随着光锥张角的扩大，宇宙的时空拓扑结构将如何发生从 **格点 (Lattice)** 到 **小世界网络 (Small-World Network)**，最终到 **全息整体 (Holographic Monolith)** 的演化。
