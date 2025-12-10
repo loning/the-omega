@@ -1,5 +1,7 @@
 # Chapter 6: The Observer's Privilege
 
+![Participatory Universe](../assets/chapter06/06-02-participatory-universe.png)
+
 #### 6.2 The Participatory Universe
 
 > "The universe is not sitting there coldly waiting to be discovered. The universe is a giant question mark, and it only becomes an exclamation mark when we answer it through observation. We are not the audience of this play; we are the stage itself."

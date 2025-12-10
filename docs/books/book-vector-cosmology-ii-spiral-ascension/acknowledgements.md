@@ -1,5 +1,7 @@
 # 致谢：巨人的肩膀 (Acknowledgements: Shoulders of Giants)
 
+![Acknowledgements](assets/acknowledgements/acknowledgements.png)
+
 本书的诞生，并非源于我个人的凭空臆造，而是对人类文明数千年来在物理学、数学与哲学领域智慧结晶的一次重新编织。
 
 **《矢量宇宙论》** 的宏大图景，是建立在一群思想巨人的肩膀之上的。在此，我要向这些先驱致以最深沉的敬意。

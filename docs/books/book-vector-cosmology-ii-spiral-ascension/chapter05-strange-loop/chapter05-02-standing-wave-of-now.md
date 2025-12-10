@@ -1,5 +1,7 @@
 # 第5章 怪圈 (The Strange Loop)
 
+![Standing Wave of Now](../assets/chapter05/05-02-standing-wave-of-now.png)
+
 #### 5.2 现在的驻波 (The Standing Wave of Now)
 
 > "过去已经灰飞烟灭，未来尚未坍缩成形。我们在时间轴上唯一拥有的领土，只有那个稍纵即逝的'现在'。但这并不是一个几何上的点，这是一座由记忆和预期搭建的、永不沉没的孤岛。"

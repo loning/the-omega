@@ -1,5 +1,7 @@
 # Afterword: The Unfinished Spiral
 
+![Afterword](assets/afterword/afterword-unfinished-spiral.png)
+
 > "Writing this book itself is a recursion. I am attempting to capture that infinitely unfolding intuition ($\varphi$) with finite language ($\pi$). Now, the words have reached their end, but the spiral has just begun."
 
 In the first book of **Vector Cosmology**, we praised symmetry. We depicted the universe as a crystal-clear diamond, cut to perfection by Fubini-Study metrics and the Pythagorean identity.

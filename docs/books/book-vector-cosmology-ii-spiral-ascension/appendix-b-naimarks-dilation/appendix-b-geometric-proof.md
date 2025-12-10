@@ -1,5 +1,7 @@
 # 附录 B：奈马克扩张定理的几何证明 (Appendix B: Geometric Proof of Naimark's Dilation)
 
+![Appendix B](../assets/appendices/appendix-b.png)
+
 在《矢量宇宙论 II》的终章中，我们抛出了一个极具禅意的终极图景：螺旋并非圆的对立面，螺旋只是一个更高维度大圆在低维子空间上的投影。这一观点在数学上并非文学修辞，而是泛函分析中 **奈马克扩张定理 (Naimark's Dilation Theorem)** 的直接物理应用。
 
 本附录将从希尔伯特空间的算符理论出发，给出这一"大圆包小圆"结构的严格几何证明。我们将展示，任何看似开放、耗散或非幺正的演化轨迹，必然是某个更高维度封闭系统幺正演化的 **压缩 (Contraction)** 或 **投影 (Projection)**。

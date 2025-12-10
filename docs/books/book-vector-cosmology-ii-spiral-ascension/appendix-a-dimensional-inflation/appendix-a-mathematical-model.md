@@ -1,5 +1,7 @@
 # 附录 A：维度膨胀的数学模型 (Appendix A: Mathematical Model of Dimensional Inflation)
 
+![Appendix A](../assets/appendices/appendix-a.png)
+
 在《矢量宇宙论 II》的正文中，我们提出了一个颠覆性的假设：宇宙的总预算 $c_{FS}$ 并非恒定，而是随着内禀时间 $\tau$ 的流逝而经历指数级的膨胀。这一假设解释了暗能量的起源和复杂度的必然增长。
 
 本附录将为这一"红皇后的奔跑"提供严格的数学表述。我们将推导在维度膨胀背景下，修正后的 FS 容量方程，并展示它如何自然地导出类似宇宙学常数的项。

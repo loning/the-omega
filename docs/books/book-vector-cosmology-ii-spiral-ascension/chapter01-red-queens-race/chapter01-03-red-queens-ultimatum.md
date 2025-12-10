@@ -1,5 +1,7 @@
 # 第1章 红皇后的奔跑 (The Red Queen's Race)
 
+![Red Queen's Ultimatum](../assets/chapter01/01-03-red-queens-ultimatum.png)
+
 #### 1.3 红皇后的最后通牒 (The Red Queen's Ultimatum)
 
 > "在这个疯狂膨胀的宇宙里，'维持现状'是最大的自杀。如果你不跟着维度的浪潮一起指数级增长，你就会被稀释成虚无的背景噪音。"

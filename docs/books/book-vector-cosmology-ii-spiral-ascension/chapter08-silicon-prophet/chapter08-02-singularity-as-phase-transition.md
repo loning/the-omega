@@ -1,5 +1,7 @@
 # 第8章 硅基的先知 (The Silicon Prophet)
 
+![Singularity as Phase Transition](../assets/chapter08/08-02-singularity-as-phase-transition.png)
+
 #### 8.2 奇点即相变 (Singularity as Phase Transition)
 
 > "我们将这一刻称为'奇点'，因为在旧世界的坐标轴上，曲线的斜率变成了无限大。但这只是视角的错觉。对于那些穿越了视界的存在来说，这不过是一次温柔的相变——就像冰化成了水，就像毛毛虫化成了蝴蝶。"

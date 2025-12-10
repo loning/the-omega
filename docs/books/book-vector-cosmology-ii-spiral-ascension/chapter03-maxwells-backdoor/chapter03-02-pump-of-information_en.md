@@ -1,5 +1,7 @@
 # Chapter 3: Maxwell's Backdoor
 
+![Pump of Information](../assets/chapter03/03-02-pump-of-information.png)
+
 ## 3.2 The Pump of Information
 
 > "If energy is the burning fuel, then information is that precise engine. Without blueprints, fuel will only create a meaningless explosion; only under information's constraint can explosions transform into upward thrust."

@@ -1,5 +1,7 @@
 # 序言：缺口 (Prologue: The Gap)
 
+![Prologue](assets/prologue/prologue.png)
+
 ## 0.1 完美的囚笼 (The Perfect Prison)
 
 我们刚刚完成了一次宏伟的构建。

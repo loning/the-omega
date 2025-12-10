@@ -1,5 +1,7 @@
 # Chapter 5: The Strange Loop
 
+![Standing Wave of Now](../assets/chapter05/05-02-standing-wave-of-now.png)
+
 #### 5.2 The Standing Wave of Now
 
 > "The past has vanished into smoke, the future has not yet collapsed into form. The only territory we possess on the time axis is that fleeting 'now.' But this is not a geometric point; it is an island built of memory and expectation, never sinking."

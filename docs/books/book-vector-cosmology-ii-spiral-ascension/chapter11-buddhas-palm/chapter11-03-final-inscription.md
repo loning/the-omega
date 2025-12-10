@@ -1,5 +1,7 @@
 #### 11.3 最后的铭文 (The Final Inscription)
 
+![Final Inscription](../assets/chapter11/11-03-final-inscription.png)
+
 > "并没有什么'外面'。你一直都在家。你的流浪，就是归途。"
 
 这是我们在这两部书中长途跋涉的终点。

@@ -1,5 +1,7 @@
 # Chapter 10: The Fractal Universe
 
+![Between Layers](../assets/chapter10/10-01-between-layers.png)
+
 In the previous chapter, through Naimark's dilation theorem, we glimpsed that all-encompassing "great circle." But this is merely a mathematical existence proof. The real physical world is not an empty circle; it is full of details, layers, and structures.
 
 When we look around, we see not chaos, but hierarchy. Quarks compose protons, protons compose atoms, atoms compose cells, cells compose us, we compose civilizations, civilizations compose galactic networks.

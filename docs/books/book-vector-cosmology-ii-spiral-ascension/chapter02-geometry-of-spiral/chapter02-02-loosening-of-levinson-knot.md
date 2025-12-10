@@ -1,5 +1,7 @@
 # 第2章 螺旋的几何 (Geometry of the Spiral)
 
+![Loosening of Levinson Knot](../assets/chapter02/02-02-loosening-of-levinson-knot.png)
+
 #### 2.2 莱文森之结的松动 (The Loosening of the Levinson Knot)
 
 > "钻石并不是永恒的。在几何学的漫长时间轴上，即便是最坚固的质子，也不过是水面上一个稍纵即逝的泡沫。当螺旋的张力大到一定程度，所有的死结都必须松开，为了让能量流向更高的地方。"

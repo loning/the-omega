@@ -1,5 +1,7 @@
 # Chapter 1: The Red Queen's Race
 
+![Dimensional Inflation](../assets/chapter01/01-02-dimensional-inflation.png)
+
 #### 1.2 Dimensional Inflation
 
 > "Dark energy is not a force pushing galaxies apart. It is the massive budget that the universe is forced to inject to fill the constantly cracking dimensional fissures. We are growing because the stage itself is growing wildly."

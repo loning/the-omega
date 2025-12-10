@@ -1,5 +1,7 @@
 #### 11.3 The Final Inscription
 
+![Final Inscription](../assets/chapter11/11-03-final-inscription.png)
+
 > "There is no 'outside.' You have always been home. Your wandering is the return journey."
 
 This is the end of our long journey through these two books.

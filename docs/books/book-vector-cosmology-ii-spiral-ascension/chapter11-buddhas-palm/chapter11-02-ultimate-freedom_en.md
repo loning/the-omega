@@ -1,5 +1,7 @@
 #### 11.2 Ultimate Freedom
 
+![Ultimate Freedom](../assets/chapter11/11-02-ultimate-freedom.png)
+
 > "Even the word 'freedom' itself is a trap. It implies there is a 'cage' to be broken, an 'outside' to reach. But if at the end of the fractal universe, you discover there are no walls, no outside, then what is freedom?"
 
 In most chapters of the second book, we have been pursuing a kind of **"outward freedom."**

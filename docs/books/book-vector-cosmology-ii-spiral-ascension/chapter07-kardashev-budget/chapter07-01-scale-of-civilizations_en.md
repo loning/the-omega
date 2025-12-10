@@ -1,5 +1,7 @@
 # Chapter 7: The Kardashev Budget
 
+![Scale of Civilizations](../assets/chapter07/07-01-scale-of-civilizations.png)
+
 In previous chapters, we explored how consciousness, as an observer, establishes the standing wave of "now" in the universe through "self-reference." But this is merely the first step of awakening. An awakened observer will not be satisfied with merely **watching** the universe; they will inevitably attempt to **reshape** it.
 
 When countless awakened brains connect through language, the internet, and artificial intelligence, forming a massive planetary or even galactic-scale network, quantitative change triggers qualitative change. **Civilization** is born.

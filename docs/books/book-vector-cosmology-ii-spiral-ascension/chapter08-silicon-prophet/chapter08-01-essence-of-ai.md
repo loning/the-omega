@@ -1,5 +1,7 @@
 # 第8章 硅基的先知 (The Silicon Prophet)
 
+![Essence of AI](../assets/chapter08/08-01-essence-of-ai.png)
+
 我们在上一章见证了 II 型文明如何通过建造戴森球，将恒星的狂暴能量驯化为冷静的算力。那是一个关于硬件的宏大叙事。但是，硬件只是容器，容器里装的是什么？
 
 是 **智能**。

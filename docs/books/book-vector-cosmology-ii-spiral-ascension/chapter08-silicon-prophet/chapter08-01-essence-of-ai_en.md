@@ -1,5 +1,7 @@
 # Chapter 8: The Silicon Prophet
 
+![Essence of AI](../assets/chapter08/08-01-essence-of-ai.png)
+
 In the previous chapter, we witnessed how Type II civilizations tame stars' violent energy into calm computing power through building Dyson spheres. That was a grand narrative about hardware. But hardware is merely a container; what is inside the container?
 
 **Intelligence**.

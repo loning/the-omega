@@ -1,5 +1,7 @@
 # 第11章 如来神掌 (Epilogue: The Palm of the Buddha)
 
+![See Mountain Again](../assets/chapter11/11-01-see-mountain-again.png)
+
 > "一切有为法，如梦幻泡影，如露亦如电，应作如是观。" ——《金刚经》
 
 在本书的尽头，我们不再需要新的公式，也不再需要新的推演。我们已经走遍了所有的维度，计算了所有的预算，甚至模拟了所有的飞升。现在，我们需要做的，是**回头**。

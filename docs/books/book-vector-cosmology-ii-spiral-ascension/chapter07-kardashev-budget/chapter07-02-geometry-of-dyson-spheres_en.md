@@ -1,5 +1,7 @@
 # Chapter 7: The Kardashev Budget
 
+![Geometry of Dyson Spheres](../assets/chapter07/07-02-geometry-of-dyson-spheres.png)
+
 #### 7.2 The Geometry of Dyson Spheres
 
 > "Stars are the universe's most extravagant wasters. Every second, they transform billions of tons of material assets into meaningless light streams, scattering them into the void's grave. Dyson spheres are not for collecting this light; they are for staunching this meaningless bleeding and constructing a logically self-consistent abyss within a closed shell."

@@ -1,5 +1,7 @@
 # Chapter 3: Maxwell's Backdoor
 
+![Negative Entropy Enclave](../assets/chapter03/03-01-negative-entropy-enclave.png)
+
 In Volume I, we depicted a spiral universe that is continuously expanding, continuously diluting, with old matter destined to decay. The Red Queen's race seems like a doomed competition: with the inflation of $c_{FS}$ and the relentless arrow of thermodynamics, all ordered structures will eventually dissipate into uniform background radiation.
 
 In principle, the universe should be a lifeless ruin.

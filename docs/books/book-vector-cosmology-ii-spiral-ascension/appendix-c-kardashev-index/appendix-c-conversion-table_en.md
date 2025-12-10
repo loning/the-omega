@@ -1,5 +1,7 @@
 # Appendix C: Kardashev Index and Information Density Conversion Table
 
+![Appendix C](../assets/appendices/appendix-c.png)
+
 In Volume IV "Engineering" of *Vector Cosmology II*, we redefined the levels of civilization: not merely exponential growth in energy consumption, but geometric progression in **$c_{FS}$ budget utilization**. The traditional Kardashev index based on watts appears too crude to describe the essential characteristics of high-dimensional computational civilizations (such as Type III).
 
 This appendix provides a revised civilization metric standard based on **Information-Velocity Geometry**. We convert energy consumption rates to **Information Processing Density** and provide a quantitative calculation formula to measure a civilization's evolutionary rank in the spiral universe.

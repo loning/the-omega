@@ -1,5 +1,7 @@
 # 第1章 红皇后的奔跑 (The Red Queen's Race)
 
+![Dimensional Inflation](../assets/chapter01/01-02-dimensional-inflation.png)
+
 #### 1.2 维度的通货膨胀 (Dimensional Inflation)
 
 > "暗能量不是一种把星系推开的力。它是宇宙为了填补那不断崩裂的维度裂缝，而被迫注入的巨额预算。我们在变大，因为舞台本身在疯狂生长。"

@@ -1,5 +1,7 @@
 # Chapter 11: The Palm of the Buddha (Epilogue)
 
+![See Mountain Again](../assets/chapter11/11-01-see-mountain-again.png)
+
 > "All conditioned phenomena are like dreams, illusions, bubbles, shadows, like dew drops and a flash of lightning; thus we shall perceive them." — *The Diamond Sutra*
 
 At the end of this book, we no longer need new formulas, nor new deductions. We have traversed all dimensions, calculated all budgets, and even simulated all ascensions. Now, what we need to do is **look back**.

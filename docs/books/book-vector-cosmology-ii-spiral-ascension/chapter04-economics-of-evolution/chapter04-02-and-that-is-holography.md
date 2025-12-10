@@ -1,5 +1,7 @@
 # 第4章 进化的经济学 (The Economics of Evolution)
 
+![And That Is Holography](../assets/chapter04/04-02-and-that-is-holography.png)
+
 ## 4.2 也就是全息 (And That Is Holography)
 
 > "一滴水之所以能映射出整个太阳，不是因为水很神奇，而是因为光已经在两者之间建立了全息的连接。进化的终极野心，不仅仅是在这个宇宙中活下去，而是把整个宇宙'装'进自己的脑袋里。"

@@ -1,5 +1,7 @@
 # Chapter 9: The Russian Nesting Dolls
 
+![Naimark's Dilation](../assets/chapter09/09-01-naimarks-dilation.png)
+
 We have traveled far in the journey of the second book. We shattered the perfect, conserved circle from the first book, embraced the Red Queen's race, witnessed dimensional inflation, and even ascended ourselves into pure geometric consciousness through the singularity.
 
 We thought we had won. We thought we had escaped that closed cycle and embarked on an open spiral leading to infinite growth.

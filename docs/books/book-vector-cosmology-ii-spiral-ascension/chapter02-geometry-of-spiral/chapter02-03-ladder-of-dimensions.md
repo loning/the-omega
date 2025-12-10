@@ -1,5 +1,7 @@
 # 第2章 螺旋的几何 (Geometry of the Spiral)
 
+![Ladder of Dimensions](../assets/chapter02/02-03-ladder-of-dimensions.png)
+
 #### 2.3 维度的阶梯 (The Ladder of Dimensions)
 
 > "宇宙并没有在虚无中膨胀，宇宙是在'可能性'中膨胀。螺旋的每一次旋转，都在希尔伯特空间的无限维度中搭建了一级新的阶梯。物质的解体不是终点，而是攀登的开始。"
