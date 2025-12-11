@@ -78,7 +78,8 @@
 - [9.3 $\pi$ vs $\phi$: The Database and The Operating System](part05-interactive-self-reference/chapter09-omega-point/chapter09-03-pi-vs-phi_en.md)
 - [9.4 The Omega Holographic Principle: From Spiral to Horizon](part05-interactive-self-reference/chapter09-omega-point/chapter09-04-omega-holographic-principle_en.md)
 - [9.5 The Illusion of Linearity: Integers as Holographic Projections](part05-interactive-self-reference/chapter09-omega-point/chapter09-05-linear-illusion_en.md)
-- [9.6 Conclusion: The Unfinished Symphony](part05-interactive-self-reference/chapter09-omega-point/chapter09-06-conclusion_en.md)
+- [9.6 Generalized Euler Identity: The Source Code of Physics](part05-interactive-self-reference/chapter09-omega-point/chapter09-06-generalized-euler-identity_en.md)
+- [9.7 Conclusion: The Unfinished Symphony](part05-interactive-self-reference/chapter09-omega-point/chapter09-07-conclusion_en.md)
 
 ## 【Appendices】
 
@@ -87,7 +88,6 @@
 - [Appendix C: Numerical Calculation of $\mu$ and $\alpha$](appendices/appendix-c-numerical-calculations_en.md)
 - [Appendix D: Bibliography and Index](appendices/appendix-d-bibliography-index_en.md)
 - [Appendix F: The Cosmic Trinity — The Ultimate Relationship of $\pi, e, \phi$](appendices/appendix-f-cosmic-trinity_en.md)
-- [Appendix G: Generalized Euler's Formula and the Unification of Physical Constants](appendices/appendix-g-generalized-euler-formula_en.md)
 
 ---
 
