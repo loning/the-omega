@@ -81,7 +81,8 @@
 - [9.4 欧米伽全息原理：从螺旋到视界 (The Omega Holographic Principle: From Spiral to Horizon)](part05-interactive-self-reference/chapter09-omega-point/chapter09-04-omega-holographic-principle.md)
 - [9.5 线性幻觉：整数作为全息投影 (The Illusion of Linearity: Integers as Holographic Projections)](part05-interactive-self-reference/chapter09-omega-point/chapter09-05-linear-illusion.md)
 - [9.6 广义欧拉恒等式：物理学的源代码 (Generalized Euler Identity: The Source Code of Physics)](part05-interactive-self-reference/chapter09-omega-point/chapter09-06-generalized-euler-identity.md)
-- [9.7 结语：未完成的交响曲 (Conclusion: The Unfinished Symphony)](part05-interactive-self-reference/chapter09-omega-point/chapter09-07-conclusion.md)
+- [9.7 本体论几何：万物皆圆 (Ontological Geometry: All Things Are Circles)](part05-interactive-self-reference/chapter09-omega-point/chapter09-07-ontological-geometry.md)
+- [9.8 结语：未完成的交响曲 (Conclusion: The Unfinished Symphony)](part05-interactive-self-reference/chapter09-omega-point/chapter09-08-conclusion.md)
 
 ## 【附录】 (Appendices)
 
