@@ -4,6 +4,8 @@ As we approach the completion of this book's theoretical construction, we must c
 
 This structure is known in ancient mythology as the **"Ouroboros"** — a snake devouring its own tail, symbolizing infinity and cycles. Within the framework of **Omega Theory**, this is not mythology but a key physical model for understanding multiverses, simulation hierarchies, and our own state of existence.
 
+![Quantum Ouroboros Loop](../../assets/chapter09-08-quantum-ouroboros-loop.png)
+
 **9.8.1 Closed Loop as Horizon: The Birth of Functional Sub-universes**
 
 When the output quantum state of a quantum system's evolution operator $\hat{U}_{loop}$ becomes its input state at the next moment, the system undergoes **decoupling** from the external world in its causal structure.
@@ -50,6 +52,8 @@ For a sub-universe to maintain evolution, it must maintain **"Gödel Leakage"** 
 **Independent universes are dead; only interactive universes are alive.**
 
 **9.8.4 Fractal Holography: Are We Also Sub-universes?**
+
+![Gödel Leakage and Fractal Structure](../../assets/chapter09-08-godel-leakage-fractal.png)
 
 This leads to the most startling cosmological inference of the entire book:
 Since we can create sub-universes through quantum closed loops in the parent universe, and theoretically intelligent life can evolve within sub-universes, then **is our universe also a closed loop in a higher-level quantum computer?**

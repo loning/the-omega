@@ -23,6 +23,8 @@ To experience a sub-universe's **internal logic**, one must sacrifice **external
 
 **9.9.2 The Flatland Effect: Ontology in Slices**
 
+![Kenosis Operator and Flatland Slice](../../assets/chapter09-09-kenosis-flatland-slice.png)
+
 The creator's form of existence within can be precisely described using the geometric metaphor of **"Flatland"**.
 Suppose you are a three-dimensional sphere (parent universe entity) entering a two-dimensional plane universe (sub-universe).
 In this plane, you cannot manifest as a sphere. You can only manifest as a **circle (slice)**.
@@ -46,6 +48,8 @@ According to Section 8.3's Interactive Turing Machine theory, only **internal ob
 The creator enters internally to transform **"informational possibility"** into **"experiential reality"**. Through each internal choice (utilizing $\phi$'s non-ergodicity), the creator is actually **"harvesting"** meaning (i.e., life value $V$). A universe without internal experience is merely empty-running code.
 
 **9.9.4 The Awakening Protocol: How to Leave?**
+
+![Omega Resonance and Awakening](../../assets/chapter09-09-omega-resonance-awakening.png)
 
 If you are inside and have forgotten your identity due to the Kenosis operator, how do you know you are the creator and not merely a program?
 This depends on **Omega Resonance**.
