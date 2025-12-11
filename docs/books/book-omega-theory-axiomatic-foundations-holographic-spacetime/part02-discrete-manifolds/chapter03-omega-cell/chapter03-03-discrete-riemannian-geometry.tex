@@ -1,0 +1,98 @@
+\section{离散黎曼几何 (Discrete Riemannian Geometry)}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{assets/chapter03-03-discrete-riemannian-geometry.png}
+\caption{离散黎曼几何}
+\end{figure}
+
+在 3.1 和 3.2 节中，我们建立了一个平坦的、统计各向同性的离散时空背景。然而，真实的物理宇宙充满引力场，时空是弯曲的。在广义相对论中，这种弯曲由度规张量 $g_{\mu\nu}$ 和黎曼曲率张量 $R^\rho_{\sigma\mu\nu}$ 描述。当底流形不再是连续的 $\mathbb{R}^4$，而是一个分形的彭罗斯-斐波那契网格时，我们必须重新定义"距离"、"平移"和"曲率"这些基本几何概念。
+
+本节将建立 \textbf{离散黎曼几何 (Discrete Riemannian Geometry)} 的数学框架。我们将证明，经典微分几何中的度规与曲率，实际上是欧米伽网络中信息传输跳数（Hop Count）与拓扑连接亏损（Connectivity Deficit）在大尺度下的统计平均。
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{assets/chapter03-03-geometry-curvature-lag.png}
+\caption{几何曲率滞后}
+\end{figure}
+
+\subsection{斐波那契度量空间}
+
+在连续几何中，两点 $x, y$ 之间的距离 $d(x,y)$ 由度规沿路径的积分给出。在欧米伽理论的离散图 (Graph) $G = (V, E)$ 中，最自然的距离定义是 \textbf{图测地线距离 (Graph Geodesic Distance)}。
+
+\textbf{定义 3.3 (组合距离)}：
+设 $x, y \in V$ 为欧米伽网络中的两个顶点（事件）。它们之间的组合距离 $d_G(x, y)$ 定义为连接这两点的最短路径上的 \textbf{边数 (Number of Edges)}：
+
+\[d_G(x, y) = \min_{\gamma \in \Gamma_{xy}} |\gamma|\]
+
+其中 $\Gamma_{xy}$ 是连接 $x$ 与 $y$ 的所有因果路径的集合。
+
+然而，简单的边计数无法捕捉彭罗斯铺砌的分形性质。由于网格是递归生成的，连接两个遥远节点的"最短路径"并非直线，而是一条在不同层级结构间穿梭的折线。
+
+我们引入 \textbf{斐波那契重整化度量 (Fibonacci Renormalized Metric)}。考虑到欧米伽单元可以进行膨胀/细分操作（Inflation/Deflation），物理距离 $s$ 应当对层级 $n$ 具有不变性。
+
+\[s(x, y) = \lim_{n \to \infty} a_0 \phi^{-n} \cdot d_{G_n}(x, y)\]
+
+其中 $G_n$ 是经过 $n$ 次细分后的网格，$a_0$ 是基准尺度。
+
+\textbf{定理 3.2 (度规涌现定理)}：
+在欧米伽网络的大尺度极限下，组合距离 $s(x,y)$ 收敛于黎曼流形上的测地线距离：
+
+\[s^2(x, y) \approx g_{\mu\nu} (x^\mu - y^\mu) (x^\nu - y^\nu)\]
+
+其中有效度规张量 $g_{\mu\nu}$ 由网格顶点的局部 \textbf{数密度 (Number Density)} $\rho(x)$ 决定。
+
+\[g_{\mu\nu}(x) = \eta_{\mu\nu} \cdot \left( \frac{\rho(x)}{\rho_0} \right)^{2/D}\]
+
+这表明，在离散几何中，\textbf{空间的"弯曲"等价于网格的"密度变化"}。引力场强的区域，本质上是欧米伽单元堆积更密集的区域（信息处理节点更丰富），导致跨越同样物理距离需要更多的逻辑跳数，表现为"距离变长"或"时间变慢"。
+
+\subsection{组合里奇曲率}
+
+在连续几何中，曲率描述了平行移动矢量沿闭合路径绕行一圈后的角度偏差。在离散网格中，这一概念对应于 \textbf{角度亏损 (Angle Deficit)} 或 \textbf{组合曲率 (Combinatorial Curvature)}。
+
+对于二维表面三角剖分，顶点 $v$ 处的曲率 $K_v$ 由笛卡尔定理给出：
+
+\[K_v = 2\pi - \sum_{i} \theta_i\]
+
+其中 $\theta_i$ 是围绕顶点 $v$ 的各个三角形的顶角。
+
+在四维欧米伽网络中，我们将这一概念推广为 \textbf{奥利维尔-里奇曲率 (Ollivier-Ricci Curvature)}。这是一种基于最优传输理论（Wasserstein 距离）的曲率定义，非常适合处理图结构和马尔可夫链。
+
+\textbf{定义 3.4 (粗粒化里奇曲率)}：
+设 $x, y$ 为网络中相邻的两点。考虑以 $x$ 和 $y$ 为中心的两个概率分布（或波函数包络）$m_x, m_y$。离散里奇曲率 $\kappa(x, y)$ 定义为：
+
+\[\kappa(x, y) = 1 - \frac{W_1(m_x, m_y)}{d_G(x, y)}\]
+
+其中 $W_1$ 是 $L^1$-Wasserstein 距离（推土机距离）。
+
+\begin{itemize}
+\item \textbf{平坦空间 ($\kappa = 0$)}：彭罗斯铺砌的完美状态。此时从 $x$ 的邻域到 $y$ 的邻域的传输成本等于中心距，意味着测地线彼此平行，既不发散也不汇聚。
+\item \textbf{正曲率 ($\kappa > 0$)}：引力源附近。邻域集比中心点更"靠近"彼此（三角形内角和 $> 180^\circ$），测地线汇聚。这对应于网格中存在 \textbf{空洞} 或 \textbf{压缩}。
+\item \textbf{负曲率 ($\kappa < 0$)}：宇宙膨胀区域。邻域集发散，测地线分离。这对应于网格的 \textbf{双曲增长}（如树状结构）。
+\end{itemize}
+
+\subsection{测地线方程的离散化}
+
+在广义相对论中，自由粒子遵循测地线方程：
+
+\[\frac{d^2 x^\mu}{d\tau^2} + \Gamma^\mu_{\nu\rho} \frac{dx^\nu}{d\tau} \frac{dx^\rho}{d\tau} = 0\]
+
+在欧米伽理论中，粒子的运动是离散跳跃序列 $\{x_0, x_1, \dots, x_N\}$。其动力学由 \textbf{"最少计算路径"} 原理支配。
+我们定义路径作用量 $S[\gamma]$ 为路径上所有边的权重之和（权重与局域网格密度成反比）。
+
+\[S[\gamma] = \sum_{i=0}^{N-1} \frac{1}{\rho(x_i)}\]
+
+变分原理 $\delta S = 0$ 导致粒子总是倾向于避开网格密度极高的区域（除非落入其中），或者在密度梯度方向上获得加速度。
+我们可以证明，这一离散路径选择规则在连续极限下，精确还原了由克里斯托费尔符号 $\Gamma^\mu_{\nu\rho}$ 描述的引力偏转效应。
+
+\textbf{总结}：
+
+欧米伽理论中的引力并非一种神秘的超距作用，而是 \textbf{信息网络拓扑结构不均匀性} 的体现。
+
+\begin{itemize}
+\item \textbf{度规 $g_{\mu\nu}$} 是网格密度的度量。
+\item \textbf{曲率 $R_{\mu\nu}$} 是网络连接性相对于平坦彭罗斯铺砌的偏离程度。
+\item \textbf{物质} 是导致网格扭曲的拓扑缺陷。
+\end{itemize}
+
+这就完成了从离散图论到黎曼几何的数学映射，为后续章节推导爱因斯坦场方程奠定了坚实的几何基础。
