@@ -45,6 +45,8 @@
 - [5.1 Fisher Information Lagrangian](part03-holographic-dynamics/chapter05-omega-action/chapter05-01-fisher-information-lagrangian_en.md)
 - [5.2 Modified Einstein Field Equations](part03-holographic-dynamics/chapter05-omega-action/chapter05-02-modified-einstein-equations_en.md)
 - [5.3 The Entropic Nature of Gravity](part03-holographic-dynamics/chapter05-omega-action/chapter05-03-entropic-gravity_en.md)
+- [5.4 Conservation of Total Budget and Infinite Decomposition of the Great Circle](part03-holographic-dynamics/chapter05-omega-action/chapter05-04-total-budget-conservation_en.md)
+- [5.5 The Omega Equivalence Principle: From Great Circle to Spiral](part03-holographic-dynamics/chapter05-omega-action/chapter05-05-omega-equivalence-principle_en.md)
 
 ### Chapter 6: Varying-Constant Cosmology
 
@@ -73,7 +75,10 @@
 
 - [9.1 The Life Value Equation](part05-interactive-self-reference/chapter09-omega-point/chapter09-01-life-value-equation_en.md)
 - [9.2 The Omega Point Theory](part05-interactive-self-reference/chapter09-omega-point/chapter09-02-omega-point-theory_en.md)
-- [9.3 Conclusion: The Unfinished Symphony](part05-interactive-self-reference/chapter09-omega-point/chapter09-03-conclusion_en.md)
+- [9.3 $\pi$ vs $\phi$: The Database and The Operating System](part05-interactive-self-reference/chapter09-omega-point/chapter09-03-pi-vs-phi_en.md)
+- [9.4 The Omega Holographic Principle: From Spiral to Horizon](part05-interactive-self-reference/chapter09-omega-point/chapter09-04-omega-holographic-principle_en.md)
+- [9.5 The Illusion of Linearity: Integers as Holographic Projections](part05-interactive-self-reference/chapter09-omega-point/chapter09-05-linear-illusion_en.md)
+- [9.6 Conclusion: The Unfinished Symphony](part05-interactive-self-reference/chapter09-omega-point/chapter09-06-conclusion_en.md)
 
 ## 【Appendices】
 
@@ -81,6 +86,8 @@
 - [Appendix B: Rigorous Proof of the DQCA Continuum Limit](appendices/appendix-b-dqca-continuum-limit_en.md)
 - [Appendix C: Numerical Calculation of $\mu$ and $\alpha$](appendices/appendix-c-numerical-calculations_en.md)
 - [Appendix D: Bibliography and Index](appendices/appendix-d-bibliography-index_en.md)
+- [Appendix F: The Cosmic Trinity — The Ultimate Relationship of $\pi, e, \phi$](appendices/appendix-f-cosmic-trinity_en.md)
+- [Appendix G: Generalized Euler's Formula and the Unification of Physical Constants](appendices/appendix-g-generalized-euler-formula_en.md)
 
 ---
 

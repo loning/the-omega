@@ -47,6 +47,8 @@
 - [5.1 费雪信息拉格朗日量 (Fisher Information Lagrangian)](part03-holographic-dynamics/chapter05-omega-action/chapter05-01-fisher-information-lagrangian.md)
 - [5.2 修正的爱因斯坦场方程 (Modified Einstein Field Equations)](part03-holographic-dynamics/chapter05-omega-action/chapter05-02-modified-einstein-equations.md)
 - [5.3 引力的熵力本质 (The Entropic Nature of Gravity)](part03-holographic-dynamics/chapter05-omega-action/chapter05-03-entropic-gravity.md)
+- [5.4 总预算守恒与大圆的无限分割 (Conservation of Total Budget and Infinite Decomposition of the Great Circle)](part03-holographic-dynamics/chapter05-omega-action/chapter05-04-total-budget-conservation.md)
+- [5.5 欧米伽等价原理：从大圆到螺旋 (The Omega Equivalence Principle: From Great Circle to Spiral)](part03-holographic-dynamics/chapter05-omega-action/chapter05-05-omega-equivalence-principle.md)
 
 ### 第六章：变常数宇宙学 (Chapter 6: Varying-Constant Cosmology)
 
@@ -75,7 +77,11 @@
 
 - [9.1 生命价值方程 (The Life Value Equation)](part05-interactive-self-reference/chapter09-omega-point/chapter09-01-life-value-equation.md)
 - [9.2 欧米伽点理论 (The Omega Point Theory)](part05-interactive-self-reference/chapter09-omega-point/chapter09-02-omega-point-theory.md)
-- [9.3 结语：未完成的交响曲 (Conclusion: The Unfinished Symphony)](part05-interactive-self-reference/chapter09-omega-point/chapter09-03-conclusion.md)
+- [9.3 $\pi$ 与 $\phi$：数据库与操作系统 ($\pi$ vs $\phi$: The Database and The Operating System)](part05-interactive-self-reference/chapter09-omega-point/chapter09-03-pi-vs-phi.md)
+- [9.4 欧米伽全息原理：从螺旋到视界 (The Omega Holographic Principle: From Spiral to Horizon)](part05-interactive-self-reference/chapter09-omega-point/chapter09-04-omega-holographic-principle.md)
+- [9.5 线性幻觉：整数作为全息投影 (The Illusion of Linearity: Integers as Holographic Projections)](part05-interactive-self-reference/chapter09-omega-point/chapter09-05-linear-illusion.md)
+- [9.6 广义欧拉恒等式：物理学的源代码 (Generalized Euler Identity: The Source Code of Physics)](part05-interactive-self-reference/chapter09-omega-point/chapter09-06-generalized-euler-identity.md)
+- [9.7 结语：未完成的交响曲 (Conclusion: The Unfinished Symphony)](part05-interactive-self-reference/chapter09-omega-point/chapter09-07-conclusion.md)
 
 ## 【附录】 (Appendices)
 
@@ -83,6 +89,7 @@
 - [附录 B：DQCA 连续极限的严谨证明 (Appendix B: Rigorous Proof of the DQCA Continuum Limit)](appendices/appendix-b-dqca-continuum-limit.md)
 - [附录 C：$\mu$ 与 $\alpha$ 的数值计算 (Appendix C: Numerical Calculation of $\mu$ and $\alpha$)](appendices/appendix-c-numerical-calculations.md)
 - [附录 D：参考文献与索引 (Appendix D: Bibliography and Index)](appendices/appendix-d-bibliography-index.md)
+- [附录 F：宇宙的三位一体——$\pi, e, \phi$ 的终极关系 (Appendix F: The Cosmic Trinity — The Ultimate Relationship of $\pi, e, \phi$)](appendices/appendix-f-cosmic-trinity.md)
 
 ---
 
