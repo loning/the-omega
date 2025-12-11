@@ -6,9 +6,13 @@
 
 ## 6.1 光速的指数标度律 (The Exponential Scaling Law of Light Speed)
 
+![指数标度光速](../../assets/chapter06-01-exponential-scaling-light-speed.png)
+
 **6.1.1 彭罗斯膨胀与网格细分**
 
 回顾第 3 章，我们将时空建模为由欧米伽单元（因果菱形）构成的彭罗斯-斐波那契准晶体。这种结构的演化并非像气球那样单纯的体积膨胀，而是遵循 **"替代-细分" (Substitution-Subdivision)** 规则。
+
+![宇宙视界膨胀](../../assets/chapter06-01-cosmic-horizon-expansion.png)
 
 在彭罗斯铺砌中，存在一种被称为 **"膨胀" (Inflation)** 的操作 $\mathcal{I}$。对于每一代网格 $G_n$，我们可以通过特定的几何规则将其中的每一个菱形分解为更小一代的菱形组合，从而生成网格 $G_{n+1}$。
 这一过程的增长因子是严格的黄金分割率 $\phi$：

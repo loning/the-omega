@@ -1,8 +1,12 @@
 ## 4.2 Continuum Limit and Wavefunction Emergence
 
+![Continuum Limit](../../assets/chapter04-02-continuum-limit.png)
+
 In Section 4.1, we established the microscopic dynamical model of Dirac-Quantum Cellular Automata (DQCA). This is a completely discrete system defined on a rigid spacetime lattice. However, the physical world we observe in laboratories—at least at current energy scales—exhibits high continuity. Electrons follow partial differential equations (Dirac equation), not difference equations.
 
 The core task of this section is to bridge this gap. We will prove **Theorem 4.2**, that in the limit of extremely fine spacetime grids (lattice constant $\varepsilon \to 0$), the discrete evolution equations of DQCA strictly converge to the continuous Dirac equation. This proof has profound ontological significance: it shows that **the wave function $\psi(x,t)$ is not the primitive state of physical entities but a statistical envelope of underlying discrete information flow under coarse-grained horizons**.
+
+![Continuum Emergent Wavefront](../../assets/chapter04-02-continuum-emergent-wavefront.png)
 
 **4.2.1 Scale Transformation and Taylor Expansion**
 

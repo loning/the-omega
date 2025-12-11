@@ -8,11 +8,15 @@ This chapter aims to construct a **Background Independent** discrete spacetime m
 
 ## 3.1 Penrose-Fibonacci Tiling
 
+![Penrose Fibonacci Tiling](../../assets/chapter03-01-penrose-fibonacci-tiling.png)
+
 To restore macroscopic Lorentz invariance in discrete structures, we cannot use simple periodic lattices (such as cubic grids), because periodic lattices have specific privileged axes that destroy spatial isotropy. The aperiodic tilings discovered by mathematician Roger Penrose provide a perfect solution: they possess long-range order yet have no translational periodicity, and contain fivefold rotational symmetry—which is forbidden in periodic lattices.
 
 **3.1.1 Geometric Definition of the Omega Cell**
 
 We define the fundamental building block of spacetime—the **Omega Cell**—as a spacetime generalization of a four-dimensional **Rhombohedron**, i.e., a **Hyper-rhombohedron**.
+
+![Penrose Quasicrystal Projector](../../assets/chapter03-01-penrose-quasicrystal-projector.png)
 
 **Definition 3.1 (Omega Cell)**:
 The Omega cell $\mathcal{C}_\Omega$ is a compact convex set in Minkowski spacetime $\mathbb{R}^{3,1}$, defined as a linear combination of a set of lightlike vectors $\{k_i\}_{i=1}^4$:

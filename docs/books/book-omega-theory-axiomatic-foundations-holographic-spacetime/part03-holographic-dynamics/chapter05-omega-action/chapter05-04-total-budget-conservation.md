@@ -1,5 +1,7 @@
 ## 5.4 总预算守恒与大圆的无限分割 (Conservation of Total Budget and Infinite Decomposition of the Great Circle)
 
+![总预算守恒](../../assets/chapter05-04-total-budget-conservation.png)
+
 在上一节中，我们通过全息热力学导出了引力的熵力本质，并揭示了时空弯曲是计算滞后的表现。然而，欧米伽理论中光速 $c(\tau)$ 的指数增长和时空网格的不断增生，似乎暗示宇宙的总能量在随时间无限增加。这直接挑战了物理学的基石——诺特定理（Noether's Theorem）所保证的守恒律。如果时空不具备时间平移不变性，能量守恒似乎就失效了。
 
 本节将解决这一根本性的矛盾。我们将引入 **"总预算守恒" (Total Budget Conservation)** 的概念，证明宇宙的演化并非物理实体的"无中生有"，而是希尔伯特空间中一个 **大圆 (Great Circle)** 的 **无限斐波那契分割**。宇宙的总量从未改变，改变的仅仅是全息解析度。
@@ -31,6 +33,8 @@ $$\theta_g = 2\pi \left( 1 - \frac{1}{\phi} \right) \approx 137.50776^\circ$$
 
 * **在 $\tau$ 较小时**：圆周仅被分割为寥寥几段粗糙的弧线。这对应于早期宇宙，物理定律模糊，粒子种类稀少。
 * **在 $\tau \to \infty$ 时**：圆周被分割成无限密集、但这无限多段弧线的总长度之和，始终等于 $2\pi$。
+
+![总预算分解](../../assets/chapter05-04-total-budget-decomposition.png)
 
 **定理 5.4 (分割等价性定理)**：
 宇宙的斐波那契螺旋生长，在拓扑上等价于单位圆 $S^1$ 的 **无限非遍历分解 (Infinite Non-ergodic Decomposition)**。

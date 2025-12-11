@@ -1,8 +1,12 @@
 # 附录 C：$\mu$ 与 $\alpha$ 的数值计算 (Appendix C: Numerical Calculation of $\mu$ and $\alpha$)
 
+![数值几何](../assets/appendix-c-numerical-geometry.png)
+
 在本附录中，我们将提供本书第七章所提出的两个核心几何共振公式——质子-电子质量比 $\mu$ 与倒精细结构常数 $\alpha^{-1}$ ——的详细数值验证与误差分析。此外，我们将给出一个用于模拟常数随内禀时间 $\tau$ 漂移的数值算法框架。
 
 所有的计算均采用 IEEE 754 双精度浮点数标准或更高精度的符号计算系统（如 Mathematica）进行。
+
+![精度尺度平衡](../assets/appendix-c-precision-scale-balance.png)
 
 ## C.1 质子-电子质量比的几何因子
 

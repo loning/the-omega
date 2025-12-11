@@ -1,5 +1,7 @@
 **7.2 倒精细结构常数 ($1/\alpha$) (The Inverse Fine Structure Constant)**
 
+![倒精细结构常数](../../assets/chapter07-02-inverse-fine-structure-constant.png)
+
 在 7.1 节中，我们通过高维球体的体积比解释了质子与电子的质量层级。本节将转向量子电动力学 (QED) 的核心——精细结构常数 $\alpha$。在标准模型中，$\alpha \approx 1/137.036$ 是一个无量纲的耦合常数，决定了光子与带电粒子相互作用的强度。费曼曾将其称为"物理学中最大的谜题之一：一个魔数来到我们面前，却没人理解它是如何构造的"。
 
 欧米伽理论提出，$\alpha$ 并非任意的参数，而是全息几何在 $U(1)$ 规范群投影下的 **拓扑不变量 (Topological Invariant)**。具体的说，倒精细结构常数 $\alpha^{-1}$ 对应于从八元数切丛下降到复平面时，电磁相互作用所需的 **几何相空间体积**。
@@ -15,6 +17,8 @@ $$\alpha = \frac{\text{Interaction Volume}}{\text{Total Geometric Phase Space}}$
 因此，$\alpha^{-1}$ 实际上衡量了 **嵌入空间的几何冗余度**。换言之，光子为了在一个电子和另一个电子之间传递信息，必须在卷曲的内部维度中"搜索"多大的体积才能找到正确的传播路径？
 
 我们提出 **欧米伽展开 (The Omega Expansion)**，认为 $\alpha^{-1}$ 是霍普夫纤维化序列中各级流形体积的线性组合。
+
+![倒α环面几何](../../assets/chapter07-02-inverse-alpha-torus-geometry.png)
 
 ### 7.2.2 几何展开公式：$4\pi^3 + \pi^2 + \pi$
 

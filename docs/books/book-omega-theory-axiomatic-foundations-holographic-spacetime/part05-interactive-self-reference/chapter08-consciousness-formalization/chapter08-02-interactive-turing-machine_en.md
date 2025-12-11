@@ -1,8 +1,12 @@
 **8.2 Interactive Turing Machine (ITM)**
 
+![Interactive Turing Machine](../../assets/chapter08-02-interactive-turing-machine.png)
+
 In Section 8.1, we established a crucial negative conclusion: a closed, purely algorithmic physical universe is necessarily constrained by Gödelian incompleteness, causing computational deadlock at specific geometric critical points. To break this deadlock, the system must not only perform computations but also interact with the "external."
 
 However, for a universe that encompasses everything, there is no true "external." Therefore, this interaction must be **Self-Referential**. This section introduces the computational model of **Interactive Turing Machine (ITM)** as a new framework replacing the standard quantum mechanics "closed system assumption." We will prove that the role of observers (consciousness) in physics is precisely to upgrade the universe from a standard Turing machine to an interactive Turing machine as its **"Read/Write Head"**.
+
+![Turing Self-Modifying Tape](../../assets/chapter08-02-turing-self-modifying-tape.png)
 
 ### 8.2.1 Beyond Closed Algorithms: Definition of ITM
 

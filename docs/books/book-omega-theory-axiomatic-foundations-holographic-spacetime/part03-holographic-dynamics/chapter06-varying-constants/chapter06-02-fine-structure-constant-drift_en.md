@@ -1,10 +1,14 @@
 ## 6.2 Geometric Drift of the Fine Structure Constant
 
+![Fine Structure Constant Drift](../../assets/chapter06-02-fine-structure-constant-drift.png)
+
 In Section 6.1, we established the exponential scaling law of light speed $c(\tau)$ with intrinsic time $\tau$. This conclusion poses a severe challenge to the cornerstone of physics—the stability of fundamental constants. Among them, the most sensitive and observationally significant physical quantity is the **Fine Structure Constant** $\alpha$.
 
 $\alpha$ is the core coupling constant of quantum electrodynamics (QED), determining the strength of electromagnetic interactions. In the standard model, $\alpha \approx 1/137.036$ is considered absolutely constant. However, in the varying light speed context of Omega Theory, the constancy of $\alpha$ is no longer an a priori assumption but depends on geometric constraints of evolutionary synchronization among component constants ($e, \hbar, c$).
 
 This section will derive the evolution equation of $\alpha$, introduce the **Shear Factor** $\zeta$ to quantify the asynchrony between internal degrees of freedom and external horizon expansion, and argue that the tiny drift of $\alpha$ is an inevitable byproduct of cosmic Fibonacci growth.
+
+![Fine Structure Spectrum Shift](../../assets/chapter06-02-fine-structure-spectrum-shift.png)
 
 **6.2.1 Dynamical Decomposition of Coupling Constants**
 

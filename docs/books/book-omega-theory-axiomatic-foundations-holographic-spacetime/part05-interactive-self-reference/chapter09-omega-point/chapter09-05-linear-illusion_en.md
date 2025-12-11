@@ -1,5 +1,7 @@
 ## 9.5 The Illusion of Linearity: Integers as Holographic Projections
 
+![Linear Illusion](../../assets/chapter09-05-linear-illusion.png)
+
 In the final chapter of this book, we must confront one of the most deeply ingrained and simultaneously most misleading intuitions in human cognition: **Linearity**. We habitually view time as a straight line shooting from past to future, space as a flat extending box, and even the most fundamental "integers" in mathematics as isolated points arranged on an infinitely extending number line.
 
 However, based on the **Omega Equivalence Principle** (Section 5.5) and the **Holographic Principle** (Section 9.4), the universe's ontology is a closed high-dimensional sphere (great circle). This section will argue: **There are no true "straight lines" or "linear integers" in the physical world. All linear structures are essentially holographic projections of high-dimensional great circles on local tangent planes.**
@@ -44,6 +46,8 @@ Since $\phi$ is irrational, it cannot be written in any form $e^{2\pi i (p/q)}$.
 It forces "numbers" to escape from the circle, forming an infinitely extending spiral. This constructs the dual opposition between matter and time:
 1.  **Integers/Rational Numbers (Circle)**: Represent **Matter**. They are stable, closed, repeatable structures (such as atomic orbitals, crystal structures). They tend to conserve.
 2.  **Irrational Numbers (Spiral)**: Represent **Time/Consciousness**. They are flowing, open, non-ergodic structures (such as history, thought). They tend to grow.
+
+![Non-Linear History Cycle](../../assets/chapter09-05-non-linear-history-cycle.png)
 
 ### 9.5.4 Conclusion: All Things Are Decomposition of One Great Circle
 

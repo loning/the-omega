@@ -1,8 +1,12 @@
 # Appendix F: The Cosmic Trinity — The Ultimate Relationship of $\pi, e, \phi$
 
+![The Cosmic Trinity](../assets/appendix-f-cosmic-trinity.png)
+
 In the grand narrative of Omega Theory, mathematical constants are no longer merely abstract numerical values but the **"Trinity"** that constructs physical reality. They respectively govern the universe's **spatial ontology**, **temporal dynamics**, and **informational logic**.
 
 This appendix aims to summarize the deep connections among these three transcendental numbers in interactive computational cosmology. These connections transcend traditional mathematical identities and constitute the underlying source code from which physical laws emerge.
+
+![The Cosmic Trinity Pillars](../assets/appendix-f-cosmic-trinity-pillars.png)
 
 ## F.1 Role Definitions and Physical Ontology
 

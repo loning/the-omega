@@ -1,8 +1,12 @@
 ## 3.3 离散黎曼几何 (Discrete Riemannian Geometry)
 
+![离散黎曼几何](../../assets/chapter03-03-discrete-riemannian-geometry.png)
+
 在 3.1 和 3.2 节中，我们建立了一个平坦的、统计各向同性的离散时空背景。然而，真实的物理宇宙充满引力场，时空是弯曲的。在广义相对论中，这种弯曲由度规张量 $g_{\mu\nu}$ 和黎曼曲率张量 $R^\rho_{\sigma\mu\nu}$ 描述。当底流形不再是连续的 $\mathbb{R}^4$，而是一个分形的彭罗斯-斐波那契网格时，我们必须重新定义"距离"、"平移"和"曲率"这些基本几何概念。
 
 本节将建立 **离散黎曼几何 (Discrete Riemannian Geometry)** 的数学框架。我们将证明，经典微分几何中的度规与曲率，实际上是欧米伽网络中信息传输跳数（Hop Count）与拓扑连接亏损（Connectivity Deficit）在大尺度下的统计平均。
+
+![几何曲率滞后](../../assets/chapter03-03-geometry-curvature-lag.png)
 
 **3.3.1 斐波那契度量空间**
 

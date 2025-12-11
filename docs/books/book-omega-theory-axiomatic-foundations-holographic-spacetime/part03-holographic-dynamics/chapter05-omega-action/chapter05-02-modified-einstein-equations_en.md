@@ -1,8 +1,12 @@
 ## 5.2 Modified Einstein Field Equations
 
+![Modified Einstein Field Equations](../../assets/chapter05-02-modified-einstein-equations.png)
+
 In Section 5.1, we encoded the total dynamical behavior of the universe as the Omega action $S_{\Omega}$. This action contains three core parts: the Einstein-Hilbert term representing spacetime geometric rigidity, the Fisher information term representing matter field evolution cost, and the topological potential term maintaining cosmic Fibonacci growth.
 
 In this section, we will execute the variational procedure $\delta S_{\Omega} = 0$. Unlike standard general relativity, which merely treats matter as an energy-momentum tensor source on the right-hand side, the variational process in Omega Theory reveals the **computational ontology** meaning of gravitational field equations: spacetime curvature is not a container for energy but a **"Geometric Backreaction"** to information processing density. We will derive a set of modified field equations that explicitly include a dynamic cosmological term $\Lambda(\tau)$ caused by holographic constraints.
+
+![Geometric Backreaction Feedback](../../assets/chapter05-02-geometric-backreaction-feedback.png)
 
 **5.2.1 Variation with Respect to the Metric Tensor**
 

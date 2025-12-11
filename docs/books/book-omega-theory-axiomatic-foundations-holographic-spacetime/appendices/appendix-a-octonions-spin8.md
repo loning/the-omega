@@ -23,6 +23,8 @@ $$\bar{x} = x_0 e_0 - \sum_{i=1}^7 x_i e_i$$
 
 ### A.1.2 法诺平面与乘法规则
 
+![八元数乘法网格](../assets/appendix-a-octonion-multiplication-grid.png)
+
 八元数的乘法是非交换且 **非结合 (Non-associative)** 的。其虚单位之间的乘法规则 $e_i e_j$ 可以通过 **法诺平面 (Fano Plane)** 简洁地编码。
 
 法诺平面是一个包含 7 个点和 7 条线（其中圆周视为一条线）的有限射影平面。
@@ -44,6 +46,8 @@ $$e_i e_j = \begin{cases} e_k & \text{if } (e_i, e_j, e_k) \text{ is a valid lin
 $$[x, y, z] \equiv (xy)z - x(yz)$$
 
 对于八元数，结合子是非零的，且完全反对称。它反映了 $\mathbb{O}$ 的代数结构不仅仅是矢量空间的直和，而是具有内在的 **手性 (Chirality)** 或 **扭曲 (Torsion)**。在欧米伽理论中，这一非零项 $[e_i, e_j, e_k]$ 对应于时空流形上的 3-形式场强，是导致三代费米子结构的拓扑源头。
+
+![Spin8三里性](../assets/appendix-a-spin8-triality.png)
 
 ---
 

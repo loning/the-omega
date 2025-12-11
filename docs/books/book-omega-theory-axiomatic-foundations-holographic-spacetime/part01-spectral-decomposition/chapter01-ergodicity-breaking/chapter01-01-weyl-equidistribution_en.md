@@ -22,10 +22,14 @@ The core question in physics is: **Will the system return?** That is, does there
 
 **1.1.2 Weyl's Theorem and Irrational Rotations**
 
+![Weyl's Equidistribution Theorem](../../assets/chapter01-01-weyl-equidistribution.png)
+
 Hermann Weyl proved a theorem on equidistribution of sequences in 1916.
 
 **Theorem (Weyl's Equidistribution Theorem)**:
 Let $\alpha$ be a real number. The sequence $\{n\alpha \pmod 1\}_{n=1}^{\infty}$ is **equidistributed** on the interval $[0, 1]$ if and only if $\alpha$ is an **irrational number**.
+
+![Irrational Rotation](../../assets/chapter01-01-weyl-irrational-rotation.png)
 
 This means that if the rotation angle $\alpha$ is irrational, the orbit $\{x_n\}$ will densely fill the entire circle but will never exactly return to the starting point. Conversely, if $\alpha$ is a rational number $p/q$, then the orbit is periodic and contains only $q$ discrete points.
 

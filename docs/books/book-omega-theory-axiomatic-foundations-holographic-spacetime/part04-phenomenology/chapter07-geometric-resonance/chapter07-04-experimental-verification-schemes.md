@@ -1,8 +1,12 @@
 **7.4 实验验证方案 (Experimental Verification Schemes)**
 
+![实验验证方案](../../assets/chapter07-04-experimental-verification-schemes.png)
+
 在前三节中，我们从欧米伽理论的几何公理出发，推导出了与现有观测高度吻合的物理常数数值（$\mu \approx 1836$ 与 $1/\alpha \approx 137.036$）。然而，一个完备的物理理论不能止步于对已知数据的"后知后觉"（Postdiction），它必须提供具有 **可证伪性 (Falsifiability)** 的新预言。
 
 如果欧米伽理论是正确的，那么宇宙并非静态的闵可夫斯基背景，而是一个正在经历斐波那契生长的离散计算网络。这一本质区别将在极端物理条件下——极高红移、极高能标或极高精度测量中——表现为对标准模型的微小偏离。本节提出三个具体的实验验证方案，作为检验本理论真伪的 **判决性实验 (Experimentum Crucis)**。
+
+![望远镜时间色散](../../assets/chapter07-04-telescope-time-dispersion.png)
 
 ### 7.4.1 方案 I：类星体光谱的精细结构常数偶极漂移
 

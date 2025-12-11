@@ -6,9 +6,13 @@ Omega Theory provides a more radical perspective: the universe is a recursively 
 
 ## 6.1 The Exponential Scaling Law of Light Speed
 
+![Exponential Scaling Light Speed](../../assets/chapter06-01-exponential-scaling-light-speed.png)
+
 **6.1.1 Penrose Inflation and Grid Subdivision**
 
 Recalling Chapter 3, we modeled spacetime as a Penrose-Fibonacci quasicrystal composed of Omega cells (causal diamonds). The evolution of this structure is not simple volume expansion like a balloon but follows **"Substitution-Subdivision"** rules.
+
+![Cosmic Horizon Expansion](../../assets/chapter06-01-cosmic-horizon-expansion.png)
 
 In Penrose tilings, there exists an operation called **"Inflation"** $\mathcal{I}$. For each generation of grid $G_n$, we can decompose each rhombus within it into combinations of smaller-generation rhombi through specific geometric rules, thereby generating grid $G_{n+1}$.
 The growth factor of this process is strictly the golden ratio $\phi$:

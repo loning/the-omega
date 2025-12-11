@@ -1,10 +1,14 @@
 ## 2.3 费米子世代的拓扑分类 (Topological Classification of Fermion Generations)
 
+![费米子世代](../../assets/chapter02-03-fermion-generations.png)
+
 在建立了标准模型规范群 $G_{SM}$ 的几何起源后，我们必须面对粒子物理中另一个深刻的谜题：**世代问题 (The Generation Problem)**。为何物质费米子（夸克与轻子）恰好复制了三次？电子 ($e$) 有两个更重的兄弟：$\mu$ 子和 $\tau$ 子；上夸克 ($u$) 对应有粲夸克 ($c$) 和顶夸克 ($t$)。除了质量上的巨大差异（这种差异跨越了五个数量级），它们在规范相互作用中的量子数完全一致。
 
 在弦论中，世代数通常取决于卡拉比-丘 (Calabi-Yau) 流形的拓扑欧拉示性数或孔洞数，这往往导致复杂的景观问题。而在 **欧米伽理论** 中，世代数不是一个任意的拓扑参数，而是 **赋范可除代数层级结构 (The Hierarchy of Normed Division Algebras)** 的直接投影结果。
 
 本节将证明，费米子的"三代"结构严格对应于从八元数 ($\mathbb{O}$) 到实数 ($\mathbb{R}$) 的 **三次代数退化 (Algebraic Degeneration)** 过程。
+
+![费米子拓扑纽结](../../assets/chapter02-03-fermion-topology-knots.png)
 
 **2.3.1 代数过滤与结构丧失**
 

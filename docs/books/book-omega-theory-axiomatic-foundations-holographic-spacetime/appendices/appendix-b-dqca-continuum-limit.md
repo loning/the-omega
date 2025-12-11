@@ -1,6 +1,10 @@
 # 附录 B：DQCA 连续极限的严谨证明 (Appendix B: Rigorous Proof of the DQCA Continuum Limit)
 
+![DQCA连续极限](../assets/appendix-b-dqca-continuum.png)
+
 在本书第四章中，我们物理地论证了定义在欧米伽网格上的狄拉克-量子元胞自动机 (DQCA) 在宏观尺度下涌现为狄拉克方程。本附录将利用渐进分析与算符谱理论，提供这一结论的数学严格证明。我们将展示如何从离散的幺正演化算符中提取有效的哈密顿量，并分析由于时空离散性引入的高阶修正项（即洛伦兹不变性破坏项）。
+
+![离散洛伦兹提升](../assets/appendix-b-discrete-lorentz-boost.png)
 
 ## B.1 离散演化算符的动量空间表示
 

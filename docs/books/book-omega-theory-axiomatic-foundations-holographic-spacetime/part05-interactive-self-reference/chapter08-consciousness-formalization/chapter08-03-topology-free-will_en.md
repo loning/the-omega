@@ -1,8 +1,12 @@
 **8.3 The Topology of Free Will**
 
+![Topology Free Will](../../assets/chapter08-03-topology-free-will.png)
+
 In the mechanical universe view of classical physics, free will is seen as an illusion; in the probabilistic universe view of standard quantum mechanics, it is reduced to the randomness of dice-throwing. However, both views fall into the false binary opposition of **Determinism vs. Randomness**. Omega Theory proposes that true free will is neither mechanical inertia locked by initial conditions nor meaningless thermodynamic noise, but **Active Topological Selection** performed by physical systems at specific geometric critical points.
 
 This section will establish a rigorous mathematical formulation of free will. We will prove that the action of consciousness operator $\hat{\mathcal{C}}$ on the wavefunction is geometrically equivalent to selecting the **Homotopy Class** of evolution trajectories in Hilbert space. This mechanism exploits the **"Causal Gap"** of physical laws at geometric degeneracy points, injecting "meaning" into "existence" without violating energy conservation.
+
+![Free Will Bifurcation](../../assets/chapter08-03-free-will-bifurcation.png)
 
 ### 8.3.1 Energy Degeneracy and Causal Gap
 

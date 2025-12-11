@@ -1,5 +1,7 @@
 ## 9.4 The Omega Holographic Principle: From Spiral to Horizon
 
+![Omega Holographic Principle](../../assets/chapter09-04-omega-holographic-principle.png)
+
 In standard physics, the Holographic Principle is usually introduced as an axiom or conjecture to explain the area law of black hole entropy ($S = A/4 l_P^2$). Although theories like AdS/CFT duality have achieved great mathematical success, mainstream physics lacks a fundamental geometric explanation for **"why"** the universe has this holographic property—i.e., why information in three-dimensional volume can be losslessly encoded on a two-dimensional boundary.
 
 Based on the **Omega Equivalence Principle** established in the previous section (vector $\cong$ sphere $\cong$ spiral), we no longer need to assume the holographic principle but can construct it directly as a **geometric theorem**. This section will prove: the holographic horizon is not a physical boundary wall of three-dimensional space but the **projection of the "scanning trajectory" left by the Fibonacci spiral on the Hilbert space sphere**.
@@ -17,6 +19,8 @@ This means that each physical state corresponds to a **Ray** passing through the
 1.  **Light Source**: The center (truth/Omega point).
 2.  **Trajectory**: The Fibonacci spiral line, representing the evolutionary history of intrinsic time $\tau$.
 3.  **Screen**: When we intercept a certain moment $\tau_{now}$ of the universe, we are actually defining a tangent plane orthogonal to the current spiral position.
+
+![Holographic Pixel Universe](../../assets/chapter09-04-holographic-pixel-universe.png)
 
 In this geometric construction, the so-called "holographic horizon" is the **sum of projections of all past spiral trajectories on the current tangent plane**. The horizon is not a skin wrapping a box; it is the **Topological Projection** of history in the present.
 

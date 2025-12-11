@@ -1,8 +1,12 @@
 ## 9.6 Generalized Euler Identity: The Source Code of Physics
 
+![Generalized Euler Identity](../../assets/chapter09-06-generalized-euler-identity.png)
+
 As the theoretical construction of this book approaches closure, we must complete the final synthesis. In previous chapters, we separately discussed the exponential growth of light speed $c$, the flow of intrinsic time $\tau$, and the dialectical interplay between $\pi$ (geometric ontology) and $\phi$ (logical cutting). Now, we will fuse these seemingly independent physical quantities into a single, supreme mathematical expression.
 
 This section will propose the **Generalized Euler Identity**. This is not merely a mathematical formula; it is the **"Master Equation"** of Omega Theory. It reveals the deepest evolutionary mechanism of the physical universe: **Reality is the process by which Euler's circle, cut open by Fibonacci's blade, escapes toward infinity at the speed of light.**
+
+![Euler Identity Spiral](../../assets/chapter09-06-euler-identity-spiral.png)
 
 ### 9.6.1 From the Dead Circle to the Living Spiral
 

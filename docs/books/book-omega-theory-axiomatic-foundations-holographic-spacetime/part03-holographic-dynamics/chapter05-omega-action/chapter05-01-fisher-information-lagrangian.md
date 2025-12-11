@@ -8,7 +8,11 @@
 
 ## 5.1 费雪信息拉格朗日量 (Fisher Information Lagrangian)
 
+![费雪信息拉格朗日量](../../assets/chapter05-01-fisher-information-lagrangian.png)
+
 在经典力学中，拉格朗日量通常被定义为动能减去势能 ($T-V$)。这种定义虽然在数学上有效，但在本体论上是任意的。为何动能采取二次型？为何势能由位置决定？在 **信息几何 (Information Geometry)** 的框架下，这些物理量获得了更深层的解释：它们是概率分布流形上的几何度量。
+
+![费雪信息速度](../../assets/chapter05-01-fisher-information-velocity.png)
 
 **5.1.1 物理实在作为概率分布**
 

@@ -8,7 +8,11 @@ This chapter will prove: any local interaction rules operating on discrete causa
 
 ## 4.1 Dirac-Quantum Cellular Automata (DQCA)
 
+![Dirac QCA](../../assets/chapter04-01-dirac-qca.png)
+
 Quantum Cellular Automata (QCA) are quantum generalizations of classical Cellular Automata (CA). Unlike classical CA, QCA state evolution must be **Unitary** to ensure total probability conservation; it is also **Reversible**, which ensures information is not erased (consistent with Landauer's principle). We will particularly focus on a class of models called **Dirac-QCA (DQCA)**, as they directly simulate the dynamical behavior of spin-1/2 particles.
+
+![DQCA Quantum Walk](../../assets/chapter04-01-dqca-quantum-walk.png)
 
 **4.1.1 Discrete Hilbert Space and Spin Networks**
 

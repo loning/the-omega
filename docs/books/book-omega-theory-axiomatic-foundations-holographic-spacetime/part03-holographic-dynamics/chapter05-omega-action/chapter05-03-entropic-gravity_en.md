@@ -1,8 +1,12 @@
 ## 5.3 The Entropic Nature of Gravity
 
+![Entropic Gravity](../../assets/chapter05-03-entropic-gravity.png)
+
 In Section 5.2, we derived modified Einstein field equations through variation of the Omega action. However, the field equations themselves do not explain the *origin* of gravity. In the standard model, gravity is assumed to be a fundamental interaction, similar to electromagnetic force. But within the computational ontology framework of Omega Theory, this view is untenable. If spacetime itself is an emergent computational network, then the "force" that distorts this network cannot be fundamental.
 
 This section will prove: **Gravity is not a fundamental force but an Entropic Force.** It arises from the statistical tendency of systems to maximize information entropy on holographic boundaries. More specifically, we will establish strict mathematical equivalence between **gravitational potential and Computational Lag**, thereby revealing the microscopic mechanism of "matter tells spacetime how to curve": high-density information processing necessarily leads to reduction of local clock frequency.
+
+![Entropic Gravity Pressure](../../assets/chapter05-03-entropic-gravity-pressure.png)
 
 **5.3.1 Holographic Screen Thermodynamics**
 

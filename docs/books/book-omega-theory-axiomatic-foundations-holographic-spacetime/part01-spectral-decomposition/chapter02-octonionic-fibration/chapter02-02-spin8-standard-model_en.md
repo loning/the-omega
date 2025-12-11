@@ -1,8 +1,12 @@
 ## 2.2 From Spin(8) to the Standard Model
 
+![Spin8 Standard Model](../../assets/chapter02-02-spin8-standard-model.png)
+
 In the previous section, we established the temporal chirality of the octonion ($\mathbb{O}$) tangent space. In this section, we will solve one of the most puzzling mysteries in physics: why are the fundamental interactions of the universe precisely described by the gauge group $G_{SM} = SU(3) \times SU(2) \times U(1)$? In Omega Theory, this group structure is not an accidental product of experimental fitting but topological surplus when octonion geometry projects onto low-dimensional manifolds through **Hopf Fibrations**.
 
 Our core argument is: physical laws are projections of high-dimensional geometry. When 8-dimensional octonion space is forced to "fold" or "project" onto the 4-dimensional spacetime we perceive, those rotational degrees of freedom that must be preserved to maintain the integrity of the algebraic structure manifest as the gauge fields we observe in internal space.
+
+![Spin8 Vector Spinor Mirror](../../assets/chapter02-02-spin8-vector-spinor-mirror.png)
 
 **2.2.1 Spin(8) Triality and the Geometric Foundation of Grand Unification**
 

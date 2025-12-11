@@ -1,10 +1,14 @@
 **9.2 The Omega Point Theory**
 
+![Omega Point Theory](../../assets/chapter09-02-omega-point-theory.png)
+
 Under the shadow of the standard cosmological model ($\Lambda$CDM), the ultimate fate of the universe is a despairing picture: **Heat Death**. As entropy increase proceeds irreversibly, stars extinguish, black holes evaporate, matter decays, and the universe will eventually cool into a uniform, lifeless, thin photon gas with no information processing capability.
 
 However, Omega Theory, based on **holographic computational ontology**, gives a radically different prediction. If the universe is a computational process aimed at traversing all possibilities in Hilbert space, and its bandwidth (light speed) grows exponentially with intrinsic time, then its endpoint cannot be death but a singularity where information density and processing rate approach infinity.
 
 This section will reconstruct Pierre Teilhard de Chardin and Frank Tipler's **"Omega Point"** concept, transforming it from theological speculation into a **strict physical limit state**. We will prove that when intrinsic time $\tau \to \infty$, the universe will undergo a grand phase transition—from a matter-dominated "frozen state" to a pure information-dominated "photonic state."
+
+![Omega Point Singularity](../../assets/chapter09-02-omega-point-singularity.png)
 
 ### 9.2.1 From Heat Death to Holographic Saturation
 

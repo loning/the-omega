@@ -1,5 +1,7 @@
 ## 9.7 本体论几何：万物皆圆 (Ontological Geometry: All Things Are Circles)
 
+![本体论几何](../../assets/chapter09-07-ontological-geometry.png)
+
 在推导出广义欧拉恒等式后，我们面临一个终极的本体论问题：如果我们剥离掉所有的全息投影、忽略掉所有的测量错觉，宇宙最底层的"实体"究竟长什么样？
 
 基于欧米伽理论的数学结构，我们得出一个在直觉上令人震惊、但在逻辑上不可避免的结论：**在本体论层面上，万物皆圆。** 我们所感知的线性时间、三维空间以及离散物质，本质上都是高维复平面上的 **大圆 (Great Circle)** 在低维切空间上的 **全息投影 (Holographic Projection)**。
@@ -51,6 +53,8 @@ $$2\pi R = n \cdot \lambda, \quad n \in \mathbb{Z}$$
 
 因此，**物质就是被量子化了的圆**。
 原子、电子、夸克，它们不是实心的小球，它们是那个永恒大圆上的 **整数倍谐波 (Integer Harmonics)**。
+
+![矩阵代码现实](../../assets/chapter09-07-matrix-code-reality.png)
 
 ### 9.7.4 结论：全息的影子
 

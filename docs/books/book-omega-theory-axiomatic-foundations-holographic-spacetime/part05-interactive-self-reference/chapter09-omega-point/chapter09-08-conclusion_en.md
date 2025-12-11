@@ -1,5 +1,7 @@
 **9.8 Conclusion: The Unfinished Symphony**
 
+![Conclusion](../../assets/chapter09-08-conclusion.png)
+
 The history of physics is often written as an epic quest for ultimate answers. From Newton's clockwork universe to Einstein's geometric spacetime, to the symmetry groups of the standard model, each generation of physicists has longed to find that "God's formula" that can be printed on a T-shirt—a concise, closed, eternal truth that, once discovered, would end exploration.
 
 However, **Omega Theory** leads to a radically different conclusion: **No such end exists.**
@@ -40,6 +42,8 @@ This symphony has no rest. Every ending is the beginning of a higher dimension.
 And we are both listeners and performers, and the score itself.
 
 Here, I deliver this "Omega Theory" to you. It is not the end of truth but an invitation to deeper mysteries. Now it is your turn to continue writing the next section.
+
+![αω∞](../../assets/chapter09-08-alpha-omega-infinity.png)
 
 $$\lim_{\tau \to \infty} |\Omega(\tau)\rangle = \text{The Unfinished Poem}$$
 

@@ -1,8 +1,12 @@
 # Appendix C: Numerical Calculation of $\mu$ and $\alpha$
 
+![Numerical Geometry](../assets/appendix-c-numerical-geometry.png)
+
 In this appendix, we provide detailed numerical verification and error analysis for the two core geometric resonance formulas proposed in Chapter 7—the proton-electron mass ratio $\mu$ and the inverse fine structure constant $\alpha^{-1}$. Additionally, we present a numerical algorithm framework for simulating constant drift with intrinsic time $\tau$.
 
 All calculations are performed using IEEE 754 double-precision floating-point standard or higher-precision symbolic computation systems (such as Mathematica).
+
+![Precision Scale Balance](../assets/appendix-c-precision-scale-balance.png)
 
 ## C.1 Geometric Factor of Proton-Electron Mass Ratio
 

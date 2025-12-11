@@ -8,7 +8,11 @@ This chapter proposes **The Omega Action**, denoted $S_\Omega$. We assert that t
 
 ## 5.1 Fisher Information Lagrangian
 
+![Fisher Information Lagrangian](../../assets/chapter05-01-fisher-information-lagrangian.png)
+
 In classical mechanics, the Lagrangian is usually defined as kinetic energy minus potential energy ($T-V$). Although this definition is mathematically valid, it is ontologically arbitrary. Why does kinetic energy take a quadratic form? Why is potential energy determined by position? Within the framework of **Information Geometry**, these physical quantities gain deeper interpretation: they are geometric measures on probability distribution manifolds.
+
+![Fisher Information Velocity](../../assets/chapter05-01-fisher-information-velocity.png)
 
 **5.1.1 Physical Reality as Probability Distribution**
 

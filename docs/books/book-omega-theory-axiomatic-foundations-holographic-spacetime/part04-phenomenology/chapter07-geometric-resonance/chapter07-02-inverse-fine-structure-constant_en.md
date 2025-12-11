@@ -1,5 +1,7 @@
 **7.2 The Inverse Fine Structure Constant ($1/\alpha$)**
 
+![Inverse Fine Structure Constant](../../assets/chapter07-02-inverse-fine-structure-constant.png)
+
 In Section 7.1, we explained the mass hierarchy between protons and electrons through volume ratios of high-dimensional spheres. This section turns to the core of quantum electrodynamics (QED)—the fine structure constant $\alpha$. In the standard model, $\alpha \approx 1/137.036$ is a dimensionless coupling constant that determines the strength of interaction between photons and charged particles. Feynman once called it "one of the greatest mysteries of physics: a magic number comes to us, but no one understands how it is constructed."
 
 Omega Theory proposes that $\alpha$ is not an arbitrary parameter but a **Topological Invariant** of holographic geometry under $U(1)$ gauge group projection. Specifically, the inverse fine structure constant $\alpha^{-1}$ corresponds to the **geometric phase space volume** required for electromagnetic interactions when descending from octonion tangent bundles to the complex plane.
@@ -15,6 +17,8 @@ For electromagnetic interactions, the gauge group is $U(1)$, corresponding to th
 Therefore, $\alpha^{-1}$ actually measures the **geometric redundancy of the embedding space**. In other words, how large a volume must a photon "search" in the curled internal dimensions to find the correct propagation path between one electron and another?
 
 We propose **The Omega Expansion**, suggesting that $\alpha^{-1}$ is a linear combination of volumes of manifolds at various levels in the Hopf fibration sequence.
+
+![Inverse Alpha Torus Geometry](../../assets/chapter07-02-inverse-alpha-torus-geometry.png)
 
 ### 7.2.2 Geometric Expansion Formula: $4\pi^3 + \pi^2 + \pi$
 

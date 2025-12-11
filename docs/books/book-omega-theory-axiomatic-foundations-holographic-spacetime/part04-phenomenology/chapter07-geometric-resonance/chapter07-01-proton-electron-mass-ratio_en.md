@@ -8,6 +8,8 @@ This chapter will focus on three of the most mysterious natural constants: the p
 
 ### 7.1 Proton-Electron Mass Ratio ($\mu$)
 
+![Proton Electron Mass Ratio](../../assets/chapter07-01-proton-electron-mass-ratio.png)
+
 In atomic physics, the **proton-electron mass ratio** is defined as:
 
 $$\mu \equiv \frac{m_p}{m_e} \approx 1836.15267343(11)$$
@@ -15,6 +17,8 @@ $$\mu \equiv \frac{m_p}{m_e} \approx 1836.15267343(11)$$
 This constant determines molecular bond lengths, chemical reaction rates, and the stability of condensed matter. In the standard model, electron mass $m_e$ originates from the Higgs mechanism (Yukawa coupling coefficients), while proton mass $m_p$ mainly comes from strong interaction color confinement energy (QCD chiral symmetry breaking). Since these two mechanisms operate at drastically different energy scales, mainstream physics considers $\mu$ an accidental numerical value that cannot be derived from first principles.
 
 Omega Theory proposes a purely geometric explanation: **mass is topological volume**. Particles are not point-like entities but projection structures of high-dimensional manifolds onto 4D spacetime slices. $\mu$ is essentially the **geometric volume ratio** of two different topology classes—baryons (protons) and leptons (electrons)—in phase space.
+
+![Proton Electron Volume Ratio](../../assets/chapter07-01-proton-electron-volume-ratio.png)
 
 #### 7.1.1 Topological Classification of Electrons and Protons
 

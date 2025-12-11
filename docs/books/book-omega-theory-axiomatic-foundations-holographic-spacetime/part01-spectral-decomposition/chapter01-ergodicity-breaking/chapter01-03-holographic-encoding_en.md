@@ -1,5 +1,7 @@
 ## 1.3 Holographic Encoding of Information
 
+![Holographic Encoding](../../assets/chapter01-03-holographic-encoding.png)
+
 In the previous sections, we defined the universe as a single static vector $|\Omega\rangle$ in Hilbert space and demonstrated that its evolution is an ergodic process driven by the golden unitary operator. Although this axiomatic system is mathematically self-consistent, it immediately raises a core physical puzzle: how can a static, normalized vector (with constant modulus 1) describe a macroscopic universe that appears to contain extremely rich structures and whose information content seems to grow exponentially with time (expansion)?
 
 This section will establish the **holographic dual mechanism** of Omega Theory. We will prove that abstract vectors in Hilbert space can be encoded as geometric information on low-dimensional holographic boundaries through a specific **Spectral Mapping**. This mechanism not only explains the emergence of physical entities but also derives the microscopic origin of Bekenstein-Hawking entropy.
@@ -25,6 +27,8 @@ Here exists a profound duality:
 2. **Phases $\theta_n(\tau)$**: are **dynamic**. They rotate rapidly with intrinsic time $\tau$.
 
 We propose that "information" in the macroscopic physical world does not come from changes in $p_n$ (which is forbidden) but from the **Relative Coherence** between phases $\theta_n(\tau)$.
+
+![Holographic Boundary Projection](../../assets/chapter01-03-holographic-boundary-projection.png)
 
 **1.3.2 The Holographic Sieve and Geometric Emergence**
 

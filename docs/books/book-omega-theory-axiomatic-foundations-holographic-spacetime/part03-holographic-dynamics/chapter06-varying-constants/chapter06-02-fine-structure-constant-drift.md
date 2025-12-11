@@ -1,10 +1,14 @@
 ## 6.2 精细结构常数的几何漂移 (Geometric Drift of the Fine Structure Constant)
 
+![精细结构常数漂移](../../assets/chapter06-02-fine-structure-constant-drift.png)
+
 在 6.1 节中，我们确立了光速 $c(\tau)$ 随内禀时间 $\tau$ 的指数标度律。这一结论对物理学大厦的基石——基本常数的稳定性——提出了严峻挑战。其中，最敏感且最具观测意义的物理量是 **精细结构常数 (Fine Structure Constant)** $\alpha$。
 
 $\alpha$ 是量子电动力学 (QED) 的核心耦合常数，决定了电磁相互作用的强度。在标准模型中，$\alpha \approx 1/137.036$ 被视为绝对恒定。然而，在欧米伽理论的变光速背景下，$\alpha$ 的恒定性不再是先验假设，而是取决于各个组分常数（$e, \hbar, c$）之间演化同步性的几何约束。
 
 本节将推导 $\alpha$ 的演化方程，引入 **剪切因子 (Shear Factor)** $\zeta$ 来量化内部自由度与外部视界膨胀之间的非同步性，并论证 $\alpha$ 的微小漂移是宇宙斐波那契生长的必然副产物。
+
+![精细结构谱移](../../assets/chapter06-02-fine-structure-spectrum-shift.png)
 
 **6.2.1 耦合常数的动力学分解**
 

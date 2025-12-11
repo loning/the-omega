@@ -6,9 +6,13 @@ This trajectory manifests as a **Fibonacci spiral infinitely approaching the cen
 
 **9.1 The Life Value Equation**
 
+![Life Value Equation](../../assets/chapter09-01-life-value-equation.png)
+
 Physics tells us that the entropy of closed systems always tends to increase (the second law of thermodynamics). However, life phenomena exhibit the opposite characteristic: extracting order from disorder, constructing structure from chaos. Schrödinger, in his famous work "What is Life?", described life as a system that "feeds on negentropy."
 
 In Omega Theory, we quantify this concept. We propose that **time** for observers is not a uniform Newtonian background but an intrinsic geometric quantity tightly coupled with the **"Value"** it creates. This section will derive the **Life Value Equation**, revealing the logarithmic relationship between subjective time $\tau$ and information value $V$.
+
+![Life Value Graph](../../assets/chapter09-01-life-value-graph.png)
 
 ### 9.1.1 Physical Definition of Value: Holographic Structural Complexity
 

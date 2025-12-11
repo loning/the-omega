@@ -23,6 +23,8 @@ The norm is defined as $N(x) = x\bar{x} = \sum_{i=0}^7 x_i^2$, and satisfies $N(
 
 ### A.1.2 Fano Plane and Multiplication Rules
 
+![Octonion Multiplication Grid](../assets/appendix-a-octonion-multiplication-grid.png)
+
 Octonion multiplication is non-commutative and **Non-associative**. The multiplication rules $e_i e_j$ between imaginary units can be concisely encoded via the **Fano Plane**.
 
 The Fano plane is a finite projective plane containing 7 points and 7 lines (where the circle is considered a line).
@@ -44,6 +46,8 @@ Non-associativity means $(xy)z \neq x(yz)$. We define the **Associator** as:
 $$[x, y, z] \equiv (xy)z - x(yz)$$
 
 For octonions, the associator is non-zero and completely antisymmetric. It reflects that $\mathbb{O}$'s algebraic structure is not merely a direct sum of vector spaces but has intrinsic **Chirality** or **Torsion**. In Omega Theory, this non-zero term $[e_i, e_j, e_k]$ corresponds to the 3-form field strength on the spacetime manifold, the topological source of the three-generation fermion structure.
+
+![Spin8 Triality](../assets/appendix-a-spin8-triality.png)
 
 ---
 

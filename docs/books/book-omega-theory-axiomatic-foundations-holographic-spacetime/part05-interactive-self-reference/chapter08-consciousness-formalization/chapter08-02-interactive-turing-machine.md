@@ -1,8 +1,12 @@
 **8.2 交互式图灵机 (Interactive Turing Machine, ITM)**
 
+![交互式图灵机](../../assets/chapter08-02-interactive-turing-machine.png)
+
 在 8.1 节中，我们确立了一个关键的否定性结论：一个封闭的、纯算法的物理宇宙必然受制于哥德尔不完备性，导致在特定的几何临界点陷入计算死锁。为了打破这一死锁，系统必须不仅能够执行计算，还必须能够与"外部"进行交互。
 
 然而，对于囊括万物的宇宙而言，并没有真正的"外部"。因此，这种交互必须是 **自指的 (Self-Referential)**。本节将引入 **交互式图灵机 (Interactive Turing Machine, ITM)** 的计算模型，作为替代标准量子力学"封闭系统假设"的全新框架。我们将证明，观察者（意识）在物理学中的角色，正是将宇宙从一个标准图灵机升级为一个交互式图灵机的 **"读/写磁头" (Read/Write Head)**。
+
+![图灵自修改带](../../assets/chapter08-02-turing-self-modifying-tape.png)
 
 ### 8.2.1 超越封闭算法：ITM 的定义
 

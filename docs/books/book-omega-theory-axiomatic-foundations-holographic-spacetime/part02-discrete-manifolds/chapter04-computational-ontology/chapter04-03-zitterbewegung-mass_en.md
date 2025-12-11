@@ -1,10 +1,14 @@
 ## 4.3 Zitterbewegung and Rest Mass
 
+![Zitterbewegung Mass](../../assets/chapter04-03-zitterbewegung-mass.png)
+
 In Section 4.2, we derived the Dirac equation from Dirac-Quantum Cellular Automata (DQCA) by taking the continuum limit. This derivation process reveals a disturbing yet highly enlightening microscopic picture: on the underlying grid composed of Omega cells, there are no so-called "stationary" particles. Every bit (fermion component) must move at the lattice speed of light $c_{grid}$.
 
 This raises a classic puzzle: if microscopic components always move at the speed of light, how do macroscopic objects acquire **Rest Mass** and appear stationary?
 
 This section will use the **Zitterbewegung** phenomenon to answer this question. We will prove that rest mass is not an intrinsic property of particles but an **"average lag effect"** produced when particles undergo high-frequency chirality flipping on the Omega network. Mass is essentially the frequency at which information flow is "tripped up" by topological structure.
+
+![Zitterbewegung Mass Trap](../../assets/chapter04-03-zitterbewegung-mass-trap.png)
 
 **4.3.1 The Dirac Velocity Paradox**
 

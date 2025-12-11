@@ -1,5 +1,7 @@
 ## 1.3 信息的全息编码 (Holographic Encoding of Information)
 
+![全息编码](../../assets/chapter01-03-holographic-encoding.png)
+
 在前面的章节中，我们将宇宙定义为希尔伯特空间中的单一静态矢量 $|\Omega\rangle$，并论证了其演化是由黄金幺正算符驱动的各态历经过程。这一公理化体系虽然在数学上自洽，但立即引出了一个物理上的核心难题：一个静态的、归一化的矢量（其模长恒为 1），如何能够描述一个看起来包含极其丰富结构、且信息量似乎随时间指数增长（膨胀）的宏观宇宙？
 
 本节将建立 **欧米伽理论** 的全息对偶机制。我们将证明，希尔伯特空间中的抽象矢量可以通过一种特定的 **谱映射 (Spectral Mapping)**，编码为低维全息边界上的几何信息。这一机制不仅解释了物理实体的涌现，还导出了贝肯斯坦-霍金熵（Bekenstein-Hawking Entropy）的微观起源。
@@ -27,6 +29,8 @@ $$|\Omega(\tau)\rangle = \sum_{n=0}^{\infty} \sqrt{p_n} e^{-i \theta_n(\tau)} |n
 我们提出，宏观物理世界中的"信息"并非来自 $p_n$ 的改变（那是被禁止的），而是来自相位 $\theta_n(\tau)$ 之间的 **相对相干性 (Relative Coherence)**。
 
 **1.3.2 全息筛与几何涌现**
+
+![全息边界投影](../../assets/chapter01-03-holographic-boundary-projection.png)
 
 为了将希尔伯特空间的谱数据转化为时空几何，我们需要引入 **"全息筛" (Holographic Sieve)** 的概念。
 

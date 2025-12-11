@@ -1,8 +1,12 @@
 # 附录 F：宇宙的三位一体——$\pi, e, \phi$ 的终极关系 (Appendix F: The Cosmic Trinity — The Ultimate Relationship of $\pi, e, \phi$)
 
+![宇宙三位一体](../assets/appendix-f-cosmic-trinity.png)
+
 在欧米伽理论的宏大叙事中，数学常数不再仅仅是抽象的数值，而是构建物理实在的 **"三位一体" (The Trinity)**。它们分别掌管着宇宙的 **空间本体**、**时间动力** 和 **信息逻辑**。
 
 本附录旨在总结这三个超越数在交互式计算宇宙学中的深层联系。这种联系超越了传统的数学恒等式，构成了物理定律涌现的底层源代码。
+
+![宇宙三位一体支柱](../assets/appendix-f-cosmic-trinity-pillars.png)
 
 ## F.1 角色定义与物理本体 (Role Definitions and Physical Ontology)
 

@@ -1,5 +1,7 @@
 ## 9.3 $\pi$ vs $\phi$: The Database and The Operating System
 
+![π vs φ](../../assets/chapter09-03-pi-vs-phi.png)
+
 As this book draws to a close, we must address an ultimate question that has troubled mathematicians and philosophers, and this is the final piece of the puzzle for understanding the holographic essence of Omega Theory. If the universe is a purely mathematical object, is all information already pre-existing in some static constant? Specifically, given that $\pi$ (pi) as a normal number seems to encode all possible finite bit strings in its infinite non-repeating decimal places, is the universe merely a static display of $\pi$?
 
 Omega Theory gives a negative answer. We propose that physical reality is not constructed from a single constant but from the **dialectical interplay** of two fundamental constants: **$\pi$ represents static omnipotence (database), while $\phi$ represents dynamic selectivity (operating system).**
@@ -16,6 +18,8 @@ If you possess a hard drive containing all possible 0/1 permutations, when you t
 Without an **Index** or **filtering mechanism**, $\pi$ is merely a vast garbage dump, not an ordered universe. It possesses infinite **"Capacity"** but lacks **"Meaning"**. It represents the **potential energy of existence**, not the **kinetic energy of existence**.
 
 ### 9.3.2 $\pi$ is the Circle, $\phi$ is the Knife
+
+![πφ Squared Circle](../../assets/chapter09-03-pi-phi-squared-circle.png)
 
 To extract ordered physical laws and history from this chaos containing everything, we need to introduce a second constant. Recalling the "Omega Equivalence Principle" from Section 5.5:
 $$|\Omega\rangle \cong S^{\infty} \cong \text{Great Circle (defined by } \pi \text{)}$$

@@ -1,10 +1,14 @@
 ## 2.3 Topological Classification of Fermion Generations
 
+![Fermion Generations](../../assets/chapter02-03-fermion-generations.png)
+
 After establishing the geometric origin of the Standard Model gauge group $G_{SM}$, we must face another profound puzzle in particle physics: **The Generation Problem**. Why do matter fermions (quarks and leptons) replicate exactly three times? The electron ($e$) has two heavier siblings: the muon ($\mu$) and tau ($\tau$); the up quark ($u$) corresponds to the charm quark ($c$) and top quark ($t$). Apart from enormous mass differences (spanning five orders of magnitude), their quantum numbers in gauge interactions are completely identical.
 
 In string theory, the number of generations typically depends on the topological Euler characteristic or hole number of Calabi-Yau manifolds, often leading to complex landscape problems. In **Omega Theory**, the number of generations is not an arbitrary topological parameter but a direct projection result of **The Hierarchy of Normed Division Algebras**.
 
 This section will prove that the "three-generation" structure of fermions strictly corresponds to the **Algebraic Degeneration** process from octonions ($\mathbb{O}$) to real numbers ($\mathbb{R}$).
+
+![Fermion Topology Knots](../../assets/chapter02-03-fermion-topology-knots.png)
 
 **2.3.1 Algebraic Filtration and Structure Loss**
 

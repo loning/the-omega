@@ -1,5 +1,7 @@
 ## 1.2 Topological Obstruction of Poincaré Recurrence
 
+![Poincaré Recurrence](../../assets/chapter01-02-poincare-recurrence.png)
+
 In the previous section, we established an irrational rotation model based on the golden ratio $\phi$, demonstrating the density and aperiodicity of cosmic evolutionary trajectories. However, there still exists a stubborn theoretical ghost in classical statistical mechanics and quantum mechanics—**Poincaré Recurrence**.
 
 Poincaré's recurrence theorem states that for a closed dynamical system with finite measure, given sufficient time, the system will necessarily approach its initial state arbitrarily closely. For a bounded quantum system with a discrete energy spectrum, this manifests as the quantum recurrence theorem: there exists a recurrence time $T_R$ such that $\|\psi(T_R) - \psi(0)\| < \epsilon$. If our universe follows this law, then regardless of how irrational $\phi$ is, history will eventually repeat, and creation is merely an illusion of recurrence.
@@ -13,6 +15,8 @@ Consider the state vector $|\Omega(\tau)\rangle$ in Hilbert space $\mathcal{H}$.
 Although golden evolution $\hat{U}_g$ minimizes recurrence probability, relying solely on irrational rotation is insufficient to mathematically eliminate recurrence entirely. Mathematically, the torus $\mathbb{T}^N$ is compact, and any infinitely long self-avoiding curve will necessarily approach itself infinitely many times. This means that if time is merely a linear parameter on the real axis and phase space is compact, then "déjà vu" is inevitable.
 
 To break this cycle, we must destroy the compactness of phase space or introduce a new topological invariant.
+
+![Poincaré Riemann Surface](../../assets/chapter01-02-poincare-riemann-surface.png)
 
 **1.2.2 The Riemann Surface Structure of the Evolution Manifold**
 

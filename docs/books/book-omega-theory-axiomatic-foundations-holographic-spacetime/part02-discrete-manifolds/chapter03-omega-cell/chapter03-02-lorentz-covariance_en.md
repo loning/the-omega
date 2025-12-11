@@ -1,8 +1,12 @@
 ## 3.2 Lorentz Covariance of Quasicrystals
 
+![Lorentz Covariance](../../assets/chapter03-02-lorentz-covariance.png)
+
 When constructing discrete spacetime models, the greatest theoretical obstacle physicists face has always been the violation of **Lorentz Invariance**. For any regular periodic lattice (such as cubic lattices), their geometric structure explicitly breaks continuous rotational symmetry $SO(3)$ and Lorentz boost symmetry $SO(3,1)$. In cubic grids, the speed of information propagation along axes differs significantly from that along diagonals (i.e., anisotropy), causing light cones derived from discrete models to appear "square-shaped" rather than conical, which severely conflicts with the Michelson-Morley experiment and the experimental foundation of special relativity.
 
 This section will prove that the **Penrose-Fibonacci Quasicrystal** structure adopted by **Omega Theory**, by virtue of its unique aperiodicity and high-order rotational symmetry, can naturally emerge statistical isotropy in the macroscopic limit, thereby restoring Lorentz covariance.
+
+![Lorentz Fuzzy Cone](../../assets/chapter03-02-lorentz-fuzzy-cone.png)
 
 **3.2.1 The Lattice Anisotropy Problem**
 

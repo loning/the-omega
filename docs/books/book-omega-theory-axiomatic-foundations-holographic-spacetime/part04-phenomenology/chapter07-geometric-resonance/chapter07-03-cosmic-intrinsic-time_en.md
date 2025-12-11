@@ -1,10 +1,14 @@
 **7.3 Cosmic Intrinsic Time ($\tau$)**
 
+![Cosmic Intrinsic Time](../../assets/chapter07-03-cosmic-intrinsic-time.png)
+
 In the previous two sections, we established the geometric origins of microscopic physical constants ($\mu$ and $\alpha$). This section turns to the macroscopic scale, addressing a deeper anthropic question: **our coordinate position in cosmic history**.
 
 Why did human civilization emerge exactly $138$ billion years after the Big Bang? In standard cosmology, this is considered a random point in time. But in **Omega Theory**, time is a geometrically scaled spiral. We will prove that the current cosmic intrinsic time coordinate $\tau_{now}$ is not an arbitrary value; it exhibits a remarkable **Geometric Resonance** with the microscopic matter structure constant $\mu$.
 
 Specifically, we will derive a stunning conclusion: **$\tau_{now} \approx \mu \approx 1836$**. This means that the depth of cosmic macro-evolution has just caught up with the microscopic geometric complexity of protons. We live at the universe's "noon moment."
+
+![Cosmic Time Mass Resonance](../../assets/chapter07-03-cosmic-time-mass-resonance.png)
 
 ### 7.3.1 Logarithmic Definition of Intrinsic Time
 

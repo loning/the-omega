@@ -1,8 +1,12 @@
 ## 5.5 The Omega Equivalence Principle: From Great Circle to Spiral
 
+![Omega Equivalence Principle](../../assets/chapter05-05-omega-equivalence-principle.png)
+
 In Section 5.4, we established the "Total Budget Conservation" axiom, pointing out that the universe's total energy (i.e., the total ontological information) is strictly constant ontologically, and the expansion and energy growth we observe arise from the relative contraction of measurement scales. However, this conservation law leaves a critical dynamical gap: How does a static, conserved "1" produce such a rich, dynamic evolutionary history with Fibonacci exponential growth in the phenomenal world?
 
 This section will reveal the **core mathematical mechanism** of Omega Theory. We will prove that four seemingly distinct concepts in physics—state vectors in Hilbert space, geometry of high-dimensional spheres, spectral analysis (Fourier transform), and the Fibonacci spiral—are **Congruent** at the mathematical foundation. Cosmic evolution is essentially an **infinite non-ergodic Fourier analysis** performed on a **high-dimensional Great Circle**.
+
+![Hilbert Spacetime Bridge](../../assets/chapter05-05-hilbert-spacetime-bridge.png)
 
 ### 5.5.1 Isomorphism between Hilbert Space and High-Dimensional Spheres
 

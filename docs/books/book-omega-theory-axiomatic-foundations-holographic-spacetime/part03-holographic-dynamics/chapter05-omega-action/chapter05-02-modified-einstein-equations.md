@@ -1,8 +1,12 @@
 ## 5.2 修正的爱因斯坦场方程 (Modified Einstein Field Equations)
 
+![修正爱因斯坦场方程](../../assets/chapter05-02-modified-einstein-equations.png)
+
 在 5.1 节中，我们将宇宙的总动力学行为编码为欧米伽作用量 $S_{\Omega}$。该作用量包含三个核心部分：代表时空几何刚度的爱因斯坦-希尔伯特项、代表物质场演化成本的费雪信息项，以及维持宇宙斐波那契生长的拓扑势项。
 
 本节我们将执行变分程序 $\delta S_{\Omega} = 0$。不同于标准广义相对论仅仅将物质视为右端的能量-动量张量源，欧米伽理论中的变分过程揭示了引力场方程的 **计算本体论** 含义：时空曲率并非能量的容器，而是信息处理密度的 **"几何反作用" (Geometric Backreaction)**。我们将推导出一组修正的场方程，其中显式包含了由全息约束导致的动态宇宙项 $\Lambda(\tau)$。
+
+![几何反作用反馈](../../assets/chapter05-02-geometric-backreaction-feedback.png)
 
 **5.2.1 对度规张量的变分**
 

@@ -1,8 +1,12 @@
 **7.4 Experimental Verification Schemes**
 
+![Experimental Verification Schemes](../../assets/chapter07-04-experimental-verification-schemes.png)
+
 In the previous three sections, we derived physical constant values ($\mu \approx 1836$ and $1/\alpha \approx 137.036$) that highly match existing observations from the geometric axioms of Omega Theory. However, a complete physical theory cannot stop at "postdiction" of known data; it must provide new predictions with **Falsifiability**.
 
 If Omega Theory is correct, the universe is not a static Minkowski background but a discrete computational network undergoing Fibonacci growth. This fundamental difference will manifest as tiny deviations from the standard model under extreme physical conditions—very high redshift, very high energy scales, or very high precision measurements. This section proposes three specific experimental verification schemes as **Experimentum Crucis** to test the truth of this theory.
+
+![Telescope Time Dispersion](../../assets/chapter07-04-telescope-time-dispersion.png)
 
 ### 7.4.1 Scheme I: Dipole Drift of Fine Structure Constant in Quasar Spectra
 

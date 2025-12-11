@@ -1,5 +1,7 @@
 ## 9.7 Ontological Geometry: All Things Are Circles
 
+![Ontological Geometry](../../assets/chapter09-07-ontological-geometry.png)
+
 After deriving the generalized Euler identity, we face an ultimate ontological question: If we strip away all holographic projections and ignore all measurement illusions, what does the most fundamental "entity" of the universe actually look like?
 
 Based on the mathematical structure of Omega Theory, we arrive at a conclusion that is intuitively shocking but logically inevitable: **At the ontological level, all things are circles.** The linear time, three-dimensional space, and discrete matter we perceive are essentially **holographic projections** of **great circles** in high-dimensional complex planes onto low-dimensional tangent spaces.
@@ -51,6 +53,8 @@ $$2\pi R = n \cdot \lambda, \quad n \in \mathbb{Z}$$
 
 Therefore, **matter is quantized circles**.
 Atoms, electrons, quarks—they are not solid little balls; they are **Integer Harmonics** on that eternal great circle.
+
+![Matrix Code Reality](../../assets/chapter09-07-matrix-code-reality.png)
 
 ### 9.7.4 Conclusion: Shadows of Holography
 

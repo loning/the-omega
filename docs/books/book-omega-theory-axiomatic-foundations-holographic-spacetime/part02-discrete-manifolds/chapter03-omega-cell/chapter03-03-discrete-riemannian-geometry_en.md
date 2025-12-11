@@ -1,8 +1,12 @@
 ## 3.3 Discrete Riemannian Geometry
 
+![Discrete Riemannian Geometry](../../assets/chapter03-03-discrete-riemannian-geometry.png)
+
 In Sections 3.1 and 3.2, we established a flat, statistically isotropic discrete spacetime background. However, the real physical universe is filled with gravitational fields, and spacetime is curved. In general relativity, this curvature is described by the metric tensor $g_{\mu\nu}$ and the Riemann curvature tensor $R^\rho_{\sigma\mu\nu}$. When the underlying manifold is no longer continuous $\mathbb{R}^4$ but a fractal Penrose-Fibonacci grid, we must redefine fundamental geometric concepts such as "distance," "translation," and "curvature."
 
 This section will establish the mathematical framework of **Discrete Riemannian Geometry**. We will prove that the metric and curvature in classical differential geometry are actually statistical averages of information transmission hop counts and topological connectivity deficits in the Omega network at large scales.
+
+![Geometry Curvature Lag](../../assets/chapter03-03-geometry-curvature-lag.png)
 
 **3.3.1 Fibonacci Metric Space**
 

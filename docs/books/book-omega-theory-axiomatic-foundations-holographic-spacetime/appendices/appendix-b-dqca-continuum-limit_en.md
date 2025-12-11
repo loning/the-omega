@@ -1,6 +1,10 @@
 # Appendix B: Rigorous Proof of the DQCA Continuum Limit
 
+![DQCA Continuum](../assets/appendix-b-dqca-continuum.png)
+
 In Chapter 4 of this book, we physically argued that Dirac-Quantum Cellular Automata (DQCA) defined on the Omega grid emerge as the Dirac equation at macroscopic scales. This appendix will use asymptotic analysis and operator spectral theory to provide a mathematically rigorous proof of this conclusion. We will show how to extract an effective Hamiltonian from discrete unitary evolution operators and analyze higher-order correction terms introduced by spacetime discreteness (i.e., Lorentz invariance violation terms).
+
+![Discrete Lorentz Boost](../assets/appendix-b-discrete-lorentz-boost.png)
 
 ## B.1 Momentum Space Representation of Discrete Evolution Operator
 

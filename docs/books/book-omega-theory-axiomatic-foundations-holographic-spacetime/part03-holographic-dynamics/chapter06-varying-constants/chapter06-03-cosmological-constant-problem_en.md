@@ -1,8 +1,12 @@
 ## 6.3 The Cosmological Constant Problem
 
+![Cosmological Constant Problem](../../assets/chapter06-03-cosmological-constant-problem.png)
+
 In fundamental physics, no problem is more embarrassing than **The Cosmological Constant Problem**. This problem is called by physicists "the worst theoretical prediction in history." Between the vacuum zero-point energy calculation results based on standard quantum field theory (QFT) and the astronomically observed cosmological constant $\Lambda_{obs}$, there exists a staggering difference of up to **120 orders of magnitude ($10^{120}$)**.
 
 This section will prove that this enormous difference is not a failure of physics but a fundamental misunderstanding of how physicists count spacetime degrees of freedom. In the holographic framework of **Omega Theory**, as long as we treat the universe as a projection of a two-dimensional information processing system rather than a three-dimensional entity, this 120-order-of-magnitude error naturally disappears.
+
+![Vacuum Energy Grid](../../assets/chapter06-03-vacuum-energy-grid.png)
 
 **6.3.1 Vacuum Catastrophe: The Fallacy of Voxel Counting**
 

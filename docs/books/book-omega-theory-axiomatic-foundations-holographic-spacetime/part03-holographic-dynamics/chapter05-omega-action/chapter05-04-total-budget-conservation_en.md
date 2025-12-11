@@ -1,5 +1,7 @@
 ## 5.4 Conservation of Total Budget and Infinite Decomposition of the Great Circle
 
+![Total Budget Conservation](../../assets/chapter05-04-total-budget-conservation.png)
+
 In the previous section, we derived the entropic nature of gravity through holographic thermodynamics and revealed that spacetime curvature is a manifestation of computational lag. However, the exponential growth of light speed $c(\tau)$ and the continuous proliferation of spacetime grids in Omega Theory seem to imply that the universe's total energy is increasing infinitely over time. This directly challenges the cornerstone of physics—the conservation laws guaranteed by Noether's Theorem. If spacetime lacks time translation invariance, energy conservation appears to fail.
 
 This section will resolve this fundamental contradiction. We will introduce the concept of **"Total Budget Conservation"**, proving that cosmic evolution is not the "creation from nothing" of physical entities, but rather the **infinite Fibonacci decomposition** of a **Great Circle** in Hilbert space. The total quantity of the universe never changes; only the holographic resolution changes.
@@ -31,6 +33,8 @@ Due to the irrationality of $\phi$, according to Weyl's equidistribution theorem
 
 * **When $\tau$ is small**: The circle is only divided into a few rough arcs. This corresponds to the early universe, where physical laws are vague and particle types are scarce.
 * **When $\tau \to \infty$**: The circle is divided into infinitely dense segments, but the sum of lengths of these infinitely many arcs always equals $2\pi$.
+
+![Total Budget Decomposition](../../assets/chapter05-04-total-budget-decomposition.png)
 
 **Theorem 5.4 (Decomposition Equivalence Theorem)**:
 The Fibonacci spiral growth of the universe is topologically equivalent to the **Infinite Non-ergodic Decomposition** of the unit circle $S^1$.

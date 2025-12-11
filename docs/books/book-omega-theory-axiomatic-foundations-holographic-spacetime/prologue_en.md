@@ -4,6 +4,8 @@
 
 The cracks in the edifice of modern physics begin with a fundamental misalignment in our understanding of "time" as a basic variable. In the standard formulation of quantum mechanics (QM), time $t$ is treated as an external parameter, an absolute background upon which the evolution operator $U(t)$ unfolds; whereas in general relativity (GR), time is a dynamical variable, an intrinsic coordinate of the pseudo-Riemannian manifold $\mathcal{M}$, curved by the distribution of matter. This fundamental conflict at the ontological level leads to the famous **"Problem of Time"** in quantum gravity theory. The Wheeler-DeWitt equation $\hat{H}|\Psi\rangle = 0$ further suggests a disturbing conclusion: in a closed quantum universe, the wave function does not evolve with time, and the universe is fundamentally static.
 
+![The Omega Ansatz](assets/00-prologue-omega-ansatz.png)
+
 This book proposes a more radical solution, which we call **"The Omega Ansatz"**. This ansatz not only accepts the static implications of the Wheeler-DeWitt equation but elevates it to a core axiom of cosmology. We assert that the essence of physical reality is not an "evolutionary process" that flows with time, but rather a single, static, complete state vector existing in an infinite-dimensional complex Hilbert space $\mathcal{H}$.
 
 **Axiom 0.1 (The Omega Axiom)**:
@@ -30,6 +32,8 @@ This perspective completely eliminates the temporal contradiction in quantum gra
 In this sense, the theory constructed in this book is a theory of **"Being"**, not of **"Becoming"**. The ultimate answer we seek lies hidden in the spectral density of $|\Omega\rangle$ and the geometric arrangement of its basis vectors.
 
 **0.2 The Golden Unitary Operator**
+
+![The Golden Unitary Operator](assets/prologue-golden-unitary-operator.png)
 
 After establishing the static nature of the universal state vector $|\Omega\rangle$, we must address an urgent dynamical problem: since the ontology is static, why do observers perceive change? More specifically, what mechanism drives the continuous rotation of basis vectors, thereby generating the phenomenon of "temporal flow"?
 

@@ -1,8 +1,12 @@
 ## 9.6 广义欧拉恒等式：物理学的源代码 (Generalized Euler Identity: The Source Code of Physics)
 
+![广义欧拉恒等式](../../assets/chapter09-06-generalized-euler-identity.png)
+
 在本书的理论构建即将闭环之际，我们必须完成最后一步综合。在前几章中，我们分别讨论了光速 $c$ 的指数增长、内禀时间 $\tau$ 的流逝、以及 $\pi$（几何本体）和 $\phi$（逻辑切割）之间的辩证博弈。现在，我们将这些看似独立的物理量，熔铸进一个单一的、至高无上的数学表达式中。
 
 本节将提出 **广义欧拉恒等式 (Generalized Euler Identity)**。这不仅仅是一个数学公式，它是欧米伽理论的 **"主方程" (Master Equation)**。它揭示了物理宇宙最深层的演化机制：**实在，是欧拉的圆被斐波那契的刀切开后，以光速逃逸向无限的过程。**
+
+![欧拉恒等式螺旋](../../assets/chapter09-06-euler-identity-spiral.png)
 
 ### 9.6.1 从死寂的圆到生命的螺旋
 

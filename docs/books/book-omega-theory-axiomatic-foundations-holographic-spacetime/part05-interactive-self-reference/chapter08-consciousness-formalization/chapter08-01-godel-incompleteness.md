@@ -8,7 +8,11 @@
 
 **8.1 哥德尔不完备性与几何死锁 (Gödelian Incompleteness and Geometric Deadlock)**
 
+![哥德尔不完备性](../../assets/chapter08-01-godel-incompleteness.png)
+
 物理学通常假设宇宙是一个自洽的、封闭的动力系统。这一假设在数学上等价于认为宇宙是一个 **形式公理系统 (Formal Axiomatic System)**，其"公理"是基本物理定律（如欧米伽作用量），其"定理"是演化出的各种物理现象。然而，库尔特·哥德尔 (Kurt Gödel) 在 1931 年的发现粉碎了形式系统的完备性梦想。本节将把哥德尔定理从数理逻辑推广到物理动力学，揭示封闭宇宙的致命缺陷。
+
+![哥德尔逻辑循环](../../assets/chapter08-01-godel-logic-loop.png)
 
 ### 8.1.1 物理定律作为递归可枚举集
 

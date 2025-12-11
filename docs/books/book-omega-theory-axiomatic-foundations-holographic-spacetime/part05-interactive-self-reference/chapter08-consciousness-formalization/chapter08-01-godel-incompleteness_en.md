@@ -8,7 +8,11 @@ Omega Theory is not just a physical theory but also a cognitive theory. We rejec
 
 **8.1 Gödelian Incompleteness and Geometric Deadlock**
 
+![Gödel Incompleteness](../../assets/chapter08-01-godel-incompleteness.png)
+
 Physics typically assumes the universe is a self-consistent, closed dynamical system. This assumption is mathematically equivalent to considering the universe a **Formal Axiomatic System**, where "axioms" are fundamental physical laws (such as the Omega Action) and "theorems" are various evolved physical phenomena. However, Kurt Gödel's discovery in 1931 shattered the dream of completeness for formal systems. This section will extend Gödel's theorem from mathematical logic to physical dynamics, revealing the fatal flaw of closed universes.
+
+![Gödel Logic Loop](../../assets/chapter08-01-godel-logic-loop.png)
 
 ### 8.1.1 Physical Laws as Recursively Enumerable Sets
 

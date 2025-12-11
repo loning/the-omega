@@ -24,8 +24,12 @@ $$x_{n+1} = x_n + \alpha \pmod 1$$
 
 赫尔曼·外尔 (Hermann Weyl) 在 1916 年证明了关于序列分布的均布定理。
 
+![外尔均布定理](../../assets/chapter01-01-weyl-equidistribution.png)
+
 **定理 (外尔均布定理)**：
 设 $\alpha$ 为一个实数。序列 $\{n\alpha \pmod 1\}_{n=1}^{\infty}$ 在区间 $[0, 1]$ 上是 **均匀分布 (Equidistributed)** 的，当且仅当 $\alpha$ 是一个 **无理数 (Irrational Number)**。
+
+![无理数旋转](../../assets/chapter01-01-weyl-irrational-rotation.png)
 
 这意味着，如果旋转角 $\alpha$ 是无理数，轨道 $\{x_n\}$ 将稠密地填满整个圆周，却永远不会精确回到起点。相反，如果 $\alpha$ 是有理数 $p/q$，则轨道是周期的，且仅包含 $q$ 个离散点。
 
