@@ -33,49 +33,45 @@ where $A(\partial \Sigma)$ is the area of the minimal cut separating a causal re
 \section{Quantum Cellular Automata (QCA) as Fundamental Dynamics}
 \label{chap:qca}
 
-\subsection{Definition of QCA}
-A Quantum Cellular Automaton is a unitary evolution $\hat{U}$ on $\bigotimes_x \mathcal{H}_x$ that is:
+\subsection{Definition of QCA on a Quasicrystal}
+A Quantum Cellular Automaton is a unitary evolution $\hat{U}$ on the composite Hilbert space $\mathcal{H} = \bigotimes_{x \in \Lambda} \mathcal{H}_x$. Following the operational framework of D'Ariano, Perinotti, and Bisio \cite{Dariano2014}, we require:
 \begin{enumerate}
-    \item \textbf{Unitary}: $\hat{U}^\dagger \hat{U} = \hat{I}$ (Conservation of probability).
-    \item \textbf{Local}: The state of cell $x$ at $t+1$ depends only on the neighborhood $\mathcal{N}(x)$ at $t$.
-    \item \textbf{Translationally Invariant}: The rule is uniform across $\Lambda$.
+    \item \textbf{Unitarity}: $\hat{U}^\dagger \hat{U} = \hat{I}$ (Conservation of probability).
+    \item \textbf{Causal Locality}: There exists a neighborhood scheme $\mathcal{N}$ such that the state of cell $x$ at step $t+1$ depends only on cells $y \in \mathcal{N}(x)$ at step $t$. Formally, if $\hat{A}_x$ is an observable at $x$, then $\hat{U}^\dagger \hat{A}_x \hat{U}$ is supported on $\mathcal{N}(x)$.
+    \item \textbf{Statistical Isotropy}: While the lattice $\Lambda$ is discrete, the distribution of neighbors $\mathcal{N}(x)$ in the quasicrystal approximation recovers $SO(3)$ invariance in the continuum limit of the propagator.
 \end{enumerate}
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\linewidth]{images/ca_spacetime.png}
-    \caption{\textbf{Space-Time Emerging from Logic}. A space-time diagram of an elementary Cellular Automaton (Rule 110). Complex, non-repeating structures (particles/gliders) emerge from simple local interaction rules, analogous to the emergence of physics from the Omega Network updates.}
-    \label{fig:automaton}
-\end{figure}
-The global operator can be constructed from local block unitaries or partitioned gates:
+The global evolution is built from local "coin" and "shift" operators (or partitioned unitaries). On our $E_8$-projected lattice, the update rule takes the form of a \textbf{Quantum Walk with Memory}:
 \begin{equation}
-    \hat{U} = \prod_{\text{partitions } k} \left( \bigotimes_{\mathcal{N}_j \in \Lambda} \hat{U}_{\mathcal{N}_j}^{(k)} \right).
+    |\psi(x, t+1)\rangle = \sum_{y \in \mathcal{N}(x)} \hat{S}_{x,y} \cdot \hat{C}_y \cdot |\psi(y, t)\rangle,
 \end{equation}
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\linewidth]{images/omega_network.png}
-    \caption{\textbf{The Discrete Omega Network}. A schematic visualization of the vacuum structure as a graph state. Nodes represent finite-dimensional Hilbert spaces ($\mathbb{C}^{d}$), and edges represent entanglement links. "Space" is the graph geometry; "gravity" is the tension in these links.}
-    \label{fig:omega_network}
-\end{figure}
+where $\hat{C}_y$ is a local unitary "coin" acting on the internal degrees of freedom (octonionic fibers), and $\hat{S}_{x,y}$ is a conditional shift operator.
 
 \subsection{Emergence of the Dirac Equation}
-It is a profound result that the Dirac equation is the long-wavelength continuum limit of a QCA.
-Consider a 1D chain of spinors $\psi(x,t)$. The evolution is given by:
+It is a profound result (e.g., as shown by Arrighi, Facchini, and Forets \cite{Arrighi2014}) that the Dirac equation emerges as the long-wavelength continuum limit of discrete quantum walks.
+Consider a simplified 1D chain of spinors $\Psi(x,t) = (\psi_R, \psi_L)^T$. Time evolution is given by mixing chiral states and shifting them:
 \begin{equation}
-    \psi(x, t+\delta t) = \hat{W} \psi(x,t).
+    \Psi(x, t+\varepsilon) = \begin{pmatrix} \cos \theta & -i \sin \theta \\ -i \sin \theta & \cos \theta \end{pmatrix} \begin{pmatrix} \psi_R(x-\varepsilon) \\ \psi_L(x+\varepsilon) \end{pmatrix}.
 \end{equation}
-By scaling the mass parameter $\theta = m \delta t$ (mixing angle) and performing a Taylor expansion to first order in the lattice constant $\varepsilon \sim \delta t$:
+By scaling the "mixing angle" $\theta$ with the mass $m$ as $\theta = m \varepsilon$, and expanding to first order in the lattice constant $\varepsilon$:
 \begin{equation}
-    \psi_{R/L}(x, t+\delta t) \approx \psi_{R/L}(x, t) + \delta t \partial_t \psi_{R/L}.
+    \psi_{R}(x, t) + \varepsilon \partial_t \psi_{R} \approx (1 - \frac{m^2 \varepsilon^2}{2}) \psi_R(x-\varepsilon) - i m \varepsilon \psi_L(x+\varepsilon).
 \end{equation}
-Substituting this into the discrete update rule:
+This system rearranges into the standard 1+1 dimensional Dirac equation in the limit $\varepsilon \to 0$:
 \begin{equation}
-    \partial_t \psi_R = -\partial_x \psi_R + i m \psi_L, \quad \partial_t \psi_L = +\partial_x \psi_L + i m \psi_R.
+    i \gamma^\mu \partial_\mu \Psi - m \Psi = 0.
 \end{equation}
-This system rearranges into the standard 1+1 dimensional Dirac equation $(i \gamma^\mu \partial_\mu - m) \Psi = 0$.
 
-\begin{theorem}[DQCA Limit Convergence]
-For a unitary QCA on a quasicrystal grid with lattice constant $\varepsilon$, if the mixing angle scales as $\theta = m\varepsilon$, the evolution operator $\hat{U}^{t/\varepsilon}$ uniformly converges to the massive Dirac propagator $e^{-i\hat{H}_{\text{Dirac}}t}$ as $\varepsilon \to 0$.
-\end{theorem}
-This proves that the "wave" is merely the statistical envelope of discrete informational jumps.
+\subsection{Conjecture: The Quasicrystal Limit}
+While the convergence is proven for regular grids, the extension to quasicrystals is non-trivial due to the lack of strict translational invariance. However, we invoke the \textit{Principle of Isotropic Averaging}.
+
+\begin{proposition}[Heuristic Dirac Limit]
+\label{prop:dirac_limit}
+For a unitary QCA on a statistically isotropic quasicrystal grid $\Lambda$ with density $\rho \sim \varepsilon^{-3}$, if the local coin operators $\hat{C}_y$ are chosen to respect the local frame symmetries of the $G_2$ fiber, the expectation value of the evolution operator converges to the massive Dirac propagator:
+\begin{equation}
+    \lim_{\varepsilon \to 0} || \langle \hat{U}^{t/\varepsilon} \rangle_{\Lambda} - e^{-i\hat{H}_{\text{Dirac}}t} || = 0.
+\end{equation}
+The formal proof of this convergence, relying on the Bombieri-Taylor theorem for diffraction spectra and the Homogenization Lemma, is provided in \textbf{Appendix \ref{app:homogenization}}. We show that the path integral sum over the irregular lattice averages out the non-commuting phases of the irrational links, leaving only the translation-invariant mode $\vec{k} \cdot \vec{x}$ as the dominant contribution.
+\end{proposition}
+
+This implies that effective Lorentz invariance is not a fundamental symmetry of the lattice, but an emergent statistical property of the "Golden" dispersion relation, valid for low-momentum excitations ($k \ll 1/\varepsilon$).
