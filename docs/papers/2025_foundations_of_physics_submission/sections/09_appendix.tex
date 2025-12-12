@@ -1,4 +1,3 @@
-```latex
 \appendix
 
 \section{Rigorous Proof of Quasicrystal Homogenization}
@@ -83,14 +82,14 @@ We rigorously derive the field equations from the Principle of Least Action.
 \begin{enumerate}
     \item \textbf{Metric Signature}: We use the "mostly plus" convention $(-+++)$.
     \item \textbf{Connection}: The connection $\Gamma^\lambda_{\mu\nu}$ is the Levi-Civita connection (torsion-free).
-    \item \textbf{Scalar Identification}: The scalar field is the logarithm of the information density $\Phi \equiv \ln \rho$.
+    \item \textbf{Scalar Identification}: Let $\varrho$ denote a coarse-grained information/probability density, and define $\varphi \equiv \ln \sqrt{\varrho}$.
     \item \textbf{Matter Coupling}: Standard Model fields $\psi_m$ couple to the metric via the standard Lagrangian $\mathcal{L}_m$.
 \end{enumerate}
 
 \subsection{The Omega Action}
 The total action is the sum of the Einstein-Hilbert term, the Fisher Information term, and the Matter term:
 \begin{equation}
-    S = \int d^4x \sqrt{-g} \left[ \frac{R}{16\pi G} - \lambda g^{\mu\nu} \nabla_\mu \Phi \nabla_\nu \Phi + \mathcal{L}_m(g_{\mu\nu}, \psi_m) \right].
+    S = \int d^4x \sqrt{-g} \left[ \frac{R}{16\pi G} - \lambda_F g^{\mu\nu} \nabla_\mu \varphi \nabla_\nu \varphi - V(\varrho) + \mathcal{L}_m(g_{\mu\nu}, \psi_m) \right].
 \end{equation}
 
 \subsection{Variation with respect to the Metric}
@@ -99,12 +98,14 @@ We vary $S$ with respect to $g^{\mu\nu}$.
     \item \textbf{Gravity}: $\delta S_{EH} = \int \sqrt{-g} \frac{1}{16\pi G} (G_{\mu\nu}) \delta g^{\mu\nu}$.
     \item \textbf{Information}: Using $\delta \sqrt{-g} = -\frac{1}{2}\sqrt{-g} g_{\mu\nu} \delta g^{\mu\nu}$, the variation of the Fisher term is:
     \begin{equation}
-        \delta S_{info} = -\lambda \int \sqrt{-g} \left[ \nabla_\mu \Phi \nabla_\nu \Phi \delta g^{\mu\nu} - \frac{1}{2} g_{\rho\sigma} (\nabla \Phi)^2 \delta g^{\rho\sigma} \right].
+        \delta S_{info} = -\lambda_F \int \sqrt{-g} \left[ \nabla_\mu \varphi \nabla_\nu \varphi \delta g^{\mu\nu} - \frac{1}{2} g_{\rho\sigma} (\nabla \varphi)^2 \delta g^{\rho\sigma} \right].
     \end{equation}
     This yields the \textbf{Information Stress-Energy Tensor}:
     \begin{equation}
-        T_{\mu\nu}^{info} \equiv -\frac{2}{\sqrt{-g}} \frac{\delta S_{info}}{\delta g^{\mu\nu}} = 2\lambda \left( \nabla_\mu \Phi \nabla_\nu \Phi - \frac{1}{2} g_{\mu\nu} (\nabla \Phi)^2 \right).
+        T_{\mu\nu}^{info} \equiv -\frac{2}{\sqrt{-g}} \frac{\delta (S_{info}+S_V)}{\delta g^{\mu\nu}}
+        = 2\lambda_F \left( \nabla_\mu \varphi \nabla_\nu \varphi - \frac{1}{2} g_{\mu\nu} (\nabla \varphi)^2 \right) - g_{\mu\nu} V(\varrho),
     \end{equation}
+    where $S_V = -\int d^4x \sqrt{-g}\, V(\varrho)$.
     \item \textbf{Matter}: By definition, $T_{\mu\nu}^{(m)} \equiv -\frac{2}{\sqrt{-g}} \frac{\delta S_m}{\delta g^{\mu\nu}}$.
 \end{enumerate}
 Collecting terms, we obtain the field equations:
@@ -113,14 +114,16 @@ Collecting terms, we obtain the field equations:
 \end{equation}
 
 \subsection{Variation with respect to the Scalar Field}
-Varying with respect to $\Phi$ yields the equation of motion for the information density.
+Varying with respect to $\varphi$ yields the equation of motion for the information density.
 \begin{equation}
-    \delta S_{info} = -2\lambda \int d^4x \sqrt{-g} \nabla^\mu \Phi \nabla_\mu (\delta \Phi) = 2\lambda \int d^4x \sqrt{-g} (\Box \Phi) \delta \Phi.
+    \delta S_{info} = -2\lambda_F \int d^4x \sqrt{-g} \nabla^\mu \varphi \nabla_\mu (\delta \varphi)
+    = 2\lambda_F \int d^4x \sqrt{-g} (\Box \varphi) \delta \varphi.
 \end{equation}
-Assuming no direct coupling between $\Phi$ and matter (in the minimal model), we get the homogeneous wave equation:
+Including the potential term, $\delta S_V = -\int d^4x \sqrt{-g}\, \frac{dV}{d\varphi}\, \delta\varphi$, the Euler--Lagrange equation is:
 \begin{equation}
-    \Box \Phi \equiv \nabla_\mu \nabla^\mu \Phi = 0.
+    2\lambda_F \Box \varphi - \frac{dV}{d\varphi} = 0,
 \end{equation}
+with $\frac{dV}{d\varphi} = 2\varrho \frac{dV}{d\varrho}$.
 
 \subsection{Conservation Laws}
 Diffeomorphism invariance ensures $\nabla^\mu G_{\mu\nu} = 0$. Thus, the total stress tensor must be conserved:
@@ -129,21 +132,20 @@ Diffeomorphism invariance ensures $\nabla^\mu G_{\mu\nu} = 0$. Thus, the total s
 \end{equation}
 Checking the divergence of the information tensor explicitly:
 \begin{equation}
-    \nabla^\mu T_{\mu\nu}^{info} = 2\lambda [ (\Box \Phi) \nabla_\nu \Phi + \nabla^\mu \Phi \nabla_\mu \nabla_\nu \Phi - \frac{1}{2} \nabla_\nu (\nabla_\alpha \Phi \nabla^\alpha \Phi) ]
+    \nabla^\mu T_{\mu\nu}^{info} = 2\lambda_F [ (\Box \varphi) \nabla_\nu \varphi + \nabla^\mu \varphi \nabla_\mu \nabla_\nu \varphi - \frac{1}{2} \nabla_\nu (\nabla_\alpha \varphi \nabla^\alpha \varphi) ] - \nabla_\nu V(\varrho).
 \end{equation}
-Using $\nabla_\nu (\nabla \Phi)^2 = 2 \nabla^\mu \Phi \nabla_\nu \nabla_\mu \Phi$, the last two terms cancel. We are left with:
+Using $\nabla_\nu (\nabla \varphi)^2 = 2 \nabla^\mu \varphi \nabla_\nu \nabla_\mu \varphi$, the last two terms cancel. We are left with:
 \begin{equation}
-    \nabla^\mu T_{\mu\nu}^{info} = 2\lambda (\Box \Phi) \nabla_\nu \Phi.
+    \nabla^\mu T_{\mu\nu}^{info} = \left( 2\lambda_F \Box \varphi - \frac{dV}{d\varphi} \right) \nabla_\nu \varphi.
 \end{equation}
-Thus, provided the scalar field satisfies the equation of motion $\Box \Phi = 0$, the information energy is separately conserved.
+Thus, provided the scalar field satisfies its equation of motion, the information stress tensor is separately conserved.
 
 \subsection{The Information Current}
-We define the probabilistic current $J^\mu = \rho \nabla^\mu \Phi$. Note that since $\Phi = \ln \rho$, this is $J^\mu = \nabla^\mu \rho$.
-The equation $\Box \Phi = 0$ implies:
+We define a natural covariant ``information current'' by
 \begin{equation}
-    \nabla_\mu (\rho^{-1} J^\mu) = 0.
+    J^\mu \equiv \varrho \nabla^\mu \varphi.
 \end{equation}
-This represents the geometric conservation of the generating information flow.
+Since $\varphi = \ln \sqrt{\varrho}$, we have $J^\mu = \frac{1}{2}\nabla^\mu \varrho$. In the minimal case $V\equiv 0$, the scalar equation reduces to $\Box \varphi = 0$.
 
 \section{Holographic Isometry and Error Correction}
 \label{app:isometry}
@@ -174,6 +176,7 @@ where the error term $\mathcal{E}$ is exponentially suppressed.
 \subsection{Error Bounds}
 The "price" of reconstruction is governed by the code distance.
 \begin{proposition}[Error Suppression]
+\label{prop:error_suppression}
 For a Perfect Tensor network with bond dimension $\chi$, the error in reconstructing an operator at bulk depth $z$ from a boundary region $A$ scales as:
 \begin{equation}
     ||\mathcal{E}|| \le c \cdot \chi^{-(Area(\gamma_A) - Area(\gamma_{min}))}.
@@ -196,14 +199,13 @@ The fundamental couplings are defined as integrals over the moduli space of the 
 \subsection{Fine Structure Constant \texorpdfstring{$\alpha$}{alpha}}
 The gauge group $U(1)$ arises from the $S^1$ fiber of the Hopf fibration $S^1 \hookrightarrow S^3 \to S^2$. The bare inverse coupling $\alpha^{-1}_{UV}$ is given by the spectral volume of the total fibration moduli $\mathcal{M} \cong S^1 \times S^2 \times S^3$.
 
-\begin{definition}[Alpha Integral]
+\begin{definition}[Alpha Ansatz (Working)]
+\label{def:alpha_ansatz}
+We use a phenomenological geometric ansatz for the UV-normalized inverse coupling:
 \begin{equation}
-    \alpha^{-1}_{UV} \equiv \frac{\text{Vol}(S^1 \times S^2 \times S^3)}{\text{Vol}(U(1)_{gauge})} = \frac{2\pi \cdot 4\pi \cdot 2\pi^2}{1} = 16\pi^4 \text{ (Naive)}.
+    \alpha^{-1}_{\mathrm{UV}} \equiv 4\pi^3 + \pi^2 + \pi,
 \end{equation}
-Correcting for the discrete torsion classes $H^3(S^3, \mathbb{Z})$, the sum includes the base manifolds:
-\begin{equation}
-    \alpha^{-1}_{UV} = \text{Vol}(T^3) + \text{Area}(D^2) + \text{Length}(S^1) \approx 137.03630.
-\end{equation}
+which numerically gives $\alpha^{-1}_{\mathrm{UV}}\approx 137.03630$. This expression should be understood as an effective summary of discrete/topological weights associated with the internal fiber data; a first-principles derivation from a well-defined measure on the relevant moduli space is an open problem.
 \end{definition}
 
 \subsubsection{Renormalization Group Flow}
@@ -216,11 +218,7 @@ For the hierarchy of $M_{Pl}/m_e \approx 10^{22}$, the logarithmic term is large
 \subsection{Proton-Electron Mass Ratio \texorpdfstring{$\mu$}{mu}}
 The mass ratio is defined by the ratio of the volumes of the maximal compact cycle (the "proton" knot) to the minimal cycle (the "electron" loop).
 \begin{equation}
-    \mu_{geo} \equiv \frac{\text{Vol}(S^7 / \mathbb{Z}_2)}{\text{Vol}(S^1)} = \frac{\frac{1}{2} \cdot \frac{1}{3} \pi^4}{2\pi} \cdot \text{(Scaling Factor)}.
-\end{equation}
-More precisely, using the Lens Space $L(p,q)$ capacities:
-\begin{equation}
-    \mu_{geo} = 6 \pi^5 \approx 1836.1181.
+    \mu_{\mathrm{geo}} = 6\pi^5 \approx 1836.1181.
 \end{equation}
 Comparing with experimental $\mu_{exp} \approx 1836.1526$, the error is $1.8 \times 10^{-5}$, consistent with higher-order symmetry breaking corrections.
 
