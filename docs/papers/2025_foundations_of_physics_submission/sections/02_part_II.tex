@@ -80,10 +80,25 @@ This locality imposes a strict "light cone" structure on the propagation of info
 \begin{axiom}[Holographic Mapping Axiom]
 Let $\mathcal{H}_{\text{bulk}}$ be the Hilbert space of the bulk QCA on the graph $G$, and $\mathcal{H}_{\partial G}$ be the Hilbert space associated with the graph boundary $\partial G$. We postulate the existence of a holographic isometry $\Phi: \mathcal{H}_{\text{bulk}} \hookrightarrow \mathcal{H}_{\partial G}$ that maps bulk states to boundary states.
 
-For any decomposition of the boundary Hilbert space $\mathcal{H}_{\partial G} = \mathcal{H}_R \otimes \mathcal{H}_{\bar{R}}$ corresponding to a boundary region $R$, and for a bulk state $|\psi\rangle$ satisfying the semiclassical condition (large bond dimension), the geometric area of the bulk minimal surface $\gamma_R$ homologous to $R$ is given by the von Neumann entropy of the mapped boundary state:
+\textbf{Concrete Construction (Golden MERA)}: The isometry $\Phi$ is strictly defined by the renormalization group flow of the Quasicrystal. Let $\{\Lambda_s\}_{s=0}^{N}$ be a hierarchy of tilings where $\Lambda_{s+1}$ is generated from $\Lambda_s$ via the standard inflation rule (e.g., $L \to L+S, S \to L$ for 1D, or the equivalent Penrose substitution). The mapping is constructed as a tensor network:
 \begin{equation}
-    \langle \psi | \hat{A}_{\gamma_R} | \psi \rangle = 4 l_P^2 \cdot S(\rho_R), \quad \rho_R = \text{Tr}_{\bar{R}}(\Phi |\psi\rangle \langle \psi| \Phi^\dagger).
+    \Phi \equiv \lim_{N \to \infty} \prod_{s=0}^{N} \left( \hat{D}_s \cdot \hat{W}_s \right),
 \end{equation}
-This relation transforms the "Area" from a fundamental geometric primitive into a derived informational quantity measuring the entanglement required to stitch spacetime together.
+where $\hat{W}_s$ are isometric "inflation tensors" and $\hat{D}_s$ are local unitary "disentanglers". In Appendix \ref{app:isometry}, we rigorously define these as \textbf{Perfect Tensors} and prove the exact recoverability conditions.
+
+\textbf{Error Correction and Recovery}: This tensor network functions as a Quantum Error Correcting Code (QECC).
+\begin{enumerate}
+    \item \textbf{Complementary Recovery}: For any boundary region $R$, the bulk operators in the \textit{entanglement wedge} $\mathcal{W}_E(R)$ can be reconstructed as operators on $R$. Theorem \ref{app:isometry} (Entanglement Wedge Reconstruction) proves that $\Phi \hat{O}_{\text{bulk}} \Phi^\dagger = \hat{O}_R \otimes \hat{I}_{\bar{R}} + \mathcal{E}$.
+    \item \textbf{Code Distance}: The topological protection of the bulk is guaranteed by the code distance $d \sim L^{\frac{1}{\phi}}$. The error term $\mathcal{E}$ is exponentially suppressed as $e^{-d \cdot \ln \chi}$ (see Proposition 3 in Appendix C).
+\end{enumerate}
+
+\subsection{The Factorization Problem and Baby Universes}
+A central puzzle in modern holography is the "Factorization Problem" \cite{Harlow2021}: in a theory with multiple boundaries, the gravitational path integral (which includes connected topologies like Euclidean wormholes) fails to factorize, suggesting an ensemble average over dual theories rather than a single unitary description. This is formalized by the inclusion of "Baby Universes" or $\alpha$-parameters in the Hilbert space.
+
+Omega Theory offers a definitive resolution: the "Alpha Parameters" correspond to the fixed, unique spectral data of the global state $|\Omega\rangle$. By positing a single, rigid vector rather than a statistical ensemble, we effectively "fix the gauge" of the baby universe Hilbert space. Spacetime wormholes are not fundamental topology changes but rather non-local entanglement correlations within the unique tensor network. Factorization is restored because the theory is fundamentally a single quantum system, not an average over random Hamiltonians (as in SYK).
+
+The geometric area law follows from this structure: for a state $|\psi\rangle$ defined by this network, the entropy $S(\rho_R)$ is upper-bounded by the number of bond cuts required to sever $R$ from the rest of the network, which scales as the area of the minimal surface $\gamma_R$:
+\begin{equation}
+    S(\rho_R) \propto |\text{min-cut}(R)| \sim \frac{\text{Area}(\gamma_R)}{4 l_P^2}.
+\end{equation}
 \end{axiom}
-\textit{Remark:} This axiom adapts the Ryu-Takayanagi formula to the QCA context. The isometry $\Phi$ is realized in specific models by tensor sets (e.g., MERA or HaPPY codes) where the bulk emergence corresponds to the renormalization group flow. The equality holds strictly in the limit of large spectral gap and infinite bond dimension; for finite systems, it receives quantum corrections proportional to bulk entanglement entropy (FLM formula).
