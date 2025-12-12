@@ -125,7 +125,42 @@ Here, $\vec{\sigma}$ are the Pauli matrices, and $S_{\hat{n}}$ is the conditiona
 \end{equation}
 This modulation is crucial for breaking the exact translational symmetry that would otherwise lead to doubling.
 
+\subsubsection{Fibonacci/Sturmian coin textures}
+The smooth phason modulation above is a convenient analytic toy model. A canonical discrete quasiperiodic texture is obtained by Sturmian (rotation) coding, which in the golden case yields the Fibonacci word \cite{MorseHedlund1940,Lothaire2002}. In a 1D reduction (or along a chosen lattice geodesic), fix an irrational slope $\alpha\in(0,1)\setminus\mathbb{Q}$ (golden case $\alpha=\phi^{-2}$) and an intercept $\rho\in[0,1)$, and define
+\begin{equation}
+    I_L=[0,1-\alpha),\qquad I_S=[1-\alpha,1),
+\end{equation}
+\begin{equation}
+    \sigma(x)=
+    \begin{cases}
+    L,& \{x\alpha+\rho\}\in I_L,\\
+    S,& \{x\alpha+\rho\}\in I_S,
+    \end{cases}
+\end{equation}
+where $\{\cdot\}$ denotes the fractional part. We then define a piecewise-constant coin (mass/mixing) field by
+\begin{equation}
+    \theta(x)=
+    \begin{cases}
+    \theta_L,& \sigma(x)=L,\\
+    \theta_S,& \sigma(x)=S.
+    \end{cases}
+\end{equation}
+This produces a Fibonacci-textured (quasiperiodic) Dirac walk that is naturally compatible with the cut-and-project viewpoint: the Fibonacci chain is the standard 1D cut-and-project set with a compact window and hence bounded phason fluctuations.
+
 \subsection{Emergence of the Dirac Equation}
+\noindent\textbf{Standard 1D Dirac QCA.}
+To make contact with the canonical 1D Dirac quantum cellular automaton, consider a translation-invariant 1D walk in momentum space with
+\begin{equation}
+    U(k)=
+    \begin{pmatrix}
+    n\,e^{ik} & -i m\\
+    i m & n\,e^{-ik}
+    \end{pmatrix},
+    \qquad
+    n^2+m^2=1,
+\end{equation}
+which yields a Dirac dispersion in the long-wavelength limit \cite{Dariano2014,Bisio2015}. In our parametrization one may identify $n=\cos\theta$ and $m=\sin\theta$ (up to conventions), so that the coin angle plays the role of an effective mass/mixing parameter.
+
 It is a profound result, rigorously established by \textbf{Arrighi, Facchini, and Forets} \cite{Arrighi2014} and \textbf{D'Ariano and Perinotti} \cite{Dariano2014}, that the Dirac equation emerges naturally as the long-wavelength continuum limit of discrete quantum walks.
 Consider a simplified 1D chain. The single-particle dispersion relation for the quantum walk is derived by diagonalizing the evolution operator in momentum space. For the Golden Gate, we obtain:
 \begin{equation}
@@ -168,7 +203,13 @@ If the initial state $|\psi(0)\rangle$ is smooth (band-limited with $k_{max} \ll
     \lim_{\varepsilon \to 0} || \hat{U}_\varepsilon^{\lfloor t/\varepsilon \rfloor} |\psi(0)\rangle - e^{-i\hat{H}_{\text{Dirac}}t} |\psi(0)\rangle || < \mathcal{O}(\varepsilon^2).
 \end{equation}
 \end{theorem}
+\begin{corollary}[Fibonacci-chain / Zeckendorf-textured DQCA]
+The 1D Fibonacci quasicrystal is a cut-and-project set with a compact window and hence bounded phason strain. Therefore the homogenization framework of Appendix \ref{app:homogenization} (in particular Lemma \ref{lemma:ergodic}) applies to Fibonacci/Sturmian-textured walks such as $\hat{U}_\varepsilon=S\cdot C_{\theta(x)}$ with $\theta(x)\in\{\theta_L,\theta_S\}$ defined by a Fibonacci coding. In the long-wavelength regime, the resulting dynamics converges to a Dirac equation with an effective (quasiperiodic) mass/mixing term set by the local coin parameter, up to an error controlled by the homogenization remainder.
+\end{corollary}
 \textit{Proof Sketch.} The proof relies on the \textbf{Homogenization Lemma} (Lemma \ref{lemma:ergodic} in Appendix \ref{app:homogenization}). The irrational winding of the quasicrystal ensures that anisotropic lattice artifacts in the propagator sum $\sum e^{i \vec{k} \cdot \vec{x}}$ destructively interfere. The surviving term is the isotropic spherical average, effectively integrating over the $SO(3)$ measure. The error is bounded by the phason strain field $||\phi||$, as detailed in Appendix \ref{app:homogenization}.
+
+\paragraph{Remark (Zeckendorf-clocked drive).}
+One may also consider a time-dependent drive where the coin parameter alternates according to the intrinsic phase-orbit coding introduced in Part~II: define $\sigma_t\in\{L,S\}$ by an irrational circle rotation and set $\theta_t=\theta_L$ if $\sigma_t=L$ and $\theta_t=\theta_S$ if $\sigma_t=S$. In the golden case, the tick index $t$ admits a unique Zeckendorf digit structure, giving a sparse hierarchical schedule for when scale-dependent updates are activated \cite{Zeckendorf1972,AlloucheShallit2003}.
 
 \subsubsection{Resolution of Fermion Doubling via Domain Wall Filtering}
 The \textbf{Nielsen-Ninomiya (NN) No-Go Theorem} \cite{Nielsen1981} establishes that for any local, translationally invariant, hermitian lattice Hamiltonian, fermion species must come in pairs of opposite chirality (doublers). Omega Theory does not evade the theorem but \textit{resolves} the doubling problem by explicitly paying a known cost: the breaking of exact translation invariance in the higher-dimensional embedding space.

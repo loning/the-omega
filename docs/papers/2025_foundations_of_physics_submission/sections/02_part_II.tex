@@ -25,7 +25,47 @@ We define a 1-parameter family of states $|\Omega(\tau)\rangle$ by injecting a p
 \begin{equation}
     |\Omega(\tau)\rangle \equiv \sum_n c_n e^{-\iu E_n \tau} |E_n\rangle.
 \end{equation}
-This $\tau$ is the "Cosmic Time." It serves as a coordinate parametrizing a curve $\mathcal{C}$ on the unit sphere of $\mathcal{H}$.
+
+\subsubsection{Intrinsic phase-orbit coding and Zeckendorf time}
+The intrinsic parameter $\tau$ serves as a coordinate parametrizing a curve $\mathcal{C}$ in the unit sphere of $\mathcal{H}$ (and hence a trajectory in the projective space $\mathbb{P}(\mathcal{H})$). To connect this continuous intrinsic evolution to a discrete computational clock, we introduce a canonical one-dimensional phase readout of the intrinsic phase orbit.
+
+\begin{definition}[Intrinsic phase-orbit readout]
+Fix a reference vector $|r\rangle\in\mathcal{H}$ such that $\langle r|\Omega(\tau)\rangle\neq 0$ for the times of interest (e.g., $|r\rangle=|E_0\rangle$ with $c_0\neq 0$). Define the phase readout
+\begin{equation}
+    x(\tau)\ \equiv\ \frac{1}{2\pi}\arg\langle r|\Omega(\tau)\rangle\ \ \bmod 1,
+\end{equation}
+which maps the intrinsic phase orbit to a circle variable $x(\tau)\in\mathbb{R}/\mathbb{Z}$.
+\end{definition}
+
+\begin{definition}[Circle-rotation sampling and Sturmian coding]
+Let $t\in\mathbb{Z}_{\ge 0}$ index discrete ticks (e.g., QCA steps) and sample $x(\tau)$ stroboscopically as $x_t\equiv x(\tau_0+t\Delta\tau)$. In the irrational-rotation regime this is modeled as
+\begin{equation}
+    x_{t+1}=x_t+\alpha \pmod 1,\qquad \alpha\in(0,1)\setminus\mathbb{Q}.
+\end{equation}
+Partition the circle into two intervals
+\begin{equation}
+    I_L=[0,1-\alpha),\qquad I_S=[1-\alpha,1),
+\end{equation}
+and define the symbolic coding $\sigma_t\in\{L,S\}$ by
+\begin{equation}
+    \sigma_t=
+    \begin{cases}
+    L,& x_t\in I_L,\\
+    S,& x_t\in I_S.
+    \end{cases}
+\end{equation}
+Such codings of irrational rotations are Sturmian sequences; for the golden-slope choice $\alpha=\phi^{-2}$ (with $\phi=\tfrac{1+\sqrt5}{2}$), $\{\sigma_t\}$ is the Fibonacci word \cite{MorseHedlund1940,Lothaire2002}.
+\end{definition}
+
+\begin{proposition}[Ostrowski numeration and the Zeckendorf specialization (golden case)]
+For an irrational slope $\alpha$, the associated Ostrowski numeration gives a unique digit expansion of each integer time $t$. In the golden case $\alpha=\phi^{-2}$, this admissibility condition reduces to the Zeckendorf rule (no consecutive Fibonacci summands): writing the Fibonacci numbers as $F_0=0$, $F_1=1$, $F_{n+2}=F_{n+1}+F_n$, every $t\in\mathbb{Z}_{\ge 0}$ admits a unique expansion
+\begin{equation}
+    t=\sum_{k\ge 0} b_k F_{k+2},\qquad b_k\in\{0,1\},\qquad b_k b_{k+1}=0,
+\end{equation}
+and conversely every such digit string represents a unique integer \cite{Zeckendorf1972,AlloucheShallit2003}.
+\end{proposition}
+
+\noindent\textit{Interpretation.} The intrinsic phase orbit can be read out as a canonical Fibonacci (Long/Short) symbol stream and, equivalently, a Zeckendorf-addressable digit structure for discrete ticks. This provides a natural intrinsic clock and a sparse hierarchical schedule for activating scale-dependent updates.
 
 \subsection{The Fubini-Study Metric as Physical Duration}
 To give $\tau$ a geometric meaning independent of the specific parametrization, we employ the natural metric of the projective Hilbert space $\mathbb{P}(\mathcal{H})$: the Fubini-Study metric.
@@ -90,6 +130,13 @@ Let $\mathcal{H}_{\text{bulk}}$ be the Hilbert space of the bulk QCA on the grap
     \Phi \equiv \lim_{N \to \infty} \prod_{s=0}^{N} \left( \hat{D}_s \cdot \hat{W}_s \right),
 \end{equation}
 where $\hat{W}_s$ are isometric "inflation tensors" and $\hat{D}_s$ are local unitary "disentanglers". In Appendix \ref{app:isometry}, we formalize the construction under a perfect-tensor (or $\epsilon$-perfect) assumption and derive the corresponding recoverability conditions.
+
+\paragraph{Zeckendorf addressing of inflation layers.}
+In the 1D golden case, the inflation hierarchy admits a canonical arithmetic addressing by Zeckendorf digits: for an integer position (or coarse-graining address) $x\in\mathbb{Z}_{\ge 0}$ one may write uniquely
+\begin{equation}
+    x=\sum_{k\ge 0} b_k F_{k+2},\qquad b_k\in\{0,1\},\qquad b_k b_{k+1}=0.
+\end{equation}
+The digit $b_k$ indicates whether scale layer $k$ contributes a long-scale threshold in the inflation history of that site, providing a sparse hierarchical label for causal structure in the Golden MERA. In this sense, Fibonacci fusion fixes the local tensor data (Appendix \ref{app:formal_proofs}), while Zeckendorf addressing fixes a canonical scheduling/labeling of discrete scale events \cite{Zeckendorf1972,AlloucheShallit2003}.
 
 \textbf{Error Correction and Recovery}: This tensor network functions as a Quantum Error Correcting Code (QECC).
 \begin{enumerate}
