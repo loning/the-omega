@@ -10,13 +10,37 @@ Let $\mathcal{I}_{\text{total}}$ be the total rate at which the quantum state $|
 \begin{enumerate}
     \item \textbf{External Propagation ($v_{\text{ext}}$)}: Moving information through the spatial graph (speed of particles).
     \item \textbf{Internal Processing ($v_{\text{int}}$)}: Processing information locally (mass/inertia).
-    \item \textbf{Holographic Entanglement ($v_{\text{env}}$)}: Updating the boundary connection (gravity).
+    \item \textbf{Environment/Geometry ($v_{\text{env}}$)}: (i) holographic entanglement updates on $\partial G$; and (ii) routing overhead required to realize bulk-local PQCA updates on an effectively 1D computational substrate (see Section \ref{sec:routeA_routing}).
 \end{enumerate}
 The conservation law is:
 \begin{equation}
-    v_{\text{ext}}^2 + v_{\text{int}}^2 + v_{\text{env}}^2 = c^2.
+    v_{\text{ext}}^2 + v_{\text{int}}^2 + v_{\text{holo}}^2 + v_{\text{route}}^2 = c^2,
 \end{equation}
-In empty space ($v_{\text{int}} = v_{\text{env}} = 0$), we recover $v_{\text{ext}} = c$. Near a massive body, $v_{\text{env}}$ increases (gravitational time dilation), forcing $v_{\text{ext}}$ to decrease (Shapiro delay).
+where we have decomposed $v_{\text{env}}^2 \equiv v_{\text{holo}}^2 + v_{\text{route}}^2$. In empty space ($v_{\text{int}} = v_{\text{holo}} = v_{\text{route}} = 0$), we recover $v_{\text{ext}} = c$. Near a region requiring larger routing overhead, $v_{\text{route}}$ increases and the locally available budget for propagation decreases, corresponding to gravitational time dilation and Shapiro-like delay in this parametrization.
+
+\begin{definition}[Computational lapse from routing cost]
+\label{def:computational_lapse}
+Let $\kappa(x)$ denote the coarse-grained local routing cost induced by the exact 1D compilation construction (Definition \ref{def:routing_cost_field}). Define the \emph{computational lapse} by
+\begin{equation}
+    N(x)\equiv \frac{\kappa_0}{\kappa(x)},
+\end{equation}
+where $\kappa_0$ is a reference cost (e.g., the asymptotic value in a weak-field region). If $t$ denotes the computational time defined by 1D nearest-neighbor gate depth on the tape, we identify the local proper time increment as
+\begin{equation}
+    d\tau_{\mathrm{loc}}(x)=N(x)\,dt.
+\end{equation}
+\end{definition}
+
+With this identification, the emergent lapse field is
+\begin{equation}
+    \sqrt{-g_{00}(x)}\ \equiv\ N(x)\ \equiv\ \frac{\kappa_0}{\kappa(x)}.
+\end{equation}
+
+For later convenience, one may parametrize the routing component by
+\begin{equation}
+    \frac{v_{\text{route}}(x)}{c}\equiv \sqrt{1-N(x)^2}
+    \quad\Longleftrightarrow\quad
+    N(x)=\sqrt{1-\frac{v_{\text{route}}(x)^2}{c^2}}.
+\end{equation}
 
 \section{The Omega Action and Informational Gravity}
 \label{chap:omega_action}
@@ -34,6 +58,22 @@ The action functional $S_{\Omega}[g_{\mu\nu}, \varrho]$ is:
     S_{\Omega} = \int d^4x \sqrt{-g} \left[ \frac{R}{16\pi G} - \lambda_{F} g^{\mu\nu} (\nabla_\mu \varphi) (\nabla_\nu \varphi) - V(\varrho) \right].
 \end{equation}
 The first term is the Einstein-Hilbert action (geometry). The second is the relativistic Fisher Information (intrinsic statistical cost). The term $\lambda_F$ is a coupling constant of order $\hbar^2$.
+
+\paragraph{Ansatz (Cost--density identification).}
+To connect the informational field to compilation overhead, we adopt the identification
+\begin{equation}
+    \varrho(x)\equiv \varrho_0\,\kappa(x)^p,\qquad p>0,
+\end{equation}
+so that
+\begin{equation}
+    \varphi = \ln\sqrt{\varrho} = \ln\sqrt{\varrho_0} + \frac{p}{2}\ln\kappa.
+\end{equation}
+Consequently the Fisher term becomes a routing-gradient term:
+\begin{equation}
+    g^{\mu\nu}(\nabla_\mu\varphi)(\nabla_\nu\varphi)
+    = \frac{p^2}{4}\,g^{\mu\nu}(\nabla_\mu\ln\kappa)(\nabla_\nu\ln\kappa).
+\end{equation}
+Thus, curvature is sourced by gradients of the routing-cost field $\kappa(x)$: regions requiring larger exact compilation depth exhibit a smaller lapse $N(x)=\kappa_0/\kappa(x)$ and hence gravitational time dilation.
 
 \subsection{Derivation of Field Equations}
 We perform the variation with respect to the metric $g^{\mu\nu}$.
@@ -86,6 +126,12 @@ We postulate a modified FLRW line element with a time-dependent propagation spee
 \begin{equation}
     ds^2 = -c^2(t) dt^2 + a^2(t) \left[ \frac{dr^2}{1-kr^2} + r^2 d\Omega^2 \right].
 \end{equation}
+In a weak-field inhomogeneous extension compatible with the lapse identification above, one may write
+\begin{equation}
+    ds^2 = -c^2(t) N^2(\mathbf{x})\,dt^2 + a^2(t)\,\gamma_{ij}\,dx^i dx^j,
+    \qquad N(\mathbf{x})=\frac{\kappa_0}{\kappa(\mathbf{x})},
+\end{equation}
+which reduces to the homogeneous FLRW form when $N(\mathbf{x})\approx 1$.
 The Einstein field equations $G_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$ are solved using the "Minimal VSL" prescription where the covariant derivative $\nabla_\mu$ is compatible with the metric ($g_{\mu\nu; \gamma} = 0$).
 
 \subsection{Modified Friedmann Equations}

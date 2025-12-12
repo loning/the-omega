@@ -31,6 +31,9 @@ We propose that the effective bond dimension $\chi$ of the spacetime tensor netw
 \end{equation}
 where $A(\partial \Sigma)$ is the area of the minimal cut separating a causal region. This confirms the prediction of Axiom O4: the "spacetime geometry" we perceive is literally the visualization of the quantum error correction code protecting the information in $|\Omega\rangle$ against boundary erasures. The curvature $R$ of the emergent metric corresponds to the density of disentanglers in the network.
 
+\paragraph{Remark (Circuit density and routing cost).}
+In the exact 1D tape realization (Section \ref{sec:routeA_routing}), both disentangler density and compilation/routing depth are circuit-density measures. We therefore treat spatial gradients of the routing-cost field as a microscopic source of curvature, consistent with the informational-gravity term introduced in Section \ref{chap:omega_action}.
+
 \section{Quantum Cellular Automata (QCA) as Fundamental Dynamics}
 \label{chap:qca}
 
@@ -47,6 +50,62 @@ The global evolution is built from local "coin" and "shift" operators (or partit
     \hat{U} \equiv \prod_{k} \hat{U}_{\mathcal{N}_k} (\theta, \phi),
 \end{equation}
 where each $\hat{U}_{\mathcal{N}_k}$ acts on the Hilbert space $\bigotimes_{x \in \mathcal{N}_k} \mathcal{H}_x$.
+
+\subsection{Exact 1D Tape Realization and Routing Depth}
+\label{sec:routeA_routing}
+This construction provides an exact realization of a bulk-local PQCA step on an effectively one-dimensional nearest-neighbor computational substrate. This makes it possible to define a local \emph{routing overhead} as an intrinsic compilation cost.
+
+Let $R \subset \Lambda$ be a finite patch with $|R|=N$ that is a union of PQCA neighborhoods, so that the restricted one-step update on $R$ is
+\begin{equation}
+    \hat{U}_R \equiv \prod_{k:\,\mathcal{N}_k \subset R} \hat{U}_{\mathcal{N}_k}.
+\end{equation}
+
+\begin{definition}[Tape ordering]
+\label{def:tape_ordering}
+For any finite patch $R \subset \Lambda$ with $|R|=N$, choose an ordering (a bijection)
+\begin{equation}
+    f_R: R \to \{1,\dots,N\}.
+\end{equation}
+\end{definition}
+
+\begin{definition}[Tape encoding isometry]
+\label{def:tape_encoding_isometry}
+Define an isometric relabeling map
+\begin{equation}
+    E_R:\bigotimes_{x\in R}\mathcal H_x\to\bigotimes_{i=1}^{N}\mathcal H_i,
+\end{equation}
+by its action on computational basis product states:
+\begin{equation}
+    E_R\!\Big(\bigotimes_{x\in R}|s_x\rangle\Big)=\bigotimes_{i=1}^{N}\big|s_{f_R^{-1}(i)}\big\rangle .
+\end{equation}
+\end{definition}
+
+For each neighborhood block $\mathcal{N}_k \subset R$, define its tape span
+\begin{equation}
+    \Delta_k \equiv \max_{x\in \mathcal{N}_k} f_R(x)-\min_{x\in \mathcal{N}_k} f_R(x).
+\end{equation}
+
+\begin{proposition}[Exact 1D compilation]
+\label{prop:exact_1d_compilation}
+There exists a 1D nearest-neighbor circuit $\mathcal C_R$ such that
+\begin{equation}
+    \hat{U}_R = E_R^\dagger \, \mathcal C_R \, E_R,
+\end{equation}
+with compilation depth bounded by
+\begin{equation}
+    \mathrm{depth}(\mathcal C_R)\le C\cdot \max_k(\Delta_k+1),
+\end{equation}
+where the constant $C$ depends only on an upper bound on the neighborhood size $\max_k |\mathcal{N}_k|$.
+\end{proposition}
+
+\begin{definition}[Local routing cost field]
+\label{def:routing_cost_field}
+Define the (patch-dependent) local routing cost as
+\begin{equation}
+    \kappa_R(x)\equiv \max_{k:\,x\in \mathcal{N}_k}\big(\Delta_k+1\big).
+\end{equation}
+In the coarse-grained limit we write $\kappa(x)$ for the corresponding routing-cost field.
+\end{definition}
 Specifically, we choose a \textbf{Golden Unitary} scheme. The explicit local update rule (the "Golden Gate") $U_{loc}$ acting on a spinor $\psi_x \in \mathbb{C}^2$ is defined by:
 \begin{equation}
     U_{loc}(\theta, \hat{n}) = e^{-i \theta \vec{n} \cdot \vec{\sigma}} \otimes S_{\hat{n}}.
