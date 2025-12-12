@@ -22,7 +22,7 @@ Let $f: \mathbb{R}^{n-d} \to \mathbb{C}$ be a Riemann-integrable function on the
 \begin{equation}
     \lim_{R \to \infty} \frac{1}{Vol(B_R)} \sum_{x \in \Lambda \cap B_R} f(x_\perp) = \rho \int_W f(y) dy.
 \end{equation}
-This follows from Weyl's Equidistribution Theorem extended to point sets (Hof, 1995).
+This follows from Weyl-type equidistribution for cut-and-project sets; see, e.g., \cite{Hof1995}.
 \end{lemma}
 
 \subsection{Homogenization Theorem}
@@ -44,7 +44,7 @@ where the error term is bounded by:
 \begin{equation}
     \hat{U}(k) \approx I - i \sum_j (\vec{k} \cdot \vec{e}_j) P_j - i H_{coin}.
 \end{equation}
-2. \textbf{Isotropy of Sums (Schechtman's Theorem)}: The linear term depends on the sum of projectors $\sum_j \vec{e}_j P_j$. For the icosahedral set, the sum of rank-1 tensors $\sum \vec{e}_j \otimes \vec{e}_j^T$ is irreducible under $SO(3)$ and thus proportional to the identity $\delta_{ab}$ (Schur's Lemma). This forces the velocity tensor $v_{ab}$ to be $c \delta_{ab}$.
+2. \textbf{Isotropy of sums (icosahedral symmetry)}: The linear term depends on the sum of projectors $\sum_j \vec{e}_j P_j$. For the icosahedral set, the sum of rank-1 tensors $\sum \vec{e}_j \otimes \vec{e}_j^T$ is irreducible under $SO(3)$ and thus proportional to the identity $\delta_{ab}$ (Schur's Lemma). This forces the velocity tensor $v_{ab}$ to be $c \delta_{ab}$.
 3. \textbf{Phason Error Control}: The key difficulty in quasicrystals is the non-periodic modulation. We invoke the \textbf{Ergodic Path Integral Lemma}:
 \begin{equation}
     \left| \sum_{x \in \Lambda_L} e^{i \vec{q} \cdot x} \phi(x) \right| < C L^{d/2} ||\phi||_{W^{1,2}}.
@@ -320,14 +320,27 @@ Let $\hat{\phi}$ be a field operator in the Omega Network. Let $\hat{B}$ be the 
 \label{app:formal_observation}
 
 \subsection{The Observer Operator}
-We define the Observer Operator $\hat{\mathcal{O}}$ rigorously as a Completely Positive Trace-Preserving (CPTP) map acting on the Hilbert space of the universe.
+We distinguish a \emph{conditional} selection/update map (nonlinear because of normalization) from its \emph{unconditioned} statistical average (which is linear and CPTP). This matches the non-linear projector form used in Part~VII.\par
+Let $\mathcal{H}_{univ} = \mathcal{H}_{sys} \otimes \mathcal{H}_{obs}$ and let $\{\hat{\Pi}_k\}$ be a projective family of pointer/consistency sectors with $\hat{\Pi}_k\hat{\Pi}_\ell=\delta_{k\ell}\hat{\Pi}_k$ and $\sum_k \hat{\Pi}_k = I$.
 
-\begin{definition}[Observer Operator]
-Let $\mathcal{H}_{univ} = \mathcal{H}_{sys} \otimes \mathcal{H}_{obs}$ be the bipartition of the universe into system and observer. The Observer Operator $\hat{\mathcal{O}}$ is a projection onto the subspace of "Semantic Consistency":
+\begin{definition}[Conditional selection map (nonlinear)]
+For a state $\rho$ with $p_k\equiv \mathrm{Tr}(\hat{\Pi}_k\rho)>0$, define the conditional update associated with outcome/sector $k$ by
 \begin{equation}
-    \hat{\mathcal{O}}[\rho] = \sum_k \hat{\Pi}_k \rho \hat{\Pi}_k,
+    \hat{\mathcal{O}}_k[\rho] \equiv \frac{\hat{\Pi}_k \rho \hat{\Pi}_k}{\mathrm{Tr}(\hat{\Pi}_k\rho)}.
 \end{equation}
-where $\{\hat{\Pi}_k\}$ is a set of projectors onto pointer states $|k\rangle_{obs}$ that satisfy the \textbf{Wigner-Yanase-Dyson Skew Information} condition $I(\rho, \hat{H}) > 0$, ensuring dynamical non-triviality (lifelike behavior).
+Equivalently, on pure states $|\Psi\rangle$ one has $|\Psi\rangle \mapsto \hat{\Pi}_k|\Psi\rangle/\|\hat{\Pi}_k|\Psi\rangle\|$. This is the basic non-linear ``selection'' map.
+\end{definition}
+
+\begin{definition}[Unconditioned channel (CPTP)]
+The corresponding unconditioned map (outcome ignored/averaged) is the linear CPTP channel
+\begin{equation}
+    \mathcal{E}_{\mathcal{O}}[\rho] \equiv \sum_k \hat{\Pi}_k \rho \hat{\Pi}_k
+    \;=\;\sum_k p_k\,\hat{\mathcal{O}}_k[\rho].
+\end{equation}
+\end{definition}
+
+\paragraph{Remark (Semantic consistency filter).}
+In the applications discussed in Part~VII, the projectors $\hat{\Pi}_k$ are intended to encode coarse-grained ``semantic consistency'' constraints; one may further restrict attention to sectors for which a chosen dynamical non-triviality functional (e.g.\ a skew-information measure) is positive.
 
 \subsection{Minimal Working Example: System + Pointer}
 We illustrate the mechanism with a minimal "Toy Universe" consisting of a System qubit $S$ and a Pointer qubit $P$.
@@ -346,17 +359,16 @@ To the local observer (the Pointer), linearity is broken (collapse). To the glob
 
 \subsection{Global Consistency and Bell Tests}
 This framework resolves the conflict with Bell inequalities via a form of \textbf{Global Superdeterminism} (or "Super-Measure").
-Standard Bell derivations assume Statistical Independence: $P(\lambda | settings) = P(\lambda)$. In Omega Theory, the "settings" (detector orientations) and the "hidden variables" (particle spins) are both determinstic consequences of the single fixed state $|\Omega\rangle$.
-The Observer Operator $\hat{\mathcal{O}}$ does not "cause" collapse retrocausally. Instead, it selects the \textbf{Consistent History} from the Hilbert space where the detector settings and outcomes are aligned to preserve the global topological charge.
+Standard Bell derivations assume Statistical Independence: $P(\lambda | settings) = P(\lambda)$. In Omega Theory, the "settings" (detector orientations) and the "hidden variables" (particle spins) are both deterministic consequences of the single fixed state $|\Omega\rangle$.
+The observer/selection map does not "cause" collapse retrocausally. Instead, it models the selection of a \textbf{Consistent History} from the Hilbert space where the detector settings and outcomes are aligned to preserve the global topological charge.
 Thus, Alice's choice of setting $a$ and Bob's outcome $b$ are correlated *at the Big Bang* (at the root of the MERA network). The violation of CHSH inequalities ($S > 2$) is allowed because the "free will" assumption of the experimenter is constrained by the global self-consistency of the computational history.
-\end{definition}
 
 \subsection{Theorem: Gödelian Undecidability Requires Measurement}
 We prove that "measurement" is not an arbitrary addition but a logical necessity for any consistent QCA capable of self-reference.
 
 \begin{theorem}[Gödel-Measurement]
 \label{thm:godel_measurement}
-Let $\mathcal{U}$ be a universal Quantum Cellular Automaton. There exists a subclass of states $\{|\psi_{undec}\rangle\}$ (encoding self-referential propositons $G$) such that the infinite-time limit of the evolution $\lim_{t\to\infty} \hat{U}^t |\psi_{undec}\rangle$ is formally undecidable (non-computable) from within the algebra $\mathfrak{A}_{loc}$ of local observers.
+Let $\mathcal{U}$ be a universal Quantum Cellular Automaton. There exists a subclass of states $\{|\psi_{undec}\rangle\}$ (encoding self-referential propositions $G$) such that the infinite-time limit of the evolution $\lim_{t\to\infty} \hat{U}^t |\psi_{undec}\rangle$ is formally undecidable (non-computable) from within the algebra $\mathfrak{A}_{loc}$ of local observers.
 \textbf{Resolution}: The act of "Measurement" corresponds to the introduction of an external Choice Operator $\hat{\mathcal{C}}$ (the "Oracle") that projects the state into a decidable sector:
 \begin{equation}
     \hat{\mathcal{C}} |\psi_{undec}\rangle \to |\psi_{True}\rangle \text{ or } |\psi_{False}\rangle.
@@ -364,8 +376,8 @@ Let $\mathcal{U}$ be a universal Quantum Cellular Automaton. There exists a subc
 Thus, state reduction is the physical manifestation of logical consistency in an incomplete axiomatic system.
 \end{theorem}
 
-\subsection{Rigorous Derivation of the Born Rule}
-We adapt Zurek's \textbf{Envariance} (Entanglement-Assisted Invariance) argument to the specific geometry of the Omega Network.
+\subsection{Born Rule from Holographic Counting (under assumptions)}
+We present a symmetry-based counting argument for the Born rule under explicit fine-graining and fair-sampling (indifference) assumptions. Related symmetry-based approaches include envariance \cite{Zurek2005}.
 
 \begin{theorem}[Born Rule from Holographic Counting]
 \label{thm:born_rule}
@@ -373,13 +385,16 @@ Let $|\psi\rangle = \sum_k c_k |k\rangle$ be a state in the Omega Network. The p
 \end{theorem}
 \begin{proof}
 1. \textbf{Holographic Encoding}: Every state $|k\rangle$ in the bulk corresponds to a boundary code subspace $\mathcal{C}_k$ of dimension $d_k = e^{S(k)}$.
-2. \textbf{Fine-Graining}: We decompose the coefficients $c_k = \sqrt{n_k/N}$ into an equal-weight superposition of $n_k$ microstates: $|\psi\rangle \propto \sum_{k} \sum_{i=1}^{n_k} |k, i\rangle_{micro}$.
+2. \textbf{Fine-Graining}: Approximate the weights by rationals $|c_k|^2 \approx n_k/N$ and represent $|\psi\rangle$ as an equal-weight superposition of $N$ microstates grouped into $n_k$ copies of branch $k$:
+\[
+|\psi\rangle \propto \sum_{k} \sum_{i=1}^{n_k} |k, i\rangle_{micro}.
+\]
 3. \textbf{Frame Stability}: The physical "laws" (the Hamiltonian $\hat{H}$) are invariant under unitary swaps of the microstates $|k, i\rangle \leftrightarrow |k, j\rangle$ (Action of the Symmetric Group $S_N$).
-4. \textbf{Indifference}: By the Principle of Indifference (Laplace), determined by the symmetry of the micro-ensemble, the probability of any microstate is $p_{micro} = 1/N$.
+4. \textbf{Indifference}: By a micro-canonical fair-sampling assumption (Principle of Indifference), each microstate has probability $p_{micro} = 1/N$.
 5. \textbf{Aggregation}: The probability of the macrostate $k$ is the sum over its micro-realizations:
 \begin{equation}
     P_k = \sum_{i=1}^{n_k} p_{micro} = \frac{n_k}{N} = |c_k|^2.
 \end{equation}
-Thus, the Born rule is a counting theorem for the underlying holographic bits.
+Thus, under the fine-graining and indifference assumptions, the Born rule follows as a counting identity for the underlying holographic micro-ensemble.
 \end{proof}
 

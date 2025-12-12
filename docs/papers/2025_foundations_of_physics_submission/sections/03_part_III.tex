@@ -97,15 +97,24 @@ with compilation depth bounded by
 \end{equation}
 where the constant $C$ depends only on an upper bound on the neighborhood size $\max_k |\mathcal{N}_k|$.
 \end{proposition}
+\textit{Proof sketch.}
+Fix an ordering $f_R$ and let $m\equiv \max_k|\mathcal{N}_k|<\infty$. For each neighborhood block $\mathcal{N}_k$, let $I_k\equiv[\min_{x\in\mathcal N_k}f_R(x),\,\max_{x\in\mathcal N_k}f_R(x)]$ be its tape interval, of length $\Delta_k+1$. Since $m$ is bounded, the local unitary $\hat{U}_{\mathcal{N}_k}$ admits a fixed-depth nearest-neighbor implementation once its $m$ registers occupy a contiguous segment of the 1D tape (the required depth depends only on $m$ and the on-site dimension).\par
+We implement $\hat{U}_R=\prod_k\hat{U}_{\mathcal{N}_k}$ by a \emph{gather--execute--scatter} construction. (i) \textbf{Gather}: using a nearest-neighbor SWAP network on the tape, route the registers belonging to $\mathcal{N}_k$ so that they become contiguous within $I_k$; this requires $\mathcal{O}(\Delta_k+1)$ SWAP layers because no register needs to move more than $\Delta_k$ sites. (ii) \textbf{Execute}: apply the local circuits for all $k$ in parallel. (iii) \textbf{Scatter}: undo the SWAP network. The resulting overall depth is bounded by a constant times $\max_k(\Delta_k+1)$, yielding the stated bound.
 
 \begin{definition}[Local routing cost field]
 \label{def:routing_cost_field}
-Define the (patch-dependent) local routing cost as
+For a fixed tape ordering $f_R$, define the ordering-dependent local routing cost
 \begin{equation}
-    \kappa_R(x)\equiv \max_{k:\,x\in \mathcal{N}_k}\big(\Delta_k+1\big).
+    \kappa_R(x;f_R)\equiv \max_{k:\,x\in \mathcal{N}_k}\big(\Delta_k+1\big).
 \end{equation}
+Since $f_R$ is not a physical datum but a relabeling choice for the 1D substrate, we define the physical routing cost by minimizing over orderings (equivalently, over exact 1D nearest-neighbor compilation choices compatible with the relabeling):
+\begin{equation}
+    \kappa_R(x)\equiv \inf_{f_R}\,\kappa_R(x;f_R),
+\end{equation}
+with $\inf$ replaced by $\min$ when the minimum is attained.
 In the coarse-grained limit we write $\kappa(x)$ for the corresponding routing-cost field.
 \end{definition}
+We will later denote by $\kappa_0>0$ a reference minimal routing cost (e.g., the weak-field baseline), so that $\kappa(x)\ge \kappa_0$ in the regimes where the lapse identification is used.
 Specifically, we choose a \textbf{Golden Unitary} scheme. The explicit local update rule (the "Golden Gate") $U_{loc}$ acting on a spinor $\psi_x \in \mathbb{C}^2$ is defined by:
 \begin{equation}
     U_{loc}(\theta, \hat{n}) = e^{-i \theta \vec{n} \cdot \vec{\sigma}} \otimes S_{\hat{n}}.
