@@ -1,5 +1,175 @@
 \appendix
 
+\section{Explicit 1D Fibonacci DQCA model and numerical protocol}
+\label{app:fib_dqca}
+
+This appendix specifies a concrete 1D Fibonacci (cut-and-project) Dirac quantum cellular automaton (DQCA) used as a checkable subsystem model for the quasicrystal program in Part~III. It also fixes the diagnostics (dispersion extraction, group velocities, and norm errors) used for the numerical evidence reported in Part~VI.\par
+Throughout, $\phi=\tfrac{1+\sqrt5}{2}$ and $\alpha=\phi^{-2}$.
+
+\subsection{Fibonacci chain as a cut-and-project set}
+Fix an intercept (phason shift) $\rho\in[0,1)$ and define the internal coordinate
+\begin{equation}
+    u_j \equiv \{j\alpha+\rho\}\in[0,1),\qquad j\in\mathbb{Z},
+\end{equation}
+where $\{\cdot\}$ denotes the fractional part. Define the tile-type word $\sigma(j)\in\{L,S\}$ by
+\begin{equation}
+    \sigma(j)=
+    \begin{cases}
+    L,& u_j\in[0,1-\alpha),\\
+    S,& u_j\in[1-\alpha,1).
+    \end{cases}
+\label{eq:fib_sigma_appendix}
+\end{equation}
+This is the standard Sturmian coding of an irrational rotation and yields the Fibonacci word for $\alpha=\phi^{-2}$ \cite{MorseHedlund1940,Lothaire2002}. The geometric embedding is obtained by assigning two edge lengths
+\begin{equation}
+    \ell_L\equiv \phi\,\varepsilon,\qquad \ell_S\equiv \varepsilon,
+\end{equation}
+and defining vertex positions recursively by
+\begin{equation}
+    r_0=0,\qquad r_{j+1}=r_j+\ell_{\sigma(j)}.
+\end{equation}
+The embedded set $\{r_j\}\subset\mathbb{R}$ is a 1D cut-and-project quasicrystal (Fibonacci chain).
+
+\subsection{Local gates and the one-step unitary}
+For continuum-limit diagnostics we work in the single-particle sector
+\begin{equation}
+    \mathcal{H}_{1p}=\ell^2(\mathbb{Z})\otimes\mathbb{C}^2,
+\end{equation}
+with internal basis states $\{|R\rangle,|L\rangle\}$.
+Let the on-site (Long/Short) coin rotations be
+\begin{equation}
+    C_L\equiv e^{-i\theta_L\sigma_y},\qquad C_S\equiv e^{-i\theta_S\sigma_y}.
+\end{equation}
+Define the position-dependent coin operator
+\begin{equation}
+    C\equiv \sum_{j\in\mathbb{Z}} |j\rangle\langle j|\otimes C_{\sigma(j)}.
+\end{equation}
+Define the conditional nearest-neighbor shift
+\begin{equation}
+    S\equiv \sum_{j\in\mathbb{Z}}\Big(|j+1\rangle\langle j|\otimes|R\rangle\langle R| + |j-1\rangle\langle j|\otimes|L\rangle\langle L|\Big).
+\end{equation}
+The one-step Floquet operator is the coined quantum walk
+\begin{equation}
+    U \equiv S\,C.
+\end{equation}
+Unitarity is immediate from unitarity of $S$ (a permutation on the basis) and of $C$ (block-diagonal with unitary blocks).
+
+\subsection{Phason shift and phason strain}
+The intercept $\rho$ shifts the acceptance window in internal space and generates a family of locally indistinguishable Fibonacci chains (different global phason choices). A convenient strain model lets $\rho$ vary slowly with the site index $j$:
+\begin{equation}
+    \rho\to \rho(j),\qquad u_j\equiv \{j\alpha+\rho(j)\}.
+\end{equation}
+Define the discrete phason strain by the incremental change
+\begin{equation}
+    \eta_j \equiv \rho(j+1)-\rho(j),
+\end{equation}
+and its norms (used in the numerics) by
+\begin{equation}
+    \|\eta\|_{\infty}\equiv \sup_j |\eta_j|,\qquad
+    \|\eta\|_{2;N}\equiv \left(\frac{1}{N}\sum_{j=0}^{N-1}\eta_j^2\right)^{1/2}.
+\end{equation}
+The unstrained Fibonacci chain corresponds to $\eta_j\equiv 0$. Small $\|\eta\|$ generates a controlled density of local phason flips (local changes of the L/S pattern).
+
+\subsection{Periodic approximants and dispersion extraction}
+To define a momentum-space diagnostic on an aperiodic texture we use periodic Fibonacci approximants. Let $F_0=0$, $F_1=1$, $F_{n+2}=F_{n+1}+F_n$ be Fibonacci numbers and set
+\begin{equation}
+    \alpha_n \equiv \frac{F_{n-1}}{F_n}\to \alpha.
+\end{equation}
+Define a length-$N$ periodic texture by taking $N\equiv F_n$ and replacing $\alpha$ with $\alpha_n$ in Eq.~(\ref{eq:fib_sigma_appendix}), so $\sigma_n(j+N)=\sigma_n(j)$. The finite-volume Floquet operator $U_N$ acts on $\mathbb{C}^{2N}$ and is block-circulant up to the coin texture.\par
+For each quasi-momentum $k\in[-\pi,\pi)$, implement the Bloch boundary condition
+\begin{equation}
+    \psi(j+N)=e^{ikN}\psi(j),
+\end{equation}
+and compute the $2\times 2$ quasienergy branches $E^{(n)}_{\pm}(k)$ from the eigenphases of the resulting $2N\times 2N$ matrix representation of $U_N(k)$. The group velocity is defined by
+\begin{equation}
+    v^{(n)}_{\pm}(k)\equiv \frac{\partial E^{(n)}_{\pm}(k)}{\partial k},
+\end{equation}
+computed numerically by finite differences on a $k$ grid.
+
+\subsection{Error norms}
+Let $E_D(k)=\sqrt{(c_{\mathrm{eff}}k)^2+m_{\mathrm{eff}}^2}$ be the target Dirac dispersion in the long-wavelength regime, with $(c_{\mathrm{eff}},m_{\mathrm{eff}})$ fit from small-$k$ data. We define the dispersion error at cutoff $k_{\max}$ by
+\begin{equation}
+    \delta_E^{(n)}(k_{\max})\equiv \max_{|k|\le k_{\max}} \big|E^{(n)}_{+}(k)-E_D(k)\big|.
+\end{equation}
+For wavepacket propagation, given an initial normalized state $|\psi_0\rangle\in\mathcal{H}_{1p}$ and integer time $T$, define
+\begin{equation}
+    \epsilon_{\mathrm{prop}}(T)\equiv \|U^T|\psi_0\rangle-|\psi_D(t)\rangle\|,\qquad t\equiv T\varepsilon,
+\end{equation}
+where $|\psi_D(t)\rangle$ is the corresponding Dirac evolution under a chosen continuum Hamiltonian $H_D$ (with the same fitted parameters and the same initial envelope). In the numerical implementation we report both $\epsilon_{\mathrm{prop}}(T)$ and its scaling with $(\varepsilon,k_{\max},\|\eta\|)$.
+
+\subsection{Reproducible numerical evidence (fixed parameter set)}
+For reproducibility, the figures below are generated by the fixed-parameter script
+\texttt{scripts/generate\_fib\_dqca\_figures.py}. The script prints its configuration to stdout; in the current version the key parameters are
+$\varepsilon=0.05$, $(m_L,m_S)=(0.60,0.40)$ (so $\theta_{L/S}=m_{L/S}\varepsilon$), $\rho_0=0.123456$, approximant sizes $N\in\{F_{11},F_{12},F_{13}\}=\{89,144,233\}$, and a compact $k$-grid of $17$ points over $|p|\le 2.5$.\par
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.85\linewidth]{images/fib_dqca_dispersion.png}
+    \caption{\textbf{Low-energy dispersion on Fibonacci periodic approximants.} The plotted branch is the smallest nonzero quasienergy magnitude (near the Floquet eigenvalue $1$), extracted from periodic Fibonacci approximants and expressed in physical units $(p,E)$ with $p=k/\varepsilon$ and $E=\mathrm{phase}/\varepsilon$. A Dirac fit $E_D(p)=\sqrt{(c_{\mathrm{eff}}p)^2+m_{\mathrm{eff}}^2}$ is overlaid for the largest $N$.}
+    \label{fig:fib_dqca_dispersion}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.85\linewidth]{images/fib_dqca_dirac_fit_error_vs_N.png}
+    \caption{\textbf{Dirac-fit residual vs approximant size.} The max and RMS residuals of the Dirac fit decrease as the Fibonacci approximant size $N$ increases, consistent with convergence of the low-energy branch to a Dirac form in the long-wavelength regime for the Fibonacci-textured walk (within the fixed-parameter protocol above).}
+    \label{fig:fib_dqca_dirac_fit_error_vs_N}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.85\linewidth]{images/fib_dqca_dirac_fit_error_vs_phason.png}
+    \caption{\textbf{Sensitivity to phason strain (periodic test field).} The Dirac-fit RMS residual is plotted against the wrapped phason strain metric $\eta_{\infty}$ for a periodic sinusoidal phason field $\rho(j)=\rho_0+A\sin(2\pi j/N)$ (wrapped). Once the modulation induces additional local flips in the L/S pattern, the residual increases.}
+    \label{fig:fib_dqca_dirac_fit_error_vs_phason}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.85\linewidth]{images/fib_dqca_doubler_gap_at_pi.png}
+    \caption{\textbf{Doubler diagnostic at the Brillouin edge.} The smallest nonzero quasienergy magnitude at $k=\pi$ (in physical units) remains bounded away from $0$ across increasing approximant size in the fixed-parameter protocol. This is consistent with the absence of an additional low-energy Dirac cone in the periodic-approximant diagnostic.}
+    \label{fig:fib_dqca_doubler_gap_at_pi}
+\end{figure}
+
+\section{Projection filtering and a doubler gap bound (1D Fibonacci case)}
+\label{app:doubling_filter}
+This appendix spells out the acceptance-window Fourier transform and a simple mass-gap bound for the projection-filter mechanism discussed in Section~\ref{sec:doubling_filter}, specializing to the standard 1D Fibonacci cut-and-project construction from $\mathbb{Z}^2$.\par
+
+\subsection{Interval window and explicit Fourier transform}
+For the Fibonacci chain, the internal space is one-dimensional and the acceptance window $W\subset\mathbb{R}$ can be taken as an interval of length $R>0$ (up to an affine change of coordinates). Let $W=[-R/2,R/2]$ and define the normalized Fourier transform
+\begin{equation}
+    \widehat{W}(q)\equiv \frac{1}{R}\int_{-R/2}^{R/2} e^{-iqy}\,dy
+    = e^{-iq\cdot 0}\,\frac{\sin(qR/2)}{qR/2}
+    \equiv \mathrm{sinc}\!\left(\frac{qR}{2}\right),
+\end{equation}
+with $\mathrm{sinc}(x)\equiv \sin(x)/x$ and $\widehat{W}(0)=1$.
+The elementary bound $|\sin x|\le 1$ implies
+\begin{equation}
+    |\widehat{W}(q)| \le \min\left\{1,\ \frac{2}{|q|R}\right\}.
+\label{eq:window_sinc_bound}
+\end{equation}
+
+\subsection{A concrete lower bound for would-be doubler momenta}
+In the cut-and-project embedding picture one decomposes embedding momentum $k\in(\mathbb{R}/(2\pi/\varepsilon)\mathbb{Z})^2$ into components $(k_\parallel,k_\perp)$ along the physical and internal directions. For a ``mirror'' shift by $\pi/\varepsilon$ in one embedding coordinate, Diophantine irrationality of the slope implies that the induced internal component is not arbitrarily small; in the noble (golden) case one can take a bound of the form
+\begin{equation}
+    |q_{\mathrm{doubler}}|\equiv |k_\perp|\ge \frac{c_0}{\varepsilon}
+\end{equation}
+for some constant $c_0>0$ that depends on the embedding convention and on the chosen family of mirror shifts. (For golden slopes, this ultimately reduces to the same bad-approximability property that underlies the Roth-type bound quoted in Appendix~\ref{app:homogenization}.)
+\par
+
+\subsection{Mass gap from the window bound}
+With the projection-filter mass term $\mathcal{M}(q)=\mu(1-\widehat{W}(q))$ from Eq.~(\ref{eq:proj_filter_mass}), the sinc bound (\ref{eq:window_sinc_bound}) implies that for $|q|\ge c_0/\varepsilon$ one has $|\widehat{W}(q)|\le 2\varepsilon/(c_0R)$. Therefore
+\begin{equation}
+    |\mathcal{M}(q_{\mathrm{doubler}})| \ge \mu\left(1-\frac{2\varepsilon}{c_0R}\right).
+\end{equation}
+Choosing the UV normalization $\mu=\mu_0/\varepsilon$ yields
+\begin{equation}
+    |\mathcal{M}(q_{\mathrm{doubler}})| \ge \frac{\mu_0}{\varepsilon}\left(1-\frac{2\varepsilon}{c_0R}\right),
+\end{equation}
+which is of order $1/\varepsilon$ for small $\varepsilon$, as claimed.\par
+
+\subsection{Numerical cross-check on periodic approximants}
+For the periodic approximants used in Appendix~\ref{app:fib_dqca}, a would-be doubler would appear as a near-zero quasienergy branch at Brillouin-edge momenta. The fixed-parameter script \texttt{scripts/generate\_fib\_dqca\_figures.py} regenerates the dispersion figures and can be extended to directly evaluate the smallest quasienergy magnitude at $k=\pi$ as a diagnostic for the doubler sector.
+
 \section{Rigorous Proof of Quasicrystal Homogenization}
 \label{app:homogenization}
 
@@ -82,35 +252,42 @@ We rigorously derive the field equations from the Principle of Least Action.
 \begin{enumerate}
     \item \textbf{Metric Signature}: We use the "mostly plus" convention $(-+++)$.
     \item \textbf{Connection}: The connection $\Gamma^\lambda_{\mu\nu}$ is the Levi-Civita connection (torsion-free).
-    \item \textbf{Scalar Identification}: Let $\varrho$ denote a coarse-grained information/probability density, and define $\varphi \equiv \ln \sqrt{\varrho}$.
+    \item \textbf{Scalar Identification}: Let $\varrho$ denote a coarse-grained information/probability density and define the Fisher-amplitude scalar $\chi\equiv \sqrt{\varrho}$ (equivalently $\varphi\equiv\ln\chi$).
     \item \textbf{Matter Coupling}: Standard Model fields $\psi_m$ couple to the metric via the standard Lagrangian $\mathcal{L}_m$.
 \end{enumerate}
 
 \paragraph{Compilation-cost identification.}
 Under the cost--density ansatz $\varrho(x)=\varrho_0\,\kappa(x)^p$ (Section \ref{chap:info_budget}), we have
 \begin{equation}
-    \varphi = \ln\sqrt{\varrho} = \ln\sqrt{\varrho_0} + \frac{p}{2}\ln\kappa,
+    \chi=\sqrt{\varrho}=\sqrt{\varrho_0}\,\kappa^{p/2},
 \end{equation}
-so the Fisher term is equivalently a kinetic term for $\ln\kappa$.
+so the Fisher-amplitude kinetic term becomes a routing-gradient term proportional to $\varrho\,(\nabla\ln\kappa)^2$.
 
 \subsection{The Omega Action}
-The total action is the sum of the Einstein-Hilbert term, the Fisher Information term, and the Matter term:
+The total action is the sum of the Einstein--Hilbert term, the Fisher-amplitude term (proportional to Fisher information of $\varrho$), and the Matter term:
 \begin{equation}
     S = \int d^4x \sqrt{-g} \left[ \frac{R}{16\pi G} - \lambda_F g^{\mu\nu} \nabla_\mu \varphi \nabla_\nu \varphi - V(\varrho) + \mathcal{L}_m(g_{\mu\nu}, \psi_m) \right].
 \end{equation}
+\noindent
+In the minimal sector used in this manuscript we equivalently write the Fisher term in terms of $\chi$:
+\begin{equation}
+    S = \int d^4x \sqrt{-g} \left[ \frac{R}{16\pi G} - \lambda_F g^{\mu\nu} \nabla_\mu \chi \nabla_\nu \chi - V(\chi^2) + \mathcal{L}_m(g_{\mu\nu}, \psi_m) \right],
+\label{eq:omega_action_appendix_chi}
+\end{equation}
+which differs from the $\varphi$-form only by the identity $\nabla_\mu\chi=\chi\,\nabla_\mu\varphi$ and by a rescaling of $\lambda_F$ consistent with Eq.~(\ref{eq:omega_action_chi}) in Part~V.
 
 \subsection{Variation with respect to the Metric}
 We vary $S$ with respect to $g^{\mu\nu}$.
 \begin{enumerate}
     \item \textbf{Gravity}: $\delta S_{EH} = \int \sqrt{-g} \frac{1}{16\pi G} (G_{\mu\nu}) \delta g^{\mu\nu}$.
-    \item \textbf{Information}: Using $\delta \sqrt{-g} = -\frac{1}{2}\sqrt{-g} g_{\mu\nu} \delta g^{\mu\nu}$, the variation of the Fisher term is:
+    \item \textbf{Information}: Using $\delta \sqrt{-g} = -\frac{1}{2}\sqrt{-g} g_{\mu\nu} \delta g^{\mu\nu}$, the variation of the Fisher-amplitude term is:
     \begin{equation}
-        \delta S_{info} = -\lambda_F \int \sqrt{-g} \left[ \nabla_\mu \varphi \nabla_\nu \varphi \delta g^{\mu\nu} - \frac{1}{2} g_{\rho\sigma} (\nabla \varphi)^2 \delta g^{\rho\sigma} \right].
+        \delta S_{info} = -\lambda_F \int \sqrt{-g} \left[ \nabla_\mu \chi \nabla_\nu \chi \,\delta g^{\mu\nu} - \frac{1}{2} g_{\rho\sigma} (\nabla \chi)^2 \delta g^{\rho\sigma} \right].
     \end{equation}
     This yields the \textbf{Information Stress-Energy Tensor}:
     \begin{equation}
         T_{\mu\nu}^{info} \equiv -\frac{2}{\sqrt{-g}} \frac{\delta (S_{info}+S_V)}{\delta g^{\mu\nu}}
-        = 2\lambda_F \left( \nabla_\mu \varphi \nabla_\nu \varphi - \frac{1}{2} g_{\mu\nu} (\nabla \varphi)^2 \right) - g_{\mu\nu} V(\varrho),
+        = 2\lambda_F \left( \nabla_\mu \chi \nabla_\nu \chi - \frac{1}{2} g_{\mu\nu} (\nabla \chi)^2 \right) - g_{\mu\nu} V(\chi^2),
     \end{equation}
     where $S_V = -\int d^4x \sqrt{-g}\, V(\varrho)$.
     \item \textbf{Matter}: By definition, $T_{\mu\nu}^{(m)} \equiv -\frac{2}{\sqrt{-g}} \frac{\delta S_m}{\delta g^{\mu\nu}}$.
@@ -121,16 +298,16 @@ Collecting terms, we obtain the field equations:
 \end{equation}
 
 \subsection{Variation with respect to the Scalar Field}
-Varying with respect to $\varphi$ yields the equation of motion for the information density.
+Varying with respect to $\chi$ yields the equation of motion for the information field.
 \begin{equation}
-    \delta S_{info} = -2\lambda_F \int d^4x \sqrt{-g} \nabla^\mu \varphi \nabla_\mu (\delta \varphi)
-    = 2\lambda_F \int d^4x \sqrt{-g} (\Box \varphi) \delta \varphi.
+    \delta S_{info} = -2\lambda_F \int d^4x \sqrt{-g} \nabla^\mu \chi \nabla_\mu (\delta \chi)
+    = 2\lambda_F \int d^4x \sqrt{-g} (\Box \chi)\, \delta \chi.
 \end{equation}
-Including the potential term, $\delta S_V = -\int d^4x \sqrt{-g}\, \frac{dV}{d\varphi}\, \delta\varphi$, the Euler--Lagrange equation is:
+Including the potential term, $\delta S_V = -\int d^4x \sqrt{-g}\, \frac{dV}{d\chi}\, \delta\chi$, the Euler--Lagrange equation is:
 \begin{equation}
-    2\lambda_F \Box \varphi - \frac{dV}{d\varphi} = 0,
+    2\lambda_F \Box \chi - \frac{dV}{d\chi} = 0,
 \end{equation}
-with $\frac{dV}{d\varphi} = 2\varrho \frac{dV}{d\varrho}$.
+with $\frac{dV}{d\chi} = 2\chi\,\frac{dV}{d\varrho}$ when $V=V(\varrho)$ and $\varrho=\chi^2$.
 
 \subsection{Conservation Laws}
 Diffeomorphism invariance ensures $\nabla^\mu G_{\mu\nu} = 0$. Thus, the total stress tensor must be conserved:
@@ -139,20 +316,20 @@ Diffeomorphism invariance ensures $\nabla^\mu G_{\mu\nu} = 0$. Thus, the total s
 \end{equation}
 Checking the divergence of the information tensor explicitly:
 \begin{equation}
-    \nabla^\mu T_{\mu\nu}^{info} = 2\lambda_F [ (\Box \varphi) \nabla_\nu \varphi + \nabla^\mu \varphi \nabla_\mu \nabla_\nu \varphi - \frac{1}{2} \nabla_\nu (\nabla_\alpha \varphi \nabla^\alpha \varphi) ] - \nabla_\nu V(\varrho).
+    \nabla^\mu T_{\mu\nu}^{info} = 2\lambda_F [ (\Box \chi) \nabla_\nu \chi + \nabla^\mu \chi \nabla_\mu \nabla_\nu \chi - \frac{1}{2} \nabla_\nu (\nabla_\alpha \chi \nabla^\alpha \chi) ] - \nabla_\nu V(\chi^2).
 \end{equation}
-Using $\nabla_\nu (\nabla \varphi)^2 = 2 \nabla^\mu \varphi \nabla_\nu \nabla_\mu \varphi$, the last two terms cancel. We are left with:
+Using $\nabla_\nu (\nabla \chi)^2 = 2 \nabla^\mu \chi \nabla_\nu \nabla_\mu \chi$, the last two terms cancel. We are left with:
 \begin{equation}
-    \nabla^\mu T_{\mu\nu}^{info} = \left( 2\lambda_F \Box \varphi - \frac{dV}{d\varphi} \right) \nabla_\nu \varphi.
+    \nabla^\mu T_{\mu\nu}^{info} = \left( 2\lambda_F \Box \chi - \frac{dV}{d\chi} \right) \nabla_\nu \chi.
 \end{equation}
 Thus, provided the scalar field satisfies its equation of motion, the information stress tensor is separately conserved.
 
 \subsection{The Information Current}
 We define a natural covariant ``information current'' by
 \begin{equation}
-    J^\mu \equiv \varrho \nabla^\mu \varphi.
+    J^\mu \equiv \chi\, \nabla^\mu \chi = \frac{1}{2}\nabla^\mu \varrho.
 \end{equation}
-Since $\varphi = \ln \sqrt{\varrho}$, we have $J^\mu = \frac{1}{2}\nabla^\mu \varrho$. In the minimal case $V\equiv 0$, the scalar equation reduces to $\Box \varphi = 0$.
+In the minimal case $V\equiv 0$, the scalar equation reduces to $\Box \chi = 0$.
 
 \section{Holographic Isometry and Error Correction}
 \label{app:isometry}
@@ -195,39 +372,39 @@ Specifically, if the bulk site is "deep" inside the wedge (distance $d$ from the
 \end{proposition}
 This ensures that "Deep Memory" is protected against all local boundary erasures up to half the system size, fulfilling Axiom O4.
 
-\section{Formal Spectral Integrals for Constants}
+\section{Geometric ans\"atze for dimensionless constants}
 \label{app:constants_proof}
 
-We provide the rigorous definition and regularization of the geometric constants $\alpha$ and $\mu$.
+This appendix records the working geometric ans\"atze for two dimensionless constants discussed in Part~IV and clarifies the matching assumptions and error budgets. These expressions are \emph{not} derived here from a unique microscopic measure; they are to be read as explicit model targets for a future dynamical completion.
 
 \subsection{Regularization and Scale Definition}
-The fundamental couplings are defined as integrals over the moduli space of the internal fiber topology $\mathcal{M}_{int}$. We define the \textbf{Geometric Coupling} $\alpha_{geo}$ as the ratio of the volume of the stabilizer subgroup orbit to the total volume of the bundle space.
+In a fully specified microscopic model, dimensionless couplings should arise as ratios of normalized geometric/topological invariants of the internal sector, potentially defined via an appropriate measure on a moduli space $\mathcal{M}_{int}$. In the present manuscript we do not fix such a measure. Instead, we work with concrete closed-form ans\"atze and interpret them as defining \emph{effective} low-energy matching data for the corresponding couplings.
 
 \subsection{Fine Structure Constant \texorpdfstring{$\alpha$}{alpha}}
-The gauge group $U(1)$ arises from the $S^1$ fiber of the Hopf fibration $S^1 \hookrightarrow S^3 \to S^2$. The bare inverse coupling $\alpha^{-1}_{UV}$ is given by the spectral volume of the total fibration moduli $\mathcal{M} \cong S^1 \times S^2 \times S^3$.
+Motivated by the appearance of $U(1)$ as a circle fiber in standard Hopf-type constructions, we introduce a simple geometric inverse-coupling ansatz as a dimensionless combination of elementary fiber-volume factors.
 
-\begin{definition}[Alpha Ansatz (Working)]
+\begin{definition}[Alpha ansatz (working)]
 \label{def:alpha_ansatz}
-We use a phenomenological geometric ansatz for the UV-normalized inverse coupling:
+We use a phenomenological geometric ansatz for the inverse coupling:
 \begin{equation}
-    \alpha^{-1}_{\mathrm{UV}} \equiv 4\pi^3 + \pi^2 + \pi,
+    \alpha^{-1}_{\mathrm{geo}} \equiv 4\pi^3 + \pi^2 + \pi,
 \end{equation}
-which numerically gives $\alpha^{-1}_{\mathrm{UV}}\approx 137.03630$. This expression should be understood as an effective summary of discrete/topological weights associated with the internal fiber data; a first-principles derivation from a well-defined measure on the relevant moduli space is an open problem.
+which numerically gives $\alpha^{-1}_{\mathrm{geo}}\approx 137.03630$. This expression should be understood as an effective summary of discrete/topological weights associated with internal fiber data; a first-principles derivation from a well-defined measure on the relevant moduli space remains an open problem.
 \end{definition}
 
-\subsubsection{Renormalization Group Flow}
-The physical value at zero momentum is obtained by running the RG flow from the Planck scale $M_{Pl}$ to the electron mass $m_e$:
+\subsubsection{Matching and error budget}
+Comparing with the low-energy value $\alpha^{-1}(0)\approx 137.035999$, one finds
 \begin{equation}
-    \alpha^{-1}(0) = \alpha^{-1}_{UV} - \frac{1}{2\pi} \beta_{eff} \ln \left( \frac{M_{Pl}}{m_e} \right).
+    \Delta \alpha^{-1}\equiv \alpha^{-1}_{\mathrm{geo}}-\alpha^{-1}(0)\approx 3.0\times 10^{-4},
 \end{equation}
-For the hierarchy of $M_{Pl}/m_e \approx 10^{22}$, the logarithmic term is large. The observation that $\alpha^{-1}(0) \approx \alpha^{-1}_{UV}$ implies $\beta_{eff} \approx 0$, suggesting the theory sits at a quasi-fixed point.
+corresponding to a relative discrepancy $|\Delta \alpha^{-1}|/\alpha^{-1}(0)\sim 2\times 10^{-6}$. In a controlled EFT embedding, one would interpret $\alpha^{-1}_{\mathrm{geo}}$ as a boundary condition at a matching scale $\mu_\ast$ and run the Standard Model renormalization group to $\mu=0$, including thresholds. Since the microscopic Omega construction is not yet specified to that level, we do not perform this RG matching here; instead we treat $\Delta \alpha^{-1}$ as an empirical error budget that a future completion must account for (e.g.\ via normalization choices, threshold corrections, or additional geometric contributions).
 
 \subsection{Proton-Electron Mass Ratio \texorpdfstring{$\mu$}{mu}}
-The mass ratio is defined by the ratio of the volumes of the maximal compact cycle (the "proton" knot) to the minimal cycle (the "electron" loop).
+We record the working geometric ansatz for the proton--electron mass ratio $\mu=m_p/m_e$ as a dimensionless constant associated with internal-cycle data. In the absence of a derived hadronic/EW/QED matching computation, we treat the following as a phenomenological target:
 \begin{equation}
     \mu_{\mathrm{geo}} = 6\pi^5 \approx 1836.1181.
 \end{equation}
-Comparing with experimental $\mu_{exp} \approx 1836.1526$, the error is $1.8 \times 10^{-5}$, consistent with higher-order symmetry breaking corrections.
+Comparing with the experimental value $\mu_{\mathrm{exp}}\approx 1836.1526$, the absolute discrepancy is $|\Delta\mu|\approx 3.5\times 10^{-2}$ and the relative discrepancy is $|\Delta\mu|/\mu_{\mathrm{exp}}\approx 1.9\times 10^{-5}$. Any serious derivation must explain both the functional form and the size/sign of $\Delta\mu$ once QCD binding effects, electroweak symmetry breaking, and radiative corrections are included.
 
 \section{Pseudocode}
 \label{app:reference}
@@ -303,23 +480,36 @@ function OmegaStep(state, t, mode):
 \section{Formal Existence Proofs}
 \label{app:formal_proofs}
 
-\subsection{Finite Dimensional Factorization from Holography}
-We prove that the Holographic Principle implies finite-dimensional local Hilbert spaces, contradicting the continuum field theory assumption.
+\subsection{Finite-information localization and approximate factorization}
+We formalize the finite-information postulate in a way compatible with operator-algebraic locality. In continuum AQFT, local von Neumann algebras are typically type~III and do not admit an exact tensor factorization $\mathcal{H}\simeq\mathcal{H}_R\otimes\mathcal{H}_{R^c}$; this is tied to ultraviolet entanglement across sharp boundaries (see, e.g., \cite{Haag1996}). The finite-information axiom is therefore interpreted as a statement about a \emph{regulated/operational} description: at finite resolution (or on a finite-dimensional code subspace), the relevant effective algebra is type~I and admits an approximate subsystem structure.\par
 
-\begin{theorem}[Factorization]
+\begin{theorem}[Finite-information effective dimension]
 \label{thm:factorization}
-Let $\mathcal{H}_V$ be the Hilbert space associated with a spatial region $V$. If the maximum entropy of the region is bounded by its boundary area $A(\partial V)$ in Planck units (Bekenstein Bound),
+Let $V$ be a finite causal region with boundary area $A(\partial V)$.
+Assume that the set of physically distinguishable states accessible to observers localized in $V$ obeys a Bekenstein--Hawking entropy bound
 \begin{equation}
-    S_{max}(\mathcal{H}_V) \le \frac{A(\partial V)}{4 l_P^2},
+    S_{\max}(V)\ \le\ \frac{A(\partial V)}{4 l_P^2}.
 \end{equation}
-then $\dim(\mathcal{H}_V)$ must be finite.
+Then any family of pairwise orthogonal operational states $\{|\psi_i\rangle\}_{i=1}^N$ localized in $V$ has cardinality bounded by
+\begin{equation}
+    N\ \le\ \exp\!\left(\frac{A(\partial V)}{4 l_P^2}\right).
+\end{equation}
+Equivalently, the operational state space in $V$ can be supported on an effective finite-dimensional Hilbert space $\mathcal{H}^{\mathrm{eff}}_V$ of dimension at most $\exp(A(\partial V)/4l_P^2)$.
 \end{theorem}
 \begin{proof}
-1. \textbf{Entropy Definition}: The maximum entropy of a quantum system with Hilbert space dimension $D$ is $S_{max} = \ln D$.
-2. \textbf{Boundedness}: From the Bekenstein Bound, $\ln D \le \eta A$. Since $A$ is finite for any compact region $V$, $\ln D$ is finite.
-3. \textbf{Result}: $D < \infty$.
-4. \textbf{Corollary}: The decomposition $\mathcal{H} \cong \bigotimes_x \mathcal{H}_x$ must involve finite-dimensional factors $\mathcal{H}_x$. If $\mathcal{H}_x$ were infinite (e.g., Harmonic Oscillator), $S_{max}$ would be unbounded, violating the Area Law.
+Let $\{|\psi_i\rangle\}_{i=1}^N$ be orthonormal. Consider the maximally mixed state on their span,
+\begin{equation}
+    \rho \equiv \frac{1}{N}\sum_{i=1}^{N}|\psi_i\rangle\langle\psi_i|.
+\end{equation}
+Its von Neumann entropy is $S(\rho)=\ln N$. By definition of $S_{\max}(V)$, one has $\ln N\le S_{\max}(V)$, and the stated bound follows.
 \end{proof}
+
+\paragraph{Remark (split property and the continuum limit).}
+In theories satisfying the split property, for nested regions $V\subset V_{\epsilon}$ there exists an intermediate type~I factor $\mathfrak{N}$ with $\mathfrak{A}(V)\subset \mathfrak{N}\subset \mathfrak{A}(V_{\epsilon})$ \cite{Buchholz1987}. This provides a controlled notion of localization at finite resolution and an approximate tensor-product structure on the associated state spaces, while the sharp-boundary limit recovers type~III behavior.
+In Omega Theory, statements such as $\mathcal{H}\cong\bigotimes_x\mathcal{H}_x$ are to be read in this regulated/code-subspace sense (cf.\ Part~II), not as a claim about exact factorization in continuum QFT.\par
+
+\paragraph{Corollary (area-limited independent degrees of freedom).}
+If a microscopic model admits a local tensor-factor description on a graph, but the physically realized states in a region $V$ are restricted to an operational/code subspace obeying the bound above, then the number of independent degrees of freedom in $V$ is limited by area rather than volume. This is the sense in which the holographic constraint enforces redundancy of bulk degrees of freedom in a regulated discrete description.
 
 \subsection{Existence of the Golden MERA Isometry}
 We establish the existence of the Scale-Invariant Isometry $\Phi$ (Axiom O4).

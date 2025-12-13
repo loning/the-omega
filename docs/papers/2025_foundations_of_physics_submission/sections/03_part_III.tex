@@ -6,7 +6,7 @@
 
 \subsection{Decomposition of the Global State}
 Can the infinite-dimensional Hilbert space $\mathcal{H}$ be decomposed? In standard QFT, spacetime is a continuum, and the Hilbert space is a Fock space over continuous fields. This leads to the ultraviolet divergence problem. Omega Theory takes the opposite view: the continuum is an approximation.
-We motivate the decomposition of $\mathcal{H}$ into a countable tensor product of local factors (see Theorem \ref{thm:factorization} in Appendix \ref{app:formal_proofs} for a formal entropy-bound argument):
+We motivate a regulated localization structure in which the operational state space of a causal region admits an effective finite-dimensional description consistent with holographic entropy bounds (see Theorem \ref{thm:factorization} in Appendix \ref{app:formal_proofs}). In the microscopic/QCA description this is realized as a local tensor-factor model together with a holographically constrained code subspace:
 \begin{equation}
     \mathcal{H} \cong \bigotimes_{x \in \Lambda} \mathcal{H}_x, \quad \dim \mathcal{H}_x = d < \infty.
 \end{equation}
@@ -115,15 +115,22 @@ with $\inf$ replaced by $\min$ when the minimum is attained.
 In the coarse-grained limit we write $\kappa(x)$ for the corresponding routing-cost field.
 \end{definition}
 We will later denote by $\kappa_0>0$ a reference minimal routing cost (e.g., the weak-field baseline), so that $\kappa(x)\ge \kappa_0$ in the regimes where the lapse identification is used.
-Specifically, we choose a \textbf{Golden Unitary} scheme. The explicit local update rule (the "Golden Gate") $U_{loc}$ acting on a spinor $\psi_x \in \mathbb{C}^2$ is defined by:
+\par
+\noindent\textbf{Coin--shift form and the ``Golden'' texture.}
+For the explicit models analyzed in this manuscript we use coined QCA/quantum-walk steps of the form
 \begin{equation}
-    U_{loc}(\theta, \hat{n}) = e^{-i \theta \vec{n} \cdot \vec{\sigma}} \otimes S_{\hat{n}}.
+    U = S\,C,
 \end{equation}
-Here, $\vec{\sigma}$ are the Pauli matrices, and $S_{\hat{n}}$ is the conditional shift operator. The coin angle $\theta$ is not constant but modulated by the perpendicular coordinate $x_\perp$ to enforce the quasicrystal order:
+where $C=\bigoplus_x C_x$ is a strictly on-site unitary acting on a local spinor $\psi_x\in\mathbb{C}^2$ and $S$ is a conditional nearest-neighbor shift (a basis permutation) determined by the adjacency structure of the underlying graph.
+A convenient local coin family is the spin rotation
 \begin{equation}
-    \theta(x) = \frac{\pi}{4} \left( 1 + \epsilon \cos(2\pi \vec{k}_\perp \cdot \vec{x}_\perp) \right).
+    C_x(\theta(x),\hat{n})\equiv e^{-i\theta(x)\,\hat{n}\cdot\vec{\sigma}},
 \end{equation}
-This modulation is crucial for breaking the exact translational symmetry that would otherwise lead to doubling.
+with $\vec{\sigma}$ the Pauli matrices. The defining ``golden'' ingredient of our quasicrystal models is that the coin texture $\theta(x)$ is determined by the cut-and-project internal coordinate $x_\perp$ (or, in 1D reductions, by the Sturmian/Fibonacci coding below). As an analytic toy model one may take a smooth modulation
+\begin{equation}
+    \theta(x)=\theta_0\left[1+\epsilon\cos\!\left(2\pi\,\vec{k}_\perp\cdot \vec{x}_\perp\right)\right],
+\end{equation}
+with $0<\epsilon\ll 1$, while the discrete (fully specified) Fibonacci-textured model is given in Section~\ref{sec:fib_dqca_spec}.
 
 \subsubsection{Fibonacci/Sturmian coin textures}
 The smooth phason modulation above is a convenient analytic toy model. A canonical discrete quasiperiodic texture is obtained by Sturmian (rotation) coding, which in the golden case yields the Fibonacci word \cite{MorseHedlund1940,Lothaire2002}. In a 1D reduction (or along a chosen lattice geodesic), fix an irrational slope $\alpha\in(0,1)\setminus\mathbb{Q}$ (golden case $\alpha=\phi^{-2}$) and an intercept $\rho\in[0,1)$, and define
@@ -136,6 +143,7 @@ The smooth phason modulation above is a convenient analytic toy model. A canonic
     L,& \{x\alpha+\rho\}\in I_L,\\
     S,& \{x\alpha+\rho\}\in I_S,
     \end{cases}
+\label{eq:sturmian_sigma}
 \end{equation}
 where $\{\cdot\}$ denotes the fractional part. We then define a piecewise-constant coin (mass/mixing) field by
 \begin{equation}
@@ -146,6 +154,59 @@ where $\{\cdot\}$ denotes the fractional part. We then define a piecewise-consta
     \end{cases}
 \end{equation}
 This produces a Fibonacci-textured (quasiperiodic) Dirac walk that is naturally compatible with the cut-and-project viewpoint: the Fibonacci chain is the standard 1D cut-and-project set with a compact window and hence bounded phason fluctuations.
+
+\subsubsection{A fully specified 1D Fibonacci DQCA (golden texture)}
+\label{sec:fib_dqca_spec}
+To make the quasicrystal QCA proposal checkable, we now give an explicit 1D model on a Fibonacci (cut-and-project) substrate, including its local gates and the quantitative diagnostics used later for numerical verification.\par
+\noindent\textbf{Fibonacci substrate (cut-and-project / Sturmian coding).}
+Fix the golden slope $\alpha=\phi^{-2}$ and intercept $\rho\in[0,1)$. Define the tile-type word $\sigma(j)\in\{L,S\}$ by Eq.~(\ref{eq:sturmian_sigma}).
+Let the physical coordinate of vertex $j\in\mathbb{Z}$ be
+\begin{equation}
+    r_{0}=0,\qquad r_{j+1}=r_{j}+\ell_{\sigma(j)},
+\end{equation}
+with $\ell_L\equiv \phi\,\varepsilon$ and $\ell_S\equiv \varepsilon$ for a microscopic length scale $\varepsilon>0$.
+The resulting embedded vertex set $\{r_j\}\subset\mathbb{R}$ is the standard Fibonacci quasicrystal (a 1D cut-and-project set). The intercept $\rho$ implements a global \emph{phason shift}; allowing $\rho$ to vary slowly with $j$ defines a \emph{phason strain field} (Appendix~\ref{app:fib_dqca}).
+\par
+\noindent\textbf{Hilbert space and single-particle sector.}
+For continuum-limit diagnostics we restrict to the single-excitation (single-particle) sector,
+\begin{equation}
+    \mathcal{H}_{1p} \equiv \ell^2(\mathbb{Z})\otimes \mathbb{C}^2,
+\end{equation}
+with basis $\{|j\rangle\otimes|R\rangle,\ |j\rangle\otimes|L\rangle\}$ interpreted as a 1D Dirac spinor at vertex $j$.
+\par
+\noindent\textbf{Local gates and one-step unitary.}
+Define two on-site coin rotations (Long/Short) by
+\begin{equation}
+    C_L \equiv e^{-i\theta_L\sigma_y},\qquad C_S \equiv e^{-i\theta_S\sigma_y},
+\end{equation}
+and the position-dependent coin
+\begin{equation}
+    C \equiv \sum_{j\in\mathbb{Z}} |j\rangle\langle j|\otimes C_{\sigma(j)}.
+\end{equation}
+Define the conditional shift on the 1D adjacency graph by
+\begin{equation}
+    S \equiv \sum_{j\in\mathbb{Z}}\Big(|j+1\rangle\langle j|\otimes|R\rangle\langle R| + |j-1\rangle\langle j|\otimes|L\rangle\langle L|\Big).
+\end{equation}
+The one-step evolution is the coined quantum walk
+\begin{equation}
+    U \equiv S\,C,
+\end{equation}
+which is manifestly unitary and strictly local (range-1 on the chain). This model is fully specified by the parameters $(\varepsilon,\theta_L,\theta_S,\rho)$.
+\par
+\noindent\textbf{Why 1D is sufficient for verification.}
+Although the Omega Network is higher-dimensional, the exact 1D tape compilation in Proposition~\ref{prop:exact_1d_compilation} shows that any finite patch update generated by bounded-range local gates admits an equivalent nearest-neighbor 1D realization (at the cost of routing depth). Therefore, a 1D Fibonacci-textured DQCA provides a computationally tractable testbed for the continuum-limit diagnostics (dispersion, group velocity, and norm-error scaling) while remaining faithful to the locality structure of the underlying PQCA.
+\par
+\noindent\textbf{Diagnostics for the Dirac limit.}
+To extract dispersion on the aperiodic substrate we use periodic Fibonacci approximants: replace $\alpha$ by the rational approximant $\alpha_n\equiv F_{n-1}/F_n$ and impose period $N\equiv F_n$ on the coin texture. The resulting $N$-cell Floquet operator admits Bloch decomposition $U^{(n)}(k)$ with quasi-momentum $k\in[-\pi,\pi)$, yielding quasienergies $E^{(n)}_\pm(k)$ via eigenphases of $U^{(n)}(k)$.
+We compare these to the target Dirac dispersion $E_D(k)=\sqrt{(c_{\mathrm{eff}}k)^2+m_{\mathrm{eff}}^2}$ in the long-wavelength regime, and we quantify errors by, e.g.,
+\begin{equation}
+    \delta_E^{(n)}(k_{\max})\equiv \max_{|k|\le k_{\max}} \big|E^{(n)}_+(k)-E_D(k)\big|,
+\end{equation}
+and wavepacket-propagation errors
+\begin{equation}
+    \epsilon_{\mathrm{prop}}(T)\equiv \left\|U^T|\psi_0\rangle-e^{-iH_D\,t}|\psi_0\rangle\right\|,\qquad t\equiv T\varepsilon,
+\end{equation}
+for band-limited initial states $|\psi_0\rangle$ (Appendix~\ref{app:fib_dqca} specifies the numerical protocol). These diagnostics allow a direct test of convergence and of dependence on phason strain.
 
 \subsection{Emergence of the Dirac Equation}
 \noindent\textbf{Standard 1D Dirac QCA.}
@@ -211,29 +272,42 @@ The 1D Fibonacci quasicrystal is a cut-and-project set with a compact window and
 \paragraph{Remark (Zeckendorf-clocked drive).}
 One may also consider a time-dependent drive where the coin parameter alternates according to the intrinsic phase-orbit coding introduced in Part~II: define $\sigma_t\in\{L,S\}$ by an irrational circle rotation and set $\theta_t=\theta_L$ if $\sigma_t=L$ and $\theta_t=\theta_S$ if $\sigma_t=S$. In the golden case, the tick index $t$ admits a unique Zeckendorf digit structure, giving a sparse hierarchical schedule for when scale-dependent updates are activated \cite{Zeckendorf1972,AlloucheShallit2003}.
 
-\subsubsection{Resolution of Fermion Doubling via Domain Wall Filtering}
-The \textbf{Nielsen-Ninomiya (NN) No-Go Theorem} \cite{Nielsen1981} establishes that for any local, translationally invariant, hermitian lattice Hamiltonian, fermion species must come in pairs of opposite chirality (doublers). Omega Theory does not evade the theorem but \textit{resolves} the doubling problem by explicitly paying a known cost: the breaking of exact translation invariance in the higher-dimensional embedding space.
-We adopt the \textbf{Domain Wall Fermion} strategy proposed by \textbf{Kaplan} \cite{Kaplan1992}, adapted to the cut-and-project geometry. In our framework, the "doublers" are not eliminated but are segregated into the perpendicular space (the "bulk").
+\subsubsection{Fermion doubling and a cut-and-project projection filter (with bounds)}
+\label{sec:doubling_filter}
+The \textbf{Nielsen--Ninomiya no-go theorem} \cite{Nielsen1981} shows that under locality, hermiticity, and exact translation invariance, lattice fermions generically exhibit species doubling. In the Omega construction translation invariance is broken at the microscopic level by the cut-and-project internal coordinate (or, in 1D reductions, by a Sturmian/Fibonacci texture), so the hypotheses of the theorem do not apply verbatim.
+Rather than claiming an evasion, we formulate a concrete \emph{filtering mechanism} with explicit assumptions and an explicit mass-gap bound.\par
 
-Recall that every mode $\psi_k$ on the lattice $\Lambda$ has momentum components $(k_{||}, k_{\perp})$. The full dispersion relation on the embedding lattice $\mathbb{Z}^N$ is:
+\noindent\textbf{Acceptance window and its Fourier decay.}
+Let $W\subset E_\perp$ be the compact acceptance window defining the cut-and-project set, and let $\mathds{1}_W$ be its indicator function. Define the normalized window Fourier transform
 \begin{equation}
-    E(k) = \pm \sqrt{ \sum_{i=1}^N \sin^2(k_i a) + \mathcal{M}^2(k_\perp) }.
+    \widehat{W}(q)\ \equiv\ \frac{1}{\mathrm{Vol}(W)}\int_W e^{-i q\cdot y}\,dy,\qquad q\in E_\perp^*,
 \end{equation}
-The "doublers" correspond to the $2^N - 1$ distinct zeros at $k_i \in \{0, \pi/a\}$ where at least one component is $\pi/a$.
-The \textbf{Projection Filter Operator} $\hat{P}_{W}$ acts as a momentum-dependent mass term. Explicitly, the effective mass $M(k)$ induced by the perpendicular projection is:
+so that $\widehat{W}(0)=1$ and $|\widehat{W}(q)|\le 1$.
+For windows with piecewise $C^1$ boundary one has a quantitative decay bound $|\widehat{W}(q)|\le C_W/|q|$ for large $|q|$ (Riemann--Lebesgue with one integration by parts), and for the 1D Fibonacci window (an interval) the transform is explicitly a sinc function (Appendix~\ref{app:doubling_filter}).\par
+
+\noindent\textbf{Projection-filter mass term.}
+In the embedding picture, modes carry momenta $(k_{\parallel},k_\perp)$ and we introduce a momentum-dependent mass term controlled by the internal momentum $q\equiv k_\perp$:
 \begin{equation}
-    \mathcal{M}(k) = \mu \left( 1 - \hat{W}(k_\perp) \right).
+    \mathcal{M}(q)\ \equiv\ \mu\,\bigl(1-\widehat{W}(q)\bigr).
+\label{eq:proj_filter_mass}
 \end{equation}
-Here, $\hat{W}(k_\perp)$ is the Fourier transform of the icosahedral acceptance window $W$, which is a product of sinc functions (or Bessel functions $J_1$ for spherical windows):
+This has the desired behavior: for physical long-wavelength modes one expects $q\approx 0$ and hence $\mathcal{M}(q)\approx 0$, while for modes pushed into the internal direction one expects $|q|$ of order the UV scale, for which $\widehat{W}(q)$ is small and $\mathcal{M}(q)\approx \mu$.\par
+
+\noindent\textbf{Gap bound (statement).}
+Assume that the cut slope is Diophantine (noble/golden case) so that the internal component of a would-be ``mirror'' momentum shift by $\pi/\varepsilon$ is bounded below by
 \begin{equation}
-    \hat{W}(k_\perp) \propto \prod_{i=1}^3 \text{sinc}(k_{\perp, i} R).
+    |q_{\mathrm{doubler}}|\ \ge\ \frac{c_0}{\varepsilon}
 \end{equation}
-\begin{enumerate}
-    \item \textbf{Physical Mode}: $k \approx 0 \implies k_\perp \approx 0 \implies \hat{W} \approx 1 \implies \mathcal{M} \approx 0$.
-    \item \textbf{Doubler Modes}: For a mirror mode $k' = k + \frac{\pi}{a}$, the irrational projection map pushes $k_\perp$ to a value of order $1/a$.
-    \item \textbf{Spectral Gap}: The mass of the doubler becomes proportional to the UV cutoff:
-    \begin{equation}
-        M_{doubler} = \mu (1 - \hat{W}(\pi/a)) \sim \frac{1}{\varepsilon}.
-    \end{equation}
-\end{enumerate}
-In the continuum limit $\varepsilon \to 0$, the doubler mass $M_{doubler} \to \infty$, effectively decoupling these modes from the low-energy spectrum. This spectral bound guarantees that the effective theory contains only the single chiral fermion, rigorously resolving the doubling problem.
+for some $c_0>0$ (Appendix~\ref{app:doubling_filter} gives the 1D Fibonacci case explicitly).
+Assume further that the window satisfies a decay bound $|\widehat{W}(q)|\le \delta_W(\varepsilon)$ for $|q|\ge c_0/\varepsilon$. Then
+\begin{equation}
+    |\mathcal{M}(q_{\mathrm{doubler}})| \ \ge\ \mu\bigl(1-\delta_W(\varepsilon)\bigr).
+\end{equation}
+Choosing the UV normalization $\mu=\mu_0/\varepsilon$ yields a physical doubler gap of order $1/\varepsilon$:
+\begin{equation}
+    |\mathcal{M}(q_{\mathrm{doubler}})| \ \ge\ \frac{\mu_0}{\varepsilon}\bigl(1-\delta_W(\varepsilon)\bigr).
+\end{equation}
+In particular, in the 1D Fibonacci interval-window case one has $\delta_W(\varepsilon)=\mathcal{O}(\varepsilon)$ from the explicit sinc bound, so the prefactor approaches $\mu_0$ as $\varepsilon\to 0$.\par
+
+\noindent\textbf{Finite-volume check on periodic approximants.}
+On the periodic Fibonacci approximants used for dispersion extraction, a doubler would manifest as an additional near-zero quasienergy branch near the Brillouin-edge momenta. Numerically (with fixed, reproducible parameters), the smallest quasienergy magnitude at $k=\pi$ remains bounded away from $0$ across increasing approximant size, consistent with a lattice-scale (hence physical $\sim 1/\varepsilon$) gap for the would-be doubler sector (Appendix~\ref{app:doubling_filter}).
