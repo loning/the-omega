@@ -20,7 +20,25 @@ where $\{\cdot\}$ denotes the fractional part. Define the tile-type word $\sigma
     \end{cases}
 \label{eq:fib_sigma_appendix}
 \end{equation}
-This is the standard Sturmian coding of an irrational rotation and yields the Fibonacci word for $\alpha=\phi^{-2}$ \cite{MorseHedlund1940,Lothaire2002}. The geometric embedding is obtained by assigning two edge lengths
+This is the standard Sturmian coding of an irrational rotation and yields the Fibonacci word for $\alpha=\phi^{-2}$ \cite{MorseHedlund1940,Lothaire2002}. Lemma~\ref{lemma:sturmian_frequencies} records the asymptotic symbol frequencies.
+\begin{lemma}[Symbol frequencies]
+\label{lemma:sturmian_frequencies}
+For irrational $\alpha$, the sequence $\sigma(j)$ defined by Eq.~(\ref{eq:fib_sigma_appendix}) has well-defined asymptotic symbol frequencies:
+\begin{equation}
+    \lim_{N\to\infty}\frac{1}{N}\#\{0\le j<N:\sigma(j)=S\}=\alpha,\qquad
+    \lim_{N\to\infty}\frac{1}{N}\#\{0\le j<N:\sigma(j)=L\}=1-\alpha.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The sequence $u_j=\{j\alpha+\rho\}$ is equidistributed in $[0,1)$ for irrational $\alpha$ (Weyl equidistribution). Therefore the asymptotic fraction of indices with $u_j$ in an interval equals the interval length. Applying this to the partition $[0,1)=[0,1-\alpha)\cup[1-\alpha,1)$ yields the stated frequencies.
+\end{proof}
+\paragraph{Corollary (mean coin/mass parameter).}
+If the coin angles are scaled as $\theta_{L/S}=m_{L/S}\varepsilon$ with fixed $m_{L/S}$, then the spatial average of the local mass/mixing parameter satisfies
+\begin{equation}
+    \lim_{N\to\infty}\frac{1}{N}\sum_{j=0}^{N-1} m_{\sigma(j)} = (1-\alpha)m_L+\alpha m_S,
+\end{equation}
+with $\alpha=\phi^{-2}$ in the golden case.
+The geometric embedding is obtained by assigning two edge lengths
 \begin{equation}
     \ell_L\equiv \phi\,\varepsilon,\qquad \ell_S\equiv \varepsilon,
 \end{equation}
@@ -153,8 +171,7 @@ In the cut-and-project embedding picture one decomposes embedding momentum $k\in
 \begin{equation}
     |q_{\mathrm{doubler}}|\equiv |k_\perp|\ge \frac{c_0}{\varepsilon}
 \end{equation}
-for some constant $c_0>0$ that depends on the embedding convention and on the chosen family of mirror shifts. (For golden slopes, this ultimately reduces to the same bad-approximability property that underlies the Roth-type bound quoted in Appendix~\ref{app:homogenization}.)
-\par
+for some constant $c_0>0$ that depends on the embedding convention and on the chosen family of mirror shifts. For golden slopes, such lower bounds are a manifestation of bad Diophantine approximability (Appendix~\ref{app:homogenization}).\par
 
 \subsection{Mass gap from the window bound}
 With the projection-filter mass term $\mathcal{M}(q)=\mu(1-\widehat{W}(q))$ from Eq.~(\ref{eq:proj_filter_mass}), the sinc bound (\ref{eq:window_sinc_bound}) implies that for $|q|\ge c_0/\varepsilon$ one has $|\widehat{W}(q)|\le 2\varepsilon/(c_0R)$. Therefore
@@ -170,20 +187,63 @@ which is of order $1/\varepsilon$ for small $\varepsilon$, as claimed.\par
 \subsection{Numerical cross-check on periodic approximants}
 For the periodic approximants used in Appendix~\ref{app:fib_dqca}, a would-be doubler would appear as a near-zero quasienergy branch at Brillouin-edge momenta. The fixed-parameter script \texttt{scripts/generate\_fib\_dqca\_figures.py} regenerates the dispersion figures and can be extended to directly evaluate the smallest quasienergy magnitude at $k=\pi$ as a diagnostic for the doubler sector.
 
-\section{Rigorous Proof of Quasicrystal Homogenization}
+\section{Dirac limit and homogenization framework}
 \label{app:homogenization}
 
-We provide a formal proof of Theorem \ref{prop:dirac_limit}, establishing the emergence of the Dirac propagator from the Quantum Walk on a cut-and-project quasicrystal.
+We provide a proof of Theorem~\ref{prop:dirac_limit} for the translation-invariant 1D coined walk (the baseline Dirac QCA). We then record definitions and averaging statements used when discussing cut-and-project (quasicrystal) textures and phason fields.
+
+\subsection{Proof of Theorem~\ref{prop:dirac_limit} (translation-invariant 1D case)}
+Let $\mathcal{H}_{1p}=\ell^2(\mathbb{Z})\otimes\mathbb{C}^2$ and fix $\varepsilon>0$. Define the shift $S$ on basis states by
+\begin{equation}
+    S\big(|j\rangle\otimes|R\rangle\big)=|j+1\rangle\otimes|R\rangle,\qquad
+    S\big(|j\rangle\otimes|L\rangle\big)=|j-1\rangle\otimes|L\rangle,
+\end{equation}
+and the (translation-invariant) coin by $C_\varepsilon\equiv e^{-i\varepsilon m\sigma_y}$ with fixed $m\in\mathbb{R}$. The one-step unitary is $U_\varepsilon=S\,C_\varepsilon$.
+
+Write the lattice quasi-momentum variable as $k\in[-\pi,\pi)$ and set the physical momentum $p\equiv k/\varepsilon$. In momentum representation the shift is diagonal,
+\begin{equation}
+    S(k)=e^{-ik\sigma_z}=e^{-i\varepsilon p\,\sigma_z},
+\end{equation}
+so the Bloch-reduced step is
+\begin{equation}
+    U_\varepsilon(k)=S(k)\,C_\varepsilon
+    =e^{-i\varepsilon p\,\sigma_z}\,e^{-i\varepsilon m\,\sigma_y}.
+\end{equation}
+For $|p|\le p_{\max}$ and $\varepsilon$ sufficiently small, $U_\varepsilon(k)$ lies in a neighborhood of the identity on which the principal matrix logarithm is analytic. Define the effective Hamiltonian by
+\begin{equation}
+    H_{\mathrm{eff}}^{(\varepsilon)}(p)\ \equiv\ \frac{i}{\varepsilon}\log U_\varepsilon(\varepsilon p).
+\end{equation}
+Using the Baker--Campbell--Hausdorff expansion and $\|[\sigma_z,\sigma_y]\|=2\|\sigma_x\|=2$, one obtains the uniform bound
+\begin{equation}
+    \big\|H_{\mathrm{eff}}^{(\varepsilon)}(p) - (p\,\sigma_z+m\,\sigma_y)\big\|
+    \le C_0\,\varepsilon\,(p_{\max}^2+m^2),
+\end{equation}
+for some absolute constant $C_0$ (the bound is uniform over $|p|\le p_{\max}$).
+
+Let $t\ge 0$ be fixed and set $T\equiv\lfloor t/\varepsilon\rfloor$. For each $p$ the evolution after $T$ steps satisfies
+\begin{equation}
+    U_\varepsilon(\varepsilon p)^T = \exp\!\left(-it\,H_{\mathrm{eff}}^{(\varepsilon)}(p)\right)\,+\,\mathcal{O}(\varepsilon),
+\end{equation}
+where the $\mathcal{O}(\varepsilon)$ term accounts for the rounding error between $T\varepsilon$ and $t$. Since the matrix exponential is Lipschitz on bounded sets, for $|p|\le p_{\max}$ one has
+\begin{equation}
+    \left\|\exp\!\left(-it\,H_{\mathrm{eff}}^{(\varepsilon)}(p)\right)-\exp\!\left(-it\,(p\,\sigma_z+m\,\sigma_y)\right)\right\|
+    \le t\,\big\|H_{\mathrm{eff}}^{(\varepsilon)}(p) - (p\,\sigma_z+m\,\sigma_y)\big\|\,e^{t\,\|H_{\mathrm{eff}}^{(\varepsilon)}(p)\|}.
+\end{equation}
+Combining the uniform bounds above yields
+\begin{equation}
+    \sup_{|p|\le p_{\max}}\left\|U_\varepsilon(\varepsilon p)^T-\exp\!\left(-it\,(p\,\sigma_z+m\,\sigma_y)\right)\right\|
+    \le C(t,p_{\max})\,\varepsilon.
+\end{equation}
+For a band-limited state $|\psi_0\rangle$ with support $|p|\le p_{\max}$, Parseval's identity transfers this uniform bound to the full norm on $\mathcal{H}_{1p}$, proving Theorem~\ref{prop:dirac_limit} with $H_D=-i\sigma_z\partial_x+m\sigma_y$.
 
 \subsection{Setup and Definitions}
 Let $\Lambda \subset \mathbb{R}^d$ be a cut-and-project set defined by the projection $P: \mathbb{R}^n \to \mathbb{R}^d$ ($n > d$) of the strip $S = \mathbb{R}^d \times W$, where $W \subset \mathbb{R}^{n-d}$ is a compact window.
 Sites are $x \in \Lambda$. The unitary evolution is $\hat{U} = S \cdot C$, with shift $S = \sum_x \sum_j |x+e_j\rangle\langle x| \otimes P_j$ and coin $C = \bigoplus_x C_x$.
 
-\begin{definition}[Phason Strain]
-The phason coordinate of a site $x$ is $x_\perp = P_\perp(\vec{n})$ where $x = P_{||}(\vec{n})$. The \textbf{Phason Strain Field} $\phi(x)$ describes the local deviation of the point set from a perfect linear cut. For a standard cut-and-project, $||\phi(x)||$ is strictly bounded by the diameter of the window $W$:
-\begin{equation}
-    ||\phi(x)|| \le \text{diam}(W) < \infty.
-\end{equation}
+\begin{definition}[Phason coordinate and phason strain]
+For a cut-and-project point $x=P_{\parallel}(\vec{n})$ with $\vec{n}\in\mathbb{Z}^n$, its internal (perpendicular) coordinate is $x_{\perp}\equiv P_{\perp}(\vec{n})\in W$. Since the window $W$ is compact, $x_{\perp}$ is bounded uniformly by $\mathrm{diam}(W)$; this bound is a property of the internal \emph{coordinate}, not of any strain field.
+
+A \emph{phason displacement field} is a (possibly slowly varying) internal shift $u(x)\in\mathbb{R}^{n-d}$ that locally replaces the window by $W+u(x)$ and hence parametrizes deviations from a perfect linear cut. The corresponding \emph{phason strain} is the spatial variation of this displacement, measured for instance by $\|\nabla u\|$ in continuum descriptions or by discrete differences (e.g.\ the 1D strain $\eta_j$ in Appendix~\ref{app:fib_dqca}). A perfect cut corresponds to $u\equiv\mathrm{const}$ and hence vanishing strain.
 \end{definition}
 
 \begin{lemma}[Ergodic Averaging]
@@ -195,53 +255,15 @@ Let $f: \mathbb{R}^{n-d} \to \mathbb{C}$ be a Riemann-integrable function on the
 This follows from Weyl-type equidistribution for cut-and-project sets; see, e.g., \cite{Hof1995}.
 \end{lemma}
 
-\subsection{Homogenization Theorem}
-We analyze the propagator in momentum space. The effective Hamiltonian $H_{eff}(k)$ is defined by $e^{-i H_{eff} \tau} = \hat{U}(k)$.
+\subsection{Homogenization remarks (quasicrystal extension)}
+For coined walks on regular lattices, rigorous long-wavelength Dirac limits (including variable-mass and gauge-coupled extensions) are available in the QW/QCA literature; see, e.g., \cite{Arrighi2014,Dariano2014,Bisio2015}. Extending such results to cut-and-project substrates requires controlling the quasicrystal structure factor together with the spatial variation of internal-coordinate (phason) fields. In this manuscript we use the ergodic averaging statement (Lemma~\ref{lemma:ergodic}) and explicit 1D diagnostics (Appendix~\ref{app:fib_dqca}) as the checkable backbone of the quasicrystal program; a full higher-dimensional homogenization proof is left for future work.
 
-\begin{theorem}
-Let $\Lambda$ be an icosahedral quasicrystal. The effective Hamiltonian expands as:
+\subsection{Diophantine property (golden case)}
+Quantitative control of near-commensurabilities in quasiperiodic constructions is often organized by Diophantine (badly-approximable) bounds. For the golden ratio $\phi=\tfrac{1+\sqrt5}{2}$, continued-fraction theory gives the sharp estimate
 \begin{equation}
-    H_{eff}(k) = \vec{\sigma} \cdot \vec{k} + \mathcal{E}(k),
+    \left| \phi - \frac{p}{q} \right|\ \ge\ \frac{1}{\sqrt{5}\,q^2}\qquad (p,q\in\mathbb{Z},\ q\ge 1),
 \end{equation}
-where the error term is bounded by:
-\begin{equation}
-    ||\mathcal{E}(k)|| \le C_1 |k|^2 + C_2 \frac{|k|}{\Lambda_{UV}} ||\nabla \phi||.
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-1. \textbf{Expansion}: We expand the shift operator $S = e^{-i \vec{k} \cdot \hat{x}}$. For small $k$:
-\begin{equation}
-    \hat{U}(k) \approx I - i \sum_j (\vec{k} \cdot \vec{e}_j) P_j - i H_{coin}.
-\end{equation}
-2. \textbf{Isotropy of sums (icosahedral symmetry)}: The linear term depends on the sum of projectors $\sum_j \vec{e}_j P_j$. For the icosahedral set, the sum of rank-1 tensors $\sum \vec{e}_j \otimes \vec{e}_j^T$ is irreducible under $SO(3)$ and thus proportional to the identity $\delta_{ab}$ (Schur's Lemma). This forces the velocity tensor $v_{ab}$ to be $c \delta_{ab}$.
-3. \textbf{Phason Error Control}: The key difficulty in quasicrystals is the non-periodic modulation. We invoke the \textbf{Ergodic Path Integral Lemma}:
-\begin{equation}
-    \left| \sum_{x \in \Lambda_L} e^{i \vec{q} \cdot x} \phi(x) \right| < C L^{d/2} ||\phi||_{W^{1,2}}.
-\end{equation}
-The error term $\mathcal{E}(k)$ is dominated by the Bragg peaks of the phason strain. For the Golden Mean tiling, these peaks are hierarchically suppressed by powers of $\phi^{-3}$.
-4. \textbf{Result}: The first non-vanishing anisotropic term is rank-4 (since rank-3 vanishes by inversion). This scales as $k^2$, giving the $O(\varepsilon^2)$ bound.
-\end{proof}
-
-\subsection{Error Bounds and Diophantine Conditions}
-The rate of convergence depends on the smoothness of the window boundary $\partial W$.
-If $\partial W$ is fractal (canonical cut-and-project), the error decays as $N^{-\alpha}$. If we "smooth" the window (fuzzy boundary), the error decays exponentially $e^{-\gamma N}$, but this introduces non-local hopping tails.
-For the "Omega Network" with physical finite information density, $W$ is sharp, so we rely on the \textbf{Diophantine condition} on the projection slope $\tau$. Since $\tau = \phi$ (Golden Ratio) is bad-diophantine (hardest to approximate by rationals), the distribution is maximally uniform ("Noble Number").
-\begin{proposition}[Diophantine Bound]
-For the Golden Mean $\phi$, Roth's Theorem guarantees that for any rational $p/q$:
-\begin{equation}
-    \left| \phi - \frac{p}{q} \right| > \frac{1}{\sqrt{5} q^2}.
-\end{equation}
-This implies that the Fourier coefficients of the lattice density $\hat{\rho}(k)$ decay as:
-\begin{equation}
-    |\hat{\rho}(k)| \le C \frac{1}{|k|}.
-\end{equation}
-Substituting this into the ergodic integral, the error term in the Hamiltonian scales as:
-\begin{equation}
-    ||\mathcal{E}|| \le \int_{|q| > \Lambda} |\hat{\phi}(q)| dq \sim \mathcal{O}(\varepsilon^2).
-\end{equation}
-The constant $C$ is determined by the surface area of the projection window, $C \approx \text{Vol}(\partial W)$.
-\end{proposition}
+with equality attained along the Fibonacci convergents. This arithmetic rigidity underlies the Fibonacci return-time structure discussed in Appendix~\ref{app:three_gap} and the Zeckendorf/Ostrowski digit constraints used in Part~II and Appendix~\ref{app:ostrowski}.
 
 \subsection{Three-gap structure and Fibonacci return times}
 \label{app:three_gap}
@@ -249,6 +271,84 @@ The same bad-approximability property that controls the Diophantine bounds above
 Moreover, when $N$ equals a denominator $q_k$ of a continued-fraction convergent of $\alpha$, the partition exhibits a particularly rigid two-gap structure, and the closest returns occur at such $q_k$.
 
 For the golden case $\alpha=\phi^{-2}$, the continued fraction is eventually constant, so the convergent denominators are Fibonacci numbers (up to an index shift). Consequently, the strongest near-returns and the most uniform finite sampling of the phase orbit occur on Fibonacci time scales. This provides a concrete number-theoretic underpinning for the Fibonacci ``resonant eras'' discussed in Part~VI.
+
+\subsection{Torus rotations from finite-dimensional spectra: aperiodicity, equidistribution, recurrence}
+\label{app:torus_rotation}
+Several claims in Part~VI can be reduced to standard facts about translations on tori. We record them in a form adapted to finite-dimensional unitary spectra.
+
+\begin{proposition}[Projective evolution as a torus rotation]
+\label{prop:projective_torus}
+Let $U$ be a unitary on a finite-dimensional Hilbert space with an eigenbasis $\{|n\rangle\}_{n=0}^{d-1}$ and eigenvalues $U|n\rangle = e^{-i2\pi \alpha_n}|n\rangle$, where $\alpha_n\in\mathbb{R}/\mathbb{Z}$. For a state $|\psi\rangle=\sum_{n} c_n|n\rangle$ with support $S\equiv\{n:\,c_n\neq 0\}$, define the relative-phase vector
+\begin{equation}
+    \omega\equiv (\alpha_n-\alpha_{n_0})_{n\in S\setminus\{n_0\}}\ \in\ (\mathbb{R}/\mathbb{Z})^{|S|-1},
+\end{equation}
+for any fixed $n_0\in S$. Then the projective orbit $[U^t|\psi\rangle]$ is completely determined by the torus rotation $t\mapsto t\,\omega\ (\mathrm{mod}\ 1)$.
+\end{proposition}
+\begin{proof}
+Write $U^t|\psi\rangle=\sum_{n\in S} c_n e^{-i2\pi t\alpha_n}|n\rangle$. In projective space, the global phase $e^{-i2\pi t\alpha_{n_0}}$ is irrelevant, so the ray is determined by the relative phases $e^{-i2\pi t(\alpha_n-\alpha_{n_0})}$ for $n\in S\setminus\{n_0\}$, i.e.\ by $t\,\omega$.
+\end{proof}
+
+\begin{proposition}[No exact repetition criterion]
+\label{prop:aperiodic_criterion}
+With the notation above, the projective orbit is periodic (i.e.\ there exists $T\ge 1$ such that $[U^T|\psi\rangle]=[|\psi\rangle]$) if and only if $T\,\omega=0$ in $(\mathbb{R}/\mathbb{Z})^{|S|-1}$, equivalently $T(\alpha_n-\alpha_{n_0})\in\mathbb{Z}$ for all $n\in S$.
+In particular, if at least one difference $\alpha_n-\alpha_{n_0}$ with $c_n\neq 0$ is irrational, then the orbit has no exact period.
+\end{proposition}
+\begin{proof}
+The condition $[U^T|\psi\rangle]=[|\psi\rangle]$ means $U^T|\psi\rangle=e^{i\theta}|\psi\rangle$ for some $\theta$. Comparing coefficients in the eigenbasis gives $e^{-i2\pi T\alpha_n}=e^{i\theta}$ for all $n\in S$, i.e.\ $e^{-i2\pi T(\alpha_n-\alpha_{n_0})}=1$ for all $n\in S$, which is equivalent to the stated integer condition.
+\end{proof}
+
+\begin{theorem}[Equidistribution on the orbit closure]
+\label{thm:equidistribution_closure}
+Let $\omega\in(\mathbb{R}/\mathbb{Z})^m$ and consider the translation $T_\omega:x\mapsto x+\omega$ on the torus $\mathbb{T}^m$. Let $H\equiv \overline{\{t\omega:\,t\in\mathbb{Z}\}}\subset\mathbb{T}^m$ be the orbit closure of $0$ (a subtorus). Then for any continuous $f$ on $H$ and any $x\in H$,
+\begin{equation}
+    \lim_{N\to\infty}\frac{1}{N}\sum_{t=0}^{N-1} f(x+t\omega) \;=\; \int_H f\,d\mu_H,
+\end{equation}
+where $\mu_H$ is the normalized Haar measure on $H$ \cite{KuipersNiederreiter1974,Weyl1916}.
+\end{theorem}
+\begin{proof}
+By Fourier analysis on the compact abelian group $H$, it suffices to test characters $\chi$ of $H$. For a character $\chi$, the average is
+\begin{equation}
+    \frac{1}{N}\sum_{t=0}^{N-1}\chi(x+t\omega)=\chi(x)\,\frac{1}{N}\sum_{t=0}^{N-1}\chi(\omega)^t.
+\end{equation}
+If $\chi(\omega)\neq 1$ the geometric-series average tends to $0$ as $N\to\infty$; if $\chi(\omega)=1$, then $\chi$ is constant on the dense subgroup generated by $\omega$ and hence is the trivial character on $H$. Therefore the only surviving Fourier mode is the constant one, implying convergence to the Haar integral.
+\end{proof}
+
+\begin{proposition}[Torus translations are not mixing]
+\label{prop:torus_not_mixing}
+Let $T_\omega$ be a translation on a torus $\mathbb{T}^m$ by a nonzero $\omega$. Then $T_\omega$ is not mixing with respect to Haar measure. In particular, there exist bounded observables $f,g$ with zero mean such that the correlation $\langle f\circ T_\omega^t, g\rangle$ does not converge to $0$ as $t\to\infty$.
+\end{proposition}
+\begin{proof}
+Take a nontrivial character $\chi_k(x)\equiv e^{2\pi i k\cdot x}$ with $k\in\mathbb{Z}^m\setminus\{0\}$. Let $f=\chi_k$ and $g=\overline{\chi_k}$. Both have zero Haar mean. Then
+\begin{equation}
+    \langle f\circ T_\omega^t, g\rangle
+    = \int_{\mathbb{T}^m} e^{2\pi i k\cdot (x+t\omega)}\,e^{-2\pi i k\cdot x}\,dx
+    = e^{2\pi i t\,k\cdot \omega},
+\end{equation}
+which has modulus $1$ for all $t$ and therefore cannot converge to $0$.
+\end{proof}
+
+\begin{proposition}[Quantitative recurrence bound (Dirichlet approximation)]
+\label{prop:dirichlet_recurrence}
+Let $\omega\in\mathbb{R}^m$ and let $\|\cdot\|_{\mathbb{T}^m}$ denote distance to $0$ in $\mathbb{T}^m$. Then for any integer $Q\ge 1$ there exists $1\le t\le Q^m$ such that
+\begin{equation}
+    \|t\,\omega\|_{\mathbb{T}^m} \le \frac{1}{Q}.
+\end{equation}
+Consequently, for any $\varepsilon>0$ there exists $t=\mathcal{O}(\varepsilon^{-m})$ such that $t\omega$ returns within $\varepsilon$ of $0$.
+\end{proposition}
+\begin{proof}
+This is the standard simultaneous Dirichlet approximation theorem: among the $Q^m+1$ points $\{t\omega\}_{t=0}^{Q^m}$ in $[0,1)^m$, two must lie in the same cube of side length $1/Q$, so their difference $t\omega$ is within $1/Q$ of an integer vector.
+\end{proof}
+
+\paragraph{Application to the golden-spectrum unitary.}
+For the diagonal golden-spectrum ansatz of Part~VI, the projective dynamics is a torus translation of the form above with a frequency vector determined by the eigenphase differences $\alpha_n-\alpha_{n_0}$. Proposition~\ref{prop:aperiodic_criterion} gives a simple sufficient condition for absence of exact periods, while Theorem~\ref{thm:equidistribution_closure} and Proposition~\ref{prop:dirichlet_recurrence} justify equidistribution on the orbit closure and the existence of arbitrarily close returns (with polynomial recurrence-time bounds in the effective torus dimension). In the golden case, continued-fraction optimality further organizes the \emph{best} near-returns on Fibonacci time scales, as summarized in Appendix~\ref{app:three_gap}.
+
+\begin{corollary}[Recurrence obstructs strictly monotone continuous ``complexity'' along a fixed finite spectrum]
+\label{cor:recurrence_no_monotone}
+Let $U$ be a finite-dimensional unitary and let $|\psi\rangle$ be a state whose projective orbit has arbitrarily close returns (as in Proposition~\ref{prop:dirichlet_recurrence} for the associated torus rotation). Then no continuous functional $C:\mathbb{P}(\mathcal{H})\to\mathbb{R}$ can be strictly increasing along the entire orbit $\{[U^t|\psi\rangle]\}_{t\ge 0}$.
+\end{corollary}
+\begin{proof}
+Arbitrarily close returns mean that there exists a sequence $t_k\to\infty$ with $[U^{t_k}|\psi\rangle]\to[|\psi\rangle]$ in $\mathbb{P}(\mathcal{H})$. By continuity, $C([U^{t_k}|\psi\rangle])\to C([|\psi\rangle])$. A strictly increasing sequence cannot have a subsequence that converges back to its initial value, so $C$ cannot be strictly increasing along all $t$.
+\end{proof}
 
 \subsection{Golden-mean constraint, capacity, and Zeckendorf coding}
 \label{app:golden_mean_capacity}
@@ -261,6 +361,45 @@ so the topological entropy is $h_{\mathrm{top}}=\lim_{L\to\infty}\frac{1}{L}\ln 
     C=\log_2\phi \approx 0.6942\ \text{bits/site}.
 \end{equation}
 Zeckendorf's theorem gives the matching uniqueness statement in arithmetic form: every integer admits a unique representation as a sum of non-consecutive Fibonacci numbers, which is equivalent to the golden-mean admissibility condition on digits \cite{Zeckendorf1972,AlloucheShallit2003}. In this sense, the Zeckendorf/Ostrowski representation is the canonical discretization compatible with Fibonacci combinatorics and finite-resolution constraints in the golden construction.
+
+\section{Ostrowski numeration, Sturmian coding, and Zeckendorf time}
+\label{app:ostrowski}
+
+This appendix provides a concise proof of the Zeckendorf specialization used in Proposition~\ref{prop:ostrowski_zeckendorf} and summarizes the general Ostrowski framework associated with an irrational rotation.
+
+\subsection{Ostrowski numeration associated with an irrational slope}
+Let $\alpha\in(0,1)\setminus\mathbb{Q}$ have continued fraction expansion $\alpha=[0;a_1,a_2,\dots]$ with convergents $p_n/q_n$. Define $q_{-1}\equiv 0$, $q_0\equiv 1$ and
+\begin{equation}
+    q_{n+1}=a_{n+1}q_n+q_{n-1}\qquad (n\ge 0).
+\end{equation}
+The \emph{Ostrowski representation} associated with $\alpha$ states that every integer $t\in\mathbb{Z}_{\ge 0}$ admits a unique expansion
+\begin{equation}
+    t=\sum_{n=0}^{m} b_n q_n,
+\end{equation}
+with digits satisfying $0\le b_0<a_1$, $0\le b_n\le a_{n+1}$ for $n\ge 1$, and the admissibility constraint that if $b_n=a_{n+1}$ then $b_{n-1}=0$ (see, e.g., \cite{AlloucheShallit2003}).
+
+\subsection{Golden case and the Zeckendorf rule}
+For the golden-slope choice $\alpha=\phi^{-2}$ one has $\alpha=[0;2,1,1,1,\dots]$, so $a_1=2$ and $a_n=1$ for $n\ge 2$. The recurrence above then yields
+\begin{equation}
+    q_n = F_{n+2}\qquad (n\ge 0),
+\end{equation}
+with Fibonacci numbers defined by $F_0=0$, $F_1=1$, $F_{n+2}=F_{n+1}+F_n$. The Ostrowski digit constraints therefore reduce to $b_n\in\{0,1\}$ with no adjacent ones, exactly the Zeckendorf admissibility rule used in Proposition~\ref{prop:ostrowski_zeckendorf}.
+
+\subsection{Proof of Zeckendorf's theorem (existence and uniqueness)}
+\label{app:zeckendorf_proof}
+\begin{theorem}[Zeckendorf]
+Every $t\in\mathbb{Z}_{\ge 0}$ admits a unique representation
+\begin{equation}
+    t=\sum_{k=0}^{m} b_k F_{k+2},\qquad b_k\in\{0,1\},\qquad b_k b_{k+1}=0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+\textbf{Existence.} For $t=0$ the empty sum works. For $t>0$, let $n\ge 2$ be maximal with $F_n\le t$. Set $t_1\equiv t-F_n$. Since $F_{n+1}=F_n+F_{n-1}$, maximality implies $t< F_{n+1}$ and hence $t_1<t-F_n< F_{n-1}$. Therefore any further Fibonacci summand in a representation of $t_1$ has index at most $n-2$, so it cannot be consecutive with $F_n$. Iterating the same greedy step on the remainder terminates and produces a representation with no consecutive summands.
+
+\textbf{Uniqueness.} We use the bound that the maximal sum representable using Fibonacci numbers $\{F_2,\dots,F_{m+1}\}$ without consecutive indices equals $F_{m+2}-1$. This follows by induction: for $m=0$ the maximum is $0=F_2-1$, and for $m\ge 1$ the maximum either excludes $F_{m+1}$ (giving at most $F_{m+1}-1$ by induction) or includes $F_{m+1}$ and must exclude $F_m$, giving at most $F_{m+1}+(F_m-1)=F_{m+2}-1$.
+
+Now suppose two admissible representations of the same $t$ exist, with digit strings $(b_k)$ and $(b'_k)$ not identical. Let $m$ be the largest index with $b_m\ne b'_m$. Without loss of generality $b_m=1$ and $b'_m=0$. Then the difference between the two sums is at least $F_{m+2}$ minus a sum of admissible terms from $\{F_2,\dots,F_{m+1}\}$, whose magnitude is at most $F_{m+2}-1$ by the bound above. Hence the difference cannot vanish, a contradiction. Therefore the representation is unique.
+\end{proof}
 
 \section{Variational Derivation of Informational Gravity}
 \label{app:action_proof}
@@ -350,6 +489,164 @@ We define a natural covariant ``information current'' by
 \end{equation}
 In the minimal case $V\equiv 0$, the scalar equation reduces to $\Box \chi = 0$.
 
+\subsection{FLRW reduction with lapse (derivation of the background equations)}
+\label{app:frw_lapse_derivation}
+In Part~V we use an FLRW metric with homogeneous lapse $N(t)$,
+\begin{equation}
+    ds^2=-N^2(t)\,dt^2+a^2(t)\left[\frac{dr^2}{1-kr^2}+r^2 d\Omega^2\right],
+\end{equation}
+and define proper time by $d\tau=N(t)\,dt$. The proper-time Hubble parameter is
+\begin{equation}
+    H_\tau\equiv \frac{1}{a}\frac{da}{d\tau}=\frac{\dot a}{a\,N}.
+\end{equation}
+For a perfect-fluid stress tensor $T^{\mu}{}_{\nu}=\mathrm{diag}(-\rho,p,p,p)$ and cosmological term $\Lambda(t)$, the Einstein equations yield the standard Friedmann system in $\tau$:
+\begin{align}
+    H_\tau^2 &= \frac{8\pi G}{3}\rho + \frac{\Lambda(t)}{3} - \frac{k}{a^2},\\
+    \frac{1}{a}\frac{d^2a}{d\tau^2} &= -\frac{4\pi G}{3}\left(\rho+3p\right) + \frac{\Lambda(t)}{3}.
+\end{align}
+Rewriting the second equation in the $t$-coordinate uses
+\begin{equation}
+    \frac{d}{d\tau}=\frac{1}{N}\frac{d}{dt},\qquad
+    \frac{d^2a}{d\tau^2}=\frac{1}{N^2}\ddot a-\frac{\dot N}{N^3}\dot a,
+\end{equation}
+so that
+\begin{equation}
+    \frac{\ddot a}{a}-\frac{\dot N}{N}\frac{\dot a}{a}
+    =
+    -\frac{4\pi G}{3}N^2(\rho+3p)+\frac{\Lambda(t)}{3}N^2,
+\end{equation}
+equivalently the form quoted in Part~V.
+
+Finally, covariant conservation $\nabla_\mu T^{\mu\nu}=0$ implies in proper time
+\begin{equation}
+    \frac{d\rho}{d\tau}+3H_\tau(\rho+p)=0,
+\end{equation}
+which is equivalent to $\dot\rho+3(\dot a/a)(\rho+p)=0$ in the $t$-coordinate because both terms acquire the same factor $1/N$.
+
+\section{Reciprocal-lattice templates and \texorpdfstring{low-$\ell$}{low-l} alignment}
+\label{app:moire_cmb}
+Part~VI uses a reciprocal-lattice (``moir\'e'') template to motivate preferred-axis signatures in low-$\ell$ CMB multipoles. Here we record the elementary spherical-harmonic relation for sums of plane waves on the sky.
+
+\begin{proposition}[Plane-wave template and spherical-harmonic coefficients]
+\label{prop:plane_wave_harmonics}
+Let $\hat{n}\in S^2$ denote a sky direction and consider a (real) scalar template of the form
+\begin{equation}
+    V(\hat n)=\sum_{k\in\mathcal{K}} V_k\,e^{i\,\vec{k}\cdot \hat n},\qquad V_{-k}=\overline{V_k},
+\end{equation}
+where $\mathcal{K}$ is a finite (or sufficiently summable) set of wavevectors. Expand $V$ in spherical harmonics, $V(\hat n)=\sum_{\ell,m} a_{\ell m}Y_{\ell m}(\hat n)$. Then
+\begin{equation}
+    a_{\ell m} = 4\pi\, i^{\ell}\sum_{k\in\mathcal{K}} V_k\, j_{\ell}(|k|)\,\overline{Y_{\ell m}(\hat{k})},
+\end{equation}
+where $j_{\ell}$ is the spherical Bessel function and $\hat{k}\equiv \vec{k}/|\vec{k}|$.
+\end{proposition}
+\begin{proof}
+Use the standard plane-wave expansion on the unit sphere,
+\begin{equation}
+    e^{i\,\vec{k}\cdot \hat n}=4\pi\sum_{\ell,m} i^{\ell}\,j_{\ell}(|k|)\,Y_{\ell m}(\hat n)\,\overline{Y_{\ell m}(\hat{k})},
+\end{equation}
+and collect coefficients of $Y_{\ell m}(\hat n)$. The reality condition $V_{-k}=\overline{V_k}$ ensures $V(\hat n)$ is real.
+\end{proof}
+
+\begin{corollary}[Dominant axis implies aligned low-$\ell$ multipoles]
+\label{cor:axis_alignment}
+If the set of dominant wavevectors $\mathcal{K}$ is concentrated near a single axis $\hat{k}_\ast$ (for example, $\mathcal{K}$ is dominated by $\pm \vec{k}_\ast$), then the low-$\ell$ coefficients $a_{\ell m}$ are dominated by the corresponding spherical harmonics evaluated at $\hat{k}_\ast$. In particular, in the exactly axisymmetric case $V(\hat n)=f(\hat{k}_\ast\cdot \hat n)$, one can choose coordinates with $z$-axis along $\hat{k}_\ast$ so that $a_{\ell m}=0$ for all $m\neq 0$, implying that the quadrupole and octopole share the same preferred axis.
+\end{corollary}
+\begin{proof}
+In the axisymmetric case, $V$ depends only on the polar angle $\theta$ relative to $\hat{k}_\ast$, so it is invariant under rotations about $\hat{k}_\ast$. Spherical harmonics with $m\neq 0$ transform with nontrivial phase under such rotations, hence cannot appear. Therefore only $m=0$ modes remain in that coordinate system, and all low-$\ell$ multipoles are aligned with the same axis.
+\end{proof}
+
+\section{Symmetry constraints on modified dispersion}
+\label{app:mdr_symmetry}
+The modified-dispersion discussion in Parts~VI and VIII uses only basic symmetry constraints. We record the minimal expansion statement used to justify the absence of linear ($n=1$) time-of-flight terms in parity-symmetric lattice/QCA settings.
+
+\begin{proposition}[Parity-symmetric analytic dispersion has no $n=1$ MDR term]
+\label{prop:no_linear_mdr}
+Let $E(p)$ be a (positive) dispersion relation for a massless mode in one dimension, with $p$ the physical momentum, and assume that the squared dispersion is analytic and parity symmetric near $p=0$:
+\begin{equation}
+    E^2(p)=E^2(-p),\qquad
+    E^2(p)=c^2 p^2 + \beta_2 p^4 + \beta_3 p^6 + \cdots \quad (|p|\ll p_{\mathrm{UV}}).
+\end{equation}
+Then the group velocity satisfies
+\begin{equation}
+    v(p)\equiv \frac{dE}{dp}=c\left[1+\mathcal{O}(p^2)\right],
+\end{equation}
+so there is no linear-in-energy ($n=1$) time-of-flight correction in an MDR parameterization; the leading correction is quadratic in energy (equivalently quartic in momentum).
+\end{proposition}
+\begin{proof}
+From the assumed expansion,
+\begin{equation}
+    E(p)=c|p|\left[1+\frac{\beta_2}{2c^2}p^2+\mathcal{O}(p^4)\right]
+\end{equation}
+for $p$ in a one-sided neighborhood (e.g.\ $p>0$). Differentiating gives $v(p)=c+\mathcal{O}(p^2)$, so the first correction is quadratic in $p$ (hence quadratic in $E$ at leading order).
+\end{proof}
+
+\section{Discrete scale invariance and \texorpdfstring{$1/f$}{1/f} spectra}
+\label{app:one_over_f}
+The ``pink'' ($1/f$) noise ansatz used in Part~VI can be derived from a minimal scale-invariance mechanism: a log-uniform distribution of characteristic times (continuous scale invariance) or a geometric ladder of times (discrete scale invariance).
+
+\begin{proposition}[$1/f$ spectrum from a log-uniform mixture of Lorentzians]
+\label{prop:one_over_f}
+Let $x(t)$ be a stationary process obtained as a superposition of independent Ornstein--Uhlenbeck components with relaxation times $\tau\in[\tau_{\min},\tau_{\max}]$ whose density is log-uniform,
+\begin{equation}
+    \rho(\tau)=\frac{C}{\tau}\,\mathbf{1}_{[\tau_{\min},\tau_{\max}]}(\tau),
+\end{equation}
+and whose single-component power spectral density is Lorentzian, $S_\tau(f)=\frac{A\,\tau}{1+(2\pi f\tau)^2}$. Then the total PSD satisfies
+\begin{equation}
+    S(f)=\int_{\tau_{\min}}^{\tau_{\max}} \rho(\tau)\,S_\tau(f)\,d\tau \;=\; \frac{A C}{2\pi}\,\frac{1}{f}\int_{2\pi f\tau_{\min}}^{2\pi f\tau_{\max}} \frac{du}{1+u^2}.
+\end{equation}
+In the intermediate band $1/\tau_{\max}\ll f\ll 1/\tau_{\min}$, the integral is approximately constant, hence $S(f)\propto 1/f$.
+\end{proposition}
+\begin{proof}
+Substitute $u\equiv 2\pi f\tau$ to obtain the stated formula. In the regime $2\pi f\tau_{\min}\ll 1\ll 2\pi f\tau_{\max}$ one has $\int_{u_{\min}}^{u_{\max}}\frac{du}{1+u^2}\approx \frac{\pi}{2}$, giving $S(f)\approx \frac{AC}{4}\,\frac{1}{f}$.
+\end{proof}
+
+\paragraph{Discrete scale invariance.}
+If the characteristic times form a geometric ladder $\tau_k=\tau_0\,\phi^k$ (golden scaling) with weights approximating a log-uniform density, the resulting spectrum exhibits the same $1/f$ envelope with log-periodic modulations (a periodic function of $\log_\phi f$), consistent with the ``log-periodic peaks'' template used in Part~VI.
+
+\begin{proposition}[Common-mode field implies positive cross-correlation]
+\label{prop:common_mode_crosscorr}
+Let two colocated detectors have outputs
+\begin{equation}
+    y_1(t)=x(t)+n_1(t),\qquad y_2(t)=x(t)+n_2(t),
+\end{equation}
+where $x(t)$ is a stationary ``common'' signal and $n_1,n_2$ are stationary detector noises that are uncorrelated with $x$ and with each other. Then the cross power spectral density satisfies
+\begin{equation}
+    S_{12}(f)\equiv \langle \widetilde{y}_1(f)\,\overline{\widetilde{y}_2(f)}\rangle = S_x(f),
+\end{equation}
+so the cross-spectrum inherits the sign/shape of the common field and is strictly positive for a positive PSD $S_x(f)$.
+\end{proposition}
+\begin{proof}
+Expand $\widetilde{y}_1\overline{\widetilde{y}_2}=(\widetilde{x}+\widetilde{n}_1)(\overline{\widetilde{x}}+\overline{\widetilde{n}_2})$ and take expectation. The mixed terms vanish by the stated uncorrelatedness assumptions, leaving $S_{12}(f)=\langle \widetilde{x}(f)\overline{\widetilde{x}(f)}\rangle=S_x(f)$.
+\end{proof}
+
+\section{Echo time delay from a near-horizon reflector}
+\label{app:echo_delay}
+The echo-delay estimate in Part~VI follows from the standard tortoise-coordinate logarithm near a horizon. We record the elementary derivation in the Schwarzschild case.
+
+\begin{proposition}[Logarithmic echo delay]
+\label{prop:echo_delay}
+Consider a Schwarzschild black hole of mass $M$ (in units $G=c=1$) with tortoise coordinate
+\begin{equation}
+    r_\ast(r)=r+2M\ln\!\left(\frac{r}{2M}-1\right).
+\end{equation}
+Suppose a partially reflecting structure is located at $r_0=2M+\varepsilon$ with $0<\varepsilon\ll 2M$, and consider wavepackets that reflect between $r_0$ and an exterior potential barrier at $r\simeq r_b$ (e.g.\ near the photon sphere). Then the echo time delay between successive reflections is
+\begin{equation}
+    \Delta t_{\mathrm{echo}}
+    \simeq 2\bigl[r_\ast(r_b)-r_\ast(r_0)\bigr]
+    = 4M\ln\!\left(\frac{2M}{\varepsilon}\right) + \mathcal{O}(M),
+\end{equation}
+where the $\mathcal{O}(M)$ term depends on the choice of $r_b$ but is subdominant for $\varepsilon\ll 2M$.
+\end{proposition}
+\begin{proof}
+In Schwarzschild coordinates, radial null propagation satisfies $t\simeq \pm r_\ast+\mathrm{const}$. A round trip from $r_0$ to $r_b$ and back therefore takes $2[r_\ast(r_b)-r_\ast(r_0)]$. For $\varepsilon\ll 2M$, one has
+\begin{equation}
+    r_\ast(2M+\varepsilon)=2M+\varepsilon+2M\ln\!\left(\frac{\varepsilon}{2M}\right),
+\end{equation}
+so $-r_\ast(r_0)$ contains the dominant logarithm $2M\ln(2M/\varepsilon)$, giving the stated leading term.
+\end{proof}
+\noindent
+\textit{Conversion to SI.} Restoring $G$ and $c$ gives $\Delta t_{\mathrm{echo}}\simeq \frac{4GM}{c^3}\ln\!\left(\frac{2GM}{c^2\varepsilon}\right)$.
+
 \section{Holographic Isometry and Error Correction}
 \label{app:isometry}
 
@@ -360,36 +657,71 @@ The "Golden MERA" is constructed from a hierarchy of tensors $\{T^{(s)}\}$ actin
 \begin{definition}[Perfect Tensor Class]
 We assume the local tensors $W$ (isometry) and $D$ (disentangler) are \textbf{Perfect Tensors} (or $\epsilon$-perfect). A tensor $T_{i_1 \dots i_n}$ is perfect if any bipartition of its indices into sets $A$ and $B$ with $|A| \le |B|$ defines an isometry from $A$ to $B$.
 \end{definition}
-The global isometry $\Phi: \mathcal{H}_{bulk} \to \mathcal{H}_{boundary}$ is the limit of the layer composition:
+The global encoding map $\Phi$ is defined as the (finite-depth) layer composition, with the infinite-depth limit understood as a scaling limit on the code subspace:
 \begin{equation}
     \Phi = \prod_{s=0}^\infty \left( \bigotimes_{x} D^{(s)}_x \cdot \bigotimes_{y} W^{(s)}_y \right).
 \end{equation}
 
-\subsection{Reconstruction and Complementary Recovery}
-The error correction property is guaranteed by the following theorem, adapting the \textbf{HKLL} (Hamilton-Kabat-Lifschytz-Lowe) condition to discrete networks \cite{Pastawski2015}:
-\begin{theorem}[Entanglement Wedge Reconstruction]
-Let $A$ be a boundary region. Let $\gamma_A$ be the minimal cut (RT surface) homologous to $A$. The entanglement wedge $\mathcal{W}_E(A)$ is the bulk region enclosed by $A \cup \gamma_A$.
-For any bulk operator $\phi_x$ acting at site $x \in \mathcal{W}_E(A)$, there exists a boundary operator $\mathcal{O}_A$ supported only on $A$ such that:
-\begin{equation}
-    \Phi \phi_x \Phi^\dagger = \mathcal{O}_A \otimes I_{A^c} + \mathcal{E},
-\end{equation}
-where the error term $\mathcal{E}$ is exponentially suppressed.
-\end{theorem}
+\subsection{Min-cut entropy bound}
+For tensor-network states/codes, the elementary and fully rigorous statement is an \emph{upper bound} on boundary entanglement entropy in terms of bond cuts.
 
-\subsection{Error Bounds}
-The "price" of reconstruction is governed by the code distance.
-\begin{proposition}[Error Suppression]
-\label{prop:error_suppression}
-For a Perfect Tensor network with bond dimension $\chi$, the error in reconstructing an operator at bulk depth $z$ from a boundary region $A$ scales as:
+\begin{theorem}[Min-cut entropy upper bound]
+\label{thm:mincut_entropy}
+Let $|\Psi\rangle$ be a (pure) boundary state obtained from contracting a tensor network with uniform bond dimension $\chi$ on internal edges. For any boundary region $A$, let $\gamma_A$ be a cut that separates $A$ from its complement $A^c$ and crosses $|\gamma_A|$ internal edges. Then the von Neumann entropy satisfies
 \begin{equation}
-    ||\mathcal{E}|| \le c \cdot \chi^{-(Area(\gamma_A) - Area(\gamma_{min}))}.
+    S(\rho_A)\ \le\ |\gamma_A|\,\ln \chi,
 \end{equation}
-Specifically, if the bulk site is "deep" inside the wedge (distance $d$ from the RT surface), the error is suppressed by the number of cut bonds:
+and in particular $S(\rho_A)\le |\gamma_{\min}(A)|\ln\chi$ for a minimal cut $\gamma_{\min}(A)$.
+\end{theorem}
+\begin{proof}
+Cutting $|\gamma_A|$ bonds of dimension $\chi$ yields a bipartition in which the Schmidt rank across $(A|A^c)$ is at most $\chi^{|\gamma_A|}$. Therefore $S(\rho_A)\le \ln(\mathrm{rank}\,\rho_A)\le |\gamma_A|\ln\chi$.
+\end{proof}
+
+\begin{proposition}[Page-curve mechanism from competing cuts (tensor-network island picture)]
+\label{prop:page_curve_mincut}
+Consider a tensor-network boundary state $|\Psi\rangle$ with bond dimension $\chi$ and a boundary partition into $R$ (radiation) and $B$ (the remaining boundary). Suppose the network contains a distinguished set of ``horizon'' edges of cardinality $|\partial I|$ such that there exist two natural classes of cuts homologous to $R$:
+\begin{itemize}
+    \item \textbf{No-island cut}: cuts that separate $R$ from $B$ without crossing the horizon bottleneck;
+    \item \textbf{Island cut}: cuts that additionally enclose a bulk region $I$ and hence cross the horizon bottleneck, incurring an additive cost $|\partial I|$.
+\end{itemize}
+Then the min-cut entropy bound implies
 \begin{equation}
-    ||\mathcal{E}|| \sim e^{-d \cdot \ln \chi}.
+    S(\rho_R)\ \le\ \min\!\Big\{ |\gamma_{\mathrm{no}}(R)|,\ |\gamma_{\mathrm{is}}(R\cup I)|+|\partial I| \Big\}\,\ln\chi,
 \end{equation}
+where $\gamma_{\mathrm{no}}(R)$ and $\gamma_{\mathrm{is}}(R\cup I)$ denote the minimal cuts within the respective classes. If, along an evaporation/transfer process, the minimizing class changes from ``no-island'' at early times to ``island'' at late times, this reproduces a Page-curve-shaped entropy profile by a discrete analogue of a quantum extremal surface transition.
 \end{proposition}
-This ensures that "Deep Memory" is protected against all local boundary erasures up to half the system size, fulfilling Axiom O4.
+\begin{proof}
+The min-cut bound (Theorem~\ref{thm:mincut_entropy}) holds for any cut, hence for the best cut in each class. Taking the minimum over the two admissible classes yields the stated inequality. The ``Page curve'' statement follows from the observation that a change in the minimizing cut class causes $S(\rho_R)$ to transition from being controlled by the no-island cut size to being controlled by the island cut size plus the horizon cost.
+\end{proof}
+
+\subsection{Entanglement wedge reconstruction (perfect/approximate-perfect networks)}
+To connect the holographic map $\Phi$ to reconstruction, we use the standard tensor-network QECC results (HaPPY / OAQEC); see, e.g., \cite{Pastawski2015,Harlow2017}.
+
+\begin{theorem}[Entanglement wedge reconstruction for a perfect tensor network]
+\label{thm:ewr_perfect}
+Assume the encoding $\Phi$ is implemented by a tensor network built from perfect tensors and defines an isometry from a bulk code space into the boundary Hilbert space. Let $A$ be a boundary region and let $\mathcal{W}_E(A)$ be the bulk region enclosed by $A$ and a minimal cut $\gamma_{\min}(A)$. Then for any bulk operator $\phi_x$ supported on $x\in\mathcal{W}_E(A)$ there exists a boundary operator $\mathcal{O}_A$ supported only on $A$ such that, on the code subspace,
+\begin{equation}
+    \Phi\,\phi_x\,\Phi^\dagger\ =\ \mathcal{O}_A\otimes I_{A^c}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+This is the standard ``operator pushing''/``tensor pushing'' argument of the HaPPY code. Because a perfect tensor is an isometry from any subset of at most half its legs to the complementary legs, one can iteratively move (conjugate) the action of $\phi_x$ through the network along a directed flow that ends on the boundary region $A$, provided $x$ lies in the wedge defined by the minimal cut homologous to $A$. The resulting boundary operator is supported on $A$ and reproduces the bulk action on the code subspace.
+\end{proof}
+
+\begin{corollary}[Approximate reconstruction for $\epsilon$-perfect tensors]
+\label{cor:ewr_eps}
+If the network tensors are $\epsilon$-perfect in operator norm (each intended isometry condition holds up to error $\epsilon$) and the pushing path from $x$ to $A$ crosses at most $d$ tensors, then there exists a boundary operator $\mathcal{O}_A$ supported on $A$ such that
+\begin{equation}
+    \left\|\left(\Phi\,\phi_x\,\Phi^\dagger\right)-\left(\mathcal{O}_A\otimes I_{A^c}\right)\right\|\ \le\ C\,d\,\epsilon,
+\end{equation}
+for a constant $C$ that depends only on the local arity (degree) of the tensors.
+\end{corollary}
+\begin{proof}
+Each approximate-isometry step in the pushing construction incurs an operator-norm error bounded by $\mathcal{O}(\epsilon)$. Summing the errors over at most $d$ steps yields the stated bound.
+\end{proof}
+
+\paragraph{Relation to Axiom~O4.}
+Theorem~\ref{thm:ewr_perfect} provides an explicit sufficient condition under which an encoding map $\Phi$ realizes exact entanglement-wedge reconstruction. Corollary~\ref{cor:ewr_eps} gives a minimal quantitative error bound in an $\epsilon$-perfect setting. These results are one concrete route to implementing the reconstruction requirement in Axiom~O4.
 
 \section{Geometric ans\"atze for dimensionless constants}
 \label{app:constants_proof}
@@ -424,6 +756,39 @@ We record the working geometric ansatz for the proton--electron mass ratio $\mu=
     \mu_{\mathrm{geo}} = 6\pi^5 \approx 1836.1181.
 \end{equation}
 Comparing with the experimental value $\mu_{\mathrm{exp}}\approx 1836.1526$, the absolute discrepancy is $|\Delta\mu|\approx 3.5\times 10^{-2}$ and the relative discrepancy is $|\Delta\mu|/\mu_{\mathrm{exp}}\approx 1.9\times 10^{-5}$. Any serious derivation must explain both the functional form and the size/sign of $\Delta\mu$ once QCD binding effects, electroweak symmetry breaking, and radiative corrections are included.
+
+\subsection{Rigidity bound for local temporal drift of coarse-grained couplings}
+\label{app:rigidity_drift}
+The drift estimates in Part~VI use only a minimal ``averaging'' mechanism: if an effective coupling is a coarse-grained average over many microscopic contributions, then any bounded-rate microscopic update produces a parametrically suppressed macroscopic drift.
+
+\begin{proposition}[Averaging bound]
+\label{prop:averaging_bound}
+Let $g(t)$ be an effective (dimensionless) coupling defined as an average over $N$ bounded microscopic contributions,
+\begin{equation}
+    g(t)=\frac{1}{N}\sum_{i=1}^{N} g_i(t),
+\end{equation}
+and assume that during a time interval of duration $\Delta t$ at most $M$ of the $g_i$ change, each by at most $|\Delta g_i|\le \delta$. Then
+\begin{equation}
+    |\Delta g|\ \le\ \frac{M}{N}\,\delta.
+\end{equation}
+If $g(t)$ is strictly positive and bounded below by $g_{\min}>0$, then the fractional drift obeys
+\begin{equation}
+    \left|\frac{\Delta g}{g}\right|\ \le\ \frac{M}{N}\,\frac{\delta}{g_{\min}}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+By the triangle inequality,
+\begin{equation}
+    |\Delta g|
+    =\left|\frac{1}{N}\sum_{i=1}^{N}\Delta g_i\right|
+    \le \frac{1}{N}\sum_{i=1}^{N}|\Delta g_i|
+    \le \frac{M}{N}\,\delta.
+\end{equation}
+Dividing by $g\ge g_{\min}$ gives the fractional bound.
+\end{proof}
+
+\paragraph{Holographic scaling of $N$.}
+In holographic near-saturation regimes, one may identify $N$ with the number of independent boundary degrees of freedom in a causal patch, $N\sim A/(4l_P^2\ln 2)$, so that any bounded-rate microscopic update yields a very small macroscopic drift. The estimate is purely kinematic; the remaining dynamical question is to determine the effective update rate $M$ and the microscopic step size $\delta$ for a concrete Omega network.
 
 \section{Pseudocode}
 \label{app:reference}
@@ -530,48 +895,71 @@ In Omega Theory, statements such as $\mathcal{H}\cong\bigotimes_x\mathcal{H}_x$ 
 \paragraph{Corollary (area-limited independent degrees of freedom).}
 If a microscopic model admits a local tensor-factor description on a graph, but the physically realized states in a region $V$ are restricted to an operational/code subspace obeying the bound above, then the number of independent degrees of freedom in $V$ is limited by area rather than volume. This is the sense in which the holographic constraint enforces redundancy of bulk degrees of freedom in a regulated discrete description.
 
+\subsection{Modular flow as a canonical intrinsic clock}
+\label{app:modular_time}
+Part~II introduces an intrinsic parameter $\tau$ by writing a one-parameter family of phase-twisted representatives of the Omega ray. In an operator-algebraic setting, a canonical one-parameter flow is provided by modular theory. Since the regulated/QCA description used throughout this manuscript is effectively finite-dimensional on relevant code subspaces, we record the finite-dimensional modular statement explicitly.
+
+\begin{theorem}[Modular automorphism group (finite-dimensional case)]
+\label{thm:modular_finite}
+Let $\mathcal{H}$ be finite-dimensional and let $\rho$ be a full-rank density matrix on $\mathcal{H}$. Define the faithful state $\omega(A)\equiv \mathrm{Tr}(\rho\,A)$ on $\mathcal{B}(\mathcal{H})$. Then the maps
+\begin{equation}
+    \sigma_t^\omega(A)\ \equiv\ \rho^{it}\,A\,\rho^{-it}\qquad (t\in\mathbb{R})
+\end{equation}
+form a one-parameter group of $*$-automorphisms of $\mathcal{B}(\mathcal{H})$ that leaves $\omega$ invariant: $\omega(\sigma_t^\omega(A))=\omega(A)$ for all $t$.
+Equivalently, writing the modular Hamiltonian as $K\equiv -\ln\rho$, one has $\sigma_t^\omega(A)=e^{-itK}A\,e^{itK}$.
+\end{theorem}
+\begin{proof}
+Since $\rho$ is positive definite, $\rho^{it}$ is unitary for all $t$, hence $\sigma_t^\omega$ is an inner $*$-automorphism:
+\[
+    \sigma_t^\omega(AB)=\rho^{it}AB\rho^{-it}=(\rho^{it}A\rho^{-it})(\rho^{it}B\rho^{-it})=\sigma_t^\omega(A)\sigma_t^\omega(B),
+    \qquad
+    \sigma_t^\omega(A^\dagger)=\sigma_t^\omega(A)^\dagger.
+\]
+The group property $\sigma_{t+s}^\omega=\sigma_t^\omega\circ\sigma_s^\omega$ follows from $\rho^{i(t+s)}=\rho^{it}\rho^{is}$. Finally, invariance holds because $\rho^{it}$ commutes with $\rho$ and the trace is cyclic:
+\[
+    \omega(\sigma_t^\omega(A))=\mathrm{Tr}(\rho\,\rho^{it}A\rho^{-it})
+    =\mathrm{Tr}(\rho^{it}\rho\rho^{-it}A)=\mathrm{Tr}(\rho A)=\omega(A).
+\]
+Writing $\rho^{it}=e^{it\ln\rho}=e^{-itK}$ gives the modular-Hamiltonian form.
+\end{proof}
+
+\paragraph{Remark (general von Neumann algebras).}
+For a general von Neumann algebra $\mathfrak{M}$ and a faithful normal state $\omega$, the Tomita--Takesaki theorem provides a canonical modular automorphism group $\{\sigma_t^\omega\}_{t\in\mathbb{R}}$ characterized (in the GNS representation) by conjugation with the modular operator. This is the natural operator-algebraic sense in which a state determines an intrinsic flow; see \cite{Takesaki2002}.
+
 \subsection{Existence of the Golden MERA Isometry}
 We establish the existence of a scale-invariant encoding map $\Phi$ realizing Axiom~O4 under the concrete model assumptions of this manuscript (in particular Assumption~\ref{assump:M3}).
 
-\begin{theorem}[Golden Isometry]
+\begin{theorem}[Golden MERA encoding isometry (finite depth)]
 \label{thm:golden_isometry}
-There exists a Tensor Network $\Phi: \mathcal{H}_{bulk} \to \mathcal{H}_{boundary}$ based on the Fibonacci fusion rules such that $\Phi$ is an approximate isometry with error exponentially suppressed by the bond dimension $\chi$.
+Fix a finite-depth truncation $L$ of the Golden MERA network and assume that each disentangler tensor $D^{(s)}$ is unitary and each coarse-graining tensor $W^{(s)}$ is an isometry (so $W^{(s)\dagger}W^{(s)}=I$ on its input legs). Let $\Phi_L:\mathcal{H}_{bulk,L}\to\mathcal{H}_{boundary}$ denote the resulting layer composition. Then $\Phi_L$ is an isometry:
+\begin{equation}
+    \Phi_L^\dagger \Phi_L = I_{\mathcal{H}_{bulk,L}}.
+\end{equation}
 \end{theorem}
 \begin{proof}
-1. \textbf{Tensor Definition}: The local tensors $u$ (disentangler) and $w$ (isometry) are defined by the $F$-symbols of the $SU(2)_3$ (Fibonacci) modular tensor category. The non-trivial $F$-matrix relating the two fusion bases of three $\tau$-anyons is:
-\begin{equation}
-    F^{\tau}_{\tau \tau \tau} = \begin{pmatrix} \phi^{-1} & \sqrt{\phi^{-1}} \\ \sqrt{\phi^{-1}} & -\phi^{-1} \end{pmatrix},
-\end{equation}
-where $\phi = \frac{1+\sqrt{5}}{2}$.
-2. \textbf{Bi-Unitarity}: These tensors satisfy the \textbf{Perfect Tensor} condition (or bi-unitarity) approximately. While exact perfect tensors don't exist for small bond dimension, the Fibonacci tensors minimize the "leakage" entropy, satisfying:
-\begin{equation}
-    u^\dagger u = I, \quad w^\dagger w = I, \quad u u^\dagger \oplus w w^\dagger \approx I.
-\end{equation}
-3. \textbf{Code Distance}: The MERA structure creates a hyperbolic graph. The logical information is protected by the topological charge conservation. The code distance $d$ (minimal number of physical errors to change the logical state) scales with the system size $L$ as a power law determined by the scaling dimension of the anyon flux:
-\begin{equation}
-    d(L) \sim L^{\gamma}, \quad \gamma = \frac{\ln \phi}{\ln 2} \approx 0.69.
-\end{equation}
-\paragraph{Remark (entropy rate of Fibonacci constraints).}
-Note that $\gamma=\ln\phi/\ln 2=\log_2\phi$ coincides with the capacity of the golden-mean constraint (no adjacent excitations) discussed in Appendix~\ref{app:golden_mean_capacity}, and with the asymptotic growth rate of Fibonacci fusion path spaces. This links the Golden MERA code-distance scaling directly to the information-theoretic rate supported by Fibonacci combinatorics.
-This polynomial scaling $d \to \infty$ as $L \to \infty$ proves that the "Golden MERA" is a robust Quantum Error Correcting Code for the vacuum state.
+Each layer of the MERA consists of a tensor product of local unitaries (disentanglers) and local isometries (coarse-grainers). A tensor product of unitaries is unitary, and a tensor product of isometries is an isometry. Therefore each layer map is an isometry, and the composition $\Phi_L$ of finitely many layers is again an isometry, giving $\Phi_L^\dagger \Phi_L=I$.
 \end{proof}
+\paragraph{Remark (error correction vs isometry).}
+The isometry statement above is purely kinematic. Approximate OAQEC/entanglement-wedge reconstruction requires additional structure (e.g.\ perfect or $\epsilon$-perfect tensors and a suitable code subspace); see Appendix~\ref{app:isometry} and \cite{Pastawski2015,Harlow2017}.
 
 \subsection{Operator Algebraic Resolution of Baby Universes}
+\label{app:baby_universes}
 The factorization $\mathcal{H} = \otimes \mathcal{H}_x$ appears to contradict the existence of "Baby Universes" (closed topological sectors) which typically imply a direct sum structure $\mathcal{H} = \oplus_\alpha \mathcal{H}_\alpha$ (Marolf \& Maxfield, 2020). We resolve this via the \textbf{Omega Superselection Principle}.
 
-\begin{theorem}[Superselection of the Alpha-Parameters]
-Let $\hat{\phi}$ be a field operator in the Omega Network. Let $\hat{B}$ be the "Baby Universe" creation operator (topology change). In the limit of infinite network size (thermodynamic limit), all Baby Universe operators $\hat{B}$ commute with all local observables $\hat{\mathcal{O}}_{loc}$:
+\begin{theorem}[Superselection of the $\alpha$-parameters (operator-algebraic form)]
+\label{thm:alpha_superselection}
+Let $(\pi,\mathcal{H},|\Omega\rangle)$ be a GNS representation of the Omega state $\omega_\Omega$ and let $\mathfrak{A}_{loc}\subset\mathcal{B}(\mathcal{H})$ denote the von Neumann algebra generated by all quasi-local observables. If a bounded operator $\hat{B}\in\mathcal{B}(\mathcal{H})$ commutes with $\mathfrak{A}_{loc}$,
 \begin{equation}
-    [\hat{B}, \hat{\mathcal{O}}_{loc}] = 0.
+    [\hat{B}, \hat{\mathcal{O}}] = 0\qquad \forall\,\hat{\mathcal{O}}\in\mathfrak{A}_{loc},
 \end{equation}
+\noindent
+then $\hat{B}$ lies in the commutant $\mathfrak{A}_{loc}'$. In particular, if the representation is irreducible (equivalently $\mathfrak{A}_{loc}'=\mathbb{C}\,I$) or more generally factorial, then $\hat{B}$ is a multiple of the identity and its eigenvalue is a superselection parameter fixed by the choice of $\omega_\Omega$.
 \end{theorem}
 \begin{proof}
-1. \textbf{Locality}: Local observables $\hat{\mathcal{O}}_{loc}$ have support on a finite sub-region $K \subset \Lambda$.
-2. \textbf{Topology Change}: A Baby Universe creation involves a global change in the linking number of the quasicrystal (a "phason flip" at infinity).
-3. \textbf{Cluster Decomposition}: For the Golden MERA, correlators decay exponentially with graph distance $d(x,y)$.
-4. \textbf{Schur's Lemma}: Since $\hat{B}$ commutes with the entire local algebra $\mathfrak{A}_{loc}$, it must be a multiple of the identity in any irreducible representation.
-5. \textbf{Result}: The "Baby Universe" state is not a dynamical variable but a fixed superselection parameter (effectively a constant of nature). The "One State" $|\Omega\rangle$ corresponds to a single sharp eigenvalue of all $\hat{B}$ operators, effectively "freezing" the multiverse into a single physical realization.
+The commutation condition places $\hat{B}$ in the commutant $\mathfrak{A}_{loc}'$. If the representation is irreducible, Schur's lemma implies $\mathfrak{A}_{loc}'=\mathbb{C}\,I$, hence $\hat{B}=\lambda I$ for some $\lambda\in\mathbb{C}$. The same conclusion holds for a factorial representation when $\hat{B}$ is central. Therefore any such $\hat{B}$ acts as a fixed superselection parameter on the physical Hilbert space of the GNS sector determined by $\omega_\Omega$.
 \end{proof}
+\paragraph{Remark (baby universes as central data).}
+In gravitational path-integral discussions, ``baby-universe'' operators are often modeled as global/topological degrees of freedom that commute with the quasi-local algebra. Theorem~\ref{thm:alpha_superselection} states the corresponding operator-algebraic fact: if such operators commute with all quasi-local observables in the physical representation, then they reduce to fixed central data (a choice of sector) rather than dynamical variables within that sector.
 
 \section{Formal Theory of Observation}
 \label{app:formal_observation}
@@ -620,18 +1008,22 @@ Standard Bell derivations assume Statistical Independence: $P(\lambda | settings
 The observer/selection map does not "cause" collapse retrocausally. Instead, it models the selection of a \textbf{Consistent History} from the Hilbert space where the detector settings and outcomes are aligned to preserve the global topological charge.
 Thus, Alice's choice of setting $a$ and Bob's outcome $b$ are correlated *at the Big Bang* (at the root of the MERA network). The violation of CHSH inequalities ($S > 2$) is allowed because the "free will" assumption of the experimenter is constrained by the global self-consistency of the computational history.
 
-\subsection{Theorem: Gödelian Undecidability Requires Measurement}
-We prove that "measurement" is not an arbitrary addition but a logical necessity for any consistent QCA capable of self-reference.
+\subsection{Undecidability in universal QCA (and an oracle interpretation)}
+The connection between computation and physics suggests that sufficiently expressive local dynamics can encode undecidable questions. We record a minimal reachability statement and then explain how the selection/oracle language used in Part~VII can be read as an interpretation layer rather than as a derived theorem.
 
-\begin{theorem}[Gödel-Measurement]
+\begin{theorem}[Undecidability of local reachability in a universal QCA]
 \label{thm:godel_measurement}
-Let $\mathcal{U}$ be a universal Quantum Cellular Automaton. There exists a subclass of states $\{|\psi_{undec}\rangle\}$ (encoding self-referential propositions $G$) such that the infinite-time limit of the evolution $\lim_{t\to\infty} \hat{U}^t |\psi_{undec}\rangle$ is formally undecidable (non-computable) from within the algebra $\mathfrak{A}_{loc}$ of local observers.
-\textbf{Resolution}: The act of "Measurement" corresponds to the introduction of an external Choice Operator $\hat{\mathcal{C}}$ (the "Oracle") that projects the state into a decidable sector:
+Let $\mathcal{U}$ be a universal quantum cellular automaton whose dynamics can simulate a universal \emph{reversible} Turing machine on an appropriate computational subspace. Then there exist a finite region $K$, a local projector $\Pi_K$ supported on $K$, and a family of (computational-basis) initial states $\{|\psi_{M,x}\rangle\}$ encoding a machine $M$ and input $x$ such that the reachability problem
 \begin{equation}
-    \hat{\mathcal{C}} |\psi_{undec}\rangle \to |\psi_{True}\rangle \text{ or } |\psi_{False}\rangle.
+    \text{``Does there exist }t\ge 0\text{ such that }\Pi_K\text{ clicks at time }t\text{?''}
 \end{equation}
-Thus, state reduction is the physical manifestation of logical consistency in an incomplete axiomatic system.
+is algorithmically undecidable as a function of $(M,x)$.
 \end{theorem}
+\begin{proof}
+By universality, for each pair $(M,x)$ there exists an encoding $|\psi_{M,x}\rangle$ whose time evolution under $\mathcal{U}$ simulates the reversible computation of $M$ on input $x$. Choose the local projector $\Pi_K$ to test a designated halting-flag register within the simulation region $K$. Then $\Pi_K$ clicks at some time $t$ if and only if $M$ halts on $x$. If the reachability question were decidable for all $(M,x)$, the Halting Problem would be decidable, a contradiction.
+\end{proof}
+\paragraph{Remark (selection/oracle layer).}
+In Part~VII we model ``measurement/choice'' by an additional map $\hat{\mathcal{C}}$ that selects a sector/branch. From the computational viewpoint, such a map can be read as an oracle input that resolves undecidable reachability questions by selecting a consistent continuation. This is an interpretation of how selection could function as an external resource; it is not implied by the undecidability theorem itself.
 
 \subsection{Born Rule from Holographic Counting (under assumptions)}
 We present a symmetry-based counting argument for the Born rule under explicit fine-graining and an indifference (fair-sampling) assumption (Assumption~\ref{assump:S1}). Related symmetry-based approaches include envariance \cite{Zurek2005}.

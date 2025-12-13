@@ -28,9 +28,11 @@ The recursive construction of the Omega Network constitutes the \textbf{Golden M
 The links in our quasicrystal $\Lambda$ can be viewed as entanglement bonds. The Golden Ratio scaling ($\tau \to \phi \tau$) mimics the renormalization group flow in MERA, where coarse-graining the lattice preserves the long-range entanglement structure.
 We propose that the effective bond dimension $\chi$ of the spacetime tensor network is related to the topological complexity of the $G_2$ fiber:
 \begin{equation}
-    \log_2 \chi \sim S_{\text{ent}} \cong \frac{A(\partial \Sigma)}{4 G_N \hbar},
+    S(\rho_A)\ \le\ |\gamma_{\min}(A)|\,\ln\chi,
 \end{equation}
-where $A(\partial \Sigma)$ is the area of the minimal cut separating a causal region. This confirms the prediction of Axiom~O4: the "spacetime geometry" we perceive is literally the visualization of the quantum error correction code protecting the information in $|\Omega\rangle$ against boundary erasures. The curvature $R$ of the emergent metric corresponds to the density of disentanglers in the network.
+for boundary regions $A$, where $\gamma_{\min}(A)$ is a minimal cut separating $A$ from $A^c$ and $\chi$ is the bond dimension on internal edges (Appendix~\ref{app:isometry}, Theorem~\ref{thm:mincut_entropy}). In holographic normalization one calibrates the discrete area element by matching $|\gamma_{\min}(A)|\ln\chi$ to $\mathrm{Area}(\gamma_A)/(4l_P^2)$ in the appropriate large-scale limit. This is consistent with Axiom~O4: a holographic encoding architecture enforces an area-law \emph{upper bound} on boundary entanglement and supports an error-correction interpretation of bulk locality (Appendix~\ref{app:isometry}). The curvature $R$ of the emergent metric corresponds to the density of disentanglers in the network.
+\par
+\noindent\textit{Remark (saturation vs.\ bound).} The min-cut statement is kinematic and provides only an upper bound. Approximate saturation (turning the bound into an approximate equality) is an additional property of special tensor classes and/or special states (e.g.\ perfect or random tensors) and is treated here as a model target.
 
 \paragraph{Remark (Circuit density and routing cost).}
 In the exact 1D tape realization (Section \ref{sec:routeA_routing}), both disentangler density and compilation/routing depth are circuit-density measures. We therefore treat spatial gradients of the routing-cost field as a microscopic source of curvature, consistent with the informational-gravity term introduced in Section \ref{chap:omega_action}.
@@ -46,19 +48,27 @@ A Quantum Cellular Automaton is a unitary evolution $\hat{U}$ on the composite H
     \item \textbf{Statistical Isotropy (Assumption~\ref{assump:M1})}: While the lattice $\Lambda$ is discrete, the distribution of neighbors $\mathcal{N}(x)$ in the quasicrystal approximation recovers $SO(3)$ invariance in the continuum limit of the propagator.
 \end{enumerate}
 
-The global evolution is built from local "coin" and "shift" operators (or partitioned unitaries). On our $E_8$-projected lattice $\Lambda$, we define the explicit update rule as a \textbf{Partitioned Quantum Cellular Automaton} (PQCA). The vertex set $V$ is partitioned into disjoint neighborhoods $V = \bigsqcup_k \mathcal{N}_k$. The update operator is a product of non-commuting local unitaries acting on these neighborhoods:
+The global evolution is built from local "coin" and "shift" operators (or, equivalently, a finite-depth sequence of partitioned local updates). On our $E_8$-projected lattice $\Lambda$, we define the explicit update rule as a \textbf{Partitioned Quantum Cellular Automaton} (PQCA) in the standard circuit form: fix a constant depth $D\ge 1$, and for each layer $s=1,\dots,D$ choose a partition of the vertex set into disjoint neighborhoods
 \begin{equation}
-    \hat{U} \equiv \prod_{k} \hat{U}_{\mathcal{N}_k} (\theta, \phi),
+    V=\bigsqcup_k \mathcal{N}_k^{(s)},
 \end{equation}
-where each $\hat{U}_{\mathcal{N}_k}$ acts on the Hilbert space $\bigotimes_{x \in \mathcal{N}_k} \mathcal{H}_x$.
+with uniformly bounded neighborhood size $\sup_{s,k}|\mathcal{N}_k^{(s)}|<\infty$. Define the layer unitary
+\begin{equation}
+    \hat U^{(s)}\ \equiv\ \prod_k \hat U_{\mathcal{N}_k^{(s)}}(\theta,\phi),
+\end{equation}
+where each $\hat U_{\mathcal{N}_k^{(s)}}$ acts on the Hilbert space $\bigotimes_{x\in \mathcal{N}_k^{(s)}}\mathcal{H}_x$. Within a fixed layer the factors commute because their supports are disjoint, while different layers generally do not commute. One PQCA step is then the finite-depth circuit
+\begin{equation}
+    \hat U \ \equiv\ \hat U^{(D)}\cdots \hat U^{(1)}.
+\end{equation}
 
 \subsection{Exact 1D Tape Realization and Routing Depth}
 \label{sec:routeA_routing}
 This construction provides an exact realization of a bulk-local PQCA step on an effectively one-dimensional nearest-neighbor computational substrate. This makes it possible to define a local \emph{routing overhead} as an intrinsic compilation cost.
 
-Let $R \subset \Lambda$ be a finite patch with $|R|=N$ that is a union of PQCA neighborhoods, so that the restricted one-step update on $R$ is
+Let $R \subset \Lambda$ be a finite patch with $|R|=N$. For each layer we define the restricted update by keeping only those neighborhood unitaries fully supported inside $R$ (dropping terms that cross the boundary), so that the restricted one-step update on $R$ is
 \begin{equation}
-    \hat{U}_R \equiv \prod_{k:\,\mathcal{N}_k \subset R} \hat{U}_{\mathcal{N}_k}.
+    \hat U_R\ \equiv\ \hat U_R^{(D)}\cdots \hat U_R^{(1)},\qquad
+    \hat U_R^{(s)}\equiv \prod_{k:\,\mathcal{N}_k^{(s)} \subset R} \hat U_{\mathcal{N}_k^{(s)}}.
 \end{equation}
 
 \begin{definition}[Tape ordering]
@@ -81,9 +91,9 @@ by its action on computational basis product states:
 \end{equation}
 \end{definition}
 
-For each neighborhood block $\mathcal{N}_k \subset R$, define its tape span
+For each neighborhood block $\mathcal{N}_k^{(s)} \subset R$, define its tape span
 \begin{equation}
-    \Delta_k \equiv \max_{x\in \mathcal{N}_k} f_R(x)-\min_{x\in \mathcal{N}_k} f_R(x).
+    \Delta_k^{(s)} \equiv \max_{x\in \mathcal{N}_k^{(s)}} f_R(x)-\min_{x\in \mathcal{N}_k^{(s)}} f_R(x).
 \end{equation}
 
 \begin{proposition}[Exact 1D compilation]
@@ -94,19 +104,19 @@ There exists a 1D nearest-neighbor circuit $\mathcal C_R$ such that
 \end{equation}
 with compilation depth bounded by
 \begin{equation}
-    \mathrm{depth}(\mathcal C_R)\le C\cdot \max_k(\Delta_k+1),
+    \mathrm{depth}(\mathcal C_R)\le C\cdot D\cdot \max_{s,k}\big(\Delta_k^{(s)}+1\big),
 \end{equation}
-where the constant $C$ depends only on an upper bound on the neighborhood size $\max_k |\mathcal{N}_k|$.
+where the constant $C$ depends only on an upper bound on the neighborhood size $m\equiv \sup_{s,k}|\mathcal{N}_k^{(s)}|$ (and the on-site dimension).
 \end{proposition}
 \textit{Proof sketch.}
-Fix an ordering $f_R$ and let $m\equiv \max_k|\mathcal{N}_k|<\infty$. For each neighborhood block $\mathcal{N}_k$, let $I_k\equiv[\min_{x\in\mathcal N_k}f_R(x),\,\max_{x\in\mathcal N_k}f_R(x)]$ be its tape interval, of length $\Delta_k+1$. Since $m$ is bounded, the local unitary $\hat{U}_{\mathcal{N}_k}$ admits a fixed-depth nearest-neighbor implementation once its $m$ registers occupy a contiguous segment of the 1D tape (the required depth depends only on $m$ and the on-site dimension).\par
-We implement $\hat{U}_R=\prod_k\hat{U}_{\mathcal{N}_k}$ by a \emph{gather--execute--scatter} construction. (i) \textbf{Gather}: using a nearest-neighbor SWAP network on the tape, route the registers belonging to $\mathcal{N}_k$ so that they become contiguous within $I_k$; this requires $\mathcal{O}(\Delta_k+1)$ SWAP layers because no register needs to move more than $\Delta_k$ sites. (ii) \textbf{Execute}: apply the local circuits for all $k$ in parallel. (iii) \textbf{Scatter}: undo the SWAP network. The resulting overall depth is bounded by a constant times $\max_k(\Delta_k+1)$, yielding the stated bound.
+Fix an ordering $f_R$ and let $m\equiv \sup_{s,k}|\mathcal{N}_k^{(s)}|<\infty$. For each neighborhood block $\mathcal{N}_k^{(s)}$, let $I_k^{(s)}\equiv[\min_{x\in\mathcal N_k^{(s)}}f_R(x),\,\max_{x\in\mathcal N_k^{(s)}}f_R(x)]$ be its tape interval, of length $\Delta_k^{(s)}+1$. Since $m$ is bounded, each local unitary $\hat{U}_{\mathcal{N}_k^{(s)}}$ admits a fixed-depth nearest-neighbor implementation once its registers occupy a contiguous segment of the 1D tape (the required depth depends only on $m$ and the on-site dimension).\par
+We implement each layer $\hat U_R^{(s)}=\prod_k \hat U_{\mathcal N_k^{(s)}}$ by a \emph{gather--execute--scatter} construction. (i) \textbf{Gather}: using a nearest-neighbor SWAP network on the tape, route the registers belonging to each $\mathcal{N}_k^{(s)}$ so that they become contiguous within $I_k^{(s)}$; this requires $\mathcal{O}(\Delta_k^{(s)}+1)$ SWAP layers because no register needs to move more than $\Delta_k^{(s)}$ sites. (ii) \textbf{Execute}: apply the local circuits for all $k$ in parallel (supports are disjoint within a layer). (iii) \textbf{Scatter}: undo the SWAP network. Scheduling this for $s=1,\dots,D$ yields the stated depth bound up to a constant factor, controlled by $\max_{s,k}(\Delta_k^{(s)}+1)$.
 
 \begin{definition}[Local routing cost field]
 \label{def:routing_cost_field}
 For a fixed tape ordering $f_R$, define the ordering-dependent local routing cost
 \begin{equation}
-    \kappa_R(x;f_R)\equiv \max_{k:\,x\in \mathcal{N}_k}\big(\Delta_k+1\big).
+    \kappa_R(x;f_R)\equiv \max_{s,k:\,x\in \mathcal{N}_k^{(s)}}\big(\Delta_k^{(s)}+1\big).
 \end{equation}
 Since $f_R$ is not a physical datum but a relabeling choice for the 1D substrate, we define the physical routing cost by minimizing over orderings (equivalently, over exact 1D nearest-neighbor compilation choices compatible with the relabeling):
 \begin{equation}
@@ -224,23 +234,11 @@ To make contact with the canonical 1D Dirac quantum cellular automaton, consider
 which yields a Dirac dispersion in the long-wavelength limit \cite{Dariano2014,Bisio2015}. In our parametrization one may identify $n=\cos\theta$ and $m=\sin\theta$ (up to conventions), so that the coin angle plays the role of an effective mass/mixing parameter.
 
 It is a profound result, rigorously established by \textbf{Arrighi, Facchini, and Forets} \cite{Arrighi2014} and \textbf{D'Ariano and Perinotti} \cite{Dariano2014}, that the Dirac equation emerges naturally as the long-wavelength continuum limit of discrete quantum walks.
-Consider a simplified 1D chain. The single-particle dispersion relation for the quantum walk is derived by diagonalizing the evolution operator in momentum space. For the Golden Gate, we obtain:
+For the translation-invariant 1D coined walk written above, diagonalization yields eigenphases $\pm E(k)$ satisfying the standard relation $\cos E(k)=n\cos k$ (with $n^2+m^2=1$). In the long-wavelength regime $k=\varepsilon p$ with a small-angle (small-mass) scaling $m=\varepsilon m_{\mathrm{phys}}$, one obtains
 \begin{equation}
-    E(k) = \arccos(\cos(k) \cos(\theta) - \sin(k) \sin(\theta) \vec{n} \cdot \vec{\sigma}).
+    E(k)^2=(\varepsilon p)^2+(\varepsilon m_{\mathrm{phys}})^2+\mathcal{O}(\varepsilon^4 p^4)+\mathcal{O}(\varepsilon^4 p^2 m_{\mathrm{phys}}^2),
 \end{equation}
-Expanding near $k \approx 0$ with $\theta = \epsilon m$:
-\begin{equation}
-    E(k)^2 \approx k^2 + m^2 + \mathcal{O}(k^4) + \mathcal{O}(\varepsilon^2 k^2).
-\end{equation}
-The deviation from the linear Dirac cone $\delta E = |E_{QCA} - E_{Dirac}|$ is bounded by lattice artifacts scaling as $\alpha k^2$ (discreteness) and $\beta ||\phi||$ (phason strain). Numerically, the group velocity $v_g = \partial E / \partial k$ converges to $c=1$ with corrections suppressed by the inverse lattice scale $1/a$.
-By scaling the "mixing angle" $\theta$ with the mass $m$ as $\theta = m \varepsilon$, and expanding to first order in the lattice constant $\varepsilon$:
-\begin{equation}
-    \psi_{R}(x, t) + \varepsilon \partial_t \psi_{R} \approx (1 - \frac{m^2 \varepsilon^2}{2}) \psi_R(x-\varepsilon) - i m \varepsilon \psi_L(x+\varepsilon).
-\end{equation}
-This system rearranges into the standard 1+1 dimensional Dirac equation in the limit $\varepsilon \to 0$:
-\begin{equation}
-    i \gamma^\mu \partial_\mu \Psi - m \Psi = 0.
-\end{equation}
+so that the walk reproduces a Dirac dispersion at leading order. The corresponding \emph{operator-norm} convergence statement for band-limited initial states is recorded as Theorem~\ref{prop:dirac_limit} below, with a proof in Appendix~\ref{app:homogenization}.
 Recent work on \textbf{quantum simulation of QED} \cite{Arrighi2019} further demonstrates that U(1) gauge invariance can be preserved exactly in such QCA models by introducing link variables that transform under local unitaries, providing a rigorous basis for our gauge field emergence arguments.
 
 \subsubsection{Discrete vs. Emergent Lorentz Covariance}
@@ -249,26 +247,27 @@ How is Lorentz symmetry treated on the lattice? Two distinct frameworks exist in
     \item \textbf{Exact Discrete Lorentz Symmetry}: As pioneered by \textbf{Bisio, D'Ariano, and Perinotti} \cite{Bisio2015}, one can define a "discrete Lorentz transform" on regular Cayley graphs. This transformation maps the cellular automaton to an equivalent one with modified local rules, preserving causal cones exactly. In this framework, Lorentz covariance is an exact symmetry of the discrete structure ($SO(1,3)_{discrete}$).
     \item \textbf{Emergent Isotropic Symmetry}: The Omega Network approach differs. Since a quasicrystal lacks a global subgroup structure to support exact boosts, we rely on \textbf{emergent symmetry}. The lightcone speed $c=1$ is strict (causal locality), but the continuous Lorentz group $SO(1,3)$ is recovered only via the statistical isotropy of the Golden MERA.
 \end{enumerate}
-\textbf{Precision of the Approximation}: As proven in Theorem \ref{prop:dirac_limit}, the deviation from exact covariance in the massive propagator behaves as:
+\textbf{Precision of the Approximation}: In the small-lattice-spacing regime, the long-wavelength sector of a coined walk admits a controlled Dirac approximation. At the level of leading corrections one expects
 \begin{equation}
-    \delta \mathcal{L} \sim \mathcal{O}(\varepsilon^2) + \mathcal{O}(||\phi(x)||),
+    \delta \mathcal{L} \sim \mathcal{O}(\varepsilon) + \mathcal{O}(\|\eta\|),
 \end{equation}
-where $\phi(x)$ is the phason strain. Thus, while we utilize the local unitary principles of the discrete framework, our global symmetry is approximate, becoming exact in the thermodynamic limit of infinite information density.
+where $\varepsilon$ is the microscopic spacing and $\eta$ denotes a phason-strain measure (e.g.\ the discrete strain $\eta_j$ in Appendix~\ref{app:fib_dqca} or a bounded internal-displacement gradient in higher-dimensional cut-and-project settings). Thus, while we utilize the local unitary principles of the discrete framework, our global Lorentz symmetry is approximate and improves in the continuum/weak-strain regime.
 
-\subsection{Theorem: The Quasicrystal Continuum Limit}
-While convergence is proven for regular grids, the extension to quasicrystals requires controlling the "phason" fluctuations. We now establish the rigorous limit:
-\begin{theorem}[Emergent Isotropic Dirac Dynamics]
+\subsection{Theorem: The Continuum Dirac Limit (checkable 1D statement)}
+While convergence is proven for regular grids, the quasicrystal program requires additional homogenization input. As a fully checkable subsystem statement, we record a rigorous 1D limit for the single-particle coined walk used throughout this manuscript.
+\begin{theorem}[Dirac limit for a 1D coined walk (single-particle sector)]
 \label{prop:dirac_limit}
-Let $\Lambda \subset \mathbb{R}^3$ be a cut-and-project quasicrystal. The phason strain is naturally bounded by the finite acceptance window $W$. Let $\hat{U}_\varepsilon$ be a unitary QCA with lattice spacing $\varepsilon \sim \rho^{-1/3}$, respecting the local $G_2$ frame symmetries.
-If the initial state $|\psi(0)\rangle$ is smooth (band-limited with $k_{max} \ll \varepsilon^{-1}$) and the phason strain field is bounded, then for any fixed time $t$, the expectation value converges in the norm to the continuous Dirac propagator:
+Consider the single-particle coined walk on $\mathcal{H}_{1p}=\ell^2(\mathbb{Z})\otimes\mathbb{C}^2$ with one-step unitary $U_\varepsilon=S\,C_\varepsilon$, where $S$ is the conditional shift and $C_\varepsilon$ is an on-site coin of the form $C_\varepsilon=\exp(-i\varepsilon\,m\,\sigma_y)$ with fixed $m\in\mathbb{R}$. Let $|\psi_0\rangle$ be long-wavelength/band-limited in the sense that in lattice quasi-momentum variables $k\in[-\pi,\pi)$ its support obeys $|k|\le \varepsilon p_{\max}$ for some fixed $p_{\max}<\infty$ (equivalently, physical momenta $p=k/\varepsilon$ satisfy $|p|\le p_{\max}$).
+Then for any fixed physical time $t\ge 0$ (with $T\equiv \lfloor t/\varepsilon\rfloor$ steps) one has
 \begin{equation}
-    \lim_{\varepsilon \to 0} || \hat{U}_\varepsilon^{\lfloor t/\varepsilon \rfloor} |\psi(0)\rangle - e^{-i\hat{H}_{\text{Dirac}}t} |\psi(0)\rangle || < \mathcal{O}(\varepsilon^2).
+    \left\|U_\varepsilon^{T}|\psi_0\rangle-e^{-itH_D}|\psi_0\rangle\right\|\ \le\ C(t,p_{\max})\,\varepsilon,
 \end{equation}
+where $H_D\equiv -i\sigma_z\partial_x+m\,\sigma_y$ is the continuum $1{+}1$ Dirac Hamiltonian (in units with $c=\hbar=1$) acting on two-component spinors. A proof is given in Appendix~\ref{app:homogenization}.
 \end{theorem}
 \begin{corollary}[Fibonacci-chain / Zeckendorf-textured DQCA]
-The 1D Fibonacci quasicrystal is a cut-and-project set with a compact window and hence bounded phason strain. Therefore the homogenization framework of Appendix \ref{app:homogenization} (in particular Lemma \ref{lemma:ergodic}) applies to Fibonacci/Sturmian-textured walks such as $\hat{U}_\varepsilon=S\cdot C_{\theta(x)}$ with $\theta(x)\in\{\theta_L,\theta_S\}$ defined by a Fibonacci coding. In the long-wavelength regime, the resulting dynamics converges to a Dirac equation with an effective (quasiperiodic) mass/mixing term set by the local coin parameter, up to an error controlled by the homogenization remainder.
+For the fully specified Fibonacci/Sturmian-textured walk of Section~\ref{sec:fib_dqca_spec} with coin angles scaled as $\theta_{L/S}=m_{L/S}\varepsilon$, the same small-angle expansion yields a Dirac-type effective description on long wavelengths. The leading effect of the aperiodic texture enters through a quasiperiodic effective mass/mixing field and through controlled scattering between Floquet bands; the dependence on phason strain is quantified by the diagnostics and numerical protocol in Appendix~\ref{app:fib_dqca}.
 \end{corollary}
-\textit{Proof Sketch.} The proof relies on the \textbf{Homogenization Lemma} (Lemma \ref{lemma:ergodic} in Appendix \ref{app:homogenization}). The irrational winding of the quasicrystal ensures that anisotropic lattice artifacts in the propagator sum $\sum e^{i \vec{k} \cdot \vec{x}}$ destructively interfere. The surviving term is the isotropic spherical average, effectively integrating over the $SO(3)$ measure. The error is bounded by the phason strain field $||\phi||$, as detailed in Appendix \ref{app:homogenization}.
+\textit{Remark.} Extending the fully rigorous convergence statement above to higher-dimensional cut-and-project substrates with statistical isotropy requires a homogenization analysis that controls (i) the quasicrystal structure factor and (ii) the spatial variation of the internal-coordinate (phason) fields. The appendix collects the definitions and scaling heuristics used in this manuscript and points to the precise places where additional regularity assumptions enter.
 
 \paragraph{Remark (Zeckendorf-clocked drive).}
 One may also consider a time-dependent drive where the coin parameter alternates according to the intrinsic phase-orbit coding introduced in Part~II: define $\sigma_t\in\{L,S\}$ by an irrational circle rotation and set $\theta_t=\theta_L$ if $\sigma_t=L$ and $\theta_t=\theta_S$ if $\sigma_t=S$. In the golden case, the tick index $t$ admits a unique Zeckendorf digit structure, giving a sparse hierarchical schedule for when scale-dependent updates are activated \cite{Zeckendorf1972,AlloucheShallit2003}.

@@ -23,7 +23,7 @@ The "state of the universe" does not change; it simply \textit{is}.
 
 \subsection{Intrinsic Time from Spectral Decomposition}
 If the universe is static, whence comes the illusion of change? Time is emergent. It is defined internally by comparing the static vector $|\Omega\rangle$ against a reference basis.
-Let $\hat{H}$ be a self-adjoint operator (the Hamiltonian) defining an orthogonal basis $\{|E_n\rangle\}$. The vector $|\Omega\rangle$ can be decomposed as:
+Let $\hat{H}$ be a self-adjoint generator defining an orthogonal basis $\{|E_n\rangle\}$ (e.g.\ an effective Hamiltonian or a modular Hamiltonian in a regulated setting). The vector $|\Omega\rangle$ can be decomposed as:
 \begin{equation}
     |\Omega\rangle = \sum_n c_n |E_n\rangle, \quad \sum_n |c_n|^2 = 1.
 \end{equation}
@@ -31,17 +31,26 @@ We define a 1-parameter family of states $|\Omega(\tau)\rangle$ by injecting pha
 \begin{equation}
     |\Omega(\tau)\rangle \equiv \sum_n c_n e^{-\iu E_n \tau/\hbar} |E_n\rangle.
 \end{equation}
+\begin{definition}[Modular intrinsic time (thermal-time parameter)]
+\label{def:modular_time}
+Let $\mathfrak{M}$ be an observer algebra (for instance, a type-I factor associated with a regulated region as in the split-property discussion) and let $\omega$ be the restriction of the Omega state to $\mathfrak{M}$. If $\omega$ is faithful, Tomita--Takesaki theory provides a canonical modular automorphism group $\{\sigma_\tau^\omega\}_{\tau\in\mathbb{R}}$ on $\mathfrak{M}$ \cite{Takesaki2002}. In a finite-dimensional regulated description where $\mathfrak{M}\cong\mathcal{B}(\mathcal{H}_{\mathrm{eff}})$ and $\omega(A)=\mathrm{Tr}(\rho A)$ with full-rank $\rho$, one has explicitly
+\begin{equation}
+    \sigma_\tau^\omega(A)=\rho^{i\tau}A\rho^{-i\tau}=e^{-i\tau K}A\,e^{i\tau K},\qquad K\equiv -\ln\rho,
+\end{equation}
+and we call $\tau$ the \emph{modular intrinsic time}. In this manuscript, the phase-twisted family $|\Omega(\tau)\rangle$ should be read as a choice of representative compatible with such an intrinsic flow; concretely one may take $\hat H$ proportional to a modular Hamiltonian $K$ on the relevant effective sector (Appendix~\ref{app:modular_time}).
+\end{definition}
 
 \subsubsection{Intrinsic phase-orbit coding and Zeckendorf time}
 The intrinsic parameter $\tau$ serves as a coordinate parametrizing a curve $\mathcal{C}$ in the unit sphere of $\mathcal{H}$ (and hence a trajectory in the projective space $\mathbb{P}(\mathcal{H})$). To connect this continuous intrinsic evolution to a discrete computational clock, we introduce a canonical one-dimensional phase readout of the intrinsic phase orbit.
 
-\begin{definition}[Intrinsic phase-orbit readout]
-Fix a reference vector $|r\rangle\in\mathcal{H}$ such that $\langle r|\Omega(\tau)\rangle\neq 0$ for the times of interest (e.g., $|r\rangle=|E_0\rangle$ with $c_0\neq 0$). Define the phase readout
+\begin{definition}[Intrinsic phase-orbit readout (projective)]
+Fix two reference vectors $|r_0\rangle,|r_1\rangle\in\mathcal{H}$ such that $\langle r_a|\Omega(\tau)\rangle\neq 0$ for $a=0,1$ on the times of interest (e.g., $|r_0\rangle=|E_0\rangle$ with $c_0\neq 0$). Define the phase readout
 \begin{equation}
-    x(\tau)\ \equiv\ \frac{1}{2\pi}\arg\langle r|\Omega(\tau)\rangle\ \ \bmod 1,
+    x(\tau)\ \equiv\ \frac{1}{2\pi}\arg\!\left(\frac{\langle r_1|\Omega(\tau)\rangle}{\langle r_0|\Omega(\tau)\rangle}\right)\ \ \bmod 1,
 \end{equation}
 which maps the intrinsic phase orbit to a circle variable $x(\tau)\in\mathbb{R}/\mathbb{Z}$.
 \end{definition}
+\noindent\textit{Remark (gauge invariance).} The ratio in the definition is invariant under the $\tau$-dependent global phase choice $|\Omega(\tau)\rangle\mapsto e^{i\chi(\tau)}|\Omega(\tau)\rangle$ and changes only by an additive constant under phase redefinitions of the fixed reference vectors. Thus $x(\tau)$ is a well-defined circle coordinate up to an arbitrary choice of origin (clock offset).
 
 \begin{definition}[Circle-rotation sampling and Sturmian coding]
 Let $t\in\mathbb{Z}_{\ge 0}$ index discrete ticks (e.g., QCA steps) and sample $x(\tau)$ stroboscopically as $x_t\equiv x(\tau_0+t\Delta\tau)$. In the irrational-rotation regime this is modeled as
@@ -64,12 +73,14 @@ Such codings of irrational rotations are Sturmian sequences; for the golden-slop
 \end{definition}
 
 \begin{proposition}[Ostrowski numeration and the Zeckendorf specialization (golden case)]
+\label{prop:ostrowski_zeckendorf}
 For an irrational slope $\alpha$, the associated Ostrowski numeration gives a unique digit expansion of each integer time $t$. In the golden case $\alpha=\phi^{-2}$, this admissibility condition reduces to the Zeckendorf rule (no consecutive Fibonacci summands): writing the Fibonacci numbers as $F_0=0$, $F_1=1$, $F_{n+2}=F_{n+1}+F_n$, every $t\in\mathbb{Z}_{\ge 0}$ admits a unique expansion
 \begin{equation}
     t=\sum_{k\ge 0} b_k F_{k+2},\qquad b_k\in\{0,1\},\qquad b_k b_{k+1}=0,
 \end{equation}
 and conversely every such digit string represents a unique integer \cite{Zeckendorf1972,AlloucheShallit2003}.
 \end{proposition}
+\noindent\textit{Proof.} A self-contained proof of the Zeckendorf specialization and a summary of the Ostrowski framework are given in Appendix~\ref{app:ostrowski}.
 
 \noindent\textit{Interpretation.} The intrinsic phase orbit can be read out as a canonical Fibonacci (Long/Short) symbol stream and, equivalently, a Zeckendorf-addressable digit structure for discrete ticks. This provides a natural intrinsic clock and a sparse hierarchical schedule for activating scale-dependent updates.
 
@@ -209,12 +220,13 @@ which is an \emph{approximate isometry} on the relevant code subspace, with reco
 \subsection{The Factorization Problem and Baby Universes}
 A central puzzle in modern holography is the "Factorization Problem" \cite{Harlow2021}: in a theory with multiple boundaries, the gravitational path integral (which includes connected topologies like Euclidean wormholes) fails to factorize, suggesting an ensemble average over dual theories rather than a single unitary description. This is formalized by the inclusion of "Baby Universes" or $\alpha$-parameters in the Hilbert space.
 
-Omega Theory offers a definitive resolution: the "Alpha Parameters" correspond to the fixed, unique spectral data of the global state $|\Omega\rangle$. By positing a single, rigid vector rather than a statistical ensemble, we effectively "fix the gauge" of the baby universe Hilbert space. Spacetime wormholes are not fundamental topology changes but rather non-local entanglement correlations within the unique tensor network. Factorization is restored because the theory is fundamentally a single quantum system, not an average over random Hamiltonians (as in SYK).
+Omega Theory approaches this issue in an operator-algebraic language rather than via the gravitational Euclidean path integral. In many discussions, ``baby-universe'' operators are modeled as global/topological degrees of freedom that commute with the quasi-local algebra of observables accessible to finite observers. In our framework this corresponds to operators in the commutant/center of the physical representation of $\mathfrak{A}$, hence to \emph{superselection data}. Under standard factoriality/irreducibility conditions, such commuting operators reduce to fixed $\alpha$-parameters (a choice of sector) rather than dynamical variables within that sector (Appendix~\ref{app:baby_universes}, Theorem~\ref{thm:alpha_superselection}). The Omega Axiom (O1) then postulates a unique global state $\omega_\Omega$, which may be read as selecting a single sector of such superselection data. This provides a concrete microscopic notion of ``fixing $\alpha$'' compatible with unitarity in the regulated Hilbert-space description; it should not be interpreted as a general theorem about the full gravitational path-integral measure.
 
-The geometric area law follows from this structure: for a state $|\psi\rangle$ defined by this network, the entropy $S(\rho_R)$ is upper-bounded by the number of bond cuts required to sever $R$ from the rest of the network, which scales as the area of the minimal surface $\gamma_R$:
+The geometric area law is implemented kinematically by tensor-network constructions: for a state $|\psi\rangle$ defined by a network with bond dimension $\chi$, the boundary entropy satisfies the rigorous min-cut \emph{upper bound}
 \begin{equation}
-    S(\rho_R) \propto |\text{min-cut}(R)| \sim \frac{\text{Area}(\gamma_R)}{4 l_P^2}.
+    S(\rho_R)\ \le\ |\gamma_{\min}(R)|\,\ln\chi,
 \end{equation}
+where $\gamma_{\min}(R)$ is a minimal cut separating $R$ from $R^c$ (Appendix~\ref{app:isometry}, Theorem~\ref{thm:mincut_entropy}). Interpreting $|\gamma_{\min}(R)|$ as a discrete area functional and identifying $\ln\chi$ with an area-density scale yields the familiar area-law scaling; approximate saturation (turning the bound into an approximate equality) is an additional property of special tensor classes (e.g.\ perfect or random tensors) and is treated here as a model target rather than an automatic consequence.
 
 \subsection{Model Assumptions and Auxiliary Assumptions}
 \label{sec:model_assumptions}
