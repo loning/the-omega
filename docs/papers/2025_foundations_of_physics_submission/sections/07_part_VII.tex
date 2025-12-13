@@ -5,7 +5,7 @@
 \label{chap:formal_system}
 
 \subsection{Dynamical Incompleteness and the Halting Problem}
-If the universe is effectively a closed system evolving unitarily according to a fixed local rule (a QCA), it is isomorphic to a Turing Machine or a formal axiomatic system.
+If the universe is effectively a closed system evolving unitarily according to a fixed local rule (a QCA), then on suitable computational subspaces its dynamics can simulate universal reversible computation. In that sense, certain dynamical reachability questions can encode the Halting Problem and inherit algorithmic undecidability.
 Gödel-type incompleteness enters through \emph{universality}: if the local dynamics can simulate universal computation, then certain reachability questions about local observables are algorithmically undecidable (Appendix~\ref{app:formal_observation}, Theorem~\ref{thm:godel_measurement}). This provides a precise sense in which ``dynamical questions'' can exceed what can be decided by an observer restricted to a quasi-local algebra and finite resources.
 
 \paragraph{Finite-information saturation vs.\ open-ended growth.}
@@ -22,12 +22,12 @@ where $\mathcal{E}_{u_t}$ is CPTP for each $u_t$. In our framework, the ``input'
 \label{chap:selection_operator}
 
 \subsection{Formal Definition of the Observer Operator}
-We consider the role of the observer not as a passive witness but as an active selection principle. We formalize the "Oracle" input as the \textbf{Observer Operator}, denoted $\hat{\mathcal{O}}$ (or $\hat{\mathcal{S}}$ for Selection).
+We consider the role of the observer not as a passive witness but as an active selection principle. We formalize the "Oracle" input as the \textbf{Observer Operator}, denoted $\hat{\mathcal{O}}$.
 This operator is proposed as a conditioning/selection map on histories. From the computational viewpoint, it can be interpreted as an oracle-like resource that selects a continuation when local reachability questions are undecidable from within a restricted observer algebra (Appendix~\ref{app:formal_observation}):
 \begin{equation}
     \hat{\mathcal{O}}: \mathbb{P}(\mathcal{H}) \to \mathbb{P}(\mathcal{H}), \quad |\Psi\rangle \mapsto \frac{\hat{P}_{\Delta C > 0} |\Psi\rangle}{||\hat{P}_{\Delta C > 0} |\Psi\rangle||}.
 \end{equation}
-Mathematically, $\hat{\mathcal{O}}$ is a non-linear projector. $\hat{P}_{\Delta C > 0}$ filters the superposition for trajectory branches where the complexity (logical depth) increases.
+Mathematically, $\hat{\mathcal{O}}$ is a nonlinear conditioning map (the nonlinearity is only the normalization). Here $\hat{P}_{\Delta C > 0}$ is shorthand for a coarse-grained \emph{record projector} selecting the subset of orthogonal branches that satisfy a chosen complexity-growth criterion: for instance, given an orthogonal family $\{\hat P_\alpha\}$ of record projectors, one may define $\hat{P}_{\Delta C > 0}\equiv \sum_{\alpha:\,\Delta C_\alpha>0}\hat P_\alpha$, where $\Delta C_\alpha$ compares a chosen complexity functional across successive steps (e.g.\ circuit depth relative to a fixed local gate set).
 
 \subsection{Piecewise Unitarity vs. Global Unitarity}
 Does this violate quantum mechanics?
@@ -40,7 +40,7 @@ Thus, unitarity is preserved in the global description, but the \textit{observed
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\linewidth]{images/complexity_growth.png}
-    \caption{\textbf{Escaping Heat Death}. Comparison between standard thermodynamic entropy (gray, dashed), which leads to equilibrium, and Omega Complexity/Logical Depth (magenta, solid). The "Selection Operator" $\hat{\mathcal{S}}$ injects non-algorithmic input, driving the universe towards open-ended evolution.}
+    \caption{\textbf{Escaping Heat Death}. Comparison between standard thermodynamic entropy (gray, dashed), which leads to equilibrium, and Omega Complexity/Logical Depth (magenta, solid). The observer/selection operator $\hat{\mathcal{O}}$ injects non-algorithmic input, driving the universe towards open-ended evolution.}
     \label{fig:complexity_growth}
 \end{figure}
 
@@ -50,20 +50,23 @@ In a finite-information microscopic description, one may associate to a coarse-g
 \begin{equation}
     N(\psi_k) \propto ||\psi_k||^2.
 \end{equation}
-The selection/observer mechanism (modeled here by $\hat{\mathcal{S}}$) samples from this ensemble. Under the microcanonical indifference assumption (Assumption~\ref{assump:S1}, i.e.\ uniform sampling over the underlying discrete micro-realizations), the resulting macro-outcome probability is $P_k = N(\psi_k) / N_{total} = |\psi_k|^2$ (see Theorem \ref{thm:born_rule} in Appendix \ref{app:formal_observation} for one formalization of the counting argument).
+The selection/observer mechanism (modeled here by $\hat{\mathcal{O}}$) samples from this ensemble. Under the microcanonical indifference assumption (Assumption~\ref{assump:S1}, i.e.\ uniform sampling over the underlying discrete micro-realizations), the resulting macro-outcome probability is $P_k = N(\psi_k) / N_{total} = |\psi_k|^2$ (see Theorem \ref{thm:born_rule} in Appendix \ref{app:formal_observation} for one formalization of the counting argument).
+\par
+\noindent
+Separately from microstate-counting realizations, the Born rule is also singled out by a mature uniqueness theorem: in finite-dimensional regulated descriptions, any noncontextual probability assignment on projective measurements that is additive on orthogonal resolutions of the identity must be of the form $\mu(P)=\mathrm{Tr}(\rho P)$ (Gleason; and Busch's POVM extension covers the qubit case). We record this as Appendix~\ref{app:formal_observation}, Theorem~\ref{thm:gleason_busch} \cite{Gleason1957,Busch2003}.
 
 \subsection{Bell Non-Locality and Superdeterminism}
 Standard Bell inequalities (e.g., CHSH $|S| \le 2$) rely on the assumption of "Statistical Independence": $P(\lambda | a, b) = P(\lambda)$, meaning the hidden variables $\lambda$ are independent of the detector settings $a, b$.
-In Omega Theory, the universe is a single, static, pre-existing vector $|\Omega\rangle$. All "events," including the choice of detector settings, are correlations within this fixed state. This implies a form of \textbf{Global Superdeterminism}. The "Free Will" of the experimenter is constrained by the global requirement that the universe must remain a consistent solution to the Omega Axiom.
-Therefore, the violation of Bell inequalities ($S_{\text{exp}} \approx 2\sqrt{2}$) does not imply superluminal signaling but rather the failure of the statistical independence assumption on the cosmological scale. The "Selection Operator" $\hat{\mathcal{S}}$ navigates this pre-existing correlation landscape, selecting the path that maximizes consistent histories without breaking local causality in the tensor network. This recovers the predictions of Quantum Mechanics while maintaining an ontological realism compatible with 't Hooft's Cellular Automaton interpretation.
+In Omega Theory, the universe is a single, static, pre-existing vector $|\Omega\rangle$. All "events," including the choice of detector settings, are correlations within this fixed state. This can be read as a form of \textbf{Global Superdeterminism}: Statistical Independence is not imposed as a fundamental assumption.
+Therefore, the violation of Bell inequalities ($S_{\text{exp}} \approx 2\sqrt{2}$) need not imply superluminal signaling but rather the failure of the statistical-independence assumption on the cosmological scale. The observer/selection operator $\hat{\mathcal{O}}$ is then interpreted as navigating a pre-existing correlation landscape while respecting local causal structure in the tensor-network description. This interpretation is compatible with quantum predictions while aligning with deterministic/superdeterministic viewpoints in the literature (e.g.\ \cite{thooft2014cai}).
 
 \subsection{Logical Selection ('Free Will')}
-In this framework, what is often termed "Free Will" is modeled as the operation of $\hat{\mathcal{S}}$, i.e.\ as a conditioning/selection rule on histories. It represents a mechanism of "downward causation" where a global consistency/complexity-growth criterion constrains local quantum transitions.
+In this framework, what is often termed "Free Will" is modeled as the operation of $\hat{\mathcal{O}}$, i.e.\ as a conditioning/selection rule on histories. It represents a mechanism of "downward causation" where a global consistency/complexity-growth criterion constrains local quantum transitions.
 This approaches the measurement problem not as random collapse, but as a selection principle maximizing the "gameplay" of the universe (i.e., its logical depth).
 
 \subsection{The Fermi Paradox: Sparse Logic}
 If the universe is fine-tuned for life, where is everyone? Omega Theory suggests a \textbf{Computational Solution}.
-The "Selection Operator" $\hat{\mathcal{S}}$ is computationally expensive. It requires a high density of Quantum logical depth (Q-depth) to sustain a self-referential loop (consciousness).
+The observer/selection operator $\hat{\mathcal{O}}$ is computationally expensive. It requires a high density of Quantum logical depth (Q-depth) to sustain a self-referential loop (consciousness).
 Given the finite information-processing rate $\mathcal{C}(\tau)$ of the Omega vector, the universe can only support a sparse distribution of high-level observers. The "Great Filter" is the difficulty of phase-locking a macroscopic network to the global time variance. We may be the only active "Write Head" in our current causal patch of the Omega Network, explaining the "Silent Sky" not as emptiness, but as the necessary sparsity of active processing nodes in a holographic computer.
 
 \section{The Omega Point and Ultimate Phase Transition}

@@ -38,6 +38,24 @@ where $\kappa_0>0$ is a reference minimal cost (e.g., the infimum of $\kappa$ in
 \end{equation}
 \end{definition}
 
+\paragraph{Remark (consistency with modular intrinsic time).}
+In a regulated operator-algebraic description, modular theory provides a canonical intrinsic parameter $\tau$ on an observer algebra (Definition~\ref{def:modular_time}). In the thermal-time reading \cite{ConnesRovelli1994}, $\tau$ plays the role of an internal clock for the restricted state. The lapse identification above should be read as a bridge between two \emph{parametrizations}: $t$ is a bookkeeping parameter tied to nearest-neighbor gate depth on the 1D substrate, while $\tau_{\mathrm{loc}}$ is an intrinsic parameter tied to the local effective state. The routing-cost ratio $N(x)=\kappa_0/\kappa(x)$ expresses that, in regions with larger compilation overhead, fewer intrinsic (local) updates are realized per unit substrate depth, matching the interpretation of gravitational time dilation as computational slowdown in the present model.
+
+\begin{proposition}[Lapse normalization from compilation depth]
+\label{prop:lapse_from_depth}
+Fix a finite region $R$ and an ordering $f_R$ of its degrees of freedom onto a 1D nearest-neighbor substrate. Let $\kappa_R(x;f_R)$ be the local routing cost of Definition~\ref{def:routing_cost_field} and set $\kappa_R^{\max}(f_R)\equiv \max_{x\in R}\kappa_R(x;f_R)$.
+Then the exact compilation in Proposition~\ref{prop:exact_1d_compilation} yields a nearest-neighbor circuit implementing one restricted PQCA step on $R$ with depth bounded by
+\begin{equation}
+    \mathrm{depth}(\mathcal C_R)\ \le\ C\cdot D\cdot \kappa_R^{\max}(f_R),
+\end{equation}
+where $C$ depends only on the bounded neighborhood size and on-site dimension.
+If computational time $t$ is measured in nearest-neighbor depth layers, this bound implies that the number of logical PQCA steps executable per unit $t$ is suppressed by a factor proportional to $1/\kappa_R^{\max}(f_R)$ for that region.
+Normalizing to a weak-field reference region with cost $\kappa_0$ motivates the lapse ratio $N=\kappa_0/\kappa$ used above.
+\end{proposition}
+\begin{proof}
+The depth bound is the one stated in Proposition~\ref{prop:exact_1d_compilation}, with $\max_{s,k}(\Delta_k^{(s)}+1)=\max_{x\in R}\kappa_R(x;f_R)=\kappa_R^{\max}(f_R)$ (Definition~\ref{def:routing_cost_field}). Interpreting $t$ as the nearest-neighbor depth count, executing one logical step on $R$ requires $\mathcal{O}(D\,\kappa_R^{\max})$ units of $t$ in this exact compilation scheme, hence a step rate $\mathcal{O}(1/\kappa_R^{\max})$. The normalized ratio with respect to a reference cost $\kappa_0$ gives the lapse form $N=\kappa_0/\kappa$.
+\end{proof}
+
 With this identification, we propose the metric identification
 \begin{equation}
     \sqrt{-g_{00}(x)}\ \equiv\ N(x)\ \equiv\ \frac{\kappa_0}{\kappa(x)}.
@@ -55,6 +73,8 @@ For later convenience, one may parametrize the routing component by
 
 Our approach builds upon the foundational insights of \textbf{Jacobson} \cite{Jacobson1995} (thermodynamics of spacetime) and \textbf{Verlinde} \cite{Verlinde2011} (entropic gravity). While these authors derived Einstein's equations from general thermodynamic equations of state ($\delta Q = T dS$), the Omega Action proposes a concrete microscopic realization where the 'entropy' is explicitly identified with the \textbf{Fisher Information} of the fundamental state vector.
 Related information-theoretic variational principles and Fisher-information-based derivations of quantum dynamics appear in, e.g., Frieden's program and Reginatto's formulation \cite{Frieden1998, Reginatto1998}.
+\paragraph{Remark (why Fisher information is canonical).}
+In classical information geometry, the Fisher information metric is uniquely characterized (up to an overall constant) by monotonicity under coarse-graining/sufficient statistics (Čencov's theorem) \cite{Chentsov1982,AmariNagaoka2000}. In the quantum setting, monotone Riemannian metrics on the space of density matrices are classified by operator-monotone functions (Petz) \cite{Petz1996}. In this manuscript we adopt the Fisher-information functional as the minimal two-derivative information-geometric term compatible with these canonicality principles in the classical/coarse-grained sector.
 
 \subsection{The Fisher-Information Lagrangian}
 We postulate the \textbf{Omega Action} as a covariant information-geometric functional. Let $\Psi(x)=\sqrt{\varrho(x)}\,e^{i\theta(x)}$ be a coarse-grained continuum wavefunction, where $\varrho$ is an information/probability density. It is convenient to define both the amplitude field
@@ -79,20 +99,39 @@ Accordingly, we take the minimal Omega Action to be Einstein--Hilbert gravity co
 with $\varrho=\chi^2$. The first term is the Einstein--Hilbert action, the second is proportional to Fisher information, and $V(\varrho)$ is an effective potential encoding coarse-grained constraints (including vacuum-energy-like components in homogeneous regimes). At this two-derivative level the model is a standard scalar field minimally coupled to GR.
 
 \paragraph{Ansatz (Cost--density identification).}
-To connect the informational field to compilation overhead, we adopt the identification
+To connect the informational field to compilation overhead, it is convenient to work with the dimensionless overhead ratio
 \begin{equation}
-    \varrho(x)\equiv \varrho_0\,\kappa(x)^p,\qquad p>0,
+    s(x)\ \equiv\ \frac{\kappa(x)}{\kappa_0}\ =\ \frac{1}{N(x)}\ \ge\ 1.
+\end{equation}
+In general one could posit a local coupling $\varrho=\varrho_0\,F(s)$ with $F(s)>0$ and $F(1)=1$. In the weak-field/slow-variation regime where $s$ stays close to unity, any smooth $F$ reduces at leading order to a power law; we record this as a short proposition and adopt the minimal truncation:
+\begin{proposition}[Local power-law form of the cost--density coupling]
+\label{prop:cost_density_powerlaw}
+Let $s>0$ and suppose $\varrho=\varrho_0\,F(s)$ with $F\in C^2$ in a neighborhood of $s=1$ and $F(1)=1$. Writing $s=e^{u}$, one has for $|u|\ll 1$
+\begin{equation}
+    \varrho\ =\ \varrho_0\, s^{p}\,\bigl(1+\mathcal{O}(u^2)\bigr),\qquad
+    p\ \equiv\ \left.\frac{d}{du}\ln F(e^{u})\right|_{u=0}
+    \ =\ \left.s\,\frac{F'(s)}{F(s)}\right|_{s=1}.
+\end{equation}
+In particular, keeping only the leading log-linear coupling corresponds to the exact power-law choice $F(s)=s^{p}$.
+\end{proposition}
+\begin{proof}
+Define $f(u)\equiv \ln F(e^u)$. Since $F\in C^2$ near $s=1$ and $F(1)=1$, one has $f\in C^2$ near $u=0$ and $f(0)=0$. Taylor expansion gives $f(u)=p\,u+\mathcal{O}(u^2)$. Exponentiating yields $F(e^u)=e^{f(u)}=e^{pu}\bigl(1+\mathcal{O}(u^2)\bigr)=s^p\bigl(1+\mathcal{O}(u^2)\bigr)$ and hence $\varrho=\varrho_0 F(s)=\varrho_0 s^p(1+\mathcal{O}(u^2))$.
+\end{proof}
+\noindent
+Accordingly, we adopt the leading-order power-law identification
+\begin{equation}
+    \varrho(x)\equiv \varrho_0\left(\frac{\kappa(x)}{\kappa_0}\right)^p,\qquad p>0,
 \end{equation}
 so that
 \begin{equation}
-    \varphi = \ln\sqrt{\varrho} = \ln\sqrt{\varrho_0} + \frac{p}{2}\ln\kappa.
+    \varphi = \ln\sqrt{\varrho} = \ln\sqrt{\varrho_0} + \frac{p}{2}\ln\!\left(\frac{\kappa}{\kappa_0}\right).
 \end{equation}
 Consequently the Fisher-amplitude gradient becomes a routing-gradient term:
 \begin{equation}
     g^{\mu\nu}(\nabla_\mu\chi)(\nabla_\nu\chi)
-    = \frac{p^2}{4}\,\varrho\,g^{\mu\nu}(\nabla_\mu\ln\kappa)(\nabla_\nu\ln\kappa),
+    = \frac{p^2}{4}\,\varrho\,g^{\mu\nu}\Bigl(\nabla_\mu\ln\!\bigl(\kappa/\kappa_0\bigr)\Bigr)\Bigl(\nabla_\nu\ln\!\bigl(\kappa/\kappa_0\bigr)\Bigr),
 \end{equation}
-Thus, curvature is sourced by gradients of the routing-cost field $\kappa(x)$: regions requiring larger exact compilation depth exhibit a smaller lapse $N(x)=\kappa_0/\kappa(x)$ and hence gravitational time dilation.
+so that the informational stress tensor contains a positive gradient-energy contribution controlled by spatial variations of the routing-cost field. In solutions with inhomogeneous $\kappa(x)$, this contribution sources curvature; the lapse dictionary $N(x)=\kappa_0/\kappa(x)$ then ties routing overhead to gravitational time dilation in the computational-time parametrization.
 
 \subsection{Derivation of Field Equations}
 We perform the variation with respect to the metric $g^{\mu\nu}$.
@@ -115,15 +154,17 @@ Varying with respect to $\chi$ gives the scalar equation of motion,
 with $\frac{dV}{d\chi} = 2\chi\,\frac{dV}{d\varrho}$.
 
 \subsection{Homogeneous limit and effective fluid form}
-For a spatially homogeneous configuration $\chi=\chi(t)$ on an FLRW background (with constant $c$ for simplicity), the informational sector can be written as an effective perfect fluid. The corresponding energy density and pressure are
+For a spatially homogeneous configuration $\chi=\chi(t)$ on an FLRW background with lapse $N(t)$ (Section~\ref{chap:cosmology}), the informational sector can be written as an effective perfect fluid. The corresponding energy density and pressure measured in proper time are
 \begin{equation}
-    \rho_{\mathrm{info}} = \lambda_F \dot{\chi}^{\,2} + V(\varrho), \qquad
-    p_{\mathrm{info}} = \lambda_F \dot{\chi}^{\,2} - V(\varrho),
+    \rho_{\mathrm{info}} = \lambda_F \left(\frac{d\chi}{d\tau}\right)^{\!2} + V(\varrho)
+    = \lambda_F \frac{\dot{\chi}^{\,2}}{N^2(t)} + V(\varrho), \qquad
+    p_{\mathrm{info}} = \lambda_F \left(\frac{d\chi}{d\tau}\right)^{\!2} - V(\varrho)
+    = \lambda_F \frac{\dot{\chi}^{\,2}}{N^2(t)} - V(\varrho),
 \end{equation}
 so that the effective equation-of-state parameter is
 \begin{equation}
     w_{\mathrm{info}} \equiv \frac{p_{\mathrm{info}}}{\rho_{\mathrm{info}}}
-    = \frac{\lambda_F \dot{\chi}^{\,2} - V(\varrho)}{\lambda_F \dot{\chi}^{\,2} + V(\varrho)}.
+    = \frac{\lambda_F \dot{\chi}^{\,2}/N^2(t) - V(\varrho)}{\lambda_F \dot{\chi}^{\,2}/N^2(t) + V(\varrho)}.
 \end{equation}
 In the kinetic-dominated regime, $w_{\mathrm{info}}\to 1$ (stiff); in the potential-dominated regime, $w_{\mathrm{info}}\to -1$ (effective vacuum energy). This provides a controlled bridge between the action principle above and the cosmological parameterizations below.
 
@@ -187,7 +228,7 @@ In phenomenological applications one may parameterize a slow cosmological drift 
 as an effective summary of how average routing/encoding overhead changes with cosmological scale.
 
 \subsection{Holographic Dark Energy Decay}
-Standard $\Lambda$CDM assumes constant $\Lambda$. Omega Theory derives $\Lambda(t)$ from cosmological near-saturation of the holographic bound (Axiom~O2; Assumption~\ref{assump:C1}):
+Standard $\Lambda$CDM assumes constant $\Lambda$. In holographic-energy models, near-saturation of a UV--IR consistency bound motivates an effective vacuum sector whose density is controlled by an infrared length scale $L$ (Axiom~O2; Assumption~\ref{assump:C1}). We record the standard energy bound in a causal patch \cite{CohenKaplanNelson1999}:
 \begin{proposition}[Holographic energy bound in a causal patch]
 \label{prop:hde_bound}
 Let a causal patch be characterized by an infrared length scale $L$ (e.g.\ a horizon scale). Requiring that the total energy $E$ contained in the patch not exceed the mass of a black hole of the same size gives the bound
@@ -204,7 +245,7 @@ Parameterizing near-saturation by a factor $\eta=\mathcal{O}(1)$ (Assumption~\re
 \begin{equation}
     \rho_{\Lambda}(t) = \frac{3 \,\eta}{8\pi G\, L^2}, \quad L \sim H_{\tau}^{-1}(t) \implies \Lambda(t) \propto H_{\tau}^2(t),
 \end{equation}
-where $\eta=\mathcal{O}(1)$ parametrizes the near-saturation level (Assumption~\ref{assump:C1}). Since $\rho_{\mathrm{crit}}=3H_\tau^2/(8\pi G)$, the choice $\rho_\Lambda=3\eta/(8\pi G L^2)$ with $L\sim H_\tau^{-1}$ implies $\Omega_\Lambda\simeq \eta$ (approximately constant). The dynamics mimics a tracking dark-energy component with $w_{DE}\approx -1+\delta$ in regimes where $\eta$ drifts slowly.
+where $\eta=\mathcal{O}(1)$ parametrizes the near-saturation level (Assumption~\ref{assump:C1}). Such $L^{-2}$ scaling is the starting point of holographic dark energy models \cite{Li2004}; different choices of the IR cutoff $L$ lead to different phenomenologies. Since $\rho_{\mathrm{crit}}=3H_\tau^2/(8\pi G)$, the choice $\rho_\Lambda=3\eta/(8\pi G L^2)$ with $L\sim H_\tau^{-1}$ implies $\Omega_\Lambda\simeq \eta$ (approximately constant). The dynamics mimics a tracking dark-energy component with $w_{DE}\approx -1+\delta$ in regimes where $\eta$ drifts slowly.
 
 \subsection{Linear Perturbations and Growth Factor}
 To confront large-scale structure (LSS) data, we analyze the scalar perturbations. The growth equation for the matter density contrast $\delta_m = \delta \rho_m / \rho_m$ in the sub-horizon limit is:
@@ -224,12 +265,12 @@ so that a slowly varying $N(t)$ can shift the mapping between early-universe mic
 
 
 \subsection{The Initial Singularity and Bouncing Cosmology}
-Standard Big Bang cosmology predicts a singularity at $t=0$. Omega Theory avoids this via the discreteness of the lattice. The universe originates from a non-singular "Big Bounce" where the information density saturates the holographic bound.
+Standard Big Bang cosmology predicts a singularity at $t=0$. In a discrete finite-information substrate, it is natural to seek non-singular effective templates in which coarse-grained densities remain bounded and the evolution undergoes a bounce rather than a divergence. Interpreting such a bounce within Omega Theory requires specifying how the coarse-grained density is induced from microscopic information-capacity data; in this manuscript we therefore use a controlled effective template rather than claiming a derived microscopic theorem.
 As a phenomenological template for a non-singular bounce, we adopt the standard LQC-inspired effective modification \cite{AshtekarPawlowskiSingh2006}:
 \begin{equation}
     H_\tau^2 = \frac{8\pi G}{3} \rho \left( 1 - \frac{\rho}{\rho_{\text{crit}}} \right),
 \end{equation}
-where $H_\tau$ is the proper-time Hubble rate and $\rho_{\text{crit}}$ is a model parameter. In the Golden-scaling benchmark we set $\rho_{\text{crit}} \equiv \rho_{Pl} / \phi^3$ as an order-of-magnitude parametrization. When $\rho \to \rho_{\text{crit}}$, one has $H_\tau \to 0$ and the effective evolution undergoes a bounce. Interpreting this within Omega Theory requires specifying how the coarse-grained density $\rho$ is induced from the microscopic information-capacity data; in this manuscript we treat the bounce equation above as a controlled effective template rather than a derived microscopic theorem.
+where $H_\tau$ is the proper-time Hubble rate and $\rho_{\text{crit}}$ is a model parameter. In the Golden-scaling benchmark we set $\rho_{\text{crit}} \equiv \rho_{Pl} / \phi^3$ as an order-of-magnitude parametrization. When $\rho \to \rho_{\text{crit}}$, one has $H_\tau \to 0$ and the effective evolution undergoes a bounce.
 
 \begin{figure}[ht]
     \centering
@@ -251,5 +292,7 @@ In Omega Theory, this transition is modeled at the microscopic level by the conn
 
 \subsection{Boltzmann Brains and Non-thermalization}
 In a standard infinite universe with thermal fluctuations, "Boltzmann Brains" (randomly assembled observers) should vastly outnumber evolved biological observers, leading to an epistemic paradox.
-Omega Theory resolves this by denying the premise of thermal equilibrium. The time evolution $\hat{U}(t)=e^{-iHt}$ is driven by the Golden-spectrum ansatz (Part~VI), whose irrational eigenphases yield a quasiperiodic motion confined to an invariant orbit closure (a torus in the simplest diagonal models). Such torus-translation dynamics is not mixing (Appendix~\ref{app:torus_rotation}, Proposition~\ref{prop:torus_not_mixing}) and does not generically thermalize to a microcanonical equilibrium measure on the full Hilbert sphere, even though arbitrarily close returns are generic in finite dimension.
-Consequently, equilibrium measures that treat random thermal fluctuations as typical are not applicable: the realized history is a constrained, algorithmically generated orbit of the Omega Network, and Boltzmann-brain-like configurations are not expected to dominate along that orbit.
+Omega Theory avoids the standard premise of thermal equilibrium. The time evolution $\hat{U}(t)=e^{-iHt}$ is driven by the Golden-spectrum ansatz (Part~VI), whose irrational eigenphases yield a quasiperiodic motion confined to an invariant orbit closure (a torus in the simplest diagonal models). Such torus-translation dynamics is not mixing (Appendix~\ref{app:torus_rotation}, Proposition~\ref{prop:torus_not_mixing}) and therefore does not support the usual justification for treating long-time behavior as sampling from a thermal equilibrium ensemble on the full Hilbert sphere.
+\par
+\noindent
+Accordingly, equilibrium typicality estimates for Boltzmann-brain dominance do not automatically apply in this setting. Establishing a quantitative suppression (or otherwise) requires an explicit characterization of the relevant invariant set (orbit closure/code subspace) and a computation of the time fractions of macrostates visited by the algorithmically generated orbit, which we leave as an open diagnostic for the microscopic completion.
