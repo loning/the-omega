@@ -246,11 +246,20 @@ For a cut-and-project point $x=P_{\parallel}(\vec{n})$ with $\vec{n}\in\mathbb{Z
 A \emph{phason displacement field} is a (possibly slowly varying) internal shift $u(x)\in\mathbb{R}^{n-d}$ that locally replaces the window by $W+u(x)$ and hence parametrizes deviations from a perfect linear cut. The corresponding \emph{phason strain} is the spatial variation of this displacement, measured for instance by $\|\nabla u\|$ in continuum descriptions or by discrete differences (e.g.\ the 1D strain $\eta_j$ in Appendix~\ref{app:fib_dqca}). A perfect cut corresponds to $u\equiv\mathrm{const}$ and hence vanishing strain.
 \end{definition}
 
+\begin{definition}[Finite-window structure factor (diffraction diagnostic)]
+Let $\Lambda\subset\mathbb{R}^d$ be a discrete set and let $B_R\subset\mathbb{R}^d$ be a ball of radius $R$. The (normalized) finite-window structure factor is
+\begin{equation}
+    S_R(k)\ \equiv\ \frac{1}{|\Lambda\cap B_R|}\left|\sum_{x\in\Lambda\cap B_R} e^{-i\,k\cdot x}\right|^2,\qquad k\in\mathbb{R}^d.
+\end{equation}
+For regular cut-and-project (model) sets, $S_R(k)$ converges (in the appropriate weak sense) to a pure-point diffraction measure whose Bragg spectrum is determined by the dual lattice and the window function; see, e.g., \cite{Hof1995}. In this manuscript, ``controlling the structure factor'' refers to controlling this diffraction content (e.g.\ location and weights of dominant peaks) in the regime relevant for long-wavelength propagators.
+\end{definition}
+
 \begin{lemma}[Ergodic Averaging]
 \label{lemma:ergodic}
 Let $f: \mathbb{R}^{n-d} \to \mathbb{C}$ be a Riemann-integrable function on the internal space. For an irrational cut (where the projection of $\mathbb{Z}^n$ is dense in $W$), the lattice sum converges to the integral:
 \begin{equation}
-    \lim_{R \to \infty} \frac{1}{Vol(B_R)} \sum_{x \in \Lambda \cap B_R} f(x_\perp) = \rho \int_W f(y) dy.
+    \lim_{R \to \infty} \frac{1}{|\Lambda \cap B_R|} \sum_{x \in \Lambda \cap B_R} f(x_\perp)
+    = \frac{1}{\mathrm{Vol}(W)} \int_W f(y)\,dy.
 \end{equation}
 This follows from Weyl-type equidistribution for cut-and-project sets; see, e.g., \cite{Hof1995}.
 \end{lemma}
@@ -600,6 +609,38 @@ For fixed $(\ell,m)$, $Y_{\ell m}$ is the restriction to $S^2$ of a homogeneous 
 The integral vanishes for all $\ell\ge 1$ by orthogonality of spherical harmonics (equivalently, $Y_{\ell m}$ has zero mean on the sphere), proving the claim.
 \end{proof}
 
+\begin{proposition}[Design-averaged plane waves are isotropic to order $t$]
+\label{prop:design_plane_wave_isotropy}
+Let $\{\hat u_i\}_{i=1}^M\subset S^2$ be a spherical $t$-design and define, for $q\in\mathbb{R}^3$,
+\begin{equation}
+    F(q)\ \equiv\ \frac{1}{M}\sum_{i=1}^M e^{i\,q\cdot \hat u_i}.
+\end{equation}
+Then the Taylor polynomial of $F$ at $q=0$ of total degree $t$ coincides with that of the isotropic spherical average
+\begin{equation}
+    \overline{F}(q)\ \equiv\ \frac{1}{4\pi}\int_{S^2} e^{i\,q\cdot \hat u}\,d\Omega(\hat u)
+    \;=\; j_0(|q|)\;=\;\frac{\sin |q|}{|q|},
+\end{equation}
+so that, as $|q|\to 0$,
+\begin{equation}
+    F(q)=\overline{F}(q)+\mathcal{O}(|q|^{t+1}).
+\end{equation}
+In particular, all anisotropic contributions in the small-$|q|$ expansion are pushed to order at least $t{+}1$.
+\end{proposition}
+\begin{proof}
+Expand the exponential as a Taylor series,
+\begin{equation}
+    e^{i\,q\cdot \hat u}=\sum_{n=0}^{t}\frac{i^n}{n!}(q\cdot \hat u)^n\;+\;R_{t+1}(q,\hat u),
+\end{equation}
+where the remainder satisfies $|R_{t+1}(q,\hat u)|\le |q|^{t+1}/(t{+}1)!$ for all unit $\hat u$ (by the standard Taylor remainder bound).
+For each $n\le t$, $(q\cdot \hat u)^n$ is a polynomial in the components of $\hat u$ of total degree $n$, hence its discrete average over a $t$-design equals its spherical average:
+\begin{equation}
+    \frac{1}{M}\sum_{i=1}^M (q\cdot \hat u_i)^n
+    =\frac{1}{4\pi}\int_{S^2} (q\cdot \hat u)^n\,d\Omega(\hat u).
+\end{equation}
+Therefore the truncated Taylor sums of $F$ and $\overline{F}$ match term-by-term up to degree $t$, and the difference is controlled by the averaged remainder, giving $F(q)-\overline{F}(q)=\mathcal{O}(|q|^{t+1})$.
+Finally, the identity $\overline{F}(q)=\sin|q|/|q|$ follows by rotational invariance: align $q$ with the $z$-axis and integrate $e^{i|q|\cos\theta}$ over the sphere.
+\end{proof}
+
 \section{Discrete scale invariance and \texorpdfstring{$1/f$}{1/f} spectra}
 \label{app:one_over_f}
 The ``pink'' ($1/f$) noise ansatz used in Part~VI can be derived from a minimal scale-invariance mechanism: a log-uniform distribution of characteristic times (continuous scale invariance) or a geometric ladder of times (discrete scale invariance).
@@ -947,7 +988,7 @@ Writing $\rho^{it}=e^{it\ln\rho}=e^{-itK}$ gives the modular-Hamiltonian form.
 For a general von Neumann algebra $\mathfrak{M}$ and a faithful normal state $\omega$, the Tomita--Takesaki theorem provides a canonical modular automorphism group $\{\sigma_t^\omega\}_{t\in\mathbb{R}}$ characterized (in the GNS representation) by conjugation with the modular operator. This is the natural operator-algebraic sense in which a state determines an intrinsic flow; see \cite{Takesaki2002,ConnesRovelli1994}.
 
 \subsection{Existence of the Golden MERA Isometry}
-We establish the existence of a scale-invariant encoding map $\Phi$ realizing Axiom~O4 under the concrete model assumptions of this manuscript (in particular Assumption~\ref{assump:M3}).
+We record a purely kinematic existence statement for the finite-depth Golden MERA map used throughout this manuscript: under the local tensor assumptions of Assumption~\ref{assump:M3}, the truncated encoding map $\Phi_L$ is an isometry. This matches the isometry component of Axiom~O4 at finite depth; scale-invariant limits and error-correction properties require additional assumptions (Appendix~\ref{app:isometry}).
 
 \begin{theorem}[Golden MERA encoding isometry (finite depth)]
 \label{thm:golden_isometry}
