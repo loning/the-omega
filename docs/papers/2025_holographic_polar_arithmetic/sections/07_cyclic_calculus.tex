@@ -1,4 +1,4 @@
-\section{Cyclic calculus: difference, trace, and finite parts along \texorpdfstring{$\Theta$}{Theta}-orbits}
+\section{Cyclic calculus: difference, Newton expansion, trace, and finite parts along \texorpdfstring{$\Theta$}{Theta}-orbits}
 \label{sec:cyclic_calculus}
 
 This section provides the second structural pillar: statements about regularization and finite residuals are formulated via orbit functionals rather than by informal limiting intuition.
@@ -9,6 +9,56 @@ $$
 (\mathcal{D}_\Theta f)(x):=\frac{f(x+\alpha)-f(x)}{\alpha}.
 $$
 When $\alpha$ is small this approximates a derivative, but here $\alpha$ is fixed and irrational, so $\mathcal{D}_\Theta$ is an intrinsic ``discrete derivative'' along the scan step.
+
+\subsection{Orbit Newton series: discrete Taylor reconstruction}
+\label{subsec:orbit_newton}
+Define the forward difference operator along the scan by
+$$
+(\Delta_\Theta f)(x):=(\Theta-I)f(x)=f(x+\alpha)-f(x)=\alpha\,(\mathcal{D}_\Theta f)(x),
+$$
+and its higher iterates $\Delta_\Theta^k:=(\Theta-I)^k$ for $k\ge 0$.
+The relevant Taylor surrogate in the scan direction is then a Newton-type expansion in the operator $(\Theta-I)$ rather than in a primitive additive increment.
+
+\begin{proposition}[Binomial orbit expansion (discrete Taylor formula)]
+\label{prop:orbit_binomial_taylor}
+For every integer $n\ge 0$,
+$$
+\Theta^n=(I+\Delta_\Theta)^n=\sum_{k=0}^{n}\binom{n}{k}\Delta_\Theta^k.
+$$
+Equivalently, for any $f$ and $x\in X$,
+$$
+f(x+n\alpha)=(\Theta^n f)(x)=\sum_{k=0}^{n}\binom{n}{k}(\Delta_\Theta^k f)(x)
+=\sum_{k=0}^{n}\binom{n}{k}\alpha^k\,(\mathcal{D}_\Theta^k f)(x).
+$$
+\end{proposition}
+
+\begin{proof}
+Since $\Theta=I+\Delta_\Theta$, the operator identity is the binomial theorem.
+Applying both sides to $f$ and evaluating at $x$ gives the pointwise formulas.
+\end{proof}
+
+\begin{remark}[Explicit $k$th difference]
+\label{rem:orbit_kth_difference}
+For $k\ge 0$,
+$$
+\Delta_\Theta^k=\sum_{j=0}^{k}(-1)^{k-j}\binom{k}{j}\Theta^{j},
+\qquad
+(\Delta_\Theta^k f)(x)=\sum_{j=0}^{k}(-1)^{k-j}\binom{k}{j}f(x+j\alpha).
+$$
+\end{remark}
+
+\begin{definition}[Orbit Newton polynomial and remainder]
+\label{def:orbit_newton_remainder}
+For $m\ge 0$ define the order-$m$ orbit Newton polynomial
+$$
+T_m(n;f)(x):=\sum_{k=0}^{\min\{m,n\}}\binom{n}{k}(\Delta_\Theta^k f)(x),
+$$
+and the associated remainder
+$$
+R_m(n;f)(x):=f(x+n\alpha)-T_m(n;f)(x)=\sum_{k=m+1}^{n}\binom{n}{k}(\Delta_\Theta^k f)(x),
+$$
+with the convention that the sum is empty (hence $0$) when $m\ge n$.
+\end{definition}
 
 \subsection{Orbit trace: ergodic averages as an integral surrogate}
 Define the orbit average
@@ -79,6 +129,36 @@ $$
 \hat f(m):=\int_X f(x)\,\e^{-2\pi\iu m x}\,d\mu(x),\qquad m\in\ZZ,
 $$
 so that formally $f(x)\sim\sum_{m\in\ZZ}\hat f(m)\e^{2\pi\iu m x}$.
+
+\begin{proposition}[Fourier symbols and a band-limited remainder bound]
+\label{prop:fourier_symbol_remainder}
+Let $e_m(x):=\e^{2\pi\iu m x}$. Then $e_m$ is an eigenfunction of $\Theta$:
+$$
+\Theta e_m=\e^{2\pi\iu m\alpha}\,e_m,
+$$
+hence $\Delta_\Theta e_m=(\e^{2\pi\iu m\alpha}-1)e_m$ and $\mathcal{D}_\Theta e_m=\frac{\e^{2\pi\iu m\alpha}-1}{\alpha}e_m$.
+If $f$ has finite Fourier support $\hat f(m)=0$ for $|m|>M$, set
+$$
+\eta_M:=\max_{|m|\le M}\bigl|\e^{2\pi\iu m\alpha}-1\bigr|.
+$$
+Then for all $k\ge 0$,
+$$
+\|\Delta_\Theta^k f\|_{L^2}\le \eta_M^k\,\|f\|_{L^2},
+$$
+and for the orbit-Newton remainder from Definition~\ref{def:orbit_newton_remainder},
+$$
+\|R_m(n;f)\|_{L^2}\le \|f\|_{L^2}\sum_{k=m+1}^{n}\binom{n}{k}\eta_M^k.
+$$
+\end{proposition}
+
+\begin{proof}
+The eigenvalue identity follows from $\Theta f(x)=f(x+\alpha)$.
+If $f(x)=\sum_{|m|\le M}\hat f(m)e_m(x)$, then $\Delta_\Theta^k f=\sum_{|m|\le M}\hat f(m)(\e^{2\pi\iu m\alpha}-1)^k e_m$, so by Parseval
+$$
+\|\Delta_\Theta^k f\|_{L^2}^2=\sum_{|m|\le M}|\hat f(m)|^2\,|\e^{2\pi\iu m\alpha}-1|^{2k}\le \eta_M^{2k}\sum_{|m|\le M}|\hat f(m)|^2=\eta_M^{2k}\|f\|_{L^2}^2.
+$$
+The remainder bound follows from the triangle inequality and Definition~\ref{def:orbit_newton_remainder}.
+\end{proof}
 
 \begin{proposition}[Fourier evaluation of the Abel orbit sum]
 \label{prop:abel_fourier_formula}
