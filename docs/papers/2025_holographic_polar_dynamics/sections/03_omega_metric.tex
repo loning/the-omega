@@ -1,34 +1,92 @@
 \section{The Omega Metric: Rewriting Schwarzschild}
+\label{sec:omega_metric}
 
 \subsection{Classical Schwarzschild Metric}
 The standard Schwarzschild metric in Schwarzschild coordinates $(t, r, \theta, \phi)$ is given by:
 \begin{equation}
-    ds^2 = -\left(1 - \frac{2M}{r}\right)dt^2 + \left(1 - \frac{2M}{r}\right)^{-1}dr^2 + r^2 d\Omega^2
+	    ds^2 = -\left(1 - \frac{2M}{r}\right)dt^2 + \left(1 - \frac{2M}{r}\right)^{-1}dr^2 + r^2 d\Omega^2
 \end{equation}
 This metric, derived by Schwarzschild in 1916 \cite{Schwarzschild1916}, exhibits a coordinate singularity at the event horizon $r_s = 2M$ and an essential singularity at $r=0$. While the horizon singularity can be removed by coordinate transformations such as Kruskal-Szekeres coordinates \cite{Kruskal1960}, the curvature singularity at the center remains a non-removable feature in classical General Relativity \cite{Penrose1965}.
 
-\subsection{Holographic Polar Coordinates}
-We transition to the Holographic Polar Coordinates defined in Paper I. Let the radial coordinate be $\rho$ and the scanning index be $n$ (replacing continuous time $t$).
-The transformation is governed by the holographic map $\Phi$:
+\subsection{Isotropic (Holographic) Radius and the Cayley Factor}
+For holographic polar dynamics it is convenient to work with the \emph{isotropic} radius $\rho$, in which the spatial metric is conformally flat. The classical Schwarzschild solution admits the standard isotropic coordinate transformation \cite{MisnerThorneWheeler1973, Wald1984}:
 \begin{equation}
-    r \to \rho, \quad t \to n
+  r = \rho\left(1+\frac{M}{2\rho}\right)^2 .
 \end{equation}
-However, unlike the linear radius $r$, the holographic radius $\rho$ is subject to the inversion symmetry of the Riemann sphere.
-
-\subsection{The Topological Inversion Factor}
-We introduce the \textbf{Holographic Inversion Factor} $\mathcal{J}(\rho)$, which regulates the metric near the origin. This factor is not arbitrary but arises from the requirement that the scanning density must remain invariant under the mapping from bulk to boundary.
+In these coordinates the metric takes the form
 \begin{equation}
-    \mathcal{J}(\rho) = \frac{\rho - \rho_{crit}}{\rho + \rho_{crit}}
+  ds^2 = -\left(\frac{1-\frac{M}{2\rho}}{1+\frac{M}{2\rho}}\right)^2 dt^2
+  + \left(1+\frac{M}{2\rho}\right)^4 \left(d\rho^2+\rho^2 d\Omega^2\right).
 \end{equation}
-where $\rho_{crit}$ corresponds to the classical Schwarzschild radius $2M$.
-
-This structure mirrors the UV/IR connection in the AdS/CFT correspondence \cite{Maldacena1998, Witten1998}, where positions deep in the bulk (small $\rho$) map to high-energy scales on the boundary. Here, the factor $\mathcal{J}(\rho)$ acts similarly to a redshift factor, ensuring that the phase scanning rate $\omega_{scan}$ measured at infinity remains finite even as the local coordinate nears the critical point.
-
-Substituting this into the metric structure, the divergent term $(1 - 2M/r)$ is replaced by the smooth phase factor derived from $\Theta$-scanning:
+Define the \textbf{Holographic Inversion Factor} (a Cayley transform)
 \begin{equation}
-    g_{00} \sim \mathcal{J}(\rho)
+  \mathcal{J}(\rho) := \frac{1-\frac{M}{2\rho}}{1+\frac{M}{2\rho}}
+  = \frac{\rho-\rho_h}{\rho+\rho_h},
+  \qquad \rho_h:=\frac{M}{2},
 \end{equation}
+so that $g_{tt}=-\mathcal{J}(\rho)^2$. The horizon $r_s=2M$ corresponds to the finite isotropic radius $\rho=\rho_h$, where $g_{tt}\to 0$ but the spatial conformal factor $\left(1+\frac{M}{2\rho}\right)^4$ remains finite.
 
-\subsection{Resolution of the Singularity}
-As $\rho \to 0$ (approaching the center), the metric does not diverge. Instead, the geometry undergoes a conformal inversion. The region $\rho < \rho_{crit}$ maps to a dual space where radial progression is inverted.
-The ``center'' of the black hole is effectively a topological throat that connects the interior to the holographic boundary at infinity. Thus, $r=0$ is topologically equivalent to $r=\infty$ on the dual manifold, removing the singularity point entirely.
+\subsection{Inversion Symmetry and the Einstein--Rosen Throat}
+The isotropic form exhibits a simple inversion symmetry. Define the inversion map
+\begin{equation}
+  \mathcal{I}: \rho \mapsto \frac{\rho_h^2}{\rho}.
+\end{equation}
+\begin{lemma}[Isotropic inversion identities]
+One has $r(\rho)=r(\mathcal{I}(\rho))$ and $\mathcal{J}(\mathcal{I}(\rho))=-\mathcal{J}(\rho)$.
+\end{lemma}
+\begin{proof}
+Using $r(\rho)=\rho(1+\rho_h/\rho)^2=\rho+2\rho_h+\rho_h^2/\rho$ shows $r(\rho)=r(\rho_h^2/\rho)$. For $\mathcal{J}(\rho)=(\rho-\rho_h)/(\rho+\rho_h)$, substitution gives $\mathcal{J}(\rho_h^2/\rho)=(\rho_h-\rho)/(\rho_h+\rho)=-\mathcal{J}(\rho)$.
+\end{proof}
+
+In particular, $r(\rho)=\rho+2\rho_h+\rho_h^2/\rho$ shows $r(\rho)\to\infty$ as $\rho\to 0$, so $\rho\to 0$ corresponds to a second asymptotic region in the time-symmetric isotropic completion.
+
+\begin{lemma}[Inversion preserves the isotropic metric form]
+Let $\tilde{\rho}:=\rho_h^2/\rho$. Then
+\begin{equation}
+  \left(1+\frac{\rho_h}{\rho}\right)^4\left(d\rho^2+\rho^2 d\Omega^2\right)
+  =\left(1+\frac{\rho_h}{\tilde{\rho}}\right)^4\left(d\tilde{\rho}^2+\tilde{\rho}^2 d\Omega^2\right),
+\end{equation}
+and $g_{tt}(\rho)=g_{tt}(\tilde{\rho})=-\mathcal{J}(\rho)^2$.
+\end{lemma}
+\begin{proof}
+With $\rho=\rho_h^2/\tilde{\rho}$ one has $d\rho = -(\rho_h^2/\tilde{\rho}^2)\,d\tilde{\rho}$ and $\rho^2=\rho_h^4/\tilde{\rho}^2$, hence
+\begin{equation}
+  d\rho^2+\rho^2 d\Omega^2=\frac{\rho_h^4}{\tilde{\rho}^4}\left(d\tilde{\rho}^2+\tilde{\rho}^2 d\Omega^2\right).
+\end{equation}
+Also $\left(1+\rho_h/\rho\right)^4=\left(1+\tilde{\rho}/\rho_h\right)^4=(\tilde{\rho}+\rho_h)^4/\rho_h^4$, so multiplying gives the claimed identity. Finally, $\mathcal{J}(\tilde{\rho})=-\mathcal{J}(\rho)$ by the previous lemma, hence $g_{tt}=-\mathcal{J}^2$ is invariant.
+\end{proof}
+
+Consequently, the spatial slice in isotropic coordinates has two asymptotically flat ends: $\rho\to\infty$ and $\rho\to 0$ correspond to $r\to\infty$ on two sheets, glued at the minimal surface $\rho=\rho_h$ (the Einstein--Rosen throat) \cite{EinsteinRosen1935, Kruskal1960}. This is precisely the geometric template that Omega Dynamics promotes to a holographic ``South Pole / North Pole'' completion: the inversion exchanges the near-origin polar chart with a boundary chart without introducing a curvature blow-up.
+
+\begin{proposition}[Lower bound on areal radius in the isotropic exterior]
+For $\rho>0$, the areal radius $r(\rho)=\rho(1+M/(2\rho))^2$ satisfies
+\begin{equation}
+  r(\rho)\ge 2M,
+\end{equation}
+with equality at $\rho=\rho_h=M/2$.
+\end{proposition}
+\begin{proof}
+Writing $r(\rho)=\rho+2\rho_h+\rho_h^2/\rho$, AM--GM gives $\rho+\rho_h^2/\rho\ge 2\rho_h$, hence $r(\rho)\ge 4\rho_h=2M$.
+\end{proof}
+
+\begin{corollary}[No curvature blow-up in the completed exterior]
+In Schwarzschild vacuum the Kretschmann scalar is $K=R_{\mu\nu\rho\sigma}R^{\mu\nu\rho\sigma}=48 M^2/r^6$ \cite{MisnerThorneWheeler1973}. On the isotropic exterior (hence also on its Einstein--Rosen completion) one has $r\ge 2M$, so
+\begin{equation}
+  K \le \frac{48M^2}{(2M)^6}=\frac{3}{4M^4},
+\end{equation}
+and there is no $r\to 0$ curvature divergence in this geometry.
+\end{corollary}
+
+\begin{remark}[Distinguishing the exterior throat from the classical interior]
+The maximal analytic extension of Schwarzschild contains black-hole/white-hole regions and a genuine curvature singularity at $r=0$ \cite{Kruskal1960, Wald1984}. The isotropic chart used here captures the exterior geometry in a form where the time-symmetric spatial slice exhibits an Einstein--Rosen throat. Omega Dynamics uses this throat/inversion structure as a \emph{template} for its continuation rule, rather than as a claim that classical GR already removes the interior singularity.
+\end{remark}
+
+\subsection{Omega Completion as a Dynamical Identification}
+Classically, the isotropic chart does not include the $r<2M$ black-hole interior; it instead makes explicit the two-ended Einstein--Rosen completion of the exterior geometry. Omega Dynamics adopts the inversion $\mathcal{I}$ as the dynamical continuation rule for the holographic radius: the scan evolution in $\rho$ is extended through $\rho=\rho_h$ by the identification $\rho\sim\rho_h^2/\rho$, so that trajectories avoid terminating at a coordinate endpoint. This provides a concrete and externally motivated realization of the ``topological inversion'' principle used in the remainder of the paper.
+
+\begin{axiom}[Omega inversion continuation]
+\label{ax:omega_inversion}
+Physical radial evolution is formulated in the isotropic holographic radius $\rho$. When the scan dynamics reaches the locking surface $\rho=\rho_h$, continuation is defined by switching charts via the inversion $\rho\mapsto\rho_h^2/\rho$. The inverted end $\rho\to 0$ is interpreted as a holographic boundary readout channel rather than as a curvature endpoint.
+\par
+This axiom is stated at the level of the scan-time slicing and the isotropic throat template; a fully causal Lorentzian continuation (beyond the time-symmetric exterior completion) is left for future work.
+\end{axiom}
