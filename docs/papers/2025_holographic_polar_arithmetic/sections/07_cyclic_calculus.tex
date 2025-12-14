@@ -31,6 +31,7 @@ $$
 Theorem~\ref{thm:unique_ergodic} is a standard consequence of unique ergodicity/equidistribution of irrational circle rotations and provides a canonical replacement for ``integration'' and ``summation'' along the scan orbit; see e.g.~\cite{Weyl1916,KuipersNiederreiter1974}.
 
 \subsection{An Abel-type finite part for divergent orbit sums}
+\label{subsec:abel_fp}
 Let $u_k:=f(x_0+k\alpha)$ be a (possibly non-absolutely summable) sequence. Define its Abel generating function
 $$
 S_f(r):=\sum_{k=0}^{\infty} u_k r^k,\qquad 0<r<1.
@@ -69,3 +70,74 @@ Multiplying by $(1-r)^{J''}$ and taking $r\uparrow 1$ gives $d_{J''}=0$. Repeati
 \end{proof}
 
 This template shifts ``divergence'' from being a defect of the object to being a dependence on a consistent limiting and pole-subtraction scheme.
+
+\subsection{Finite-part traces and regularized determinants}
+\label{subsec:fp_determinants}
+To interface orbit finite parts with spectral/trace formulas one needs a determinant language compatible with regularization. A minimal template is as follows.
+
+\begin{definition}[Regularized trace and finite-part trace]
+Let $\mathcal{A}$ be a (not necessarily commutative) algebra of operators on a Hilbert space. A \emph{regularized trace scheme} is a family of linear functionals $\{\mathrm{Tr}_\varepsilon\}_{\varepsilon>0}$ on a subalgebra $\mathcal{A}_0\subset\mathcal{A}$ such that for each $T\in\mathcal{A}_0$ the scalar $\mathrm{Tr}_\varepsilon(T)$ is well-defined for $\varepsilon>0$ and admits, as $\varepsilon\downarrow 0$, an asymptotic expansion
+$$
+\mathrm{Tr}_\varepsilon(T)=\sum_{j=1}^{J}\frac{c_j(T)}{\varepsilon^{j}}+\mathrm{Tr}_{\FP}(T)+o(1).
+$$
+The constant term $\mathrm{Tr}_{\FP}(T)$ is called the \emph{finite-part trace} of $T$ (relative to the chosen scheme).
+\end{definition}
+
+\begin{remark}
+The Abel orbit finite part of Subsection~\ref{subsec:abel_fp} is a special case of this definition with the regulator $\varepsilon\sim 1-r$ and $T$ replaced by an orbit-sampled observable. In analytic number theory one often uses heat-kernel or zeta regularizations; see e.g.~\cite{Connes1994,Hardy1949}.
+\end{remark}
+
+\begin{assumption}[Cyclicity on the admissible class]
+\label{ass:fp_cyclicity}
+On $\mathcal{A}_0$ the finite-part trace is cyclic:
+$$
+\mathrm{Tr}_{\FP}(AB)=\mathrm{Tr}_{\FP}(BA)\qquad (A,B\in\mathcal{A}_0),
+$$
+equivalently $\mathrm{Tr}_{\FP}([A,B])=0$.
+\end{assumption}
+
+\begin{definition}[Finite-part determinant]
+\label{def:fp_det}
+Let $T\in\mathcal{A}_0$ be such that $\mathrm{Tr}_{\FP}(T^n)$ is defined for all $n\ge 1$ and obeys an exponential growth bound $\big|\mathrm{Tr}_{\FP}(T^n)\big|\le C R^n$ for some $C,R>0$. For $|u|<1/R$ define the finite-part determinant by
+$$
+\log\det_{\FP}(I-uT):=-\sum_{n=1}^{\infty}\frac{u^n}{n}\,\mathrm{Tr}_{\FP}(T^n),
+\qquad
+\det_{\FP}(I-uT):=\exp\!\big(\log\det_{\FP}(I-uT)\big).
+$$
+\end{definition}
+
+\begin{proposition}[Analyticity near the origin]
+\label{prop:fp_det_analytic}
+Under the growth hypothesis in Definition~\ref{def:fp_det}, the series defining $\log\det_{\FP}(I-uT)$ converges absolutely for $|u|<1/R$ and defines a holomorphic function there.
+\end{proposition}
+
+\begin{proof}
+For $|u|<1/R$ one has
+$$
+\sum_{n\ge 1}\left|\frac{u^n}{n}\mathrm{Tr}_{\FP}(T^n)\right|
+\le \sum_{n\ge 1}\frac{C(|u|R)^n}{n}
+<\infty,
+$$
+so the series converges uniformly on compact subsets and defines a holomorphic function.
+\end{proof}
+
+\begin{proposition}[Invariance of the zero set under finite-part scheme changes]
+\label{prop:fp_det_invariance}
+Let $\mathrm{Tr}_{\FP}$ and $\mathrm{Tr}'_{\FP}$ arise from two regularized trace schemes on $\mathcal{A}_0$, and assume that for a given $T\in\mathcal{A}_0$ the difference of the corresponding logarithmic determinants,
+$$
+\Delta(u):=\log\det'_{\FP}(I-uT)-\log\det_{\FP}(I-uT),
+$$
+extends holomorphically to a neighborhood of $u=0$. Then in that neighborhood
+$$
+\det'_{\FP}(I-uT)=\e^{\Delta(u)}\,\det_{\FP}(I-uT),
+$$
+so the two determinants have the same zero set (with multiplicities).
+\end{proposition}
+
+\begin{proof}
+By definition $\det'_{\FP}(I-uT)/\det_{\FP}(I-uT)=\exp(\Delta(u))$. If $\Delta$ is holomorphic then $\exp(\Delta)$ is holomorphic and nowhere vanishing, hence it cannot create or remove zeros.
+\end{proof}
+
+\begin{remark}[Why cyclicity matters]
+Assumption~\ref{ass:fp_cyclicity} is the minimal condition ensuring that $\mathrm{Tr}_{\FP}$ behaves as a trace and that determinant identities are stable under cyclic rearrangements (the mechanism behind many trace formulas). Verifying cyclicity and identifying a canonical admissible class $\mathcal{A}_0$ is model-dependent; in noncommutative settings, canonical traces often arise from unique ergodicity or $C^*$-algebraic trace states, while in analytic settings they arise from heat-kernel/zeta regularization.
+\end{remark}
