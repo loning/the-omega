@@ -1,0 +1,903 @@
+\pdfoutput=1 % arXiv: force pdfLaTeX
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{cite}
+\usepackage{color}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{assumption}[theorem]{Assumption}
+
+% Custom commands
+\newcommand{\ketomega}{|\Omega\rangle}
+\newcommand{\hilbert}{\mathcal{H}}
+\newcommand{\iu}{\mathrm{i}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\ind}{\mathbf{1}}
+\newcommand{\FP}{\mathrm{FP}}
+
+\title{Holographic Polar Arithmetic: Multiplicative Ontology, Unitary Scanning, and the Geometric Origin of Quantum Uncertainty}
+\author{Haobo Ma\thanks{Email: auric@aelf.io} \\
+\textit{AELF PTE LTD.} \\
+\textit{\#14-02, Marina Bay Financial Centre Tower 1, 8 Marina Blvd, Singapore 018981}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Linear presentations of arithmetic take additive translation as the primitive operation. While locally economical, this choice systematically obscures multiplicative scaling, phase and periodicity, and spectral data, and it pushes ``infinity'' outside the object domain, where endpoint pathologies (singularity and divergence) are then handled by external prescriptions. This paper proposes a self-contained coordinate upgrade---\emph{Holographic Polar Arithmetic} (HPA)---in which multiplication is ontological and addition becomes a derived, lossy readout.
+
+Starting from the $\mathbb{F}_1$-inspired multiplicative monoid skeleton $M=(\NN_{>0},\cdot)$, we define a radial character $\rho$ and a multiplicative phase $\theta_\times$ which is additive under multiplication, yielding a polar embedding
+$$
+\mathcal{Z}(n)=\rho(n)\e^{\iu\theta_\times(n)}\in\CC^*.
+$$
+We show that any nontrivial such embedding is multiplicative but cannot be additive in the classical linear sense: no map $\Phi:\NN_{>0}\to\CC^*$ can simultaneously preserve multiplication and linear addition except the identity. Consequently, vector synthesis $\mathcal{Z}(a)+\mathcal{Z}(b)$ is not constrained to land on the discrete image $\mathcal{Z}(M)$. This mismatch between continuous vector composition and discrete integer coordinates defines a \emph{quantum gap}. Macroscopic ``addition'' is therefore modeled as a probabilistic projection of synthesized vectors onto a discrete coordinate lattice, canonically realized by Zeckendorf/Ostrowski coding.
+
+To decouple intrinsic multiplicative phase from time/readout, we introduce a genuine unitary scan operator $\Theta$ (a Koopman operator for an irrational rotation on $L^2(S^1)$), with iteration count as time. The scan model naturally yields a Weyl pair: together with the basic phase multiplication operator $V$, the shift $U=\Theta$ satisfies $UV=\e^{2\pi\iu\alpha}VU$, i.e. the irrational rotation algebra. A binary readout is obtained by a window projection $\Pi_W$, producing a two-letter mechanical word. The golden branch $\alpha=\varphi^{-1}$ is singled out by a binary-minimality requirement: its continued fraction coefficients are all $1$, so the characteristic Sturmian word is the Fibonacci word and Ostrowski numeration degenerates to the binary Zeckendorf representation. On this basis we construct an orbit-wise ``cyclic calculus'' (difference, ergodic trace, and Abel-type finite part) and package three reusable modules---topologizing singularities, extracting finite parts from divergences, and replacing ill-posed continuum path integrals by controlled sums over Zeckendorf-coded lattices---closing a consistent loop from multiplicative skeleton to discrete readout.
+\end{abstract}
+
+\textbf{Keywords}: $\mathbb{F}_1$, polar arithmetic, multiplicative phase, unitary scan, irrational rotation, Sturmian mechanical word, cut-and-project, Ostrowski numeration, Zeckendorf decomposition, orbit trace, finite part.
+
+\paragraph{Conventions.}
+Unless otherwise stated, $\log$ denotes the natural logarithm. Throughout, ``mod $1$'' refers to reduction in $\RR/\ZZ$, and ``mod $2\pi$'' refers to reduction in $\RR/2\pi\ZZ$.
+
+\tableofcontents
+\newpage
+
+\section{Introduction: upgrading the coordinate system of arithmetic}
+\label{sec:intro}
+
+\subsection{Linear minimality and its structural side effects}
+In the classical one-dimensional presentation, integers live on a line and the primitive generator is the successor map $n\mapsto n+1$. Additive structure is represented as translation, and multiplicative structure is typically introduced as iterated addition. This ``Cartesian'' minimality is effective for local linearization, but it exhibits systematic side effects in three directions.
+
+\begin{enumerate}
+    \item \textbf{Open endpoints.} The ``point at infinity'' is not part of the object domain. Limit procedures therefore develop endpoint pathologies (singularity and divergence) that are extrinsic to the algebraic objects being studied.
+    \item \textbf{Flattening multiplicativity.} Prime factorization encodes multiplicative topology and spectral information. In a purely additive coordinate these become highly nonlocal, motivating auxiliary prescriptions (cutoffs and regularization) when one attempts analytic or spectral constructions.
+    \item \textbf{Conflation of readout and ontology.} Using a single linear index to encode both ``time/scan'' (iteration count) and intrinsic multiplicative structure forces conflicts between phase conventions and multiplicative homomorphisms. For instance, a naive phase $\theta(n)=2\pi\alpha n$ is generally incompatible with multiplicative additivity $\theta(mn)\equiv\theta(m)+\theta(n)$.
+\end{enumerate}
+
+The goal of this paper is not to patch these issues within the linear coordinate, but to upgrade the coordinate system so that multiplication and phase become primitive, and ``time/scan'' is represented by an explicit unitary dynamics.
+
+\subsection{Polar minimality: a generator and a canonical readout}
+We make ``minimal complexity'' explicit as the following design criteria.
+
+\begin{itemize}
+    \item \textbf{(C1) Compactification.} Replace open linear endpoints by a compact phase space (circle or torus), so that ``infinity'' becomes an internal boundary point of an extended object domain.
+    \item \textbf{(C2) Anti-resonance.} Avoid short periodic lock-in; prefer irrational rotations that are difficult to approximate by rationals.
+    \item \textbf{(C3) Binary readout.} The observational alphabet is minimized to $\{0,1\}$.
+    \item \textbf{(C4) Canonical coordinates.} Discrete readouts should correspond to a unique, computable, locally constrained integer coding.
+    \item \textbf{(C5) Single generator.} Use a single unitary scan generator rather than multi-parameter assembly.
+\end{itemize}
+
+Under these constraints, we adopt the skeleton ``irrational rotation + binary window readout''. For irrational $\alpha$ and interval windows, the resulting mechanical word is Sturmian and hence has minimal factor complexity $p(n)=n+1$ among aperiodic binary sequences; see~\cite{MorseHedlund1940,Lothaire2002}. The golden branch $\alpha=\varphi^{-1}$ is then distinguished because its continued fraction coefficients are all $1$. This choice is extremal for anti-resonance (it attains the optimal Hurwitz constant among irrational rotations; see e.g.~\cite{Cassels1957,KuipersNiederreiter1974}) and it yields the Fibonacci word together with the binary Zeckendorf/Ostrowski canonical encoding (Sections~\ref{sec:readout}--\ref{sec:zeckendorf}).
+
+\subsection{Contributions and organization}
+This paper constructs and organizes a closed-loop toolkit.
+
+\begin{itemize}
+    \item Sections~\ref{sec:skeleton}--\ref{sec:embedding} define a radial character $\rho$ and a multiplicative phase $\theta_\times$ from the multiplicative skeleton $M=(\NN_{>0},\cdot)$, and introduce the holographic polar embedding $\mathcal{Z}$.
+    \item Section~\ref{sec:interference} reframes addition as a lossy geometric readout: we prove a no-go theorem for additive completeness, formalize lattice mismatch, and define a projection-induced notion of additive readout together with the associated quantum gap.
+    \item Sections~\ref{sec:theta}--\ref{sec:cyclic_calculus} introduce the unitary scan operator $\Theta$, formalize time as iteration count, and construct orbit-wise operators (difference, trace, finite part).
+    \item Sections~\ref{sec:readout}--\ref{sec:zeckendorf} define window readouts and derive Sturmian/Fibonacci structure, then connect to Ostrowski numeration and its golden degeneration to Zeckendorf decompositions.
+    \item Sections~\ref{sec:modules}--\ref{sec:conclusion} package reusable modules (singularity compactification, finite-part extraction, lattice path sums) and summarize limitations and testable intermediate claims.
+\end{itemize}
+
+\section{Minimal ontological commitments: a reference state and the \texorpdfstring{$\mathbb{F}_1$}{F1} skeleton}
+\label{sec:skeleton}
+
+\subsection{Reference state \texorpdfstring{$\ketomega$}{|Omega>} as minimal mathematical commitment}
+Fix a separable Hilbert space $\hilbert$ and a unit vector $\ketomega\in\hilbert$. In this paper $\ketomega$ plays the role of a global reference state for later operator-theoretic constructions.
+
+We do not assign $\ketomega$ a physical interpretation as a theorem. The only requirement is that, under the subsequent scan and projection operations, $\ketomega$ can generate observable readout structures.
+
+\begin{remark}[A concrete choice in the minimal scan model]
+\label{rem:omega_choice}
+In the minimal rotation model of Section~\ref{sec:theta} we take $\hilbert=L^2(X,\mu)$ with $X=\RR/\ZZ$ and $\mu$ the Lebesgue probability measure. For $x_0\in X$ and $\delta\in(0,1)$ define the normalized bump
+$$
+\omega_{x_0,\delta}(x):=\frac{\ind_{[x_0,x_0+\delta)}(x)}{\sqrt{\delta}}\in L^2(X).
+$$
+Let $\Pi_W$ be the multiplication operator $(\Pi_W f)(x)=\ind_W(x)f(x)$. Then the scalar
+$$
+p_k(\delta):=\langle \omega_{x_0,\delta},\,\Pi_W\,\Theta^k\,\omega_{x_0,\delta}\rangle
+$$
+is a bona fide Hilbert-space observable. Moreover, for any $x_0$ that is a Lebesgue point of $W$ one has
+$$
+\lim_{\delta\downarrow 0} p_k(\delta)=\ind_W(x_0+k\alpha),
+$$
+so the binary orbit readout arises as a sharp localization limit of a standard projection measurement. By the Lebesgue differentiation theorem, for any measurable $W$ almost every $x_0$ is a Lebesgue point of $W$; for interval windows the only exceptional points are the boundary points; see e.g.~\cite{SteinShakarchi2005}.
+\end{remark}
+
+\subsection{The \texorpdfstring{$\mathbb{F}_1$}{F1} viewpoint: the multiplicative monoid skeleton}
+Let
+$$
+M := (\NN_{>0},\cdot)
+$$
+be the multiplicative monoid of positive integers. By ``$\mathbb{F}_1$ skeleton'' we only use the following minimal core.
+
+\begin{itemize}
+    \item \textbf{Prime generation.} Every $n\in M$ admits a unique prime factorization
+    $$
+    n=\prod_{p\in\PP} p^{a_p(n)},\qquad a_p(n)\in\NN,\quad a_p(n)=0\text{ for all but finitely many }p.
+    $$
+    \item \textbf{Multiplication as first-order structure.} All ``geometric'' quantities introduced below (radial and phase) are required to be homomorphic or covariant with respect to multiplication on $M$.
+\end{itemize}
+
+\section{Radial structure \texorpdfstring{$\rho$}{rho}: metrizing the multiplicative skeleton}
+\label{sec:radial}
+
+\subsection{Radial weights and the radial character}
+Fix a weight function $w:\PP\to\RR$. Define the radial character
+$$
+\rho_w(n) := \exp\!\Big(\sum_{p\in\PP} a_p(n)\, w(p)\Big),
+$$
+where $n=\prod_{p} p^{a_p(n)}$.
+
+\begin{proposition}[Radial homomorphism]
+\label{prop:radial_hom}
+For all $m,n\in M$ one has $\rho_w(mn)=\rho_w(m)\rho_w(n)$.
+\end{proposition}
+
+\begin{proof}
+Using $a_p(mn)=a_p(m)+a_p(n)$ and additivity of the logarithm,
+$$
+\log\rho_w(mn)=\sum_{p\in\PP} (a_p(m)+a_p(n))w(p)=\log\rho_w(m)+\log\rho_w(n).
+$$
+Exponentiating yields the claim.
+\end{proof}
+
+\subsection{Minimal choice and tunable families}
+\begin{itemize}
+    \item \textbf{Minimal choice.} If $w(p)=\log p$, then
+    $$
+    \rho_w(n)=\exp\Big(\sum_p a_p(n)\log p\Big)=n.
+    $$
+    In this case we simply write $\rho(n)=n$.
+    \item \textbf{Tunable family.} Other choices of $w$ correspond to alternative ``radial scales'' and can be used to couple the arithmetic skeleton to external weighting schemes (e.g., spectral weights). Unless stated otherwise, we adopt the minimal choice $\rho(n)=n$.
+\end{itemize}
+
+\section{Multiplicative phase \texorpdfstring{$\theta_\times$}{theta\_times} and the holographic polar embedding \texorpdfstring{$\mathcal{Z}$}{Z}}
+\label{sec:embedding}
+
+\subsection{Definition of multiplicative phase}
+Fix a phase weight $\beta:\PP\to\RR$. Define the multiplicative phase (valued in $\RR/2\pi\ZZ$) by
+$$
+\theta_\times(n)\equiv \sum_{p\in\PP} a_p(n)\,\beta(p)\pmod{2\pi}.
+$$
+
+\begin{proposition}[Phase additivity under multiplication]
+\label{prop:phase_hom}
+For all $m,n\in M$,
+$$
+\theta_\times(mn)\equiv\theta_\times(m)+\theta_\times(n)\pmod{2\pi}.
+$$
+\end{proposition}
+
+\begin{proof}
+This follows from $a_p(mn)=a_p(m)+a_p(n)$ and additivity of the sum, exactly as in Proposition~\ref{prop:radial_hom}.
+\end{proof}
+
+A minimal parametrized choice is $\beta(p)=\beta_0\log p$ for some real constant $\beta_0$, in which case
+$$
+\theta_\times(n)\equiv \beta_0\log n\pmod{2\pi}.
+$$
+
+\subsection{Holographic polar embedding}
+\begin{definition}[HPA embedding]
+\label{def:Z_embedding}
+Define a map $\mathcal{Z}:M\to\CC^*$ by
+$$
+\mathcal{Z}(n):=\rho(n)\,\e^{\iu\theta_\times(n)}.
+$$
+\end{definition}
+
+Under the minimal choices $\rho(n)=n$ and $\theta_\times(n)\equiv\beta_0\log n\ (\mathrm{mod}\ 2\pi)$,
+$$
+\mathcal{Z}(n)=n\,\e^{\iu\beta_0\log n}=n^{1+\iu\beta_0},
+$$
+so $\mathcal{Z}(M)$ lies on a family of logarithmic spirals in the complex plane.
+
+\begin{theorem}[Multiplicative homomorphism of the embedding]
+\label{thm:Z_mult}
+For all $m,n\in M$,
+$$
+\mathcal{Z}(mn)=\mathcal{Z}(m)\mathcal{Z}(n).
+$$
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:radial_hom} and Proposition~\ref{prop:phase_hom},
+$$
+\mathcal{Z}(mn)=\rho(mn)\e^{\iu\theta_\times(mn)}=\rho(m)\rho(n)\e^{\iu(\theta_\times(m)+\theta_\times(n))}=\mathcal{Z}(m)\mathcal{Z}(n).
+$$
+\end{proof}
+
+Theorem~\ref{thm:Z_mult} is the first structural pillar: multiplicativity is decomposed into radial scaling and angular additivity.
+
+\section{Geometric interference and the quantum gap}
+\label{sec:interference}
+
+\subsection{Vector synthesis}
+In $\CC$ the interaction of two holographic integers is expressed as Euclidean vector composition. For $a,b\in M$ define the synthesized vector
+$$
+v(a,b):=\mathcal{Z}(a)+\mathcal{Z}(b)\in\CC.
+$$
+In polar form, $\mathcal{Z}(a)$ and $\mathcal{Z}(b)$ are vectors; synthesis depends on their relative phase.
+
+\begin{itemize}
+    \item If $\theta_\times(a)\approx\theta_\times(b)$, magnitudes reinforce.
+    \item If $\theta_\times(a)\approx\theta_\times(b)+\pi$, partial cancellation occurs.
+\end{itemize}
+
+The central point is strategic: in a multiplicative ontology we do not ask addition to be complete. Instead, we ask how and why it fails, and what kind of readout must replace it.
+
+\subsection{Lattice mismatch: why linear addition is not preserved}
+The embedding $\mathcal{Z}$ is designed to be multiplicative (Theorem~\ref{thm:Z_mult}). A naive expectation is that it should also respect linear addition, but this target is impossible except in a degenerate trivial case.
+
+\begin{theorem}[No-go for additive completeness]
+\label{thm:no_go_additive}
+Let $\Phi:\NN_{>0}\to\CC$ satisfy
+$$
+\Phi(mn)=\Phi(m)\Phi(n)
+\quad\text{and}\quad
+\Phi(a+b)=\Phi(a)+\Phi(b)
+$$
+for all $m,n,a,b\in\NN_{>0}$. Then either $\Phi\equiv 0$ or $\Phi(n)=n$ for all $n\in\NN_{>0}$.
+\end{theorem}
+
+\begin{proof}
+Let $z:=\Phi(1)$. Multiplicativity gives $z=\Phi(1)=\Phi(1\cdot 1)=\Phi(1)^2=z^2$, hence $z\in\{0,1\}$.
+If $z=0$, then for any $n\in\NN_{>0}$ one has $\Phi(n)=\Phi(n\cdot 1)=\Phi(n)\Phi(1)=0$, so $\Phi\equiv 0$.
+If $z=1$, then by additivity,
+$$
+\Phi(n)=\Phi(\underbrace{1+\cdots+1}_{n\ \text{terms}})=n\Phi(1)=n.
+$$
+\end{proof}
+
+\begin{corollary}[Non-additivity is necessary]
+\label{cor:nonadditive}
+Let $\mathcal{Z}:M\to\CC^*$ be multiplicative and satisfy $\mathcal{Z}(1)=1$.
+If $\mathcal{Z}$ is not the identity map, then it cannot satisfy $\mathcal{Z}(a+b)=\mathcal{Z}(a)+\mathcal{Z}(b)$ for all $a,b\in M$.
+\end{corollary}
+
+\begin{proof}
+If $\mathcal{Z}$ were additive on $M=\NN_{>0}$, then it would satisfy the hypotheses of Theorem~\ref{thm:no_go_additive}. Since $\mathcal{Z}$ takes values in $\CC^*$ it is not identically zero, hence $\mathcal{Z}(n)=n$ for all $n\in M$, contradicting the assumption that $\mathcal{Z}$ is not the identity.
+\end{proof}
+
+This is the \emph{lattice mismatch}: vector synthesis takes place in the continuous plane $\CC$, while integer readout is constrained to the discrete point set $\mathcal{Z}(M)\subset\CC$. A quantitative obstruction is the distance-to-image function
+$$
+g(v):=\inf_{n\in M}\bigl|v-\mathcal{Z}(n)\bigr|.
+$$
+When $v=v(a,b)$, the value $g(v)$ measures the residual error incurred when one attempts to interpret synthesis as an exact integer operation. If $v\in\mathcal{Z}(M)$ then $g(v)=0$; otherwise $g(v)>0$.
+
+\subsection{Quantum projection: lossy additive readout}
+Since $v(a,b)$ is not constrained to lie in $\mathcal{Z}(M)$, any macroscopic ``additive'' bookkeeping must be implemented as a \emph{projection} back to $M$. A minimal deterministic choice is a nearest-point readout.
+
+\begin{definition}[Nearest-point readout]
+\label{def:nearest_point}
+For $v\in\CC$ define
+$$
+\pi(v):=\operatorname*{argmin}_{n\in M}\bigl|v-\mathcal{Z}(n)\bigr|,
+$$
+with a fixed tie-breaking rule (e.g. choose the smallest $n$ among minimizers).
+\end{definition}
+
+This produces a lossy ``sum readout'' $c=\pi(v(a,b))$. The residual
+$$
+\delta(a,b):=v(a,b)-\mathcal{Z}\!\bigl(\pi(v(a,b))\bigr)
+$$
+is the \emph{quantum gap}: the part of synthesis that cannot be represented inside the integer image. In physical terms, $\delta$ encodes the fluctuations that remain when a continuous interference pattern is coerced into a discrete lattice readout.
+
+A probabilistic refinement replaces the hard nearest-point rule by a soft projection kernel.
+
+\begin{definition}[Projection kernel]
+\label{def:projection_kernel}
+Fix a scale $\varepsilon>0$. For $v\in\CC$ define a probability distribution on $M$ by
+$$
+\pi_\varepsilon(c\mid v)
+:=
+\frac{\exp\!\bigl(-|v-\mathcal{Z}(c)|^2/\varepsilon^2\bigr)}
+{\sum_{n\in M}\exp\!\bigl(-|v-\mathcal{Z}(n)|^2/\varepsilon^2\bigr)}.
+$$
+\end{definition}
+
+\begin{proposition}[Well-definedness of the projection readout]
+\label{prop:projection_well_defined}
+Assume the minimal radial choice $\rho(n)=n$. Then for every $v\in\CC$:
+\begin{enumerate}
+    \item The minimizer set
+    $$
+    \operatorname*{Argmin}_{n\in M}\,|v-\mathcal{Z}(n)|
+    $$
+    is nonempty and finite, hence the nearest-point rule $\pi(v)$ is well-defined.
+    \item For every $\varepsilon>0$ the normalizing sum
+    $$
+    Z_\varepsilon(v):=\sum_{n\in M}\exp\!\bigl(-|v-\mathcal{Z}(n)|^2/\varepsilon^2\bigr)
+    $$
+    converges and satisfies $0<Z_\varepsilon(v)<\infty$, hence $\pi_\varepsilon(\cdot\mid v)$ is a well-defined probability distribution on $M$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Under $\rho(n)=n$ we have $|\mathcal{Z}(n)|=n$, so $|\mathcal{Z}(n)|\to\infty$ as $n\to\infty$.
+\begin{enumerate}
+    \item Fix $v\in\CC$ and set $R:=|v|+1$. If $|v-\mathcal{Z}(n)|\le 1$, then $|\mathcal{Z}(n)|\le |v|+|v-\mathcal{Z}(n)|\le R$, hence $n\le R$. Therefore only finitely many $n\in M$ can lie within distance $1$ of $v$, and the minimum distance is achieved by at least one of them. Finiteness of the minimizer set follows from the same bound.
+    \item For all $n\in M$ we have
+    $$
+    |v-\mathcal{Z}(n)|\ge \bigl||\mathcal{Z}(n)|-|v|\bigr|=|n-|v||,
+    $$
+    hence
+    $$
+    \exp\!\bigl(-|v-\mathcal{Z}(n)|^2/\varepsilon^2\bigr)\le \exp\!\bigl(-|n-|v||^2/\varepsilon^2\bigr).
+    $$
+    The comparison series $\sum_{n\ge 1}\exp(-|n-|v||^2/\varepsilon^2)$ converges, so $Z_\varepsilon(v)<\infty$. Positivity is immediate since each summand is positive.
+\end{enumerate}
+\end{proof}
+
+\begin{proposition}[Sharp projection limit]
+\label{prop:sharp_projection_limit}
+Assume the minimal radial choice $\rho(n)=n$. Fix $v\in\CC$ and let
+$$
+d_{\min}(v):=\min_{n\in M}|v-\mathcal{Z}(n)|.
+$$
+Define the minimizer set $D(v):=\{n\in M:\ |v-\mathcal{Z}(n)|=d_{\min}(v)\}$.
+Then as $\varepsilon\downarrow 0$ the kernel $\pi_\varepsilon(\cdot\mid v)$ converges to the uniform distribution on $D(v)$.
+In particular, if $D(v)$ is a singleton, then $\pi_\varepsilon(\cdot\mid v)$ converges to a point mass at that minimizer.
+\end{proposition}
+
+\begin{proof}
+Let $d=d_{\min}(v)$. For $c\in D(v)$ one has $\exp(-|v-\mathcal{Z}(c)|^2/\varepsilon^2)=\exp(-d^2/\varepsilon^2)$.
+For $m\notin D(v)$ set $\Delta_m:=|v-\mathcal{Z}(m)|^2-d^2>0$. Then
+$$
+\frac{\exp(-|v-\mathcal{Z}(m)|^2/\varepsilon^2)}{\exp(-d^2/\varepsilon^2)}
+=\exp(-\Delta_m/\varepsilon^2)\xrightarrow[\varepsilon\downarrow 0]{}0.
+$$
+Since $D(v)$ is finite by Proposition~\ref{prop:projection_well_defined}(1), dividing numerator and denominator by $\exp(-d^2/\varepsilon^2)$ yields
+$$
+\pi_\varepsilon(c\mid v)
+=
+\frac{1}{|D(v)|+\sum_{m\notin D(v)}\exp(-\Delta_m/\varepsilon^2)}\xrightarrow[\varepsilon\downarrow 0]{}\frac{1}{|D(v)|}
+$$
+for $c\in D(v)$, and $\pi_\varepsilon(m\mid v)\to 0$ for $m\notin D(v)$.
+\end{proof}
+
+Given $a,b\in M$, set $v=v(a,b)$ and draw $C\sim \pi_\varepsilon(\,\cdot\,\mid v)$. The random gap
+$$
+\delta:=v-\mathcal{Z}(C)
+$$
+realizes a probability cloud around the synthesized vector. After readout, the integer outcome $C$ is canonically encoded in Zeckendorf/Ostrowski coordinates (Section~\ref{sec:zeckendorf}), making explicit that ``addition'' in the observable layer is a statistical projection onto a discrete coding lattice rather than a closed microscopic law.
+
+Any statement about divergent sums or ``finite residuals'' must be made using the orbit-trace and finite-part machinery introduced in Section~\ref{sec:cyclic_calculus}.
+
+\section{The scan operator \texorpdfstring{$\Theta$}{Theta}: time/readout must arise from a genuine unitary}
+\label{sec:theta}
+
+\subsection{Why a scalar phase is insufficient}
+If $\Theta$ is merely a complex number $\e^{2\pi\iu\alpha}$, then for any state $|\psi\rangle$ we have $\Theta^k|\psi\rangle=\e^{2\pi\iu k\alpha}|\psi\rangle$, which differs only by a global phase and produces no observable structure. Therefore a scan that drives readout must be represented by a nontrivial unitary operator on a nontrivial Hilbert space.
+
+\subsection{A minimal model: the Koopman operator for an irrational rotation}
+Let $X:=\RR/\ZZ\cong S^1$ with Lebesgue measure $\mu$, and set $\hilbert:=L^2(X,\mu)$. Fix an irrational $\alpha\in(0,1)\setminus\QQ$. Define
+$$
+T_\alpha(x):=x+\alpha\pmod{1},
+$$
+and the Koopman operator $\Theta$ by
+$$
+(\Theta f)(x):=f(T_\alpha(x))=f(x+\alpha).
+$$
+
+\begin{proposition}[Unitarity]
+\label{prop:theta_unitary}
+The operator $\Theta$ is unitary on $\hilbert$.
+\end{proposition}
+
+\begin{proof}
+For $f,g\in L^2(X)$,
+$$
+\langle \Theta f,\Theta g\rangle=\int_X \overline{f(x+\alpha)}\,g(x+\alpha)\,d\mu(x)=\int_X \overline{f(u)}\,g(u)\,d\mu(u)=\langle f,g\rangle,
+$$
+using invariance of Lebesgue measure under rotations.
+\end{proof}
+
+\subsection{A Weyl pair and intrinsic noncommutativity}
+\label{subsec:weyl_pair}
+On $\hilbert=L^2(X,\mu)$ define a second unitary $V$ by multiplication with the basic character,
+$$
+(Vf)(x):=\e^{2\pi\iu x} f(x).
+$$
+Then $U:=\Theta$ and $V$ satisfy the Weyl commutation relation
+$$
+UV=\e^{2\pi\iu\alpha}VU.
+$$
+Indeed,
+$$
+(UVf)(x)=(Vf)(x+\alpha)=\e^{2\pi\iu(x+\alpha)}f(x+\alpha)=\e^{2\pi\iu\alpha}(VUf)(x).
+$$
+The $C^*$-algebra generated by $U$ and $V$ is the irrational rotation algebra (noncommutative $2$-torus) for irrational $\alpha$; see e.g.~\cite{Rieffel1981,Connes1994}. In particular, scan shift and phase multiplication cannot be simultaneously diagonalized.
+
+\begin{corollary}[No common eigenvectors]
+\label{cor:no_common_eigenvectors}
+If $\alpha\notin\QQ$, there is no nonzero $f\in\hilbert$ such that $Uf=\lambda f$ and $Vf=\mu f$ for some $\lambda,\mu\in S^1$.
+\end{corollary}
+
+\begin{proof}
+If $Uf=\lambda f$ and $Vf=\mu f$, then $UVf=\lambda\mu f$ and $VUf=\mu\lambda f$. The Weyl relation gives $UVf=\e^{2\pi\iu\alpha}VUf$, hence $(1-\e^{2\pi\iu\alpha})\lambda\mu f=0$. Since $\alpha\notin\QQ$ implies $\e^{2\pi\iu\alpha}\ne 1$, it follows that $f=0$.
+\end{proof}
+
+\begin{theorem}[A variance-type uncertainty relation for a Weyl pair]
+\label{thm:weyl_uncertainty}
+Let $U$ and $V$ be unitary operators satisfying
+$$
+UV = \e^{\iu\Phi} VU,\qquad U^\dagger V = \e^{-\iu\Phi} VU^\dagger,
+\qquad 0\le \Phi\le \pi.
+$$
+For a normalized state $|\psi\rangle$, define the unitary variances
+$$
+\Delta U^2 := 1-|\langle \psi|U|\psi\rangle|^2,\qquad
+\Delta V^2 := 1-|\langle \psi|V|\psi\rangle|^2,
+$$
+and set $A:=\tan(\Phi/2)$. Then
+$$
+(1+2A)\,\Delta U^2\,\Delta V^2 + A^2(\Delta U^2+\Delta V^2)\ \ge\ A^2.
+$$
+\end{theorem}
+
+\begin{proof}
+This is Theorem~1 of~\cite{MassarSpindel2008}.
+\end{proof}
+
+\begin{remark}[Quantitative irreducibility for irrational rotations]
+In the rotation model one has $UV=\e^{2\pi\iu\alpha}VU$. Choosing the representative $\Phi\in(0,\pi]$ with $\e^{\iu\Phi}=\e^{2\pi\iu\alpha}$ (equivalently, $\Phi=2\pi\min\{\alpha,1-\alpha\}$) and noting that $\Delta U^2$ depends only on $|\langle U\rangle|$, Theorem~\ref{thm:weyl_uncertainty} applies. In particular, for $\alpha\notin\QQ$ one has $\Phi\ne 0$, hence $A>0$, which forces a strictly nontrivial tradeoff between localization in the $U$- and $V$-modes.
+\end{remark}
+
+\subsection{Separating multiplicative phase from scan time}
+Define scan time as the iteration index $k\in\ZZ_{\ge 0}$ and the orbit
+$$
+x_k:=T_\alpha^k(x_0)=x_0+k\alpha\pmod{1},\qquad f_k:=\Theta^k f_0.
+$$
+Define a scan phase increment $\delta:=2\pi\alpha$ and a scan phase $\theta_t(k):=k\delta$. The separation principle is:
+
+\begin{itemize}
+    \item $\theta_\times(n)$ is determined by the multiplicative structure of $n$ and satisfies $\theta_\times(mn)\equiv\theta_\times(m)+\theta_\times(n)$.
+    \item $\theta_t(k)$ is determined by scan time $k$ and is independent of $n$.
+\end{itemize}
+
+This avoids the structural conflict that arises when one attempts to use a single index simultaneously as multiplicative coordinate and time/scan coordinate.
+
+\subsection{The golden branch as a minimal grammar choice}
+Let $\varphi:=\frac{1+\sqrt{5}}{2}$ and choose
+$$
+\alpha:=\varphi^{-1}=\varphi-1.
+$$
+This choice is not treated as mystical. It is singled out by two concrete extremal features.
+
+\begin{itemize}
+    \item \textbf{Anti-resonance (Diophantine extremality).} The golden ratio attains the optimal Hurwitz constant: among all irrational $\alpha$, it maximizes the Diophantine ``gap'' to rational resonances (equivalently, it is maximally badly approximable); see e.g.~\cite{Cassels1957,KuipersNiederreiter1974}.
+    \item \textbf{Binary-minimal canonical encoding.} In Ostrowski numeration (Section~\ref{sec:zeckendorf}) the digit bounds are controlled by the continued fraction coefficients $a_{k+1}$. Since $a_{k+1}\ge 1$ for all $k$, the smallest possible digit alphabet is binary $\{0,1\}$, and this occurs precisely when $a_{k+1}=1$ for all $k$, i.e. $\alpha=[0;1,1,1,\dots]=\varphi^{-1}$.
+\end{itemize}
+
+\begin{proposition}[Binary-minimality of the golden slope]
+\label{prop:golden_binary_minimal}
+Let $\alpha=[0;a_1,a_2,\dots]\in(0,1)\setminus\QQ$ and let $(b_{k+1})$ be the digits in its Ostrowski representation (Section~\ref{sec:zeckendorf}). If one requires a canonical encoding with binary digits $b_{k+1}\in\{0,1\}$ for all $k$, then necessarily $a_i=1$ for all $i$, hence $\alpha=\varphi^{-1}$. Conversely, for $\alpha=\varphi^{-1}$ the Ostrowski constraints degenerate to the Zeckendorf constraints (Section~\ref{sec:zeckendorf}).
+\end{proposition}
+
+\begin{proof}
+In \eqref{eq:ostrowski_digits} the digits satisfy $0\le b_{k+1}\le a_{k+1}$ for all $k\ge 1$. If $b_{k+1}\in\{0,1\}$ is required for all $k$, then necessarily $a_{k+1}=1$ for all $k\ge 1$ (and also $a_1=1$ since $0\le b_1<a_1$). Thus $\alpha=[0;1,1,1,\dots]=\varphi^{-1}$. The converse is exactly the golden degeneration described in Section~\ref{sec:zeckendorf}.
+\end{proof}
+
+\section{Cyclic calculus: difference, trace, and finite parts along \texorpdfstring{$\Theta$}{Theta}-orbits}
+\label{sec:cyclic_calculus}
+
+This section provides the second structural pillar: statements about regularization and finite residuals are formulated via orbit functionals rather than by informal limiting intuition.
+
+\subsection{\texorpdfstring{$\Theta$}{Theta}-difference as a derivative surrogate}
+For sufficiently regular $f:X\to\CC$, define the orbit difference operator
+$$
+(\mathcal{D}_\Theta f)(x):=\frac{f(x+\alpha)-f(x)}{\alpha}.
+$$
+When $\alpha$ is small this approximates a derivative, but here $\alpha$ is fixed and irrational, so $\mathcal{D}_\Theta$ is an intrinsic ``discrete derivative'' along the scan step.
+
+\subsection{Orbit trace: ergodic averages as an integral surrogate}
+Define the orbit average
+$$
+A_N(f;x_0):=\frac{1}{N}\sum_{k=0}^{N-1} f(x_0+k\alpha).
+$$
+
+\begin{theorem}[Unique ergodicity of irrational rotations]
+\label{thm:unique_ergodic}
+If $f$ is continuous, the limit
+$$
+\mathrm{Tr}_\Theta(f):=\lim_{N\to\infty} A_N(f;x_0)
+$$
+exists, is independent of $x_0$, and equals the space average:
+$$
+\mathrm{Tr}_\Theta(f)=\int_X f(x)\,d\mu(x).
+$$
+\end{theorem}
+
+Theorem~\ref{thm:unique_ergodic} is a standard consequence of unique ergodicity/equidistribution of irrational circle rotations and provides a canonical replacement for ``integration'' and ``summation'' along the scan orbit; see e.g.~\cite{Weyl1916,KuipersNiederreiter1974}.
+
+\subsection{An Abel-type finite part for divergent orbit sums}
+Let $u_k:=f(x_0+k\alpha)$ be a (possibly non-absolutely summable) sequence. Define its Abel generating function
+$$
+S_f(r):=\sum_{k=0}^{\infty} u_k r^k,\qquad 0<r<1.
+$$
+If as $r\uparrow 1$ the function admits an asymptotic expansion of the form
+$$
+S_f(r)=\sum_{j=1}^{J} \frac{c_j}{(1-r)^j} + C + o(1),
+$$
+then we define its orbit finite part by
+$$
+\FP_\Theta(f):=C.
+$$
+The constant term $C$ is unique whenever such an expansion exists, so $\FP_\Theta$ is well-defined (see Lemma~\ref{lem:fp_unique}).
+
+\begin{lemma}[Uniqueness of the finite part]
+\label{lem:fp_unique}
+Suppose $S_f(r)$ admits two expansions as $r\uparrow 1$ of the form
+$$
+S_f(r)=\sum_{j=1}^{J} \frac{c_j}{(1-r)^j} + C + o(1)
+$$
+and
+$$
+S_f(r)=\sum_{j=1}^{J'} \frac{c'_j}{(1-r)^j} + C' + o(1).
+$$
+Then $C=C'$.
+\end{lemma}
+
+\begin{proof}
+Subtract the two expansions to obtain
+$$
+0=\sum_{j=1}^{J''}\frac{d_j}{(1-r)^j}+(C-C')+o(1)
+$$
+as $r\uparrow 1$, where $J'':=\max\{J,J'\}$ and $d_j:=c_j-c'_j$ (with missing coefficients treated as $0$).
+Multiplying by $(1-r)^{J''}$ and taking $r\uparrow 1$ gives $d_{J''}=0$. Repeating inductively yields $d_j=0$ for all $j\ge 1$, so $C-C'+o(1)=0$ and therefore $C=C'$.
+\end{proof}
+
+This template shifts ``divergence'' from being a defect of the object to being a dependence on a consistent limiting and pole-subtraction scheme.
+
+\section{Projection readout: binary windows imply Sturmian and Fibonacci structure}
+\label{sec:readout}
+
+\subsection{Window projection and binary readout}
+Fix a half-open window interval $W\subset X$ and define the binary readout
+$$
+s_k := \ind_W(x_0+k\alpha)\in\{0,1\}.
+$$
+Equivalently, on $\hilbert=L^2(X,\mu)$ one may regard $\Pi_W$ as the orthogonal projection (multiplication operator) $(\Pi_W f)(x)=\ind_W(x)f(x)$, so that orbit sampling admits an operator-theoretic interpretation; cf.~Remark~\ref{rem:omega_choice}.
+This realizes criterion (C3) and provides a minimal alphabet for scan observables.
+
+\subsection{Mechanical word form and Sturmian minimal complexity}
+Fix the interval window $W=[1-\alpha,1)$. Then the binary sequence can be written as a mechanical word: there exists an intercept $\beta\in\RR$ (determined by $x_0$) such that
+$$
+s_k=\big\lfloor (k+1)\alpha+\beta\big\rfloor-\big\lfloor k\alpha+\beta\big\rfloor.
+$$
+
+\begin{proposition}[Window coding as a mechanical word]
+\label{prop:window_mechanical}
+Let $W=[1-\alpha,1)$ and set $\beta:=x_0$ (viewed as a real representative in $[0,1)$). Then the orbit coding $s_k=\ind_W(x_0+k\alpha)$ satisfies
+$$
+s_k=\big\lfloor (k+1)\alpha+\beta\big\rfloor-\big\lfloor k\alpha+\beta\big\rfloor
+$$
+for all $k\ge 0$.
+\end{proposition}
+
+\begin{proof}
+Write $x_k=\{k\alpha+\beta\}\in[0,1)$ for the fractional part. One has $s_k=1$ iff $x_k\in[1-\alpha,1)$, i.e. iff $\{k\alpha+\beta\}+\alpha\ge 1$. This is equivalent to
+$$
+\lfloor k\alpha+\beta+\alpha\rfloor=\lfloor k\alpha+\beta\rfloor+1,
+$$
+which is exactly the claimed difference-of-floors identity.
+\end{proof}
+
+When $\alpha$ is irrational, this sequence is Sturmian, i.e. its factor complexity satisfies $p(n)=n+1$, which is minimal among aperiodic binary sequences; see~\cite{MorseHedlund1940,Lothaire2002}.
+
+\subsection{The golden branch yields the Fibonacci word}
+For $\alpha=\varphi^{-1}$, the associated Sturmian sequence is the Fibonacci word. Equivalently, it arises as the fixed point of the substitution
+$$
+0\mapsto 01,\qquad 1\mapsto 0.
+$$
+Geometrically, this encodes a Fibonacci chain with two spacings (Long/Short), ordered aperiodically but with strong combinatorial constraints.
+
+\section{Cut-and-project geometry: from symbolic readout to discrete point sets}
+\label{sec:cut_project}
+
+\subsection{A cut-and-project scheme for an irrational slope}
+Fix an irrational slope $\alpha\in(0,1)\setminus\QQ$. Consider the lattice $L:=\ZZ^2\subset\RR^2$. Let
+$$
+E_\parallel:=\mathrm{span}\{(1,\alpha)\},\qquad E_\perp:=\mathrm{span}\{(-\alpha,1)\},
+$$
+and let $\pi_\parallel$ and $\pi_\perp$ denote the orthogonal projections onto $E_\parallel$ and $E_\perp$, respectively. Given a bounded interval window $W\subset E_\perp$ with boundary of $\mu$-measure zero, the associated model set is
+$$
+\Lambda(W):=\{\pi_\parallel(\ell)\ :\ \ell\in L,\ \pi_\perp(\ell)\in W\}.
+$$
+This is the standard cut-and-project construction; see~\cite{Moody2000}. For the golden slope $\alpha=\varphi^{-1}$ and a standard half-open interval window in internal space, $\Lambda(W)$ is the Fibonacci model set, whose gap sequence yields the Fibonacci tiling (two spacings in a nonperiodic order).
+
+\subsection{A canonical staircase coordinate from the readout}
+The window coding $s_k\in\{0,1\}$ defines a natural integer coordinate by prefix summation. Set
+$$
+S_N:=\sum_{k=0}^{N-1} s_k,\qquad N\ge 1.
+$$
+Then the lattice path $\gamma_N:=(N,S_N)\in\ZZ^2$ advances by steps $(1,0)$ and $(1,1)$, encoding the local short/long pattern.
+
+\begin{proposition}[Prefix-sum coordinate and the staircase line]
+\label{prop:prefix_sum}
+If $s_k$ is given by the mechanical word formula of Proposition~\ref{prop:window_mechanical}, then
+$$
+S_N=\big\lfloor N\alpha+\beta\big\rfloor-\big\lfloor \beta\big\rfloor.
+$$
+In particular, when $\beta\in[0,1)$ one has $S_N=\lfloor N\alpha+\beta\rfloor$, so the staircase $\{(N,S_N)\}$ is a digital approximation of the line $y=\alpha x+\beta$ and provides an explicit bridge between symbolic readout and lattice geometry.
+\end{proposition}
+
+\begin{proof}
+By telescoping,
+$$
+S_N=\sum_{k=0}^{N-1}\Big(\big\lfloor (k+1)\alpha+\beta\big\rfloor-\big\lfloor k\alpha+\beta\big\rfloor\Big)
+=\big\lfloor N\alpha+\beta\big\rfloor-\big\lfloor \beta\big\rfloor.
+$$
+\end{proof}
+
+\section{Ostrowski numeration and Zeckendorf coordinates: canonical discrete arithmetic}
+\label{sec:zeckendorf}
+
+\subsection{Ostrowski representation for a general irrational slope}
+Let $\alpha\in(0,1)\setminus\QQ$ have continued fraction expansion
+$$
+\alpha=[0;a_1,a_2,a_3,\dots],\qquad a_i\in\NN.
+$$
+Let $q_k$ be the denominators of convergents, defined by
+$$
+q_{-1}=0,\quad q_0=1,\quad q_{k+1}=a_{k+1}q_k+q_{k-1}.
+$$
+Ostrowski numeration asserts that every $N\in\NN_{>0}$ admits a unique expansion (see e.g.~\cite{AlloucheShallit2003,Lothaire2002})
+$$
+N=\sum_{k=0}^{m} b_{k+1} q_k,
+$$
+where the digits satisfy
+\begin{equation}
+\label{eq:ostrowski_digits}
+0\le b_1<a_1,\qquad
+0\le b_{k+1}\le a_{k+1}\ (k\ge 1),\qquad
+b_{k+1}=a_{k+1}\ \Rightarrow\ b_k=0\ (k\ge 1).
+\end{equation}
+This numeration shares a common source with Sturmian mechanical words: both are controlled by the continued fraction data $(a_i)$.
+
+\subsection{Golden degeneration: Zeckendorf as the binary canonical form}
+For $\alpha=\varphi^{-1}=[0;1,1,1,\dots]$, we have $a_i=1$ for all $i$, hence
+$$
+q_{k+1}=q_k+q_{k-1},
+$$
+so $(q_k)$ is Fibonacci-type. The digit constraints degenerate to
+$$
+b_1=0,\qquad b_{k+1}\in\{0,1\}\ (k\ge 1),\qquad b_{k+1}=1\ \Rightarrow\ b_k=0\ (k\ge 1),
+$$
+i.e. no adjacent ones.
+
+\begin{lemma}[Convergent denominators and Fibonacci bases]
+\label{lem:qk_fib}
+For $\alpha=\varphi^{-1}$ the convergent denominators satisfy $q_0=1$, and for every $k\ge 1$ one has
+$$
+q_k=F_k,
+$$
+where $(F_k)$ is the Zeckendorf Fibonacci base defined below by $F_1=1$, $F_2=2$, $F_{n+2}=F_{n+1}+F_n$.
+\end{lemma}
+
+\begin{proof}
+From the recurrence $q_{k+1}=q_k+q_{k-1}$ with $q_0=1$ and $q_1=1$, we obtain
+$$
+(q_k)_{k\ge 0}=(1,1,2,3,5,\dots).
+$$
+The Zeckendorf base satisfies the same recurrence with initial data $F_1=1$ and $F_2=2$, hence
+$$
+(F_k)_{k\ge 1}=(1,2,3,5,\dots).
+$$
+Thus $q_1=1=F_1$ and by induction $q_k=F_k$ for all $k\ge 1$.
+\end{proof}
+
+To align with the classical Zeckendorf convention, define the Fibonacci base
+$$
+F_1=1,\qquad F_2=2,\qquad F_{n+2}=F_{n+1}+F_n.
+$$
+
+\begin{theorem}[Zeckendorf uniqueness]
+\label{thm:zeckendorf}
+Every $N\in\NN_{>0}$ admits a unique representation
+$$
+N=\sum_{k=1}^{m} c_k F_k,
+\qquad c_k\in\{0,1\},\qquad c_k c_{k+1}=0.
+$$
+\end{theorem}
+
+\begin{proof}
+See~\cite{Zeckendorf1972}.
+\end{proof}
+
+\subsection{Algorithms and interface to readout}
+\begin{itemize}
+    \item \textbf{Canonical encoding.} Given $N$ and the convergent denominators $(q_k)$ of $\alpha$, one computes the Ostrowski digits $(b_{k+1})$ by a greedy algorithm subject to the constraints in \eqref{eq:ostrowski_digits}. In the golden branch this degenerates to the Zeckendorf greedy algorithm, yielding the canonical bitstring $(c_k)$.
+    \item \textbf{Readout interface.} Given a finite readout prefix $(s_0,\dots,s_{N-1})$, form the staircase coordinate $S_N=\sum_{k=0}^{N-1}s_k$ (Proposition~\ref{prop:prefix_sum}). In the golden branch, canonicalization is achieved by Zeckendorf normalization (Theorem~\ref{thm:zeckendorf}); for a general irrational slope, the analogous canonical coding is given by Ostrowski digits $(b_{k+1})$.
+\end{itemize}
+
+This completes the scan--projection--canonical-coordinate loop.
+
+\section{A modular toolbox: singularities, divergences, and lattice path sums}
+\label{sec:modules}
+
+\subsection{Topologizing singularities on the Riemann sphere}
+On the extended complex plane $\widehat{\CC}:=\CC\cup\{\infty\}$, the inversion map
+$$
+\mathcal{I}(z):=\frac{1}{z}
+$$
+is a biholomorphic automorphism satisfying $\mathcal{I}(0)=\infty$ and $\mathcal{I}(\infty)=0$. Thus ``division by zero'' is replaced by a compactified pole within the object domain, shifting singularities from ``undefined'' to ``boundary points'' of a compactified geometry.
+
+\subsection{Finite-part extraction: an Abel prototype}
+Consider the Abel family
+$$
+S(\varepsilon):=\sum_{n=1}^{\infty} n\,\e^{-n\varepsilon},\qquad \varepsilon>0.
+$$
+A direct computation yields
+$$
+S(\varepsilon)=\frac{\e^{-\varepsilon}}{\bigl(1-\e^{-\varepsilon}\bigr)^2}.
+$$
+As $\varepsilon\to 0^+$,
+$$
+S(\varepsilon)=\frac{1}{\varepsilon^2}-\frac{1}{12}+O(\varepsilon^2).
+$$
+Therefore, in the finite-part sense (subtracting the pole terms and taking the limit),
+$$
+\FP_{\varepsilon\to 0^+} \sum_{n=1}^{\infty} n\,\e^{-n\varepsilon}=-\frac{1}{12}.
+$$
+More generally, any divergent object that admits a controlled Abel asymptotic can be treated within the orbit finite-part template of Section~\ref{sec:cyclic_calculus}.
+
+\subsection{Lattice path sums over Zeckendorf-coded configuration spaces}
+Suppose a class of configurations is coded by Zeckendorf bitstrings $(c_k)$ subject to the local constraint $c_k c_{k+1}=0$. Then a formally ill-posed continuum path integral may be replaced by a controlled sum over a discrete, locally constrained code space:
+$$
+\int \mathcal{D}[\mathrm{path}]\,\e^{\iu S[\mathrm{path}]}
+\quad\longrightarrow\quad
+\sum_{(c_k)\in\mathcal{C}} W(c)\,\e^{\iu S(c)},
+$$
+where $\mathcal{C}$ is the set of legal bitstrings and $W(c)$ is a weight induced by the projection density or an application-specific measure.
+
+\section{Discussion: meaning, boundaries, and testable intermediate claims}
+\label{sec:discussion}
+
+\subsection{Two notions of minimality}
+The classical picture realizes a Cartesian minimality in which addition and multiplication are primitive and orthogonal. HPA aims at a polar minimality:
+
+\begin{itemize}
+    \item radial/phase separation $(\rho,\theta_\times)$ linearizes multiplicative structure;
+    \item scan time is supplied by a genuine unitary $\Theta$ and is decoupled from multiplicative phase;
+    \item binary window readout together with canonical numeration (Zeckendorf in the golden branch) yields a computable, locally constrained coordinate system.
+\end{itemize}
+
+In this sense, ``minimal complexity'' refers to the shortest generative description: one unitary generator, one binary window, one canonical encoding.
+
+\subsection{Core prediction: emergence of addition}
+HPA predicts that addition is not a fundamental primitive of the object domain. At the $\mathbb{F}_1$ ontological layer only multiplicative structure is intrinsic, while additive bookkeeping arises only after imposing a readout: synthesized vectors in $\CC$ must be projected back to a discrete coordinate lattice, and that projection is necessarily lossy (Section~\ref{sec:interference}). In this view, the linear conservation laws of low-energy physics are effective statements about projected statistics rather than exact microscopic identities. A concrete consequence is that at sufficiently high resolution one should expect additive bookkeeping to be replaced by a more refined holographic conservation principle in which conservation is expressed through the geometry of $\mathcal{Z}$, the scan dynamics of $\Theta$, and the statistics of projection gaps.
+
+\subsection{Testable intermediate statements}
+Rather than asserting global claims, HPA motivates concrete intermediate problems.
+
+\begin{enumerate}
+    \item \textbf{Readout--encoding consistency.} Quantify the stability of Sturmian factors and Zeckendorf/Ostrowski encodings under window perturbations.
+    \item \textbf{Error bounds for finite parts.} For function classes specified by regularity or Fourier decay, derive explicit bounds on the error terms in $\FP_\Theta$.
+    \item \textbf{Statistics of projection gaps.} For specified phase weights $\beta(p)$ and sampling models on $(a,b)$, study the distribution of the quantum gap $\delta$ and its dependence on the projection scale $\varepsilon$.
+    \item \textbf{Spectral meaning of multiplicative phase choices.} Study how different prime weights $\beta(p)$ shape the distribution of $\mathcal{Z}(M)$ in $\CC^*$ and how this interfaces with spectral statistics.
+\end{enumerate}
+
+\subsection{Limitations}
+\begin{itemize}
+    \item The projection step is intentionally left as an application-layer choice: different physical or statistical models correspond to different kernels, scales, and tie-breaking conventions (Definitions~\ref{def:nearest_point}--\ref{def:projection_kernel}).
+    \item Orbit trace/finite-part mechanisms provide a uniform template, but application to concrete models requires specifying weights and actions compatible with the chosen readout and projection scheme.
+    \item The present construction keeps $\mathcal{Z}$ and $\Theta$ minimally separated; stronger couplings may exist but may sacrifice minimality or require additional axioms.
+\end{itemize}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+We introduced Holographic Polar Arithmetic (HPA) as a self-contained toolkit.
+
+\begin{itemize}
+    \item From the $\mathbb{F}_1$-inspired multiplicative skeleton we defined a radial character $\rho$ and a multiplicative phase $\theta_\times$, yielding an embedding $\mathcal{Z}(n)=\rho(n)\e^{\iu\theta_\times(n)}$ that linearizes multiplication.
+    \item We proved a no-go theorem: no nontrivial holographic embedding into $\CC^*$ can preserve linear addition together with multiplication. Additive readout therefore appears as a lossy projection from vector synthesis in $\CC$ back to a discrete coordinate lattice, with an intrinsic quantum gap.
+    \item We introduced a genuine unitary scan operator $\Theta$ (irrational-rotation Koopman operator), defined time as iteration count, and constructed an orbit-wise cyclic calculus (difference, trace, finite part).
+    \item Via binary window readout we obtained Sturmian/Fibonacci structures and, in the golden branch, a canonical coordinate system given by Zeckendorf decompositions (Ostrowski degeneration).
+    \item We packaged three reusable modules: singularity compactification, finite-part extraction, and Zeckendorf-coded lattice path sums.
+\end{itemize}
+
+Under the minimal-complexity criteria, the golden branch is singled out not by numerology but by two concrete extremal features: Hurwitz anti-resonance and binary-minimal canonical encoding (Proposition~\ref{prop:golden_binary_minimal}). Future work can focus on robustness bounds, explicit error control for finite parts, and interfaces to multiplicative/spectral statistics.
+
+\begin{thebibliography}{99}
+
+\bibitem{Weyl1916}
+H.~Weyl.
+\newblock {\"U}ber die {G}leichverteilung von {Z}ahlen mod. {E}ins.
+\newblock \emph{Mathematische Annalen}, 77:313--352, 1916.
+
+\bibitem{KuipersNiederreiter1974}
+L.~Kuipers and H.~Niederreiter.
+\newblock \emph{Uniform Distribution of Sequences}.
+\newblock Wiley, New York, 1974.
+
+\bibitem{Cassels1957}
+J.~W.~S. Cassels.
+\newblock \emph{An Introduction to Diophantine Approximation}.
+\newblock Cambridge University Press, Cambridge, 1957.
+
+\bibitem{MassarSpindel2008}
+S.~Massar and P.~Spindel.
+\newblock Uncertainty relation for the discrete Fourier transform.
+\newblock \emph{Physical Review Letters}, 100:190401, 2008.
+
+\bibitem{MorseHedlund1940}
+M.~Morse and G.~A. Hedlund.
+\newblock Symbolic dynamics {II}. {S}turmian trajectories.
+\newblock \emph{American Journal of Mathematics}, 62(1):1--42, 1940.
+
+\bibitem{Lothaire2002}
+M.~Lothaire.
+\newblock \emph{Algebraic Combinatorics on Words}.
+\newblock Cambridge University Press, Cambridge, 2002.
+
+\bibitem{AlloucheShallit2003}
+J.-P. Allouche and J.~Shallit.
+\newblock \emph{Automatic Sequences: Theory, Applications, Generalizations}.
+\newblock Cambridge University Press, Cambridge, 2003.
+
+\bibitem{Zeckendorf1972}
+E.~Zeckendorf.
+\newblock Repr{\'e}sentation des nombres naturels par une somme de nombres de {F}ibonacci ou de nombres de {L}ucas.
+\newblock \emph{Bulletin de la Soci{\'e}t{\'e} Royale des Sciences de Li{\`e}ge}, 41:179--182, 1972.
+
+\bibitem{Moody2000}
+R.~V. Moody.
+\newblock Model sets: A survey.
+\newblock In F.~Axel, F.~D{\'e}noyer, and J.~P. Gazeau, editors, \emph{From Quasicrystals to More Complex Systems}, pages 145--166. Springer, Berlin, 2000.
+
+\bibitem{Rieffel1981}
+M.~A. Rieffel.
+\newblock $C^*$-algebras associated with irrational rotations.
+\newblock \emph{Pacific Journal of Mathematics}, 93(2):415--429, 1981.
+
+\bibitem{Connes1994}
+A.~Connes.
+\newblock \emph{Noncommutative Geometry}.
+\newblock Academic Press, 1994.
+
+\bibitem{SteinShakarchi2005}
+E.~M. Stein and R.~Shakarchi.
+\newblock \emph{Real Analysis: Measure Theory, Integration, and Hilbert Spaces}.
+\newblock Princeton University Press, Princeton, 2005.
+
+\bibitem{Hardy1949}
+G.~H. Hardy.
+\newblock \emph{Divergent Series}.
+\newblock Oxford University Press, Oxford, 1949.
+
+\bibitem{Deitmar2005}
+A.~Deitmar.
+\newblock Schemes over $\mathbb{F}_1$.
+\newblock In G.~Cornelissen and M.~Marcolli, editors, \emph{Number Fields and Function Fields---Two Parallel Worlds}, pages 87--100. Birkh{\"a}user, Boston, 2005.
+
+\end{thebibliography}
+
+\end{document}
