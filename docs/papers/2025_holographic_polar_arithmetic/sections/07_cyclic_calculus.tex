@@ -415,3 +415,166 @@ By definition $\det'_{\FP}(I-uT)/\det_{\FP}(I-uT)=\exp(\Delta(u))$. If $\Delta$ 
 \begin{remark}[Why cyclicity matters]
 Assumption~\ref{ass:fp_cyclicity} is the minimal condition ensuring that $\mathrm{Tr}_{\FP}$ behaves as a trace and that determinant identities are stable under cyclic rearrangements (the mechanism behind many trace formulas). Verifying cyclicity and identifying a canonical admissible class $\mathcal{A}_0$ is model-dependent; in noncommutative settings, canonical traces often arise from unique ergodicity or $C^*$-algebraic trace states, while in analytic settings they arise from heat-kernel/zeta regularization.
 \end{remark}
+
+\subsection{The holographic dispersion relation from discrete scan}
+\label{subsec:holographic_dispersion}
+The orbit calculus is built around the forward difference $\Delta_\Theta=\Theta-I$ (Subsection~\ref{subsec:orbit_newton}), which plays the role of a derivative surrogate along the discrete scan step.
+This subsection records a simple but structurally rigid consequence: on scan eigenmodes, the difference norm produces a sine-type dispersion relation, whose low-energy expansion yields a fixed quartic correction.
+
+\subsubsection{Physical identification (interpretation layer)}
+\begin{assumption}[Energy and momentum from scan phase and scan difference]
+\label{assump:energy_momentum_from_scan}
+Assume the scan unitary $\Theta$ is interpreted as a single microscopic time step of size $\varepsilon>0$, so that scan time is $t=k\varepsilon$ after $k$ iterations.
+On a spectral subspace where $\Theta$ admits eigenvectors, write the eigenvalue as
+$$
+\Theta|\psi\rangle=\e^{-\iu E\varepsilon}|\psi\rangle
+$$
+and interpret $E$ as the (quasi-)energy of $|\psi\rangle$.
+Define the (lattice) momentum operator by
+$$
+\widehat{P}:=\frac{1}{\varepsilon}\,\big(\Delta_\Theta^\dagger\Delta_\Theta\big)^{1/2}
+\qquad\text{where}\qquad
+\Delta_\Theta:=\Theta-I,
+$$
+so that $\widehat{P}$ measures the size of the discrete change per scan step.
+\end{assumption}
+
+\subsubsection{Exact dispersion and the low-energy expansion}
+\begin{proposition}[Holographic dispersion from discrete scan]
+\label{prop:holographic_dispersion}
+Let $|\psi\rangle$ satisfy $\Theta|\psi\rangle=\e^{-\iu E\varepsilon}|\psi\rangle$ and define $\widehat{P}$ as in Assumption~\ref{assump:energy_momentum_from_scan}.
+Then $|\psi\rangle$ is an eigenvector of $\widehat{P}^2$ with eigenvalue $P^2$ satisfying the exact relation
+$$
+P^2=\frac{4}{\varepsilon^2}\sin^2\!\left(\frac{E\varepsilon}{2}\right).
+$$
+Equivalently,
+$$
+E=\frac{2}{\varepsilon}\arcsin\!\left(\frac{\varepsilon P}{2}\right),
+\qquad 0\le E\varepsilon\le \pi.
+$$
+In the low-energy regime $E\varepsilon\ll 1$ (equivalently $\varepsilon P\ll 1$) one has the modified dispersion expansion
+$$
+E^2
+=P^2+\frac{1}{12}\,\varepsilon^2 P^4+\frac{1}{90}\,\varepsilon^4 P^6+O(\varepsilon^6 P^8).
+$$
+\end{proposition}
+
+\begin{proof}
+On $|\psi\rangle$ one has $\Delta_\Theta|\psi\rangle=(\e^{-\iu E\varepsilon}-1)|\psi\rangle$ and $\Delta_\Theta^\dagger|\psi\rangle=(\e^{\iu E\varepsilon}-1)|\psi\rangle$.
+Therefore
+$$
+\Delta_\Theta^\dagger\Delta_\Theta|\psi\rangle
+=(\e^{\iu E\varepsilon}-1)(\e^{-\iu E\varepsilon}-1)\,|\psi\rangle
+=\big(2-2\cos(E\varepsilon)\big)\,|\psi\rangle
+=4\sin^2\!\left(\frac{E\varepsilon}{2}\right)|\psi\rangle.
+$$
+Dividing by $\varepsilon^2$ gives the exact dispersion relation for the eigenvalue $P^2$ of $\widehat{P}^2$.
+Solving for $E$ yields $E=\frac{2}{\varepsilon}\arcsin(\varepsilon P/2)$ in the principal branch.
+Expanding $\arcsin(x)=x+\frac{1}{6}x^3+\frac{3}{40}x^5+O(x^7)$ at $x=\varepsilon P/2$ gives
+$
+E=P+\frac{1}{24}\varepsilon^2 P^3+\frac{3}{640}\varepsilon^4 P^5+O(\varepsilon^6 P^7)
+$
+and squaring yields
+$$
+E^2
+=P^2+\frac{1}{12}\varepsilon^2 P^4+\left(\frac{3}{320}+\frac{1}{576}\right)\varepsilon^4 P^6+O(\varepsilon^6 P^8)
+=P^2+\frac{1}{12}\varepsilon^2 P^4+\frac{1}{90}\varepsilon^4 P^6+O(\varepsilon^6 P^8).
+$$
+\end{proof}
+
+\subsubsection{High-order structure and convergence}
+\label{subsubsec:dispersion_convergence}
+The exact inversion
+$
+E=\frac{2}{\varepsilon}\arcsin(\varepsilon P/2)
+$
+implies that all higher-order corrections are fixed by the Taylor series of $\arcsin$.
+For $|x|\le 1$ one has the classical expansion
+$$
+\arcsin(x)=\sum_{n=0}^{\infty}\frac{(2n)!}{4^n (n!)^2 (2n+1)}\,x^{2n+1}.
+$$
+Setting $x=\varepsilon P/2$ yields
+$$
+E
+=\frac{1}{\varepsilon}\sum_{n=0}^{\infty}\frac{(2n)!}{16^n (n!)^2 (2n+1)}\,(\varepsilon P)^{2n+1},
+$$
+and therefore
+$$
+E^2
+=P^2\left(1+\frac{1}{12}(\varepsilon P)^2+\frac{1}{90}(\varepsilon P)^4+\cdots\right).
+$$
+Thus the correction coefficients are universal and can be generated to arbitrary order by series convolution.
+
+\begin{proposition}[Radius of convergence and ultraviolet cutoff]
+\label{prop:dispersion_convergence_radius}
+The power-series expansions of $E$ and $E^2$ about $P=0$ have radius of convergence $|P|<2/\varepsilon$ (equivalently $|\varepsilon P/2|<1$).
+Equivalently, the dimensionless momentum $\tilde P:=\varepsilon P=|\e^{-\iu E\varepsilon}-1|$ satisfies $|\tilde P|\le 2$, and the only singularities of the analytic continuation occur at the branch points $\tilde P=\pm 2$.
+\end{proposition}
+
+\begin{proof}
+The Taylor series of $\arcsin(x)$ about $x=0$ has radius of convergence $1$, with branch points at $x=\pm 1$.
+Substituting $x=\varepsilon P/2$ yields radius $|P|<2/\varepsilon$.
+The bound $|\tilde P|\le 2$ is geometric: $\tilde P$ is the chord length between $1$ and $\e^{-\iu E\varepsilon}$ on the unit circle.
+\end{proof}
+
+\begin{remark}[No polynomial-interpolation pathologies]
+For geometric intuition, it is helpful to keep the following chord/arc dictionary in mind:
+{\small
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{l|c|c|c}
+\hline
+ & \textbf{Momentum} & \textbf{Energy} & \textbf{Cutoff} \\
+\hline
+\textbf{Physics} & $P$ & $E$ & $|\varepsilon P|\le 2$ \\
+\textbf{Geometry (circle)} & chord $\tilde P:=\varepsilon P$ & arc angle $E\varepsilon$ & diameter $2$ \\
+\textbf{Math (unitary)} & $|\e^{-\iu E\varepsilon}-1|$ & $\mathrm{Arg}(\e^{-\iu E\varepsilon})$ & branch points of $\arcsin$ at $\tilde P=\pm 2$ \\
+\hline
+\end{tabular}
+\end{center}
+}
+In particular, the coefficient $1/12$ in Proposition~\ref{prop:holographic_dispersion} is the universal chord--arc correction fixed by the Taylor series of $\arcsin$.
+The high-order expansions above are genuine Taylor series of an analytic function of the complex variable $\varepsilon P/2$, not polynomial interpolation on an unbounded real interval.
+The compact unitary geometry forces a finite Brillouin-zone range $|\tilde P|\le 2$ and places the only non-analyticities at the zone edge $\tilde P=\pm 2$.
+\end{remark}
+
+\subsubsection{Group velocity and a ``supersonic'' signature (interpretation layer)}
+\label{subsubsec:dispersion_group_velocity}
+Differentiating the exact inversion gives
+$$
+\frac{dE}{dP}=\frac{1}{\sqrt{1-(\varepsilon P/2)^2}},
+$$
+which satisfies $\frac{dE}{dP}>1$ for every $P\ne 0$ in the principal branch and diverges as $|P|\uparrow 2/\varepsilon$.
+In the normalization of Assumption~\ref{assump:energy_momentum_from_scan} this means the group velocity inferred from the $E(P)$ law is strictly increasing with $|P|$.
+If one further identifies $P$ with a physical momentum observable in a continuum limit, this predicts a ``time advance'' for higher-energy messengers relative to lower-energy ones.
+As emphasized above, this last identification is model-dependent and should be treated as a falsifiable phenomenological signature of the interpretation layer rather than as a purely kinematic theorem.
+
+\begin{remark}[Causality defense: asymptotic approach to lattice causality]
+The inequality $\frac{dE}{dP}>1$ does not by itself imply acausal signal propagation.
+In any microscopic completion based on local updates on a discrete substrate, the fundamental information-velocity bound is set by locality (``one hop per tick'').
+The present computation treats $P$ as a norm of a unitary difference symbol; near the zone edge $|\varepsilon P|\uparrow 2$ this coordinate saturates while the phase variable remains well-defined, and the divergence of $\frac{dE}{dP}$ signals a breakdown of the low-energy continuum interpretation rather than an infinite microscopic signal speed.
+Accordingly, the ``supersonic'' behavior should be read as an energy-dependent effective light-cone slope which, at high energy, probes the lattice regime and approaches the substrate causality constraint, not as a license for closed causal curves.
+\end{remark}
+
+\begin{remark}[Newton-series viewpoint]
+On an eigenvector $|\psi\rangle$ the forward difference acts by a scalar symbol
+$
+\lambda:=\e^{-\iu E\varepsilon}-1.
+$
+Proposition~\ref{prop:orbit_binomial_taylor} becomes the identity
+$
+\e^{-\iu E\varepsilon n}=(1+\lambda)^n=\sum_{k=0}^{n}\binom{n}{k}\lambda^k,
+$
+so orbit Newton polynomials correspond to truncations in powers of the difference symbol.
+The dispersion relation in Proposition~\ref{prop:holographic_dispersion} can be read as the statement that the momentum $P$ is the natural (scaled) modulus of this symbol:
+$
+P=\frac{|\lambda|}{\varepsilon}.
+$
+\end{remark}
+
+\begin{remark}[Lattice vs.\ continuum momentum]
+The operator $\widehat{P}$ is a lattice momentum associated with a discrete scan step.
+In particular, $P$ is bounded by $2/\varepsilon$, reflecting the compactness of the unitary spectrum.
+In the long-wavelength regime $\varepsilon P\ll 1$ one has $E\approx P$, while higher-order terms quantify the inevitable departure from a strictly linear dispersion induced by replacing derivatives with differences.
+Matching $\widehat{P}$ to a laboratory momentum observable is model-dependent and belongs to the interpretation layer (e.g.\ via a continuum limit and a choice of physical units).
+\end{remark}

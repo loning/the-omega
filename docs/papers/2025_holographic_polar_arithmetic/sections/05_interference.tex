@@ -160,4 +160,115 @@ $$
 $$
 realizes a probability cloud around the synthesized vector. After readout, the integer outcome $C$ is canonically encoded in Zeckendorf/Ostrowski coordinates (Section~\ref{sec:zeckendorf}), making explicit that ``addition'' in the observable layer is a statistical projection onto a discrete coding lattice rather than a closed microscopic law.
 
+\subsection{Cohomology of the quantum gap}
+\label{subsec:gap_cohomology}
+In the preceding construction the quantum gap $\delta$ appears as an arithmetic--geometric residual attached to a projection readout.
+From a structural viewpoint, a natural question is why such residuals do not simply cancel to zero at macroscopic scales, or else accumulate into an uncontrolled ultraviolet divergence when one sums over many microscopic modes.
+One way to separate ``pure gauge'' residuals from topologically protected ones is to treat the quantum gap as a discrete $1$-form on an interaction complex and classify it by cohomology.
+
+\subsubsection{An interaction complex and cochains}
+\begin{definition}[HPA interaction complex]
+\label{def:hpa_interaction_complex}
+Let $\mathcal{K}$ be a (finite) oriented simplicial complex; see e.g.~\cite{Hatcher2002}.
+Its vertex set $V$ represents a chosen family of internal states (e.g.\ prime-lift states and composite states), its oriented edges $E$ represent chosen elementary HPA interaction/readout events, and its oriented $2$-simplices represent minimal closed interaction loops.
+The specific choice of $\mathcal{K}$ is an application-layer modeling input, analogous in spirit to the choice of projection kernel and scale.
+\end{definition}
+
+\begin{definition}[Discrete $k$-forms as cochains]
+\label{def:cochains_discrete_forms}
+Let $A$ be an abelian group (e.g.\ $A=(\CC,+)$ in the complex embedding, or $A=(\OO,+)$ when gaps are lifted to octonionic internal coordinates).
+Define
+$
+C^k(\mathcal{K};A)
+$
+to be the group of $A$-valued simplicial $k$-cochains on $\mathcal{K}$, i.e.\ functions on oriented $k$-simplices which are alternating with respect to orientation.
+Elements of $C^0$ are discrete scalar fields and elements of $C^1$ are discrete $1$-forms.
+See e.g.~\cite{Hatcher2002,DesbrunHiraniLeokMarsden2005DEC}.
+\end{definition}
+
+\subsubsection{Discrete exterior derivative and gauge}
+\begin{definition}[Coboundary operator (discrete exterior derivative)]
+\label{def:discrete_exterior_derivative}
+Define $d^0:C^0(\mathcal{K};A)\to C^1(\mathcal{K};A)$ by
+$$
+(d^0 f)(u,v):=f(v)-f(u)
+$$
+on an oriented edge $(u,v)$.
+Define $d^1:C^1(\mathcal{K};A)\to C^2(\mathcal{K};A)$ by
+$$
+(d^1\omega)(u,v,w):=\omega(v,w)-\omega(u,w)+\omega(u,v)
+$$
+on an oriented face $(u,v,w)$.
+Write $d$ for the graded operator $d^k$.
+See e.g.~\cite{Hatcher2002,DesbrunLeokMarsden2005Poincare}.
+\end{definition}
+
+\begin{definition}[Exact and closed gap fields]
+\label{def:exact_closed_gap}
+A $1$-cochain $\delta\in C^1(\mathcal{K};A)$ is \emph{exact} if $\delta=d^0 f$ for some $f\in C^0(\mathcal{K};A)$, and \emph{closed} if $d^1\delta=0$.
+\end{definition}
+
+\begin{remark}[Quantum gap as a $1$-cochain]
+Fix a model choice of $\mathcal{K}$.
+To each oriented interaction/readout edge $e=(u,v)\in E$, associate a synthesized vector $v_e$ (in the embedding space) and an output lattice state $c_e$ (deterministic $c_e=\pi(v_e)$ or sampled $c_e\sim\pi_\varepsilon(\cdot\mid v_e)$).
+Then the quantum gap field can be recorded as the edge cochain
+$
+\delta(e):=v_e-\mathcal{Z}(c_e)\in A.
+$
+\end{remark}
+
+\begin{remark}[Gauge interpretation]
+If $\delta=d^0 f$ is exact, then $\delta$ can be eliminated by a redefinition of local reference data $f$ at the vertices.
+In this sense, exact components represent a choice of local phase/origin convention rather than a topological obstruction.
+\end{remark}
+
+\subsubsection{First cohomology and topological obstruction}
+\begin{definition}[First cohomology of the quantum gap]
+\label{def:h1_gap}
+Define
+$$
+H^1(\mathcal{K};A):=\ker(d^1)/\mathrm{im}(d^0).
+$$
+The cohomology class $[\delta]\in H^1(\mathcal{K};A)$ is invariant under gauge shifts $\delta\mapsto \delta+d^0 f$.
+\end{definition}
+
+\begin{proposition}[Loop holonomy depends only on the cohomology class]
+\label{prop:gap_holonomy_class}
+Let $\gamma$ be an oriented $1$-cycle in $\mathcal{K}$ and let $\delta\in C^1(\mathcal{K};A)$ be closed.
+Then the cycle sum $\langle \delta,\gamma\rangle$ depends only on the class $[\delta]\in H^1(\mathcal{K};A)$.
+In particular, if $[\delta]=0$ then $\langle \delta,\gamma\rangle=0$ for every $1$-cycle $\gamma$.
+\end{proposition}
+
+\begin{assumption}[Matter as nontrivial gap cohomology (interpretation layer)]
+\label{assump:matter_gap_cohomology}
+Assume the interpretation layer of a concrete HPA-based model identifies long-lived physical excitations with topologically protected gap modes, i.e.\ with closed but non-exact components of the gap field.
+Then $[\delta]\neq 0$ provides a gauge-invariant obstruction to global cancellation and can be treated as a stability label for ``real'' excitations, while exact components represent renormalizable/gauge fluctuations.
+\end{assumption}
+
+\begin{remark}[Vanishing $H^1$ implies no topological gap modes]
+If $H^1(\mathcal{K};A)=0$, then every closed gap field is exact, hence gauge.
+Thus any model in which matter is identified with nontrivial $[\delta]$ requires an interaction complex $\mathcal{K}$ with nontrivial first cohomology (non-contractible loops).
+In practice this is expected to arise from the combinatorics of allowable readout paths and, in octonionic lifts, from the presence of multiple inequivalent composition histories.
+\end{remark}
+
+\begin{remark}[Associator-to-cohomology link (algebra $\to$ topology)]
+In an octonionic lift, non-associativity provides a canonical mechanism for generating inequivalent composition histories: for three internal factors one can compare $(xy)z$ and $x(yz)$, and their discrepancy is the associator $\mathcal{A}(x,y,z)$ (Definition~\ref{def:associator}).
+When such path dependence is fed through a readout/projection map, it naturally produces loop-level residuals in the gap cochain $\delta$, hence nontrivial cohomology classes $[\delta]\in H^1(\mathcal{K};A)$.
+Combined with the mass--associator ansatz (Assumption~\ref{assump:mass_associator}), this motivates the slogan: \emph{mass is the topological shadow of algebraic non-associativity}.
+\end{remark}
+
+\subsubsection{Stability and ultraviolet finiteness (interpretive consequences)}
+\begin{corollary}[Topological stability heuristic]
+\label{cor:gap_topological_stability}
+If an excitation is labeled by a nontrivial class $[\delta]\in H^1(\mathcal{K};A)$, then it cannot be removed by any local gauge redefinition $\delta\mapsto\delta+d^0 f$.
+In particular, any decay channel that would annihilate the excitation must correspond to a change of the effective interaction complex or to a transition in which the relevant class becomes trivial in a larger complex.
+\end{corollary}
+
+\begin{remark}[Vacuum-energy bookkeeping and finite parts]
+The cohomology viewpoint suggests a separation of bookkeeping:
+exact/gauge components of $\delta$ can be treated as renormalizable fluctuations (to be removed or regularized by the finite-part prescriptions developed in Appendix~\ref{sec:cyclic_calculus}),
+while nontrivial cohomology classes provide discrete topological sectors which do not cancel by local rephasings.
+Making this quantitative requires specifying a model-dependent weighting of sectors and a controlled summation scheme.
+\end{remark}
+
 Any statement about divergent sums or ``finite residuals'' must be made using the orbit-trace and finite-part machinery introduced in Appendix~\ref{sec:cyclic_calculus}.
