@@ -1,0 +1,71 @@
+\section{Cyclic calculus: difference, trace, and finite parts along \texorpdfstring{$\Theta$}{Theta}-orbits}
+\label{sec:cyclic_calculus}
+
+This section provides the second structural pillar: statements about regularization and finite residuals are formulated via orbit functionals rather than by informal limiting intuition.
+
+\subsection{\texorpdfstring{$\Theta$}{Theta}-difference as a derivative surrogate}
+For sufficiently regular $f:X\to\CC$, define the orbit difference operator
+$$
+(\mathcal{D}_\Theta f)(x):=\frac{f(x+\alpha)-f(x)}{\alpha}.
+$$
+When $\alpha$ is small this approximates a derivative, but here $\alpha$ is fixed and irrational, so $\mathcal{D}_\Theta$ is an intrinsic ``discrete derivative'' along the scan step.
+
+\subsection{Orbit trace: ergodic averages as an integral surrogate}
+Define the orbit average
+$$
+A_N(f;x_0):=\frac{1}{N}\sum_{k=0}^{N-1} f(x_0+k\alpha).
+$$
+
+\begin{theorem}[Unique ergodicity of irrational rotations]
+\label{thm:unique_ergodic}
+If $f$ is continuous, the limit
+$$
+\mathrm{Tr}_\Theta(f):=\lim_{N\to\infty} A_N(f;x_0)
+$$
+exists, is independent of $x_0$, and equals the space average:
+$$
+\mathrm{Tr}_\Theta(f)=\int_X f(x)\,d\mu(x).
+$$
+\end{theorem}
+
+Theorem~\ref{thm:unique_ergodic} is a standard consequence of unique ergodicity/equidistribution of irrational circle rotations and provides a canonical replacement for ``integration'' and ``summation'' along the scan orbit; see e.g.~\cite{Weyl1916,KuipersNiederreiter1974}.
+
+\subsection{An Abel-type finite part for divergent orbit sums}
+Let $u_k:=f(x_0+k\alpha)$ be a (possibly non-absolutely summable) sequence. Define its Abel generating function
+$$
+S_f(r):=\sum_{k=0}^{\infty} u_k r^k,\qquad 0<r<1.
+$$
+If $f$ is bounded (e.g. continuous on $X$), then $|u_k|\le \|f\|_\infty$ and $S_f(r)$ converges absolutely for every $0<r<1$. The use of Abel limits and pole subtraction as a regularization principle is classical; see e.g.~\cite{Hardy1949}.
+If as $r\uparrow 1$ the function admits an asymptotic expansion of the form
+$$
+S_f(r)=\sum_{j=1}^{J} \frac{c_j}{(1-r)^j} + C + o(1),
+$$
+then we define its orbit finite part by
+$$
+\FP_\Theta(f):=C.
+$$
+The constant term $C$ is unique whenever such an expansion exists, so $\FP_\Theta$ is well-defined (see Lemma~\ref{lem:fp_unique}).
+
+\begin{lemma}[Uniqueness of the finite part]
+\label{lem:fp_unique}
+Suppose $S_f(r)$ admits two expansions as $r\uparrow 1$ of the form
+$$
+S_f(r)=\sum_{j=1}^{J} \frac{c_j}{(1-r)^j} + C + o(1)
+$$
+and
+$$
+S_f(r)=\sum_{j=1}^{J'} \frac{c'_j}{(1-r)^j} + C' + o(1).
+$$
+Then $C=C'$.
+\end{lemma}
+
+\begin{proof}
+Subtract the two expansions to obtain
+$$
+0=\sum_{j=1}^{J''}\frac{d_j}{(1-r)^j}+(C-C')+o(1)
+$$
+as $r\uparrow 1$, where $J'':=\max\{J,J'\}$ and $d_j:=c_j-c'_j$ (with missing coefficients treated as $0$).
+Multiplying by $(1-r)^{J''}$ and taking $r\uparrow 1$ gives $d_{J''}=0$. Repeating inductively yields $d_j=0$ for all $j\ge 1$, so $C-C'+o(1)=0$ and therefore $C=C'$.
+\end{proof}
+
+This template shifts ``divergence'' from being a defect of the object to being a dependence on a consistent limiting and pole-subtraction scheme.

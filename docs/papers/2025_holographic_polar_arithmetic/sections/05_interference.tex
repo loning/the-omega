@@ -1,0 +1,158 @@
+\section{Geometric interference and the quantum gap}
+\label{sec:interference}
+
+\subsection{Vector synthesis}
+In $\CC$ the interaction of two holographic integers is expressed as Euclidean vector composition. For $a,b\in M$ define the synthesized vector
+$$
+v(a,b):=\mathcal{Z}(a)+\mathcal{Z}(b)\in\CC.
+$$
+In polar form, $\mathcal{Z}(a)$ and $\mathcal{Z}(b)$ are vectors; synthesis depends on their relative phase.
+
+\begin{itemize}
+    \item If $\theta_\times(a)\approx\theta_\times(b)$, magnitudes reinforce.
+    \item If $\theta_\times(a)\approx\theta_\times(b)+\pi$, partial cancellation occurs.
+\end{itemize}
+
+The central point is strategic: in a multiplicative ontology we do not ask addition to be complete. Instead, we ask how and why it fails, and what kind of readout must replace it.
+
+\subsection{Lattice mismatch: why linear addition is not preserved}
+The embedding $\mathcal{Z}$ is designed to be multiplicative (Theorem~\ref{thm:Z_mult}). A naive expectation is that it should also respect linear addition, but this target is impossible except in a degenerate trivial case.
+
+\begin{theorem}[No-go for additive completeness]
+\label{thm:no_go_additive}
+Let $\Phi:\NN_{>0}\to\CC$ satisfy
+$$
+\Phi(mn)=\Phi(m)\Phi(n)
+\quad\text{and}\quad
+\Phi(a+b)=\Phi(a)+\Phi(b)
+$$
+for all $m,n,a,b\in\NN_{>0}$. Then either $\Phi\equiv 0$ or $\Phi(n)=n$ for all $n\in\NN_{>0}$.
+\end{theorem}
+
+\begin{proof}
+Let $z:=\Phi(1)$. Multiplicativity gives $z=\Phi(1)=\Phi(1\cdot 1)=\Phi(1)^2=z^2$, hence $z\in\{0,1\}$.
+If $z=0$, then for any $n\in\NN_{>0}$ one has $\Phi(n)=\Phi(n\cdot 1)=\Phi(n)\Phi(1)=0$, so $\Phi\equiv 0$.
+If $z=1$, then by additivity,
+$$
+\Phi(n)=\Phi(\underbrace{1+\cdots+1}_{n\ \text{terms}})=n\Phi(1)=n.
+$$
+\end{proof}
+
+\begin{corollary}[Non-additivity is necessary]
+\label{cor:nonadditive}
+Let $\mathcal{Z}:M\to\CC^*$ be multiplicative and satisfy $\mathcal{Z}(1)=1$.
+If $\mathcal{Z}$ is not the identity map, then it cannot satisfy $\mathcal{Z}(a+b)=\mathcal{Z}(a)+\mathcal{Z}(b)$ for all $a,b\in M$.
+\end{corollary}
+
+\begin{proof}
+If $\mathcal{Z}$ were additive on $M=\NN_{>0}$, then it would satisfy the hypotheses of Theorem~\ref{thm:no_go_additive}. Since $\mathcal{Z}$ takes values in $\CC^*$ it is not identically zero, hence $\mathcal{Z}(n)=n$ for all $n\in M$, contradicting the assumption that $\mathcal{Z}$ is not the identity.
+\end{proof}
+
+This is the \emph{lattice mismatch}: vector synthesis takes place in the continuous plane $\CC$, while integer readout is constrained to the discrete point set $\mathcal{Z}(M)\subset\CC$. A quantitative obstruction is the distance-to-image function
+$$
+g(v):=\inf_{n\in M}\bigl|v-\mathcal{Z}(n)\bigr|.
+$$
+When $v=v(a,b)$, the value $g(v)$ measures the residual error incurred when one attempts to interpret synthesis as an exact integer operation. Under the minimal radial choice $\rho(n)=n$, Proposition~\ref{prop:projection_well_defined}(1) implies the infimum is a minimum, hence $g(v)=0$ if and only if $v\in\mathcal{Z}(M)$, and otherwise $g(v)>0$.
+
+\subsection{Quantum projection: lossy additive readout}
+Since $v(a,b)$ is not constrained to lie in $\mathcal{Z}(M)$, any macroscopic ``additive'' bookkeeping must be implemented as a \emph{projection} back to $M$. A minimal deterministic choice is a nearest-point readout.
+
+\begin{definition}[Nearest-point readout]
+\label{def:nearest_point}
+For $v\in\CC$ define
+$$
+\pi(v):=\operatorname*{argmin}_{n\in M}\bigl|v-\mathcal{Z}(n)\bigr|,
+$$
+with a fixed tie-breaking rule (e.g. choose the smallest $n$ among minimizers).
+\end{definition}
+
+This produces a lossy ``sum readout'' $c=\pi(v(a,b))$. The residual
+$$
+\delta(a,b):=v(a,b)-\mathcal{Z}\!\bigl(\pi(v(a,b))\bigr)
+$$
+is the \emph{quantum gap}: the part of synthesis that cannot be represented inside the integer image. In physical terms, $\delta$ encodes the fluctuations that remain when a continuous interference pattern is coerced into a discrete lattice readout.
+
+A probabilistic refinement replaces the hard nearest-point rule by a soft projection kernel.
+
+\begin{definition}[Projection kernel]
+\label{def:projection_kernel}
+Fix a scale $\varepsilon>0$. For $v\in\CC$ define a probability distribution on $M$ by
+$$
+\pi_\varepsilon(c\mid v)
+:=
+\frac{\exp\!\bigl(-|v-\mathcal{Z}(c)|^2/\varepsilon^2\bigr)}
+{\sum_{n\in M}\exp\!\bigl(-|v-\mathcal{Z}(n)|^2/\varepsilon^2\bigr)}.
+$$
+\end{definition}
+
+\begin{proposition}[Well-definedness of the projection readout]
+\label{prop:projection_well_defined}
+Assume the minimal radial choice $\rho(n)=n$. Then for every $v\in\CC$:
+\begin{enumerate}
+    \item The minimizer set
+    $$
+    \operatorname*{Argmin}_{n\in M}\,|v-\mathcal{Z}(n)|
+    $$
+    is nonempty and finite, hence the nearest-point rule $\pi(v)$ is well-defined.
+    \item For every $\varepsilon>0$ the normalizing sum
+    $$
+    Z_\varepsilon(v):=\sum_{n\in M}\exp\!\bigl(-|v-\mathcal{Z}(n)|^2/\varepsilon^2\bigr)
+    $$
+    converges and satisfies $0<Z_\varepsilon(v)<\infty$, hence $\pi_\varepsilon(\cdot\mid v)$ is a well-defined probability distribution on $M$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Under $\rho(n)=n$ we have $|\mathcal{Z}(n)|=n$, so $|\mathcal{Z}(n)|\to\infty$ as $n\to\infty$.
+\begin{enumerate}
+    \item Fix $v\in\CC$ and set $d_0:=|v-\mathcal{Z}(1)|$. For any $n\in M$,
+    $$
+    |v-\mathcal{Z}(n)|\ge \bigl||\mathcal{Z}(n)|-|v|\bigr|=|n-|v||.
+    $$
+    If $n>|v|+d_0$ then $|n-|v||>d_0$, hence $|v-\mathcal{Z}(n)|>d_0=|v-\mathcal{Z}(1)|$. Therefore every minimizer lies in the finite set $\{1,2,\dots,\lceil |v|+d_0\rceil\}$, so the minimum is attained and the minimizer set is nonempty and finite.
+    \item For all $n\in M$ we have
+    $$
+    |v-\mathcal{Z}(n)|\ge \bigl||\mathcal{Z}(n)|-|v|\bigr|=|n-|v||,
+    $$
+    hence
+    $$
+    \exp\!\bigl(-|v-\mathcal{Z}(n)|^2/\varepsilon^2\bigr)\le \exp\!\bigl(-|n-|v||^2/\varepsilon^2\bigr).
+    $$
+    The comparison series $\sum_{n\ge 1}\exp(-|n-|v||^2/\varepsilon^2)$ converges, so $Z_\varepsilon(v)<\infty$. Positivity is immediate since each summand is positive.
+\end{enumerate}
+\end{proof}
+
+\begin{proposition}[Sharp projection limit]
+\label{prop:sharp_projection_limit}
+Assume the minimal radial choice $\rho(n)=n$. Fix $v\in\CC$ and let
+$$
+d_{\min}(v):=\min_{n\in M}|v-\mathcal{Z}(n)|.
+$$
+Define the minimizer set $D(v):=\{n\in M:\ |v-\mathcal{Z}(n)|=d_{\min}(v)\}$.
+Then as $\varepsilon\downarrow 0$ the kernel $\pi_\varepsilon(\cdot\mid v)$ converges to the uniform distribution on $D(v)$.
+In particular, if $D(v)$ is a singleton, then $\pi_\varepsilon(\cdot\mid v)$ converges to a point mass at that minimizer.
+\end{proposition}
+
+\begin{proof}
+Let $d=d_{\min}(v)$. For $c\in D(v)$ one has $\exp(-|v-\mathcal{Z}(c)|^2/\varepsilon^2)=\exp(-d^2/\varepsilon^2)$.
+For $m\notin D(v)$ set $\Delta_m:=|v-\mathcal{Z}(m)|^2-d^2>0$. Then
+$$
+\frac{\exp(-|v-\mathcal{Z}(m)|^2/\varepsilon^2)}{\exp(-d^2/\varepsilon^2)}
+=\exp(-\Delta_m/\varepsilon^2)\xrightarrow[\varepsilon\downarrow 0]{}0.
+$$
+Since $D(v)$ is finite by Proposition~\ref{prop:projection_well_defined}(1), dividing numerator and denominator by $\exp(-d^2/\varepsilon^2)$ yields
+$$
+\pi_\varepsilon(c\mid v)
+=
+\frac{1}{|D(v)|+\sum_{m\notin D(v)}\exp(-\Delta_m/\varepsilon^2)}\xrightarrow[\varepsilon\downarrow 0]{}\frac{1}{|D(v)|}
+$$
+for $c\in D(v)$, and $\pi_\varepsilon(m\mid v)\to 0$ for $m\notin D(v)$.
+\end{proof}
+
+Given $a,b\in M$, set $v=v(a,b)$ and draw $C\sim \pi_\varepsilon(\,\cdot\,\mid v)$. The random gap
+$$
+\delta:=v-\mathcal{Z}(C)
+$$
+realizes a probability cloud around the synthesized vector. After readout, the integer outcome $C$ is canonically encoded in Zeckendorf/Ostrowski coordinates (Section~\ref{sec:zeckendorf}), making explicit that ``addition'' in the observable layer is a statistical projection onto a discrete coding lattice rather than a closed microscopic law.
+
+Any statement about divergent sums or ``finite residuals'' must be made using the orbit-trace and finite-part machinery introduced in Section~\ref{sec:cyclic_calculus}.
