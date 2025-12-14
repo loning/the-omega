@@ -2,31 +2,31 @@
 \label{app:fib_dqca}
 
 This appendix specifies a concrete 1D Fibonacci (cut-and-project) Dirac quantum cellular automaton (DQCA) used as a checkable subsystem model for the quasicrystal program in Part~III. It also fixes the diagnostics (dispersion extraction, group velocities, and norm errors) used for the numerical evidence reported in Part~VI.\par
-Throughout, $\phi=\tfrac{1+\sqrt5}{2}$ and $\alpha=\phi^{-2}$.
+Throughout, $\phi=\tfrac{1+\sqrt5}{2}$ and $\alpha_{\mathrm{rot}}=\phi^{-2}$.
 
 \subsection{Fibonacci chain as a cut-and-project set}
 Fix an intercept (phason shift) $\rho\in[0,1)$ and define the internal coordinate
 \begin{equation}
-    u_j \equiv \{j\alpha+\rho\}\in[0,1),\qquad j\in\mathbb{Z},
+    u_j \equiv \{j\alpha_{\mathrm{rot}}+\rho\}\in[0,1),\qquad j\in\mathbb{Z},
 \end{equation}
 where $\{\cdot\}$ denotes the fractional part. Define the tile-type word $\sigma(j)\in\{L,S\}$ by
 \begin{equation}
     \sigma(j)=
     \begin{cases}
-    L,& u_j\in[0,1-\alpha),\\
-    S,& u_j\in[1-\alpha,1).
+    L,& u_j\in[0,1-\alpha_{\mathrm{rot}}),\\
+    S,& u_j\in[1-\alpha_{\mathrm{rot}},1).
     \end{cases}
 \label{eq:fib_sigma_appendix}
 \end{equation}
-This is the standard Sturmian coding of an irrational rotation and yields the Fibonacci word for $\alpha=\phi^{-2}$ \cite{MorseHedlund1940,Lothaire2002}. Lemma~\ref{lemma:sturmian_frequencies} records the asymptotic symbol frequencies.
+This is the standard Sturmian coding of an irrational rotation and yields the Fibonacci word for $\alpha_{\mathrm{rot}}=\phi^{-2}$ \cite{MorseHedlund1940,Lothaire2002}. Lemma~\ref{lemma:sturmian_frequencies} records the asymptotic symbol frequencies.
 \paragraph{Remark (relation to scan--projection readout).}
 Eq.~(\ref{eq:fib_sigma_appendix}) is the spatial analogue of the intrinsic scan--projection readout of Part~II (Axiom~O5): the index $j$ plays the role of the tick, $\rho$ is an initial phase/phason shift, and the binary output $\sigma(j)\in\{L,S\}$ is obtained by window projection of the rotation orbit.
 \begin{lemma}[Symbol frequencies]
 \label{lemma:sturmian_frequencies}
-For irrational $\alpha$, the sequence $\sigma(j)$ defined by Eq.~(\ref{eq:fib_sigma_appendix}) has well-defined asymptotic symbol frequencies:
+For irrational $\alpha_{\mathrm{rot}}$, the sequence $\sigma(j)$ defined by Eq.~(\ref{eq:fib_sigma_appendix}) has well-defined asymptotic symbol frequencies:
 \begin{equation}
-    \lim_{N\to\infty}\frac{1}{N}\#\{0\le j<N:\sigma(j)=S\}=\alpha,\qquad
-    \lim_{N\to\infty}\frac{1}{N}\#\{0\le j<N:\sigma(j)=L\}=1-\alpha.
+    \lim_{N\to\infty}\frac{1}{N}\#\{0\le j<N:\sigma(j)=S\}=\alpha_{\mathrm{rot}},\qquad
+    \lim_{N\to\infty}\frac{1}{N}\#\{0\le j<N:\sigma(j)=L\}=1-\alpha_{\mathrm{rot}}.
 \end{equation}
 \end{lemma}
 \begin{proof}[Reference]
@@ -35,9 +35,9 @@ This is a standard consequence of Weyl equidistribution for irrational rotations
 \paragraph{Corollary (mean coin/mass parameter).}
 If the coin angles are scaled as $\theta_{L/S}=m_{L/S}\varepsilon$ with fixed $m_{L/S}$, then the spatial average of the local mass/mixing parameter satisfies
 \begin{equation}
-    \lim_{N\to\infty}\frac{1}{N}\sum_{j=0}^{N-1} m_{\sigma(j)} = (1-\alpha)m_L+\alpha m_S,
+    \lim_{N\to\infty}\frac{1}{N}\sum_{j=0}^{N-1} m_{\sigma(j)} = (1-\alpha_{\mathrm{rot}})m_L+\alpha_{\mathrm{rot}} m_S,
 \end{equation}
-with $\alpha=\phi^{-2}$ in the golden case.
+with $\alpha_{\mathrm{rot}}=\phi^{-2}$ in the golden case.
 The geometric embedding is obtained by assigning two edge lengths
 \begin{equation}
     \ell_L\equiv \phi\,\varepsilon,\qquad \ell_S\equiv \varepsilon,
@@ -75,7 +75,7 @@ Unitarity is immediate from unitarity of $S$ (a permutation on the basis) and of
 \subsection{Phason shift and phason strain}
 The intercept $\rho$ shifts the acceptance window in internal space and generates a family of locally indistinguishable Fibonacci chains (different global phason choices). A convenient strain model lets $\rho$ vary slowly with the site index $j$:
 \begin{equation}
-    \rho\to \rho(j),\qquad u_j\equiv \{j\alpha+\rho(j)\}.
+    \rho\to \rho(j),\qquad u_j\equiv \{j\alpha_{\mathrm{rot}}+\rho(j)\}.
 \end{equation}
 Define the discrete phason strain by the incremental change
 \begin{equation}
@@ -91,9 +91,9 @@ The unstrained Fibonacci chain corresponds to $\eta_j\equiv 0$. Small $\|\eta\|$
 \subsection{Periodic approximants and dispersion extraction}
 To define a momentum-space diagnostic on an aperiodic texture we use periodic Fibonacci approximants. Let $F_0=0$, $F_1=1$, $F_{n+2}=F_{n+1}+F_n$ be Fibonacci numbers and set
 \begin{equation}
-    \alpha_n \equiv \frac{F_{n-1}}{F_n}\to \alpha.
+    \alpha_{\mathrm{rot},n} \equiv \frac{F_{n-1}}{F_n}\to \alpha_{\mathrm{rot}}.
 \end{equation}
-Define a length-$N$ periodic texture by taking $N\equiv F_n$ and replacing $\alpha$ with $\alpha_n$ in Eq.~(\ref{eq:fib_sigma_appendix}), so $\sigma_n(j+N)=\sigma_n(j)$. The finite-volume Floquet operator $U_N$ acts on $\mathbb{C}^{2N}$ and is block-circulant up to the coin texture.\par
+Define a length-$N$ periodic texture by taking $N\equiv F_n$ and replacing $\alpha_{\mathrm{rot}}$ with $\alpha_{\mathrm{rot},n}$ in Eq.~(\ref{eq:fib_sigma_appendix}), so $\sigma_n(j+N)=\sigma_n(j)$. The finite-volume Floquet operator $U_N$ acts on $\mathbb{C}^{2N}$ and is block-circulant up to the coin texture.\par
 For each quasi-momentum $k\in[-\pi,\pi)$, implement the Bloch boundary condition
 \begin{equation}
     \psi(j+N)=e^{ikN}\psi(j),

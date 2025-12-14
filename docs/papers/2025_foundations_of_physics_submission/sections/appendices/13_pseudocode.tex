@@ -3,7 +3,7 @@
 \begin{verbatim}
 # Golden-clock parameters (golden case)
 phi = (1 + sqrt(5)) / 2
-alpha = 1 / (phi * phi)      # = 1/phi^2
+alpha_rot = 1 / (phi * phi)      # = 1/phi^2
 rho_time  = 0.0
 rho_space = 0.0
 
@@ -14,9 +14,9 @@ G_S = GoldenGate(theta_S)
 function frac(u):
     return u - floor(u)
 
-function SturmianSymbol(index, alpha, rho):
-    u = frac(index * alpha + rho)
-    if u < 1 - alpha:
+function SturmianSymbol(index, alpha_rot, rho):
+    u = frac(index * alpha_rot + rho)
+    if u < 1 - alpha_rot:
         return "L"
     else:
         return "S"
@@ -44,9 +44,9 @@ function OmegaStep(state, n, mode):
     # 1. Unitary Update (coin)
     for x in Lattice:
         if mode == "space_texture":
-            sigma = SturmianSymbol(x, alpha, rho_space)
+            sigma = SturmianSymbol(x, alpha_rot, rho_space)
         else:
-            sigma = SturmianSymbol(n, alpha, rho_time)
+            sigma = SturmianSymbol(n, alpha_rot, rho_time)
 
         if sigma == "L":
             G_matrix = G_L

@@ -50,7 +50,7 @@ In the exact 1D tape realization (Section \ref{sec:routeA_routing}), both disent
 \label{chap:qca}
 
 \subsection{Definition of QCA on a Quasicrystal}
-A Quantum Cellular Automaton is a unitary evolution $\hat{U}$ on the composite Hilbert space $\mathcal{H} = \bigotimes_{x \in \Lambda} \mathcal{H}_x$. Following the operational framework of D'Ariano, Perinotti, and Bisio \cite{Dariano2014}, we require:
+A Quantum Cellular Automaton is a unitary evolution $\hat{U}$ on the composite Hilbert space $\mathcal{H} = \bigotimes_{x \in \Lambda} \mathcal{H}_x$. Following standard locality/reversibility formulations in the QCA literature \cite{Watrous1995QCA,SchumacherWerner2004,Dariano2014}, we require:
 \begin{enumerate}
     \item \textbf{Unitarity}: $\hat{U}^\dagger \hat{U} = \hat{I}$ (Conservation of probability).
     \item \textbf{Causal Locality}: There exists a neighborhood scheme $\mathcal{N}$ such that the state of cell $x$ at step $t+1$ depends only on cells $y \in \mathcal{N}(x)$ at step $t$. Formally, if $\hat{A}_x$ is an observable at $x$, then $\hat{U}^\dagger \hat{A}_x \hat{U}$ is supported on $\mathcal{N}(x)$.
@@ -69,6 +69,9 @@ where each $\hat U_{\mathcal{N}_k^{(s)}}$ acts on the Hilbert space $\bigotimes_
 \begin{equation}
     \hat U \ \equiv\ \hat U^{(D)}\cdots \hat U^{(1)}.
 \end{equation}
+
+\paragraph{Remark (relation to structure theorems).}
+On regular translation-invariant lattices, reversible QCAs admit a block representation in terms of partitioned local unitaries (generalized Margolus partitioning) \cite{SchumacherWerner2004}. In one dimension, additional classification structure is available (e.g.\ index theory for locality-preserving dynamics) \cite{GrossNesmeVogtsWerner2012}. The PQCA form above is adopted here as a concrete circuit-level locality template; on a quasicrystal substrate we do not assume global translation invariance, so we treat the partition data as part of the microscopic model specification.
 
 \subsection{Exact 1D Tape Realization and Routing Depth}
 \label{sec:routeA_routing}
@@ -153,20 +156,20 @@ with $\vec{\sigma}$ the Pauli matrices. The defining ``golden'' ingredient of ou
 with $0<\epsilon\ll 1$, while the discrete (fully specified) Fibonacci-textured model is given in Section~\ref{sec:fib_dqca_spec}.
 
 \subsubsection{Fibonacci/Sturmian coin textures}
-The smooth phason modulation above is a convenient analytic toy model. A canonical discrete quasiperiodic texture is obtained by Sturmian (rotation) coding, which in the golden case yields the Fibonacci word \cite{MorseHedlund1940,Lothaire2002}. In a 1D reduction (or along a chosen lattice geodesic), fix an irrational slope $\alpha\in(0,1)\setminus\mathbb{Q}$ (golden case $\alpha=\phi^{-2}$) and an intercept $\rho\in[0,1)$, and define
+The smooth phason modulation above is a convenient analytic toy model. A canonical discrete quasiperiodic texture is obtained by Sturmian (rotation) coding, which in the golden case yields the Fibonacci word \cite{MorseHedlund1940,Lothaire2002}. In a 1D reduction (or along a chosen lattice geodesic), fix an irrational slope $\alpha_{\mathrm{rot}}\in(0,1)\setminus\mathbb{Q}$ (golden case $\alpha_{\mathrm{rot}}=\phi^{-2}$) and an intercept $\rho\in[0,1)$, and define
 \begin{equation}
-    I_L=[0,1-\alpha),\qquad I_S=[1-\alpha,1),
+    I_L=[0,1-\alpha_{\mathrm{rot}}),\qquad I_S=[1-\alpha_{\mathrm{rot}},1),
 \end{equation}
 \begin{equation}
     \sigma(x)=
     \begin{cases}
-    L,& \{x\alpha+\rho\}\in I_L,\\
-    S,& \{x\alpha+\rho\}\in I_S,
+    L,& \{x\alpha_{\mathrm{rot}}+\rho\}\in I_L,\\
+    S,& \{x\alpha_{\mathrm{rot}}+\rho\}\in I_S,
     \end{cases}
 \label{eq:sturmian_sigma}
 \end{equation}
 where $\{\cdot\}$ denotes the fractional part.\par
-\noindent\textit{Remark (scan--projection / cut-and-project unification).} Eq.~(\ref{eq:sturmian_sigma}) is a direct instance of the scan--projection template of Axiom~O5: the scan is the rotation by $\alpha$, the readout is window projection onto $\{I_L,I_S\}$, and the intercept $\rho$ is a phason shift (or initial phase). The same window data also define the standard 1D cut-and-project (model set) construction of the Fibonacci chain; Appendix~\ref{app:fib_dqca} records the explicit embedding and phason interpretation.\par
+\noindent\textit{Remark (scan--projection / cut-and-project unification).} Eq.~(\ref{eq:sturmian_sigma}) is a direct instance of the scan--projection template of Axiom~O5: the scan is the rotation by $\alpha_{\mathrm{rot}}$, the readout is window projection onto $\{I_L,I_S\}$, and the intercept $\rho$ is a phason shift (or initial phase). The same window data also define the standard 1D cut-and-project (model set) construction of the Fibonacci chain; Appendix~\ref{app:fib_dqca} records the explicit embedding and phason interpretation.\par
 We then define a piecewise-constant coin (mass/mixing) field by
 \begin{equation}
     \theta(x)=
@@ -181,7 +184,7 @@ This produces a Fibonacci-textured (quasiperiodic) Dirac walk that is compatible
 \label{sec:fib_dqca_spec}
 To make the quasicrystal QCA proposal checkable, we now give an explicit 1D model on a Fibonacci (cut-and-project) substrate, including its local gates and the quantitative diagnostics used later for numerical verification.\par
 \noindent\textbf{Fibonacci substrate (cut-and-project / Sturmian coding).}
-Fix the golden slope $\alpha=\phi^{-2}$ and intercept $\rho\in[0,1)$. Define the tile-type word $\sigma(j)\in\{L,S\}$ by Eq.~(\ref{eq:sturmian_sigma}).
+Fix the golden slope $\alpha_{\mathrm{rot}}=\phi^{-2}$ and intercept $\rho\in[0,1)$. Define the tile-type word $\sigma(j)\in\{L,S\}$ by Eq.~(\ref{eq:sturmian_sigma}).
 Let the physical coordinate of vertex $j\in\mathbb{Z}$ be
 \begin{equation}
     r_{0}=0,\qquad r_{j+1}=r_{j}+\ell_{\sigma(j)},
@@ -219,7 +222,7 @@ which is manifestly unitary and strictly local (range-1 on the chain). This mode
 Although the Omega Network is higher-dimensional, the exact 1D tape compilation in Proposition~\ref{prop:exact_1d_compilation} shows that any finite patch update generated by bounded-range local gates admits an equivalent nearest-neighbor 1D realization (at the cost of routing depth). Therefore, a 1D Fibonacci-textured DQCA provides a computationally tractable testbed for the continuum-limit diagnostics (dispersion, group velocity, and norm-error scaling) while remaining faithful to the locality structure of the underlying PQCA.
 \par
 \noindent\textbf{Diagnostics for the Dirac limit.}
-To extract dispersion on the aperiodic substrate we use periodic Fibonacci approximants: replace $\alpha$ by the rational approximant $\alpha_n\equiv F_{n-1}/F_n$ and impose period $N\equiv F_n$ on the coin texture. The resulting $N$-cell Floquet operator admits Bloch decomposition $U^{(n)}(k)$ with quasi-momentum $k\in[-\pi,\pi)$, yielding quasienergies $E^{(n)}_\pm(k)$ via eigenphases of $U^{(n)}(k)$.
+To extract dispersion on the aperiodic substrate we use periodic Fibonacci approximants: replace $\alpha_{\mathrm{rot}}$ by the rational approximant $\alpha_{\mathrm{rot},n}\equiv F_{n-1}/F_n$ and impose period $N\equiv F_n$ on the coin texture. The resulting $N$-cell Floquet operator admits Bloch decomposition $U^{(n)}(k)$ with quasi-momentum $k\in[-\pi,\pi)$, yielding quasienergies $E^{(n)}_\pm(k)$ via eigenphases of $U^{(n)}(k)$.
 We compare these to the target Dirac dispersion $E_D(k)=\sqrt{(c_{\mathrm{eff}}k)^2+m_{\mathrm{eff}}^2}$ in the long-wavelength regime, and we quantify errors by, e.g.,
 \begin{equation}
     \delta_E^{(n)}(k_{\max})\equiv \max_{|k|\le k_{\max}} \big|E^{(n)}_+(k)-E_D(k)\big|,
