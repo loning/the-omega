@@ -21,6 +21,8 @@ where $\{\cdot\}$ denotes the fractional part. Define the tile-type word $\sigma
 \label{eq:fib_sigma_appendix}
 \end{equation}
 This is the standard Sturmian coding of an irrational rotation and yields the Fibonacci word for $\alpha=\phi^{-2}$ \cite{MorseHedlund1940,Lothaire2002}. Lemma~\ref{lemma:sturmian_frequencies} records the asymptotic symbol frequencies.
+\paragraph{Remark (relation to scan--projection readout).}
+Eq.~(\ref{eq:fib_sigma_appendix}) is the spatial analogue of the intrinsic scan--projection readout of Part~II (Axiom~O5): the index $j$ plays the role of the tick, $\rho$ is an initial phase/phason shift, and the binary output $\sigma(j)\in\{L,S\}$ is obtained by window projection of the rotation orbit.
 \begin{lemma}[Symbol frequencies]
 \label{lemma:sturmian_frequencies}
 For irrational $\alpha$, the sequence $\sigma(j)$ defined by Eq.~(\ref{eq:fib_sigma_appendix}) has well-defined asymptotic symbol frequencies:
@@ -263,6 +265,7 @@ Let $f: \mathbb{R}^{n-d} \to \mathbb{C}$ be a Riemann-integrable function on the
 \end{equation}
 This follows from Weyl-type equidistribution for cut-and-project sets; see, e.g., \cite{Hof1995}.
 \end{lemma}
+\noindent\textit{Remark.} Lemma~\ref{lemma:ergodic} is the cut-and-project analogue of the orbit-trace identity recorded in Appendix~\ref{app:orbit_calculus}.
 
 \subsection{Homogenization remarks (quasicrystal extension)}
 For coined walks on regular lattices, rigorous long-wavelength Dirac limits (including variable-mass and gauge-coupled extensions) are available in the QW/QCA literature; see, e.g., \cite{Arrighi2014,Dariano2014,Bisio2015}. Extending such results to cut-and-project substrates requires controlling the quasicrystal structure factor together with the spatial variation of internal-coordinate (phason) fields. In this manuscript we use the ergodic averaging statement (Lemma~\ref{lemma:ergodic}) and explicit 1D diagnostics (Appendix~\ref{app:fib_dqca}) as the checkable backbone of the quasicrystal program; a full higher-dimensional homogenization proof is left for future work.
@@ -409,6 +412,67 @@ Every $t\in\mathbb{Z}_{\ge 0}$ admits a unique representation
 
 Now suppose two admissible representations of the same $t$ exist, with digit strings $(b_k)$ and $(b'_k)$ not identical. Let $m$ be the largest index with $b_m\ne b'_m$. Without loss of generality $b_m=1$ and $b'_m=0$. Then the difference between the two sums is at least $F_{m+2}$ minus a sum of admissible terms from $\{F_2,\dots,F_{m+1}\}$, whose magnitude is at most $F_{m+2}-1$ by the bound above. Hence the difference cannot vanish, a contradiction. Therefore the representation is unique.
 \end{proof}
+
+\section{Orbit calculus and finite-part regularization}
+\label{app:orbit_calculus}
+This appendix records the orbit-calculus conventions used when relating scan-generated discrete data to continuum functionals, in accordance with Axiom~O8. The minimal template is an irrational circle rotation; the same logic extends to torus translations and to cut-and-project dynamical systems via Haar averages on orbit closures (Appendix~\ref{app:torus_rotation}).
+
+\subsection{Orbit difference and orbit trace (irrational rotation template)}
+Let $X=\mathbb{R}/\mathbb{Z}$ and fix $\alpha\in(0,1)\setminus\mathbb{Q}$. Define the rotation
+$$
+T_\alpha(x):=x+\alpha\pmod{1}.
+$$
+For a sufficiently regular $f:X\to\mathbb{C}$ define the orbit difference operator
+$$
+(\mathcal{D}_\alpha f)(x):=\frac{f(x+\alpha)-f(x)}{\alpha}.
+$$
+This is an intrinsic discrete derivative surrogate along the scan step.\par
+Define the orbit average (a discrete integral surrogate) by
+$$
+A_N(f;x_0):=\frac{1}{N}\sum_{t=0}^{N-1} f(T_\alpha^t(x_0)).
+$$
+
+\begin{theorem}[Orbit trace for an irrational rotation]
+If $f$ is continuous and $\alpha\notin\mathbb{Q}$, the limit
+$$
+\mathrm{Tr}_\alpha(f):=\lim_{N\to\infty}A_N(f;x_0)
+$$
+exists, is independent of $x_0$, and equals the space average with respect to Lebesgue measure $\mu$ on $X$:
+$$
+\mathrm{Tr}_\alpha(f)=\int_X f(x)\,d\mu(x).
+$$
+\end{theorem}
+\begin{proof}[Reference]
+This is a standard consequence of unique ergodicity/equidistribution of irrational rotations; see, e.g., \cite{Weyl1916,KuipersNiederreiter1974}.
+\end{proof}
+
+\subsection{Abel finite part for divergent orbit sums}
+Let $u_t:=f(T_\alpha^t(x_0))$ be the orbit sample sequence (not assumed absolutely summable). Define its Abel generating function
+$$
+S_f(r):=\sum_{t=0}^{\infty} u_t r^t,\qquad 0<r<1.
+$$
+If $f$ is bounded then $S_f(r)$ converges absolutely for $0<r<1$. If as $r\uparrow 1$ the function admits an asymptotic expansion of the form
+$$
+S_f(r)=\sum_{j=1}^{J} \frac{c_j}{(1-r)^j} + C + o(1),
+$$
+we define the orbit finite part by
+$$
+\mathrm{FP}_\alpha(f):=C.
+$$
+
+\begin{lemma}[Uniqueness of the finite part]
+If $S_f(r)$ admits two expansions of the above form with constants $C$ and $C'$, then $C=C'$.
+\end{lemma}
+\begin{proof}
+Subtracting the two expansions gives
+$$
+0=\sum_{j=1}^{J''}\frac{d_j}{(1-r)^j}+(C-C')+o(1),
+$$
+as $r\uparrow 1$, where $J''=\max\{J,J'\}$ and $d_j$ are coefficient differences (missing coefficients treated as $0$). Multiplying by $(1-r)^{J''}$ and letting $r\uparrow 1$ yields $d_{J''}=0$. Repeating inductively gives $d_j=0$ for all $j\ge 1$, hence $C-C'+o(1)=0$ and therefore $C=C'$.
+\end{proof}
+
+\noindent
+In this manuscript, whenever a constant term depends on a regularization choice, the Abel finite-part convention above (together with its natural extensions beyond the circle template) is taken as the normalization prescribed by Axiom~O8.
 
 \section{Variational Derivation of Informational Gravity}
 \label{app:action_proof}
@@ -791,6 +855,9 @@ This appendix records the working geometric ans\"atze for two dimensionless cons
 
 \subsection{Regularization and Scale Definition}
 In a fully specified microscopic model, dimensionless couplings should arise as ratios of normalized geometric/topological invariants of the internal sector, potentially defined via an appropriate measure on a moduli space $\mathcal{M}_{int}$. In the present manuscript we do not fix such a measure. Instead, we work with concrete closed-form ans\"atze and interpret them as defining \emph{effective} low-energy matching data for the corresponding couplings.
+\par
+\noindent
+In the scan-based viewpoint, such normalized quantities can be expressed (in concrete models) as orbit traces and, when necessary, as finite parts of regulated orbit sums. Whenever a constant term depends on regularization choice, we adopt the orbit finite-part convention of Axiom~O8 (Appendix~\ref{app:orbit_calculus}).
 
 \subsection{Fine Structure Constant \texorpdfstring{$\alpha$}{alpha}}
 Motivated by the appearance of $U(1)$ as a circle fiber in standard Hopf-type constructions, we introduce a simple geometric inverse-coupling ansatz as a dimensionless combination of elementary fiber-volume factors.
@@ -1131,10 +1198,10 @@ By universality, for each pair $(M,x)$ there exists an encoding $|\psi_{M,x}\ran
 \paragraph{Remark (selection/oracle layer).}
 In Part~VII we model ``measurement/choice'' by an additional map $\hat{\mathcal{O}}$ that selects a sector/branch. From the computational viewpoint, such a map can be read as an oracle input that resolves undecidable reachability questions by selecting a consistent continuation. This is an interpretation of how selection could function as an external resource; it is not implied by the undecidability theorem itself.
 
-\subsection{Born Rule from Holographic Counting (under assumptions)}
-We present a symmetry-based counting argument for the Born rule under explicit fine-graining and an indifference (fair-sampling) assumption (Assumption~\ref{assump:S1}). Related symmetry-based approaches include envariance \cite{Zurek2005}.
+\subsection{Born Rule from projection-induced readout (counting template)}
+We record a symmetry-based counting template in which probabilities are induced by finite-resolution readout (Axiom~O7) together with a sharp-readout symmetry hypothesis on fine-grained micro-realizations (Assumption~\ref{assump:S1}). Related symmetry-based approaches include envariance \cite{Zurek2005}.
 
-\begin{theorem}[Born Rule from Holographic Counting]
+\begin{theorem}[Born Rule from projection-induced readout (fine-grained template)]
 \label{thm:born_rule}
 Let $|\psi\rangle = \sum_k c_k |k\rangle$ be a state in the Omega Network. The probability of observing outcome $k$ is $P_k = |c_k|^2$.
 \end{theorem}
@@ -1145,16 +1212,16 @@ Let $|\psi\rangle = \sum_k c_k |k\rangle$ be a state in the Omega Network. The p
 |\psi\rangle \propto \sum_{k} \sum_{i=1}^{n_k} |k, i\rangle_{micro}.
 \]
 3. \textbf{Frame Stability}: The physical "laws" (the Hamiltonian $\hat{H}$) are invariant under unitary swaps of the microstates $|k, i\rangle \leftrightarrow |k, j\rangle$ (Action of the Symmetric Group $S_{N_{\mathrm{micro}}}$).
-4. \textbf{Indifference}: By the microcanonical indifference assumption (Assumption~\ref{assump:S1}), each microstate has probability $p_{micro} = 1/N_{\mathrm{micro}}$.
+4. \textbf{Projection-induced micro-measure}: By Axiom~O7, outcome weights are induced by a readout kernel/instrument. Under the sharp-readout symmetry hypothesis (Assumption~\ref{assump:S1}), this kernel is uniform on the admissible micro-realizations within the relevant degeneracy class, so each microstate has probability $p_{micro} = 1/N_{\mathrm{micro}}$.
 5. \textbf{Aggregation}: The probability of the macrostate $k$ is the sum over its micro-realizations:
 \begin{equation}
     P_k = \sum_{i=1}^{n_k} p_{micro} = \frac{n_k}{N_{\mathrm{micro}}} = |c_k|^2.
 \end{equation}
-Thus, under fine-graining and Assumption~\ref{assump:S1}, the Born rule follows as a counting identity for the underlying holographic micro-ensemble.
+Thus, under fine-graining, Axiom~O7, and Assumption~\ref{assump:S1}, the Born rule follows as a counting identity for the underlying holographic micro-ensemble.
 \end{proof}
 
 \subsection{Born rule as the unique noncontextual probability rule (mature theorem)}
-The counting argument above makes explicit which assumption carries the probabilistic content (indifference on fine-grained micro-realizations). Independently, there is a mathematically sharp characterization of quantum probability rules that can be cited directly.
+The counting template above isolates the structural input needed for a microstate-counting reading: a symmetric sharp-readout limit of the induced readout kernel on fine-grained micro-realizations (Assumption~\ref{assump:S1}). Independently, there is a mathematically sharp characterization of quantum probability rules that can be cited directly.
 
 \begin{theorem}[Gleason--Busch characterization of quantum probabilities]
 \label{thm:gleason_busch}
