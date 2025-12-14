@@ -1,0 +1,71 @@
+\section{Pseudocode}
+\label{app:reference}
+\begin{verbatim}
+# Golden-clock parameters (golden case)
+phi = (1 + sqrt(5)) / 2
+alpha = 1 / (phi * phi)      # = 1/phi^2
+rho_time  = 0.0
+rho_space = 0.0
+
+# Two local gate choices (Long/Short)
+G_L = GoldenGate(theta_L)
+G_S = GoldenGate(theta_S)
+
+function frac(u):
+    return u - floor(u)
+
+function SturmianSymbol(index, alpha, rho):
+    u = frac(index * alpha + rho)
+    if u < 1 - alpha:
+        return "L"
+    else:
+        return "S"
+
+function ZeckendorfDigits(n):
+    # Greedy Zeckendorf representation n = sum b_k F_{k+2}, no adjacent 1s
+    F = [1, 2]               # F_2=1, F_3=2
+    while F[-1] <= n:
+        F.append(F[-1] + F[-2])
+    b = zeros(len(F))
+    k = len(F) - 1
+    while n > 0 and k >= 0:
+        if F[k] <= n:
+            b[k] = 1
+            n = n - F[k]
+            k = k - 2
+        else:
+            k = k - 1
+    return b
+
+function OmegaStep(state, n, mode):
+    # Optional: Zeckendorf digits can schedule hierarchical updates at tick n
+    z_digits = ZeckendorfDigits(n)
+
+    # 1. Unitary Update (coin)
+    for x in Lattice:
+        if mode == "space_texture":
+            sigma = SturmianSymbol(x, alpha, rho_space)
+        else:
+            sigma = SturmianSymbol(n, alpha, rho_time)
+
+        if sigma == "L":
+            G_matrix = G_L
+        else:
+            G_matrix = G_S
+
+        state[x] = G_matrix * state[x]
+
+    # 2. Shift (Transport)
+    new_state = zeros(Lattice)
+    for x in Lattice:
+        for spin in directions:
+             neighbor = x + e[spin]
+             new_state[neighbor][spin] = state[x][spin]
+
+    # 3. Holographic Check
+    if Entropy(state) > SurfaceArea(Lattice) / 4:
+         Inflate(Lattice)
+
+    return new_state
+\end{verbatim}
+
