@@ -71,6 +71,200 @@ Multiplying by $(1-r)^{J''}$ and taking $r\uparrow 1$ gives $d_{J''}=0$. Repeati
 
 This template shifts ``divergence'' from being a defect of the object to being a dependence on a consistent limiting and pole-subtraction scheme.
 
+\subsection{Fourier resolution and a cohomological interpretation of Abel finite parts}
+\label{subsec:abel_fourier}
+For irrational rotations, Abel orbit sums admit an explicit Fourier--resolvent description.
+Write the Fourier coefficients of $f\in L^2(X)$ as
+$$
+\hat f(m):=\int_X f(x)\,\e^{-2\pi\iu m x}\,d\mu(x),\qquad m\in\ZZ,
+$$
+so that formally $f(x)\sim\sum_{m\in\ZZ}\hat f(m)\e^{2\pi\iu m x}$.
+
+\begin{proposition}[Fourier evaluation of the Abel orbit sum]
+\label{prop:abel_fourier_formula}
+Let $\alpha\in(0,1)\setminus\QQ$ and $x_0\in X$.
+Assume $f$ has absolutely summable Fourier coefficients:
+$$
+\sum_{m\in\ZZ}|\hat f(m)|<\infty.
+$$
+Then for every $0<r<1$ one has
+$$
+S_f(r)=\sum_{m\in\ZZ}\frac{\hat f(m)\,\e^{2\pi\iu m x_0}}{1-r\,\e^{2\pi\iu m\alpha}}.
+$$
+\end{proposition}
+
+\begin{proof}
+For $k\ge 0$,
+$$
+u_k=f(x_0+k\alpha)=\sum_{m\in\ZZ}\hat f(m)\,\e^{2\pi\iu m (x_0+k\alpha)}
+$$
+with absolute convergence uniformly in $x$ by the hypothesis $\sum_m|\hat f(m)|<\infty$.
+Therefore, for $0<r<1$ we may exchange the summations:
+$$
+S_f(r)=\sum_{k\ge 0}r^k u_k
+=\sum_{m\in\ZZ}\hat f(m)\,\e^{2\pi\iu m x_0}\sum_{k\ge 0}\bigl(r\,\e^{2\pi\iu m\alpha}\bigr)^k,
+$$
+and the inner geometric series sums to $(1-r\,\e^{2\pi\iu m\alpha})^{-1}$.
+\end{proof}
+
+\begin{corollary}[Simple pole and explicit finite part]
+\label{cor:abel_fp_fourier}
+Under the hypotheses of Proposition~\ref{prop:abel_fourier_formula}, as $r\uparrow 1$ one has
+$$
+S_f(r)=\frac{\hat f(0)}{1-r}
+\;+\;
+\sum_{m\in\ZZ\setminus\{0\}}\frac{\hat f(m)\,\e^{2\pi\iu m x_0}}{1-\e^{2\pi\iu m\alpha}}
+\;+\;o(1).
+$$
+In particular, $\FP_\Theta(f)$ exists and equals the constant term
+$$
+\FP_\Theta(f)=\sum_{m\in\ZZ\setminus\{0\}}\frac{\hat f(m)\,\e^{2\pi\iu m x_0}}{1-\e^{2\pi\iu m\alpha}}.
+$$
+\end{corollary}
+
+\begin{proof}
+In Proposition~\ref{prop:abel_fourier_formula}, the $m=0$ term is $\hat f(0)/(1-r)$.
+For $m\ne 0$, irrationality of $\alpha$ implies $\e^{2\pi\iu m\alpha}\ne 1$, so the denominator stays bounded away from $0$ as $r\uparrow 1$.
+Dominated convergence (using $\sum_m|\hat f(m)|<\infty$) yields the limit of the $m\ne 0$ part, proving the expansion.
+\end{proof}
+
+\begin{proposition}[A quantitative remainder bound for the Abel finite part]
+\label{prop:abel_fp_error}
+Assume the hypotheses of Proposition~\ref{prop:abel_fourier_formula} and assume additionally that $\alpha$ is of bounded type, i.e. $\sup_i a_i<\infty$ in the continued fraction expansion $\alpha=[0;a_1,a_2,\dots]$.
+Assume further that
+$$
+\sum_{m\in\ZZ}(1+|m|^2)\,|\hat f(m)|<\infty.
+$$
+Then there exists a constant $C=C(f,\alpha)$ such that for all $r\in(0,1)$,
+$$
+\left|S_f(r)-\frac{\hat f(0)}{1-r}-\FP_\Theta(f)\right|\le C\,(1-r).
+$$
+\end{proposition}
+
+\begin{proof}
+Write $\theta_m:=2\pi m\alpha$.
+By Proposition~\ref{prop:abel_fourier_formula} and Corollary~\ref{cor:abel_fp_fourier},
+$$
+S_f(r)-\frac{\hat f(0)}{1-r}-\FP_\Theta(f)
+=\sum_{m\ne 0}\hat f(m)\e^{2\pi\iu m x_0}
+\left(\frac{1}{1-r\e^{\iu\theta_m}}-\frac{1}{1-\e^{\iu\theta_m}}\right).
+$$
+For $m\ne 0$,
+$$
+\left|\frac{1}{1-r\e^{\iu\theta_m}}-\frac{1}{1-\e^{\iu\theta_m}}\right|
+=\frac{1-r}{|1-r\e^{\iu\theta_m}|\;|1-\e^{\iu\theta_m}|}.
+$$
+Split the sum into the regimes $|1-\e^{\iu\theta_m}|\ge 2(1-r)$ and $|1-\e^{\iu\theta_m}|<2(1-r)$.
+
+If $|1-\e^{\iu\theta_m}|\ge 2(1-r)$, then
+$$
+|1-r\e^{\iu\theta_m}|\ge |1-\e^{\iu\theta_m}|-(1-r)\ge \tfrac12|1-\e^{\iu\theta_m}|,
+$$
+hence
+$$
+\left|\frac{1}{1-r\e^{\iu\theta_m}}-\frac{1}{1-\e^{\iu\theta_m}}\right|
+\le \frac{2(1-r)}{|1-\e^{\iu\theta_m}|^2}.
+$$
+If $|1-\e^{\iu\theta_m}|<2(1-r)$, then $|1-r\e^{\iu\theta_m}|\ge 1-r$, so
+$$
+\left|\frac{1}{1-r\e^{\iu\theta_m}}-\frac{1}{1-\e^{\iu\theta_m}}\right|
+\le \frac{1}{|1-\e^{\iu\theta_m}|}.
+$$
+
+Since $\alpha$ is of bounded type, there exists $c_\alpha>0$ such that $\|m\alpha\|\ge c_\alpha/|m|$ for all $m\ne 0$, where $\|t\|:=\inf_{n\in\ZZ}|t-n|$ denotes distance to the nearest integer.
+Using $|1-\e^{2\pi\iu t}|=2|\sin(\pi t)|\ge 4\|t\|$, we obtain
+$$
+|1-\e^{\iu\theta_m}|=|1-\e^{2\pi\iu m\alpha}|\ge \frac{4c_\alpha}{|m|}.
+$$
+Therefore $|1-\e^{\iu\theta_m}|^{-2}\le C'_\alpha\,|m|^2$ and $|1-\e^{\iu\theta_m}|^{-1}\le C''_\alpha\,|m|$.
+Combining the two regimes yields
+$$
+\left|\frac{1}{1-r\e^{\iu\theta_m}}-\frac{1}{1-\e^{\iu\theta_m}}\right|
+\le 2(1-r)\,C'_\alpha\,|m|^2 + C''_\alpha\,|m|\ind_{\{|1-\e^{\iu\theta_m}|<2(1-r)\}}.
+$$
+The first term is summable by the hypothesis $\sum_m|m|^2|\hat f(m)|<\infty$.
+For the second term, note that $|1-\e^{\iu\theta_m}|<2(1-r)$ implies $|m|>2c_\alpha/(1-r)$, hence
+$$
+\sum_{m\ne 0}|m|\,|\hat f(m)|\,\ind_{\{|1-\e^{\iu\theta_m}|<2(1-r)\}}
+\le \sum_{|m|>2c_\alpha/(1-r)} |m|\,|\hat f(m)|
+=o(1)
+$$
+as $r\uparrow 1$.
+In particular, this term is $O(1-r)$ for $r$ sufficiently close to $1$ (after increasing the constant if needed).
+Putting the estimates together proves the claim.
+\end{proof}
+
+\begin{proposition}[Cohomological equation and the finite part]
+\label{prop:cohomological_fp}
+Assume the hypotheses of Proposition~\ref{prop:abel_fourier_formula} and set $f_0:=f-\hat f(0)$.
+Define
+$$
+g(x):=\sum_{m\in\ZZ\setminus\{0\}}\frac{\hat f(m)}{1-\e^{2\pi\iu m\alpha}}\,\e^{2\pi\iu m x}.
+$$
+Then the series converges uniformly, $g$ is continuous, and it solves the cohomological equation
+$$
+(I-\Theta)g=f_0.
+$$
+Moreover, the Abel limit of orbit sums is the cohomological potential:
+$$
+\lim_{r\uparrow 1}\sum_{k\ge 0} r^k f_0(x_0+k\alpha)=g(x_0)=\FP_\Theta(f).
+$$
+\end{proposition}
+
+\begin{proof}
+Uniform convergence follows as in Proposition~\ref{prop:abel_fourier_formula}.
+Compute Fourier coefficients. Since $\Theta$ acts by translation, it sends the Fourier mode $\e^{2\pi\iu m x}$ to $\e^{2\pi\iu m\alpha}\e^{2\pi\iu m x}$, hence
+$$
+\widehat{(I-\Theta)g}(m)=(1-\e^{2\pi\iu m\alpha})\hat g(m)=\hat f(m)\qquad (m\ne 0),
+$$
+and $\widehat{(I-\Theta)g}(0)=0=\widehat{f_0}(0)$, so $(I-\Theta)g=f_0$.
+Finally, apply Corollary~\ref{cor:abel_fp_fourier} to $f_0$ (for which $\hat f_0(0)=0$) to obtain the Abel limit and identify it with $g(x_0)$.
+\end{proof}
+
+\subsection{Mellin comparison: Abel finite parts and zeta regularization}
+\label{subsec:mellin_zeta_fp}
+The orbit prescription above becomes classical zeta regularization when the ``orbit'' is replaced by the standard counting orbit $n\mapsto n$.
+We record a representative statement that makes the relationship to Mellin transform analytic continuation explicit; see e.g.~\cite{FlajoletGourdonDumas1995,Hardy1949}.
+
+\begin{theorem}[Abel finite part of polynomial sums equals zeta regularization]
+\label{thm:abel_fp_zeta}
+Let $k\in\NN_0$ and define, for $\varepsilon>0$,
+$$
+S_k(\varepsilon):=\sum_{n=1}^{\infty} n^k\,\e^{-n\varepsilon}.
+$$
+Then as $\varepsilon\downarrow 0$ the function $S_k(\varepsilon)$ admits an asymptotic expansion of the form
+$$
+S_k(\varepsilon)=\sum_{j=1}^{k+1}\frac{c_j}{\varepsilon^j}+\zeta(-k)+o(1),
+$$
+and therefore
+$$
+\FP_{\varepsilon\downarrow 0}\,S_k(\varepsilon)=\zeta(-k).
+$$
+In particular, the Abel finite part agrees with zeta regularization of the divergent sum $\sum_{n\ge 1}n^k$.
+\end{theorem}
+
+\begin{proof}
+For $\Re(s)>0$ one has the Mellin identity
+$$
+\e^{-n\varepsilon}=\frac{1}{2\pi\iu}\int_{\sigma-\iu\infty}^{\sigma+\iu\infty}\Gamma(s)\,(n\varepsilon)^{-s}\,ds
+$$
+for any $\sigma>0$.
+Multiplying by $n^k$ and summing over $n\ge 1$ gives, for $\sigma>k+1$ (justifying absolute convergence),
+$$
+S_k(\varepsilon)=\frac{1}{2\pi\iu}\int_{\sigma-\iu\infty}^{\sigma+\iu\infty}\Gamma(s)\,\zeta(s-k)\,\varepsilon^{-s}\,ds.
+$$
+The integrand extends meromorphically to $s\in\CC$, with a simple pole at $s=k+1$ coming from $\zeta(s-k)$ and simple poles at $s=0,-1,-2,\dots$ coming from $\Gamma(s)$.
+Shifting the contour to the left and summing residues yields an asymptotic expansion in powers of $\varepsilon$ as $\varepsilon\downarrow 0$.
+The constant term comes from the residue at $s=0$:
+since $\Gamma(s)=\frac{1}{s}+O(1)$ and $\zeta(s-k)=\zeta(-k)+O(s)$ near $s=0$, the residue equals $\zeta(-k)$.
+This proves that the finite-part constant term is $\zeta(-k)$.
+\end{proof}
+
+\begin{remark}[Hadamard finite parts and ``constant-term extraction'']
+The operation $\FP_{\varepsilon\downarrow 0}$ in Theorem~\ref{thm:abel_fp_zeta} is a Hadamard-type finite part: it extracts the constant term in a full asymptotic expansion after subtracting divergent negative powers of $\varepsilon$.
+This is the same conceptual mechanism as in Subsection~\ref{subsec:abel_fp}, with the regulator $(1-r)$ replaced by $\varepsilon$ via $r=\e^{-\varepsilon}$; see e.g.~\cite{EstradaKanwal2002}.
+\end{remark}
+
 \subsection{Finite-part traces and regularized determinants}
 \label{subsec:fp_determinants}
 To interface orbit finite parts with spectral/trace formulas one needs a determinant language compatible with regularization. A minimal template is as follows.

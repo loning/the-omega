@@ -1,0 +1,61 @@
+\section{Orbit calculus and finite-part regularization}
+\label{app:orbit_calculus}
+This appendix records the orbit-calculus conventions used when relating scan-generated discrete data to continuum functionals, in accordance with Convention~R1 (Section~\ref{conv:orbit_regularization}). The minimal template is an irrational circle rotation; the same logic extends to torus translations and to cut-and-project dynamical systems via Haar averages on orbit closures (Appendix~\ref{app:torus_rotation}).
+
+\subsection{Orbit difference and orbit trace (irrational rotation template)}
+Let $X=\mathbb{R}/\mathbb{Z}$ and fix $\alpha\in(0,1)\setminus\mathbb{Q}$. Define the rotation
+$$
+T_\alpha(x):=x+\alpha\pmod{1}.
+$$
+For a sufficiently regular $f:X\to\mathbb{C}$ define the orbit difference operator
+$$
+(\mathcal{D}_\alpha f)(x):=\frac{f(x+\alpha)-f(x)}{\alpha}.
+$$
+This is an intrinsic discrete derivative surrogate along the scan step.\par
+Define the orbit average (a discrete integral surrogate) by
+$$
+A_N(f;x_0):=\frac{1}{N}\sum_{n=0}^{N-1} f(T_\alpha^n(x_0)).
+$$
+
+\begin{theorem}[Orbit trace for an irrational rotation]
+If $f$ is continuous and $\alpha\notin\mathbb{Q}$, the limit
+$$
+\mathrm{Tr}_\alpha(f):=\lim_{N\to\infty}A_N(f;x_0)
+$$
+exists, is independent of $x_0$, and equals the space average with respect to Lebesgue measure $\mu$ on $X$:
+$$
+\mathrm{Tr}_\alpha(f)=\int_X f(x)\,d\mu(x).
+$$
+\end{theorem}
+\begin{proof}[Reference]
+This is a standard consequence of unique ergodicity/equidistribution of irrational rotations; see, e.g., \cite{Weyl1916,KuipersNiederreiter1974}.
+\end{proof}
+
+\subsection{Abel finite part for divergent orbit sums}
+Let $u_n:=f(T_\alpha^n(x_0))$ be the orbit sample sequence (not assumed absolutely summable). Define its Abel generating function
+$$
+S_f(r):=\sum_{n=0}^{\infty} u_n r^n,\qquad 0<r<1.
+$$
+If $f$ is bounded then $S_f(r)$ converges absolutely for $0<r<1$. If as $r\uparrow 1$ the function admits an asymptotic expansion of the form
+$$
+S_f(r)=\sum_{j=1}^{J} \frac{c_j}{(1-r)^j} + C + o(1),
+$$
+we define the orbit finite part by
+$$
+\mathrm{FP}_\alpha(f):=C.
+$$
+
+\begin{lemma}[Uniqueness of the finite part]
+If $S_f(r)$ admits two expansions of the above form with constants $C$ and $C'$, then $C=C'$.
+\end{lemma}
+\begin{proof}
+Subtracting the two expansions gives
+$$
+0=\sum_{j=1}^{J''}\frac{d_j}{(1-r)^j}+(C-C')+o(1),
+$$
+as $r\uparrow 1$, where $J''=\max\{J,J'\}$ and $d_j$ are coefficient differences (missing coefficients treated as $0$). Multiplying by $(1-r)^{J''}$ and letting $r\uparrow 1$ yields $d_{J''}=0$. Repeating inductively gives $d_j=0$ for all $j\ge 1$, hence $C-C'+o(1)=0$ and therefore $C=C'$.
+\end{proof}
+
+\noindent
+In this manuscript, whenever a constant term depends on a regularization choice, the Abel finite-part convention above (together with its natural extensions beyond the circle template) is taken as the normalization prescribed by Convention~R1.
+

@@ -1,0 +1,150 @@
+\section{Explicit 1D Fibonacci DQCA model and numerical protocol}
+\label{app:fib_dqca}
+
+This appendix specifies a concrete 1D Fibonacci (cut-and-project) Dirac quantum cellular automaton (DQCA) used as a checkable subsystem model for the quasicrystal program in Part~III. It also fixes the diagnostics (dispersion extraction, group velocities, and norm errors) used for the numerical evidence reported in Part~VI.\par
+Throughout, $\phi=\tfrac{1+\sqrt5}{2}$ and $\alpha=\phi^{-2}$.
+
+\subsection{Fibonacci chain as a cut-and-project set}
+Fix an intercept (phason shift) $\rho\in[0,1)$ and define the internal coordinate
+\begin{equation}
+    u_j \equiv \{j\alpha+\rho\}\in[0,1),\qquad j\in\mathbb{Z},
+\end{equation}
+where $\{\cdot\}$ denotes the fractional part. Define the tile-type word $\sigma(j)\in\{L,S\}$ by
+\begin{equation}
+    \sigma(j)=
+    \begin{cases}
+    L,& u_j\in[0,1-\alpha),\\
+    S,& u_j\in[1-\alpha,1).
+    \end{cases}
+\label{eq:fib_sigma_appendix}
+\end{equation}
+This is the standard Sturmian coding of an irrational rotation and yields the Fibonacci word for $\alpha=\phi^{-2}$ \cite{MorseHedlund1940,Lothaire2002}. Lemma~\ref{lemma:sturmian_frequencies} records the asymptotic symbol frequencies.
+\paragraph{Remark (relation to scan--projection readout).}
+Eq.~(\ref{eq:fib_sigma_appendix}) is the spatial analogue of the intrinsic scan--projection readout of Part~II (Axiom~O5): the index $j$ plays the role of the tick, $\rho$ is an initial phase/phason shift, and the binary output $\sigma(j)\in\{L,S\}$ is obtained by window projection of the rotation orbit.
+\begin{lemma}[Symbol frequencies]
+\label{lemma:sturmian_frequencies}
+For irrational $\alpha$, the sequence $\sigma(j)$ defined by Eq.~(\ref{eq:fib_sigma_appendix}) has well-defined asymptotic symbol frequencies:
+\begin{equation}
+    \lim_{N\to\infty}\frac{1}{N}\#\{0\le j<N:\sigma(j)=S\}=\alpha,\qquad
+    \lim_{N\to\infty}\frac{1}{N}\#\{0\le j<N:\sigma(j)=L\}=1-\alpha.
+\end{equation}
+\end{lemma}
+\begin{proof}[Reference]
+This is a standard consequence of Weyl equidistribution for irrational rotations; see, e.g., \cite{Weyl1916,KuipersNiederreiter1974}.
+\end{proof}
+\paragraph{Corollary (mean coin/mass parameter).}
+If the coin angles are scaled as $\theta_{L/S}=m_{L/S}\varepsilon$ with fixed $m_{L/S}$, then the spatial average of the local mass/mixing parameter satisfies
+\begin{equation}
+    \lim_{N\to\infty}\frac{1}{N}\sum_{j=0}^{N-1} m_{\sigma(j)} = (1-\alpha)m_L+\alpha m_S,
+\end{equation}
+with $\alpha=\phi^{-2}$ in the golden case.
+The geometric embedding is obtained by assigning two edge lengths
+\begin{equation}
+    \ell_L\equiv \phi\,\varepsilon,\qquad \ell_S\equiv \varepsilon,
+\end{equation}
+and defining vertex positions recursively by
+\begin{equation}
+    r_0=0,\qquad r_{j+1}=r_j+\ell_{\sigma(j)}.
+\end{equation}
+The embedded set $\{r_j\}\subset\mathbb{R}$ is a 1D cut-and-project quasicrystal (Fibonacci chain).
+
+\subsection{Local gates and the one-step unitary}
+For continuum-limit diagnostics we work in the single-particle sector
+\begin{equation}
+    \mathcal{H}_{1p}=\ell^2(\mathbb{Z})\otimes\mathbb{C}^2,
+\end{equation}
+with internal basis states $\{|R\rangle,|L\rangle\}$.
+Let the on-site (Long/Short) coin rotations be
+\begin{equation}
+    C_L\equiv e^{-i\theta_L\sigma_y},\qquad C_S\equiv e^{-i\theta_S\sigma_y}.
+\end{equation}
+Define the position-dependent coin operator
+\begin{equation}
+    C\equiv \sum_{j\in\mathbb{Z}} |j\rangle\langle j|\otimes C_{\sigma(j)}.
+\end{equation}
+Define the conditional nearest-neighbor shift
+\begin{equation}
+    S\equiv \sum_{j\in\mathbb{Z}}\Big(|j+1\rangle\langle j|\otimes|R\rangle\langle R| + |j-1\rangle\langle j|\otimes|L\rangle\langle L|\Big).
+\end{equation}
+The one-step Floquet operator is the coined quantum walk
+\begin{equation}
+    U \equiv S\,C.
+\end{equation}
+Unitarity is immediate from unitarity of $S$ (a permutation on the basis) and of $C$ (block-diagonal with unitary blocks).
+
+\subsection{Phason shift and phason strain}
+The intercept $\rho$ shifts the acceptance window in internal space and generates a family of locally indistinguishable Fibonacci chains (different global phason choices). A convenient strain model lets $\rho$ vary slowly with the site index $j$:
+\begin{equation}
+    \rho\to \rho(j),\qquad u_j\equiv \{j\alpha+\rho(j)\}.
+\end{equation}
+Define the discrete phason strain by the incremental change
+\begin{equation}
+    \eta_j \equiv \rho(j+1)-\rho(j),
+\end{equation}
+and its norms (used in the numerics) by
+\begin{equation}
+    \|\eta\|_{\infty}\equiv \sup_j |\eta_j|,\qquad
+    \|\eta\|_{2;N}\equiv \left(\frac{1}{N}\sum_{j=0}^{N-1}\eta_j^2\right)^{1/2}.
+\end{equation}
+The unstrained Fibonacci chain corresponds to $\eta_j\equiv 0$. Small $\|\eta\|$ generates a controlled density of local phason flips (local changes of the L/S pattern).
+
+\subsection{Periodic approximants and dispersion extraction}
+To define a momentum-space diagnostic on an aperiodic texture we use periodic Fibonacci approximants. Let $F_0=0$, $F_1=1$, $F_{n+2}=F_{n+1}+F_n$ be Fibonacci numbers and set
+\begin{equation}
+    \alpha_n \equiv \frac{F_{n-1}}{F_n}\to \alpha.
+\end{equation}
+Define a length-$N$ periodic texture by taking $N\equiv F_n$ and replacing $\alpha$ with $\alpha_n$ in Eq.~(\ref{eq:fib_sigma_appendix}), so $\sigma_n(j+N)=\sigma_n(j)$. The finite-volume Floquet operator $U_N$ acts on $\mathbb{C}^{2N}$ and is block-circulant up to the coin texture.\par
+For each quasi-momentum $k\in[-\pi,\pi)$, implement the Bloch boundary condition
+\begin{equation}
+    \psi(j+N)=e^{ikN}\psi(j),
+\end{equation}
+and compute the $2\times 2$ quasienergy branches $E^{(n)}_{\pm}(k)$ from the eigenphases of the resulting $2N\times 2N$ matrix representation of $U_N(k)$. The group velocity is defined by
+\begin{equation}
+    v^{(n)}_{\pm}(k)\equiv \frac{\partial E^{(n)}_{\pm}(k)}{\partial k},
+\end{equation}
+computed numerically by finite differences on a $k$ grid.
+
+\subsection{Error norms}
+Let $E_D(k)=\sqrt{(c_{\mathrm{eff}}k)^2+m_{\mathrm{eff}}^2}$ be the target Dirac dispersion in the long-wavelength regime, with $(c_{\mathrm{eff}},m_{\mathrm{eff}})$ fit from small-$k$ data. We define the dispersion error at cutoff $k_{\max}$ by
+\begin{equation}
+    \delta_E^{(n)}(k_{\max})\equiv \max_{|k|\le k_{\max}} \big|E^{(n)}_{+}(k)-E_D(k)\big|.
+\end{equation}
+For wavepacket propagation, given an initial normalized state $|\psi_0\rangle\in\mathcal{H}_{1p}$ and integer time $T$, define
+\begin{equation}
+    \epsilon_{\mathrm{prop}}(T)\equiv \|U^T|\psi_0\rangle-|\psi_D(t)\rangle\|,\qquad t\equiv T\varepsilon,
+\end{equation}
+where $|\psi_D(t)\rangle$ is the corresponding Dirac evolution under a chosen continuum Hamiltonian $H_D$ (with the same fitted parameters and the same initial envelope). In the numerical implementation we report both $\epsilon_{\mathrm{prop}}(T)$ and its scaling with $(\varepsilon,k_{\max},\|\eta\|)$.
+
+\subsection{Reproducible numerical evidence (fixed parameter set)}
+For reproducibility, the figures below are generated by the fixed-parameter script
+\texttt{scripts/generate\_fib\_dqca\_figures.py}. The script prints its configuration to stdout; in the current version the key parameters are
+$\varepsilon=0.05$, $(m_L,m_S)=(0.60,0.40)$ (so $\theta_{L/S}=m_{L/S}\varepsilon$), $\rho_0=0.123456$, approximant sizes $N\in\{F_{11},F_{12},F_{13}\}=\{89,144,233\}$, and a compact $k$-grid of $17$ points over $|p|\le 2.5$.\par
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.85\linewidth]{images/fib_dqca_dispersion.png}
+    \caption{\textbf{Low-energy dispersion on Fibonacci periodic approximants.} The plotted branch is the smallest nonzero quasienergy magnitude (near the Floquet eigenvalue $1$), extracted from periodic Fibonacci approximants and expressed in physical units $(p,E)$ with $p=k/\varepsilon$ and $E=\mathrm{phase}/\varepsilon$. A Dirac fit $E_D(p)=\sqrt{(c_{\mathrm{eff}}p)^2+m_{\mathrm{eff}}^2}$ is overlaid for the largest $N$.}
+    \label{fig:fib_dqca_dispersion}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.85\linewidth]{images/fib_dqca_dirac_fit_error_vs_N.png}
+    \caption{\textbf{Dirac-fit residual vs approximant size.} The max and RMS residuals of the Dirac fit decrease as the Fibonacci approximant size $N$ increases, consistent with convergence of the low-energy branch to a Dirac form in the long-wavelength regime for the Fibonacci-textured walk (within the fixed-parameter protocol above).}
+    \label{fig:fib_dqca_dirac_fit_error_vs_N}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.85\linewidth]{images/fib_dqca_dirac_fit_error_vs_phason.png}
+    \caption{\textbf{Sensitivity to phason strain (periodic test field).} The Dirac-fit RMS residual is plotted against the wrapped phason strain metric $\eta_{\infty}$ for a periodic sinusoidal phason field $\rho(j)=\rho_0+A\sin(2\pi j/N)$ (wrapped). Once the modulation induces additional local flips in the L/S pattern, the residual increases.}
+    \label{fig:fib_dqca_dirac_fit_error_vs_phason}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.85\linewidth]{images/fib_dqca_doubler_gap_at_pi.png}
+    \caption{\textbf{Doubler diagnostic at the Brillouin edge.} The smallest nonzero quasienergy magnitude at $k=\pi$ (in physical units) remains bounded away from $0$ across increasing approximant size in the fixed-parameter protocol. This is consistent with the absence of an additional low-energy Dirac cone in the periodic-approximant diagnostic.}
+    \label{fig:fib_dqca_doubler_gap_at_pi}
+\end{figure}
+
