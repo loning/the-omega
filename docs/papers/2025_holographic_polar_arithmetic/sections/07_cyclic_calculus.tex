@@ -189,7 +189,11 @@ and the inner geometric series sums to $(1-r\,\e^{2\pi\iu m\alpha})^{-1}$.
 
 \begin{corollary}[Simple pole and explicit finite part]
 \label{cor:abel_fp_fourier}
-Under the hypotheses of Proposition~\ref{prop:abel_fourier_formula}, as $r\uparrow 1$ one has
+Assume the hypotheses of Proposition~\ref{prop:abel_fourier_formula} and assume additionally that
+$$
+\sum_{m\in\ZZ\setminus\{0\}}\frac{|\hat f(m)|}{|1-\e^{2\pi\iu m\alpha}|}<\infty.
+$$
+Then as $r\uparrow 1$ one has
 $$
 S_f(r)=\frac{\hat f(0)}{1-r}
 \;+\;
@@ -204,8 +208,20 @@ $$
 
 \begin{proof}
 In Proposition~\ref{prop:abel_fourier_formula}, the $m=0$ term is $\hat f(0)/(1-r)$.
-For $m\ne 0$, irrationality of $\alpha$ implies $\e^{2\pi\iu m\alpha}\ne 1$, so the denominator stays bounded away from $0$ as $r\uparrow 1$.
-Dominated convergence (using $\sum_m|\hat f(m)|<\infty$) yields the limit of the $m\ne 0$ part, proving the expansion.
+For $0<r<1$ one has
+$$
+|1-r\e^{2\pi\iu m\alpha}|^2=r\,|1-\e^{2\pi\iu m\alpha}|^2+(1-r)^2,
+$$
+so for $r\in(1/2,1)$,
+$$
+|1-r\e^{2\pi\iu m\alpha}|\ge \sqrt{r}\,|1-\e^{2\pi\iu m\alpha}|\ge \frac{1}{\sqrt{2}}\,|1-\e^{2\pi\iu m\alpha}|.
+$$
+Hence, for $m\ne 0$ and $r\in(1/2,1)$,
+$$
+\left|\frac{\hat f(m)\,\e^{2\pi\iu m x_0}}{1-r\,\e^{2\pi\iu m\alpha}}\right|
+\le \sqrt{2}\,\frac{|\hat f(m)|}{|1-\e^{2\pi\iu m\alpha}|}.
+$$
+By the additional hypothesis, the right-hand side is summable over $m\ne 0$, so dominated convergence yields the limit of the $m\ne 0$ part as $r\uparrow 1$, proving the expansion and the formula for $\FP_\Theta(f)$.
 \end{proof}
 
 \begin{proposition}[A quantitative remainder bound for the Abel finite part]
@@ -267,16 +283,19 @@ For the second term, note that $|1-\e^{\iu\theta_m}|<2(1-r)$ implies $|m|>2c_\al
 $$
 \sum_{m\ne 0}|m|\,|\hat f(m)|\,\ind_{\{|1-\e^{\iu\theta_m}|<2(1-r)\}}
 \le \sum_{|m|>2c_\alpha/(1-r)} |m|\,|\hat f(m)|
-=o(1)
+\le \frac{1-r}{2c_\alpha}\sum_{m\ne 0}|m|^2|\hat f(m)|
+=O(1-r).
 $$
-as $r\uparrow 1$.
-In particular, this term is $O(1-r)$ for $r$ sufficiently close to $1$ (after increasing the constant if needed).
 Putting the estimates together proves the claim.
 \end{proof}
 
 \begin{proposition}[Cohomological equation and the finite part]
 \label{prop:cohomological_fp}
-Assume the hypotheses of Proposition~\ref{prop:abel_fourier_formula} and set $f_0:=f-\hat f(0)$.
+Assume the hypotheses of Proposition~\ref{prop:abel_fourier_formula} and assume additionally that
+$$
+\sum_{m\in\ZZ\setminus\{0\}}\frac{|\hat f(m)|}{|1-\e^{2\pi\iu m\alpha}|}<\infty.
+$$
+Set $f_0:=f-\hat f(0)$.
 Define
 $$
 g(x):=\sum_{m\in\ZZ\setminus\{0\}}\frac{\hat f(m)}{1-\e^{2\pi\iu m\alpha}}\,\e^{2\pi\iu m x}.
@@ -292,7 +311,7 @@ $$
 \end{proposition}
 
 \begin{proof}
-Uniform convergence follows as in Proposition~\ref{prop:abel_fourier_formula}.
+The additional hypothesis implies $\sum_{m\ne 0}\left|\hat f(m)/(1-\e^{2\pi\iu m\alpha})\right|<\infty$, so the defining Fourier series for $g$ converges absolutely and uniformly by the Weierstrass $M$-test, hence $g$ is continuous.
 Compute Fourier coefficients. Since $\Theta$ acts by translation, it sends the Fourier mode $\e^{2\pi\iu m x}$ to $\e^{2\pi\iu m\alpha}\e^{2\pi\iu m x}$, hence
 $$
 \widehat{(I-\Theta)g}(m)=(1-\e^{2\pi\iu m\alpha})\hat g(m)=\hat f(m)\qquad (m\ne 0),
