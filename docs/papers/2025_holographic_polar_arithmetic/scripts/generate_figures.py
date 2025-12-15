@@ -382,6 +382,109 @@ def plot_projection_kernel_example(
     plt.close(fig)
 
 
+def plot_transport_duality_diagram(out_path: Path) -> None:
+    """
+    Schematic concept figure:
+      - Boundary S^1 with prime traps / mass impedance
+      - Low-energy arc path with detours (gravitational delay)
+      - High-energy chord shortcut and inward dive (kinematic advance)
+    """
+    fig, ax = plt.subplots(figsize=(7.8, 6.2))
+    ax.set_aspect("equal", adjustable="box")
+    ax.axis("off")
+
+    # Unit disk (bulk)
+    disk = plt.Circle((0.0, 0.0), 1.0, facecolor="#f3f3f3", edgecolor="none", zorder=0)
+    ax.add_patch(disk)
+
+    # Rough boundary ring to suggest impedance/texture.
+    # Keep the ring on or outside the unit circle (no inward dents), so the
+    # low-energy arc path is visually confined to the boundary regime.
+    theta = np.linspace(0.0, TWO_PI, 800, dtype=np.float64)
+    rough1 = 0.5 + 0.5 * np.sin(20.0 * theta)
+    rough2 = 0.5 + 0.5 * np.sin(7.0 * theta + 0.7)
+    r = 1.0 + 0.03 * rough1 + 0.015 * rough2
+    ax.plot(r * np.cos(theta), r * np.sin(theta), color="black", linewidth=3.0, zorder=3)
+
+    # Prime traps on the boundary
+    trap_deg = np.array([20.0, 75.0, 140.0, 210.0, 280.0, 330.0], dtype=np.float64)
+    trap_theta = np.deg2rad(trap_deg)
+    trap_r = 1.0 + 0.03 * (0.5 + 0.5 * np.sin(20.0 * trap_theta)) + 0.015 * (0.5 + 0.5 * np.sin(7.0 * trap_theta + 0.7))
+    ax.scatter(trap_r * np.cos(trap_theta), trap_r * np.sin(trap_theta), s=70, c="black", zorder=4)
+
+    # Low-energy arc path near the boundary with local detours near traps
+    t_arc = np.linspace(0.15 * math.pi, 1.85 * math.pi, 700, dtype=np.float64)
+    r_arc = 0.92 + 0.015 * np.sin(6.0 * t_arc)
+    for a in trap_theta:
+        diff = np.angle(np.exp(1j * (t_arc - a)))
+        r_arc += 0.06 * np.exp(-((diff / 0.12) ** 2))
+    x_arc = r_arc * np.cos(t_arc)
+    y_arc = r_arc * np.sin(t_arc)
+    ax.plot(x_arc, y_arc, color="#d73027", linewidth=2.6, zorder=2)
+
+    # High-energy chord shortcut across the disk
+    p0 = (math.cos(float(t_arc[0])), math.sin(float(t_arc[0])))
+    p1 = (math.cos(float(t_arc[-1])), math.sin(float(t_arc[-1])))
+    ax.plot([p0[0], p1[0]], [p0[1], p1[1]], color="#4575b4", linewidth=3.0, zorder=1)
+
+    # Inward dive: logarithmic spiral (Fibonacci-type visual)
+    t_sp = np.linspace(0.0, 4.0 * math.pi, 900, dtype=np.float64)
+    r0, r_end = 0.98, 0.10
+    k = math.log(r_end / r0) / float(t_sp[-1])  # negative
+    r_sp = r0 * np.exp(k * t_sp)
+    phi0 = math.radians(35.0)
+    x_sp = r_sp * np.cos(t_sp + phi0)
+    y_sp = r_sp * np.sin(t_sp + phi0)
+    ax.plot(x_sp, y_sp, color="#1a9850", linewidth=2.4, zorder=2)
+
+    # Arrow along the spiral (inward direction)
+    i0, i1 = -110, -1
+    ax.annotate(
+        "",
+        xy=(float(x_sp[i1]), float(y_sp[i1])),
+        xytext=(float(x_sp[i0]), float(y_sp[i0])),
+        arrowprops=dict(arrowstyle="->", lw=2.0, color="#1a9850"),
+        zorder=5,
+    )
+
+    # Labels
+    ax.text(0.0, 1.16, r"Boundary $S^1$", fontsize=11, ha="center", va="bottom")
+    ax.text(0.0, 0.0, r"Bulk $D^2$", fontsize=11, ha="center", va="center", color="gray")
+
+    ax.text(-1.45, 0.95, "Arc path\n(gravitational delay)", fontsize=10, ha="left", va="center", color="#d73027")
+
+    mid = ((p0[0] + p1[0]) / 2.0, (p0[1] + p1[1]) / 2.0)
+    ax.text(
+        mid[0] + 0.10,
+        mid[1] - 0.20,
+        "Chord shortcut\n(kinematic advance)",
+        fontsize=10,
+        ha="center",
+        va="center",
+        color="#4575b4",
+    )
+
+    ax.text(-0.25, -0.55, "Inward dive\n(Fibonacci-type spiral)", fontsize=10, ha="center", va="center", color="#1a9850")
+
+    ax.annotate(
+        "Prime traps\n(mass impedance)",
+        xy=(float(trap_r[1] * np.cos(trap_theta[1])), float(trap_r[1] * np.sin(trap_theta[1]))),
+        xytext=(1.35, 0.85),
+        arrowprops=dict(arrowstyle="->", lw=1.2, color="black"),
+        fontsize=10,
+        ha="left",
+        va="center",
+        color="black",
+    )
+
+    ax.set_xlim(-1.65, 1.65)
+    ax.set_ylim(-1.35, 1.30)
+
+    fig.tight_layout()
+    fig.savefig(out_path, dpi=300)
+    plt.close(fig)
+
+
 def main() -> None:
     here = Path(__file__).resolve()
     images_dir = (here.parent / "../images").resolve()
@@ -452,6 +555,8 @@ def main() -> None:
         encode=lambda S: ostrowski_digits_periodic(int(S), a_val=2),
     )
     plot_readout_stability(stab_silver, out_path=images_dir / "hpa_readout_stability_silver.png")
+
+    plot_transport_duality_diagram(images_dir / "hpa_transport_duality.png")
 
     print(f"Saved figures to: {images_dir}")
 
