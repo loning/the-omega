@@ -69,10 +69,12 @@ def fib_pair(n: int) -> tuple[int, int]:
 def sturmian_sigma(alpha: float, rho: float | np.ndarray, N: int) -> np.ndarray:
     """
     Return sigma[j] in {0,1} where 0=L and 1=S for Sturmian coding.
+    Convention: L corresponds to the window [1-alpha, 1) (mod 1).
     """
     j = np.arange(N, dtype=np.float64)
     u = (j * float(alpha) + rho) % 1.0
-    return (u >= (1.0 - float(alpha))).astype(np.int8)
+    # S occurs on the complementary window [0, 1-alpha).
+    return (u < (1.0 - float(alpha))).astype(np.int8)
 
 
 def rho_field_sinusoidal(N: int, rho0: float, amp: float) -> np.ndarray:

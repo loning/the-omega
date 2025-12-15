@@ -2,7 +2,7 @@
 \label{app:fib_dqca}
 
 This appendix specifies a concrete 1D Fibonacci (cut-and-project) Dirac quantum cellular automaton (DQCA) used as a checkable subsystem model for the quasicrystal program in Part~III. It also fixes the diagnostics (dispersion extraction, group velocities, and norm errors) used for the numerical evidence reported in Part~VI.\par
-Throughout, $\phi=\tfrac{1+\sqrt5}{2}$ and $\alpha_{\mathrm{rot}}=\phi^{-2}$.
+Throughout, $\phi=\tfrac{1+\sqrt5}{2}$ and $\alpha_{\mathrm{rot}}=\phi^{-1}$.
 
 \subsection{Fibonacci chain as a cut-and-project set}
 Fix an intercept (phason shift) $\rho\in[0,1)$ and define the internal coordinate
@@ -13,20 +13,20 @@ where $\{\cdot\}$ denotes the fractional part. Define the tile-type word $\sigma
 \begin{equation}
     \sigma(j)=
     \begin{cases}
-    L,& u_j\in[0,1-\alpha_{\mathrm{rot}}),\\
-    S,& u_j\in[1-\alpha_{\mathrm{rot}},1).
+    L,& u_j\in[1-\alpha_{\mathrm{rot}},1),\\
+    S,& u_j\in[0,1-\alpha_{\mathrm{rot}}).
     \end{cases}
 \label{eq:fib_sigma_appendix}
 \end{equation}
-This is the standard Sturmian coding of an irrational rotation and yields the Fibonacci word for $\alpha_{\mathrm{rot}}=\phi^{-2}$ \cite{MorseHedlund1940,Lothaire2002}. Lemma~\ref{lemma:sturmian_frequencies} records the asymptotic symbol frequencies.
+This is the standard Sturmian coding of an irrational rotation and yields the Fibonacci word for $\alpha_{\mathrm{rot}}=\phi^{-1}$ \cite{MorseHedlund1940,Lothaire2002}. Lemma~\ref{lemma:sturmian_frequencies} records the asymptotic symbol frequencies.
 \paragraph{Remark (relation to scan--projection readout).}
 Eq.~(\ref{eq:fib_sigma_appendix}) is the spatial analogue of the intrinsic scan--projection readout of Part~II (Axiom~O5): the index $j$ plays the role of the tick, $\rho$ is an initial phase/phason shift, and the binary output $\sigma(j)\in\{L,S\}$ is obtained by window projection of the rotation orbit.
 \begin{lemma}[Symbol frequencies]
 \label{lemma:sturmian_frequencies}
 For irrational $\alpha_{\mathrm{rot}}$, the sequence $\sigma(j)$ defined by Eq.~(\ref{eq:fib_sigma_appendix}) has well-defined asymptotic symbol frequencies:
 \begin{equation}
-    \lim_{N\to\infty}\frac{1}{N}\#\{0\le j<N:\sigma(j)=S\}=\alpha_{\mathrm{rot}},\qquad
-    \lim_{N\to\infty}\frac{1}{N}\#\{0\le j<N:\sigma(j)=L\}=1-\alpha_{\mathrm{rot}}.
+    \lim_{N\to\infty}\frac{1}{N}\#\{0\le j<N:\sigma(j)=L\}=\alpha_{\mathrm{rot}},\qquad
+    \lim_{N\to\infty}\frac{1}{N}\#\{0\le j<N:\sigma(j)=S\}=1-\alpha_{\mathrm{rot}}.
 \end{equation}
 \end{lemma}
 \begin{proof}[Reference]
@@ -35,9 +35,9 @@ This is a standard consequence of Weyl equidistribution for irrational rotations
 \paragraph{Corollary (mean coin/mass parameter).}
 If the coin angles are scaled as $\theta_{L/S}=m_{L/S}\varepsilon$ with fixed $m_{L/S}$, then the spatial average of the local mass/mixing parameter satisfies
 \begin{equation}
-    \lim_{N\to\infty}\frac{1}{N}\sum_{j=0}^{N-1} m_{\sigma(j)} = (1-\alpha_{\mathrm{rot}})m_L+\alpha_{\mathrm{rot}} m_S,
+    \lim_{N\to\infty}\frac{1}{N}\sum_{j=0}^{N-1} m_{\sigma(j)} = \alpha_{\mathrm{rot}}m_L+(1-\alpha_{\mathrm{rot}})m_S,
 \end{equation}
-with $\alpha_{\mathrm{rot}}=\phi^{-2}$ in the golden case.
+with $\alpha_{\mathrm{rot}}=\phi^{-1}$ in the golden case.
 The geometric embedding is obtained by assigning two edge lengths
 \begin{equation}
     \ell_L\equiv \phi\,\varepsilon,\qquad \ell_S\equiv \varepsilon,
@@ -87,6 +87,7 @@ and its norms (used in the numerics) by
     \|\eta\|_{2;N}\equiv \left(\frac{1}{N}\sum_{j=0}^{N-1}\eta_j^2\right)^{1/2}.
 \end{equation}
 The unstrained Fibonacci chain corresponds to $\eta_j\equiv 0$. Small $\|\eta\|$ generates a controlled density of local phason flips (local changes of the L/S pattern).
+Equivalently, perturbing the intercept/window changes the binary coding only when the orbit hits the symmetric difference of the two windows; quantitative flip-count bounds can be phrased in terms of Ostrowski/Denjoy--Koksma discrepancy control for irrational-rotation readouts \cite{Ma2025HPA}.
 
 \subsection{Periodic approximants and dispersion extraction}
 To define a momentum-space diagnostic on an aperiodic texture we use periodic Fibonacci approximants. Let $F_0=0$, $F_1=1$, $F_{n+2}=F_{n+1}+F_n$ be Fibonacci numbers and set
