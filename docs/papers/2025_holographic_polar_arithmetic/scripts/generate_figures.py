@@ -662,6 +662,79 @@ def plot_holographic_slice_diagram(out_path: Path) -> None:
     plt.close(fig)
 
 
+def plot_impedance_decomposition_diagram(out_path: Path) -> None:
+    """
+    Concept figure:
+      - Three orthogonal readout channels (bulk / boundary / line)
+      - A projection vector with components (4π^3, π^2, π)
+      - L1-style sequential accumulation vs. a straight (L2-like) diagonal
+    """
+    from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
+
+    # Raw magnitudes (used only for labels); plot in normalized units.
+    v_line = float(math.pi)
+    v_boundary = float(math.pi**2)
+    v_bulk = float(4.0 * math.pi**3)
+    vals = np.asarray([v_line, v_boundary, v_bulk], dtype=np.float64)
+    s = vals / float(np.max(vals))
+
+    p = np.asarray([s[0], s[1], s[2]], dtype=np.float64)
+    axis_len = 1.05
+
+    fig = plt.figure(figsize=(10.4, 5.6))
+    ax = fig.add_subplot(1, 1, 1, projection="3d")
+    ax.set_box_aspect((1.0, 1.0, 1.0))
+    ax.set_xlim(0.0, axis_len)
+    ax.set_ylim(0.0, axis_len)
+    ax.set_zlim(0.0, axis_len)
+    ax.axis("off")
+
+    # Orthogonal axes (schematic channels).
+    ax.plot([0.0, axis_len], [0.0, 0.0], [0.0, 0.0], color="black", lw=1.6)
+    ax.plot([0.0, 0.0], [0.0, axis_len], [0.0, 0.0], color="black", lw=1.6)
+    ax.plot([0.0, 0.0], [0.0, 0.0], [0.0, axis_len], color="black", lw=1.6)
+    ax.quiver(0.0, 0.0, 0.0, axis_len, 0.0, 0.0, color="black", lw=1.6, arrow_length_ratio=0.08)
+    ax.quiver(0.0, 0.0, 0.0, 0.0, axis_len, 0.0, color="black", lw=1.6, arrow_length_ratio=0.08)
+    ax.quiver(0.0, 0.0, 0.0, 0.0, 0.0, axis_len, color="black", lw=1.6, arrow_length_ratio=0.08)
+
+    ax.text(axis_len + 0.04, 0.0, 0.0, r"Line $S^1$", fontsize=11, ha="left", va="center")
+    ax.text(0.0, axis_len + 0.04, 0.0, r"Boundary $D^2$", fontsize=11, ha="center", va="bottom")
+    ax.text(0.0, 0.0, axis_len + 0.04, r"Bulk $T^3$", fontsize=11, ha="center", va="bottom")
+
+    # L1 path (sequential accumulation) in normalized coordinates.
+    path_x = [0.0, float(p[0]), float(p[0]), float(p[0])]
+    path_y = [0.0, 0.0, float(p[1]), float(p[1])]
+    path_z = [0.0, 0.0, 0.0, float(p[2])]
+    ax.plot(path_x, path_y, path_z, color="black", lw=3.0)
+    ax.scatter([float(p[0])], [0.0], [0.0], s=26, c="black")
+    ax.scatter([float(p[0])], [float(p[1])], [0.0], s=26, c="black")
+    ax.scatter([float(p[0])], [float(p[1])], [float(p[2])], s=36, c="black")
+
+    # Diagonal (contrast with metric-style combination).
+    ax.plot([0.0, float(p[0])], [0.0, float(p[1])], [0.0, float(p[2])], color="gray", lw=2.2, ls="--")
+
+    # Component annotations (use raw values in math labels).
+    ax.text(float(p[0]) * 0.55, 0.02, 0.00, r"$V_{\mathrm{line}}=\pi$", fontsize=11, ha="center", va="bottom")
+    ax.text(float(p[0]) + 0.02, float(p[1]) * 0.55, 0.00, r"$V_{\mathrm{boundary}}=\pi^2$", fontsize=11, ha="left", va="center")
+    ax.text(float(p[0]) + 0.02, float(p[1]) + 0.02, float(p[2]) * 0.55, r"$V_{\mathrm{bulk}}=4\pi^3$", fontsize=11, ha="left", va="center")
+
+    ax.text(
+        0.02,
+        0.02,
+        axis_len,
+        r"Sequential cost: $\|\vec{V}\|_1=V_{\mathrm{bulk}}+V_{\mathrm{boundary}}+V_{\mathrm{line}}$",
+        fontsize=10,
+        ha="left",
+        va="bottom",
+        color="black",
+    )
+
+    ax.view_init(elev=20.0, azim=-55.0)
+    fig.tight_layout()
+    fig.savefig(out_path, dpi=300)
+    plt.close(fig)
+
+
 def plot_spiral_geodesic_diagram(out_path: Path) -> None:
     """
     Concept figure:
@@ -884,6 +957,7 @@ def main() -> None:
 
     plot_transport_duality_diagram(images_dir / "hpa_transport_duality.png")
     plot_holographic_slice_diagram(images_dir / "hpa_holographic_slice.png")
+    plot_impedance_decomposition_diagram(images_dir / "hpa_impedance_decomposition.png")
     plot_spiral_geodesic_diagram(images_dir / "hpa_spiral_geodesic.png")
     plot_fractal_onion_diagram(images_dir / "hpa_fractal_onion.png")
 
