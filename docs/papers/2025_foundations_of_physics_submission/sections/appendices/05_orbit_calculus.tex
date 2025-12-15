@@ -31,6 +31,38 @@ $$
 This is a standard consequence of unique ergodicity/equidistribution of irrational rotations; see, e.g., \cite{Weyl1916,KuipersNiederreiter1974}.
 \end{proof}
 
+\subsection{Denjoy--Koksma/Ostrowski bounds for interval readouts (robustness)}
+Binary scan readouts in this manuscript are modeled by interval windows $W\subset X$ and indicator sampling $s_k=\mathds{1}_W(x_0+k\alpha_{\mathrm{rot}})$. The following quantitative discrepancy bound is a convenient robustness tool; see \cite{Ma2025HPA} for a self-contained development in the scan--projection setting.
+
+\begin{theorem}[Ostrowski/Denjoy--Koksma bound for interval counts]
+\label{thm:ostrowski_dk_fop}
+Let $\alpha=[0;a_1,a_2,\dots]\in(0,1)\setminus\mathbb{Q}$ and let $q_k$ denote the convergent denominators.
+Let $W\subset X$ be any interval and define
+\begin{equation}
+    s_k:=\mathds{1}_W(x_0+k\alpha),\qquad S_N:=\sum_{k=0}^{N-1}s_k.
+\end{equation}
+For every $N\ge 1$ write the Ostrowski expansion $N=\sum_{k=0}^{m} b_k q_k$ with admissible digits.
+Then for every $x_0\in X$ one has the uniform bound
+\begin{equation}
+    \bigl|S_N-N\,\mu(W)\bigr|\ \le\ 2\sum_{k=0}^{m} b_k.
+\end{equation}
+\end{theorem}
+\begin{proof}[Sketch/Reference]
+Let $f:=\mathds{1}_W-\mu(W)$, so $\int f\,d\mu=0$ and $\mathrm{Var}(f)=2$.
+Denjoy--Koksma gives a uniform bound at convergent times: $\left|\sum_{j=0}^{q_k-1} f(x_0+j\alpha)\right|\le \mathrm{Var}(f)=2$.
+Decomposing the length-$N$ sum into Ostrowski blocks of lengths $q_k$ and applying the convergent-time bound to each block yields the stated estimate; see, e.g., \cite{Denjoy1932,Koksma1935,KatokHasselblatt1995,Ma2025HPA}.
+\end{proof}
+
+\begin{corollary}[Window-perturbation stability via symmetric difference]
+\label{cor:window_perturbation_stability}
+Let $W,W'\subset X$ be interval windows and let $s_k:=\mathds{1}_W(x_0+k\alpha)$ and $s'_k:=\mathds{1}_{W'}(x_0+k\alpha)$ be the corresponding binary readouts.
+Then the length-$N$ Hamming distance equals the orbit count on the symmetric difference:
+\begin{equation}
+    \sum_{k=0}^{N-1}|s_k-s'_k|\;=\;\sum_{k=0}^{N-1}\mathds{1}_{W\triangle W'}(x_0+k\alpha).
+\end{equation}
+In particular, applying Theorem~\ref{thm:ostrowski_dk_fop} to the interval $W\triangle W'$ gives an explicit uniform bound on the number of flips induced by a window perturbation, in terms of the Ostrowski digits of $N$ and the window measure.
+\end{corollary}
+
 \subsection{Abel finite part for divergent orbit sums}
 Let $u_n:=f(T_{\alpha_{\mathrm{rot}}}^n(x_0))$ be the orbit sample sequence (not assumed absolutely summable). Define its Abel generating function
 $$

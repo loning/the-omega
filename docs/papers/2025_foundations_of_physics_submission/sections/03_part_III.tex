@@ -29,10 +29,11 @@ We define the \textbf{Omega Network} $\Lambda$ as a subset of points in $\mathbb
 \begin{equation}
     \Lambda = \{ P_{||} \vec{n} \mid \vec{n} \in \mathbb{Z}^N, P_{\perp} \vec{n} \in W \}.
 \end{equation}
+This is the standard cut-and-project (model-set) construction of quasicrystals; see, e.g., \cite{Senechal1995,BaakeGrimm2013AperiodicOrder}.
 This construction provides a natural candidate substrate whose large-scale statistics can approximate rotational invariance. The precise dynamical condition used in this manuscript is encoded in Assumption~\ref{assump:M1} at the level of the long-wavelength propagator/dispersion.
 
 \subsection{Relation to Tensor Networks (MERA)}
-The recursive construction of the Omega Network constitutes the \textbf{Golden MERA} realization (Assumption~\ref{assump:M3}) of the holographic encoding map $\Phi$ postulated in Axiom~O4 (see Theorem \ref{thm:golden_isometry} in Appendix \ref{app:formal_proofs} for an existence argument). This structure shares deep structural isomorphisms with Multi-scale Entanglement Renormalization Ansatz (MERA) networks used in efficient quantum simulations and AdS/CFT holography.
+The recursive construction of the Omega Network constitutes the \textbf{Golden MERA} realization (Assumption~\ref{assump:M3}) of the holographic encoding map $\Phi$ postulated in Axiom~O4 (see Theorem \ref{thm:golden_isometry} in Appendix \ref{app:formal_proofs} for an existence argument). This structure shares deep structural isomorphisms with Multi-scale Entanglement Renormalization Ansatz (MERA) networks used in efficient quantum simulations and AdS/CFT holography \cite{Vidal2007MERA,Swingle2012MERA,Pastawski2015,Harlow2017}.
 
 The links in our quasicrystal $\Lambda$ can be viewed as entanglement bonds. The Golden Ratio scaling ($\tau \to \phi \tau$) mimics the renormalization group flow in MERA, where coarse-graining the lattice preserves the long-range entanglement structure.
 We propose that the effective bond dimension $\chi$ of the spacetime tensor network is related to the topological complexity of the $G_2$ fiber:
@@ -121,8 +122,8 @@ with compilation depth bounded by
 where the constant $C$ depends only on an upper bound on the neighborhood size $m\equiv \sup_{s,k}|\mathcal{N}_k^{(s)}|$ (and the on-site dimension).
 \end{proposition}
 \textit{Proof sketch.}
-Fix an ordering $f_R$ and let $m\equiv \sup_{s,k}|\mathcal{N}_k^{(s)}|<\infty$. For each neighborhood block $\mathcal{N}_k^{(s)}$, let $I_k^{(s)}\equiv[\min_{x\in\mathcal N_k^{(s)}}f_R(x),\,\max_{x\in\mathcal N_k^{(s)}}f_R(x)]$ be its tape interval, of length $\Delta_k^{(s)}+1$. Since $m$ is bounded, each local unitary $\hat{U}_{\mathcal{N}_k^{(s)}}$ admits a fixed-depth nearest-neighbor implementation once its registers occupy a contiguous segment of the 1D tape (the required depth depends only on $m$ and the on-site dimension).\par
-We implement each layer $\hat U_R^{(s)}=\prod_k \hat U_{\mathcal N_k^{(s)}}$ by a \emph{gather--execute--scatter} construction. (i) \textbf{Gather}: using a nearest-neighbor SWAP network on the tape, route the registers belonging to each $\mathcal{N}_k^{(s)}$ so that they become contiguous within $I_k^{(s)}$; this requires $\mathcal{O}(\Delta_k^{(s)}+1)$ SWAP layers because no register needs to move more than $\Delta_k^{(s)}$ sites. (ii) \textbf{Execute}: apply the local circuits for all $k$ in parallel (supports are disjoint within a layer). (iii) \textbf{Scatter}: undo the SWAP network. Scheduling this for $s=1,\dots,D$ yields the stated depth bound up to a constant factor, controlled by $\max_{s,k}(\Delta_k^{(s)}+1)$.
+Fix an ordering $f_R$ and let $m\equiv \sup_{s,k}|\mathcal{N}_k^{(s)}|<\infty$. For each neighborhood block $\mathcal{N}_k^{(s)}$, let $I_k^{(s)}\equiv[\min_{x\in\mathcal N_k^{(s)}}f_R(x),\,\max_{x\in\mathcal N_k^{(s)}}f_R(x)]$ be its tape interval, of length $\Delta_k^{(s)}+1$. Since $m$ is bounded, each local unitary $\hat{U}_{\mathcal{N}_k^{(s)}}$ admits a fixed-depth nearest-neighbor implementation once its registers occupy a contiguous segment of the 1D tape (the required depth depends only on $m$ and the on-site dimension) \cite{NielsenChuang2000}.\par
+We implement each layer $\hat U_R^{(s)}=\prod_k \hat U_{\mathcal N_k^{(s)}}$ by a \emph{gather--execute--scatter} construction. (i) \textbf{Gather}: using a nearest-neighbor SWAP network on the tape, route the registers belonging to each $\mathcal{N}_k^{(s)}$ so that they become contiguous within $I_k^{(s)}$; this requires $\mathcal{O}(\Delta_k^{(s)}+1)$ SWAP layers because no register needs to move more than $\Delta_k^{(s)}$ sites (cf.\ standard linear-nearest-neighbor routing templates \cite{Hirata2011LNN}). (ii) \textbf{Execute}: apply the local circuits for all $k$ in parallel (supports are disjoint within a layer). (iii) \textbf{Scatter}: undo the SWAP network. Scheduling this for $s=1,\dots,D$ yields the stated depth bound up to a constant factor, controlled by $\max_{s,k}(\Delta_k^{(s)}+1)$.
 
 \begin{definition}[Local routing cost field]
 \label{def:routing_cost_field}
@@ -220,9 +221,10 @@ which is manifestly unitary and strictly local (range-1 on the chain). This mode
 \par
 \noindent\textbf{Why 1D is sufficient for verification.}
 Although the Omega Network is higher-dimensional, the exact 1D tape compilation in Proposition~\ref{prop:exact_1d_compilation} shows that any finite patch update generated by bounded-range local gates admits an equivalent nearest-neighbor 1D realization (at the cost of routing depth). Therefore, a 1D Fibonacci-textured DQCA provides a computationally tractable testbed for the continuum-limit diagnostics (dispersion, group velocity, and norm-error scaling) while remaining faithful to the locality structure of the underlying PQCA.
+\par\noindent\textit{Scope.} The 1D Fibonacci DQCA is used as a falsifiable diagnostic subsystem; it does not by itself constitute a rigorous higher-dimensional continuum-limit theorem, which remains a homogenization problem (Appendix~\ref{app:homogenization}).
 \par
 \noindent\textbf{Diagnostics for the Dirac limit.}
-To extract dispersion on the aperiodic substrate we use periodic Fibonacci approximants: replace $\alpha_{\mathrm{rot}}$ by the rational approximant $\alpha_{\mathrm{rot},n}\equiv F_{n-1}/F_n$ and impose period $N\equiv F_n$ on the coin texture. The resulting $N$-cell Floquet operator admits Bloch decomposition $U^{(n)}(k)$ with quasi-momentum $k\in[-\pi,\pi)$, yielding quasienergies $E^{(n)}_\pm(k)$ via eigenphases of $U^{(n)}(k)$.
+To extract dispersion on the aperiodic substrate we use periodic Fibonacci approximants: replace $\alpha_{\mathrm{rot}}$ by the rational approximant $\alpha_{\mathrm{rot},n}\equiv F_{n-1}/F_n$ and impose period $N\equiv F_n$ on the coin texture \cite{Senechal1995,BaakeGrimm2013AperiodicOrder}. The resulting $N$-cell Floquet operator admits Bloch decomposition $U^{(n)}(k)$ with quasi-momentum $k\in[-\pi,\pi)$, yielding quasienergies $E^{(n)}_\pm(k)$ via eigenphases of $U^{(n)}(k)$.
 We compare these to the target Dirac dispersion $E_D(k)=\sqrt{(c_{\mathrm{eff}}k)^2+m_{\mathrm{eff}}^2}$ in the long-wavelength regime, and we quantify errors by, e.g.,
 \begin{equation}
     \delta_E^{(n)}(k_{\max})\equiv \max_{|k|\le k_{\max}} \big|E^{(n)}_+(k)-E_D(k)\big|,
@@ -297,7 +299,7 @@ Let $W\subset E_\perp$ be the compact acceptance window defining the cut-and-pro
     \widehat{W}(q)\ \equiv\ \frac{1}{\mathrm{Vol}(W)}\int_W e^{-i q\cdot y}\,dy,\qquad q\in E_\perp^*,
 \end{equation}
 so that $\widehat{W}(0)=1$ and $|\widehat{W}(q)|\le 1$.
-For windows with piecewise $C^1$ boundary one has a quantitative decay bound $|\widehat{W}(q)|\le C_W/|q|$ for large $|q|$ (Riemann--Lebesgue with one integration by parts), and for the 1D Fibonacci window (an interval) the transform is explicitly a sinc function (Appendix~\ref{app:doubling_filter}).\par
+For windows with piecewise $C^1$ boundary one has a quantitative decay bound $|\widehat{W}(q)|\le C_W/|q|$ for large $|q|$ (Riemann--Lebesgue with one integration by parts); see, e.g., \cite{SteinShakarchi2003FourierAnalysis,BaakeGrimm2013AperiodicOrder}. For the 1D Fibonacci window (an interval) the transform is explicitly a sinc function (Appendix~\ref{app:doubling_filter}).\par
 
 \noindent\textbf{Projection-filter mass term.}
 In the embedding picture, modes carry momenta $(k_{\parallel},k_\perp)$ and we introduce a momentum-dependent mass term controlled by the internal momentum $q\equiv k_\perp$:
