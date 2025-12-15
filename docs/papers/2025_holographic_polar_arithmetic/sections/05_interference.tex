@@ -76,12 +76,12 @@ A probabilistic refinement replaces the hard nearest-point rule by a soft projec
 
 \begin{definition}[Projection kernel]
 \label{def:projection_kernel}
-Fix a scale $\varepsilon>0$. For $v\in\CC$ define a probability distribution on $M$ by
+Fix a scale $\sigma>0$. For $v\in\CC$ define a probability distribution on $M$ by
 $$
-\pi_\varepsilon(c\mid v)
+\pi_\sigma(c\mid v)
 :=
-\frac{\exp\!\bigl(-|v-\mathcal{Z}(c)|^2/\varepsilon^2\bigr)}
-{\sum_{n\in M}\exp\!\bigl(-|v-\mathcal{Z}(n)|^2/\varepsilon^2\bigr)}.
+\frac{\exp\!\bigl(-|v-\mathcal{Z}(c)|^2/\sigma^2\bigr)}
+{\sum_{n\in M}\exp\!\bigl(-|v-\mathcal{Z}(n)|^2/\sigma^2\bigr)}.
 $$
 \end{definition}
 
@@ -94,11 +94,11 @@ Assume the minimal radial choice $\rho(n)=n$. Then for every $v\in\CC$:
     \operatorname*{Argmin}_{n\in M}\,|v-\mathcal{Z}(n)|
     $$
     is nonempty and finite, hence the nearest-point rule $\pi(v)$ is well-defined.
-    \item For every $\varepsilon>0$ the normalizing sum
+    \item For every $\sigma>0$ the normalizing sum
     $$
-    Z_\varepsilon(v):=\sum_{n\in M}\exp\!\bigl(-|v-\mathcal{Z}(n)|^2/\varepsilon^2\bigr)
+    Z_\sigma(v):=\sum_{n\in M}\exp\!\bigl(-|v-\mathcal{Z}(n)|^2/\sigma^2\bigr)
     $$
-    converges and satisfies $0<Z_\varepsilon(v)<\infty$, hence $\pi_\varepsilon(\cdot\mid v)$ is a well-defined probability distribution on $M$.
+    converges and satisfies $0<Z_\sigma(v)<\infty$, hence $\pi_\sigma(\cdot\mid v)$ is a well-defined probability distribution on $M$.
 \end{enumerate}
 \end{proposition}
 
@@ -116,9 +116,9 @@ Under $\rho(n)=n$ we have $|\mathcal{Z}(n)|=n$, so $|\mathcal{Z}(n)|\to\infty$ a
     $$
     hence
     $$
-    \exp\!\bigl(-|v-\mathcal{Z}(n)|^2/\varepsilon^2\bigr)\le \exp\!\bigl(-|n-|v||^2/\varepsilon^2\bigr).
+    \exp\!\bigl(-|v-\mathcal{Z}(n)|^2/\sigma^2\bigr)\le \exp\!\bigl(-|n-|v||^2/\sigma^2\bigr).
     $$
-    The comparison series $\sum_{n\ge 1}\exp(-|n-|v||^2/\varepsilon^2)$ converges, so $Z_\varepsilon(v)<\infty$. Positivity is immediate since each summand is positive.
+    The comparison series $\sum_{n\ge 1}\exp(-|n-|v||^2/\sigma^2)$ converges, so $Z_\sigma(v)<\infty$. Positivity is immediate since each summand is positive.
 \end{enumerate}
 \end{proof}
 
@@ -134,27 +134,27 @@ $$
 d_{\min}(v):=\min_{n\in M}|v-\mathcal{Z}(n)|.
 $$
 Define the minimizer set $D(v):=\{n\in M:\ |v-\mathcal{Z}(n)|=d_{\min}(v)\}$.
-Then as $\varepsilon\downarrow 0$ the kernel $\pi_\varepsilon(\cdot\mid v)$ converges to the uniform distribution on $D(v)$.
-In particular, if $D(v)$ is a singleton, then $\pi_\varepsilon(\cdot\mid v)$ converges to a point mass at that minimizer.
+Then as $\sigma\downarrow 0$ the kernel $\pi_\sigma(\cdot\mid v)$ converges to the uniform distribution on $D(v)$.
+In particular, if $D(v)$ is a singleton, then $\pi_\sigma(\cdot\mid v)$ converges to a point mass at that minimizer.
 \end{proposition}
 
 \begin{proof}
-Let $d=d_{\min}(v)$. For $c\in D(v)$ one has $\exp(-|v-\mathcal{Z}(c)|^2/\varepsilon^2)=\exp(-d^2/\varepsilon^2)$.
+Let $d=d_{\min}(v)$. For $c\in D(v)$ one has $\exp(-|v-\mathcal{Z}(c)|^2/\sigma^2)=\exp(-d^2/\sigma^2)$.
 For $m\notin D(v)$ set $\Delta_m:=|v-\mathcal{Z}(m)|^2-d^2>0$. Then
 $$
-\frac{\exp(-|v-\mathcal{Z}(m)|^2/\varepsilon^2)}{\exp(-d^2/\varepsilon^2)}
-=\exp(-\Delta_m/\varepsilon^2)\xrightarrow[\varepsilon\downarrow 0]{}0.
+\frac{\exp(-|v-\mathcal{Z}(m)|^2/\sigma^2)}{\exp(-d^2/\sigma^2)}
+=\exp(-\Delta_m/\sigma^2)\xrightarrow[\sigma\downarrow 0]{}0.
 $$
-Since $D(v)$ is finite by Proposition~\ref{prop:projection_well_defined}(1), dividing numerator and denominator by $\exp(-d^2/\varepsilon^2)$ yields
+Since $D(v)$ is finite by Proposition~\ref{prop:projection_well_defined}(1), dividing numerator and denominator by $\exp(-d^2/\sigma^2)$ yields
 $$
-\pi_\varepsilon(c\mid v)
+\pi_\sigma(c\mid v)
 =
-\frac{1}{|D(v)|+\sum_{m\notin D(v)}\exp(-\Delta_m/\varepsilon^2)}\xrightarrow[\varepsilon\downarrow 0]{}\frac{1}{|D(v)|}
+\frac{1}{|D(v)|+\sum_{m\notin D(v)}\exp(-\Delta_m/\sigma^2)}\xrightarrow[\sigma\downarrow 0]{}\frac{1}{|D(v)|}
 $$
-for $c\in D(v)$, and $\pi_\varepsilon(m\mid v)\to 0$ for $m\notin D(v)$.
+for $c\in D(v)$, and $\pi_\sigma(m\mid v)\to 0$ for $m\notin D(v)$.
 \end{proof}
 
-Given $a,b\in M$, set $v=v(a,b)$ and draw $C\sim \pi_\varepsilon(\,\cdot\,\mid v)$. The random gap
+Given $a,b\in M$, set $v=v(a,b)$ and draw $C\sim \pi_\sigma(\,\cdot\,\mid v)$. The random gap
 $$
 \delta:=v-\mathcal{Z}(C)
 $$
@@ -210,7 +210,7 @@ A $1$-cochain $\delta\in C^1(\mathcal{K};A)$ is \emph{exact} if $\delta=d^0 f$ f
 
 \begin{remark}[Quantum gap as a $1$-cochain]
 Fix a model choice of $\mathcal{K}$.
-To each oriented interaction/readout edge $e=(u,v)\in E$, associate a synthesized vector $v_e$ (in the embedding space) and an output lattice state $c_e$ (deterministic $c_e=\pi(v_e)$ or sampled $c_e\sim\pi_\varepsilon(\cdot\mid v_e)$).
+To each oriented interaction/readout edge $e=(u,v)\in E$, associate a synthesized vector $v_e$ (in the embedding space) and an output lattice state $c_e$ (deterministic $c_e=\pi(v_e)$ or sampled $c_e\sim\pi_\sigma(\cdot\mid v_e)$).
 Then the quantum gap field can be recorded as the edge cochain
 $
 \delta(e):=v_e-\mathcal{Z}(c_e)\in A.

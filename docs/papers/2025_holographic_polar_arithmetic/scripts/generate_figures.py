@@ -355,26 +355,26 @@ def plot_readout_stability(stab: dict[str, np.ndarray], out_path: Path) -> None:
 def plot_projection_kernel_example(
     Z: np.ndarray,
     v: complex,
-    epsilon: float,
+    sigma: float,
     title: str,
     out_path: Path,
 ) -> None:
     r = float(abs(v))
-    W = int(math.ceil(6.0 * epsilon))
+    W = int(math.ceil(6.0 * sigma))
     left = max(1, int(math.floor(r - W)))
     right = min(len(Z), int(math.ceil(r + W)))
     n = np.arange(left, right + 1, dtype=np.int32)
     d = np.abs(Z[left - 1 : right] - v)
     d2 = d * d
     d2_min = float(np.min(d2))
-    w = np.exp(-(d2 - d2_min) / (epsilon * epsilon))
+    w = np.exp(-(d2 - d2_min) / (sigma * sigma))
     p = w / np.sum(w)
 
     fig, ax = plt.subplots(figsize=(8.0, 3.8))
     ax.plot(n, p, linewidth=1.1, color="#2c7fb8")
     ax.set_yscale("log")
     ax.set_xlabel(r"candidate $c$")
-    ax.set_ylabel(r"$\pi_\varepsilon(c\mid v)$ (log scale)")
+    ax.set_ylabel(r"$\pi_\sigma(c\mid v)$ (log scale)")
     ax.set_title(title)
     ax.grid(True, which="both", linewidth=0.3, alpha=0.4)
     fig.tight_layout()
@@ -423,7 +423,7 @@ def main() -> None:
         plot_projection_kernel_example(
             Z=Z,
             v=v0,
-            epsilon=120.0,
+            sigma=120.0,
             title=f"Soft projection kernel example (model: {model.name})",
             out_path=images_dir / f"hpa_kernel_example_{model.name}.png",
         )
