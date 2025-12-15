@@ -485,6 +485,332 @@ def plot_transport_duality_diagram(out_path: Path) -> None:
     plt.close(fig)
 
 
+def plot_holographic_slice_diagram(out_path: Path) -> None:
+    """
+    Concept figure:
+      - A unit sphere (monolith) in which the state is a unit vector.
+      - An observation slice (a plane through the origin) and the orthogonal
+        projection of the state onto that slice.
+      - A discrete lattice readout on the slice, illustrating a nonzero gap δ.
+    """
+    # Matplotlib registers 3D projections via mpl_toolkits.
+    from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
+
+    fig = plt.figure(figsize=(12.6, 5.6))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.15, 0.85])
+
+    ax3 = fig.add_subplot(gs[0], projection="3d")
+    ax2 = fig.add_subplot(gs[1])
+
+    # --- Left: sphere + slice + projection ---
+    ax3.set_box_aspect((1.0, 1.0, 1.0))
+    ax3.set_xlim(-1.1, 1.1)
+    ax3.set_ylim(-1.1, 1.1)
+    ax3.set_zlim(-1.1, 1.1)
+    ax3.axis("off")
+
+    # Unit sphere
+    u = np.linspace(0.0, TWO_PI, 80, dtype=np.float64)
+    v = np.linspace(0.0, math.pi, 40, dtype=np.float64)
+    uu, vv = np.meshgrid(u, v)
+    xs = np.cos(uu) * np.sin(vv)
+    ys = np.sin(uu) * np.sin(vv)
+    zs = np.cos(vv)
+    ax3.plot_surface(xs, ys, zs, rstride=1, cstride=1, color="#e6e6e6", alpha=0.25, edgecolor="none")
+
+    # Observation slice plane through origin with normal n
+    n = np.asarray([0.25, -0.15, 1.0], dtype=np.float64)
+    n /= float(np.linalg.norm(n))
+    e1 = np.asarray([n[1], -n[0], 0.0], dtype=np.float64)
+    if float(np.linalg.norm(e1)) < 1e-8:
+        e1 = np.asarray([1.0, 0.0, 0.0], dtype=np.float64)
+    e1 /= float(np.linalg.norm(e1))
+    e2 = np.cross(n, e1)
+    e2 /= float(np.linalg.norm(e2))
+
+    s = np.linspace(-1.05, 1.05, 18, dtype=np.float64)
+    t = np.linspace(-1.05, 1.05, 18, dtype=np.float64)
+    ss, tt = np.meshgrid(s, t)
+    xp = ss * e1[0] + tt * e2[0]
+    yp = ss * e1[1] + tt * e2[1]
+    zp = ss * e1[2] + tt * e2[2]
+    ax3.plot_surface(xp, yp, zp, color="#4575b4", alpha=0.12, edgecolor="none")
+
+    # Orthogonal axes: maximal distinguishability channels (schematic).
+    axis_len = 1.25
+    ax3.plot([-axis_len, axis_len], [0.0, 0.0], [0.0, 0.0], color="black", lw=1.1, alpha=0.55)
+    ax3.plot([0.0, 0.0], [-axis_len, axis_len], [0.0, 0.0], color="black", lw=1.1, alpha=0.55)
+    ax3.plot([0.0, 0.0], [0.0, 0.0], [-axis_len, axis_len], color="black", lw=1.1, alpha=0.55)
+    ax3.quiver(0.0, 0.0, 0.0, axis_len, 0.0, 0.0, color="black", lw=1.3, arrow_length_ratio=0.08)
+    ax3.quiver(0.0, 0.0, 0.0, 0.0, axis_len, 0.0, color="black", lw=1.3, arrow_length_ratio=0.08)
+    ax3.quiver(0.0, 0.0, 0.0, 0.0, 0.0, axis_len, color="black", lw=1.3, arrow_length_ratio=0.08)
+    ax3.text(axis_len + 0.06, 0.0, 0.0, "X", fontsize=10, ha="left", va="center", color="black")
+    ax3.text(0.0, axis_len + 0.06, 0.0, "Y", fontsize=10, ha="center", va="bottom", color="black")
+    ax3.text(0.0, 0.0, axis_len + 0.06, "Z", fontsize=10, ha="center", va="bottom", color="black")
+
+    # A measurement/readout axis (needle): a chosen direction of distinction.
+    needle_start = 1.25 * n
+    needle_dir = -1.25 * n
+    ax3.quiver(
+        float(needle_start[0]),
+        float(needle_start[1]),
+        float(needle_start[2]),
+        float(needle_dir[0]),
+        float(needle_dir[1]),
+        float(needle_dir[2]),
+        color="#542788",
+        lw=2.0,
+        arrow_length_ratio=0.10,
+    )
+    ax3.text(
+        float(needle_start[0]) + 0.04,
+        float(needle_start[1]) + 0.04,
+        float(needle_start[2]) + 0.02,
+        "Reading axis",
+        fontsize=9,
+        ha="left",
+        va="center",
+        color="#542788",
+    )
+
+    # Slice boundary on the sphere + a wavy residual ring (conceptual).
+    theta_c = np.linspace(0.0, TWO_PI, 500, dtype=np.float64)
+    circle = (np.cos(theta_c)[:, None] * e1[None, :]) + (np.sin(theta_c)[:, None] * e2[None, :])
+    ax3.plot(circle[:, 0], circle[:, 1], circle[:, 2], color="black", lw=1.1, alpha=0.55, ls="--")
+    wav = (1.0 + 0.05 * np.sin(12.0 * theta_c))[:, None] * circle
+    ax3.plot(wav[:, 0], wav[:, 1], wav[:, 2], color="#1a9850", lw=1.2, alpha=0.55)
+
+    # A representative unit state vector Ψ
+    psi = np.asarray([0.62, 0.23, 0.75], dtype=np.float64)
+    psi /= float(np.linalg.norm(psi))
+    psi_proj = psi - float(np.dot(psi, n)) * n
+
+    # Draw Ψ and its slice projection
+    ax3.plot([0.0, float(psi[0])], [0.0, float(psi[1])], [0.0, float(psi[2])], color="#d73027", lw=3.0)
+    ax3.scatter([float(psi[0])], [float(psi[1])], [float(psi[2])], s=28, c="#d73027")
+
+    ax3.plot(
+        [0.0, float(psi_proj[0])],
+        [0.0, float(psi_proj[1])],
+        [0.0, float(psi_proj[2])],
+        color="#d73027",
+        lw=2.2,
+        ls="--",
+    )
+    ax3.plot(
+        [float(psi[0]), float(psi_proj[0])],
+        [float(psi[1]), float(psi_proj[1])],
+        [float(psi[2]), float(psi_proj[2])],
+        color="black",
+        lw=1.2,
+        ls=":",
+    )
+    ax3.scatter([float(psi_proj[0])], [float(psi_proj[1])], [float(psi_proj[2])], s=18, c="black")
+
+    # A small in-slice spiral to suggest residual structure around the cut.
+    t_sp = np.linspace(0.0, 3.5 * math.pi, 400, dtype=np.float64)
+    r_sp = 0.02 + 0.18 * (t_sp / float(t_sp[-1]))
+    spiral = psi_proj[None, :] + (r_sp * np.cos(t_sp))[:, None] * e1[None, :] + (r_sp * np.sin(t_sp))[:, None] * e2[None, :]
+    ax3.plot(spiral[:, 0], spiral[:, 1], spiral[:, 2], color="#1a9850", lw=1.4, alpha=0.8)
+
+    ax3.view_init(elev=18.0, azim=35.0)
+    ax3.text(-1.15, 0.0, 1.05, r"Monolith ($\|\Psi\|=1$)", fontsize=10, ha="left", va="center")
+    ax3.text(-0.20, -1.25, -0.95, "Observation slice", fontsize=10, ha="center", va="center", color="#4575b4")
+    ax3.text(float(psi[0]) + 0.08, float(psi[1]) + 0.05, float(psi[2]) + 0.02, r"state $\Psi$", fontsize=10, color="#d73027")
+    ax3.text(-1.15, -0.25, 0.85, "Orthogonal axes\n(maximal distinction)", fontsize=9, ha="left", va="center", color="black")
+
+    # --- Right: slice coordinates + lattice mismatch + δ ---
+    ax2.set_aspect("equal", adjustable="box")
+    ax2.axis("off")
+
+    # Coordinates of the projected point in the (e1,e2) basis
+    p2 = np.asarray([float(np.dot(psi_proj, e1)), float(np.dot(psi_proj, e2))], dtype=np.float64)
+
+    # A schematic lattice on the slice (conceptual readout grid)
+    grid = np.arange(-1.2, 1.21, 0.4, dtype=np.float64)
+    gx, gy = np.meshgrid(grid, grid)
+    pts = np.column_stack([gx.ravel(), gy.ravel()])
+    d = np.linalg.norm(pts - p2[None, :], axis=1)
+    q2 = pts[int(np.argmin(d))]
+
+    ax2.scatter(pts[:, 0], pts[:, 1], s=12, c="#555555", alpha=0.35, edgecolors="none")
+    ax2.scatter([float(q2[0])], [float(q2[1])], s=55, c="black", zorder=5)
+    ax2.scatter([float(p2[0])], [float(p2[1])], s=70, c="#d73027", marker="o", zorder=6)
+
+    ax2.annotate(
+        "",
+        xy=(float(p2[0]), float(p2[1])),
+        xytext=(float(q2[0]), float(q2[1])),
+        arrowprops=dict(arrowstyle="->", lw=2.0, color="#d73027"),
+        zorder=7,
+    )
+    ax2.text(float(p2[0]) + 0.08, float(p2[1]) + 0.04, r"projection", fontsize=10, color="#d73027")
+    ax2.text(float(q2[0]) - 0.05, float(q2[1]) - 0.10, r"readout", fontsize=10, ha="right", va="top", color="black")
+    mid = 0.5 * (p2 + q2)
+    ax2.text(float(mid[0]) + 0.06, float(mid[1]) + 0.02, r"$\delta$", fontsize=12, color="#d73027")
+    ax2.plot([-1.35, 1.35], [0.0, 0.0], color="black", lw=1.0, alpha=0.30)
+    ax2.plot([0.0, 0.0], [-1.35, 1.35], color="black", lw=1.0, alpha=0.30)
+    ax2.text(1.30, -0.08, "x", fontsize=10, ha="right", va="top", color="black", alpha=0.7)
+    ax2.text(-0.08, 1.30, "y", fontsize=10, ha="right", va="top", color="black", alpha=0.7)
+    ax2.text(0.0, 1.25, "Orthogonal readout + lattice mismatch", fontsize=10, ha="center", va="bottom")
+
+    ax2.set_xlim(-1.35, 1.35)
+    ax2.set_ylim(-1.35, 1.35)
+
+    fig.tight_layout()
+    fig.savefig(out_path, dpi=300)
+    plt.close(fig)
+
+
+def plot_spiral_geodesic_diagram(out_path: Path) -> None:
+    """
+    Concept figure:
+      - A cylinder representing (space-time) × (internal phase) geometry.
+      - A geodesic-like path with no internal winding (m=0) and a tight helix
+        with significant internal winding (m>0).
+      - A schematic right-triangle decomposition (E, p, mc^2).
+    """
+    from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
+
+    fig = plt.figure(figsize=(12.2, 5.2))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.2, 0.8])
+    ax3 = fig.add_subplot(gs[0], projection="3d")
+    ax = fig.add_subplot(gs[1])
+
+    # --- Left: cylinder + paths ---
+    ax3.set_box_aspect((1.0, 1.0, 1.3))
+    ax3.axis("off")
+
+    R = 1.0
+    H = 2.6
+    th = np.linspace(0.0, TWO_PI, 80, dtype=np.float64)
+    zz = np.linspace(0.0, H, 40, dtype=np.float64)
+    tt, zzm = np.meshgrid(th, zz)
+    xc = R * np.cos(tt)
+    yc = R * np.sin(tt)
+    zc = zzm
+    ax3.plot_surface(xc, yc, zc, color="#bdbdbd", alpha=0.10, edgecolor="none")
+
+    # Path A: no internal winding (straight along the axis on the surface)
+    theta0 = 0.55 * math.pi
+    z_line = np.linspace(0.0, H, 200, dtype=np.float64)
+    x_line = R * np.cos(theta0) * np.ones_like(z_line)
+    y_line = R * np.sin(theta0) * np.ones_like(z_line)
+    ax3.plot(x_line, y_line, z_line, color="#4575b4", lw=3.0)
+
+    # Path B: tight internal helix (winding stores action off-axis)
+    r = 0.62
+    turns = 10.0
+    t = np.linspace(0.0, TWO_PI * turns, 1500, dtype=np.float64)
+    xh = r * np.cos(t)
+    yh = r * np.sin(t)
+    zh = H * (t / (TWO_PI * turns))
+    ax3.plot(xh, yh, zh, color="#d73027", lw=2.6)
+
+    # Direction arrow on helix
+    i0, i1 = 950, 1050
+    ax3.quiver(
+        float(xh[i0]),
+        float(yh[i0]),
+        float(zh[i0]),
+        float(xh[i1] - xh[i0]),
+        float(yh[i1] - yh[i0]),
+        float(zh[i1] - zh[i0]),
+        color="#d73027",
+        lw=1.8,
+        arrow_length_ratio=0.25,
+    )
+
+    ax3.view_init(elev=18.0, azim=-55.0)
+    ax3.text(0.0, 0.0, H + 0.15, "Spiral vs. geodesic (schematic)", fontsize=11, ha="center", va="bottom")
+    ax3.text(float(x_line[0]) + 0.05, float(y_line[0]) + 0.05, 0.15, r"Light / geodesic ($m=0$)", fontsize=10, color="#4575b4")
+    ax3.text(-0.95, 0.75, 1.45, r"Massive / helix ($m>0$)", fontsize=10, color="#d73027")
+
+    ax3.set_xlim(-1.15, 1.15)
+    ax3.set_ylim(-1.15, 1.15)
+    ax3.set_zlim(0.0, H + 0.25)
+
+    # --- Right: Pythagorean split diagram (interpretive) ---
+    ax.set_aspect("equal", adjustable="box")
+    ax.axis("off")
+
+    p = 1.20
+    m = 0.85
+    A = (0.0, 0.0)
+    B = (p, 0.0)
+    C = (p, m)
+
+    ax.plot([A[0], B[0]], [A[1], B[1]], color="black", lw=2.2)
+    ax.plot([B[0], C[0]], [B[1], C[1]], color="black", lw=2.2)
+    ax.plot([C[0], A[0]], [C[1], A[1]], color="black", lw=2.2)
+
+    ax.text(0.5 * p, -0.12, r"$p$", fontsize=12, ha="center", va="top")
+    ax.text(p + 0.08, 0.5 * m, r"$mc^2$", fontsize=12, ha="left", va="center")
+    ax.text(0.52 * p, 0.48 * m + 0.10, r"$E$", fontsize=12, ha="center", va="bottom")
+    ax.text(0.0, m + 0.25, "Local right-triangle split (interpretive)", fontsize=10, ha="left", va="bottom")
+
+    ax.set_xlim(-0.2, p + 0.55)
+    ax.set_ylim(-0.35, m + 0.55)
+
+    fig.tight_layout()
+    fig.savefig(out_path, dpi=300)
+    plt.close(fig)
+
+
+def plot_fractal_onion_diagram(out_path: Path) -> None:
+    """
+    Concept figure:
+      - A schematic 'fractal onion' / recursive decomposition view.
+      - Three zoom levels that suggest nested Pythagorean splits.
+    """
+    from matplotlib.patches import Circle, Rectangle
+
+    fig, axes = plt.subplots(1, 3, figsize=(12.2, 4.2))
+    for ax in axes:
+        ax.set_aspect("equal", adjustable="box")
+        ax.axis("off")
+
+    # Panel 1: Level 0 (unity)
+    ax0 = axes[0]
+    ax0.add_patch(Circle((0.0, 0.0), 1.0, facecolor="none", edgecolor="black", lw=2.2))
+    ax0.plot([0.0], [0.0], "o", color="black", ms=3)
+    ax0.text(0.0, 1.22, "Level 0: Unity", fontsize=11, ha="center", va="bottom")
+    ax0.text(0.0, -1.28, r"$R^2$", fontsize=12, ha="center", va="top")
+    zoom_box = Rectangle((0.58, 0.58), 0.32, 0.32, fill=False, edgecolor="#d73027", lw=1.8)
+    ax0.add_patch(zoom_box)
+    ax0.annotate("zoom", xy=(0.90, 0.90), xytext=(1.10, 1.10), arrowprops=dict(arrowstyle="->", lw=1.2, color="#d73027"), fontsize=10, color="#d73027")
+    ax0.set_xlim(-1.35, 1.45)
+    ax0.set_ylim(-1.35, 1.45)
+
+    # Panel 2: Level 1 (first decomposition)
+    ax1 = axes[1]
+    ax1.text(0.0, 1.22, "Level 1: First split", fontsize=11, ha="center", va="bottom")
+    ax1.text(0.0, -1.28, r"$R^2=x^2+y^2$", fontsize=12, ha="center", va="top")
+    # A 'beaded' boundary segment
+    n_beads = 12
+    centers = np.linspace(-1.05, 1.05, n_beads, dtype=np.float64)
+    for c in centers:
+        ax1.add_patch(Circle((float(c), 0.0), 0.18, facecolor="none", edgecolor="black", lw=1.2, alpha=0.9))
+    ax1.add_patch(Rectangle((-0.25, -0.22), 0.50, 0.44, fill=False, edgecolor="#4575b4", lw=1.8))
+    ax1.annotate("zoom", xy=(0.25, 0.22), xytext=(0.95, 0.95), arrowprops=dict(arrowstyle="->", lw=1.2, color="#4575b4"), fontsize=10, color="#4575b4")
+    ax1.set_xlim(-1.35, 1.45)
+    ax1.set_ylim(-1.35, 1.45)
+
+    # Panel 3: Level 2 (nested decomposition)
+    ax2 = axes[2]
+    ax2.text(0.0, 1.22, "Level 2: Nested split", fontsize=11, ha="center", va="bottom")
+    ax2.text(0.0, -1.28, r"$y^2=z^2+w^2$", fontsize=12, ha="center", va="top")
+    centers2 = np.linspace(-1.05, 1.05, 22, dtype=np.float64)
+    for c in centers2:
+        ax2.add_patch(Circle((float(c), 0.0), 0.09, facecolor="none", edgecolor="black", lw=1.0, alpha=0.9))
+    ax2.set_xlim(-1.35, 1.45)
+    ax2.set_ylim(-1.35, 1.45)
+
+    fig.tight_layout()
+    fig.savefig(out_path, dpi=300)
+    plt.close(fig)
+
+
 def main() -> None:
     here = Path(__file__).resolve()
     images_dir = (here.parent / "../images").resolve()
@@ -557,6 +883,9 @@ def main() -> None:
     plot_readout_stability(stab_silver, out_path=images_dir / "hpa_readout_stability_silver.png")
 
     plot_transport_duality_diagram(images_dir / "hpa_transport_duality.png")
+    plot_holographic_slice_diagram(images_dir / "hpa_holographic_slice.png")
+    plot_spiral_geodesic_diagram(images_dir / "hpa_spiral_geodesic.png")
+    plot_fractal_onion_diagram(images_dir / "hpa_fractal_onion.png")
 
     print(f"Saved figures to: {images_dir}")
 
