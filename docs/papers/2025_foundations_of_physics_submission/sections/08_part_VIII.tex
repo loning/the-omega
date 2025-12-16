@@ -114,11 +114,43 @@ where $\rho_{\mathrm{info}}\equiv \langle T_{00}^{info}\rangle$ is the informati
 \label{chap:limitations}
 
 \subsection{Theoretical completion tasks}
-Two conceptual completion tasks remain central:
+We restate the two central completion tasks in a checkable form.
+
+\begin{conjecture}[Higher-dimensional quasicrystal Dirac homogenization]
+\label{conj:quasicrystal_dirac}
+Let $\Lambda\subset\mathbb{R}^d$ be a regular cut-and-project (model) set with compact window $W$ and let $U_\varepsilon$ be a finite-range coined walk/PQCA step on $\Lambda$ with microscopic scale $\varepsilon>0$ (Part~III; Appendix~\ref{app:homogenization}). Assume:
+\begin{enumerate}
+    \item \textbf{(Structure-factor control).} The long-wavelength diffraction/structure factor relevant to a Dirac/EFT expansion is sufficiently isotropic and stable under the approximants used for continuum diagnostics \cite{Hof1995,BaakeGrimm2013AperiodicOrder}.
+    \item \textbf{(Phason/rigidity control).} The phason displacement $u(x)$ has small strain (slow variation) so that window perturbations induce only a controlled defect density, in the sense of the orbit/discrepancy stability bounds of Paper~I \cite{Ma2025HPA}.
+\end{enumerate}
+Then there exists an effective long-wavelength generator $H_{\mathrm{eff}}$ whose leading symbol is Dirac-type (with coefficients given by orbit-trace averages on $W$) and such that, for band-limited initial data and fixed macroscopic times $t$, the evolution satisfies an error bound of the form
+\begin{equation}
+    \left\|U_\varepsilon^{\lfloor t/\varepsilon\rfloor}|\psi_0\rangle - e^{-it H_{\mathrm{eff}}}|\psi_0\rangle\right\|
+    \le C(t,p_{\max})\big(\varepsilon + \|\nabla u\|_\infty + \varepsilon_{\mathrm{sf}}\big),
+\end{equation}
+where $\varepsilon_{\mathrm{sf}}$ summarizes the residual long-wavelength structure-factor anisotropy. In particular, a controlled higher-dimensional Dirac limit reduces to the two quantitative control tasks isolated in Appendix~\ref{app:homogenization}, Proposition~\ref{prop:quasicrystal_homogenization_reduction}.\par
+\end{conjecture}
+
+\paragraph{Minimal verification criteria.}
+A concrete check reduces to:
 \begin{itemize}
-    \item \textbf{Quasicrystal continuum limit in higher dimensions.} The manuscript provides fully rigorous continuum control for a translation-invariant 1D coined walk (Theorem~\ref{prop:dirac_limit}) and a checkable aperiodic testbed based on Fibonacci cut-and-project reductions (Part~III; Appendix~\ref{app:fib_dqca}). Extending this to higher-dimensional cut-and-project substrates with statistical isotropy requires a homogenization analysis that controls both the quasicrystal structure factor and the spatial variation of internal-coordinate (phason) fields; Appendix~\ref{app:homogenization}, Proposition~\ref{prop:quasicrystal_homogenization_reduction} records a minimal reduction to these two quantitative control tasks.
-    \item \textbf{Closed EFT reduction and RG matching.} The octonionic/$G_2$ organization in Part~IV enforces sharp representation-theoretic consistency conditions (chirality, anomaly cancellation) and provides geometric matching ans\"atze for selected constants. A derivation of the full low-energy EFT (including Yukawa textures, coupling running, and threshold matching) requires specifying the microscopic spectral data and an explicit coarse-graining/matching scheme; this remains part of the dynamical completion program (Part~IV; Appendix~\ref{app:constants_proof}).
+    \item \textbf{Dirac-cone diagnostics.} Compute the dispersion and eigenmodes on periodic approximants and verify convergence of the low-$k$ spectrum to a Dirac cone with errors $\mathcal{O}(\varepsilon)$ (cf.\ Theorem~\ref{prop:dirac_limit} and Appendix~\ref{app:homogenization}).
+    \item \textbf{Isotropy diagnostics.} Bound the low-$\ell$ spherical-harmonic moments of the neighbor-direction distribution (or equivalently of the dominant long-wavelength diffraction peaks) to quantify isotropy, using the spherical-design template in Appendix~\ref{app:mdr_symmetry}.
+    \item \textbf{Phason robustness.} Verify that introducing a slowly varying phason field changes local coin/shift data only through a defect density controlled by $\|\nabla u\|_\infty$ (a fully specified 1D Fibonacci testbed and its diagnostics are recorded in Appendix~\ref{app:fib_dqca}).
 \end{itemize}
+
+\begin{conjecture}[Closed EFT reduction and RG matching from internal data]
+\label{conj:eft_matching}
+Assume the internal-sector organization of Part~IV (octonionic/$G_2$ ansatz and the representation-theoretic constraints) and suppose a microscopic coarse-graining/matching map produces, at some scale $\mu_\ast$, an effective Standard-Model-like Lagrangian with couplings and thresholds determined by the internal spectral data. Then the propagation of these matching data to laboratory scales is governed by standard EFT and renormalization-group flow \cite{PeskinSchroeder1995}. In particular, once the matching scale, the particle-content thresholds, and the boundary conditions for the gauge/Yukawa couplings are fixed, low-energy predictions are algorithmic.\par
+\end{conjecture}
+
+\paragraph{Minimal verification criteria.}
+The dynamical-completion burden may be isolated to:
+\begin{enumerate}
+    \item \textbf{Microscopic spectrum selection.} Specify the microscopic spectrum that selects the light chiral content and fixes the matching scale $\mu_\ast$.
+    \item \textbf{Matching data at $\mu_\ast$.} Compute the induced gauge couplings and Yukawa textures at $\mu_\ast$ (including threshold corrections) from the internal geometric measure data.
+    \item \textbf{RG propagation and comparison.} Run the resulting EFT to $\mu=0$ and compare with measured couplings/masses within the stated error budgets (Appendix~\ref{app:constants_proof}).
+\end{enumerate}
 
 \subsection{Confrontation with Experimental Constraints}
 While the predictions in Table \ref{tab:constraints} are distinct, they must be reconciled with existing high-precision data.
@@ -179,14 +211,25 @@ To model this, we identify the variation with the "Higgs-like" geometric breathi
 In a late-time quasi-static regime where $\Phi(x)$ is close to a constant background value, local temporal drift is expected to be suppressed relative to horizon-scale spatial gradients (schematically by Hubble-scale factors), so that clock bounds and a horizon-scale dipole template can be simultaneously accommodated at the level of an effective scalar-field parameterization.
 
 \subsection{Theoretical Open Questions}
-\begin{enumerate}
-    \item \textbf{Computational Constraints}: Our ansatz for $\mu$ relies on small-scale lattice simulations ($N < 100$). Verifying the scaling behavior to the cosmological limit ($N \sim 10^{122}$) is currently computationally intractable and relies on the assumption of exact self-similarity.
-    \item \textbf{Effective Field Theory}: We have not yet rigorously derived the full continuum path integral of the Standard Model from the discrete cellular automaton, relying instead on the correspondence of symmetry groups and conservation laws.
-    \item \textbf{Experimental Discrimination}: Direct laboratory discrimination of the golden-spectrum ansatz from standard Quantum Mechanics requires isolating extremely small corrections in the appropriate effective sector. In practice, the most promising probes are indirect, through dedicated searches for the predicted template features in high-precision data (e.g.\ absence of a linear MDR term together with bounds on $n=2$ dispersion; and targeted analyses for holographic-noise templates and spatial dipoles in constants), rather than through any direct observation at the Planck-time scale.
-\end{enumerate}
+\begin{conjecture}[Self-similar scaling control for the $\mu$ estimator]
+\label{conj:mu_scaling}
+Let $\mu_N$ denote the finite-size estimator of $\mu$ obtained from the regulated golden-spectrum/quasicrystal diagnostics used in this manuscript. If the relevant microscopic sector is governed by an exact substitution/renormalization self-similarity (golden scaling), then $\mu_N$ admits an asymptotic expansion with a controlled finite-size remainder and (typically) log-periodic modulation,
+\begin{equation}
+    \mu_N = \mu_\infty + N^{-\beta}\,P\!\left(\frac{\log N}{\log\phi}\right) + o(N^{-\beta}),
+\end{equation}
+for some $\beta>0$ and bounded periodic $P$ (discrete scale invariance) \cite{Sornette1998DSI}. In particular, convergence can be probed efficiently on a geometric progression $N\sim \phi^k$.\par
+\end{conjecture}
+\paragraph{Minimal verification criteria.}
+This reduces to: (i) define the estimator $\mu_N$ in a way compatible with the orbit-trace/finite-part conventions, (ii) compute $\mu_N$ on periodic approximants over a range of sizes with $N\sim \phi^k$, and (iii) fit/upper-bound the remainder term and the log-periodic modulation amplitude (cf.\ Appendix~\ref{app:one_over_f} and the quasicrystal diagnostics in Appendix~\ref{app:fib_dqca}).
+
+\paragraph{EFT completion target.}
+The continuum EFT reduction is isolated as a concrete matching problem in Conjecture~\ref{conj:eft_matching}: once the matching scale, threshold spectrum, and boundary couplings are fixed by the microscopic coarse-graining, the low-energy propagation is governed by standard RG flow \cite{PeskinSchroeder1995}.
+
+\paragraph{Experimental discrimination target.}
+Direct Planck-scale access is not required: the most sensitive discriminators are template searches for (i) the absence of an $n=1$ MDR term together with bounds on $n=2$ dispersion (Appendix~\ref{app:mdr_symmetry}), (ii) log-periodic holographic-noise peaks in cross-correlated interferometer data (Appendix~\ref{app:one_over_f}), and (iii) spatial dipole templates in constants (Part~VI).
 
 \subsection{Summary of Falsifiable Predictions and Observational Constraints}
-We summarize representative experimental constraints in standard parameterizations and indicate how the Omega parameter choices map onto them. A full global fit is beyond the scope of this manuscript.
+We summarize representative experimental constraints in standard parameterizations and indicate how the Omega parameter choices map onto them \cite{Mattingly2005,Dodelson2003}. A full global fit is beyond the scope of this manuscript.
 
 \begin{table}[ht]
     \centering
