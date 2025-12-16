@@ -735,6 +735,60 @@ def plot_impedance_decomposition_diagram(out_path: Path) -> None:
     plt.close(fig)
 
 
+def plot_alpha_geometric_lock_diagram(out_path: Path) -> None:
+    """
+    Concept figure:
+      - A nested 'geometric lock' visualization for the three-sector impedance ansatz.
+      - Line (scan/worldline) piercing a holographic boundary disk.
+      - Bulk reservoir shown as a toroidal enclosure (a visual proxy for an internal T^3 sector).
+    """
+    from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
+
+    fig = plt.figure(figsize=(10.0, 8.0))
+    ax = fig.add_subplot(1, 1, 1, projection="3d")
+    ax.set_axis_off()
+
+    # --- Line / worldline scan (π) ---
+    z_line = np.linspace(-2.0, 2.0, 240, dtype=np.float64)
+    x_line = np.zeros_like(z_line)
+    y_line = np.zeros_like(z_line)
+    ax.plot(x_line, y_line, z_line, color="#d73027", linewidth=4.0)
+
+    # --- Boundary disk (π^2) ---
+    theta = np.linspace(0.0, TWO_PI, 160, dtype=np.float64)
+    r_disk = np.linspace(0.0, 1.6, 40, dtype=np.float64)
+    T, R = np.meshgrid(theta, r_disk)
+    Xd = R * np.cos(T)
+    Yd = R * np.sin(T)
+    Zd = np.zeros_like(Xd)
+    ax.plot_surface(Xd, Yd, Zd, color="#4575b4", alpha=0.18, edgecolor="none")
+    ax.plot(1.6 * np.cos(theta), 1.6 * np.sin(theta), 0.0, color="#4575b4", linewidth=2.0)
+
+    # --- Bulk reservoir (4π^3), visual proxy as a toroidal enclosure ---
+    c, a = 3.1, 0.95  # major/minor radii (visual only)
+    u = np.linspace(0.0, TWO_PI, 80, dtype=np.float64)
+    v = np.linspace(0.0, TWO_PI, 46, dtype=np.float64)
+    U, V = np.meshgrid(u, v)
+    Xt = (c + a * np.cos(V)) * np.cos(U)
+    Yt = (c + a * np.cos(V)) * np.sin(U)
+    Zt = a * np.sin(V)
+    ax.plot_wireframe(Xt, Yt, Zt, color="#1a9850", alpha=0.18, rstride=2, cstride=2)
+
+    # --- Labels (kept minimal for a clean 'geometric lock' feel) ---
+    ax.text(0.0, 0.0, 2.20, "Line / scan", ha="center", va="bottom", fontsize=10, color="#d73027")
+    ax.text(1.95, 0.0, 0.05, "Boundary / screen", ha="left", va="center", fontsize=10, color="#4575b4")
+    ax.text(3.10, 0.0, 1.25, "Bulk / reservoir", ha="center", va="center", fontsize=10, color="#1a9850")
+
+    ax.set_xlim(-4.2, 4.2)
+    ax.set_ylim(-4.2, 4.2)
+    ax.set_zlim(-2.2, 2.2)
+    ax.view_init(elev=18.0, azim=35.0)
+
+    fig.tight_layout()
+    fig.savefig(out_path, dpi=300, bbox_inches="tight")
+    plt.close(fig)
+
+
 def plot_spiral_geodesic_diagram(out_path: Path) -> None:
     """
     Concept figure:
@@ -884,6 +938,293 @@ def plot_fractal_onion_diagram(out_path: Path) -> None:
     plt.close(fig)
 
 
+def plot_modal_integers_diagram(out_path: Path) -> None:
+    """
+    Figure 3 (paper): Modal view of integers.
+
+    Top panel: classical linear axis (successor / translation view).
+    Bottom panel: polar 'standing-wave' modes r = 1 + a cos(n theta), illustrating n-fold symmetry.
+    """
+    fig = plt.figure(figsize=(12.0, 6.0))
+
+    # --- (a) Linear view ---
+    ax_linear = fig.add_axes([0.10, 0.75, 0.80, 0.15])  # [left, bottom, width, height]
+    ax_linear.set_title("(a) Classical Linear View: Integers as Translation", loc="left", fontsize=12, pad=10)
+
+    numbers = np.arange(1, 7, dtype=np.int32)
+    ax_linear.hlines(0.0, 0.0, 7.0, colors="black", linewidth=1.1)
+    ax_linear.plot(numbers, np.zeros_like(numbers, dtype=np.float64), "o", color="black", markersize=8)
+
+    for n in numbers:
+        ax_linear.text(int(n), -0.05, str(int(n)), ha="center", va="top", fontsize=12)
+        if int(n) < int(numbers[-1]):
+            ax_linear.annotate(
+                "",
+                xy=(float(n + 1), 0.0),
+                xytext=(float(n), 0.0),
+                arrowprops=dict(arrowstyle="->", color="gray", lw=1.4, mutation_scale=15),
+            )
+
+    ax_linear.set_xlim(0.5, 6.5)
+    ax_linear.set_ylim(-0.2, 0.2)
+    ax_linear.axis("off")
+
+    # --- (b) Modal view ---
+    modes = [1, 2, 3, 4, 5, 7]
+    labels = [
+        "n=1\n(Monopole)",
+        "n=2\n(Dipole)",
+        "n=3\n(Tripole)",
+        "n=4\n(Quadrupole)",
+        "n=5\n(Pentapole)",
+        "n=7\n(Prime mode)",
+    ]
+
+    theta = np.linspace(0.0, TWO_PI, 600, dtype=np.float64)
+    amp = 0.20
+
+    for i, n in enumerate(modes):
+        ax_polar = fig.add_axes([0.05 + i * 0.15, 0.10, 0.14, 0.40], polar=True)
+        r = 1.0 + amp * np.cos(float(n) * theta)
+
+        ax_polar.plot(theta, r, color="#1f77b4", linewidth=2.0)
+        ax_polar.fill(theta, r, alpha=0.12, color="#1f77b4")
+
+        ax_polar.set_xticks([])
+        ax_polar.set_yticks([])
+        ax_polar.spines["polar"].set_visible(False)
+
+        # Monolith center marker
+        ax_polar.plot([0.0], [0.0], ".", color="black", markersize=6)
+
+        ax_polar.set_title(labels[i], fontsize=10, y=-0.20)
+
+    fig.text(0.10, 0.55, "(b) HPA Modal View: Integers as Resonant Symmetries", fontsize=12, ha="left")
+
+    fig.savefig(out_path, dpi=300, bbox_inches="tight")
+    plt.close(fig)
+
+
+def plot_hpa_pipeline_diagram(out_path: Path) -> None:
+    """
+    Concept figure:
+      - A high-level HPA system architecture / pipeline diagram.
+      - Layer 0: Monolith (unit-norm conservative state).
+      - Layer 1: Unitary scan (time as iteration).
+      - Layer 2: Readout/cut (orthogonal distinction).
+      - Layer 3: Discrete observable history (codes, gaps/impedance).
+    """
+    from matplotlib.patches import FancyBboxPatch, Rectangle
+
+    fig, ax = plt.subplots(figsize=(12.0, 7.6))
+    ax.set_xlim(0.0, 1.0)
+    ax.set_ylim(0.0, 1.0)
+    ax.axis("off")
+
+    # Layout parameters
+    left = 0.08
+    width = 0.84
+    height = 0.16
+    gap = 0.06
+    y_top = 0.82
+
+    # Soft background boxes per layer (subtle tint, consistent with other figures)
+    layers = [
+        ("LAYER 0: ONTOLOGY", "The Monolith (conservative state)", "#4575b4"),
+        ("LAYER 1: DYNAMICS", "Unitary scan $\\Theta$ (time as iteration)", "#fdae61"),
+        ("LAYER 2: INTERFACE", "Readout / cut (orthogonal distinction)", "#9e9e9e"),
+        ("LAYER 3: OBSERVABLE", "Discrete history (codes, gaps / impedance)", "#ffffff"),
+    ]
+
+    # Draw boxes + icons + text
+    for i, (hdr, sub, color) in enumerate(layers):
+        y = y_top - i * (height + gap)
+        face = color
+        alpha = 0.10 if color != "#ffffff" else 0.0
+        box = FancyBboxPatch(
+            (left, y),
+            width,
+            height,
+            boxstyle="round,pad=0.02,rounding_size=0.02",
+            linewidth=1.8,
+            edgecolor="black",
+            facecolor=face,
+            alpha=alpha,
+        )
+        ax.add_patch(box)
+
+        ax.text(left + 0.02, y + height * 0.72, hdr, fontsize=12, fontweight="bold", ha="left", va="center")
+        ax.text(left + 0.02, y + height * 0.36, sub, fontsize=11, ha="left", va="center")
+
+        # Icon area
+        cx = left + width - 0.10
+        cy = y + height * 0.50
+
+        if i == 0:
+            # Monolith: filled circle + norm label
+            t = np.linspace(0.0, TWO_PI, 240, dtype=np.float64)
+            r = 0.055
+            ax.fill(cx + r * np.cos(t), cy + r * np.sin(t), color="#4575b4", alpha=0.95, zorder=3)
+            ax.plot(cx + r * np.cos(t), cy + r * np.sin(t), color="black", lw=1.2, zorder=4)
+            ax.text(cx, cy, r"$\|\Psi\|=1$", fontsize=10, ha="center", va="center", color="white", zorder=5)
+        elif i == 1:
+            # Scan: spiral trajectory
+            t = np.linspace(0.0, 5.5 * math.pi, 700, dtype=np.float64)
+            r0, r1 = 0.002, 0.060
+            rr = r0 + (r1 - r0) * (t / float(t[-1]))
+            xs = cx + rr * np.cos(t)
+            ys = cy + rr * np.sin(t)
+            ax.plot(xs, ys, color="#f46d43", lw=2.4, zorder=4)
+            ax.annotate(
+                "",
+                xy=(float(xs[-1]), float(ys[-1])),
+                xytext=(float(xs[-30]), float(ys[-30])),
+                arrowprops=dict(arrowstyle="->", lw=2.0, color="#f46d43"),
+            )
+        elif i == 2:
+            # Readout/cut: a thin bar + projection arrow
+            bar = Rectangle((cx - 0.06, cy - 0.01), 0.12, 0.02, facecolor="#666666", edgecolor="black", lw=1.0)
+            ax.add_patch(bar)
+            ax.annotate(
+                "",
+                xy=(cx, cy - 0.06),
+                xytext=(cx, cy + 0.06),
+                arrowprops=dict(arrowstyle="->", lw=1.6, color="#666666"),
+            )
+        else:
+            # Discrete output: bits / blocks
+            xs = [cx - 0.055, cx - 0.015, cx + 0.025, cx + 0.065]
+            for j, x0 in enumerate(xs):
+                sq = Rectangle((x0 - 0.016, cy - 0.016), 0.032, 0.032, facecolor="black", edgecolor="black", lw=1.0)
+                ax.add_patch(sq)
+                ax.text(x0, cy - 0.045, "1" if j % 2 else "0", fontsize=10, ha="center", va="top", color="black")
+
+    # Connecting arrows between boxes (centered)
+    x_mid = left + width * 0.50
+    for k in range(3):
+        y0 = y_top - k * (height + gap)
+        y1 = y_top - (k + 1) * (height + gap)
+        ax.annotate(
+            "",
+            xy=(x_mid, y1 + height + 0.01),
+            xytext=(x_mid, y0 - 0.01),
+            arrowprops=dict(arrowstyle="->", lw=2.0, color="black"),
+        )
+
+    ax.text(
+        0.50,
+        0.97,
+        "The HPA Pipeline: from geometry to arithmetic",
+        fontsize=15,
+        fontweight="bold",
+        ha="center",
+        va="top",
+    )
+
+    fig.tight_layout()
+    fig.savefig(out_path, dpi=300, bbox_inches="tight")
+    plt.close(fig)
+
+
+def plot_fano_tension_diagram(out_path: Path) -> None:
+    """
+    Concept figure:
+      - A Fano-plane sketch for the octonionic unit basis (e1..e7).
+      - Blue: associative triples (collinear on the Fano plane).
+      - Red: a highlighted non-collinear triple with a nonzero associator (tension proxy).
+
+    The point labeling is chosen to match the oriented Fano cycles used in the paper
+    (Remark ex:associator_example), so that the seven collinear triples are:
+      (1,2,3), (1,4,5), (2,4,6), (1,7,6), (2,5,7), (3,4,7), (3,6,5).
+    """
+    from matplotlib.patches import Circle
+
+    fig, ax = plt.subplots(figsize=(9.2, 9.2))
+    ax.set_aspect("equal", adjustable="box")
+    ax.axis("off")
+
+    # --- Fano plane point layout (equilateral triangle + midpoints + center) ---
+    e1 = np.asarray([0.0, 1.0], dtype=np.float64)
+    e2 = np.asarray([0.866, -0.5], dtype=np.float64)
+    e4 = np.asarray([-0.866, -0.5], dtype=np.float64)
+
+    e3 = 0.5 * (e1 + e2)  # midpoint on line (1,2,3)
+    e6 = 0.5 * (e2 + e4)  # midpoint on line (2,4,6)
+    e5 = 0.5 * (e4 + e1)  # midpoint on line (1,4,5)
+    e7 = np.asarray([0.0, 0.0], dtype=np.float64)
+
+    pts = {
+        "e1": e1,
+        "e2": e2,
+        "e3": e3,
+        "e4": e4,
+        "e5": e5,
+        "e6": e6,
+        "e7": e7,
+    }
+
+    # --- Associative lines (blue) ---
+    blue = "#4575b4"
+    lw = 3.0
+    alpha = 0.28
+
+    # Outer triangle edges: (1,2,3), (2,4,6), (1,4,5)
+    ax.plot([e1[0], e2[0]], [e1[1], e2[1]], color=blue, lw=lw, alpha=alpha, zorder=1)
+    ax.plot([e2[0], e4[0]], [e2[1], e4[1]], color=blue, lw=lw, alpha=alpha, zorder=1)
+    ax.plot([e4[0], e1[0]], [e4[1], e1[1]], color=blue, lw=lw, alpha=alpha, zorder=1)
+
+    # Medians through the center: (1,7,6), (2,5,7), (3,4,7)
+    ax.plot([e1[0], e6[0]], [e1[1], e6[1]], color=blue, lw=lw, alpha=alpha, zorder=1)
+    ax.plot([e2[0], e5[0]], [e2[1], e5[1]], color=blue, lw=lw, alpha=alpha, zorder=1)
+    ax.plot([e4[0], e3[0]], [e4[1], e3[1]], color=blue, lw=lw, alpha=alpha, zorder=1)
+
+    # Inner circle through midpoints: (3,6,5)
+    r_circle = float(np.linalg.norm(e3))
+    ax.add_patch(Circle((0.0, 0.0), r_circle, fill=False, edgecolor=blue, lw=lw, alpha=alpha, zorder=1))
+
+    # --- Non-associative "tension" highlight (red) ---
+    red = "#d73027"
+    x, y, z = e1, e2, e4  # (e1,e2,e4) has nonzero associator in Remark ex:associator_example
+    c = (x + y + z) / 3.0
+
+    for p in (x, y, z):
+        ax.plot([p[0], c[0]], [p[1], c[1]], color=red, lw=2.2, ls="--", alpha=0.9, zorder=2)
+
+    ax.add_patch(Circle((float(c[0]), float(c[1])), 0.16, facecolor=red, edgecolor="none", alpha=0.14, zorder=2))
+    ax.text(
+        float(c[0]),
+        float(c[1]),
+        r"$\|\mathcal{A}\|\neq 0$" + "\n" + r"$m\propto\|\mathcal{A}\|$",
+        fontsize=11,
+        ha="center",
+        va="center",
+        color="#7f0000",
+        fontweight="bold",
+        zorder=3,
+    )
+
+    # --- Nodes ---
+    for name, p in pts.items():
+        ax.scatter([float(p[0])], [float(p[1])], s=680, facecolor="white", edgecolor="black", linewidth=1.4, zorder=5)
+        ax.text(float(p[0]), float(p[1]), name, fontsize=13, ha="center", va="center", fontweight="bold", zorder=6)
+
+    # Minimal in-figure legend
+    ax.text(
+        0.0,
+        -0.98,
+        "Blue: associative triples (quaternionic subalgebras)\nRed: non-associative defect (associator tension)",
+        fontsize=11,
+        ha="center",
+        va="center",
+        bbox=dict(facecolor="white", edgecolor="#999999", alpha=0.92, boxstyle="round,pad=0.35"),
+    )
+
+    ax.set_title("Fano plane tension: associator as internal impedance (schematic)", fontsize=15, pad=14)
+    fig.tight_layout()
+    fig.savefig(out_path, dpi=300, bbox_inches="tight")
+    plt.close(fig)
+
+
 def main() -> None:
     here = Path(__file__).resolve()
     images_dir = (here.parent / "../images").resolve()
@@ -958,8 +1299,12 @@ def main() -> None:
     plot_transport_duality_diagram(images_dir / "hpa_transport_duality.png")
     plot_holographic_slice_diagram(images_dir / "hpa_holographic_slice.png")
     plot_impedance_decomposition_diagram(images_dir / "hpa_impedance_decomposition.png")
+    plot_alpha_geometric_lock_diagram(images_dir / "hpa_alpha_geometric_lock.png")
     plot_spiral_geodesic_diagram(images_dir / "hpa_spiral_geodesic.png")
     plot_fractal_onion_diagram(images_dir / "hpa_fractal_onion.png")
+    plot_modal_integers_diagram(images_dir / "hpa_modal_integers.png")
+    plot_hpa_pipeline_diagram(images_dir / "hpa_pipeline.png")
+    plot_fano_tension_diagram(images_dir / "hpa_fano_tension.png")
 
     print(f"Saved figures to: {images_dir}")
 
