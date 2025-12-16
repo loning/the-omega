@@ -1,7 +1,10 @@
 \section{Resolution of the Information Paradox}
+\label{sec:information_paradox}
 
 \subsection{Unitary Scanning and Modular Flow}
 The central claim of Paper~I \cite{Ma2025HPA} is that the \textbf{Omega Operator} $\Theta$ is fundamentally unitary (scan time is an honest unitary evolution). A natural bridge to continuum QFT is provided by Tomita--Takesaki theory: for a von Neumann algebra $\mathcal{A}$ acting on a Hilbert space $\mathcal{H}$ and a cyclic separating vector $|\Omega\rangle$, there exists a modular operator $\Delta_\Omega$ and modular conjugation $J_\Omega$ such that the modular flow is implemented by the unitary one-parameter group $\Delta_\Omega^{it}$ \cite{Takesaki2002, Borchers2000, Witten2018}.
+\par
+In algebraic QFT, modular data are not merely formal: for the vacuum state and a Rindler wedge algebra, the modular automorphism group is precisely the Lorentz-boost flow and the state satisfies a KMS condition at the Unruh temperature; moreover, modular conjugation implements a wedge reflection (TCP) and exchanges the wedge algebra with its commutant. These statements are the content of the Bisognano--Wichmann theorem and its standard expositions \cite{BisognanoWichmann1975, BisognanoWichmann1976, Haag1996}.
 
 \begin{assumption}[Modular-scan identification]
 \label{assump:modular_scan}
@@ -44,7 +47,7 @@ Let $x_n:=\vartheta_n/(2\pi)\pmod{1}\in[0,1)$ be the normalized scan phase. Defi
     1,& x_n\in[1-\alpha,1),
   \end{cases}
 \end{equation}
-where $\alpha\in(0,1)$ is the irrational scan slope (Paper~I). This is the standard mechanical-word coding of an irrational rotation.
+where $\alpha\in(0,1)$ is the irrational scan slope (Paper~I). This is the standard mechanical-word coding of an irrational rotation \cite{Lothaire2002, LindMarcus1995}.
 We refer to Paper~I for the concrete choice of $\alpha$ (e.g.\ the golden slope) and the associated Koopman-unitary model \cite{Ma2025HPA}.
 \end{definition}
 
@@ -52,7 +55,42 @@ We refer to Paper~I for the concrete choice of $\alpha$ (e.g.\ the golden slope)
 If $\alpha\notin\QQ$ then $(s_n)$ is Sturmian (equivalently, it has minimal subword complexity among aperiodic binary sequences) \cite{MorseHedlund1940, Lothaire2002}; see Appendix~\ref{app:sturmian}.
 \end{proposition}
 
-At the level of \emph{one-point} statistics, equidistribution of $x_n$ implies that the frequency of the symbol $1$ converges to the interval length $\alpha$ \cite{Weyl1916}; this supplies a clean mechanism for stationary-looking marginals under coarse-graining. At the level of \emph{correlations}, the Sturmian property means the readout is deterministic but information-rich: coarse-grained observables can look random while fine-grained phase correlations remain structured and, in principle, decodable.
+\subsection{Thermality in Marginals vs.\ Information in Correlations}
+The symbolic readout model cleanly separates coarse one-point statistics and fine multi-time correlations.
+
+\begin{proposition}[Single-symbol statistics from equidistribution]
+In the irrational-rotation model $x_n=\{n\alpha+\beta\}$ with $\alpha\notin\QQ$, the binary readout defined by the window $W=[1-\alpha,1)$ satisfies
+\begin{equation}
+  \lim_{N\to\infty}\frac{1}{N}\sum_{n=0}^{N-1} s_n
+  =\mu(W)
+  =\alpha,
+\end{equation}
+where $\mu$ is Lebesgue measure on $[0,1)$. Equivalently, the frequency of the symbol $1$ converges to $\alpha$ \cite{Weyl1916}.
+\end{proposition}
+
+\begin{proposition}[Low complexity and vanishing entropy rate of Sturmian readouts]
+If $(s_n)$ is Sturmian, its factor complexity satisfies $p(m)=m+1$ \cite{MorseHedlund1940, Lothaire2002}. Moreover, Sturmian subshifts are minimal and uniquely ergodic, hence admit a unique shift-invariant probability measure $\mu$ \cite{LindMarcus1995, KatokHasselblatt1995}. Let $P_m(w)$ denote the $\mu$-frequency of length-$m$ words $w\in\{0,1\}^m$. Then the block Shannon entropy
+\begin{equation}
+  H_m:=-\sum_{w\in\{0,1\}^m} P_m(w)\,\log P_m(w)
+\end{equation}
+satisfies
+\begin{equation}
+  H_m \le \log(m+1),
+\end{equation}
+and therefore the entropy rate $\limsup_{m\to\infty}H_m/m$ vanishes.
+\end{proposition}
+\begin{proof}
+At most $p(m)=m+1$ distinct words of length $m$ occur in a Sturmian sequence, hence at most $m+1$ words have positive $\mu$-frequency. Any probability distribution supported on at most $m+1$ points has Shannon entropy bounded by $\log(m+1)$, which proves the stated inequality. Dividing by $m$ yields zero entropy rate.
+\end{proof}
+
+The first proposition supplies a simple mechanism for thermal-looking \emph{marginals} under coarse-graining. The second shows that the readout remains globally constrained: while the one-point Shannon entropy $H_1=-(1-\alpha)\log(1-\alpha)-\alpha\log\alpha$ is positive, the entropy \emph{rate} is zero, so information can be stored in long-range correlations rather than in one-point statistics.
+
+\begin{remark}[Deterministic coding vs.\ stochastic readout]
+The mechanical-word coding is a deterministic factor of an irrational rotation and therefore has zero entropy rate, even though its one-point entropy is positive. In Paper~I \cite{Ma2025HPA}, the observable layer involves a lossy projection readout (instrument/POVM structure) that can introduce genuine stochasticity under coarse-graining; the present subsection isolates the logical point that thermal-looking marginals do not imply information loss when information is stored in correlations.
+\end{remark}
+
+\subsection{Decoding Template: Canonical Coding from Paper I}
+Paper~I \cite{Ma2025HPA} develops a self-contained scan--projection model together with canonical integer-time coordinates (Ostrowski/Zeckendorf in the golden case) and orbit-calculus tools (orbit traces and finite-part prescriptions). In the present context, these constructions provide an explicit arithmetic template for how information can reside in the correlation structure of an apparently featureless readout: decoding is not performed from single-symbol frequencies but from the constrained combinatorics of long words and their canonical block decompositions.
 
 Finally, in random-unitary/scrambling models of evaporation, Page's theorem implies an entropy turnover at the Page time for typical pure states \cite{Page1993, HaydenPreskill2007}. In Omega Dynamics, the corresponding turnover is attributed to the emergence of long-range phase correlations induced by the inversion channel $J_{\mathrm{inv}}$, rather than to fundamental non-unitarity.
 In this sense, the black hole acts as a \textbf{holographic storage channel}: coarse-grained observables are approximately thermal, while fine-grained correlations carry the information.
