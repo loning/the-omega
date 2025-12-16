@@ -1,12 +1,52 @@
 \section{Minimal consequence chain}
 We record the shortest implication chain that ties the new axioms together; detailed constructions and proofs are given in \cite{Ma2025HPA} and in the companion physics manuscript \cite{Ma2025FoP}.
 
+\subsection{Relational ticks from scan covariance}
+By O3, correlators are defined by iterating the intrinsic update $\mathcal{U}$ on observables under the single state $\omega_{\Omega}$. By O6, on the observer-accessible algebra $\mathfrak{A}_{\mathrm{eff}}$ the same iteration is implemented by the scan unitary $U_{\mathrm{scan}}$ in the effective representation. Hence tick-labeled readouts are naturally modeled as orbits under $U_{\mathrm{scan}}$: for any finite-resolution effect $E_k^{(\varepsilon)}$,
+\begin{equation}
+    P_k^{(\varepsilon)}(t)=\omega_{\mathrm{eff}}\!\left(U_{\mathrm{scan}}^{*t} E_k^{(\varepsilon)} U_{\mathrm{scan}}^{t}\right),
+\end{equation}
+and, for a circle pointer mode $V=\e^{2\pi \iu X}$, the Weyl relation implies $X\mapsto X+\alpha\ (\mathrm{mod}\ 1)$ under each tick.
+\par
+The formula above gives the \emph{unconditioned} single-tick statistics in the static state. For sequential readout (conditioning/back-action), one uses the instrument structure from O5, interleaved with the scan evolution.
+
 \subsection{From scan--projection to canonical coding}
-Axiom~O5 gives a canonical map from a continuous intrinsic parameter to a discrete symbolic stream. The same construction simultaneously provides (i) a binary word $\sigma_t\in\{L,S\}$ and (ii) a canonical integer coordinate system for the tick index $t$ (Ostrowski numeration).
+Axiom~O5 gives a canonical map from a continuous intrinsic parameter to a discrete symbolic stream once a readout partition and resolution are fixed. A convenient two-outcome specialization uses the sharp windows $W_L=[0,1-\alpha)$ and $W_S=[1-\alpha,1)$ (exchanging $L\leftrightarrow S$ corresponds to the complementary partition). At finite resolution $\varepsilon$, choose response functions $w_L^{(\varepsilon)},w_S^{(\varepsilon)}:\mathbb{R}/\mathbb{Z}\to[0,1]$ with $w_L^{(\varepsilon)}+w_S^{(\varepsilon)}=1$ and $w_{L,S}^{(\varepsilon)}\to \mathds{1}_{W_{L,S}}$ as $\varepsilon\downarrow 0$, and let $E_{L,S}^{(\varepsilon)}$ be the induced effects as in O5. The tick-$t$ symbol distribution is then
+\begin{equation}
+    \mathbb{P}_{\varepsilon}(\sigma_t=S)=\omega_{\mathrm{eff}}\!\left(U_{\mathrm{scan}}^{*t} E_S^{(\varepsilon)} U_{\mathrm{scan}}^{t}\right),\qquad
+    \mathbb{P}_{\varepsilon}(\sigma_t=L)=\omega_{\mathrm{eff}}\!\left(U_{\mathrm{scan}}^{*t} E_L^{(\varepsilon)} U_{\mathrm{scan}}^{t}\right).
+\end{equation}
+More generally, the associated instrument determines the joint law of a finite symbol string by sequential composition; the above are the single-tick marginals.
+Concretely, let $\mathcal{U}_{\mathrm{scan}}(\rho):=U_{\mathrm{scan}}\rho U_{\mathrm{scan}}^{*}$. With the convention that a scan step separates successive readouts, the joint probability of a length-$T$ outcome string $(k_0,\dots,k_{T-1})$ is
+\begin{equation}
+    \mathbb{P}_{\varepsilon}(k_0,\dots,k_{T-1})
+    =\mathrm{Tr}\!\left(
+    \mathcal{I}_{k_{T-1}}^{(\varepsilon)}\circ \mathcal{U}_{\mathrm{scan}}\circ \cdots \circ
+    \mathcal{I}_{k_{0}}^{(\varepsilon)}(\rho)\right),
+\end{equation}
+where $\rho$ represents $\omega_{\mathrm{eff}}$ on $\hilbert_{\mathrm{eff}}$.
+In a commutative pointer model where $X$ has a sharp value $x_t$ at tick $t$, the marginals reduce to $\mathbb{P}_{\varepsilon}(\sigma_t=S)=w_S^{(\varepsilon)}(x_t)$ and $\mathbb{P}_{\varepsilon}(\sigma_t=L)=w_L^{(\varepsilon)}(x_t)$.
+\par
+In the sharp (window) limit $w_{L,S}^{(\varepsilon)}\to \mathds{1}_{W_{L,S}}$ the effects become window projectors. In the commutative/classical pointer idealization where the pointer phase follows the rotation model $x_t=x_0+t\alpha\ (\mathrm{mod}\ 1)$, this reduces to the deterministic window coding: define the binary word $\sigma_t\in\{L,S\}$ by
+\begin{equation}
+    \sigma_t :=
+    \begin{cases}
+        L, & x_t\in W_L,\\
+        S, & x_t\in W_S.
+    \end{cases}
+\end{equation}
+Equivalently, letting $s_t:=\lfloor x_0+(t+1)\alpha\rfloor-\lfloor x_0+t\alpha\rfloor\in\{0,1\}$, one may take $\sigma_t=S$ iff $s_t=1$ and $\sigma_t=L$ iff $s_t=0$ (mechanical word form).
+For irrational $\alpha$ this produces a Sturmian word of slope $\alpha$; changing $x_0$ shifts the word (and may affect only finitely many symbols when $x_0$ lies on a window boundary). A canonical representative is the characteristic word obtained by the choice $x_0=0$. The same continued-fraction data of $\alpha=[0;a_1,a_2,\dots]$ yields a canonical integer coordinate system for tick indices (Ostrowski numeration): writing $p_n/q_n$ for the convergents, every $t\in\mathbb{Z}_{\ge 0}$ has a unique expansion
+\begin{equation}
+    t=\sum_{n=0}^{N} b_n q_n,\qquad 0\le b_n\le a_{n+1},\qquad b_n=a_{n+1}\Rightarrow b_{n-1}=0.
+\end{equation}
 
 \begin{proposition}[Golden specialization]
-For the golden slope choice $\alpha=\phi^{-2}$, the induced Sturmian coding is the Fibonacci word and the Ostrowski numeration specializes to Zeckendorf coding (no adjacent Fibonacci summands).
+For the golden slope choice $\alpha=\phi^{-2}$ (with $\phi=(1+\sqrt{5})/2$), the induced Sturmian coding is the Fibonacci word and the Ostrowski numeration specializes to Zeckendorf coding (no adjacent Fibonacci summands).
 \end{proposition}
+\begin{proof}[Proof sketch]
+For $x_0=0$ the coding above is the (characteristic) mechanical word of slope $\alpha$. When $\alpha=\phi^{-2}=[0;2,1,1,1,\dots]$ this mechanical word is the Fibonacci word. The corresponding convergent denominators satisfy $q_{n+1}=q_n+q_{n-1}$, hence are Fibonacci numbers (up to index shift), and the Ostrowski admissibility constraint reduces to digits $b_n\in\{0,1\}$ with no adjacent $1$'s, i.e.\ Zeckendorf decomposition.
+\end{proof}
 
 \subsection{Unitary scanning, Weyl pairs, and intrinsic uncertainty}
 Axiom~O6 postulates a Weyl pair $(U_{\mathrm{scan}},V)$ with irrational commutation phase. This is the minimal algebraic source of incompatibility between scan-time and phase/pointer localization.
@@ -14,12 +54,65 @@ Axiom~O6 postulates a Weyl pair $(U_{\mathrm{scan}},V)$ with irrational commutat
 \begin{proposition}[No common eigenvectors]
 If $U_{\mathrm{scan}}V=\e^{2\pi \iu \alpha}VU_{\mathrm{scan}}$ with $\alpha\notin\mathbb{Q}$, then $U_{\mathrm{scan}}$ and $V$ have no nonzero common eigenvector.
 \end{proposition}
+\begin{proof}
+Suppose $\psi\neq 0$ is a common eigenvector, $U_{\mathrm{scan}}\psi=u\psi$ and $V\psi=v\psi$ with $|u|=|v|=1$. Then
+$U_{\mathrm{scan}}V\psi=uv\psi$ while the Weyl relation gives $U_{\mathrm{scan}}V\psi=\e^{2\pi \iu \alpha}VU_{\mathrm{scan}}\psi=\e^{2\pi \iu \alpha}vu\psi$.
+Thus $uv=\e^{2\pi \iu \alpha}uv$, forcing $\e^{2\pi \iu \alpha}=1$, contradicting $\alpha\notin\mathbb{Q}$.
+\end{proof}
+
+\subsection{Finite-dimensional rational approximants}
+In regulated finite-dimensional realizations compatible with the holographic cutoff (O2), one works with rational slopes $\alpha=p/q$. Exact Weyl pairs exist in dimension $q$, and irrational slopes are recovered as scaling limits along convergents $\alpha_n=p_n/q_n$; notably, the same denominators $q_n$ also underlie the Ostrowski coordinates of tick indices.
+Operationally, O2 bounds the available effective dimension in any finite observer region, and hence bounds the accessible denominators $q$ of exact Weyl pairs; the irrational $\alpha$ is therefore observed only through long-period rational approximants and finite prefixes of the limiting symbolic stream.
+\begin{proposition}[Rational Weyl pair (clock/shift)]
+Let $\alpha=p/q$ with $\gcd(p,q)=1$. On $\mathbb{C}^{q}$ define unitaries $V$ and $U$ by
+\begin{equation}
+    (V\psi)_j=\e^{2\pi \iu j/q}\psi_j,\qquad (U\psi)_j=\psi_{j+1\ (\mathrm{mod}\ q)}.
+\end{equation}
+Then $U^{p}V=\e^{2\pi \iu p/q}VU^{p}$.
+\end{proposition}
+\begin{proof}
+A direct computation gives $(UV\psi)_j=\e^{2\pi \iu (j+1)/q}\psi_{j+1}$ and $(VU\psi)_j=\e^{2\pi \iu j/q}\psi_{j+1}$, hence $UV=\e^{2\pi \iu /q}VU$ and therefore $U^{p}V=\e^{2\pi \iu p/q}VU^{p}$.
+\end{proof}
+\par
+On the symbolic side, the same rational approximants yield periodic mechanical words: for $\alpha=p/q$ and window coding as above, $x_{t+q}=x_t$ and hence $\sigma_{t+q}=\sigma_t$. Over one period one has
+\begin{equation}
+    \#\{0\le t<q:\sigma_t=S\}=\sum_{t=0}^{q-1}\bigl(\lfloor (t+1)\alpha\rfloor-\lfloor t\alpha\rfloor\bigr)=\lfloor q\alpha\rfloor=p,
+\end{equation}
+so the period block contains $p$ symbols $S$ and $q-p$ symbols $L$ (a Christoffel/mechanical rational block). Along convergents $\alpha_n=p_n/q_n\to\alpha$ these periodic blocks converge in the product topology to the characteristic Sturmian word of slope $\alpha$ (see \cite{Ma2025HPA}).
 
 \subsection{One mechanism for both time readout and quasicrystal texture}
 The scan--projection mechanism is not restricted to ``time.'' Replacing the tick index by a spatial index along a lattice geodesic yields Sturmian/Fibonacci textures, while interpreting the same window data as an acceptance window yields a cut-and-project (model-set) geometry. In this way, Fibonacci coin textures in a 1D reduction, phason shifts, and Zeckendorf-clocked drives can be traced to the same scan--projection source (see \cite{Ma2025FoP} for the QCA setting).
 
 \subsection{Projection kernels and induced measures (Born/instrument structure)}
-Axiom~O5 makes probability a derived object of finite-resolution readout. In regulated finite-dimensional settings, standard structural results (instrument/POVM calculus and Gleason--Busch characterization) then constrain consistent probability assignments to take the familiar trace form.
+Axiom~O5 makes probability a derived object of finite-resolution readout: once the effects $\{E_k^{(\varepsilon)}\}$ are fixed by the readout kernel, the state functional $\omega_{\mathrm{eff}}$ induces the outcome law $P_k^{(\varepsilon)}=\omega_{\mathrm{eff}}(E_k^{(\varepsilon)})$. In regulated finite-dimensional realizations, representing $\omega_{\mathrm{eff}}$ by a density matrix immediately yields the Born form $P_k^{(\varepsilon)}=\mathrm{Tr}(\rho E_k^{(\varepsilon)})$.
+\par
+Conversely, if one starts from an abstract assignment of probabilities to (generalized) measurement effects and imposes standard consistency requirements (normalization, additivity under coarse-graining, and noncontextuality), Gleason-type theorems for POVMs (Busch) constrain the assignment to be of trace form \cite{Gleason1957,Busch2003}.
 
 \subsection{Orbit traces and Abel finite parts}
 Convention~R1 fixes a canonical normalization for regulated-to-continuum passages: orbit averages become Haar/orbit traces, and constant terms in divergent orbit sums are fixed by Abel finite parts.
+\begin{proposition}[Orbit trace for irrational rotations]
+Let $\alpha\notin\mathbb{Q}$ and $x_t=x_0+t\alpha\ (\mathrm{mod}\ 1)$. Then the rotation is uniquely ergodic with invariant measure $dx$, and for any continuous $f$ one has
+\begin{equation}
+    \lim_{N\to\infty}\frac{1}{N}\sum_{t=0}^{N-1} f(x_t)=\int_{0}^{1} f(x)\,dx.
+\end{equation}
+\end{proposition}
+\begin{proof}[Proof sketch]
+It suffices to check the claim on Fourier modes $f(x)=\e^{2\pi \iu m x}$ and then use density of trigonometric polynomials. For $m=0$ the statement is trivial; for $m\neq 0$ the finite average is a geometric sum and its magnitude is $O(1/N)$ because $\e^{2\pi \iu m\alpha}\neq 1$ for irrational $\alpha$.
+\end{proof}
+\par
+Accordingly, in the irrational rotation regime the orbit trace appearing in Convention~R1 is the Haar average $\int_{0}^{1} f(x)\,dx$, independent of $x_0$. For Abel regularization, define
+\begin{equation}
+    S(r):=\sum_{t\ge 0} r^{t} f(x_t),\qquad 0<r<1,
+\end{equation}
+and note that the Abel-averaged orbit mean is $(1-r)S(r)$; for continuous $f$ one has $(1-r)S(r)\to \int_{0}^{1} f(x)\,dx$ as $r\uparrow 1$. The finite part prescription fixes the constant term after subtracting the pole:
+\begin{equation}
+    \mathrm{FP}\sum_{t\ge 0} f(x_t)\;:=\;\lim_{r\uparrow 1}\left(S(r)-\frac{1}{1-r}\int_{0}^{1} f(x)\,dx\right),
+\end{equation}
+\noindent
+whenever the limit exists; existence along the canonical scaling path/order is part of Assumption~\ref{ass:R2}.
+\paragraph{Example.}
+For $f\equiv 1$, $S(r)=(1-r)^{-1}$ and $\mathrm{FP}\sum_{t\ge 0}1=0$. For the Fourier mode $f(x)=\e^{2\pi \iu m x}$ with $m\neq 0$, the orbit average vanishes and
+\begin{equation}
+    S(r)=\frac{\e^{2\pi \iu m x_0}}{1-r\,\e^{2\pi \iu m\alpha}}\;\xrightarrow[r\uparrow 1]{}\;\frac{\e^{2\pi \iu m x_0}}{1-\e^{2\pi \iu m\alpha}},
+\end{equation}
+so the Abel finite part coincides with the Abel limit.

@@ -2,37 +2,74 @@
 We keep the baseline axioms O1--O4 and record the upgrade axioms O5--O6, together with a regularization convention.
 
 \begin{axiom}[O1: Omega axiom]
-The physical universe is specified by a unique normalized global state $\omega_{\Omega}$ on a quasi-local operator algebra $\mathfrak{A}$ associated with a countable graph of finite-dimensional degrees of freedom. There is no external time parameter; the fundamental description is a single state rather than a family $\{\omega(t)\}$.
+The physical universe is specified by a unique normalized global state $\omega_{\Omega}$ on a quasi-local operator algebra $\mathfrak{A}$ associated with a countable graph of finite-dimensional degrees of freedom. There is no external time parameter; the fundamental description is a single state rather than a family $\{\omega(t)\}$. Any ``dynamics'' is encoded as intrinsic automorphisms acting on observables (O3), while operational clock-time is specified only after a scan--projection readout is chosen (O5).
 \end{axiom}
 
 \begin{axiom}[O2: Finite information]
-For any causally closed region with boundary area $A$, the effective dimension of the regulated state space obeys a holographic bound of the form $\dim \hilbert_{\mathrm{region}}\le \exp(A/4\ell_P^2)$.
+For any causally closed region with boundary area $A$, the effective dimension of the regulated state space obeys a holographic bound of the form
+\begin{equation}
+    \dim \hilbert_{\mathrm{region}}\le \exp(A/4\ell_P^2).
+\end{equation}
 \end{axiom}
 
 \begin{axiom}[O3: Causal locality]
-There exists a discrete-time unitary update with finite-range causal propagation: local observables evolve to observables supported only on bounded neighborhoods.
+There exists a discrete-step causal update given by a unital $*$-automorphism $\mathcal{U}:\mathfrak{A}\to\mathfrak{A}$. In the regulated representation it is implemented by a unitary, $\mathcal{U}(A)=U^{*}AU$, and has finite-range causal propagation: local observables evolve to observables supported only on bounded neighborhoods. Correlators are thus of Heisenberg/relational form $\omega_{\Omega}(\mathcal{U}^{n}(A))$ for $n\in\mathbb{Z}$, without introducing a family of time-labeled states.
 \end{axiom}
 
 \begin{axiom}[O4: Holographic mapping]
-There exists a holographic encoding map $\Phi$ from bulk to boundary that is (approximately) isometric on the relevant code subspace and supports approximate operator-algebra quantum error correction / entanglement-wedge reconstruction.
+There exists a holographic encoding map $\Phi$ from bulk to boundary that is (approximately) isometric on the relevant code subspace and supports approximate operator-algebra quantum error correction / entanglement-wedge reconstruction. In particular, observer-accessible readout operators may be chosen within the boundary algebra on the code subspace, and the effective observer state $\omega_{\mathrm{eff}}$ in O5 is obtained by restricting $\omega_{\Omega}$ (after encoding) to those observables.
 \end{axiom}
 
 \begin{axiom}[O5: Scan--projection readout (and induced measure)]
-Any operational notion of time available to a finite observer is obtained from a finite-resolution scan and projection of intrinsic phase data. In particular, there exists a circle-valued phase readout $x(\tau)\in\mathbb{R}/\mathbb{Z}$ of an intrinsic parameter $\tau$ and a stroboscopic sampling at ticks $t\in\mathbb{Z}_{\ge 0}$ such that the sampled readout is modeled (in the generic aperiodic regime) by an irrational circle rotation with slope $\alpha\in(0,1)\setminus\mathbb{Q}$.
-\par
-Moreover, finite-resolution readout induces probabilities as a projection measure rather than as an external sampling postulate: for a state $\rho$ and resolution parameter $\varepsilon>0$, outcome statistics are determined by a family of effects $\{E_k^{(\varepsilon)}\}$ with $\sum_k E_k^{(\varepsilon)}=I$ via
+Any operational notion of time available to a finite observer is obtained from a finite-resolution scan and projection of intrinsic phase data. In particular, there exists a circle-valued phase readout $x(\tau)\in\mathbb{R}/\mathbb{Z}$ of an intrinsic scan parameter $\tau$ and a stroboscopic sampling at ticks $t\in\mathbb{Z}_{\ge 0}$ (counting scan steps) such that the sampled readout $x_t:=x(\tau_t)$ is modeled (in the generic aperiodic regime) by an irrational circle rotation with slope $\alpha\in(0,1)\setminus\mathbb{Q}$:
 \begin{equation}
-    P_k^{(\varepsilon)}=\mathrm{Tr}(\rho\,E_k^{(\varepsilon)}).
+    x_t = x_0 + t\alpha \pmod{1}.
 \end{equation}
-In the sharp limit the effects reduce to projectors and conditioning reduces to the standard L\"uders/Kraus instrument.
+\par
+In the continuum covariant model of O6, $x$ is the spectral coordinate of the pointer mode $V$ and the scan acts as the translation $x\mapsto x+\alpha$, so the rotation model can be viewed as the induced dynamics on the pointer spectrum.
+\par
+In regulated finite settings, one may work with long-period rational approximants $\alpha_n=p_n/q_n$ (e.g.\ convergents of the continued fraction of $\alpha$), so that the irrational rotation describes the scaling/continuum limit $q_n\to\infty$ and the effective aperiodic regime at finite resolution.
+\par
+Moreover, finite-resolution readout induces probabilities as a projection measure rather than as an external sampling postulate: for each resolution parameter $\varepsilon>0$ there is a family of effects $\{E_k^{(\varepsilon)}\}$ with $\sum_k E_k^{(\varepsilon)}=I$ and outcome statistics are determined by
+\begin{equation}
+    P_k^{(\varepsilon)}=\omega_{\mathrm{eff}}\!\left(E_k^{(\varepsilon)}\right).
+\end{equation}
+In a Hilbert-space representation, $\omega_{\mathrm{eff}}(A)=\mathrm{Tr}(\rho A)$ for a density matrix $\rho$ on $\hilbert_{\mathrm{eff}}$. A convenient model for finite-resolution readout is a unitary pointer mode $V$ with spectral measure $\Pi_V$ on $\mathbb{R}/\mathbb{Z}$ (so that $V=\int_{\mathbb{R}/\mathbb{Z}} \e^{2\pi \iu x}\,d\Pi_V(x)$); equivalently $V=\e^{2\pi \iu X}$ for a circle-valued pointer observable $X$. Given response functions $w_k^{(\varepsilon)}:\mathbb{R}/\mathbb{Z}\to[0,1]$ with $\sum_k w_k^{(\varepsilon)}(x)=1$, the induced effects are
+\begin{equation}
+    E_k^{(\varepsilon)}=\int_{\mathbb{R}/\mathbb{Z}} w_k^{(\varepsilon)}(x)\, d\Pi_V(x).
+\end{equation}
+To describe sequential readouts, one may fix an associated instrument $\{\mathcal{I}_k^{(\varepsilon)}\}$ (completely positive maps) such that $\sum_k \mathcal{I}_k^{(\varepsilon)}$ is trace preserving and $\mathrm{Tr}(\mathcal{I}_k^{(\varepsilon)}(\rho))=\mathrm{Tr}(\rho E_k^{(\varepsilon)})$. In finite dimensions an operator-sum form exists,
+\begin{equation}
+    \mathcal{I}_k^{(\varepsilon)}(\rho)=\sum_a K_{k,a}^{(\varepsilon)}\,\rho\,K_{k,a}^{(\varepsilon)*},\qquad
+    E_k^{(\varepsilon)}=\sum_a K_{k,a}^{(\varepsilon)*}K_{k,a}^{(\varepsilon)}.
+\end{equation}
+In the sharp limit $w_k^{(\varepsilon)}\to \mathds{1}_{W_k}$ the effects reduce to projectors (window projections) and conditioning reduces to the standard L\"uders/Kraus instrument.
 \end{axiom}
 
 \begin{axiom}[O6: Unitary scan algebra (Weyl pair)]
-The scan underlying tick-labeled readouts is implemented by a nontrivial unitary $U_{\mathrm{scan}}$ on an effective observer sector $\hilbert_{\mathrm{eff}}$. Moreover, there exists a conjugate unitary $V$ (a phase/pointer mode) such that
+The scan underlying tick-labeled readouts is implemented by a nontrivial unitary $U_{\mathrm{scan}}$ on an effective observer sector $\hilbert_{\mathrm{eff}}$. The scan is compatible with the causal update (O3) on the observer-accessible algebra: there exists an observer-accessible subalgebra $\mathfrak{A}_{\mathrm{eff}}\subseteq \mathfrak{A}$ (or in the boundary algebra under $\Phi$) and a representation $\pi_{\mathrm{eff}}:\mathfrak{A}_{\mathrm{eff}}\to\mathcal{B}(\hilbert_{\mathrm{eff}})$ such that
+\begin{equation}
+    \pi_{\mathrm{eff}}(\mathcal{U}(A))=U_{\mathrm{scan}}^{*}\,\pi_{\mathrm{eff}}(A)\,U_{\mathrm{scan}},\qquad A\in\mathfrak{A}_{\mathrm{eff}}.
+\end{equation}
+Moreover, there exists a conjugate unitary $V$ (a phase/pointer mode) such that
 \begin{equation}
     U_{\mathrm{scan}}V = \e^{2\pi \iu \alpha} VU_{\mathrm{scan}},
 \end{equation}
 with the same irrational slope $\alpha$ as in O5. Consequently there are no nonzero states that are simultaneous eigenvectors of $U_{\mathrm{scan}}$ and $V$, and quantitative uncertainty tradeoffs follow from the Weyl relation.
+\par
+Equivalently, $U_{\mathrm{scan}}^{t} V U_{\mathrm{scan}}^{-t}=\e^{2\pi \iu t\alpha}V$. If $V=\e^{2\pi \iu X}$ for a circle-valued pointer observable $X$, then $X\mapsto X+\alpha\ (\mathrm{mod}\ 1)$ under the scan, matching the rotation model in O5.
+\par
+\emph{Continuum model.} A canonical covariant realization of the Weyl relation is on $L^{2}(\mathbb{R}/\mathbb{Z})$ with
+\begin{equation}
+    (U_{\mathrm{scan}}\psi)(x)=\psi(x+\alpha),\qquad (V\psi)(x)=\e^{2\pi \iu x}\psi(x),
+\end{equation}
+so that $U_{\mathrm{scan}}V=\e^{2\pi \iu \alpha}VU_{\mathrm{scan}}$ and the induced action on the spectrum is the circle rotation $x\mapsto x+\alpha$.
+\par
+\emph{Regulated realizations.} In a strictly finite-dimensional regulated observer sector of dimension $d$, an exact Weyl relation $U_{\mathrm{scan}}V=\e^{2\pi \iu \alpha}VU_{\mathrm{scan}}$ forces $\e^{2\pi \iu \alpha d}=1$ (e.g.\ by taking determinants), hence $\alpha\in\mathbb{Q}$. The irrational slope $\alpha$ is therefore to be understood as a limiting/continuum parameter: regulated realizations use rational convergents $\alpha_n=p_n/q_n$ with exact $q_n$-dimensional clock/shift Weyl pairs, and the irrational rotation algebra is recovered as $q_n\to\infty$ (see \cite{Ma2025HPA}).
 \end{axiom}
 \paragraph{Convention R1 (Orbit regularization and finite parts).}
-Effective continuum observables are defined as limits of regulated scan-orbit functionals: orbit averages are taken as orbit traces (ergodic/Haar averages on orbit closures), while divergent orbit sums are assigned a canonical finite part via Abel regularization and pole subtraction \cite{Ma2025HPA}.
+Effective continuum observables are defined as limits of regulated scan-orbit functionals: orbit averages are taken as orbit traces (ergodic/Haar averages on orbit closures), while divergent orbit sums are assigned a canonical finite part via Abel regularization and pole subtraction \cite{Ma2025HPA}. When multiple regulators are present (finite dimension $q$, finite resolution $\varepsilon$, Abel parameter $r$), the finite-part assignment is defined at fixed $(q,\varepsilon)$ by the Abel limit $r\uparrow 1$ and pole subtraction, and only afterwards one takes scaling/continuum limits. In this note we treat $r\uparrow 1$ as the innermost limit, take $q\to\infty$ along convergents when passing from rational to irrational slope, and take the sharp readout limit $\varepsilon\downarrow 0$ only when a projective/window idealization is required. When different paths in $(q,\varepsilon)$ lead to different limits, this convention fixes the canonical path/order.
+\begin{assumption}[R2: Existence of canonical scaling limits]
+\label{ass:R2}
+For the class of scan-orbit functionals and readout kernels considered, the iterated limits specified in Convention~R1 exist along the canonical path/order, and define the effective continuum quantities used below.
+\end{assumption}
