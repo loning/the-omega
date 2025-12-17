@@ -1,0 +1,102 @@
+\section{Complexity as physical cost: a unified resource semantics}
+\label{sec:complexity}
+
+This section performs two tasks: (i) it aligns standard complexity models with HPA--$\Omega$ objects, and (ii) it makes precise in what sense ``time complexity \emph{is} time'' and ``space complexity \emph{is} space'' in this framework: both are internal resource functionals of the scan--readout protocol.
+
+\subsection{Three standard models and their HPA--Omega alignment}
+\label{subsec:model_alignment}
+
+\paragraph{Turing machine (TM).}
+Time is step count $T(x)$; space is the number of tape cells visited $S(x)$.
+
+\paragraph{Circuit model.}
+Time is circuit depth $\mathrm{depth}(C)$; space is width / number of working wires.
+
+\paragraph{Quantum cellular automaton (QCA).}
+Time is the number of global update ticks $t$; space is active region size $|R|$ and local dimension $d$.
+
+\paragraph{HPA--Omega alignment.}
+The HPA scan iteration count $k$ aligns with TM time and circuit depth:
+\begin{equation}
+T \sim k.
+\end{equation}
+Readout prefix length $N$, canonical code length $m$ (Ostrowski/Zeckendorf), and QCA active region $|R|$ align with space:
+\begin{equation}
+S \sim (N,\,m,\,|R|).
+\end{equation}
+Omega Theory provides a further unification: local PQCA steps can be compiled to 1D nearest-neighbor circuits, so ``time'' can be expressed uniformly as nearest-neighbor depth.
+
+\subsection{Time complexity as an internal definition: scan depth and compilation depth}
+\label{subsec:time_internal_definition}
+
+\begin{definition}[Scan time complexity]
+\label{def:scan_time_complexity}
+Fix a scan operator $\Theta$, an initial state $|\psi\rangle$, and a readout predicate $P$ (for example, a predicate on the stabilized canonical code derived from the readout stream). For a tolerance $\epsilon>0$, define the scan time complexity
+\begin{equation}
+T_{\Theta}(P;\epsilon) := \min\Bigl\{k\ge 0:\ \mathrm{Readout}(\Theta^k|\psi\rangle)\ \text{decides $P$ stably within error $\epsilon$}\Bigr\}.
+\end{equation}
+If no such $k$ exists, set $T_{\Theta}(P;\epsilon)=+\infty$.
+\end{definition}
+
+\begin{definition}[Compilation time complexity]
+\label{def:compilation_time_complexity}
+For a finite region $R$ and a local PQCA update $U_R$, define
+\begin{equation}
+T_{\mathrm{comp}}(R) := \min_{f_R}\ \mathrm{depth}\bigl(C_R(f_R)\bigr),
+\end{equation}
+where $f_R$ ranges over admissible 1D layouts/encodings of $R$ onto the tape and $C_R(f_R)$ is the corresponding 1D nearest-neighbor circuit implementing $U_R$ (Proposition~\ref{prop:1d_compilation}).
+\end{definition}
+
+The lapse definition \eqref{eq:lapse_definition} is exactly the statement that local proper time is measured by the achievable logical rate per unit depth.
+
+\subsection{Space complexity as an internal definition: readout resolution and orthogonal cut capacity}
+\label{subsec:space_internal_definition}
+
+\begin{definition}[Readout space complexity]
+\label{def:readout_space_complexity}
+Fix a readout task $\mathsf{R}$ (e.g. reconstructing a canonical integer coordinate from the scan stream) and a tolerance $\epsilon>0$. Let $s_0,\dots,s_{N-1}$ be the binary stream induced by the window projection. Define
+\begin{equation}
+S_{\mathrm{read}}(\mathsf{R};\epsilon):=\min\Bigl\{N\ge 1:\ \text{the length-$N$ prefix suffices to complete $\mathsf{R}$ within error $\epsilon$}\Bigr\}.
+\end{equation}
+\end{definition}
+
+\begin{definition}[Coding space complexity]
+\label{def:coding_space_complexity}
+Let $\mathrm{Code}_\alpha(N)$ denote the Ostrowski representation of $N$ associated with slope $\alpha$, and let $\ell(\mathrm{Code}_\alpha(N))$ be its digit length. Define
+\begin{equation}
+S_{\mathrm{code}}(N;\alpha):=\ell\bigl(\mathrm{Code}_\alpha(N)\bigr).
+\end{equation}
+In the golden branch $\alpha=\varphi^{-1}$, this specializes to the Zeckendorf digit length.
+\end{definition}
+
+\begin{definition}[QCA workspace complexity]
+\label{def:qca_space_complexity}
+For a QCA with local Hilbert dimension $d$ and an active region $R$, define the workspace capacity
+\begin{equation}
+S_{\mathrm{QCA}}(R):=|R|\,\log d.
+\end{equation}
+\end{definition}
+
+In the scan--readout ontology, ``space'' is the minimal orthogonal grammar required to distinguish and stabilize readout outcomes. This is why the natural space measures are prefix length, canonical code length, and active-region capacity. Appendix~\ref{app:readout_bounds} records explicit discrepancy and digit-depth scalings in the Sturmian/golden setting.
+
+\begin{proposition}[A concrete $(T,S)$ scaling in the Sturmian scan model]
+\label{prop:sturmian_TS_scaling}
+In the window-scan model producing a mechanical word $s_0,\dots,s_{N-1}$, the prefix-sum estimator $\widehat{\alpha}_N:=S_N/N$ satisfies
+\begin{equation}
+\bigl|\widehat{\alpha}_N-\alpha\bigr|<\frac{1}{N}
+\end{equation}
+uniformly in $N$ (Proposition~\ref{prop:uniform_discrepancy}).
+Hence to achieve estimation error $\le\epsilon$ it suffices to take $N\ge\lceil 1/\epsilon\rceil$ (Corollary~\ref{cor:prefix_for_epsilon}).
+Since one scan iteration produces one readout bit, the scan time to acquire an $N$-bit prefix scales as $T=\Theta(N)$ for such streaming tasks.
+In the golden branch, the corresponding Zeckendorf digit depth obeys $S_{\mathrm{code}}=\Theta(\log N)=\Theta(\log(\epsilon^{-1}))$ (Proposition~\ref{prop:resolution_digit_depth}).
+\end{proposition}
+
+\begin{remark}[A worked resource pipeline (example)]
+For an estimation tolerance $\epsilon=10^{-3}$, Corollary~\ref{cor:prefix_for_epsilon} yields $N\ge 10^3$, so a streaming scan requires $T=\Theta(10^3)$ iterations to acquire the corresponding prefix.
+In the golden branch, Proposition~\ref{prop:resolution_digit_depth} gives a Zeckendorf digit depth on the order of
+\begin{equation}
+m\ \gtrsim\ \log_{\varphi}\!\left(\sqrt{5}\,\epsilon^{-1}\right)\ \approx\ 16,
+\end{equation}
+illustrating the separation between raw prefix length (streaming memory) and compressed canonical description length.
+Independently, for a $2$D $L\times L$ grid region update, Theorem~\ref{thm:boundary_scaling_overhead} implies a compilation lower bound $\kappa(R)=\Omega(L)$ under 1D embedding; this is the quantitative sense in which geometry reappears as implementation-time overhead.
+\end{remark}

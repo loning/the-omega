@@ -1,0 +1,42 @@
+\section{Undecidable local reachability in universal QCA: a reduction blueprint}
+\label{app:reachability_undecidability}
+
+This appendix strengthens Theorem~\ref{thm:undecidable_reachability} by making the halting-to-reachability reduction explicit.
+The argument is standard in spirit: any universal computational dynamics supports undecidable hitting predicates once a halting flag is localized.
+For related undecidability results for reachability properties in quantum-system models (quantum automata), see \cite{LiYing2014}.
+
+\subsection{Step 1: reversible halting as a well-posed predicate}
+The classical halting problem is undecidable \cite{Turing1936}.
+To embed it into a unitary dynamics, it is convenient to work with a reversible (injective) machine model.
+Reversible simulation of Turing machines is standard in reversible computation \cite{Bennett1973,Bennett1989}.
+In particular, there exist universal reversible Turing machines whose halting behavior encodes the usual halting problem.
+
+\subsection{Step 2: reversible computation embedded into QCA}
+A QCA is a unitary, local, shift-invariant update on a lattice of finite-dimensional systems.
+Any classical reversible cellular automaton (RCA) can be embedded into a QCA by restricting to the computational basis and letting the QCA act as a permutation on basis states.
+Conversely, intrinsically universal QCAs can simulate arbitrary local dynamics, including RCA and reversible Turing machine space-time diagrams; see intrinsic universality constructions such as \cite{ArrighiGrattage2010}.
+
+\subsection{Step 3: a localized halting flag projector}
+Fix a universal QCA update $U$.
+Given an instance $(M,x)$, construct an initial basis state $|\psi_{M,x}\rangle$ that encodes $M$ and input $x$ in a finite ``program/data'' region, with blank padding elsewhere.
+Reserve a dedicated finite region $K$ containing a ``flag cell'' whose local basis includes states $|0\rangle$ and $|1\rangle$.
+
+Design the simulation so that:
+(i) if $M$ halts on $x$, then at the moment of halting the flag cell is set to $|1\rangle$ and remains $|1\rangle$ thereafter (this can be achieved without violating reversibility by recording the halting event in an ancilla and continuing with a reversible idle loop);
+(ii) if $M$ does not halt, the flag cell remains $|0\rangle$ forever.
+
+Let $\Pi_K$ be the local projector onto the subspace where the flag cell is in state $|1\rangle$ (tensored with identity on the rest of $K$).
+Then
+\begin{equation}
+\exists t\ge 0:\ \langle\psi_{M,x}|U^{\dagger t}\Pi_K U^t|\psi_{M,x}\rangle>0
+\end{equation}
+holds if and only if $M$ halts on $x$.
+
+\subsection{Conclusion: undecidability}
+If there were an algorithm deciding the reachability predicate above for all $(M,x)$, it would decide halting.
+Therefore the local reachability predicate is undecidable.
+
+\begin{remark}[Why this is compatible with unitarity]
+The construction never modifies $U$ nonunitarily.
+Undecidability arises because the predicate quantifies over unbounded time and because universal dynamics can encode arbitrarily long computations.
+\end{remark}

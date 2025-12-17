@@ -1,0 +1,40 @@
+\section{Time complexity as geometric impedance: from scan iteration to emergent lapse}
+\label{sec:time}
+
+\subsection{HPA: time as access order}
+In HPA, ``time'' is not a background parameter but the access order induced by the scan operator $\Theta$: the system is accessed by the orbit $\{\Theta^k|\psi\rangle\}_{k\ge 0}$, and the physical content of ``waiting longer'' is the need for a larger iteration count before the readout stabilizes (Definition~\ref{def:scan_time_complexity}).
+
+This internalization of time has a direct complexity interpretation: if a readout task requires deeper orbit sampling to resolve an ambiguity created by projection (or by phase aliasing), then the time cost is literally larger $k$.
+
+\subsection{Omega Theory: compilation overhead and time dilation as computational slowdown}
+Omega Theory adds a second, implementation-level notion of time: the depth required to implement a local update on a one-dimensional nearest-neighbor substrate (Definition~\ref{def:compilation_time_complexity}).
+The key point is that an abstract ``one-step'' local PQCA update is not automatically a constant-time operation once one fixes a physical connectivity constraint (nearest neighbor). Routing induces overhead.
+
+The lapse definition
+\begin{equation}
+\lapse(x)=\frac{\kappa_0}{\kappa(x)},\qquad d\tau_{\mathrm{loc}}(x)=\lapse(x)\,dt
+\end{equation}
+states that the local proper time $\tau_{\mathrm{loc}}$ counts realizable logical steps, while $t$ counts baseline nearest-neighbor depth. Regions with larger routing overhead ($\kappa$ large) execute fewer logical steps per unit $t$ and therefore appear time-dilated.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.98\textwidth]{images/fig2_lapse.png}
+\caption{\textbf{Time complexity as scan/compilation depth and routing overhead.} A local PQCA step on a finite region can be implemented on a 1D nearest-neighbor tape at a depth cost that defines the routing overhead $\kappa$. The computational lapse $\lapse=\kappa_0/\kappa$ converts baseline depth time $t$ into local logical time $\tau_{\mathrm{loc}}$ via $d\tau_{\mathrm{loc}}=\lapse(x)\,dt$.}
+\label{fig:lapse}
+\end{figure}
+
+\subsection{Unitarity and reversible computation: why tradeoffs are structural}
+The scan and the QCA update are unitary and hence reversible.
+However, any nontrivial readout must involve projection, coarse graining, or conditioning---all of which are information-losing operations on the observed algebra.
+This juxtaposition reproduces, in a geometric language, a standard phenomenon in reversible computation: simulating an irreversible computation reversibly typically forces a time--space tradeoff.
+
+Bennett's pebbling-based results formalize this in the classical reversible setting \cite{Bennett1989}. In the present framework the tradeoff becomes transparent:
+
+\begin{itemize}
+    \item Reducing \emph{space} corresponds to using a shorter prefix, fewer orthogonal channels, or more aggressive projection.
+    \item Reducing \emph{time} corresponds to using fewer scan iterations or a shallower compiled circuit.
+\end{itemize}
+
+\noindent But the Weyl complementarity (Section~\ref{sec:complementarity}) and the projection gap (Definition~\ref{def:quantum_gap}) imply that these reductions are incompatible beyond a structural limit: pushing readout resolution downward increases aliasing and instability, which then forces either more scan depth (time) or more workspace (space) to regain robustness.
+
+In short, within HPA--$\Omega$ the phrase ``time dilation'' has an exact computational meaning: it is the slowdown induced by routing/compilation overhead required by locality constraints, coupled to readout-induced irreversibility.
