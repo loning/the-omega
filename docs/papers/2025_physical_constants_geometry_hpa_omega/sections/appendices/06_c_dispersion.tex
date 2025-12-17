@@ -1,0 +1,45 @@
+\section{On \texorpdfstring{$c$}{c} and dispersion signatures: boundary conditions}
+\label{app:c_dispersion}
+
+In the ``gravitational stretching vs high-energy shortcut'' picture, the standard speed of light $c$ arises as the baseline limit in which both effects are negligible.
+
+\paragraph{Group velocity versus signal front.}
+If a dispersive relation $\omega=\omega(k)$ is induced (e.g., by discrete scan), the phase and group velocities are
+\begin{equation}
+v_{\mathrm{ph}}=\frac{\omega}{k},\qquad v_g=\frac{\diff\omega}{\diff k}.
+\end{equation}
+It is standard that $v_g$ can exceed $c$ (or become negative) in dispersive media without enabling superluminal signaling; what constrains causality is the propagation of the wavefront, controlled by analyticity of the response function and the high-frequency limit \cite{Brillouin1960,Jackson1998}.
+
+\paragraph{A minimal discrete-scan dispersion model.}
+Discrete nearest-neighbor updates produce $k$-dependent group velocity. A representative example is the standard central-difference discretization of the one-dimensional wave equation.
+\begin{proposition}[Dispersion from a nearest-neighbor discretized wave equation]\label{prop:discrete_scan_dispersion}
+Discretize $u_{tt}=c^2u_{xx}$ on a uniform lattice $x_j=ja$ and times $t_n=n\Delta t$ by
+\begin{equation}
+\frac{u^{n+1}_j-2u^n_j+u^{n-1}_j}{\Delta t^2}
+=c^2\frac{u^n_{j+1}-2u^n_j+u^n_{j-1}}{a^2}.
+\end{equation}
+Plane-wave solutions $u^n_j=\exp(\iu(kja-\omega n\Delta t))$ satisfy
+\begin{equation}
+\sin^2\!\left(\frac{\omega\Delta t}{2}\right)=\nu^2\sin^2\!\left(\frac{ka}{2}\right),
+\qquad
+\nu:=\frac{c\Delta t}{a},
+\end{equation}
+and the group velocity is
+\begin{equation}
+v_g(k)=\frac{\diff\omega}{\diff k}
+=c\,\frac{\cos(ka/2)}{\sqrt{1-\nu^2\sin^2(ka/2)}}.
+\end{equation}
+In particular, $\omega=ck+O(k^3)$ as $k\to 0$, while $v_g$ depends on $k$ for $\nu\neq 1$.
+\end{proposition}
+\begin{proof}
+Substitute the plane-wave ansatz into the update equation and simplify using $\cos x=1-2\sin^2(x/2)$. Differentiate the dispersion relation implicitly to obtain $v_g(k)$, and use $\sin x=x+O(x^3)$ for the low-$k$ expansion.
+\end{proof}
+
+One convenient definition of the front velocity is
+\begin{equation}
+v_{\mathrm{front}}:=\lim_{\omega\to\infty}\frac{\omega}{k(\omega)}=\frac{c}{\lim_{\omega\to\infty} n(\omega)},
+\end{equation}
+where $n(\omega)$ is the refractive index (or its effective analogue). In causal linear response, $n(\omega)$ is analytic in the upper half-plane and approaches $1$ at high frequency, implying $v_{\mathrm{front}}=c$ in vacuum \cite{Brillouin1960,Jackson1998}.
+
+\paragraph{Boundary condition for discrete-scan dispersion.}
+Therefore any scan-induced group-velocity dispersion proposed in the HPA--$\Omega$ program must be read as $v_g(\omega)$ and must be embedded into a local microscopic model that preserves analyticity/causality so that $v_{\mathrm{front}}$ remains luminal.

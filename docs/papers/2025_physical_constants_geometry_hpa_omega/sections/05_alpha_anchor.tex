@@ -1,0 +1,118 @@
+\section{An anchored worked example: a three-channel impedance model for \texorpdfstring{$\alpha_{\mathrm{em}}$}{alpha\_em}}
+\label{sec:alpha_anchor}
+
+\subsection{Closed-theory axioms: serial composition and geometric impedance}
+We isolate the axioms that turn the three-term expression into a theorem-level statement inside the HPA--$\Omega$ constant-geometry program.
+
+\begin{axiom}[Serial composition of layered readout costs]
+\label{ax:serial_impedance}
+If a readout protocol must satisfy channel constraints in a fixed hierarchy, and if each channel $j$ has a nonnegative minimal process cost $V_j$ at a given resolution, then the total geometric impedance is the serial sum
+\begin{equation}
+\alpha_{\mathrm{geo}}^{-1}=\sum_{j} V_j.
+\end{equation}
+\end{axiom}
+
+\begin{remark}[Numerical isolation of serial composition among standard aggregation rules]\label{rem:alpha_aggregation_isolation}
+For the three-stratum costs $V_{\mathrm{bulk}}=4\pi^3$, $V_{\mathrm{boundary}}=\pi^2$, and $V_{\mathrm{line}}=\pi$, standard alternatives to serial addition give values far from the CODATA benchmark. For example, the Euclidean aggregation $\sqrt{V_{\mathrm{bulk}}^2+V_{\mathrm{boundary}}^2+V_{\mathrm{line}}^2}$ gives $124.4568430929$ (relative deviation $-9.18\times 10^{-2}$), the max aggregation $\max\{V_{\mathrm{bulk}},V_{\mathrm{boundary}},V_{\mathrm{line}}\}$ gives $124.0251067212$ (relative deviation $-9.49\times 10^{-2}$), and the parallel-impedance aggregation $(V_{\mathrm{bulk}}^{-1}+V_{\mathrm{boundary}}^{-1}+V_{\mathrm{line}}^{-1})^{-1}$ gives $2.3381204994$ (relative deviation $-9.83\times 10^{-1}$). By contrast, the serial sum gives $4\pi^3+\pi^2+\pi=137.0363037759$ (relative deviation $+2.22\times 10^{-6}$).
+\end{remark}
+
+\begin{axiom}[Geometric impedance as normalized phase volume]
+\label{ax:impedance_volume}
+For each channel $j$, the process cost $V_j$ is identified with a normalized geometric invariant of the corresponding phase space $\mathcal{M}_j$. In the minimal model used here we take
+\begin{equation}
+V_j = \mathrm{Vol}(\mathcal{M}_j),
+\end{equation}
+where $\mathrm{Vol}$ is the canonical volume induced by the standard bi-invariant metric on compact Lie groups and its quotient metrics.
+\end{axiom}
+
+\subsection{Geometric identification of the three strata}
+The HPA readout is built from projective quantum kinematics: rays rather than vectors. For a minimal (two-level) readout interface, the ray space is $\mathbb{C}P^1\cong S^2$ (Bloch sphere), and the associated principal $U(1)$ bundle of normalized state vectors is the Hopf fibration with total space $S^3\cong SU(2)$ \cite{Nakahara2003,BengtssonZyczkowski2017}. The physical identification of $\pm 1$ for spinorial lifts produces the standard double cover $SU(2)\to SO(3)=SU(2)/\{\pm 1\}$ \cite{Hall2015}.
+
+\begin{axiom}[Electromagnetic three-stratum phase spaces]
+\label{ax:em_phase_spaces}
+For the electromagnetic readout channel we take the three topologically distinguishable strata to be
+\begin{equation}
+\mathcal{M}_{\mathrm{bulk}} \cong U(1)\times SU(2),\qquad
+\mathcal{M}_{\mathrm{boundary}} \cong SO(3) \cong \mathbb{R}P^3,\qquad
+\mathcal{M}_{\mathrm{line}} \cong U(1)/\{\pm 1\} \cong \mathbb{R}P^1.
+\end{equation}
+The quotient by $\{\pm 1\}$ encodes the projective identification intrinsic to readout.
+\end{axiom}
+
+\subsection{A theorem-level value from group volumes}
+\begin{theorem}[Three-channel impedance]
+\label{thm:alpha_three_channel}
+Under Axioms~\ref{ax:serial_impedance}--\ref{ax:em_phase_spaces}, the minimal-model geometric value of the inverse fine-structure constant is
+\begin{equation}
+\alpha_{\mathrm{geo}}^{-1}=4\pi^3+\pi^2+\pi\approx 137.0363037759.
+\end{equation}
+\end{theorem}
+\begin{proof}
+By Axiom~\ref{ax:serial_impedance}, $\alpha_{\mathrm{geo}}^{-1}=V_{\mathrm{bulk}}+V_{\mathrm{boundary}}+V_{\mathrm{line}}$. By Axiom~\ref{ax:impedance_volume}, $V_j=\mathrm{Vol}(\mathcal{M}_j)$, and by Axiom~\ref{ax:em_phase_spaces} we reduce the calculation to canonical volumes. Appendix~\ref{app:group_volumes} records the standard values
+\begin{equation}
+\mathrm{Vol}(U(1))=2\pi,\quad \mathrm{Vol}(SU(2))=2\pi^2,\quad
+\mathrm{Vol}(SO(3))=\pi^2,\quad \mathrm{Vol}(\mathbb{R}P^1)=\pi,
+\end{equation}
+so that
+\begin{equation}
+V_{\mathrm{bulk}}=\mathrm{Vol}(U(1)\times SU(2))=4\pi^3,\qquad
+V_{\mathrm{boundary}}=\pi^2,\qquad
+V_{\mathrm{line}}=\pi.
+\end{equation}
+Summing the three terms yields the stated expression.
+\end{proof}
+
+\subsection{Quantitative rigidity: low-complexity integer relation search}
+Even if one sets aside the geometric identification, a referee will ask whether the coefficient triple $(4,1,1)$ is a tuned choice. We therefore document a reproducible rigidity check: approximate the CODATA target by the three-term ansatz $a\pi^3+b\pi^2+c\pi$ with small nonnegative integers.
+
+Let $\alpha_{\mathrm{CODATA}}^{-1}=137.035999177$ denote the CODATA 2022 recommended central value \cite{CODATA2022RMP}. We exhaustively search all triples $(a,b,c)\in\{0,1,\dots,12\}^3\setminus\{(0,0,0)\}$ and minimize the absolute error $|a\pi^3+b\pi^2+c\pi-\alpha_{\mathrm{CODATA}}^{-1}|$.
+
+\begin{proposition}[Uniqueness at low coefficient complexity]
+\label{prop:alpha_integer_rigidity}
+Within the domain $0\le a,b,c\le 12$, the unique minimizer of $|a\pi^3+b\pi^2+c\pi-\alpha_{\mathrm{CODATA}}^{-1}|$ is $(a,b,c)=(4,1,1)$, with relative error $2.22\times 10^{-6}$. The next-best triple in the same domain has relative error at least $7.14\times 10^{-4}$.
+\end{proposition}
+\begin{proof}
+This is a finite check by exhaustive enumeration over all triples $(a,b,c)$ in the stated domain and minimization of the absolute error.
+\end{proof}
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$(a,b,c)$ & $a+b+c$ & $a\pi^3+b\pi^2+c\pi$ & $\Delta$ & $\Delta/\alpha_{\mathrm{CODATA}}^{-1}$ \\
+\midrule
+\input{sections/generated/alpha_integer_search_rows.tex}%
+\\
+\bottomrule
+\end{tabular}
+\caption{Exhaustive integer search in the ansatz $a\pi^3+b\pi^2+c\pi$ over $0\le a,b,c\le 12$. Here $\Delta=(a\pi^3+b\pi^2+c\pi)-\alpha_{\mathrm{CODATA}}^{-1}$. The minimizer is $(4,1,1)$; the gap to the next best solution is large at fixed coefficient bounds. Integer-relation algorithms such as PSLQ provide a complementary, non-exhaustive route \cite{FergusonBaileyArno1999}.}
+\label{tab:alpha_integer_search}
+\end{table}
+
+\subsection{From \texorpdfstring{$\alpha_{\mathrm{geo}}$}{alpha\_geo} to CODATA \texorpdfstring{$\alpha$}{alpha}: an error budget}
+The CODATA 2022 central value differs from the minimal geometric value by
+\begin{equation}
+\Delta\alpha^{-1}:=\alpha_{\mathrm{CODATA}}^{-1}-\alpha_{\mathrm{geo}}^{-1}\approx -3.05\times 10^{-4}.
+\end{equation}
+Within a closed-theory reading, this gap is not treated as ``noise'' but as a controlled correction decomposed into (i) a renormalization map $F$ between geometric impedance and operational coupling, and (ii) finite-resolution effects tied to the readout scale $r$.
+
+A standard external benchmark is that effective electromagnetic couplings are scheme- and scale-dependent in quantum field theory, with running controlled by a beta function. For example, one-loop QED running in a mass-independent scheme yields a logarithmic shift of $\alpha^{-1}$ with scale \cite{PeskinSchroeder1995,GellMannLow1954}. In our program, such scale dependence is absorbed into $r\mapsto \mu(r)$ and into the map $F$ in Definition~\ref{def:geom_template}.
+
+To quantify the size of the residual, treat $|\Delta\alpha^{-1}|$ as a scale-shift equivalent under one-loop QED running~\eqref{eq:qed_running_one_loop}. At energies below the muon threshold, heavy charged fields decouple from the low-energy flow \cite{AppelquistCarazzone1975}, so the electron contribution provides the relevant coefficient. For one Dirac fermion with $N_c=1$ and $Q=1$, the one-loop coefficient is $b=(2/3)N_cQ^2=2/3$ \cite{PeskinSchroeder1995}. The scale ratio required to account for the offset satisfies
+\begin{equation}
+\log\!\left(\frac{\mu_{\mathrm{eff}}}{\mu_0}\right)
+\approx
+\frac{2\pi}{b}\big(\alpha_{\mathrm{geo}}^{-1}-\alpha_{\mathrm{CODATA}}^{-1}\big)
+=3\pi\big(\alpha_{\mathrm{geo}}^{-1}-\alpha_{\mathrm{CODATA}}^{-1}\big)
+\approx 2.87\times 10^{-3},
+\end{equation}
+so $\mu_{\mathrm{eff}}/\mu_0\approx 1.0029$. Under the Fibonacci map~\eqref{eq:qed_running_r}, this corresponds to a sub-step correction $\delta r\approx 5.96\times 10^{-3}$ of one unit of Zeckendorf depth. In this precise sense, the residual gap between $\alpha_{\mathrm{geo}}$ and $\alpha_{\mathrm{CODATA}}$ corresponds to a finite-resolution interface correction rather than a change of the coarse-graining scale by a full unit.
+
+\subsection{Metrological interfaces for electromagnetic constants (revised SI)}
+In the revised SI, $c,h,e$ are defining constants while $\alpha$ remains experimentally determined; hence the uncertainty structure of $\mu_0$ and $\epsilon_0$ is controlled by that of $\alpha$ \cite{BIPMSI2019,NISTMu0RevisedSI,CODATA2022RMP}. We record standard relations
+\begin{equation}
+\alpha=\frac{e^2}{4\pi\epsilon_0\hbar c}=\frac{\mu_0 e^2 c}{2h},\qquad
+\epsilon_0=\frac{1}{\mu_0 c^2},\qquad
+Z_0=\sqrt{\frac{\mu_0}{\epsilon_0}}=\mu_0 c.
+\end{equation}
+A short derivation is provided in Appendix~\ref{app:em_constants}.
