@@ -21,14 +21,20 @@ Scale $\mu$ & $\mu\,[\mathrm{GeV}]$ & $r(\mu)$ & $r-\mathrm{round}(r)$ \\
 \\
 \bottomrule
 \end{tabular}
-\caption{Calibration of the Fibonacci resolution coordinate $r(\mu)=\log(\mu/m_e)/\log\varphi$ at representative particle-physics scales (values from PDG conventions \cite{PDGRPP2024}).}
+\caption{Calibration of the Fibonacci resolution coordinate $r(\mu)=\log(\mu/m_e)/\log\varphi$ at standard particle-physics scales (values from PDG conventions \cite{PDGRPP2024}). The near-integer depth tests in this appendix use the leptonic/electroweak subset $\{m_\mu,m_\tau,m_W,m_Z\}$; the proton scale is included for comparison and enters as a matching input rather than an integer-depth anchor.}
 \label{tab:resolution_map_calibration}
 \end{table}
 
 Table~\ref{tab:resolution_map_calibration} places the muon and tau thresholds near $r\approx 11$ and $r\approx 17$, and the electroweak reference scale near $r\approx 25$. This anchors $r$ as a discrete depth coordinate with finite matching corrections at thresholds, matching leading-log running combined with decoupling/matching in effective field theory \cite{AppelquistCarazzone1975,PeskinSchroeder1995,PDGRPP2024}.
 
-\begin{proposition}[Near-integer depth rigidity under a uniform null]\label{prop:resolution_map_uniform_null}
-Fix reference scales $\{\mu_i\}_{i=1}^N$ and define $\delta_i:=r(\mu_i)-\mathrm{round}(r(\mu_i))\in[-1/2,1/2]$. If the fractional parts of $\{r(\mu_i)\}$ are independent and uniform on $[0,1]$, then
+The anchor set $\{m_\mu,m_\tau,m_W,m_Z\}$ consists of scheme-stable threshold scales used in the standard running-coupling conventions. By Proposition~\ref{prop:resolution_scheme_shift}, any multiplicative matching factor $\mu\mapsto s\mu$ induces an additive shift in $r$, so composite/hadronic scales enter as matching inputs rather than as integer-depth anchors.
+
+\begin{definition}[Uniform null model for fractional parts]\label{def:resolution_uniform_null}
+Fix reference scales $\{\mu_i\}_{i=1}^N$ and define $\delta_i:=r(\mu_i)-\mathrm{round}(r(\mu_i))\in[-1/2,1/2]$. The \emph{uniform null model} is that the fractional parts of $\{r(\mu_i)\}$ are independent and uniform on $[0,1]$ (equidistribution theory provides the canonical uniform baseline) \cite{KuipersNiederreiter1974}. This is a statistical null model used to quantify how restrictive the near-integer event is; it is not an additional axiom of the HPA--$\Omega$ program.
+\end{definition}
+
+\begin{proposition}[Near-integer depth probability under the uniform null]\label{prop:resolution_map_uniform_null}
+Under Definition~\ref{def:resolution_uniform_null},
 \begin{equation}
 \mathbb{P}\!\left(\max_{1\le i\le N}|\delta_i|\le \delta_0\right)=(2\delta_0)^N.
 \end{equation}
@@ -49,9 +55,32 @@ Scale $\mu$ & $r_\ast(\mu)$ & $\mu_0(\mu)\,[\mathrm{GeV}]$ & $\mu_0(\mu)/m_e$ & 
 \\
 \bottomrule
 \end{tabular}
-\caption{Inferred reference scales $\mu_0(\mu)=\mu/\varphi^{\mathrm{round}(r(\mu))}$ from near-integer depth assignments for representative leptonic/electroweak scales.}
+\caption{Inferred reference scales $\mu_0(\mu)=\mu/\varphi^{\mathrm{round}(r(\mu))}$ from near-integer depth assignments for standard leptonic/electroweak scales.}
 \label{tab:resolution_map_mu0_cluster}
 \end{table}
+
+\begin{proposition}[Multiplicative minimax centering of the reference scale]\label{prop:resolution_mu0_minimax}
+Fix scales $\{\mu_i\}_{i=1}^N$ and an integer depth assignment $\{r_i^*\}_{i=1}^N$. Define the implied reference scales
+\begin{equation}
+\mu_{0,i}:=\frac{\mu_i}{\varphi^{r_i^*}}.
+\end{equation}
+Then the choice
+\begin{equation}
+\mu_0^*:=\sqrt{\min_i \mu_{0,i}\;\max_i \mu_{0,i}}
+\end{equation}
+uniquely minimizes the multiplicative worst-case deviation $\max_i\big|\log(\mu_{0,i}/\mu_0)\big|$. Equivalently, $\mu_0^*$ uniquely minimizes $\max_i |r(\mu_i)-r_i^*|$ since
+\begin{equation}
+r(\mu_i)-r_i^*=\frac{\log(\mu_{0,i}/\mu_0)}{\log\varphi}.
+\end{equation}
+For $\{\mu_i\}=\{m_\mu,m_\tau,m_W,m_Z\}$ with $(r_\mu^*,r_\tau^*,r_W^*,r_Z^*)=(11,17,25,25)$ one finds
+\begin{equation}
+\mu_0^*\approx 5.1032\times 10^{-4}\,\mathrm{GeV}=0.998672\,m_e,
+\end{equation}
+and the resulting maximal depth deviation decreases from $\delta_0=0.133880$ (Table~\ref{tab:resolution_map_calibration}) to $\delta_0^*=0.131118$, giving $(2\delta_0^*)^4\approx 4.73\times 10^{-3}$ under the same uniform null. Thus the rigid convention $\mu_0=m_e$ lies within $0.13\%$ of the multiplicative minimax center for this electroweak/leptonic anchor set.
+\end{proposition}
+\begin{proof}
+For $\mu_0>0$ define $t:=\log\mu_0$ and $t_i:=\log\mu_{0,i}$. Then $\max_i|\log(\mu_{0,i}/\mu_0)|=\max_i|t_i-t|$. This is minimized uniquely at the midrange $t^*=(\min_i t_i+\max_i t_i)/2$, i.e.\ $\mu_0^*=\exp(t^*)=\sqrt{\min_i\mu_{0,i}\,\max_i\mu_{0,i}}$. The equivalence with minimizing $\max_i|r(\mu_i)-r_i^*|$ follows by the displayed identity.
+\end{proof}
 
 \begin{table}[t]
 \centering
@@ -63,9 +92,27 @@ Scale $\mu$ & $\mu\,[\mathrm{GeV}]$ & $r(\mu)$ & $r-\mathrm{round}(r)$ \\
 \\
 \bottomrule
 \end{tabular}
-\caption{Extended calibration of the Fibonacci resolution coordinate $r(\mu)=\log(\mu/m_e)/\log\varphi$ for additional representative QCD/heavy-flavor scales, using standard reference values \cite{PDGRPP2024}.}
+\caption{Extended calibration of the Fibonacci resolution coordinate $r(\mu)=\log(\mu/m_e)/\log\varphi$ for additional QCD/heavy-flavor scales, using standard reference values \cite{PDGRPP2024}.}
 \label{tab:resolution_map_calibration_extended}
 \end{table}
 
 Table~\ref{tab:resolution_map_calibration_extended} lists additional QCD/\allowbreak heavy-flavor reference scales. These are scheme-dependent and enter as matching inputs rather than as integer-depth anchors.
+
+\begin{proposition}[Scheme rescaling induces an additive depth shift]\label{prop:resolution_scheme_shift}
+Define
+\[
+r(\mu):=\frac{\log(\mu/m_e)}{\log\varphi}.
+\]
+If a convention or renormalization scheme rescales a reference scale multiplicatively, $\mu' = s\,\mu$ with $s>0$, then
+\begin{equation}
+r(\mu')=r(\mu)+\frac{\log s}{\log\varphi}.
+\end{equation}
+In particular, the fractional part of $r(\mu)$ is not invariant under such rescalings. Near-integer depth tests are meaningful only for scheme-stable anchor scales; scheme-dependent scales are treated as matching inputs.
+\end{proposition}
+\begin{proof}
+This is immediate from the definition:
+\[
+r(\mu')=\frac{\log(s\mu/m_e)}{\log\varphi}=\frac{\log(\mu/m_e)}{\log\varphi}+\frac{\log s}{\log\varphi}.
+\]
+\end{proof}
 

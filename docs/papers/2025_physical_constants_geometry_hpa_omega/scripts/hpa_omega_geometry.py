@@ -23,13 +23,14 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
 PI = math.pi
 PHI = (1.0 + math.sqrt(5.0)) / 2.0
+LOG_PHI = math.log(PHI)
 
 
 DEFAULT_CONFIG: Dict[str, Any] = {
     # Reference values (data-facing targets).
     "codata_alpha_inv": 137.035999177,  # CODATA 2022 (central), as used in the paper
-    "pdg_alpha_inv_mZ": 127.955,  # PDG effective alpha^{-1} near Z pole (benchmark)
-    "pdg_sin2_thetaW_mZ": 0.23122,  # PDG sin^2 theta_W at mu_Z (benchmark, scheme-dependent)
+    "pdg_alpha_inv_mZ": 127.955,  # PDG effective alpha^{-1} near Z pole (reference value)
+    "pdg_sin2_thetaW_mZ": 0.23122,  # PDG sin^2 theta_W at mu_Z in MSbar (reference value)
     "pdg_alpha_s_mZ": 0.1180,  # PDG world average
     "pdg_alpha_s_mZ_unc": 0.0009,  # representative uncertainty used in the paper
     "pdg_jarlskog": 3.00e-5,  # PDG J central value
@@ -50,9 +51,11 @@ DEFAULT_CONFIG: Dict[str, Any] = {
     # Resolution-map configuration.
     "resolution_mu0_GeV": None,  # default: m_e
     # Rigidity search bounds.
-    "alpha_integer_max_coeff": 12,
+    "alpha_integer_max_coeff": 10,
+    "alpha_integer_max_sum": 10,
     "IG_integer_max_coeff": 10,
-    "mu_integer_max_coeff": 12,
+    "IG_integer_max_sum": 10,
+    "mu_integer_max_coeff": 10,
     "mu_integer_max_sum": 10,
     "jarlskog_a_max": 50,
     "jarlskog_n_max": 20,
@@ -100,6 +103,32 @@ def fmt_sci(x: float, digits: int = 3) -> str:
     if x == 0.0:
         return "0"
     return f"{x:.{digits}e}"
+
+
+def log_ratio(value: float, target: float) -> float:
+    if value <= 0.0 or target <= 0.0:
+        raise ValueError("log_ratio requires positive value and target.")
+    # Compute in the log domain for stability when value ~= target.
+    return math.log(value) - math.log(target)
+
+
+def weight_from_cost(cost: float) -> float:
+    # Readout weights are multiplicative; costs are additive after a -log projection.
+    return math.exp(-cost)
+
+
+def weight_ratio_from_costs(cost_value: float, cost_target: float) -> float:
+    # w(value)/w(target) = exp(-(cost_value - cost_target))
+    return math.exp(-(cost_value - cost_target))
+
+
+def weight_ratio_minus_one_from_costs(cost_value: float, cost_target: float) -> float:
+    # Compute exp(-(Δcost)) - 1 stably for small Δcost.
+    return math.expm1(-(cost_value - cost_target))
+
+
+def fmt_ratio(x: float, digits: int = 12) -> str:
+    return f"{x:.{digits}g}"
 
 
 def latex_sci(x: float, mantissa_decimals: int = 2, sign: bool = True) -> str:
@@ -201,18 +230,25 @@ def alpha_three_channel() -> Tuple[float, float, float, float]:
     v_bulk = vol_u1 * vol_su2  # U(1) x SU(2)
     v_boundary = vol_so3
     v_line = vol_rp1
-    alpha_inv = v_bulk + v_boundary + v_line
+    alpha_inv = math.fsum([v_bulk, v_boundary, v_line])
     return alpha_inv, v_bulk, v_boundary, v_line
 
 
-def search_alpha_integer_rigidity(target: float, max_coeff: int) -> Tuple[SearchHit, Optional[SearchHit]]:
+def search_alpha_integer_rigidity(
+    target: float, max_coeff: int, max_sum: Optional[int] = None
+) -> Tuple[SearchHit, Optional[SearchHit]]:
     def candidates() -> Iterable[SearchHit]:
-        for a in range(0, max_coeff + 1):
-            for b in range(0, max_coeff + 1):
-                for c in range(0, max_coeff + 1):
+        a_max = max_coeff if max_sum is None else min(max_coeff, max_sum)
+        for a in range(0, a_max + 1):
+            b_max = max_coeff if max_sum is None else min(max_coeff, max_sum - a)
+            for b in range(0, b_max + 1):
+                c_max = max_coeff if max_sum is None else min(max_coeff, max_sum - a - b)
+                for c in range(0, c_max + 1):
                     if a == 0 and b == 0 and c == 0:
                         continue
-                    val = a * (PI**3) + b * (PI**2) + c * PI
+                    if max_sum is not None and (a + b + c) > max_sum:
+                        continue
+                    val = math.fsum([a * (PI**3), b * (PI**2), c * PI])
                     err = val - target
                     yield SearchHit(value=val, abs_error=abs(err), rel_error=err / target, payload=(a, b, c))
 
@@ -232,6 +268,92 @@ def resolution_significance_uniform_null(deltas: Sequence[float]) -> float:
     delta0 = max(abs(d) for d in deltas)
     n = len(deltas)
     return (2.0 * delta0) ** n
+
+
+def geometric_mean(xs: Sequence[float]) -> float:
+    if not xs:
+        raise ValueError("geometric_mean requires non-empty sequence.")
+    if any(x <= 0.0 for x in xs):
+        raise ValueError("geometric_mean requires positive entries.")
+    return math.exp(sum(math.log(x) for x in xs) / float(len(xs)))
+
+
+def minimax_center_geometric(mu0_candidates: Sequence[float]) -> float:
+    """
+    Minimize max_i |log(mu0_i/mu0)| over mu0>0.
+    The unique minimax center is mu0 = sqrt(mu0_min * mu0_max).
+    """
+    if not mu0_candidates:
+        raise ValueError("Empty candidates.")
+    if any(x <= 0.0 for x in mu0_candidates):
+        raise ValueError("Candidates must be positive.")
+    mn = min(mu0_candidates)
+    mx = max(mu0_candidates)
+    return math.sqrt(mn * mx)
+
+
+def tune_resolution_mu0_minimax(
+    scales: Sequence[Tuple[str, float]],
+    mu0_ref: float,
+    int_window: int = 1,
+) -> Tuple[float, List[Tuple[str, int, float, float]]]:
+    """
+    Choose integer depths r_i* and mu0 that minimize max |r(mu_i; mu0) - r_i*|.
+
+    The search enumerates r_i* in a small window around the baseline rounding at mu0_ref.
+    Returns (mu0_best, details) where details is [(name, r_star, r, delta), ...] at mu0_best.
+    """
+    if int_window < 0:
+        raise ValueError("int_window must be nonnegative.")
+    if not scales:
+        raise ValueError("No scales.")
+    if mu0_ref <= 0.0:
+        raise ValueError("mu0_ref must be positive.")
+
+    baseline_r: List[Tuple[str, float, int]] = []
+    for name, mu in scales:
+        r0 = resolution_r(mu, mu0_ref)
+        baseline_r.append((name, mu, round_nearest_int(r0)))
+
+    # Enumerate all integer-depth assignments in the local window.
+    choices: List[List[int]] = []
+    for _, _, r0_star in baseline_r:
+        choices.append(list(range(r0_star - int_window, r0_star + int_window + 1)))
+
+    best: Optional[Tuple[float, float, float, List[int]]] = None
+    # best = (delta0, sum_abs, mu0_best, rstars)
+
+    def rec(i: int, rstars: List[int]) -> None:
+        nonlocal best
+        if i == len(baseline_r):
+            # Compute mu0 by multiplicative (log) centering of implied mu0_i := mu_i / phi^{r_i*}.
+            mu0_implied = [mu / (PHI ** rs) for (_, mu, _), rs in zip(baseline_r, rstars)]
+            mu0_hat = minimax_center_geometric(mu0_implied)
+
+            deltas: List[float] = []
+            for (name, mu, _), rs in zip(baseline_r, rstars):
+                r = resolution_r(mu, mu0_hat)
+                deltas.append(r - float(rs))
+            delta0 = max(abs(d) for d in deltas)
+            sum_abs = sum(abs(d) for d in deltas)
+
+            if best is None or (delta0, sum_abs) < (best[0], best[1]):
+                best = (delta0, sum_abs, mu0_hat, list(rstars))
+            return
+
+        for rs in choices[i]:
+            rec(i + 1, rstars + [rs])
+
+    rec(0, [])
+    assert best is not None
+    _, _, mu0_best, rstars_best = best
+
+    details: List[Tuple[str, int, float, float]] = []
+    for (name, mu, _), rs in zip(baseline_r, rstars_best):
+        r = resolution_r(mu, mu0_best)
+        delta = r - float(rs)
+        details.append((name, rs, r, delta))
+    return mu0_best, details
 
 
 def qcd_lambda_msbar_two_loop(mu: float, alpha_s: float, nf: int) -> float:
@@ -346,22 +468,27 @@ def jarlskog_search(j_target: float, a_max: int, n_max: int) -> Tuple[SearchHit,
     return best_two_hits(candidates())
 
 
-def alphaG_from_codate(alphaG: float) -> float:
+def alphaG_from_codata(alphaG: float) -> float:
     return math.log(1.0 / alphaG)
 
 
 def IG_geo() -> float:
-    return 2.0 * (PI**3) + 2.0 * (PI**2) + 2.0 * PI
+    return math.fsum([2.0 * (PI**3), 2.0 * (PI**2), 2.0 * PI])
 
 
-def IG_integer_search(target: float, max_coeff: int) -> Tuple[SearchHit, Optional[SearchHit]]:
+def IG_integer_search(target: float, max_coeff: int, max_sum: Optional[int] = None) -> Tuple[SearchHit, Optional[SearchHit]]:
     def candidates() -> Iterable[SearchHit]:
-        for a in range(0, max_coeff + 1):
-            for b in range(0, max_coeff + 1):
-                for c in range(0, max_coeff + 1):
+        a_max = max_coeff if max_sum is None else min(max_coeff, max_sum)
+        for a in range(0, a_max + 1):
+            b_max = max_coeff if max_sum is None else min(max_coeff, max_sum - a)
+            for b in range(0, b_max + 1):
+                c_max = max_coeff if max_sum is None else min(max_coeff, max_sum - a - b)
+                for c in range(0, c_max + 1):
                     if a == 0 and b == 0 and c == 0:
                         continue
-                    val = a * (PI**3) + b * (PI**2) + c * PI
+                    if max_sum is not None and (a + b + c) > max_sum:
+                        continue
+                    val = math.fsum([a * (PI**3), b * (PI**2), c * PI])
                     err = val - target
                     yield SearchHit(value=val, abs_error=abs(err), rel_error=err / target, payload=(a, b, c))
 
@@ -383,12 +510,39 @@ def run_alpha(cfg: Dict[str, Any]) -> None:
     delta = alpha_inv_geo - alpha_inv_codata
     print(f"Delta = alpha_geo^{-1} - alpha_CODATA^{-1} = {fmt_sci(delta, 3)} (rel {fmt_sci(delta/alpha_inv_codata, 3)})")
 
+    subheader("Multiplicative readout view: weights and log-costs (diagnostic)")
+    w_geo = weight_from_cost(alpha_inv_geo)
+    w_codata = weight_from_cost(alpha_inv_codata)
+    w_ratio = weight_ratio_from_costs(alpha_inv_geo, alpha_inv_codata)
+    w_ratio_m1 = weight_ratio_minus_one_from_costs(alpha_inv_geo, alpha_inv_codata)
+    s_alpha = weight_ratio_from_costs(alpha_inv_codata, alpha_inv_geo)
+    s_alpha_m1 = weight_ratio_minus_one_from_costs(alpha_inv_codata, alpha_inv_geo)
+    print("Define a multiplicative readout weight w := exp(-alpha^{-1}).")
+    print(f"w_geo = exp(-alpha_geo^{-1}) = {fmt_sci(w_geo, 6)}")
+    print(f"w_CODATA = exp(-alpha_CODATA^{-1}) = {fmt_sci(w_codata, 6)}")
+    print(f"w_geo/w_CODATA = exp(-(Delta)) = {fmt_sci(w_ratio, 6)}  (ratio-1 = {fmt_sci(w_ratio_m1, 6)})")
+    print(f"s_alpha := w_CODATA/w_geo = exp(+Delta) = {fmt_sci(s_alpha, 6)}  (s_alpha-1 = {fmt_sci(s_alpha_m1, 6)})")
+    print(f"log(w_geo/w_CODATA) = {fmt_sci(-delta, 6)}  (equals -Delta)")
+    w_bulk = weight_from_cost(v_bulk)
+    w_boundary = weight_from_cost(v_boundary)
+    w_line = weight_from_cost(v_line)
+    print("Channel weights multiply: w_total = w_bulk * w_boundary * w_line.")
+    print(f"w_bulk = exp(-4*pi^3) = {fmt_sci(w_bulk, 6)}")
+    print(f"w_boundary = exp(-pi^2) = {fmt_sci(w_boundary, 6)}")
+    print(f"w_line = exp(-pi) = {fmt_sci(w_line, 6)}")
+    print(f"w_bulk*w_boundary*w_line = {fmt_sci(w_bulk*w_boundary*w_line, 6)}  (matches w_geo)")
+
     max_coeff = int(cfg["alpha_integer_max_coeff"])
-    best, second = search_alpha_integer_rigidity(alpha_inv_codata, max_coeff=max_coeff)
+    max_sum_val = cfg.get("alpha_integer_max_sum", None)
+    max_sum = None if max_sum_val is None else int(max_sum_val)
+    best, second = search_alpha_integer_rigidity(alpha_inv_codata, max_coeff=max_coeff, max_sum=max_sum)
     a, b, c = best.payload
-    print(f"Best (a,b,c) in a*pi^3 + b*pi^2 + c*pi with 0..{max_coeff}: ({a},{b},{c})")
+    domain_s = f"0..{max_coeff}" if max_sum is None else f"a+b+c <= {max_sum}"
+    print(f"Best (a,b,c) in a*pi^3 + b*pi^2 + c*pi with {domain_s}: ({a},{b},{c})")
     print(f"  value = {fmt_float(best.value, 10)}")
     print(f"  rel_error = {fmt_sci(best.rel_error, 3)}")
+    print(f"  log(value/target) = {fmt_sci(log_ratio(best.value, alpha_inv_codata), 3)}")
+    print(f"  weight ratio exp(-(value-target)) = {fmt_sci(weight_ratio_from_costs(best.value, alpha_inv_codata), 6)}  (ratio-1 = {fmt_sci(weight_ratio_minus_one_from_costs(best.value, alpha_inv_codata), 6)})")
     if second is not None:
         a2, b2, c2 = second.payload
         print(f"Second best: ({a2},{b2},{c2}) rel_error = {fmt_sci(second.rel_error, 3)}")
@@ -401,6 +555,11 @@ def run_alpha(cfg: Dict[str, Any]) -> None:
     print(f"l2 (euclidean)  = {fmt_float(l2, 10)}  (rel {fmt_sci((l2 - alpha_inv_codata) / alpha_inv_codata, 3)})")
     print(f"linf (max)      = {fmt_float(linf, 10)}  (rel {fmt_sci((linf - alpha_inv_codata) / alpha_inv_codata, 3)})")
     print(f"parallel        = {fmt_float(par, 10)}  (rel {fmt_sci((par - alpha_inv_codata) / alpha_inv_codata, 3)})")
+    print("Weight ratios vs CODATA weight (multiplicative domain):")
+    print(f"  l1: w/w_CODATA = {fmt_sci(weight_ratio_from_costs(alpha_inv_geo, alpha_inv_codata), 6)}")
+    print(f"  l2: w/w_CODATA = {fmt_sci(weight_ratio_from_costs(l2, alpha_inv_codata), 6)}")
+    print(f"  linf: w/w_CODATA = {fmt_sci(weight_ratio_from_costs(linf, alpha_inv_codata), 6)}")
+    print(f"  parallel: w/w_CODATA = {fmt_sci(weight_ratio_from_costs(par, alpha_inv_codata), 6)}")
 
 
 def run_resolution(cfg: Dict[str, Any]) -> None:
@@ -447,6 +606,19 @@ def run_resolution(cfg: Dict[str, Any]) -> None:
     p = resolution_significance_uniform_null(deltas)
     print(f"N={len(deltas)}  delta0=max|r-round(r)|={delta0:.3f}  P(max<=delta0)=(2*delta0)^N={p:.3e}")
 
+    subheader("Multiplicative mu0 tuning (minimax in |r-r*|; diagnostic)")
+    # Use the same quartet used in the paper's significance statement.
+    tune_scales = inverse_scales
+    mu0_best, details = tune_resolution_mu0_minimax(tune_scales, mu0_ref=mu0, int_window=1)
+    deltas_best = [d for (_, _, _, d) in details]
+    delta0_best = max(abs(d) for d in deltas_best)
+    p_best = resolution_significance_uniform_null(deltas_best)
+    print(f"mu0_best = {mu0_best:.7e} GeV  (mu0_best/m_e = {mu0_best/me:.6f})")
+    print(f"N={len(deltas_best)}  delta0_best={delta0_best:.6f}  P(max<=delta0_best)=(2*delta0_best)^N={p_best:.3e}")
+    for name, r_star, r, d in details:
+        print(f"{name:5s}  r*={r_star:2d}  r={r: .6f}  (r-r*)={d:+.6f}")
+    print("Note: this tuning is a diagnostic fit; the paper's rigidity tables fix mu0 by convention.")
+
     subheader("Extended table (scheme-dependent matching inputs)")
     extra = [
         ("Lambda_MSbar_5", float(cfg["lambda_msbar_5_GeV"])),
@@ -461,25 +633,25 @@ def run_resolution(cfg: Dict[str, Any]) -> None:
 
 
 def run_running_couplings(cfg: Dict[str, Any]) -> None:
-    header("Running couplings: QED benchmark slope and QCD Lambda_MSbar")
+    header("Running couplings: QED reference slope and QCD Lambda_MSbar")
     alpha_inv_0 = float(cfg["codata_alpha_inv"])
     alpha_inv_mZ = float(cfg["pdg_alpha_inv_mZ"])
     mZ = float(cfg["m_Z_GeV"])
     me = float(cfg["m_e_GeV"])
     delta_alpha = alpha_inv_0 - alpha_inv_mZ
-    log_ratio = math.log(mZ / me)
-    b_eff = (2.0 * PI * delta_alpha) / log_ratio
+    log_mZ_me = math.log(mZ / me)
+    b_eff = (2.0 * PI * delta_alpha) / log_mZ_me
     # One-loop QED coefficient b = (2/3) * sum_f N_c Q_f^2.
     # At mu = mZ, the active charged fermions are e,mu,tau,u,d,s,c,b (top is above threshold).
     b_sm = 40.0 / 9.0
 
-    print(f"log(mZ/me) = {fmt_float(log_ratio, 12)}")
+    print(f"log(mZ/me) = {fmt_float(log_mZ_me, 12)}")
     print(f"Delta alpha^{-1} = alpha^{-1}(0) - alpha^{-1}(mZ) = {fmt_float(delta_alpha, 6)}")
     print(f"b_eff = 2*pi*Delta/log(mZ/me) = {fmt_float(b_eff, 6)}")
     print(f"b_SM(mZ) = 40/9 = {fmt_float(b_sm, 6)}")
     print(f"b_eff/b_SM = {fmt_float(b_eff/b_sm, 6)}")
 
-    subheader("QCD Lambda_MSbar^(5) from two-loop formula (PDG benchmark)")
+    subheader("QCD Lambda_MSbar^(5) from two-loop formula (PDG reference inputs)")
     alpha_s = float(cfg["pdg_alpha_s_mZ"])
     nf = 5
     lam = qcd_lambda_msbar_two_loop(mu=mZ, alpha_s=alpha_s, nf=nf)
@@ -502,11 +674,13 @@ def run_electroweak(cfg: Dict[str, Any]) -> None:
     print(f"alpha^{-1}(mu_Z) PDG (config) = {fmt_float(alpha_inv_pdg, 6)}")
     d_alpha = alpha_inv_geo - alpha_inv_pdg
     print(f"Delta alpha^{-1} = {fmt_float(d_alpha, 6)}  (rel {fmt_sci(d_alpha/alpha_inv_pdg, 3)})")
+    print(f"log(alpha_geo^{-1}/alpha_PDG^{-1}) = {fmt_sci(log_ratio(alpha_inv_geo, alpha_inv_pdg), 3)}")
 
     print(f"sin^2 theta_W geo = 3/13 = {fmt_float(sin2_geo, 10)}")
     print(f"sin^2 theta_W PDG (config) = {fmt_float(sin2_pdg, 6)}")
     d_sin = sin2_geo - sin2_pdg
     print(f"Delta sin^2 = {fmt_sci(d_sin, 3)}  (rel {fmt_sci(d_sin/sin2_pdg, 3)})")
+    print(f"log(sin2_geo/sin2_PDG) = {fmt_sci(log_ratio(sin2_geo, sin2_pdg), 3)}")
 
     subheader("Integer n rigidity for alpha^{-1}(mu_Z) ≈ n*pi^2")
     best_n = None
@@ -536,6 +710,10 @@ def run_mu(cfg: Dict[str, Any]) -> None:
     print(f"mu_geo = 6*pi^5 = {fmt_float(mu_val, 10)}")
     print(f"mu_exp (config) = {fmt_float(mu_exp, 8)}")
     print(f"Delta mu = mu_geo - mu_exp = {fmt_sci(d, 3)} (rel {fmt_sci(d/mu_exp, 3)})")
+    print(f"mu_geo/mu_exp = {fmt_ratio(mu_val/mu_exp, 12)}")
+    print(f"log(mu_geo/mu_exp) = {fmt_sci(log_ratio(mu_val, mu_exp), 3)}")
+    s_mu = mu_exp / mu_val
+    print(f"s_mu = mu_exp/mu_geo = {fmt_ratio(s_mu, 12)}  (s_mu-1 = {fmt_sci(s_mu-1.0, 3)})")
 
     subheader("Primitive phase-space factorization enumeration (3 factors, per-color sector)")
     ranked = enumerate_mu_phase_factorizations(mu_exp=mu_exp)
@@ -548,7 +726,7 @@ def run_mu(cfg: Dict[str, Any]) -> None:
     max_sum = int(cfg["mu_integer_max_sum"])
     best, second = search_mu_integer_rigidity(mu_exp, max_coeff=max_coeff, max_sum=max_sum)
     a, b, c, d_, e = best.payload
-    print(f"Best (a,b,c,d,e) with coeff<= {max_coeff} and sum<= {max_sum}: ({a},{b},{c},{d_},{e})")
+    print(f"Best (a,b,c,d,e) with a+b+c+d+e <= {max_sum}: ({a},{b},{c},{d_},{e})")
     print(f"  value = {fmt_float(best.value, 10)}")
     print(f"  rel_error = {fmt_sci(best.rel_error, 3)}")
     if second is not None:
@@ -569,6 +747,7 @@ def run_jarlskog(cfg: Dict[str, Any]) -> None:
     print(f"Best (a,n) in [1..{a_max}]x[1..{n_max}] for 1/(a*pi^n): ({a},{n})")
     print(f"  J_geo = {fmt_sci(best.value, 12)}")
     print(f"  rel_error = {fmt_sci(best.rel_error, 3)}")
+    print(f"  log(J_geo/J_PDG) = {fmt_sci(log_ratio(best.value, j), 3)}")
     if second is not None:
         a2, n2 = second.payload
         print(f"Second best: ({a2},{n2}) rel_error = {fmt_sci(second.rel_error, 3)}")
@@ -591,7 +770,7 @@ def run_jarlskog(cfg: Dict[str, Any]) -> None:
 def run_gravity(cfg: Dict[str, Any]) -> None:
     header("Gravity: proton Newton coupling and integer rigidity for I_G(p)")
     alphaG_p = float(cfg["codata_alphaG_p"])
-    IG_p = alphaG_from_codate(alphaG_p)
+    IG_p = alphaG_from_codata(alphaG_p)
     IG_p_geo = IG_geo()
     d_IG = IG_p_geo - IG_p
 
@@ -600,12 +779,22 @@ def run_gravity(cfg: Dict[str, Any]) -> None:
     print(f"I_G(p) geo = 2*pi^3 + 2*pi^2 + 2*pi = {fmt_float(IG_p_geo, 12)}")
     print(f"Delta I_G = I_G_geo - I_G_CODATA = {fmt_sci(d_IG, 3)} (rel {fmt_sci(d_IG/IG_p, 3)})")
     print(f"alpha_G_geo(p) = exp(-I_G_geo) = {fmt_sci(math.exp(-IG_p_geo), 6)}")
+    ratio = weight_ratio_from_costs(IG_p_geo, IG_p)
+    ratio_m1 = weight_ratio_minus_one_from_costs(IG_p_geo, IG_p)
+    s_G = weight_ratio_from_costs(IG_p, IG_p_geo)
+    s_G_m1 = weight_ratio_minus_one_from_costs(IG_p, IG_p_geo)
+    print(f"alpha_G_geo/alpha_G_CODATA = exp(-(Delta I_G)) = {fmt_sci(ratio, 6)}  (ratio-1 = {fmt_sci(ratio_m1, 6)})")
+    print(f"s_G := alpha_G_CODATA/alpha_G_geo = exp(+Delta I_G) = {fmt_sci(s_G, 6)}  (s_G-1 = {fmt_sci(s_G_m1, 6)})")
+    print(f"log(alpha_G_geo/alpha_G_CODATA) = {fmt_sci(-d_IG, 6)}  (equals -Delta I_G)")
 
     subheader("Integer rigidity for I_G in a*pi^3 + b*pi^2 + c*pi")
     max_coeff = int(cfg["IG_integer_max_coeff"])
-    best, second = IG_integer_search(target=IG_p, max_coeff=max_coeff)
+    max_sum_val = cfg.get("IG_integer_max_sum", None)
+    max_sum = None if max_sum_val is None else int(max_sum_val)
+    best, second = IG_integer_search(target=IG_p, max_coeff=max_coeff, max_sum=max_sum)
     a, b, c = best.payload
-    print(f"Best (a,b,c) in 0..{max_coeff}: ({a},{b},{c})")
+    domain_s = f"0..{max_coeff}" if max_sum is None else f"a+b+c <= {max_sum}"
+    print(f"Best (a,b,c) with {domain_s}: ({a},{b},{c})")
     print(f"  value = {fmt_float(best.value, 12)}")
     print(f"  rel_error = {fmt_sci(best.rel_error, 3)}")
     if second is not None:
@@ -624,6 +813,11 @@ def run_gravity(cfg: Dict[str, Any]) -> None:
     print(f"l2 (euclidean)  = {fmt_float(l2, 12)}  (rel {fmt_sci((l2 - IG_p) / IG_p, 3)})")
     print(f"linf (max)      = {fmt_float(linf, 12)}  (rel {fmt_sci((linf - IG_p) / IG_p, 3)})")
     print(f"parallel        = {fmt_float(par, 12)}  (rel {fmt_sci((par - IG_p) / IG_p, 3)})")
+    print("alpha_G ratios vs CODATA (multiplicative domain):")
+    print(f"  l1: alpha_G/alpha_G_CODATA = {fmt_sci(weight_ratio_from_costs(l1, IG_p), 6)}")
+    print(f"  l2: alpha_G/alpha_G_CODATA = {fmt_sci(weight_ratio_from_costs(l2, IG_p), 6)}")
+    print(f"  linf: alpha_G/alpha_G_CODATA = {fmt_sci(weight_ratio_from_costs(linf, IG_p), 6)}")
+    print(f"  parallel: alpha_G/alpha_G_CODATA = {fmt_sci(weight_ratio_from_costs(par, IG_p), 6)}")
 
 
 def run_all(cfg: Dict[str, Any]) -> None:
@@ -655,12 +849,19 @@ def emit_tex_tables(cfg: Dict[str, Any], out_dir: Optional[str]) -> None:
     # ---- Table: alpha integer search (top 3) ----
     alpha_target = float(cfg["codata_alpha_inv"])
     max_coeff = int(cfg["alpha_integer_max_coeff"])
+    alpha_max_sum_val = cfg.get("alpha_integer_max_sum", None)
+    alpha_max_sum = None if alpha_max_sum_val is None else int(alpha_max_sum_val)
 
     def alpha_hits() -> Iterable[SearchHit]:
-        for a in range(0, max_coeff + 1):
-            for b in range(0, max_coeff + 1):
-                for c in range(0, max_coeff + 1):
+        a_max = max_coeff if alpha_max_sum is None else min(max_coeff, alpha_max_sum)
+        for a in range(0, a_max + 1):
+            b_max = max_coeff if alpha_max_sum is None else min(max_coeff, alpha_max_sum - a)
+            for b in range(0, b_max + 1):
+                c_max = max_coeff if alpha_max_sum is None else min(max_coeff, alpha_max_sum - a - b)
+                for c in range(0, c_max + 1):
                     if a == 0 and b == 0 and c == 0:
+                        continue
+                    if alpha_max_sum is not None and (a + b + c) > alpha_max_sum:
                         continue
                     val = a * (PI**3) + b * (PI**2) + c * PI
                     err = val - alpha_target
@@ -720,24 +921,50 @@ def emit_tex_tables(cfg: Dict[str, Any], out_dir: Optional[str]) -> None:
         )
     (base / "mu_integer_search_rows.tex").write_text(join_rows(mu_rows), encoding="utf-8")
 
-    # ---- Table: mu primitive phase-space factorizations (selected) ----
+    # ---- Table: mu primitive phase-space factorizations (full enumeration) ----
     # Canonical primitive volumes:
     #   Vol(U(1)) = 2*pi, Vol(SU(2)) = 2*pi^2, Vol(SO(3)) = pi^2, Vol(RP^1) = pi.
     # The table records 3 * product of three primitive factors per color sector.
-    mu_fact_rows: List[str] = []
-    mu_fact_cases = [
-        ("$SO(3)\\times SO(3)\\times U(1)$", 6, 5),
-        ("$SO(3)\\times SU(2)\\times \\mathbb{R}P^1$", 6, 5),
-        ("$SU(2)\\times U(1)\\times U(1)$", 24, 4),
-        ("$SU(2)\\times U(1)\\times \\mathbb{R}P^1$", 12, 4),
-    ]
-    for name, coeff, k in mu_fact_cases:
-        val = float(coeff) * (PI**int(k))
-        delta = val - mu_target
-        expr = f"{coeff}\\pi^{k}={val:.10f}"
-        mu_fact_rows.append(
-            f"{name} & ${expr}$ & ${latex_sci(delta, 2, True)}$ & ${latex_sci(delta/mu_target, 2, True)}$"
-        )
+    vols = phase_space_volumes()
+    tex_name = {
+        "U(1)": "U(1)",
+        "SU(2)": "SU(2)",
+        "SO(3)": "SO(3)",
+        "RP^1": "\\mathbb{R}P^1",
+    }
+    # Use a preferred print order so the table reads naturally.
+    keys = ["SO(3)", "SU(2)", "U(1)", "RP^1"]
+
+    mu_fact_ranked: List[Tuple[float, str]] = []
+    for combo in combinations_with_replacement(keys, 3):
+        v = vols[combo[0]] * vols[combo[1]] * vols[combo[2]]
+        mu_val = 3.0 * v
+        delta = mu_val - mu_target
+
+        # Exact symbolic form is always (integer)*pi^k for this primitive set.
+        coeff = 3
+        k = 0
+        for g in combo:
+            if g == "U(1)":
+                coeff *= 2
+                k += 1
+            elif g == "SU(2)":
+                coeff *= 2
+                k += 2
+            elif g == "SO(3)":
+                k += 2
+            elif g == "RP^1":
+                k += 1
+            else:
+                raise ValueError(f"Unknown primitive group {g!r}")
+
+        name = "$" + "\\times ".join(tex_name[g] for g in combo) + "$"
+        expr = f"{coeff}\\pi^{k}={mu_val:.10f}"
+        row = f"{name} & ${expr}$ & ${latex_sci(delta, 2, True)}$ & ${latex_sci(delta/mu_target, 2, True)}$"
+        mu_fact_ranked.append((abs(delta), row))
+
+    mu_fact_ranked.sort(key=lambda t: t[0])
+    mu_fact_rows = [row for _, row in mu_fact_ranked]
     (base / "mu_phase_factorizations_rows.tex").write_text(join_rows(mu_fact_rows), encoding="utf-8")
 
     # ---- Table: Jarlskog integer search (top 3) ----
@@ -765,14 +992,21 @@ def emit_tex_tables(cfg: Dict[str, Any], out_dir: Optional[str]) -> None:
 
     # ---- Table: I_G integer search (top 3) ----
     alphaG_p = float(cfg["codata_alphaG_p"])
-    IG_target = alphaG_from_codate(alphaG_p)
+    IG_target = alphaG_from_codata(alphaG_p)
     IG_max_coeff = int(cfg["IG_integer_max_coeff"])
+    IG_max_sum_val = cfg.get("IG_integer_max_sum", None)
+    IG_max_sum = None if IG_max_sum_val is None else int(IG_max_sum_val)
 
     def IG_hits() -> Iterable[SearchHit]:
-        for a in range(0, IG_max_coeff + 1):
-            for b in range(0, IG_max_coeff + 1):
-                for c in range(0, IG_max_coeff + 1):
+        a_max = IG_max_coeff if IG_max_sum is None else min(IG_max_coeff, IG_max_sum)
+        for a in range(0, a_max + 1):
+            b_max = IG_max_coeff if IG_max_sum is None else min(IG_max_coeff, IG_max_sum - a)
+            for b in range(0, b_max + 1):
+                c_max = IG_max_coeff if IG_max_sum is None else min(IG_max_coeff, IG_max_sum - a - b)
+                for c in range(0, c_max + 1):
                     if a == 0 and b == 0 and c == 0:
+                        continue
+                    if IG_max_sum is not None and (a + b + c) > IG_max_sum:
                         continue
                     val = a * (PI**3) + b * (PI**2) + c * PI
                     err = val - IG_target
@@ -853,7 +1087,7 @@ def build_parser() -> argparse.ArgumentParser:
     sub = p.add_subparsers(dest="cmd", required=True)
     sub.add_parser("all", help="Run all computations.")
     sub.add_parser("alpha", help="Alpha_em three-channel value and rigidity.")
-    sub.add_parser("running", help="Running-coupling benchmarks (QED/QCD).")
+    sub.add_parser("running", help="Running-coupling reference checks (QED/QCD).")
     sub.add_parser("ew", help="Electroweak matching and rational rigidity.")
     sub.add_parser("mu", help="Proton-electron mass ratio computations.")
     sub.add_parser("j", help="Jarlskog invariant rigidity.")

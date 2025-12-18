@@ -1,17 +1,24 @@
 \section{Notation and layer conventions}
 \label{app:notation_layers}
 
-We keep a strict separation of conceptual layers.
+We keep a strict separation of layers.
 
 \begin{itemize}
     \item \textbf{Ontology layer.} Multiplicative structure and phase structure are treated as primitives.
     \item \textbf{Scan layer.} A genuine unitary scan operator $\Theta$ introduces time as iteration count.
     \item \textbf{Readout layer.} A window projection and an orthogonal cut map continuous structure to discrete distinguishable outcomes; canonical coding (Ostrowski/Zeckendorf) fixes the readout grammar.
-    \item \textbf{Observable layer.} The residual mismatch (gap/impedance/noise) is the data-facing remainder and controls error budgets.
+    \item \textbf{Observable layer.} The residual mismatch (gap/impedance) is the data-facing remainder and controls error budgets.
 \end{itemize}
 
 \paragraph{Resolution parameter $r$.}
 The symbol $r$ denotes a resolution/coarse-graining parameter. Depending on context it is instantiated as coding bit depth, window scale, scan depth, or (in the $\Omega$ setting) effective compilation depth. The only requirement is that there exists a map $r\mapsto \mu(r)$ connecting resolution flow to running couplings.
 
+\paragraph{Complexity budgets.}
+Finite rigidity checks are stated at bounded integer complexity. For nonnegative coefficient vectors $\mathbf{a}=(a_1,\dots,a_k)\in\ZZ_{\ge 0}^k$ in polynomial $\pi$-ans\"atze we use the coefficient-sum complexity
+\[
+\|\mathbf{a}\|_1:=\sum_{i=1}^k a_i
+\]
+and impose a fixed budget $\|\mathbf{a}\|_1\le B$ (e.g.\ $B=10$ in the $\alpha^{-1}$, $I_G(p)$, and $\mu$ integer searches). For rational approximations we bound the denominator $q\le Q$ (e.g.\ $Q=50$ for $\sin^2\theta_W$). For primitive phase-space factorizations we bound the factor count. Every rigidity proposition states its finite domain explicitly.
+
 \paragraph{Reproducibility.}
-All finite rigidity checks and calibration tables in this paper are reproducible by a unified script included with the source: \texttt{scripts/hpa\_omega\_geometry.py}. Running \texttt{python3 scripts/hpa\_omega\_geometry.py emit-tex} writes the LaTeX row fragments into \texttt{sections/generated/}, which are input by Tables~\ref{tab:alpha_integer_search}, \ref{tab:mu_phase_factorizations}, \ref{tab:mu_integer_search}, \ref{tab:jarlskog_integer_search}, \ref{tab:alpha_G_integer_search}, and Appendix~\ref{app:resolution_map_calibration}. Running \texttt{python3 scripts/hpa\_omega\_geometry.py all} prints the corresponding values and search winners.
+All finite rigidity checks and calibration tables in this paper are reproducible by a unified script included with the source: \texttt{scripts/hpa\_omega\_geometry.py}. Running \texttt{python3 scripts/hpa\_omega\_geometry.py emit-tex} writes the LaTeX row fragments into \texttt{sections/generated/}, which are input by Tables~\ref{tab:alpha_integer_search}, \ref{tab:mu_phase_factorizations}, \ref{tab:mu_integer_search}, \ref{tab:jarlskog_integer_search}, \ref{tab:alpha_G_integer_search}, and Appendix~\ref{app:resolution_map_calibration}. Running \texttt{python3 scripts/hpa\_omega\_geometry.py all} prints the corresponding values, multiplicative log-ratio error metrics, and search winners.

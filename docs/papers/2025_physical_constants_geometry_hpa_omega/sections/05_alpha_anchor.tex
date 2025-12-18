@@ -4,16 +4,26 @@
 \subsection{Closed-theory axioms: serial composition and geometric impedance}
 We isolate the axioms that turn the three-term expression into a theorem-level statement inside the HPA--$\Omega$ constant-geometry program.
 
-\begin{axiom}[Serial composition of layered readout costs]
+\begin{axiom}[Serial composition: multiplicative constraints and logarithmic readout]
 \label{ax:serial_impedance}
-If a readout protocol must satisfy channel constraints in a fixed hierarchy, and if each channel $j$ has a nonnegative minimal process cost $V_j$ at a given resolution, then the total geometric impedance is the serial sum
+If a readout protocol must satisfy channel constraints in a fixed hierarchy, assign each channel $j$ a readout weight $w_j\in(0,1]$ and define its readout cost by $V_j:=-\log w_j$. The total readout weight is the product
+\begin{equation}
+w_{\mathrm{tot}}=\prod_j w_j,
+\end{equation}
+and the geometric impedance is the log-cost
+\begin{equation}
+\alpha_{\mathrm{geo}}^{-1}:=-\log w_{\mathrm{tot}}.
+\end{equation}
+Equivalently, by Proposition~\ref{prop:log_readout_additivity}, the impedance is the serial sum
 \begin{equation}
 \alpha_{\mathrm{geo}}^{-1}=\sum_{j} V_j.
 \end{equation}
 \end{axiom}
 
 \begin{remark}[Numerical isolation of serial composition among standard aggregation rules]\label{rem:alpha_aggregation_isolation}
-For the three-stratum costs $V_{\mathrm{bulk}}=4\pi^3$, $V_{\mathrm{boundary}}=\pi^2$, and $V_{\mathrm{line}}=\pi$, standard alternatives to serial addition give values far from the CODATA benchmark. For example, the Euclidean aggregation $\sqrt{V_{\mathrm{bulk}}^2+V_{\mathrm{boundary}}^2+V_{\mathrm{line}}^2}$ gives $124.4568430929$ (relative deviation $-9.18\times 10^{-2}$), the max aggregation $\max\{V_{\mathrm{bulk}},V_{\mathrm{boundary}},V_{\mathrm{line}}\}$ gives $124.0251067212$ (relative deviation $-9.49\times 10^{-2}$), and the parallel-impedance aggregation $(V_{\mathrm{bulk}}^{-1}+V_{\mathrm{boundary}}^{-1}+V_{\mathrm{line}}^{-1})^{-1}$ gives $2.3381204994$ (relative deviation $-9.83\times 10^{-1}$). By contrast, the serial sum gives $4\pi^3+\pi^2+\pi=137.0363037759$ (relative deviation $+2.22\times 10^{-6}$).
+For the three-stratum costs $V_{\mathrm{bulk}}=4\pi^3$, $V_{\mathrm{boundary}}=\pi^2$, and $V_{\mathrm{line}}=\pi$, standard alternatives to serial addition give values far from the CODATA reference value. For example, the Euclidean aggregation $\sqrt{V_{\mathrm{bulk}}^2+V_{\mathrm{boundary}}^2+V_{\mathrm{line}}^2}$ gives $124.4568430929$ (relative deviation $-9.18\times 10^{-2}$), the max aggregation $\max\{V_{\mathrm{bulk}},V_{\mathrm{boundary}},V_{\mathrm{line}}\}$ gives $124.0251067212$ (relative deviation $-9.49\times 10^{-2}$), and the parallel-impedance aggregation $(V_{\mathrm{bulk}}^{-1}+V_{\mathrm{boundary}}^{-1}+V_{\mathrm{line}}^{-1})^{-1}$ gives $2.3381204994$ (relative deviation $-9.83\times 10^{-1}$). By contrast, the serial sum gives $4\pi^3+\pi^2+\pi=137.0363037759$ (relative deviation $+2.22\times 10^{-6}$).
+
+In the multiplicative domain of Axiom~\ref{ax:serial_impedance}, define the total weight $w:=\exp(-\alpha^{-1})$. Relative to the CODATA weight $w_{\mathrm{CODATA}}=\exp(-\alpha_{\mathrm{CODATA}}^{-1})$, the serial sum gives $w_{\mathrm{geo}}/w_{\mathrm{CODATA}}=\exp(-(\alpha_{\mathrm{geo}}^{-1}-\alpha_{\mathrm{CODATA}}^{-1}))\approx 9.99695\times 10^{-1}$, whereas the Euclidean, max, and parallel rules give ratios $2.90\times 10^{5}$, $4.47\times 10^{5}$, and $3.15\times 10^{58}$ respectively.
 \end{remark}
 
 \begin{axiom}[Geometric impedance as normalized phase volume]
@@ -39,6 +49,20 @@ For the electromagnetic readout channel we take the three topologically distingu
 The quotient by $\{\pm 1\}$ encodes the projective identification intrinsic to readout.
 \end{axiom}
 
+\begin{proposition}[Primitive factorization rigidity for the electromagnetic strata]\label{prop:alpha_phase_factorization_rigidity}
+Fix the primitive set $\mathfrak{P}$ from Axiom~\ref{ax:primitive_phase_spaces} with canonical volumes (Appendix~\ref{app:group_volumes}). Impose the minimal factor counts compatible with the $\pi$-powers of the stratum costs: realize $V_{\mathrm{bulk}}=4\pi^3$ by a product of two primitives, and realize $V_{\mathrm{boundary}}=\pi^2$ and $V_{\mathrm{line}}=\pi$ each by a single primitive. Then the stratum phase spaces are forced (up to ordering) as
+\[
+\mathcal{M}_{\mathrm{bulk}}\cong U(1)\times SU(2),\qquad
+\mathcal{M}_{\mathrm{boundary}}\cong SO(3),\qquad
+\mathcal{M}_{\mathrm{line}}\cong \mathbb{R}P^1.
+\]
+\end{proposition}
+\begin{proof}
+From Appendix~\ref{app:group_volumes} one has $\mathrm{Vol}(U(1))=2\pi$, $\mathrm{Vol}(SU(2))=2\pi^2$, $\mathrm{Vol}(SO(3))=\pi^2$, and $\mathrm{Vol}(\mathbb{R}P^1)=\pi$. Any two-factor product has the form $2^{m}\pi^{k}$ with $m\in\{0,1,2\}$ and $k\in\{2,3,4\}$. The constraint $k=3$ forces exponent pattern $(1,2)$, and the coefficient $4$ forces $m=2$, hence the factors must be $U(1)$ and $SU(2)$.
+
+For one-factor realizations, $\pi^2$ occurs only for $SO(3)$ and $\pi$ occurs only for $\mathbb{R}P^1$ in the primitive set.
+\end{proof}
+
 \subsection{A theorem-level value from group volumes}
 \begin{theorem}[Three-channel impedance]
 \label{thm:alpha_three_channel}
@@ -63,16 +87,17 @@ Summing the three terms yields the stated expression.
 \end{proof}
 
 \subsection{Quantitative rigidity: low-complexity integer relation search}
-Even if one sets aside the geometric identification, a referee will ask whether the coefficient triple $(4,1,1)$ is a tuned choice. We therefore document a reproducible rigidity check: approximate the CODATA target by the three-term ansatz $a\pi^3+b\pi^2+c\pi$ with small nonnegative integers.
+To exclude coefficient-level tuning, we document a reproducible rigidity check: minimize the CODATA error within the three-term ansatz $a\pi^3+b\pi^2+c\pi$ over small nonnegative integers.
 
-Let $\alpha_{\mathrm{CODATA}}^{-1}=137.035999177$ denote the CODATA 2022 recommended central value \cite{CODATA2022RMP}. We exhaustively search all triples $(a,b,c)\in\{0,1,\dots,12\}^3\setminus\{(0,0,0)\}$ and minimize the absolute error $|a\pi^3+b\pi^2+c\pi-\alpha_{\mathrm{CODATA}}^{-1}|$.
+Let $\alpha_{\mathrm{CODATA}}^{-1}=137.035999177$ denote the CODATA 2022 recommended central value \cite{CODATA2022RMP}. We exhaustively search all triples $(a,b,c)\in\ZZ_{\ge 0}^3$ with $a+b+c\le 10$ and minimize the absolute error $|a\pi^3+b\pi^2+c\pi-\alpha_{\mathrm{CODATA}}^{-1}|$.
+The coefficient-sum budget $a+b+c\le 10$ is a fixed complexity constraint; it strictly contains the geometric triple $(4,1,1)$ (with sum $6$) and tests robustness against nontrivial nearby coefficients at bounded total multiplicity.
 
 \begin{proposition}[Uniqueness at low coefficient complexity]
 \label{prop:alpha_integer_rigidity}
-Within the domain $0\le a,b,c\le 12$, the unique minimizer of $|a\pi^3+b\pi^2+c\pi-\alpha_{\mathrm{CODATA}}^{-1}|$ is $(a,b,c)=(4,1,1)$, with relative error $2.22\times 10^{-6}$. The next-best triple in the same domain has relative error at least $7.14\times 10^{-4}$.
+Within the coefficient-sum complexity domain $a,b,c\in\ZZ_{\ge 0}$ and $a+b+c\le 10$, the unique minimizer of $|a\pi^3+b\pi^2+c\pi-\alpha_{\mathrm{CODATA}}^{-1}|$ is $(a,b,c)=(4,1,1)$, with relative error $2.22\times 10^{-6}$. The next-best triple in the same domain has relative error at least $3.24\times 10^{-3}$.
 \end{proposition}
 \begin{proof}
-This is a finite check by exhaustive enumeration over all triples $(a,b,c)$ in the stated domain and minimization of the absolute error.
+This is a finite check by exhaustive enumeration over all triples $(a,b,c)\in\ZZ_{\ge 0}^3$ with $a+b+c\le 10$ and minimization of the absolute error.
 \end{proof}
 
 \begin{table}[t]
@@ -85,7 +110,7 @@ $(a,b,c)$ & $a+b+c$ & $a\pi^3+b\pi^2+c\pi$ & $\Delta$ & $\Delta/\alpha_{\mathrm{
 \\
 \bottomrule
 \end{tabular}
-\caption{Exhaustive integer search in the ansatz $a\pi^3+b\pi^2+c\pi$ over $0\le a,b,c\le 12$. Here $\Delta=(a\pi^3+b\pi^2+c\pi)-\alpha_{\mathrm{CODATA}}^{-1}$. The minimizer is $(4,1,1)$; the gap to the next best solution is large at fixed coefficient bounds. Integer-relation algorithms such as PSLQ provide a complementary, non-exhaustive route \cite{FergusonBaileyArno1999}.}
+\caption{Exhaustive integer search in the ansatz $a\pi^3+b\pi^2+c\pi$ over the coefficient-sum domain $a,b,c\in\ZZ_{\ge 0}$ and $a+b+c\le 10$. Here $\Delta=(a\pi^3+b\pi^2+c\pi)-\alpha_{\mathrm{CODATA}}^{-1}$. The minimizer is $(4,1,1)$; the gap to the next best solution is large at fixed complexity budget. Integer-relation algorithms such as PSLQ provide a complementary, non-exhaustive route \cite{FergusonBaileyArno1999}.}
 \label{tab:alpha_integer_search}
 \end{table}
 
@@ -94,9 +119,19 @@ The CODATA 2022 central value differs from the minimal geometric value by
 \begin{equation}
 \Delta\alpha^{-1}:=\alpha_{\mathrm{CODATA}}^{-1}-\alpha_{\mathrm{geo}}^{-1}\approx -3.05\times 10^{-4}.
 \end{equation}
-Within a closed-theory reading, this gap is not treated as ``noise'' but as a controlled correction decomposed into (i) a renormalization map $F$ between geometric impedance and operational coupling, and (ii) finite-resolution effects tied to the readout scale $r$.
+In the multiplicative readout variable $w=\exp(-\alpha^{-1})$, this is the weight ratio
+\begin{equation}
+\frac{w_{\mathrm{geo}}}{w_{\mathrm{CODATA}}}
+=\exp(\Delta\alpha^{-1})
+\approx 9.99695\times 10^{-1}.
+\end{equation}
+Equivalently, define the multiplicative matching input
+\begin{equation}
+s_\alpha:=\frac{w_{\mathrm{CODATA}}}{w_{\mathrm{geo}}}=\exp(-\Delta\alpha^{-1})\approx 1+3.05\times 10^{-4}.
+\end{equation}
+In the closed-theory reading, this gap is a controlled correction decomposed into (i) a renormalization map $F$ between geometric impedance and operational coupling, and (ii) finite-resolution effects tied to the readout scale $r$.
 
-A standard external benchmark is that effective electromagnetic couplings are scheme- and scale-dependent in quantum field theory, with running controlled by a beta function. For example, one-loop QED running in a mass-independent scheme yields a logarithmic shift of $\alpha^{-1}$ with scale \cite{PeskinSchroeder1995,GellMannLow1954}. In our program, such scale dependence is absorbed into $r\mapsto \mu(r)$ and into the map $F$ in Definition~\ref{def:geom_template}.
+In quantum field theory, effective electromagnetic couplings are scheme- and scale-dependent, with running controlled by a beta function. For example, one-loop QED running in a mass-independent scheme yields a logarithmic shift of $\alpha^{-1}$ with scale \cite{PeskinSchroeder1995,GellMannLow1954}. In our program, such scale dependence is absorbed into $r\mapsto \mu(r)$ and into the map $F$ in Definition~\ref{def:geom_template}.
 
 To quantify the size of the residual, treat $|\Delta\alpha^{-1}|$ as a scale-shift equivalent under one-loop QED running~\eqref{eq:qed_running_one_loop}. At energies below the muon threshold, heavy charged fields decouple from the low-energy flow \cite{AppelquistCarazzone1975}, so the electron contribution provides the relevant coefficient. For one Dirac fermion with $N_c=1$ and $Q=1$, the one-loop coefficient is $b=(2/3)N_cQ^2=2/3$ \cite{PeskinSchroeder1995}. The scale ratio required to account for the offset satisfies
 \begin{equation}

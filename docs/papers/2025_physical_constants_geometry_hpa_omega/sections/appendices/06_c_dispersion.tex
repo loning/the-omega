@@ -11,7 +11,7 @@ v_{\mathrm{ph}}=\frac{\omega}{k},\qquad v_g=\frac{\diff\omega}{\diff k}.
 It is standard that $v_g$ can exceed $c$ (or become negative) in dispersive media without enabling superluminal signaling; what constrains causality is the propagation of the wavefront, controlled by analyticity of the response function and the high-frequency limit \cite{Brillouin1960,Jackson1998}.
 
 \paragraph{A minimal discrete-scan dispersion model.}
-Discrete nearest-neighbor updates produce $k$-dependent group velocity. A representative example is the standard central-difference discretization of the one-dimensional wave equation.
+Discrete nearest-neighbor updates produce $k$-dependent group velocity. A standard example is the central-difference discretization of the one-dimensional wave equation.
 \begin{proposition}[Dispersion from a nearest-neighbor discretized wave equation]\label{prop:discrete_scan_dispersion}
 Discretize $u_{tt}=c^2u_{xx}$ on a uniform lattice $x_j=ja$ and times $t_n=n\Delta t$ by
 \begin{equation}
@@ -35,11 +35,19 @@ In particular, $\omega=ck+O(k^3)$ as $k\to 0$, while $v_g$ depends on $k$ for $\
 Substitute the plane-wave ansatz into the update equation and simplify using $\cos x=1-2\sin^2(x/2)$. Differentiate the dispersion relation implicitly to obtain $v_g(k)$, and use $\sin x=x+O(x^3)$ for the low-$k$ expansion.
 \end{proof}
 
-One convenient definition of the front velocity is
+\begin{proposition}[Front velocity from analyticity]\label{prop:front_velocity_causality}
+In causal linear response, the effective refractive index $n(\omega)$ is analytic in the upper half-plane and satisfies $n(\omega)\to 1$ as $\omega\to\infty$. Consequently the wavefront (signal-front) velocity equals $c$:
+\begin{equation}
+v_{\mathrm{front}}=c.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Define
 \begin{equation}
 v_{\mathrm{front}}:=\lim_{\omega\to\infty}\frac{\omega}{k(\omega)}=\frac{c}{\lim_{\omega\to\infty} n(\omega)},
 \end{equation}
-where $n(\omega)$ is the refractive index (or its effective analogue). In causal linear response, $n(\omega)$ is analytic in the upper half-plane and approaches $1$ at high frequency, implying $v_{\mathrm{front}}=c$ in vacuum \cite{Brillouin1960,Jackson1998}.
+and the stated analyticity and high-frequency limit imply $\lim_{\omega\to\infty}n(\omega)=1$ and hence $v_{\mathrm{front}}=c$ \cite{Brillouin1960,Jackson1998}.
+\end{proof}
 
 \paragraph{Boundary condition for discrete-scan dispersion.}
-Therefore any scan-induced group-velocity dispersion proposed in the HPA--$\Omega$ program must be read as $v_g(\omega)$ and must be embedded into a local microscopic model that preserves analyticity/causality so that $v_{\mathrm{front}}$ remains luminal.
+Accordingly, any scan-induced dispersion is treated at the level of $v_g(\omega)$, while compatibility with locality/causality is enforced by Proposition~\ref{prop:front_velocity_causality}.
