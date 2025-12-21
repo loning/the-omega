@@ -1,17 +1,20 @@
 ## `docs/papers` 论文索引与关系图
 
-本目录包含 4 篇相互关联的手稿（均以 `main.tex` 作为入口）。它们共享一条核心机制链：**unitary scan（幺正扫描）→ projection/readout（有限分辨率投影读出）→ canonical coding（Ostrowski/Zeckendorf 等规范编码）→ mismatch/discrepancy（读出失配）→ regulated-to-continuum（orbit trace/finite part 正则化）**，并在不同层级上展开（工具/公理/主物理/应用）。
+本目录包含多篇相互关联的手稿（均以 `main.tex` 作为入口）。它们共享一条核心机制链：**unitary scan（幺正扫描）→ projection/readout（有限分辨率投影读出）→ canonical coding（Ostrowski/Zeckendorf 等规范编码）→ mismatch/discrepancy（读出失配）→ regulated-to-continuum（orbit trace/finite part 正则化）**，并在不同层级上展开（工具/公理/主物理/变分统一/应用/专题）。
 
 ### 论文总览
 
 | 目录 | 论文名（title） | PDF | TeX | 定位 | 主要依赖 |
 |---|---|---|---|---|---|
 | `2025_holographic_polar_arithmetic/` | Holographic Polar Arithmetic (HPA) | [`main.pdf`](./2025_holographic_polar_arithmetic/main.pdf) | [`main.tex`](./2025_holographic_polar_arithmetic/main.tex) | **工具/数学论文（Paper I）**：scan–projection、Sturmian/Fibonacci、Ostrowski/Zeckendorf、orbit 正则化 | — |
-| `2025_holographic_polar_dynamics/` | Holographic Polar Dynamics (HPD) | [`main.pdf`](./2025_holographic_polar_dynamics/main.pdf) | [`main.tex`](./2025_holographic_polar_dynamics/main.tex) | **应用篇（Paper II）**：把 HPA 的失配/差异度量用于黑洞/奇点与信息悖论模板 | HPA |
-| `2025_holographic_polar_omega_theory/` | Holographic Polar Omega Theory (HPΩT) | [`main.pdf`](./2025_holographic_polar_omega_theory/main.pdf) | [`main.tex`](./2025_holographic_polar_omega_theory/main.tex) | **短文/公理接口**：抽取并固定 O1–O6 + R1 的最短推论链 | HPA + FoP |
 | `2025_foundations_of_physics_submission/` | Omega Theory: Axiomatic Foundations of Holographic Spacetime and Interactive Evolution (FoP) | [`main.pdf`](./2025_foundations_of_physics_submission/main.pdf) | [`main.tex`](./2025_foundations_of_physics_submission/main.tex) | **主物理手稿**：全局静态态 + 有限信息/全息映射 + QCA/准晶 + 现象学/宇宙学模板 | HPA（O5/O6 等工具链） |
+| `2025_holographic_polar_omega_theory/` | Holographic Polar Omega Theory (HPΩT) | [`main.pdf`](./2025_holographic_polar_omega_theory/main.pdf) | [`main.tex`](./2025_holographic_polar_omega_theory/main.tex) | **短文/公理接口**：抽取并固定 O1–O6 + R1 的最短推论链 | HPA + FoP |
+| `2025_computational_action_principle_hpa_omega/` | Computational Action Principle: Least-Discrepancy Dynamics and Field Unification in HPA–Ω (CAP) | [`main.pdf`](./2025_computational_action_principle_hpa_omega/main.pdf) | [`main.tex`](./2025_computational_action_principle_hpa_omega/main.tex) | **变分统一篇（CAP）**：最小差异原理 → Ω 作用量（Fisher + 路由开销）→ GR+信息应力；规范/物质为相位误差补偿与拓扑缺陷 | HPA + FoP + HPΩT |
+| `2025_holographic_polar_dynamics/` | Holographic Polar Dynamics (HPD) | [`main.pdf`](./2025_holographic_polar_dynamics/main.pdf) | [`main.tex`](./2025_holographic_polar_dynamics/main.tex) | **应用篇（Paper II）**：把 HPA 的失配/差异度量用于黑洞/奇点与信息悖论模板（Phase Pressure） | HPA（+ CAP 作为统一视角） |
+| `2025_physical_constants_geometry_hpa_omega/` | Physical Constants Geometry in HPA–Ω (PCG) | [`main.pdf`](./2025_physical_constants_geometry_hpa_omega/main.pdf) | [`main.tex`](./2025_physical_constants_geometry_hpa_omega/main.tex) | **专题篇（常数/几何）**：把 HPA–Ω 的几何/信息结构用于常数关系与数值验证 | HPA + FoP |
+| `2025_computational_teleology_hpa_omega/` | Computational Teleology in HPA–Ω (CT) | [`main.pdf`](./2025_computational_teleology_hpa_omega/main.pdf) | [`main.tex`](./2025_computational_teleology_hpa_omega/main.tex) | **专题篇（架构/可计算性）**：复杂性–几何–观测同构、路由开销与计算 lapse、可判定性边界 | HPA + FoP |
 
-说明：当前仓库内未提交 `main.pdf`，上表的 PDF 链接在生成对应 PDF 后即可直接打开。
+说明：若目录内存在 `main.pdf` 则可直接打开；若尚未生成，可按下文编译生成。
 
 ### 关系图（依赖/承接）
 
@@ -20,22 +23,38 @@ flowchart TB
   HPA["HPA<br/>Holographic Polar Arithmetic<br/>工具/数学（Paper I）"]
   FoP["FoP<br/>Omega Theory 主物理手稿"]
   HPOT["HPΩT<br/>Omega Theory 公理升级短文"]
+  CAP["CAP<br/>Computational Action Principle<br/>最小差异变分统一"]
   HPD["HPD<br/>Holographic Polar Dynamics<br/>黑洞/奇点应用（Paper II）"]
+  PCG["PCG<br/>Physical Constants Geometry<br/>常数/几何专题"]
+  CT["CT<br/>Computational Teleology<br/>架构/可计算性边界"]
 
   HPA -->|"scan–projection、编码、orbit 正则化"| FoP
-  HPA -->|"discrepancy/quantum gap → Phase Pressure"| HPD
   HPA -->|"细节构造与证明"| HPOT
   FoP -->|"主框架/术语与物理展开"| HPOT
+  HPA -->|"最小差异/读出失配"| CAP
+  FoP -->|"Ω 作用量、lapse、Fisher"| CAP
+  HPOT -->|"O1–O6 + R1 接口"| CAP
+  CAP -->|"Phase Pressure 的变分闭合"| HPD
+  HPA -->|"discrepancy/quantum gap → Phase Pressure"| HPD
+  HPA -->|"Weyl 对、读出与编码工具"| CT
+  FoP -->|"实现层路由开销与现象学"| CT
+  HPA -->|"算术/编码与正则化工具"| PCG
+  FoP -->|"常数/几何推导接口"| PCG
 
   classDef tool fill:#4CAF50,stroke:#2E7D32,color:#FFFFFF;
   classDef core fill:#2196F3,stroke:#1565C0,color:#FFFFFF;
   classDef note fill:#FF9800,stroke:#EF6C00,color:#FFFFFF;
   classDef app fill:#9C27B0,stroke:#6A1B9A,color:#FFFFFF;
+  classDef unify fill:#009688,stroke:#00695C,color:#FFFFFF;
+  classDef topic fill:#607D8B,stroke:#455A64,color:#FFFFFF;
 
   class HPA tool;
   class FoP core;
   class HPOT note;
   class HPD app;
+  class CAP unify;
+  class PCG topic;
+  class CT topic;
 ```
 
 ### 各论文简介（含与其他论文的接口）
@@ -87,10 +106,33 @@ flowchart TB
   - 可作为与 FoP 兼容的应用模块阅读（同一 scan–projection 中轴），但文本层面主要引用 HPA。
 - **入口链接**：[`main.pdf`](./2025_holographic_polar_dynamics/main.pdf)、[`main.tex`](./2025_holographic_polar_dynamics/main.tex)、[`references.bib`](./2025_holographic_polar_dynamics/references.bib)
 
+### `2025_computational_action_principle_hpa_omega/`（CAP，Computational Action Principle）
+
+- **核心问题**：把“定律 = 纠错/稳态机制”的叙事提升为可变分的封闭链条：最小差异（least discrepancy）作为变分原则，驱动从读出失配到场方程的统一表达。
+- **关键主张**：
+  - **最小差异原理**：把 discrepancy/失配累积作为“必须被压制到可持续水平”的代价项，并将其提升为连续源（相位势/应力源）。
+  - **Ω 作用量骨架**：以 Fisher 信息（信息几何）+ 实现复杂性（路由开销/计算 lapse）为最小耦合表达，差异惩罚进入势项/源项。
+  - **GR 唯一闭合**：在局域协变与二阶闭合条件下，宏观度规方程唯一收敛为爱因斯坦方程（含 $\Lambda$），差异/复杂性进入有效应力张量与势。
+  - **规范/物质解释**：规范联络为局域相位误差补偿；物质为拓扑锁定的相位缺陷（需要持续预算维持）。
+- **与其他论文关系**：
+  - 以 HPA 的 scan–projection、编码与 discrepancy 工具链为输入；以 FoP/HPΩT 的公理与 Ω 作用量字典为骨架。
+  - 为 HPD 的 Phase Pressure 模板提供一个可变分闭合视角。
+- **入口链接**：[`main.pdf`](./2025_computational_action_principle_hpa_omega/main.pdf)、[`main.tex`](./2025_computational_action_principle_hpa_omega/main.tex)、[`references.bib`](./2025_computational_action_principle_hpa_omega/references.bib)
+
+### `2025_physical_constants_geometry_hpa_omega/`（PCG，Physical Constants Geometry）
+
+- **定位**：把 HPA–Ω 的几何/信息结构用于物理常数关系与数值验证的专题手稿。
+- **入口链接**：[`main.pdf`](./2025_physical_constants_geometry_hpa_omega/main.pdf)、[`main.tex`](./2025_physical_constants_geometry_hpa_omega/main.tex)、[`references.bib`](./2025_physical_constants_geometry_hpa_omega/references.bib)
+
+### `2025_computational_teleology_hpa_omega/`（CT，Computational Teleology）
+
+- **定位**：复杂性–几何–观测的系统架构层：路由开销与计算 lapse、时间/空间互补性、以及可判定性边界（可计算性层面的开放性条件）。
+- **入口链接**：[`main.pdf`](./2025_computational_teleology_hpa_omega/main.pdf)、[`main.tex`](./2025_computational_teleology_hpa_omega/main.tex)、[`references.bib`](./2025_computational_teleology_hpa_omega/references.bib)
+
 ### 推荐阅读顺序（两条路径）
 
-- **路径 A（先抓总接口）**：HPΩT → HPA → FoP → HPD
-- **路径 B（先看主物理叙事）**：FoP（看 O1–O6 与整体结构）→ HPΩT（对齐升级公理）→ HPA（补齐工具细节）→ HPD（看黑洞应用）
+- **路径 A（先抓总接口）**：HPΩT → HPA → FoP → CAP → HPD（需要专题再读 PCG/CT）
+- **路径 B（先看主物理叙事）**：FoP（看 O1–O6 与整体结构）→ HPΩT（对齐升级公理）→ HPA（补齐工具细节）→ CAP（看变分闭合）→ HPD（看黑洞应用）
 
 ### 生成 `main.pdf`（本地编译）
 
