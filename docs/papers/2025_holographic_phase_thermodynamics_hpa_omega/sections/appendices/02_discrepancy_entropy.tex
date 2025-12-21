@@ -1,0 +1,185 @@
+\section{Discrepancy bounds and entropy proxies}
+\label{app:discrepancy_entropy}
+
+This appendix records explicit arithmetic bounds for the Kronecker sequence $x_n=x_0+n\alpha\bmod 1$ and their interpretation as entropy proxies in ASM.
+
+\subsection{Definitions}
+
+Given points $x_1,\dots,x_N\in[0,1)$, define the empirical distribution function
+\begin{equation}
+F_N(a):=\frac{1}{N}\#\{1\le n\le N:\ x_n<a\},\qquad 0\le a\le 1.
+\end{equation}
+The star discrepancy and accumulated mismatch are
+\begin{equation}
+D_N^\ast := \sup_{0\le a\le 1}\left|F_N(a)-a\right|,\qquad
+E_N:=N D_N^\ast.
+\end{equation}
+
+\subsection{Continued fractions and an explicit bound}
+
+Let $\alpha=[0;a_1,a_2,\dots]$ be the continued fraction of $\alpha$, with convergents $p_m/q_m$. For each $N\ge 1$, choose $m$ such that $q_m\le N<q_{m+1}$. Classical results bound the discrepancy of the Kronecker sequence in terms of the partial quotients \cite{KuipersNiederreiter1974,Cassels1957}:
+\begin{equation}
+D_N^\ast \;\le\; \frac{1}{N}\left(1+\sum_{i=1}^{m} a_i\right).
+\label{eq:explicit_disc_bound}
+\end{equation}
+
+\paragraph{A proof-level bound (Denjoy--Koksma + Ostrowski).}
+For completeness we record a standard proof route (with explicit constants) based on the Denjoy--Koksma inequality for rotations and Ostrowski block decomposition.
+
+\begin{theorem}[Ostrowski--Denjoy--Koksma bound for interval counts]
+\label{thm:ostrowski_dk_hpt}
+Let $x_n=x_0+n\alpha\bmod 1$ with $\alpha$ irrational. Let $W\subset[0,1)$ be any interval and define
+\begin{equation}
+S_N(W):=\sum_{n=0}^{N-1}\ind_W(x_0+n\alpha).
+\end{equation}
+Write the Ostrowski expansion $N=\sum_{k=0}^m b_k q_k$ (relative to $\alpha$). Then for every $x_0\in[0,1)$,
+\begin{equation}
+\left|S_N(W)-N\,\mu(W)\right|
+\le 2\sum_{k=0}^m b_k
+\le 2\sum_{k=0}^m a_{k+1},
+\end{equation}
+where $\mu$ is Lebesgue measure.
+\end{theorem}
+
+\begin{proof}
+Let $f:=\ind_W-\mu(W)$. Then $f$ has bounded variation $\mathrm{Var}(f)=2$ and $\int_0^1 f\,\dd\mu=0$.
+For each $k\ge 0$, the Denjoy--Koksma inequality for rotations gives a uniform bound at convergent times:
+\begin{equation}
+\left|\sum_{j=0}^{q_k-1} f(x_0+j\alpha)\right|\le \mathrm{Var}(f)=2,
+\end{equation}
+see e.g.\ \cite{Denjoy1932,Koksma1935,KatokHasselblatt1995}.
+Now expand $N=\sum_{k=0}^m b_k q_k$ and decompose the length-$N$ sum into $b_m$ blocks of length $q_m$, then $b_{m-1}$ blocks of length $q_{m-1}$, and so on (Ostrowski block decomposition; see e.g.\ \cite{AlloucheShallit2003,Lothaire2002}). Applying the $q_k$-time bound to each block yields the first inequality. The second follows from the standard digit bounds $b_0<a_1$ and $b_k\le a_{k+1}$.
+\end{proof}
+
+\begin{corollary}[Star discrepancy bound]
+\label{cor:EN_cf_bound}
+For the Kronecker sequence one has
+\begin{equation}
+E_N = N D_N^\ast = \sup_{0\le a\le 1}\left|S_N([0,a)) - Na\right|
+\le 2\sum_{k=0}^m a_{k+1},
+\end{equation}
+where $m$ is the index such that $q_m\le N<q_{m+1}$.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:ostrowski_dk_hpt} to $W=[0,a)$ and take the supremum over $a\in[0,1]$.
+\end{proof}
+
+\paragraph{Bounded type implies logarithmic mismatch.}
+If $\alpha$ is badly approximable, the partial quotients are uniformly bounded, $a_i\le A$. Then Corollary~\ref{cor:EN_cf_bound} gives $E_N\le 2A(m+1)$. Since $a_{k+1}\ge 1$ implies $q_{k+1}\ge q_k+q_{k-1}$, one has $q_k\ge F_k$ (Fibonacci), hence $m=O(\log N)$ and therefore
+\begin{equation}
+D_N^\ast = O\!\left(\frac{\log N}{N}\right),\qquad
+E_N=O(\log N).
+\end{equation}
+
+\paragraph{Golden branch constants.}
+For $\alpha=\varphi^{-1}$, all partial quotients satisfy $a_i=1$ and $q_m=F_{m+1}$ (Fibonacci numbers). Then Eq.~\eqref{eq:explicit_disc_bound} becomes
+\begin{equation}
+D_N^\ast \;\le\; \frac{m+1}{N}\qquad\text{whenever } F_{m+1}\le N< F_{m+2},
+\end{equation}
+which makes the logarithmic growth of $E_N$ explicit.
+
+\subsection{Rational slopes and linear mismatch}
+
+If $\alpha=p/q$ with $\gcd(p,q)=1$, then $\{x_n\}$ takes values on a $q$-point lattice and is periodic with period $q$. For $N$ that is a multiple of $q$, the multiset $\{x_1,\dots,x_N\}$ consists of the same $q$ points repeated equally often, hence its star discrepancy equals the star discrepancy of the underlying $q$-point set.
+
+\begin{lemma}[Universal lower bound for 1D star discrepancy]
+\label{lem:star_disc_lower}
+Let $0\le y_1\le \cdots \le y_q < 1$. Then the 1D star discrepancy of the $q$-point set satisfies
+\begin{equation}
+  D_q^\ast \ge \frac{1}{2q}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For a sorted set, the star discrepancy admits the standard 1D formula
+\[
+  D_q^\ast=\max\!\left\{\max_{1\le i\le q}\left(\frac{i}{q}-y_i\right),\ \max_{1\le i\le q}\left(y_i-\frac{i-1}{q}\right)\right\}.
+\]
+If $D_q^\ast < 1/(2q)$, then for every $i$ we would have
+\[
+  y_i > \frac{i}{q}-\frac{1}{2q}=\frac{2i-1}{2q}
+  \quad\text{and}\quad
+  y_i < \frac{i-1}{q}+\frac{1}{2q}=\frac{2i-1}{2q},
+\]
+a contradiction.
+\end{proof}
+
+\noindent Consequently, for $\alpha=p/q$ and every $N$ divisible by $q$,
+\begin{equation}
+  D_N^\ast \ge \frac{1}{2q},
+  \qquad
+  E_N = N D_N^\ast \ge \frac{N}{2q}.
+\end{equation}
+This is the arithmetic mechanism behind periodic phase locking and the collapse of accessible macrostates under fixed finite resolution.
+
+\paragraph{Exact period-2 case $\alpha=1/2$.}
+Let $\alpha=1/2$ and write $a:=x_0-\lfloor x_0\rfloor\in[0,1)$. Then the orbit visits the two points $\{a,\ a+1/2 \bmod 1\}$, which can be written as $\{u, u+1/2\}$ for a unique $u\in[0,1/2)$. For even $N$, the empirical distribution assigns weight $1/2$ to each point, and a direct evaluation of the empirical CDF shows
+\begin{equation}
+  D_N^\ast = \max\!\left(u,\frac{1}{2}-u\right),
+  \qquad
+  E_N = N\,\max\!\left(u,\frac{1}{2}-u\right).
+\end{equation}
+This matches the exact linear fit observed in the toy experiment for $\alpha=1/2$.
+
+\subsection{Entropy production proxies}
+
+In ASM the phase-friction entropy for a length-$N$ window is
+\begin{equation}
+S_{\mathrm{pf}}(N)=k_B E_N.
+\end{equation}
+If one interprets $D_N^\ast$ as a per-step mismatch intensity, a natural scan-time proxy for the entropy production rate is
+\begin{equation}
+\frac{\dd S_{\mathrm{pf}}}{\dd \tau}\ \sim\ k_B\, D_N^\ast,
+\end{equation}
+with the understanding that the right-hand side depends on the scale $N$ at which coarse-graining is performed. The lapse rescaling $\dd S/\dd t = (\dd S/\dd\tau)(\dd\tau/\dd t)$ then yields Eq.~\eqref{eq:lapse_rescaling} in the main text.
+
+\subsection{Numerical sanity checks (toy)}
+
+To make the arithmetic bounds tangible, Table~\ref{tab:hpt_EN} reports representative values of $E_N$ at the phase offset $x_0=0.123456789$ for two irrational slopes and one rational slope.
+Empirical values fluctuate with $N$ and with $x_0$ (because star discrepancy is anchored at $0$), but the qualitative separation between logarithmic and linear regimes is robust.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rccc@{}}
+\toprule
+$N$ & $E_N(\alpha=\varphi^{-1})$ & $E_N(\alpha=\sqrt2-1)$ & $E_N(\alpha=1/2)$ \\
+\midrule
+100    & 1.763207 & 1.374521 & 37.654321 \\
+300    & 1.821446 & 2.092946 & 112.962963 \\
+1000   & 1.793023 & 1.927121 & 376.543211 \\
+3000   & 2.345318 & 2.934988 & 1129.629633 \\
+10000  & 3.350444 & 3.706156 & 3765.432110 \\
+30000  & 2.823758 & 3.305305 & 11296.296330 \\
+100000 & 2.691072 & 2.855873 & 37654.321100 \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Representative accumulated mismatch.} The rational slope exhibits linear growth, while the irrational slopes remain at $O(\log N)$ scale (consistent with Corollary~\ref{cor:EN_cf_bound}).}
+\label{tab:hpt_EN}
+\end{table}
+
+\paragraph{Log-fit diagnostic (finite range).}
+Fitting $E_N\approx A\log N+B$ over the $N$ values in Table~\ref{tab:hpt_EN} yields
+\begin{equation}
+A_{\varphi^{-1}}\approx 0.196992,\quad B_{\varphi^{-1}}\approx 0.786635,\quad R^2\approx 0.6337,
+\end{equation}
+and
+\begin{equation}
+A_{\sqrt2-1}\approx 0.267471,\quad B_{\sqrt2-1}\approx 0.450037,\quad R^2\approx 0.6460.
+\end{equation}
+This fit is not a theorem; it is an operational diagnostic consistent with the $O(\log N)$ bound.
+
+\paragraph{$x_0$-sensitivity (toy).}
+At $N=30000$, a uniform grid $x_0\in\{0,\tfrac{1}{16},\dots,\tfrac{15}{16}\}$ gives:
+\begin{center}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+slope & $\min E_N$ & $\max E_N$ & mean & std \\
+\midrule
+$\varphi^{-1}$ & 2.421996 & 3.421996 & 2.629265 & 0.382915 \\
+$\sqrt2-1$ & 2.551632 & 3.551632 & 2.848136 & 0.339885 \\
+$1/2$ & 7500.000000 & 15000.000000 & 11250.000000 & 2296.396634 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+

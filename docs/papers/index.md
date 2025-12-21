@@ -10,6 +10,7 @@
 | `2025_foundations_of_physics_submission/` | Omega Theory: Axiomatic Foundations of Holographic Spacetime and Interactive Evolution (FoP) | [`main.pdf`](./2025_foundations_of_physics_submission/main.pdf) | [`main.tex`](./2025_foundations_of_physics_submission/main.tex) | **主物理手稿**：全局静态态 + 有限信息/全息映射 + QCA/准晶 + 现象学/宇宙学模板 | HPA（O5/O6 等工具链） |
 | `2025_holographic_polar_omega_theory/` | Holographic Polar Omega Theory (HPΩT) | [`main.pdf`](./2025_holographic_polar_omega_theory/main.pdf) | [`main.tex`](./2025_holographic_polar_omega_theory/main.tex) | **短文/公理接口**：抽取并固定 O1–O6 + R1 的最短推论链 | HPA + FoP |
 | `2025_computational_action_principle_hpa_omega/` | Computational Action Principle: Least-Discrepancy Dynamics and Field Unification in HPA–Ω (CAP) | [`main.pdf`](./2025_computational_action_principle_hpa_omega/main.pdf) | [`main.tex`](./2025_computational_action_principle_hpa_omega/main.tex) | **变分统一篇（CAP）**：最小差异原理 → Ω 作用量（Fisher + 路由开销）→ GR+信息应力；规范/物质为相位误差补偿与拓扑缺陷 | HPA + FoP + HPΩT |
+| `2025_holographic_phase_thermodynamics_hpa_omega/` | Holographic Phase Thermodynamics: Arithmetic Statistical Mechanics, Computational Lapse, and the Geometric Origin of Intelligence in HPA–Ω (HPT) | [`main.pdf`](./2025_holographic_phase_thermodynamics_hpa_omega/main.pdf) | [`main.tex`](./2025_holographic_phase_thermodynamics_hpa_omega/main.tex) | **专题篇（热力学/智能）**：算术统计力学、相位摩擦（差异熵）、计算时延与熵流重标度、智能作为主动纠错相变 | HPA + FoP + HPΩT + CAP（+ HPD 的 Phase Pressure 模板） |
 | `2025_holographic_polar_dynamics/` | Holographic Polar Dynamics (HPD) | [`main.pdf`](./2025_holographic_polar_dynamics/main.pdf) | [`main.tex`](./2025_holographic_polar_dynamics/main.tex) | **应用篇（Paper II）**：把 HPA 的失配/差异度量用于黑洞/奇点与信息悖论模板（Phase Pressure） | HPA（+ CAP 作为统一视角） |
 | `2025_physical_constants_geometry_hpa_omega/` | Physical Constants Geometry in HPA–Ω (PCG) | [`main.pdf`](./2025_physical_constants_geometry_hpa_omega/main.pdf) | [`main.tex`](./2025_physical_constants_geometry_hpa_omega/main.tex) | **专题篇（常数/几何）**：把 HPA–Ω 的几何/信息结构用于常数关系与数值验证 | HPA + FoP |
 | `2025_computational_teleology_hpa_omega/` | Computational Teleology in HPA–Ω (CT) | [`main.pdf`](./2025_computational_teleology_hpa_omega/main.pdf) | [`main.tex`](./2025_computational_teleology_hpa_omega/main.tex) | **专题篇（架构/可计算性）**：复杂性–几何–观测同构、路由开销与计算 lapse、可判定性边界 | HPA + FoP |
@@ -24,6 +25,7 @@ flowchart TB
   FoP["FoP<br/>Omega Theory 主物理手稿"]
   HPOT["HPΩT<br/>Omega Theory 公理升级短文"]
   CAP["CAP<br/>Computational Action Principle<br/>最小差异变分统一"]
+  HPT["HPT<br/>Holographic Phase Thermodynamics<br/>热力学/智能专题"]
   HPD["HPD<br/>Holographic Polar Dynamics<br/>黑洞/奇点应用（Paper II）"]
   PCG["PCG<br/>Physical Constants Geometry<br/>常数/几何专题"]
   CT["CT<br/>Computational Teleology<br/>架构/可计算性边界"]
@@ -34,6 +36,10 @@ flowchart TB
   HPA -->|"最小差异/读出失配"| CAP
   FoP -->|"Ω 作用量、lapse、Fisher"| CAP
   HPOT -->|"O1–O6 + R1 接口"| CAP
+  HPA -->|"ASM、相位摩擦（差异熵）"| HPT
+  FoP -->|"O1–O6 读出接口与热力学语义"| HPT
+  CAP -->|"computational lapse 与熵流重标度"| HPT
+  HPD -->|"Phase Pressure / 相位势模板"| HPT
   CAP -->|"Phase Pressure 的变分闭合"| HPD
   HPA -->|"discrepancy/quantum gap → Phase Pressure"| HPD
   HPA -->|"Weyl 对、读出与编码工具"| CT
@@ -51,6 +57,7 @@ flowchart TB
   class HPA tool;
   class FoP core;
   class HPOT note;
+  class HPT topic;
   class HPD app;
   class CAP unify;
   class PCG topic;

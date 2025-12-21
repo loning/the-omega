@@ -79,6 +79,29 @@ $\pi-3$ & 37.309031 & 69.891876 & 53.662953 & 10.095011 \\
 \label{tab:EN_x0}
 \end{table}
 
+\paragraph{Theorem-bound sanity check (golden/silver).}
+For quadratic irrational slopes with eventually periodic continued fractions (golden and silver), the proxy bound in Theorem~\ref{thm:ostrowski_dk_cap} can be computed explicitly from the convergent denominators. Table~\ref{tab:EN_bound_ratio} reports the corresponding $U_N:=2\sum_{j\le m+1}a_j$ (where $q_m\le N<q_{m+1}$) and the empirical ratio $E_N/U_N$.
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rccc ccc@{}}
+\toprule
+& \multicolumn{3}{c}{golden $\alpha=\varphi^{-1}$} & \multicolumn{3}{c}{silver $\alpha=\sqrt{2}-1$} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+$N$ & $E_N$ & $U_N$ & $E_N/U_N$ & $E_N$ & $U_N$ & $E_N/U_N$ \\
+\midrule
+200   & 1.790506 & 24 & 0.074604 & 1.835317 & 28 & 0.065547 \\
+500   & 1.802811 & 28 & 0.064386 & 1.741094 & 32 & 0.054409 \\
+1000  & 1.752245 & 32 & 0.054758 & 1.706770 & 36 & 0.047410 \\
+2000  & 1.911260 & 34 & 0.056214 & 2.062419 & 36 & 0.057289 \\
+5000  & 2.173936 & 38 & 0.057209 & 2.258847 & 40 & 0.056471 \\
+10000 & 2.942666 & 40 & 0.073567 & 2.909670 & 44 & 0.066129 \\
+20000 & 2.818185 & 44 & 0.064050 & 2.595185 & 48 & 0.054066 \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Empirical mismatch vs.\ theorem proxy upper bound.} Even with anchored-interval star discrepancy and a fixed $x_0$, the empirical $E_N$ remains well below the uniform proxy bound $U_N$ at these scales.}
+\label{tab:EN_bound_ratio}
+\end{table}
+
 \subsection{Experiment B: FFT solution of Poisson equation and an approximate $1/r$ phase potential}
 \label{subsec:expB}
 
@@ -106,5 +129,16 @@ $r$ & $\langle \Phi\rangle$ & $r\langle\Phi\rangle$ \\
 \caption{\textbf{Representative FFT Poisson output (periodic box).} The near-field shows $r\langle\Phi\rangle\approx\text{const}$, consistent with $\Phi\sim -1/r$.}
 \label{tab:poisson}
 \end{table}
+
+\paragraph{$1/r$ fit (representative).}
+Using the values in Table~\ref{tab:poisson} and fitting over $r\in\{2,3,4,5,6\}$ gives
+\begin{equation}
+  \langle\Phi\rangle(r) \approx C_0 - \frac{M}{r},
+  \qquad
+  C_0 \approx 0.016236,\quad M\approx 0.854953,
+\end{equation}
+with RMS residual $\approx 6.09\times 10^{-3}$ and $R^2\approx 0.9964$ on that fit window. This provides a quantitative confirmation of the near-field $1/r$ behavior expected from the Poisson closure.
+
+In the continuum normalization $\Delta\Phi=4\pi\rho$ with a unit point source $\rho=\delta$, one expects $M=1$ (Green function normalization). The fitted $M\approx 0.855$ is therefore within $\sim 15\%$ of the continuum value, consistent with finite-grid and periodic-image effects at $n=64$.
 
 

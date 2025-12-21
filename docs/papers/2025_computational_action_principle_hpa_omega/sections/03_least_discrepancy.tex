@@ -114,13 +114,13 @@ At finite depth $m$, an observer effectively accesses only an $m$-truncated Ostr
 \subsection{Phase potential and phase pressure: mismatch sources generate $1/r$ fields}
 \label{subsec:phase_potential}
 
-Omega Dynamics lifts coarse-grained mismatch into a continuum source \cite{Ma2025HPD}. Let $\sigma(x)$ be a mismatch density obtained from a regulated continuum limit of $E_N$ (Convention R1). Assume there exists a \emph{phase potential} $\Phi$ solving a Poisson-type equation
+Omega Dynamics lifts coarse-grained mismatch into a continuum source \cite{Ma2025HPD}. Let $\sigma(x)$ be a mismatch density obtained from a regulated continuum limit of $E_N$ (Convention R1). We define the \emph{phase potential} $\Phi$ as the stationary point of the quadratic functional $S_\Phi[\Phi;\sigma]$ in \eqref{eq:phase_energy_functional}; equivalently, $\Phi$ solves the Poisson equation
 \begin{equation}
   \Delta \Phi = 4\pi \rho_{\Phi},
   \qquad
-  \rho_{\Phi} = \kappa_{\Phi}\, \sigma ,
+  \rho_{\Phi} = \kappa_{\Phi}\, \sigma .
 \end{equation}
-and define the \emph{phase pressure} vector field
+We then define the \emph{phase pressure} vector field
 \begin{equation}
   \mathbf{P}_{\Phi} := -\nabla \Phi .
 \end{equation}
@@ -145,6 +145,44 @@ with fixed source $\sigma$ and appropriate decay/boundary conditions. Varying $\
   \Delta\Phi = 4\pi\kappa_{\Phi}\sigma.
 \end{equation}
 This recovers the Poisson-type sourcing used above. CAP therefore treats the Poisson lift not as an extra postulate but as the \emph{least-action} closure for a scalar potential field that encodes mismatch cost at the macroscopic level.
+
+\paragraph{Exterior solution and mismatch charge.}
+Let $\sigma$ be compactly supported in $\RR^3$ and assume $\Phi\to 0$ at spatial infinity. Using the Green function identity $\Delta(1/|\mathbf{x}|)=-4\pi\delta(\mathbf{x})$ \cite{ArfkenWeberHarris2013}, the unique decaying solution of
+\begin{equation}
+  \Delta\Phi = 4\pi \kappa_\Phi \sigma
+\end{equation}
+is
+\begin{equation}
+  \Phi(\mathbf{x})
+  = -\kappa_\Phi\int_{\RR^3}\frac{\sigma(\mathbf{y})}{|\mathbf{x}-\mathbf{y}|}\,\dd^3\mathbf{y}.
+\end{equation}
+In particular, for $r=|\mathbf{x}|\to\infty$ one has the multipole expansion
+\begin{equation}
+  \Phi(r)
+  = -\frac{M}{r} + O(r^{-2}),
+  \qquad
+  M := \kappa_\Phi \int_{\RR^3}\sigma(\mathbf{y})\,\dd^3\mathbf{y}.
+\end{equation}
+Thus the monopole coefficient $M$ is fixed by the total mismatch charge $\int\sigma$ and the calibration constant $\kappa_\Phi$.
+
+\begin{remark}[Signed discrepancy vs.\ mismatch charge]
+The empirical measure $\mu_N=\frac1N\sum_{n=1}^N \delta_{x_n}$ and the uniform measure $\mu$ satisfy $\int(\mu_N-\mu)=0$, so a \emph{signed} equidistribution defect would have zero total charge and would not generate a monopole $1/r$ term. CAP's $\sigma$ is therefore not the signed measure $\mu_N-\mu$; it is a \emph{nonnegative coarse-grained cost density} associated with sustaining readout consistency (and, in the Newtonian closure of Appendix~\ref{app:newtonian_limit}, it can be tied to an effective energy density). This is precisely why an isolated defect sector can carry nonzero total mismatch charge and produce a monopole potential.
+\end{remark}
+
+\begin{remark}[Flux characterization]
+By the divergence theorem and $\Delta\Phi=4\pi\kappa_\Phi\sigma$, one has
+\begin{equation}
+  \int_{S_R}\mathbf{P}_\Phi\cdot \dd\mathbf{S}
+  = \int_{B_R}\nabla\cdot \mathbf{P}_\Phi\,\dd^3\mathbf{x}
+  = -\int_{B_R}\Delta\Phi\,\dd^3\mathbf{x}
+  = -4\pi \kappa_\Phi \int_{B_R}\sigma\,\dd^3\mathbf{x},
+\end{equation}
+so in the limit $R\to\infty$ the monopole strength satisfies
+\begin{equation}
+  M = -\frac{1}{4\pi}\lim_{R\to\infty}\int_{S_R}\mathbf{P}_\Phi\cdot \dd\mathbf{S}.
+\end{equation}
+This matches the topological-flux perspective in Section~\ref{sec:matter_defects}.
+\end{remark}
 
 For an isolated defect source with quantized flux (a topological input analogous to Dirac quantization; Section~\ref{sec:matter_defects}) \cite{Dirac1931,WuYang1975}, the exterior solution is necessarily harmonic and (under standard isolation assumptions) spherically symmetric, hence
 \begin{equation}

@@ -1,0 +1,82 @@
+\section{Testable templates and reproducible toy experiments}
+\label{sec:predictions}
+
+The HPA--$\Omega$ program is a closed inference chain from scan--projection axioms to macroscopic templates. The appropriate empirical posture is to specify testable \emph{interfaces}: spectral templates, scaling laws, and reproducible toy-model checks that can be extended in concrete microscopic implementations.
+
+\subsection{Holographic noise as a hierarchical spectral template}
+
+If an experimental setup is sensitive enough that instrumental thermal noise is subdominant, then the dominant residual may originate from finite-resolution readout mismatch rather than stochastic bath noise. ASM predicts that such mismatch need not be white: multi-scale coding (Ostrowski/Zeckendorf hierarchies) imprints a canonical ladder of time scales. In the minimal closure where readout aggregates approximately equal-weight relaxation contributions across the (asymptotically geometric) Fibonacci ladder, one obtains a quantitative $1/f$ mid-band with explicit prefactor (Appendix~\ref{app:fibonacci_1f}, Proposition~\ref{prop:1overf} and Table~\ref{tab:1f_fit}):
+\begin{equation}
+  S(f)\ \approx\ \frac{w}{4 f\,\log\varphi}.
+\end{equation}
+This provides a falsifiable interface: the slope, band limits, and prefactor are determined once the effective ladder range and the aggregation weight $w$ are fixed by the instrument kernel and the scale flow.
+
+\subsection{Golden ratios in biological rhythms (as a control-law hypothesis)}
+
+ASM does not attribute mystical significance to the golden ratio. Instead, it yields a quantitative \emph{anti-locking} criterion rooted in Diophantine approximation. In coupled-oscillator systems, phase locking occurs near rational resonances and is organized by Arnold tongues; high-order resonances (large denominators) are typically much narrower and therefore harder to lock into at fixed noise/coupling strength \cite{Strogatz1994,PikovskyRosenblumKurths2001}.
+
+Fix an operational locking tolerance $\delta>0$ (set by noise level, coupling strength, or measurement resolution). Define the \emph{resonance susceptibility index}
+\begin{equation}
+  Q_\delta(\alpha)
+  := \min\left\{q\in\NN:\ \exists\,p\in\ZZ\ \text{s.t.}\ \left|\alpha-\frac{p}{q}\right|<\delta\right\}.
+\end{equation}
+If $Q_\delta(\alpha)$ is large, the system must access high-order resonances before it can phase-lock within tolerance $\delta$.
+
+\begin{proposition}[Diophantine lower bound on resonance susceptibility]
+\label{prop:Qdelta_bound}
+If $\alpha$ is badly approximable, then there exists a constant $c(\alpha)>0$ such that
+\begin{equation}
+  \left|\alpha-\frac{p}{q}\right| \ge \frac{c(\alpha)}{q^2}
+  \qquad\text{for all } \frac{p}{q}\in\QQ
+\end{equation}
+see e.g.\ \cite{Cassels1957}.
+For any tolerance $\delta>0$, this implies the quantitative anti-locking bound
+\begin{equation}
+  Q_\delta(\alpha)\ \ge\ \left\lceil \left(\frac{c(\alpha)}{\delta}\right)^{1/2}\right\rceil.
+\end{equation}
+\end{proposition}
+
+By Hurwitz/Markov extremality (Section~\ref{sec:third_law}), the golden branch $\alpha=\varphi^{-1}$ achieves the maximal uniform constant $c(\varphi^{-1})=1/\sqrt{5}$ and satisfies the sharp lower bound
+\begin{equation}
+  \left|\varphi^{-1}-\frac{p}{q}\right|\ge \frac{1}{\sqrt{5}\,q^2}
+  \quad\Rightarrow\quad
+  Q_\delta(\varphi^{-1}) \ \ge\ \left\lceil\left(\frac{1}{\sqrt{5}\,\delta}\right)^{1/2}\right\rceil,
+\end{equation}
+which is (in the Hurwitz sense) maximal among irrational ratios \cite{Cassels1957}. This motivates a concrete control-law hypothesis: if an adaptive oscillator network is selected to resist low-order phase locking at a given effective tolerance $\delta$, it should favor badly-approximable ratios, with the golden branch as the extremal candidate. A natural statistical test is to estimate $\delta$ from observed coupling/noise and compare the empirical distribution of inferred ratios against the predicted anti-locking index $Q_\delta$.
+
+\subsection{Cosmological entropy flow and dark-energy parameterization}
+
+If dark energy is reinterpreted as a background ``openness'' budget required to prevent global periodic locking, then it is natural to associate an effective energy density $\rho_\sigma(a)$ to a cosmological mismatch reservoir. In an FLRW background, covariant energy conservation implies the continuity equation
+\begin{equation}
+  \frac{\dd\log\rho_\sigma}{\dd\log a} = -3\bigl(1+w_\sigma(a)\bigr),
+\end{equation}
+so the equation-of-state parameter is determined by the scale flow:
+\begin{equation}
+  w_\sigma(a) = -1 - \frac{1}{3}\frac{\dd\log\rho_\sigma}{\dd\log a}.
+\label{eq:w_from_rho}
+\end{equation}
+In particular, a stationary background mismatch reservoir ($\dd\rho_\sigma/\dd a\approx 0$ on Hubble time scales) predicts $w_\sigma\approx -1$ \cite{Weinberg2008,Dodelson2003}. Deviations from $-1$ directly measure the slow running of the mismatch reservoir and therefore provide a clean observational interface for the ``openness budget'' interpretation.
+
+\subsection{Reproducible toy experiments}
+
+Appendix~\ref{app:repro_code} provides minimal Python scripts validating:
+\begin{itemize}
+  \item logarithmic mismatch-growth compatibility for the golden branch (Theorem~\ref{thm:log_bound}),
+  \item linear mismatch growth and periodicity for rational slopes (Proposition~\ref{prop:rational_linear}),
+  \item lapse rescaling of externally observed entropy flow (Eq.~\eqref{eq:lapse_rescaling}),
+  \item least-squares envelope fits for mismatch templates (Appendix~\ref{app:fit_table}),
+  \item a toy $1/f$ spectrum from Fibonacci/geometric relaxation ladders (Appendix~\ref{app:fibonacci_1f}).
+\end{itemize}
+These experiments are not intended as definitive phenomenology; they are unit tests of the interface claims in the simplest controlled setting.
+
+\subsection{Quantitative parameter identification and fits (toy model)}
+
+The mismatch-growth bounds of Section~\ref{sec:asm} can be turned into measurable parameters. For badly approximable slopes, discrepancy theory implies the asymptotic template
+\begin{equation}
+  E_N^{\uparrow}(\alpha;x_0) = C_\alpha(x_0)\,\log N + B_\alpha(x_0) + o(1),
+\end{equation}
+while rational slopes satisfy a linear lower bound $E_N\ge N/(2q)$ for $\alpha=p/q$ (Proposition~\ref{prop:rational_linear}). In the simplest periodic case $\alpha=1/2$, $E_N$ is exactly linear with an explicit coefficient depending on the initial phase $x_0$ (Appendix~\ref{app:discrepancy_entropy}).
+
+We perform least-squares fits of these templates to the toy data generated by the scripts in Appendix~\ref{app:repro_code}. The fitted constants (including goodness-of-fit metrics) are reported in Appendix~\ref{app:fit_table}, providing a concrete calibration of ``phase friction'' in the minimal 1D model.
+
+

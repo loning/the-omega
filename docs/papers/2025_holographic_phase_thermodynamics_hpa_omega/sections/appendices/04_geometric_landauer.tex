@@ -1,0 +1,64 @@
+\section{Geometric Landauer principle and impedance}
+\label{app:geometric_landauer}
+
+This appendix records a minimal formulation of the geometric Landauer bound used in the main text.
+
+\subsection{Log-cost additivity}
+
+In the scan--projection semantics, operational ``success'' is naturally multiplicative: if two independent constraints have weights $w_1,w_2\in(0,1]$, then their joint weight is $w=w_1 w_2$. Defining a log-cost
+\begin{equation}
+C:=-\log w,
+\end{equation}
+one obtains additivity
+\begin{equation}
+C = C_1 + C_2,\qquad C_i:=-\log w_i.
+\end{equation}
+This is the structural reason entropies appear as logarithms in ASM.
+
+\subsection{Landauer bound and geometric overhead}
+
+Landauer's principle bounds the minimal work required to erase one bit at temperature $T$ by \cite{Landauer1961,Bennett1973}
+\begin{equation}
+W_{\mathrm{erase}} \ge k_B T \ln 2.
+\end{equation}
+In HPA--$\Omega$, the relevant operational temperature is the computational temperature $T_c$, and erasure must be implemented on a constrained local network with routing overhead $\kappa$ (or equivalently lapse $\lapse=\kappa_0/\kappa$). This motivates a refined bound
+\begin{equation}
+W_{\mathrm{erase}} \ge k_B T_c \ln 2 + Z_{\mathrm{geom}}.
+\end{equation}
+
+\subsection{A convenient impedance parameterization}
+
+The term $Z_{\mathrm{geom}}$ captures extra work required by geometric constraints such as routing, locality, and impedance.
+A convenient choice consistent with log-cost additivity and with monotonic increase of cost under slowdown is forced (up to a single dimensionless constant) by a simple functional equation.
+
+\begin{proposition}[Log-overhead form]
+\label{prop:Zgeom_log}
+Let $s:=\kappa/\kappa_0\ge 1$ denote the dimensionless routing-overhead factor and assume that the geometric impedance term can be written as
+\begin{equation}
+  Z_{\mathrm{geom}}(s)=k_B T_c\,F(s),
+\end{equation}
+where $F:[1,\infty)\to\RR$ satisfies the normalization $F(1)=0$ and the log-additivity condition
+\begin{equation}
+  F(s_1 s_2)=F(s_1)+F(s_2)\qquad (s_1,s_2\ge 1),
+\end{equation}
+expressing the multiplicative composition of serial overhead factors. If $F$ is measurable (or continuous) on $[1,\infty)$, then there exists a constant $\zeta_{\mathrm{geom}}\ge 0$ such that
+\begin{equation}
+  Z_{\mathrm{geom}}(s)=\zeta_{\mathrm{geom}}\,k_B T_c\,\log s
+  \;=\;\zeta_{\mathrm{geom}}\,k_B T_c\,\log\!\left(\frac{\kappa}{\kappa_0}\right)
+  \;=\;\zeta_{\mathrm{geom}}\,k_B T_c\,\log\!\left(\frac{1}{\lapse}\right).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Define $g:\RR_{\ge 0}\to\RR$ by $g(x):=F(\e^{x})$. Then $g(x+y)=g(x)+g(y)$ for all $x,y\ge 0$.
+Measurability (or continuity) implies the standard Cauchy conclusion $g(x)=\zeta_{\mathrm{geom}} x$ for some constant $\zeta_{\mathrm{geom}}$, hence $F(s)=\zeta_{\mathrm{geom}}\log s$.
+\end{proof}
+
+This form makes the semantics transparent:
+\begin{itemize}
+  \item larger routing overhead $\kappa$ (smaller $\lapse$) increases the minimal work cost,
+  \item serial routing segments contribute additively in log-overhead.
+\end{itemize}
+The paper uses $Z_{\mathrm{geom}}$ as an interface term: the dimensionless constant $\zeta_{\mathrm{geom}}$ can be fixed once an explicit compilation-depth model or a benchmark calibration protocol is chosen.
+
+
