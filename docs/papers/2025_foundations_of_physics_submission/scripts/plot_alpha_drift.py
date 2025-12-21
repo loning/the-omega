@@ -1,6 +1,7 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
+from pathlib import Path
 
 # Set style
 plt.style.use('default')
@@ -20,8 +21,8 @@ dec_dipole = -0.5 # ~ Declination ~ -30 deg
 # cos(Theta) = sin(d1)sin(d2) + cos(d1)cos(d2)cos(ra1-ra2)
 cos_theta = np.sin(DEC) * np.sin(dec_dipole) + np.cos(DEC) * np.cos(dec_dipole) * np.cos(RA - ra_dipole)
 
-# Variation Amplitude
-delta_alpha = 1e-5 * cos_theta
+# Variation Amplitude (benchmark template used in the manuscript)
+delta_alpha = 1e-6 * cos_theta
 
 # Plot Heatmap
 mesh = ax.pcolormesh(RA, DEC, delta_alpha, cmap='RdBu_r', shading='auto')
@@ -44,7 +45,8 @@ ax.set_title(r'Spatial Variation of $\alpha$ (Dipole)', color='black', fontsize=
 # Stylizing
 ax.tick_params(colors='gray') # Lat/Lon labels are tricky in Mollweide, keep subtle
 
-# Save
-output_path = "../images/alpha_drift.png"
-plt.savefig(output_path, dpi=300, bbox_inches='tight', transparent=False)
+# Save (path relative to this script)
+output_path = (Path(__file__).resolve().parent / ".." / "images" / "alpha_drift.png").resolve()
+output_path.parent.mkdir(parents=True, exist_ok=True)
+plt.savefig(str(output_path), dpi=300, bbox_inches='tight', transparent=False)
 print(f"Saved to {output_path}")

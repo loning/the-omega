@@ -3,9 +3,10 @@
 
 This section isolates one concrete, model-level interface between the scan formalism and phenomenology: the exact dispersion relation induced by a discrete scan/difference replacement.
 The goal is not to claim a unique physical prediction, but to provide a falsifiable template: any scan-based lattice model carries characteristic high-energy deviations from linear propagation.
+Related lattice-unitary models (QCA/quantum walks) derive relativistic wave equations with intrinsic lattice dispersion; see, e.g., \cite{BialynickiBirula1994,ArrighiNesmeForets2014}.
 
 \subsection{A representative exact dispersion relation}
-In the HPA scan calculus, replacing derivatives by finite differences at step size $\varepsilon$ yields an exact lattice-type dispersion of the form \cite{Ma2025HPA}
+Replacing derivatives by finite differences at step size $\varepsilon$ yields an exact lattice-type dispersion of the form
 \begin{equation}
 E(P)=\frac{2}{\varepsilon}\arcsin\!\left(\frac{\varepsilon P}{2}\right).
 \label{eq:lattice_dispersion}
@@ -98,6 +99,59 @@ Translating via \eqref{eq:eqg2_def} gives the corresponding bound on the scan st
 \end{equation}
 In length units, $1\,\mathrm{GeV}^{-1}\simeq 1.97\times 10^{-16}\,\mathrm{m}$, so $\varepsilon\lesssim 5.3\times 10^{-27}\,\mathrm{m}$.
 
+\subsection{Translating GRB~090510 timing limits into the quadratic scale}
+Equation~\eqref{eq:tof_quadratic} can be inverted to obtain a one-sided lower limit on $E_{\mathrm{QG},2}$ (hence an upper limit on $\varepsilon$) from any published time-delay constraint.
+For a single event with observed energies $E_{\mathrm{h},0},E_{\mathrm{l},0}$ at redshift $z$ and an upper bound $|\Delta t|\le \Delta t_{\max}$, one obtains
+\begin{equation}
+E_{\mathrm{QG},2}\ >\ \left[\frac{3}{2}\,\frac{E_{\mathrm{h},0}^2-E_{\mathrm{l},0}^2}{\Delta t_{\max}}
+\left(\int_0^z\frac{(1+z')^2}{H(z')}\,dz'\right)\right]^{1/2},
+\label{eq:eqg2_from_dt_bound}
+\end{equation}
+which is a conservative one-sided bound obtained from the absolute time-delay constraint (independent of the sign convention).
+Abdo \emph{et al.}\ \cite{Abdo2009Nature} tabulate a set of conservative and less-conservative upper bounds on $|\Delta t|$ for GRB~090510 based on different choices of the reference emission time (their Table~2).
+Using a standard flat $\Lambda$CDM background in the integral, these bounds translate to quadratic limits on $E_{\mathrm{QG},2}$ and $\varepsilon$ that are consistent (in order of magnitude) with the later systematic analysis \cite{Vasileiou2013}.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Constraint source & $\Delta t_{\max}$ & $E_{\mathrm{QG},2}$ lower bound & $\varepsilon$ upper bound \\
+ & (ms) & (GeV) & (GeV$^{-1}$) \\
+\midrule
+GRB~090510, conservative onset choice (Table~2a) \cite{Abdo2009Nature} & $859$ & $3.0\times 10^{10}$ & $1.1\times 10^{-10}$ \\
+GRB~090510, $>1$\,GeV onset choice (Table~2d) \cite{Abdo2009Nature} & $99$ & $8.9\times 10^{10}$ & $3.9\times 10^{-11}$ \\
+GRB~090510, spike association (Table~2e) \cite{Abdo2009Nature} & $10$ & $2.8\times 10^{11}$ & $1.2\times 10^{-11}$ \\
+Fermi-LAT systematic quadratic bound \cite{Vasileiou2013} & --- & $1.3\times 10^{11}$ & $2.7\times 10^{-11}$ \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Representative published timing constraints translated into the quadratic scan scale.} The GRB~090510 entries are obtained by combining the published $\Delta t_{\max}$ values \cite{Abdo2009Nature} with the quadratic time-of-flight template \eqref{eq:tof_quadratic}; the corresponding $\varepsilon$ bound uses \eqref{eq:eqg2_def}. The numerical translation uses $z=0.900$ and the 1$\sigma$ lower energy $E_{\mathrm{h},0}=28$\,GeV reported in \cite{Abdo2009Nature}, with the low-energy reference chosen as in their Table~2, and a standard flat $\Lambda$CDM background in the redshift integral (e.g.\ $H_0\simeq 67.4$\,km\,s$^{-1}$\,Mpc$^{-1}$, $\Omega_m\simeq 0.315$). Results depend only weakly on the background cosmology.}
+\label{tab:liv_quadratic_bounds}
+\end{table}
+
+\subsection{A reproducible likelihood template for fitting \texorpdfstring{$\varepsilon$}{epsilon} (quadratic case)}
+Given a dataset of observed spectral lags $\Delta t_i$ with uncertainties $\sigma_i$ and associated $(E_{\mathrm{h},0,i},E_{\mathrm{l},0,i},z_i)$, define the regressor
+\begin{equation}
+X_i\ :=\ \left(E_{\mathrm{h},0,i}^2-E_{\mathrm{l},0,i}^2\right)\int_0^{z_i}\frac{(1+z')^2}{H(z')}\,dz'.
+\end{equation}
+Introduce the parameter $\eta:=s_2\,E_{\mathrm{QG},2}^{-2}$ (equivalently $\varepsilon=\sqrt{12}\,E_{\mathrm{QG},2}^{-1}$).
+Then the leading quadratic model is
+\begin{equation}
+\Delta t_i\ =\ \Delta t_{\mathrm{int},i}\ +\ \frac{3}{2}\,\eta\,X_i\ +\ \epsilon_i,
+\label{eq:liv_regression_model}
+\end{equation}
+where $\Delta t_{\mathrm{int},i}$ captures intrinsic source emission lags and $\epsilon_i$ is observational noise.
+A standard conservative treatment is to model $\Delta t_{\mathrm{int},i}$ as a nuisance term (either per-burst intercepts or a hierarchical distribution) and to include an intrinsic-scatter parameter $\sigma_{\mathrm{int}}$.
+For Gaussian errors, one convenient log-likelihood is
+\begin{equation}
+\log L(\eta,\{\Delta t_{\mathrm{int}}\},\sigma_{\mathrm{int}})
+=-\frac12\sum_i\left[
+\frac{\left(\Delta t_i-\Delta t_{\mathrm{int},i}-\frac{3}{2}\eta X_i\right)^2}{\sigma_i^2+\sigma_{\mathrm{int}}^2}
++\log(\sigma_i^2+\sigma_{\mathrm{int}}^2)
+\right].
+\label{eq:liv_likelihood_template}
+\end{equation}
+This template makes explicit what is and is not being assumed: constraints on $\varepsilon$ tighten only to the extent that intrinsic-lag systematics can be controlled (e.g.\ by within-burst association methods, by multi-pulse modeling, or by hierarchical pooling).
+
 \subsection{Causality: group velocity vs signal velocity}
 Equation~\eqref{eq:group_velocity} can exceed $1$ for sufficiently large $P$.
 However, in a strictly local update model (QCA/PQCA), information propagation is bounded by locality: per tick, influence can spread only within a finite neighborhood.
@@ -114,3 +168,11 @@ Therefore, an apparent ``superluminal group velocity'' extracted from a lattice 
 In the unified semantics, the effective propagation speed is determined by the scan step and by the compilation overhead required to realize local updates.
 Hence, ``light-cone structure'' is itself a complexity statement: it is a bound on how many sites can be causally reached within a given depth budget.
 This ties the phenomenological dispersion discussion back to the central theme: kinematics is constrained by scan complexity (iteration/depth) and by readout resolution (which determines which deviations are operationally accessible).
+
+\subsection{Laboratory constraints and operator content}
+It is important to distinguish which kind of Lorentz-violation tests apply to which operator structures.
+The scan-induced MDR in \eqref{eq:mdr_quadratic} is an \emph{isotropic, energy-dependent} modification of propagation (quadratic in energy at leading order).
+At optical or microwave energies, the relative correction is suppressed by $(E/E_{\mathrm{QG},2})^2$.
+For example, taking $E\sim 1\,\mathrm{eV}$ and $E_{\mathrm{QG},2}\gtrsim 10^{11}\,\mathrm{GeV}$ yields $(E/E_{\mathrm{QG},2})^2\lesssim 10^{-40}$, far below laboratory sensitivity.
+Accordingly, precision cavity experiments are most constraining for \emph{anisotropic} and/or polarization-dependent modifications (SME-type operator coefficients) rather than for an isotropic $n=2$ time-of-flight term; see the review \cite{Mattingly2005} and representative optical-resonator tests such as \cite{MullerHerrmannSaenzPetersLaemmerzahl2003}.
+This is why high-energy, long-baseline time-of-flight observations dominate the quantitative bounds quoted in Table~\ref{tab:liv_quadratic_bounds} for the present MDR template.

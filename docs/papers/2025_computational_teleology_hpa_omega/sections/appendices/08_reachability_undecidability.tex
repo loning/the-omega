@@ -1,9 +1,19 @@
-\section{Undecidable local reachability in universal QCA: a reduction blueprint}
+\section{Undecidable local reachability in universal QCA: a reduction}
 \label{app:reachability_undecidability}
 
-This appendix strengthens Theorem~\ref{thm:undecidable_reachability} by making the halting-to-reachability reduction explicit.
-The argument is standard in spirit: any universal computational dynamics supports undecidable hitting predicates once a halting flag is localized.
-For related undecidability results for reachability properties in quantum-system models (quantum automata), see \cite{LiYing2014}.
+This appendix provides a concrete halting-to-reachability reduction establishing Theorem~\ref{thm:undecidable_reachability}.
+Once a fixed local, reversible dynamics can simulate a universal machine and a halting event is recorded in a localized flag, the corresponding hitting predicate is undecidable by a direct reduction from halting.
+For classical CA undecidability results in closely related settings see, e.g., \cite{Kari1990,Kari1994}.
+For undecidability results about reachability properties of quantum-system models (quantum automata), see \cite{LiYing2014}.
+
+\subsection{Formal predicate}
+Fix a lattice $\ZZ$ and a local Hilbert space $\CC^d$ per site.
+Let $U$ be a QCA update on $\bigotimes_{n\in\ZZ}\CC^d$.
+For a finite region $K$ and a local projector $\Pi_K$ supported on $K$, define the \emph{local reachability predicate}
+\begin{equation}
+\mathsf{Reach}(U,\Pi_K;\psi)\ :=\ \Bigl[\exists t\ge 0:\ \langle\psi|U^{\dagger t}\Pi_K U^t|\psi\rangle>0\Bigr].
+\end{equation}
+Theorem~\ref{thm:undecidable_reachability} claims the existence of a fixed $(U,\Pi_K)$ for which $\mathsf{Reach}(U,\Pi_K;\psi_{M,x})$ is undecidable as a function of the encoded instance $(M,x)$.
 
 \subsection{Step 1: reversible halting as a well-posed predicate}
 The classical halting problem is undecidable \cite{Turing1936}.
@@ -11,13 +21,19 @@ To embed it into a unitary dynamics, it is convenient to work with a reversible 
 Reversible simulation of Turing machines is standard in reversible computation \cite{Bennett1973,Bennett1989}.
 In particular, there exist universal reversible Turing machines whose halting behavior encodes the usual halting problem.
 
-\subsection{Step 2: reversible computation embedded into QCA}
-A QCA is a unitary, local, shift-invariant update on a lattice of finite-dimensional systems.
-Any classical reversible cellular automaton (RCA) can be embedded into a QCA by restricting to the computational basis and letting the QCA act as a permutation on basis states.
-Conversely, intrinsically universal QCAs can simulate arbitrary local dynamics, including RCA and reversible Turing machine space-time diagrams; see intrinsic universality constructions such as \cite{ArrighiGrattage2010}.
+\subsection{Step 2: a fixed local, reversible dynamics simulating a universal reversible machine}
+Let $M_\star$ be a fixed universal reversible Turing machine (URTM).
+Fix a finite tape alphabet $\Gamma$, a finite internal state set $Q$, and a distinguished halting state $q_{\mathrm{halt}}\in Q$.
+Encode the URTM configuration into a 1D lattice by using a finite local alphabet that stores:
+(i) a tape symbol in $\Gamma$,
+(ii) a head marker plus internal state in $Q$ at exactly one site, and
+(iii) auxiliary registers used to make halting-event recording reversible \cite{Bennett1973,Bennett1989}.
+
+\noindent One can implement one URTM step by a translation-invariant, finite-radius reversible local rule (equivalently, a reversible cellular automaton on the computational basis).
+Promoting this reversible basis permutation to a unitary yields a QCA update $U$ which acts as the classical reversible dynamics on basis states.
+Universal QCA constructions and QCA structure theorems are discussed in \cite{Watrous1995,SchumacherWerner2004,ArrighiGrattage2010,ArrighiNesmeWerner2011}.
 
 \subsection{Step 3: a localized halting flag projector}
-Fix a universal QCA update $U$.
 Given an instance $(M,x)$, construct an initial basis state $|\psi_{M,x}\rangle$ that encodes $M$ and input $x$ in a finite ``program/data'' region, with blank padding elsewhere.
 Reserve a dedicated finite region $K$ containing a ``flag cell'' whose local basis includes states $|0\rangle$ and $|1\rangle$.
 
@@ -32,6 +48,12 @@ Then
 \end{equation}
 holds if and only if $M$ halts on $x$.
 
+\begin{proof}
+Because the evolution is classical on the computational basis, for each $t$ the state $U^t|\psi_{M,x}\rangle$ is again a basis state.
+Hence the quantity $\langle\psi_{M,x}|U^{\dagger t}\Pi_K U^t|\psi_{M,x}\rangle$ is in $\{0,1\}$ and equals $1$ iff the flag cell is in state $|1\rangle$ at time $t$.
+By construction, the flag is triggered at some time iff the simulated computation halts.
+\end{proof}
+
 \subsection{Conclusion: undecidability}
 If there were an algorithm deciding the reachability predicate above for all $(M,x)$, it would decide halting.
 Therefore the local reachability predicate is undecidable.
@@ -40,3 +62,51 @@ Therefore the local reachability predicate is undecidable.
 The construction never modifies $U$ nonunitarily.
 Undecidability arises because the predicate quantifies over unbounded time and because universal dynamics can encode arbitrarily long computations.
 \end{remark}
+
+\subsection{Robustness: a thresholded reachability predicate}
+\label{app:reachability_robustness}
+The bare predicate $\exists t:\langle\Pi_K\rangle>0$ is intentionally sharp, but it is not robust under arbitrary perturbations of the initial encoding: an arbitrarily small component in the flag subspace would make the inequality true.
+One can, however, state a robust version that remains equivalent for perturbations bounded in trace distance.
+
+\begin{lemma}[Projector expectation is Lipschitz in trace distance]
+\label{lem:proj_lipschitz_trace}
+For any two density operators $\rho,\sigma$ and any projector $\Pi$,
+\begin{equation}
+\bigl|\Tr(\Pi\rho)-\Tr(\Pi\sigma)\bigr|\ \le\ D(\rho,\sigma),
+\qquad D(\rho,\sigma):=\tfrac12\|\rho-\sigma\|_1.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+This is standard: for any effect $0\le E\le \mathds{1}$ one has
+$|\Tr(E(\rho-\sigma))|\le \tfrac12\|\rho-\sigma\|_1$; see, e.g., \cite{Watrous2018}.
+\end{proof}
+
+\begin{proposition}[Robust halting-to-reachability with a probability threshold]
+\label{prop:reachability_threshold_robust}
+Let $U$ and $\Pi_K$ be as in the reduction above and let $\rho_{M,x}:=|\psi_{M,x}\rangle\langle\psi_{M,x}|$ be the ideal basis-state encoding.
+Assume the reduction is \emph{deterministic on the computational basis} so that for all $t$,
+\begin{equation}
+\Tr\!\bigl(\Pi_K\,U^t\rho_{M,x}U^{\dagger t}\bigr)\in\{0,1\},
+\end{equation}
+and there exists a time $t_\star$ such that this quantity equals $1$ if and only if $M$ halts on $x$.
+Let $\widetilde\rho$ be an imperfect encoding with
+$D(\widetilde\rho,\rho_{M,x})\le\delta$.
+Then for every $t$,
+\begin{equation}
+\bigl|\Tr(\Pi_K\,U^t\widetilde\rho\,U^{\dagger t})-\Tr(\Pi_K\,U^t\rho_{M,x}U^{\dagger t})\bigr|\ \le\ \delta,
+\end{equation}
+and in particular, if $\delta<1/2$ the thresholded predicate
+\begin{equation}
+\exists t\ge 0:\ \Tr(\Pi_K\,U^t\widetilde\rho\,U^{\dagger t})\ \ge\ 1/2
+\end{equation}
+is true if and only if $M$ halts on $x$.
+\end{proposition}
+
+\begin{proof}
+Unitary evolution preserves trace distance:
+$D(U^t\widetilde\rho\,U^{\dagger t},U^t\rho_{M,x}U^{\dagger t})=D(\widetilde\rho,\rho_{M,x})$.
+Apply Lemma~\ref{lem:proj_lipschitz_trace}.
+If $M$ does not halt then the ideal expectation is $0$ for all $t$, hence the imperfect expectation is $<1/2$ for all $t$.
+If $M$ halts then at $t=t_\star$ the ideal expectation is $1$, hence the imperfect expectation is $>1/2$.
+\end{proof}

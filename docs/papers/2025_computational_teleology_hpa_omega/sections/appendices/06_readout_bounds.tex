@@ -99,3 +99,71 @@ Thus $S_{\mathrm{read}}(\epsilon)=\Theta(\epsilon^{-1})$ while $S_{\mathrm{code}
 \end{proposition}
 
 These relations make the ``space as resolution'' claim quantitative and highlight a dual notion of space: raw prefix length (a streaming memory cost) versus canonical digit depth (a compressed description length).
+
+\subsection{Stability under imperfect readout: a bit-flip noise model}
+\label{app:readout_noise}
+The bounds above are deterministic statements about the underlying mechanical word $s_k\in\{0,1\}$.
+To connect to realistic readout, it is useful to quantify how the required prefix length changes under a minimal noise model.
+
+\paragraph{Noise model.}
+Assume the observed bits are corrupted by independent bit-flips:
+\begin{equation}
+\widetilde s_k := s_k\oplus \xi_k,\qquad \xi_k\sim \mathrm{Bernoulli}(p),\qquad 0\le p<\tfrac12,
+\end{equation}
+independently over $k$.
+Let $S_N=\sum_{k=0}^{N-1}s_k$ and $\widetilde S_N=\sum_{k=0}^{N-1}\widetilde s_k$.
+Then
+\begin{equation}
+\mathbb{E}[\widetilde S_N]=(1-2p)\,S_N+pN.
+\end{equation}
+If $p$ is known (or separately calibrated), a natural unbiased estimator of $S_N$ is
+\begin{equation}
+\widehat S_N:=\frac{\widetilde S_N-pN}{1-2p},
+\qquad
+\widehat\alpha_N:=\frac{\widehat S_N}{N}.
+\label{eq:debiased_alpha_estimator}
+\end{equation}
+
+\begin{proposition}[High-probability accuracy under bit-flip noise]
+\label{prop:bitflip_accuracy}
+Fix $\delta\in(0,1)$.
+Under the model above, for all $N\ge 1$,
+\begin{equation}
+\mathbb{P}\!\left(
+\bigl|\widehat\alpha_N-\alpha\bigr|
+\ \le\ \frac{1}{N}+\frac{1}{1-2p}\sqrt{\frac{\log(2/\delta)}{2N}}
+\right)\ \ge\ 1-\delta.
+\label{eq:alpha_noise_bound}
+\end{equation}
+Consequently, to ensure $|\widehat\alpha_N-\alpha|\le \epsilon$ with probability at least $1-\delta$, it suffices to take
+\begin{equation}
+N\ \ge\ \max\!\left\{\left\lceil \epsilon^{-1}\right\rceil,\ \left\lceil \frac{\log(2/\delta)}{2(1-2p)^2\,(\epsilon-1/N)^2}\right\rceil\right\},
+\end{equation}
+and in the noise-dominated regime one has the scaling $N=\Theta\!\bigl((1-2p)^{-2}\epsilon^{-2}\log(1/\delta)\bigr)$.
+\end{proposition}
+
+\begin{proof}
+Decompose
+\begin{equation}
+\widehat\alpha_N-\alpha
+\ =\ \left(\frac{S_N}{N}-\alpha\right)
+\ +\ \frac{1}{N(1-2p)}\left(\widetilde S_N-\mathbb{E}[\widetilde S_N]\right).
+\end{equation}
+The deterministic discrepancy bound gives $|S_N/N-\alpha|<1/N$ (Proposition~\ref{prop:uniform_discrepancy}).
+Conditional on $\{s_k\}$, the random variables $\widetilde s_k-\mathbb{E}[\widetilde s_k]$ are independent and lie in $[-1,1]$.
+Hoeffding's inequality \cite{Hoeffding1963} yields
+\begin{equation}
+\mathbb{P}\!\left(
+\left|\widetilde S_N-\mathbb{E}[\widetilde S_N]\right|
+\ \le\ \sqrt{\frac{N\log(2/\delta)}{2}}
+\right)\ \ge\ 1-\delta.
+\end{equation}
+Divide by $N(1-2p)$ and combine with the deterministic term to obtain \eqref{eq:alpha_noise_bound}.
+\end{proof}
+
+\begin{remark}[Interpretation for readout space complexity]
+Proposition~\ref{prop:bitflip_accuracy} cleanly separates two contributions:
+the intrinsic $O(1/N)$ deterministic discrepancy term from the rotation coding, and a stochastic $O(N^{-1/2})$ term induced by measurement noise.
+Thus, for sufficiently small $\epsilon$ the noise-dominated regime forces the familiar $N=\Theta(\epsilon^{-2})$ sample-complexity scaling.
+This is the quantitative sense in which imperfect readout increases the operational space cost of stabilization.
+\end{remark}

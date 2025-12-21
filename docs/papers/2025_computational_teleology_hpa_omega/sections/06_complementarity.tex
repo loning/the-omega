@@ -2,15 +2,28 @@
 \label{sec:complementarity}
 
 \subsection{Weyl pairs in the scan model}
-In the minimal scan model on $L^2(S^1)$, let $U:=\Theta$ be the unitary shift (scan) and let $V$ be the unitary multiplication operator implementing the phase channel. For irrational slope $\alpha$ one has the Weyl commutation relation
+Let $S^1=\RR/\ZZ$ and $\hilbert=L^2(S^1,dx)$.
+Fix an irrational slope $\alpha\in\RR\setminus\QQ$.
+Define the scan shift
 \begin{equation}
-UV=\e^{\iu\Phi}VU,
+(Uf)(x):=f(x+\alpha),
 \end{equation}
-with $\Phi=2\pi\alpha$.
-Equivalently, $U$ and $V$ generate the irrational rotation algebra \cite{Rieffel1981}.
+and the phase multiplication operator
+\begin{equation}
+(Vf)(x):=\e^{2\pi \iu x}\,f(x).
+\end{equation}
+Then, by direct computation,
+\begin{equation}
+(UVf)(x)=\e^{2\pi \iu (x+\alpha)}f(x+\alpha)=\e^{2\pi \iu \alpha}\,(VUf)(x),
+\end{equation}
+so $U$ and $V$ satisfy the Weyl relation
+\begin{equation}
+UV=\e^{\iu\Phi}VU,\qquad \Phi:=2\pi\alpha.
+\end{equation}
+Equivalently, $U$ and $V$ generate the irrational rotation algebra (the noncommutative torus) \cite{Rieffel1981}.
 
 \subsection{A variance-type uncertainty relation}
-Following the HPA formalism \cite{Ma2025HPA} (see also related Fourier-uncertainty discussions \cite{MassarSpindel2008}), define for a normalized state $|\psi\rangle$
+Following Massar--Spindel \cite{MassarSpindel2008} (see also the number--phase literature surveyed in \cite{CarruthersNieto1968} and the Pegg--Barnett approach \cite{PeggBarnett1989}), define for a normalized state $|\psi\rangle$
 \begin{equation}
 \Delta_U^2:=1-\bigl|\langle\psi|U|\psi\rangle\bigr|^2,
 \qquad
@@ -21,13 +34,19 @@ The Weyl commutation implies a quantitative obstruction to simultaneous eigensta
 
 \begin{theorem}[Weyl-pair complementarity (variance form)]
 \label{thm:weyl_uncertainty}
-Let $U,V$ be unitary operators satisfying $UV=\e^{\iu\Phi}VU$ and set $A=\tan(\Phi/2)$. Then for any normalized state $|\psi\rangle$,
+Let $U,V$ be unitary operators satisfying $UV=\e^{\iu\Phi}VU$, with the phase chosen so that $0\le\Phi\le\pi$, and set $A=\tan(\Phi/2)$. Then for any normalized state $|\psi\rangle$,
 \begin{equation}
 (1+2A)\,\Delta_U^2\,\Delta_V^2 + A^2\,(\Delta_U^2+\Delta_V^2)\ge A^2.
 \label{eq:weyl_variance_uncertainty}
 \end{equation}
 In particular, if $\Phi\not\equiv 0\ \mathrm{mod}\ 2\pi$ then $\Delta_U$ and $\Delta_V$ cannot both be arbitrarily small.
 \end{theorem}
+
+\begin{remark}[Closed-form vs tight unitary uncertainty bounds]
+Massar--Spindel \cite{MassarSpindel2008} also provide a stronger (tight) characterization of the accessible region in the $(|\langle U\rangle|,|\langle V\rangle|)$ plane via the smallest eigenvalue of a Hermitian ``Harper'' operator (their Theorem~2).
+The present paper uses the closed-form inequality \eqref{eq:weyl_variance_uncertainty} because it yields an explicit algebraic tradeoff suitable for resource lower bounds and operational translation (Appendix~\ref{app:weyl_derivation}).
+Whenever tighter constants matter, one may replace \eqref{eq:weyl_variance_uncertainty} by the implicit Harper-eigenvalue boundary without changing the scan--readout semantics.
+\end{remark}
 
 \subsection{Resource semantics: why T and S cannot both be minimized}
 Equation~\eqref{eq:weyl_variance_uncertainty} becomes a resource statement once we identify $U$ with scan access and $V$ with readout phase channel.

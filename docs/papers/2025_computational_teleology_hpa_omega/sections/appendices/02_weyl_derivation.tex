@@ -1,7 +1,8 @@
 \section{From Weyl pairs to resource complementarity: inequality and operational meaning}
 \label{app:weyl_derivation}
 
-We record the minimal objects behind the variance-form uncertainty inequality used in Theorem~\ref{thm:weyl_uncertainty}. Detailed proofs and related operator-algebra context appear in the HPA manuscript \cite{Ma2025HPA}.
+We record the minimal objects behind the variance-form uncertainty inequality used in Theorem~\ref{thm:weyl_uncertainty}.
+The inequality (in essentially this form) is due to Massar--Spindel \cite{MassarSpindel2008} for unitary operators obeying a Weyl commutation relation; for completeness we include a self-contained derivation (following their proof of Theorem~1 in \cite{MassarSpindel2008}).
 
 \paragraph{Weyl relation.}
 Let $U,V$ be unitaries satisfying $UV=\e^{\iu\Phi}VU$.
@@ -15,11 +16,121 @@ For a normalized state $|\psi\rangle$, define
 where $\langle U\rangle:=\langle\psi|U|\psi\rangle$.
 These vanish exactly on eigenstates.
 
-\paragraph{Inequality.}
-Setting $A=\tan(\Phi/2)$, one obtains
+\subsection{Proof of Theorem~\ref{thm:weyl_uncertainty} (Massar--Spindel inequality)}
+\label{app:weyl_proof}
+We assume the phase is chosen so that $0\le \Phi\le \pi$ (this can always be arranged without changing $\Delta_U,\Delta_V$ by replacing $U$ or $V$ with its adjoint, which flips $\Phi\mapsto-\Phi$ modulo $2\pi$).
+Set
 \begin{equation}
-(1+2A)\Delta_U^2\Delta_V^2 + A^2(\Delta_U^2+\Delta_V^2)\ge A^2.
+A:=\tan(\Phi/2)\ \ge\ 0.
 \end{equation}
+
+\paragraph{Sine/cosine operators.}
+Introduce the Hermitian operators
+\begin{equation}
+C_U:=\frac{U+U^{\dagger}}{2},\quad S_U:=\frac{U-U^{\dagger}}{2\iu},
+\qquad
+C_V:=\frac{V+V^{\dagger}}{2},\quad S_V:=\frac{V-V^{\dagger}}{2\iu}.
+\label{eq:weyl_sine_cosine}
+\end{equation}
+They satisfy $C_U^2+S_U^2=\mathds{1}$ and $C_V^2+S_V^2=\mathds{1}$.
+Moreover,
+\begin{equation}
+\Delta_U^2=\Delta C_U^2+\Delta S_U^2,\qquad \Delta_V^2=\Delta C_V^2+\Delta S_V^2,
+\end{equation}
+where $\Delta X^2:=\langle X^2\rangle-\langle X\rangle^2$ for Hermitian $X$.
+
+\paragraph{Robertson reduction.}
+Since $\Delta_U^2\ge \Delta S_U^2$ and $\Delta_V^2\ge \Delta S_V^2$, one has
+\begin{equation}
+\Delta_U^2\Delta_V^2\ \ge\ \Delta S_U^2\,\Delta S_V^2.
+\end{equation}
+By the Robertson uncertainty relation, for any Hermitian $A,B$,
+\begin{equation}
+\Delta A\,\Delta B\ \ge\ \frac12\bigl|\langle[A,B]\rangle\bigr|,
+\end{equation}
+and therefore
+\begin{equation}
+\Delta_U^2\Delta_V^2\ \ge\ \frac14\bigl|\langle[S_U,S_V]\rangle\bigr|^2.
+\label{eq:weyl_robertson_step}
+\end{equation}
+
+\begin{lemma}[Sine-commutator identity {\cite[Proof of Theorem~1]{MassarSpindel2008}}]
+\label{lem:weyl_sine_commutator}
+If $U,V$ satisfy $UV=\e^{\iu\Phi}VU$ with $0\le\Phi\le\pi$ and $A=\tan(\Phi/2)$, then
+\begin{equation}
+[S_U,S_V]=-\iu A\,(C_UC_V+C_VC_U).
+\label{eq:weyl_sine_commutator}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Using \eqref{eq:weyl_sine_cosine} one expands
+\begin{align}
+S_U S_V
+&=-\frac14\,(UV+U^{\dagger}V^{\dagger})+\frac14\,(U^{\dagger}V+UV^{\dagger}),\\
+S_V S_U
+&=-\frac14\,(VU+V^{\dagger}U^{\dagger})+\frac14\,(V^{\dagger}U+VU^{\dagger}),\\
+C_U C_V
+&=\frac14\,(UV+U^{\dagger}V^{\dagger})+\frac14\,(U^{\dagger}V+UV^{\dagger}),\\
+C_V C_U
+&=\frac14\,(VU+V^{\dagger}U^{\dagger})+\frac14\,(V^{\dagger}U+VU^{\dagger}).
+\end{align}
+Using $UV=\e^{\iu\Phi}VU$ and $U^{\dagger}V=VU^{\dagger}\e^{-\iu\Phi}$ to rewrite terms yields two equivalent forms:
+\begin{align}
+[S_U,S_V]
+&=-\iu\sin\Phi\, C_V C_U-2\sin^2(\Phi/2)\,S_VS_U,\\
+[S_U,S_V]
+&=-\iu\sin\Phi\, C_U C_V+2\sin^2(\Phi/2)\,S_US_V.
+\end{align}
+Combining them gives
+\begin{equation}
+[S_U,S_V]=-\iu\,\frac{\sin\Phi}{2\cos^2(\Phi/2)}\,(C_UC_V+C_VC_U)
+\ =\ -\iu\tan(\Phi/2)\,(C_UC_V+C_VC_U),
+\end{equation}
+as claimed.
+\end{proof}
+
+\begin{lemma}[Lower bound on $\langle C_UC_V\rangle$ {\cite[Proof of Theorem~1]{MassarSpindel2008}}]
+\label{lem:weyl_cucu_bound}
+By rephasing $U\mapsto \e^{-\iu\arg\langle U\rangle}U$ and $V\mapsto \e^{-\iu\arg\langle V\rangle}V$ one may assume $\langle U\rangle,\langle V\rangle\in\RR_{\ge 0}$, hence $\langle S_U\rangle=\langle S_V\rangle=0$ and $\langle C_U\rangle=\sqrt{1-\Delta_U^2}$, $\langle C_V\rangle=\sqrt{1-\Delta_V^2}$.
+With this choice,
+\begin{equation}
+\bigl|\langle C_UC_V\rangle\bigr|\ \ge\ \sqrt{1-\Delta_U^2}\,\sqrt{1-\Delta_V^2}-\Delta_U\Delta_V.
+\label{eq:cucu_bound}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write
+$C_U|\psi\rangle=x_U|\psi\rangle+y_U|\psi^{\perp}\rangle$
+where $|\psi^{\perp}\rangle$ is normalized and orthogonal to $|\psi\rangle$, and $x_U=\langle C_U\rangle$.
+Since $\|C_U\|\le 1$, one has $x_U^2+y_U^2=\langle\psi|C_U^2|\psi\rangle\le 1$, hence
+$y_U^2\le 1-x_U^2=\Delta_U^2$.
+Similarly,
+$C_V|\psi\rangle=x_V|\psi\rangle+y_V|\psi'^{\perp}\rangle$
+with $x_V=\langle C_V\rangle$ and $y_V^2\le \Delta_V^2$.
+Therefore
+\begin{align}
+\bigl|\langle C_VC_U\rangle\bigr|
+&=\bigl|x_Ux_V+y_Uy_V\langle\psi'^{\perp}|\psi^{\perp}\rangle\bigr|\\
+&\ge x_Ux_V-|y_Uy_V|\\
+&\ge \sqrt{1-\Delta_U^2}\,\sqrt{1-\Delta_V^2}-\Delta_U\Delta_V,
+\end{align}
+which implies \eqref{eq:cucu_bound}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:weyl_uncertainty}]
+Using Lemma~\ref{lem:weyl_sine_commutator} in \eqref{eq:weyl_robertson_step} gives
+\begin{equation}
+\Delta_U\Delta_V\ \ge\ A\,\bigl|\langle C_UC_V\rangle\bigr|.
+\end{equation}
+Applying Lemma~\ref{lem:weyl_cucu_bound} yields
+\begin{equation}
+\Delta_U\Delta_V\ \ge\ A\Bigl(\sqrt{1-\Delta_U^2}\,\sqrt{1-\Delta_V^2}-\Delta_U\Delta_V\Bigr).
+\label{eq:weyl_pre_squaring}
+\end{equation}
+Rearranging and squaring \eqref{eq:weyl_pre_squaring} gives \eqref{eq:weyl_variance_uncertainty}.
+\end{proof}
 
 \paragraph{Resource reading.}
 In the scan model, $U=\Theta$ encodes access order (time), while $V$ encodes phase/readout channels (space).
@@ -75,7 +186,7 @@ Then $\Delta_U=1-2p_U$ and $\Delta_V=1-2p_V$.
 
 \begin{proposition}[Binary-decision tradeoff for a Weyl pair]
 \label{prop:weyl_binary_tradeoff}
-Let $U,V$ satisfy $UV=\e^{\iu\Phi}VU$ and set $A=\tan(\Phi/2)$.
+Let $U,V$ satisfy $UV=\e^{\iu\Phi}VU$, with the phase chosen so that $0\le\Phi\le\pi$, and set $A=\tan(\Phi/2)$.
 For any normalized state $|\psi\rangle$, the optimal discrimination errors $p_U,p_V$ satisfy
 \begin{equation}
 (1+2A)\,(1-2p_U)^2(1-2p_V)^2 + A^2\bigl((1-2p_U)^2+(1-2p_V)^2\bigr)\ \ge\ A^2.
