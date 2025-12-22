@@ -9,6 +9,7 @@
 | `2025_holographic_polar_arithmetic/` | Holographic Polar Arithmetic (HPA) | [`main.pdf`](./2025_holographic_polar_arithmetic/main.pdf) | [`main.tex`](./2025_holographic_polar_arithmetic/main.tex) | **工具/数学论文（Paper I）**：scan–projection、Sturmian/Fibonacci、Ostrowski/Zeckendorf、orbit 正则化 | — |
 | `2025_foundations_of_physics_submission/` | Omega Theory: Axiomatic Foundations of Holographic Spacetime and Interactive Evolution (FoP) | [`main.pdf`](./2025_foundations_of_physics_submission/main.pdf) | [`main.tex`](./2025_foundations_of_physics_submission/main.tex) | **主物理手稿**：全局静态态 + 有限信息/全息映射 + QCA/准晶 + 现象学/宇宙学模板 | HPA（O5/O6 等工具链） |
 | `2025_holographic_polar_omega_theory/` | Holographic Polar Omega Theory (HPΩT) | [`main.pdf`](./2025_holographic_polar_omega_theory/main.pdf) | [`main.tex`](./2025_holographic_polar_omega_theory/main.tex) | **短文/公理接口**：抽取并固定 O1–O6 + R1 的最短推论链 | HPA + FoP |
+| `2025_ramanujan_holographic_scanning_principle_hpa_omega/` | Ramanujan Holographic Scanning Principle: Modular Curves, Hecke Dynamics, and an Arithmetic Constitution for HPA--Ω (RHSP) | [`main.pdf`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/main.pdf) | [`main.tex`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/main.tex) | **算术几何接口篇**：模曲线/Hecke 为 scan–projection 提供母体与素数骨架；附可复现实验（Fibonacci/Sturmian、τ(n)、j 不变量） | HPA + HPΩT |
 | `2025_computational_action_principle_hpa_omega/` | Computational Action Principle: Least-Discrepancy Dynamics and Field Unification in HPA–Ω (CAP) | [`main.pdf`](./2025_computational_action_principle_hpa_omega/main.pdf) | [`main.tex`](./2025_computational_action_principle_hpa_omega/main.tex) | **变分统一篇（CAP）**：最小差异原理 → Ω 作用量（Fisher + 路由开销）→ GR+信息应力；规范/物质为相位误差补偿与拓扑缺陷 | HPA + FoP + HPΩT |
 | `2025_holographic_phase_thermodynamics_hpa_omega/` | Holographic Phase Thermodynamics: Arithmetic Statistical Mechanics, Computational Lapse, and the Geometric Origin of Intelligence in HPA–Ω (HPT) | [`main.pdf`](./2025_holographic_phase_thermodynamics_hpa_omega/main.pdf) | [`main.tex`](./2025_holographic_phase_thermodynamics_hpa_omega/main.tex) | **专题篇（热力学/智能）**：算术统计力学、相位摩擦（差异熵）、计算时延与熵流重标度、智能作为主动纠错相变 | HPA + FoP + HPΩT + CAP（+ HPD 的 Phase Pressure 模板） |
 | `2025_holographic_polar_dynamics/` | Holographic Polar Dynamics (HPD) | [`main.pdf`](./2025_holographic_polar_dynamics/main.pdf) | [`main.tex`](./2025_holographic_polar_dynamics/main.tex) | **应用篇（Paper II）**：把 HPA 的失配/差异度量用于黑洞/奇点与信息悖论模板（Phase Pressure） | HPA（+ CAP 作为统一视角） |
@@ -24,6 +25,7 @@ flowchart TB
   HPA["HPA<br/>Holographic Polar Arithmetic<br/>工具/数学（Paper I）"]
   FoP["FoP<br/>Omega Theory 主物理手稿"]
   HPOT["HPΩT<br/>Omega Theory 公理升级短文"]
+  RHSP["RHSP<br/>Ramanujan Holographic Scanning Principle<br/>modular curves / Hecke interface"]
   CAP["CAP<br/>Computational Action Principle<br/>最小差异变分统一"]
   HPT["HPT<br/>Holographic Phase Thermodynamics<br/>热力学/智能专题"]
   HPD["HPD<br/>Holographic Polar Dynamics<br/>黑洞/奇点应用（Paper II）"]
@@ -33,6 +35,8 @@ flowchart TB
   HPA -->|"scan–projection、编码、orbit 正则化"| FoP
   HPA -->|"细节构造与证明"| HPOT
   FoP -->|"主框架/术语与物理展开"| HPOT
+  HPA -->|"模曲线嵌入、Hecke 素数骨架"| RHSP
+  HPOT -->|"O1–O6 + R1 审计接口"| RHSP
   HPA -->|"最小差异/读出失配"| CAP
   FoP -->|"Ω 作用量、lapse、Fisher"| CAP
   HPOT -->|"O1–O6 + R1 接口"| CAP
@@ -57,6 +61,7 @@ flowchart TB
   class HPA tool;
   class FoP core;
   class HPOT note;
+  class RHSP note;
   class HPT topic;
   class HPD app;
   class CAP unify;
@@ -100,6 +105,20 @@ flowchart TB
 - **与其他论文关系**：
   - 把 HPA（构造/证明）与 FoP（完整物理展开）之间的接口固定下来，便于在后续应用篇引用。
 - **入口链接**：[`main.pdf`](./2025_holographic_polar_omega_theory/main.pdf)、[`main.tex`](./2025_holographic_polar_omega_theory/main.tex)、[`references.bib`](./2025_holographic_polar_omega_theory/references.bib)
+
+### `2025_ramanujan_holographic_scanning_principle_hpa_omega/`（RHSP，Ramanujan Holographic Scanning Principle）
+
+- **定位**：将 scan–projection（O5/O6）置于模曲线 $X(1)$ 与 Hecke 代数的算术几何母体中，形成可审计的“算术—全息—计算宪法”。
+- **做了什么**：
+  - **母体几何**：给出 $\mathrm{PSL}_2(\mathbb{Z})$ 基本域、尖点与 $0\sim\infty$ cusp 识别，作为尺度互换的几何模板。
+  - **离散接口**：以 cusp 的 $q$-展开作为连续→离散系数接口，并用判别式模形式 $\Delta$ 的 $\tau(n)$ 作为可计算示例。
+  - **素数骨架**：澄清 Hecke 算子对所有 $n$ 定义、但由素数生成，并给出素数幂递推与本征形式的稳定谱解释。
+  - **规范编码**：continued fraction → Ostrowski；黄金分支 → Zeckendorf（Fibonacci/Sturmian）提供“整数时间—比特读出”接口。
+  - **可复现验证**：附纯标准库 Python 代码验证 Fibonacci 词、差异、$\tau(n)$ 递推、以及 $j$-不变量的 $S$-不变性。
+- **与其他论文关系**：
+  - 继承并引用 HPA 的 scan–projection 与编码工具链，在算术几何层面给出母体与素数骨架。
+  - 与 HPΩT 的 O1–O6 + R1 审计接口对齐，便于在 FoP/CAP 等论文中作为算术接口引用。
+- **入口链接**：[`main.pdf`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/main.pdf)、[`main.tex`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/main.tex)、[`references.bib`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/references.bib)
 
 ### `2025_holographic_polar_dynamics/`（HPD，Omega Dynamics / Paper II）
 
