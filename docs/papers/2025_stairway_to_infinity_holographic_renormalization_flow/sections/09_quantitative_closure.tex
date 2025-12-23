@@ -1,0 +1,77 @@
+
+\section{Quantitative closure and reproducible experiments}
+\label{sec:quantitative_closure}
+
+As a closed argument, the stairway chain is only as strong as its \emph{quantitative} audit points. Here we connect the main theoretical modules to reproducible numerical checks and to explicit, constant-bearing bounds (Appendix~\ref{app:quant_fits}).
+
+\subsection{Experiment I: golden rotation window readout and discrepancy scaling}
+\label{sec:exp_golden_discrepancy}
+
+On the golden branch $\alpha=\varphi^{-1}$, interval-window readout produces a Fibonacci/Sturmian binary word, and the induced window frequencies converge with discrepancy-controlled finite-$N$ error (Theorem~\ref{thm:weyl_equidistribution} and Corollary~\ref{cor:ostrowski_digit_discrepancy}).
+Appendix~\ref{app:repro_code} includes pure-Python code that generates the orbit, computes star discrepancy, and prints representative scaling.
+\par
+At the theorem level, the quantitative upgrade of ``induced probability'' is the Koksma inequality (Appendix~\ref{app:koksma_inequality}) together with the Ostrowski digit bound (Appendix~\ref{app:dk_koksma_ostrowski}): finite-$N$ readout error is controlled by discrepancy, and discrepancy is controlled by a locally auditable digit sum.
+In particular, for constant-type slopes (bounded continued-fraction coefficients), one obtains an explicit $O((\log N)/N)$ discrepancy rate with a closed constant (Appendix~\ref{app:dk_koksma_ostrowski}).
+
+\subsection{Experiment II: Ramanujan \texorpdfstring{$\tau(n)$}{tau(n)} and Hecke recursion/multiplicativity}
+\label{sec:exp_tau_hecke}
+
+We compute $\tau(n)$ from the $q$-expansion of $\Delta$ (via Eisenstein series) and verify:
+(i) $\tau(mn)=\tau(m)\tau(n)$ for $(m,n)=1$, and
+(ii) $\tau(p^{r+1})=\tau(p)\tau(p^r)-p^{11}\tau(p^{r-1})$ for primes $p$.
+This makes the ``prime skeleton'' constraint auditable at the integer-coefficient level.
+\par
+Standard theory further supplies sharp \emph{a priori} bounds: Deligne's theorem implies $|\tau(p)|\le 2p^{11/2}$ for primes (as a consequence of the Weil conjectures \cite{Deligne1974}), and the Hecke prime-power recursion yields the global bound $|\tau(n)|\le d(n)\,n^{11/2}$; see \cite{Serre1973,Apostol1990,DiamondShurman2005} for background.
+\par
+\paragraph{Closing the scan $\Rightarrow$ coefficients $\Rightarrow$ Hecke loop on $\Delta$.}
+Beyond computing $\tau(n)$ from $q$-expansions, Experiment~X applies the slice--sampling estimator directly to scan samples of the slice $\Delta(x+\iu y)$, recovers $\tau(1),\tau(2),\tau(4)$ with an explicit discrepancy-controlled bound (Table~\ref{tab:delta_tau_slice_sampling}), and certifies the $p=2$ Hecke prime-square recursion from the recovered coefficients under explicit error propagation (Table~\ref{tab:tau_hecke_certified_closure}).
+
+\subsection{Experiment III: numerical \texorpdfstring{$S$}{S}-invariance of the \texorpdfstring{$j$}{j}-invariant}
+\label{sec:exp_j_S_invariance}
+
+Using truncated $q$-series for $E_4,E_6$ and the standard formula
+\begin{equation}
+j(\tau)=1728\,\frac{E_4(\tau)^3}{E_4(\tau)^3-E_6(\tau)^2},
+\end{equation}
+we numerically check $j(\tau)\approx j(-1/\tau)$ for representative $\tau$ in $\HH$.
+This provides a direct computational audit of modular inversion symmetry.
+\par
+Since $q=\e^{2\pi\iu\tau}$ with $|q|=\e^{-2\pi y}<1$, truncation errors admit explicit geometric tail bounds at fixed $y>0$ (cf.\ standard modular-function references \cite{Apostol1990,Serre1973}).
+Appendix~\ref{app:eisenstein_tail_bounds} records a constant-explicit tail bound for $E_4$ (and a polynomial-form bound for $E_6$), sufficient for certified truncation-error budgeting.
+
+\subsection{Experiment IV: Gauss digit-law fit}
+\label{sec:exp_gauss_digit_law}
+
+Iterating the Gauss map produces a digit sequence whose empirical digit frequencies converge to the Gauss law~\eqref{eq:gauss_digit_law}. Appendix~\ref{app:repro_code} includes a simple simulation that reports empirical versus theoretical frequencies and basic error norms.
+Representative fit errors are recorded in Table~\ref{tab:gauss_digit_fit}.
+
+\subsection{Experiment VII: the roof-function mean and the scale-time constant}
+\label{sec:exp_roof_mean}
+
+The modular geodesic flow is represented as a suspension over the Gauss map with roof function $r(\xi)=-2\log\xi$ (Theorem~\ref{thm:series_suspension}). Proposition~\ref{prop:gauss_roof_mean} gives the closed-form mean $\mathbb{E}_\mu[r]=\pi^2/(6\log 2)$, hence typical orbits have linear scale-time growth with this constant. Table~\ref{tab:roof_mean_fit} records a reproducible numerical fit of the empirical mean to the theoretical constant.
+
+\subsection{Experiment V: slice--sampling coefficient recovery with an explicit bound}
+\label{sec:exp_slice_sampling_e4}
+
+The stairway-specific quantitative addition is the slice--sampling recovery pipeline of Section~\ref{sec:cusp_qexp_slice_sampling}: coefficients are recovered from a height slice by Fourier projection (Theorem~\ref{thm:slice_coefficient_reconstruction}) and, under scan-orbit sampling, admit an explicit discrepancy-controlled finite-$N$ bound (Theorem~\ref{thm:finiteN_coeff_bound}).
+\par
+For concrete modular objects, one can further make the constant in the bound explicit. Appendix~\ref{app:variation_bound_e4_explicit} derives a closed-form $\Var(g_{n,y})$ upper bound for $E_4$, yielding a fully numerical error bound; Table~\ref{tab:e4_slice_sampling_bound} audits this bound for recovering the coefficient $a_1=240$ at height $y=1$.
+\par
+To make the ``smoothing versus amplification'' claim quantitative, Table~\ref{tab:e4_slice_sampling_y_tradeoff} records a fixed-$N$ sweep over the height $y$, showing that the net recovery behavior is non-monotone in $y$ even in this simplest toy case.
+
+\paragraph{A second modular object.}
+To show that the pipeline is not specific to $E_4$, Appendix~\ref{app:quant_fits_slice_sampling_e6} records an analogous coefficient-recovery audit for $E_6$ (Table~\ref{tab:e6_slice_sampling_bound}), using the same discrepancy-controlled estimator and an explicit coefficient-growth-based $\Var$ bound.
+
+\subsection{Experiment VIII: a certified \texorpdfstring{$S$}{S}-invariance check for \texorpdfstring{$j$}{j}}
+\label{sec:exp_j_certified}
+
+Beyond high-precision sanity checks, one can certify modular invariance with explicit truncation-error budgets. Table~\ref{tab:j_certified_S} records the certified inequality
+\begin{equation}
+|j^{(N)}(\tau)-j^{(N)}(-1/\tau)|\le B(\tau)+B(-1/\tau),
+\end{equation}
+obtained by propagating explicit Eisenstein tail bounds through the algebraic expression for $j$.
+
+\paragraph{Reproducibility.}
+All experiments are implemented in pure Python 3 with no third-party dependencies (Appendix~\ref{app:repro_code}).
+
+

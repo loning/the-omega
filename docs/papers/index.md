@@ -10,6 +10,7 @@
 | `2025_foundations_of_physics_submission/` | Omega Theory: Axiomatic Foundations of Holographic Spacetime and Interactive Evolution (FoP) | [`main.pdf`](./2025_foundations_of_physics_submission/main.pdf) | [`main.tex`](./2025_foundations_of_physics_submission/main.tex) | **主物理手稿**：全局静态态 + 有限信息/全息映射 + QCA/准晶 + 现象学/宇宙学模板 | HPA（O5/O6 等工具链） |
 | `2025_holographic_polar_omega_theory/` | Holographic Polar Omega Theory (HPΩT) | [`main.pdf`](./2025_holographic_polar_omega_theory/main.pdf) | [`main.tex`](./2025_holographic_polar_omega_theory/main.tex) | **短文/公理接口**：抽取并固定 O1–O6 + R1 的最短推论链 | HPA + FoP |
 | `2025_ramanujan_holographic_scanning_principle_hpa_omega/` | Ramanujan Holographic Scanning Principle: Modular Curves, Hecke Dynamics, and an Arithmetic Constitution for HPA--Ω (RHSP) | [`main.pdf`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/main.pdf) | [`main.tex`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/main.tex) | **算术几何接口篇**：模曲线/Hecke 为 scan–projection 提供母体与素数骨架；附可复现实验（Fibonacci/Sturmian、τ(n)、j 不变量） | HPA + HPΩT |
+| `2025_stairway_to_infinity_holographic_renormalization_flow/` | The Stairway to Infinity: A Holographic Renormalization Flow from Noncommutative Scanning to the Langlands Program (STI) | [`main.pdf`](./2025_stairway_to_infinity_holographic_renormalization_flow/main.pdf) | [`main.tex`](./2025_stairway_to_infinity_holographic_renormalization_flow/main.tex) | **攀登/重整化流篇**：把“向上抽象”形式化为模曲面测地流/Gauss 悬挂流；给出切片—系数—采样与差异度/Ostrowski 的有限 $N$ 误差界；以 $S$-反演 + Morita/傅里叶交换作为尺度互换模板，并给出朗兰兹函子化任务 | RHSP + HPA |
 | `2025_computational_action_principle_hpa_omega/` | Computational Action Principle: Least-Discrepancy Dynamics and Field Unification in HPA–Ω (CAP) | [`main.pdf`](./2025_computational_action_principle_hpa_omega/main.pdf) | [`main.tex`](./2025_computational_action_principle_hpa_omega/main.tex) | **变分统一篇（CAP）**：最小差异原理 → Ω 作用量（Fisher + 路由开销）→ GR+信息应力；规范/物质为相位误差补偿与拓扑缺陷 | HPA + FoP + HPΩT |
 | `2025_holographic_phase_thermodynamics_hpa_omega/` | Holographic Phase Thermodynamics: Arithmetic Statistical Mechanics, Computational Lapse, and the Geometric Origin of Intelligence in HPA–Ω (HPT) | [`main.pdf`](./2025_holographic_phase_thermodynamics_hpa_omega/main.pdf) | [`main.tex`](./2025_holographic_phase_thermodynamics_hpa_omega/main.tex) | **专题篇（热力学/智能）**：算术统计力学、相位摩擦（差异熵）、计算时延与熵流重标度、智能作为主动纠错相变 | HPA + FoP + HPΩT + CAP（+ HPD 的 Phase Pressure 模板） |
 | `2025_holographic_polar_dynamics/` | Holographic Polar Dynamics (HPD) | [`main.pdf`](./2025_holographic_polar_dynamics/main.pdf) | [`main.tex`](./2025_holographic_polar_dynamics/main.tex) | **应用篇（Paper II）**：把 HPA 的失配/差异度量用于黑洞/奇点与信息悖论模板（Phase Pressure） | HPA（+ CAP 作为统一视角） |
@@ -26,6 +27,7 @@ flowchart TB
   FoP["FoP<br/>Omega Theory 主物理手稿"]
   HPOT["HPΩT<br/>Omega Theory 公理升级短文"]
   RHSP["RHSP<br/>Ramanujan Holographic Scanning Principle<br/>modular curves / Hecke interface"]
+  STI["STI<br/>Stairway to Infinity<br/>holographic renormalization flow"]
   CAP["CAP<br/>Computational Action Principle<br/>最小差异变分统一"]
   HPT["HPT<br/>Holographic Phase Thermodynamics<br/>热力学/智能专题"]
   HPD["HPD<br/>Holographic Polar Dynamics<br/>黑洞/奇点应用（Paper II）"]
@@ -37,6 +39,8 @@ flowchart TB
   FoP -->|"主框架/术语与物理展开"| HPOT
   HPA -->|"模曲线嵌入、Hecke 素数骨架"| RHSP
   HPOT -->|"O1–O6 + R1 审计接口"| RHSP
+  RHSP -->|"模测地流/Gauss 悬挂流、切片—系数—采样"| STI
+  HPA -->|"扫描代数与差异度控制"| STI
   HPA -->|"最小差异/读出失配"| CAP
   FoP -->|"Ω 作用量、lapse、Fisher"| CAP
   HPOT -->|"O1–O6 + R1 接口"| CAP
@@ -62,6 +66,7 @@ flowchart TB
   class FoP core;
   class HPOT note;
   class RHSP note;
+  class STI note;
   class HPT topic;
   class HPD app;
   class CAP unify;
@@ -119,6 +124,19 @@ flowchart TB
   - 继承并引用 HPA 的 scan–projection 与编码工具链，在算术几何层面给出母体与素数骨架。
   - 与 HPΩT 的 O1–O6 + R1 审计接口对齐，便于在 FoP/CAP 等论文中作为算术接口引用。
 - **入口链接**：[`main.pdf`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/main.pdf)、[`main.tex`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/main.tex)、[`references.bib`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/references.bib)
+
+### `2025_stairway_to_infinity_holographic_renormalization_flow/`（STI，The Stairway to Infinity）
+
+- **定位**：把 RHSP 的“静态宪法”推进到“攀登过程”本身：将跨尺度提升严格形式化为模曲面测地流（连续尺度）及其 Gauss 悬挂流/继续分数数字（离散尺度）。
+- **做了什么**：
+  - **重整化流对象**：以 Series 定理把模测地流与 Gauss 映射连接起来，令屋顶函数提供可计算的尺度时间。
+  - **切片—系数—采样**：给出任意高度 $y>0$ 的切片上恢复 $q$-展开系数的投影公式，并把积分替换为扫描轨道采样，得到由星差异与 Ostrowski 数位控制的有限 $N$ 误差界。
+  - **尺度互换模板**：把 $S$-反演（端点识别、深浅互换）与非交换环面 Morita 等价/傅里叶交换并列为同一“尺度交换”的严格数学模板。
+  - **朗兰兹升级任务**：以函子化方式陈述从扫描协议范畴到自守表示范畴的研究目标。
+- **与其他论文关系**：
+  - 继承 RHSP 的模曲线/Hecke 素数骨架接口，同时更强调“攀登/跨尺度”的动力学与误差预算。
+  - 复用 HPA 的扫描—投影与差异度工具，作为切片采样误差控制的底层模块。
+- **入口链接**：[`main.tex`](./2025_stairway_to_infinity_holographic_renormalization_flow/main.tex)、[`references.bib`](./2025_stairway_to_infinity_holographic_renormalization_flow/references.bib)
 
 ### `2025_holographic_polar_dynamics/`（HPD，Omega Dynamics / Paper II）
 

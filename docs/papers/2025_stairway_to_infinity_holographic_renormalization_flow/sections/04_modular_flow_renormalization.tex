@@ -1,0 +1,106 @@
+
+\section{The climb: modular flow as renormalization}
+\label{sec:modular_flow_renormalization}
+
+\subsection{Mother space: the modular curve and its cusp interface}
+\label{sec:mother_space_modular}
+
+Let
+\begin{equation}
+\HH=\{\tau=x+\iu y\in\CC:\ y>0\}
+\end{equation}
+be the upper half-plane. The modular group $\PSL_2(\ZZ)$ acts by fractional linear transformations
+\begin{equation}
+\tau\mapsto \frac{a\tau+b}{c\tau+d},\qquad \begin{pmatrix}a&b\\c&d\end{pmatrix}\in \SL_2(\ZZ).
+\end{equation}
+The level-1 modular curve is
+\begin{equation}
+X(1)=\PSL_2(\ZZ)\backslash\big(\HH\cup\{\text{cusps}\}\big).
+\end{equation}
+It has a single cusp class. In particular, the inversion $S:\tau\mapsto -1/\tau$ exchanges $0$ and $\infty$ and identifies them in the quotient, providing a canonical ``endpoint identification'' template (developed further in Section~\ref{sec:S_duality_morita}).
+
+\subsection{Geodesic flow and the Gauss-map suspension}
+\label{sec:geodesic_flow_gauss}
+
+Define the modular surface
+\begin{equation}
+M:=\PSL_2(\ZZ)\backslash\HH.
+\end{equation}
+The geodesic flow on the unit tangent bundle $T^1M$ admits a canonical symbolic coding by continued fractions. The key fact, due to Series \cite{Series1985} (see also \cite{KatokHasselblatt1995,IosifescuKraaikamp2002}), is that a Poincar\'e section returns by the Gauss map.
+
+\begin{theorem}[Series: modular geodesic flow as a Gauss suspension]
+\label{thm:series_suspension}
+There exists a Poincar\'e section $\Sigma\subset T^1M$ and a measurable isomorphism between $(\Sigma,\text{return map})$ and $((0,1),G)$, where
+\begin{equation}
+G(\xi)=\left\{\frac{1}{\xi}\right\}\in(0,1),\qquad \xi\in(0,1),
+\end{equation}
+is the Gauss map (fractional part of $1/\xi$). Moreover, the geodesic flow on $T^1M$ is measurably isomorphic to the suspension flow over $G$ with roof function
+\begin{equation}
+r(\xi)=-2\log \xi.
+\end{equation}
+If $\xi=[0;a_1,a_2,\dots]$ is the continued fraction of $\xi$, then the digit sequence $(a_n)$ is the symbolic orbit of $\xi$ under $G$.
+\end{theorem}
+
+\paragraph{Scale time.}
+The roof function $r(\xi)$ is additive under suspension concatenation, so the accumulated scale time after $n$ returns is
+\begin{equation}
+T_n(\xi)=\sum_{j=0}^{n-1} r(G^j\xi)= -2\sum_{j=0}^{n-1}\log(G^j\xi).
+\end{equation}
+This makes ``climbing in scale'' into a computable quantity controlled by the continued-fraction digits.
+
+\subsection{Gauss invariant measure and digit laws}
+\label{sec:gauss_measure_digit_law}
+
+The Gauss map preserves the probability measure
+\begin{equation}
+\dd\mu(\xi)=\frac{1}{\log 2}\frac{\dd\xi}{1+\xi},
+\end{equation}
+and is ergodic with respect to $\mu$ \cite{IosifescuKraaikamp2002}. Consequently, the leading digit $a_1=\lfloor 1/\xi\rfloor$ has the closed-form law
+\begin{equation}
+\label{eq:gauss_digit_law}
+\mu(a_1=k)=\log_2\!\left(1+\frac{1}{k(k+2)}\right),\qquad k\ge 1.
+\end{equation}
+A short derivation is given in Appendix~\ref{app:gauss_digit_law_derivation}.
+
+\paragraph{Metrical constants.}
+Beyond the one-step digit law, metrical continued-fraction theory provides sharp almost-everywhere scaling constants. Examples include Khinchin's constant for geometric means of digits and L\'evy's constant for the exponential growth rate of convergent denominators $q_n$; see \cite{IosifescuKraaikamp2002} for standard statements and proofs. These constants provide additional quantitative rigidity for the ``scale time'' encoded by continued fractions.
+\par
+In particular, the Gauss measure expectation of the logarithm has a closed form,
+\begin{equation}
+\int_0^1 (-\log \xi)\,\dd\mu(\xi)=\frac{\pi^2}{12\log 2},
+\end{equation}
+see Proposition~\ref{prop:gauss_roof_mean} for a short proof.
+so the roof function $r(\xi)=-2\log\xi$ has mean
+\begin{equation}
+\int_0^1 r(\xi)\,\dd\mu(\xi)=\frac{\pi^2}{6\log 2}.
+\end{equation}
+By the ergodic theorem, for $\mu$-almost every $\xi$,
+\begin{equation}
+\frac{1}{n}\sum_{j=0}^{n-1} r(G^j\xi)\to \frac{\pi^2}{6\log 2},
+\end{equation}
+which gives a constant-controlled linear growth law for the accumulated scale time $T_n(\xi)$.
+
+\paragraph{Gauss--Kuzmin convergence (mixing to the Gauss measure).}
+The Gauss map admits an exponential relaxation theorem: for broad classes of absolutely continuous initial distributions, the law of $G^n(\xi)$ converges exponentially fast to the Gauss invariant measure. We treat this as a standard input from metrical continued-fraction theory and do not reprove it here; see \cite{IosifescuKraaikamp2002}.
+Appendix~\ref{app:gauss_kuzmin} records a standard theorem statement.
+
+\subsection{From the scan slope to canonical digits: Gauss iteration and Ostrowski coding}
+\label{sec:alpha_to_digits_ostrowski}
+
+The scan protocol is controlled by the irrational slope $\alpha$ in $x_t=x_0+t\alpha\pmod 1$. The climb acts on the same parameter by Gauss iteration. Write
+\begin{equation}
+\alpha=[0;a_1,a_2,\dots],\qquad a_n\in\NN_{\ge 1},
+\end{equation}
+and define convergents $p_n/q_n$ by the standard continued-fraction recursion. The integer denominators $q_n$ provide canonical ``scale blocks'' for orbit sums.
+
+The Ostrowski representation theorem states that every $N\in\NN$ admits a unique expansion (see, e.g., \cite{IosifescuKraaikamp2002})
+\begin{equation}
+\label{eq:ostrowski_rep}
+N=\sum_{n=0}^{m} b_n q_n,
+\end{equation}
+where the digits $(b_n)$ satisfy local admissibility constraints determined by the continued-fraction digits $(a_n)$. This representation is a local syntax: admissibility can be checked without global carries.
+
+\paragraph{Golden branch.}
+On the golden branch $\alpha=\varphi^{-1}=[0;1,1,1,\dots]$, Ostrowski coding degenerates to the Zeckendorf decomposition: every integer is uniquely written as a sum of nonconsecutive Fibonacci numbers \cite{Zeckendorf1972}. This yields a particularly simple binary syntax (no adjacent $1$'s), and plays the role of a canonical toy sector for quantitative experiments.
+
+
