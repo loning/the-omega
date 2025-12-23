@@ -1,19 +1,76 @@
-\section{Auditable intermediate claims and a verification route}
+\section{Quantitative closure: theorems, bounds, and reproducible fits}
 \label{sec:verification_route}
 
-To keep the constitution auditable, we restrict ourselves to intermediate claims that are mathematically standard and numerically verifiable without any new experimental apparatus. The goal is not to prove a physical ontology, but to demonstrate that the proposed dependency chain closes \emph{internally} on canonical arithmetic objects.
+As a closed constitution, the present framework is only as strong as its \emph{quantitative} consequences. Here we record three classes of standard theorems (with explicit constants where possible) and tie them to reproducible numerical checks.
 
-\begin{enumerate}
-  \item \textbf{Golden rotation window readout $\Rightarrow$ Fibonacci/Sturmian words and discrepancy scaling.}
-  We verify that a golden-branch irrational rotation with an interval window produces a Sturmian word shift-equivalent to the Fibonacci word, and we compute basic uniformity diagnostics and star discrepancy behavior.
+\subsection{From unitary scan to induced measures: equidistribution}
+\label{sec:quant_equidistribution}
 
-  \item \textbf{Discriminant form $\Delta$ $\Rightarrow$ Ramanujan $\tau(n)$ obeys Hecke multiplicativity and prime-power recursion.}
-  We compute $\tau(n)$ from the Euler product definition of $\Delta(q)$ and verify (i) multiplicativity on coprime indices and (ii) the prime-power recursion induced by the Hecke algebra.
+Under O5/O6 the scan orbit is an irrational rotation. Weyl's equidistribution theorem implies that the orbit induces the Lebesgue measure on $\RR/\ZZ$ \cite{Weyl1916,KuipersNiederreiter1974}; in particular, for any interval window $W$,
+\begin{equation}
+\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}_W(x_t)\to |W|.
+\end{equation}
+Thus the limiting ``probabilities'' of window readout are not postulated but induced by the scan dynamics and the chosen finite-resolution window.
 
-  \item \textbf{$j$-invariant $\Rightarrow$ numerical $S$-invariance.}
-  Using $q$-series for Eisenstein series $E_4,E_6$, we evaluate $j(\tau)$ and check $j(\tau)\approx j(-1/\tau)$ at representative points in $\HH$.
-\end{enumerate}
+\paragraph{Digit statistics from the modular-geodesic coding.}
+Section~\ref{sec:modular_geodesic_cf} identifies continued-fraction digits as return-symbols of modular geodesics. The Gauss map admits a canonical invariant measure and a closed-form digit law (Theorem~\ref{thm:gauss_digit_law}), so digit frequencies are quantitatively constrained for typical orbits. Appendix~\ref{app:quant_fits_gauss_digits} records a reproducible numerical fit table for this digit law (Experiment~11), providing an additional audit point for the ``canonical coding'' module beyond discrepancy bounds.
+\par
+Beyond almost-everywhere digit frequencies, the Gauss--Kuzmin theorem provides a finite-time relaxation guarantee: for broad absolutely continuous initial laws, the distribution of $G^n$ converges exponentially fast to the Gauss invariant measure (Theorem~\ref{thm:gauss_kuzmin_convergence}). Appendix~\ref{app:quant_fits_gauss_kuzmin} records a toy convergence-rate fit (Experiment~13).
+\par
+Metrical continued-fraction theory also provides sharp scaling constants: the L\'evy limit for $\frac{1}{n}\log q_n$ and Khinchin's constant for digit geometric means (Section~\ref{sec:ostrowski}), with a reproducible sanity check in Appendix~\ref{app:quant_fits_khinchin_levy} (Experiment~12).
 
-Reference implementations (standard library only) are provided in Appendix~\ref{app:repro_code}.
+\paragraph{Finite-$N$ error control.}
+For any finite set of scan samples $P_N=\{x_0,\ldots,x_{N-1}\}$ and any interval window $W$, the Koksma inequality gives an explicit finite-$N$ bound
+\begin{equation}
+\left|\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}_W(x_t)-|W|\right|\le 2\,D_N^*(P_N),
+\end{equation}
+see Appendix~\ref{app:koksma_inequality}. In particular, on convergent lengths the closed-form expressions in Proposition~\ref{prop:convergent_star_discrepancy} turn induced probability into a constant-controlled estimate.
+More generally, the Ostrowski/Zeckendorf coding of the tick count $N$ controls discrepancy via digit sums (Appendix~\ref{app:ostrowski_discrepancy}), providing a direct quantitative bridge from canonical coding to finite-$N$ readout accuracy.
+For the golden branch $\alpha=\varphi^{-1}$ at Fibonacci lengths $N=F_n$, Appendix~\ref{app:golden_constant} yields explicit constants: for odd $n$, $D_{F_n}^*=1/F_n$ so the window-frequency error is bounded by $2/F_n$; for even $n$,
+\begin{equation}
+D_{F_n}^*=\frac{1}{F_n}+\left(1-\frac{1}{F_n}\right)\frac{1}{\sqrt{5}\,F_n},
+\end{equation}
+so the window-frequency error is bounded by $2\left(1+\frac{1}{\sqrt{5}}\right)\frac{1}{F_n}$ up to the vanishing factor $(1-1/F_n)$, consistent with Table~\ref{tab:golden_fib_discrepancy}.
+
+\subsection{Quantitative discrepancy control and a closed form on convergent lengths}
+\label{sec:quant_discrepancy}
+
+The same irrational-rotation model admits quantitative, non-asymptotic control. The Denjoy--Koksma inequality yields uniform bounds at convergent lengths $q_n$ \cite{Denjoy1932,Koksma1935,KatokHasselblatt1995}. More sharply, Proposition~\ref{prop:convergent_star_discrepancy} gives a closed form for the one-dimensional star discrepancy at lengths $q$ satisfying $|\alpha-p/q|<1/q^2$.
+
+For the golden branch $\alpha=\varphi^{-1}$, where the convergents are Fibonacci ratios, this implies an explicit constant:
+\begin{equation}
+F_n\,D_{F_n}^* \to 1+\frac{1}{\sqrt{5}}
+\qquad (n\ \text{even}),
+\end{equation}
+while $F_n\,D_{F_n}^*=1$ for odd $n$. A compact numerical table is given in Appendix~\ref{app:quant_fits}, and the full reproduction code is in Appendix~\ref{app:repro_code}.
+
+\subsection{Hecke rigidity in coefficients: recursion, multiplicativity, and Deligne bounds}
+\label{sec:quant_hecke_tau}
+
+For a normalized Hecke eigenform, Hecke commutativity and eigen-structure force strong arithmetic constraints on $q$-coefficients (Section~\ref{sec:eigenforms}). For the discriminant cusp form $\Delta$ of weight $12$, the coefficients $\tau(n)$ are Hecke eigenvalues and satisfy multiplicativity on coprime indices and prime-power recursions (standard; see \cite{Serre1973,Apostol1990,DiamondShurman2005}). In addition, Deligne's theorem implies the sharp Ramanujan--Petersson bound
+\begin{equation}
+|\tau(p)|\le 2p^{11/2}\qquad (p\ \text{prime}),
+\end{equation}
+see Appendix~\ref{app:deligne_bound}. We provide a reproducible coefficient computation and verification suite in Appendix~\ref{app:repro_code}, together with a small numerical bound-check table in Appendix~\ref{app:quant_fits}.
+For completeness, Appendix~\ref{app:tau_global_bound} derives a standard global growth bound for all integers $n$ from Deligne's prime bound and the prime-power Hecke recursion:
+\begin{equation}
+|\tau(n)|\le d(n)\,n^{11/2}.
+\end{equation}
+\par
+Finally, Appendix~\ref{app:quant_fits_euler_product} records a direct numerical closure check of the Euler-product identity for $L(\Delta,s)$ in an absolutely convergent regime (Experiment~15), making the ``prime skeleton'' formula auditable at the numerical level.
+\par
+Beyond pointwise bounds, mature distribution results constrain normalized prime coefficients. In the non-CM case, Sato--Tate predicts a semicircle law for the normalized values $a_p/(2p^{(k-1)/2})$; see \cite{Clozel2006SatoTate,Harris2014SatoTate,BarnetLambGeeGeraghty2011} for background and broad theorem statements. For $\Delta$ (weight $12$), Appendix~\ref{app:quant_fits_sato_tate} records a simple moment-fit check for $x_p=\tau(p)/(2p^{11/2})$.
+\par
+As an additional distribution-level sanity check beyond moments, Appendix~\ref{app:quant_fits_sato_tate_ks} records Kolmogorov--Smirnov distances of the empirical CDF of $\{x_p\}$ to the Sato--Tate semicircle CDF (Experiment~14).
+
+\subsection{Modular invariance of \texorpdfstring{$j$}{j} and truncation error control}
+\label{sec:quant_j_invariant}
+
+The $j$-invariant is $\PSL_2(\ZZ)$-invariant by construction; in particular, $j(\tau)=j(-1/\tau)$ \cite{Serre1973,Apostol1990}. For numerical verification, we evaluate $E_4,E_6$ via truncated $q$-series (absolutely convergent for $|q|<1$). Truncation errors admit explicit tail bounds that decay essentially geometrically in the truncation depth $N$ at fixed $\tau$ (Appendix~\ref{app:eisenstein_tail_bounds}). Moreover, Appendix~\ref{app:j_truncation_bounds} gives a certified truncation-only error propagation bound for the induced $j$-invariant error. Since
+\begin{equation}
+j(\tau)=1728\,\frac{E_4(\tau)^3}{E_4(\tau)^3-E_6(\tau)^2}=\frac{E_4(\tau)^3}{\Delta(\tau)},
+\end{equation}
+numerical sensitivity is amplified near the cusp where $|\Delta(\tau)|$ is small; Appendix~\ref{app:quant_fits} records representative truncation behavior and floating-point saturation effects.
+
 
 
