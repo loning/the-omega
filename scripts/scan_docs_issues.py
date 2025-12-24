@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-扫描文档问题：
-1. 未收录的文件（在 docs/ 目录下但不在 SUMMARY.md 中，包括 .md 和 .tex 文件）
+扫描文档问题（仅扫描 docs/books 目录）：
+1. 未收录的文件（在 docs/books/ 目录下但不在 SUMMARY.md 中，包括 .md 和 .tex 文件）
 2. 链接缺失（SUMMARY.md 中链接的文件不存在）
 3. 图片未引用或缺失（文档中引用的图片文件不存在，或者图片文件存在但未被引用）
-4. LaTeX 文件引用缺失（.tex 文件中的 \input 和 \include 引用的文件不存在）
+4. LaTeX 文件引用缺失（.tex 文件中的 \\input 和 \\include 引用的文件不存在）
 """
 import re
 import sys
@@ -20,7 +20,7 @@ class DocScanner:
         self.base_dir = docs_dir.parent
         
     def extract_links_from_summary(self) -> Set[str]:
-        """从 SUMMARY.md 中提取所有文件链接"""
+        """从 SUMMARY.md 中提取所有文件链接（只保留 books/ 目录下的）"""
         if not self.summary_file.exists():
             print(f"✗ SUMMARY.md 不存在: {self.summary_file}")
             return set()
@@ -55,7 +55,17 @@ class DocScanner:
                 # 相对于 docs/ 目录
                 file_path_str = file_path_str[3:]
             
-            file_links.add(file_path_str)
+            # 只保留 books/ 目录下的链接
+            if file_path_str.startswith('books/'):
+                # 去掉 'books/' 前缀，转换为相对于 docs/books 的路径
+                file_path_str = file_path_str[6:]  # 去掉 'books/'
+                file_links.add(file_path_str)
+            elif not file_path_str.startswith('/') and 'books/' in file_path_str:
+                # 处理包含 books/ 的相对路径
+                parts = file_path_str.split('books/')
+                if len(parts) > 1:
+                    file_path_str = parts[1]
+                    file_links.add(file_path_str)
         
         return file_links
     
@@ -167,13 +177,13 @@ class DocScanner:
     def _find_book_root(self, doc_file: Path) -> Path:
         """找到文档文件所属的 book 根目录"""
         current = doc_file.parent
-        # 向上查找，直到找到 book-* 目录或到达 docs/books 目录
+        # 向上查找，直到找到 book-* 目录或到达 docs_dir（现在是 docs/books）
         while current != self.docs_dir and current.parent != self.docs_dir:
             if current.name.startswith('book-'):
                 return current
             current = current.parent
-        # 如果没有找到 book-* 目录，返回 docs/books 目录
-        return self.docs_dir / 'books'
+        # 如果没有找到 book-* 目录，返回 docs_dir（docs/books）
+        return self.docs_dir
     
     def _resolve_image_path(self, doc_file: Path, img_path: str) -> str:
         """解析图片路径（相对于文档文件）"""
@@ -188,6 +198,14 @@ class DocScanner:
         if not img_path_clean.startswith('/'):
             # 确保 doc_file 是绝对路径
             if not doc_file.is_absolute():
+                # doc_file 应该是相对于 docs_dir 的路径
+                # 如果包含 docs/books/ 前缀，需要去掉
+                doc_file_str = str(doc_file)
+                if doc_file_str.startswith('docs/books/'):
+                    # 去掉 docs/books/ 前缀
+                    doc_file_str = doc_file_str[11:]  # 去掉 'docs/books/'
+                    doc_file = Path(doc_file_str)
+                # 相对于 docs_dir 解析
                 doc_file = (self.docs_dir / doc_file).resolve()
             doc_dir = doc_file.parent
             
@@ -240,7 +258,14 @@ class DocScanner:
             try:
                 # 确保使用绝对路径进行比较
                 docs_dir_abs = self.docs_dir.resolve() if not self.docs_dir.is_absolute() else self.docs_dir
-                img_abs_path_resolved = img_abs_path.resolve() if img_abs_path.exists() else img_abs_path
+                # 确保 img_abs_path 是绝对路径
+                if not img_abs_path.is_absolute():
+                    img_abs_path = img_abs_path.resolve()
+                # 如果路径存在，使用 resolve() 获取绝对路径；否则直接使用
+                if img_abs_path.exists():
+                    img_abs_path_resolved = img_abs_path.resolve()
+                else:
+                    img_abs_path_resolved = img_abs_path
                 img_rel_path = img_abs_path_resolved.relative_to(docs_dir_abs)
                 img_rel_path = str(img_rel_path).replace('\\', '/')
                 
@@ -282,7 +307,7 @@ class DocScanner:
             return img_path_clean.lstrip('/')
     
     def extract_tex_file_references(self) -> Dict[str, Set[str]]:
-        """从所有 LaTeX 文件中提取文件引用（\input 和 \include）"""
+        """从所有 LaTeX 文件中提取文件引用（\\input 和 \\include）"""
         file_refs = defaultdict(set)  # file -> set of referenced file paths
         
         # LaTeX 文件引用模式：\input{path} 或 \include{path}
@@ -659,7 +684,7 @@ class DocScanner:
 def main():
     import argparse
     
-    parser = argparse.ArgumentParser(description='扫描文档问题')
+    parser = argparse.ArgumentParser(description='扫描文档问题（仅扫描 docs/books 目录）')
     parser.add_argument('-o', '--output', type=str, help='将结果保存到文件')
     parser.add_argument('-v', '--verbose', action='store_true', help='输出详细信息（显示所有结果，不限制数量）')
     args = parser.parse_args()
@@ -668,11 +693,11 @@ def main():
     script_dir = Path(__file__).parent
     project_root = script_dir.parent
     
-    docs_dir = project_root / "docs"
-    summary_file = docs_dir / "SUMMARY.md"
+    docs_dir = project_root / "docs" / "books"
+    summary_file = project_root / "docs" / "SUMMARY.md"
     
     if not docs_dir.exists():
-        print(f"✗ docs 目录不存在: {docs_dir}")
+        print(f"✗ docs/books 目录不存在: {docs_dir}")
         sys.exit(1)
     
     scanner = DocScanner(docs_dir, summary_file)
