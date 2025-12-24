@@ -1,0 +1,119 @@
+\section{Routing overhead and 1D compilation: quantitative bounds}
+\label{app:compilation_overhead}
+
+This appendix makes the compilation notion used in Proposition~\ref{prop:1d_compilation} quantitatively explicit.
+The goal is not to re-prove all compilation technology but to (i) formalize the overhead functional $\kappa$ and (ii) record standard upper/lower bounds that tie $\kappa$ to graph geometry.
+
+\subsection{A canonical definition of routing overhead}
+Let $G_R=(V_R,E_R)$ be the interaction graph of a finite region $R$ for a single PQCA step, with $n:=|V_R|$.
+Assume the PQCA step on $R$ can be expressed as a constant-depth circuit of two-site gates along edges of $G_R$ (this is the standard ``local finite-depth'' meaning of PQCA).
+
+Let $L_n$ be the path graph on $n$ vertices (a 1D nearest-neighbor line).
+A \emph{layout} is an injection $f:V_R\to\{1,\dots,n\}$ specifying where each site is placed on the line.
+Given $f$, let $\mathrm{depth}_{\mathrm{1D}}(U_R;f)$ be the minimal depth of a 1D nearest-neighbor circuit on $L_n$ that implements $U_R$ up to the fixed encoding/decoding isometries of Proposition~\ref{prop:1d_compilation}.
+
+\begin{definition}[Routing overhead]
+\label{def:routing_overhead}
+Define the routing overhead of the region update as
+\begin{equation}
+\kappa(R):=\min_f\ \mathrm{depth}_{\mathrm{1D}}(U_R;f).
+\end{equation}
+When comparing to an ``ideal'' connectivity where the same circuit has constant depth $d_0$, one may also consider the dimensionless ratio $\kappa(R)/d_0$.
+\end{definition}
+
+This definition is purely operational: $\kappa$ is a resource functional determined by locality constraints and implementability.
+
+\subsection{Bandwidth as a universal lower bound}
+For a layout $f$, define the bandwidth
+\begin{equation}
+\mathrm{bw}(G_R,f):=\max_{\{u,v\}\in E_R} |f(u)-f(v)|.
+\end{equation}
+Intuitively, an edge spanning distance $d$ requires at least $d-1$ nearest-neighbor swaps to bring its endpoints adjacent at some time.
+This yields a robust lower bound.
+
+\begin{proposition}[Bandwidth lower bound]
+\label{prop:bandwidth_lower_bound}
+For any layout $f$,
+\begin{equation}
+\mathrm{depth}_{\mathrm{1D}}(U_R;f) \ge c\,\mathrm{bw}(G_R,f)
+\end{equation}
+for a constant $c>0$ that depends only on the allowed local gate radius and on whether swaps and interaction gates can be parallelized in the same layer.
+Consequently,
+\begin{equation}
+\kappa(R)\ \ge\ c\,\mathrm{bw}(G_R),\qquad \mathrm{bw}(G_R):=\min_f \mathrm{bw}(G_R,f).
+\end{equation}
+\end{proposition}
+
+Rigorous formulations of bandwidth-based lower bounds are standard in VLSI layout and in nearest-neighbor circuit compilation.
+
+\begin{remark}[Explicit constants and interaction range]
+If the 1D target architecture allows only nearest-neighbor swaps and two-site gates, and one counts depth in layers of disjoint nearest-neighbor operations, then a qubit can move by at most one site per layer.
+Hence two qubits separated by distance $d$ can reduce their separation by at most $2$ per layer, so making them adjacent requires at least $\lceil(d-1)/2\rceil$ layers.
+In this standard accounting one may take $c\ge 1/2$ up to lower-order additive constants.
+\end{remark}
+
+\begin{remark}[Dependence on geometric interaction radius]
+If a single PQCA step includes two-site interactions within geometric graph distance at most $r$ (a bounded interaction range), then $G_R$ is the corresponding $r$-neighborhood interaction graph.
+For fixed $r=O(1)$, the boundary/bandwidth scaling exponents in Theorem~\ref{thm:boundary_scaling_overhead} are unchanged; the dependence on $r$ enters only through constants in the $\Omega(\cdot)$ and $O(\cdot)$ bounds.
+\end{remark}
+
+\subsection{A constructive linear upper bound via swap networks}
+A matching universal upper bound follows from the existence of depth-$O(n)$ swap networks that realize any permutation of $n$ items on a line.
+A classical example is odd--even transposition sorting (brick sort), which implements any permutation in depth $n$ using nearest-neighbor swaps \cite{Knuth1998}.
+Quantum-circuit formulations of this ``compute permutations with adjacent swaps'' primitive for linear-nearest-neighbor architectures are discussed, for example, by Kutin--Moulton--Smithline \cite{Kutin2007}.
+
+\begin{proposition}[Universal $O(n)$ 1D compilation bound]
+\label{prop:swap_upper_bound}
+Let $U_R$ be a constant-depth circuit of bounded-degree two-site gates on $n$ sites.
+Then there exists a 1D nearest-neighbor implementation with
+\begin{equation}
+\mathrm{depth}_{\mathrm{1D}}(U_R) = O(n).
+\end{equation}
+The constant in $O(n)$ depends only on the maximal degree and on the number of circuit layers in the PQCA step.
+\end{proposition}
+
+\begin{proof}
+Route, layer by layer, the disjoint pairs of qubits that need to interact.
+Each layer induces a partial matching on $V_R$.
+Use a swap network to permute the line so that each matched pair becomes adjacent; apply all gates in parallel; then undo (or continue with a new permutation for the next layer).
+Odd--even transposition provides a depth-$n$ permutation primitive.
+\end{proof}
+
+This shows that Proposition~\ref{prop:1d_compilation} is not merely existential: it has a concrete depth scaling.
+
+\subsection{Grid regions: overhead scales like boundary area}
+For a 2D $L\times L$ grid (the Cartesian product $P_L\times P_L$) with nearest-neighbor interactions, the bandwidth is exactly
+\begin{equation}
+\mathrm{bw}(P_L\times P_L)=L,
+\end{equation}
+as shown by Chv{\'a}talov{\'a} \cite{Chvatalova1975}.
+For higher-dimensional grids, Billera--Blanco give an explicit formula for the bandwidth of $P_L^d$ (the $d$-fold Cartesian product of a length-$L$ path) and, in particular, show that for fixed $d$ one has the asymptotic scaling
+\begin{equation}
+\mathrm{bw}(P_L^d)=\Theta(L^{d-1}).
+\end{equation}
+See \cite{BilleraBlanco2013} and references therein for related product-graph bandwidth results (see also \cite{Harper1966} for classical optimal-numbering/isoperimetric perspectives).
+
+Since the boundary size also scales as $|\partial R|=\Theta(L^{d-1})$, one obtains a geometric law:
+
+\begin{theorem}[Boundary-scaling compilation overhead]
+\label{thm:boundary_scaling_overhead}
+Let $R$ be a $d$-dimensional cubic grid region of side length $L$ with bounded-range local interactions.
+Then the minimal 1D nearest-neighbor compilation depth for one local update obeys
+\begin{equation}
+\kappa(R)=\Omega(L^{d-1})=\Omega(|\partial R|),
+\end{equation}
+and there exists a compilation with depth $O(n)=O(L^d)$.
+In particular, for $d=2$ one has $\kappa(R)=\Omega(L)=\Omega(\sqrt{n})$.
+\end{theorem}
+
+\begin{proof}
+For a local nearest-neighbor update on a $d$-dimensional $L^d$ grid region, the interaction graph contains (up to constant-radius thickening) the grid adjacency $P_L^d$.
+Therefore its bandwidth is at least that of $P_L^d$.
+By Proposition~\ref{prop:bandwidth_lower_bound}, any 1D nearest-neighbor implementation depth is lower-bounded (up to a locality-dependent constant) by bandwidth, hence $\kappa(R)=\Omega(\mathrm{bw}(P_L^d))$.
+The scaling $\mathrm{bw}(P_L^d)=\Theta(L^{d-1})$ for fixed $d$ follows from \cite{BilleraBlanco2013} (and for $d=2$ one has the exact value $L$ by \cite{Chvatalova1975}).
+Since $|\partial R|=\Theta(L^{d-1})$, this yields $\kappa(R)=\Omega(|\partial R|)$.
+The upper bound $O(n)$ follows from Proposition~\ref{prop:swap_upper_bound}.
+\end{proof}
+
+This theorem gives a quantitatively rigid bridge from geometry to computation: encoding higher-dimensional locality into 1D forces an overhead controlled by a boundary-like measure.
+Under the lapse definition $N=\kappa_0/\kappa$, this becomes a precise ``time slows down where compilation gets expensive'' statement.

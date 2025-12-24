@@ -1,0 +1,127 @@
+\section{Minimal inputs of the HPA--\texorpdfstring{$\Omega$}{Omega} framework}
+\label{sec:minimal_inputs}
+
+This section records the structural modules that will be repeatedly invoked. When a module is used later in the quantitative chain, we either prove it explicitly or cite a standard reference.
+
+\subsection{Multiplicative ontology and polar embedding}
+HPA takes the multiplicative monoid of positive integers $M=(\NNpos,\cdot)$ as a primitive structure and defines a polar embedding into $\CC^*$ of the form
+\begin{equation}
+\mathcal{Z}(n)=\rho(n)\,\e^{\iu\theta_\times(n)}\in \CC^*,
+\end{equation}
+where $\rho(n)>0$ and $\theta_\times$ is additive under multiplication (mod $2\pi$), so that $\mathcal{Z}$ is a multiplicative homomorphism.
+
+\subsection{A no-go principle: addition and multiplication cannot both be preserved}
+HPA uses a rigidity fact: except for the trivial real embedding, there is no embedding of $\NNpos$ into $\CC^*$ that preserves both multiplication and linear addition. We use the following formulation.
+
+\begin{lemma}[Rigidity of additive--multiplicative embeddings on $\NNpos$]
+\label{lem:no_go_add_mult}
+Let $f:\NNpos\to\CC^*$ satisfy
+\begin{equation}
+f(m+n)=f(m)+f(n),\qquad f(mn)=f(m)f(n),
+\end{equation}
+for all $m,n\in\NNpos$. Then $f(n)=n$ for all $n\in\NNpos$.
+\end{lemma}
+\begin{proof}
+By additivity, $f(n)=nf(1)$ for all $n$. By multiplicativity, $f(1)=f(1\cdot 1)=f(1)^2$. Since $f(1)\in\CC^*$, this implies $f(1)=1$, hence $f(n)=n$.
+\end{proof}
+
+Therefore any nontrivial polar embedding with a genuine phase component cannot be additive, and ``addition'' can only enter through a readout projection/encoding. The resulting mismatch defines a structural gap that enters the observable layer.
+
+\subsection{Logarithmic readout: additive costs from multiplicative weights}
+The structural gap between multiplicative ontology and additive bookkeeping is resolved at the readout interface by a projection. In this paper, every additive ``impedance'' variable is a \emph{log-cost}: a logarithmic image of an underlying multiplicative weight.
+
+\begin{definition}[Readout weight and log-cost]\label{def:log_cost}
+Let $w\in(0,1]$ be a dimensionless readout weight (e.g., a success weight or likelihood of satisfying a constraint). Define the associated readout cost by
+\begin{equation}
+C:=-\log w.
+\end{equation}
+\end{definition}
+
+\begin{proposition}[Multiplicative-to-additive conversion under log readout]\label{prop:log_readout_additivity}
+If a layered readout protocol imposes serial constraints with weights $\{w_j\}_{j=1}^J$, so that the total weight is the product
+\begin{equation}
+w_{\mathrm{tot}}=\prod_{j=1}^J w_j,
+\end{equation}
+then the total cost in Definition~\ref{def:log_cost} is the sum of channel costs:
+\begin{equation}
+C_{\mathrm{tot}}=-\log w_{\mathrm{tot}}=\sum_{j=1}^J \big(-\log w_j\big)=\sum_{j=1}^J C_j.
+\end{equation}
+\end{proposition}
+\begin{proof}
+This follows from $\log(\prod_j w_j)=\sum_j \log w_j$.
+\end{proof}
+
+\begin{proposition}[Uniqueness of logarithmic costs under multiplicative composition]\label{prop:log_cost_uniqueness}
+Let $C:(0,1]\to[0,\infty)$ satisfy $C(1)=0$ and the homomorphism rule
+\begin{equation}
+C(xy)=C(x)+C(y)
+\end{equation}
+for all $x,y\in(0,1]$. If $C$ is continuous at $1$ (equivalently, locally bounded on $(0,1]$), then there exists $k\ge 0$ such that
+\begin{equation}
+C(w)=-k\log w.
+\end{equation}
+In particular, up to a choice of cost unit (the constant $k$), the logarithm is the unique additive readout of multiplicative weights.
+\end{proposition}
+\begin{proof}
+Define $f:[0,\infty)\to[0,\infty)$ by $f(t):=C(\e^{-t})$. Then $f(t+s)=f(t)+f(s)$ and $f$ is continuous at $0$ by continuity of $C$ at $1$. The continuous Cauchy equation implies $f(t)=kt$ for some constant $k\ge 0$ \cite{Aczel1966}. Therefore $C(\e^{-t})=kt$ and $C(w)=-k\log w$.
+\end{proof}
+
+\begin{remark}[Log base and cost units]\label{rem:log_base_units}
+Changing the logarithm base rescales $C$ by a constant. Throughout we use the natural logarithm so that weights are written as $w=\exp(-C)$.
+\end{remark}
+
+\subsection{Primitive projective phase spaces and closure of the candidate set}
+The worked examples in this paper use phase spaces that are fixed by projective quantum kinematics at minimal complexity. For a two-level interface, the ray space is $\CC P^1\cong S^2$ (Bloch sphere) and the associated principal $U(1)$ bundle of normalized state vectors is the Hopf fibration with total space $S^3\cong SU(2)$ \cite{Nakahara2003,BengtssonZyczkowski2017}. Projectivization by $\{\pm 1\}$ gives the standard double cover $SU(2)\to SO(3)$ and $U(1)\to \RR P^1$ \cite{Hall2015}.
+
+\begin{axiom}[Primitive projective phase-space closure]\label{ax:primitive_phase_spaces}
+In the minimal volume-quantized models of this paper, every internal phase space is built as a finite Cartesian product of primitives from the set
+\begin{equation}
+\mathfrak{P}:=\{U(1),SU(2),SO(3),\RR P^1\},
+\end{equation}
+and finite disjoint unions thereof. All primitives are equipped with the standard unit-radius bi-invariant (or quotient) metrics, so the associated canonical volumes are fixed.
+\end{axiom}
+
+\begin{proposition}[Minimal projective closure of the primitive set]\label{prop:primitive_set_minimality}
+Assume a primitive candidate set contains $U(1)$ and $SU(2)$ and is closed under the $\ZZ_2$ projectivization $M\mapsto M/\{\pm 1\}$. Then it contains
+\[
+SO(3)\cong SU(2)/\{\pm 1\},\qquad
+\RR P^1\cong U(1)/\{\pm 1\}.
+\]
+In particular, $\{U(1),SU(2),SO(3),\RR P^1\}$ is the minimal such closure.
+\end{proposition}
+\begin{proof}
+Closure under $M\mapsto M/\{\pm 1\}$ forces inclusion of the displayed quotients once $U(1)$ and $SU(2)$ are included, and minimality is immediate.
+\end{proof}
+
+Appendix~\ref{app:group_volumes} records the resulting canonical volumes and the $\ZZ_2$ quotient relations. This closure axiom is the source of the finite candidate sets used in the rigidity enumerations.
+
+\subsection{The scan operator \texorpdfstring{$\Theta$}{Theta}: time as iteration count}
+To decouple ontology (phase/multiplicative structure) from readout (additive projection), HPA introduces a genuine unitary scan operator $\Theta$ and defines time as the iteration count of $\Theta$. The scan shift and the phase-multiplication operator form a Weyl pair \cite{Hall2013,Folland1989}, producing a noncommutative structure and uncertainty-type tradeoffs.
+
+Concretely, in standard quantum kinematics one models a Weyl pair by unitary operators $U,V$ satisfying
+\begin{equation}
+UV=\e^{\iu\omega}VU,
+\end{equation}
+for some $\omega\in\RR$. We encode the HPA scan--phase interface in the same form.
+
+\begin{axiom}[Scan--phase Weyl relation]\label{ax:scan_phase_weyl}
+There exist unitary operators $\Theta$ (scan shift) and $\Phi$ (phase multiplication) acting on the readout Hilbert space such that
+\begin{equation}
+\Theta\Phi=\e^{\iu\omega}\Phi\Theta
+\end{equation}
+for some $\omega\in\RR$ fixed by the scan slope/branch.
+\end{axiom}
+
+\subsection{Golden branch and minimal binary readout}
+In the golden branch, the scan slope is selected such that the induced binary mechanical word becomes the Fibonacci word; the Ostrowski numeration degenerates to the Zeckendorf representation \cite{MorseHedlund1940,Lothaire2002,Zeckendorf1972}.
+
+The golden slope is selected by the extremal Diophantine property of $\varphi$: its continued fraction has the minimal partial quotients, which makes rational approximations maximally difficult \cite{Khinchin1964}. For Kronecker sequences $\{n\alpha\}$, discrepancy and gap statistics are controlled by continued-fraction data \cite{KuipersNiederreiter1974}. In particular, the three-distance theorem implies that, for any irrational $\alpha$, the gaps between successive elements of $\{n\alpha\}$ take at most three values; the detailed ``gap/step'' structure is classical \cite{Slater1967}. These external results justify treating the golden branch as a canonical low-complexity choice for binary readout localization.
+\begin{theorem}[Hurwitz bound and the golden extremizer]\label{thm:hurwitz_golden}
+For any irrational $\alpha$, there exist infinitely many rationals $p/q$ such that
+\begin{equation}
+\left|\alpha-\frac{p}{q}\right|<\frac{1}{\sqrt{5}\,q^2}.
+\end{equation}
+The constant $1/\sqrt{5}$ is optimal in the sense that it cannot be replaced by a larger uniform constant over all irrational $\alpha$, and the extremal case is attained (in the limit of best approximants) by $\alpha=\varphi$ and its $\mathrm{SL}(2,\ZZ)$ transforms \cite{Khinchin1964,KuipersNiederreiter1974}.
+\end{theorem}
+
+Therefore the golden branch is a minimax choice for suppressing rational near-resonances in a finite-depth readout; this is the precise mathematical content of the phrase ``most irrational''.

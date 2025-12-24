@@ -1,0 +1,126 @@
+\section{Variational Derivation of Informational Gravity}
+\label{app:action_proof}
+
+We rigorously derive the field equations from the Principle of Least Action.
+
+\subsection{Assumptions and Definitions}
+\begin{enumerate}
+    \item \textbf{Metric Signature}: We use the "mostly plus" convention $(-+++)$.
+    \item \textbf{Connection}: The connection $\Gamma^\lambda_{\mu\nu}$ is the Levi-Civita connection (torsion-free).
+    \item \textbf{Scalar Identification}: Let $\varrho$ denote a coarse-grained information/probability density and define the Fisher-amplitude scalar $\chi\equiv \sqrt{\varrho}$ (equivalently $\varphi\equiv\ln\chi$).
+    \item \textbf{Matter Coupling}: Standard Model fields $\psi_m$ couple to the metric via the standard covariant matter Lagrangian density $\mathcal{L}_m$ \cite{PeskinSchroeder1995,Carroll2004}.
+\end{enumerate}
+
+\paragraph{Compilation-cost identification.}
+Under the cost--density identification of Proposition~\ref{prop:cost_density_powerlaw},
+\begin{equation}
+    \varrho(x)=\varrho_0\left(\frac{\kappa(x)}{\kappa_0}\right)^p,
+\end{equation}
+we have
+\begin{equation}
+    \chi=\sqrt{\varrho}=\sqrt{\varrho_0}\left(\frac{\kappa}{\kappa_0}\right)^{p/2},
+\end{equation}
+so the Fisher-amplitude kinetic term becomes a routing-gradient term proportional to $\varrho\,(\nabla\ln(\kappa/\kappa_0))^2$.
+
+\subsection{The Omega Action}
+The total action is the sum of the Einstein--Hilbert term, the Fisher-amplitude term (proportional to Fisher information of $\varrho$), and the Matter term:
+\begin{equation}
+    S = \int d^4x \sqrt{-g} \left[ \frac{R}{16\pi G} - \lambda_F\,\chi^2\, g^{\mu\nu} \nabla_\mu \varphi \nabla_\nu \varphi - V(\varrho) + \mathcal{L}_m(g_{\mu\nu}, \psi_m) \right].
+\end{equation}
+\noindent
+In the minimal sector used in this manuscript we equivalently write the Fisher term in terms of $\chi$:
+\begin{equation}
+    S = \int d^4x \sqrt{-g} \left[ \frac{R}{16\pi G} - \lambda_F g^{\mu\nu} \nabla_\mu \chi \nabla_\nu \chi - V(\chi^2) + \mathcal{L}_m(g_{\mu\nu}, \psi_m) \right],
+\label{eq:omega_action_appendix_chi}
+\end{equation}
+which is equivalent to the $\varphi$-form by the identity $\nabla_\mu\chi=\chi\,\nabla_\mu\varphi$ (and is consistent with Eq.~(\ref{eq:omega_action_chi}) in Part~V).
+
+\subsection{Variation with respect to the Metric}
+We vary $S$ with respect to $g^{\mu\nu}$.
+\begin{enumerate}
+    \item \textbf{Gravity}: $\delta S_{EH} = \int \sqrt{-g} \frac{1}{16\pi G} (G_{\mu\nu}) \delta g^{\mu\nu}$.
+    \item \textbf{Information}: Using $\delta \sqrt{-g} = -\frac{1}{2}\sqrt{-g} g_{\mu\nu} \delta g^{\mu\nu}$, the variation of the Fisher-amplitude term is:
+    \begin{equation}
+        \delta S_{info} = -\lambda_F \int \sqrt{-g} \left[ \nabla_\mu \chi \nabla_\nu \chi \,\delta g^{\mu\nu} - \frac{1}{2} g_{\rho\sigma} (\nabla \chi)^2 \delta g^{\rho\sigma} \right].
+    \end{equation}
+    This yields the \textbf{Information Stress-Energy Tensor}:
+    \begin{equation}
+        T_{\mu\nu}^{info} \equiv -\frac{2}{\sqrt{-g}} \frac{\delta (S_{info}+S_V)}{\delta g^{\mu\nu}}
+        = 2\lambda_F \left( \nabla_\mu \chi \nabla_\nu \chi - \frac{1}{2} g_{\mu\nu} (\nabla \chi)^2 \right) - g_{\mu\nu} V(\chi^2),
+    \end{equation}
+    where $S_V = -\int d^4x \sqrt{-g}\, V(\varrho)$.
+    \item \textbf{Matter}: By definition, $T_{\mu\nu}^{(m)} \equiv -\frac{2}{\sqrt{-g}} \frac{\delta S_m}{\delta g^{\mu\nu}}$.
+\end{enumerate}
+Collecting terms, we obtain the field equations:
+\begin{equation}
+    G_{\mu\nu} = 8\pi G \left( T_{\mu\nu}^{(m)} + T_{\mu\nu}^{info} \right).
+\end{equation}
+
+\subsection{Variation with respect to the Scalar Field}
+Varying with respect to $\chi$ yields the equation of motion for the information field.
+\begin{equation}
+    \delta S_{info} = -2\lambda_F \int d^4x \sqrt{-g} \nabla^\mu \chi \nabla_\mu (\delta \chi)
+    = 2\lambda_F \int d^4x \sqrt{-g} (\Box \chi)\, \delta \chi.
+\end{equation}
+Including the potential term, $\delta S_V = -\int d^4x \sqrt{-g}\, \frac{dV}{d\chi}\, \delta\chi$, the Euler--Lagrange equation is:
+\begin{equation}
+    2\lambda_F \Box \chi - \frac{dV}{d\chi} = 0,
+\end{equation}
+with $\frac{dV}{d\chi} = 2\chi\,\frac{dV}{d\varrho}$ when $V=V(\varrho)$ and $\varrho=\chi^2$.
+
+\subsection{Conservation Laws}
+Diffeomorphism invariance ensures $\nabla^\mu G_{\mu\nu} = 0$. Thus, the total stress tensor must be conserved:
+\begin{equation}
+    \nabla^\mu (T_{\mu\nu}^{(m)} + T_{\mu\nu}^{info}) = 0.
+\end{equation}
+Checking the divergence of the information tensor explicitly:
+\begin{equation}
+    \nabla^\mu T_{\mu\nu}^{info} = 2\lambda_F [ (\Box \chi) \nabla_\nu \chi + \nabla^\mu \chi \nabla_\mu \nabla_\nu \chi - \frac{1}{2} \nabla_\nu (\nabla_\alpha \chi \nabla^\alpha \chi) ] - \nabla_\nu V(\chi^2).
+\end{equation}
+Using $\nabla_\nu (\nabla \chi)^2 = 2 \nabla^\mu \chi \nabla_\nu \nabla_\mu \chi$, the last two terms cancel. We are left with:
+\begin{equation}
+    \nabla^\mu T_{\mu\nu}^{info} = \left( 2\lambda_F \Box \chi - \frac{dV}{d\chi} \right) \nabla_\nu \chi.
+\end{equation}
+Thus, provided the scalar field satisfies its equation of motion, the information stress tensor is separately conserved.
+
+\subsection{The Information Current}
+We define a natural covariant ``information current'' by
+\begin{equation}
+    J^\mu \equiv \chi\, \nabla^\mu \chi = \frac{1}{2}\nabla^\mu \varrho.
+\end{equation}
+In the minimal case $V\equiv 0$, the scalar equation reduces to $\Box \chi = 0$.
+
+\subsection{FLRW reduction with lapse (derivation of the background equations)}
+\label{app:frw_lapse_derivation}
+In Part~V we use an FLRW metric with homogeneous lapse $N(t)$,
+\begin{equation}
+    ds^2=-N^2(t)\,dt^2+a^2(t)\left[\frac{dr^2}{1-kr^2}+r^2 d\Omega^2\right],
+\end{equation}
+and define proper time by $d\tau=N(t)\,dt$. The proper-time Hubble parameter is
+\begin{equation}
+    H_\tau\equiv \frac{1}{a}\frac{da}{d\tau}=\frac{\dot a}{a\,N}.
+\end{equation}
+For a perfect-fluid stress tensor $T^{\mu}{}_{\nu}=\mathrm{diag}(-\rho,p,p,p)$ and cosmological term $\Lambda(t)$, the Einstein equations yield the standard Friedmann system in $\tau$ \cite{Dodelson2003,Carroll2004}:
+\begin{align}
+    H_\tau^2 &= \frac{8\pi G}{3}\rho + \frac{\Lambda(t)}{3} - \frac{k}{a^2},\\
+    \frac{1}{a}\frac{d^2a}{d\tau^2} &= -\frac{4\pi G}{3}\left(\rho+3p\right) + \frac{\Lambda(t)}{3}.
+\end{align}
+Rewriting the second equation in the $t$-coordinate uses
+\begin{equation}
+    \frac{d}{d\tau}=\frac{1}{N}\frac{d}{dt},\qquad
+    \frac{d^2a}{d\tau^2}=\frac{1}{N^2}\ddot a-\frac{\dot N}{N^3}\dot a,
+\end{equation}
+so that
+\begin{equation}
+    \frac{\ddot a}{a}-\frac{\dot N}{N}\frac{\dot a}{a}
+    =
+    -\frac{4\pi G}{3}N^2(\rho+3p)+\frac{\Lambda(t)}{3}N^2,
+\end{equation}
+equivalently the form quoted in Part~V.
+
+Finally, covariant conservation $\nabla_\mu T^{\mu\nu}=0$ implies in proper time
+\begin{equation}
+    \frac{d\rho}{d\tau}+3H_\tau(\rho+p)=0,
+\end{equation}
+which is equivalent to $\dot\rho+3(\dot a/a)(\rho+p)=0$ in the $t$-coordinate because both terms acquire the same factor $1/N$.
+

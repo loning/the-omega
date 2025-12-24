@@ -1,0 +1,205 @@
+\part{Specific Models and Verification}
+\label{part:VI}
+
+\section{The Golden Spectrum Model}
+\label{chap:golden_spectrum}
+
+\subsection{The Golden Unitary Operator}
+The previous sections established the general framework. Here we propose a specific Ansatz for the local update rule $\hat{U}_x$ acting on the internal fiber $\mathbb{O}_x \cong \mathbb{C}^8$.
+Finite-dimensional unitary evolution is quasi-periodic: exact periodicity requires special rational relations among eigenphases, while arbitrarily close returns (in the Poincar\'e $\varepsilon$-recurrence sense) are generic. The Golden-spectrum ansatz below is therefore used to avoid short exact periods and to motivate very long near-recurrence time scales, rather than to eliminate recurrences altogether. We define the \textbf{Golden Unitary} $\hat{U}_{\phi}$ acting on the basis states $|n\rangle$ of the internal space ($n=0 \dots 7$):
+\par
+This choice is also motivated by the broader role of quasiperiodic order and irrational rotations in physics: canonical quasiperiodic Hamiltonians can exhibit fractal (Cantor-like) spectra and singular-continuous spectral measures, with Fibonacci-type models and related constructions serving as standard examples \cite{Hofstadter1976,KohmotoKadanoffTang1983,Suto1987}. In the same spirit, quasicrystals provide a class of ordered aperiodic structures that naturally organize such quasiperiodic data \cite{LevineSteinhardt1984,Shechtman1984}.
+\begin{equation}
+    \hat{U}_{\phi} = \exp\left( -i 2\pi  \hat{H}_{\phi} \right), \quad \hat{H}_{\phi} |n\rangle = \left( \phi^{-n} \mod 1 \right) |n\rangle.
+\end{equation}
+This operator generates a multi-frequency torus rotation in the relative phases of the energy components. In the eigenbasis, the projective orbit is a translation on a torus determined by the eigenphase differences (Appendix~\ref{app:torus_rotation}, Proposition~\ref{prop:projective_torus}). If at least one relevant eigenphase difference is irrational, the orbit has no exact period (Appendix~\ref{app:torus_rotation}, Proposition~\ref{prop:aperiodic_criterion}). Moreover, the orbit is equidistributed on its orbit closure (a subtorus determined by the integer relations among the eigenphases) with respect to Haar measure (Appendix~\ref{app:torus_rotation}, Theorem~\ref{thm:equidistribution_closure}), while still admitting arbitrarily close returns with quantitative recurrence bounds (Appendix~\ref{app:torus_rotation}, Proposition~\ref{prop:dirichlet_recurrence}). Thus, for any continuous observable on the orbit closure (including readout observables induced by Axiom~O5), long-time orbit averages are canonically defined and coincide with Haar/orbit traces (Convention~R1), even though the dynamics is not mixing and need not exhibit decay of correlations. In the golden case, bad Diophantine approximability organizes the \emph{best} near-returns on Fibonacci time scales (Appendix~\ref{app:three_gap}).
+
+\subsubsection{Why the golden branch is canonical}
+The golden branch is not treated as a numerological input. It is selected by two extremal requirements that arise naturally in a finite-information scan--projection setting (Part~II).\par
+\paragraph{Anti-resonance (Diophantine extremality).}
+In any irrational-rotation readout, the strongest finite-time deviations from uniform sampling and the closest near-returns are organized by good rational approximants of the slope. Choosing a slope that is maximally badly approximable suppresses small-denominator near-resonances. In the golden case, continued-fraction optimality controls best approximants by Fibonacci denominators and hence organizes the best near-returns on Fibonacci time scales (Appendix~\ref{app:three_gap}).\par
+\paragraph{Binary-minimal canonical coding.}
+Requiring the Ostrowski tick-coordinate admissibility constraints to degenerate to a binary Zeckendorf grammar singles out the golden slope $\alpha_{\mathrm{rot}}=\phi^{-1}$; see Appendix~\ref{app:ostrowski}, Proposition~\ref{prop:golden_zeckendorf_equivalence} and \cite{Ma2025HPA}.\par
+
+\paragraph{Readout stability (Ostrowski/Denjoy--Koksma control).}
+Prefix-count discrepancy and window-perturbation flip counts admit explicit uniform bounds controlled by the Ostrowski digits of $N$; see Appendix~\ref{app:orbit_calculus}, Theorem~\ref{thm:ostrowski_dk_fop} and Corollary~\ref{cor:window_perturbation_stability} (cf.\ \cite{Ma2025HPA}).\par
+
+\subsubsection{From golden spectrum to Sturmian/Zeckendorf readout}
+The Golden Unitary provides a natural mechanism for producing an intrinsic phase orbit with arithmetic structure. Concretely, any fixed one-dimensional phase readout of the projective evolution (as in the intrinsic phase-orbit coding defined in Part~II) yields a circle variable sampled at integer ticks. In the generic irrational-rotation regime, a binary partition of this circle readout produces a Sturmian symbol stream \cite{MorseHedlund1940,Lothaire2002}; for the golden-slope choice the resulting Sturmian word is the Fibonacci word. Moreover, the integer tick index is canonically addressable by Ostrowski numeration, which specializes in the golden case to the Zeckendorf decomposition (no consecutive Fibonacci summands) \cite{Zeckendorf1972,AlloucheShallit2003}. This makes the Golden-spectrum ansatz not only a source of long quasi-periodic recurrences but also a natural generator of a Fibonacci/Zeckendorf clock that can drive quasiperiodic QCA textures.
+
+\subsection{Circuit Decomposition and Locality}
+The global evolution $\hat{U}_{\text{global}} = \bigotimes_x \hat{U}_x \cdot \hat{S}$ is generated by local gates. The "Golden Unitary" $\hat{U}_x$ acts locally on the internal Hilbert space at vertex $x$, while the shift operator $\hat{S}$ permutes states between nearest neighbors on the Voronoi dual graph of the quasicrystal.
+The \textbf{Locality Radius} $R_{loc}$ is strictly bounded:
+\begin{equation}
+    \mathrm{supp}\!\left(\hat{U}_{\text{global}}^{\dagger}\,\hat{A}_x\,\hat{U}_{\text{global}}\right)\subseteq \mathcal{N}_1(x)\qquad\text{for all local observables }\hat{A}_x,
+\end{equation}
+where $\mathcal{N}_1(x)$ is the radius-1 neighborhood of $x$ in the interaction graph. In this sense one may take $R_{loc}=1$, ensuring strict causality. In the illustrative gate set below we take a small bounded circuit depth per step (e.g.\ $d=3$). The "Golden Gate" $G(\phi)$ provides the mixing between the $z$-basis (information) and $x$-basis (coherence). Explicitly, in the computational basis $\{|0\rangle, |1\rangle\}$:
+\begin{equation}
+    G(\phi) = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix} \cdot e^{i \pi \phi \sigma_z} = \begin{pmatrix} 0 & e^{-i\pi\phi} \\ e^{i\pi\phi} & 0 \end{pmatrix}.
+\label{eq:golden_gate}
+\end{equation}
+The iterates $\{G(\phi)^n\}_{n\in\mathbb{Z}}$ form a cyclic subgroup of $U(2)$ (and, up to an overall phase, of $SU(2)$); when the eigenphase of $G(\phi)$ is an irrational multiple of $\pi$, this subgroup is dense in the corresponding one-parameter torus (its closure is a circle subgroup), while for rational relations it is finite. In the many-body PQCA, rapid scrambling is generated not by repeated application of a single-qubit gate in isolation but by the combination of non-commuting local unitaries and causal shifts on the interaction graph; in this manuscript we treat the fast-scrambling property as a model target/diagnostic rather than as an automatic consequence of Eq.~(\ref{eq:golden_gate}).
+
+\section{The Generalized Euler Identity}
+\label{chap:euler_identity}
+
+\subsection{The Master Equation}
+We propose a compact relation for the intrinsic phase accumulation associated with the Omega vector, combining the geometric phase $\pi$, a golden-ratio scale parameter $\phi$, and an information rate $\mathcal{C}(\tau)$ (not to be conflated with the cosmological lapse $N(t)$ introduced in Part~V). Since the Omega Axiom identifies the universe with a static ray, any equation proportional to the state should be read as fixing an overall phase convention (a gauge choice) rather than generating physical evolution in projective space. Accordingly, define a phase function $\gamma(\tau)$ by
+\begin{equation}
+    |\Omega(\tau)\rangle = e^{i\gamma(\tau)}|\widetilde{\Omega}(\tau)\rangle,
+    \qquad
+    \frac{d\gamma}{d\tau} = \left( \frac{\mathcal{C}(\tau)}{\mathcal{C}_0} \right)\left( \frac{\pi}{\phi} \right),
+\end{equation}
+where $|\widetilde{\Omega}(\tau)\rangle$ denotes a representative of the ray $[\Omega(\tau)]$ in a fixed phase convention (e.g.\ one may impose $\arg\langle r|\widetilde{\Omega}(\tau)\rangle=0$ for a chosen reference $|r\rangle$, cf.\ Part~II). Observable content resides in the projective trajectory and in relative phases, not in $\gamma$ itself.
+Here:
+\begin{itemize}
+    \item $\mathcal{C}(\tau)$: An effective resolution/complexity scale. In the golden-scaling benchmark we take $\mathcal{C}(\tau)\propto \phi^\tau$ as an illustrative discrete-scale-invariant template.
+    \item $\pi / \phi$: A fixed geometric ratio in this normalization, interpreted here as a ``form'' factor relating a horizon-scale angle ($\pi$) to the golden cut ($\phi$).
+\end{itemize}
+The quantity $\mathcal{C}(\tau)$ is thus interpreted not as a speed limit, but as an effective exchange rate between geometry ($\pi$) and incomplete logic ($\phi$).
+
+\section{The Fibonacci Spiral Universe}
+\label{chap:spiral_universe}
+
+\subsection{Geometric Visualization}
+In the projective Hilbert space, the trajectory of $|\Omega(\tau)\rangle$ can be visualized as a self-similar spiral.
+Using the polar coordinates of the complex coefficients $c_n = r_n e^{\iu \theta_n}$, the evolution defines a flow:
+\begin{equation}
+    \theta_n(\tau) = \theta_n(0) - \omega_0 \phi^{-n} \tau.
+\end{equation}
+Here $\omega_0$ sets the overall frequency scale of the phase drift.
+Using Binet's formula $F_n = (\phi^n-\hat{\phi}^n)/\sqrt{5}$ with $\hat{\phi}=(1-\sqrt{5})/2$ and $|\hat{\phi}|<1$, one has $F_n\sim \phi^n/\sqrt{5}$ asymptotically. In the golden-rotation setting, the most prominent near-returns and the most uniform finite samplings occur on Fibonacci time scales, motivating the use of Fibonacci indices to label ``resonant eras'' in phenomenological discussions (Appendix~\ref{app:three_gap}).
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\linewidth]{images/golden_spiral.png}
+    \caption{\textbf{The Omega Network Projection}. A visualization of the Golden Spiral distribution, representing a schematic conformal projection of a higher-dimensional cut-and-project lattice onto the 2D effective phase space. The density of nodes corresponds to information content.}
+    \label{fig:golden_spiral}
+\end{figure}
+\begin{equation}
+    \tau_k \sim F_k.
+\end{equation}
+Mathematically, in the golden-rotation setting the Fibonacci denominators identify the most uniform finite samplings and the closest near-returns of the underlying phase orbit (Appendix~\ref{app:three_gap}); interpreting selected near-returns as ``resonant eras'' is a model choice that must be calibrated against physical scales.
+
+Beyond these prominent resonant eras, one may view the discrete epoch index more generally through Zeckendorf layering: any $n\in\mathbb{Z}_{\ge 0}$ admits a unique decomposition
+\begin{equation}
+    n=\sum_{k\ge 0} b_k F_{k+2},\qquad b_k\in\{0,1\},\qquad b_k b_{k+1}=0,
+\end{equation}
+so that cosmic history can be interpreted as a sparse superposition of Fibonacci scale events, with the active layers specified by the digits $\{b_k\}$ \cite{Zeckendorf1972,AlloucheShallit2003}.
+
+\section{Drift of Fundamental Constants}
+\label{chap:drift_predictions}
+
+\subsection{parameterization of \texorpdfstring{$\alpha$}{alpha} Variation}
+In the golden-projection ansatz, a distinguished projection/reciprocal-lattice direction can be used to define a dipole template on the sky. We parameterize the corresponding sensitivity by a dimensionless coefficient $\zeta_{\alpha}$:
+\begin{equation}
+    \frac{\Delta \alpha}{\alpha}(z, \hat{n}) = \zeta_{\alpha} \left( \frac{r(z)}{R_H} \right) \cos \Theta.
+\end{equation}
+Quasar absorption-spectrum analyses have reported dipole-like fits at the level $\Delta \alpha / \alpha \sim 10^{-6}$ \cite{Webb2011AlphaDipole}. In particular, a commonly used phenomenological form is $\Delta\alpha/\alpha = A \cos\Theta$ with a best-fit amplitude $A\sim 10^{-6}$ and a best-fit axis on the sky \cite{Webb2011AlphaDipole}. In the present parametrization, the corresponding effective $\zeta_\alpha$ is of order $A/(r(z)/R_H)$; for absorbers at cosmological distances with $r(z)/R_H=\mathcal{O}(1)$, this suggests the benchmark scale $\zeta_\alpha\sim 10^{-6}$.
+However, laboratory atomic clock comparisons place a stringent local limit on the temporal drift \cite{Rosenband2008}:
+\begin{equation}
+    \left| \frac{\dot{\alpha}}{\alpha} \right| < 1.6 \times 10^{-17} \text{ yr}^{-1}.
+\end{equation}
+In Omega Theory, a ``rigid lattice'' suppression can be formulated as an averaging bound: if the effective coupling is a coarse-grained average over $N_{\mathrm{dof}}$ microscopic contributions, then any bounded-rate microscopic update produces a macroscopic drift suppressed by at least $1/N_{\mathrm{dof}}$ (Appendix~\ref{app:constants_proof}, Proposition~\ref{prop:averaging_bound}). In holographic near-saturation regimes one may take $N_{\mathrm{dof}}\sim A/(4l_P^2\ln 2)$ for a causal patch of boundary area $A$, making the implied local drift far below current atomic-clock sensitivities for modest microscopic update rates.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\linewidth]{images/alpha_drift.png}
+    \caption{\textbf{Spatial variation of $\alpha$ (template)}. An illustrative dipole anisotropy template in the fine-structure constant across the celestial sphere. The plot is normalized to a visualization scale $|\Delta\alpha/\alpha|\sim 10^{-5}$; the benchmark dipole amplitude discussed in the text is $A\sim 10^{-6}$ \cite{Webb2011AlphaDipole}. In the golden-projection ansatz, the dipole axis is taken to align with a distinguished projection/reciprocal-lattice direction; confronting data requires specifying the microscopic weights and the relevant transfer functions.}
+    \label{fig:alpha_drift}
+\end{figure}
+
+\subsection{CMB Anomalies: The "Axis of Evil"}
+Standard $\Lambda$CDM assumes the universe is statistically isotropic. However, analyses of CMB maps discuss low-$\ell$ anomalies, including the alignment of quadrupole ($l=2$) and octopole ($l=3$) moments \cite{Copi2010LargeAngle,Planck2018Isotropy}.
+Omega Theory models such alignments as potential signatures of a distinguished projection/reciprocal-lattice axis of the underlying cut-and-project construction. In a simple reciprocal-lattice template, the gravitational potential $\Phi(\vec{x})$ is supplemented by a modulation term of the form
+\begin{equation}
+    V_{\text{moire}}(\theta, \phi) = V_0 \sum_{k \in \Lambda^*} e^{i \vec{k} \cdot \vec{n}(\theta, \phi)}.
+\end{equation}
+This kind of reciprocal-lattice template induces deterministic correlations between spherical harmonic coefficients $a_{\ell m}$ via the standard plane-wave harmonic expansion (Appendix~\ref{app:moire_cmb}, Proposition~\ref{prop:plane_wave_harmonics}). In particular, if the dominant reciprocal vectors are concentrated near a single axis, the low-$\ell$ multipoles are expected to share a preferred direction (Appendix~\ref{app:moire_cmb}, Corollary~\ref{cor:axis_alignment}). In this interpretation, reported low-$\ell$ ``axis of evil'' alignments are modeled as signatures of a dominant projection/reciprocal-lattice axis of the underlying cut-and-project construction; quantitative comparison requires specifying the weight distribution over $\Lambda^*$ and the relevant cosmological transfer functions.
+
+\subsection{Temporal Drift of \texorpdfstring{$\mu$}{mu}}
+As a phenomenological parameterization of how an internal geometric modulus could imprint on the proton-electron mass ratio, we write a drift proportional to the Hubble scale:
+\begin{equation}
+    \frac{\dot{\mu}}{\mu} = - \kappa_{\mu} H_0,
+\end{equation}
+where $\kappa_{\mu}$ is an effective geometric coupling. Optical clock comparisons constrain $|\dot{\mu}/\mu|\lesssim 10^{-16}\,\mathrm{yr}^{-1}$ \cite{Godun2014YbRatios}, which in the parameterization above corresponds to $\kappa_{\mu}\lesssim 10^{-6}$ for $H_0\sim 10^{-10}\,\mathrm{yr}^{-1}$. A benchmark target for next-generation searches is sensitivity to $\kappa_{\mu}\sim 10^{-7}$, e.g.\ via Thorium-229 nuclear clock proposals \cite{PeikTamm2003}; any detected nonzero drift would require matching the sign and magnitude to a concrete microscopic modulus dynamics.
+
+\section{High-Energy Verification and Constraints}
+\label{chap:verification}
+
+\subsection{Fermi-LAT and Lorentz Invariance Violation (LIV)}
+Discrete spacetime structures typically induce modified dispersion relations (MDR) for high-energy photons; see, e.g., \cite{Mattingly2005,Colladay1998,KosteleckyMewes2009} for standard parameterizations and constraints:
+\begin{equation}
+    E^2 = p^2 c^2 \left[ 1 \pm \xi_n \left( \frac{E}{E_{QG}} \right)^n \right].
+\end{equation}
+Linear corrections ($n=1$) are strongly constrained by time-of-flight analyses (e.g.\ Fermi-LAT GRB~090510) \cite{Abdo2009,Vasileiou2013}, which require $E_{QG} \gtrsim E_{Planck}$ in the usual convention.
+\textbf{Prediction (structural).} In parity-symmetric lattice/QCA settings with analytic dispersion, there is no linear ($n=1$) time-of-flight term (Appendix~\ref{app:mdr_symmetry}, Proposition~\ref{prop:no_linear_mdr}). In the Omega Network, statistical isotropy (Assumption~\ref{assump:M1}) is intended to suppress \emph{anisotropic} Lorentz-violating contributions; in the idealized icosahedral design limit the low-$\ell$ multipoles vanish exactly (Appendix~\ref{app:mdr_symmetry}, Proposition~\ref{prop:design_suppresses_lowell}) and the corresponding direction-averaged plane-wave factors are isotropic through fifth order (Appendix~\ref{app:mdr_symmetry}, Proposition~\ref{prop:design_plane_wave_isotropy}), pushing anisotropy into higher spherical-harmonic sectors. Accordingly the leading constraint-relevant effect is taken to be an approximately isotropic even-order MDR term. A minimal benchmark is a quadratic-in-energy correction ($n=2$):
+\begin{equation}
+    E^2 = p^2 c^2 \left[ 1 - \xi_2 \left( \frac{E}{E_{QG}} \right)^2 + \mathcal{O}\!\left( \frac{E}{E_{QG}} \right)^4 \right],
+\end{equation}
+with $\xi_2=\mathcal{O}(1)$ as a benchmark. For $E_{QG}\sim E_{Planck}$, the corresponding time-of-flight effect is far below current sensitivity, while the absence of an $n=1$ term remains a falsifiable structural statement when mapped to SME coefficients (see Part VIII).
+\par
+\noindent
+\textbf{Fixed-coefficient benchmark from unitarity (arc--chord).}
+In the unitary scan/difference toy model recorded in Appendix~\ref{app:mdr_symmetry}, the long-wavelength expansion gives
+\begin{equation}
+    E^2 = P^2+\frac{1}{12}\,\varepsilon^2 P^4+\mathcal{O}(\varepsilon^4 P^6),
+\end{equation}
+so the leading even-order MDR coefficient is rigidly fixed by compact unitary geometry rather than introduced as a tunable deformation. Matching this to the quadratic MDR form identifies an effective scale
+\begin{equation}
+    E^{(2)}_{QG}\ \sim\ \frac{\sqrt{12}}{\varepsilon},
+\end{equation}
+up to sign conventions for $\xi_2$. Taking $\varepsilon\sim l_P$ yields $E^{(2)}_{QG}\sim \mathcal{O}(1)\,M_{Pl}$, safely above current time-of-flight lower bounds.
+
+\subsection{Holometer Constraints on Holographic Noise}
+The Fermilab Holometer experiment ruled out "random walk" holographic noise ($\Delta x \sim \sqrt{L l_P}$) \cite{Chou2016Holometer}.
+\textbf{Prediction (scale invariance template)}: If the microscopic update architecture exhibits (approximate) scale invariance across a wide band of characteristic times---for example through a geometric ladder of time scales induced by golden scaling---then the induced displacement/strain fluctuations have a $1/f$ (pink) spectral envelope with possible log-periodic modulation (Appendix~\ref{app:one_over_f}, Proposition~\ref{prop:one_over_f}; cf.\ standard $1/f$ reviews \cite{DuttaHorn1981,Weissman1988} and discrete-scale-invariance/log-periodic discussions \cite{Sornette1998DSI}). In that regime one may parameterize the one-sided strain PSD by
+\begin{equation}
+    S_h(f) \sim A_h\,\frac{l_P}{L}\,\frac{1}{f},
+\end{equation}
+where $A_h$ is a dimensionless amplitude coefficient, $S_h(f)$ is the one-sided strain power spectral density (units $1/\mathrm{Hz}$), and the corresponding displacement PSD is $S_x(f)=L^2 S_h(f)$. Equivalently,
+\begin{equation}
+    S_x(f)\sim A_h\,\frac{L\,l_P}{f},
+    \qquad
+    A_h\sim \frac{f\,S_x(f)}{L\,l_P}.
+\end{equation}
+As an order-of-magnitude translation: taking a Holometer-scale baseline $L\sim 40\,\mathrm{m}$ and a representative MHz-band displacement ASD bound $\sqrt{S_x(f)}\lesssim 10^{-20}\,\mathrm{m}/\sqrt{\mathrm{Hz}}$ \cite{Chou2016Holometer} at $f\sim 10^6\,\mathrm{Hz}$ gives $A_h\lesssim \mathcal{O}(10^{-1})$. Analyses optimized for broadband white/shear noise are not necessarily optimal for narrowband/log-periodic templates; we therefore urge re-analyses of Holometer and GEO600 data targeting these spectral features.
+
+\subsection{Gravitational Wave Echoes}
+If the effective horizon is modeled as a partially reflecting structure located a proper distance $\varepsilon$ outside the classical horizon, then the echo delay between successive reflections scales logarithmically with $\varepsilon$ via the tortoise-coordinate behavior. Echo templates for exotic compact objects / near-horizon reflectivity and their observability have been widely discussed \cite{CardosoFranzinPani2016Ringdown,AbediDykaarAfshordi2017Echoes}, and reported evidence remains model- and analysis-dependent. In the Schwarzschild case one obtains
+\begin{equation}
+    \Delta t_{\mathrm{echo}} \simeq \frac{4GM}{c^3}\,\ln\!\left(\frac{2GM}{c^2\varepsilon}\right),
+\end{equation}
+up to an additive $\mathcal{O}(GM/c^3)$ term depending on the exterior potential barrier location (Appendix~\ref{app:echo_delay}, Proposition~\ref{prop:echo_delay}). Setting $\varepsilon\sim l_P$ yields the familiar logarithmic enhancement $\Delta t_{\mathrm{echo}}\propto (GM/c^3)\ln(M/m_P)$. The amplitude of any echoes then constrains the effective reflectivity/fuzziness of the holographic mapping.
+
+\section{Summary of benchmark templates}
+\label{chap:summary_table}
+
+We summarize representative benchmark templates adopted in this manuscript and indicate their relation to current constraints in Table~\ref{tab:predictions}.
+
+\begin{table}[h]
+    \centering
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{|l|c|c|c|}
+        \hline
+        \textbf{Observable} & \textbf{Standard Model / $\Lambda$CDM} & \textbf{Omega Template} & \textbf{Representative Constraints} \\
+        \hline
+        Fine Structure $\alpha^{-1}$ & Input Parameter & $137.0363038$ (geometric impedance) & $137.035999177$ (CODATA 2022) \cite{CODATA2022RMP} \\
+        \hline
+        Mass Ratio $\mu = m_p/m_e$ & Input Parameter & $1836.1181087$ (phase-volume) & $1836.15267343$ (CODATA 2022) \cite{CODATA2022RMP} \\
+        \hline
+        Local Drift $\dot{\alpha}/\alpha$ & $0$ & $\ll 10^{-17} \text{ yr}^{-1}$ (Hubble/averaging benchmark) & $< 10^{-17}$ (atomic clocks) \cite{Rosenband2008} \\
+        \hline
+        Spatial Dipole $\Delta \alpha/\alpha$ & $0$ & $\sim 10^{-6}\cos \Theta$ (dipole template) & quasar spectra searches/claims at $\sim 10^{-6}$ \cite{Webb2011AlphaDipole} \\
+        \hline
+        LIV Order $(E/E_{QG})^n$ & $n=1$ or $n=2$ (generic EFT/QG parametrizations) & no $n=1$; leading $n=2$ benchmark & GRB/LHAASO ToF bounds on $n=1,2$ \cite{Abdo2009,Vasileiou2013,Hua2025DisCan} \\
+        \hline
+        Holographic Noise & Null (instrumental/no-fundamental template) & $1/f$ envelope (pink; log-periodic peaks) & Holometer constrains $A_h$ at $\lesssim \mathcal{O}(10^{-1})$ (MHz band) \cite{Chou2016Holometer} \\
+        \hline
+        Effective $\Lambda(t)$ & Constant & $\Lambda(t)\propto H_{\tau}(t)^2$ (near-saturation template) & $\Omega_\Lambda \approx 0.7$ \\
+        \hline
+    \end{tabular}
+    }
+    \caption{Summary of benchmark templates and representative constraints. The ``geometric'' values are the canonical phase-volume/impedance invariants of the minimal model; their small offsets from CODATA define matching factors at the readout/renormalization interface (Appendix~\ref{app:constants_proof}).}
+    \label{tab:predictions}
+\end{table}

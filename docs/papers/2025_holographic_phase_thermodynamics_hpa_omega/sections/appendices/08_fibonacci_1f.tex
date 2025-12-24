@@ -1,0 +1,90 @@
+\section{Fibonacci hierarchy and \texorpdfstring{$1/f$}{1/f} spectra}
+\label{app:fibonacci_1f}
+
+This appendix closes the \texorpdfstring{$1/f$}{1/f} claim as a quantitative consequence of a Fibonacci/Zeckendorf scale hierarchy combined with a standard spectral superposition law.
+
+\subsection{Log-uniform scaling from Fibonacci times}
+
+Let $(F_k)_{k\ge 0}$ denote Fibonacci numbers with $F_0=0$, $F_1=1$, $F_{k+1}=F_k+F_{k-1}$. The closed form
+\begin{equation}
+  F_k=\frac{\varphi^k-\hat\varphi^k}{\sqrt{5}},\qquad \hat\varphi=-\varphi^{-1},
+\end{equation}
+implies the asymptotic ratio $F_{k+1}/F_k\to\varphi$ and therefore the log-spacing
+\begin{equation}
+  \log F_{k+1}-\log F_k \to \log\varphi.
+\end{equation}
+Hence Fibonacci times are asymptotically geometric: they form an approximately uniform lattice in $\log \tau$.
+
+\subsection{Discrete log-uniform mixtures yield \texorpdfstring{$1/f$}{1/f}}
+
+Consider a family of relaxation-time modes indexed by $k$ with time constants
+\begin{equation}
+  \tau_k = \tau_0\,r^k,\qquad r>1,
+\end{equation}
+and mode weights $w_k\ge 0$. A standard Lorentzian single-mode spectrum takes the form
+\begin{equation}
+  S_k(\omega)=w_k\,\frac{\tau_k}{1+(\omega\tau_k)^2},
+\end{equation}
+which captures (up to normalization) the power spectrum of a wide class of exponentially relaxing fluctuations (e.g.\ random-telegraph or OU-type components) \cite{DuttaHorn1981,Weissman1988}.
+
+\begin{proposition}[Geometric relaxation ladder implies \texorpdfstring{$1/\omega$}{1/ω} plateau]
+\label{prop:1overf}
+Assume $w_k\equiv w$ (scale-equipartition across log-time). Define the ladder spectrum
+\begin{equation}
+  S_K(\omega)=\sum_{k=0}^{K} w\,\frac{\tau_0 r^k}{1+(\omega\tau_0 r^k)^2}.
+\end{equation}
+Then for intermediate frequencies satisfying
+\begin{equation}
+  \omega\tau_0 \ll 1 \ll \omega\tau_0 r^K,
+\end{equation}
+one has the asymptotic approximation
+\begin{equation}
+  S_K(\omega) = \frac{w}{\omega\log r}\left(\frac{\pi}{2}+o(1)\right),
+\end{equation}
+and therefore in frequency $f=\omega/(2\pi)$,
+\begin{equation}
+  S_K(f) = \frac{w}{4 f\,\log r}\left(1+o(1)\right).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Approximate the sum by an integral over $\log\tau$. Since $\tau_k=\tau_0 r^k$, the spacing in $\log\tau$ is constant $\Delta=\log r$, so
+\[
+  S_K(\omega)\approx \frac{w}{\Delta}\int_{\tau_0}^{\tau_0 r^K}\frac{\tau}{1+(\omega\tau)^2}\,\frac{\dd\tau}{\tau}
+  = \frac{w}{\omega\Delta}\left[\arctan(\omega\tau)\right]_{\tau_0}^{\tau_0 r^K}.
+\]
+Under $\omega\tau_0\ll 1\ll \omega\tau_0 r^K$, the bracket tends to $\pi/2$, yielding the stated approximation.
+\end{proof}
+
+\begin{corollary}[Robustness to nonuniform weights]
+\label{cor:1overf_robust}
+Assume the weights are bounded, $w_- \le w_k \le w_+$ for all $k$. Under the same intermediate-frequency condition $\omega\tau_0 \ll 1 \ll \omega\tau_0 r^K$, the ladder spectrum satisfies
+\begin{equation}
+  \frac{w_-}{4 f\,\log r}\left(1+o(1)\right)
+  \;\le\;
+  S_K(f)
+  \;\le\;
+  \frac{w_+}{4 f\,\log r}\left(1+o(1)\right),
+\end{equation}
+and therefore exhibits a robust \texorpdfstring{$1/f$}{1/f} mid-band. The weights affect only the prefactor, which is set by the effective log-scale average of $w_k$ across the contributing ladder range.
+\end{corollary}
+\begin{proof}
+Each summand in $S_K$ is nonnegative and linear in $w_k$, so termwise bounds give
+\[
+  \sum_{k=0}^{K} w_-\,\frac{\tau_0 r^k}{1+(\omega\tau_0 r^k)^2}
+  \le
+  S_K(\omega)
+  \le
+  \sum_{k=0}^{K} w_+\,\frac{\tau_0 r^k}{1+(\omega\tau_0 r^k)^2}.
+\]
+Applying Proposition~\ref{prop:1overf} to the constant-weight ladders yields the stated bounds after converting $\omega$ to $f=\omega/(2\pi)$.
+\end{proof}
+
+\paragraph{Fibonacci/Zeckendorf specialization.}
+Taking $r=\varphi$ and $\tau_k\propto F_k$ yields the same intermediate scaling because $F_{k+1}/F_k\to\varphi$. Thus a multi-scale readout that aggregates approximately equal-weight relaxation contributions across Zeckendorf depth predicts a \texorpdfstring{$1/f$}{1/f} band with an explicit prefactor proportional to $(\log\varphi)^{-1}$.
+
+\subsection{Numerical verification (toy)}
+
+Appendix~\ref{app:repro_code} includes a pure-Python script that constructs $S_K(f)$ for both geometric and Fibonacci ladders, performs a log--log linear fit over an automatically selected mid-band, and reports the fitted spectral slope and $R^2$.
+Representative fit parameters (fit band, slope, $R^2$) are reported in Appendix~\ref{app:1f_fit_table}.
+
+

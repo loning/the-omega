@@ -1,0 +1,91 @@
+\section{Holographic Isometry and Error Correction}
+\label{app:isometry}
+
+We formalize the construction of the holographic mapping $\Phi$ as a Tensor Network Quantum Error Correcting Code (TN-QECC).
+
+\subsection{Tensor Network Construction}
+The "Golden MERA" is constructed from a hierarchy of tensors $\{T^{(s)}\}$ acting on the dual graph of the quasicrystal inflation (cf.\ MERA and its holographic interpretation \cite{Vidal2007MERA,Swingle2012MERA}).
+\begin{definition}[Perfect Tensor Class]
+We assume the local tensors $W$ (isometry) and $D$ (disentangler) are \textbf{Perfect Tensors} (or $\epsilon$-perfect). A tensor $T_{i_1 \dots i_n}$ is perfect if any bipartition of its indices into sets $A$ and $B$ with $|A| \le |B|$ defines an isometry from $A$ to $B$ \cite{Pastawski2015,Harlow2017}.
+\end{definition}
+The global encoding map $\Phi$ is defined as the (finite-depth) layer composition, with the infinite-depth limit understood as a scaling limit on the code subspace:
+\begin{equation}
+    \Phi = \prod_{s=0}^\infty \left( \bigotimes_{x} D^{(s)}_x \cdot \bigotimes_{y} W^{(s)}_y \right).
+\end{equation}
+
+\subsection{Min-cut entropy bound}
+For tensor-network states/codes, the elementary and fully rigorous statement is an \emph{upper bound} on boundary entanglement entropy in terms of bond cuts.
+
+\begin{theorem}[Min-cut entropy upper bound]
+\label{thm:mincut_entropy}
+Let $|\Psi\rangle$ be a (pure) boundary state obtained from contracting a tensor network with uniform bond dimension $\chi$ on internal edges. For any boundary region $A$, let $\gamma_A$ be a cut that separates $A$ from its complement $A^c$ and crosses $|\gamma_A|$ internal edges. Then the von Neumann entropy satisfies
+\begin{equation}
+    S(\rho_A)\ \le\ |\gamma_A|\,\ln \chi,
+\end{equation}
+and in particular $S(\rho_A)\le |\gamma_{\min}(A)|\ln\chi$ for a minimal cut $\gamma_{\min}(A)$.
+\end{theorem}
+\begin{proof}[Reference]
+This is a standard tensor-network entropy bound (Schmidt-rank across a cut); see, e.g., \cite{Pastawski2015,Harlow2017}.
+\end{proof}
+
+\begin{proposition}[Page-curve mechanism from competing cuts (tensor-network island picture)]
+\label{prop:page_curve_mincut}
+Consider a tensor-network boundary state $|\Psi\rangle$ with bond dimension $\chi$ and a boundary partition into $R$ (radiation) and $B$ (the remaining boundary). Suppose the network contains a distinguished set of ``horizon'' edges of cardinality $|\partial I|$ such that there exist two natural classes of cuts homologous to $R$:
+\begin{itemize}
+    \item \textbf{No-island cut}: cuts that separate $R$ from $B$ without crossing the horizon bottleneck;
+    \item \textbf{Island cut}: cuts that additionally enclose a bulk region $I$ and hence cross the horizon bottleneck, incurring an additive cost $|\partial I|$.
+\end{itemize}
+Then the min-cut entropy bound implies
+\begin{equation}
+    S(\rho_R)\ \le\ \min\!\Big\{ |\gamma_{\mathrm{no}}(R)|,\ |\gamma_{\mathrm{is}}(R\cup I)|+|\partial I| \Big\}\,\ln\chi,
+\end{equation}
+where $\gamma_{\mathrm{no}}(R)$ and $\gamma_{\mathrm{is}}(R\cup I)$ denote the minimal cuts within the respective classes. If, along an evaporation/transfer process, the minimizing class changes from ``no-island'' at early times to ``island'' at late times, this reproduces a Page-curve-shaped entropy profile by a discrete analogue of a quantum extremal surface transition.
+\end{proposition}
+\begin{proof}[Reference]
+This follows directly from applying the min-cut bound to the two cut classes; see, e.g., \cite{Harlow2017,Penington2020,Almheiri2019}.
+\end{proof}
+
+\subsection{Entanglement wedge reconstruction (perfect/approximate-perfect networks)}
+To connect the holographic map $\Phi$ to reconstruction, we use the standard tensor-network QECC results (HaPPY / OAQEC); see, e.g., \cite{Pastawski2015,Harlow2017}.
+
+\begin{theorem}[Entanglement wedge reconstruction for a perfect tensor network]
+\label{thm:ewr_perfect}
+Assume the encoding $\Phi$ is implemented by a tensor network built from perfect tensors and defines an isometry from a bulk code space into the boundary Hilbert space. Let $A$ be a boundary region and let $\mathcal{W}_E(A)$ be the bulk region enclosed by $A$ and a minimal cut $\gamma_{\min}(A)$. Then for any bulk operator $\phi_x$ supported on $x\in\mathcal{W}_E(A)$ there exists a boundary operator $\mathcal{O}_A$ supported only on $A$ such that, on the code subspace,
+\begin{equation}
+    \Phi\,\phi_x\,\Phi^\dagger\ =\ \mathcal{O}_A\otimes I_{A^c}.
+\end{equation}
+\end{theorem}
+\begin{proof}[Reference]
+See, e.g., \cite{Pastawski2015,Harlow2017} for the standard HaPPY/OAQEC ``operator pushing'' reconstruction argument.
+\end{proof}
+
+\begin{corollary}[Approximate reconstruction for $\epsilon$-perfect tensors]
+\label{cor:ewr_eps}
+If the network tensors are $\epsilon$-perfect in operator norm (each intended isometry condition holds up to error $\epsilon$) and the pushing path from $x$ to $A$ crosses at most $d$ tensors, then there exists a boundary operator $\mathcal{O}_A$ supported on $A$ such that
+\begin{equation}
+    \left\|\left(\Phi\,\phi_x\,\Phi^\dagger\right)-\left(\mathcal{O}_A\otimes I_{A^c}\right)\right\|\ \le\ C\,d\,\epsilon,
+\end{equation}
+for a constant $C$ that depends only on the local arity (degree) of the tensors.
+\end{corollary}
+\begin{proof}[Reference]
+This is the standard telescoping/error-accumulation estimate for approximate isometries in tensor pushing; see, e.g., \cite{Harlow2017}.
+\end{proof}
+
+\paragraph{Relation to Axiom~O4.}
+Theorem~\ref{thm:ewr_perfect} provides an explicit sufficient condition under which an encoding map $\Phi$ realizes exact entanglement-wedge reconstruction. Corollary~\ref{cor:ewr_eps} gives a minimal quantitative error bound in an $\epsilon$-perfect setting. These results are one concrete route to implementing the reconstruction requirement in Axiom~O4.
+
+\subsection{Algebraic vs.\ tensor-factor localization (AMPS interface)}
+The firewall tension is usually stated using a tripartite tensor-factor language $A\otimes B\otimes R$. In code-subspace holography this factorization is not the correct kinematic primitive: bulk degrees of freedom are represented redundantly on the boundary, and ``interior'' operators are defined only as logical operators on a code subspace.
+
+\begin{proposition}[No naive factorization requirement in an isometric code]
+\label{prop:no_naive_factorization_code}
+Let $\Phi:\mathcal{H}_{\mathrm{code}}\to\mathcal{H}_{\partial}$ be an isometric encoding of a code subspace into the boundary Hilbert space, and assume the code admits entanglement-wedge reconstruction in the sense of Theorem~\ref{thm:ewr_perfect} (or its approximate version, Corollary~\ref{cor:ewr_eps}).
+Then bulk ``interior'' operators are defined as logical operators acting on $\mathcal{H}_{\mathrm{code}}$, and their boundary representations need not correspond to a fixed tensor factor of $\mathcal{H}_{\partial}$.
+In particular, the AMPS monogamy tension stated under an exact tensor-factor decomposition $A\otimes B\otimes R$ does not apply as a kinematic assumption on the microscopic encoding: the relevant notion of subsystem is an operator algebra on the code subspace rather than a literal Hilbert-space factorization.
+\end{proposition}
+\begin{proof}[Sketch]
+In an isometric code, physical boundary operators act on $\Phi(\mathcal{H}_{\mathrm{code}})\subset \mathcal{H}_{\partial}$, while bulk operators are defined by their action on $\mathcal{H}_{\mathrm{code}}$ and are represented on the boundary only up to equivalence on the code subspace.
+Entanglement-wedge reconstruction implies that the same logical operator can have boundary reconstructions on different regions, so no unique boundary tensor factor can be identified as ``the'' interior.
+Thus the correct kinematic primitive is the reconstructed operator algebra on the code, not a fixed factorization of $\mathcal{H}_{\partial}$; see, e.g., \cite{AlmheiriDongHarlow2015,Harlow2017}.
+\end{proof}
+

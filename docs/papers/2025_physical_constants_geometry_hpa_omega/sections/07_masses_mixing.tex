@@ -1,0 +1,253 @@
+\section{Generalization II: mass ratios, spectral gaps, and mixing as holonomy}
+\label{sec:masses_mixing}
+
+\subsection{Mass as internal winding and extra scan cycles}
+Nonassociative structures (e.g., octonions and related nonassociative algebras) are standard mathematical objects in physics and geometry \cite{Baez2002Octonions,Okubo1995Nonassociative,Schafer1966Nonassociative}. We adopt the scan-based mass--delay chain as an internal axiom of the program (Axiom~\ref{ax:mass_delay_chain} in Appendix~\ref{app:mass_delay}), which interfaces the additional scan cycles required to resolve algebraic obstructions with effective time delays in the readout layer. To avoid unit dependence, we restrict the primary geometricization target to \emph{dimensionless mass ratios}.
+
+\begin{definition}[Mass-ratio invariants]
+\label{def:mass_ratio}
+For particles $i,j$ define
+\begin{equation}
+\frac{m_i}{m_j}=\frac{I_i(\mathcal{G})}{I_j(\mathcal{G})},
+\end{equation}
+where $I_i(\mathcal{G})$ is a process cost or spectral quantity induced by the defect associated with particle $i$ (e.g., associator tension, holonomy data, or a spectral gap).
+\end{definition}
+
+This definition fixes ratios; an overall scale is set by the reference choice. The task reduces to defining a computable family $\{I_i\}$ whose ratios match the PDG mass-ratio data within uncertainties \cite{PDGRPP2024}.
+
+\subsection{Worked example: proton--electron mass ratio}
+To make the program quantitative beyond $\alpha$, we record a second low-parameter worked example: the proton--electron mass ratio $\mu=m_p/m_e$.
+
+We strengthen Definition~\ref{def:mass_ratio} by fixing a closed-theory invariant choice.
+
+\begin{axiom}[Mass invariants as phase-volume costs]\label{ax:mass_volume}
+For each particle class $i$, the mass invariant $I_i$ is given by a canonical phase-volume of an internal compact manifold $\mathcal{M}_i$ (or a finite disjoint union of such manifolds), normalized so that the electron reference satisfies $I_e=1$.
+\begin{equation}
+\mathrm{Vol}\!\left(\bigsqcup_{a=1}^A \mathcal{M}_{i,a}\right)=\sum_{a=1}^A \mathrm{Vol}(\mathcal{M}_{i,a}).
+\end{equation}
+
+For a baryon in three-color QCD ($N_c=3$), the invariant is the sum over three color sectors \cite{PeskinSchroeder1995,PDGRPP2024}.
+\end{axiom}
+
+\begin{remark}[Normalization gauge for mass invariants]\label{rem:mass_normalization_gauge}
+Mass ratios depend only on the ratios $I_i/I_j$ (Definition~\ref{def:mass_ratio}); the common multiplicative scale of $\{I_i\}$ is fixed by the reference choice $I_e=1$ and plays the same role as a scale interface.
+\end{remark}
+
+\begin{axiom}[Proton internal phase space]\label{ax:proton_phase_space}
+The proton is assigned three identical color sectors ($N_c=3$) \cite{PeskinSchroeder1995,PDGRPP2024}. Each color sector is modeled by the compact phase space
+\begin{equation}
+\mathcal{M}_{q}\cong SO(3)\times SO(3)\times U(1),
+\end{equation}
+so that $\mathcal{M}_p$ is the disjoint union of three copies of $\mathcal{M}_q$.
+
+This choice is equivalent, at the level of canonical volumes, to the alternative factorization $SO(3)\times SU(2)\times \mathbb{R}P^1$, since $\mathrm{Vol}(SO(3))\,\mathrm{Vol}(U(1))=\mathrm{Vol}(SU(2))\,\mathrm{Vol}(\mathbb{R}P^1)$ by the $\mathbb{Z}_2$ quotient relations in Appendix~\ref{app:group_volumes}. We select $SO(3)\times SO(3)\times U(1)$ as the projective-rotation convention: rotational sectors are projectivized (spinorial double cover removed) while the phase circle is kept unquotiented.
+\end{axiom}
+
+\begin{theorem}[Proton--electron mass ratio]\label{thm:mu_geo}
+Under Axioms~\ref{ax:mass_volume}--\ref{ax:proton_phase_space}, the geometric prediction for the proton--electron mass ratio is
+\begin{equation}
+\mu_{\mathrm{geo}}:=\frac{m_p}{m_e}=6\pi^5\approx 1836.1181087117.
+\end{equation}
+\end{theorem}
+\begin{proof}
+By Axiom~\ref{ax:mass_volume}, $m_p/m_e=I_p/I_e=I_p$ since $I_e=1$. By Axiom~\ref{ax:proton_phase_space},
+\begin{equation}
+I_p=3\,\mathrm{Vol}(SO(3)\times SO(3)\times U(1)).
+\end{equation}
+Using $\mathrm{Vol}(SO(3))=\pi^2$ and $\mathrm{Vol}(U(1))=2\pi$ (Appendix~\ref{app:group_volumes}) gives
+\begin{equation}
+I_p=3\,(\pi^2)(\pi^2)(2\pi)=6\pi^5.
+\end{equation}
+\end{proof}
+
+\begin{remark}[Minimal factor count for the \texorpdfstring{$\pi^5$}{pi^5} scaling]\label{rem:mu_min_factor_count}
+Under the primitive set $\mathfrak{P}$ of Axiom~\ref{ax:primitive_phase_spaces} with canonical volumes (Appendix~\ref{app:group_volumes}), each primitive contributes at most a $\pi^2$ factor to a product volume. Therefore any product of two primitives has $\pi$-power at most $4$, and the $\pi^5$ scaling of $\mu_{\mathrm{geo}}=6\pi^5$ forces at least three primitive factors per color sector. The three-factor search domain used in Proposition~\ref{prop:mu_phase_factorization_rigidity} is therefore the unique minimal domain that can realize the required scaling.
+\end{remark}
+
+\begin{proposition}[Finite primitive factorization rigidity for \texorpdfstring{$\mu$}{mu}]\label{prop:mu_phase_factorization_rigidity}
+Fix the primitive candidate set $\{U(1),SU(2),SO(3),\mathbb{R}P^1\}$ from Axiom~\ref{ax:primitive_phase_spaces} with canonical volumes (Appendix~\ref{app:group_volumes}), and restrict a per-color sector $\mathcal{M}_q$ to be a product of three primitives (order irrelevant). Then the condition
+\begin{equation}
+3\,\mathrm{Vol}(\mathcal{M}_q)=6\pi^5
+\end{equation}
+holds if and only if
+\begin{equation}
+\mathcal{M}_q\cong SO(3)\times SO(3)\times U(1)
+\qquad\text{or}\qquad
+\mathcal{M}_q\cong SO(3)\times SU(2)\times \mathbb{R}P^1.
+\end{equation}
+In particular, among the $20$ three-factor multisets, these two are the unique solutions; the next-closest candidate has relative deviation at least $2.73\times 10^{-1}$ (Table~\ref{tab:mu_phase_factorizations}).
+\end{proposition}
+\begin{proof}
+Use $\mathrm{Vol}(U(1))=2\pi$, $\mathrm{Vol}(\mathbb{R}P^1)=\pi$, $\mathrm{Vol}(SO(3))=\pi^2$, and $\mathrm{Vol}(SU(2))=2\pi^2$. Any three-factor product has the form
+\[
+\mathrm{Vol}(\mathcal{M}_q)=2^{m}\pi^{k},
+\]
+where $m$ counts how many factors are drawn from $\{U(1),SU(2)\}$ and $k$ is the sum of exponents $1$ (for $U(1)$ or $\mathbb{R}P^1$) and $2$ (for $SU(2)$ or $SO(3)$). The condition $3\,\mathrm{Vol}(\mathcal{M}_q)=6\pi^5$ forces $m=1$ and $k=5$. Hence exactly two factors must contribute exponent $2$ and one factor exponent $1$.
+
+If the exponent-$1$ factor is $U(1)$, then $m\ge 1$ already; to keep $m=1$, both exponent-$2$ factors must be $SO(3)$, giving $SO(3)\times SO(3)\times U(1)$. If the exponent-$1$ factor is $\mathbb{R}P^1$, then $m$ comes only from $SU(2)$ factors; to get $m=1$ with two exponent-$2$ factors, exactly one is $SU(2)$ and the other is $SO(3)$, giving $SO(3)\times SU(2)\times \mathbb{R}P^1$.
+\end{proof}
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Per-color sector $\mathcal{M}_q$ & $\mu_{\mathrm{geo}}=3\,\mathrm{Vol}(\mathcal{M}_q)$ & $\Delta$ & $\Delta/\mu_{\mathrm{exp}}$ \\
+\midrule
+\input{sections/generated/mu_phase_factorizations_rows.tex}%
+\\
+\bottomrule
+\end{tabular}
+\caption{Full enumeration over three-factor products of primitives $\{U(1),SU(2),SO(3),\mathbb{R}P^1\}$ (with canonical volumes) for a per-color sector $\mathcal{M}_q$. The only candidates achieving $\mu_{\mathrm{geo}}=3\,\mathrm{Vol}(\mathcal{M}_q)=6\pi^5$ are the two solutions in Proposition~\ref{prop:mu_phase_factorization_rigidity}; the next candidate has order-one relative error. Here $\Delta=\mu_{\mathrm{geo}}-\mu_{\mathrm{exp}}$ with $\mu_{\mathrm{exp}}\approx 1836.15267343$ \cite{CODATA2022RMP}.}
+\label{tab:mu_phase_factorizations}
+\end{table}
+
+Numerically, CODATA 2022 gives $\mu_{\mathrm{exp}}\approx 1836.15267343$ \cite{CODATA2022RMP}, so
+\begin{equation}
+\Delta\mu:=\mu_{\mathrm{geo}}-\mu_{\mathrm{exp}}\approx -3.456\times 10^{-2},
+\qquad
+\frac{\Delta\mu}{\mu_{\mathrm{exp}}}\approx -1.88\times 10^{-5}.
+\end{equation}
+Equivalently, in the multiplicative error metric,
+\begin{equation}
+\log\!\left(\frac{\mu_{\mathrm{geo}}}{\mu_{\mathrm{exp}}}\right)\approx -1.88\times 10^{-5}.
+\end{equation}
+Equivalently, define the multiplicative matching factor
+\begin{equation}
+s_\mu:=\frac{\mu_{\mathrm{exp}}}{\mu_{\mathrm{geo}}}=\exp\!\left(-\log\!\frac{\mu_{\mathrm{geo}}}{\mu_{\mathrm{exp}}}\right)\approx 1+1.88\times 10^{-5}.
+\end{equation}
+In the closed-theory reading, $s_\mu$ is the matching input between the canonical phase-volume value and the CODATA ratio; it encodes QCD binding and radiative structure.
+
+In QCD, the proton mass is dominated by dynamical scale generation and strong-interaction energy rather than by light-quark current masses \cite{Wilczek1999MassWithoutMass,Collins2011,PDGRPP2024}. Accordingly, the multiplicative matching input $s_\mu$ subsumes nonperturbative binding and radiative structure.
+
+As a rigidity check analogous to Section~\ref{sec:alpha_anchor}, we minimize the CODATA error within the five-term ansatz
+\begin{equation}
+\mu(a,b,c,d,e)=a\pi^5+b\pi^4+c\pi^3+d\pi^2+e\pi
+\end{equation}
+with small nonnegative integers.
+
+\begin{proposition}[Uniqueness at low coefficient complexity for $\mu$]\label{prop:mu_integer_rigidity}
+Within the coefficient-sum complexity domain $a,b,c,d,e\in\ZZ_{\ge 0}$ and $a+b+c+d+e\le 10$, the unique minimizer of $|\mu(a,b,c,d,e)-\mu_{\mathrm{exp}}|$ is $(a,b,c,d,e)=(6,0,0,0,0)$, i.e., $\mu_{\mathrm{geo}}=6\pi^5$, with relative error $1.88\times 10^{-5}$. The next-best combination in the same domain has relative error at least $4.44\times 10^{-4}$.
+\end{proposition}
+\begin{proof}
+This is a finite check by exhaustive enumeration over all $(a,b,c,d,e)\in\ZZ_{\ge 0}^5$ with $a+b+c+d+e\le 10$.
+\end{proof}
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rrrrrrr@{}}
+\toprule
+$(a,b,c,d,e)$ & $a{+}b{+}c{+}d{+}e$ & $\mu(a,b,c,d,e)$ & $\Delta$ & $\Delta/\mu_{\mathrm{exp}}$ \\
+\midrule
+\input{sections/generated/mu_integer_search_rows.tex}%
+\\
+\bottomrule
+\end{tabular}
+\caption{Rigidity check for $\mu=m_p/m_e$ in the ansatz $\mu(a,b,c,d,e)=a\pi^5+b\pi^4+c\pi^3+d\pi^2+e\pi$ over the coefficient-sum domain $a,b,c,d,e\in\ZZ_{\ge 0}$ and $a{+}b{+}c{+}d{+}e\le 10$. Here $\Delta=\mu(a,b,c,d,e)-\mu_{\mathrm{exp}}$. Exhaustive enumeration shows $(6,0,0,0,0)$ is the unique minimizer in the stated domain. Integer-relation algorithms such as PSLQ provide a complementary route \cite{FergusonBaileyArno1999}.}
+\label{tab:mu_integer_search}
+\end{table}
+
+\subsection{Mixing matrices as holonomy: from geometric phase to CKM/PMNS}
+The $\Omega$ framework uses standard geometric-phase language (Berry connection and holonomy) on parameter manifolds \cite{Simon1983,Berry1984,WilczekZee1984,Nakahara2003}. We therefore adopt the following geometric implementation axiom.
+
+\begin{axiom}[Mixing matrices as holonomy]
+\label{ax:mixing_holonomy}
+There exists a parameter manifold $\mathcal{M}$ associated with the readout protocol / gauge choice / internal fiber structure, together with a $U(1)$ or $U(n)$ connection $\mathcal{A}$ on $\mathcal{M}$, such that generation mixing can be represented as holonomy along basic loops:
+\begin{equation}
+U_{\mathrm{mix}}=\mathcal{P}\exp\!\left(\oint_{\gamma\subset\mathcal{M}} \mathcal{A}\right).
+\end{equation}
+Observable invariants (mixing angles, CP phases) correspond to conjugacy-class data of the holonomy.
+\end{axiom}
+
+This template upgrades ``angles/phases'' from fit parameters to geometric objects (connection, curvature, and topology). It matches the unitarity structure used in the standard CKM/\allowbreak PMNS parameterizations \cite{Cabibbo1963,KobayashiMaskawa1973,Pontecorvo1957,MakiNakagawaSakata1962}. The PDG provides systematic reviews and conventions \cite{PDGRPP2024}. A short geometric-phase reminder is included in Appendix~\ref{app:holonomy}.
+
+\subsection{A quantitative CP-odd reference: the Jarlskog invariant}
+For quark mixing, a basis-independent measure of CP violation is the Jarlskog invariant $J$, defined from the CKM matrix $V$ by \cite{Jarlskog1985}
+\begin{equation}
+J:=\mathrm{Im}\!\left(V_{ud}V_{cs}V_{us}^\ast V_{cd}^\ast\right),
+\end{equation}
+equivalently by any of its rephasing-invariant forms. The PDG quotes \cite{PDGRPP2024}
+\begin{equation}
+J_{\mathrm{PDG}}=(3.00\pm 0.15)\times 10^{-5}.
+\end{equation}
+In the Wolfenstein parametrization \cite{Wolfenstein1983}, one has at leading order
+\begin{equation}\label{eq:jarlskog_wolfenstein}
+J=A^2\lambda^6\bar{\eta}+O(\lambda^8),
+\end{equation}
+with the standard $(\lambda,A,\bar{\rho},\bar{\eta})$ conventions summarized by the PDG \cite{PDGRPP2024}.
+
+To complement the holonomy axiom with a minimal quantitative rigidity check, we test the one-parameter $\pi$-power ansatz
+\begin{equation}\label{eq:jarlskog_pi_ansatz}
+J_{\mathrm{geo}}(a,n)=\frac{1}{a\pi^n},\qquad a\in\NNpos,\ n\in\NNpos,
+\end{equation}
+which matches volume-normalized geometric costs and their inverses.
+Rigidity is stated at bounded multiplicity and exponent complexity; Propositions~\ref{prop:jarlskog_rigidity} and~\ref{prop:jarlskog_minimax_rigidity} fix the corresponding finite search domain.
+
+\begin{proposition}[Low-complexity $\pi$-power rigidity for CKM CP violation]\label{prop:jarlskog_rigidity}
+Let $J_{\mathrm{PDG}}=3.00\times 10^{-5}$ be the PDG central value. Among all pairs $(a,n)$ with $1\le a\le 50$ and $1\le n\le 20$, the unique minimizer of $|J_{\mathrm{geo}}(a,n)-J_{\mathrm{PDG}}|$ is $(a,n)=(11,7)$, yielding
+\begin{equation}
+J_{\mathrm{geo}}=\frac{1}{11\pi^7}\approx 3.009942547\times 10^{-5},
+\end{equation}
+with relative deviation $3.31\times 10^{-3}$, equivalently $\log(J_{\mathrm{geo}}/J_{\mathrm{PDG}})\approx 3.31\times 10^{-3}$. The next-best pair in the same domain has relative deviation at least $9.37\times 10^{-3}$.
+\end{proposition}
+\begin{proof}
+This is a finite check by enumeration over $(a,n)$ in the stated domain.
+\end{proof}
+
+\begin{proposition}[Minimax rigidity over the PDG interval]\label{prop:jarlskog_minimax_rigidity}
+Let the PDG reference interval be $J\in[J_-,J_+]$ with $J_-:=2.85\times 10^{-5}$ and $J_+:=3.15\times 10^{-5}$ \cite{PDGRPP2024}. Among all pairs $(a,n)$ with $1\le a\le 50$ and $1\le n\le 20$, the unique minimizer of the worst-case relative deviation
+\begin{equation}
+\max\!\left\{\left|\frac{J_{\mathrm{geo}}(a,n)-J_-}{J_-}\right|,\ \left|\frac{J_{\mathrm{geo}}(a,n)-J_+}{J_+}\right|\right\}
+\end{equation}
+is $(a,n)=(11,7)$, with worst-case value $5.61\times 10^{-2}$. The next-best pair in the same domain has worst-case value at least $5.65\times 10^{-2}$.
+\end{proposition}
+\begin{proof}
+This is a finite check by enumeration over $(a,n)$ in the stated domain, evaluating the worst-case error at the endpoints $J_-$ and $J_+$.
+\end{proof}
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rrrcc@{}}
+\toprule
+$a$ & $n$ & $J_{\mathrm{geo}}(a,n)$ & $\Delta$ & $\Delta/J_{\mathrm{PDG}}$ \\
+\midrule
+\input{sections/generated/jarlskog_integer_search_rows.tex}%
+\\
+\bottomrule
+\end{tabular}
+\caption{Rigidity check for the CKM Jarlskog invariant in the ansatz $J_{\mathrm{geo}}(a,n)=1/(a\pi^n)$ over $1\le a\le 50$ and $1\le n\le 20$. Here $\Delta=J_{\mathrm{geo}}(a,n)-J_{\mathrm{PDG}}$ with reference value $J_{\mathrm{PDG}}=3.00\times 10^{-5}$ (PDG central value). Exhaustive enumeration shows $(a,n)=(11,7)$ is the unique minimizer in the stated domain.}
+\label{tab:jarlskog_integer_search}
+\end{table}
+
+\paragraph{Closed-theory assignment.}
+The rigidity winner $(a,n)=(11,7)$ is implemented by an explicit finite phase-space assignment.
+
+\begin{axiom}[CP-odd phase space and discrete multiplicity]\label{ax:cp_phase_space}
+Define the CP-odd readout sector by
+\begin{equation}
+\mathcal{M}_{\mathrm{CP}}\cong SO(3)\times SO(3)\times SO(3)\times \mathbb{R}P^1,
+\end{equation}
+so $\mathrm{Vol}(\mathcal{M}_{\mathrm{CP}})=\pi^7$ under the canonical normalization (Appendix~\ref{app:group_volumes}). Define the discrete multiplicity by the combined gauge-sector dimension
+\begin{equation}
+d_{\mathrm{CP}}:=\dim(\mathfrak{su}(3))+\dim(\mathfrak{su}(2))=8+3=11,
+\end{equation}
+and set
+\begin{equation}
+J_{\mathrm{geo}}:=\frac{1}{d_{\mathrm{CP}}\,\mathrm{Vol}(\mathcal{M}_{\mathrm{CP}})}=\frac{1}{11\pi^7}.
+\end{equation}
+\end{axiom}
+
+This fixes both the exponent $n=7$ and the coefficient $a=11$ by geometry and finite group data rather than by fitting a free holonomy connection (Remark~\ref{rem:holonomy_rigidity}).
+
+\begin{proposition}[Finite primitive factorization rigidity for the CP-odd phase space]\label{prop:cp_phase_factorization_rigidity}
+Fix the primitive set $\mathfrak{P}$ from Axiom~\ref{ax:primitive_phase_spaces} with canonical volumes (Appendix~\ref{app:group_volumes}). Since each primitive contributes at most a $\pi^2$ factor, any product of three primitives has $\pi$-power at most $6$, so the $\pi^7$ scaling forces at least four primitive factors. Among all products of exactly four primitives (order irrelevant), the condition
+\begin{equation}
+\mathrm{Vol}(\mathcal{M})=\pi^7
+\end{equation}
+holds if and only if
+\[
+\mathcal{M}\cong SO(3)\times SO(3)\times SO(3)\times \mathbb{R}P^1.
+\]
+\end{proposition}
+\begin{proof}
+From Appendix~\ref{app:group_volumes}, each primitive volume is one of $2\pi$, $2\pi^2$, $\pi^2$, $\pi$. Any four-factor product has the form $2^{m}\pi^{k}$ with $m\in\{0,1,2,3,4\}$ and $k\in\{4,5,6,7,8\}$. The constraint $2^{m}\pi^{k}=\pi^7$ forces $m=0$ and $k=7$, so no factor can be $U(1)$ or $SU(2)$, and the exponent pattern must be $(2,2,2,1)$. Hence the factors are three copies of $SO(3)$ and one copy of $\mathbb{R}P^1$.
+\end{proof}

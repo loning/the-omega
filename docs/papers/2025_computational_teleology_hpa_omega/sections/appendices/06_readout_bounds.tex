@@ -1,0 +1,169 @@
+\section{Quantitative readout bounds: discrepancy, resolution, and digit depth}
+\label{app:readout_bounds}
+
+This appendix turns several qualitative readout claims into quantitative statements that can be cited or verified directly.
+
+\subsection{A sharp discrepancy identity for mechanical words}
+Let $\alpha\in(0,1)\setminus\QQ$ and let $\beta\in\RR$.
+Define the mechanical word
+\begin{equation}
+ s_k := \lfloor (k+1)\alpha+\beta\rfloor-\lfloor k\alpha+\beta\rfloor \in\{0,1\}.
+\label{eq:mechanical_word_floor_def}
+\end{equation}
+Then the prefix sum satisfies the exact identity
+\begin{equation}
+S_N:=\sum_{k=0}^{N-1} s_k=\lfloor N\alpha+\beta\rfloor-\lfloor\beta\rfloor.
+\end{equation}
+This is equivalent to Equation~\eqref{eq:sturmian_prefix_sum} after fixing the window convention.
+
+\begin{proposition}[Uniform discrepancy bound]
+\label{prop:uniform_discrepancy}
+For all $N\ge 1$,
+\begin{equation}
+\bigl|S_N - N\alpha\bigr| < 1.
+\label{eq:uniform_discrepancy_bound}
+\end{equation}
+Consequently,
+\begin{equation}
+\left|\frac{S_N}{N}-\alpha\right|<\frac{1}{N}.
+\label{eq:alpha_estimate_error}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Write $S_N=\lfloor N\alpha+\beta\rfloor-\lfloor\beta\rfloor$. Then
+$S_N \le N\alpha+\beta-\lfloor\beta\rfloor < S_N+1$. Subtract $N\alpha$ and note $\beta-\lfloor\beta\rfloor\in[0,1)$.
+\end{proof}
+
+\begin{corollary}[Prefix length for relative accuracy]
+\label{cor:prefix_for_epsilon}
+If a readout task reduces to estimating $\alpha$ by $S_N/N$ and one requires error $\le \epsilon$, it suffices to take
+\begin{equation}
+N\ge \left\lceil\frac{1}{\epsilon}\right\rceil.
+\end{equation}
+\end{corollary}
+
+This is the simplest quantitative instance of Definition~\ref{def:readout_space_complexity}: in the Sturmian scan model, readout resolution improves at least as $O(1/N)$.
+
+\subsection{Denjoy--Koksma control at continued-fraction times}
+Let $\alpha=[0;a_1,a_2,\dots]$ and let $p_n/q_n$ be its convergents.
+Denjoy--Koksma type inequalities bound Birkhoff sums of bounded-variation functions along the rotation by $\alpha$ at times $q_n$; see standard discrepancy references \cite{KuipersNiederreiter1974}.
+
+\begin{theorem}[Denjoy--Koksma inequality for rotations (quoted)]
+\label{thm:denjoy_koksma}
+Let $f:S^1\to\RR$ have bounded variation $\mathrm{Var}(f)$. For irrational rotation $T(x)=x+\alpha$ and convergent denominators $q_n$,
+\begin{equation}
+\left|\sum_{k=0}^{q_n-1} f(T^k x) - q_n\int_{S^1} f\,d\mu\right|\le \mathrm{Var}(f)
+\end{equation}
+for all $x$.
+\end{theorem}
+
+Specializing $f$ to the indicator of an interval (a window), $\mathrm{Var}(f)=2$, so the deviation of the window-hit count from its mean is uniformly bounded at the convergent times.
+This yields a rigorous notion of ``stability scales'' tied to continued fractions.
+
+\subsection{Golden anti-resonance as a quantitative extremum}
+The golden ratio $\varphi$ is extremal for rational approximation.
+Hurwitz's theorem implies that every irrational $\alpha$ has infinitely many rationals $p/q$ with $|\alpha-p/q|<1/(\sqrt{5}q^2)$, and the constant $1/\sqrt{5}$ is optimal.
+Moreover, for $\alpha=\varphi^{-1}$ one has the lower bound
+\begin{equation}
+\left|\varphi^{-1}-\frac{p}{q}\right|\ge \frac{1}{\sqrt{5}\,q^2}
+\qquad \text{for all }\frac{p}{q}\in\QQ.
+\label{eq:golden_worst_approx}
+\end{equation}
+See, for example, \cite[Ch.~II]{Cassels1957}.
+
+This quantifies the ``anti-resonance'' claim: the golden scan minimizes the possibility of short rational lock-in at a given denominator budget.
+
+\subsection{Digit depth scaling in the golden branch}
+In the golden branch, convergent denominators are Fibonacci numbers, $q_n=F_{n+1}$.
+Using Binet's formula one has the standard bounds for $n\ge 2$,
+\begin{equation}
+\varphi^{n-2}\le F_n\le \varphi^{n-1}.
+\label{eq:fibonacci_bounds}
+\end{equation}
+Therefore the Zeckendorf digit depth $m$ (the index of the largest Fibonacci number used) satisfies
+\begin{equation}
+ m = \Theta(\log N),\qquad N\sim F_m\sim \frac{\varphi^m}{\sqrt{5}}.
+\label{eq:zeckendorf_log_scaling}
+\end{equation}
+Combining this with Corollary~\ref{cor:prefix_for_epsilon}, one obtains an explicit resolution-to-digit-depth relation:
+
+\begin{proposition}[Resolution vs digit depth (golden case)]
+\label{prop:resolution_digit_depth}
+To achieve relative readout error $\le\epsilon$ via Sturmian prefix statistics, it suffices to take $N\ge \lceil 1/\epsilon\rceil$.
+In the golden branch, the corresponding Zeckendorf digit depth obeys
+\begin{equation}
+ m \ge \log_{\varphi}\!\left(\sqrt{5}\,\epsilon^{-1}\right) + O(1).
+\end{equation}
+Thus $S_{\mathrm{read}}(\epsilon)=\Theta(\epsilon^{-1})$ while $S_{\mathrm{code}}=\Theta(\log(\epsilon^{-1}))$.
+\end{proposition}
+
+These relations make the ``space as resolution'' claim quantitative and highlight a dual notion of space: raw prefix length (a streaming memory cost) versus canonical digit depth (a compressed description length).
+
+\subsection{Stability under imperfect readout: a bit-flip noise model}
+\label{app:readout_noise}
+The bounds above are deterministic statements about the underlying mechanical word $s_k\in\{0,1\}$.
+To connect to realistic readout, it is useful to quantify how the required prefix length changes under a minimal noise model.
+
+\paragraph{Noise model.}
+Assume the observed bits are corrupted by independent bit-flips:
+\begin{equation}
+\widetilde s_k := s_k\oplus \xi_k,\qquad \xi_k\sim \mathrm{Bernoulli}(p),\qquad 0\le p<\tfrac12,
+\end{equation}
+independently over $k$.
+Let $S_N=\sum_{k=0}^{N-1}s_k$ and $\widetilde S_N=\sum_{k=0}^{N-1}\widetilde s_k$.
+Then
+\begin{equation}
+\mathbb{E}[\widetilde S_N]=(1-2p)\,S_N+pN.
+\end{equation}
+If $p$ is known (or separately calibrated), a natural unbiased estimator of $S_N$ is
+\begin{equation}
+\widehat S_N:=\frac{\widetilde S_N-pN}{1-2p},
+\qquad
+\widehat\alpha_N:=\frac{\widehat S_N}{N}.
+\label{eq:debiased_alpha_estimator}
+\end{equation}
+
+\begin{proposition}[High-probability accuracy under bit-flip noise]
+\label{prop:bitflip_accuracy}
+Fix $\delta\in(0,1)$.
+Under the model above, for all $N\ge 1$,
+\begin{equation}
+\mathbb{P}\!\left(
+\bigl|\widehat\alpha_N-\alpha\bigr|
+\ \le\ \frac{1}{N}+\frac{1}{1-2p}\sqrt{\frac{\log(2/\delta)}{2N}}
+\right)\ \ge\ 1-\delta.
+\label{eq:alpha_noise_bound}
+\end{equation}
+Consequently, to ensure $|\widehat\alpha_N-\alpha|\le \epsilon$ with probability at least $1-\delta$, it suffices to take
+\begin{equation}
+N\ \ge\ \max\!\left\{\left\lceil \epsilon^{-1}\right\rceil,\ \left\lceil \frac{\log(2/\delta)}{2(1-2p)^2\,(\epsilon-1/N)^2}\right\rceil\right\},
+\end{equation}
+and in the noise-dominated regime one has the scaling $N=\Theta\!\bigl((1-2p)^{-2}\epsilon^{-2}\log(1/\delta)\bigr)$.
+\end{proposition}
+
+\begin{proof}
+Decompose
+\begin{equation}
+\widehat\alpha_N-\alpha
+\ =\ \left(\frac{S_N}{N}-\alpha\right)
+\ +\ \frac{1}{N(1-2p)}\left(\widetilde S_N-\mathbb{E}[\widetilde S_N]\right).
+\end{equation}
+The deterministic discrepancy bound gives $|S_N/N-\alpha|<1/N$ (Proposition~\ref{prop:uniform_discrepancy}).
+Conditional on $\{s_k\}$, the random variables $\widetilde s_k-\mathbb{E}[\widetilde s_k]$ are independent and lie in $[-1,1]$.
+Hoeffding's inequality \cite{Hoeffding1963} yields
+\begin{equation}
+\mathbb{P}\!\left(
+\left|\widetilde S_N-\mathbb{E}[\widetilde S_N]\right|
+\ \le\ \sqrt{\frac{N\log(2/\delta)}{2}}
+\right)\ \ge\ 1-\delta.
+\end{equation}
+Divide by $N(1-2p)$ and combine with the deterministic term to obtain \eqref{eq:alpha_noise_bound}.
+\end{proof}
+
+\begin{remark}[Interpretation for readout space complexity]
+Proposition~\ref{prop:bitflip_accuracy} cleanly separates two contributions:
+the intrinsic $O(1/N)$ deterministic discrepancy term from the rotation coding, and a stochastic $O(N^{-1/2})$ term induced by measurement noise.
+Thus, for sufficiently small $\epsilon$ the noise-dominated regime forces the familiar $N=\Theta(\epsilon^{-2})$ sample-complexity scaling.
+This is the quantitative sense in which imperfect readout increases the operational space cost of stabilization.
+\end{remark}

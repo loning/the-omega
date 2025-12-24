@@ -1,0 +1,117 @@
+\section{Formal Existence Proofs}
+\label{app:formal_proofs}
+
+\subsection{Logical dependency map}
+\label{sec:dependency_map}
+For orientation, the core logical dependencies used throughout this manuscript can be summarized as follows:
+\begin{itemize}
+    \item \textbf{Static state and intrinsic parametrizations.} Axiom~O1 (a single global state) is combined with regulated/type-I viewpoints and modular theory to supply a canonical intrinsic parameter on an observer algebra (Part~II; Appendix~\ref{app:modular_time}).
+    \item \textbf{Scan--projection readout and canonical coding.} Axioms~O5--O6 (unitary scan and projection readout) motivate an irrational-rotation model for tick-indexed readouts, which implies Sturmian (mechanical-word) structure and canonical Ostrowski coordinates; in the golden case, the admissibility constraints degenerate to a binary Zeckendorf grammar (Part~II; Appendix~\ref{app:ostrowski}; \cite{Ma2025HPA}).
+    \item \textbf{Robustness of readouts.} Discrepancy control for rotation orbits (Denjoy--Koksma/Ostrowski block decompositions) yields explicit stability bounds for prefix counts and for window-perturbation flips in binary readouts (Part~VI; Appendix~\ref{app:orbit_calculus}; \cite{Ma2025HPA}).
+    \item \textbf{Local QCA testbeds and continuum diagnostics.} The locality-preserving PQCA/QCA framework admits checkable one-dimensional reductions (e.g.\ Fibonacci cut-and-project textures) that support Dirac-limit diagnostics and symmetry-based MDR constraints (Part~III; Appendix~\ref{app:fib_dqca}; Appendix~\ref{app:mdr_symmetry}). The higher-dimensional continuum-limit closure is isolated as Conjecture~\ref{conj:quasicrystal_dirac} and reduced to two quantitative control tasks in Appendix~\ref{app:homogenization}, Proposition~\ref{prop:quasicrystal_homogenization_reduction}.
+    \item \textbf{Holographic encoding and algebraic locality.} Axiom~O4 (holographic encoding as an approximate isometry on a code subspace) supplies the operator-algebra quantum error-correction / entanglement-wedge reconstruction viewpoint and the associated non-factorization interpretation relevant to the AMPS tension (Appendix~\ref{app:isometry}).
+    \item \textbf{Internal sector and geometric matching data.} The octonionic/$G_2$ internal-sector ansatz (Assumption~M2) motivates a constrained internal coordinate organization and the working geometric matching ans\"atze for selected dimensionless constants (Part~IV; Appendix~\ref{app:constants_proof}; \cite{Ma2025HPA}). The corresponding EFT/RG closure of these matching data is formulated as Conjecture~\ref{conj:eft_matching}.
+\end{itemize}
+
+\subsection{Finite-information localization and approximate factorization}
+We formalize the finite-information postulate in a way compatible with operator-algebraic locality. In lattice/graph models with finite-dimensional local factors, the quasi-local observable algebra is the norm completion of the inductive limit of local matrix algebras (the standard quasi-local $C^\ast$-algebra construction; see, e.g., \cite{BratteliRobinson1987OAQSM1}). In continuum AQFT, local von Neumann algebras are typically type~III and do not admit an exact tensor factorization $\mathcal{H}\simeq\mathcal{H}_R\otimes\mathcal{H}_{R^c}$; this is tied to ultraviolet entanglement across sharp boundaries (see, e.g., \cite{Haag1996}). The finite-information axiom is therefore interpreted as a statement about a \emph{regulated/operational} description: at finite resolution (or on a finite-dimensional code subspace), the relevant effective algebra is type~I and admits an approximate subsystem structure.\par
+
+\begin{theorem}[Finite-information effective dimension]
+\label{thm:finite_information_dimension}
+Let $V$ be a finite causal region with boundary area $A(\partial V)$.
+Assume that the set of physically distinguishable states accessible to observers localized in $V$ obeys a Bekenstein--Hawking entropy bound \cite{bekenstein1973black,hawking1975particle}
+\begin{equation}
+    S_{\max}(V)\ \le\ \frac{A(\partial V)}{4 l_P^2}.
+\end{equation}
+Then any family of pairwise orthogonal operational states $\{|\psi_i\rangle\}_{i=1}^N$ localized in $V$ has cardinality bounded by
+\begin{equation}
+    N\ \le\ \exp\!\left(\frac{A(\partial V)}{4 l_P^2}\right).
+\end{equation}
+Equivalently, the operational state space in $V$ can be supported on an effective finite-dimensional Hilbert space $\mathcal{H}^{\mathrm{eff}}_V$ of dimension at most $\exp(A(\partial V)/4l_P^2)$.
+\end{theorem}
+\begin{proof}[Reference]
+This is immediate since the maximally mixed state on the span of $N$ orthogonal states has entropy $S=\ln N$.
+\end{proof}
+
+\paragraph{Remark (split property and the continuum limit).}
+In theories satisfying the split property, for nested regions $V\subset V_{\epsilon}$ there exists an intermediate type~I factor $\mathfrak{N}$ with $\mathfrak{A}(V)\subset \mathfrak{N}\subset \mathfrak{A}(V_{\epsilon})$ \cite{Buchholz1987}. This provides a controlled notion of localization at finite resolution and an approximate tensor-product structure on the associated state spaces, while the sharp-boundary limit recovers type~III behavior.
+In Omega Theory, statements such as $\mathcal{H}\cong\bigotimes_x\mathcal{H}_x$ are to be read in this regulated/code-subspace sense (cf.\ Part~II), not as a claim about exact factorization in continuum QFT.\par
+
+\paragraph{Corollary (area-limited independent degrees of freedom).}
+If a microscopic model admits a local tensor-factor description on a graph, but the physically realized states in a region $V$ are restricted to an operational/code subspace obeying the bound above, then the number of independent degrees of freedom in $V$ is limited by area rather than volume. This is the sense in which the holographic constraint enforces redundancy of bulk degrees of freedom in a regulated discrete description.
+
+\subsection{Modular flow as a canonical intrinsic clock}
+\label{app:modular_time}
+Part~II introduces an intrinsic parameter $\tau$ by writing a one-parameter family of phase-twisted representatives of the Omega ray. In an operator-algebraic setting, a canonical one-parameter flow is provided by modular theory. Since the regulated/QCA description used throughout this manuscript is effectively finite-dimensional on relevant code subspaces, we record the finite-dimensional modular statement explicitly.
+
+\begin{theorem}[Modular automorphism group (finite-dimensional case)]
+\label{thm:modular_finite}
+Let $\mathcal{H}$ be finite-dimensional and let $\rho$ be a full-rank density matrix on $\mathcal{H}$. Define the faithful state $\omega(A)\equiv \mathrm{Tr}(\rho\,A)$ on $\mathcal{B}(\mathcal{H})$. Then the maps
+\begin{equation}
+    \sigma_t^\omega(A)\ \equiv\ \rho^{it}\,A\,\rho^{-it}\qquad (t\in\mathbb{R})
+\end{equation}
+form a one-parameter group of $*$-automorphisms of $\mathcal{B}(\mathcal{H})$ that leaves $\omega$ invariant: $\omega(\sigma_t^\omega(A))=\omega(A)$ for all $t$.
+Equivalently, writing the modular Hamiltonian as $K\equiv -\ln\rho$, one has $\sigma_t^\omega(A)=e^{-itK}A\,e^{itK}$.
+\end{theorem}
+\begin{proof}[Reference]
+This is the standard finite-dimensional case of the modular automorphism group; see, e.g., \cite{Takesaki2002}.
+\end{proof}
+
+\begin{proposition}[Pictures and representative families for automorphisms]
+\label{prop:pictures_automorphisms}
+Let $\mathfrak{M}\subset\mathcal{B}(\mathcal{H})$ be a $*$-algebra and let $U_t$ be a one-parameter unitary group on $\mathcal{H}$ implementing automorphisms $\alpha_t$ on $\mathfrak{M}$ by
+\begin{equation}
+    \alpha_t(A)\equiv U_t^\dagger A\,U_t\qquad (A\in\mathfrak{M}).
+\end{equation}
+Fix a normalized vector $|\Omega\rangle$ and define the associated state $\omega(A)\equiv\langle\Omega|A|\Omega\rangle$.
+Then for every $A\in\mathfrak{M}$ one has the identity
+\begin{equation}
+    \langle \Omega|\,\alpha_t(A)\,|\Omega\rangle
+    \;=\;
+    \langle \Omega(t)|\,A\,|\Omega(t)\rangle,
+    \qquad |\Omega(t)\rangle\equiv U_t|\Omega\rangle.
+\end{equation}
+In particular, a $\tau$-indexed family of vectors $|\Omega(\tau)\rangle$ can be used as a notational representative for an automorphism family on observables, without committing to an ontological external-time evolution of the underlying state.
+\end{proposition}
+\begin{proof}
+By unitarity, $\langle\Omega(t)|A|\Omega(t)\rangle=\langle\Omega|U_t^\dagger A U_t|\Omega\rangle=\langle\Omega|\alpha_t(A)|\Omega\rangle$.
+\end{proof}
+
+\paragraph{Remark (general von Neumann algebras).}
+For a general von Neumann algebra $\mathfrak{M}$ and a faithful normal state $\omega$, the Tomita--Takesaki theorem provides a canonical modular automorphism group $\{\sigma_t^\omega\}_{t\in\mathbb{R}}$ characterized (in the GNS representation) by conjugation with the modular operator. This is the natural operator-algebraic sense in which a state determines an intrinsic flow; see \cite{Takesaki2002,ConnesRovelli1994}.
+
+\subsection{Existence of the Golden MERA Isometry}
+We record a purely kinematic existence statement for the finite-depth Golden MERA map used throughout this manuscript: under the local tensor assumptions of Assumption~\ref{assump:M3}, the truncated encoding map $\Phi_L$ is an isometry. This matches the isometry component of Axiom~O4 at finite depth; scale-invariant limits and error-correction properties require additional assumptions (Appendix~\ref{app:isometry}).
+
+\begin{theorem}[Golden MERA encoding isometry (finite depth)]
+\label{thm:golden_isometry}
+Fix a finite-depth truncation $L$ of the Golden MERA network and assume that each disentangler tensor $D^{(s)}$ is unitary and each coarse-graining tensor $W^{(s)}$ is an isometry (so $W^{(s)\dagger}W^{(s)}=I$ on its input legs). Let $\Phi_L:\mathcal{H}_{bulk,L}\to\mathcal{H}_{boundary}$ denote the resulting layer composition. Then $\Phi_L$ is an isometry:
+\begin{equation}
+    \Phi_L^\dagger \Phi_L = I_{\mathcal{H}_{bulk,L}}.
+\end{equation}
+\end{theorem}
+\begin{proof}[Reference]
+This is immediate since a tensor product of isometries is an isometry and a finite composition of isometries is an isometry.
+\end{proof}
+\paragraph{Remark (error correction vs isometry).}
+The isometry statement above is purely kinematic. Approximate OAQEC/entanglement-wedge reconstruction requires additional structure (e.g.\ perfect or $\epsilon$-perfect tensors and a suitable code subspace); see Appendix~\ref{app:isometry} and \cite{Pastawski2015,Harlow2017}.
+
+\subsection{Operator-algebraic superselection viewpoint on baby universes}
+\label{app:baby_universes}
+The factorization $\mathcal{H} = \otimes \mathcal{H}_x$ appears to contradict the existence of ``baby-universe''/$\alpha$-parameter sectors which are often modeled as implying a direct-sum structure $\mathcal{H} = \oplus_\alpha \mathcal{H}_\alpha$ \cite{MarolfMaxfield2020}. In this manuscript we interpret this tension via the \textbf{Omega Superselection Principle}.
+
+\begin{theorem}[Superselection of the $\alpha$-parameters (operator-algebraic form)]
+\label{thm:alpha_superselection}
+Let $(\pi,\mathcal{H},|\Omega\rangle)$ be a GNS representation of the Omega state $\omega_\Omega$ and let $\mathfrak{A}_{loc}\subset\mathcal{B}(\mathcal{H})$ denote the von Neumann algebra generated by all quasi-local observables. If a bounded operator $\hat{B}\in\mathcal{B}(\mathcal{H})$ commutes with $\mathfrak{A}_{loc}$,
+\begin{equation}
+    [\hat{B}, \hat{A}] = 0\qquad \forall\,\hat{A}\in\mathfrak{A}_{loc},
+\end{equation}
+\noindent
+then $\hat{B}$ lies in the commutant $\mathfrak{A}_{loc}'$. In particular, if the representation is irreducible (equivalently $\mathfrak{A}_{loc}'=\mathbb{C}\,I$) or more generally factorial, then $\hat{B}$ is a multiple of the identity and its eigenvalue is a superselection parameter fixed by the choice of $\omega_\Omega$.
+\end{theorem}
+\begin{proof}[Reference]
+This is the standard commutant/Schur-lemma argument; see, e.g., \cite{Takesaki2002}.
+\end{proof}
+\paragraph{Remark (baby universes as central data).}
+In gravitational path-integral discussions, ``baby-universe'' operators are often modeled as global/topological degrees of freedom that commute with the quasi-local algebra. Theorem~\ref{thm:alpha_superselection} states the corresponding operator-algebraic fact: if such operators commute with all quasi-local observables in the physical representation, then they reduce to fixed central data (a choice of sector) rather than dynamical variables within that sector.
+

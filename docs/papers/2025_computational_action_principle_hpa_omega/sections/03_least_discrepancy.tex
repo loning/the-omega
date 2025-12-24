@@ -1,0 +1,206 @@
+\section{Least discrepancy: from mismatch accumulation to phase potential and the Newtonian limit}
+\label{sec:least_discrepancy}
+
+\subsection{Discrepancy as a readout mismatch measure}
+\label{subsec:discrepancy_definition}
+
+For a point set $\{x_n\}_{n=1}^N\subset[0,1)$, define the one-dimensional \emph{star discrepancy} \cite{KuipersNiederreiter1974}
+\begin{equation}
+  D_N^{\ast} := \sup_{a\in[0,1]}\left|\frac{1}{N}\sum_{n=1}^N \ind_{[0,a)}(x_n) - a\right|,
+  \qquad
+  E_N := N D_N^{\ast}.
+\end{equation}
+In the scan model $x_n=x_0+n\alpha\pmod{1}$, $E_N$ is interpreted as the accumulated mismatch between finite-prefix readout statistics and the uniform ontic measure. CAP treats mismatch as \emph{structural}: it cannot be eliminated by longer observation but can be controlled.
+
+To connect $D_N^\ast$ to scan readout stability, write the orbit as $x_n=x_0+n\alpha\pmod 1$ and consider interval-window counts
+\begin{equation}
+  s_n = \ind_W(x_0+n\alpha),
+  \qquad
+  S_N(W)=\sum_{n=0}^{N-1}s_n,
+  \qquad
+  W\subset[0,1)\ \text{an interval}.
+\end{equation}
+For $W=[0,a)$ one has $S_N(W)=\sum_{n=1}^N \ind_{[0,a)}(x_n)$ and therefore
+\begin{equation}
+  E_N = \sup_{a\in[0,1]}\left|S_N([0,a)) - Na\right|.
+\end{equation}
+Thus, a uniform interval-count bound immediately yields a star-discrepancy bound.
+
+\paragraph{Continued fractions and Ostrowski expansion.}
+Let $\alpha=[0;a_1,a_2,\dots]\in(0,1)\setminus\QQ$ and let $(q_k)_{k\ge 0}$ be the convergent denominators defined by
+\begin{equation}
+  q_{-1}=0,\quad q_0=1,\quad q_{k+1}=a_{k+1}q_k+q_{k-1}.
+\end{equation}
+Every $N\in\NN_{>0}$ admits a unique Ostrowski expansion relative to $\alpha$,
+\begin{equation}
+  N=\sum_{k=0}^m b_k q_k,
+\end{equation}
+with digits satisfying $0\le b_0<a_1$, $0\le b_k\le a_{k+1}$ for $k\ge 1$ and the standard admissibility constraint (if $b_k=a_{k+1}$ then $b_{k-1}=0$); see e.g.\ \cite{AlloucheShallit2003,Lothaire2002}.
+
+\begin{theorem}[Ostrowski--Denjoy--Koksma bound for interval counts]
+\label{thm:ostrowski_dk_cap}
+Let $\alpha=[0;a_1,a_2,\dots]\in(0,1)\setminus\QQ$ and let $q_k$ be the convergent denominators.
+Let $W\subset[0,1)$ be any interval and let $S_N(W)=\sum_{n=0}^{N-1}\ind_W(x_0+n\alpha)$.
+For every $N\in\NN_{>0}$ write the Ostrowski expansion $N=\sum_{k=0}^m b_k q_k$.
+Then for every $x_0\in[0,1)$,
+\begin{equation}
+  \left|S_N(W) - N\,\mu(W)\right|
+  \le 2\sum_{k=0}^m b_k
+  \le 2\sum_{k=0}^m a_{k+1},
+\end{equation}
+where $\mu$ is Lebesgue measure on $[0,1)$.
+\end{theorem}
+
+\begin{proof}
+Let $f:=\ind_W-\mu(W)$. Then $f$ has bounded variation $\mathrm{Var}(f)=2$ and $\int_0^1 f\,\dd\mu=0$.
+For each $k\ge 0$, the Denjoy--Koksma inequality for rotations gives a uniform bound at convergent times:
+\begin{equation}
+  \left|\sum_{j=0}^{q_k-1} f(x_0+j\alpha)\right|\le \mathrm{Var}(f)=2,
+\end{equation}
+see e.g.\ \cite{Denjoy1932,Koksma1935,KatokHasselblatt1995}.
+Now expand $N=\sum_{k=0}^m b_k q_k$ and decompose the length-$N$ sum into $b_m$ blocks of length $q_m$, then $b_{m-1}$ blocks of length $q_{m-1}$, and so on (the standard Ostrowski block decomposition).
+Applying the $q_k$-time bound to each block yields
+\begin{equation}
+  \left|\sum_{n=0}^{N-1} f(x_0+n\alpha)\right|
+  \le 2\sum_{k=0}^m b_k.
+\end{equation}
+Since $\sum_{n=0}^{N-1} f(x_0+n\alpha)=S_N(W)-N\mu(W)$, the first inequality follows.
+The second inequality follows from the digit bounds $b_0<a_1$ and $b_k\le a_{k+1}$ for $k\ge 1$.
+\end{proof}
+
+\begin{corollary}[Golden optimality for a discrepancy proxy]
+\label{cor:golden_proxy_cap}
+Fix a depth $m\ge 0$ and define the continued-fraction proxy
+\begin{equation}
+  C_m(\alpha):=\sum_{k=0}^m a_{k+1},
+  \qquad \alpha=[0;a_1,a_2,\dots].
+\end{equation}
+Then $C_m(\alpha)\ge m+1$ for every irrational $\alpha$, with equality if and only if $a_i=1$ for all $1\le i\le m+1$ (the golden branch prefix).
+In particular, the golden slope $\alpha=\varphi^{-1}=[0;1,1,1,\dots]$ uniquely minimizes the upper bound in Theorem~\ref{thm:ostrowski_dk_cap} at every finite depth.
+\end{corollary}
+
+\begin{proof}
+Since each $a_i\in\NN$, one has $a_i\ge 1$ and therefore $C_m(\alpha)\ge m+1$, with equality if and only if $a_i=1$ for $1\le i\le m+1$.
+The uniqueness of continued fractions yields the last statement.
+\end{proof}
+
+\begin{remark}[Star discrepancy bound and logarithmic growth for bounded type]
+Applying Theorem~\ref{thm:ostrowski_dk_cap} to $W=[0,a)$ and taking the supremum over $a$ yields
+\begin{equation}
+  E_N = N D_N^\ast \le 2\sum_{k=0}^m a_{k+1}.
+\end{equation}
+If $\alpha$ is of bounded type, i.e.\ $\sup_k a_k\le A<\infty$, then $E_N\le 2A(m+1)$.
+Moreover, since $a_{k+1}\ge 1$ implies $q_{k+1}\ge q_k+q_{k-1}$, one has $q_k\ge F_k$ (Fibonacci), hence $m=O(\log N)$ whenever $q_m\le N<q_{m+1}$. Therefore $E_N=O(\log N)$ for bounded type slopes.
+\end{remark}
+
+This quantitative control should be contrasted with resonance-prone slopes that admit exceptionally good rational approximations on intermediate scales. In CAP semantics, good rational approximation corresponds to \emph{phase locking} over finite depth: the scan visits window boundaries in structured patterns that amplify readout mismatch before equidistribution asserts itself. Least discrepancy is therefore not only a statement about asymptotic equidistribution but a statement about finite-resolution stability under repeated projection.
+
+\subsection{Finite-depth optimality of the golden branch}
+\label{subsec:golden_optimality}
+
+The previous subsection provides a concrete finite-depth proxy $C_m(\alpha)=\sum_{k=0}^m a_{k+1}$ controlling mismatch via Denjoy--Koksma and Ostrowski decomposition. The golden slope
+\begin{equation}
+  \alpha_{\varphi} := \varphi^{-1} = \frac{\sqrt{5}-1}{2},
+  \qquad
+  [0;1,1,1,\dots],
+\end{equation}
+minimizes this proxy uniformly at every depth (Corollary~\ref{cor:golden_proxy_cap}) and is the archetype of ``most badly approximable'' numbers \cite{Cassels1957}.
+
+\paragraph{Canonical ticks via Ostrowski truncation.}
+At finite depth $m$, an observer effectively accesses only an $m$-truncated Ostrowski expansion of scan indices; this induces a discrete tick structure whose stability depends on the continued-fraction prefix \cite{AlloucheShallit2003,Lothaire2002}. In the golden branch, the truncation specializes to Zeckendorf/Fibonacci addressing, supplying a canonical ``clock'' without external tuning \cite{Zeckendorf1972}.
+
+\noindent In CAP terms, the golden branch is not aesthetic but variational: for a fixed readout resolution, it minimizes the \emph{worst-case} upper bound controlling mismatch accumulation, thereby lowering the cost required for long-term self-consistent readout. Pointwise $E_N$ at a fixed $N$ and $x_0$ can still fluctuate among bounded-type slopes (Section~\ref{sec:numerics}); CAP's claim is the uniform stability of the bound that governs sustainable readout.
+
+\subsection{Phase potential and phase pressure: mismatch sources generate \texorpdfstring{$1/r$}{1/r} fields}
+\label{subsec:phase_potential}
+
+Omega Dynamics lifts coarse-grained mismatch into a continuum source \cite{Ma2025HPD}. Let $\sigma(x)$ be a mismatch density obtained from a regulated continuum limit of $E_N$ (Convention R1). We define the \emph{phase potential} $\Phi$ as the stationary point of the quadratic functional $S_\Phi[\Phi;\sigma]$ in \eqref{eq:phase_energy_functional}; equivalently, $\Phi$ solves the Poisson equation
+\begin{equation}
+  \Delta \Phi = 4\pi \rho_{\Phi},
+  \qquad
+  \rho_{\Phi} = \kappa_{\Phi}\, \sigma .
+\end{equation}
+We then define the \emph{phase pressure} vector field
+\begin{equation}
+  \mathbf{P}_{\Phi} := -\nabla \Phi .
+\end{equation}
+The Poisson form is the natural weak-field, slow-variation limit: in the Newtonian limit of GR one obtains $\Delta\phi=4\pi G\rho$ for the gravitational potential $\phi$ \cite{Wald1984,Carroll2004}. CAP uses the same operator as the minimal continuum lift of mismatch accumulation when promoted to an effective potential.
+
+\paragraph{Variational closure for the phase potential.}
+Independently of GR, the Poisson equation is the Euler--Lagrange equation of the quadratic field functional
+\begin{equation}
+\label{eq:phase_energy_functional}
+  S_{\Phi}[\Phi;\sigma]
+  := \int_{\RR^{3}}\dd^{3}x\,
+  \left(
+    \frac{1}{8\pi}\,|\nabla\Phi|^{2}
+    + \kappa_{\Phi}\,\sigma\,\Phi
+  \right),
+\end{equation}
+with fixed source $\sigma$ and appropriate decay/boundary conditions. Varying $\Phi\mapsto\Phi+\epsilon \delta\Phi$ and integrating by parts yields
+\begin{equation}
+  \delta S_{\Phi}
+  = \int \dd^{3}x\,\delta\Phi\left(-\frac{1}{4\pi}\Delta\Phi+\kappa_{\Phi}\sigma\right),
+  \qquad\Rightarrow\qquad
+  \Delta\Phi = 4\pi\kappa_{\Phi}\sigma.
+\end{equation}
+This recovers the Poisson-type sourcing used above. CAP therefore treats the Poisson lift not as an extra postulate but as the \emph{least-action} closure for a scalar potential field that encodes mismatch cost at the macroscopic level.
+
+\paragraph{Exterior solution and mismatch charge.}
+Let $\sigma$ be compactly supported in $\RR^3$ and assume $\Phi\to 0$ at spatial infinity. Using the Green function identity $\Delta(1/|\mathbf{x}|)=-4\pi\delta(\mathbf{x})$ \cite{ArfkenWeberHarris2013}, the unique decaying solution of
+\begin{equation}
+  \Delta\Phi = 4\pi \kappa_\Phi \sigma
+\end{equation}
+is
+\begin{equation}
+  \Phi(\mathbf{x})
+  = -\kappa_\Phi\int_{\RR^3}\frac{\sigma(\mathbf{y})}{|\mathbf{x}-\mathbf{y}|}\,\dd^3\mathbf{y}.
+\end{equation}
+In particular, for $r=|\mathbf{x}|\to\infty$ one has the multipole expansion
+\begin{equation}
+  \Phi(r)
+  = -\frac{M}{r} + O(r^{-2}),
+  \qquad
+  M := \kappa_\Phi \int_{\RR^3}\sigma(\mathbf{y})\,\dd^3\mathbf{y}.
+\end{equation}
+Thus the monopole coefficient $M$ is fixed by the total mismatch charge $\int\sigma$ and the calibration constant $\kappa_\Phi$.
+
+\begin{remark}[Signed discrepancy vs.\ mismatch charge]
+The empirical measure $\mu_N=\frac1N\sum_{n=1}^N \delta_{x_n}$ and the uniform measure $\mu$ satisfy $\int(\mu_N-\mu)=0$, so a \emph{signed} equidistribution defect would have zero total charge and would not generate a monopole $1/r$ term. CAP's $\sigma$ is therefore not the signed measure $\mu_N-\mu$; it is a \emph{nonnegative coarse-grained cost density} associated with sustaining readout consistency (and, in the Newtonian closure of Appendix~\ref{app:newtonian_limit}, it can be tied to an effective energy density). This is precisely why an isolated defect sector can carry nonzero total mismatch charge and produce a monopole potential.
+\end{remark}
+
+\begin{remark}[Flux characterization]
+By the divergence theorem and $\Delta\Phi=4\pi\kappa_\Phi\sigma$, one has
+\begin{equation}
+  \int_{S_R}\mathbf{P}_\Phi\cdot \dd\mathbf{S}
+  = \int_{B_R}\nabla\cdot \mathbf{P}_\Phi\,\dd^3\mathbf{x}
+  = -\int_{B_R}\Delta\Phi\,\dd^3\mathbf{x}
+  = -4\pi \kappa_\Phi \int_{B_R}\sigma\,\dd^3\mathbf{x},
+\end{equation}
+so in the limit $R\to\infty$ the monopole strength satisfies
+\begin{equation}
+  M = -\frac{1}{4\pi}\lim_{R\to\infty}\int_{S_R}\mathbf{P}_\Phi\cdot \dd\mathbf{S}.
+\end{equation}
+This Gauss-law relation parallels the curvature-flux characterization of topological sectors in Section~\ref{sec:matter_defects}.
+\end{remark}
+
+For an isolated localized source (compactly supported $\sigma$), the exterior solution is harmonic; in the far field the monopole term dominates, and for an approximately spherically symmetric core one may write
+\begin{equation}
+  \Phi(r) = -\frac{M}{r},
+  \qquad
+  \mathbf{a}(r) \equiv \mathbf{P}_{\Phi}(r) = -\frac{M}{r^{2}}\, \hat{\mathbf{r}} ,
+\end{equation}
+recovering the Newtonian inverse-square form as a mismatch-induced phase-pressure limit.
+
+\noindent This establishes CAP's first closed chain:
+\begin{equation}
+  \text{discrete readout mismatch (discrepancy)}
+  \;\Rightarrow\;
+  \text{phase potential } \Phi
+  \;\Rightarrow\;
+  \text{phase pressure}
+  \;\Rightarrow\;
+  \text{Newtonian limit}.
+\end{equation}
+
+

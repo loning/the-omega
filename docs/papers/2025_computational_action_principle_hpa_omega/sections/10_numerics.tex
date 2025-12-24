@@ -1,0 +1,144 @@
+\section{Numerical toy experiments: reproducible checks of key CAP links}
+\label{sec:numerics}
+
+This section provides two minimal simulations that check intermediate CAP links: (i) discrepancy accumulation across scan slopes; (ii) defect source $\to$ Poisson phase potential $\to$ approximate $1/r$ field.
+The corresponding reference implementations are included in Appendix~\ref{app:repro_code}.
+
+\subsection{Experiment A: star discrepancy for Kronecker sequences}
+\label{subsec:expA}
+
+We consider the Kronecker orbit
+\begin{equation}
+  x_n = (x_0 + n\alpha)\bmod 1,
+  \qquad x_0=0.12345,
+\end{equation}
+and compute the one-dimensional star discrepancy $D_N^\ast$ and the accumulated mismatch $E_N=ND_N^\ast$.
+
+\paragraph{Interpretation.}
+Theorem~\ref{thm:ostrowski_dk_cap} provides a worst-case upper bound on $E_N$ in terms of the continued-fraction proxy $C_m(\alpha)$, and Corollary~\ref{cor:golden_proxy_cap} shows that the golden branch minimizes this proxy at every finite depth. The empirical $E_N$ at a fixed $x_0$ can still fluctuate among bounded-type slopes; the relevant CAP statement is the uniform stability of the bound that governs sustainable readout.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rcccc@{}}
+\toprule
+$N$ & $\alpha=\varphi^{-1}$ (golden) & $\alpha=\sqrt{2}-1$ (silver) & $\alpha=\e-2$ & $\alpha=\pi-3$ \\
+\midrule
+200   & 1.790506 & 1.835317 & 2.557223 & 3.672939 \\
+500   & 1.802811 & 1.741094 & 1.599947 & 7.110437 \\
+1000  & 1.752245 & 1.706770 & 1.268638 & 8.140322 \\
+2000  & 1.911260 & 2.062419 & 1.973620 & 17.143745 \\
+5000  & 2.173936 & 2.258847 & 2.934050 & 37.846869 \\
+10000 & 2.942666 & 2.909670 & 2.845196 & 60.373228 \\
+20000 & 2.818185 & 2.595185 & 4.146376 & 61.891876 \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Accumulated mismatch $E_N=ND_N^\ast$ for selected scan slopes.} Smaller $E_N$ indicates lower finite-prefix mismatch. Bounded-type slopes (golden/silver) maintain low mismatch over large $N$, while more resonance-prone slopes can exhibit much larger $E_N$ in the same range.}
+\label{tab:EN}
+\end{table}
+
+\paragraph{Log-fit diagnostic.}
+To quantify the ``slow growth'' trend, we fit a simple finite-range model
+\begin{equation}
+  E_N \approx A\log N + B
+\end{equation}
+by least squares on the sampled $N$ values (Table~\ref{tab:EN}).
+This fit is not a theorem; it is an operational diagnostic consistent with the $E_N=O(\log N)$ bound for bounded-type slopes (Remark after Corollary~\ref{cor:golden_proxy_cap}).
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}lccc@{}}
+\toprule
+slope $\alpha$ & $A$ & $B$ & $R^2$ \\
+\midrule
+$\varphi^{-1}$ (golden) & 0.268900 & 0.109201 & 0.771640 \\
+$\sqrt{2}-1$ (silver) & 0.240277 & 0.316830 & 0.753593 \\
+$\e-2$ & 0.409865 & $-0.666467$ & 0.490403 \\
+$\pi-3$ & 14.499032 & $-83.104486$ & 0.899618 \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Finite-range log-fit for $E_N$ on the sampled $N$ values.} Bounded-type slopes show modest $A$ at this resolution; slopes with strong intermediate-scale rational approximations can exhibit much larger apparent coefficients in finite ranges.}
+\label{tab:EN_fit}
+\end{table}
+
+\paragraph{Dependence on the phase offset $x_0$.}
+Because $D_N^\ast$ is a \emph{star} discrepancy (intervals anchored at $0$), the measured $E_N$ depends on the phase offset $x_0$ even for a fixed slope $\alpha$.
+To avoid selection bias from a single seed, we report summary statistics over a uniform grid $x_0\in\{0,\tfrac{1}{16},\dots,\tfrac{15}{16}\}$ at $N=20000$:
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+slope $\alpha$ & $\min E_N$ & $\max E_N$ & mean & std \\
+\midrule
+$\varphi^{-1}$ (golden) & 2.818185 & 3.818185 & 3.073116 & 0.366927 \\
+$\sqrt{2}-1$ (silver) & 2.595185 & 3.595185 & 2.881189 & 0.308296 \\
+$\e-2$ & 3.146376 & 4.893425 & 3.879091 & 0.525654 \\
+$\pi-3$ & 37.309031 & 69.891876 & 53.662953 & 10.095011 \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{$x_0$-sensitivity of $E_N$ at fixed $N=20000$.} Values are computed over a uniform grid of 16 phase offsets. The worst-case theoretical upper bound from Theorem~\ref{thm:ostrowski_dk_cap} is uniform in $x_0$; the table reports empirical spread for anchored-interval discrepancy.}
+\label{tab:EN_x0}
+\end{table}
+
+\paragraph{Theorem-bound sanity check (golden/silver).}
+For quadratic irrational slopes with eventually periodic continued fractions (golden and silver), the proxy bound in Theorem~\ref{thm:ostrowski_dk_cap} can be computed explicitly from the convergent denominators. Table~\ref{tab:EN_bound_ratio} reports the corresponding $U_N:=2\sum_{j\le m+1}a_j$ (where $q_m\le N<q_{m+1}$) and the empirical ratio $E_N/U_N$.
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rccc ccc@{}}
+\toprule
+& \multicolumn{3}{c}{golden $\alpha=\varphi^{-1}$} & \multicolumn{3}{c}{silver $\alpha=\sqrt{2}-1$} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+$N$ & $E_N$ & $U_N$ & $E_N/U_N$ & $E_N$ & $U_N$ & $E_N/U_N$ \\
+\midrule
+200   & 1.790506 & 24 & 0.074604 & 1.835317 & 28 & 0.065547 \\
+500   & 1.802811 & 28 & 0.064386 & 1.741094 & 32 & 0.054409 \\
+1000  & 1.752245 & 32 & 0.054758 & 1.706770 & 36 & 0.047410 \\
+2000  & 1.911260 & 34 & 0.056214 & 2.062419 & 36 & 0.057289 \\
+5000  & 2.173936 & 38 & 0.057209 & 2.258847 & 40 & 0.056471 \\
+10000 & 2.942666 & 40 & 0.073567 & 2.909670 & 44 & 0.066129 \\
+20000 & 2.818185 & 44 & 0.064050 & 2.595185 & 48 & 0.054066 \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Empirical mismatch vs.\ theorem proxy upper bound.} Even with anchored-interval star discrepancy and a fixed $x_0$, the empirical $E_N$ remains well below the uniform proxy bound $U_N$ at these scales.}
+\label{tab:EN_bound_ratio}
+\end{table}
+
+\subsection{Experiment B: FFT solution of Poisson equation and an approximate \texorpdfstring{$1/r$}{1/r} phase potential}
+\label{subsec:expB}
+
+We solve the periodic-grid Poisson equation
+\begin{equation}
+  \Delta\Phi = 4\pi\rho
+\end{equation}
+in a three-dimensional periodic box using FFT, with $\rho$ a single lattice-site point source. After solving, we compute radial shell averages of $\Phi$ about the source center.
+
+For a representative run with $n=64$ grid, the near-field behavior is well-approximated by $\Phi(r)\sim -\mathrm{const}/r$ (so $r\langle\Phi\rangle$ is approximately constant) before periodic-boundary effects dominate at larger radii. The script also supports a least-squares fit of the form $\langle\Phi\rangle \approx C_0 - M/r$ over a chosen radius range and reports RMS residuals as a quantitative goodness-of-fit.
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rcc@{}}
+\toprule
+$r$ & $\langle \Phi\rangle$ & $r\langle\Phi\rangle$ \\
+\midrule
+1 & $-0.7908$ & $-0.7908$ \\
+2 & $-0.4057$ & $-0.8113$ \\
+3 & $-0.2775$ & $-0.8326$ \\
+4 & $-0.2029$ & $-0.8116$ \\
+5 & $-0.1529$ & $-0.7645$ \\
+6 & $-0.1195$ & $-0.7172$ \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Representative FFT Poisson output (periodic box).} The near-field shows $r\langle\Phi\rangle\approx\text{const}$, consistent with $\Phi\sim -1/r$.}
+\label{tab:poisson}
+\end{table}
+
+\paragraph{$1/r$ fit (representative).}
+Using the values in Table~\ref{tab:poisson} and fitting over $r\in\{2,3,4,5,6\}$ gives
+\begin{equation}
+  \langle\Phi\rangle(r) \approx C_0 - \frac{M}{r},
+  \qquad
+  C_0 \approx 0.016236,\quad M\approx 0.854953,
+\end{equation}
+with RMS residual $\approx 6.09\times 10^{-3}$ and $R^2\approx 0.9964$ on that fit window. This provides a quantitative confirmation of the near-field $1/r$ behavior expected from the Poisson closure.
+
+In the continuum normalization $\Delta\Phi=4\pi\rho$ with a unit point source $\rho=\delta$, one expects $M=1$ (Green function normalization). The fitted $M\approx 0.855$ is therefore within $\sim 15\%$ of the continuum value, consistent with finite-grid and periodic-image effects at $n=64$.
+
+

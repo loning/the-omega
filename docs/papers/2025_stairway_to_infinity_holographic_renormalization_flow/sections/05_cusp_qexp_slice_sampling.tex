@@ -1,0 +1,143 @@
+
+\section{Top interface: cusps, \texorpdfstring{$q$}{q}-expansions, and slice--sampling reconstruction}
+\label{sec:cusp_qexp_slice_sampling}
+
+\subsection{Cusps, periodicity, and \texorpdfstring{$q$}{q}-expansions as a canonical continuous--discrete interface}
+\label{sec:cusp_qexp_interface}
+
+Near the cusp $i\infty$ of the modular curve, a canonical local parameter is
+\begin{equation}
+q=\e^{2\pi \iu \tau},\qquad \tau=x+\iu y.
+\end{equation}
+As $y\to\infty$, $|q|=\e^{-2\pi y}\to 0$. For level~$1$, modular objects are $T$-invariant ($f(\tau+1)=f(\tau)$), hence $1$-periodic in $x=\Re\tau$ and admit Fourier expansions on each horizontal slice. In particular, any modular form (or more generally, any function analytic at the cusp in the appropriate sense) admits an absolutely convergent Fourier/$q$-expansion
+\begin{equation}
+\label{eq:qexp_general}
+f(\tau)=\sum_{n\ge 0} a_n q^n=\sum_{n\ge 0} a_n \e^{2\pi \iu n x}\e^{-2\pi n y}.
+\end{equation}
+See, e.g., \cite{Apostol1990,DiamondShurman2005,Serre1973} for standard treatments of $q$-expansions and cusp Fourier theory.
+The coefficients $(a_n)$ constitute a discrete integer (or algebraic) spectrum in arithmetic settings; Hecke symmetry then constrains these coefficients rigidly (Section~\ref{sec:hecke_dynamics_prime}).
+
+\subsection{A slice--coefficient identity at arbitrary height}
+\label{sec:slice_coefficient_identity}
+
+The cusp limit $y\to\infty$ is \emph{not} required to recover coefficients. Coefficients can be reconstructed from any height slice by Fourier projection.
+
+\begin{definition}[height slice]
+\label{def:height_slice}
+For any $y>0$, define the slice function
+\begin{equation}
+F_y(x):=f(x+\iu y),\qquad x\in[0,1).
+\end{equation}
+\end{definition}
+
+\begin{theorem}[slice--coefficient reconstruction]
+\label{thm:slice_coefficient_reconstruction}
+Assume that~\eqref{eq:qexp_general} converges absolutely and uniformly for fixed $y>0$. Then for every $n\ge 0$ and every $y>0$,
+\begin{equation}
+\label{eq:coeff_reconstruction}
+a_n = \e^{2\pi n y}\int_0^1 F_y(x)\,\e^{-2\pi \iu n x}\,\dd x.
+\end{equation}
+\end{theorem}
+\begin{proof}
+By absolute uniform convergence at fixed $y>0$, we may integrate~\eqref{eq:qexp_general} termwise:
+\begin{equation}
+\int_0^1 F_y(x)\,\e^{-2\pi\iu n x}\,\dd x
+=\sum_{m\ge 0} a_m \e^{-2\pi m y}\int_0^1 \e^{2\pi \iu (m-n)x}\,\dd x
+= a_n \e^{-2\pi n y},
+\end{equation}
+since $\int_0^1 \e^{2\pi\iu(m-n)x}\,\dd x=\delta_{mn}$. Rearranging yields~\eqref{eq:coeff_reconstruction}.
+\end{proof}
+
+\begin{remark}[when the assumptions hold]
+For the holomorphic modular-form objects used in this manuscript, the Fourier coefficients have polynomial growth, hence the $q$-series converges absolutely and uniformly on every half-strip $\{x\in[0,1],\,y\ge y_0\}$ for $y_0>0$ (Proposition~\ref{prop:poly_growth_uniform_slice}). This justifies termwise integration and differentiation on slices at fixed $y>0$.
+\end{remark}
+
+\subsection{Scan-orbit sampling: a finite-\texorpdfstring{$N$}{N} estimator and discrepancy control}
+\label{sec:sampling_estimator_discrepancy}
+
+We now replace the slice integral by scan-orbit sampling using $x_t=x_0+t\alpha\pmod 1$ from Axiom~O5.
+
+\begin{definition}[scan-sampled coefficient estimator]
+\label{def:scan_sampled_estimator}
+For $n\ge 0$, $y>0$, and $N\in\NN$, define
+\begin{equation}
+\label{eq:scan_estimator}
+\widehat a_{n,N}(y)
+:=\e^{2\pi n y}\cdot\frac{1}{N}\sum_{t=0}^{N-1}F_y(x_t)\,\e^{-2\pi \iu n x_t}.
+\end{equation}
+\end{definition}
+
+To control the approximation error, we use star discrepancy. Given a point set $P_N=\{x_0,\dots,x_{N-1}\}\subset[0,1)$, define
+\begin{equation}
+D_N^\ast(P_N)=\sup_{0\le u\le 1}\left|\frac{1}{N}\sum_{t=0}^{N-1}\ind_{[0,u)}(x_t)-u\right|.
+\end{equation}
+The Koksma inequality bounds integration error by star discrepancy for bounded-variation functions \cite{Koksma1935,KuipersNiederreiter1974}.
+
+\begin{theorem}[finite-$N$ recovery bound]
+\label{thm:finiteN_coeff_bound}
+Assume $g_{n,y}(x):=F_y(x)\e^{-2\pi\iu n x}$ has bounded variation on $[0,1]$. Then
+\begin{equation}
+\label{eq:finiteN_coeff_bound}
+\big|\widehat a_{n,N}(y)-a_n\big|
+\le \e^{2\pi n y}\,\Var(g_{n,y})\,D_N^\ast(P_N).
+\end{equation}
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:slice_coefficient_reconstruction}, $a_n=\e^{2\pi n y}\int_0^1 g_{n,y}(x)\,\dd x$. By Koksma's inequality,
+\begin{equation}
+\left|\frac{1}{N}\sum_{t=0}^{N-1}g_{n,y}(x_t)-\int_0^1 g_{n,y}(x)\,\dd x\right|
+\le \Var(g_{n,y})\,D_N^\ast(P_N).
+\end{equation}
+Multiplying by $\e^{2\pi n y}$ yields~\eqref{eq:finiteN_coeff_bound}.
+\end{proof}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.98\linewidth]{fig04_slice_sampling_bound_diagram}
+\caption{Structure of slice--sampling coefficient recovery: Fourier reconstruction on a fixed height slice, scan-orbit sampling, and an explicit finite-$N$ error bound controlled by variation and star discrepancy (with height dependence carried by $\e^{2\pi n y}$).}
+\label{fig:slice_sampling_bound_diagram}
+\end{figure}
+
+\begin{remark}[complex-valued functions]
+The 1D Koksma inequality extends to complex-valued functions with the same constant once $\Var$ is taken as $\Var(\Re f)+\Var(\Im f)$ (Definition~\ref{def:complex_variation}). In the modular-form settings considered here, $g_{n,y}$ is absolutely continuous in $x$ at fixed $y>0$ under standard coefficient-growth assumptions (Appendix~\ref{app:qexp_uniform_convergence}), so bounded variation is satisfied.
+\end{remark}
+
+\subsection{Ostrowski digits and an auditable bound on discrepancy}
+\label{sec:ostrowski_discrepancy_bound}
+
+For irrational rotations, discrepancy admits a digit-auditable upper bound in terms of the Ostrowski expansion~\eqref{eq:ostrowski_rep}. In its simplest form, this bound is obtained by combining the Denjoy--Koksma inequality at convergent denominators with an Ostrowski block decomposition; see Appendix~\ref{app:dk_koksma_ostrowski}.
+
+\begin{corollary}[Ostrowski digit bound]
+\label{cor:ostrowski_digit_discrepancy}
+Let $N=\sum_{j=0}^{m} b_j q_j$ be the Ostrowski expansion associated with $\alpha=[0;a_1,a_2,\dots]$. Then
+\begin{equation}
+\label{eq:ostrowski_discrepancy_bound}
+D_N^\ast(P_N)\le \frac{2}{N}\sum_{j=0}^{m} b_j.
+\end{equation}
+Consequently,
+\begin{equation}
+\big|\widehat a_{n,N}(y)-a_n\big|
+\le \e^{2\pi n y}\,\Var(g_{n,y})\cdot \frac{2}{N}\sum_{j=0}^{m} b_j.
+\end{equation}
+\end{corollary}
+
+\begin{remark}[golden branch / Zeckendorf weight]
+On the golden branch $\alpha=\varphi^{-1}$, the Ostrowski expansion degenerates to the Zeckendorf decomposition and $\sum_j b_j$ becomes the Zeckendorf (Fibonacci) Hamming weight $w_Z(N)$, yielding
+\begin{equation}
+D_N^\ast(P_N)\le \frac{2w_Z(N)}{N}.
+\end{equation}
+\end{remark}
+
+\subsection{Scale trade-offs: smoothing versus amplification}
+\label{sec:scale_tradeoffs}
+
+The factor $\e^{2\pi n y}$ in~\eqref{eq:coeff_reconstruction} and~\eqref{eq:finiteN_coeff_bound} makes a basic numerical truth explicit: increasing $y$ suppresses high-frequency contributions in the slice $F_y(x)$ by $\e^{-2\pi n y}$, but recovering the $n$th coefficient requires multiplication by $\e^{2\pi n y}$, which amplifies finite-$N$ sampling error and finite-precision noise. Thus ``climbing'' is not monotone in ``easiness''; rather, the modular scale direction organizes which discrete information is stably accessible at which heights.
+\par
+This trade-off is already visible in the structure of the reconstruction formula and the finite-$N$ bound.
+
+\subsection{Abel radial parameters and the \texorpdfstring{$|q|$}{|q|} modulus}
+\label{sec:abel_q_modulus}
+
+The cusp modulus satisfies $|q|=\e^{-2\pi y}\in(0,1)$. This is formally analogous to Abel damping parameters used in orbit regularization (Assumption~R1): a radial parameter controls how much of a tail is included before taking a limit. In this sense, the $q$-modulus provides a canonical ``radial'' coordinate for the cusp interface, compatible with the notion that renormalization consists of separating universal divergences from finite parts when approaching a boundary.
+
+

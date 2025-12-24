@@ -1,0 +1,170 @@
+\section{Formal interface: HPA and Omega Theory in one syntax}
+\label{sec:interface}
+
+\subsection{HPA: multiplicative ontology, scan time, and projection readout}
+\label{subsec:hpa_basics}
+We adopt the multiplicative-first stance: multiplication is treated as primitive structure, while classical linear addition is realized operationally as a (lossy) readout.
+The starting point is the multiplicative skeleton
+\begin{equation}
+M=(\NN_{>0},\cdot),
+\end{equation}
+augmented by a radial character $\rho:M\to\RR_{>0}$ and a multiplicative phase $\theta_\times:M\to\RR/2\pi\ZZ$ that is additive under multiplication. The basic embedding is
+\begin{equation}
+\mathcal{Z}(n)=\rho(n)\e^{\iu\theta_\times(n)}\in\CC^*,\qquad \mathcal{Z}(mn)=\mathcal{Z}(m)\mathcal{Z}(n).
+\label{eq:polar_embedding}
+\end{equation}
+
+\begin{remark}[Explicit parametrization via prime data]
+\label{rem:prime_parametrization}
+Writing $n=\prod_p p^{v_p(n)}$, any choice of prime parameters $(r_p,\vartheta_p)$ with $r_p>0$ and $\vartheta_p\in\RR/2\pi\ZZ$ induces
+\begin{equation}
+\rho(n):=\prod_p r_p^{v_p(n)},\qquad
+\theta_\times(n):=\sum_p v_p(n)\,\vartheta_p\ \ (\mathrm{mod}\ 2\pi),
+\end{equation}
+and hence $\mathcal{Z}(n)=\prod_p (r_p\e^{\iu\vartheta_p})^{v_p(n)}$ is multiplicative.
+This makes explicit that the embedding is fully determined by its values on primes.
+\end{remark}
+
+\begin{remark}[What depends on $\mathcal{Z}$ in this manuscript]
+\label{rem:what_depends_on_Z}
+All theorem-level results used in the main chain (discrepancy/readout scaling, Weyl-pair complementarity, compilation-overhead bounds, undecidable reachability, and the dispersion template) do not require any further specification of the prime parameters beyond multiplicativity.
+The embedding $\mathcal{Z}$ enters only when one chooses a concrete additive readout rule $\mathsf{R}$ (Remark~\ref{rem:readout_as_minimizer}) and studies embedding-dependent quantities such as the quantum gap (Definition~\ref{def:quantum_gap}).
+\end{remark}
+
+To decouple intrinsic phase from readout order, HPA introduces a \emph{genuine} unitary scan operator $\Theta$ and defines time as iteration count $k\in\ZZ_{\ge 0}$.
+In the minimal model, $\Theta$ may be realized as a Koopman shift for an irrational rotation on $L^2(S^1)$,
+\begin{equation}
+(\Theta f)(x)=f(x+\alpha),\qquad \alpha\in\RR\setminus\QQ.
+\end{equation}
+\noindent Here we take $S^1=\RR/\ZZ$ with coordinate $x\in[0,1)$ and Haar measure $dx$.
+Fix a measurable window $W\subset S^1$ and let $\chi_W:S^1\to\{0,1\}$ denote its indicator.
+The corresponding sharp window projection is the multiplication operator
+\begin{equation}
+(\Pi_W f)(x):=\chi_W(x)\,f(x),
+\qquad \Pi_W^2=\Pi_W=\Pi_W^\dagger.
+\label{eq:window_projection_operator}
+\end{equation}
+In the classical orbit limit (a sharply localized phase $x_0$), readout produces the mechanical/Sturmian word
+\begin{equation}
+ s_k := \chi_W\bigl(x_0+k\alpha\bigr)\in\{0,1\}.
+\label{eq:mechanical_word}
+\end{equation}
+For interval windows, this is the standard Sturmian construction; in particular, the prefix sums satisfy the exact discrepancy identity
+\begin{equation}
+S_N:=\sum_{k=0}^{N-1}s_k=\lfloor N\alpha+\beta\rfloor-\lfloor \beta\rfloor
+\label{eq:sturmian_prefix_sum}
+\end{equation}
+for a phase offset $\beta$ determined by $x_0$ and the window convention \cite{MorseHedlund1940,Lothaire2002}.
+
+\paragraph{Readout as a two-outcome measurement/instrument.}
+At the interface layer, the same window cut can be expressed as a standard two-outcome quantum measurement \cite{Watrous2018}.
+The sharp readout is the projective measurement (PVM) $\{\Pi_W,\ \mathds{1}-\Pi_W\}$ on $L^2(S^1)$.
+Given a state $\rho$, the Born probability for outcome ``1'' is $p_1=\Tr(\Pi_W\rho)$, and the associated L\"uders instrument maps
+\begin{equation}
+\rho\ \longmapsto\ \frac{\Pi_W\rho\,\Pi_W}{\Tr(\Pi_W\rho)}
+\qquad\text{or}\qquad
+\rho\ \longmapsto\ \frac{(\mathds{1}-\Pi_W)\rho\,(\mathds{1}-\Pi_W)}{\Tr((\mathds{1}-\Pi_W)\rho)},
+\end{equation}
+conditioned on the respective outcomes.
+If one samples after $k$ scan steps, $\rho_k=\Theta^k\rho_0\Theta^{-k}$ and $p_k=\Tr(\Pi_W\rho_k)$.
+In the idealized phase-eigenstate limit $|x_0\rangle$ (or a narrow wavepacket around $x_0$), this reduces to the deterministic orbit rule $p_k=\chi_W(x_0+k\alpha)$ in \eqref{eq:mechanical_word}.
+
+\noindent More realistic readouts are naturally modeled by POVMs: for a ``soft window'' $w:S^1\to[0,1]$, define commuting Kraus operators
+$M_1 f=\sqrt{w}\,f$ and $M_0 f=\sqrt{1-w}\,f$, yielding effects $E_1=M_1^\dagger M_1$ and $E_0=M_0^\dagger M_0$ with $E_0+E_1=\mathds{1}$.
+This makes explicit how $\Pi_W$ is the sharp ($w=\chi_W$) limit of a standard instrument model.
+
+\noindent Within a QCA substrate, such readouts can be realized by a standard dilation: any POVM can be implemented by coupling the system locally to an ancilla via a unitary and then performing a projective measurement on the ancilla (Naimark/Stinespring-type realizations; see, e.g., \cite{NielsenChuang2012,Watrous2018}).
+This places $\Pi_W$ and its noisy variants within the usual local-unitary-plus-projective-measurement paradigm.
+
+\paragraph{Golden branch and canonical coding.}
+The golden ratio $\varphi=(1+\sqrt{5})/2$ and its inverse $\alpha=\varphi^{-1}$ play a privileged role.
+The golden rotation is maximally anti-resonant among irrational rotations (hardest to approximate by rationals), and it minimizes symbolic complexity within the binary Sturmian family.
+In this branch, Ostrowski numeration degenerates to the Zeckendorf decomposition: every $N\in\NN$ admits a unique Fibonacci-sum representation with no adjacent terms \cite{Zeckendorf1972,Cassels1957,KuipersNiederreiter1974}.
+
+\subsection{Structural quantum gap: addition as lossy readout}
+\label{subsec:quantum_gap}
+A key HPA theorem is a no-go statement: beyond trivial cases, one cannot preserve both multiplicative structure and classical linear addition.
+We record the consequence in the form needed here.
+
+\begin{theorem}[No-go for simultaneous multiplicativity and linear additivity]
+\label{thm:no_go_additive}
+Let $\Phi:\NN_{>0}\to\CC$ satisfy $\Phi(mn)=\Phi(m)\Phi(n)$ and $\Phi(a+b)=\Phi(a)+\Phi(b)$ for all $a,b,m,n\in\NN_{>0}$. Then $\Phi$ is trivial (zero) or the identity embedding (up to the standard identification).
+\end{theorem}
+\begin{proof}
+Let $c:=\Phi(1)$.
+By additivity, $\Phi(n)=\Phi(1+\cdots+1)=nc$ for all $n\in\NN_{>0}$.
+By multiplicativity, $c=\Phi(1)=\Phi(1\cdot 1)=\Phi(1)^2=c^2$, hence $c\in\{0,1\}$.
+If $c=0$ then $\Phi\equiv 0$.
+If $c=1$ then $\Phi(n)=n$ for all $n$, i.e.\ the standard embedding of $\NN_{>0}$ into $\CC$.
+\end{proof}
+
+Consequently, for a nontrivial multiplicative embedding $\mathcal{Z}$, the continuous vector synthesis $\mathcal{Z}(a)+\mathcal{Z}(b)$ is not constrained to lie on the discrete image $\mathcal{Z}(M)$. HPA models the induced additive operation as a readout projection (nearest-point, kernel projection, or a probabilistic instrument), and defines the \emph{quantum gap} as the residual mismatch between synthesis and discrete coordinate recovery.
+
+\begin{definition}[Quantum gap (distance to the discrete image)]
+\label{def:quantum_gap}
+Fix a multiplicative embedding $\mathcal{Z}:M\to\CC$ and write $\mathcal{Z}(M)\subset\CC$ for its discrete image. For a pair $(a,b)\in\NN_{>0}^2$, define the quantum gap as the distance from continuous synthesis to the discrete image:
+\begin{equation}
+\delta(a,b)\ :=\ \mathrm{dist}\bigl(\mathcal{Z}(a)+\mathcal{Z}(b),\,\mathcal{Z}(M)\bigr)
+\ :=\ \inf_{n\in\NN_{>0}}\ \bigl\|\mathcal{Z}(a)+\mathcal{Z}(b)-\mathcal{Z}(n)\bigr\|.
+\end{equation}
+\end{definition}
+
+\begin{remark}[Readout rules as (approximate) minimizers]
+\label{rem:readout_as_minimizer}
+Any concrete readout protocol supplies a (possibly randomized) choice of an integer-valued map $\mathsf{R}:\CC\to\NN_{>0}$.
+If the infimum in Definition~\ref{def:quantum_gap} is attained (or approximated), a natural deterministic readout is a nearest-image rule
+$\mathsf{R}_*(v)\in\arg\min_{n}\|v-\mathcal{Z}(n)\|$.
+More generally, any admissible readout $\mathsf{R}$ induces a residual
+$\delta_{\mathsf{R}}(a,b):=\|\mathcal{Z}(a)+\mathcal{Z}(b)-\mathcal{Z}(\mathsf{R}(\mathcal{Z}(a)+\mathcal{Z}(b)))\|$
+with $\delta_{\mathsf{R}}(a,b)\ge \delta(a,b)$.
+\end{remark}
+
+The central point for this paper is conceptual: \emph{space} enters not as a container but as the grammar and resolution of the readout protocol that discretizes a continuous ontological synthesis.
+
+\subsection{Omega Theory: PQCA microdynamics, exact 1D compilation, and lapse as routing overhead}
+\label{subsec:omega_basics}
+We model microscopic evolution as a partitioned quantum cellular automaton (PQCA) on a quasi-local substrate with strictly local, finite-depth unitary updates.
+The PQCA viewpoint is compatible with standard QCA structure theorems (block representations and localizability) \cite{SchumacherWerner2004,ArrighiNesmeWerner2011}.
+For the present paper we only use one interface theorem: any local PQCA step on a finite region can be compiled \emph{exactly} into a one-dimensional nearest-neighbor circuit, and the minimal circuit depth becomes a computational notion of time.
+
+\begin{proposition}[Exact 1D nearest-neighbor compilation (Omega interface)]
+\label{prop:1d_compilation}
+Let $U_R$ be a single local PQCA step restricted to a finite region $R$. There exist an encoding isometry $E_R$ and a 1D nearest-neighbor circuit $C_R$ such that
+\begin{equation}
+U_R = E_R^{\dagger} C_R E_R.
+\end{equation}
+Moreover, defining the routing overhead
+\begin{equation}
+\kappa(R):=\min_f\ \mathrm{depth}_{\mathrm{1D}}(U_R;f)
+\end{equation}
+over 1D layouts/encodings $f$ (Definition~\ref{def:routing_overhead}), one may take $\mathrm{depth}(C_R)=\kappa(R)$.
+This overhead admits explicit, geometry-controlled bounds (Appendix~\ref{app:compilation_overhead}):
+for $n:=|R|$ sites and bounded-degree local steps, $\kappa(R)=O(n)$ (Proposition~\ref{prop:swap_upper_bound}), while $\kappa(R)=\Omega(\mathrm{bw}(G_R))$ in terms of the interaction-graph bandwidth (Proposition~\ref{prop:bandwidth_lower_bound}).
+In particular, for a $d$-dimensional $L^d$ grid region, $\kappa(R)=\Omega(L^{d-1})=\Omega(|\partial R|)$ (Theorem~\ref{thm:boundary_scaling_overhead}).
+\end{proposition}
+
+At the circuit level, such compilations reduce to nearest-neighbor routing by swap networks; see Appendix~\ref{app:compilation_overhead} and, e.g., \cite{Kutin2007}.
+
+This motivates the \emph{computational lapse} definition:
+\begin{equation}
+\lapse(x):=\frac{\kappa_0}{\kappa(x)},\qquad d\tau_{\mathrm{loc}}(x)=\lapse(x)\,dt,
+\label{eq:lapse_definition}
+\end{equation}
+where $t$ is measured in 1D nearest-neighbor depth and $\tau_{\mathrm{loc}}$ counts locally realizable logical steps.
+In this language, ``time dilation'' is literally a slowdown in the implementable logical rate due to increased compilation/routing cost.
+Quantitative overhead bounds for standard geometries are summarized in Appendix~\ref{app:compilation_overhead}.
+
+\subsection{Undecidability interface: local reachability in universal QCA}
+\label{subsec:undecidability_interface}
+The final interface fact is computability-theoretic. Universal QCAs can encode reversible computation; in Omega Theory this is sharpened into a local reachability predicate.
+
+\begin{theorem}[Undecidable local reachability in a universal QCA (Omega theorem)]
+\label{thm:undecidable_reachability}
+There exist a universal QCA update $U$ and a family of initial states encoding instances $(M,x)$ (a reversible machine $M$ on input $x$), together with a finite region $K$ and a local projector $\Pi_K$, such that the predicate
+\begin{equation}
+\exists t\ge 0:\ \langle\psi_{M,x}|\,U^{\dagger t}\,\Pi_K\,U^t\,|\psi_{M,x}\rangle > 0
+\end{equation}
+(i.e. whether the local flag $\Pi_K$ is ever triggered) is algorithmically undecidable as a function of $(M,x)$.
+\end{theorem}
+
+This theorem provides a strict mathematical pivot for later sections: ``open-ended history'' can be made precise as an undecidable reachability boundary within a strictly local, unitary microdynamics.

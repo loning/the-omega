@@ -1,0 +1,45 @@
+\section{Quantitative fits for mismatch templates}
+\label{app:fit_table}
+
+This appendix reports least-squares fits for the toy mismatch-growth templates discussed in Section~\ref{sec:predictions}. A practical subtlety is that $E_N$ for Kronecker sequences exhibits number-theoretic oscillations and is not monotone in $N$. Since the theoretical statements are envelope bounds (e.g.\ $E_N=O(\log N)$ for badly approximable slopes), we fit an empirical upper envelope
+\begin{equation}
+  E_N^{\uparrow} := \max_{M\le N} E_M,
+\end{equation}
+approximated on a discrete sample of $N$ values by the running maximum.
+
+\paragraph{Dataset.}
+We use initial phase $x_0=0.123456789$ and sample sizes
+\[
+N\in\{100,300,10^3,3\times 10^3,10^4,3\times 10^4,10^5\}.
+\]
+The fitted values below are produced by the pure-Python script \path{scripts/experiment_c_fit_tables.py} (Appendix~\ref{app:repro_code}).
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l l r r r}
+\toprule
+Slope & Model & $a$ & $b$ & $R^2$ \\
+\midrule
+$\alpha=\varphi^{-1}$ & $E_N^{\uparrow}=a\log N+b$ & 0.290129 & 0.211636 & 0.857333 \\
+$\alpha=\sqrt{2}-1$ & $E_N^{\uparrow}=a\log N+b$ & 0.366607 & -0.144242 & 0.904830 \\
+$\alpha=1/2$ & $E_N=cN+d$ & 0.376543 & 0.000000 & 1.000000 \\
+\bottomrule
+\end{tabular}
+\caption{Toy-model fits for mismatch templates. For irrational slopes we fit the empirical envelope $E_N^{\uparrow}$ to the logarithmic template; for the rational slope the mismatch is exactly linear (Appendix~\ref{app:discrepancy_entropy}).}
+\end{table}
+
+\paragraph{Provable envelope coefficients from continued fractions.}
+Appendix~\ref{app:discrepancy_entropy}, Eq.~\eqref{eq:explicit_disc_bound} implies an explicit envelope bound of the form
+\[
+  E_N \le a_{\mathrm{ub}}(\alpha)\,\log N + O(1)
+\]
+for badly approximable slopes. For the golden branch $\alpha=\varphi^{-1}$ (all partial quotients $a_i=1$ and $q_m=F_{m+1}$) one obtains
+\[
+  a_{\mathrm{ub}}(\varphi^{-1}) = \frac{1}{\log\varphi}\approx 2.078087.
+\]
+For $\alpha=\sqrt{2}-1=[0;2,2,2,\dots]$ (all partial quotients $a_i=2$ and $q_m$ growing at rate $1+\sqrt{2}$) one obtains
+\[
+  a_{\mathrm{ub}}(\sqrt{2}-1)=\frac{2}{\log(1+\sqrt{2})}\approx 2.269185.
+\]
+These are rigorous but not optimized; they provide a non-asymptotic calibration scale against which the fitted envelope coefficients $a$ may be compared.
+

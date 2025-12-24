@@ -1,0 +1,135 @@
+\section{Formal Theory of Observation}
+\label{app:formal_observation}
+
+\subsection{The Observer Operator}
+We distinguish a \emph{conditional} selection/update map (nonlinear because of normalization) from its \emph{unconditioned} statistical average (which is linear and CPTP). This matches the non-linear projector form used in Part~VII.\par
+Let $\mathcal{H}_{univ} = \mathcal{H}_{sys} \otimes \mathcal{H}_{obs}$ and let $\{\hat{\Pi}_k\}$ be a projective family of pointer/consistency sectors with $\hat{\Pi}_k\hat{\Pi}_\ell=\delta_{k\ell}\hat{\Pi}_k$ and $\sum_k \hat{\Pi}_k = I$.
+
+\begin{definition}[Conditional selection map (nonlinear)]
+For a state $\rho$ with $p_k\equiv \mathrm{Tr}(\hat{\Pi}_k\rho)>0$, define the conditional update associated with outcome/sector $k$ by
+\begin{equation}
+    \hat{\mathcal{O}}_k[\rho] \equiv \frac{\hat{\Pi}_k \rho \hat{\Pi}_k}{\mathrm{Tr}(\hat{\Pi}_k\rho)}.
+\end{equation}
+Equivalently, on pure states $|\Psi\rangle$ one has $|\Psi\rangle \mapsto \hat{\Pi}_k|\Psi\rangle/\|\hat{\Pi}_k|\Psi\rangle\|$. This is the basic non-linear ``selection'' map.
+\end{definition}
+
+\begin{definition}[Unconditioned channel (CPTP)]
+The corresponding unconditioned map (outcome ignored/averaged) is the linear CPTP channel
+\begin{equation}
+    \mathcal{E}_{\mathcal{O}}[\rho] \equiv \sum_k \hat{\Pi}_k \rho \hat{\Pi}_k
+    \;=\;\sum_k p_k\,\hat{\mathcal{O}}_k[\rho].
+\end{equation}
+\end{definition}
+
+\begin{proposition}[Projective measurement as an instrument (L{\"u}ders/Kraus)]
+\label{prop:luders_kraus_instrument}
+Let $\{\hat{\Pi}_k\}$ be a projective family with $\hat{\Pi}_k\hat{\Pi}_\ell=\delta_{k\ell}\hat{\Pi}_k$ and $\sum_k \hat{\Pi}_k=I$. Then the unnormalized maps
+\begin{equation}
+    \rho\ \mapsto\ \hat{\Pi}_k\rho\hat{\Pi}_k
+\end{equation}
+are completely positive and trace-nonincreasing, and their sum $\rho\mapsto \sum_k \hat{\Pi}_k\rho\hat{\Pi}_k$ is completely positive and trace preserving. Conditioning on outcome $k$ yields the normalized update
+\begin{equation}
+    \rho\ \mapsto\ \frac{\hat{\Pi}_k\rho\hat{\Pi}_k}{\mathrm{Tr}(\hat{\Pi}_k\rho)},
+\end{equation}
+which is the standard L{\"u}ders state-update rule for projective measurements \cite{Luders1951,Kraus1983,NielsenChuang2000}.
+\end{proposition}
+\begin{proof}[Reference]
+See, e.g., \cite{Kraus1983,NielsenChuang2000} for the standard Kraus/instrument formulation and the L{\"u}ders update rule.
+\end{proof}
+
+\begin{corollary}[No-signalling of local projective instruments (unconditioned)]
+\label{cor:nosignalling_luders}
+Let $\rho_{AB}$ be a bipartite state and let $\{\Pi_k\}$ be a projective family acting on $A$. Consider the unconditioned local measurement channel on $A$,
+\begin{equation}
+    \rho_{AB}\ \mapsto\ \rho'_{AB}\equiv \sum_k (\Pi_k\otimes I_B)\,\rho_{AB}\,(\Pi_k\otimes I_B).
+\end{equation}
+Then the reduced state on $B$ is unchanged:
+\begin{equation}
+    \rho'_B \equiv \mathrm{Tr}_A(\rho'_{AB})=\mathrm{Tr}_A(\rho_{AB})\equiv \rho_B.
+\end{equation}
+In particular, treating $\hat{\mathcal{O}}$ as a conditioning map on outcomes does not enable superluminal signalling: signalling would require control of the outcome-conditioned branch, whereas the locally accessible state with outcomes ignored is invariant on $B$.
+\end{corollary}
+\begin{proof}[Reference]
+This is the standard no-signalling statement for unconditioned local CPTP instruments; see, e.g., \cite{NielsenChuang2000}.
+\end{proof}
+
+\paragraph{Remark (Semantic consistency filter).}
+In the applications discussed in Part~VII, the projectors $\hat{\Pi}_k$ are intended to encode coarse-grained ``semantic consistency'' constraints; one may further restrict attention to sectors for which a chosen dynamical non-triviality functional (e.g.\ a skew-information measure) is positive.
+
+\subsection{Minimal Working Example: System + Pointer}
+We illustrate the mechanism with a minimal "Toy Universe" consisting of a System qubit $S$ and a Pointer qubit $P$.
+\begin{enumerate}
+    \item \textbf{Pre-Measurement}: System is in superposition, Pointer is ready: $|\Psi_0\rangle = (\alpha|0\rangle_S + \beta|1\rangle_S) \otimes |0\rangle_P$.
+    \item \textbf{Unitary Entanglement}: The "Measurement" interaction is a CNOT gate:
+    \begin{equation}
+        \hat{U}_{CNOT} |\Psi_0\rangle = \alpha |00\rangle + \beta |11\rangle.
+    \end{equation}
+    \item \textbf{Observer Selection}: The Observer Operator $\hat{\mathcal{O}}$ projects onto a definite pointer state. If the "consistent history" selected by the global attractor is $|0\rangle_P$:
+    \begin{equation}
+        \hat{\mathcal{O}}_0 (\alpha |00\rangle + \beta |11\rangle) \to \frac{\alpha}{|\alpha|} |00\rangle.
+    \end{equation}
+\end{enumerate}
+To the local observer (the Pointer), linearity is broken (collapse). To the global vector $|\Omega\rangle$, this is simply a static correlation. The apparent non-unitarity is the result of conditional probability within a fixed permuted state.
+
+\subsection{Global Consistency and Bell Tests}
+This framework is compatible with Bell-inequality violations by relaxing Statistical Independence, i.e.\ by adopting a form of \textbf{Global Superdeterminism} (or "Super-Measure") as an interpretation of correlations in the single fixed state.
+Standard Bell derivations assume Statistical Independence: $P(\lambda | settings) = P(\lambda)$ \cite{Bell1964,CHSH1969,Brunner2014BellNonlocality}. In Omega Theory, the "settings" (detector orientations) and the "hidden variables" (particle spins) are both deterministic consequences of the single fixed state $|\Omega\rangle$.
+The observer/selection map does not "cause" collapse retrocausally. Instead, it models the selection of a \textbf{Consistent History} from the Hilbert space where the detector settings and outcomes are aligned to preserve the global topological charge.
+Thus, Alice's choice of setting $a$ and Bob's outcome $b$ can be correlated by common-cause structure in the global state (e.g.\ encoded at the root of the holographic network description). The violation of CHSH inequalities ($S > 2$) is then compatible with locality because the statistical-independence assumption is not imposed at the cosmological level.
+
+\subsection{Undecidability in universal QCA (and an oracle interpretation)}
+The connection between computation and physics suggests that sufficiently expressive local dynamics can encode undecidable questions. We record a minimal reachability statement and then explain how the selection/oracle language used in Part~VII can be read as an interpretation layer rather than as a derived theorem.
+
+\begin{theorem}[Undecidability of local reachability in a universal QCA]
+\label{thm:godel_measurement}
+Let $\mathcal{U}$ be a universal quantum cellular automaton whose dynamics can simulate a universal \emph{reversible} Turing machine on an appropriate computational subspace (see, e.g., \cite{Watrous1995QCA,SchumacherWerner2004} for QCA frameworks). Then there exist a finite region $K$, a local projector $\Pi_K$ supported on $K$, and a family of (computational-basis) initial states $\{|\psi_{M,x}\rangle\}$ encoding a machine $M$ and input $x$ such that the reachability problem
+\begin{equation}
+    \text{``Does there exist }t\ge 0\text{ such that }\Pi_K\text{ clicks at time }t\text{?''}
+\end{equation}
+is algorithmically undecidable as a function of $(M,x)$.
+\end{theorem}
+\begin{proof}
+By universality, for each pair $(M,x)$ there exists an encoding $|\psi_{M,x}\rangle$ whose time evolution under $\mathcal{U}$ simulates the reversible computation of $M$ on input $x$. Choose the local projector $\Pi_K$ to test a designated halting-flag register within the simulation region $K$. Then $\Pi_K$ clicks at some time $t$ if and only if $M$ halts on $x$. If the reachability question were decidable for all $(M,x)$, the Halting Problem would be decidable, a contradiction.
+\end{proof}
+\paragraph{Remark (selection/oracle layer).}
+In Part~VII we model ``measurement/choice'' by an additional map $\hat{\mathcal{O}}$ that selects a sector/branch. From the computational viewpoint, such a map can be read as an oracle input that resolves undecidable reachability questions by selecting a consistent continuation. This is an interpretation of how selection could function as an external resource; it is not implied by the undecidability theorem itself. Related undecidability themes in sufficiently expressive dynamics are classical \cite{Moore1990Unpredictability,Kari1994Reversibility}.
+
+\subsection{Born Rule from projection-induced readout (counting template)}
+We record a symmetry-based counting template in which probabilities are induced by finite-resolution readout (Axiom~O5) together with a sharp-readout symmetry hypothesis on fine-grained micro-realizations (Assumption~\ref{assump:S1}). Related symmetry-based approaches include envariance \cite{Zurek2005}.
+
+\begin{theorem}[Born weights from projection-induced readout (fine-grained template)]
+\label{thm:born_rule}
+Let $|\psi\rangle = \sum_k c_k |k\rangle$ be a normalized state and consider the projective readout in the $\{|k\rangle\}$ basis. Assume a fine-grained holographic realization in which each coarse branch $k$ corresponds to a degeneracy class of $n_k$ admissible micro-realizations with $|c_k|^2\approx n_k/N_{\mathrm{micro}}$, and assume the sharp-readout symmetry hypothesis (Assumption~\ref{assump:S1}) so that the induced micro-measure is uniform on admissible micro-realizations. Then the induced coarse outcome probabilities satisfy $P_k=n_k/N_{\mathrm{micro}}\approx |c_k|^2$, and in the fine-graining limit one obtains $P_k=|c_k|^2$.
+\end{theorem}
+\begin{proof}
+1. \textbf{Holographic Encoding}: Every state $|k\rangle$ in the bulk corresponds to a boundary code subspace $\mathcal{C}_k$ of dimension $d_k = e^{S(k)}$.
+2. \textbf{Fine-Graining}: Approximate the weights by rationals $|c_k|^2 \approx n_k/N_{\mathrm{micro}}$ and represent $|\psi\rangle$ as an equal-weight superposition of $N_{\mathrm{micro}}$ microstates grouped into $n_k$ copies of branch $k$:
+\begin{equation}
+|\psi\rangle \propto \sum_{k} \sum_{i=1}^{n_k} |k, i\rangle_{micro}.
+\end{equation}
+3. \textbf{Frame Stability}: The physical "laws" (the Hamiltonian $\hat{H}$) are invariant under unitary swaps of the microstates $|k, i\rangle \leftrightarrow |k, j\rangle$ (Action of the Symmetric Group $S_{N_{\mathrm{micro}}}$).
+4. \textbf{Projection-induced micro-measure}: By Axiom~O5, outcome weights are induced by a readout kernel/instrument. Under the sharp-readout symmetry hypothesis (Assumption~\ref{assump:S1}), this kernel is uniform on the admissible micro-realizations within the relevant degeneracy class, so each microstate has probability $p_{micro} = 1/N_{\mathrm{micro}}$.
+5. \textbf{Aggregation}: The probability of the macrostate $k$ is the sum over its micro-realizations:
+\begin{equation}
+    P_k = \sum_{i=1}^{n_k} p_{micro} = \frac{n_k}{N_{\mathrm{micro}}} = |c_k|^2.
+\end{equation}
+Thus, under fine-graining, Axiom~O5, and Assumption~\ref{assump:S1}, the Born weights are realized as a counting identity for the underlying holographic micro-ensemble.
+\end{proof}
+
+\subsection{Born rule as the unique noncontextual probability rule (mature theorem)}
+The counting template above isolates the structural input needed for a microstate-counting reading: a symmetric sharp-readout limit of the induced readout kernel on fine-grained micro-realizations (Assumption~\ref{assump:S1}). Independently, there is a mathematically sharp characterization of quantum probability rules that can be cited directly.
+
+\begin{theorem}[Gleason--Busch characterization of quantum probabilities]
+\label{thm:gleason_busch}
+Let $\mathcal{H}$ be a complex Hilbert space. Suppose a probability assignment $\mu$ maps each orthogonal projector $P$ on $\mathcal{H}$ to $\mu(P)\in[0,1]$ and is finitely additive on orthogonal families: for any pairwise orthogonal projectors $\{P_i\}$ with $\sum_i P_i = I$, one has $\sum_i \mu(P_i)=1$.
+If $\dim\mathcal{H}\ge 3$, then there exists a unique density matrix $\rho$ such that
+\begin{equation}
+    \mu(P)=\mathrm{Tr}(\rho\,P)\qquad\text{for all projectors }P.
+\end{equation}
+In particular, for a pure state $\rho=|\psi\rangle\langle\psi|$ one obtains $\mu(P)=\langle\psi|P|\psi\rangle$ (Born rule for projective measurements).
+For $\dim\mathcal{H}=2$, an analogous conclusion holds if one assumes the same additivity on the full set of POVM effects (Busch's extension).
+\end{theorem}
+\begin{proof}[Reference]
+See Gleason's theorem for $\dim\mathcal{H}\ge 3$ \cite{Gleason1957}. For the POVM/effect-algebra extension that covers $\dim\mathcal{H}=2$, see \cite{Busch2003}.
+\end{proof}
+

@@ -1,0 +1,62 @@
+\section{Generalized first law: energy as computational flux}
+\label{sec:first_law}
+
+To elevate phase friction from a mismatch measure to a thermodynamic quantity, we need a dictionary relating entropy to energy, temperature, and work. In the scan--projection semantics, energy is not a primitive ``substance''; it is the operational \emph{computational flux} required to (i) perform finite-resolution readout, and (ii) maintain and repair structure against phase friction.
+
+\subsection{Computational temperature as tick rate}
+
+Let $\tau$ denote scan-time (intrinsic step count) and $t$ denote external/operational time. Define the local scan tick rate
+\begin{equation}
+\nu(x):=\frac{\dd \tau}{\dd t}.
+\end{equation}
+In the $\Omega$ implementation dictionary, $\nu$ is controlled by routing overhead through a lapse field $\lapse$ (Section~\ref{sec:lapse_thermo}). We define the \emph{computational temperature} by a proportionality
+\begin{equation}
+T_c(x):=\eta_T\,\nu(x),
+\end{equation}
+where $\eta_T$ sets units (one may take $\eta_T=1$ in natural units). The operational meaning is direct: faster local ticking forces more scan samples through the same finite-resolution readout channel per unit $t$, increasing mismatch generation rate.
+
+\paragraph{Quantum speed-limit calibration.}
+In microscopic quantum implementations, the tick rate of distinguishable state updates is bounded by energy-time speed limits. For example, the Margolus--Levitin bound implies that a system with average energy above its ground state satisfies
+\begin{equation}
+  \nu \ \le\ \frac{2(\langle H\rangle-E_0)}{\pi\hbar},
+\end{equation}
+while the Mandelstam--Tamm bound implies $\nu\le 2\Delta H/(\pi\hbar)$ \cite{MargolusLevitin1998,MandelstamTamm1945}. Lloyd's ``ultimate limits'' estimate uses these bounds to relate energy to an upper bound on logical operations per unit time \cite{lloyd2000ultimate}. Therefore $\eta_T$ can be fixed by calibration to such microscopic limits (e.g.\ by saturating an appropriate speed bound), or treated as an effective proportionality constant when the underlying microscopic degrees of freedom are not specified.
+
+\subsection{Structure information: Zeckendorf-effective bits}
+
+In the golden branch, readout depth is canonically organized by Zeckendorf/Fibonacci coding \cite{Zeckendorf1972}. Let $I$ denote the number of \emph{effective} internal bits (or more generally, effective Ostrowski depth) that can be stably maintained under a given readout-and-control protocol. $I$ measures \emph{structure capacity}:
+\begin{itemize}
+  \item larger $I$ corresponds to finer internal models and more stable correlations;
+  \item smaller $I$ corresponds to coarse macrostates near equilibrium.
+\end{itemize}
+
+\subsection{A first-law form for ASM}
+
+\begin{proposition}[Generalized first law (computational flux form)]
+\label{prop:first_law}
+At fixed readout protocol class (fixed $\varepsilon$ and window family), the externally observed change of computational flux $E$ decomposes as
+\begin{equation}
+\dd E = T_c\, \dd S_{\mathrm{pf}} + \Xi\, \dd I + \delta W_{\mathrm{geom}}.
+\end{equation}
+Here $S_{\mathrm{pf}}$ is phase-friction entropy (Section~\ref{sec:asm}), $\Xi$ is the ``chemical potential'' conjugate to stable structure information $I$, and $\delta W_{\mathrm{geom}}$ is geometric work associated with changes in routing overhead / impedance.
+\end{proposition}
+
+\noindent Proposition~\ref{prop:first_law} can be read as a bookkeeping identity in the standard thermodynamic sense \cite{LandauLifshitz1980}: for a fixed protocol class, one may treat $E$ as an effective state function $E=E(S_{\mathrm{pf}},I,\text{geom})$ and \emph{define} the conjugate variables by partial derivatives,
+\[
+  T_c:=\left(\frac{\partial E}{\partial S_{\mathrm{pf}}}\right)_{I,\text{geom}},
+  \qquad
+  \Xi:=\left(\frac{\partial E}{\partial I}\right)_{S_{\mathrm{pf}},\text{geom}},
+\]
+with $\delta W_{\mathrm{geom}}$ collecting protocol-dependent geometric work terms. The physical content is that finite-resolution readout forces an unavoidable tradeoff between dissipated mismatch and maintainable internal structure.
+
+\subsection{Landauer cost and log-cost additivity}
+
+The log structure of $S_{\mathrm{rd}}=k_B(-\log w)$ (Section~\ref{sec:asm}) matches the multiplicative-to-additive conversion intrinsic to readout. In particular, when independent constraints have success weights $w_1,w_2$, their joint weight is $w_1 w_2$ and the total log-cost is additive.
+
+Landauer's principle provides a lower bound on the energetic cost of erasing one bit at temperature $T$ \cite{Landauer1961,Bennett1973}:
+\begin{equation}
+W_{\mathrm{erase}} \ge k_B T \ln 2.
+\end{equation}
+In HPA--$\Omega$, the relevant temperature is the computational temperature $T_c$ and the total cost includes geometric impedance (Appendix~\ref{app:geometric_landauer}). This makes explicit how maintaining low-entropy structure is compatible with the second law: entropy is exported to the environment through an operationally irreversible readout-and-erase channel \cite{Szilard1929,Bennett1989}.
+
+

@@ -1,0 +1,93 @@
+\section{Orbit calculus and finite-part regularization}
+\label{app:orbit_calculus}
+This appendix records the orbit-calculus conventions used when relating scan-generated discrete data to continuum functionals, in accordance with Convention~R1 (Section~\ref{conv:orbit_regularization}). The minimal template is an irrational circle rotation; the same logic extends to torus translations and to cut-and-project dynamical systems via Haar averages on orbit closures (Appendix~\ref{app:torus_rotation}).
+
+\subsection{Orbit difference and orbit trace (irrational rotation template)}
+Let $X=\mathbb{R}/\mathbb{Z}$ and fix $\alpha_{\mathrm{rot}}\in(0,1)\setminus\mathbb{Q}$. Define the rotation
+$$
+T_{\alpha_{\mathrm{rot}}}(x):=x+\alpha_{\mathrm{rot}}\pmod{1}.
+$$
+For a sufficiently regular $f:X\to\mathbb{C}$ define the orbit difference operator
+$$
+(\mathcal{D}_{\alpha_{\mathrm{rot}}} f)(x):=\frac{f(x+\alpha_{\mathrm{rot}})-f(x)}{\alpha_{\mathrm{rot}}}.
+$$
+This is an intrinsic discrete derivative surrogate along the scan step.\par
+Define the orbit average (a discrete integral surrogate) by
+$$
+A_N(f;x_0):=\frac{1}{N}\sum_{n=0}^{N-1} f(T_{\alpha_{\mathrm{rot}}}^n(x_0)).
+$$
+
+\begin{theorem}[Orbit trace for an irrational rotation]
+If $f$ is continuous and $\alpha_{\mathrm{rot}}\notin\mathbb{Q}$, the limit
+$$
+\mathrm{Tr}_{\alpha_{\mathrm{rot}}}(f):=\lim_{N\to\infty}A_N(f;x_0)
+$$
+exists, is independent of $x_0$, and equals the space average with respect to Lebesgue measure $\mu$ on $X$:
+$$
+\mathrm{Tr}_{\alpha_{\mathrm{rot}}}(f)=\int_X f(x)\,d\mu(x).
+$$
+\end{theorem}
+\begin{proof}[Reference]
+This is a standard consequence of unique ergodicity/equidistribution of irrational rotations; see, e.g., \cite{Weyl1916,KuipersNiederreiter1974}.
+\end{proof}
+
+\subsection{Denjoy--Koksma/Ostrowski bounds for interval readouts (robustness)}
+Binary scan readouts in this manuscript are modeled by interval windows $W\subset X$ and indicator sampling $s_k=\mathds{1}_W(x_0+k\alpha_{\mathrm{rot}})$. The following quantitative discrepancy bound is a convenient robustness tool; see \cite{Ma2025HPA} for a self-contained development in the scan--projection setting.
+
+\begin{theorem}[Ostrowski/Denjoy--Koksma bound for interval counts]
+\label{thm:ostrowski_dk_fop}
+Let $\alpha=[0;a_1,a_2,\dots]\in(0,1)\setminus\mathbb{Q}$ and let $q_k$ denote the convergent denominators.
+Let $W\subset X$ be any interval and define
+\begin{equation}
+    s_k:=\mathds{1}_W(x_0+k\alpha),\qquad S_N:=\sum_{k=0}^{N-1}s_k.
+\end{equation}
+For every $N\ge 1$ write the Ostrowski expansion $N=\sum_{k=0}^{m} b_k q_k$ with admissible digits.
+Then for every $x_0\in X$ one has the uniform bound
+\begin{equation}
+    \bigl|S_N-N\,\mu(W)\bigr|\ \le\ 2\sum_{k=0}^{m} b_k.
+\end{equation}
+\end{theorem}
+\begin{proof}[Sketch/Reference]
+Let $f:=\mathds{1}_W-\mu(W)$, so $\int f\,d\mu=0$ and $\mathrm{Var}(f)=2$.
+Denjoy--Koksma gives a uniform bound at convergent times: $\left|\sum_{j=0}^{q_k-1} f(x_0+j\alpha)\right|\le \mathrm{Var}(f)=2$.
+Decomposing the length-$N$ sum into Ostrowski blocks of lengths $q_k$ and applying the convergent-time bound to each block yields the stated estimate; see, e.g., \cite{Denjoy1932,Koksma1935,KatokHasselblatt1995,Ma2025HPA}.
+\end{proof}
+
+\begin{corollary}[Window-perturbation stability via symmetric difference]
+\label{cor:window_perturbation_stability}
+Let $W,W'\subset X$ be interval windows and let $s_k:=\mathds{1}_W(x_0+k\alpha)$ and $s'_k:=\mathds{1}_{W'}(x_0+k\alpha)$ be the corresponding binary readouts.
+Then the length-$N$ Hamming distance equals the orbit count on the symmetric difference:
+\begin{equation}
+    \sum_{k=0}^{N-1}|s_k-s'_k|\;=\;\sum_{k=0}^{N-1}\mathds{1}_{W\triangle W'}(x_0+k\alpha).
+\end{equation}
+In particular, applying Theorem~\ref{thm:ostrowski_dk_fop} to the interval $W\triangle W'$ gives an explicit uniform bound on the number of flips induced by a window perturbation, in terms of the Ostrowski digits of $N$ and the window measure.
+\end{corollary}
+
+\subsection{Abel finite part for divergent orbit sums}
+Let $u_n:=f(T_{\alpha_{\mathrm{rot}}}^n(x_0))$ be the orbit sample sequence (not assumed absolutely summable). Define its Abel generating function
+$$
+S_f(r):=\sum_{n=0}^{\infty} u_n r^n,\qquad 0<r<1.
+$$
+If $f$ is bounded then $S_f(r)$ converges absolutely for $0<r<1$. If as $r\uparrow 1$ the function admits an asymptotic expansion of the form
+$$
+S_f(r)=\sum_{j=1}^{J} \frac{c_j}{(1-r)^j} + C + o(1),
+$$
+we define the orbit finite part by
+$$
+\mathrm{FP}_{\alpha_{\mathrm{rot}}}(f):=C.
+$$
+
+\begin{lemma}[Uniqueness of the finite part]
+If $S_f(r)$ admits two expansions of the above form with constants $C$ and $C'$, then $C=C'$.
+\end{lemma}
+\begin{proof}
+Subtracting the two expansions gives
+$$
+0=\sum_{j=1}^{J''}\frac{d_j}{(1-r)^j}+(C-C')+o(1),
+$$
+as $r\uparrow 1$, where $J''=\max\{J,J'\}$ and $d_j$ are coefficient differences (missing coefficients treated as $0$). Multiplying by $(1-r)^{J''}$ and letting $r\uparrow 1$ yields $d_{J''}=0$. Repeating inductively gives $d_j=0$ for all $j\ge 1$, hence $C-C'+o(1)=0$ and therefore $C=C'$.
+\end{proof}
+
+\noindent
+In this manuscript, whenever a constant term depends on a regularization choice, the Abel finite-part convention above (together with its natural extensions beyond the circle template) is taken as the normalization prescribed by Convention~R1.
+

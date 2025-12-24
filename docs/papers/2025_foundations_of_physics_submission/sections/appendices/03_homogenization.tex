@@ -1,0 +1,195 @@
+\section{Dirac limit and homogenization framework}
+\label{app:homogenization}
+
+We provide a proof of Theorem~\ref{prop:dirac_limit} for the translation-invariant 1D coined walk (the baseline Dirac QCA). We then record definitions and averaging statements used when discussing cut-and-project (quasicrystal) textures and phason fields.
+
+\subsection{Proof of Theorem~\ref{prop:dirac_limit} (translation-invariant 1D case)}
+Let $\mathcal{H}_{1p}=\ell^2(\mathbb{Z})\otimes\mathbb{C}^2$ and fix $\varepsilon>0$. Define the shift $S$ on basis states by
+\begin{equation}
+    S\big(|j\rangle\otimes|R\rangle\big)=|j+1\rangle\otimes|R\rangle,\qquad
+    S\big(|j\rangle\otimes|L\rangle\big)=|j-1\rangle\otimes|L\rangle,
+\end{equation}
+and the (translation-invariant) coin by $C_\varepsilon\equiv e^{-i\varepsilon m\sigma_y}$ with fixed $m\in\mathbb{R}$. The one-step unitary is $U_\varepsilon=S\,C_\varepsilon$.
+
+Write the lattice quasi-momentum variable as $k\in[-\pi,\pi)$ and set the physical momentum $p\equiv k/\varepsilon$. In momentum representation the shift is diagonal,
+\begin{equation}
+    S(k)=e^{-ik\sigma_z}=e^{-i\varepsilon p\,\sigma_z},
+\end{equation}
+so the Bloch-reduced step is
+\begin{equation}
+    U_\varepsilon(k)=S(k)\,C_\varepsilon
+    =e^{-i\varepsilon p\,\sigma_z}\,e^{-i\varepsilon m\,\sigma_y}.
+\end{equation}
+For $|p|\le p_{\max}$ and $\varepsilon$ sufficiently small, $U_\varepsilon(k)$ lies in a neighborhood of the identity on which the principal matrix logarithm is analytic. Define the effective Hamiltonian by
+\begin{equation}
+    H_{\mathrm{eff}}^{(\varepsilon)}(p)\ \equiv\ \frac{i}{\varepsilon}\log U_\varepsilon(\varepsilon p).
+\end{equation}
+Using the Baker--Campbell--Hausdorff expansion and $\|[\sigma_z,\sigma_y]\|=2\|\sigma_x\|=2$, one obtains the uniform bound
+\begin{equation}
+    \big\|H_{\mathrm{eff}}^{(\varepsilon)}(p) - (p\,\sigma_z+m\,\sigma_y)\big\|
+    \le C_0\,\varepsilon\,(p_{\max}^2+m^2),
+\end{equation}
+for some absolute constant $C_0$ (the bound is uniform over $|p|\le p_{\max}$).
+
+Let $t\ge 0$ be fixed and set $T\equiv\lfloor t/\varepsilon\rfloor$. For each $p$ the evolution after $T$ steps satisfies
+\begin{equation}
+    U_\varepsilon(\varepsilon p)^T = \exp\!\left(-it\,H_{\mathrm{eff}}^{(\varepsilon)}(p)\right)\,+\,\mathcal{O}(\varepsilon),
+\end{equation}
+where the $\mathcal{O}(\varepsilon)$ term accounts for the rounding error between $T\varepsilon$ and $t$. Since the matrix exponential is Lipschitz on bounded sets, for $|p|\le p_{\max}$ one has
+\begin{equation}
+    \left\|\exp\!\left(-it\,H_{\mathrm{eff}}^{(\varepsilon)}(p)\right)-\exp\!\left(-it\,(p\,\sigma_z+m\,\sigma_y)\right)\right\|
+    \le t\,\big\|H_{\mathrm{eff}}^{(\varepsilon)}(p) - (p\,\sigma_z+m\,\sigma_y)\big\|\,e^{t\,\|H_{\mathrm{eff}}^{(\varepsilon)}(p)\|}.
+\end{equation}
+Combining the uniform bounds above yields
+\begin{equation}
+    \sup_{|p|\le p_{\max}}\left\|U_\varepsilon(\varepsilon p)^T-\exp\!\left(-it\,(p\,\sigma_z+m\,\sigma_y)\right)\right\|
+    \le C(t,p_{\max})\,\varepsilon.
+\end{equation}
+For a band-limited state $|\psi_0\rangle$ with support $|p|\le p_{\max}$, Parseval's identity transfers this uniform bound to the full norm on $\mathcal{H}_{1p}$, proving Theorem~\ref{prop:dirac_limit} with $H_D=-i\sigma_z\partial_x+m\sigma_y$.
+
+\subsection{Setup and Definitions}
+Let $\Lambda \subset \mathbb{R}^d$ be a cut-and-project set defined by the projection $P: \mathbb{R}^n \to \mathbb{R}^d$ ($n > d$) of the strip $S = \mathbb{R}^d \times W$, where $W \subset \mathbb{R}^{n-d}$ is a compact window; see, e.g., \cite{Senechal1995,BaakeGrimm2013AperiodicOrder}.
+Sites are $x \in \Lambda$. The unitary evolution is $\hat{U} = S \cdot C$, with shift $S = \sum_x \sum_j |x+e_j\rangle\langle x| \otimes P_j$ and coin $C = \bigoplus_x C_x$.
+
+\begin{definition}[Phason coordinate and phason strain]
+For a cut-and-project point $x=P_{\parallel}(\vec{n})$ with $\vec{n}\in\mathbb{Z}^n$, its internal (perpendicular) coordinate is $x_{\perp}\equiv P_{\perp}(\vec{n})\in W$. Since the window $W$ is compact, $x_{\perp}$ is bounded uniformly by $\mathrm{diam}(W)$; this bound is a property of the internal \emph{coordinate}, not of any strain field.
+
+A \emph{phason displacement field} is a (possibly slowly varying) internal shift $u(x)\in\mathbb{R}^{n-d}$ that locally replaces the window by $W+u(x)$ and hence parametrizes deviations from a perfect linear cut. The corresponding \emph{phason strain} is the spatial variation of this displacement, measured for instance by $\|\nabla u\|$ in continuum descriptions or by discrete differences (e.g.\ the 1D strain $\eta_j$ in Appendix~\ref{app:fib_dqca}). A perfect cut corresponds to $u\equiv\mathrm{const}$ and hence vanishing strain.
+\end{definition}
+
+\begin{definition}[Finite-window structure factor (diffraction diagnostic)]
+Let $\Lambda\subset\mathbb{R}^d$ be a discrete set and let $B_R\subset\mathbb{R}^d$ be a ball of radius $R$. The (normalized) finite-window structure factor is
+\begin{equation}
+    S_R(k)\ \equiv\ \frac{1}{|\Lambda\cap B_R|}\left|\sum_{x\in\Lambda\cap B_R} e^{-i\,k\cdot x}\right|^2,\qquad k\in\mathbb{R}^d.
+\end{equation}
+For regular cut-and-project (model) sets, $S_R(k)$ converges (in the appropriate weak sense) to a pure-point diffraction measure whose Bragg spectrum is determined by the dual lattice and the window function; see, e.g., \cite{Hof1995,BaakeGrimm2013AperiodicOrder}. In this manuscript, ``controlling the structure factor'' refers to controlling this diffraction content (e.g.\ location and weights of dominant peaks) in the regime relevant for long-wavelength propagators.
+\end{definition}
+
+\begin{lemma}[Ergodic Averaging]
+\label{lemma:ergodic}
+Let $f: \mathbb{R}^{n-d} \to \mathbb{C}$ be a Riemann-integrable function on the internal space. For an irrational cut (where the projection of $\mathbb{Z}^n$ is dense in $W$), the lattice sum converges to the integral:
+\begin{equation}
+    \lim_{R \to \infty} \frac{1}{|\Lambda \cap B_R|} \sum_{x \in \Lambda \cap B_R} f(x_\perp)
+    = \frac{1}{\mathrm{Vol}(W)} \int_W f(y)\,dy.
+\end{equation}
+This follows from Weyl-type equidistribution for cut-and-project sets; see, e.g., \cite{Hof1995,BaakeGrimm2013AperiodicOrder}.
+\end{lemma}
+\noindent\textit{Remark.} Lemma~\ref{lemma:ergodic} is the cut-and-project analogue of the orbit-trace identity recorded in Appendix~\ref{app:orbit_calculus}.
+
+\subsection{Homogenization remarks (quasicrystal extension)}
+For coined walks on regular lattices, rigorous long-wavelength Dirac limits (including variable-mass and gauge-coupled extensions) are available in the QW/QCA literature; see, e.g., \cite{Arrighi2014,Dariano2014,Bisio2015}. Extending such results to cut-and-project substrates requires controlling the quasicrystal structure factor together with the spatial variation of internal-coordinate (phason) fields. In this manuscript we use the ergodic averaging statement (Lemma~\ref{lemma:ergodic}) and explicit 1D diagnostics (Appendix~\ref{app:fib_dqca}) as the checkable backbone of the quasicrystal program.\par
+\noindent
+The corresponding higher-dimensional target is stated as Conjecture~\ref{conj:quasicrystal_dirac} and reduced to the two quantitative control tasks in Proposition~\ref{prop:quasicrystal_homogenization_reduction}.
+
+\begin{proposition}[Higher-dimensional quasicrystal Dirac limit as a rigidity reduction]
+\label{prop:quasicrystal_homogenization_reduction}
+Let $\Lambda\subset\mathbb{R}^d$ be a regular cut-and-project (model) set with compact window $W$ and consider a finite-range coined walk/PQCA step $U_\varepsilon$ on $\Lambda$ with microscopic scale $\varepsilon>0$.
+Assume that the local coin data are given by a bounded, sufficiently regular function of the internal coordinate (and a slowly varying phason displacement), so that local coefficients admit orbit traces on $W$ in the sense of Lemma~\ref{lemma:ergodic}.\par
+\noindent
+Then the higher-dimensional continuum-limit problem may be decomposed into two quantitative control tasks:
+\begin{itemize}
+    \item \textbf{(Structure-factor control).} Control the finite-window structure factor/diffraction content (dominant Bragg peaks and their weights) in the long-wavelength band relevant to a Dirac/EFT expansion \cite{Hof1995,BaakeGrimm2013AperiodicOrder}.
+    \item \textbf{(Phason/rigidity control).} Control the spatial variation of the internal-coordinate data (phason strain) so that window perturbations induce only a controlled density of local flips/defects in the induced readout/texture; in scan--projection language this is governed by orbit-calculus discrepancy bounds and window-symmetric-difference stability \cite{Ma2025HPA}.
+\end{itemize}
+Under these controls, the same analytic-logarithm mechanism used in the translation-invariant proof above yields an effective long-wavelength Hamiltonian whose leading symbol is Dirac-type (with coefficients given by the orbit-trace averages), and whose remainder is perturbatively small in $\varepsilon$ and in the phason-strain scale (cf.\ the band-limited regime in the proof of Theorem~\ref{prop:dirac_limit} and the orbit-trace normalization of Convention~R1).\par
+\end{proposition}
+
+\paragraph{Bridge: discrete step to an effective Hamiltonian (analytic logarithm regime).}
+Several continuum-limit arguments in this manuscript (Dirac-limit diagnostics, MDR expansions) implicitly use the same elementary bridge: a one-step unitary $U_\varepsilon$ close to the identity admits an analytic principal logarithm on a band-limited sector, yielding an effective Hamiltonian $H_{\mathrm{eff}}^{(\varepsilon)}\equiv \frac{i}{\varepsilon}\log U_\varepsilon$.
+This is the mechanism used explicitly in the proof of Theorem~\ref{prop:dirac_limit} above, and it also underlies the analytic/parity expansion used in Appendix~\ref{app:mdr_symmetry}.
+In particular, the compactness of the unitary spectrum and the choice of a discrete difference-based momentum coordinate provide a rigid example of an arc--chord modified dispersion relation; see Appendix~\ref{app:mdr_symmetry} and \cite{Ma2025HPA}.
+
+\subsection{Diophantine property (golden case)}
+Quantitative control of near-commensurabilities in quasiperiodic constructions is often organized by Diophantine (badly-approximable) bounds. For the golden ratio $\phi=\tfrac{1+\sqrt5}{2}$, continued-fraction theory gives the sharp estimate \cite{Cassels1957Diophantine}
+\begin{equation}
+    \left| \phi - \frac{p}{q} \right|\ \ge\ \frac{1}{\sqrt{5}\,q^2}\qquad (p,q\in\mathbb{Z},\ q\ge 1),
+\end{equation}
+with equality attained along the Fibonacci convergents. This arithmetic rigidity underlies the Fibonacci return-time structure discussed in Appendix~\ref{app:three_gap} and the Zeckendorf/Ostrowski digit constraints used in Part~II and Appendix~\ref{app:ostrowski}.
+
+\subsection{Three-gap structure and Fibonacci return times}
+\label{app:three_gap}
+The same bad-approximability property that controls the Diophantine bounds above also governs the arithmetic structure of intrinsic phase-orbit readouts (Part~II), modeled by an irrational rotation $x_{n+1}=x_n+\alpha_{\mathrm{rot}}\ (\mathrm{mod}\ 1)$ with $\alpha_{\mathrm{rot}}=\phi^{-1}$. A classical result (the Three-Gap/Three-Distance Theorem) states that for any irrational $\alpha_{\mathrm{rot}}$, the ordered set of points $\{n\alpha_{\mathrm{rot}}\}_{n=0}^{N-1}$ partitions the circle into at most three distinct gap lengths \cite{Slater1967}.
+Moreover, when $N$ equals a denominator $q_k$ of a continued-fraction convergent of $\alpha_{\mathrm{rot}}$, the partition exhibits a particularly rigid two-gap structure, and the closest returns occur at such $q_k$.
+
+For the golden case $\alpha_{\mathrm{rot}}=\phi^{-1}$, the continued fraction is eventually constant, so the convergent denominators are Fibonacci numbers (up to an index shift). Consequently, the strongest near-returns and the most uniform finite sampling of the phase orbit occur on Fibonacci time scales. This provides a concrete number-theoretic underpinning for the Fibonacci ``resonant eras'' discussed in Part~VI.
+
+\subsection{Torus rotations from finite-dimensional spectra: aperiodicity, equidistribution, recurrence}
+\label{app:torus_rotation}
+Several claims in Part~VI can be reduced to standard facts about translations on tori. We record them in a form adapted to finite-dimensional unitary spectra.
+
+\begin{proposition}[Projective evolution as a torus rotation]
+\label{prop:projective_torus}
+Let $U$ be a unitary on a finite-dimensional Hilbert space with an eigenbasis $\{|j\rangle\}_{j=0}^{d-1}$ and eigenvalues $U|j\rangle = e^{-i2\pi \alpha_j}|j\rangle$, where $\alpha_j\in\mathbb{R}/\mathbb{Z}$. For a state $|\psi\rangle=\sum_{j} c_j|j\rangle$ with support $S\equiv\{j:\,c_j\neq 0\}$, define the relative-phase vector
+\begin{equation}
+    \omega\equiv (\alpha_j-\alpha_{j_0})_{j\in S\setminus\{j_0\}}\ \in\ (\mathbb{R}/\mathbb{Z})^{|S|-1},
+\end{equation}
+for any fixed $j_0\in S$. Then the projective orbit $[U^n|\psi\rangle]$ is completely determined by the torus rotation $n\mapsto n\,\omega\ (\mathrm{mod}\ 1)$.
+\end{proposition}
+\begin{proof}[Reference]
+This is immediate from the eigenbasis expansion and the fact that projective rays are defined modulo a global phase.
+\end{proof}
+
+\begin{proposition}[No exact repetition criterion]
+\label{prop:aperiodic_criterion}
+With the notation above, the projective orbit is periodic (i.e.\ there exists $T\ge 1$ such that $[U^T|\psi\rangle]=[|\psi\rangle]$) if and only if $T\,\omega=0$ in $(\mathbb{R}/\mathbb{Z})^{|S|-1}$, equivalently $T(\alpha_j-\alpha_{j_0})\in\mathbb{Z}$ for all $j\in S$.
+In particular, if at least one difference $\alpha_j-\alpha_{j_0}$ with $c_j\neq 0$ is irrational, then the orbit has no exact period.
+\end{proposition}
+\begin{proof}[Reference]
+This is immediate by comparing eigenbasis coefficients of $U^T|\psi\rangle=e^{i\theta}|\psi\rangle$.
+\end{proof}
+
+\begin{theorem}[Equidistribution on the orbit closure]
+\label{thm:equidistribution_closure}
+Let $\omega\in(\mathbb{R}/\mathbb{Z})^m$ and consider the translation $T_\omega:x\mapsto x+\omega$ on the torus $\mathbb{T}^m$. Let $H\equiv \overline{\{n\omega:\,n\in\mathbb{Z}\}}\subset\mathbb{T}^m$ be the orbit closure of $0$ (a subtorus). Then for any continuous $f$ on $H$ and any $x\in H$,
+\begin{equation}
+    \lim_{N\to\infty}\frac{1}{N}\sum_{n=0}^{N-1} f(x+n\omega) \;=\; \int_H f\,d\mu_H,
+\end{equation}
+where $\mu_H$ is the normalized Haar measure on $H$ \cite{KuipersNiederreiter1974,Weyl1916}.
+\end{theorem}
+\begin{proof}[Reference]
+See, e.g., \cite{Weyl1916,KuipersNiederreiter1974} for the standard proof via Fourier analysis/unique ergodicity on compact abelian groups.
+\end{proof}
+
+\begin{proposition}[Torus translations are not mixing]
+\label{prop:torus_not_mixing}
+Let $T_\omega$ be a translation on a torus $\mathbb{T}^m$ by a nonzero $\omega$. Then $T_\omega$ is not mixing with respect to Haar measure. In particular, there exist bounded observables $f,g$ with zero mean such that the correlation $\langle f\circ T_\omega^n, g\rangle$ does not converge to $0$ as $n\to\infty$.
+\end{proposition}
+\begin{proof}[Reference]
+This is the standard fact that torus translations (Kronecker systems) are not mixing; see, e.g., \cite{Walters1982}.
+\end{proof}
+
+\begin{proposition}[Quantitative recurrence bound (Dirichlet approximation)]
+\label{prop:dirichlet_recurrence}
+Let $\omega\in\mathbb{R}^m$ and let $\|\cdot\|_{\mathbb{T}^m}$ denote distance to $0$ in $\mathbb{T}^m$. Then for any integer $Q\ge 1$ there exists $1\le n\le Q^m$ such that
+\begin{equation}
+    \|n\,\omega\|_{\mathbb{T}^m} \le \frac{1}{Q}.
+\end{equation}
+Consequently, for any $\varepsilon>0$ there exists $n=\mathcal{O}(\varepsilon^{-m})$ such that $n\omega$ returns within $\varepsilon$ of $0$.
+\end{proposition}
+\begin{proof}[Reference]
+This is the standard simultaneous Dirichlet approximation theorem; see, e.g., \cite{KuipersNiederreiter1974}.
+\end{proof}
+
+\paragraph{Application to the golden-spectrum unitary.}
+For the diagonal golden-spectrum ansatz of Part~VI, the projective dynamics is a torus translation of the form above with a frequency vector determined by the eigenphase differences $\alpha_j-\alpha_{j_0}$. Proposition~\ref{prop:aperiodic_criterion} gives a simple sufficient condition for absence of exact periods, while Theorem~\ref{thm:equidistribution_closure} and Proposition~\ref{prop:dirichlet_recurrence} justify equidistribution on the orbit closure and the existence of arbitrarily close returns (with polynomial recurrence-time bounds in the effective torus dimension). In the golden case, continued-fraction optimality further organizes the \emph{best} near-returns on Fibonacci time scales, as summarized in Appendix~\ref{app:three_gap}.
+
+\begin{corollary}[Recurrence obstructs strictly monotone continuous ``complexity'' along a fixed finite spectrum]
+\label{cor:recurrence_no_monotone}
+Let $U$ be a finite-dimensional unitary and let $|\psi\rangle$ be a state whose projective orbit has arbitrarily close returns (as in Proposition~\ref{prop:dirichlet_recurrence} for the associated torus rotation). Then no continuous functional $C:\mathbb{P}(\mathcal{H})\to\mathbb{R}$ can be strictly increasing along the entire orbit $\{[U^n|\psi\rangle]\}_{n\ge 0}$.
+\end{corollary}
+\begin{proof}[Reference]
+This is immediate from continuity: arbitrarily close returns force $C$ to revisit values arbitrarily close to its initial value.
+\end{proof}
+
+\subsection{Golden-mean constraint, capacity, and Zeckendorf coding}
+\label{app:golden_mean_capacity}
+Finite-information locality suggests that operational discretizations of intrinsic readouts should obey simple admissibility constraints. A canonical example is the \emph{golden-mean constraint} on binary strings (no adjacent excitations): for $\mathbf{b}=(b_1,\dots,b_L)\in\{0,1\}^L$ require $b_i b_{i+1}=0$. The number of admissible strings satisfies a Fibonacci recursion and grows as
+\begin{equation}
+    N(L)=F_{L+2}\sim \frac{\phi^{L+2}}{\sqrt{5}},
+\end{equation}
+so the topological entropy is $h_{\mathrm{top}}=\lim_{L\to\infty}\frac{1}{L}\ln N(L)=\ln\phi$, and the corresponding capacity is
+\begin{equation}
+    C=\log_2\phi \approx 0.6942\ \text{bits/site}.
+\end{equation}
+Zeckendorf's theorem gives the matching uniqueness statement in arithmetic form: every integer admits a unique representation as a sum of non-consecutive Fibonacci numbers, which is equivalent to the golden-mean admissibility condition on digits \cite{Zeckendorf1972,AlloucheShallit2003}. In this sense, the Zeckendorf/Ostrowski representation is the canonical discretization compatible with Fibonacci combinatorics and finite-resolution constraints in the golden construction.
+

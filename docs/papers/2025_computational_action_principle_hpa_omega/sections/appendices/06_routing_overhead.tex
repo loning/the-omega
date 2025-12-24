@@ -1,0 +1,40 @@
+\section{Routing overhead as a circuit-theoretic invariant (basic bounds)}
+\label{app:routing_overhead}
+
+This appendix isolates a minimal, model-independent backbone behind the ``routing overhead'' $\kappa$ used in Section~\ref{subsec:two_times}. The goal is not to fix a particular microscopic architecture but to show that (i) a well-defined circuit-depth notion exists, (ii) it obeys universal locality bounds, and (iii) it therefore supports the interpretation of $\lapse=\kappa_0/\kappa$ as an operational slowdown factor.
+
+\subsection{1D nearest-neighbor depth and causal light cones}
+\label{app:lightcone}
+
+Consider a one-dimensional chain of qubits (or finite-dimensional local systems) indexed by $i\in\ZZ$, and a depth-$D$ circuit composed of layers of disjoint nearest-neighbor two-site gates.
+Let $\mathrm{supp}(O)$ denote the set of sites on which an operator $O$ acts nontrivially.
+
+\begin{lemma}[Light-cone bound for 1D nearest-neighbor circuits]
+\label{lem:lightcone}
+Let $U$ be a depth-$D$ 1D nearest-neighbor circuit. Then for any local operator $O$,
+\begin{equation}
+  \mathrm{diam}\!\left(\mathrm{supp}(U^\dagger O U)\right)
+  \le \mathrm{diam}\!\left(\mathrm{supp}(O)\right) + 2D.
+\end{equation}
+In particular, information (operator support) propagates at speed at most one lattice site per circuit layer.
+\end{lemma}
+
+\begin{proof}
+Each circuit layer consists of disjoint nearest-neighbor gates. Conjugation by a two-site gate can enlarge the support of an operator by at most one site on each side (because the gate touches at most one new neighbor of the current support). Iterating over $D$ layers yields an expansion by at most $D$ sites to the left and $D$ sites to the right.
+\end{proof}
+
+\subsection{A universal lower bound on routing overhead}
+\label{app:routing_lower_bound}
+
+\begin{corollary}[Range lower bound]
+Suppose a target unitary $U_{\mathrm{tar}}$ maps some strictly local operator at site $i$ to an operator supported at distance at least $L$ away (i.e.\ $\mathrm{diam}(\mathrm{supp}(U_{\mathrm{tar}}^\dagger O U_{\mathrm{tar}}))-\mathrm{diam}(\mathrm{supp}(O))\ge 2L$ for some $O$). Then any 1D nearest-neighbor circuit implementing $U_{\mathrm{tar}}$ has depth $\ge L$.
+\end{corollary}
+
+\noindent This is the minimal reason why ``routing overhead'' is not arbitrary bookkeeping: locality alone enforces depth lower bounds.
+
+\subsection{Finiteness and a coarse upper bound}
+\label{app:routing_upper_bound}
+
+On any finite region of $n$ sites, depth is also finite. A crude universal statement is that any target unitary can be implemented with depth $O(n^2)$ using gate decompositions plus SWAP routing, hence $\kappa$ is always finite on finite regions \cite{NielsenChuang2000}. In structured models (e.g.\ fixed local update rules), one expects much better bounds; CAP does not require the optimal construction, only that $\kappa(x)$ is a well-defined operational cost field.
+
+

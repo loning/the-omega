@@ -1,0 +1,72 @@
+\section{From routing overhead to a relativistic lapse: an axiomatic correspondence}
+\label{app:lapse_correspondence}
+
+This appendix records an explicit mapping under which the computational lapse
+$\lapse(x)=\kappa_0/\kappa(x)$ reproduces the kinematic role of a relativistic lapse function.
+The goal is to make the correspondence operational and quantitatively checkable under explicit axioms relating geometry to compilation overhead.
+
+\subsection{A minimal operational statement}
+Fix a baseline depth time $t$ measured in 1D nearest-neighbor circuit depth.
+By definition, the local logical time $\tau_{\mathrm{loc}}$ counts locally realizable logical steps.
+If implementing one logical step at location $x$ requires routing overhead $\kappa(x)$ (Definition~\ref{def:routing_overhead}), then
+\begin{equation}
+d\tau_{\mathrm{loc}}(x)=\frac{\kappa_0}{\kappa(x)}\,dt\ =\ \lapse(x)\,dt,
+\end{equation}
+which is Equation~\eqref{eq:lapse_definition}.
+
+\subsection{A geometry-to-\texorpdfstring{$\kappa$}{kappa} model via boundary scaling}
+To connect $\kappa$ to geometric data, one must specify how a spatial region and its local interaction structure are encoded into an interaction graph.
+We formalize this as a geometric rigidity postulate.
+
+\begin{axiom}[Geometric rigidity of overhead]
+\label{ax:geometric_rigidity_overhead}
+At each location $x$, the effective local update acts on a region $R(x)$ whose interaction graph contains a $d$-dimensional cubic grid of side length $L(x)$ at bounded interaction range, and the minimal 1D compilation depth saturates the boundary-scaling lower bound up to a fixed constant factor:
+\begin{equation}
+\kappa(x)=c\,L(x)^{d-1},
+\end{equation}
+for some constant $c>0$ independent of $x$.
+\end{axiom}
+
+By Theorem~\ref{thm:boundary_scaling_overhead}, the scaling $\kappa(x)=\Omega(L(x)^{d-1})$ is unavoidable under 1D embedding; Axiom~\ref{ax:geometric_rigidity_overhead} asserts that the realized compilation is asymptotically optimal in this sense.
+Under Axiom~\ref{ax:geometric_rigidity_overhead}, the lapse scales as
+\begin{equation}
+\lapse(x)\ =\ \frac{\kappa_0}{c}\,L(x)^{-(d-1)}.
+\label{eq:lapse_boundary_scaling}
+\end{equation}
+
+\subsection{Relativistic kinematics: redshift from \texorpdfstring{$\kappa$}{kappa}}
+For a static spacetime metric in ADM form,
+\begin{equation}
+ds^2=-N(x)^2\,dt^2+h_{ij}(x)\,dx^idx^j,
+\end{equation}
+proper time obeys $d\tau = N(x)\,dt$ for observers at rest in the chosen coordinates.
+Define the emergent lapse by
+\begin{equation}
+N(x):=\lapse(x)=\frac{\kappa_0}{\kappa(x)}.
+\end{equation}
+Then the gravitational redshift factor between two static observers at $x_{\mathrm{em}}$ and $x_{\mathrm{obs}}$ is
+\begin{equation}
+\frac{\nu_{\mathrm{obs}}}{\nu_{\mathrm{em}}}=\frac{N(x_{\mathrm{obs}})}{N(x_{\mathrm{em}})}
+=\frac{\kappa(x_{\mathrm{em}})}{\kappa(x_{\mathrm{obs}})},
+\end{equation}
+so frequency shifts become directly measurable ratios of compilation overheads.
+
+\subsection{Matching a target relativistic lapse (example)}
+Consider a static spacetime metric in ADM form
+\begin{equation}
+ds^2=-N(x)^2\,dt^2+h_{ij}(x)\,dx^idx^j,
+\end{equation}
+so that proper time obeys $d\tau = N(x)\,dt$ for observers at rest in the chosen coordinates.
+Given a target lapse profile $N(x)$, the boundary-scaling model \eqref{eq:lapse_boundary_scaling} suggests choosing a geometric scale field $L(x)$ such that
+\begin{equation}
+L(x)\ \propto\ N(x)^{-1/(d-1)}.
+\end{equation}
+For instance, in $d=2$ one has $L(x)\propto N(x)^{-1}$.
+In particular, for a Schwarzschild-like kinematic lapse $N(r)=\sqrt{1-2GM/r}$ (in units $c=1$),
+the corresponding overhead profile is
+\begin{equation}
+\kappa(r)\ \propto\ \frac{1}{\sqrt{1-2GM/r}},
+\end{equation}
+which makes the ``clock rate'' slowdown an explicit routing/compilation slowdown.
+
+

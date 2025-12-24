@@ -1,0 +1,109 @@
+\section{Computational Action Principle and the \texorpdfstring{$\Omega$}{Omega} action}
+\label{sec:cap_action}
+
+\subsection{Two notions of ``time'' and the geometry of implementation cost}
+\label{subsec:two_times}
+
+HPA defines \emph{scan time} as the iteration count of a unitary scan. $\Omega$ theory introduces a second operational notion: \emph{implementation time}. Even if ontic evolution is unitary and reversible, an observer can only implement and read out local updates through finite hardware constraints. In the $\Omega$ program, microscopic evolution is modeled as a partitioned quantum cellular automaton (PQCA), and a local PQCA step on a finite region is exactly compilable into a one-dimensional nearest-neighbor circuit \cite{Ma2025FoP}. This construction is compatible with standard QCA locality results (e.g.\ unitarity + causality $\Rightarrow$ localizability) \cite{SchumacherWerner2004,Watrous1995,ArrighiNesmeWerner2011}. The required circuit depth defines a \emph{routing overhead} field $\kappa(x)$, i.e.\ the implementation cost of moving information through the local network to realize the update. Appendix~\ref{app:routing_overhead} records model-independent circuit-theoretic bounds supporting $\kappa$ as an operational invariant.
+
+This naturally induces a computational lapse:
+\begin{equation}
+  \lapse(x) = \frac{\kappa_0}{\kappa(x)},
+  \qquad
+  \dd\tau_{\mathrm{loc}}(x) = \lapse(x)\, \dd t,
+  \qquad
+  \kappa(x)\ge \kappa_0 .
+\end{equation}
+Intuitively: higher routing overhead means fewer effective local logical updates per unit background depth $\dd t$, and therefore a slower local clock. This is the computational interpretation of gravitational time dilation: local clocks slow down because implementing local dynamics consumes more routing budget.
+
+The dictionary becomes concrete in static GR. If we identify $\lapse(x)$ with the GR lapse, then in Schwarzschild coordinates \cite{Wald1984,MisnerThorneWheeler1973}
+\begin{equation}
+  \lapse(r)=\sqrt{1-\frac{2GM}{rc^{2}}},
+  \qquad
+  \frac{\kappa(r)}{\kappa_0} = \frac{1}{\lapse(r)}
+  =1+\frac{GM}{rc^{2}}+O(r^{-2}),
+\end{equation}
+so gravitational redshift is operationally equivalent to computational slowdown in the implementation layer.
+
+\subsection{Why a Fisher term: information geometry as a minimal covariant quadratic form}
+\label{subsec:fisher}
+
+To lift readout statistics into a covariant action, we require a local, coordinate-invariant, quadratic form that measures infinitesimal statistical distinguishability of an effective density field. Under standard information-geometric axioms (monotonicity under coarse-graining, locality, and scale naturalness), the Fisher metric is the canonical choice \cite{AmariNagaoka2000,Cencov1982}. In particular, Fisher information is the unique (up to scale) Riemannian metric on probability manifolds that is contractive under stochastic maps (coarse-graining), matching the operational fact that finite-resolution readout cannot increase distinguishability.
+
+\begin{remark}[Uniqueness input (C{\v{e}}ncov)]
+On finite probability simplices, C{\v{e}}ncov's theorem states that, up to an overall constant factor, the Fisher information metric is the unique Riemannian metric that is monotone under Markov morphisms (stochastic coarse-grainings) \cite{Cencov1982,AmariNagaoka2000}. CAP uses this uniqueness as the quantitative reason why a Fisher-gradient term is the minimal canonical quadratic penalty compatible with finite-resolution readout semantics.
+\end{remark}
+
+Let $\varrho(x)\ge 0$ be an information density and define the Fisher functional in covariant form:
+\begin{equation}
+  I_F[\varrho]
+  =\int \dd^{4}x\, \sqrt{-g}\;
+  g^{\mu\nu}\frac{\nabla_{\mu}\varrho\,\nabla_{\nu}\varrho}{\varrho}
+  =4\int \dd^{4}x\, \sqrt{-g}\;
+  g^{\mu\nu}(\nabla_{\mu}\chi)(\nabla_{\nu}\chi),
+  \qquad
+  \chi\equiv \sqrt{\varrho}.
+\end{equation}
+This suggests a minimal scalar degree of freedom $\chi$ (the Fisher amplitude) coupled to gravity.
+
+\subsection{Minimal \texorpdfstring{$\Omega$}{Omega} action: Einstein--Hilbert + Fisher amplitude}
+\label{subsec:omega_action}
+
+We take the minimal $\Omega$ action to be
+\begin{equation}
+\label{eq:omega_action}
+  S_{\Omega}
+  =\int \dd^{4}x\,\sqrt{-g}\,
+  \left[
+    \frac{R-2\Lambda}{16\pi G}
+    -\lambda_{F}\, g^{\mu\nu}(\nabla_{\mu}\chi)(\nabla_{\nu}\chi)
+    -V(\chi^{2})
+    +\mathcal{L}_{m}
+  \right],
+  \qquad
+  \varrho=\chi^{2}.
+\end{equation}
+Here $V(\chi^{2})$ is an effective potential encoding readout-stability and topological-sector costs, and $\mathcal{L}_{m}$ collects additional matter/gauge degrees of freedom. CAP interprets \eqref{eq:omega_action} as a minimal-cost closure consistent with O1--O6 and with the requirement that mismatch and implementation overhead must be expressible as local covariant functionals.
+
+\paragraph{Interpretation.}
+The Einstein--Hilbert term fixes the macroscopic geometry under the closure assumptions of Section~\ref{subsec:uniqueness}. The Fisher-amplitude term is the minimal local quadratic penalty for spatial/temporal variation in distinguishability (readout information density). The potential $V$ encodes the ``quantized penalties'' required to stabilize discrete readout sectors and to maintain nontrivial topological sectors. The matter/gauge sector captures compensating degrees of freedom required for local consistency under phase complementarity (Section~\ref{sec:gauge_fields}).
+
+\subsection{Cost--density identification: from routing overhead to information density}
+\label{subsec:cost_density}
+
+To inject implementation cost into the continuum action, we identify a dimensionless cost field
+\begin{equation}
+  s(x) \equiv \frac{\kappa(x)}{\kappa_0} = \frac{1}{\lapse(x)} \ge 1,
+\end{equation}
+and relate it to the information density by a smooth local map. In the weak-field, slow-variation regime, a leading-order model is
+\begin{equation}
+\label{eq:rho_cost_power}
+  \varrho(x) = \varrho_{0}\, s(x)^{p},
+\end{equation}
+or more generally $\varrho=\varrho_{0}F(s)$ with $F$ twice differentiable near $s=1$, in which case the dominant term reduces to a power law in the relevant asymptotic expansion. Then the Fisher-gradient term becomes a routing-gradient energy: $\chi=\sqrt{\varrho}\propto s^{p/2}$.
+
+\begin{remark}[Why power laws appear at leading order]
+If $\varrho=\varrho_0 F(s)$ with $F(1)=1$ and $F$ positive and $C^2$ near $s=1$, then $\log \varrho = \log \varrho_0 + \log F(s)$ admits a Taylor expansion in $\log s$:
+\begin{equation}
+  \log \varrho = \log \varrho_0 + p\,\log s + O\!\left((\log s)^2\right),
+  \qquad
+  p := \left.\frac{\dd\,\log F}{\dd\,\log s}\right|_{s=1}.
+\end{equation}
+Exponentiating yields $\varrho=\varrho_0 s^p\left(1+O\!\left((\log s)^2\right)\right)$, justifying \eqref{eq:rho_cost_power} as the universal leading-order form.
+\end{remark}
+
+This provides CAP's second chain: implementation overhead $\kappa$ controls $s=1/\lapse$; $s$ controls $\varrho$; gradients of $\varrho$ generate Fisher energy and therefore gravitational backreaction through the information stress tensor.
+
+\subsection{CAP as a variational principle: embedding least discrepancy into the potential}
+\label{subsec:cap_statement}
+
+CAP asserts that among all effective field configurations $(g_{\mu\nu},\chi,\psi_m,\dots)$ compatible with the $\Omega$ axioms and boundary data, physical configurations extremize the total action \eqref{eq:omega_action}, with the readout mismatch encoded as a least-discrepancy penalty in the potential:
+\begin{equation}
+  V(\chi^{2}) = V_{\mathrm{disc}}(\chi^{2}) + V_{\mathrm{topo}}(\chi^{2}) + V_{0}.
+\end{equation}
+Here $V_{\mathrm{disc}}$ encodes quantized penalties induced by window projection and discrepancy accumulation (stabilizing discrete readout sectors), while $V_{\mathrm{topo}}$ encodes the maintenance cost of topological sectors (defects, winding). Including gauge symmetry adds compensating connections and Yang--Mills-type terms in $\mathcal{L}_{m}$ without changing the minimal gravity--Fisher backbone.
+
+\paragraph{CAP in one sentence.}
+\emph{Among all covariant effective configurations compatible with finite-resolution readout, the realized configuration is the stationary point that minimizes accumulated readout discrepancy and implementation overhead in a single action.}
+
+

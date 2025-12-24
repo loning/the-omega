@@ -1,0 +1,66 @@
+\section{Introduction: from coordinate schematics to computational teleology}
+\label{sec:introduction}
+
+\subsection{If the universe were fully decidable, why has it not ``halted''?}
+A standard division of labor treats time as a physical parameter (or a coordinate on a background geometry) and treats time complexity as a computational resource (step count in an abstract machine). The HPA--$\Omega$ stance is more aggressive and more unified: \emph{time and space are not background containers but internal costs paid by a readout protocol that accesses, cuts, and encodes a conserved whole}.
+
+The motivating question can be phrased without metaphysics. If microscopic dynamics is strictly local and unitary---as in a quantum cellular automaton (QCA)---then ``history'' is a reversible computation. If, in addition, the internal reachability of certain local predicates is undecidable (as in universal QCAs; Appendix~\ref{app:reachability_undecidability}), then there is no general algorithm deciding whether a given local event will ever occur from the finite description of the initial encoding. In such a setting, ``the universe computing an ultimate answer and stopping'' is not the generic computational narrative; undecidable reachability provides a theorem-level boundary condition for long-time prediction.
+
+\subsection{What this paper does}
+This paper presents a self-contained system-architecture layer for Holographic Polar Arithmetic (HPA) and Omega Theory.
+We treat their primitives as an axiomatic toolbox, but every theorem-level statement used in the main chain is either proved in this manuscript (often in the appendices) or cited to standard literature.
+
+\paragraph{Contribution 1 (unified resource semantics).}
+We define time complexity as scan depth (iteration count of a unitary scan $\Theta$) and as compilation depth (1D nearest-neighbor circuit depth for implementing a local PQCA step). We define space complexity as readout resolution: prefix length of a window projection bitstream, canonical coding length (Ostrowski/Zeckendorf), and active Hilbert-workspace capacity.
+
+\paragraph{Contribution 2 (hard resource complementarity).}
+From the Weyl-pair structure $UV=\e^{\iu\Phi}VU$ (scan shift vs phase) we obtain a variance-type uncertainty relation, which becomes a quantitative statement that one cannot simultaneously minimize scan-localization and readout-localization. This is the formal core behind time--space tradeoffs in the scan--readout setting.
+Appendix~\ref{app:weyl_derivation} further gives an operational form in terms of Helstrom-optimal hypothesis testing and an explicit sample-complexity lower bound for detecting a scan shift at error tolerance $\epsilon$.
+
+\paragraph{Contribution 3 (universe--QCA--undecidability chain).}
+Omega Theory models microscopic dynamics as a PQCA, and provides an exact compilation of finite-region steps to 1D nearest-neighbor circuits. Universal QCAs support an undecidable local reachability predicate (encoding halting into a local flag). Hence, in the ``universe as computation'' model, open-endedness is a theorem-level boundary condition rather than a purely philosophical slogan.
+
+\paragraph{Contribution 4 (observer as an interactive interface; interpretation layer).}
+We model an observer as an interactive machine that continually exchanges information with the environment. Treating ``selection'' or ``collapse'' as an oracle-like resource input is an \emph{interpretation-layer} language for conditionalization on undecidable predicates; it is not a physical conclusion forced by the undecidability theorem.
+
+\paragraph{Contribution 5 (a testable dispersion template).}
+The discrete scan yields an exact lattice dispersion relation whose low-energy limit is approximately linear. The high-energy deviation provides a concrete template for energy-dependent corrections to effective propagation speed.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.98\textwidth]{images/fig1_architecture.png}
+\caption{\textbf{HPA--\texorpdfstring{$\Omega$}{Omega} system architecture.} The paper organizes three layers: (i) a formal operator/coding layer (scan and readout), (ii) a computational implementation layer (1D compilation and routing overhead), and (iii) a computability boundary layer (undecidable reachability), with a strict separation between theorem statements and interpretation-layer mappings.}
+\label{fig:architecture}
+\end{figure}
+
+\subsection{Logic audit: definition edges, theorem edges, interpretation edges}
+\label{subsec:logic_audit}
+To keep the chain explicit, we distinguish three edge types.
+
+\begin{itemize}
+    \item \textbf{Definition edge}: an internal definition within the HPA--$\Omega$ formalism.
+    \item \textbf{Theorem edge}: a mathematical statement proved in this manuscript or cited to standard literature.
+    \item \textbf{Interpretation edge}: a mapping from formal objects to physical language; this is not a theorem and must remain clearly marked.
+\end{itemize}
+
+\noindent The main chain of this paper is summarized in Table~\ref{tab:logic_chain}.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}p{0.12\linewidth}p{0.83\linewidth}@{}}
+\toprule
+\textbf{Edge} & \textbf{Claim / link in the chain} \\
+\midrule
+Def. & HPA defines a multiplicative polar embedding $\mathcal{Z}(n)=\rho(n)\e^{\iu\theta_\times(n)}$ and introduces a genuine unitary scan operator $\Theta$, defining time as iteration count. \\
+Thm. & No-go: a map $\Phi:\NN_{>0}\to\CC$ cannot be simultaneously multiplicative and linearly additive except in the trivial/identity cases (Theorem~\ref{thm:no_go_additive}); therefore addition must be realized as a lossy readout/projection, producing a structural gap. \\
+Def. & Window projection $\PiW$ produces a binary mechanical word; the golden branch selects Zeckendorf/Ostrowski canonical coding. \\
+Thm. & The scan shift and phase operator form a Weyl pair and satisfy an uncertainty relation, yielding a hard time--space complementarity; operationally this can be phrased as a hypothesis-testing and sample-complexity tradeoff (Appendix~\ref{app:weyl_derivation}). \\
+Def. & Omega Theory models microdynamics as a PQCA; a local step on a finite region is exactly compilable to a 1D nearest-neighbor circuit. Compilation depth defines routing overhead $\kappa$ and lapse $\lapse=\kappa_0/\kappa$. \\
+Thm. & In a universal QCA, a local reachability predicate can encode reversible halting and is undecidable. \\
+Interp. & An observer is modeled as an interactive machine; ``selection'' can be spoken of as oracle-like resource input for conditioning on undecidable predicates (a language choice, not a physical theorem). \\
+Model & Discrete scan induces an exact dispersion relation with low-energy linearity and high-energy deviations, providing a testable template for effective signal-speed corrections. \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Logic chain audit.} Definition edges are internal to the formalism; theorem edges are mathematical statements; interpretation edges are semantic mappings that must remain clearly separated.}
+\label{tab:logic_chain}
+\end{table}

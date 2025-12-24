@@ -1,0 +1,55 @@
+\section{Projection filtering and a doubler gap bound (1D Fibonacci case)}
+\label{app:doubling_filter}
+This appendix spells out the acceptance-window Fourier transform and a simple mass-gap bound for the projection-filter mechanism discussed in Section~\ref{sec:doubling_filter}, specializing to the standard 1D Fibonacci cut-and-project construction from $\mathbb{Z}^2$ \cite{Senechal1995,BaakeGrimm2013AperiodicOrder}.\par
+
+\subsection{Interval window and explicit Fourier transform}
+For the Fibonacci chain, the internal space is one-dimensional and the acceptance window $W\subset\mathbb{R}$ can be taken as an interval of length $R>0$ (up to an affine change of coordinates). Let $W=[-R/2,R/2]$ and define the normalized Fourier transform
+\begin{equation}
+    \widehat{W}(q)\equiv \frac{1}{R}\int_{-R/2}^{R/2} e^{-iqy}\,dy
+    = e^{-iq\cdot 0}\,\frac{\sin(qR/2)}{qR/2}
+    \equiv \mathrm{sinc}\!\left(\frac{qR}{2}\right),
+\end{equation}
+with $\mathrm{sinc}(x)\equiv \sin(x)/x$ and $\widehat{W}(0)=1$.
+The elementary bound $|\sin x|\le 1$ implies
+\begin{equation}
+    |\widehat{W}(q)| \le \min\left\{1,\ \frac{2}{|q|R}\right\}.
+\label{eq:window_sinc_bound}
+\end{equation}
+
+\subsection{A concrete lower bound for would-be doubler momenta}
+In the cut-and-project embedding picture one decomposes embedding momentum $k\in(\mathbb{R}/(2\pi/\varepsilon)\mathbb{Z})^2$ into components $(k_\parallel,k_\perp)$ along the physical and internal directions. In the standard Fibonacci embedding from $\mathbb{Z}^2$ \cite{Senechal1995,BaakeGrimm2013AperiodicOrder}, one may take the (unnormalized) physical and internal direction vectors to be $(1,\alpha_{\mathrm{rot}})$ and $(-\alpha_{\mathrm{rot}},1)$, where $\alpha_{\mathrm{rot}}=\phi^{-1}$, so that the internal component of an embedding wavevector $k=\frac{\pi}{\varepsilon}(m,n)$ (with integers $m,n$) is proportional to the linear form $n-\alpha_{\mathrm{rot}}m$.
+
+\begin{lemma}[Diophantine lower bound for the internal component (golden case)]
+\label{lemma:q_doubler_lower_bound}
+Let $\alpha_{\mathrm{rot}}=\phi^{-1}=[0;1,1,1,\dots]$ and let $k=\frac{\pi}{\varepsilon}(m,n)$ with $m,n\in\mathbb{Z}$. In the standard $\mathbb{Z}^2$ Fibonacci embedding \cite{Senechal1995,BaakeGrimm2013AperiodicOrder}, the internal component satisfies
+\begin{equation}
+    |k_\perp|\ =\ \frac{\pi}{\varepsilon}\,\frac{|n-\alpha_{\mathrm{rot}}m|}{\sqrt{1+\alpha_{\mathrm{rot}}^2}}.
+\end{equation}
+Moreover, since $\alpha_{\mathrm{rot}}$ has bounded continued-fraction coefficients (here $a_j\le 1$), it is badly approximable: there exists a constant $c_{\alpha}>0$ such that for all $m\neq 0$ and all $n\in\mathbb{Z}$,
+\begin{equation}
+    |n-\alpha_{\mathrm{rot}}m|\ \ge\ \frac{c_{\alpha}}{|m|},
+\end{equation}
+and hence $|k_\perp|\ge \frac{\pi c_{\alpha}}{\varepsilon\sqrt{1+\alpha_{\mathrm{rot}}^2}\,|m|}$ \cite{Cassels1957Diophantine}.
+\end{lemma}
+
+\noindent
+In particular, for any fixed-order ``mirror'' shift in an embedding coordinate (so that the relevant $|m|$ is $\mathcal{O}(1)$), Lemma~\ref{lemma:q_doubler_lower_bound} yields a bound of the form
+\begin{equation}
+    |q_{\mathrm{doubler}}|\equiv |k_\perp|\ \ge\ \frac{c_0}{\varepsilon}
+\end{equation}
+for some constant $c_0>0$ depending only on the embedding convention and the chosen mirror shift family.\par
+
+\subsection{Mass gap from the window bound}
+With the projection-filter mass term $\mathcal{M}(q)=\mu(1-\widehat{W}(q))$ from Eq.~(\ref{eq:proj_filter_mass}), the sinc bound (\ref{eq:window_sinc_bound}) implies that for $|q|\ge c_0/\varepsilon$ one has $|\widehat{W}(q)|\le 2\varepsilon/(c_0R)$. Therefore
+\begin{equation}
+    |\mathcal{M}(q_{\mathrm{doubler}})| \ge \mu\left(1-\frac{2\varepsilon}{c_0R}\right).
+\end{equation}
+Choosing the UV normalization $\mu=\mu_0/\varepsilon$ yields
+\begin{equation}
+    |\mathcal{M}(q_{\mathrm{doubler}})| \ge \frac{\mu_0}{\varepsilon}\left(1-\frac{2\varepsilon}{c_0R}\right),
+\end{equation}
+which is of order $1/\varepsilon$ for small $\varepsilon$, as claimed.\par
+
+\subsection{Numerical cross-check on periodic approximants}
+For the periodic approximants used in Appendix~\ref{app:fib_dqca}, a would-be doubler would appear as a near-zero quasienergy branch at Brillouin-edge momenta. The fixed-parameter script \texttt{scripts/generate\_fib\_dqca\_figures.py} regenerates the dispersion figures and can be extended to directly evaluate the smallest quasienergy magnitude at $k=\pi$ as a diagnostic for the doubler sector.
+

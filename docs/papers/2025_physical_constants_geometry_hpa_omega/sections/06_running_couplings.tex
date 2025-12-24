@@ -1,0 +1,245 @@
+\section{Generalization I: running couplings as ``resolution flow''}
+\label{sec:running_couplings}
+
+\subsection{From energy scale \texorpdfstring{$\mu$}{mu} to resolution \texorpdfstring{$r$}{r}}
+In field-theoretic language, couplings run with the energy scale $\mu$ \cite{GellMannLow1954,PeskinSchroeder1995}. In the HPA language, running originates from changes in the readout window, coding depth, and coarse-graining scale. We therefore introduce a map
+\begin{equation}
+\mu=\mu(r),
+\end{equation}
+where $r$ is instantiated as scan iteration depth, projection-window scale, Zeckendorf/\allowbreak Ostrowski bit depth, or effective compilation depth in the $\Omega$ framework, depending on context.
+
+\subsection{A concrete choice: Zeckendorf depth and a Fibonacci resolution map}
+To make the $r\mapsto\mu(r)$ interface quantitative, we fix the canonical golden-branch choice. Let $r$ denote Zeckendorf depth: the maximal Fibonacci index used in the canonical decomposition. The Fibonacci numbers satisfy Binet's formula and grow exponentially, $F_r\sim \varphi^r/\sqrt{5}$ \cite{Koshy2001}.
+
+\begin{lemma}[Zeckendorf depth and exponential growth]\label{lem:zeckendorf_depth_growth}
+Let $n\in\NNpos$ have Zeckendorf representation with maximal Fibonacci index $r$, i.e.\ $F_r$ appears and $F_{r+1}$ does not. Then
+\begin{equation}
+F_r\le n\le F_{r+1}-1.
+\end{equation}
+Consequently, $\log n = r\log\varphi+O(1)$ as $r\to\infty$.
+\end{lemma}
+\begin{proof}
+The lower bound holds because the representation contains $F_r$. The upper bound is attained by the alternating sum
+\begin{equation}
+F_r+F_{r-2}+F_{r-4}+\cdots = F_{r+1}-1,
+\end{equation}
+which follows by induction using $F_{k+1}=F_k+F_{k-1}$. The asymptotic $\log n=r\log\varphi+O(1)$ follows from $F_r\sim \varphi^r/\sqrt{5}$ \cite{Koshy2001}.
+\end{proof}
+
+\begin{axiom}[Fibonacci resolution--energy map]\label{ax:fib_resolution_map}
+In the golden branch we identify the effective scale with the exponential growth of canonical depth and set
+\begin{equation}
+\mu(r)=\mu_0\,\varphi^{\,r},
+\end{equation}
+where $\varphi=(1+\sqrt{5})/2$ and $\mu_0$ is a conventional reference scale.
+
+Equivalently, up to $O(1)$ factors, $\mu(r)\propto F_r$ by Binet asymptotics.
+\end{axiom}
+
+Appendix~\ref{app:resolution_map_calibration} records a data-facing calibration of this map by fixing $\mu_0=m_e$ and listing the resulting $r(\mu)$ values at standard PDG reference scales, together with an inverse check that infers $\mu_0$ from near-integer depth assignments.
+
+\subsection{A quantitative check against one-loop QED running}
+At one loop, the QED beta function gives a logarithmic running for $\alpha^{-1}$ with coefficient determined by charged matter content (in a mass-independent scheme and away from thresholds) \cite{GellMannLow1954,PeskinSchroeder1995}:
+\begin{equation}\label{eq:qed_running_one_loop}
+\alpha^{-1}(\mu)\;\approx\;\alpha^{-1}(\mu_0)\;-\;\frac{b}{2\pi}\log\!\left(\frac{\mu}{\mu_0}\right),\qquad
+b=\frac{2}{3}\sum_{f} N_c^{(f)}Q_f^2.
+\end{equation}
+Combining~\eqref{eq:qed_running_one_loop} with Axiom~\ref{ax:fib_resolution_map} yields an $r$-linear flow:
+\begin{equation}\label{eq:qed_running_r}
+\alpha^{-1}(r)\;\approx\;\alpha^{-1}(0)\;-\;\frac{b\log\varphi}{2\pi}\,r.
+\end{equation}
+
+Using the CODATA 2022 low-energy value $\alpha^{-1}(0)=137.035999177$ and the PDG effective value near the $Z$ pole $\alpha^{-1}(m_Z)=127.955$ \cite{CODATA2022RMP,PDGRPP2024}, one finds $\Delta\alpha^{-1}=9.080999$ over $\log(m_Z/m_e)=12.0921$, which corresponds to an effective one-loop coefficient
+\begin{equation}
+b_{\mathrm{eff}}:=\frac{2\pi\,\Delta\alpha^{-1}}{\log(m_Z/m_e)}\approx 4.7186.
+\end{equation}
+For comparison, heavy charged fields decouple from the low-energy flow \cite{AppelquistCarazzone1975,PeskinSchroeder1995}. At $\mu=m_Z$ this excludes the top quark, so the active charged fermions are $e,\mu,\tau$ and $u,d,s,c,b$. Their charge-weighted sum is
+\begin{equation}
+\sum_f N_c Q_f^2
+=\underbrace{3}_{e,\mu,\tau}
+\underbrace{2\cdot 3\left(\frac{2}{3}\right)^2}_{u,c}
+\underbrace{3\cdot 3\left(\frac{1}{3}\right)^2}_{d,s,b}
+=\frac{20}{3},
+\end{equation}
+hence the one-loop coefficient is
+\begin{equation}
+b_{\mathrm{SM}}(m_Z)=\frac{2}{3}\sum_f N_c Q_f^2=\frac{40}{9}\approx 4.4444.
+\end{equation}
+Numerically, $b_{\mathrm{eff}}/b_{\mathrm{SM}}(m_Z)\approx 1.062$. Threshold structure and hadronic-vacuum-polarization effects enter through matching \cite{PeskinSchroeder1995,PDGRPP2024}.
+
+Within the HPA--$\Omega$ program, this paper isolates an explicit, falsifiable link between readout depth and scale flow at the leading-log level; threshold structure enters through finite matching corrections as in effective field theory \cite{AppelquistCarazzone1975,PeskinSchroeder1995,PDGRPP2024}.
+
+\subsection{Asymptotic freedom and dimensional transmutation in QCD}
+For QCD, the beta function has the opposite sign: the coupling decreases at high scales (asymptotic freedom) \cite{GrossWilczek1973,Politzer1973,PeskinSchroeder1995}. At one loop,
+\begin{equation}\label{eq:qcd_beta_one_loop}
+\frac{\diff \alpha_s}{\diff \log\mu}=-\frac{b_0}{2\pi}\,\alpha_s^2+O(\alpha_s^3),
+\qquad
+b_0=11-\frac{2}{3}n_f,
+\end{equation}
+so that (away from thresholds)
+\begin{equation}\label{eq:qcd_running_one_loop}
+\alpha_s(\mu)=\frac{2\pi}{b_0\log(\mu/\Lambda)},
+\end{equation}
+where $\Lambda$ is the dimensional-transmutation scale (scheme-dependent). In the $r$-coordinate, a scheme change that rescales $\Lambda$ by a constant factor corresponds to an additive shift of $r$ (Proposition~\ref{prop:resolution_scheme_shift}).
+
+At two loops, including $b_1=102-\frac{38}{3}n_f$, the $\overline{\mathrm{MS}}$ scale parameter is expressed as \cite{PeskinSchroeder1995,PDGRPP2024}
+\begin{equation}\label{eq:lambda_two_loop}
+\Lambda_{\overline{\mathrm{MS}}}
+\;=\;
+\mu\,
+\exp\!\left(-\frac{2\pi}{b_0\,\alpha_s(\mu)}\right)
+\left(\frac{b_0\,\alpha_s(\mu)}{4\pi}\right)^{-\,\frac{b_1}{2b_0^2}}.
+\end{equation}
+Using the PDG world average $\alpha_s(m_Z)=0.1180\pm 0.0009$ \cite{PDGRPP2024} with $n_f=5$ gives $\Lambda_{\overline{\mathrm{MS}}}^{(5)}\approx 0.21\,\mathrm{GeV}$.
+
+With $n_f=5$ one has $b_0=23/3$ and $b_1=116/3$. Taking $\mu=m_Z=91.1876\,\mathrm{GeV}$ and $\alpha_s(m_Z)=0.1180$ in~\eqref{eq:lambda_two_loop} yields $\Lambda_{\overline{\mathrm{MS}}}^{(5)}\approx 0.209\,\mathrm{GeV}$. The PDG uncertainty $\pm 0.0009$ yields the range $\Lambda_{\overline{\mathrm{MS}}}^{(5)}\approx (0.198\text{--}0.219)\,\mathrm{GeV}$ \cite{PDGRPP2024}.
+
+Combining~\eqref{eq:qcd_running_one_loop} with Axiom~\ref{ax:fib_resolution_map} yields an $r$-linear flow for $\alpha_s^{-1}$ analogous to~\eqref{eq:qed_running_r}, with slope $b_0\log\varphi/(2\pi)$.
+
+\subsection{Electroweak matching: volume quantization and the Weinberg angle}
+We now record a closed-theory electroweak matching model at the $Z$-scale. The Standard Model relation between gauge couplings and the electromagnetic coupling is \cite{Glashow1961,Weinberg1967,Salam1968,PeskinSchroeder1995}
+\begin{equation}\label{eq:ew_parallel}
+\frac{1}{e^2}=\frac{1}{g^2}+\frac{1}{g'^2},
+\qquad
+e=g\sin\theta_W=g'\cos\theta_W,
+\end{equation}
+which implies (with $\alpha=e^2/(4\pi)$, $\alpha_2=g^2/(4\pi)$, $\alpha_Y=g'^2/(4\pi)$)
+\begin{equation}\label{eq:ew_alpha_relations}
+\alpha^{-1}=\alpha_2^{-1}+\alpha_Y^{-1},
+\qquad
+\sin^2\theta_W=\frac{\alpha}{\alpha_2}=\frac{\alpha_2^{-1}}{\alpha^{-1}}.
+\end{equation}
+
+We adopt the following volume-quantization axiom at the electroweak matching scale.
+
+\begin{axiom}[Electroweak inverse couplings as weighted volumes]\label{ax:ew_volumes}
+At a matching scale $\mu=\mu_Z$ (identified with the $Z$ pole), the inverse electroweak couplings are identified with weighted canonical phase volumes:
+\begin{equation}
+\alpha_2^{-1}(\mu_Z)=\dim(\mathfrak{su}(2))\,\mathrm{Vol}(SO(3))=3\pi^2,
+\end{equation}
+and
+\begin{equation}
+\alpha_Y^{-1}(\mu_Z)=\left(\sum_{f\in \mathrm{SM}} Y_f^2\right)\mathrm{Vol}(SO(3))=10\pi^2,
+\end{equation}
+where the sum is over the Standard Model chiral fermions in three generations, with hypercharges normalized by $Q=T_3+Y$ \cite{PeskinSchroeder1995,PDGRPP2024}. In the standard $SU(5)$ normalization $\alpha_1=(5/3)\alpha_Y$, so $\alpha_1^{-1}=(3/5)\alpha_Y^{-1}=6\pi^2$.
+\end{axiom}
+
+Explicitly, for one generation,
+\begin{equation}
+\sum Y^2
+=6\left(\frac{1}{6}\right)^2+3\left(\frac{2}{3}\right)^2+3\left(\frac{1}{3}\right)^2+2\left(\frac{1}{2}\right)^2+1\cdot 1^2
+=\frac{10}{3},
+\end{equation}
+so for three generations $\sum_{f\in \mathrm{SM}}Y_f^2=10$.
+
+\begin{theorem}[Weinberg angle and $\alpha(\mu_Z)$ from volume quantization]\label{thm:weinberg_angle}
+Under Axiom~\ref{ax:ew_volumes} and the Standard Model relations~\eqref{eq:ew_alpha_relations}, one obtains
+\begin{equation}
+\alpha^{-1}(\mu_Z)=13\pi^2\approx 128.3048572142,
+\qquad
+\sin^2\theta_W(\mu_Z)=\frac{3}{13}\approx 0.2307692308.
+\end{equation}
+\end{theorem}
+\begin{proof}
+By Axiom~\ref{ax:ew_volumes}, $\alpha_2^{-1}(\mu_Z)=3\pi^2$ and $\alpha_Y^{-1}(\mu_Z)=10\pi^2$. Using~\eqref{eq:ew_alpha_relations} gives $\alpha^{-1}(\mu_Z)=13\pi^2$ and $\sin^2\theta_W(\mu_Z)=\alpha_2^{-1}/\alpha^{-1}=3/13$.
+\end{proof}
+
+\paragraph{Numerical comparison.}
+PDG quotes the effective electromagnetic coupling at the $Z$ pole, $\alpha^{-1}_{\mathrm{PDG}}(\mu_Z)\approx 127.955$ \cite{PDGRPP2024}. It also quotes the $\overline{\mathrm{MS}}$ weak mixing angle, $\sin^2\theta_{W,\mathrm{PDG}}(\mu_Z)\approx 0.23122$ \cite{PDGRPP2024}. Theorem~\ref{thm:weinberg_angle} then gives the explicit deviations
+\begin{equation}
+13\pi^2-127.955\approx 3.50\times 10^{-1}\qquad (2.73\times 10^{-3}\ \text{relative}),
+\end{equation}
+and
+\begin{equation}
+\frac{3}{13}-0.23122\approx -4.51\times 10^{-4}\qquad (-1.95\times 10^{-3}\ \text{relative}).
+\end{equation}
+Equivalently, in multiplicative log-ratio form,
+\begin{equation}
+\log\!\left(\frac{13\pi^2}{\alpha^{-1}_{\mathrm{PDG}}(\mu_Z)}\right)\approx 2.73\times 10^{-3},
+\qquad
+\log\!\left(\frac{(3/13)}{\sin^2\theta_{W,\mathrm{PDG}}(\mu_Z)}\right)\approx -1.95\times 10^{-3}.
+\end{equation}
+
+\begin{proposition}[Integer rigidity for \texorpdfstring{$\alpha^{-1}(\mu_Z)$}{alpha^{-1}(muZ)} in the ansatz \texorpdfstring{$n\pi^2$}{n pi^2}]\label{prop:alphaZ_integer_rigidity}
+Let $\alpha^{-1}_{\mathrm{PDG}}(\mu_Z)\approx 127.955$ be the PDG reference value. Among all integers $n$ with $1\le n\le 50$, the unique minimizer of
+\begin{equation}
+|n\pi^2-\alpha^{-1}_{\mathrm{PDG}}(\mu_Z)|
+\end{equation}
+is $n=13$, i.e.\ $\alpha^{-1}(\mu_Z)\approx 13\pi^2$ is the unique best integer-$\pi^2$ approximation at this coefficient bound.
+\end{proposition}
+\begin{proof}
+This is a finite check: evaluate $|n\pi^2-\alpha^{-1}_{\mathrm{PDG}}(\mu_Z)|$ for $1\le n\le 50$ and minimize.
+\end{proof}
+
+\begin{remark}[Scale-shift equivalent under one-loop QED running]\label{rem:ew_scale_shift}
+Treat $13\pi^2-\alpha^{-1}_{\mathrm{PDG}}(\mu_Z)$ as a scale-shift equivalent under the one-loop QED running~\eqref{eq:qed_running_one_loop} with coefficient $b_{\mathrm{SM}}=40/9$ at the electroweak scale. Then
+\begin{equation}
+\log\!\left(\frac{\mu_Z}{\mu_\ast}\right)\approx \frac{2\pi}{b_{\mathrm{SM}}}\big(13\pi^2-\alpha^{-1}_{\mathrm{PDG}}(\mu_Z)\big)\approx 4.94\times 10^{-1},
+\end{equation}
+so $\mu_\ast\approx 0.61\,\mu_Z$. Under the Fibonacci map $\mu(r)=\mu_0\varphi^r$, this corresponds to a depth shift $\delta r\approx 1.03$. Since $\varphi^{-1}=0.618\ldots$, the inferred scale ratio $\mu_\ast/\mu_Z$ lies within a percent-level neighborhood of a single discrete Fibonacci step $\mu_Z\mapsto \mu_Z/\varphi$.
+\!
+Equivalently, one Fibonacci step induces a one-loop QED shift
+\[
+\Delta\alpha^{-1}_{\varphi}:=\frac{b_{\mathrm{SM}}}{2\pi}\log\varphi\approx 3.40\times 10^{-1},
+\]
+while the observed mismatch is $13\pi^2-\alpha^{-1}_{\mathrm{PDG}}(\mu_Z)\approx 3.50\times 10^{-1}$, differing by $9.6\times 10^{-3}$ (about $2.8\%$ of $\Delta\alpha^{-1}_{\varphi}$).
+\end{remark}
+
+\begin{proposition}[Discrete rigidity of the electroweak integers]\label{prop:ew_integer_rigidity}
+Let $\alpha^{-1}_{\mathrm{PDG}}(\mu_Z)\approx 127.955$ and $\sin^2\theta_{W,\mathrm{PDG}}(\mu_Z)\approx 0.23122$ be the PDG reference values \cite{PDGRPP2024}. Restrict to the $\pi^2$-quantized ansatz
+\[
+\alpha^{-1}(\mu_Z)=n\pi^2,\qquad \sin^2\theta_W(\mu_Z)=\frac{p}{n},
+\]
+with an integer $1\le n\le 50$ and a reduced rational $p/n$ (equivalently, $\gcd(p,n)=1$). Then the unique choice consistent with Propositions~\ref{prop:alphaZ_integer_rigidity} and~\ref{prop:weinberg_rational_rigidity} is $(n,p)=(13,3)$. Consequently,
+\[
+\alpha_2^{-1}(\mu_Z)=3\pi^2,\qquad \alpha_Y^{-1}(\mu_Z)=10\pi^2.
+\]
+\end{proposition}
+\begin{proof}
+By Proposition~\ref{prop:alphaZ_integer_rigidity}, the unique best integer-$\pi^2$ approximation in the stated range is $n=13$. With $n$ fixed, Proposition~\ref{prop:weinberg_rational_rigidity} gives $p/n=3/13$. The displayed values follow from $\alpha^{-1}=\alpha_2^{-1}+\alpha_Y^{-1}$ and $\sin^2\theta_W=\alpha_2^{-1}/\alpha^{-1}$.
+\end{proof}
+
+The same integers coincide with $\dim(\mathfrak{su}(2))=3$ and $\sum_{f\in\mathrm{SM}} Y_f^2=10$ under the Standard Model hypercharge assignments (Axiom~\ref{ax:ew_volumes}), so the electroweak identification is simultaneously fixed by representation content and by low-complexity rigidity.
+
+\begin{proposition}[Rational rigidity at low denominator]\label{prop:weinberg_rational_rigidity}
+Let $x\approx 0.23122$ be the PDG electroweak mixing reference value. Among all reduced rationals $p/q$ with $1\le q\le 50$ and $\gcd(p,q)=1$, the closest to $x$ is $3/13$.
+\end{proposition}
+\begin{proof}
+This is a finite check: enumerate all pairs $(p,q)$ with $1\le q\le 50$, $0\le p\le q$, and $\gcd(p,q)=1$, and minimize $|p/q-x|$.
+\end{proof}
+
+\begin{proposition}[Geometric expression of running couplings]
+\label{prop:running_couplings}
+Given $\mathcal{G}(r)$ and an invariant $I_r(\mathcal{G})$, define an effective coupling by
+\begin{equation}
+\alpha_{\mathrm{eff}}(\mu(r)) = F\!\left(I_r(\mathcal{G})\right).
+\end{equation}
+When increasing $r$ corresponds to higher-resolution readout (shorter distances / higher energies), the running of $\alpha_{\mathrm{eff}}$ is equivalent to the flow of $I_r$.
+\end{proposition}
+\begin{proof}
+This is immediate: by definition, $\alpha_{\mathrm{eff}}$ depends on scale only through the composite map $r\mapsto I_r(\mathcal{G})\mapsto F(I_r)$, so varying $r$ induces the running.
+\end{proof}
+
+This definition matches the PDG practice of quoting scale-dependent effective parameters and summarizing experimental constraints and theoretical frameworks \cite{PDGRPP2024}.
+
+\subsection{A universal ``multi-channel impedance'' axiom}
+Extending the three-channel model for $\alpha_{\mathrm{em}}^{-1}$, we state the following structural axiom for general gauge couplings.
+
+\begin{axiom}[Multi-channel geometric impedance]
+\label{ax:multi_channel}
+For any effective coupling $\alpha_a(\mu)$, there exists a finite channel decomposition
+\begin{equation}
+\alpha_{a,\mathrm{geo}}^{-1}(r)=\sum_{j=1}^{J_a} V_{a,j}(r),
+\end{equation}
+where each $V_{a,j}$ corresponds to a topologically distinguishable sector in readout (e.g., bulk reservoir, boundary screen, line scan, or richer internal fiber submanifolds).
+\end{axiom}
+
+\begin{axiom}[Volume quantization of channel costs]\label{ax:channel_volume_quantization}
+Each channel cost is an integer-weighted canonical phase volume built from the primitive set in Axiom~\ref{ax:primitive_phase_spaces}: there exist products $\mathcal{M}_{a,j}$ of primitives and integers $n_{a,j}(r)\in\NNpos$ such that
+\begin{equation}
+V_{a,j}(r)=n_{a,j}(r)\,\mathrm{Vol}(\mathcal{M}_{a,j}).
+\end{equation}
+The scale dependence of $n_{a,j}(r)$ is piecewise constant in $r$, with discrete jumps only at thresholds, in the same sense as effective-field-theory decoupling and matching \cite{AppelquistCarazzone1975,PeskinSchroeder1995,PDGRPP2024}.
+\end{axiom}
+
+Together, Axioms~\ref{ax:multi_channel} and~\ref{ax:channel_volume_quantization} reduce ``why is a coupling small/large?'' to a finite rigidity problem: a bounded search over integer weights and a finite primitive phase-space set, plus threshold matching as part of the $r\mapsto\mu(r)$ interface.
