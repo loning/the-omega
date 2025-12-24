@@ -87,12 +87,13 @@ def build(out_dir: Path, *, png: bool = False) -> None:
     )
     ax.text(
         0.50,
-        0.53,
+        0.65,
         "Derivation flow",
         transform=ax.transAxes,
         ha="center",
         va="center",
         fontsize=9,
+        bbox=dict(boxstyle="round,pad=0.15", fc="white", ec="none", alpha=0.92),
     )
 
     ax.text(

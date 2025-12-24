@@ -50,6 +50,11 @@ def _available_figures() -> list[str]:
     return [
         "fig01_layers_flow",
         "fig02_stairway_pipeline",
+        "fig03_modular_fundamental_domain",
+        "fig04_slice_sampling_bound_diagram",
+        "fig05_S_morita_fourier_exchange",
+        "fig06_langlands_pipeline",
+        "fig07_hecke_correspondence_rescale_height",
     ]
 
 

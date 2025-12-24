@@ -51,6 +51,11 @@ def _available_figures() -> list[str]:
     return [
         "fig01_layers_flow",
         "fig02_modular_fundamental_domain",
+        "fig03_constitution_chain",
+        "fig04_window_induced_measure",
+        "fig05_gauss_suspension_bridge",
+        "fig06_hecke_prime_skeleton",
+        "fig07_ostrowski_admissibility",
     ]
 
 
