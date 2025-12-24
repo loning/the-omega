@@ -26,7 +26,7 @@ This workflow outlines the process for illustrating a book project using AI-gene
     - **Format Requirements**:
         - **Source Canvas**: Square (1024x1024).
         - **Safe Zone**: **CRITICAL**: The B5 cut is the central 724px.
-        - **Instruction**: "Ensure ALL text and key art are strictly in the central 74%. The side 12% edges must be **seamless background extensions** (e.g., continuing the stars/void)."
+        - **Instruction**: "Ensure ALL text and key art are strictly in the central 70%. The side 10% edges must be **seamless background extensions** (e.g., continuing the stars/void)."
         - **Negative Prompt**: **NO vertical dividing lines, NO frames, NO visible borders, NO sidebars.** The image must look like one continuous scene, not a strip cut out of a page.
     - **Content Requirements**:
         - **Title**: High contrast, centered, fully inside the safe zone.
