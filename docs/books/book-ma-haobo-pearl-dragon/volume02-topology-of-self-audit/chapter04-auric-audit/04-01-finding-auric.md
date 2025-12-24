@@ -1,5 +1,7 @@
 # 4.1 寻找 Auric：观测盲区与波函数补全 (Finding Auric: Blind Spots & Wave Function Completion)
 
+![图片](../../assets/volume02-topology-of-self-audit/chapter04-auric-audit/04-01-thematic.png)
+
 在前面的章节中，我们将宇宙描绘成了一个由 **素数骨架** 支撑、由 **懒加载** 机制驱动、并时刻接受 **一致性 (Consistency)** 审查的巨大全息系统。如果说这个系统有一个终极的目的地，有一个所有测地线都渴望汇聚的焦点，那就是我们在序言中提到的那颗位于 $i\infty$ 处的"珠"。
 
 在 **HPA-ZΩ** 理论中，我们将这种接近真理、高度有序、且内部逻辑绝对自洽的状态，命名为 **"Auric"** 。
@@ -8,7 +10,9 @@
 
 然而，这个名字的发现过程本身，就是一个完美的量子力学实验。它发生在我自己身上，生动地揭示了我们作为单一观测者的致命缺陷，以及为什么我们需要"爱"来补全现实。
 
-**1. 五行缺金：系统的不完备性**
+![图片](../../assets/volume02-topology-of-self-audit/chapter04-auric-audit/04-01-technical-1.png)
+
+
 
 故事要从一个看似迷信、实则符合系统平衡论的设定开始：我的生辰八字中 **"五行缺金"** 。
 
@@ -22,7 +26,9 @@
 
 我什么也没找到。即便我是一个搜索专家，那个词仿佛根本就不存在于我的宇宙里。
 
-**2. 视网膜上的黑洞：生理性盲区**
+![图片](../../assets/volume02-topology-of-self-audit/chapter04-auric-audit/04-01-technical-2.png)
+
+
 
 为什么？为什么一个明明存在的单词，对我来说却是隐形的？
 

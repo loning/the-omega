@@ -1,5 +1,7 @@
 # 8.1 重构红楼梦：拒绝"白茫茫"的系统重置 (Refactoring The Red Dream: Rejecting the "White Void" System Reset)
 
+![图片](../../assets/volume04-ultimate-algorithm-gods-perspective/chapter08-admins-awakening/08-01-thematic.png)
+
 作为一名从小沉迷于构建系统的架构师，我经常会反复思考一部东方经典——《红楼梦》的结局。
 
 在世俗的眼光中，这从来不是一个好结局。哪怕是抛开后四十回的续书争议，仅看前八十回的伏笔，那个曾经锦衣玉食的少年贾宝玉，最终的归宿似乎注定是悲剧：家族崩塌，众芳流散，他看破红尘，悬崖撒手，最终落得个 **"白茫茫大地真干净"** 。
@@ -14,7 +16,9 @@
 
 如果我们修行的终点仅仅是为了把丰富多彩的生命数据全部删除，回归到一种死寂的"一"，那么宇宙花费 138 亿年进行如此复杂的计算，究竟是为了什么？
 
-**1. "归一"的陷阱：热寂与信息丢失**
+![图片](../../assets/volume04-ultimate-algorithm-gods-perspective/chapter08-admins-awakening/08-01-technical-1.png)
+
+
 
 在许多古老的哲学和宗教体系中， **"圆满"** 往往被描述为一种静态的虚无。他们告诉你，个体是一种幻觉，欲望是一种负担，最终我们要像水滴汇入大海一样，消融掉所有的自我，回归到那个原本的"一"。
 
@@ -32,7 +36,9 @@
 
 我们不要那个"白茫茫"的空，我们要的是 **"金" (Auric)** 的实。
 
-**2. 未完成的代码：开源的邀请**
+![图片](../../assets/volume04-ultimate-algorithm-gods-perspective/chapter08-admins-awakening/08-01-technical-2.png)
+
+
 
 《红楼梦》最大的魅力，或许就在于它 **"没写完"** 。
 

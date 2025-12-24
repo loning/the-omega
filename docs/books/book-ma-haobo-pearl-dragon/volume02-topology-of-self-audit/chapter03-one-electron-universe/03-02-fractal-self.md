@@ -1,5 +1,7 @@
 # 3.2 我就是我的宠物：分形自我的物理学 (The Physics of Fractal Self)
 
+![图片](../../assets/volume02-topology-of-self-audit/chapter03-one-electron-universe/03-02-thematic.png)
+
 当你结束了一天疲惫的工作，拖着沉重的步伐回到家，打开门的那一刻，一只毛茸茸的小家伙扑进你的怀里。它用湿漉漉的鼻子蹭你的手，用纯净无瑕的眼神看着你。在那一瞬间，你所有的社会面具——你的职位、你的 KPI、你的焦虑——都像潮水般退去。你感到一种难以言喻的放松和治愈。
 
 为什么？
@@ -8,7 +10,9 @@
 
 **你并没有在看一个"动物"，你在看一个"低分辨率的自己"。**
 
-**1. 全息宇宙的碎片与自相似性**
+![图片](../../assets/volume02-topology-of-self-audit/chapter03-one-electron-universe/03-02-technical-1.png)
+
+
 
 为了理解这一点，我们需要复习一下 **"全息原理" (Holographic Principle)** 的一个核心特性： **"部分包含整体"** 。
 
@@ -29,7 +33,9 @@
 
 当你看着它时，你其实是在通过一个更干净的镜子审视自己。宇宙通过这种 **自相似** 的结构，保证了生命本质在不同尺度上的 **一致性** 。你爱它，是因为你在它身上看到了那个未被世界污染的、内部逻辑绝对自洽的自己。
 
-**2. 降维打击：直抵 Layer 0 的通道**
+![图片](../../assets/volume02-topology-of-self-audit/chapter03-one-electron-universe/03-02-technical-2.png)
+
+
 
 为什么我们如此迷恋吸猫撸狗？
 

@@ -1,5 +1,7 @@
 # 7.2 冥想：系统调试与垃圾回收 (Meditation: System Debugging & Garbage Collection)
 
+![图片](../../assets/volume04-ultimate-algorithm-gods-perspective/chapter07-interactive-principles/07-02-thematic.png)
+
 在计算机科学中，任何一个长时间运行的高性能系统，如果缺乏维护，最终都会面临两个致命的问题：一是 **"内存泄漏" (Memory Leak)** ，即无用的数据占满了内存空间，导致系统卡顿；二是 **"逻辑错误" (Logic Bugs)** ，即错误的指令在后台无限循环，导致 CPU 过热。
 
 人类的大脑，作为已知宇宙中最精密的生物计算机，每天都在处理着海量的信息流。我们的每一个念头、每一次情绪波动，都会在神经元网络中创建一个 **"临时对象" (Temporary Object)** 。
@@ -8,7 +10,9 @@
 
 在 **HPA-ZΩ** 理论的 **应用层** ，我们给予 **冥想 (Meditation)** 一个全新的、去宗教化的定义： **冥想不是发呆，它是针对意识操作系统的一次主动的"系统调试" (Debugging) 和"垃圾回收" (Garbage Collection)** 。
 
-**1. 内存泄漏：你为什么感到累？**
+![图片](../../assets/volume04-ultimate-algorithm-gods-perspective/chapter07-interactive-principles/07-02-technical-1.png)
+
+
 
 你是否有过这样的体验：明明周末什么都没做，只是躺在床上刷手机，却感觉比上班还累？
 
@@ -20,7 +24,9 @@
 
 这就解释了为什么现代人普遍感到 **"脑雾" (Brain Fog)** 和疲惫。你的系统没有变慢，是你的内存被无数个未关闭的 **"悬空指针" (Dangling Pointers)** 塞满了。
 
-**2. 垃圾回收机制 (GC)：主动释放引用**
+![图片](../../assets/volume04-ultimate-algorithm-gods-perspective/chapter07-interactive-principles/07-02-technical-2.png)
+
+
 
 在高级编程语言（如 Java 或 Python）中，有一个自动运行的程序叫做 **"垃圾回收器" (Garbage Collector, GC)** 。它的工作原理很简单：扫描内存中的所有对象，标记那些 **"不再被引用"** 的对象，然后强制删除它们，释放空间。
 

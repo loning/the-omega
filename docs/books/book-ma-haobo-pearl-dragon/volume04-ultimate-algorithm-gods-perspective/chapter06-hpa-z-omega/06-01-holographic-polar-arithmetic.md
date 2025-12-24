@@ -1,5 +1,7 @@
 # 6.1 HPA：全息极坐标算术——宇宙的汇编语言 (Holographic Polar Arithmetic)
 
+![图片](../../assets/volume04-ultimate-algorithm-gods-perspective/chapter06-hpa-z-omega/06-01-thematic.png)
+
 物理学界一直流传着一个圣杯般的梦想：寻找一个"一英寸公式"。
 
 斯蒂芬·霍金相信，终有一天，我们能把描述宇宙万物运行的所有法则——从夸克的振动到黑洞的吞噬，从 DNA 的编码到星系的旋转——浓缩进一个简短的、优雅的、甚至可以印在 T 恤衫上的数学公式中。
@@ -18,7 +20,9 @@
 
 这不是一个冷冰冰的算术工具，这是宇宙操作系统的 **汇编语言** 。让我们逐个字母拆解这把通往真理的钥匙。
 
-**1. H (Holographic)：全息的视界**
+![图片](../../assets/volume04-ultimate-algorithm-gods-perspective/chapter06-hpa-z-omega/06-01-technical-1.png)
+
+
 
 在标准物理学中，我们习惯生活在实数轴上，或者三维的笛卡尔坐标系中。如果我们拿走一个苹果，空间里就少了一个苹果。每一个物体都是独立的、互不干涉的孤岛。
 
@@ -30,7 +34,9 @@
 
 **H** 告诉我们：在这个宇宙中，没有"距离"的概念，只有"分辨率"的差异。你与真理的距离，不是以光年计算的，而是以你意识的清晰度计算的。
 
-**2. P (Polar)：极坐标的秘密 (相位与模长)**
+![图片](../../assets/volume04-ultimate-algorithm-gods-perspective/chapter06-hpa-z-omega/06-01-technical-2.png)
+
+
 
 这是 **HPA** 的核心灵魂。为什么是 **Polar (极坐标)** 而不是 **Cartesian (直角坐标)** ？
 

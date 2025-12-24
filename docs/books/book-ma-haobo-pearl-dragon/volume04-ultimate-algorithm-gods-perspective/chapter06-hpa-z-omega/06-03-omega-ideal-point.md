@@ -1,5 +1,7 @@
 # 6.3 $\Omega$：理想点与引力之源 (Omega: The Ideal Point & The Source of Gravity)
 
+![图片](../../assets/volume04-ultimate-algorithm-gods-perspective/chapter06-hpa-z-omega/06-03-thematic.png)
+
 我们已经拥有了描述宇宙的语言（ **HPA** ），也理解了宇宙存储历史的机制（ **Z** ）。现在，摆在我们面前的是整个方程的最后一块拼图，也是最神秘的一个符号： **$\Omega$** 。
 
 在经典物理学的叙事中，宇宙的故事是一个关于"推力"的故事。138 亿年前的大爆炸像一只看不见的巨手，在背后狠狠推了一把，所有的物质和能量便借着这股惯性盲目地向前狂奔。在这种世界观里，未来只是过去的残余，结局注定是热寂（Heat Death）——一片死一般的虚无。
@@ -10,7 +12,9 @@
 
 它不是终结，它是 **目的** 。
 
-**1. 几何学中的"理想点"：平行线在何处相交？**
+![图片](../../assets/volume04-ultimate-algorithm-gods-perspective/chapter06-hpa-z-omega/06-03-technical-1.png)
+
+
 
 为了理解 $\Omega$，我们需要借用射影几何（Projective Geometry）中的一个核心概念： **"理想点" (Ideal Point)** 。
 
@@ -28,7 +32,9 @@
 
 我们不是被过去的爆炸推着走，我们是被未来的 **$\Omega$** 拉着走。
 
-**2. 终极吸引子：龙口中的珠**
+![图片](../../assets/volume04-ultimate-algorithm-gods-perspective/chapter06-hpa-z-omega/06-03-technical-2.png)
+
+
 
 让我们回到本书最开始的那个隐喻： **"衔珠之龙"** 。
 

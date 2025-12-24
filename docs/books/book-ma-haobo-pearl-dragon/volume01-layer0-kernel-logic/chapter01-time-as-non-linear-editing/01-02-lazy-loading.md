@@ -1,5 +1,7 @@
 # 1.2 视锥剔除与算力经济学：现实渲染的工程原理 (Frustum Culling & Computational Economics: Engineering Principles of Reality Rendering)
 
+![图片](../../assets/volume01-layer0-kernel-logic/chapter01-time-as-non-linear-editing/01-02-thematic.png)
+
 爱因斯坦曾经在散步时，向他的朋友亚伯拉罕·派斯（Abraham Pais）提出了一个困扰物理学界百年的著名问题："你是否真的相信，只有当你看着月亮的时候，月亮才存在？"
 
 在经典物理学的世界观里，这个问题的答案是不言而喻的：月亮当然在那里，无论你看还是不看，它的质量都在弯曲时空，它的引力都在牵引潮汐。如果你认为它不存在，那是唯心主义的痴人说梦。
@@ -28,6 +30,8 @@
 
 **2. 视锥剔除：只为你渲染的世界**
 
+![图片](../../assets/volume01-layer0-kernel-logic/chapter01-time-as-non-linear-editing/01-02-technical-1.png)
+
 在现代 3D 游戏引擎（如 Unreal Engine 或 Unity）中，有一项标准的核心优化技术，叫做 **"视锥剔除" (Frustum Culling)** 。
 
 想象你在玩一款第一人称视角的开放世界游戏。虽然整个地图可能有几百平方公里，包含数万个 NPC 和建筑。但在任何一个瞬间，你的屏幕（视网膜）只能显示前方约 60 到 120 度的视角范围。这个锥形的视野区域，被称为 **"视锥" (View Frustum)** 。
@@ -45,6 +49,8 @@
 **"波"** 就是省电的数据态； **"粒子"** 就是高耗能的渲染态。
 
 **3. 算力经济学：熵与信息的转化**
+
+![图片](../../assets/volume01-layer0-kernel-logic/chapter01-time-as-non-linear-editing/01-02-technical-2.png)
 
 在 **HPA-ZΩ** 理论中，我们将这种机制总结为 **算力经济学** 的核心公式：
 

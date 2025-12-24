@@ -1,5 +1,7 @@
 # 7.1 观测者的责任：提交"有效代码" (The Observer's Responsibility: Submitting Valid Code)
 
+![图片](../../assets/volume04-ultimate-algorithm-gods-perspective/chapter07-interactive-principles/07-01-thematic.png)
+
 当我们终于费力地爬上了 **HPA** 的算术高塔，沿着 **Z** 的螺旋阶梯回溯了亿万年的记忆，并最终瞥见了那个位于无穷远处的 **$\Omega$** 理想点时，我们不得不面对一个最实际、也最紧迫的问题：
 
 **"知道了这一切，然后呢？"**
@@ -10,7 +12,9 @@
 
 在这一章，作为全书的终章，我们将探讨 **HPA-ZΩ** 理论的 **应用层 (Application Layer)** 。我们将不再谈论抽象的公式，而是谈论 **"交互" (Interaction)** 。我们要把那些冰冷的物理法则，转化为你每天早上醒来时可以执行的操作手册。
 
-**1. 读写权限：你不仅仅是观众**
+![图片](../../assets/volume04-ultimate-algorithm-gods-perspective/chapter07-interactive-principles/07-01-technical-1.png)
+
+
 
 大多数人的一生，都是在 **"只读模式" (Read-Only Mode)** 下度过的。
 他们认为世界是客观存在的实体，命运是写好的剧本。他们能做的，只是被动地接收感官信号——看到花开就高兴，遭遇下雨就抱怨。在这种模式下，你只是宇宙影院里的一名普通观众，除了吃爆米花和发弹幕，你对剧情的发展无能为力。
@@ -23,7 +27,9 @@
 
 所以，痛苦的根源不在于世界对你不好，而在于 **你一直在提交"Bug"** 。
 
-**2. 什么是"Bug"？逻辑不自洽的观测**
+![图片](../../assets/volume04-ultimate-algorithm-gods-perspective/chapter07-interactive-principles/07-01-technical-2.png)
+
+
 
 在程序员的世界里，如果一段代码逻辑混乱、自相矛盾，编译器就会报错，程序就会崩溃。
 在物理世界里，这种报错的表现形式就是 **"苦难"** 和 **"阻力"** 。

@@ -1,12 +1,16 @@
 # 3.3 痛苦的物理学：熵汇与能量守恒 (The Physics of Pain: Entropy Sink & Conservation)
 
+![图片](../../assets/volume02-topology-of-self-audit/chapter03-one-electron-universe/03-03-thematic.png)
+
 我们终于来到了这本书中最沉重，却也最能带来解脱的章节。
 
 在人类所有的体验中，没有比 **痛苦 (Pain)** 更真实、更普遍，也更令人困惑的了。几千年来，宗教将其解释为"业力"或"原罪"，心理学将其解释为"创伤"或"防御"。但在 **HPA-ZΩ** 理论的物理视角下，痛苦不需要道德审判，也不需要复杂的心理分析。
 
 痛苦，本质上是一个 **热力学** 问题。它是宇宙维持系统 **"一致性" (Consistency)** 时所必须支付的能量代价。
 
-**1. 兰道尔原理：思考即产热**
+![图片](../../assets/volume02-topology-of-self-audit/chapter03-one-electron-universe/03-03-technical-1.png)
+
+
 
 为了理解痛苦的物理本质，我们需要看一眼计算机机房。在那里面，虽然 CPU 只是在处理 0 和 1 的逻辑运算，并没有搬运任何重物，但它却必须配备巨大的散热风扇或水冷系统。
 
@@ -26,7 +30,9 @@
 
 正如汽车引擎运转必然发热一样，一个拥有高度复杂意识的生命体，必然会产生大量的精神废热。这符合能量守恒定律，是宇宙物理 **一致性** 的铁律。你越是试图逃避痛苦，越是试图压抑它，就越像是在堵住 CPU 的散热孔，只会导致系统过热、死机（精神崩溃）。
 
-**2. 熵汇：谁在为你承担废热？**
+![图片](../../assets/volume02-topology-of-self-audit/chapter03-one-electron-universe/03-03-technical-2.png)
+
+
 
 如果痛苦是废热，那么它是如何被处理的？
 

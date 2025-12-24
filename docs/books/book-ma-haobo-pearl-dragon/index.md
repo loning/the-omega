@@ -4,6 +4,8 @@
 
 **Subtitle: From Holographic Universe to Quantum Truth - Reverse Engineering Time, Consciousness and Love**
 
+![书籍主题图](assets/top-level/index-thematic.png)
+
 ---
 
 ## 序言
@@ -11,6 +13,8 @@
 - [序言：烟雾中的观测者 (The Observer in the Smoke)](prologue.md)
 
 ## 书籍结构
+
+![第一卷技术图1](assets/top-level/index-technical-1.png)
 
 ### 【第一卷】 系统的底层逻辑：时间与阶梯
 
@@ -27,6 +31,8 @@
 - [2.1 素数的骨架：上帝不掷骰子，上帝在谱曲](volume01-layer0-kernel-logic/chapter02-prime-skeleton-stairway/02-01-prime-skeleton.md)
 - [2.2 雅各布的天梯：从混沌到真理的攀登](volume01-layer0-kernel-logic/chapter02-prime-skeleton-stairway/02-02-period-tower.md)
 - [2.3 极简架构：最顶级的代码是"无代码"](volume01-layer0-kernel-logic/chapter02-prime-skeleton-stairway/02-03-minimal-architecture.md)
+
+![第二卷技术图2](assets/top-level/index-technical-2.png)
 
 ### 【第二卷】 意识的拓扑结构：自我与审计
 

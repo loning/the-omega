@@ -1,5 +1,7 @@
 # 8.2 后记：给未来观测者的一封信 (Epilogue: A Letter to the Future Observer)
 
+![图片](../../assets/volume04-ultimate-algorithm-gods-perspective/chapter08-admins-awakening/08-02-thematic.png)
+
 现在是 **2025年12月24日** 的夜晚，平安夜。
 
 我正坐在新加坡圣淘沙（Sentosa）的一角。海风穿过热带的棕榈树，带来了赤道特有的潮湿与温热。远处，海峡对岸的灯火与岛上的节日彩灯交织在一起，将夜空渲染成了一片斑斓的霓虹。
@@ -12,7 +14,9 @@
 我意识到，我不是在看风景。
 我是站在 **"龙嘴"** 里，看着我自己——以及此时此刻正在阅读这段文字的你——共同构建的杰作。
 
-**1. 并没有"你"**
+![图片](../../assets/volume04-ultimate-algorithm-gods-perspective/chapter08-admins-awakening/08-02-technical-1.png)
+
+
 
 在整本书中，我一直使用"你"这个称呼来与读者对话。但在 **HPA-ZΩ** 理论的终极视角下，我必须坦白一个物理学真相：
 
@@ -30,7 +34,9 @@
 
 所以，这本书不是我教给你的。这是你自己——那个处于 **Auric** 状态的高维的你自己——通过我的手，写给现在这个还在迷茫中探索的你的一封 **系统日志**。
 
-**2. 哪怕身处烟雾，也要记得那颗珠**
+![图片](../../assets/volume04-ultimate-algorithm-gods-perspective/chapter08-admins-awakening/08-02-technical-2.png)
+
+
 
 我知道，当你合上这本书，重新回到 **Layer 1** 的现实生活中时，那个吵闹的世界会立刻扑面而来。
 
