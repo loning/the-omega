@@ -1,4 +1,4 @@
-# **The Pearl-Chasing Dragon by Ma Haobo**
+# **Auric's Pearl-Chasing Dragon**
 
 **Subtitle: From Holographic Universe to Quantum Truth - Reverse Engineering Time, Consciousness and Love**
 
