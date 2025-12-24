@@ -50,16 +50,6 @@ def _available_figures() -> list[str]:
     return [
         "fig01_layers_flow",
         "fig02_stairway_pipeline",
-        "fig03_golden_rotation_equidistribution",
-        "fig04_sturmian_fibonacci_word",
-        "fig05_star_discrepancy_scaling",
-        "fig06_tau_deligne_ratios",
-        "fig07_j_certified_S_invariance",
-        "fig08_gauss_digit_law_fit",
-        "fig09_roof_mean_fit",
-        "fig10_slice_sampling_e4_e6_recovery",
-        "fig11_slice_sampling_y_tradeoff",
-        "fig12_delta_tau_slice_sampling_closure",
     ]
 
 

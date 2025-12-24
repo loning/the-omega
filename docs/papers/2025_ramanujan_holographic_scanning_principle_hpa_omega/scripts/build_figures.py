@@ -51,16 +51,6 @@ def _available_figures() -> list[str]:
     return [
         "fig01_layers_flow",
         "fig02_modular_fundamental_domain",
-        "fig03_golden_rotation_equidistribution",
-        "fig04_sturmian_fibonacci_word",
-        "fig05_fibonacci_discrepancy_constant",
-        "fig06_zeckendorf_weight_bound",
-        "fig07_tau_deligne_ratios",
-        "fig08_sato_tate_hist_and_ks",
-        "fig09_euler_product_closure_error",
-        "fig10_j_invariant_truncation_decay",
-        "fig11_gauss_digit_law_fit",
-        "fig12_gauss_kuzmin_convergence",
     ]
 
 
