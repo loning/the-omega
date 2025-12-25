@@ -6,6 +6,14 @@
 
 ![书籍主题图](assets/top-level/index-thematic.png)
 
+## 资源
+
+- **视频**：[YouTube 视频](https://youtu.be/BFwye7eo-jw)
+- **架构图**：[查看架构图](architecture.png)
+- **PDF（英文版）**：[下载 PDF](Auric_s_Pearl-Chasing_Dragon_A_Reverse-Engineering_of_Reality.pdf)
+
+![架构图](architecture.png)
+
 ---
 
 ## 序言

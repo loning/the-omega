@@ -4,6 +4,14 @@
 
 ![Book Thematic Image](assets/top-level/index-thematic.png)
 
+## Resources
+
+- **Video**: [YouTube](https://youtu.be/BFwye7eo-jw)
+- **Architecture**: [View diagram](architecture.png)
+- **PDF**: [Download PDF](Auric_s_Pearl-Chasing_Dragon_A_Reverse-Engineering_of_Reality.pdf)
+
+![Architecture Diagram](architecture.png)
+
 ---
 
 ## Prologue
