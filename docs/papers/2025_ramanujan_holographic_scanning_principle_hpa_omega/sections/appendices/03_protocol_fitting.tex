@@ -1,0 +1,86 @@
+\section{Protocol identification and fitting templates (audit-ready)}
+\label{app:protocol_fitting}
+
+The constitution is designed to be auditable: once a laboratory-to-protocol mapping is fixed, one should be able to \emph{fit} the protocol parameters and to \emph{falsify} the model by finite-data consistency checks with explicit error budgets.
+This appendix records deterministic fitting templates that require no stochastic modeling and no simulation assumptions.
+
+\subsection{Binary readout from rotation: Sturmian signatures and a slope estimator}
+\label{app:sturmian_fitting}
+
+Consider the Layer~1 rotation scan of O5,
+\[
+x_t=x_0+t\alpha\pmod 1,\qquad \alpha\notin\QQ,
+\]
+and a binary window readout
+\[
+s_t=\mathbf{1}_W(x_t)\in\{0,1\},
+\]
+for an interval window $W\subset\RR/\ZZ$.
+It is classical that such codings of irrational rotations by intervals yield Sturmian (mechanical) words \cite{MorseHedlund1940,Lothaire2002}.
+
+\paragraph{Finite-data Sturmian diagnostics.}
+Given a finite binary record $s_0,\ldots,s_{N-1}$, two standard diagnostics can be used as deterministic consistency checks:
+\begin{itemize}
+  \item \textbf{Factor complexity.}
+  Let $p(n)$ be the number of distinct length-$n$ subwords among the factors of the observed record.
+  For a Sturmian word, $p(n)=n+1$ for all $n\ge 1$ \cite{MorseHedlund1940,Lothaire2002}.
+  \item \textbf{Balance.}
+  A Sturmian word is balanced: for any two factors $u,v$ of the same length, the number of $1$'s differs by at most $1$ \cite{Lothaire2002}.
+  Balance yields sharp finite-$N$ constraints on fluctuations of prefix frequencies.
+\end{itemize}
+Failure of these diagnostics at small scales is a direct falsifier of the pure rotation+interval-window model, independent of any asymptotic limit.
+
+\paragraph{A canonical slope estimator (when the coding is fixed).}
+To turn binary readout into a concrete ``fit'', one must fix a coding convention that associates a unique slope to a word.
+A standard convention is the \emph{(lower) mechanical word} with parameters $(\alpha,\rho)$,
+\begin{equation}
+w_t(\alpha,\rho):=\bigl\lfloor (t+1)\alpha+\rho\bigr\rfloor-\bigl\lfloor t\alpha+\rho\bigr\rfloor\in\{0,1\},
+\label{eq:mechanical_word_definition}
+\end{equation}
+which is Sturmian for $\alpha\notin\QQ$ \cite{Lothaire2002}.
+In this convention, the limiting frequency of $1$'s equals $\alpha$ and admits an explicit finite-$N$ deviation bound:
+\begin{lemma}[prefix frequency estimates the slope in the mechanical convention]
+\label{lem:mechanical_prefix_frequency}
+Let $w_t(\alpha,\rho)$ be defined by \eqref{eq:mechanical_word_definition} with $\alpha\in(0,1)$ and $\rho\in\RR$.
+Let $S_N:=\sum_{t=0}^{N-1} w_t(\alpha,\rho)$.
+Then for every $N\ge 1$,
+\begin{equation}
+\left|\frac{S_N}{N}-\alpha\right|\le \frac{1}{N}.
+\label{eq:mechanical_frequency_bound}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Summing \eqref{eq:mechanical_word_definition} telescopes:
+$S_N=\lfloor N\alpha+\rho\rfloor-\lfloor \rho\rfloor$.
+Hence $|S_N-(N\alpha+\rho-\rho)|\le 1$, which gives \eqref{eq:mechanical_frequency_bound}.
+\end{proof}
+\noindent
+Thus, under a fixed mechanical-coding convention, one can fit $\alpha$ from a finite record by $\widehat\alpha=S_N/N$ with a deterministic $1/N$ error guarantee.
+
+\paragraph{General interval windows: fitting window length with discrepancy control.}
+If the coding uses an arbitrary interval $W$ of length $|W|$, then the induced limiting frequency is $|W|$ and finite-$N$ deviation is controlled by discrepancy:
+\begin{equation}
+\left|\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}_W(x_t)-|W|\right|\le 2\,D_N^\ast\!\left(P_N(\alpha)\right),
+\end{equation}
+by Koksma (Appendix~\ref{app:koksma_inequality}).
+If $\alpha$ is of constant type ($a_j\le A$), then \eqref{eq:bounded_type_discrepancy_main} yields an explicit parameter-free bound on $D_N^\ast$ and therefore on the fit error of $|W|$.
+
+\subsection{Phase-level signatures: the three-gap theorem}
+\label{app:three_gap_fitting}
+
+When the protocol exposes phase samples $\{x_t\}$ (or when multiple thresholds allow partial reconstruction of ordered phase points), the point set $P_N(\alpha)=\{\{t\alpha\}:0\le t\le N-1\}$ admits a sharp deterministic signature: its complementary gaps take at most three lengths (the three-gap theorem) \cite{Slater1967}.
+This provides an additional finite-data falsifier for the pure Kronecker scan model, independent of any probabilistic assumptions.
+
+\subsection{Coefficient-level audits: Hecke recursions as prime-indexed constraints}
+\label{app:hecke_fitting}
+
+If a readout sector is hypothesized to expose (exactly or approximately) a coefficient sequence $\{a_n\}$ of a Hecke eigenform, then the prime-skeleton relations supply stringent finite-depth internal consistency tests:
+\begin{itemize}
+  \item \textbf{Coprime multiplicativity.} $a_{mn}=a_m a_n$ for $(m,n)=1$.
+  \item \textbf{Prime-power recursion.} $a_{p^{r+1}}=a_p a_{p^r}-p^{k-1}a_{p^{r-1}}$ for $r\ge 1$ (weight $k$).
+  \item \textbf{Finite determination (Sturm bound).}
+  Matching coefficients up to the Sturm cutoff determines the modular form \cite{Sturm1987,DiamondShurman2005} (Section~\ref{sec:quant_hecke_tau}).
+\end{itemize}
+These constraints are purely arithmetic identities; they can therefore be used as audit-grade ``fit/fail'' conditions whenever coefficient claims are made.
+
+

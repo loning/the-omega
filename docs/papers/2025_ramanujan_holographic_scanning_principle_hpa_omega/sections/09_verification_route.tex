@@ -195,13 +195,38 @@ with $q=\e^{-2\pi y}$. For the discriminant form $\Delta$ of weight $12$, the sa
 Given \eqref{eq:coeff_recovery_koksma_bound}, a principled scan-slope choice is to enforce uniformly small $D_N^\ast$. The explicit constant-type bound \eqref{eq:bounded_type_discrepancy_main} shows that bounded partial quotients ($a_n\le A$) guarantee $D_N^\ast=O((\log N)/N)$ with an explicit constant; the golden branch ($A=1$) yields the canonical smallest bound among constant-type choices and also admits exact discrepancy constants on Fibonacci lengths (Appendix~\ref{app:golden_constant}).
 For generic $\alpha$ with unbounded partial quotients there is no comparable uniform constant, and $D_N^\ast$ can exhibit spikes at $N$ tied to unusually large continued-fraction digits.
 
+\begin{corollary}[Constant-type design inequality for coefficient recovery]
+\label{cor:const_type_design_inequality}
+Assume the scan slope $\alpha$ has bounded continued-fraction coefficients $a_j\le A$ for all $j$ (constant type), so that the discrepancy bound \eqref{eq:bounded_type_discrepancy_main} holds.
+Then for any $T$-periodic holomorphic $f$ with $q$-expansion and for any $y>0$, the scan-quadrature estimator \eqref{eq:scan_quadrature_estimator} satisfies
+\begin{equation}
+\left|\widehat a_n^{(N)}(y)-a_n\right|
+\le
+\e^{2\pi n y}\,\mathrm{Var}(g_{n,y})\,\frac{2A(2+\log_\varphi N)}{N},
+\label{eq:const_type_design_bound}
+\end{equation}
+where $g_{n,y}$ is defined in \eqref{eq:def_gny}.
+In particular, for $f=E_k$ one may upper-bound $\mathrm{Var}(g_{n,y})$ by \eqref{eq:var_bound_eisenstein}, and for a normalized Hecke eigen cusp form by \eqref{eq:var_bound_cusp_coarse}.
+\end{corollary}
+
 \paragraph{Joint choice of \texorpdfstring{$y$}{y} and \texorpdfstring{$N$}{N} for a target coefficient index \texorpdfstring{$n$}{n}.}
 The finite-$N$ recovery bound \eqref{eq:coeff_recovery_koksma_bound} combines (i) an amplification factor $\e^{2\pi n y}$ and (ii) a decay factor in $\mathrm{Var}(g_{n,y})$ driven by $q=\e^{-2\pi y}$. For the polynomial-growth classes above, the small-$y$ asymptotic $q/(1-q)^{s+1}\sim (2\pi y)^{-(s+1)}$ suggests minimizing a proxy of the form $\e^{2\pi n y}\,y^{-p}$, whose optimizer is
+\begin{lemma}[exponential--power tradeoff optimizer]
+\label{lem:exp_power_tradeoff}
+Let $c>0$ and $p>0$. The function $h:(0,\infty)\to(0,\infty)$ given by $h(y)=\e^{c y}\,y^{-p}$ attains its unique minimum at $y=p/c$, and
 \begin{equation}
-y_\star \approx \frac{p}{2\pi n}.
+\min_{y>0}\e^{c y}\,y^{-p}=\e^{p}\left(\frac{c}{p}\right)^{p}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Differentiate $\log h(y)=c y-p\log y$ to obtain $(\log h)'(y)=c-p/y$, which vanishes if and only if $y=p/c$. Since $(\log h)''(y)=p/y^2>0$, this critical point is the unique minimizer. Evaluating at $y=p/c$ gives the stated minimum.
+\end{proof}
+\begin{equation}
+y_\star = \frac{p}{2\pi n}.
 \label{eq:y_star_rule}
 \end{equation}
-For Eisenstein series $E_k$, the dominant term in \eqref{eq:var_bound_eisenstein} corresponds to $p=k$; for cusp eigenforms of weight $k$ with the coarse bound \eqref{eq:var_bound_cusp_coarse}, the dominant term corresponds to $p\approx s_1+1\approx \frac{k+3}{2}$. Once $y$ is fixed, one selects $N$ so that $D_N^\ast(P_N(\alpha))\le \varepsilon/\bigl(\e^{2\pi n y}\mathrm{Var}(g_{n,y})\bigr)$ for a target tolerance $\varepsilon$, using \eqref{eq:bounded_type_discrepancy_main} (or the exact convergent-length formulas) as an explicit design inequality.
+For Eisenstein series $E_k$, the dominant term in \eqref{eq:var_bound_eisenstein} corresponds to $p=k$; for cusp eigenforms of weight $k$ with the coarse bound \eqref{eq:var_bound_cusp_coarse}, the dominant term corresponds to $p\approx s_1+1\approx \frac{k+3}{2}$.
+Once $y$ is fixed, one selects $N$ so that $D_N^\ast(P_N(\alpha))\le \varepsilon/\bigl(\e^{2\pi n y}\mathrm{Var}(g_{n,y})\bigr)$ for a target tolerance $\varepsilon$, using \eqref{eq:bounded_type_discrepancy_main} (or the exact convergent-length formulas) as an explicit design inequality.
 
 \paragraph{Where R1 enters beyond \texorpdfstring{$|q|$}{|q|} analogy.}
 At the operator level, coefficient recovery and discrepancy control both involve regulated orbit sums of the form $\sum_{t\ge 0} U_{\mathrm{scan}}^{\,t}$ applied to mean-zero observables (the cohomological equation for a rotation). The canonical way to make these sums well-defined is precisely Abel/resolvent regularization:
@@ -220,24 +245,6 @@ If samples of $g_{n,y}(x_t)$ are corrupted by an additive deterministic error $\
 \label{eq:coeff_recovery_with_noise}
 \end{equation}
 where the first term is the discrepancy-controlled quadrature error and the second is the amplified measurement perturbation.
-
-\paragraph{A small deterministic numerical sanity check (E\texorpdfstring{$4$}{4}).}
-As an illustration of \eqref{eq:coeff_recovery_koksma_bound} with the explicit variation bound \eqref{eq:var_bound_eisenstein}, Table~\ref{tab:e4_coeff_recovery_sanity} reports coefficient recovery for $E_4$ using the scan-quadrature estimator \eqref{eq:scan_quadrature_estimator} at $y$ chosen by the rule \eqref{eq:y_star_rule} (with $p=k=4$). The star discrepancy $D_N^\ast$ is computed exactly from its definition, and the bound uses $\e^{2\pi n y}\mathrm{Var}(g_{n,y})D_N^\ast$ with $\mathrm{Var}(g_{n,y})$ upper-bounded by \eqref{eq:var_bound_eisenstein}.
-\begin{table}[H]
-\centering
-\begin{tabular}{cccccccc}
-\toprule
-$\alpha$ & $N$ & $y$ & $n$ & $D_N^\ast$ & $|\widehat a_n-a_n|$ & bound & ratio \\
-\midrule
-$\varphi^{-1}$ & $233$ & $0.63662$ & $1$ & $4.29\times 10^{-3}$ & $8.63\times 10^{-4}$ & $2.57\times 10^{2}$ & $3.36\times 10^{-6}$ \\
-$\varphi^{-1}$ & $377$ & $0.31831$ & $2$ & $3.84\times 10^{-3}$ & $6.25\times 10^{-3}$ & $3.66\times 10^{3}$ & $1.71\times 10^{-6}$ \\
-$\varphi^{-1}$ & $610$ & $0.21221$ & $3$ & $1.64\times 10^{-3}$ & $1.10\times 10^{-2}$ & $7.36\times 10^{3}$ & $1.50\times 10^{-6}$ \\
-$\sqrt{2}-1$ & $377$ & $0.31831$ & $2$ & $5.90\times 10^{-3}$ & $2.65\times 10^{0}$ & $5.63\times 10^{3}$ & $4.70\times 10^{-4}$ \\
-\bottomrule
-\end{tabular}
-\caption{Sanity check for $E_4$ coefficient recovery by scan quadrature. The ratio is $|\widehat a_n-a_n|$/bound.}
-\label{tab:e4_coeff_recovery_sanity}
-\end{table}
 
 \paragraph{Wasserstein bounds versus star discrepancy (why we use discrepancy here).}
 For Lipschitz test functions $h$ on $\RR/\ZZ$, Kantorovich--Rubinstein duality implies $|\frac{1}{N}\sum h(x_t)-\int h|\le \mathrm{Lip}(h)\,W_1(\mu_N,\lambda)$. In one dimension, $W_1(\mu_N,\lambda)=\int_0^1 |F_N(t)-t|\,\dd t\le D_N^\ast(P_N)$, so a Wasserstein-$1$ bound cannot improve the order of the deterministic discrepancy control unless one has an independent sharp bound on $W_1$ for the specific orbit. Moreover, for discontinuous window readout $\mathbf{1}_W$ the Lipschitz constant is infinite while $\mathrm{Var}(\mathbf{1}_W)=2$, so bounded-variation/discrepancy estimates are the natural quantitative language for the scan--projection protocol.
@@ -363,6 +370,9 @@ The following tests are designed to discriminate structured scan--projection rea
 
   \item \textbf{Prime-skeleton constraints when coefficient data is claimed.}
   In any model that identifies readout with coefficient data of a Hecke eigenform (even approximately), multiplicativity and prime-power recursions supply stringent internal consistency checks (Section~\ref{sec:quant_hecke_tau}). These constraints are sharply discriminative: they are not generic properties of arbitrary integer sequences.
+
+  \item \textbf{Protocol fitting and audit-ready parameter extraction.}
+  Once a concrete lab-to-protocol mapping is specified (what is $x$, what family realizes the windows), one can fit protocol parameters with deterministic finite-$N$ guarantees and test Sturmian/three-gap/Hecke signatures as falsifiers; see Appendix~\ref{app:protocol_fitting}.
 \end{enumerate}
 
 \paragraph{A quantitative noise/decoherence interface.}

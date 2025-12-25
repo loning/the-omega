@@ -1,8 +1,8 @@
 
-\section{Periods, computability, and a minimal notion of ``wish''}
+\section{Periods, computability, and protocol-stable period data}
 \label{sec:periods_motives_wishes}
 
-This section recalls the period layer that will serve as our auditable ``interface'' to motives and formulates a minimal, protocol-based notion of wish. Throughout, we keep the closed proof chain within the period layer and use motive language only to indicate a possible source structure for period relations.
+This section recalls the period layer that will serve as our auditable ``interface'' to motives and introduces a minimal, protocol-based stability notion for period data. Throughout, we keep the closed proof chain within the period layer and use motive language only to indicate a possible source structure for period relations.
 
 \subsection{Kontsevich--Zagier periods}
 \label{sec:kz_periods}
@@ -22,7 +22,7 @@ P = \int_D f(x)\,\dd x_1\cdots \dd x_n.
 \end{equation}
 \end{definition}
 
-Kontsevich--Zagier periods form a countable $\QQ$-algebra under addition and multiplication \cite{KontsevichZagier2001}. They contain classical constants such as $\pi$ and $\log 2$, and encompass many special values arising in arithmetic geometry and perturbative quantum field theory.
+Kontsevich--Zagier periods form a countable $\QQ$-algebra under addition and multiplication \cite{KontsevichZagier2001}. They contain classical constants such as $\pi$ and $\log 2$, and encompass many special values arising in arithmetic geometry and perturbative quantum field theory \cite{KontsevichZagier2001,Brown2012}.
 
 \begin{remark}[Controlled scope used in this paper]
 \label{rem:controlled_scope}
@@ -49,24 +49,30 @@ The associated numerical period is
 \end{equation}
 \end{definition}
 
+\begin{remark}[When a period datum yields a Kontsevich--Zagier period]
+\label{rem:perdatum_kz_condition}
+Definition~\ref{def:period_datum} is an object-level encoding of an auditable integral value. If, moreover, $D$ is $\QQ$-semialgebraic and the regularized kernel $f_{\mathcal{R}}$ is (piecewise) rational with coefficients in $\QQ$ on a finite $\QQ$-semialgebraic partition of $D$ \emph{and the integral converges absolutely} (equivalently, $f_{\mathcal{R}}\in L^1(D)$), then $\mathrm{per}(D,f,\mathcal{R})$ is a Kontsevich--Zagier period in the sense of Definition~\ref{def:kz_period} (by additivity over the partition).
+All kernels used in the closed chain of this paper fall in this class: the one-dimensional benchmarks are rational, and the truncations used for zeta-values produce polynomial (hence rational) kernels.
+\end{remark}
+
 \begin{remark}[Motivic background, not used as an axiom]
 \label{rem:motivic_background}
 In the standard paradigm, periods arise as pairings between de~Rham cohomology classes and Betti homology classes (or, more generally, between two realizations of the same motive). Relations among periods are governed by the structure of motives and comparison isomorphisms \cite{Andre2004,Deligne1982HodgeCycles}. This paper does not assume any conjectural principle about periods or motives; we use the period datum only as an auditable intermediate object.
 \end{remark}
 
-\subsection{A minimal operative notion of wish}
+\subsection{A minimal operative notion of protocol-stable period data}
 \label{sec:wish_definition}
 
-The word ``motive'' suggests an origin; the word ``wish'' suggests a constraint. To keep the notion operational and falsifiable, we define wish purely through finite-resolution realizability and protocol invariance.
+The word ``motive'' suggests an origin. To keep the stability notion operational and falsifiable, we define protocol-stable period data purely through finite-resolution realizability and protocol invariance.
 
 \begin{remark}[Motive vs.\ period: what is constructed here]
 \label{rem:motive_vs_period}
 In standard arithmetic geometry, a \emph{motive} is an abstract source object whose realizations (Betti, de~Rham, $\ell$-adic) produce, among other invariants, periods as numerical comparison data. In this paper we do \emph{not} construct a motive-valued functor from protocols, and we do not assume any period conjecture. The only closed construction is the functor $\HSP:\ScanAlg\to\PerDatum$ (Section~\ref{sec:scan_alg_and_hsp}), i.e.\ a \emph{period realization} interface.
 \end{remark}
 
-\begin{definition}[Wish (protocol-stable period structure)]
+\begin{definition}[Protocol-stable period datum]
 \label{def:wish}
-Fix a class of protocols $\ScanAlg$ (defined in Section~\ref{sec:scan_alg_and_hsp}). A period datum $\mathcal{D}=(D,f,\mathcal{R})$ is called a \emph{wish} (relative to $\ScanAlg$) if there exists a family of protocols $\{\mathcal{P}_\lambda\}_{\lambda\in\Lambda}\subset\ScanAlg$ and an auditable error budget $\varepsilon(N,\lambda)\to 0$ as $N\to\infty$ such that:
+Fix a class of protocols $\ScanAlg$ (defined in Section~\ref{sec:scan_alg_and_hsp}). A period datum $\mathcal{D}=(D,f,\mathcal{R})$ is called a \emph{protocol-stable period datum} (relative to $\ScanAlg$) if there exists a family of protocols $\{\mathcal{P}_\lambda\}_{\lambda\in\Lambda}\subset\ScanAlg$ and an auditable error budget $\varepsilon(N,\lambda)\to 0$ as $N\to\infty$ such that:
 \begin{itemize}
 \item for each $\lambda$, the protocol produces an empirical readout $\avgN{\mathcal{P}_\lambda}$ (Definition~\ref{def:birkhoff_average}) satisfying
 \begin{equation}
@@ -77,6 +83,6 @@ Fix a class of protocols $\ScanAlg$ (defined in Section~\ref{sec:scan_alg_and_hs
 \end{itemize}
 \end{definition}
 
-Definition~\ref{def:wish} does not identify a wish with ``a number'' alone; it identifies a wish with a stable period \emph{structure} that survives finite-resolution realization and protocol equivalence. The selection principle in Section~\ref{sec:selection_principle} will treat wishes as candidates that are preferentially realized under bounded resources.
+Definition~\ref{def:wish} does not identify a protocol-stable period datum with ``a number'' alone; it identifies a stable period \emph{structure} that survives finite-resolution realization and protocol equivalence. The selection principle in Section~\ref{sec:selection_principle} will treat protocol-stable period data as candidates that are preferentially realized under bounded resources.
 
 

@@ -59,7 +59,7 @@ d
 \;+\;
 \log(1+N),
 \end{equation}
-where $\mathrm{size}(f_{\mathcal{R}})$ is a syntactic size of a rational presentation of $f_{\mathcal{R}}$ (e.g.\ total number of nonzero coefficients plus degree and coefficient height), and $\mathrm{cost}(\mathcal{R})$ accounts for regularization parameters (e.g.\ truncation depth $M$). Different reasonable encodings change \eqref{eq:comp_default} by at most multiplicative/additive constants and are interchangeable at the level of the programmatic conjecture.
+where $\mathrm{size}(f_{\mathcal{R}})$ is a syntactic size of a rational presentation of $f_{\mathcal{R}}$ (e.g.\ total number of nonzero coefficients plus degree and coefficient height), and $\mathrm{cost}(\mathcal{R})$ accounts for regularization parameters (e.g.\ truncation depth $M$). Different reasonable encodings change \eqref{eq:comp_default} by at most multiplicative/additive constants (in the sense of invariance theorems for description complexity) and are interchangeable at the level of the programmatic conjecture; see, e.g., \cite{LiVitanyi2008}.
 \end{definition}
 
 \begin{definition}[Naive height of period data]
@@ -108,6 +108,20 @@ with $\lambda,\mu\ge 0$, such that the period data empirically observed as ``con
 
 The term $\mathrm{Height}(\HSP(\mathcal{P}))$ is optional and programmatic: it is intended to encode arithmetic/geometric ``size'' of the period datum (in the spirit of heights in arithmetic geometry) and to penalize excessively high-complexity realizations. The conjecture is falsifiable because each term in \eqref{eq:selection_functional} can be operationalized: $\mathrm{Stab}_N$ can be upper-bounded by discrepancy bounds, $\mathrm{Comp}$ is a bounded description budget, and candidate height surrogates can be compared by predictive performance.
 
+\subsection{An operational falsification protocol (schematic)}
+\label{sec:selection_falsification_protocol}
+
+To make the term ``falsifiable'' concrete in the present audit setting, one may fix:
+\begin{itemize}
+\item a finite resource horizon $N$ and a finite description budget (which determines a finite candidate subclass $\mathcal{C}_{N,B}\subset\ScanAlg$),
+\item a concrete encoding of $\mathrm{Comp}$ (Definition~\ref{def:protocol_complexity}) and a concrete height surrogate (Definition~\ref{def:naive_height}),
+\item weights $\lambda,\mu$ (which may be fit on a calibration set and then frozen).
+\end{itemize}
+For each candidate protocol $\mathcal{P}\in\mathcal{C}_{N,B}$ one then computes (or upper-bounds) $\mathcal{J}_N(\mathcal{P})$ from auditable data.
+Given an empirical constant target $T$ with an uncertainty interval, one tests whether there exists a near-minimizer family $\{\mathcal{P}_\star\}$ whose realized period values fall inside that interval while maintaining low $\mathcal{J}_N$.
+If, across a sufficiently rich and auditable candidate class, observed constants systematically fail to align with near-minimizers (or if low-$\mathcal{J}_N$ near-minimizers systematically predict values not observed), the conjecture is falsified in that regime.
+Lemma~\ref{lem:gap_stability} isolates a quantitative rigidity mechanism that makes such tests robust to finite uncertainty bars.
+
 \subsection{Why the golden branch appears}
 \label{sec:golden_branch}
 
@@ -123,12 +137,24 @@ More precisely, Hurwitz's theorem implies that for every irrational $\alpha$ the
 \]
 and the constant $1/\sqrt{5}$ is best possible; the extremal case is attained on the golden branch (continued fraction $[1;1,1,\dots]$) and its $\SL_2(\ZZ)$ orbit \cite{HardyWright2008,IosifescuKraaikamp2002}.
 
+This extremality can be upgraded from a qualitative heuristic to an explicit stability certificate in our audit framework. If $\alpha$ has bounded partial quotients $a_n\le A$, then Proposition~\ref{prop:1d_discrepancy_log_over_n} yields the closed bound
+\[
+D_N^\ast(P_N)\le \frac{2A(3+\log_\varphi N)}{N}.
+\]
+For a one-dimensional protocol with bounded-variation kernel $f_{\mathcal{R}}$, the $d=1$ Koksma inequality therefore gives the explicit finite-resource guarantee
+\[
+\left|\avgN{\mathcal{P}}-\mathrm{per}(\HSP(\mathcal{P}))\right|
+\le \Var(f_{\mathcal{R}})\,D_N^\ast(P_N)
+\le \Var(f_{\mathcal{R}})\,\frac{2A(3+\log_\varphi N)}{N}.
+\]
+The golden branch has $A=1$, minimizing this constant-type certificate.
+
 Within the selection principle framework, the golden branch is therefore not a numerological artifact: it is a concrete scan choice that improves stability bounds for a wide class of kernels under finite resources.
 
-\subsection{Wishes as stable period structures}
+\subsection{Protocol-stable period data as stable period structures}
 \label{sec:wishes_as_stable_periods}
 
-Definition~\ref{def:wish} can now be read as a stability constraint: a wish is a period datum that admits realizations whose $\mathcal{J}_N$ cost remains small under bounded resources, and whose value is invariant under protocol equivalence. Under this perspective, ``motive'' provides a language for organizing relations among such stable period data, while selection is enforced at the protocol layer through finite-horizon stability and complexity.
+Definition~\ref{def:wish} can now be read as a stability constraint: a protocol-stable period datum is a period datum that admits realizations whose $\mathcal{J}_N$ cost remains small under bounded resources, and whose value is invariant under protocol equivalence. Under this perspective, ``motive'' provides a language for organizing relations among such stable period data, while selection is enforced at the protocol layer through finite-horizon stability and complexity.
 
 \subsection{Dimension cost and an effective curse of dimensionality}
 \label{sec:dimension_cost}

@@ -4,11 +4,82 @@
 
 As a closed argument, the stairway chain relies on theorem-level quantitative statements that remain valid at finite resolution and finite tick length. This section collects the bounds used in later arguments.
 
-\subsection{Finite-$N$ readout error and discrepancy}
+\subsection{Finite-\texorpdfstring{$N$}{N} readout error and discrepancy}
 On an irrational rotation orbit, Weyl equidistribution implies induced Lebesgue measure (Theorem~\ref{thm:weyl_equidistribution}). For an interval-window readout, finite-$N$ deviation is controlled by star discrepancy via the Koksma inequality (Appendix~\ref{app:koksma_inequality}). Ostrowski digit bounds then control discrepancy in terms of a locally checkable digit sum (Appendix~\ref{app:dk_koksma_ostrowski}).
 
-\subsection{Slice--coefficient reconstruction and a finite-$N$ coefficient bound}
+\subsection{Slice--coefficient reconstruction and a finite-\texorpdfstring{$N$}{N} coefficient bound}
 At the cusp interface, Fourier projection gives a height-slice coefficient reconstruction identity (Theorem~\ref{thm:slice_coefficient_reconstruction}). Under scan-orbit sampling, the finite-$N$ estimator admits an explicit discrepancy-controlled bound (Theorem~\ref{thm:finiteN_coeff_bound}). The dependence on height $y$ is governed by the factor $\e^{2\pi n y}$, making the smoothing/amplification trade-off explicit.
+
+\subsection{Finite-alphabet readout: sampling + quantization and exact integer recovery}
+The bounds above control only the \emph{sampling} deviation of an orbit average from a slice integral.
+To close the protocol at finite resolution, one must also account for the fact that a finite-alphabet instrument does not return the exact phase $x_t\in\RR/\ZZ$, but only a representative $\widetilde x_t$ with a controlled quantization error.
+
+\begin{definition}[quantized scan-sampled coefficient estimator]
+\label{def:quantized_scan_estimator}
+Fix $n\ge 0$ and $y>0$, and let $g_{n,y}(x)=f(x+\iu y)\,\e^{-2\pi\iu n x}$ as in Section~\ref{sec:cusp_qexp_slice_sampling}.
+Let $x_t=x_0+t\alpha\pmod 1$ be the underlying scan orbit and suppose the readout returns $\widetilde x_t\in[0,1)$ satisfying
+\begin{equation}
+\label{eq:quantization_error}
+|x_t-\widetilde x_t|\le \frac{\varepsilon}{2}\qquad (t=0,\ldots,N-1).
+\end{equation}
+Define the quantized estimator
+\begin{equation}
+\label{eq:quantized_scan_estimator}
+\widehat a_{n,N}^{(\varepsilon)}(y)
+:=\e^{2\pi n y}\cdot\frac{1}{N}\sum_{t=0}^{N-1} g_{n,y}(\widetilde x_t).
+\end{equation}
+\end{definition}
+
+\begin{theorem}[finite-alphabet recovery bound (sampling + quantization)]
+\label{thm:finite_alphabet_recovery_bound}
+Assume $g_{n,y}$ is absolutely continuous on $[0,1]$ and has essentially bounded derivative $\|g_{n,y}'\|_\infty<\infty$. Let $P_N=\{x_0,\ldots,x_{N-1}\}$ be the underlying (unquantized) orbit point set. Then
+\begin{equation}
+\label{eq:finite_alphabet_recovery_bound}
+\big|\widehat a_{n,N}^{(\varepsilon)}(y)-a_n\big|
+\le \e^{2\pi n y}\left(\Var(g_{n,y})\,D_N^\ast(P_N)\;+\;\frac{\varepsilon}{2}\,\|g_{n,y}'\|_\infty\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Write
+\[
+\frac{1}{N}\sum_{t=0}^{N-1} g_{n,y}(\widetilde x_t)-\int_0^1 g_{n,y}
+=\left(\frac{1}{N}\sum_{t=0}^{N-1} g_{n,y}(x_t)-\int_0^1 g_{n,y}\right)
+\;+\;\frac{1}{N}\sum_{t=0}^{N-1}\big(g_{n,y}(\widetilde x_t)-g_{n,y}(x_t)\big).
+\]
+The first term is bounded by $\Var(g_{n,y})D_N^\ast(P_N)$ by Koksma's inequality (Theorem~\ref{thm:koksma_inequality_1d}).
+For the second term, the assumption $\|g_{n,y}'\|_\infty<\infty$ implies the uniform Lipschitz bound $|g_{n,y}(\widetilde x)-g_{n,y}(x)|\le \|g_{n,y}'\|_\infty|\widetilde x-x|$, and~\eqref{eq:quantization_error} gives $|\widetilde x_t-x_t|\le \varepsilon/2$.
+Multiplying by $\e^{2\pi n y}$ yields~\eqref{eq:finite_alphabet_recovery_bound}.
+\end{proof}
+
+\begin{remark}[regularity of the sliced integrand]
+For the modular-form observables used in this manuscript, Proposition~\ref{prop:poly_growth_uniform_slice} implies that $F_y(x)=f(x+\iu y)$ is $C^1$ in $x$ for every fixed $y>0$ (by termwise differentiation under uniform absolute convergence on half-strips). Hence $g_{n,y}(x)=F_y(x)\e^{-2\pi\iu n x}$ has bounded derivative on $[0,1]$, so the assumption $\|g_{n,y}'\|_\infty<\infty$ in Theorem~\ref{thm:finite_alphabet_recovery_bound} is satisfied in the intended arithmetic examples.
+\end{remark}
+
+\begin{remark}[adding certified evaluation/truncation error]
+\label{rem:finite_alphabet_plus_eval}
+If $F_y(\widetilde x_t)=f(\widetilde x_t+\iu y)$ is computed numerically (e.g.\ by truncating a $q$-expansion), then an additional explicit evaluation error term can be added to~\eqref{eq:finite_alphabet_recovery_bound}.
+For Eisenstein series, Appendix~\ref{app:eisenstein_tail_bounds} provides closed-form tail bounds at fixed $|q|=\e^{-2\pi y}$.
+\end{remark}
+
+\begin{corollary}[exact integer recovery by rounding]
+\label{cor:exact_integer_recovery_rounding}
+Let $f(\tau)=\sum_{n\ge 0} a_n q^n$ have integer coefficients $a_n\in\ZZ$. If the right-hand side of~\eqref{eq:finite_alphabet_recovery_bound} is $<\tfrac12$, then rounding $\widehat a_{n,N}^{(\varepsilon)}(y)$ to the nearest integer recovers $a_n$ exactly.
+\end{corollary}
+\begin{proof}
+If $|\widehat a-a_n|<1/2$ and $a_n\in\ZZ$, the nearest-integer map is unique and equals $a_n$.
+\end{proof}
+
+\subsection{Parameter choices: convergent lengths and constant-type slopes}
+The bounds above become fully explicit once $D_N^\ast(P_N)$ is controlled in terms of the continued-fraction digits of $\alpha$.
+Two robust, auditable choices are:
+\begin{itemize}
+\item \textbf{Convergent-length sampling.} If $p/q$ satisfies $0<|\alpha-p/q|<1/q^2$ and $N=q$, then Proposition~\ref{prop:convergent_star_discrepancy} gives an explicit closed form for $D_q^\ast(P_q(\alpha))$, implying in particular $D_N^\ast(P_N)\le 2/N$.
+\item \textbf{Constant-type slopes.} If $\alpha=[0;a_1,a_2,\ldots]$ has bounded partial quotients $a_j\le A$, then Appendix~\ref{app:dk_koksma_ostrowski} gives
+\[
+D_N^\ast(P_N)\le \frac{2A(2+\log_\varphi N)}{N},
+\]
+providing an explicit $O((\log N)/N)$ rate with auditable constants.
+\end{itemize}
 
 \subsection{Truncation control for modular objects}
 When modular forms are evaluated via truncated $q$-series, explicit tail bounds provide certified truncation budgets (Appendix~\ref{app:eisenstein_tail_bounds}). These bounds can be propagated through algebraic identities, such as $j=1728E_4^3/(E_4^3-E_6^2)$, to obtain certified error budgets at fixed $\tau$.

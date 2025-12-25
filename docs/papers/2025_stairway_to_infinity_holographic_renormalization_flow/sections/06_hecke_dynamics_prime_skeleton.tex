@@ -104,11 +104,74 @@ If $f$ is a normalized Hecke eigenform, the eigen-relation $T_p f=a_p f$ becomes
 \mathcal{T}_p a = a_p\,a,
 \end{equation}
 which is an explicit prime-indexed consistency test on the recovered discrete spectrum.
+\begin{remark}[normalization convention]
+Throughout, ``normalized Hecke eigenform'' means the standard normalization $a_1=1$ in the $q$-expansion. For an eigenform scaled by a nonzero constant, one can always renormalize by dividing the coefficient sequence by $a_1$ before applying the prime-skeleton identities.
+\end{remark}
 \par
 \paragraph{(ii) Implementable channel on instruments (additional structure).}
 Interpreting $T_p$ as a physical symmetry acting within a fixed effective observer sector $\hilbert_{\mathrm{eff}}$ requires an explicit interface that maps a modular observable $f$ to an operator-valued readout observable and that can realize the branch mixing $\tau\mapsto p\tau$ and $\tau\mapsto(\tau+b)/p$ operationally.
 This is naturally cross-scale (it mixes heights $y\mapsto py$ and $y\mapsto y/p$), and therefore goes beyond the coefficient-level closure used in this paper.
 A fully worked finite-resolution model and a discussion of this distinction are recorded in Appendix~\ref{app:hecke_protocol_level}.
+
+\subsection{Quantitative Hecke consistency under certified coefficient errors}
+\label{sec:hecke_consistency_quantitative}
+The prime-skeleton constraints are most useful when they can be evaluated with a certified tolerance implied by the coefficient-recovery error budgets.
+We record a simple deterministic residual bound showing how coefficient-level uncertainty propagates into Hecke-eigen consistency checks.
+
+\begin{definition}[Hecke residual at a prime]
+\label{def:hecke_residual}
+Fix a weight $k$ and a prime $p$. For a candidate coefficient sequence $b=(b_n)_{n\ge 1}$, define the residual
+\begin{equation}
+\label{eq:hecke_residual}
+R_{p,\ell}(b):=\big(b_{p\ell}+p^{k-1}b_{\ell/p}\big)-b_p b_\ell,
+\qquad b_{\ell/p}:=0\ \text{if }p\nmid \ell.
+\end{equation}
+\end{definition}
+\begin{remark}
+The residual~\eqref{eq:hecke_residual} tests the normalized Hecke-eigen identity. If one starts from an unnormalized coefficient sequence $a$ with $a_1\neq 0$, apply it to $b_n:=a_n/a_1$.
+\end{remark}
+
+\begin{proposition}[residual bound from coefficient error bars]
+\label{prop:hecke_residual_bound}
+Assume $f$ is a normalized Hecke eigenform so that its true coefficients satisfy
+\[
+a_{p\ell}+p^{k-1}a_{\ell/p}=a_p a_\ell
+\qquad(\ell\ge 1),
+\]
+where $a_{\ell/p}:=0$ if $p\nmid \ell$,
+and let $\widehat a$ be an approximate coefficient sequence. Suppose for a given pair $(p,\ell)$ we have certified bounds
+\[
+|\widehat a_m-a_m|\le \delta_m
+\qquad\text{for }m\in\{p\ell,\ p,\ \ell\}\ \text{and also for }m=\ell/p\ \text{when }p\mid\ell,
+\]
+with the convention $\delta_{\ell/p}:=0$ if $p\nmid \ell$.
+Then the Hecke residual satisfies
+\begin{equation}
+\label{eq:hecke_residual_bound}
+|R_{p,\ell}(\widehat a)|
+\le \delta_{p\ell}+p^{k-1}\delta_{\ell/p}+|a_p|\delta_\ell+|a_\ell|\delta_p+\delta_p\delta_\ell.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Insert the true identity $a_{p\ell}+p^{k-1}a_{\ell/p}=a_p a_\ell$ into Definition~\ref{def:hecke_residual}:
+\[
+R_{p,\ell}(\widehat a)
+=(\widehat a_{p\ell}-a_{p\ell})+p^{k-1}(\widehat a_{\ell/p}-a_{\ell/p})-(\widehat a_p\widehat a_\ell-a_p a_\ell).
+\]
+For the product term,
+\[
+\widehat a_p\widehat a_\ell-a_p a_\ell
+=(\widehat a_p-a_p)\widehat a_\ell+a_p(\widehat a_\ell-a_\ell),
+\]
+so $|\widehat a_p\widehat a_\ell-a_p a_\ell|
+\le \delta_p(|a_\ell|+\delta_\ell)+|a_p|\delta_\ell$.
+Combining these inequalities yields~\eqref{eq:hecke_residual_bound}.
+\end{proof}
+
+\begin{remark}[turning residual bounds into falsifiable fits]
+In arithmetic settings, $|a_p|$ admits explicit majorants (e.g.\ Deligne/Ramanujan--Petersson for cuspidal eigenforms; see, e.g., \cite{Deligne1974,Serre1973,DiamondShurman2005}), so~\eqref{eq:hecke_residual_bound} becomes a fully explicit, deterministic tolerance for a Hecke-eigen ``fit'' test.
+In the special case where $a_n\in\ZZ$ and coefficients are recovered exactly by rounding (Corollary~\ref{cor:exact_integer_recovery_rounding}), the residual vanishes identically: $R_{p,\ell}(\widehat a)=0$ for all tested primes and indices.
+\end{remark}
 
 \subsection{Eigenforms: stable directions and coefficient rigidity}
 \label{sec:eigenforms_coeff_rigidity}

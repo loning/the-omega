@@ -14,7 +14,7 @@ All experiments are implemented in pure Python~3 with no third-party dependencie
 \end{itemize}
 The scripts write \LaTeX{} row files into \texttt{sections/generated/} which are included below.
 
-\subsection{Experiment I: $\log 2$ via a one-dimensional scan}
+\subsection{Experiment I: \texorpdfstring{$\log 2$}{log 2} via a one-dimensional scan}
 \label{sec:exp_log2}
 
 We use the golden-branch slope $\alpha=\varphi^{-1}$ and the kernel $f(x)=\frac{1}{1+x}$ (Example~\ref{ex:log2}). The target value is $\log 2$.
@@ -33,14 +33,28 @@ $N$ & $\avgN{\mathcal{P}}$ & $\avgN{\mathcal{P}}-\log 2$ & $D_N^\ast$ & $\Var(f)
 \label{tab:log2_scan}
 \end{table}
 
+\paragraph{A closed, parameter-free finite-$N$ certificate for the golden branch.}
+Since $\alpha=\varphi^{-1}$ has bounded continued-fraction coefficients, Proposition~\ref{prop:1d_discrepancy_log_over_n} yields the explicit bound
+\[
+D_N^\ast(P_N)\le \frac{2(3+\log_\varphi N)}{N}.
+\]
+Combining this with Proposition~\ref{prop:explicit_1d_variations} gives the fully explicit inequality
+\[
+|\avgN{\mathcal{P}}-\log 2|
+\le \Var(f_{\log})\,D_N^\ast(P_N)
+\le \frac{3+\log_\varphi N}{N},
+\qquad f_{\log}(x)=\frac{1}{1+x},
+\]
+independent of any numerical estimation of discrepancy.
+
 \paragraph{A simple rate fit (log--log).}
 Using the same data, the script also performs a least-squares fit of $\log|\avgN{\mathcal{P}}-\log 2|$ against $\log N$ over the tabulated horizons, yielding the empirical slope
 \[
 \beta_{\log 2}=\input{sections/generated/log2_fit.tex},
 \]
-which is consistent with a decay close to $N^{-1}$ at these scales (modulo the known logarithmic fluctuations of discrepancy bounds for Kronecker scans).
+which should be read as a descriptive summary of these horizons rather than a claimed asymptotic law. The closed certificate above is $O((\log N)/N)$, while the observed absolute error can decay faster on specific kernels and finite ranges.
 
-\subsection{Experiment II: $\pi$ via a one-dimensional scan}
+\subsection{Experiment II: \texorpdfstring{$\pi$}{pi} via a one-dimensional scan}
 \label{sec:exp_pi}
 
 We keep the same slope $\alpha=\varphi^{-1}$ and use the kernel $f(x)=\frac{4}{1+x^2}$ (Example~\ref{ex:pi}). The target value is $\pi$.
@@ -59,51 +73,101 @@ $N$ & $\avgN{\mathcal{P}}$ & $\avgN{\mathcal{P}}-\pi$ & $D_N^\ast$ & $\Var(f)\,D
 \label{tab:pi_scan}
 \end{table}
 
+\paragraph{A closed, parameter-free finite-$N$ certificate for the golden branch.}
+Combining Proposition~\ref{prop:1d_discrepancy_log_over_n} with Proposition~\ref{prop:explicit_1d_variations} yields
+\[
+|\avgN{\mathcal{P}}-\pi|
+\le \Var(f_{\pi})\,D_N^\ast(P_N)
+\le \frac{4(3+\log_\varphi N)}{N},
+\qquad f_{\pi}(x)=\frac{4}{1+x^2}.
+\]
+
 \paragraph{A simple rate fit (log--log).}
 Analogously, the least-squares log--log slope for $|\avgN{\mathcal{P}}-\pi|$ over the tabulated horizons is
 \[
 \beta_{\pi}=\input{sections/generated/pi_fit.tex}.
 \]
 
-\subsection{Experiment III: $\zeta(2)$ via a two-dimensional scan with truncation}
+\subsection{Experiment III: \texorpdfstring{$\zeta(2)$}{zeta(2)} via a two-dimensional scan with truncation}
 \label{sec:exp_zeta2}
 
 We use the truncated geometric kernel $g_M(x,y)=\sum_{n=0}^{M-1}(xy)^n$ (Definition~\ref{def:geom_trunc_kernel}), whose exact period is $H_M^{(2)}$ (Lemma~\ref{lem:geom_trunc_integral}). The truncation remainder satisfies $\zeta(2)-H_M^{(2)}<1/M$ (Proposition~\ref{prop:zeta_trunc_bounds}). The scan slope is $\alpha=(\varphi^{-1},\sqrt{2}-1)$ and we report an ensemble mean over $K$ random initial conditions (Definition~\ref{def:ensemble_mean}) with a fixed seed.
 
+\paragraph{A closed total-error certificate.}
+For each $(N,M,K)$ case, Proposition~\ref{prop:error_decomposition} and Corollary~\ref{cor:sampling_error} yield the deterministic inequality
+\[
+\left|\overline{\avgN{\mathcal{P}}}_K-\zeta(2)\right|
+\le
+\left|\overline{\avgN{\mathcal{P}}}_K-H_M^{(2)}\right|
+\;+\;\left(\zeta(2)-H_M^{(2)}\right)
+\le
+\HKVar(g_M)\,D_N^\ast(P_N)
+\;+\;\frac{1}{M},
+\]
+where the right-hand side is auditable from protocol data once a discrepancy certificate for $P_N$ is fixed.
+Corollary~\ref{cor:optimal_truncation_tradeoff} makes the stability--truncation tradeoff explicit and provides an optimized choice of $M$ once an explicit upper bound on $D_N^\ast(P_N)$ is available.
+
 \begin{table}[t]
 \centering
-\begin{tabular}{@{}rrrrrrrr@{}}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}rrrrrrrrr@{}}
 \toprule
-$(N,M,K)$ & $\overline{\avgN{\mathcal{P}}}_K$ & $\overline{\avgN{\mathcal{P}}}_K-\zeta(2)$ & $\overline{\avgN{\mathcal{P}}}_K-H_M^{(2)}$ & trunc.\ bound $<1/M$ & $D_N^\ast$ bound & $\HKVar(g_M)D_N^\ast$ bound & ratio \\
+$(N,M,K)$ & $H$ & $\overline{\avgN{\mathcal{P}}}_K$ & $\overline{\avgN{\mathcal{P}}}_K-\zeta(2)$ & $\overline{\avgN{\mathcal{P}}}_K-H_M^{(2)}$ & trunc.\ bound $<1/M$ & $B_{N,H}$ & $\frac{9}{4}\,\HKVar(g_M)\,B_{N,H}$ & ratio \\
 \midrule
 \input{sections/generated/zeta2_rows.tex}%
 \\
 \bottomrule
 \end{tabular}
-\caption{$\zeta(2)$ realized via a two-dimensional scan and an auditable truncation. The total error is decomposed into sampling error (fourth column) and truncation error (fifth column bound). The last three columns provide an auditable deterministic sampling certificate via the Erd\H{o}s--Tur\'an--Koksma discrepancy bound specialized to Kronecker scans (Appendix~\ref{app:etk_kronecker_bound}) with the explicit constant choice $C_d=3^d$ and truncation parameter $H=20$ in the discrepancy certificate.}
+}
+\caption{$\zeta(2)$ realized via a two-dimensional scan and an auditable truncation. The total error is decomposed into sampling error (fifth column) and truncation error (sixth column bound). For each $(N,M,K)$ case, the ETK truncation parameter $H$ (second column) is chosen from a fixed candidate list by minimizing the computable bracket term $B_{N,H}$ in Proposition~\ref{prop:kronecker_discrepancy_bound}. The last three columns report this $B_{N,H}$ and the resulting fully numerical sampling certificate obtained from the ETK inequality with the explicit constant $C_2=(3/2)^2=9/4$ (Theorem~\ref{thm:etk}): namely $D_N^\ast(P_N)\le \frac{9}{4}B_{N,H}$ and hence $|\overline{\avgN{\mathcal{P}}}_K-H_M^{(2)}|\le \frac{9}{4}\HKVar(g_M)B_{N,H}$. The ratio column is $|\overline{\avgN{\mathcal{P}}}_K-H_M^{(2)}|/(\frac{9}{4}\HKVar(g_M)B_{N,H})$.}
 \label{tab:zeta2_scan}
 \end{table}
 
-\subsection{Experiment IV: $\zeta(3)$ via a three-dimensional scan with truncation}
+\paragraph{On conservatism of the multi-dimensional certificates.}
+For $d\ge 2$ we report the explicit bracket term $B_{N,H}$ appearing in Proposition~\ref{prop:kronecker_discrepancy_bound} and the explicit choice $C_d=(3/2)^d$ in Theorem~\ref{thm:etk}. The truncation parameter $H$ is chosen from a fixed candidate list by minimizing the computable bracket term $B_{N,H}$ (reported in the tables). These choices are made for audit simplicity and uniform reproducibility rather than tightness; the bound can be tightened further by enlarging the candidate list, using sharper variants of ETK, or using sharper Diophantine information on $\alpha$. The closed theoretical conclusions of the paper do not depend on any particular constant choice.
+
+\subsection{Experiment IV: \texorpdfstring{$\zeta(3)$}{zeta(3)} via a three-dimensional scan with truncation}
 \label{sec:exp_zeta3}
 
 We use the kernel $g_M(x,y,z)=\sum_{n=0}^{M-1}(xyz)^n$ with exact period $H_M^{(3)}$ and truncation remainder $\zeta(3)-H_M^{(3)}<1/(2M^2)$ (Proposition~\ref{prop:zeta_trunc_bounds}). The scan slope is $\alpha=(\varphi^{-1},\sqrt{2}-1,\sqrt{3}-1)$.
 
+\paragraph{A certified numerical reference for $\zeta(3)$.}
+Since $\zeta(3)$ has no known closed form, we use a certified reference interval obtained from the defining series. Fix $M_{\mathrm{ref}}=200{,}000$ and set $H^{(3)}_{M_{\mathrm{ref}}}=\sum_{n=1}^{M_{\mathrm{ref}}}n^{-3}$. Proposition~\ref{prop:zeta_trunc_bounds} implies
+\[
+\zeta(3)\in\left[H^{(3)}_{M_{\mathrm{ref}}},\,H^{(3)}_{M_{\mathrm{ref}}}+\frac{1}{2M_{\mathrm{ref}}^2}\right].
+\]
+We define $\zeta(3)_{\mathrm{ref}}$ as the midpoint of this certified interval, so that $|\zeta(3)-\zeta(3)_{\mathrm{ref}}|\le 1/(4M_{\mathrm{ref}}^2)$.
+
+\paragraph{A closed total-error certificate.}
+Independently of the reference $\zeta(3)_{\mathrm{ref}}$, Proposition~\ref{prop:error_decomposition} and Corollary~\ref{cor:sampling_error} imply the deterministic bound
+\[
+\left|\overline{\avgN{\mathcal{P}}}_K-\zeta(3)\right|
+\le
+\left|\overline{\avgN{\mathcal{P}}}_K-H_M^{(3)}\right|
+\;+\;\left(\zeta(3)-H_M^{(3)}\right)
+\le
+\HKVar(g_M)\,D_N^\ast(P_N)
+\;+\;\frac{1}{2M^2}.
+\]
+As in the $d=2$ case, Corollary~\ref{cor:optimal_truncation_tradeoff} provides an optimized truncation choice once a discrepancy certificate is fixed.
+
 \begin{table}[t]
 \centering
-\begin{tabular}{@{}rrrrrrrr@{}}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}rrrrrrrrr@{}}
 \toprule
-$(N,M,K)$ & $\overline{\avgN{\mathcal{P}}}_K$ & $\overline{\avgN{\mathcal{P}}}_K-\zeta(3)$ & $\overline{\avgN{\mathcal{P}}}_K-H_M^{(3)}$ & trunc.\ bound $<1/(2M^2)$ & $D_N^\ast$ bound & $\HKVar(g_M)D_N^\ast$ bound & ratio \\
+$(N,M,K)$ & $H$ & $\overline{\avgN{\mathcal{P}}}_K$ & $\overline{\avgN{\mathcal{P}}}_K-\zeta(3)_{\mathrm{ref}}$ & $\overline{\avgN{\mathcal{P}}}_K-H_M^{(3)}$ & trunc.\ bound $<1/(2M^2)$ & $B_{N,H}$ & $\frac{27}{8}\,\HKVar(g_M)\,B_{N,H}$ & ratio \\
 \midrule
 \input{sections/generated/zeta3_rows.tex}%
 \\
 \bottomrule
 \end{tabular}
-\caption{$\zeta(3)$ realized via a three-dimensional scan with auditable truncation. The scripts compute a reference $\zeta(3)$ value as a high-$M$ harmonic sum with a certified remainder bound. As in Table~\ref{tab:zeta2_scan}, the last three columns provide an auditable deterministic sampling certificate via an ETK discrepancy bound for the Kronecker scan (again using $C_d=3^d$ and $H=20$).}
+}
+\caption{$\zeta(3)$ realized via a three-dimensional scan with auditable truncation. The third column uses the certified reference $\zeta(3)_{\mathrm{ref}}$ defined above; it satisfies $|\zeta(3)-\zeta(3)_{\mathrm{ref}}|\le 1/(4M_{\mathrm{ref}}^2)$. As in Table~\ref{tab:zeta2_scan}, for each $(N,M,K)$ case the ETK truncation parameter $H$ (second column) is chosen from a fixed candidate list by minimizing the computable bracket term $B_{N,H}$ in Proposition~\ref{prop:kronecker_discrepancy_bound}. The last three columns report this $B_{N,H}$ and the resulting fully numerical sampling certificate obtained from the ETK inequality with the explicit constant $C_3=(3/2)^3=27/8$ (Theorem~\ref{thm:etk}): namely $D_N^\ast(P_N)\le \frac{27}{8}B_{N,H}$ and hence $|\overline{\avgN{\mathcal{P}}}_K-H_M^{(3)}|\le \frac{27}{8}\HKVar(g_M)B_{N,H}$. The ratio column is $|\overline{\avgN{\mathcal{P}}}_K-H_M^{(3)}|/(\frac{27}{8}\HKVar(g_M)B_{N,H})$.}
 \label{tab:zeta3_scan}
 \end{table}
 
-\subsection{Experiment V: low-complexity constant search for $\alpha^{-1}$}
+\subsection{Experiment V: low-complexity constant search for \texorpdfstring{$\alpha^{-1}$}{alpha inverse}}
 \label{sec:constant_search_experiment}
 
 As a toy model for ``selection under a bounded description budget'', we reproduce an exhaustive search over the low-complexity ansatz
@@ -112,6 +176,9 @@ As a toy model for ``selection under a bounded description budget'', we reproduc
 v(a,b,c)=a\pi^3+b\pi^2+c\pi,\qquad a,b,c\in\ZZ_{\ge 0},\quad a+b+c\le 10,
 \end{equation}
 targeting the CODATA 2022 central value $\alpha^{-1}(0)=137.035999177$ \cite{CODATA2022RMP}. This complexity domain contains the geometric candidate $(a,b,c)=(4,1,1)$ used in the constants-geometry manuscript \cite{Ma2025PCG}. The goal here is not metrology, but a sharp \emph{uniqueness gap} under a fixed budget.
+
+\paragraph{Why this particular ansatz is auditable in the present framework.}
+The primitives $\pi,\pi^2,\pi^3$ are themselves low-complexity cubical scan periods in $\ScanAlg$ (Examples~\ref{ex:pi}, \ref{ex:pi2}, \ref{ex:pi3}). Once a finite-resource certificate is available for each primitive at a chosen horizon, Lemma~\ref{lem:linear_combination_rule} shows that the propagated uncertainty of any linear combination is controlled by the coefficient $\ell^1$ size $a+b+c$. This provides a direct stability rationale for the coefficient-sum budget and for restricting to the nonnegative cone (avoiding cancellation-driven instability).
 
 \begin{remark}[Running and scheme dependence (interpretation-layer note)]
 The electromagnetic coupling $\alpha(\mu)$ is scale- and scheme-dependent in quantum field theory; CODATA quotes the low-energy value $\alpha(0)$ in a specific metrological convention. In this paper, the bounded-complexity search should be read as a \emph{protocol-level} rigidity signal at a fixed reference convention: it tests whether a low-description geometric expression is uniquely selected within a constrained ansatz class. Any map from a geometric baseline to an operational coupling across scales belongs to interpretation-layer modeling and is treated elsewhere in the HPA--$\Omega$ program.

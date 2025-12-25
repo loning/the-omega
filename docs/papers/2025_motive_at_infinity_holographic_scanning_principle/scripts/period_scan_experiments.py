@@ -27,9 +27,8 @@ ALPHA_GOLDEN = 1.0 / PHI
 ALPHA2 = math.sqrt(2.0) - 1.0
 ALPHA3 = math.sqrt(3.0) - 1.0
 
-# For discrepancy certificates via Erdős–Turán–Koksma we fix an explicit, dimension-dependent constant.
-# (See Appendix B in the paper for the bound form; the constant is treated as part of the auditable certificate.)
-ETK_C_BASE = 3.0
+# For multi-dimensional scans we report the explicit ETK bracket term B_{N,H} that appears in the paper,
+# and we fix the explicit admissible ETK constant C_d = (3/2)^d to obtain fully numerical certificates.
 
 
 def frac_part(x: float) -> float:
@@ -103,26 +102,51 @@ def star_discrepancy_1d(points: Sequence[float]) -> float:
 
 
 def dist_to_nearest_int(x: float) -> float:
-    """Distance to the nearest integer, in [0, 0.5]."""
-    return abs(x - round(x))
-
-
-def etk_c_d(d: int) -> float:
-    """Explicit ETK constant used in the certificate."""
-    return ETK_C_BASE ** float(d)
-
-
-def etk_kronecker_discrepancy_bound(alpha: Sequence[float], n: int, h_max: int) -> float:
     """
-    Deterministic star-discrepancy upper bound for a Kronecker orbit prefix via ETK + geometric-series bound.
+    Distance to the nearest integer, in [0, 0.5], with a small conservative margin.
 
-    Returns an explicit number B such that D_N^*(P_N) <= B, where P_N={x0+t alpha mod 1: 0<=t<=N-1}.
-    The bound is uniform in the initial condition x0.
+    We subtract a tiny epsilon to avoid overestimating the distance due to floating rounding,
+    so that terms of the form 1/(2N*dist) remain conservative upper bounds.
+    """
+    d = abs(x - round(x))
+    d -= 1e-12 * (1.0 + abs(x))
+    return d if d > 0.0 else 0.0
+
+
+def etk_constant(d: int) -> float:
+    """Explicit admissible ETK dimension constant: C_d = (3/2)^d."""
+    return (1.5) ** float(d)
+
+
+def choose_best_h(
+    alpha: Sequence[float], n: int, candidates: Sequence[int]
+) -> Tuple[int, float]:
+    """Choose H from a fixed candidate list by minimizing the ETK bracket term B_{N,H}."""
+    best_h = None
+    best_b = None
+    for h in candidates:
+        if h <= 0:
+            continue
+        b = etk_kronecker_bracket_term(alpha, n, h)
+        if best_b is None or b < best_b:
+            best_b = b
+            best_h = h
+    # candidates are expected to be nonempty positive ints
+    assert best_h is not None and best_b is not None
+    return best_h, best_b
+
+
+def etk_kronecker_bracket_term(alpha: Sequence[float], n: int, h_max: int) -> float:
+    """
+    ETK bracket term for a Kronecker orbit prefix via ETK + geometric-series bound.
+
+    Returns an explicit number B_{N,H} such that
+      D_N^*(P_N) <= C_d * B_{N,H},
+    where C_d depends only on the dimension d. The term is uniform in the initial condition x0.
     """
     if n <= 0 or h_max <= 0:
         return 1.0
     d = len(alpha)
-    cd = etk_c_d(d)
 
     def term_for_h(h: Sequence[int]) -> float:
         r = 1.0
@@ -154,9 +178,9 @@ def etk_kronecker_discrepancy_bound(alpha: Sequence[float], n: int, h_max: int) 
                         continue
                     s += term_for_h((h1, h2, h3))
     else:
-        raise ValueError("Only d=2 or d=3 supported in etk_kronecker_discrepancy_bound.")
+        raise ValueError("Only d=2 or d=3 supported in etk_kronecker_bracket_term.")
 
-    return cd * (1.0 / float(h_max) + s)
+    return 1.0 / float(h_max) + s
 
 
 def birkhoff_geom_2d(alpha: Sequence[float], n: int, m: int, x0: Sequence[float]) -> float:
@@ -351,12 +375,13 @@ def main() -> None:
         delta_zeta = mean - zeta2
         sampling_err = mean - hm2
         trunc_bound = 1.0 / float(m)
-        dstar_bound = etk_kronecker_discrepancy_bound(alpha_2d, n, h_etk)
+        h_used, etk_term = choose_best_h(alpha_2d, n, candidates=(10, 20, 30, 40, 50, 80, 100, 150, 200, 300, 500, 800))
         hkvar = (2.0 ** 2 - 1.0) * float(m - 1)
+        dstar_bound = etk_constant(2) * etk_term
         sampling_bound = hkvar * dstar_bound
         ratio = abs(sampling_err) / sampling_bound if sampling_bound > 0.0 else 0.0
         zeta2_rows.append(
-            f"({n:,},{m:,},{k}) & {mean:.12f} & {fmt_sci_signed(delta_zeta)} & {fmt_sci_signed(sampling_err)} & {fmt_sci_unsigned(trunc_bound)} & {fmt_sci_unsigned(dstar_bound)} & {fmt_sci_unsigned(sampling_bound)} & {fmt_sci_unsigned(ratio)} \\\\"
+            f"({n:,},{m:,},{k}) & {h_used} & {mean:.12f} & {fmt_sci_signed(delta_zeta)} & {fmt_sci_signed(sampling_err)} & {fmt_sci_unsigned(trunc_bound)} & {fmt_sci_unsigned(etk_term)} & {fmt_sci_unsigned(sampling_bound)} & {fmt_sci_unsigned(ratio)} \\\\"
         )
     write_rows(gen / "zeta2_rows.tex", zeta2_rows)
 
@@ -380,12 +405,13 @@ def main() -> None:
         delta_zeta = mean - zeta3_ref
         sampling_err = mean - hm3
         trunc_bound = 1.0 / (2.0 * float(m) * float(m))
-        dstar_bound = etk_kronecker_discrepancy_bound(alpha_3d, n, h_etk)
+        h_used, etk_term = choose_best_h(alpha_3d, n, candidates=(10, 20, 30, 40, 50, 60, 80, 100))
         hkvar = (2.0 ** 3 - 1.0) * float(m - 1)
+        dstar_bound = etk_constant(3) * etk_term
         sampling_bound = hkvar * dstar_bound
         ratio = abs(sampling_err) / sampling_bound if sampling_bound > 0.0 else 0.0
         zeta3_rows.append(
-            f"({n:,},{m:,},{k}) & {mean:.12f} & {fmt_sci_signed(delta_zeta)} & {fmt_sci_signed(sampling_err)} & {fmt_sci_unsigned(trunc_bound)} & {fmt_sci_unsigned(dstar_bound)} & {fmt_sci_unsigned(sampling_bound)} & {fmt_sci_unsigned(ratio)} \\\\"
+            f"({n:,},{m:,},{k}) & {h_used} & {mean:.12f} & {fmt_sci_signed(delta_zeta)} & {fmt_sci_signed(sampling_err)} & {fmt_sci_unsigned(trunc_bound)} & {fmt_sci_unsigned(etk_term)} & {fmt_sci_unsigned(sampling_bound)} & {fmt_sci_unsigned(ratio)} \\\\"
         )
     write_rows(gen / "zeta3_rows.tex", zeta3_rows)
 

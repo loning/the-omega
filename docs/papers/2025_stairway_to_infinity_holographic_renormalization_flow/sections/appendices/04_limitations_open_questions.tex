@@ -10,9 +10,7 @@ The following limitations and open questions are explicit.
 \subsection{Scope and novelty}
 \label{app:limitations_scope_novelty}
 
-The manuscript should be read as a blueprint for organizing a cross-scale ``protocol chain'' rather than as a source of new theorems in classical modular/ergodic theory.
-Most theorem-level inputs are standard results with well-established proofs (Appendix~\ref{app:audit_dependency_chain}).
-Accordingly, novelty claims are best interpreted at the level of \emph{interfaces} (scan orbit $\leftrightarrow$ slice sampling, slice $\leftrightarrow$ $q$-coefficients, coefficients $\leftrightarrow$ Hecke closure) and \emph{auditability} (explicit finite-$N$ bounds with locally checkable digit witnesses), not at the level of new identities in modular forms.
+Most theorem-level inputs are standard results with well-established proofs (Appendix~\ref{app:audit_dependency_chain}). The contribution is a protocol-level synthesis that makes the cross-scale climb and the continuous--discrete interface quantitatively auditable at finite resources. Novelty claims are therefore best interpreted at the level of \emph{interfaces} (scan orbit $\leftrightarrow$ slice sampling, slice $\leftrightarrow$ $q$-coefficients, coefficients $\leftrightarrow$ Hecke closure) and \emph{closure mechanisms} (explicit end-to-end error budgets including finite-alphabet quantization, and exact integer recovery by rounding when $a_n\in\ZZ$; Theorem~\ref{thm:finite_alphabet_recovery_bound} and Corollary~\ref{cor:exact_integer_recovery_rounding}), rather than as new identities in classical modular theory.
 
 \subsection{Making protocol morphisms precise}
 
@@ -25,11 +23,11 @@ Definition~\ref{def:holographic_langlands_functor} treats ``protocol equivalence
 
 \subsection{Certified coefficient recovery under finite resources}
 
-The slice--sampling pipeline provides explicit discrepancy-based bounds (Theorem~\ref{thm:finiteN_coeff_bound} and Corollary~\ref{cor:ostrowski_digit_discrepancy}), but a fully certified numerical pipeline needs additional ingredients:
+The slice--sampling pipeline provides explicit discrepancy-based bounds (Theorem~\ref{thm:finiteN_coeff_bound} and Corollary~\ref{cor:ostrowski_digit_discrepancy}). Incorporating finite-alphabet readout yields an explicit sampling+quantization bound (Theorem~\ref{thm:finite_alphabet_recovery_bound}) and, in arithmetic cases, an exact integer recovery criterion (Corollary~\ref{cor:exact_integer_recovery_rounding}). A fully certified numerical pipeline may additionally require:
 \begin{itemize}
-\item \textbf{Certified evaluation of $f(\tau)$ on slices.} When $f$ is computed via truncated $q$-series, explicit tail bounds are required at fixed $\tau$; for Eisenstein series these are given with constants in Appendix~\ref{app:eisenstein_tail_bounds}, while for general cusp forms one needs explicit majorants compatible with the chosen computational representation.
-\item \textbf{Floating-point and instrument error propagation.} The finite-$N$ bound controls only quadrature (sampling) error. A complete budget must include rounding, conditioning, and any finite-resolution readout noise as a function of $(n,y,N)$, especially in regimes where amplification by $\e^{2\pi n y}$ dominates.
-\item \textbf{Explicit regularity bounds controlling $\Var(g_{n,y})$.} The Koksma step is sharp only when the variation term is under control uniformly over the parameter ranges used in the protocol; see the next subsection.
+\item \textbf{Certified evaluation of $f(\tau)$ on slices.} When $f$ is computed via truncated $q$-series, explicit tail bounds are required at fixed $\tau$; for Eisenstein series these are given with constants in Appendix~\ref{app:eisenstein_tail_bounds}, while for general cusp forms one needs explicit majorants compatible with the chosen computational representation (Remark~\ref{rem:finite_alphabet_plus_eval}).
+\item \textbf{Floating-point and instrument error propagation.} The bounds isolate sampling and quantization contributions, but a complete numerical budget must include floating-point rounding, conditioning, and any additional instrument noise as a function of $(n,y,N,\varepsilon)$, especially in regimes where amplification by $\e^{2\pi n y}$ dominates.
+\item \textbf{Uniform regularity control.} The Koksma step is sharp only when $\Var(g_{n,y})$ and $\|g_{n,y}'\|_\infty$ are under control uniformly over the parameter ranges used in the protocol; see the next subsection.
 \end{itemize}
 
 \subsection{Variation bounds, uniform constants, and stability windows}
@@ -45,7 +43,7 @@ Even when $D_N^\ast(P_N)$ is small, large variation or poor conditioning can des
 \par
 For the most common modular objects, explicit bounds are available:
 Appendix~\ref{app:variation_bound_gny} records a general absolute-continuity estimate, and Appendix~\ref{app:variation_bound_e4_explicit}--\ref{app:variation_bound_e6_explicit} give closed-form $y$-dependent upper bounds for $\Var(g_{n,y})$ for $E_4$ and $E_6$ (in terms of $r=\e^{-2\pi y}$).
-However, turning these into an \emph{auditable end-to-end} guarantee still requires:
+Combined with the finite-alphabet bound (Theorem~\ref{thm:finite_alphabet_recovery_bound}) and explicit tail bounds, these estimates already yield auditable end-to-end guarantees for standard Eisenstein observables (Appendix~\ref{app:worked_model_finite_resolution} and Corollary~\ref{cor:E4_parameter_selection}). For broader families, one still requires:
 \begin{itemize}
 \item explicit parameter ranges $(n,y,N)$ for which the bound is numerically stable (a ``scale window'');
 \item explicit constants that remain uniform across the intended family of $f$ (e.g.\ across a space of cusp forms or across a class of observables mapped to modular data);
@@ -91,13 +89,13 @@ A sharper integration of R1 into a certified pipeline would require stating expl
 \subsection{Empirical validation and practical tightness}
 \label{app:limitations_empirical}
 
-The manuscript presents schematic figures and theorem-level bounds, but it does not include numerical case studies testing:
+The manuscript emphasizes certified bounds and explicit constants over empirical tightness. Numerical case studies could nonetheless complement the theory by testing:
 \begin{itemize}
 \item the practical tightness of discrepancy/digit bounds for realistic $(\alpha,N)$ choices;
 \item the dependence of $\Var(g_{n,y})$ on $(n,y)$ for representative modular objects beyond $E_4/E_6$;
 \item the empirical stability window in $(n,y,N)$ balancing smoothing against amplification.
 \end{itemize}
-Such experiments would materially strengthen the ``auditable error'' narrative by demonstrating how conservative the explicit bounds are in typical regimes.
+Such experiments would clarify how conservative the explicit bounds are in typical regimes, but they are not required for the logical closure statements proved in this manuscript.
 
 \subsection{Related work: quasi-Monte Carlo, lattice rules, and transport-based metrics}
 \label{app:limitations_related_work}

@@ -12,11 +12,11 @@ that is explicit and propagates under protocol composition.
 \subsection{Sampling discrepancy and Koksma--Hlawka type bounds}
 \label{sec:discrepancy_bounds}
 
-Let $x_0,\dots,x_{N-1}\in[0,1)^d$ be a finite point set. Its star discrepancy is
+Let
 \begin{equation}
-P_N := \{x_0,\dots,x_{N-1}\}\subset[0,1)^d,
+P_N := \{x_0,\dots,x_{N-1}\}\subset[0,1)^d
 \end{equation}
-and
+be a finite point set. Its star discrepancy is
 \begin{equation}
 \label{eq:star_discrepancy}
 \DNstar(P_N)
@@ -207,6 +207,60 @@ and take $s=2$ and $s=3$.
 \label{rem:why_truncation}
 The ``ideal'' kernel $1/(1-xy)$ on $[0,1]^2$ is not bounded near $xy=1$, complicating finite-$N$ sampling bounds. By replacing it with the polynomial kernel $g_M(x,y)=\sum_{n=0}^{M-1}(xy)^n$, we obtain: (i) an exact period $H_M^{(2)}$ at finite $M$, (ii) a uniform integrand regularity compatible with discrepancy bounds, and (iii) an explicit truncation remainder controlled by \eqref{eq:zeta2_bound}. The same strategy applies to $d=3$.
 \end{remark}
+
+\begin{corollary}[Stability--truncation tradeoff and an optimized choice of $M$ for $\zeta(d)$]
+\label{cor:optimal_truncation_tradeoff}
+Fix an integer $d\ge 2$ and let $g_M$ be the truncated geometric kernel (Definition~\ref{def:geom_trunc_kernel}) on $[0,1)^d$. Let $\mathcal{P}\in\ScanAlg$ be a $d$-dimensional protocol with regularized kernel $f_{\mathcal{R}}=g_M$ and orbit-prefix point set $P_N$. Assume a (possibly protocol-dependent) explicit discrepancy certificate
+\[
+D_N^\ast(P_N)\le \delta_N.
+\]
+Then the total deviation from $\zeta(d)$ satisfies the auditable bound
+\begin{equation}
+\label{eq:zeta_d_tradeoff}
+\left|\avgN{\mathcal{P}}-\zeta(d)\right|
+\le
+\underbrace{(2^d-1)(M-1)\,\delta_N}_{\text{sampling error}}
+\;+\;
+\underbrace{\frac{1}{(d-1)M^{d-1}}}_{\text{truncation error}}.
+\end{equation}
+In particular, with $A:=(2^d-1)\delta_N$ and the integer choice
+\begin{equation}
+\label{eq:optimal_m_choice}
+M:=\left\lceil A^{-1/d}\right\rceil,
+\end{equation}
+one obtains the explicit rate bound
+\begin{equation}
+\label{eq:optimized_zeta_d_bound}
+\left|\avgN{\mathcal{P}}-\zeta(d)\right|
+\le
+\frac{d}{d-1}\,A^{(d-1)/d}+A.
+\end{equation}
+For $d=2$ this yields $|\avgN{\mathcal{P}}-\zeta(2)|\le 2\sqrt{3\delta_N}+3\delta_N$, and for $d=3$ it yields $|\avgN{\mathcal{P}}-\zeta(3)|\le \tfrac{3}{2}(7\delta_N)^{2/3}+7\delta_N$.
+\end{corollary}
+
+\begin{proof}
+By Corollary~\ref{cor:gm_sampling_bound} and Lemma~\ref{lem:geom_trunc_integral},
+\[
+\left|\avgN{\mathcal{P}}-H_M^{(d)}\right|
+\le (2^d-1)(M-1)\,D_N^\ast(P_N)
+\le (2^d-1)(M-1)\,\delta_N.
+\]
+For the truncation remainder, the integral test gives
+\[
+0<\zeta(d)-H_M^{(d)}
+=\sum_{n=M+1}^\infty \frac{1}{n^d}
+\le \int_M^\infty x^{-d}\,\dd x
+=\frac{1}{(d-1)M^{d-1}},
+\]
+which yields \eqref{eq:zeta_d_tradeoff} by Proposition~\ref{prop:error_decomposition}.
+For \eqref{eq:optimized_zeta_d_bound}, note that $M\ge A^{-1/d}$ implies $M^{-(d-1)}\le A^{(d-1)/d}$ and that $M-1\le M\le A^{-1/d}+1$, hence
+\[
+(2^d-1)(M-1)\delta_N \le A\left(A^{-1/d}+1\right)=A^{(d-1)/d}+A,
+\qquad
+\frac{1}{(d-1)M^{d-1}}\le \frac{1}{d-1}A^{(d-1)/d}.
+\]
+Summing these bounds gives \eqref{eq:optimized_zeta_d_bound}.
+\end{proof}
 
 \subsection{Benchmark one-dimensional kernels: explicit variation constants}
 \label{sec:benchmark_variation_constants}

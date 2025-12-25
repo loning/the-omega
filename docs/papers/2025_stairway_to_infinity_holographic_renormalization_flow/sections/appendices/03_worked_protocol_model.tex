@@ -123,40 +123,8 @@ The ideal (continuum) coefficient identity is
 a_n=\e^{2\pi n y}\int_0^1 g_{n,y}(x)\,\dd x
 \]
 (Theorem~\ref{thm:slice_coefficient_reconstruction}).
-At finite resolution and finite $N$, define the quantized scan-sampled estimator
-\begin{equation}
-\label{eq:quantized_scan_estimator}
-\widehat a_{n,N}^{(\varepsilon)}(y)
-:=\e^{2\pi n y}\cdot\frac{1}{N}\sum_{t=0}^{N-1} g_{n,y}(\widetilde x_t).
-\end{equation}
-
-\begin{theorem}[finite-alphabet recovery bound (sampling + quantization)]
-\label{thm:finite_alphabet_recovery_bound}
-Assume $g_{n,y}$ is absolutely continuous on $[0,1]$. Let $P_N=\{x_0,\ldots,x_{N-1}\}$ be the underlying (unquantized) orbit point set. Then
-\begin{equation}
-\label{eq:finite_alphabet_recovery_bound}
-\big|\widehat a_{n,N}^{(\varepsilon)}(y)-a_n\big|
-\le \e^{2\pi n y}\left(\Var(g_{n,y})\,D_N^\ast(P_N)\;+\;\frac{\varepsilon}{2}\,\|g_{n,y}'\|_\infty\right).
-\end{equation}
-\end{theorem}
-\begin{proof}
-Write
-\[
-\frac{1}{N}\sum_{t=0}^{N-1} g_{n,y}(\widetilde x_t)-\int_0^1 g_{n,y}
-=\underbrace{\left(\frac{1}{N}\sum_{t=0}^{N-1} g_{n,y}(x_t)-\int_0^1 g_{n,y}\right)}_{\text{sampling error}}
-\;+\;
-\underbrace{\frac{1}{N}\sum_{t=0}^{N-1}\big(g_{n,y}(\widetilde x_t)-g_{n,y}(x_t)\big)}_{\text{quantization error}}.
-\]
-The sampling term is bounded by $\Var(g_{n,y})D_N^\ast(P_N)$ via Koksma (Theorem~\ref{thm:finiteN_coeff_bound}).
-For the quantization term, absolute continuity gives a uniform Lipschitz bound
-$|g_{n,y}(\widetilde x)-g_{n,y}(x)|\le \|g_{n,y}'\|_\infty|\widetilde x-x|$,
-and $|\widetilde x_t-x_t|\le \varepsilon/2$. Multiplying by $\e^{2\pi n y}$ yields~\eqref{eq:finite_alphabet_recovery_bound}.
-\end{proof}
-
-\begin{remark}[adding certified evaluation/truncation error]
-\label{rem:finite_alphabet_plus_eval}
-If $F_y(\widetilde x_t)$ is computed by truncating a $q$-series (rather than accessed as an exact observable), then an additional explicit evaluation error term can be added to~\eqref{eq:finite_alphabet_recovery_bound}. For Eisenstein series, Appendix~\ref{app:eisenstein_tail_bounds} provides closed-form tail bounds at fixed $|q|=\e^{-2\pi y}$.
-\end{remark}
+At finite resolution and finite $N$, we use the quantized scan-sampled coefficient estimator of Definition~\ref{def:quantized_scan_estimator} (Equation~\ref{eq:quantized_scan_estimator}).
+Theorem~\ref{thm:finite_alphabet_recovery_bound} provides an explicit end-to-end bound including both discrepancy (sampling) and $\varepsilon$-quantization terms, while Remark~\ref{rem:finite_alphabet_plus_eval} records how to add certified evaluation/truncation terms when $f$ is computed via truncated $q$-series.
 
 \subsubsection{A worked modular observable: \texorpdfstring{$E_4$}{E4} with explicit constants and exact-integer recovery}
 \label{app:worked_model_E4}
@@ -173,14 +141,7 @@ n + 240\,\zeta(3)\big(S_4(r)+nS_3(r)\big)
 \]
 and the same expression upper-bounds $\Var(g_{n,y})$.
 Combining with Theorem~\ref{thm:finite_alphabet_recovery_bound} yields a completely explicit bound in terms of $(n,y,N,\varepsilon)$ and $D_N^\ast(P_N)$ (or its Ostrowski digit bounds, Appendix~\ref{app:dk_koksma_ostrowski}).
-
-\begin{corollary}[exact integer recovery by rounding]
-\label{cor:exact_integer_recovery_rounding}
-Let $f$ have integer coefficients $a_n\in\ZZ$. If the right-hand side of~\eqref{eq:finite_alphabet_recovery_bound} is $<\tfrac12$, then rounding $\widehat a_{n,N}^{(\varepsilon)}(y)$ to the nearest integer recovers $a_n$ exactly.
-\end{corollary}
-\begin{proof}
-If $|\widehat a-a_n|<1/2$ and $a_n\in\ZZ$, the nearest-integer map is unique and equals $a_n$.
-\end{proof}
+In arithmetic settings with $a_n\in\ZZ$, exact integer recovery follows from the rounding criterion in Corollary~\ref{cor:exact_integer_recovery_rounding}.
 
 \begin{corollary}[parameter selection for $E_4$: explicit sufficient inequalities]
 \label{cor:E4_parameter_selection}
@@ -215,6 +176,36 @@ $D_N^\ast(P_N)\le \frac{2A(2+\log_\varphi N)}{N}$, hence
 \end{itemize}
 In either case, the rounding criterion in Corollary~\ref{cor:exact_integer_recovery_rounding} applies whenever the corresponding right-hand side is $<\tfrac12$.
 \end{corollary}
+
+\subsubsection{A certified numerical instance for \texorpdfstring{$E_4$}{E4}: exact recovery of \texorpdfstring{$a_1=240$}{a1=240}}
+\label{app:E4_certified_instance}
+To make the end-to-end bound concrete without any simulations, we record a single explicit parameter choice for which the rounding criterion is certified.
+Take the golden-branch scan slope $\alpha=\varphi^{-1}=[0;1,1,1,\ldots]$ and choose a convergent-length sample size $N=46368$ (a Fibonacci denominator of a convergent of $\alpha$), so that Proposition~\ref{prop:convergent_star_discrepancy} implies $D_N^\ast(P_N)\le 2/N$.
+Fix $n=1$, $y=0.7$, and a finite-alphabet resolution $\varepsilon=10^{-4}$.
+
+For $y=0.7$ one has
+\[
+r=\e^{-2\pi y}\approx 0.012299<0.0123,
+\qquad
+S_3(r)\approx 0.013561<0.0136,
+\qquad
+S_4(r)\approx 0.014876<0.0149,
+\]
+and using the numerical bound $\zeta(3)<1.202057$ in~\eqref{eq:B_ny_E4} (e.g.\ truncate $\zeta(3)=\sum_{m\ge 1}m^{-3}$ and bound the tail by $\sum_{m>K}m^{-3}<\int_K^\infty x^{-3}\dd x=\frac{1}{2K^2}$ with $K=20000$) one obtains
+\[
+B_{1,0.7}^{(4)}<57.83,
+\qquad
+\e^{2\pi\cdot 0.7}\approx 81.3068<81.31.
+\]
+Using the convergent-length bound in Corollary~\ref{cor:E4_parameter_selection}, we obtain the explicit numerical estimate
+\[
+\big|\widehat a_{1,N}^{(\varepsilon)}(0.7)-a_1\big|
+\le \e^{2\pi\cdot 0.7}\,B_{1,0.7}^{(4)}\left(\frac{2}{46368}+\frac{10^{-4}}{2}\right)
+< 81.31\cdot 57.83\left(\frac{2}{46368}+\frac{10^{-4}}{2}\right)
+< 0.44
+<\frac{1}{2}.
+\]
+Since $a_1=240\,\sigma_3(1)=240\in\ZZ$, Corollary~\ref{cor:exact_integer_recovery_rounding} implies that rounding $\widehat a_{1,N}^{(\varepsilon)}(0.7)$ to the nearest integer recovers $a_1=240$ exactly.
 
 \subsection{Hecke operators at the protocol level: structural closure versus implementable channels}
 \label{app:hecke_protocol_level}
