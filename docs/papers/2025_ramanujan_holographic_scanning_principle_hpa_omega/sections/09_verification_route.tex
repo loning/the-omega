@@ -18,7 +18,7 @@ Section~\ref{sec:modular_geodesic_cf} identifies continued-fraction digits as re
 \paragraph{Finite-$N$ error control.}
 For any finite set of scan samples $P_N=\{x_0,\ldots,x_{N-1}\}$ and any interval window $W$, the Koksma inequality gives an explicit finite-$N$ bound
 \begin{equation}
-\left|\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}_W(x_t)-|W|\right|\le 2\,D_N^*(P_N),
+\left|\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}_W(x_t)-|W|\right|\le 2\,D_N^\ast(P_N),
 \end{equation}
 see Appendix~\ref{app:koksma_inequality}. In particular, on convergent lengths the closed-form expressions in Proposition~\ref{prop:convergent_star_discrepancy} turn induced probability into a constant-controlled estimate.
 More generally, the Ostrowski/Zeckendorf coding of the tick count $N$ controls discrepancy via digit sums (Appendix~\ref{app:ostrowski_discrepancy}), providing a direct quantitative bridge from canonical coding to finite-$N$ readout accuracy.
@@ -33,19 +33,19 @@ is the Ostrowski expansion of $N$, then Proposition~\ref{prop:ostrowski_birkhoff
 \end{equation}
 hence
 \begin{equation}
-D_N^*\!\left(P_N(\alpha)\right)\le \frac{2}{N}\sum_{n=0}^{m} b_n.
+D_N^\ast\!\left(P_N(\alpha)\right)\le \frac{2}{N}\sum_{n=0}^{m} b_n.
 \label{eq:ostrowski_discrepancy_main}
 \end{equation}
 This bound holds for \emph{all} $N\ge 1$ (not only at convergent lengths) and makes the constant explicit.
-For the golden branch $\alpha=\varphi^{-1}$ at Fibonacci lengths $N=F_n$, Appendix~\ref{app:golden_constant} yields explicit constants: for odd $n$, $D_{F_n}^*=1/F_n$ so the window-frequency error is bounded by $2/F_n$; for even $n$,
+For the golden branch $\alpha=\varphi^{-1}$ at Fibonacci lengths $N=F_n$, Appendix~\ref{app:golden_constant} yields explicit constants: for odd $n$, $D_{F_n}^\ast=1/F_n$ so the window-frequency error is bounded by $2/F_n$; for even $n$,
 \begin{equation}
-D_{F_n}^*=\frac{1}{F_n}+\left(1-\frac{1}{F_n}\right)\frac{1}{\sqrt{5}\,F_n},
+D_{F_n}^\ast=\frac{1}{F_n}+\left(1-\frac{1}{F_n}\right)\frac{1}{\sqrt{5}\,F_n},
 \end{equation}
 so the window-frequency error is bounded by $2\left(1+\frac{1}{\sqrt{5}}\right)\frac{1}{F_n}$ up to the vanishing factor $(1-1/F_n)$.
 More generally, choosing $\alpha$ with bounded continued-fraction coefficients (constant type) yields an explicit uniform guarantee:
 if $a_n\le A$ for all $n$, then Appendix~\ref{app:ostrowski_discrepancy} gives
 \begin{equation}
-D_N^*\!\left(P_N(\alpha)\right)\le \frac{2A(2+\log_\varphi N)}{N},
+D_N^\ast\!\left(P_N(\alpha)\right)\le \frac{2A(2+\log_\varphi N)}{N},
 \label{eq:bounded_type_discrepancy_main}
 \end{equation}
 recovering the classical $O((\log N)/N)$ rate with explicit constants. This provides a principled scan-slope selection rule: \emph{bounded partial quotients} give uniformly low discrepancy, and the golden branch ($A=1$) is the canonical extremal choice compatible with Zeckendorf coding.
@@ -57,10 +57,10 @@ The same irrational-rotation model admits quantitative, non-asymptotic control. 
 
 For the golden branch $\alpha=\varphi^{-1}$, where the convergents are Fibonacci ratios, this implies an explicit constant:
 \begin{equation}
-F_n\,D_{F_n}^* \to 1+\frac{1}{\sqrt{5}}
+F_n\,D_{F_n}^\ast \to 1+\frac{1}{\sqrt{5}}
 \qquad (n\ \text{even}),
 \end{equation}
-while $F_n\,D_{F_n}^*=1$ for odd $n$.
+while $F_n\,D_{F_n}^\ast=1$ for odd $n$.
 
 \subsection{Coefficient recovery by scan quadrature: variation bounds and parameter choices}
 \label{sec:coeff_recovery_bounds}
@@ -99,10 +99,10 @@ If $g_{n,y}$ has bounded variation, then Koksma's inequality (Appendix~\ref{app:
 \begin{equation}
 \left|\widehat a_n^{(N)}(y)-a_n\right|
 \le
-\e^{2\pi n y}\,\mathrm{Var}(g_{n,y})\,D_N^*\!\left(P_N(\alpha)\right).
+\e^{2\pi n y}\,\mathrm{Var}(g_{n,y})\,D_N^\ast\!\left(P_N(\alpha)\right).
 \label{eq:coeff_recovery_koksma_bound}
 \end{equation}
-Thus, for coefficient recovery the quantitative problem reduces to (i) bounding $\mathrm{Var}(g_{n,y})$ as a function of $y$ and $n$, and (ii) choosing $\alpha,N$ to control $D_N^*$.
+Thus, for coefficient recovery the quantitative problem reduces to (i) bounding $\mathrm{Var}(g_{n,y})$ as a function of $y$ and $n$, and (ii) choosing $\alpha,N$ to control $D_N^\ast$.
 
 \begin{proposition}[Uniform variation bound from the \texorpdfstring{$q$}{q}-expansion]
 \label{prop:var_gny_qexp}
@@ -192,8 +192,8 @@ s_1:=\left\lceil\frac{k+1}{2}\right\rceil,\ \ s_2:=\left\lceil\frac{k+3}{2}\righ
 with $q=\e^{-2\pi y}$. For the discriminant form $\Delta$ of weight $12$, the same bound applies with $s_1=7$, $s_2=8$.
 
 \paragraph{Choosing \texorpdfstring{$\alpha$}{alpha} and \texorpdfstring{$N$}{N} (discrepancy control).}
-Given \eqref{eq:coeff_recovery_koksma_bound}, a principled scan-slope choice is to enforce uniformly small $D_N^*$. The explicit constant-type bound \eqref{eq:bounded_type_discrepancy_main} shows that bounded partial quotients ($a_n\le A$) guarantee $D_N^*=O((\log N)/N)$ with an explicit constant; the golden branch ($A=1$) yields the canonical smallest bound among constant-type choices and also admits exact discrepancy constants on Fibonacci lengths (Appendix~\ref{app:golden_constant}).
-For generic $\alpha$ with unbounded partial quotients there is no comparable uniform constant, and $D_N^*$ can exhibit spikes at $N$ tied to unusually large continued-fraction digits.
+Given \eqref{eq:coeff_recovery_koksma_bound}, a principled scan-slope choice is to enforce uniformly small $D_N^\ast$. The explicit constant-type bound \eqref{eq:bounded_type_discrepancy_main} shows that bounded partial quotients ($a_n\le A$) guarantee $D_N^\ast=O((\log N)/N)$ with an explicit constant; the golden branch ($A=1$) yields the canonical smallest bound among constant-type choices and also admits exact discrepancy constants on Fibonacci lengths (Appendix~\ref{app:golden_constant}).
+For generic $\alpha$ with unbounded partial quotients there is no comparable uniform constant, and $D_N^\ast$ can exhibit spikes at $N$ tied to unusually large continued-fraction digits.
 
 \paragraph{Joint choice of \texorpdfstring{$y$}{y} and \texorpdfstring{$N$}{N} for a target coefficient index \texorpdfstring{$n$}{n}.}
 The finite-$N$ recovery bound \eqref{eq:coeff_recovery_koksma_bound} combines (i) an amplification factor $\e^{2\pi n y}$ and (ii) a decay factor in $\mathrm{Var}(g_{n,y})$ driven by $q=\e^{-2\pi y}$. For the polynomial-growth classes above, the small-$y$ asymptotic $q/(1-q)^{s+1}\sim (2\pi y)^{-(s+1)}$ suggests minimizing a proxy of the form $\e^{2\pi n y}\,y^{-p}$, whose optimizer is
@@ -201,7 +201,7 @@ The finite-$N$ recovery bound \eqref{eq:coeff_recovery_koksma_bound} combines (i
 y_\star \approx \frac{p}{2\pi n}.
 \label{eq:y_star_rule}
 \end{equation}
-For Eisenstein series $E_k$, the dominant term in \eqref{eq:var_bound_eisenstein} corresponds to $p=k$; for cusp eigenforms of weight $k$ with the coarse bound \eqref{eq:var_bound_cusp_coarse}, the dominant term corresponds to $p\approx s_1+1\approx \frac{k+3}{2}$. Once $y$ is fixed, one selects $N$ so that $D_N^*(P_N(\alpha))\le \varepsilon/\bigl(\e^{2\pi n y}\mathrm{Var}(g_{n,y})\bigr)$ for a target tolerance $\varepsilon$, using \eqref{eq:bounded_type_discrepancy_main} (or the exact convergent-length formulas) as an explicit design inequality.
+For Eisenstein series $E_k$, the dominant term in \eqref{eq:var_bound_eisenstein} corresponds to $p=k$; for cusp eigenforms of weight $k$ with the coarse bound \eqref{eq:var_bound_cusp_coarse}, the dominant term corresponds to $p\approx s_1+1\approx \frac{k+3}{2}$. Once $y$ is fixed, one selects $N$ so that $D_N^\ast(P_N(\alpha))\le \varepsilon/\bigl(\e^{2\pi n y}\mathrm{Var}(g_{n,y})\bigr)$ for a target tolerance $\varepsilon$, using \eqref{eq:bounded_type_discrepancy_main} (or the exact convergent-length formulas) as an explicit design inequality.
 
 \paragraph{Where R1 enters beyond \texorpdfstring{$|q|$}{|q|} analogy.}
 At the operator level, coefficient recovery and discrepancy control both involve regulated orbit sums of the form $\sum_{t\ge 0} U_{\mathrm{scan}}^{\,t}$ applied to mean-zero observables (the cohomological equation for a rotation). The canonical way to make these sums well-defined is precisely Abel/resolvent regularization:
@@ -215,19 +215,19 @@ If samples of $g_{n,y}(x_t)$ are corrupted by an additive deterministic error $\
 \begin{equation}
 \left|\widehat a_n^{(N)}(y)-a_n\right|
 \le
-\e^{2\pi n y}\,\mathrm{Var}(g_{n,y})\,D_N^*\!\left(P_N(\alpha)\right)
+\e^{2\pi n y}\,\mathrm{Var}(g_{n,y})\,D_N^\ast\!\left(P_N(\alpha)\right)
 \;+\;\e^{2\pi n y}\,\delta,
 \label{eq:coeff_recovery_with_noise}
 \end{equation}
 where the first term is the discrepancy-controlled quadrature error and the second is the amplified measurement perturbation.
 
 \paragraph{A small deterministic numerical sanity check (E\texorpdfstring{$4$}{4}).}
-As an illustration of \eqref{eq:coeff_recovery_koksma_bound} with the explicit variation bound \eqref{eq:var_bound_eisenstein}, Table~\ref{tab:e4_coeff_recovery_sanity} reports coefficient recovery for $E_4$ using the scan-quadrature estimator \eqref{eq:scan_quadrature_estimator} at $y$ chosen by the rule \eqref{eq:y_star_rule} (with $p=k=4$). The star discrepancy $D_N^*$ is computed exactly from its definition, and the bound uses $\e^{2\pi n y}\mathrm{Var}(g_{n,y})D_N^*$ with $\mathrm{Var}(g_{n,y})$ upper-bounded by \eqref{eq:var_bound_eisenstein}.
+As an illustration of \eqref{eq:coeff_recovery_koksma_bound} with the explicit variation bound \eqref{eq:var_bound_eisenstein}, Table~\ref{tab:e4_coeff_recovery_sanity} reports coefficient recovery for $E_4$ using the scan-quadrature estimator \eqref{eq:scan_quadrature_estimator} at $y$ chosen by the rule \eqref{eq:y_star_rule} (with $p=k=4$). The star discrepancy $D_N^\ast$ is computed exactly from its definition, and the bound uses $\e^{2\pi n y}\mathrm{Var}(g_{n,y})D_N^\ast$ with $\mathrm{Var}(g_{n,y})$ upper-bounded by \eqref{eq:var_bound_eisenstein}.
 \begin{table}[H]
 \centering
 \begin{tabular}{cccccccc}
 \toprule
-$\alpha$ & $N$ & $y$ & $n$ & $D_N^*$ & $|\widehat a_n-a_n|$ & bound & ratio \\
+$\alpha$ & $N$ & $y$ & $n$ & $D_N^\ast$ & $|\widehat a_n-a_n|$ & bound & ratio \\
 \midrule
 $\varphi^{-1}$ & $233$ & $0.63662$ & $1$ & $4.29\times 10^{-3}$ & $8.63\times 10^{-4}$ & $2.57\times 10^{2}$ & $3.36\times 10^{-6}$ \\
 $\varphi^{-1}$ & $377$ & $0.31831$ & $2$ & $3.84\times 10^{-3}$ & $6.25\times 10^{-3}$ & $3.66\times 10^{3}$ & $1.71\times 10^{-6}$ \\
@@ -240,7 +240,7 @@ $\sqrt{2}-1$ & $377$ & $0.31831$ & $2$ & $5.90\times 10^{-3}$ & $2.65\times 10^{
 \end{table}
 
 \paragraph{Wasserstein bounds versus star discrepancy (why we use discrepancy here).}
-For Lipschitz test functions $h$ on $\RR/\ZZ$, Kantorovich--Rubinstein duality implies $|\frac{1}{N}\sum h(x_t)-\int h|\le \mathrm{Lip}(h)\,W_1(\mu_N,\lambda)$. In one dimension, $W_1(\mu_N,\lambda)=\int_0^1 |F_N(t)-t|\,\dd t\le D_N^*(P_N)$, so a Wasserstein-$1$ bound cannot improve the order of the deterministic discrepancy control unless one has an independent sharp bound on $W_1$ for the specific orbit. Moreover, for discontinuous window readout $\mathbf{1}_W$ the Lipschitz constant is infinite while $\mathrm{Var}(\mathbf{1}_W)=2$, so bounded-variation/discrepancy estimates are the natural quantitative language for the scan--projection protocol.
+For Lipschitz test functions $h$ on $\RR/\ZZ$, Kantorovich--Rubinstein duality implies $|\frac{1}{N}\sum h(x_t)-\int h|\le \mathrm{Lip}(h)\,W_1(\mu_N,\lambda)$. In one dimension, $W_1(\mu_N,\lambda)=\int_0^1 |F_N(t)-t|\,\dd t\le D_N^\ast(P_N)$, so a Wasserstein-$1$ bound cannot improve the order of the deterministic discrepancy control unless one has an independent sharp bound on $W_1$ for the specific orbit. Moreover, for discontinuous window readout $\mathbf{1}_W$ the Lipschitz constant is infinite while $\mathrm{Var}(\mathbf{1}_W)=2$, so bounded-variation/discrepancy estimates are the natural quantitative language for the scan--projection protocol.
 
 \subsection{Hecke rigidity in coefficients: recursion, multiplicativity, and Deligne bounds}
 \label{sec:quant_hecke_tau}
@@ -303,13 +303,13 @@ so the protocol-level limiting probabilities are fixed by the geometry of the wi
 For a finite sample of $N$ scan ticks, the empirical frequencies satisfy the constant-controlled bound
 \begin{equation}
 \left|\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}_{I_k^{(\varepsilon)}}(x_t)-\varepsilon\right|
-\le 2\,D_N^*(P_N),
+\le 2\,D_N^\ast(P_N),
 \end{equation}
 by Koksma (Appendix~\ref{app:koksma_inequality}), with explicit closed forms at convergent lengths (Proposition~\ref{prop:convergent_star_discrepancy}).
 
 \paragraph{Step 3: a canonical tick length and coding choice.}
 Specialize to the golden branch $\alpha=\varphi^{-1}$ and take a Fibonacci length $N=F_n$.
-Then Appendix~\ref{app:golden_constant} supplies explicit constants for $D_{F_n}^*$, turning the scan--projection statistics into an auditable finite-$N$ estimate.
+Then Appendix~\ref{app:golden_constant} supplies explicit constants for $D_{F_n}^\ast$, turning the scan--projection statistics into an auditable finite-$N$ estimate.
 The same choice aligns with Zeckendorf coding (Section~\ref{sec:zeckendorf}): $N$ admits a unique Fibonacci-digit representation with a locally checkable admissibility rule (no adjacent $1$'s), and the corresponding digit sums control discrepancy via Appendix~\ref{app:ostrowski_discrepancy}.
 
 \paragraph{Step 4: cusp evaluation with certified truncation control.}
@@ -385,7 +385,7 @@ In a commutative phase-window model, an auditable total error budget takes the a
 \begin{equation}
 \Bigl|\widehat P_W - P_W\Bigr|
 \;\le\;
-V(w_{W,\sigma})\,D_N^*(P_N)
+V(w_{W,\sigma})\,D_N^\ast(P_N)
 \;+\;\delta_{\mathrm{instr}}(\sigma)
 \;+\;\delta_{\mathrm{num}}(M,\tau),
 \label{eq:error_budget_template}

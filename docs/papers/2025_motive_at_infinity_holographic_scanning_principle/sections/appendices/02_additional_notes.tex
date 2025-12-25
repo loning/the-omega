@@ -47,4 +47,125 @@ D_N^\ast(P_N)\le \frac{2A(3+\log_\varphi N)}{N}.
 For the golden branch $\alpha=\varphi^{-1}$ one has $A=1$, giving an explicit certified $O((\log N)/N)$ discrepancy bound. Combined with Proposition~\ref{prop:explicit_1d_variations}, this turns the $\log 2$ and $\pi$ scan realizations into fully quantified, parameter-free finite-$N$ bounds.
 \end{remark}
 
+\subsection{Hardy--Krause variation (definition)}
+\label{app:hk_variation_definition}
+
+The Koksma--Hlawka inequality (Theorem~\ref{thm:koksma_hlawka}) uses bounded variation in the sense of Hardy--Krause. We recall a standard definition (anchored at $1$) and a useful representation for smooth functions.
+
+\begin{definition}[Hardy--Krause variation anchored at $1$]
+\label{def:hk_variation}
+Let $f:[0,1]^d\to\RR$. For a nonempty subset $u\subset\{1,\dots,d\}$, write $x_u=(x_j)_{j\in u}$ and let $(x_u;1)$ denote the point in $[0,1]^d$ obtained by setting coordinates in $u$ to $x_u$ and all remaining coordinates to $1$.
+Define the Hardy--Krause variation anchored at $1$ by
+\begin{equation}
+\label{eq:hk_variation_def}
+\HKVar(f):=\sum_{\emptyset\neq u\subset\{1,\dots,d\}} V\!\left(f(\cdot;1);u\right),
+\end{equation}
+where $V(f(\cdot;1);u)$ is the Vitali variation of the function $x_u\mapsto f(x_u;1)$ on $[0,1]^{|u|}$.
+\end{definition}
+
+\begin{remark}[Smooth-case representation]
+\label{rem:hk_smooth_representation}
+If $f$ has continuous mixed partial derivatives of all orders up to $d$, then one has the standard representation
+\begin{equation}
+\label{eq:hk_smooth_rep}
+\HKVar(f)
+=
+\sum_{\emptyset\neq u\subset\{1,\dots,d\}}
+\int_{[0,1]^{|u|}}
+\left|
+\frac{\partial^{|u|}}{\prod_{j\in u}\partial x_j}
+f(x_u;1)
+\right|
+\dd x_u,
+\end{equation}
+see, e.g., \cite{Niederreiter1992,DickPillichshammer2010}.
+\end{remark}
+
+\subsection{Erd\H{o}s--Tur\'an--Koksma inequality and a Kronecker discrepancy bound}
+\label{app:etk_kronecker_bound}
+
+The following inequality bounds star discrepancy by exponential sums. It provides a closed quantitative bridge from the scan slope $\alpha$ to a finite-$N$ discrepancy certificate.
+
+\begin{theorem}[Erd\H{o}s--Tur\'an--Koksma inequality (star discrepancy)]
+\label{thm:etk}
+Let $P_N=\{x_0,\dots,x_{N-1}\}\subset[0,1)^d$ and let $H\ge 1$ be an integer. Define
+\[
+r(h):=\prod_{j=1}^d \max\{1,|h_j|\},\qquad h=(h_1,\dots,h_d)\in\ZZ^d.
+\]
+Then there exists a constant $C_d>0$ depending only on $d$ such that
+\begin{equation}
+\label{eq:etk}
+D_N^\ast(P_N)
+\le
+C_d\left(
+\frac{1}{H}
+\;+\;
+\sum_{\substack{h\in\ZZ^d\\0<\|h\|_\infty\le H}}
+\frac{1}{r(h)}
+\left|
+\frac{1}{N}\sum_{t=0}^{N-1} e^{2\pi \iu \langle h,x_t\rangle}
+\right|
+\right).
+\end{equation}
+\end{theorem}
+
+\begin{remark}
+We use Theorem~\ref{thm:etk} as a standard tool; explicit admissible constants $C_d$ and closely related variants are given in the quasi-Monte Carlo literature, see \cite{Niederreiter1992,DickPillichshammer2010}. For the fully auditable numerical certificates in Section~\ref{sec:experiments}, we fix a concrete explicit choice $C_d=3^d$ (a standard admissible choice in these references) and treat it as part of the protocol-level certificate.
+\end{remark}
+
+\begin{lemma}[Geometric-series bound for Kronecker exponential sums]
+\label{lem:kronecker_exp_sum}
+Let $\theta\in\RR$ and define $\|\theta\|:=\min_{m\in\ZZ}|\theta-m|$ (distance to the nearest integer). Then for every $N\ge 1$,
+\begin{equation}
+\label{eq:exp_sum_bound}
+\left|\sum_{t=0}^{N-1} e^{2\pi \iu t\theta}\right|
+\le
+\min\left\{N,\frac{1}{2\|\theta\|}\right\}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+If $\theta\in\ZZ$, the left-hand side equals $N$. Otherwise,
+\[
+\sum_{t=0}^{N-1} e^{2\pi \iu t\theta}
+=\frac{1-e^{2\pi \iu N\theta}}{1-e^{2\pi \iu \theta}},
+\]
+so
+\[
+\left|\sum_{t=0}^{N-1} e^{2\pi \iu t\theta}\right|
+\le \frac{2}{|1-e^{2\pi \iu \theta}|}
+=\frac{1}{|\sin(\pi \theta)|}.
+\]
+Using $|\sin(\pi\theta)|\ge 2\|\theta\|$ yields \eqref{eq:exp_sum_bound}. The bound by $N$ is trivial.
+\end{proof}
+
+\begin{proposition}[Auditable discrepancy bound for Kronecker scans]
+\label{prop:kronecker_discrepancy_bound}
+Let $x_t=x_0+t\alpha\pmod{1}$ with $\alpha\in\RR^d$ and point set $P_N=\{x_0,\dots,x_{N-1}\}\subset[0,1)^d$. Then for every integer $H\ge 1$,
+\begin{equation}
+\label{eq:kronecker_discrepancy_bound}
+D_N^\ast(P_N)
+\le
+C_d\left(
+\frac{1}{H}
+\;+\;
+\sum_{\substack{h\in\ZZ^d\\0<\|h\|_\infty\le H}}
+\frac{1}{r(h)}
+\min\left\{1,\frac{1}{2N\|\langle h,\alpha\rangle\|}\right\}
+\right),
+\end{equation}
+with $C_d$ as in Theorem~\ref{thm:etk}.
+\end{proposition}
+
+\begin{proof}
+For $h\in\ZZ^d$,
+\[
+\sum_{t=0}^{N-1} e^{2\pi \iu \langle h,x_t\rangle}
+=
+e^{2\pi \iu \langle h,x_0\rangle}
+\sum_{t=0}^{N-1} e^{2\pi \iu t\langle h,\alpha\rangle},
+\]
+so the modulus is independent of $x_0$. Apply Theorem~\ref{thm:etk} and bound the exponential sum by Lemma~\ref{lem:kronecker_exp_sum}.
+\end{proof}
+
 

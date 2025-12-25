@@ -21,17 +21,24 @@ We use the golden-branch slope $\alpha=\varphi^{-1}$ and the kernel $f(x)=\frac{
 
 \begin{table}[t]
 \centering
-\begin{tabular}{@{}rrr@{}}
+\begin{tabular}{@{}rrrrrr@{}}
 \toprule
-$N$ & $\avgN{\mathcal{P}}$ & $\avgN{\mathcal{P}}-\log 2$ \\
+$N$ & $\avgN{\mathcal{P}}$ & $\avgN{\mathcal{P}}-\log 2$ & $D_N^\ast$ & $\Var(f)\,D_N^\ast$ & ratio \\
 \midrule
 \input{sections/generated/log2_rows.tex}%
 \\
 \bottomrule
 \end{tabular}
-\caption{$\log 2$ realized as a scan period via the kernel $f(x)=1/(1+x)$ and the golden-branch slope $\alpha=\varphi^{-1}$.}
+\caption{$\log 2$ realized as a scan period via the kernel $f(x)=1/(1+x)$ and the golden-branch slope $\alpha=\varphi^{-1}$. The scripts compute the one-dimensional star discrepancy $D_N^\ast$ exactly from its definition and report the deterministic Koksma certificate $|\avgN{\mathcal{P}}-\log 2|\le \Var(f)\,D_N^\ast$ (Proposition~\ref{prop:explicit_1d_variations}).}
 \label{tab:log2_scan}
 \end{table}
+
+\paragraph{A simple rate fit (log--log).}
+Using the same data, the script also performs a least-squares fit of $\log|\avgN{\mathcal{P}}-\log 2|$ against $\log N$ over the tabulated horizons, yielding the empirical slope
+\[
+\beta_{\log 2}=\input{sections/generated/log2_fit.tex},
+\]
+which is consistent with a decay close to $N^{-1}$ at these scales (modulo the known logarithmic fluctuations of discrepancy bounds for Kronecker scans).
 
 \subsection{Experiment II: $\pi$ via a one-dimensional scan}
 \label{sec:exp_pi}
@@ -40,17 +47,23 @@ We keep the same slope $\alpha=\varphi^{-1}$ and use the kernel $f(x)=\frac{4}{1
 
 \begin{table}[t]
 \centering
-\begin{tabular}{@{}rrr@{}}
+\begin{tabular}{@{}rrrrrr@{}}
 \toprule
-$N$ & $\avgN{\mathcal{P}}$ & $\avgN{\mathcal{P}}-\pi$ \\
+$N$ & $\avgN{\mathcal{P}}$ & $\avgN{\mathcal{P}}-\pi$ & $D_N^\ast$ & $\Var(f)\,D_N^\ast$ & ratio \\
 \midrule
 \input{sections/generated/pi_rows.tex}%
 \\
 \bottomrule
 \end{tabular}
-\caption{$\pi$ realized as a scan period via the kernel $f(x)=4/(1+x^2)$ and the golden-branch slope.}
+\caption{$\pi$ realized as a scan period via the kernel $f(x)=4/(1+x^2)$ and the golden-branch slope. As in Table~\ref{tab:log2_scan}, the scripts compute $D_N^\ast$ exactly and report the deterministic Koksma certificate.}
 \label{tab:pi_scan}
 \end{table}
+
+\paragraph{A simple rate fit (log--log).}
+Analogously, the least-squares log--log slope for $|\avgN{\mathcal{P}}-\pi|$ over the tabulated horizons is
+\[
+\beta_{\pi}=\input{sections/generated/pi_fit.tex}.
+\]
 
 \subsection{Experiment III: $\zeta(2)$ via a two-dimensional scan with truncation}
 \label{sec:exp_zeta2}
@@ -59,15 +72,15 @@ We use the truncated geometric kernel $g_M(x,y)=\sum_{n=0}^{M-1}(xy)^n$ (Definit
 
 \begin{table}[t]
 \centering
-\begin{tabular}{@{}rrrrr@{}}
+\begin{tabular}{@{}rrrrrrrr@{}}
 \toprule
-$(N,M,K)$ & $\overline{\avgN{\mathcal{P}}}_K$ & $\overline{\avgN{\mathcal{P}}}_K-\zeta(2)$ & $\overline{\avgN{\mathcal{P}}}_K-H_M^{(2)}$ & trunc.\ bound $<1/M$ \\
+$(N,M,K)$ & $\overline{\avgN{\mathcal{P}}}_K$ & $\overline{\avgN{\mathcal{P}}}_K-\zeta(2)$ & $\overline{\avgN{\mathcal{P}}}_K-H_M^{(2)}$ & trunc.\ bound $<1/M$ & $D_N^\ast$ bound & $\HKVar(g_M)D_N^\ast$ bound & ratio \\
 \midrule
 \input{sections/generated/zeta2_rows.tex}%
 \\
 \bottomrule
 \end{tabular}
-\caption{$\zeta(2)$ realized via a two-dimensional scan and an auditable truncation. The total error is decomposed into sampling error (third column) and truncation error (last column bound).}
+\caption{$\zeta(2)$ realized via a two-dimensional scan and an auditable truncation. The total error is decomposed into sampling error (fourth column) and truncation error (fifth column bound). The last three columns provide an auditable deterministic sampling certificate via the Erd\H{o}s--Tur\'an--Koksma discrepancy bound specialized to Kronecker scans (Appendix~\ref{app:etk_kronecker_bound}) with the explicit constant choice $C_d=3^d$ and truncation parameter $H=20$ in the discrepancy certificate.}
 \label{tab:zeta2_scan}
 \end{table}
 
@@ -78,15 +91,15 @@ We use the kernel $g_M(x,y,z)=\sum_{n=0}^{M-1}(xyz)^n$ with exact period $H_M^{(
 
 \begin{table}[t]
 \centering
-\begin{tabular}{@{}rrrrr@{}}
+\begin{tabular}{@{}rrrrrrrr@{}}
 \toprule
-$(N,M,K)$ & $\overline{\avgN{\mathcal{P}}}_K$ & $\overline{\avgN{\mathcal{P}}}_K-\zeta(3)$ & $\overline{\avgN{\mathcal{P}}}_K-H_M^{(3)}$ & trunc.\ bound $<1/(2M^2)$ \\
+$(N,M,K)$ & $\overline{\avgN{\mathcal{P}}}_K$ & $\overline{\avgN{\mathcal{P}}}_K-\zeta(3)$ & $\overline{\avgN{\mathcal{P}}}_K-H_M^{(3)}$ & trunc.\ bound $<1/(2M^2)$ & $D_N^\ast$ bound & $\HKVar(g_M)D_N^\ast$ bound & ratio \\
 \midrule
 \input{sections/generated/zeta3_rows.tex}%
 \\
 \bottomrule
 \end{tabular}
-\caption{$\zeta(3)$ realized via a three-dimensional scan with auditable truncation. The scripts compute a reference $\zeta(3)$ value as a high-$M$ harmonic sum with a certified remainder bound.}
+\caption{$\zeta(3)$ realized via a three-dimensional scan with auditable truncation. The scripts compute a reference $\zeta(3)$ value as a high-$M$ harmonic sum with a certified remainder bound. As in Table~\ref{tab:zeta2_scan}, the last three columns provide an auditable deterministic sampling certificate via an ETK discrepancy bound for the Kronecker scan (again using $C_d=3^d$ and $H=20$).}
 \label{tab:zeta3_scan}
 \end{table}
 
@@ -126,5 +139,10 @@ Within the complexity domain $a,b,c\in\ZZ_{\ge 0}$ and $a+b+c\le 10$, the unique
 \begin{proof}
 This is a finite check by exhaustive enumeration over all triples $(a,b,c)\in\ZZ_{\ge 0}^3$ with $a+b+c\le 10$ and minimization of the absolute error; see \texttt{scripts/alpha\_inverse\_search.py}, which generates the top-candidate table rows included in Table~\ref{tab:alpha_integer_search}.
 \end{proof}
+
+\begin{corollary}[Robustness under target perturbations]
+\label{cor:alpha_gap_robustness}
+Let $V=\{a\pi^3+b\pi^2+c\pi:\ a,b,c\in\ZZ_{\ge 0},\ a+b+c\le 10\}$ and let $T=\alpha^{-1}=137.035999177$. Then the minimizer $v_\star=4\pi^3+\pi^2+\pi$ remains the unique minimizer of $|v-T'|$ over $v\in V$ for every perturbed target $T'$ satisfying $|T'-T|<m/2$, where $m$ is the best-vs-second-best margin in Lemma~\ref{lem:gap_stability}. In particular, the observed gap in Table~\ref{tab:alpha_integer_search} yields a wide robustness interval compared to metrological uncertainties.
+\end{corollary}
 
 

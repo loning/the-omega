@@ -19,8 +19,8 @@ where:
 \item $\TT^d=(\RR/\ZZ)^d$ is the mother space,
 \item $\alpha\in\RR^d$ is a scan slope (Kronecker rotation vector),
 \item $x_0\in\TT^d$ is an initial condition,
-\item $f:[0,1)^d\to\RR$ is a readout kernel presented as a rational function in $\QQ(x_1,\dots,x_d)$ on the fundamental domain, and
-\item $\mathcal{R}$ is a regularization rule that produces an integrable kernel $f_{\mathcal{R}}$ on $[0,1)^d$.
+\item $f$ is a readout kernel presented as a rational function in $\QQ(x_1,\dots,x_d)$ on the fundamental domain $[0,1)^d$, understood on the complement of its pole locus (a semialgebraic set of measure zero), and
+\item $\mathcal{R}$ is a regularization rule that produces a kernel $f_{\mathcal{R}}$ that is integrable on $[0,1)^d$ (and, in the finite-resource regime of Section~\ref{sec:error_budgets}, has finite Hardy--Krause variation when discrepancy bounds are invoked).
 \end{itemize}
 The protocol dynamics is the Kronecker scan
 \begin{equation}
@@ -41,7 +41,7 @@ Let $\mathcal{P}=(\TT^d,\alpha,x_0,f,\mathcal{R})$ and $\mathcal{P}'=(\TT^d,\alp
 \label{eq:torus_auto}
 \varphi(x)=Mx+b \pmod{1},
 \end{equation}
-with $M\in \SL_d(\ZZ)$ and $b\in\TT^d$, such that:
+with $M\in \SL_d(\ZZ)$ and $b\in(\QQ/\ZZ)^d$ (a rational translation), such that:
 \begin{equation}
 \label{eq:intertwining_conditions}
 \alpha' = M\alpha,\qquad x_0'=\varphi(x_0),\qquad f'_{\mathcal{R}'} = f_{\mathcal{R}}\circ \varphi^{-1}\ \ \text{a.e.\ on }[0,1)^d.
@@ -76,6 +76,21 @@ Let $\{x_0^{(k)}\}_{k=1}^K\subset\TT^d$ be $K$ initial conditions, and let $\mat
 \end{equation}
 \end{definition}
 
+\begin{lemma}[Ensemble averaging preserves deterministic error certificates]
+\label{lem:ensemble_preserves_bounds}
+Suppose $|\avgN{\mathcal{P}^{(k)}}-P|\le \varepsilon_k$ for $k=1,\dots,K$, where $P\in\RR$ is a target value and $\varepsilon_k\ge 0$ are bounds. Then
+\[
+\left|\overline{\avgN{\mathcal{P}}}_{K}-P\right|
+\le
+\frac{1}{K}\sum_{k=1}^K \varepsilon_k.
+\]
+In particular, if a uniform bound $|\avgN{\mathcal{P}^{(k)}}-P|\le \varepsilon$ holds for all $k$, then $|\overline{\avgN{\mathcal{P}}}_{K}-P|\le \varepsilon$.
+\end{lemma}
+
+\begin{proof}
+Triangle inequality.
+\end{proof}
+
 \subsection{The period-data category $\PerDatum$}
 \label{sec:perdatum_category}
 
@@ -86,7 +101,7 @@ An object of $\PerDatum$ is a period datum $(D,f,\mathcal{R})$ as in Definition~
 
 \begin{definition}[$\PerDatum$ morphisms]
 \label{def:perdatum_morphism}
-A morphism $(D,f,\mathcal{R})\to(D',f',\mathcal{R}')$ is a semialgebraic $C^1$-diffeomorphism $\psi:D\to D'$ defined over $\QQ$ such that the change-of-variables identity holds:
+A morphism $(D,f,\mathcal{R})\to(D',f',\mathcal{R}')$ is a map $\psi:D\to D'$ for which there exists a finite semialgebraic partition $D=\bigsqcup_{i=1}^m D_i$ such that each restriction $\psi|_{D_i}:D_i\to \psi(D_i)$ is a $C^1$-diffeomorphism defined over $\QQ$ and the change-of-variables identity holds almost everywhere:
 \begin{equation}
 \label{eq:perdatum_morphism}
 f_{\mathcal{R}}(x)\,\dd x = f'_{\mathcal{R}'}(\psi(x))\,\big|\det D\psi(x)\big|\,\dd x,
@@ -116,6 +131,24 @@ as follows.
 \item On morphisms: if $\varphi:\mathcal{P}\to\mathcal{P}'$ is a $\ScanAlg$ morphism, define $\HSP(\varphi)$ to be the induced change of variables on fundamental domains, viewed as a $\PerDatum$ morphism in the sense of Definition~\ref{def:perdatum_morphism}.
 \end{itemize}
 \end{definition}
+
+\begin{remark}[Fundamental domains and a.e.\ maps]
+\label{rem:fundamental_domain_ae}
+The torus automorphism $\varphi(x)=Mx+b\pmod{1}$ is smooth on $\TT^d$ but, when represented on the fundamental domain $[0,1)^d$, it becomes a piecewise-affine map $x\mapsto \{Mx+b\}$ with discontinuities only along a finite union of codimension-$1$ hyperplanes coming from wrap-around. Since these discontinuity sets have Lebesgue measure zero, the ``a.e.'' formulation in Definition~\ref{def:scan_alg_morphism} and the piecewise-$C^1$ formulation in Definition~\ref{def:perdatum_morphism} make $\HSP(\varphi)$ well-defined and auditable.
+\end{remark}
+
+\begin{lemma}[Category structure and functoriality]
+\label{lem:category_and_functoriality}
+With Definitions~\ref{def:scan_alg_morphism} and~\ref{def:perdatum_morphism}, $\ScanAlg$ and $\PerDatum$ are categories, and $\HSP$ (Definition~\ref{def:hsp_functor}) is a well-defined functor.
+\end{lemma}
+
+\begin{proof}
+\textbf{$\ScanAlg$.} Composition of torus automorphisms $(M_1,b_1)$ and $(M_2,b_2)$ is $(M_2M_1,M_2b_1+b_2)$; if $b_1,b_2\in(\QQ/\ZZ)^d$ then $M_2b_1+b_2\in(\QQ/\ZZ)^d$ since $M_2\in\SL_d(\ZZ)$. The intertwining conditions \eqref{eq:intertwining_conditions} are preserved under composition, and the identity morphism is $(I,0)$.
+
+\textbf{$\PerDatum$.} Identity morphisms are given by $\psi=\mathrm{id}$. If $\psi:D\to D'$ and $\psi':D'\to D''$ are piecewise-$C^1$ semialgebraic morphisms over $\QQ$, then $\psi'\circ\psi$ is piecewise-$C^1$ on a finite semialgebraic refinement of the domain partition, and the change-of-variables identity \eqref{eq:perdatum_morphism} composes on each piece (hence a.e.\ on $D$).
+
+\textbf{$\HSP$.} On objects, $\HSP$ is defined by \eqref{eq:hsp_on_objects}. On morphisms, $\HSP(\varphi)$ is well-defined by Remark~\ref{rem:fundamental_domain_ae} and satisfies $\HSP(\mathrm{id})=\mathrm{id}$ and $\HSP(\varphi_2\circ\varphi_1)=\HSP(\varphi_2)\circ\HSP(\varphi_1)$ because both are induced by the same underlying torus automorphisms and their compositions.
+\end{proof}
 
 \begin{proposition}[Functorial invariance of readout averages]
 \label{prop:functorial_invariance}

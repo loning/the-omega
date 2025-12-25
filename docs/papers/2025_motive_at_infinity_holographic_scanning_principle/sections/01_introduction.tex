@@ -23,17 +23,37 @@ Our answer is not a new physical narrative; it is a further audit-compatible \em
 \subsection{Core claim: scanning as a period realization}
 \label{sec:core_claim}
 
-The key thesis can be stated informally as follows.
+The key thesis is closed in the controlled protocol class $\ScanAlg$ (Section~\ref{sec:scan_alg_and_hsp}) and can be stated as a single theorem by combining the realization results of Section~\ref{sec:period_realization} with the finite-resource bounds of Section~\ref{sec:error_budgets}.
 
-\begin{proposition}[Scanning = period realization, informal]
-\label{prop:scan_equals_period_informal}
-In a controlled class of scan--readout protocols with algebraic kernels, the long-time readout statistics are equal to explicit algebraic-geometric integrals, i.e.\ Kontsevich--Zagier periods. Finite-resource approximations admit an auditable error budget separating sampling discrepancy from regularization/truncation error.
-\end{proposition}
+\begin{theorem}[Scanning realizes periods with an auditable finite-$N$ certificate]
+\label{thm:scan_realizes_period_intro}
+Let $\mathcal{P}=(\TT^d,\alpha,x_0,f,\mathcal{R})\in\ScanAlg$ and let $P_N=\{x_0,\dots,x_{N-1}\}\subset[0,1)^d$ be its orbit-prefix point set. Assume the rational-independence condition \eqref{eq:rational_independence} (or $\alpha\notin\QQ$ if $d=1$) and that the regularized kernel $f_{\mathcal{R}}$ is Riemann integrable on $[0,1)^d$. Then
+\begin{equation}
+\label{eq:intro_main_limit}
+\lim_{N\to\infty}\avgN{\mathcal{P}}
+=
+\mathrm{per}(\HSP(\mathcal{P}))
+=
+\int_{[0,1)^d} f_{\mathcal{R}}(x)\,\dd x.
+\end{equation}
+If, moreover, $\HKVar(f_{\mathcal{R}})<\infty$, then for every $N\ge 1$ one has the explicit finite-resource bound
+\begin{equation}
+\label{eq:intro_sampling_certificate}
+\left|\avgN{\mathcal{P}}-\mathrm{per}(\HSP(\mathcal{P}))\right|
+\le
+\HKVar(f_{\mathcal{R}})\,\DNstar(P_N).
+\end{equation}
+Finally, if $f$ is an ideal kernel and $\mathcal{R}$ is a regularization rule, then the total error to the ideal period admits an auditable sampling--regularization decomposition (Proposition~\ref{prop:error_decomposition}).
+\end{theorem}
 
-Proposition~\ref{prop:scan_equals_period_informal} has two consequences.
+\begin{proof}
+The limit statement \eqref{eq:intro_main_limit} is Corollary~\ref{cor:scan_period_md} (or Corollary~\ref{cor:scan_period_1d} in $d=1$). The finite-$N$ certificate \eqref{eq:intro_sampling_certificate} is Corollary~\ref{cor:sampling_error}. The final sentence is Proposition~\ref{prop:error_decomposition}.
+\end{proof}
+
+Theorem~\ref{thm:scan_realizes_period_intro} has two consequences.
 \begin{itemize}
 \item \textbf{Numerical layer.} The repeated appearance of $\pi$, $\log$, and zeta-values is explained by the fact that these constants are periods, and the protocol computes periods.
-\item \textbf{Structural layer.} ``Protocol equivalence'' can be anchored to period data: in a controlled subcategory, protocols are equivalent if and only if they induce the same period datum (Section~\ref{sec:scan_alg_and_hsp}).
+\item \textbf{Structural layer.} ``Protocol equivalence'' can be anchored to period data: morphisms in $\ScanAlg$ induce period-datum equivalences in $\PerDatum$, hence $\ScanAlg$-isomorphic protocols yield identical long-time limits and identical period values (Section~\ref{sec:scan_alg_and_hsp}). A full classification of protocols by period data is left as a separate problem.
 \end{itemize}
 
 \subsection{What is new in this paper}
