@@ -109,6 +109,32 @@ C_d\left(
 \end{equation}
 \end{theorem}
 
+\begin{definition}[ETK bracket term]
+\label{def:etk_bracket}
+For a point set $P_N=\{x_0,\dots,x_{N-1}\}\subset[0,1)^d$ and an integer $H\ge 1$, define
+\begin{equation}
+\label{eq:etk_bracket_def}
+B_{N,H}(P_N)
+:=
+\frac{1}{H}
+\;+\;
+\sum_{\substack{h\in\ZZ^d\\0<\|h\|_\infty\le H}}
+\frac{1}{r(h)}
+\left|
+\frac{1}{N}\sum_{t=0}^{N-1} e^{2\pi \iu \langle h,x_t\rangle}
+\right|.
+\end{equation}
+\end{definition}
+
+\begin{remark}
+With Definition~\ref{def:etk_bracket}, the inequality \eqref{eq:etk} can be written as
+\begin{equation}
+\label{eq:etk_compact}
+D_N^\ast(P_N)\le C_d\,B_{N,H}(P_N),
+\end{equation}
+with an explicit admissible choice $C_d=(3/2)^d$.
+\end{remark}
+
 \begin{remark}
 We use Theorem~\ref{thm:etk} as a standard tool; the explicit admissible choice $C_d=(3/2)^d$ (and closely related variants) is standard in the quasi-Monte Carlo literature, see, e.g., \cite[Ch.\ 2]{Niederreiter1992} or \cite[Ch.\ 3]{DickPillichshammer2010}.
 In Section~\ref{sec:experiments} we report the explicit bracket term in \eqref{eq:etk} (with a fixed truncation parameter $H$) and multiply it by this $C_d$ to obtain a fully numerical star-discrepancy certificate.
@@ -168,5 +194,117 @@ e^{2\pi \iu \langle h,x_0\rangle}
 \]
 so the modulus is independent of $x_0$. Apply Theorem~\ref{thm:etk} and bound the exponential sum by Lemma~\ref{lem:kronecker_exp_sum}.
 \end{proof}
+
+\begin{definition}[Computable Kronecker bracket term]
+\label{def:kronecker_bracket}
+For $\alpha\in\RR^d$ and integers $N,H\ge 1$, define
+\begin{equation}
+\label{eq:kronecker_bracket_def}
+B_{N,H}(\alpha;N)
+:=
+\frac{1}{H}
+\;+\;
+\sum_{\substack{h\in\ZZ^d\\0<\|h\|_\infty\le H}}
+\frac{1}{r(h)}
+\min\left\{1,\frac{1}{2N\|\langle h,\alpha\rangle\|}\right\}.
+\end{equation}
+\end{definition}
+
+\begin{remark}[From ETK to an auditable Kronecker certificate]
+For a Kronecker orbit prefix $P_N=\{x_0+t\alpha\pmod{1}:0\le t\le N-1\}$, Definition~\ref{def:etk_bracket} and Lemma~\ref{lem:kronecker_exp_sum} imply
+\[
+B_{N,H}(P_N)\le B_{N,H}(\alpha;N),
+\]
+and hence
+\begin{equation}
+\label{eq:kronecker_certificate}
+D_N^\ast(P_N)\le C_d\,B_{N,H}(\alpha;N).
+\end{equation}
+In Section~\ref{sec:experiments} we report the computable quantity $B_{N,H}(\alpha;N)$ and choose $H$ from fixed candidate lists by minimizing it.
+\end{remark}
+
+\subsection{A Diophantine-rate corollary (explicit)}
+\label{app:diophantine_rate_corollary}
+
+The computable bracket term $B_{N,H}(\alpha;N)$ is designed for auditability and direct evaluation. In some regimes one may prefer a closed rate bound in terms of Diophantine approximation constants of $\alpha$. The following corollary is a standard consequence of Proposition~\ref{prop:kronecker_discrepancy_bound} together with a crude but explicit bound on the ETK weight sum.
+
+\begin{definition}[Diophantine condition (sup-norm form)]
+\label{def:diophantine_condition}
+We say that $\alpha\in\RR^d$ satisfies a Diophantine condition of type $(c,\tau)$ if there exist constants $c>0$ and $\tau\ge 0$ such that for all $0\neq h\in\ZZ^d$,
+\begin{equation}
+\label{eq:diophantine_condition}
+\|\langle h,\alpha\rangle\|\ge \frac{c}{\|h\|_\infty^\tau}.
+\end{equation}
+\end{definition}
+
+\begin{lemma}[A crude ETK weight-sum bound]
+\label{lem:etk_weight_sum_bound}
+For every integer $H\ge 1$,
+\begin{equation}
+\label{eq:etk_weight_sum_bound}
+\sum_{\substack{h\in\ZZ^d\\0<\|h\|_\infty\le H}}\frac{1}{r(h)}
+\le
+\left(1+2\sum_{k=1}^H\frac{1}{k}\right)^d-1
+\le
+\big(3+2\log H\big)^d-1.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write the sum over $\|h\|_\infty\le H$ as a product of one-dimensional sums:
+\[
+\sum_{\substack{h\in\ZZ^d\\\|h\|_\infty\le H}}\frac{1}{r(h)}
+=\prod_{j=1}^d\left(\sum_{m=-H}^H\frac{1}{\max\{1,|m|\}}\right)
+=\left(1+2\sum_{k=1}^H\frac{1}{k}\right)^d.
+\]
+Removing the $h=0$ term yields the first inequality. For the second, use $\sum_{k=1}^H k^{-1}\le 1+\log H$ for $H\ge 1$.
+\end{proof}
+
+\begin{corollary}[Explicit discrepancy bound under a Diophantine condition]
+\label{cor:diophantine_discrepancy_bound}
+Assume $\alpha\in\RR^d$ satisfies the Diophantine condition \eqref{eq:diophantine_condition} of type $(c,\tau)$ with $\tau>0$. Let $P_N=\{x_0+t\alpha\pmod{1}:0\le t\le N-1\}$ and let $N\ge 1$.
+Then for every integer $H\ge 1$,
+\begin{equation}
+\label{eq:diophantine_discrepancy_bound}
+D_N^\ast(P_N)
+\le
+C_d\left(
+\frac{1}{H}
+\;+\;
+\frac{H^\tau}{2Nc}\,\big(3+2\log H\big)^d
+\right),
+\end{equation}
+with the same admissible constant $C_d=(3/2)^d$ as in Theorem~\ref{thm:etk}.
+In particular, with the explicit choice
+\begin{equation}
+\label{eq:diophantine_choice_H}
+H:=\left\lceil (2Nc)^{\frac{1}{\tau+1}}\right\rceil,
+\end{equation}
+one obtains the closed rate bound
+\begin{equation}
+\label{eq:diophantine_rate_bound}
+D_N^\ast(P_N)
+\le
+2C_d\,(2Nc)^{-\frac{1}{\tau+1}}\,\big(3+2\log H\big)^d.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+By Proposition~\ref{prop:kronecker_discrepancy_bound} and \eqref{eq:diophantine_condition},
+\[
+\min\left\{1,\frac{1}{2N\|\langle h,\alpha\rangle\|}\right\}
+\le
+\min\left\{1,\frac{\|h\|_\infty^\tau}{2Nc}\right\}
+\le
+\frac{H^\tau}{2Nc}
+\qquad (0<\|h\|_\infty\le H),
+\]
+which gives \eqref{eq:diophantine_discrepancy_bound} after applying Lemma~\ref{lem:etk_weight_sum_bound}.
+For \eqref{eq:diophantine_rate_bound}, the choice \eqref{eq:diophantine_choice_H} implies $H^{-1}\le (2Nc)^{-1/(\tau+1)}$ and $H^\tau/(2Nc)\le (2Nc)^{-1/(\tau+1)}$. Substitute these into \eqref{eq:diophantine_discrepancy_bound} and absorb constants.
+\end{proof}
+
+\begin{remark}
+Sharper bounds are available in the discrepancy literature by using refined Diophantine information and sharper ETK variants; see, e.g., \cite{KuipersNiederreiter1974,DrmotaTichy1997,Niederreiter1992,DickPillichshammer2010}. The purpose of Corollary~\ref{cor:diophantine_discrepancy_bound} is to provide a fully explicit closed certificate within the present audit style.
+\end{remark}
 
 

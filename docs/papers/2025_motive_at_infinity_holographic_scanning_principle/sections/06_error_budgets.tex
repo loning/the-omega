@@ -56,7 +56,11 @@ Let $\mathcal{P}=(\TT^d,\alpha,x_0,f,\mathcal{R})\in\ScanAlg$ and assume $\HKVar
 
 \begin{remark}[Discrepancy certificates for Kronecker scans]
 \label{rem:kronecker_discrepancy_certificate}
-In $\ScanAlg$, the point set $P_N$ is the Kronecker orbit prefix $x_t=x_0+t\alpha\pmod{1}$. Appendix~\ref{app:etk_kronecker_bound} records an explicit discrepancy bound for such point sets in terms of exponential sums and Diophantine approximation data of $\alpha$ (Proposition~\ref{prop:kronecker_discrepancy_bound}). This yields an auditable finite-$N$ certificate once a truncation parameter $H$ is fixed.
+In $\ScanAlg$, the point set $P_N$ is the Kronecker orbit prefix $x_t=x_0+t\alpha\pmod{1}$. Appendix~\ref{app:etk_kronecker_bound} records the Erd\H{o}s--Tur\'an--Koksma inequality and a closed specialization to Kronecker scans, yielding the explicit finite-$N$ certificate
+\[
+D_N^\ast(P_N)\le C_d\,B_{N,H}(\alpha;N),
+\]
+valid for every integer $H\ge 1$, with an admissible constant choice $C_d=(3/2)^d$ (Theorem~\ref{thm:etk}) and an explicit computable bracket term $B_{N,H}(\alpha;N)$ (Definition~\ref{def:kronecker_bracket}).
 \end{remark}
 
 \subsection{Regularization and truncation as auditable error terms}
@@ -280,6 +284,67 @@ Let $f_{\log}(x)=\frac{1}{1+x}$ and $f_\pi(x)=\frac{4}{1+x^2}$ on $[0,1]$. Then
 
 \begin{proof}
 Both kernels are smooth and strictly decreasing on $[0,1]$. Hence $\Var(f)=f(0)-f(1)$.
+\end{proof}
+
+\begin{proposition}[Hardy--Krause variation for separable products]
+\label{prop:hkvar_separable_product}
+Let $f_j:[0,1]\to\RR$ be $C^1$ functions with finite Jordan variation $\Var(f_j)<\infty$, and define
+\[
+F(x_1,\dots,x_d):=\prod_{j=1}^d f_j(x_j)
+\qquad\text{on }[0,1]^d.
+\]
+Then $F$ has finite Hardy--Krause variation (anchored at $1$) and
+\begin{equation}
+\label{eq:hkvar_separable_product}
+\HKVar(F)
+=
+\prod_{j=1}^d\big(\Var(f_j)+|f_j(1)|\big)
+\;-\;
+\prod_{j=1}^d|f_j(1)|.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For $C^1$ functions, the anchored Hardy--Krause variation admits the mixed-derivative representation (Remark~\ref{rem:hk_smooth_representation}). For a nonempty subset $u\subset\{1,\dots,d\}$, the mixed derivative of $F(x_u;1)$ factorizes:
+\[
+\frac{\partial^{|u|}}{\prod_{j\in u}\partial x_j}F(x_u;1)
+=
+\left(\prod_{j\in u} f_j'(x_j)\right)\left(\prod_{k\notin u} f_k(1)\right).
+\]
+Therefore
+\[
+\int_{[0,1]^{|u|}}
+\left|
+\frac{\partial^{|u|}}{\prod_{j\in u}\partial x_j}F(x_u;1)
+\right|
+\dd x_u
+=
+\left(\prod_{k\notin u}|f_k(1)|\right)\left(\prod_{j\in u}\int_0^1 |f_j'(x)|\,\dd x\right)
+=
+\left(\prod_{k\notin u}|f_k(1)|\right)\left(\prod_{j\in u}\Var(f_j)\right),
+\]
+since $f_j$ is $C^1$ and $\Var(f_j)=\int_0^1|f_j'(x)|\,\dd x$. Summing over all nonempty $u$ and expanding the product gives \eqref{eq:hkvar_separable_product}.
+\end{proof}
+
+\begin{corollary}[Explicit Hardy--Krause constants for the $\pi^2$ and $\pi^3$ kernels]
+\label{cor:hkvar_pi2_pi3}
+Let $f_\pi(x)=\frac{4}{1+x^2}$ on $[0,1]$ and define
+\[
+F_2(x,y):=\frac{16}{(1+x^2)(1+y^2)}=f_\pi(x)f_\pi(y),
+\qquad
+F_3(x,y,z):=\frac{64}{(1+x^2)(1+y^2)(1+z^2)}=f_\pi(x)f_\pi(y)f_\pi(z).
+\]
+Then
+\begin{equation}
+\label{eq:hkvar_pi2_pi3}
+\HKVar(F_2)=12,
+\qquad
+\HKVar(F_3)=56.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+By Proposition~\ref{prop:explicit_1d_variations}, $\Var(f_\pi)=2$ and $f_\pi(1)=2$. Apply Proposition~\ref{prop:hkvar_separable_product} with $d=2$ and $d=3$.
 \end{proof}
 
 \subsection{Propagation rules for composed protocols}

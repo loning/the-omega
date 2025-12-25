@@ -49,7 +49,13 @@ def fmt_sci_signed(x: float, sig: int = 3) -> str:
 
 def write_rows(path: Path, lines: List[str]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    content = "\n".join(lines).rstrip() + "\n"
+    out = list(lines)
+    if out:
+        last = out[-1].rstrip()
+        if last.endswith("\\\\"):
+            last = last[:-2].rstrip()
+        out[-1] = last
+    content = "\n".join(out).rstrip() + "\n"
     path.write_text(content, encoding="utf-8")
 
 
