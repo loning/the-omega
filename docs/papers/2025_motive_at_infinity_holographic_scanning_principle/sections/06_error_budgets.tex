@@ -1,0 +1,237 @@
+
+\section{Finite-resource error budgets: discrepancy plus regularization}
+\label{sec:error_budgets}
+
+The realization theorem (Corollary~\ref{cor:scan_period_md}) identifies the long-time limit. For finite resources, the relevant object is an auditable error budget: a bound on
+\begin{equation}
+\label{eq:finite_error_target}
+\Big|\avgN{\mathcal{P}}-\mathrm{per}(\HSP(\mathcal{P}))\Big|
+\end{equation}
+that is explicit and propagates under protocol composition.
+
+\subsection{Sampling discrepancy and Koksma--Hlawka type bounds}
+\label{sec:discrepancy_bounds}
+
+Let $x_0,\dots,x_{N-1}\in[0,1)^d$ be a finite point set. Its star discrepancy is
+\begin{equation}
+P_N := \{x_0,\dots,x_{N-1}\}\subset[0,1)^d,
+\end{equation}
+and
+\begin{equation}
+\label{eq:star_discrepancy}
+\DNstar(P_N)
+:=\sup_{u\in[0,1]^d}\left|
+\frac{1}{N}\sum_{t=0}^{N-1}\ind_{[0,u)}(x_t)
+\;-\;\prod_{j=1}^d u_j
+\right|.
+\end{equation}
+For brevity we write $\DNstar:=\DNstar(P_N)$ when the point set is understood.
+
+\begin{theorem}[Koksma--Hlawka inequality]
+\label{thm:koksma_hlawka}
+Let $f:[0,1)^d\to\RR$ have bounded variation in the sense of Hardy--Krause, denoted $\HKVar(f)<\infty$. Then for any point set $x_0,\dots,x_{N-1}\in[0,1)^d$,
+\begin{equation}
+\label{eq:koksma_hlawka}
+\left|\frac{1}{N}\sum_{t=0}^{N-1} f(x_t) - \int_{[0,1)^d} f(x)\,\dd x \right|
+\le \HKVar(f)\,\DNstar.
+\end{equation}
+\end{theorem}
+
+\begin{remark}
+\label{rem:koksma_refs}
+We use Theorem~\ref{thm:koksma_hlawka} as a standard discrepancy-to-error bridge \cite{KuipersNiederreiter1974}. In $d=1$, bounded Hardy--Krause variation reduces to classical bounded variation, and \eqref{eq:koksma_hlawka} becomes the Koksma inequality.
+\end{remark}
+
+For protocols $\mathcal{P}\in\ScanAlg$, the point set is the scan orbit prefix $x_t=x_0+t\alpha\pmod{1}$, and $f$ is the regularized kernel $f_{\mathcal{R}}$.
+
+\begin{corollary}[Sampling error bound for regular kernels]
+\label{cor:sampling_error}
+Let $\mathcal{P}=(\TT^d,\alpha,x_0,f,\mathcal{R})\in\ScanAlg$ and assume $\HKVar(f_{\mathcal{R}})<\infty$. Then
+\begin{equation}
+\label{eq:sampling_error_bound}
+\Big|\avgN{\mathcal{P}}-\mathrm{per}(\HSP(\mathcal{P}))\Big|
+\le \HKVar(f_{\mathcal{R}})\,\DNstar(P_N).
+\end{equation}
+\end{corollary}
+
+\subsection{Regularization and truncation as auditable error terms}
+\label{sec:truncation_error}
+
+Many period representations involve kernels that are integrable but unbounded. To keep finite-$N$ sampling error auditable, we adopt a two-stage realization:
+\begin{itemize}
+\item first, replace the ideal kernel $f$ by a bounded (or finite-variation) regularized kernel $f_{\mathcal{R}}$,
+\item then, sample $f_{\mathcal{R}}$ along the scan orbit.
+\end{itemize}
+This yields a generic decomposition.
+
+\subsection{Singularity sets of measure zero and orbit avoidance}
+\label{sec:singularity_avoidance}
+
+One subtlety in period realizations is that an ``ideal'' integrand may have a singular locus (e.g.\ a rational pole set) of Lebesgue measure zero. While such singularities do not affect the integral when the function is integrable, they can be a numerical hazard if a protocol samples exactly on the singular set. For Kronecker scans this risk is negligible in a precise sense.
+
+\begin{lemma}[Almost-sure avoidance of null singular sets]
+\label{lem:null_set_avoidance}
+Let $T_\alpha:\TT^d\to\TT^d$ be a translation $T_\alpha(x)=x+\alpha\pmod{1}$ and let $S\subset\TT^d$ be a measurable set of Haar (Lebesgue) measure $m(S)=0$. Then the set of initial conditions whose orbit hits $S$ at some time,
+\[
+E:=\{x_0\in\TT^d:\exists\,t\in\ZZ_{\ge 0}\ \text{such that}\ T_\alpha^t(x_0)\in S\},
+\]
+also satisfies $m(E)=0$.
+\end{lemma}
+
+\begin{proof}
+For each $t\ge 0$, the set $T_\alpha^{-t}(S)$ is a translate of $S$ and hence has measure zero. Since
+\[
+E=\bigcup_{t=0}^\infty T_\alpha^{-t}(S),
+\]
+countable subadditivity yields $m(E)\le \sum_{t\ge 0} m(T_\alpha^{-t}(S))=0$.
+\end{proof}
+
+\begin{remark}[Why we still regularize]
+\label{rem:why_regularize_even_if_avoids}
+Lemma~\ref{lem:null_set_avoidance} addresses the event of \emph{hitting} the singular set. It does not control near-singular excursions, which can dominate finite-$N$ error when the kernel is unbounded. For closed, auditable finite-resource bounds we therefore encode regularization/truncation as part of the protocol object (Definition~\ref{def:scan_alg_object}) and use bounded-variation kernels whenever quantitative control is required.
+\end{remark}
+
+\begin{proposition}[Auditable error decomposition]
+\label{prop:error_decomposition}
+Let $f$ be an ``ideal'' kernel on $[0,1)^d$ with a regularized version $f_{\mathcal{R}}$ integrable on $[0,1)^d$. For a protocol $\mathcal{P}$ using $f_{\mathcal{R}}$ at horizon $N$,
+\begin{equation}
+\label{eq:error_decomposition}
+\Big|\avgN{\mathcal{P}}-\mathrm{per}([0,1)^d,f,\mathrm{Id})\Big|
+\le
+\underbrace{\Big|\avgN{\mathcal{P}}-\mathrm{per}([0,1)^d,f,\mathcal{R})\Big|}_{\text{sampling error}}
+\;+\;
+\underbrace{\Big|\mathrm{per}([0,1)^d,f,\mathcal{R})-\mathrm{per}([0,1)^d,f,\mathrm{Id})\Big|}_{\text{regularization error}}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Triangle inequality.
+\end{proof}
+
+The second term in \eqref{eq:error_decomposition} is designed to admit a direct analytical bound. The first term is bounded by discrepancy inequalities such as \eqref{eq:sampling_error_bound}.
+
+\subsection{Truncated geometric kernels and zeta-values}
+\label{sec:zeta_truncation}
+
+We now record a regularization that will be used in the experiments: truncated geometric kernels whose integrals are generalized harmonic numbers and whose truncation error admits an explicit bound.
+
+\begin{definition}[Truncated geometric kernel]
+\label{def:geom_trunc_kernel}
+For $M\in\NN$ define, on $[0,1)^d$,
+\begin{equation}
+\label{eq:geom_trunc_kernel}
+g_M(x_1,\dots,x_d) := \sum_{n=0}^{M-1}\left(\prod_{j=1}^d x_j\right)^n.
+\end{equation}
+\end{definition}
+
+\begin{lemma}[Integral of truncated geometric kernel]
+\label{lem:geom_trunc_integral}
+For $d\ge 1$ and $M\in\NN$,
+\begin{equation}
+\label{eq:geom_trunc_integral}
+\int_{[0,1)^d} g_M(x)\,\dd x = \sum_{n=1}^M \frac{1}{n^d}=:H_M^{(d)}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Expand \eqref{eq:geom_trunc_kernel}, use Tonelli's theorem for the finite sum, and compute
+\[
+\int_{[0,1)^d}\left(\prod_{j=1}^d x_j\right)^n \dd x
+=\prod_{j=1}^d \int_0^1 x_j^n \dd x_j
+=\left(\frac{1}{n+1}\right)^d.
+\]
+Reindex $n+1\mapsto n$ to obtain \eqref{eq:geom_trunc_integral}.
+\end{proof}
+
+\begin{proposition}[Exact Hardy--Krause variation of $g_M$]
+\label{prop:hkvar_geom_trunc}
+For every $d\ge 1$ and $M\in\NN$,
+\begin{equation}
+\label{eq:hkvar_geom_trunc}
+\HKVar(g_M) = (2^d-1)(M-1).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For $n\ge 1$, the monomial term $\prod_{j=1}^d x_j^n$ has nonnegative mixed partial derivatives on $[0,1]^d$. For functions with continuous mixed partial derivatives, the Hardy--Krause variation admits the standard representation as a sum of integrals of absolute mixed derivatives over all faces anchored at $1$ (see, e.g., \cite{Niederreiter1992,DickPillichshammer2010}). Since all relevant derivatives are nonnegative, absolute values can be dropped. For a subset $u\subset\{1,\dots,d\}$ with $|u|=k\ge 1$, the $k$-fold mixed derivative of $\prod_{j=1}^d x_j^n$ restricted to the face where variables outside $u$ are set to $1$ equals $n^k \prod_{j\in u} x_j^{n-1}$. Integrating over $[0,1]^k$ yields $n^k \cdot (1/n)^k = 1$. Summing over $n=1,\dots,M-1$ gives a contribution $M-1$ for each nonempty subset $u$, and there are $2^d-1$ such subsets. Summing the contributions yields \eqref{eq:hkvar_geom_trunc}.
+\end{proof}
+
+\begin{corollary}[Auditable finite-$N$ bound for $g_M$ sampling]
+\label{cor:gm_sampling_bound}
+Let $\mathcal{P}\in\ScanAlg$ be a $d$-dimensional protocol with regularized kernel $f_{\mathcal{R}}=g_M$. Then for the orbit prefix point set $P_N$,
+\begin{equation}
+\label{eq:gm_sampling_bound}
+\left|\avgN{\mathcal{P}}-H_M^{(d)}\right|
+\le (2^d-1)(M-1)\,\DNstar(P_N).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Combine Corollary~\ref{cor:sampling_error} with Proposition~\ref{prop:hkvar_geom_trunc}.
+\end{proof}
+
+For $d=2$ and $d=3$, the limits $H_M^{(2)}\to\zeta(2)$ and $H_M^{(3)}\to\zeta(3)$ are classical, and the integral test yields explicit tails.
+
+\begin{proposition}[Truncation bounds for $\zeta(2)$ and $\zeta(3)$]
+\label{prop:zeta_trunc_bounds}
+For $M\ge 1$,
+\begin{align}
+\label{eq:zeta2_bound}
+0<\zeta(2)-H_M^{(2)} &< \frac{1}{M},\\
+\label{eq:zeta3_bound}
+0<\zeta(3)-H_M^{(3)} &< \frac{1}{2M^2}.
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Use the integral remainder bound for decreasing positive series:
+\[
+\sum_{n=M+1}^\infty \frac{1}{n^s}
+\le \int_M^\infty x^{-s}\dd x
+=\frac{1}{(s-1)M^{s-1}},\qquad s>1,
+\]
+and take $s=2$ and $s=3$.
+\end{proof}
+
+\begin{remark}[Why truncation is preferable for auditability]
+\label{rem:why_truncation}
+The ``ideal'' kernel $1/(1-xy)$ on $[0,1]^2$ is not bounded near $xy=1$, complicating finite-$N$ sampling bounds. By replacing it with the polynomial kernel $g_M(x,y)=\sum_{n=0}^{M-1}(xy)^n$, we obtain: (i) an exact period $H_M^{(2)}$ at finite $M$, (ii) a uniform integrand regularity compatible with discrepancy bounds, and (iii) an explicit truncation remainder controlled by \eqref{eq:zeta2_bound}. The same strategy applies to $d=3$.
+\end{remark}
+
+\subsection{Benchmark one-dimensional kernels: explicit variation constants}
+\label{sec:benchmark_variation_constants}
+
+For monotone functions $f:[0,1]\to\RR$, the Jordan variation satisfies $\Var(f)=|f(1)-f(0)|$. Therefore the $d=1$ Koksma inequality (the $d=1$ case of Theorem~\ref{thm:koksma_hlawka}) yields explicit constants for the benchmark kernels used in Section~\ref{sec:experiments}.
+
+\begin{proposition}[Explicit 1D variation constants]
+\label{prop:explicit_1d_variations}
+Let $f_{\log}(x)=\frac{1}{1+x}$ and $f_\pi(x)=\frac{4}{1+x^2}$ on $[0,1]$. Then
+\begin{equation}
+\label{eq:explicit_1d_variations}
+\Var(f_{\log})=\frac{1}{2},
+\qquad
+\Var(f_\pi)=2.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Both kernels are smooth and strictly decreasing on $[0,1]$. Hence $\Var(f)=f(0)-f(1)$.
+\end{proof}
+
+\subsection{Propagation rules for composed protocols}
+\label{sec:propagation_rules}
+
+Auditability requires that error budgets compose. For the present paper, it suffices to record the following simple propagation rule.
+
+\begin{lemma}[Linear combination rule]
+\label{lem:linear_combination_rule}
+Let $\widehat{P}_i$ be estimators for numbers $P_i$ with bounds $|\widehat{P}_i-P_i|\le \varepsilon_i$. For any scalars $c_i\in\RR$,
+\begin{equation}
+\label{eq:linear_combination_error}
+\left|\sum_i c_i\widehat{P}_i - \sum_i c_i P_i\right|\le \sum_i |c_i|\varepsilon_i.
+\end{equation}
+\end{lemma}
+
+This rule is sufficient for the low-complexity constant search of Section~\ref{sec:constant_search_experiment}, where candidates are linear combinations of precomputed period primitives.
+
+

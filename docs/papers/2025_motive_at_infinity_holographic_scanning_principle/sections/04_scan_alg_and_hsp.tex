@@ -1,0 +1,155 @@
+
+\section{From protocols to functors: $\ScanAlg$, $\PerDatum$, and the holographic scanning functor}
+\label{sec:scan_alg_and_hsp}
+
+We now formalize a controlled category of scan--readout protocols and construct a functor to period data. The guiding principle is to stay within a class where both the long-time limit (equidistribution) and finite-resource error control (discrepancy) are available.
+
+\subsection{The controlled protocol category $\ScanAlg$}
+\label{sec:scan_alg_definition}
+
+\begin{definition}[$\ScanAlg$ objects]
+\label{def:scan_alg_object}
+An object of $\ScanAlg$ is a quintuple
+\begin{equation}
+\label{eq:scan_alg_object}
+\mathcal{P} = (\TT^d,\alpha,x_0,f,\mathcal{R}),
+\end{equation}
+where:
+\begin{itemize}
+\item $\TT^d=(\RR/\ZZ)^d$ is the mother space,
+\item $\alpha\in\RR^d$ is a scan slope (Kronecker rotation vector),
+\item $x_0\in\TT^d$ is an initial condition,
+\item $f:[0,1)^d\to\RR$ is a readout kernel presented as a rational function in $\QQ(x_1,\dots,x_d)$ on the fundamental domain, and
+\item $\mathcal{R}$ is a regularization rule that produces an integrable kernel $f_{\mathcal{R}}$ on $[0,1)^d$.
+\end{itemize}
+The protocol dynamics is the Kronecker scan
+\begin{equation}
+\label{eq:kronecker_scan}
+x_t = x_0 + t\alpha \pmod{1},\qquad t\in\ZZ_{\ge 0}.
+\end{equation}
+\end{definition}
+
+\begin{remark}[Regularization as an auditable component]
+\label{rem:regularization_component}
+In many period examples, the ``ideal'' integrand is unbounded (e.g.\ $1/(1-xy)$ on $[0,1]^2$) even though the integral converges. To keep finite-resource error budgets auditable, we treat regularization as part of the protocol object: $\mathcal{R}$ specifies a concrete, reproducible transformation of the presentation into an integrable rational kernel. Section~\ref{sec:experiments} uses truncations that yield explicit bounds.
+\end{remark}
+
+\begin{definition}[$\ScanAlg$ morphisms]
+\label{def:scan_alg_morphism}
+Let $\mathcal{P}=(\TT^d,\alpha,x_0,f,\mathcal{R})$ and $\mathcal{P}'=(\TT^d,\alpha',x_0',f',\mathcal{R}')$ be objects of the same dimension $d$. A morphism $\varphi:\mathcal{P}\to\mathcal{P}'$ is a torus automorphism of the form
+\begin{equation}
+\label{eq:torus_auto}
+\varphi(x)=Mx+b \pmod{1},
+\end{equation}
+with $M\in \SL_d(\ZZ)$ and $b\in\TT^d$, such that:
+\begin{equation}
+\label{eq:intertwining_conditions}
+\alpha' = M\alpha,\qquad x_0'=\varphi(x_0),\qquad f'_{\mathcal{R}'} = f_{\mathcal{R}}\circ \varphi^{-1}\ \ \text{a.e.\ on }[0,1)^d.
+\end{equation}
+\end{definition}
+
+Morphisms in Definition~\ref{def:scan_alg_morphism} are \emph{auditable} in the sense that they explicitly intertwine scan dynamics and readout kernels while preserving Lebesgue measure on $\TT^d$ (since $\det M=1$). This is sufficient for the functorial invariance statements we need.
+
+\subsection{Protocol outputs: Birkhoff averages and ensembles}
+\label{sec:protocol_outputs}
+
+\begin{definition}[Birkhoff readout average]
+\label{def:birkhoff_average}
+For a protocol $\mathcal{P}$ and a horizon $N\ge 1$, define the $N$-step readout average
+\begin{equation}
+\label{eq:birkhoff_average}
+\avgN{\mathcal{P}}
+:= \frac{1}{N}\sum_{t=0}^{N-1} f_{\mathcal{R}}(x_t),
+\qquad x_t=x_0+t\alpha\pmod{1}.
+\end{equation}
+\end{definition}
+
+For numerical stability, one may also average over a finite ensemble of initial conditions. This does not change the theoretical limit under unique ergodicity but reduces variance in finite-$N$ experiments.
+
+\begin{definition}[Finite ensemble mean]
+\label{def:ensemble_mean}
+Let $\{x_0^{(k)}\}_{k=1}^K\subset\TT^d$ be $K$ initial conditions, and let $\mathcal{P}^{(k)}$ denote the protocol with the same $(d,\alpha,f,\mathcal{R})$ but initial point $x_0^{(k)}$. Define
+\begin{equation}
+\label{eq:ensemble_mean}
+\overline{\avgN{\mathcal{P}}}_{K}
+:=\frac{1}{K}\sum_{k=1}^K \avgN{\mathcal{P}^{(k)}}.
+\end{equation}
+\end{definition}
+
+\subsection{The period-data category $\PerDatum$}
+\label{sec:perdatum_category}
+
+\begin{definition}[$\PerDatum$ objects]
+\label{def:perdatum_object}
+An object of $\PerDatum$ is a period datum $(D,f,\mathcal{R})$ as in Definition~\ref{def:period_datum}. In this paper we will mostly use the cubical case $D=[0,1)^d$.
+\end{definition}
+
+\begin{definition}[$\PerDatum$ morphisms]
+\label{def:perdatum_morphism}
+A morphism $(D,f,\mathcal{R})\to(D',f',\mathcal{R}')$ is a semialgebraic $C^1$-diffeomorphism $\psi:D\to D'$ defined over $\QQ$ such that the change-of-variables identity holds:
+\begin{equation}
+\label{eq:perdatum_morphism}
+f_{\mathcal{R}}(x)\,\dd x = f'_{\mathcal{R}'}(\psi(x))\,\big|\det D\psi(x)\big|\,\dd x,
+\end{equation}
+so that $\mathrm{per}(D,f,\mathcal{R})=\mathrm{per}(D',f',\mathcal{R}')$.
+\end{definition}
+
+Definition~\ref{def:perdatum_morphism} encodes the idea that period data should be considered up to auditable changes of variables and regularization conventions.
+
+\subsection{The holographic scanning functor $\HSP$}
+\label{sec:hsp_functor}
+
+\begin{definition}[Holographic scanning functor]
+\label{def:hsp_functor}
+Define a functor
+\begin{equation}
+\label{eq:hsp_def}
+\HSP:\ScanAlg\to\PerDatum
+\end{equation}
+as follows.
+\begin{itemize}
+\item On objects: for $\mathcal{P}=(\TT^d,\alpha,x_0,f,\mathcal{R})$, set
+\begin{equation}
+\label{eq:hsp_on_objects}
+\HSP(\mathcal{P}) := \big([0,1)^d,\ f,\ \mathcal{R}\big).
+\end{equation}
+\item On morphisms: if $\varphi:\mathcal{P}\to\mathcal{P}'$ is a $\ScanAlg$ morphism, define $\HSP(\varphi)$ to be the induced change of variables on fundamental domains, viewed as a $\PerDatum$ morphism in the sense of Definition~\ref{def:perdatum_morphism}.
+\end{itemize}
+\end{definition}
+
+\begin{proposition}[Functorial invariance of readout averages]
+\label{prop:functorial_invariance}
+If $\varphi:\mathcal{P}\to\mathcal{P}'$ is a morphism in $\ScanAlg$, then for every $N\ge 1$,
+\begin{equation}
+\label{eq:avg_invariance}
+\avgN{\mathcal{P}} = \avgN{\mathcal{P}'},
+\end{equation}
+and the associated period values agree:
+\begin{equation}
+\label{eq:per_invariance}
+\mathrm{per}(\HSP(\mathcal{P}))=\mathrm{per}(\HSP(\mathcal{P}')).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The intertwining conditions \eqref{eq:intertwining_conditions} imply $\varphi(x_t)=x_t'$ for all $t$ and $f'_{\mathcal{R}'}(x_t')=f_{\mathcal{R}}(x_t)$, hence \eqref{eq:avg_invariance}. Since $\varphi$ preserves Lebesgue measure on $\TT^d$, the change-of-variables identity gives \eqref{eq:per_invariance}.
+\end{proof}
+
+\subsection{Protocol equivalence and period invariants}
+\label{sec:protocol_equivalence}
+
+The previous paper \cite{Ma2025STI} emphasized the need for an equivalence criterion for protocols. In the controlled setting of $\ScanAlg$, we can state a minimal long-time criterion.
+
+\begin{definition}[Long-time statistical equivalence]
+\label{def:long_time_equivalence}
+Two protocols $\mathcal{P},\mathcal{P}'\in\ScanAlg$ are \emph{long-time statistically equivalent}, written $\mathcal{P}\sim_\infty \mathcal{P}'$, if both limits exist and
+\begin{equation}
+\label{eq:long_time_equivalence}
+\lim_{N\to\infty}\avgN{\mathcal{P}}=\lim_{N\to\infty}\avgN{\mathcal{P}'}.
+\end{equation}
+If, moreover, the common value equals $\mathrm{per}(\HSP(\mathcal{P}))=\mathrm{per}(\HSP(\mathcal{P}'))$, we say the protocols are \emph{period-equivalent}.
+\end{definition}
+
+In Sections~\ref{sec:period_realization} and~\ref{sec:error_budgets} we show that, under standard rational-independence conditions on $\alpha$, long-time statistics are determined by the period datum and finite-$N$ stability is controlled by discrepancy and regularization errors.
+
+

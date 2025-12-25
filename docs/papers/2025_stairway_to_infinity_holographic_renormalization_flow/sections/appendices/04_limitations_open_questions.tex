@@ -2,7 +2,17 @@
 \section{Limitations and open questions}
 \label{app:limitations_open_questions}
 
-The present paper isolates a closed Layer~0/1 chain and keeps Layer~2 narratives optional. The following gaps are explicit and remain open.
+The present paper isolates a closed Layer~0/1 chain and keeps Layer~2 narratives optional.
+Much of the mathematical content invoked along the chain---Gauss-map suspension coding of the modular geodesic flow, cusp $q$-expansions, Hecke relations, and discrepancy/variation bounds---is classical.
+The contribution is primarily a synthesis and protocol-level framing that exposes a concrete dependency chain and makes the finite-resolution extraction of discrete spectra auditable.
+The following limitations and open questions are explicit.
+
+\subsection{Scope and novelty}
+\label{app:limitations_scope_novelty}
+
+The manuscript should be read as a blueprint for organizing a cross-scale ``protocol chain'' rather than as a source of new theorems in classical modular/ergodic theory.
+Most theorem-level inputs are standard results with well-established proofs (Appendix~\ref{app:audit_dependency_chain}).
+Accordingly, novelty claims are best interpreted at the level of \emph{interfaces} (scan orbit $\leftrightarrow$ slice sampling, slice $\leftrightarrow$ $q$-coefficients, coefficients $\leftrightarrow$ Hecke closure) and \emph{auditability} (explicit finite-$N$ bounds with locally checkable digit witnesses), not at the level of new identities in modular forms.
 
 \subsection{Making protocol morphisms precise}
 
@@ -15,11 +25,31 @@ Definition~\ref{def:holographic_langlands_functor} treats ``protocol equivalence
 
 \subsection{Certified coefficient recovery under finite resources}
 
-The slice--sampling pipeline provides explicit discrepancy-based bounds, but a fully certified numerical pipeline needs additional ingredients:
+The slice--sampling pipeline provides explicit discrepancy-based bounds (Theorem~\ref{thm:finiteN_coeff_bound} and Corollary~\ref{cor:ostrowski_digit_discrepancy}), but a fully certified numerical pipeline needs additional ingredients:
 \begin{itemize}
-\item truncation-error bounds for $q$-series evaluations at fixed $\tau$;
-\item floating-point error propagation and stability regimes as a function of $(n,y,N)$;
-\item explicit regularity bounds controlling $\Var(g_{n,y})$ for the chosen class of functions $f$.
+\item \textbf{Certified evaluation of $f(\tau)$ on slices.} When $f$ is computed via truncated $q$-series, explicit tail bounds are required at fixed $\tau$; for Eisenstein series these are given with constants in Appendix~\ref{app:eisenstein_tail_bounds}, while for general cusp forms one needs explicit majorants compatible with the chosen computational representation.
+\item \textbf{Floating-point and instrument error propagation.} The finite-$N$ bound controls only quadrature (sampling) error. A complete budget must include rounding, conditioning, and any finite-resolution readout noise as a function of $(n,y,N)$, especially in regimes where amplification by $\e^{2\pi n y}$ dominates.
+\item \textbf{Explicit regularity bounds controlling $\Var(g_{n,y})$.} The Koksma step is sharp only when the variation term is under control uniformly over the parameter ranges used in the protocol; see the next subsection.
+\end{itemize}
+
+\subsection{Variation bounds, uniform constants, and stability windows}
+\label{app:limitations_variation}
+
+The coefficient-recovery bound
+\[
+|\widehat a_{n,N}(y)-a_n|
+\le \e^{2\pi n y}\,\Var(g_{n,y})\,D_N^\ast(P_N)
+\]
+is sensitive to the joint dependence of $\Var(g_{n,y})$ and the amplification factor $\e^{2\pi n y}$.
+Even when $D_N^\ast(P_N)$ is small, large variation or poor conditioning can destroy a meaningful guarantee.
+\par
+For the most common modular objects, explicit bounds are available:
+Appendix~\ref{app:variation_bound_gny} records a general absolute-continuity estimate, and Appendix~\ref{app:variation_bound_e4_explicit}--\ref{app:variation_bound_e6_explicit} give closed-form $y$-dependent upper bounds for $\Var(g_{n,y})$ for $E_4$ and $E_6$ (in terms of $r=\e^{-2\pi y}$).
+However, turning these into an \emph{auditable end-to-end} guarantee still requires:
+\begin{itemize}
+\item explicit parameter ranges $(n,y,N)$ for which the bound is numerically stable (a ``scale window'');
+\item explicit constants that remain uniform across the intended family of $f$ (e.g.\ across a space of cusp forms or across a class of observables mapped to modular data);
+\item a principled way to trade off $y$ (smoothing of slice data) against $\e^{2\pi n y}$ (amplification in coefficient recovery), beyond qualitative discussion.
 \end{itemize}
 
 \subsection{Functorial uplift beyond \texorpdfstring{$GL_2$}{GL2}}
@@ -34,5 +64,71 @@ The paper only uses classical $GL_2$ modular objects in a minimal toy role. A ge
 \subsection{Interfaces to externally specified observables}
 
 While Hecke spectra provide a rigid integer data layer, connecting it to any externally specified observable spectrum must be done with an explicit interface map and an error budget, without violating layer discipline. This remains a separate construction task.
+
+\subsection{Choosing the scan slope \texorpdfstring{$\alpha$}{alpha} and adapting \texorpdfstring{$N$}{N}}
+\label{app:limitations_alpha_N}
+
+Discrepancy control depends strongly on the Diophantine type of the rotation slope $\alpha$.
+The Ostrowski digit bound (Corollary~\ref{cor:ostrowski_digit_discrepancy}) makes this dependence auditable via the digit sum $\sum_j b_j$, but it also highlights a limitation: for $\alpha$ with large partial quotients (including Liouville-type parameters) the bound can deteriorate dramatically.
+\par
+For constant-type rotations (bounded partial quotients), Appendix~\ref{app:dk_koksma_ostrowski} gives an explicit $O((\log N)/N)$ rate with constants depending on the bound on partial quotients.
+Moreover, at convergent lengths $N=q_m$ one has more refined and even closed-form discrepancy information (Appendix~\ref{app:convergent_star_discrepancy}).
+Pragmatically, this suggests two robust tactics for certified sampling:
+\begin{itemize}
+\item preferentially choose $\alpha$ of constant type (the golden branch is a canonical toy case);
+\item preferentially choose $N$ near convergent denominators, while using the Ostrowski digit sum as an online diagnostic of ``how expensive'' a given $N$ is in discrepancy terms.
+\end{itemize}
+
+\subsection{R1 regularization: Abel-first conventions and their scope}
+\label{app:limitations_R1_scope}
+
+Assumption~R1 fixes a canonical prescription (``Abel first, then limit'') for regulated-to-continuum passages along scan orbits when divergent sums or traces arise.
+In the present paper's main finite-$N$ recovery pipeline, the core quantitative steps are finite-sample bounds (Koksma/Denjoy--Koksma and discrepancy) and do not require R1.
+The role of R1 is instead to specify a normalization convention in settings where one studies infinite-time orbit traces, distributional limits, or boundary limits in which a regulated parameter is sent to $1^-$ before taking a continuum limit (cf.\ the analogy between the cusp modulus $|q|=\e^{-2\pi y}$ and Abel damping in Section~\ref{sec:abel_q_modulus}).
+\par
+A sharper integration of R1 into a certified pipeline would require stating explicit conditions under which Abel regularization agrees with the analytic continuation or spectral regularization used on the modular side, and identifying whether it provides genuinely new control beyond the intrinsic damping already present in the cusp parameter $y$.
+
+\subsection{Empirical validation and practical tightness}
+\label{app:limitations_empirical}
+
+The manuscript presents schematic figures and theorem-level bounds, but it does not include numerical case studies testing:
+\begin{itemize}
+\item the practical tightness of discrepancy/digit bounds for realistic $(\alpha,N)$ choices;
+\item the dependence of $\Var(g_{n,y})$ on $(n,y)$ for representative modular objects beyond $E_4/E_6$;
+\item the empirical stability window in $(n,y,N)$ balancing smoothing against amplification.
+\end{itemize}
+Such experiments would materially strengthen the ``auditable error'' narrative by demonstrating how conservative the explicit bounds are in typical regimes.
+
+\subsection{Related work: quasi-Monte Carlo, lattice rules, and transport-based metrics}
+\label{app:limitations_related_work}
+
+\paragraph{Comparison with classical quadrature on the torus.}
+The sampling scheme $x_t=x_0+t\alpha\pmod 1$ is a Kronecker sequence, which is a canonical object in uniform distribution and quasi-Monte Carlo (QMC) theory \cite{KuipersNiederreiter1974,DrmotaTichy1997,Niederreiter1992}.
+From the numerical-integration perspective, it is closely related to lattice rules (rank-1 lattices) and other discrepancy-optimized constructions \cite{SloanJoe1994,DickPillichshammer2010}.
+For certain function classes (e.g.\ periodic functions with additional smoothness structure), Fourier-analytic error bounds and specialized QMC designs can yield improved constants or rates compared with a generic bounded-variation/Koksma analysis.
+The present paper does not benchmark its slice-reconstruction estimator against these classical quadrature baselines.
+
+\paragraph{Transport-based error metrics.}
+Star discrepancy is tailored to interval (or anchored-box) test sets and is therefore coordinate dependent.
+In contrast, Wasserstein distances provide a geometric notion of equidistribution via optimal transport costs \cite{Villani2009,Santambrogio2015}.
+In one dimension, if $\mu_N$ is the empirical measure of the sample points and $\lambda$ is Lebesgue measure on $[0,1]$, then
+\[
+W_1(\mu_N,\lambda)=\int_0^1 |F_N(x)-x|\,\dd x
+\le \sup_{x\in[0,1]}|F_N(x)-x|
+=D_N^\ast(P_N),
+\]
+so star discrepancy control implies a Wasserstein-$1$ control.
+Exploring transport-based bounds (and their robustness properties under coordinate changes) could provide a complementary analysis of the estimator beyond the Koksma framework used here.
+
+\subsection{Presentation and notation}
+\label{app:limitations_presentation_notation}
+
+The protocol chain benefits from a strict separation between proved statements and interpretive analogies.
+While the manuscript maintains layer discipline at the logical level, additional editorial standardization would further reduce ambiguity:
+\begin{itemize}
+\item fix notation for arithmetic groups consistently (e.g.\ $\SL_2(\ZZ)$ and $\PSL_2(\ZZ)$) and standardize matrix conventions;
+\item standardize constants and admissible ranges for roof/discrepancy parameters whenever they enter quantitative claims;
+\item make explicit, near each protocol-level bound, which auxiliary constants are available in closed form (as for $E_4/E_6$) and which remain qualitative.
+\end{itemize}
 
 

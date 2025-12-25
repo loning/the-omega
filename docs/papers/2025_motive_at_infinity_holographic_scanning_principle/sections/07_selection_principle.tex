@@ -1,0 +1,122 @@
+
+\section{A selection principle: stability under finite resources}
+\label{sec:selection_principle}
+
+The realization theorem shows that, under equidistribution, the asymptotic value of a scan protocol depends only on the period datum. In particular, for a fixed kernel $f_{\mathcal{R}}$, the integral is independent of the scan slope $\alpha$ as long as \eqref{eq:rational_independence} holds. This shifts the locus of ``selection'' away from the infinite-time limit and toward the finite-resource regime: what differs across protocols is not the limit value but the \emph{stability and cost} with which that value is realized.
+
+\subsection{Value--rate separation}
+\label{sec:value_rate_separation}
+
+Let $\mathcal{P}=(\TT^d,\alpha,x_0,f,\mathcal{R})$ and $\mathcal{P}'=(\TT^d,\alpha',x_0',f,\mathcal{R})$ share the same kernel but use different scan slopes. If both slopes satisfy \eqref{eq:rational_independence}, then
+\[
+\lim_{N\to\infty}\avgN{\mathcal{P}}
+=
+\lim_{N\to\infty}\avgN{\mathcal{P}'}
+=\int_{[0,1)^d} f_{\mathcal{R}}.
+\]
+However, the finite-$N$ errors generally differ:
+\[
+\Big|\avgN{\mathcal{P}}-\int f_{\mathcal{R}}\Big|
+\ \text{depends on}\ \alpha
+\quad\text{through}\quad
+\DNstar(P_N),
+\]
+where $P_N=\{x_0,\dots,x_{N-1}\}$ denotes the scan-orbit prefix on $[0,1)^d$.
+This is the operational content of value--rate separation: selection does not choose the integral, but chooses how efficiently the protocol realizes it.
+
+\subsection{Stability metrics and bounded description budgets}
+\label{sec:stability_metrics}
+
+To make the notion of selection falsifiable, we require a cost functional that can be evaluated (or upper-bounded) from auditable protocol data.
+
+\begin{definition}[Finite-horizon stability bound]
+\label{def:stability_bound}
+For a protocol $\mathcal{P}\in\ScanAlg$ at horizon $N$, define a stability bound
+\begin{equation}
+\label{eq:stability_bound}
+\mathrm{Stab}_N(\mathcal{P})
+:= \HKVar(f_{\mathcal{R}})\,\DNstar(P_N)
+\end{equation}
+whenever $\HKVar(f_{\mathcal{R}})<\infty$.
+\end{definition}
+
+Definition~\ref{def:stability_bound} uses Corollary~\ref{cor:sampling_error} as a canonical, auditable choice. Alternative bounds (e.g.\ bounds in terms of continued-fraction digits in $d=1$) may be substituted, provided they remain auditable within the protocol.
+
+Selection also requires a cost for \emph{describing} the protocol. In the present controlled setting, the dominant contributions are: the symbolic complexity of the kernel (degree, coefficient sizes, number of terms), and the regularization parameters (e.g.\ the truncation depth $M$).
+
+\begin{definition}[Protocol description complexity (schematic)]
+\label{def:protocol_complexity}
+Let $\mathrm{Comp}(\mathcal{P})$ denote an application-dependent description length for the protocol, combining (i) the encoding cost of $f$ and $\mathcal{R}$ and (ii) the implementation cost of producing $N$ samples. We only require that $\mathrm{Comp}$ be monotone in obvious resources (e.g.\ higher truncation depth increases complexity).
+\end{definition}
+
+\subsection{Selection principle (programmatic conjecture)}
+\label{sec:selection_conjecture}
+
+We now state a programmatic, falsifiable selection principle. It is not used as an input to any closed theorem.
+
+\begin{conjecture}[Selection by stability--complexity optimization]
+\label{conj:selection_principle}
+There exists a functional $\mathcal{J}_N$ on a class of admissible protocols $\mathcal{C}\subset\ScanAlg$ of the form
+\begin{equation}
+\label{eq:selection_functional}
+\mathcal{J}_N(\mathcal{P})
+=
+\mathrm{Stab}_N(\mathcal{P})
+\;+\;
+\lambda\,\mathrm{Comp}(\mathcal{P})
+\;+\;
+\mu\,\mathrm{Height}(\HSP(\mathcal{P})),
+\end{equation}
+with $\lambda,\mu\ge 0$, such that the period data empirically observed as ``constants'' correspond to near-minimizers (or extremizers) of $\mathcal{J}_N$ as $N$ ranges over accessible horizons.
+\end{conjecture}
+
+The term $\mathrm{Height}(\HSP(\mathcal{P}))$ is optional and programmatic: it is intended to encode arithmetic/geometric ``size'' of the period datum (in the spirit of heights in arithmetic geometry) and to penalize excessively high-complexity realizations. The conjecture is falsifiable because each term in \eqref{eq:selection_functional} can be operationalized: $\mathrm{Stab}_N$ can be upper-bounded by discrepancy bounds, $\mathrm{Comp}$ is a bounded description budget, and candidate height surrogates can be compared by predictive performance.
+
+\subsection{Why the golden branch appears}
+\label{sec:golden_branch}
+
+In one dimension, the discrepancy of Kronecker sequences is controlled by Diophantine properties of $\alpha$, typically expressed via continued fractions \cite{KuipersNiederreiter1974,IosifescuKraaikamp2002}. Badly approximable slopes (bounded continued-fraction coefficients) yield improved uniformity bounds at finite horizons. The golden ratio $\varphi$ is extremal in the sense that it is the \emph{most} badly approximable number: it maximizes the constant $c(\alpha)$ in inequalities of the form
+\[
+\left|\alpha-\frac{p}{q}\right|\ge \frac{c(\alpha)}{q^2},
+\]
+over irrational $\alpha$.
+
+Within the selection principle framework, the golden branch is therefore not a numerological artifact: it is a concrete scan choice that improves stability bounds for a wide class of kernels under finite resources.
+
+\subsection{Wishes as stable period structures}
+\label{sec:wishes_as_stable_periods}
+
+Definition~\ref{def:wish} can now be read as a stability constraint: a wish is a period datum that admits realizations whose $\mathcal{J}_N$ cost remains small under bounded resources, and whose value is invariant under protocol equivalence. Under this perspective, ``motive'' provides a language for organizing relations among such stable period data, while selection is enforced at the protocol layer through finite-horizon stability and complexity.
+
+\subsection{Dimension cost and an effective curse of dimensionality}
+\label{sec:dimension_cost}
+
+The selection principle becomes sharper when dimension is made explicit. For explicit low-discrepancy constructions in quasi-Monte Carlo integration, one has upper bounds of the form
+\begin{equation}
+\label{eq:star_discrepancy_upper}
+D_N^\ast \le C_d\,\frac{(\log N)^d}{N},
+\end{equation}
+for some dimension-dependent constant $C_d$ for explicit low-discrepancy constructions \cite{Niederreiter1992,DickPillichshammer2010}. Combined with Koksma--Hlawka, this yields the generic finite-horizon estimate
+\begin{equation}
+\label{eq:qmc_dimension_penalty}
+\Big|\avgN{\mathcal{P}}-\mathrm{per}(\HSP(\mathcal{P}))\Big|
+\le
+\HKVar(f_{\mathcal{R}})\,C_d\,\frac{(\log N)^d}{N}.
+\end{equation}
+Thus, for fixed horizon $N$, the auditable bound deteriorates rapidly with dimension $d$; equivalently, achieving a target accuracy $\varepsilon$ requires a horizon satisfying
+\begin{equation}
+\label{eq:inverse_discrepancy_requirement}
+N \ge \frac{\HKVar(f_{\mathcal{R}})\,C_d}{\varepsilon}\,(\log N)^d.
+\end{equation}
+
+In the present program, this motivates an explicit \emph{dimension penalty} in the selection functional \eqref{eq:selection_functional}: high-dimensional period data are ``expensive'' to stabilize under bounded resources, and low-dimensional periods (1D/2D/3D) are naturally favored as stable observables.
+
+\begin{remark}[Lower bounds: the dimension penalty is not removable]
+The deterioration with $d$ is not merely an artifact of a particular construction. For $d\ge 2$, Roth's theorem gives a general lower bound on star discrepancy: for any $N$-point set in $[0,1]^d$, one has
+\[
+D_N^\ast \ge c_d\,\frac{(\log N)^{(d-1)/2}}{N}
+\]
+for a positive constant $c_d$ depending only on $d$ \cite{Roth1954,Matousek1999}. In particular, in dimension $d=2$ one can strengthen the logarithmic exponent \cite{Schmidt1972}. These bounds support the interpretation that high-dimensional stable realizations are intrinsically more expensive under finite resources.
+\end{remark}
+
+

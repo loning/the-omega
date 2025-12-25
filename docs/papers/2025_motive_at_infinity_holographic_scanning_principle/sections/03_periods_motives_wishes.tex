@@ -1,0 +1,82 @@
+
+\section{Periods, computability, and a minimal notion of ``wish''}
+\label{sec:periods_motives_wishes}
+
+This section recalls the period layer that will serve as our auditable ``interface'' to motives and formulates a minimal, protocol-based notion of wish. Throughout, we keep the closed proof chain within the period layer and use motive language only to indicate a possible source structure for period relations.
+
+\subsection{Kontsevich--Zagier periods}
+\label{sec:kz_periods}
+
+\begin{definition}[Kontsevich--Zagier period]
+\label{def:kz_period}
+A complex number $P\in\CC$ is a \emph{(Kontsevich--Zagier) period} if there exist
+\begin{itemize}
+\item an integer $n\ge 1$,
+\item a semialgebraic domain $D\subset\RR^n$ defined by finitely many polynomial inequalities with coefficients in $\QQ$, and
+\item a rational function $f(x)\in\QQ(x_1,\dots,x_n)$
+\end{itemize}
+such that the integral converges absolutely and
+\begin{equation}
+\label{eq:kz_def}
+P = \int_D f(x)\,\dd x_1\cdots \dd x_n.
+\end{equation}
+\end{definition}
+
+Kontsevich--Zagier periods form a countable $\QQ$-algebra under addition and multiplication \cite{KontsevichZagier2001}. They contain classical constants such as $\pi$ and $\log 2$, and encompass many special values arising in arithmetic geometry and perturbative quantum field theory.
+
+\begin{remark}[Controlled scope used in this paper]
+\label{rem:controlled_scope}
+For auditable protocol realizations, we will primarily use \emph{cubical} representations with $D=[0,1]^d$ and $f$ an integrable rational function on $D$. This already captures the examples relevant for the experiments in Section~\ref{sec:experiments} and is stable under the discrepancy-based error analysis of Section~\ref{sec:error_budgets}.
+\end{remark}
+
+\subsection{Period data as auditable objects}
+\label{sec:perdatum_intro}
+
+The KZ definition characterizes numbers. For functorialization, we need an object-level description.
+
+\begin{definition}[Period datum]
+\label{def:period_datum}
+A \emph{period datum} is a triple $(D,f,\mathcal{R})$ where:
+\begin{itemize}
+\item $D\subset\RR^d$ is a $\QQ$-semialgebraic domain,
+\item $f\in\QQ(x_1,\dots,x_d)$ is a rational function that is integrable on $D$ after applying a regularization rule $\mathcal{R}$ (possibly the identity),
+\item $\mathcal{R}$ specifies how to interpret $f$ if it is presented via a convergent/regularized expression (e.g.\ truncation of a series, principal value conventions, or a limit along a prescribed subsequence), producing an integrable kernel $f_{\mathcal{R}}$ on $D$.
+\end{itemize}
+The associated numerical period is
+\begin{equation}
+\label{eq:per_value}
+\mathrm{per}(D,f,\mathcal{R}) := \int_D f_{\mathcal{R}}(x)\,\dd x.
+\end{equation}
+\end{definition}
+
+\begin{remark}[Motivic background, not used as an axiom]
+\label{rem:motivic_background}
+In the standard paradigm, periods arise as pairings between de~Rham cohomology classes and Betti homology classes (or, more generally, between two realizations of the same motive). Relations among periods are governed by the structure of motives and comparison isomorphisms \cite{Andre2004,Deligne1982HodgeCycles}. This paper does not assume any conjectural principle about periods or motives; we use the period datum only as an auditable intermediate object.
+\end{remark}
+
+\subsection{A minimal operative notion of wish}
+\label{sec:wish_definition}
+
+The word ``motive'' suggests an origin; the word ``wish'' suggests a constraint. To keep the notion operational and falsifiable, we define wish purely through finite-resolution realizability and protocol invariance.
+
+\begin{remark}[Motive vs.\ period: what is constructed here]
+\label{rem:motive_vs_period}
+In standard arithmetic geometry, a \emph{motive} is an abstract source object whose realizations (Betti, de~Rham, $\ell$-adic) produce, among other invariants, periods as numerical comparison data. In this paper we do \emph{not} construct a motive-valued functor from protocols, and we do not assume any period conjecture. The only closed construction is the functor $\HSP:\ScanAlg\to\PerDatum$ (Section~\ref{sec:scan_alg_and_hsp}), i.e.\ a \emph{period realization} interface.
+\end{remark}
+
+\begin{definition}[Wish (protocol-stable period structure)]
+\label{def:wish}
+Fix a class of protocols $\ScanAlg$ (defined in Section~\ref{sec:scan_alg_and_hsp}). A period datum $\mathcal{D}=(D,f,\mathcal{R})$ is called a \emph{wish} (relative to $\ScanAlg$) if there exists a family of protocols $\{\mathcal{P}_\lambda\}_{\lambda\in\Lambda}\subset\ScanAlg$ and an auditable error budget $\varepsilon(N,\lambda)\to 0$ as $N\to\infty$ such that:
+\begin{itemize}
+\item for each $\lambda$, the protocol produces an empirical readout $\avgN{\mathcal{P}_\lambda}$ (Definition~\ref{def:birkhoff_average}) satisfying
+\begin{equation}
+\label{eq:wish_realizability}
+\big|\avgN{\mathcal{P}_\lambda} - \mathrm{per}(\mathcal{D})\big| \le \varepsilon(N,\lambda)\quad\text{for all }N,
+\end{equation}
+\item the value $\mathrm{per}(\mathcal{D})$ is invariant under the protocol equivalence relation in $\ScanAlg$ (Section~\ref{sec:protocol_equivalence}), i.e.\ equivalent protocols realize the same period datum up to the morphisms of $\PerDatum$.
+\end{itemize}
+\end{definition}
+
+Definition~\ref{def:wish} does not identify a wish with ``a number'' alone; it identifies a wish with a stable period \emph{structure} that survives finite-resolution realization and protocol equivalence. The selection principle in Section~\ref{sec:selection_principle} will treat wishes as candidates that are preferentially realized under bounded resources.
+
+

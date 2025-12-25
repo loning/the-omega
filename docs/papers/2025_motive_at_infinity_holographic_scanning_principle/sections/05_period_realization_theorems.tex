@@ -1,0 +1,129 @@
+
+\section{Main results: Birkhoff averages realize periods}
+\label{sec:period_realization}
+
+This section establishes the closed core of the paper: in the controlled protocol class $\ScanAlg$, long-time readout averages agree with the period values produced by the functor $\HSP$.
+
+\subsection{One-dimensional realization}
+\label{sec:period_realization_1d}
+
+\begin{theorem}[Weyl equidistribution $\Rightarrow$ period realization in $d=1$]
+\label{thm:weyl_1d}
+Let $\alpha\in\RR\setminus\QQ$ and define $x_t=x_0+t\alpha\pmod{1}$ on $\TT^1$. If $f:[0,1)\to\RR$ is Riemann integrable, then
+\begin{equation}
+\label{eq:weyl_1d_limit}
+\lim_{N\to\infty}\frac{1}{N}\sum_{t=0}^{N-1} f(x_t)
+=\int_0^1 f(x)\,\dd x.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The sequence $(x_t)_{t\ge 0}$ is uniformly distributed modulo $1$ for irrational $\alpha$ \cite{Weyl1916,KuipersNiederreiter1974}. Weyl's criterion implies \eqref{eq:weyl_1d_limit} for all Riemann integrable $f$.
+\end{proof}
+
+\begin{corollary}[Protocol limit equals the period value in $d=1$]
+\label{cor:scan_period_1d}
+Let $\mathcal{P}=(\TT^1,\alpha,x_0,f,\mathcal{R})\in\ScanAlg$ with $\alpha\notin\QQ$ and suppose $f_{\mathcal{R}}$ is Riemann integrable on $[0,1)$. Then
+\begin{equation}
+\label{eq:scan_period_1d}
+\lim_{N\to\infty}\avgN{\mathcal{P}}
+=\mathrm{per}(\HSP(\mathcal{P}))
+=\int_0^1 f_{\mathcal{R}}(x)\,\dd x.
+\end{equation}
+\end{corollary}
+
+\subsection{Multi-dimensional realization}
+\label{sec:period_realization_md}
+
+\begin{theorem}[Kronecker equidistribution $\Rightarrow$ period realization]
+\label{thm:kronecker_md}
+Let $\alpha\in\RR^d$ satisfy the rational-independence condition
+\begin{equation}
+\label{eq:rational_independence}
+1,\alpha_1,\dots,\alpha_d\ \ \text{are linearly independent over }\QQ.
+\end{equation}
+Define $x_t=x_0+t\alpha\pmod{1}$ on $\TT^d$. If $f:[0,1)^d\to\RR$ is Riemann integrable, then
+\begin{equation}
+\label{eq:kronecker_limit}
+\lim_{N\to\infty}\frac{1}{N}\sum_{t=0}^{N-1} f(x_t)
+=\int_{[0,1)^d} f(x)\,\dd x.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Condition \eqref{eq:rational_independence} implies that the Kronecker sequence $(x_t)$ is uniformly distributed on $\TT^d$ \cite{KuipersNiederreiter1974}. As in the one-dimensional case, uniform distribution implies \eqref{eq:kronecker_limit} for Riemann integrable $f$.
+\end{proof}
+
+\begin{corollary}[Main realization theorem for $\ScanAlg$]
+\label{cor:scan_period_md}
+Let $\mathcal{P}=(\TT^d,\alpha,x_0,f,\mathcal{R})\in\ScanAlg$ satisfy \eqref{eq:rational_independence} and assume $f_{\mathcal{R}}$ is Riemann integrable on $[0,1)^d$. Then
+\begin{equation}
+\label{eq:scan_period_md}
+\lim_{N\to\infty}\avgN{\mathcal{P}}
+=\mathrm{per}(\HSP(\mathcal{P}))
+=\int_{[0,1)^d} f_{\mathcal{R}}(x)\,\dd x.
+\end{equation}
+Moreover, the limit is independent of $x_0$.
+\end{corollary}
+
+\begin{remark}[Beyond Riemann integrability]
+\label{rem:birkhoff_extension}
+If $f_{\mathcal{R}}\in L^1(\TT^d)$, ergodicity of the irrational rotation under \eqref{eq:rational_independence} implies that \eqref{eq:scan_period_md} holds for almost every initial condition $x_0$ by the Birkhoff ergodic theorem \cite{KatokHasselblatt1995}. We restrict to Riemann integrable kernels in the closed chain because this supports explicit discrepancy-based error bounds for finite resources.
+\end{remark}
+
+\subsection{Canonical period examples realized by scans}
+\label{sec:canonical_period_examples}
+
+The following examples will be used as reproducible benchmarks in Section~\ref{sec:experiments}. They also illustrate why the ``special constants'' of the earlier papers appear naturally: they are periods with low-complexity cubical representations.
+
+\begin{example}[$\log 2$ as a one-dimensional scan period]
+\label{ex:log2}
+Let $f(x)=\frac{1}{1+x}$ on $[0,1)$. Then
+\begin{equation}
+\label{eq:log2_period}
+\int_0^1 \frac{1}{1+x}\,\dd x = \log 2,
+\end{equation}
+and Theorem~\ref{thm:weyl_1d} implies that for any irrational $\alpha$,
+\begin{equation}
+\label{eq:log2_scan}
+\lim_{N\to\infty}\frac{1}{N}\sum_{t=0}^{N-1}\frac{1}{1+\{x_0+t\alpha\}}=\log 2.
+\end{equation}
+\end{example}
+
+\begin{example}[$\pi$ as a one-dimensional scan period]
+\label{ex:pi}
+Let $f(x)=\frac{4}{1+x^2}$ on $[0,1)$. Then
+\begin{equation}
+\label{eq:pi_period}
+\int_0^1 \frac{4}{1+x^2}\,\dd x = \pi,
+\end{equation}
+and Theorem~\ref{thm:weyl_1d} yields a scan realization of $\pi$.
+\end{example}
+
+Multiple zeta values are also periods, but their most naive cubical representations involve integrands with boundary singularities. Section~\ref{sec:error_budgets} introduces truncation regularizations that keep kernels bounded and yield explicit error bounds.
+
+\subsection{Resonant (rationally dependent) scan slopes}
+\label{sec:resonance_case}
+
+The rational-independence hypothesis \eqref{eq:rational_independence} is the clean regime in which the scan explores the full torus and the limiting statistic equals the full-cube integral. When rational relations exist, the scan lives on a lower-dimensional subtorus and the limit changes accordingly. This behavior is standard and can be stated as a closed quantitative alternative to Theorem~\ref{thm:kronecker_md}.
+
+\begin{theorem}[Subtorus reduction in the resonant case]
+\label{thm:subtorus_reduction}
+Let $T_\alpha(x)=x+\alpha\pmod{1}$ on $\TT^d$ with arbitrary $\alpha\in\RR^d$. Let $H:=\overline{\{t\alpha\pmod{1}:t\in\ZZ\}}$ be the orbit-closure subgroup, which is a subtorus of $\TT^d$, and let $m_H$ denote its Haar probability measure. Then for every continuous function $f:\TT^d\to\RR$ and every $x_0\in\TT^d$,
+\begin{equation}
+\label{eq:subtorus_average}
+\lim_{N\to\infty}\frac{1}{N}\sum_{t=0}^{N-1} f(T_\alpha^t(x_0))
+\;=\;\int_{x_0+H} f(x)\,\dd m_H(x).
+\end{equation}
+If $H=\TT^d$ (equivalently, \eqref{eq:rational_independence} holds), then \eqref{eq:subtorus_average} reduces to \eqref{eq:kronecker_limit}.
+\end{theorem}
+
+\begin{proof}
+The translation $T_\alpha$ is uniquely ergodic on each coset of its orbit-closure subgroup; see standard treatments of rotations on compact abelian groups and Kronecker's theorem \cite{KuipersNiederreiter1974,Walters1982,KatokHasselblatt1995}. Unique ergodicity implies uniform convergence of Birkhoff averages for continuous observables to the Haar integral on the orbit closure, yielding \eqref{eq:subtorus_average}.
+\end{proof}
+
+\begin{remark}[Interpretation-layer note: ``locking'']
+When rational relations constrain $H$ to be a proper subtorus, the protocol's long-time statistic becomes a lower-dimensional average. In interpretation-layer language this resembles phase locking or plateau behavior under resonance constraints. Theorem~\ref{thm:subtorus_reduction} is the Layer~0/1 mathematical statement behind such narratives.
+\end{remark}
+
+

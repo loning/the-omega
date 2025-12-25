@@ -22,11 +22,33 @@ For any finite set of scan samples $P_N=\{x_0,\ldots,x_{N-1}\}$ and any interval
 \end{equation}
 see Appendix~\ref{app:koksma_inequality}. In particular, on convergent lengths the closed-form expressions in Proposition~\ref{prop:convergent_star_discrepancy} turn induced probability into a constant-controlled estimate.
 More generally, the Ostrowski/Zeckendorf coding of the tick count $N$ controls discrepancy via digit sums (Appendix~\ref{app:ostrowski_discrepancy}), providing a direct quantitative bridge from canonical coding to finite-$N$ readout accuracy.
+More precisely, if $p_n/q_n$ are convergents of $\alpha$ and
+\begin{equation}
+N=\sum_{n=0}^{m} b_n q_n
+\end{equation}
+is the Ostrowski expansion of $N$, then Proposition~\ref{prop:ostrowski_birkhoff_bound} gives, for every interval window $W$,
+\begin{equation}
+\left|\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}_W(x_t)-|W|\right|
+\le \frac{2}{N}\sum_{n=0}^{m} b_n,
+\end{equation}
+hence
+\begin{equation}
+D_N^*\!\left(P_N(\alpha)\right)\le \frac{2}{N}\sum_{n=0}^{m} b_n.
+\label{eq:ostrowski_discrepancy_main}
+\end{equation}
+This bound holds for \emph{all} $N\ge 1$ (not only at convergent lengths) and makes the constant explicit.
 For the golden branch $\alpha=\varphi^{-1}$ at Fibonacci lengths $N=F_n$, Appendix~\ref{app:golden_constant} yields explicit constants: for odd $n$, $D_{F_n}^*=1/F_n$ so the window-frequency error is bounded by $2/F_n$; for even $n$,
 \begin{equation}
 D_{F_n}^*=\frac{1}{F_n}+\left(1-\frac{1}{F_n}\right)\frac{1}{\sqrt{5}\,F_n},
 \end{equation}
 so the window-frequency error is bounded by $2\left(1+\frac{1}{\sqrt{5}}\right)\frac{1}{F_n}$ up to the vanishing factor $(1-1/F_n)$.
+More generally, choosing $\alpha$ with bounded continued-fraction coefficients (constant type) yields an explicit uniform guarantee:
+if $a_n\le A$ for all $n$, then Appendix~\ref{app:ostrowski_discrepancy} gives
+\begin{equation}
+D_N^*\!\left(P_N(\alpha)\right)\le \frac{2A(2+\log_\varphi N)}{N},
+\label{eq:bounded_type_discrepancy_main}
+\end{equation}
+recovering the classical $O((\log N)/N)$ rate with explicit constants. This provides a principled scan-slope selection rule: \emph{bounded partial quotients} give uniformly low discrepancy, and the golden branch ($A=1$) is the canonical extremal choice compatible with Zeckendorf coding.
 
 \subsection{Quantitative discrepancy control and a closed form on convergent lengths}
 \label{sec:quant_discrepancy}
@@ -39,6 +61,186 @@ F_n\,D_{F_n}^* \to 1+\frac{1}{\sqrt{5}}
 \qquad (n\ \text{even}),
 \end{equation}
 while $F_n\,D_{F_n}^*=1$ for odd $n$.
+
+\subsection{Coefficient recovery by scan quadrature: variation bounds and parameter choices}
+\label{sec:coeff_recovery_bounds}
+
+The constitution repeatedly uses the cusp interface as a continuous-to-discrete bridge. To make this quantitative at finite $N$, it is useful to treat coefficient extraction as a deterministic quadrature problem along a scan orbit, with a discrepancy-controlled error.
+
+\paragraph{Coefficient recovery at height \texorpdfstring{$y$}{y}.}
+Let $f$ be holomorphic on $\HH$ and $T$-periodic, so it admits a $q$-expansion
+\begin{equation}
+f(\tau)=\sum_{m\ge 0} a_m q^m,\qquad q=\e^{2\pi\iu\tau}.
+\end{equation}
+For any $y>0$, Fourier inversion at height $y$ gives the exact coefficient formula
+\begin{equation}
+a_n
+=
+\e^{2\pi n y}\int_0^1 f(x+\iu y)\,\e^{-2\pi\iu n x}\,\dd x
+\qquad (n\ge 0).
+\label{eq:coeff_recovery_integral}
+\end{equation}
+Define the integrand
+\begin{equation}
+g_{n,y}(x):=f(x+\iu y)\,\e^{-2\pi\iu n x}\qquad (x\in\RR/\ZZ),
+\label{eq:def_gny}
+\end{equation}
+so that $a_n=\e^{2\pi n y}\int_{\RR/\ZZ} g_{n,y}\,\dd x$.
+
+\paragraph{Scan quadrature estimator and a deterministic finite-\texorpdfstring{$N$}{N} bound.}
+Given a scan orbit $x_t=x_0+t\alpha\ (\mathrm{mod}\ 1)$, define the scan-quadrature estimator
+\begin{equation}
+\widehat a_n^{(N)}(y)
+:=
+\e^{2\pi n y}\,\frac{1}{N}\sum_{t=0}^{N-1} g_{n,y}(x_t).
+\label{eq:scan_quadrature_estimator}
+\end{equation}
+If $g_{n,y}$ has bounded variation, then Koksma's inequality (Appendix~\ref{app:koksma_inequality}) yields
+\begin{equation}
+\left|\widehat a_n^{(N)}(y)-a_n\right|
+\le
+\e^{2\pi n y}\,\mathrm{Var}(g_{n,y})\,D_N^*\!\left(P_N(\alpha)\right).
+\label{eq:coeff_recovery_koksma_bound}
+\end{equation}
+Thus, for coefficient recovery the quantitative problem reduces to (i) bounding $\mathrm{Var}(g_{n,y})$ as a function of $y$ and $n$, and (ii) choosing $\alpha,N$ to control $D_N^*$.
+
+\begin{proposition}[Uniform variation bound from the \texorpdfstring{$q$}{q}-expansion]
+\label{prop:var_gny_qexp}
+Let $f(\tau)=\sum_{m\ge 0} a_m q^m$ and $g_{n,y}$ be defined by \eqref{eq:def_gny}. Then for any $y>0$,
+\begin{equation}
+\mathrm{Var}(g_{n,y})
+\le
+2\pi\sum_{m\ge 0} |m-n|\,|a_m|\,\e^{-2\pi m y}.
+\label{eq:var_gny_series_bound}
+\end{equation}
+In particular, using $|m-n|\le m+n$,
+\begin{equation}
+\mathrm{Var}(g_{n,y})
+\le
+2\pi\left(
+n\sum_{m\ge 0} |a_m|\,\e^{-2\pi m y}
+\;+\;
+\sum_{m\ge 0} m\,|a_m|\,\e^{-2\pi m y}
+\right).
+\label{eq:var_gny_mplusn_bound}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Writing $\tau=x+\iu y$ gives
+\begin{equation}
+g_{n,y}(x)=\sum_{m\ge 0} a_m\,\e^{-2\pi m y}\,\e^{2\pi\iu(m-n)x}.
+\end{equation}
+Termwise differentiation (justified by absolute convergence for fixed $y>0$) yields
+\begin{equation}
+g'_{n,y}(x)=2\pi\iu\sum_{m\ge 0} (m-n)\,a_m\,\e^{-2\pi m y}\,\e^{2\pi\iu(m-n)x}.
+\end{equation}
+For absolutely continuous $1$-periodic functions, $\mathrm{Var}(g_{n,y})\le\int_0^1 |g'_{n,y}(x)|\,\dd x$, and the triangle inequality gives \eqref{eq:var_gny_series_bound}. The bound \eqref{eq:var_gny_mplusn_bound} follows from $|m-n|\le m+n$.
+\end{proof}
+
+\paragraph{An explicit elementary bound for weighted power sums.}
+For integer $s\ge 0$ and $q\in(0,1)$, one has
+\begin{equation}
+\sum_{m\ge 1} m^s q^m = \frac{q\,P_s(q)}{(1-q)^{s+1}},
+\end{equation}
+where $P_s$ is the Eulerian polynomial of degree $s$ with nonnegative coefficients and $P_s(1)=s!$. Hence
+\begin{equation}
+\sum_{m\ge 1} m^s q^m \le \frac{s!\,q}{(1-q)^{s+1}}.
+\label{eq:power_sum_bound}
+\end{equation}
+See, e.g., \cite{GrahamKnuthPatashnik1994} for standard generating-function identities and Eulerian-number properties.
+Below we use \eqref{eq:power_sum_bound} with $q=\e^{-2\pi y}$ to turn \eqref{eq:var_gny_series_bound} into explicit $y$- and $n$-dependent bounds.
+
+\paragraph{Eisenstein series (level 1).}
+For even $k\ge 4$, the normalized Eisenstein series satisfies
+\begin{equation}
+E_k(\tau)=1-\frac{2k}{B_k}\sum_{m\ge 1}\sigma_{k-1}(m)\,q^m,
+\end{equation}
+so $|a_m|\le C_k\,m^{k-1}$ for $m\ge 1$ with
+\begin{equation}
+C_k:=\left|\frac{2k}{B_k}\right|\zeta(k-1),
+\end{equation}
+using $\sigma_{k-1}(m)\le \zeta(k-1)\,m^{k-1}$. Applying Proposition~\ref{prop:var_gny_qexp} and \eqref{eq:power_sum_bound} with $q=\e^{-2\pi y}$ gives the uniform bound
+\begin{equation}
+\mathrm{Var}(g_{n,y}^{(E_k)})
+\le
+2\pi n
++
+2\pi C_k\left(
+n\frac{(k-1)!\,q}{(1-q)^{k}}
+\;+\;
+\frac{k!\,q}{(1-q)^{k+1}}
+\right),
+\qquad q=\e^{-2\pi y}.
+\label{eq:var_bound_eisenstein}
+\end{equation}
+
+\paragraph{Hecke eigen cusp forms (coarse uniform bound).}
+Let $f(\tau)=\sum_{m\ge 1} a_m q^m$ be a normalized Hecke eigen cusp form of even weight $k$ (level $1$ for concreteness). Deligne's bound implies $|a_m|\le d(m)\,m^{(k-1)/2}$. Using the trivial divisor bound $d(m)\le m+1\le 2m$ for $m\ge 1$ yields $|a_m|\le 2\,m^{(k+1)/2}$, hence Proposition~\ref{prop:var_gny_qexp} and \eqref{eq:power_sum_bound} give
+\begin{equation}
+\mathrm{Var}(g_{n,y}^{(f)})
+\le
+4\pi\left(
+n\frac{s_1!\,q}{(1-q)^{s_1+1}}
+\;+\;
+\frac{s_2!\,q}{(1-q)^{s_2+1}}
+\right),
+\qquad
+s_1:=\left\lceil\frac{k+1}{2}\right\rceil,\ \ s_2:=\left\lceil\frac{k+3}{2}\right\rceil,
+\label{eq:var_bound_cusp_coarse}
+\end{equation}
+with $q=\e^{-2\pi y}$. For the discriminant form $\Delta$ of weight $12$, the same bound applies with $s_1=7$, $s_2=8$.
+
+\paragraph{Choosing \texorpdfstring{$\alpha$}{alpha} and \texorpdfstring{$N$}{N} (discrepancy control).}
+Given \eqref{eq:coeff_recovery_koksma_bound}, a principled scan-slope choice is to enforce uniformly small $D_N^*$. The explicit constant-type bound \eqref{eq:bounded_type_discrepancy_main} shows that bounded partial quotients ($a_n\le A$) guarantee $D_N^*=O((\log N)/N)$ with an explicit constant; the golden branch ($A=1$) yields the canonical smallest bound among constant-type choices and also admits exact discrepancy constants on Fibonacci lengths (Appendix~\ref{app:golden_constant}).
+For generic $\alpha$ with unbounded partial quotients there is no comparable uniform constant, and $D_N^*$ can exhibit spikes at $N$ tied to unusually large continued-fraction digits.
+
+\paragraph{Joint choice of \texorpdfstring{$y$}{y} and \texorpdfstring{$N$}{N} for a target coefficient index \texorpdfstring{$n$}{n}.}
+The finite-$N$ recovery bound \eqref{eq:coeff_recovery_koksma_bound} combines (i) an amplification factor $\e^{2\pi n y}$ and (ii) a decay factor in $\mathrm{Var}(g_{n,y})$ driven by $q=\e^{-2\pi y}$. For the polynomial-growth classes above, the small-$y$ asymptotic $q/(1-q)^{s+1}\sim (2\pi y)^{-(s+1)}$ suggests minimizing a proxy of the form $\e^{2\pi n y}\,y^{-p}$, whose optimizer is
+\begin{equation}
+y_\star \approx \frac{p}{2\pi n}.
+\label{eq:y_star_rule}
+\end{equation}
+For Eisenstein series $E_k$, the dominant term in \eqref{eq:var_bound_eisenstein} corresponds to $p=k$; for cusp eigenforms of weight $k$ with the coarse bound \eqref{eq:var_bound_cusp_coarse}, the dominant term corresponds to $p\approx s_1+1\approx \frac{k+3}{2}$. Once $y$ is fixed, one selects $N$ so that $D_N^*(P_N(\alpha))\le \varepsilon/\bigl(\e^{2\pi n y}\mathrm{Var}(g_{n,y})\bigr)$ for a target tolerance $\varepsilon$, using \eqref{eq:bounded_type_discrepancy_main} (or the exact convergent-length formulas) as an explicit design inequality.
+
+\paragraph{Where R1 enters beyond \texorpdfstring{$|q|$}{|q|} analogy.}
+At the operator level, coefficient recovery and discrepancy control both involve regulated orbit sums of the form $\sum_{t\ge 0} U_{\mathrm{scan}}^{\,t}$ applied to mean-zero observables (the cohomological equation for a rotation). The canonical way to make these sums well-defined is precisely Abel/resolvent regularization:
+\begin{equation}
+\sum_{t\ge 0} r^t\,U_{\mathrm{scan}}^{\,t}=(1-r\,U_{\mathrm{scan}})^{-1},\qquad 0<r<1,
+\end{equation}
+followed by the controlled limit $r\uparrow 1$ selecting a finite part (R1; Appendix~\ref{app:abel_regularization}). In protocol terms, this is the minimal finite-coherence response kernel used to turn formally divergent infinite-time expressions into auditable finite quantities.
+
+\paragraph{Noise terms (explicit).}
+If samples of $g_{n,y}(x_t)$ are corrupted by an additive deterministic error $\eta_t$ with $|\eta_t|\le \delta$ for all $t$, then
+\begin{equation}
+\left|\widehat a_n^{(N)}(y)-a_n\right|
+\le
+\e^{2\pi n y}\,\mathrm{Var}(g_{n,y})\,D_N^*\!\left(P_N(\alpha)\right)
+\;+\;\e^{2\pi n y}\,\delta,
+\label{eq:coeff_recovery_with_noise}
+\end{equation}
+where the first term is the discrepancy-controlled quadrature error and the second is the amplified measurement perturbation.
+
+\paragraph{A small deterministic numerical sanity check (E\texorpdfstring{$4$}{4}).}
+As an illustration of \eqref{eq:coeff_recovery_koksma_bound} with the explicit variation bound \eqref{eq:var_bound_eisenstein}, Table~\ref{tab:e4_coeff_recovery_sanity} reports coefficient recovery for $E_4$ using the scan-quadrature estimator \eqref{eq:scan_quadrature_estimator} at $y$ chosen by the rule \eqref{eq:y_star_rule} (with $p=k=4$). The star discrepancy $D_N^*$ is computed exactly from its definition, and the bound uses $\e^{2\pi n y}\mathrm{Var}(g_{n,y})D_N^*$ with $\mathrm{Var}(g_{n,y})$ upper-bounded by \eqref{eq:var_bound_eisenstein}.
+\begin{table}[H]
+\centering
+\begin{tabular}{cccccccc}
+\toprule
+$\alpha$ & $N$ & $y$ & $n$ & $D_N^*$ & $|\widehat a_n-a_n|$ & bound & ratio \\
+\midrule
+$\varphi^{-1}$ & $233$ & $0.63662$ & $1$ & $4.29\times 10^{-3}$ & $8.63\times 10^{-4}$ & $2.57\times 10^{2}$ & $3.36\times 10^{-6}$ \\
+$\varphi^{-1}$ & $377$ & $0.31831$ & $2$ & $3.84\times 10^{-3}$ & $6.25\times 10^{-3}$ & $3.66\times 10^{3}$ & $1.71\times 10^{-6}$ \\
+$\varphi^{-1}$ & $610$ & $0.21221$ & $3$ & $1.64\times 10^{-3}$ & $1.10\times 10^{-2}$ & $7.36\times 10^{3}$ & $1.50\times 10^{-6}$ \\
+$\sqrt{2}-1$ & $377$ & $0.31831$ & $2$ & $5.90\times 10^{-3}$ & $2.65\times 10^{0}$ & $5.63\times 10^{3}$ & $4.70\times 10^{-4}$ \\
+\bottomrule
+\end{tabular}
+\caption{Sanity check for $E_4$ coefficient recovery by scan quadrature. The ratio is $|\widehat a_n-a_n|$/bound.}
+\label{tab:e4_coeff_recovery_sanity}
+\end{table}
+
+\paragraph{Wasserstein bounds versus star discrepancy (why we use discrepancy here).}
+For Lipschitz test functions $h$ on $\RR/\ZZ$, Kantorovich--Rubinstein duality implies $|\frac{1}{N}\sum h(x_t)-\int h|\le \mathrm{Lip}(h)\,W_1(\mu_N,\lambda)$. In one dimension, $W_1(\mu_N,\lambda)=\int_0^1 |F_N(t)-t|\,\dd t\le D_N^*(P_N)$, so a Wasserstein-$1$ bound cannot improve the order of the deterministic discrepancy control unless one has an independent sharp bound on $W_1$ for the specific orbit. Moreover, for discontinuous window readout $\mathbf{1}_W$ the Lipschitz constant is infinite while $\mathrm{Var}(\mathbf{1}_W)=2$, so bounded-variation/discrepancy estimates are the natural quantitative language for the scan--projection protocol.
 
 \subsection{Hecke rigidity in coefficients: recursion, multiplicativity, and Deligne bounds}
 \label{sec:quant_hecke_tau}
@@ -54,6 +256,17 @@ For completeness, Appendix~\ref{app:tau_global_bound} derives a standard global 
 \end{equation}
 \par
 Finally, the Euler-product identity for $L(\Delta,s)$ and its absolute convergence for $\Re(s)>13/2$ are standard consequences of Hecke theory (see, e.g., \cite{Serre1973,Apostol1990,DiamondShurman2005}). Beyond pointwise bounds, mature distribution results constrain normalized prime coefficients. In the non-CM case, Sato--Tate predicts a semicircle law for the normalized values $a_p/(2p^{(k-1)/2})$; see \cite{Clozel2006SatoTate,Harris2014SatoTate,BarnetLambGeeGeraghty2011} for background and broad theorem statements.
+\par
+Beyond coefficient statistics, there are also deep equidistribution theorems for \emph{Hecke eigenfunctions} on the modular surface (quantum unique ergodicity, and effective variants). Such results are directly relevant whenever one appeals to ``stability under Hecke dynamics'' or to induced measures associated with Hecke eigenbases; see, e.g., \cite{BisainHumphriesMandelstamWalshWang2024EffectiveQUE} for an effective QUE statement for Hecke--Maa\ss\ cusp forms on $\SL_2(\ZZ)\backslash\SL_2(\RR)$.
+
+\paragraph{How many coefficients determine an eigenform? Sturm bounds and prime reduction.}
+A practical quantitative consequence of Hecke rigidity is that \emph{finitely many} coefficients determine a modular form. Sturm's theorem gives an explicit cutoff: if $f,g\in M_k(\Gamma_0(N))$ satisfy $a_n(f)=a_n(g)$ for all $1\le n\le B_{k,N}$, where
+\begin{equation}
+B_{k,N}:=\left\lfloor \frac{k}{12}\,[\SL_2(\ZZ):\Gamma_0(N)]\right\rfloor,
+\end{equation}
+then $f=g$ \cite{Sturm1987,DiamondShurman2005}. In particular, for level~$1$ one has $[\SL_2(\ZZ):\Gamma_0(1)]=1$, so matching coefficients up to $\lfloor k/12\rfloor$ is enough to identify a form.
+\par
+For normalized Hecke eigenforms, the Hecke relations further reduce the amount of \emph{independent} data needed: knowing the prime eigenvalues $a_p$ for primes $p\le B_{k,N}$ determines $a_{p^r}$ by the prime-power recursion and then determines all $a_n$ with $n\le B_{k,N}$ by multiplicativity. Thus one can, in principle, reconstruct (or validate) an eigenform up to the Sturm bound using only as many prime-indexed constraints as there are primes $p\le B_{k,N}$, providing a concrete quantitative meaning of the ``prime skeleton'' as a compression mechanism.
 
 \subsection{Modular invariance of \texorpdfstring{$j$}{j} and truncation error control}
 \label{sec:quant_j_invariant}
@@ -63,6 +276,121 @@ The $j$-invariant is $\PSL_2(\ZZ)$-invariant by construction; in particular, $j(
 j(\tau)=1728\,\frac{E_4(\tau)^3}{E_4(\tau)^3-E_6(\tau)^2}=\frac{E_4(\tau)^3}{\Delta(\tau)},
 \end{equation}
 numerical sensitivity is amplified near the cusp where $|\Delta(\tau)|$ is small, so any finite truncation or finite-precision evaluation should be interpreted through explicit tail bounds and stability estimates.
+
+\subsection{A worked end-to-end instance: scan, window readout, cusp evaluation, Hecke checks, and coding}
+\label{sec:worked_end_to_end_instance}
+
+This subsection records one explicit ``toy instance'' that runs through the full constitution chain with no interpretive steps: a concrete scan model, a concrete finite-resolution instrument, an explicit cusp evaluation of standard modular objects with certified truncation control, prime-skeleton checks on coefficient data, and a canonical tick-time coding.
+
+\paragraph{Step 1: a covariant scan model and an effective observer state.}
+Use the canonical covariant model of O6 on $L^2(\RR/\ZZ)$ (Section~\ref{sec:axioms_O5_O6}): $(U_{\mathrm{scan}}\psi)(x)=\psi(x+\alpha)$, $(V\psi)(x)=\e^{2\pi\iu x}\psi(x)$ with $\alpha\notin\QQ$.
+For the commutative subalgebra generated by functions of the phase $x$, fix an effective observer state given by Lebesgue integration,
+\begin{equation}
+\omega_{\mathrm{eff}}(g)=\int_{\RR/\ZZ} g(x)\,\dd x,
+\end{equation}
+which is the invariant state naturally induced by unique ergodicity of irrational rotation.
+
+\paragraph{Step 2: an explicit finite-resolution instrument (POVM by interval windows).}
+Fix an integer $K\ge 1$ (resolution $\varepsilon:=1/K$) and partition $\RR/\ZZ$ into $K$ disjoint intervals
+\begin{equation}
+I_k^{(\varepsilon)}=[k\varepsilon,(k+1)\varepsilon)\qquad (k=0,\ldots,K-1),
+\end{equation}
+and define effects $E_k^{(\varepsilon)}=\mathbf{1}_{I_k^{(\varepsilon)}}$ (multiplication operators in the $x$-representation). Then
+\begin{equation}
+P_k^{(\varepsilon)}=\omega_{\mathrm{eff}}\!\left(E_k^{(\varepsilon)}\right)=\varepsilon,
+\end{equation}
+so the protocol-level limiting probabilities are fixed by the geometry of the window family, not postulated.
+For a finite sample of $N$ scan ticks, the empirical frequencies satisfy the constant-controlled bound
+\begin{equation}
+\left|\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}_{I_k^{(\varepsilon)}}(x_t)-\varepsilon\right|
+\le 2\,D_N^*(P_N),
+\end{equation}
+by Koksma (Appendix~\ref{app:koksma_inequality}), with explicit closed forms at convergent lengths (Proposition~\ref{prop:convergent_star_discrepancy}).
+
+\paragraph{Step 3: a canonical tick length and coding choice.}
+Specialize to the golden branch $\alpha=\varphi^{-1}$ and take a Fibonacci length $N=F_n$.
+Then Appendix~\ref{app:golden_constant} supplies explicit constants for $D_{F_n}^*$, turning the scan--projection statistics into an auditable finite-$N$ estimate.
+The same choice aligns with Zeckendorf coding (Section~\ref{sec:zeckendorf}): $N$ admits a unique Fibonacci-digit representation with a locally checkable admissibility rule (no adjacent $1$'s), and the corresponding digit sums control discrepancy via Appendix~\ref{app:ostrowski_discrepancy}.
+
+\paragraph{Step 4: cusp evaluation with certified truncation control.}
+Fix an imaginary part $y>0$ and define a modular coordinate along the scan by
+\begin{equation}
+\tau_t := x_t+\iu y,\qquad q_t := \e^{2\pi\iu\tau_t}=\e^{-2\pi y}\,\e^{2\pi\iu x_t}.
+\end{equation}
+Evaluate $E_4(\tau_t),E_6(\tau_t)$ by truncated $q$-series (truncation depth $M$) and form the induced approximation $j^{(M)}(\tau_t)$.
+Appendix~\ref{app:eisenstein_tail_bounds} and Appendix~\ref{app:j_truncation_bounds} provide certified truncation-only error bounds, so modular invariance checks such as
+\begin{equation}
+j(\tau_t)=j(-1/\tau_t)
+\end{equation}
+can be turned into finite-truncation numerical audits with explicit stability budgets (Section~\ref{sec:quant_j_invariant}).
+
+\paragraph{Step 5: prime-skeleton checks on coefficient data.}
+For the discriminant form $\Delta(q)=\sum_{n\ge 1}\tau(n)\,q^n$, Hecke eigen-structure implies exact arithmetic constraints:
+multiplicativity on coprime indices and the prime-power recursion
+\begin{equation}
+\tau(p^{r+1})=\tau(p)\,\tau(p^r)-p^{11}\tau(p^{r-1})\qquad (r\ge 1),
+\end{equation}
+see Section~\ref{sec:quant_hecke_tau}.
+As concrete consistency checks (all exact integer identities),
+\begin{equation}
+\tau(6)=\tau(2)\tau(3)=(-24)(252)=-6048,
+\end{equation}
+\begin{equation}
+\tau(4)=\tau(2)^2-2^{11}=576-2048=-1472,
+\end{equation}
+and
+\begin{equation}
+\tau(9)=\tau(3)^2-3^{11}=63504-177147=-113643.
+\end{equation}
+In any model where discrete readout is hypothesized to expose coefficient data of a Hecke eigenform (even after coarse-graining), such relations supply sharp, prime-indexed cross-scale constraints that can be audited at finite depth.
+
+\subsection{Discrimination tasks, noise models, and explicit error budgets (conditional falsifiability)}
+\label{sec:discrimination_tasks}
+
+This paper is a constitution rather than a complete laboratory theory, so ``falsifiable'' must be read in the conditional sense: once one posits a concrete lab-to-protocol mapping (what plays the role of the pointer phase $x$, what instrument family realizes $\{E_k^{(\varepsilon)}\}$, and how coarse-graining is implemented), the protocol makes checkable quantitative claims that can fail on data.
+
+\paragraph{A minimal set of discrimination tasks.}
+The following tests are designed to discriminate structured scan--projection readout from generic stochastic readout models:
+\begin{enumerate}
+  \item \textbf{Window statistics with constant-controlled finite-$N$ error.}
+  For chosen windows $W$ (or a window partition), compare empirical frequencies to the induced limiting probabilities, using discrepancy bounds (Section~\ref{sec:quant_equidistribution}--\ref{sec:quant_discrepancy}). The point is not merely convergence but the availability of explicit constants at special lengths (e.g.\ Fibonacci lengths on the golden branch).
+
+  \item \textbf{Sturmian/low-complexity signatures for binary thresholds.}
+  For a binary readout $s_t=\mathbf{1}_W(x_t)$, the irrational-rotation protocol yields a Sturmian mechanical word (Section~\ref{sec:sturmian_words}) with rigid combinatorial constraints (balance, minimal complexity). Generic i.i.d.\ noise does not reproduce these constraints except in degenerate limits.
+
+  \item \textbf{Cross-resolution consistency under canonical coarse-graining.}
+  If an experimental knob changes resolution by an integer factor (e.g.\ aperture/threshold coarsening), then protocol-level coarse-graining predicts compatibility relations between fine and coarse statistics. On the boundary, a canonical model is the fiber-average operator $\mathcal{C}_n$ of \eqref{eq:boundary_coarse_grain}; on the modular stage, the corresponding symmetry-preserving cross-scale family is organized by Hecke operators (Section~\ref{sec:hecke_protocol_origin}).
+
+  \item \textbf{Prime-skeleton constraints when coefficient data is claimed.}
+  In any model that identifies readout with coefficient data of a Hecke eigenform (even approximately), multiplicativity and prime-power recursions supply stringent internal consistency checks (Section~\ref{sec:quant_hecke_tau}). These constraints are sharply discriminative: they are not generic properties of arbitrary integer sequences.
+\end{enumerate}
+
+\paragraph{A quantitative noise/decoherence interface.}
+At Layer~1, noise enters by deforming either the effective state $\omega_{\mathrm{eff}}$ or the effects $\{E_k^{(\varepsilon)}\}$. In the Heisenberg picture, one may represent an instrument/noise channel by a completely positive unital map $\mathcal{N}$ on the observer algebra and write
+\begin{equation}
+P_k^{(\varepsilon)}=\omega_{\mathrm{eff}}\!\left(\mathcal{N}\!\left(E_k^{(\varepsilon)}\right)\right).
+\label{eq:noise_channel_effects}
+\end{equation}
+Two canonical toy deformations capture common laboratory imperfections:
+\begin{itemize}
+  \item \textbf{Finite aperture / window smoothing.}
+  Replace a sharp window $\mathbf{1}_W$ by a smoothed kernel $w_{W,\sigma}=\kappa_\sigma * \mathbf{1}_W$ (convolution on $\RR/\ZZ$). This models finite spatial/phase resolution. In discrepancy bounds, the variation $V(\mathbf{1}_W)=2$ is replaced by $V(w_{W,\sigma})\le 2$, improving finite-$N$ constants when the aperture is smooth.
+
+  \item \textbf{Finite coherence / exponential memory.}
+  Replace uniform time-averages by Abel-weighted averages $(1-r)\sum_{t\ge 0} r^t(\cdot)$, which is the canonical resolvent regularization of the scan dynamics (R1 and Appendix~\ref{app:abel_regularization}). This models a causal finite-memory response with exponential forgetting. The limit $r\uparrow 1$ is an idealized infinite-coherence limit.
+\end{itemize}
+
+\paragraph{Error-budget template.}
+In a commutative phase-window model, an auditable total error budget takes the additive form
+\begin{equation}
+\Bigl|\widehat P_W - P_W\Bigr|
+\;\le\;
+V(w_{W,\sigma})\,D_N^*(P_N)
+\;+\;\delta_{\mathrm{instr}}(\sigma)
+\;+\;\delta_{\mathrm{num}}(M,\tau),
+\label{eq:error_budget_template}
+\end{equation}
+where the first term is the deterministic finite-$N$ discrepancy contribution, $\delta_{\mathrm{instr}}$ collects instrument-model mismatch (e.g.\ calibration error beyond the smoothing kernel), and $\delta_{\mathrm{num}}$ is a certified truncation/precision term when modular objects are evaluated via finite $q$-series depth $M$ (Appendix~\ref{app:eisenstein_tail_bounds} and Appendix~\ref{app:j_truncation_bounds}). The key point is methodological: each contribution can be made explicit and independently audited.
 
 
 

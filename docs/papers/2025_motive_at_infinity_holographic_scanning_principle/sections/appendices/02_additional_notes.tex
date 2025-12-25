@@ -1,0 +1,50 @@
+
+\section{Additional mathematical notes}
+\label{app:additional_notes}
+
+\subsection{On unique ergodicity of Kronecker rotations}
+
+For $\alpha$ satisfying \eqref{eq:rational_independence}, the translation $x\mapsto x+\alpha$ on $\TT^d$ is uniquely ergodic with respect to Haar measure. As a consequence, for continuous $f$, Birkhoff averages converge uniformly in the initial condition. In the main text we used the equivalent uniform distribution formulation because it interfaces directly with discrepancy bounds and Riemann integrable kernels.
+
+\subsection{On discrepancy estimates and Diophantine properties}
+
+The star discrepancy of the Kronecker sequence $\{x_0+t\alpha\}$ admits explicit bounds in terms of Diophantine approximation properties of $\alpha$; in $d=1$ these are controlled by continued fractions \cite{KuipersNiederreiter1974,IosifescuKraaikamp2002}. This paper does not require a specific bound, only that discrepancy provides an auditable sampling error term (Corollary~\ref{cor:sampling_error}). The selection principle (Section~\ref{sec:selection_principle}) uses these estimates as motivation.
+
+\subsection{A closed 1D rate bound for constant-type rotations (bounded partial quotients)}
+\label{app:1d_discrepancy_constant_type}
+
+For one-dimensional scans $x_t=x_0+t\alpha\pmod{1}$, finite-horizon stability can be made fully explicit under a standard Diophantine regularity condition.
+
+\begin{proposition}[Star discrepancy for bounded partial quotients]
+\label{prop:1d_discrepancy_log_over_n}
+Let $\alpha=[0;a_1,a_2,\dots]$ be irrational with bounded partial quotients $a_n\le A$. Then the star discrepancy of the Kronecker point set $P_N=\{\{x_0+t\alpha\}:0\le t\le N-1\}\subset[0,1)$ satisfies
+\begin{equation}
+\label{eq:1d_discrepancy_log_over_n}
+D_N^\ast(P_N) \le \frac{2A(3+\log_\varphi N)}{N},
+\end{equation}
+where $\varphi=(1+\sqrt{5})/2$.
+\end{proposition}
+
+\begin{proof}
+Let $q_n$ denote the continued-fraction convergent denominators of $\alpha$, and write the Ostrowski expansion $N=\sum_{j=0}^m b_j q_j$. For $u\in[0,1]$, set $f_u(x)=\ind_{[0,u)}(x)-u$, so that $\int_0^1 f_u=0$ and $\Var(f_u)\le 2$.
+
+By the Denjoy--Koksma inequality at convergent lengths \cite{Denjoy1932,Koksma1935,KatokHasselblatt1995}, each block sum over a length-$q_j$ orbit segment is bounded by $\Var(f_u)$ uniformly in the starting point. Applying an Ostrowski block decomposition and summing over the $b_j$ blocks yields
+\[
+\left|\sum_{t=0}^{N-1} f_u(x_0+t\alpha)\right|\le \Var(f_u)\sum_{j=0}^m b_j \le 2\sum_{j=0}^m b_j.
+\]
+Dividing by $N$ and taking the supremum over $u$ gives
+\[
+D_N^\ast(P_N)\le \frac{2}{N}\sum_{j=0}^m b_j.
+\]
+If $a_n\le A$, then Ostrowski digits satisfy $b_j\le a_{j+1}\le A$, hence $\sum_{j=0}^m b_j\le A(m+1)$.
+Moreover, $q_{n+1}=a_{n+1}q_n+q_{n-1}\ge q_n+q_{n-1}$ implies $q_n\ge F_n$ for Fibonacci numbers, and $F_n\ge \varphi^{n-2}$ for $n\ge 2$. Since $q_m\le N$, we obtain $\varphi^{m-2}\le N$, hence $m\le 2+\log_\varphi N$. Therefore $m+1\le 3+\log_\varphi N$ and
+\[
+D_N^\ast(P_N)\le \frac{2A(3+\log_\varphi N)}{N}.
+\]
+\end{proof}
+
+\begin{remark}
+For the golden branch $\alpha=\varphi^{-1}$ one has $A=1$, giving an explicit certified $O((\log N)/N)$ discrepancy bound. Combined with Proposition~\ref{prop:explicit_1d_variations}, this turns the $\log 2$ and $\pi$ scan realizations into fully quantified, parameter-free finite-$N$ bounds.
+\end{remark}
+
+
