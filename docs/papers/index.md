@@ -12,6 +12,7 @@
 | `2025_ramanujan_holographic_scanning_principle_hpa_omega/` | Ramanujan Holographic Scanning Principle: Modular Curves, Hecke Dynamics, and an Arithmetic Constitution for HPA--Ω (RHSP) | [`main.pdf`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/main.pdf) | [`main.tex`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/main.tex) | **算术几何接口篇**：模曲线/Hecke 为 scan–projection 提供母体与素数骨架；附可复现实验（Fibonacci/Sturmian、τ(n)、j 不变量） | HPA + HPΩT |
 | `2025_stairway_to_infinity_holographic_renormalization_flow/` | The Stairway to Infinity: A Holographic Renormalization Flow from Noncommutative Scanning to the Langlands Program (STI) | [`main.pdf`](./2025_stairway_to_infinity_holographic_renormalization_flow/main.pdf) | [`main.tex`](./2025_stairway_to_infinity_holographic_renormalization_flow/main.tex) | **攀登/重整化流篇**：把“向上抽象”形式化为模曲面测地流/Gauss 悬挂流；给出切片—系数—采样与差异度/Ostrowski 的有限 $N$ 误差界；以 $S$-反演 + Morita/傅里叶交换作为尺度互换模板，并给出朗兰兹函子化任务 | RHSP + HPA |
 | `2025_motive_at_infinity_holographic_scanning_principle/` | The Motive at Infinity: Functorialization of the Holographic Scanning Principle, Period Realizations, and a Selection Principle (MAI) | [`main.pdf`](./2025_motive_at_infinity_holographic_scanning_principle/main.pdf) | [`main.tex`](./2025_motive_at_infinity_holographic_scanning_principle/main.tex) | **周期/动机升维篇**：在不破坏 Layer 0/1 审计纪律下把扫描协议函子化到 KZ 周期数据；证明“扫描平均=周期积分”；给出可审计误差预算与可复现实验，并提出有限资源下的选择原则 | STI + HPA（+ PCG 的常数刚性示例） |
+| `2025_protocol_stable_period_data_computational_teleology/` | Protocol-Stable Period Data in Computational Teleology: From Holographic Scanning Protocols to Variational Dynamics of Minimal Computational Discrepancy and Constant Selection (PSPD) | [`main.pdf`](./2025_protocol_stable_period_data_computational_teleology/main.pdf) | [`main.tex`](./2025_protocol_stable_period_data_computational_teleology/main.tex) | **专题篇（Wish/period + 变分动力学）**：协议稳定周期数据（Wish）、差异度×变差的有限资源证书、协议空间的带阻尼惯性梯度流、以及常数刚性/唯一性间隙玩具模型 | MAI + CAP（+ PCG） |
 | `2025_computational_action_principle_hpa_omega/` | Computational Action Principle: Least-Discrepancy Dynamics and Field Unification in HPA–Ω (CAP) | [`main.pdf`](./2025_computational_action_principle_hpa_omega/main.pdf) | [`main.tex`](./2025_computational_action_principle_hpa_omega/main.tex) | **变分统一篇（CAP）**：最小差异原理 → Ω 作用量（Fisher + 路由开销）→ GR+信息应力；规范/物质为相位误差补偿与拓扑缺陷 | HPA + FoP + HPΩT |
 | `2025_holographic_phase_thermodynamics_hpa_omega/` | Holographic Phase Thermodynamics: Arithmetic Statistical Mechanics, Computational Lapse, and the Geometric Origin of Intelligence in HPA–Ω (HPT) | [`main.pdf`](./2025_holographic_phase_thermodynamics_hpa_omega/main.pdf) | [`main.tex`](./2025_holographic_phase_thermodynamics_hpa_omega/main.tex) | **专题篇（热力学/智能）**：算术统计力学、相位摩擦（差异熵）、计算时延与熵流重标度、智能作为主动纠错相变 | HPA + FoP + HPΩT + CAP（+ HPD 的 Phase Pressure 模板） |
 | `2025_holographic_polar_dynamics/` | Holographic Polar Dynamics (HPD) | [`main.pdf`](./2025_holographic_polar_dynamics/main.pdf) | [`main.tex`](./2025_holographic_polar_dynamics/main.tex) | **应用篇（Paper II）**：把 HPA 的失配/差异度量用于黑洞/奇点与信息悖论模板（Phase Pressure） | HPA（+ CAP 作为统一视角） |
@@ -30,6 +31,7 @@ flowchart TB
   RHSP["RHSP<br/>Ramanujan Holographic Scanning Principle<br/>modular curves / Hecke interface"]
   STI["STI<br/>Stairway to Infinity<br/>holographic renormalization flow"]
   MAI["MAI<br/>The Motive at Infinity<br/>periods / motives / selection"]
+  PSPD["PSPD<br/>Protocol-Stable Period Data<br/>teleological variational dynamics"]
   CAP["CAP<br/>Computational Action Principle<br/>最小差异变分统一"]
   HPT["HPT<br/>Holographic Phase Thermodynamics<br/>热力学/智能专题"]
   HPD["HPD<br/>Holographic Polar Dynamics<br/>黑洞/奇点应用（Paper II）"]
@@ -46,6 +48,9 @@ flowchart TB
   STI -->|"扫描=周期实现、周期数据函子化"| MAI
   HPA -->|"扫描—读出协议与误差预算模板"| MAI
   PCG -->|"低复杂度常数刚性示例"| MAI
+  MAI -->|"Wish data + auditable error budgets"| PSPD
+  CAP -->|"least-discrepancy variational closure"| PSPD
+  PCG -->|"bounded-complexity rigidity toy model"| PSPD
   HPA -->|"最小差异/读出失配"| CAP
   FoP -->|"Ω 作用量、lapse、Fisher"| CAP
   HPOT -->|"O1–O6 + R1 接口"| CAP
@@ -78,6 +83,7 @@ flowchart TB
   class CAP unify;
   class PCG topic;
   class CT topic;
+  class PSPD topic;
 ```
 
 ### 各论文简介（含与其他论文的接口）
@@ -157,6 +163,19 @@ flowchart TB
   - 承接 STI 的“函子化升级/协议等价”目标，把其拆分为可落地的 `Scan_alg -> PerDatum` 第一箭头，并将“周期—动机—朗兰兹拼接”明确为后续交换图目标。
   - 与 HPA 共享扫描—读出语言与差异度/误差预算的审计框架；与 PCG 在“常数的低复杂度刚性信号”上形成互证接口。
 - **入口链接**：[`main.pdf`](./2025_motive_at_infinity_holographic_scanning_principle/main.pdf)、[`main.tex`](./2025_motive_at_infinity_holographic_scanning_principle/main.tex)、[`references.bib`](./2025_motive_at_infinity_holographic_scanning_principle/references.bib)、[`scripts/`](./2025_motive_at_infinity_holographic_scanning_principle/scripts/)
+
+### `2025_protocol_stable_period_data_computational_teleology/`（PSPD，Protocol-Stable Period Data）
+
+- **定位**：把 MAI 的 “Wish=协议稳定周期数据” 与 CAP 的 “最小差异变分骨架” 在协议参数空间上闭合为一个可审计的动力学模型：证书化差异势能 + 显式复杂度代价 + 带阻尼惯性梯度流。
+- **做了什么**：
+  - **Wish 的公理性对象化**：把 Wish 固定为 protocol-stable period datum/data，并将其作为可复现的目标对象而非解释层语言。
+  - **有限资源误差证书**：以 discrepancy × Hardy–Krause variation 给出采样误差证书，并与正则/截断误差分解组合成全误差预算。
+  - **协议空间变分动力学**：把证书化差异势能与复杂度代价视为计算势能，在协议参数空间导出带阻尼惯性梯度流，并给出 Lyapunov 单调性。
+  - **可复现验证**：纯 Python 实验复现 $\log 2,\pi,\zeta(2),\zeta(3)$ 的协议实现与证书，并给出 $\alpha^{-1}(0)$ 低复杂度搜索的显著唯一性间隙。
+- **与其他论文关系**：
+  - 继承 MAI 的 period/Wish/误差预算与审计纪律，并把其选择原则推进为显式动力学闭合。
+  - 与 CAP 在 “最小差异/变分” 上结构同构，并与 PCG 的常数刚性示例形成互证接口。
+- **入口链接**：[`main.pdf`](./2025_protocol_stable_period_data_computational_teleology/main.pdf)、[`main.tex`](./2025_protocol_stable_period_data_computational_teleology/main.tex)、[`references.bib`](./2025_protocol_stable_period_data_computational_teleology/references.bib)、[`scripts/`](./2025_protocol_stable_period_data_computational_teleology/scripts/)
 
 ### `2025_holographic_polar_dynamics/`（HPD，Omega Dynamics / Paper II）
 

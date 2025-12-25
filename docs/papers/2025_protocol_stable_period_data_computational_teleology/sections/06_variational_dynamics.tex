@@ -1,0 +1,214 @@
+
+\section{Variational dynamics on protocol space: minimal computational discrepancy}
+\label{sec:variational_dynamics}
+
+This section gives the main new closed contribution: a variational dynamics on protocol parameter space in which Wish induces a computable ``potential'' and finite-resource stability becomes a Lyapunov principle.
+
+\subsection{Parameterized protocol families}
+\label{sec:param_protocol_families}
+
+Let $\Theta\subset\RR^m$ be a parameter space and let
+\[
+\{\mathcal{P}_\theta\in\ScanAlg:\ \theta\in\Theta\}
+\]
+be a family of auditable protocols whose parameters may include scan slopes $\alpha$, truncation depths, kernel coefficients, or regularization knobs.
+Fix a target Wish $W_0\in\PerDatum_{\mathrm{stable}}$ with value $\per(W_0)$.
+
+\subsection{Discrepancy potentials: true and certified}
+\label{sec:potentials}
+
+There are two natural ways to measure ``distance to Wish'' at horizon $N$.
+
+\paragraph{True (numerical) discrepancy potential.}
+Define
+\begin{equation}
+\label{eq:true_potential}
+V_N(\theta):=\left|\avgN{\mathcal{P}_\theta}-\per(W_0)\right|^2.
+\end{equation}
+This quantity is directly evaluable by simulation when $\per(W_0)$ is known (e.g.\ $\log 2$ or $\pi$), or when a certified reference interval is used (e.g.\ for $\zeta(3)$).
+However, it is not itself an auditable \emph{certificate}, since it mixes numerical estimation with the unknown true error.
+
+\paragraph{Certified discrepancy potential.}
+Using the deterministic bound \eqref{eq:certified_total_error}, define
+\begin{equation}
+\label{eq:cert_potential}
+\widehat V_N(\theta):=\Big(\widehat{\Stab}_N(\mathcal{P}_\theta)+\Reg(\HSP(\mathcal{P}_\theta);W_0)\Big)^2.
+\end{equation}
+This is a fully auditable quantity derived from protocol data once discrepancy and truncation bounds are fixed.
+
+\subsection{A teleological Lagrangian and dissipative principle}
+\label{sec:teleological_lagrangian}
+
+We define a finite-horizon computational potential that combines certified discrepancy and an implementation cost:
+\begin{equation}
+\label{eq:U_def}
+U_N(\theta):=\kappa\,\widehat V_N(\theta)+\kappa_c\,\Comp(\mathcal{P}_\theta;N),
+\qquad \kappa,\kappa_c\ge 0.
+\end{equation}
+
+Consider a continuous-time protocol trajectory $\theta(t)$.
+Define the Lagrangian
+\begin{equation}
+\label{eq:lagrangian}
+\mathcal{L}(\theta,\dot\theta)
+:=\frac{\mu}{2}\norm{\dot\theta}^2-U_N(\theta),
+\qquad \mu>0,
+\end{equation}
+and a Rayleigh dissipation function
+\begin{equation}
+\label{eq:rayleigh}
+\mathcal{R}(\dot\theta):=\frac{\gamma}{2}\norm{\dot\theta}^2,
+\qquad \gamma>0.
+\end{equation}
+
+\begin{theorem}[Teleological protocol dynamics: damped inertial gradient flow]
+\label{thm:teleology_dynamics}
+Assume $U_N$ is differentiable on $\Theta$.
+The dissipative variational principle with Lagrangian \eqref{eq:lagrangian} and Rayleigh term \eqref{eq:rayleigh} yields the equation of motion
+\begin{equation}
+\label{eq:teleology_ode}
+\mu\,\ddot\theta+\gamma\,\dot\theta
+\;=\;
+-\nabla_\theta U_N(\theta)
+\;=\;
+-\nabla_\theta\Big(\kappa\,\widehat V_N(\theta)+\kappa_c\,\Comp(\mathcal{P}_\theta;N)\Big).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The dissipative Euler--Lagrange equation is
+\[
+\frac{\dd}{\dd t}\frac{\partial \mathcal{L}}{\partial \dot\theta}
+-\frac{\partial \mathcal{L}}{\partial \theta}
++\frac{\partial \mathcal{R}}{\partial \dot\theta}=0,
+\]
+Compute $\frac{\partial \mathcal{L}}{\partial \dot\theta}=\mu\dot\theta$ and $\frac{\partial \mathcal{R}}{\partial \dot\theta}=\gamma\dot\theta$, and note $\frac{\partial \mathcal{L}}{\partial \theta}=-\nabla_\theta U_N(\theta)$.
+Substitution yields \eqref{eq:teleology_ode}.
+\end{proof}
+
+\begin{remark}[On nonsmooth certificate potentials]
+Theorem~\ref{thm:teleology_dynamics} is stated under a $C^1$ assumption on $U_N$ to keep the closed derivation standard.
+In the certificate setting, $U_N$ is generally only locally Lipschitz: the construction of $\widehat{\Stab}_N$ and $\Reg(\HSP(\mathcal{P}_\theta);W_0)$ involves absolute values, suprema/infima, and piecewise-defined bounds (e.g.\ minima such as $\min(1,\cdot)$ in ETK certificates).
+Such functionals are not differentiable in general, but they admit well-developed generalized gradient calculus.
+In that case, \eqref{eq:teleology_ode} can be interpreted using generalized gradients and differential inclusions (e.g.\ Clarke subdifferentials) while retaining a Lyapunov-type monotonicity; see \cite{Clarke1990} for a standard framework.
+Similarly, $\Comp(\mathcal{P}_\theta;N)$ may contain discrete description-length components.
+For the continuous-time analysis one may either (i) restrict attention to a continuous subfamily of protocols for which $\Comp$ is represented by a differentiable surrogate, or (ii) keep the discrete components and work directly with the discrete-time update \eqref{eq:heavy_ball}.
+\end{remark}
+
+\begin{proposition}[Nonsmooth teleological dynamics and energy decay]
+\label{prop:nonsmooth_energy}
+Assume $U_N:\Theta\to\RR$ is locally Lipschitz on an open set $\Theta\subset\RR^m$ and let $\partial U_N$ denote the Clarke subdifferential.
+Let $\theta:[0,T]\to\Theta$ be a $C^1$ curve whose velocity $\dot\theta$ is absolutely continuous and satisfies the differential inclusion
+\begin{equation}
+\label{eq:teleology_inclusion}
+\mu\,\ddot\theta+\gamma\,\dot\theta \in -\partial U_N(\theta)
+\qquad\text{for a.e.\ }t\in[0,T].
+\end{equation}
+Then the energy
+\[
+E(t):=\frac{\mu}{2}\norm{\dot\theta(t)}^2+U_N(\theta(t))
+\]
+is absolutely continuous and satisfies
+\[
+\frac{\dd E}{\dd t}=-\gamma\,\norm{\dot\theta(t)}^2
+\quad\text{for a.e.\ }t\in[0,T].
+\]
+In particular, $E$ is nonincreasing.
+\end{proposition}
+
+\begin{proof}
+Since $U_N$ is locally Lipschitz, it is differentiable almost everywhere on $\Theta$ (Rademacher's theorem; see \cite{Clarke1990}).
+Therefore, for almost every $t$ the point $\theta(t)$ is a differentiability point of $U_N$, in which case $\partial U_N(\theta(t))=\{\nabla U_N(\theta(t))\}$.
+At such times, the inclusion \eqref{eq:teleology_inclusion} reduces to the classical ODE
+\[
+\mu\ddot\theta+\gamma\dot\theta=-\nabla U_N(\theta(t)).
+\]
+Taking the inner product with $\dot\theta$ and applying the chain rule gives
+\[
+\frac{\dd}{\dd t}\left(\frac{\mu}{2}\norm{\dot\theta}^2\right)+\gamma\norm{\dot\theta}^2
+=-\langle\nabla U_N(\theta(t)),\dot\theta\rangle
+=-\frac{\dd}{\dd t}U_N(\theta(t))
+\]
+for almost every $t$, hence $\frac{\dd E}{\dd t}=-\gamma\norm{\dot\theta}^2$ a.e.
+Absolute continuity of $E$ follows from absolute continuity of $\dot\theta$ and the fact that locally Lipschitz functions composed with absolutely continuous curves are absolutely continuous \cite{Clarke1990}.
+\end{proof}
+
+\begin{proposition}[Well-posedness of the teleological dynamics]
+\label{prop:wellposedness}
+Assume $\Theta\subset\RR^m$ is open and $\nabla_\theta U_N$ is locally Lipschitz on $\Theta$.
+Then for every initial condition $(\theta(0),\dot\theta(0))\in \Theta\times\RR^m$, the ODE \eqref{eq:teleology_ode} admits a unique maximal solution.
+If in addition $\Theta=\RR^m$ and $\nabla_\theta U_N$ is globally Lipschitz, the solution exists for all $t\ge 0$.
+\end{proposition}
+
+\begin{proof}
+Rewrite \eqref{eq:teleology_ode} as a first-order system in $(\theta,v)$ with $v=\dot\theta$:
+\[
+\dot\theta=v,\qquad
+\dot v=-(\gamma/\mu)v-(1/\mu)\nabla_\theta U_N(\theta).
+\]
+Local existence and uniqueness follow from the Picard--Lindel\"of theorem under local Lipschitz continuity.
+Global existence follows under global Lipschitz continuity on $\RR^m$; see, e.g., \cite[Chapter~1]{CoddingtonLevinson1955}.
+\end{proof}
+
+\subsection{Lyapunov monotonicity: minimal computational discrepancy}
+\label{sec:lyapunov}
+
+Define the protocol energy
+\begin{equation}
+\label{eq:energy_def}
+E(\theta,\dot\theta)
+:=
+\frac{\mu}{2}\norm{\dot\theta}^2
++
+U_N(\theta).
+\end{equation}
+
+\begin{proposition}[Energy decay]
+\label{prop:energy_decay}
+Along any solution of \eqref{eq:teleology_ode},
+\[
+\frac{\dd E}{\dd t}=-\gamma\,\norm{\dot\theta}^2\le 0.
+\]
+In particular, $E$ is a Lyapunov function and is nonincreasing in time.
+\end{proposition}
+
+\begin{proof}
+Take the inner product of \eqref{eq:teleology_ode} with $\dot\theta$:
+\[
+\mu\langle \ddot\theta,\dot\theta\rangle+\gamma\norm{\dot\theta}^2
+=-\langle\nabla_\theta U_N(\theta),\dot\theta\rangle.
+\]
+The first term equals $\frac{\dd}{\dd t}\left(\frac{\mu}{2}\norm{\dot\theta}^2\right)$ and the right-hand side equals $-\frac{\dd}{\dd t}U_N(\theta)$.
+Rearranging gives the claim.
+\end{proof}
+
+\begin{corollary}[Finite total dissipation]
+\label{cor:finite_dissipation}
+Assume $U_N$ is bounded below by $U_{\inf}\in\RR$.
+Then along any solution of \eqref{eq:teleology_ode},
+\[
+\int_0^\infty \norm{\dot\theta(t)}^2\,\dd t
+\le
+\frac{E(0)-U_{\inf}}{\gamma}.
+\]
+In particular, $\dot\theta\in L^2([0,\infty))$ and there exists a sequence $t_k\to\infty$ such that $\dot\theta(t_k)\to 0$.
+\end{corollary}
+
+\begin{proof}
+Integrate \eqref{eq:energy_def} and Proposition~\ref{prop:energy_decay}:
+\[
+E(t)-E(0)=-\gamma\int_0^t \norm{\dot\theta(s)}^2\,\dd s.
+\]
+Since $E(t)\ge U_N(\theta(t))\ge U_{\inf}$, we obtain the bound by letting $t\to\infty$.
+The existence of a sequence with $\dot\theta(t_k)\to 0$ follows from $\dot\theta\in L^2$.
+\end{proof}
+
+\subsection{Structural correspondence with the principle of least action}
+\label{sec:pla_correspondence}
+
+Equation \eqref{eq:teleology_ode} has the same structural form as classical mechanics:
+inertial term $+$ damping term $=$ negative gradient of a potential.
+Here the potential is \emph{computational}: a certified discrepancy bound toward a Wish, plus an explicit cost penalty.
+This yields a precise, audit-compatible sense in which ``least action'' and ``least computational discrepancy'' share a common variational skeleton once the degrees of freedom are taken to be protocol parameters.
+
+

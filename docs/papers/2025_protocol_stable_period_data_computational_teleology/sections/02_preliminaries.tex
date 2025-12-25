@@ -1,0 +1,136 @@
+
+\section{Preliminaries: scanning protocols, readout, and period data}
+\label{sec:preliminaries}
+
+\subsection{A controlled protocol class}
+\label{sec:prelim_scanalg}
+
+We work in a controlled class of auditable scan--readout protocols.
+For concreteness, we focus on Kronecker-type scans on tori with algebraic (rational) kernels and explicit regularization rules.
+
+\begin{definition}[Kronecker scan protocol]
+\label{def:protocol}
+A (Kronecker) scan protocol is a tuple
+\[
+\mathcal{P}=(\TT^d,\alpha,x_0,f,R),
+\]
+where $\TT^d=(\RR/\ZZ)^d$ is the $d$-torus, $\alpha\in\RR^d$ is a scan slope, $x_0\in\TT^d$ is an initial condition, $f$ is a readout kernel, and $R$ is a regularization rule producing a regulated kernel $f_R$.
+The scan orbit is
+\[
+x_t = x_0+t\alpha \pmod 1,\qquad t\in\ZZ_{\ge 0}.
+\]
+\end{definition}
+
+In this paper, the \emph{finite horizon} $N$ is treated as the primary resource variable.
+We denote the orbit prefix by
+\[
+P_N=\{x_0,x_1,\dots,x_{N-1}\}\subset [0,1)^d.
+\]
+Additional resource parameters (e.g.\ truncation depth) are recorded as part of $R$ when relevant.
+
+\subsection{Readout: finite-time averages}
+\label{sec:prelim_readout}
+
+\begin{definition}[Finite-horizon readout]
+\label{def:readout}
+Given a protocol $\mathcal{P}$ and horizon $N\ge 1$, the protocol readout is the empirical average
+\[
+\avgN{\mathcal{P}} := \frac{1}{N}\sum_{t=0}^{N-1} f_R(x_t).
+\]
+\end{definition}
+
+The readout is the \emph{only} protocol output used in the closed layer: it is finite, computable, and reproducible given the protocol data.
+Ensemble versions (averaging over multiple initial conditions) will be used in the numerical section.
+
+\subsection{Period data and ideal values}
+\label{sec:prelim_period_data}
+
+To connect protocol outputs to classical constants, we treat the ideal target as a (regularized) period integral.
+
+\begin{definition}[Period datum]
+\label{def:period_datum}
+A \emph{period datum} is a triple $W=(D,f,R)$ where $D\subset\RR^d$ is a measurable domain (in practice $D=[0,1)^d$), $f$ is a kernel, and $R$ is a regularization rule producing $f_R$.
+Its (regularized) period value is
+\[
+\per(W) := \int_D f_R\,\dd x.
+\]
+\end{definition}
+
+In the Kontsevich--Zagier sense, periods are values of integrals of algebraic differential forms over domains defined by algebraic inequalities \cite{KontsevichZagier2001}.
+Our controlled protocol class is designed so that $\per(W)$ lies in, or is canonically related to, such a period class.
+
+\subsection{Examples: basic period data used in this paper}
+\label{sec:prelim_examples}
+
+\begin{example}[$\log 2$]
+On $D=[0,1]$, let $f(x)=\frac{1}{1+x}$ and $R=\mathrm{Id}$.
+Then $W=(D,f,R)$ satisfies $\per(W)=\int_0^1 \frac{1}{1+x}\,\dd x=\log 2$.
+\end{example}
+
+\begin{example}[$\pi$]
+On $D=[0,1]$, let $f(x)=\frac{4}{1+x^2}$ and $R=\mathrm{Id}$.
+Then $W=(D,f,R)$ satisfies $\per(W)=\int_0^1 \frac{4}{1+x^2}\,\dd x=\pi$.
+\end{example}
+
+\begin{example}[$\pi^2$ and $\pi^3$ as cubical periods]
+\label{ex:pi_powers}
+Let $g(x)=\frac{4}{1+x^2}$ on $[0,1]$.
+Define $f_2(x,y)=g(x)g(y)$ on $[0,1]^2$ and $f_3(x,y,z)=g(x)g(y)g(z)$ on $[0,1]^3$ (with $R=\mathrm{Id}$).
+By Fubini's theorem,
+\[
+\int_{[0,1]^2} f_2\,\dd x\,\dd y=\left(\int_0^1 g(x)\,\dd x\right)^2=\pi^2,
+\qquad
+\int_{[0,1]^3} f_3\,\dd x\,\dd y\,\dd z=\left(\int_0^1 g(x)\,\dd x\right)^3=\pi^3.
+\]
+These product forms provide an explicit period realization of $\pi^2$ and $\pi^3$ within the same rational-kernel protocol class used throughout the paper.
+\end{example}
+
+\subsection{The holographic scan-to-period interface}
+\label{sec:prelim_hsp}
+
+The essential bridge is that a protocol determines a canonical period datum by forgetting orbit-level details while keeping the domain, kernel, and regularization.
+
+\begin{definition}[Scan-to-period interface map]
+\label{def:hsp}
+For a protocol $\mathcal{P}=(\TT^d,\alpha,x_0,f,R)$ we define its associated period datum by
+\[
+\HSP(\mathcal{P}) := ([0,1)^d,f,R).
+\]
+When we restrict to the controlled class $\ScanAlg$, this assignment can be organized as a functor $\HSP:\ScanAlg\to\PerDatum$; in this paper we only need the object-level map and its invariance properties.
+\end{definition}
+
+\begin{remark}[Protocol equivalence and invariance]
+\label{rem:protocol_equivalence}
+Many changes in protocol presentation (e.g.\ torus translations, measure-preserving automorphisms, or equivalent regularization conventions) do not change $\per(\HSP(\mathcal{P}))$.
+This invariance is the basis for treating period values as \emph{protocol invariants} rather than properties of a specific implementation.
+\end{remark}
+
+\begin{definition}[Affine protocol equivalence]
+\label{def:protocol_equivalence}
+Let $\mathcal{P}=(\TT^d,\alpha,x_0,f,R)$.
+For $A\in \mathrm{GL}(d,\ZZ)$ with $|\det A|=1$ and $b\in\TT^d$, define the affine torus automorphism $\Phi(x)=Ax+b$.
+We say that $\mathcal{P}'=(\TT^d,\alpha',x_0',f',R)$ is \emph{affine-equivalent} to $\mathcal{P}$ if
+\[
+\alpha'=A\alpha,\qquad x_0'=\Phi(x_0),\qquad f'_R = f_R\circ \Phi^{-1}
+\]
+(equivalently, $f'$ is the pullback of $f$ under $\Phi$ with the same regularization rule).
+\end{definition}
+
+\begin{lemma}[Period invariance under affine protocol equivalence]
+\label{lem:period_invariance_affine}
+If $\mathcal{P}'$ is affine-equivalent to $\mathcal{P}$ in the sense of Definition~\ref{def:protocol_equivalence}, then
+\[
+\per(\HSP(\mathcal{P}'))=\per(\HSP(\mathcal{P})).
+\]
+\end{lemma}
+
+\begin{proof}
+By definition, $\HSP(\mathcal{P})=([0,1)^d,f,R)$ and $\HSP(\mathcal{P}')=([0,1)^d,f',R)$ with $f'_R=f_R\circ \Phi^{-1}$.
+Since $\Phi$ is measure-preserving on $\TT^d$ (it is an affine automorphism with $|\det A|=1$),
+the change-of-variables formula yields
+\[
+\int_{[0,1)^d} f'_R\,\dd x=\int_{[0,1)^d} f_R\circ \Phi^{-1}\,\dd x=\int_{[0,1)^d} f_R\,\dd x.
+\]
+\end{proof}
+
+

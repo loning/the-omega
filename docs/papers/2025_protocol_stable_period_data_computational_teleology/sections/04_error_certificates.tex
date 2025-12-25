@@ -1,0 +1,370 @@
+
+\section{Finite-resource error certificates: discrepancy \texorpdfstring{$\times$}{x} variation}
+\label{sec:error_certificates}
+
+\subsection{Sampling error versus regularization error}
+\label{sec:error_decomposition}
+
+Let $\mathcal{P}=(\TT^d,\alpha,x_0,f,R)$ be a protocol.
+Write
+\[
+W_0:=(D,f,\mathrm{Id}),\qquad W_R:=(D,f,R),
+\]
+for the ideal (unregularized) and regulated period data, when $W_0$ is well-defined.
+For many classical constants, one introduces explicit regularization or truncation, encoded by $R$, to obtain an auditable finite-resource approximation.
+This yields an immediate auditable decomposition:
+\begin{equation}
+\label{eq:error_decomposition}
+\left|\avgN{\mathcal{P}}-\per(W_0)\right|
+\le
+\underbrace{\left|\avgN{\mathcal{P}}-\per(W_R)\right|}_{\text{sampling error}}
+\;+\;
+\underbrace{\left|\per(W_R)-\per(W_0)\right|}_{\text{regularization error}}.
+\end{equation}
+The first term depends on the finite orbit prefix $P_N$ and is controlled by discrepancy theory.
+The second term can be controlled by an explicit, auditable remainder bound induced by $R$.
+
+\begin{definition}[Regularization remainder and auditable certificate]
+\label{def:reg_certificate}
+Let $W_0=(D,f,\mathrm{Id})$ be an ideal datum and let $W_R=(D,f,R)$ be a regulated datum.
+Define the (exact) regularization remainder
+\[
+\Delta_{\mathrm{reg}}(W_R;W_0):=\left|\per(W_R)-\per(W_0)\right|.
+\]
+An \emph{auditable regularization certificate} is any explicitly computable bound
+\[
+\Reg(W_R;W_0)\ge \Delta_{\mathrm{reg}}(W_R;W_0).
+\]
+\end{definition}
+
+\begin{definition}[Admissible regularization rule]
+\label{def:admissible_regularization}
+We call a regularization rule $R$ \emph{admissible} for $W_0=(D,f,\mathrm{Id})$ if the associated regulated datum $W_R=(D,f,R)$ admits an auditable regularization certificate $\Reg(W_R;W_0)$ in the sense of Definition~\ref{def:reg_certificate}.
+\end{definition}
+
+\begin{remark}[Regularization certificates used in this paper]
+For $R=\mathrm{Id}$ we take the certificate $\Reg(W_R;W_0)=0$.
+For the truncated geometric kernels realizing $\zeta(2)$ and $\zeta(3)$, Proposition~\ref{prop:zeta_truncation} provides the explicit certificates $\Reg\le 1/M$ and $\Reg\le 1/(2M^2)$, respectively.
+\end{remark}
+
+\subsection{Star discrepancy}
+\label{sec:star_discrepancy}
+
+\begin{definition}[Star discrepancy]
+\label{def:star_discrepancy}
+Let $P_N=\{x_0,\dots,x_{N-1}\}\subset[0,1)^d$.
+The \emph{star discrepancy} of $P_N$ is
+\[
+\DNstar(P_N):=\sup_{u\in[0,1]^d}\left|
+\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}_{[0,u)}(x_t)\;-\;\prod_{j=1}^d u_j
+\right|,
+\]
+where $[0,u)=\prod_{j=1}^d[0,u_j)$ and $\mathbf{1}_{[0,u)}$ is its indicator function.
+\end{definition}
+
+\begin{lemma}[Exact formula for the one-dimensional star discrepancy]
+\label{lem:star_discrepancy_1d_formula}
+Let $x_1,\dots,x_N\in[0,1)$ and let $x_{(1)}\le \cdots \le x_{(N)}$ be the sorted list.
+Then the one-dimensional star discrepancy satisfies
+\[
+\DNstar(\{x_1,\dots,x_N\})
+=
+\max_{1\le i\le N}\max\!\left(\frac{i}{N}-x_{(i)},\;x_{(i)}-\frac{i-1}{N}\right).
+\]
+In particular, it can be computed exactly in $O(N\log N)$ time by sorting.
+\end{lemma}
+
+\begin{proof}
+In one dimension, $\DNstar=\sup_{u\in[0,1]}|F_N(u)-u|$, where $F_N(u)=\frac{1}{N}\#\{i:\ x_i<u\}$ is the empirical distribution function.
+The function $F_N(u)-u$ is piecewise linear with slope $-1$ and jumps of size $1/N$ at the sample points, so its extrema occur at the jump locations.
+Evaluating the left and right limits at $u=x_{(i)}$ yields the stated maximum formula; see, e.g., \cite[\S 2.1]{KuipersNiederreiter1974}.
+\end{proof}
+
+Star discrepancy measures the worst-case deviation of empirical frequencies from Lebesgue measure over anchored axis-aligned boxes and is a standard audit-compatible notion for quasi-Monte Carlo integration \cite{KuipersNiederreiter1974,Niederreiter1992,Matousek1999}.
+
+\subsection{Hardy--Krause variation and Koksma--Hlawka}
+\label{sec:koksma_hlawka}
+
+For bounded-variation kernels, deterministic quadrature bounds take the form ``variation $\times$ discrepancy'' \cite{Koksma1935,Hlawka1961,KuipersNiederreiter1974,Niederreiter1992,DickPillichshammer2010}.
+
+\begin{definition}[Hardy--Krause variation (smooth form)]
+\label{def:hkvar_smooth}
+Assume $f:[0,1]^d\to\RR$ has continuous mixed partial derivatives of all orders $1\le |u|\le d$.
+For a nonempty index set $u\subseteq\{1,\dots,d\}$, write $x_u$ for the subvector of coordinates in $u$ and set the complementary coordinates to $1$.
+Define
+\[
+\HKVar(f)
+:=
+\sum_{\emptyset\neq u\subseteq\{1,\dots,d\}}
+\int_{[0,1]^{|u|}}
+\left|
+\frac{\partial^{|u|}}{\prod_{j\in u}\partial x_j}
+f\big(x_u;\mathbf{1}_{-u}\big)
+\right|\,
+\dd x_u.
+\]
+This representation agrees with the Hardy--Krause variation for bounded-variation functions in the standard quasi-Monte Carlo conventions; see \cite[\S 3.3]{DickPillichshammer2010}.
+\end{definition}
+
+\begin{theorem}[Koksma--Hlawka inequality]
+\label{thm:koksma_hlawka}
+Let $f:[0,1]^d\to\RR$ have bounded Hardy--Krause variation $\HKVar(f)<\infty$.
+Then for any point set $P_N\subset[0,1)^d$,
+\[
+\left|\frac{1}{N}\sum_{x\in P_N} f(x)\;-\;\int_{[0,1]^d} f(x)\,\dd x\right|
+\le \HKVar(f)\,\DNstar(P_N).
+\]
+\end{theorem}
+
+\begin{remark}[Audit discipline]
+Theorem~\ref{thm:koksma_hlawka} is a closed-layer statement: once $f$ and $P_N$ are fixed, the right-hand side is an explicit certificate whenever $\HKVar(f)$ and $\DNstar(P_N)$ are computable or bounded.
+\end{remark}
+
+\subsection{Protocol stability functional}
+\label{sec:stability_functional}
+
+We use Koksma--Hlawka to define a canonical audit-compatible finite-resource stability functional.
+
+\begin{definition}[Finite-horizon stability certificate]
+\label{def:stabN}
+For a protocol $\mathcal{P}=(\TT^d,\alpha,x_0,f,R)$ with regulated kernel $f_R$ of bounded Hardy--Krause variation, define
+\[
+\Stab_N(\mathcal{P})
+:=\HKVar(f_R)\,\DNstar(P_N).
+\]
+\end{definition}
+
+\begin{definition}[Auditable discrepancy certificate]
+\label{def:discrepancy_certificate}
+An \emph{auditable discrepancy certificate} for a prefix $P_N$ is any explicitly computable upper bound
+\[
+\widehat D_N^\ast(P_N)\ge \DNstar(P_N).
+\]
+It induces an auditable stability certificate
+\[
+\widehat{\Stab}_N(\mathcal{P})
+:=\HKVar(f_R)\,\widehat D_N^\ast(P_N).
+\]
+\end{definition}
+
+\begin{definition}[Audit-compatible protocol]
+\label{def:audit_compatible_protocol}
+Fix an ideal datum $W_0=(D,f,\mathrm{Id})$ and a horizon $N$.
+A protocol $\mathcal{P}=(\TT^d,\alpha,x_0,f,R)$ is \emph{audit-compatible with respect to $W_0$ at horizon $N$} if
+\begin{itemize}
+\item $\HKVar(f_R)$ is finite and explicitly bounded (or exactly computable) from the protocol data;
+\item an auditable discrepancy certificate $\widehat D_N^\ast(P_N)\ge \DNstar(P_N)$ is specified;
+\item the associated regulated datum $W_R=(D,f,R)$ is admissible for $W_0$ in the sense of Definition~\ref{def:admissible_regularization}, with a fixed certificate $\Reg(W_R;W_0)$.
+\end{itemize}
+In this case, the total certificate bound \eqref{eq:certified_total_error} is fully auditable from the protocol data and the fixed audit convention.
+\end{definition}
+
+Combining \eqref{eq:error_decomposition} with Theorem~\ref{thm:koksma_hlawka} yields the basic certified bound
+\begin{equation}
+\label{eq:certified_total_error}
+\begin{aligned}
+\left|\avgN{\mathcal{P}}-\per(W_0)\right|
+&\le \Stab_N(\mathcal{P})+\Delta_{\mathrm{reg}}(W_R;W_0)\\
+&\le \Stab_N(\mathcal{P})+\Reg(W_R;W_0).
+\end{aligned}
+\end{equation}
+In particular, whenever a discrepancy certificate $\widehat D_N^\ast$ is available and an admissible regularization certificate $\Reg(W_R;W_0)$ is fixed,
+\[
+\left|\avgN{\mathcal{P}}-\per(W_0)\right|
+\le \widehat{\Stab}_N(\mathcal{P})+\Reg(W_R;W_0).
+\]
+
+\subsection{A closed one-dimensional certificate for the golden branch}
+\label{sec:golden_branch}
+
+In one dimension, $\HKVar$ reduces to total variation and $\DNstar$ admits strong Diophantine control.
+For constant-type rotations (bounded continued-fraction coefficients), star discrepancy satisfies an explicit $O((\log N)/N)$ bound \cite{KuipersNiederreiter1974,DrmotaTichy1997}.
+For the golden-branch slope $\alpha=\varphi^{-1}$, one can make the constant fully explicit (Appendix~\ref{app:rotation_discrepancy_golden}):
+\begin{equation}
+\label{eq:golden_discrepancy_bound}
+\DNstar(P_N)\;\le\;\frac{2\,(2+\log_\varphi N)}{N},
+\qquad \alpha=\varphi^{-1}.
+\end{equation}
+Thus for any regulated kernel $f_R$ of bounded variation on $[0,1]$,
+\[
+\left|\avgN{\mathcal{P}}-\int_0^1 f_R(x)\,\dd x\right|
+\le \Var(f_R)\,\DNstar(P_N)
+\le \Var(f_R)\,\frac{2(2+\log_\varphi N)}{N}.
+\]
+Section~\ref{sec:reproducible_experiments} instantiates this with $f(x)=1/(1+x)$ (realizing $\log 2$) and $f(x)=4/(1+x^2)$ (realizing $\pi$).
+
+\begin{proposition}[Total variations of the $\log 2$ and $\pi$ kernels]
+\label{prop:variations_log_pi}
+Let $f_{\log}(x)=\frac{1}{1+x}$ and $f_{\pi}(x)=\frac{4}{1+x^2}$ on $[0,1]$.
+Then
+\[
+\Var(f_{\log})=\frac{1}{2},
+\qquad
+\Var(f_{\pi})=2.
+\]
+\end{proposition}
+
+\begin{proof}
+Both functions are smooth and strictly decreasing on $[0,1]$, hence their total variation equals the endpoint drop.
+Thus $\Var(f_{\log})=f_{\log}(0)-f_{\log}(1)=1-\frac12=\frac12$ and $\Var(f_{\pi})=f_{\pi}(0)-f_{\pi}(1)=4-2=2$.
+\end{proof}
+
+\subsection{Truncated geometric kernels and zeta certificates}
+\label{sec:truncated_geometric}
+
+To realize zeta-values in an audit-friendly way, we use a truncated geometric kernel with an exact harmonic-sum period and an explicit Hardy--Krause variation.
+
+\begin{definition}[Truncated geometric kernel]
+\label{def:geom_kernel}
+For $d\ge 2$ and truncation depth $M\in\NN$, define
+\[
+g_M(x_1,\dots,x_d)
+ := \sum_{n=0}^{M-1}\left(\prod_{j=1}^d x_j\right)^n,
+\qquad (x_1,\dots,x_d)\in[0,1)^d.
+\]
+\end{definition}
+
+\begin{lemma}[Exact period]
+\label{lem:geom_period}
+For $d\ge 2$,
+\[
+\int_{[0,1)^d} g_M(x)\,\dd x
+ = \sum_{n=1}^M \frac{1}{n^d}
+ =: H_M^{(d)}.
+\]
+\end{lemma}
+
+\begin{proof}
+Expand and integrate termwise:
+\[
+\int_{[0,1)^d}\prod_{j=1}^d x_j^n\,\dd x
+\;=\;\prod_{j=1}^d \int_0^1 x_j^n\,\dd x_j
+\;=\;\left(\frac{1}{n+1}\right)^d,
+\]
+and sum over $n=0,\dots,M-1$ to obtain $\sum_{m=1}^M m^{-d}$.
+\end{proof}
+
+\begin{proposition}[Hardy--Krause variation]
+\label{prop:geom_hkvar}
+For $g_M$ on $[0,1]^d$,
+\[
+\HKVar(g_M)=(2^d-1)(M-1).
+\]
+\end{proposition}
+
+\begin{proof}
+See Appendix~\ref{app:hkvar_truncated_geometric} for a direct computation from the definition of Hardy--Krause variation.
+\end{proof}
+
+\begin{remark}
+The exact value in Proposition~\ref{prop:geom_hkvar} is convenient for audit: it depends only on $(d,M)$ and not on any numerical estimation.
+\end{remark}
+
+For $d=2,3$, the harmonic sums converge to $\zeta(d)$ and the truncation remainders admit explicit bounds.
+
+\begin{proposition}[Zeta truncation bounds]
+\label{prop:zeta_truncation}
+For $M\ge 1$,
+\[
+0<\zeta(2)-H_M^{(2)}<\frac{1}{M},
+\qquad
+0<\zeta(3)-H_M^{(3)}<\frac{1}{2M^2}.
+\]
+\end{proposition}
+
+\begin{proof}
+This is the standard integral test remainder bound.
+For $s>1$ and $M\ge 1$,
+\[
+\sum_{n=M+1}^\infty \frac{1}{n^s}
+<
+\int_M^\infty \frac{\dd x}{x^s}
+=\frac{1}{(s-1)M^{s-1}}.
+\]
+Apply this with $s=2$ and $s=3$.
+See, e.g., \cite[\S 12]{Apostol1976} for classical remainder estimates.
+\end{proof}
+
+Combining Theorem~\ref{thm:koksma_hlawka} with Proposition~\ref{prop:zeta_truncation} yields closed total-error certificates:
+\[
+\left|\avgN{\mathcal{P}}-\zeta(2)\right|
+\le \HKVar(g_M)\,\DNstar(P_N)+\frac{1}{M},
+\qquad
+\left|\avgN{\mathcal{P}}-\zeta(3)\right|
+\le \HKVar(g_M)\,\DNstar(P_N)+\frac{1}{2M^2}.
+\]
+Section~\ref{sec:reproducible_experiments} provides reproducible instances with explicit numerical discrepancy bounds.
+
+\begin{corollary}[Optimal truncation depth under a discrepancy certificate]
+\label{cor:optimal_truncation}
+Assume a discrepancy certificate $\DNstar(P_N)\le \delta_N$ is available for the scan prefix at horizon $N$.
+\begin{itemize}
+\item For $\zeta(2)$, the certified total error bound
+\[
+\left|\avgN{\mathcal{P}}-\zeta(2)\right|
+\le 3(M-1)\,\delta_N+\frac{1}{M}
+\le 3M\,\delta_N+\frac{1}{M}
+\]
+is minimized (up to integer rounding) by
+\[
+M_\star(N):=\left\lceil \frac{1}{\sqrt{3\,\delta_N}}\right\rceil,
+\]
+yielding the explicit rate $\left|\avgN{\mathcal{P}}-\zeta(2)\right|=O(\sqrt{\delta_N})$.
+In the continuous relaxation, the minimum of $3M\delta_N+1/M$ is $2\sqrt{3\,\delta_N}$.
+\item For $\zeta(3)$, the certified total error bound
+\[
+\left|\avgN{\mathcal{P}}-\zeta(3)\right|
+\le 7(M-1)\,\delta_N+\frac{1}{2M^2}
+\le 7M\,\delta_N+\frac{1}{2M^2}
+\]
+is minimized (up to integer rounding) by
+\[
+M_\star(N):=\left\lceil \left(\frac{1}{7\,\delta_N}\right)^{1/3}\right\rceil,
+\]
+yielding the explicit rate $\left|\avgN{\mathcal{P}}-\zeta(3)\right|=O(\delta_N^{2/3})$.
+In the continuous relaxation, the minimum of $7M\delta_N+1/(2M^2)$ is $\frac{3}{2}(7\,\delta_N)^{2/3}$.
+\end{itemize}
+\end{corollary}
+
+\subsection{Multi-dimensional discrepancy bounds via Erd\H{o}s--Tur\'an--Koksma}
+\label{sec:etk}
+
+For $d\ge 2$, exact computation of $\DNstar(P_N)$ is expensive.
+To retain auditable certificates, we use a computable upper bound based on the Erd\H{o}s--Tur\'an--Koksma (ETK) inequality specialized to Kronecker sequences \cite{KuipersNiederreiter1974,Niederreiter1992}.
+
+\begin{definition}[Kronecker bracket term]
+\label{def:kronecker_bracket}
+Fix $d\ge 2$, $\alpha\in\RR^d$, horizon $N$, and truncation parameter $H\in\NN$.
+Define
+\[
+B_{N,H}(\alpha)
+:=\frac{1}{H}
+ +\sum_{\substack{h\in\ZZ^d\\0<\supnorm{h}\le H}}
+\frac{1}{r(h)}
+\min\!\left(1,\frac{1}{2N\,\distZ{h\cdot\alpha}}\right),
+\]
+where $r(h):=\prod_{j=1}^d \max(1,|h_j|)$ and, for $x\in\RR$, $\distZ{x}:=\min_{k\in\ZZ}|x-k|$.
+\end{definition}
+
+\begin{theorem}[ETK certificate for Kronecker scans (audit form)]
+\label{thm:etk}
+For a Kronecker orbit prefix $P_N=\{x_0+t\alpha\pmod 1:\ 0\le t\le N-1\}$ in dimension $d$,
+there exists a dimension constant $C_d$ such that
+\[
+\DNstar(P_N)\le C_d\,B_{N,H}(\alpha)
+\]
+for all $H\ge 1$.
+In the numerical experiments we use the explicit admissible choice
+\[
+C_d=\left(\frac{3}{2}\right)^d,
+\]
+and choose $H$ from a fixed candidate list by minimizing $B_{N,H}(\alpha)$.
+\end{theorem}
+
+\begin{proof}
+Appendix~\ref{app:etk_kronecker_derivation} records a standard ETK inequality for star discrepancy in terms of exponential sums (equation \eqref{eq:etk_generic}).
+For a Kronecker prefix $x_t=x_0+t\alpha\pmod 1$, the exponential sums are geometric series whose normalized magnitude is bounded by \eqref{eq:geom_sum_bound}.
+Substituting this bound into \eqref{eq:etk_generic} yields the bracket term $B_{N,H}(\alpha)$ and gives $\DNstar(P_N)\le C_d B_{N,H}(\alpha)$, with the explicit admissible choice $C_d=(3/2)^d$ as stated.
+\end{proof}
+
+

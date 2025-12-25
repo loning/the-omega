@@ -1,0 +1,152 @@
+
+\section{A selection functional on protocol space (programmatic layer)}
+\label{sec:selection_principle}
+
+The closed-layer results so far identify Wish as protocol-stable period data and provide deterministic finite-resource error certificates.
+To speak about ``selection'' of constants or targets, one needs an additional ingredient: an implementation cost.
+This section formulates a falsifiable selection principle at the programmatic layer.
+
+\subsection{A computable complexity proxy}
+\label{sec:complexity_proxy}
+
+In an audit-driven framework, an admissible cost must be explicit and computable from protocol data.
+We therefore use a simple proxy that penalizes dimension, kernel description size, regularization depth, and horizon.
+
+\begin{definition}[Protocol description complexity proxy]
+\label{def:comp}
+For a protocol $\mathcal{P}=(\TT^d,\alpha,x_0,f,R)$ and horizon $N$, define
+\[
+\Comp(\mathcal{P};N)
+:=
+d+\mathrm{size}(\alpha)+\mathrm{size}(f_R)+\mathrm{cost}(R)+\log(1+N),
+\]
+where $\mathrm{size}(\alpha)$ and $\mathrm{size}(f_R)$ are explicit encoding-length proxies defined below and $\mathrm{cost}(R)$ is an explicit regularization-cost proxy.
+\end{definition}
+
+\begin{remark}
+The role of $\Comp$ is not to claim a universal notion of Kolmogorov complexity, but to provide a stable, auditable penalty that can be consistently applied across a protocol family; see \cite{LiVitanyi2008} for standard background on complexity measures and why practical proxies are often preferred in applied settings.
+More refined proxies (including time/memory accounting or complexity measures of arithmetic data) can be substituted without changing the closed-layer theorems.
+\end{remark}
+
+\begin{definition}[Polynomial and rational-kernel size proxies]
+\label{def:kernel_size_proxy}
+Let $p\in\ZZ[x_1,\dots,x_d]$ be written as a finite sum of monomials $p(x)=\sum_{k\in K} c_k x^k$ with $c_k\in\ZZ$ and multi-indices $k\in\NN^d$.
+Define the monomial count $T(p):=|K|$, the total degree $\deg(p):=\max_{k\in K}\sum_{j=1}^d k_j$, and the coefficient height $H(p):=\max_{k\in K}|c_k|$.
+Set
+\[
+\mathrm{size}(p):=T(p)+\deg(p)+\log\big(1+H(p)\big).
+\]
+If the regulated kernel admits a rational representation $f_R=p/q$ with $p,q\in\ZZ[x_1,\dots,x_d]$ and $q$ nonvanishing on $[0,1]^d$, define
+\[
+\mathrm{size}(f_R):=\mathrm{size}(p)+\mathrm{size}(q).
+\]
+\end{definition}
+
+\begin{definition}[Algebraic slope size proxy]
+\label{def:slope_size_proxy}
+Assume each coordinate $\alpha_j$ is specified as an algebraic number by its primitive integer minimal polynomial $P_{\alpha_j}\in\ZZ[t]$ (leading coefficient positive, coefficients coprime).
+Define
+\[
+\mathrm{size}(\alpha_j):=\deg(P_{\alpha_j})+\log\big(1+H(P_{\alpha_j})\big),
+\qquad
+H(P):=\max\{|c|:\ c\text{ is a coefficient of }P\}.
+\]
+For $\alpha=(\alpha_1,\dots,\alpha_d)$ set $\mathrm{size}(\alpha):=\sum_{j=1}^d \mathrm{size}(\alpha_j)$.
+\end{definition}
+
+\begin{example}[Sizes of the slopes used in the experiments]
+\label{ex:slope_sizes}
+The paper uses the algebraic slopes $\varphi^{-1}$, $\sqrt{2}-1$, and $\sqrt{3}-1$.
+Their primitive minimal polynomials are
+\[
+\varphi^{-1}:\ t^2+t-1,\qquad
+\sqrt{2}-1:\ t^2+2t-1,\qquad
+\sqrt{3}-1:\ t^2+2t-2.
+\]
+Thus $\deg=2$ for each and $H=1$ for $\varphi^{-1}$ while $H=2$ for the square-root slopes.
+Definition~\ref{def:slope_size_proxy} gives
+\[
+\mathrm{size}(\varphi^{-1})=2+\log 2,
+\qquad
+\mathrm{size}(\sqrt{2}-1)=2+\log 3,
+\qquad
+\mathrm{size}(\sqrt{3}-1)=2+\log 3.
+\]
+\end{example}
+
+\begin{definition}[Regularization-cost proxy]
+\label{def:reg_cost_proxy}
+For the regularization rule $R$, define $\mathrm{cost}(R)$ as follows:
+\begin{itemize}
+\item if $R=\mathrm{Id}$, set $\mathrm{cost}(R)=0$;
+\item if $R$ is a truncation at depth $M\in\NN$ (as in the truncated geometric kernel), set $\mathrm{cost}(R)=\log(1+M)$;
+\item more generally, if $R$ carries a finite list of nonnegative integer budgets $(b_1,\dots,b_r)$, set $\mathrm{cost}(R)=\sum_{i=1}^r \log(1+b_i)$.
+\end{itemize}
+\end{definition}
+
+\begin{definition}[A concrete height proxy for rational kernels]
+\label{def:height_proxy}
+Assume the regulated kernel admits a rational representation
+\[
+f_R(x)=\frac{p(x)}{q(x)},
+\qquad
+p,q\in\ZZ[x_1,\dots,x_d],
+\]
+with $q$ nonvanishing on $[0,1]^d$.
+Define the coefficient height
+\[
+H(p):=\max\{|c|:\ c\text{ is a coefficient of }p\},
+\qquad
+H(q):=\max\{|c|:\ c\text{ is a coefficient of }q\},
+\]
+and the kernel-height proxy
+\[
+\Height(f_R):=\log\big(1+\max\{H(p),H(q)\}\big).
+\]
+For a period datum $W=(D,f,R)$ we set $\Height(W):=\Height(f_R)$.
+\end{definition}
+
+\subsection{A stability--complexity functional}
+\label{sec:selection_functional}
+
+Finite-horizon stability suggests a canonical leading term: the auditable certificate $\widehat{\Stab}_N(\mathcal{P})$ from Definition~\ref{def:discrepancy_certificate}.
+One may also include an arithmetic/geometric height penalty for the induced period datum.
+
+\begin{definition}[Certified selection functional (audit form)]
+\label{def:certified_selection_functional}
+Fix weights $\lambda,\mu\ge 0$ and a target Wish $W_0\in\PerDatum_{\mathrm{stable}}$.
+For a protocol $\mathcal{P}$ with induced regulated datum $W_R=\HSP(\mathcal{P})$, define the fully auditable cost
+\[
+J_N(\mathcal{P};W_0)
+:=
+\widehat{\Stab}_N(\mathcal{P})
+\;+\;
+\Reg(W_R;W_0)
+\;+\;
+\lambda\,\Comp(\mathcal{P};N)
+\;+\;
+\mu\,\Height(W_R),
+\]
+where $\widehat{\Stab}_N$ is induced by a chosen discrepancy certificate, $\Reg(W_R;W_0)$ is an auditable regularization certificate in the sense of Definition~\ref{def:reg_certificate}, and $\Comp,\Height$ are the explicit proxies defined above.
+\end{definition}
+
+\begin{conjecture}[Stability--complexity selection]
+\label{conj:selection}
+Fix a target Wish $W_0\in\PerDatum_{\mathrm{stable}}$.
+There exist weights $\lambda,\mu\ge 0$ and a vanishing tolerance sequence $\eta_N\downarrow 0$ such that the certified functional $J_N(\mathcal{P};W_0)$ from Definition~\ref{def:certified_selection_functional} exhibits the following empirical behavior within the reachable resource regime:
+protocol families implementing observed ``constants'' admit representatives $\mathcal{P}_N$ satisfying
+\[
+J_N(\mathcal{P}_N;W_0)
+\le
+\inf_{\substack{\mathcal{P}\in\ScanAlg\\\mathcal{P}\ \text{audit-compatible w.r.t. }W_0\text{ at horizon }N}} J_N(\mathcal{P};W_0)
+\;+\;
+\eta_N,
+\]
+where $\ScanAlg$ denotes an explicitly specified controlled admissible protocol class under a fixed audit convention.
+\end{conjecture}
+
+\paragraph{Interpretation.}
+At the programmatic level, Conjecture~\ref{conj:selection} proposes that \emph{Wish} can be operationally characterized as period data that are simultaneously (i) stable under finite resources (small discrepancy certificates) and (ii) cheap to implement (small description cost), possibly with an additional height penalty discouraging excessive arithmetic complexity.
+This does not assert that every physical constant is a period, nor that a specific cost proxy is unique; it asserts that within a protocol-driven model class, stable constants should correlate with low $J_N$.
+
+

@@ -1,0 +1,104 @@
+
+\section{Wish as protocol-stable period data}
+\label{sec:wish}
+
+\subsection{Definition: Wish}
+\label{sec:wish_definition}
+
+We now formalize the core object of this paper.
+
+\begin{definition}[Wish (protocol-stable period data)]
+\label{def:wish}
+A \emph{Wish} is an \emph{ideal} period datum
+\[
+W_0=(D,f,\mathrm{Id})
+\]
+equipped with an admissible implementation class in the controlled protocol family:
+\begin{itemize}
+\item \textbf{Protocol realizability with auditable regularizations.}
+There exists a family of protocols $\{\mathcal{P}_\lambda\}_{\lambda\in\Lambda}$ of the form
+\[
+\mathcal{P}_\lambda=(\TT^d,\alpha_\lambda,x_{0,\lambda},f,R_\lambda),
+\]
+with associated regulated data $W_{R_\lambda}:=\HSP(\mathcal{P}_\lambda)=(D,f,R_\lambda)$, such that $W_0$ is the shared ideal datum and $R_\lambda$ ranges over a fixed admissible regularization class.
+\item \textbf{Audit compatibility.}
+For each horizon $N$ in the resource regime under consideration, the protocol $\mathcal{P}_\lambda$ is audit-compatible with respect to $W_0$ in the sense of Definition~\ref{def:audit_compatible_protocol}, i.e.\ it comes equipped with explicit discrepancy and regularization certificates.
+\item \textbf{Finite-resource stability.} There exists an auditable error budget $\varepsilon(N,\lambda)$, computable from protocol data, such that
+\[
+\left|\avgN{\mathcal{P}_\lambda}-\per(W_0)\right|\le \varepsilon(N,\lambda),
+\]
+and $\varepsilon(N,\lambda)\to 0$ along at least one resource-admissible regime as $N\to\infty$ (and, when applicable, additional resource parameters in $\lambda$ are scaled appropriately).
+In the present paper, a canonical auditable choice is
+\[
+\varepsilon(N,\lambda)
+:=
+\widehat{\Stab}_N(\mathcal{P}_\lambda)+\Reg(W_{R_\lambda};W_0),
+\]
+where $\widehat{\Stab}_N$ is induced by a discrepancy certificate (Definition~\ref{def:discrepancy_certificate}) and $\Reg(W_{R_\lambda};W_0)$ is an auditable regularization certificate (Definition~\ref{def:reg_certificate}).
+\item \textbf{Protocol invariance.} For any protocol $\mathcal{P}'$ equivalent to $\mathcal{P}_\lambda$ within the admissible equivalence relation of the protocol class (at minimum the affine torus symmetries of Definition~\ref{def:protocol_equivalence}), the induced period value is invariant:
+\[
+\per(\HSP(\mathcal{P}'))=\per(\HSP(\mathcal{P}_\lambda))=\per(W_{R_\lambda}).
+\]
+\end{itemize}
+We call $W_0$ \emph{protocol-stable period data} (Wish), and write $W_0\in\PerDatum_{\mathrm{stable}}$ when the structure is understood.
+\end{definition}
+
+\begin{remark}[Regularization schedules]
+In the main constructions of this paper, the index $\lambda$ includes an explicit regularization budget (e.g.\ a truncation depth $M$).
+Since $\varepsilon(N,\lambda)$ contains the certificate term $\Reg(W_{R_\lambda};W_0)$, the condition $\varepsilon(N,\lambda)\to 0$ enforces a joint regime in which both the sampling certificate and the regularization certificate vanish.
+Concrete remainder bounds (e.g.\ Proposition~\ref{prop:zeta_truncation} and Corollary~\ref{cor:optimal_truncation}) make this regime fully auditable.
+\end{remark}
+
+The definition emphasizes that the object is a \emph{datum} (domain/kernel/regularization), not merely a number.
+Stability is explicitly finite-resource and auditable; invariance prevents the value from being an artifact of a particular protocol presentation.
+
+\subsection{Realization: scan averages converge to periods}
+\label{sec:wish_realization}
+
+The scan--period interface becomes meaningful only if the readout converges to the (regulated) period value when the protocol is sufficiently ergodic.
+For Kronecker scans, equidistribution is ensured by rational independence via Theorem~\ref{thm:kronecker_equidistribution}.
+
+\begin{definition}[Rational independence]
+\label{def:rational_independence}
+A vector $\alpha\in\RR^d$ is \emph{rationally independent} if
+\[
+h\cdot \alpha \notin \ZZ
+\quad\text{for all }h\in\ZZ^d\setminus\{0\}.
+\]
+Equivalently, $1,\alpha_1,\dots,\alpha_d$ are linearly independent over $\QQ$.
+\end{definition}
+
+\begin{theorem}[Equidistribution of Kronecker sequences]
+\label{thm:kronecker_equidistribution}
+If $\alpha\in\RR^d$ is rationally independent, then for every $x_0\in\TT^d$ the sequence $x_t=x_0+t\alpha\pmod 1$ is equidistributed in $\TT^d$.
+\end{theorem}
+
+\begin{proof}
+This is Weyl's theorem for Kronecker sequences; see \cite{Weyl1916,KuipersNiederreiter1974}.
+\end{proof}
+
+\begin{theorem}[Scan realization of regulated periods]
+\label{thm:period_realization}
+Let $\mathcal{P}=(\TT^d,\alpha,x_0,f,R)$ be a Kronecker scan protocol and let $f_R$ be Riemann integrable on $[0,1)^d$.
+If the slope $\alpha\in\RR^d$ is rationally independent (Definition~\ref{def:rational_independence}), then
+\[
+\lim_{N\to\infty}\avgN{\mathcal{P}} = \int_{[0,1)^d} f_R\,\dd x
+= \per(\HSP(\mathcal{P})).
+\]
+Moreover, the limit is invariant under protocol equivalences that preserve $\HSP(\mathcal{P})$.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:kronecker_equidistribution}, the empirical measures of $P_N$ converge weakly to Haar measure on $\TT^d$ for every initial condition when $\alpha$ is rationally independent.
+For Riemann integrable $f_R$, equidistribution implies convergence of empirical averages to the Haar integral on $\TT^d$, which equals the integral over the fundamental domain $[0,1)^d$.
+The invariance claim follows from Lemma~\ref{lem:period_invariance_affine} for affine protocol equivalences, and more generally from any admissible equivalence relation that preserves $\HSP$ at the datum level.
+\end{proof}
+
+\begin{remark}[Finite-$N$ is where selection lives]
+\label{rem:finiteN_selection}
+Theorem~\ref{thm:period_realization} shows that the \emph{limit} $\per(\HSP(\mathcal{P}))$ is independent of the slope as long as equidistribution holds.
+However, at finite horizon the error $\left|\avgN{\mathcal{P}}-\per(\HSP(\mathcal{P}))\right|$ depends strongly on Diophantine properties of $\alpha$.
+This dependence enables a falsifiable notion of ``selection'' driven by finite-resource stability rather than by the infinite limit alone.
+\end{remark}
+
+

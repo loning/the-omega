@@ -1,0 +1,67 @@
+
+\section{Linear combination error propagation and gap robustness}
+\label{app:linear_combination_gap}
+
+This appendix records two elementary lemmas used to justify bounded-coefficient searches and the robustness of uniqueness gaps.
+
+\subsection{Propagation of certified errors under linear combinations}
+\label{app:linear_combination_error}
+
+\begin{lemma}[Linear combination error bound]
+\label{lem:linear_combination_error}
+Let $v_1,\dots,v_k\in\RR$ be target values and let $\widehat v_1,\dots,\widehat v_k\in\RR$ be certified approximations satisfying
+\[
+|\widehat v_i-v_i|\le \varepsilon_i,\qquad i=1,\dots,k.
+\]
+Then for any coefficients $c_1,\dots,c_k\in\RR$,
+\[
+\left|\sum_{i=1}^k c_i\widehat v_i-\sum_{i=1}^k c_i v_i\right|
+\le
+\sum_{i=1}^k |c_i|\,\varepsilon_i.
+\]
+\end{lemma}
+
+\begin{proof}
+By the triangle inequality,
+\[
+\left|\sum_{i=1}^k c_i(\widehat v_i-v_i)\right|
+\le
+\sum_{i=1}^k |c_i|\,|\widehat v_i-v_i|
+\le
+\sum_{i=1}^k |c_i|\,\varepsilon_i.
+\]
+\end{proof}
+
+\subsection{Robustness of the discrete minimizer under target perturbations}
+\label{app:gap_robustness}
+
+\begin{lemma}[Gap robustness]
+\label{lem:gap_robustness}
+Let $V\subset\RR$ be a finite set of candidates and let $T\in\RR$ be a target.
+Let $v_\star\in V$ be a unique minimizer of $|v-T|$ over $v\in V$, and define the margin
+\[
+m:=\min_{v\in V\setminus\{v_\star\}}\Big(|v-T|-|v_\star-T|\Big)>0.
+\]
+Then for every perturbed target $T'$ satisfying $|T'-T|<m/2$, the same $v_\star$ remains the unique minimizer of $|v-T'|$ over $v\in V$.
+\end{lemma}
+
+\begin{proof}
+For any $v\in V$, the reverse triangle inequality gives
+\[
+\big||v-T'|-|v-T|\big|\le |T'-T|.
+\]
+Hence, for $v\neq v_\star$,
+\[
+|v-T'|
+\ge
+|v-T|-|T'-T|
+\ge
+|v_\star-T|+m-|T'-T|
+>
+|v_\star-T|+m/2.
+\]
+Similarly, $|v_\star-T'|\le |v_\star-T|+|T'-T|<|v_\star-T|+m/2$.
+Therefore $|v_\star-T'|<|v-T'|$ for all $v\neq v_\star$, proving uniqueness.
+\end{proof}
+
+

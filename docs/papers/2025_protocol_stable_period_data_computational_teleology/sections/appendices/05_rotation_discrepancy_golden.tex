@@ -1,0 +1,98 @@
+
+\section{A fully explicit star-discrepancy bound for the golden-branch rotation}
+\label{app:rotation_discrepancy_golden}
+
+This appendix justifies the explicit bound \eqref{eq:golden_discrepancy_bound} for the Kronecker sequence $x_t=x_0+t\alpha\pmod 1$ with $\alpha=\varphi^{-1}$.
+
+\subsection{Denjoy--Koksma for interval indicators}
+\label{app:dk_indicator}
+
+Let $R_\alpha:\TT^1\to\TT^1$ be the irrational rotation $x\mapsto x+\alpha\pmod 1$.
+Denote by $p_m/q_m$ the $m$-th continued-fraction convergent of $\alpha$.
+The Denjoy--Koksma inequality states that for any function $f$ of bounded variation on $\TT^1$ and any $m\ge 1$,
+\begin{equation}
+\label{eq:denjoy_koksma}
+\sup_{x\in\TT^1}
+\left|
+\sum_{t=0}^{q_m-1} f(R_\alpha^t x)
+-
+q_m\int_{\TT^1} f\,\dd x
+\right|
+\le \Var(f).
+\end{equation}
+See, e.g., \cite[Chapter~2]{KuipersNiederreiter1974} or \cite[Chapter~1]{DrmotaTichy1997}.
+
+Apply \eqref{eq:denjoy_koksma} to the (periodic) indicator $f_u(x):=\mathbf{1}_{[0,u)}(x)$.
+As a function on the circle it has at most two unit jumps, hence $\Var(f_u)\le 2$.
+Therefore, for every $u\in[0,1]$,
+\[
+\sup_{x\in\TT^1}
+\left|
+\#\{0\le t\le q_m-1:\ R_\alpha^t x\in[0,u)\}
+-q_m\,u
+\right|
+\le 2.
+\]
+Taking the supremum over $u$ yields the convergent-length bound
+\begin{equation}
+\label{eq:discrepancy_at_convergents}
+\DNstar(P_{q_m})\le \frac{2}{q_m}.
+\end{equation}
+
+\subsection{Ostrowski decomposition and digit-sum bound}
+\label{app:ostrowski_digit_sum}
+
+For any irrational $\alpha$, every $N\in\NN$ admits an Ostrowski expansion
+\[
+N=\sum_{m=0}^M b_m q_m,
+\]
+with digits $b_m$ bounded in terms of the continued-fraction coefficients of $\alpha$ \cite[Chapter~3]{DrmotaTichy1997}.
+For the golden-branch rotation $\alpha=\varphi^{-1}=[0;1,1,1,\dots]$, all continued-fraction coefficients equal $1$, hence the Ostrowski digits satisfy $b_m\in\{0,1\}$.
+In particular,
+\begin{equation}
+\label{eq:digit_sum_bound}
+\sum_{m=0}^M b_m\le M+1.
+\end{equation}
+
+Using the block decomposition induced by the Ostrowski expansion and applying \eqref{eq:discrepancy_at_convergents} to each block, one obtains the digit-sum bound
+\begin{equation}
+\label{eq:discrepancy_digit_sum}
+\DNstar(P_N)\le \frac{2}{N}\sum_{m=0}^M b_m
+\le \frac{2(M+1)}{N}.
+\end{equation}
+
+\begin{proof}[Proof of \eqref{eq:discrepancy_digit_sum}]
+Fix $u\in[0,1]$ and write $S_N(u;x_0)=\sum_{t=0}^{N-1}\mathbf{1}_{[0,u)}(x_0+t\alpha)$.
+Using the Ostrowski expansion $N=\sum_{m=0}^M b_m q_m$, partition the index set $\{0,\dots,N-1\}$ into consecutive blocks of lengths $q_m$, repeated $b_m$ times.
+Each block sum is of the form $S_{q_m}(u;x)$ for some shifted initial condition $x$.
+By \eqref{eq:discrepancy_at_convergents}, for every shift $x$,
+\[
+\left|S_{q_m}(u;x)-q_m u\right|\le 2.
+\]
+Summing over all blocks yields
+\[
+\left|S_N(u;x_0)-Nu\right|
+\le
+2\sum_{m=0}^M b_m.
+\]
+Taking the supremum over $u$ gives $\DNstar(P_N)\le \frac{2}{N}\sum_{m=0}^M b_m$.
+The second inequality follows from \eqref{eq:digit_sum_bound}.
+\end{proof}
+
+\subsection{Explicit logarithmic bound for \texorpdfstring{$\alpha=\varphi^{-1}$}{alpha=1/phi}}
+\label{app:explicit_log_bound}
+
+For the golden ratio $\varphi=(1+\sqrt{5})/2$, the convergent denominators are Fibonacci numbers: $q_m=F_{m+1}$.
+The elementary growth bound $F_{m+1}\ge \varphi^{m-1}$ (for $m\ge 1$) implies that if $q_M\le N$ then
+\[
+\varphi^{M-1}\le q_M\le N
+\qquad\Rightarrow\qquad
+M+1\le 2+\log_\varphi N.
+\]
+Substituting this into \eqref{eq:discrepancy_digit_sum} yields
+\[
+\DNstar(P_N)\le \frac{2(M+1)}{N}\le \frac{2\,(2+\log_\varphi N)}{N},
+\]
+which is \eqref{eq:golden_discrepancy_bound}.
+
+

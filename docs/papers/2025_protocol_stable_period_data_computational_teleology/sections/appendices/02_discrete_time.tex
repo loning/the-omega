@@ -1,0 +1,57 @@
+
+\section{Discrete-time form: heavy-ball update}
+\label{app:discrete_time}
+
+Scanning protocols are naturally discrete-time objects.
+To implement the variational dynamics of Section~\ref{sec:variational_dynamics} numerically, one can use a standard inertial gradient scheme.
+
+Let $U_N(\theta)$ be the computational potential \eqref{eq:U_def}.
+Given step size $\eta>0$ and momentum coefficient $\beta\in[0,1)$, define
+\begin{equation}
+\label{eq:heavy_ball}
+\theta_{k+1}=\theta_k-\eta\,\nabla U_N(\theta_k)+\beta(\theta_k-\theta_{k-1}).
+\end{equation}
+This scheme is the classical heavy-ball (Polyak) method \cite{Polyak1964}.
+
+\subsection{Consistency with the continuous teleological ODE}
+\label{app:discrete_consistency}
+
+To connect \eqref{eq:heavy_ball} to the continuous dynamics \eqref{eq:teleology_ode}, it is convenient to keep the inertial parameters $(\mu,\gamma)$ explicit.
+Let $h>0$ be a time step and consider the first-order system equivalent to \eqref{eq:teleology_ode}:
+\[
+\dot\theta=v,\qquad
+\mu\,\dot v=-\gamma\,v-\nabla U_N(\theta).
+\]
+The forward Euler discretization gives
+\[
+v_{k+1}=v_k-\frac{h}{\mu}\nabla U_N(\theta_k)-\frac{\gamma h}{\mu}v_k,
+\qquad
+\theta_{k+1}=\theta_k+h\,v_{k+1}.
+\]
+Eliminating $v_k=(\theta_k-\theta_{k-1})/h$ yields
+\[
+\theta_{k+1}
+=
+\theta_k
+-\frac{h^2}{\mu}\nabla U_N(\theta_k)
+\left(1-\frac{\gamma h}{\mu}\right)(\theta_k-\theta_{k-1}),
+\]
+which is exactly \eqref{eq:heavy_ball} with the parameter identification
+\[
+\eta=\frac{h^2}{\mu},\qquad
+\beta=1-\frac{\gamma h}{\mu}.
+\]
+Thus \eqref{eq:heavy_ball} is a consistent discretization of the continuous teleological ODE in the small-step regime $h\to 0$ with $\beta\uparrow 1$.
+
+\subsection{Energy monotonicity: what is guaranteed}
+\label{app:discrete_monotonicity}
+
+Unlike the continuous-time dynamics, the discrete update \eqref{eq:heavy_ball} does not guarantee monotone decrease of $U_N$ for arbitrary $(\eta,\beta)$, even for smooth objectives.
+When one requires a monotone decrease certificate at the discrete level, one may either:
+\begin{itemize}
+\item set $\beta=0$ (plain gradient descent), for which $U_N(\theta_{k+1})\le U_N(\theta_k)$ holds under the standard $L$-smooth step-size condition $\eta\in(0,2/L)$ \cite{Nesterov2004}; or
+\item introduce an explicit discrete Lyapunov function for the inertial scheme and choose parameters in a stability regime.
+\end{itemize}
+In the present paper, the closed-layer Lyapunov statement is the continuous energy decay in Proposition~\ref{prop:energy_decay} and its nonsmooth extension in Proposition~\ref{prop:nonsmooth_energy}; \eqref{eq:heavy_ball} is included as an implementation interface and as a consistent discretization of \eqref{eq:teleology_ode}.
+
+

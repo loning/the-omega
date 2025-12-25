@@ -1,0 +1,79 @@
+
+\section{ETK discrepancy bound specialized to Kronecker scans}
+\label{app:etk_kronecker_derivation}
+
+This appendix records the standard reduction from the Erd\H{o}s--Tur\'an--Koksma (ETK) inequality to the explicit bracket term $B_{N,H}(\alpha)$ used in Definition~\ref{def:kronecker_bracket}.
+
+\subsection{ETK inequality (star discrepancy)}
+\label{app:etk_statement}
+
+A common explicit form of the ETK inequality for star discrepancy states that for any point set $P_N=\{x_0,\dots,x_{N-1}\}\subset[0,1)^d$ and any integer $H\ge 1$,
+\begin{equation}
+\label{eq:etk_generic}
+\DNstar(P_N)
+\le
+C_d\left(
+\frac{1}{H}
+\sum_{\substack{h\in\ZZ^d\\0<\supnorm{h}\le H}}
+\frac{1}{r(h)}
+\left|
+\frac{1}{N}\sum_{t=0}^{N-1}\e^{2\pi \iu\, h\cdot x_t}
+\right|
+\right),
+\end{equation}
+with $r(h)=\prod_{j=1}^d\max(1,|h_j|)$ and an explicit dimension constant $C_d$.
+See, e.g., \cite[Theorem~2.1]{Niederreiter1992} or \cite[\S 3.3]{DickPillichshammer2010}.
+In particular, one admissible explicit choice is $C_d=(3/2)^d$ in these references, which is the constant used in our auditable numerical certificates.
+
+\subsection{Kronecker specialization}
+\label{app:etk_kronecker_specialization}
+
+For a Kronecker scan prefix $x_t=x_0+t\alpha\pmod 1$, the exponential sum factors as a one-dimensional geometric series:
+\[
+\sum_{t=0}^{N-1}\e^{2\pi \iu\, h\cdot x_t}
+=
+\e^{2\pi \iu\, h\cdot x_0}
+\sum_{t=0}^{N-1}\e^{2\pi \iu\, t(h\cdot\alpha)}.
+\]
+Thus
+\[
+\left|\frac{1}{N}\sum_{t=0}^{N-1}\e^{2\pi \iu\, h\cdot x_t}\right|
+=
+\frac{1}{N}\left|\sum_{t=0}^{N-1}\e^{2\pi \iu\, t\theta}\right|,
+\qquad \theta:=h\cdot\alpha.
+\]
+The geometric series admits the standard bound
+\begin{equation}
+\label{eq:geom_sum_bound}
+\left|\sum_{t=0}^{N-1}\e^{2\pi \iu\, t\theta}\right|
+\le
+\min\!\left(N,\frac{1}{2\,\distZ{\theta}}\right),
+\end{equation}
+where $\distZ{\theta}=\min_{k\in\ZZ}|\theta-k|$.
+Indeed, writing the sum in closed form gives
+\[
+\left|\sum_{t=0}^{N-1}\e^{2\pi \iu\, t\theta}\right|
+=
+\left|
+\frac{\e^{2\pi \iu N\theta}-1}{\e^{2\pi \iu\theta}-1}
+\right|
+\le
+\frac{2}{|\e^{2\pi \iu\theta}-1|}
+=
+\frac{1}{|\sin(\pi\theta)|},
+\]
+and the elementary inequality $|\sin(\pi\theta)|\ge 2\,\distZ{\theta}$ yields the second term in \eqref{eq:geom_sum_bound}.
+
+Substituting \eqref{eq:geom_sum_bound} into \eqref{eq:etk_generic} yields
+\[
+\DNstar(P_N)\le C_d\left(
+\frac{1}{H}
+\sum_{\substack{h\in\ZZ^d\\0<\supnorm{h}\le H}}
+\frac{1}{r(h)}
+\min\!\left(1,\frac{1}{2N\,\distZ{h\cdot\alpha}}\right)
+\right)
+=C_d\,B_{N,H}(\alpha),
+\]
+which is Theorem~\ref{thm:etk}.
+
+

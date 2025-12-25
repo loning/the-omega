@@ -1,0 +1,261 @@
+
+\section{Low-complexity constant search as a toy model of selection and rigidity}
+\label{sec:constant_search}
+
+This section provides a bounded-description toy model illustrating how a stability--complexity principle can produce sharp uniqueness gaps in a constrained hypothesis class.
+The example is not a metrological claim; it is a protocol-level rigidity signal under a fixed convention.
+
+\subsection{A bounded ansatz class}
+\label{sec:ansatz}
+
+Fix a target value $T$ for the inverse fine-structure constant at low energy, taken as the CODATA 2022 recommended central value $T=\alpha^{-1}(0)=137.035999177$ \cite{CODATA2022RMP}.
+Consider the bounded nonnegative integer ansatz
+\begin{equation}
+\label{eq:alpha_ansatz}
+v(a,b,c)=a\pi^3+b\pi^2+c\pi,
+\qquad
+a,b,c\in\ZZ_{\ge 0},
+\qquad
+a+b+c\le B,
+\end{equation}
+with budget $B=10$.
+
+\paragraph{Why this ansatz is audit-compatible.}
+The primitives $\pi$ and related scan-realizable quantities are periods in the present protocol class (Section~\ref{sec:preliminaries}); linear combination budgets are natural in a stability context because error propagation under certified bounds scales with coefficient size.
+See Lemma~\ref{lem:linear_combination_error} for the basic certificate propagation inequality.
+Restricting to the nonnegative cone avoids cancellation-driven instability, making the budget a conservative, audit-friendly proxy.
+
+\begin{proposition}[A fixed-dimension rational-kernel realization of the ansatz]
+\label{prop:abc_rational_kernel}
+Let $g(x)=\frac{4}{1+x^2}$ and define, on $[0,1]^3$,
+\[
+F_{a,b,c}(x,y,z)
+:=
+a\,g(x)g(y)g(z)+b\,g(x)g(y)+c\,g(x),
+\qquad a,b,c\in\ZZ_{\ge 0}.
+\]
+Then
+\[
+\int_{[0,1]^3}F_{a,b,c}(x,y,z)\,\dd x\,\dd y\,\dd z
+=a\pi^3+b\pi^2+c\pi=v(a,b,c).
+\]
+Moreover $F_{a,b,c}$ is a rational function with denominator $(1+x^2)(1+y^2)(1+z^2)$ and a numerator polynomial whose coefficient height is bounded by $64(a+b+c)$.
+\end{proposition}
+
+\begin{proof}
+By Fubini and the identity $\int_0^1 g(x)\,\dd x=\pi$, we have
+\[
+\int_{[0,1]^3} a\,g(x)g(y)g(z)=a\left(\int_0^1 g\right)^3=a\pi^3,
+\]
+and similarly
+\[
+\int_{[0,1]^3} b\,g(x)g(y)=b\left(\int_0^1 g\right)^2=b\pi^2,\qquad
+\int_{[0,1]^3} c\,g(x)=c\int_0^1 g=c\pi.
+\]
+Summing yields the claimed value.
+For the rational-kernel form, write everything over the common denominator $(1+x^2)(1+y^2)(1+z^2)$:
+\[
+F_{a,b,c}(x,y,z)=\frac{64a+16b(1+z^2)+4c(1+y^2)(1+z^2)}{(1+x^2)(1+y^2)(1+z^2)}.
+\]
+All numerator coefficients are nonnegative and the constant term is $64a+16b+4c\le 64(a+b+c)$, which bounds the coefficient height.
+\end{proof}
+
+\begin{remark}[Connection to the complexity proxy]
+Proposition~\ref{prop:abc_rational_kernel} embeds the ansatz into the same rational-kernel protocol class used in the rest of the paper, at a fixed dimension and with explicit coefficient-height control.
+Under the size/height proxies in Section~\ref{sec:selection_principle}, bounding $a+b+c$ directly bounds both a natural encoding cost and the propagated certificate error in Lemma~\ref{lem:linear_combination_error}.
+\end{remark}
+
+\begin{proposition}[Hardy--Krause variation of the ansatz kernel]
+\label{prop:hkvar_abc_kernel}
+Let $F_{a,b,c}$ be as in Proposition~\ref{prop:abc_rational_kernel}.
+Then $F_{a,b,c}$ is smooth on $[0,1]^3$ and its Hardy--Krause variation satisfies
+\[
+\HKVar(F_{a,b,c})=56a+12b+2c.
+\]
+In particular, on the budget domain $a+b+c\le B$ one has the uniform bound $\HKVar(F_{a,b,c})\le 56B$.
+\end{proposition}
+
+\begin{proof}
+Use the smooth Hardy--Krause formula (Definition~\ref{def:hkvar_smooth}).
+Since $g$ is smooth and strictly decreasing on $[0,1]$, we have $g'(x)<0$ and $\int_0^1 |g'(x)|\,\dd x=\Var(g)=2$ (Proposition~\ref{prop:variations_log_pi}).
+For each nonempty subset $u\subseteq\{x,y,z\}$, the mixed partial derivative
+\[
+\frac{\partial^{|u|}}{\prod_{j\in u}\partial j}F_{a,b,c}(x,y,z)
+\]
+is a nonnegative multiple of a product of $g'$ factors (and possibly $g(1)=2$ factors from coordinates set to $1$ in Definition~\ref{def:hkvar_smooth}).
+Because all coefficients $a,b,c$ are nonnegative and $g'$ has a fixed sign, the absolute value in Definition~\ref{def:hkvar_smooth} factors into a coefficient times a product of $|g'|$ terms.
+Evaluating each term gives:
+\[
+\begin{aligned}
+u=\{x\}&:\ 2(4a+2b+c),\qquad
+u=\{y\}:\ 2(4a+2b),\qquad
+u=\{z\}:\ 2(4a),\\
+u=\{x,y\}&:\ 4(2a+b),\qquad
+u=\{x,z\}:\ 4(2a),\qquad
+u=\{y,z\}:\ 4(2a),\\
+u=\{x,y,z\}&:\ 8a.
+\end{aligned}
+\]
+Summing these contributions yields $\HKVar(F_{a,b,c})=56a+12b+2c$.
+The bound $\HKVar(F_{a,b,c})\le 56B$ follows since $56$ dominates $12$ and $2$ on nonnegative coefficients.
+\end{proof}
+
+\begin{corollary}[Certified sampling bound for the constant-search ansatz]
+\label{cor:abc_sampling_certificate}
+Fix a Kronecker protocol in $d=3$ with kernel $F_{a,b,c}$ and orbit prefix $P_N$.
+If a discrepancy certificate $\widehat D_N^\ast(P_N)\ge \DNstar(P_N)$ is available, then
+\[
+\left|\avgN{\mathcal{P}_{a,b,c}}-v(a,b,c)\right|
+\le \HKVar(F_{a,b,c})\,\widehat D_N^\ast(P_N)
+=(56a+12b+2c)\,\widehat D_N^\ast(P_N).
+\]
+\end{corollary}
+
+\begin{remark}[A closed uniqueness condition under certificate uncertainty]
+Let $V_B=\{v(a,b,c):\ a,b,c\in\ZZ_{\ge 0},\ a+b+c\le B\}$ and fix a target $T\in\RR$.
+If each candidate $v\in V_B$ is available only within a certified interval $[v-\varepsilon_v,\,v+\varepsilon_v]$ and the target is known within $[T-\delta,\,T+\delta]$, then the unique minimizer $v_\star$ of $|v-T|$ over $V_B$ remains uniquely selected whenever
+\[
+|v_\star-T|+\varepsilon_{v_\star}+\delta
+<
+|v-T|-\varepsilon_v-\delta
+\quad\text{for all }v\in V_B\setminus\{v_\star\}.
+\]
+In particular, Proposition~\ref{prop:alpha_rigidity} and the large numerical gap in Table~\ref{tab:alpha_inverse_search} imply that very coarse certificates already suffice to preserve uniqueness within this bounded ansatz class.
+\end{remark}
+
+\subsection{Uniqueness gap}
+\label{sec:uniqueness_gap}
+
+\begin{proposition}[Uniqueness gap at fixed coefficient-sum complexity]
+\label{prop:alpha_rigidity}
+Within the domain \eqref{eq:alpha_ansatz} with $B=10$, the unique minimizer of
+$|v(a,b,c)-T|$ is $(a,b,c)=(4,1,1)$.
+Its relative error is $2.22\times 10^{-6}$, while the next best triple in the same domain has relative error at least $3.24\times 10^{-3}$.
+\end{proposition}
+
+\begin{proof}
+This is a finite exhaustive check over all nonnegative integer triples with $a+b+c\le 10$.
+See the reproducible script \path{scripts/alpha_inverse_search.py} and the top-candidate table in Section~\ref{sec:reproducible_experiments}.
+\end{proof}
+
+\begin{remark}[Protocol-level reading]
+The significance of Proposition~\ref{prop:alpha_rigidity} is the existence of a large \emph{gap} at fixed description budget: if one treats \eqref{eq:alpha_ansatz} as a toy ``protocol family'' and the squared error as a potential, then the landscape has a sharp and isolated minimizer.
+How (or whether) such a rigidity signal should map to running couplings across scales belongs to interpretation-layer modeling and is not assumed in any closed-layer derivation.
+\end{remark}
+
+\subsection{Certified uniqueness under finite-resource scan approximations}
+\label{sec:certified_uniqueness}
+
+The previous subsection treats $\pi$ (and hence $v(a,b,c)$) as exact.
+At the protocol level, one works with certified finite-horizon approximations.
+This subsection makes the uniqueness gap compatible with certified finite-resource error budgets.
+
+\begin{lemma}[Range bounds for the $\pi$ kernel]
+\label{lem:pi_kernel_range}
+Let $g(x)=\frac{4}{1+x^2}$ on $[0,1]$.
+Then $2\le g(x)\le 4$ for all $x\in[0,1]$.
+Consequently,
+\[
+2\le \pi=\int_0^1 g(x)\,\dd x\le 4,
+\]
+and for any finite sample $(x_t)_{t=0}^{N-1}\subset[0,1]$ the empirical average $\frac{1}{N}\sum_{t=0}^{N-1} g(x_t)$ also lies in $[2,4]$.
+\end{lemma}
+
+\begin{proof}
+Since $x^2\in[0,1]$, one has $1+x^2\in[1,2]$, hence $g(x)=4/(1+x^2)\in[2,4]$.
+The integral and empirical bounds follow since averages preserve bounds.
+\end{proof}
+
+\begin{lemma}[Polynomial perturbation bound on a bounded interval]
+\label{lem:poly_perturb}
+Fix $B\in\NN$ and let $p(x)=ax^3+bx^2+cx$ with $a,b,c\in\RR_{\ge 0}$ and $a+b+c\le B$.
+If $x,\widehat x\in[0,4]$, then
+\[
+|p(\widehat x)-p(x)|
+\le 57B\,|\widehat x-x|.
+\]
+\end{lemma}
+
+\begin{proof}
+By the mean value theorem, $|p(\widehat x)-p(x)|\le \sup_{\xi\in[0,4]}|p'(\xi)|\,|\widehat x-x|$.
+Since $p'(x)=3ax^2+2bx+c$ and $a+b+c\le B$, we have
+\[
+p'(x)\le (3x^2+2x+1)B\le (3\cdot 4^2+2\cdot 4+1)B=57B
+\]
+for all $x\in[0,4]$.
+\end{proof}
+
+\begin{corollary}[A uniform certified bound for $v(a,b,c)$ from a $\pi$ certificate]
+\label{cor:v_from_pi_certificate}
+Let $\widehat\pi$ be any approximation to $\pi$ satisfying $|\widehat\pi-\pi|\le \varepsilon_\pi$.
+Define the derived approximation
+\[
+\widehat v(a,b,c):=a\widehat\pi^{\,3}+b\widehat\pi^{\,2}+c\widehat\pi,
+\qquad a,b,c\ge 0,\quad a+b+c\le B.
+\]
+Then
+\[
+|\widehat v(a,b,c)-v(a,b,c)|
+\le 57B\,\varepsilon_\pi.
+\]
+\end{corollary}
+
+\begin{proof}
+By Lemma~\ref{lem:pi_kernel_range}, both $\pi$ and $\widehat\pi$ lie in $[2,4]$ whenever $\widehat\pi$ is obtained as a finite-horizon average of the $\pi$ kernel.
+Apply Lemma~\ref{lem:poly_perturb} with $x=\pi$, $\widehat x=\widehat\pi$ and $p(x)=ax^3+bx^2+cx$.
+\end{proof}
+
+\begin{corollary}[A closed $N$-threshold guaranteeing uniqueness at budget $B=10$]
+\label{cor:uniqueness_threshold}
+Fix the budget $B=10$ and target $T=\alpha^{-1}(0)=137.035999177$.
+Let $\widehat\pi_N$ be obtained from the golden-branch scan for $\pi$ at horizon $N$ (Experiment~\ref{sec:exp_1d}).
+Then the deterministic Koksma certificate and the golden-branch discrepancy bound imply
+\[
+|\widehat\pi_N-\pi|
+\le
+4\,\frac{2+\log_\varphi N}{N}.
+\]
+Let $m$ denote the best-vs-second-best margin in Proposition~\ref{prop:alpha_rigidity}$.$
+The exhaustive enumeration script \path{scripts/alpha_inverse_search.py} yields the explicit value
+\[
+m=\input{sections/generated/alpha_gap_margin.tex}.
+\]
+If $N$ satisfies
+\[
+57B\cdot 4\,\frac{2+\log_\varphi N}{N}<\frac{m}{2},
+\]
+then the unique minimizer $(a,b,c)=(4,1,1)$ remains uniquely selected even when every candidate value is replaced by its derived finite-horizon approximation $\widehat v(a,b,c)$.
+In particular, $N\ge \input{sections/generated/alpha_uniqueness_N.tex}$ suffices for this inequality.
+Equivalently, it suffices that a certified $\pi$ approximation satisfies
+\[
+|\widehat\pi-\pi| \le \varepsilon_\pi
+< \input{sections/generated/alpha_eps_pi_max.tex}.
+\]
+\end{corollary}
+
+\begin{remark}
+Corollary~\ref{cor:uniqueness_threshold} shows that the rigidity gap in Proposition~\ref{prop:alpha_rigidity} is so large that a coarse but fully auditable finite-resource $\pi$ certificate already guarantees stability of the unique minimizer under protocol-level approximation.
+This provides a closed bridge between ``bounded-description rigidity'' and ``finite-resource auditability'' without appealing to any probabilistic assumptions.
+\end{remark}
+
+\begin{corollary}[Robustness interval under target perturbations]
+\label{cor:alpha_gap_robustness}
+Let $V=\{v(a,b,c):\ a,b,c\in\ZZ_{\ge 0},\ a+b+c\le 10\}$ and let $T=\alpha^{-1}(0)=137.035999177$.
+Define the margin $m$ between the best and second-best candidates by
+\[
+m := \min_{v\in V\setminus\{v_\star\}} \big(|v-T|-|v_\star-T|\big),
+\]
+where $v_\star=4\pi^3+\pi^2+\pi$ is the unique minimizer from Proposition~\ref{prop:alpha_rigidity}.
+Then for every perturbed target $T'$ satisfying $|T'-T|<m/2$, the same $v_\star$ remains the unique minimizer of $|v-T'|$ over $v\in V$.
+\end{corollary}
+
+\begin{proof}
+This is Lemma~\ref{lem:gap_robustness} with the finite candidate set $V$.
+\end{proof}
+
+\begin{remark}[Numerical width of the robustness interval in this ansatz]
+The exhaustive script reports the best absolute error $|\Delta_\star|=\input{sections/generated/alpha_gap_best_abs.tex}$ and the second-best absolute error $|\Delta_2|=\input{sections/generated/alpha_gap_second_abs.tex}$ (Table~\ref{tab:alpha_inverse_search}).
+Thus the margin is $m=\input{sections/generated/alpha_gap_margin.tex}$, and the robustness condition $|T'-T|<m/2$ allows perturbations of order $10^{-1}$ within this bounded hypothesis class.
+\end{remark}
+
+

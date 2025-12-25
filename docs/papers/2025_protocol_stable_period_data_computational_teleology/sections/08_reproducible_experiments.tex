@@ -1,0 +1,172 @@
+
+\section{Reproducible experiments (pure Python)}
+\label{sec:reproducible_experiments}
+
+This section provides reproducible numerical demonstrations of the paper's closed claims:
+(i) scan protocols realize period values and (ii) finite-resource error decompositions admit auditable certificates.
+The experiments do not ``prove'' equidistribution or period closure properties; they validate that the proposed implementations behave as predicted under finite resources.
+
+\subsection{Reproducibility protocol}
+\label{sec:reproducibility_protocol}
+
+All experiments are implemented in pure Python~3 with no third-party dependencies.
+To reproduce the tables, run the following scripts from this paper directory:
+\begin{itemize}
+\item \path{python3 scripts/exp_period_1d.py}
+\item \path{python3 scripts/exp_zeta_truncated_geometric.py}
+\item \path{python3 scripts/alpha_inverse_search.py}
+\item \path{python3 scripts/teleology_dynamics.py}
+\end{itemize}
+The scripts write \LaTeX{} row files into \path{sections/generated/}, which are included below.
+All randomness is controlled by fixed seeds.
+
+\subsection{Experiment 1: one-dimensional scans for \texorpdfstring{$\log 2$}{log 2} and \texorpdfstring{$\pi$}{pi}}
+\label{sec:exp_1d}
+
+We use the golden-branch slope $\alpha=\varphi^{-1}$ and bounded-variation kernels
+\[
+f_{\log}(x)=\frac{1}{1+x},
+\qquad
+f_{\pi}(x)=\frac{4}{1+x^2},
+\]
+with exact period values
+\[
+\int_0^1 f_{\log}(x)\,\dd x=\log 2,
+\qquad
+\int_0^1 f_{\pi}(x)\,\dd x=\pi.
+\]
+The scripts compute the one-dimensional star discrepancy $\DNstar(P_N)$ exactly from its definition and report the deterministic Koksma certificate
+\[
+|\avgN{\mathcal{P}}-\per(\HSP(\mathcal{P}))|\le \Var(f)\,\DNstar(P_N).
+\]
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$N$ & $\avgN{\mathcal{P}}$ & $\avgN{\mathcal{P}}-\log 2$ & $\DNstar$ & $\Var(f)\,\DNstar$ & ratio \\
+\midrule
+\input{sections/generated/log2_rows.tex}
+\\
+\bottomrule
+\end{tabular}
+\caption{$\log 2$ realized as a scan period via $f(x)=1/(1+x)$ and $\alpha=\varphi^{-1}$. The ratio column is $|\avgN{\mathcal{P}}-\log 2|/(\Var(f)\DNstar)$, which must be $\le 1$ for the certificate.}
+\label{tab:log2_scan}
+\end{table}
+
+\paragraph{Empirical rate fit (log--log).}
+As a descriptive summary of these horizons, the script also performs a least-squares fit of $\log|\avgN{\mathcal{P}}-\log 2|$ against $\log N$ and reports the slope
+\[
+\beta_{\log 2}=\input{sections/generated/log2_fit.tex}.
+\]
+This fit is not used in any proof; the deterministic certificate in Section~\ref{sec:golden_branch} is $O((\log N)/N)$.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$N$ & $\avgN{\mathcal{P}}$ & $\avgN{\mathcal{P}}-\pi$ & $\DNstar$ & $\Var(f)\,\DNstar$ & ratio \\
+\midrule
+\input{sections/generated/pi_rows.tex}
+\\
+\bottomrule
+\end{tabular}
+\caption{$\pi$ realized as a scan period via $f(x)=4/(1+x^2)$ and $\alpha=\varphi^{-1}$.}
+\label{tab:pi_scan}
+\end{table}
+
+\paragraph{Empirical rate fit (log--log).}
+Analogously, the script reports the least-squares log--log slope for $|\avgN{\mathcal{P}}-\pi|$:
+\[
+\beta_{\pi}=\input{sections/generated/pi_fit.tex}.
+\]
+
+\subsection{Experiment 2: truncated geometric kernels for \texorpdfstring{$\zeta(2)$}{zeta(2)} and \texorpdfstring{$\zeta(3)$}{zeta(3)}}
+\label{sec:exp_zeta}
+
+\begin{sloppypar}
+We use the truncated geometric kernel $g_M$ (Definition~\ref{def:geom_kernel}) with exact periods $H_M^{(d)}$ (Lemma~\ref{lem:geom_period}).
+For $d=2,3$ the truncation remainders satisfy Proposition~\ref{prop:zeta_truncation}.
+The scan slopes are
+\[
+\alpha_{2}=(\varphi^{-1},\sqrt{2}-1),
+\qquad
+\alpha_{3}=(\varphi^{-1},\sqrt{2}-1,\sqrt{3}-1).
+\]
+To obtain explicit discrepancy certificates in dimensions $2$ and $3$, the scripts compute the ETK bracket term $B_{N,H}(\alpha)$ (Definition~\ref{def:kronecker_bracket}), choose $H$ from fixed candidate sets by minimizing it, and use the explicit constant $C_d=(3/2)^d$ (Theorem~\ref{thm:etk}).
+To preserve the inequality direction under finite-precision evaluation of $h\cdot\alpha$, the implementation computes $\distZ{h\cdot\alpha}$ with a conservative floating-point error guard, so that the reported $B_{N,H}(\alpha)$ remains an auditable upper bound at the code level \cite{Higham2002}.
+\end{sloppypar}
+
+\begin{table}[t]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}rrrrrrrrr@{}}
+\toprule
+$(N,M,K)$ & $H$ & $\overline{\avgN{\mathcal{P}}}_K$ & $\overline{\avgN{\mathcal{P}}}_K-\zeta(2)$ & $\overline{\avgN{\mathcal{P}}}_K-H_M^{(2)}$ & trunc.\ bound $<1/M$ & $B_{N,H}$ & $\HKVar(g_M)\,C_2\,B_{N,H}$ & ratio \\
+\midrule
+\input{sections/generated/zeta2_rows.tex}
+\\
+\bottomrule
+\end{tabular}
+}
+\caption{$\zeta(2)$ realized via a two-dimensional scan and auditable truncation. The sampling certificate uses $\DNstar(P_N)\le C_2 B_{N,H}$ with $C_2=(3/2)^2$ and $\HKVar(g_M)=(2^2-1)(M-1)$. The ratio column is $|\overline{\avgN{\mathcal{P}}}_K-H_M^{(2)}|/(\HKVar(g_M)C_2B_{N,H})$.}
+\label{tab:zeta2_scan}
+\end{table}
+
+\begin{table}[t]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}rrrrrrrrr@{}}
+\toprule
+$(N,M,K)$ & $H$ & $\overline{\avgN{\mathcal{P}}}_K$ & $\overline{\avgN{\mathcal{P}}}_K-\zeta(3)_{\mathrm{ref}}$ & $\overline{\avgN{\mathcal{P}}}_K-H_M^{(3)}$ & trunc.\ bound $<1/(2M^2)$ & $B_{N,H}$ & $\HKVar(g_M)\,C_3\,B_{N,H}$ & ratio \\
+\midrule
+\input{sections/generated/zeta3_rows.tex}
+\\
+\bottomrule
+\end{tabular}
+}
+\caption{$\zeta(3)$ realized via a three-dimensional scan and auditable truncation. We use a certified reference $\zeta(3)_{\mathrm{ref}}$ defined as the midpoint of the interval $[H_{M_{\mathrm{ref}}}^{(3)},H_{M_{\mathrm{ref}}}^{(3)}+1/(2M_{\mathrm{ref}}^2)]$ with $M_{\mathrm{ref}}=200{,}000$. The sampling certificate uses $C_3=(3/2)^3$.}
+\label{tab:zeta3_scan}
+\end{table}
+
+\subsection{Experiment 3: bounded-complexity search for \texorpdfstring{$\alpha^{-1}(0)$}{alpha inverse}}
+\label{sec:exp_alpha_inverse}
+
+We reproduce the bounded-coefficient search in the ansatz \eqref{eq:alpha_ansatz} with budget $B=10$ and target $T=\alpha^{-1}(0)$.
+The script writes the top candidates (sorted by absolute error) into \path{sections/generated/alpha_inverse_rows.tex}.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$(a,b,c)$ & $a+b+c$ & $v(a,b,c)$ & $\Delta$ & $|\Delta|/T$ \\
+\midrule
+\input{sections/generated/alpha_inverse_rows.tex}
+\\
+\bottomrule
+\end{tabular}
+\caption{Top candidates in the bounded ansatz $a\pi^3+b\pi^2+c\pi$ with $a,b,c\ge 0$ and $a+b+c\le 10$, targeting $T=\alpha^{-1}(0)=137.035999177$ \cite{CODATA2022RMP}. Here $\Delta=v(a,b,c)-T$.}
+\label{tab:alpha_inverse_search}
+\end{table}
+
+\subsection{Experiment 4: teleological dynamics toy model}
+\label{sec:exp_dynamics}
+
+To illustrate Theorem~\ref{thm:teleology_dynamics} and Proposition~\ref{prop:energy_decay}, we simulate a one-dimensional damped inertial gradient flow on a toy potential $U(\theta)=(\theta^2-1)^2$ and record the energy decay.
+The script writes sample trajectory points into \path{sections/generated/teleology_energy_rows.tex}.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+step & $\theta$ & $\dot\theta$ & $U(\theta)$ & $E$ \\
+\midrule
+\input{sections/generated/teleology_energy_rows.tex}
+\\
+\bottomrule
+\end{tabular}
+\caption{Toy simulation of \eqref{eq:teleology_ode} showing monotone energy decay.}
+\label{tab:teleology_energy}
+\end{table}
+
+
