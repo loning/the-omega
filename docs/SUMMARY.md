@@ -1254,6 +1254,9 @@
         - [8.2 Epilogue: A Letter to Future Observers](./books/book-ma-haobo-pearl-dragon/volume04-ultimate-algorithm-gods-perspective/chapter08-admins-awakening/08-02-epilogue_en.md)
     - [Appendix A: HPA-ZΩ Core Glossary](./books/book-ma-haobo-pearl-dragon/appendix/glossary_en.md)
     - [Appendix B: Reading List & Inspirations](./books/book-ma-haobo-pearl-dragon/appendix/reading-list_en.md)
+    - [Appendix C: Causal Isometry & Fractal Dragon Pearl: Geometric Notes on the Discrete–Continuous Handshake](./books/book-ma-haobo-pearl-dragon/appendix/appendix-c-causal-isometry-fractal-dragon-pearl_en.md)
+    - [Appendix D: God's Compiler & Recursive Universe](./books/book-ma-haobo-pearl-dragon/appendix/appendix-d-gods-compiler-recursive-universe_en.md)
+    - [Addendum A: The Final Patch—Causal Isometry & Fractal Pearls](./books/book-ma-haobo-pearl-dragon/appendix/addendum-a-final-patch_en.md)
 
 - [物理基础：几何与信息](./books/book-foundation-of-phys-in-geo-and-info/index.md)
     - [前言：重构实在的算法与几何](./books/book-foundation-of-phys-in-geo-and-info/foreword.md)
@@ -2513,4 +2516,8 @@
     - [附录]()
         - [A. HPA-ZΩ 核心术语表](./books/book-ma-haobo-pearl-dragon/appendix/glossary.md)
         - [B. 推荐阅读清单与灵感来源](./books/book-ma-haobo-pearl-dragon/appendix/reading-list.md)
+        - [C. 因果等距与分形龙珠：离散—连续握手的几何注解](./books/book-ma-haobo-pearl-dragon/appendix/appendix-c-causal-isometry-fractal-dragon-pearl.md)
+        - [D. 上帝的编译器与递归宇宙](./books/book-ma-haobo-pearl-dragon/appendix/appendix-d-gods-compiler-recursive-universe.md)
+    - [补遗]()
+        - [补遗 A：最后的补丁：因果等距与分形龙珠](./books/book-ma-haobo-pearl-dragon/appendix/addendum-a-final-patch.md)
 

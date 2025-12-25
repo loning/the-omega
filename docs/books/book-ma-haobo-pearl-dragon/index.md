@@ -84,6 +84,12 @@
 
 - [A. HPA-ZΩ 核心术语表](appendix/glossary.md)
 - [B. 推荐阅读清单与灵感来源](appendix/reading-list.md)
+- [C. 因果等距与分形龙珠：离散—连续握手的几何注解](appendix/appendix-c-causal-isometry-fractal-dragon-pearl.md)
+- [D. 上帝的编译器与递归宇宙](appendix/appendix-d-gods-compiler-recursive-universe.md)
+
+## 补遗
+
+- [补遗 A：最后的补丁：因果等距与分形龙珠](appendix/addendum-a-final-patch.md)
 
 ---
 

@@ -82,6 +82,12 @@
 
 - [A. HPA-ZΩ Core Glossary](appendix/glossary_en.md)
 - [B. Recommended Reading List and Sources of Inspiration](appendix/reading-list_en.md)
+- [C. Causal Isometry & Fractal Dragon Pearl: Geometric Notes on the Discrete–Continuous Handshake](appendix/appendix-c-causal-isometry-fractal-dragon-pearl_en.md)
+- [D. God's Compiler & Recursive Universe](appendix/appendix-d-gods-compiler-recursive-universe_en.md)
+
+## Addenda
+
+- [Addendum A: The Final Patch—Causal Isometry & Fractal Pearls](appendix/addendum-a-final-patch_en.md)
 
 ---
 
