@@ -10,6 +10,7 @@
 | `2025_foundations_of_physics_submission/` | Omega Theory: Axiomatic Foundations of Holographic Spacetime and Interactive Evolution (FoP) | [`main.pdf`](./2025_foundations_of_physics_submission/main.pdf) | [`main.tex`](./2025_foundations_of_physics_submission/main.tex) | **主物理手稿**：全局静态态 + 有限信息/全息映射 + QCA/准晶 + 现象学/宇宙学模板 | HPA（O5/O6 等工具链） |
 | `2025_holographic_polar_omega_theory/` | Holographic Polar Omega Theory (HPΩT) | [`main.pdf`](./2025_holographic_polar_omega_theory/main.pdf) | [`main.tex`](./2025_holographic_polar_omega_theory/main.tex) | **短文/公理接口**：抽取并固定 O1–O6 + R1 的最短推论链 | HPA + FoP |
 | `2025_ramanujan_holographic_scanning_principle_hpa_omega/` | Ramanujan Holographic Scanning Principle: Modular Curves, Hecke Dynamics, and an Arithmetic Constitution for HPA--Ω (RHSP) | [`main.pdf`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/main.pdf) | [`main.tex`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/main.tex) | **算术几何接口篇**：模曲线/Hecke 为 scan–projection 提供母体与素数骨架；附可复现实验（Fibonacci/Sturmian、τ(n)、j 不变量） | HPA + HPΩT |
+| `2025_riemann_ground_state_hpa_omega/` | Riemann Ground State: Holographic Trace Formulas, Abel Finite Parts, and a Protocol Derivation of the Riemann Hypothesis in HPA--Omega (RGS) | [`main.pdf`](./2025_riemann_ground_state_hpa_omega/main.pdf) | [`main.tex`](./2025_riemann_ground_state_hpa_omega/main.tex) | **专题篇（RH / trace）**：把显式公式协议化为 Abel–迹，并在 Ω+HTF 下给出 RH 的协议推论；附可复现数值实验（差异度稳定与阈值爆炸） | HPA + HPΩT（+ RHSP） |
 | `2025_stairway_to_infinity_holographic_renormalization_flow/` | The Stairway to Infinity: A Holographic Renormalization Flow from Noncommutative Scanning to the Langlands Program (STI) | [`main.pdf`](./2025_stairway_to_infinity_holographic_renormalization_flow/main.pdf) | [`main.tex`](./2025_stairway_to_infinity_holographic_renormalization_flow/main.tex) | **攀登/重整化流篇**：把“向上抽象”形式化为模曲面测地流/Gauss 悬挂流；给出切片—系数—采样与差异度/Ostrowski 的有限 $N$ 误差界；以 $S$-反演 + Morita/傅里叶交换作为尺度互换模板，并给出朗兰兹函子化任务 | RHSP + HPA |
 | `2025_motive_at_infinity_holographic_scanning_principle/` | The Motive at Infinity: Functorialization of the Holographic Scanning Principle, Period Realizations, and a Selection Principle (MAI) | [`main.pdf`](./2025_motive_at_infinity_holographic_scanning_principle/main.pdf) | [`main.tex`](./2025_motive_at_infinity_holographic_scanning_principle/main.tex) | **周期/动机升维篇**：在不破坏 Layer 0/1 审计纪律下把扫描协议函子化到 KZ 周期数据；证明“扫描平均=周期积分”；给出可审计误差预算与可复现实验，并提出有限资源下的选择原则 | STI + HPA（+ PCG 的常数刚性示例） |
 | `2025_protocol_stable_period_data_computational_teleology/` | Protocol-Stable Period Data in Computational Teleology: From Holographic Scanning Protocols to Variational Dynamics of Minimal Computational Discrepancy and Constant Selection (PSPD) | [`main.pdf`](./2025_protocol_stable_period_data_computational_teleology/main.pdf) | [`main.tex`](./2025_protocol_stable_period_data_computational_teleology/main.tex) | **专题篇（Wish/period + 变分动力学）**：协议稳定周期数据（Wish）、差异度×变差的有限资源证书、协议空间的带阻尼惯性梯度流、以及常数刚性/唯一性间隙玩具模型 | MAI + CAP（+ PCG） |
@@ -29,6 +30,7 @@ flowchart TB
   FoP["FoP<br/>Omega Theory 主物理手稿"]
   HPOT["HPΩT<br/>Omega Theory 公理升级短文"]
   RHSP["RHSP<br/>Ramanujan Holographic Scanning Principle<br/>modular curves / Hecke interface"]
+  RGS["RGS<br/>Riemann Ground State<br/>trace formula / Abel finite part / RH"]
   STI["STI<br/>Stairway to Infinity<br/>holographic renormalization flow"]
   MAI["MAI<br/>The Motive at Infinity<br/>periods / motives / selection"]
   PSPD["PSPD<br/>Protocol-Stable Period Data<br/>teleological variational dynamics"]
@@ -43,6 +45,9 @@ flowchart TB
   FoP -->|"主框架/术语与物理展开"| HPOT
   HPA -->|"模曲线嵌入、Hecke 素数骨架"| RHSP
   HPOT -->|"O1–O6 + R1 审计接口"| RHSP
+  HPA -->|"orbit trace / finite part 正则化"| RGS
+  HPOT -->|"Abel finite part 规范路径"| RGS
+  RHSP -->|"素数周期轨道 / 显式公式动机"| RGS
   RHSP -->|"模测地流/Gauss 悬挂流、切片—系数—采样"| STI
   HPA -->|"扫描代数与差异度控制"| STI
   STI -->|"扫描=周期实现、周期数据函子化"| MAI
@@ -76,6 +81,7 @@ flowchart TB
   class FoP core;
   class HPOT note;
   class RHSP note;
+  class RGS note;
   class STI note;
   class MAI note;
   class HPT topic;
@@ -136,6 +142,17 @@ flowchart TB
   - 继承并引用 HPA 的 scan–projection 与编码工具链，在算术几何层面给出母体与素数骨架。
   - 与 HPΩT 的 O1–O6 + R1 审计接口对齐，便于在 FoP/CAP 等论文中作为算术接口引用。
 - **入口链接**：[`main.pdf`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/main.pdf)、[`main.tex`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/main.tex)、[`references.bib`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/references.bib)
+
+### `2025_riemann_ground_state_hpa_omega/`（RGS，Riemann Ground State）
+
+- **定位**：以 HPA–Ω 的 scan–readout 与 Abel finite part 为闭层规范，把 ζ 的显式公式读作“全息迹公式”，并在 Ω + HTF 假设下给出 RH 的协议性推导链。
+- **做了什么**：
+  - **闭层推导链**：Omega 的 “(0<r<1) Abel–迹全域可定义 + 规范路径有限部存在” 与 HTF 的 “零点指数模态进入谱侧” 组合，给出 Abel 收敛半径障碍并排除 $\Re(\rho)\neq 1/2$。
+  - **可复现机制验证**：黄金分支一维星差异度呈对数级稳定；玩具零点模态中引入实部偏移会触发 Abel 阈值与能量爆炸。
+- **与其他论文关系**：
+  - 直接复用 HPA 的 orbit calculus/finite part 与 HPΩT 的公理接口（O5/O6 + R1）。
+  - 与 RHSP 的 “素数=周期轨道” 视角兼容，但本篇闭层证明只依赖 HTF 结构性桥梁。
+- **入口链接**：[`main.tex`](./2025_riemann_ground_state_hpa_omega/main.tex)、[`references.bib`](./2025_riemann_ground_state_hpa_omega/references.bib)、[`scripts/`](./2025_riemann_ground_state_hpa_omega/scripts/)
 
 ### `2025_stairway_to_infinity_holographic_renormalization_flow/`（STI，The Stairway to Infinity）
 

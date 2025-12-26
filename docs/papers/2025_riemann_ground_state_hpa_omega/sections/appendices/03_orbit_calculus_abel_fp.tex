@@ -1,0 +1,168 @@
+
+\section{Orbit calculus, Abel means, and finite parts (rotation template)}
+\label{app:orbit_abel}
+
+This appendix makes precise the closed-layer regularization conventions used in the main text.
+The simplest template is an irrational circle rotation (or, more generally, a torus translation), where Abel weights and finite-part extractions admit concrete analytic formulas.
+
+\subsection{Abel generating functions are holomorphic on the unit disk}
+\label{app:abel_holomorphic}
+
+\begin{proposition}[Holomorphy and boundedness of Abel generating functions]
+\label{prop:abel_holomorphic}
+Let $(u_t)_{t\ge 0}$ be a bounded complex sequence: $|u_t|\le M$.
+Define its Abel generating function
+\[
+S(r):=\sum_{t=0}^{\infty} u_t r^t.
+\]
+Then $S(r)$ converges absolutely for every $|r|<1$, defines a holomorphic function on the open unit disk, and satisfies
+\[
+|S(r)|\le \frac{M}{1-|r|}.
+\]
+\end{proposition}
+
+\begin{proof}
+Absolute convergence for $|r|<1$ follows from domination by $\sum_{t\ge 0} M|r|^t$.
+Holomorphy is immediate since $S$ is a power series with radius of convergence at least $1$.
+The bound is the geometric-series estimate.
+\end{proof}
+
+\subsection{Abel means for uniquely ergodic rotations}
+\label{app:abel_mean_unique_ergodic}
+
+Let $X=\RR/\ZZ$ and fix $\alpha\in(0,1)\setminus\QQ$.
+Write $T_\alpha(x)=x+\alpha\pmod{1}$.
+
+\begin{theorem}[Orbit trace for an irrational rotation]
+\label{thm:orbit_trace_rotation}
+If $f:X\to\CC$ is continuous and $\alpha\notin\QQ$, then the Ces\`aro orbit average
+\[
+A_N(f;x_0):=\frac{1}{N}\sum_{t=0}^{N-1} f\bigl(T_\alpha^t(x_0)\bigr)
+\]
+converges as $N\to\infty$ to the Lebesgue integral $\int_X f\,\dd x$, uniformly in $x_0$.
+\end{theorem}
+
+\begin{proof}[Reference]
+This is a standard consequence of unique ergodicity/equidistribution of irrational rotations; see, e.g., \cite{Weyl1916,KuipersNiederreiter1974,Walters1982}.
+\end{proof}
+
+\begin{theorem}[Abel means converge to the space average]
+\label{thm:abel_mean_rotation}
+If $f:X\to\CC$ is continuous and $\alpha\notin\QQ$, then for every $x_0\in X$,
+\[
+\lim_{r\uparrow 1} (1-r)\sum_{t=0}^{\infty} r^t f\bigl(T_\alpha^t(x_0)\bigr)
+=\int_X f(x)\,\dd x,
+\]
+and the convergence is uniform in $x_0$.
+\end{theorem}
+
+\begin{proof}[Reference]
+One route is: unique ergodicity gives convergence of Ces\`aro means $A_N(f;x_0)\to\int f$ uniformly in $x_0$ (Theorem~\ref{thm:orbit_trace_rotation}), and Abel means preserve limits of Ces\`aro means (Abel--Ces\`aro comparison); see \cite{Hardy1949,Walters1982}.
+\end{proof}
+
+\subsection{Abel finite part as a constant term (uniqueness and a Fourier criterion)}
+\label{app:abel_finite_part}
+
+Let $u_t:=f(T_\alpha^t(x_0))$ and
+\[
+S_f(r):=\sum_{t=0}^{\infty} u_t r^t,\qquad 0<r<1.
+\]
+If $f$ is bounded then $S_f(r)$ is well-defined for $0<r<1$.
+Following a standard Abel regularization convention \cite{Hardy1949}, we treat the constant term in the asymptotic expansion of $S_f(r)$ as the finite part.
+
+\begin{definition}[Abel finite part]
+\label{def:abel_finite_part}
+Assume that as $r\uparrow 1$ the function $S_f(r)$ admits an asymptotic expansion
+\[
+S_f(r)=\sum_{j=1}^{J}\frac{c_j}{(1-r)^j} + C + o(1).
+\]
+Then we define the Abel finite part by $\FP_{\alpha}(f):=C$.
+\end{definition}
+
+\begin{lemma}[Uniqueness of the finite part]
+\label{lem:fp_unique_rgs}
+If $S_f(r)$ admits two asymptotic expansions of the form in Definition~\ref{def:abel_finite_part} with constants $C$ and $C'$, then $C=C'$.
+\end{lemma}
+
+\begin{proof}
+Subtract the two expansions; an induction on the highest pole order shows that all pole coefficients agree, hence the constant terms agree.
+\end{proof}
+
+For rotations, Abel sums admit an explicit Fourier--resolvent representation.
+Write Fourier coefficients of $f$ as
+\[
+\hat f(m):=\int_X f(x)\,\e^{-2\pi\iu m x}\,\dd x,\qquad m\in\ZZ.
+\]
+
+\begin{proposition}[Fourier resolvent formula for Abel orbit sums]
+\label{prop:abel_fourier_formula_rgs}
+Assume $\sum_{m\in\ZZ}|\hat f(m)|<\infty$.
+Then for every $|r|<1$,
+\[
+S_f(r)=\sum_{m\in\ZZ}\frac{\hat f(m)\,\e^{2\pi\iu m x_0}}{1-r\,\e^{2\pi\iu m\alpha}}.
+\]
+\end{proposition}
+
+\begin{proof}
+Under the absolute Fourier summability hypothesis, the Fourier series converges absolutely and uniformly, allowing termwise summation of the geometric series $\sum_{t\ge 0}(r\e^{2\pi\iu m\alpha})^t$.
+\end{proof}
+
+\begin{corollary}[Simple pole and explicit finite part under a Diophantine/Fourier criterion]
+\label{cor:abel_fp_fourier_rgs}
+Assume the hypotheses of Proposition~\ref{prop:abel_fourier_formula_rgs} and in addition
+\[
+\sum_{m\in\ZZ\setminus\{0\}}\frac{|\hat f(m)|}{|1-\e^{2\pi\iu m\alpha}|}<\infty.
+\]
+Then as $r\uparrow 1$,
+\[
+S_f(r)=\frac{\hat f(0)}{1-r}
+\;+\;
+\sum_{m\in\ZZ\setminus\{0\}}\frac{\hat f(m)\,\e^{2\pi\iu m x_0}}{1-\e^{2\pi\iu m\alpha}}
+\;+\;o(1).
+\]
+In particular, $\FP_{\alpha}(f)$ exists and equals the explicit constant term.
+\end{corollary}
+
+\subsection{Golden-branch star discrepancy bound via Denjoy--Koksma and Ostrowski}
+\label{app:golden_discrepancy_bound}
+
+We record an explicit one-dimensional star-discrepancy bound used in Section~\ref{sec:scan_discrepancy}.
+Let $P_N=\{\{x_0+t\alpha\}\}_{t=0}^{N-1}\subset[0,1)$.
+
+\begin{theorem}[Ostrowski/Denjoy--Koksma bound for interval counts]
+\label{thm:dk_ostrowski_rgs}
+Let $\alpha=[0;a_1,a_2,\dots]\in(0,1)\setminus\QQ$ and let $q_k$ be the continued-fraction convergent denominators.
+Let $W\subset X$ be an interval and set $s_t=\mathds{1}_W(x_0+t\alpha)$ and $S_N=\sum_{t=0}^{N-1} s_t$.
+For every $N\ge 1$ write the Ostrowski expansion $N=\sum_{k=0}^{m} b_k q_k$ with admissible digits.
+Then
+\[
+\bigl|S_N-N\,\mu(W)\bigr|\ \le\ 2\sum_{k=0}^{m} b_k,
+\]
+uniformly in $x_0$ and $W$.
+\end{theorem}
+
+\begin{proof}[Reference]
+This is a standard consequence of Denjoy--Koksma at convergent times plus the Ostrowski block decomposition; see \cite{Denjoy1932,Koksma1935,KatokHasselblatt1995}.
+\end{proof}
+
+\begin{corollary}[Explicit bound for the golden branch]
+\label{cor:golden_discrepancy_bound}
+Let $\alpha=\varphi^{-1}=[0;1,1,1,\dots]$.
+Then for every $N\ge 1$,
+\[
+\DNstar(P_N)\le \frac{2\bigl(2+\log_\varphi N\bigr)}{N}.
+\]
+\end{corollary}
+
+\begin{proof}
+For one-dimensional star discrepancy, it suffices to take $W=[0,u)$ in Theorem~\ref{thm:dk_ostrowski_rgs} and divide by $N$, giving
+\[
+\DNstar(P_N)\le \frac{2}{N}\sum_{k=0}^{m} b_k.
+\]
+For the golden branch all continued-fraction digits satisfy $a_k=1$, hence all Ostrowski digits satisfy $b_k\in\{0,1\}$, so $\sum_{k=0}^{m} b_k\le m+1$.
+Moreover, for the golden branch the convergent denominators are Fibonacci numbers $q_m=F_{m+1}$, and one has $q_m\ge \varphi^{m-1}$ for $m\ge 1$.
+Since $q_m\le N$, it follows that $m\le 1+\log_\varphi N$, hence $m+1\le 2+\log_\varphi N$.
+Combining the bounds yields the stated inequality.
+\end{proof}
+
+

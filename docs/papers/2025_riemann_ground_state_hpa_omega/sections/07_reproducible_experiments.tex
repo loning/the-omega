@@ -1,0 +1,134 @@
+
+\section{Reproducible numerics: discrepancy stability and ``off-line zero'' threshold blow-up}
+\label{sec:experiments}
+
+This section provides optional reproducible numerical illustrations consistent with the paper's closed-layer mechanism.
+No accepted mathematical fact in the main argument relies on computation: the rigidity theorem is purely analytic once HTF is assumed.
+The role of these examples is only to visualize the contrast between (i) logarithmically controlled scan irregularity and (ii) exponential-gain modes that destroy Abel admissibility.
+
+\subsection{Reproducibility protocol}
+\label{sec:experiments_repro}
+
+All experiments are implemented in pure Python~3 with no third-party dependencies.
+To reproduce the tables, run the following scripts from this paper directory:
+\begin{itemize}
+\item \path{python3 scripts/exp_golden_discrepancy.py}
+\item \path{python3 scripts/exp_toy_zero_modes.py}
+\end{itemize}
+The scripts write \LaTeX{} row files into \path{sections/generated/}, which are included below.
+All randomness is absent (deterministic computations only).
+
+\subsection{Experiment A: one-dimensional golden scan star discrepancy}
+\label{sec:expA_discrepancy}
+
+We take $\alpha=\varphi^{-1}$ and the point set $P_N=\{\{t\alpha\}\}_{t=0}^{N-1}\subset[0,1)$.
+The script computes the one-dimensional star discrepancy $\DNstar(P_N)$ exactly from its definition and compares it with the explicit bound
+\[
+\DNstar(P_N)\le \frac{2(2+\log_\varphi N)}{N}.
+\]
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rccc@{}}
+\toprule
+$N$ & $\DNstar(P_N)$ & bound $2(2+\log_\varphi N)/N$ & ratio \\
+\midrule
+\input{sections/generated/golden_discrepancy_rows.tex}
+\\
+\bottomrule
+\end{tabular}
+\caption{Exact one-dimensional star discrepancy for the golden-branch Kronecker sequence and the explicit logarithmic bound. The ratio column is $\DNstar/\text{bound}$.}
+\label{tab:golden_discrepancy}
+\end{table}
+
+\subsection{Experiment B: toy ``zero-mode'' signal and the Abel threshold}
+\label{sec:expB_toy_modes}
+
+Let $\gamma_k$ be the imaginary parts of the first $K$ nontrivial zeros on the critical line (hard-coded constants in the script).
+We form a toy ``critical-line'' signal
+\[
+e(t)=\sum_{k=1}^K \cos(\gamma_k t),
+\]
+and then introduce an artificial real-part shift $\delta>0$ on the first mode:
+\[
+e_\delta(t)=\e^{\delta t}\cos(\gamma_1 t)+\sum_{k=2}^K \cos(\gamma_k t).
+\]
+We monitor two proxies:
+
+\paragraph{Discrete energy growth.}
+Define the discrete $L^2$ energy up to horizon $T$ by
+\[
+E_\delta(T)=\sum_{t=0}^{T-1} |e_\delta(t)|^2.
+\]
+Pure oscillatory signals ($\delta=0$) exhibit at most linear growth, while $\delta>0$ forces exponential growth in $T$.
+
+\begin{lemma}[Closed-form growth of a single amplified mode]
+\label{lem:toy_energy_closed_form}
+Let $u_t=\e^{\delta t}\cos(\gamma t)$ with $\delta>0$.
+Then for every integer $T\ge 1$,
+\[
+\sum_{t=0}^{T-1} u_t^2
+=\frac{1}{2}\sum_{t=0}^{T-1}\e^{2\delta t}
+\;+\;\frac{1}{2}\sum_{t=0}^{T-1}\e^{2\delta t}\cos(2\gamma t)
+=\frac{\e^{2\delta T}-1}{2(\e^{2\delta}-1)}
+\;+\;\frac{1}{2}\RePart\!\left(\frac{1-(\e^{2\delta+2\iu\gamma})^{T}}{1-\e^{2\delta+2\iu\gamma}}\right).
+\]
+In particular, the leading growth is $\Theta(\e^{2\delta T})$ as $T\to\infty$.
+\end{lemma}
+
+\begin{proof}
+Use $\cos^2(\gamma t)=\tfrac12(1+\cos(2\gamma t))$ and sum the resulting geometric series in complex form.
+\end{proof}
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rccc@{}}
+\toprule
+$T$ & $\delta$ & $E_\delta(T)$ & $\max_{t<T}|e_\delta(t)|$ \\
+\midrule
+\input{sections/generated/toy_energy_rows.tex}
+\\
+\bottomrule
+\end{tabular}
+\caption{Toy-mode energy growth. Exponential gain ($\delta>0$) produces rapidly increasing energy and peak amplitude.}
+\label{tab:toy_energy}
+\end{table}
+
+\paragraph{Abel threshold.}
+For integer time sampling, consider the finite-horizon Abel sum
+\[
+S_\delta(r;T_{\max})=\sum_{t=0}^{T_{\max}-1} r^t e_\delta(t).
+\]
+The closed-layer prediction behind Lemma~\ref{lem:abel_obstruction} is that the effective threshold is
+\[
+r_0=\e^{-\delta},
+\]
+since $r^t\e^{\delta t}=(r\e^\delta)^t$.
+For the single complex mode $z_t:=\e^{(\delta+\iu\gamma_1)t}$ one has the exact geometric identity
+\[
+\sum_{t=0}^{T_{\max}-1} r^t z_t=\sum_{t=0}^{T_{\max}-1}\bigl(r\,\e^{\delta+\iu\gamma_1}\bigr)^t
+=\frac{1-\bigl(r\,\e^{\delta+\iu\gamma_1}\bigr)^{T_{\max}}}{1-r\,\e^{\delta+\iu\gamma_1}},
+\]
+and for the real cosine mode $\e^{\delta t}\cos(\gamma_1 t)=\RePart(z_t)$ one has
+\[
+\sum_{t=0}^{T_{\max}-1} r^t \e^{\delta t}\cos(\gamma_1 t)
+=\RePart\!\left(\frac{1-\bigl(r\,\e^{\delta+\iu\gamma_1}\bigr)^{T_{\max}}}{1-r\,\e^{\delta+\iu\gamma_1}}\right).
+\]
+so the transition at $r\e^\delta=1$ separates decay ($r<\e^{-\delta}$) from exponential growth in $T_{\max}$ ($r>\e^{-\delta}$), independent of any analytic continuation considerations.
+The script reports the magnitude $|S_\delta(r;T_{\max})|$ as $r$ crosses $r_0$.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rcc@{}}
+\toprule
+$\delta$ & $r$ & $|S_\delta(r;T_{\max})|$ \\
+\midrule
+\input{sections/generated/toy_abel_rows.tex}
+\\
+\bottomrule
+\end{tabular}
+\caption{Toy Abel threshold behavior at fixed $T_{\max}$. Values remain moderate for $r<\e^{-\delta}$ and grow rapidly once $r$ crosses the predicted threshold.}
+\label{tab:toy_abel}
+\end{table}
+
+

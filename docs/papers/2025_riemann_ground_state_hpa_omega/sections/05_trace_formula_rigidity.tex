@@ -1,0 +1,144 @@
+
+\section{Holographic trace formula and polar rigidity: a protocol derivation of RH}
+\label{sec:htf_rigidity}
+
+We now state the structural bridge (HTF) and derive the core rigidity theorem.
+The proof uses only three ingredients: (i) Omega's geometric-side holomorphy of Abel traces on the unit disk, (ii) the HTF mode structure for zeros, and (iii) an elementary pole-location computation.
+
+\subsection{The Holographic Trace Formula assumption (HTF)}
+\label{sec:htf_assumption}
+
+\begin{assumption}[HTF (Holographic Trace Formula)]
+\label{assump:HTF}
+There exists a family of controllable readout kernels (test objects) $\mathcal{K}$ and, for each $K\in\mathcal{K}$, an Abel-weighted scan trace function $T_K(r)$ constructed from the scan algebra $(U_{\mathrm{scan}},V)$ and finite-resolution readout effects $\{E_k^{(\varepsilon)}\}$ such that:
+
+\begin{enumerate}
+\item \textbf{(Geometric side boundedness and canonical finite part).}
+For each fixed resolution $\varepsilon$ and each $K\in\mathcal{K}$, the function $T_K(r)$ is given by a power series $\sum_{t\ge 0} a_t(K)\,r^t$ with bounded coefficients and therefore extends to a holomorphic function on the open unit disk $\{\,|r|<1\,\}$ (cf.\ Proposition~\ref{prop:abel_definability}).
+Moreover, it admits a finite-part extraction along the canonical real path $r\uparrow 1$ in the sense of Section~\ref{sec:abel_finite_part}.
+
+\item \textbf{(Explicit-formula isomorphism).}
+Under the same regularization convention, $T_K(r)$ admits a decomposition into a ``prime/periodic-orbit'' term and a ``zero/spectral'' term.
+On the spectral side, there exist complex coefficients $c_\rho(K)$ such that each nontrivial zero $\rho$ contributes via an exponential mode sampled at integer times:
+\[
+S_\rho(r):=\sum_{t=0}^{\infty} r^t \e^{(\rho-\tfrac{1}{2})t},
+\]
+possibly after taking the same finite-part normalization used on the geometric side.
+Equivalently, $T_K(r)$ matches, kernel-by-kernel, a Weil-type explicit formula in which $x^\rho$ appears as $\e^{\rho t}$ in log time.
+Whenever the above series converges (i.e.\ $|r\,\e^{\RePart(\rho)-\tfrac{1}{2}}|<1$), it sums to the meromorphic mode function
+\[
+M_\rho(r):=\frac{1}{1-r\,\e^{(\rho-\tfrac{1}{2})}}.
+\]
+HTF further assumes that the spectral-side expression
+\[
+T_K^{\mathrm{spec}}(r):=\sum_{\rho} c_\rho(K)\,M_\rho(r)
+\]
+is well-defined as a meromorphic function on $|r|<1$ with poles only of the above mode form, in the sense that the series converges absolutely and uniformly on compact subsets of $\{|r|<1\}$ that avoid the pole set.
+Finally, the HTF identity holds as an identity of meromorphic functions on $|r|<1$ between $T_K(r)$ and its geometric+spectral decomposition (after the same canonical normalization on both sides).
+
+\item \textbf{(Detectability).}
+For every nontrivial zero $\rho$ of $\zeta$, there exists at least one kernel $K\in\mathcal{K}$ such that the residue of $T_K^{\mathrm{spec}}$ at the pole location $r=\e^{-(\rho-\tfrac{1}{2})}$ is nonzero.
+\end{enumerate}
+\end{assumption}
+
+\paragraph{Closed-layer status.}
+HTF is explicitly a structural assumption bridging scan algebra traces and the classical explicit formula.
+All subsequent closed-layer consequences will depend on HTF; no interpretation-layer content is used.
+
+\subsection{An internal pole obstruction for off-critical modes}
+\label{sec:abel_obstruction}
+
+\begin{lemma}[Internal pole obstruction lemma]
+\label{lem:abel_obstruction}
+Let $\rho=\beta+\iu\gamma$ with $\beta>\tfrac{1}{2}$.
+Then the meromorphic mode function
+\[
+M_\rho(r)=\frac{1}{1-r\,\e^{(\rho-\tfrac{1}{2})}}
+\]
+has a pole at
+\[
+r_\rho=\e^{-(\beta-\tfrac{1}{2})}\,\e^{-\iu\gamma},
+\qquad |r_\rho|=\e^{-(\beta-\tfrac{1}{2})}<1.
+\]
+In particular, any spectral-side expression that contains a nonzero multiple of $M_\rho$ cannot extend to a holomorphic function on the full unit disk.
+\end{lemma}
+
+\begin{proof}
+The pole occurs where the denominator vanishes:
+\[
+1-r\,\e^{(\rho-\tfrac{1}{2})}=0
+\quad\Longleftrightarrow\quad
+r=\e^{-(\rho-\tfrac{1}{2})}=\e^{-(\beta-\tfrac{1}{2})}\e^{-\iu\gamma}.
+\]
+Its modulus is $\e^{-(\beta-\tfrac{1}{2})}<1$ when $\beta>\tfrac{1}{2}$.
+\end{proof}
+
+\begin{lemma}[Holomorphic--meromorphic incompatibility at an interior pole]
+\label{lem:holomorphic_meromorphic_pole}
+Let $U\subset\CC$ be open and let $r_0\in U$.
+If $F$ is holomorphic on $U$ and $G$ is meromorphic on $U$ with a pole at $r_0$, then $F\neq G$ on $U\setminus\{r_0\}$.
+\end{lemma}
+
+\begin{proof}
+Assume for contradiction that $F=G$ on $U\setminus\{r_0\}$.
+Choose a small disk $D\subset U$ centered at $r_0$.
+Since $F$ is holomorphic on $D$, it has a Taylor series
+\[
+F(r)=\sum_{k=0}^{\infty} b_k (r-r_0)^k
+\qquad (r\in D).
+\]
+Since $G$ is meromorphic on $D$ with a pole at $r_0$, it has a Laurent expansion with a nontrivial principal part
+\[
+G(r)=\sum_{k=-m}^{\infty} a_k (r-r_0)^k,
+\qquad a_{-m}\neq 0.
+\]
+Equality on the punctured disk $D\setminus\{r_0\}$ forces equality of Laurent coefficients, hence $a_{-m}=0$, a contradiction.
+\end{proof}
+
+\subsection{Polar rigidity implies the critical line}
+\label{sec:polar_rigidity}
+
+\begin{theorem}[Polar rigidity $\Rightarrow$ critical line]
+\label{thm:polar_rigidity}
+Assume the Omega axioms O2/O5/O6 as used in Section~\ref{sec:omega_axioms} and assume HTF (Assumption~\ref{assump:HTF}).
+Then every nontrivial zero $\rho$ of $\zeta$ satisfies $\RePart(\rho)=\tfrac{1}{2}$.
+\end{theorem}
+
+\begin{proof}
+Fix a kernel $K\in\mathcal{K}$ and consider the corresponding Abel trace $T_K(r)$.
+
+\paragraph{Step 1: geometric-side holomorphy on the unit disk.}
+By construction in Omega, $T_K(r)$ is an Abel-weighted sum of bounded scan--readout contributions, hence a power series in $r$ with radius of convergence at least $1$.
+By Proposition~\ref{prop:abel_definability}, it defines a holomorphic function for every $|r|<1$.
+Moreover, Omega requires that a canonical finite part along $r\uparrow 1$ exists for admissible traces (Assumption~\ref{assump:HTF}(1)).
+
+\paragraph{Step 2: off-critical zeros force an internal pole.}
+Suppose, for contradiction, that there exists a nontrivial zero $\rho=\beta+\iu\gamma$ with $\beta>\tfrac{1}{2}$.
+By detectability (Assumption~\ref{assump:HTF}(3)), choose $K\in\mathcal{K}$ such that the spectral side has nonzero residue at the pole location $r_\rho=\e^{-(\rho-\tfrac{1}{2})}$.
+By Lemma~\ref{lem:abel_obstruction}, this location satisfies $|r_\rho|<1$.
+
+\paragraph{Step 3: contradiction with the Omega trace identity.}
+HTF identifies the geometric-side holomorphic function $T_K(r)$ with the spectral-side meromorphic expression on $|r|<1$.
+If an off-critical $\rho$ were present with nonzero residue at $r_\rho$, the spectral side would have a pole at $r_\rho\in\{|r|<1\}$, which is incompatible with holomorphy of $T_K(r)$ by Lemma~\ref{lem:holomorphic_meromorphic_pole}.
+Therefore no off-critical $\rho$ with $\RePart(\rho)>\tfrac{1}{2}$ can be present.
+
+\paragraph{Step 4: symmetry excludes $\beta<\tfrac{1}{2}$.}
+Therefore no zero satisfies $\RePart(\rho)>\tfrac{1}{2}$.
+By the functional equation symmetry $\rho\mapsto 1-\rho$, this also excludes $\RePart(\rho)<\tfrac{1}{2}$.
+Hence $\RePart(\rho)=\tfrac{1}{2}$ for all nontrivial zeros.
+\end{proof}
+
+\begin{corollary}[RH in the Omega+HTF protocol system]
+\label{cor:rh}
+Within the protocol system defined by Omega (O2/O5/O6) plus HTF, the Riemann Hypothesis holds.
+\end{corollary}
+
+\begin{remark}[Closed-layer inputs]
+Theorem~\ref{thm:polar_rigidity} depends only on:
+(i) Omega's geometric-side Abel definability and canonical finite-part admissibility,
+(ii) HTF's mode structure in which zeros contribute as $\e^{(\rho-\tfrac{1}{2})t}$ under Abel weights, and
+(iii) the interior-pole obstruction of Lemma~\ref{lem:abel_obstruction} together with the holomorphic--meromorphic incompatibility Lemma~\ref{lem:holomorphic_meromorphic_pole}.
+No programmatic interpretation (energy, teleology, cosmology) enters the proof.
+\end{remark}
+
+

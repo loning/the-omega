@@ -1,0 +1,124 @@
+
+\section{Preliminaries: zeta, explicit formulas, and closed-layer scan objects}
+\label{sec:preliminaries}
+
+\subsection{The Riemann zeta function and zero notation}
+\label{sec:zeta_notation}
+
+We write
+\[
+\zeta(s)=\sum_{n\ge 1} n^{-s}\qquad (\RePart(s)>1),
+\]
+and use analytic continuation to extend $\zeta$ to $\CC\setminus\{1\}$.
+Nontrivial zeros are denoted by $\rho=\beta+\iu\gamma$ with $0<\beta<1$.
+The functional equation implies the usual symmetries: if $\rho$ is a zero, so are $\overline{\rho}$ and $1-\rho$ (ignoring the trivial zeros).
+
+\paragraph{Completed zeta function.}
+It is often convenient to work with the completed zeta function
+\[
+\xi(s):=\tfrac12 s(s-1)\,\pi^{-s/2}\Gamma\!\left(\tfrac{s}{2}\right)\zeta(s),
+\]
+which is entire and satisfies $\xi(s)=\xi(1-s)$ \cite{Titchmarsh1986,Edwards1974}.
+The nontrivial zeros of $\zeta$ coincide with the zeros of $\xi$.
+
+\subsection{Explicit formulas as a trace template}
+\label{sec:explicit_formula_template}
+
+Weil-type explicit formulas share a common shape: a \emph{geometric side} supported on primes (or prime powers) equals a \emph{spectral side} supported on the zeros $\rho$ of $\zeta$, up to controlled archimedean terms \cite{IwaniecKowalski2004, Titchmarsh1986}.
+Rather than reproducing technical hypotheses, we extract only the mode structure needed for the protocol argument.
+
+Passing to log coordinates $t=\log x$, the term $x^\rho$ becomes $\e^{\rho t}$.
+After centering at $\tfrac{1}{2}$ (the natural symmetry axis), the spectral contribution of a zero typically appears as an exponential mode of the form
+\[
+\e^{(\rho-\tfrac{1}{2})t}=\e^{(\beta-\tfrac{1}{2})t}\,\e^{\iu\gamma t}.
+\]
+The closed-layer rigidity mechanism will use only this elementary growth/oscillation decomposition under Abel weights.
+
+\begin{proposition}[A standard explicit formula for $\psi(x)$ (quoted)]
+\label{prop:psi_explicit_formula}
+Let $\psi(x)=\sum_{n\le x}\Lambda(n)$ be the Chebyshev function and assume $x>1$ is not a prime power.
+Then one has the explicit formula
+\[
+\psi(x)=x-\sum_{\rho}\frac{x^\rho}{\rho}-\log(2\pi)-\tfrac12\log(1-x^{-2}),
+\]
+where the sum runs over the nontrivial zeros $\rho$ of $\zeta$ (interpreted in the standard symmetric limiting sense).
+\end{proposition}
+
+\begin{proof}[Reference]
+See, e.g., \cite[Ch.\ 14]{Titchmarsh1986} or \cite[Ch.\ 1]{Edwards1974}.
+\end{proof}
+
+The mode structure used in HTF is the direct consequence of the identity $x^\rho=\e^{\rho\log x}$: in log-time $t=\log x$, each zero contributes a frequency $\gamma$ and a growth rate $\beta$.
+
+\subsection{A quantitative zero counting law}
+\label{sec:zero_counting}
+
+Let $N(T)$ denote the number of nontrivial zeros $\rho=\beta+\iu\gamma$ with $0<\gamma\le T$, counted with multiplicity.
+The Riemann--von Mangoldt formula gives the quantitative density of the spectral side:
+\[
+N(T)=\frac{T}{2\pi}\log\!\left(\frac{T}{2\pi}\right)-\frac{T}{2\pi}+O(\log T)
+\qquad (T\to\infty).
+\]
+We will not use this asymptotic in any proof, but it is useful for calibrating what kind of decay is needed for kernel-dependent coefficients $c_\rho(K)$ in order for spectral-side sums to define meromorphic functions on $|r|<1$.
+Standard references include \cite{Titchmarsh1986,Edwards1974}.
+
+\subsection{Scan--readout protocols and star discrepancy}
+\label{sec:scan_discrepancy}
+
+In the closed layer, a scan protocol and its readout are primary objects.
+A canonical example class is a Kronecker scan on the $d$-torus $\TT^d=(\RR/\ZZ)^d$:
+\[
+x_t=x_0+t\alpha \pmod{1},
+\qquad t\in\ZZ_{\ge 0},
+\]
+with irrational slope vector $\alpha\in\RR^d$.
+Given a bounded kernel (readout observable) $f:[0,1)^d\to\RR$, the finite-horizon readout is
+\[
+\avgN{f}=\frac{1}{N}\sum_{t=0}^{N-1} f(x_t),
+\]
+a fully computable and auditable output at resource level $N$.
+
+To certify uniformity of coverage in a deterministic way, we use the \emph{star discrepancy} $\DNstar(P_N)$ of the point set $P_N=\{x_0,\dots,x_{N-1}\}\subset[0,1)^d$:
+\[
+\DNstar(P_N)
+=\sup_{u\in[0,1]^d}
+\left|
+\frac{1}{N}\#\bigl(P_N\cap [0,u)\bigr) - \lambda\bigl([0,u)\bigr)
+\right|,
+\]
+where $[0,u)=\prod_{j=1}^d [0,u_j)$ and $\lambda$ is Lebesgue measure \cite{KuipersNiederreiter1974, DrmotaTichy1997}.
+
+In the one-dimensional golden-branch case $\alpha=\varphi^{-1}$ (with $\varphi=(1+\sqrt{5})/2$), an explicit logarithmic upper bound is available:
+\[
+\DNstar(P_N)\ \le\ \frac{2\bigl(2+\log_\varphi N\bigr)}{N}.
+\]
+One convenient route to this explicit bound is via Denjoy--Koksma at convergent times together with the Ostrowski expansion of $N$ (Appendix~\ref{app:orbit_abel}; see also \cite{Denjoy1932,Koksma1935,KuipersNiederreiter1974}).
+This certifies that, under a minimal-complexity irrational scan, finite-resource sampling error grows at most logarithmically (times $1/N$), in sharp contrast with the exponential growth induced by off-critical spectral modes.
+
+\subsection{Abel regularization and finite-part extraction}
+\label{sec:abel_finite_part}
+
+Abel regularization provides a protocol-native way to turn formal ``infinite'' orbit sums into auditable objects.
+Given a bounded function $f$ along the scan orbit $(x_t)$, define the Abel family
+\[
+S_f(r):=\sum_{t=0}^{\infty} r^t f(x_t),\qquad 0<r<1.
+\]
+For every $r<1$, the series is absolutely convergent and computable.
+For uniquely ergodic scans (in particular, irrational translations on tori), Abel means converge to the space average for continuous observables; see, e.g., \cite{Walters1982} and the Abel--Ces\`aro comparison in \cite{Hardy1949}.
+In the rotation template, one has the Abelian limit
+\[
+\lim_{r\uparrow 1} (1-r)S_f(r)=\int_{[0,1)^d} f(x)\,\dd x.
+\]
+The \emph{Abel finite part} (finite-part constant term) is defined, when the limit exists, by
+\[
+\FP\sum_{t=0}^{\infty} f(x_t)
+\ :=\
+\lim_{r\uparrow 1}
+\left(
+S_f(r)-\frac{\int f}{1-r}
+\right).
+\]
+In the HPA--Omega formalism, the existence of this finite part along the canonical path $r\uparrow 1$ is not an afterthought: it is part of the admissibility conditions for using the corresponding infinite object in the closed layer.
+Appendix~\ref{app:orbit_abel} records a precise asymptotic/finite-part template, including a Fourier-resolvent criterion that guarantees existence of the constant term for sufficiently regular readout kernels.
+
+
