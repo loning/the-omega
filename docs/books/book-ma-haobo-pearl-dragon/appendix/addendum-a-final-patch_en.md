@@ -83,3 +83,4 @@ As long as you are fast enough, the future is now.
 
 **Further Reading (Optional):** [Appendix C: Causal Isometry & Fractal Dragon Pearl—Geometric Notes on the Discrete–Continuous Handshake](appendix-c-causal-isometry-fractal-dragon-pearl_en.md)
 
+
