@@ -1,0 +1,109 @@
+
+\section{Intrinsic quantumness: Weyl pairs, induced probability, and uncertainty as a protocol tradeoff}
+\label{sec:weyl_readout}
+
+\subsection{Weyl pairs as the algebraic source of complementarity}
+\label{sec:weyl_pair}
+
+By Axiom~\ref{ax:O6}, the scan algebra contains a Weyl pair $(U_{\mathrm{scan}},V)$ satisfying
+\[
+U_{\mathrm{scan}}V=\e^{\iu\theta}VU_{\mathrm{scan}},
+\qquad \theta:=2\pi\alpha\not\equiv 0 \ (\mathrm{mod}\ 2\pi).
+\]
+This obstructs simultaneous diagonalization: one cannot prepare a state that is arbitrarily close to an eigenstate of both scan shift and phase pointer.
+In the scan--readout semantics, this is the structural origin of complementarity.
+
+\subsection{Readout instruments and the derived Born form}
+\label{sec:povm_semantics}
+
+At resolution $\varepsilon$, the readout channel is encoded by a POVM $\{E_k^{(\varepsilon)}\}$ (Axiom~\ref{ax:O5}).
+The probability assignment is induced by the effective state:
+\[
+\mathbb{P}_k^{(\varepsilon)}=\omega_{\mathrm{eff}}\!\left(E_k^{(\varepsilon)}\right).
+\]
+In finite-dimensional approximations, this becomes the Born form $\mathbb{P}_k=\Tr(\rho E_k)$.
+Thus, probability is a derived interface object controlled by the readout resolution and the instrument design, rather than an external stochastic postulate \cite{Kraus1983,NielsenChuang2000,Busch2003}.
+
+\paragraph{Born form from effect-additivity (Gleason--Busch).}
+The appearance of $\Tr(\rho E)$ is not an extra modeling choice once one commits to POVM-based readout and noncontextual additivity on effects.
+In a finite-dimensional $\mathcal{H}_{\mathrm{eff}}$, every normal state $\omega_{\mathrm{eff}}$ has the form $\omega_{\mathrm{eff}}(E)=\Tr(\rho E)$ for a density operator $\rho$.
+More generally, the following theorem shows that \emph{any} consistent probability assignment on effects is necessarily of this form.
+
+\begin{theorem}[Gleason--Busch representation for POVMs (informal statement)]
+\label{thm:busch_gleason_povm}
+Let $\mathcal{H}$ be a complex Hilbert space and let $\mu$ be a map assigning probabilities to effects $E$ ($0\le E\le \ind$) such that:
+\begin{itemize}
+\item $\mu(\ind)=1$ and $\mu(E)\ge 0$;
+\item for any finite POVM $\{E_k\}_k$ with $\sum_k E_k=\ind$, one has $\sum_k \mu(E_k)=1$ (equivalently, $\mu$ is finitely additive on coexistent effects).
+\end{itemize}
+Then there exists a density operator $\rho$ such that $\mu(E)=\Tr(\rho E)$ for all effects $E$.
+\end{theorem}
+
+\begin{proof}[Reference]
+This is a POVM/effect-space version of Gleason's theorem; see \cite{Busch2003} for a simple proof and discussion of hypotheses.
+\end{proof}
+
+\subsection{A variance-form uncertainty relation (Massar--Spindel)}
+\label{sec:massar_spindel}
+
+Following \cite{MassarSpindel2008}, for a normalized state $\ket{\psi}$ define the unitary variances
+\[
+\Delta_U^2:=1-\abs{\bra{\psi}U\ket{\psi}}^2,
+\qquad
+\Delta_V^2:=1-\abs{\bra{\psi}V\ket{\psi}}^2.
+\]
+
+\begin{theorem}[Weyl-pair uncertainty (variance form)]
+\label{thm:weyl_uncertainty}
+Let $U,V$ be unitary operators satisfying $UV=\e^{\iu\theta}VU$ with the phase chosen so that $0\le \theta\le \pi$, and set $A=\tan(\theta/2)$.
+Then for any normalized state $\ket{\psi}$,
+\begin{equation}
+\label{eq:weyl_variance_uncertainty}
+(1+2A)\,\Delta_U^2\,\Delta_V^2 + A^2(\Delta_U^2+\Delta_V^2)\ \ge\ A^2.
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Reference]
+This is Theorem~1 of \cite{MassarSpindel2008}; see also the derivation in \cite[Appendix]{Ma2025CT}.
+\end{proof}
+
+\subsection{Entropic uncertainty at finite resolution}
+\label{sec:entropic_uncertainty}
+
+Variance bounds such as \eqref{eq:weyl_variance_uncertainty} capture one aspect of complementarity.
+Finite-resolution readout naturally also supports \emph{entropic} uncertainty relations, which are often tighter and directly operational in information-theoretic tasks.
+For two projective measurements corresponding to orthonormal bases $\{\ket{x_i}\}$ and $\{\ket{z_j}\}$, the Maassen--Uffink bound states
+\[
+H(X)+H(Z)\ \ge\ -2\log c,
+\qquad
+c:=\max_{i,j}\abs{\braket{x_i}{z_j}},
+\]
+where $H(\cdot)$ is the Shannon entropy of the induced outcome distribution \cite{MaassenUffink1988}.
+With quantum side information (memory), the bound strengthens to a conditional-entropy form \cite{BertaChristandlColbeckRenesRenner2011}.
+
+\subsection{SDP and polynomial-optimization uncertainty frontiers}
+\label{sec:sdp_uncertainty}
+
+Beyond analytic inequalities, modern approaches compute tight uncertainty tradeoffs for fixed finite measurement families using convex optimization.
+For finite observables and POVMs, measurement-uncertainty regions can be characterized and approximated by semidefinite programs \cite{SchwonnekReebWerner2016}.
+More recently, state polynomial optimization provides systematic hierarchies yielding uncertainty relations and tight constants from polynomial constraints on states \cite{BermejoMoranHuber2024}.
+These frameworks provide a quantitative route from a specified instrument family $\{E_k^{(\varepsilon)}\}_k$ to testable uncertainty frontiers.
+This complements the variance-form Weyl-pair bound.
+
+\subsection{Protocol interpretation: address sharpness vs.\ global context}
+\label{sec:uncertainty_resource}
+
+Equation~\eqref{eq:weyl_variance_uncertainty} admits a direct operational translation in the scan--readout setting:
+\begin{itemize}
+\item making the phase pointer channel sharp (small $\Delta_V$) requires a more selective readout instrument, which increases the cost of maintaining global coherence under scan dynamics;
+\item making scan access ``cheap'' (small $\Delta_U$, near invariance under $U_{\mathrm{scan}}$) reduces distinguishability across ticks and forces longer horizons or deeper protocols to accumulate reliable information.
+\end{itemize}
+Thus, uncertainty is reinterpreted as a \emph{resource lower bound} reflecting the incompatibility between sharpening local addresses and retaining global contextual information under finite-resolution readout.
+
+\paragraph{Coupling to routing overhead.}
+In the scan--fold framework, sharpening ``where'' and ``when'' is not only an algebraic tradeoff (Weyl-pair complementarity), but can also become a compilation tradeoff once the readout instrument and locality primitive are embedded into a constrained substrate.
+Concretely, any protocol refinement that requires more selective screen-local addressing or denser local couplings increases the required routing dilation/congestion on the hardware graph (Section~\ref{sec:kappa_bounds}), hence increases the local overhead field $\kappa(x)$ and decreases the lapse $N(x)=\lapse(x)=\kappa_0/\kappa(x)$ (Section~\ref{sec:lapse_definition}).
+In scan-chain realizations this dependence is directly controlled by address-order separations of screen neighbors (Proposition~\ref{prop:scan_chain_separation_lower_bound}).
+A fully quantitative inequality linking a chosen POVM family $\{E_k^{(\varepsilon)}\}_k$ to a lower bound on $\kappa$ requires specifying an explicit compilation model for implementing that instrument; the present paper treats this as an auditable interface: once a concrete instrument family and routing model are fixed, the resulting $(\Delta_U,\Delta_V)$ uncertainty region and the induced $\kappa$ landscape can be computed and compared.
+
+

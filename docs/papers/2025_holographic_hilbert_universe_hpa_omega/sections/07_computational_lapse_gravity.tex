@@ -1,0 +1,319 @@
+
+\section[Computational-lapse gravity]{Computational-lapse gravity: routing overhead, redshift, and a\\ phase-potential Newtonian limit}
+\label{sec:gravity}
+
+\subsection{Routing overhead and the lapse field}
+\label{sec:lapse_definition}
+
+Hilbert folding defines screen locality, but physical implementation depends on how screen-local operations are compiled into scan-nearest-neighbor primitives.
+To make the ``routing overhead'' $\kappa$ precise and falsifiable, we fix a minimal compilation model.
+
+\begin{assumption}[Hardware graph and primitive operations]
+\label{ass:hardware_graph}
+At resolution $n$, the observer-accessible degrees of freedom are labeled by screen sites $x\in\Sigma_n$ (Axiom~\ref{ax:H1}).
+Physical primitives are executed on a \emph{hardware interaction graph} $G_{\mathrm{phys}}=(V_{\mathrm{phys}},E_{\mathrm{phys}})$ with edge weights $w(e)>0$ interpreted as the tick cost of a primitive two-body operation along $e\in E_{\mathrm{phys}}$.
+A placement map $\pi_n:\Sigma_n\to V_{\mathrm{phys}}$ assigns each screen site to a physical vertex.
+In one tick, any set of primitives supported on disjoint edges of $G_{\mathrm{phys}}$ may be executed in parallel (standard locality constraint).
+\end{assumption}
+
+\begin{definition}[Local compilation overhead]
+\label{def:kappa_local}
+Fix a reference \emph{local update task} $\mathcal{G}_x$ supported in a bounded screen neighborhood of $x$ (e.g.\ a prescribed set of nearest-neighbor gates on $(\Sigma_n,\sim)$ around $x$).
+Let $\mathrm{Depth}_{G_{\mathrm{phys}}}(\mathcal{G}_x)$ denote the minimal number of global scan ticks required to implement $\mathcal{G}_x$ using primitive operations on $G_{\mathrm{phys}}$ and local swaps/routing allowed by Assumption~\ref{ass:hardware_graph}.
+Define
+\[
+\kappa(x):=\mathrm{Depth}_{G_{\mathrm{phys}}}(\mathcal{G}_x).
+\]
+\end{definition}
+
+Definition~\ref{def:kappa_local} makes $\kappa(x)$ an operationally auditable quantity once $G_{\mathrm{phys}}$, $\pi_n$, and the task family $\mathcal{G}_x$ are fixed.
+It also allows graph-theoretic bounds that connect $\kappa$ to standard notions of circuit depth and routing congestion.
+
+We define the computational lapse by \eqref{eq:lapse_def}:
+\[
+\lapse(x)=\frac{\kappa_0}{\kappa(x)}.
+\]
+
+\begin{proposition}[Operational derivation of the lapse time-scaling]
+\label{prop:proper_time_scaling}
+Let $t\in\ZZ_{\ge 0}$ denote global scan ticks, and fix a reference overhead $\kappa_0>0$ corresponding to a homogeneous region in which the local update task completes in $\kappa_0$ ticks.
+Define the \emph{local relational time} $\tau_{\mathrm{loc}}(t;x)$ to be proportional to the number of completed local update cycles at $x$ by time $t$, normalized so that $\tau_{\mathrm{loc}}(t;x)=t$ when $\kappa(x)=\kappa_0$.
+Then, in the continuous notation used throughout the paper,
+\begin{equation}
+\label{eq:proper_time_scaling}
+\dd \tau_{\mathrm{loc}}=\lapse(x)\,\dd t=\frac{\kappa_0}{\kappa(x)}\,\dd t.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+By Definition~\ref{def:kappa_local}, one local update cycle at $x$ requires $\kappa(x)$ global ticks.
+Thus, the number of completed cycles by time $t$ is $t/\kappa(x)$, up to an $O(1)$ endpoint effect that vanishes under coarse-grained time.
+Normalizing relational time so that one cycle corresponds to $\kappa_0$ units gives $\tau_{\mathrm{loc}}(t;x)=\kappa_0\,t/\kappa(x)$, hence \eqref{eq:proper_time_scaling}.
+\end{proof}
+
+Equation~\eqref{eq:proper_time_scaling} is therefore not an external relativistic postulate: it is a closed-layer consequence of (i) the compilation model and (ii) the definition of relational time as auditable progress of a standard local update task.
+In standard relativity language, it matches the role of the lapse function in a static slicing with vanishing shift \cite{MisnerThorneWheeler1973,Wald1984,Carroll2004}.
+
+\paragraph{Static-metric dictionary.}
+In a static spacetime with vanishing shift, the line element can be written as
+\[
+\dd s^2=-N(x)^2\,c^2\,\dd t^2+h_{ij}(x)\,\dd x^i\dd x^j,
+\]
+so for a stationary worldline ($\dd x^i=0$) one has $\dd \tau=N(x)\,\dd t$.
+Thus, \eqref{eq:proper_time_scaling} identifies the GR lapse $N$ with the operational field $\lapse$, up to the calibration that turns scan ticks into coordinate time.
+
+\begin{remark}[Calibration and reparameterization]
+\label{rem:lapse_calibration_reparam}
+The global tick parameter $t$ is a protocol coordinate.
+Rescaling $t\mapsto t':=a\,t$ (or, more generally, applying a monotone reparameterization) rescales the lapse by $N'(x)=N(x)\,\dd t/\dd t'$.
+All closed-layer observables used below are formulated either in terms of the relational time $\tau_{\mathrm{loc}}$ itself or in terms of lapse ratios (redshifts), which are invariant under such coordinate reparameterizations.
+To attach physical units, one fixes a calibration map from ticks to coordinate time, e.g.\ $t_{\mathrm{phys}}:=\Delta t\,t$ where $\Delta t$ is the duration (in seconds) of a chosen primitive reference tick in the substrate, or $\Delta t:=\tau_0$ in a time-delay realization (Appendix~\ref{app:wigner_smith}).
+The reference overhead $\kappa_0$ sets the zero of the potential $\Phi=\log(\kappa/\kappa_0)$ and can be fixed by choosing a homogeneous reference region (or reference energy band) in which the standard local task completes in $\kappa_0$ ticks.
+\end{remark}
+
+\begin{proposition}[Clock-task equivalence does not change the lapse field]
+\label{prop:clock_task_equivalence}
+Let $\mathcal{G}_x$ and $\mathcal{G}'_x$ be two bounded-local update task families on the same screen neighborhood such that there exists a constant $C>0$ with
+\[
+\mathrm{Depth}_{G_{\mathrm{phys}}}(\mathcal{G}'_x)=C\,\mathrm{Depth}_{G_{\mathrm{phys}}}(\mathcal{G}_x)
+\qquad \text{for all }x\in\Sigma_n.
+\]
+Let $\kappa,\kappa'$ be the corresponding overhead fields and choose $\kappa_0' := C\,\kappa_0$.
+Then the associated lapse fields coincide: $\lapse'(x)=\lapse(x)$ for all $x$, and hence all redshift ratios are unchanged.
+\end{proposition}
+
+\begin{proof}
+By definition, $\kappa'(x)=C\,\kappa(x)$ for all $x$.
+Therefore $\lapse'(x)=\kappa_0'/\kappa'(x)=(C\kappa_0)/(C\kappa(x))=\kappa_0/\kappa(x)=\lapse(x)$.
+\end{proof}
+
+\subsubsection{Graph-theoretic bounds for \texorpdfstring{$\kappa$}{kappa}}
+\label{sec:kappa_bounds}
+
+Definition~\ref{def:kappa_local} admits immediate lower bounds in terms of \emph{dilation} (distance expansion) and \emph{congestion} (edge load) of any routing realizing the required screen-local couplings on the hardware graph.
+These are standard notions in network routing and parallel compilation.
+
+\begin{definition}[Dilation and congestion (routing complexity measures)]
+\label{def:dilation_congestion}
+Let
+\[
+E_{\mathrm{screen}}
+:=\bigl\{\{x,y\}\subset\Sigma_n:\ x\sim y\bigr\}
+\]
+denote the nearest-neighbor edge set of the screen lattice.
+Consider a collection of required screen-local interactions (edges) $\mathcal{E}\subseteq E_{\mathrm{screen}}$ to be implemented during a local update.
+A \emph{routing} assigns to each $\{x,y\}\in\mathcal{E}$ a path $P_{xy}$ in $G_{\mathrm{phys}}$ connecting $\pi_n(x)$ to $\pi_n(y)$.
+The \emph{dilation} of the routing is
+\[
+\mathrm{dil}(\mathcal{E}):=\max_{\{x,y\}\in\mathcal{E}} \sum_{e\in P_{xy}} w(e),
+\]
+and the \emph{congestion} is
+\[
+\mathrm{cong}(\mathcal{E}):=\max_{e\in E_{\mathrm{phys}}} \sum_{\{x,y\}\in\mathcal{E}: e\in P_{xy}} 1,
+\]
+interpreted as the maximum number of routed interactions whose chosen paths traverse a given hardware edge.
+\end{definition}
+
+\begin{proposition}[Universal lower bounds]
+\label{prop:kappa_lower_bounds}
+For any local update task whose required interaction set is $\mathcal{E}$ one has
+\[
+\kappa(x)\ \ge\ \mathrm{dil}(\mathcal{E}),
+\qquad
+\kappa(x)\ \ge\ \mathrm{cong}(\mathcal{E}),
+\]
+up to fixed constant factors determined by the primitive gate set and scheduling convention.
+\end{proposition}
+
+\begin{proof}
+No implementation can transmit information between $\pi_n(x)$ and $\pi_n(y)$ faster than the weighted shortest-path distance, yielding the dilation bound.
+Each tick uses any hardware edge at most once (parallel disjoint-edge constraint), so an edge traversed by $k$ routed interactions forces at least $k$ time slices, yielding the congestion bound.
+\end{proof}
+
+\begin{proposition}[Existence of schedules with depth \texorpdfstring{$O(\mathrm{cong}+\mathrm{dil})$}{O(cong+dil)}]
+\label{prop:kappa_upper_bound_cong_dil}
+Under standard store-and-forward routing/scheduling models on graphs, there exist randomized schedules that realize all interactions in $\mathcal{E}$ within
+\[
+O\!\left(\mathrm{cong}(\mathcal{E})+\mathrm{dil}(\mathcal{E})\right)
+\]
+ticks, with high probability, and corresponding deterministic bounds with additional polylogarithmic overhead; see \cite{LeightonMaggsRao1994}.
+\end{proposition}
+
+Propositions~\ref{prop:kappa_lower_bounds}--\ref{prop:kappa_upper_bound_cong_dil} provide a principled map from the protocol field $\kappa(x)$ to well-defined graph-theoretic complexity measures with provable bounds.
+They also identify what must be specified to make $\kappa$ experimentally meaningful: the hardware graph, the placement map, and the local interaction task family.
+
+\paragraph{Scan-chain specialization (explicit \texorpdfstring{$\kappa$}{kappa} in terms of address separation).}
+The simplest substrate model is the one-dimensional scan chain, in which $G_{\mathrm{phys}}$ is the path graph on vertices $\{0,1,\dots,2^{dn}-1\}$ with unit weights $w(e)\equiv 1$ and primitive operations allowed only between adjacent ticks.
+In this case, a natural placement is $\pi_n(x):=H_n^{-1}(x)$ (Section~\ref{sec:finite_resolution_addressing}).
+For a single required interaction between screen neighbors $\{x,y\}\in E_{\mathrm{screen}}$, any implementation by adjacent swaps satisfies the tight bound
+\[
+\mathrm{Depth}_{\mathrm{chain}}(\{x,y\})\ \ge\ \abs{H_n^{-1}(x)-H_n^{-1}(y)},
+\]
+since information cannot traverse faster than one edge per tick on a path.
+Conversely, swapping along the unique shortest path on the chain yields an implementation within $O(\Delta_{xy})$ ticks, where $\Delta_{xy}:=\abs{H_n^{-1}(x)-H_n^{-1}(y)}$.
+Thus, in the scan-chain model, the lapse profile is quantitatively controlled by address-order separation of screen neighbors, making the address map choice directly testable.
+
+\paragraph{Canonical architecture scalings.}
+As an order-of-magnitude guide, Definition~\ref{def:kappa_local} supports immediate scaling estimates on standard graphs:
+\begin{itemize}
+\item \textbf{Matched lattice (near-constant lapse).}
+If $G_{\mathrm{phys}}$ contains a copy of the screen adjacency graph with unit weights and $\pi_n$ respects that adjacency locally (identity placement at scale $\varepsilon$), then the local update task $\mathcal{G}_x$ can be scheduled in $O(1)$ depth by a constant-round edge-coloring/matching decomposition, hence $\kappa(x)=O(1)$ and $\lapse$ is approximately uniform.
+\item \textbf{Hypercube (logarithmic diameter).}
+If $G_{\mathrm{phys}}$ is a hypercube on $|V_{\mathrm{phys}}|=2^{dn}$ vertices, its diameter is $dn$, so any two sites can be made adjacent via a path of length at most $dn$.
+For bounded-degree local tasks this yields the conservative estimate $\kappa(x)=O(dn)$, i.e.\ logarithmic in the total number of sites.
+\item \textbf{Scan chain (maximal distortion).}
+On the path graph, the diameter is $2^{dn}-1$, so neighbor pairs in the screen graph that are far in scan order yield $\kappa$ of order their index separation, producing exponentially large overheads in the worst case.
+\end{itemize}
+These estimates clarify what the lapse field is sensitive to: the interplay between the required screen-local interaction pattern and the geometric/graph-theoretic constraints of the underlying primitive substrate.
+
+\paragraph{Time-delay interface for a measurable overhead proxy.}
+A practical way to interpret and measure routing overhead is as an operational delay.
+If an experiment provides a local total delay $\tau_{\mathrm{WS}}(E)$ (e.g.\ via Wigner--Smith time delay at energy $E$), then a dimensionless overhead proxy can be defined by
+\[
+\kappa_{\mathrm{WS}}(E):=\frac{\tau_{\mathrm{WS}}(E)}{\tau_0},
+\qquad
+\lapse_{\mathrm{WS}}(E):=\frac{\kappa_0}{\kappa_{\mathrm{WS}}(E)},
+\]
+for a chosen reference tick duration $\tau_0$.
+This energy/scale-dependent proxy is not the same object as the spatial fields $\kappa(x)$ and $\lapse(x)$ defined by a compilation task family; see Appendix~\ref{app:wigner_smith}.
+
+\subsection{Redshift as an overhead ratio}
+\label{sec:redshift_ratio}
+
+Given two locations $x_1,x_2$, \eqref{eq:proper_time_scaling} yields the redshift ratio
+\begin{equation}
+\label{eq:redshift_ratio}
+\frac{\dd \tau_1}{\dd \tau_2}
+=\frac{\lapse(x_1)}{\lapse(x_2)}
+=\frac{\kappa(x_2)}{\kappa(x_1)}.
+\end{equation}
+Thus, inhomogeneous compilation cost is directly observable as a relative slowing of local relational time.
+This provides a concrete operational semantics for ``gravitational time dilation'' within the scan--fold--readout framework \cite{Ma2025CAP,Ma2025FoP}.
+
+\subsection{Computational potential and a GR matching dictionary}
+\label{sec:computational_potential}
+
+\begin{definition}[Computational potential]
+\label{def:computational_potential}
+Define the computational potential
+\begin{equation}
+\label{eq:Phi_def}
+\Phi(x):=-\log \lapse(x)=\log\!\left(\frac{\kappa(x)}{\kappa_0}\right).
+\end{equation}
+\end{definition}
+
+The potential $\Phi$ is directly measurable once $\kappa$ is operationally specified, and it converts multiplicative redshift into an additive field:
+\[
+\frac{\lapse(x_1)}{\lapse(x_2)}=\e^{-(\Phi(x_1)-\Phi(x_2))}.
+\]
+
+\paragraph{Schwarzschild matching (static vacuum template).}
+In classical GR, for a static spherically symmetric vacuum solution in Schwarzschild coordinates, the lapse is
+\[
+N_{\mathrm{Schw}}(r)=\sqrt{1-\frac{2GM}{c^2 r}},
+\]
+so the corresponding overhead profile in the present dictionary is
+\[
+\kappa_{\mathrm{Schw}}(r)=\frac{\kappa_0}{N_{\mathrm{Schw}}(r)}.
+\]
+This provides a direct \emph{fitting interface}: any measured redshift profile $\lapse(r)$ can be converted into an inferred $\kappa(r)$, and compared against the Schwarzschild template at the level of a single parameter $M$ \cite{MisnerThorneWheeler1973,Wald1984,Poisson2004}.
+
+\paragraph{Weak-field expansion.}
+For $r\gg 2GM/c^2$, one has
+\[
+\Phi_{\mathrm{Schw}}(r)=-\log N_{\mathrm{Schw}}(r)
+=-\frac12\log\!\left(1-\frac{2GM}{c^2 r}\right)
+=\frac{GM}{c^2 r}+O\!\left(\frac{G^2M^2}{c^4 r^2}\right),
+\]
+so $\lapse(r)=\e^{-\Phi(r)}$ reproduces the standard first-order gravitational redshift/time-dilation scaling.
+
+\paragraph{Closed-form one-parameter fit.}
+Given two radii $r_1,r_2$ and a measured lapse ratio $R:=\lapse(r_1)/\lapse(r_2)$, the Schwarzschild formula yields
+\[
+R^2=\frac{1-\frac{2GM}{c^2 r_1}}{1-\frac{2GM}{c^2 r_2}},
+\]
+so (provided $1/r_1\neq R^2/r_2$) one obtains
+\begin{equation}
+\label{eq:mass_fit_from_redshift}
+M=\frac{c^2(1-R^2)}{2G\left(\frac{1}{r_1}-\frac{R^2}{r_2}\right)}.
+\end{equation}
+
+\subsection{Calibration example: Earth-to-GPS gravitational redshift}
+\label{sec:gps_calibration}
+
+In the weak-field regime, the relative clock-rate difference between two stationary radii $r_1<r_2$ is
+\begin{equation}
+\label{eq:weak_field_rate_difference}
+\frac{\dd \tau(r_2)}{\dd \tau(r_1)}-1\;\approx\;\frac{GM}{c^2}\left(\frac{1}{r_1}-\frac{1}{r_2}\right).
+\end{equation}
+Conversely, a measured rate difference immediately yields a one-parameter mass extraction in this approximation:
+\[
+M\ \approx\ \frac{c^2}{G}\,
+\frac{\left(\frac{\dd \tau(r_2)}{\dd \tau(r_1)}-1\right)}{\left(\frac{1}{r_1}-\frac{1}{r_2}\right)},
+\]
+consistent with the exact inversion \eqref{eq:mass_fit_from_redshift} when the redshift is not linearized.
+For Earth, taking $GM\simeq 3.986\times 10^{14}\,\mathrm{m^3/s^2}$, $c=299\,792\,458\,\mathrm{m/s}$, $r_1\simeq 6.371\times 10^6\,\mathrm{m}$ and $r_2\simeq r_1+2.02\times 10^7\,\mathrm{m}$ (GPS altitude), \eqref{eq:weak_field_rate_difference} predicts a gravitational rate increase of
+\[
+\Delta\tau \approx 45.7\ \mu\mathrm{s/day},
+\]
+consistent with the standard GPS gravitational redshift budget (before including the kinematic special-relativistic correction) \cite{Ashby2003GPS}.
+
+\subsection{Discrepancy as a source and a Poisson closure for a phase potential}
+\label{sec:poisson_closure}
+
+To connect lapse and forces in a minimal way, we introduce a coarse-grained \emph{mismatch density} $\sigma(x)$, intended to be an auditable proxy derived from discrepancy/regularization budgets (Section~\ref{sec:poisson_from_action}).
+At the level of effective fields, the canonical closure is a Poisson equation for the scalar phase potential $\Phi$:
+\begin{equation}
+\label{eq:poisson_phase_potential}
+-\Delta \Phi = 4\pi G\,\sigma,
+\end{equation}
+where $G$ is Newton's constant (or, more generally, the macroscopic coupling constant fixed by calibration).
+With $\sigma=\rho/c^2$ (mass-energy density divided by $c^2$), \eqref{eq:poisson_phase_potential} is equivalent to the standard Newtonian form for $\phi_N:=-c^2\Phi$:
+\[
+\Delta \phi_N = 4\pi G\,\rho.
+\]
+The associated phase-pressure (force) field is
+\begin{equation}
+\label{eq:phase_pressure}
+\mathbf{P}_\Phi:=-\nabla\Phi.
+\end{equation}
+In these conventions, the weak-field gravitational acceleration template is
+\[
+\mathbf{a}=-\nabla\phi_N=c^2\nabla\Phi=-c^2\,\mathbf{P}_\Phi.
+\]
+
+\paragraph{Newtonian template.}
+In $\RR^3$, the Green function of $-\Delta$ implies that a localized source produces
+\begin{equation}
+\label{eq:one_over_r_potential}
+\Phi(r)\approx \Phi_0+\frac{GM}{c^2 r},
+\end{equation}
+and therefore an inverse-square acceleration template $\abs{\mathbf{a}}\sim GM/r^2$.
+Section~\ref{sec:experiments} includes a reproducible FFT-based Poisson solver demonstrating the emergence of an approximate $1/r$ profile on a periodic grid.
+
+\paragraph{Remarks on closure.}
+Equation~\eqref{eq:poisson_phase_potential} follows as an Euler--Lagrange equation both on the discrete screen graph (Proposition~\ref{prop:dirichlet_poisson_discrete}) and in the continuum (Proposition~\ref{prop:dirichlet_poisson}).
+It also matches the covariant weak-field limit of Einstein's equations (Remark~\ref{rem:weak_field_gr_poisson}), and therefore serves as the standard Newtonian-limit template for static weak fields \cite{Evans2010PDE,MisnerThorneWheeler1973,Wald1984,Carroll2004,Poisson2004}.
+In the present framework, its closed-layer role is to provide a quantitative and falsifiable bridge:
+given a protocol-defined source density $\sigma$ (from discrepancy/defect budgets) one computes $\Phi$ and predicts redshift and force profiles via \eqref{eq:Phi_def} and \eqref{eq:phase_pressure}.
+For extended discussions and variational embeddings within the HPA--$\Omega$ program, see \cite{Ma2025HPD,Ma2025CAP}.
+
+\subsection{Beyond static lapse: drift/shift, defect currents, and constraint templates}
+\label{sec:beyond_static_shift}
+
+The closed-layer constructions above are formulated in a static slicing with vanishing shift, which suffices for the auditable redshift dictionary and the Newtonian-limit Poisson template.
+For time-dependent protocol flows, the defect-density interface already provides the minimal conservation structure: a source $\sigma(t,x)$ and a defect current $J(t,x)$ satisfying the continuity equation $\partial_t\sigma+\nabla\cdot J=0$ (Definition~\ref{def:continuity_sigma}).
+
+In GR language, a general ADM line element reads
+\[
+\dd s^2=-N^2 c^2\,\dd t^2+h_{ij}\bigl(\dd x^i+N^i\dd t\bigr)\bigl(\dd x^j+N^j\dd t\bigr),
+\]
+where the lapse $N$ and shift $N^i$ act as Lagrange multipliers enforcing the Hamiltonian and momentum constraints.
+In the present dictionary, $N$ continues to be identified with the local cycle-completion rate $\lapse=\kappa_0/\kappa$.
+A nontrivial effective shift is naturally interpreted as a protocol-level drift of screen-local degrees of freedom induced by compilation schedules and routing, i.e.\ by systematic transport of defect budgets across the screen.
+In this sense, routing overhead contributes not only to the scalar lapse landscape but also to transport costs controlling feasible defect currents.
+
+A fully closed dynamic model requires one additional input beyond the static Poisson closure: a constitutive principle relating $J$ to the protocol fields (or, equivalently, a dynamical penalty/constraint for transport on the hardware graph).
+Once such an input is fixed, the continuity constraint and the static Dirichlet principle (Section~\ref{sec:poisson_from_action}) provide a canonical route to a time-dependent effective geometry: one enforces charge conservation at the protocol level while determining $\Phi(t,\cdot)$ at each time slice from the instantaneous defect density by a variational principle.
+
+

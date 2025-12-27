@@ -1,0 +1,45 @@
+
+\section{Notes on star discrepancy, Denjoy--Koksma, and the golden-branch bound}
+\label{app:discrepancy_notes}
+
+We recall the one-dimensional star discrepancy
+\[
+\DNstar(P_N)
+=\sup_{u\in[0,1]}
+\left|\frac{1}{N}\#\{t<N:x_t<u\}-u\right|
+\]
+for $P_N=\{x_0,\dots,x_{N-1}\}\subset[0,1)$, and the Koksma inequality \eqref{eq:koksma} controlling sampling error for bounded-variation observables \cite{KuipersNiederreiter1974,DrmotaTichy1997}.
+
+\paragraph{Rotation sequences and bounded-type slopes.}
+For an irrational rotation $x_t=x_0+t\alpha\ (\mathrm{mod}\ 1)$, discrepancy behavior is governed by the continued fraction of $\alpha$.
+When the partial quotients are uniformly bounded (bounded type), Denjoy--Koksma estimates at convergent times yield logarithmic mismatch stability; see \cite{Denjoy1932,Koksma1935,KuipersNiederreiter1974}.
+
+\paragraph{A continued-fraction certificate.}
+A standard bound for Kronecker sequences controls star discrepancy in terms of the continued-fraction data of $\alpha$:
+if $p_m/q_m$ is a convergent and $q_m\le N<q_{m+1}$, then one has
+\[
+\DNstar(P_N)\ \le\ \frac{1+\sum_{k=1}^m a_k}{N},
+\]
+where $a_k$ are the partial quotients of $\alpha$; see, e.g., \cite[Ch.~2]{KuipersNiederreiter1974} or \cite[Ch.~1]{DrmotaTichy1997}.
+For bounded type, $\sum_{k=1}^m a_k=O(m)=O(\log N)$, giving the familiar $O((\log N)/N)$ rate.
+
+\paragraph{Golden branch.}
+For the golden slope $\alpha=\varphi^{-1}=[0;1,1,1,\dots]$, all partial quotients satisfy $a_k=1$ and the convergent denominators are Fibonacci numbers, hence $q_m$ grows exponentially like $\varphi^m$.
+Specializing the continued-fraction certificate above therefore yields an explicit logarithmic bound of order $(\log N)/N$; \eqref{eq:golden_bound} is a convenient uniform certificate.
+The script \path{scripts/exp_golden_discrepancy_bound.py} computes $\DNstar(P_N)$ exactly from its definition and compares it against \eqref{eq:golden_bound} for representative $N$.
+
+\paragraph{Higher-dimensional discrepancy and the inverse problem.}
+The discussion in the main text emphasizes one-dimensional deterministic certificates as a minimal auditable interface.
+In dimension $d\ge 2$, the theory of star discrepancy becomes substantially more delicate, with sharp bounds depending on $d$, the point-set class, and the norm used to measure irregularities; see, e.g., \cite{Matousek1999GeometricDiscrepancy,DickPillichshammer2010DigitalNets}.
+One structural fact relevant to any ``deterministic error certificate'' narrative is the \emph{inverse discrepancy} problem: how large $N$ must be (as a function of $d$ and $\varepsilon$) to guarantee $\DNstar\le \varepsilon$.
+In particular, the inverse of the star discrepancy can scale at least linearly with the dimension in general settings \cite{HeinrichWozniakowskiWasilkowskiNovak2001InverseStarDiscrepancy}.
+Recent work also relates discrepancy growth to additive energy and other arithmetic structure of sequences, providing additional mechanisms by which protocols can exhibit large irregularities \cite{AistleitnerLarcher2016AdditiveEnergyIrregularities}.
+
+\paragraph{A sensitivity channel for coarse-grained field estimation.}
+The closed-layer role of discrepancy is to provide deterministic, non-asymptotic error certificates for finite-horizon readout.
+For one-dimensional scan samples, Koksma-type inequalities bound the error of estimating a bounded-variation observable by $\Var(f)\,\DNstar(P_N)$ (cf.\ \eqref{eq:koksma}).
+When a protocol source density $\sigma$ is built from occupation bias and then coarse-grained by a kernel $w^{(\varepsilon)}$ (Example~\ref{ex:occupation_bias_sigma}), the same discrepancy controls the deviation of the coarse-grained empirical density from its uniform reference at fixed horizon and resolution.
+Propagation to the phase potential and lapse is then controlled by the Poisson stability estimate (Proposition~\ref{prop:poisson_stability}), which bounds the induced perturbation of $\nabla\Phi$ in terms of the $H^{-1}$ norm of the source perturbation.
+This provides a concrete sensitivity pipeline from ``off-golden'' scan irregularities to coarse-grained geometric prediction errors.
+
+

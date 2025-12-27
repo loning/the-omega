@@ -1,0 +1,69 @@
+
+\section{Hilbert folding: from tick time to holographic screen locality}
+\label{sec:hilbert_folding}
+
+\subsection{Addressing at finite resolution}
+\label{sec:finite_resolution_addressing}
+
+Fix $d\ge 2$.
+At resolution level $n$, the screen lattice $\Sigma_n$ in \eqref{eq:screen_lattice} has $2^{dn}$ sites.
+By Axiom~\ref{ax:H1}, there exists a bijective address map $H_n$ with one-step locality \eqref{eq:hilbert_locality}.
+We interpret $H_n$ as a \emph{compiler-visible} and \emph{auditable} specification of how scan ticks visit screen degrees of freedom.
+
+Because $H_n$ is a bijection, it admits an inverse
+\[
+H_n^{-1}:\Sigma_n\to\{0,1,\dots,2^{dn}-1\},
+\]
+and therefore supports two primitive operations:
+\begin{itemize}
+\item \textbf{forward addressing} (tick $\to$ site): $t\mapsto H_n(t)$;
+\item \textbf{reverse addressing} (site $\to$ tick): $x\mapsto H_n^{-1}(x)$.
+\end{itemize}
+This invertibility is essential: locality is not only a geometric notion but a compilable addressing relation.
+
+\subsection{Locality as a verifiable adjacency constraint}
+\label{sec:hilbert_locality_property}
+
+The defining local constraint \eqref{eq:hilbert_locality} implies that the scan visits screen sites along a nearest-neighbor path:
+\[
+H_n(0)\sim H_n(1)\sim \cdots \sim H_n(2^{dn}-1),
+\]
+where $\sim$ denotes $\ell^1$ nearest-neighbor adjacency on the grid.
+Thus, any scan-layer update that couples consecutive ticks corresponds to a screen-local propagation.
+
+Conversely, implementing a prescribed screen-local interaction (nearest neighbors on $\Sigma_n$) on a one-dimensional scan substrate typically requires \emph{routing}:
+degrees of freedom must be swapped/moved in scan order so that neighboring sites become neighboring ticks.
+This is the source of computational overhead $\kappa(x)$ and, ultimately, computational lapse (Section~\ref{sec:gravity}).
+
+\subsection{A constructive view of ``space''}
+\label{sec:space_as_addressing}
+
+Within this framework, ``space'' is defined at each resolution level $n$ as the graph $(\Sigma_n,\sim)$, where $\sim$ is a chosen nearest-neighbor relation (e.g.\ $\ell^1$).
+The scan is not embedded \emph{into} a pre-existing manifold; rather, the manifold is an \emph{effective} description of how the address-induced neighborhood structure behaves under coarse graining.
+
+Two consequences are immediate:
+\begin{itemize}
+\item \textbf{Locality is protocol-relative.}
+The same underlying scan dynamics can induce different effective spatial neighborhoods under different admissible address maps (different compilation conventions).
+\item \textbf{Continuum geometry is an emergent coarse-grained object.}
+The continuous Hilbert curve $H:[0,1]\to[0,1]^d$ provides a classical scaling limit of $H_n$ under appropriate normalization, but operational claims are always made at finite $n$ and finite readout resolution.
+\end{itemize}
+
+\paragraph{A quantitative locality fact (H\"older regularity).}
+For the continuous Hilbert curve $H:[0,1]\to[0,1]^d$, one has H\"older continuity with exponent $1/d$:
+there exists a constant $C_d$ such that
+\[
+\norm{H(t)-H(s)}_\infty \le C_d\,|t-s|^{1/d}
+\qquad (s,t\in[0,1]),
+\]
+see, e.g., \cite{Sagan1994}.
+This provides a quantitative backbone for the ``finite resolution'' viewpoint: small parameter increments induce small spatial displacements after coarse graining, with a deterministic scale law.
+
+\subsection{Algorithmic realization (2D) and locality check}
+\label{sec:hilbert_algorithm}
+
+For $d=2$, a standard bitwise construction provides a concrete $H_n$ and is easy to verify by brute force.
+Appendix~\ref{app:hilbert_addressing} records a pure-Python implementation and checks \eqref{eq:hilbert_locality} for orders up to $n=8$ in milliseconds.
+This implementation is included only as an auditable reference construction consistent with the standard literature \cite{Sagan1994}.
+
+

@@ -1,0 +1,162 @@
+
+\section{Constructive spacetime: coarse-grained geometry from folded scan dynamics}
+\label{sec:constructive_spacetime}
+
+\subsection{Locality as a compilation/addressing effect}
+\label{sec:locality_as_address}
+
+At resolution $n$, the physical adjacency graph is the screen lattice $(\Sigma_n,\sim)$.
+The scan order provides an \emph{addressing} of this graph, but it does not in general preserve all local interactions for free.
+Instead, the cost of implementing a screen-local gate using scan-nearest-neighbor primitives depends on the local routing overhead $\kappa$.
+This yields a natural operational meaning of ``curvature'' or ``gravitational potential'' in terms of inhomogeneous compilation cost.
+
+In particular, regions in which $\kappa$ is larger are regions in which local operations take more global ticks to realize.
+This is the structural origin of the lapse field \eqref{eq:lapse_def} and of gravitational redshift in this framework (Section~\ref{sec:gravity}).
+
+\subsection{Why a non-differentiable address still yields smooth effective geometry}
+\label{sec:coarse_graining_geometry}
+
+The continuous Hilbert curve is nowhere differentiable, and even the discrete address path is highly tortuous at fine scales.
+However, physical measurement is always performed with finite resolution.
+Let $w^{(\varepsilon)}$ be a readout kernel at scale $\varepsilon$ (or, equivalently, a POVM element family $E^{(\varepsilon)}$).
+The effective observable is a coarse-grained field $\Phi_\varepsilon$ obtained by smoothing over many lattice sites.
+
+In this regime, discrete differential operators on $\Sigma_n$ (graph Laplacian, discrete gradients) can approximate continuum operators provided $\varepsilon$ is large compared with the lattice spacing $2^{-n}$ and the readout kernel is sufficiently regular.
+Thus, classical smooth geometry is an \emph{effective} description of coarse-grained fields, not a microscopic property of the address curve itself.
+
+\subsection{Scale as resolution: Hilbert self-similarity and canonical time coding}
+\label{sec:scale_renormalization}
+
+Hilbert addressing is strictly hierarchical: $H_{n+1}$ is built recursively from $H_n$ by subdividing the lattice into $2^d$ subcubes and connecting appropriately rotated/reflected subpaths.
+This induces a natural notion of ``coarse graining'':
+the map $n\mapsto n-1$ groups $2^d$ sites into a block and projects $\Sigma_n$ to $\Sigma_{n-1}$.
+
+On the time side, canonical integer codings (Ostrowski/Zeckendorf for the golden branch) provide a multi-scale decomposition of scan time.
+Together, these two hierarchical structures support a renormalization viewpoint in which:
+\begin{itemize}
+\item resolution level $n$ acts as a discrete spatial scale;
+\item Abel weight $r$ acts as an analytic radial coordinate (regularizing long tails before taking the boundary limit);
+\item coarse-grained dynamics is defined by pushing forward the scan/readout protocol through these scale maps.
+\end{itemize}
+
+\subsection{Admissible address maps and robustness under coarse graining}
+\label{sec:address_robustness}
+
+Hilbert folding (Axiom~\ref{ax:H1}) commits to a concrete finite-resolution addressing primitive, but the broader scan--fold paradigm admits alternative address families.
+This matters because the addressing enters the compilation problem and therefore the overhead field $\kappa$ (Section~\ref{sec:kappa_bounds}).
+At the same time, physical predictions are formulated at finite readout resolution, so only coarse-grained features of protocol fields are observable.
+This subsection records a minimal robustness statement in the closed layer.
+
+\begin{definition}[Admissible address family (coarse-grained locality class)]
+\label{def:admissible_address_family}
+An address family $\{A_n\}_{n\ge 1}$ with $A_n:\{0,1,\dots,2^{dn}-1\}\to\Sigma_n$ is called admissible if each $A_n$ is a bijection and if there exist constants $C_d>0$ and $c_d>0$ such that, after rescaling $\Sigma_n$ to the unit cube by $\tilde x:=2^{-n}x$, the induced discrete path obeys a uniform H\"older-type locality bound
+\[
+\norm{2^{-n}A_n(t)-2^{-n}A_n(s)}_\infty\ \le\ C_d\,\left|\frac{t-s}{2^{dn}}\right|^{1/d},
+\qquad s,t\in\{0,\dots,2^{dn}-1\},
+\]
+and a uniform non-degeneracy bound in the reverse direction
+\[
+\left|\frac{t-s}{2^{dn}}\right|\ \le\ c_d\,\norm{2^{-n}A_n(t)-2^{-n}A_n(s)}_\infty^{d}.
+\]
+Continuous Hilbert/Peano-type constructions satisfy such bi-H\"older bounds in their classical forms; see \cite{Sagan1994}.
+\end{definition}
+
+\begin{remark}[Hilbert vs.\ Z-order (Morton) locality]
+\label{rem:hilbert_vs_zorder}
+Different admissible families can have substantially different clustering properties at finite resolution, and therefore different compilation overhead landscapes.
+In spatial indexing, Hilbert orders are known to provide stronger clustering/locality than Z-order/Morton-type orders for a wide range of window queries and locality metrics; see \cite{MoonJagadishFaloutsosSaltz2001}.
+In the present framework, this translates into a principled sensitivity channel: the map choice changes the distribution of address separations and therefore changes $\kappa$ and $\lapse$ in substrate models where compilation is dominated by scan-order routing.
+\end{remark}
+
+\begin{definition}[Neighbor index separation and a scan-chain overhead proxy]
+\label{def:neighbor_index_separation}
+Fix an admissible address map $A_n:\{0,1,\dots,2^{dn}-1\}\to\Sigma_n$ and write its inverse as $A_n^{-1}:\Sigma_n\to\{0,1,\dots,2^{dn}-1\}$.
+For a screen-neighbor edge $\{x,y\}\in E_{\mathrm{screen}}$ define the \emph{scan-order separation}
+\[
+\Delta_{A_n}(x,y):=\abs{A_n^{-1}(x)-A_n^{-1}(y)}.
+\]
+Define the associated local scan-chain overhead proxy by
+\[
+\widetilde\kappa_{A_n}(x):=\max_{y\sim x}\Delta_{A_n}(x,y),
+\]
+interpreted as the largest scan-order separation among screen neighbors of $x$.
+\end{definition}
+
+\begin{proposition}[Scan-chain lower bound from address separations]
+\label{prop:scan_chain_separation_lower_bound}
+Assume the hardware graph is the unit-weight path on vertices $\{0,1,\dots,2^{dn}-1\}$ and the placement is $\pi_n(x)=A_n^{-1}(x)$.
+Then implementing any primitive interaction between screen neighbors $\{x,y\}\in E_{\mathrm{screen}}$ using adjacent primitives on the chain requires at least $\Delta_{A_n}(x,y)$ global ticks.
+Consequently, for any local update task family $\mathcal{G}_x$ that requires at least one interaction between $x$ and each of its neighbors, the compilation overhead satisfies
+\[
+\kappa(x)\ \ge\ \widetilde\kappa_{A_n}(x),
+\]
+up to fixed constant factors determined by the primitive gate set and scheduling convention.
+\end{proposition}
+
+\begin{proof}
+On a path graph with unit weights, information cannot propagate faster than one edge per tick.
+Thus any interaction between sites placed at chain positions $A_n^{-1}(x)$ and $A_n^{-1}(y)$ requires at least their graph distance, which equals $\abs{A_n^{-1}(x)-A_n^{-1}(y)}$.
+The local-update bound follows by taking the maximum over the required neighbor interactions.
+\end{proof}
+
+\begin{remark}[Address-family dependence of \texorpdfstring{$N(x)$}{N(x)} on a scan chain]
+\label{rem:address_dependence_lapse}
+In the GR dictionary of Section~\ref{sec:gravity}, the lapse $N$ is identified with the operational field $\lapse=\kappa_0/\kappa$, hence also with the potential $\Phi=-\log N=\log(\kappa/\kappa_0)$.
+In the scan-chain specialization $\pi_n(x)=A_n^{-1}(x)$, Proposition~\ref{prop:scan_chain_separation_lower_bound} shows that address-order neighbor separations control the overhead landscape and therefore directly control the lapse landscape.
+This makes the dependence of $N(x)$ on the choice of address family (Hilbert vs.\ Morton/Z-order, etc.) an experimentally testable effect: Tables~\ref{tab:address_kappa_proxy} and~\ref{tab:kappa_redshift_toy} report the induced proxy statistics and the corresponding redshift ratios for fixed substrate model, with only the address family varied.
+Since all physical comparisons are formulated either as lapse ratios or as potentials (which are invariant under global tick reparameterizations; Remark~\ref{rem:lapse_calibration_reparam}), the sensitivity to address choice is a genuine spatial inhomogeneity rather than a coordinate artifact.
+\end{remark}
+
+\subsubsection{A stability estimate for coarse-grained potentials}
+\label{sec:potential_stability}
+
+Let $w^{(\varepsilon)}$ be a nonnegative readout kernel at scale $\varepsilon$ with $\int w^{(\varepsilon)}=1$.
+For any field $F$ define its coarse-graining by convolution $F_\varepsilon:=w^{(\varepsilon)}\ast F$.
+If $\Phi$ is defined as the Poisson potential of a protocol-defined source density $\sigma$ (Section~\ref{sec:poisson_from_action}), then small changes in $\sigma$ imply small changes in $\Phi$ in standard Sobolev norms.
+
+\begin{proposition}[Stability of Poisson potentials under source perturbations]
+\label{prop:poisson_stability}
+Let $\Omega\subset\RR^3$ be a domain with fixed boundary conditions (periodic, Dirichlet, or suitable decay at infinity).
+Let $\sigma_1,\sigma_2$ be two source densities and let $\Phi_1,\Phi_2$ solve
+\[
+-\Delta\Phi_i=4\pi G\,\sigma_i
+\]
+with the same boundary convention.
+Then
+\[
+\norm{\nabla(\Phi_1-\Phi_2)}_{L^2(\Omega)}\ \le\ 4\pi G\,\norm{\sigma_1-\sigma_2}_{H^{-1}(\Omega)}.
+\]
+\end{proposition}
+
+\begin{proof}
+Set $\delta\Phi=\Phi_1-\Phi_2$ and $\delta\sigma=\sigma_1-\sigma_2$.
+Then $-\Delta\delta\Phi=4\pi G\,\delta\sigma$.
+Testing against $\delta\Phi$ and integrating by parts yields
+\[
+\norm{\nabla\delta\Phi}_{L^2(\Omega)}^2
+=4\pi G\,\langle \delta\sigma,\delta\Phi\rangle
+\le 4\pi G\,\norm{\delta\sigma}_{H^{-1}(\Omega)}\,\norm{\nabla\delta\Phi}_{L^2(\Omega)},
+\]
+hence the claimed estimate.
+\end{proof}
+
+\begin{definition}[Resolution-\texorpdfstring{$\varepsilon$}{epsilon} universality class (protocol equivalence)]
+\label{def:eps_universality_class}
+Fix a boundary convention on $\Omega$ and a readout kernel $w^{(\varepsilon)}$ of width $\varepsilon$ with $\int w^{(\varepsilon)}=1$.
+Consider two protocol realizations (address family, routing scheme, hardware graph $G_{\mathrm{phys}}$, placement $\pi_n$, horizon and regularization budgets, etc.) that induce source densities $\sigma_1,\sigma_2$ in the sense of Definition~\ref{def:defect_charge_sigma}.
+Define the coarse-grained sources $\sigma_{i,\varepsilon}:=w^{(\varepsilon)}\ast\sigma_i$.
+For a tolerance $\delta>0$, we say the two realizations are \emph{$(\varepsilon,\delta)$-equivalent} if
+\[
+\norm{\sigma_{1,\varepsilon}-\sigma_{2,\varepsilon}}_{H^{-1}(\Omega)}\ \le\ \delta.
+\]
+The collection of realizations mutually $(\varepsilon,\delta)$-equivalent forms an operational universality class at readout resolution $\varepsilon$.
+\end{definition}
+
+\begin{remark}[Practical robustness criterion at resolution \texorpdfstring{$\varepsilon$}{epsilon}]
+\label{rem:robustness_eps}
+If a change of address map (or other protocol parameters) modifies the source density only at scales below the readout resolution, then the coarse-grained sources $\sigma_{1,\varepsilon}$ and $\sigma_{2,\varepsilon}$ are close, and Proposition~\ref{prop:poisson_stability} implies that the coarse-grained potentials $\Phi_{1,\varepsilon}$ and $\Phi_{2,\varepsilon}$ (hence $\lapse_{i,\varepsilon}=\e^{-\Phi_{i,\varepsilon}}$) are close as well.
+Thus, sensitivity of physical conclusions to the address map can be made quantitative: it is controlled by the norm of the induced source perturbation after coarse graining.
+Equivalently, within the universality class of Definition~\ref{def:eps_universality_class}, the coarse-grained lapse field $N_\varepsilon=\lapse_\varepsilon$ is insensitive to microscopic address/graph details beyond their impact on the coarse-grained source.
+\end{remark}
+
+

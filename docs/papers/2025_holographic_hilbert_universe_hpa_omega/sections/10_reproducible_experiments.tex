@@ -1,0 +1,175 @@
+
+\section{Reproducible numerics and scripts}
+\label{sec:experiments}
+
+This section provides optional reproducible scripts illustrating intermediate mechanisms discussed in the paper.
+No closed-layer theorem depends on computation; the scripts are included to make the constructions auditable and testable.
+
+\subsection{Reproducibility protocol}
+\label{sec:repro_protocol}
+
+All experiments are implemented in Python~3.10+.
+The Poisson solver uses \texttt{numpy} if available (FFT mode); if not, it falls back to a pure-Python iterative periodic solver (slower, but dependency-free).
+All other scripts use only the Python standard library.
+Run the following from this paper directory:
+\begin{itemize}
+\item \path{python3 scripts/exp_hilbert_locality.py}
+\item \path{python3 scripts/exp_golden_discrepancy_bound.py}
+\item \path{python3 scripts/exp_abel_pole_barrier.py}
+\item \path{python3 scripts/exp_poisson_fft.py}
+\item \path{python3 scripts/exp_wigner_smith_kappa.py}
+\item \path{python3 scripts/exp_address_family_sensitivity.py}
+\item \path{python3 scripts/exp_kappa_redshift_toy.py}
+\end{itemize}
+
+The scripts optionally write small \LaTeX{} row files into \path{sections/generated/}.
+If those files are present, the tables below will include them.
+
+\subsection{Experiment A: Hilbert address locality (2D)}
+\label{sec:exp_hilbert_locality}
+
+We verify the one-step locality property \eqref{eq:hilbert_locality} for the standard $2$D discrete Hilbert map up to order $n=8$.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rcc@{}}
+\toprule
+order $n$ & $\min_t \norm{H_n(t+1)-H_n(t)}_1$ & $\max_t \norm{H_n(t+1)-H_n(t)}_1$ \\
+\midrule
+\IfFileExists{sections/generated/hilbert_locality_rows.tex}{\input{sections/generated/hilbert_locality_rows.tex}}{(run \path{scripts/exp_hilbert_locality.py} to generate)}\\
+\bottomrule
+\end{tabular}
+\caption{Hilbert address one-step locality check for orders $n=1,\dots,8$.}
+\label{tab:hilbert_locality}
+\end{table}
+
+\subsection{Experiment A$'$: address-family sensitivity on a scan chain (2D)}
+\label{sec:exp_address_sensitivity}
+
+We quantify how the choice of address family changes scan-order separations of screen neighbors.
+For an address map $A_n$ and a screen-neighbor edge $\{x,y\}$, define the separation $\Delta_{A_n}(x,y):=\abs{A_n^{-1}(x)-A_n^{-1}(y)}$ (Definition~\ref{def:neighbor_index_separation}).
+On a scan chain, $\Delta_{A_n}$ lower bounds the depth required to enact neighbor interactions (Proposition~\ref{prop:scan_chain_separation_lower_bound}).
+We report statistics of the induced local proxy $\widetilde\kappa_{A_n}(x)=\max_{y\sim x}\Delta_{A_n}(x,y)$ across all sites in $\Sigma_n$ for Hilbert vs.\ Morton/Z-order.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}r l rrrrr@{}}
+\toprule
+order $n$ & map & mean & $p_{50}$ & $p_{90}$ & $p_{99}$ & max \\
+\midrule
+\IfFileExists{sections/generated/address_kappa_proxy_rows.tex}{\input{sections/generated/address_kappa_proxy_rows.tex}}{(run \path{scripts/exp_address_family_sensitivity.py} to generate)}\\
+\bottomrule
+\end{tabular}
+\caption{Address-family sensitivity on the 2D screen: statistics of the local scan-chain overhead proxy $\widetilde\kappa_{A_n}$ for Hilbert and Morton/Z-order.}
+\label{tab:address_kappa_proxy}
+\end{table}
+
+\subsection{Experiment B: golden-branch star discrepancy and an explicit bound}
+\label{sec:exp_golden_discrepancy}
+
+We compute $\DNstar(P_N)$ for the golden scan and compare it against the explicit bound \eqref{eq:golden_bound}.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rccc@{}}
+\toprule
+$N$ & $\DNstar(P_N)$ & bound $2(2+\log_\varphi N)/N$ & ratio \\
+\midrule
+\IfFileExists{sections/generated/golden_discrepancy_rows.tex}{\input{sections/generated/golden_discrepancy_rows.tex}}{(run \path{scripts/exp_golden_discrepancy_bound.py} to generate)}\\
+\bottomrule
+\end{tabular}
+\caption{Exact star discrepancy for the golden-branch Kronecker sequence and the explicit logarithmic bound.}
+\label{tab:golden_discrepancy}
+\end{table}
+
+\subsection{Experiment C: Abel pole barrier toy model}
+\label{sec:exp_abel_barrier}
+
+We illustrate Lemma~\ref{lem:abel_pole_barrier} using a toy mode
+$u_t=\e^{(\beta-\frac12)t}\cos(\gamma t)$.
+When $\beta>\tfrac12$, the Abel weight must satisfy $r<\e^{-(\beta-\frac12)}$ to suppress exponential gain; otherwise the partial sums exhibit threshold blow-up.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}ccc@{}}
+\toprule
+$\beta$ & $r$ & $\bigl|S(r;T_{\max})\bigr|$ \\
+\midrule
+\IfFileExists{sections/generated/abel_barrier_rows.tex}{\input{sections/generated/abel_barrier_rows.tex}}{(run \path{scripts/exp_abel_pole_barrier.py} to generate)}\\
+\bottomrule
+\end{tabular}
+\caption{Toy Abel-threshold behavior at fixed $T_{\max}$.}
+\label{tab:abel_barrier}
+\end{table}
+
+\subsection{Experiment D: Poisson phase potential via FFT}
+\label{sec:exp_poisson}
+
+We solve $-\Delta\Phi=4\pi\rho$ on a periodic grid and check that a localized source produces an approximate $1/r$ potential profile before periodic images dominate.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rcc@{}}
+\toprule
+$r$ & $\langle\Phi\rangle$ & $r\langle\Phi\rangle$ \\
+\midrule
+\IfFileExists{sections/generated/poisson_rows.tex}{\input{sections/generated/poisson_rows.tex}}{(run \path{scripts/exp_poisson_fft.py} to generate)}\\
+\bottomrule
+\end{tabular}
+\caption{Representative radial averages from the FFT Poisson solver (periodic box).}
+\label{tab:poisson_rows}
+\end{table}
+
+\subsection{Experiment E: Wigner--Smith time delay and \texorpdfstring{$\kappa_{\mathrm{WS}}(E)$}{kappa_WS(E)}}
+\label{sec:exp_wigner_smith}
+
+To connect computational lapse to measurable delays, we include a minimal implementation of the Wigner--Smith time-delay matrix
+\[
+Q(E)=-\iu S(E)^\dagger \frac{\dd S}{\dd E},
+\]
+the total delay $\tau_{\mathrm{WS}}(E)=\Tr Q(E)$, and the dimensionless overhead proxy $\kappa_{\mathrm{WS}}(E)=\tau_{\mathrm{WS}}(E)/\tau_0$ for a chosen reference tick duration $\tau_0$.
+The script \path{scripts/exp_wigner_smith_kappa.py} provides an interface and includes a 1-channel Breit--Wigner toy model; users may replace it with a physical model or data for the scattering matrix $S(E)$.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}rcc@{}}
+\toprule
+$E$ & $\tau_{\mathrm{WS}}(E)$ & $\kappa_{\mathrm{WS}}(E)$ \\
+\midrule
+\IfFileExists{sections/generated/wigner_smith_rows.tex}{\input{sections/generated/wigner_smith_rows.tex}}{(run \path{scripts/exp_wigner_smith_kappa.py} to generate)}\\
+\bottomrule
+\end{tabular}
+\caption{Representative values from the Wigner--Smith toy model, providing an auditable interface for $\kappa_{\mathrm{WS}}(E)$.}
+\label{tab:wigner_smith_rows}
+\end{table}
+
+\subsection{Experiment F: a scan-chain redshift toy from a computed \texorpdfstring{$\kappa(x)$}{kappa(x)} landscape}
+\label{sec:exp_kappa_redshift_toy}
+
+We demonstrate the redshift ratio \eqref{eq:redshift_ratio} on a fully discrete scan-chain toy model.
+Fix a finite-resolution address map $A_n$ (Hilbert or Morton/Z-order) and place screen sites on a scan chain by $\pi_n(x)=A_n^{-1}(x)$.
+Define a site-local overhead proxy by
+\[
+\kappa(x):=\widetilde\kappa_{A_n}(x)=\max_{y\sim x}\abs{A_n^{-1}(x)-A_n^{-1}(y)},
+\]
+as in Definition~\ref{def:neighbor_index_separation}.
+Interpreting one local ``clock cycle'' at $x$ as requiring $\kappa(x)$ global ticks, the lapse dictionary predicts
+\[
+\frac{\dd\tau_1}{\dd\tau_2}=\frac{\kappa(x_2)}{\kappa(x_1)}.
+\]
+The script below selects representative low/median/high overhead sites and verifies the ratio by counting completed cycles over a long horizon.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}r l l r l r rr@{}}
+\toprule
+order $n$ & map & $x_1$ & $\kappa(x_1)$ & $x_2$ & $\kappa(x_2)$ & predicted & measured \\
+\midrule
+\IfFileExists{sections/generated/kappa_redshift_toy_rows.tex}{\input{sections/generated/kappa_redshift_toy_rows.tex}}{(run \path{scripts/exp_kappa_redshift_toy.py} to generate)}\\
+\bottomrule
+\end{tabular}
+\caption{Scan-chain toy redshift verification from a computed overhead proxy $\kappa(x)$ (Hilbert vs Morton/Z-order).}
+\label{tab:kappa_redshift_toy}
+\end{table}
+
+

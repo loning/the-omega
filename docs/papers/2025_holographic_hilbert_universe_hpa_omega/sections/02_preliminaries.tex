@@ -1,0 +1,202 @@
+
+\section{Preliminaries: scan objects, discrepancy certificates, Hilbert addressing, and Abel regularization}
+\label{sec:preliminaries}
+
+\subsection{Kronecker phase scans and Abel regularization}
+\label{sec:kronecker_abel}
+
+The minimal deterministic scan model is a Kronecker rotation on the circle:
+\begin{equation}
+\label{eq:kronecker_scan}
+  x_t=x_0+t\alpha \pmod 1,\qquad t\in\ZZ_{\ge 0},\quad \alpha\in(0,1)\setminus\QQ.
+\end{equation}
+Given a bounded readout kernel $f:\TT\to\CC$, the \emph{Abel-regularized orbit sum} is
+\begin{equation}
+\label{eq:abel_orbit_sum}
+  S_f(r):=\sum_{t\ge 0} r^t f(x_t),\qquad 0<r<1.
+\end{equation}
+For every $|r|<1$, the series converges absolutely and defines a holomorphic function of $r$.
+This ``move infinity to the boundary'' principle is the closed-layer replacement for informal divergent orbit sums.
+
+\paragraph{Fourier-resolvent form.}
+If $f$ has an absolutely summable Fourier series,
+\[
+f(x)=\sum_{m\in\ZZ}\widehat f(m)\,\e^{2\pi \iu m x},
+\qquad \sum_{m\in\ZZ}\abs{\widehat f(m)}<\infty,
+\]
+then substituting into \eqref{eq:abel_orbit_sum} yields the resolvent identity
+\begin{equation}
+\label{eq:abel_resolvent}
+S_f(r)=\sum_{m\in\ZZ}\widehat f(m)\,\e^{2\pi \iu m x_0}\,\frac{1}{1-r\,\e^{2\pi \iu m\alpha}},
+\qquad |r|<1.
+\end{equation}
+Thus, $S_f$ is holomorphic on the unit disk and admits a controlled boundary expansion as $r\uparrow 1$.
+
+\paragraph{Finite-part extraction.}
+For uniquely ergodic rotations, Abel means converge to the space average for sufficiently regular $f$.
+We define the Abel finite part along the canonical path $r\uparrow 1$ by
+\begin{equation}
+\label{eq:finite_part_def}
+\FP\sum_{t\ge 0} f(x_t)
+:=\lim_{r\uparrow 1}\left(
+S_f(r)-\frac{\int_0^1 f(x)\,\dd x}{1-r}
+\right),
+\end{equation}
+whenever the limit exists.
+In the $\Omega$ discipline, admissibility of an ``infinite'' protocol quantity is tied to the existence of such a canonical finite part.
+
+\subsection{Star discrepancy and deterministic error certificates}
+\label{sec:discrepancy_certificates}
+
+Let $P_N=\{x_0,\dots,x_{N-1}\}\subset[0,1)$ be the scan prefix.
+The one-dimensional star discrepancy is
+\begin{equation}
+\label{eq:star_discrepancy_1d}
+\DNstar(P_N)
+\;:=\;
+\sup_{u\in[0,1]}
+\left|
+\frac{1}{N}\#\{t<N: x_t<u\}-u
+\right|.
+\end{equation}
+The discrepancy controls deterministic sampling error via Koksma-type bounds:
+for functions of bounded variation $\Var(f)$,
+\begin{equation}
+\label{eq:koksma}
+\left|
+\frac{1}{N}\sum_{t=0}^{N-1} f(x_t)-\int_0^1 f(x)\,\dd x
+\right|
+\le \Var(f)\,\DNstar(P_N),
+\end{equation}
+see \cite{KuipersNiederreiter1974,DrmotaTichy1997}.
+
+\paragraph{Golden-branch logarithmic stability.}
+For the golden slope $\alpha=\varphi^{-1}$ with $\varphi=(1+\sqrt 5)/2$, a convenient explicit bound is
+\begin{equation}
+\label{eq:golden_bound}
+\DNstar(P_N)\ \le\ \frac{2\bigl(2+\log_\varphi N\bigr)}{N},
+\end{equation}
+which we will use as an illustrative certificate in Section~\ref{sec:experiments}; see Appendix~\ref{app:discrepancy_notes} and \cite{KuipersNiederreiter1974,DrmotaTichy1997}.
+
+\subsection{Discrete Hilbert addressing (space-filling folding at finite resolution)}
+\label{sec:hilbert_addressing_prelim}
+
+Fix an integer dimension $d\ge 2$.
+At resolution $n\in\NN$, define the $d$-dimensional screen lattice
+\begin{equation}
+\label{eq:screen_lattice}
+\Sigma_n := \{0,1,\dots,2^n-1\}^d,
+\qquad |\Sigma_n|=2^{dn}.
+\end{equation}
+
+\begin{definition}[Discrete Hilbert address map]
+\label{def:hilbert_address}
+A map $H_n:\{0,1,\dots,2^{dn}-1\}\to \Sigma_n$ is a discrete Hilbert address map if it is a bijection and if the ordered list
+$(H_n(0),H_n(1),\dots,H_n(2^{dn}-1))$ forms a Hamiltonian path on the grid with one-step locality.
+\end{definition}
+
+For standard Hilbert constructions, one-step locality holds in the Manhattan metric:
+\begin{equation}
+\label{eq:hilbert_locality}
+\norm{H_n(t+1)-H_n(t)}_1=1,
+\qquad 0\le t<2^{dn}-1.
+\end{equation}
+In this paper, $H_n$ is treated as a finite-resolution \emph{addressing primitive}.
+The continuous Hilbert curve is a classical limiting object, but operational claims are always formulated at finite $n$.
+
+\subsection{Weyl pairs and finite-resolution readout}
+\label{sec:weyl_readout_prelim}
+
+Let $\mathcal{H}_{\mathrm{eff}}$ be an effective observer Hilbert space.
+A Weyl pair $(U,V)$ is a pair of unitaries satisfying
+\begin{equation}
+\label{eq:weyl_relation}
+UV=\e^{2\pi \iu\alpha}\,VU,
+\end{equation}
+which is the algebraic source of complementarity for scan shift and phase pointer.
+In the canonical circle representation,
+\[
+(U\psi)(x)=\psi(x+\alpha),\qquad (V\psi)(x)=\e^{2\pi \iu x}\psi(x),
+\]
+$U$ implements the Kronecker shift \eqref{eq:kronecker_scan}.
+
+Finite-resolution readout is encoded by a POVM $\{E_k^{(\varepsilon)}\}_k$ (effects summing to $\ind$) and an effective state $\omega_{\mathrm{eff}}$:
+\begin{equation}
+\label{eq:povm_probability}
+\mathbb{P}_k^{(\varepsilon)}=\omega_{\mathrm{eff}}\!\bigl(E_k^{(\varepsilon)}\bigr),
+\qquad \sum_k E_k^{(\varepsilon)}=\ind,
+\end{equation}
+see \cite{Kraus1983,NielsenChuang2000,Busch2003}.
+
+\subsection{Routing overhead and computational lapse}
+\label{sec:routing_overhead_prelim}
+
+Hilbert addressing turns scan time into screen locality, but implementing screen-local interactions using a one-dimensional scan substrate requires compilation.
+We denote by $\kappa(x)$ a local routing overhead (e.g.\ minimal swap depth) required to enact a prescribed screen-local operation near lattice site $x\in\Sigma_n$.
+The \emph{computational lapse} is defined by
+\begin{equation}
+\label{eq:lapse_def}
+\lapse(x)=\frac{\kappa_0}{\kappa(x)},
+\end{equation}
+where $\kappa_0$ is a reference overhead in a homogeneous region.
+This provides an operational redshift dictionary: larger compilation cost corresponds to smaller local proper time per global tick.
+
+\subsection{Abel mode factors and an interior pole barrier}
+\label{sec:abel_pole_barrier_prelim}
+
+The conditional RH mechanism used later is a simple analytic fact about Abel transforms of exponential modes.
+
+\begin{lemma}[Abel pole barrier for off-critical growth]
+\label{lem:abel_pole_barrier}
+Fix $\rho\in\CC$ and define $a_t=\e^{(\rho-\frac12)t}$.
+For $|r|<1$,
+\[
+\sum_{t\ge 0} r^t a_t = \frac{1}{1-r\,\e^{(\rho-\frac12)}}.
+\]
+If $\RePart(\rho)>\tfrac12$, then the right-hand side has a pole at
+\[
+r_\rho:=\e^{-(\rho-\frac12)},
+\qquad |r_\rho|=\e^{-(\RePart(\rho)-\frac12)}<1.
+\]
+\end{lemma}
+
+\begin{proof}
+This is the geometric series identity for the complex ratio $r\,\e^{(\rho-\frac12)}$.
+If $\RePart(\rho)>\tfrac12$, then $\abs{\e^{(\rho-\frac12)}}>1$, so the reciprocal $r_\rho$ satisfies $\abs{r_\rho}<1$ and annihilates the denominator.
+\end{proof}
+
+Lemma~\ref{lem:abel_pole_barrier} will be paired with the holomorphy of bounded scan traces on $|r|<1$ to obtain a contradiction under the HTF bridge assumption.
+
+\subsection{Minimal primitives and terminology map}
+\label{sec:glossary_map}
+
+To streamline terminology, Table~\ref{tab:primitives_glossary} lists the small set of primitives used in the closed-layer arguments and their standard mathematical counterparts.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.33\linewidth}>{\raggedright\arraybackslash}p{0.62\linewidth}@{}}
+\toprule
+HPA--$\Omega$ term / symbol & Standard object / reading \\
+\midrule
+scan ticks $t$ & discrete time index (protocol time) \\
+scan unitary $U_{\mathrm{scan}}$ & unitary shift/rotation implementing scan dynamics \\
+phase pointer $V$ and Weyl relation & noncommutative Weyl pair (complementarity source) \\
+readout kernel / POVM $\{E_k^{(\varepsilon)}\}$ & generalized measurement (effects at resolution $\varepsilon$) \\
+effective state $\omega_{\mathrm{eff}}$ & normal state; in finite dimensions $\omega_{\mathrm{eff}}(E)=\Tr(\rho E)$ \\
+Hilbert folding $H_n$ & discrete space-filling address map (Hamiltonian path locality) \\
+routing overhead $\kappa(x)$ & compilation/routing depth for screen-local tasks on a hardware graph \\
+time-delay overhead proxy $\kappa_{\mathrm{WS}}(E)$ & Wigner--Smith total delay normalized by a tick duration (experimental proxy) \\
+computational lapse $\lapse(x)=\kappa_0/\kappa(x)$ & ratio of local relational time to global ticks (redshift factor) \\
+computational potential $\Phi(x)=-\log\lapse(x)$ & dimensionless potential; $\phi_N=-c^2\Phi$ in Newtonian units \\
+star discrepancy $\DNstar$ & deterministic equidistribution error certificate \\
+Abel regularization $S(r)=\sum a_t r^t$ & holomorphic generating function on $|r|<1$ \\
+finite part $\FP_{r\uparrow 1}$ & constant-term extraction along the canonical Abel path \\
+HTF & trace-bridge assumption (explicit-formula-as-trace in Abel coordinates) \\
+\bottomrule
+\end{tabular}
+\caption{Minimal primitives and terminology map used throughout the paper.}
+\label{tab:primitives_glossary}
+\end{table}
+
+

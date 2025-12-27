@@ -1,0 +1,22 @@
+
+\section{Discrete Hilbert addressing and one-step locality}
+\label{app:hilbert_addressing}
+
+The Hilbert curve is a classical space-filling construction mapping an interval continuously onto a square (and, more generally, onto higher-dimensional cubes) \cite{Hilbert1891,Sagan1994}.
+For the purposes of this paper, we use only its \emph{finite-resolution} discrete approximation:
+a bijection between indices $\{0,\dots,2^{dn}-1\}$ and lattice sites $\{0,\dots,2^n-1\}^d$ that visits each lattice site exactly once.
+
+\paragraph{One-step locality.}
+Standard Hilbert orders are constructed so that consecutive indices correspond to lattice neighbors (in $\ell^1$), i.e.\ \eqref{eq:hilbert_locality}.
+This property is crucial for interpreting the address map as a locality-preserving scan schedule.
+
+\paragraph{H\"older scaling (continuum limit).}
+The continuous Hilbert curve is H\"older continuous with exponent $1/d$ \cite{Sagan1994}, which quantitatively expresses locality preservation under coarse graining.
+In the present paper, this scaling is invoked only as a standard mathematical property supporting the finite-resolution interpretation; all operational claims remain at finite $n$.
+
+\paragraph{Implementation (2D).}
+For $d=2$, a compact bitwise algorithm maps a Hilbert index to $(x,y)$ coordinates.
+We include a pure-Python reference implementation in \path{scripts/exp_hilbert_locality.py}, which also brute-force verifies that $\norm{H_n(t+1)-H_n(t)}_1=1$ for all $t$ and for orders up to $n=8$.
+The script emits a small \LaTeX{} row file for Table~\ref{tab:hilbert_locality}.
+
+

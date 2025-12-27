@@ -1,0 +1,53 @@
+
+\section{Wigner--Smith time delay as an interface for measuring computational lapse}
+\label{app:wigner_smith}
+
+If computational lapse is interpreted as an operational time-delay density, then scattering theory provides a natural measurable proxy.
+Given a unitary scattering matrix $S(E)$ as a function of energy $E$, the Wigner--Smith time-delay matrix is
+\begin{equation}
+\label{eq:wigner_smith}
+Q(E)=-\iu\,S(E)^\dagger\frac{\dd S}{\dd E}.
+\end{equation}
+A common scalar summary is the total delay
+\begin{equation}
+\label{eq:tau_ws_trace}
+\tau_{\mathrm{WS}}(E)=\Tr Q(E).
+\end{equation}
+In the present framework, $\tau_{\mathrm{WS}}(E)$ can be interpreted as a measurable time-delay proxy for routing overhead at energy/scale $E$.
+Choosing a reference tick duration $\tau_0$ defines a dimensionless overhead proxy
+\[
+\kappa_{\mathrm{WS}}(E):=\frac{\tau_{\mathrm{WS}}(E)}{\tau_0},
+\qquad
+\lapse_{\mathrm{WS}}(E):=\frac{\kappa_0}{\kappa_{\mathrm{WS}}(E)}.
+\]
+
+The script \path{scripts/exp_wigner_smith_kappa.py} implements a finite-difference approximation of \eqref{eq:wigner_smith} and \eqref{eq:tau_ws_trace}.
+It includes a 1-channel Breit--Wigner toy model for $S(E)$ and can be replaced by a physical model or experimental data source.
+Standard references for time delay include \cite{Wigner1955,Smith1960}.
+
+\paragraph{A one-channel Breit--Wigner model (analytic check).}
+For a single-channel elastic scatterer, one may write $S(E)=\e^{\iu\delta(E)}$ and the Wigner--Smith delay reduces to the phase derivative $\tau_{\mathrm{WS}}(E)=\dd\delta/\dd E$.
+A minimal exactly unitary resonance model is the Breit--Wigner form
+\begin{equation}
+\label{eq:breit_wigner_S}
+S(E)=\frac{E-E_0-\iu\gamma/2}{E-E_0+\iu\gamma/2},
+\end{equation}
+whose phase rises by $\pi$ across the resonance.
+In this case one obtains the Lorentzian delay profile
+\begin{equation}
+\label{eq:breit_wigner_tau}
+\tau_{\mathrm{WS}}(E)=\frac{\gamma}{(E-E_0)^2+(\gamma/2)^2}.
+\end{equation}
+The toy implementation in \path{scripts/exp_wigner_smith_kappa.py} computes $\tau_{\mathrm{WS}}(E)$ numerically via a phase-unwrapped finite difference and provides an auditable interface for replacing \eqref{eq:breit_wigner_S} by a physical $S(E)$.
+
+\paragraph{Directly measurable observables.}
+In laboratory settings where a scattering description is available, the most direct measurable objects are the scattering matrix elements (e.g.\ microwave/mesoscopic $S$-parameters) as functions of energy/frequency.
+From these one extracts:
+\begin{itemize}
+\item the phase $\arg S(E)$ (or multi-channel eigenphases) and its derivative (group delay / Wigner--Smith delay);
+\item resonance locations $E_0$ and linewidths $\gamma$ via fits of phase jumps or delay peaks;
+\item in the multi-channel case, the full time-delay matrix $Q(E)$ and its trace $\tau_{\mathrm{WS}}(E)=\Tr Q(E)$.
+\end{itemize}
+Fixing a reference tick duration $\tau_0$ turns the measured delay into the dimensionless overhead proxy $\kappa_{\mathrm{WS}}(E)=\tau_{\mathrm{WS}}(E)/\tau_0$, and hence into a lapse proxy $\lapse_{\mathrm{WS}}(E)=\kappa_0/\kappa_{\mathrm{WS}}(E)$.
+
+

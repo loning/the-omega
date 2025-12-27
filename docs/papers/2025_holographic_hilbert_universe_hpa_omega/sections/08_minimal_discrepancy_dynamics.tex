@@ -1,0 +1,238 @@
+
+\section{Minimal dynamical closure: least-discrepancy flow and an auditable arrow of time}
+\label{sec:dynamics}
+
+\subsection{Accumulated mismatch as a Lyapunov candidate}
+\label{sec:mismatch_lyapunov}
+
+For a scan prefix $P_N$, define the accumulated mismatch
+\[
+E_N := N\,\DNstar(P_N).
+\]
+For bounded-type irrational scans (notably the golden branch), discrepancy certificates imply $E_N=O(\log N)$, so mismatch grows slowly and remains auditable at large horizons.
+In contrast, protocols that effectively introduce exponential-gain modes (Appendix~\ref{app:trace_rigidity}) destroy Abel admissibility and drive $E_N$ beyond sustainable bounds.
+
+\begin{remark}[Sensitivity away from the golden branch]
+\label{rem:slope_sensitivity}
+The mismatch growth rate is quantitatively controlled by the continued-fraction data of the scan slope $\alpha$.
+For Kronecker scans, standard certificates bound $\DNstar(P_N)$ in terms of partial quotients (Appendix~\ref{app:discrepancy_notes}); bounded-type slopes yield the logarithmic $O((\log N)/N)$ rate, while large partial quotients produce bursts of irregularity at intermediate horizons.
+When the defect density $\sigma$ is constructed from occupation bias (Example~\ref{ex:occupation_bias_sigma}), such discrepancy bursts translate into source perturbations at the readout scale.
+Propagation to effective geometry is then controlled by the Poisson stability estimate (Proposition~\ref{prop:poisson_stability}): coarse-grained perturbations of $\sigma$ induce proportionate perturbations of $\nabla\Phi$ (hence of lapse ratios) in Sobolev norms.
+\end{remark}
+
+This motivates a minimal closed-layer arrow-of-time statement:
+in the space of admissible protocols, sustainable evolution must flow toward configurations that keep mismatch growth controlled under fixed resource budgets.
+
+\subsection{A least-discrepancy variational template}
+\label{sec:least_discrepancy_template}
+
+Let $\mathcal{P}$ denote protocol parameters (scan slope, readout resolution, address map selection within the admissible family, routing scheme, truncation budget, etc.).
+A minimal auditable cost functional at horizon $T$ takes the schematic form
+\begin{equation}
+\label{eq:least_discrepancy_functional}
+\mathcal{E}_T(\mathcal{P})
+=
+\mathrm{CertDisc}_T(\mathcal{P})
+\;+\;
+\lambda\,\mathrm{Cost}(\mathcal{P})
+\;+\;
+\mu\,\mathrm{RegTail}_T(\mathcal{P}),
+\end{equation}
+where:
+\begin{itemize}
+\item $\mathrm{CertDisc}_T$ is a deterministic discrepancy-based certificate (e.g.\ $\Var(f)\,\DNstar$);
+\item $\mathrm{Cost}$ is an implementation overhead cost (routing depth, memory, circuit size), including the lapse profile $\lapse$;
+\item $\mathrm{RegTail}_T$ controls truncation/regularization tail errors under the Abel-first convention.
+\end{itemize}
+
+One may then define dynamics as a (possibly damped) gradient flow on protocol space decreasing $\mathcal{E}_T$.
+In the broader HPA--$\Omega$ program, this template is elevated to an $\Omega$ action principle with explicit Fisher-information and gravitational terms \cite{Ma2025CAP}.
+For the present paper, \eqref{eq:least_discrepancy_functional} serves only as the minimal closed-layer bridge between discrepancy certificates, routing overhead, and effective gravitational templates.
+
+\subsection{From auditable defect budgets to a Poisson closure}
+\label{sec:poisson_from_action}
+
+Section~\ref{sec:gravity} uses a phase potential $\Phi=-\log\lapse$ and a Poisson closure as the Newtonian-limit template.
+Here we record a closed-layer derivation of this closure from a minimal energy principle.
+
+\subsubsection{Defect charge measures and continuity constraints}
+\label{sec:defect_charge}
+
+To connect discrepancy/regularization budgets to a field source, it is convenient to treat mismatch as a signed ``defect charge'' distributed over the screen.
+
+\begin{definition}[Defect charge and source density]
+\label{def:defect_charge_sigma}
+Let $\Omega\subset\RR^3$ denote a coarse-grained region of the screen continuum limit.
+A protocol at horizon $T$ induces an \emph{auditable defect charge measure} $\Sigma_T$ on $\Omega$ such that $\Sigma_T(B)$ equals the net mismatch budget assigned to a measurable region $B\subseteq\Omega$.
+Assume $\Sigma_T$ is finite and absolutely continuous with respect to volume measure, so that there exists a density $\sigma_T\in L^1(\Omega)$ with
+\[
+\Sigma_T(B)=\int_B \sigma_T(x)\,\dd^3x.
+\]
+In the static closure, we write $\sigma:=\sigma_T$ at a fixed horizon and suppress $T$.
+\end{definition}
+
+\begin{example}[A canonical auditable choice: coarse-grained occupation bias]
+\label{ex:occupation_bias_sigma}
+At resolution $n$, let $x_t^{(n)}\in\Sigma_n$ denote the addressed site at tick $t$ and let
+\[
+\nu_T^{(n)}:=\frac{1}{T}\sum_{t=0}^{T-1}\delta_{x_t^{(n)}}
+\]
+be the empirical occupation measure on $\Sigma_n$ up to horizon $T$.
+Let $u_n:=|\Sigma_n|^{-1}\sum_{x\in\Sigma_n}\delta_x$ be the uniform reference measure and let $w^{(\varepsilon)}$ be a nonnegative readout kernel of width $\varepsilon$ used to coarse-grain lattice data into a continuum density.
+Then a concrete auditable defect measure is obtained by smoothing the signed occupation bias $\nu_T^{(n)}-u_n$ and scaling by a calibration constant:
+\[
+\Sigma_T := \gamma_\sigma \,(w^{(\varepsilon)}\ast (\nu_T^{(n)}-u_n)),
+\qquad
+\sigma_T=\frac{\dd\Sigma_T}{\dd^3x}.
+\]
+On a periodic box, this construction automatically yields $\int_\Omega \sigma_T\,\dd^3x=0$ (zero mean), matching the solvability condition of Remark~\ref{rem:sigma_constraints}.
+\end{example}
+
+\begin{remark}[A discrete implementable source at resolution \texorpdfstring{$n$}{n}]
+\label{rem:discrete_sigma_implementable}
+Let $N_T^{(n)}(x):=\#\{0\le t<T:\ x_t^{(n)}=x\}$ be the occupation count at site $x\in\Sigma_n$.
+The signed occupation bias
+\[
+b_T^{(n)}(x):=\frac{N_T^{(n)}(x)}{T}-\frac{1}{|\Sigma_n|}
+\]
+satisfies $\sum_{x\in\Sigma_n} b_T^{(n)}(x)=0$.
+A concrete discrete source for the graph Poisson equation \eqref{eq:poisson_graph} is then
+\[
+\sigma_n(x):=\gamma_\sigma\,b_T^{(n)}(x),
+\]
+and the continuum source density $\sigma$ may be obtained by smoothing $\sigma_n$ at readout scale $\varepsilon$.
+\end{remark}
+
+\begin{remark}[Conservation/solvability constraints]
+\label{rem:sigma_constraints}
+If $\Omega$ is treated as periodic (as in the FFT Poisson experiment), solvability of $-\Delta\Phi=4\pi G\sigma$ requires the zero-mean constraint $\int_\Omega \sigma\,\dd^3x=0$, corresponding to fixing the Laplacian zero mode.
+On non-compact domains with decay at infinity, or on bounded domains with Dirichlet boundary conditions, no such global neutrality is required.
+\end{remark}
+
+For time-dependent protocol flows, one may encode conservation of auditable defect charge by a continuity equation.
+
+\begin{definition}[Continuity equation (dynamic defect conservation)]
+\label{def:continuity_sigma}
+Let $\sigma(t,x)$ be a time-dependent source density and let $J(t,x)$ be a defect current.
+We say that defect charge is conserved if, in the distributional sense on $(0,T)\times\Omega$,
+\[
+\partial_t\sigma+\nabla\cdot J=0.
+\]
+\end{definition}
+
+\subsubsection{Dirichlet principle and the Poisson equation}
+\label{sec:dirichlet_principle}
+
+We now isolate the minimal variational structure that yields Poisson closure.
+
+\paragraph{Discrete screen formulation (graph Dirichlet principle).}
+At finite resolution $n$, the screen lattice $(\Sigma_n,\sim)$ is a finite graph with nearest-neighbor edge set $E_{\mathrm{screen}}$ (Definition~\ref{def:dilation_congestion}).
+A discrete source $\sigma_n:\Sigma_n\to\RR$ may be taken as the coarse-grained defect charge assigned to each site (Definition~\ref{def:defect_charge_sigma}), with the neutrality constraint $\sum_{x\in\Sigma_n}\sigma_n(x)=0$ in the periodic convention (Remark~\ref{rem:sigma_constraints}).
+
+\begin{definition}[Screen graph Laplacian]
+\label{def:screen_graph_laplacian}
+For a function $\Phi:\Sigma_n\to\RR$, define the (unscaled) graph Laplacian
+\[
+(\Delta_{\Sigma_n}\Phi)(x):=\sum_{y\in\Sigma_n:\,y\sim x}\bigl(\Phi(y)-\Phi(x)\bigr).
+\]
+\end{definition}
+
+\begin{proposition}[Discrete Dirichlet principle and graph Poisson equation]
+\label{prop:dirichlet_poisson_discrete}
+Fix $G>0$ and a discrete source $\sigma_n:\Sigma_n\to\RR$.
+Consider the discrete Dirichlet functional on potentials $\Phi:\Sigma_n\to\RR$,
+\begin{equation}
+\label{eq:dirichlet_functional_Phi_discrete}
+\mathcal{J}_n[\Phi]
+:=
+\sum_{\{x,y\}\in E_{\mathrm{screen}}}\frac{1}{8\pi G}\,\bigl(\Phi(x)-\Phi(y)\bigr)^2
+\;-\;
+\sum_{x\in\Sigma_n}\sigma_n(x)\,\Phi(x),
+\end{equation}
+with boundary convention (periodic/Dirichlet) fixed.
+If $\Phi$ is a stationary point of $\mathcal{J}_n$ under arbitrary variations $\eta:\Sigma_n\to\RR$ compatible with the boundary convention, then $\Phi$ satisfies the graph Poisson equation
+\begin{equation}
+\label{eq:poisson_graph}
+-\Delta_{\Sigma_n}\Phi=4\pi G\,\sigma_n.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Let $\Phi_\epsilon=\Phi+\epsilon\eta$.
+Differentiating \eqref{eq:dirichlet_functional_Phi_discrete} at $\epsilon=0$ gives
+\[
+0=\left.\frac{\dd}{\dd\epsilon}\right|_{\epsilon=0}\mathcal{J}_n[\Phi_\epsilon]
+=\sum_{x\in\Sigma_n}\eta(x)\left(\frac{1}{4\pi G}\sum_{y\sim x}\bigl(\Phi(x)-\Phi(y)\bigr)-\sigma_n(x)\right),
+\]
+since each undirected edge contributes to exactly its two endpoints.
+Because $\eta$ is arbitrary, the bracket must vanish for each $x$, which is equivalent to \eqref{eq:poisson_graph} using Definition~\ref{def:screen_graph_laplacian}.
+\end{proof}
+
+\begin{remark}[Continuum limit and calibration]
+\label{rem:poisson_discrete_to_continuum}
+On a regular grid of spacing $h=2^{-n}$, the standard scaled discrete Laplacian is $h^{-2}\Delta_{\Sigma_n}$, which converges to the continuum Laplacian under smoothness/coarse-graining assumptions.
+In the present framework, the overall coefficient $G$ is fixed by calibration at finite resolution (Remark~\ref{rem:units_calibration}), so the discrete and continuum conventions may be treated uniformly once a boundary convention and scale map are specified.
+\end{remark}
+
+\begin{proposition}[Dirichlet functional and Poisson Euler--Lagrange equation]
+\label{prop:dirichlet_poisson}
+Fix a coupling constant $G>0$.
+Let $\Omega\subset\RR^3$ be a domain and let $\sigma\in L^1(\Omega)$ be a source density (Definition~\ref{def:defect_charge_sigma}).
+Consider the functional on admissible potentials $\Phi$ with suitable boundary conditions,
+\begin{equation}
+\label{eq:dirichlet_functional_Phi}
+\mathcal{J}[\Phi]
+:=
+\int_\Omega \left(\frac{1}{8\pi G}\,\abs{\nabla\Phi(x)}^2-\sigma(x)\,\Phi(x)\right)\dd^3x.
+\end{equation}
+If $\Phi$ is a stationary point of $\mathcal{J}$ under compactly supported variations (or variations compatible with the boundary condition), then $\Phi$ satisfies the Poisson equation
+\begin{equation}
+\label{eq:poisson_from_action}
+-\Delta\Phi=4\pi G\,\sigma
+\end{equation}
+in the weak sense; if $\Phi$ is sufficiently smooth, then \eqref{eq:poisson_from_action} holds pointwise.
+\end{proposition}
+
+\begin{proof}
+Let $\eta$ be a smooth test function compatible with the boundary condition and consider $\Phi_\epsilon=\Phi+\epsilon\eta$.
+Differentiating \eqref{eq:dirichlet_functional_Phi} at $\epsilon=0$ and integrating by parts yields
+\[
+0=\left.\frac{\dd}{\dd\epsilon}\right|_{\epsilon=0}\mathcal{J}[\Phi_\epsilon]
+=\int_\Omega \left(\frac{1}{4\pi G}\,\nabla\Phi\cdot\nabla\eta-\sigma\,\eta\right)\dd^3x
+=\int_\Omega \left(-\frac{1}{4\pi G}\,\Delta\Phi-\sigma\right)\eta\,\dd^3x,
+\]
+which is exactly the weak formulation of \eqref{eq:poisson_from_action}.
+\end{proof}
+
+\begin{remark}[Minimal closed-layer input for Poisson closure]
+\label{rem:minimal_poisson_input}
+Propositions~\ref{prop:dirichlet_poisson_discrete}--\ref{prop:dirichlet_poisson} show that the Poisson closure for the phase potential is not an additional axiom once the defect-density interface is fixed.
+Beyond Axioms~\ref{ax:O5}--\ref{ax:O6} and Hilbert folding (Axiom~\ref{ax:H1}), the only additional closed-layer inputs are:
+(i) an auditable defect charge density $\sigma$ (or $\sigma_n$) at a chosen horizon and readout scale (Definition~\ref{def:defect_charge_sigma});
+(ii) a boundary/gauge convention (periodic/Dirichlet/decay), including neutrality when required for solvability (Remark~\ref{rem:sigma_constraints});
+and (iii) a macroscopic coupling constant $G$ fixed by calibration (Remark~\ref{rem:units_calibration}).
+Given these, the Dirichlet principle uniquely determines $\Phi$ (up to the standard Laplacian zero mode in the periodic convention), and the force template follows by $\mathbf{P}_\Phi=-\nabla\Phi$ (Section~\ref{sec:poisson_closure}).
+\end{remark}
+
+\begin{remark}[Dimensional analysis and calibration]
+\label{rem:units_calibration}
+In the GR matching dictionary of Section~\ref{sec:gravity}, $\Phi=-\log\lapse$ is dimensionless.
+Defining the Newtonian potential $\phi_N:=-c^2\Phi$ gives $\phi_N$ the standard physical units.
+Then \eqref{eq:poisson_from_action} becomes the classical Poisson equation $\Delta\phi_N=4\pi G\rho$ upon setting $\rho:=c^2\sigma$.
+Operationally, the coefficient $G$ is fixed by calibration against a reference redshift profile (e.g.\ Earth-to-GPS) once $\sigma$ is defined from auditable protocol budgets.
+\end{remark}
+
+\begin{remark}[Weak-field limit from general covariance]
+\label{rem:weak_field_gr_poisson}
+In general relativity, Einstein's equation is $G_{\mu\nu}=(8\pi G/c^4)\,T_{\mu\nu}$.
+In the weak, static, slow-motion limit with $T_{00}\approx \rho c^2$ and negligible stresses, one may write
+$g_{00}=-(1+2\phi_N/c^2)+O(c^{-4})$ and $g_{0i}=0$.
+Linearizing the field equations yields the Newtonian Poisson equation $\Delta\phi_N=4\pi G\rho$ (see, e.g., \cite{MisnerThorneWheeler1973,Wald1984,Carroll2004,Poisson2004}).
+In a static slicing with vanishing shift, the lapse is $N=\sqrt{-g_{00}}=1+\phi_N/c^2+O(c^{-4})$, hence
+\[
+\Phi=-\log N=-\frac{\phi_N}{c^2}+O(c^{-4}).
+\]
+Therefore $-\Delta\Phi=4\pi G\,\rho/c^2+O(c^{-4})=4\pi G\,\sigma+O(c^{-4})$, matching \eqref{eq:poisson_from_action} at leading order.
+\end{remark}
+
+

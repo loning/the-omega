@@ -9,6 +9,7 @@
 | `2025_holographic_polar_arithmetic/` | Holographic Polar Arithmetic (HPA) | [`main.pdf`](./2025_holographic_polar_arithmetic/main.pdf) | [`main.tex`](./2025_holographic_polar_arithmetic/main.tex) | **工具/数学论文（Paper I）**：scan–projection、Sturmian/Fibonacci、Ostrowski/Zeckendorf、orbit 正则化 | — |
 | `2025_foundations_of_physics_submission/` | Omega Theory: Axiomatic Foundations of Holographic Spacetime and Interactive Evolution (FoP) | [`main.pdf`](./2025_foundations_of_physics_submission/main.pdf) | [`main.tex`](./2025_foundations_of_physics_submission/main.tex) | **主物理手稿**：全局静态态 + 有限信息/全息映射 + QCA/准晶 + 现象学/宇宙学模板 | HPA（O5/O6 等工具链） |
 | `2025_holographic_polar_omega_theory/` | Holographic Polar Omega Theory (HPΩT) | [`main.pdf`](./2025_holographic_polar_omega_theory/main.pdf) | [`main.tex`](./2025_holographic_polar_omega_theory/main.tex) | **短文/公理接口**：抽取并固定 O1–O6 + R1 的最短推论链 | HPA + FoP |
+| `2025_holographic_hilbert_universe_hpa_omega/` | The Holographic Hilbert Universe: Constructive Spacetime, Computational-Lapse Gravity, and a Conditional Riemann Ground-State Derivation in HPA--Ω (HHU) | [`main.pdf`](./2025_holographic_hilbert_universe_hpa_omega/main.pdf) | [`main.tex`](./2025_holographic_hilbert_universe_hpa_omega/main.tex) | **综合/构造性时空篇**：Hilbert 折叠编址 → 路由开销 lapse 引力 → Abel 有限部 →（HTF 下）RH 条件刚性 | HPA + HPΩT + CAP + RGS |
 | `2025_ramanujan_holographic_scanning_principle_hpa_omega/` | Ramanujan Holographic Scanning Principle: Modular Curves, Hecke Dynamics, and an Arithmetic Constitution for HPA--Ω (RHSP) | [`main.pdf`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/main.pdf) | [`main.tex`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/main.tex) | **算术几何接口篇**：模曲线/Hecke 为 scan–projection 提供母体与素数骨架；附可复现实验（Fibonacci/Sturmian、τ(n)、j 不变量） | HPA + HPΩT |
 | `2025_riemann_ground_state_hpa_omega/` | Riemann Ground State: Holographic Trace Formulas, Abel Finite Parts, and a Protocol Derivation of the Riemann Hypothesis in HPA--Omega (RGS) | [`main.pdf`](./2025_riemann_ground_state_hpa_omega/main.pdf) | [`main.tex`](./2025_riemann_ground_state_hpa_omega/main.tex) | **专题篇（RH / trace）**：把显式公式协议化为 Abel–迹，并在 Ω+HTF 下给出 RH 的协议推论；附可复现数值实验（差异度稳定与阈值爆炸） | HPA + HPΩT（+ RHSP） |
 | `2025_stairway_to_infinity_holographic_renormalization_flow/` | The Stairway to Infinity: A Holographic Renormalization Flow from Noncommutative Scanning to the Langlands Program (STI) | [`main.pdf`](./2025_stairway_to_infinity_holographic_renormalization_flow/main.pdf) | [`main.tex`](./2025_stairway_to_infinity_holographic_renormalization_flow/main.tex) | **攀登/重整化流篇**：把“向上抽象”形式化为模曲面测地流/Gauss 悬挂流；给出切片—系数—采样与差异度/Ostrowski 的有限 $N$ 误差界；以 $S$-反演 + Morita/傅里叶交换作为尺度互换模板，并给出朗兰兹函子化任务 | RHSP + HPA |
@@ -128,6 +129,20 @@ flowchart TB
 - **与其他论文关系**：
   - 把 HPA（构造/证明）与 FoP（完整物理展开）之间的接口固定下来，便于在后续应用篇引用。
 - **入口链接**：[`main.pdf`](./2025_holographic_polar_omega_theory/main.pdf)、[`main.tex`](./2025_holographic_polar_omega_theory/main.tex)、[`references.bib`](./2025_holographic_polar_omega_theory/references.bib)
+
+### `2025_holographic_hilbert_universe_hpa_omega/`（HHU，The Holographic Hilbert Universe）
+
+- **定位**：把 “一维扫描协议如何构造多维空间局域性” 写成可审计的构造链，并将其与计算迟滞（lapse）引力模板与 Abel–迹的（HTF 下）RH 条件刚性统一到同一篇主文中。
+- **做了什么**：
+  - **Hilbert 折叠公理（H1）**：在每个分辨率层级 $n$ 上用离散 Hilbert 编址把 tick 时间映射到全息屏晶格，令“空间局域性”成为可检验的编址/编译效应。
+  - **计算迟滞引力**：以路由开销 $\kappa$ 定义 lapse $\mathcal{N}=\kappa_0/\kappa$，给出红移模板，并以 Poisson 闭合展示近场 $1/r$ 相位势数值验证。
+  - **黎曼基态（条件性）**：在 HTF 桥接假设下，用 Abel 单位圆盘内的全纯性排除临界线外零点的内点极点，从而得到 RH 的协议后果定理。
+  - **可复现实验脚本**：Hilbert 局部性检查、黄金分支星偏差界、Abel 极点屏障 toy 模型、Poisson 求解与 Wigner--Smith $\kappa(E)$ 接口。
+- **与其他论文关系**：
+  - 继承 HPΩT 的 O5/O6 + R1 审计接口，并将“空间构造”补足为 Hilbert 折叠这一明确编址机制；
+  - 与 CAP/HPD 的 lapse/相位势模板一致，并把其落到可复现脚本层；
+  - 与 RGS 在 HTF→RH 条件刚性机制上同构，但本篇把该机制嵌入“构造性时空 + 计算迟滞引力”的统一叙事中。
+- **入口链接**：[`main.tex`](./2025_holographic_hilbert_universe_hpa_omega/main.tex)、[`references.bib`](./2025_holographic_hilbert_universe_hpa_omega/references.bib)、[`scripts/`](./2025_holographic_hilbert_universe_hpa_omega/scripts/)
 
 ### `2025_ramanujan_holographic_scanning_principle_hpa_omega/`（RHSP，Ramanujan Holographic Scanning Principle）
 

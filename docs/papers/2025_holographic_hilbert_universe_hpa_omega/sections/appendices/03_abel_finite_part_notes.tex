@@ -1,0 +1,68 @@
+
+\section{Abel finite parts and unit-disk analyticity (notes)}
+\label{app:abel_finite_part}
+
+Abel regularization replaces divergent infinite-horizon expressions by holomorphic generating functions on the unit disk.
+Given a bounded sequence $(a_t)_{t\ge 0}$, define
+\[
+\mathcal{A}_a(r):=\sum_{t\ge 0} a_t r^t,\qquad |r|<1.
+\]
+This is holomorphic for $|r|<1$ and is computable at every $r\in(0,1)$.
+The only universal singular behavior allowed by absolute convergence is at the boundary $r\uparrow 1$.
+
+\paragraph{Finite-part template.}
+If $\mathcal{A}_a(r)$ admits an expansion
+\[
+\mathcal{A}_a(r)=\frac{c_{-1}}{1-r}+c_0+c_1(1-r)+\cdots
+\qquad (r\uparrow 1),
+\]
+then the Abel finite part is defined by $\FP_{r\uparrow 1}\mathcal{A}_a(r):=c_0$.
+This is the canonical constant-term extraction used in Convention~\ref{ax:R1}; see \cite{Hardy1949,EstradaKanwal2002} for classical treatments of Abelian summation and finite-part asymptotics.
+
+\paragraph{Rotation resolvent criterion.}
+For rotation orbits with a sufficiently regular kernel $f$ (absolutely summable Fourier coefficients), the resolvent identity \eqref{eq:abel_resolvent} shows that $\mathcal{A}(r)$ is holomorphic on $|r|<1$ and that all possible singularities occur only on the boundary $|r|=1$.
+This is the analytic backbone of the interior pole-barrier argument in Lemma~\ref{lem:abel_pole_barrier}.
+
+\begin{proposition}[Canonical pole subtraction and scheme stability for rotation kernels]
+\label{prop:abel_scheme_independence}
+Let $\alpha\in(0,1)\setminus\QQ$ and let $x_t=x_0+t\alpha\ (\mathrm{mod}\ 1)$.
+Let $f:\TT\to\CC$ have an absolutely summable Fourier series $\sum_{m\in\ZZ}\abs{\widehat f(m)}<\infty$ and define the Abel orbit sum $S_f(r)=\sum_{t\ge 0} r^t f(x_t)$ for $|r|<1$.
+Then:
+\begin{enumerate}
+\item \textbf{Unique universal pole.}
+One has the decomposition
+\[
+S_f(r)=\frac{\widehat f(0)}{1-r}\;+\;H_f(r),
+\]
+where $H_f$ is holomorphic on $|r|<1$ and extends continuously to $r\uparrow 1$.
+In particular, no subleading divergences of the form $\log(1-r)$ occur in this kernel class.
+\item \textbf{Finite-part existence and uniqueness.}
+The Abel finite part in \eqref{eq:finite_part_def} exists and equals $H_f(1)$.
+\item \textbf{Scheme dependence is reduced to a fixed constant.}
+If a modified subtraction scheme uses
+\[
+\lim_{r\uparrow 1}\left(S_f(r)-\frac{\widehat f(0)}{1-r}-g(r)\right)
+\]
+for some function $g$ holomorphic in a neighborhood of $r=1$, then the resulting value equals $H_f(1)-g(1)$.
+Thus, within the admissible kernel class and with the Abel-first canonical path fixed, the only ambiguity is an additive constant corresponding to an explicitly chosen counterterm $g(1)$; Convention~\ref{ax:R1} fixes this ambiguity by taking $g\equiv 0$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+By \eqref{eq:abel_resolvent},
+\[
+S_f(r)=\sum_{m\in\ZZ}\widehat f(m)\,\e^{2\pi\iu m x_0}\,\frac{1}{1-r\,\e^{2\pi\iu m\alpha}}.
+\]
+The $m=0$ term equals $\widehat f(0)/(1-r)$.
+For $m\neq 0$, irrationality of $\alpha$ implies $\e^{2\pi\iu m\alpha}\neq 1$, so the denominators do not vanish at $r=1$; absolute summability of $\widehat f(m)$ then gives uniform convergence and holomorphy of the remaining sum on $|r|<1$ and continuity at $r\uparrow 1$.
+This yields the claimed decomposition with $H_f(1)$ finite and excludes subleading divergences in this class.
+The scheme-stability statement is immediate from holomorphy of $g$ at $r=1$.
+\end{proof}
+
+\begin{remark}[Inadmissibility as a protection against subleading divergences]
+\label{rem:abel_inadmissibility}
+If one enlarges the kernel class or the protocol object so that $S_f(r)$ develops subleading divergences at $r\uparrow 1$ (for example, logarithmic terms), then the canonical finite-part limit in \eqref{eq:finite_part_def} need not exist.
+In the $\Omega$ layer discipline, such quantities are rejected as inadmissible: the closed layer only assigns protocol values when the Abel-first/finite-part convention yields a well-defined finite part along the canonical path.
+\end{remark}
+
+
