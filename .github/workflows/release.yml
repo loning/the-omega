@@ -1,0 +1,146 @@
+name: Release
+on:
+  push:
+    branches: ["main"]
+    tags: ["*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "release"
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Decide whether to release
+        id: decide
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          REF="${GITHUB_REF}"
+
+          echo "should_release=false" >> "$GITHUB_OUTPUT"
+          echo "create_tag=false" >> "$GITHUB_OUTPUT"
+
+          if [[ "$REF" == refs/tags/* ]]; then
+            TAG="${GITHUB_REF_NAME}"
+
+            git fetch origin main --prune
+            git fetch --tags --force
+
+            TAG_COMMIT="$(git rev-parse "${TAG}^{commit}")"
+            if git merge-base --is-ancestor "$TAG_COMMIT" "origin/main"; then
+              echo "should_release=true" >> "$GITHUB_OUTPUT"
+              echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+            else
+              echo "Tag '$TAG' does not point to a commit on main; skipping release."
+            fi
+
+            exit 0
+          fi
+
+          # For pushes to main: create a release if it's been >= 7 days since the latest release AND there are new commits.
+          if [[ "$REF" != refs/heads/main ]]; then
+            echo "Not on main ($REF); skipping."
+            exit 0
+          fi
+
+          git fetch --tags --force
+
+          if gh api "repos/${GITHUB_REPOSITORY}/releases/latest" >/tmp/latest_release.json 2>/dev/null; then
+            PUBLISHED_AT="$(jq -r '.published_at // .created_at' /tmp/latest_release.json)"
+            LATEST_TAG="$(jq -r '.tag_name // empty' /tmp/latest_release.json)"
+            LATEST_EPOCH="$(date -d "$PUBLISHED_AT" +%s)"
+            NOW_EPOCH="$(date -u +%s)"
+            DIFF_DAYS="$(( (NOW_EPOCH - LATEST_EPOCH) / 86400 ))"
+          else
+            DIFF_DAYS=999999
+            LATEST_TAG=""
+          fi
+
+          if [[ "$DIFF_DAYS" -lt 7 ]]; then
+            echo "Latest release is ${DIFF_DAYS} day(s) ago; skipping."
+            exit 0
+          fi
+
+          if [[ -n "${LATEST_TAG:-}" ]] && git rev-parse "refs/tags/${LATEST_TAG}" >/dev/null 2>&1; then
+            LATEST_COMMIT="$(git rev-parse "${LATEST_TAG}^{commit}")"
+
+            if [[ "$LATEST_COMMIT" == "$GITHUB_SHA" ]]; then
+              echo "No new commits since latest release tag (${LATEST_TAG}); skipping."
+              exit 0
+            fi
+
+            if git merge-base --is-ancestor "$LATEST_COMMIT" "$GITHUB_SHA"; then
+              COMMITS_SINCE="$(git rev-list --count "${LATEST_COMMIT}..${GITHUB_SHA}")"
+              if [[ "$COMMITS_SINCE" -le 0 ]]; then
+                echo "No commits since latest release; skipping."
+                exit 0
+              fi
+            fi
+          fi
+
+          DATE_UTC="$(date -u +'%Y%m%d')"
+          TAG="auto-${DATE_UTC}"
+          if git rev-parse "refs/tags/${TAG}" >/dev/null 2>&1; then
+            TAG="auto-${DATE_UTC}-$(date -u +'%H%M%S')"
+          fi
+
+          echo "should_release=true" >> "$GITHUB_OUTPUT"
+          echo "create_tag=true" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Create and push tag
+        if: steps.decide.outputs.create_tag == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          TAG="${{ steps.decide.outputs.tag }}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git tag -a "$TAG" -m "Auto release $TAG"
+          git push origin "$TAG"
+
+      - name: Check if release already exists
+        id: exists
+        if: steps.decide.outputs.should_release == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          TAG="${{ steps.decide.outputs.tag }}"
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create GitHub Release
+        if: steps.decide.outputs.should_release == 'true' && steps.exists.outputs.exists != 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.decide.outputs.tag }}
+          name: ${{ steps.decide.outputs.tag }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
