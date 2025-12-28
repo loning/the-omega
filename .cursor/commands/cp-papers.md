@@ -1,0 +1,1 @@
+运行 scripts/copy_papers.py
