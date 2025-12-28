@@ -6,20 +6,20 @@
 
 | 目录 | 论文名（title） | PDF | TeX | 定位 | 主要依赖 |
 |---|---|---|---|---|---|
-| `2025_holographic_polar_arithmetic/` | Holographic Polar Arithmetic (HPA) | [`main.pdf`](./2025_holographic_polar_arithmetic/main.pdf) | [`main.tex`](./2025_holographic_polar_arithmetic/main.tex) | **工具/数学论文（Paper I）**：scan–projection、Sturmian/Fibonacci、Ostrowski/Zeckendorf、orbit 正则化 | — |
+| `2025_holographic_polar_arithmetic/` | Holographic Polar Arithmetic: Multiplicative Ontology, Unitary Scanning, and the Geometric Origin of Quantum Uncertainty (HPA) | [`main.pdf`](./2025_holographic_polar_arithmetic/main.pdf) | [`main.tex`](./2025_holographic_polar_arithmetic/main.tex) | **工具/数学论文（Paper I）**：scan–projection、Sturmian/Fibonacci、Ostrowski/Zeckendorf、orbit 正则化 | — |
 | `2025_foundations_of_physics_submission/` | Omega Theory: Axiomatic Foundations of Holographic Spacetime and Interactive Evolution (FoP) | [`main.pdf`](./2025_foundations_of_physics_submission/main.pdf) | [`main.tex`](./2025_foundations_of_physics_submission/main.tex) | **主物理手稿**：全局静态态 + 有限信息/全息映射 + QCA/准晶 + 现象学/宇宙学模板 | HPA（O5/O6 等工具链） |
-| `2025_holographic_polar_omega_theory/` | Holographic Polar Omega Theory (HPΩT) | [`main.pdf`](./2025_holographic_polar_omega_theory/main.pdf) | [`main.tex`](./2025_holographic_polar_omega_theory/main.tex) | **短文/公理接口**：抽取并固定 O1–O6 + R1 的最短推论链 | HPA + FoP |
-| `2025_holographic_hilbert_universe_hpa_omega/` | The Holographic Hilbert Universe: Constructive Spacetime, Computational-Lapse Gravity, and a Conditional Riemann Ground-State Derivation in HPA--Ω (HHU) | [`main.pdf`](./2025_holographic_hilbert_universe_hpa_omega/main.pdf) | [`main.tex`](./2025_holographic_hilbert_universe_hpa_omega/main.tex) | **综合/构造性时空篇**：Hilbert 折叠编址 → 路由开销 lapse 引力 → Abel 有限部 →（HTF 下）RH 条件刚性 | HPA + HPΩT + CAP + RGS |
+| `2025_holographic_polar_omega_theory/` | Holographic Polar Omega Theory: An Axiomatic Upgrade and the Continuous--Discrete Bridge (HPΩT) | [`main.pdf`](./2025_holographic_polar_omega_theory/main.pdf) | [`main.tex`](./2025_holographic_polar_omega_theory/main.tex) | **短文/公理接口**：抽取并固定 O1–O6 + R1 的最短推论链 | HPA + FoP |
+| `2025_holographic_hilbert_universe_hpa_omega/` | The Holographic Hilbert Universe: Constructive Spacetime, Computational-Lapse Gravity, and a Conditional Riemann Critical-Line Rigidity Theorem in HPA--Ω (HHU) | [`main.pdf`](./2025_holographic_hilbert_universe_hpa_omega/main.pdf) | [`main.tex`](./2025_holographic_hilbert_universe_hpa_omega/main.tex) | **综合/构造性时空篇**：Hilbert 折叠编址 → 路由开销 lapse 引力 → Abel 有限部 →（HTF 下）RH 条件刚性 | HPA + HPΩT + CAP + RGS |
 | `2025_ramanujan_holographic_scanning_principle_hpa_omega/` | Ramanujan Holographic Scanning Principle: Modular Curves, Hecke Dynamics, and an Arithmetic Constitution for HPA--Ω (RHSP) | [`main.pdf`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/main.pdf) | [`main.tex`](./2025_ramanujan_holographic_scanning_principle_hpa_omega/main.tex) | **算术几何接口篇**：模曲线/Hecke 为 scan–projection 提供母体与素数骨架；附可复现实验（Fibonacci/Sturmian、τ(n)、j 不变量） | HPA + HPΩT |
 | `2025_riemann_ground_state_hpa_omega/` | Riemann Ground State: Holographic Trace Formulas, Abel Finite Parts, and a Protocol Derivation of the Riemann Hypothesis in HPA--Omega (RGS) | [`main.pdf`](./2025_riemann_ground_state_hpa_omega/main.pdf) | [`main.tex`](./2025_riemann_ground_state_hpa_omega/main.tex) | **专题篇（RH / trace）**：把显式公式协议化为 Abel–迹，并在 Ω+HTF 下给出 RH 的协议推论；附可复现数值实验（差异度稳定与阈值爆炸） | HPA + HPΩT（+ RHSP） |
 | `2025_stairway_to_infinity_holographic_renormalization_flow/` | The Stairway to Infinity: A Holographic Renormalization Flow from Noncommutative Scanning to the Langlands Program (STI) | [`main.pdf`](./2025_stairway_to_infinity_holographic_renormalization_flow/main.pdf) | [`main.tex`](./2025_stairway_to_infinity_holographic_renormalization_flow/main.tex) | **攀登/重整化流篇**：把“向上抽象”形式化为模曲面测地流/Gauss 悬挂流；给出切片—系数—采样与差异度/Ostrowski 的有限 $N$ 误差界；以 $S$-反演 + Morita/傅里叶交换作为尺度互换模板，并给出朗兰兹函子化任务 | RHSP + HPA |
 | `2025_motive_at_infinity_holographic_scanning_principle/` | The Motive at Infinity: Functorialization of the Holographic Scanning Principle, Period Realizations, and a Selection Principle (MAI) | [`main.pdf`](./2025_motive_at_infinity_holographic_scanning_principle/main.pdf) | [`main.tex`](./2025_motive_at_infinity_holographic_scanning_principle/main.tex) | **周期/动机升维篇**：在不破坏 Layer 0/1 审计纪律下把扫描协议函子化到 KZ 周期数据；证明“扫描平均=周期积分”；给出可审计误差预算与可复现实验，并提出有限资源下的选择原则 | STI + HPA（+ PCG 的常数刚性示例） |
 | `2025_protocol_stable_period_data_computational_teleology/` | Protocol-Stable Period Data in Computational Teleology: From Holographic Scanning Protocols to Variational Dynamics of Minimal Computational Discrepancy and Constant Selection (PSPD) | [`main.pdf`](./2025_protocol_stable_period_data_computational_teleology/main.pdf) | [`main.tex`](./2025_protocol_stable_period_data_computational_teleology/main.tex) | **专题篇（Wish/period + 变分动力学）**：协议稳定周期数据（Wish）、差异度×变差的有限资源证书、协议空间的带阻尼惯性梯度流、以及常数刚性/唯一性间隙玩具模型 | MAI + CAP（+ PCG） |
-| `2025_computational_action_principle_hpa_omega/` | Computational Action Principle: Least-Discrepancy Dynamics and Field Unification in HPA–Ω (CAP) | [`main.pdf`](./2025_computational_action_principle_hpa_omega/main.pdf) | [`main.tex`](./2025_computational_action_principle_hpa_omega/main.tex) | **变分统一篇（CAP）**：最小差异原理 → Ω 作用量（Fisher + 路由开销）→ GR+信息应力；规范/物质为相位误差补偿与拓扑缺陷 | HPA + FoP + HPΩT |
-| `2025_holographic_phase_thermodynamics_hpa_omega/` | Holographic Phase Thermodynamics: Arithmetic Statistical Mechanics, Computational Lapse, and the Geometric Origin of Intelligence in HPA–Ω (HPT) | [`main.pdf`](./2025_holographic_phase_thermodynamics_hpa_omega/main.pdf) | [`main.tex`](./2025_holographic_phase_thermodynamics_hpa_omega/main.tex) | **专题篇（热力学/智能）**：算术统计力学、相位摩擦（差异熵）、计算时延与熵流重标度、智能作为主动纠错相变 | HPA + FoP + HPΩT + CAP（+ HPD 的 Phase Pressure 模板） |
-| `2025_holographic_polar_dynamics/` | Holographic Polar Dynamics (HPD) | [`main.pdf`](./2025_holographic_polar_dynamics/main.pdf) | [`main.tex`](./2025_holographic_polar_dynamics/main.tex) | **应用篇（Paper II）**：把 HPA 的失配/差异度量用于黑洞/奇点与信息悖论模板（Phase Pressure） | HPA（+ CAP 作为统一视角） |
-| `2025_physical_constants_geometry_hpa_omega/` | Physical Constants Geometry in HPA–Ω (PCG) | [`main.pdf`](./2025_physical_constants_geometry_hpa_omega/main.pdf) | [`main.tex`](./2025_physical_constants_geometry_hpa_omega/main.tex) | **专题篇（常数/几何）**：把 HPA–Ω 的几何/信息结构用于常数关系与数值验证 | HPA + FoP |
-| `2025_computational_teleology_hpa_omega/` | Computational Teleology in HPA–Ω (CT) | [`main.pdf`](./2025_computational_teleology_hpa_omega/main.pdf) | [`main.tex`](./2025_computational_teleology_hpa_omega/main.tex) | **专题篇（架构/可计算性）**：复杂性–几何–观测同构、路由开销与计算 lapse、可判定性边界 | HPA + FoP |
+| `2025_computational_action_principle_hpa_omega/` | Computational Action Principle: Least-Discrepancy Dynamics and Field Unification in HPA--Ω (CAP) | [`main.pdf`](./2025_computational_action_principle_hpa_omega/main.pdf) | [`main.tex`](./2025_computational_action_principle_hpa_omega/main.tex) | **变分统一篇（CAP）**：最小差异原理 → Ω 作用量（Fisher + 路由开销）→ GR+信息应力；规范/物质为相位误差补偿与拓扑缺陷 | HPA + FoP + HPΩT |
+| `2025_holographic_phase_thermodynamics_hpa_omega/` | Holographic Phase Thermodynamics: Arithmetic Statistical Mechanics, Computational Lapse, and the Geometric Origin of Intelligence in HPA--Ω (HPT) | [`main.pdf`](./2025_holographic_phase_thermodynamics_hpa_omega/main.pdf) | [`main.tex`](./2025_holographic_phase_thermodynamics_hpa_omega/main.tex) | **专题篇（热力学/智能）**：算术统计力学、相位摩擦（差异熵）、计算时延与熵流重标度、智能作为主动纠错相变 | HPA + FoP + HPΩT + CAP（+ HPD 的 Phase Pressure 模板） |
+| `2025_holographic_polar_dynamics/` | Holographic Polar Dynamics: Topological Inversion of the Schwarzschild Singularity and the Phase Origin of Gravity (HPD) | [`main.pdf`](./2025_holographic_polar_dynamics/main.pdf) | [`main.tex`](./2025_holographic_polar_dynamics/main.tex) | **应用篇（Paper II）**：把 HPA 的失配/差异度量用于黑洞/奇点与信息悖论模板（Phase Pressure） | HPA（+ CAP 作为统一视角） |
+| `2025_physical_constants_geometry_hpa_omega/` | The Geometry of Physical Constants in HPA--Ω: From the Fine-Structure Constant to Particle Spectra and Black-Hole/Cosmological Invariants (PCG) | [`main.pdf`](./2025_physical_constants_geometry_hpa_omega/main.pdf) | [`main.tex`](./2025_physical_constants_geometry_hpa_omega/main.tex) | **专题篇（常数/几何）**：把 HPA–Ω 的几何/信息结构用于常数关系与数值验证 | HPA + FoP |
+| `2025_computational_teleology_hpa_omega/` | Computational Teleology in Holographic Polar Arithmetic: Scan Complexity, Readout Resolution, and an Undecidable Quantum-Cellular Universe (CT) | [`main.pdf`](./2025_computational_teleology_hpa_omega/main.pdf) | [`main.tex`](./2025_computational_teleology_hpa_omega/main.tex) | **专题篇（架构/可计算性）**：复杂性–几何–观测同构、路由开销与计算 lapse、可判定性边界 | HPA + FoP |
 
 说明：若目录内存在 `main.pdf` 则可直接打开；若尚未生成，可按下文编译生成。
 
@@ -30,6 +30,7 @@ flowchart TB
   HPA["HPA<br/>Holographic Polar Arithmetic<br/>工具/数学（Paper I）"]
   FoP["FoP<br/>Omega Theory 主物理手稿"]
   HPOT["HPΩT<br/>Omega Theory 公理升级短文"]
+  HHU["HHU<br/>The Holographic Hilbert Universe<br/>构造性时空/计算迟滞引力"]
   RHSP["RHSP<br/>Ramanujan Holographic Scanning Principle<br/>modular curves / Hecke interface"]
   RGS["RGS<br/>Riemann Ground State<br/>trace formula / Abel finite part / RH"]
   STI["STI<br/>Stairway to Infinity<br/>holographic renormalization flow"]
@@ -44,6 +45,10 @@ flowchart TB
   HPA -->|"scan–projection、编码、orbit 正则化"| FoP
   HPA -->|"细节构造与证明"| HPOT
   FoP -->|"主框架/术语与物理展开"| HPOT
+  HPA -->|"Hilbert 折叠编址、lapse 与 Abel–迹构造"| HHU
+  HPOT -->|"O1–O6 + R1 审计接口"| HHU
+  CAP -->|"computational lapse / 相位势模板"| HHU
+  RGS -->|"Abel–迹与 HTF→RH 条件刚性机制"| HHU
   HPA -->|"模曲线嵌入、Hecke 素数骨架"| RHSP
   HPOT -->|"O1–O6 + R1 审计接口"| RHSP
   HPA -->|"orbit trace / finite part 正则化"| RGS
@@ -62,6 +67,7 @@ flowchart TB
   HPOT -->|"O1–O6 + R1 接口"| CAP
   HPA -->|"ASM、相位摩擦（差异熵）"| HPT
   FoP -->|"O1–O6 读出接口与热力学语义"| HPT
+  HPOT -->|"O1–O6 读出接口与 R1 正则约定"| HPT
   CAP -->|"computational lapse 与熵流重标度"| HPT
   HPD -->|"Phase Pressure / 相位势模板"| HPT
   CAP -->|"Phase Pressure 的变分闭合"| HPD
@@ -81,6 +87,7 @@ flowchart TB
   class HPA tool;
   class FoP core;
   class HPOT note;
+  class HHU note;
   class RHSP note;
   class RGS note;
   class STI note;
@@ -136,13 +143,13 @@ flowchart TB
 - **做了什么**：
   - **Hilbert 折叠公理（H1）**：在每个分辨率层级 $n$ 上用离散 Hilbert 编址把 tick 时间映射到全息屏晶格，令“空间局域性”成为可检验的编址/编译效应。
   - **计算迟滞引力**：以路由开销 $\kappa$ 定义 lapse $\mathcal{N}=\kappa_0/\kappa$，给出红移模板，并以 Poisson 闭合展示近场 $1/r$ 相位势数值验证。
-  - **黎曼基态（条件性）**：在 HTF 桥接假设下，用 Abel 单位圆盘内的全纯性排除临界线外零点的内点极点，从而得到 RH 的协议后果定理。
+  - **临界线刚性（条件性）**：在 HTF 桥接假设下，用 Abel 单位圆盘内的全纯性排除临界线外零点的内点极点，从而得到 RH 的协议后果定理。
   - **可复现实验脚本**：Hilbert 局部性检查、黄金分支星偏差界、Abel 极点屏障 toy 模型、Poisson 求解与 Wigner--Smith $\kappa(E)$ 接口。
 - **与其他论文关系**：
   - 继承 HPΩT 的 O5/O6 + R1 审计接口，并将“空间构造”补足为 Hilbert 折叠这一明确编址机制；
   - 与 CAP/HPD 的 lapse/相位势模板一致，并把其落到可复现脚本层；
   - 与 RGS 在 HTF→RH 条件刚性机制上同构，但本篇把该机制嵌入“构造性时空 + 计算迟滞引力”的统一叙事中。
-- **入口链接**：[`main.tex`](./2025_holographic_hilbert_universe_hpa_omega/main.tex)、[`references.bib`](./2025_holographic_hilbert_universe_hpa_omega/references.bib)、[`scripts/`](./2025_holographic_hilbert_universe_hpa_omega/scripts/)
+- **入口链接**：[`main.pdf`](./2025_holographic_hilbert_universe_hpa_omega/main.pdf)、[`main.tex`](./2025_holographic_hilbert_universe_hpa_omega/main.tex)、[`references.bib`](./2025_holographic_hilbert_universe_hpa_omega/references.bib)、[`scripts/`](./2025_holographic_hilbert_universe_hpa_omega/scripts/)
 
 ### `2025_ramanujan_holographic_scanning_principle_hpa_omega/`（RHSP，Ramanujan Holographic Scanning Principle）
 
@@ -167,7 +174,7 @@ flowchart TB
 - **与其他论文关系**：
   - 直接复用 HPA 的 orbit calculus/finite part 与 HPΩT 的公理接口（O5/O6 + R1）。
   - 与 RHSP 的 “素数=周期轨道” 视角兼容，但本篇闭层证明只依赖 HTF 结构性桥梁。
-- **入口链接**：[`main.tex`](./2025_riemann_ground_state_hpa_omega/main.tex)、[`references.bib`](./2025_riemann_ground_state_hpa_omega/references.bib)、[`scripts/`](./2025_riemann_ground_state_hpa_omega/scripts/)
+- **入口链接**：[`main.pdf`](./2025_riemann_ground_state_hpa_omega/main.pdf)、[`main.tex`](./2025_riemann_ground_state_hpa_omega/main.tex)、[`references.bib`](./2025_riemann_ground_state_hpa_omega/references.bib)、[`scripts/`](./2025_riemann_ground_state_hpa_omega/scripts/)
 
 ### `2025_stairway_to_infinity_holographic_renormalization_flow/`（STI，The Stairway to Infinity）
 
@@ -180,7 +187,7 @@ flowchart TB
 - **与其他论文关系**：
   - 继承 RHSP 的模曲线/Hecke 素数骨架接口，同时更强调“攀登/跨尺度”的动力学与误差预算。
   - 复用 HPA 的扫描—投影与差异度工具，作为切片采样误差控制的底层模块。
-- **入口链接**：[`main.tex`](./2025_stairway_to_infinity_holographic_renormalization_flow/main.tex)、[`references.bib`](./2025_stairway_to_infinity_holographic_renormalization_flow/references.bib)
+- **入口链接**：[`main.pdf`](./2025_stairway_to_infinity_holographic_renormalization_flow/main.pdf)、[`main.tex`](./2025_stairway_to_infinity_holographic_renormalization_flow/main.tex)、[`references.bib`](./2025_stairway_to_infinity_holographic_renormalization_flow/references.bib)
 
 ### `2025_motive_at_infinity_holographic_scanning_principle/`（MAI，The Motive at Infinity）
 
