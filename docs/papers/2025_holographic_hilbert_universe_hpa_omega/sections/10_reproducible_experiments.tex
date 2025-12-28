@@ -20,10 +20,63 @@ Run the following from this paper directory:
 \item \path{python3 scripts/exp_wigner_smith_kappa.py}
 \item \path{python3 scripts/exp_address_family_sensitivity.py}
 \item \path{python3 scripts/exp_kappa_redshift_toy.py}
+\item \path{python3 scripts/exp_1p1d_routing_worked_example.py}
 \end{itemize}
 
 The scripts optionally write small \LaTeX{} row files into \path{sections/generated/}.
 If those files are present, the tables below will include them.
+
+\subsubsection*{Determinism and randomness}
+All scripts are deterministic as written.
+The only use of pseudorandomness is in the ``shuffled baseline'' of \path{scripts/exp_address_family_sensitivity.py}, and the RNG seeds are fixed in code (2D: \texttt{seed = 123456 + order}; 3D: \texttt{seed = 654321 + order}).
+Thus, regenerating tables does not require passing external seeds.
+
+\subsubsection*{Generated artifacts (what each script writes)}
+Each script writes into \path{sections/generated/} using fixed filenames; tables include them when present.
+{\small
+\begin{itemize}
+\item \textbf{Hilbert locality (Experiment A).}\\
+\path{exp_hilbert_locality.py} writes \path{hilbert_locality_rows.tex}.\\
+\emph{Defaults:} orders $n=1,\dots,8$.
+\item \textbf{Address-family sensitivity (Experiments A', A'', A''', A3D).}\\
+\path{exp_address_family_sensitivity.py} writes\\
+\path{address_kappa_proxy_rows.tex},\\
+\path{address_neighbor_model_sensitivity_rows.tex},\\
+\path{address_kappa_proxy_fit_rows.tex},\\
+\path{address_kappa_proxy_3d_rows.tex},\\
+and (where used) \path{address_neighbor_separation_rows.tex}.\\
+\emph{Defaults:} 2D orders $n=1,\dots,8$ with Manhattan and Chebyshev neighborhoods.
+3D orders $n=1,\dots,5$.
+Shuffled baseline seeds fixed as stated above.
+\item \textbf{Golden discrepancy (Experiment B).}
+\path{exp_golden_discrepancy_bound.py} writes \path{golden_discrepancy_rows.tex}.
+\emph{Defaults:} $\alpha=1/\varphi$, $x_0=0.1$, and $N$ in \{100, 300, 1000, 3000, 10000, 30000\}.
+\item \textbf{Abel pole barrier (Experiment C).}
+\path{exp_abel_pole_barrier.py} writes \path{abel_barrier_rows.tex}.
+\emph{Defaults:} $\gamma=1$ and $T_{\max}=5000$.
+$\beta$ in \{0.5, 0.6\}, with $r$ sampled on a fixed grid around the threshold.
+\item \textbf{Poisson FFT (Experiments D and D').}
+\path{exp_poisson_fft.py} writes \path{poisson_rows.tex} and \path{poisson_scaling_rows.tex}.
+\emph{Defaults:} FFT mode uses $N=64$ and $r_{\max}=12$ (fallback: $N=24$).
+The scaling table uses $N$ in \{32, 48, 64\} (FFT) plus a modest Dirichlet-Jacobi comparison at $N=32$, with window band starting at $r=3$.
+\item \textbf{Wigner--Smith interface (Experiment E).}\\
+\path{exp_wigner_smith_kappa.py} writes \path{wigner_smith_rows.tex}.\\
+\emph{Defaults:} toy Breit--Wigner with $E_0=1$ and $\gamma=0.2$.
+Energy band $[0,2]$ sampled at $n=17$ points.
+$\tau_0=1$, smoothing window $=1$ (off).
+\item \textbf{Scan-chain redshift toy (Experiment F).}\\
+\path{exp_kappa_redshift_toy.py} writes \path{kappa_redshift_toy_rows.tex}.\\
+\emph{Defaults:} order $n=8$ and horizon $t_{\max}=2\times 10^8$ ticks.
+Maps: Hilbert and Z-order.
+\item \textbf{1+1D worked example (Appendix~\ref{app:worked_1p1d}).}
+\path{exp_1p1d_routing_worked_example.py} writes
+\path{1p1d_error_rows.tex},
+\path{1p1d_scaling_fit_rows.tex},
+and \path{1p1d_curve_rows.tex}.
+\emph{Defaults:} weak-field target with $M=0.05$ on $r$ in $[1,8]$, and $\kappa_0=10^9$.
+Orders $n=6,\dots,11$ for scaling (representative curve samples at order $n=9$).
+\end{itemize}
+}
 
 \subsection{Experiment A: Hilbert address locality (2D)}
 \label{sec:exp_hilbert_locality}
@@ -43,13 +96,14 @@ order $n$ & $\min_t \norm{H_n(t+1)-H_n(t)}_1$ & $\max_t \norm{H_n(t+1)-H_n(t)}_1
 \label{tab:hilbert_locality}
 \end{table}
 
-\subsection{Experiment A$'$: address-family sensitivity on a scan chain (2D)}
+\subsection[Experiment A': address-family sensitivity on a scan chain (2D)]{Experiment A$'$: address-family sensitivity on a scan chain (2D)}
 \label{sec:exp_address_sensitivity}
 
 We quantify how the choice of address family changes scan-order separations of screen neighbors.
 For an address map $A_n$ and a screen-neighbor edge $\{x,y\}$, define the separation $\Delta_{A_n}(x,y):=\abs{A_n^{-1}(x)-A_n^{-1}(y)}$ (Definition~\ref{def:neighbor_index_separation}).
 On a scan chain, $\Delta_{A_n}$ lower bounds the depth required to enact neighbor interactions (Proposition~\ref{prop:scan_chain_separation_lower_bound}).
-We report statistics of the induced local proxy $\widetilde\kappa_{A_n}(x)=\max_{y\sim x}\Delta_{A_n}(x,y)$ across all sites in $\Sigma_n$ for Hilbert vs.\ Morton/Z-order.
+We report statistics of the induced local proxy $\widetilde\kappa_{A_n}(x)=\max_{y\sim x}\Delta_{A_n}(x,y)$ across all sites in $\Sigma_n$ for Hilbert vs.\ Morton/Z-order, together with a deterministic shuffled baseline.
+Unless otherwise stated, the neighborhood relation $y\sim x$ here refers to the 4-neighbor (Manhattan) screen adjacency.
 
 \begin{table}[t]
 \centering
@@ -60,8 +114,68 @@ order $n$ & map & mean & $p_{50}$ & $p_{90}$ & $p_{99}$ & max \\
 \IfFileExists{sections/generated/address_kappa_proxy_rows.tex}{\input{sections/generated/address_kappa_proxy_rows.tex}}{(run \path{scripts/exp_address_family_sensitivity.py} to generate)}\\
 \bottomrule
 \end{tabular}
-\caption{Address-family sensitivity on the 2D screen: statistics of the local scan-chain overhead proxy $\widetilde\kappa_{A_n}$ for Hilbert and Morton/Z-order.}
+\caption{Address-family sensitivity on the 2D screen: statistics of the local scan-chain overhead proxy $\widetilde\kappa_{A_n}$ for Hilbert, Morton/Z-order, and a shuffled baseline.}
 \label{tab:address_kappa_proxy}
+\end{table}
+
+\subsection[Experiment A'': neighborhood-model robustness (fixed order)]{Experiment A$''$: neighborhood-model robustness (fixed order)}
+\label{sec:exp_address_neighbor_model}
+
+To assess robustness of the proxy to adjacency conventions, we recompute the local proxy at a fixed order,
+\[
+\widetilde\kappa_{A_n}(x)=\max_{y\sim x}\Delta_{A_n}(x,y),
+\]
+using both the Manhattan 4-neighbor adjacency and the Chebyshev 8-neighbor adjacency (including diagonals).
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}l rrr rrr@{}}
+\toprule
+map & $p_{99}^{(4)}$ & $p_{99}^{(8)}$ & ratio &
+max$^{(4)}$ & max$^{(8)}$ & ratio \\
+\midrule
+\IfFileExists{sections/generated/address_neighbor_model_sensitivity_rows.tex}{\input{sections/generated/address_neighbor_model_sensitivity_rows.tex}}{(run \path{scripts/exp_address_family_sensitivity.py} to generate)}\\
+\bottomrule
+\end{tabular}
+\caption{Sensitivity of the overhead proxy to the neighborhood model at a fixed resolution (script default: order $n=8$). Here $(4)$ denotes Manhattan 4-neighbors and $(8)$ denotes Chebyshev 8-neighbors.}
+\label{tab:address_neighbor_model_sensitivity}
+\end{table}
+
+\subsection[Experiment A''': finite-size trend fit for high quantiles]{Experiment A$'''$: finite-size trend fit for high quantiles}
+\label{sec:exp_address_fit}
+
+To summarize finite-size scaling, we fit $\log_2 p_{99}$ and $\log_2(\max)$ as affine functions of $n$ over the computed range $n=1,\dots,8$ (least squares), and report the fitted slopes and $R^2$.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}l r r r r@{}}
+\toprule
+map & slope for $\log_2 p_{99}$ & $R^2$ & slope for $\log_2(\max)$ & $R^2$ \\
+\midrule
+\IfFileExists{sections/generated/address_kappa_proxy_fit_rows.tex}{\input{sections/generated/address_kappa_proxy_fit_rows.tex}}{(run \path{scripts/exp_address_family_sensitivity.py} to generate)}\\
+\bottomrule
+\end{tabular}
+\caption{Finite-size trend fit for high quantiles of the Manhattan proxy $\widetilde\kappa_{A_n}$.}
+\label{tab:address_kappa_proxy_fit}
+\end{table}
+
+\subsection[Experiment A3D: address sensitivity in three dimensions (scan-chain proxy)]{Experiment A$_{3D}$: address sensitivity in three dimensions (scan-chain proxy)}
+\label{sec:exp_address_sensitivity_3d}
+
+As a minimal dimensional robustness check, we repeat the same scan-chain proxy construction on a 3D screen lattice $\Sigma_n=\{0,\dots,2^n-1\}^3$ with 6-neighbor (Manhattan) adjacency, comparing Morton/Z-order against a shuffled baseline.
+We report the local proxy $\widetilde\kappa_{A_n}(x)=\max_{y\sim x}\abs{A_n^{-1}(x)-A_n^{-1}(y)}$ statistics across all sites.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}r l rrrrr@{}}
+\toprule
+order $n$ & map & mean & $p_{50}$ & $p_{90}$ & $p_{99}$ & max \\
+\midrule
+\IfFileExists{sections/generated/address_kappa_proxy_3d_rows.tex}{\input{sections/generated/address_kappa_proxy_3d_rows.tex}}{(run \path{scripts/exp_address_family_sensitivity.py} to generate)}\\
+\bottomrule
+\end{tabular}
+\caption{3D scan-chain proxy statistics for Morton/Z-order and a shuffled baseline (orders $n=1,\dots,5$).}
+\label{tab:address_kappa_proxy_3d}
 \end{table}
 
 \subsection{Experiment B: golden-branch star discrepancy and an explicit bound}
@@ -120,7 +234,27 @@ $r$ & $\langle\Phi\rangle$ & $r\langle\Phi\rangle$ \\
 \label{tab:poisson_rows}
 \end{table}
 
-\subsection{Experiment E: Wigner--Smith time delay and \texorpdfstring{$\kappa_{\mathrm{WS}}(E)$}{kappa_WS(E)}}
+\subsection[Experiment D': finite-size and source-width robustness of the 1/r window]{Experiment D$'$: finite-size and source-width robustness of the $1/r$ window}
+\label{sec:exp_poisson_scaling}
+
+To quantify how cleanly a periodic finite grid reproduces an intermediate $1/r$ regime, we measure the flatness of $r\langle\Phi\rangle$ over a fixed radius band and report the relative RMS deviation as a simple error proxy, for multiple grid sizes and for a point source vs.\ a small cube-smeared source.
+For comparison, we also include a Dirichlet (zero boundary) iterative solve at a modest size.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{@{}r l l l r r r@{}}
+\toprule
+$N$ & boundary/solver & source & window & count & mean($r\langle\Phi\rangle$) & rel.\ RMS \\
+\midrule
+\IfFileExists{sections/generated/poisson_scaling_rows.tex}{\input{sections/generated/poisson_scaling_rows.tex}}{(run \path{scripts/exp_poisson_fft.py} to generate)}\\
+\bottomrule
+\end{tabular}
+\caption{Finite-size and source-width robustness proxy for the $1/r$ window.}
+\label{tab:poisson_scaling}
+\end{table}
+
+\subsection{Experiment E: Wigner--Smith time delay and \texorpdfstring{$\kappa_{\mathrm{WS}}(E)$}{kappaWS(E)}}
 \label{sec:exp_wigner_smith}
 
 To connect computational lapse to measurable delays, we include a minimal implementation of the Wigner--Smith time-delay matrix

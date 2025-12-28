@@ -12,6 +12,10 @@ We set the zero mode to 0 (zero-mean gauge) by subtracting the mean of rho.
 
 The script outputs radial shell averages <Phi>(r) and writes a small LaTeX row
 file into sections/generated/poisson_rows.tex.
+
+It also reports simple finite-size and source-width robustness statistics for the
+approximate 1/r window by checking the flatness of r*<Phi>(r) over an intermediate
+radius band, and writes sections/generated/poisson_scaling_rows.tex.
 """
 
 from __future__ import annotations
@@ -139,6 +143,51 @@ def poisson_solve_jacobi_periodic(
     return phi
 
 
+def poisson_solve_jacobi_dirichlet(
+    N: int,
+    rho: list[float],
+    max_iter: int = 12000,
+    omega: float = 0.9,
+) -> list[float]:
+    """
+    Pure-Python Dirichlet Poisson solver for -Delta phi = 4*pi rho on a cube with
+    boundary condition phi=0 on the boundary.
+
+    The grid spacing is 1. rho is a flat list of length N^3.
+    """
+    n3 = N * N * N
+    if len(rho) != n3:
+        raise ValueError("rho must have length N^3.")
+
+    def idx(i: int, j: int, k: int) -> int:
+        return (i * N + j) * N + k
+
+    phi = [0.0] * n3
+    phi_new = [0.0] * n3
+
+    # Keep boundaries pinned to 0; update only interior sites (weighted Jacobi).
+    for _it in range(max_iter):
+        for i in range(1, N - 1):
+            for j in range(1, N - 1):
+                for k in range(1, N - 1):
+                    p = idx(i, j, k)
+                    neigh = (
+                        phi[idx(i + 1, j, k)]
+                        + phi[idx(i - 1, j, k)]
+                        + phi[idx(i, j + 1, k)]
+                        + phi[idx(i, j - 1, k)]
+                        + phi[idx(i, j, k + 1)]
+                        + phi[idx(i, j, k - 1)]
+                    )
+                    candidate = (neigh + 4.0 * math.pi * rho[p]) / 6.0
+                    phi_new[p] = (1.0 - omega) * phi[p] + omega * candidate
+
+        # Boundaries stay 0.
+        phi, phi_new = phi_new, phi
+
+    return phi
+
+
 def radial_shell_average_pure(phi: list[float], N: int, r_max: int = 12) -> list[tuple[int, float]]:
     """
     Pure-Python shell averages for integer radii r=1..r_max (in lattice steps).
@@ -187,6 +236,67 @@ def write_rows(rows: list[tuple[int, float]]) -> None:
     out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def flatness_metric(stats: list[tuple[int, float]], r_min: int, r_max: int) -> tuple[float, float, int]:
+    """
+    Given shell averages (r, <Phi>(r)), compute mean and relative RMS of r*<Phi>(r)
+    over the window r in [r_min, r_max]. Returns (mean, rel_rms, count).
+    """
+    vals: list[float] = []
+    for r, mean in stats:
+        if r_min <= r <= r_max:
+            vals.append(float(r) * float(mean))
+    if not vals:
+        return 0.0, float("inf"), 0
+    m = sum(vals) / float(len(vals))
+    rms = (sum((v - m) ** 2 for v in vals) / float(len(vals))) ** 0.5
+    rel = rms / abs(m) if m != 0.0 else float("inf")
+    return m, rel, len(vals)
+
+
+def write_scaling_rows(rows: list[str]) -> None:
+    root = Path(__file__).resolve().parent.parent
+    out_dir = root / "sections" / "generated"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / "poisson_scaling_rows.tex"
+    out_path.write_text("\n".join(rows) + "\n", encoding="utf-8")
+
+
+def build_rho_cube_pure(N: int, radius: int) -> list[float]:
+    """
+    A simple compact source: uniform mass on a (2*radius+1)^3 cube centered at N//2.
+    """
+    n3 = N * N * N
+    rho = [0.0] * n3
+    cx = cy = cz = N // 2
+    total = 0
+    for i in range(cx - radius, cx + radius + 1):
+        for j in range(cy - radius, cy + radius + 1):
+            for k in range(cz - radius, cz + radius + 1):
+                if 0 <= i < N and 0 <= j < N and 0 <= k < N:
+                    p = (i * N + j) * N + k
+                    rho[p] = 1.0
+                    total += 1
+    if total > 0:
+        rho = [v / float(total) for v in rho]
+    return rho
+
+
+def build_rho_cube_numpy(N: int, radius: int) -> "np.ndarray":
+    if np is None:
+        raise RuntimeError("numpy is required.")
+    rho = np.zeros((N, N, N), dtype=float)
+    c = N // 2
+    for i in range(c - radius, c + radius + 1):
+        for j in range(c - radius, c + radius + 1):
+            for k in range(c - radius, c + radius + 1):
+                if 0 <= i < N and 0 <= j < N and 0 <= k < N:
+                    rho[i, j, k] = 1.0
+    s = float(rho.sum())
+    if s > 0.0:
+        rho /= s
+    return rho
+
+
 def main() -> None:
     r_max = 12
 
@@ -194,21 +304,15 @@ def main() -> None:
         N = 64
         L = 1.0
 
-        rho = np.zeros((N, N, N), dtype=float)
-        rho[N // 2, N // 2, N // 2] = 1.0
+        rho = build_rho_cube_numpy(N, radius=0)
 
         phi = poisson_solve_fft(rho, L=L)
         stats = radial_shell_average_numpy(phi, r_max=r_max)
     else:
         # Pure-Python fallback: smaller grid and iterative solver.
         N = 24
-        n3 = N * N * N
-        rho = [0.0] * n3
-        center = (N // 2, N // 2, N // 2)
-        center_idx = (center[0] * N + center[1]) * N + center[2]
-        rho[center_idx] = 1.0
-
-        phi_flat = poisson_solve_jacobi_periodic(N=N, rho=rho, max_iter=5000, omega=0.9)
+        rho = build_rho_cube_pure(N, radius=0)
+        phi_flat = poisson_solve_jacobi_periodic(N=N, rho=rho, max_iter=6000, omega=0.9)
         stats = radial_shell_average_pure(phi_flat, N=N, r_max=r_max)
 
     print("r | <Phi> | r*<Phi>")
@@ -217,6 +321,60 @@ def main() -> None:
 
     write_rows(stats[:10])
     print("Wrote sections/generated/poisson_rows.tex")
+
+    # Robustness / finite-size scaling table for the 1/r window.
+    scaling_lines: list[str] = []
+    window_min = 3
+
+    if np is not None:
+        for N in (32, 48, 64):
+            for radius in (0, 1):
+                rho = build_rho_cube_numpy(N, radius=radius)
+                phi = poisson_solve_fft(rho, L=1.0)
+                statsN = radial_shell_average_numpy(phi, r_max=min(r_max, N // 3))
+                window_max = min(10, N // 4)
+                m, rel, cnt = flatness_metric(statsN, r_min=window_min, r_max=window_max)
+                scaling_lines.append(
+                    f"{N} & periodic-FFT & cube-{radius} & {window_min}--{window_max} & {cnt} & {m:+.4e} & {rel:.3e} \\\\"
+                )
+
+        # Dirichlet comparison (pure-Python SOR) at a modest size.
+        N = 32
+        for radius in (0, 1):
+            rho_pure = build_rho_cube_pure(N, radius=radius)
+            phi_flat = poisson_solve_jacobi_dirichlet(N=N, rho=rho_pure, max_iter=12000, omega=0.9)
+            statsD = radial_shell_average_pure(phi_flat, N=N, r_max=min(r_max, N // 3))
+            window_max = min(10, N // 4)
+            m, rel, cnt = flatness_metric(statsD, r_min=window_min, r_max=window_max)
+            scaling_lines.append(
+                f"{N} & Dirichlet-Jacobi & cube-{radius} & {window_min}--{window_max} & {cnt} & {m:+.4e} & {rel:.3e} \\\\"
+            )
+    else:
+        # Pure-Python only: keep the grid small for runtime.
+        for N in (20, 24):
+            for radius in (0, 1):
+                rho_pure = build_rho_cube_pure(N, radius=radius)
+                phi_flat = poisson_solve_jacobi_periodic(N=N, rho=rho_pure, max_iter=7000, omega=0.9)
+                statsN = radial_shell_average_pure(phi_flat, N=N, r_max=min(r_max, N // 3))
+                window_max = min(8, N // 4)
+                m, rel, cnt = flatness_metric(statsN, r_min=window_min, r_max=window_max)
+                scaling_lines.append(
+                    f"{N} & periodic-Jacobi & cube-{radius} & {window_min}--{window_max} & {cnt} & {m:+.4e} & {rel:.3e} \\\\"
+                )
+
+        N = 20
+        for radius in (0, 1):
+            rho_pure = build_rho_cube_pure(N, radius=radius)
+            phi_flat = poisson_solve_jacobi_dirichlet(N=N, rho=rho_pure, max_iter=10000, omega=0.9)
+            statsD = radial_shell_average_pure(phi_flat, N=N, r_max=min(r_max, N // 3))
+            window_max = min(8, N // 4)
+            m, rel, cnt = flatness_metric(statsD, r_min=window_min, r_max=window_max)
+            scaling_lines.append(
+                f"{N} & Dirichlet-Jacobi & cube-{radius} & {window_min}--{window_max} & {cnt} & {m:+.4e} & {rel:.3e} \\\\"
+            )
+
+    write_scaling_rows(scaling_lines)
+    print("Wrote sections/generated/poisson_scaling_rows.tex")
 
 
 if __name__ == "__main__":

@@ -26,6 +26,28 @@ For any state $\omega_{\mathrm{eff}}$ on a $C^\ast$-algebra one has $\abs{\omega
 Absolute convergence for $|r|<1$ and holomorphy of the resulting power series are immediate.
 \end{proof}
 
+\begin{corollary}[Geometric-side growth bounds on the unit disk]
+\label{cor:geom_growth_bounds}
+In the setting of Lemma~\ref{lem:bounded_trace_holomorphy}, for every $r\in\CC$ with $|r|<1$ one has the explicit bound
+\begin{equation}
+\label{eq:geom_growth_bound}
+\abs{G(r)}\ \le\ \frac{\|A\|}{1-|r|}.
+\end{equation}
+More generally, for every integer $k\ge 0$ the $k$-th derivative exists and satisfies
+\[
+\abs{G^{(k)}(r)}\ \le\ \frac{k!\,\|A\|}{(1-|r|)^{k+1}}.
+\]
+\end{corollary}
+
+\begin{proof}
+By Lemma~\ref{lem:bounded_trace_holomorphy}, $\abs{a_t}\le \|A\|$.
+Thus, for $|r|<1$,
+\[
+\abs{G(r)}\le \sum_{t\ge 0}\abs{a_t}\,|r|^t\le \|A\|\sum_{t\ge 0}|r|^t=\frac{\|A\|}{1-|r|}.
+\]
+Termwise differentiation is justified by absolute convergence on compact subsets of $|r|<1$, and the derivative bound follows from $\sum_{t\ge k} t(t-1)\cdots(t-k+1)\,|r|^{t-k}\le k!/(1-|r|)^{k+1}$.
+\end{proof}
+
 Lemma~\ref{lem:bounded_trace_holomorphy} provides the geometric-side analyticity constraint mandated by bounded scan readout (Axioms~\ref{ax:O5}--\ref{ax:O6}).
 This unit-disk holomorphy will be paired with the spectral-side mode structure under HTF.
 
@@ -53,21 +75,28 @@ It is holomorphic on $|r|<1$.
 The Riemann Hypothesis in this framework is treated as a \emph{protocol consequence} of a trace identity that embeds arithmetic spectral data into scan traces.
 We isolate the needed input as a single assumption.
 
-\begin{assumption}[HTF: holographic trace formula bridge (package form)]
+\begin{remark}[A fully explicit model exists in the function-field setting]
+\label{rem:htf_function_field_preview}
+Before stating HTF, we emphasize that the logical structure required here is not a purely formal slogan.
+Appendix~\ref{app:htf_function_field} records an unconditional HTF-style trace identity for Weil zeta functions of curves over finite fields, where the analogue of RH is known.
+That example shows concretely how a resolvent-mode decomposition produces interior poles when a spectral radius exceeds $1$, and how unit-disk holomorphy forces a ``critical-line'' modulus constraint.
+\end{remark}
+
+\begin{assumption}[HTF: holographic trace formula bridge (Id, Types, Modes, Renorm, NonCancel)]
 \label{ass:HTF}
 There exists a choice of $(U,\omega_{\mathrm{eff}},A)$ and an Abel-regularized scan trace $G$ in the sense of Definition~\ref{def:abel_scan_trace}, together with a spectral term $\mathcal{S}$ and a regular term $\mathcal{A}_\infty$ on the unit disk, such that:
 \begin{enumerate}
-\item \textbf{Meromorphic identity.}
+\item[\textbf{HTF-Id (meromorphic identity).}]
 The following identity holds on $|r|<1$ as an equality of meromorphic functions:
 \begin{equation}
 \label{eq:htf_identity}
 G(r)=\mathcal{S}(r)+\mathcal{A}_{\infty}(r),
 \qquad |r|<1,
 \end{equation}
-\item \textbf{Analytic types.}
+\item[\textbf{HTF-Types (analytic types).}]
 $G(r)$ is holomorphic on $|r|<1$ by Lemma~\ref{lem:bounded_trace_holomorphy}.
 The regular term $\mathcal{A}_{\infty}(r)$ is holomorphic on $|r|<1$ and collects archimedean/renormalization contributions compatible with the Abel-first/finite-part convention.
-\item \textbf{Spectral mode structure.}
+\item[\textbf{HTF-Modes (zeta-zero resolvent modes).}]
 The spectral term $\mathcal{S}(r)$ is meromorphic on $|r|<1$ and admits a decomposition
 \begin{equation}
 \label{eq:zero_mode_factor}
@@ -75,17 +104,37 @@ The spectral term $\mathcal{S}(r)$ is meromorphic on $|r|<1$ and admits a decomp
 \end{equation}
 where the sum ranges over nontrivial zeros $\rho$ of $\zeta$, the coefficients $c_\rho$ are complex numbers, and $\mathcal{H}(r)$ is holomorphic on $|r|<1$.
 The sum is understood with a fixed summability/renormalization prescription (for example, symmetric pairing of zeros and an Abel-first limiting procedure) chosen so that the right-hand side defines a meromorphic function on $|r|<1$.
-\item \textbf{Non-cancellation of interior poles.}
+\item[\textbf{HTF-Renorm (local meromorphy under renormalization).}]
+The chosen summability/renormalization prescription is fixed once and for all (as part of the HTF package) and defines $\mathcal{S}(r)$ as a meromorphic function on $|r|<1$ whose principal parts at its poles agree with the principal parts of the corresponding resolvent-mode factors in \eqref{eq:zero_mode_factor}.
+In particular, the prescription does not remove interior poles by subtracting their principal parts.
+\item[\textbf{HTF-NonCancel (no interior pole cancellation).}]
 Whenever $\RePart(\rho)>\tfrac12$ (equivalently $|r_\rho|<1$), the point
 \[
 r_\rho=\e^{-(\rho-\frac12)}
 \]
 is an actual pole of $\mathcal{S}(r)$, i.e.\ the principal part of $\mathcal{S}$ at $r=r_\rho$ is nonzero.
+Equivalently, the total residue at $r=r_\rho$ contributed by all zero modes mapping to $r_\rho$ is nonzero.
 \end{enumerate}
 \end{assumption}
 
+\begin{remark}[On ``cancellation hiding poles'']
+\label{rem:noncancel_discussion}
+In a meromorphic identity on $|r|<1$ of the form $G=\mathcal{S}+\mathcal{A}_\infty$, the regular term $\mathcal{A}_\infty$ is holomorphic by HTF-Types and therefore cannot cancel any interior pole.
+Hence any interior pole of the right-hand side must be canceled \emph{within} $\mathcal{S}$ itself.
+But cancellation between different pole locations is impossible: principal parts at distinct points are independent.
+The only way for a pole to be ``hidden'' is therefore a \emph{same-point} cancellation (the total principal part at that pole vanishes).
+HTF-NonCancel excludes exactly this degenerate possibility, and it is automatically satisfied in explicit resolvent-trace models in which residues are fixed nonzero spectral multiplicities (Appendix~\ref{app:htf_function_field} gives a fully explicit instance).
+\end{remark}
+
 Assumption~\ref{ass:HTF} is a protocol-level abstraction of the classical ``explicit formula as trace'' paradigm \cite{Connes1999,IwaniecKowalski2004,Titchmarsh1986}, rewritten in Abel $r$-coordinates with the $\Omega$ canonical path; see also the companion protocol trace manuscript \cite{Ma2025RGS}.
 The present paper does not attempt to construct such an identity; rather, it isolates the analytic hypotheses and proves the rigidity consequence \emph{if} HTF holds.
+
+\begin{remark}[Logical separation and why the argument is not circular]
+\label{rem:htf_not_circular}
+The rigidity step proved below is purely complex-analytic: unit-disk holomorphy of the geometric-side Abel trace $G$ (a boundedness consequence) is incompatible with interior poles produced by exponential-growth modes.
+HTF does \emph{not} assume RH; it assumes the existence of a trace identity whose spectral side contains zeta-zero resolvent factors in the concrete Abel coordinate $r$.
+The conditional theorem should therefore be read as a \emph{rigidity constraint on admissible trace bridges}: any HTF candidate compatible with bounded scan readout must be consistent with the critical-line location of all zero modes.
+\end{remark}
 
 \begin{remark}[HTF as a concrete verification checklist]
 \label{rem:htf_checklist}
@@ -116,8 +165,22 @@ The zero-mode factor in \eqref{eq:zero_mode_factor} becomes
 Thus, an off-critical zero with $\RePart(\rho)>\tfrac12$ produces a pole at $r_\rho=\e^{-(\rho-\frac12)}$ strictly inside the unit disk (Lemma~\ref{lem:abel_pole_barrier}).
 This is the analytic content of the ``pole barrier'' mechanism: in Abel/Laplace coordinates, exponential-growth modes correspond to interior resolvent singularities.
 
+\paragraph{Resolvent and determinant viewpoint (operator-theoretic intuition).}
+Factors of the form $(1-r\lambda)^{-1}$ are resolvent kernels.
+If an operator $F$ has eigenvalues $\{\lambda_j\}$ and the trace $\Tr((I-rF)^{-1})$ is meaningful (possibly after regularization), then formally
+\[
+\Tr\bigl((I-rF)^{-1}\bigr)=\sum_j \frac{1}{1-r\lambda_j}.
+\]
+The function-field model in Appendix~\ref{app:htf_function_field} is exactly of this form with $F$ the normalized Frobenius action.
+In an operator-trace instantiation of HTF, \eqref{eq:zero_mode_factor} should be interpreted as asserting that a suitably regularized resolvent trace contains zeta-zero modes as resolvent singularities in the Abel coordinate $r$ (equivalently, in the Laplace coordinate $s$).
+Related determinant regularizations can be viewed through $\log\det(I-rF)=-\sum_{n\ge 1}\frac{r^n}{n}\Tr(F^n)$ when such expansions are justified.
+
 \paragraph{Test-function viewpoint (explicit-formula dictionary).}
-The Abel trace $G(r)=\sum_{t\ge 0} a_t r^t$ is the Laplace transform of the discrete-time sequence $a_t$ under $r=\e^{-s}$:
+The Abel trace is the generating function
+\[
+G(r)=\sum_{t\ge 0} a_t r^t,
+\]
+and under $r=\e^{-s}$ it becomes the discrete Laplace transform
 \[
 G(\e^{-s})=\sum_{t\ge 0} a_t\,\e^{-st}.
 \]
@@ -139,7 +202,7 @@ From the present closed-layer perspective, HTF packages the existence of such a 
 
 \begin{theorem}[Riemann critical-line rigidity (conditional)]
 \label{thm:rh_conditional}
-Assume Axioms~\ref{ax:O5}--\ref{ax:O6}, Convention~\ref{ax:R1}, and the HTF bridge Assumption~\ref{ass:HTF}.
+Assume Axioms~\ref{ax:O5}--\ref{ax:O6}, Convention~\ref{ax:R1}, and the HTF bridge Assumption~\ref{ass:HTF} (HTF-Id/Types/Modes/Renorm/NonCancel).
 If the geometric-side trace $G(r)$ is holomorphic on the unit disk $|r|<1$, then every nontrivial zero $\rho$ of $\zeta$ satisfies
 \[
 \RePart(\rho)=\frac12.

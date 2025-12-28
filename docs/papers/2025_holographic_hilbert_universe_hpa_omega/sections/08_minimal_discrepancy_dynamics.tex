@@ -49,11 +49,93 @@ One may then define dynamics as a (possibly damped) gradient flow on protocol sp
 In the broader HPA--$\Omega$ program, this template is elevated to an $\Omega$ action principle with explicit Fisher-information and gravitational terms \cite{Ma2025CAP}.
 For the present paper, \eqref{eq:least_discrepancy_functional} serves only as the minimal closed-layer bridge between discrepancy certificates, routing overhead, and effective gravitational templates.
 
+\subsection{An explicit least-discrepancy evolution and an \texorpdfstring{$H$}{H}-theorem}
+\label{sec:least_discrepancy_h_theorem}
+
+To answer the ``minimal deviation'' question quantitatively, we record an explicit evolution equation that is sufficient for a closed-layer monotonicity statement.
+
+\begin{definition}[Least-discrepancy gradient flow (continuous time)]
+\label{def:least_discrepancy_flow}
+Assume the protocol space is modeled as an open subset $\mathcal{U}\subset\RR^m$ with coordinate vector $\mathcal{P}\in\mathcal{U}$, and assume $\mathcal{E}_T:\mathcal{U}\to\RR$ is differentiable.
+Fix a \emph{mobility} (preconditioner) field $M(\mathcal{P})\in\RR^{m\times m}$ such that $M(\mathcal{P})$ is symmetric and positive semidefinite for all $\mathcal{P}$.
+The least-discrepancy evolution is the gradient flow
+\begin{equation}
+\label{eq:least_discrepancy_flow}
+\frac{\dd \mathcal{P}}{\dd \tau}=-\,M(\mathcal{P})\,\nabla_{\mathcal{P}}\mathcal{E}_T(\mathcal{P}),
+\end{equation}
+where $\tau$ is an auxiliary (protocol) time parameter indexing updates in protocol space.
+\end{definition}
+
+\begin{proposition}[\texorpdfstring{$H$}{H}-theorem (continuous flow)]
+\label{prop:h_theorem_continuous}
+Let $\mathcal{P}(\tau)$ satisfy \eqref{eq:least_discrepancy_flow} and suppose $\mathcal{E}_T$ is continuously differentiable along the trajectory.
+Then the ``entropy'' functional $H(\tau):=\mathcal{E}_T(\mathcal{P}(\tau))$ is nonincreasing:
+\[
+\frac{\dd H}{\dd \tau}=-\left\langle \nabla_{\mathcal{P}}\mathcal{E}_T(\mathcal{P}),\,M(\mathcal{P})\,\nabla_{\mathcal{P}}\mathcal{E}_T(\mathcal{P})\right\rangle\ \le\ 0.
+\]
+Moreover, $\dd H/\dd\tau=0$ holds if and only if $M(\mathcal{P})\,\nabla_{\mathcal{P}}\mathcal{E}_T(\mathcal{P})=0$ (a stationary protocol under the chosen mobility).
+\end{proposition}
+
+\begin{proof}
+Differentiate $H(\tau)=\mathcal{E}_T(\mathcal{P}(\tau))$ and use \eqref{eq:least_discrepancy_flow}:
+\[
+\frac{\dd H}{\dd \tau}
+=\left\langle \nabla_{\mathcal{P}}\mathcal{E}_T(\mathcal{P}),\,\frac{\dd \mathcal{P}}{\dd\tau}\right\rangle
+=-\left\langle \nabla_{\mathcal{P}}\mathcal{E}_T(\mathcal{P}),\,M(\mathcal{P})\,\nabla_{\mathcal{P}}\mathcal{E}_T(\mathcal{P})\right\rangle\le 0,
+\]
+since $M(\mathcal{P})$ is positive semidefinite.
+\end{proof}
+
+\begin{definition}[Auditable discrete-time update (proximal/gradient step)]
+\label{def:least_discrepancy_discrete_update}
+In practice the protocol is updated in discrete steps $k\in\ZZ_{\ge 0}$.
+A minimal auditable update rule compatible with \eqref{eq:least_discrepancy_flow} is
+\begin{equation}
+\label{eq:least_discrepancy_discrete}
+\mathcal{P}_{k+1}=\mathcal{P}_k-\eta_k\,M_k\,\nabla_{\mathcal{P}}\mathcal{E}_T(\mathcal{P}_k),
+\end{equation}
+where $\eta_k>0$ is a step size and $M_k\succeq 0$ is a chosen preconditioner (for example, a diagonal scaling reflecting heterogeneous audit costs of changing different protocol knobs).
+\end{definition}
+
+\begin{proposition}[Sufficient condition for monotonic decrease (discrete time)]
+\label{prop:h_theorem_discrete}
+Assume $\mathcal{E}_T$ has an $L$-Lipschitz gradient on a convex subset containing the iterates (i.e.\ $\mathcal{E}_T$ is $L$-smooth).
+If $M_k=I$ and $0<\eta_k\le 1/L$, then the discrete update \eqref{eq:least_discrepancy_discrete} satisfies
+\[
+\mathcal{E}_T(\mathcal{P}_{k+1})\le \mathcal{E}_T(\mathcal{P}_k)
+\]
+for every step $k$.
+More generally, for symmetric $M_k\succeq 0$, the same conclusion holds whenever $\eta_k\|M_k\|_2\le 1/L$.
+\end{proposition}
+
+\begin{proof}
+For an $L$-smooth function, the standard descent lemma gives
+\[
+\mathcal{E}_T(\mathcal{P}_{k+1})\le \mathcal{E}_T(\mathcal{P}_k)
+\;+\;
+\left\langle \nabla\mathcal{E}_T(\mathcal{P}_k),\,\mathcal{P}_{k+1}-\mathcal{P}_k\right\rangle
+\;+\;\frac{L}{2}\,\|\mathcal{P}_{k+1}-\mathcal{P}_k\|_2^2.
+\]
+Substituting $\mathcal{P}_{k+1}-\mathcal{P}_k=-\eta_k M_k\nabla\mathcal{E}_T(\mathcal{P}_k)$ yields a negative quadratic form whenever $\eta_k\|M_k\|_2\le 1/L$.
+\end{proof}
+
+\begin{remark}[When the \texorpdfstring{$H$}{H}-theorem can fail]
+\label{rem:h_theorem_failure_modes}
+Monotonicity is guaranteed only under regularity and step-size control (Propositions~\ref{prop:h_theorem_continuous}--\ref{prop:h_theorem_discrete}).
+In particular, $\mathcal{E}_T$ is generally nonconvex in realistic protocol spaces, and large steps or poorly conditioned preconditioners can increase $\mathcal{E}_T$ transiently.
+This is not a contradiction: it simply means the protocol update rule is itself part of the auditable specification of dynamics.
+\end{remark}
+
 \subsection{From auditable defect budgets to a Poisson closure}
 \label{sec:poisson_from_action}
 
 Section~\ref{sec:gravity} uses a phase potential $\Phi=-\log\lapse$ and a Poisson closure as the Newtonian-limit template.
 Here we record a closed-layer derivation of this closure from a minimal energy principle.
+
+\paragraph{Scope of the closure.}
+The purpose of this subsection is to provide a minimal and auditable route from protocol-level defect budgets to an effective \emph{scalar} potential.
+It should be read as a weak-field/static (Hamiltonian-constraint) template: once a source convention and boundary condition are fixed, Poisson closure follows from the Dirichlet principle.
+A full time-dependent recovery of the ADM system requires additional constitutive input coupling conserved defect currents to an effective shift/drift sector (Section~\ref{sec:beyond_static_shift}).
 
 \subsubsection{Defect charge measures and continuity constraints}
 \label{sec:defect_charge}

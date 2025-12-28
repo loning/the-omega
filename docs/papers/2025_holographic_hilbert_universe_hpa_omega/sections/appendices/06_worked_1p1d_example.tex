@@ -1,0 +1,173 @@
+\section[A complete 1+1D worked example]{A complete 1+1D worked example:\\
+weighted scan-chain lapse matching}
+\label{app:worked_1p1d}
+
+This appendix provides a fully explicit $1{+}1$-dimensional worked example (one spatial lattice dimension plus scan time) that closes the micro-to-macro loop required for quantitative testing:
+\emph{addressing $\rightarrow$ hardware graph $\rightarrow$ routing/compilation depth $\kappa(x)$ $\rightarrow$ lapse $N(x)=\kappa_0/\kappa(x)$ $\rightarrow$ coarse-grained readout and comparison against a weak-field template}.
+
+\subsection{Microscopic specification: address, hardware graph, primitives, and a local clock task}
+\label{app:worked_1p1d_micro}
+
+\paragraph{Screen (1D) at resolution \texorpdfstring{$n$}{n}.}
+Let $\Sigma_n:=\{0,1,\dots,L-1\}$ with $L:=2^n$ and nearest-neighbor adjacency $i\sim i\pm 1$ (with endpoints treated as boundaries).
+
+\paragraph{Addressing and placement.}
+Fix the trivial address map $A_n(t)=t$ and the identity placement
+\[
+\pi_n(i):=i\in V_{\mathrm{phys}}.
+\]
+In this example, addressing is explicit and routing is driven entirely by the (weighted) hardware constraint rather than by a nontrivial folding permutation.
+
+\paragraph{Hardware interaction graph.}
+Take the weighted path graph
+\[
+V_{\mathrm{phys}}=\{0,1,\dots,L-1\},
+\qquad
+E_{\mathrm{phys}}=\bigl\{\{i,i+1\}:0\le i\le L-2\bigr\},
+\]
+with integer edge weights $w_{i+\frac12}:=w(\{i,i+1\})\in\ZZ_{>0}$ interpreted as tick costs (Assumption~\ref{ass:hardware_graph}).
+
+\paragraph{Local clock task (two-edge update).}
+Fix a bounded-local task family $\mathcal{G}=\{\mathcal{G}_i\}_{i\in\Sigma_n}$ as follows.
+For interior sites $1\le i\le L-2$, the task $\mathcal{G}_i$ consists of executing a prescribed two-body primitive on the left edge $\{i-1,i\}$ and on the right edge $\{i,i+1\}$ once each (the specific gate is irrelevant for depth accounting).
+Because the two edges share the vertex $i$, the disjoint-support scheduling constraint forces sequential execution, so the minimal depth is exactly
+\begin{equation}
+\label{eq:worked_1p1d_kappa_exact}
+\kappa(i)=\mathrm{Depth}_{G_{\mathrm{phys}}}(\mathcal{G}_i)=w_{i-\frac12}+w_{i+\frac12},
+\qquad 1\le i\le L-2.
+\end{equation}
+This gives a completely explicit and auditable $\kappa(i)$.
+
+\paragraph{Lapse and potential.}
+Fix a reference overhead $\kappa_0>0$ and define
+\[
+N(i):=\frac{\kappa_0}{\kappa(i)},
+\qquad
+\Phi(i):=\log\!\left(\frac{\kappa(i)}{\kappa_0}\right)=-\log N(i).
+\]
+By Proposition~\ref{prop:proper_time_scaling}, $N(i)$ is the operational lapse linking global scan ticks to local relational time in this concrete model.
+
+\subsection{Weak-field target and construction of a matching hardware profile}
+\label{app:worked_1p1d_target}
+
+\paragraph{Target lapse (weak-field Schwarzschild template along a radial line).}
+To compare against a standard weak-field template used throughout Section~\ref{sec:gravity}, we take the Schwarzschild lapse
+\begin{equation}
+\label{eq:worked_1p1d_schw_lapse}
+N_{\mathrm{Schw}}(r)=\sqrt{1-\frac{2M}{r}}
+\qquad (c=G=1),
+\end{equation}
+restricted to a radial interval $r\in[r_{\min},r_{\max}]$ with $r_{\min}>2M$ so that $N_{\mathrm{Schw}}$ is real and close to $1$.
+In the worked numerics below we use a weak-field choice with $2M/r_{\min}\ll 1$.
+
+\paragraph{Grid embedding.}
+Embed the 1D screen sites into the radial interval by
+\[
+r_i:=r_{\min}+i\,h,
+\qquad
+h:=\frac{r_{\max}-r_{\min}}{L-1},
+\qquad 0\le i\le L-1,
+\]
+and midpoints $r_{i+\frac12}:=r_i+\frac{h}{2}$ for $0\le i\le L-2$.
+
+\paragraph{Target overhead and midpoint edge weights.}
+Define the target overhead field
+\[
+\kappa_{\mathrm{tar}}(r):=\frac{\kappa_0}{N_{\mathrm{Schw}}(r)}.
+\]
+We choose the hardware edge weights by midpoint sampling:
+\begin{equation}
+\label{eq:worked_1p1d_edge_weights}
+w_{i+\frac12}:=\left\lfloor \frac{1}{2}\,\kappa_{\mathrm{tar}}(r_{i+\frac12})+\frac12\right\rfloor,
+\qquad 0\le i\le L-2.
+\end{equation}
+This choice is constructive, integer-valued (as required by Assumption~\ref{ass:hardware_graph}), and yields a second-order accurate site overhead by symmetric averaging.
+
+\begin{proposition}[Second-order matching]
+\label{prop:worked_1p1d_second_order}
+Assume $\kappa_{\mathrm{tar}}\in C^2([r_{\min},r_{\max}])$.
+Define $\kappa(i)$ for interior sites by \eqref{eq:worked_1p1d_kappa_exact}--\eqref{eq:worked_1p1d_edge_weights}.
+Define the induced lapse by $N(i)=\kappa_0/\kappa(i)$.
+Then for interior sites $1\le i\le L-2$,
+\[
+\kappa(i)=\kappa_{\mathrm{tar}}(r_i)+O(h^2)+O(1),
+\qquad
+N(i)=N_{\mathrm{Schw}}(r_i)+O(h^2)+O\!\left(\frac{1}{\kappa_0}\right),
+\]
+where the $O(1)$ term comes from integer rounding of edge weights and is uniformly bounded independent of $h$.
+In particular, at fixed $\kappa_0$ large enough that rounding is negligible, the mismatch decays as $O(h^2)$ under refinement.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+Ignoring the integer rounding in \eqref{eq:worked_1p1d_edge_weights}, one has
+\[
+w_{i\pm\frac12}\approx \frac12\,\kappa_{\mathrm{tar}}(r_i\pm h/2),
+\qquad
+\kappa(i)=w_{i-\frac12}+w_{i+\frac12}\approx \frac12\Bigl(\kappa_{\mathrm{tar}}(r_i-h/2)+\kappa_{\mathrm{tar}}(r_i+h/2)\Bigr).
+\]
+Taylor expansion shows the symmetric average equals $\kappa_{\mathrm{tar}}(r_i)+\frac{h^2}{8}\kappa_{\mathrm{tar}}''(r_i)+O(h^4)$, hence the $O(h^2)$ term.
+Rounding each edge weight introduces an error bounded by $1/2$ tick per edge, hence an $O(1)$ error in $\kappa(i)$.
+Finally, $N(i)=\kappa_0/\kappa(i)$ and smoothness of $N_{\mathrm{Schw}}$ on $[r_{\min},r_{\max}]$ transfer the scaling to lapse errors, with an additional $O(1/\kappa_0)$ quantization term under fixed physical calibration.
+\end{proof}
+
+\subsection{Readout at finite resolution}
+\label{app:worked_1p1d_readout}
+
+To model finite-resolution measurement, we read out coarse-grained fields using a nonnegative normalized kernel $w^{(\varepsilon)}$ of width $\varepsilon$ (cf.\ Section~\ref{sec:coarse_graining_geometry} and Definition~\ref{def:eps_universality_class}).
+On the 1D grid, a concrete discrete implementation is the windowed average
+\[
+\Phi_{\varepsilon}(i):=\sum_{j=0}^{L-1} w^{(\varepsilon)}_{ij}\,\Phi(j),
+\qquad
+\sum_{j} w^{(\varepsilon)}_{ij}=1,\quad w^{(\varepsilon)}_{ij}\ge 0,
+\]
+with $w^{(\varepsilon)}_{ij}$ supported mainly on $|r_j-r_i|\lesssim \varepsilon$.
+The induced coarse lapse is $N_{\varepsilon}(i)=\exp(-\Phi_{\varepsilon}(i))$.
+
+\subsection{Numerical pipeline and generated tables}
+\label{app:worked_1p1d_numerics}
+
+The script \path{scripts/exp_1p1d_routing_worked_example.py} implements the construction \eqref{eq:worked_1p1d_edge_weights}, computes $\kappa(i)$, produces the induced lapse $N(i)$, and compares it to the weak-field target \eqref{eq:worked_1p1d_schw_lapse}.
+It reports finite-size errors across multiple resolutions and a simple log--log scaling fit.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{@{}r r r r r r@{}}
+\toprule
+order $n$ & sites $L$ & $h$ & $\max_{i}|\Delta N_i|$ & RMS$(|\Delta N|)$ & rel.\ RMS \\
+\midrule
+\IfFileExists{sections/generated/1p1d_error_rows.tex}{\input{sections/generated/1p1d_error_rows.tex}}{(run \path{python3 scripts/exp_1p1d_routing_worked_example.py} to generate)}\\
+\bottomrule
+\end{tabular}
+\caption{1+1D worked example: induced lapse $N(i)=\kappa_0/\kappa(i)$ vs.\ the weak-field target $N_{\mathrm{Schw}}(r_i)$, with finite-size error metrics evaluated on interior sites.}
+\label{tab:worked_1p1d_errors}
+\end{table}
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}r r r@{}}
+\toprule
+fit range (orders) & slope for RMS vs.\ $h$ & $R^2$ \\
+\midrule
+\IfFileExists{sections/generated/1p1d_scaling_fit_rows.tex}{\input{sections/generated/1p1d_scaling_fit_rows.tex}}{(run \path{python3 scripts/exp_1p1d_routing_worked_example.py} to generate)}\\
+\bottomrule
+\end{tabular}
+\caption{Finite-size scaling fit for the 1+1D worked example. The midpoint construction yields second-order convergence in $h$ up to the integer-quantization floor.}
+\label{tab:worked_1p1d_scaling}
+\end{table}
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{@{}r r r r@{}}
+\toprule
+$r$ & $N_{\mathrm{Schw}}(r)$ & $N(r)$ (measured) & $\Delta N$ \\
+\midrule
+\IfFileExists{sections/generated/1p1d_curve_rows.tex}{\input{sections/generated/1p1d_curve_rows.tex}}{(run \path{python3 scripts/exp_1p1d_routing_worked_example.py} to generate)}\\
+\bottomrule
+\end{tabular}
+\caption{Representative lapse curve samples from the 1+1D worked example at a fixed order (script default).}
+\label{tab:worked_1p1d_curve}
+\end{table}
+
+

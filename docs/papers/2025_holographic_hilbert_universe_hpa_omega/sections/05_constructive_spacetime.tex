@@ -107,6 +107,15 @@ This makes the dependence of $N(x)$ on the choice of address family (Hilbert vs.
 Since all physical comparisons are formulated either as lapse ratios or as potentials (which are invariant under global tick reparameterizations; Remark~\ref{rem:lapse_calibration_reparam}), the sensitivity to address choice is a genuine spatial inhomogeneity rather than a coordinate artifact.
 \end{remark}
 
+\begin{remark}[Address choice as a protocol gauge (diffeomorphism analogy)]
+\label{rem:address_as_gauge}
+In continuum gravity, diffeomorphism invariance expresses the fact that physical predictions do not depend on the choice of coordinates.
+In the present constructive setting, an address family plays a role closer to a \emph{protocol gauge choice}: it is a concrete discrete chart that fixes how scan time is folded into screen locality and therefore fixes a concrete compilation problem on a given substrate.
+Accordingly, at fixed microscopic substrate the lapse landscape can depend on the address choice (Remark~\ref{rem:address_dependence_lapse}).
+Operational invariance is recovered only after specifying the readout resolution: Definition~\ref{def:eps_universality_class} formalizes when two protocol realizations are indistinguishable at scale $\varepsilon$, and Proposition~\ref{prop:poisson_stability} then bounds the induced changes in coarse-grained potentials and lapse ratios.
+In this sense, diffeomorphism-style ``gauge freedom'' is replaced here by an explicit, testable universality statement at finite resolution.
+\end{remark}
+
 \subsubsection{A stability estimate for coarse-grained potentials}
 \label{sec:potential_stability}
 
@@ -151,6 +160,58 @@ For a tolerance $\delta>0$, we say the two realizations are \emph{$(\varepsilon,
 \]
 The collection of realizations mutually $(\varepsilon,\delta)$-equivalent forms an operational universality class at readout resolution $\varepsilon$.
 \end{definition}
+
+\begin{proposition}[Coarse-grained invariance of potentials and lapse ratios in a universality class]
+\label{prop:eps_invariance_lapse}
+Fix a boundary convention on $\Omega$ such that a Poincar\'e-type inequality holds in the chosen gauge (e.g.\ periodic with zero-mean gauge, or Dirichlet with $\Phi|_{\partial\Omega}=0$), and let $C_P$ be the corresponding constant:
+\[
+\norm{f}_{L^2(\Omega)}\le C_P\,\norm{\nabla f}_{L^2(\Omega)}.
+\]
+Let two protocol realizations be $(\varepsilon,\delta)$-equivalent in the sense of Definition~\ref{def:eps_universality_class}.
+Let $\Phi_{i,\varepsilon}$ denote the Poisson potentials of the coarse-grained sources:
+\[
+-\Delta\Phi_{i,\varepsilon}=4\pi G\,\sigma_{i,\varepsilon}
+\]
+with the same boundary convention and gauge choice, and define the corresponding coarse-grained lapse fields $N_{i,\varepsilon}:=\e^{-\Phi_{i,\varepsilon}}$.
+Then:
+\begin{enumerate}
+\item \textbf{Energy-norm invariance.}
+\[
+\norm{\nabla(\Phi_{1,\varepsilon}-\Phi_{2,\varepsilon})}_{L^2(\Omega)}\ \le\ 4\pi G\,\delta.
+\]
+\item \textbf{Pointwise invariance after readout smoothing.}
+For any nonnegative normalized kernel $\widetilde w^{(\varepsilon)}$ used to read out the potential at scale $\varepsilon$, define $\widetilde\Phi_{i,\varepsilon}:=\widetilde w^{(\varepsilon)}\ast\Phi_{i,\varepsilon}$ and $\widetilde N_{i,\varepsilon}:=\e^{-\widetilde\Phi_{i,\varepsilon}}$.
+Then
+\[
+\norm{\widetilde\Phi_{1,\varepsilon}-\widetilde\Phi_{2,\varepsilon}}_{L^\infty(\Omega)}
+\ \le\
+4\pi G\,C_P\,\norm{\widetilde w^{(\varepsilon)}}_{L^2(\Omega)}\,\delta,
+\]
+and therefore for all $x\in\Omega$ one has the multiplicative lapse bound
+\[
+\exp\!\bigl(-\Delta_\varepsilon\bigr)\ \le\ \frac{\widetilde N_{1,\varepsilon}(x)}{\widetilde N_{2,\varepsilon}(x)}\ \le\ \exp\!\bigl(\Delta_\varepsilon\bigr),
+\qquad
+\Delta_\varepsilon:=4\pi G\,C_P\,\norm{\widetilde w^{(\varepsilon)}}_{L^2(\Omega)}\,\delta.
+\]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+By Definition~\ref{def:eps_universality_class}, one has the coarse-grained source bound
+\[
+\norm{\sigma_{1,\varepsilon}-\sigma_{2,\varepsilon}}_{H^{-1}(\Omega)}\le \delta.
+\]
+Applying Proposition~\ref{prop:poisson_stability} to the pair $(\sigma_{1,\varepsilon},\sigma_{2,\varepsilon})$ yields the energy-norm bound.
+For the pointwise statement, set $\delta\Phi_\varepsilon:=\Phi_{1,\varepsilon}-\Phi_{2,\varepsilon}$ and note
+\[
+\widetilde\Phi_{1,\varepsilon}-\widetilde\Phi_{2,\varepsilon}
+=\widetilde w^{(\varepsilon)}\ast\delta\Phi_\varepsilon.
+\]
+Young's inequality gives $\norm{\widetilde w^{(\varepsilon)}\ast\delta\Phi_\varepsilon}_{L^\infty}\le \norm{\widetilde w^{(\varepsilon)}}_{L^2}\,\norm{\delta\Phi_\varepsilon}_{L^2}$.
+The Poincar\'e inequality bounds $\norm{\delta\Phi_\varepsilon}_{L^2}\le C_P \norm{\nabla\delta\Phi_\varepsilon}_{L^2}$.
+Combining with the energy estimate yields the stated $L^\infty$ bound.
+The multiplicative lapse bound follows from $\widetilde N_{i,\varepsilon}=\exp(-\widetilde\Phi_{i,\varepsilon})$.
+\end{proof}
 
 \begin{remark}[Practical robustness criterion at resolution \texorpdfstring{$\varepsilon$}{epsilon}]
 \label{rem:robustness_eps}

@@ -1,5 +1,5 @@
 
-\section[Computational-lapse gravity]{Computational-lapse gravity: routing overhead, redshift, and a\\ phase-potential Newtonian limit}
+\section[Computational-lapse gravity]{Computational-lapse gravity: routing overhead, redshift, and a phase-potential Newtonian limit}
 \label{sec:gravity}
 
 \subsection{Routing overhead and the lapse field}
@@ -8,22 +8,31 @@
 Hilbert folding defines screen locality, but physical implementation depends on how screen-local operations are compiled into scan-nearest-neighbor primitives.
 To make the ``routing overhead'' $\kappa$ precise and falsifiable, we fix a minimal compilation model.
 
-\begin{assumption}[Hardware graph and primitive operations]
+\begin{assumption}[Hardware graph, primitive gate set, and scheduling]
 \label{ass:hardware_graph}
 At resolution $n$, the observer-accessible degrees of freedom are labeled by screen sites $x\in\Sigma_n$ (Axiom~\ref{ax:H1}).
-Physical primitives are executed on a \emph{hardware interaction graph} $G_{\mathrm{phys}}=(V_{\mathrm{phys}},E_{\mathrm{phys}})$ with edge weights $w(e)>0$ interpreted as the tick cost of a primitive two-body operation along $e\in E_{\mathrm{phys}}$.
+Physical primitives are executed on a \emph{hardware interaction graph} $G_{\mathrm{phys}}=(V_{\mathrm{phys}},E_{\mathrm{phys}})$ equipped with integer edge weights $w(e)\in\ZZ_{>0}$ interpreted as the number of global scan ticks required to execute a fixed primitive two-body operation supported on $e\in E_{\mathrm{phys}}$.
 A placement map $\pi_n:\Sigma_n\to V_{\mathrm{phys}}$ assigns each screen site to a physical vertex.
-In one tick, any set of primitives supported on disjoint edges of $G_{\mathrm{phys}}$ may be executed in parallel (standard locality constraint).
+In addition to two-body primitives on edges, we allow arbitrary single-site primitives on vertices at unit tick cost (absorbed into the tick definition) and, when needed, bounded-cost measurement/reset primitives as part of the readout interface (Axiom~\ref{ax:O5}).
+
+\paragraph{Scheduling constraint (disjoint-support parallelism).}
+Time is discretized in global scan ticks $t\in\ZZ_{\ge 0}$.
+During any tick, one may execute in parallel any collection of primitives whose supports are vertex-disjoint (equivalently, two-body primitives are executed on a matching of $G_{\mathrm{phys}}$, possibly together with arbitrary single-site primitives on vertices not engaged by a two-body primitive in that tick).
+If a two-body primitive on an edge $e$ has weight $w(e)>1$, it occupies its endpoints for $w(e)$ consecutive ticks under this rule.
+
+\paragraph{Routing primitive.}
+Whenever a screen-local task requires a two-body interaction between degrees of freedom placed far apart on $G_{\mathrm{phys}}$, routing is implemented by sequences of local swaps/permutations built from the same two-body primitives (standard swap-network compilation).
 \end{assumption}
 
 \begin{definition}[Local compilation overhead]
 \label{def:kappa_local}
 Fix a reference \emph{local update task} $\mathcal{G}_x$ supported in a bounded screen neighborhood of $x$ (e.g.\ a prescribed set of nearest-neighbor gates on $(\Sigma_n,\sim)$ around $x$).
-Let $\mathrm{Depth}_{G_{\mathrm{phys}}}(\mathcal{G}_x)$ denote the minimal number of global scan ticks required to implement $\mathcal{G}_x$ using primitive operations on $G_{\mathrm{phys}}$ and local swaps/routing allowed by Assumption~\ref{ass:hardware_graph}.
+Let $\mathrm{Depth}_{G_{\mathrm{phys}}}(\mathcal{G}_x)$ denote the minimal number of global scan ticks required to implement $\mathcal{G}_x$ using the primitive gate set and disjoint-support scheduling constraint of Assumption~\ref{ass:hardware_graph}, together with any intermediate swaps/routing permitted on $G_{\mathrm{phys}}$.
 Define
 \[
 \kappa(x):=\mathrm{Depth}_{G_{\mathrm{phys}}}(\mathcal{G}_x).
 \]
+When needed, we write $\mathcal{G}:=\{\mathcal{G}_x\}_{x\in\Sigma_n}$ and $\kappa(x)=\kappa(x;G_{\mathrm{phys}},\pi_n,\mathcal{G})$ to emphasize the dependence on the hardware graph, placement, and task family.
 \end{definition}
 
 Definition~\ref{def:kappa_local} makes $\kappa(x)$ an operationally auditable quantity once $G_{\mathrm{phys}}$, $\pi_n$, and the task family $\mathcal{G}_x$ are fixed.
@@ -46,10 +55,43 @@ Then, in the continuous notation used throughout the paper,
 \end{proposition}
 
 \begin{proof}
-By Definition~\ref{def:kappa_local}, one local update cycle at $x$ requires $\kappa(x)$ global ticks.
-Thus, the number of completed cycles by time $t$ is $t/\kappa(x)$, up to an $O(1)$ endpoint effect that vanishes under coarse-grained time.
-Normalizing relational time so that one cycle corresponds to $\kappa_0$ units gives $\tau_{\mathrm{loc}}(t;x)=\kappa_0\,t/\kappa(x)$, hence \eqref{eq:proper_time_scaling}.
+Define the completed-cycle count
+\[
+C_x(t):=\left\lfloor \frac{t}{\kappa(x)}\right\rfloor,
+\]
+which is an operationally auditable integer derived from the compilation depth $\kappa(x)$.
+By Definition~\ref{def:kappa_local}, one local update cycle at $x$ requires $\kappa(x)$ global ticks, so $C_x(t)$ is exactly the number of completed local cycles by tick $t$.
+Define relational time by
+\begin{equation}
+\label{eq:tau_loc_discrete_def}
+\tau_{\mathrm{loc}}(t;x):=\kappa_0\,C_x(t).
+\end{equation}
+Then $\tau_{\mathrm{loc}}(t;x)=t$ when $\kappa(x)=\kappa_0$, since $C_x(t)=\lfloor t/\kappa_0\rfloor$ and coarse-grained time ignores the $O(1)$ endpoint discrepancy.
+Moreover,
+\[
+0\ \le\ \frac{\kappa_0}{\kappa(x)}\,t\;-\;\tau_{\mathrm{loc}}(t;x)\ <\ \kappa_0,
+\]
+so
+\[
+\frac{\tau_{\mathrm{loc}}(t;x)}{t}=\frac{\kappa_0}{\kappa(x)}+O\!\left(\frac{1}{t}\right)\qquad (t\to\infty).
+\]
+Passing to the continuous notation (coarse-grained in $t$) yields \eqref{eq:proper_time_scaling}.
 \end{proof}
+
+\begin{remark}[Finite-horizon redshift test and quantitative error bound]
+\label{rem:finite_horizon_redshift_test}
+The lapse ratio prediction \eqref{eq:redshift_ratio} is directly testable by counting completed cycles.
+For two sites $x_1,x_2$ and horizon $t$, define the measured ratio
+\[
+R_{\mathrm{meas}}(t):=\frac{\tau_{\mathrm{loc}}(t;x_1)}{\tau_{\mathrm{loc}}(t;x_2)}=\frac{C_{x_1}(t)}{C_{x_2}(t)}.
+\]
+Whenever $t>\kappa(x_2)$ one has the deterministic bounds
+\[
+\frac{\frac{t}{\kappa(x_1)}-1}{\frac{t}{\kappa(x_2)}}\ \le\ R_{\mathrm{meas}}(t)\ \le\ \frac{\frac{t}{\kappa(x_1)}}{\frac{t}{\kappa(x_2)}-1},
+\]
+so $R_{\mathrm{meas}}(t)\to \kappa(x_2)/\kappa(x_1)$ with an explicit $O(1/t)$ finite-horizon error controlled by $\kappa(x_1),\kappa(x_2)$.
+This is the discrete (auditable) counterpart of the differential statement $\dd\tau_1/\dd\tau_2=\kappa(x_2)/\kappa(x_1)$.
+\end{remark}
 
 Equation~\eqref{eq:proper_time_scaling} is therefore not an external relativistic postulate: it is a closed-layer consequence of (i) the compilation model and (ii) the definition of relational time as auditable progress of a standard local update task.
 In standard relativity language, it matches the role of the lapse function in a static slicing with vanishing shift \cite{MisnerThorneWheeler1973,Wald1984,Carroll2004}.
@@ -69,6 +111,25 @@ Rescaling $t\mapsto t':=a\,t$ (or, more generally, applying a monotone reparamet
 All closed-layer observables used below are formulated either in terms of the relational time $\tau_{\mathrm{loc}}$ itself or in terms of lapse ratios (redshifts), which are invariant under such coordinate reparameterizations.
 To attach physical units, one fixes a calibration map from ticks to coordinate time, e.g.\ $t_{\mathrm{phys}}:=\Delta t\,t$ where $\Delta t$ is the duration (in seconds) of a chosen primitive reference tick in the substrate, or $\Delta t:=\tau_0$ in a time-delay realization (Appendix~\ref{app:wigner_smith}).
 The reference overhead $\kappa_0$ sets the zero of the potential $\Phi=\log(\kappa/\kappa_0)$ and can be fixed by choosing a homogeneous reference region (or reference energy band) in which the standard local task completes in $\kappa_0$ ticks.
+\end{remark}
+
+\begin{remark}[Micro-to-macro map and scope]
+\label{rem:micro_to_macro_map}
+To avoid ambiguity about what is postulated and what is derived, we summarize the dictionary used in this section.
+\begin{itemize}
+\item \textbf{Auditable micro input.}
+One fixes (i) a hardware graph $(G_{\mathrm{phys}},w)$ and placement $\pi_n$ (Assumption~\ref{ass:hardware_graph});
+(ii) a bounded-local task family $\mathcal{G}=\{\mathcal{G}_x\}$ (Definition~\ref{def:kappa_local});
+and (iii) calibration choices such as $(\kappa_0,\Delta t)$ or $(\kappa_0,\tau_0)$ (Remark~\ref{rem:lapse_calibration_reparam}).
+\item \textbf{Derived closed-layer observables.}
+Given (i)--(iii), the overhead field $\kappa$ induces the lapse field $\lapse=\kappa_0/\kappa$, hence the relational time scaling \eqref{eq:proper_time_scaling}, redshift ratios \eqref{eq:redshift_ratio}, and the potential $\Phi=-\log\lapse$ (Definition~\ref{def:computational_potential}).
+\item \textbf{Minimal macroscopic closure (Newtonian-limit template).}
+To connect $\Phi$ to forces, one additionally specifies (iv) an auditable defect/source interface $\sigma$ at a chosen horizon and readout scale, with a boundary convention, and (v) a macroscopic coupling $G$ fixed by calibration (Section~\ref{sec:poisson_from_action} and Remark~\ref{rem:units_calibration}).
+Given (iv)--(v), the Dirichlet principle yields Poisson closure for $\Phi$, reproducing the weak-field template of GR at leading order (Remark~\ref{rem:weak_field_gr_poisson}).
+\item \textbf{Limitations.}
+This paper does not derive the full Einstein dynamics from the microscopic compilation model.
+Beyond the static weak-field template, additional constitutive input is required to relate defect currents to protocol fields and to determine an effective shift/spatial-metric evolution; Section~\ref{sec:beyond_static_shift} records the corresponding constraint-level templates.
+\end{itemize}
 \end{remark}
 
 \begin{proposition}[Clock-task equivalence does not change the lapse field]
@@ -315,5 +376,26 @@ In this sense, routing overhead contributes not only to the scalar lapse landsca
 
 A fully closed dynamic model requires one additional input beyond the static Poisson closure: a constitutive principle relating $J$ to the protocol fields (or, equivalently, a dynamical penalty/constraint for transport on the hardware graph).
 Once such an input is fixed, the continuity constraint and the static Dirichlet principle (Section~\ref{sec:poisson_from_action}) provide a canonical route to a time-dependent effective geometry: one enforces charge conservation at the protocol level while determining $\Phi(t,\cdot)$ at each time slice from the instantaneous defect density by a variational principle.
+
+\paragraph{ADM constraint templates (for orientation).}
+On each time slice, the ADM constraints relate intrinsic geometry, extrinsic curvature, and matter sources.
+In standard notation, they can be written schematically as
+\begin{align}
+R^{(3)}+K^2-K_{ij}K^{ij} \;&=\; \frac{16\pi G}{c^4}\,T_{\mu\nu}n^\mu n^\nu,
+\label{eq:adm_hamiltonian_constraint}\\
+D_j\!\left(K^{ij}-h^{ij}K\right) \;&=\; \frac{8\pi G}{c^4}\,T_{\mu\nu}n^\mu h^{\nu i},
+\label{eq:adm_momentum_constraint}
+\end{align}
+where $R^{(3)}$ is the scalar curvature of $h_{ij}$, $K_{ij}$ is the extrinsic curvature, $D$ is the Levi--Civita connection of $h_{ij}$, and $n^\mu$ is the unit normal to the slice \cite{MisnerThorneWheeler1973,Wald1984,Carroll2004}.
+The static Poisson closure used above corresponds to the weak-field, slow-motion regime in which the shift is negligible, $K_{ij}\approx 0$, and $T_{00}\approx \rho c^2$, so that \eqref{eq:adm_hamiltonian_constraint} reduces at leading order to $\Delta\phi_N=4\pi G\rho$ (Remark~\ref{rem:weak_field_gr_poisson}).
+
+\paragraph{Momentum-constraint analogue and open input.}
+In the protocol language, the defect current $J(t,x)$ (Definition~\ref{def:continuity_sigma}) is the minimal conserved flux accompanying the source $\sigma(t,x)$.
+To match the spirit of \eqref{eq:adm_momentum_constraint} beyond the static template, one must provide an additional constitutive or variational input that couples a shift/drift field (or an extrinsic-curvature surrogate) to the conserved current.
+This paper does not fix such an input; rather, it isolates the point at which new physics must enter to go beyond the scalar Poisson closure.
+
+\paragraph{Limitations and non-claims.}
+The present section provides an operational definition of the lapse field and a calibrated Newtonian-limit template once a defect/source interface is specified.
+It does not establish a micro-to-macro derivation of full Einstein dynamics, the full ADM constraint algebra, or a unique time-dependent closure for $(h_{ij},N^i)$ from compilation/routing microphysics.
 
 

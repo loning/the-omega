@@ -100,10 +100,58 @@ Equation~\eqref{eq:weyl_variance_uncertainty} admits a direct operational transl
 \end{itemize}
 Thus, uncertainty is reinterpreted as a \emph{resource lower bound} reflecting the incompatibility between sharpening local addresses and retaining global contextual information under finite-resolution readout.
 
-\paragraph{Coupling to routing overhead.}
+\subsubsection*{Coupling to routing overhead}
 In the scan--fold framework, sharpening ``where'' and ``when'' is not only an algebraic tradeoff (Weyl-pair complementarity), but can also become a compilation tradeoff once the readout instrument and locality primitive are embedded into a constrained substrate.
-Concretely, any protocol refinement that requires more selective screen-local addressing or denser local couplings increases the required routing dilation/congestion on the hardware graph (Section~\ref{sec:kappa_bounds}), hence increases the local overhead field $\kappa(x)$ and decreases the lapse $N(x)=\lapse(x)=\kappa_0/\kappa(x)$ (Section~\ref{sec:lapse_definition}).
+Concretely, any protocol refinement that requires more selective screen-local addressing or denser local couplings increases the required routing dilation/congestion on the hardware graph (Section~\ref{sec:kappa_bounds}), hence increases the local overhead field $\kappa(x)$.
+In the lapse dictionary (Section~\ref{sec:lapse_definition}), this decreases $N(x)=\kappa_0/\kappa(x)$.
 In scan-chain realizations this dependence is directly controlled by address-order separations of screen neighbors (Proposition~\ref{prop:scan_chain_separation_lower_bound}).
-A fully quantitative inequality linking a chosen POVM family $\{E_k^{(\varepsilon)}\}_k$ to a lower bound on $\kappa$ requires specifying an explicit compilation model for implementing that instrument; the present paper treats this as an auditable interface: once a concrete instrument family and routing model are fixed, the resulting $(\Delta_U,\Delta_V)$ uncertainty region and the induced $\kappa$ landscape can be computed and compared.
+A fully quantitative inequality linking a chosen POVM family $\{E_k^{(\varepsilon)}\}_k$ to a lower bound on $\kappa$ requires specifying an explicit compilation model for implementing that instrument.
+In this paper we treat this as an auditable interface.
+Once a concrete instrument family and routing model are fixed, one can compute the induced uncertainty region $(\Delta_U,\Delta_V)$ and the resulting $\kappa$ landscape and compare them.
+
+\subsection{Readout regularity and bandwidth: controlled approximation of differential operators}
+\label{sec:povm_regular_differential}
+
+To connect coarse-grained closed-layer fields to continuum differential operators (as used in the Poisson template), the readout must suppress sub-lattice scales and provide sufficient regularity.
+We record a concrete sufficient condition in a standard band-limited setting.
+
+\begin{definition}[Kernel-form readout and effective bandwidth]
+\label{def:kernel_readout_bandwidth}
+Let the screen be embedded as a periodic box and let $h:=2^{-n}$ denote the lattice spacing at resolution $n$.
+We say a readout POVM at resolution $\varepsilon$ admits a \emph{kernel form} if the induced coarse-grained scalar field can be written as a convolution
+\[
+F_\varepsilon=w^{(\varepsilon)}\ast F,
+\qquad
+w^{(\varepsilon)}\ge 0,\ \ \int w^{(\varepsilon)}=1,
+\]
+for a nonnegative normalized kernel $w^{(\varepsilon)}$ of spatial width $\varepsilon$ (equivalently, a low-pass transfer function $\widehat w^{(\varepsilon)}$).
+We call $K_\varepsilon$ an \emph{effective bandwidth} if $\widehat w^{(\varepsilon)}(k)$ is negligible for $|k|>K_\varepsilon$ (for example, compactly supported or rapidly decaying), so that $F_\varepsilon$ is effectively band-limited to frequencies $|k|\lesssim K_\varepsilon$.
+\end{definition}
+
+\begin{proposition}[Band-limited error bounds for discrete gradients and Laplacians]
+\label{prop:povm_bandlimited_error}
+Consider a $d$-dimensional periodic box and a band-limited field $f$ whose Fourier support satisfies $\widehat f(k)=0$ for $|k|>K$.
+Let $\nabla_h$ and $\Delta_h$ denote the standard centered finite-difference gradient and Laplacian on the grid of spacing $h$.
+Then there exists a dimension-dependent constant $C_d>0$ such that, at grid points,
+\[
+\norm{\nabla_h f-\nabla f}_{L^2}\ \le\ C_d\,(Kh)^2\,\norm{\nabla f}_{L^2},
+\qquad
+\norm{\Delta_h f-\Delta f}_{L^2}\ \le\ C_d\,(Kh)^2\,\norm{\Delta f}_{L^2}.
+\]
+In particular, if the readout kernel enforces an effective bandwidth $K_\varepsilon\asymp 1/\varepsilon$ (Definition~\ref{def:kernel_readout_bandwidth}) and the scale separation $h\ll \varepsilon$ holds, then the discretization error is $O((h/\varepsilon)^2)$ in these norms.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+On a periodic domain, discrete difference operators are Fourier multipliers with symbols that approximate the continuum symbols:
+for example, in one dimension the centered difference derivative has symbol $\frac{\sin(kh)}{h}$ while the continuum derivative has symbol $k$.
+For $|k|\le K$ one has $\left|\frac{\sin(kh)}{h}-k\right|\le c\,(Kh)^2\,|k|$ and similarly for the second derivative symbol, yielding the stated bounds after summing over Fourier modes.
+\end{proof}
+
+\begin{remark}[Interpretation as a POVM regularity condition]
+\label{rem:povm_regular_interpretation}
+Proposition~\ref{prop:povm_bandlimited_error} isolates concrete readout requirements:
+the POVM must act as a low-pass filter at scale $\varepsilon$ (bandwidth $K_\varepsilon\lesssim 1/\varepsilon$) and the lattice spacing must satisfy $h\ll \varepsilon$.
+Under these conditions, coarse-grained closed-layer operators built from discrete gradients/Laplacians approximate their continuum counterparts with a controlled error, so the continuum Poisson template of Section~\ref{sec:poisson_from_action} becomes quantitatively meaningful.
+\end{remark}
 
 
