@@ -1,0 +1,149 @@
+\section{Benchmark limits}
+\label{sec:benchmarks}
+
+This section summarizes the consistency targets CAP-II is required to reproduce in appropriate limits.
+The emphasis is not on claiming uniqueness, but on recording the regimes in which the routing-overhead lapse should match known weak-field and cosmological templates under the closure assumptions.
+
+\subsection{Newtonian / weak-field limit}
+\label{subsec:newtonian_limit}
+
+In the static weak-field regime, write the metric in scalar-potential form
+\begin{equation}
+  \dd s^2 = -(1+2\phi)\,\dd t^2 + (1-2\phi)\,\dd\mathbf{x}^2,
+  \qquad |\phi|\ll 1.
+\end{equation}
+Then $g_{00}\approx -(1+2\phi)$ and the lapse satisfies $\lapse\approx 1+\phi$.
+We denote the ADM lapse by $\lapse$ (often written $N$ in the GR literature).
+With the dictionary $\Phi=-\log\lapse$, one has $\Phi\approx -\phi$ to leading order.
+The $00$ Einstein equation reduces to the Poisson equation
+\begin{equation}
+  \Delta\phi = 4\pi G\,\rho_{\mathrm{tot}},
+\end{equation}
+so in vacuum $\Delta\phi=0$ and asymptotic flatness forces $\phi(r)=-GM/r$ for an isolated source.
+See, e.g., \cite{Wald1984,Carroll2004}.
+\par
+\noindent In terms of the auditable routing overhead, the computational-lapse dictionary gives
+$u:=\log(\kappa/\kappa_0)=-\log\lapse=:\Phi$.
+Therefore, in the same weak-field gauge one has $\Phi\approx -\phi$ and hence
+\begin{equation}
+  \Delta\Phi\ =\ -4\pi G\,\rho_{\mathrm{tot}}
+  \qquad (|\phi|\ll 1).
+\end{equation}
+
+\subsection{Direct fit target: Schwarzschild lapse from operational \texorpdfstring{$\kappa$}{kappa}}
+\label{subsec:schwarzschild_fit}
+
+For a static, spherically symmetric exterior region in GR one has the Schwarzschild lapse
+\begin{equation}
+  \lapse_{\mathrm{Schw}}(r)=\sqrt{1-\frac{2GM}{r}},
+  \qquad r>2GM.
+\end{equation}
+In the weak-field regime $r\gg 2GM$ this becomes
+\begin{equation}
+  \lapse_{\mathrm{Schw}}(r)=1-\frac{GM}{r}+O\!\left(\frac{1}{r^2}\right),
+  \qquad
+  \frac{\kappa(r)}{\kappa_0}=\frac{1}{\lapse(r)}=1+\frac{GM}{r}+O\!\left(\frac{1}{r^2}\right),
+  \label{eq:kappa_schw_weak}
+\end{equation}
+where the last identity uses the operational lapse definition $\lapse=\kappa_0/\kappa$.
+Therefore a minimal quantitative check is a linear fit of $\kappa(r)/\kappa_0-1$ against $1/r$ in an exterior window where weak-field and finite-resolution conditions hold.
+\par
+\noindent\textbf{Exact inversion (Schwarzschild benchmark).}
+If one assumes the exact Schwarzschild form $\lapse^2(r)=1-2GM/r$ in an exterior window, then the benchmark admits a pointwise inversion:
+\begin{equation}
+  GM
+  = \frac{r}{2}\left(1-\lapse(r)^2\right)
+  = \frac{r}{2}\left(1-\frac{1}{(\kappa(r)/\kappa_0)^2}\right)
+  = \frac{r}{2}\left(1-\left(\frac{\gamma(r)}{\gamma_0}\right)^2\right),
+\end{equation}
+where the last identity uses the linewidth proxy $\gamma/\gamma_0\approx\lapse$.
+The weak-field regressions in Section~\ref{subsec:fit_objective} are the leading-order linearizations of this inversion.
+\begin{remark}[Scalar hair and why Schwarzschild is a benchmark, not an identity]
+\label{rem:schwarzschild_as_benchmark}
+CAP-II couples gravity to an additional scalar sector determined by the cost-to-density identification.
+In Einstein gravity with a \emph{massless} scalar, the generic static spherically symmetric solution is not Schwarzschild but the Fisher/JNW family \cite{Fisher1948,JanisNewmanWinicour1968}.
+Accordingly, the Schwarzschild lapse is used here as a benchmark fit target in a controlled regime: either the scalar sector is effectively short-ranged (pinned by the potential) or its backreaction is negligible in the chosen exterior window.
+Departures from the benchmark provide quantitative constraints on the scalar potential family and coupling scale.
+\end{remark}
+
+\paragraph{Using the scattering proxy.}
+If $\kappa(r)$ is inferred from Wigner--Smith delay via \eqref{eq:ws_kappa_identification}, then in the same regime one predicts
+\begin{equation}
+  \frac{\gamma(r)}{\gamma_0}
+  = \frac{\kappa_0}{\kappa(r)}
+  = \lapse(r)
+  = 1-\frac{GM}{r}+O\!\left(\frac{1}{r^2}\right),
+  \label{eq:gamma_schw_weak}
+\end{equation}
+so $GM$ can be estimated by a weighted least-squares fit of $1-\gamma(r)/\gamma_0$ against $1/r$.
+The same fit yields a falsifiable consistency check: the inferred $GM$ must be stable under changing the coarse-graining scale $\varepsilon$ within the regime $h\ll\varepsilon\ll r$.
+
+\subsection{Quantitative regression target and uncertainty (minimal)}
+\label{subsec:fit_objective}
+
+Let $(r_i,\kappa_i)_{i=1}^n$ be measurements (or compiled estimates) of routing overhead at radii $r_i$ in an exterior window, and define
+\begin{equation}
+  x_i := \frac{1}{r_i},
+  \qquad
+  y_i := \frac{\kappa_i}{\kappa_0}-1.
+\end{equation}
+In the weak-field model \eqref{eq:kappa_schw_weak} one has the linear regression target
+\begin{equation}
+  y_i = (GM)\,x_i + \epsilon_i,
+  \label{eq:wls_linear_model}
+\end{equation}
+where $\epsilon_i$ collects finite-resolution bias (controlled by $\varepsilon$), finite-horizon tick-count rounding error, and measurement noise.
+\begin{remark}[Calibration offset and intercept fit]
+\label{rem:intercept_fit}
+Model \eqref{eq:wls_linear_model} fits through the origin and is appropriate when $\kappa_0$ (or $\gamma_0$) is calibrated in a region where the benchmark normalization $\lapse\approx 1$ applies.
+If instead the reference is taken in a finite region, the weak-field fit should include an intercept nuisance parameter $b$:
+\begin{equation}
+  y_i = (GM)\,x_i + b + \epsilon_i.
+\end{equation}
+\end{remark}
+Given nonnegative weights $w_i$ (e.g.\ inverse variances), the weighted least-squares estimator is
+\begin{equation}
+  \widehat{GM}
+  = \frac{\sum_{i=1}^n w_i x_i y_i}{\sum_{i=1}^n w_i x_i^2}.
+  \label{eq:gm_wls_estimator}
+\end{equation}
+If the errors are independent with $\mathrm{Var}(\epsilon_i)=\sigma_i^2$ and $w_i=\sigma_i^{-2}$, then the standard estimated variance is
+\begin{equation}
+  \mathrm{Var}(\widehat{GM}) \approx \left(\sum_{i=1}^n w_i x_i^2\right)^{-1},
+  \label{eq:gm_wls_var}
+\end{equation}
+up to model-misspecification bias.
+
+\paragraph{Window conditions (what makes the fit meaningful).}
+The fit window should satisfy simultaneously:
+\begin{itemize}
+  \item \emph{Weak field:} $r_i\gg 2GM$ so that truncation at $O(1/r^2)$ is controlled.
+  \item \emph{Readout separation:} $\varepsilon \ll r_i$ so that coarse-graining does not wash out the radial profile.
+  \item \emph{Microscopic separation:} $h\ll \varepsilon$ so that continuum derivatives on coarse-grained fields are meaningful.
+\end{itemize}
+The stability condition across $\varepsilon$ is therefore not cosmetic but a key falsifiable test: if $\widehat{GM}$ drifts systematically as $\varepsilon$ varies within the separation regime, the closure is inconsistent with a Schwarzschild-like exterior interpretation.
+
+\paragraph{Equivalent regression from linewidth ratios.}
+When $\kappa$ is inferred through the Wigner--Smith linewidth proxy \eqref{eq:ws_kappa_identification}, one may instead set
+\begin{equation}
+  y_i := 1-\frac{\gamma_i}{\gamma_0},
+\end{equation}
+and use the same estimator \eqref{eq:gm_wls_estimator} under the weak-field prediction \eqref{eq:gamma_schw_weak}.
+
+\subsection{Homogeneous cosmology with lapse}
+\label{subsec:frw_lapse}
+
+For an FLRW ansatz with homogeneous lapse,
+\begin{equation}
+  \dd s^2 = -\lapse^2(t)\,\dd t^2 + a^2(t)\,\dd\Sigma_k^2,
+\end{equation}
+proper time is $\dd\tau=\lapse(t)\,\dd t$ and the Friedmann equations take their standard form in $\tau$.
+This reduction provides a controlled setting for testing how the cost-to-density map (Assumption~\ref{ass:cost_to_density}) and the potential $V(\chi^2)$ impact effective expansion histories.
+
+\subsection{Linearized sector (optional target)}
+\label{subsec:linearized_target}
+
+If the effective theory is to capture dynamical gravitational degrees of freedom beyond the Newtonian sector, the linearized equations around a background should reproduce standard wave-like propagation at long wavelengths.
+In strictly local microscopic substrates (QCA/PQCA), causality bounds (Lieb--Robinson-type) constrain signal/front velocities; the effective description must remain consistent with such bounds in its domain of validity.
+
+

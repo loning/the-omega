@@ -1,0 +1,106 @@
+\section{\texorpdfstring{From protocol to fields: $\kappa(x,t)$ and computational lapse}{From protocol to fields: kappa(x,t) and computational lapse}}
+\label{sec:protocol_dictionary}
+
+\subsection{Hardware substrate, scheduling, and compilation depth}
+\label{subsec:hardware_depth}
+
+Fix the physical interaction graph $G_{\mathrm{phys}}=(V,E,w)$ of Assumption~\ref{ass:local_compilation_model}.
+We interpret each edge $e\in E$ as admitting a primitive two-site gate at cost $w(e)$ ticks, and each vertex as admitting primitive single-site gates at $O(1)$ cost.
+A schedule is a sequence of parallel layers, where each layer is a set of primitive gates with disjoint supports.
+The cost of a layer is the maximum tick cost among the gates executed in that layer; the cost of a schedule is the sum of layer costs.
+\par
+\noindent Protocol realizations are defined on discrete sites $v\in V$ and tick indices $n\in\ZZ_{\ge 0}$.
+To compare with the continuum effective theory we work with coarse-grained representatives at readout scale $\varepsilon$; for readability we typically suppress $\varepsilon$ and write $(x,t)$ with $t=n\tau_0$ for the corresponding physical time (Appendix~\ref{app:readout_error_bounds} records representative bandwidth-error estimates).
+
+\begin{definition}[Compilation depth and routing overhead]
+\label{def:compilation_depth}
+Let $G_x(n)$ be the local update task at point $x$ and tick index $n$ (Assumption~\ref{ass:local_task_family}).
+Define the compilation depth $\mathrm{Depth}(G_x(n);G_{\mathrm{phys}})$ as the minimum schedule cost required to realize $G_x(n)$ using the primitive operations of $G_{\mathrm{phys}}$.
+Define the routing overhead field
+\begin{equation}
+  \kappa(x,n)\ :=\ \mathrm{Depth}(G_x(n);G_{\mathrm{phys}}).
+\end{equation}
+\end{definition}
+
+\subsection{Local cycle counting and operational proper time}
+\label{subsec:cycle_counting}
+
+Fix a reference tick duration $\tau_0$ (seconds per primitive tick) and a reference overhead $\kappa_0$ in a chosen calibration region (e.g.\ a far-field region for asymptotically flat benchmark fits, where one may set $\lapse\approx 1$ by convention).
+Consider a long protocol horizon of $T$ ticks.
+At a fixed $x$, the maximal number of completed local tasks by time $T$ is
+\begin{equation}
+  C_x(T)\ :=\ \left\lfloor \frac{T}{\kappa(x)} \right\rfloor,
+\end{equation}
+where we suppress the explicit $n$-dependence for a quasi-static background over the horizon.
+We define the operational local proper time by
+\begin{equation}
+  \tau_{\mathrm{loc}}(T;x)\ :=\ C_x(T)\,\tau_0.
+\end{equation}
+
+\begin{proposition}[Finite-horizon proper-time scaling]
+\label{prop:finite_horizon_proper_time}
+Assume $\kappa(x,n)$ is constant in $n$ over the horizon, written as $\kappa(x)$.
+Then
+\begin{equation}
+  \left\lvert
+  \tau_{\mathrm{loc}}(T;x) - \frac{T\,\tau_0}{\kappa(x)}
+  \right\rvert
+  \le \tau_0,
+  \label{eq:tau_loc_floor_error}
+\end{equation}
+and therefore
+\begin{equation}
+  \frac{\tau_{\mathrm{loc}}(T;x)}{T}
+  = \frac{\tau_0}{\kappa(x)} + O\!\left(\frac{1}{T}\right).
+  \label{eq:tau_loc_rate}
+\end{equation}
+In particular, for two points $x_1,x_2$ with constant overheads over $[0,T]$ one has the finite-horizon redshift ratio
+\begin{equation}
+  \frac{\tau_{\mathrm{loc}}(T;x_1)}{\tau_{\mathrm{loc}}(T;x_2)}
+  = \frac{\kappa(x_2)}{\kappa(x_1)} + O\!\left(\frac{1}{T}\right).
+  \label{eq:finite_horizon_redshift_ratio}
+\end{equation}
+\end{proposition}
+
+\begin{remark}[Time-dependent overhead]
+\label{rem:time_dependent_overhead}
+When $\kappa(x,n)$ varies with the tick index $n$, a natural cycle count over a $T$-tick horizon is the maximal number of completed tasks
+\begin{equation}
+  C_x(T)\ :=\ \max\Bigl\{m\in\ZZ_{\ge 0}:\ \sum_{j=0}^{m-1}\kappa(x,j)\le T\Bigr\},
+\end{equation}
+with $\tau_{\mathrm{loc}}(T;x):=C_x(T)\tau_0$ as before.
+If $\kappa_{\min}\le \kappa(x,j)\le \kappa_{\max}$ holds throughout the horizon, then the crude but auditable bounds
+\begin{equation}
+  \left\lfloor \frac{T}{\kappa_{\max}}\right\rfloor
+  \le C_x(T)
+  \le \left\lfloor \frac{T}{\kappa_{\min}}\right\rfloor
+\end{equation}
+follow immediately.
+The present paper uses the quasi-static regime for clean test targets; fully dynamical closure is addressed through the covariant action and the ADM formulation in Sections~\ref{sec:effective_action}--\ref{sec:adm_closure}.
+\end{remark}
+
+\subsection{Computational lapse and a weak-field dictionary}
+\label{subsec:lapse_dictionary}
+
+\begin{definition}[Computational lapse]
+\label{def:computational_lapse}
+Define the computational lapse field by
+\begin{equation}
+  \lapse(x,n)\ :=\ \frac{\kappa_0}{\kappa(x,n)}.
+\end{equation}
+\end{definition}
+
+When using the continuum effective description we write $\lapse(x,t)$ for the corresponding coarse-grained representative with $t=n\tau_0$.
+
+The quantity $\lapse$ is an auditable, protocol-level object: it is defined by compilation depth and can be inferred by cycle counting.
+To compare with a relativistic effective description we adopt the standard weak-field dictionary, working in a protocol-rest slicing in which the shift is negligible (or set to zero; Section~\ref{sec:adm_closure}).
+More generally, in ADM variables one has $g_{00}=-\lapse^2+h_{ij}N^iN^j$, so the identification below is the shiftless limit.
+\begin{equation}
+  g_{00}(x,t)\ \approx\ -\lapse(x,t)^2,
+  \qquad
+  \Phi(x,t)\ :=\ -\log \lapse(x,t),
+\end{equation}
+so that $\Phi$ plays the role of a Newtonian-type potential in the static regime.
+Section~\ref{sec:benchmarks} records the consistency targets in the Newtonian limit.
+
+

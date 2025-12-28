@@ -1,0 +1,52 @@
+\section{ADM details and closure interfaces}
+\label{app:adm_details}
+
+This appendix complements Section~\ref{sec:adm_closure} by recording standard ADM identities and highlighting where CAP-specific closure enters.
+
+\subsection{Constraint quantities}
+\label{app:adm_constraints}
+
+Let $n^\mu$ be the future-directed unit normal to a spatial slice.
+Define the energy density and momentum flux by
+\begin{equation}
+  \rho_{\mathrm{tot}} := T_{\mu\nu}n^\mu n^\nu,
+  \qquad
+  j_i^{\mathrm{tot}} := -T_{\mu\nu}n^\mu h^\nu{}_i.
+\end{equation}
+These are the quantities appearing in \eqref{eq:ham_constraint_cap2}--\eqref{eq:mom_constraint_cap2}.
+
+\subsection{Gauge versus constitutive content}
+\label{app:adm_gauge_constitutive}
+
+In pure GR, lapse and shift encode gauge freedom in foliating spacetime.
+In CAP-II, the lapse is also an operational observable (Section~\ref{subsec:lapse_dictionary}).
+This dual role forces an explicit separation between:
+\begin{itemize}
+  \item a gauge choice used to set up an initial-value formulation, and
+  \item a constitutive identification that maps protocol data to the slice quantities $(\rho_{\mathrm{tot}},j_i^{\mathrm{tot}})$.
+\end{itemize}
+Assumption~\ref{ass:shift_closure} asserts that such a constitutive map exists and is local within the readout bandwidth.
+
+\subsection{Preferred shift from protocol flow (optional extension)}
+\label{app:preferred_shift_protocol_flow}
+
+The minimal CAP-II closure used for benchmark fits works in a protocol-rest gauge with $N^i=0$ (Assumption~\ref{ass:shift_closure}).
+In genuinely time-dependent regimes it can be advantageous to use protocol data to define a \emph{preferred} spatial frame, i.e.\ a preferred shift beyond pure gauge fixing.
+\par
+\noindent A concrete route is to treat directed protocol activity as a measurable coarse-grained current.
+For example, compilation logs can provide, at readout scale $\varepsilon$, oriented edge-usage counts (net executed two-site primitives across an oriented cut per tick) which define an effective spatial flow field $v^i(x,t)$ after coarse-graining.
+Given such a $v^i$, one may impose a \emph{comoving} slicing condition
+\begin{equation}
+  N^i(x,t) = v^i(x,t),
+\end{equation}
+or, equivalently, select coordinates in which the measured protocol flow has vanishing spatial components.
+This turns part of the gauge freedom into constitutive content and is therefore an additional modeling assumption, to be recorded alongside the ledger when used.
+\par
+\noindent Operationally, adopting a preferred shift requires at least:
+\begin{itemize}
+  \item an auditable definition of a coarse-grained protocol current (directed edge utilization, task-dependency flow, or a related transport observable), and
+  \item a compatibility rule relating that current to the slice momentum density $j^i_{\mathrm{tot}}$ in \eqref{eq:mom_constraint_cap2} (e.g.\ identifying a frame in which $j^i_{\mathrm{tot}}$ is minimized or vanishes for the information sector).
+\end{itemize}
+The present manuscript isolates this issue by keeping the benchmark targets in a shiftless gauge; preferred-shift closure is left as an explicit extension point for time-dependent datasets.
+
+

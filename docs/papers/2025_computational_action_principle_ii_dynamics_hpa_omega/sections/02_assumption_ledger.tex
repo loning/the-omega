@@ -1,0 +1,123 @@
+\section{Assumption ledger and auditable objects}
+\label{sec:assumption_ledger}
+
+This manuscript separates three kinds of inputs:
+\begin{enumerate}
+  \item \emph{Auditable protocol objects}: hardware interaction data, a compilation/scheduling model, and a local task family. These determine $\kappa(x,n)$ (and hence, after readout smoothing, a coarse-grained $\kappa(x,t)$) and lapse ratios by definition and counting.
+  \item \emph{Coarse-graining conventions}: how finite-resolution readout maps discrete protocol data to continuum fields at scale $\varepsilon$.
+  \item \emph{Closure assumptions}: additional identifications required to embed the above into a covariant effective theory with dynamical gravity.
+\end{enumerate}
+We now record the non-definitional assumptions as an explicit ledger.
+
+\paragraph{Scales and units (recorded once).}
+We distinguish four scales:
+(i) the microscopic spacing $h$ of the hardware substrate (or the characteristic separation between physical sites),
+(ii) the readout scale $\varepsilon$ of the observer kernel,
+(iii) a macroscopic variation scale $L$ of coarse-grained fields, and
+(iv) the finite tick horizon $T$ used in operational redshift tests.
+The intended continuum regime is
+\begin{equation}
+  h \ll \varepsilon \ll L,
+  \label{eq:scale_separation_ledger}
+\end{equation}
+and tick costs are converted to physical time by a reference tick duration $\tau_0$ (seconds per primitive tick).
+\par
+\noindent\textbf{Dimension conventions.}
+With $c=1$, we treat spacetime coordinates as having dimensions of length, so $\nabla_\mu$ carries dimension $L^{-1}$.
+We take the Fisher-amplitude field $\chi$ to have dimension $L^{-1}$ (equivalently $\rho=\chi^2$ has dimension $L^{-2}$), so that the scalar kinetic term in \eqref{eq:omega_action_cap2} has the same mass dimension as $R$ without inserting an additional scale.
+Accordingly, $\lambda_F$ is dimensionless in our normalization, $\rho_0$ carries dimension $L^{-2}$ in Assumption~\ref{ass:cost_to_density}, and $V(\chi^2)$ has dimension $L^{-4}$.
+
+\subsection{Structural assumptions (S)}
+\label{subsec:assumptions_structural}
+
+\begin{assumption}[Local compilation model]
+\label{ass:local_compilation_model}
+There exists a fixed physical interaction graph $G_{\mathrm{phys}}=(V,E,w)$, where vertices are physical sites, edges are primitive two-site interactions, and $w:E\to\RR_{>0}$ assigns tick costs.
+Primitive single-site operations are allowed at $O(1)$ tick cost.
+Parallel execution is permitted only on disjoint supports (matching constraints), with total tick cost given by the maximum occupied edge weight per layer.
+\par
+\noindent We treat $w(e)$ as a dimensionless tick count; the corresponding physical duration is $w(e)\tau_0$.
+\end{assumption}
+
+\begin{assumption}[Local task family]
+\label{ass:local_task_family}
+For each continuum point $x$ and protocol tick index $n$ (equivalently, coarse-grained time $t=n\tau_0$), there is an associated bounded-diameter local update task $G_x(n)$ whose compilation depth under Assumption~\ref{ass:local_compilation_model} defines $\kappa(x,n)$.
+The task family is stable under coarse-graining: after smoothing at scale $\varepsilon$ the induced observables vary slowly on that scale.
+\end{assumption}
+
+\subsection{Identification and closure assumptions (C)}
+\label{subsec:assumptions_closure}
+
+\begin{assumption}[Cost-to-density identification]
+\label{ass:cost_to_density}
+There exist constants $\rho_0>0$, $\kappa_0>0$ and an exponent $p>0$ such that the coarse-grained information density obeys
+\begin{equation}
+  \rho(x,t)=\rho_0\left(\frac{\kappa(x,t)}{\kappa_0}\right)^p
+  \qquad\text{in the effective domain of interest.}
+\end{equation}
+The exponent $p$ and calibration $\rho_0$ are treated as fit parameters, not as derived constants.
+\par
+\noindent We assume $\kappa(x,t)$ is strictly positive and bounded on the domain of interest, so that $\lapse=\kappa_0/\kappa$ is well-defined and bounded away from $0$.
+\end{assumption}
+
+\begin{remark}[Micro-motivation and universality test for the cost-to-density map]
+\label{rem:cost_to_density_motivation}
+Assumption~\ref{ass:cost_to_density} is a closure input: it maps an auditable scheduling depth into an effective scalar density used in the covariant source sector.
+The assumption is motivated by a generic mechanism in constrained parallel execution on local graphs: schedule length is controlled by \emph{congestion} (how much weighted work must traverse/occupy a local bottleneck) and by \emph{dilation} (the typical distance over which a task must route dependencies).
+In many routing/scheduling settings, one has bounds of the form
+\begin{equation}
+  \mathrm{Depth}\ \gtrsim\ \mathrm{Congestion},
+\end{equation}
+and constructive upper bounds scaling like $\mathrm{Depth}\ \lesssim\ C\,(\mathrm{Congestion}+\mathrm{Dilation})$ up to polylogarithmic factors, for appropriate notions of congestion/dilation and admissible schedules; see, e.g., \cite{LeightonMaggsRao1994,Leighton1992}.
+\par
+\noindent Operationally, this means that when the local task family at readout scale $\varepsilon$ is parameterized by a coarse-grained \emph{load} observable (expected weighted number of required primitive interactions per unit volume per cycle), the measured routing overhead $\kappa$ is a monotone proxy for that load in the effective domain.
+In the absence of additional local scales after coarse-graining, a power-law ansatz in $\kappa/\kappa_0$ is the simplest closed form compatible with multiplicative rescalings, and $p$ becomes a universality exponent capturing how load renormalizes into the effective density used in the action.
+\par
+\noindent\textbf{Stability criterion (falsifiable).}
+Fix a calibration rule for $\kappa_0$ and a readout scale $\varepsilon$.
+Across multiple task families and hardware realizations that are $(\varepsilon,\delta)$-equivalent at the observable level (Definition~\ref{def:eps_delta_equiv}), estimate $p$ by a log--log regression of $\rho$ against $\kappa/\kappa_0$ over the same effective domain.
+If the inferred $p$ is stable (within uncertainty) under changes of task family, address protocol, and moderate changes of $\varepsilon$ respecting $h\ll\varepsilon\ll L$, then Assumption~\ref{ass:cost_to_density} identifies a genuine universality class; systematic drift signals that a richer constitutive map $\rho=\rho(\kappa,\nabla\kappa,\ldots)$ is required.
+\end{remark}
+
+\begin{assumption}[Fisher-amplitude field]
+\label{ass:fisher_amplitude}
+Define the Fisher-amplitude scalar field $\chi(x,t)$ by $\chi=\sqrt{\rho}$.
+The effective action depends on $\rho$ only through $\chi$ and its covariant derivatives, up to a local potential term $V(\chi^2)$.
+\end{assumption}
+
+\begin{assumption}[Covariant effective action]
+\label{ass:covariant_action}
+There exists a local, diffeomorphism-invariant effective action $S[g,\chi,\psi_m]$ in four dimensions such that the metric field equation is of second differential order and the matter sector couples covariantly.
+\end{assumption}
+
+\begin{assumption}[Protocol gauge and momentum density identification]
+\label{ass:shift_closure}
+In the ADM formulation we regard the shift $N^i$ as a gauge choice (spatial coordinates on each slice).
+In the \emph{minimal} CAP-II closure used for quantitative targets, we work in a protocol-rest gauge with $N^i=0$ on the domain of interest.
+The momentum density $j_i$ entering the momentum constraint is identified with the standard slice quantity
+$j_i := -T_{\mu\nu}n^\mu h^\nu{}_i$ built from the total stress tensor derived from the effective action.
+Under the cost-to-density identification, the information-sector contribution is therefore determined by $\kappa$ via $\chi=\sqrt{\rho_0}(\kappa/\kappa_0)^{p/2}$.
+\end{assumption}
+
+\subsection{Readout and regularization assumptions (R)}
+\label{subsec:assumptions_readout}
+
+\begin{assumption}[Kernel readout regularity]
+\label{ass:kernel_readout}
+Finite-resolution readout at scale $\varepsilon$ is modeled by a positive kernel $K_\varepsilon$ inducing coarse-grained observables by convolution/smoothed averaging.
+The kernel has finite effective bandwidth and sufficient regularity so that discrete difference operators approximate continuum derivatives with controlled error when the lattice spacing $h\ll\varepsilon$.
+\par
+\noindent A standard concrete model is a mollifier family $K_\varepsilon(x)=\varepsilon^{-d}K(x/\varepsilon)$ with $K\ge 0$, $\int_{\RR^d}K=1$, and $K$ smooth with sufficient decay/compact support.
+\end{assumption}
+
+\begin{assumption}[Canonical regularization path]
+\label{ass:canonical_regularization}
+When a regulated-to-continuum limit requires extracting a finite constant term, we fix a canonical prescription (Abel regularization along $r\uparrow 1$ and finite-part extraction).
+Different finite parts are interpreted as different local counterterm choices in the effective action.
+\end{assumption}
+
+\paragraph{Testability.}
+Each assumption above is associated with a measurable consequence: lapse ratios from tick counting; parameter identification in the weak-field limit; and linewidth/time-delay calibration in the scattering interface.
+Sections~\ref{sec:protocol_dictionary}--\ref{sec:wigner_smith} make these targets explicit.
+
+

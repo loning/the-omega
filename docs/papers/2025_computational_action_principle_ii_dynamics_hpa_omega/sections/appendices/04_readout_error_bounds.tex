@@ -1,0 +1,59 @@
+\section{Readout bandwidth and controlled differential operators}
+\label{app:readout_error_bounds}
+
+This appendix records a representative controlled-approximation statement for differential operators under kernel readout.
+The goal is not to optimize constants, but to exhibit the scale separation structure $h\ll\varepsilon$.
+
+\subsection{A model estimate (with standard references)}
+\label{app:model_estimate}
+
+Let $f$ be a smooth function on a domain $\Omega\subset\RR^d$.
+Let $f_h$ denote its sampling on a lattice of spacing $h$, and let $K_\varepsilon$ be a smooth kernel of bandwidth $\sim\varepsilon^{-1}$.
+Define the coarse-grained field $f_{\varepsilon,h}:=K_\varepsilon * f_h$.
+Then discrete symmetric differences acting on $f_{\varepsilon,h}$ approximate continuum derivatives with an error controlled by the ratio $h/\varepsilon$:
+\begin{equation}
+  \norm{\nabla_h f_{\varepsilon,h} - \nabla f_\varepsilon}_{L^\infty(\Omega)}
+  \ \lesssim\ C\,\left(\frac{h}{\varepsilon}\right)^2,
+\end{equation}
+under standard smoothness assumptions on $f$ and $K_\varepsilon$.
+An analogous estimate holds for discrete Laplacians.
+\par
+\noindent Such statements are standard in numerical analysis (finite differences) combined with mollification/smoothing estimates; see, e.g., \cite{LeVeque2007,Evans2010}.
+
+\paragraph{Interpretation.}
+Assumption~\ref{ass:kernel_readout} asserts that the observer's readout bandwidth enforces precisely this kind of scale separation, ensuring that continuum operators are meaningful on coarse-grained observables even when the microscopic substrate is discrete and protocol-dependent.
+
+\subsection{Microscopic ``protocol gauge'' perturbations and $\varepsilon/h$ suppression (model bound)}
+\label{app:protocol_gauge_suppression}
+
+The universality notion of Section~\ref{subsec:eps_delta_equiv} treats microscopic representation choices (e.g.\ address order or tie-breaking rules) as a protocol gauge whenever they affect only sub-$\varepsilon$ structure.
+Here we record one representative bound exhibiting explicit $\varepsilon/h$ suppression for a class of lattice-scale perturbations.
+\par
+\noindent For simplicity we state the estimate on a regular lattice; the same proof extends to bounded-degree graphs with $h$ interpreted as the microscopic spacing and with degree-dependent constants.
+
+\begin{proposition}[Divergence-form perturbations are suppressed by $h/\varepsilon$]
+\label{prop:divergence_form_suppression}
+Let $\kappa_h$ and $\kappa'_h$ be two lattice fields on a spacing-$h$ lattice in $\RR^d$.
+Assume their difference admits a discrete divergence representation
+\begin{equation}
+  \delta\kappa_h := \kappa'_h-\kappa_h = \nabla_h\cdot J_h,
+\end{equation}
+where $J_h$ is an edge/flux field supported on edges and bounded in sup norm by $\|J_h\|_\infty\le J_{\max}$.
+Let $K_\varepsilon$ be a smooth mollifier as in Assumption~\ref{ass:kernel_readout} and set $\delta\kappa_{\varepsilon,h}:=K_\varepsilon * \delta\kappa_h$.
+Then there exists a constant $C_K$ depending only on the kernel family such that
+\begin{equation}
+  \|\delta\kappa_{\varepsilon,h}\|_{L^\infty}
+  \ \le\ C_K\,J_{\max}\,\frac{h}{\varepsilon}.
+  \label{eq:divergence_suppression}
+\end{equation}
+\end{proposition}
+
+\paragraph{Sketch of proof.}
+Write $\delta\kappa_{\varepsilon,h}=K_\varepsilon*(\nabla_h\cdot J_h)$ and apply discrete integration by parts to move $\nabla_h$ onto the smooth kernel.
+One obtains $\delta\kappa_{\varepsilon,h}=-(\nabla_h K_\varepsilon)*J_h$.
+Since $\|\nabla_h K_\varepsilon\|_{L^1}\lesssim (h/\varepsilon)\|\nabla K\|_{L^1}$ for a mollifier family, the bound \eqref{eq:divergence_suppression} follows.
+\par
+\noindent On a bounded-degree graph of maximum degree $\Delta$, the same argument yields an additional factor polynomial in $\Delta$ through the discrete divergence definition.
+If the microscopic protocol gauge choice acts only within a bounded task diameter $D$ (Assumption~\ref{ass:local_task_family}), then $J_{\max}$ can be taken to scale at most polynomially in $(\Delta,D)$ for that task family, making the suppression explicit.
+
+

@@ -1,0 +1,74 @@
+\section{Continuum limit and universality class}
+\label{sec:continuum_universality}
+
+This section records the minimal conditions under which protocol-level differences (addressing family, local compilation details, tie-breaking rules) do not obstruct an effective continuum description at finite readout resolution.
+The guiding principle is operational: invariance is asserted only for \emph{coarse-grained observables} accessible to a finite observer.
+
+\subsection{Coarse-graining by kernel readout}
+\label{subsec:kernel_coarse_grain}
+
+Fix a readout scale $\varepsilon>0$.
+Assumption~\ref{ass:kernel_readout} models readout by a positive kernel $K_\varepsilon$ of bandwidth $\sim \varepsilon^{-1}$.
+For a field-like observable $F$ we define the coarse-grained quantity
+\begin{equation}
+  F_\varepsilon(x)\ :=\ \int_{\RR^d} K_\varepsilon(x-y)\,F(y)\,\dd y,
+\end{equation}
+or the analogous discrete convolution on a lattice.
+We emphasize that $F_\varepsilon$ is the object with operational meaning; $F$ itself is a model-dependent microscopic representative.
+
+\begin{remark}[Derivative scaling under mollification]
+\label{rem:mollifier_derivative_scaling}
+For a mollifier family $K_\varepsilon(x)=\varepsilon^{-d}K(x/\varepsilon)$ with $K$ smooth, one has the standard scaling
+\begin{equation}
+  \norm{\partial^\alpha F_\varepsilon}_{L^\infty(\Omega)}
+  \le \norm{F}_{L^\infty(\Omega_\varepsilon)}\,\norm{\partial^\alpha K}_{L^1(\RR^d)}\,\varepsilon^{-|\alpha|},
+\end{equation}
+where $\Omega_\varepsilon$ is an $\varepsilon$-neighborhood of $\Omega$.
+Thus, at fixed readout scale, only a bounded number of derivatives are operationally meaningful, and their natural magnitude scales like $\varepsilon^{-|\alpha|}$.
+See, e.g., \cite{Evans2010} for standard mollification estimates.
+\end{remark}
+
+\subsection{Protocol gauge and \texorpdfstring{$(\varepsilon,\delta)$}{(epsilon,delta)}-equivalence}
+\label{subsec:eps_delta_equiv}
+
+\begin{definition}[$(\varepsilon,\delta)$-equivalent protocol realizations]
+\label{def:eps_delta_equiv}
+Two protocol realizations are called $(\varepsilon,\delta)$-equivalent on a domain $\Omega$ if their coarse-grained lapse fields satisfy
+\begin{equation}
+  \sup_{x\in\Omega}\abs{\lapse_{1,\varepsilon}(x)-\lapse_{2,\varepsilon}(x)}\ \le\ \delta,
+\end{equation}
+and their coarse-grained source observables (when used) differ by at most $\delta$ in the same norm.
+\end{definition}
+
+The definition is intentionally weak: it regards different microscopic representatives as the same physical state whenever they cannot be distinguished at the readout scale.
+In particular, the choice of address family (Hilbert vs Morton/Z-order, etc.) is interpreted as a \emph{protocol gauge} when it changes only sub-$\varepsilon$ structure.
+
+\begin{proposition}[Universality of band-limited observables]
+\label{prop:bandlimited_universality}
+Assume two realizations are $(\varepsilon,\delta)$-equivalent on $\Omega$.
+Let $\mathcal{O}_\varepsilon$ be any observable that depends on the lapse only through a bounded number of derivatives at scale $\varepsilon$ (equivalently, a band-limited functional in the readout bandwidth).
+Then there exists a constant $C_{\mathcal{O}}$ (depending on the readout kernel and on $\mathcal{O}_\varepsilon$ but not on microscopic representatives) such that
+\begin{equation}
+  \sup_{x\in\Omega}\abs{\mathcal{O}_\varepsilon[\lapse_1](x)-\mathcal{O}_\varepsilon[\lapse_2](x)}\ \le\ C_{\mathcal{O}}\,\delta.
+\end{equation}
+\end{proposition}
+
+\begin{corollary}[Derivative stability at fixed bandwidth]
+\label{cor:derivative_stability}
+Assume $\sup_{x\in\Omega}\abs{\lapse_1(x)-\lapse_2(x)}\le \delta$ and $K_\varepsilon$ is a mollifier as in Assumption~\ref{ass:kernel_readout}.
+Then for any multi-index $\alpha$ there exists a constant $C_\alpha$ (depending only on $K$ and $\alpha$) such that
+\begin{equation}
+  \sup_{x\in\Omega}\abs{\partial^\alpha \lapse_{1,\varepsilon}(x)-\partial^\alpha \lapse_{2,\varepsilon}(x)}
+  \le C_\alpha\,\delta\,\varepsilon^{-|\alpha|}.
+\end{equation}
+This makes explicit how stability degrades as one asks for higher derivatives at fixed readout scale.
+\end{corollary}
+
+\paragraph{Interpretation.}
+Proposition~\ref{prop:bandlimited_universality} is the operative form of diffeomorphism invariance used in this program: invariance is stated not for microscopic encodings, but for the coarse-grained observables that define the effective continuum physics.
+
+\paragraph{Clarification (microscopic gauge vs.\ operational invariance).}
+Microscopic choices such as address family can affect the representative $\lapse$ at scales below $\varepsilon$.
+However, the effective field theory is formulated for $\lapse_\varepsilon$ and its band-limited functionals, and it is only at this level that invariance is asserted and tested.
+
+

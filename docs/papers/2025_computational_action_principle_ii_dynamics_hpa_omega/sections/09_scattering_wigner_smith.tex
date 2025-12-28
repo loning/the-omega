@@ -1,0 +1,87 @@
+\section{Scattering apparatus and Wigner--Smith time delay}
+\label{sec:wigner_smith}
+
+This section states a minimal scattering interface that turns an operational delay measurement into a calibrated proxy for routing overhead.
+The goal is to provide a concrete experimental and numerical verification route for lapse ratios without requiring direct access to the underlying compilation log.
+
+\subsection{Scattering apparatus (minimal Hamiltonian model)}
+\label{subsec:scattering_apparatus}
+
+Fix an internal (finite) region with Hamiltonian $H$ coupled to $M$ asymptotic channels (leads).
+In a standard effective description, the coupling is encoded by a matrix $W$ mapping channel states into the internal region, leading to an effective non-Hermitian Hamiltonian
+\begin{equation}
+  H_{\mathrm{eff}}(E) := H - \iu\pi\,W W^\dagger,
+\end{equation}
+and an on-shell scattering matrix of the form \cite{MahauxWeidenmueller1969,Datta1995}
+\begin{equation}
+  S(E) = \ind - 2\pi\iu\,W^\dagger\left(E - H_{\mathrm{eff}}(E)\right)^{-1}W.
+  \label{eq:weidenmueller_S}
+\end{equation}
+This model covers, at the level of interfaces, a broad class of platforms: mesoscopic transport, microwave networks, photonic structures, and circuit-QED scattering measurements.
+
+\subsection{Wigner--Smith operator and time delay}
+\label{subsec:wigner_smith_def}
+
+Consider an $M$-channel scattering apparatus with on-shell scattering matrix $S(E)\in U(M)$.
+The Wigner--Smith time-delay operator \cite{Wigner1955,Smith1960} is
+\begin{equation}
+  Q(E)\ :=\ -\iu\,\hbar\,S(E)^\dagger\,\frac{\dd S}{\dd E}(E),
+  \label{eq:wigner_smith_Q}
+\end{equation}
+and the mean Wigner--Smith delay is
+\begin{equation}
+  \tau_{\mathrm{WS}}(E)\ :=\ \frac{1}{M}\Tr Q(E).
+  \label{eq:wigner_smith_tau}
+\end{equation}
+
+\subsection{Resonance linewidth calibration}
+\label{subsec:linewidth_calibration}
+
+Near an isolated resonance at energy $E_0$ with linewidth $\gamma$, the scattering matrix admits a Breit--Wigner-type parametrization.
+In the single-resonance regime, the peak time delay scales as
+\begin{equation}
+  \tau_{\mathrm{WS}}(E_0)\ \approx\ \frac{4\hbar}{\gamma},
+  \label{eq:ws_linewidth_relation}
+\end{equation}
+up to apparatus-dependent prefactors that can be calibrated by a reference region.
+\par
+\noindent For a single channel ($M=1$) one may write $S(E)=\e^{2\iu\delta(E)}$.
+In the Breit--Wigner approximation the phase shift takes the standard form
+\begin{equation}
+  \delta(E)\ \approx\ \arctan\!\left(\frac{\gamma/2}{E_0-E}\right),
+\end{equation}
+see, e.g., \cite{BreitWigner1936}.
+so that $\tau_{\mathrm{WS}}(E)=2\hbar\,\dd\delta/\dd E$ and $\tau_{\mathrm{WS}}(E_0)=4\hbar/\gamma$, consistent with \eqref{eq:ws_linewidth_relation}.
+
+\begin{remark}[Channel conventions]
+\label{rem:ws_conventions}
+The prefactor in \eqref{eq:ws_linewidth_relation} depends on the convention used for $\tau_{\mathrm{WS}}$ (mean over channels, partial delay, or a particular incoming state) and on how $\gamma$ is defined from the pole structure.
+The present paper fixes the convention by \eqref{eq:wigner_smith_Q}--\eqref{eq:wigner_smith_tau} and uses \eqref{eq:ws_linewidth_relation} as a benchmark in the single-resonance regime \cite{BreitWigner1936,Wigner1955,Smith1960}.
+\end{remark}
+
+\subsection{From delay to routing overhead}
+\label{subsec:ws_to_kappa}
+
+Define the dimensionless delay proxy
+\begin{equation}
+  \kappa_{\mathrm{WS}}(E)\ :=\ \frac{\tau_{\mathrm{WS}}(E)}{\tau_0},
+\end{equation}
+where $\tau_0$ is the reference tick duration.
+The interface assumption is that a localized resonance probe at location $x$ has a characteristic resonance energy $E_0(x)$ and linewidth $\gamma(x)$ such that
+\begin{equation}
+  \kappa(x)\ \approx\ \kappa_{\mathrm{WS}}\!\left(E_0(x)\right)
+  \approx\ \frac{4\hbar}{\gamma(x)\tau_0}.
+  \label{eq:ws_kappa_identification}
+\end{equation}
+This identification makes lapse ratios directly testable:
+\begin{equation}
+  \frac{\lapse(x_1)}{\lapse(x_2)}
+  = \frac{\kappa(x_2)}{\kappa(x_1)}
+  \approx \frac{\gamma(x_1)}{\gamma(x_2)}.
+\end{equation}
+In practice one calibrates the overall scale by a reference region $x_0$:
+define $\gamma_0:=\gamma(x_0)$ and $\kappa_0:=4\hbar/(\gamma_0\tau_0)$ in the same single-resonance convention, so that $\kappa(x)/\kappa_0\approx \gamma_0/\gamma(x)$ within the calibrated bandwidth window.
+Appendix~\ref{app:ws_interface_details} records standard trace identities, basis-invariance properties, and loss/dispersion considerations relevant for turning measured $S$-data into calibrated $\kappa$ ratios.
+Section~\ref{sec:benchmarks} records consistency targets, and Appendix~\ref{app:adm_details} comments on how probe localization interacts with coarse-graining.
+
+

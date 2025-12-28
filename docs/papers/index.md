@@ -16,6 +16,7 @@
 | `2025_motive_at_infinity_holographic_scanning_principle/` | The Motive at Infinity: Functorialization of the Holographic Scanning Principle, Period Realizations, and a Selection Principle (MAI) | [`main.pdf`](./2025_motive_at_infinity_holographic_scanning_principle/main.pdf) | [`main.tex`](./2025_motive_at_infinity_holographic_scanning_principle/main.tex) | **周期/动机升维篇**：在不破坏 Layer 0/1 审计纪律下把扫描协议函子化到 KZ 周期数据；证明“扫描平均=周期积分”；给出可审计误差预算与可复现实验，并提出有限资源下的选择原则 | STI + HPA（+ PCG 的常数刚性示例） |
 | `2025_protocol_stable_period_data_computational_teleology/` | Protocol-Stable Period Data in Computational Teleology: From Holographic Scanning Protocols to Variational Dynamics of Minimal Computational Discrepancy and Constant Selection (PSPD) | [`main.pdf`](./2025_protocol_stable_period_data_computational_teleology/main.pdf) | [`main.tex`](./2025_protocol_stable_period_data_computational_teleology/main.tex) | **专题篇（Wish/period + 变分动力学）**：协议稳定周期数据（Wish）、差异度×变差的有限资源证书、协议空间的带阻尼惯性梯度流、以及常数刚性/唯一性间隙玩具模型 | MAI + CAP（+ PCG） |
 | `2025_computational_action_principle_hpa_omega/` | Computational Action Principle: Least-Discrepancy Dynamics and Field Unification in HPA--Ω (CAP) | [`main.pdf`](./2025_computational_action_principle_hpa_omega/main.pdf) | [`main.tex`](./2025_computational_action_principle_hpa_omega/main.tex) | **变分统一篇（CAP）**：最小差异原理 → Ω 作用量（Fisher + 路由开销）→ GR+信息应力；规范/物质为相位误差补偿与拓扑缺陷 | HPA + FoP + HPΩT |
+| `2025_computational_action_principle_ii_dynamics_hpa_omega/` | Computational Action Principle II: Dynamical Einstein Gravity and Quantum Interfaces from Routing Overhead in HPA--Ω (CAP-II) | [`main.pdf`](./2025_computational_action_principle_ii_dynamics_hpa_omega/main.pdf) | [`main.tex`](./2025_computational_action_principle_ii_dynamics_hpa_omega/main.tex) | **变分统一续篇（CAP-II）**：从路由开销 lapse 的审计量出发，给出 ADM 动力学闭合与量子/散射校准接口 | CAP + HHU + HPA + HPΩT（+ FoP） |
 | `2025_holographic_phase_thermodynamics_hpa_omega/` | Holographic Phase Thermodynamics: Arithmetic Statistical Mechanics, Computational Lapse, and the Geometric Origin of Intelligence in HPA--Ω (HPT) | [`main.pdf`](./2025_holographic_phase_thermodynamics_hpa_omega/main.pdf) | [`main.tex`](./2025_holographic_phase_thermodynamics_hpa_omega/main.tex) | **专题篇（热力学/智能）**：算术统计力学、相位摩擦（差异熵）、计算时延与熵流重标度、智能作为主动纠错相变 | HPA + FoP + HPΩT + CAP（+ HPD 的 Phase Pressure 模板） |
 | `2025_holographic_polar_dynamics/` | Holographic Polar Dynamics: Topological Inversion of the Schwarzschild Singularity and the Phase Origin of Gravity (HPD) | [`main.pdf`](./2025_holographic_polar_dynamics/main.pdf) | [`main.tex`](./2025_holographic_polar_dynamics/main.tex) | **应用篇（Paper II）**：把 HPA 的失配/差异度量用于黑洞/奇点与信息悖论模板（Phase Pressure） | HPA（+ CAP 作为统一视角） |
 | `2025_physical_constants_geometry_hpa_omega/` | The Geometry of Physical Constants in HPA--Ω: From the Fine-Structure Constant to Particle Spectra and Black-Hole/Cosmological Invariants (PCG) | [`main.pdf`](./2025_physical_constants_geometry_hpa_omega/main.pdf) | [`main.tex`](./2025_physical_constants_geometry_hpa_omega/main.tex) | **专题篇（常数/几何）**：把 HPA–Ω 的几何/信息结构用于常数关系与数值验证 | HPA + FoP |
@@ -37,6 +38,7 @@ flowchart TB
   MAI["MAI<br/>The Motive at Infinity<br/>periods / motives / selection"]
   PSPD["PSPD<br/>Protocol-Stable Period Data<br/>teleological variational dynamics"]
   CAP["CAP<br/>Computational Action Principle<br/>最小差异变分统一"]
+  CAPII["CAP-II: Dynamical closure"]
   HPT["HPT<br/>Holographic Phase Thermodynamics<br/>热力学/智能专题"]
   HPD["HPD<br/>Holographic Polar Dynamics<br/>黑洞/奇点应用（Paper II）"]
   PCG["PCG<br/>Physical Constants Geometry<br/>常数/几何专题"]
@@ -65,6 +67,8 @@ flowchart TB
   HPA -->|"最小差异/读出失配"| CAP
   FoP -->|"Ω 作用量、lapse、Fisher"| CAP
   HPOT -->|"O1–O6 + R1 接口"| CAP
+  CAP -->|"dynamical closure (ADM, interfaces)"| CAPII
+  HHU -->|"from auditable lapse to dynamics"| CAPII
   HPA -->|"ASM、相位摩擦（差异熵）"| HPT
   FoP -->|"O1–O6 读出接口与热力学语义"| HPT
   HPOT -->|"O1–O6 读出接口与 R1 正则约定"| HPT
@@ -95,6 +99,7 @@ flowchart TB
   class HPT topic;
   class HPD app;
   class CAP unify;
+  class CAPII unify;
   class PCG topic;
   class CT topic;
   class PSPD topic;

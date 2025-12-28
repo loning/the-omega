@@ -1,0 +1,116 @@
+\section{Wigner--Smith interface details: basis invariance, loss models, and calibration}
+\label{app:ws_interface_details}
+
+This appendix complements Section~\ref{sec:wigner_smith} by recording standard identities and practical interface points needed for quantitative use of Wigner--Smith delay as a calibrated proxy for routing overhead.
+The emphasis is operational: which quantities are basis-independent, how to handle non-unitarity/loss at the interface level, and how to define calibration rules that make lapse ratios testable.
+
+\subsection{Trace identities and a density-of-states reading (unitary case)}
+\label{app:ws_trace_identities}
+
+Let $S(E)\in U(M)$ be the on-shell scattering matrix for $M$ asymptotic channels and define the Wigner--Smith operator
+\begin{equation}
+  Q(E) := -\iu\,\hbar\,S(E)^\dagger\,\frac{\dd S}{\dd E}(E).
+\end{equation}
+Since $S^\dagger S=\ind$, one has $Q(E)=Q(E)^\dagger$.
+The scalar delay used in the main text is
+\begin{equation}
+  \tau_{\mathrm{WS}}(E) := \frac{1}{M}\Tr Q(E).
+\end{equation}
+
+\paragraph{Determinant identity.}
+Using $\frac{\dd}{\dd E}\log\det S=\Tr\!\left(S^{-1}\frac{\dd S}{\dd E}\right)$ and unitarity ($S^{-1}=S^\dagger$), one obtains
+\begin{equation}
+  \Tr Q(E) = -\iu\,\hbar\,\frac{\dd}{\dd E}\log\det S(E).
+  \label{eq:ws_trace_logdet}
+\end{equation}
+Equivalently, writing $\det S(E)=\e^{\iu\Theta(E)}$ with total scattering phase $\Theta(E)\in\RR$,
+\begin{equation}
+  \Tr Q(E)=\hbar\,\frac{\dd\Theta}{\dd E}(E).
+\end{equation}
+
+\paragraph{Density-of-states interface.}
+In standard scattering theory, the energy derivative of the total scattering phase is proportional to the (excess) density of states in the interaction region (Friedel/Krein-type relations).
+At the interface level, \eqref{eq:ws_trace_logdet} can therefore be read as: the WS trace measures a spectral delay/dwell observable which is naturally interpreted as a density-of-states proxy at the chosen probe energy.
+For background and conventions, see \cite{Wigner1955,Smith1960,Datta1995,MahauxWeidenmueller1969}.
+
+\subsection{Channel-basis dependence and a basis-invariant scalar observable}
+\label{app:ws_basis_invariance}
+
+Let $U\in U(M)$ be an energy-independent change of channel basis and set $S'(E):=U\,S(E)\,U^\dagger$.
+Then
+\begin{equation}
+  Q'(E) = -\iu\,\hbar\,S'(E)^\dagger\,\frac{\dd S'}{\dd E}(E)
+  = U\,Q(E)\,U^\dagger,
+\end{equation}
+so the trace and eigenvalues of $Q(E)$ are basis-invariant:
+\begin{equation}
+  \Tr Q'(E)=\Tr Q(E),
+  \qquad
+  \mathrm{Spec}(Q'(E))=\mathrm{Spec}(Q(E)).
+\end{equation}
+This is the main reason to prefer $\Tr Q(E)$ (or $M^{-1}\Tr Q(E)$) as a scalar interface observable: it is insensitive to static unitary mixing of measurement ports.
+\par
+\noindent If the effective basis transformation is energy-dependent, $U=U(E)$, then $\Tr Q(E)$ acquires an additive contribution from the apparatus dispersion.
+Operationally, CAP-II treats this as part of the calibration: the same probe configuration and derivative regularization are used throughout the dataset and a reference region is used to normalize out apparatus-dependent offsets (Section~\ref{subsec:ws_to_kappa}).
+\par
+\noindent\textbf{Non-reciprocity.}
+Non-reciprocal devices generally have scattering matrices that are not symmetric ($S\neq S^{\mathsf{T}}$) even in the lossless case.
+This does not obstruct the WS interface: for unitary $S(E)$, $Q(E)$ remains Hermitian and $\Tr Q(E)$ remains basis-invariant in the sense above.
+Non-reciprocity therefore affects the detailed channel-resolved delay structure (eigenvectors/eigenphases), but not the scalar trace observable used for calibrated $\kappa$-ratio targets.
+
+\subsection{Loss, non-unitarity, and a calibrated ratio protocol}
+\label{app:ws_nonunitary}
+
+Realistic devices can exhibit absorption, dissipation, inelasticity, or imperfect calibration, so the measured $S(E)$ may be non-unitary.
+CAP-II uses two complementary interface viewpoints.
+
+\paragraph{Hidden-channel completion.}
+Non-unitarity can be modeled by coupling the interaction region to additional unobserved channels (loss ports, absorptive baths).
+In the enlarged channel space the full scattering matrix $\widetilde S(E)$ is unitary, and the WS operator $\widetilde Q(E)$ and trace identities above apply to $\widetilde S$.
+The measured $S(E)$ is then a sub-block of $\widetilde S(E)$, and $\Tr Q(E)$ is interpreted as a partial delay observable.
+
+\paragraph{Self-energy and renormalized resonance parameters.}
+In device-level models (Section~\ref{subsec:scattering_apparatus}), coupling to leads/baths induces an energy-dependent self-energy.
+Equivalently, one writes an effective non-Hermitian Hamiltonian $H_{\mathrm{eff}}(E)=H+\Delta(E)-\iu\,\Gamma(E)/2$, so that both the resonance center $E_0$ and linewidth $\gamma$ are \emph{renormalized} by the environment.
+The WS interface does not require a microscopic subtraction of these effects: $E_0(x)$ and $\gamma(x)$ are defined operationally by the measured/simulated $S(E)$ in the chosen probe configuration, and the ratio protocol below uses these renormalized parameters consistently across locations.
+For background on effective-Hamiltonian and self-energy formulations, see \cite{MahauxWeidenmueller1969,Datta1995}.
+
+\paragraph{Ratio protocol (calibration robustness).}
+For lapse tests CAP-II primarily uses \emph{ratios} of calibrated delays (or linewidths) between regions.
+Fix a probe convention and a reference region $x_0$.
+Define the dimensionless overhead proxy by
+\begin{equation}
+  \kappa_{\mathrm{WS}}(x) := \frac{\tau_{\mathrm{WS}}(x)}{\tau_0},
+  \qquad
+  \kappa_0 := \kappa_{\mathrm{WS}}(x_0),
+\end{equation}
+where $\tau_{\mathrm{WS}}(x)$ is evaluated at the local probe energy $E_0(x)$ under the same derivative regularization rule.
+Then the ratio
+\begin{equation}
+  \frac{\kappa(x)}{\kappa_0}
+  \approx
+  \frac{\kappa_{\mathrm{WS}}(x)}{\kappa_{\mathrm{WS}}(x_0)}
+  =
+  \frac{\tau_{\mathrm{WS}}(x)}{\tau_{\mathrm{WS}}(x_0)}
+  \label{eq:ws_ratio_protocol}
+\end{equation}
+is insensitive to any multiplicative apparatus factor that is common to the two measurements (e.g.\ an overall port-normalization convention or a global tick-to-second calibration).
+When the interface uses linewidth extraction in the single-resonance regime, the corresponding ratio form is
+\begin{equation}
+  \frac{\kappa(x)}{\kappa_0}
+  \approx
+  \frac{\gamma(x_0)}{\gamma(x)},
+\end{equation}
+consistent with Section~\ref{subsec:linewidth_calibration}.
+
+\paragraph{Minimal reporting standard.}
+To make the WS interface auditable, a quantitative report should include:
+\begin{itemize}
+  \item the measured (or simulated) $S(E)$ data source and port normalization convention;
+  \item a unitarity diagnostic (e.g.\ $\|S^\dagger S-\ind\|$ over the band) and a stated loss model when non-unitarity is present;
+  \item the derivative regularization choice (grid step, smoothing window, or phase-unwrapping method);
+  \item a stability check under moderate changes of the derivative resolution.
+\end{itemize}
+This is the minimal data required to evaluate how sensitive inferred $\kappa$ ratios are to loss and to apparatus dispersion.
+
+
