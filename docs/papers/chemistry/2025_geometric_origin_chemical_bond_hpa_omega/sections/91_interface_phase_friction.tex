@@ -1,0 +1,44 @@
+\section{An optional interface template: phase stabilization under finite readout}
+\label{app:interface_phase_friction}
+
+This appendix records an \emph{interface-level} model that connects the scan--readout viewpoint to chemistry language (bonding, reactions, and free-energy descent). It is not used in the closed-theory derivations of $(\alpha_{\mathrm{geo}},\mu_{\mathrm{geo}})$, nor in the stability and scaling arguments of the main text; it is included as a constrained, falsifiable interface consistent with HPA phase thermodynamics.
+
+\subsection{A minimal mismatch-augmented functional}
+Let $R$ denote nuclear coordinates (collectively). Let $\psi$ be an electronic state normalized on the electronic Hilbert space at fixed $R$. Define the functional
+\begin{equation}\label{eq:chem_free_energy_template}
+\mathcal{F}[\psi;R]
+:=
+\braket{\psi|\hat H_{\mathrm{Coul}}(\alpha_{\mathrm{em}};R)|\psi}
+\;+\;\lambda\,\mathcal{D}_\varepsilon[\psi;R]
+\;-\;T_c\, S_{\mathrm{pf}}[\psi;\varepsilon],
+\end{equation}
+where $\hat H_{\mathrm{Coul}}$ is the standard Coulomb electronic Hamiltonian, $\mathcal{D}_\varepsilon$ is a resolution-dependent mismatch penalty, and $S_{\mathrm{pf}}$ is a phase-friction entropy proxy (e.g.\ discrepancy-based) \cite{Ma2025HPT}.
+For fixed $R$, define the corresponding effective surface
+\begin{equation}
+E_{\mathrm{eff}}(R)=\inf_{\psi}\mathcal{F}[\psi;R].
+\end{equation}
+In the formal limit $\lambda\to 0$ and when the entropy term is negligible, $E_{\mathrm{eff}}$ reduces to the standard BO surface used in quantum chemistry.
+
+\subsection{Bonding and reaction direction (interpretation)}
+In standard chemistry language, a bond forms when the electronic energy is lowered by delocalization and exchange at an intermediate nuclear separation, producing a minimum in $E_{\mathrm{BO}}(R)$. In the HPA interface language, the same phenomenon can be phrased as:
+\begin{itemize}
+\item \textbf{Bond formation}: reconfiguration that lowers the total protocol cost by stabilizing phases (reducing mismatch accumulation) under finite readout.
+\item \textbf{Reaction direction}: evolution toward configurations that decrease the effective functional \eqref{eq:chem_free_energy_template}, aligning with a free-energy descent structure but expressed via phase-friction entropy and mismatch penalties \cite{Ma2025HPT,Ma2025CAP}.
+\end{itemize}
+The purpose of \eqref{eq:chem_free_energy_template} is falsifiability: once a concrete $\mathcal{D}_\varepsilon$ and $S_{\mathrm{pf}}$ are specified, the implied corrections to molecular levels must exhibit structured parameter dependence tied to readout resolution and discrepancy, rather than arbitrary higher-order operators.
+
+\subsection{A minimal computable toy choice (for falsifiability bookkeeping)}
+To make \eqref{eq:chem_free_energy_template} operational without committing to a full microscopic derivation, we record a minimal interface that is explicit, low-parameter, and auditable:
+\begin{itemize}
+\item Choose a finite readout depth $N$ associated with resolution $\varepsilon$ (e.g.\ $N\sim \varepsilon^{-1}$ as a bookkeeping proxy).
+\item Let the scan orbit be $x_n=x_0+n\nu\ (\mathrm{mod}\ 1)$ from Axiom~\ref{ax:O6}.
+\item Define a phase-friction proxy by $S_{\mathrm{pf}}(N)=k_B\,E_N$ with $E_N=N D_N^\ast$ as in Section~\ref{sec:minimal_interface}.
+\item Define a mismatch penalty as a scalar multiple of the same mismatch accumulation,
+\[
+\mathcal{D}_\varepsilon := E_N,
+\]
+so that the interface correction is controlled by a single effective coefficient $(\lambda - T_c k_B)$ at fixed $(\varepsilon,N)$.
+\end{itemize}
+This minimal choice fixes a concrete residual template so that any spectroscopy-facing comparison can be phrased in terms of an explicit mismatch variable $E_N$ rather than an unspecified functional; more detailed interfaces should reduce to an equivalent low-parameter form at leading order.
+
+

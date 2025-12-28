@@ -20,6 +20,7 @@
 | `2025_holographic_phase_thermodynamics_hpa_omega/` | Holographic Phase Thermodynamics: Arithmetic Statistical Mechanics, Computational Lapse, and the Geometric Origin of Intelligence in HPA--Ω (HPT) | [`main.pdf`](./2025_holographic_phase_thermodynamics_hpa_omega/main.pdf) | [`main.tex`](./2025_holographic_phase_thermodynamics_hpa_omega/main.tex) | **专题篇（热力学/智能）**：算术统计力学、相位摩擦（差异熵）、计算时延与熵流重标度、智能作为主动纠错相变 | HPA + FoP + HPΩT + CAP（+ HPD 的 Phase Pressure 模板） |
 | `2025_holographic_polar_dynamics/` | Holographic Polar Dynamics: Topological Inversion of the Schwarzschild Singularity and the Phase Origin of Gravity (HPD) | [`main.pdf`](./2025_holographic_polar_dynamics/main.pdf) | [`main.tex`](./2025_holographic_polar_dynamics/main.tex) | **应用篇（Paper II）**：把 HPA 的失配/差异度量用于黑洞/奇点与信息悖论模板（Phase Pressure） | HPA（+ CAP 作为统一视角） |
 | `2025_physical_constants_geometry_hpa_omega/` | The Geometry of Physical Constants in HPA--Ω: From the Fine-Structure Constant to Particle Spectra and Black-Hole/Cosmological Invariants (PCG) | [`main.pdf`](./2025_physical_constants_geometry_hpa_omega/main.pdf) | [`main.tex`](./2025_physical_constants_geometry_hpa_omega/main.tex) | **专题篇（常数/几何）**：把 HPA–Ω 的几何/信息结构用于常数关系与数值验证 | HPA + FoP |
+| `chemistry/2025_geometric_origin_chemical_bond_hpa_omega/` | Geometric Origin of Chemical Bonding in HPA--Ω: Deriving Molecular Stability from the Three-Channel Geometric Impedance α and the Internal Phase Volume μ (Chem) | [`main.pdf`](./chemistry/2025_geometric_origin_chemical_bond_hpa_omega/main.pdf) | [`main.tex`](./chemistry/2025_geometric_origin_chemical_bond_hpa_omega/main.tex) | **专题篇（化学/成键）**：由 α、μ 的几何不变量锁定原子单位与 BO 分离，导出分子稳定与谱学接口 | PCG + HPΩT + HHU + HPT + CAP |
 | `2025_computational_teleology_hpa_omega/` | Computational Teleology in Holographic Polar Arithmetic: Scan Complexity, Readout Resolution, and an Undecidable Quantum-Cellular Universe (CT) | [`main.pdf`](./2025_computational_teleology_hpa_omega/main.pdf) | [`main.tex`](./2025_computational_teleology_hpa_omega/main.tex) | **专题篇（架构/可计算性）**：复杂性–几何–观测同构、路由开销与计算 lapse、可判定性边界 | HPA + FoP |
 
 说明：若目录内存在 `main.pdf` 则可直接打开；若尚未生成，可按下文编译生成。
@@ -250,6 +251,16 @@ flowchart TB
 
 - **定位**：把 HPA–Ω 的几何/信息结构用于物理常数关系与数值验证的专题手稿。
 - **入口链接**：[`main.pdf`](./2025_physical_constants_geometry_hpa_omega/main.pdf)、[`main.tex`](./2025_physical_constants_geometry_hpa_omega/main.tex)、[`references.bib`](./2025_physical_constants_geometry_hpa_omega/references.bib)
+
+### `chemistry/2025_geometric_origin_chemical_bond_hpa_omega/`（Chem，化学/成键专题）
+
+- **定位**：把 PCG 的常数几何（$\alpha,\mu$）作为闭层输入，映射到原子单位与 Born–Oppenheimer 分离，给出“化学可存在性”的协议几何解释，并提出可证伪的分子谱学接口。
+- **包含内容**：
+  - **三通道几何阻抗**：$\alpha^{-1}_{\mathrm{geo}}=4\pi^3+\pi^2+\pi$（引用 PCG 的闭层定理链）。
+  - **内部相位体积**：$\mu_{\mathrm{geo}}=6\pi^5$（引用 PCG 的闭层定理链）。
+  - **化学后果（解释层映射）**：原子单位标尺（$a_0,E_h$）与谱层级分离（$\mu^{-1/2}$），同位素效应作为界面推论。
+  - **可复现实验**：$\mathrm{H}_2^+$ 的 BO 势能曲线（LCAO + Monte Carlo 矩阵元）与 $E_{\mathrm{ZPE}}\propto\mu^{-1/2}$ 的显式数值展示（含脚本）。
+- **入口链接**：[`main.pdf`](./chemistry/2025_geometric_origin_chemical_bond_hpa_omega/main.pdf)、[`main.tex`](./chemistry/2025_geometric_origin_chemical_bond_hpa_omega/main.tex)、[`references.bib`](./chemistry/2025_geometric_origin_chemical_bond_hpa_omega/references.bib)、[`scripts/`](./chemistry/2025_geometric_origin_chemical_bond_hpa_omega/scripts/)
 
 ### `2025_computational_teleology_hpa_omega/`（CT，Computational Teleology）
 
