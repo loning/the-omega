@@ -1,0 +1,61 @@
+\section{Sequence-level Zeckendorf spectra and falsifiable predictions}
+\label{sec:sequence_spectra}
+
+The codon-level map $c\mapsto (V_{\mu^\ast}(c),\Delta_{\mu^\ast}(c))$ induces a natural spectrum representation for sequences.
+
+\subsection{Definitions: $Z$-spectrum and uplift trace}
+\label{sec:z_u_def}
+
+Let $S$ be an RNA (or DNA) sequence and fix a reading frame.
+Split $S$ into codons $(c_1,c_2,\dots,c_L)$.
+Define:
+\begin{itemize}
+\item the \emph{$Z$-spectrum} (visible Zeckendorf level)
+\[
+Z(i):=V_{\mu^\ast}(c_i)\in\{0,\dots,20\};
+\]
+\item the \emph{uplift trace} (window-external load)
+\[
+U(i):=\Delta_{\mu^\ast}(c_i)=N_{\mu^\ast}(c_i)-V_{\mu^\ast}(c_i).
+\]
+\end{itemize}
+
+Intuitively, $Z(i)$ measures the locally visible folding complexity in the Zeckendorf window, while $U(i)$ measures the hidden external component that is erased by folding.
+
+\subsection{Predictions and tests}
+\label{sec:predictions}
+
+We list several directly testable predictions that do not rely on any parameter fitting beyond the unique encoding $\mu^\ast$.
+
+\paragraph{P1 (start/stop boundary split).}
+In the canonical reading frame of annotated ORFs, the start codon $\mathrm{AUG}$ and the stop codon $\mathrm{UAA}$ should produce the same boundary energy level $Z=14$ but different uplift values:
+\[
+(Z,U)(\mathrm{AUG})=(14,0),\qquad (Z,U)(\mathrm{UAA})=(14,34).
+\]
+If large-scale ORF statistics do not exhibit this split, the boundary-homology interpretation is weakened.
+
+\paragraph{P2 (UGA extreme uplift).}
+The stop codon $\mathrm{UGA}$ has a large uplift $U=55$ in the minimal window-$6$ model.
+If context-dependent recoding (e.g.\ selenocysteine insertion) is sensitive to hidden loads, then the neighborhood statistics of $U(i)$ around $\mathrm{UGA}$ sites should differ systematically from those around $\mathrm{UAA}$ or $\mathrm{UAG}$ sites.
+
+\paragraph{P3 (nonstandard codes as boundary migration).}
+In organisms with nonstandard start/stop assignments, our framework predicts either:
+\begin{itemize}
+\item a reassignment that moves control semantics between the three boundary words ($100001$, $100101$, $101001$), or
+\item a symmetry action on the two-bit encoding that preserves the folding template while permuting codon indices.
+\end{itemize}
+
+\subsection{Reproducible spectrum extraction on arbitrary genomes}
+\label{sec:reproducible_pipeline}
+
+Appendix~\ref{app:reproducibility} documents a minimal command-line tool that:
+\begin{itemize}
+\item reads FASTA DNA/RNA;
+\item normalizes DNA to RNA by $T\mapsto U$;
+\item scans reading frames and (optionally) extracts ORFs using $\mathrm{AUG}$ starts and $\{\mathrm{UAA,UAG,UGA}\}$ stops;
+\item outputs per-codon traces $(Z,U)$ as a TSV file (optional) and per-segment summary statistics as JSONL (optional), including boundary-hit counts, $V/\Delta$ histograms, and stop-context uplift windows.
+\end{itemize}
+
+This makes the theory falsifiable on any dataset without hidden assumptions.
+
+

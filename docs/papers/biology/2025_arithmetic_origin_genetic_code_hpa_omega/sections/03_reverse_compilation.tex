@@ -1,0 +1,150 @@
+\section{Genetic interface and reverse compilation over $24$ encodings}
+\label{sec:reverse_compilation}
+
+\subsection{Two-bit nucleotide encodings and codon indices}
+\label{sec:encoding}
+
+Let $\Sigma=\{A,C,G,U\}$ be the RNA alphabet.
+A two-bit nucleotide encoding is a bijection
+\[
+\mu:\Sigma\to\{00,01,10,11\}.
+\]
+There are $4!=24$ such encodings.
+
+Given a codon $c=b_1 b_2 b_3\in\Sigma^3$, define the $6$-bit microstate word by concatenation
+\[
+\mathrm{code}_\mu(c):=\mu(b_1)\,\mu(b_2)\,\mu(b_3)\in\{0,1\}^6,
+\]
+and define the integer microstate index $N_\mu(c)\in\{0,\dots,63\}$ by interpreting $\mathrm{code}_\mu(c)$ as a binary integer with the leftmost bit as most significant.
+
+Composing with the folding map defines the folded type and its spectral level:
+\[
+w_\mu(c):=\mathrm{Fold}_6(N_\mu(c))\in X_6,\qquad
+V_\mu(c):=V(w_\mu(c))\in\{0,\dots,20\}.
+\]
+
+We also define the \emph{uplift} variable:
+\[
+\Delta_\mu(c):=N_\mu(c)-V_\mu(c).
+\]
+Intuitively, $V_\mu(c)$ is the window-visible Zeckendorf content, while $\Delta_\mu(c)$ measures the window-external contribution that is invisible to $\mathrm{Fold}_6$.
+In the $m=6$ model, $\Delta_\mu(c)$ takes values in a small discrete set (empirically $\{0,21,34,55\}$ under $\mu^\ast$; see Appendix~\ref{app:generated_tables}).
+
+\subsection{A minimal anchor: start--stop boundary homology}
+\label{sec:anchor}
+
+We treat the following as a minimal and falsifiable anchor based on standard semantics \cite{Alberts2014,Crick1966}:
+\begin{itemize}
+\item $\mathrm{AUG}$ is a canonical start codon;
+\item $\mathrm{UAA}$ is a canonical stop codon.
+\end{itemize}
+
+\begin{definition}[Start--stop boundary homology criterion]
+\label{def:start_stop_homology}
+An encoding $\mu$ satisfies start--stop boundary homology if
+\[
+w_\mu(\mathrm{AUG})=w_\mu(\mathrm{UAA})\in X_6^{\mathrm{bdry}}.
+\]
+\end{definition}
+
+This criterion does not use amino-acid physicochemical data, codon usage statistics, or evolutionary assumptions; it only uses the existence of a start and stop control semantics and the folding-defined boundary sector.
+
+\subsection{A structural limitation: stop codons cannot all be boundary}
+\label{sec:stop_limit}
+
+The RF folding interface \cite{Ma2025RF} identifies the boundary sector by a fixed set of $6$ integer indices:
+\[
+\mathrm{Fold}_6^{-1}(X_6^{\mathrm{bdry}})=\{14,17,19,48,51,53\}.
+\]
+Hence, for a codon $c$, the condition $w_\mu(c)\in X_6^{\mathrm{bdry}}$ is equivalent to the membership test $N_\mu(c)\in\{14,17,19,48,51,53\}$.
+
+\begin{proposition}[At most one standard stop codon can land in the boundary sector]
+\label{prop:stop_hits_at_most_one}
+For any bijective two-bit encoding $\mu$, among the three standard stop codons
+\[
+S_{\mathrm{stop}}=\{\mathrm{UAA},\mathrm{UAG},\mathrm{UGA}\},
+\]
+at most one satisfies $w_\mu(c)\in X_6^{\mathrm{bdry}}$ (equivalently $N_\mu(c)\in\{14,17,19,48,51,53\}$).
+In particular, it is impossible to map all three stop codons into the boundary sector in the minimal $m=6$ interface.
+\end{proposition}
+
+\begin{proof}
+Write $u:=\mu(U)$, $a:=\mu(A)$, and $g:=\mu(G)$ as $2$-bit blocks, with $u,a,g$ distinct by bijectivity.
+The three stop codons correspond to $6$-bit block triples:
+\[
+\mathrm{UAA}: (u,a,a),\qquad
+\mathrm{UAG}: (u,a,g),\qquad
+\mathrm{UGA}: (u,g,a).
+\]
+The boundary-index set $\{14,17,19,48,51,53\}$ corresponds to the following $2$-bit block forms (write each $N$ in binary and group into three blocks):
+\[
+14=(00,11,10),\quad
+17=(01,00,01),\quad
+19=(01,00,11),\quad
+48=(11,00,00),\quad
+51=(11,00,11),\quad
+53=(11,01,01).
+\]
+We distinguish cases by $u$.
+
+\emph{Case $u=10$.} None of the boundary block triples begins with $10$, so no stop codon can be boundary.
+
+\emph{Case $u=00$.} The only boundary triple beginning with $00$ is $(00,11,10)$, which cannot equal $(u,a,a)$ because its last two blocks differ. Hence $\mathrm{UAA}$ is not boundary.
+If $\mathrm{UAG}$ is boundary, then necessarily $(u,a,g)=(00,11,10)$, forcing $(a,g)=(11,10)$. Then $\mathrm{UGA}=(00,10,11)$ is not among the boundary triples, so at most one stop is boundary.
+
+\emph{Case $u=01$.} The boundary triples beginning with $01$ are $(01,00,01)$ and $(01,00,11)$, both of which have second block $00$. Thus if $\mathrm{UAG}$ is boundary then $a=00$, which makes it impossible for $\mathrm{UGA}=(01,g,00)$ to match either boundary triple (their third block is $01$ or $11$). Also $\mathrm{UAA}=(01,00,00)$ is not boundary. Hence at most one stop is boundary.
+
+\emph{Case $u=11$.} The boundary triples beginning with $11$ are $(11,00,00)$, $(11,00,11)$, and $(11,01,01)$. If $\mathrm{UAA}$ is boundary then $(u,a,a)$ must be $(11,00,00)$ or $(11,01,01)$, forcing $a=00$ or $a=01$.
+If $a=00$, then $\mathrm{UAG}=(11,00,g)$ would have to match $(11,00,11)$ to be boundary, implying $g=11=u$, contradicting bijectivity; and $\mathrm{UGA}=(11,g,00)$ cannot match any boundary triple because its third block is $00$ while the only boundary triple with third block $00$ is $(11,00,00)$ which would force $g=00=a$.
+If $a=01$, then $\mathrm{UAG}=(11,01,g)$ can only match $(11,01,01)$, forcing $g=01=a$, again impossible. Thus at most one stop can be boundary.
+
+In all cases, at most one of $\{\mathrm{UAA},\mathrm{UAG},\mathrm{UGA}\}$ can land in the boundary sector.
+\end{proof}
+
+\begin{remark}[Exhaustive scan confirmation]
+The exhaustive scan over all $24$ encodings reproduces the histogram $\{0:16,1:8,2:0,3:0\}$ for the number of stop codons landing in $X_6^{\mathrm{bdry}}$, recorded in Appendix~\ref{app:generated_tables}.
+\end{remark}
+
+\subsection{Exhaustive search and uniqueness}
+\label{sec:uniqueness}
+
+Since the encoding space has size $24$, we can search exhaustively.
+The following theorem is the main identifiability result.
+
+\begin{theorem}[Unique encoding selected by start--stop boundary homology]
+\label{thm:unique_encoding}
+Among the $24$ bijective two-bit encodings $\mu:\{A,C,G,U\}\to\{00,01,10,11\}$, there is a unique encoding $\mu^\ast$ that satisfies Definition~\ref{def:start_stop_homology}. It is
+\[
+\mu^\ast:\quad A\mapsto 00,\quad C\mapsto 01,\quad G\mapsto 10,\quad U\mapsto 11.
+\]
+Moreover,
+\[
+N_{\mu^\ast}(\mathrm{AUG})=14,\qquad N_{\mu^\ast}(\mathrm{UAA})=48,
+\qquad
+w_{\mu^\ast}(\mathrm{AUG})=w_{\mu^\ast}(\mathrm{UAA})=100001.
+\]
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:boundary_preimages}, the boundary word $100001$ has exactly two preimages $\{14,48\}$.
+If an encoding satisfies start--stop boundary homology, then $N_\mu(\mathrm{AUG})$ and $N_\mu(\mathrm{UAA})$ must equal $\{14,48\}$ in some order.
+Since the leftmost two bits of $48$ are $11$ and the last four bits are $0000$, the codon $\mathrm{UAA}$ forces $\mu(U)=11$ and $\mu(A)=00$.
+Then $14$ has bit pattern $001110$, and the codon $\mathrm{AUG}$ forces $\mu(G)=10$.
+The remaining nucleotide $C$ must map to the remaining two-bit pattern $01$.
+Hence $\mu$ is uniquely determined and equals $\mu^\ast$.
+\end{proof}
+
+\subsection{An information-theoretic alignment diagnostic (optional)}
+\label{sec:mutual_information}
+
+Beyond the hard anchor above, \cite{Ma2025RF} suggests comparing the genetic code map $\mathsf{Gen}$ with the folding-induced compression by encoding-dependent joint statistics.
+For a codon random variable $C$ under a chosen prior (e.g.\ uniform on $64$ codons), we may consider the mutual information
+\[
+I\bigl(\mathsf{Gen}(C);\ w_\mu(C)\bigr),
+\]
+which measures how informative the folded type is about amino-acid identity under encoding $\mu$.
+We compute this quantity for all encodings as an auxiliary diagnostic; it is not used as a premise in the identification theorem.
+\input{sections/generated/mutual_information_brief}
+Additional scan details (including the top encodings by mutual information) are recorded in Appendix~\ref{app:generated_tables}.
+
+

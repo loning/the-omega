@@ -41,7 +41,14 @@ s(B):=\frac{\bar{g}_m(B)}{\bar{g}_0},
 \qquad
 \chi(B):=\log s(B).
 \]
-On homogeneous backgrounds, a canonical centering choice is $\bar{g}_0=d_m=2^m/F_{m+2}$ (or the empirical global mean of $\bar{g}_m$), which enforces $\mathbb{E}(\chi)=0$ at the chosen resolution.
+On homogeneous backgrounds, there are two natural global degeneracy means:
+\[
+d_m:=\frac{2^m}{|X_m|}=\frac{2^m}{F_{m+2}},
+\qquad
+\tilde d_m:=\mathbb{E}_{N\sim \mathrm{Unif}(\{0,\dots,2^m-1\})}\bigl(g_m(N)\bigr)=\frac{1}{2^m}\sum_{w\in X_m}\bigl|\mathrm{Fold}_m^{-1}(w)\bigr|^2.
+\]
+Since $\bar{g}_m(B)$ averages $g_m(N)$ over inputs, a canonical centering is $\bar{g}_0=\tilde d_m$ (or the empirical global mean of $\bar{g}_m$), which enforces $\mathbb{E}(\chi)=0$ at the chosen resolution.
+In the minimal $m=6$ model, Theorem~\ref{thm:fold6_preimages} gives $\tilde d_6=(8\cdot 2^2+4\cdot 3^2+9\cdot 4^2)/64=212/64\approx 3.3125$, while $d_6=64/21\approx 3.0476$.
 We then define the local overhead and lapse factors by
 \[
 \kappa(B):=\kappa_0\, s(B),
@@ -56,6 +63,11 @@ N(B):=\left(\frac{\kappa_0}{\kappa(B)}\right)^{\gamma}=\frac{1}{s(B)^{\gamma}}=\
 If a readout map collapses $g$ indistinguishable microstates into one stable output type, then resolving (or routing around) that degeneracy requires at least $\log_2 g$ bits of side information in the worst case.
 In particular, any operational overhead that restores stable single-valued readout must scale at least logarithmically with the effective degeneracy.
 \end{proposition}
+
+\begin{proof}
+If $g$ microstates are indistinguishable under the readout map, any disambiguation channel that restores a single-valued output must label $g$ alternatives.
+Binary side information of length $L$ can encode at most $2^L$ distinct labels, hence $2^L\ge g$ in the worst case, i.e.\ $L\ge \log_2 g$.
+\end{proof}
 
 The logarithmic scaling is a standard consequence of the source coding bound and is a minimality principle for disambiguation \cite{CoverThomas2006}.
 The definition therefore yields an explicit micro-to-macro chain:
@@ -84,6 +96,17 @@ p_\chi=\frac{1}{2}\dot{\chi}^2-V(\chi).
 \]
 \cite{Dodelson2003}
 When $V$ dominates, $w_\chi=p_\chi/\rho_\chi\to -1$, producing an accelerated-expansion component consistent with dark-energy phenomenology.
+
+\paragraph{Background--fluctuation split and unified dark sector.}
+Decompose the overhead field as
+\[
+\chi(x,t)=\bar{\chi}(t)+\delta\chi(x,t),
+\qquad \mathbb{E}_x(\delta\chi)=0,
+\]
+where $\bar{\chi}$ is the spatial mean at fixed cosmic time and $\delta\chi$ are spatial fluctuations.
+At the background level, $\bar{\chi}$ contributes an effective dark-energy component via $\bar\rho_\chi=\frac{1}{2}\dot{\bar\chi}^{\,2}+V(\bar\chi)$ and $\bar p_\chi=\frac{1}{2}\dot{\bar\chi}^{\,2}-V(\bar\chi)$, hence $w\approx -1$ whenever $V(\bar\chi)$ dominates.
+At the perturbative level, spatial fluctuations $\delta\chi$ source an effective gravitational potential through the weak-field relation $\Phi\propto -\chi$ (Section~\ref{subsec:newton_limit}), producing clustering and lensing in the same way as an effective dark-matter component.
+This realizes a unified dark sector in a single overhead-derived field.
 
 We model $V(\chi)$ as a geometric \emph{grid-tension potential} induced by resolution refinement.
 As Hilbert order $n$ increases (spatial refinement), maintaining locality and causal connectivity requires higher scan scheduling and higher refresh rates.

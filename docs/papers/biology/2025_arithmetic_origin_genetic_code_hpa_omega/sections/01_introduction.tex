@@ -1,0 +1,44 @@
+\section{Introduction}
+\label{sec:introduction}
+
+The genetic code is a structured many-to-one mapping from $64$ RNA triplet codons to $20$ amino acids and a stop signal.
+It exhibits block patterns, synonym degeneracy, and special control semantics at start and stop codons.
+Standard explanations emphasize historical contingency and ``frozen accident'' arguments \cite{Crick1968}, coevolution with amino-acid biosynthesis pathways \cite{Wong1975}, and quantitative error-minimization properties \cite{HaigHurst1991}, but they often leave open a sharper question:
+\emph{why this particular table, and why are the control codons so exceptional?}
+
+This paper adopts a different viewpoint: treat codon translation as a finite arithmetic readout problem at a minimal resolution.
+The starting observation is that a three-letter codon over a four-letter alphabet naturally admits a two-bit encoding per nucleotide, hence a $6$-bit microstate.
+If a downstream readout device (or protocol) only resolves certain combinatorial patterns in the $6$-bit string, then a fixed compression template arises, independent of chemical details.
+
+In the HPA--$\Omega$ program, \cite{Ma2025RF} formalizes such a template via \emph{resolution folding}: a computable map $\mathrm{Fold}_6:\{0,\dots,63\}\twoheadrightarrow X_6$ obtained by Zeckendorf normalization and window truncation.
+The stable type space $X_6$ is the golden-mean admissible set of length-$6$ binary words, with $|X_6|=21$, matching the cardinality $20+\mathrm{Stop}$ of the genetic-code outputs.
+Moreover, $X_6$ splits into $18$ cyclic states and exactly $3$ boundary states.
+These boundary states provide a small, sharply defined ``control sector'' inside the $64\to 21$ compression.
+
+\paragraph{Reverse compilation as a finite identification problem.}
+The key unknown is the \emph{hardware encoding} that maps nucleotides to two-bit blocks.
+If we assume a bijection $\mu:\{A,C,G,U\}\to\{00,01,10,11\}$, then there are exactly $4!=24$ possible encodings, so any identification criterion can be tested exhaustively.
+
+We formulate a minimal and falsifiable anchor:
+\emph{the canonical start codon $\mathrm{AUG}$ and the canonical stop codon $\mathrm{UAA}$ should land on the same boundary state}.
+This uses only a small piece of widely shared biological semantics, and it yields a rigid structural prediction at the folding level.
+
+\paragraph{A built-in limitation at minimal resolution.}
+The RF interface also provides an encoding-independent characterization of the boundary sector by a fixed set of six indices.
+As a consequence, in the minimal $m=6$ model it is \emph{impossible} to place all three standard stop codons $\{\mathrm{UAA,UAG,UGA}\}$ into the boundary sector for any two-bit encoding (Section~\ref{sec:stop_limit}).
+This forces a natural refinement: treat $\mathrm{UAA}$ as a boundary-aligned ``hard stop'' candidate while allowing $\mathrm{UAG}$ and $\mathrm{UGA}$ to realize context-sensitive or mismatch-driven stop mechanisms.
+
+\paragraph{Contributions.}
+This paper provides:
+\begin{itemize}
+\item a self-contained construction of the $\mathrm{Fold}_6$-based codon spectrum interface (types, boundary sector, Zeckendorf levels, and the uplift variable);
+\item an exhaustive search over all $24$ two-bit encodings, showing that the start--stop boundary-homology criterion selects a \emph{unique} encoding $\mu^\ast$;
+\item the resulting start--stop $14/48$ symmetry and the fine structure of stop codons under $\mu^\ast$;
+\item a sequence-level spectrum definition $(Z,U)$ and a set of directly testable predictions on annotated genes or raw genomes;
+\item auditable Python scripts (standard library only) that reproduce all finite computations and generate LaTeX table fragments used in this manuscript.
+\end{itemize}
+
+We emphasize that the folding template is a minimal arithmetic--topological layer.
+It is not claimed to replace biochemical explanations; rather, it constrains the space of compatible encodings and provides new, computation-first falsifiable invariants.
+
+

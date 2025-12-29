@@ -78,16 +78,27 @@ Flat rotation curves are empirically ubiquitous in disk galaxies \cite{SofueRubi
 For example, a typical spiral-galaxy value $v_{\mathrm{flat}}\sim 200\,\mathrm{km/s}$ corresponds to $v_{\mathrm{flat}}^2/c^2\sim 4\times 10^{-7}$; if the reconstructed $\Delta\chi$ across the flat region is $O(1)$, then $\gamma$ is naturally at the $10^{-7}$ scale.
 
 \paragraph{Least-squares estimator for $\gamma$.}
-Given rotation-curve measurements $\{(r_i,v_i,\sigma_i)\}_{i=1}^N$ and a reconstructed profile $\chi(r)$, define
+Given rotation-curve measurements $\{(r_i,v_i,\sigma_i)\}_{i=1}^N$ (with $\sigma_i$ the uncertainty on $v_i$) and a reconstructed profile $\chi(r)$, define
 \[
 v_{\mathrm{pred}}^2(r_i;\gamma):=-\gamma c^2\, r_i\,\chi'(r_i).
 \]
-Estimating $\chi'(r_i)$ by finite differences, one obtains a one-parameter weighted least-squares fit:
+Estimating $\chi'(r_i)$ by finite differences (e.g.\ a central difference $\chi'(r_i)\approx(\chi(r_{i+1})-\chi(r_{i-1}))/(r_{i+1}-r_{i-1})$), define
 \[
-\widehat{\gamma}=\arg\min_{\gamma>0}\sum_{i=1}^N \frac{\bigl(v_{\mathrm{pred}}^2(r_i;\gamma)-v_i^2\bigr)^2}{\sigma_i^2}
-=\frac{\sum_{i=1}^N \left(\frac{x_i v_i^2}{\sigma_i^2}\right)}{\sum_{i=1}^N \left(\frac{x_i^2}{\sigma_i^2}\right)},
+y_i:=v_i^2,
 \qquad
-x_i:=-c^2 r_i\,\chi'(r_i).
+x_i:=-c^2 r_i\,\chi'(r_i),
+\qquad
+\sigma_{y,i}\approx 2v_i\sigma_i,
+\]
+where $\sigma_{y,i}$ is the propagated uncertainty on $v_i^2$ in the small-error regime.
+One then obtains a one-parameter weighted least-squares fit:
+\[
+\widehat{\gamma}=\arg\min_{\gamma>0}\sum_{i=1}^N \frac{(\gamma x_i-y_i)^2}{\sigma_{y,i}^2}
+=\frac{\sum_{i=1}^N \left(\frac{x_i y_i}{\sigma_{y,i}^2}\right)}{\sum_{i=1}^N \left(\frac{x_i^2}{\sigma_{y,i}^2}\right)}.
+\]
+Under standard independent Gaussian noise assumptions on $y_i$, the estimator variance is
+\[
+\Var(\widehat{\gamma})=\left(\sum_{i=1}^N \frac{x_i^2}{\sigma_{y,i}^2}\right)^{-1}.
 \]
 
 \subsection{Micro-to-macro interface: folding statistics as an overhead definition}

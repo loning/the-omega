@@ -1,0 +1,132 @@
+\section{Framework: microstates, admissible types, and Zeckendorf window folding}
+\label{sec:framework}
+
+\subsection{Six-bit microstates and the $21$ admissible types}
+\label{sec:microstates}
+
+At the minimal resolution of three nucleotides with two bits each, we take the microstate space
+\[
+\Omega_6:=\{0,1\}^6,\qquad |\Omega_6|=64.
+\]
+
+The stable type space is the golden-mean admissible set of length-$6$ binary words:
+\[
+X_6:=\{w\in\{0,1\}^6:\ \text{$w$ contains no substring ``11''}\}.
+\]
+It is classical that $|X_6|=F_8=21$, by the Fibonacci recursion for binary words with no adjacent ones \cite{LindMarcus1995,Koshy2001}.
+
+\subsection{Cyclic vs.\ boundary states}
+\label{sec:boundary}
+
+Following \cite{Ma2025RF}, we distinguish cyclic admissibility from linear admissibility.
+Let $w=w_1\cdots w_6\in X_6$.
+If the word is placed on a cycle, the endpoints $w_1$ and $w_6$ become adjacent.
+Hence we define:
+\[
+X_6^{\mathrm{cyc}}:=\{w\in X_6:\ (w_1,w_6)\neq (1,1)\},\qquad
+X_6^{\mathrm{bdry}}:=\{w\in X_6:\ w_1=w_6=1\}.
+\]
+In the $m=6$ case the boundary sector has exactly three words:
+\[
+X_6^{\mathrm{bdry}}=\{100001,\ 100101,\ 101001\}.
+\]
+The remaining $18$ words form the cyclic sector.
+
+\subsection{Zeckendorf representation}
+\label{sec:zeckendorf}
+
+Let $(F_n)_{n\ge 1}$ be Fibonacci numbers with $F_1=F_2=1$.
+Zeckendorf's theorem states that every nonnegative integer $N$ has a unique representation as a sum of nonconsecutive Fibonacci numbers \cite{Zeckendorf1972}:
+\[
+N=\sum_{k\ge 1} c_k F_{k+1},\qquad c_k\in\{0,1\},\qquad c_k c_{k+1}=0.
+\]
+We call $(c_k)_{k\ge 1}$ the Zeckendorf digits of $N$.
+
+\subsection{The folding map $\mathrm{Fold}_6$ and the Zeckendorf value $V$}
+\label{sec:fold6}
+
+Define the window-$6$ folding map by truncating the Zeckendorf digits:
+\[
+\mathrm{Fold}_6:\{0,\dots,63\}\to X_6,\qquad
+\mathrm{Fold}_6(N):=(c_1,\dots,c_6),
+\]
+padding with zeros when the Zeckendorf expansion has fewer than six digits.
+
+For $w=(w_1,\dots,w_6)\in X_6$ define its Zeckendorf value
+\[
+V(w):=\sum_{k=1}^6 w_k F_{k+1} = w_1 F_2 + w_2 F_3 + \cdots + w_6 F_7
+ = w_1 + 2 w_2 + 3 w_3 + 5 w_4 + 8 w_5 + 13 w_6.
+\]
+In the $m=6$ case, $V$ maps $X_6$ bijectively onto $\{0,1,\dots,20\}$ \cite{Ma2025RF}.
+
+\subsection{Boundary preimages and the $34$ split}
+\label{sec:boundary_preimages}
+
+The key structural fact behind the start--stop symmetry is that boundary words have exactly two preimages under $\mathrm{Fold}_6$.
+
+\begin{proposition}[Boundary preimages at window length $6$ \cite{Ma2025RF}]
+\label{prop:boundary_preimages}
+The three boundary words in $X_6^{\mathrm{bdry}}$ have preimages:
+\[
+\mathrm{Fold}_6^{-1}(100001)=\{14,48\},\qquad
+\mathrm{Fold}_6^{-1}(101001)=\{17,51\},\qquad
+\mathrm{Fold}_6^{-1}(100101)=\{19,53\}.
+\]
+In each case the two preimages differ by $34=F_9$.
+\end{proposition}
+
+\begin{proof}
+We sketch the argument for $100001$; the other cases are analogous.
+The Zeckendorf value is $V(100001)=1+13=14$, so $N=14$ is a preimage.
+Because the last window digit is $1$ (the $F_7=13$ term is present), the next admissible Fibonacci weight that can be added without creating adjacency is $F_9=34$ (the intermediate weight $F_8=21$ is adjacent to $F_7$).
+Hence $14+34=48$ has the same first six Zeckendorf digits and is the only other preimage within $\{0,\dots,63\}$.
+See \cite{Ma2025RF} for a closed-form characterization of all preimages.
+\end{proof}
+
+This fixed $34$-splitting will later realize the ``same boundary, different uplift'' mechanism for start and stop.
+
+\subsection{Encoding-independent invariants at window length $6$}
+\label{sec:fold6_invariants}
+
+Beyond the boundary-pair structure, $\mathrm{Fold}_6$ has two rigid features that do not depend on any nucleotide encoding.
+They are intrinsic combinatorics of Zeckendorf truncation on $\{0,\dots,63\}$.
+
+\begin{theorem}[Finite preimage sizes and a rigid degeneracy histogram \cite{Ma2025RF}]
+\label{thm:fold6_degeneracy}
+For every $w\in X_6$, the preimage size $\bigl|\mathrm{Fold}_6^{-1}(w)\bigr|$ is one of $2$, $3$, or $4$.
+Moreover, the degeneracy histogram over the $21$ outputs is fixed:
+\[
+\#\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=2\}=8,\qquad
+\#\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=3\}=4,\qquad
+\#\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=4\}=9.
+\]
+\end{theorem}
+
+\begin{lemma}[Uplift values for $N\in\{0,\dots,63\}$]
+\label{lem:delta_values}
+Define the encoding-independent uplift of an index by
+\[
+\Delta(N):=N-V\bigl(\mathrm{Fold}_6(N)\bigr).
+\]
+Then for $N\in\{0,\dots,63\}$,
+\[
+\Delta(N)\in\{0,21,34,55\}=\{0,F_8,F_9,F_{10}\}.
+\]
+\end{lemma}
+
+\begin{proof}
+Write the Zeckendorf expansion $N=\sum_{k\ge 1} c_k F_{k+1}$ and let $\mathrm{Fold}_6(N)=(c_1,\dots,c_6)$.
+Then
+\[
+\Delta(N)=\sum_{k\ge 7} c_k F_{k+1}.
+\]
+Since $N\le 63$, the only Fibonacci weights beyond the window that can appear are $F_8=21$, $F_9=34$, and $F_{10}=55$.
+The Zeckendorf constraint forbids adjacent ones, hence at most one of the three digits $(c_7,c_8,c_9)$ can be $1$.
+Therefore $\Delta(N)$ can only be $0$, $21$, $34$, or $55$.
+\end{proof}
+
+\begin{remark}[Where the multiplicities are recorded]
+Appendix~\ref{app:generated_tables} records the multiplicities of $\Delta(N)$ over $N\in\{0,\dots,63\}$ and the induced codon-level histogram under $\mu^\ast$, generated by the reproducibility scripts.
+\end{remark}
+
+

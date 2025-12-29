@@ -1,0 +1,31 @@
+\begin{abstract}
+The genetic code maps $64$ RNA codons to $20$ amino acids and stop signals, a structured many-to-one compression often attributed to historical contingency or evolutionary tradeoffs \cite{Crick1968,Wong1975,HaigHurst1991}. Motivated by the finite-resolution \texorpdfstring{Zeckendorf--Hilbert}{Zeckendorf--Hilbert} folding template in the HPA--$\Omega$ program \cite{Ma2025RF}, we propose a reproducible minimal arithmetic--topological model in which codons are embedded into a $6$-bit microstate space via an \emph{unknown} bijective two-bit nucleotide encoding, and are then projected by a Zeckendorf-window folding operator to a stable type space of size $21$.
+
+Concretely, let $\Omega_6=\{0,1\}^6$ and let $X_6\subset\{0,1\}^6$ be the golden-mean admissible set (no adjacent ones), so $|X_6|=21$ and $X_6$ splits into $18$ cyclic states and $3$ boundary states. For each integer $N\in\{0,\dots,63\}$, $\mathrm{Fold}_6(N)\in X_6$ is defined as the first six Zeckendorf digits of $N$ (Fibonacci base) \cite{Zeckendorf1972}. Given a nucleotide encoding $\mu:\{A,C,G,U\}\to\{00,01,10,11\}$, a codon $c$ induces an integer microstate index $N_\mu(c)\in\{0,\dots,63\}$, a folded type $w_\mu(c)=\mathrm{Fold}_6(N_\mu(c))$, and a Zeckendorf spectral level $V_\mu(c)=V(w_\mu(c))\in\{0,\dots,20\}$.
+
+We formulate genetic-code ``reverse compilation'' as an identification problem over the finite search space of $4!=24$ encodings. Using only two widely accepted semantic anchors---$\mathrm{AUG}$ as a canonical start codon and $\mathrm{UAA}$ as a canonical stop codon \cite{Alberts2014,Crick1966,NirenbergMatthaei1961}---we exhaustively search all encodings and find a unique solution $\mu^\ast$ such that $\mathrm{AUG}$ and $\mathrm{UAA}$ fold to the \emph{same} boundary state $100001$. Under this encoding,
+\[
+\mu^\ast:\quad A\mapsto 00,\quad C\mapsto 01,\quad G\mapsto 10,\quad U\mapsto 11,
+\]
+the two codons have microstate indices $N_{\mu^\ast}(\mathrm{AUG})=14$ and $N_{\mu^\ast}(\mathrm{UAA})=48$, which are exactly the two preimages $\{14,48\}$ of the boundary word $100001$. This yields a rigid and testable \emph{start--stop $14/48$ boundary symmetry}: the same topological gate is realized by a low-energy local preimage (start) and a high-energy uplifted preimage (stop), separated by the Fibonacci weight $34=F_9$.
+
+We further prove a structural limitation of the minimal $m=6$ interface: for any encoding, at most one of the three standard stop codons $\{\mathrm{UAA,UAG,UGA}\}$ can land in the boundary sector (hence a ``three-stop-all-boundary'' hypothesis is false at this resolution). Finally, we define an \emph{uplift} variable $\Delta_\mu(c)=N_\mu(c)-V_\mu(c)$, derive codon and sequence Zeckendorf spectra, and provide auditable Python scripts that reproduce all finite claims and enable genome-scale tests.
+\end{abstract}
+
+\begin{sloppypar}
+\textbf{Keywords}: genetic code; Zeckendorf representation; golden mean shift; resolution folding; boundary states; reverse compilation; mutual information; codon spectra; start--stop symmetry.
+\end{sloppypar}
+
+\paragraph{Conventions.}
+Unless otherwise stated, $\log$ denotes the natural logarithm.
+We use Fibonacci numbers $F_1=F_2=1$, $F_{n+1}=F_n+F_{n-1}$.
+For $N\in\{0,\dots,63\}$, the Zeckendorf digits $c_k\in\{0,1\}$ satisfy $c_k c_{k+1}=0$ and
+\[
+N=\sum_{k\ge 1} c_k F_{k+1}.
+\]
+The folding map is $\mathrm{Fold}_6(N)=(c_1,\dots,c_6)\in X_6$, with padding by zeros as needed.
+
+\tableofcontents
+\newpage
+
+

@@ -57,6 +57,23 @@ Then the binary-input folding map is
 \]
 \end{definition}
 
+\begin{proposition}[Well-definedness and surjectivity of \texorpdfstring{$\mathrm{Fold}_m$}{Foldm}]
+\label{prop:foldm_surjective}
+For every $m\ge 1$, the map $\mathrm{Fold}_m$ in Definition~\ref{def:foldm} is well-defined with codomain $X_m$ and is surjective.
+\end{proposition}
+
+\begin{proof}
+Well-definedness: by definition, the Zeckendorf digit sequence $Z(N)$ has no adjacent ones, hence its truncation $\pi_m(Z(N))$ contains no occurrence of $11$, i.e.\ $\mathrm{Fold}_m(N)\in X_m$.
+
+Surjectivity: for any $w=w_1\cdots w_m\in X_m$, define its Zeckendorf value
+\[
+V_m(w):=\sum_{k=1}^m w_k F_{k+1}.
+\]
+Since $w$ has no adjacent ones, this is already a valid Zeckendorf representation of $V_m(w)$; by uniqueness, $Z(V_m(w))$ begins with the digits $w_1,\dots,w_m$, hence $\pi_m(Z(V_m(w)))=w$ and therefore $\mathrm{Fold}_m(V_m(w))=w$.
+Finally, $V_m(w)\le F_{m+2}-1$ (maximal representable value with weights $F_2,\dots,F_{m+1}$ under the no-adjacent-ones constraint), and $F_{m+2}\le 2^m$ for all $m\ge 1$.
+Thus $V_m(w)\in\{0,\dots,2^m-1\}$, so the preimage element lies in the stated domain.
+\end{proof}
+
 \begin{remark}[Scope]
 The paper uses the $m=6$ case as a minimal fully explicit anchor (Appendix~\ref{app:fold6_table}).
 General window-length preimage structure and scaling laws are treated in the companion folding manuscript \cite{Ma2025RF}.
@@ -86,6 +103,44 @@ Moreover, the degeneracy histogram is fixed:
 \]
 The complete mapping table is recorded in Appendix~\ref{app:fold6_table}.
 \end{theorem}
+
+\begin{proof}
+Write the Zeckendorf expansion of $N\in\{0,\dots,63\}$ as
+\[
+N=\sum_{k\ge 1} c_k F_{k+1},
+\qquad c_k\in\{0,1\},\qquad c_kc_{k+1}=0.
+\]
+Since $F_{11}=89>63$, only digits up to $k=9$ can be nonzero, and we may write
+\[
+N=\sum_{k=1}^{6} c_k F_{k+1} + c_7F_8+c_8F_9+c_9F_{10}
+\;=\; V + 21c_7+34c_8+55c_9,
+\]
+where $V=\sum_{k=1}^6 c_kF_{k+1}$.
+By definition, $\mathrm{Fold}_6(N)=w=w_1\cdots w_6$ means that $c_k=w_k$ for $k=1,\dots,6$, hence $V=V(w)$.
+The Zeckendorf constraint gives $w_6c_7=0$, $c_7c_8=0$, and $c_8c_9=0$.
+
+\paragraph{Case 1: $w_6=1$ (hence $V\ge 13$).}
+Then $c_7=0$.
+Moreover, $c_9=1$ would force $N\ge V+55\ge 68$, impossible on $\{0,\dots,63\}$.
+Thus $c_9=0$ and $c_8\in\{0,1\}$ is free, yielding exactly two preimages:
+\[
+\mathrm{Fold}_6^{-1}(w)=\{V,\ V+34\}.
+\]
+
+\paragraph{Case 2: $w_6=0$.}
+Then $(c_7,c_8)\in\{(0,0),(1,0),(0,1)\}$.
+If $c_9=1$, then $c_8=0$ and $N=V+55\le 63$, hence $V\le 8$; in that subcase necessarily $c_7=0$ as well.
+Therefore:
+\begin{itemize}
+\item if $V\le 8$, then $\mathrm{Fold}_6^{-1}(w)=\{V,\ V+21,\ V+34,\ V+55\}$ has size $4$;
+\item if $9\le V\le 12$, then $\mathrm{Fold}_6^{-1}(w)=\{V,\ V+21,\ V+34\}$ has size $3$.
+\end{itemize}
+
+\paragraph{Histogram.}
+Words with $w_6=1$ must have $w_5=0$, and the prefix $w_1\cdots w_4$ can be any element of $X_4$, hence there are $|X_4|=F_6=8$ such words; these are exactly the $|\mathrm{Fold}_6^{-1}(w)|=2$ class.
+Among the remaining $w_6=0$ words, the condition $9\le V\le 12$ is equivalent to $w_5=1$ and $(w_1,w_2,w_3)\in X_3\setminus\{\texttt{000}\}$ (since $w_4=0$ is forced by admissibility), giving exactly $|X_3|-1=F_5-1=4$ words; these are the $|\mathrm{Fold}_6^{-1}(w)|=3$ class.
+All other admissible words lie in the $V\le 8$ class, hence the $|\mathrm{Fold}_6^{-1}(w)|=4$ class has size $21-8-4=9$.
+\end{proof}
 
 \subsection{Stable types, cyclic split, and the ``hidden'' degrees of freedom}
 \label{subsec:ghost_microstates_bridge}

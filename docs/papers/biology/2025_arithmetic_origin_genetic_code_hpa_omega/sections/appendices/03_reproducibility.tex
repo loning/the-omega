@@ -1,0 +1,66 @@
+\section{Reproducibility}
+\label{app:reproducibility}
+
+This paper includes minimal, auditable scripts that reproduce the finite encoding search, codon tables, and sequence-spectrum extraction.
+All scripts are standard-library Python and live under:
+\[
+\texttt{docs/papers/biology/2025\_arithmetic\_origin\_genetic\_code\_hpa\_omega/scripts/}.
+\]
+
+\subsection{What is reproduced}
+The scripts reproduce:
+\begin{itemize}
+\item $\mathrm{Fold}_6$ computation for $N=0,\dots,63$ (via greedy Zeckendorf digits);
+\item the exhaustive scan of all $24$ two-bit nucleotide encodings, including the unique identification of $\mu^\ast$;
+\item stop-codon fine structure, boundary-sector codon list, and the amino-acid spectral summary;
+\item mutual-information diagnostics under uniform codon prior;
+\item sequence-level $(Z,U)$ traces for arbitrary DNA/RNA FASTA inputs, with optional ORF extraction.
+\end{itemize}
+
+\subsection{Main entry points}
+\begin{itemize}
+\item \path{exp_genetic_code_decompiler.py}: generates all \path{sections/generated/*.tex} fragments and prints key checks.
+\item \path{seq_spectrum_cli.py}: command-line sequence spectrum tool (FASTA input, frame/ORF options, TSV/JSONL outputs).
+\end{itemize}
+
+\subsection{Sequence spectrum CLI usage}
+The CLI requires at least one output: either a per-codon TSV trace (\path{--out}) or a per-segment JSONL summary (\path{--summary-out}), or both.
+
+\paragraph{Full sequence (single frame).}
+\begin{verbatim}
+python3 scripts/seq_spectrum_cli.py \
+  --fasta your_sequence.fasta \
+  --frame 0 \
+  --out out_trace.tsv \
+  --summary-out out_summary.jsonl \
+  --stop-window 10
+\end{verbatim}
+
+\paragraph{ORF mode (single frame).}
+ORFs are extracted using start \texttt{AUG} and stops \texttt{UAA/UAG/UGA} in the chosen frame.
+\begin{verbatim}
+python3 scripts/seq_spectrum_cli.py \
+  --fasta your_sequence.fasta \
+  --frame 0 \
+  --orfs --min-codons 100 \
+  --summary-out orf_summary.jsonl \
+  --stop-window 10
+\end{verbatim}
+
+\paragraph{Summary fields (JSONL).}
+Each JSON line corresponds to one segment (either \texttt{full} or one ORF) and includes:
+\begin{itemize}
+\item counts of codons and boundary hits;
+\item $V$ and $\Delta$ histograms;
+\item start/stop split counts via \texttt{start\_VDelta\_hist} and \texttt{stop\_VDelta\_hist};
+\item optional stop-context uplift statistics (before/after windows) when \path{--stop-window>0}.
+\end{itemize}
+
+\subsection{Generated LaTeX fragments}
+The scripts write small LaTeX fragments (table rows and summary lines) into:
+\[
+\texttt{docs/papers/biology/2025\_arithmetic\_origin\_genetic\_code\_hpa\_omega/sections/generated/}.
+\]
+This repository includes the generated fragments so the paper can compile out of the box, but they can be regenerated at any time.
+
+
