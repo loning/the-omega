@@ -1,0 +1,50 @@
+\section{Operational definition: life as predictive active error correction}
+\label{sec:life_aec}
+
+Phase friction is unavoidable at finite resolution (Section~\ref{sec:readout_phase_friction}).
+Therefore, any subsystem that maintains stable low-entropy structure over long times must implement continuous repair.
+This motivates an operational definition of life that is compatible with the second law and is auditable at the protocol level.
+
+\subsection{Agent definition at the readout interface}
+\label{sec:agent_definition}
+
+\begin{definition}[Agent as predictive active error correction (AEC)]
+\label{def:agent_aec}
+Fix a finite-resolution readout protocol and an external environment.
+Let $S$ be an open subsystem with a bounded computational flux budget $\mathcal{E}$, understood operationally as an upper bound on the sustained average control power available for measurement, modeling, and feedback.
+We call $S$ an \emph{agent} if there exist internal state variables $M$ (a memory/model) and feedback operations $\mathcal{U}$ such that:
+\begin{enumerate}
+  \item (\textbf{conditional information acquisition}) the readout channel provides conditional information about the environment, yielding a nontrivial mutual information between $M$ and environment-dependent readout outcomes;
+  \item (\textbf{predictive internal model}) the internal dynamics maintains a predictive model of future readout outcomes (possibly coarse-grained), so that $M$ carries information about future readout statistics;
+  \item (\textbf{active reduction of phase friction}) applying $\mathcal{U}$ reduces the subsystem's phase-friction entropy production rate relative to a passive baseline (same protocol and environment, but with feedback disabled), i.e.
+  \begin{equation}
+    \dot S_{\mathrm{pf}}^{\mathrm{(active)}}\ <\ \dot S_{\mathrm{pf}}^{\mathrm{(passive)}}
+  \end{equation}
+  on a sustained time interval, while respecting the budget $\mathcal{E}$.
+\end{enumerate}
+\end{definition}
+
+\begin{remark}[Life as an AEC phase]
+Definition~\ref{def:agent_aec} is intentionally minimal and interface-level: it does not identify life with a particular chemistry.
+In this manuscript we use ``life'' as shorthand for an AEC-capable agent that operates stably over long time scales, i.e.\ one that can maintain low-entropy structure despite persistent phase friction.
+The definition is compatible with standard thermodynamics: an agent does not destroy entropy; it \emph{redirects} dissipation into waste channels while protecting internal degrees of freedom.
+In practice, the inequality in Definition~\ref{def:agent_aec} is tested using the mismatch-rate estimator $\Sigma_N(t)$ derived from windowed discrepancy certificates (Section~\ref{sec:mismatch_density}).
+\end{remark}
+
+\subsection{Reverse compilation: prediction as arithmetic compression, control as phase correction}
+\label{sec:reverse_compilation}
+
+In the $\Omega$ implementation dictionary, local unitary update rules can be compiled into nearest-neighbor circuits, and the required depth defines routing overhead $\kappa(x)$ and lapse $\lapse(x)$ (Section~\ref{sec:lapse_rescaling}).
+We use ``forward compilation'' for the map from dynamics to implementation cost.
+The agent operation is the reverse direction: given limited internal bits, infer what future readout will produce and pre-configure corrective actions.
+
+\paragraph{Reverse compilation (interface description).}
+At the operational layer, prediction is the compression of future readout words under a finite alphabet and finite resolution.
+Control is the implementation of phase corrections compatible with the Weyl structure \eqref{eq:weyl_pair}.
+Together they aim to reduce mismatch density $\sigma(x,\tau)$ and therefore reduce the phase-friction entropy flow \eqref{eq:Spf_rate_t}.
+
+\paragraph{Canonical coding in the golden branch.}
+For irrational rotations, canonical codings (Ostrowski, Zeckendorf/Fibonacci in the golden branch) provide a natural coordinate system for readout compression and for multi-scale stabilization \cite{Zeckendorf1972,Ma2025HPA,Ma2025CT,Ma2025HPT}.
+In this sense, ``life is not a collection of chemical reactions'': chemistry is a physical substrate, while life is the algorithmic phase of reverse compilation---predicting future readout and actively correcting phase-friction mismatch.
+
+

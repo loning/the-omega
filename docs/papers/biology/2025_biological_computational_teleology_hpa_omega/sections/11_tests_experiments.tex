@@ -1,0 +1,83 @@
+\section{Testable predictions and experimental/data-analysis protocols}
+\label{sec:tests}
+
+The appropriate empirical posture for HPA--$\Omega$ is to specify testable interfaces: statistical biases, scaling laws, and protocol-level certificates that can be measured across systems.
+This section gives three minimal, falsifiable templates aligned with the AEC definition.
+
+\subsection{P1: rhythm ratio bias and the anti-locking index \texorpdfstring{$Q_\delta$}{Qdelta}}
+\label{sec:test_P1}
+
+\paragraph{Data.}
+Cross-species or cross-condition measurements of coupled biological rhythms (e.g.\ heart--respiration, gait frequencies, circadian harmonics, neural band couplings), together with estimates of noise levels and coupling strengths.
+
+\paragraph{Pipeline.}
+\begin{enumerate}
+  \item Infer an effective frequency ratio $\alpha$ using standard phase-synchrony or coupled-oscillator identification methods \cite{Strogatz1994,PikovskyRosenblumKurths2001}.
+  \item Estimate an operational locking tolerance $\delta$ from noise/coupling (or from empirical locking width) using the detuning-to-ratio conversion \eqref{eq:delta_from_detuning}.
+  \item Compute $Q_\delta(\alpha)$ as in Eq.~\eqref{eq:Qdelta_def} (Appendix~\ref{app:repro_code} provides a reference implementation).
+  \item Compare the distribution of $Q_\delta$ (or normalized $Q_\delta$ relative to the Diophantine bound) against appropriate baselines that preserve sampling and noise structure.
+\end{enumerate}
+\paragraph{Decision criterion.}
+If there is no anti-locking selection pressure, $Q_\delta$ should not systematically exceed baselines.
+If the control-law hypothesis holds (Remark~\ref{rem:control_law}), $Q_\delta$ should be significantly shifted upward and should exhibit an enhanced upper tail near the golden-branch extremum.
+
+\subsection{P2: phase-friction certificate \texorpdfstring{$E_N$}{EN} vs maintenance dissipation}
+\label{sec:test_P2}
+
+\paragraph{Claim.}
+Stronger AEC should manifest as lower effective mismatch density $\sigma$ (or lower discrepancy-based proxies such as $D_N^\ast$ at matched scales) under comparable external perturbations, at the cost of higher maintenance dissipation $\dot W_{\mathrm{diss}}$.
+
+\paragraph{Operational proxies.}
+Fix a readout variable $y(t)$ (e.g.\ inter-event intervals, phase-difference increments, or any scalar readout chosen by the protocol) and map it to a phase coordinate $u(t)\in[0,1)$ by uniformization under a reference distribution:
+\begin{equation}
+  u(t) := \widehat{F}\bigl(y(t)\bigr),
+  \label{eq:u_uniformization}
+\end{equation}
+where $\widehat{F}$ is an empirically estimated CDF under matched baseline conditions.
+For a window of $N$ samples ending at time $t$, compute the star discrepancy $D_N^\ast(t)$ of $\{u_{t,1},\dots,u_{t,N}\}$ and define
+\begin{equation}
+  E_N(t):=N D_N^\ast(t),\qquad S_{\mathrm{pf}}^{(N)}(t):=\kB E_N(t).
+\end{equation}
+Define the external-time mismatch rate by a finite difference
+\begin{equation}
+  \Sigma_N(t) := \frac{E_N(t+\Delta t)-E_N(t)}{\Delta t},
+  \label{eq:SigmaN_def}
+\end{equation}
+which estimates $\Sigma(x,t)$ after smoothing (Section~\ref{sec:mismatch_density}).
+
+For the dissipation side, use a protocol-matched estimate of maintenance power $P_{\mathrm{maint}}(t)$ (e.g.\ metabolic power minus external mechanical work, or ATP expenditure rates). In the minimal closure where maintenance is dominated by exporting phase-friction entropy at temperature $T_c$, the bound \eqref{eq:Wdiss_lower} gives
+\begin{equation}
+  P_{\mathrm{maint}}(t)\ \ge\ \kB T_c\,\Sigma(x,t),
+  \label{eq:Pmaint_lower}
+\end{equation}
+and with geometric impedance one expects an affine lower envelope
+\begin{equation}
+  P_{\mathrm{maint}}(t)\ \gtrsim\ \kB T_c\,\Sigma(x,t)\ +\ P_{\mathrm{geom}}(t),
+  \label{eq:Pmaint_affine}
+\end{equation}
+where $P_{\mathrm{geom}}$ aggregates architecture-dependent overhead terms (Section~\ref{sec:geometric_landauer}).
+
+\paragraph{Decision criterion.}
+Across matched conditions, systems with enhanced repair/control should exhibit reduced $\Sigma_N$ at the relevant scale.
+For quantitative fitting, one can regress $P_{\mathrm{maint}}$ against $\Sigma_N$ to estimate $\kB T_c$ as the minimal slope and diagnose additional intercept/overhead terms associated with $Z_{\mathrm{geom}}$.
+
+\subsection{P3: hierarchical relaxation and \texorpdfstring{$1/f$}{1/f} structure from Fibonacci/Zeckendorf layering}
+\label{sec:test_P3}
+
+HPA--$\Omega$ predicts that canonical multi-scale coding (Ostrowski/Zeckendorf hierarchies) can imprint hierarchical time scales on readout-induced residuals \cite{Ma2025HPT}.
+If biological repair/relaxation processes aggregate across a roughly logarithmic ladder of time scales, a mid-band $1/f$ spectrum can appear as a robust template (with task- and protocol-dependent prefactors).
+This yields a falsifiable interface: identify the relevant band, estimate the slope and prefactor, and test consistency with hierarchical-ladder aggregation rather than with purely white-noise assumptions.
+For background on $1/f$ phenomenology and spectral estimation practices, see e.g.\ \cite{Milotti2002}.
+
+\subsection{Reference implementations}
+\label{sec:reference_impl}
+
+Appendix~\ref{app:repro_code} includes minimal Python reference implementations for:
+\begin{itemize}
+  \item logarithmic mismatch-growth compatibility for the golden branch vs linear growth for rationals (Experiment~A),
+  \item a numerical illustration of the predictive-information-rate threshold \eqref{eq:Idot_threshold} (Experiment~B),
+  \item computation of $Q_\delta$ (Experiment~C).
+\end{itemize}
+The scripts are provided for transparent reproducibility of the certificate computations and threshold numerics used in the text.
+
+

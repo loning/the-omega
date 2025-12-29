@@ -1,0 +1,42 @@
+\section{Statistical test details for the golden-branch control-law hypothesis}
+\label{app:golden_tests}
+
+Given samples $\{(\alpha_i,\delta_i)\}_{i=1}^M$ inferred from data (Section~\ref{sec:test_P1}), define
+\begin{equation}
+  Q_{\delta_i}(\alpha_i)
+  := \min\left\{q\in\NN:\ \exists\,p\in\ZZ\ \text{s.t.}\ \left|\alpha_i-\frac{p}{q}\right|<\delta_i\right\}.
+\end{equation}
+The following statistical choices are natural:
+\begin{itemize}
+  \item \textbf{Matched baselines.} Construct baselines by randomizing phases or shuffling within comparable noise/coupling strata so that $\delta_i$ and sampling protocols are preserved.
+  \item \textbf{Normalization.} Normalize $Q_{\delta_i}(\alpha_i)$ by the Diophantine lower bound scale $q_{\min}(\delta_i)\approx \left(c/\delta_i\right)^{1/2}$ to compare across different tolerances.
+  \item \textbf{Tail sensitivity.} In addition to mean shifts, test upper-tail enhancement (e.g.\ quantiles) because the hypothesis predicts increased anti-locking robustness.
+\end{itemize}
+
+\subsection{Computing \texorpdfstring{$Q_\delta$}{Qdelta} in practice}
+\label{app:qdelta_computation}
+
+The definition of $Q_\delta$ is constructive: for each $q$ one only needs to check whether there exists an integer $p$ such that $|\alpha-p/q|<\delta$.
+A practical computation is to set $p=\lfloor \alpha q\rceil$ (nearest integer) and check both $\lfloor \alpha q\rfloor$ and $\lceil \alpha q\rceil$.
+Appendix~\ref{app:repro_code} provides a reference Python implementation.
+
+\subsection{A quantitative null baseline for \texorpdfstring{$Q_\delta$}{Qdelta}}
+\label{app:qdelta_null}
+
+If $\alpha$ is drawn uniformly from $(0,1)$, then $Q_\delta(\alpha)\le Q$ iff $\alpha$ lies within $\delta$ of some reduced rational $p/q$ with $1\le q\le Q$.
+By a union bound over reduced rationals, one has
+\begin{equation}
+  \mathbb{P}\bigl(Q_\delta(\alpha)\le Q\bigr)
+  \le 2\delta\sum_{q=1}^{Q}\phi(q),
+\end{equation}
+and the classical summatory estimate $\sum_{q\le Q}\phi(q)=\frac{3}{\pi^2}Q^2+O(Q\log Q)$ \cite{HardyWright2008} yields the baseline scaling $\mathbb{P}(Q_\delta\le Q)\lesssim \frac{6}{\pi^2}\delta Q^2$ when $\delta Q^2\ll 1$.
+This provides a quantitative reference curve for goodness-of-fit tests and tail comparisons under matched tolerances.
+
+\paragraph{Scale-free normalization.}
+Since the null scale is $Q_\delta\asymp \delta^{-1/2}$, it is natural to compare samples using the normalized score
+\begin{equation}
+  Z_{\delta}(\alpha):=\sqrt{\delta}\,Q_\delta(\alpha),
+\end{equation}
+which is $O(1)$ under the null and directly comparable across different tolerances.
+
+

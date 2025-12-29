@@ -1,0 +1,110 @@
+\section{Golden-branch stabilizer: an anti-locking control-law hypothesis for biological rhythms}
+\label{sec:golden_control}
+
+If phase friction is tied to arithmetic mismatch, then a dominant failure mode of adaptive oscillatory control is low-order phase locking: rational resonances generate short pseudo-periods and amplify mismatch accumulation (Proposition~\ref{prop:rational_locking}).
+Coupled-oscillator theory organizes locking near rationals by Arnold tongues, with low-denominator resonances typically having the widest tongues and therefore being easiest to lock into at fixed noise/coupling strength \cite{Strogatz1994,PikovskyRosenblumKurths2001}.
+
+\subsection{Number-theoretic reason: the golden branch is maximally badly approximable}
+\label{sec:golden_number_theory}
+
+For any irrational $\alpha$, Diophantine approximation studies the quality of rational approximations $p/q$.
+Badly-approximable numbers are those with a uniform lower bound of order $1/q^2$.
+The golden branch $\alpha=\varphi^{-1}=(\sqrt{5}-1)/2$ is extremal: among irrationals it maximizes the uniform constant in the $1/q^2$ bound (Hurwitz/Markov extremality) \cite{Cassels1957}.
+This makes it the canonical anti-locking ratio under finite tolerance.
+
+\subsection{A quantitative anti-locking index}
+\label{sec:qdelta}
+
+Fix an operational locking tolerance $\delta>0$ that summarizes noise level, coupling strength, or measurement resolution.
+Define the resonance susceptibility index
+\begin{equation}
+  Q_\delta(\alpha)
+  := \min\left\{q\in\NN:\ \exists\,p\in\ZZ\ \text{s.t.}\ \left|\alpha-\frac{p}{q}\right|<\delta\right\}.
+  \label{eq:Qdelta_def}
+\end{equation}
+If $Q_\delta(\alpha)$ is large, the system must reach high-order resonances (large denominator) before it can lock within tolerance $\delta$.
+
+\begin{proposition}[Diophantine lower bound for the anti-locking index]
+\label{prop:Qdelta_bound}
+If $\alpha$ is badly approximable, then there exists $c(\alpha)>0$ such that
+\begin{equation}
+  \left|\alpha-\frac{p}{q}\right| \ge \frac{c(\alpha)}{q^2}
+  \qquad\text{for all } \frac{p}{q}\in\QQ
+  \label{eq:diophantine_bound}
+\end{equation}
+\cite{Cassels1957}. For any tolerance $\delta>0$, this implies
+\begin{equation}
+  Q_\delta(\alpha)\ \ge\ \left\lceil \left(\frac{c(\alpha)}{\delta}\right)^{1/2}\right\rceil.
+  \label{eq:Qdelta_lower}
+\end{equation}
+In particular, for $\alpha=\varphi^{-1}$ one can take $c(\varphi^{-1})=1/\sqrt{5}$, yielding the sharp bound
+\begin{equation}
+  Q_\delta(\varphi^{-1})\ \ge\ \left\lceil \left(\frac{1}{\sqrt{5}\,\delta}\right)^{1/2}\right\rceil.
+  \label{eq:Qdelta_golden}
+\end{equation}
+\end{proposition}
+
+\subsection{Operational identification of the tolerance \texorpdfstring{$\delta$}{delta}}
+\label{sec:delta_identification}
+
+The tolerance parameter $\delta$ is not a metaphysical knob; it is an operational summary of how wide low-order resonances are under noise and coupling.
+In standard phase-reduction theory, two weakly coupled oscillators admit an Adler-type phase-difference equation \cite{Strogatz1994,PikovskyRosenblumKurths2001}.
+For a near $p$:$q$ resonance, define the resonant phase $\psi := p\theta_1-q\theta_2$; then the reduced dynamics has the form
+\begin{equation}
+  \dot\psi = \Delta_{p:q} + K_{p:q}\,g(\psi) + \text{noise},
+\end{equation}
+where $\Delta_{p:q}:=p\omega_1-q\omega_2$ is the detuning and $K_{p:q}$ is an effective coupling amplitude.
+In the noise-free case, locking occurs when $|\Delta_{p:q}|$ is below an order-$K_{p:q}$ threshold.
+Converting detuning into ratio space, with $\alpha:=\omega_1/\omega_2$ one has
+\begin{equation}
+  \left|\alpha-\frac{p}{q}\right|
+  = \frac{|\Delta_{p:q}|}{q\,\omega_2}
+  \ \lesssim\ \frac{K_{p:q}}{q\,\omega_2},
+  \label{eq:delta_from_detuning}
+\end{equation}
+which provides an operational route to estimate $\delta$ (or a $q$-dependent tolerance $\delta_{p:q}$) from inferred coupling strengths and noise levels.
+
+\subsection{Null baseline: typical scaling of \texorpdfstring{$Q_\delta$}{Qdelta} for random ratios}
+\label{sec:qdelta_baseline}
+
+To turn Prediction~P1 into a quantitative statistical test, one needs a baseline for $Q_\delta$ in the absence of selection pressure.
+If $\alpha$ is drawn uniformly from $(0,1)$, then $Q_\delta(\alpha)\le Q$ iff $\alpha$ lies within $\delta$ of some reduced rational $p/q$ with $1\le q\le Q$.
+A simple union bound yields
+\begin{equation}
+  \mathbb{P}\bigl(Q_\delta(\alpha)\le Q\bigr)
+  \ \le\ 2\delta\sum_{q=1}^{Q}\phi(q),
+  \label{eq:qdelta_union_bound}
+\end{equation}
+where $\phi(q)$ is Euler's totient function counting reduced residues.
+Using the classical summatory estimate $\sum_{q\le Q}\phi(q)=\frac{3}{\pi^2}Q^2+O(Q\log Q)$ \cite{HardyWright2008}, one obtains the asymptotic baseline
+\begin{equation}
+  \mathbb{P}\bigl(Q_\delta(\alpha)\le Q\bigr)
+  \ \lesssim\ \frac{6}{\pi^2}\,\delta\,Q^2
+  \qquad (\delta Q^2\ll 1),
+  \label{eq:qdelta_baseline_scaling}
+\end{equation}
+so the typical scale of $Q_\delta$ under the null is $Q_\delta \asymp \delta^{-1/2}$.
+This suggests a scale-free normalization for cross-system comparison:
+\begin{equation}
+  Z_\delta(\alpha) := \sqrt{\delta}\,Q_\delta(\alpha).
+  \label{eq:Zdelta_def}
+\end{equation}
+At the leading-order null scale, the threshold $\frac{6}{\pi^2}\delta Q^2\sim 1$ corresponds to $Z_\delta\sim \pi/\sqrt{6}$.
+Prediction~P1 therefore becomes a concrete tail test: at matched $\delta$, biological data should show systematically larger $Q_\delta$ than the $\delta^{-1/2}$ null scaling.
+
+\subsection{Prediction P1: statistical bias of rhythm ratios toward anti-locking irrationals}
+\label{sec:P1}
+
+We can now state a falsifiable control-law hypothesis.
+
+\begin{remark}[Control-law hypothesis (anti-locking selection pressure)]
+\label{rem:control_law}
+Consider an adaptive biological oscillator network whose primary failure mode is low-order phase locking (synchrony collapse, limit-cycle trapping, energy blow-up due to repeated mismatch accumulation).
+If selection pressure favors operating points that remain unlockable within the effective tolerance $\delta$, then inferred effective coupling ratios $\alpha$ should be biased toward badly-approximable irrationals and should exhibit systematically larger $Q_\delta(\alpha)$ than appropriate randomized baselines.
+The golden branch is the Hurwitz extremal candidate and therefore a natural reference point.
+\end{remark}
+
+This hypothesis is not a claim that ``the golden ratio is everywhere''; it is a task- and tolerance-dependent statistical prediction.
+Section~\ref{sec:tests} gives a concrete data-analysis pipeline and a reproducible computation of $Q_\delta$ (Appendix~\ref{app:repro_code}).
+
+

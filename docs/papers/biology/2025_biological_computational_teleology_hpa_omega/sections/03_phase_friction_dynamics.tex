@@ -1,0 +1,75 @@
+\section{From mismatch certificates to entropy production rates and computational thermodynamics}
+\label{sec:phase_friction_dynamics}
+
+Section~\ref{sec:readout_phase_friction} defined phase friction over a finite window via discrepancy and accumulated mismatch.
+To connect that certificate to biological maintenance costs, we need rate-level quantities.
+
+\subsection{Mismatch density and phase-friction entropy production}
+\label{sec:mismatch_density}
+
+Let $\tau$ denote intrinsic scan time (iteration count). In a spatially extended setting, let $x$ denote a location or subsystem label.
+Fix a readout phase coordinate $u\in[0,1)$ (constructed from the experimental readout protocol) and a window length $N$.
+At external time $t$, let $\{u_{t,1},\dots,u_{t,N}\}$ be the $N$ phase points produced by the protocol over a window ending at $t$, and define the windowed certificates $D_N^\ast(t)$, $E_N(t):=N D_N^\ast(t)$, and
+\begin{equation}
+  S_{\mathrm{pf}}^{(N)}(t) := \kB E_N(t).
+  \label{eq:Spf_windowed}
+\end{equation}
+The phase-friction entropy flow is then defined by a finite-difference rate:
+\begin{equation}
+  \frac{\dd S_{\mathrm{pf}}}{\dd t}(t)
+  := \lim_{\Delta t\to 0}\lim_{N\to\infty} \frac{S_{\mathrm{pf}}^{(N)}(t+\Delta t)-S_{\mathrm{pf}}^{(N)}(t)}{\Delta t},
+  \label{eq:Spf_rate_def}
+\end{equation}
+with $N$ and $\Delta t$ chosen by the protocol and then smoothed at the analysis layer.
+In intrinsic scan time, we define the \emph{mismatch density} (phase-friction entropy production density) as
+\begin{equation}
+  \sigma(x,\tau)
+  := \frac{1}{\kB}\frac{\dd S_{\mathrm{pf}}(x;\tau)}{\dd \tau},
+  \label{eq:sigma_def}
+\end{equation}
+so that
+\begin{equation}
+  \frac{\dd S_{\mathrm{pf}}}{\dd\tau} = \kB\,\sigma(x,\tau).
+  \label{eq:Spf_rate_tau}
+\end{equation}
+Operationally, $\sigma$ is a rate extracted from the windowed mismatch certificate \eqref{eq:Spf_windowed} via \eqref{eq:Spf_rate_def}; it is not a phenomenological noise parameter.
+
+\subsection{Computational lapse and externally observed entropy flow}
+\label{sec:lapse_rescaling}
+
+HPA--$\Omega$ introduces a \emph{computational lapse} $\lapse(x)$ determined by local routing overhead $\kappa(x)$ in the implementation dictionary \cite{Ma2025CAP,Ma2025FoP,Ma2025CT}.
+Relative to a reference overhead $\kappa_0$, define
+\begin{equation}
+  \lapse(x) := \frac{\kappa_0}{\kappa(x)}.
+  \label{eq:lapse_def}
+\end{equation}
+Operationally, $\lapse$ is the protocol-level rescaling between external time $t$ and local scan time $\tau$:
+\begin{equation}
+  \dd \tau_{\mathrm{loc}}(x) = \lapse(x)\,\dd t.
+  \label{eq:tau_lapse}
+\end{equation}
+Combining \eqref{eq:Spf_rate_tau} with \eqref{eq:tau_lapse} yields the externally observed entropy-flow law
+\begin{equation}
+  \frac{\dd S_{\mathrm{pf}}}{\dd t}
+  = \frac{\dd S_{\mathrm{pf}}}{\dd\tau_{\mathrm{loc}}}\frac{\dd\tau_{\mathrm{loc}}}{\dd t}
+  = \kB\,\sigma(x,\tau)\,\lapse(x).
+  \label{eq:Spf_rate_t}
+\end{equation}
+It is convenient to introduce the external-time mismatch rate
+\begin{equation}
+  \Sigma(x,t) := \sigma(x,\tau)\,\lapse(x),
+  \label{eq:Sigma_def}
+\end{equation}
+so that $\dd S_{\mathrm{pf}}/\dd t = \kB\,\Sigma(x,t)$.
+For biological systems, Eq.~\eqref{eq:Spf_rate_t} supplies a unifying interface: different tissues and environments can exhibit different effective computational lapse profiles (estimated from routing/transport/control overhead proxies), which rescale the entropy flow observed per unit external time.
+
+\subsection{Computational temperature and the cost of control}
+\label{sec:computational_temperature}
+
+In information thermodynamics, temperature sets the energetic scale of information processing costs and feedback advantages \cite{Landauer1961,SagawaUeda2010}.
+HPA--$\Omega$ introduces an effective \emph{computational temperature} $T_c$ associated to the readout/implementation interface \cite{Ma2025HPT}.
+Operationally, $T_c$ is the coefficient that converts erased information into a minimal work/heat scale at the readout interface (Landauer scale): erasing $\Delta I$ nats costs at least $\kB T_c\,\Delta I$ (up to additional geometric impedance), and erasing one bit costs at least $\kB T_c\ln 2$.
+This $T_c$ need not equal a physical bath temperature; rather, it is the operational temperature relevant for control and erasure at the interface.
+In the next sections we use $T_c$ to formulate necessary inequalities for predictive control to offset phase-friction dissipation.
+
+

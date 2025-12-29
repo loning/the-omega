@@ -1,0 +1,123 @@
+\section{Readout-induced entropy and the necessity of active repair}
+\label{sec:readout_phase_friction}
+
+\subsection{Scan--readout two-layer structure and Weyl complementarity}
+\label{sec:weyl_complementarity}
+
+The HPA--$\Omega$ axioms separate an ontic unitary scan from an operational readout interface \cite{Ma2025HPA,Ma2025FoP,Ma2025HPOT}.
+In the minimal model, the scan and the pointer phase form a Weyl pair $(U_{\mathrm{scan}},V)$ with commutation relation
+\begin{equation}
+  U_{\mathrm{scan}} V = \e^{2\pi \iu \alpha}\, V U_{\mathrm{scan}},
+  \qquad \alpha\in(0,1)\setminus \QQ.
+  \label{eq:weyl_pair}
+\end{equation}
+In the standard representation on $L^2(\mathbb{T})$, the scan induces an irrational rotation orbit \cite{Folland1989}
+\begin{equation}
+  x_n = x_0 + n\alpha \pmod 1,
+  \qquad n\in\NN,
+  \label{eq:kronecker_orbit}
+\end{equation}
+while the readout extracts only finite-resolution statistics from that orbit.
+Because $U_{\mathrm{scan}}$ and $V$ do not commute, finite-resolution readout cannot access ``time'' (scan index) and ``phase'' arbitrarily sharply at the same time; operational irreversibility is therefore an interface phenomenon rather than an ontic one.
+
+\paragraph{Finite-resolution readout.}
+Operationally, we model readout as a finite-resolution instrument or POVM $\{E_k^{(\varepsilon)}\}$ indexed by a resolution parameter $\varepsilon>0$, with $\sum_k E_k^{(\varepsilon)}=\ind$ \cite{NielsenChuang2010}.
+Each outcome corresponds to a coarse window $w_k^{(\varepsilon)}$ over the pointer phase, inducing a CPTP map from the ontic state to an effective classical distribution.
+The exact choice of kernel is part of the experimental protocol; the key point is structural: \emph{finite resolution injects a systematic mismatch between the continuous orbit and discrete distinguishable outcomes}.
+
+\subsection{Arithmetic statistical mechanics: discrepancy and accumulated mismatch}
+\label{sec:asm_discrepancy}
+
+Given the induced phase points $\{x_1,\dots,x_N\}\subset[0,1)$, define the empirical distribution function
+\begin{equation}
+  F_N(a) := \frac{1}{N}\#\{1\le n\le N:\ x_n<a\},
+  \qquad 0\le a\le 1,
+\end{equation}
+and the \emph{star discrepancy}
+\begin{equation}
+  D_N^\ast := \sup_{0\le a\le 1}\bigl|F_N(a)-a\bigr|.
+  \label{eq:star_discrepancy_def}
+\end{equation}
+The discrepancy measures the worst-case deviation between the readout-induced finite sample and the ideal uniform reference on $[0,1)$.
+ASM uses the \emph{accumulated mismatch}
+\begin{equation}
+  E_N := N D_N^\ast
+  \label{eq:EN_def}
+\end{equation}
+as a protocol-auditable certificate of readout inconsistency accumulation \cite{KuipersNiederreiter1974,DrmotaTichy1997,Ma2025HPT}.
+The phase-friction entropy certificate on a length-$N$ window is defined as
+\begin{equation}
+  S_{\mathrm{pf}}(N) := \kB E_N.
+  \label{eq:Spf_def}
+\end{equation}
+This is not a claim that all thermodynamic entropy \emph{reduces} to one-dimensional discrepancy; rather, it provides a minimal computable certificate that is robust under protocol composition and captures the key arithmetic bifurcation (rational locking vs irrational spreading).
+
+\paragraph{Why star discrepancy is the natural certificate.}
+Star discrepancy controls worst-case readout deviations for all threshold-type coarse measurements, and it also controls integration error for bounded-variation observables via the Koksma--Hlawka inequality \cite{KuipersNiederreiter1974,DrmotaTichy1997}:
+for any $f:[0,1)\to\RR$ of bounded variation $V(f)$,
+\begin{equation}
+  \left|\frac{1}{N}\sum_{n=1}^N f(x_n) - \int_0^1 f(x)\,\dd x\right|
+  \le V(f)\,D_N^\ast.
+  \label{eq:koksma_hlawka_1d}
+\end{equation}
+Thus $D_N^\ast$ is an auditable, protocol-level upper bound on worst-case readout bias across a large class of coarse observables.
+Moreover, in one dimension the discrepancy over \emph{all} intervals is controlled by star discrepancy up to a universal factor (e.g.\ $D_N \le 2D_N^\ast$) \cite{KuipersNiederreiter1974}, so $D_N^\ast$ is a sufficient certificate at the level of order-of-magnitude entropy production.
+
+\subsection{A ``third-law template'': zero friction is unattainable without locking}
+\label{sec:third_law_template}
+
+Discrepancy theory implies a stark dichotomy for Kronecker orbits \eqref{eq:kronecker_orbit} \cite{KuipersNiederreiter1974,Cassels1957}.
+If $\alpha$ is rational, the orbit is periodic, and mismatch accumulates linearly.
+If $\alpha$ is badly approximable (equivalently: its continued-fraction partial quotients are bounded), discrepancy is controlled and $E_N$ grows only logarithmically.
+
+\begin{proposition}[Rational locking yields linear mismatch growth]
+\label{prop:rational_locking}
+If $\alpha=p/q\in\QQ$ in lowest terms, then the orbit \eqref{eq:kronecker_orbit} visits only $q$ distinct points and one has the universal lower bound
+\begin{equation}
+  D_N^\ast \ge \frac{1}{2q},
+  \qquad
+  E_N \ge \frac{N}{2q}
+  \label{eq:rational_linear}
+\end{equation}
+for infinitely many $N$ (in particular for multiples of $q$) \cite{KuipersNiederreiter1974,DrmotaTichy1997}.
+\end{proposition}
+
+\begin{theorem}[Continued-fraction certificate for star discrepancy]
+\label{thm:cf_discrepancy}
+Let $\alpha\in(0,1)\setminus\QQ$ have continued fraction expansion $\alpha=[0;a_1,a_2,\dots]$ with convergent denominators $(q_m)_{m\ge 0}$.
+For any $N\in\NN$, choose $m$ such that $q_m\le N<q_{m+1}$.
+Then for the Kronecker sequence \eqref{eq:kronecker_orbit} one has the explicit bound \cite{KuipersNiederreiter1974,DrmotaTichy1997}
+\begin{equation}
+  D_N^\ast \le \frac{1+\sum_{i=1}^m a_i}{N},
+  \qquad\text{equivalently}\qquad
+  E_N \le 1+\sum_{i=1}^m a_i.
+  \label{eq:cf_discrepancy_bound}
+\end{equation}
+\end{theorem}
+
+\begin{corollary}[Explicit logarithmic mismatch bound for bounded partial quotients]
+\label{cor:bounded_partial_quotients}
+If $\alpha$ has bounded continued-fraction partial quotients, i.e.\ $a_i\le A$ for all $i$, then for all $N\ge 1$,
+\begin{equation}
+  E_N \le 1 + A\,m(N)
+  \le 1 + A\left\lceil \log_{\varphi}\!\left(\sqrt{5}\,N\right)\right\rceil,
+  \label{eq:EN_bounded_A}
+\end{equation}
+where $m(N)$ is the unique index such that $q_{m(N)}\le N<q_{m(N)+1}$ and $\varphi=(1+\sqrt{5})/2$.
+In particular, $E_N=O(\log N)$ with an explicit constant.
+\end{corollary}
+
+\begin{corollary}[Golden-branch bound (fully explicit)]
+\label{cor:golden_EN}
+For the golden branch $\alpha=\varphi^{-1}=[0;1,1,1,\dots]$, the convergent denominators are Fibonacci numbers $q_m=F_{m+1}$, hence for all $N\ge 1$,
+\begin{equation}
+  E_N \le 1 + \left\lceil \log_{\varphi}\!\left(\sqrt{5}\,N\right)\right\rceil.
+  \label{eq:EN_golden_explicit}
+\end{equation}
+\end{corollary}
+
+In this sense, ``zero phase friction'' is not a stable operational limit: pushing the system toward exact periodicity (rational locking) collapses openness into a finite cycle and creates a linear mismatch channel.
+For long-term sustainability, a system must instead operate in the badly-approximable regime where mismatch is unavoidable but controllable.
+The golden branch $\alpha=\varphi^{-1}$ is extremal in the Hurwitz/Markov sense and provides a canonical anti-locking reference \cite{Cassels1957}.
+
+
