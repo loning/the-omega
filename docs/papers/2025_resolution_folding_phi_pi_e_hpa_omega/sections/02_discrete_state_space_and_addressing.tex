@@ -1,0 +1,128 @@
+
+\section{Discrete state space and address families}
+\label{sec:state_space_addressing}
+
+\subsection{The 64-state local readout space}
+We work at fixed local readout length $6$.
+Define
+\[
+\Omega_6:=\{0,1\}^6,
+\qquad \mathcal{H}_6:=\ell^2(\Omega_6)\cong \CC^{64},
+\]
+with the standard orthonormal basis $\{\mathbf{e}_w:w\in\Omega_6\}$.
+Elements $w\in\Omega_6$ will be referred to as \emph{microstate labels}.
+
+\paragraph{Binary indexing convention.}
+We will also use the canonical identification between $\Omega_6$ and integer indices $\{0,1,\dots,63\}$ given by binary expansion.
+Define
+\[
+\mathrm{int}_6:\Omega_6\to \{0,1,\dots,63\},
+\qquad
+\mathrm{int}_6(w_1\cdots w_6):=\sum_{j=1}^6 w_j\,2^{6-j}.
+\]
+Its inverse $\mathrm{bin}_6:\{0,\dots,63\}\to\Omega_6$ maps an integer to its $6$-bit binary word.
+This convention turns statements about $64$ indices into equivalent statements about $6$-bit words; alternative identifications correspond to a change of readout basis.
+
+\subsection{Hilbert addressing at finite spatial resolution}
+Let $n\ge 1$ and consider the square lattice
+\[
+\Lambda_n:=\{0,1,\dots,2^n-1\}^2,
+\qquad |\Lambda_n|=2^{2n}.
+\]
+A finite-resolution Hilbert address map is a bijection
+\[
+H_n:\{0,1,\dots,2^{2n}-1\}\to \Lambda_n
+\]
+with a one-step locality property: consecutive indices map to nearest neighbors on the grid, i.e.
+\[
+\norm{H_n(t+1)-H_n(t)}_1=1
+\qquad (0\le t<2^{2n}-1),
+\]
+where $\norm{\cdot}_1$ is the $\ell^1$ (Manhattan) norm on $\ZZ^2$.
+Such maps are standard discrete versions of the Hilbert space-filling curve; see, e.g., \cite{Hilbert1891,Sagan1994}.
+They are also widely used as locality-preserving orderings in applications (e.g.\ clustering behavior for range queries); see \cite{MoonJagadishFaloutsosSaltz2001}.
+
+For the purposes of this paper, the relevant point is the cardinality match: at order $n=3$ one has $|\Lambda_3|=2^6=64$, matching the microstate count.
+Thus a resolution-$3$ screen lattice provides a canonical geometric carrier for a $64$-state slice.
+
+\begin{remark}[Scan indices as words]
+At order $n=3$, a scan index $t\in\{0,\dots,63\}$ can be viewed as a word $\mathrm{bin}_6(t)\in\Omega_6$.
+Therefore any constraint or folding map defined on $\Omega_6$ can be pulled back to scan indices (and thus to screen sites via $H_3$).
+\end{remark}
+
+\subsection{Layout group and 8 address families}
+Let $G:=D_4$ be the dihedral group of the square (four rotations and four reflections), with $|G|=8$.
+Each element $g\in G$ acts on $\Lambda_n$ by an isometry, hence produces a new address map
+\[
+H_n^{(g)}:=g\circ H_n.
+\]
+We interpret $\{H_n^{(g)}:g\in G\}$ as an \emph{address family} of size $8$ at fixed resolution.
+Changing $g$ preserves bijectivity and locality but changes how local neighborhoods are compiled into a scan order.
+
+\begin{proposition}[D4 invariance of adjacency-based scan-order statistics]
+\label{prop:d4_invariance_stats}
+Fix a resolution $n$ and a bijective address map $H_n$.
+Let $g\in D_4$ and define $H_n^{(g)}=g\circ H_n$.
+Let $\sim$ denote nearest-neighbor adjacency on $\Lambda_n$.
+Then for any function $f:\{0,\dots,2^{2n}-1\}\to\RR$ and any edge functional of the form
+\[
+\mathcal{S}(H,f):=\sum_{\substack{x\sim y\\ x,y\in\Lambda_n}}
+\Phi\!\bigl(f(H^{-1}(x)),\,f(H^{-1}(y))\bigr),
+\]
+where $\Phi:\RR^2\to\RR$ is any fixed function, one has
+\[
+\mathcal{S}(H_n^{(g)},f)=\mathcal{S}(H_n,f).
+\]
+\end{proposition}
+
+\begin{proof}
+Since $g$ is a graph automorphism of $(\Lambda_n,\sim)$, the map $(x,y)\mapsto(g^{-1}x,g^{-1}y)$ is a bijection of the edge set.
+Moreover, $(H_n^{(g)})^{-1}(x)=H_n^{-1}(g^{-1}x)$.
+Substituting and changing variables over edges yields equality.
+\end{proof}
+
+\begin{remark}[Concrete invariants]
+Examples covered by Proposition~\ref{prop:d4_invariance_stats} include:
+\begin{itemize}
+\item the histogram of scan-index separations $|H^{-1}(x)-H^{-1}(y)|$ over neighboring pairs $x\sim y$;
+\item label-correlation counts for label fields of the form $x\mapsto \mathrm{Fold}_m(H^{-1}(x))$;
+\item label-correlation counts for label fields of the form $x\mapsto \mathsf{Fold}^{\mathrm{bin}}_m(\mathrm{bin}_m(H^{-1}(x)))$;
+\item average Hamming distance between labels across adjacent sites (with $\Phi$ chosen accordingly).
+\end{itemize}
+Thus the dihedral layout family changes the embedding only by a symmetry, and adjacency-based statistics are exactly layout-invariant.
+\end{remark}
+
+\begin{corollary}[Geometric rigidity under the layout group]
+\label{cor:hilbert_layout_rigidity}
+For fixed $n$, the set of layouts $\{H_n^{(g)}:g\in D_4\}$ is a $D_4$-orbit under left composition, and any two layouts differ by a global lattice isometry.
+Consequently, within this model class, any statement about a pulled-back label field $x\mapsto \ell(H_n^{-1}(x))$ that depends only on the adjacency relation $x\sim y$ is independent of the chosen layout.
+\end{corollary}
+
+\begin{proof}
+For $g,h\in D_4$ one has $h\circ H_n^{(g)}=(hg)\circ H_n$, so the family is a $D_4$-orbit.
+If $H_n^{(g_1)}$ and $H_n^{(g_2)}$ are two layouts, then $H_n^{(g_2)}=(g_2g_1^{-1})\circ H_n^{(g_1)}$ with $g_2g_1^{-1}\in D_4$ a lattice isometry.
+The final assertion follows from Proposition~\ref{prop:d4_invariance_stats}.
+\end{proof}
+
+\subsection{Two-sector layout space \texorpdfstring{$G\times G$}{GxG} and a 6-bit encoding}
+\label{subsec:two_sector_layout}
+In many hierarchical constructions one considers two independent address families (two sectors) on the same lattice.
+Abstractly this means choosing $(g_+,g_-)\in G\times G$, hence defining a layout state space
+\[
+\Omega_{\mathrm{layout}}:=G\times G,
+\qquad |\Omega_{\mathrm{layout}}|=8\cdot 8=64.
+\]
+Therefore there exists a (non-canonical) bijection
+\[
+\iota:\Omega_{\mathrm{layout}}\xrightarrow{\sim}\Omega_6.
+\]
+We do \emph{not} fix $\iota$ in the main text; different choices correspond to different readout bases and encodings.
+Appendix~\ref{app:d4_encoding} records a concrete $6$-bit encoding obtained from the normal form $g=r^k s^\epsilon$ in $D_4$.
+
+\begin{remark}[Why Hilbert addressing appears here]
+The $\varphi$--$\pi$--$\e$ constraints are formulated at the level of words $w\in\Omega_6$.
+Hilbert addressing enters as the \emph{resolution mechanism}: it specifies how a one-dimensional scan index is compiled into a spatial neighborhood structure on a screen lattice at a given resolution, and it provides a natural symmetry group (the $D_4$ layout group).
+This yields a clean separation: constraints define stable types; addressing defines how those types are embedded and refined across spatial scales.
+\end{remark}
+
+

@@ -1,0 +1,105 @@
+
+\section{Application interfaces (non-premise): genetics and a three-factor analogy}
+\label{sec:applications}
+
+This section records two \emph{interfaces}: mappings from external structures into the present $64\to 21$ folding framework.
+They are not used as inputs to proofs.
+The purpose is to turn informal analogies into falsifiable mathematical questions (existence of low-complexity encodings, distributional invariants, and robustness under symmetry actions).
+
+\subsection{Genetic code as a 64-to-(20+Stop) compression template}
+Let $\mathsf{Codon}$ be the set of $64$ nucleotide triplets over a four-letter alphabet, and let
+\[
+\mathsf{Gen}:\mathsf{Codon}\twoheadrightarrow \mathsf{AA}\cup\{\mathrm{Stop}\}
+\]
+be the standard genetic code map (a many-to-one map onto $20$ amino acids plus a stop signal); see, e.g., \cite{Alberts2014MBoC}.
+
+Fix any injective two-bit encoding $\mathsf{enc}:\{A,C,G,U/T\}\to\{0,1\}^2$ and extend it to a map
+\[
+\mathsf{code}:\mathsf{Codon}\to\Omega_6
+\]
+by concatenating the three two-bit blocks.
+Composing with the folding map yields a canonical $64\to 21$ compression
+\[
+\mathsf{Fold}^{\mathrm{bin}}_6\circ \mathsf{code}:\mathsf{Codon}\twoheadrightarrow X_6.
+\]
+
+\begin{remark}[Encoding search space is finite]
+If $\mathsf{enc}$ is required to be a bijection between the four nucleotides and $\{0,1\}^2$, then there are exactly $4!=24$ possible encodings.
+Hence any optimization over encodings can be performed exhaustively (no sampling is needed).
+\end{remark}
+
+\paragraph{Testable comparison invariants.}
+One can compare $\mathsf{Gen}$ and $\mathsf{Fold}^{\mathrm{bin}}_6\circ \mathsf{code}$ by encoding-independent statistics:
+\begin{itemize}
+\item the preimage-size histogram (degeneracy distribution);
+\item conditional entropy and mutual information for the induced random variables under a chosen codon prior;
+\item degeneracy conditioned on Hamming weight of the folded type in $X_6$;
+\item distances between degeneracy histograms (e.g.\ KL divergence after smoothing, or Earth Mover's Distance).
+\end{itemize}
+
+\begin{remark}[What depends on $\mathsf{enc}$]
+Because $\mathsf{code}$ is a bijection, the multiset of preimage sizes of $\mathsf{Fold}^{\mathrm{bin}}_6\circ \mathsf{code}$ equals that of $\mathrm{Fold}_6$ (equivalently $\mathsf{Fold}^{\mathrm{bin}}_6$) and is therefore \emph{independent} of $\mathsf{enc}$.
+Encoding dependence enters through the \emph{joint} distribution of the pair of outputs $(\mathsf{Gen}(C),(\mathsf{Fold}^{\mathrm{bin}}_6\circ\mathsf{code})(C))$ for a random codon $C$.
+A concrete, encoding-dependent objective is the mutual information
+\[
+I\bigl(\mathsf{Gen}(C);\ (\mathsf{Fold}^{\mathrm{bin}}_6\circ \mathsf{code})(C)\bigr),
+\]
+under a specified codon prior (e.g.\ uniform).
+\end{remark}
+
+\paragraph{The ``three boundary states'' coincidence.}
+The decomposition $X_6=X_6^{\mathrm{cyc}}\sqcup X_6^{\mathrm{bdry}}$ yields exactly three boundary states.
+Whether stop codons preferentially map into the boundary sector $X_6^{\mathrm{bdry}}$ is a concrete, encoding-dependent matching problem; no such alignment is assumed here.
+
+\begin{proposition}[What ``stop $\subset$ boundary'' means at window length $6$]
+\label{prop:stop_subset_boundary}
+Let $S_{\mathrm{stop}}\subset \mathsf{Codon}$ be the set of stop codons, with $|S_{\mathrm{stop}}|=3$, and fix a bijective two-bit encoding $\mathsf{enc}$ and the induced map $\mathsf{code}:\mathsf{Codon}\to\Omega_6$.
+Define the boundary-sector preimage set
+\[
+S_{\mathrm{bdry}}(\mathsf{enc}):=\bigl(\mathsf{Fold}^{\mathrm{bin}}_6\circ \mathsf{code}\bigr)^{-1}\!\bigl(X_6^{\mathrm{bdry}}\bigr)\subset \mathsf{Codon}.
+\]
+Then $|S_{\mathrm{bdry}}(\mathsf{enc})|=6$ for every $\mathsf{enc}$, hence $S_{\mathrm{bdry}}(\mathsf{enc})$ can never equal $S_{\mathrm{stop}}$.
+Moreover, the inclusion $S_{\mathrm{stop}}\subseteq S_{\mathrm{bdry}}(\mathsf{enc})$ holds if and only if
+\[
+\mathrm{int}_6\bigl(\mathsf{code}(c)\bigr)\in \{14,17,19,48,51,53\}
+\qquad \text{for every }c\in S_{\mathrm{stop}}.
+\]
+\end{proposition}
+
+\begin{proof}
+Proposition~\ref{prop:boundary_3} gives $X_6^{\mathrm{bdry}}=\{100001,100101,101001\}$.
+By Theorem~\ref{thm:fold6_preimages} each of these boundary words has exactly two preimages under $\mathrm{Fold}_6$, namely
+\[
+\mathrm{Fold}_6^{-1}(100001)=\{14,48\},\quad
+\mathrm{Fold}_6^{-1}(101001)=\{17,51\},\quad
+\mathrm{Fold}_6^{-1}(100101)=\{19,53\},
+\]
+so $\bigl|\mathrm{Fold}_6^{-1}(X_6^{\mathrm{bdry}})\bigr|=6$.
+Since $\mathsf{code}$ is a bijection, $|S_{\mathrm{bdry}}(\mathsf{enc})|=6$ as well.
+The membership condition is exactly the statement that stop codons land in the boundary-sector preimage under the index identification $\mathrm{int}_6$.
+\end{proof}
+
+\subsection{A three-factor template: a categorical interface problem}
+The standard model gauge group exhibits a three-factor product structure $SU(3)\times SU(2)\times U(1)$; see, e.g., \cite{PeskinSchroeder1995}.
+Independently, the present framework isolates three stability channels $\varphi$--$\pi$--$\e$.
+We stress that this mention is only motivational: no physical identification is assumed or used.
+What follows is a purely mathematical interface problem for future work.
+
+\begin{problem}[A hierarchical limit object with three natural projections (interface)]
+\label{prob:limit_object_interface}
+There exists a hierarchy of finite-resolution objects generated by Hilbert refinement (spatial recursion) and Zeckendorf window growth (syntactic recursion), whose inductive limit defines a moduli object $\mathcal{M}_\infty$ together with three natural projection functors (or factor maps)
+\[
+\mathcal{M}_\infty \to \mathcal{M}_\varphi,\qquad
+\mathcal{M}_\infty \to \mathcal{M}_\pi,\qquad
+\mathcal{M}_\infty \to \mathcal{M}_{\e},
+\]
+such that the associated linearized readout admits a three-sector decomposition compatible with these projections.
+\end{problem}
+
+\begin{remark}[What would make the interface nontrivial]
+In the minimal window-$6$ model, the $\varphi$- and $\e$-constraints coincide (Remark after Proposition~\ref{prop:e_phi_coincide}).
+A nontrivial realization of Problem~\ref{prob:limit_object_interface} therefore requires a higher-resolution regime in which analytic stability (zeta/Abel holomorphy domains) and syntactic legality are no longer equivalent.
+Potential mathematical routes include weighted transfer operators, countable-state grammars, and zeta functions beyond the rational finite-state class.
+\end{remark}
+
+

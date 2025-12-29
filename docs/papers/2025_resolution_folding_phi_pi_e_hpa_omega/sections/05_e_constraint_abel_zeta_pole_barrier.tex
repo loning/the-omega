@@ -1,0 +1,176 @@
+
+\section{The e-channel: Abel--zeta stability and a pole barrier}
+\label{sec:e_constraint}
+
+The $\e$-channel formalizes an \emph{analytic stability} viewpoint: stable grammars admit generating functions with a controlled holomorphic domain.
+In the finite-state setting of shifts of finite type, the relevant analytic content is completely captured by a rational zeta function and its pole locations (equivalently, the spectral radius of the adjacency matrix).
+We use the variable $r$ in the unit disk as a normalized power-series parameter; no Abel finite-part subtleties are required at this level.
+
+\subsection{Artin--Mazur zeta for the golden mean shift}
+Let $A=\bigl(\begin{smallmatrix}1&1\\ 1&0\end{smallmatrix}\bigr)$ be the golden mean adjacency matrix (Section~\ref{sec:pi_constraint}).
+For $n\ge 1$, let $P_n$ be the number of period-$n$ points of the golden mean shift.
+Equivalently, $P_n$ is the number of cyclic admissible words of length $n$ (wrap-around allowed).
+
+\begin{proposition}[Determinant identity for the zeta function]
+\label{prop:zeta_det}
+Define the Artin--Mazur zeta function
+\[
+\zeta(z):=\exp\Big(\sum_{n\ge 1}\frac{P_n}{n}z^n\Big).
+\]
+Then
+\[
+\zeta(z)=\frac{1}{\det(I-zA)}=\frac{1}{1-z-z^2}.
+\]
+\end{proposition}
+
+\begin{proof}
+The zeta function $\zeta$ was introduced in \cite{ArtinMazur1965}.
+For a topological Markov shift with adjacency matrix $A$, one has $P_n=\Tr(A^n)$ and
+\[
+\zeta(z)=\exp\Big(\sum_{n\ge 1}\frac{\Tr(A^n)}{n}z^n\Big)=\frac{1}{\det(I-zA)};
+\]
+see, e.g., \cite{LindMarcus1995,ParryPollicott1990}.
+For $A=\bigl(\begin{smallmatrix}1&1\\ 1&0\end{smallmatrix}\bigr)$, a direct computation gives $\det(I-zA)=1-z-z^2$.
+\end{proof}
+
+\begin{remark}[Rationality for finite-state shifts]
+For shifts of finite type given by a finite adjacency matrix, the determinant identity implies that $\zeta$ is a rational function whose poles are reciprocals of eigenvalues of the matrix.
+In particular, analytic stability questions reduce to spectral information (Perron--Frobenius theory) in the finite-state setting \cite{LindMarcus1995,ParryPollicott1990}.
+\end{remark}
+
+\subsection{Pole locations and spectral radius}
+The eigenvalues of $A$ are
+\[
+\lambda_\pm=\frac{1\pm \sqrt{5}}{2}=\varphi,\ -\varphi^{-1}.
+\]
+Hence $\zeta(z)$ has poles at $z=\varphi^{-1}$ and $z=-\varphi$.
+The nearest singularity to the origin is at $z=\varphi^{-1}$, so the radius of convergence of the defining power series is $\varphi^{-1}$.
+
+\begin{proposition}[Radius of convergence equals inverse spectral radius]
+\label{prop:radius_inverse_spectral}
+Let $A$ be the adjacency matrix of a shift of finite type and let $\zeta_A(z)=1/\det(I-zA)$.
+Then the radius of convergence of the power series defining $\log\zeta_A(z)$ around $z=0$ equals $1/\rho(A)$.
+\end{proposition}
+
+\begin{proof}
+By the determinant formula, poles of $\zeta_A$ are reciprocals of eigenvalues of $A$.
+Thus the singularity of $\zeta_A$ nearest to the origin lies at modulus $1/\rho(A)$.
+Since $\log\zeta_A$ is analytic wherever $\zeta_A$ is analytic and nonzero, the same radius controls the defining series for $\log\zeta_A$.
+\end{proof}
+
+\subsection{Spectral (Abel-type) normalization and a unit-disk holomorphy domain}
+Introduce a normalized complex variable $r$ by setting
+\[
+z=\frac{r}{\varphi}.
+\]
+Define
+\[
+\widetilde{\zeta}(r):=\zeta\Big(\frac{r}{\varphi}\Big)
+=\frac{1}{1-\frac{r}{\varphi}-\frac{r^2}{\varphi^2}}
+=\frac{1}{\bigl(1-r\bigr)\bigl(1+\varphi^{-2}r\bigr)}.
+\]
+The factorization follows from $\varphi^2=\varphi+1$, which implies $1-\varphi^{-2}=\varphi^{-1}$.
+Here $\varphi^{-2}r$ denotes the product $\varphi^{-2}\cdot r$ (not an exponential dependence on $r$).
+Then $\widetilde{\zeta}$ is holomorphic in the open unit disk $|r|<1$, and its principal pole is located at $r=1$ on the boundary.
+The second pole $r=-\varphi^2$ lies strictly outside the unit disk.
+
+\begin{remark}[A pole-barrier interpretation]
+The change of variables $z=r/\varphi$ is a spectral normalization that places the dominant singularity of the golden mean zeta at the boundary point $r=1$.
+In this coordinate the normalized zeta has no poles in $|r|<1$.
+For comparison, the full two-symbol shift (allowing $11$) has adjacency matrix $B=\bigl(\begin{smallmatrix}1&1\\1&1\end{smallmatrix}\bigr)$ with spectral radius $\rho(B)=2$ and zeta $(1-2z)^{-1}$ \cite{LindMarcus1995}.
+Under the same normalization $z=r/\varphi$, its pole lies at $r=\varphi/\rho(B)=\varphi/2<1$.
+Equivalently, the full shift has a larger exponential growth rate than the golden mean shift, so its zeta becomes singular strictly inside the unit disk in the golden-mean normalization.
+\end{remark}
+
+\begin{proposition}[Spectral normalization yields a unit-disk holomorphy domain]
+\label{prop:spectral_normalization_unit_disk}
+Let $A$ be a nonnegative $d\times d$ matrix with spectral radius $\rho(A)>0$ and define
+\[
+\zeta_A(z):=\frac{1}{\det(I-zA)}.
+\]
+Then the normalized function
+\[
+\widetilde{\zeta}_A(r):=\zeta_A\Big(\frac{r}{\rho(A)}\Big)=\frac{1}{\det\!\Bigl(I-\frac{r}{\rho(A)}A\Bigr)}
+\]
+is holomorphic on $|r|<1$.
+Moreover, if $A$ has an eigenvalue equal to $\rho(A)$ (as in Perron--Frobenius theory), then $r=1$ is a pole on the boundary.
+\end{proposition}
+
+\begin{proof}
+Poles of $\zeta_A$ are reciprocals of eigenvalues of $A$.
+Thus poles of $\widetilde{\zeta}_A$ occur at $r=\rho(A)/\lambda$, where $\lambda$ ranges over eigenvalues.
+Since $|\lambda|\le \rho(A)$ for all eigenvalues, every pole satisfies $|r|\ge 1$, proving holomorphy on $|r|<1$.
+If $\lambda=\rho(A)$ is an eigenvalue, then $r=1$ is a pole.
+\end{proof}
+
+\subsection{A genuinely distinct e-channel via weighted shifts}
+The minimal window-$6$ model identifies the $\e$-defect with a local forbidden-event counter.
+To obtain an analytic stability channel that is \emph{not} equivalent to a single forbidden word, one may keep the underlying grammar fixed but introduce a weight (a potential) and study the associated weighted zeta / transfer-operator spectrum.
+This is standard in thermodynamic formalism; see \cite{Ruelle1978,Bowen1975,ParryPollicott1990}.
+
+\begin{proposition}[A one-parameter weighted golden mean zeta]
+\label{prop:weighted_golden_mean_zeta}
+For $\beta\in\RR$, define a weighted adjacency matrix
+\[
+A_\beta:=\begin{pmatrix}1 & \e^{-\beta}\\[2pt] 1 & 0\end{pmatrix}.
+\]
+Then the associated (finite-state) zeta function is
+\[
+\zeta_\beta(z)=\frac{1}{\det(I-zA_\beta)}=\frac{1}{1-z-\e^{-\beta}z^2},
+\]
+with spectral radius
+\[
+\rho(A_\beta)=\frac{1+\sqrt{1+4\e^{-\beta}}}{2}.
+\]
+Under the fixed normalization $z=r/\varphi$, the normalized zeta has a pole in $|r|<1$ if and only if $\rho(A_\beta)>\varphi$ (equivalently $\beta<0$).
+\end{proposition}
+
+\begin{proof}
+The determinant identity is a direct computation:
+\[
+\det(I-zA_\beta)=\det\!\begin{pmatrix}1-z & -z\e^{-\beta}\\[2pt] -z & 1\end{pmatrix}
+=(1-z)-\e^{-\beta}z^2.
+\]
+The eigenvalues of $A_\beta$ are the roots of $\lambda^2-\lambda-\e^{-\beta}=0$, hence the spectral radius is the positive root.
+Under $z=r/\varphi$, the closest pole to the origin in the $r$-plane is located at $r=\varphi/\rho(A_\beta)$, which lies inside $|r|<1$ exactly when $\rho(A_\beta)>\varphi$.
+\end{proof}
+
+\begin{remark}[Channel separation]
+The $\varphi$-constraint may still be formulated as a pure grammar restriction (e.g.\ forbidding $11$), while the weighted $\e$-channel above changes analytic stability through $\rho(A_\beta)$ without changing the forbidden word set.
+At finite window length $m$, a natural local observable for this weighted channel is the Hamming weight $|w|_1$ (or edge-count observables such as the number of $0\to 1$ transitions), which is generally not equal to the $\varphi$-defect counting forbidden adjacent pairs.
+\end{remark}
+
+\begin{remark}[Connection to pressure and transfer operators]
+For shifts of finite type and locally constant potentials, thermodynamic formalism identifies the topological pressure with the logarithm of the leading eigenvalue of a weighted transfer operator.
+In the finite-state setting above, this leading eigenvalue is precisely the spectral radius $\rho(A_\beta)$, so $\log\rho(A_\beta)$ is the pressure of the corresponding potential (see \cite{Ruelle1978,Bowen1975}).
+Accordingly, pole locations of $\zeta_\beta$ encode pressure via $\rho(A_\beta)$, and the normalization $z=r/\rho(A)$ is a concrete finite-state manifestation of an Abel-type parameter $r\uparrow 1$ approaching the dominant spectral singularity.
+\end{remark}
+
+\subsection{A finite-window e-defect and its coincidence with the phi-constraint}
+Define the local defect
+\[
+\mathcal{D}_{\e}(w):=\#\{\,i\in\{1,\dots,5\}:\ w_i=w_{i+1}=1\,\},
+\qquad w\in\Omega_6.
+\]
+This counts the number of forbidden adjacent excitations inside the length-$6$ window.
+
+\begin{proposition}[$\e$-stability coincides with $\varphi$-legality at window length $6$]
+\label{prop:e_phi_coincide}
+For $w\in\Omega_6$ one has $\mathcal{D}_{\e}(w)=0$ if and only if $w\in X_6$.
+Equivalently,
+\[
+\{w\in\Omega_6:\ \mathcal{D}_{\e}(w)=0\}=X_6.
+\]
+\end{proposition}
+
+\begin{proof}
+By definition $\mathcal{D}_{\e}(w)=0$ exactly when no adjacent pair $(w_i,w_{i+1})$ equals $(1,1)$, which is precisely the definition of $X_6$.
+\end{proof}
+
+\begin{remark}[Minimal-model degeneracy]
+At the level of a length-$6$ local model, the $\varphi$-channel (forbidden word grammar) and the $\e$-channel (analytic stability interpreted via forbidden events) coincide as constraints on $\Omega_6$.
+Their distinction is semantic: $\varphi$ refers to Fibonacci growth / Zeckendorf legality, while $\e$ refers to holomorphy domains and pole barriers of zeta/Abel transforms.
+Nontrivial separation of the channels can emerge in higher-resolution models (longer windows, weighted shifts, or infinite-state extensions), where analytic stability is no longer captured by a single local forbidden law.
+\end{remark}
+
+

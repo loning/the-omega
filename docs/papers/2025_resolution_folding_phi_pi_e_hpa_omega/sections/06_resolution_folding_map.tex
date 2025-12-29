@@ -1,0 +1,354 @@
+
+\section{A computable folding map: Zeckendorf normalization and window truncation}
+\label{sec:fold_map}
+
+The $\varphi$-constraint selects the admissible set $X_6\subset\Omega_6$ of size $21$.
+To obtain a genuine \emph{folding} from $64$ microstates to these $21$ stable types, we define an explicit surjection using Zeckendorf representations and finite windows.
+
+\subsection{Zeckendorf base and uniqueness}
+Let $(F_n)_{n\ge 1}$ denote the Fibonacci numbers with $F_1=1$, $F_2=1$, and $F_{n+2}=F_{n+1}+F_n$.
+In Zeckendorf representation one uses the Fibonacci weights $F_2,F_3,F_4,\dots$, i.e.\ the weight attached to digit $c_k$ is $F_{k+1}$.
+
+\begin{lemma}[Binet formula and standard Fibonacci bounds]
+\label{lem:binet_bounds}
+Let $\varphi=\frac{1+\sqrt{5}}{2}$ and $\psi=\frac{1-\sqrt{5}}{2}=-\varphi^{-1}$.
+Then for all $n\ge 1$,
+\[
+F_n=\frac{\varphi^n-\psi^n}{\sqrt{5}}.
+\]
+In particular, for all $n\ge 2$ one has the two-sided bounds
+\[
+\varphi^{\,n-2}\le F_n\le \varphi^{\,n-1},
+\]
+and hence $F_n=\Theta(\varphi^n)$.
+\end{lemma}
+
+\begin{proof}
+This is classical; see, e.g., \cite{Koshy2001}.
+For the bounds, it suffices to argue by induction using the recursion $F_{n}=F_{n-1}+F_{n-2}$ and the identity $\varphi^2=\varphi+1$.
+For $n=2,3$ one checks directly that $\varphi^{n-2}\le F_n\le \varphi^{n-1}$.
+Assume $n\ge 4$ and that the bounds hold for $n-1$ and $n-2$.
+Then
+\[
+F_n=F_{n-1}+F_{n-2}\le \varphi^{n-2}+\varphi^{n-3}=\varphi^{n-3}(\varphi+1)=\varphi^{n-1},
+\]
+and similarly
+\[
+F_n=F_{n-1}+F_{n-2}\ge \varphi^{n-3}+\varphi^{n-4}=\varphi^{n-4}(\varphi+1)=\varphi^{n-2}.
+\]
+This proves the two-sided bounds and $F_n=\Theta(\varphi^n)$.
+\end{proof}
+
+\begin{theorem}[Zeckendorf uniqueness]
+\label{thm:zeckendorf_uniqueness}
+Every integer $N\in\NN_{>0}$ admits a unique representation
+\[
+N=\sum_{k=1}^{m} c_k F_{k+1},
+\qquad c_k\in\{0,1\},\qquad c_k c_{k+1}=0.
+\]
+\end{theorem}
+
+\begin{proof}
+See \cite{Zeckendorf1972}; modern accounts are available in \cite{AlloucheShallit2003,Lothaire2002}.
+\end{proof}
+
+For convenience, set $\mathrm{Z}(0):=(0,0,0,\dots)$ and for $N>0$ let $\mathrm{Z}(N):=(c_1,c_2,\dots)$ denote the Zeckendorf digit sequence of $N$ (extended by zeros).
+
+\subsection{Window projection and the folding map \texorpdfstring{$\mathrm{Fold}_6$}{Fold\_6}}
+For $m\ge 1$ define the window projection
+\[
+\pi_m(\mathrm{Z}(N)) := (c_1,\dots,c_m)\in\{0,1\}^m.
+\]
+By Theorem~\ref{thm:zeckendorf_uniqueness}, $\pi_m(\mathrm{Z}(N))$ always has no adjacent ones, so $\pi_m(\mathrm{Z}(N))\in X_m$.
+
+\begin{definition}[Resolution folding map at window length $6$]
+Define
+\[
+\mathrm{Fold}_6:\{0,1,\dots,63\}\to X_6,
+\qquad
+\mathrm{Fold}_6(N):=\pi_6(\mathrm{Z}(N)).
+\]
+\end{definition}
+
+\begin{definition}[Folding of $6$-bit microstates]
+Using the binary indexing map $\mathrm{int}_6:\Omega_6\to\{0,\dots,63\}$ from Section~\ref{sec:state_space_addressing}, define
+\[
+\mathsf{Fold}^{\mathrm{bin}}_6:\Omega_6\to X_6,
+\qquad
+\mathsf{Fold}^{\mathrm{bin}}_6(w):=\mathrm{Fold}_6(\mathrm{int}_6(w)).
+\]
+\end{definition}
+
+\begin{proposition}[Surjectivity onto the $21$ admissible types]
+\label{prop:fold6_surjective}
+The image of $\mathrm{Fold}_6$ is exactly $X_6$; in particular $\mathrm{Fold}_6$ is surjective and $|\mathrm{Im}(\mathrm{Fold}_6)|=21$.
+\end{proposition}
+
+\begin{proof}
+For every $N$, the Zeckendorf digits have no adjacent ones, hence $\mathrm{Fold}_6(N)\in X_6$ and $\mathrm{Im}(\mathrm{Fold}_6)\subseteq X_6$.
+
+Conversely, let $w=(w_1,\dots,w_6)\in X_6$.
+Define
+\[
+N_w:=\sum_{k=1}^6 w_k F_{k+1}.
+\]
+Since $w$ has no adjacent ones, the digit string $(w_1,\dots,w_6,0,0,\dots)$ is already Zeckendorf-admissible, hence it equals $\mathrm{Z}(N_w)$ by uniqueness.
+Therefore $\mathrm{Fold}_6(N_w)=w$, so $X_6\subseteq \mathrm{Im}(\mathrm{Fold}_6)$.
+\end{proof}
+
+\subsection{A canonical bijection on the Zeckendorf range}
+\label{subsec:zeckendorf_range_bijection}
+Let
+\[
+V(w):=\sum_{k=1}^6 w_k F_{k+1}
+\qquad (w\in X_6)
+\]
+be the Zeckendorf value of a length-$6$ admissible word.
+
+\begin{lemma}[Maximal Zeckendorf value at window length $m$]
+\label{lem:max_zeckendorf_value}
+For every $m\ge 1$ one has
+\[
+\max_{w\in X_m}\sum_{k=1}^m w_k F_{k+1}=F_{m+2}-1.
+\]
+In particular, for $m=6$ one has $\max_{w\in X_6} V(w)=F_8-1=20$.
+\end{lemma}
+
+\begin{proof}
+Let $M_n:=\max_{w\in X_n}\sum_{k=1}^n w_k F_{k+1}$ for $n\ge 1$.
+If $w_n=0$, the best contribution is $M_{n-1}$.
+If $w_n=1$, then $w_{n-1}=0$ and the best contribution is $F_{n+1}+M_{n-2}$.
+Hence $M_n=\max\{M_{n-1},F_{n+1}+M_{n-2}\}$ with initial values $M_1=F_2=1$ and $M_2=F_3=2$.
+Using $F_{n+3}=F_{n+2}+F_{n+1}$, one checks by induction that $M_n=F_{n+2}-1$.
+Setting $n=m$ yields $M_m=F_{m+2}-1$.
+\end{proof}
+
+\begin{proposition}[General window length: canonical bijection on the Zeckendorf range]
+\label{prop:foldm_bijection}
+For $m\ge 1$, define
+\[
+\mathrm{Fold}_m:\{0,1,\dots,2^m-1\}\to X_m,
+\qquad
+\mathrm{Fold}_m(N):=\pi_m(\mathrm{Z}(N)).
+\]
+Then $\mathrm{Fold}_m$ is surjective, and it restricts to a bijection
+\[
+\mathrm{Fold}_m:\{0,1,\dots,F_{m+2}-1\}\xrightarrow{\sim} X_m.
+\]
+\end{proposition}
+
+\begin{proof}
+Surjectivity follows as in Proposition~\ref{prop:fold6_surjective}: for $w\in X_m$, the integer $N_w:=\sum_{k=1}^m w_k F_{k+1}$ satisfies $\mathrm{Fold}_m(N_w)=w$.
+Lemma~\ref{lem:max_zeckendorf_value} implies $0\le N_w\le F_{m+2}-1$.
+
+For the bijection claim, Lemma~\ref{lem:max_zeckendorf_value} implies that every integer $N\in\{0,\dots,F_{m+2}-1\}$ has Zeckendorf digits supported within $\{1,\dots,m\}$, so $\mathrm{Fold}_m(N)$ equals the full digit string of $N$ and therefore determines $N$ uniquely by Zeckendorf uniqueness.
+\end{proof}
+
+\begin{remark}[Average degeneracy for the $2^m\to F_{m+2}$ compression]
+On the full index set $\{0,\dots,2^m-1\}$, the average preimage size of $\mathrm{Fold}_m$ is
+\[
+\frac{2^m}{|X_m|}=\frac{2^m}{F_{m+2}}\sim \sqrt{5}\,\varphi^{-2}\Bigl(\frac{2}{\varphi}\Bigr)^m,
+\]
+Thus, while the stable type count grows as $F_{m+2}\asymp\varphi^m$, the mean folding degeneracy grows exponentially with base $2/\varphi>1$.
+Theorem~\ref{thm:fold6_preimages} gives a complete closed-form degeneracy classification in the base case $m=6$.
+\end{remark}
+
+\begin{proposition}[General preimages for $\mathrm{Fold}_m$]
+\label{prop:foldm_preimages_general}
+Fix $m\ge 1$ and $w=(w_1,\dots,w_m)\in X_m$.
+Define its Zeckendorf value
+\[
+V_m(w):=\sum_{k=1}^m w_k F_{k+1}.
+\]
+Let $K(m)$ be the unique integer such that
+\[
+F_{K(m)+1}\le 2^m-1 < F_{K(m)+2}.
+\]
+Then the full preimage set of $w$ under $\mathrm{Fold}_m$ is
+\[
+\mathrm{Fold}_m^{-1}(w)=\left\{\,V_m(w)+\sum_{k=m+1}^{K(m)} c_k F_{k+1}:\ 
+\begin{array}{l}
+(c_{m+1},\dots,c_{K(m)})\in\{0,1\}^{K(m)-m},\\
+c_kc_{k+1}=0\ \text{for }m+1\le k<K(m),\\
+w_m c_{m+1}=0,\\
+V_m(w)+\sum_{k=m+1}^{K(m)} c_k F_{k+1}\le 2^m-1
+\end{array}
+\,\right\}.
+\]
+In particular, the degeneracy $|\mathrm{Fold}_m^{-1}(w)|$ depends on $w$ only through $V_m(w)$ and the boundary bit $w_m$.
+\end{proposition}
+
+\begin{proof}
+Let $N\in\{0,\dots,2^m-1\}$ and write its Zeckendorf digits $\mathrm{Z}(N)=(c_1,c_2,\dots)$.
+By definition $\mathrm{Fold}_m(N)=w$ if and only if $(c_1,\dots,c_m)=(w_1,\dots,w_m)$.
+For $N\le 2^m-1$, no Fibonacci weight above $F_{K(m)+1}$ can appear in $\mathrm{Z}(N)$, hence $c_k=0$ for all $k>K(m)$.
+Therefore
+\[
+N=V_m(w)+\sum_{k=m+1}^{K(m)} c_k F_{k+1}
+\]
+with the adjacency constraints $c_kc_{k+1}=0$ and the boundary constraint $w_m c_{m+1}=0$.
+Finally, $N\in\{0,\dots,2^m-1\}$ is equivalent to the stated inequality bound on the tail sum.
+\end{proof}
+
+\begin{corollary}[Uniform upper bound and extremizer]
+\label{cor:foldm_degeneracy_bound}
+With $K(m)$ as in Proposition~\ref{prop:foldm_preimages_general}, one has for every $w\in X_m$:
+\[
+|\mathrm{Fold}_m^{-1}(w)|\le |X_{K(m)-m}|=F_{K(m)-m+2}.
+\]
+Moreover, $|\mathrm{Fold}_m^{-1}(w)|$ is nonincreasing in $V_m(w)$, and it is maximized at $w=0^m$.
+\end{corollary}
+
+\begin{proof}
+Dropping the inequality constraint in Proposition~\ref{prop:foldm_preimages_general} yields an injection
+\[
+\mathrm{Fold}_m^{-1}(w)\hookrightarrow \{(c_{m+1},\dots,c_{K(m)})\in\{0,1\}^{K(m)-m}:\ c_kc_{k+1}=0\},
+\]
+whose cardinality is $|X_{K(m)-m}|=F_{K(m)-m+2}$.
+Monotonicity in $V_m(w)$ holds because increasing $V_m(w)$ decreases the available tail budget $2^m-1-V_m(w)$, hence can only remove admissible tails.
+The additional boundary restriction $w_m c_{m+1}=0$ is weakest when $w_m=0$.
+Thus the maximal degeneracy is attained for the smallest value $V_m(w)$ with $w_m=0$, namely $w=0^m$.
+\end{proof}
+
+\begin{proposition}[Location of the Zeckendorf cutoff $K(m)$]
+\label{prop:Km_bounds}
+Let $K(m)$ be the unique integer such that $F_{K(m)+1}\le 2^m-1< F_{K(m)+2}$.
+Then for every $m\ge 2$,
+\[
+(m-1)\log_\varphi 2-1\ \le\ K(m)\ <\ m\log_\varphi 2+1.
+\]
+In particular, $K(m)=m\log_\varphi 2+O(1)$ and
+\[
+K(m)-m=\bigl(\log_\varphi 2-1\bigr)m+O(1)=\log_\varphi\!\Bigl(\frac{2}{\varphi}\Bigr)m+O(1).
+\]
+\end{proposition}
+
+\begin{proof}
+Since $m\ge 2$ one has $2^{m-1}\le 2^m-1<2^m$.
+From $2^m-1< F_{K(m)+2}$ and Lemma~\ref{lem:binet_bounds} (upper bound) we get
+\[
+2^{m-1}\le 2^m-1< F_{K(m)+2}\le \varphi^{K(m)+1},
+\]
+so $(m-1)\log_\varphi 2\le K(m)+1$ and hence $K(m)\ge (m-1)\log_\varphi 2-1$.
+From $F_{K(m)+1}\le 2^m-1<2^m$ and Lemma~\ref{lem:binet_bounds} (lower bound) we get
+\[
+\varphi^{K(m)-1}\le F_{K(m)+1}\le 2^m,
+\]
+so $K(m)-1\le m\log_\varphi 2$ and hence $K(m)<m\log_\varphi 2+1$.
+The asymptotic statements follow.
+\end{proof}
+
+\begin{corollary}[Maximal degeneracy is of the same exponential order as the mean]
+\label{cor:maxdeg_same_order_as_mean}
+Let
+\[
+\overline{d}_m:=\frac{1}{|X_m|}\sum_{w\in X_m}|\mathrm{Fold}_m^{-1}(w)|=\frac{2^m}{|X_m|}=\frac{2^m}{F_{m+2}}
+\]
+be the mean preimage size, and let $d_m^{\max}:=\max_{w\in X_m}|\mathrm{Fold}_m^{-1}(w)|$.
+Then for all $m\ge 2$,
+\[
+\varphi^{-1}\Bigl(\frac{2}{\varphi}\Bigr)^m\ \le\ \overline{d}_m\ \le\ d_m^{\max}\ \le\ \varphi^2\Bigl(\frac{2}{\varphi}\Bigr)^m.
+\]
+In particular, $d_m^{\max}=\Theta\!\bigl((2/\varphi)^m\bigr)$ and $d_m^{\max}\le \varphi^3\,\overline{d}_m$.
+\end{corollary}
+
+\begin{proof}
+The lower bound $\overline{d}_m\le d_m^{\max}$ is trivial.
+By Lemma~\ref{lem:binet_bounds} (upper bound) one has $F_{m+2}\le \varphi^{m+1}$, hence
+\[
+\overline{d}_m=\frac{2^m}{F_{m+2}}\ge \frac{2^m}{\varphi^{m+1}}=\varphi^{-1}\Bigl(\frac{2}{\varphi}\Bigr)^m.
+\]
+For the upper bound on $d_m^{\max}$, Corollary~\ref{cor:foldm_degeneracy_bound} gives
+\[
+d_m^{\max}\le F_{K(m)-m+2}\le \varphi^{K(m)-m+1}=\frac{\varphi^{K(m)+1}}{\varphi^{m}}.
+\]
+Lemma~\ref{lem:binet_bounds} (lower bound) implies $\varphi^{K(m)-1}\le F_{K(m)+1}\le 2^m$, hence $\varphi^{K(m)+1}\le \varphi^2 2^m$.
+Substituting yields $d_m^{\max}\le \varphi^2 (2/\varphi)^m$.
+Finally, Lemma~\ref{lem:binet_bounds} (lower bound) implies $F_{m+2}\ge \varphi^{m}$, so $(2/\varphi)^m\le \varphi\,\overline{d}_m$ and therefore $d_m^{\max}\le \varphi^3\,\overline{d}_m$.
+\end{proof}
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{rrrrr}
+\toprule
+$m$ & $2^m$ & $F_{m+2}$ & $\overline{d}_m=\frac{2^m}{F_{m+2}}$ & $\overline{d}_m\Bigl(\frac{\varphi}{2}\Bigr)^m$ \\
+\midrule
+\input{sections/generated/foldm_scaling_rows}
+\end{tabular}
+\caption{Quantitative scaling of mean folding degeneracy. The normalized quantity $\overline{d}_m(\varphi/2)^m$ approaches $\sqrt{5}/\varphi^2$ by Lemma~\ref{lem:binet_bounds}.}
+\label{tab:foldm_scaling}
+\end{table}
+
+\subsection{Strong quantitative preimage structure on the index set \texorpdfstring{$\{0,\dots,63\}$}{0..63}}
+The folding $\mathrm{Fold}_6:\{0,\dots,63\}\to X_6$ is many-to-one because $2^6=64$ exceeds $|X_6|=F_8=21$.
+Nevertheless, its preimage structure is completely explicit at window length $6$.
+
+\begin{theorem}[Preimage classification and degeneracy histogram for $\mathrm{Fold}_6$]
+\label{thm:fold6_preimages}
+For $w\in X_6$, let $V(w)=\sum_{k=1}^6 w_k F_{k+1}$.
+Then the preimage set $\mathrm{Fold}_6^{-1}(w)\subset\{0,\dots,63\}$ is:
+\[
+\mathrm{Fold}_6^{-1}(w)=
+\begin{cases}
+\{V(w),\,V(w)+F_9\}, & w_6=1,\\[4pt]
+\{V(w),\,V(w)+F_8,\,V(w)+F_9,\,V(w)+F_{10}\}, & w_6=0\ \text{and}\ V(w)\le 8,\\[4pt]
+\{V(w),\,V(w)+F_8,\,V(w)+F_9\}, & w_6=0\ \text{and}\ V(w)> 8.
+\end{cases}
+\]
+In particular, $|\mathrm{Fold}_6^{-1}(w)|\in\{2,3,4\}$ for all $w\in X_6$, and the degeneracy histogram is
+\[
+\begin{aligned}
+\#\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=2\}&=8,\\
+\#\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=3\}&=4,\\
+\#\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=4\}&=9.
+\end{aligned}
+\]
+\end{theorem}
+
+\begin{proof}
+For $N\le 63$, the Fibonacci weight $F_{11}=89$ is too large, so the Zeckendorf digits satisfy $c_k=0$ for all $k\ge 10$.
+Thus only the digits $c_7,c_8,c_9$ (with weights $F_8=21$, $F_9=34$, $F_{10}=55$) can appear above the window.
+
+Fix $w\in X_6$ and suppose $\mathrm{Fold}_6(N)=w$.
+Then the first six Zeckendorf digits of $N$ equal $w$, hence
+\[
+N=V(w)+c_7 F_8 + c_8 F_9 + c_9 F_{10},
+\qquad c_7,c_8,c_9\in\{0,1\},
+\]
+with the adjacency constraints $w_6 c_7=0$, $c_7 c_8=0$, and $c_8 c_9=0$.
+
+\paragraph{Case 1: \texorpdfstring{$w_6=1$}{w6=1}.}
+Then $c_7=0$. The admissible choices for $(c_8,c_9)$ are $(0,0)$ and $(1,0)$ and $(0,1)$.
+However, $V(w)\ge F_7=13$ in this case, hence $V(w)+F_{10}>63$ and the option $(c_8,c_9)=(0,1)$ is impossible under the bound $N\le 63$.
+Therefore $\mathrm{Fold}_6^{-1}(w)=\{V(w),V(w)+F_9\}$.
+
+\paragraph{Case 2: \texorpdfstring{$w_6=0$}{w6=0}.}
+Now $c_7$ may be $0$ or $1$, but $(c_7,c_8)=(1,1)$ is forbidden.
+Moreover, if $c_9=1$ then $c_8=0$, and necessarily $c_7=0$ as well since $F_{10}+F_8=55+21>63$.
+Thus the only admissible offsets are $0$, $F_8$, $F_9$, and possibly $F_{10}$.
+The offset $F_{10}$ is admissible if and only if $V(w)\le 63-F_{10}=8$.
+This yields the stated preimage formulas.
+
+\paragraph{Degeneracy counts.}
+There are exactly $8$ admissible words in $X_6$ with $w_6=1$ (equivalently, length-$4$ admissible prefixes followed by $01$), hence $8$ outputs of degeneracy $2$.
+Among the $w_6=0$ outputs, $V(w)>8$ holds precisely when $w_5=1$ and $(w_1,w_2,w_3)\neq (0,0,0)$ (since $w_4=0$ is forced by admissibility), yielding $4$ such words and hence $4$ outputs of degeneracy $3$.
+The remaining $21-8-4=9$ outputs have degeneracy $4$.
+\end{proof}
+
+\subsection{Algorithmic computation}
+A standard greedy algorithm computes $\mathrm{Z}(N)$ by iteratively subtracting the largest Fibonacci weight $\le N$ while skipping adjacent indices (to enforce $c_k c_{k+1}=0$); see, e.g., \cite{AlloucheShallit2003}.
+We record pseudocode and a reference pure-Python implementation in Appendix~\ref{app:zeckendorf_algorithms}.
+
+\subsection{Local normalization by a rewriting rule (optional viewpoint)}
+There exist normalization procedures that convert a non-canonical Fibonacci digit string into the Zeckendorf canonical form using local rewrites induced by the Fibonacci recursion.
+One concrete instance is the rewrite
+\[
+011 \ \Rightarrow\ 100,
+\]
+interpreted for digits written in \emph{descending} weight order (most significant digit on the left), since $F_{n}=F_{n-1}+F_{n-2}$.
+Iterating such rewrites (together with a finite carry protocol) yields a canonical Zeckendorf form; see, e.g., \cite{AlloucheShallit2003}.
+
+

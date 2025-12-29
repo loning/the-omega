@@ -1,0 +1,137 @@
+
+\section{Resolution change as recursion: Hilbert refinement and Zeckendorf depth}
+\label{sec:resolution_recursion}
+
+The phrase ``resolution'' in this paper refers to two independent parameters:
+\begin{itemize}
+\item a \emph{spatial} resolution parameter (Hilbert order $n$), controlling the screen lattice size $2^n\times 2^n$ and the address map $H_n$;
+\item a \emph{syntactic} resolution parameter (Zeckendorf window length $m$), controlling the number of admissible types $|X_m|=F_{m+2}$.
+\end{itemize}
+Resolution folding couples these recursions: spatial refinement changes locality/embedding, while syntactic refinement changes the stable type space.
+
+\subsection{Hilbert recursion: \texorpdfstring{$n\mapsto n+1$}{n->n+1}}
+The Hilbert address map admits a self-similar recursion: the order-$n+1$ curve consists of four order-$n$ sub-curves, one in each quadrant, with quadrant-dependent rotations/reflections.
+Concretely, there exist quadrant offsets $\Delta_q\in \Lambda_{n+1}$ and transforms $T_q\in D_4$ such that
+\[
+H_{n+1}(t)=\Delta_q + T_q\bigl(H_n(t')\bigr),
+\]
+where $t\in\{0,\dots,2^{2(n+1)}-1\}$ is decomposed as
+\[
+t=q\cdot 2^{2n}+t',\qquad q\in\{0,1,2,3\},\quad t'\in\{0,\dots,2^{2n}-1\}.
+\]
+This is the discrete manifestation of the Hilbert curve's classical self-similarity; see \cite{Sagan1994}.
+
+\begin{remark}[Locality under recursion]
+The defining purpose of Hilbert addressing is that the one-step scan adjacency $t\sim t+1$ compiles to nearest-neighbor adjacency on the screen lattice.
+As $n$ increases, this locality property is preserved by construction, while the induced neighborhood model can vary across the $D_4$ layout family.
+\end{remark}
+
+\subsection{Zeckendorf recursion: \texorpdfstring{$m\mapsto m+1$}{m->m+1}}
+Let $X_m\subset\{0,1\}^m$ be the set of length-$m$ words with no adjacent ones.
+Proposition~\ref{prop:no_adjacent_fib} implies the Fibonacci recursion
+\[
+|X_{m+1}|=|X_m|+|X_{m-1}|.
+\]
+Thus $|X_m|\asymp \varphi^m$, while the full word space size is $2^m$.
+In particular, as $m$ grows the absolute number of admissible types increases, but the admissible density $|X_m|/2^m$ decreases.
+
+\begin{proposition}[Recursive uplift decomposition of the admissible language]
+\label{prop:uplift_decomposition}
+For every $m\ge 1$, define two injections
+\[
+U_0:X_m\to X_{m+1},\quad U_0(w):=w0,
+\qquad
+U_1:X_{m-1}\to X_{m+1},\quad U_1(v):=v01,
+\]
+where concatenation is written by juxtaposition.
+Then
+\[
+X_{m+1}=U_0(X_m)\ \sqcup\ U_1(X_{m-1}),
+\]
+a disjoint union partitioned by the last bit (words ending in $0$ versus words ending in $1$).
+\end{proposition}
+
+\begin{proof}
+Every word in $U_0(X_m)$ ends in $0$ and is admissible because appending $0$ cannot create an adjacent pair of ones.
+Every word in $U_1(X_{m-1})$ ends in $01$ and is admissible because the inserted $0$ separates any preceding digit from the terminal $1$.
+
+Conversely, let $w\in X_{m+1}$.
+If $w$ ends in $0$, write $w=u0$ with $u\in\{0,1\}^{m}$; then $u\in X_m$ and $w=U_0(u)$.
+If $w$ ends in $1$, admissibility forces the last two bits to be $01$, so $w=v01$ for some $v\in\{0,1\}^{m-1}$; then $v\in X_{m-1}$ and $w=U_1(v)$.
+The union is disjoint because the last bit differs.
+\end{proof}
+
+\begin{proposition}[Uplift as orthogonal isometries on $\ell^2$]
+\label{prop:uplift_isometries}
+Let $\{\mathbf{e}_w:w\in X_m\}$ denote the standard orthonormal basis of $\ell^2(X_m)$.
+Define linear maps
+\[
+\widehat{U}_0:\ell^2(X_m)\to \ell^2(X_{m+1}),\qquad \widehat{U}_0(\mathbf{e}_w):=\mathbf{e}_{w0},
+\]
+and
+\[
+\widehat{U}_1:\ell^2(X_{m-1})\to \ell^2(X_{m+1}),\qquad \widehat{U}_1(\mathbf{e}_v):=\mathbf{e}_{v01}.
+\]
+Then $\widehat{U}_0$ and $\widehat{U}_1$ are isometries with orthogonal ranges, and one has the orthogonal direct sum decomposition
+\[
+\ell^2(X_{m+1})=\widehat{U}_0\ell^2(X_m)\ \oplus\ \widehat{U}_1\ell^2(X_{m-1}).
+\]
+\end{proposition}
+
+\begin{proof}
+Since $\widehat{U}_0$ and $\widehat{U}_1$ map orthonormal bases to orthonormal sets, they extend to isometries.
+Their ranges are orthogonal because words in $U_0(X_m)$ end in $0$ while words in $U_1(X_{m-1})$ end in $1$.
+Finally, Proposition~\ref{prop:uplift_decomposition} gives a disjoint union partition of $X_{m+1}$ into the two image sets, hence $\ell^2(X_{m+1})$ decomposes as the orthogonal sum of the corresponding coordinate subspaces.
+\end{proof}
+
+\subsection{The \texorpdfstring{$64\to 21$}{64->21} projection as a scale-local statement}
+At local window length $m=6$, the $\varphi$-stable type space is $X_6$ and has size $21$.
+Independently, at spatial order $n=3$ the screen lattice has $2^{2n}=2^6=64$ sites.
+This is the minimal resolution at which the spatial carrier ($64$ sites) and the local word space ($64$ words) match exactly.
+
+From this viewpoint, the statement ``$64\to 21$'' is \emph{scale-local}:
+it asserts that a six-bit local readout admits a canonical $21$-type stability sector, regardless of how the readout is embedded into a spatial neighborhood by an address family.
+
+\begin{definition}[Balanced coupling of spatial and syntactic resolution]
+\label{def:balanced_coupling}
+We call the choice
+\[
+m=2n
+\]
+the \emph{balanced coupling} between spatial Hilbert order $n$ and Zeckendorf window length $m$.
+Equivalently, balanced coupling is the condition $|\Omega_m|=|\Lambda_n|$.
+\end{definition}
+
+\begin{remark}[Why balanced coupling is natural]
+Under Definition~\ref{def:balanced_coupling}, the scan index set $\{0,\dots,2^{2n}-1\}$ has the same cardinality as the local word space $\Omega_{2n}$.
+Thus the binary expansion provides a canonical identification of scan indices with microstate labels, and a folding map on $\Omega_{2n}$ may be viewed as a deterministic type-labeling of the entire $2^n\times 2^n$ lattice via Hilbert addressing.
+This is the minimal setting in which the spatial carrier and the local readout have matching finite complexity.
+\end{remark}
+
+\begin{proposition}[Hilbert index length and Fibonacci type count]
+\label{prop:hilbert_index_fib_count}
+At spatial order $n$ (2D), the Hilbert scan index set has size $2^{2n}$ and admits a canonical identification with binary words of length $2n$.
+Under the no-adjacent-one constraint, the admissible subset has cardinality
+\[
+|X_{2n}|=F_{2n+2}.
+\]
+In particular, for $n=3$ one has $2^{2n}=64$ and $|X_{2n}|=F_8=21$.
+\end{proposition}
+
+\begin{proof}
+The cardinality $|\Lambda_n|=2^{2n}$ implies the index set is $\{0,\dots,2^{2n}-1\}$.
+Binary expansion identifies it with $\{0,1\}^{2n}$.
+The admissible count is Proposition~\ref{prop:no_adjacent_fib} with $m=2n$.
+\end{proof}
+
+\subsection{Iterability: folding across scales}
+There are two complementary ways to iterate the construction:
+\begin{itemize}
+\item \textbf{Fixed local window, increasing spatial resolution.}
+Keep $m=6$ and increase $n$. The same $64\to 21$ local folding applies to each local window extracted along the scan chain, while Hilbert recursion changes how local interactions are embedded on the screen.
+\item \textbf{Fixed spatial carrier class, increasing syntactic resolution.}
+Increase the window length $m$ (hence the admissible type space size $F_{m+2}$) while viewing $64\to 21$ as the base case $m=6$ of a general family $2^m\to F_{m+2}$.
+\end{itemize}
+In both cases, the folding mechanism remains explicit and auditable: it is implemented either by the projector onto $X_m$ or by the many-to-one map $\mathrm{Fold}_m$ defined via Zeckendorf window truncation.
+
+

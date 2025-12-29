@@ -1,0 +1,125 @@
+
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{Problem statement: from 64 microstates to a stable 21-type sector}
+Fix a finite local readout space with $64$ microstates,
+\[
+\Omega_6:=\{0,1\}^6,\qquad |\Omega_6|=2^6=64,
+\]
+and its linearization $\mathcal{H}_6:=\ell^2(\Omega_6)\cong \CC^{64}$.
+Our goal is to formalize, in a purely mathematical language, a notion of \emph{resolution folding}:
+how a finite-resolution readout can admit a computable projection from the full microstate set to a smaller, stable effective set, and how this mechanism can iterate across scales.
+
+\begin{definition}[Resolution folding scheme (finite window)]
+\label{def:resolution_folding_scheme}
+Fix a window length $m\ge 1$ and let $\Omega_m:=\{0,1\}^m$ be the microstate alphabet.
+A \emph{resolution folding scheme} at window length $m$ consists of:
+\begin{itemize}
+\item a \emph{stable type set} $X_m\subseteq \Omega_m$ selected by constraint channels (equivalently, $X_m=\{w\in\Omega_m:\ \mathcal{D}(w)=0\}$ for some nonnegative defect function $\mathcal{D}$);
+\item a surjective \emph{folding map} $\mathsf{Fold}_m:\Omega_m\twoheadrightarrow X_m$ (or, after indexing $\Omega_m\cong\{0,\dots,2^m-1\}$, a surjection from $\{0,\dots,2^m-1\}$ onto $X_m$);
+\item the induced orthogonal projection $P_m:\ell^2(\Omega_m)\to \ell^2(\Omega_m)$ onto $\ell^2(X_m)$.
+\end{itemize}
+A \emph{scale interface} is a family of such schemes as $m$ varies, together with natural maps relating $(X_m,\mathsf{Fold}_m)$ across different $m$ (Section~\ref{sec:resolution_recursion}).
+\end{definition}
+
+\begin{remark}[Relation to companion manuscripts]
+Motivations for coupling address families, canonical codings, and Abel-type regularizations appear in the broader HPA--$\Omega$ manuscript series; see, e.g., \cite{Ma2025HPA,Ma2025HPOT,Ma2025FoP}.
+The present paper is self-contained and uses only the abstract mathematical structures needed for the $64\to 21$ folding analysis.
+\end{remark}
+
+\paragraph{Related work and positioning.}
+The golden mean constraint defines a shift of finite type and is among the standard model examples in symbolic dynamics; see \cite{LindMarcus1995}.
+The determinant/zeta identities used here are classical for topological Markov shifts and sit within thermodynamic formalism and transfer-operator methods; see \cite{Bowen1975,Ruelle1978,ParryPollicott1990} for general frameworks and refinements (pressure, weighted zeta functions, and Ruelle operators).
+Zeckendorf and Fibonacci numeration, and associated algorithms, are standard in the combinatorics on words and automatic sequences literature; see \cite{AlloucheShallit2003,Lothaire2002}.
+The Hilbert curve and its use as a locality-preserving ordering (e.g.\ in indexing and embedding contexts) are classical; see \cite{Hilbert1891,Sagan1994,MoonJagadishFaloutsosSaltz2001}.
+
+\subsection{Contributions (and what is classical)}
+\label{subsec:intro_contrib}
+At fixed word length $6$, the golden-mean forbidden grammar (\emph{no adjacent ones}) selects precisely $21$ admissible binary words.
+This Fibonacci count and its asymptotic growth rate are classical.
+The goal of this paper is not to re-prove standard symbolic-dynamics background, but to make the \emph{folding mechanism} explicit and quantitative at a fixed finite resolution, while keeping a clean interface to higher-resolution generalizations.
+
+Concretely, beyond standard background, the paper contributes:
+\begin{itemize}
+\item \textbf{An explicit folding map with closed preimages.}
+We define a computable surjection $\mathrm{Fold}_6:\{0,\dots,63\}\twoheadrightarrow X_6$ via Zeckendorf normalization and window truncation, and we give closed-form preimage sets and an exact degeneracy histogram (Theorem~\ref{thm:fold6_preimages}; Appendix~\ref{app:fold6_table}).
+\item \textbf{Quantitative control beyond the base case.}
+We provide a general preimage characterization for $\mathrm{Fold}_m$ and derive explicit degeneracy bounds and scaling laws for the $2^m\to F_{m+2}$ compression (Section~\ref{sec:fold_map}).
+\item \textbf{A symmetry-invariant spatial interface.}
+We formalize the dihedral layout family $D_4$ for Hilbert addressing and prove exact invariance statements for adjacency-based statistics under layout changes (Section~\ref{sec:state_space_addressing}).
+\item \textbf{An analytic stability channel with a separable extension.}
+We formulate the $\e$-channel via zeta/Abel normalization and record a weighted finite-state extension in which analytic stability is not equivalent to a single forbidden word (Section~\ref{sec:e_constraint}).
+\end{itemize}
+
+With these pieces in place, we enrich the $\varphi$-stable sector with two additional, commuting channels:
+\begin{itemize}
+\item \textbf{($\pi$) discrete monodromy / closure.}
+Within the admissible set, a cyclic wrap-around condition splits the $21$ stable words into $18$ cyclically admissible states and $3$ boundary states.
+\item \textbf{($\e$) analytic stability / Abel--zeta pole barrier.}
+The golden-mean shift has zeta function $\zeta(z)=1/(1-z-z^2)$; after spectral normalization $z=r/\varphi$, the normalized zeta is holomorphic on $|r|<1$ with its principal pole on the boundary.
+\end{itemize}
+
+\subsection{Main results (finite resolution)}
+Let $X_6\subset \Omega_6$ be the set of length-$6$ words with no occurrence of the substring $11$.
+Our main finite-resolution statements are:
+\begin{itemize}
+\item \textbf{Stable dimension ($64\to 21$).} The orthogonal projection $P_\varphi:\mathcal{H}_6\to\mathcal{H}_6$ onto $\ell^2(X_6)$ has rank $|X_6|=21$.
+\item \textbf{Canonical split ($21=18\oplus 3$).} The cyclic admissibility condition (wrap-around allowed transition) defines a partition
+\[
+X_6=X_6^{\mathrm{cyc}}\ \sqcup\ X_6^{\mathrm{bdry}},
+\qquad |X_6^{\mathrm{cyc}}|=18,\quad |X_6^{\mathrm{bdry}}|=3,
+\]
+with $X_6^{\mathrm{bdry}}=\{100001,100101,101001\}$.
+\item \textbf{A computable folding map.} We define a natural surjection
+\[
+\mathrm{Fold}_6:\{0,\dots,63\}\twoheadrightarrow X_6
+\]
+by taking the Zeckendorf representation of an integer and truncating to a length-$6$ window.
+\item \textbf{Strong degeneracy law.} The full preimage structure of $\mathrm{Fold}_6$ on $\{0,\dots,63\}$ is explicit: every output has degeneracy $2$, $3$, or $4$, with histogram $(8,4,9)$ for $(2,3,4)$, and closed-form preimage sets (Theorem~\ref{thm:fold6_preimages}).
+\end{itemize}
+
+\subsection{Quantitative summary at a glance}
+\label{subsec:intro_quant_summary}
+Table~\ref{tab:quant_summary} records the core finite-resolution quantities and their general formulas (when available).
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lll}
+\toprule
+Quantity & General formula & At window length $6$ \\
+\midrule
+Microstate count & $|\Omega_m|=2^m$ & $|\Omega_6|=64$ \\
+Admissible (stable) types & $|X_m|=F_{m+2}$ & $|X_6|=21$ \\
+Cyclically admissible types & $|X_m^{\mathrm{cyc}}|=\Tr(A^m)=F_{m-1}+F_{m+1}$ & $|X_6^{\mathrm{cyc}}|=18$ \\
+Boundary types & $|X_m^{\mathrm{bdry}}|=F_{m-2}$ (for $m\ge 2$) & $|X_6^{\mathrm{bdry}}|=3$ \\
+Golden mean zeta & $\zeta(z)=1/\det(I-zA)$ & $\zeta(z)=1/(1-z-z^2)$ \\
+Spectral normalization & $z=r/\rho(A)$, pole at $r=1$ & $\rho(A)=\varphi$, pole at $r=1$ \\
+Mean folding degeneracy & $\frac{2^m}{|X_m|}=\frac{2^m}{F_{m+2}}$ & $\frac{64}{21}$ \\
+Fold\_6 degeneracy histogram & explicit finite classification & $(2\mapsto 8,\ 3\mapsto 4,\ 4\mapsto 9)$ \\
+\bottomrule
+\end{tabular}
+\caption{Quantitative summary of the $64\to 21$ folding model and its generalizations.}
+\label{tab:quant_summary}
+\end{table}
+
+\subsection{Resolution as recursion: Hilbert addressing and Zeckendorf windowing}
+Two recursive structures provide the scale interface.
+On the spatial side, finite-resolution Hilbert addressing maps a one-dimensional tick index to a two-dimensional $2^n\times 2^n$ grid, with an $8$-element layout group $D_4$ acting by global symmetries.
+On the syntactic side, increasing the Zeckendorf window length $m$ grows the admissible set size as $|X_m|=F_{m+2}$ (Fibonacci recursion), with asymptotic rate $|X_m|\asymp \varphi^m$.
+We view resolution folding as a coupling of these two recursions: spatial refinement changes the embedding/locality model, while syntactic refinement changes the stable type space.
+
+\subsection{Roadmap}
+Section~\ref{sec:state_space_addressing} defines the $64$-state model and Hilbert address families.
+Section~\ref{sec:phi_constraint} develops the $\varphi$-constraint and proves the $21$ count.
+Section~\ref{sec:pi_constraint} introduces the $\pi$-channel and the $18\oplus 3$ split.
+Section~\ref{sec:e_constraint} develops the Abel--zeta pole-barrier viewpoint and formalizes the $\e$-channel at finite window.
+Section~\ref{sec:fold_map} defines the folding map $\mathrm{Fold}_6$ and proves surjectivity.
+Section~\ref{sec:resolution_recursion} discusses recursion across Hilbert order and Zeckendorf window.
+Section~\ref{sec:three_operator} packages the construction as commuting defect operators and states a conservative iterability axiom.
+Section~\ref{sec:applications} records two application interfaces as falsifiable mapping problems.
+
+

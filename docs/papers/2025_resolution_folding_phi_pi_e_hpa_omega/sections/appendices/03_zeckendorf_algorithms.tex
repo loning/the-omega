@@ -1,0 +1,40 @@
+
+\section{Zeckendorf computation and folding algorithms}
+\label{app:zeckendorf_algorithms}
+
+\subsection{Greedy Zeckendorf algorithm}
+Input: an integer $N\ge 0$.
+Output: Zeckendorf digits $(c_k)_{k\ge 1}\in\{0,1\}^{\NN}$ such that $N=\sum_{k\ge 1} c_k F_{k+1}$ and $c_k c_{k+1}=0$.
+
+\begin{enumerate}
+\item If $N=0$, return $c_k=0$ for all $k$.
+\item Generate Fibonacci weights $(F_{k+1})_{k\ge 1}$ (with $F_1=F_2=1$ and $F_{n+2}=F_{n+1}+F_n$) until $F_{K+1}\le N < F_{K+2}$.
+\item Initialize all digits $c_k:=0$.
+\item For $k=K,K-1,\dots,1$:
+  \begin{itemize}
+  \item If $F_{k+1}\le N$, set $c_k:=1$ and update $N\leftarrow N-F_{k+1}$.
+  \item If $c_k$ was set to $1$, skip the next index $k-1$ (to enforce $c_{k-1}=0$).
+  \end{itemize}
+\item Return $(c_k)$.
+\end{enumerate}
+
+Correctness and uniqueness are guaranteed by Theorem~\ref{thm:zeckendorf_uniqueness}.
+
+\subsection{Computing \texorpdfstring{$\mathrm{Fold}_6$}{Fold\_6}}
+Given an input integer $N\in\{0,\dots,63\}$:
+\begin{enumerate}
+\item Compute $\mathrm{Z}(N)=(c_1,c_2,\dots)$ by the greedy algorithm above.
+\item Output $\mathrm{Fold}_6(N)=(c_1,\dots,c_6)\in X_6$.
+\end{enumerate}
+
+\subsection{Local normalization viewpoint}
+Let a finite digit string $(d_1,\dots,d_M)\in\{0,1\}^M$ represent an integer by Fibonacci weights, with digit $d_k$ attached to weight $F_{k+1}$.
+Normalization to Zeckendorf form can be implemented via local rewrites induced by $F_n=F_{n-1}+F_{n-2}$ when digits are written in descending weight order; see, e.g., \cite{AlloucheShallit2003}.
+
+\subsection{Reference implementation}
+Pure-Python (standard-library) reference implementations are included under the paper directory:
+\[
+\texttt{docs/papers/2025\_resolution\_folding\_phi\_pi\_e\_hpa\_omega/scripts/}.
+\]
+
+

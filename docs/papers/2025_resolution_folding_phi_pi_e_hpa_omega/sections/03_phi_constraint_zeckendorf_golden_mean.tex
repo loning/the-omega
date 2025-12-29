@@ -1,0 +1,88 @@
+
+\section{The phi-constraint: Zeckendorf legality and the golden mean subshift}
+\label{sec:phi_constraint}
+
+\subsection{Golden mean grammar at finite window length}
+Let $\mathcal{F}:=\{11\}$ be the forbidden word set.
+Define the admissible set of length-$6$ words
+\[
+X_6:=\{w\in\{0,1\}^6:\ w\ \text{contains no occurrence of }11\}.
+\]
+Equivalently, $w=w_1\cdots w_6\in X_6$ if and only if $w_iw_{i+1}=0$ for $i=1,\dots,5$.
+This is the length-$6$ truncation of the classical \emph{golden mean shift} (a shift of finite type).
+It also coincides with the locality rule for Zeckendorf representations in the golden Ostrowski degeneration; see, e.g., \cite{AlloucheShallit2003,Lothaire2002,Zeckendorf1972}.
+
+\subsection{Counting admissible words: \texorpdfstring{$|X_6|=21$}{|X6|=21}}
+Let $a_n$ denote the number of binary words of length $n$ with no adjacent ones.
+
+\begin{proposition}[Fibonacci recursion for no-adjacent-one words]
+\label{prop:no_adjacent_fib}
+For $n\ge 3$ one has
+\[
+a_n=a_{n-1}+a_{n-2},
+\qquad a_1=2,\quad a_2=3,
+\]
+hence $a_n=F_{n+2}$ where $(F_k)$ is the Fibonacci sequence with $F_1=1,F_2=1$.
+\end{proposition}
+
+\begin{proof}
+Classify admissible words by their first letter.
+If the first letter is $0$, the remaining $n-1$ letters form any admissible word, contributing $a_{n-1}$ possibilities.
+If the first letter is $1$, the second letter must be $0$, and the remaining $n-2$ letters form any admissible word, contributing $a_{n-2}$.
+Thus $a_n=a_{n-1}+a_{n-2}$.
+The initial values are $a_1=2$ (words $0,1$) and $a_2=3$ (words $00,01,10$).
+\end{proof}
+
+\begin{corollary}[The $64\to 21$ count]
+\label{cor:x6_21}
+One has $|X_6|=a_6=F_8=21$.
+\end{corollary}
+
+\subsection{The phi-stable subspace as an orthogonal projection}
+Define the orthogonal projector
+\[
+P_\varphi:\mathcal{H}_6\to\mathcal{H}_6,
+\qquad
+P_\varphi(\mathbf{e}_w)=
+\begin{cases}
+\mathbf{e}_w, & w\in X_6,\\
+0, & w\notin X_6.
+\end{cases}
+\]
+
+\begin{proposition}[$\varphi$-stability is $21$-dimensional]
+\label{prop:pvarphi_rank}
+The operator $P_\varphi$ is an orthogonal projection and
+\[
+\rank(P_\varphi)=\dim \mathrm{Im}(P_\varphi)=|X_6|=21.
+\]
+\end{proposition}
+
+\begin{proof}
+By construction $P_\varphi$ is diagonal in the orthonormal basis $\{\mathbf{e}_w\}$ with eigenvalues $0$ or $1$.
+Hence $P_\varphi^2=P_\varphi=P_\varphi^\ast$ and its image is $\ell^2(X_6)$, of dimension $|X_6|=21$.
+\end{proof}
+
+\begin{remark}[Entropy rate and the appearance of $\varphi$]
+The appearance of $\varphi$ is not only combinatorial but also dynamical.
+The golden mean shift is a shift of finite type with adjacency matrix $A=\bigl(\begin{smallmatrix}1&1\\1&0\end{smallmatrix}\bigr)$, hence its topological entropy equals $\log\rho(A)=\log\varphi$; see \cite{LindMarcus1995}.
+At the finite-window level, Proposition~\ref{prop:no_adjacent_fib} gives $|X_n|=F_{n+2}$, so $\frac{1}{n}\log|X_n|\to \log\varphi$ as $n\to\infty$ by the standard Fibonacci asymptotics.
+In this sense $\varphi$ is the canonical growth/grammar constant for the stability constraint ``no adjacent ones''.
+\end{remark}
+
+\begin{proposition}[Entropy from admissible growth]
+\label{prop:entropy_from_growth}
+Let $X_n\subset\{0,1\}^n$ be the length-$n$ golden mean language (no adjacent ones).
+Then
+\[
+\lim_{n\to\infty}\frac{1}{n}\log|X_n|=\log\varphi.
+\]
+\end{proposition}
+
+\begin{proof}
+Proposition~\ref{prop:no_adjacent_fib} gives $|X_n|=F_{n+2}$.
+By Binet's formula (or any standard Fibonacci bound), $F_{n+2}=\frac{\varphi^{n+2}-(-\varphi)^{-n-2}}{\sqrt{5}}$, hence $F_{n+2}=\Theta(\varphi^n)$.
+Taking logs and dividing by $n$ yields the limit $\log\varphi$.
+\end{proof}
+
+
