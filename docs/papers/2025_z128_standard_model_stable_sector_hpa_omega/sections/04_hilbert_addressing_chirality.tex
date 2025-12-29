@@ -1,0 +1,60 @@
+
+\section{Hilbert addressing and dihedral layout families}
+\label{sec:hilbert_addressing}
+
+\subsection{Hilbert addressing as a locality-preserving embedding}
+\label{subsec:hilbert_map}
+
+To express spatial locality at finite resolution, a one-dimensional scan index must be embedded into a multi-dimensional grid with controlled neighborhood distortion.
+Hilbert addressing provides a classical locality-preserving bijection
+\[
+H_n:\{0,1,\dots,4^n-1\}\to \{0,1,\dots,2^n-1\}^2
+\]
+with bounded jump statistics relative to the Euclidean metric; see \cite{Hilbert1891,Sagan1994,MoonJagadishFaloutsosSaltz2001}.
+At $n=3$, the grid has $4^3=64$ sites, matching the $64$ microstates of $\Omega_6$ in the balanced coupling $(m,n)=(6,3)$.
+
+\subsection{The \texorpdfstring{$D_4$}{D4} layout family and non-canonicity}
+\label{subsec:d4_family}
+
+Hilbert recursion is not unique: there are $8$ global layout variants related by the dihedral group $D_4$ acting on the square by rotations and reflections.
+These correspond to different address families (different orientation and reflection choices at recursion seed), and can be treated as different readout bases.
+Rotation elements preserve orientation; reflection elements reverse orientation.
+
+This non-canonicity is the geometric entrance for chirality in the readout protocol:
+fixing an orientation class at initialization selects a handedness for the address recursion.
+In the physical identification layer, we elevate this to a \emph{protocol choice} whose mirror is not a symmetry within the same protocol (Section~\ref{sec:chirality_antimatter}).
+
+\paragraph{Non-canonicity as protocol, not gauge.}
+Changing Hilbert layout changes the address mapping and therefore changes certain finite statistics of neighborhood patterns.
+At the same time, the folding core of Section~\ref{sec:folding_core} is protocol-stable: the $64\to 21$ and $18\oplus 3$ statements are invariant as combinatorics of words, independent of the spatial embedding.
+The role of $D_4$ is therefore not to modify the folding theorem, but to provide a controlled family of readout bases in which chirality can be defined and tested.
+
+\subsection{A discrete Hilbert chirality index}
+\label{subsec:hilbert_chi}
+
+Let $p_0,p_1,\dots,p_{4^n-1}\in\ZZ^2$ be the Hilbert path points, with $p_k=H_n(k)$.
+Define the discrete chirality index
+\begin{equation}\label{eq:hilbert_chi_def}
+\chi:=\sum_{k=1}^{4^n-2}\mathrm{sgn}\!\left( (p_k-p_{k-1})\times (p_{k+1}-p_k)\right),
+\end{equation}
+where the $2$D cross product is the scalar $ (a_x,a_y)\times(b_x,b_y):=a_x b_y-a_y b_x$ and $\mathrm{sgn}(t)\in\{-1,0,+1\}$.
+Intuitively, $\chi$ is the net excess of left turns over right turns along the discrete path.
+
+\begin{proposition}[Parity and traversal reversal flip $\chi$]\label{prop:chi_flip}
+Let $P$ be any reflection of the grid and let $T$ be traversal reversal (path reversal).
+Then
+\[
+\chi(P\cdot p)=-\chi(p),\qquad
+\chi(T\cdot p)=-\chi(p),
+\]
+while orientation-preserving rigid motions (rotations and translations) preserve $\chi$.
+\end{proposition}
+\begin{proof}
+Reflections reverse orientation, hence reverse the sign of the scalar cross product at every non-collinear local turn.
+Traversal reversal swaps the order of each local triple $(p_{k-1},p_k,p_{k+1})$, which also flips the cross-product sign.
+Rotations preserve orientation and therefore preserve cross-product signs.
+\end{proof}
+
+Appendix~\ref{app:generated_tables} records a reproducible $n=3$ check: the canonical Hilbert path has $\chi=-2$, while both reflection and traversal reversal yield $\chi=+2$.
+
+

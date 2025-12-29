@@ -1,0 +1,59 @@
+
+\section{HPA readout dynamics: from unitary scan to Zeckendorf windows}
+\label{sec:hpa_readout}
+
+\subsection{Unitary scan and a Weyl pair: time as iteration count}
+\label{subsec:weyl_scan}
+
+In HPA, microscopic dynamics is modeled as a unitary scan with a Weyl-pair structure.
+Abstractly, one may encode noncommutativity by operators $(U,V)$ satisfying
+\begin{equation}\label{eq:weyl_pair}
+UV=\e^{2\pi\iu\alpha}\,VU,
+\end{equation}
+with an irrational slope $\alpha$.
+At the level of a circle rotation model, let $x_0\in\RR/\ZZ$ and define the orbit
+\begin{equation}\label{eq:kronecker_orbit}
+x_n:=x_0+n\alpha \pmod{1},\qquad
+z_n:=\e^{2\pi\iu x_n}\in\TT.
+\end{equation}
+Time is not imposed as an external parameter; it is realized as the iteration count $n\in\ZZ$ along the scan.
+
+\subsection{Window projection and symbolic words: finite observability}
+\label{subsec:window_projection}
+
+Let $W\subset\TT$ be a measurable ``readout window''.
+Define the binary readout word by thresholding the scan orbit:
+\begin{equation}\label{eq:window_word}
+w_n:=\ind\{z_n\in W\}\in\{0,1\}.
+\end{equation}
+The resulting sequence $w=(w_n)_{n\in\ZZ}$ is a symbolic coding of the orbit (mechanical/Sturmian in classical settings).
+Finite observers access only finite windows, hence finite words $w_1\cdots w_m\in\Omega_m$.
+In operational quantum language, such coarse readout corresponds to a POVM-like description, where the ``particle spectrum'' is readout-induced discreteness rather than an \emph{a priori} field continuum \cite{Ma2025HPOT,Ma2025FoP}.
+In particular, what is experimentally accessible is not the underlying continuous orbit, but the empirical statistics of finite window words.
+The finite readout alphabet $\Omega_m$ and its stability-filtered subsets therefore serve as the primary objects for any auditable finite-resolution model.
+
+\subsection{The golden branch and Zeckendorf/Ostrowski coding}
+\label{subsec:zeckendorf_coding}
+
+At the golden branch $\alpha=\varphi^{-1}$, the symbolic language is constrained by Fibonacci/Sturmian structure and connects naturally to Ostrowski and Zeckendorf numeration \cite{Zeckendorf1972,AlloucheShallit2003,Lothaire2002}.
+In particular, every $N\in\NN$ admits a unique Zeckendorf expansion
+\begin{equation}\label{eq:zeckendorf}
+N=\sum_{k\ge 1} c_k F_{k+1},
+\qquad c_k\in\{0,1\},\qquad c_kc_{k+1}=0,
+\end{equation}
+which is a forbidden-word grammar (no adjacent ones) on the digit string $(c_k)$.
+This grammar is the mathematical origin of the $\varphi$-channel in the folding model: it selects a stable type set $X_m\subset\Omega_m$ by excluding the forbidden substring ``11'' at finite window length (Section~\ref{sec:folding_core}).
+
+\paragraph{A coding bridge (symbol $\leftrightarrow$ arithmetic).}
+At the golden branch, Fibonacci weights provide a canonical arithmetic bridge between symbolic digits and integers.
+Given a binary digit sequence $(c_k)$ satisfying the Zeckendorf grammar, the value map is
+\[
+V(c):=\sum_{k\ge 1} c_k F_{k+1}.
+\]
+Conversely, given a binary readout word $(w_k)$ produced by a window protocol, one may form a Fibonacci-weighted observable
+\begin{equation}\label{eq:fib_weighted_readout}
+Z:=\sum_{k\ge 1} w_k F_k,
+\end{equation}
+which makes explicit the ``arithmetic--symbol--geometry'' loop emphasized in the HPA program: window projection induces symbolic words; the golden branch constrains them by a forbidden grammar; and Fibonacci weights convert the resulting digits into arithmetic invariants.
+
+
