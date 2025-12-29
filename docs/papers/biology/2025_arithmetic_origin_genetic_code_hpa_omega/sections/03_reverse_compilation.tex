@@ -126,6 +126,19 @@ The exhaustive scan over all $24$ encodings reproduces the histogram $\{0:16,1:8
 
 The next theorem is the main identifiability result under the control objective.
 
+\begin{lemma}[A sharp upper bound for the control score]
+\label{lem:control_score_upper_bound}
+For any encoding $\mu$, the control-boundary score satisfies $S(\mu)\le 2$.
+Moreover, $S(\mu)=2$ if and only if $\mathrm{AUG}$ is boundary and at least one of the three stop codons is boundary.
+\end{lemma}
+
+\begin{proof}
+By Proposition~\ref{prop:stop_hits_at_most_one}, among the three stop codons $\{\mathrm{UAA,UAG,UGA}\}$ at most one can land in the boundary sector, hence their total contribution to $S(\mu)$ is at most $1$.
+Since the remaining control codon is $\mathrm{AUG}$, we obtain $S(\mu)\le 1+\mathbf{1}\{w_\mu(\mathrm{AUG})\in X_6^{\mathrm{bdry}}\}\le 2$.
+If $S(\mu)=2$, then $\mathrm{AUG}$ is boundary and at least one stop codon is boundary.
+Conversely, if $\mathrm{AUG}$ is boundary and at least one stop codon is boundary, then exactly two elements of $\mathcal{K}$ are boundary (because at most one stop can be boundary), so $S(\mu)=2$.
+\end{proof}
+
 \begin{theorem}[Unique encoding selected by control-boundary alignment]
 \label{thm:unique_encoding}
 Among the $24$ bijective two-bit encodings $\mu:\{A,C,G,U\}\to\{00,01,10,11\}$, the maximal score in Definition~\ref{def:control_boundary_score} is $2$, and it is achieved by a unique encoding $\mu^\ast$:
@@ -141,20 +154,58 @@ w_{\mu^\ast}(\mathrm{AUG})=w_{\mu^\ast}(\mathrm{UAA})=100001.
 \end{theorem}
 
 \begin{proof}
-By Proposition~\ref{prop:stop_hits_at_most_one}, at most one of $\{\mathrm{UAA,UAG,UGA}\}$ can be boundary under any encoding.
-Hence $S(\mu)\le 1+\mathbf{1}\{w_\mu(\mathrm{AUG})\in X_6^{\mathrm{bdry}}\}\le 2$.
+Lemma~\ref{lem:control_score_upper_bound} gives $S(\mu)\le 2$ for every encoding $\mu$.
+Under $\mu^\ast$, direct computation shows that both $\mathrm{AUG}$ and $\mathrm{UAA}$ are boundary, hence $S(\mu^\ast)=2$.
+Therefore the maximal score equals $2$.
 
-Assume $S(\mu)=2$. Then $\mathrm{AUG}$ must be boundary, so $(\mu(A),\mu(U),\mu(G))$ must equal one of the six boundary block triples listed in the proof of Proposition~\ref{prop:stop_hits_at_most_one}.
-Inspecting that list, the only boundary triple with second block $11$ is $(00,11,10)$.
-Therefore $\mu(U)=11$ and $\mu(A)=00$ and $\mu(G)=10$.
-Bijectivity forces the remaining nucleotide $C$ to map to $01$, hence $\mu=\mu^\ast$.
-Under $\mu^\ast$, a direct computation gives $N_{\mu^\ast}(\mathrm{AUG})=14$ and $N_{\mu^\ast}(\mathrm{UAA})=48$, and both fold to $100001$.
+It remains to prove uniqueness.
+Assume $S(\mu)=2$.
+By Lemma~\ref{lem:control_score_upper_bound}, $\mathrm{AUG}$ is boundary and at least one stop codon is boundary.
+Write the $2$-bit blocks $u:=\mu(U)$, $a:=\mu(A)$, $g:=\mu(G)$, $c:=\mu(C)$.
+
+\emph{Claim 1: the boundary stop must be $\mathrm{UAA}$.}
+Suppose $\mathrm{UAG}$ is boundary.
+Then $(u,a,g)$ is one of the boundary triples listed in the proof of Proposition~\ref{prop:stop_hits_at_most_one}.
+Since $\mathrm{AUG}$ is also boundary, the triple $(a,u,g)$ must also be boundary.
+We consider cases by $u$.
+If $u=00$, then $(u,a,g)=(00,11,10)$ forcing $(a,g)=(11,10)$, but then $(a,u,g)=(11,00,10)$ is not a boundary triple.
+If $u=01$, then $(u,a,g)\in\{(01,00,01),(01,00,11)\}$ forces $a=00$, but then $(a,u,g)$ begins with $00$ while no boundary triple begins with $00$ and has second block $01$.
+If $u=11$, then $(u,a,g)\in\{(11,00,00),(11,00,11),(11,01,01)\}$, and distinctness of $a,g$ forces $(a,g)=(00,11)$, hence $(a,u,g)=(00,11,11)$ which is not a boundary triple.
+Therefore $\mathrm{UAG}$ cannot be boundary when $\mathrm{AUG}$ is boundary.
+
+Similarly, suppose $\mathrm{UGA}$ is boundary.
+Then $(u,g,a)$ is boundary and $(a,u,g)$ is boundary.
+If $u=00$, then $(u,g,a)=(00,11,10)$ forces $(g,a)=(11,10)$, hence $(a,u,g)=(10,00,11)$ begins with $10$, impossible for a boundary triple.
+If $u=01$, then $(u,g,a)\in\{(01,00,01),(01,00,11)\}$ forces $g=00$, so $(a,u,g)$ ends with $00$, but the only boundary triple ending with $00$ is $(11,00,00)$, which would force $a=11$ and $u=00$, contradiction.
+If $u=11$, then $(u,g,a)\in\{(11,00,00),(11,00,11),(11,01,01)\}$ and distinctness of $g,a$ forces $(g,a)=(00,11)$, so $(a,u,g)=(11,11,00)$ which is not admissible and in particular not a boundary triple.
+Thus $\mathrm{UGA}$ cannot be boundary when $\mathrm{AUG}$ is boundary.
+
+Consequently, the only possible boundary stop is $\mathrm{UAA}$.
+
+\emph{Claim 2: $\mu=\mu^\ast$.}
+Since $\mathrm{UAA}$ is boundary, $(u,a,a)$ is a boundary triple.
+From the boundary list, this forces $u=11$ and $a\in\{00,01\}$.
+If $a=01$, then $(a,u,g)=(01,11,g)$ cannot be a boundary triple for any $g$, contradicting that $\mathrm{AUG}$ is boundary.
+Therefore $a=00$.
+Now $\mathrm{AUG}$ being boundary implies $(a,u,g)=(00,11,g)$ is a boundary triple, forcing $g=10$.
+Bijectivity then forces $c=01$, so $\mu=\mu^\ast$.
+
+Finally, under $\mu^\ast$, the bit patterns of $\mathrm{AUG}$ and $\mathrm{UAA}$ are $001110$ and $110000$.
+Therefore,
+\[
+N_{\mu^\ast}(\mathrm{AUG})=14,\qquad N_{\mu^\ast}(\mathrm{UAA})=48.
+\]
+A direct evaluation gives $w_{\mu^\ast}(\mathrm{AUG})=w_{\mu^\ast}(\mathrm{UAA})=100001$.
 \end{proof}
+
+\begin{remark}[Null probability under the uniform encoding prior]
+Under the uniform prior on the $24$ encodings, the event of attaining the maximal score $S(\mu)=2$ has probability $1/24$, since $\mu^\ast$ is the unique maximizer.
+\end{remark}
 
 \subsection{An information-theoretic alignment diagnostic (optional)}
 \label{sec:mutual_information}
 
-Beyond the hard anchor above, \cite{Ma2025RF} suggests comparing the genetic code map $\mathsf{Gen}$ with the folding-induced compression by encoding-dependent joint statistics.
+Beyond the hard control objective above, \cite{Ma2025RF} suggests comparing the genetic code map $\mathsf{Gen}$ with the folding-induced compression by encoding-dependent joint statistics.
 For a codon random variable $C$ under a chosen prior (e.g.\ uniform on $64$ codons), we may consider the mutual information
 \[
 I\bigl(\mathsf{Gen}(C);\ w_\mu(C)\bigr),

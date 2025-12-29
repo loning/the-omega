@@ -93,4 +93,14 @@ For the human case studies in Section~\ref{sec:human_case_studies}, this reposit
 \end{itemize}
 The experiment script \path{scripts/exp_genetic_code_decompiler.py} reads these files and generates the LaTeX fragment \path{sections/generated/human_transcript_case_studies_rows.tex}.
 
+\paragraph{Refreshing the transcript FASTA files.}
+If you wish to refresh these sequences from the upstream sources, the following commands fetch the corresponding entries (network required):
+\begin{Verbatim}
+mkdir -p data
+curl -L "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=NM_000518.5&rettype=fasta&retmode=text" \
+  -o data/NM_000518.5.fasta
+curl -L -H "Accept: text/x-fasta" "https://rest.ensembl.org/sequence/id/ENST00000381330?type=cdna" \
+  -o data/ENST00000381330.5.fasta
+\end{Verbatim}
+
 

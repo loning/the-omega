@@ -2,7 +2,7 @@
 """
 Reproducible experiments for:
   - scanning 24 nucleotide two-bit encodings,
-  - identifying the unique encoding mu* by start/stop boundary homology,
+  - identifying the unique encoding mu* by control-boundary alignment on K={AUG,UAA,UAG,UGA},
   - generating LaTeX fragments in sections/generated/,
   - generating full codon tables and spectrum summaries under mu*.
 
@@ -109,7 +109,7 @@ def generate_human_transcript_case_studies(mu: dict[str, str]) -> None:
         nt_len = len(seq)
 
         # Choose the longest ORF across all three reading frames (robust to UTRs and frame offset).
-        best = None  # (length_codons, start, stop, frame)
+        best = None  # (length_codons_including_stop, start, stop, frame)
         for frame in (0, 1, 2):
             orfs = find_orfs(seq, frame=frame, min_codons=0)
             for start, stop in orfs:
@@ -119,7 +119,7 @@ def generate_human_transcript_case_studies(mu: dict[str, str]) -> None:
                     best = cand
         if best is None:
             continue
-        _, start, stop, frame = best
+        length_codons, start, stop, frame = best
         start_codon = seq[start : start + 3]
         stop_codon = seq[stop : stop + 3]
 
@@ -134,7 +134,7 @@ def generate_human_transcript_case_studies(mu: dict[str, str]) -> None:
         stop_tuple = f"({f_stop.n},\\mathtt{{{f_stop.w}}},{f_stop.v},{f_stop.delta})"
 
         rows.append(
-            f"{gene} (\\path{{{tid}}}) & {nt_len} & {frame} & {start_1} & {stop_1} & {stop_codon} & ${start_tuple}$ & ${stop_tuple}$ \\\\"
+            f"{gene} (\\path{{{tid}}}) & {nt_len} & {length_codons} & {frame} & {start_1} & {stop_1} & {stop_codon} & ${start_tuple}$ & ${stop_tuple}$ \\\\"
         )
 
     write_text(generated_dir() / "human_transcript_case_studies_rows.tex", "\n".join(rows) + "\n\\bottomrule\n")
@@ -226,6 +226,17 @@ def generate_encoding_scan_summary() -> None:
     mi_min = min(mi_values)
     mi_max = max(mi_values)
 
+    # Brief fragment for the main Results section (control objective only).
+    brief = []
+    brief.append(
+        f"Under the control set $\\mathcal{{K}}=\\{{\\mathrm{{AUG,UAA,UAG,UGA}}\\}}$, "
+        f"the score histogram is $\\{{0:{control_hits_hist.get(0,0)},\\ 1:{control_hits_hist.get(1,0)},\\ 2:{control_hits_hist.get(2,0)}\\}}$ over $24$ encodings. "
+        f"The maximum is $S_{{\\max}}={control_hits_max}$, achieved by a unique encoding: "
+        f"${_latex_encoding(control_best_mus[0])}$. "
+        f"Under the uniform encoding prior this is a one-in-24 event."
+    )
+    write_text(generated_dir() / "control_objective_brief.tex", "\n".join(brief) + "\n")
+
     lines = []
     lines.append("\\paragraph{Encoding scan.}")
     lines.append(
@@ -248,10 +259,11 @@ def generate_encoding_scan_summary() -> None:
         f"(``all stop $N\\in\\{{14,17,19,48,51,53\\}}$'') succeeds for {all_stop_in_boundary_int_set} encodings."
     )
     lines.append("")
-    lines.append("\\paragraph{Start--stop boundary homology.}")
+    lines.append("\\paragraph{Emergent start--stop boundary homology.}")
     lines.append(
-        f"Exactly {len(homology_hits)} encoding satisfies start--stop boundary homology, namely "
-        f"$A\\mapsto 00,\\ C\\mapsto 01,\\ G\\mapsto 10,\\ U\\mapsto 11$."
+        f"Exactly {len(homology_hits)} encoding satisfies start--stop boundary homology "
+        f"($w_\\mu(\\mathrm{{AUG}})=w_\\mu(\\mathrm{{UAA}})\\in X_6^\\mathrm{{bdry}}$), "
+        f"namely $A\\mapsto 00,\\ C\\mapsto 01,\\ G\\mapsto 10,\\ U\\mapsto 11$."
     )
     lines.append("")
     lines.append("\\paragraph{Mutual information diagnostic.}")
@@ -299,7 +311,7 @@ def generate_mutual_information_summary() -> None:
     lines = []
     lines.append("\\paragraph{Mutual information details.}")
     lines.append(
-        f"Under the uniform codon prior, the unique start--stop homology solution "
+        f"Under the uniform codon prior, the unique control-optimal solution "
         f"$\\mu^\\ast$ has mutual information $I(\\mathsf{{Gen}}(C);w_{{\\mu^\\ast}}(C))={mi_star:.6f}$ bits."
     )
     lines.append(
@@ -456,16 +468,35 @@ def generate_vmean_property_correlations(mu: dict[str, str]) -> None:
 def main() -> None:
     print("=== Genetic code reverse compilation (Fold_6) ===")
 
-    # 1) Unique encoding by start/stop boundary homology
+    # 1) Control-boundary alignment optimum over K={AUG,UAA,UAG,UGA}.
+    control_codons = ("AUG", "UAA", "UAG", "UGA")
+    best_score = None
+    best: list[dict[str, str]] = []
+    hist = Counter()
+    for mu in all_encodings():
+        s = sum(1 for c in control_codons if fold_codon(c, mu).w in BOUNDARY_WORDS)
+        hist[s] += 1
+        if best_score is None or s > best_score:
+            best_score = s
+            best = [mu]
+        elif s == best_score:
+            best.append(mu)
+    assert best_score is not None
+    print("Control score S(mu) histogram over 24 encodings:", dict(hist))
+    print("Max S(mu):", best_score, "encodings achieving max:", len(best))
+    for mu in best:
+        print("  best:", encoding_to_str(mu))
+
+    if best != [MU_STAR]:
+        raise AssertionError("Expected a unique mu* optimum under control-boundary alignment.")
+
+    # 2) Emergent start/stop boundary homology (derived property).
     hits = [mu for mu in all_encodings() if satisfies_start_stop_boundary_homology(mu)]
-    print("Start/stop boundary-homology encodings:", len(hits))
+    print("Start/stop boundary-homology encodings (derived):", len(hits))
     for mu in hits:
-        print("  hit:", encoding_to_str(mu))
+        print("  homology hit:", encoding_to_str(mu))
 
-    if hits != [MU_STAR]:
-        raise AssertionError("Expected a unique mu* hit: A=00,C=01,G=10,U=11")
-
-    # 2) Sanity checks for 14/48 symmetry
+    # 3) Sanity checks for 14/48 symmetry
     aug = fold_codon("AUG", MU_STAR)
     uaa = fold_codon("UAA", MU_STAR)
     print("AUG:", aug)
@@ -473,7 +504,7 @@ def main() -> None:
     if not (aug.n == 14 and uaa.n == 48 and aug.w == uaa.w == "100001"):
         raise AssertionError("14/48 symmetry check failed")
 
-    # 3) Generate LaTeX fragments
+    # 4) Generate LaTeX fragments
     generate_stop_fine_structure(MU_STAR)
     generate_control_codons_table(MU_STAR)
     generate_human_transcript_case_studies(MU_STAR)
