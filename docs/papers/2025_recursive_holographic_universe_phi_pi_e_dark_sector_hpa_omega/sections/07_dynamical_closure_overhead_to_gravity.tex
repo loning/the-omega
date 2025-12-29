@@ -24,7 +24,7 @@ The exact form of $T_{\mu\nu}^{(\chi)}$ depends on the chosen kinetic term and p
 \subsection{Newtonian limit: Poisson equation and the identification of the potential}
 \label{subsec:newton_limit}
 
-In the weak-field, slow-motion regime, one writes
+In the weak-field, slow-motion regime, one writes \cite{Wald1984}
 \[
 g_{00}\approx -(1+2\Phi/c^2),
 \]
@@ -34,38 +34,77 @@ The computational action principle is designed to recover the Poisson equation
 \nabla^2\Phi = 4\pi G_{\mathrm{eff}}\rho_{\mathrm{m}}
 \]
 in the appropriate limit.
-In the overhead interpretation, the potential can be identified (to leading order) with a perturbation of the overhead field:
+In the overhead interpretation, the lapse is determined by a dimensionless overhead field $\chi$ and a coupling strength $\gamma$ (Definition~\ref{def:degeneracy_overhead}; Appendix~\ref{app:overhead_lapse}):
 \[
-\Phi \propto \delta\chi,
+N(x)=\e^{-\gamma\chi(x)}.
 \]
-so that spatial variation in $\chi$ sources gravitational acceleration and lensing.
+Thus
+\[
+g_{00}(x)\approx -N(x)^2=-\e^{-2\gamma\chi(x)}
+\approx -(1-2\gamma\chi(x)),
+\]
+and comparing with $g_{00}\approx -(1+2\Phi/c^2)$ yields the leading-order identification
+\[
+\Phi(x)= -\gamma c^2\bigl(\chi(x)-\chi_0\bigr),
+\]
+where $\chi_0$ is an arbitrary reference (a constant shift of $\chi$ does not change forces).
+Consequently, the effective source associated with an overhead field can be written as
+\[
+\rho_{\mathrm{eff}}(x):=\frac{1}{4\pi G_{\mathrm{eff}}}\nabla^2\Phi(x)
+=-\frac{\gamma c^2}{4\pi G_{\mathrm{eff}}}\nabla^2\chi(x).
+\]
+This is the closed bridge from folding statistics to an effective gravitational source once $\chi$ is specified by the folding degeneracy (Section~\ref{subsec:micro_to_macro}).
+
+\subsection{A minimal halo fit: rotation curves as a constraint on \texorpdfstring{$\gamma$}{gamma}}
+\label{subsec:rotation_fit}
+
+For a static, spherically symmetric configuration, circular velocity satisfies
+\[
+v_c^2(r)=r\,\Phi'(r)= -\gamma c^2\, r\,\chi'(r).
+\]
+In particular, a flat rotation curve ($v_c(r)\approx v_{\mathrm{flat}}$ over a range of radii) implies
+\[
+\chi(r)= -\frac{v_{\mathrm{flat}}^2}{\gamma c^2}\log\frac{r}{r_0},
+\]
+and yields the standard isothermal effective density profile
+\[
+\rho_{\mathrm{eff}}(r)=\frac{1}{4\pi G_{\mathrm{eff}}}\nabla^2\Phi(r)
+=\frac{v_{\mathrm{flat}}^2}{4\pi G_{\mathrm{eff}}\,r^2}
+\]
+\cite{BinneyTremaine2008}.
+Therefore, once $\chi(r)$ is reconstructed from folding statistics (Appendix~\ref{app:data_protocol}), the observed $v_{\mathrm{flat}}$ constrains $\gamma$ by a one-parameter fit:
+the product $\gamma\Delta\chi$ over the relevant radial interval must match $v_{\mathrm{flat}}^2/c^2$.
+Flat rotation curves are empirically ubiquitous in disk galaxies \cite{SofueRubin2001}.
+For example, a typical spiral-galaxy value $v_{\mathrm{flat}}\sim 200\,\mathrm{km/s}$ corresponds to $v_{\mathrm{flat}}^2/c^2\sim 4\times 10^{-7}$; if the reconstructed $\Delta\chi$ across the flat region is $O(1)$, then $\gamma$ is naturally at the $10^{-7}$ scale.
+
+\paragraph{Least-squares estimator for $\gamma$.}
+Given rotation-curve measurements $\{(r_i,v_i,\sigma_i)\}_{i=1}^N$ and a reconstructed profile $\chi(r)$, define
+\[
+v_{\mathrm{pred}}^2(r_i;\gamma):=-\gamma c^2\, r_i\,\chi'(r_i).
+\]
+Estimating $\chi'(r_i)$ by finite differences, one obtains a one-parameter weighted least-squares fit:
+\[
+\widehat{\gamma}=\arg\min_{\gamma>0}\sum_{i=1}^N \frac{\bigl(v_{\mathrm{pred}}^2(r_i;\gamma)-v_i^2\bigr)^2}{\sigma_i^2}
+=\frac{\sum_{i=1}^N \left(\frac{x_i v_i^2}{\sigma_i^2}\right)}{\sum_{i=1}^N \left(\frac{x_i^2}{\sigma_i^2}\right)},
+\qquad
+x_i:=-c^2 r_i\,\chi'(r_i).
+\]
 
 \subsection{Micro-to-macro interface: folding statistics as an overhead definition}
 \label{subsec:micro_to_macro}
 
 The closure requires a concrete mapping from local folding statistics to $\chi$.
-Two natural candidates are:
-\begin{itemize}
-\item a local defect density (grammar violations),
+We adopt the degeneracy-based definition (Definition~\ref{def:degeneracy_overhead}):
 \[
-\bar{D}_\varphi(B)=\frac{1}{|B|}\sum_{w\in B}D_\varphi(w),
+\chi(B)=\log\frac{\bar{g}_m(B)}{\bar{g}_0},
+\qquad
+\bar{g}_m(B)=\mathbb{E}_{N\sim\mu_B}\bigl(g_m(N)\bigr),
+\qquad
+g_m(N)=\bigl|\mathrm{Fold}_m^{-1}(\mathrm{Fold}_m(N))\bigr|.
 \]
-computed on a local block $B$;
-\item a local degeneracy proxy (expected preimage size),
-\[
-\bar{g}(B)=\mathbb{E}_{N\sim\mu_B}\Bigl(\bigl|\mathrm{Fold}_m^{-1}(\mathrm{Fold}_m(N))\bigr|\Bigr),
-\]
-computed under a local input distribution $\mu_B$.
-\end{itemize}
-One then defines
-\[
-\chi(B)=\log\frac{\bar{g}(B)}{\bar{g}_0}
-\quad\text{or}\quad
-\chi(B)\propto \bar{D}_\varphi(B),
-\]
-with $\bar{g}_0$ a reference value.
+In practice, if only coarse binary data are available, one may use the local grammar-defect density $\bar{D}_\varphi(B)$ as a proxy statistic, since $\varphi$-defects are necessary for leaving the admissible sector.
 
-The minimal model provides a fully explicit calibration point: for $m=6$, the preimages of $\mathrm{Fold}_6$ are known exactly (Appendix~\ref{app:fold6_table}), so $\bar{g}$ can be computed without approximation once a local input distribution is specified.
+The minimal model provides a fully explicit calibration point: for $m=6$, the preimages of $\mathrm{Fold}_6$ are known exactly (Appendix~\ref{app:fold6_table}), so $\bar{g}_6$ can be computed without approximation once a local input distribution is specified.
 This makes the micro-to-macro interface executable: it is not merely qualitative but a data pipeline (Appendix~\ref{app:data_protocol}).
 
 

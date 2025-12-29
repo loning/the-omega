@@ -20,25 +20,50 @@ To make ghost microstates gravitate without coupling to visible channels, we int
 Let $\kappa(x)$ denote a local routing/compilation overhead, interpreted operationally as a readout-time delay or scheduling depth.
 Define the lapse-like factor
 \[
-N(x):=\frac{\kappa_0}{\kappa(x)},
+N(x):=\left(\frac{\kappa_0}{\kappa(x)}\right)^{\gamma},
 \]
-where $\kappa_0$ is a reference overhead.
+where $\kappa_0$ is a reference overhead and $\gamma>0$ is a dimensionless coupling constant.
 In the HPA--$\Omega$ framework this lapse factor controls redshift and time-delay effects \cite{Ma2025HPT}.
 
-\begin{assumption}[Overhead correlates with folding degeneracy]
-\label{assump:kappa_degeneracy}
-The local overhead $\kappa(x)$ is positively correlated with local folding degeneracy statistics, e.g.\ with the frequency of $\varphi$-defects or with the expected preimage size
+\begin{definition}[Folding degeneracy index and induced overhead]
+\label{def:degeneracy_overhead}
+For $m\ge 1$ and $N\in\{0,\dots,2^m-1\}$ define the \emph{folding degeneracy index}
 \[
-\bar{g}(B):=\mathbb{E}_{N\sim\mu_B}\Bigl(\bigl|\mathrm{Fold}_m^{-1}(\mathrm{Fold}_m(N))\bigr|\Bigr)
+g_m(N):=\bigl|\mathrm{Fold}_m^{-1}(\mathrm{Fold}_m(N))\bigr|.
 \]
-computed on a local block $B$ under a local input distribution $\mu_B$.
-\end{assumption}
+Given a local block $B$ (in address space) with an induced input distribution $\mu_B$, define the local mean degeneracy
+\[
+\bar{g}_m(B):=\mathbb{E}_{N\sim\mu_B}\bigl(g_m(N)\bigr).
+\]
+Fix a reference degeneracy $\bar{g}_0>0$ and define the dimensionless overhead ratio and its logarithm by
+\[
+s(B):=\frac{\bar{g}_m(B)}{\bar{g}_0},
+\qquad
+\chi(B):=\log s(B).
+\]
+On homogeneous backgrounds, a canonical centering choice is $\bar{g}_0=d_m=2^m/F_{m+2}$ (or the empirical global mean of $\bar{g}_m$), which enforces $\mathbb{E}(\chi)=0$ at the chosen resolution.
+We then define the local overhead and lapse factors by
+\[
+\kappa(B):=\kappa_0\, s(B),
+\qquad
+N(B):=\left(\frac{\kappa_0}{\kappa(B)}\right)^{\gamma}=\frac{1}{s(B)^{\gamma}}=\e^{-\gamma\,\chi(B)},
+\]
+\noindent where $\gamma>0$ is a dimensionless coupling parameter that converts overhead ratios into metric lapse strength (Section~\ref{sec:dynamical_closure}).
+\end{definition}
 
-This assumption yields an explicit micro-to-macro chain:
+\begin{proposition}[Disambiguation cost and the logarithmic scaling]
+\label{prop:disambiguation_cost}
+If a readout map collapses $g$ indistinguishable microstates into one stable output type, then resolving (or routing around) that degeneracy requires at least $\log_2 g$ bits of side information in the worst case.
+In particular, any operational overhead that restores stable single-valued readout must scale at least logarithmically with the effective degeneracy.
+\end{proposition}
+
+The logarithmic scaling is a standard consequence of the source coding bound and is a minimality principle for disambiguation \cite{CoverThomas2006}.
+The definition therefore yields an explicit micro-to-macro chain:
 \[
 \text{ghost microstates / degeneracy}\ \longrightarrow\ \kappa(x)\ \longrightarrow\ N(x)\ \longrightarrow\ g_{\mu\nu}\ \longrightarrow\ \text{effective gravity}.
 \]
 In particular, regions with larger hidden folding redundancy induce larger overhead (smaller $N$), producing gravitational redshift and lensing without introducing new luminous degrees of freedom.
+In the weak-field regime this closes to a quantitative potential law $\Phi(x)=-\gamma c^2(\chi(x)-\chi_0)$ and an effective source $\rho_{\mathrm{eff}}\propto -\nabla^2\chi$ (Section~\ref{subsec:newton_limit}).
 
 \subsection{Dark energy as grid tension and information potential}
 \label{subsec:de_grid_tension}
@@ -47,7 +72,7 @@ Dark energy is an approximately homogeneous component with negative pressure.
 In an overhead-field interpretation, a natural candidate is a potential-dominated regime of an effective scalar field built from the overhead.
 Define
 \[
-s(x):=\frac{\kappa(x)}{\kappa_0}=\frac{1}{N(x)},
+s(x):=\frac{\kappa(x)}{\kappa_0},
 \qquad
 \chi(x):=\log s(x).
 \]
@@ -57,11 +82,24 @@ Treating $\chi$ as an effective scalar degree of freedom, one obtains an energy 
 \qquad
 p_\chi=\frac{1}{2}\dot{\chi}^2-V(\chi).
 \]
+\cite{Dodelson2003}
 When $V$ dominates, $w_\chi=p_\chi/\rho_\chi\to -1$, producing an accelerated-expansion component consistent with dark-energy phenomenology.
 
-The readout interpretation suggests a geometric origin for $V(\chi)$: \emph{grid tension from refinement}.
+We model $V(\chi)$ as a geometric \emph{grid-tension potential} induced by resolution refinement.
 As Hilbert order $n$ increases (spatial refinement), maintaining locality and causal connectivity requires higher scan scheduling and higher refresh rates.
 The associated scheduling ``tension'' is a natural source of an approximately uniform background potential at large scales.
+
+\paragraph{Minimal closure and a direct fit.}
+A minimal closed choice consistent with $w\approx -1$ is to take
+\[
+V(\chi)\equiv V_0,
+\]
+so that $\rho_\chi=V_0$ and $p_\chi=-V_0$ at the background level.
+In an effective Einstein equation, this is equivalent to a cosmological constant term with
+\[
+V_0=\frac{\Lambda}{8\pi G_{\mathrm{eff}}}
+\]
+and $V_0$ is fixed directly by the observed dark-energy density \cite{Planck2018CosmoParams}.
 
 Finally, the $\e$-channel provides a rigorous interface between analytic stability and a pressure-like quantity:
 for weighted transfer operators, the pressure is $\log\rho(A_\beta)$ \cite{Ruelle1978}.

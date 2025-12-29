@@ -8,6 +8,33 @@ This section records falsifiable signatures and directs the reader to an executa
 \subsection{Dark-matter clustering from Hilbert addresses and folding statistics}
 \label{subsec:test_dm_clustering}
 
+\paragraph{Address-binned statistics.}
+Fix an address order $n$ and a Hilbert map $H_n$.
+Let $\rho_s$ denote an observed (or simulated) mass density assigned to the cell with Hilbert index $s\in\{0,\dots,2^{2n}-1\}$, and define a density contrast $\delta_s=(\rho_s-\bar\rho)/\bar\rho$.
+Two minimal address-aware correlators are:
+\[
+C_1:=\mathbb{E}(\delta_s\delta_{s+1}),
+\qquad
+C_L:=\mathbb{E}\!\left(\bar{\delta}_{s,L}\,\bar{\delta}_{s+L,L}\right),
+\quad
+\bar{\delta}_{s,L}:=\frac{1}{L}\sum_{j=0}^{L-1}\delta_{s+j},
+\]
+with expectations taken over $s$ (and over an ensemble if available).
+These statistics quantify clustering along the scan order and across block scales $L$.
+Hilbert indexing is known to have strong locality-preserving clustering properties relevant for such diagnostics \cite{MoonJagadishFaloutsosSaltz2001}.
+
+\begin{lemma}[Layout invariance of adjacency-based Hilbert statistics]
+\label{lem:layout_invariance}
+Let $R$ be a dihedral symmetry of the square grid and let $H_n'$ be the Hilbert map obtained by composing $H_n$ with $R$ (a global layout change).
+Then any statistic that depends only on index adjacency and block aggregation along $s$ (such as $C_1$ and $C_L$) is invariant under this layout change.
+\end{lemma}
+
+\begin{proof}
+A global layout change is a permutation of grid cells induced by an isometry.
+It relabels the index-to-cell correspondence without changing the adjacency structure of the scan order (up to a global reindexing of $s$ and, at most, reversal).
+Averages over $s$ of functions of the form $F(\delta_s,\delta_{s+1},\dots,\delta_{s+L})$ are therefore unchanged.
+\end{proof}
+
 \paragraph{Prediction P1 (address-aware clustering invariants).}
 If the dark sector is an effective source induced by Hilbert-addressed readout and folding overhead, then dark-matter clustering statistics should exhibit invariances tied to the address family and its layout symmetries.
 In particular, adjacency-based statistics computed after Hilbert binning should be rigid under global layout changes of the address family (dihedral symmetries), while still differing from generic isotropic fluid predictions.
@@ -16,10 +43,15 @@ In particular, adjacency-based statistics computed after Hilbert binning should 
 Given an $N$-body simulation or galaxy survey, construct a Hilbert index at fixed order and compute:
 \begin{itemize}
 \item standard two-point functions in Euclidean coordinates;
-\item address-neighbor correlation functions and block-aggregation statistics in Hilbert coordinates;
+\item address-neighbor and block-aggregation correlators (e.g.\ $C_1$ and $C_L$) in Hilbert coordinates;
 \item the reconstructed overhead proxy $\chi(x)$ from folding statistics (Appendix~\ref{app:data_protocol}).
 \end{itemize}
-The prediction is that a family of address-aware statistics remains stable under layout changes and correlates with lensing-inferred mass maps more strongly than visible-matter proxies alone.
+The prediction is that a family of address-aware statistics remains stable under layout changes and correlates with lensing-inferred mass maps more strongly than visible-matter proxies alone \cite{BartelmannSchneider2001}.
+In particular, a minimal quantitative diagnostic is the Hilbert-index cross-correlation between $\chi$ and density contrast at block scale $L$,
+\[
+R_L:=\mathbb{E}\!\left(\chi_s\,\bar{\delta}_{s,L}\right),
+\]
+which should be positive and scale-stable if overhead is a genuine gravitational source (Section~\ref{subsec:newton_limit}).
 
 \subsection{Geometric drift of effective constants in high-overhead regions}
 \label{subsec:test_constants_drift}

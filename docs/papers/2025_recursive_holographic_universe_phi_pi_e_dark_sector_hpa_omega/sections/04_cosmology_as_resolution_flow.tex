@@ -27,7 +27,12 @@ As the window length increases from $m$ to $m+\Delta m$, the stable type count g
 \]
 so the stable sector expands asymptotically at rate $\varphi^m$.
 This provides a purely combinatorial capacity-growth mechanism: without introducing an additional inflaton field, an early phase of rapid resolution growth naturally increases the number of stable types available for macroscopic structure.
-Macroscopic ``inflation'' can be interpreted as the readout capacity of stable types expanding faster than the system can equilibrate.
+If the effective window length grows approximately linearly in an early epoch, $m(t)\approx m_0+\alpha t$, then the stable capacity grows exponentially in $t$:
+\[
+|X_{m(t)}|=F_{m(t)+2}\asymp \varphi^{m(t)}\asymp \e^{(\alpha\log\varphi)\,t}.
+\]
+This provides a quantitative readout-capacity analog of an inflationary exponential stage.
+For standard inflationary motivation and phenomenological benchmarks, see \cite{Guth1981}.
 
 \subsection{Folding degeneracy growth and dark-sector capacity}
 \label{subsec:degeneracy_growth}
@@ -43,13 +48,72 @@ d_m\asymp \left(\frac{2}{\varphi}\right)^m,
 \qquad \frac{2}{\varphi}>1.
 \]
 Hence the \emph{average amount of hidden redundancy per stable type grows exponentially} with resolution.
-This scaling suggests a natural explanation for the dominance of the dark sector in the cosmic energy budget: as resolution increases, stable visible types grow, but the hidden folding redundancy grows faster.
+\begin{proposition}[Asymptotic dominance of the hidden sector]
+\label{prop:hidden_dominance}
+Let $f_{\mathrm{stab}}(m)=F_{m+2}/2^m$ and $f_{\mathrm{hid}}(m)=1-f_{\mathrm{stab}}(m)$.
+Then $f_{\mathrm{stab}}(m)\to 0$ and $f_{\mathrm{hid}}(m)\to 1$ as $m\to\infty$.
+Moreover, the dark-to-stable ratio satisfies
+\[
+\frac{f_{\mathrm{hid}}(m)}{f_{\mathrm{stab}}(m)}=\frac{2^m}{F_{m+2}}-1=d_m-1\asymp \left(\frac{2}{\varphi}\right)^m.
+\]
+\end{proposition}
+
+\begin{proof}
+Since $F_{m+2}\asymp \varphi^m$ and $\varphi<2$, we have $F_{m+2}/2^m\to 0$, hence $f_{\mathrm{stab}}(m)\to 0$ and $f_{\mathrm{hid}}(m)\to 1$.
+The ratio identity is algebraic, and the exponential growth follows from $d_m=2^m/F_{m+2}\asymp (2/\varphi)^m$.
+\end{proof}
 
 In the minimal case, the hidden count is already nontrivial:
 \[
 |\Omega_6|-|X_6|=64-21=43.
 \]
 The explicit preimage classification of $\mathrm{Fold}_6$ (Theorem~\ref{thm:fold6_preimages}) provides a finite, computable model of how hidden degrees of freedom are distributed among stable outputs.
+
+\subsection{A minimal discrete fit: present-day energy budget and an effective window length}
+\label{subsec:energy_budget_fit}
+
+Define the \emph{stable fraction} and the \emph{hidden fraction} at window length $m$ by
+\[
+f_{\mathrm{stab}}(m):=\frac{|X_m|}{|\Omega_m|}=\frac{F_{m+2}}{2^m},
+\qquad
+f_{\mathrm{hid}}(m):=1-f_{\mathrm{stab}}(m).
+\]
+\begin{lemma}[Monotonicity of the stable fraction]
+\label{lem:f_stab_monotone}
+For $m\ge 1$, the function $f_{\mathrm{stab}}(m)=F_{m+2}/2^m$ is strictly decreasing in $m$.
+\end{lemma}
+
+\begin{proof}
+Using the Fibonacci recursion $F_{m+3}=F_{m+2}+F_{m+1}$ and $F_{m+1}<F_{m+2}$ for $m\ge 1$, we have
+\[
+\frac{f_{\mathrm{stab}}(m+1)}{f_{\mathrm{stab}}(m)}
+=\frac{F_{m+3}}{2F_{m+2}}
+=\frac{F_{m+2}+F_{m+1}}{2F_{m+2}}
+<1.
+\]
+\end{proof}
+Interpreting $f_{\mathrm{stab}}(m)$ as the fraction of degrees of freedom that survive as stable visible-sector readout and $f_{\mathrm{hid}}(m)$ as the complementary dark sector (dark matter plus dark energy), we obtain a discrete, parameter-free matching condition:
+\[
+f_{\mathrm{stab}}(m_\ast)\approx 1-\Omega_{\mathrm{dark},0},
+\]
+where $\Omega_{\mathrm{dark},0}$ is the present-day dark-sector energy fraction \cite{Planck2018CosmoParams}.
+By Lemma~\ref{lem:f_stab_monotone}, this discrete matching selects a unique effective window length $m_\ast$ once a target visible fraction is fixed.
+Using the Planck 2018 values (radiation negligible at $z=0$), $\Omega_{\mathrm{dark},0}\approx 0.95$, hence $1-\Omega_{\mathrm{dark},0}\approx 0.05$ \cite{Planck2018CosmoParams}.
+Numerically, $\Omega_{\Lambda,0}\approx 0.68$ and $\Omega_{\mathrm{m},0}\approx 0.32$ with $\Omega_{\mathrm{b},0}\approx 0.049$, so the visible fraction is indeed at the few-percent level while the dark sector dominates the budget.
+The Fibonacci ratio realizes this value at a small integer window length:
+\[
+\frac{F_{17}}{2^{15}}=\frac{1597}{32768}\approx 0.0487.
+\]
+Thus the minimal discrete fit yields
+\[
+m_\ast \approx 15.
+\]
+Equivalently, the mean degeneracy at this scale is
+\[
+d_{m_\ast}=\frac{2^{m_\ast}}{F_{m_\ast+2}}\approx \frac{2^{15}}{F_{17}}\approx 20.5,
+\]
+so the implied dark-to-stable ratio is $d_{m_\ast}-1\approx 19.5$, consistent with the observed present-day ratio $(1-\Omega_{\mathrm{b},0})/\Omega_{\mathrm{b},0}$ at the few-percent level \cite{Planck2018CosmoParams}.
+The role of the $m=6$ model is not to claim that cosmic accounting is literally performed at $6$ bits, but to provide the smallest layer where the folding mechanism is fully explicit and testable; the fit indicates that the present effective readout window may be at moderate resolution while remaining in the same universality class.
 
 
 

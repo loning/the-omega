@@ -12,27 +12,35 @@ Compute a Hilbert index $s$ for each occupied cell and obtain an ordered one-dim
 
 \subsection{Step 2: local window sampling}
 On the index axis, select a window length $m$ and define sliding windows $W_s$ (blocks of consecutive indices).
-Within each window, produce a binary encoding of local structure, e.g.\ by thresholding a density statistic to obtain an $m$-bit word.
+Within each window, produce an $m$-bit word by thresholding a local statistic.
+For example, using the Hilbert-indexed density contrast $\delta_s$, fix a threshold $\tau$ and define
+\[
+w_{s,j}:=\ind\{\delta_{s+j}\ge \tau\},\qquad j=0,\dots,m-1,
+\]
+so that the window is encoded by the word $w_s:=w_{s,0}\cdots w_{s,m-1}\in\Omega_m$.
+Two common choices are $\tau=0$ (above/below mean) or $\tau$ chosen as a fixed quantile to enforce a controlled sparsity level.
+Finally, map $w_s$ to an integer index $N_s:=\mathrm{int}_m(w_s)$ (Definition~\ref{def:foldm}).
 
 \subsection{Step 3: folding statistics}
 For each window, compute at least one of the following:
 \begin{itemize}
 \item the grammar-defect frequency $\bar{D}_\varphi(W_s)$ (adjacent-$11$ rate);
-\item the degeneracy proxy $\bar{g}(W_s)$, defined as the expected preimage size under the folding map,
+\item the degeneracy proxy $\bar{g}_m(W_s)$, defined as the expected preimage size under the folding map,
 \[
-\bar{g}(W_s)=\mathbb{E}_{N\sim\mu_{W_s}}\Bigl(\bigl|\mathrm{Fold}_m^{-1}(\mathrm{Fold}_m(N))\bigr|\Bigr),
+\bar{g}_m(W_s)=\mathbb{E}_{N\sim\mu_{W_s}}\Bigl(\bigl|\mathrm{Fold}_m^{-1}(\mathrm{Fold}_m(N))\bigr|\Bigr),
 \]
 using either an explicit finite table (for $m=6$, Appendix~\ref{app:fold6_table}) or a higher-$m$ generalization \cite{Ma2025RF}.
 \end{itemize}
+In practice, $\mu_{W_s}$ can be taken as the empirical distribution of $\{N_{s+j}\}_{j=0}^{m-1}$ (uniform over the $m$ indices), so that the expectation is a finite average.
 
 \subsection{Step 4: overhead proxy reconstruction}
-Define an overhead proxy on the index axis by
+Define the overhead proxy on the index axis by the degeneracy-based definition (Definition~\ref{def:degeneracy_overhead}),
 \[
-\chi(s)=\log\frac{\bar{g}(W_s)}{\bar{g}_0}
-\quad\text{or}\quad
-\chi(s)\propto \bar{D}_\varphi(W_s),
+\chi(s)=\log\frac{\bar{g}_m(W_s)}{\bar{g}_0},
 \]
 with $\bar{g}_0$ a baseline degeneracy (e.g.\ a global median).
+For a centered reconstruction, one may take $\bar{g}_0$ as the global empirical mean of $\bar{g}_m$ (or the theoretical mean degeneracy $d_m=2^m/F_{m+2}$ when appropriate), so that $\mathbb{E}(\chi)\approx 0$ on the chosen background.
+If only coarse binary encodings are available, one may use $\bar{D}_\varphi(W_s)$ as a proxy statistic for $\chi$, but the primary definition above is the closed model variable.
 Map $\chi(s)$ back to space using the inverse Hilbert indexing to obtain a spatial field $\chi(x)$.
 
 \subsection{Step 5: comparison tests}
@@ -42,6 +50,14 @@ Use $\chi(x)$ as a proxy for dark-sector effective sources and compare with:
 \item dynamical mass estimates;
 \item standard $\Lambda$CDM-based reconstructions.
 \end{itemize}
+Optionally, convert $\chi(x)$ to a predicted gravitational potential and effective density using the closed weak-field relations in Section~\ref{subsec:newton_limit}:
+\[
+\Phi(x)= -\gamma c^2(\chi(x)-\chi_0),
+\qquad
+\rho_{\mathrm{eff}}(x)= -\frac{\gamma c^2}{4\pi G_{\mathrm{eff}}}\nabla^2\chi(x),
+\]
+and fit $\gamma$ by rotation curves or lensing/time-delay data (Section~\ref{subsec:rotation_fit}).
+In weak lensing, the lensing potential is a line-of-sight integral of $\Phi$, and the convergence is $\kappa=(1/2)\nabla_\theta^2\psi$; since $\Phi$ is linear in $\gamma$, the predicted $\kappa$ is linear in $\gamma$ as well, so $\gamma$ can be estimated by linear least squares from a reconstructed convergence map \cite{BartelmannSchneider2001}.
 The key test is the presence (or absence) of the predicted address-aware invariances and correlations.
 
 
