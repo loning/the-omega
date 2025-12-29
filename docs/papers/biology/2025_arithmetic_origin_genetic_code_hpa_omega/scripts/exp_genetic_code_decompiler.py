@@ -22,9 +22,11 @@ from genetic_code_tools import (
     all_encodings,
     amino_acid_spectrum,
     encoding_to_str,
+    find_orfs,
     fold6,
     fold_codon,
     hydrophobicity_correlation_under_mu,
+    iter_fasta,
     mutual_information_bits,
     satisfies_start_stop_boundary_homology,
     vmean_hydrophobicity_correlation_under_mu,
@@ -68,6 +70,74 @@ def generate_stop_fine_structure(mu: dict[str, str]) -> None:
     # the generated fragment.
     write_text(generated_dir() / "stop_fine_structure_rows.tex", "\n".join(rows) + "\n\\bottomrule\n")
 
+def generate_control_codons_table(mu: dict[str, str]) -> None:
+    """
+    Table for the control set K={AUG,UAA,UAG,UGA}.
+    """
+    control_codons = ("AUG", "UAA", "UAG", "UGA")
+    rows = []
+    for codon in control_codons:
+        f = fold_codon(codon, mu)
+        is_b = "yes" if f.w in BOUNDARY_WORDS else "no"
+        rows.append(
+            f"{codon} & \\texttt{{{f.bits}}} & {f.n} & \\texttt{{{f.w}}} & {f.v} & {f.delta} & {is_b} \\\\"
+        )
+    write_text(generated_dir() / "control_codons_rows.tex", "\n".join(rows) + "\n\\bottomrule\n")
+
+
+def generate_human_transcript_case_studies(mu: dict[str, str]) -> None:
+    """
+    Reproducible case studies on two human transcripts:
+      - HBB (RefSeq NM_000518.5)
+      - INS (Ensembl ENST00000381330.5)
+    Requires FASTA files under data/.
+    """
+    data_dir = root_dir() / "data"
+    cases = [
+        ("HBB", "NM_000518.5", data_dir / "NM_000518.5.fasta"),
+        ("INS", "ENST00000381330.5", data_dir / "ENST00000381330.5.fasta"),
+    ]
+
+    rows: list[str] = []
+    for gene, tid, path in cases:
+        if not path.exists():
+            continue
+        records = list(iter_fasta(str(path)))
+        if not records:
+            continue
+        rid, seq = records[0]
+        nt_len = len(seq)
+
+        # Choose the longest ORF across all three reading frames (robust to UTRs and frame offset).
+        best = None  # (length_codons, start, stop, frame)
+        for frame in (0, 1, 2):
+            orfs = find_orfs(seq, frame=frame, min_codons=0)
+            for start, stop in orfs:
+                length_codons = (stop - start) // 3 + 1
+                cand = (length_codons, start, stop, frame)
+                if best is None or cand > best:
+                    best = cand
+        if best is None:
+            continue
+        _, start, stop, frame = best
+        start_codon = seq[start : start + 3]
+        stop_codon = seq[stop : stop + 3]
+
+        f_start = fold_codon(start_codon, mu)
+        f_stop = fold_codon(stop_codon, mu)
+
+        # 1-based base positions to match typical transcript coordinates.
+        start_1 = start + 1
+        stop_1 = stop + 1
+
+        start_tuple = f"({f_start.n},\\mathtt{{{f_start.w}}},{f_start.v},{f_start.delta})"
+        stop_tuple = f"({f_stop.n},\\mathtt{{{f_stop.w}}},{f_stop.v},{f_stop.delta})"
+
+        rows.append(
+            f"{gene} (\\path{{{tid}}}) & {nt_len} & {frame} & {start_1} & {stop_1} & {stop_codon} & ${start_tuple}$ & ${stop_tuple}$ \\\\"
+        )
+
+    write_text(generated_dir() / "human_transcript_case_studies_rows.tex", "\n".join(rows) + "\n\\bottomrule\n")
 
 def generate_boundary_sector_codons(mu: dict[str, str]) -> None:
     rows = []
@@ -119,10 +189,26 @@ def generate_encoding_scan_summary() -> None:
     stop_hits_hist = Counter()
     all_stop_in_boundary_int_set = 0
     homology_hits = []
+    control_hits_hist = Counter()
+    control_hits_max = 0
+    control_best_mus: list[dict[str, str]] = []
     mi_values = []
 
     for mu in encs:
         mi_values.append(mutual_information_bits(mu))
+
+        # Control-boundary alignment score over K={AUG,UAA,UAG,UGA}.
+        control_codons = ("AUG", "UAA", "UAG", "UGA")
+        control_hits = 0
+        for c in control_codons:
+            if fold_codon(c, mu).w in BOUNDARY_WORDS:
+                control_hits += 1
+        control_hits_hist[control_hits] += 1
+        if control_hits > control_hits_max:
+            control_hits_max = control_hits
+            control_best_mus = [mu]
+        elif control_hits == control_hits_max:
+            control_best_mus.append(mu)
 
         hits = 0
         stop_ns = []
@@ -146,6 +232,16 @@ def generate_encoding_scan_summary() -> None:
         f"There are $24$ bijective two-bit encodings. Under the standard stop set $\\{{\\mathrm{{UAA,UAG,UGA}}\\}}$, "
         f"the number of stop codons landing in the boundary sector has histogram: "
         f"$\\{{0:{stop_hits_hist.get(0,0)},\\ 1:{stop_hits_hist.get(1,0)},\\ 2:{stop_hits_hist.get(2,0)},\\ 3:{stop_hits_hist.get(3,0)}\\}}$."
+    )
+    lines.append(
+        f"Under the control set $\\mathcal{{K}}=\\{{\\mathrm{{AUG,UAA,UAG,UGA}}\\}}$, "
+        f"the boundary-hit score $S(\\mu)$ has histogram: "
+        f"$\\{{0:{control_hits_hist.get(0,0)},\\ 1:{control_hits_hist.get(1,0)},\\ 2:{control_hits_hist.get(2,0)},\\ 3:{control_hits_hist.get(3,0)},\\ 4:{control_hits_hist.get(4,0)}\\}}$."
+    )
+    lines.append(
+        f"The maximum is $S_{{\\max}}={control_hits_max}$, achieved by {len(control_best_mus)} encoding."
+        + (" " if len(control_best_mus) == 1 else "s ")
+        + (f"Namely ${_latex_encoding(control_best_mus[0])}$." if len(control_best_mus) == 1 else "")
     )
     lines.append(
         "In particular, no encoding places all three stop codons inside the boundary sector, and the stronger RF boundary-index inclusion test "
@@ -295,10 +391,17 @@ def generate_hydrophobicity_correlation(mu: dict[str, str]) -> None:
     rho = corr["spearman_rho"]
     p_rho = corr["spearman_p"]
 
+    b = corr["reg_slope"]
+    a = corr["reg_intercept"]
+    r2 = corr["reg_r2"]
+    p_b = corr["reg_p_slope"]
+    se_b = corr["reg_se_slope"]
+
     # Single LaTeX paragraph fragment used inline.
     s = (
-        f"Pearson $r={r:.3f}$ ($p={p:.4f}$, $n={n}$) and "
-        f"Spearman $\\rho={rho:.3f}$ ($p={p_rho:.4f}$, $n={n}$)."
+        f"OLS fit ($\\mathrm{{KD}}=a+b\\,N_{{\\max}}$): $b={b:.4f}\\pm {se_b:.4f}$ "
+        f"($p={p_b:.4f}$), $a={a:.4f}$, $R^2={r2:.3f}$ (n={n}). "
+        f"Correlation: Pearson $r={r:.3f}$ ($p={p:.4f}$), Spearman $\\rho={rho:.3f}$ ($p={p_rho:.4f}$)."
     )
     write_text(generated_dir() / "hydrophobicity_correlation.tex", s + "\n")
 
@@ -310,25 +413,42 @@ def generate_vmean_property_correlations(mu: dict[str, str]) -> None:
     corr_h = vmean_hydrophobicity_correlation_under_mu(mu)
     corr_m = vmean_mass_correlation_under_mu(mu)
 
-    def fmt(c: dict[str, float]) -> tuple[str, str, str, str, int]:
+    def fmt(c: dict[str, float]) -> tuple[str, str, str, str, int, str, str, str, str, str]:
         n = int(c["n"])
         r = c["pearson_r"]
         p = c["pearson_p"]
         rho = c["spearman_rho"]
         p_rho = c["spearman_p"]
-        return f"{r:.3f}", f"{p:.4f}", f"{rho:.3f}", f"{p_rho:.4f}", n
+        b = c["reg_slope"]
+        a = c["reg_intercept"]
+        r2 = c["reg_r2"]
+        p_b = c["reg_p_slope"]
+        se_b = c["reg_se_slope"]
+        return (
+            f"{r:.3f}",
+            f"{p:.4f}",
+            f"{rho:.3f}",
+            f"{p_rho:.4f}",
+            n,
+            f"{b:.4f}",
+            f"{se_b:.4f}",
+            f"{p_b:.4f}",
+            f"{a:.4f}",
+            f"{r2:.3f}",
+        )
 
-    r_h, p_h, rho_h, p_rho_h, n_h = fmt(corr_h)
-    r_m, p_m, rho_m, p_rho_m, n_m = fmt(corr_m)
+    r_h, p_h, rho_h, p_rho_h, n_h, b_h, sebh, pbh, a_h, r2_h = fmt(corr_h)
+    r_m, p_m, rho_m, p_rho_m, n_m, b_m, sebm, pbm, a_m, r2_m = fmt(corr_m)
     assert n_h == n_m
 
     lines = []
     lines.append(
         f"For $V_\\mathrm{{mean}}$ (uniform-codon average of $V$ per amino acid), "
-        f"the correlations are: hydrophobicity Pearson $r={r_h}$ ($p={p_h}$, $n={n_h}$), "
-        f"Spearman $\\rho={rho_h}$ ($p={p_rho_h}$); "
-        f"mass Pearson $r={r_m}$ ($p={p_m}$, $n={n_m}$), "
-        f"Spearman $\\rho={rho_m}$ ($p={p_rho_m}$)."
+        f"OLS fits give: hydrophobicity $\\mathrm{{KD}}=a+b\\,V_\\mathrm{{mean}}$ with "
+        f"$b={b_h}\\pm {sebh}$ ($p={pbh}$), $a={a_h}$, $R^2={r2_h}$; "
+        f"mass $M=a+b\\,V_\\mathrm{{mean}}$ with $b={b_m}\\pm {sebm}$ ($p={pbm}$), $a={a_m}$, $R^2={r2_m}$ "
+        f"(n={n_h}). Correlations: hydrophobicity Pearson $r={r_h}$ ($p={p_h}$), Spearman $\\rho={rho_h}$ ($p={p_rho_h}$); "
+        f"mass Pearson $r={r_m}$ ($p={p_m}$), Spearman $\\rho={rho_m}$ ($p={p_rho_m}$)."
     )
     write_text(generated_dir() / "vmean_property_correlations.tex", "\n".join(lines) + "\n")
 
@@ -355,6 +475,8 @@ def main() -> None:
 
     # 3) Generate LaTeX fragments
     generate_stop_fine_structure(MU_STAR)
+    generate_control_codons_table(MU_STAR)
+    generate_human_transcript_case_studies(MU_STAR)
     generate_boundary_sector_codons(MU_STAR)
     generate_amino_acid_spectrum_rows(MU_STAR)
     generate_full_codon_table_rows(MU_STAR)

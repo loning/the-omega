@@ -1,4 +1,4 @@
-\section{Genetic interface and reverse compilation over $24$ encodings}
+\section{Genetic interface and reverse compilation over 24 encodings}
 \label{sec:reverse_compilation}
 
 \subsection{Two-bit nucleotide encodings and codon indices}
@@ -28,26 +28,44 @@ We also define the \emph{uplift} variable:
 \Delta_\mu(c):=N_\mu(c)-V_\mu(c).
 \]
 Intuitively, $V_\mu(c)$ is the window-visible Zeckendorf content, while $\Delta_\mu(c)$ measures the window-external contribution that is invisible to $\mathrm{Fold}_6$.
-In the $m=6$ model, $\Delta_\mu(c)$ takes values in a small discrete set (empirically $\{0,21,34,55\}$ under $\mu^\ast$; see Appendix~\ref{app:generated_tables}).
+By Lemma~\ref{lem:delta_values}, at window length $m=6$ the uplift is constrained to the discrete set
+\[
+\Delta_\mu(c)\in\{0,21,34,55\}=\{0,F_8,F_9,F_{10}\},
+\]
+for every codon $c$ and every two-bit encoding $\mu$.
 
-\subsection{A minimal anchor: start--stop boundary homology}
-\label{sec:anchor}
+\begin{remark}[Low/high split]
+It is sometimes useful to view
+\[
+V_{\mathrm{low},\mu}(c):=V_\mu(c),\qquad V_{\mathrm{high},\mu}(c):=\Delta_\mu(c),
+\]
+so that the microstate index decomposes as $N_\mu(c)=V_{\mathrm{low},\mu}(c)+V_{\mathrm{high},\mu}(c)$.
+\end{remark}
 
-We treat the following as a minimal and falsifiable anchor based on standard semantics \cite{Alberts2014,Crick1966}:
+\subsection{Control-boundary alignment as a minimal objective}
+\label{sec:control_objective}
+
+We treat the following as minimal and widely accepted translation-control semantics \cite{Alberts2014,Crick1966,NirenbergMatthaei1961}:
 \begin{itemize}
 \item $\mathrm{AUG}$ is a canonical start codon;
-\item $\mathrm{UAA}$ is a canonical stop codon.
+\item $\mathrm{UAA}$, $\mathrm{UAG}$, $\mathrm{UGA}$ are standard stop codons.
 \end{itemize}
 
-\begin{definition}[Start--stop boundary homology criterion]
-\label{def:start_stop_homology}
-An encoding $\mu$ satisfies start--stop boundary homology if
+Let
 \[
-w_\mu(\mathrm{AUG})=w_\mu(\mathrm{UAA})\in X_6^{\mathrm{bdry}}.
+\mathcal{K}:=\{\mathrm{AUG},\mathrm{UAA},\mathrm{UAG},\mathrm{UGA}\}.
+\]
+
+\begin{definition}[Control-boundary alignment score]
+\label{def:control_boundary_score}
+For an encoding $\mu$, define
+\[
+S(\mu):=\sum_{c\in\mathcal{K}}\mathbf{1}\{w_\mu(c)\in X_6^{\mathrm{bdry}}\}.
 \]
 \end{definition}
 
-This criterion does not use amino-acid physicochemical data, codon usage statistics, or evolutionary assumptions; it only uses the existence of a start and stop control semantics and the folding-defined boundary sector.
+We select encodings that maximize $S(\mu)$.
+This objective intentionally does \emph{not} impose that start and stop coincide on the same boundary word; any such coincidence, if present, is an emergent consequence of the folding geometry and the finite encoding search.
 
 \subsection{A structural limitation: stop codons cannot all be boundary}
 \label{sec:stop_limit}
@@ -78,12 +96,10 @@ The three stop codons correspond to $6$-bit block triples:
 \]
 The boundary-index set $\{14,17,19,48,51,53\}$ corresponds to the following $2$-bit block forms (write each $N$ in binary and group into three blocks):
 \[
-14=(00,11,10),\quad
-17=(01,00,01),\quad
-19=(01,00,11),\quad
-48=(11,00,00),\quad
-51=(11,00,11),\quad
-53=(11,01,01).
+\begin{aligned}
+14&=(00,11,10),&\qquad 17&=(01,00,01),&\qquad 19&=(01,00,11),\\
+48&=(11,00,00),&\qquad 51&=(11,00,11),&\qquad 53&=(11,01,01).
+\end{aligned}
 \]
 We distinguish cases by $u$.
 
@@ -105,19 +121,18 @@ In all cases, at most one of $\{\mathrm{UAA},\mathrm{UAG},\mathrm{UGA}\}$ can la
 The exhaustive scan over all $24$ encodings reproduces the histogram $\{0:16,1:8,2:0,3:0\}$ for the number of stop codons landing in $X_6^{\mathrm{bdry}}$, recorded in Appendix~\ref{app:generated_tables}.
 \end{remark}
 
-\subsection{Exhaustive search and uniqueness}
+\subsection{Unique optimizer and emergent start--stop homology}
 \label{sec:uniqueness}
 
-Since the encoding space has size $24$, we can search exhaustively.
-The following theorem is the main identifiability result.
+The next theorem is the main identifiability result under the control objective.
 
-\begin{theorem}[Unique encoding selected by start--stop boundary homology]
+\begin{theorem}[Unique encoding selected by control-boundary alignment]
 \label{thm:unique_encoding}
-Among the $24$ bijective two-bit encodings $\mu:\{A,C,G,U\}\to\{00,01,10,11\}$, there is a unique encoding $\mu^\ast$ that satisfies Definition~\ref{def:start_stop_homology}. It is
+Among the $24$ bijective two-bit encodings $\mu:\{A,C,G,U\}\to\{00,01,10,11\}$, the maximal score in Definition~\ref{def:control_boundary_score} is $2$, and it is achieved by a unique encoding $\mu^\ast$:
 \[
 \mu^\ast:\quad A\mapsto 00,\quad C\mapsto 01,\quad G\mapsto 10,\quad U\mapsto 11.
 \]
-Moreover,
+Moreover, under $\mu^\ast$ the start and the $\mathrm{UAA}$ stop codon fold to the same boundary word:
 \[
 N_{\mu^\ast}(\mathrm{AUG})=14,\qquad N_{\mu^\ast}(\mathrm{UAA})=48,
 \qquad
@@ -126,12 +141,14 @@ w_{\mu^\ast}(\mathrm{AUG})=w_{\mu^\ast}(\mathrm{UAA})=100001.
 \end{theorem}
 
 \begin{proof}
-By Proposition~\ref{prop:boundary_preimages}, the boundary word $100001$ has exactly two preimages $\{14,48\}$.
-If an encoding satisfies start--stop boundary homology, then $N_\mu(\mathrm{AUG})$ and $N_\mu(\mathrm{UAA})$ must equal $\{14,48\}$ in some order.
-Since the leftmost two bits of $48$ are $11$ and the last four bits are $0000$, the codon $\mathrm{UAA}$ forces $\mu(U)=11$ and $\mu(A)=00$.
-Then $14$ has bit pattern $001110$, and the codon $\mathrm{AUG}$ forces $\mu(G)=10$.
-The remaining nucleotide $C$ must map to the remaining two-bit pattern $01$.
-Hence $\mu$ is uniquely determined and equals $\mu^\ast$.
+By Proposition~\ref{prop:stop_hits_at_most_one}, at most one of $\{\mathrm{UAA,UAG,UGA}\}$ can be boundary under any encoding.
+Hence $S(\mu)\le 1+\mathbf{1}\{w_\mu(\mathrm{AUG})\in X_6^{\mathrm{bdry}}\}\le 2$.
+
+Assume $S(\mu)=2$. Then $\mathrm{AUG}$ must be boundary, so $(\mu(A),\mu(U),\mu(G))$ must equal one of the six boundary block triples listed in the proof of Proposition~\ref{prop:stop_hits_at_most_one}.
+Inspecting that list, the only boundary triple with second block $11$ is $(00,11,10)$.
+Therefore $\mu(U)=11$ and $\mu(A)=00$ and $\mu(G)=10$.
+Bijectivity forces the remaining nucleotide $C$ to map to $01$, hence $\mu=\mu^\ast$.
+Under $\mu^\ast$, a direct computation gives $N_{\mu^\ast}(\mathrm{AUG})=14$ and $N_{\mu^\ast}(\mathrm{UAA})=48$, and both fold to $100001$.
 \end{proof}
 
 \subsection{An information-theoretic alignment diagnostic (optional)}

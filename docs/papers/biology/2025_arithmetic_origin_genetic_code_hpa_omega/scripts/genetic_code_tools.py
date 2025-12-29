@@ -341,6 +341,61 @@ def pearson_r(xs: list[float], ys: list[float]) -> float:
     return sxy / math.sqrt(sxx * syy)
 
 
+def linear_regression(xs: list[float], ys: list[float]) -> dict[str, float]:
+    """
+    Ordinary least squares (OLS) for y = intercept + slope * x.
+
+    Returns:
+      slope, intercept, r, r2, se_slope, se_intercept, t_slope, p_slope, n.
+    """
+    if len(xs) != len(ys) or len(xs) < 3:
+        raise ValueError("xs and ys must have same length >= 3")
+
+    n = len(xs)
+    mx = sum(xs) / n
+    my = sum(ys) / n
+    sxx = sum((x - mx) ** 2 for x in xs)
+    syy = sum((y - my) ** 2 for y in ys)
+    sxy = sum((xs[i] - mx) * (ys[i] - my) for i in range(n))
+    if sxx <= 0:
+        raise ValueError("Zero variance in xs")
+
+    slope = sxy / sxx
+    intercept = my - slope * mx
+
+    # Residuals / R^2
+    sse = 0.0
+    for i in range(n):
+        yhat = intercept + slope * xs[i]
+        sse += (ys[i] - yhat) ** 2
+    r2 = 1.0 - (sse / syy) if syy > 0 else 0.0
+    r = sxy / math.sqrt(sxx * syy) if syy > 0 else 0.0
+
+    # Standard errors (n-2 degrees of freedom)
+    df = n - 2
+    if df <= 0:
+        raise ValueError("Need at least 3 points for regression")
+    s = math.sqrt(sse / df)
+    se_slope = s / math.sqrt(sxx)
+    se_intercept = s * math.sqrt(1.0 / n + (mx * mx) / sxx)
+
+    t_slope = slope / se_slope if se_slope > 0 else float("inf")
+    p_slope = 2.0 * (1.0 - student_t_cdf(abs(t_slope), df=df))
+    p_slope = max(0.0, min(1.0, p_slope))
+
+    return {
+        "slope": slope,
+        "intercept": intercept,
+        "r": r,
+        "r2": r2,
+        "se_slope": se_slope,
+        "se_intercept": se_intercept,
+        "t_slope": t_slope,
+        "p_slope": p_slope,
+        "n": float(n),
+    }
+
+
 def _betacf(a: float, b: float, x: float) -> float:
     """
     Continued fraction for incomplete beta (Numerical Recipes style).
@@ -520,13 +575,17 @@ def hydrophobicity_correlation_under_mu(mu: dict[str, str]) -> dict[str, float]:
     rho = spearman_rho(xs, ys)
     p_rho = pearson_p_value_two_sided(rho, n=len(xs))
 
-    return {
+    reg = linear_regression(xs, ys)
+
+    out = {
         "pearson_r": r,
         "pearson_p": p,
         "spearman_rho": rho,
         "spearman_p": p_rho,
         "n": float(len(xs)),
     }
+    out.update({f"reg_{k}": float(v) for k, v in reg.items()})
+    return out
 
 
 def amino_acid_vmean(mu: dict[str, str]) -> dict[str, float]:
@@ -572,13 +631,17 @@ def vmean_property_correlation_under_mu(
     rho = spearman_rho(xs, ys)
     p_rho = pearson_p_value_two_sided(rho, n=len(xs))
 
-    return {
+    reg = linear_regression(xs, ys)
+
+    out = {
         "pearson_r": r,
         "pearson_p": p,
         "spearman_rho": rho,
         "spearman_p": p_rho,
         "n": float(len(xs)),
     }
+    out.update({f"reg_{k}": float(v) for k, v in reg.items()})
+    return out
 
 
 def vmean_hydrophobicity_correlation_under_mu(mu: dict[str, str]) -> dict[str, float]:

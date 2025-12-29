@@ -17,11 +17,15 @@ These boundary states provide a small, sharply defined ``control sector'' inside
 
 \paragraph{Reverse compilation as a finite identification problem.}
 The key unknown is the \emph{hardware encoding} that maps nucleotides to two-bit blocks.
-If we assume a bijection $\mu:\{A,C,G,U\}\to\{00,01,10,11\}$, then there are exactly $4!=24$ possible encodings, so any identification criterion can be tested exhaustively.
+If we assume a bijection
+\[
+\mu:\{A,C,G,U\}\to\{00,01,10,11\},
+\]
+then there are exactly $4!=24$ possible encodings, so any identification criterion can be tested exhaustively.
 
-We formulate a minimal and falsifiable anchor:
-\emph{the canonical start codon $\mathrm{AUG}$ and the canonical stop codon $\mathrm{UAA}$ should land on the same boundary state}.
-This uses only a small piece of widely shared biological semantics, and it yields a rigid structural prediction at the folding level.
+Instead of fitting amino-acid properties, we use a minimal control objective:
+the translation control set $\mathcal{K}=\{\mathrm{AUG},\mathrm{UAA},\mathrm{UAG},\mathrm{UGA}\}$ should embed into the folding boundary sector as much as possible.
+This objective does not force $\mathrm{AUG}$ and $\mathrm{UAA}$ to coincide a priori; if a $14/48$ start--stop symmetry emerges, it is a consequence of the folding geometry and the finite encoding search.
 
 \paragraph{A built-in limitation at minimal resolution.}
 The RF interface also provides an encoding-independent characterization of the boundary sector by a fixed set of six indices.
@@ -32,8 +36,8 @@ This forces a natural refinement: treat $\mathrm{UAA}$ as a boundary-aligned ``h
 This paper provides:
 \begin{itemize}
 \item a self-contained construction of the $\mathrm{Fold}_6$-based codon spectrum interface (types, boundary sector, Zeckendorf levels, and the uplift variable);
-\item an exhaustive search over all $24$ two-bit encodings, showing that the start--stop boundary-homology criterion selects a \emph{unique} encoding $\mu^\ast$;
-\item the resulting start--stop $14/48$ symmetry and the fine structure of stop codons under $\mu^\ast$;
+\item an exhaustive search over all $24$ two-bit encodings under a control-boundary alignment objective, selecting a \emph{unique} encoding $\mu^\ast$;
+\item the resulting start--stop $14/48$ boundary symmetry and the fine structure of stop codons under $\mu^\ast$;
 \item a sequence-level spectrum definition $(Z,U)$ and a set of directly testable predictions on annotated genes or raw genomes;
 \item auditable Python scripts (standard library only) that reproduce all finite computations and generate LaTeX table fragments used in this manuscript.
 \end{itemize}

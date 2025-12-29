@@ -1,0 +1,93 @@
+\section{Statistical test protocols for sequence-level predictions}
+\label{app:stat_tests}
+
+This appendix specifies quantitative test statistics corresponding to the sequence-level predictions in Section~\ref{sec:sequence_spectra}.
+The purpose is to separate \emph{arithmetic facts} (which are deterministic once $\mu^\ast$ is fixed) from \emph{empirical hypotheses} about genomes and translation context (which require data).
+
+\subsection{Notation}
+Fix a DNA or RNA dataset and a reading frame. For each codon position $i$ with codon $c_i$, define
+\[
+Z(i)=V_{\mu^\ast}(c_i)\in\{0,\dots,20\},\qquad
+U(i)=\Delta_{\mu^\ast}(c_i)\in\{0,21,34,55\}.
+\]
+Throughout this appendix we fix $\mu^\ast$ and abbreviate
+\[
+V(c):=V_{\mu^\ast}(c),\qquad \Delta(c):=\Delta_{\mu^\ast}(c),\qquad w(c):=w_{\mu^\ast}(c).
+\]
+Let $\mathcal{I}_{\mathrm{stop},s}$ denote the set of indices $i$ where the stop codon equals $s\in\{\mathrm{UAA,UAG,UGA}\}$, and similarly $\mathcal{I}_{\mathrm{start}}$ for $\mathrm{AUG}$.
+
+\subsection{Stop-context uplift windows}
+\label{app:stop_context_windows}
+
+Fix an integer window radius $k\ge 1$.
+Define the \emph{before} and \emph{after} window means for a stop codon class $s$ by:
+\[
+\overline{U}_{\mathrm{before}}(s;k)
+:=
+\frac{1}{|\mathcal{I}_{\mathrm{stop},s}|}
+\sum_{i\in\mathcal{I}_{\mathrm{stop},s}}
+\left(
+\frac{1}{k}\sum_{j=1}^{k} U(i-j)
+\right),
+\]
+\[
+\overline{U}_{\mathrm{after}}(s;k)
+:=
+\frac{1}{|\mathcal{I}_{\mathrm{stop},s}|}
+\sum_{i\in\mathcal{I}_{\mathrm{stop},s}}
+\left(
+\frac{1}{k}\sum_{j=1}^{k} U(i+j)
+\right),
+\]
+excluding positions that fall outside a segment boundary (e.g.\ ORF boundary).
+
+\paragraph{Test.}
+To compare stop classes $s_1$ and $s_2$, test the null hypothesis
+\[
+H_0:\ \overline{U}_{\mathrm{before}}(s_1;k)=\overline{U}_{\mathrm{before}}(s_2;k)
+\quad\text{and}\quad
+\overline{U}_{\mathrm{after}}(s_1;k)=\overline{U}_{\mathrm{after}}(s_2;k),
+\]
+using either:
+\begin{itemize}
+\item a permutation test over the pooled stop occurrences (recommended when distributional assumptions are unclear), or
+\item a two-sample test on per-stop window means (Welch $t$-test or Mann--Whitney).
+\end{itemize}
+
+The CLI in Appendix~\ref{app:reproducibility} outputs these window summaries as JSONL via \path{--summary-out} and \path{--stop-window}.
+
+\subsection{Boundary enrichment tests}
+\label{app:boundary_enrichment}
+
+Define the boundary indicator
+\[
+B(i):=\mathbf{1}\{w(c_i)\in X_6^{\mathrm{bdry}}\}.
+\]
+Given a subset of codon positions $\mathcal{J}$ (e.g.\ annotated catalytic residues, conserved sites, or motif neighborhoods), define the empirical boundary rate
+\[
+\widehat{p}_B(\mathcal{J}) := \frac{1}{|\mathcal{J}|}\sum_{i\in\mathcal{J}} B(i).
+\]
+
+\paragraph{Test.}
+Compare $\widehat{p}_B(\mathcal{J})$ to a background rate $\widehat{p}_B(\mathcal{J}_0)$ using:
+\begin{itemize}
+\item a binomial test with background $\widehat{p}_B(\mathcal{J}_0)$, or
+\item a hypergeometric test when $\mathcal{J}$ is sampled without replacement from a fixed finite pool.
+\end{itemize}
+
+\subsection{Codon-usage bias vs.\ folding spectra}
+\label{app:codon_usage_bias}
+
+Let $f(c)$ be the empirical frequency of codon $c$ in a dataset (optionally restricted to coding regions).
+Define summary usage statistics such as:
+\[
+\overline{Z}:=\sum_{c} f(c)\,V(c),
+\qquad
+\overline{U}:=\sum_{c} f(c)\,\Delta(c).
+\]
+or conditional means within amino-acid synonym classes.
+
+\paragraph{Test.}
+To test whether codon usage is biased toward certain folding levels, compare observed $(\overline{Z},\overline{U})$ to a null model that preserves amino-acid composition (shuffle codons within each amino-acid family) and compute an empirical $p$-value by Monte Carlo permutation.
+
+

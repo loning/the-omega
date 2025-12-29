@@ -1,13 +1,21 @@
 \section{Framework: microstates, admissible types, and Zeckendorf window folding}
 \label{sec:framework}
 
-\subsection{Six-bit microstates and the $21$ admissible types}
+\subsection{Six-bit microstates and the 21 admissible types}
 \label{sec:microstates}
 
 At the minimal resolution of three nucleotides with two bits each, we take the microstate space
 \[
 \Omega_6:=\{0,1\}^6,\qquad |\Omega_6|=64.
 \]
+
+\begin{remark}[Hilbert addressing context (interface)]
+\label{rem:hilbert_context}
+In the full RF framework \cite{Ma2025RF}, finite microstates can be coupled to spatial refinement via Hilbert addressing (a $1$D scan indexing a $2$D grid) and a dihedral layout family.
+At $m=6$, the cardinality $|\Omega_6|=64$ matches the Hilbert-addressed grid at order $n=3$ (since $4^n=64$).
+The present paper focuses on the arithmetic folding $\mathrm{Fold}_6$ and the finite encoding search, which depend only on the Zeckendorf-window truncation and the induced index $N\in\{0,\dots,63\}$.
+Hilbert embedding can therefore be overlaid as additional geometric structure without changing the $64\to 21$ folding combinatorics used here.
+\end{remark}
 
 The stable type space is the golden-mean admissible set of length-$6$ binary words:
 \[
@@ -42,7 +50,7 @@ N=\sum_{k\ge 1} c_k F_{k+1},\qquad c_k\in\{0,1\},\qquad c_k c_{k+1}=0.
 \]
 We call $(c_k)_{k\ge 1}$ the Zeckendorf digits of $N$.
 
-\subsection{The folding map $\mathrm{Fold}_6$ and the Zeckendorf value $V$}
+\subsection{The folding map \texorpdfstring{$\mathrm{Fold}_6$}{Fold6} and the Zeckendorf value \texorpdfstring{$V$}{V}}
 \label{sec:fold6}
 
 Define the window-$6$ folding map by truncating the Zeckendorf digits:
@@ -57,9 +65,35 @@ For $w=(w_1,\dots,w_6)\in X_6$ define its Zeckendorf value
 V(w):=\sum_{k=1}^6 w_k F_{k+1} = w_1 F_2 + w_2 F_3 + \cdots + w_6 F_7
  = w_1 + 2 w_2 + 3 w_3 + 5 w_4 + 8 w_5 + 13 w_6.
 \]
-In the $m=6$ case, $V$ maps $X_6$ bijectively onto $\{0,1,\dots,20\}$ \cite{Ma2025RF}.
 
-\subsection{Boundary preimages and the $34$ split}
+\begin{lemma}[Admissible words are realized by their Zeckendorf values]
+\label{lem:fold6_of_V_is_identity}
+For every $w\in X_6$, one has
+\[
+\mathrm{Fold}_6\bigl(V(w)\bigr)=w.
+\]
+\end{lemma}
+
+\begin{proof}
+Because $w$ has no adjacent ones, the finite sum $V(w)=\sum_{k=1}^6 w_k F_{k+1}$ is already a valid Zeckendorf expansion (no consecutive Fibonacci weights are used).
+By uniqueness of Zeckendorf digits \cite{Zeckendorf1972}, the digit sequence of $V(w)$ begins with $(w_1,\dots,w_6)$ and has no additional nonzero digits beyond the window.
+Therefore the length-$6$ truncation yields $\mathrm{Fold}_6(V(w))=w$.
+\end{proof}
+
+\begin{corollary}[The window-$6$ Zeckendorf value is a bijection]
+\label{cor:V_bijection_0_20}
+The map $V:X_6\to\{0,1,\dots,20\}$ is a bijection.
+\end{corollary}
+
+\begin{proof}
+By Lemma~\ref{lem:fold6_of_V_is_identity}, $V$ is injective: if $V(w)=V(w')$ then applying $\mathrm{Fold}_6$ gives $w=w'$.
+Also $V(w)\in\{0,\dots,20\}$ for $w\in X_6$ at window length $6$, and $|X_6|=21$.
+Hence an injection $X_6\hookrightarrow\{0,\dots,20\}$ is necessarily a bijection.
+\end{proof}
+
+These facts are recorded and used in \cite{Ma2025RF} as part of the general $\mathrm{Fold}_m$ surjectivity mechanism.
+
+\subsection{Boundary preimages and the 34 split}
 \label{sec:boundary_preimages}
 
 The key structural fact behind the start--stop symmetry is that boundary words have exactly two preimages under $\mathrm{Fold}_6$.
@@ -85,7 +119,7 @@ See \cite{Ma2025RF} for a closed-form characterization of all preimages.
 
 This fixed $34$-splitting will later realize the ``same boundary, different uplift'' mechanism for start and stop.
 
-\subsection{Encoding-independent invariants at window length $6$}
+\subsection{Encoding-independent invariants at window length 6}
 \label{sec:fold6_invariants}
 
 Beyond the boundary-pair structure, $\mathrm{Fold}_6$ has two rigid features that do not depend on any nucleotide encoding.
@@ -96,9 +130,11 @@ They are intrinsic combinatorics of Zeckendorf truncation on $\{0,\dots,63\}$.
 For every $w\in X_6$, the preimage size $\bigl|\mathrm{Fold}_6^{-1}(w)\bigr|$ is one of $2$, $3$, or $4$.
 Moreover, the degeneracy histogram over the $21$ outputs is fixed:
 \[
-\#\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=2\}=8,\qquad
-\#\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=3\}=4,\qquad
-\#\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=4\}=9.
+\begin{aligned}
+\#\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=2\}&=8,\\
+\#\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=3\}&=4,\\
+\#\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=4\}&=9.
+\end{aligned}
 \]
 \end{theorem}
 

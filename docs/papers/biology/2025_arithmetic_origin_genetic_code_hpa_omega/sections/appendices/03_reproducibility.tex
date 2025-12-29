@@ -3,9 +3,9 @@
 
 This paper includes minimal, auditable scripts that reproduce the finite encoding search, codon tables, and sequence-spectrum extraction.
 All scripts are standard-library Python and live under:
-\[
-\texttt{docs/papers/biology/2025\_arithmetic\_origin\_genetic\_code\_hpa\_omega/scripts/}.
-\]
+\begin{center}
+\path{docs/papers/biology/2025_arithmetic_origin_genetic_code_hpa_omega/scripts/}
+\end{center}
 
 \subsection{What is reproduced}
 The scripts reproduce:
@@ -17,9 +17,14 @@ The scripts reproduce:
 \item sequence-level $(Z,U)$ traces for arbitrary DNA/RNA FASTA inputs, with optional ORF extraction.
 \end{itemize}
 
+\paragraph{What is a theorem vs.\ what is a finite enumeration.}
+Classical arithmetic facts (Zeckendorf uniqueness, Fibonacci counts of admissible words) and RF folding theorems (e.g.\ boundary preimages and the $2/3/4$ degeneracy histogram) are treated as mathematical results and are cited in the main text.
+The scripts are provided to make the finite instances auditable and to produce tables and diagnostics without manual transcription.
+The only ``search'' performed is over a finite, explicitly bounded space (the $24$ nucleotide encodings).
+
 \subsection{Main entry points}
 \begin{itemize}
-\item \path{exp_genetic_code_decompiler.py}: generates all \path{sections/generated/*.tex} fragments and prints key checks.
+\item \path{exp_genetic_code_decompiler.py}: generates all fragments in \path{sections/generated/} and prints key checks.
 \item \path{seq_spectrum_cli.py}: command-line sequence spectrum tool (FASTA input, frame/ORF options, TSV/JSONL outputs).
 \end{itemize}
 
@@ -56,11 +61,36 @@ Each JSON line corresponds to one segment (either \texttt{full} or one ORF) and 
 \item optional stop-context uplift statistics (before/after windows) when \path{--stop-window>0}.
 \end{itemize}
 
+\subsection{Testing nonstandard genetic codes}
+\label{app:nonstandard_codes}
+
+To test prediction~P3 on organisms with nonstandard translation tables, replace the codon-to-label map used by the scripts.
+Concretely, the standard code is defined as the dictionary \path{GENETIC_CODE} in \path{scripts/genetic_code_tools.py}.
+For an alternative genetic code, update that mapping (or load a mapping generated from an external translation-table source) and rerun:
+\begin{itemize}
+\item \path{exp_genetic_code_decompiler.py} for encoding-level scan diagnostics;
+\item \path{seq_spectrum_cli.py} for sequence-level $(Z,U)$ traces and stop-context windows.
+\end{itemize}
+The folding map $\mathrm{Fold}_6$ and all index-level invariants remain unchanged; only the semantic labeling layer (amino acid / stop identity) changes.
+
 \subsection{Generated LaTeX fragments}
 The scripts write small LaTeX fragments (table rows and summary lines) into:
-\[
-\texttt{docs/papers/biology/2025\_arithmetic\_origin\_genetic\_code\_hpa\_omega/sections/generated/}.
-\]
+\begin{center}
+\path{docs/papers/biology/2025_arithmetic_origin_genetic_code_hpa_omega/sections/generated/}
+\end{center}
 This repository includes the generated fragments so the paper can compile out of the box, but they can be regenerated at any time.
+
+\subsection{Included transcript data for case studies}
+\label{app:included_transcripts}
+
+For the human case studies in Section~\ref{sec:human_case_studies}, this repository includes two small FASTA files under:
+\begin{center}
+\path{docs/papers/biology/2025_arithmetic_origin_genetic_code_hpa_omega/data/}
+\end{center}
+\begin{itemize}
+\item \path{NM_000518.5.fasta} (HBB, RefSeq transcript);
+\item \path{ENST00000381330.5.fasta} (INS, Ensembl transcript).
+\end{itemize}
+The experiment script \path{scripts/exp_genetic_code_decompiler.py} reads these files and generates the LaTeX fragment \path{sections/generated/human_transcript_case_studies_rows.tex}.
 
 

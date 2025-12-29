@@ -3,7 +3,7 @@
 
 The codon-level map $c\mapsto (V_{\mu^\ast}(c),\Delta_{\mu^\ast}(c))$ induces a natural spectrum representation for sequences.
 
-\subsection{Definitions: $Z$-spectrum and uplift trace}
+\subsection{Definitions: \texorpdfstring{$Z$}{Z}-spectrum and uplift trace}
 \label{sec:z_u_def}
 
 Let $S$ be an RNA (or DNA) sequence and fix a reading frame.
@@ -32,18 +32,19 @@ In the canonical reading frame of annotated ORFs, the start codon $\mathrm{AUG}$
 \[
 (Z,U)(\mathrm{AUG})=(14,0),\qquad (Z,U)(\mathrm{UAA})=(14,34).
 \]
-If large-scale ORF statistics do not exhibit this split, the boundary-homology interpretation is weakened.
+Quantitative variants of this check include start/stop $(Z,U)$ histograms and boundary-hit rates $B(i)$ at annotated control sites (Appendix~\ref{app:stat_tests}).
 
 \paragraph{P2 (UGA extreme uplift).}
 The stop codon $\mathrm{UGA}$ has a large uplift $U=55$ in the minimal window-$6$ model.
-If context-dependent recoding (e.g.\ selenocysteine insertion) is sensitive to hidden loads, then the neighborhood statistics of $U(i)$ around $\mathrm{UGA}$ sites should differ systematically from those around $\mathrm{UAA}$ or $\mathrm{UAG}$ sites.
+If context-dependent recoding (e.g.\ selenocysteine insertion at $\mathrm{UGA}$ or pyrrolysine insertion at $\mathrm{UAG}$) is sensitive to hidden loads, then the neighborhood statistics of $U(i)$ around $\mathrm{UGA}$ and $\mathrm{UAG}$ sites should differ systematically from those around $\mathrm{UAA}$ sites \cite{HatfieldGladyshev2002,SrinivasanJamesKrzycki2002,McCaughanBrownDalphinBerryTate1995}.
 
-\paragraph{P3 (nonstandard codes as boundary migration).}
+\paragraph{P3 (nonstandard start/stop codes).}
 In organisms with nonstandard start/stop assignments, our framework predicts either:
 \begin{itemize}
 \item a reassignment that moves control semantics between the three boundary words ($100001$, $100101$, $101001$), or
 \item a symmetry action on the two-bit encoding that preserves the folding template while permuting codon indices.
 \end{itemize}
+Operationally, this can be tested by computing boundary-hit enrichment of the organism's annotated start/stop codon sets under $\mu^\ast$, and comparing against a background codon model (Appendix~\ref{app:stat_tests}).
 
 \subsection{Reproducible spectrum extraction on arbitrary genomes}
 \label{sec:reproducible_pipeline}
@@ -52,10 +53,37 @@ Appendix~\ref{app:reproducibility} documents a minimal command-line tool that:
 \begin{itemize}
 \item reads FASTA DNA/RNA;
 \item normalizes DNA to RNA by $T\mapsto U$;
-\item scans reading frames and (optionally) extracts ORFs using $\mathrm{AUG}$ starts and $\{\mathrm{UAA,UAG,UGA}\}$ stops;
+\item scans reading frames and (optionally) extracts ORFs using \texttt{AUG} starts and \texttt{UAA/UAG/UGA} stops;
 \item outputs per-codon traces $(Z,U)$ as a TSV file (optional) and per-segment summary statistics as JSONL (optional), including boundary-hit counts, $V/\Delta$ histograms, and stop-context uplift windows.
 \end{itemize}
 
 This makes the theory falsifiable on any dataset without hidden assumptions.
+
+\paragraph{Stop-context uplift output.}
+When \path{--stop-window} is enabled, the CLI reports for each stop class $s\in\{\mathrm{UAA,UAG,UGA}\}$ the before/after uplift window means and histograms (Appendix~\ref{app:stop_context_windows}), directly supporting quantitative tests of prediction~P2.
+
+\subsection{Human transcript case studies: HBB and INS}
+\label{sec:human_case_studies}
+
+As a reproducible sanity check at the sequence level, we apply the pipeline to two human transcripts:
+HBB (RefSeq \path{NM_000518.5}) and INS (Ensembl \path{ENST00000381330.5}) \cite{NCBIRefSeqNM000518,EnsemblENST00000381330}.
+For each transcript we select the longest ORF across the three frames and record its start/stop positions and folded signatures under $\mu^\ast$.
+
+\begin{center}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrlll}
+\toprule
+transcript & nt & frame & start (1-based) & stop (1-based) & stop codon & start $(N,w,V,\Delta)$ & stop $(N,w,V,\Delta)$ \\
+\midrule
+\input{sections/generated/human_transcript_case_studies_rows}
+\end{tabular}
+}
+\end{center}
+
+The HBB transcript terminates with $\mathrm{UAA}$ and exhibits the boundary-aligned $14/48$ start--stop split.
+The INS transcript terminates with $\mathrm{UAG}$ and exhibits a non-boundary stop signature, consistent with the stop fine structure in Section~\ref{sec:stop_fine_structure}.
 
 
