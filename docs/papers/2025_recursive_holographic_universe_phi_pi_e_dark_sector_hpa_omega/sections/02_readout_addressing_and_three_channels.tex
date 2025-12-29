@@ -1,0 +1,163 @@
+
+\section{Readout space, Hilbert addressing, and the \texorpdfstring{$\varphi$--$\pi$--$\e$}{phi--pi--e} channels}
+\label{sec:readout_addressing_three_channels}
+
+\subsection{Local readout space and minimal hardware: \texorpdfstring{$\Omega_6$}{Omega6} and \texorpdfstring{$\mathcal{H}_6$}{H6}}
+\label{subsec:local_readout}
+
+We define a local readout window of length $m$ as the binary word space
+\[
+\Omega_m:=\{0,1\}^m,\qquad |\Omega_m|=2^m,
+\]
+and its linearization as the Hilbert space
+\[
+\mathcal{H}_m:=\ell^2(\Omega_m).
+\]
+The minimal falsifiable model uses $m=6$, hence $|\Omega_6|=64$.
+
+\paragraph{Interpretation (working hypothesis).}
+The set $\Omega_6$ is not a particle state space; it is the smallest local configuration alphabet that a finite readout device can discriminate within a fixed window.
+Stability is a property of the readout: only a subset of microstates can be consistently projected and maintained as long-lived observable structures.
+
+\subsection{Hilbert addressing and locality: from scan ticks to spatial adjacency}
+\label{subsec:hilbert_addressing}
+
+To build ``space'' from a one-dimensional scan, we use Hilbert curve addressing.
+For each spatial order $n$, there exists a map
+\[
+H_n:\{0,1,\dots,2^{2n}-1\}\to \Lambda_n,
+\]
+where $\Lambda_n$ is the point set of a $2^n\times 2^n$ grid.
+The Hilbert locality axiom is that consecutive indices map to neighboring grid points (first-order locality) \cite{Hilbert1891,Sagan1994}.
+
+\paragraph{Balanced coupling.}
+At order $n=3$ the grid has $|\Lambda_3|=2^{2\cdot 3}=64$ points.
+This matches the minimal local readout size $|\Omega_6|=64$.
+We therefore highlight the balanced interface
+\[
+m=2n,
+\qquad
+|\Omega_m|=2^m=2^{2n}=|\Lambda_n|,
+\]
+as a natural coupling between address scale and readout-window scale.
+In this regime, an ``address--microstate'' pairing can be realized at the minimal level without additional padding.
+
+\paragraph{Distance as scan cost.}
+At fixed $n$, physical proximity is approximated by Hilbert adjacency, while scan distance (tick count) measures an effective traversal cost.
+A central theme of the paper is that dark-sector and gravitational effects can be read as an \emph{effective inflation of scan cost}: routing overhead modifies the mapping between scan ticks and perceived distances.
+
+\subsection{Three commuting stability channels: \texorpdfstring{$(\varphi,\pi,\e)$}{(phi,pi,e)}}
+\label{subsec:three_channels}
+
+We organize stability selection by three commuting channels.
+Formally, each channel is modeled as a defect operator (or projection) on $\mathcal{H}_m$; physically, each channel is a distinct consistency requirement for sustained readout.
+
+\subsubsection{The \texorpdfstring{$\varphi$}{phi} channel: Zeckendorf grammar stability}
+\label{subsubsec:phi_channel}
+
+\begin{definition}[Admissible set for the golden-mean grammar]
+\label{def:Xm}
+Define
+\[
+X_m:=\{w\in\{0,1\}^m:\ \text{$w$ contains no occurrence of the substring $11$}\}.
+\]
+\end{definition}
+
+The $\varphi$-channel is the projection onto admissible words.
+Equivalently, define a defect function that counts adjacent violations:
+\[
+D_\varphi(w):=\#\{i\in\{1,\dots,m-1\}:\ w_i=w_{i+1}=1\},\qquad w\in\Omega_m.
+\]
+Then $D_\varphi(w)=0$ if and only if $w\in X_m$.
+
+\begin{lemma}[Fibonacci count of admissible words]
+\label{lem:Xm_fib_count}
+For $m\ge 1$,
+\[
+|X_m|=F_{m+2}.
+\]
+In particular, $|X_6|=F_8=21$.
+\end{lemma}
+
+\begin{proof}
+Let $a_m:=|X_m|$.
+Partition admissible words by their last digit.
+If $w_m=0$, then the prefix $w_1\cdots w_{m-1}$ is any element of $X_{m-1}$, contributing $a_{m-1}$ words.
+If $w_m=1$, then necessarily $w_{m-1}=0$, and the prefix $w_1\cdots w_{m-2}$ is any element of $X_{m-2}$, contributing $a_{m-2}$ words.
+Thus $a_m=a_{m-1}+a_{m-2}$ with $a_1=2$ and $a_2=3$, so $a_m=F_{m+2}$.
+\end{proof}
+
+We define the $\varphi$-stable projection $P_\varphi:\mathcal{H}_m\to \mathcal{H}_m$ as the orthogonal projection onto $\ell^2(X_m)$.
+At $m=6$ this realizes the basic dimensional compression
+\[
+64\ \text{microstates}\ \longrightarrow\ 21\ \text{stable types}.
+\]
+
+\subsubsection{The \texorpdfstring{$\pi$}{pi} channel: discrete closure and cyclic admissibility}
+\label{subsubsec:pi_channel}
+
+Inside $X_6$ we impose an additional wrap-around admissibility: the first and last bits must not form $11$.
+Define
+\[
+X^{\mathrm{cyc}}_6:=\{w\in X_6:\ w_6w_1\neq 11\},
+\qquad
+X^{\mathrm{bdry}}_6:=X_6\setminus X^{\mathrm{cyc}}_6.
+\]
+This yields a canonical split of the stable set.
+
+\begin{proposition}[The \texorpdfstring{$18\oplus 3$}{18+3} split at window length $6$]
+\label{prop:18_plus_3}
+At $m=6$,
+\[
+|X^{\mathrm{cyc}}_6|=18,\qquad |X^{\mathrm{bdry}}_6|=3,
+\qquad
+X^{\mathrm{bdry}}_6=\{\texttt{100001},\ \texttt{100101},\ \texttt{101001}\}.
+\]
+\end{proposition}
+
+\begin{proof}
+By definition, $w\in X^{\mathrm{bdry}}_6$ if and only if $w\in X_6$ and $w_1=w_6=1$.
+Admissibility forces $w_2=w_5=0$.
+The remaining bits $(w_3,w_4)$ must be admissible (no adjacent ones), giving the three possibilities
+\[
+(w_3,w_4)\in\{(0,0),(0,1),(1,0)\}.
+\]
+Thus $X^{\mathrm{bdry}}_6=\{\texttt{100001},\texttt{100101},\texttt{101001}\}$ and has size $3$, hence $|X^{\mathrm{cyc}}_6|=21-3=18$.
+\end{proof}
+
+Define a cyclic closure defect
+\[
+D_\pi^{\mathrm{cyc}}(w):=\ind\{w_1=w_6=1\},
+\]
+which vanishes on $X^{\mathrm{cyc}}_6$ and is nonzero exactly on $X^{\mathrm{bdry}}_6$.
+
+\subsubsection{The \texorpdfstring{$\e$}{e} channel: Abel--zeta pole barrier and pressure}
+\label{subsubsec:e_channel}
+
+The admissible language of the golden-mean grammar is a shift of finite type with adjacency matrix
+\[
+A=\begin{pmatrix}
+1 & 1\\
+1 & 0
+\end{pmatrix},
+\]
+encoding allowed transitions $0\to 0,1$ and $1\to 0$.
+Its Artin--Mazur zeta function is the rational function
+\[
+\zeta(z)=\frac{1}{\det(I-zA)}=\frac{1}{1-z-z^2}
+\]
+\cite{ArtinMazur1965,ParryPollicott1990}.
+The spectral radius satisfies $\rho(A)=\varphi$, the golden ratio, and we introduce the normalized variable $z=r/\rho(A)=r/\varphi$.
+Then
+\[
+\tilde{\zeta}(r)=\zeta(r/\varphi)=\frac{1}{(1-r)\left(1+\varphi^{-2}r\right)}.
+\]
+Hence $\tilde{\zeta}$ is holomorphic on $|r|<1$, and its dominant pole sits at the unit-circle boundary $r=1$.
+This motivates an \emph{analytic stability} condition: stability corresponds to a pole barrier that does not move inside the unit disc under the admissible dynamics.
+
+\paragraph{Weighted extension and pressure.}
+At higher resolution one can introduce a weighted transfer matrix $A_\beta$ without changing the forbidden grammar, thereby modifying the spectral radius $\rho(A_\beta)$ and the associated pressure $\log\rho(A_\beta)$ \cite{Ruelle1978}.
+This provides a natural mechanism by which the $\e$-channel becomes genuinely distinct from the $\varphi$-channel while still commuting with the grammar selection.
+
+
+

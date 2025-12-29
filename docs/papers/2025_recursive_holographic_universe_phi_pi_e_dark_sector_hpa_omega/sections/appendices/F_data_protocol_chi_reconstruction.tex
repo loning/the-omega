@@ -1,0 +1,48 @@
+
+\section{Protocol: reconstructing an overhead proxy \texorpdfstring{$\chi$}{chi} from simulations or surveys}
+\label{app:data_protocol}
+
+This appendix records an executable pipeline for reconstructing an overhead proxy field $\chi$ from $N$-body simulations or survey data.
+The protocol is designed to test Prediction~P1 in Section~\ref{subsec:test_dm_clustering}.
+
+\subsection{Step 1: Hilbert binning}
+Choose a spatial order $n$ and a bounding box for the data.
+Discretize the region into a $2^n\times 2^n$ grid (or into $2^n\times 2^n\times 2^n$ in $3$D with a chosen 3D space-filling curve).
+Compute a Hilbert index $s$ for each occupied cell and obtain an ordered one-dimensional sequence $\{x_s\}$.
+
+\subsection{Step 2: local window sampling}
+On the index axis, select a window length $m$ and define sliding windows $W_s$ (blocks of consecutive indices).
+Within each window, produce a binary encoding of local structure, e.g.\ by thresholding a density statistic to obtain an $m$-bit word.
+
+\subsection{Step 3: folding statistics}
+For each window, compute at least one of the following:
+\begin{itemize}
+\item the grammar-defect frequency $\bar{D}_\varphi(W_s)$ (adjacent-$11$ rate);
+\item the degeneracy proxy $\bar{g}(W_s)$, defined as the expected preimage size under the folding map,
+\[
+\bar{g}(W_s)=\mathbb{E}_{N\sim\mu_{W_s}}\Bigl(\bigl|\mathrm{Fold}_m^{-1}(\mathrm{Fold}_m(N))\bigr|\Bigr),
+\]
+using either an explicit finite table (for $m=6$, Appendix~\ref{app:fold6_table}) or a higher-$m$ generalization \cite{Ma2025RF}.
+\end{itemize}
+
+\subsection{Step 4: overhead proxy reconstruction}
+Define an overhead proxy on the index axis by
+\[
+\chi(s)=\log\frac{\bar{g}(W_s)}{\bar{g}_0}
+\quad\text{or}\quad
+\chi(s)\propto \bar{D}_\varphi(W_s),
+\]
+with $\bar{g}_0$ a baseline degeneracy (e.g.\ a global median).
+Map $\chi(s)$ back to space using the inverse Hilbert indexing to obtain a spatial field $\chi(x)$.
+
+\subsection{Step 5: comparison tests}
+Use $\chi(x)$ as a proxy for dark-sector effective sources and compare with:
+\begin{itemize}
+\item lensing-reconstructed mass maps;
+\item dynamical mass estimates;
+\item standard $\Lambda$CDM-based reconstructions.
+\end{itemize}
+The key test is the presence (or absence) of the predicted address-aware invariances and correlations.
+
+
+

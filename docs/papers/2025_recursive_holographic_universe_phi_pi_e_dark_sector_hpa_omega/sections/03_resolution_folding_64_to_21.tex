@@ -1,0 +1,80 @@
+
+\section{Resolution folding at minimal window length: the \texorpdfstring{$64\to 21$}{64->21} projection}
+\label{sec:folding_64_21}
+
+This section defines the minimal folding map $\mathrm{Fold}_6$ and records its explicit finite-resolution structure.
+The base combinatorics are classical (Lemma~\ref{lem:Xm_fib_count}), but the folding mechanism yields additional rigid data: a computable surjection from all $64$ microstates (indexed by $\{0,\dots,63\}$) onto the $21$ stable types, together with an explicit preimage classification \cite{Ma2025RF}.
+
+\subsection{Zeckendorf normalization and the folding map \texorpdfstring{$\mathrm{Fold}_6$}{Fold6}}
+\label{subsec:fold6_definition}
+
+We use the Zeckendorf representation, i.e.\ the unique expansion of a nonnegative integer as a sum of nonconsecutive Fibonacci numbers \cite{Zeckendorf1972}.
+
+\begin{definition}[Zeckendorf digit sequence and truncation]
+\label{def:zeckendorf_truncation}
+Let $(F_k)_{k\ge 1}$ be the Fibonacci numbers with $F_1=F_2=1$.
+For $N\in\NN$, write its Zeckendorf expansion
+\[
+N=\sum_{k\ge 1} c_k F_{k+1},
+\qquad c_k\in\{0,1\},\qquad c_k c_{k+1}=0.
+\]
+Define the length-$6$ truncation map
+\[
+\pi_6(c_1,c_2,\dots):=(c_1,c_2,c_3,c_4,c_5,c_6)\in X_6.
+\]
+\end{definition}
+
+\begin{definition}[Resolution folding map at window length $6$]
+\label{def:fold6}
+Define
+\[
+\mathrm{Fold}_6:\{0,\dots,63\}\twoheadrightarrow X_6,\qquad \mathrm{Fold}_6(N):=\pi_6\bigl(Z(N)\bigr),
+\]
+where $Z(N)=(c_1,c_2,\dots)$ denotes the Zeckendorf digit sequence of $N$ as in Definition~\ref{def:zeckendorf_truncation}.
+\end{definition}
+
+Equivalently, define a binary-input version by indexing $\Omega_6\cong\{0,\dots,63\}$ via the standard binary map $\mathrm{int}_6:\Omega_6\to\{0,\dots,63\}$ and setting
+\[
+\mathrm{Fold}^{\mathrm{bin}}_6(w):=\mathrm{Fold}_6(\mathrm{int}_6(w)),\qquad w\in\Omega_6.
+\]
+
+\subsection{Explicit preimages and a rigid degeneracy histogram}
+\label{subsec:fold6_degeneracy}
+
+Since $2^6=64>|X_6|=21$, the folding map is necessarily many-to-one.
+The remarkable feature of the minimal model is that this many-to-one structure is fully explicit and rigid.
+
+For $w=w_1\cdots w_6\in X_6$, define its Zeckendorf value
+\[
+V(w):=\sum_{k=1}^{6} w_k F_{k+1}.
+\]
+
+\begin{theorem}[Finite preimage classification for \texorpdfstring{$\mathrm{Fold}_6$}{Fold6}]
+\label{thm:fold6_preimages}
+For every $w\in X_6$, the preimage size $\bigl|\mathrm{Fold}_6^{-1}(w)\bigr|$ is one of $2$, $3$, or $4$.
+Moreover, the degeneracy histogram is fixed:
+\[
+\begin{aligned}
+\#\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=2\}&=8,\\
+\#\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=3\}&=4,\\
+\#\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=4\}&=9.
+\end{aligned}
+\]
+The complete mapping table is recorded in Appendix~\ref{app:fold6_table}.
+\end{theorem}
+
+\subsection{Stable types, cyclic split, and the ``hidden'' degrees of freedom}
+\label{subsec:ghost_microstates_bridge}
+
+The stable sector $X_6$ contains $21$ admissible types (Appendix~\ref{app:x6_words}).
+The $\pi$-channel refines this set canonically into cyclic states and boundary states (Proposition~\ref{prop:18_plus_3}).
+
+Two complementary ``hidden'' counts appear at minimal resolution:
+\begin{itemize}
+\item \textbf{Illegal words.} The set $\Omega_6\setminus X_6$ has size $64-21=43$ and consists of words that violate the $\varphi$ grammar (they contain at least one adjacent pair $11$).
+\item \textbf{Folding redundancy.} The map $\mathrm{Fold}_6$ collapses $64$ inputs onto $21$ outputs, leaving $64-21=43$ additional degrees of freedom in the preimage structure.
+\end{itemize}
+We treat these as two faces of the same phenomenon: stable readout compresses microscopic possibilities into a smaller type space, and the eliminated degrees of freedom persist as a structured remainder that can influence dynamics through overhead.
+
+
+
