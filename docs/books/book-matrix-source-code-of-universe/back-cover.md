@@ -10,7 +10,7 @@
 
 **架构：** FS-QCA (Fubini-Study Geometry + Quantum Cellular Automata)
 
-**许可证：** Open Source (MIT / BSD-style)
+**许可证：** CC BY-NC-ND 4.0（文本与图像）
 
 **简介：**
 

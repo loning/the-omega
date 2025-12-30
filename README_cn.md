@@ -3,7 +3,8 @@
 ![Status](https://img.shields.io/badge/Status-Theoretical_Beta-blue?style=for-the-badge)
 ![Math](https://img.shields.io/badge/Math-Von_Neumann_Algebras-red?style=for-the-badge)
 ![Build](https://img.shields.io/badge/Build-mdBook-success?style=for-the-badge)
-![License](https://img.shields.io/badge/License-CC_BY_4.0-orange?style=for-the-badge)
+![Docs License](https://img.shields.io/badge/Docs-CC_BY--NC--ND_4.0-orange?style=for-the-badge)
+![Code License](https://img.shields.io/badge/Code-AGPLv3-blue?style=for-the-badge)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18067010.svg)](https://doi.org/10.5281/zenodo.18067010)
 [![Website](https://img.shields.io/badge/Read_Online-omega.dw.cash-2ea44f?style=for-the-badge&logo=google-chrome&logoColor=white)](https://omega.dw.cash/)
 [![PDF](https://img.shields.io/badge/Download-PDF-b31b1b?style=for-the-badge&logo=adobe-acrobat-reader&logoColor=white)](https://omega.dw.cash/books/book-foundation-of-phys-in-geo-and-info/Information_Geometry_Agency.pdf)
@@ -24,7 +25,7 @@
 
 ---
 
-> *"宇宙不是模拟。它是一个自引用的数学证明。"*
+*"宇宙不是模拟。它是一个自引用的数学证明。"*
 
 <p align="center">
   <img src="docs/assets/img/cover.png" alt="觉醒的拓扑学" width="100%">
@@ -252,7 +253,7 @@
 ## 🛠️ 如何构建
 
 ### 在线阅读
-> **[omega.dw.cash](https://omega.dw.cash/)**
+**[omega.dw.cash](https://omega.dw.cash/)**
 
 本项目使用 [mdBook](https://github.com/rust-lang/mdBook) 构建。
 
@@ -324,5 +325,5 @@
 -----
 
 *草稿版本：1.0*
-*许可证：[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)*
+*许可证：文档采用 [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) 许可，代码采用 AGPL-3.0-or-later。详见 [LICENSE](LICENSE) 与 [署名契约](docs/covenant_cn.md)。*
 

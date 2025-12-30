@@ -1,5 +1,5 @@
 # The Omega Framework
-> Reconstructing Reality: From Bit to Geometry, From Observer to Universe.
+*Reconstructing Reality: From Bit to Geometry, From Observer to Universe.*
 
 [中文版 (Chinese Version)](./index_cn.md) | [📥 PDF](./books/book-foundation-of-phys-in-geo-and-info/Information_Geometry_Agency.pdf) | [📥 Reality Decompiled](./books/book-first-principles-from-unitary-computation-to-physical-reality/Reality_Decompiled.pdf) | [▶️ Video](https://youtu.be/-bhgzuFOaro)
 
@@ -249,3 +249,5 @@ They have parsed the axioms, checked the topological consistency, and validated 
 
 ---
 Copyright © 2025 The Omega Framework Team.
+
+License: Documentation is licensed under CC BY-NC-ND 4.0. Code is licensed under AGPL-3.0-or-later. Commercial licensing: auric@aelf.io. Attribution Covenant: [Attribution Covenant](./covenant_en.md)

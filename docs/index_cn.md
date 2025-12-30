@@ -1,5 +1,5 @@
 # The Omega Framework
-> 重构实在：从比特到几何，从观察者到宇宙。
+*重构实在：从比特到几何，从观察者到宇宙。*
 
 [English Version](./index.md) | [📥 PDF](./books/book-foundation-of-phys-in-geo-and-info/Information_Geometry_Agency.pdf) | [📥 Reality Decompiled](./books/book-first-principles-from-unitary-computation-to-physical-reality/Reality_Decompiled.pdf) | [▶️ Video](https://youtu.be/-bhgzuFOaro)
 
@@ -249,4 +249,6 @@
 
 ---
 Copyright © 2025 The Omega Framework Team.
+
+许可证：文档采用 CC BY-NC-ND 4.0 许可，代码采用 AGPL-3.0-or-later。商业授权：auric@aelf.io。署名契约：[署名契约](./covenant_cn.md)
 
