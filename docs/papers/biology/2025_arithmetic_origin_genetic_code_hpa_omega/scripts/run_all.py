@@ -31,7 +31,9 @@ def run(cmd: list[str], *, cwd: Path) -> None:
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Reproduce all experiments and build the paper PDF.")
-    p.add_argument("--download", action="store_true", help="Fetch public datasets per data/manifest.json.")
+    p.add_argument("--download", dest="download", action="store_true", help="Fetch latest data bundle (GitHub Release) and/or upstream datasets.")
+    p.add_argument("--no-download", dest="download", action="store_false", help="Do not fetch any datasets; assume data/ is already present.")
+    p.set_defaults(download=True)
     p.add_argument("--insecure", action="store_true", help="Disable TLS certificate verification for downloads.")
     p.add_argument("--refseq-stop-window", type=int, default=10, help="Stop-context window radius k for RefSeq scan.")
     p.add_argument("--recoding-k", type=int, default=10, help="Window radius k for recoding-site context.")
