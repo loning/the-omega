@@ -308,6 +308,40 @@ def main() -> None:
         rows2.append(f"{codon} & {k} & {n} & {bm:.4f} & {am:.4f} \\\\")
     write_text(generated_dir() / "refseq_stop_context_rows.tex", "\n".join(rows2) + "\n\\bottomrule\n")
 
+    # 3b) Stop-context pairwise tests (Welch, two-sided).
+    def _p_rel(p: float) -> tuple[str, str]:
+        # Avoid printing "0" in LaTeX; interpret as numerically underflowed to 0.
+        if p == 0.0:
+            return "<", "10^{-300}"
+        if p < 1e-4:
+            return "=", f"{p:.2e}"
+        return "=", f"{p:.4f}"
+
+    tests_lines = []
+    tests_lines.append(
+        "Welch tests (two-sided) for stop-context window means (window radius "
+        f"$k={k}$) across terminal stops in the RefSeq corpus."
+    )
+    op, val = _p_rel(float(p_before["UAA_vs_UAG"]))
+    op2, val2 = _p_rel(float(p_before["UAA_vs_UGA"]))
+    op3, val3 = _p_rel(float(p_before["UAG_vs_UGA"]))
+    tests_lines.append(
+        "Before-window: "
+        f"$p(\\mathrm{{UAA}}\\!\\neq\\!\\mathrm{{UAG}}){op}{val}$, "
+        f"$p(\\mathrm{{UAA}}\\!\\neq\\!\\mathrm{{UGA}}){op2}{val2}$, "
+        f"$p(\\mathrm{{UAG}}\\!\\neq\\!\\mathrm{{UGA}}){op3}{val3}$."
+    )
+    op, val = _p_rel(float(p_after["UAA_vs_UAG"]))
+    op2, val2 = _p_rel(float(p_after["UAA_vs_UGA"]))
+    op3, val3 = _p_rel(float(p_after["UAG_vs_UGA"]))
+    tests_lines.append(
+        "After-window: "
+        f"$p(\\mathrm{{UAA}}\\!\\neq\\!\\mathrm{{UAG}}){op}{val}$, "
+        f"$p(\\mathrm{{UAA}}\\!\\neq\\!\\mathrm{{UGA}}){op2}{val2}$, "
+        f"$p(\\mathrm{{UAG}}\\!\\neq\\!\\mathrm{{UGA}}){op3}{val3}$."
+    )
+    write_text(generated_dir() / "refseq_stop_context_tests.tex", " ".join(tests_lines) + "\n")
+
     null_s = (
         "Codon-usage summary over coding tokens (excluding terminal stops): "
         f"$\\overline{{Z}}={zbar:.4f}$, $\\overline{{U}}={ubar:.4f}$. "
