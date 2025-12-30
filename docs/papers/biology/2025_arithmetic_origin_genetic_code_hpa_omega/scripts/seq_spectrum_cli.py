@@ -14,6 +14,7 @@ from collections import Counter, deque
 from pathlib import Path
 
 from genetic_code_tools import (
+    GENETIC_CODE,
     START_CODON,
     STOP_CODONS,
     codon_stream,
@@ -105,6 +106,14 @@ def process_segment(
             continue
         if base_pos + 3 > end_base_exclusive:
             break
+
+        if codon not in GENETIC_CODE:
+            # Ambiguous codon: reset stop-context state and skip.
+            if stop_window > 0:
+                pending = []
+                prev_u.clear()
+            codon_index += 1
+            continue
 
         f = fold_codon(codon, mu)
 

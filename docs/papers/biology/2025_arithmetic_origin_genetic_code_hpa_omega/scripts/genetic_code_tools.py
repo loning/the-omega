@@ -8,8 +8,10 @@ from __future__ import annotations
 
 import itertools
 import math
+import gzip
 from collections import Counter, defaultdict
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Iterable, Iterator
 
 
@@ -659,10 +661,19 @@ def vmean_mass_correlation_under_mu(mu: dict[str, str]) -> dict[str, float]:
 
 def normalize_sequence(seq: str) -> str:
     """
-    Uppercase, convert DNA to RNA (T->U), and keep only A/C/G/U.
+    Uppercase, convert DNA to RNA (T->U).
+
+    Keep A/C/G/U as-is; map other alphabetic IUPAC symbols to 'N' to preserve length
+    without shifting reading frames. Non-alphabetic characters are dropped.
     """
     seq = seq.upper().replace("T", "U")
-    return "".join(ch for ch in seq if ch in "ACGU")
+    out: list[str] = []
+    for ch in seq:
+        if ch in "ACGU":
+            out.append(ch)
+        elif ch.isalpha():
+            out.append("N")
+    return "".join(out)
 
 
 def iter_fasta(path: str) -> Iterator[tuple[str, str]]:
@@ -671,7 +682,12 @@ def iter_fasta(path: str) -> Iterator[tuple[str, str]]:
     """
     rid = None
     chunks: list[str] = []
-    with open(path, "r", encoding="utf-8") as f:
+    p = Path(path)
+    if p.suffix == ".gz":
+        fobj = gzip.open(p, "rt", encoding="utf-8", newline="")
+    else:
+        fobj = open(p, "r", encoding="utf-8", newline="")
+    with fobj as f:
         for line in f:
             line = line.strip()
             if not line:
@@ -710,6 +726,11 @@ def find_orfs(seq: str, frame: int = 0, min_codons: int = 0) -> list[tuple[int, 
     start_pos = None
 
     for pos, codon in codon_stream(seq, frame=frame):
+        if any(b not in "ACGU" for b in codon):
+            # Ambiguous base: break any in-progress ORF and continue scanning.
+            in_orf = False
+            start_pos = None
+            continue
         if not in_orf:
             if codon == START_CODON:
                 in_orf = True
@@ -746,6 +767,9 @@ def sequence_spectrum_rows(
             continue
         if pos + 3 > end_base_exclusive:
             break
+        if codon not in GENETIC_CODE:
+            codon_idx += 1
+            continue
         f = fold_codon(codon, mu)
         out.append(
             {
