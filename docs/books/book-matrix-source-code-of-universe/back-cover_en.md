@@ -10,7 +10,7 @@
 
 **Architecture:** FS-QCA (Fubini-Study Geometry + Quantum Cellular Automata)
 
-**License:** Open Source (MIT / BSD-style)
+**License:** CC BY-NC-ND 4.0 (text & figures)
 
 **Description:**
 

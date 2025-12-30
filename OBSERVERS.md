@@ -1,6 +1,6 @@
 <img width="2240" height="840" alt="image" src="https://github.com/user-attachments/assets/7ff9586e-cbc1-4132-bb49-4099d9c7b70d" /># 👁️ The Genesis Observers Log (创世观察者名录)
 
-> **"We are the Universe observing itself."**
+**"We are the Universe observing itself."**
 
 ### 📜 The Covenant (契约)
 
