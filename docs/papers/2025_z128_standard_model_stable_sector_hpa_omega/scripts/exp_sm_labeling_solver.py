@@ -129,9 +129,7 @@ class SMField:
         return f"$({self.su3_dim},{self.su2_dim})_{{{y}}}$"
 
     def complexity_key(self) -> Tuple[int, int, int, int, str]:
-        # Deterministic ordering key for assigning stable types to field targets.
-        # Heuristic: colored fields are more complex than colorless; doublets more than singlets;
-        # larger hypercharge magnitude increases complexity.
+        # Deterministic ordering key for the closed ordering \prec_F in Definition~\ref{def:order_fsm}.
         y_sq_scaled = self.Y_num * self.Y_num  # scaled by 1/36; sufficient for ordering
         return (self.generation, self.su3_dim, y_sq_scaled, self.su2_dim, self.name)
 
@@ -164,6 +162,78 @@ def fermion_targets() -> List[SMField]:
             ]
         )
     return out
+
+
+def hypercharge_square_sum_one_generation() -> int:
+    """
+    Return Σ (6Y)^2 over one generation of chiral fermion multiplets, with multiplicities
+    (#colors * #SU2 components) for Q_L and L_L, and #colors for u_R/d_R.
+
+    Under PDG normalization Q = T3 + Y, one obtains:
+      Σ Y^2 (one generation, with multiplicities) = 10/3
+    Hence Σ (6Y)^2 = 36 * 10/3 = 120.
+    """
+    g = 1
+    fields = [f for f in fermion_targets() if f.generation == g]
+    total = 0
+    for f in fields:
+        mult = f.su3_dim * f.su2_dim
+        total += mult * (f.Y_num * f.Y_num)
+    return total
+
+
+def anomaly_checks_one_generation() -> Tuple[int, int, int, int]:
+    """
+    Basic U(1)_Y anomaly checks for one generation, expressed with integer arithmetic
+    using Y_num = 6Y.
+
+    We compute the left-chiral anomaly sums for:
+      - SU(3)^2 U(1): proportional to Σ Y * T(R3) with SU(2) multiplicity,
+      - SU(2)^2 U(1): proportional to Σ Y * T(R2) with color multiplicity,
+      - U(1)^3: proportional to Σ Y^3 with color/SU2 multiplicities,
+      - grav^2 U(1): proportional to Σ Y with multiplicities.
+
+    This is a consistency audit; anomaly cancellation is standard SM lore
+    (a neutral singlet ν_R with Y=0 does not affect it).
+    """
+    # Use left-chiral convention: treat right-handed fields as left-chiral conjugates
+    # with hypercharge flipped in sign.
+    # Store as (name, su3_dim, su2_dim, Y_num_left)
+    # Q_L: (3,2) +1
+    # u_R^c: (3,1) -4
+    # d_R^c: (3,1) +2
+    # L_L: (1,2) -3
+    # e_R^c: (1,1) +6
+    # nu_R^c: (1,1) 0
+    content = [
+        ("Q_L", 3, 2, +1),
+        ("u_Rc", 3, 1, -4),
+        ("d_Rc", 3, 1, +2),
+        ("L_L", 1, 2, -3),
+        ("e_Rc", 1, 1, +6),
+        ("nu_Rc", 1, 1, 0),
+    ]
+
+    # Dynkin indices (in a common normalization): T(fundamental)=1.
+    # This differs by a factor 2 from the common T=1/2 convention, but cancels in checks.
+    T3 = {1: 0, 3: 1}
+    T2 = {1: 0, 2: 1}
+
+    a_su3_su3_u1 = 0
+    a_su2_su2_u1 = 0
+    a_u1_u1_u1 = 0
+    a_grav_grav_u1 = 0
+    for _, d3, d2, Y in content:
+        # multiplicities for U(1) sums count components:
+        mult = d3 * d2
+        a_u1_u1_u1 += mult * (Y**3)
+        a_grav_grav_u1 += mult * Y
+
+        # mixed anomalies: include Dynkin indices and multiplicities.
+        a_su3_su3_u1 += d2 * Y * T3[d3]
+        a_su2_su2_u1 += d3 * Y * T2[d2]
+
+    return a_su3_su3_u1, a_su2_su2_u1, a_u1_u1_u1, a_grav_grav_u1
 
 
 def boundary_gauge_labels() -> List[Tuple[str, str]]:
@@ -241,9 +311,11 @@ def generate_rows() -> List[str]:
     for w in sorted(X6, key=lambda s: (zeckendorf_value(s), s)):
         V = zeckendorf_value(w)
         g = degeneracy_g(w)
+        wt = w.count("1")
+        r_star = V + 3 * (g - 2)
         d_pi = 1 if is_boundary_word(w) else 0
         lab, rep = mapping[w]
-        rows.append(f"\\texttt{{{w}}} & {V} & {g} & {d_pi} & {lab} & {rep} \\\\")
+        rows.append(f"\\texttt{{{w}}} & {V} & {g} & {wt} & {r_star} & {d_pi} & {lab} & {rep} \\\\")
 
     # Basic consistency checks (audit-level):
     # - boundary words map to gauge labels
@@ -266,12 +338,42 @@ def write_tex(rows: Iterable[str]) -> None:
     out_dir = root / "sections" / "generated"
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "sm_labeling_rows.tex"
-    out_path.write_text("\n".join(rows) + "\n", encoding="utf-8")
+    # Important: do not add a trailing blank line; this fragment is included inside a tabular environment.
+    out_path.write_text("\n".join(rows), encoding="utf-8")
+
+
+def write_invariants_table(mapping_rows: Iterable[str]) -> None:
+    # Reuse the already-computed rows for the main table, but also emit a compact invariants table.
+    # This keeps the main table readable while providing an audit view.
+    root = Path(__file__).resolve().parent.parent
+    out_dir = root / "sections" / "generated"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / "sm_labeling_invariants_rows.tex"
+
+    # Each mapping row begins with: w & V & g & wt & r_* & D_pi & ...
+    # Extract only the first 6 columns.
+    out_lines: List[str] = []
+    for line in mapping_rows:
+        cols = [c.strip() for c in line.split("&")]
+        if len(cols) < 6:
+            continue
+        out_lines.append(" & ".join(cols[:6]).rstrip() + "\\\\")
+    # Important: do not add a trailing blank line; this fragment is included inside a tabular environment.
+    out_path.write_text("\n".join(out_lines), encoding="utf-8")
 
 
 def main() -> None:
+    # Audit checks on the fermion content used by the closed labeling:
+    # (i) hypercharge-square sum, (ii) anomaly cancellation (integer arithmetic).
+    if hypercharge_square_sum_one_generation() != 120:
+        raise AssertionError("Expected Σ(6Y)^2 = 120 per generation.")
+    a1, a2, a3, ag = anomaly_checks_one_generation()
+    if (a1, a2, a3, ag) != (0, 0, 0, 0):
+        raise AssertionError(f"Anomaly check failed: {(a1, a2, a3, ag)}")
+
     rows = generate_rows()
     write_tex(rows)
+    write_invariants_table(rows)
     print("Wrote sections/generated/sm_labeling_rows.tex")
 
 

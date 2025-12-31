@@ -66,7 +66,7 @@ class Row:
     mu_ref: Optional[float]
     r_ref: Optional[float]
     r_hat: Optional[int]
-    mu_pred: Optional[float]
+    delta_r: Optional[float]
     ratio: Optional[float]
 
 
@@ -121,11 +121,15 @@ def main() -> None:
     # Electron reference field for normalization: e_R^(1)
     w_e = word_for[(1, "e_R")]
     r_star_e = r_star_of_word(w_e)
+    g_e = sml.degeneracy_g(w_e)
+    wt_e = w_e.count("1")
 
     kappa = 2  # m/n = 2 for (m,n)=(6,3)
 
     def r_hat_from_word(w: str) -> int:
-        return kappa * (r_star_of_word(w) - r_star_e)
+        g_w = sml.degeneracy_g(w)
+        wt_w = w.count("1")
+        return kappa * (r_star_of_word(w) - r_star_e) + (wt_w - wt_e) + (g_e - g_w)
 
     def mu_pred_from_rhat(rh: int) -> float:
         return m_e * (PHI**rh)
@@ -149,7 +153,7 @@ def main() -> None:
                 mu_ref=mu_ref,
                 r_ref=r_of_mu(mu_ref, m_e),
                 r_hat=rh,
-                mu_pred=mu_p,
+                delta_r=r_of_mu(mu_ref, m_e) - float(rh),
                 ratio=mu_ref / mu_p,
             )
         )
@@ -176,7 +180,7 @@ def main() -> None:
                 mu_ref=mu_ref,
                 r_ref=r_of_mu(mu_ref, m_e),
                 r_hat=rh,
-                mu_pred=mu_p,
+                delta_r=r_of_mu(mu_ref, m_e) - float(rh),
                 ratio=mu_ref / mu_p,
             )
         )
@@ -189,7 +193,7 @@ def main() -> None:
             mu_ref=nu_scale,
             r_ref=r_of_mu(nu_scale, m_e),
             r_hat=None,
-            mu_pred=None,
+            delta_r=None,
             ratio=None,
         )
     )
@@ -209,7 +213,7 @@ def main() -> None:
                 mu_ref=mu_ref,
                 r_ref=r_of_mu(mu_ref, m_e),
                 r_hat=rh,
-                mu_pred=mu_p,
+                delta_r=r_of_mu(mu_ref, m_e) - float(rh),
                 ratio=mu_ref / mu_p,
             )
         )
@@ -222,23 +226,37 @@ def main() -> None:
 
     rows_sorted = sorted(rows, key=sort_key)
 
-    out_lines: List[str] = []
-    for row in rows_sorted:
-        mu_ref_tex = "$-$" if row.mu_ref is None else f"${latex_number_GeV(row.mu_ref)}$"
-        r_ref_tex = "$-$" if row.r_ref is None else f"{fmt_fixed(row.r_ref, 3)}"
-        r_hat_tex = "$-$" if row.r_hat is None else f"{row.r_hat:d}"
-        mu_pred_tex = "$-$" if row.mu_pred is None else f"${latex_number_GeV(row.mu_pred)}$"
-        ratio_tex = "$-$" if row.ratio is None else f"${row.ratio:.6g}$"
-        out_lines.append(
-            f"{row.field_tex} & {mu_ref_tex} & {r_ref_tex} & {r_hat_tex} & {mu_pred_tex} & {ratio_tex} \\\\"
-        )
+    # Grouped output (rows only). Group headings and rules are handled in LaTeX.
+    anchor_names = {"$e$", "$\\mu$", "$\\tau$", "$W$", "$Z$", "$H$"}
+    quark_names = {"$u$", "$d$", "$s$", "$c$", "$b$", "$t$"}
+
+    def row_line(r: Row) -> str:
+        mu_ref_tex = "$-$" if r.mu_ref is None else f"${latex_number_GeV(r.mu_ref)}$"
+        r_ref_tex = "$-$" if r.r_ref is None else f"{fmt_fixed(r.r_ref, 3)}"
+        r_hat_tex = "$-$" if r.r_hat is None else f"{r.r_hat:d}"
+        delta_r_tex = "$-$" if r.delta_r is None else f"{fmt_fixed(r.delta_r, 3)}"
+        ratio_tex = "$-$" if r.ratio is None else f"${r.ratio:.6g}$"
+        return f"{r.field_tex} & {mu_ref_tex} & {r_ref_tex} & {r_hat_tex} & {delta_r_tex} & {ratio_tex} \\\\"
+
+    anchors = [r for r in rows_sorted if r.field_tex in anchor_names]
+    quarks = [r for r in rows_sorted if r.field_tex in quark_names]
+    nu = [r for r in rows_sorted if r.field_tex.startswith("$\\nu$")]
+
+    anchor_lines = [row_line(r) for r in anchors]
+    quark_lines = [row_line(r) for r in quarks]
+    nu_lines = [row_line(r) for r in nu]
+    nu_lines_with_rules = nu_lines + ["\\bottomrule"]
 
     root = Path(__file__).resolve().parent.parent
     out_dir = root / "sections" / "generated"
     out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / "mass_spectrum_rows.tex"
-    out_path.write_text("\n".join(out_lines) + "\n", encoding="utf-8")
-    print("Wrote sections/generated/mass_spectrum_rows.tex")
+    # Important: do not add a trailing blank line; fragments are included inside tabular environments.
+    (out_dir / "mass_spectrum_anchor_rows.tex").write_text("\n".join(anchor_lines), encoding="utf-8")
+    (out_dir / "mass_spectrum_quark_rows.tex").write_text("\n".join(quark_lines), encoding="utf-8")
+    (out_dir / "mass_spectrum_neutrino_rows.tex").write_text("\n".join(nu_lines_with_rules), encoding="utf-8")
+    # Backward-compatible combined rows (no headings/rules).
+    (out_dir / "mass_spectrum_rows.tex").write_text("\n".join(anchor_lines + quark_lines + nu_lines), encoding="utf-8")
+    print("Wrote sections/generated/mass_spectrum_anchor_rows.tex, mass_spectrum_quark_rows.tex, mass_spectrum_neutrino_rows.tex")
 
 
 if __name__ == "__main__":
