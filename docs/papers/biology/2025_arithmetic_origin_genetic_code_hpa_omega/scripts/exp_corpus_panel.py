@@ -51,6 +51,199 @@ def write_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def _read_json_dict(path: Path) -> dict[str, object] | None:
+    try:
+        obj = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    return obj if isinstance(obj, dict) else None
+
+
+def _refseq_transcriptome_summary_to_panel_summary(
+    ref: dict[str, object],
+    *,
+    stop_codons: set[str],
+    k_list: list[int],
+) -> dict[str, object] | None:
+    """
+    Convert exp_refseq_transcriptome_merge.py output (transcriptome_summary.json)
+    to the summary schema expected by scan_refseq_mrna_best_orf in this script.
+    """
+    # Basic required fields.
+    try:
+        records = int(ref.get("records", 0) or 0)
+        records_with_orf = int(ref.get("records_with_orf", 0) or 0)
+        coding_tokens = int(ref.get("coding_tokens", 0) or 0)
+        boundary_token_count = int(ref.get("boundary_token_count", 0) or 0)
+        boundary_rate = float(ref.get("boundary_rate", float("nan")))
+    except Exception:
+        return None
+
+    term_counts_raw = ref.get("termination_stop_counts", {}) or {}
+    term_counts: dict[str, int] = {}
+    if isinstance(term_counts_raw, dict):
+        for k, v in term_counts_raw.items():
+            try:
+                term_counts[str(k)] = int(v)
+            except Exception:
+                continue
+    term_stop_boundary = int(ref.get("termination_stop_boundary_count", 0) or 0)
+    stop_total = int(sum(term_counts.values()))
+    term_stop_rates = {c: (float(term_counts.get(c, 0)) / float(stop_total) if stop_total else 0.0) for c in sorted(term_counts)}
+
+    # Stop-context multi-k from Welford stats.
+    w_mk = ref.get("stop_context_welford_multi_k")
+    if not isinstance(w_mk, dict) or not w_mk:
+        return None
+    ks = sorted({int(x) for x in k_list if int(x) >= 1})
+    stop_ctx: dict[str, dict[str, dict[str, float | int | None]]] = {}
+    for kk in ks:
+        stop_ctx[str(int(kk))] = {}
+        for codon in sorted(stop_codons):
+            sm = w_mk.get(str(codon))
+            if not isinstance(sm, dict):
+                return None
+            entry = sm.get(str(int(kk)))
+            if not isinstance(entry, dict):
+                return None
+            b = entry.get("before", {}) or {}
+            a = entry.get("after", {}) or {}
+            if not isinstance(b, dict) or not isinstance(a, dict):
+                return None
+            try:
+                n = int(b.get("n", 0) or 0)
+            except Exception:
+                n = 0
+            bm = None
+            am = None
+            if n > 0:
+                try:
+                    bm = float(b.get("mean", float("nan")))
+                except Exception:
+                    bm = None
+                try:
+                    am = float(a.get("mean", float("nan")))
+                except Exception:
+                    am = None
+            stop_ctx[str(int(kk))][str(codon)] = {"n": int(n), "before_mean": bm, "after_mean": am}
+
+    codon_counts_raw = ref.get("codon_counts", {}) or {}
+    aa_counts_raw = ref.get("aa_counts", {}) or {}
+    v_hist_raw = ref.get("V_hist", {}) or {}
+    d_hist_raw = ref.get("Delta_hist", {}) or {}
+
+    codon_counts: dict[str, int] = {}
+    if isinstance(codon_counts_raw, dict):
+        for k, v in codon_counts_raw.items():
+            try:
+                codon_counts[str(k)] = int(v)
+            except Exception:
+                continue
+
+    aa_counts: dict[str, int] = {}
+    if isinstance(aa_counts_raw, dict):
+        for k, v in aa_counts_raw.items():
+            try:
+                aa_counts[str(k)] = int(v)
+            except Exception:
+                continue
+
+    v_hist: dict[str, int] = {}
+    if isinstance(v_hist_raw, dict):
+        for k, v in v_hist_raw.items():
+            try:
+                v_hist[str(k)] = int(v)
+            except Exception:
+                continue
+
+    d_hist: dict[str, int] = {}
+    if isinstance(d_hist_raw, dict):
+        for k, v in d_hist_raw.items():
+            try:
+                d_hist[str(k)] = int(v)
+            except Exception:
+                continue
+
+    zfp = ref.get("zspectrum_metrics", {}) or {}
+    if not isinstance(zfp, dict):
+        zfp = {}
+
+    return {
+        "records": int(records),
+        "records_with_orf": int(records_with_orf),
+        "coding_tokens": int(coding_tokens),
+        "boundary_token_count": int(boundary_token_count),
+        "boundary_rate": float(boundary_rate),
+        "termination_stop_counts": {k: int(v) for k, v in sorted(term_counts.items())},
+        "termination_stop_boundary_count": int(term_stop_boundary),
+        "termination_stop_rates": {k: float(v) for k, v in sorted(term_stop_rates.items())},
+        "stop_context_multi_k": stop_ctx,
+        "codon_counts": {k: int(v) for k, v in sorted(codon_counts.items())},
+        "aa_counts": {k: int(v) for k, v in sorted(aa_counts.items())},
+        "V_hist": {str(k): int(v) for k, v in sorted(v_hist.items())},
+        "Delta_hist": {str(k): int(v) for k, v in sorted(d_hist.items())},
+        "zspectrum_metrics": zfp,
+    }
+
+
+def _maybe_reuse_hsapiens_refseq_summary(
+    *,
+    m: dict[str, Any],
+    present_files: list[Path],
+    stop_codons: set[str],
+    k_list: list[int],
+) -> dict[str, object] | None:
+    """
+    If the human RefSeq transcriptome summary exists and matches the current
+    panel configuration, reuse it instead of rescanning the FASTA shards.
+    """
+    ref_path = root_dir() / "data" / "refseq_hsapiens_mrna" / "transcriptome_summary.json"
+    ref = _read_json_dict(ref_path)
+    if ref is None:
+        return None
+    mu = ref.get("mu_star")
+    if mu is not None:
+        if mu != MU_STAR:
+            return None
+    else:
+        # Back-compat: older merged summaries may omit mu_star; validate via the cache meta sidecar.
+        mp = cache_meta_path(ref_path)
+        meta = _read_json_dict(mp) if mp.exists() else None
+        if not isinstance(meta, dict):
+            return None
+        ck = meta.get("cache_key")
+        if not isinstance(ck, dict):
+            return None
+        if ck.get("mu_star") != MU_STAR:
+            return None
+
+    # Require that the precomputed summary contains at least the k values requested by the panel.
+    swl = ref.get("stop_window_list")
+    if not isinstance(swl, list):
+        return None
+    try:
+        have_ks = {int(x) for x in swl if int(x) >= 1}
+    except Exception:
+        return None
+    want_ks = {int(x) for x in k_list if int(x) >= 1}
+    if not want_ks.issubset(have_ks):
+        return None
+
+    # Ensure summary corresponds to exactly the currently present shard set (avoid accidental partial reuse).
+    src = ref.get("source_files")
+    if not isinstance(src, list):
+        return None
+    src_set = {str(x) for x in src if isinstance(x, str) and x}
+    try:
+        present_rel = {str(fp.relative_to(root_dir()).as_posix()) for fp in present_files}
+    except Exception:
+        present_rel = {str(fp) for fp in present_files}
+    if src_set != present_rel:
+        return None
+
+    return _refseq_transcriptome_summary_to_panel_summary(ref, stop_codons=stop_codons, k_list=k_list)
+
+
 def read_manifest() -> dict[str, Any]:
     mp = data_root() / "manifest.json"
     return json.loads(mp.read_text(encoding="utf-8"))
@@ -863,15 +1056,32 @@ def main() -> None:
                 st = fp.stat()
                 fp_list.append({"name": fp.name, "bytes": int(st.st_size), "mtime_ns": int(getattr(st, "st_mtime_ns", int(st.st_mtime * 1e9)))})
         fp_list.sort(key=lambda x: str(x.get("name") or ""))
-        item_fps.append(
-            {
-                "dataset": dataset_key,
-                "mode": str(it.get("mode") or ""),
-                "code_id": int(it.get("code_id") or 1),
-                "present_n": int(len(present)),
-                "files": fp_list,
-            }
-        )
+        mode = str(it.get("mode") or "")
+        code_id = int(it.get("code_id") or 1)
+        entry: dict[str, object] = {
+            "dataset": dataset_key,
+            "mode": mode,
+            "code_id": code_id,
+            "present_n": int(len(present)),
+            "files": fp_list,
+        }
+        # If we may reuse the upstream human RefSeq transcriptome summary, include its cache digest
+        # so the panel cache invalidates when the upstream summary changes (even if raw FASTA is unchanged).
+        if (int(args.max_records) == 0) and dataset_key == "refseq_hsapiens_mrna" and mode == "refseq_mrna_best_orf" and int(code_id) == 1:
+            ref_sum = root_dir() / "data" / "refseq_hsapiens_mrna" / "transcriptome_summary.json"
+            mp = cache_meta_path(ref_sum)
+            if mp.exists():
+                meta = _read_json_dict(mp)
+                if meta is not None and isinstance(meta.get("cache_digest"), str):
+                    entry["refseq_transcriptome_summary_cache_digest"] = str(meta.get("cache_digest"))
+                else:
+                    entry["refseq_transcriptome_summary_cache_digest"] = f"stat:{mp.stat().st_size}:{getattr(mp.stat(),'st_mtime_ns', int(mp.stat().st_mtime*1e9))}"
+            elif ref_sum.exists():
+                st = ref_sum.stat()
+                entry["refseq_transcriptome_summary_cache_digest"] = f"stat:{st.st_size}:{getattr(st,'st_mtime_ns', int(st.st_mtime*1e9))}"
+            else:
+                entry["refseq_transcriptome_summary_cache_digest"] = None
+        item_fps.append(entry)
     item_fps.sort(key=lambda x: str(x.get("dataset") or ""))
 
     cache_key = {
@@ -936,24 +1146,43 @@ def main() -> None:
             )
             continue
 
-        if mode == "refseq_mrna_best_orf":
-            res = scan_refseq_mrna_best_orf(
-                present,
+        res: dict[str, object] | None = None
+        # Lightweight cross-script reuse: if the upstream human RefSeq transcriptome summary exists
+        # (produced by exp_refseq_transcriptome_merge.py), use it to avoid rescanning the large corpus.
+        if (
+            (int(args.max_records) == 0)
+            and dataset_key == "refseq_hsapiens_mrna"
+            and mode == "refseq_mrna_best_orf"
+            and int(code_id) == 1
+        ):
+            res = _maybe_reuse_hsapiens_refseq_summary(
+                m=m,
+                present_files=present,
+                stop_codons=set(stop_codons),
                 k_list=k_list,
-                codon_to_aa=codon_to_aa,
-                stop_codons=stop_codons,
-                max_records=int(args.max_records),
             )
-        elif mode == "cds_fasta":
-            res = scan_cds_fasta(
-                present,
-                k_list=k_list,
-                codon_to_aa=codon_to_aa,
-                stop_codons=stop_codons,
-                max_records=int(args.max_records),
-            )
-        else:
-            raise SystemExit(f"Unsupported mode: {mode} (dataset={dataset_key})")
+            if res is not None:
+                print("[reuse] panel: using data/refseq_hsapiens_mrna/transcriptome_summary.json for refseq_hsapiens_mrna", flush=True)
+
+        if res is None:
+            if mode == "refseq_mrna_best_orf":
+                res = scan_refseq_mrna_best_orf(
+                    present,
+                    k_list=k_list,
+                    codon_to_aa=codon_to_aa,
+                    stop_codons=stop_codons,
+                    max_records=int(args.max_records),
+                )
+            elif mode == "cds_fasta":
+                res = scan_cds_fasta(
+                    present,
+                    k_list=k_list,
+                    codon_to_aa=codon_to_aa,
+                    stop_codons=stop_codons,
+                    max_records=int(args.max_records),
+                )
+            else:
+                raise SystemExit(f"Unsupported mode: {mode} (dataset={dataset_key})")
 
         # Null decomposition for U and Z (using observed codon/aa counts).
         codon_counts = {str(k): int(v) for k, v in (res.get("codon_counts", {}) or {}).items()}

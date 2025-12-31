@@ -521,6 +521,19 @@ def main() -> None:
             "input_sha256": input_sha,
             "mu_star": MU_STAR,
         }
+        # Back-compat: older shard metas did not include max_records (implicitly 0).
+        if int(args.max_records) > 0:
+            cache_key["max_records"] = int(args.max_records)
+        else:
+            mp0 = cache_meta_path(out_json)
+            if mp0.exists():
+                try:
+                    meta0 = read_json(mp0)
+                    ck0 = meta0.get("cache_key") if isinstance(meta0, dict) else None
+                    if isinstance(ck0, dict) and int(ck0.get("max_records") or 0) == 0 and ("max_records" in ck0):
+                        cache_key["max_records"] = 0
+                except Exception:
+                    pass
         meta = {
             "cache_key": cache_key,
             "cache_digest": cache_key_digest(cache_key),
@@ -852,6 +865,8 @@ def main() -> None:
             "input_sha256": input_sha,
             "mu_star": MU_STAR,
         }
+        if int(args.max_records) > 0:
+            cache_key["max_records"] = int(args.max_records)
         meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
         write_json_atomic(cache_meta_path(out_json), meta)
 

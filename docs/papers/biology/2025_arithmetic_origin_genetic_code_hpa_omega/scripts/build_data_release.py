@@ -36,6 +36,8 @@ def should_exclude(rel_posix: str) -> bool:
     # Exclude caches and obvious test artifacts.
     if rel_posix.startswith("data/_release_cache/"):
         return True
+    if rel_posix.startswith("data/_quick/"):
+        return True
     if rel_posix.endswith("/.DS_Store") or rel_posix.endswith(".DS_Store"):
         return True
     if rel_posix == "data/recoding_genbank/recoding_sites.test.jsonl":

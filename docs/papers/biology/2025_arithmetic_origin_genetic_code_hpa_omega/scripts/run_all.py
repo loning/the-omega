@@ -77,6 +77,13 @@ def main() -> None:
     args = parse_args()
     cwd = root_dir()
 
+    refseq_quick = int(args.refseq_max_records) > 0 or int(args.refseq_max_shards) > 0
+    recoding_quick = int(args.recoding_max_files) > 0
+    panel_quick = int(args.panel_max_records) > 0
+    nonstandard_quick = int(args.nonstandard_max_records) > 0
+
+    quick_dir = cwd / "data" / "_quick" / "run_all"
+
     # 1) Optional downloads
     if args.download:
         cmd = ["python3", "scripts/fetch_datasets.py", "--dataset", "all"]
@@ -96,12 +103,27 @@ def main() -> None:
         rec_cmd += ["--k-list", str(args.recoding_k_list)]
     if int(args.recoding_max_files) > 0:
         rec_cmd += ["--max-files", str(int(args.recoding_max_files))]
+    if recoding_quick:
+        quick_dir.mkdir(parents=True, exist_ok=True)
+        rec_cmd += [
+            "--no-latex",
+            "--out-jsonl",
+            str((quick_dir / "recoding_sites.jsonl").relative_to(cwd)),
+            "--out-summary-json",
+            str((quick_dir / "recoding_sites_summary.json").relative_to(cwd)),
+        ]
     if args.force:
         rec_cmd += ["--force"]
     run(rec_cmd, cwd=cwd)
 
     # 5) RefSeq transcriptome scan (sharded) + merge
-    shards_dir = cwd / "data" / "refseq_hsapiens_mrna" / "shards" / f"k{int(args.refseq_stop_window)}_v{ANALYSIS_VERSION}"
+    if refseq_quick:
+        quick_dir.mkdir(parents=True, exist_ok=True)
+        shards_dir = quick_dir / "refseq_shards" / f"k{int(args.refseq_stop_window)}_v{ANALYSIS_VERSION}_mr{int(args.refseq_max_records)}_ms{int(args.refseq_max_shards)}"
+        merge_out_json = quick_dir / "transcriptome_summary.json"
+    else:
+        shards_dir = cwd / "data" / "refseq_hsapiens_mrna" / "shards" / f"k{int(args.refseq_stop_window)}_v{ANALYSIS_VERSION}"
+        merge_out_json = cwd / "data" / "refseq_hsapiens_mrna" / "transcriptome_summary.json"
     shards_dir.mkdir(parents=True, exist_ok=True)
 
     if args.force:
@@ -150,7 +172,8 @@ def main() -> None:
         "--in-dir",
         str(shards_dir.relative_to(cwd)),
         "--out-json",
-        str((cwd / "data" / "refseq_hsapiens_mrna" / "transcriptome_summary.json").relative_to(cwd)),
+        str(merge_out_json.relative_to(cwd)),
+        *(["--no-latex"] if refseq_quick else []),
         *(["--force"] if args.force else []),
     ]
     run(merge_cmd, cwd=cwd)
@@ -159,6 +182,13 @@ def main() -> None:
     panel_cmd = ["python3", "scripts/exp_corpus_panel.py", "--panel", "corpus_panel_v1"]
     if int(args.panel_max_records) > 0:
         panel_cmd += ["--max-records", str(int(args.panel_max_records))]
+    if panel_quick:
+        quick_dir.mkdir(parents=True, exist_ok=True)
+        panel_cmd += [
+            "--no-latex",
+            "--out-json",
+            str((quick_dir / "corpus_panel_summary.json").relative_to(cwd)),
+        ]
     if args.force:
         panel_cmd += ["--force"]
     run(panel_cmd, cwd=cwd)
@@ -166,6 +196,13 @@ def main() -> None:
     ns_cmd = ["python3", "scripts/exp_nonstandard_sequence_tests.py", "--panel", "nonstandard_examples_v1"]
     if int(args.nonstandard_max_records) > 0:
         ns_cmd += ["--max-records", str(int(args.nonstandard_max_records))]
+    if nonstandard_quick:
+        quick_dir.mkdir(parents=True, exist_ok=True)
+        ns_cmd += [
+            "--no-latex",
+            "--out-json",
+            str((quick_dir / "nonstandard_sequence_tests.json").relative_to(cwd)),
+        ]
     if args.force:
         ns_cmd += ["--force"]
     run(ns_cmd, cwd=cwd)

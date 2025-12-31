@@ -18,6 +18,7 @@ Standard library only.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import random
@@ -40,7 +41,15 @@ from stats_tools import bh_fdr, normal_two_sided_p, summarize_mean_diff
 
 
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
-ANALYSIS_VERSION = 1
+ANALYSIS_VERSION = 2
+
+
+def _stable_seed_u32(tag: str) -> int:
+    """
+    Deterministic 32-bit seed from a string tag (independent of Python's hash randomization).
+    """
+    h = hashlib.sha256(tag.encode("utf-8")).hexdigest()
+    return int(h[:8], 16)
 
 
 def root_dir() -> Path:
@@ -982,9 +991,17 @@ def main() -> None:
         grp_sites = [s for s in sites if s.codon_rna == codon and (s.before_mean_delta is not None) and (s.after_mean_delta is not None)]
         if len(grp_sites) < 2:
             continue
-        cds_keys = {cds_key(s) for s in grp_sites}
-        term_b = [b for (_, b, _, _) in (term_by_cds[k0] for k0 in cds_keys if k0 in term_by_cds) if b is not None]
-        term_a = [a for (_, _, a, _) in (term_by_cds[k0] for k0 in cds_keys if k0 in term_by_cds) if a is not None]
+        cds_keys = sorted({cds_key(s) for s in grp_sites})
+        term_b = []
+        term_a = []
+        for k0 in cds_keys:
+            if k0 not in term_by_cds:
+                continue
+            _stop, b0, a0, _dom0 = term_by_cds[k0]
+            if b0 is not None:
+                term_b.append(float(b0))
+            if a0 is not None:
+                term_a.append(float(a0))
         xs_b = [float(s.before_mean_delta) for s in grp_sites if s.before_mean_delta is not None]
         xs_a = [float(s.after_mean_delta) for s in grp_sites if s.after_mean_delta is not None]
         tests_primary.extend(
@@ -997,7 +1014,7 @@ def main() -> None:
                         k=k_primary,
                         xs=xs_b,
                         ys=[float(x) for x in term_b],
-                        seed=70001 + (abs(hash(codon)) % 10000),
+                        seed=70001 + _stable_seed_u32("recoding:by_codon:before:" + str(codon)),
                     ),
                     _make_test(
                         label=f"By codon $\\mathrm{{{codon}}}$ (recoding vs terminal)",
@@ -1005,7 +1022,7 @@ def main() -> None:
                         k=k_primary,
                         xs=xs_a,
                         ys=[float(x) for x in term_a],
-                        seed=70002 + (abs(hash(codon)) % 10000),
+                        seed=70002 + _stable_seed_u32("recoding:by_codon:after:" + str(codon)),
                     ),
                 )
                 if t is not None
@@ -1017,9 +1034,17 @@ def main() -> None:
         grp_sites = [s for s in sites if (s.domain or "Unknown") == dom and (s.before_mean_delta is not None) and (s.after_mean_delta is not None)]
         if len(grp_sites) < 2:
             continue
-        cds_keys = {cds_key(s) for s in grp_sites}
-        term_b = [b for (_, b, _, _) in (term_by_cds[k0] for k0 in cds_keys if k0 in term_by_cds) if b is not None]
-        term_a = [a for (_, _, a, _) in (term_by_cds[k0] for k0 in cds_keys if k0 in term_by_cds) if a is not None]
+        cds_keys = sorted({cds_key(s) for s in grp_sites})
+        term_b = []
+        term_a = []
+        for k0 in cds_keys:
+            if k0 not in term_by_cds:
+                continue
+            _stop, b0, a0, _dom0 = term_by_cds[k0]
+            if b0 is not None:
+                term_b.append(float(b0))
+            if a0 is not None:
+                term_a.append(float(a0))
         xs_b = [float(s.before_mean_delta) for s in grp_sites if s.before_mean_delta is not None]
         xs_a = [float(s.after_mean_delta) for s in grp_sites if s.after_mean_delta is not None]
         tests_primary.extend(
@@ -1032,7 +1057,7 @@ def main() -> None:
                         k=k_primary,
                         xs=xs_b,
                         ys=[float(x) for x in term_b],
-                        seed=90001 + (abs(hash(dom)) % 10000),
+                        seed=90001 + _stable_seed_u32("recoding:by_domain:before:" + str(dom)),
                     ),
                     _make_test(
                         label=f"By domain {dom} (recoding vs terminal)",
@@ -1040,7 +1065,7 @@ def main() -> None:
                         k=k_primary,
                         xs=xs_a,
                         ys=[float(x) for x in term_a],
-                        seed=90002 + (abs(hash(dom)) % 10000),
+                        seed=90002 + _stable_seed_u32("recoding:by_domain:after:" + str(dom)),
                     ),
                 )
                 if t is not None
@@ -1221,12 +1246,13 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
     write_text(generated_dir() / "recoding_sites_summary.tex", "\n".join(summary_lines) + "\n")
 
     # Primary tests.
-    tests_primary = []
+    tests_primary: list[object] = []
     tp = primary.get("tests_primary") or []
     if isinstance(tp, list):
         for d in tp:
             if not isinstance(d, dict):
                 continue
+            t_obj: object | None = None
             try:
                 # Rehydrate minimal object-like wrapper.
                 class _T:
@@ -1235,9 +1261,11 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
                 t = _T()
                 for k, v in d.items():
                     setattr(t, k, v)
-                tests_primary.append(t)
+                t_obj = t
             except Exception:
-                continue
+                t_obj = None
+            if t_obj is not None:
+                tests_primary.append(t_obj)
     _write_recoding_context_tests_tex(tests_primary, k_primary=k_primary)
 
     # Multi-k fragment: reuse the already-rendered per-k tests.
@@ -1247,22 +1275,22 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
     if isinstance(mk, list):
         for item in mk:
             if not isinstance(item, dict):
-                continue
-            lbl = str(item.get("label") or "-")
-            kk = int(item.get("k", 0) or 0)
-            b = item.get("before") or {}
-            a = item.get("after") or {}
-            if not isinstance(b, dict) or not isinstance(a, dict) or kk <= 0:
-                continue
-            op_p, p_s = _fmt_p_tex(b.get("p_welch"))
-            op_p2, p2_s = _fmt_p_tex(a.get("p_welch"))
-            mk_lines.append(
-                f"{lbl} ($k={kk}$): "
-                f"before diff {float(b.get('diff', float('nan'))):+.4f} (Welch $p{op_p}{p_s}$; "
-                f"$n={int(b.get('n1', 0) or 0)}$ vs {int(b.get('n2', 0) or 0)}), "
-                f"after diff {float(a.get('diff', float('nan'))):+.4f} (Welch $p{op_p2}{p2_s}$; "
-                f"$n={int(a.get('n1', 0) or 0)}$ vs {int(a.get('n2', 0) or 0)})."
-            )
+                pass
+    else:
+                lbl = str(item.get("label") or "-")
+                kk = int(item.get("k", 0) or 0)
+                b = item.get("before") or {}
+                a = item.get("after") or {}
+                if isinstance(b, dict) and isinstance(a, dict) and kk > 0:
+                    op_p, p_s = _fmt_p_tex(b.get("p_welch"))
+                    op_p2, p2_s = _fmt_p_tex(a.get("p_welch"))
+                    mk_lines.append(
+                        f"{lbl} ($k={kk}$): "
+                        f"before diff {float(b.get('diff', float('nan'))):+.4f} (Welch $p{op_p}{p_s}$; "
+                        f"$n={int(b.get('n1', 0) or 0)}$ vs {int(b.get('n2', 0) or 0)}), "
+                        f"after diff {float(a.get('diff', float('nan'))):+.4f} (Welch $p{op_p2}{p2_s}$; "
+                        f"$n={int(a.get('n1', 0) or 0)}$ vs {int(a.get('n2', 0) or 0)})."
+                    )
     write_text(generated_dir() / "recoding_context_tests_multi_k.tex", "\n\n".join(mk_lines) + "\n")
 
     # Controls fragment (primary k).
