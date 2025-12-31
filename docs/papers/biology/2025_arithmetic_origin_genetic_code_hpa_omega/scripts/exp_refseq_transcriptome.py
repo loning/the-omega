@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import re
 import statistics
 from collections import Counter
 from dataclasses import dataclass
@@ -36,7 +37,10 @@ from genetic_code_tools import (
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
 
 # Bump this when the analysis logic (not just speed) changes.
-ANALYSIS_VERSION = 1
+ANALYSIS_VERSION = 2
+
+# Bump this when the output JSON schema changes.
+SCHEMA_VERSION = 2
 
 # Precompute codon-level Fold_6 attributes under mu* for speed.
 CODON_INFO: dict[str, dict[str, object]] = {}
@@ -430,7 +434,12 @@ def parse_args() -> argparse.Namespace:
         default="",
         help="Optional single FASTA(.gz) shard to process; empty means use manifest file list.",
     )
-    p.add_argument("--stop-window", type=int, default=10, help="Window radius k for stop-context uplift.")
+    p.add_argument("--stop-window", type=int, default=10, help="Primary window radius k for stop-context uplift.")
+    p.add_argument(
+        "--stop-window-list",
+        default="",
+        help="Optional comma-separated list of window radii k to compute in one pass (e.g. 3,5,10,20).",
+    )
     p.add_argument("--max-records", type=int, default=0, help="Optional limit on number of records (0 = no limit).")
     p.add_argument("--out-json", default=str(data_dir() / "transcriptome_summary.json"), help="Output summary JSON path.")
     p.add_argument("--no-latex", action="store_true", help="Do not write LaTeX fragments.")
@@ -456,9 +465,26 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    k = int(args.stop_window)
-    if k < 1:
+    k_primary = int(args.stop_window)
+    if k_primary < 1:
         raise SystemExit("--stop-window must be >= 1")
+    k_list_raw = str(args.stop_window_list or "").strip()
+    if k_list_raw:
+        parts = re.split(r"[,\s]+", k_list_raw)
+        ks = []
+        for p in parts:
+            p = p.strip()
+            if not p:
+                continue
+            try:
+                ks.append(int(p))
+            except ValueError:
+                raise SystemExit(f"Invalid --stop-window-list entry: {p}")
+        k_list = sorted({k for k in ks if int(k) >= 1} | {int(k_primary)})
+    else:
+        k_list = [int(k_primary)]
+    k_set = set(int(x) for x in k_list)
+    max_k = int(max(k_list)) if k_list else int(k_primary)
 
     progress_every = int(args.progress_every)
     log_path = Path(args.log) if args.log else None
@@ -489,7 +515,8 @@ def main() -> None:
         cache_key = {
             "analysis": "refseq_transcriptome_shard",
             "analysis_version": ANALYSIS_VERSION,
-            "stop_window": int(k),
+            "stop_window": int(k_primary),
+            "stop_window_list": [int(x) for x in k_list],
             "input_name": input_name,
             "input_sha256": input_sha,
             "mu_star": MU_STAR,
@@ -498,7 +525,10 @@ def main() -> None:
             "cache_key": cache_key,
             "cache_digest": cache_key_digest(cache_key),
         }
-        if cache_hit(out_json, expected_meta=meta):
+        # If the caller requests meta sidecars, require meta match for a cache hit (prevents false hits
+        # when parameters change but the output filename stays the same).
+        require_meta = bool(args.write_meta)
+        if cache_hit(out_json, expected_meta=meta, require_meta=require_meta):
             # Back-compat: if meta is missing, write it (optional).
             if args.write_meta and not cache_meta_path(out_json).exists():
                 write_json_atomic(cache_meta_path(out_json), meta)
@@ -528,8 +558,11 @@ def main() -> None:
     orf_autocorr_z1: list[float] = []
 
     # Stop-context window means at terminal stop codons (only best ORF termination).
-    before_stats: dict[str, RunningStats] = {s: RunningStats() for s in STOP_CODONS}
-    after_stats: dict[str, RunningStats] = {s: RunningStats() for s in STOP_CODONS}
+    # Track multi-k in one pass; keep the primary-k views for legacy fragments/fields.
+    before_stats_mk: dict[str, dict[int, RunningStats]] = {s: {kk: RunningStats() for kk in k_list} for s in STOP_CODONS}
+    after_stats_mk: dict[str, dict[int, RunningStats]] = {s: {kk: RunningStats() for kk in k_list} for s in STOP_CODONS}
+    before_stats: dict[str, RunningStats] = {s: before_stats_mk[s][int(k_primary)] for s in STOP_CODONS}
+    after_stats: dict[str, RunningStats] = {s: after_stats_mk[s][int(k_primary)] for s in STOP_CODONS}
 
     for fp in files:
         if not fp.exists():
@@ -634,32 +667,49 @@ def main() -> None:
 
             # Stop-context windows around the terminal stop in the best ORF.
             stop_index = (t - s) // 3  # within ORF (0-based), includes stop position index
-            if stop_index >= k:
-                # Ensure after-window codons exist in transcript.
-                ok_after = True
-                after_vals: list[int] = []
-                for j in range(1, k + 1):
+            if stop_index >= 1 and max_k >= 1:
+                # After-window: scan forward until invalid/out-of-range; this determines which k are feasible.
+                after_sums: dict[int, float] = {}
+                sum_after = 0.0
+                after_len = 0
+                for j in range(1, max_k + 1):
                     p = t + 3 * j
                     if p + 3 > len(seq):
-                        ok_after = False
                         break
                     c = seq[p : p + 3]
                     if c not in GENETIC_CODE:
-                        ok_after = False
                         break
-                    after_vals.append(int(CODON_INFO[c]["delta"]))
-                if ok_after:
-                    before_vals: list[int] = []
-                    for j in range(1, k + 1):
-                        p = t - 3 * j
-                        c = seq[p : p + 3]
-                        if c not in GENETIC_CODE:
-                            ok_after = False
-                            break
-                        before_vals.append(int(CODON_INFO[c]["delta"]))
-                    if ok_after:
-                        before_stats[stop_codon].update(sum(before_vals) / float(k))
-                        after_stats[stop_codon].update(sum(after_vals) / float(k))
+                    sum_after += float(int(CODON_INFO[c]["delta"]))
+                    after_len = j
+                    if j in k_set:
+                        after_sums[j] = sum_after
+
+                # Before-window: scan backward inside ORF (should be valid, but guard anyway).
+                before_sums: dict[int, float] = {}
+                sum_before = 0.0
+                before_len = 0
+                j_max_before = min(int(stop_index), int(max_k))
+                for j in range(1, j_max_before + 1):
+                    p = t - 3 * j
+                    c = seq[p : p + 3]
+                    if c not in GENETIC_CODE:
+                        break
+                    sum_before += float(int(CODON_INFO[c]["delta"]))
+                    before_len = j
+                    if j in k_set:
+                        before_sums[j] = sum_before
+
+                # Update only when both sides exist for the same k (matches previous behavior).
+                for kk in k_list:
+                    kk_i = int(kk)
+                    if kk_i <= 0:
+                        continue
+                    if kk_i > before_len or kk_i > after_len:
+                        continue
+                    if kk_i not in before_sums or kk_i not in after_sums:
+                        continue
+                    before_stats_mk[stop_codon][kk_i].update(float(before_sums[kk_i]) / float(kk_i))
+                    after_stats_mk[stop_codon][kk_i].update(float(after_sums[kk_i]) / float(kk_i))
 
         if args.max_records and n_records >= int(args.max_records):
             break
@@ -696,7 +746,7 @@ def main() -> None:
         bs = before_stats[s]
         a_s = after_stats[s]
         stop_ctx_summary[s] = {
-            "k": k,
+            "k": int(k_primary),
             "n": int(bs.n),
             "before_mean": (float(bs.mean) if bs.n > 0 else None),
             "after_mean": (float(a_s.mean) if a_s.n > 0 else None),
@@ -714,7 +764,7 @@ def main() -> None:
     }
 
     summary = {
-        "schema_version": 1,
+        "schema_version": int(SCHEMA_VERSION),
         "source_files": [str(p) for p in files],
         "records": n_records,
         "records_with_orf": n_with_orf,
@@ -733,11 +783,31 @@ def main() -> None:
         "orf_len_hist": {str(k): int(v) for k, v in sorted(orf_len_hist.items())},
         "termination_stop_counts": {k: int(v) for k, v in term_stop_counts.items()},
         "termination_stop_boundary_count": int(term_stop_boundary),
+        "stop_window": int(k_primary),
+        "stop_window_list": [int(x) for x in k_list],
         "stop_context": stop_ctx_summary,
         "stop_context_welford": {
             s: {
                 "before": {"n": int(before_stats[s].n), "mean": float(before_stats[s].mean), "M2": float(before_stats[s].M2)},
                 "after": {"n": int(after_stats[s].n), "mean": float(after_stats[s].mean), "M2": float(after_stats[s].M2)},
+            }
+            for s in STOP_CODONS
+        },
+        "stop_context_welford_multi_k": {
+            s: {
+                str(kk): {
+                    "before": {
+                        "n": int(before_stats_mk[s][int(kk)].n),
+                        "mean": float(before_stats_mk[s][int(kk)].mean),
+                        "M2": float(before_stats_mk[s][int(kk)].M2),
+                    },
+                    "after": {
+                        "n": int(after_stats_mk[s][int(kk)].n),
+                        "mean": float(after_stats_mk[s][int(kk)].mean),
+                        "M2": float(after_stats_mk[s][int(kk)].M2),
+                    },
+                }
+                for kk in k_list
             }
             for s in STOP_CODONS
         },
@@ -776,7 +846,8 @@ def main() -> None:
         cache_key = {
             "analysis": "refseq_transcriptome_shard",
             "analysis_version": ANALYSIS_VERSION,
-            "stop_window": int(k),
+            "stop_window": int(k_primary),
+            "stop_window_list": [int(x) for x in k_list],
             "input_name": input_name,
             "input_sha256": input_sha,
             "mu_star": MU_STAR,
@@ -815,13 +886,13 @@ def main() -> None:
         rows.append(f"{codon} & {c} & {frac:.4f} \\\\")
     write_text(generated_dir() / "refseq_termination_stop_rows.tex", "\n".join(rows) + "\n\\bottomrule\n")
 
-    # 3) Stop-context window rows.
+    # 3) Stop-context window rows (primary k only; multi-k handled in merge).
     rows2 = []
     for codon in STOP_CODONS:
         n = int(before_stats[codon].n)
         bm = float(before_stats[codon].mean) if n else float("nan")
         am = float(after_stats[codon].mean) if n else float("nan")
-        rows2.append(f"{codon} & {k} & {n} & {bm:.4f} & {am:.4f} \\\\")
+        rows2.append(f"{codon} & {k_primary} & {n} & {bm:.4f} & {am:.4f} \\\\")
     write_text(generated_dir() / "refseq_stop_context_rows.tex", "\n".join(rows2) + "\n\\bottomrule\n")
 
     # 4) Codon-usage null-model summary (single paragraph).

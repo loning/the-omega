@@ -33,6 +33,8 @@ The only ``search'' performed is over a finite, explicitly bounded space (the $2
 \item RefSeq shard merge: \path{exp_refseq_transcriptome_merge.py}.
 \item \path{exp_recoding_sites.py}: recoding-site extraction and summary tables (Sec/Pyl).
 \item \path{exp_nonstandard_codes.py}: nonstandard translation-table scan from \path{gc.prt}.
+\item \path{exp_nonstandard_sequence_tests.py}: sequence-level nonstandard-code tests driven by \path{manifest.json}.
+\item \path{exp_corpus_panel.py}: cross-domain corpus panel scan driven by \path{manifest.json}.
 \item \path{seq_spectrum_cli.py}: command-line sequence spectrum tool (FASTA input, frame/ORF options, TSV/JSONL outputs).
 \end{itemize}
 
@@ -81,10 +83,11 @@ Each JSON line corresponds to one segment (either \texttt{full} or one ORF) and 
 
 \subsection{Testing nonstandard genetic codes}
 For translation-table level tests of prediction~P3, \path{exp_nonstandard_codes.py} parses the NCBI table file \path{data/gc.prt} and reports the stop/start sets and their boundary-hit metrics under $\mu^\ast$.
+For sequence-level tests on organismal CDS corpora (e.g.\ code-specific start/stop usage and boundary-hit enrichment), \path{exp_nonstandard_sequence_tests.py} reads \path{data/manifest.json} and evaluates the example corpora listed under \path{panels/nonstandard\_examples\_v1}.
 To test a specific organismal code, either:
 \begin{itemize}
 \item use \path{exp_nonstandard_codes.py} directly (translation-table level), or
-\item replace the codon-to-label map \path{GENETIC_CODE} in \path{scripts/genetic_code_tools.py} and rerun \path{seq_spectrum_cli.py} on organism-specific FASTA (sequence level).
+\item run \path{exp_nonstandard_sequence_tests.py} on an organism-specific CDS FASTA dataset listed in \path{manifest.json}.
 \end{itemize}
 The folding map $\mathrm{Fold}_6$ and all index-level invariants remain unchanged; only the semantic labeling layer changes.
 

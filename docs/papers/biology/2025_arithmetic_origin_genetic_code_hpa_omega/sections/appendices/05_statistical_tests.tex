@@ -90,4 +90,62 @@ or conditional means within amino-acid synonym classes.
 \paragraph{Test.}
 To test whether codon usage is biased toward certain folding levels, compare observed $(\overline{Z},\overline{U})$ to a null model that preserves amino-acid composition (shuffle codons within each amino-acid family) and compute an empirical $p$-value by Monte Carlo permutation.
 
+\subsection{Effect sizes, confidence intervals, and multiple testing}
+\label{app:effect_sizes}
+
+For two samples of window statistics $\{X_i\}_{i=1}^{n_1}$ and $\{Y_j\}_{j=1}^{n_2}$ (e.g.\ stop-context means), define:
+\[
+\Delta\mu := \overline{X}-\overline{Y}.
+\]
+We report:
+\begin{itemize}
+\item a normal-approximation confidence interval for $\Delta\mu$,
+\[
+\Delta\mu \pm z_{1-\alpha/2}\sqrt{\frac{s_X^2}{n_1}+\frac{s_Y^2}{n_2}},
+\]
+where $s_X^2$ and $s_Y^2$ are sample variances and $z_{1-\alpha/2}$ is the standard normal quantile;
+\item standardized effect sizes such as Cohen's $d$ (pooled standard deviation) and Hedges' $g$ (small-sample correction).
+\end{itemize}
+
+When multiple related hypotheses are tested (e.g.\ across multiple $k$ and multiple stop-pair comparisons), we also report Benjamini--Hochberg FDR-adjusted $q$-values.
+
+\subsection{Multi-$k$ sensitivity}
+\label{app:multi_k_sensitivity}
+
+Many sequence-context statistics depend on a window radius $k$.
+To avoid over-interpreting a single choice, we evaluate key comparisons across a set $k\in\{k_1,\dots,k_m\}$ and report trends (and where applicable, per-$k$ test outcomes).
+
+\subsection{Recoding-site terminal-stop bias}
+\label{app:recoding_stop_bias}
+
+Given a set of CDS sequences containing recoding sites (deduplicated by CDS), let $n_1$ be the number of CDS and let $x_1$ be the number terminating with the boundary-aligned stop codon $\mathrm{UAA}$.
+For a baseline corpus (e.g.\ a reference transcriptome), let $(x_2,n_2)$ be the corresponding counts.
+We report the observed rates $\widehat{p}_1=x_1/n_1$ and $\widehat{p}_2=x_2/n_2$ and use a two-proportion normal approximation to test $H_0:\widehat{p}_1=\widehat{p}_2$:
+\[
+z=\frac{\widehat{p}_1-\widehat{p}_2}{\sqrt{\widehat{p}(1-\widehat{p})(1/n_1+1/n_2)}},
+\qquad
+\widehat{p}=\frac{x_1+x_2}{n_1+n_2}.
+\]
+
+\subsection{Nonstandard-code sequence-level tests}
+\label{app:nonstandard_sequence_tests}
+
+Fix a translation table (NCBI \texttt{gc.prt}) with a stop set $\mathcal{S}_{\mathrm{stop}}$ and a start set $\mathcal{S}_{\mathrm{start}}$.
+
+\paragraph{Start boundary-hit enrichment.}
+For each CDS/transcript $r$, let $c_r^{\mathrm{start}}$ be the annotated start codon (first in-frame codon of the sequence), and let $\mathcal{C}_r$ be the internal in-frame coding codons excluding the terminal stop.
+Define the within-sequence background probability
+\[
+p_r := \frac{1}{|\mathcal{C}_r|}\sum_{c\in\mathcal{C}_r}\mathbf{1}\{w(c)\in X_6^{\mathrm{bdry}}\}.
+\]
+Across records, the null distribution of the number of boundary-hit starts can be approximated by a Poisson--binomial normal approximation with mean $\sum_r p_r$ and variance $\sum_r p_r(1-p_r)$.
+
+\paragraph{Terminal-stop boundary preference.}
+Let $c_r^{\mathrm{stop}}$ be the terminal stop codon of record $r$.
+Define the boundary-hit probability under a uniform choice over the table's stop set
+\[
+p_0 := \frac{|\{s\in\mathcal{S}_{\mathrm{stop}}:\ w(s)\in X_6^{\mathrm{bdry}}\}|}{|\mathcal{S}_{\mathrm{stop}}|}.
+\]
+We compare the observed boundary-hit count at termination to the binomial null with success probability $p_0$ (reported via a normal approximation at large $n$).
+
 

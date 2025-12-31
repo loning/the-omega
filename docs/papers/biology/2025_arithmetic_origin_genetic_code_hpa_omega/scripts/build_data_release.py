@@ -42,6 +42,9 @@ def should_exclude(rel_posix: str) -> bool:
         return True
     if rel_posix.startswith("data/refseq_hsapiens_mrna/shards/") and "/test_" in ("/" + rel_posix):
         return True
+    # Panel outputs are reproducible; keep them optional in the release bundle.
+    if rel_posix.startswith("data/panel/") and rel_posix.endswith(".tmp"):
+        return True
     return False
 
 

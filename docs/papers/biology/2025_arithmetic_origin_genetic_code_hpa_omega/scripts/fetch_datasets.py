@@ -79,20 +79,24 @@ def fetch_gc_prt(m: dict[str, Any], *, verify_ssl: bool) -> None:
     ds["retrieved_at_utc"] = res.retrieved_at_utc
 
 
-def fetch_refseq_hsapiens_mrna(m: dict[str, Any], *, verify_ssl: bool) -> None:
-    ds = m["datasets"]["refseq_hsapiens_mrna"]
-    base_url = ds["base_url"].rstrip("/") + "/"
-    index_url = base_url + ds["index_file"]
-    include_re = re.compile(ds["include_regex"])
+def _strip_dot_slash(path: str) -> str:
+    while path.startswith("./"):
+        path = path[2:]
+    return path
 
-    local_dir = _abs_path(ds["local_dir"])
+
+def fetch_refseq_dir_dataset(ds: dict[str, Any], *, verify_ssl: bool) -> None:
+    base_url = str(ds["base_url"]).rstrip("/") + "/"
+    index_url = base_url + str(ds["index_file"])
+    include_re = re.compile(str(ds["include_regex"]))
+
+    local_dir = _abs_path(str(ds["local_dir"]))
     local_dir.mkdir(parents=True, exist_ok=True)
 
-    # Download md5checksums.txt to discover file list.
-    md5_text = _download_text(index_url, timeout_s=120.0, verify_ssl=verify_ssl)
+    index_text = _download_text(index_url, timeout_s=120.0, verify_ssl=verify_ssl)
     names: list[str] = []
     md5_map: dict[str, str] = {}
-    for line in md5_text.splitlines():
+    for line in index_text.splitlines():
         line = line.strip()
         if not line:
             continue
@@ -100,7 +104,7 @@ def fetch_refseq_hsapiens_mrna(m: dict[str, Any], *, verify_ssl: bool) -> None:
         if len(parts) < 2:
             continue
         md5 = parts[0]
-        name = parts[-1]
+        name = _strip_dot_slash(parts[-1])
         if include_re.match(name):
             names.append(name)
             md5_map[name] = md5
@@ -110,7 +114,7 @@ def fetch_refseq_hsapiens_mrna(m: dict[str, Any], *, verify_ssl: bool) -> None:
     for name in names:
         url = base_url + name
         dst = local_dir / name
-        # We compute sha256 for reproducibility; md5 from NCBI index is recorded as additional info.
+        dst.parent.mkdir(parents=True, exist_ok=True)
         res = download_file(
             url,
             dst,
@@ -132,6 +136,179 @@ def fetch_refseq_hsapiens_mrna(m: dict[str, Any], *, verify_ssl: bool) -> None:
 
     ds["files"] = files_out
     ds["retrieved_at_utc"] = utc_now_iso()
+
+
+def _parse_assembly_summary(text: str) -> list[dict[str, str]]:
+    header: list[str] = []
+    rows: list[dict[str, str]] = []
+    for raw in text.splitlines():
+        line = raw.rstrip("\n")
+        if not line:
+            continue
+        if line.startswith("#"):
+            if "assembly_accession" in line and "\t" in line:
+                header = line.lstrip("#").strip().split("\t")
+            continue
+        if not header:
+            continue
+        parts = line.split("\t")
+        if len(parts) < len(header):
+            continue
+        row = {header[i]: parts[i] for i in range(len(header))}
+        rows.append(row)
+    return rows
+
+
+def _parse_date_key(s: str) -> int:
+    s = s.strip()
+    if not s or s.lower() == "na":
+        return 0
+    parts = re.split(r"[/\\-\\.]+", s)
+    if len(parts) < 3:
+        return 0
+    try:
+        y = int(parts[0])
+        m = int(parts[1])
+        d = int(parts[2])
+    except ValueError:
+        return 0
+    if y <= 0 or m <= 0 or d <= 0:
+        return 0
+    return y * 10000 + m * 100 + d
+
+
+def _assembly_row_rank(row: dict[str, str]) -> tuple[int, int, int, str]:
+    vs = (row.get("version_status") or "").strip().lower()
+    r_latest = 0 if vs == "latest" else 1
+    rc = (row.get("refseq_category") or "").strip().lower()
+    if rc == "reference genome":
+        r_ref = 0
+    elif rc == "representative genome":
+        r_ref = 1
+    else:
+        r_ref = 2
+    date_key = 0
+    for k in ("seq_rel_date", "release_date"):
+        date_key = max(date_key, _parse_date_key(row.get(k) or ""))
+    # Prefer larger date_key -> smaller negative.
+    return (r_latest, r_ref, -date_key, row.get("assembly_accession") or "")
+
+
+def _normalize_ftp_url(p: str) -> str:
+    p = p.strip()
+    if p.startswith("ftp://"):
+        return "https://" + p[len("ftp://") :]
+    return p
+
+
+def fetch_refseq_assembly_files(ds: dict[str, Any], *, verify_ssl: bool) -> None:
+    summary_url = str(ds["assembly_summary_url"])
+    txt = _download_text(summary_url, timeout_s=120.0, verify_ssl=verify_ssl, retries=6, retry_sleep_s=2.0)
+    rows = _parse_assembly_summary(txt)
+    if not rows:
+        raise SystemExit(f"Failed to parse any assemblies from: {summary_url}")
+
+    filters = dict(ds.get("filters", {}) or {})
+    want_level = (filters.get("assembly_level") or "").strip()
+    want_refcat = (filters.get("refseq_category") or "").strip()
+    want_org_sub = (filters.get("organism_contains") or "").strip().lower()
+
+    candidates: list[dict[str, str]] = []
+    for r in rows:
+        if want_level:
+            if (r.get("assembly_level") or "").strip() != want_level:
+                continue
+        if want_refcat:
+            if (r.get("refseq_category") or "").strip() != want_refcat:
+                continue
+        if want_org_sub:
+            org = (r.get("organism_name") or "").strip().lower()
+            if want_org_sub not in org:
+                continue
+        ftp_path = (r.get("ftp_path") or "").strip()
+        if not ftp_path or ftp_path.lower() == "na":
+            continue
+        candidates.append(r)
+
+    if not candidates:
+        raise SystemExit(f"No assembly_summary rows matched filters for dataset local_dir={ds.get('local_dir')}")
+
+    chosen = min(candidates, key=_assembly_row_rank)
+    ftp_base = _normalize_ftp_url(chosen["ftp_path"]).rstrip("/")
+
+    md5_url = ftp_base + "/md5checksums.txt"
+    md5_text = _download_text(md5_url, timeout_s=120.0, verify_ssl=verify_ssl, retries=6, retry_sleep_s=2.0)
+    md5_map: dict[str, str] = {}
+    names: list[str] = []
+    for line in md5_text.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        parts = line.split()
+        if len(parts) < 2:
+            continue
+        md5 = parts[0]
+        name = _strip_dot_slash(parts[-1])
+        # Ignore directory entries.
+        if not name or name.endswith("/"):
+            continue
+        md5_map[name] = md5
+        names.append(name)
+
+    wanted_suffixes = [str(x) for x in (ds.get("wanted_files", []) or [])]
+    if not wanted_suffixes:
+        raise SystemExit(f"Dataset has no wanted_files: local_dir={ds.get('local_dir')}")
+
+    local_dir = _abs_path(str(ds["local_dir"]))
+    local_dir.mkdir(parents=True, exist_ok=True)
+
+    files_out: list[dict[str, Any]] = []
+    for suffix in wanted_suffixes:
+        matches = sorted({n for n in names if n.endswith(suffix)})
+        if not matches:
+            raise SystemExit(f"Missing wanted file '{suffix}' under {ftp_base}")
+        rel_name = matches[0]
+        url = ftp_base + "/" + rel_name
+        dst = local_dir / Path(rel_name).name
+        res = download_file(
+            url,
+            dst,
+            verify_ssl=verify_ssl,
+            timeout_s=900.0,
+            retries=6,
+            retry_sleep_s=5.0,
+        )
+        files_out.append(
+            {
+                "name": Path(rel_name).name,
+                "url": url,
+                "bytes": res.bytes,
+                "sha256": res.sha256,
+                "retrieved_at_utc": res.retrieved_at_utc,
+                "ncbi_md5": md5_map.get(rel_name),
+            }
+        )
+
+    ds["selected_assembly"] = {
+        "assembly_accession": chosen.get("assembly_accession"),
+        "asm_name": chosen.get("asm_name"),
+        "organism_name": chosen.get("organism_name"),
+        "taxid": chosen.get("taxid"),
+        "assembly_level": chosen.get("assembly_level"),
+        "refseq_category": chosen.get("refseq_category"),
+        "version_status": chosen.get("version_status"),
+        "seq_rel_date": chosen.get("seq_rel_date"),
+        "release_date": chosen.get("release_date"),
+        "ftp_path": ftp_base,
+        "md5checksums_url": md5_url,
+    }
+    ds["files"] = files_out
+    ds["retrieved_at_utc"] = utc_now_iso()
+
+
+def fetch_refseq_hsapiens_mrna(m: dict[str, Any], *, verify_ssl: bool) -> None:
+    ds = m["datasets"]["refseq_hsapiens_mrna"]
+    fetch_refseq_dir_dataset(ds, verify_ssl=verify_ssl)
 
 
 def _eutils_esearch(db: str, term: str, retmax: int, *, verify_ssl: bool) -> list[str]:
@@ -303,28 +480,134 @@ def fetch_recoding_genbank(m: dict[str, Any], *, verify_ssl: bool) -> None:
     ds["retrieved_at_utc"] = retrieved_at
 
 
+def _resolve_dataset_keys(m: dict[str, Any], dataset: str) -> list[str]:
+    d = str(dataset).strip()
+    if not d:
+        raise SystemExit("--dataset must be non-empty")
+    datasets = (m.get("datasets") or {}) if isinstance(m.get("datasets"), dict) else {}
+    panels = (m.get("panels") or {}) if isinstance(m.get("panels"), dict) else {}
+
+    aliases = {
+        "gc_prt": ["ncbi_gc_prt"],
+        "recoding_genbank": ["ncbi_recoding_genbank"],
+    }
+    if d in aliases:
+        return aliases[d]
+
+    if d == "all":
+        return sorted(str(k) for k in datasets.keys())
+
+    if d == "refseq_panel":
+        p = panels.get("corpus_panel_v1") or {}
+        items = p.get("items", []) or []
+        keys = sorted({str(x.get("dataset")) for x in items if isinstance(x, dict) and x.get("dataset")})
+        if not keys:
+            raise SystemExit("manifest.panels.corpus_panel_v1.items is empty; cannot resolve refseq_panel")
+        return keys
+
+    if d == "nonstandard_examples":
+        p = panels.get("nonstandard_examples_v1") or {}
+        items = p.get("items", []) or []
+        keys = sorted({str(x.get("dataset")) for x in items if isinstance(x, dict) and x.get("dataset")})
+        if not keys:
+            raise SystemExit("manifest.panels.nonstandard_examples_v1.items is empty; cannot resolve nonstandard_examples")
+        return keys
+
+    # Dataset key directly.
+    if d in datasets:
+        return [d]
+    if d in ("refseq_hsapiens_mrna",):
+        return [d]
+
+    raise SystemExit(f"Unknown dataset selector: {d}")
+
+
+def _is_dataset_present(m: dict[str, Any] | None, dataset_key: str) -> bool:
+    droot = data_root()
+    key = str(dataset_key)
+    if key == "ncbi_gc_prt":
+        return (droot / "gc.prt").exists()
+    if key == "ncbi_recoding_genbank":
+        gb = droot / "recoding_genbank" / "genbank"
+        return gb.exists() and any(gb.glob("*.gb"))
+
+    if not m or not isinstance(m.get("datasets"), dict):
+        return False
+    ds = (m["datasets"] or {}).get(key)
+    if not isinstance(ds, dict):
+        return False
+
+    # Generic local_path presence (best-effort).
+    lp = ds.get("local_path")
+    if isinstance(lp, str):
+        p = _abs_path(lp)
+        if p.exists():
+            return True
+
+    t = str(ds.get("type") or "")
+    if t == "ncbi_refseq_dir":
+        local_dir = ds.get("local_dir")
+        include_regex = ds.get("include_regex")
+        if not isinstance(local_dir, str) or not isinstance(include_regex, str):
+            return False
+        base = _abs_path(local_dir)
+        if not base.exists():
+            return False
+        try:
+            r = re.compile(include_regex)
+        except re.error:
+            return any(base.glob("*.gz"))
+        return any(r.match(fp.name) for fp in base.iterdir() if fp.is_file())
+
+    if t == "ncbi_refseq_assembly_files":
+        local_dir = ds.get("local_dir")
+        wanted = ds.get("wanted_files")
+        if not isinstance(local_dir, str):
+            return False
+        base = _abs_path(local_dir)
+        if not base.exists():
+            return False
+        wanted_suffixes = [str(x) for x in (wanted or [])]
+        if not wanted_suffixes:
+            return any(base.iterdir())
+        for suf in wanted_suffixes:
+            if not any(fp.is_file() and fp.name.endswith(suf) for fp in base.iterdir()):
+                return False
+        return True
+
+    return False
+
+
 def _has_local_data(dataset: str) -> bool:
     d = data_root()
+    mp = manifest_path()
+    m: dict[str, Any] | None = None
+    if mp.exists():
+        try:
+            m = read_json(mp)
+        except Exception:  # noqa: BLE001
+            m = None
 
-    if dataset in ("gc_prt", "all"):
-        if not (d / "gc.prt").exists():
+    # Without a manifest, fall back to legacy checks.
+    if m is None:
+        if dataset in ("gc_prt", "all") and not (d / "gc.prt").exists():
             return False
+        if dataset in ("refseq_hsapiens_mrna", "all"):
+            ref = d / "refseq_hsapiens_mrna"
+            if (not ref.exists()) or (not any(ref.glob("human.*.rna.fna.gz"))):
+                return False
+        if dataset in ("recoding_genbank", "all"):
+            gb = d / "recoding_genbank" / "genbank"
+            if (not gb.exists()) or (not any(gb.glob("*.gb"))):
+                return False
+        return True
 
-    if dataset in ("refseq_hsapiens_mrna", "all"):
-        ref = d / "refseq_hsapiens_mrna"
-        if not ref.exists():
-            return False
-        if not any(ref.glob("human.*.rna.fna.gz")):
-            return False
-
-    if dataset in ("recoding_genbank", "all"):
-        gb = d / "recoding_genbank" / "genbank"
-        if not gb.exists():
-            return False
-        if not any(gb.glob("*.gb")):
-            return False
-
-    return True
+    try:
+        keys = _resolve_dataset_keys(m, dataset)
+    except SystemExit:
+        # Unknown selector: treat as missing.
+        return False
+    return all(_is_dataset_present(m, k) for k in keys)
 
 
 def _release_asset_url(tag: str, asset_name: str) -> str:
@@ -523,9 +806,11 @@ def main() -> None:
     p = argparse.ArgumentParser(description="Fetch datasets in data/manifest.json")
     p.add_argument(
         "--dataset",
-        choices=("gc_prt", "refseq_hsapiens_mrna", "recoding_genbank", "all"),
         default="all",
-        help="Which dataset group to fetch.",
+        help=(
+            "Dataset selector: gc_prt, recoding_genbank, refseq_hsapiens_mrna, "
+            "refseq_panel, nonstandard_examples, all, or a dataset key from manifest.datasets."
+        ),
     )
     p.add_argument(
         "--sync-ncbi",
@@ -583,13 +868,27 @@ def main() -> None:
             f"(default: {DEFAULT_GITHUB_RELEASE_TAG}) or provide the data directory manually."
         )
     m = read_json(mp)
+    keys = _resolve_dataset_keys(m, dataset)
+    for k in keys:
+        if k == "ncbi_gc_prt":
+            fetch_gc_prt(m, verify_ssl=verify_ssl)
+            continue
+        if k == "ncbi_recoding_genbank":
+            fetch_recoding_genbank(m, verify_ssl=verify_ssl)
+            continue
 
-    if dataset in ("gc_prt", "all"):
-        fetch_gc_prt(m, verify_ssl=verify_ssl)
-    if dataset in ("refseq_hsapiens_mrna", "all"):
-        fetch_refseq_hsapiens_mrna(m, verify_ssl=verify_ssl)
-    if dataset in ("recoding_genbank", "all"):
-        fetch_recoding_genbank(m, verify_ssl=verify_ssl)
+        ds = m["datasets"].get(k)
+        if not isinstance(ds, dict):
+            raise SystemExit(f"Missing dataset in manifest: {k}")
+        t = str(ds.get("type") or "")
+        if t == "ncbi_refseq_dir":
+            fetch_refseq_dir_dataset(ds, verify_ssl=verify_ssl)
+        elif t == "ncbi_refseq_assembly_files":
+            fetch_refseq_assembly_files(ds, verify_ssl=verify_ssl)
+        else:
+            # Some manifest entries are informational or local-only (e.g., small case-study FASTA files).
+            # Leave them untouched.
+            continue
 
     write_json(mp, m)
     print("Updated manifest:", mp)
