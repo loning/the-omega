@@ -70,21 +70,43 @@ Define the wrap-around defect
 \[
 D_\pi(w):=\ind\{w_1=w_m=1\}.
 \]
-At $m=6$, define
+For a window length $m\ge 4$, define
 \[
-X_6^{\mathrm{cyc}}:=\{w\in X_6:\ w_1 w_6=0\},
+X_m^{\mathrm{cyc}}:=\{w\in X_m:\ w_1 w_m=0\},
 \qquad
-X_6^{\mathrm{bdry}}:=\{w\in X_6:\ w_1=w_6=1\}.
+X_m^{\mathrm{bdry}}:=\{w\in X_m:\ w_1=w_m=1\}.
 \]
 
-\begin{proposition}[Canonical cyclic/boundary split at $m=6$]\label{prop:cyc_bdry_6}
-One has $|X_6^{\mathrm{cyc}}|=18$ and $|X_6^{\mathrm{bdry}}|=3$, and
+\begin{proposition}[Cyclic/boundary split size for the $\pi$-channel]\label{prop:cyc_bdry_size}
+For every $m\ge 4$, the boundary set has Fibonacci size
 \[
-X_6^{\mathrm{bdry}}=\{100001,\ 100101,\ 101001\}.
+|X_m^{\mathrm{bdry}}|=F_{m-2},
+\]
+and therefore, using Lemma~\ref{lem:xm_fib},
+\[
+|X_m^{\mathrm{cyc}}|=|X_m|-|X_m^{\mathrm{bdry}}|=F_{m+2}-F_{m-2}.
 \]
 \end{proposition}
 \begin{proof}
-This is an explicit finite enumeration (Appendix~\ref{app:generated_tables}); see also \cite{Ma2025RF}.
+If $w\in X_m^{\mathrm{bdry}}$, then $w_1=w_m=1$ and Zeckendorf admissibility forces $w_2=w_{m-1}=0$.
+Thus the middle substring $w_3\cdots w_{m-2}$ is an admissible word of length $m-4$ with no adjacent ones, i.e.\ an element of $X_{m-4}$.
+Conversely, any $u\in X_{m-4}$ yields a boundary word $w=10\,u\,01\in X_m^{\mathrm{bdry}}$.
+This gives a bijection $X_m^{\mathrm{bdry}}\cong X_{m-4}$, hence
+\[
+|X_m^{\mathrm{bdry}}|=|X_{m-4}|=F_{(m-4)+2}=F_{m-2}
+\]
+by Lemma~\ref{lem:xm_fib}.
+\end{proof}
+
+\begin{corollary}[Canonical $18\oplus 3$ split at $m=6$]\label{prop:cyc_bdry_6}
+At $m=6$, one has $|X_6^{\mathrm{cyc}}|=18$ and $|X_6^{\mathrm{bdry}}|=3$, and
+\[
+X_6^{\mathrm{bdry}}=\{100001,\ 100101,\ 101001\}.
+\]
+\end{corollary}
+\begin{proof}
+The sizes follow from Proposition~\ref{prop:cyc_bdry_size} and Lemma~\ref{lem:xm_fib}.
+The explicit boundary words are obtained by finite enumeration (Appendix~\ref{app:generated_tables}); see also \cite{Ma2025RF}.
 \end{proof}
 
 \subsection{The \texorpdfstring{$\e$}{e}-channel: Artin--Mazur zeta and Abel pole barrier}
