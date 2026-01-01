@@ -170,9 +170,9 @@ def plan_rebuilds(papers_root: Path, stamp_root: Path) -> tuple[list[Path], list
 
 def _run_latexmk(paper_dir: Path) -> None:
     cmds = [
-        ["latexmk", "-pdf", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "main.tex"],
-        ["latexmk", "-pdfxe", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "main.tex"],
-        ["latexmk", "-pdflua", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "main.tex"],
+        ["latexmk", "-quiet", "-pdf", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "main.tex"],
+        ["latexmk", "-quiet", "-pdfxe", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "main.tex"],
+        ["latexmk", "-quiet", "-pdflua", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "main.tex"],
     ]
 
     last_rc: int | None = None
@@ -185,10 +185,17 @@ def _run_latexmk(paper_dir: Path) -> None:
     raise RuntimeError(f"latexmk failed in {paper_dir} (last exit code: {last_rc})")
 
 
+def _clean_latexmk(paper_dir: Path) -> None:
+    # Keep the final PDF; remove auxiliary build artifacts to save disk space in CI.
+    subprocess.run(["latexmk", "-c"], cwd=str(paper_dir))
+
+
 def build_from_plan(
     papers_root: Path,
     stamp_root: Path,
     plan_items: list[PlanItem],
+    *,
+    clean: bool,
 ) -> None:
     for item in plan_items:
         paper_dir = item.paper_dir
@@ -202,6 +209,8 @@ def build_from_plan(
             raise FileNotFoundError(f"Expected PDF not found: {pdf_path}")
 
         write_stamp(stamp_path(stamp_root, papers_root, paper_dir), sources_hash)
+        if clean:
+            _clean_latexmk(paper_dir)
 
 
 def verify_all_pdfs(papers_root: Path) -> None:
@@ -254,6 +263,11 @@ def main(argv: list[str]) -> int:
         action="store_true",
         help="If plan file is missing, recompute the plan instead of failing.",
     )
+    clean_default = os.environ.get("CI", "").lower() in {"1", "true", "yes", "on"}
+    clean_group = p_build.add_mutually_exclusive_group()
+    clean_group.add_argument("--clean", dest="clean", action="store_true", help="Clean LaTeX aux files after build.")
+    clean_group.add_argument("--no-clean", dest="clean", action="store_false", help="Do not clean LaTeX aux files.")
+    p_build.set_defaults(clean=clean_default)
 
     sub.add_parser("verify", help="Verify all papers have main.pdf.")
 
@@ -298,7 +312,7 @@ def main(argv: list[str]) -> int:
             print("No papers to build.")
             return 0
 
-        build_from_plan(papers_root, stamp_root, plan_items)
+        build_from_plan(papers_root, stamp_root, plan_items, clean=bool(getattr(args, "clean", False)))
         return 0
 
     if args.cmd == "verify":

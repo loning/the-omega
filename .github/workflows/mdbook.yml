@@ -55,14 +55,23 @@ jobs:
         run: |
           set -euo pipefail
           sudo apt-get update
-          sudo apt-get install -y latexmk texlive-full
+          sudo apt-get install -y --no-install-recommends \
+            latexmk \
+            texlive-latex-base \
+            texlive-latex-recommended \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            texlive-fonts-extra \
+            texlive-bibtex-extra
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
 
       - name: Build papers PDFs (only if needed)
         if: steps.papers_plan.outputs.papers_to_build != '0'
         shell: bash
         run: |
           set -euo pipefail
-          python3 scripts/build_papers_pdfs.py build
+          python3 scripts/build_papers_pdfs.py build --clean
 
       - name: Verify all papers PDFs exist
         shell: bash
