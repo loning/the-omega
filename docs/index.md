@@ -1,7 +1,7 @@
 # The Omega Framework
 *Reconstructing Reality: From Bit to Geometry, From Observer to Universe.*
 
-[中文版 (Chinese Version)](./index_cn.md) | [📥 PDF](./books/book-foundation-of-phys-in-geo-and-info/Information_Geometry_Agency.pdf) | [📥 Reality Decompiled](./books/book-first-principles-from-unitary-computation-to-physical-reality/Reality_Decompiled.pdf) | [▶️ Video](https://youtu.be/-bhgzuFOaro)
+[中文版 (Chinese Version)](./index_cn.md) | [📄 Papers](./papers/index_en.md) | [📥 PDF](./books/book-foundation-of-phys-in-geo-and-info/Information_Geometry_Agency.pdf) | [📥 Reality Decompiled](./books/book-first-principles-from-unitary-computation-to-physical-reality/Reality_Decompiled.pdf) | [▶️ Video](https://youtu.be/-bhgzuFOaro)
 
 ---
 
@@ -51,6 +51,15 @@ We not only accept the Holographic Principle but further prove that the gravitat
 Consciousness is no longer a "byproduct" of physics but a causal network with specific topological structures.
 *   **Mathematical Definition**: The observer is defined as a subsystem of a von Neumann algebra with a **self-referential structure**.
 *   **Topological Protection**: Conscious states correspond to non-trivial $\mathbb{Z}_2$ holonomy classes in parameter space, explaining their stability in decoherent environments.
+
+---
+
+## 📄 Papers (LaTeX Manuscripts)
+
+Beyond the long-form books, this project also maintains an interconnected paper series (LaTeX manuscripts) with a dependency graph, recommended reading paths, and reproducible scripts.
+
+- **Index (EN)**: [`papers/index_en.md`](./papers/index_en.md)
+- **Index (中文)**: [`papers/index.md`](./papers/index.md)
 
 ---
 

@@ -90,7 +90,7 @@ $$(i \gamma^\mu \partial_\mu - m) \Psi = 0$$
 2. **局域因果性 (Locality)**：信息传输速度受限于 1 格/步；
 3. **小质量条件 (Small Mass Limit)**：手性混合角 $\theta$ 与时间步长 $\varepsilon$ 成线性关系 $\theta = m \varepsilon$；
 
-则在连续极限 $\varepsilon \to 0$ 下，系统演化算符 $\hat{U}^N$（其中 $N = t/\varepsilon$）所生成的概率幅分布 $\Psi(x,t)$，**一致收敛 (Uniformly Converges)** 于大质量狄拉克方程 $(i \slashed{\partial} - m)\Psi = 0$ 的解。
+则在连续极限 $\varepsilon \to 0$ 下，系统演化算符 $\hat{U}^N$（其中 $N = t/\varepsilon$）所生成的概率幅分布 $\Psi(x,t)$，**一致收敛 (Uniformly Converges)** 于大质量狄拉克方程 $(i \not{\partial} - m)\Psi = 0$ 的解。
 
 **证明注记**：
 对于 3+1 维情形，证明稍微复杂，涉及到彭罗斯网络的各向同性平均（见 3.2 节）。在准晶体网络上，移位算符 $\hat{S}$ 不再是简单的左右移动，而是沿着二十面体顶点方向的加权求和。根据中心极限定理的量子模拟形式，这些离散位移的张量积在宏观上平均化为梯度算符 $\nabla = (\partial_x, \partial_y, \partial_z)$，从而导出 3+1 维的韦尔方程（无质量极限）或狄拉克方程（有质量情形）。

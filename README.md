@@ -13,6 +13,8 @@
 
 [中文版 (Chinese Version)](README_cn.md)
 
+[📄 Papers Index](docs/papers/index_en.md) | [📄 论文索引](docs/papers/index.md)
+
 ---
 
 ## 🚀 Abstract
@@ -73,6 +75,15 @@ We map physical phenomenology directly to mathematical structures. This eliminat
 | **Consciousness** | **Self-Referential Loops** (Recursive Functions) 👁️ |
 
 ---
+
+## 📄 Papers (LaTeX Manuscripts)
+
+This repository also maintains an interconnected paper series (LaTeX manuscripts) that formalizes the core mechanism chain and its applications.
+
+- **Index (EN)**: [`docs/papers/index_en.md`](docs/papers/index_en.md)
+- **Index (中文)**: [`docs/papers/index.md`](docs/papers/index.md)
+- **Recommended start**: HPΩT → HPA → STI → MAI → FoP → CAP → HPD (see the papers index for the dependency graph and alternatives)
+- **Direct PDFs**: [`HPA`](docs/papers/2025_holographic_polar_arithmetic/main.pdf), [`FoP`](docs/papers/2025_foundations_of_physics_submission/main.pdf), [`CAP`](docs/papers/2025_computational_action_principle_hpa_omega/main.pdf)
 
 ## 📚 Table of Contents
 
