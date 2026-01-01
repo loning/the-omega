@@ -3,6 +3,7 @@
 - [首页](./index_cn.md)
 - [Attribution Covenant (EN)](./covenant_en.md)
 - [署名契约](./covenant_cn.md)
+- [论文索引与关系图](./papers/index.md)
 - [Foundations of Physics: Geometry and Information (EN)](./books/book-foundation-of-phys-in-geo-and-info/index_en.md)
     - [Foreword: Reconstructing Reality via Algorithms and Geometry](./books/book-foundation-of-phys-in-geo-and-info/foreword_en.md)
     - [Volume I: Discrete Ontology — Physical Foundations of Information]()
