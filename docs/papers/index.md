@@ -44,7 +44,7 @@ English version: [`index_en.md`](./index_en.md)
   - **定位**：**纯数学/符号动力学—拓扑—复分析接口篇**：Zeckendorf 过滤（21）、循环闭合分裂（18+3）、Abel–ζ 极点屏障、Hilbert address family；含可复现实验脚本
   - **主要依赖**：HHU（Hilbert 折叠）+ HPA（Zeckendorf shift）
 
-- **`2025_z128_standard_model_stable_sector_hpa_omega/`（Z128/SM）**：A Standard Model of Stable Sectors for $\ZZ_{128}$ Scanning Readout: $\varphi$--$\pi$--$\e$ Resolution Folding, Hilbert-Chiral Addressing, and Antimatter Duality
+- **`2025_z128_standard_model_stable_sector_hpa_omega/`（Z128/SM）**：A Standard Model of Stable Sectors for $\mathbb{Z}_{128}$ Scanning Readout: $\varphi$--$\pi$--$e$ Resolution Folding, Hilbert-Chiral Addressing, and Antimatter Duality
   - **PDF**：[`main.pdf`](./2025_z128_standard_model_stable_sector_hpa_omega/main.pdf)
   - **TeX**：[`main.tex`](./2025_z128_standard_model_stable_sector_hpa_omega/main.tex)
   - **定位**：**粒子物理接口篇**：在 $64\to 21$ 与 $18\oplus 3$ 的可证核心上，给出可复现的 **21→SM 场层标注**、**质量谱（含 W/Z/H）**，并提供 **20 轮有界复杂度刚性搜索** 与 **审计通过/失败汇总表**
@@ -278,7 +278,7 @@ flowchart TB
 
 ### `2025_resolution_folding_phi_pi_e_hpa_omega/`（RF，Resolution Folding）
 
-- **定位**：把 $64\to 21$ 投影写成可审计的 Zeckendorf–Hilbert–Abel 框架，并给出与 $\varphi$–$\pi$–$\e$ 三算子约束一致的分辨率折叠机制与可复现实验。
+- **定位**：把 $64\to 21$ 投影写成可审计的 Zeckendorf–Hilbert–Abel 框架，并给出与 $\varphi$–$\pi$–$e$ 三算子约束一致的分辨率折叠机制与可复现实验。
 - **做了什么**：
   - **Zeckendorf 过滤（21）**：把离散读出通过规范编码压缩到稳定扇区（21）。
   - **闭合分裂（18+3）**：给出循环闭合/分裂结构，并作为后续场层标注的核心输入。

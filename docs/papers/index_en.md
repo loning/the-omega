@@ -45,7 +45,7 @@ Grouped by role (each item uses `main.tex` as the entry; if `main.pdf` exists yo
   - **Role**: **pure math / symbolic dynamics–topology–complex analysis interface** — Zeckendorf filtering (21), loop-closure split (18+3), Abel–ζ pole barrier, Hilbert address family; includes reproducible scripts
   - **Depends on**: HHU (Hilbert folding) + HPA (Zeckendorf shift)
 
-- **`2025_z128_standard_model_stable_sector_hpa_omega/` (Z128/SM)**: A Standard Model of Stable Sectors for $\ZZ_{128}$ Scanning Readout: $\varphi$--$\pi$--$\e$ Resolution Folding, Hilbert-Chiral Addressing, and Antimatter Duality
+- **`2025_z128_standard_model_stable_sector_hpa_omega/` (Z128/SM)**: A Standard Model of Stable Sectors for $\mathbb{Z}_{128}$ Scanning Readout: $\varphi$--$\pi$--$e$ Resolution Folding, Hilbert-Chiral Addressing, and Antimatter Duality
   - **PDF**: [`main.pdf`](./2025_z128_standard_model_stable_sector_hpa_omega/main.pdf)
   - **TeX**: [`main.tex`](./2025_z128_standard_model_stable_sector_hpa_omega/main.tex)
   - **Role**: **particle interface** — reproducible 21→SM field labeling, mass spectrum (incl. W/Z/H), 20-round bounded-complexity rigidity search and audit summaries
