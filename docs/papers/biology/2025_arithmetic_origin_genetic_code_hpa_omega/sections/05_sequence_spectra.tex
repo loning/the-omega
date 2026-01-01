@@ -62,6 +62,39 @@ This makes the theory falsifiable on any dataset without hidden assumptions.
 \paragraph{Stop-context uplift output.}
 When \path{--stop-window} is enabled, the CLI reports for each stop class $s\in\{\mathrm{UAA,UAG,UGA}\}$ the before/after uplift window means and histograms (Appendix~\ref{app:stop_context_windows}), directly supporting quantitative tests of prediction~P2.
 
+\subsection{Genome-scale check on human RefSeq mRNA}
+\label{sec:refseq_transcriptome_check}
+
+As an initial large-corpus check of predictions~P1--P2 under $\mu^\ast$, we scan the human RefSeq mRNA collection.
+For each transcript we select the longest ORF across frames and compute terminal-stop statistics, boundary-hit rates, stop-context uplift windows, and basic $Z$-spectrum fingerprint metrics.
+The full tables are recorded in Appendix~\ref{app:refseq_transcriptome}; here we report the headline summary:
+\input{sections/generated/refseq_transcriptome_summary}
+
+\paragraph{Terminal stop usage and the boundary-stop rate.}
+At window length $m=6$, only $\mathrm{UAA}$ is boundary-aligned (Section~\ref{sec:stop_fine_structure}).
+Thus the \emph{boundary-stop rate at termination} in a corpus is exactly the empirical frequency of terminal $\mathrm{UAA}$.
+In human RefSeq mRNA, $\mathrm{UGA}$ is the most frequent terminal stop, followed by $\mathrm{UAA}$ and $\mathrm{UAG}$ (Appendix~\ref{app:refseq_transcriptome}).
+
+\paragraph{Stop-context uplift windows.}
+Appendix~\ref{app:stop_context_windows} defines the before/after uplift window means, and Appendix~\ref{app:refseq_transcriptome} reports their empirical values for terminal stop codons at window radius $k=10$.
+The corresponding pairwise Welch tests are:
+\input{sections/generated/refseq_stop_context_tests}
+These differences are quantitative evidence that terminal-stop neighborhoods carry distinct uplift signatures across stop classes in the human transcriptome.
+Effect-size summaries and multi-$k$ sensitivity tables are recorded in Appendix~\ref{app:refseq_transcriptome}.
+
+\paragraph{Codon-usage bias relative to folding spectra.}
+Beyond control sites, the folding map assigns every coding token a pair $(Z,U)$.
+In the same RefSeq scan, we compare the observed corpus averages $(\overline{Z},\overline{U})$ to an amino-acid preserving null that draws synonymous codons uniformly within each amino-acid family.
+We find a strong deviation under this null:
+\input{sections/generated/refseq_codon_usage_null}
+This indicates that codon usage in human RefSeq mRNA is not neutral with respect to the folding-derived spectra, even after conditioning on amino-acid composition.
+An additive decomposition of the deviation across amino-acid families and synonymous codons is recorded in Appendix~\ref{app:refseq_transcriptome}.
+
+\paragraph{\texorpdfstring{$Z$}{Z}-spectrum fingerprint metrics.}
+Finally, we report simple per-ORF summary features---boundary-hit rate, entropy of $Z$, and lag-1 autocorrelation of $Z$---as an initial sequence-level fingerprint family:
+\input{sections/generated/refseq_zspectrum_fingerprint}
+The near-zero lag-1 autocorrelation in particular suggests that the minimal $Z$ process is close to uncorrelated at the codon scale in this dataset, while the entropy values indicate broad usage of the available $Z$ levels.
+
 \subsection{Human transcript case studies: HBB and INS}
 \label{sec:human_case_studies}
 

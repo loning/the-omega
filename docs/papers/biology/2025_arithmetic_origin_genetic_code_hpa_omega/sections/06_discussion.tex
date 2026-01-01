@@ -35,6 +35,11 @@ Alternative weak objectives (e.g.\ combining boundary hits with mutual informati
 
 The boundary sector contains exactly six codons (two per boundary word), independent of the nucleotide encoding.
 An encoding can therefore never map the three stop codons to \emph{all} boundary codons (the sets cannot match), and moreover an exhaustive search shows that under the standard stop set $\{\mathrm{UAA,UAG,UGA}\}$ it is impossible to place all three stops inside the boundary sector (Appendix~\ref{app:generated_tables}).
+\medskip
+
+\noindent A complementary check across nonstandard translation tables is also consistent with this rigidity.
+Using the NCBI translation-table collection (\path{gc.prt}), we find that under $\mu^\ast$ at window length $6$ the stop-set boundary-hit count is at most one across all listed codes:
+\input{sections/generated/nonstandard_code_summary}
 
 This suggests a natural structural interpretation: $\mathrm{UAA}$ may correspond to a ``hard'' topological stop aligned with boundary failure, while $\mathrm{UAG}$ and $\mathrm{UGA}$ may correspond to ``soft'' or context-dependent stops whose semantics is realized by additional factors beyond the minimal window-$6$ folding layer.
 
@@ -48,6 +53,37 @@ Empirically, translation termination is known to depend on the nucleotide contex
 
 The framework here does not attempt to derive these biochemical mechanisms.
 Instead it provides an explicit quantitative signal family $(Z,U)$ that can be extracted from sequences and compared across stop classes and contexts using the protocols in Appendix~\ref{app:stat_tests}.
+\medskip
+
+\noindent As a direct, reproducible data point, we mined GenBank records annotated with \texttt{transl\_except} and extracted both selenocysteine and pyrrolysine recoding events:
+\input{sections/generated/recoding_sites_summary}
+\input{sections/generated/recoding_context_tests}
+\input{sections/generated/recoding_context_controls}
+\input{sections/generated/recoding_terminal_stop_bias}
+
+\paragraph{CDS-level terminal-stop baselines and stratification.}
+Because a single CDS can contain multiple \texttt{transl\_except} sites, terminal-stop contexts are treated at CDS resolution: each CDS contributes at most one terminal-stop window to the reference distribution.
+We also report codon- and domain-stratified tests to make explicit which subsets drive the aggregate signal; in the present dataset, recoding is dominated by $\mathrm{UGA}$/Sec events and non-eukaryotic strata are small.
+
+\paragraph{Within-CDS controls.}
+In coding regions, the stop codons $\mathrm{UGA}$ and $\mathrm{UAG}$ are normally forbidden as internal codons; thus an internal same-codon control (Control-B) is typically unavailable once \texttt{transl\_except} sites are excluded.
+Instead we compare each recoding site to random internal non-stop codon positions from the same CDS (Control-C), which provides a within-gene baseline for uplift-context windows.
+The resulting signal persists under this within-CDS control, supporting the interpretation of uplift-context sensitivity as a recoding interface.
+
+\subsection{Corpus-scale biases and spectrum fingerprints}
+\label{sec:corpus_biases}
+
+The RefSeq transcriptome scan also reveals two broader, sequence-level phenomena.
+
+\paragraph{Codon usage is biased with respect to $(Z,U)$ under an amino-acid preserving null.}
+Even after conditioning on amino-acid composition, the empirical coding-token averages $(\overline{Z},\overline{U})$ differ strongly from the null expectation under uniform selection among synonymous codons:
+\input{sections/generated/refseq_codon_usage_null}
+This does not by itself identify a mechanistic driver (e.g.\ mutational biases, translation kinetics, or selection on RNA structure), but it establishes that the folding-derived spectra are not statistically inert in a large human coding corpus.
+
+\paragraph{A compact spectrum fingerprint is available at the ORF level.}
+The per-ORF boundary rate, entropy of $Z$, and lag-1 autocorrelation provide a minimal feature vector that can be extracted from any genome without parameter fitting.
+\par\noindent\input{sections/generated/refseq_zspectrum_fingerprint}\par
+At least in human RefSeq mRNA, the lag-1 autocorrelation concentrates near zero, suggesting that any longer-range structure in $Z$ (if present) would need to be probed at larger windows or by conditioning on functional annotations.
 
 \subsection{Resolution upgrade and context}
 \label{sec:resolution_upgrade}

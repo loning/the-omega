@@ -78,9 +78,9 @@ def write_tex_summary(n_bits: int, chi: int, chi_rev: int, chi_ref: int) -> None
         f"For Hilbert order $n={n}$: "
         f"$\\chi(\\text{{path}})={chi}$, "
         f"$\\chi(\\text{{reversed path}})={chi_rev}$, and "
-        f"$\\chi(\\text{{reflected path}})={chi_ref}$.\\n"
+        f"$\\chi(\\text{{reflected path}})={chi_ref}$."
     )
-    (out_dir / "hilbert_chi_summary.tex").write_text(text, encoding="utf-8")
+    (out_dir / "hilbert_chi_summary.tex").write_text(text + "\n", encoding="utf-8")
 
 
 def main() -> None:

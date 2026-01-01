@@ -15,6 +15,9 @@ The scripts reproduce:
 \item stop-codon fine structure, boundary-sector codon list, and the amino-acid spectral summary;
 \item mutual-information diagnostics under uniform codon prior;
 \item sequence-level $(Z,U)$ traces for arbitrary DNA/RNA FASTA inputs, with optional ORF extraction.
+\item genome-scale scans of the human RefSeq mRNA corpus (best-ORF selection, terminal stop statistics, stop-context windows, and $Z$-spectrum fingerprint metrics);
+\item recoding-site extraction (Sec/Pyl) and context tests via \texttt{transl\_}\allowbreak\texttt{except};
+\item nonstandard translation-table scanning from NCBI \path{gc.prt}.
 \end{itemize}
 
 \paragraph{What is a theorem vs.\ what is a finite enumeration.}
@@ -25,17 +28,36 @@ The only ``search'' performed is over a finite, explicitly bounded space (the $2
 \subsection{Main entry points}
 \begin{itemize}
 \item \path{exp_genetic_code_decompiler.py}: generates all fragments in \path{sections/generated/} and prints key checks.
+\item \path{fetch_datasets.py}: downloads public datasets described in \path{data/manifest.json} and updates checksums.
+\item RefSeq transcriptome scan: \path{exp_refseq_transcriptome.py}.
+\item RefSeq shard merge: \path{exp_refseq_transcriptome_merge.py}.
+\item \path{exp_recoding_sites.py}: recoding-site extraction and summary tables (Sec/Pyl).
+\item \path{exp_nonstandard_codes.py}: nonstandard translation-table scan from \path{gc.prt}.
+\item \path{exp_nonstandard_sequence_tests.py}: sequence-level nonstandard-code tests driven by \path{manifest.json}.
+\item \path{exp_corpus_panel.py}: cross-domain corpus panel scan driven by \path{manifest.json}.
 \item \path{seq_spectrum_cli.py}: command-line sequence spectrum tool (FASTA input, frame/ORF options, TSV/JSONL outputs).
 \end{itemize}
 
+\subsection{One-command end-to-end run}
+The repository includes a single driver that can refresh datasets, regenerate all LaTeX fragments, and build the PDF:
+\begin{verbatim}
+python3 scripts/run_all.py --download --pdf
+\end{verbatim}
+If your environment cannot validate the TLS certificate chain for NCBI/Ensembl endpoints, add:
+\begin{verbatim}
+python3 scripts/run_all.py --download --insecure --pdf
+\end{verbatim}
+
 \subsection{Sequence spectrum CLI usage}
-The CLI requires at least one output: either a per-codon TSV trace (\path{--out}) or a per-segment JSONL summary (\path{--summary-out}), or both.
+The CLI requires at least one output. Use \path{--out} (per-codon TSV trace) and/or \path{--summary-out} (per-segment JSONL summary).
+The Zeckendorf window length can be set via \path{--m} (default: $m=6$).
 
 \paragraph{Full sequence (single frame).}
 \begin{verbatim}
 python3 scripts/seq_spectrum_cli.py \
   --fasta your_sequence.fasta \
   --frame 0 \
+  --m 6 \
   --out out_trace.tsv \
   --summary-out out_summary.jsonl \
   --stop-window 10
@@ -47,6 +69,7 @@ ORFs are extracted using start \texttt{AUG} and stops \texttt{UAA/UAG/UGA} in th
 python3 scripts/seq_spectrum_cli.py \
   --fasta your_sequence.fasta \
   --frame 0 \
+  --m 6 \
   --orfs --min-codons 100 \
   --summary-out orf_summary.jsonl \
   --stop-window 10
@@ -62,16 +85,14 @@ Each JSON line corresponds to one segment (either \texttt{full} or one ORF) and 
 \end{itemize}
 
 \subsection{Testing nonstandard genetic codes}
-\label{app:nonstandard_codes}
-
-To test prediction~P3 on organisms with nonstandard translation tables, replace the codon-to-label map used by the scripts.
-Concretely, the standard code is defined as the dictionary \path{GENETIC_CODE} in \path{scripts/genetic_code_tools.py}.
-For an alternative genetic code, update that mapping (or load a mapping generated from an external translation-table source) and rerun:
+For translation-table level tests of prediction~P3, \path{exp_nonstandard_codes.py} parses the NCBI table file \path{data/gc.prt} and reports the stop/start sets and their boundary-hit metrics under $\mu^\ast$.
+For sequence-level tests on organismal CDS corpora (e.g.\ code-specific start/stop usage and boundary-hit enrichment), \path{exp_nonstandard_sequence_tests.py} reads \path{data/manifest.json} and evaluates the example corpora listed under \path{panels/nonstandard\_examples\_v1}.
+To test a specific organismal code, either:
 \begin{itemize}
-\item \path{exp_genetic_code_decompiler.py} for encoding-level scan diagnostics;
-\item \path{seq_spectrum_cli.py} for sequence-level $(Z,U)$ traces and stop-context windows.
+\item use \path{exp_nonstandard_codes.py} directly (translation-table level), or
+\item run \path{exp_nonstandard_sequence_tests.py} on an organism-specific CDS FASTA dataset listed in \path{manifest.json}.
 \end{itemize}
-The folding map $\mathrm{Fold}_6$ and all index-level invariants remain unchanged; only the semantic labeling layer (amino acid / stop identity) changes.
+The folding map $\mathrm{Fold}_6$ and all index-level invariants remain unchanged; only the semantic labeling layer changes.
 
 \subsection{Generated LaTeX fragments}
 The scripts write small LaTeX fragments (table rows and summary lines) into:
@@ -102,5 +123,12 @@ curl -L "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id
 curl -L -H "Accept: text/x-fasta" "https://rest.ensembl.org/sequence/id/ENST00000381330?type=cdna" \
   -o data/ENST00000381330.5.fasta
 \end{Verbatim}
+
+\subsection{Human RefSeq mRNA corpus}
+The transcriptome scan uses the RefSeq human mRNA FASTA shards:
+\begin{center}
+\path{data/refseq_hsapiens_mrna/human.*.rna.fna.gz}
+\end{center}
+These are downloaded and checksummed via \path{scripts/fetch_datasets.py} according to \path{data/manifest.json}.
 
 
