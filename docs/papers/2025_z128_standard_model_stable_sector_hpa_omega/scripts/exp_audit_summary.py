@@ -249,6 +249,33 @@ def main() -> None:
         ok = math.isfinite(loop_Einf_min)
         rows.append(_row(r"loop-scale PMNS $E_\infty$ finite", "finite", f"{loop_Einf_min:.3f}", ok))
 
+    # Loop-scale SU(3) rotation-angle sanity: require some 3/4-cycle loops and angle range within [0,180].
+    angle_path = gen_dir / "holonomy_loop_scale_su3_angle_rows.tex"
+    if angle_path.exists():
+        total_cnt = 0
+        mn = None
+        mx = None
+        for line in angle_path.read_text(encoding="utf-8").splitlines():
+            s = line.strip()
+            if not s or s.startswith("\\bottomrule"):
+                continue
+            parts = [p.strip() for p in s.split("&")]
+            if len(parts) < 5:
+                continue
+            cnt = _parse_first_float(parts[1])
+            a_min = _parse_first_float(parts[3])
+            a_max = _parse_first_float(parts[4])
+            if cnt is None or a_min is None or a_max is None:
+                continue
+            if cnt <= 0:
+                continue
+            total_cnt += int(cnt)
+            mn = a_min if mn is None else min(mn, a_min)
+            mx = a_max if mx is None else max(mx, a_max)
+        ok = (total_cnt > 0) and (mn is not None) and (mx is not None) and (0.0 <= mn <= mx <= 180.0)
+        obs = f"count={total_cnt}, range=[{mn:.1f},{mx:.1f}]" if mn is not None and mx is not None else f"count={total_cnt}"
+        rows.append(_row(r"loop-scale $SO(3)$ angle range", r"$[0,180]$", obs, ok))
+
     # Inverse generation fit: require a perfect classifier exists (errors=0).
     inv_gen_line = _read_first_data_line(gen_dir / "inverse_generation_fit_rows.tex")
     # The fragment has multiple rows; we want the best-row which is the third line in our generator.

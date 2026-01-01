@@ -16,6 +16,10 @@ We compare two bounded score families:
   (B) affine on the first five word bits:
       S(w) = Σ_{i=1..5} c_i w_i + d
 
+  (C) depth-3 decision tree on the six word bits:
+      internal nodes test a bit w_i and branch left/right; leaf labels are chosen
+      by majority vote (deterministic tie-break).
+
 Both families use bounded integer coefficients.
 
 Prediction rule (projection):
@@ -143,6 +147,74 @@ def best_affine_bits5(data: List[Datum], B: int, d_min: int = -6, d_max: int = 6
     return best
 
 
+def best_depth3_tree_bits(data: List[Datum]) -> Tuple[int, int, Tuple[int, ...], Tuple[int, ...]]:
+    """
+    Search full binary trees of depth 3 with bit-tests at 7 internal nodes.
+    Return (errors, complexity, bitsel(7), leaf_labels(8)).
+
+    Complexity = number of distinct bits used.
+    Tie-break is lexicographic on (errors, complexity, bitsel, leaf_labels).
+    """
+    # Precompute bit vectors and label indices.
+    bitvecs = [[1 if ch == "1" else 0 for ch in p.w] for p in data]
+    y_vals = list(ALLOWED)
+    y_to_idx = {y: i for i, y in enumerate(y_vals)}
+    y_idx = [y_to_idx[p.Y_num] for p in data]
+    n_classes = len(y_vals)
+    counts = [0] * (8 * n_classes)
+    totals = [0] * 8
+
+    best = None  # (errors, complexity, bitsel, leaf_labels)
+    for bitsel in itertools.product(range(6), repeat=7):
+        # Reset counters.
+        for i in range(8 * n_classes):
+            counts[i] = 0
+        for i in range(8):
+            totals[i] = 0
+
+        for bits, yi in zip(bitvecs, y_idx):
+            node = 0
+            for _depth in range(3):
+                b = bitsel[node]
+                v = bits[b]
+                node = 2 * node + 1 + v
+            leaf = node - 7
+            totals[leaf] += 1
+            counts[leaf * n_classes + yi] += 1
+
+        leaf_labels: List[int] = []
+        err = 0
+        for leaf in range(8):
+            if totals[leaf] == 0:
+                leaf_labels.append(0)
+                continue
+            best_lab = None  # (-count, abs(y), y, idx)
+            for j, y in enumerate(y_vals):
+                cnt = counts[leaf * n_classes + j]
+                cand = (-cnt, abs(y), y, j)
+                if best_lab is None or cand < best_lab:
+                    best_lab = cand
+            if best_lab is None:
+                leaf_labels.append(0)
+                continue
+            chosen_j = best_lab[3]
+            chosen_y = y_vals[chosen_j]
+            leaf_labels.append(chosen_y)
+            max_cnt = counts[leaf * n_classes + chosen_j]
+            err += totals[leaf] - max_cnt
+        leaf_labels_t = tuple(leaf_labels)
+
+        comp = len(set(bitsel))
+        cand = (err, comp, tuple(bitsel), leaf_labels_t)
+        if best is None or cand < best:
+            best = cand
+
+    if best is None:
+        raise AssertionError("No trees enumerated.")
+    err, comp, bitsel, leaf_labels = best
+    return err, comp, bitsel, leaf_labels
+
+
 def main() -> None:
     data = build_dataset()
     n = len(data)
@@ -166,6 +238,15 @@ def main() -> None:
     c1, c2, c3, c4, c5 = coeffs5
     rows.append(
         f"$|c_i|\\le {B5}$ & $Y_{{\\mathrm{{num}}}}$ (bits $1..5$) & $(c_1,\\dots,c_5,d)=({c1},{c2},{c3},{c4},{c5},{d5})$ & {err2} & {acc2:.3f} \\\\"
+    )
+
+    # (C) depth-3 decision tree on word bits
+    err3, comp3, bitsel, leaf_labels = best_depth3_tree_bits(data)
+    acc3 = 1.0 - float(err3) / float(n)
+    bitsel_tex = ",".join(str(b) for b in bitsel)
+    leaf_tex = ",".join(str(y) for y in leaf_labels)
+    rows.append(
+        rf"$\mathrm{{depth}}=3$ & $Y_{{\mathrm{{num}}}}$ (bit tree) & $\texttt{{bits}}=({bitsel_tex}),\ \texttt{{leaf}}=({leaf_tex})$ & {err3} & {acc3:.3f} \\"
     )
 
     rows.append("\\bottomrule")

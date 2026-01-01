@@ -186,6 +186,13 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Holonomy loop-scale SU(3) angles (toy)",
+            script="exp_holonomy_loop_scale_su3_angle_sweep.py",
+            expected_outputs=[
+                "sections/generated/holonomy_loop_scale_su3_angle_rows.tex",
+            ],
+        ),
+        Step(
             name="Holonomy phase-lift angles denom sweep (toy)",
             script="exp_holonomy_phase_lift_angles_denom_sweep.py",
             expected_outputs=[
