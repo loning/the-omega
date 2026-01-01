@@ -23,6 +23,52 @@ jobs:
       MDBOOK_KATEX_VERSION: 0.9.4
     steps:
       - uses: actions/checkout@v4
+
+      - name: Compute papers cache key
+        id: papers_cache_key
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/build_papers_pdfs.py cache-key --github-output
+
+      - name: Cache papers PDFs
+        id: cache_papers_pdfs
+        uses: actions/cache@v4
+        with:
+          path: |
+            docs/papers/**/main.pdf
+            .ci_cache/papers/**/sources.sha256
+          key: ${{ runner.os }}-papers-pdf-${{ steps.papers_cache_key.outputs.hash }}
+          restore-keys: |
+            ${{ runner.os }}-papers-pdf-
+
+      - name: Plan papers PDF build
+        id: papers_plan
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/build_papers_pdfs.py plan --github-output
+
+      - name: Install TeX Live (only if needed)
+        if: steps.papers_plan.outputs.papers_to_build != '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y latexmk texlive-full
+
+      - name: Build papers PDFs (only if needed)
+        if: steps.papers_plan.outputs.papers_to_build != '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/build_papers_pdfs.py build
+
+      - name: Verify all papers PDFs exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/build_papers_pdfs.py verify
       
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
