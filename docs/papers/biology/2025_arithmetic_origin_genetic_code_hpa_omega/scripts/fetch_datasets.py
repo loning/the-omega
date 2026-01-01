@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Any
 
 from data_manager import download_file, read_json, sha256_file, ssl_context, utc_now_iso, write_json
+from progress_tools import Heartbeat
 
 
 DEFAULT_GITHUB_REPO = "loning/the-omega"
@@ -399,7 +400,7 @@ def _genbank_accession(record: str) -> str | None:
     return None
 
 
-def fetch_recoding_genbank(m: dict[str, Any], *, verify_ssl: bool) -> None:
+def fetch_recoding_genbank(m: dict[str, Any], *, verify_ssl: bool, heartbeat_s: float = 60.0) -> None:
     ds = m["datasets"]["ncbi_recoding_genbank"]
     local_dir = _abs_path(ds["local_dir"])
     local_dir.mkdir(parents=True, exist_ok=True)
@@ -407,6 +408,8 @@ def fetch_recoding_genbank(m: dict[str, Any], *, verify_ssl: bool) -> None:
     gb_dir.mkdir(parents=True, exist_ok=True)
 
     max_per_q = int(ds.get("max_records_per_query", 200))
+    hb_all = Heartbeat(every_s=float(heartbeat_s), prefix="[progress] fetch_recoding_genbank")
+    hb_all.force(f"start queries={len(ds.get('queries', []) or [])} max_records_per_query={max_per_q}")
     # Deduplicate entries by accession to avoid manifest bloat when queries overlap.
     # Also preserve previously recorded accessions so re-running with new queries does not shrink the manifest.
     out_by_acc: dict[str, dict[str, Any]] = {}
@@ -420,7 +423,10 @@ def fetch_recoding_genbank(m: dict[str, Any], *, verify_ssl: bool) -> None:
         qid = q["id"]
         db = q.get("db", "nuccore")
         term = q["term"]
+        hb = Heartbeat(every_s=float(heartbeat_s), prefix=f"[progress] fetch_recoding_genbank:{qid}")
+        hb.force("esearch")
         ids = _eutils_esearch(db=db, term=term, retmax=max_per_q, verify_ssl=verify_ssl)
+        hb.force(f"esearch ids={len(ids)}")
         (local_dir / f"esearch_{qid}.json").write_text(
             json.dumps({"db": db, "term": term, "ids": ids}, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8",
@@ -429,18 +435,27 @@ def fetch_recoding_genbank(m: dict[str, Any], *, verify_ssl: bool) -> None:
         # First, use esummary to map nuccore uids -> accessionversion, and only efetch missing records.
         summary_chunk = 200
         efetch_chunk = 20
+        uids_total = int(len(ids))
+        uids_processed = 0
+        n_existing = 0
+        n_need_fetch = 0
+        n_new_records = 0
+        n_uids_no_acc = 0
         for i in range(0, len(ids), summary_chunk):
             uids = ids[i : i + summary_chunk]
+            uids_processed += int(len(uids))
             uid_to_acc = _eutils_esummary_accessionversions(db=db, ids=uids, verify_ssl=verify_ssl)
 
             need_fetch: list[str] = []
             for uid in uids:
                 acc = uid_to_acc.get(str(uid))
                 if not acc:
+                    n_uids_no_acc += 1
                     need_fetch.append(uid)
                     continue
                 path = gb_dir / f"{acc}.gb"
                 if path.exists():
+                    n_existing += 1
                     if acc not in out_by_acc:
                         out_by_acc[acc] = {
                             "query": qid,
@@ -452,6 +467,7 @@ def fetch_recoding_genbank(m: dict[str, Any], *, verify_ssl: bool) -> None:
                             "retrieved_at_utc": retrieved_at,
                         }
                     continue
+                n_need_fetch += 1
                 need_fetch.append(uid)
 
             for j in range(0, len(need_fetch), efetch_chunk):
@@ -465,6 +481,7 @@ def fetch_recoding_genbank(m: dict[str, Any], *, verify_ssl: bool) -> None:
                     path = gb_dir / f"{acc}.gb"
                     if not path.exists():
                         path.write_text(rec, encoding="utf-8")
+                        n_new_records += 1
                     if acc not in out_by_acc:
                         out_by_acc[acc] = {
                             "query": qid,
@@ -475,6 +492,19 @@ def fetch_recoding_genbank(m: dict[str, Any], *, verify_ssl: bool) -> None:
                             "sha256": sha256_file(path),
                             "retrieved_at_utc": retrieved_at,
                         }
+                hb.maybe(
+                    f"uids={uids_processed}/{uids_total} existing={n_existing} need_fetch={n_need_fetch} "
+                    f"new_records={n_new_records} manifest_acc={len(out_by_acc)}"
+                )
+            hb.maybe(
+                f"uids={uids_processed}/{uids_total} existing={n_existing} need_fetch={n_need_fetch} "
+                f"new_records={n_new_records} uids_no_acc={n_uids_no_acc} manifest_acc={len(out_by_acc)}"
+            )
+
+        hb.force(
+            f"done ids={uids_total} existing={n_existing} need_fetch={n_need_fetch} "
+            f"new_records={n_new_records} uids_no_acc={n_uids_no_acc} manifest_acc={len(out_by_acc)}"
+        )
 
     ds["genbank_files"] = [out_by_acc[k] for k in sorted(out_by_acc)]
     ds["retrieved_at_utc"] = retrieved_at
@@ -837,6 +867,12 @@ def main() -> None:
         action="store_true",
         help="Disable TLS certificate verification for HTTPS downloads (use only if required by your environment).",
     )
+    p.add_argument(
+        "--heartbeat-s",
+        type=float,
+        default=60.0,
+        help="Emit a progress heartbeat at least once per this many seconds (0 disables).",
+    )
     args = p.parse_args()
 
     dataset = str(args.dataset)
@@ -874,7 +910,7 @@ def main() -> None:
             fetch_gc_prt(m, verify_ssl=verify_ssl)
             continue
         if k == "ncbi_recoding_genbank":
-            fetch_recoding_genbank(m, verify_ssl=verify_ssl)
+            fetch_recoding_genbank(m, verify_ssl=verify_ssl, heartbeat_s=float(args.heartbeat_s))
             continue
 
         ds = m["datasets"].get(k)

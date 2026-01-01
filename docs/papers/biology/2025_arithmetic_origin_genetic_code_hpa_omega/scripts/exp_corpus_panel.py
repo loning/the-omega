@@ -26,6 +26,7 @@ from typing import Any, Iterator
 
 from cache_manager import cache_hit, cache_key_digest, cache_meta_path, write_json_atomic
 from genetic_code_tools import BOUNDARY_WORDS, GENETIC_CODE, START_CODON, STOP_CODONS, fold_codon, iter_fasta
+from progress_tools import Heartbeat
 from stats_tools import aa_preserving_null_decomposition
 
 
@@ -565,6 +566,8 @@ def scan_refseq_mrna_best_orf(
     codon_to_aa: dict[str, str],
     stop_codons: set[str],
     max_records: int = 0,
+    heartbeat_s: float = 60.0,
+    progress_label: str = "refseq_mrna_best_orf",
 ) -> dict[str, object]:
     # Aggregate stats over best ORF per transcript.
     n_records = 0
@@ -592,11 +595,15 @@ def scan_refseq_mrna_best_orf(
     after_stats_mk: dict[str, dict[int, RunningStats]] = {c: {k: RunningStats() for k in ks} for c in stop_codons}
     max_k = max(ks) if ks else 0
 
+    hb = Heartbeat(every_s=float(heartbeat_s), prefix=f"[progress] corpus_panel:{progress_label}")
+    hb.force(f"start files={len(files)} max_records={int(max_records)}")
+
     for fp in files:
         for _rid, seq in iter_fasta(str(fp)):
             n_records += 1
             if max_records and n_records > int(max_records):
                 break
+            hb.maybe(f"file={fp.name} records={n_records} with_orf={n_with_orf} coding_tokens={coding_tokens}")
             best = best_orf_across_frames(seq)
             if best is None:
                 continue
@@ -709,6 +716,7 @@ def scan_refseq_mrna_best_orf(
         if max_records and n_records > int(max_records):
             break
 
+    hb.force(f"done records={n_records} with_orf={n_with_orf} coding_tokens={coding_tokens}")
     boundary_rate = boundary_token_count / float(coding_tokens) if coding_tokens > 0 else float("nan")
     stop_total = int(sum(term_stop_counts.values()))
     term_stop_rates = {c: (float(term_stop_counts.get(c, 0)) / float(stop_total) if stop_total else 0.0) for c in sorted(term_stop_counts)}
@@ -754,6 +762,8 @@ def scan_cds_fasta(
     codon_to_aa: dict[str, str],
     stop_codons: set[str],
     max_records: int = 0,
+    heartbeat_s: float = 60.0,
+    progress_label: str = "cds_fasta",
 ) -> dict[str, object]:
     n_records = 0
     n_used = 0
@@ -779,11 +789,18 @@ def scan_cds_fasta(
     ks = sorted({int(k) for k in k_list if int(k) >= 1})
     before_stats_mk: dict[str, dict[int, RunningStats]] = {c: {k: RunningStats() for k in ks} for c in stop_codons}
 
+    hb = Heartbeat(every_s=float(heartbeat_s), prefix=f"[progress] corpus_panel:{progress_label}")
+    hb.force(f"start files={len(files)} max_records={int(max_records)}")
+
     for fp in files:
         for _rid, seq in iter_fasta(str(fp)):
             n_records += 1
             if max_records and n_records > int(max_records):
                 break
+            hb.maybe(
+                f"file={fp.name} records={n_records} used={n_used} invalid={n_invalid} "
+                f"no_terminal_stop={n_no_terminal_stop} internal_stop={n_internal_stop}"
+            )
 
             # In-frame codons from base 0.
             L = (len(seq) // 3) * 3
@@ -881,6 +898,7 @@ def scan_cds_fasta(
         if max_records and n_records > int(max_records):
             break
 
+    hb.force(f"done records={n_records} used={n_used} invalid={n_invalid}")
     boundary_rate = boundary_token_count / float(coding_tokens) if coding_tokens > 0 else float("nan")
     stop_total = int(sum(term_stop_counts.values()))
     term_stop_rates = {c: (float(term_stop_counts.get(c, 0)) / float(stop_total) if stop_total else 0.0) for c in sorted(term_stop_counts)}
@@ -927,6 +945,12 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--out-json", default=str(root_dir() / "data" / "panel" / "corpus_panel_summary.json"), help="Output JSON path.")
     p.add_argument("--no-latex", action="store_true", help="Do not write LaTeX fragments.")
     p.add_argument("--max-records", type=int, default=0, help="Optional max records per dataset (0 = no limit).")
+    p.add_argument(
+        "--heartbeat-s",
+        type=float,
+        default=60.0,
+        help="Emit a progress heartbeat at least once per this many seconds (0 disables).",
+    )
     p.add_argument("--force", action="store_true", help="Force recomputation even if cached outputs exist.")
     return p.parse_args()
 
@@ -940,6 +964,12 @@ def _emit_latex_from_summary(out: dict[str, object]) -> None:
         k_list = []
     panel = str(out.get("panel") or "")
 
+    def tex_path(s: object) -> str:
+        t = str(s) if s is not None else ""
+        if not t or t == "-":
+            return "-"
+        return f"\\path{{{t}}}"
+
     # LaTeX rows: one per item (compact).
     # Columns: label, domain, mode, code_id, n_used, boundary_rate, term UAA/UAG/UGA fractions, U null delta
     rows = []
@@ -947,7 +977,9 @@ def _emit_latex_from_summary(out: dict[str, object]) -> None:
         if not isinstance(it, dict):
             continue
         if not it.get("present"):
-            rows.append(f"{it.get('label','-')} & {it.get('domain','-')} & {it.get('mode','-')} & {it.get('code_id','-')} & - & - & - & - & - & - & - \\\\")
+            rows.append(
+                f"{tex_path(it.get('label','-'))} & {it.get('domain','-')} & {tex_path(it.get('mode','-'))} & {it.get('code_id','-')} & - & - & - & - & - & - & - \\\\"
+            )
             continue
         summ = it.get("summary") or {}
         if not isinstance(summ, dict):
@@ -968,7 +1000,7 @@ def _emit_latex_from_summary(out: dict[str, object]) -> None:
         unull = float(((cu.get("U") or {}).get("null_mean") or float("nan")))  # type: ignore[union-attr]
         du = uobs - unull if (not math.isnan(uobs) and not math.isnan(unull)) else float("nan")
         rows.append(
-            f"{it.get('label','-')} & {it.get('domain','-')} & {it.get('mode','-')} & {it.get('code_id','-')} & "
+            f"{tex_path(it.get('label','-'))} & {it.get('domain','-')} & {tex_path(it.get('mode','-'))} & {it.get('code_id','-')} & "
             f"{n_used} & {br:.4f} & {uaa:.4f} & {uag:.4f} & {uga:.4f} & {uobs:.4f} & {du:+.4f} \\\\"
         )
     write_text(generated_dir() / "corpus_panel_rows.tex", "\n".join(rows) + "\n\\bottomrule\n")
@@ -980,7 +1012,7 @@ def _emit_latex_from_summary(out: dict[str, object]) -> None:
         except Exception:
             continue
     ks_s = ",".join(str(int(x)) for x in ks)
-    summary_lines = [f"Corpus panel {panel} generated $n={len(items)}$ item summaries with $k\\in\\{{{ks_s}\\}}$."]
+    summary_lines = [f"Corpus panel {tex_path(panel)} generated $n={len(items)}$ item summaries with $k\\in\\{{{ks_s}\\}}$."]
     write_text(generated_dir() / "corpus_panel_summary.tex", "\n".join(summary_lines) + "\n")
 
 
@@ -1172,6 +1204,8 @@ def main() -> None:
                     codon_to_aa=codon_to_aa,
                     stop_codons=stop_codons,
                     max_records=int(args.max_records),
+                    heartbeat_s=float(args.heartbeat_s),
+                    progress_label=label,
                 )
             elif mode == "cds_fasta":
                 res = scan_cds_fasta(
@@ -1180,6 +1214,8 @@ def main() -> None:
                     codon_to_aa=codon_to_aa,
                     stop_codons=stop_codons,
                     max_records=int(args.max_records),
+                    heartbeat_s=float(args.heartbeat_s),
+                    progress_label=label,
                 )
             else:
                 raise SystemExit(f"Unsupported mode: {mode} (dataset={dataset_key})")

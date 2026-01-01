@@ -32,6 +32,7 @@ from genetic_code_tools import (
     iter_fasta,
     student_t_cdf,
 )
+from progress_tools import Heartbeat
 
 
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
@@ -456,6 +457,12 @@ def parse_args() -> argparse.Namespace:
         help="Print progress every N records (0 disables).",
     )
     p.add_argument(
+        "--heartbeat-s",
+        type=float,
+        default=60.0,
+        help="Emit a progress heartbeat at least once per this many seconds (0 disables).",
+    )
+    p.add_argument(
         "--log",
         default=str(data_dir() / "transcriptome_scan.log"),
         help="Optional log file path (appends).",
@@ -499,12 +506,15 @@ def main() -> None:
             log_f.write(msg + "\n")
             log_f.flush()
 
+    hb = Heartbeat(every_s=float(args.heartbeat_s), prefix="[progress] refseq_transcriptome")
+
     if args.input:
         files = [Path(args.input)]
     else:
         files = read_manifest_files()
     if not files:
         raise SystemExit("No RefSeq FASTA shards found. Run scripts/fetch_datasets.py first.")
+    hb.force(f"start files={len(files)} stop_window={int(k_primary)} max_records={int(args.max_records or 0)}")
 
     # ---- Cache short-circuit (single input shard mode) ----
     out_json = Path(args.out_json)
@@ -590,6 +600,10 @@ def main() -> None:
                     f"[progress] records={n_records} with_orf={n_with_orf} coding_tokens={total_coding_tokens} "
                     f"boundary_rate={(boundary_token_count / total_coding_tokens) if total_coding_tokens else 0.0:.5f}"
                 )
+            hb.maybe(
+                f"file={fp.name} records={n_records} with_orf={n_with_orf} coding_tokens={total_coding_tokens} "
+                f"boundary_rate={(boundary_token_count / total_coding_tokens) if total_coding_tokens else 0.0:.5f}"
+            )
 
             best = best_orf_across_frames(seq)
             if best is None:
@@ -851,6 +865,7 @@ def main() -> None:
     out_json.parent.mkdir(parents=True, exist_ok=True)
     write_json_atomic(out_json, summary)
     log(f"[done] wrote {out_json}")
+    hb.force(f"wrote_summary records={n_records} with_orf={n_with_orf} coding_tokens={total_coding_tokens}")
 
     if args.write_meta and args.input:
         fp0 = files[0]
@@ -938,6 +953,7 @@ def main() -> None:
     log("[done] wrote LaTeX fragments under sections/generated/")
     if log_f is not None:
         log_f.close()
+    hb.force("done")
 
 
 if __name__ == "__main__":

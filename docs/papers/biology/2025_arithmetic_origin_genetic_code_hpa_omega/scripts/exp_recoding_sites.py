@@ -37,6 +37,7 @@ from genetic_code_tools import (
     fold_codon,
     student_t_cdf,
 )
+from progress_tools import Heartbeat
 from stats_tools import bh_fdr, normal_two_sided_p, summarize_mean_diff
 
 
@@ -510,7 +511,7 @@ def delta_window_means(seq_dna: str, center_pos_1: int, k: int, *, left_bound_1:
     return mean(before), mean(after)
 
 
-def extract_recoding_sites_from_record(record_text: str, *, k: int) -> list[RecodingSite]:
+def extract_recoding_sites_from_record(record_text: str, *, k: int, heartbeat: Heartbeat | None = None, hb_tag: str = "") -> list[RecodingSite]:
     version = parse_version(record_text)
     if version is None:
         return []
@@ -522,7 +523,11 @@ def extract_recoding_sites_from_record(record_text: str, *, k: int) -> list[Reco
 
     feats = parse_features(record_text)
     out: list[RecodingSite] = []
+    if heartbeat is not None:
+        heartbeat.maybe(f"{hb_tag}record={version} feats={len(feats)} k={int(k)}")
     for feat in feats:
+        if heartbeat is not None:
+            heartbeat.maybe(f"{hb_tag}record={version} k={int(k)} key={feat.key} sites={len(out)}")
         if feat.key != "CDS":
             continue
         if "transl_except" not in feat.qualifiers:
@@ -736,6 +741,12 @@ def parse_args() -> argparse.Namespace:
         help="Optional comma-separated list of window radii k to compute (e.g. 3,5,10,20). Primary --k is always included.",
     )
     p.add_argument("--max-files", type=int, default=0, help="Optional limit on number of gb files (0=all).")
+    p.add_argument(
+        "--heartbeat-s",
+        type=float,
+        default=60.0,
+        help="Emit a progress heartbeat at least once per this many seconds (0 disables).",
+    )
     p.add_argument("--out-jsonl", default=str(data_dir() / "recoding_sites.jsonl"), help="Output JSONL path.")
     p.add_argument(
         "--out-summary-json",
@@ -845,10 +856,25 @@ def main() -> None:
         return
 
     sites_by_k: dict[int, list[RecodingSite]] = {int(k): [] for k in k_list}
-    for fp in gb_files:
+    hb = Heartbeat(every_s=float(args.heartbeat_s), prefix="[progress] recoding_sites")
+    hb.force(f"start files={len(gb_files)} k_primary={int(k_primary)} k_list={','.join(str(int(x)) for x in k_list)}")
+    site_counts: dict[int, int] = {int(k): 0 for k in k_list}
+    for i, fp in enumerate(gb_files, start=1):
         text = fp.read_text(encoding="utf-8", errors="replace")
         for k in k_list:
-            sites_by_k[int(k)].extend(extract_recoding_sites_from_record(text, k=int(k)))
+            new_sites = extract_recoding_sites_from_record(
+                text,
+                k=int(k),
+                heartbeat=hb,
+                hb_tag=f"file={fp.name} ",
+            )
+            sites_by_k[int(k)].extend(new_sites)
+            site_counts[int(k)] += int(len(new_sites))
+        hb.maybe(
+            f"files={i}/{len(gb_files)} last_file={fp.name} "
+            f"sites_k{int(k_primary)}={int(site_counts.get(int(k_primary), 0))}"
+        )
+    hb.force(f"done files={len(gb_files)} sites_k{int(k_primary)}={int(site_counts.get(int(k_primary), 0))}")
 
     sites = sites_by_k[int(k_primary)]
 

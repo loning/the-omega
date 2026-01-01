@@ -31,6 +31,7 @@ from typing import Any
 from cache_manager import cache_hit, cache_key_digest, cache_meta_path, write_json_atomic
 from exp_nonstandard_codes import codons_for_table, parse_gc_prt
 from genetic_code_tools import BOUNDARY_WORDS, GENETIC_CODE, fold_codon, iter_fasta
+from progress_tools import Heartbeat
 from stats_tools import normal_two_sided_p
 
 
@@ -98,6 +99,12 @@ def parse_args() -> argparse.Namespace:
         help="Output JSON path.",
     )
     p.add_argument("--max-records", type=int, default=0, help="Optional max records per dataset (0 = no limit).")
+    p.add_argument(
+        "--heartbeat-s",
+        type=float,
+        default=60.0,
+        help="Emit a progress heartbeat at least once per this many seconds (0 disables).",
+    )
     p.add_argument("--no-latex", action="store_true", help="Do not write LaTeX fragments.")
     p.add_argument("--force", action="store_true", help="Force recomputation even if cached outputs exist.")
     return p.parse_args()
@@ -107,13 +114,18 @@ def _emit_latex_from_summary(out: dict[str, object]) -> None:
     items = out.get("items") or []
     if not isinstance(items, list):
         items = []
+    def tex_path(s: object) -> str:
+        t = str(s) if s is not None else ""
+        if not t or t == "-":
+            return "-"
+        return f"\\path{{{t}}}"
     # LaTeX fragments (compact table rows).
     rows = []
     for it in items:
         if not isinstance(it, dict):
             continue
         if not it.get("present"):
-            rows.append(f"{it.get('label','-')} & {it.get('code_id','-')} & - & - & - & - & - \\\\")
+            rows.append(f"{tex_path(it.get('label','-'))} & {it.get('code_id','-')} & - & - & - & - & - \\\\")
             continue
         tests = it.get("tests") or {}
         if not isinstance(tests, dict):
@@ -129,7 +141,7 @@ def _emit_latex_from_summary(out: dict[str, object]) -> None:
         z_start = float(st.get("z", float("nan")))
         z_stop = float(sp.get("z", float("nan")))
         rows.append(
-            f"{it.get('label','-')} & {it.get('code_id','-')} & {n_used} & "
+            f"{tex_path(it.get('label','-'))} & {it.get('code_id','-')} & {n_used} & "
             f"{start_rate:.4f} & {z_start:.2f} & {stop_rate:.4f} & {z_stop:.2f} \\\\"
         )
     write_text(generated_dir() / "nonstandard_sequence_tests_rows.tex", "\n".join(rows) + "\n\\bottomrule\n")
@@ -146,6 +158,7 @@ def _emit_latex_from_summary(out: dict[str, object]) -> None:
 def main() -> None:
     args = parse_args()
     out_json = Path(args.out_json)
+    hb_global = Heartbeat(every_s=float(args.heartbeat_s), prefix="[progress] nonstandard_sequence_tests")
     m = read_manifest()
     panels = m.get("panels") or {}
     if not isinstance(panels, dict):
@@ -281,6 +294,9 @@ def main() -> None:
             )
             continue
 
+        hb = Heartbeat(every_s=float(args.heartbeat_s), prefix=f"[progress] nonstandard_sequence_tests:{dataset_key}")
+        hb.force(f"start code_id={code_id} files={len(present)}")
+
         n_seen = 0
         n_used = 0
         n_invalid = 0
@@ -297,6 +313,7 @@ def main() -> None:
         p_internal: list[float] = []
 
         for fp in present:
+            hb_global.maybe(f"active_dataset={dataset_key} active_file={fp.name}")
             for _rid, seq in iter_fasta(str(fp)):
                 n_seen += 1
                 if args.max_records and n_seen > int(args.max_records):
@@ -337,6 +354,12 @@ def main() -> None:
                             b += 1
                     p_internal.append(b / float(len(internal)))
 
+                # Heartbeat (time-based) so terminals never go silent during long scans.
+                hb.maybe(
+                    f"file={fp.name} seen={n_seen} used={n_used} invalid={n_invalid} "
+                    f"start_not_in_set={start_not_in_set} stop_not_in_set={stop_not_in_set}"
+                )
+
             if args.max_records and n_seen > int(args.max_records):
                 break
 
@@ -352,6 +375,7 @@ def main() -> None:
         z_stop = (float(stop_boundary_hits) - mu_s) / math.sqrt(var_s) if var_s > 0 else 0.0
         p_stop = normal_two_sided_p(z_stop) if var_s > 0 else 1.0
 
+        hb.force(f"done seen={n_seen} used={n_used} invalid={n_invalid}")
         out_items.append(
             {
                 "dataset": dataset_key,

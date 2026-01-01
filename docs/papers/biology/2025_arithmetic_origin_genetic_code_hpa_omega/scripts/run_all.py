@@ -94,6 +94,9 @@ def main() -> None:
     # 2) Core encoding scan + codon tables
     run(["python3", "scripts/exp_genetic_code_decompiler.py"], cwd=cwd)
 
+    # 2b) Fold_m resolution scan (m>6)
+    run(["python3", "scripts/exp_foldm_resolution_scan.py"], cwd=cwd)
+
     # 3) Nonstandard translation tables
     run(["python3", "scripts/exp_nonstandard_codes.py"], cwd=cwd)
 

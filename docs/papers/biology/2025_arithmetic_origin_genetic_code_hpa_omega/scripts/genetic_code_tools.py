@@ -166,6 +166,106 @@ def fold6(n: int) -> str:
     return s
 
 
+def fib_weights_first(m: int) -> list[int]:
+    """
+    Return the first m Fibonacci weights used in Zeckendorf coding:
+      [F2, F3, ..., F_{m+1}] with F2=1, F3=2.
+    """
+    if m <= 0:
+        raise ValueError("m must be positive")
+    if m == 1:
+        return [1]
+    weights = [1, 2]
+    while len(weights) < m:
+        weights.append(weights[-1] + weights[-2])
+    return weights[:m]
+
+
+def is_admissible_word(w: str) -> bool:
+    """
+    Golden-mean admissibility: no consecutive ones.
+    """
+    return "11" not in w
+
+
+def fold_m(n: int, m: int) -> str:
+    """
+    Fold_m(n): first m Zeckendorf digits (c1..cm), padded by zeros.
+    Output is a length-m word in {'0','1'} with no substring '11'.
+    """
+    if m <= 0:
+        raise ValueError("m must be positive")
+    digits = zeckendorf_digits(n)
+    if len(digits) < m:
+        digits = digits + [0] * (m - len(digits))
+    dm = digits[:m]
+    s = "".join("1" if b else "0" for b in dm)
+    if "11" in s:
+        raise AssertionError("Fold_m output violated admissibility.")
+    return s
+
+
+def zeckendorf_value_word(w: str) -> int:
+    """
+    Value V(w) under Fibonacci weights [F2..] aligned with the digits in w.
+    Supports any length (including 0).
+    """
+    if not w:
+        return 0
+    weights = fib_weights_first(len(w))
+    return sum(int(w[i]) * weights[i] for i in range(len(w)))
+
+
+def zeckendorf_value_m(w: str) -> int:
+    """
+    Back-compat alias for zeckendorf_value_word(w).
+    """
+    return zeckendorf_value_word(w)
+
+
+def is_boundary_word(w: str) -> bool:
+    """
+    Boundary words are admissible words with a cyclic boundary defect:
+      w_1 = w_m = 1.
+    """
+    if len(w) < 2:
+        return False
+    if not is_admissible_word(w):
+        return False
+    return w[0] == "1" and w[-1] == "1"
+
+
+def x_m(m: int) -> list[str]:
+    """
+    Enumerate the admissible set X_m: binary words of length m with no consecutive ones.
+    """
+    if m < 0:
+        raise ValueError("m must be nonnegative")
+    if m == 0:
+        return [""]
+    words = ["0", "1"]
+    for _ in range(1, m):
+        nxt: list[str] = []
+        for w in words:
+            nxt.append(w + "0")
+            if not w.endswith("1"):
+                nxt.append(w + "1")
+        words = nxt
+    # Deterministic order for reproducibility.
+    words.sort()
+    # Sanity check.
+    if any(not is_admissible_word(w) or len(w) != m for w in words):
+        raise AssertionError("X_m enumeration produced invalid words.")
+    return words
+
+
+def boundary_words_m(m: int) -> set[str]:
+    """
+    Boundary subset of X_m: admissible words with first and last bit 1.
+    """
+    return {w for w in x_m(m) if is_boundary_word(w)}
+
+
 def zeckendorf_value(w: str) -> int:
     if len(w) != 6:
         raise ValueError("w must be a length-6 binary word")
@@ -228,6 +328,50 @@ def fold_codon(codon: str, mu: dict[str, str]) -> CodonFold:
         v=v,
         delta=delta,
         is_boundary=(w in BOUNDARY_WORDS),
+    )
+
+
+@dataclass(frozen=True)
+class CodonFoldM:
+    codon: str
+    aa: str
+    bits: str
+    n: int
+    w: str
+    v: int
+    delta: int
+    is_boundary: bool
+    m: int
+
+
+def fold_codon_m(codon: str, mu: dict[str, str], m: int) -> CodonFoldM:
+    """
+    Fold a codon under the m-digit Zeckendorf window (resolution m).
+    Keeps the same two-bit encoding mu; only the folding window changes.
+    """
+    if m <= 0:
+        raise ValueError("m must be positive")
+    codon = codon.upper().replace("T", "U")
+    if len(codon) != 3 or any(b not in mu for b in codon):
+        raise ValueError(f"Invalid codon: {codon!r}")
+    aa = GENETIC_CODE.get(codon)
+    if aa is None:
+        raise ValueError(f"Unknown codon (not in standard code): {codon!r}")
+    bits = codon_bits(codon, mu)
+    n = int(bits, 2)
+    w = fold_m(n, m)
+    v = zeckendorf_value_word(w)
+    delta = n - v
+    return CodonFoldM(
+        codon=codon,
+        aa=aa,
+        bits=bits,
+        n=n,
+        w=w,
+        v=int(v),
+        delta=int(delta),
+        is_boundary=is_boundary_word(w),
+        m=int(m),
     )
 
 

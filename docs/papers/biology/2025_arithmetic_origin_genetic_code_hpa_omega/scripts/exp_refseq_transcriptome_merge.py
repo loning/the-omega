@@ -29,6 +29,7 @@ from exp_refseq_transcriptome import (
     write_text,
 )
 from genetic_code_tools import BOUNDARY_WORDS, GENETIC_CODE, STOP_CODONS, amino_acid_codons, fold_codon
+from progress_tools import Heartbeat
 from stats_tools import (
     aa_preserving_null_decomposition,
     bh_fdr,
@@ -58,6 +59,12 @@ def parse_args() -> argparse.Namespace:
     )
     p.add_argument("--no-latex", action="store_true", help="Do not write LaTeX fragments.")
     p.add_argument("--force", action="store_true", help="Force merge and LaTeX regeneration (ignore cache).")
+    p.add_argument(
+        "--heartbeat-s",
+        type=float,
+        default=60.0,
+        help="Emit a progress heartbeat at least once per this many seconds (0 disables).",
+    )
     return p.parse_args()
 
 
@@ -373,7 +380,8 @@ def _emit_outputs_from_summary(summary: dict[str, object]) -> None:
         g_s = f"{float(t['g']):+.3f}" if t["g"] is not None else "NA"
         op_p, p_s = _fmt_p_tex(t["p"])
         op_q, q_s = _fmt_p_tex(t["q"])
-        pq = f"{op_p}{p_s}/{op_q}{q_s}"
+        # Wrap p/q values in math mode so expressions like 10^{-300} are valid TeX.
+        pq = f"${op_p}{p_s}$/${op_q}{q_s}$"
         eff_lines.append(
             f"{window} & {kk_i} & {n1} & {n2} & {pair} & {m1:.4f} & {m2:.4f} & {diff:+.4f} & {ci_s} & {d_s} & {g_s} & {pq} \\\\"
         )
@@ -621,11 +629,15 @@ def main() -> None:
 
     source_files: list[str] = []
 
-    for fp in files:
+    hb = Heartbeat(every_s=float(args.heartbeat_s), prefix="[progress] refseq_transcriptome_merge")
+    hb.force(f"start shards={len(files)} in_dir={in_dir.name}")
+
+    for i, fp in enumerate(files, start=1):
         obj = json.loads(fp.read_text(encoding="utf-8"))
         shard_schema = int(obj.get("schema_version", 0) or 0)
         if shard_schema not in (1, 2):
             raise SystemExit(f"Unexpected schema_version in {fp}: {shard_schema}")
+        hb.maybe(f"merged_shards={i}/{len(files)} records={records} coding_tokens={coding_tokens}")
 
         # Stop-context k configuration (primary k + optional multi-k list).
         k_primary = int(obj.get("stop_window", 0) or 0)
@@ -844,14 +856,17 @@ def main() -> None:
     out_json.parent.mkdir(parents=True, exist_ok=True)
     write_json_atomic(out_json, summary)
     print("Wrote:", out_json)
+    hb.force(f"wrote_summary records={records} coding_tokens={coding_tokens}")
 
     if args.no_latex:
         write_json_atomic(cache_meta_path(out_json), merge_meta)
+        hb.force("done")
         return
 
     _emit_outputs_from_summary(summary)
     print("Wrote LaTeX fragments into:", generated_dir())
     write_json_atomic(cache_meta_path(out_json), merge_meta)
+    hb.force("done")
 
 
 if __name__ == "__main__":

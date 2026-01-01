@@ -1,5 +1,5 @@
 """
-Sequence spectrum CLI for the Fold_6 genetic-code interface.
+Sequence spectrum CLI for the Fold_m genetic-code interface.
 
 Reads FASTA (DNA or RNA), normalizes T->U, and outputs per-codon (Z,U) traces.
 Optionally scans ORFs in a chosen reading frame.
@@ -19,7 +19,7 @@ from genetic_code_tools import (
     STOP_CODONS,
     codon_stream,
     find_orfs,
-    fold_codon,
+    fold_codon_m,
     iter_fasta,
 )
 
@@ -28,9 +28,10 @@ MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
 
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Fold_6 codon spectrum (Z,U) extractor")
+    p = argparse.ArgumentParser(description="Fold_m codon spectrum (Z,U) extractor")
     p.add_argument("--fasta", required=True, help="Input FASTA file (DNA or RNA).")
     p.add_argument("--frame", type=int, default=0, choices=(0, 1, 2), help="Reading frame (0,1,2).")
+    p.add_argument("--m", type=int, default=6, help="Zeckendorf window length m (default: 6).")
     p.add_argument(
         "--orfs",
         action="store_true",
@@ -57,6 +58,7 @@ def process_segment(
     frame: int,
     segment_id: str,
     mu: dict[str, str],
+    m: int,
     *,
     record_id: str,
     out_writer: csv.DictWriter | None,
@@ -72,6 +74,8 @@ def process_segment(
         end_base_exclusive = len(seq)
     if stop_window < 0:
         raise ValueError("stop_window must be nonnegative")
+    if m <= 0:
+        raise ValueError("m must be positive")
 
     codon_counts: Counter[str] = Counter()
     aa_counts: Counter[str] = Counter()
@@ -100,6 +104,7 @@ def process_segment(
                 "after_hist": Counter(),
             }
 
+    fold_key = "Fold6" if int(m) == 6 else f"Fold{int(m)}"
     codon_index = 0
     for base_pos, codon in codon_stream(seq, frame=frame):
         if base_pos < start_base:
@@ -115,7 +120,7 @@ def process_segment(
             codon_index += 1
             continue
 
-        f = fold_codon(codon, mu)
+        f = fold_codon_m(codon, mu, m=m)
 
         codon_counts[codon] += 1
         aa_counts[f.aa] += 1
@@ -174,7 +179,7 @@ def process_segment(
                     "aa": f.aa,
                     "bits": f.bits,
                     "N": f.n,
-                    "Fold6": f.w,
+                    fold_key: f.w,
                     "V": f.v,
                     "Delta": f.delta,
                     "is_boundary": int(f.is_boundary),
@@ -186,6 +191,7 @@ def process_segment(
         codon_index += 1
 
     summary: dict[str, object] = {
+        "m": int(m),
         "record_id": record_id,
         "segment": segment_id,
         "frame": frame,
@@ -229,7 +235,10 @@ def main() -> None:
     args = parse_args()
     if not args.out and not args.summary_out:
         raise SystemExit("At least one of --out or --summary-out must be provided.")
+    if int(args.m) <= 0:
+        raise SystemExit("--m must be positive")
 
+    fold_key = "Fold6" if int(args.m) == 6 else f"Fold{int(args.m)}"
     out_writer = None
     out_f = None
     if args.out:
@@ -248,7 +257,7 @@ def main() -> None:
                 "aa",
                 "bits",
                 "N",
-                "Fold6",
+                fold_key,
                 "V",
                 "Delta",
                 "is_boundary",
@@ -278,6 +287,7 @@ def main() -> None:
                         frame=args.frame,
                         segment_id=seg,
                         mu=MU_STAR,
+                        m=int(args.m),
                         record_id=rid,
                         out_writer=out_writer,
                         stop_window=int(args.stop_window),
@@ -292,6 +302,7 @@ def main() -> None:
                     frame=args.frame,
                     segment_id="full",
                     mu=MU_STAR,
+                    m=int(args.m),
                     record_id=rid,
                     out_writer=out_writer,
                     stop_window=int(args.stop_window),
