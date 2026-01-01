@@ -10,7 +10,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import hashlib
 import math
+import random
+import statistics
 from collections import Counter
 from pathlib import Path
 
@@ -26,6 +29,7 @@ from exp_refseq_transcriptome import (
     hist_sum,
     hist_total,
     welch_t_p_value_two_sided_from_stats,
+    student_t_cdf,
     write_text,
 )
 from genetic_code_tools import BOUNDARY_WORDS, GENETIC_CODE, STOP_CODONS, amino_acid_codons, fold_codon
@@ -36,9 +40,18 @@ from stats_tools import (
     cohen_d_from_stats,
     hedges_g_from_stats,
     mean_diff_ci_normal_from_stats,
+    normal_two_sided_p,
 )
 
 MERGE_VERSION = 1
+
+
+def _stable_seed_u32(tag: str) -> int:
+    h = hashlib.sha256(tag.encode("utf-8")).hexdigest()
+    return int(h[:8], 16)
+
+
+DINUC_ORDER = [a + b for a in "ACGT" for b in "ACGT"]
 
 
 def root_dir() -> Path:
@@ -391,6 +404,57 @@ def _emit_outputs_from_summary(summary: dict[str, object]) -> None:
     eff_lines.append("\\end{center}")
     write_text(generated_dir() / "refseq_stop_context_effects_table.tex", "\n".join(eff_lines) + "\n")
 
+    # ---- Composition-adjusted controls (stratified bins + NN sample cross-check) ----
+    comp = summary.get("stop_context_composition")
+    comp_lines: list[str] = []
+    if not isinstance(comp, dict) or not comp:
+        comp_lines.append("Composition-adjusted stop-context controls unavailable.")
+    else:
+        schemes = comp.get("schemes") or {}
+        strat = comp.get("stratified") or {}
+        nn = (comp.get("nn_samples") or {}).get("results") if isinstance(comp.get("nn_samples"), dict) else None
+        pairs = ["UAA_vs_UAG", "UAA_vs_UGA", "UAG_vs_UGA"]
+        if isinstance(schemes, dict) and isinstance(strat, dict):
+            for sk in sorted(schemes.keys()):
+                meta = schemes.get(sk) or {}
+                x_name = str(meta.get("x_name") or "")
+                comp_lines.append(f"Composition-adjusted stop-context comparisons (scheme {sk}, GC$\\times${x_name}, primary $k={k_primary}$).")
+                for window in ("before", "after"):
+                    w0 = strat.get(sk, {}).get(window, {}) if isinstance(strat.get(sk), dict) else {}
+                    if not isinstance(w0, dict):
+                        continue
+                    for pair in pairs:
+                        r = w0.get(pair) or {}
+                        if not isinstance(r, dict):
+                            continue
+                        diff = r.get("diff")
+                        p = r.get("p")
+                        bins_used = int(r.get("bins_used", 0) or 0)
+                        diff_s = f"{float(diff):+.4f}" if diff is not None else "NA"
+                        op, p_s = _fmt_p_tex(p)
+                        comp_lines.append(
+                            f"Stratified ({window}-window): {pair.replace('_vs_', '$\\\\,$vs$\\\\,$')} diff {diff_s} (bins {bins_used}, $p{op}{p_s}$)."
+                        )
+        if isinstance(nn, dict):
+            comp_lines.append("GC+dinuc nearest-neighbor matching on bounded reservoirs (cross-check).")
+            for window in ("before", "after"):
+                w0 = nn.get(window, {}) or {}
+                if not isinstance(w0, dict):
+                    continue
+                for pair in pairs:
+                    r = w0.get(pair) or {}
+                    if not isinstance(r, dict):
+                        continue
+                    diff = r.get("mean_diff")
+                    p = r.get("p")
+                    n = int(r.get("n", 0) or 0)
+                    diff_s = f"{float(diff):+.4f}" if diff is not None else "NA"
+                    op, p_s = _fmt_p_tex(p)
+                    comp_lines.append(
+                        f"NN ({window}-window): {pair.replace('_vs_', '$\\\\,$vs$\\\\,$')} diff {diff_s} (n={n}, $p{op}{p_s}$)."
+                    )
+    write_text(generated_dir() / "refseq_stop_context_composition_controls.tex", "\n\n".join(comp_lines) + "\n")
+
     out_tsv = root_dir() / "data" / "refseq_hsapiens_mrna" / "stop_context_pairwise_effects.tsv"
     tsv_rows = []
     for t in tests:
@@ -627,6 +691,16 @@ def main() -> None:
     hz_samples: list[float] = []
     rho_samples: list[float] = []
 
+    # Composition-adjusted stop-context merge (schema v3+).
+    comp_schemes_seen: dict[str, dict[str, object]] = {}
+    comp_before_merged: dict[str, dict[str, dict[str, RunningStats]]] = {}
+    comp_after_merged: dict[str, dict[str, dict[str, RunningStats]]] = {}
+
+    NN_SAMPLE_MAX_PER_STOP = 2000
+    nn_seen: dict[str, int] = {s: 0 for s in STOP_CODONS}
+    nn_samples: dict[str, list[dict[str, object]]] = {s: [] for s in STOP_CODONS}
+    rng_nn = random.Random(_stable_seed_u32(f"refseq:merge:nn:{ANALYSIS_VERSION}:{MERGE_VERSION}"))
+
     source_files: list[str] = []
 
     hb = Heartbeat(every_s=float(args.heartbeat_s), prefix="[progress] refseq_transcriptome_merge")
@@ -635,7 +709,7 @@ def main() -> None:
     for i, fp in enumerate(files, start=1):
         obj = json.loads(fp.read_text(encoding="utf-8"))
         shard_schema = int(obj.get("schema_version", 0) or 0)
-        if shard_schema not in (1, 2):
+        if shard_schema not in (1, 2, 3):
             raise SystemExit(f"Unexpected schema_version in {fp}: {shard_schema}")
         hb.maybe(f"merged_shards={i}/{len(files)} records={records} coding_tokens={coding_tokens}")
 
@@ -740,6 +814,67 @@ def main() -> None:
         for x in zsm.get("autocorr_Z1", []) or []:
             rho_samples.append(float(x))
 
+        # Composition-adjusted stop-context bins + samples (schema v3+).
+        comp = obj.get("stop_context_composition")
+        if isinstance(comp, dict) and comp:
+            for sk, meta in comp.items():
+                if not isinstance(sk, str) or not isinstance(meta, dict):
+                    continue
+                x_name = str(meta.get("x_name") or "")
+                gc_edges = meta.get("gc_edges") or []
+                x_edges = meta.get("x_edges") or []
+                if sk not in comp_schemes_seen:
+                    comp_schemes_seen[sk] = {"x_name": x_name, "gc_edges": gc_edges, "x_edges": x_edges}
+                    comp_before_merged[sk] = {s: {} for s in STOP_CODONS}
+                    comp_after_merged[sk] = {s: {} for s in STOP_CODONS}
+                else:
+                    prev = comp_schemes_seen[sk]
+                    if (
+                        str(prev.get("x_name") or "") != x_name
+                        or prev.get("gc_edges") != gc_edges
+                        or prev.get("x_edges") != x_edges
+                    ):
+                        raise SystemExit(f"Mismatched stop_context_composition scheme '{sk}' across shards in {fp}")
+
+                before = meta.get("before") or {}
+                after = meta.get("after") or {}
+                if not isinstance(before, dict) or not isinstance(after, dict):
+                    continue
+                for s in STOP_CODONS:
+                    bmap = before.get(s) or {}
+                    amap = after.get(s) or {}
+                    if isinstance(bmap, dict):
+                        for bk, st in bmap.items():
+                            if not isinstance(st, dict):
+                                continue
+                            comp_before_merged[sk][s].setdefault(str(bk), RunningStats()).merge(_load_stats(st))
+                    if isinstance(amap, dict):
+                        for bk, st in amap.items():
+                            if not isinstance(st, dict):
+                                continue
+                            comp_after_merged[sk][s].setdefault(str(bk), RunningStats()).merge(_load_stats(st))
+
+        samp = obj.get("stop_context_composition_samples") or {}
+        if isinstance(samp, dict):
+            by_stop = samp.get("by_stop") or {}
+            if isinstance(by_stop, dict):
+                for s in STOP_CODONS:
+                    lst = by_stop.get(s) or []
+                    if not isinstance(lst, list):
+                        continue
+                    for item in lst:
+                        if not isinstance(item, dict):
+                            continue
+                        seen = int(nn_seen.get(s, 0)) + 1
+                        nn_seen[s] = int(seen)
+                        rsv = nn_samples[s]
+                        if len(rsv) < int(NN_SAMPLE_MAX_PER_STOP):
+                            rsv.append(item)
+                        else:
+                            j = rng_nn.randrange(int(seen))
+                            if j < int(NN_SAMPLE_MAX_PER_STOP):
+                                rsv[int(j)] = item
+
     if coding_tokens <= 0 or hist_total(orf_len_hist) <= 0:
         raise SystemExit("Merged shard summaries contain no coding tokens / ORFs.")
 
@@ -791,8 +926,166 @@ def main() -> None:
         "UAG_vs_UGA": welch_t_p_value_two_sided_from_stats(after_stats["UAG"], after_stats["UGA"]),
     }
 
+    # ---- Composition-adjusted stop-context (stratified bins + NN sample cross-check) ----
+    def _paired_summary(diffs: list[float]) -> dict[str, object]:
+        n = len(diffs)
+        if n <= 0:
+            return {"n": 0, "mean_diff": None, "ci_low": None, "ci_high": None, "p": None}
+        xs = [float(x) for x in diffs]
+        mu = sum(xs) / float(n)
+        if n < 2:
+            return {"n": int(n), "mean_diff": float(mu), "ci_low": None, "ci_high": None, "p": None}
+        v = statistics.pvariance(xs) * (n / (n - 1))  # sample variance
+        se = math.sqrt(v / float(n)) if v > 0 else 0.0
+        ci_low = mu - 1.96 * se if se > 0 else None
+        ci_high = mu + 1.96 * se if se > 0 else None
+        t = abs(mu) / se if se > 0 else 0.0
+        df_i = max(1, int(n - 1))
+        p = 2.0 * (1.0 - student_t_cdf(t, df=df_i)) if se > 0 else 1.0
+        return {"n": int(n), "mean_diff": float(mu), "ci_low": ci_low, "ci_high": ci_high, "p": float(p)}
+
+    def _l1_16(a: list[float], b: list[float]) -> float:
+        return float(sum(abs(float(x) - float(y)) for x, y in zip(a, b)))
+
+    def _nn_match_one(
+        *,
+        target_gc: float,
+        target_vec: list[float],
+        candidates: list[dict[str, object]],
+        window: str,
+        gc_eps_schedule: list[float],
+    ) -> float | None:
+        best: float | None = None
+        best_l1: float | None = None
+        for eps in gc_eps_schedule:
+            for c in candidates:
+                gc0 = c.get(f"{window}_gc")
+                vec0 = c.get(f"{window}_dinuc")
+                mean0 = c.get(f"{window}_mean")
+                if gc0 is None or vec0 is None or mean0 is None:
+                    continue
+                try:
+                    gc_f = float(gc0)
+                    m_f = float(mean0)
+                except Exception:
+                    continue
+                if abs(gc_f - float(target_gc)) > float(eps):
+                    continue
+                if not isinstance(vec0, list) or len(vec0) != 16:
+                    continue
+                l1 = _l1_16(target_vec, [float(x) for x in vec0])
+                if best_l1 is None or l1 < best_l1:
+                    best_l1 = float(l1)
+                    best = float(m_f)
+            if best is not None:
+                break
+        return best
+
+    comp_results: dict[str, object] | None = None
+    if comp_schemes_seen:
+        # Stratified (full-data) meta-analysis across bins.
+        stratified: dict[str, dict[str, dict[str, object]]] = {}
+        pairs = [("UAA", "UAG"), ("UAA", "UGA"), ("UAG", "UGA")]
+        for sk in sorted(comp_schemes_seen.keys()):
+            stratified[sk] = {"before": {}, "after": {}}
+            for window, merged in (("before", comp_before_merged), ("after", comp_after_merged)):
+                for a, b in pairs:
+                    num = 0.0
+                    den = 0.0
+                    bins_used = 0
+                    for bk in sorted(set(merged.get(sk, {}).get(a, {}).keys()) & set(merged.get(sk, {}).get(b, {}).keys())):
+                        sa = merged[sk][a][bk]
+                        sb = merged[sk][b][bk]
+                        n1 = int(sa.n)
+                        n2 = int(sb.n)
+                        if n1 < 2 or n2 < 2:
+                            continue
+                        v1 = float(sa.sample_variance())
+                        v2 = float(sb.sample_variance())
+                        var = (v1 / float(n1)) + (v2 / float(n2))
+                        if var <= 0:
+                            continue
+                        w = 1.0 / var
+                        num += w * (float(sa.mean) - float(sb.mean))
+                        den += w
+                        bins_used += 1
+                    if den <= 0 or bins_used <= 0:
+                        stratified[sk][window][f"{a}_vs_{b}"] = {"diff": None, "se": None, "z": None, "p": None, "bins_used": 0}
+                        continue
+                    diff = num / den
+                    se = math.sqrt(1.0 / den)
+                    z = diff / se if se > 0 else 0.0
+                    p = normal_two_sided_p(z) if se > 0 else 1.0
+                    stratified[sk][window][f"{a}_vs_{b}"] = {
+                        "diff": float(diff),
+                        "se": float(se),
+                        "z": float(z),
+                        "p": float(p),
+                        "bins_used": int(bins_used),
+                    }
+
+        # NN sample cross-check (bounded reservoirs).
+        gc_eps_schedule = [0.05, 0.10, 0.20, 0.30]
+        nn: dict[str, dict[str, dict[str, object]]] = {"before": {}, "after": {}}
+        # Normalize samples to a simpler form.
+        samples_norm: dict[str, list[dict[str, object]]] = {s: [] for s in STOP_CODONS}
+        for s in STOP_CODONS:
+            for it in nn_samples.get(s, []):
+                if not isinstance(it, dict):
+                    continue
+                # The shard sampler stores 'before_mean'/'after_mean' and 'before_gc'/'after_gc' etc.
+                # Normalize field names to '{window}_mean/gc/dinuc'.
+                out = {
+                    "before_mean": it.get("before_mean"),
+                    "after_mean": it.get("after_mean"),
+                    "before_gc": it.get("before_gc"),
+                    "after_gc": it.get("after_gc"),
+                    "before_dinuc": it.get("before_dinuc"),
+                    "after_dinuc": it.get("after_dinuc"),
+                }
+                samples_norm[s].append(out)
+
+        for window in ("before", "after"):
+            for a, b in pairs:
+                diffs: list[float] = []
+                cand_b = samples_norm.get(b, [])
+                for it in samples_norm.get(a, []):
+                    gc0 = it.get(f"{window}_gc")
+                    vec0 = it.get(f"{window}_dinuc")
+                    mean0 = it.get(f"{window}_mean")
+                    if gc0 is None or vec0 is None or mean0 is None:
+                        continue
+                    if not isinstance(vec0, list) or len(vec0) != 16:
+                        continue
+                    try:
+                        gc_f = float(gc0)
+                        m_f = float(mean0)
+                    except Exception:
+                        continue
+                    m_match = _nn_match_one(
+                        target_gc=gc_f,
+                        target_vec=[float(x) for x in vec0],
+                        candidates=cand_b,
+                        window=window,
+                        gc_eps_schedule=gc_eps_schedule,
+                    )
+                    if m_match is None:
+                        continue
+                    diffs.append(float(m_f) - float(m_match))
+                nn[window][f"{a}_vs_{b}"] = _paired_summary(diffs)
+
+        comp_results = {
+            "schemes": comp_schemes_seen,
+            "stratified": stratified,
+            "nn_samples": {
+                "max_per_stop": int(NN_SAMPLE_MAX_PER_STOP),
+                "n_per_stop": {s: int(len(nn_samples.get(s, []))) for s in STOP_CODONS},
+                "results": nn,
+            },
+        }
+
     summary = {
-        "schema_version": 2,
+        "schema_version": 3,
         "source_files": sorted(set(source_files)),
         "records": records,
         "records_with_orf": records_with_orf,
@@ -849,6 +1142,7 @@ def main() -> None:
             "entropy_Z": _summarize_float_list(hz_samples),
             "autocorr_Z1": _summarize_float_list(rho_samples),
         },
+        "stop_context_composition": comp_results,
         "V_hist": {str(k): int(v) for k, v in sorted(v_hist.items())},
         "Delta_hist": {str(k): int(v) for k, v in sorted(delta_hist.items())},
     }

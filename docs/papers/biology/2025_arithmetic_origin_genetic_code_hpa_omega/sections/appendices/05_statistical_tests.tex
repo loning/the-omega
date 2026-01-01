@@ -56,6 +56,33 @@ using either:
 
 The CLI in Appendix~\ref{app:reproducibility} outputs these window summaries as JSONL via \path{--summary-out} and \path{--stop-window}.
 
+\subsection{Composition-matched controls for uplift windows}
+\label{app:composition_controls}
+
+Stop-context and recoding-context statistics can be confounded by base-composition biases (GC, dinucleotide usage) that are independent of folding.
+To separate uplift effects from nucleotide composition, we define composition features on the same frame-aligned windows used for $U(i)$ statistics.
+
+\paragraph{Window sequences and composition features.}
+For each evaluated control event at codon position $i$ (e.g.\ a terminal stop, or a recoding site), define the length-$3k$ DNA strings
+$S_{\mathrm{before}}(i;k)$ and $S_{\mathrm{after}}(i;k)$ as the concatenation of the $k$ in-frame codons immediately before/after the event, in reading order.
+From each window string $S$ define:
+\begin{itemize}
+\item GC fraction $g(S)$ over $\{A,C,G,T\}$;
+\item the $16$-dimensional dinucleotide frequency vector $d(S)$ (overlapping dinucleotides);
+\item optional low-dimensional dinucleotide summaries such as the CpG or TA dinucleotide rate $x(S)$.
+\end{itemize}
+
+\paragraph{NN matching (GC + dinucleotide).}
+To compare two event classes $A$ and $B$ (e.g.\ terminal $\mathrm{UAA}$ vs.\ terminal $\mathrm{UGA}$), for each event $i\in A$ we select a matched event
+$j\in B$ among candidates satisfying $|g(S_i)-g(S_j)|\le \epsilon$ (with a small schedule of $\epsilon$ values), choosing the candidate minimizing the $\ell_1$ distance
+$\|d(S_i)-d(S_j)\|_1$.
+We then analyze the paired differences of the window means (before/after separately) using a paired test on the difference distribution and a sign-flip permutation test as a robustness check.
+
+\paragraph{Stratified binning (GC $\times$ dinucleotide summary).}
+Alternatively, define bins over GC and a dinucleotide summary (e.g.\ GC$\times$CpG or GC$\times$TA).
+Within each bin, compute event-class means and variances of the window means.
+Aggregate class differences across bins by an inverse-variance weighted meta-analysis (normal approximation), and optionally validate by within-bin permutation of labels.
+
 \subsection{Boundary enrichment tests}
 \label{app:boundary_enrichment}
 

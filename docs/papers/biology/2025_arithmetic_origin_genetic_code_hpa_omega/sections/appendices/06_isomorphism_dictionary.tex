@@ -1,0 +1,74 @@
+\section{Interface isomorphisms: folding, genetic codes, and active correction}
+\label{app:isomorphism_dictionary}
+
+This appendix records a shared protocol-level template used across the HPA--$\Omega$ manuscript series: finite-resolution scan--projection readout induces symbolic words and coarse observables; stability/consistency constraints select a compressed visible sector; and sustained low-entropy structure can be understood either as passive compensation (connections enforcing consistency) or as active correction (feedback reducing mismatch).
+
+\subsection{A shared interface template}
+We use the standard auditable separation between two layers:
+\begin{itemize}
+  \item \textbf{Mathematical layer.} Finite-resolution definitions and computable statements (explicit maps, finite searches, and reproducible tables).
+  \item \textbf{Identification layer.} Mapping hypotheses connecting the finite protocol objects to biological or physical interpretations, stated in a falsifiable form.
+\end{itemize}
+Within the operational readout layer, a broad class of problems can be organized by the following interface objects:
+\begin{itemize}
+  \item \textbf{Readout alphabet.} A finite word alphabet $\Omega_m=\{0,1\}^m$ (or a finite outcome set for a POVM-like instrument) obtained by window projection.
+  \item \textbf{Stability selection.} A protocol-defined stable subset $X_m\subset\Omega_m$ (e.g.\ a forbidden-word grammar and its refinements).
+  \item \textbf{Coarse graining and degeneracy.} Many-to-one maps $\Omega_m\twoheadrightarrow X_m$ with a degeneracy distribution that trades resolution for robustness.
+  \item \textbf{Mismatch certificates.} Computable measures of readout inconsistency accumulation (e.g.\ discrepancy-based certificates) that can be compared across systems under matched protocols.
+  \item \textbf{Audit closure under bounded complexity.} Deterministic selections from finite candidate families under explicit complexity bounds, together with uniqueness and rigidity diagnostics.
+\end{itemize}
+
+\subsection{Genetic-code reverse compilation as bounded-complexity closure}
+The present paper casts the genetic code as a \emph{reverse compilation} problem over a finite search domain: an unknown bijective two-bit nucleotide encoding $\mu:\{A,C,G,U\}\to\{00,01,10,11\}$ (a domain of size $4!=24$) induces a codon-to-microstate map $c\mapsto N_\mu(c)\in\{0,\dots,63\}$, a folded stable type $w_\mu(c)=\mathrm{Fold}_6(N_\mu(c))\in X_6$, and a Zeckendorf spectral level $V_\mu(c)=V(w_\mu(c))\in\{0,\dots,20\}$.
+Selecting $\mu$ by an explicit objective on a fixed control set (e.g.\ start/stop codons) is therefore an auditable finite search.
+
+\begin{definition}[Bounded-complexity closure (audit form)]\label{def:bc_closure_audit}
+Fix reference targets $x_i^{\mathrm{ref}}>0$ and a candidate family $x_i(\theta)>0$ indexed by discrete parameters $\theta$.
+For a bound $B\in\NN$, let $\Theta(B)$ be a finite admissible domain (the \emph{complexity box}).
+Define the log-mismatch vector
+\[
+e_i(\theta):=\log\!\left(\frac{x_i(\theta)}{x_i^{\mathrm{ref}}}\right),
+\]
+and summary objectives
+\[
+E_\infty(\theta):=\max_i |e_i(\theta)|,\qquad
+E_1(\theta):=\sum_i |e_i(\theta)|.
+\]
+A bounded-complexity closure is the selection of a unique $\theta_B\in\Theta(B)$ by a fully specified deterministic rule (e.g.\ lexicographic minimization of stated objectives with a tie-break rule).
+\end{definition}
+
+\begin{definition}[Rigidity certificate]\label{def:rigidity_certificate_audit}
+A closure is called \emph{rigid} on a tested range $B\in\{1,\dots,B_{\max}\}$ if the minimizer is unique at each $B$ and stabilizes: there exists $B_\ast\le B_{\max}$ such that $\theta_B=\theta_{B_\ast}$ for all $B_\ast\le B\le B_{\max}$.
+\end{definition}
+
+In this paper, the admissible domain is already finite and exact ($|\Theta|=24$), so uniqueness is a directly auditable property of the exhaustive search; Section~\ref{sec:results} and Appendix~\ref{app:reproducibility} record reproducible scripts and generated tables for the relevant objectives.
+
+\subsection{Isomorphism dictionary (stable sectors $\leftrightarrow$ genetic codes)}
+Table~\ref{tab:isomorphism_dictionary} summarizes a protocol-level correspondence between stable-sector constructions and the genetic-code folding characterization used in this paper.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.30\linewidth}p{0.34\linewidth}p{0.32\linewidth}}
+\toprule
+Interface object & Stable-sector language & Genetic-code language (this paper) \\
+\midrule
+finite readout alphabet & microstate words $w\in\Omega_6=\{0,1\}^6$ & codons mapped to $\Omega_6$ via an unknown encoding $\mu$ \\
+stability selection & stable types $X_6$ (golden-mean grammar) with $18\oplus 3$ split & codons projected to $X_6$; start/stop control set targets boundary alignment \\
+coarse graining & folding $\mathrm{Fold}_6:\{0,\dots,63\}\twoheadrightarrow X_6$ with degeneracy & many-to-one codon compression; uplift $\Delta_\mu=N_\mu-V_\mu$ quantifies projection mismatch \\
+audit closure & bounded candidate families and deterministic tie-breaks & finite search over $4!=24$ encodings with a fixed objective on a fixed control set \\
+falsifiable outputs & rigid counts/histograms and thresholded stability changes & start--stop boundary symmetry; stop fine structure; corpus-level $Z$-spectrum and recoding-context statistics \\
+\bottomrule
+\end{tabular}
+\caption{A protocol-level isomorphism dictionary: the genetic code can be treated as a finite-resolution folding/closure problem over a bounded encoding domain, with explicit stability selection and auditable objectives.}
+\label{tab:isomorphism_dictionary}
+\end{table}
+
+\paragraph{Relation to active correction.}
+The stable-sector viewpoint used here has a control-theoretic dual developed elsewhere in the manuscript series: in open systems, sustained low-entropy structure can be modeled as predictive active error correction (AEC) that suppresses protocol-level mismatch relative to a passive baseline while paying dissipation and implementation costs.
+The interface objects in Table~\ref{tab:isomorphism_dictionary} are compatible with that dual: coarse graining and stability selection define what is visible under readout; active correction describes how biological systems maintain reliability against mismatch accumulation.
+\cite{Ma2025BioTeleology,Ma2025Z128SM}
+
+

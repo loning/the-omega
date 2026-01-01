@@ -4,6 +4,12 @@
 The appropriate empirical posture for HPA--$\Omega$ is to specify testable interfaces: statistical biases, scaling laws, and protocol-level certificates that can be measured across systems.
 This section gives three minimal, falsifiable templates aligned with the AEC definition.
 
+\subsection{Audit posture: bounded-complexity protocols}
+\label{sec:test_audit_posture}
+Each test below depends on explicit protocol choices: how a readout variable is mapped to a phase coordinate (uniformization), how ratios and tolerances are inferred, which window length $N$ and step size $\Delta t$ are used, which smoothing operator is applied, and which surrogate/baseline family is used for comparison.
+To avoid post-hoc freedom, these choices should be fixed \emph{a priori} or selected by a deterministic bounded-complexity rule from a finite admissible domain (Appendix~\ref{app:isomorphism_dictionary}, Definitions~\ref{def:bc_closure_audit}--\ref{def:rigidity_certificate_audit}).
+All reported effects should be stated relative to a baseline that preserves the relevant sampling and noise structure of the measurement protocol.
+
 \subsection{P1: rhythm ratio bias and the anti-locking index \texorpdfstring{$Q_\delta$}{Qdelta}}
 \label{sec:test_P1}
 
@@ -20,6 +26,10 @@ Cross-species or cross-condition measurements of coupled biological rhythms (e.g
 \paragraph{Decision criterion.}
 If there is no anti-locking selection pressure, $Q_\delta$ should not systematically exceed baselines.
 If the control-law hypothesis holds (Remark~\ref{rem:control_law}), $Q_\delta$ should be significantly shifted upward and should exhibit an enhanced upper tail near the golden-branch extremum.
+\paragraph{Audit form (baseline and rejection region).}
+Fix an admissible protocol domain (windowing, inference method, and surrogate family) and compute the scale-free score $Z_\delta=\sqrt{\delta}\,Q_\delta$ (Eq.~\eqref{eq:Zdelta_def}) for each inferred coupling ratio.
+Let $T$ be a pre-specified summary statistic of the empirical $Z_\delta$ sample (e.g.\ median or an upper-tail quantile).
+Generate a baseline distribution of $T$ using protocol-matched surrogates (e.g.\ time-shuffled or phase-randomized controls that preserve power spectra and noise levels) and reject the no-bias hypothesis at level $\alpha$ if $T$ exceeds the $(1-\alpha)$ baseline quantile.
 
 \subsection{P2: phase-friction certificate \texorpdfstring{$E_N$}{EN} vs maintenance dissipation}
 \label{sec:test_P2}
@@ -60,6 +70,7 @@ where $P_{\mathrm{geom}}$ aggregates architecture-dependent overhead terms (Sect
 \paragraph{Decision criterion.}
 Across matched conditions, systems with enhanced repair/control should exhibit reduced $\Sigma_N$ at the relevant scale.
 For quantitative fitting, one can regress $P_{\mathrm{maint}}$ against $\Sigma_N$ to estimate $\kB T_c$ as the minimal slope and diagnose additional intercept/overhead terms associated with $Z_{\mathrm{geom}}$.
+To make this auditable, the window length $N$, step size $\Delta t$, and smoothing operator used to compute $\Sigma_N$ should be fixed (or selected by a bounded-complexity rule) and reported alongside the fitted slope/intercept and their uncertainty under resampling.
 
 \subsection{P3: hierarchical relaxation and \texorpdfstring{$1/f$}{1/f} structure from Fibonacci/Zeckendorf layering}
 \label{sec:test_P3}
