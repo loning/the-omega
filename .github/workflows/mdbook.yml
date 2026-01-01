@@ -49,11 +49,27 @@ jobs:
           set -euo pipefail
           python3 scripts/build_papers_pdfs.py plan --github-output
 
+      - name: Cache APT archives (TeX)
+        if: steps.papers_plan.outputs.papers_to_build != '0'
+        uses: actions/cache@v4
+        continue-on-error: true
+        with:
+          path: .ci_cache/apt/archives
+          key: ${{ runner.os }}-apt-tex-${{ hashFiles('.github/workflows/mdbook.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-apt-tex-
+
       - name: Install TeX Live (only if needed)
         if: steps.papers_plan.outputs.papers_to_build != '0'
         shell: bash
         run: |
           set -euo pipefail
+          mkdir -p .ci_cache/apt/archives
+          sudo mkdir -p /var/cache/apt/archives
+          if compgen -G ".ci_cache/apt/archives/*.deb" > /dev/null; then
+            sudo cp -f .ci_cache/apt/archives/*.deb /var/cache/apt/archives/ || true
+          fi
+
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             latexmk \
@@ -66,6 +82,10 @@ jobs:
             texlive-science \
             texlive-xetex \
             texlive-luatex
+
+          sudo cp -f /var/cache/apt/archives/*.deb .ci_cache/apt/archives/ || true
+          sudo chown -R "$(id -u)":"$(id -g)" .ci_cache/apt || true
+
           sudo apt-get clean
           sudo rm -rf /var/lib/apt/lists/*
 
@@ -85,18 +105,19 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         
-      - name: Cache Rust dependencies
+      - name: Cache mdBook binaries (Cargo)
         uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/bin/
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
+            ~/.cargo/registry/src/
             ~/.cargo/git/db/
-          key: ${{ runner.os }}-cargo-${{ env.MDBOOK_VERSION }}-mermaid-${{ hashFiles('**/Cargo.lock', '**/Cargo.toml') }}
+          key: ${{ runner.os }}-mdbook-${{ env.MDBOOK_VERSION }}-katex-${{ env.MDBOOK_KATEX_VERSION }}-mermaid-${{ env.MDBOOK_MERMAID_VERSION }}
           restore-keys: |
-            ${{ runner.os }}-cargo-${{ env.MDBOOK_VERSION }}-
-            ${{ runner.os }}-cargo-
+            ${{ runner.os }}-mdbook-${{ env.MDBOOK_VERSION }}-
+            ${{ runner.os }}-mdbook-
             
       - name: Install mdBook
         run: |
