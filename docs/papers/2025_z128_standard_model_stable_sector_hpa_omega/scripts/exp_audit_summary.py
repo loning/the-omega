@@ -107,6 +107,39 @@ def _max_float_column(path: Path, col_idx: int) -> float | None:
     return best
 
 
+def _minmax_float_columns(path: Path, col_min: int, col_max: int) -> Tuple[float | None, float | None]:
+    if not path.exists():
+        return None, None
+    mn = None
+    mx = None
+    for line in path.read_text(encoding="utf-8").splitlines():
+        s = line.strip()
+        if not s or s.startswith("\\bottomrule"):
+            continue
+        parts = [p.strip() for p in s.split("&")]
+        if col_min >= len(parts) or col_max >= len(parts):
+            continue
+        a = _parse_first_float(parts[col_min])
+        b = _parse_first_float(parts[col_max])
+        if a is None or b is None:
+            continue
+        mn = a if mn is None else min(mn, a)
+        mx = b if mx is None else max(mx, b)
+    return mn, mx
+
+
+def _find_row_by_prefix(path: Path, prefix: str) -> str | None:
+    if not path.exists():
+        return None
+    for line in path.read_text(encoding="utf-8").splitlines():
+        s = line.strip()
+        if not s or s.startswith("\\bottomrule"):
+            continue
+        if s.startswith(prefix):
+            return s
+    return None
+
+
 def main() -> None:
     rows: List[str] = []
 
@@ -275,6 +308,27 @@ def main() -> None:
         ok = (total_cnt > 0) and (mn is not None) and (mx is not None) and (0.0 <= mn <= mx <= 180.0)
         obs = f"count={total_cnt}, range=[{mn:.1f},{mx:.1f}]" if mn is not None and mx is not None else f"count={total_cnt}"
         rows.append(_row(r"loop-scale $SO(3)$ angle range", r"$[0,180]$", obs, ok))
+
+    # Wilson-loop W sanity: require W in [-1,1] on all reported ks.
+    w_mn, w_mx = _minmax_float_columns(gen_dir / "holonomy_wilson_loop_rows.tex", col_min=3, col_max=4)
+    if w_mn is not None and w_mx is not None:
+        ok = (-1.0 <= w_mn <= w_mx <= 1.0)
+        rows.append(_row(r"Wilson $W$ range", r"$[-1,1]$", f"[{w_mn:.3f},{w_mx:.3f}]", ok))
+
+    # Single-loop best-fit sanity checks.
+    sl_path = gen_dir / "holonomy_single_loop_bestfit_rows.tex"
+    pmns_line = _find_row_by_prefix(sl_path, "\\texttt{PMNS}")
+    if pmns_line is not None:
+        parts = [p.strip() for p in pmns_line.split("&")]
+        Einf = _parse_first_float(parts[11]) if len(parts) > 11 else None
+        ok = (Einf is not None) and (Einf <= 0.25)
+        rows.append(_row(r"single-loop PMNS $E_\infty$", r"$\le 0.25$", f"{Einf:.3f}" if Einf is not None else "$-$", ok))
+    ckm_line = _find_row_by_prefix(sl_path, "\\texttt{CKM}")
+    if ckm_line is not None:
+        parts = [p.strip() for p in ckm_line.split("&")]
+        Einf = _parse_first_float(parts[11]) if len(parts) > 11 else None
+        ok = (Einf is not None) and (Einf <= 1.0)
+        rows.append(_row(r"single-loop CKM $E_\infty$", r"$\le 1.0$", f"{Einf:.3f}" if Einf is not None else "$-$", ok))
 
     # Inverse generation fit: require a perfect classifier exists (errors=0).
     inv_gen_line = _read_first_data_line(gen_dir / "inverse_generation_fit_rows.tex")

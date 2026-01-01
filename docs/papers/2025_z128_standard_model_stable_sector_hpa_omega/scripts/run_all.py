@@ -193,6 +193,20 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Holonomy Wilson loop sweep (toy)",
+            script="exp_holonomy_wilson_loop_sweep.py",
+            expected_outputs=[
+                "sections/generated/holonomy_wilson_loop_rows.tex",
+            ],
+        ),
+        Step(
+            name="Holonomy single-loop best fits (toy)",
+            script="exp_holonomy_single_loop_bestfit.py",
+            expected_outputs=[
+                "sections/generated/holonomy_single_loop_bestfit_rows.tex",
+            ],
+        ),
+        Step(
             name="Holonomy phase-lift angles denom sweep (toy)",
             script="exp_holonomy_phase_lift_angles_denom_sweep.py",
             expected_outputs=[
