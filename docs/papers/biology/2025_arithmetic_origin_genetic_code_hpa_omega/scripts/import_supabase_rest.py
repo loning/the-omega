@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import Any
 
 from supabase_env import load_env_file
+from provenance_tools import infer_analysis_version
 
 
 def _now_ms() -> int:
@@ -146,36 +147,59 @@ def count_rows(
         return None
 
 
-def load_recoding_sites(jsonl_path: Path) -> tuple[list[dict[str, Any]], int]:
+def load_recoding_sites(jsonl_path: Path, *, analysis_version: int | None = None) -> tuple[list[dict[str, Any]], int]:
     rows: list[dict[str, Any]] = []
     n = 0
-    for line in jsonl_path.read_text(encoding="utf-8").splitlines():
-        if not line.strip():
-            continue
-        obj = json.loads(line)
-        if not isinstance(obj, dict):
-            continue
-        rows.append(obj)
-        n += 1
+    with jsonl_path.open("r", encoding="utf-8") as f:
+        for line_no, line in enumerate(f, start=1):
+            if not line.strip():
+                continue
+            obj = json.loads(line)
+            if not isinstance(obj, dict):
+                continue
+
+            # Minimal validation for DB constraints and conflict keys.
+            av = obj.get("analysis_version")
+            k = obj.get("k")
+            ver = obj.get("version")
+            pos_start = obj.get("pos_start")
+            try:
+                av_i = int(av)  # type: ignore[arg-type]
+            except Exception as e:
+                raise SystemExit(f"Invalid analysis_version at {jsonl_path}:{line_no}") from e
+            if av_i <= 0:
+                raise SystemExit(f"Invalid analysis_version at {jsonl_path}:{line_no}: {av_i}")
+            if analysis_version is not None and int(av_i) != int(analysis_version):
+                raise SystemExit(
+                    f"Mismatched analysis_version at {jsonl_path}:{line_no}: {av_i} vs expected {int(analysis_version)}"
+                )
+            try:
+                k_i = int(k)  # type: ignore[arg-type]
+            except Exception as e:
+                raise SystemExit(f"Invalid k at {jsonl_path}:{line_no}") from e
+            if k_i <= 0:
+                raise SystemExit(f"Invalid k at {jsonl_path}:{line_no}: {k_i}")
+            if not isinstance(ver, str) or not ver.strip():
+                raise SystemExit(f"Invalid version at {jsonl_path}:{line_no}")
+            try:
+                int(pos_start)  # type: ignore[arg-type]
+            except Exception as e:
+                raise SystemExit(f"Invalid pos_start at {jsonl_path}:{line_no}") from e
+
+            rows.append(obj)
+            n += 1
     return rows, n
 
 
-def load_refseq_comp_results(summary_json: Path) -> list[dict[str, Any]]:
-    obj = json.loads(summary_json.read_text(encoding="utf-8"))
-    if not isinstance(obj, dict):
-        raise SystemExit("Malformed transcriptome_summary.json")
-    dataset = "human_refseq_mrna"
-    analysis_version = int(obj.get("analysis_version", 0) or 0)
-    if analysis_version <= 0:
-        # Back-compat: older merged summaries did not carry analysis_version.
-        analysis_version = int(obj.get("schema_version", 0) or 0)
-    if analysis_version <= 0:
-        raise SystemExit("Missing analysis_version/schema_version in transcriptome_summary.json")
-    k = int(obj.get("stop_window", 0) or 0)
+def load_refseq_comp_results(*, summary_path: Path, summary_obj: dict[str, Any], dataset: str) -> list[dict[str, Any]]:
+    analysis_version = infer_analysis_version(summary_path, summary_obj=summary_obj)
+    if not analysis_version:
+        raise SystemExit(f"Missing analysis_version for transcriptome summary: {summary_path}")
+    k = int(summary_obj.get("stop_window", 0) or 0)
     if k <= 0:
         raise SystemExit("Missing stop_window in transcriptome_summary.json")
 
-    comp = obj.get("stop_context_composition") or {}
+    comp = summary_obj.get("stop_context_composition") or {}
     if not isinstance(comp, dict) or not comp:
         raise SystemExit("Missing stop_context_composition in transcriptome_summary.json")
 
@@ -250,33 +274,32 @@ def load_refseq_comp_results(summary_json: Path) -> list[dict[str, Any]]:
 def load_analysis_runs(
     *,
     transcriptome_summary_path: Path,
+    transcriptome_summary_obj: dict[str, Any],
     recoding_summary_path: Path,
+    recoding_summary_obj: dict[str, Any],
+    refseq_dataset: str,
+    recoding_dataset: str,
 ) -> list[dict[str, Any]]:
-    ref_obj = json.loads(transcriptome_summary_path.read_text(encoding="utf-8"))
-    if not isinstance(ref_obj, dict):
-        raise SystemExit("Malformed transcriptome_summary.json")
-    rec_obj = json.loads(recoding_summary_path.read_text(encoding="utf-8"))
-    if not isinstance(rec_obj, dict):
-        raise SystemExit("Malformed recoding_sites_summary.json")
+    ref_av = infer_analysis_version(transcriptome_summary_path, summary_obj=transcriptome_summary_obj)
+    if not ref_av:
+        raise SystemExit(f"Missing analysis_version for transcriptome summary: {transcriptome_summary_path}")
 
-    ref_av = int(ref_obj.get("analysis_version", 0) or 0)
-    if ref_av <= 0:
-        ref_av = int(ref_obj.get("schema_version", 0) or 0)
-    if ref_av <= 0:
-        raise SystemExit("Missing analysis_version/schema_version in transcriptome_summary.json")
+    rec_av = infer_analysis_version(recoding_summary_path, summary_obj=recoding_summary_obj)
+    if not rec_av:
+        raise SystemExit(f"Missing analysis_version for recoding summary: {recoding_summary_path}")
 
     return [
         {
-            "dataset": "human_refseq_mrna",
+            "dataset": refseq_dataset,
             "analysis": "transcriptome_summary",
             "analysis_version": ref_av,
-            "payload": ref_obj,
+            "payload": transcriptome_summary_obj,
         },
         {
-            "dataset": "ncbi_recoding_genbank",
+            "dataset": recoding_dataset,
             "analysis": "recoding_sites_summary",
-            "analysis_version": int(rec_obj.get("analysis_version", 0) or 0),
-            "payload": rec_obj,
+            "analysis_version": rec_av,
+            "payload": recoding_summary_obj,
         },
     ]
 
@@ -297,7 +320,34 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--no-recoding", action="store_true", help="Skip importing recoding_sites.")
     p.add_argument("--no-refseq", action="store_true", help="Skip importing refseq_stop_context_comp_results.")
     p.add_argument("--no-analysis-runs", action="store_true", help="Skip importing analysis_runs payloads.")
+    p.add_argument(
+        "--recoding-jsonl",
+        default="data/recoding_genbank/recoding_sites.jsonl",
+        help="Input recoding JSONL path (relative to project root by default).",
+    )
+    p.add_argument(
+        "--recoding-summary-json",
+        default="data/recoding_genbank/recoding_sites_summary.json",
+        help="Input recoding summary JSON path (relative to project root by default).",
+    )
+    p.add_argument(
+        "--refseq-summary-json",
+        default="data/refseq_hsapiens_mrna/transcriptome_summary.json",
+        help="Input RefSeq merged transcriptome summary JSON path (relative to project root by default).",
+    )
+    p.add_argument("--recoding-dataset", default="ncbi_recoding_genbank", help="Dataset label for analysis_runs.")
+    p.add_argument("--refseq-dataset", default="human_refseq_mrna", help="Dataset label for analysis_runs / refseq results.")
     return p.parse_args()
+
+
+def _read_json_dict(path: Path, *, label: str) -> dict[str, Any]:
+    try:
+        obj = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as e:
+        raise SystemExit(f"Failed to read {label}: {path}") from e
+    if not isinstance(obj, dict):
+        raise SystemExit(f"Malformed {label}: {path}")
+    return obj
 
 
 def main() -> None:
@@ -321,9 +371,32 @@ def main() -> None:
     else:
         ssl_context = None
 
+    recoding_jsonl_path = (root / str(args.recoding_jsonl)).resolve()
+    recoding_summary_path = (root / str(args.recoding_summary_json)).resolve()
+    refseq_summary_path = (root / str(args.refseq_summary_json)).resolve()
+
+    transcriptome_obj: dict[str, Any] | None = None
+    recoding_summary_obj: dict[str, Any] | None = None
+
+    if (not args.no_refseq) or (not args.no_analysis_runs):
+        if not refseq_summary_path.exists():
+            raise SystemExit(f"Missing RefSeq transcriptome summary JSON: {refseq_summary_path}")
+        transcriptome_obj = _read_json_dict(refseq_summary_path, label="transcriptome_summary.json")
+
+    if (not args.no_analysis_runs) or (not args.no_recoding):
+        if recoding_summary_path.exists():
+            recoding_summary_obj = _read_json_dict(recoding_summary_path, label="recoding_sites_summary.json")
+        elif not args.no_analysis_runs:
+            raise SystemExit(f"Missing recoding summary JSON: {recoding_summary_path}")
+
     # 1) RefSeq comp results (small upsert)
     if not args.no_refseq:
-        ref_rows = load_refseq_comp_results(root / "data" / "refseq_hsapiens_mrna" / "transcriptome_summary.json")
+        assert transcriptome_obj is not None
+        ref_rows = load_refseq_comp_results(
+            summary_path=refseq_summary_path,
+            summary_obj=transcriptome_obj,
+            dataset=str(args.refseq_dataset),
+        )
         upsert_rows(
             supabase_url=supabase_url,
             supabase_key=supabase_key,
@@ -336,7 +409,12 @@ def main() -> None:
 
     # 2) Recoding sites (JSONL; larger)
     if not args.no_recoding:
-        rec_rows, n_rec = load_recoding_sites(root / "data" / "recoding_genbank" / "recoding_sites.jsonl")
+        if not recoding_jsonl_path.exists():
+            raise SystemExit(f"Missing recoding JSONL: {recoding_jsonl_path}")
+        rec_av_hint: int | None = None
+        if recoding_summary_obj is not None:
+            rec_av_hint = infer_analysis_version(recoding_summary_path, summary_obj=recoding_summary_obj)
+        rec_rows, n_rec = load_recoding_sites(recoding_jsonl_path, analysis_version=rec_av_hint)
         if rec_rows:
             upsert_rows(
                 supabase_url=supabase_url,
@@ -352,9 +430,15 @@ def main() -> None:
 
     # 3) Provenance payloads (2 rows)
     if not args.no_analysis_runs:
+        assert transcriptome_obj is not None
+        assert recoding_summary_obj is not None
         run_rows = load_analysis_runs(
-            transcriptome_summary_path=root / "data" / "refseq_hsapiens_mrna" / "transcriptome_summary.json",
-            recoding_summary_path=root / "data" / "recoding_genbank" / "recoding_sites_summary.json",
+            transcriptome_summary_path=refseq_summary_path,
+            transcriptome_summary_obj=transcriptome_obj,
+            recoding_summary_path=recoding_summary_path,
+            recoding_summary_obj=recoding_summary_obj,
+            refseq_dataset=str(args.refseq_dataset),
+            recoding_dataset=str(args.recoding_dataset),
         )
         upsert_rows(
             supabase_url=supabase_url,

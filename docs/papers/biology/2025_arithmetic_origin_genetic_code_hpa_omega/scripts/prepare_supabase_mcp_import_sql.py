@@ -15,6 +15,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from provenance_tools import infer_analysis_version
+
 
 def _json_dumps(x: object) -> str:
     return json.dumps(x, ensure_ascii=False, separators=(",", ":"), sort_keys=False)
@@ -96,6 +98,9 @@ def _prep_refseq_rows(csv_rows: list[dict[str, str]]) -> list[dict[str, Any]]:
 
 
 def _prep_recoding_rows(csv_rows: list[dict[str, str]], *, analysis_version: int) -> list[dict[str, Any]]:
+    if int(analysis_version) <= 0:
+        raise SystemExit(f"Invalid recoding analysis_version: {analysis_version}")
+
     int_cols = {
         "analysis_version",
         "k",
@@ -151,8 +156,14 @@ def _prep_recoding_rows(csv_rows: list[dict[str, str]], *, analysis_version: int
     out: list[dict[str, Any]] = []
     for r in csv_rows:
         row: dict[str, Any] = {}
-        # Force non-null analysis_version (DB enforces NOT NULL).
-        row["analysis_version"] = analysis_version
+        # Ensure consistent non-null analysis_version (DB enforces NOT NULL).
+        av_cell = _as_int(r.get("analysis_version", ""))
+        if av_cell is None:
+            row["analysis_version"] = int(analysis_version)
+        elif int(av_cell) != int(analysis_version):
+            raise SystemExit(f"Mismatched analysis_version in recoding CSV: {av_cell} vs expected {analysis_version}")
+        else:
+            row["analysis_version"] = int(analysis_version)
 
         for c in text_cols:
             v = (r.get(c) or "").strip()
@@ -369,18 +380,30 @@ do nothing;
 """
 
 
-def _sql_insert_analysis_runs(*, transcriptome_summary: dict[str, Any], recoding_meta: dict[str, Any]) -> str:
-    # Prefer analysis_version if present; fall back to schema_version for older summaries.
-    a_ref = int(transcriptome_summary.get("analysis_version", 0) or 0)
-    if a_ref <= 0:
-        a_ref = int(transcriptome_summary.get("schema_version", 0) or 0)
-    ref_payload = _json_dumps(transcriptome_summary)
+def _sql_insert_analysis_runs(
+    *,
+    transcriptome_summary: dict[str, Any] | None,
+    transcriptome_analysis_version: int | None,
+    recoding_meta: dict[str, Any],
+) -> str:
+    values: list[str] = []
+
+    if transcriptome_summary is not None and transcriptome_analysis_version is not None and int(transcriptome_analysis_version) > 0:
+        ref_payload = _json_dumps(transcriptome_summary)
+        values.append(
+            f"('human_refseq_mrna', 'transcriptome_summary', {int(transcriptome_analysis_version)}, $json${ref_payload}$json$::jsonb)"
+        )
+
+    rec_av = int(recoding_meta.get("analysis_version", 0) or 0)
+    if rec_av <= 0:
+        raise SystemExit("Missing/invalid analysis_version in recoding_meta")
     rec_payload = _json_dumps(recoding_meta)
+    values.append(f"('ncbi_recoding_genbank', 'recoding_sites_summary', {rec_av}, $json${rec_payload}$json$::jsonb)")
+
     return f"""\
 insert into public.analysis_runs (dataset, analysis, analysis_version, payload)
 values
-  ('human_refseq_mrna', 'transcriptome_summary', {a_ref}, $json${ref_payload}$json$::jsonb),
-  ('ncbi_recoding_genbank', 'recoding_sites', {int(recoding_meta.get("analysis_version", 0) or 0)}, $json${rec_payload}$json$::jsonb)
+  {",\n  ".join(values)}
 on conflict (dataset, analysis, analysis_version)
 do update set
   payload = excluded.payload,
@@ -401,8 +424,22 @@ def parse_args() -> argparse.Namespace:
         help="Output directory for .sql files (relative to project root).",
     )
     p.add_argument("--chunk-size", type=int, default=200, help="Rows per insert chunk for recoding_sites.")
-    p.add_argument("--recoding-analysis-version", type=int, default=5, help="analysis_version to stamp into recoding_sites.")
+    p.add_argument(
+        "--recoding-analysis-version",
+        type=int,
+        default=0,
+        help="Override recoding analysis_version (0 = infer from CSV).",
+    )
     return p.parse_args()
+
+
+def _infer_single_analysis_version_from_csv(csv_rows: list[dict[str, str]], *, csv_path: Path) -> int | None:
+    vals = sorted({v for v in (_as_int(r.get("analysis_version", "")) for r in csv_rows) if v is not None})
+    if not vals:
+        return None
+    if len(vals) != 1:
+        raise SystemExit(f"Multiple analysis_version values in {csv_path}: {vals[:10]}")
+    return int(vals[0])
 
 
 def main() -> None:
@@ -426,7 +463,19 @@ def main() -> None:
     if not ref_rows_raw:
         raise SystemExit(f"No rows in refseq CSV: {ref_csv}")
 
-    rec_rows = _prep_recoding_rows(rec_rows_raw, analysis_version=int(args.recoding_analysis_version))
+    inferred_rec_av = _infer_single_analysis_version_from_csv(rec_rows_raw, csv_path=rec_csv)
+    if int(args.recoding_analysis_version) > 0:
+        if inferred_rec_av is not None and int(inferred_rec_av) != int(args.recoding_analysis_version):
+            raise SystemExit(
+                f"recoding analysis_version mismatch: CSV has {inferred_rec_av} but --recoding-analysis-version={int(args.recoding_analysis_version)}"
+            )
+        rec_av = int(args.recoding_analysis_version)
+    else:
+        if inferred_rec_av is None:
+            raise SystemExit(f"Missing analysis_version column values in {rec_csv}; provide --recoding-analysis-version")
+        rec_av = int(inferred_rec_av)
+
+    rec_rows = _prep_recoding_rows(rec_rows_raw, analysis_version=int(rec_av))
     ref_rows = _prep_refseq_rows(ref_rows_raw)
 
     _write_sql(out_dir / "001_refseq_stop_context_comp_results.sql", _sql_insert_refseq(ref_rows))
@@ -436,22 +485,32 @@ def main() -> None:
 
     # analysis_runs payloads
     transcriptome_path = root / "data" / "refseq_hsapiens_mrna" / "transcriptome_summary.json"
+    transcriptome_summary: dict[str, Any] | None
+    transcriptome_av: int | None = None
     if transcriptome_path.exists():
         transcriptome_summary = json.loads(transcriptome_path.read_text(encoding="utf-8"))
         if not isinstance(transcriptome_summary, dict):
             raise SystemExit(f"Malformed transcriptome_summary.json: {transcriptome_path}")
+        transcriptome_av = infer_analysis_version(transcriptome_path, summary_obj=transcriptome_summary)
     else:
-        transcriptome_summary = {"schema_version": 0, "note": "missing transcriptome_summary.json"}
+        transcriptome_summary = None
 
     # Minimal recoding metadata (kept small; raw rows live in recoding_sites table).
     ks = sorted({int(r["k"]) for r in rec_rows if isinstance(r.get("k"), int)})
     recoding_meta = {
-        "analysis_version": int(args.recoding_analysis_version),
+        "analysis_version": int(rec_av),
         "rows": len(rec_rows),
         "k_list": ks,
         "exports_dir": str(exports_dir),
     }
-    _write_sql(out_dir / "900_analysis_runs.sql", _sql_insert_analysis_runs(transcriptome_summary=transcriptome_summary, recoding_meta=recoding_meta))
+    _write_sql(
+        out_dir / "900_analysis_runs.sql",
+        _sql_insert_analysis_runs(
+            transcriptome_summary=transcriptome_summary,
+            transcriptome_analysis_version=transcriptome_av,
+            recoding_meta=recoding_meta,
+        ),
+    )
 
     print("Wrote SQL dir:", out_dir)
     print("  refseq rows:", len(ref_rows))

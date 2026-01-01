@@ -46,6 +46,35 @@ python3 scripts/import_supabase_rest.py --batch-size 200
 python3 scripts/import_supabase_rest.py --batch-size 200 --insecure
 ```
 
+3) **可选：指定输入文件（支持 quick 产物）**
+
+默认使用：
+
+- `data/recoding_genbank/recoding_sites.jsonl`
+- `data/recoding_genbank/recoding_sites_summary.json`
+- `data/refseq_hsapiens_mrna/transcriptome_summary.json`
+
+如果你跑的是快速流程（例如 `data/_quick/run_all/` 下的产物），可显式指定路径：
+
+```bash
+python3 scripts/import_supabase_rest.py \
+  --recoding-jsonl data/_quick/run_all/recoding_sites.jsonl \
+  --recoding-summary-json data/_quick/run_all/recoding_sites_summary.json \
+  --refseq-summary-json data/_quick/run_all/transcriptome_summary.json \
+  --batch-size 200
+```
+
+如 quick 的 `transcriptome_summary.json` 未包含 `stop_context_composition`（较旧 schema），可加 `--no-refseq` 仅导入 `recoding_sites` 与 `analysis_runs`：
+
+```bash
+python3 scripts/import_supabase_rest.py \
+  --no-refseq \
+  --recoding-jsonl data/_quick/run_all/recoding_sites.jsonl \
+  --recoding-summary-json data/_quick/run_all/recoding_sites_summary.json \
+  --refseq-summary-json data/_quick/run_all/transcriptome_summary.json \
+  --batch-size 200
+```
+
 ### 导出 CSV
 
 - **导出**（在项目根目录 `docs/papers/biology/2025_arithmetic_origin_genetic_code_hpa_omega` 下运行）：
@@ -54,9 +83,52 @@ python3 scripts/import_supabase_rest.py --batch-size 200 --insecure
 python3 scripts/export_supabase_tables.py --out-dir data/db_exports
 ```
 
+如需从 quick 产物导出（例如 `data/_quick/run_all/`），可指定输入路径：
+
+```bash
+python3 scripts/export_supabase_tables.py \
+  --recoding-jsonl data/_quick/run_all/recoding_sites.jsonl \
+  --refseq-summary-json data/_quick/run_all/transcriptome_summary.json \
+  --out-dir data/db_exports
+```
+
+如 quick 的 `transcriptome_summary.json` 未包含 `stop_context_composition`，可加 `--no-refseq` 仅导出 `recoding_sites.csv`：
+
+```bash
+python3 scripts/export_supabase_tables.py \
+  --no-refseq \
+  --recoding-jsonl data/_quick/run_all/recoding_sites.jsonl \
+  --out-dir data/db_exports
+```
+
 会生成：
 - `data/db_exports/recoding_sites.csv`
 - `data/db_exports/refseq_stop_context_comp_results.csv`
+
+### 产物一致性校验（推荐）
+
+在导入前可先做一次本地一致性检查（文件存在性、analysis\_version 一致性、冲突键重复等）：
+
+```bash
+python3 scripts/validate_artifacts.py
+```
+
+针对 quick 产物：
+
+```bash
+python3 scripts/validate_artifacts.py \
+  --recoding-jsonl data/_quick/run_all/recoding_sites.jsonl \
+  --recoding-summary-json data/_quick/run_all/recoding_sites_summary.json \
+  --refseq-summary-json data/_quick/run_all/transcriptome_summary.json
+```
+
+如果 quick 未产生 recoding 行，可用 `--no-recoding` 仅校验 RefSeq summary：
+
+```bash
+python3 scripts/validate_artifacts.py \
+  --no-recoding \
+  --refseq-summary-json data/_quick/run_all/transcriptome_summary.json
+```
 
 ### 版本字段约定
 

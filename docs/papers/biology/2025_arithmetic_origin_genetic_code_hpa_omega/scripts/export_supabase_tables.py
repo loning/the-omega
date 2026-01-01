@@ -19,6 +19,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from provenance_tools import infer_analysis_version
+
 
 DINUC_ORDER = [a + b for a in "ACGT" for b in "ACGT"]
 
@@ -107,30 +109,27 @@ def export_recoding_sites(*, in_jsonl: Path, out_csv: Path) -> None:
         w = csv.DictWriter(f_out, fieldnames=cols, extrasaction="ignore")
         w.writeheader()
         n = 0
-        for line in in_jsonl.read_text(encoding="utf-8").splitlines():
-            if not line.strip():
-                continue
-            obj = json.loads(line)
-            if not isinstance(obj, dict):
-                continue
-            row = {k: _csv_cell(obj.get(k)) for k in cols}
-            w.writerow(row)
-            n += 1
+        with in_jsonl.open("r", encoding="utf-8") as f_in:
+            for line in f_in:
+                if not line.strip():
+                    continue
+                obj = json.loads(line)
+                if not isinstance(obj, dict):
+                    continue
+                row = {k: _csv_cell(obj.get(k)) for k in cols}
+                w.writerow(row)
+                n += 1
     print("Wrote:", out_csv, f"(rows={n})")
 
 
-def export_refseq_stop_context_comp_results(*, in_summary_json: Path, out_csv: Path) -> None:
+def export_refseq_stop_context_comp_results(*, in_summary_json: Path, out_csv: Path, dataset: str) -> None:
     obj = json.loads(in_summary_json.read_text(encoding="utf-8"))
     if not isinstance(obj, dict):
         raise SystemExit("Malformed transcriptome_summary.json")
 
-    dataset = "human_refseq_mrna"
-    analysis_version = int(obj.get("analysis_version", 0) or 0)
-    if analysis_version <= 0:
-        # Back-compat: older merged summaries did not carry analysis_version.
-        analysis_version = int(obj.get("schema_version", 0) or 0)
-    if analysis_version <= 0:
-        raise SystemExit("Missing analysis_version/schema_version in transcriptome_summary.json")
+    analysis_version = infer_analysis_version(in_summary_json, summary_obj=obj)
+    if not analysis_version:
+        raise SystemExit("Missing analysis_version for transcriptome_summary.json")
     k = int(obj.get("stop_window", 0) or 0)
     if k <= 0:
         raise SystemExit("Missing stop_window in transcriptome_summary.json")
@@ -234,6 +233,19 @@ def export_refseq_stop_context_comp_results(*, in_summary_json: Path, out_csv: P
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Export datasets to CSV for Supabase/Postgres.")
     p.add_argument("--out-dir", default="data/db_exports", help="Output directory (relative to project root).")
+    p.add_argument(
+        "--recoding-jsonl",
+        default="data/recoding_genbank/recoding_sites.jsonl",
+        help="Input recoding JSONL path (relative to project root by default).",
+    )
+    p.add_argument(
+        "--refseq-summary-json",
+        default="data/refseq_hsapiens_mrna/transcriptome_summary.json",
+        help="Input RefSeq merged transcriptome summary JSON path (relative to project root by default).",
+    )
+    p.add_argument("--refseq-dataset", default="human_refseq_mrna", help="Dataset label written into refseq CSV.")
+    p.add_argument("--no-recoding", action="store_true", help="Skip exporting recoding_sites.csv.")
+    p.add_argument("--no-refseq", action="store_true", help="Skip exporting refseq_stop_context_comp_results.csv.")
     return p.parse_args()
 
 
@@ -242,14 +254,17 @@ def main() -> None:
     root = Path(__file__).resolve().parent.parent
     out_dir = (root / str(args.out_dir)).resolve()
 
-    export_recoding_sites(
-        in_jsonl=root / "data" / "recoding_genbank" / "recoding_sites.jsonl",
-        out_csv=out_dir / "recoding_sites.csv",
-    )
-    export_refseq_stop_context_comp_results(
-        in_summary_json=root / "data" / "refseq_hsapiens_mrna" / "transcriptome_summary.json",
-        out_csv=out_dir / "refseq_stop_context_comp_results.csv",
-    )
+    if not args.no_recoding:
+        export_recoding_sites(
+            in_jsonl=(root / str(args.recoding_jsonl)).resolve(),
+            out_csv=out_dir / "recoding_sites.csv",
+        )
+    if not args.no_refseq:
+        export_refseq_stop_context_comp_results(
+            in_summary_json=(root / str(args.refseq_summary_json)).resolve(),
+            out_csv=out_dir / "refseq_stop_context_comp_results.csv",
+            dataset=str(args.refseq_dataset),
+        )
 
 
 if __name__ == "__main__":
