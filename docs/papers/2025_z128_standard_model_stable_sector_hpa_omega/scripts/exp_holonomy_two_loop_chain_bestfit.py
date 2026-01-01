@@ -187,8 +187,9 @@ def main() -> None:
         raise AssertionError("No 3/4-cycle loops found.")
 
     # Run bounded scans.
-    best_p, second_p, domain_p = two_best_candidates(pmns_ref, loops, map_names, denoms, progress_every_s=30.0)
-    best_c, second_c, domain_c = two_best_candidates(ckm_ref, loops, map_names, denoms, progress_every_s=30.0)
+    # Progress: print once per minute for long-running scans.
+    best_p, second_p, domain_p = two_best_candidates(pmns_ref, loops, map_names, denoms, progress_every_s=60.0)
+    best_c, second_c, domain_c = two_best_candidates(ckm_ref, loops, map_names, denoms, progress_every_s=60.0)
 
     rows: List[str] = []
 

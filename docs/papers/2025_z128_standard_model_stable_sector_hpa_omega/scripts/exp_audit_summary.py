@@ -345,6 +345,21 @@ def main() -> None:
         ok = (Einf is not None) and (Einf <= 0.5)
         rows.append(_row(r"two-loop CKM $E_\infty$", r"$\le 0.5$", f"{Einf:.3f}" if Einf is not None else "$-$", ok))
 
+    # Two-loop chain (mixed cycles) sanity checks.
+    tlm_path = gen_dir / "holonomy_two_loop_chain_mixed_cycles_bestfit_rows.tex"
+    pmns_line = _find_row_by_prefix(tlm_path, "\\texttt{PMNS}")
+    if pmns_line is not None:
+        parts = [p.strip() for p in pmns_line.split("&")]
+        Einf = _parse_first_float(parts[11]) if len(parts) > 11 else None
+        ok = (Einf is not None) and (Einf <= 0.05)
+        rows.append(_row(r"two-loop (mixed) PMNS $E_\infty$", r"$\le 0.05$", f"{Einf:.3f}" if Einf is not None else "$-$", ok))
+    ckm_line = _find_row_by_prefix(tlm_path, "\\texttt{CKM}")
+    if ckm_line is not None:
+        parts = [p.strip() for p in ckm_line.split("&")]
+        Einf = _parse_first_float(parts[11]) if len(parts) > 11 else None
+        ok = (Einf is not None) and (Einf <= 0.3)
+        rows.append(_row(r"two-loop (mixed) CKM $E_\infty$", r"$\le 0.3$", f"{Einf:.3f}" if Einf is not None else "$-$", ok))
+
     # Inverse generation fit: require a perfect classifier exists (errors=0).
     inv_gen_line = _read_first_data_line(gen_dir / "inverse_generation_fit_rows.tex")
     # The fragment has multiple rows; we want the best-row which is the third line in our generator.

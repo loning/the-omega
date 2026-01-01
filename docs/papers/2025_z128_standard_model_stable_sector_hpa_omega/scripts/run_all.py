@@ -214,6 +214,13 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Holonomy two-loop chain best fits (mixed cycles, toy)",
+            script="exp_holonomy_two_loop_chain_mixed_cycles_bestfit.py",
+            expected_outputs=[
+                "sections/generated/holonomy_two_loop_chain_mixed_cycles_bestfit_rows.tex",
+            ],
+        ),
+        Step(
             name="Holonomy phase-lift angles denom sweep (toy)",
             script="exp_holonomy_phase_lift_angles_denom_sweep.py",
             expected_outputs=[
