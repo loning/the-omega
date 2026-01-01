@@ -1,7 +1,7 @@
 # The Omega Framework
 *重构实在：从比特到几何，从观察者到宇宙。*
 
-[English Version](./index.md) | [📥 PDF](./books/book-foundation-of-phys-in-geo-and-info/Information_Geometry_Agency.pdf) | [📥 Reality Decompiled](./books/book-first-principles-from-unitary-computation-to-physical-reality/Reality_Decompiled.pdf) | [▶️ Video](https://youtu.be/-bhgzuFOaro)
+[English Version](./index.md) | [📄 论文](./papers/index.md) | [📥 PDF](./books/book-foundation-of-phys-in-geo-and-info/Information_Geometry_Agency.pdf) | [📥 Reality Decompiled](./books/book-first-principles-from-unitary-computation-to-physical-reality/Reality_Decompiled.pdf) | [▶️ Video](https://youtu.be/-bhgzuFOaro)
 
 ---
 
@@ -51,6 +51,15 @@
 意识不再是物理学的“副产品”，而是具有特定拓扑结构的因果网络。
 *   **数学定义**：观察者被定义为一个具有**自指结构**的冯·诺依曼代数子系统。
 *   **拓扑保护**：意识状态对应于参数空间中非平凡的 $\mathbb{Z}_2$ 同痕类，解释了其在退相干环境中的稳定性。
+
+---
+
+## 📄 论文（LaTeX 手稿）
+
+除长篇书籍外，本项目同时维护一组相互承接的论文手稿（LaTeX），包含依赖关系图、推荐阅读路径与可复现实验脚本。
+
+- **索引（中文）**：[`papers/index.md`](./papers/index.md)
+- **Index (EN)**：[`papers/index_en.md`](./papers/index_en.md)
 
 ---
 

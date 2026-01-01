@@ -13,6 +13,8 @@
 
 [English Version](README.md)
 
+[📄 论文索引](docs/papers/index.md) | [📄 Papers Index](docs/papers/index_en.md)
+
 ---
 
 ## 🚀 摘要
@@ -73,6 +75,15 @@
 | **意识** | **自指循环**（递归函数） 👁️ |
 
 ---
+
+## 📄 论文（LaTeX 手稿）
+
+本仓库同时维护一组相互承接的论文手稿（LaTeX），将核心机制链与各应用/专题以可审计方式展开。
+
+- **索引（中文）**：[`docs/papers/index.md`](docs/papers/index.md)
+- **Index (EN)**：[`docs/papers/index_en.md`](docs/papers/index_en.md)
+- **推荐起步**：HPΩT → HPA → STI → MAI → FoP → CAP → HPD（依赖图与更多路径见论文索引）
+- **直达 PDF**：[`HPA`](docs/papers/2025_holographic_polar_arithmetic/main.pdf)、[`FoP`](docs/papers/2025_foundations_of_physics_submission/main.pdf)、[`CAP`](docs/papers/2025_computational_action_principle_hpa_omega/main.pdf)
 
 ## 📚 目录
 
