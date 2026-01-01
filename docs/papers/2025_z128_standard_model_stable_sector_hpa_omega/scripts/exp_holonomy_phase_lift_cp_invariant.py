@@ -52,7 +52,47 @@ Perm = Tuple[int, int, int, int]
 def phase(k: int) -> float:
     # Z_128-like phase register embedding for k in {0..63}.
     # Use a full 64-step circle: 2*pi*k/64 = 2*pi*(2k)/128.
-    return 2.0 * math.pi * (float(k) / 64.0)
+    return phase_with_denom(k, denom=64, map_name="id", bits=6)
+
+
+def _bit_reverse(k: int, bits: int) -> int:
+    out = 0
+    for _ in range(bits):
+        out = (out << 1) | (k & 1)
+        k >>= 1
+    return out
+
+
+def map_index(k: int, bits: int, map_name: str) -> int:
+    """
+    Deterministic low-complexity index maps on {0..2^bits-1}.
+
+    Supported:
+      - "id": identity
+      - "gray": Gray code k ^ (k>>1)
+      - "bitrev": bit-reversal on 'bits' bits
+      - "not": bitwise complement within 'bits' bits
+    """
+    if bits <= 0:
+        raise ValueError("bits must be positive.")
+    mask = (1 << bits) - 1
+    k = int(k) & mask
+    if map_name == "id":
+        return k
+    if map_name == "gray":
+        return (k ^ (k >> 1)) & mask
+    if map_name == "bitrev":
+        return _bit_reverse(k, bits=bits) & mask
+    if map_name == "not":
+        return (~k) & mask
+    raise ValueError(f"Unknown map_name: {map_name!r}")
+
+
+def phase_with_denom(k: int, denom: int, map_name: str = "id", bits: int = 6) -> float:
+    if denom <= 0:
+        raise ValueError("denom must be positive.")
+    kk = map_index(k, bits=bits, map_name=map_name)
+    return 2.0 * math.pi * (float(kk) / float(denom))
 
 
 def fiber4(pre: Dict[str, List[int]], w: str) -> List[int]:
@@ -74,6 +114,35 @@ def edge_unitary(a: Coord, b: Coord, labels: Dict[Coord, str], pre: Dict[str, Li
     for i in range(4):
         j = p[i]
         theta = phase(fb[j]) - phase(fa[i])
+        U[j][i] = cmath.exp(1j * theta)
+    return U
+
+
+def edge_unitary_with_denom(
+    a: Coord,
+    b: Coord,
+    labels: Dict[Coord, str],
+    pre: Dict[str, List[int]],
+    edge_p: Dict[Tuple[Coord, Coord], Perm],
+    denom: int,
+    map_name: str = "id",
+    bits: int = 6,
+) -> List[List[complex]]:
+    """
+    Same as edge_unitary, but with an explicit phase denominator.
+    """
+    p = edge_p[(a, b)]
+    wa = labels[a]
+    wb = labels[b]
+    fa = fiber4(pre, wa)
+    fb = fiber4(pre, wb)
+
+    U = [[0j] * 4 for _ in range(4)]
+    for i in range(4):
+        j = p[i]
+        theta = phase_with_denom(fb[j], denom=denom, map_name=map_name, bits=bits) - phase_with_denom(
+            fa[i], denom=denom, map_name=map_name, bits=bits
+        )
         U[j][i] = cmath.exp(1j * theta)
     return U
 
@@ -167,7 +236,7 @@ def jarlskog_invariant(U: List[List[complex]]) -> float:
     return float((U[0][0] * U[1][1] * U[0][1].conjugate() * U[1][0].conjugate()).imag)
 
 
-def plaquette_unitary_holonomies() -> List[Tuple[Perm, List[List[complex]]]]:
+def plaquette_unitary_holonomies(denom: int = 64, map_name: str = "id") -> List[Tuple[Perm, List[List[complex]]]]:
     labels = holo.grid_labels(n_bits=3)
     pre = holo.preimages()
     edge_p = holo.edge_perm_cache(labels, pre)
@@ -188,10 +257,10 @@ def plaquette_unitary_holonomies() -> List[Tuple[Perm, List[List[complex]]]]:
             hol_p = holo.compose(p_da, holo.compose(p_cd, holo.compose(p_bc, p_ab)))
 
             # Phase-lifted unitary holonomy.
-            U_ab = edge_unitary(a, b, labels, pre, edge_p)
-            U_bc = edge_unitary(b, c, labels, pre, edge_p)
-            U_cd = edge_unitary(c, d, labels, pre, edge_p)
-            U_da = edge_unitary(d, a, labels, pre, edge_p)
+            U_ab = edge_unitary_with_denom(a, b, labels, pre, edge_p, denom=denom, map_name=map_name, bits=6)
+            U_bc = edge_unitary_with_denom(b, c, labels, pre, edge_p, denom=denom, map_name=map_name, bits=6)
+            U_cd = edge_unitary_with_denom(c, d, labels, pre, edge_p, denom=denom, map_name=map_name, bits=6)
+            U_da = edge_unitary_with_denom(d, a, labels, pre, edge_p, denom=denom, map_name=map_name, bits=6)
             H = matmul(U_da, matmul(U_cd, matmul(U_bc, U_ab)))
 
             out.append((hol_p, H))

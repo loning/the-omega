@@ -148,6 +148,57 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Holonomy phase denominator sweep (toy)",
+            script="exp_holonomy_phase_lift_family_sweep.py",
+            expected_outputs=[
+                "sections/generated/holonomy_phase_lift_family_rows.tex",
+            ],
+        ),
+        Step(
+            name="Holonomy phase-lift angles (toy)",
+            script="exp_holonomy_phase_lift_angles.py",
+            expected_outputs=[
+                "sections/generated/holonomy_phase_lift_angles_rows.tex",
+            ],
+        ),
+        Step(
+            name="Holonomy balanced-chain sweep (toy)",
+            script="exp_holonomy_balanced_chain_sweep.py",
+            expected_outputs=[
+                "sections/generated/holonomy_balanced_chain_rows.tex",
+            ],
+        ),
+        Step(
+            name="Holonomy phase-lift angles denom sweep (toy)",
+            script="exp_holonomy_phase_lift_angles_denom_sweep.py",
+            expected_outputs=[
+                "sections/generated/holonomy_phase_lift_angles_denom_sweep_rows.tex",
+            ],
+        ),
+        Step(
+            name="Holonomy PMNS denom fit (toy)",
+            script="exp_holonomy_phase_lift_pmns_denom_fit.py",
+            expected_outputs=[
+                "sections/generated/holonomy_phase_lift_pmns_denom_fit_rows.tex",
+            ],
+        ),
+        Step(
+            name="Holonomy permutation fits (PMNS/CKM, toy)",
+            script="exp_holonomy_phase_lift_perm_fit.py",
+            expected_outputs=[
+                "sections/generated/holonomy_perm_fit_pmns_rows.tex",
+                "sections/generated/holonomy_perm_fit_ckm_rows.tex",
+            ],
+        ),
+        Step(
+            name="Holonomy phase-map family sweep (toy)",
+            script="exp_holonomy_phase_lift_map_family_sweep.py",
+            expected_outputs=[
+                "sections/generated/holonomy_map_family_pmns_rows.tex",
+                "sections/generated/holonomy_map_family_ckm_rows.tex",
+            ],
+        ),
+        Step(
             name="SM labeling solver",
             script="exp_sm_labeling_solver.py",
             expected_outputs=[
@@ -182,6 +233,20 @@ def build_steps() -> List[Step]:
             script="exp_labeling_lift_highm_invariants.py",
             expected_outputs=[
                 "sections/generated/label_lift_highm_invariants_rows.tex",
+            ],
+        ),
+        Step(
+            name="Inverse hypercharge fit (toy)",
+            script="exp_inverse_hypercharge_fit.py",
+            expected_outputs=[
+                "sections/generated/inverse_hypercharge_fit_rows.tex",
+            ],
+        ),
+        Step(
+            name="Inverse rep-dimension fit (toy)",
+            script="exp_inverse_rep_dim_fit.py",
+            expected_outputs=[
+                "sections/generated/inverse_rep_dim_fit_rows.tex",
             ],
         ),
         Step(
@@ -261,6 +326,13 @@ def build_steps() -> List[Step]:
             script="exp_audit_uncertainty_robustness.py",
             expected_outputs=[
                 "sections/generated/audit_uncertainty_robustness_rows.tex",
+            ],
+        ),
+        Step(
+            name="Audit resolution calibration robustness",
+            script="exp_audit_resolution_calibration_robustness.py",
+            expected_outputs=[
+                "sections/generated/audit_resolution_calibration_robustness_rows.tex",
             ],
         ),
         Step(
