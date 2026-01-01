@@ -169,6 +169,23 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Holonomy balanced-chain permutation fits (PMNS/CKM, toy)",
+            script="exp_holonomy_balanced_chain_perm_fit.py",
+            expected_outputs=[
+                "sections/generated/holonomy_balanced_chain_fit_pmns_rows.tex",
+                "sections/generated/holonomy_balanced_chain_fit_ckm_rows.tex",
+            ],
+        ),
+        Step(
+            name="Holonomy loop-scale sweep (toy)",
+            script="exp_holonomy_loop_scale_sweep.py",
+            expected_outputs=[
+                "sections/generated/holonomy_loop_scale_cycle_rows.tex",
+                "sections/generated/holonomy_loop_scale_fit_pmns_rows.tex",
+                "sections/generated/holonomy_loop_scale_fit_ckm_rows.tex",
+            ],
+        ),
+        Step(
             name="Holonomy phase-lift angles denom sweep (toy)",
             script="exp_holonomy_phase_lift_angles_denom_sweep.py",
             expected_outputs=[
@@ -196,6 +213,14 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "sections/generated/holonomy_map_family_pmns_rows.tex",
                 "sections/generated/holonomy_map_family_ckm_rows.tex",
+            ],
+        ),
+        Step(
+            name="Holonomy soft-transport beta sweep (toy)",
+            script="exp_holonomy_soft_transport_beta_sweep.py",
+            expected_outputs=[
+                "sections/generated/holonomy_soft_transport_pmns_rows.tex",
+                "sections/generated/holonomy_soft_transport_ckm_rows.tex",
             ],
         ),
         Step(
@@ -243,10 +268,31 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Inverse hypercharge sign fit (toy)",
+            script="exp_inverse_hypercharge_sign_fit.py",
+            expected_outputs=[
+                "sections/generated/inverse_hypercharge_sign_fit_rows.tex",
+            ],
+        ),
+        Step(
+            name="Inverse hypercharge full fit (toy)",
+            script="exp_inverse_hypercharge_full_fit.py",
+            expected_outputs=[
+                "sections/generated/inverse_hypercharge_full_fit_rows.tex",
+            ],
+        ),
+        Step(
             name="Inverse rep-dimension fit (toy)",
             script="exp_inverse_rep_dim_fit.py",
             expected_outputs=[
                 "sections/generated/inverse_rep_dim_fit_rows.tex",
+            ],
+        ),
+        Step(
+            name="Inverse generation fit (toy)",
+            script="exp_inverse_generation_fit.py",
+            expected_outputs=[
+                "sections/generated/inverse_generation_fit_rows.tex",
             ],
         ),
         Step(

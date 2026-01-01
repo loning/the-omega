@@ -40,6 +40,54 @@ def _row(name: str, expected: str, observed: str, ok: bool) -> str:
     return f"{name} & {expected} & {observed} & {_fmt_bool(ok)} \\\\"
 
 
+def _parse_first_float(s: str) -> float | None:
+    # Very small helper for reading numeric fields from generated LaTeX fragments.
+    # We strip common TeX wrappers and return the first parseable float token.
+    t = s.replace("\\textbf{", "").replace("}", "").replace("$", "")
+    for tok in t.replace("&", " ").replace("\\\\", " ").split():
+        try:
+            return float(tok)
+        except ValueError:
+            continue
+    return None
+
+
+def _read_first_data_line(path: Path) -> str | None:
+    if not path.exists():
+        return None
+    for line in path.read_text(encoding="utf-8").splitlines():
+        s = line.strip()
+        if not s or s.startswith("\\bottomrule"):
+            continue
+        return s
+    return None
+
+
+def _min_float_column(path: Path, col_idx: int, skip_prefixes: Tuple[str, ...] = ("\\texttt{best/second}",)) -> float | None:
+    """
+    Parse a generated LaTeX tabular fragment and return the minimum numeric value
+    found in column col_idx (0-based) among data lines.
+    """
+    if not path.exists():
+        return None
+    best = None
+    for line in path.read_text(encoding="utf-8").splitlines():
+        s = line.strip()
+        if not s or s.startswith("\\bottomrule"):
+            continue
+        if any(s.startswith(pfx) for pfx in skip_prefixes):
+            continue
+        parts = [p.strip() for p in s.split("&")]
+        if col_idx >= len(parts):
+            continue
+        x = _parse_first_float(parts[col_idx])
+        if x is None:
+            continue
+        if best is None or x < best:
+            best = x
+    return best
+
+
 def main() -> None:
     rows: List[str] = []
 
@@ -165,12 +213,54 @@ def main() -> None:
     obs_cp = f"|J| mean (1,2,3,4)=({mean_abs.get('1',0.0):.3g},{mean_abs.get('2',0.0):.3g},{mean_abs.get('3',0.0):.3g},{mean_abs.get('4',0.0):.3g})"
     rows.append(_row(r"phase-lift CP signal", "nonzero on 3/4 cycles", obs_cp, ok_cp))
 
+    # Additional lightweight audits based on generated fragments (run_all ensures they exist).
+    root = Path(__file__).resolve().parent.parent
+    gen_dir = root / "sections" / "generated"
+
+    # Permutation-robust PMNS fit objective (unit-plaquette, denom sweep):
+    # expect Einf <= 0.2 (diagnostic threshold).
+    Einf_min = _min_float_column(gen_dir / "holonomy_perm_fit_pmns_rows.tex", col_idx=6)
+    if Einf_min is not None:
+        ok = Einf_min <= 0.2
+        rows.append(_row(r"PMNS perm-fit $E_\infty$", r"$\le 0.2$", f"{Einf_min:.3f}", ok))
+
+    # Loop-scale PMNS best Einf should be finite for k=1..3.
+    loop_Einf_min = _min_float_column(gen_dir / "holonomy_loop_scale_fit_pmns_rows.tex", col_idx=7)
+    if loop_Einf_min is not None:
+        ok = math.isfinite(loop_Einf_min)
+        rows.append(_row(r"loop-scale PMNS $E_\infty$ finite", "finite", f"{loop_Einf_min:.3f}", ok))
+
+    # Inverse generation fit: require a perfect classifier exists (errors=0).
+    inv_gen_line = _read_first_data_line(gen_dir / "inverse_generation_fit_rows.tex")
+    # The fragment has multiple rows; we want the best-row which is the third line in our generator.
+    inv_gen_path = gen_dir / "inverse_generation_fit_rows.tex"
+    if inv_gen_path.exists():
+        lines = [ln.strip() for ln in inv_gen_path.read_text(encoding="utf-8").splitlines() if ln.strip() and not ln.strip().startswith("\\bottomrule")]
+        best_acc = None
+        for ln in lines:
+            parts = [p.strip() for p in ln.split("&")]
+            if len(parts) < 4:
+                continue
+            acc = _parse_first_float(parts[3])
+            if acc is None:
+                continue
+            if best_acc is None or acc > best_acc:
+                best_acc = acc
+        ok = (best_acc is not None) and (best_acc >= 1.0 - 1e-12)
+        rows.append(_row(r"inverse generation acc", "1.000", f"{best_acc:.3f}" if best_acc is not None else "$-$", ok))
+
+    # Inverse hypercharge sign fit: require accuracy >= 0.6 (diagnostic).
+    inv_sign_line = _read_first_data_line(gen_dir / "inverse_hypercharge_sign_fit_rows.tex")
+    if inv_sign_line is not None:
+        parts = [p.strip() for p in inv_sign_line.split("&")]
+        acc = _parse_first_float(parts[4]) if len(parts) > 4 else None
+        ok = (acc is not None) and (acc >= 0.6)
+        rows.append(_row(r"inverse sign(Y) acc", r"$\ge 0.6$", f"{acc:.3f}" if acc is not None else "$-$", ok))
+
     rows.append(r"\bottomrule")
 
-    root = Path(__file__).resolve().parent.parent
-    out_dir = root / "sections" / "generated"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / "audit_summary_rows.tex"
+    gen_dir.mkdir(parents=True, exist_ok=True)
+    out_path = gen_dir / "audit_summary_rows.tex"
     # Important: do not add a trailing blank line; this fragment is included inside a tabular environment.
     out_path.write_text("\n".join(rows), encoding="utf-8")
     print("Wrote sections/generated/audit_summary_rows.tex")
