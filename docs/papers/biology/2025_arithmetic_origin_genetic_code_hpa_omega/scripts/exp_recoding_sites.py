@@ -43,7 +43,7 @@ from stats_tools import bh_fdr, normal_two_sided_p, summarize_mean_diff
 
 
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
-ANALYSIS_VERSION = 4
+ANALYSIS_VERSION = 5
 
 
 def _stable_seed_u32(tag: str) -> int:
@@ -816,6 +816,7 @@ class RecodingSite:
     nn_after_gc_diff: float | None = None
     nn_before_gc_eps: float | None = None
     nn_after_gc_eps: float | None = None
+    analysis_version: int = ANALYSIS_VERSION
 
 
 @dataclass
@@ -1128,7 +1129,12 @@ def extract_recoding_sites_from_record(
                 continue
             pos_start = int(m.group("start"))
             pos_end = int(m.group("end"))
-            aa = str(m.group("aa"))
+            aa_raw = str(m.group("aa"))
+            aa_norm = aa_raw.strip()
+            if aa_norm.lower() == "sec":
+                aa_norm = "Sec"
+            elif aa_norm.lower() == "pyl":
+                aa_norm = "Pyl"
             if pos_end - pos_start != 2:
                 continue
             # For minus-strand codons, the first translated base is at the high coordinate.
@@ -1141,8 +1147,11 @@ def extract_recoding_sites_from_record(
                 continue
             if idx0_i + 2 >= len(cds_seq_dna):
                 continue
+            # Exclude all transl_except positions from internal controls, even if we don't
+            # treat them as Sec/Pyl recoding sites for analysis.
             recoding_positions_idx.add(idx0_i)
-            recoding_entries.append((int(pos_start), int(pos_end), aa, idx0_i))
+            if aa_norm in ("Sec", "Pyl"):
+                recoding_entries.append((int(pos_start), int(pos_end), aa_norm, idx0_i))
 
         # Control-C pool: random internal codon positions within CDS (exclude transl_except + stop codons),
         # with complete k-windows in both directions.

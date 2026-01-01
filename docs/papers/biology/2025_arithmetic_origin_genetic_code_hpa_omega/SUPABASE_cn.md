@@ -1,0 +1,136 @@
+### Supabase 数据库（Postgres）搭建与导入
+
+本项目提供了可直接用于 Supabase 的 schema migration，以及把实验输出导出为 CSV 的脚本，便于在 Postgres 里做可查询、可复现的统计分析。
+
+### 目录
+
+- **schema/migration**：`supabase/migrations/20260101000000_init.sql`
+- **导出脚本**：`scripts/export_supabase_tables.py`
+
+### 本地 Supabase（推荐）
+
+- **启动**：
+  - 进入目录：`docs/papers/biology/2025_arithmetic_origin_genetic_code_hpa_omega`
+  - 运行 `supabase start`
+  - 运行 `supabase db reset`（会自动应用 `supabase/migrations/`）
+  - 用 `supabase status` 查看 DB 连接串
+
+### 云端 Supabase
+
+- **创建项目**：在 Supabase 控制台创建项目（Postgres）
+- **应用 migration**：用 Supabase SQL Editor 执行 `supabase/migrations/20260101000000_init.sql`，或用 psql 连接后执行该文件
+
+### Python 直连导入（PostgREST / REST，无需 psql）
+
+本仓库提供了一个**纯标准库**的导入脚本，直接走 Supabase 的 PostgREST 接口写入三张表。
+
+1) **准备连接信息文件（git ignore）**
+
+- 复制模板：`supabase.env.template` → `supabase.env`
+- 填写：
+  - `SUPABASE_URL`
+  - `SUPABASE_KEY`（建议使用可写入数据库的 key）
+  - `DATABASE_URL`（可选，仅用于你自己用 psql/驱动直连时）
+
+2) **执行导入**
+
+在项目根目录 `docs/papers/biology/2025_arithmetic_origin_genetic_code_hpa_omega` 下运行：
+
+```bash
+python3 scripts/import_supabase_rest.py --batch-size 200
+```
+
+如果你的 Python 环境遇到证书链问题，可临时加 `--insecure`（仅用于本机证书缺失的场景）：
+
+```bash
+python3 scripts/import_supabase_rest.py --batch-size 200 --insecure
+```
+
+### 导出 CSV
+
+- **导出**（在项目根目录 `docs/papers/biology/2025_arithmetic_origin_genetic_code_hpa_omega` 下运行）：
+
+```bash
+python3 scripts/export_supabase_tables.py --out-dir data/db_exports
+```
+
+会生成：
+- `data/db_exports/recoding_sites.csv`
+- `data/db_exports/refseq_stop_context_comp_results.csv`
+
+### 导入（psql / COPY）
+
+1) **设置数据库连接**
+
+从 `supabase status` 或 Supabase 控制台拿到 DB URL，例如设置：
+
+```bash
+export DB_URL='postgresql://...'
+```
+
+2) **导入 recoding_sites**
+
+```bash
+psql "$DB_URL" -v ON_ERROR_STOP=1 <<'SQL'
+\copy public.recoding_sites(
+  analysis_version,k,version,definition,organism,domain,gene,product,
+  cds_location,cds_start,cds_end,cds_strand,translation_start,
+  aa,pos_start,pos_end,codon_dna,codon_rna,
+  n,w,v,delta,is_boundary,
+  before_mean_delta,after_mean_delta,
+  terminal_stop,terminal_before_mean_delta,terminal_after_mean_delta,
+  control_same_codon_before_mean_delta,control_same_codon_after_mean_delta,
+  control_random_cds_before_mean_delta,control_random_cds_after_mean_delta,
+  before_gc,after_gc,before_cpg,after_cpg,before_ta,after_ta,before_dinuc,after_dinuc,
+  terminal_before_gc,terminal_after_gc,terminal_before_cpg,terminal_after_cpg,terminal_before_ta,terminal_after_ta,
+  terminal_before_dinuc,terminal_after_dinuc,
+  nn_ctrl_before_mean_delta,nn_ctrl_after_mean_delta,nn_before_diff,nn_after_diff,nn_before_l1,nn_after_l1,
+  nn_before_gc_diff,nn_after_gc_diff,nn_before_gc_eps,nn_after_gc_eps
+) FROM 'data/db_exports/recoding_sites.csv'
+WITH (FORMAT csv, HEADER true, NULL '');
+SQL
+```
+
+3) **导入 RefSeq composition 结果**
+
+```bash
+psql "$DB_URL" -v ON_ERROR_STOP=1 <<'SQL'
+\copy public.refseq_stop_context_comp_results(
+  dataset,analysis_version,k,method,scheme,window_side,pair,
+  diff,p,se,z,bins_used,n,ci_low,ci_high
+) FROM 'data/db_exports/refseq_stop_context_comp_results.csv'
+WITH (FORMAT csv, HEADER true, NULL '');
+SQL
+```
+
+### 常用查询示例
+
+- **查看 recoding 的分布（按 domain / codon / aa）**：
+
+```sql
+select domain, codon_rna, aa, count(*) as n
+from public.recoding_sites
+group by 1,2,3
+order by n desc;
+```
+
+- **查看 recoding NN（within-CDS）差值分布是否整体偏移**：
+
+```sql
+select
+  count(*) as n,
+  avg(nn_before_diff) as mean_before_diff,
+  avg(nn_after_diff) as mean_after_diff
+from public.recoding_sites
+where nn_before_diff is not null;
+```
+
+- **RefSeq stop-context composition 控制结果**：
+
+```sql
+select method, scheme, window_side, pair, diff, p, bins_used, n
+from public.refseq_stop_context_comp_results
+order by method, scheme, window_side, pair;
+```
+
+
