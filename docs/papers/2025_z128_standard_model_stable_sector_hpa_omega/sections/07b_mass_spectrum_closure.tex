@@ -1,0 +1,168 @@
+\section{Closure: mass spectrum as resolution depth and protocol cost}
+\label{sec:mass_spectrum_closure}
+
+This section closes the interface by connecting the field-level labeling map (Section~\ref{sec:sm_labeling_closure}) to a concrete, reproducible mass-spectrum template.
+We work with dimensionless ratios relative to the electron reference, and we phrase running/threshold effects in the Fibonacci resolution coordinate of the golden branch.
+
+\subsection{Fibonacci resolution coordinate}
+\label{subsec:mass_resolution_coordinate}
+
+Fix the reference scale $\mu_0=m_e$ and define the resolution coordinate
+\begin{equation}\label{eq:r_of_mu_z128}
+r(\mu):=\frac{\log(\mu/m_e)}{\log\varphi},
+\end{equation}
+where $\varphi=(1+\sqrt{5})/2$ is the golden ratio.
+Equivalently, the exponential map is
+\begin{equation}\label{eq:mu_of_r_z128}
+\mu(r)=m_e\,\varphi^{\,r}.
+\end{equation}
+This is the same resolution-flow dictionary recorded in the constants-geometry sector \cite{Ma2025PCG}.
+
+\subsection{A closed depth assignment from stable-type invariants}
+\label{subsec:mass_depth_assignment}
+
+Let $w\in X_6$ and recall the intrinsic invariants $(V(w),g(w),D_\pi(w))$ (Definition~\ref{def:x6_invariants}).
+We use the effective protocol depth $r_\ast(w)$ from Definition~\ref{def:r_star}.
+The interpretation is that folding degeneracy counts extra protocol effort (additional scan density) in units of one spatial addressing order.
+
+\begin{definition}[Closed mass template]\label{def:mass_template}
+Fix the electron reference field $e:=e_R^{(1)}$ and let $w_e\in X_6$ denote its stable-type label under $\mathcal{L}_{\mathrm{SM}}$.
+Define the normalized depth
+\begin{equation}\label{eq:r_hat_def}
+\widehat r(f):=\kappa\bigl(r_\ast(w_f)-r_\ast(w_e)\bigr)
+\;+\;\bigl(|w_f|_1-|w_e|_1\bigr)
+\;+\;\bigl(g(w_e)-g(w_f)\bigr),
+\end{equation}
+where $w_f\in X_6$ satisfies $\mathcal{L}_{\mathrm{SM}}(w_f)=f$, $\kappa:=m/n=2$ for the minimal balanced coupling $(m,n)=(6,3)$, $|w|_1$ is Hamming weight, and $g(w)$ is folding degeneracy (Definition~\ref{def:x6_invariants}).
+Then define the closed template mass prediction by
+\begin{equation}\label{eq:mass_template}
+\mu_{\mathrm{pred}}(f):=m_e\,\varphi^{\,\widehat r(f)}.
+\end{equation}
+\end{definition}
+
+It is useful to express $\widehat r$ directly as a bounded-complexity integer combination of stable-type differences.
+\begin{proposition}[Simplified depth formula]\label{prop:rhat_simplified}
+Let $\Delta V:=V(w_f)-V(w_e)$, $\Delta g:=g(w_f)-g(w_e)$, and $\Delta|w|_1:=|w_f|_1-|w_e|_1$.
+Under Definition~\ref{def:mass_template} at $(m,n)=(6,3)$ one has
+\begin{equation}\label{eq:rhat_251}
+\widehat r(f)=2\,\Delta V+5\,\Delta g+\Delta|w|_1.
+\end{equation}
+\end{proposition}
+\begin{proof}
+By Definition~\ref{def:r_star}, $r_\ast(w)=V(w)+3(g(w)-2)$ at $n=3$.
+Hence $\kappa(r_\ast(w_f)-r_\ast(w_e))=2\Delta V+6\Delta g$.
+The remaining two correction terms in \eqref{eq:r_hat_def} contribute $\Delta|w|_1-(\Delta g)$, yielding $2\Delta V+5\Delta g+\Delta|w|_1$.
+\end{proof}
+
+Equation~\eqref{eq:mass_template} yields a discrete spectrum of reference scales.
+Threshold and scheme effects are recorded as multiplicative matching factors (equivalently, additive shifts in $r$) as in effective field theory \cite{PeskinSchroeder1995,PDGRPP2024}.
+
+\subsection{Predicted spectrum and PDG/CODATA comparisons}
+\label{subsec:mass_spectrum_table}
+
+Table \ref{tab:mass_spectrum} records the closed template values.
+Standard reference values are listed using PDG and CODATA conventions.
+For quarks we use a scheme-dependent reference (e.g.\ $\overline{\mathrm{MS}}$ running masses) and treat scheme dependence as a matching input rather than an integer-depth anchor, consistent with the resolution-map calibration philosophy \cite{Ma2025PCG}.
+For neutrinos we record an order-of-magnitude reference scale inferred from oscillation data, but we do not fix a unique absolute mass prediction at this minimal resolution.
+For $W$, $Z$, and $H$ we include the canonical electroweak anchor depths as discrete reference points in the $r$-coordinate.
+These bosonic rows are not identified with individual stable types in $X_6$; they serve as protocol-calibration thresholds for the electroweak interface in the same sense as the $Z$-scale normalization in the constants-geometry sector \cite{Ma2025PCG,PDGRPP2024}.
+\paragraph{Scheme dependence and matching inputs.}
+For light quarks, PDG masses are convention-dependent and quoted as running masses in a chosen scheme; even for heavy quarks, perturbative matching and threshold conventions affect the quoted reference values \cite{PDGRPP2024}.
+Accordingly, the extended fermion rows in Table~\ref{tab:mass_spectrum} are diagnostic: they record the implied depth mismatch $\Delta r$ and the corresponding multiplicative matching factor $\mu/\mu_{\mathrm{pred}}$ under the stated reference convention, rather than serving as scheme-independent rigidity anchors.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lrrrrr}
+\toprule
+field & reference $\mu$ [GeV] & $r(\mu)$ & $\widehat r$ & $\Delta r:=r-\widehat r$ & $\mu/\mu_{\mathrm{pred}}$ \\
+\midrule
+\textbf{Anchor scales} & & & & & \\
+\input{sections/generated/mass_spectrum_anchor_rows.tex}
+\textbf{Quark refs (scheme)} & & & & & \\
+\input{sections/generated/mass_spectrum_quark_rows.tex}
+\textbf{Neutrino scale} & & & & & \\
+\input{sections/generated/mass_spectrum_neutrino_rows.tex}
+\end{tabular}
+\caption{Mass-spectrum closure in the resolution-depth language. The predicted values use the normalized depth \eqref{eq:r_hat_def} (equivalently \eqref{eq:rhat_251}) together with the exponential map \eqref{eq:mu_of_r_z128}. The depth mismatch $\Delta r$ is additive, while $\mu/\mu_{\mathrm{pred}}=\varphi^{\Delta r}$ is the corresponding multiplicative matching factor. All rows are generated by a reproducible script.}
+\label{tab:mass_spectrum}
+\end{table}
+
+\subsection{Rigidity of the depth formula at bounded coefficient complexity}
+\label{subsec:mass_depth_rigidity}
+
+To make the integer depth assignment auditable as a low-complexity closure, we test a bounded-coefficient ansatz for the depth map.
+Write the stable-type differences relative to the electron reference $w_e$ as
+\[
+\Delta V:=V(w)-V(w_e),\qquad \Delta g:=g(w)-g(w_e),\qquad \Delta|w|_1:=|w|_1-|w_e|_1.
+\]
+Consider the integer ansatz
+\begin{equation}\label{eq:rhat_abc_ansatz}
+\widehat r(w)=a\,\Delta V+b\,\Delta g+c\,\Delta|w|_1,
+\qquad a,b,c\in\ZZ,
+\end{equation}
+and measure its mismatch on the scheme-stable charged-lepton anchor set $\{\mu,\tau\}$ by the depth deviation in the resolution coordinate $r(\mu)$.
+As a diagnostic, we also record the same metrics on an extended fermion set including quark reference masses (scheme-dependent by convention).
+Table~\ref{tab:mass_depth_rigidity} records the selected minimizers in the coefficient box $|a|,|b|,|c|\le B$ for $B=1,\dots,20$ under a lexicographic minimization rule: first minimize the leptonic minimax deviation, then the leptonic sum deviation, then the extended-set minimax and sum deviations, and finally coefficient complexity.
+
+\begin{proposition}[Rigidity of the $(2,5,1)$ coefficients at bounded complexity]\label{prop:rhat_rigidity}
+In the bounded search domain $|a|,|b|,|c|\le 20$, the unique minimizer of the leptonic objective (as defined above) satisfies
+\[
+(a,b,c)=(2,5,1).
+\]
+Moreover, within the tested range $B=1,\dots,20$, the minimizer stabilizes at $B=5$ and remains constant for all $B$ with $5\le B\le 20$.
+\end{proposition}
+\begin{proof}
+This is a finite exhaustive enumeration over integer triples in the stated box with deterministic tie-break rules; the resulting minimizers are listed in Table~\ref{tab:mass_depth_rigidity} and reproduced by the accompanying script.
+\end{proof}
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{rrrrrr}
+\toprule
+$B$ & $(a,b,c)$ & max$_{\mu,\tau}$ & sum$_{\mu,\tau}$ & max$_{\mathrm{ext}}$ & sum$_{\mathrm{ext}}$ \\
+\midrule
+\input{sections/generated/mass_depth_rigidity_rows.tex}%
+\end{tabular}
+\caption{Bounded-coefficient rigidity search for the depth ansatz \eqref{eq:rhat_abc_ansatz} over $B=1,\dots,20$. The primary anchor set is $\{\mu,\tau\}$; the extended set includes quark reference masses as a diagnostic. Rows are generated by a reproducible script.}
+\label{tab:mass_depth_rigidity}
+\end{table}
+
+\subsection{A minimal matching layer: quantized depth shifts}
+\label{subsec:mass_matching_layer}
+
+In effective field theory, scheme and threshold conventions enter as multiplicative matching factors.
+In the resolution coordinate, a matching factor is an additive shift:
+if $\mu_{\mathrm{ref}}$ is a reference mass and $\mu_{\mathrm{pred}}$ is a closed template value, then
+\[
+\Delta r:=r(\mu_{\mathrm{ref}})-\widehat r=\log_\varphi\!\left(\frac{\mu_{\mathrm{ref}}}{\mu_{\mathrm{pred}}}\right),
+\qquad
+\frac{\mu_{\mathrm{ref}}}{\mu_{\mathrm{pred}}}=\varphi^{\Delta r}.
+\]
+
+To make the matching layer auditable at bounded complexity, we record a minimal quantization hypothesis:
+matching shifts cluster near a quarter-depth lattice $\Delta r\approx k/4$.
+Table~\ref{tab:mass_matching_layer} reports $\Delta r$, the nearest $k/4$, the residual $\Delta r-k/4$, and the implied quantized matching factor $\varphi^{k/4}$.
+This does not change the closed depth formula; it makes the scheme/matching correction explicit in the same discrete language as the rest of the paper.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lrrrrrr}
+\toprule
+field & $r(\mu)$ & $\widehat r$ & $\Delta r$ & nearest & residual & $\varphi^{k/4}$ \\
+\midrule
+\input{sections/generated/mass_matching_layer_rows.tex}%
+\end{tabular}
+\caption{Minimal matching-layer summary in the resolution coordinate. The ``nearest'' column reports the closest quarter-step $k/4$ to the observed $\Delta r$. Rows are generated by \texttt{scripts/exp\_mass\_matching\_layer.py}.}
+\label{tab:mass_matching_layer}
+\end{table}
+
+
