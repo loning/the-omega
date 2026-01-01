@@ -27,11 +27,18 @@ from typing import Any, Iterator
 from cache_manager import cache_hit, cache_key_digest, cache_meta_path, write_json_atomic
 from genetic_code_tools import BOUNDARY_WORDS, GENETIC_CODE, START_CODON, STOP_CODONS, fold_codon, iter_fasta
 from progress_tools import Heartbeat
-from stats_tools import aa_preserving_null_decomposition
+from stats_tools import (
+    aa_preserving_null_decomposition,
+    cohen_d_from_stats,
+    hedges_g_from_stats,
+    mean_diff_ci_normal_from_stats,
+    normal_two_sided_p,
+)
 
 
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
-ANALYSIS_VERSION = 1
+# Bump this when the analysis logic (not just speed) changes.
+ANALYSIS_VERSION = 2
 
 
 def root_dir() -> Path:
@@ -169,6 +176,85 @@ def _refseq_transcriptome_summary_to_panel_summary(
     if not isinstance(zfp, dict):
         zfp = {}
 
+    # Start-context multi-k from Welford stats (AUG).
+    sc_mk = ref.get("start_context_welford_multi_k")
+    if not isinstance(sc_mk, dict) or not sc_mk:
+        return None
+    start_ctx: dict[str, dict[str, dict[str, float | int | None]]] = {}
+    for kk in ks:
+        entry = sc_mk.get(str(int(kk)))
+        if not isinstance(entry, dict):
+            return None
+        b = entry.get("before", {}) or {}
+        a = entry.get("after", {}) or {}
+        if not isinstance(b, dict) or not isinstance(a, dict):
+            return None
+        nb = int(b.get("n", 0) or 0)
+        na = int(a.get("n", 0) or 0)
+        bm = None if nb <= 0 else float(b.get("mean", float("nan")))
+        am = None if na <= 0 else float(a.get("mean", float("nan")))
+        start_ctx[str(int(kk))] = {
+            "before": {"n": int(nb), "mean": (None if bm is None or math.isnan(float(bm)) else float(bm))},
+            "after": {"n": int(na), "mean": (None if am is None or math.isnan(float(am)) else float(am))},
+        }
+
+    # Stop-context effect sizes (from Welford stats; multi-k).
+    stop_effects: dict[str, dict[str, dict[str, object]]] = {"before": {}, "after": {}}
+    for kk in ks:
+        stop_effects["before"][str(int(kk))] = {}
+        stop_effects["after"][str(int(kk))] = {}
+        for c1, c2 in _STOP_PAIRS:
+            pair = f"{c1}_vs_{c2}"
+            if c1 not in stop_codons or c2 not in stop_codons:
+                stop_effects["before"][str(int(kk))][pair] = {
+                    "n1": 0,
+                    "n2": 0,
+                    "mean1": None,
+                    "mean2": None,
+                    "diff": None,
+                    "ci_low": None,
+                    "ci_high": None,
+                    "d": None,
+                    "g": None,
+                    "z": None,
+                    "p": None,
+                }
+                stop_effects["after"][str(int(kk))][pair] = {
+                    "n1": 0,
+                    "n2": 0,
+                    "mean1": None,
+                    "mean2": None,
+                    "diff": None,
+                    "ci_low": None,
+                    "ci_high": None,
+                    "d": None,
+                    "g": None,
+                    "z": None,
+                    "p": None,
+                }
+                continue
+
+            sm1 = w_mk.get(c1)
+            sm2 = w_mk.get(c2)
+            if not isinstance(sm1, dict) or not isinstance(sm2, dict):
+                return None
+            e1 = sm1.get(str(int(kk)))
+            e2 = sm2.get(str(int(kk)))
+            if not isinstance(e1, dict) or not isinstance(e2, dict):
+                return None
+            b1 = e1.get("before", {}) or {}
+            a1 = e1.get("after", {}) or {}
+            b2 = e2.get("before", {}) or {}
+            a2 = e2.get("after", {}) or {}
+            if not isinstance(b1, dict) or not isinstance(a1, dict) or not isinstance(b2, dict) or not isinstance(a2, dict):
+                return None
+            rs_b1 = RunningStats(n=int(b1.get("n", 0) or 0), mean=float(b1.get("mean", 0.0) or 0.0), M2=float(b1.get("M2", 0.0) or 0.0))
+            rs_b2 = RunningStats(n=int(b2.get("n", 0) or 0), mean=float(b2.get("mean", 0.0) or 0.0), M2=float(b2.get("M2", 0.0) or 0.0))
+            rs_a1 = RunningStats(n=int(a1.get("n", 0) or 0), mean=float(a1.get("mean", 0.0) or 0.0), M2=float(a1.get("M2", 0.0) or 0.0))
+            rs_a2 = RunningStats(n=int(a2.get("n", 0) or 0), mean=float(a2.get("mean", 0.0) or 0.0), M2=float(a2.get("M2", 0.0) or 0.0))
+            stop_effects["before"][str(int(kk))][pair] = _mean_diff_effects_from_stats(rs_b1, rs_b2)
+            stop_effects["after"][str(int(kk))][pair] = _mean_diff_effects_from_stats(rs_a1, rs_a2)
+
     return {
         "records": int(records),
         "records_with_orf": int(records_with_orf),
@@ -179,6 +265,8 @@ def _refseq_transcriptome_summary_to_panel_summary(
         "termination_stop_boundary_count": int(term_stop_boundary),
         "termination_stop_rates": {k: float(v) for k, v in sorted(term_stop_rates.items())},
         "stop_context_multi_k": stop_ctx,
+        "stop_context_effects_multi_k": stop_effects,
+        "start_context_multi_k": start_ctx,
         "codon_counts": {k: int(v) for k, v in sorted(codon_counts.items())},
         "aa_counts": {k: int(v) for k, v in sorted(aa_counts.items())},
         "V_hist": {str(k): int(v) for k, v in sorted(v_hist.items())},
@@ -343,6 +431,80 @@ class RunningStats:
         if self.n <= 1:
             return 0.0
         return self.M2 / (self.n - 1)
+
+
+_STOP_PAIRS: list[tuple[str, str]] = [
+    ("UAA", "UAG"),
+    ("UAA", "UGA"),
+    ("UAG", "UGA"),
+]
+
+
+def _mean_diff_effects_from_stats(a: RunningStats, b: RunningStats) -> dict[str, object]:
+    """
+    Summarize mean difference and standardized effect sizes from Welford stats.
+
+    Returns a JSON-serializable dict with keys:
+      n1,n2,mean1,mean2,diff,ci_low,ci_high,d,g,z,p
+    """
+    n1 = int(a.n)
+    n2 = int(b.n)
+    if n1 <= 0 and n2 <= 0:
+        return {
+            "n1": 0,
+            "n2": 0,
+            "mean1": None,
+            "mean2": None,
+            "diff": None,
+            "ci_low": None,
+            "ci_high": None,
+            "d": None,
+            "g": None,
+            "z": None,
+            "p": None,
+        }
+    mean1 = float(a.mean) if n1 > 0 else None
+    mean2 = float(b.mean) if n2 > 0 else None
+    if n1 < 2 or n2 < 2 or mean1 is None or mean2 is None:
+        return {
+            "n1": n1,
+            "n2": n2,
+            "mean1": mean1,
+            "mean2": mean2,
+            "diff": None,
+            "ci_low": None,
+            "ci_high": None,
+            "d": None,
+            "g": None,
+            "z": None,
+            "p": None,
+        }
+    var1 = float(a.sample_variance())
+    var2 = float(b.sample_variance())
+    diff = float(mean1 - mean2)
+    ci = mean_diff_ci_normal_from_stats(n1=n1, mean1=float(mean1), var1=var1, n2=n2, mean2=float(mean2), var2=var2)
+    d = cohen_d_from_stats(n1=n1, mean1=float(mean1), var1=var1, n2=n2, mean2=float(mean2), var2=var2)
+    g = hedges_g_from_stats(n1=n1, mean1=float(mean1), var1=var1, n2=n2, mean2=float(mean2), var2=var2)
+    se2 = (var1 / float(n1)) + (var2 / float(n2))
+    if se2 > 0:
+        z = diff / math.sqrt(se2)
+        p = normal_two_sided_p(z)
+    else:
+        z = None
+        p = None
+    return {
+        "n1": n1,
+        "n2": n2,
+        "mean1": float(mean1),
+        "mean2": float(mean2),
+        "diff": diff,
+        "ci_low": (float(ci[0]) if ci is not None else None),
+        "ci_high": (float(ci[1]) if ci is not None else None),
+        "d": (float(d) if d is not None else None),
+        "g": (float(g) if g is not None else None),
+        "z": (float(z) if z is not None else None),
+        "p": (float(p) if p is not None else None),
+    }
 
 
 def _summarize_float_list(xs: list[float]) -> dict[str, float]:
@@ -595,6 +757,10 @@ def scan_refseq_mrna_best_orf(
     after_stats_mk: dict[str, dict[int, RunningStats]] = {c: {k: RunningStats() for k in ks} for c in stop_codons}
     max_k = max(ks) if ks else 0
 
+    # start-context stats (AUG only in this mode), tracked independently for before/after windows.
+    start_before_stats_mk: dict[int, RunningStats] = {k: RunningStats() for k in ks}
+    start_after_stats_mk: dict[int, RunningStats] = {k: RunningStats() for k in ks}
+
     hb = Heartbeat(every_s=float(heartbeat_s), prefix=f"[progress] corpus_panel:{progress_label}")
     hb.force(f"start files={len(files)} max_records={int(max_records)}")
 
@@ -685,6 +851,38 @@ def scan_refseq_mrna_best_orf(
                     if var_x > 0 and var_y > 0:
                         orf_autocorr_z1.append(cov / math.sqrt(var_x * var_y))
 
+            # Start-context windows around start codon (AUG) in the selected frame.
+            # Before-window: in-frame codons upstream of AUG (typically 5' UTR in mRNA).
+            # After-window: in-frame codons downstream of AUG inside the ORF (excluding terminal stop).
+            if max_k >= 1:
+                start_after_vals: list[int] = []
+                for j in range(1, max_k + 1):
+                    p = s + 3 * j
+                    if p >= t:
+                        break
+                    if p + 3 > len(seq):
+                        break
+                    c = seq[p : p + 3]
+                    if c not in GENETIC_CODE:
+                        break
+                    start_after_vals.append(int(FOLD_INFO[c]["delta"]))
+
+                start_before_vals: list[int] = []
+                for j in range(1, max_k + 1):
+                    p = s - 3 * j
+                    if p < 0:
+                        break
+                    c = seq[p : p + 3]
+                    if c not in GENETIC_CODE:
+                        break
+                    start_before_vals.append(int(FOLD_INFO[c]["delta"]))
+
+                for k in ks:
+                    if k <= len(start_before_vals):
+                        start_before_stats_mk[k].update(float(sum(start_before_vals[:k])) / float(k))
+                    if k <= len(start_after_vals):
+                        start_after_stats_mk[k].update(float(sum(start_after_vals[:k])) / float(k))
+
             # Stop-context windows around terminal stop.
             stop_index = (t - s) // 3
             if stop_index >= 1 and max_k >= 1:
@@ -733,6 +931,52 @@ def scan_refseq_mrna_best_orf(
                 "after_mean": (float(a_s.mean) if a_s.n > 0 else None),
             }
 
+    start_ctx: dict[str, dict[str, dict[str, float | int | None]]] = {}
+    for k in ks:
+        b = start_before_stats_mk[k]
+        a = start_after_stats_mk[k]
+        start_ctx[str(k)] = {
+            "before": {"n": int(b.n), "mean": (float(b.mean) if b.n > 0 else None)},
+            "after": {"n": int(a.n), "mean": (float(a.mean) if a.n > 0 else None)},
+        }
+
+    stop_effects: dict[str, dict[str, dict[str, object]]] = {"before": {}, "after": {}}
+    for k in ks:
+        stop_effects["before"][str(k)] = {}
+        stop_effects["after"][str(k)] = {}
+        for c1, c2 in _STOP_PAIRS:
+            pair = f"{c1}_vs_{c2}"
+            if c1 not in stop_codons or c2 not in stop_codons:
+                stop_effects["before"][str(k)][pair] = {
+                    "n1": 0,
+                    "n2": 0,
+                    "mean1": None,
+                    "mean2": None,
+                    "diff": None,
+                    "ci_low": None,
+                    "ci_high": None,
+                    "d": None,
+                    "g": None,
+                    "z": None,
+                    "p": None,
+                }
+                stop_effects["after"][str(k)][pair] = {
+                    "n1": 0,
+                    "n2": 0,
+                    "mean1": None,
+                    "mean2": None,
+                    "diff": None,
+                    "ci_low": None,
+                    "ci_high": None,
+                    "d": None,
+                    "g": None,
+                    "z": None,
+                    "p": None,
+                }
+                continue
+            stop_effects["before"][str(k)][pair] = _mean_diff_effects_from_stats(before_stats_mk[c1][k], before_stats_mk[c2][k])
+            stop_effects["after"][str(k)][pair] = _mean_diff_effects_from_stats(after_stats_mk[c1][k], after_stats_mk[c2][k])
+
     return {
         "records": int(n_records),
         "records_with_orf": int(n_with_orf),
@@ -743,6 +987,8 @@ def scan_refseq_mrna_best_orf(
         "termination_stop_boundary_count": int(term_stop_boundary),
         "termination_stop_rates": {k: float(v) for k, v in sorted(term_stop_rates.items())},
         "stop_context_multi_k": stop_ctx,
+        "stop_context_effects_multi_k": stop_effects,
+        "start_context_multi_k": start_ctx,
         "codon_counts": {k: int(v) for k, v in sorted(codon_counts.items())},
         "aa_counts": {k: int(v) for k, v in sorted(aa_counts.items())},
         "V_hist": {str(k): int(v) for k, v in sorted(v_hist.items())},
@@ -788,6 +1034,10 @@ def scan_cds_fasta(
 
     ks = sorted({int(k) for k in k_list if int(k) >= 1})
     before_stats_mk: dict[str, dict[int, RunningStats]] = {c: {k: RunningStats() for k in ks} for c in stop_codons}
+
+    # Start-context stats at the first codon in each CDS record.
+    # For CDS FASTA records the upstream sequence is not available, so only after windows are evaluated.
+    start_after_stats_mk: dict[int, RunningStats] = {k: RunningStats() for k in ks}
 
     hb = Heartbeat(every_s=float(heartbeat_s), prefix=f"[progress] corpus_panel:{progress_label}")
     hb.force(f"start files={len(files)} max_records={int(max_records)}")
@@ -895,6 +1145,13 @@ def scan_cds_fasta(
                     before = float(sum(deltas[-k:])) / float(k)
                     before_stats_mk[terminal][k].update(before)
 
+            # Start-context after-window only (first codon in CDS).
+            # Use uplift (Delta) of subsequent in-frame codons, excluding the start codon itself.
+            for k in ks:
+                if len(deltas) >= (k + 1):
+                    after = float(sum(deltas[1 : 1 + k])) / float(k)
+                    start_after_stats_mk[k].update(after)
+
         if max_records and n_records > int(max_records):
             break
 
@@ -914,6 +1171,64 @@ def scan_cds_fasta(
                 "after_mean": None,
             }
 
+    start_ctx: dict[str, dict[str, dict[str, float | int | None]]] = {}
+    for k in ks:
+        a = start_after_stats_mk[k]
+        start_ctx[str(k)] = {
+            "before": {"n": 0, "mean": None},
+            "after": {"n": int(a.n), "mean": (float(a.mean) if a.n > 0 else None)},
+        }
+
+    stop_effects: dict[str, dict[str, dict[str, object]]] = {"before": {}, "after": {}}
+    for k in ks:
+        stop_effects["before"][str(k)] = {}
+        stop_effects["after"][str(k)] = {}
+        for c1, c2 in _STOP_PAIRS:
+            pair = f"{c1}_vs_{c2}"
+            if c1 not in stop_codons or c2 not in stop_codons:
+                stop_effects["before"][str(k)][pair] = {
+                    "n1": 0,
+                    "n2": 0,
+                    "mean1": None,
+                    "mean2": None,
+                    "diff": None,
+                    "ci_low": None,
+                    "ci_high": None,
+                    "d": None,
+                    "g": None,
+                    "z": None,
+                    "p": None,
+                }
+                stop_effects["after"][str(k)][pair] = {
+                    "n1": 0,
+                    "n2": 0,
+                    "mean1": None,
+                    "mean2": None,
+                    "diff": None,
+                    "ci_low": None,
+                    "ci_high": None,
+                    "d": None,
+                    "g": None,
+                    "z": None,
+                    "p": None,
+                }
+                continue
+            stop_effects["before"][str(k)][pair] = _mean_diff_effects_from_stats(before_stats_mk[c1][k], before_stats_mk[c2][k])
+            # CDS records do not have after-windows at the terminal stop.
+            stop_effects["after"][str(k)][pair] = {
+                "n1": 0,
+                "n2": 0,
+                "mean1": None,
+                "mean2": None,
+                "diff": None,
+                "ci_low": None,
+                "ci_high": None,
+                "d": None,
+                "g": None,
+                "z": None,
+                "p": None,
+            }
+
     return {
         "records": int(n_records),
         "records_used": int(n_used),
@@ -927,6 +1242,8 @@ def scan_cds_fasta(
         "termination_stop_boundary_count": int(term_stop_boundary),
         "termination_stop_rates": {k: float(v) for k, v in sorted(term_stop_rates.items())},
         "stop_context_multi_k": stop_ctx,
+        "stop_context_effects_multi_k": stop_effects,
+        "start_context_multi_k": start_ctx,
         "codon_counts": {k: int(v) for k, v in sorted(codon_counts.items())},
         "aa_counts": {k: int(v) for k, v in sorted(aa_counts.items())},
         "V_hist": {str(k): int(v) for k, v in sorted(v_hist.items())},
@@ -1011,9 +1328,116 @@ def _emit_latex_from_summary(out: dict[str, object]) -> None:
             ks.append(int(x))
         except Exception:
             continue
+    k_primary = 10 if 10 in ks else (min(ks) if ks else 10)
     ks_s = ",".join(str(int(x)) for x in ks)
     summary_lines = [f"Corpus panel {tex_path(panel)} generated $n={len(items)}$ item summaries with $k\\in\\{{{ks_s}\\}}$."]
     write_text(generated_dir() / "corpus_panel_summary.tex", "\n".join(summary_lines) + "\n")
+
+    # Start-context rows (primary k only).
+    # Columns: label, domain, mode, code_id, n_used, k, n_before, before_mean, n_after, after_mean
+    start_rows: list[str] = []
+    for it in items:
+        if not isinstance(it, dict):
+            continue
+        if not it.get("present"):
+            start_rows.append(
+                f"{tex_path(it.get('label','-'))} & {it.get('domain','-')} & {tex_path(it.get('mode','-'))} & {it.get('code_id','-')} & - & {k_primary} & - & - & - & - \\\\"
+            )
+            continue
+        summ = it.get("summary") or {}
+        if not isinstance(summ, dict):
+            summ = {}
+        mode = str(it.get("mode") or "")
+        n_used = int(summ.get("records_with_orf", 0) or 0) if mode == "refseq_mrna_best_orf" else int(summ.get("records_used", 0) or 0)
+        sc = summ.get("start_context_multi_k") or {}
+        entry = (sc.get(str(int(k_primary))) if isinstance(sc, dict) else None) or {}
+        b = (entry.get("before") if isinstance(entry, dict) else None) or {}
+        a = (entry.get("after") if isinstance(entry, dict) else None) or {}
+        nb = int(b.get("n", 0) or 0) if isinstance(b, dict) else 0
+        na = int(a.get("n", 0) or 0) if isinstance(a, dict) else 0
+        mb = b.get("mean") if (isinstance(b, dict) and nb > 0) else None
+        ma = a.get("mean") if (isinstance(a, dict) and na > 0) else None
+        mb_s = "-" if mb is None else f"{float(mb):.4f}"
+        ma_s = "-" if ma is None else f"{float(ma):.4f}"
+        start_rows.append(
+            f"{tex_path(it.get('label','-'))} & {it.get('domain','-')} & {tex_path(it.get('mode','-'))} & {it.get('code_id','-')} & "
+            f"{n_used} & {k_primary} & {nb} & {mb_s} & {na} & {ma_s} \\\\"
+        )
+    write_text(generated_dir() / "corpus_panel_start_context_rows.tex", "\n".join(start_rows) + "\n\\bottomrule\n")
+
+    # Stop-context effects rows (primary k only), before/after separately.
+    # Columns: label, domain, mode, code_id, k, pair, n1, n2, diff, ci_low, ci_high, g, p
+    def _fmt_p(p: object) -> str:
+        if p is None:
+            return "-"
+        try:
+            p0 = float(p)
+        except Exception:
+            return "-"
+        if math.isnan(p0):
+            return "-"
+        if p0 == 0.0:
+            return "0"
+        if p0 < 1e-4:
+            return f"{p0:.2e}"
+        return f"{p0:.4f}"
+
+    def _fmt_float(x: object) -> str:
+        if x is None:
+            return "-"
+        try:
+            v = float(x)
+        except Exception:
+            return "-"
+        if math.isnan(v):
+            return "-"
+        return f"{v:.4f}"
+
+    def _emit_effect_rows(side: str) -> list[str]:
+        out_rows: list[str] = []
+        for it in items:
+            if not isinstance(it, dict):
+                continue
+            if not it.get("present"):
+                for c1, c2 in _STOP_PAIRS:
+                    pair_key = f"{c1}_vs_{c2}"
+                    pair_tex = pair_key.replace("_vs_", "$\\,$vs$\\,$")
+                    out_rows.append(
+                        f"{tex_path(it.get('label','-'))} & {it.get('domain','-')} & {tex_path(it.get('mode','-'))} & {it.get('code_id','-')} & "
+                        f"{k_primary} & {pair_tex} & - & - & - & - & - & - & - \\\\"
+                    )
+                continue
+            summ = it.get("summary") or {}
+            if not isinstance(summ, dict):
+                summ = {}
+            eff = summ.get("stop_context_effects_multi_k") or {}
+            side_obj = (eff.get(str(side)) if isinstance(eff, dict) else None) or {}
+            k_obj = (side_obj.get(str(int(k_primary))) if isinstance(side_obj, dict) else None) or {}
+            for c1, c2 in _STOP_PAIRS:
+                pair_key = f"{c1}_vs_{c2}"
+                pair_tex = pair_key.replace("_vs_", "$\\,$vs$\\,$")
+                r = (k_obj.get(pair_key) if isinstance(k_obj, dict) else None) or {}
+                n1 = int(r.get("n1", 0) or 0) if isinstance(r, dict) else 0
+                n2 = int(r.get("n2", 0) or 0) if isinstance(r, dict) else 0
+                diff = r.get("diff") if isinstance(r, dict) else None
+                ci_low = r.get("ci_low") if isinstance(r, dict) else None
+                ci_high = r.get("ci_high") if isinstance(r, dict) else None
+                g = r.get("g") if isinstance(r, dict) else None
+                p = r.get("p") if isinstance(r, dict) else None
+                out_rows.append(
+                    f"{tex_path(it.get('label','-'))} & {it.get('domain','-')} & {tex_path(it.get('mode','-'))} & {it.get('code_id','-')} & "
+                    f"{k_primary} & {pair_tex} & {n1} & {n2} & {_fmt_float(diff)} & {_fmt_float(ci_low)} & {_fmt_float(ci_high)} & {_fmt_float(g)} & {_fmt_p(p)} \\\\"
+                )
+        return out_rows
+
+    write_text(
+        generated_dir() / "corpus_panel_stop_context_effects_before_rows.tex",
+        "\n".join(_emit_effect_rows("before")) + "\n\\bottomrule\n",
+    )
+    write_text(
+        generated_dir() / "corpus_panel_stop_context_effects_after_rows.tex",
+        "\n".join(_emit_effect_rows("after")) + "\n\\bottomrule\n",
+    )
 
 
 def main() -> None:
@@ -1274,7 +1698,7 @@ def main() -> None:
         )
 
     out = {
-        "schema_version": 1,
+        "schema_version": 2,
         "analysis_version": int(ANALYSIS_VERSION),
         "panel": str(args.panel),
         "k_list": [int(x) for x in k_list],

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import tarfile
 import re
 import urllib.parse
@@ -312,25 +313,131 @@ def fetch_refseq_hsapiens_mrna(m: dict[str, Any], *, verify_ssl: bool) -> None:
     fetch_refseq_dir_dataset(ds, verify_ssl=verify_ssl)
 
 
-def _eutils_esearch(db: str, term: str, retmax: int, *, verify_ssl: bool) -> list[str]:
+def _ncbi_api_key() -> str | None:
+    """
+    Optional NCBI E-utilities API key.
+    If present, NCBI allows higher request rates; we still throttle conservatively.
+    """
+    for k in ("NCBI_API_KEY", "NCBI_APIKEY", "NCBI_KEY"):
+        v = (os.environ.get(k) or "").strip()
+        if v:
+            return v
+    return None
+
+
+def _ncbi_throttle_sleep(*, api_key: str | None) -> None:
     # NCBI recommends <=3 requests/second without an API key.
-    time.sleep(0.4)
+    # With an API key, higher rates are allowed; keep a modest throttle anyway.
+    time.sleep(0.12 if api_key else 0.4)
+
+
+def _eutils_esearch_page(
+    db: str,
+    term: str,
+    *,
+    retstart: int,
+    retmax: int,
+    verify_ssl: bool,
+    api_key: str | None,
+) -> tuple[list[str], int]:
+    _ncbi_throttle_sleep(api_key=api_key)
     q = {
         "db": db,
         "term": term,
+        "retstart": str(int(retstart)),
         "retmax": str(int(retmax)),
         "retmode": "json",
     }
+    if api_key:
+        q["api_key"] = api_key
     url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?" + urllib.parse.urlencode(q)
     txt = _download_text(url, timeout_s=120.0, verify_ssl=verify_ssl, retries=6, retry_sleep_s=2.0)
     obj = json.loads(txt)
-    ids = obj.get("esearchresult", {}).get("idlist", [])
-    return [str(x) for x in ids]
+    er = obj.get("esearchresult", {}) or {}
+    ids = [str(x) for x in (er.get("idlist", []) or [])]
+    try:
+        count = int(er.get("count", 0) or 0)
+    except Exception:
+        count = 0
+    return ids, count
 
 
-def _eutils_efetch_genbank(db: str, ids: list[str], *, verify_ssl: bool) -> str:
-    # NCBI recommends <=3 requests/second without an API key.
-    time.sleep(0.4)
+def _dedupe_preserve_order(xs: list[str]) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for x in xs:
+        if x in seen:
+            continue
+        seen.add(x)
+        out.append(x)
+    return out
+
+
+def _eutils_esearch_paged(
+    *,
+    db: str,
+    term: str,
+    cap: int | None,
+    page_size: int,
+    verify_ssl: bool,
+    api_key: str | None,
+) -> tuple[list[str], dict[str, Any]]:
+    """
+    Fetch ESearch idlist in pages. If cap is None, attempt to fetch all.
+    Returns (ids, meta).
+    """
+    page_size_i = max(1, int(page_size))
+    ids_all: list[str] = []
+    pages: list[dict[str, Any]] = []
+    total_count: int | None = None
+    retstart = 0
+    while True:
+        if cap is not None:
+            remaining = int(cap) - len(ids_all)
+            if remaining <= 0:
+                break
+            retmax = min(page_size_i, remaining)
+        else:
+            retmax = page_size_i
+
+        page_ids, count = _eutils_esearch_page(
+            db=db,
+            term=term,
+            retstart=retstart,
+            retmax=retmax,
+            verify_ssl=verify_ssl,
+            api_key=api_key,
+        )
+        if total_count is None:
+            total_count = int(count)
+        pages.append({"retstart": int(retstart), "retmax": int(retmax), "n_ids": int(len(page_ids))})
+        if not page_ids:
+            break
+        ids_all.extend(page_ids)
+        retstart += len(page_ids)
+        if cap is None and total_count is not None and retstart >= int(total_count):
+            break
+        # Safety: if server returns fewer than requested, we may be at the end.
+        if len(page_ids) < int(retmax):
+            if cap is None:
+                break
+
+    ids_out = _dedupe_preserve_order(ids_all)
+    meta = {
+        "db": db,
+        "term": term,
+        "count": (int(total_count) if total_count is not None else None),
+        "cap": (int(cap) if cap is not None else None),
+        "page_size": int(page_size_i),
+        "pages": pages,
+        "ids_retrieved": int(len(ids_out)),
+        "has_api_key": bool(api_key),
+    }
+    return ids_out, meta
+
+
+def _eutils_efetch_genbank(db: str, ids: list[str], *, verify_ssl: bool, api_key: str | None) -> str:
+    _ncbi_throttle_sleep(api_key=api_key)
     # Use comma-separated ids; chunking handled by caller.
     q = {
         "db": db,
@@ -338,23 +445,28 @@ def _eutils_efetch_genbank(db: str, ids: list[str], *, verify_ssl: bool) -> str:
         "rettype": "gb",
         "retmode": "text",
     }
+    if api_key:
+        q["api_key"] = api_key
     url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?" + urllib.parse.urlencode(q)
     return _download_text(url, timeout_s=240.0, verify_ssl=verify_ssl, retries=6, retry_sleep_s=3.0)
 
 
-def _eutils_esummary_accessionversions(db: str, ids: list[str], *, verify_ssl: bool) -> dict[str, str]:
+def _eutils_esummary_accessionversions(
+    db: str, ids: list[str], *, verify_ssl: bool, api_key: str | None
+) -> dict[str, str]:
     """
     Return mapping {uid -> accessionversion} for nuccore IDs using E-utilities esummary.
     """
     if not ids:
         return {}
-    # NCBI recommends <=3 requests/second without an API key.
-    time.sleep(0.4)
+    _ncbi_throttle_sleep(api_key=api_key)
     q = {
         "db": db,
         "id": ",".join(ids),
         "retmode": "json",
     }
+    if api_key:
+        q["api_key"] = api_key
     url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?" + urllib.parse.urlencode(q)
     txt = _download_text(url, timeout_s=120.0, verify_ssl=verify_ssl, retries=6, retry_sleep_s=2.0)
     obj = json.loads(txt)
@@ -408,8 +520,15 @@ def fetch_recoding_genbank(m: dict[str, Any], *, verify_ssl: bool, heartbeat_s: 
     gb_dir.mkdir(parents=True, exist_ok=True)
 
     max_per_q = int(ds.get("max_records_per_query", 200))
+    # Interpret max_records_per_query=0 as "try to fetch all".
+    cap_per_q: int | None = None if max_per_q <= 0 else int(max_per_q)
+    page_size = int(ds.get("esearch_page_size", 500))
+    api_key = _ncbi_api_key()
     hb_all = Heartbeat(every_s=float(heartbeat_s), prefix="[progress] fetch_recoding_genbank")
-    hb_all.force(f"start queries={len(ds.get('queries', []) or [])} max_records_per_query={max_per_q}")
+    hb_all.force(
+        f"start queries={len(ds.get('queries', []) or [])} max_records_per_query={max_per_q} "
+        f"esearch_page_size={page_size} api_key={'yes' if api_key else 'no'}"
+    )
     # Deduplicate entries by accession to avoid manifest bloat when queries overlap.
     # Also preserve previously recorded accessions so re-running with new queries does not shrink the manifest.
     out_by_acc: dict[str, dict[str, Any]] = {}
@@ -425,10 +544,22 @@ def fetch_recoding_genbank(m: dict[str, Any], *, verify_ssl: bool, heartbeat_s: 
         term = q["term"]
         hb = Heartbeat(every_s=float(heartbeat_s), prefix=f"[progress] fetch_recoding_genbank:{qid}")
         hb.force("esearch")
-        ids = _eutils_esearch(db=db, term=term, retmax=max_per_q, verify_ssl=verify_ssl)
-        hb.force(f"esearch ids={len(ids)}")
+        ids, meta = _eutils_esearch_paged(
+            db=str(db),
+            term=str(term),
+            cap=cap_per_q,
+            page_size=page_size,
+            verify_ssl=verify_ssl,
+            api_key=api_key,
+        )
+        hb.force(f"esearch ids={len(ids)} count={(meta.get('count') or 0)}")
         (local_dir / f"esearch_{qid}.json").write_text(
-            json.dumps({"db": db, "term": term, "ids": ids}, ensure_ascii=False, indent=2) + "\n",
+            json.dumps(
+                {"db": db, "term": term, "ids": ids, "meta": meta, "retrieved_at_utc": retrieved_at},
+                ensure_ascii=False,
+                indent=2,
+            )
+            + "\n",
             encoding="utf-8",
         )
 
@@ -444,7 +575,7 @@ def fetch_recoding_genbank(m: dict[str, Any], *, verify_ssl: bool, heartbeat_s: 
         for i in range(0, len(ids), summary_chunk):
             uids = ids[i : i + summary_chunk]
             uids_processed += int(len(uids))
-            uid_to_acc = _eutils_esummary_accessionversions(db=db, ids=uids, verify_ssl=verify_ssl)
+            uid_to_acc = _eutils_esummary_accessionversions(db=db, ids=uids, verify_ssl=verify_ssl, api_key=api_key)
 
             need_fetch: list[str] = []
             for uid in uids:
@@ -472,7 +603,7 @@ def fetch_recoding_genbank(m: dict[str, Any], *, verify_ssl: bool, heartbeat_s: 
 
             for j in range(0, len(need_fetch), efetch_chunk):
                 chunk = need_fetch[j : j + efetch_chunk]
-                gb_text = _eutils_efetch_genbank(db=db, ids=chunk, verify_ssl=verify_ssl)
+                gb_text = _eutils_efetch_genbank(db=db, ids=chunk, verify_ssl=verify_ssl, api_key=api_key)
                 recs = _split_genbank_records(gb_text)
                 for rec in recs:
                     acc = _genbank_accession(rec)

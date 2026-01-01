@@ -30,6 +30,7 @@ from pathlib import Path
 from typing import Any
 
 from cache_manager import cache_hit, cache_key_digest, cache_meta_path, write_json_atomic
+from composition_tools import bin_value, cpg_rate, dinuc_freq, gc_fraction, l1_distance_16, ta_rate
 from genetic_code_tools import (
     BOUNDARY_WORDS,
     GENETIC_CODE,
@@ -42,7 +43,7 @@ from stats_tools import bh_fdr, normal_two_sided_p, summarize_mean_diff
 
 
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
-ANALYSIS_VERSION = 2
+ANALYSIS_VERSION = 7
 
 
 def _stable_seed_u32(tag: str) -> int:
@@ -320,8 +321,437 @@ def delta_window_means_strand(
     return mean(before), mean(after)
 
 
+def delta_after_mean_strand(
+    seq_dna: str,
+    center_pos_1: int,
+    k: int,
+    *,
+    strand: int,
+    left_bound_1: int,
+    right_bound_1: int,
+) -> float | None:
+    """
+    Mean Delta in k codons after a center codon at center_pos_1 (1-based, low coordinate),
+    in the translated orientation of the strand.
+    Returns None if the full after-window is not available/valid.
+    """
+    if strand not in (1, -1):
+        raise ValueError("strand must be +1 or -1")
+    if k <= 0:
+        return None
+    step = 3 * strand
+    vals: list[float] = []
+    for j in range(1, int(k) + 1):
+        p = center_pos_1 + step * j
+        if p < left_bound_1 or p + 2 > right_bound_1:
+            return None
+        c = codon_at_strand(seq_dna, p, strand=strand)
+        if c is None:
+            return None
+        f = fold_codon(c.replace("T", "U"), MU_STAR)
+        vals.append(float(f.delta))
+    return mean(vals)
+
+
+def codon_window_seq_strand(
+    seq_dna: str,
+    center_pos_1: int,
+    k: int,
+    *,
+    strand: int,
+    left_bound_1: int,
+    right_bound_1: int,
+    direction: str,
+) -> str | None:
+    """
+    Extract the DNA sequence of k codons immediately before/after a codon starting at center_pos_1 (1-based, low coordinate),
+    in the translated orientation of the strand.
+    Returns a concatenated DNA string of length 3k, or None if the full window is not available/valid.
+    """
+    if strand not in (1, -1):
+        raise ValueError("strand must be +1 or -1")
+    if direction not in ("before", "after"):
+        raise ValueError("direction must be 'before' or 'after'")
+    if k <= 0:
+        return None
+    step = 3 * strand
+    out: list[str] = []
+    # Emit sequence in the translated 5'->3' orientation.
+    js = range(1, int(k) + 1) if direction == "after" else range(int(k), 0, -1)
+    for j in js:
+        p = center_pos_1 + (step * j if direction == "after" else -step * j)
+        if p < left_bound_1 or p + 2 > right_bound_1:
+            return None
+        c = codon_at_strand(seq_dna, p, strand=strand)
+        if c is None:
+            return None
+        out.append(c)
+    return "".join(out)
+
+
 def _cds_strand(location: str) -> int:
     return -1 if location.strip().startswith("complement(") else 1
+
+
+def _balanced_parens(s: str) -> bool:
+    depth = 0
+    for ch in s:
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth -= 1
+            if depth < 0:
+                return False
+    return depth == 0
+
+
+def _unwrap_outer_call(s: str, fn: str) -> tuple[bool, str]:
+    """
+    If s is exactly of the form fn(...), unwrap one level and return (True, inner).
+    Case-insensitive for fn.
+    """
+    t = s.strip()
+    if not t:
+        return False, s
+    fn0 = fn.strip().lower()
+    low = t.lower()
+    prefix = fn0 + "("
+    if low.startswith(prefix) and t.endswith(")"):
+        inner = t[len(prefix) : -1]
+        # Best-effort sanity: only unwrap when parentheses are balanced.
+        if _balanced_parens(inner):
+            return True, inner
+    return False, s
+
+
+def _split_top_level_commas(s: str) -> list[str]:
+    """
+    Split a string by commas that are not nested inside parentheses.
+    """
+    parts: list[str] = []
+    buf: list[str] = []
+    depth = 0
+    for ch in s:
+        if ch == "(":
+            depth += 1
+            buf.append(ch)
+            continue
+        if ch == ")":
+            depth = max(0, depth - 1)
+            buf.append(ch)
+            continue
+        if ch == "," and depth == 0:
+            parts.append("".join(buf).strip())
+            buf = []
+            continue
+        buf.append(ch)
+    if buf:
+        parts.append("".join(buf).strip())
+    return [p for p in parts if p]
+
+
+@dataclass(frozen=True)
+class ParsedCDSLocation:
+    raw: str
+    strand: int
+    spans: list[tuple[int, int]]  # (start,end) 1-based inclusive, in location order
+
+    @property
+    def is_join(self) -> bool:
+        return len(self.spans) > 1
+
+
+_LOC_PAIR_ONE = re.compile(r"(\d+)\.\.(\d+)")
+_LOC_SINGLE_ONE = re.compile(r"(\d+)")
+
+
+def parse_cds_location(location: str) -> ParsedCDSLocation | None:
+    """
+    Parse GenBank CDS location into ordered spans + strand.
+
+    Supported forms (common in practice):
+      - 53..733
+      - complement(53..733)
+      - join(53..100,200..733)
+      - complement(join(53..100,200..733))
+
+    Coordinates are 1-based inclusive.
+    """
+    raw = str(location or "").strip()
+    if not raw:
+        return None
+
+    # Remove whitespace to simplify parsing; keep raw for output.
+    s = raw.replace(" ", "")
+
+    strand = 1
+    changed, inner = _unwrap_outer_call(s, "complement")
+    while changed:
+        strand *= -1
+        s = inner
+        changed, inner = _unwrap_outer_call(s, "complement")
+
+    # Treat order(...) same as join(...) for our purposes.
+    is_join = False
+    changed, inner = _unwrap_outer_call(s, "join")
+    if changed:
+        is_join = True
+        s = inner
+    else:
+        changed2, inner2 = _unwrap_outer_call(s, "order")
+        if changed2:
+            is_join = True
+            s = inner2
+
+    parts = _split_top_level_commas(s) if is_join else [s]
+    spans: list[tuple[int, int]] = []
+    for part0 in parts:
+        part = part0.strip()
+        if not part:
+            continue
+        # Disallow per-segment complement(...) in CDS: too rare and implies mixed orientation.
+        if "complement(" in part.lower():
+            return None
+        part = part.replace("<", "").replace(">", "")
+        m = _LOC_PAIR_ONE.search(part)
+        if m:
+            a = int(m.group(1))
+            b = int(m.group(2))
+            start, end = (a, b) if a <= b else (b, a)
+            spans.append((start, end))
+            continue
+        m2 = _LOC_SINGLE_ONE.search(part)
+        if m2:
+            x = int(m2.group(1))
+            spans.append((x, x))
+            continue
+        return None
+
+    if not spans:
+        return None
+    return ParsedCDSLocation(raw=raw, strand=int(strand), spans=spans)
+
+
+def build_spliced_cds(
+    seq_dna: str,
+    spans: list[tuple[int, int]],
+    *,
+    strand: int,
+) -> tuple[str, list[int], dict[int, int]]:
+    """
+    Build translation-oriented spliced CDS sequence from genomic spans.
+    Returns (cds_seq_dna, genomic_pos_by_i, genomic_to_i).
+    """
+    if strand not in (1, -1):
+        raise ValueError("strand must be +1 or -1")
+    n = len(seq_dna)
+
+    bases: list[str] = []
+    genomic_pos_by_i: list[int] = []
+
+    if strand == 1:
+        for a0, b0 in spans:
+            a, b = (a0, b0) if a0 <= b0 else (b0, a0)
+            if a < 1 or b > n:
+                return "", [], {}
+            for p in range(a, b + 1):
+                bases.append(seq_dna[p - 1])
+                genomic_pos_by_i.append(int(p))
+    else:
+        for a0, b0 in reversed(spans):
+            a, b = (a0, b0) if a0 <= b0 else (b0, a0)
+            if a < 1 or b > n:
+                return "", [], {}
+            for p in range(b, a - 1, -1):
+                bases.append(seq_dna[p - 1].translate(_COMPLEMENT))
+                genomic_pos_by_i.append(int(p))
+
+    cds_seq = "".join(bases).upper()
+    genomic_to_i: dict[int, int] = {}
+    for i, p in enumerate(genomic_pos_by_i):
+        # Keep the earliest mapping if duplicates appear (overlapping spans are malformed anyway).
+        if p not in genomic_to_i:
+            genomic_to_i[int(p)] = int(i)
+    return cds_seq, genomic_pos_by_i, genomic_to_i
+
+
+def delta_window_means_precomputed(
+    delta_by_idx: dict[int, int],
+    center_idx: int,
+    k: int,
+    *,
+    translation_start_idx0: int,
+    n_codons: int,
+) -> tuple[float | None, float | None]:
+    """
+    Compute mean Delta in k codons before/after a center codon using precomputed deltas
+    keyed by codon-start index in the spliced CDS sequence.
+    Requires full windows within the translated region.
+    """
+    if k <= 0:
+        return None, None
+    if n_codons <= 0:
+        return None, None
+    if center_idx < translation_start_idx0:
+        return None, None
+    off = center_idx - translation_start_idx0
+    if off % 3 != 0:
+        return None, None
+    i = off // 3
+    if i < k or i + k >= n_codons:
+        return None, None
+    before: list[float] = []
+    after: list[float] = []
+    for j in range(1, k + 1):
+        idx = translation_start_idx0 + 3 * (i - j)
+        if idx not in delta_by_idx:
+            return None, None
+        before.append(float(delta_by_idx[idx]))
+    for j in range(1, k + 1):
+        idx = translation_start_idx0 + 3 * (i + j)
+        if idx not in delta_by_idx:
+            return None, None
+        after.append(float(delta_by_idx[idx]))
+    return mean(before), mean(after)
+
+
+def delta_before_mean_precomputed(
+    delta_by_idx: dict[int, int],
+    center_idx: int,
+    k: int,
+    *,
+    translation_start_idx0: int,
+    n_codons: int,
+) -> float | None:
+    """
+    Mean Delta in k codons before center codon (one-sided), using precomputed deltas.
+    """
+    if k <= 0 or n_codons <= 0:
+        return None
+    if center_idx < translation_start_idx0:
+        return None
+    off = center_idx - translation_start_idx0
+    if off % 3 != 0:
+        return None
+    i = off // 3
+    if i < k:
+        return None
+    vals: list[float] = []
+    for j in range(1, int(k) + 1):
+        idx = translation_start_idx0 + 3 * (i - j)
+        if idx not in delta_by_idx:
+            return None
+        vals.append(float(delta_by_idx[idx]))
+    return mean(vals)
+
+
+def delta_after_mean_precomputed(
+    delta_by_idx: dict[int, int],
+    center_idx: int,
+    k: int,
+    *,
+    translation_start_idx0: int,
+    n_codons: int,
+) -> float | None:
+    """
+    Mean Delta in k codons after center codon (one-sided), using precomputed deltas.
+    """
+    if k <= 0 or n_codons <= 0:
+        return None
+    if center_idx < translation_start_idx0:
+        return None
+    off = center_idx - translation_start_idx0
+    if off % 3 != 0:
+        return None
+    i = off // 3
+    if i + k >= n_codons:
+        return None
+    vals: list[float] = []
+    for j in range(1, int(k) + 1):
+        idx = translation_start_idx0 + 3 * (i + j)
+        if idx not in delta_by_idx:
+            return None
+        vals.append(float(delta_by_idx[idx]))
+    return mean(vals)
+
+
+def codon_window_seq_spliced(
+    cds_seq_dna: str,
+    center_idx0: int,
+    k: int,
+    *,
+    translation_start_idx0: int,
+    n_codons: int,
+    direction: str,
+) -> str | None:
+    """
+    Extract the DNA sequence of k codons immediately before/after a codon at center_idx0 (0-based index into cds_seq_dna),
+    in spliced CDS coordinates (already in translated 5'->3' orientation).
+    Returns a concatenated DNA string of length 3k, or None if full window is not available.
+    """
+    if direction not in ("before", "after"):
+        raise ValueError("direction must be 'before' or 'after'")
+    if k <= 0:
+        return None
+    if n_codons <= 0:
+        return None
+    if center_idx0 < translation_start_idx0:
+        return None
+    off = center_idx0 - translation_start_idx0
+    if off % 3 != 0:
+        return None
+    i = off // 3
+    if direction == "before":
+        if i < k:
+            return None
+    else:
+        if i + k >= n_codons:
+            return None
+    # Emit sequence in translated 5'->3' order.
+    out: list[str] = []
+    if direction == "before":
+        js = range(int(k), 0, -1)
+        for j in js:
+            idx = translation_start_idx0 + 3 * (i - j)
+            if idx < 0 or idx + 3 > len(cds_seq_dna):
+                return None
+            out.append(cds_seq_dna[idx : idx + 3])
+    else:
+        for j in range(1, int(k) + 1):
+            idx = translation_start_idx0 + 3 * (i + j)
+            if idx < 0 or idx + 3 > len(cds_seq_dna):
+                return None
+            out.append(cds_seq_dna[idx : idx + 3])
+    s = "".join(out).upper()
+    if len(s) != 3 * int(k):
+        return None
+    if any(ch not in "ACGT" for ch in s):
+        return None
+    return s
+
+
+def _dna_to_rna(s: str) -> str:
+    return s.upper().replace("T", "U")
+
+
+def downstream_seq_spliced(cds_seq_dna: str, center_idx0: int, n_nt: int) -> str | None:
+    """
+    Return the DNA sequence of n_nt immediately downstream of the codon at center_idx0
+    (i.e., starting at center_idx0 + 3) in spliced CDS coordinates (translated orientation).
+    Returns None if out of range or contains non-ACGT.
+    """
+    if n_nt <= 0:
+        return None
+    start = int(center_idx0) + 3
+    end = start + int(n_nt)
+    if start < 0 or end > len(cds_seq_dna):
+        return None
+    s = cds_seq_dna[start:end].upper()
+    if len(s) != int(n_nt):
+        return None
+    if any(ch not in "ACGT" for ch in s):
+        return None
+    return s
 
 
 def _translation_start_pos_start(cds_start: int, cds_end: int, codon_start: int, *, strand: int) -> int:
@@ -413,7 +843,81 @@ class RecodingSite:
     # Control-C: random internal coding positions from the same CDS (non-stop, excluding transl_except).
     control_random_cds_before_mean_delta: float | None
     control_random_cds_after_mean_delta: float | None
+    # Composition features of the before/after windows (DNA, translation orientation; k codons each).
+    before_gc: float | None = None
+    after_gc: float | None = None
+    before_cpg: float | None = None
+    after_cpg: float | None = None
+    before_ta: float | None = None
+    after_ta: float | None = None
+    before_dinuc: dict[str, float] | None = None
+    after_dinuc: dict[str, float] | None = None
+    # Composition features for the terminal-stop windows of the same CDS (deduplicated downstream by CDS).
+    terminal_before_gc: float | None = None
+    terminal_after_gc: float | None = None
+    terminal_before_cpg: float | None = None
+    terminal_after_cpg: float | None = None
+    terminal_before_ta: float | None = None
+    terminal_after_ta: float | None = None
+    terminal_before_dinuc: dict[str, float] | None = None
+    terminal_after_dinuc: dict[str, float] | None = None
+    # GC + dinucleotide nearest-neighbor matched controls (within-CDS Control-C pool).
+    nn_ctrl_before_mean_delta: float | None = None
+    nn_ctrl_after_mean_delta: float | None = None
+    nn_before_diff: float | None = None
+    nn_after_diff: float | None = None
+    nn_before_l1: float | None = None
+    nn_after_l1: float | None = None
+    nn_before_gc_diff: float | None = None
+    nn_after_gc_diff: float | None = None
+    nn_before_gc_eps: float | None = None
+    nn_after_gc_eps: float | None = None
+    # Local downstream mechanism features (translated orientation, CDS-only).
+    plus4_nt: str | None = None  # RNA alphabet (A/C/G/U), first nt after the recoding codon
+    after_codon1: str | None = None  # next codon (RNA), length 3
+    after_nt6: str | None = None  # next 6 nt (RNA), length 6
+    analysis_version: int = ANALYSIS_VERSION
 
+
+@dataclass
+class StratBinCollector:
+    """
+    Stratified GC × (CpG or TA) bin collector for composition-adjusted comparisons.
+    Stores per-bin uplift-window means (floats) for recoding vs control samples.
+    """
+
+    label: str
+    x_name: str  # e.g. "cpg" or "ta"
+    gc_edges: list[float]
+    x_edges: list[float]
+    rec_before: dict[str, list[float]]
+    ctrl_before: dict[str, list[float]]
+    rec_after: dict[str, list[float]]
+    ctrl_after: dict[str, list[float]]
+
+    def _key(self, gc: float | None, x: float | None) -> str | None:
+        gb = bin_value(gc, edges=self.gc_edges)
+        xb = bin_value(x, edges=self.x_edges)
+        if gb is None or xb is None:
+            return None
+        return f"gc{int(gb)}_{self.x_name}{int(xb)}"
+
+    def add(self, *, group: str, window: str, gc: float | None, x: float | None, value: float) -> None:
+        k = self._key(gc, x)
+        if k is None:
+            return
+        if group not in ("rec", "ctrl"):
+            return
+        if window not in ("before", "after"):
+            return
+        if group == "rec" and window == "before":
+            self.rec_before.setdefault(k, []).append(float(value))
+        elif group == "rec" and window == "after":
+            self.rec_after.setdefault(k, []).append(float(value))
+        elif group == "ctrl" and window == "before":
+            self.ctrl_before.setdefault(k, []).append(float(value))
+        elif group == "ctrl" and window == "after":
+            self.ctrl_after.setdefault(k, []).append(float(value))
 
 def mean(xs: list[float]) -> float:
     return float(sum(xs)) / float(len(xs))
@@ -511,7 +1015,14 @@ def delta_window_means(seq_dna: str, center_pos_1: int, k: int, *, left_bound_1:
     return mean(before), mean(after)
 
 
-def extract_recoding_sites_from_record(record_text: str, *, k: int, heartbeat: Heartbeat | None = None, hb_tag: str = "") -> list[RecodingSite]:
+def extract_recoding_sites_from_record(
+    record_text: str,
+    *,
+    k: int,
+    heartbeat: Heartbeat | None = None,
+    hb_tag: str = "",
+    bin_collectors: list["StratBinCollector"] | None = None,
+) -> list[RecodingSite]:
     version = parse_version(record_text)
     if version is None:
         return []
@@ -533,144 +1044,381 @@ def extract_recoding_sites_from_record(record_text: str, *, k: int, heartbeat: H
         if "transl_except" not in feat.qualifiers:
             continue
 
-        # Skip complex join() locations (common in genomic eukaryotic records) to keep parsing correct.
-        if "join(" in feat.location:
+        ploc = parse_cds_location(feat.location)
+        if ploc is None:
             continue
-
-        loc = parse_simple_range(feat.location)
-        if loc is None:
-            continue
-        cds_start, cds_end = loc
-        strand = _cds_strand(feat.location)
+        strand = int(ploc.strand)
+        cds_start = int(min(a for a, _ in ploc.spans))
+        cds_end = int(max(b for _, b in ploc.spans))
         codon_start = 1
         if "codon_start" in feat.qualifiers and feat.qualifiers["codon_start"]:
             try:
                 codon_start = int(feat.qualifiers["codon_start"][0] or "1")
             except ValueError:
                 codon_start = 1
-        translation_start = _translation_start_pos_start(cds_start, cds_end, codon_start, strand=strand)
-        left_bound_1 = translation_start if strand == 1 else cds_start
-        right_bound_1 = cds_end if strand == 1 else (translation_start + 2)
+        codon_start = 1 if codon_start not in (1, 2, 3) else int(codon_start)
+
+        cds_seq_dna, genomic_pos_by_i, genomic_to_i = build_spliced_cds(seq_dna, ploc.spans, strand=strand)
+        if not cds_seq_dna:
+            continue
+        translation_start_idx0 = int(codon_start - 1)
+        if translation_start_idx0 < 0 or translation_start_idx0 + 2 >= len(cds_seq_dna):
+            continue
+        # Count codons in translated region (including terminal stop when present).
+        n_codons = (len(cds_seq_dna) - translation_start_idx0) // 3
+        if n_codons <= 0:
+            continue
+
+        # For output: keep the legacy definition "low coordinate of the triplet" for the first translated codon.
+        translation_start = int(min(genomic_pos_by_i[translation_start_idx0 : translation_start_idx0 + 3]))
 
         gene = feat.qualifiers.get("gene", [None])[0]
         product = feat.qualifiers.get("product", [None])[0]
 
-        # Terminal stop (best-effort): last codon inside CDS range.
+        # Precompute codon-level folding for the translated region.
+        codon_rna_by_idx: dict[int, str] = {}
+        delta_by_idx: dict[int, int] = {}
+        for i in range(int(n_codons)):
+            idx0 = translation_start_idx0 + 3 * i
+            if idx0 + 2 >= len(cds_seq_dna):
+                break
+            codon_dna = cds_seq_dna[idx0 : idx0 + 3]
+            if any(ch not in "ACGT" for ch in codon_dna):
+                continue
+            codon_rna = codon_dna.replace("T", "U")
+            if codon_rna not in GENETIC_CODE:
+                continue
+            f0 = fold_codon(codon_rna, MU_STAR)
+            codon_rna_by_idx[int(idx0)] = codon_rna
+            delta_by_idx[int(idx0)] = int(f0.delta)
+
+        # Terminal stop (best-effort): last translated codon.
         term_stop: str | None = None
         term_before: float | None = None
         term_after: float | None = None
-        n_codons: int | None = None
-        if strand == 1:
-            if (cds_end - translation_start + 1) >= 3:
-                n_codons = (cds_end - translation_start + 1) // 3
-        else:
-            if (translation_start - cds_start + 3) >= 3:
-                n_codons = (translation_start - cds_start + 3) // 3
-        if n_codons and n_codons >= 1:
-            last_start = translation_start + (3 * strand) * (n_codons - 1)
-            c_last = codon_at_strand(seq_dna, last_start, strand=strand)
-            if c_last is not None:
-                r_last = c_last.replace("T", "U")
-                if r_last in STOP_CODONS:
-                    term_stop = r_last
-                    # For termination, allow after-window to extend beyond CDS when sequence is present.
-                    term_before, term_after = delta_window_means_strand(
+        term_before_seq: str | None = None
+        term_after_seq: str | None = None
+        term_before_gc: float | None = None
+        term_after_gc: float | None = None
+        term_before_cpg: float | None = None
+        term_after_cpg: float | None = None
+        term_before_ta: float | None = None
+        term_after_ta: float | None = None
+        term_before_dinuc: dict[str, float] | None = None
+        term_after_dinuc: dict[str, float] | None = None
+        last_idx0 = translation_start_idx0 + 3 * (int(n_codons) - 1)
+        last_rna = codon_rna_by_idx.get(int(last_idx0))
+        if last_rna in STOP_CODONS:
+            term_stop = str(last_rna)
+            # Before-window is always computed within the translated CDS when possible (independent of UTR availability).
+            term_before = delta_before_mean_precomputed(
+                delta_by_idx,
+                int(last_idx0),
+                int(k),
+                translation_start_idx0=translation_start_idx0,
+                n_codons=int(n_codons),
+            )
+            if term_before is not None:
+                term_before_seq = codon_window_seq_spliced(
+                    cds_seq_dna,
+                    int(last_idx0),
+                    int(k),
+                    translation_start_idx0=translation_start_idx0,
+                    n_codons=int(n_codons),
+                    direction="before",
+                )
+
+            # After-window requires bases beyond the terminal stop codon. For spliced genomic CDS we do not
+            # assume UTR is present in the record, so keep after as None.
+            if not ploc.is_join:
+                last_triplet = genomic_pos_by_i[int(last_idx0) : int(last_idx0) + 3]
+                if len(last_triplet) == 3:
+                    last_start_low = int(min(last_triplet))
+                    term_after = delta_after_mean_strand(
                         seq_dna,
-                        last_start,
-                        k,
+                        last_start_low,
+                        int(k),
                         strand=strand,
                         left_bound_1=1,
                         right_bound_1=len(seq_dna),
                     )
+                    if term_after is not None:
+                        term_after_seq = codon_window_seq_strand(
+                            seq_dna,
+                            last_start_low,
+                            int(k),
+                            strand=strand,
+                            left_bound_1=1,
+                            right_bound_1=len(seq_dna),
+                            direction="after",
+                        )
 
-        # Precompute aligned codon-start coordinates in this CDS for Control-B.
-        codon_starts = _iter_codon_starts(cds_start, cds_end, translation_start, strand=strand)
-        recoding_positions: set[int] = set()
+        # Terminal stop composition (if sequences are available).
+        if term_before_seq:
+            term_before_gc = gc_fraction(term_before_seq)
+            term_before_cpg = cpg_rate(term_before_seq)
+            term_before_ta = ta_rate(term_before_seq)
+            term_before_dinuc = dinuc_freq(term_before_seq)
+        if term_after_seq:
+            term_after_gc = gc_fraction(term_after_seq)
+            term_after_cpg = cpg_rate(term_after_seq)
+            term_after_ta = ta_rate(term_after_seq)
+            term_after_dinuc = dinuc_freq(term_after_seq)
+
+        # Resolve recoding site positions (spliced codon indices) first to exclude from controls.
+        recoding_positions_idx: set[int] = set()
+        recoding_entries: list[tuple[int, int, str, int]] = []  # (pos_start,pos_end,aa,idx0)
         for val in feat.qualifiers.get("transl_except", []):
             m = _TRANSL_EXCEPT_RE.search(val)
             if not m:
                 continue
-            recoding_positions.add(int(m.group(1)))
+            pos_start = int(m.group("start"))
+            pos_end = int(m.group("end"))
+            aa_raw = str(m.group("aa"))
+            aa_norm = aa_raw.strip()
+            if aa_norm.lower() == "sec":
+                aa_norm = "Sec"
+            elif aa_norm.lower() == "pyl":
+                aa_norm = "Pyl"
+            if pos_end - pos_start != 2:
+                continue
+            # For minus-strand codons, the first translated base is at the high coordinate.
+            anchor = pos_start if strand == 1 else pos_end
+            idx0 = genomic_to_i.get(int(anchor))
+            if idx0 is None:
+                continue
+            idx0_i = int(idx0)
+            if idx0_i < translation_start_idx0 or (idx0_i - translation_start_idx0) % 3 != 0:
+                continue
+            if idx0_i + 2 >= len(cds_seq_dna):
+                continue
+            # Exclude all transl_except positions from internal controls, even if we don't
+            # treat them as Sec/Pyl recoding sites for analysis.
+            recoding_positions_idx.add(idx0_i)
+            if aa_norm in ("Sec", "Pyl"):
+                recoding_entries.append((int(pos_start), int(pos_end), aa_norm, idx0_i))
 
         # Control-C pool: random internal codon positions within CDS (exclude transl_except + stop codons),
         # with complete k-windows in both directions.
+        M = 8
         eligible_random_controls: list[tuple[int, float, float]] = []
-        for p in codon_starts:
-            if p in recoding_positions:
+        for i in range(int(n_codons)):
+            idx0 = translation_start_idx0 + 3 * i
+            idx0_i = int(idx0)
+            if idx0_i in recoding_positions_idx:
                 continue
-            c = codon_at_strand(seq_dna, p, strand=strand)
-            if c is None:
+            r = codon_rna_by_idx.get(idx0_i)
+            if r is None or r in STOP_CODONS:
                 continue
-            r = c.replace("T", "U")
-            if r in STOP_CODONS:
-                continue
-            b, a = delta_window_means_strand(
-                seq_dna,
-                p,
-                k,
-                strand=strand,
-                left_bound_1=left_bound_1,
-                right_bound_1=right_bound_1,
+            b, a = delta_window_means_precomputed(
+                delta_by_idx,
+                idx0_i,
+                int(k),
+                translation_start_idx0=translation_start_idx0,
+                n_codons=int(n_codons),
             )
             if b is None or a is None:
                 continue
-            eligible_random_controls.append((p, float(b), float(a)))
+            eligible_random_controls.append((idx0_i, float(b), float(a)))
 
-        for val in feat.qualifiers.get("transl_except", []):
-            m = _TRANSL_EXCEPT_RE.search(val)
-            if not m:
+        # NN candidates for within-CDS matching (subsample to control runtime; deterministic).
+        NN_POOL_MAX = 2000
+        nn_pool = list(eligible_random_controls)
+        if len(nn_pool) > NN_POOL_MAX:
+            rng_pool = random.Random(_stable_seed_u32(f"{version}:{translation_start}:{k}:nn_pool"))
+            rng_pool.shuffle(nn_pool)
+            nn_pool = nn_pool[:NN_POOL_MAX]
+
+        # Precompute composition features for NN pool (before/after separately).
+        nn_cand_before: list[dict[str, object]] = []
+        nn_cand_after: list[dict[str, object]] = []
+        for idx0_i, b, a in nn_pool:
+            bseq = codon_window_seq_spliced(
+                cds_seq_dna,
+                int(idx0_i),
+                int(k),
+                translation_start_idx0=translation_start_idx0,
+                n_codons=int(n_codons),
+                direction="before",
+            )
+            aseq = codon_window_seq_spliced(
+                cds_seq_dna,
+                int(idx0_i),
+                int(k),
+                translation_start_idx0=translation_start_idx0,
+                n_codons=int(n_codons),
+                direction="after",
+            )
+            if bseq:
+                nn_cand_before.append(
+                    {
+                        "idx0": int(idx0_i),
+                        "mean": float(b),
+                        "gc": gc_fraction(bseq),
+                        "dinuc": dinuc_freq(bseq),
+                    }
+                )
+            if aseq:
+                nn_cand_after.append(
+                    {
+                        "idx0": int(idx0_i),
+                        "mean": float(a),
+                        "gc": gc_fraction(aseq),
+                        "dinuc": dinuc_freq(aseq),
+                    }
+                )
+
+        def _nn_match(
+            *,
+            target_gc: float | None,
+            target_dinuc: dict[str, float] | None,
+            candidates: list[dict[str, object]],
+            eps_schedule: list[float],
+        ) -> tuple[float | None, float | None, float | None, float | None]:
+            """
+            Return (matched_mean, l1, gc_diff, eps_used).
+            """
+            if target_gc is None or target_dinuc is None:
+                return None, None, None, None
+            best_mean: float | None = None
+            best_l1: float | None = None
+            best_gc_diff: float | None = None
+            best_eps: float | None = None
+            for eps in eps_schedule:
+                for c in candidates:
+                    gc0 = c.get("gc")
+                    d0 = c.get("dinuc")
+                    m0 = c.get("mean")
+                    if gc0 is None or d0 is None or m0 is None: continue  # noqa: SIM103
+                    if not isinstance(d0, dict): continue  # noqa: SIM103
+                    try:
+                        gc_f = float(gc0)
+                        m_f = float(m0)
+                    except Exception: continue  # noqa: BLE001
+                    if abs(gc_f - float(target_gc)) > float(eps): continue  # noqa: SIM103
+                    l1 = l1_distance_16(target_dinuc, d0)
+                    if l1 is None: continue  # noqa: SIM103
+                    gc_diff = abs(gc_f - float(target_gc))
+                    if (
+                        best_l1 is None
+                        or float(l1) < float(best_l1)
+                        or (float(l1) == float(best_l1) and gc_diff < float(best_gc_diff or 1e9))
+                    ):
+                        best_mean = float(m_f)
+                        best_l1 = float(l1)
+                        best_gc_diff = float(gc_diff)
+                        best_eps = float(eps)
+                if best_mean is not None:
+                    break
+            return best_mean, best_l1, best_gc_diff, best_eps
+
+        # GC-eps schedule: try tight -> loose.
+        GC_EPS_SCHEDULE = [0.05, 0.10, 0.20, 0.30]
+
+        for pos_start, pos_end, aa, idx0_i in recoding_entries:
+            codon_dna = cds_seq_dna[idx0_i : idx0_i + 3]
+            if any(ch not in "ACGT" for ch in codon_dna):
                 continue
-            pos_start = int(m.group(1))
-            pos_end = int(m.group(2))
-            aa = m.group(3)
-            if pos_end - pos_start != 2:
-                continue
-            dna = codon_at_strand(seq_dna, pos_start, strand=strand)
-            if dna is None:
-                continue
-            rna = dna.replace("T", "U")
-            # Only keep sites that map to a defined codon; for Pyl/Sec we expect UAG/UGA.
+            rna = codon_dna.replace("T", "U")
             if rna not in GENETIC_CODE:
                 continue
             f = fold_codon(rna, MU_STAR)
 
-            before_m, after_m = delta_window_means_strand(
-                seq_dna,
-                pos_start,
-                k,
-                strand=strand,
-                left_bound_1=left_bound_1,
-                right_bound_1=right_bound_1,
+            # Local downstream motif features (+4 and short downstream sequences).
+            plus4_nt: str | None = None
+            after_codon1: str | None = None
+            after_nt6: str | None = None
+            d3 = downstream_seq_spliced(cds_seq_dna, int(idx0_i), 3)
+            if d3 is not None:
+                after_codon1 = _dna_to_rna(d3)
+                # +4 is the first base of the next codon.
+                plus4_nt = after_codon1[0] if len(after_codon1) == 3 else None
+            d6 = downstream_seq_spliced(cds_seq_dna, int(idx0_i), 6)
+            if d6 is not None:
+                after_nt6 = _dna_to_rna(d6)
+
+            before_m, after_m = delta_window_means_precomputed(
+                delta_by_idx,
+                idx0_i,
+                int(k),
+                translation_start_idx0=translation_start_idx0,
+                n_codons=int(n_codons),
             )
 
+            # Composition features for recoding-site windows.
+            before_seq = (
+                codon_window_seq_spliced(
+                    cds_seq_dna,
+                    int(idx0_i),
+                    int(k),
+                    translation_start_idx0=translation_start_idx0,
+                    n_codons=int(n_codons),
+                    direction="before",
+                )
+                if before_m is not None
+                else None
+            )
+            after_seq = (
+                codon_window_seq_spliced(
+                    cds_seq_dna,
+                    int(idx0_i),
+                    int(k),
+                    translation_start_idx0=translation_start_idx0,
+                    n_codons=int(n_codons),
+                    direction="after",
+                )
+                if after_m is not None
+                else None
+            )
+            before_gc = gc_fraction(before_seq) if before_seq else None
+            after_gc = gc_fraction(after_seq) if after_seq else None
+            before_cpg = cpg_rate(before_seq) if before_seq else None
+            after_cpg = cpg_rate(after_seq) if after_seq else None
+            before_ta = ta_rate(before_seq) if before_seq else None
+            after_ta = ta_rate(after_seq) if after_seq else None
+            before_dinuc = dinuc_freq(before_seq) if before_seq else None
+            after_dinuc = dinuc_freq(after_seq) if after_seq else None
+
+            # NN-matched controls from within-CDS random pool (Control-C), per window.
+            nn_ctrl_before, nn_l1_b, nn_gc_diff_b, nn_eps_b = _nn_match(
+                target_gc=before_gc,
+                target_dinuc=before_dinuc,
+                candidates=nn_cand_before,
+                eps_schedule=GC_EPS_SCHEDULE,
+            )
+            nn_ctrl_after, nn_l1_a, nn_gc_diff_a, nn_eps_a = _nn_match(
+                target_gc=after_gc,
+                target_dinuc=after_dinuc,
+                candidates=nn_cand_after,
+                eps_schedule=GC_EPS_SCHEDULE,
+            )
+            nn_before_diff = (float(before_m) - float(nn_ctrl_before)) if (before_m is not None and nn_ctrl_before is not None) else None
+            nn_after_diff = (float(after_m) - float(nn_ctrl_after)) if (after_m is not None and nn_ctrl_after is not None) else None
+
             # Control-B: same-codon positions inside CDS (exclude all transl_except sites).
-            M = 8
             candidate_controls: list[int] = []
-            for p in codon_starts:
-                if p in recoding_positions:
+            for i in range(int(n_codons)):
+                p = int(translation_start_idx0 + 3 * i)
+                if p in recoding_positions_idx:
                     continue
-                c = codon_at_strand(seq_dna, p, strand=strand)
-                if c is None:
-                    continue
-                if c.replace("T", "U") == rna:
+                if codon_rna_by_idx.get(p) == rna:
                     candidate_controls.append(p)
 
             ctrl_before_mean: float | None = None
             ctrl_after_mean: float | None = None
             if candidate_controls:
-                rng = random.Random(f"{version}:{pos_start}:{k}")
+                rng = random.Random(f"{version}:{pos_start}:{k}:same")
                 rng.shuffle(candidate_controls)
-                picks = candidate_controls[:M]
+                picks = candidate_controls[: int(M)]
                 ctrl_before_vals: list[float] = []
                 ctrl_after_vals: list[float] = []
                 for p in picks:
-                    b, a = delta_window_means_strand(
-                        seq_dna,
-                        p,
-                        k,
-                        strand=strand,
-                        left_bound_1=left_bound_1,
-                        right_bound_1=right_bound_1,
+                    b, a = delta_window_means_precomputed(
+                        delta_by_idx,
+                        int(p),
+                        int(k),
+                        translation_start_idx0=translation_start_idx0,
+                        n_codons=int(n_codons),
                     )
                     if b is None or a is None:
                         continue
@@ -687,7 +1435,7 @@ def extract_recoding_sites_from_record(record_text: str, *, k: int, heartbeat: H
                 rng = random.Random(f"{version}:{pos_start}:{k}:rand")
                 picks = list(eligible_random_controls)
                 rng.shuffle(picks)
-                picks = picks[:M]
+                picks = picks[: int(M)]
                 rand_before_vals = [b for _, b, _ in picks]
                 rand_after_vals = [a for _, _, a in picks]
                 if rand_before_vals and rand_after_vals:
@@ -710,8 +1458,11 @@ def extract_recoding_sites_from_record(record_text: str, *, k: int, heartbeat: H
                     aa=aa,
                     pos_start=pos_start,
                     pos_end=pos_end,
-                    codon_dna=dna,
+                    codon_dna=codon_dna,
                     codon_rna=rna,
+                    plus4_nt=plus4_nt,
+                    after_codon1=after_codon1,
+                    after_nt6=after_nt6,
                     n=int(f.n),
                     w=str(f.w),
                     v=int(f.v),
@@ -727,6 +1478,32 @@ def extract_recoding_sites_from_record(record_text: str, *, k: int, heartbeat: H
                     control_same_codon_after_mean_delta=ctrl_after_mean,
                     control_random_cds_before_mean_delta=rand_before_mean,
                     control_random_cds_after_mean_delta=rand_after_mean,
+                    before_gc=before_gc,
+                    after_gc=after_gc,
+                    before_cpg=before_cpg,
+                    after_cpg=after_cpg,
+                    before_ta=before_ta,
+                    after_ta=after_ta,
+                    before_dinuc=before_dinuc,
+                    after_dinuc=after_dinuc,
+                    terminal_before_gc=term_before_gc,
+                    terminal_after_gc=term_after_gc,
+                    terminal_before_cpg=term_before_cpg,
+                    terminal_after_cpg=term_after_cpg,
+                    terminal_before_ta=term_before_ta,
+                    terminal_after_ta=term_after_ta,
+                    terminal_before_dinuc=term_before_dinuc,
+                    terminal_after_dinuc=term_after_dinuc,
+                    nn_ctrl_before_mean_delta=nn_ctrl_before,
+                    nn_ctrl_after_mean_delta=nn_ctrl_after,
+                    nn_before_diff=nn_before_diff,
+                    nn_after_diff=nn_after_diff,
+                    nn_before_l1=nn_l1_b,
+                    nn_after_l1=nn_l1_a,
+                    nn_before_gc_diff=nn_gc_diff_b,
+                    nn_after_gc_diff=nn_gc_diff_a,
+                    nn_before_gc_eps=nn_eps_b,
+                    nn_after_gc_eps=nn_eps_a,
                 )
             )
     return out
@@ -904,6 +1681,30 @@ def main() -> None:
     domain_counts = Counter((s.domain or "Unknown") for s in sites)
     n_cds = len(term_by_cds)
 
+    # Local downstream mechanism features (+4 base and short downstream motifs).
+    plus4_counts = Counter((s.plus4_nt if s.plus4_nt is not None else "NA") for s in sites)
+    plus4_by_aa: dict[str, Counter[str]] = {}
+    plus4_by_domain: dict[str, Counter[str]] = {}
+    after_codon1_by_aa: dict[str, Counter[str]] = {}
+    after_nt6_by_aa: dict[str, Counter[str]] = {}
+    for s in sites:
+        aa = str(s.aa)
+        dom = str(s.domain or "Unknown")
+        plus4 = str(s.plus4_nt) if s.plus4_nt is not None else "NA"
+        plus4_by_aa.setdefault(aa, Counter())[plus4] += 1
+        plus4_by_domain.setdefault(dom, Counter())[plus4] += 1
+        if s.after_codon1 is not None and ("N" not in str(s.after_codon1)):
+            after_codon1_by_aa.setdefault(aa, Counter())[str(s.after_codon1)] += 1
+        if s.after_nt6 is not None and ("N" not in str(s.after_nt6)):
+            after_nt6_by_aa.setdefault(aa, Counter())[str(s.after_nt6)] += 1
+
+    def _top_counter(c: Counter[str], *, k: int) -> list[dict[str, object]]:
+        items = sorted(c.items(), key=lambda kv: (-int(kv[1]), str(kv[0])))
+        return [{"key": str(k0), "n": int(v0)} for k0, v0 in items[: int(k)]]
+
+    after_codon1_top_by_aa = {aa: _top_counter(c, k=10) for aa, c in after_codon1_by_aa.items()}
+    after_nt6_top_by_aa = {aa: _top_counter(c, k=10) for aa, c in after_nt6_by_aa.items()}
+
     def perm_p_value_two_sided(xs: list[float], ys: list[float], *, n_perm: int, seed: int) -> float | None:
         if len(xs) < 2 or len(ys) < 2:
             return None
@@ -919,6 +1720,67 @@ def main() -> None:
             if abs(mean(x1) - mean(y1)) >= obs:
                 ge += 1
         return (ge + 1) / float(n_perm + 1)
+
+    def paired_t_p_value_two_sided(diffs: list[float]) -> float | None:
+        """
+        Paired t-test on paired differences (two-sided). Returns None if not enough samples.
+        """
+        n = len(diffs)
+        if n < 2:
+            return None
+        m = mean([float(x) for x in diffs])
+        v = sample_variance([float(x) for x in diffs])
+        if v is None or v <= 0:
+            return None
+        se = math.sqrt(float(v) / float(n))
+        if se <= 0:
+            return None
+        t = abs(float(m) / float(se))
+        df_i = max(1, int(n - 1))
+        p = 2.0 * (1.0 - student_t_cdf(t, df=df_i))
+        return max(0.0, min(1.0, float(p)))
+
+    def signflip_perm_p_value_two_sided(diffs: list[float], *, n_perm: int, seed: int) -> float | None:
+        """
+        Paired sign-flip permutation test for mean(diffs) == 0.
+        """
+        n = len(diffs)
+        if n < 2:
+            return None
+        rng = random.Random(int(seed))
+        xs = [float(x) for x in diffs]
+        obs = abs(mean(xs))
+        ge = 0
+        for _ in range(int(n_perm)):
+            s = 0.0
+            for x in xs:
+                s += (x if (rng.getrandbits(1) == 1) else -x)
+            if abs(s / float(n)) >= obs:
+                ge += 1
+        return (ge + 1) / float(int(n_perm) + 1)
+
+    def paired_summary(diffs: list[float], *, n_perm: int, seed: int) -> dict[str, object]:
+        xs = [float(x) for x in diffs]
+        n = len(xs)
+        mu = mean(xs) if n > 0 else float("nan")
+        v = sample_variance(xs)
+        sd = math.sqrt(float(v)) if (v is not None and v > 0) else float("nan")
+        se = (sd / math.sqrt(float(n))) if (n > 0 and sd == sd and sd > 0) else float("nan")
+        ci_low = (mu - 1.96 * se) if (se == se) else None
+        ci_high = (mu + 1.96 * se) if (se == se) else None
+        d = (mu / sd) if (sd == sd and sd > 0) else None
+        p_t = paired_t_p_value_two_sided(xs)
+        p_perm = signflip_perm_p_value_two_sided(xs, n_perm=int(n_perm), seed=int(seed))
+        return {
+            "n": int(n),
+            "mean_diff": float(mu) if mu == mu else None,
+            "sd_diff": (float(sd) if sd == sd else None),
+            "ci_low": (float(ci_low) if ci_low is not None else None),
+            "ci_high": (float(ci_high) if ci_high is not None else None),
+            "d": (float(d) if d is not None else None),
+            "p_paired_t": (float(p_t) if p_t is not None else None),
+            "p_signflip": (float(p_perm) if p_perm is not None else None),
+        }
 
     def _collect_lists(
         sites_k: list[RecodingSite],
@@ -1055,6 +1917,97 @@ def main() -> None:
             ]
         )
 
+    # By recoded amino acid (Sec/Pyl) (primary k)
+    for aa in sorted(set(s.aa for s in sites)):
+        grp_sites = [s for s in sites if s.aa == aa and (s.before_mean_delta is not None) and (s.after_mean_delta is not None)]
+        if len(grp_sites) < 2:
+            continue
+        cds_keys = sorted({cds_key(s) for s in grp_sites})
+        term_b = []
+        term_a = []
+        for k0 in cds_keys:
+            if k0 not in term_by_cds:
+                continue
+            _stop, b0, a0, _dom0 = term_by_cds[k0]
+            if b0 is not None:
+                term_b.append(float(b0))
+            if a0 is not None:
+                term_a.append(float(a0))
+        xs_b = [float(s.before_mean_delta) for s in grp_sites if s.before_mean_delta is not None]
+        xs_a = [float(s.after_mean_delta) for s in grp_sites if s.after_mean_delta is not None]
+        tests_primary.extend(
+            [
+                t
+                for t in (
+                    _make_test(
+                        label=f"By recoded aa {aa} (recoding vs terminal)",
+                        window="before",
+                        k=k_primary,
+                        xs=xs_b,
+                        ys=[float(x) for x in term_b],
+                        seed=85001 + _stable_seed_u32("recoding:by_aa:before:" + str(aa)),
+                    ),
+                    _make_test(
+                        label=f"By recoded aa {aa} (recoding vs terminal)",
+                        window="after",
+                        k=k_primary,
+                        xs=xs_a,
+                        ys=[float(x) for x in term_a],
+                        seed=85002 + _stable_seed_u32("recoding:by_aa:after:" + str(aa)),
+                    ),
+                )
+                if t is not None
+            ]
+        )
+
+    # By terminal stop codon in the same CDS (primary k)
+    term_stop_set = sorted({stop for stop, _, _, _ in term_by_cds.values() if stop is not None})
+    for tstop in term_stop_set:
+        grp_sites = [
+            s
+            for s in sites
+            if (s.terminal_stop == tstop) and (s.before_mean_delta is not None) and (s.after_mean_delta is not None)
+        ]
+        if len(grp_sites) < 2:
+            continue
+        cds_keys = sorted({cds_key(s) for s in grp_sites})
+        term_b = []
+        term_a = []
+        for k0 in cds_keys:
+            if k0 not in term_by_cds:
+                continue
+            _stop, b0, a0, _dom0 = term_by_cds[k0]
+            if b0 is not None:
+                term_b.append(float(b0))
+            if a0 is not None:
+                term_a.append(float(a0))
+        xs_b = [float(s.before_mean_delta) for s in grp_sites if s.before_mean_delta is not None]
+        xs_a = [float(s.after_mean_delta) for s in grp_sites if s.after_mean_delta is not None]
+        tests_primary.extend(
+            [
+                t
+                for t in (
+                    _make_test(
+                        label=f"By terminal stop $\\mathrm{{{tstop}}}$ (recoding vs terminal)",
+                        window="before",
+                        k=k_primary,
+                        xs=xs_b,
+                        ys=[float(x) for x in term_b],
+                        seed=87001 + _stable_seed_u32("recoding:by_termstop:before:" + str(tstop)),
+                    ),
+                    _make_test(
+                        label=f"By terminal stop $\\mathrm{{{tstop}}}$ (recoding vs terminal)",
+                        window="after",
+                        k=k_primary,
+                        xs=xs_a,
+                        ys=[float(x) for x in term_a],
+                        seed=87002 + _stable_seed_u32("recoding:by_termstop:after:" + str(tstop)),
+                    ),
+                )
+                if t is not None
+            ]
+        )
+
     # By domain (primary k)
     for dom in sorted(set((s.domain or "Unknown") for s in sites)):
         grp_sites = [s for s in sites if (s.domain or "Unknown") == dom and (s.before_mean_delta is not None) and (s.after_mean_delta is not None)]
@@ -1135,9 +2088,308 @@ def main() -> None:
                 continue
             mk_tests.append({"label": str(lbl), "k": int(k), "before": tb.__dict__, "after": ta.__dict__})
 
+    # ---- Composition-adjusted controls (NN matching + stratified binning) ----
+    def _quantile_edges(vals: list[float], qs: list[float]) -> list[float]:
+        xs = sorted(float(x) for x in vals if x == x)
+        if len(xs) < 5:
+            return []
+        out: list[float] = []
+        n = len(xs)
+        for q in qs:
+            q0 = float(q)
+            if q0 <= 0.0 or q0 >= 1.0:
+                continue
+            idx = int(math.floor(q0 * float(n - 1)))
+            v = float(xs[max(0, min(n - 1, idx))])
+            if out and v <= out[-1] + 1e-12:
+                continue
+            out.append(v)
+        return out
+
+    def _nn_match_global(
+        *,
+        target_gc: float | None,
+        target_dinuc: dict[str, float] | None,
+        candidates: list[dict[str, object]],
+        eps_schedule: list[float],
+    ) -> tuple[float | None, float | None, float | None, float | None]:
+        if target_gc is None or target_dinuc is None:
+            return None, None, None, None
+        best_mean: float | None = None
+        best_l1: float | None = None
+        best_gc_diff: float | None = None
+        best_eps: float | None = None
+        for eps in eps_schedule:
+            for c in candidates:
+                gc0 = c.get("gc")
+                d0 = c.get("dinuc")
+                m0 = c.get("mean")
+                if gc0 is None or d0 is None or m0 is None:
+                    continue
+                if not isinstance(d0, dict):
+                    continue
+                try:
+                    gc_f = float(gc0)
+                    m_f = float(m0)
+                except Exception:
+                    continue
+                if abs(gc_f - float(target_gc)) > float(eps):
+                    continue
+                l1 = l1_distance_16(target_dinuc, d0)
+                if l1 is None:
+                    continue
+                gc_diff = abs(gc_f - float(target_gc))
+                if (
+                    best_l1 is None
+                    or float(l1) < float(best_l1)
+                    or (float(l1) == float(best_l1) and gc_diff < float(best_gc_diff or 1e9))
+                ):
+                    best_mean = float(m_f)
+                    best_l1 = float(l1)
+                    best_gc_diff = float(gc_diff)
+                    best_eps = float(eps)
+            if best_mean is not None:
+                break
+        return best_mean, best_l1, best_gc_diff, best_eps
+
+    def _stratified_perm(
+        *,
+        rec: list[tuple[float, float | None, float | None]],
+        ctrl: list[tuple[float, float | None, float | None]],
+        gc_edges: list[float],
+        x_edges: list[float],
+        x_name: str,
+        n_perm: int,
+        seed: int,
+    ) -> dict[str, object]:
+        # Bin values.
+        bins: dict[str, dict[str, list[float]]] = {}
+        for v, gc, x in rec:
+            k0 = bin_value(gc, edges=gc_edges)
+            x0 = bin_value(x, edges=x_edges)
+            if k0 is None or x0 is None:
+                continue
+            key = f"gc{int(k0)}_{x_name}{int(x0)}"
+            bins.setdefault(key, {"rec": [], "ctrl": []})["rec"].append(float(v))
+        for v, gc, x in ctrl:
+            k0 = bin_value(gc, edges=gc_edges)
+            x0 = bin_value(x, edges=x_edges)
+            if k0 is None or x0 is None:
+                continue
+            key = f"gc{int(k0)}_{x_name}{int(x0)}"
+            bins.setdefault(key, {"rec": [], "ctrl": []})["ctrl"].append(float(v))
+
+        rows: list[dict[str, object]] = []
+        weighted_num = 0.0
+        weighted_den = 0.0
+        for key, d in sorted(bins.items()):
+            xs = d.get("rec") or []
+            ys = d.get("ctrl") or []
+            if len(xs) < 1 or len(ys) < 1:
+                continue
+            mx = mean(xs)
+            my = mean(ys)
+            diff = float(mx - my)
+            n1 = int(len(xs))
+            n2 = int(len(ys))
+            w = (float(n1) * float(n2)) / float(n1 + n2) if (n1 + n2) > 0 else 0.0
+            weighted_num += w * diff
+            weighted_den += w
+            rows.append({"bin": key, "n_rec": n1, "n_ctrl": n2, "mean_rec": float(mx), "mean_ctrl": float(my), "diff": diff, "weight": w})
+
+        obs = (weighted_num / weighted_den) if weighted_den > 0 else float("nan")
+        p_perm: float | None = None
+        if rows and weighted_den > 0 and n_perm > 0:
+            rng = random.Random(int(seed))
+            ge = 0
+            obs_abs = abs(float(obs))
+            # Pre-pack per-bin pools for speed.
+            packed: list[tuple[int, list[float], float]] = []
+            for r in rows:
+                key = str(r["bin"])
+                xs = list(bins[key]["rec"])
+                ys = list(bins[key]["ctrl"])
+                n1 = int(r["n_rec"])
+                w = float(r["weight"])
+                packed.append((n1, xs + ys, w))
+            for _ in range(int(n_perm)):
+                num = 0.0
+                den = 0.0
+                for n1, pool, w in packed:
+                    if w <= 0:
+                        continue
+                    rng.shuffle(pool)
+                    x1 = pool[:n1]
+                    y1 = pool[n1:]
+                    num += w * (mean(x1) - mean(y1))
+                    den += w
+                stat = (num / den) if den > 0 else 0.0
+                if abs(float(stat)) >= obs_abs:
+                    ge += 1
+            p_perm = (ge + 1) / float(int(n_perm) + 1)
+
+        return {"overall_diff": (float(obs) if obs == obs else None), "p_perm": p_perm, "bins": rows}
+
+    # NN matched within-CDS (Control-C pool; per-site already computed).
+    nn_before_diffs = [float(s.nn_before_diff) for s in sites if s.nn_before_diff is not None]
+    nn_after_diffs = [float(s.nn_after_diff) for s in sites if s.nn_after_diff is not None]
+    nn_within = {
+        "before": paired_summary(nn_before_diffs, n_perm=2000, seed=60001),
+        "after": paired_summary(nn_after_diffs, n_perm=2000, seed=60002),
+        "n_with_before": int(len(nn_before_diffs)),
+        "n_with_after": int(len(nn_after_diffs)),
+        "mean_l1_before": (mean([float(s.nn_before_l1) for s in sites if s.nn_before_l1 is not None]) if any(s.nn_before_l1 is not None for s in sites) else None),
+        "mean_l1_after": (mean([float(s.nn_after_l1) for s in sites if s.nn_after_l1 is not None]) if any(s.nn_after_l1 is not None for s in sites) else None),
+    }
+
+    # Terminal-stop composition pool (CDS-deduplicated).
+    def build_term_comp_by_cds(
+        sites_k: list[RecodingSite],
+    ) -> dict[tuple[str, str, int], dict[str, object]]:
+        out: dict[tuple[str, str, int], dict[str, object]] = {}
+        for s0 in sites_k:
+            key0 = cds_key(s0)
+            if key0 in out:
+                continue
+            out[key0] = {
+                "stop": s0.terminal_stop,
+                "before_mean": s0.terminal_before_mean_delta,
+                "after_mean": s0.terminal_after_mean_delta,
+                "domain": s0.domain,
+                "before_gc": s0.terminal_before_gc,
+                "after_gc": s0.terminal_after_gc,
+                "before_cpg": s0.terminal_before_cpg,
+                "after_cpg": s0.terminal_after_cpg,
+                "before_ta": s0.terminal_before_ta,
+                "after_ta": s0.terminal_after_ta,
+                "before_dinuc": s0.terminal_before_dinuc,
+                "after_dinuc": s0.terminal_after_dinuc,
+            }
+        return out
+
+    term_comp_by_cds = build_term_comp_by_cds(sites)
+    term_pool_before: list[dict[str, object]] = []
+    term_pool_after: list[dict[str, object]] = []
+    for v in term_comp_by_cds.values():
+        if v.get("before_mean") is not None and v.get("before_gc") is not None and v.get("before_dinuc") is not None:
+            term_pool_before.append({"mean": float(v["before_mean"]), "gc": float(v["before_gc"]), "dinuc": v.get("before_dinuc")})
+        if v.get("after_mean") is not None and v.get("after_gc") is not None and v.get("after_dinuc") is not None:
+            term_pool_after.append({"mean": float(v["after_mean"]), "gc": float(v["after_gc"]), "dinuc": v.get("after_dinuc")})
+
+    GC_EPS_SCHEDULE = [0.05, 0.10, 0.20, 0.30]
+    nn_term_before_diffs: list[float] = []
+    nn_term_after_diffs: list[float] = []
+    for s in sites:
+        if s.before_mean_delta is not None and s.before_gc is not None and s.before_dinuc is not None:
+            m0, _l1, _gcd, _eps = _nn_match_global(
+                target_gc=float(s.before_gc),
+                target_dinuc=(s.before_dinuc if isinstance(s.before_dinuc, dict) else None),
+                candidates=term_pool_before,
+                eps_schedule=GC_EPS_SCHEDULE,
+            )
+            if m0 is not None:
+                nn_term_before_diffs.append(float(s.before_mean_delta) - float(m0))
+        if s.after_mean_delta is not None and s.after_gc is not None and s.after_dinuc is not None:
+            m0, _l1, _gcd, _eps = _nn_match_global(
+                target_gc=float(s.after_gc),
+                target_dinuc=(s.after_dinuc if isinstance(s.after_dinuc, dict) else None),
+                candidates=term_pool_after,
+                eps_schedule=GC_EPS_SCHEDULE,
+            )
+            if m0 is not None:
+                nn_term_after_diffs.append(float(s.after_mean_delta) - float(m0))
+
+    nn_terminal = {
+        "before": paired_summary(nn_term_before_diffs, n_perm=2000, seed=61001),
+        "after": paired_summary(nn_term_after_diffs, n_perm=2000, seed=61002),
+        "n_with_before": int(len(nn_term_before_diffs)),
+        "n_with_after": int(len(nn_term_after_diffs)),
+        "term_pool_before": int(len(term_pool_before)),
+        "term_pool_after": int(len(term_pool_after)),
+    }
+
+    # Stratified GC × (CpG / TA) comparisons: recoding vs terminal stops.
+    rec_before_comp = [(float(s.before_mean_delta), s.before_gc, s.before_cpg) for s in sites if (s.before_mean_delta is not None)]
+    rec_after_comp = [(float(s.after_mean_delta), s.after_gc, s.after_cpg) for s in sites if (s.after_mean_delta is not None)]
+    term_before_comp = [
+        (float(v["before_mean"]), v.get("before_gc"), v.get("before_cpg"))
+        for v in term_comp_by_cds.values()
+        if v.get("before_mean") is not None
+    ]
+    term_after_comp = [
+        (float(v["after_mean"]), v.get("after_gc"), v.get("after_cpg"))
+        for v in term_comp_by_cds.values()
+        if v.get("after_mean") is not None
+    ]
+
+    # Data-driven edges from pooled composition values.
+    gc_vals = []
+    cpg_vals = []
+    ta_vals = []
+    for s in sites:
+        if s.before_gc is not None:
+            gc_vals.append(float(s.before_gc))
+        if s.after_gc is not None:
+            gc_vals.append(float(s.after_gc))
+        if s.before_cpg is not None:
+            cpg_vals.append(float(s.before_cpg))
+        if s.after_cpg is not None:
+            cpg_vals.append(float(s.after_cpg))
+        if s.before_ta is not None:
+            ta_vals.append(float(s.before_ta))
+        if s.after_ta is not None:
+            ta_vals.append(float(s.after_ta))
+    for v in term_comp_by_cds.values():
+        for kx in ("before_gc", "after_gc"):
+            if v.get(kx) is not None:
+                gc_vals.append(float(v[kx]))
+        for kx in ("before_cpg", "after_cpg"):
+            if v.get(kx) is not None:
+                cpg_vals.append(float(v[kx]))
+        for kx in ("before_ta", "after_ta"):
+            if v.get(kx) is not None:
+                ta_vals.append(float(v[kx]))
+
+    q_grid = [0.2, 0.4, 0.6, 0.8]
+    gc_edges = _quantile_edges(gc_vals, q_grid)
+    cpg_edges = _quantile_edges(cpg_vals, q_grid)
+    ta_edges = _quantile_edges(ta_vals, q_grid)
+
+    strat_gc_cpg = {
+        "gc_edges": gc_edges,
+        "x_edges": cpg_edges,
+        "before": _stratified_perm(rec=rec_before_comp, ctrl=term_before_comp, gc_edges=gc_edges, x_edges=cpg_edges, x_name="cpg", n_perm=2000, seed=62001),
+        "after": _stratified_perm(rec=rec_after_comp, ctrl=term_after_comp, gc_edges=gc_edges, x_edges=cpg_edges, x_name="cpg", n_perm=2000, seed=62002),
+    }
+
+    rec_before_ta = [(float(s.before_mean_delta), s.before_gc, s.before_ta) for s in sites if (s.before_mean_delta is not None)]
+    rec_after_ta = [(float(s.after_mean_delta), s.after_gc, s.after_ta) for s in sites if (s.after_mean_delta is not None)]
+    term_before_ta = [
+        (float(v["before_mean"]), v.get("before_gc"), v.get("before_ta"))
+        for v in term_comp_by_cds.values()
+        if v.get("before_mean") is not None
+    ]
+    term_after_ta = [
+        (float(v["after_mean"]), v.get("after_gc"), v.get("after_ta"))
+        for v in term_comp_by_cds.values()
+        if v.get("after_mean") is not None
+    ]
+    strat_gc_ta = {
+        "gc_edges": gc_edges,
+        "x_edges": ta_edges,
+        "before": _stratified_perm(rec=rec_before_ta, ctrl=term_before_ta, gc_edges=gc_edges, x_edges=ta_edges, x_name="ta", n_perm=2000, seed=62101),
+        "after": _stratified_perm(rec=rec_after_ta, ctrl=term_after_ta, gc_edges=gc_edges, x_edges=ta_edges, x_name="ta", n_perm=2000, seed=62102),
+    }
+
+    composition_controls = {
+        "nn_within_cds": nn_within,
+        "nn_terminal_pool": nn_terminal,
+        "stratified_terminal": {"gc_cpg": strat_gc_cpg, "gc_ta": strat_gc_ta},
+    }
+
     # ---- Summary JSON (for caching + fast LaTeX rebuild) ----
     summary_obj: dict[str, object] = {
-        "schema_version": 1,
+        "schema_version": 2,
         "analysis_version": int(ANALYSIS_VERSION),
         "mu_star": MU_STAR,
         "k_primary": int(k_primary),
@@ -1153,10 +2405,16 @@ def main() -> None:
             "codon_counts": {str(k): int(v) for k, v in sorted(codon_counts.items())},
             "domain_counts": {str(k): int(v) for k, v in sorted(domain_counts.items())},
             "term_stop_counts": {str(k): int(v) for k, v in sorted(term_stop_counts.items())},
+            "plus4_counts": {str(k): int(v) for k, v in sorted(plus4_counts.items())},
+            "plus4_counts_by_aa": {str(a): {str(k): int(v) for k, v in sorted(c.items())} for a, c in sorted(plus4_by_aa.items())},
+            "plus4_counts_by_domain": {str(d): {str(k): int(v) for k, v in sorted(c.items())} for d, c in sorted(plus4_by_domain.items())},
+            "after_codon1_top_by_aa": {str(a): lst for a, lst in sorted(after_codon1_top_by_aa.items())},
+            "after_nt6_top_by_aa": {str(a): lst for a, lst in sorted(after_nt6_top_by_aa.items())},
             "tests_primary": [t.__dict__ for t in tests_primary],
             "top_rows": [s.__dict__ for s in top_sites],
         },
         "multi_k_overall": mk_tests,
+        "composition_controls": composition_controls,
     }
     out_summary_json.parent.mkdir(parents=True, exist_ok=True)
     write_json_atomic(out_summary_json, summary_obj)
@@ -1185,6 +2443,10 @@ def _write_recoding_context_tests_tex(tests_primary: list[Any], *, k_primary: in
     lines_primary: list[str] = []
     lines_primary.append(f"Recoding-site context tests (primary window radius $k={int(k_primary)}$).")
     for t in tests_primary:
+        # Keep this fragment as the headline comparison only.
+        lbl = str(getattr(t, "label", "") or "")
+        if lbl != "Recoding vs terminal stops (CDS-deduplicated)":
+            continue
         op_p, p_s = _fmt_p_tex(getattr(t, "p_welch", None))
         op_q, q_s = _fmt_p_tex(getattr(t, "q_welch", None))
         op_perm, perm_s = _fmt_p_tex(getattr(t, "p_perm", None))
@@ -1206,6 +2468,39 @@ def _write_recoding_context_tests_tex(tests_primary: list[Any], *, k_primary: in
             f"$n={int(getattr(t, 'n1', 0) or 0)}$ vs {int(getattr(t, 'n2', 0) or 0)})."
         )
     write_text(generated_dir() / "recoding_context_tests.tex", "\n\n".join(lines_primary) + "\n")
+
+
+def _write_recoding_context_tests_stratified_tex(tests_primary: list[Any], *, k_primary: int) -> None:
+    """
+    Stratified recoding-vs-terminal comparisons (by codon / aa / domain / terminal stop).
+    """
+    lines: list[str] = []
+    lines.append(f"Stratified recoding-site context tests (primary window radius $k={int(k_primary)}$).")
+    for t in tests_primary:
+        lbl = str(getattr(t, "label", "") or "")
+        if not lbl.startswith("By "):
+            continue
+        op_p, p_s = _fmt_p_tex(getattr(t, "p_welch", None))
+        op_q, q_s = _fmt_p_tex(getattr(t, "q_welch", None))
+        op_perm, perm_s = _fmt_p_tex(getattr(t, "p_perm", None))
+        ci_low = getattr(t, "ci_low", None)
+        ci_high = getattr(t, "ci_high", None)
+        ci_s = "NA"
+        if (ci_low is not None) and (ci_high is not None):
+            ci_s = f"[{float(ci_low):.4f},{float(ci_high):.4f}]"
+        d = getattr(t, "d", None)
+        g = getattr(t, "g", None)
+        d_s = f"{float(d):+.3f}" if d is not None else "NA"
+        g_s = f"{float(g):+.3f}" if g is not None else "NA"
+        lines.append(
+            f"{lbl} ({getattr(t, 'window', '-')}-window): "
+            f"$\\bar{{\\Delta}}_1={float(getattr(t, 'mean1', float('nan'))):.4f}$ vs "
+            f"$\\bar{{\\Delta}}_2={float(getattr(t, 'mean2', float('nan'))):.4f}$ "
+            f"(diff {float(getattr(t, 'diff', float('nan'))):+.4f}, CI$_{{95\\%}}$={ci_s}, $d={d_s}$, $g={g_s}$, "
+            f"Welch $p{op_p}{p_s}$, $q{op_q}{q_s}$, perm $p{op_perm}{perm_s}$; "
+            f"$n={int(getattr(t, 'n1', 0) or 0)}$ vs {int(getattr(t, 'n2', 0) or 0)})."
+        )
+    write_text(generated_dir() / "recoding_context_tests_stratified.tex", "\n\n".join(lines) + "\n")
 
 
 def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
@@ -1293,6 +2588,7 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
             if t_obj is not None:
                 tests_primary.append(t_obj)
     _write_recoding_context_tests_tex(tests_primary, k_primary=k_primary)
+    _write_recoding_context_tests_stratified_tex(tests_primary, k_primary=k_primary)
 
     # Multi-k fragment: reuse the already-rendered per-k tests.
     mk_lines: list[str] = []
@@ -1301,8 +2597,7 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
     if isinstance(mk, list):
         for item in mk:
             if not isinstance(item, dict):
-                pass
-    else:
+                continue
                 lbl = str(item.get("label") or "-")
                 kk = int(item.get("k", 0) or 0)
                 b = item.get("before") or {}
@@ -1349,7 +2644,163 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
         f"sites $n={n_sites}$; codons " + ", ".join(f"{c}:{int(codon_counts[c])}" for c in sorted(codon_counts)) + "; "
         "domains " + ", ".join(f"{d}:{int(domain_counts[d])}" for d in sorted(domain_counts)) + "."
     )
+    mech = primary.get("plus4_counts") if isinstance(primary, dict) else None
+    if isinstance(mech, dict) and mech:
+        # +4 base is the first RNA base after the recoding codon (translated orientation).
+        parts = []
+        for b in ("A", "C", "G", "U", "NA"):
+            if b in mech:
+                parts.append(f"\\texttt{{{b}}}:{int(mech[b])}")
+        if parts:
+            comp.append("Local +4 base (RNA, first nt after recoding codon): " + ", ".join(parts) + ".")
+
+    mech_by_aa = primary.get("plus4_counts_by_aa") if isinstance(primary, dict) else None
+    if isinstance(mech_by_aa, dict) and mech_by_aa:
+        lines = []
+        for aa, d in sorted(mech_by_aa.items(), key=lambda kv: str(kv[0])):
+            if not isinstance(d, dict):
+                continue
+            parts = []
+            for b in ("A", "C", "G", "U", "NA"):
+                if b in d:
+                    parts.append(f"\\texttt{{{b}}}:{int(d[b])}")
+            if parts:
+                lines.append(f"{aa}(" + ", ".join(parts) + ")")
+        if lines:
+            comp.append("Local +4 base by recoded aa: " + "; ".join(lines) + ".")
+
+    mech_by_dom = primary.get("plus4_counts_by_domain") if isinstance(primary, dict) else None
+    if isinstance(mech_by_dom, dict) and mech_by_dom:
+        lines = []
+        for dom, d in sorted(mech_by_dom.items(), key=lambda kv: str(kv[0])):
+            if not isinstance(d, dict):
+                continue
+            parts = []
+            for b in ("A", "C", "G", "U", "NA"):
+                if b in d:
+                    parts.append(f"\\texttt{{{b}}}:{int(d[b])}")
+            if parts:
+                lines.append(f"{dom}(" + ", ".join(parts) + ")")
+        if lines:
+            comp.append("Local +4 base by domain: " + "; ".join(lines) + ".")
+
+    top_codon = primary.get("after_codon1_top_by_aa") if isinstance(primary, dict) else None
+    if isinstance(top_codon, dict) and top_codon:
+        for aa, lst in sorted(top_codon.items(), key=lambda kv: str(kv[0])):
+            if not isinstance(lst, list) or not lst:
+                continue
+            items = []
+            for it in lst[:10]:
+                if not isinstance(it, dict):
+                    continue
+                k0 = it.get("key")
+                n0 = it.get("n")
+                if k0 is None or n0 is None:
+                    continue
+                try:
+                    items.append(f"\\texttt{{{str(k0)}}}:{int(n0)}")
+                except Exception:
+                    continue
+            if items:
+                comp.append(f"Top downstream codon (+1) for {aa}: " + ", ".join(items) + ".")
+
+    top_nt6 = primary.get("after_nt6_top_by_aa") if isinstance(primary, dict) else None
+    if isinstance(top_nt6, dict) and top_nt6:
+        for aa, lst in sorted(top_nt6.items(), key=lambda kv: str(kv[0])):
+            if not isinstance(lst, list) or not lst:
+                continue
+            items = []
+            for it in lst[:10]:
+                if not isinstance(it, dict):
+                    continue
+                k0 = it.get("key")
+                n0 = it.get("n")
+                if k0 is None or n0 is None:
+                    continue
+                try:
+                    items.append(f"\\texttt{{{str(k0)}}}:{int(n0)}")
+                except Exception:
+                    continue
+            if items:
+                comp.append(f"Top downstream 6-nt motifs (+1..+6) for {aa}: " + ", ".join(items) + ".")
     write_text(generated_dir() / "recoding_dataset_composition.tex", "\n".join(comp) + "\n")
+
+    # Composition-adjusted controls fragment.
+    cc = summary.get("composition_controls") or {}
+    cc_lines: list[str] = []
+    cc_lines.append(f"Composition-adjusted controls for recoding-site context (primary window radius $k={k_primary}$).")
+    if isinstance(cc, dict) and cc:
+        nnw = cc.get("nn_within_cds") or {}
+        if isinstance(nnw, dict):
+            b = nnw.get("before") or {}
+            a = nnw.get("after") or {}
+            if isinstance(b, dict):
+                op, p_s = _fmt_p_tex(b.get("p_paired_t"))
+                op2, p2_s = _fmt_p_tex(b.get("p_signflip"))
+                md = b.get("mean_diff")
+                lo = b.get("ci_low")
+                hi = b.get("ci_high")
+                md_s = f"{float(md):+.4f}" if md is not None else "NA"
+                ci_s = f"[{float(lo):.4f},{float(hi):.4f}]" if (lo is not None and hi is not None) else "NA"
+                cc_lines.append(
+                    "Within-CDS GC+dinuc NN (Control-C), before-window: "
+                    f"diff {md_s} (CI$_{{95\\%}}$={ci_s}, paired $p{op}{p_s}$, sign-flip $p{op2}{p2_s}$; n={int(b.get('n') or 0)})."
+                )
+            if isinstance(a, dict):
+                op, p_s = _fmt_p_tex(a.get("p_paired_t"))
+                op2, p2_s = _fmt_p_tex(a.get("p_signflip"))
+                md = a.get("mean_diff")
+                lo = a.get("ci_low")
+                hi = a.get("ci_high")
+                md_s = f"{float(md):+.4f}" if md is not None else "NA"
+                ci_s = f"[{float(lo):.4f},{float(hi):.4f}]" if (lo is not None and hi is not None) else "NA"
+                cc_lines.append(
+                    "Within-CDS GC+dinuc NN (Control-C), after-window: "
+                    f"diff {md_s} (CI$_{{95\\%}}$={ci_s}, paired $p{op}{p_s}$, sign-flip $p{op2}{p2_s}$; n={int(a.get('n') or 0)})."
+                )
+        nnt = cc.get("nn_terminal_pool") or {}
+        if isinstance(nnt, dict):
+            b = nnt.get("before") or {}
+            a = nnt.get("after") or {}
+            if isinstance(b, dict):
+                op, p_s = _fmt_p_tex(b.get("p_paired_t"))
+                op2, p2_s = _fmt_p_tex(b.get("p_signflip"))
+                md = b.get("mean_diff")
+                md_s = f"{float(md):+.4f}" if md is not None else "NA"
+                cc_lines.append(
+                    "GC+dinuc NN to CDS-deduplicated terminal-stop pool, before-window: "
+                    f"diff {md_s} (paired $p{op}{p_s}$, sign-flip $p{op2}{p2_s}$; n={int(b.get('n') or 0)})."
+                )
+            if isinstance(a, dict):
+                op, p_s = _fmt_p_tex(a.get("p_paired_t"))
+                op2, p2_s = _fmt_p_tex(a.get("p_signflip"))
+                md = a.get("mean_diff")
+                md_s = f"{float(md):+.4f}" if md is not None else "NA"
+                cc_lines.append(
+                    "GC+dinuc NN to CDS-deduplicated terminal-stop pool, after-window: "
+                    f"diff {md_s} (paired $p{op}{p_s}$, sign-flip $p{op2}{p2_s}$; n={int(a.get('n') or 0)})."
+                )
+        st = cc.get("stratified_terminal") or {}
+        if isinstance(st, dict):
+            for key, title in (("gc_cpg", "GC$\\times$CpG"), ("gc_ta", "GC$\\times$TA")):
+                sch = st.get(key) or {}
+                if not isinstance(sch, dict):
+                    continue
+                b = sch.get("before") or {}
+                a = sch.get("after") or {}
+                if isinstance(b, dict):
+                    op, p_s = _fmt_p_tex(b.get("p_perm"))
+                    od = b.get("overall_diff")
+                    od_s = f"{float(od):+.4f}" if od is not None else "NA"
+                    cc_lines.append(f"Stratified ({title}) recoding vs terminal, before-window: overall diff {od_s} (perm $p{op}{p_s}$).")
+                if isinstance(a, dict):
+                    op, p_s = _fmt_p_tex(a.get("p_perm"))
+                    od = a.get("overall_diff")
+                    od_s = f"{float(od):+.4f}" if od is not None else "NA"
+                    cc_lines.append(f"Stratified ({title}) recoding vs terminal, after-window: overall diff {od_s} (perm $p{op}{p_s}$).")
+    else:
+        cc_lines.append("Composition-adjusted controls unavailable in cached summary.")
+    write_text(generated_dir() / "recoding_composition_controls.tex", "\n\n".join(cc_lines) + "\n")
 
     # Terminal-stop bias fragment: recompute vs current RefSeq baseline if available.
     term_stop_counts_i = Counter({str(k): int(v) for k, v in (term_stop_counts.items() if isinstance(term_stop_counts, dict) else [])})

@@ -1,0 +1,101 @@
+\section{Biological validation protocols (executable, falsifiable)}
+\label{app:bio_validation}
+
+This appendix outlines experimental validation plans that translate the arithmetic observables of the $\mu^\ast$ folding map into concrete, falsifiable molecular measurements.
+The key principle is to keep \emph{arithmetic facts} (fixed once $\mu^\ast$ is fixed) distinct from \emph{empirical hypotheses} (claims about translation outcomes in living systems).
+
+\subsection{Arithmetic observables and script outputs}
+\label{app:bio_validation_observables}
+
+Fix $\mu^\ast$ and a window radius $k\ge 1$.
+For any codon position $i$ in a reading frame, the folding layer defines:
+\[
+Z(i)=V_{\mu^\ast}(c_i),\qquad U(i)=\Delta_{\mu^\ast}(c_i).
+\]
+For a designated event position (start, stop, or recoding site), the scripts output the before/after window means:
+\[
+u_{\mathrm{before}}(i;k)=\frac{1}{k}\sum_{j=1}^{k}U(i-j),\qquad
+u_{\mathrm{after}}(i;k)=\frac{1}{k}\sum_{j=1}^{k}U(i+j),
+\]
+subject to frame and boundary constraints (Appendix~\ref{app:stop_context_windows}, Appendix~\ref{app:start_context_windows}).
+
+\paragraph{Direct script artefacts.}
+The following outputs can be used to design and analyze experiments:
+\begin{itemize}
+\item RefSeq baselines: stop-context and start-context window summaries and multi-$k$ sensitivity tables (Appendix~\ref{app:refseq_transcriptome}).
+\item Cross-domain corpus panel: per-dataset boundary rates, start-context windows, and stop-context effect sizes (Appendix~\ref{app:corpus_panel}).
+\item Recoding sites (\texttt{transl\_except}): per-site $u_{\mathrm{before}}/u_{\mathrm{after}}$ and composition controls, plus local downstream features such as the +4 base and short downstream motifs (Appendix~\ref{app:recoding_sites}).
+\end{itemize}
+
+\subsection{Reporter assays for termination readthrough (stop-context)}
+\label{app:bio_validation_readthrough}
+
+\paragraph{Goal.}
+Test whether termination readthrough depends on (i) stop-codon class ($\mathrm{UAA/UAG/UGA}$) and/or (ii) the uplift-context statistics $u_{\mathrm{before}}(k)$ and $u_{\mathrm{after}}(k)$ computed from the surrounding coding sequence under $\mu^\ast$.
+
+\paragraph{Construct design.}
+Use a dual-reporter readthrough system (e.g.\ Renilla--stop--Firefly) with a single in-frame stop codon between reporter ORFs.
+For each stop class $s\in\{\mathrm{UAA,UAG,UGA}\}$, build matched context sets:
+\begin{itemize}
+\item \textbf{High-$u_{\mathrm{after}}$ contexts}: choose flanking coding sequences whose predicted $u_{\mathrm{after}}(k)$ is high.
+\item \textbf{Low-$u_{\mathrm{after}}$ contexts}: choose flanking coding sequences whose predicted $u_{\mathrm{after}}(k)$ is low.
+\end{itemize}
+Candidate contexts can be harvested from the RefSeq scan or the corpus panel by selecting ORF stop neighborhoods with complete windows and specified $u_{\mathrm{after}}(k)$ bins; composition-matched selection can be enforced using the GC/dinucleotide controls defined in Appendix~\ref{app:composition_controls}.
+
+\paragraph{Primary endpoint.}
+Define the readthrough fraction as the normalized downstream reporter activity relative to an in-frame sense-codon control construct.
+
+\paragraph{Falsifiable tests (empirical hypotheses).}
+Examples of directly testable hypotheses include:
+\begin{itemize}
+\item At fixed stop codon $s$, readthrough varies monotonically with $u_{\mathrm{after}}(k)$ (regression of readthrough on $u_{\mathrm{after}}(k)$).
+\item At matched context (composition-controlled), $\mathrm{UGA}$ exhibits higher readthrough than $\mathrm{UAA}$.
+\item Effect directions are conserved or domain-dependent when contexts are sampled from different taxa in the corpus panel.
+\end{itemize}
+All tests can be carried out with the effect-size and multiple-testing protocols in Appendix~\ref{app:effect_sizes}.
+
+\subsection{Selenocysteine (Sec) recoding assays}
+\label{app:bio_validation_sec}
+
+\paragraph{Goal.}
+Connect the $\mathrm{UGA}$ recoding mechanism (Sec insertion) to the uplift-context statistics and to local downstream sequence features, while controlling for nucleotide composition.
+
+\paragraph{Construct design.}
+Use a Sec reporter with an in-frame $\mathrm{UGA}$ at a defined position and an appropriate SECIS element (eukaryotic 3' UTR SECIS for mammalian systems, or the corresponding bacterial mechanism where applicable).
+Select site contexts from the GenBank \texttt{transl\_except} dataset:
+the scripts provide per-site $u_{\mathrm{before}}(k)$ and $u_{\mathrm{after}}(k)$, composition features, and local downstream features (e.g.\ +4 base; Appendix~\ref{app:recoding_sites}).
+
+\paragraph{Primary endpoints.}
+Depending on system, quantify Sec incorporation by reporter output, targeted mass spectrometry, or isotopic labeling.
+
+\paragraph{Falsifiable tests.}
+\begin{itemize}
+\item Within the Sec site set, Sec incorporation depends on $u_{\mathrm{after}}(k)$ at fixed $k$ (or is stable across $k$ in multi-$k$ sensitivity).
+\item Local downstream features (e.g.\ +4 base categories) stratify Sec incorporation after controlling for composition.
+\end{itemize}
+
+\subsection{Pyrrolysine (Pyl) recoding assays}
+\label{app:bio_validation_pyl}
+
+\paragraph{Goal.}
+Analogous to Sec, test whether $\mathrm{UAG}$ Pyl insertion is associated with uplift-context statistics and local downstream features in systems where Pyl is naturally encoded.
+
+\paragraph{Construct design and endpoints.}
+Use a Pyl-capable system with a defined $\mathrm{UAG}$ site and the corresponding Pyl insertion machinery (PylRS/tRNA$^{\mathrm{Pyl}}$ and, where applicable, mRNA elements).
+Quantify insertion vs termination using a dual-reporter or tagged protein readout.
+
+\paragraph{Falsifiable tests.}
+Compare Pyl insertion efficiencies across contexts stratified by $u_{\mathrm{before}}(k)$/$u_{\mathrm{after}}(k)$ and by local downstream features extracted by the scripts (Appendix~\ref{app:recoding_sites}).
+
+\subsection{Practical selection rules aligned to script outputs}
+\label{app:bio_validation_selection_rules}
+
+To make the experimental program executable, the following selection rules map directly to script artefacts:
+\begin{itemize}
+\item \textbf{Window completeness}: require complete $k$-windows on the relevant side(s) as enforced by the scripts.
+\item \textbf{Composition control}: match GC and dinucleotide vectors between compared groups (Appendix~\ref{app:composition_controls}).
+\item \textbf{Effect-size targeting}: choose contexts that maximize the predicted difference in $u_{\mathrm{after}}(k)$ (or in $u_{\mathrm{after}}(k)-u_{\mathrm{before}}(k)$) while keeping codon identity fixed.
+\item \textbf{Provenance}: store selected context lists and summary JSON in \path{analysis\_runs.payload} and, when applicable, the per-item panel tables in Postgres for reproducibility (Appendix~\ref{app:reproducibility}).
+\end{itemize}
+
+

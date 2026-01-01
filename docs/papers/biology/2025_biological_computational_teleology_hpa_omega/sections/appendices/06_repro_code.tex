@@ -4,6 +4,29 @@
 This appendix contains reference implementations for Section~\ref{sec:reference_impl}.
 They require only Python 3 (no third-party dependencies). A minimal requirement file is provided in \texttt{requirements.txt}.
 
+\subsection{What is reproduced}
+The scripts in \texttt{scripts/} reproduce the following protocol-level computations used in the main text:
+\begin{itemize}
+  \item \textbf{Discrepancy and accumulated mismatch.} Exact 1D star discrepancy $D_N^\ast$ for a finite phase-point set and the accumulated mismatch $E_N=N D_N^\ast$ (Section~\ref{sec:readout_phase_friction}).
+  \item \textbf{Predictive-information-rate threshold (toy illustration).} A numerical demonstration of the inequality chain leading to the threshold form \eqref{eq:Idot_threshold} (Section~\ref{sec:bounds}). This is a unit test of the interface inequalities rather than a biological model.
+  \item \textbf{Anti-locking index.} A constructive computation of $Q_\delta(\alpha)$ together with the golden-branch Hurwitz-scale lower bound \eqref{eq:Qdelta_golden} (Section~\ref{sec:golden_control}).
+\end{itemize}
+
+\subsection{How to run (examples)}
+\begin{itemize}
+  \item \texttt{python3 scripts/experiment\_a\_star\_discrepancy.py}
+  \item \texttt{python3 scripts/experiment\_b\_predictive\_threshold.py}
+  \item \texttt{python3 scripts/experiment\_c\_qdelta.py}
+\end{itemize}
+All scripts print a small, deterministic summary to standard output.
+
+\subsection{Sanity checks and expected patterns}
+\begin{itemize}
+  \item \textbf{Experiment A.} For a rational slope (phase locking), the reported $E_N$ grows approximately linearly with $N$; for irrational slopes, the reported ratios $E_N/\log N$ vary slowly with $N$ (compatibility with $O(\log N)$ growth). Under the default parameters, the rational case dominates by orders of magnitude at large $N$.
+  \item \textbf{Experiment B.} With the default toy settings ($k_BT_c=1$ and $\dot W_{\mathrm{diss}}=0.15$), the script prints whether the upper bound $\dot F_{\mathrm{pred}}\le k_BT_c\,\dot I_{\mathrm{pred}}$ can exceed $\dot W_{\mathrm{diss}}$. Increasing environmental unpredictability (larger \texttt{p\_flip}) reduces the estimated information-rate proxy and eventually flips the printed \texttt{survive?} flag to \texttt{False} for bounded memory.
+  \item \textbf{Experiment C.} For a rational ratio (e.g.\ $3/5$), $Q_\delta$ quickly stabilizes at a small denominator once $\delta$ is sufficiently small; for the golden branch, $Q_\delta$ increases as $\delta$ decreases and should be comparable to (and bounded below by) the printed Hurwitz-scale estimate.
+\end{itemize}
+
 \subsection{Experiment A: star discrepancy and accumulated mismatch \texorpdfstring{$E_N$}{EN}}
 \VerbatimInput[breaklines=true,breakanywhere=true,fontsize=\small]{scripts/experiment_a_star_discrepancy.py}
 

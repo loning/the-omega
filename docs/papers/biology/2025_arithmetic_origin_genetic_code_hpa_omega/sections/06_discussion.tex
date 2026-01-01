@@ -57,8 +57,10 @@ Instead it provides an explicit quantitative signal family $(Z,U)$ that can be e
 
 \noindent As a direct, reproducible data point, we mined GenBank records annotated with \texttt{transl\_except} and extracted both selenocysteine and pyrrolysine recoding events:
 \input{sections/generated/recoding_sites_summary}
+\input{sections/generated/recoding_dataset_composition}
 \input{sections/generated/recoding_context_tests}
 \input{sections/generated/recoding_context_controls}
+\input{sections/generated/recoding_composition_controls}
 \input{sections/generated/recoding_terminal_stop_bias}
 
 \paragraph{CDS-level terminal-stop baselines and stratification.}
@@ -69,6 +71,7 @@ We also report codon- and domain-stratified tests to make explicit which subsets
 In coding regions, the stop codons $\mathrm{UGA}$ and $\mathrm{UAG}$ are normally forbidden as internal codons; thus an internal same-codon control (Control-B) is typically unavailable once \texttt{transl\_except} sites are excluded.
 Instead we compare each recoding site to random internal non-stop codon positions from the same CDS (Control-C), which provides a within-gene baseline for uplift-context windows.
 The resulting signal persists under this within-CDS control, supporting the interpretation of uplift-context sensitivity as a recoding interface.
+We additionally report composition-matched controls (GC and dinucleotide usage) to separate uplift differences from local base-composition effects (Appendix~\ref{app:composition_controls}).
 
 \subsection{Corpus-scale biases and spectrum fingerprints}
 \label{sec:corpus_biases}
@@ -84,6 +87,9 @@ This does not by itself identify a mechanistic driver (e.g.\ mutational biases, 
 The per-ORF boundary rate, entropy of $Z$, and lag-1 autocorrelation provide a minimal feature vector that can be extracted from any genome without parameter fitting.
 \par\noindent\input{sections/generated/refseq_zspectrum_fingerprint}\par
 At least in human RefSeq mRNA, the lag-1 autocorrelation concentrates near zero, suggesting that any longer-range structure in $Z$ (if present) would need to be probed at larger windows or by conditioning on functional annotations.
+
+\paragraph{Cross-domain replication targets.}
+To avoid over-interpreting any single corpus, we also report a cross-domain corpus panel (Eukaryota/Bacteria/Archaea) with matched summaries under $\mu^\ast$, including start-context windows and stop-context effect sizes across datasets (Appendix~\ref{app:corpus_panel}).
 
 \subsection{Resolution upgrade and context}
 \label{sec:resolution_upgrade}
