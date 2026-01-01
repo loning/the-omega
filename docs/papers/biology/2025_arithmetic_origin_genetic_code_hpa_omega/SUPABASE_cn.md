@@ -22,7 +22,7 @@
 
 ### Python 直连导入（PostgREST / REST，无需 psql）
 
-本仓库提供了一个**纯标准库**的导入脚本，直接走 Supabase 的 PostgREST 接口写入三张表。
+本仓库提供了一个**纯标准库**的导入脚本，直接走 Supabase 的 PostgREST 接口写入五张表（含 provenance 的 `analysis_runs`）。
 
 1) **准备连接信息文件（git ignore）**
 
@@ -53,6 +53,8 @@ python3 scripts/import_supabase_rest.py --batch-size 200 --insecure
 - `data/recoding_genbank/recoding_sites.jsonl`
 - `data/recoding_genbank/recoding_sites_summary.json`
 - `data/refseq_hsapiens_mrna/transcriptome_summary.json`
+- `data/panel/corpus_panel_summary.json`
+- `data/nonstandard_sequence_tests.json`
 
 如果你跑的是快速流程（例如 `data/_quick/run_all/` 下的产物），可显式指定路径：
 
@@ -61,6 +63,8 @@ python3 scripts/import_supabase_rest.py \
   --recoding-jsonl data/_quick/run_all/recoding_sites.jsonl \
   --recoding-summary-json data/_quick/run_all/recoding_sites_summary.json \
   --refseq-summary-json data/_quick/run_all/transcriptome_summary.json \
+  --panel-summary-json data/_quick/run_all/corpus_panel_summary.json \
+  --nonstandard-seqtests-json data/_quick/run_all/nonstandard_sequence_tests.json \
   --batch-size 200
 ```
 
@@ -89,6 +93,8 @@ python3 scripts/export_supabase_tables.py --out-dir data/db_exports
 python3 scripts/export_supabase_tables.py \
   --recoding-jsonl data/_quick/run_all/recoding_sites.jsonl \
   --refseq-summary-json data/_quick/run_all/transcriptome_summary.json \
+  --panel-summary-json data/_quick/run_all/corpus_panel_summary.json \
+  --nonstandard-seqtests-json data/_quick/run_all/nonstandard_sequence_tests.json \
   --out-dir data/db_exports
 ```
 
@@ -104,6 +110,8 @@ python3 scripts/export_supabase_tables.py \
 会生成：
 - `data/db_exports/recoding_sites.csv`
 - `data/db_exports/refseq_stop_context_comp_results.csv`
+- `data/db_exports/corpus_panel_items.csv`
+- `data/db_exports/nonstandard_sequence_tests_items.csv`
 
 ### 产物一致性校验（推荐）
 
@@ -153,6 +161,7 @@ psql "$DB_URL" -v ON_ERROR_STOP=1 <<'SQL'
   analysis_version,k,version,definition,organism,domain,gene,product,
   cds_location,cds_start,cds_end,cds_strand,translation_start,
   aa,pos_start,pos_end,codon_dna,codon_rna,
+  plus4_nt,after_codon1,after_nt6,
   n,w,v,delta,is_boundary,
   before_mean_delta,after_mean_delta,
   terminal_stop,terminal_before_mean_delta,terminal_after_mean_delta,
@@ -176,6 +185,34 @@ psql "$DB_URL" -v ON_ERROR_STOP=1 <<'SQL'
   dataset,analysis_version,k,method,scheme,window_side,pair,
   diff,p,se,z,bins_used,n,ci_low,ci_high
 ) FROM 'data/db_exports/refseq_stop_context_comp_results.csv'
+WITH (FORMAT csv, HEADER true, NULL '');
+SQL
+```
+
+4) **导入 corpus panel items**
+
+```bash
+psql "$DB_URL" -v ON_ERROR_STOP=1 <<'SQL'
+\copy public.corpus_panel_items(
+  panel,analysis_version,dataset,code_id,label,domain,mode,present,
+  records,records_with_orf,coding_tokens,boundary_token_count,boundary_rate,
+  payload
+) FROM 'data/db_exports/corpus_panel_items.csv'
+WITH (FORMAT csv, HEADER true, NULL '');
+SQL
+```
+
+5) **导入 nonstandard sequence tests items**
+
+```bash
+psql "$DB_URL" -v ON_ERROR_STOP=1 <<'SQL'
+\copy public.nonstandard_sequence_tests_items(
+  panel,analysis_version,dataset,code_id,label,domain,present,
+  records_seen,records_used,records_invalid,
+  start_boundary_rate,start_boundary_z,start_boundary_p,
+  stop_boundary_rate,stop_boundary_z,stop_boundary_p,
+  payload
+) FROM 'data/db_exports/nonstandard_sequence_tests_items.csv'
 WITH (FORMAT csv, HEADER true, NULL '');
 SQL
 ```
@@ -208,6 +245,27 @@ where nn_before_diff is not null;
 select method, scheme, window_side, pair, diff, p, bins_used, n
 from public.refseq_stop_context_comp_results
 order by method, scheme, window_side, pair;
+```
+
+- **Corpus panel：按 domain 看 boundary rate**：
+
+```sql
+select domain, label, boundary_rate, coding_tokens
+from public.corpus_panel_items
+where present is true
+order by domain, boundary_rate desc;
+```
+
+- **Nonstandard sequence tests：找 start/stop boundary hit 显著的样本**：
+
+```sql
+select
+  panel, label, code_id,
+  start_boundary_rate, start_boundary_z, start_boundary_p,
+  stop_boundary_rate, stop_boundary_z, stop_boundary_p
+from public.nonstandard_sequence_tests_items
+where present is true
+order by abs(stop_boundary_z) desc nulls last;
 ```
 
 

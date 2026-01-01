@@ -41,10 +41,10 @@ from progress_tools import Heartbeat
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
 
 # Bump this when the analysis logic (not just speed) changes.
-ANALYSIS_VERSION = 3
+ANALYSIS_VERSION = 4
 
 # Bump this when the output JSON schema changes.
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 4
 
 # Precompute codon-level Fold_6 attributes under mu* for speed.
 CODON_INFO: dict[str, dict[str, object]] = {}
@@ -607,6 +607,14 @@ def main() -> None:
     before_stats: dict[str, RunningStats] = {s: before_stats_mk[s][int(k_primary)] for s in STOP_CODONS}
     after_stats: dict[str, RunningStats] = {s: after_stats_mk[s][int(k_primary)] for s in STOP_CODONS}
 
+    # Start-context window means at the start codon (AUG) of the best ORF.
+    # Before-window: in-frame codons upstream of AUG in the transcript.
+    # After-window: in-frame codons downstream of AUG inside the ORF (excluding the terminal stop).
+    start_before_stats_mk: dict[int, RunningStats] = {kk: RunningStats() for kk in k_list}
+    start_after_stats_mk: dict[int, RunningStats] = {kk: RunningStats() for kk in k_list}
+    start_before_stats: RunningStats = start_before_stats_mk[int(k_primary)]
+    start_after_stats: RunningStats = start_after_stats_mk[int(k_primary)]
+
     # Composition-adjusted stop-context stats (primary k only):
     #   - stratified GC × (CpG/TA) bins (full-data Welford stats)
     #   - bounded reservoir samples (for NN matching cross-check in merge stage)
@@ -735,6 +743,52 @@ def main() -> None:
                     var_y = (sum_y2 / float(n_pairs)) - (my * my)
                     if var_x > 0 and var_y > 0:
                         orf_autocorr_z1.append(cov / math.sqrt(var_x * var_y))
+
+            # Start-context windows around the start codon in the best ORF.
+            if max_k >= 1:
+                # After-window: scan forward inside the ORF (excluding terminal stop).
+                start_after_sums: dict[int, float] = {}
+                sum_after = 0.0
+                after_len = 0
+                for j in range(1, max_k + 1):
+                    p = s + 3 * j
+                    if p >= t:
+                        break
+                    if p + 3 > len(seq):
+                        break
+                    c = seq[p : p + 3]
+                    if c not in GENETIC_CODE:
+                        break
+                    sum_after += float(int(CODON_INFO[c]["delta"]))
+                    after_len = j
+                    if j in k_set:
+                        start_after_sums[j] = sum_after
+
+                # Before-window: scan backward in transcript (in-frame with the ORF start).
+                start_before_sums: dict[int, float] = {}
+                sum_before = 0.0
+                before_len = 0
+                for j in range(1, max_k + 1):
+                    p = s - 3 * j
+                    if p < 0:
+                        break
+                    c = seq[p : p + 3]
+                    if c not in GENETIC_CODE:
+                        break
+                    sum_before += float(int(CODON_INFO[c]["delta"]))
+                    before_len = j
+                    if j in k_set:
+                        start_before_sums[j] = sum_before
+
+                # Update per-k stats when that side is available (do not require both sides).
+                for kk in k_list:
+                    kk_i = int(kk)
+                    if kk_i <= 0:
+                        continue
+                    if kk_i <= before_len and kk_i in start_before_sums:
+                        start_before_stats_mk[kk_i].update(float(start_before_sums[kk_i]) / float(kk_i))
+                    if kk_i <= after_len and kk_i in start_after_sums:
+                        start_after_stats_mk[kk_i].update(float(start_after_sums[kk_i]) / float(kk_i))
 
             # Stop-context windows around the terminal stop in the best ORF.
             stop_index = (t - s) // 3  # within ORF (0-based), includes stop position index
@@ -901,6 +955,12 @@ def main() -> None:
         "UAG_vs_UGA": welch_t_p_value_two_sided_from_stats(after_stats["UAG"], after_stats["UGA"]),
     }
 
+    start_ctx_summary = {
+        "k": int(k_primary),
+        "before": {"n": int(start_before_stats.n), "mean": (float(start_before_stats.mean) if start_before_stats.n > 0 else None)},
+        "after": {"n": int(start_after_stats.n), "mean": (float(start_after_stats.mean) if start_after_stats.n > 0 else None)},
+    }
+
     summary = {
         "schema_version": int(SCHEMA_VERSION),
         "source_files": [str(p) for p in files],
@@ -923,6 +983,26 @@ def main() -> None:
         "termination_stop_boundary_count": int(term_stop_boundary),
         "stop_window": int(k_primary),
         "stop_window_list": [int(x) for x in k_list],
+        "start_context": start_ctx_summary,
+        "start_context_welford": {
+            "before": {"n": int(start_before_stats.n), "mean": float(start_before_stats.mean), "M2": float(start_before_stats.M2)},
+            "after": {"n": int(start_after_stats.n), "mean": float(start_after_stats.mean), "M2": float(start_after_stats.M2)},
+        },
+        "start_context_welford_multi_k": {
+            str(int(kk)): {
+                "before": {
+                    "n": int(start_before_stats_mk[int(kk)].n),
+                    "mean": float(start_before_stats_mk[int(kk)].mean),
+                    "M2": float(start_before_stats_mk[int(kk)].M2),
+                },
+                "after": {
+                    "n": int(start_after_stats_mk[int(kk)].n),
+                    "mean": float(start_after_stats_mk[int(kk)].mean),
+                    "M2": float(start_after_stats_mk[int(kk)].M2),
+                },
+            }
+            for kk in k_list
+        },
         "stop_context": stop_ctx_summary,
         "stop_context_welford": {
             s: {
@@ -1064,7 +1144,15 @@ def main() -> None:
         rows2.append(f"{codon} & {k_primary} & {n} & {bm:.4f} & {am:.4f} \\\\")
     write_text(generated_dir() / "refseq_stop_context_rows.tex", "\n".join(rows2) + "\n\\bottomrule\n")
 
-    # 4) Codon-usage null-model summary (single paragraph).
+    # 4) Start-context window row (primary k only).
+    nb = int(start_before_stats.n)
+    na = int(start_after_stats.n)
+    bm = float(start_before_stats.mean) if nb else float("nan")
+    am = float(start_after_stats.mean) if na else float("nan")
+    row_start = [f"{START_CODON} & {k_primary} & {nb} & {bm:.4f} & {na} & {am:.4f} \\\\"]
+    write_text(generated_dir() / "refseq_start_context_rows.tex", "\n".join(row_start) + "\n\\bottomrule\n")
+
+    # 5) Codon-usage null-model summary (single paragraph).
     null_s = (
         "Codon-usage summary over coding tokens (excluding terminal stops): "
         f"$\\overline{{Z}}={zbar:.4f}$, $\\overline{{U}}={ubar:.4f}$. "
@@ -1076,7 +1164,7 @@ def main() -> None:
     )
     write_text(generated_dir() / "refseq_codon_usage_null.tex", null_s + "\n")
 
-    # 5) Z-spectrum fingerprint metrics (single paragraph).
+    # 6) Z-spectrum fingerprint metrics (single paragraph).
     zfp = summary["zspectrum_metrics"]
     s_fp = (
         "\\begin{tabular}{@{}l@{}}\n"

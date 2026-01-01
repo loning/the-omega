@@ -5,6 +5,8 @@ Export paper datasets to CSV for Supabase/Postgres ingestion (standard library o
 Exports:
   - recoding_sites.csv
   - refseq_stop_context_comp_results.csv
+  - corpus_panel_items.csv
+  - nonstandard_sequence_tests_items.csv
 
 Notes:
   - JSON objects are serialized as compact JSON strings (for jsonb columns).
@@ -62,6 +64,9 @@ def export_recoding_sites(*, in_jsonl: Path, out_csv: Path) -> None:
         "pos_end",
         "codon_dna",
         "codon_rna",
+        "plus4_nt",
+        "after_codon1",
+        "after_nt6",
         "n",
         "w",
         "v",
@@ -120,6 +125,152 @@ def export_recoding_sites(*, in_jsonl: Path, out_csv: Path) -> None:
                 w.writerow(row)
                 n += 1
     print("Wrote:", out_csv, f"(rows={n})")
+
+
+def export_corpus_panel_items(*, in_panel_json: Path, out_csv: Path) -> None:
+    obj = json.loads(in_panel_json.read_text(encoding="utf-8"))
+    if not isinstance(obj, dict):
+        raise SystemExit("Malformed corpus_panel_summary.json")
+
+    panel = str(obj.get("panel") or "corpus_panel_v1")
+    analysis_version = infer_analysis_version(in_panel_json, summary_obj=obj)
+    if not analysis_version:
+        raise SystemExit("Missing analysis_version for corpus_panel_summary.json")
+
+    items = obj.get("items") or []
+    if not isinstance(items, list):
+        items = []
+
+    cols = [
+        "panel",
+        "analysis_version",
+        "dataset",
+        "code_id",
+        "label",
+        "domain",
+        "mode",
+        "present",
+        "records",
+        "records_with_orf",
+        "coding_tokens",
+        "boundary_token_count",
+        "boundary_rate",
+        "payload",
+    ]
+
+    rows: list[dict[str, object]] = []
+    for it in items:
+        if not isinstance(it, dict):
+            continue
+        summary = it.get("summary") or {}
+        if not isinstance(summary, dict):
+            summary = {}
+        present = bool(it.get("present"))
+        rows.append(
+            {
+                "panel": panel,
+                "analysis_version": analysis_version,
+                "dataset": it.get("dataset"),
+                "code_id": it.get("code_id"),
+                "label": it.get("label"),
+                "domain": it.get("domain"),
+                "mode": it.get("mode"),
+                "present": present,
+                "records": summary.get("records") if present else None,
+                "records_with_orf": summary.get("records_with_orf") if present else None,
+                "coding_tokens": summary.get("coding_tokens") if present else None,
+                "boundary_token_count": summary.get("boundary_token_count") if present else None,
+                "boundary_rate": summary.get("boundary_rate") if present else None,
+                "payload": it,
+            }
+        )
+
+    out_csv.parent.mkdir(parents=True, exist_ok=True)
+    with out_csv.open("w", encoding="utf-8", newline="") as f_out:
+        w = csv.DictWriter(f_out, fieldnames=cols, extrasaction="ignore")
+        w.writeheader()
+        for r in rows:
+            w.writerow({k: _csv_cell(r.get(k)) for k in cols})
+    print("Wrote:", out_csv, f"(rows={len(rows)})")
+
+
+def export_nonstandard_sequence_tests_items(*, in_json: Path, out_csv: Path) -> None:
+    obj = json.loads(in_json.read_text(encoding="utf-8"))
+    if not isinstance(obj, dict):
+        raise SystemExit("Malformed nonstandard_sequence_tests.json")
+
+    panel = str(obj.get("panel") or "nonstandard_examples_v1")
+    analysis_version = infer_analysis_version(in_json, summary_obj=obj)
+    if not analysis_version:
+        raise SystemExit("Missing analysis_version for nonstandard_sequence_tests.json")
+
+    items = obj.get("items") or []
+    if not isinstance(items, list):
+        items = []
+
+    cols = [
+        "panel",
+        "analysis_version",
+        "dataset",
+        "code_id",
+        "label",
+        "domain",
+        "present",
+        "records_seen",
+        "records_used",
+        "records_invalid",
+        "start_boundary_rate",
+        "start_boundary_z",
+        "start_boundary_p",
+        "stop_boundary_rate",
+        "stop_boundary_z",
+        "stop_boundary_p",
+        "payload",
+    ]
+
+    rows: list[dict[str, object]] = []
+    for it in items:
+        if not isinstance(it, dict):
+            continue
+        present = bool(it.get("present"))
+        tests = it.get("tests") or {}
+        if not isinstance(tests, dict):
+            tests = {}
+        st = tests.get("start_boundary") or {}
+        sp = tests.get("stop_boundary") or {}
+        if not isinstance(st, dict):
+            st = {}
+        if not isinstance(sp, dict):
+            sp = {}
+        rows.append(
+            {
+                "panel": panel,
+                "analysis_version": analysis_version,
+                "dataset": it.get("dataset"),
+                "code_id": it.get("code_id"),
+                "label": it.get("label"),
+                "domain": it.get("domain"),
+                "present": present,
+                "records_seen": it.get("records_seen") if present else None,
+                "records_used": it.get("records_used") if present else None,
+                "records_invalid": it.get("records_invalid") if present else None,
+                "start_boundary_rate": st.get("rate") if present else None,
+                "start_boundary_z": st.get("z") if present else None,
+                "start_boundary_p": st.get("p_two_sided") if present else None,
+                "stop_boundary_rate": sp.get("rate") if present else None,
+                "stop_boundary_z": sp.get("z") if present else None,
+                "stop_boundary_p": sp.get("p_two_sided") if present else None,
+                "payload": it,
+            }
+        )
+
+    out_csv.parent.mkdir(parents=True, exist_ok=True)
+    with out_csv.open("w", encoding="utf-8", newline="") as f_out:
+        w = csv.DictWriter(f_out, fieldnames=cols, extrasaction="ignore")
+        w.writeheader()
+        for r in rows:
+            w.writerow({k: _csv_cell(r.get(k)) for k in cols})
+    print("Wrote:", out_csv, f"(rows={len(rows)})")
 
 
 def export_refseq_stop_context_comp_results(*, in_summary_json: Path, out_csv: Path, dataset: str) -> None:
@@ -243,9 +394,21 @@ def parse_args() -> argparse.Namespace:
         default="data/refseq_hsapiens_mrna/transcriptome_summary.json",
         help="Input RefSeq merged transcriptome summary JSON path (relative to project root by default).",
     )
+    p.add_argument(
+        "--panel-summary-json",
+        default="data/panel/corpus_panel_summary.json",
+        help="Input corpus panel summary JSON path (relative to project root by default).",
+    )
+    p.add_argument(
+        "--nonstandard-seqtests-json",
+        default="data/nonstandard_sequence_tests.json",
+        help="Input nonstandard sequence tests JSON path (relative to project root by default).",
+    )
     p.add_argument("--refseq-dataset", default="human_refseq_mrna", help="Dataset label written into refseq CSV.")
     p.add_argument("--no-recoding", action="store_true", help="Skip exporting recoding_sites.csv.")
     p.add_argument("--no-refseq", action="store_true", help="Skip exporting refseq_stop_context_comp_results.csv.")
+    p.add_argument("--no-panel", action="store_true", help="Skip exporting corpus_panel_items.csv.")
+    p.add_argument("--no-nonstandard", action="store_true", help="Skip exporting nonstandard_sequence_tests_items.csv.")
     return p.parse_args()
 
 
@@ -264,6 +427,16 @@ def main() -> None:
             in_summary_json=(root / str(args.refseq_summary_json)).resolve(),
             out_csv=out_dir / "refseq_stop_context_comp_results.csv",
             dataset=str(args.refseq_dataset),
+        )
+    if not args.no_panel:
+        export_corpus_panel_items(
+            in_panel_json=(root / str(args.panel_summary_json)).resolve(),
+            out_csv=out_dir / "corpus_panel_items.csv",
+        )
+    if not args.no_nonstandard:
+        export_nonstandard_sequence_tests_items(
+            in_json=(root / str(args.nonstandard_seqtests_json)).resolve(),
+            out_csv=out_dir / "nonstandard_sequence_tests_items.csv",
         )
 
 

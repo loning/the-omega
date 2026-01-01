@@ -271,12 +271,103 @@ def load_refseq_comp_results(*, summary_path: Path, summary_obj: dict[str, Any],
     return rows
 
 
+def load_corpus_panel_items(*, summary_path: Path, summary_obj: dict[str, Any]) -> list[dict[str, Any]]:
+    analysis_version = infer_analysis_version(summary_path, summary_obj=summary_obj)
+    if not analysis_version:
+        raise SystemExit(f"Missing analysis_version for corpus panel summary: {summary_path}")
+    panel = str(summary_obj.get("panel") or "corpus_panel_v1")
+
+    items = summary_obj.get("items") or []
+    if not isinstance(items, list):
+        items = []
+
+    rows: list[dict[str, Any]] = []
+    for it in items:
+        if not isinstance(it, dict):
+            continue
+        present = bool(it.get("present"))
+        summary = it.get("summary") or {}
+        if not isinstance(summary, dict):
+            summary = {}
+        rows.append(
+            {
+                "panel": panel,
+                "analysis_version": analysis_version,
+                "dataset": it.get("dataset"),
+                "code_id": it.get("code_id"),
+                "label": it.get("label"),
+                "domain": it.get("domain"),
+                "mode": it.get("mode"),
+                "present": present,
+                "records": summary.get("records") if present else None,
+                "records_with_orf": summary.get("records_with_orf") if present else None,
+                "coding_tokens": summary.get("coding_tokens") if present else None,
+                "boundary_token_count": summary.get("boundary_token_count") if present else None,
+                "boundary_rate": summary.get("boundary_rate") if present else None,
+                "payload": it,
+            }
+        )
+    return rows
+
+
+def load_nonstandard_sequence_tests_items(*, summary_path: Path, summary_obj: dict[str, Any]) -> list[dict[str, Any]]:
+    analysis_version = infer_analysis_version(summary_path, summary_obj=summary_obj)
+    if not analysis_version:
+        raise SystemExit(f"Missing analysis_version for nonstandard sequence tests: {summary_path}")
+    panel = str(summary_obj.get("panel") or "nonstandard_examples_v1")
+
+    items = summary_obj.get("items") or []
+    if not isinstance(items, list):
+        items = []
+
+    rows: list[dict[str, Any]] = []
+    for it in items:
+        if not isinstance(it, dict):
+            continue
+        present = bool(it.get("present"))
+        tests = it.get("tests") or {}
+        if not isinstance(tests, dict):
+            tests = {}
+        st = tests.get("start_boundary") or {}
+        sp = tests.get("stop_boundary") or {}
+        if not isinstance(st, dict):
+            st = {}
+        if not isinstance(sp, dict):
+            sp = {}
+        rows.append(
+            {
+                "panel": panel,
+                "analysis_version": analysis_version,
+                "dataset": it.get("dataset"),
+                "code_id": it.get("code_id"),
+                "label": it.get("label"),
+                "domain": it.get("domain"),
+                "present": present,
+                "records_seen": it.get("records_seen") if present else None,
+                "records_used": it.get("records_used") if present else None,
+                "records_invalid": it.get("records_invalid") if present else None,
+                "start_boundary_rate": st.get("rate") if present else None,
+                "start_boundary_z": st.get("z") if present else None,
+                "start_boundary_p": st.get("p_two_sided") if present else None,
+                "stop_boundary_rate": sp.get("rate") if present else None,
+                "stop_boundary_z": sp.get("z") if present else None,
+                "stop_boundary_p": sp.get("p_two_sided") if present else None,
+                "payload": it,
+            }
+        )
+    return rows
+
+
 def load_analysis_runs(
     *,
     transcriptome_summary_path: Path,
     transcriptome_summary_obj: dict[str, Any],
     recoding_summary_path: Path,
     recoding_summary_obj: dict[str, Any],
+    panel_summary_path: Path | None = None,
+    panel_summary_obj: dict[str, Any] | None = None,
+    nonstandard_summary_path: Path | None = None,
+    nonstandard_summary_obj: dict[str, Any] | None = None,
     refseq_dataset: str,
     recoding_dataset: str,
 ) -> list[dict[str, Any]]:
@@ -288,7 +379,7 @@ def load_analysis_runs(
     if not rec_av:
         raise SystemExit(f"Missing analysis_version for recoding summary: {recoding_summary_path}")
 
-    return [
+    out = [
         {
             "dataset": refseq_dataset,
             "analysis": "transcriptome_summary",
@@ -302,6 +393,36 @@ def load_analysis_runs(
             "payload": recoding_summary_obj,
         },
     ]
+
+    if panel_summary_path is not None and panel_summary_obj is not None:
+        pav = infer_analysis_version(panel_summary_path, summary_obj=panel_summary_obj)
+        if not pav:
+            raise SystemExit(f"Missing analysis_version for corpus panel summary: {panel_summary_path}")
+        panel_name = str(panel_summary_obj.get("panel") or "corpus_panel_v1")
+        out.append(
+            {
+                "dataset": panel_name,
+                "analysis": "corpus_panel_summary",
+                "analysis_version": pav,
+                "payload": panel_summary_obj,
+            }
+        )
+
+    if nonstandard_summary_path is not None and nonstandard_summary_obj is not None:
+        nav = infer_analysis_version(nonstandard_summary_path, summary_obj=nonstandard_summary_obj)
+        if not nav:
+            raise SystemExit(f"Missing analysis_version for nonstandard sequence tests: {nonstandard_summary_path}")
+        panel_name = str(nonstandard_summary_obj.get("panel") or "nonstandard_examples_v1")
+        out.append(
+            {
+                "dataset": panel_name,
+                "analysis": "nonstandard_sequence_tests",
+                "analysis_version": nav,
+                "payload": nonstandard_summary_obj,
+            }
+        )
+
+    return out
 
 
 def parse_args() -> argparse.Namespace:
@@ -319,6 +440,8 @@ def parse_args() -> argparse.Namespace:
     )
     p.add_argument("--no-recoding", action="store_true", help="Skip importing recoding_sites.")
     p.add_argument("--no-refseq", action="store_true", help="Skip importing refseq_stop_context_comp_results.")
+    p.add_argument("--no-panel", action="store_true", help="Skip importing corpus_panel_items.")
+    p.add_argument("--no-nonstandard", action="store_true", help="Skip importing nonstandard_sequence_tests_items.")
     p.add_argument("--no-analysis-runs", action="store_true", help="Skip importing analysis_runs payloads.")
     p.add_argument(
         "--recoding-jsonl",
@@ -334,6 +457,16 @@ def parse_args() -> argparse.Namespace:
         "--refseq-summary-json",
         default="data/refseq_hsapiens_mrna/transcriptome_summary.json",
         help="Input RefSeq merged transcriptome summary JSON path (relative to project root by default).",
+    )
+    p.add_argument(
+        "--panel-summary-json",
+        default="data/panel/corpus_panel_summary.json",
+        help="Input corpus panel summary JSON path (relative to project root by default).",
+    )
+    p.add_argument(
+        "--nonstandard-seqtests-json",
+        default="data/nonstandard_sequence_tests.json",
+        help="Input nonstandard sequence tests JSON path (relative to project root by default).",
     )
     p.add_argument("--recoding-dataset", default="ncbi_recoding_genbank", help="Dataset label for analysis_runs.")
     p.add_argument("--refseq-dataset", default="human_refseq_mrna", help="Dataset label for analysis_runs / refseq results.")
@@ -374,9 +507,13 @@ def main() -> None:
     recoding_jsonl_path = (root / str(args.recoding_jsonl)).resolve()
     recoding_summary_path = (root / str(args.recoding_summary_json)).resolve()
     refseq_summary_path = (root / str(args.refseq_summary_json)).resolve()
+    panel_summary_path = (root / str(args.panel_summary_json)).resolve()
+    nonstandard_summary_path = (root / str(args.nonstandard_seqtests_json)).resolve()
 
     transcriptome_obj: dict[str, Any] | None = None
     recoding_summary_obj: dict[str, Any] | None = None
+    panel_obj: dict[str, Any] | None = None
+    nonstandard_obj: dict[str, Any] | None = None
 
     if (not args.no_refseq) or (not args.no_analysis_runs):
         if not refseq_summary_path.exists():
@@ -388,6 +525,18 @@ def main() -> None:
             recoding_summary_obj = _read_json_dict(recoding_summary_path, label="recoding_sites_summary.json")
         elif not args.no_analysis_runs:
             raise SystemExit(f"Missing recoding summary JSON: {recoding_summary_path}")
+
+    if (not args.no_panel) or (not args.no_analysis_runs):
+        if panel_summary_path.exists():
+            panel_obj = _read_json_dict(panel_summary_path, label="corpus_panel_summary.json")
+        elif not args.no_panel:
+            raise SystemExit(f"Missing corpus panel summary JSON: {panel_summary_path}")
+
+    if (not args.no_nonstandard) or (not args.no_analysis_runs):
+        if nonstandard_summary_path.exists():
+            nonstandard_obj = _read_json_dict(nonstandard_summary_path, label="nonstandard_sequence_tests.json")
+        elif not args.no_nonstandard:
+            raise SystemExit(f"Missing nonstandard sequence tests JSON: {nonstandard_summary_path}")
 
     # 1) RefSeq comp results (small upsert)
     if not args.no_refseq:
@@ -437,6 +586,10 @@ def main() -> None:
             transcriptome_summary_obj=transcriptome_obj,
             recoding_summary_path=recoding_summary_path,
             recoding_summary_obj=recoding_summary_obj,
+            panel_summary_path=panel_summary_path if panel_obj is not None else None,
+            panel_summary_obj=panel_obj,
+            nonstandard_summary_path=nonstandard_summary_path if nonstandard_obj is not None else None,
+            nonstandard_summary_obj=nonstandard_obj,
             refseq_dataset=str(args.refseq_dataset),
             recoding_dataset=str(args.recoding_dataset),
         )
@@ -450,8 +603,42 @@ def main() -> None:
             ssl_context=ssl_context,
         )
 
-    # 4) Quick verification (best-effort counts)
-    for t in ("recoding_sites", "refseq_stop_context_comp_results", "analysis_runs"):
+    # 4) Corpus panel items
+    if not args.no_panel:
+        assert panel_obj is not None
+        panel_rows = load_corpus_panel_items(summary_path=panel_summary_path, summary_obj=panel_obj)
+        upsert_rows(
+            supabase_url=supabase_url,
+            supabase_key=supabase_key,
+            table="corpus_panel_items",
+            rows=panel_rows,
+            on_conflict="panel,analysis_version,dataset,code_id",
+            batch_size=int(args.batch_size),
+            ssl_context=ssl_context,
+        )
+
+    # 5) Nonstandard sequence tests items
+    if not args.no_nonstandard:
+        assert nonstandard_obj is not None
+        ns_rows = load_nonstandard_sequence_tests_items(summary_path=nonstandard_summary_path, summary_obj=nonstandard_obj)
+        upsert_rows(
+            supabase_url=supabase_url,
+            supabase_key=supabase_key,
+            table="nonstandard_sequence_tests_items",
+            rows=ns_rows,
+            on_conflict="panel,analysis_version,dataset,code_id",
+            batch_size=int(args.batch_size),
+            ssl_context=ssl_context,
+        )
+
+    # 6) Quick verification (best-effort counts)
+    for t in (
+        "recoding_sites",
+        "refseq_stop_context_comp_results",
+        "corpus_panel_items",
+        "nonstandard_sequence_tests_items",
+        "analysis_runs",
+    ):
         pk = "run_id" if t == "analysis_runs" else "id"
         n = count_rows(supabase_url=supabase_url, supabase_key=supabase_key, table=t, pk=pk, ssl_context=ssl_context)
         if n is not None:

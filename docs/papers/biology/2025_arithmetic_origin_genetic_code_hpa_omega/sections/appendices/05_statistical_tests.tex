@@ -56,6 +56,37 @@ using either:
 
 The CLI in Appendix~\ref{app:reproducibility} outputs these window summaries as JSONL via \path{--summary-out} and \path{--stop-window}.
 
+\subsection{Start-context uplift windows}
+\label{app:start_context_windows}
+
+Fix an integer window radius $k\ge 1$.
+Let $\mathcal{I}_{\mathrm{start}}$ denote the set of start-codon indices (typically $\mathrm{AUG}$) in the selected ORFs.
+Define:
+\[
+\overline{U}_{\mathrm{before}}(\mathrm{start};k)
+:=
+\frac{1}{|\mathcal{I}_{\mathrm{start}}|}
+\sum_{i\in\mathcal{I}_{\mathrm{start}}}
+\left(
+\frac{1}{k}\sum_{j=1}^{k} U(i-j)
+\right),
+\]
+\[
+\overline{U}_{\mathrm{after}}(\mathrm{start};k)
+:=
+\frac{1}{|\mathcal{I}_{\mathrm{start}}|}
+\sum_{i\in\mathcal{I}_{\mathrm{start}}}
+\left(
+\frac{1}{k}\sum_{j=1}^{k} U(i+j)
+\right),
+\]
+excluding start sites where the required in-frame codons are not available.
+In best-ORF analyses, the after-window is restricted to codons inside the ORF (excluding the terminal stop), while the before-window uses the upstream in-frame codons available in the record (e.g.\ 5' UTR if present).
+
+\paragraph{Test.}
+The primary use is a corpus-level characterization and a cross-corpus comparison:
+compare $\overline{U}_{\mathrm{before}}(\mathrm{start};k)$ and $\overline{U}_{\mathrm{after}}(\mathrm{start};k)$ across datasets, domains, and translation tables.
+
 \subsection{Composition-matched controls for uplift windows}
 \label{app:composition_controls}
 

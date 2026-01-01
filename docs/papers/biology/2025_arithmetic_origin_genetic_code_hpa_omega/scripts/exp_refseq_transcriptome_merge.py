@@ -62,7 +62,7 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Merge RefSeq transcriptome shard summaries")
     p.add_argument(
         "--in-dir",
-        default=str(root_dir() / "data" / "refseq_hsapiens_mrna" / "shards"),
+        default=str(root_dir() / "data" / "refseq_hsapiens_mrna" / "shards" / f"k10_v{int(ANALYSIS_VERSION)}"),
         help="Directory containing shard JSON summaries.",
     )
     p.add_argument(
@@ -194,6 +194,18 @@ def _emit_outputs_from_summary(summary: dict[str, object]) -> None:
     before_stats = {s: before_stats_mk[s][int(k_primary)] for s in STOP_CODONS}
     after_stats = {s: after_stats_mk[s][int(k_primary)] for s in STOP_CODONS}
 
+    # Start-context Welford stats (multi-k).
+    start_mk_raw = summary.get("start_context_welford_multi_k")
+    start_before_stats_mk: dict[int, RunningStats] = {}
+    start_after_stats_mk: dict[int, RunningStats] = {}
+    if isinstance(start_mk_raw, dict) and start_mk_raw:
+        for kk in k_list:
+            entry = start_mk_raw.get(str(int(kk)))
+            if not isinstance(entry, dict):
+                raise SystemExit(f"Missing start_context_welford_multi_k[{kk}]")
+            start_before_stats_mk[int(kk)] = _load_stats(entry.get("before", {}) or {})
+            start_after_stats_mk[int(kk)] = _load_stats(entry.get("after", {}) or {})
+
     # P-values (Welch) for primary-k.
     p_before_raw = summary.get("stop_context_p_before", {}) or {}
     p_after_raw = summary.get("stop_context_p_after", {}) or {}
@@ -252,6 +264,17 @@ def _emit_outputs_from_summary(summary: dict[str, object]) -> None:
         am = float(after_stats[codon].mean) if n else float("nan")
         rows2.append(f"{codon} & {k_primary} & {n} & {bm:.4f} & {am:.4f} \\\\")
     write_text(generated_dir() / "refseq_stop_context_rows.tex", "\n".join(rows2) + "\n\\bottomrule\n")
+
+    # Start-context (AUG) row at primary k.
+    if start_before_stats_mk and start_after_stats_mk:
+        sb = start_before_stats_mk[int(k_primary)]
+        sa = start_after_stats_mk[int(k_primary)]
+        nb = int(sb.n)
+        na = int(sa.n)
+        bm = float(sb.mean) if nb else float("nan")
+        am = float(sa.mean) if na else float("nan")
+        row_start = [f"AUG & {k_primary} & {nb} & {bm:.4f} & {na} & {am:.4f} \\\\"]
+        write_text(generated_dir() / "refseq_start_context_rows.tex", "\n".join(row_start) + "\n\\bottomrule\n")
 
     tests_lines = []
     tests_lines.append(
@@ -313,6 +336,30 @@ def _emit_outputs_from_summary(summary: dict[str, object]) -> None:
     mk_lines.append("\\end{tabular}")
     mk_lines.append("\\end{center}")
     write_text(generated_dir() / "refseq_stop_context_multi_k_table.tex", "\n".join(mk_lines) + "\n")
+
+    # ---- Start-context multi-k table (means only) ----
+    if start_before_stats_mk and start_after_stats_mk:
+        mk2 = []
+        mk2.append("\\begin{center}")
+        mk2.append("\\small")
+        mk2.append("\\setlength{\\tabcolsep}{6pt}")
+        mk2.append("\\renewcommand{\\arraystretch}{1.15}")
+        mk2.append("\\begin{tabular}{lrrrrr}")
+        mk2.append("\\toprule")
+        mk2.append("start codon & $k$ & $n_{\\mathrm{before}}$ & $\\overline{U}_{\\mathrm{before}}$ & $n_{\\mathrm{after}}$ & $\\overline{U}_{\\mathrm{after}}$ \\\\")
+        mk2.append("\\midrule")
+        for kk in k_list:
+            sb = start_before_stats_mk[int(kk)]
+            sa = start_after_stats_mk[int(kk)]
+            nb = int(sb.n)
+            na = int(sa.n)
+            bm = float(sb.mean) if nb else float("nan")
+            am = float(sa.mean) if na else float("nan")
+            mk2.append(f"AUG & {int(kk)} & {nb} & {bm:.4f} & {na} & {am:.4f} \\\\")
+        mk2.append("\\bottomrule")
+        mk2.append("\\end{tabular}")
+        mk2.append("\\end{center}")
+        write_text(generated_dir() / "refseq_start_context_multi_k_table.tex", "\n".join(mk2) + "\n")
 
     # ---- Pairwise effects across multi-k ----
     tests = []
@@ -418,7 +465,10 @@ def _emit_outputs_from_summary(summary: dict[str, object]) -> None:
             for sk in sorted(schemes.keys()):
                 meta = schemes.get(sk) or {}
                 x_name = str(meta.get("x_name") or "")
-                comp_lines.append(f"Composition-adjusted stop-context comparisons (scheme {sk}, GC$\\times${x_name}, primary $k={k_primary}$).")
+                sk_tex = str(sk).replace("_", "\\_")
+                comp_lines.append(
+                    f"Composition-adjusted stop-context comparisons (scheme {sk_tex}, GC$\\times${x_name}, primary $k={k_primary}$)."
+                )
                 for window in ("before", "after"):
                     w0 = strat.get(sk, {}).get(window, {}) if isinstance(strat.get(sk), dict) else {}
                     if not isinstance(w0, dict):
@@ -683,6 +733,8 @@ def main() -> None:
     after_stats_mk: dict[str, dict[int, RunningStats]] | None = None
     before_stats: dict[str, RunningStats] = {}
     after_stats: dict[str, RunningStats] = {}
+    start_before_stats_mk: dict[int, RunningStats] | None = None
+    start_after_stats_mk: dict[int, RunningStats] | None = None
     k_primary_seen: int | None = None
     k_list_seen: list[int] | None = None
 
@@ -709,7 +761,7 @@ def main() -> None:
     for i, fp in enumerate(files, start=1):
         obj = json.loads(fp.read_text(encoding="utf-8"))
         shard_schema = int(obj.get("schema_version", 0) or 0)
-        if shard_schema not in (1, 2, 3):
+        if shard_schema not in (1, 2, 3, 4):
             raise SystemExit(f"Unexpected schema_version in {fp}: {shard_schema}")
         hb.maybe(f"merged_shards={i}/{len(files)} records={records} coding_tokens={coding_tokens}")
 
@@ -747,6 +799,8 @@ def main() -> None:
             after_stats_mk = {s: {kk: RunningStats() for kk in k_list_seen} for s in STOP_CODONS}
             before_stats = {s: before_stats_mk[s][int(k_primary_seen)] for s in STOP_CODONS}
             after_stats = {s: after_stats_mk[s][int(k_primary_seen)] for s in STOP_CODONS}
+            start_before_stats_mk = {kk: RunningStats() for kk in k_list_seen}
+            start_after_stats_mk = {kk: RunningStats() for kk in k_list_seen}
         else:
             assert k_list_seen is not None
             if int(k_primary) != int(k_primary_seen):
@@ -779,6 +833,8 @@ def main() -> None:
 
         if before_stats_mk is None or after_stats_mk is None or k_list_seen is None or k_primary_seen is None:
             raise SystemExit("Internal error: stop-context structures not initialized")
+        if start_before_stats_mk is None or start_after_stats_mk is None:
+            raise SystemExit("Internal error: start-context structures not initialized")
 
         w_mk = obj.get("stop_context_welford_multi_k")
         if isinstance(w_mk, dict) and w_mk:
@@ -805,6 +861,18 @@ def main() -> None:
                     continue
                 before_stats_mk[s][int(k_primary_seen)].merge(_load_stats(w[s]["before"]))  # type: ignore[index]
                 after_stats_mk[s][int(k_primary_seen)].merge(_load_stats(w[s]["after"]))  # type: ignore[index]
+
+        sc_mk = obj.get("start_context_welford_multi_k")
+        if isinstance(sc_mk, dict) and sc_mk:
+            for kk in k_list_seen:
+                entry = sc_mk.get(str(int(kk)))
+                if not isinstance(entry, dict):
+                    raise SystemExit(f"Missing start_context_welford_multi_k[{kk}] in {fp}")
+                start_before_stats_mk[int(kk)].merge(_load_stats(entry.get("before", {}) or {}))
+                start_after_stats_mk[int(kk)].merge(_load_stats(entry.get("after", {}) or {}))
+        else:
+            # Back-compat: shards without start-context stats.
+            pass
 
         zsm = obj.get("zspectrum_metrics_samples", {}) or {}
         for x in zsm.get("boundary_rate", []) or []:
@@ -1084,8 +1152,11 @@ def main() -> None:
             },
         }
 
+    if start_before_stats_mk is None or start_after_stats_mk is None:
+        raise SystemExit("Missing merged start-context stats (start_context_welford_multi_k).")
+
     summary = {
-        "schema_version": 4,
+        "schema_version": 5,
         "analysis_version": int(ANALYSIS_VERSION),
         "merge_version": int(MERGE_VERSION),
         "mu_star": MU_STAR,
@@ -1109,6 +1180,44 @@ def main() -> None:
         "termination_stop_boundary_count": int(term_stop_boundary_count),
         "stop_window": int(k_primary),
         "stop_window_list": [int(x) for x in k_list],
+        "start_context": {
+            "k": int(k_primary),
+            "before": {
+                "n": int(start_before_stats_mk[int(k_primary)].n),
+                "mean": (float(start_before_stats_mk[int(k_primary)].mean) if start_before_stats_mk[int(k_primary)].n > 0 else None),
+            },
+            "after": {
+                "n": int(start_after_stats_mk[int(k_primary)].n),
+                "mean": (float(start_after_stats_mk[int(k_primary)].mean) if start_after_stats_mk[int(k_primary)].n > 0 else None),
+            },
+        },
+        "start_context_welford": {
+            "before": {
+                "n": int(start_before_stats_mk[int(k_primary)].n),
+                "mean": float(start_before_stats_mk[int(k_primary)].mean),
+                "M2": float(start_before_stats_mk[int(k_primary)].M2),
+            },
+            "after": {
+                "n": int(start_after_stats_mk[int(k_primary)].n),
+                "mean": float(start_after_stats_mk[int(k_primary)].mean),
+                "M2": float(start_after_stats_mk[int(k_primary)].M2),
+            },
+        },
+        "start_context_welford_multi_k": {
+            str(int(kk)): {
+                "before": {
+                    "n": int(start_before_stats_mk[int(kk)].n),
+                    "mean": float(start_before_stats_mk[int(kk)].mean),
+                    "M2": float(start_before_stats_mk[int(kk)].M2),
+                },
+                "after": {
+                    "n": int(start_after_stats_mk[int(kk)].n),
+                    "mean": float(start_after_stats_mk[int(kk)].mean),
+                    "M2": float(start_after_stats_mk[int(kk)].M2),
+                },
+            }
+            for kk in k_list
+        },
         "stop_context": stop_ctx_summary,
         "stop_context_welford": {
             s: {
