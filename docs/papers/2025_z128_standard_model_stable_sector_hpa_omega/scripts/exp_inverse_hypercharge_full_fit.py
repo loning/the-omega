@@ -8,9 +8,15 @@ Target set (per SM generation multiplets):
 We build a dataset on cyclic stable types (18 points) paired with the 18 fermion
 targets under the closed ordering used by the labeling solver.
 
-We search a bounded integer affine score:
-  S(w) = a*V(w) + b*g(w) + c*wt(w) + d
-with |a|,|b|,|c|,|d| <= B.
+We compare two bounded score families:
+
+  (A) affine on (V,g,wt):
+      S(w) = a*V(w) + b*g(w) + c*wt(w) + d
+
+  (B) affine on the first five word bits:
+      S(w) = Σ_{i=1..5} c_i w_i + d
+
+Both families use bounded integer coefficients.
 
 Prediction rule (projection):
   predict Y_num as the nearest value in the allowed target set to S(w),
@@ -28,6 +34,7 @@ Only the Python standard library is used.
 
 from __future__ import annotations
 
+import itertools
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Tuple
@@ -38,9 +45,11 @@ from common_tex import write_lines
 
 @dataclass(frozen=True)
 class Datum:
+    w: str
     V: int
     g: int
     wt: int
+    ones5: Tuple[int, ...]
     Y_num: int
 
 
@@ -68,24 +77,21 @@ def build_dataset() -> List[Datum]:
         raise AssertionError("Cyclic types and fermion targets must match in size.")
     out: List[Datum] = []
     for w, f in zip(cyc_sorted, fields):
+        ones5 = tuple(i for i, ch in enumerate(w[:5]) if ch == "1")
         out.append(
             Datum(
+                w=w,
                 V=sml.zeckendorf_value(w),
                 g=sml.degeneracy_g(w),
                 wt=w.count("1"),
+                ones5=ones5,
                 Y_num=f.Y_num,
             )
         )
     return out
 
 
-def main() -> None:
-    data = build_dataset()
-    n = len(data)
-    if n != 18:
-        raise AssertionError("Expected 18 cyclic points.")
-
-    B = 6
+def best_affine_vgwt(data: List[Datum], B: int) -> Tuple[int, int, int, int, int, int]:
     best = None  # (errors, complexity, a,b,c,d)
     for a in range(-B, B + 1):
         for b in range(-B, B + 1):
@@ -103,17 +109,66 @@ def main() -> None:
                     cand = (err, comp, a, b, c, d)
                     if best is None or cand < best:
                         best = cand
-
     if best is None:
         raise AssertionError("No candidates enumerated.")
-    err, comp, a, b, c, d = best
-    acc = 1.0 - float(err) / float(n)
+    return best
 
-    row = (
-        f"$|a|,|b|,|c|,|d|\\le {B}$ & $Y$ (full) & "
-        f"$(a,b,c,d)=({a},{b},{c},{d})$ & {err} & {acc:.3f} \\\\"
+
+def best_affine_bits5(data: List[Datum], B: int, d_min: int = -6, d_max: int = 6) -> Tuple[int, int, Tuple[int, int, int, int, int], int]:
+    # Precompute snap on a safe integer range for speed.
+    snap = {x: nearest_allowed(x) for x in range(-64, 65)}
+
+    def snap_y(x: int) -> int:
+        return snap.get(x, nearest_allowed(x))
+
+    vals = list(range(-B, B + 1))
+    d_vals = list(range(d_min, d_max + 1))
+    best = None  # (errors, complexity, coeffs5, d)
+    for coeffs in itertools.product(vals, repeat=5):
+        if all(c == 0 for c in coeffs):
+            continue
+        # Precompute partial sums for each datum (only uses the 1-bits among first five positions).
+        s_base = [sum(coeffs[i] for i in p.ones5) for p in data]
+        for d in d_vals:
+            err = 0
+            for sb, p in zip(s_base, data):
+                if snap_y(sb + d) != p.Y_num:
+                    err += 1
+            comp = sum(abs(c) for c in coeffs) + abs(d)
+            cand = (err, comp, coeffs, d)
+            if best is None or cand < best:
+                best = cand
+    if best is None:
+        raise AssertionError("No candidates enumerated.")
+    return best
+
+
+def main() -> None:
+    data = build_dataset()
+    n = len(data)
+    if n != 18:
+        raise AssertionError("Expected 18 cyclic points.")
+
+    rows: List[str] = []
+
+    # (A) affine on (V,g,wt)
+    B = 6
+    err, _comp, a, b, c, d = best_affine_vgwt(data, B=B)
+    acc = 1.0 - float(err) / float(n)
+    rows.append(
+        f"$|a|,|b|,|c|,|d|\\le {B}$ & $Y_{{\\mathrm{{num}}}}$ (V,g,wt) & $(a,b,c,d)=({a},{b},{c},{d})$ & {err} & {acc:.3f} \\\\"
     )
-    rows = [row, "\\bottomrule"]
+
+    # (B) affine on the first five word bits
+    B5 = 3
+    err2, _comp2, coeffs5, d5 = best_affine_bits5(data, B=B5, d_min=-6, d_max=6)
+    acc2 = 1.0 - float(err2) / float(n)
+    c1, c2, c3, c4, c5 = coeffs5
+    rows.append(
+        f"$|c_i|\\le {B5}$ & $Y_{{\\mathrm{{num}}}}$ (bits $1..5$) & $(c_1,\\dots,c_5,d)=({c1},{c2},{c3},{c4},{c5},{d5})$ & {err2} & {acc2:.3f} \\\\"
+    )
+
+    rows.append("\\bottomrule")
 
     root = Path(__file__).resolve().parent.parent
     out_dir = root / "sections" / "generated"

@@ -88,6 +88,25 @@ def _min_float_column(path: Path, col_idx: int, skip_prefixes: Tuple[str, ...] =
     return best
 
 
+def _max_float_column(path: Path, col_idx: int) -> float | None:
+    if not path.exists():
+        return None
+    best = None
+    for line in path.read_text(encoding="utf-8").splitlines():
+        s = line.strip()
+        if not s or s.startswith("\\bottomrule"):
+            continue
+        parts = [p.strip() for p in s.split("&")]
+        if col_idx >= len(parts):
+            continue
+        x = _parse_first_float(parts[col_idx])
+        if x is None:
+            continue
+        if best is None or x > best:
+            best = x
+    return best
+
+
 def main() -> None:
     rows: List[str] = []
 
@@ -256,6 +275,12 @@ def main() -> None:
         acc = _parse_first_float(parts[4]) if len(parts) > 4 else None
         ok = (acc is not None) and (acc >= 0.6)
         rows.append(_row(r"inverse sign(Y) acc", r"$\ge 0.6$", f"{acc:.3f}" if acc is not None else "$-$", ok))
+
+    # Inverse full hypercharge fit: take the best accuracy across the compared score families.
+    best_full_acc = _max_float_column(gen_dir / "inverse_hypercharge_full_fit_rows.tex", col_idx=4)
+    if best_full_acc is not None:
+        ok = best_full_acc >= 0.6
+        rows.append(_row(r"inverse $Y_{\mathrm{num}}$ acc", r"$\ge 0.6$", f"{best_full_acc:.3f}", ok))
 
     rows.append(r"\bottomrule")
 
