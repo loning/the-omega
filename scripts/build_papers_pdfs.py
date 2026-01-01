@@ -21,6 +21,7 @@ import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
+from textwrap import shorten
 from typing import Iterable
 
 
@@ -202,7 +203,25 @@ def build_from_plan(
         sources_hash = item.sources_hash
 
         print(f"Building: {paper_dir}")
-        _run_latexmk(paper_dir)
+        try:
+            _run_latexmk(paper_dir)
+        except Exception as e:
+            log_path = paper_dir / "main.log"
+            print(f"Build failed in: {paper_dir}", file=sys.stderr)
+            print(f"Error: {shorten(str(e), width=500)}", file=sys.stderr)
+            if log_path.exists():
+                try:
+                    lines = log_path.read_text(encoding="utf-8", errors="replace").splitlines()
+                    tail = lines[-200:] if len(lines) > 200 else lines
+                    print("---- main.log (tail) ----", file=sys.stderr)
+                    for line in tail:
+                        print(line, file=sys.stderr)
+                    print("---- end main.log ----", file=sys.stderr)
+                except Exception as log_e:
+                    print(f"Could not read log file {log_path}: {log_e}", file=sys.stderr)
+            else:
+                print(f"Log file not found: {log_path}", file=sys.stderr)
+            raise
 
         pdf_path = paper_dir / "main.pdf"
         if not pdf_path.exists():
