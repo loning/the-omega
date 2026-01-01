@@ -76,6 +76,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     cwd = root_dir()
+    py = sys.executable or "python3"
 
     refseq_quick = int(args.refseq_max_records) > 0 or int(args.refseq_max_shards) > 0
     recoding_quick = int(args.recoding_max_files) > 0
@@ -86,22 +87,22 @@ def main() -> None:
 
     # 1) Optional downloads
     if args.download:
-        cmd = ["python3", "scripts/fetch_datasets.py", "--dataset", "all"]
+        cmd = [py, "scripts/fetch_datasets.py", "--dataset", "all"]
         if args.insecure:
             cmd.append("--insecure")
         run(cmd, cwd=cwd)
 
     # 2) Core encoding scan + codon tables
-    run(["python3", "scripts/exp_genetic_code_decompiler.py"], cwd=cwd)
+    run([py, "scripts/exp_genetic_code_decompiler.py", *(["--force"] if args.force else [])], cwd=cwd)
 
     # 2b) Fold_m resolution scan (m>6)
-    run(["python3", "scripts/exp_foldm_resolution_scan.py"], cwd=cwd)
+    run([py, "scripts/exp_foldm_resolution_scan.py", *(["--force"] if args.force else [])], cwd=cwd)
 
     # 3) Nonstandard translation tables
-    run(["python3", "scripts/exp_nonstandard_codes.py"], cwd=cwd)
+    run([py, "scripts/exp_nonstandard_codes.py", *(["--force"] if args.force else [])], cwd=cwd)
 
     # 4) Recoding sites (Sec/Pyl)
-    rec_cmd = ["python3", "scripts/exp_recoding_sites.py", "--k", str(int(args.recoding_k))]
+    rec_cmd = [py, "scripts/exp_recoding_sites.py", "--k", str(int(args.recoding_k))]
     if str(args.recoding_k_list or "").strip():
         rec_cmd += ["--k-list", str(args.recoding_k_list)]
     if int(args.recoding_max_files) > 0:
@@ -144,7 +145,7 @@ def main() -> None:
     for fp in shard_files:
         out = shards_dir / f"{fp.name}.json"
         refseq_cmd = [
-            "python3",
+            py,
             "scripts/exp_refseq_transcriptome.py",
             "--input",
             str(fp.relative_to(cwd)),
@@ -170,7 +171,7 @@ def main() -> None:
         )
 
     merge_cmd = [
-        "python3",
+        py,
         "scripts/exp_refseq_transcriptome_merge.py",
         "--in-dir",
         str(shards_dir.relative_to(cwd)),
@@ -182,7 +183,7 @@ def main() -> None:
     run(merge_cmd, cwd=cwd)
 
     # 6) Cross-domain corpus panel + sequence-level nonstandard-code tests.
-    panel_cmd = ["python3", "scripts/exp_corpus_panel.py", "--panel", "corpus_panel_v1"]
+    panel_cmd = [py, "scripts/exp_corpus_panel.py", "--panel", "corpus_panel_v1"]
     if int(args.panel_max_records) > 0:
         panel_cmd += ["--max-records", str(int(args.panel_max_records))]
     if panel_quick:
@@ -196,7 +197,7 @@ def main() -> None:
         panel_cmd += ["--force"]
     run(panel_cmd, cwd=cwd)
 
-    ns_cmd = ["python3", "scripts/exp_nonstandard_sequence_tests.py", "--panel", "nonstandard_examples_v1"]
+    ns_cmd = [py, "scripts/exp_nonstandard_sequence_tests.py", "--panel", "nonstandard_examples_v1"]
     if int(args.nonstandard_max_records) > 0:
         ns_cmd += ["--max-records", str(int(args.nonstandard_max_records))]
     if nonstandard_quick:

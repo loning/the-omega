@@ -11,9 +11,12 @@ Only the Python standard library is used.
 
 from __future__ import annotations
 
+import argparse
+import json
 from collections import Counter, defaultdict
 from pathlib import Path
 
+from cache_manager import cache_hit, cache_key_digest, cache_meta_path, write_json_atomic
 from genetic_code_tools import (
     BOUNDARY_INT_SET,
     BOUNDARY_WORDS,
@@ -36,6 +39,7 @@ from genetic_code_tools import (
 
 
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
+ANALYSIS_VERSION = 1
 
 
 def root_dir() -> Path:
@@ -48,8 +52,30 @@ def generated_dir() -> Path:
     return d
 
 
+def data_root() -> Path:
+    return root_dir() / "data"
+
+
 def write_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
+
+
+def _fingerprint_file(path: Path) -> dict[str, object]:
+    if not path.exists():
+        return {"path": str(path), "exists": False}
+    st = path.stat()
+    return {
+        "path": str(path),
+        "exists": True,
+        "bytes": int(st.st_size),
+        "mtime_ns": int(getattr(st, "st_mtime_ns", int(st.st_mtime * 1e9))),
+    }
+
+
+def parse_args() -> argparse.Namespace:
+    p = argparse.ArgumentParser(description="Genetic code reverse compilation (Fold_6) + LaTeX fragments")
+    p.add_argument("--force", action="store_true", help="Force recomputation even if cached outputs exist.")
+    return p.parse_args()
 
 
 def generate_stop_fine_structure(mu: dict[str, str]) -> None:
@@ -466,7 +492,45 @@ def generate_vmean_property_correlations(mu: dict[str, str]) -> None:
 
 
 def main() -> None:
+    args = parse_args()
     print("=== Genetic code reverse compilation (Fold_6) ===")
+
+    # ---- Cache short-circuit ----
+    out_files = [
+        "stop_fine_structure_rows.tex",
+        "control_codons_rows.tex",
+        "human_transcript_case_studies_rows.tex",
+        "boundary_sector_codons_rows.tex",
+        "amino_acid_spectrum_rows.tex",
+        "codon_full_table_rows.tex",
+        "control_objective_brief.tex",
+        "encoding_scan_summary.tex",
+        "mutual_information_summary.tex",
+        "mutual_information_brief.tex",
+        "fold6_invariants_summary.tex",
+        "hydrophobicity_correlation.tex",
+        "vmean_property_correlations.tex",
+    ]
+    out_paths = [generated_dir() / nm for nm in out_files]
+
+    # Case-study inputs (optional, but they affect output rows).
+    cases = [
+        data_root() / "NM_000518.5.fasta",
+        data_root() / "ENST00000381330.5.fasta",
+    ]
+    cache_file = data_root() / "_cache" / f"genetic_code_decompiler_v{int(ANALYSIS_VERSION)}.json"
+    cache_key = {
+        "analysis": "genetic_code_decompiler",
+        "analysis_version": int(ANALYSIS_VERSION),
+        "mu_star": MU_STAR,
+        "inputs": [_fingerprint_file(p) for p in cases],
+        "outputs": [str(p) for p in out_paths],
+    }
+    cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
+    if (not args.force) and all(p.exists() for p in out_paths) and cache_hit(cache_file, expected_meta=cache_meta, require_meta=True):
+        print(f"[cache] hit: {cache_file}")
+        print("Wrote LaTeX fragments into:", generated_dir())
+        return
 
     # 1) Control-boundary alignment optimum over K={AUG,UAA,UAG,UGA}.
     control_codons = ("AUG", "UAA", "UAG", "UGA")
@@ -516,6 +580,10 @@ def main() -> None:
     generate_fold6_invariants_summary()
     generate_hydrophobicity_correlation(MU_STAR)
     generate_vmean_property_correlations(MU_STAR)
+
+    cache_file.parent.mkdir(parents=True, exist_ok=True)
+    write_json_atomic(cache_file, {"ok": True})
+    write_json_atomic(cache_meta_path(cache_file), cache_meta)
 
     print("Wrote LaTeX fragments into:", generated_dir())
 

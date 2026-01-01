@@ -40,6 +40,8 @@
 python3 scripts/import_supabase_rest.py --batch-size 200
 ```
 
+脚本带**导入级缓存**：对每张表根据输入产物（及其 `.meta.json`）计算 digest，重复运行会自动跳过已导入的同一批产物；如需强制重导可加 `--force`。长时间导入默认每 60 秒输出一次进度，可用 `--heartbeat-s` 调整（或设为 0 关闭）。
+
 如果你的 Python 环境遇到证书链问题，可临时加 `--insecure`（仅用于本机证书缺失的场景）：
 
 ```bash
@@ -77,6 +79,31 @@ python3 scripts/import_supabase_rest.py \
   --recoding-summary-json data/_quick/run_all/recoding_sites_summary.json \
   --refseq-summary-json data/_quick/run_all/transcriptome_summary.json \
   --batch-size 200
+```
+
+### Python 直连 Postgres 执行 SQL（强制 SQL 写在脚本中，用于生成 .tex）
+
+本项目要求：**所有用于论文的 SQL 必须写在 Python 脚本中**（便于版本控制与复现），脚本执行 SQL 并把结果写入 `sections/generated/` 的 `.tex` 片段（带缓存，避免重复查询）。
+
+1) **准备连接串**
+
+- 在 `supabase.env` 中填写 `DATABASE_URL=postgresql://...`（参考 `supabase.env.template`）。
+
+2) **安装依赖（虚拟环境）**
+
+本项目使用纯 Python 驱动 `pg8000`：
+
+```bash
+python3 -m venv .venv
+./.venv/bin/pip install -r requirements.txt
+```
+
+3) **执行脚本生成 `.tex` 片段**
+
+`scripts/exp_supabase_sql_fragments.py` 内部直接写入 SQL，生成若干 `sections/generated/sql_*.tex` 片段，并对每个片段做缓存：
+
+```bash
+./.venv/bin/python scripts/exp_supabase_sql_fragments.py
 ```
 
 ### 导出 CSV

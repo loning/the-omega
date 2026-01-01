@@ -13,14 +13,17 @@ Standard library only.
 from __future__ import annotations
 
 import argparse
+import json
 import re
 from dataclasses import dataclass
 from pathlib import Path
 
+from cache_manager import cache_hit, cache_key_digest, cache_meta_path, write_json_atomic
 from genetic_code_tools import BOUNDARY_WORDS, fold_codon
 
 
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
+ANALYSIS_VERSION = 1
 
 
 def root_dir() -> Path:
@@ -33,12 +36,24 @@ def generated_dir() -> Path:
     return d
 
 
+def data_root() -> Path:
+    return root_dir() / "data"
+
+
 def data_path() -> Path:
     return root_dir() / "data" / "gc.prt"
 
 
 def write_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
+
+
+def _read_json_dict(path: Path) -> dict[str, object] | None:
+    try:
+        obj = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    return obj if isinstance(obj, dict) else None
 
 
 @dataclass(frozen=True)
@@ -177,9 +192,52 @@ def main() -> None:
     p = argparse.ArgumentParser(description="Nonstandard code scan (NCBI gc.prt)")
     p.add_argument("--out-rows", default=str(generated_dir() / "nonstandard_code_rows.tex"))
     p.add_argument("--out-summary", default=str(generated_dir() / "nonstandard_code_summary.tex"))
+    p.add_argument("--force", action="store_true", help="Force recomputation even if cached outputs exist.")
     args = p.parse_args()
 
-    text = data_path().read_text(encoding="utf-8", errors="replace")
+    # ---- Cache short-circuit ----
+    gc = data_path()
+    if not gc.exists():
+        raise SystemExit("Missing data/gc.prt. Run scripts/fetch_datasets.py --dataset gc_prt first.")
+
+    gc_sha: str | None = None
+    mp = data_root() / "manifest.json"
+    if mp.exists():
+        m = _read_json_dict(mp)
+        if isinstance(m, dict):
+            ds = (m.get("datasets") or {}).get("ncbi_gc_prt") if isinstance(m.get("datasets"), dict) else None
+            if isinstance(ds, dict):
+                sha = ds.get("sha256")
+                if isinstance(sha, str) and sha:
+                    gc_sha = sha
+    if gc_sha is None:
+        st = gc.stat()
+        gc_sha = f"stat:{st.st_size}:{getattr(st, 'st_mtime_ns', int(st.st_mtime * 1e9))}"
+
+    out_rows = Path(args.out_rows)
+    out_summary = Path(args.out_summary)
+    cache_file = data_root() / "_cache" / f"nonstandard_codes_v{int(ANALYSIS_VERSION)}.json"
+    cache_key = {
+        "analysis": "nonstandard_codes",
+        "analysis_version": int(ANALYSIS_VERSION),
+        "mu_star": MU_STAR,
+        "gc_prt": gc_sha,
+        "out_rows": str(out_rows),
+        "out_summary": str(out_summary),
+    }
+    cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
+
+    if (
+        (not args.force)
+        and out_rows.exists()
+        and out_summary.exists()
+        and cache_hit(cache_file, expected_meta=cache_meta, require_meta=True)
+    ):
+        print(f"[cache] hit: {cache_file}")
+        print("Wrote LaTeX fragments into:", generated_dir())
+        return
+
+    text = gc.read_text(encoding="utf-8", errors="replace")
     tables = parse_gc_prt(text)
     if not tables:
         raise SystemExit("Failed to parse any translation tables from data/gc.prt")
@@ -226,6 +284,10 @@ def main() -> None:
         f"achieved by code IDs: {', '.join(str(x) for x in sorted(max_ids))}."
     )
     write_text(Path(args.out_summary), "\n".join(summary) + "\n")
+
+    cache_file.parent.mkdir(parents=True, exist_ok=True)
+    write_json_atomic(cache_file, {"ok": True})
+    write_json_atomic(cache_meta_path(cache_file), cache_meta)
 
     print("Wrote LaTeX fragments into:", generated_dir())
 

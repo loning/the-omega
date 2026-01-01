@@ -15,6 +15,7 @@ Optional:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import ssl
 import time
@@ -24,8 +25,13 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
+from cache_manager import cache_hit, cache_key_digest, cache_meta_path, read_json, write_json_atomic
+from progress_tools import Heartbeat
 from supabase_env import load_env_file
 from provenance_tools import infer_analysis_version
+
+
+IMPORT_VERSION = 1
 
 
 def _now_ms() -> int:
@@ -95,6 +101,7 @@ def upsert_rows(
     on_conflict: str,
     batch_size: int = 200,
     ssl_context: ssl.SSLContext | None = None,
+    heartbeat: Heartbeat | None = None,
 ) -> None:
     if not rows:
         return
@@ -103,6 +110,8 @@ def upsert_rows(
     common_headers["Prefer"] = "resolution=merge-duplicates,return=minimal"
 
     for i in range(0, len(rows), int(batch_size)):
+        if heartbeat is not None:
+            heartbeat.maybe(f"{table}: upserting {min(i + int(batch_size), len(rows))}/{len(rows)} rows")
         chunk = rows[i : i + int(batch_size)]
         qs = urllib.parse.urlencode({"on_conflict": on_conflict})
         url = f"{base}/{urllib.parse.quote(table)}?{qs}"
@@ -147,7 +156,9 @@ def count_rows(
         return None
 
 
-def load_recoding_sites(jsonl_path: Path, *, analysis_version: int | None = None) -> tuple[list[dict[str, Any]], int]:
+def load_recoding_sites(
+    jsonl_path: Path, *, analysis_version: int | None = None, heartbeat: Heartbeat | None = None
+) -> tuple[list[dict[str, Any]], int]:
     rows: list[dict[str, Any]] = []
     n = 0
     with jsonl_path.open("r", encoding="utf-8") as f:
@@ -188,7 +199,50 @@ def load_recoding_sites(jsonl_path: Path, *, analysis_version: int | None = None
 
             rows.append(obj)
             n += 1
+            if heartbeat is not None and (line_no % 5000) == 0:
+                heartbeat.maybe(f"recoding_sites JSONL: parsed {n} rows")
     return rows, n
+
+
+def _artifact_digest(path: Path) -> str:
+    """
+    Stable-ish digest for caching import steps without re-reading large artifacts.
+    Prefer cache sidecar meta when present; fallback to sha256 for small files; otherwise file stat.
+    """
+    mp = cache_meta_path(path)
+    if mp.exists():
+        try:
+            meta = read_json(mp)
+        except Exception:
+            meta = None
+        if isinstance(meta, dict):
+            cd = meta.get("cache_digest")
+            if isinstance(cd, str) and cd.strip():
+                return cd.strip()
+
+    # Fallback: avoid hashing huge JSONL; use file stat.
+    try:
+        st = path.stat()
+        if st.st_size > 64 * 1024 * 1024:
+            return f"stat:{int(st.st_size)}:{int(getattr(st, 'st_mtime_ns', int(st.st_mtime * 1e9)))}"
+    except Exception:
+        pass
+
+    try:
+        h = hashlib.sha256()
+        with path.open("rb") as f:
+            while True:
+                b = f.read(1024 * 1024)
+                if not b:
+                    break
+                h.update(b)
+        return h.hexdigest()
+    except Exception:
+        return ""
+
+
+def _import_cache_file(root: Path, *, table: str) -> Path:
+    return root / "data" / "_cache" / "import_supabase_rest" / f"{table}.json"
 
 
 def load_refseq_comp_results(*, summary_path: Path, summary_obj: dict[str, Any], dataset: str) -> list[dict[str, Any]]:
@@ -433,11 +487,13 @@ def parse_args() -> argparse.Namespace:
         help="Env file path (relative to project root). Copy from supabase.env.template.",
     )
     p.add_argument("--batch-size", type=int, default=200, help="Rows per request (default: 200).")
+    p.add_argument("--heartbeat-s", type=int, default=60, help="Progress heartbeat interval seconds (0 disables).")
     p.add_argument(
         "--insecure",
         action="store_true",
         help="Disable TLS certificate verification (use only if your Python cert store is missing).",
     )
+    p.add_argument("--force", action="store_true", help="Force import even if local import cache hits.")
     p.add_argument("--no-recoding", action="store_true", help="Skip importing recoding_sites.")
     p.add_argument("--no-refseq", action="store_true", help="Skip importing refseq_stop_context_comp_results.")
     p.add_argument("--no-panel", action="store_true", help="Skip importing corpus_panel_items.")
@@ -504,6 +560,8 @@ def main() -> None:
     else:
         ssl_context = None
 
+    hb = Heartbeat(every_s=float(args.heartbeat_s), prefix="[progress]")
+
     recoding_jsonl_path = (root / str(args.recoding_jsonl)).resolve()
     recoding_summary_path = (root / str(args.recoding_summary_json)).resolve()
     refseq_summary_path = (root / str(args.refseq_summary_json)).resolve()
@@ -541,95 +599,182 @@ def main() -> None:
     # 1) RefSeq comp results (small upsert)
     if not args.no_refseq:
         assert transcriptome_obj is not None
-        ref_rows = load_refseq_comp_results(
-            summary_path=refseq_summary_path,
-            summary_obj=transcriptome_obj,
-            dataset=str(args.refseq_dataset),
-        )
-        upsert_rows(
-            supabase_url=supabase_url,
-            supabase_key=supabase_key,
-            table="refseq_stop_context_comp_results",
-            rows=ref_rows,
-            on_conflict="dataset,k,method,scheme,window_side,pair",
-            batch_size=int(args.batch_size),
-            ssl_context=ssl_context,
-        )
+        cache_file = _import_cache_file(root, table="refseq_stop_context_comp_results")
+        ref_cache_key = {
+            "analysis": "import_supabase_rest",
+            "import_version": int(IMPORT_VERSION),
+            "table": "refseq_stop_context_comp_results",
+            "supabase_url": supabase_url,
+            "refseq_dataset": str(args.refseq_dataset),
+            "refseq_summary_digest": _artifact_digest(refseq_summary_path),
+        }
+        ref_cache_meta = {"cache_key": ref_cache_key, "cache_digest": cache_key_digest(ref_cache_key)}
+        if (not args.force) and cache_hit(cache_file, expected_meta=ref_cache_meta, require_meta=True):
+            print(f"[cache] hit: {cache_file}")
+        else:
+            ref_rows = load_refseq_comp_results(
+                summary_path=refseq_summary_path,
+                summary_obj=transcriptome_obj,
+                dataset=str(args.refseq_dataset),
+            )
+            upsert_rows(
+                supabase_url=supabase_url,
+                supabase_key=supabase_key,
+                table="refseq_stop_context_comp_results",
+                rows=ref_rows,
+                on_conflict="dataset,k,method,scheme,window_side,pair",
+                batch_size=int(args.batch_size),
+                ssl_context=ssl_context,
+                heartbeat=hb,
+            )
+            write_json_atomic(cache_file, {"ok": True})
+            write_json_atomic(cache_meta_path(cache_file), ref_cache_meta)
 
     # 2) Recoding sites (JSONL; larger)
     if not args.no_recoding:
         if not recoding_jsonl_path.exists():
             raise SystemExit(f"Missing recoding JSONL: {recoding_jsonl_path}")
+        cache_file = _import_cache_file(root, table="recoding_sites")
         rec_av_hint: int | None = None
         if recoding_summary_obj is not None:
             rec_av_hint = infer_analysis_version(recoding_summary_path, summary_obj=recoding_summary_obj)
-        rec_rows, n_rec = load_recoding_sites(recoding_jsonl_path, analysis_version=rec_av_hint)
-        if rec_rows:
-            upsert_rows(
-                supabase_url=supabase_url,
-                supabase_key=supabase_key,
-                table="recoding_sites",
-                rows=rec_rows,
-                on_conflict="analysis_version,k,version,pos_start",
-                batch_size=int(args.batch_size),
-                ssl_context=ssl_context,
-            )
+        rec_cache_key = {
+            "analysis": "import_supabase_rest",
+            "import_version": int(IMPORT_VERSION),
+            "table": "recoding_sites",
+            "supabase_url": supabase_url,
+            "recoding_summary_digest": _artifact_digest(recoding_summary_path),
+            "recoding_jsonl_stat": {
+                "bytes": int(recoding_jsonl_path.stat().st_size),
+                "mtime_ns": int(getattr(recoding_jsonl_path.stat(), "st_mtime_ns", int(recoding_jsonl_path.stat().st_mtime * 1e9))),
+            },
+            "analysis_version_hint": int(rec_av_hint) if rec_av_hint is not None else None,
+        }
+        rec_cache_meta = {"cache_key": rec_cache_key, "cache_digest": cache_key_digest(rec_cache_key)}
+        if (not args.force) and cache_hit(cache_file, expected_meta=rec_cache_meta, require_meta=True):
+            print(f"[cache] hit: {cache_file}")
         else:
-            raise SystemExit(f"No recoding rows found in JSONL (n={n_rec}).")
+            hb.force("Loading recoding JSONL (may take a while)...")
+            rec_rows, n_rec = load_recoding_sites(recoding_jsonl_path, analysis_version=rec_av_hint, heartbeat=hb)
+            if rec_rows:
+                upsert_rows(
+                    supabase_url=supabase_url,
+                    supabase_key=supabase_key,
+                    table="recoding_sites",
+                    rows=rec_rows,
+                    on_conflict="analysis_version,k,version,pos_start",
+                    batch_size=int(args.batch_size),
+                    ssl_context=ssl_context,
+                    heartbeat=hb,
+                )
+                write_json_atomic(cache_file, {"ok": True, "rows": int(len(rec_rows))})
+                write_json_atomic(cache_meta_path(cache_file), rec_cache_meta)
+            else:
+                raise SystemExit(f"No recoding rows found in JSONL (n={n_rec}).")
 
     # 3) Provenance payloads (2 rows)
     if not args.no_analysis_runs:
         assert transcriptome_obj is not None
         assert recoding_summary_obj is not None
-        run_rows = load_analysis_runs(
-            transcriptome_summary_path=refseq_summary_path,
-            transcriptome_summary_obj=transcriptome_obj,
-            recoding_summary_path=recoding_summary_path,
-            recoding_summary_obj=recoding_summary_obj,
-            panel_summary_path=panel_summary_path if panel_obj is not None else None,
-            panel_summary_obj=panel_obj,
-            nonstandard_summary_path=nonstandard_summary_path if nonstandard_obj is not None else None,
-            nonstandard_summary_obj=nonstandard_obj,
-            refseq_dataset=str(args.refseq_dataset),
-            recoding_dataset=str(args.recoding_dataset),
-        )
-        upsert_rows(
-            supabase_url=supabase_url,
-            supabase_key=supabase_key,
-            table="analysis_runs",
-            rows=run_rows,
-            on_conflict="dataset,analysis,analysis_version",
-            batch_size=int(args.batch_size),
-            ssl_context=ssl_context,
-        )
+        cache_file = _import_cache_file(root, table="analysis_runs")
+        runs_cache_key = {
+            "analysis": "import_supabase_rest",
+            "import_version": int(IMPORT_VERSION),
+            "table": "analysis_runs",
+            "supabase_url": supabase_url,
+            "refseq_summary_digest": _artifact_digest(refseq_summary_path),
+            "recoding_summary_digest": _artifact_digest(recoding_summary_path),
+            "panel_summary_digest": _artifact_digest(panel_summary_path) if panel_obj is not None else None,
+            "nonstandard_summary_digest": _artifact_digest(nonstandard_summary_path) if nonstandard_obj is not None else None,
+            "refseq_dataset": str(args.refseq_dataset),
+            "recoding_dataset": str(args.recoding_dataset),
+        }
+        runs_cache_meta = {"cache_key": runs_cache_key, "cache_digest": cache_key_digest(runs_cache_key)}
+        if (not args.force) and cache_hit(cache_file, expected_meta=runs_cache_meta, require_meta=True):
+            print(f"[cache] hit: {cache_file}")
+        else:
+            run_rows = load_analysis_runs(
+                transcriptome_summary_path=refseq_summary_path,
+                transcriptome_summary_obj=transcriptome_obj,
+                recoding_summary_path=recoding_summary_path,
+                recoding_summary_obj=recoding_summary_obj,
+                panel_summary_path=panel_summary_path if panel_obj is not None else None,
+                panel_summary_obj=panel_obj,
+                nonstandard_summary_path=nonstandard_summary_path if nonstandard_obj is not None else None,
+                nonstandard_summary_obj=nonstandard_obj,
+                refseq_dataset=str(args.refseq_dataset),
+                recoding_dataset=str(args.recoding_dataset),
+            )
+            upsert_rows(
+                supabase_url=supabase_url,
+                supabase_key=supabase_key,
+                table="analysis_runs",
+                rows=run_rows,
+                on_conflict="dataset,analysis,analysis_version",
+                batch_size=int(args.batch_size),
+                ssl_context=ssl_context,
+                heartbeat=hb,
+            )
+            write_json_atomic(cache_file, {"ok": True, "rows": int(len(run_rows))})
+            write_json_atomic(cache_meta_path(cache_file), runs_cache_meta)
 
     # 4) Corpus panel items
     if not args.no_panel:
         assert panel_obj is not None
-        panel_rows = load_corpus_panel_items(summary_path=panel_summary_path, summary_obj=panel_obj)
-        upsert_rows(
-            supabase_url=supabase_url,
-            supabase_key=supabase_key,
-            table="corpus_panel_items",
-            rows=panel_rows,
-            on_conflict="panel,analysis_version,dataset,code_id",
-            batch_size=int(args.batch_size),
-            ssl_context=ssl_context,
-        )
+        cache_file = _import_cache_file(root, table="corpus_panel_items")
+        panel_cache_key = {
+            "analysis": "import_supabase_rest",
+            "import_version": int(IMPORT_VERSION),
+            "table": "corpus_panel_items",
+            "supabase_url": supabase_url,
+            "panel_summary_digest": _artifact_digest(panel_summary_path),
+        }
+        panel_cache_meta = {"cache_key": panel_cache_key, "cache_digest": cache_key_digest(panel_cache_key)}
+        if (not args.force) and cache_hit(cache_file, expected_meta=panel_cache_meta, require_meta=True):
+            print(f"[cache] hit: {cache_file}")
+        else:
+            panel_rows = load_corpus_panel_items(summary_path=panel_summary_path, summary_obj=panel_obj)
+            upsert_rows(
+                supabase_url=supabase_url,
+                supabase_key=supabase_key,
+                table="corpus_panel_items",
+                rows=panel_rows,
+                on_conflict="panel,analysis_version,dataset,code_id",
+                batch_size=int(args.batch_size),
+                ssl_context=ssl_context,
+                heartbeat=hb,
+            )
+            write_json_atomic(cache_file, {"ok": True, "rows": int(len(panel_rows))})
+            write_json_atomic(cache_meta_path(cache_file), panel_cache_meta)
 
     # 5) Nonstandard sequence tests items
     if not args.no_nonstandard:
         assert nonstandard_obj is not None
-        ns_rows = load_nonstandard_sequence_tests_items(summary_path=nonstandard_summary_path, summary_obj=nonstandard_obj)
-        upsert_rows(
-            supabase_url=supabase_url,
-            supabase_key=supabase_key,
-            table="nonstandard_sequence_tests_items",
-            rows=ns_rows,
-            on_conflict="panel,analysis_version,dataset,code_id",
-            batch_size=int(args.batch_size),
-            ssl_context=ssl_context,
-        )
+        cache_file = _import_cache_file(root, table="nonstandard_sequence_tests_items")
+        ns_cache_key = {
+            "analysis": "import_supabase_rest",
+            "import_version": int(IMPORT_VERSION),
+            "table": "nonstandard_sequence_tests_items",
+            "supabase_url": supabase_url,
+            "nonstandard_seqtests_digest": _artifact_digest(nonstandard_summary_path),
+        }
+        ns_cache_meta = {"cache_key": ns_cache_key, "cache_digest": cache_key_digest(ns_cache_key)}
+        if (not args.force) and cache_hit(cache_file, expected_meta=ns_cache_meta, require_meta=True):
+            print(f"[cache] hit: {cache_file}")
+        else:
+            ns_rows = load_nonstandard_sequence_tests_items(summary_path=nonstandard_summary_path, summary_obj=nonstandard_obj)
+            upsert_rows(
+                supabase_url=supabase_url,
+                supabase_key=supabase_key,
+                table="nonstandard_sequence_tests_items",
+                rows=ns_rows,
+                on_conflict="panel,analysis_version,dataset,code_id",
+                batch_size=int(args.batch_size),
+                ssl_context=ssl_context,
+                heartbeat=hb,
+            )
+            write_json_atomic(cache_file, {"ok": True, "rows": int(len(ns_rows))})
+            write_json_atomic(cache_meta_path(cache_file), ns_cache_meta)
 
     # 6) Quick verification (best-effort counts)
     for t in (

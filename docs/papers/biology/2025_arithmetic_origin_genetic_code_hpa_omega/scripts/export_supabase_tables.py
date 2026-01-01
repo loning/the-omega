@@ -21,10 +21,24 @@ import json
 from pathlib import Path
 from typing import Any
 
+from cache_manager import cache_hit, cache_key_digest, cache_meta_path, write_json_atomic
+from progress_tools import Heartbeat
 from provenance_tools import infer_analysis_version
 
 
 DINUC_ORDER = [a + b for a in "ACGT" for b in "ACGT"]
+
+
+def _fingerprint_file(path: Path) -> dict[str, object]:
+    if not path.exists():
+        return {"path": str(path), "exists": False}
+    st = path.stat()
+    return {
+        "path": str(path),
+        "exists": True,
+        "bytes": int(st.st_size),
+        "mtime_ns": int(getattr(st, "st_mtime_ns", int(st.st_mtime * 1e9))),
+    }
 
 
 def _json_dumps(x: object) -> str:
@@ -44,7 +58,7 @@ def _csv_cell(v: object) -> str:
     return str(v)
 
 
-def export_recoding_sites(*, in_jsonl: Path, out_csv: Path) -> None:
+def export_recoding_sites(*, in_jsonl: Path, out_csv: Path, heartbeat: Heartbeat | None = None) -> None:
     cols = [
         "analysis_version",
         "k",
@@ -115,7 +129,7 @@ def export_recoding_sites(*, in_jsonl: Path, out_csv: Path) -> None:
         w.writeheader()
         n = 0
         with in_jsonl.open("r", encoding="utf-8") as f_in:
-            for line in f_in:
+            for line_no, line in enumerate(f_in, start=1):
                 if not line.strip():
                     continue
                 obj = json.loads(line)
@@ -124,6 +138,8 @@ def export_recoding_sites(*, in_jsonl: Path, out_csv: Path) -> None:
                 row = {k: _csv_cell(obj.get(k)) for k in cols}
                 w.writerow(row)
                 n += 1
+                if heartbeat is not None and (line_no % 5000) == 0:
+                    heartbeat.maybe(f"export recoding_sites.csv: wrote {n} rows")
     print("Wrote:", out_csv, f"(rows={n})")
 
 
@@ -384,6 +400,7 @@ def export_refseq_stop_context_comp_results(*, in_summary_json: Path, out_csv: P
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Export datasets to CSV for Supabase/Postgres.")
     p.add_argument("--out-dir", default="data/db_exports", help="Output directory (relative to project root).")
+    p.add_argument("--heartbeat-s", type=int, default=60, help="Progress heartbeat interval seconds (0 disables).")
     p.add_argument(
         "--recoding-jsonl",
         default="data/recoding_genbank/recoding_sites.jsonl",
@@ -409,6 +426,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--no-refseq", action="store_true", help="Skip exporting refseq_stop_context_comp_results.csv.")
     p.add_argument("--no-panel", action="store_true", help="Skip exporting corpus_panel_items.csv.")
     p.add_argument("--no-nonstandard", action="store_true", help="Skip exporting nonstandard_sequence_tests_items.csv.")
+    p.add_argument("--force", action="store_true", help="Force export even if cached outputs exist.")
     return p.parse_args()
 
 
@@ -416,11 +434,55 @@ def main() -> None:
     args = parse_args()
     root = Path(__file__).resolve().parent.parent
     out_dir = (root / str(args.out_dir)).resolve()
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    hb = Heartbeat(every_s=float(args.heartbeat_s), prefix="[progress]")
+
+    # ---- Cache short-circuit (export-level) ----
+    cache_file = out_dir / "_export_supabase_tables_cache.json"
+    cache_key = {
+        "analysis": "export_supabase_tables",
+        "out_dir": str(out_dir),
+        "inputs": {
+            "recoding_jsonl": _fingerprint_file((root / str(args.recoding_jsonl)).resolve()),
+            "refseq_summary_json": _fingerprint_file((root / str(args.refseq_summary_json)).resolve()),
+            "panel_summary_json": _fingerprint_file((root / str(args.panel_summary_json)).resolve()),
+            "nonstandard_seqtests_json": _fingerprint_file((root / str(args.nonstandard_seqtests_json)).resolve()),
+        },
+        "flags": {
+            "no_recoding": bool(args.no_recoding),
+            "no_refseq": bool(args.no_refseq),
+            "no_panel": bool(args.no_panel),
+            "no_nonstandard": bool(args.no_nonstandard),
+            "refseq_dataset": str(args.refseq_dataset),
+        },
+    }
+    cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
+
+    expected_outputs: list[Path] = []
+    if not args.no_recoding:
+        expected_outputs.append(out_dir / "recoding_sites.csv")
+    if not args.no_refseq:
+        expected_outputs.append(out_dir / "refseq_stop_context_comp_results.csv")
+    if not args.no_panel:
+        expected_outputs.append(out_dir / "corpus_panel_items.csv")
+    if not args.no_nonstandard:
+        expected_outputs.append(out_dir / "nonstandard_sequence_tests_items.csv")
+
+    if (
+        (not args.force)
+        and expected_outputs
+        and all(p.exists() for p in expected_outputs)
+        and cache_hit(cache_file, expected_meta=cache_meta, require_meta=True)
+    ):
+        print(f"[cache] hit: {cache_file}")
+        return
 
     if not args.no_recoding:
         export_recoding_sites(
             in_jsonl=(root / str(args.recoding_jsonl)).resolve(),
             out_csv=out_dir / "recoding_sites.csv",
+            heartbeat=hb,
         )
     if not args.no_refseq:
         export_refseq_stop_context_comp_results(
@@ -438,6 +500,9 @@ def main() -> None:
             in_json=(root / str(args.nonstandard_seqtests_json)).resolve(),
             out_csv=out_dir / "nonstandard_sequence_tests_items.csv",
         )
+
+    write_json_atomic(cache_file, {"ok": True})
+    write_json_atomic(cache_meta_path(cache_file), cache_meta)
 
 
 if __name__ == "__main__":

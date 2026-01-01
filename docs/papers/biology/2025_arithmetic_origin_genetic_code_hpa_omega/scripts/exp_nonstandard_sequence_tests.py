@@ -57,6 +57,26 @@ def write_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def _read_json_dict(path: Path) -> dict[str, Any] | None:
+    try:
+        obj = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    return obj if isinstance(obj, dict) else None
+
+
+def nonstandard_item_cache_dir() -> Path:
+    """
+    Per-item cache for nonstandard sequence tests.
+
+    Panel-level cache invalidates when any item changes; item-level caches prevent
+    rescanning unrelated datasets.
+    """
+    d = data_root() / "_cache" / f"nonstandard_sequence_tests_items_v{int(ANALYSIS_VERSION)}"
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
 def read_manifest() -> dict[str, Any]:
     return json.loads((data_root() / "manifest.json").read_text(encoding="utf-8"))
 
@@ -231,6 +251,17 @@ def main() -> None:
         )
     item_fps.sort(key=lambda x: str(x.get("dataset") or ""))
 
+    # Map for per-item caches: key=(dataset, code_id) -> fingerprint entry.
+    item_fp_map: dict[tuple[str, int], dict[str, object]] = {}
+    for e in item_fps:
+        try:
+            ds = str(e.get("dataset") or "")
+            cid = int(e.get("code_id") or 1)
+        except Exception:
+            continue
+        if ds:
+            item_fp_map[(ds, int(cid))] = e
+
     cache_key = {
         "analysis": "nonstandard_sequence_tests",
         "analysis_version": int(ANALYSIS_VERSION),
@@ -255,6 +286,44 @@ def main() -> None:
         _emit_latex_from_summary(cached)
         print("Wrote LaTeX fragments into:", generated_dir())
         return
+
+    # ---- Per-item caches (avoid rescanning unaffected datasets) ----
+    item_cache_dir = nonstandard_item_cache_dir()
+
+    # Best-effort: seed per-item caches from an existing panel summary JSON (even if panel cache miss),
+    # so formatting-only changes do not force rescans.
+    if (not args.force) and out_json.exists():
+        old = _read_json_dict(out_json)
+        if (
+            isinstance(old, dict)
+            and int(old.get("analysis_version", 0) or 0) == int(ANALYSIS_VERSION)
+            and str(old.get("panel") or "") == str(args.panel)
+        ):
+            old_items = old.get("items") or []
+            if isinstance(old_items, list):
+                for oit in old_items:
+                    if not isinstance(oit, dict) or not oit.get("present"):
+                        continue
+                    ds0 = str(oit.get("dataset") or "")
+                    cid0 = int(oit.get("code_id") or 1)
+                    fp0 = item_fp_map.get((ds0, int(cid0))) or {}
+                    item_cache_key0 = {
+                        "analysis": "nonstandard_sequence_tests_item",
+                        "analysis_version": int(ANALYSIS_VERSION),
+                        "panel": str(args.panel),
+                        "dataset": ds0,
+                        "code_id": int(cid0),
+                        "max_records": int(args.max_records),
+                        "mu_star": MU_STAR,
+                        "gc_prt": gc_sha,
+                        "fingerprint": fp0,
+                    }
+                    meta0 = {"cache_key": item_cache_key0, "cache_digest": cache_key_digest(item_cache_key0)}
+                    item_json0 = item_cache_dir / f"{meta0['cache_digest']}.json"
+                    if item_json0.exists() and cache_meta_path(item_json0).exists():
+                        continue
+                    write_json_atomic(item_json0, oit)
+                    write_json_atomic(cache_meta_path(item_json0), meta0)
 
     out_items: list[dict[str, object]] = []
     for it in items:
@@ -293,6 +362,36 @@ def main() -> None:
                 }
             )
             continue
+
+        # Per-item cache.
+        fp_entry = item_fp_map.get((dataset_key, int(code_id))) or {
+            "dataset": dataset_key,
+            "code_id": int(code_id),
+            "present_n": int(len(present)),
+            "files": [{"name": fp.name} for fp in present],
+        }
+        item_cache_key = {
+            "analysis": "nonstandard_sequence_tests_item",
+            "analysis_version": int(ANALYSIS_VERSION),
+            "panel": str(args.panel),
+            "dataset": dataset_key,
+            "code_id": int(code_id),
+            "max_records": int(args.max_records),
+            "mu_star": MU_STAR,
+            "gc_prt": gc_sha,
+            "fingerprint": fp_entry,
+        }
+        item_meta = {"cache_key": item_cache_key, "cache_digest": cache_key_digest(item_cache_key)}
+        item_json = item_cache_dir / f"{item_meta['cache_digest']}.json"
+        if (not args.force) and cache_hit(item_json, expected_meta=item_meta, require_meta=True):
+            cached_item = _read_json_dict(item_json)
+            if isinstance(cached_item, dict) and cached_item.get("present"):
+                # Keep metadata aligned with manifest.
+                cached_item["label"] = label
+                cached_item["domain"] = domain
+                cached_item["files"] = [str(fp) for fp in present]
+                out_items.append(cached_item)  # type: ignore[arg-type]
+                continue
 
         hb = Heartbeat(every_s=float(args.heartbeat_s), prefix=f"[progress] nonstandard_sequence_tests:{dataset_key}")
         hb.force(f"start code_id={code_id} files={len(present)}")
@@ -416,6 +515,12 @@ def main() -> None:
                 },
             }
         )
+        # Persist per-item cache (post-scan).
+        try:
+            write_json_atomic(item_json, out_items[-1])
+            write_json_atomic(cache_meta_path(item_json), item_meta)
+        except Exception:
+            pass
 
     out = {"schema_version": 1, "panel": str(args.panel), "mu_star": MU_STAR, "items": out_items}
     out_json.parent.mkdir(parents=True, exist_ok=True)
