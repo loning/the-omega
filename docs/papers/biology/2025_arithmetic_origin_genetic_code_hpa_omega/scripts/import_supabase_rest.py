@@ -165,7 +165,12 @@ def load_refseq_comp_results(summary_json: Path) -> list[dict[str, Any]]:
     if not isinstance(obj, dict):
         raise SystemExit("Malformed transcriptome_summary.json")
     dataset = "human_refseq_mrna"
-    analysis_version = int(obj.get("schema_version", 0) or 0)
+    analysis_version = int(obj.get("analysis_version", 0) or 0)
+    if analysis_version <= 0:
+        # Back-compat: older merged summaries did not carry analysis_version.
+        analysis_version = int(obj.get("schema_version", 0) or 0)
+    if analysis_version <= 0:
+        raise SystemExit("Missing analysis_version/schema_version in transcriptome_summary.json")
     k = int(obj.get("stop_window", 0) or 0)
     if k <= 0:
         raise SystemExit("Missing stop_window in transcriptome_summary.json")
@@ -254,11 +259,17 @@ def load_analysis_runs(
     if not isinstance(rec_obj, dict):
         raise SystemExit("Malformed recoding_sites_summary.json")
 
+    ref_av = int(ref_obj.get("analysis_version", 0) or 0)
+    if ref_av <= 0:
+        ref_av = int(ref_obj.get("schema_version", 0) or 0)
+    if ref_av <= 0:
+        raise SystemExit("Missing analysis_version/schema_version in transcriptome_summary.json")
+
     return [
         {
             "dataset": "human_refseq_mrna",
             "analysis": "transcriptome_summary",
-            "analysis_version": int(ref_obj.get("schema_version", 0) or 0),
+            "analysis_version": ref_av,
             "payload": ref_obj,
         },
         {

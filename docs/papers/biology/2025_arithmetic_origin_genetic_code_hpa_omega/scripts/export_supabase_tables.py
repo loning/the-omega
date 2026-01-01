@@ -125,8 +125,12 @@ def export_refseq_stop_context_comp_results(*, in_summary_json: Path, out_csv: P
         raise SystemExit("Malformed transcriptome_summary.json")
 
     dataset = "human_refseq_mrna"
-    analysis_version = int(obj.get("schema_version", 0) or 0)
-    # Note: schema_version != analysis_version in code; keep both if you want.
+    analysis_version = int(obj.get("analysis_version", 0) or 0)
+    if analysis_version <= 0:
+        # Back-compat: older merged summaries did not carry analysis_version.
+        analysis_version = int(obj.get("schema_version", 0) or 0)
+    if analysis_version <= 0:
+        raise SystemExit("Missing analysis_version/schema_version in transcriptome_summary.json")
     k = int(obj.get("stop_window", 0) or 0)
     if k <= 0:
         raise SystemExit("Missing stop_window in transcriptome_summary.json")

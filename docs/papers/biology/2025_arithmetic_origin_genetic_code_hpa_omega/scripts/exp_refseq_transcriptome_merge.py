@@ -1085,7 +1085,10 @@ def main() -> None:
         }
 
     summary = {
-        "schema_version": 3,
+        "schema_version": 4,
+        "analysis_version": int(ANALYSIS_VERSION),
+        "merge_version": int(MERGE_VERSION),
+        "mu_star": MU_STAR,
         "source_files": sorted(set(source_files)),
         "records": records,
         "records_with_orf": records_with_orf,

@@ -4,7 +4,7 @@
 
 ### 目录
 
-- **schema/migration**：`supabase/migrations/20260101000000_init.sql`
+- **schema/migration**：`supabase/migrations/`（按时间顺序执行）
 - **导出脚本**：`scripts/export_supabase_tables.py`
 
 ### 本地 Supabase（推荐）
@@ -18,7 +18,7 @@
 ### 云端 Supabase
 
 - **创建项目**：在 Supabase 控制台创建项目（Postgres）
-- **应用 migration**：用 Supabase SQL Editor 执行 `supabase/migrations/20260101000000_init.sql`，或用 psql 连接后执行该文件
+- **应用 migration**：用 Supabase SQL Editor 按顺序执行 `supabase/migrations/*.sql`（或用 psql 连接后依次执行这些文件）
 
 ### Python 直连导入（PostgREST / REST，无需 psql）
 
@@ -57,6 +57,11 @@ python3 scripts/export_supabase_tables.py --out-dir data/db_exports
 会生成：
 - `data/db_exports/recoding_sites.csv`
 - `data/db_exports/refseq_stop_context_comp_results.csv`
+
+### 版本字段约定
+
+- `analysis_version`：分析逻辑版本（用于区分不同算法/参数版本的结果；写入数据库表的 `analysis_version` 列）
+- `schema_version`：JSON 输出结构版本（仅存在于部分 summary JSON，用于回溯文件格式；在 `analysis_runs.payload` 中保留）
 
 ### 导入（psql / COPY）
 

@@ -370,8 +370,10 @@ do nothing;
 
 
 def _sql_insert_analysis_runs(*, transcriptome_summary: dict[str, Any], recoding_meta: dict[str, Any]) -> str:
-    # transcriptome_summary carries schema_version and stop_window.
-    a_ref = int(transcriptome_summary.get("schema_version", 0) or 0)
+    # Prefer analysis_version if present; fall back to schema_version for older summaries.
+    a_ref = int(transcriptome_summary.get("analysis_version", 0) or 0)
+    if a_ref <= 0:
+        a_ref = int(transcriptome_summary.get("schema_version", 0) or 0)
     ref_payload = _json_dumps(transcriptome_summary)
     rec_payload = _json_dumps(recoding_meta)
     return f"""\
@@ -399,7 +401,7 @@ def parse_args() -> argparse.Namespace:
         help="Output directory for .sql files (relative to project root).",
     )
     p.add_argument("--chunk-size", type=int, default=200, help="Rows per insert chunk for recoding_sites.")
-    p.add_argument("--recoding-analysis-version", type=int, default=4, help="analysis_version to stamp into recoding_sites.")
+    p.add_argument("--recoding-analysis-version", type=int, default=5, help="analysis_version to stamp into recoding_sites.")
     return p.parse_args()
 
 
