@@ -24,4 +24,8 @@ ALPHAZ_INV_PDG: float = 127.955
 SIN2_THETAW_PDG: float = 0.23122
 JARLSKOG_PDG_CENTRAL: float = 3.00e-5
 
+# Electroweak reference scale (GeV), used for calibration-sweep diagnostics.
+# PDG 2024: Z pole mass.
+M_Z_GEV: float = 91.1876
+
 

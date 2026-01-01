@@ -105,6 +105,20 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Resolution calibration sweep",
+            script="exp_resolution_calibration_sweep.py",
+            expected_outputs=[
+                "sections/generated/resolution_calibration_sweep_rows.tex",
+            ],
+        ),
+        Step(
+            name="Resolution calibration multianchor sweep",
+            script="exp_resolution_calibration_multianchor.py",
+            expected_outputs=[
+                "sections/generated/resolution_calibration_multianchor_rows.tex",
+            ],
+        ),
+        Step(
             name="Edge mismatch decomposition (toy connection)",
             script="exp_edge_mismatch_decomposition.py",
             expected_outputs=[
@@ -120,6 +134,20 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Holonomy SU(3) representation (toy)",
+            script="exp_holonomy_su3_representation.py",
+            expected_outputs=[
+                "sections/generated/holonomy_su3_rotation_rows.tex",
+            ],
+        ),
+        Step(
+            name="Holonomy phase lift (CP-odd invariant, toy)",
+            script="exp_holonomy_phase_lift_cp_invariant.py",
+            expected_outputs=[
+                "sections/generated/holonomy_phase_lift_j_rows.tex",
+            ],
+        ),
+        Step(
             name="SM labeling solver",
             script="exp_sm_labeling_solver.py",
             expected_outputs=[
@@ -132,6 +160,28 @@ def build_steps() -> List[Step]:
             script="exp_labeling_lift_consistency.py",
             expected_outputs=[
                 "sections/generated/label_lift_rows.tex",
+            ],
+        ),
+        Step(
+            name="Label lift refinement indices",
+            script="exp_labeling_lift_refinement_indices.py",
+            expected_outputs=[
+                "sections/generated/label_lift_suffix_catalog_rows.tex",
+                "sections/generated/label_lift_boundary_rho_rows.tex",
+            ],
+        ),
+        Step(
+            name="Audit label-lift refinement index",
+            script="exp_audit_label_lift_refinement.py",
+            expected_outputs=[
+                "sections/generated/audit_label_lift_refinement_rows.tex",
+            ],
+        ),
+        Step(
+            name="Label lift high-m invariants",
+            script="exp_labeling_lift_highm_invariants.py",
+            expected_outputs=[
+                "sections/generated/label_lift_highm_invariants_rows.tex",
             ],
         ),
         Step(
