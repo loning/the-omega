@@ -19,11 +19,13 @@ from __future__ import annotations
 import argparse
 import subprocess
 import sys
+from subprocess import CalledProcessError
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, List, Sequence
 
 from common_paths import generated_dir, paper_root, scripts_dir
+from common_progress import heartbeat_wait
 from common_tex import nonempty_file
 
 
@@ -34,9 +36,12 @@ class Step:
     expected_outputs: Sequence[str]
 
 
-def _run_script(script_path: Path) -> None:
+def _run_script(script_path: Path, step_name: str) -> None:
     cmd = [sys.executable, str(script_path)]
-    subprocess.run(cmd, cwd=str(paper_root()), check=True)
+    proc = subprocess.Popen(cmd, cwd=str(paper_root()))
+    rc = heartbeat_wait(proc, label=step_name, interval_s=60.0, poll_s=1.0)
+    if rc != 0:
+        raise CalledProcessError(rc, cmd)
 
 
 def _check_outputs(rel_paths: Iterable[str]) -> None:
@@ -69,6 +74,13 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Xm weight sweep",
+            script="exp_xm_weight_sweep.py",
+            expected_outputs=[
+                "sections/generated/xm_weight_sweep_rows.tex",
+            ],
+        ),
+        Step(
             name="Fold6 stats",
             script="exp_fold6_stats.py",
             expected_outputs=[
@@ -81,6 +93,20 @@ def build_steps() -> List[Step]:
             script="exp_foldm_stats.py",
             expected_outputs=[
                 "sections/generated/foldm_sweep_rows.tex",
+            ],
+        ),
+        Step(
+            name="Ghost sector violation diagnostics",
+            script="exp_ghost_sector_violation_stats.py",
+            expected_outputs=[
+                "sections/generated/ghost_sector_violation_rows.tex",
+            ],
+        ),
+        Step(
+            name="Ghost sector repair-cost diagnostics",
+            script="exp_ghost_sector_repair_cost_stats.py",
+            expected_outputs=[
+                "sections/generated/ghost_sector_repair_cost_rows.tex",
             ],
         ),
         Step(
@@ -331,6 +357,27 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Inverse (high-m) hypercharge-squared fit (toy)",
+            script="exp_inverse_highm_hypercharge_fit.py",
+            expected_outputs=[
+                "sections/generated/inverse_highm_hypercharge_fit_rows.tex",
+            ],
+        ),
+        Step(
+            name="Inverse (high-m) hypercharge sign fit (toy)",
+            script="exp_inverse_highm_hypercharge_sign_fit.py",
+            expected_outputs=[
+                "sections/generated/inverse_highm_hypercharge_sign_fit_rows.tex",
+            ],
+        ),
+        Step(
+            name="Inverse (high-m) full hypercharge numerator fit (toy)",
+            script="exp_inverse_highm_hypercharge_full_fit.py",
+            expected_outputs=[
+                "sections/generated/inverse_highm_hypercharge_full_fit_rows.tex",
+            ],
+        ),
+        Step(
             name="Mass spectrum",
             script="exp_mass_spectrum.py",
             expected_outputs=[
@@ -453,7 +500,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         if not script_path.is_file():
             raise FileNotFoundError(f"Missing script: {script_path}")
         print(f"[run_all] {step.name} -> {step.script}")
-        _run_script(script_path)
+        _run_script(script_path, step_name=step.name)
         _check_outputs(step.expected_outputs)
         all_expected.extend(list(step.expected_outputs))
         if args.stop_after and step.name.lower().startswith(args.stop_after.lower()):

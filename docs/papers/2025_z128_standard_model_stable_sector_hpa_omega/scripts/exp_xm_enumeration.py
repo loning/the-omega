@@ -45,8 +45,8 @@ def is_boundary_word(w: str) -> bool:
 
 
 def main() -> None:
-    # Sweep values used in the paper (m-uplift at fixed n=3; also covers balanced m=2n for n=3..5).
-    m_list = [6, 7, 8, 9, 10]
+    # Sweep values used in the paper (m-uplift at fixed n=3; also covers balanced m=2n for n=3..8).
+    m_list = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
     rows: List[str] = []
     for m in m_list:

@@ -85,7 +85,7 @@ def hist_to_tex(hist: Counter[int]) -> str:
 
 
 def main() -> None:
-    m_list = [6, 7, 8, 9, 10]
+    m_list = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
     rows: List[str] = []
     for m in m_list:

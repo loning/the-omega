@@ -109,7 +109,7 @@ def audit_rows(m_list: List[int]) -> List[str]:
 
 
 def main() -> None:
-    m_list = [8, 10]
+    m_list = [8, 10, 12, 14, 16]
     root = Path(__file__).resolve().parent.parent
     out_dir = root / "sections" / "generated"
     out_dir.mkdir(parents=True, exist_ok=True)

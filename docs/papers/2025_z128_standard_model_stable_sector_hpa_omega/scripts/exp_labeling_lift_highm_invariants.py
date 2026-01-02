@@ -74,7 +74,7 @@ def parse_label_map_from_rows(rows: List[str]) -> Dict[str, str]:
 
 
 def main() -> None:
-    m_list = [8, 10]
+    m_list = [8, 10, 12, 14, 16]
 
     base_rows = sml.generate_rows()
     label_of = parse_label_map_from_rows(base_rows)

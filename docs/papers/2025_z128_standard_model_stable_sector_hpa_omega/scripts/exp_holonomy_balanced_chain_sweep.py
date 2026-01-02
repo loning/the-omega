@@ -2,7 +2,7 @@
 """
 Balanced-chain sweep for toy holonomy and phase-lift CP signal.
 
-We consider the balanced chain m=2n with (n,m) in {(3,6),(4,8),(5,10)}.
+We consider the balanced chain m=2n with (n,m) in {(3,6),(4,8),(5,10),(6,12),(7,14),(8,16)}.
 For each pair we:
   - embed indices k in {0..4^n-1} on a 2^n x 2^n grid via Hilbert addressing,
   - label each site by the stable word w = Fold_m(k),
@@ -28,6 +28,7 @@ from typing import Dict, List, Tuple
 
 import exp_foldm_stats as foldm
 import exp_hilbert_chirality_index as hil
+from common_progress import ProgressEvery
 from common_tex import write_lines
 
 
@@ -35,12 +36,26 @@ Coord = Tuple[int, int]
 Perm = Tuple[int, int, int, int]
 
 
-def bits_m(n: int, m: int) -> str:
-    return format(n, f"0{m}b")
+def hamming(a: int, b: int) -> int:
+    # Hamming distance on m-bit words represented as integers in [0,2^m).
+    return (a ^ b).bit_count()
 
 
-def hamming(a: str, b: str) -> int:
-    return sum(1 for x, y in zip(a, b) if x != y)
+def phase_table(denom: int) -> List[complex]:
+    """
+    Return phases[k] = exp(2*pi*i*k/denom) for k=0..denom-1.
+    Constructed iteratively for determinism and speed.
+    """
+    if denom <= 0:
+        raise ValueError("denom must be positive.")
+    step = 2.0 * math.pi / float(denom)
+    root = complex(math.cos(step), math.sin(step))
+    out = [0j] * denom
+    z = 1.0 + 0j
+    for k in range(denom):
+        out[k] = z
+        z *= root
+    return out
 
 
 def preimages(m: int) -> Dict[str, List[int]]:
@@ -63,13 +78,11 @@ def fiber4(pre: Dict[str, List[int]], w: str) -> List[int]:
 
 
 def best_perm(fa: List[int], fb: List[int], m: int) -> Perm:
-    a_bits = [bits_m(x, m) for x in fa]
-    b_bits = [bits_m(x, m) for x in fb]
     best: Tuple[int, Perm] | None = None
     for p in itertools.permutations((0, 1, 2, 3), 4):
         cost = 0
         for i in range(4):
-            cost += hamming(a_bits[i], b_bits[p[i]])
+            cost += hamming(fa[i], fb[p[i]])
         cand = (cost, p)
         if best is None or cand < best:
             best = cand
@@ -227,79 +240,133 @@ def jarlskog(U: List[List[complex]]) -> float:
     return float((U[0][0] * U[1][1] * U[0][1].conjugate() * U[1][0].conjugate()).imag)
 
 
-def phase(k: int, denom: int) -> float:
-    return 2.0 * math.pi * (float(k) / float(denom))
-
-
-def edge_unitary(a: Coord, b: Coord, labels: Dict[Coord, str], pre: Dict[str, List[int]], edge_p: Dict[Tuple[Coord, Coord], Perm], m: int, denom: int) -> List[List[complex]]:
-    p = edge_p[(a, b)]
-    wa = labels[a]
-    wb = labels[b]
-    fa = fiber4(pre, wa)
-    fb = fiber4(pre, wb)
-    U = [[0j] * 4 for _ in range(4)]
-    for i in range(4):
-        j = p[i]
-        theta = phase(fb[j], denom=denom) - phase(fa[i], denom=denom)
-        U[j][i] = complex(math.cos(theta), math.sin(theta))
-    return U
+def compose_mono(p: Perm, a: List[complex], q: Perm, b: List[complex]) -> Tuple[Perm, List[complex]]:
+    """
+    Compose two 4x4 monomial unitaries:
+      U_p * U_q  ->  U_r
+    where U_p has columns mapping i -> p[i] with phase a[i] at row p[i],
+    and similarly for (q,b).
+    """
+    r = compose(p, q)
+    c = [a[q[i]] * b[i] for i in range(4)]
+    return r, c
 
 
 def sweep_one(n_bits: int, m: int) -> Tuple[Counter[str], Dict[str, float], Dict[str, float], int]:
-    labels = grid_labels(n_bits, m)
-    pre = preimages(m)
-    edge_p = edge_perm_cache(n_bits, m, labels, pre)
     N = 1 << n_bits
-
-    hist = Counter()
-    J_by_ct: Dict[str, List[float]] = defaultdict(list)
-    failures = 0
-    B = basis_B()
     denom = 1 << m  # denom = 2^m
 
+    labels = grid_labels(n_bits, m)
+    pre = preimages(m)
+    fibers = {w: fiber4(pre, w) for w in pre}
+    phases = phase_table(denom)
+
+    # Undirected edge permutation cache (store only for the canonical ordered endpoints).
+    perm_cache: Dict[Tuple[Coord, Coord], Perm] = {}
+
+    def key(a: Coord, b: Coord) -> Tuple[Coord, Coord]:
+        return (a, b) if a < b else (b, a)
+
+    # Edge build progress.
+    total_edges = 2 * N * (N - 1)
+    prog_edges = ProgressEvery(label=f"holonomy_edges n={n_bits} m={m}", total=total_edges, interval_s=60.0)
+    prog_edges.start()
+    done_edges = 0
+    for x in range(N):
+        for y in range(N):
+            a = (x, y)
+            for dx, dy in [(1, 0), (0, 1)]:
+                nx, ny = x + dx, y + dy
+                if nx >= N or ny >= N:
+                    continue
+                b = (nx, ny)
+                ka, kb = key(a, b)
+                if (ka, kb) in perm_cache:
+                    continue
+                wa = labels[ka]
+                wb = labels[kb]
+                fa = fibers[wa]
+                fb = fibers[wb]
+                perm_cache[(ka, kb)] = best_perm(fa, fb, m=m)
+                done_edges += 1
+                prog_edges.maybe(done_edges)
+    prog_edges.done(extra=f"edges={done_edges}")
+
+    hist = Counter()
+    ct_count: Dict[str, int] = defaultdict(int)
+    ct_sum_abs: Dict[str, float] = defaultdict(float)
+    ct_sum_signed: Dict[str, float] = defaultdict(float)
+    failures = 0
+    B = basis_B()
+
+    total_plaq = (N - 1) * (N - 1)
+    prog_plaq = ProgressEvery(label=f"holonomy_plaquettes n={n_bits} m={m}", total=total_plaq, interval_s=60.0)
+    prog_plaq.start()
+    done_plaq = 0
+    valid_plaq = 0
     for x in range(N - 1):
         for y in range(N - 1):
+            done_plaq += 1
+            prog_plaq.maybe(done_plaq)
             a = (x, y)
             b = (x + 1, y)
             c = (x + 1, y + 1)
             d = (x, y + 1)
 
-            p_ab = edge_p[(a, b)]
-            p_bc = edge_p[(b, c)]
-            p_cd = edge_p[(c, d)]
-            p_da = edge_p[(d, a)]
-            hol_p = compose(p_da, compose(p_cd, compose(p_bc, p_ab)))
+            def edge_mono(u: Coord, v: Coord) -> Tuple[Perm, List[complex]]:
+                ku, kv = key(u, v)
+                p0 = perm_cache[(ku, kv)]
+                p = p0 if (u, v) == (ku, kv) else inv_perm(p0)
+                wu = labels[u]
+                wv = labels[v]
+                fu = fibers[wu]
+                fv = fibers[wv]
+                a_phase = [phases[fv[p[i]]] * phases[fu[i]].conjugate() for i in range(4)]
+                return p, a_phase
+
+            p_ab, a_ab = edge_mono(a, b)
+            p_bc, a_bc = edge_mono(b, c)
+            p_cd, a_cd = edge_mono(c, d)
+            p_da, a_da = edge_mono(d, a)
+
+            hol_p, hol_a = compose_mono(p_bc, a_bc, p_ab, a_ab)
+            hol_p, hol_a = compose_mono(p_cd, a_cd, hol_p, hol_a)
+            hol_p, hol_a = compose_mono(p_da, a_da, hol_p, hol_a)
+
             ct = cycle_type(hol_p)
             hist[ct] += 1
 
             # Phase-lifted unitary holonomy.
-            U_ab = edge_unitary(a, b, labels, pre, edge_p, m=m, denom=denom)
-            U_bc = edge_unitary(b, c, labels, pre, edge_p, m=m, denom=denom)
-            U_cd = edge_unitary(c, d, labels, pre, edge_p, m=m, denom=denom)
-            U_da = edge_unitary(d, a, labels, pre, edge_p, m=m, denom=denom)
-            H = matmul(U_da, matmul(U_cd, matmul(U_bc, U_ab)))
+            H = [[0j] * 4 for _ in range(4)]
+            for i in range(4):
+                H[hol_p[i]][i] = hol_a[i]
             M = project_3x3(H, B=B)
             Q = gram_schmidt_unitary(M)
             if Q is None:
                 failures += 1
                 continue
-            J_by_ct[ct].append(jarlskog(Q))
+            J = jarlskog(Q)
+            ct_count[ct] += 1
+            ct_sum_abs[ct] += abs(J)
+            ct_sum_signed[ct] += J
+            valid_plaq += 1
+    prog_plaq.done(extra=f"valid={valid_plaq} failures={failures}")
 
     mean_abs: Dict[str, float] = {}
     mean_signed: Dict[str, float] = {}
     for ct in ["1", "2", "2x2", "3", "4", "other"]:
-        xs = J_by_ct.get(ct, [])
-        if not xs:
+        nct = ct_count.get(ct, 0)
+        if nct <= 0:
             mean_abs[ct] = 0.0
             mean_signed[ct] = 0.0
         else:
-            mean_abs[ct] = sum(abs(x) for x in xs) / float(len(xs))
-            mean_signed[ct] = sum(xs) / float(len(xs))
+            mean_abs[ct] = ct_sum_abs.get(ct, 0.0) / float(nct)
+            mean_signed[ct] = ct_sum_signed.get(ct, 0.0) / float(nct)
     return hist, mean_abs, mean_signed, failures
 
 
 def main() -> None:
-    chain = [(3, 6), (4, 8), (5, 10)]
+    chain = [(3, 6), (4, 8), (5, 10), (6, 12), (7, 14), (8, 16)]
 
     rows: List[str] = []
     for n_bits, m in chain:
