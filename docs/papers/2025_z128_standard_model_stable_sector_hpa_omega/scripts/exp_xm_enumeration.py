@@ -20,24 +20,31 @@ from __future__ import annotations
 from pathlib import Path
 from typing import List
 
+from common_cache import CACHE_VERSION, cache_path, load_or_compute
+
 
 def all_xm(m: int) -> List[str]:
     if m <= 0:
         raise ValueError("m must be positive.")
-    out: List[str] = []
+    key = cache_path(f"xm_words_m{m}_v{CACHE_VERSION}.pkl")
 
-    def rec(prefix: str, last: str) -> None:
-        if len(prefix) == m:
-            out.append(prefix)
-            return
-        # Always allowed to append 0.
-        rec(prefix + "0", "0")
-        # Append 1 only if last was not 1.
-        if last != "1":
-            rec(prefix + "1", "1")
+    def compute() -> List[str]:
+        out: List[str] = []
 
-    rec("", "0")
-    return out
+        def rec(prefix: str, last: str) -> None:
+            if len(prefix) == m:
+                out.append(prefix)
+                return
+            # Always allowed to append 0.
+            rec(prefix + "0", "0")
+            # Append 1 only if last was not 1.
+            if last != "1":
+                rec(prefix + "1", "1")
+
+        rec("", "0")
+        return out
+
+    return load_or_compute(key, compute)
 
 
 def is_boundary_word(w: str) -> bool:

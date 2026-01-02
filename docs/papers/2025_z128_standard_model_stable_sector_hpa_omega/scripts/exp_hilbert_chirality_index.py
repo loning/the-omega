@@ -15,6 +15,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from common_cache import CACHE_VERSION, cache_path, load_or_compute
+
 
 def rot(s: int, x: int, y: int, rx: int, ry: int) -> tuple[int, int]:
     if ry == 0:
@@ -42,8 +44,13 @@ def d2xy(n_bits: int, d: int) -> tuple[int, int]:
 
 
 def hilbert_curve(n_bits: int) -> list[tuple[int, int]]:
-    N = 1 << (2 * n_bits)  # 4^n
-    return [d2xy(n_bits, d) for d in range(N)]
+    key = cache_path(f"hilbert_curve_n{n_bits}_v{CACHE_VERSION}.pkl")
+
+    def compute() -> list[tuple[int, int]]:
+        N = 1 << (2 * n_bits)  # 4^n
+        return [d2xy(n_bits, d) for d in range(N)]
+
+    return load_or_compute(key, compute)
 
 
 def chirality_index(path: list[tuple[int, int]]) -> int:

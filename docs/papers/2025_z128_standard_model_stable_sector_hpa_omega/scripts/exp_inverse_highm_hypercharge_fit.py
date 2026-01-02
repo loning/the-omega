@@ -105,12 +105,10 @@ def build_base_targets() -> List[Tuple[str, int]]:
 
 
 def foldm_degeneracy_map(m: int, Xm: List[str]) -> Dict[str, int]:
-    pre: Dict[str, int] = defaultdict(int)
-    for k in range(1 << m):
-        pre[foldm.foldm(k, m)] += 1
-    if set(pre.keys()) != set(Xm):
+    gm = foldm.cached_degeneracy_map(m)
+    if set(gm.keys()) != set(Xm):
         raise AssertionError("Fold_m image mismatch.")
-    return dict(pre)
+    return gm
 
 
 def dataset_for_m(m: int) -> List[Datum]:

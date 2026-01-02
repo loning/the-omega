@@ -181,12 +181,13 @@ def sweep_one(n_bits: int, m: int) -> Tuple[List[Tuple[Perm3, Perm3, float, floa
     for k, c in enumerate(path):
         idx_of[(int(c[0]), int(c[1]))] = k
 
+    outs = foldm.cached_foldm_outputs(m)
     labels: Dict[Coord, str] = {}
     for coord, k in idx_of.items():
-        labels[coord] = foldm.foldm(k, m)
+        labels[coord] = outs[k]
 
-    pre = preimages(m)
-    fibers = {w: fiber4(pre, w) for w in pre}
+    # Fiber4 map is cached on disk (padded to rank 4).
+    fibers = foldm.cached_fiber4_map(m, rank=4)
 
     # Build undirected edge permutation cache for neighbor edges.
     perm_cache: Dict[Tuple[Coord, Coord], Perm4] = {}

@@ -135,9 +135,10 @@ def grid_labels(n_bits: int, m: int) -> Dict[Coord, str]:
     idx_of: Dict[Coord, int] = {}
     for k, c in enumerate(path):
         idx_of[(int(c[0]), int(c[1]))] = k
+    outs = foldm.cached_foldm_outputs(m)
     out: Dict[Coord, str] = {}
     for coord, k in idx_of.items():
-        out[coord] = foldm.foldm(k, m)
+        out[coord] = outs[k]
     return out
 
 
@@ -257,8 +258,7 @@ def sweep_one(n_bits: int, m: int) -> Tuple[Counter[str], Dict[str, float], Dict
     denom = 1 << m  # denom = 2^m
 
     labels = grid_labels(n_bits, m)
-    pre = preimages(m)
-    fibers = {w: fiber4(pre, w) for w in pre}
+    fibers = foldm.cached_fiber4_map(m, rank=4)
     phases = phase_table(denom)
 
     # Undirected edge permutation cache (store only for the canonical ordered endpoints).
