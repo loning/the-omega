@@ -6,7 +6,7 @@ This script produces *auditable* "look-elsewhere" context for several closures:
   - alpha_em^{-1} coefficient rigidity (a*pi^3 + b*pi^2 + c*pi)
   - electroweak alpha^{-1}(mu_Z) ~ n*pi^2 and sin^2(theta_W) ~ p/q
   - CKM Jarlskog rigidity J ~ 1/(a*pi^n)
-  - CKM magnitude closure (m,k23,k13) at B=20
+  - CKM magnitude closure (d,k23,k13) at B=20
   - PMNS mixing-sine closure (p12/q12, p23/q23, k13) at B=20
   - PMNS Dirac-phase closure delta = (k*pi)/q at Q=12 (bounded denominator, sign/quadrant anchored)
   - Mass-depth rigidity (a,b,c) at B=20
@@ -229,28 +229,28 @@ def audit_ckm_magnitudes_B20() -> Tuple[MetricRow, List[float]]:
         raise AssertionError(f"Expected V_max(X6)=20, got {vmax}.")
 
     B = 20
-    m_max = min(B, vmax)
+    d_max = min(B, vmax)
     k_max = 2 * B
 
     e_list: List[float] = []
     cand: List[Tuple[Tuple, float]] = []
-    for m in range(1, m_max + 1):
+    for d in range(1, d_max + 1):
         for k23 in range(1, k_max + 1):
             for k13 in range(1, k_max + 1):
-                maxe, sume = ckm.triple_objective(m, k23, k13, vus_ref, vcb_ref, vub_ref)
-                comp = m + k23 + k13
-                key = (maxe, sume, comp, m, k23, k13)
+                maxe, sume = ckm.triple_objective(d, k23, k13, vus_ref, vcb_ref, vub_ref)
+                comp = d + k23 + k13
+                key = (maxe, sume, comp, d, k23, k13)
                 cand.append((key, maxe))
                 e_list.append(maxe)
 
     best_key, best_e, second_key, second_e = _best_two_by_key(cand)
-    _maxe, _sume, _comp, m, k23, k13 = best_key
-    best_params_tex = f"$(m,k_{{23}},k_{{13}})=({m},{k23},{k13})$"
+    _maxe, _sume, _comp, d, k23, k13 = best_key
+    best_params_tex = f"$(d,k_{{23}},k_{{13}})=({d},{k23},{k13})$"
 
     return (
         MetricRow(
             name=r"CKM magnitudes",
-            family_tex=r"$|V_{us}|{=}1/\sqrt{m},\ |V_{cb}|{=}\varphi^{-k_{23}/2},\ |V_{ub}|{=}\varphi^{-k_{13}/2}$",
+            family_tex=r"$|V_{us}|{=}1/\sqrt{d},\ |V_{cb}|{=}\varphi^{-k_{23}/2},\ |V_{ub}|{=}\varphi^{-k_{13}/2}$",
             domain_size=len(e_list),
             best_params_tex=best_params_tex,
             best_e=best_e,

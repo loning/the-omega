@@ -68,12 +68,12 @@ def best_ckm_family(vus_ref: float, vcb_ref: float, vub_ref: float, base: float)
     # Domain matches the CKM closure at B=20.
     B = 20
     vmax = ckm.v_max_x6()
-    m_max = min(B, vmax)
+    d_max = min(B, vmax)
     k_max = 2 * B
-    best: Tuple[float, float, int, int, int, int] | None = None  # (maxe,sume,comp,m,k23,k13)
+    best: Tuple[float, float, int, int, int, int] | None = None  # (maxe,sume,comp,d,k23,k13)
     domain = 0
-    for m in range(1, m_max + 1):
-        vus = 1.0 / math.sqrt(float(m))
+    for d in range(1, d_max + 1):
+        vus = 1.0 / math.sqrt(float(d))
         for k23 in range(1, k_max + 1):
             vcb = base ** (-0.5 * float(k23))
             for k13 in range(1, k_max + 1):
@@ -83,15 +83,15 @@ def best_ckm_family(vus_ref: float, vcb_ref: float, vub_ref: float, base: float)
                 e13 = abs_log_ratio(vub, vub_ref)
                 maxe = max(e12, e23, e13)
                 sume = e12 + e23 + e13
-                comp = m + k23 + k13
-                cand = (maxe, sume, comp, m, k23, k13)
+                comp = d + k23 + k13
+                cand = (maxe, sume, comp, d, k23, k13)
                 domain += 1
                 if best is None or cand < best:
                     best = cand
     if best is None:
         raise AssertionError("No candidates for CKM family.")
-    maxe, _sume, _comp, m, k23, k13 = best
-    return (m, k23, k13), maxe, domain
+    maxe, _sume, _comp, d, k23, k13 = best
+    return (d, k23, k13), maxe, domain
 
 
 def best_pmns_family(s12_ref: float, s23_ref: float, s13_ref: float, base: float) -> Tuple[Tuple[int, int, int], float, int]:
@@ -311,13 +311,13 @@ def main() -> None:
     p_e, e_ce, dom_ce = best_ckm_family(vus_ref, vcb_ref, vub_ref, base=math.e)
     p_2, e_c2, dom_c2 = best_ckm_family(vus_ref, vcb_ref, vub_ref, base=2.0)
     rows.append(
-        f"CKM magnitudes & $\\varphi$-family & {dom_phi} & $({p_phi[0]},{p_phi[1]},{p_phi[2]})$ & {e_phi:.6g} \\\\"
+        f"CKM magnitudes & $\\varphi$-family & {dom_phi} & $(d,k_{{23}},k_{{13}})=({p_phi[0]},{p_phi[1]},{p_phi[2]})$ & {e_phi:.6g} \\\\"
     )
     rows.append(
-        f"CKM magnitudes & $\\e$-family & {dom_ce} & $({p_e[0]},{p_e[1]},{p_e[2]})$ & {e_ce:.6g} \\\\"
+        f"CKM magnitudes & $\\e$-family & {dom_ce} & $(d,k_{{23}},k_{{13}})=({p_e[0]},{p_e[1]},{p_e[2]})$ & {e_ce:.6g} \\\\"
     )
     rows.append(
-        f"CKM magnitudes & $2$-family & {dom_c2} & $({p_2[0]},{p_2[1]},{p_2[2]})$ & {e_c2:.6g} \\\\"
+        f"CKM magnitudes & $2$-family & {dom_c2} & $(d,k_{{23}},k_{{13}})=({p_2[0]},{p_2[1]},{p_2[2]})$ & {e_c2:.6g} \\\\"
     )
 
     # PMNS sines.

@@ -222,6 +222,7 @@ def mass_depth_minimizer() -> Callable[[float, float], Tuple[int, int, int]]:
 @dataclass(frozen=True)
 class Row:
     name: str
+    ref_tex: str
     sigma_tex: str
     samples: int
     baseline_tex: str
@@ -254,6 +255,7 @@ def main() -> None:
     rows.append(
         Row(
             name=r"$\alpha_{\mathrm{em}}^{-1}$",
+            ref_tex=rf"${ALPHA_INV_CODATA_2022:.12f}$",
             sigma_tex=r"$\sigma=2.1\times 10^{-8}$",
             samples=N,
             baseline_tex=f"$({base_alpha[0]},{base_alpha[1]},{base_alpha[2]})$",
@@ -272,6 +274,7 @@ def main() -> None:
     rows.append(
         Row(
             name=r"$\alpha^{-1}(\mu_Z)$",
+            ref_tex=rf"${ALPHAZ_INV_PDG:.3f}$",
             sigma_tex=r"$\sigma=10^{-2}$",
             samples=N,
             baseline_tex=f"$n={base_alphaZ}$",
@@ -290,6 +293,7 @@ def main() -> None:
     rows.append(
         Row(
             name=r"$\sin^2\theta_W(\mu_Z)$",
+            ref_tex=rf"${SIN2_THETAW_PDG:.5f}$",
             sigma_tex=r"$\sigma=3\times 10^{-5}$",
             samples=N,
             baseline_tex=f"${base_sin2[0]}/{base_sin2[1]}$",
@@ -308,6 +312,7 @@ def main() -> None:
     rows.append(
         Row(
             name=r"$J$ (CKM)",
+            ref_tex=r"$3.00\times 10^{-5}$",
             sigma_tex=r"$\sigma=1.5\times 10^{-6}$",
             samples=N,
             baseline_tex=f"$({base_J[0]},{base_J[1]})$",
@@ -330,9 +335,10 @@ def main() -> None:
     rows.append(
         Row(
             name=r"CKM magnitudes",
+            ref_tex=rf"$(|V_{{us}}|,|V_{{cb}}|,|V_{{ub}}|)=({vus_mu:.4f},{vcb_mu:.4f},{vub_mu:.5f})$",
             sigma_tex=r"$\sigma=(5,8,36)\times 10^{-4}$",
             samples=N,
-            baseline_tex=f"$({base_ckm[0]},{base_ckm[1]},{base_ckm[2]})$",
+            baseline_tex=f"$(d,k_{{23}},k_{{13}})=({base_ckm[0]},{base_ckm[1]},{base_ckm[2]})$",
             stability=float(stable) / float(N),
         )
     )
@@ -358,6 +364,7 @@ def main() -> None:
     rows.append(
         Row(
             name=r"PMNS sines",
+            ref_tex=rf"$(\sin^2\theta_{{12}},\sin^2\theta_{{23}},\sin^2\theta_{{13}})=({sin2_t12_mu:.3f},{sin2_t23_mu:.3f},{sin2_t13_mu:.4f})$",
             sigma_tex=rf"$\sigma(\sin^2\theta)=({sin2_t12_sigma:.3g},{sin2_t23_sigma:.3g},{sin2_t13_sigma:.3g})$",
             samples=N,
             baseline_tex=rf"$(p_{{12}}/q_{{12}},p_{{23}}/q_{{23}},k_{{13}})=({base_pmns[0]}/{base_pmns[1]},{base_pmns[2]}/{base_pmns[3]},{base_pmns[4]})$",
@@ -379,6 +386,7 @@ def main() -> None:
     rows.append(
         Row(
             name=r"PMNS $\delta$ (bounded denom.)",
+            ref_tex=rf"$\delta={delta_mu:.0f}^\circ$",
             sigma_tex=rf"$\sigma_\delta={delta_sigma:.0f}^\circ$",
             samples=N,
             baseline_tex=rf"$\delta={base_deg:.0f}^\circ$",
@@ -400,6 +408,7 @@ def main() -> None:
     rows.append(
         Row(
             name=r"mass depth (leptons)",
+            ref_tex=r"$(m_\mu,m_\tau)=(0.10565838,1.77686)\,\mathrm{GeV}$",
             sigma_tex=r"$\sigma/\mu=5\times 10^{-4}$",
             samples=N,
             baseline_tex=f"$({base_depth[0]},{base_depth[1]},{base_depth[2]})$",
@@ -411,7 +420,7 @@ def main() -> None:
     out_rows: List[str] = []
     for r in rows:
         out_rows.append(
-            f"{r.name} & {r.sigma_tex} & {r.samples} & {r.baseline_tex} & {r.stability:.3f} \\\\"
+            f"{r.name} & {r.ref_tex} & {r.sigma_tex} & {r.samples} & {r.baseline_tex} & {r.stability:.3f} \\\\"
         )
     out_rows.append("\\bottomrule")
 

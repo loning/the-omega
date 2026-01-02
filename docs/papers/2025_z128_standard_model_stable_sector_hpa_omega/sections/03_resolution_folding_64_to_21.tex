@@ -18,6 +18,32 @@ We focus on the minimal balanced coupling $m=2n$ with $n=3$, hence $m=6$:
 \]
 At the same order $n=3$, the Hilbert-addressed grid has $4^n=64$ sites, yielding the minimal match between spatial addressing and local readout cardinality.
 
+\begin{lemma}[Balanced coupling equivalences]\label{lem:balanced_coupling_equiv}
+For integers $m,n\ge 1$, the following are equivalent:
+\[
+2^m=4^n,\qquad m=2n.
+\]
+Equivalently, an order-$n$ Hilbert grid has the same number of sites as the $m$-bit readout alphabet $\Omega_m$ if and only if $m=2n$.
+\end{lemma}
+\begin{proof}
+Since $4^n=(2^2)^n=2^{2n}$, the equality $2^m=4^n$ holds if and only if $m=2n$.
+\end{proof}
+
+\paragraph{Principled motivation for $m=2n$ and for the ``minimal'' choice.}
+At Hilbert order $n$, the scan index ranges over $\{0,\dots,4^n-1\}$ and therefore carries exactly $2n$ bits of information.
+The balanced rule $m=2n$ identifies a readout window length with this canonical bit budget and yields the smallest scale at which spatial addressing and local readout have matched cardinalities (Lemma~\ref{lem:balanced_coupling_equiv}).
+The choice $(m,n)=(6,3)$ is the smallest nontrivial instance: $2^6=4^3=64$.
+We treat it as a concrete anchor for an explicit finite model; higher balanced pairs such as $(m,n)=(8,4)$ and $(10,5)$ are addressed by the same definitions and by the uplift sweeps recorded in Appendix~\ref{app:generated_tables}.
+In particular, the Fibonacci admissible sizes and the $\pi$-channel split persist for all $m$ (Lemma~\ref{lem:xm_fib} and Proposition~\ref{prop:cyc_bdry_size}): for example,
+\[
+2^8\to |X_8|=55,\qquad 55=47\oplus 8,
+\]
+and
+\[
+2^{10}\to |X_{10}|=144,\qquad 144=123\oplus 21,
+\]
+as recorded in Table~\ref{tab:xm_sweep}.
+
 \subsection{Defect operators as commuting multiplication operators}
 \label{subsec:defect_operators}
 
@@ -113,6 +139,11 @@ The explicit boundary words are obtained by finite enumeration (Appendix~\ref{ap
 \label{subsec:e_channel}
 
 The $\e$-channel expresses analytic stability through zeta functions and Abel normalization \cite{ArtinMazur1965,ParryPollicott1990,Ruelle1978}.
+For a dynamical system $(X,f)$, the Artin--Mazur zeta function is defined by the periodic-point counts
+\begin{equation}\label{eq:artin_mazur_def}
+\zeta_f(z):=\exp\!\left(\sum_{n\ge 1}\frac{\#\mathrm{Fix}(f^n)}{n}\,z^n\right),
+\end{equation}
+whenever the series is well-defined \cite{ArtinMazur1965,ParryPollicott1990}.
 For shifts of finite type with transition matrix $A$, the Artin--Mazur zeta function admits the standard rational form $\zeta(z)=1/\det(I-zA)$ \cite{ParryPollicott1990,LindMarcus1995,Ruelle1978}.
 For the golden mean shift, one can make $A$ explicit:
 \begin{lemma}[Golden mean shift: transition matrix and zeta]\label{lem:golden_zeta_matrix}
@@ -207,6 +238,38 @@ Moreover, by construction of $V(w)$, the digit vector $(c_1,\dots,c_6)$ of this 
 Therefore, by the definition \eqref{eq:fold6_def}, $\mathrm{Fold}_6(M)=(c_1,\dots,c_6)=w$.
 \end{proof}
 
+\begin{lemma}[Explicit fiber description of $\mathrm{Fold}_6$]\label{lem:fold6_fiber_explicit}
+Let $w\in X_6$ and write $v:=V(w)\in\{0,\dots,20\}$.
+Then $\mathrm{Fold}_6^{-1}(w)$ is given explicitly by:
+\begin{itemize}
+\item If $w_6=1$, then $\mathrm{Fold}_6^{-1}(w)=\{v,\ v+34\}$.
+\item If $w_6=0$ and $v\le 8$, then $\mathrm{Fold}_6^{-1}(w)=\{v,\ v+21,\ v+34,\ v+55\}$.
+\item If $w_6=0$ and $9\le v\le 12$, then $\mathrm{Fold}_6^{-1}(w)=\{v,\ v+21,\ v+34\}$.
+\end{itemize}
+In particular, every stable type has preimage size in $\{2,3,4\}$.
+\end{lemma}
+\begin{proof}
+Let $N\in\{0,\dots,63\}$ and write its Zeckendorf digits as $N=\sum_{k\ge 1} c_k F_{k+1}$.
+Since $63<F_{11}=89$, one has $c_k=0$ for all $k\ge 10$, so
+\[
+N=\sum_{k=1}^{9} c_k F_{k+1}
+=\sum_{k=1}^{6} c_k F_{k+1} \;+\; 21\,c_7 \;+\; 34\,c_8 \;+\; 55\,c_9.
+\]
+If $\mathrm{Fold}_6(N)=w$, then $c_k=w_k$ for $k=1,\dots,6$, hence $\sum_{k=1}^{6} c_k F_{k+1}=V(w)=v$ and
+\[
+N=v+21\,c_7+34\,c_8+55\,c_9.
+\]
+The Zeckendorf admissibility constraint is $c_kc_{k+1}=0$.
+Thus if $w_6=1$ then $c_6=1$ forces $c_7=0$; and since $v\ge 13$ in this case, one also has $v+55>63$, so $c_9=0$.
+The remaining admissible choices are $c_8\in\{0,1\}$, giving $N\in\{v,v+34\}$.
+
+If $w_6=0$ then $c_6=0$ imposes no restriction on $c_7$.
+The admissible one-hot tail choices $(c_7,c_8,c_9)\in\{(0,0,0),(1,0,0),(0,1,0),(0,0,1)\}$ produce the four candidates $v$, $v+21$, $v+34$, $v+55$.
+The candidate with $c_9=1$ is valid if and only if $v+55\le 63$, i.e.\ $v\le 8$.
+If $9\le v\le 12$, then $v+55>63$, so only the first three candidates lie in $\{0,\dots,63\}$.
+All listed candidates satisfy Zeckendorf admissibility (no adjacent ones), hence their Zeckendorf digits have the same first six digits, so they map to $w$ under $\mathrm{Fold}_6$.
+\end{proof}
+
 \begin{theorem}[Finite folding statistics at $m=6$]\label{thm:fold6_stats}
 The map $\mathrm{Fold}_6:\{0,\dots,63\}\twoheadrightarrow X_6$ is surjective.
 Every stable type has preimage size $2$, $3$, or $4$, with degeneracy histogram
@@ -223,7 +286,13 @@ Moreover, the boundary-sector preimages are
 \end{theorem}
 \begin{proof}
 Surjectivity follows from Lemma~\ref{lem:fold6_surjective}.
-The $(2,3,4)$ preimage-size restriction, the degeneracy histogram, and the explicit boundary-sector preimages are finite checks with a closed-form characterization in \cite{Ma2025RF}; Appendix~\ref{app:generated_tables} records the full table and a reproducible script.
+The explicit fiber description in Lemma~\ref{lem:fold6_fiber_explicit} shows that $|\mathrm{Fold}_6^{-1}(w)|\in\{2,3,4\}$ for every $w\in X_6$.
+Moreover, $|\mathrm{Fold}_6^{-1}(w)|=2$ holds exactly when $w_6=1$.
+The number of admissible length-$6$ words ending with $1$ is $|X_4|=F_6=8$ (fix the last two digits as $01$ and choose any admissible $4$-bit prefix), hence $|V_2|=8$.
+Among the remaining $13$ words with $w_6=0$, Lemma~\ref{lem:fold6_fiber_explicit} gives preimage size $4$ exactly when $V(w)\le 8$, i.e.\ for $v\in\{0,\dots,8\}$, yielding $|V_4|=9$ by Proposition~\ref{prop:V_bijection}.
+The remaining $4$ values $v\in\{9,10,11,12\}$ yield preimage size $3$, hence $|V_3|=4$.
+Finally, for each boundary word $w$ listed in Corollary~\ref{prop:cyc_bdry_6} one has $w_6=1$ and $V(w)\in\{14,17,19\}$, so Lemma~\ref{lem:fold6_fiber_explicit} gives the stated boundary-sector preimages.
+Appendix~\ref{app:generated_tables} records the full table and a reproducible script.
 \end{proof}
 
 \paragraph{Degeneracy histogram.}
@@ -255,5 +324,56 @@ X_6^{\mathrm{cyc}}\oplus X_6^{\mathrm{bdry}}\ (18\oplus 3).
 \]
 This $64\to 21$ and $18\oplus 3$ structure is not a metaphor but a finite combinatorial theorem with explicit tables.
 The remainder of the paper treats this rigid finite skeleton as the stable-sector substrate for Standard Model interface hypotheses.
+
+\subsection{Uplift: \texorpdfstring{$\mathrm{Fold}_m$}{Fold_m} and persistence across \texorpdfstring{$m$}{m}}
+\label{subsec:foldm_uplift}
+
+The $m=6$ map $\mathrm{Fold}_6$ is the first nontrivial instance of a general truncation map at arbitrary window length.
+For $m\ge 1$ and $N\in\{0,\dots,2^m-1\}$, let $(c_k)_{k\ge 1}$ be the Zeckendorf digits of $N$ (no adjacent ones) and define
+\begin{equation}\label{eq:foldm_def}
+\mathrm{Fold}_m(N):=(c_1,\dots,c_m)\in X_m,
+\end{equation}
+padding by zeros if the digit vector length is $<m$.
+
+\begin{lemma}[Dyadic bound for Fibonacci growth]\label{lem:fib_dyadic_bound}
+For all $m\ge 1$, one has $F_{m+2}\le 2^m$.
+\end{lemma}
+\begin{proof}
+At $m=1$, $F_3=2=2^1$.
+Assume $F_{m+2}\le 2^m$ and $F_{m+1}\le 2^{m-1}$ for some $m\ge 2$ (the second inequality holds by the induction hypothesis at $m-1$).
+Then
+\[
+F_{m+3}=F_{m+2}+F_{m+1}\le 2^m+2^{m-1}<2^{m+1}.
+\]
+Thus $F_{m+3}\le 2^{m+1}$, completing the induction.
+\end{proof}
+
+\begin{proposition}[Surjectivity of $\mathrm{Fold}_m$ onto $X_m$]\label{prop:foldm_surjective}
+For every $m\ge 1$, the map $\mathrm{Fold}_m:\{0,\dots,2^m-1\}\twoheadrightarrow X_m$ is surjective.
+\end{proposition}
+\begin{proof}
+Let $w\in X_m$ and define its Zeckendorf value
+\[
+V_m(w):=\sum_{k=1}^{m} w_k F_{k+1}.
+\]
+It is standard that the admissible digit set $X_m$ has size $F_{m+2}$ and represents exactly the integers $\{0,\dots,F_{m+2}-1\}$ under $V_m$ (Lemma~\ref{lem:xm_fib}; see also \cite{Zeckendorf1972,AlloucheShallit2003}).
+In particular, $V_m(w)\le F_{m+2}-1$.
+By Lemma~\ref{lem:fib_dyadic_bound}, $F_{m+2}\le 2^m$ for all $m\ge 1$, hence $V_m(w)\in\{0,\dots,2^m-1\}$.
+Moreover, the Zeckendorf expansion of $V_m(w)$ uses no Fibonacci weights beyond $F_{m+1}$, hence its digits beyond $c_m$ are zero and its first $m$ digits equal $w$.
+Therefore $\mathrm{Fold}_m(V_m(w))=w$.
+\end{proof}
+
+\paragraph{Degeneracy as truncated Zeckendorf tails.}
+For a fixed $w\in X_m$, the preimage size $g_m(w):=|\mathrm{Fold}_m^{-1}(w)|$ counts how many Zeckendorf expansions of numbers $N\in\{0,\dots,2^m-1\}$ share the same first $m$ digits.
+Equivalently, writing
+\[
+N=V_m(w)+\sum_{k\ge m+1} c_k F_{k+1},
+\]
+the fiber size is the number of admissible tail digit strings $(c_{m+1},c_{m+2},\dots)$ (with $c_m=w_m$ enforcing $c_m c_{m+1}=0$) whose tail value keeps $N$ in the finite domain.
+Thus finite preimage degeneracy is a direct consequence of Zeckendorf truncation at finite window length and the cutoff $N<2^m$; it is not an artifact of the $m=6$ case.
+
+\paragraph{Uplift evidence.}
+Appendix~\ref{app:generated_tables} records an $m$-sweep that verifies $\mathrm{Im}(\mathrm{Fold}_m)=X_m$ and reports the full degeneracy histograms for $m=6,\dots,16$ (Table~\ref{tab:foldm_sweep}).
+In particular, the support $\{2,3,4\}$ at $m=6$ uplifts to larger, still highly structured degeneracy values at $m=8$ and $m=10$ (Table~\ref{tab:foldm_sweep}), consistent with the tail-count interpretation above.
 
 
