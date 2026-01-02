@@ -55,6 +55,18 @@ def data_root() -> Path:
     return root_dir() / "data"
 
 
+def corpus_panel_item_cache_dir() -> Path:
+    """
+    Per-item cache for corpus panel scans.
+
+    Rationale: panel-level cache invalidates when any item changes (including reuse digests),
+    but we want to avoid rescanning unrelated corpora.
+    """
+    d = data_root() / "panel" / "_cache" / f"corpus_panel_items_v{int(ANALYSIS_VERSION)}"
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
 def write_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
@@ -1377,7 +1389,7 @@ def _emit_latex_from_summary(out: dict[str, object]) -> None:
         if math.isnan(p0):
             return "-"
         if p0 == 0.0:
-            return "0"
+            return "<1e-300"
         if p0 < 1e-4:
             return f"{p0:.2e}"
         return f"{p0:.4f}"
@@ -1443,11 +1455,25 @@ def _emit_latex_from_summary(out: dict[str, object]) -> None:
 def main() -> None:
     args = parse_args()
     m = read_manifest()
+    out_json = Path(args.out_json)
+
     panels = m.get("panels") or {}
     if not isinstance(panels, dict):
-        raise SystemExit("manifest.panels must be an object")
+        panels = {}
     pdef = panels.get(str(args.panel))
+
+    # Fallback: some data bundles may ship without manifest.panels. If an existing panel summary JSON
+    # is present, reuse it as the authoritative definition/output and only re-emit LaTeX.
     if not isinstance(pdef, dict):
+        if out_json.exists():
+            cached = _read_json_dict(out_json)
+            if cached is None:
+                raise SystemExit(f"Missing panel: {args.panel} (and cached summary is malformed: {out_json})")
+            if not args.no_latex:
+                _emit_latex_from_summary(cached)
+                print("Wrote LaTeX fragments into:", generated_dir())
+            print(f"[reuse] panel: manifest.panels missing '{args.panel}', using cached summary: {out_json}", flush=True)
+            return
         raise SystemExit(f"Missing panel: {args.panel}")
 
     k_list = [int(x) for x in (pdef.get("default_stop_window_list") or []) if int(x) >= 1]
@@ -1458,8 +1484,6 @@ def main() -> None:
     items = pdef.get("items") or []
     if not isinstance(items, list) or not items:
         raise SystemExit(f"Panel has no items: {args.panel}")
-
-    out_json = Path(args.out_json)
 
     # ---- Cache short-circuit ----
     datasets = m.get("datasets") if isinstance(m.get("datasets"), dict) else {}
@@ -1540,6 +1564,18 @@ def main() -> None:
         item_fps.append(entry)
     item_fps.sort(key=lambda x: str(x.get("dataset") or ""))
 
+    # Map for per-item caches: key=(dataset, mode, code_id) -> file fingerprint entry.
+    item_fp_map: dict[tuple[str, str, int], dict[str, object]] = {}
+    for e in item_fps:
+        try:
+            ds = str(e.get("dataset") or "")
+            md = str(e.get("mode") or "")
+            cid = int(e.get("code_id") or 1)
+        except Exception:
+            continue
+        if ds:
+            item_fp_map[(ds, md, int(cid))] = e
+
     cache_key = {
         "analysis": "corpus_panel",
         "analysis_version": int(ANALYSIS_VERSION),
@@ -1564,6 +1600,64 @@ def main() -> None:
         _emit_latex_from_summary(cached)
         print("Wrote LaTeX fragments into:", generated_dir())
         return
+
+    # ---- Per-item caches (avoid rescanning unaffected corpora) ----
+    item_cache_dir = corpus_panel_item_cache_dir()
+
+    # Best-effort: seed per-item caches from an existing panel summary JSON (even if panel cache miss),
+    # so formatting-only changes or upstream reuse-digest changes do not force a full rescan.
+    if (not args.force) and out_json.exists():
+        old = _read_json_dict(out_json)
+        if (
+            isinstance(old, dict)
+            and int(old.get("analysis_version", 0) or 0) == int(ANALYSIS_VERSION)
+            and str(old.get("panel") or "") == str(args.panel)
+            and isinstance(old.get("k_list"), list)
+        ):
+            try:
+                old_k_list = [int(x) for x in (old.get("k_list") or [])]  # type: ignore[arg-type]
+            except Exception:
+                old_k_list = []
+            if old_k_list == [int(x) for x in k_list]:
+                old_items = old.get("items") or []
+                if isinstance(old_items, list):
+                    for oit in old_items:
+                        if not isinstance(oit, dict) or not oit.get("present"):
+                            continue
+                        ds0 = str(oit.get("dataset") or "")
+                        md0 = str(oit.get("mode") or "")
+                        cid0 = int(oit.get("code_id") or 1)
+                        # Do not seed the special human RefSeq reuse item (depends on upstream transcriptome digest).
+                        if (
+                            int(args.max_records) == 0
+                            and ds0 == "refseq_hsapiens_mrna"
+                            and md0 == "refseq_mrna_best_orf"
+                            and int(cid0) == 1
+                        ):
+                            continue
+                        summ0 = oit.get("summary")
+                        null0 = oit.get("codon_usage_null")
+                        if not isinstance(summ0, dict) or not isinstance(null0, dict):
+                            continue
+                        fp0 = item_fp_map.get((ds0, md0, int(cid0))) or {}
+                        item_cache_key0 = {
+                            "analysis": "corpus_panel_item",
+                            "analysis_version": int(ANALYSIS_VERSION),
+                            "dataset": ds0,
+                            "mode": md0,
+                            "code_id": int(cid0),
+                            "k_list": [int(x) for x in k_list],
+                            "max_records": int(args.max_records),
+                            "mu_star": MU_STAR,
+                            "gc_prt": gc_sha,
+                            "fingerprint": fp0,
+                        }
+                        meta0 = {"cache_key": item_cache_key0, "cache_digest": cache_key_digest(item_cache_key0)}
+                        item_json0 = item_cache_dir / f"{meta0['cache_digest']}.json"
+                        if item_json0.exists() and cache_meta_path(item_json0).exists():
+                            continue
+                        write_json_atomic(item_json0, {"summary": summ0, "codon_usage_null": null0})
+                        write_json_atomic(cache_meta_path(item_json0), meta0)
 
     tt = load_translation_tables()
 
@@ -1601,6 +1695,48 @@ def main() -> None:
                 }
             )
             continue
+
+        # Per-item cache.
+        fp_entry = item_fp_map.get((dataset_key, mode, int(code_id))) or {
+            "dataset": dataset_key,
+            "mode": mode,
+            "code_id": int(code_id),
+            "present_n": int(len(present)),
+            "files": [{"name": fp.name} for fp in present],
+        }
+        item_cache_key = {
+            "analysis": "corpus_panel_item",
+            "analysis_version": int(ANALYSIS_VERSION),
+            "dataset": dataset_key,
+            "mode": mode,
+            "code_id": int(code_id),
+            "k_list": [int(x) for x in k_list],
+            "max_records": int(args.max_records),
+            "mu_star": MU_STAR,
+            "gc_prt": gc_sha,
+            "fingerprint": fp_entry,
+        }
+        item_meta = {"cache_key": item_cache_key, "cache_digest": cache_key_digest(item_cache_key)}
+        item_json = item_cache_dir / f"{item_meta['cache_digest']}.json"
+        if (not args.force) and cache_hit(item_json, expected_meta=item_meta, require_meta=True):
+            cached_item = _read_json_dict(item_json) or {}
+            res_cached = cached_item.get("summary")
+            null_cached = cached_item.get("codon_usage_null")
+            if isinstance(res_cached, dict) and isinstance(null_cached, dict):
+                out_items.append(
+                    {
+                        "dataset": dataset_key,
+                        "label": label,
+                        "domain": domain,
+                        "mode": mode,
+                        "code_id": code_id,
+                        "files": [str(fp) for fp in present],
+                        "present": True,
+                        "summary": res_cached,
+                        "codon_usage_null": null_cached,
+                    }
+                )
+                continue
 
         res: dict[str, object] | None = None
         # Lightweight cross-script reuse: if the upstream human RefSeq transcriptome summary exists
@@ -1696,6 +1832,20 @@ def main() -> None:
                 },
             }
         )
+
+        # Persist per-item cache (post-scan).
+        try:
+            write_json_atomic(
+                item_json,
+                {
+                    "summary": res,
+                    "codon_usage_null": out_items[-1].get("codon_usage_null"),
+                },
+            )
+            write_json_atomic(cache_meta_path(item_json), item_meta)
+        except Exception:
+            # Cache is best-effort; never fail the main run.
+            pass
 
     out = {
         "schema_version": 2,

@@ -70,7 +70,7 @@ This objective intentionally does \emph{not} impose that start and stop coincide
 \subsection{A structural limitation: stop codons cannot all be boundary}
 \label{sec:stop_limit}
 
-The RF folding interface \cite{Ma2025RF} identifies the boundary sector by a fixed set of $6$ integer indices:
+By Proposition~\ref{prop:boundary_preimages}, the boundary sector has a fixed preimage set of $6$ integer indices:
 \[
 \mathrm{Fold}_6^{-1}(X_6^{\mathrm{bdry}})=\{14,17,19,48,51,53\}.
 \]
@@ -202,16 +202,23 @@ A direct evaluation gives $w_{\mu^\ast}(\mathrm{AUG})=w_{\mu^\ast}(\mathrm{UAA})
 Under the uniform prior on the $24$ encodings, the event of attaining the maximal score $S(\mu)=2$ has probability $1/24$, since $\mu^\ast$ is the unique maximizer.
 \end{remark}
 
+\begin{remark}[Control-set non-genericity under a 4-codon null]\label{rem:control_set_null}
+To quantify how special this identifiability is \emph{within} the same $24$-encoding model, we also enumerate the entire null space of $4$-codon control sets:
+for every subset $\mathcal{K}\subset\Sigma^3$ with $|\mathcal{K}|=4$, we maximize $S_{\mathcal{K}}(\mu)=\sum_{c\in\mathcal{K}}\mathbf{1}\{w_\mu(c)\in X_6^{\mathrm{bdry}}\}$ over the $24$ encodings and record both the maximal score and the argmax multiplicity.
+Appendix~\ref{app:control_set_null} reports the exact distribution over all $\binom{64}{4}$ subsets, the exact frequency with which $\mu^\ast$ appears as the \emph{unique} maximizer under this null, and a stop-fixed variant that conditions on the standard stop set $\{\mathrm{UAA,UAG,UGA}\}$.
+\end{remark}
+
 \subsection{An information-theoretic alignment diagnostic (optional)}
 \label{sec:mutual_information}
 
-Beyond the hard control objective above, \cite{Ma2025RF} suggests comparing the genetic code map $\mathsf{Gen}$ with the folding-induced compression by encoding-dependent joint statistics.
+Beyond the hard control objective above, we also report an auxiliary information-theoretic diagnostic that compares the genetic code map $\mathsf{Gen}$ with the folding-induced compression by encoding-dependent joint statistics.
 For a codon random variable $C$ under a chosen prior (e.g.\ uniform on $64$ codons), we may consider the mutual information
 \[
 I\bigl(\mathsf{Gen}(C);\ w_\mu(C)\bigr),
 \]
 which measures how informative the folded type is about amino-acid identity under encoding $\mu$.
 We compute this quantity for all encodings as an auxiliary diagnostic; it is not used as a premise in the identification theorem.
+\cite{CoverThomas2006}
 \input{sections/generated/mutual_information_brief}
 Additional scan details (including the top encodings by mutual information) are recorded in Appendix~\ref{app:generated_tables}.
 

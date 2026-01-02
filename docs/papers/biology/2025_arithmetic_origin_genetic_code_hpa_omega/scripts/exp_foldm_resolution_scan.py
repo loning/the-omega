@@ -19,10 +19,12 @@ import argparse
 from collections import Counter
 from pathlib import Path
 
+from cache_manager import cache_hit, cache_key_digest, cache_meta_path, write_json_atomic
 from genetic_code_tools import all_encodings, boundary_words_m, fold_codon_m, x_m
 
 
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
+ANALYSIS_VERSION = 1
 
 
 def root_dir() -> Path:
@@ -31,6 +33,10 @@ def root_dir() -> Path:
 
 def generated_dir() -> Path:
     return root_dir() / "sections" / "generated"
+
+
+def data_root() -> Path:
+    return root_dir() / "data"
 
 
 def write_text(path: Path, text: str) -> None:
@@ -52,6 +58,7 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Fold_m resolution scan (codon-scale N in 0..63)")
     p.add_argument("--m-list", default="6,7,8,9", help="Comma-separated m values to scan (default: 6,7,8,9).")
     p.add_argument("--no-latex", action="store_true", help="Do not write LaTeX fragments.")
+    p.add_argument("--force", action="store_true", help="Force recomputation even if cached outputs exist.")
     return p.parse_args()
 
 
@@ -62,6 +69,24 @@ def main() -> None:
         raise SystemExit("Empty --m-list")
     if any(int(m) <= 0 for m in m_list):
         raise SystemExit("All m must be positive")
+
+    out_table = generated_dir() / "foldm_resolution_scan_table.tex"
+    out_summary = generated_dir() / "foldm_resolution_scan_summary.tex"
+
+    # ---- Cache short-circuit ----
+    cache_file = data_root() / "_cache" / f"foldm_resolution_scan_v{int(ANALYSIS_VERSION)}.json"
+    cache_key = {
+        "analysis": "foldm_resolution_scan",
+        "analysis_version": int(ANALYSIS_VERSION),
+        "m_list": [int(x) for x in m_list],
+        "mu_star": MU_STAR,
+    }
+    cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
+    if (not args.force) and out_table.exists() and out_summary.exists() and cache_hit(cache_file, expected_meta=cache_meta, require_meta=True):
+        if not args.no_latex:
+            print(f"[cache] hit: {cache_file}")
+            print("Wrote LaTeX fragments into:", generated_dir())
+        return
 
     control_codons = ("AUG", "UAA", "UAG", "UGA")
 
@@ -136,8 +161,11 @@ def main() -> None:
     lines.append("\\end{center}")
 
     if not args.no_latex:
-        write_text(generated_dir() / "foldm_resolution_scan_table.tex", "\n".join(lines) + "\n")
-        write_text(generated_dir() / "foldm_resolution_scan_summary.tex", "\n".join(summary_lines) + "\n")
+        write_text(out_table, "\n".join(lines) + "\n")
+        write_text(out_summary, "\n".join(summary_lines) + "\n")
+        cache_file.parent.mkdir(parents=True, exist_ok=True)
+        write_json_atomic(cache_file, {"ok": True})
+        write_json_atomic(cache_meta_path(cache_file), cache_meta)
         print("Wrote LaTeX fragments into:", generated_dir())
 
 

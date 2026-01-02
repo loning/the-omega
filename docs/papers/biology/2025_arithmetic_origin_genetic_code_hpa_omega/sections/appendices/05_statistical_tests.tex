@@ -165,13 +165,29 @@ where $s_X^2$ and $s_Y^2$ are sample variances and $z_{1-\alpha/2}$ is the stand
 \item standardized effect sizes such as Cohen's $d$ (pooled standard deviation) and Hedges' $g$ (small-sample correction).
 \end{itemize}
 
-When multiple related hypotheses are tested (e.g.\ across multiple $k$ and multiple stop-pair comparisons), we also report Benjamini--Hochberg FDR-adjusted $q$-values.
+When multiple related hypotheses are tested (e.g.\ across multiple $k$ and multiple stop-pair comparisons), we also report Benjamini--Hochberg FDR-adjusted $q$-values \cite{BenjaminiHochberg1995}.
 
 \subsection{Multi-$k$ sensitivity}
 \label{app:multi_k_sensitivity}
 
 Many sequence-context statistics depend on a window radius $k$.
 To avoid over-interpreting a single choice, we evaluate key comparisons across a set $k\in\{k_1,\dots,k_m\}$ and report trends (and where applicable, per-$k$ test outcomes).
+
+\subsection{Stop-context response curve fitting}
+\label{app:stop_context_fit}
+
+Beyond multi-$k$ sensitivity tables, it is sometimes useful to summarize how a stop-context statistic approaches a large-window regime.
+Define the \emph{net stop-context uplift contrast} for stop codon class $s$ as
+\[
+D(s;k):=\overline{U}_{\mathrm{after}}(s;k)-\overline{U}_{\mathrm{before}}(s;k).
+\]
+As a compact descriptive fit, we model $D(s;k)$ by a saturating exponential in $k$:
+\[
+D(s;k)=D_{\infty}(s)-A(s)\,\exp\!\left(-\frac{k}{\kappa(s)}\right),
+\qquad D_{\infty}(s)\in\RR,\ A(s)\in\RR,\ \kappa(s)>0.
+\]
+Given a finite set of window radii $\{k_1,\dots,k_m\}$, parameters are estimated by least squares (minimizing the sum of squared residuals over $j=1,\dots,m$).
+We report $(D_{\infty},\kappa)$ and a goodness-of-fit measure ($R^2$) as an interpretable summary; this fit is not used as a premise in any identification result.
 
 \subsection{Recoding-site terminal-stop bias}
 \label{app:recoding_stop_bias}

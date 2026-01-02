@@ -11,9 +11,13 @@ Only the Python standard library is used.
 
 from __future__ import annotations
 
+import argparse
+import json
+import itertools
 from collections import Counter, defaultdict
 from pathlib import Path
 
+from cache_manager import cache_hit, cache_key_digest, cache_meta_path, write_json_atomic
 from genetic_code_tools import (
     BOUNDARY_INT_SET,
     BOUNDARY_WORDS,
@@ -36,6 +40,7 @@ from genetic_code_tools import (
 
 
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
+ANALYSIS_VERSION = 5
 
 
 def root_dir() -> Path:
@@ -48,8 +53,30 @@ def generated_dir() -> Path:
     return d
 
 
+def data_root() -> Path:
+    return root_dir() / "data"
+
+
 def write_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
+
+
+def _fingerprint_file(path: Path) -> dict[str, object]:
+    if not path.exists():
+        return {"path": str(path), "exists": False}
+    st = path.stat()
+    return {
+        "path": str(path),
+        "exists": True,
+        "bytes": int(st.st_size),
+        "mtime_ns": int(getattr(st, "st_mtime_ns", int(st.st_mtime * 1e9))),
+    }
+
+
+def parse_args() -> argparse.Namespace:
+    p = argparse.ArgumentParser(description="Genetic code reverse compilation (Fold_6) + LaTeX fragments")
+    p.add_argument("--force", action="store_true", help="Force recomputation even if cached outputs exist.")
+    return p.parse_args()
 
 
 def generate_stop_fine_structure(mu: dict[str, str]) -> None:
@@ -174,7 +201,7 @@ def generate_full_codon_table_rows(mu: dict[str, str]) -> None:
         if f.w in BOUNDARY_WORDS:
             tags.append("BOUNDARY")
         if f.v == 0:
-            tags.append("VACUUM")
+            tags.append("MIN")
         if f.v == 20:
             tags.append("MAX")
         tag_str = "|".join(tags) if tags else "-"
@@ -273,6 +300,215 @@ def generate_encoding_scan_summary() -> None:
     )
 
     write_text(generated_dir() / "encoding_scan_summary.tex", "\n".join(lines) + "\n")
+
+
+def _codon_bitmask_index() -> tuple[list[str], dict[str, int]]:
+    """
+    Return (codons_sorted, codon_to_bit_index) where each codon maps to a distinct bit position in [0,63].
+    """
+    codons = sorted(GENETIC_CODE.keys())
+    if len(codons) != 64:
+        raise AssertionError("Expected 64 codons in GENETIC_CODE")
+    return codons, {c: i for i, c in enumerate(codons)}
+
+
+def generate_control_objective_null_over_all_4codon_sets() -> None:
+    """
+    Exact null enumeration over all 4-codon subsets K of the 64-codon alphabet.
+
+    For each K with |K|=4, define the boundary-hit objective:
+      S_K(mu) = sum_{c in K} 1{w_mu(c) in X6^bdry}
+    and report:
+      S_max(K) = max_mu S_K(mu), and M(K) = #argmax encodings (out of 24).
+    """
+    codons, bit_idx = _codon_bitmask_index()
+
+    # Precompute boundary masks (one per encoding).
+    encs = all_encodings()
+    boundary_masks: list[int] = []
+    for mu in encs:
+        m = 0
+        for c in codons:
+            if fold_codon(c, mu).w in BOUNDARY_WORDS:
+                m |= 1 << bit_idx[c]
+        # Each encoding has exactly 6 boundary codons (2 per boundary word).
+        if m.bit_count() != 6:
+            raise AssertionError("Unexpected boundary codon count under an encoding")
+        boundary_masks.append(int(m))
+    if len(boundary_masks) != 24:
+        raise AssertionError("Expected 24 encodings")
+
+    # Control set of interest.
+    control_codons = ("AUG", "UAA", "UAG", "UGA")
+    control_mask = 0
+    for c in control_codons:
+        control_mask |= 1 << bit_idx[c]
+
+    def _score_mask(kmask: int) -> tuple[int, int, int | None]:
+        best = -1
+        n_best = 0
+        for bm in boundary_masks:
+            s = int((bm & kmask).bit_count())
+            if s > best:
+                best = s
+                n_best = 1
+            elif s == best:
+                n_best += 1
+        # Re-scan to recover the unique argmax index only when needed; avoid storing indices in the loop above
+        # (keeps the objective implementation simple and auditable).
+        if n_best != 1:
+            return int(best), int(n_best), None
+        # Find the unique argmax encoding index.
+        idx0: int | None = None
+        for i, bm in enumerate(boundary_masks):
+            if int((bm & kmask).bit_count()) == int(best):
+                if idx0 is None:
+                    idx0 = int(i)
+                else:
+                    # Should not happen when n_best==1, but keep it safe.
+                    return int(best), int(n_best), None
+        return int(best), int(n_best), idx0
+
+    control_smax, control_m, control_best_idx = _score_mask(control_mask)
+    if control_best_idx is None:
+        raise AssertionError("Expected control set to have a unique argmax encoding")
+    mu_star_idx = None
+    for i, mu in enumerate(encs):
+        if mu == MU_STAR:
+            mu_star_idx = int(i)
+            break
+    if mu_star_idx is None:
+        raise AssertionError("Failed to locate MU_STAR among encodings")
+
+    # Enumerate all 4-codon subsets (C(64,4)=635,376).
+    total = 0
+    counts_by_smax: Counter[int] = Counter()
+    unique_by_smax: Counter[int] = Counter()
+    mu_star_unique = 0  # mu* is the unique maximizer (any S_max)
+    mu_star_unique_smax2 = 0  # mu* is the unique maximizer with S_max=2
+
+    for a, b, c, d in itertools.combinations(range(64), 4):
+        kmask = (1 << a) | (1 << b) | (1 << c) | (1 << d)
+        smax, m, best_idx = _score_mask(kmask)
+        total += 1
+        counts_by_smax[int(smax)] += 1
+        if int(m) == 1:
+            unique_by_smax[int(smax)] += 1
+            if best_idx is not None and int(best_idx) == int(mu_star_idx):
+                mu_star_unique += 1
+                if int(smax) == int(control_smax):
+                    mu_star_unique_smax2 += 1
+
+    if total != 635_376:
+        raise AssertionError(f"Unexpected total 4-codon subsets: {total}")
+
+    # Summary paragraph.
+    # Secondary null: fix the standard stop set and vary the "start" codon choice.
+    stop_set = ("UAA", "UAG", "UGA")
+    stop_mask = 0
+    for c in stop_set:
+        stop_mask |= 1 << bit_idx[c]
+    start_candidates = [c for c in codons if c not in stop_set]
+    if len(start_candidates) != 61:
+        raise AssertionError("Expected 61 non-stop codons")
+
+    fixed_dist: Counter[int] = Counter()
+    fixed_unique = 0
+    fixed_unique_mu_star: list[str] = []
+    fixed_unique_rows: list[tuple[str, int, dict[str, str]]] = []
+
+    for s in start_candidates:
+        kmask = int(stop_mask | (1 << bit_idx[s]))
+        smax, m, best_idx = _score_mask(kmask)
+        fixed_dist[int(smax)] += 1
+        if int(m) == 1:
+            fixed_unique += 1
+            # Identify the unique argmax encoding.
+            if best_idx is None:
+                continue
+            best_mu = encs[int(best_idx)]
+            fixed_unique_rows.append((str(s), int(smax), best_mu))
+            if best_mu == MU_STAR:
+                fixed_unique_mu_star.append(str(s))
+
+    fixed_unique_mu_star.sort()
+
+    s_lines: list[str] = []
+    s_lines.append(
+        "Exact null enumeration over all $4$-codon subsets $\\mathcal{K}\\subset\\Sigma^3$ "
+        f"($\\binom{{64}}{{4}}={total}$). "
+        "For each $\\mathcal{K}$ we maximize the boundary-hit objective "
+        "$S_{\\mathcal{K}}(\\mu)=\\sum_{c\\in\\mathcal{K}}\\mathbf{1}\\{w_\\mu(c)\\in X_6^{\\mathrm{bdry}}\\}$ "
+        "over the $24$ encodings, and record $S_{\\max}(\\mathcal{K})$ and the argmax multiplicity "
+        "$M(\\mathcal{K})=\\#\\arg\\max_{\\mu} S_{\\mathcal{K}}(\\mu)$. "
+        f"For the biological control set $\\{{\\mathrm{{AUG,UAA,UAG,UGA}}\\}}$, "
+        f"we have $S_{{\\max}}={control_smax}$ with $M={control_m}$ and the unique maximizer equals $\\mu^\\ast$."
+    )
+    s_lines.append("")
+    s_lines.append(
+        f"Under the same uniform $4$-codon subset prior, $\\mu^\\ast$ is the \\emph{{unique}} maximizer for "
+        f"{mu_star_unique}/{total} subsets (probability {mu_star_unique/float(total):.6f})."
+    )
+    s_lines.append(
+        f"Restricting to the maximal-score class $S_{{\\max}}=2$, $\\mu^\\ast$ is the unique maximizer for "
+        f"{mu_star_unique_smax2}/{total} subsets (probability {mu_star_unique_smax2/float(total):.6f})."
+    )
+    s_lines.append("")
+    s_lines.append(
+        "Stop-fixed null (more structured): fixing the standard stop set "
+        "$\\{\\mathrm{UAA,UAG,UGA}\\}$ and varying a single additional codon over the $61$ non-stop choices, "
+        f"the argmax over encodings is unique for {fixed_unique}/61 choices. "
+        f"Among those, the unique argmax equals $\\mu^\\ast$ for "
+        f"{len(fixed_unique_mu_star)}/61 choices (namely "
+        + (", ".join(f"$\\mathrm{{{c}}}$" for c in fixed_unique_mu_star) if fixed_unique_mu_star else "none")
+        + ")."
+    )
+    write_text(generated_dir() / "control_objective_null_summary.tex", "\n".join(s_lines) + "\n")
+
+    # Compact table: distribution by S_max and uniqueness rate.
+    tbl: list[str] = []
+    tbl.append("\\begin{center}")
+    tbl.append("\\small")
+    tbl.append("\\setlength{\\tabcolsep}{6pt}")
+    tbl.append("\\renewcommand{\\arraystretch}{1.15}")
+    tbl.append("\\begin{tabular}{rrrr}")
+    tbl.append("\\toprule")
+    tbl.append("$S_{\\max}$ & \\#subsets & \\#unique ($M=1$) & unique fraction \\\\")
+    tbl.append("\\midrule")
+    for smax in sorted(counts_by_smax.keys()):
+        n = int(counts_by_smax[smax])
+        u = int(unique_by_smax.get(smax, 0))
+        frac = (u / float(n)) if n else float("nan")
+        tbl.append(f"{smax} & {n} & {u} & {frac:.4f} \\\\")
+    tbl.append("\\bottomrule")
+    tbl.append("\\end{tabular}")
+    tbl.append("\\end{center}")
+
+    # Additional compact table for the stop-fixed null.
+    tbl.append("")
+    tbl.append("\\begin{center}")
+    tbl.append("\\small")
+    tbl.append("\\setlength{\\tabcolsep}{6pt}")
+    tbl.append("\\renewcommand{\\arraystretch}{1.15}")
+    tbl.append("\\begin{tabular}{rr}")
+    tbl.append("\\toprule")
+    tbl.append("$S_{\\max}$ (stop-fixed) & \\#start choices (out of 61) \\\\")
+    tbl.append("\\midrule")
+    for smax in sorted(fixed_dist.keys()):
+        tbl.append(f"{int(smax)} & {int(fixed_dist[smax])} \\\\")
+    tbl.append("\\bottomrule")
+    tbl.append("\\end{tabular}")
+    tbl.append("\\end{center}")
+
+    # If the unique-mu* hit list is short, record it explicitly as a final line.
+    if fixed_unique_mu_star:
+        tbl.append("")
+        tbl.append(
+            "Unique $\\mu^\\ast$ solutions under the stop-fixed null occur for start candidate(s): "
+            + ", ".join(f"$\\mathrm{{{c}}}$" for c in fixed_unique_mu_star)
+            + "."
+        )
+    write_text(generated_dir() / "control_objective_null_table.tex", "\n".join(tbl) + "\n")
 
 
 def _latex_encoding(mu: dict[str, str]) -> str:
@@ -466,7 +702,47 @@ def generate_vmean_property_correlations(mu: dict[str, str]) -> None:
 
 
 def main() -> None:
+    args = parse_args()
     print("=== Genetic code reverse compilation (Fold_6) ===")
+
+    # ---- Cache short-circuit ----
+    out_files = [
+        "stop_fine_structure_rows.tex",
+        "control_codons_rows.tex",
+        "human_transcript_case_studies_rows.tex",
+        "boundary_sector_codons_rows.tex",
+        "amino_acid_spectrum_rows.tex",
+        "codon_full_table_rows.tex",
+        "control_objective_brief.tex",
+        "control_objective_null_summary.tex",
+        "control_objective_null_table.tex",
+        "encoding_scan_summary.tex",
+        "mutual_information_summary.tex",
+        "mutual_information_brief.tex",
+        "fold6_invariants_summary.tex",
+        "hydrophobicity_correlation.tex",
+        "vmean_property_correlations.tex",
+    ]
+    out_paths = [generated_dir() / nm for nm in out_files]
+
+    # Case-study inputs (optional, but they affect output rows).
+    cases = [
+        data_root() / "NM_000518.5.fasta",
+        data_root() / "ENST00000381330.5.fasta",
+    ]
+    cache_file = data_root() / "_cache" / f"genetic_code_decompiler_v{int(ANALYSIS_VERSION)}.json"
+    cache_key = {
+        "analysis": "genetic_code_decompiler",
+        "analysis_version": int(ANALYSIS_VERSION),
+        "mu_star": MU_STAR,
+        "inputs": [_fingerprint_file(p) for p in cases],
+        "outputs": [str(p) for p in out_paths],
+    }
+    cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
+    if (not args.force) and all(p.exists() for p in out_paths) and cache_hit(cache_file, expected_meta=cache_meta, require_meta=True):
+        print(f"[cache] hit: {cache_file}")
+        print("Wrote LaTeX fragments into:", generated_dir())
+        return
 
     # 1) Control-boundary alignment optimum over K={AUG,UAA,UAG,UGA}.
     control_codons = ("AUG", "UAA", "UAG", "UGA")
@@ -512,10 +788,15 @@ def main() -> None:
     generate_amino_acid_spectrum_rows(MU_STAR)
     generate_full_codon_table_rows(MU_STAR)
     generate_encoding_scan_summary()
+    generate_control_objective_null_over_all_4codon_sets()
     generate_mutual_information_summary()
     generate_fold6_invariants_summary()
     generate_hydrophobicity_correlation(MU_STAR)
     generate_vmean_property_correlations(MU_STAR)
+
+    cache_file.parent.mkdir(parents=True, exist_ok=True)
+    write_json_atomic(cache_file, {"ok": True})
+    write_json_atomic(cache_meta_path(cache_file), cache_meta)
 
     print("Wrote LaTeX fragments into:", generated_dir())
 

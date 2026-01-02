@@ -29,26 +29,29 @@ Two structural facts make it a particularly weak form of supervision:
 Maximizing the boundary-hit count $S(\mu)$ therefore asks only whether the known control symbols preferentially occupy the rare topological endpoints of the $64\to 21$ folding space.
 Importantly, the objective does not enforce the $14/48$ start--stop symmetry; the observed coincidence of $\mathrm{AUG}$ and $\mathrm{UAA}$ on the same boundary word arises as a consequence of the folding preimage structure and the finite search.
 Alternative weak objectives (e.g.\ combining boundary hits with mutual information or with sequence-level context statistics) can be layered on later, but are not required for the closed $m=6$ identifiability result.
+In particular, we do not use codon-usage frequencies or codon-bias objectives as supervision at this stage \cite{SharpLi1987,HershbergPetrov2008}.
 
 \subsection{Why three stop codons do not all lie in the boundary sector}
 \label{sec:stops_not_all_boundary}
 
-The boundary sector contains exactly six codons (two per boundary word), independent of the nucleotide encoding.
-An encoding can therefore never map the three stop codons to \emph{all} boundary codons (the sets cannot match), and moreover an exhaustive search shows that under the standard stop set $\{\mathrm{UAA,UAG,UGA}\}$ it is impossible to place all three stops inside the boundary sector (Appendix~\ref{app:generated_tables}).
+The boundary sector contains exactly six microstate indices (two per boundary word), independent of the nucleotide encoding (Appendix~\ref{app:fold6_preimages}).
+In particular, under the standard stop set $\{\mathrm{UAA,UAG,UGA}\}$ it is impossible to place all three stop codons inside the boundary sector, and in fact at most one stop can be boundary for any bijective encoding (Proposition~\ref{prop:stop_hits_at_most_one}).
 \medskip
 
 \noindent A complementary check across nonstandard translation tables is also consistent with this rigidity.
 Using the NCBI translation-table collection (\path{gc.prt}), we find that under $\mu^\ast$ at window length $6$ the stop-set boundary-hit count is at most one across all listed codes:
+\cite{NCBIGCPRT,NCBIGeneticCodes}
 \input{sections/generated/nonstandard_code_summary}
 
-This suggests a natural structural interpretation: $\mathrm{UAA}$ may correspond to a ``hard'' topological stop aligned with boundary failure, while $\mathrm{UAG}$ and $\mathrm{UGA}$ may correspond to ``soft'' or context-dependent stops whose semantics is realized by additional factors beyond the minimal window-$6$ folding layer.
+Thus, in the minimal $m=6$ template, the stop set is forced into a rigid arithmetic stratification (Definition~\ref{def:stop_classes}): $\mathrm{UAA}$ is the unique boundary stop, $\mathrm{UAG}$ is a non-boundary stop with $\Delta=34$, and $\mathrm{UGA}$ is a non-boundary stop with maximal uplift $\Delta=55$.
+Any biological mechanism that differentiates the three stop codons must therefore act through context-sensitive factors beyond boundary occupancy at $m=6$.
 
 \subsection{Recoding and stop-context sensitivity as an uplift interface}
 \label{sec:recoding_uplift_interface}
 
 At the arithmetic level, the three standard stop codons have distinct $(V,\Delta)$ signatures under $\mu^\ast$ (Section~\ref{sec:stop_fine_structure}):
 $\mathrm{UAA}$ is boundary-aligned with $\Delta=34$, $\mathrm{UAG}$ is non-boundary with the same $\Delta=34$, and $\mathrm{UGA}$ has maximal uplift $\Delta=55$.
-This motivates an interface hypothesis: context-sensitive termination and recoding mechanisms may correlate with the hidden-load variable $\Delta$ and with local stop-context statistics.
+This yields a quantitative interface prediction: context-sensitive termination and recoding should correlate with the uplift class $\Delta$ and with local stop-context uplift windows.
 Empirically, translation termination is known to depend on the nucleotide context following the stop codon \cite{McCaughanBrownDalphinBerryTate1995}, and recoding phenomena exist in which $\mathrm{UGA}$ can specify selenocysteine and $\mathrm{UAG}$ can specify pyrrolysine in specialized contexts \cite{HatfieldGladyshev2002,SrinivasanJamesKrzycki2002}.
 
 The framework here does not attempt to derive these biochemical mechanisms.
@@ -56,6 +59,7 @@ Instead it provides an explicit quantitative signal family $(Z,U)$ that can be e
 \medskip
 
 \noindent As a direct, reproducible data point, we mined GenBank records annotated with \texttt{transl\_except} and extracted both selenocysteine and pyrrolysine recoding events:
+\cite{NCBIGenBank}
 \input{sections/generated/recoding_sites_summary}
 \input{sections/generated/recoding_dataset_composition}
 \input{sections/generated/recoding_context_tests}
@@ -70,7 +74,7 @@ We also report codon- and domain-stratified tests to make explicit which subsets
 \paragraph{Within-CDS controls.}
 In coding regions, the stop codons $\mathrm{UGA}$ and $\mathrm{UAG}$ are normally forbidden as internal codons; thus an internal same-codon control (Control-B) is typically unavailable once \texttt{transl\_except} sites are excluded.
 Instead we compare each recoding site to random internal non-stop codon positions from the same CDS (Control-C), which provides a within-gene baseline for uplift-context windows.
-The resulting signal persists under this within-CDS control, supporting the interpretation of uplift-context sensitivity as a recoding interface.
+The resulting signal persists under this within-CDS control, indicating that the effect is not explained solely by between-gene variation.
 We additionally report composition-matched controls (GC and dinucleotide usage) to separate uplift differences from local base-composition effects (Appendix~\ref{app:composition_controls}).
 
 \subsection{Corpus-scale biases and spectrum fingerprints}
@@ -82,14 +86,17 @@ The RefSeq transcriptome scan also reveals two broader, sequence-level phenomena
 Even after conditioning on amino-acid composition, the empirical coding-token averages $(\overline{Z},\overline{U})$ differ strongly from the null expectation under uniform selection among synonymous codons:
 \input{sections/generated/refseq_codon_usage_null}
 This does not by itself identify a mechanistic driver (e.g.\ mutational biases, translation kinetics, or selection on RNA structure), but it establishes that the folding-derived spectra are not statistically inert in a large human coding corpus.
+The same null-model deviations also appear across the cross-domain corpus panel, indicating that the effect is not unique to human RefSeq (Appendix~\ref{app:corpus_panel}).
+In the code-1 eukaryotic strata, the $\overline{U}$ deviation is dominated by a small set of amino-acid groups (notably Leu/Arg/Ser) under the same null (Appendix~\ref{app:corpus_panel}).
 
 \paragraph{A compact spectrum fingerprint is available at the ORF level.}
 The per-ORF boundary rate, entropy of $Z$, and lag-1 autocorrelation provide a minimal feature vector that can be extracted from any genome without parameter fitting.
 \par\noindent\input{sections/generated/refseq_zspectrum_fingerprint}\par
-At least in human RefSeq mRNA, the lag-1 autocorrelation concentrates near zero, suggesting that any longer-range structure in $Z$ (if present) would need to be probed at larger windows or by conditioning on functional annotations.
+At least in human RefSeq mRNA, the lag-1 autocorrelation concentrates near zero; detecting longer-range structure in $Z$ (if any) therefore requires larger windows or conditioning on functional annotations.
 
 \paragraph{Cross-domain replication targets.}
 To avoid over-interpreting any single corpus, we also report a cross-domain corpus panel (Eukaryota/Bacteria/Archaea) with matched summaries under $\mu^\ast$, including start-context windows and stop-context effect sizes across datasets (Appendix~\ref{app:corpus_panel}).
+To summarize stability across datasets within each domain, we additionally report a fixed-effect meta-analysis of stop-context differences at $k=10$ (Appendix~\ref{app:corpus_panel}).
 
 \subsection{Resolution upgrade and context}
 \label{sec:resolution_upgrade}
