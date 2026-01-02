@@ -135,7 +135,7 @@ def main() -> None:
     # 1) bounded-complexity minimizer at B=20 for magnitudes
     vmax = ckm.v_max_x6()
     best20 = ckm.best_triple_at_B(B=20, vus_ref=vus_ref, vcb_ref=vcb_ref, vub_ref=vub_ref, vmax=vmax)
-    vus_pred = 1.0 / math.sqrt(float(best20.m))
+    vus_pred = 1.0 / math.sqrt(float(best20.d))
     vcb_pred = PHI ** (-0.5 * float(best20.k23))
     vub_pred = PHI ** (-0.5 * float(best20.k13))
 
@@ -234,7 +234,7 @@ def main() -> None:
 
     print("Wrote sections/generated/ckm_angles_rows.tex, ckm_matrix_rows.tex, ckm_unitarity_rows.tex")
     # Extra diagnostics (not written to LaTeX):
-    print("B=20 minimizer (m,k23,k13):", (best20.m, best20.k23, best20.k13))
+    print("B=20 minimizer (d,k23,k13):", (best20.d, best20.k23, best20.k13))
     print("J_ref_back:", J_ref_back, "J_pred_back:", J_pred_back, "J_geo:", J_geo)
 
 

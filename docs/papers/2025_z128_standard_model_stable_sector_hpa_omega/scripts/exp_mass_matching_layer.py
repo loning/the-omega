@@ -23,6 +23,7 @@ We compute, for each field in the mass-spectrum table:
 
 Outputs (LaTeX fragments):
   - sections/generated/mass_matching_layer_rows.tex
+  - sections/generated/mass_matching_layer_summary_rows.tex
 
 Only the Python standard library is used.
 """
@@ -109,6 +110,7 @@ def main() -> None:
     ]
 
     rows: List[str] = []
+    abs_resids: List[float] = []
     for field_tex, key, fkey, rh_override in entries:
         mu_ref = ref[key]
         r_ref = r_of_mu(mu_ref, m_e)
@@ -122,6 +124,7 @@ def main() -> None:
         delta_r = r_ref - float(r_hat)
         k_int, dq = nearest_k_over_q(delta_r, q=q)
         resid = delta_r - dq
+        abs_resids.append(abs(resid))
         # Quantized matching factor for mu_ref/mu_pred.
         match_factor = PHI ** dq
         rows.append(
@@ -130,11 +133,39 @@ def main() -> None:
 
     rows.append("\\bottomrule")
 
+    # Summary statistics for the residual size |Delta r - k/4|.
+    abs_resids_sorted = sorted(abs_resids)
+    n = len(abs_resids_sorted)
+    if n == 0:
+        raise AssertionError("No matching-layer entries produced.")
+    if n % 2 == 1:
+        median = abs_resids_sorted[n // 2]
+    else:
+        median = 0.5 * (abs_resids_sorted[n // 2 - 1] + abs_resids_sorted[n // 2])
+    p90_idx = max(0, min(n - 1, int(math.ceil(0.90 * n)) - 1))
+    p90 = abs_resids_sorted[p90_idx]
+    max_abs = abs_resids_sorted[-1]
+    n_le_001 = sum(1 for x in abs_resids_sorted if x <= 0.01 + 1e-12)
+    n_le_005 = sum(1 for x in abs_resids_sorted if x <= 0.05 + 1e-12)
+
+    summary_rows: List[str] = []
+    summary_rows.append(f"entries & {n:d} \\\\")
+    summary_rows.append(rf"median $|\Delta r-k/4|$ & {median:.3f} \\")
+    summary_rows.append(rf"p90 $|\Delta r-k/4|$ & {p90:.3f} \\")
+    summary_rows.append(rf"max $|\Delta r-k/4|$ & {max_abs:.3f} \\")
+    summary_rows.append(rf"$N_{{|\cdot|\le 0.01}}$ & {n_le_001:d} \\")
+    summary_rows.append(rf"$N_{{|\cdot|\le 0.05}}$ & {n_le_005:d} \\")
+    summary_rows.append("\\bottomrule")
+
     root = Path(__file__).resolve().parent.parent
     out_dir = root / "sections" / "generated"
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "mass_matching_layer_rows.tex").write_text("\n".join(rows), encoding="utf-8")
     print("Wrote sections/generated/mass_matching_layer_rows.tex")
+    (out_dir / "mass_matching_layer_summary_rows.tex").write_text(
+        "\n".join(summary_rows), encoding="utf-8"
+    )
+    print("Wrote sections/generated/mass_matching_layer_summary_rows.tex")
 
 
 if __name__ == "__main__":

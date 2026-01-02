@@ -391,6 +391,7 @@ def build_steps() -> List[Step]:
             script="exp_mass_matching_layer.py",
             expected_outputs=[
                 "sections/generated/mass_matching_layer_rows.tex",
+                "sections/generated/mass_matching_layer_summary_rows.tex",
             ],
         ),
         Step(

@@ -132,7 +132,7 @@ def jarlskog_minimizer(J_ref: float) -> Tuple[int, int]:
 def ckm_magnitude_minimizer(vus: float, vcb: float, vub: float) -> Tuple[int, int, int]:
     vmax = ckm.v_max_x6()
     best = ckm.best_triple_at_B(B=20, vus_ref=vus, vcb_ref=vcb, vub_ref=vub, vmax=vmax)
-    return best.m, best.k23, best.k13
+    return best.d, best.k23, best.k13
 
 
 def pmns_magnitude_minimizer(s12: float, s23: float, s13: float) -> Tuple[int, int, int, int, int]:
