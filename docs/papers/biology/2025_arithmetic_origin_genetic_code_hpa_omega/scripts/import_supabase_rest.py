@@ -15,6 +15,7 @@ Optional:
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 import ssl
@@ -29,6 +30,7 @@ from cache_manager import cache_hit, cache_key_digest, cache_meta_path, read_jso
 from progress_tools import Heartbeat
 from supabase_env import load_env_file
 from provenance_tools import infer_analysis_version
+from stats_tools import bh_fdr
 
 
 IMPORT_VERSION = 1
@@ -346,6 +348,657 @@ def _import_cache_file(root: Path, *, table: str) -> Path:
     return root / "data" / "_cache" / "import_supabase_rest" / f"{table}.json"
 
 
+def load_stop_context_pairwise_effects_tsv(
+    *,
+    tsv_path: Path,
+    dataset: str,
+    panel: str = "na",
+    analysis_version: int,
+) -> list[dict[str, Any]]:
+    """
+    Load stop-context pairwise effects from a TSV file (e.g. refseq_hsapiens_mrna/stop_context_pairwise_effects.tsv).
+    """
+    if not tsv_path.exists():
+        return []
+    rows: list[dict[str, Any]] = []
+    with tsv_path.open("r", encoding="utf-8") as f:
+        reader = csv.DictReader(f, delimiter="\t")
+        for r in reader:
+            window = (r.get("window") or "").strip()
+            if window not in ("before", "after"):
+                continue
+            pair = (r.get("pair") or "").strip()
+            if not pair:
+                continue
+            try:
+                k = int(float(r.get("k") or 0))
+            except Exception:
+                continue
+            if k <= 0:
+                continue
+            def _f(x: str) -> float | None:
+                s = (r.get(x) or "").strip()
+                if not s:
+                    return None
+                try:
+                    return float(s)
+                except Exception:
+                    return None
+            def _i(x: str) -> int | None:
+                s = (r.get(x) or "").strip()
+                if not s:
+                    return None
+                try:
+                    return int(float(s))
+                except Exception:
+                    return None
+            p = _f("p_welch")
+            q = _f("q_bh")
+            rows.append(
+                {
+                    "panel": str(panel),
+                    "dataset": str(dataset),
+                    "analysis_version": int(analysis_version),
+                    "window_side": str(window),
+                    "k": int(k),
+                    "pair": str(pair),
+                    "n1": _i("n1"),
+                    "n2": _i("n2"),
+                    "mean1": _f("mean1"),
+                    "mean2": _f("mean2"),
+                    "diff": _f("diff"),
+                    "ci_low": _f("ci_low"),
+                    "ci_high": _f("ci_high"),
+                    "cohen_d": _f("cohen_d"),
+                    "hedges_g": _f("hedges_g"),
+                    "z": None,
+                    "p": p,
+                    "q": q,
+                    "payload": r,
+                }
+            )
+    return rows
+
+
+def load_stop_context_means_from_refseq_summary(*, summary_obj: dict[str, Any], dataset: str, panel: str = "na") -> list[dict[str, Any]]:
+    analysis_version = int(summary_obj.get("analysis_version", 0) or 0)
+    if analysis_version <= 0:
+        return []
+    k_list = summary_obj.get("stop_window_list") or []
+    ks: list[int] = []
+    if isinstance(k_list, list):
+        for x in k_list:
+            try:
+                ks.append(int(x))
+            except Exception:
+                continue
+    ks = sorted({int(k) for k in ks if int(k) >= 1})
+    w_mk = summary_obj.get("stop_context_welford_multi_k") or {}
+    if not isinstance(w_mk, dict) or not w_mk:
+        return []
+
+    rows: list[dict[str, Any]] = []
+    for stop_codon, by_k in w_mk.items():
+        if not isinstance(by_k, dict):
+            continue
+        for k in ks:
+            ent = by_k.get(str(int(k))) or {}
+            if not isinstance(ent, dict):
+                continue
+            b = ent.get("before") or {}
+            a = ent.get("after") or {}
+            if not isinstance(b, dict) or not isinstance(a, dict):
+                continue
+            nb = int(b.get("n", 0) or 0)
+            na = int(a.get("n", 0) or 0)
+            bm = b.get("mean")
+            am = a.get("mean")
+            rows.append(
+                {
+                    "panel": str(panel),
+                    "dataset": str(dataset),
+                    "analysis_version": int(analysis_version),
+                    "k": int(k),
+                    "stop_codon": str(stop_codon),
+                    "n_before": int(nb),
+                    "before_mean": (float(bm) if nb > 0 and bm is not None else None),
+                    "n_after": int(na),
+                    "after_mean": (float(am) if na > 0 and am is not None else None),
+                    "payload": {"before": b, "after": a},
+                }
+            )
+    return rows
+
+
+def load_start_context_means_from_refseq_summary(*, summary_obj: dict[str, Any], dataset: str, panel: str = "na") -> list[dict[str, Any]]:
+    analysis_version = int(summary_obj.get("analysis_version", 0) or 0)
+    if analysis_version <= 0:
+        return []
+    k_list = summary_obj.get("stop_window_list") or []
+    ks: list[int] = []
+    if isinstance(k_list, list):
+        for x in k_list:
+            try:
+                ks.append(int(x))
+            except Exception:
+                continue
+    ks = sorted({int(k) for k in ks if int(k) >= 1})
+    sc_mk = summary_obj.get("start_context_welford_multi_k") or {}
+    if not isinstance(sc_mk, dict) or not sc_mk:
+        return []
+
+    rows: list[dict[str, Any]] = []
+    for k in ks:
+        ent = sc_mk.get(str(int(k))) or {}
+        if not isinstance(ent, dict):
+            continue
+        b = ent.get("before") or {}
+        a = ent.get("after") or {}
+        if not isinstance(b, dict) or not isinstance(a, dict):
+            continue
+        nb = int(b.get("n", 0) or 0)
+        na = int(a.get("n", 0) or 0)
+        bm = b.get("mean")
+        am = a.get("mean")
+        rows.append(
+            {
+                "panel": str(panel),
+                "dataset": str(dataset),
+                "analysis_version": int(analysis_version),
+                "k": int(k),
+                "start_event": "AUG",
+                "n_before": int(nb),
+                "before_mean": (float(bm) if nb > 0 and bm is not None else None),
+                "n_after": int(na),
+                "after_mean": (float(am) if na > 0 and am is not None else None),
+                "payload": {"before": b, "after": a},
+            }
+        )
+    return rows
+
+
+def load_panel_stop_context_means(*, panel_obj: dict[str, Any]) -> list[dict[str, Any]]:
+    panel = str(panel_obj.get("panel") or "corpus_panel_v1")
+    analysis_version = int(panel_obj.get("analysis_version", 0) or 0)
+    if analysis_version <= 0:
+        return []
+    items = panel_obj.get("items") or []
+    if not isinstance(items, list):
+        return []
+    rows: list[dict[str, Any]] = []
+    for it in items:
+        if not isinstance(it, dict) or not it.get("present"):
+            continue
+        ds = str(it.get("dataset") or "")
+        summ = it.get("summary") or {}
+        if not ds or not isinstance(summ, dict):
+            continue
+        sc = summ.get("stop_context_multi_k") or {}
+        if not isinstance(sc, dict):
+            continue
+        for k_str, by_stop in sc.items():
+            try:
+                k = int(k_str)
+            except Exception:
+                continue
+            if k <= 0 or not isinstance(by_stop, dict):
+                continue
+            for stop_codon, ent in by_stop.items():
+                if not isinstance(ent, dict):
+                    continue
+                n = int(ent.get("n", 0) or 0)
+                bm = ent.get("before_mean")
+                am = ent.get("after_mean")
+                rows.append(
+                    {
+                        "panel": panel,
+                        "dataset": ds,
+                        "analysis_version": int(analysis_version),
+                        "k": int(k),
+                        "stop_codon": str(stop_codon),
+                        "n_before": int(n),
+                        "before_mean": (float(bm) if n > 0 and bm is not None else None),
+                        "n_after": int(n if am is not None else 0),
+                        "after_mean": (float(am) if am is not None else None),
+                        "payload": ent,
+                    }
+                )
+    return rows
+
+
+def load_panel_start_context_means(*, panel_obj: dict[str, Any]) -> list[dict[str, Any]]:
+    panel = str(panel_obj.get("panel") or "corpus_panel_v1")
+    analysis_version = int(panel_obj.get("analysis_version", 0) or 0)
+    if analysis_version <= 0:
+        return []
+    items = panel_obj.get("items") or []
+    if not isinstance(items, list):
+        return []
+    rows: list[dict[str, Any]] = []
+    for it in items:
+        if not isinstance(it, dict) or not it.get("present"):
+            continue
+        ds = str(it.get("dataset") or "")
+        mode = str(it.get("mode") or "")
+        start_event = "AUG" if mode == "refseq_mrna_best_orf" else ("cds_start" if mode == "cds_fasta" else "start")
+        summ = it.get("summary") or {}
+        if not ds or not isinstance(summ, dict):
+            continue
+        sc = summ.get("start_context_multi_k") or {}
+        if not isinstance(sc, dict):
+            continue
+        for k_str, ent in sc.items():
+            try:
+                k = int(k_str)
+            except Exception:
+                continue
+            if k <= 0 or not isinstance(ent, dict):
+                continue
+            b = ent.get("before") or {}
+            a = ent.get("after") or {}
+            if not isinstance(b, dict) or not isinstance(a, dict):
+                continue
+            nb = int(b.get("n", 0) or 0)
+            na = int(a.get("n", 0) or 0)
+            bm = b.get("mean")
+            am = a.get("mean")
+            rows.append(
+                {
+                    "panel": panel,
+                    "dataset": ds,
+                    "analysis_version": int(analysis_version),
+                    "k": int(k),
+                    "start_event": str(start_event),
+                    "n_before": int(nb),
+                    "before_mean": (float(bm) if nb > 0 and bm is not None else None),
+                    "n_after": int(na),
+                    "after_mean": (float(am) if na > 0 and am is not None else None),
+                    "payload": {"before": b, "after": a, "mode": mode},
+                }
+            )
+    return rows
+
+
+def load_panel_stop_context_pairwise_effects(*, panel_obj: dict[str, Any]) -> list[dict[str, Any]]:
+    panel = str(panel_obj.get("panel") or "corpus_panel_v1")
+    analysis_version = int(panel_obj.get("analysis_version", 0) or 0)
+    if analysis_version <= 0:
+        return []
+    items = panel_obj.get("items") or []
+    if not isinstance(items, list):
+        return []
+    out: list[dict[str, Any]] = []
+
+    for it in items:
+        if not isinstance(it, dict) or not it.get("present"):
+            continue
+        ds = str(it.get("dataset") or "")
+        summ = it.get("summary") or {}
+        if not ds or not isinstance(summ, dict):
+            continue
+        eff = summ.get("stop_context_effects_multi_k") or {}
+        if not isinstance(eff, dict):
+            continue
+
+        tmp_rows: list[dict[str, Any]] = []
+        pvals: list[float] = []
+
+        for window_side in ("before", "after"):
+            by_k = eff.get(window_side) or {}
+            if not isinstance(by_k, dict):
+                continue
+            for k_str, by_pair in by_k.items():
+                try:
+                    k = int(k_str)
+                except Exception:
+                    continue
+                if k <= 0 or not isinstance(by_pair, dict):
+                    continue
+                for pair, r in by_pair.items():
+                    if not isinstance(r, dict):
+                        continue
+                    diff = r.get("diff")
+                    p = r.get("p")
+                    try:
+                        diff_f = None if diff is None else float(diff)
+                    except Exception:
+                        diff_f = None
+                    try:
+                        p_f = None if p is None else float(p)
+                    except Exception:
+                        p_f = None
+                    if diff_f is None or p_f is None:
+                        continue
+                    if not (0.0 <= float(p_f) <= 1.0):
+                        continue
+                    row = {
+                        "panel": panel,
+                        "dataset": ds,
+                        "analysis_version": int(analysis_version),
+                        "window_side": str(window_side),
+                        "k": int(k),
+                        "pair": str(pair),
+                        "n1": r.get("n1"),
+                        "n2": r.get("n2"),
+                        "mean1": r.get("mean1"),
+                        "mean2": r.get("mean2"),
+                        "diff": diff_f,
+                        "ci_low": r.get("ci_low"),
+                        "ci_high": r.get("ci_high"),
+                        "cohen_d": r.get("d"),
+                        "hedges_g": r.get("g"),
+                        "z": r.get("z"),
+                        "p": p_f,
+                        "q": None,
+                        "payload": r,
+                    }
+                    tmp_rows.append(row)
+                    pvals.append(float(p_f))
+
+        if tmp_rows and pvals:
+            qs = bh_fdr(pvals)
+            for row, qv in zip(tmp_rows, qs):
+                row["q"] = float(qv)
+        out.extend(tmp_rows)
+
+    return out
+
+
+def load_codon_usage_null_from_refseq_summary(*, summary_obj: dict[str, Any], dataset: str, panel: str = "na") -> dict[str, Any] | None:
+    analysis_version = int(summary_obj.get("analysis_version", 0) or 0)
+    if analysis_version <= 0:
+        return None
+    cu = summary_obj.get("codon_usage") or {}
+    if not isinstance(cu, dict):
+        return None
+    obs_zbar = cu.get("zbar")
+    obs_ubar = cu.get("ubar")
+    null = cu.get("null") or {}
+    if not isinstance(null, dict):
+        return None
+    row = {
+        "panel": str(panel),
+        "dataset": str(dataset),
+        "analysis_version": int(analysis_version),
+        "obs_zbar": obs_zbar,
+        "obs_ubar": obs_ubar,
+        "null_mean_zbar": null.get("null_mu_zbar"),
+        "null_sd_zbar": null.get("null_sd_zbar"),
+        "null_mean_ubar": null.get("null_mu_ubar"),
+        "null_sd_ubar": null.get("null_sd_ubar"),
+        "z_zbar": null.get("z_zbar"),
+        "z_ubar": null.get("z_ubar"),
+        "p_zbar": null.get("p_zbar"),
+        "p_ubar": null.get("p_ubar"),
+        "total_codons": null.get("total_codons"),
+        "payload": {"codon_usage": cu},
+    }
+    return row
+
+
+def load_codon_usage_null_from_panel_summary(*, panel_obj: dict[str, Any]) -> list[dict[str, Any]]:
+    panel = str(panel_obj.get("panel") or "corpus_panel_v1")
+    analysis_version = int(panel_obj.get("analysis_version", 0) or 0)
+    if analysis_version <= 0:
+        return []
+    items = panel_obj.get("items") or []
+    if not isinstance(items, list):
+        return []
+    rows: list[dict[str, Any]] = []
+    for it in items:
+        if not isinstance(it, dict) or not it.get("present"):
+            continue
+        ds = str(it.get("dataset") or "")
+        cu = it.get("codon_usage_null") or {}
+        summ = it.get("summary") or {}
+        if not ds or not isinstance(cu, dict) or not isinstance(summ, dict):
+            continue
+        u = cu.get("U") or {}
+        z = cu.get("Z") or {}
+        if not isinstance(u, dict) or not isinstance(z, dict):
+            continue
+        rows.append(
+            {
+                "panel": panel,
+                "dataset": ds,
+                "analysis_version": int(analysis_version),
+                "obs_zbar": z.get("obs_mean"),
+                "obs_ubar": u.get("obs_mean"),
+                "null_mean_zbar": z.get("null_mean"),
+                "null_sd_zbar": z.get("null_sd"),
+                "null_mean_ubar": u.get("null_mean"),
+                "null_sd_ubar": u.get("null_sd"),
+                "z_zbar": z.get("z"),
+                "z_ubar": u.get("z"),
+                "p_zbar": z.get("p"),
+                "p_ubar": u.get("p"),
+                "total_codons": summ.get("coding_tokens"),
+                "payload": {"codon_usage_null": cu},
+            }
+        )
+    return rows
+
+
+def load_assay_constructs_jsonl(jsonl_path: Path, *, heartbeat: Heartbeat | None = None) -> tuple[list[dict[str, Any]], int]:
+    rows: list[dict[str, Any]] = []
+    n = 0
+    with jsonl_path.open("r", encoding="utf-8") as f:
+        for line_no, line in enumerate(f, start=1):
+            if not line.strip():
+                continue
+            obj = json.loads(line)
+            if not isinstance(obj, dict):
+                continue
+            ck = obj.get("construct_key")
+            at = obj.get("assay_type")
+            if not isinstance(ck, str) or not ck.strip():
+                raise SystemExit(f"Invalid construct_key at {jsonl_path}:{line_no}")
+            if not isinstance(at, str) or not at.strip():
+                raise SystemExit(f"Invalid assay_type at {jsonl_path}:{line_no}")
+            # Keep rows as-is (extra columns are ignored by the upsert helper).
+            rows.append(obj)
+            n += 1
+            if heartbeat is not None and (line_no % 2000) == 0:
+                heartbeat.maybe(f"assay_constructs JSONL: parsed {n} rows")
+    return rows, n
+
+
+def load_assay_measurements_jsonl(jsonl_path: Path, *, heartbeat: Heartbeat | None = None) -> tuple[list[dict[str, Any]], int]:
+    rows: list[dict[str, Any]] = []
+    n = 0
+    with jsonl_path.open("r", encoding="utf-8") as f:
+        for line_no, line in enumerate(f, start=1):
+            if not line.strip():
+                continue
+            obj = json.loads(line)
+            if not isinstance(obj, dict):
+                continue
+            ck = obj.get("construct_key")
+            mt = obj.get("measurement_type")
+            if not isinstance(ck, str) or not ck.strip():
+                raise SystemExit(f"Invalid construct_key at {jsonl_path}:{line_no}")
+            if not isinstance(mt, str) or not mt.strip():
+                raise SystemExit(f"Invalid measurement_type at {jsonl_path}:{line_no}")
+            # Normalize batch/replicate to keep upserts idempotent under the composite UNIQUE constraint.
+            b = obj.get("batch")
+            r = obj.get("replicate")
+            if not isinstance(b, str) or not b.strip():
+                obj["batch"] = "na"
+            try:
+                obj["replicate"] = int(r) if r is not None and str(r).strip() else 0
+            except Exception:
+                obj["replicate"] = 0
+            rows.append(obj)
+            n += 1
+            if heartbeat is not None and (line_no % 2000) == 0:
+                heartbeat.maybe(f"assay_measurements JSONL: parsed {n} rows")
+    return rows, n
+
+
+def load_codon_usage_null_decomp_aa_tsv(
+    *,
+    tsv_path: Path,
+    dataset: str,
+    analysis_version: int,
+    metric: str,
+    panel: str = "na",
+) -> list[dict[str, Any]]:
+    if not tsv_path.exists():
+        return []
+    metric = str(metric).strip().upper()
+    if metric not in ("U", "Z"):
+        raise SystemExit(f"Invalid metric: {metric}")
+    rows: list[dict[str, Any]] = []
+    with tsv_path.open("r", encoding="utf-8") as f:
+        reader = csv.DictReader(f, delimiter="\t")
+        for r in reader:
+            aa = str((r.get("aa") or "")).strip()
+            if not aa:
+                continue
+            def _f(key: str) -> float | None:
+                s = str((r.get(key) or "")).strip()
+                if not s:
+                    return None
+                try:
+                    return float(s)
+                except Exception:
+                    return None
+            def _i(key: str) -> int | None:
+                s = str((r.get(key) or "")).strip()
+                if not s:
+                    return None
+                try:
+                    return int(float(s))
+                except Exception:
+                    return None
+            rows.append(
+                {
+                    "panel": str(panel),
+                    "dataset": str(dataset),
+                    "analysis_version": int(analysis_version),
+                    "metric": metric,
+                    "aa": aa,
+                    "n": _i("n"),
+                    "obs_mean": _f("obs_mean"),
+                    "null_mean": _f("null_mean"),
+                    "contrib": _f("contrib"),
+                    "payload": r,
+                }
+            )
+    return rows
+
+
+def load_codon_usage_null_decomp_codon_tsv(
+    *,
+    tsv_path: Path,
+    dataset: str,
+    analysis_version: int,
+    metric: str,
+    panel: str = "na",
+) -> list[dict[str, Any]]:
+    if not tsv_path.exists():
+        return []
+    metric = str(metric).strip().upper()
+    if metric not in ("U", "Z"):
+        raise SystemExit(f"Invalid metric: {metric}")
+    rows: list[dict[str, Any]] = []
+    with tsv_path.open("r", encoding="utf-8") as f:
+        reader = csv.DictReader(f, delimiter="\t")
+        for r in reader:
+            codon = str((r.get("codon") or "")).strip()
+            if not codon:
+                continue
+            def _f(key: str) -> float | None:
+                s = str((r.get(key) or "")).strip()
+                if not s:
+                    return None
+                try:
+                    return float(s)
+                except Exception:
+                    return None
+            def _i(key: str) -> int | None:
+                s = str((r.get(key) or "")).strip()
+                if not s:
+                    return None
+                try:
+                    return int(float(s))
+                except Exception:
+                    return None
+            rows.append(
+                {
+                    "panel": str(panel),
+                    "dataset": str(dataset),
+                    "analysis_version": int(analysis_version),
+                    "metric": metric,
+                    "codon": codon,
+                    "aa": (str(r.get("aa")) if r.get("aa") is not None else None),
+                    "obs_count": _i("obs_count"),
+                    "null_count": _f("null_count"),
+                    "contrib": _f("contrib"),
+                    "payload": r,
+                }
+            )
+    return rows
+
+
+def load_recoding_multi_k_overall_from_summary(*, summary_obj: dict[str, Any], dataset: str) -> list[dict[str, Any]]:
+    av = int(summary_obj.get("analysis_version", 0) or 0)
+    if av <= 0:
+        return []
+    items = summary_obj.get("multi_k_overall") or []
+    if not isinstance(items, list):
+        return []
+
+    tmp_rows: list[dict[str, Any]] = []
+    pvals: list[float] = []
+    for it in items:
+        if not isinstance(it, dict):
+            continue
+        label = str(it.get("label") or "").strip()
+        k = int(it.get("k", 0) or 0)
+        if not label or k <= 0:
+            continue
+        for window_side in ("before", "after"):
+            w = it.get(window_side) or {}
+            if not isinstance(w, dict):
+                continue
+            p_welch = w.get("p_welch")
+            try:
+                p_w = None if p_welch is None else float(p_welch)
+            except Exception:
+                p_w = None
+            if p_w is None or not (0.0 <= p_w <= 1.0):
+                continue
+            row = {
+                "dataset": str(dataset),
+                "analysis_version": int(av),
+                "k": int(k),
+                "window_side": str(window_side),
+                "label": label,
+                "n1": w.get("n1"),
+                "n2": w.get("n2"),
+                "mean1": w.get("mean1"),
+                "mean2": w.get("mean2"),
+                "diff": w.get("diff"),
+                "ci_low": w.get("ci_low"),
+                "ci_high": w.get("ci_high"),
+                "cohen_d": w.get("d"),
+                "hedges_g": w.get("g"),
+                "p_perm": w.get("p_perm"),
+                "p_welch": float(p_w),
+                "q_welch": None,
+                "payload": w,
+            }
+            tmp_rows.append(row)
+            pvals.append(float(p_w))
+
+    if tmp_rows and pvals:
+        qs = bh_fdr(pvals)
+        for row, q in zip(tmp_rows, qs):
+            row["q_welch"] = float(q)
+    return tmp_rows
+
+
 def load_refseq_comp_results(*, summary_path: Path, summary_obj: dict[str, Any], dataset: str) -> list[dict[str, Any]]:
     analysis_version = infer_analysis_version(summary_path, summary_obj=summary_obj)
     if not analysis_version:
@@ -618,6 +1271,13 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--no-nonstandard", action="store_true", help="Skip importing nonstandard_sequence_tests_items.")
     p.add_argument("--no-boundary-enrichment", action="store_true", help="Skip importing boundary_enrichment_results.")
     p.add_argument("--no-analysis-runs", action="store_true", help="Skip importing analysis_runs payloads.")
+    p.add_argument("--no-stop-context-effects", action="store_true", help="Skip importing stop_context_pairwise_effects.")
+    p.add_argument("--no-stop-context-means", action="store_true", help="Skip importing stop_context_means.")
+    p.add_argument("--no-start-context-means", action="store_true", help="Skip importing start_context_means.")
+    p.add_argument("--no-codon-usage-null", action="store_true", help="Skip importing dataset_codon_usage_null.")
+    p.add_argument("--no-assays", action="store_true", help="Skip importing assay_constructs / assay_measurements.")
+    p.add_argument("--no-codon-usage-decomp", action="store_true", help="Skip importing codon-usage null decomposition tables.")
+    p.add_argument("--no-recoding-summary", action="store_true", help="Skip importing recoding summary tables (multi-k overall).")
     p.add_argument(
         "--recoding-jsonl",
         default="data/recoding_genbank/recoding_sites.jsonl",
@@ -632,6 +1292,31 @@ def parse_args() -> argparse.Namespace:
         "--refseq-summary-json",
         default="data/refseq_hsapiens_mrna/transcriptome_summary.json",
         help="Input RefSeq merged transcriptome summary JSON path (relative to project root by default).",
+    )
+    p.add_argument(
+        "--refseq-stop-effects-tsv",
+        default="data/refseq_hsapiens_mrna/stop_context_pairwise_effects.tsv",
+        help="Input RefSeq stop-context pairwise effects TSV path (relative to project root by default).",
+    )
+    p.add_argument(
+        "--refseq-null-decomp-u-aa-tsv",
+        default="data/refseq_hsapiens_mrna/codon_usage_null_decomp_U_aa.tsv",
+        help="Input RefSeq codon-usage null decomposition TSV (U, per AA).",
+    )
+    p.add_argument(
+        "--refseq-null-decomp-u-codon-tsv",
+        default="data/refseq_hsapiens_mrna/codon_usage_null_decomp_U_codon.tsv",
+        help="Input RefSeq codon-usage null decomposition TSV (U, per codon).",
+    )
+    p.add_argument(
+        "--refseq-null-decomp-z-aa-tsv",
+        default="data/refseq_hsapiens_mrna/codon_usage_null_decomp_Z_aa.tsv",
+        help="Input RefSeq codon-usage null decomposition TSV (Z, per AA).",
+    )
+    p.add_argument(
+        "--refseq-null-decomp-z-codon-tsv",
+        default="data/refseq_hsapiens_mrna/codon_usage_null_decomp_Z_codon.tsv",
+        help="Input RefSeq codon-usage null decomposition TSV (Z, per codon).",
     )
     p.add_argument(
         "--refseq-stop-candidates-jsonl",
@@ -657,6 +1342,16 @@ def parse_args() -> argparse.Namespace:
         "--boundary-enrichment-jsonl",
         default="data/boundary_enrichment/boundary_enrichment_results.jsonl",
         help="Input boundary enrichment results JSONL path (relative to project root by default).",
+    )
+    p.add_argument(
+        "--assay-constructs-jsonl",
+        default="",
+        help="Optional assay constructs JSONL path (for public.assay_constructs). Empty disables.",
+    )
+    p.add_argument(
+        "--assay-measurements-jsonl",
+        default="",
+        help="Optional assay measurements JSONL path (for public.assay_measurements). Empty disables.",
     )
     p.add_argument("--recoding-dataset", default="ncbi_recoding_genbank", help="Dataset label for analysis_runs.")
     p.add_argument("--refseq-dataset", default="human_refseq_mrna", help="Dataset label for analysis_runs / refseq results.")
@@ -700,11 +1395,18 @@ def main() -> None:
     recoding_jsonl_path = (root / str(args.recoding_jsonl)).resolve()
     recoding_summary_path = (root / str(args.recoding_summary_json)).resolve()
     refseq_summary_path = (root / str(args.refseq_summary_json)).resolve()
+    refseq_stop_effects_tsv_path = (root / str(args.refseq_stop_effects_tsv)).resolve()
+    refseq_decomp_u_aa_tsv_path = (root / str(args.refseq_null_decomp_u_aa_tsv)).resolve()
+    refseq_decomp_u_codon_tsv_path = (root / str(args.refseq_null_decomp_u_codon_tsv)).resolve()
+    refseq_decomp_z_aa_tsv_path = (root / str(args.refseq_null_decomp_z_aa_tsv)).resolve()
+    refseq_decomp_z_codon_tsv_path = (root / str(args.refseq_null_decomp_z_codon_tsv)).resolve()
     refseq_candidates_jsonl_path = (root / str(args.refseq_stop_candidates_jsonl)).resolve()
     panel_summary_path = (root / str(args.panel_summary_json)).resolve()
     nonstandard_summary_path = (root / str(args.nonstandard_seqtests_json)).resolve()
     nonstandard_codes_path = (root / str(args.nonstandard_codes_json)).resolve()
     boundary_enrichment_jsonl_path = (root / str(args.boundary_enrichment_jsonl)).resolve()
+    assay_constructs_jsonl_path = (root / str(args.assay_constructs_jsonl)).resolve() if str(args.assay_constructs_jsonl).strip() else None
+    assay_measurements_jsonl_path = (root / str(args.assay_measurements_jsonl)).resolve() if str(args.assay_measurements_jsonl).strip() else None
 
     transcriptome_obj: dict[str, Any] | None = None
     recoding_summary_obj: dict[str, Any] | None = None
@@ -958,6 +1660,362 @@ def main() -> None:
             write_json_atomic(cache_file, {"ok": True, "rows": int(len(ns_rows))})
             write_json_atomic(cache_meta_path(cache_file), ns_cache_meta)
 
+    # 5b) Context summary tables (stop/start context + codon-usage null)
+    if not args.no_stop_context_effects:
+        cache_file = _import_cache_file(root, table="stop_context_pairwise_effects")
+        cache_key = {
+            "analysis": "import_supabase_rest",
+            "import_version": int(IMPORT_VERSION),
+            "table": "stop_context_pairwise_effects",
+            "supabase_url": supabase_url,
+            "refseq_dataset": str(args.refseq_dataset),
+            "refseq_summary_digest": _artifact_digest(refseq_summary_path) if refseq_summary_path.exists() else None,
+            "refseq_stop_effects_digest": _artifact_digest(refseq_stop_effects_tsv_path) if refseq_stop_effects_tsv_path.exists() else None,
+            "panel_summary_digest": _artifact_digest(panel_summary_path) if panel_obj is not None else None,
+        }
+        cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
+        if (not args.force) and cache_hit(cache_file, expected_meta=cache_meta, require_meta=True):
+            print(f"[cache] hit: {cache_file}")
+        else:
+            rows: list[dict[str, Any]] = []
+            # RefSeq TSV (with q-values)
+            if transcriptome_obj is not None and refseq_stop_effects_tsv_path.exists():
+                ref_av = infer_analysis_version(refseq_summary_path, summary_obj=transcriptome_obj)
+                if ref_av:
+                    rows.extend(
+                        load_stop_context_pairwise_effects_tsv(
+                            tsv_path=refseq_stop_effects_tsv_path,
+                            dataset=str(args.refseq_dataset),
+                            panel="na",
+                            analysis_version=int(ref_av),
+                        )
+                    )
+            # Corpus panel JSON (compute BH q-values per dataset item)
+            if panel_obj is not None:
+                rows.extend(load_panel_stop_context_pairwise_effects(panel_obj=panel_obj))
+
+            if rows:
+                upsert_rows(
+                    supabase_url=supabase_url,
+                    supabase_key=supabase_key,
+                    table="stop_context_pairwise_effects",
+                    rows=rows,
+                    on_conflict="panel,dataset,analysis_version,window_side,k,pair",
+                    batch_size=int(args.batch_size),
+                    ssl_context=ssl_context,
+                    heartbeat=hb,
+                )
+            else:
+                print("[skip] stop_context_pairwise_effects: no rows to import")
+            write_json_atomic(cache_file, {"ok": True, "rows": int(len(rows))})
+            write_json_atomic(cache_meta_path(cache_file), cache_meta)
+
+    if not args.no_stop_context_means:
+        cache_file = _import_cache_file(root, table="stop_context_means")
+        cache_key = {
+            "analysis": "import_supabase_rest",
+            "import_version": int(IMPORT_VERSION),
+            "table": "stop_context_means",
+            "supabase_url": supabase_url,
+            "refseq_dataset": str(args.refseq_dataset),
+            "refseq_summary_digest": _artifact_digest(refseq_summary_path) if refseq_summary_path.exists() else None,
+            "panel_summary_digest": _artifact_digest(panel_summary_path) if panel_obj is not None else None,
+        }
+        cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
+        if (not args.force) and cache_hit(cache_file, expected_meta=cache_meta, require_meta=True):
+            print(f"[cache] hit: {cache_file}")
+        else:
+            rows: list[dict[str, Any]] = []
+            if transcriptome_obj is not None:
+                rows.extend(load_stop_context_means_from_refseq_summary(summary_obj=transcriptome_obj, dataset=str(args.refseq_dataset)))
+            if panel_obj is not None:
+                rows.extend(load_panel_stop_context_means(panel_obj=panel_obj))
+            if rows:
+                upsert_rows(
+                    supabase_url=supabase_url,
+                    supabase_key=supabase_key,
+                    table="stop_context_means",
+                    rows=rows,
+                    on_conflict="panel,dataset,analysis_version,k,stop_codon",
+                    batch_size=int(args.batch_size),
+                    ssl_context=ssl_context,
+                    heartbeat=hb,
+                )
+            else:
+                print("[skip] stop_context_means: no rows to import")
+            write_json_atomic(cache_file, {"ok": True, "rows": int(len(rows))})
+            write_json_atomic(cache_meta_path(cache_file), cache_meta)
+
+    if not args.no_start_context_means:
+        cache_file = _import_cache_file(root, table="start_context_means")
+        cache_key = {
+            "analysis": "import_supabase_rest",
+            "import_version": int(IMPORT_VERSION),
+            "table": "start_context_means",
+            "supabase_url": supabase_url,
+            "refseq_dataset": str(args.refseq_dataset),
+            "refseq_summary_digest": _artifact_digest(refseq_summary_path) if refseq_summary_path.exists() else None,
+            "panel_summary_digest": _artifact_digest(panel_summary_path) if panel_obj is not None else None,
+        }
+        cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
+        if (not args.force) and cache_hit(cache_file, expected_meta=cache_meta, require_meta=True):
+            print(f"[cache] hit: {cache_file}")
+        else:
+            rows: list[dict[str, Any]] = []
+            if transcriptome_obj is not None:
+                rows.extend(load_start_context_means_from_refseq_summary(summary_obj=transcriptome_obj, dataset=str(args.refseq_dataset)))
+            if panel_obj is not None:
+                rows.extend(load_panel_start_context_means(panel_obj=panel_obj))
+            if rows:
+                upsert_rows(
+                    supabase_url=supabase_url,
+                    supabase_key=supabase_key,
+                    table="start_context_means",
+                    rows=rows,
+                    on_conflict="panel,dataset,analysis_version,k,start_event",
+                    batch_size=int(args.batch_size),
+                    ssl_context=ssl_context,
+                    heartbeat=hb,
+                )
+            else:
+                print("[skip] start_context_means: no rows to import")
+            write_json_atomic(cache_file, {"ok": True, "rows": int(len(rows))})
+            write_json_atomic(cache_meta_path(cache_file), cache_meta)
+
+    if not args.no_codon_usage_null:
+        cache_file = _import_cache_file(root, table="dataset_codon_usage_null")
+        cache_key = {
+            "analysis": "import_supabase_rest",
+            "import_version": int(IMPORT_VERSION),
+            "table": "dataset_codon_usage_null",
+            "supabase_url": supabase_url,
+            "refseq_dataset": str(args.refseq_dataset),
+            "refseq_summary_digest": _artifact_digest(refseq_summary_path) if refseq_summary_path.exists() else None,
+            "panel_summary_digest": _artifact_digest(panel_summary_path) if panel_obj is not None else None,
+        }
+        cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
+        if (not args.force) and cache_hit(cache_file, expected_meta=cache_meta, require_meta=True):
+            print(f"[cache] hit: {cache_file}")
+        else:
+            rows: list[dict[str, Any]] = []
+            if transcriptome_obj is not None:
+                r = load_codon_usage_null_from_refseq_summary(summary_obj=transcriptome_obj, dataset=str(args.refseq_dataset))
+                if r is not None:
+                    rows.append(r)
+            if panel_obj is not None:
+                rows.extend(load_codon_usage_null_from_panel_summary(panel_obj=panel_obj))
+            if rows:
+                upsert_rows(
+                    supabase_url=supabase_url,
+                    supabase_key=supabase_key,
+                    table="dataset_codon_usage_null",
+                    rows=rows,
+                    on_conflict="panel,dataset,analysis_version",
+                    batch_size=int(args.batch_size),
+                    ssl_context=ssl_context,
+                    heartbeat=hb,
+                )
+            else:
+                print("[skip] dataset_codon_usage_null: no rows to import")
+            write_json_atomic(cache_file, {"ok": True, "rows": int(len(rows))})
+            write_json_atomic(cache_meta_path(cache_file), cache_meta)
+
+    # 5c) Optional assay backfill (wet-lab data)
+    if (not args.no_assays) and assay_constructs_jsonl_path is not None:
+        if not assay_constructs_jsonl_path.exists():
+            raise SystemExit(f"Missing assay constructs JSONL: {assay_constructs_jsonl_path}")
+        cache_file = _import_cache_file(root, table="assay_constructs")
+        cache_key = {
+            "analysis": "import_supabase_rest",
+            "import_version": int(IMPORT_VERSION),
+            "table": "assay_constructs",
+            "supabase_url": supabase_url,
+            "assay_constructs_digest": _artifact_digest(assay_constructs_jsonl_path),
+        }
+        cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
+        if (not args.force) and cache_hit(cache_file, expected_meta=cache_meta, require_meta=True):
+            print(f"[cache] hit: {cache_file}")
+        else:
+            rows, n_rows = load_assay_constructs_jsonl(assay_constructs_jsonl_path, heartbeat=hb)
+            if not rows:
+                raise SystemExit(f"No assay constructs rows found in JSONL (n={n_rows}).")
+            upsert_rows(
+                supabase_url=supabase_url,
+                supabase_key=supabase_key,
+                table="assay_constructs",
+                rows=rows,
+                on_conflict="construct_key",
+                batch_size=int(args.batch_size),
+                ssl_context=ssl_context,
+                heartbeat=hb,
+            )
+            write_json_atomic(cache_file, {"ok": True, "rows": int(len(rows))})
+            write_json_atomic(cache_meta_path(cache_file), cache_meta)
+
+    if (not args.no_assays) and assay_measurements_jsonl_path is not None:
+        if not assay_measurements_jsonl_path.exists():
+            raise SystemExit(f"Missing assay measurements JSONL: {assay_measurements_jsonl_path}")
+        cache_file = _import_cache_file(root, table="assay_measurements")
+        cache_key = {
+            "analysis": "import_supabase_rest",
+            "import_version": int(IMPORT_VERSION),
+            "table": "assay_measurements",
+            "supabase_url": supabase_url,
+            "assay_measurements_digest": _artifact_digest(assay_measurements_jsonl_path),
+        }
+        cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
+        if (not args.force) and cache_hit(cache_file, expected_meta=cache_meta, require_meta=True):
+            print(f"[cache] hit: {cache_file}")
+        else:
+            rows, n_rows = load_assay_measurements_jsonl(assay_measurements_jsonl_path, heartbeat=hb)
+            if not rows:
+                raise SystemExit(f"No assay measurements rows found in JSONL (n={n_rows}).")
+            upsert_rows(
+                supabase_url=supabase_url,
+                supabase_key=supabase_key,
+                table="assay_measurements",
+                rows=rows,
+                on_conflict="construct_key,batch,replicate,measurement_type",
+                batch_size=int(args.batch_size),
+                ssl_context=ssl_context,
+                heartbeat=hb,
+            )
+            write_json_atomic(cache_file, {"ok": True, "rows": int(len(rows))})
+            write_json_atomic(cache_meta_path(cache_file), cache_meta)
+
+    # 5d) Codon-usage null decomposition (RefSeq)
+    if not args.no_codon_usage_decomp:
+        ref_av = None
+        if transcriptome_obj is not None:
+            ref_av = infer_analysis_version(refseq_summary_path, summary_obj=transcriptome_obj)
+        if ref_av:
+            # AA-level
+            cache_file = _import_cache_file(root, table="codon_usage_null_decomp_aa")
+            cache_key = {
+                "analysis": "import_supabase_rest",
+                "import_version": int(IMPORT_VERSION),
+                "table": "codon_usage_null_decomp_aa",
+                "supabase_url": supabase_url,
+                "refseq_dataset": str(args.refseq_dataset),
+                "ref_av": int(ref_av),
+                "u_aa_digest": _artifact_digest(refseq_decomp_u_aa_tsv_path) if refseq_decomp_u_aa_tsv_path.exists() else None,
+                "z_aa_digest": _artifact_digest(refseq_decomp_z_aa_tsv_path) if refseq_decomp_z_aa_tsv_path.exists() else None,
+            }
+            cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
+            if (not args.force) and cache_hit(cache_file, expected_meta=cache_meta, require_meta=True):
+                print(f"[cache] hit: {cache_file}")
+            else:
+                rows = []
+                rows += load_codon_usage_null_decomp_aa_tsv(
+                    tsv_path=refseq_decomp_u_aa_tsv_path,
+                    dataset=str(args.refseq_dataset),
+                    analysis_version=int(ref_av),
+                    metric="U",
+                )
+                rows += load_codon_usage_null_decomp_aa_tsv(
+                    tsv_path=refseq_decomp_z_aa_tsv_path,
+                    dataset=str(args.refseq_dataset),
+                    analysis_version=int(ref_av),
+                    metric="Z",
+                )
+                if rows:
+                    upsert_rows(
+                        supabase_url=supabase_url,
+                        supabase_key=supabase_key,
+                        table="codon_usage_null_decomp_aa",
+                        rows=rows,
+                        on_conflict="panel,dataset,analysis_version,metric,aa",
+                        batch_size=int(args.batch_size),
+                        ssl_context=ssl_context,
+                        heartbeat=hb,
+                    )
+                else:
+                    print("[skip] codon_usage_null_decomp_aa: no rows to import")
+                write_json_atomic(cache_file, {"ok": True, "rows": int(len(rows))})
+                write_json_atomic(cache_meta_path(cache_file), cache_meta)
+
+            # Codon-level
+            cache_file = _import_cache_file(root, table="codon_usage_null_decomp_codon")
+            cache_key = {
+                "analysis": "import_supabase_rest",
+                "import_version": int(IMPORT_VERSION),
+                "table": "codon_usage_null_decomp_codon",
+                "supabase_url": supabase_url,
+                "refseq_dataset": str(args.refseq_dataset),
+                "ref_av": int(ref_av),
+                "u_codon_digest": _artifact_digest(refseq_decomp_u_codon_tsv_path) if refseq_decomp_u_codon_tsv_path.exists() else None,
+                "z_codon_digest": _artifact_digest(refseq_decomp_z_codon_tsv_path) if refseq_decomp_z_codon_tsv_path.exists() else None,
+            }
+            cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
+            if (not args.force) and cache_hit(cache_file, expected_meta=cache_meta, require_meta=True):
+                print(f"[cache] hit: {cache_file}")
+            else:
+                rows = []
+                rows += load_codon_usage_null_decomp_codon_tsv(
+                    tsv_path=refseq_decomp_u_codon_tsv_path,
+                    dataset=str(args.refseq_dataset),
+                    analysis_version=int(ref_av),
+                    metric="U",
+                )
+                rows += load_codon_usage_null_decomp_codon_tsv(
+                    tsv_path=refseq_decomp_z_codon_tsv_path,
+                    dataset=str(args.refseq_dataset),
+                    analysis_version=int(ref_av),
+                    metric="Z",
+                )
+                if rows:
+                    upsert_rows(
+                        supabase_url=supabase_url,
+                        supabase_key=supabase_key,
+                        table="codon_usage_null_decomp_codon",
+                        rows=rows,
+                        on_conflict="panel,dataset,analysis_version,metric,codon",
+                        batch_size=int(args.batch_size),
+                        ssl_context=ssl_context,
+                        heartbeat=hb,
+                    )
+                else:
+                    print("[skip] codon_usage_null_decomp_codon: no rows to import")
+                write_json_atomic(cache_file, {"ok": True, "rows": int(len(rows))})
+                write_json_atomic(cache_meta_path(cache_file), cache_meta)
+        else:
+            print("[skip] codon-usage decomp: missing refseq analysis_version (transcriptome summary not loaded?)")
+
+    # 5e) Recoding summary tables (multi-k overall)
+    if not args.no_recoding_summary:
+        if recoding_summary_obj is None:
+            print("[skip] recoding_summary: missing recoding summary JSON")
+        else:
+            cache_file = _import_cache_file(root, table="recoding_context_effects_multi_k")
+            cache_key = {
+                "analysis": "import_supabase_rest",
+                "import_version": int(IMPORT_VERSION),
+                "table": "recoding_context_effects_multi_k",
+                "supabase_url": supabase_url,
+                "recoding_dataset": str(args.recoding_dataset),
+                "recoding_summary_digest": _artifact_digest(recoding_summary_path),
+            }
+            cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
+            if (not args.force) and cache_hit(cache_file, expected_meta=cache_meta, require_meta=True):
+                print(f"[cache] hit: {cache_file}")
+            else:
+                rows = load_recoding_multi_k_overall_from_summary(summary_obj=recoding_summary_obj, dataset=str(args.recoding_dataset))
+                if rows:
+                    upsert_rows(
+                        supabase_url=supabase_url,
+                        supabase_key=supabase_key,
+                        table="recoding_context_effects_multi_k",
+                        rows=rows,
+                        on_conflict="dataset,analysis_version,k,window_side,label",
+                        batch_size=int(args.batch_size),
+                        ssl_context=ssl_context,
+                        heartbeat=hb,
+                    )
+                else:
+                    print("[skip] recoding_context_effects_multi_k: no rows to import")
+                write_json_atomic(cache_file, {"ok": True, "rows": int(len(rows))})
+                write_json_atomic(cache_meta_path(cache_file), cache_meta)
+
     # 6) Boundary enrichment results (JSONL; small)
     if not args.no_boundary_enrichment:
         if not boundary_enrichment_jsonl_path.exists():
@@ -999,6 +2057,15 @@ def main() -> None:
         "refseq_stop_context_candidates",
         "corpus_panel_items",
         "nonstandard_sequence_tests_items",
+        "stop_context_pairwise_effects",
+        "stop_context_means",
+        "start_context_means",
+        "dataset_codon_usage_null",
+        "assay_constructs",
+        "assay_measurements",
+        "codon_usage_null_decomp_aa",
+        "codon_usage_null_decomp_codon",
+        "recoding_context_effects_multi_k",
         "boundary_enrichment_results",
         "analysis_runs",
     ):

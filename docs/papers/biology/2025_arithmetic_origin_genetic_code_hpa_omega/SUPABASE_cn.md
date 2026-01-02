@@ -55,6 +55,7 @@ python3 scripts/import_supabase_rest.py --batch-size 200 --insecure
 - `data/recoding_genbank/recoding_sites.jsonl`
 - `data/recoding_genbank/recoding_sites_summary.json`
 - `data/refseq_hsapiens_mrna/transcriptome_summary.json`
+- `data/refseq_hsapiens_mrna/stop_context_pairwise_effects.tsv`
 - `data/panel/corpus_panel_summary.json`
 - `data/nonstandard_sequence_tests.json`
 
@@ -106,6 +107,31 @@ python3 -m venv .venv
 ./.venv/bin/python scripts/exp_supabase_sql_fragments.py
 ```
 
+4) **如果 5432 无法直连（推荐备用）**
+
+某些网络环境会阻断对 `db.<project>.supabase.co:5432` 的访问（常见报错：`No route to host`）。此时可改用 **PostgREST(HTTPS/443)** 拉取数据库内已存在的表/视图产物来生成 `.tex`：
+
+- 依赖：`SUPABASE_URL` / `SUPABASE_KEY`（见 `supabase.env`）
+- 不需要：`DATABASE_URL`
+
+```bash
+python3 scripts/exp_supabase_rest_fragments.py --force
+```
+
+### 通过 RPC 刷新派生表（仅 supabase.env，走 HTTPS/443）
+
+如果你已经把 `analysis_runs` / `corpus_panel_items` 等 payload 数据导入 Supabase，但还没有把它们“展开”为论文用的派生表（例如 `dataset_codon_usage_null`、`stop_context_means`、`start_context_means`、`stop_context_pairwise_effects`、`recoding_context_effects_multi_k`），可用 Supabase 内置 RPC 一键刷新：
+
+```bash
+python3 scripts/exp_supabase_refresh_derived_tables.py
+```
+
+推荐的最短流程：
+
+1) `python3 scripts/import_supabase_rest.py ...`（导入基础表 / analysis_runs）
+2) `python3 scripts/exp_supabase_refresh_derived_tables.py`（在 Supabase 内部执行 SQL，刷新派生表）
+3) `python3 scripts/exp_supabase_rest_fragments.py --force`（从表/视图拉取结果生成 `sections/generated/*.tex`）
+
 ### 导出 CSV
 
 - **导出**（在项目根目录 `docs/papers/biology/2025_arithmetic_origin_genetic_code_hpa_omega` 下运行）：
@@ -141,6 +167,13 @@ python3 scripts/export_supabase_tables.py \
 - `data/db_exports/corpus_panel_items.csv`
 - `data/db_exports/nonstandard_sequence_tests_items.csv`
 - （可选）`data/db_exports/boundary_enrichment_results.csv`
+- `data/db_exports/stop_context_pairwise_effects.csv`
+- `data/db_exports/stop_context_means.csv`
+- `data/db_exports/start_context_means.csv`
+- `data/db_exports/dataset_codon_usage_null.csv`
+- `data/db_exports/codon_usage_null_decomp_aa.csv`
+- `data/db_exports/codon_usage_null_decomp_codon.csv`
+- `data/db_exports/recoding_context_effects_multi_k.csv`
 
 ### 产物一致性校验（推荐）
 
@@ -260,6 +293,76 @@ WITH (FORMAT csv, HEADER true, NULL '');
 SQL
 ```
 
+7) **导入跨数据集 context 汇总表（stop/start context、codon-usage null）**
+
+```bash
+psql "$DB_URL" -v ON_ERROR_STOP=1 <<'SQL'
+\copy public.stop_context_pairwise_effects(
+  panel,dataset,analysis_version,window_side,k,pair,
+  n1,n2,mean1,mean2,diff,ci_low,ci_high,cohen_d,hedges_g,z,p,q,
+  payload
+) FROM 'data/db_exports/stop_context_pairwise_effects.csv'
+WITH (FORMAT csv, HEADER true, NULL '');
+\copy public.stop_context_means(
+  panel,dataset,analysis_version,k,stop_codon,
+  n_before,before_mean,n_after,after_mean,
+  payload
+) FROM 'data/db_exports/stop_context_means.csv'
+WITH (FORMAT csv, HEADER true, NULL '');
+\copy public.start_context_means(
+  panel,dataset,analysis_version,k,start_event,
+  n_before,before_mean,n_after,after_mean,
+  payload
+) FROM 'data/db_exports/start_context_means.csv'
+WITH (FORMAT csv, HEADER true, NULL '');
+\copy public.dataset_codon_usage_null(
+  panel,dataset,analysis_version,
+  obs_zbar,obs_ubar,
+  null_mean_zbar,null_sd_zbar,
+  null_mean_ubar,null_sd_ubar,
+  z_zbar,z_ubar,
+  p_zbar,p_ubar,
+  total_codons,
+  payload
+) FROM 'data/db_exports/dataset_codon_usage_null.csv'
+WITH (FORMAT csv, HEADER true, NULL '');
+SQL
+```
+
+8) **导入 codon-usage null 分解（AA / codon 贡献）**
+
+```bash
+psql "$DB_URL" -v ON_ERROR_STOP=1 <<'SQL'
+\copy public.codon_usage_null_decomp_aa(
+  panel,dataset,analysis_version,metric,
+  aa,n,obs_mean,null_mean,contrib,
+  payload
+) FROM 'data/db_exports/codon_usage_null_decomp_aa.csv'
+WITH (FORMAT csv, HEADER true, NULL '');
+\copy public.codon_usage_null_decomp_codon(
+  panel,dataset,analysis_version,metric,
+  codon,aa,obs_count,null_count,contrib,
+  payload
+) FROM 'data/db_exports/codon_usage_null_decomp_codon.csv'
+WITH (FORMAT csv, HEADER true, NULL '');
+SQL
+```
+
+9) **导入 recoding multi-$k$ 总体效应表**
+
+```bash
+psql "$DB_URL" -v ON_ERROR_STOP=1 <<'SQL'
+\copy public.recoding_context_effects_multi_k(
+  dataset,analysis_version,
+  k,window_side,label,
+  n1,n2,mean1,mean2,diff,ci_low,ci_high,cohen_d,hedges_g,
+  p_perm,p_welch,q_welch,
+  payload
+) FROM 'data/db_exports/recoding_context_effects_multi_k.csv'
+WITH (FORMAT csv, HEADER true, NULL '');
+SQL
+```
+
 ### 常用查询示例
 
 - **查看 recoding 的分布（按 domain / codon / aa）**：
@@ -318,5 +421,103 @@ select dataset, label, n_subset, boundary_rate_subset, boundary_rate_total, enri
 from public.boundary_enrichment_results
 order by q asc nulls last, p asc nulls last;
 ```
+
+- **RefSeq codon-usage null 分解（按贡献排序）**：
+
+```sql
+select metric, aa, n, obs_mean, null_mean, contrib
+from public.codon_usage_null_decomp_aa
+where dataset = 'human_refseq_mrna'
+order by metric, abs(contrib) desc nulls last;
+```
+
+```sql
+select metric, codon, aa, obs_count, null_count, contrib
+from public.codon_usage_null_decomp_codon
+where dataset = 'human_refseq_mrna'
+order by metric, abs(contrib) desc nulls last;
+```
+
+- **Recoding multi-$k$ 总体效应（Welch + BH $q$）**：
+
+```sql
+select label, window_side, k, diff, ci_low, ci_high, hedges_g, p_welch, q_welch
+from public.recoding_context_effects_multi_k
+where dataset = 'ncbi_recoding_genbank'
+order by label, window_side, k;
+```
+
+- **跨数据集 stop-context 效应（panel 内，含 BH $q$）**：
+
+```sql
+select
+  panel, dataset, window_side, k, pair,
+  diff, ci_low, ci_high, hedges_g, p, q
+from public.stop_context_pairwise_effects
+where panel = 'corpus_panel_v1' and k = 10
+order by q asc nulls last, abs(diff) desc nulls last;
+```
+
+- **跨数据集 start-context 均值（panel 内）**：
+
+```sql
+select
+  panel, dataset, start_event, k,
+  n_before, before_mean, n_after, after_mean
+from public.start_context_means
+where panel = 'corpus_panel_v1' and k = 10
+order by dataset, start_event;
+```
+
+- **跨数据集 codon-usage null（panel 内）**：
+
+```sql
+select
+  panel, dataset, total_codons,
+  obs_zbar, null_mean_zbar, z_zbar, p_zbar,
+  obs_ubar, null_mean_ubar, z_ubar, p_ubar
+from public.dataset_codon_usage_null
+where panel = 'corpus_panel_v1'
+order by p_ubar asc nulls last, abs(z_ubar) desc nulls last;
+```
+
+### 湿实验回灌（readthrough / Sec / Pyl）
+
+本项目提供了两张表用于回灌实验数据并与预测特征联结分析：
+
+- `public.assay_constructs`：构建体定义（序列窗口 + 预测特征），用 `construct_key` 做幂等 upsert。
+- `public.assay_measurements`：实验读数（可记录 batch/replicate），用 `(construct_key, batch, replicate, measurement_type)` 做幂等 upsert。
+
+建议实践：
+
+- 生成 readthrough 构建体库（从 RefSeq stop-context candidates）：
+
+```bash
+python3 scripts/exp_assay_construct_library.py \
+  --in-jsonl data/refseq_hsapiens_mrna/stop_context_candidates.jsonl \
+  --candidate-set reporter_v1 \
+  --group-labels matched_after_high,matched_after_low \
+  --k 10 \
+  --max-per-stop 10 \
+  --out-jsonl data/assays/readthrough_constructs.jsonl \
+  --out-summary-json data/assays/readthrough_constructs_summary.json
+```
+
+- 将构建体库导入 Supabase（REST）：
+
+```bash
+python3 scripts/import_supabase_rest.py \
+  --assay-constructs-jsonl data/assays/readthrough_constructs.jsonl
+```
+
+- 将实验读数回灌（你可自建 `data/assays/readthrough_measurements.jsonl`，每行一条测量记录，至少包含 `construct_key` 与 `measurement_type`）：
+
+```bash
+python3 scripts/import_supabase_rest.py \
+  --assay-measurements-jsonl data/assays/readthrough_measurements.jsonl
+```
+
+- 以 `refseq_stop_context_candidates` 或 `recoding_sites` 的窗口序列为来源，生成 `assay_constructs` 行（含 `k`、预测的 $\overline{U}_{\mathrm{before}}/\overline{U}_{\mathrm{after}}$、GC/dinuc 特征等）。
+- 将 readthrough fraction / 插入效率等结果写入 `assay_measurements`，后续用 SQL 直接做分层对照、回归、效应量与多重检验，并通过 `scripts/exp_supabase_sql_fragments.py` 自动生成 `.tex` 片段。
 
 

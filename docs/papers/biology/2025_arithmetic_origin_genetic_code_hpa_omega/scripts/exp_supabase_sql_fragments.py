@@ -135,6 +135,11 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--force", action="store_true", help="Force re-query even if cached outputs exist.")
     p.add_argument("--recoding-av", type=int, default=7, help="analysis_version for public.recoding_sites.")
     p.add_argument("--recoding-k", type=int, default=10, help="k for public.recoding_sites.")
+    p.add_argument(
+        "--recoding-dataset",
+        default="ncbi_recoding_genbank",
+        help="dataset for public.recoding_context_effects_multi_k.",
+    )
     p.add_argument("--panel-av", type=int, default=2, help="analysis_version for public.corpus_panel_items.")
     p.add_argument("--panel-name", default="corpus_panel_v1", help="panel name for public.corpus_panel_items.")
     p.add_argument("--ns-av", type=int, default=1, help="analysis_version for public.nonstandard_sequence_tests_items.")
@@ -181,6 +186,8 @@ def main() -> None:
 
     rec_av = int(args.recoding_av)
     rec_k = int(args.recoding_k)
+    rec_dataset = str(args.recoding_dataset)
+    rec_dataset_sql = rec_dataset.replace("'", "''")
     panel_av = int(args.panel_av)
     ns_av = int(args.ns_av)
     ref_av = int(args.refseq_av)
@@ -252,6 +259,24 @@ where analysis_version = {rec_av} and k = {rec_k}
   and before_seq_dna is not null and after_seq_dna is not null
 order by diff desc nulls last
 limit 50;
+""".strip(),
+        ),
+        QuerySpec(
+            name="sql_recoding_multi_k_overall_compact_rows",
+            out_tex=generated_dir() / "sql_recoding_multi_k_overall_compact_rows.tex",
+            sql=f"""
+select
+  label,
+  window_side,
+  k,
+  diff,
+  hedges_g,
+  p_welch,
+  q_welch
+from public.recoding_context_effects_multi_k
+where dataset = '{rec_dataset_sql}'
+  and analysis_version = {rec_av}
+order by label, window_side, k;
 """.strip(),
         ),
         QuerySpec(
@@ -441,6 +466,294 @@ from items
 order by code_id;
 """.strip(),
         ),
+        QuerySpec(
+            name="sql_panel_stop_context_effects_k10_rows",
+            out_tex=generated_dir() / "sql_panel_stop_context_effects_k10_rows.tex",
+            sql=f"""
+select
+  p.domain,
+  p.label,
+  p.mode,
+  p.code_id,
+  e.window_side,
+  e.pair,
+  e.n1,
+  e.n2,
+  e.diff,
+  e.ci_low,
+  e.ci_high,
+  e.hedges_g,
+  e.p,
+  e.q
+from public.stop_context_pairwise_effects e
+join public.corpus_panel_items p
+  on p.panel = e.panel
+  and p.analysis_version = e.analysis_version
+  and p.dataset = e.dataset
+where e.panel = '{str(args.panel_name)}'
+  and e.analysis_version = {panel_av}
+  and e.k = 10
+  and p.present is true
+order by p.domain, p.label, e.window_side, e.pair;
+""".strip(),
+        ),
+        QuerySpec(
+            name="sql_panel_stop_context_meta_k10_rows",
+            out_tex=generated_dir() / "sql_panel_stop_context_meta_k10_rows.tex",
+            sql=f"""
+with base as (
+  select
+    p.domain,
+    e.window_side,
+    e.pair,
+    e.diff,
+    e.ci_low,
+    e.ci_high
+  from public.stop_context_pairwise_effects e
+  join public.corpus_panel_items p
+    on p.panel = e.panel
+    and p.analysis_version = e.analysis_version
+    and p.dataset = e.dataset
+  where e.panel = '{str(args.panel_name)}'
+    and e.analysis_version = {panel_av}
+    and e.k = 10
+    and p.present is true
+    and e.diff is not null
+    and e.ci_low is not null
+    and e.ci_high is not null
+),
+w as (
+  select
+    domain,
+    window_side,
+    pair,
+    diff,
+    ((ci_high - ci_low) / (2.0 * 1.96)) as se,
+    1.0 / power(((ci_high - ci_low) / (2.0 * 1.96)), 2) as weight
+  from base
+  where (ci_high - ci_low) > 0
+),
+agg as (
+  select
+    domain,
+    window_side,
+    pair,
+    sum(weight * diff) / sum(weight) as meta_diff,
+    sqrt(1.0 / sum(weight)) as meta_se
+  from w
+  group by 1,2,3
+),
+z as (
+  select
+    domain,
+    window_side,
+    pair,
+    meta_diff,
+    meta_se,
+    (meta_diff / meta_se) as z
+  from agg
+  where meta_se > 0
+)
+select
+  domain,
+  window_side,
+  pair,
+  meta_diff,
+  meta_se,
+  z,
+  2.0 * (1.0 - 0.5 * (1.0 + erf(abs(z) / sqrt(2.0)))) as p
+from z
+order by window_side, pair, domain;
+""".strip(),
+        ),
+        QuerySpec(
+            name="sql_panel_codon_usage_null_rows",
+            out_tex=generated_dir() / "sql_panel_codon_usage_null_rows.tex",
+            sql=f"""
+select
+  p.domain,
+  p.label,
+  p.mode,
+  n.total_codons,
+  n.obs_zbar,
+  n.null_mean_zbar,
+  n.z_zbar,
+  n.p_zbar,
+  n.obs_ubar,
+  n.null_mean_ubar,
+  n.z_ubar,
+  n.p_ubar
+from public.dataset_codon_usage_null n
+join public.corpus_panel_items p
+  on p.panel = n.panel
+  and p.analysis_version = n.analysis_version
+  and p.dataset = n.dataset
+where n.panel = '{str(args.panel_name)}'
+  and n.analysis_version = {panel_av}
+  and p.present is true
+order by p.domain, p.label;
+""".strip(),
+        ),
+        QuerySpec(
+            name="sql_panel_start_context_k10_rows",
+            out_tex=generated_dir() / "sql_panel_start_context_k10_rows.tex",
+            sql=f"""
+select
+  p.domain,
+  p.label,
+  p.mode,
+  s.start_event,
+  s.k,
+  s.n_before,
+  s.before_mean,
+  s.n_after,
+  s.after_mean
+from public.start_context_means s
+join public.corpus_panel_items p
+  on p.panel = s.panel
+  and p.analysis_version = s.analysis_version
+  and p.dataset = s.dataset
+where s.panel = '{str(args.panel_name)}'
+  and s.analysis_version = {panel_av}
+  and s.k = 10
+  and p.present is true
+order by p.domain, p.label, s.start_event;
+""".strip(),
+        ),
+        QuerySpec(
+            name="sql_assay_readthrough_constructs_with_measurements_rows",
+            out_tex=generated_dir() / "sql_assay_readthrough_constructs_with_measurements_rows.tex",
+            sql="""
+with m as (
+  select
+    construct_key,
+    count(*) as n,
+    avg(value) as mean_value,
+    min(value) as min_value,
+    max(value) as max_value
+  from public.assay_measurements
+  where measurement_type = 'readthrough_fraction' and value is not null
+  group by 1
+)
+select
+  c.assay_type,
+  c.dataset,
+  c.candidate_set,
+  c.group_label,
+  c.rank,
+  c.stop_codon,
+  c.k,
+  m.n,
+  m.mean_value,
+  c.predicted_before_mean_delta,
+  c.predicted_after_mean_delta,
+  c.predicted_diff,
+  c.plus4_nt,
+  c.after_nt6,
+  c.source_record_id,
+  c.source_stop_base
+from public.assay_constructs c
+join m on m.construct_key = c.construct_key
+where c.assay_type = 'readthrough'
+order by c.stop_codon, c.k, c.predicted_diff desc nulls last, m.mean_value desc nulls last;
+""".strip(),
+        ),
+        QuerySpec(
+            name="sql_refseq_codon_usage_decomp_U_aa_rows",
+            out_tex=generated_dir() / "sql_refseq_codon_usage_decomp_U_aa_rows.tex",
+            sql=f"""
+select
+  aa,
+  n,
+  obs_mean,
+  null_mean,
+  contrib
+from public.codon_usage_null_decomp_aa
+where panel = 'na'
+  and dataset = '{str(args.refseq_dataset)}'
+  and analysis_version = {ref_av}
+  and metric = 'U'
+order by abs(contrib) desc nulls last, aa;
+""".strip(),
+        ),
+        QuerySpec(
+            name="sql_refseq_codon_usage_decomp_U_codon_rows",
+            out_tex=generated_dir() / "sql_refseq_codon_usage_decomp_U_codon_rows.tex",
+            sql=f"""
+select
+  codon,
+  aa,
+  obs_count,
+  null_count,
+  contrib
+from public.codon_usage_null_decomp_codon
+where panel = 'na'
+  and dataset = '{str(args.refseq_dataset)}'
+  and analysis_version = {ref_av}
+  and metric = 'U'
+order by abs(contrib) desc nulls last, codon;
+""".strip(),
+        ),
+        QuerySpec(
+            name="sql_refseq_codon_usage_decomp_Z_aa_rows",
+            out_tex=generated_dir() / "sql_refseq_codon_usage_decomp_Z_aa_rows.tex",
+            sql=f"""
+select
+  aa,
+  n,
+  obs_mean,
+  null_mean,
+  contrib
+from public.codon_usage_null_decomp_aa
+where panel = 'na'
+  and dataset = '{str(args.refseq_dataset)}'
+  and analysis_version = {ref_av}
+  and metric = 'Z'
+order by abs(contrib) desc nulls last, aa;
+""".strip(),
+        ),
+        QuerySpec(
+            name="sql_refseq_codon_usage_decomp_Z_codon_rows",
+            out_tex=generated_dir() / "sql_refseq_codon_usage_decomp_Z_codon_rows.tex",
+            sql=f"""
+select
+  codon,
+  aa,
+  obs_count,
+  null_count,
+  contrib
+from public.codon_usage_null_decomp_codon
+where panel = 'na'
+  and dataset = '{str(args.refseq_dataset)}'
+  and analysis_version = {ref_av}
+  and metric = 'Z'
+order by abs(contrib) desc nulls last, codon;
+""".strip(),
+        ),
+        QuerySpec(
+            name="sql_recoding_multi_k_overall_rows",
+            out_tex=generated_dir() / "sql_recoding_multi_k_overall_rows.tex",
+            sql=f"""
+select
+  label,
+  window_side,
+  k,
+  n1,
+  n2,
+  mean1,
+  mean2,
+  diff,
+  ci_low,
+  ci_high,
+  hedges_g,
+  p_welch,
+  q_welch
+from public.recoding_context_effects_multi_k
+where dataset = '{rec_dataset_sql}'
+  and analysis_version = {rec_av}
+order by label, window_side, k;
+""".strip(),
+        ),
     ]
 
     pg8000_dbapi = _import_pg8000()
@@ -522,6 +835,19 @@ order by code_id;
                     (str(nsc_dataset), "nonstandard_codes", nsc_av),
                 )
                 or 0
+            ),
+            "stop_context_pairwise_effects_n": int(_query_scalar(conn, "select count(*) from public.stop_context_pairwise_effects;", ()) or 0),
+            "stop_context_means_n": int(_query_scalar(conn, "select count(*) from public.stop_context_means;", ()) or 0),
+            "start_context_means_n": int(_query_scalar(conn, "select count(*) from public.start_context_means;", ()) or 0),
+            "dataset_codon_usage_null_n": int(_query_scalar(conn, "select count(*) from public.dataset_codon_usage_null;", ()) or 0),
+            "assay_constructs_n": int(_query_scalar(conn, "select count(*) from public.assay_constructs;", ()) or 0),
+            "assay_measurements_n": int(_query_scalar(conn, "select count(*) from public.assay_measurements;", ()) or 0),
+            "codon_usage_null_decomp_aa_n": int(_query_scalar(conn, "select count(*) from public.codon_usage_null_decomp_aa;", ()) or 0),
+            "codon_usage_null_decomp_codon_n": int(
+                _query_scalar(conn, "select count(*) from public.codon_usage_null_decomp_codon;", ()) or 0
+            ),
+            "recoding_context_effects_multi_k_n": int(
+                _query_scalar(conn, "select count(*) from public.recoding_context_effects_multi_k;", ()) or 0
             ),
         }
 
