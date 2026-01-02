@@ -26,11 +26,20 @@ from typing import Callable, List, Tuple
 
 import exp_ckm_mixing_depth_rigidity as ckm
 import exp_mass_depth_rigidity as mdr
+import exp_pmns_matrix_closure as pmns_mat
 import exp_pmns_mixing_depth_rigidity as pmns
 from common_constants import (
     ALPHAZ_INV_PDG,
     ALPHA_INV_CODATA_2022,
     JARLSKOG_PDG_CENTRAL,
+    PMNS_DELTA_REF_DEG,
+    PMNS_DELTA_SIGMA_DEG,
+    PMNS_SIN2_T12_REF,
+    PMNS_SIN2_T12_SIGMA,
+    PMNS_SIN2_T13_REF,
+    PMNS_SIN2_T13_SIGMA,
+    PMNS_SIN2_T23_REF,
+    PMNS_SIN2_T23_SIGMA,
     SIN2_THETAW_PDG,
 )
 
@@ -119,6 +128,15 @@ def ckm_magnitude_minimizer(vus: float, vcb: float, vub: float) -> Tuple[int, in
 def pmns_magnitude_minimizer(s12: float, s23: float, s13: float) -> Tuple[int, int, int]:
     best = pmns.best_triple_at_B(B=20, s12_ref=s12, s23_ref=s23, s13_ref=s13)
     return best.m12, best.m23, best.k13
+
+
+def pmns_delta_minimizer(s12: float, s23: float, s13: float, delta_ref_deg: float) -> float:
+    """
+    Discrete delta closure used by exp_pmns_matrix_closure.py, expressed as a minimizer.
+    """
+    delta_ref = float(delta_ref_deg) * math.pi / 180.0
+    J_ref = pmns_mat.J_from_angles(s12, s23, s13, delta_ref)
+    return pmns_mat.select_delta_discrete(s12=s12, s23=s23, s13=s13, J_ref=J_ref, candidates=[0.5 * math.pi, 1.5 * math.pi])
 
 
 def mass_depth_minimizer() -> Callable[[float, float], Tuple[int, int, int]]:
@@ -303,9 +321,9 @@ def main() -> None:
     )
 
     # PMNS sines: representative sigma on sin^2 values.
-    sin2_t12_mu, sin2_t12_sigma = 0.307, 0.013
-    sin2_t23_mu, sin2_t23_sigma = 0.545, 0.021
-    sin2_t13_mu, sin2_t13_sigma = 0.0218, 0.0007
+    sin2_t12_mu, sin2_t12_sigma = PMNS_SIN2_T12_REF, PMNS_SIN2_T12_SIGMA
+    sin2_t23_mu, sin2_t23_sigma = PMNS_SIN2_T23_REF, PMNS_SIN2_T23_SIGMA
+    sin2_t13_mu, sin2_t13_sigma = PMNS_SIN2_T13_REF, PMNS_SIN2_T13_SIGMA
     s12_mu = math.sqrt(sin2_t12_mu)
     s23_mu = math.sqrt(sin2_t23_mu)
     s13_mu = math.sqrt(sin2_t13_mu)
@@ -323,9 +341,30 @@ def main() -> None:
     rows.append(
         Row(
             name=r"PMNS sines",
-            sigma_tex=r"$\sigma(\sin^2\theta)=(0.013,0.021,0.0007)$",
+            sigma_tex=rf"$\sigma(\sin^2\theta)=({sin2_t12_sigma:.3g},{sin2_t23_sigma:.3g},{sin2_t13_sigma:.3g})$",
             samples=N,
             baseline_tex=f"$({base_pmns[0]},{base_pmns[1]},{base_pmns[2]})$",
+            stability=float(stable) / float(N),
+        )
+    )
+
+    # PMNS delta (Dirac phase): dyadic sign-anchored discrete closure.
+    # We perturb delta_ref in degrees under a truncated-normal model on [0,360].
+    delta_mu = PMNS_DELTA_REF_DEG
+    delta_sigma = PMNS_DELTA_SIGMA_DEG
+    base_delta = pmns_delta_minimizer(s12_mu, s23_mu, s13_mu, delta_ref_deg=delta_mu)
+    stable = 0
+    for _ in range(N):
+        d = truncated_normal(rng, delta_mu, delta_sigma, lo=0.0, hi=360.0)
+        if pmns_delta_minimizer(s12_mu, s23_mu, s13_mu, delta_ref_deg=d) == base_delta:
+            stable += 1
+    base_deg = base_delta * 180.0 / math.pi
+    rows.append(
+        Row(
+            name=r"PMNS $\delta$ (dyadic)",
+            sigma_tex=rf"$\sigma_\delta={delta_sigma:.0f}^\circ$",
+            samples=N,
+            baseline_tex=rf"$\delta={base_deg:.0f}^\circ$",
             stability=float(stable) / float(N),
         )
     )

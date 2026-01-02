@@ -29,7 +29,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Tuple
 
-from common_constants import LOG_PHI, PHI
+from common_constants import LOG_PHI, PHI, PMNS_SIN2_T12_REF, PMNS_SIN2_T13_REF, PMNS_SIN2_T23_REF
 
 
 @dataclass(frozen=True)
@@ -118,9 +118,9 @@ def write_rows(best_list: List[BestTriple], s12_ref: float, s23_ref: float, s13_
 def main() -> None:
     # Reference inputs (representative global-fit central values; PDG conventions).
     # We store the *sines* of the mixing angles.
-    sin2_t12 = 0.307
-    sin2_t23 = 0.545
-    sin2_t13 = 0.0218
+    sin2_t12 = PMNS_SIN2_T12_REF
+    sin2_t23 = PMNS_SIN2_T23_REF
+    sin2_t13 = PMNS_SIN2_T13_REF
     s12_ref = math.sqrt(sin2_t12)
     s23_ref = math.sqrt(sin2_t23)
     s13_ref = math.sqrt(sin2_t13)

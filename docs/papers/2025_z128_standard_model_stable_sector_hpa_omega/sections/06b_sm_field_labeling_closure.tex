@@ -17,6 +17,25 @@ Here $\nu_R^{(g)}$ denotes a neutral singlet (hypercharge $Y=0$) that is absent 
 This yields $18$ fermion multiplets.
 The remaining three stable types in the $18\oplus 3$ split are reserved for the three gauge-factor connection classes, aligned with the three-channel template (Axiom~\ref{ax:gauge_compensation}).
 
+\begin{definition}[Gauge-sector complexity order]\label{def:gauge_sector_complexity}
+For a gauge factor $G\in\{U(1),SU(2),SU(3)\}$, define its protocol-level complexity by the Lie-algebra dimension
+\[
+\dim(\mathfrak{g}),
+\]
+equivalently the number of gauge bosons in the corresponding factor.
+\end{definition}
+
+\begin{lemma}[Dimension order of the SM gauge factors]\label{lem:gauge_dim_order}
+For the Standard Model gauge factors one has
+\[
+\dim(\mathfrak{u}(1))=1,\qquad \dim(\mathfrak{su}(2))=3,\qquad \dim(\mathfrak{su}(3))=8,
+\]
+hence $U(1)\prec SU(2)\prec SU(3)$ in the complexity order of Definition~\ref{def:gauge_sector_complexity}.
+\end{lemma}
+\begin{proof}
+This is standard: $\dim(\mathfrak{u}(1))=1$ and $\dim(\mathfrak{su}(N))=N^2-1$; see, e.g., \cite{PeskinSchroeder1995}.
+\end{proof}
+
 We note two standard consistency facts for this fermion content (per generation), recorded here as audit-level requirements and referenced to the standard literature:
 (i) the hypercharge-squared sum (with multiplicities) equals $\sum Y^2=10/3$ under $Q=T_3+Y$ (Lemma~\ref{lem:hypercharge_sum_10}), and
 (ii) the gauge and mixed gravitational anomalies cancel (a neutral singlet does not affect these cancellations) \cite{BouchiatIliopoulosMeyer1972,PeskinSchroeder1995,PDGRPP2024}.
@@ -35,6 +54,11 @@ r_\ast(w):=V(w)+n\,(g(w)-2),
 \end{equation}
 where $V(w)\in\{0,\dots,20\}$ is the Zeckendorf value, $g(w)\in\{2,3,4\}$ is the folding degeneracy, and $n=3$ is the Hilbert order in the minimal balanced coupling $(m,n)=(6,3)$.
 \end{definition}
+
+\paragraph{Why $r_\ast$ is used in the labeling order.}
+The quantity $r_\ast(w)$ is an intrinsic protocol-level scalar built only from finite-resolution invariants at $(m,n)=(6,3)$.
+It is reused consistently across the paper: it is the same unnormalized depth that enters the closed mass template (Definition~\ref{def:mass_template}) and therefore ties the labeling interface to the resolution-depth spectrum closure by a shared protocol cost coordinate.
+Using $r_\ast$ in the cyclic ordering makes the labeling stage deterministic without importing any Standard-Model numerical targets as premises.
 
 We now turn the labeling into a closed optimization statement.
 
@@ -76,17 +100,19 @@ There exists a unique labeling map $\mathcal{L}_{\mathrm{SM}}$ such that:
 \[
 w_1\prec_X w_2\quad\Longrightarrow\quad \mathcal{L}_{\mathrm{SM}}(w_1)\prec_F \mathcal{L}_{\mathrm{SM}}(w_2);
 \]
-\item on the boundary sector, it assigns the three boundary types in increasing $V(w)$ order to $\{U(1),SU(2),SU(3)\}$ in increasing gauge-sector dimension.
+\item on the boundary sector, it assigns the three boundary types in increasing $V(w)$ order to $\{U(1),SU(2),SU(3)\}$ in increasing gauge-sector complexity order (Lemma~\ref{lem:gauge_dim_order}).
 \end{itemize}
 \end{theorem}
 \begin{proof}
 Both $(X_6^{\mathrm{cyc}},\prec_X)$ and $(\mathcal{F}_{\mathrm{SM}},\prec_F)$ are finite totally ordered sets with the same cardinality $18$, hence admit a unique order isomorphism given by matching ranks.
-The boundary assignment is unique by the $V(w)$ ordering on the three elements.
+The boundary words in $X_6^{\mathrm{bdry}}$ have distinct values $V(w)$, hence a unique increasing order.
+Likewise, the three gauge factors have distinct complexity values $\dim(\mathfrak{g})$, hence a unique increasing order by Lemma~\ref{lem:gauge_dim_order}.
+Matching ranks gives the unique order-preserving boundary assignment.
 \end{proof}
 
-Operationally, the assignment is therefore constructed as follows.
+Operationally, the assignment is therefore constructed as follows (equivalently: among the $3!=6$ boundary permutations, it is the unique one that is monotone in the intrinsic value $V(w)$ and the gauge-sector complexity).
 \begin{itemize}
-\item The three boundary types are sorted by $V(w)$ and assigned to $\{U(1),SU(2),SU(3)\}$ in increasing gauge-sector dimension.
+\item The three boundary types are sorted by $V(w)$ and assigned to $\{U(1),SU(2),SU(3)\}$ in increasing gauge-sector complexity order (Definition~\ref{def:gauge_sector_complexity}).
 \item The $18$ cyclic types are sorted by $\prec_X$ and assigned to the $18$ fermion multiplets sorted by $\prec_F$.
 \end{itemize}
 

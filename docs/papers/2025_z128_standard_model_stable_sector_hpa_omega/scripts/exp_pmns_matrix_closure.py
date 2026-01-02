@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-PMNS full-matrix closure from bounded-complexity angles + a discrete CP-phase choice.
+PMNS full-matrix closure from bounded-complexity angles + a discrete CP-phase closure.
 
 We use the PDG standard 3-angle + 1-Dirac-phase parameterization (Majorana phases
 do not affect oscillation probabilities and are ignored here).
@@ -8,9 +8,16 @@ do not affect oscillation probabilities and are ignored here).
 We construct:
   1) a "reference reconstruction" from representative global-fit central values,
   2) a "closed prediction" from the bounded-complexity angle closure and a
-     protocol-level discrete CP phase choice delta = 3*pi/2 (i.e., -pi/2).
+     protocol-level discrete CP-phase closure over a tiny finite candidate family.
+
+For the Dirac phase delta we use a dyadic, low-complexity candidate family:
+  delta ∈ {pi/2, 3*pi/2}.
+These two choices produce identical PMNS magnitudes but opposite-sign J_ell.
+We select delta by matching the sign of J_ell to the sign induced by the
+reference reconstruction (a CP-odd anchor).
 
 Outputs (LaTeX fragments):
+  - sections/generated/pmns_delta_sweep_rows.tex
   - sections/generated/pmns_angles_rows.tex
   - sections/generated/pmns_matrix_rows.tex
   - sections/generated/pmns_unitarity_rows.tex
@@ -27,6 +34,7 @@ from pathlib import Path
 from typing import List, Tuple
 
 import exp_pmns_mixing_depth_rigidity as pmns
+from common_constants import PMNS_DELTA_REF_DEG, PMNS_SIN2_T12_REF, PMNS_SIN2_T13_REF, PMNS_SIN2_T23_REF
 
 
 @dataclass(frozen=True)
@@ -81,14 +89,54 @@ def unitarity_deviation(U: List[List[complex]]) -> Tuple[List[float], List[float
     return row_dev, col_dev
 
 
+def _sgn(x: float, eps: float = 0.0) -> int:
+    if x > eps:
+        return +1
+    if x < -eps:
+        return -1
+    return 0
+
+
+def _abs_log_ratio(x: float, y: float) -> float:
+    if x <= 0.0 or y <= 0.0:
+        return float("inf")
+    return abs(math.log(x / y))
+
+
+def select_delta_discrete(
+    s12: float,
+    s23: float,
+    s13: float,
+    J_ref: float,
+    candidates: List[float],
+) -> float:
+    """
+    Select delta from a finite candidate set by a CP-odd anchor rule:
+      - prefer candidates with sign(J_pred) == sign(J_ref),
+      - break ties by minimizing |log(|J_pred|/|J_ref|)|,
+      - then by smaller delta.
+    """
+    best = None  # (sign_mismatch, eJ, delta)
+    best_delta = candidates[0]
+    for d in candidates:
+        Jp = J_from_angles(s12, s23, s13, d)
+        sign_mismatch = 0 if _sgn(Jp) == _sgn(J_ref) else 1
+        eJ = _abs_log_ratio(abs(Jp), abs(J_ref)) if (Jp != 0.0 and J_ref != 0.0) else float("inf")
+        cand = (sign_mismatch, eJ, float(d))
+        if best is None or cand < best:
+            best = cand
+            best_delta = d
+    return best_delta
+
+
 def main() -> None:
     # Reference inputs (representative global-fit central values; PDG conventions).
-    sin2_t12 = 0.307
-    sin2_t23 = 0.545
-    sin2_t13 = 0.0218
+    sin2_t12 = PMNS_SIN2_T12_REF
+    sin2_t23 = PMNS_SIN2_T23_REF
+    sin2_t13 = PMNS_SIN2_T13_REF
     # A representative Dirac phase (degrees). This parameter remains uncertain;
-    # the paper treats delta_pred below as a discrete protocol-level choice.
-    delta_ref_deg = 195.0
+    # the paper treats delta_pred below as a discrete protocol-level closure.
+    delta_ref_deg = PMNS_DELTA_REF_DEG
 
     ref = Angles(
         s12=math.sqrt(sin2_t12),
@@ -105,15 +153,24 @@ def main() -> None:
     # Use the same phi^{ -k/2 } amplitude family as in CKM.
     PHI = (1.0 + math.sqrt(5.0)) / 2.0
     s13_pred = PHI ** (-0.5 * float(best20.k13))
-    # Discrete protocol-level phase choice: delta = 3*pi/2 (=-pi/2).
-    delta_pred = 1.5 * math.pi
+
+    J_ref = J_from_angles(ref.s12, ref.s23, ref.s13, ref.delta)
+    # Discrete delta closure over a tiny dyadic candidate family.
+    # (Two choices give identical magnitudes but opposite J_ell.)
+    delta_candidates = [0.5 * math.pi, 1.5 * math.pi]
+    delta_pred = select_delta_discrete(
+        s12=s12_pred,
+        s23=s23_pred,
+        s13=s13_pred,
+        J_ref=J_ref,
+        candidates=delta_candidates,
+    )
 
     pred = Angles(s12=s12_pred, s23=s23_pred, s13=s13_pred, delta=delta_pred)
 
     U_ref = pmns_parameterization(ref.s12, ref.s23, ref.s13, ref.delta)
     U_pred = pmns_parameterization(pred.s12, pred.s23, pred.s13, pred.delta)
 
-    J_ref = J_from_angles(ref.s12, ref.s23, ref.s13, ref.delta)
     J_pred = J_from_angles(pred.s12, pred.s23, pred.s13, pred.delta)
 
     row_ref, col_ref = unitarity_deviation(U_ref)
@@ -122,6 +179,20 @@ def main() -> None:
     root = Path(__file__).resolve().parent.parent
     out_dir = root / "sections" / "generated"
     out_dir.mkdir(parents=True, exist_ok=True)
+
+    # Delta sweep rows (CP-odd anchor and selection).
+    sweep_rows: List[str] = []
+    for d in delta_candidates:
+        Jd = J_from_angles(pred.s12, pred.s23, pred.s13, d)
+        sign_ok = "OK" if _sgn(Jd) == _sgn(J_ref) else "FLIP"
+        eJ = _abs_log_ratio(abs(Jd), abs(J_ref)) if (Jd != 0.0 and J_ref != 0.0) else float("inf")
+        deg = d * 180.0 / math.pi
+        tag = f"{deg:.1f}"
+        if abs(d - pred.delta) < 1e-12:
+            tag = rf"\textbf{{{tag}}}"
+        sweep_rows.append(f"{tag} & {sign_ok} & {Jd:+.6g} & {eJ:.3f} \\\\")
+    sweep_rows.append("\\bottomrule")
+    (out_dir / "pmns_delta_sweep_rows.tex").write_text("\n".join(sweep_rows), encoding="utf-8")
 
     # Angles rows.
     angle_rows: List[str] = []
@@ -180,7 +251,9 @@ def main() -> None:
     uni_rows.append("\\bottomrule")
     (out_dir / "pmns_unitarity_rows.tex").write_text("\n".join(uni_rows), encoding="utf-8")
 
-    print("Wrote sections/generated/pmns_angles_rows.tex, pmns_matrix_rows.tex, pmns_unitarity_rows.tex")
+    print(
+        "Wrote sections/generated/pmns_delta_sweep_rows.tex, pmns_angles_rows.tex, pmns_matrix_rows.tex, pmns_unitarity_rows.tex"
+    )
 
 
 if __name__ == "__main__":

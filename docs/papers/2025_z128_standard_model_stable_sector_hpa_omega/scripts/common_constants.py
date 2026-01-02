@@ -24,6 +24,22 @@ ALPHAZ_INV_PDG: float = 127.955
 SIN2_THETAW_PDG: float = 0.23122
 JARLSKOG_PDG_CENTRAL: float = 3.00e-5
 
+# Representative PMNS reference values (dimensionless).
+# These are used as *targets* for deterministic closure scripts and correspond to
+# representative global-fit central values under PDG conventions.
+PMNS_SIN2_T12_REF: float = 0.307
+PMNS_SIN2_T23_REF: float = 0.545
+PMNS_SIN2_T13_REF: float = 0.0218
+# A representative Dirac phase (degrees). Used only to set the CP-odd anchor sign
+# in the discrete delta-closure; see the paper for the audit separation.
+PMNS_DELTA_REF_DEG: float = 195.0
+
+# Heuristic uncertainty model parameters used by audit scripts (not a PDG claim).
+PMNS_SIN2_T12_SIGMA: float = 0.013
+PMNS_SIN2_T23_SIGMA: float = 0.021
+PMNS_SIN2_T13_SIGMA: float = 0.0007
+PMNS_DELTA_SIGMA_DEG: float = 30.0
+
 # Electroweak reference scale (GeV), used for calibration-sweep diagnostics.
 # PDG 2024: Z pole mass.
 M_Z_GEV: float = 91.1876

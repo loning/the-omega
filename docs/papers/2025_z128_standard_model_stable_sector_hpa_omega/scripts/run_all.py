@@ -429,6 +429,7 @@ def build_steps() -> List[Step]:
             name="PMNS matrix closure",
             script="exp_pmns_matrix_closure.py",
             expected_outputs=[
+                "sections/generated/pmns_delta_sweep_rows.tex",
                 "sections/generated/pmns_angles_rows.tex",
                 "sections/generated/pmns_matrix_rows.tex",
                 "sections/generated/pmns_unitarity_rows.tex",
