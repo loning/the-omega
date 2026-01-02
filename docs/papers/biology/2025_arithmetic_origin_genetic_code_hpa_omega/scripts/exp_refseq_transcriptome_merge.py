@@ -44,7 +44,7 @@ from stats_tools import (
     normal_two_sided_p,
 )
 
-MERGE_VERSION = 2
+MERGE_VERSION = 4
 
 
 def _stable_seed_u32(tag: str) -> int:
@@ -75,6 +75,11 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--force", action="store_true", help="Force merge and LaTeX regeneration (ignore cache).")
     p.add_argument("--candidate-limit", type=int, default=20, help="Per-stop candidate count for high/low context lists.")
     p.add_argument("--candidate-set", default="reporter_v1", help="Candidate set label (for exports / Supabase).")
+    p.add_argument(
+        "--candidate-set-coding",
+        default="reporter_coding_v1",
+        help="Candidate set label for protein-coding-only (NM/XM) stop-context candidates.",
+    )
     p.add_argument(
         "--heartbeat-s",
         type=float,
@@ -306,187 +311,257 @@ def _emit_outputs_from_summary(summary: dict[str, object]) -> None:
 
     # ---- Stop-context candidate sets for reporter assays (from merged summary) ----
     cand = summary.get("stop_context_candidates")
+    cand_coding = summary.get("stop_context_candidates_coding")
+    bundles: list[tuple[str, dict[str, object]]] = []
     if isinstance(cand, dict) and cand:
+        bundles.append(("refseq_stop_context_candidates", cand))
+    if isinstance(cand_coding, dict) and cand_coding:
+        bundles.append(("refseq_stop_context_candidates_coding", cand_coding))
+
+    if bundles:
         try:
-            k_cand = int(cand.get("k", k_primary) or k_primary)
-            cand_set = str(cand.get("candidate_set") or "reporter_v1")
-            by_stop = cand.get("by_stop") or {}
-            if not isinstance(by_stop, dict):
-                by_stop = {}
-            matched_after = cand.get("matched_after") or {}
-            if not isinstance(matched_after, dict):
-                matched_after = {}
-
-            lines: list[str] = []
-            lines.append(
-                f"Stop-context candidate sets for reporter assays (candidate set \\path{{{cand_set}}}, "
-                f"window radius $k={int(k_cand)}$). Sequences are DNA (U$\\mapsto$T)."
-            )
-            lines.append("\\begin{center}")
-            lines.append("\\scriptsize")
-            lines.append("\\setlength{\\tabcolsep}{3pt}")
-            lines.append("\\renewcommand{\\arraystretch}{1.10}")
-            lines.append("\\resizebox{\\textwidth}{!}{%")
-            lines.append("\\begin{tabular}{lllrllllrrrll}")
-            lines.append("\\toprule")
-            lines.append(
-                "stop & group & rank & pos (1-based) & record & before seq & stop & after seq & "
-                "$\\overline{U}_{\\mathrm{before}}$ & $\\overline{U}_{\\mathrm{after}}$ & diff & +4 & after-nt6 \\\\"
-            )
-            lines.append("\\midrule")
-
-            def _emit_rows(stop: str, group: str, rows: list[dict[str, object]]) -> None:
-                for j, r in enumerate(rows, start=1):
-                    rec = str(r.get("record_id") or "-")
-                    pos1 = int(r.get("stop_base", 0) or 0) + 1
-                    before_seq = str(r.get("before_seq_dna") or "-")
-                    stop_dna = str(r.get("stop_codon_dna") or "-")
-                    after_seq = str(r.get("after_seq_dna") or "-")
-                    b = r.get("before_mean")
-                    a = r.get("after_mean")
-                    d = r.get("diff")
-                    plus4 = str(r.get("plus4_nt") or "-")
-                    nt6 = str(r.get("after_nt6") or "-")
-                    b_s = f"{float(b):.3f}" if b is not None else "-"
-                    a_s = f"{float(a):.3f}" if a is not None else "-"
-                    d_s = f"{float(d):+.3f}" if d is not None else "-"
-                    lines.append(
-                        f"{stop} & {group} & {j} & {pos1} & \\path{{{rec}}} & "
-                        f"\\texttt{{{before_seq}}} & \\texttt{{{stop_dna}}} & \\texttt{{{after_seq}}} & "
-                        f"{b_s} & {a_s} & {d_s} & \\texttt{{{plus4}}} & \\texttt{{{nt6}}} \\\\"
-                    )
-
-            for stop in STOP_CODONS:
-                entry = by_stop.get(stop) or {}
-                if not isinstance(entry, dict):
-                    continue
-                high = entry.get("high_after") or []
-                low = entry.get("low_after") or []
-                if isinstance(high, list):
-                    _emit_rows(stop, "high", [r for r in high if isinstance(r, dict)])
-                if isinstance(low, list):
-                    _emit_rows(stop, "low", [r for r in low if isinstance(r, dict)])
-
-            lines.append("\\bottomrule")
-            lines.append("\\end{tabular}%")
-            lines.append("}")
-            lines.append("\\end{center}")
-            write_text(generated_dir() / "refseq_stop_context_candidates.tex", "\n".join(lines) + "\n")
-
-            # Matched pairs (after-window GC + dinuc).
-            m_lines: list[str] = []
-            m_lines.append(
-                f"Composition-matched high/low candidate pairs using after-window GC+dinucleotide (candidate set \\path{{{cand_set}}}, $k={int(k_cand)}$)."
-            )
-            m_lines.append("\\begin{center}")
-            m_lines.append("\\scriptsize")
-            m_lines.append("\\setlength{\\tabcolsep}{3pt}")
-            m_lines.append("\\renewcommand{\\arraystretch}{1.10}")
-            m_lines.append("\\resizebox{\\textwidth}{!}{%")
-            m_lines.append("\\begin{tabular}{lrrllrrllrrr}")
-            m_lines.append("\\toprule")
-            m_lines.append(
-                "stop & rank & pos$_H$ & record$_H$ & after-nt6$_H$ & $\\overline{U}_{\\mathrm{after},H}$ & "
-                "pos$_L$ & record$_L$ & after-nt6$_L$ & $\\overline{U}_{\\mathrm{after},L}$ & "
-                "$\\epsilon_{GC}$ & $\\ell_1$ \\\\"
-            )
-            m_lines.append("\\midrule")
-            for stop in STOP_CODONS:
-                pairs = matched_after.get(stop) or []
-                if not isinstance(pairs, list):
-                    continue
-                for p in pairs:
-                    if not isinstance(p, dict):
-                        continue
-                    h = p.get("high") or {}
-                    l = p.get("low") or {}
-                    if not isinstance(h, dict) or not isinstance(l, dict):
-                        continue
-                    rank = int(p.get("rank", 0) or 0)
-                    eps_used = p.get("eps_used")
-                    l1 = p.get("l1")
-
-                    pos_h = int(h.get("stop_base", 0) or 0) + 1
-                    rec_h = str(h.get("record_id") or "-")
-                    nt6_h = str(h.get("after_nt6") or "-")
-                    ua_h = h.get("after_mean")
-                    ua_h_s = f"{float(ua_h):.3f}" if ua_h is not None else "-"
-
-                    pos_l = int(l.get("stop_base", 0) or 0) + 1
-                    rec_l = str(l.get("record_id") or "-")
-                    nt6_l = str(l.get("after_nt6") or "-")
-                    ua_l = l.get("after_mean")
-                    ua_l_s = f"{float(ua_l):.3f}" if ua_l is not None else "-"
-
-                    eps_s = f"{float(eps_used):.2f}" if eps_used is not None else "-"
-                    l1_s = f"{float(l1):.3f}" if l1 is not None else "-"
-                    m_lines.append(
-                        f"{stop} & {rank} & {pos_h} & \\path{{{rec_h}}} & \\texttt{{{nt6_h}}} & {ua_h_s} & "
-                        f"{pos_l} & \\path{{{rec_l}}} & \\texttt{{{nt6_l}}} & {ua_l_s} & {eps_s} & {l1_s} \\\\"
-                    )
-            m_lines.append("\\bottomrule")
-            m_lines.append("\\end{tabular}%")
-            m_lines.append("}")
-            m_lines.append("\\end{center}")
-            write_text(generated_dir() / "refseq_stop_context_candidates_matched.tex", "\n".join(m_lines) + "\n")
-
-            # Also write a JSONL export for Supabase import / downstream selection.
-            out_jsonl = root_dir() / "data" / "refseq_hsapiens_mrna" / "stop_context_candidates.jsonl"
-            out_jsonl.parent.mkdir(parents=True, exist_ok=True)
             out_rows: list[dict[str, object]] = []
-            for stop in STOP_CODONS:
-                entry = by_stop.get(stop) or {}
-                if not isinstance(entry, dict):
-                    continue
-                for group_key in ("high_after", "low_after", "high_diff", "low_diff"):
-                    lst = entry.get(group_key) or []
-                    if not isinstance(lst, list):
-                        continue
-                    for rank, r in enumerate(lst, start=1):
-                        if not isinstance(r, dict):
-                            continue
-                        out_rows.append(
-                            {
-                                "dataset": "human_refseq_mrna",
-                                "analysis_version": int(ANALYSIS_VERSION),
-                                "candidate_set": str(cand_set),
-                                "k": int(k_cand),
-                                "stop_codon": str(stop),
-                                "group_label": str(group_key),
-                                "rank": int(rank),
-                                "record_id": r.get("record_id"),
-                                "frame": r.get("frame"),
-                                "start_base": r.get("start_base"),
-                                "stop_base": r.get("stop_base"),
-                                "before_seq_dna": r.get("before_seq_dna"),
-                                "stop_codon_dna": r.get("stop_codon_dna"),
-                                "after_seq_dna": r.get("after_seq_dna"),
-                                "plus4_nt": r.get("plus4_nt"),
-                                "after_nt6": r.get("after_nt6"),
-                                "before_mean_delta": r.get("before_mean"),
-                                "after_mean_delta": r.get("after_mean"),
-                                "diff": r.get("diff"),
-                                "before_gc": r.get("before_gc"),
-                                "after_gc": r.get("after_gc"),
-                                "before_dinuc": r.get("before_dinuc"),
-                                "after_dinuc": r.get("after_dinuc"),
-                                "payload": r,
-                            }
+
+            def _emit_candidate_set(cand_obj: dict[str, object], *, stem: str) -> None:
+                k_cand = int(cand_obj.get("k", k_primary) or k_primary)
+                cand_set = str(cand_obj.get("candidate_set") or "reporter_v1")
+                by_stop = cand_obj.get("by_stop") or {}
+                if not isinstance(by_stop, dict):
+                    by_stop = {}
+                matched_after = cand_obj.get("matched_after") or {}
+                if not isinstance(matched_after, dict):
+                    matched_after = {}
+
+                # Candidate table.
+                lines: list[str] = []
+                title = "Stop-context candidate sets for reporter assays"
+                if stem.endswith("_coding"):
+                    title = "Protein-coding stop-context candidate sets for reporter assays (NM/XM)"
+                lines.append(
+                    f"{title} (candidate set \\path{{{cand_set}}}, window radius $k={int(k_cand)}$). "
+                    "Sequences are DNA (U$\\mapsto$T)."
+                )
+                lines.append("\\begin{center}")
+                lines.append("\\scriptsize")
+                lines.append("\\setlength{\\tabcolsep}{3pt}")
+                lines.append("\\renewcommand{\\arraystretch}{1.10}")
+                lines.append("\\resizebox{\\textwidth}{!}{%")
+                lines.append("\\begin{tabular}{lllrllllrrrll}")
+                lines.append("\\toprule")
+                lines.append(
+                    "stop & group & rank & pos (1-based) & record & before seq & stop & after seq & "
+                    "$\\overline{U}_{\\mathrm{before}}$ & $\\overline{U}_{\\mathrm{after}}$ & diff & +4 & after-nt6 \\\\"
+                )
+                lines.append("\\midrule")
+
+                def _emit_rows(stop: str, group: str, rows: list[dict[str, object]]) -> None:
+                    for j, r in enumerate(rows, start=1):
+                        rec = str(r.get("record_id") or "-")
+                        pos1 = int(r.get("stop_base", 0) or 0) + 1
+                        before_seq = str(r.get("before_seq_dna") or "-")
+                        stop_dna = str(r.get("stop_codon_dna") or "-")
+                        after_seq = str(r.get("after_seq_dna") or "-")
+                        b = r.get("before_mean")
+                        a = r.get("after_mean")
+                        d = r.get("diff")
+                        plus4 = str(r.get("plus4_nt") or "-")
+                        nt6 = str(r.get("after_nt6") or "-")
+                        b_s = f"{float(b):.3f}" if b is not None else "-"
+                        a_s = f"{float(a):.3f}" if a is not None else "-"
+                        d_s = f"{float(d):+.3f}" if d is not None else "-"
+                        lines.append(
+                            f"{stop} & {group} & {j} & {pos1} & \\path{{{rec}}} & "
+                            f"\\texttt{{{before_seq}}} & \\texttt{{{stop_dna}}} & \\texttt{{{after_seq}}} & "
+                            f"{b_s} & {a_s} & {d_s} & \\texttt{{{plus4}}} & \\texttt{{{nt6}}} \\\\"
                         )
-                # Matched pairs -> two rows per pair (high/low), with match metadata in payload.
-                pairs = matched_after.get(stop) or []
-                if isinstance(pairs, list):
+
+                for stop in STOP_CODONS:
+                    entry = by_stop.get(stop) or {}
+                    if not isinstance(entry, dict):
+                        continue
+                    high = entry.get("high_after") or []
+                    low = entry.get("low_after") or []
+                    if isinstance(high, list):
+                        _emit_rows(stop, "high", [r for r in high if isinstance(r, dict)])
+                    if isinstance(low, list):
+                        _emit_rows(stop, "low", [r for r in low if isinstance(r, dict)])
+
+                lines.append("\\bottomrule")
+                lines.append("\\end{tabular}%")
+                lines.append("}")
+                lines.append("\\end{center}")
+                write_text(generated_dir() / f"{stem}.tex", "\n".join(lines) + "\n")
+
+                # Matched pairs (after-window GC + dinuc).
+                m_lines: list[str] = []
+                m_lines.append(
+                    f"Composition-matched high/low candidate pairs using after-window GC+dinucleotide "
+                    f"(candidate set \\path{{{cand_set}}}, $k={int(k_cand)}$)."
+                )
+                m_lines.append("\\begin{center}")
+                m_lines.append("\\scriptsize")
+                m_lines.append("\\setlength{\\tabcolsep}{3pt}")
+                m_lines.append("\\renewcommand{\\arraystretch}{1.10}")
+                m_lines.append("\\resizebox{\\textwidth}{!}{%")
+                m_lines.append("\\begin{tabular}{lrrllrrllrrr}")
+                m_lines.append("\\toprule")
+                m_lines.append(
+                    "stop & rank & pos$_H$ & record$_H$ & after-nt6$_H$ & $\\overline{U}_{\\mathrm{after},H}$ & "
+                    "pos$_L$ & record$_L$ & after-nt6$_L$ & $\\overline{U}_{\\mathrm{after},L}$ & "
+                    "$\\epsilon_{GC}$ & $\\ell_1$ \\\\"
+                )
+                m_lines.append("\\midrule")
+                for stop in STOP_CODONS:
+                    pairs = matched_after.get(stop) or []
+                    if not isinstance(pairs, list):
+                        continue
                     for p in pairs:
                         if not isinstance(p, dict):
+                            continue
+                        h = p.get("high") or {}
+                        l = p.get("low") or {}
+                        if not isinstance(h, dict) or not isinstance(l, dict):
                             continue
                         rank = int(p.get("rank", 0) or 0)
                         eps_used = p.get("eps_used")
                         l1 = p.get("l1")
+
+                        pos_h = int(h.get("stop_base", 0) or 0) + 1
+                        rec_h = str(h.get("record_id") or "-")
+                        nt6_h = str(h.get("after_nt6") or "-")
+                        ua_h = h.get("after_mean")
+                        ua_h_s = f"{float(ua_h):.3f}" if ua_h is not None else "-"
+
+                        pos_l = int(l.get("stop_base", 0) or 0) + 1
+                        rec_l = str(l.get("record_id") or "-")
+                        nt6_l = str(l.get("after_nt6") or "-")
+                        ua_l = l.get("after_mean")
+                        ua_l_s = f"{float(ua_l):.3f}" if ua_l is not None else "-"
+
+                        eps_s = f"{float(eps_used):.2f}" if eps_used is not None else "-"
+                        l1_s = f"{float(l1):.3f}" if l1 is not None else "-"
+                        m_lines.append(
+                            f"{stop} & {rank} & {pos_h} & \\path{{{rec_h}}} & \\texttt{{{nt6_h}}} & {ua_h_s} & "
+                            f"{pos_l} & \\path{{{rec_l}}} & \\texttt{{{nt6_l}}} & {ua_l_s} & {eps_s} & {l1_s} \\\\"
+                        )
+                m_lines.append("\\bottomrule")
+                m_lines.append("\\end{tabular}%")
+                m_lines.append("}")
+                m_lines.append("\\end{center}")
+                write_text(generated_dir() / f"{stem}_matched.tex", "\n".join(m_lines) + "\n")
+
+                # ---- Candidate summary stats (plus4 / motifs / prefixes) ----
+                stat_lines: list[str] = []
+                stat_lines.append(f"Candidate summary statistics (candidate set \\path{{{cand_set}}}, window radius $k={int(k_cand)}$).")
+
+                def _plus4_counts(rows: list[dict[str, object]]) -> Counter[str]:
+                    c: Counter[str] = Counter()
+                    for r in rows:
+                        v = r.get("plus4_nt")
+                        if not isinstance(v, str) or not v:
+                            continue
+                        c[str(v)] += 1
+                    return c
+
+                def _top_nt6(rows: list[dict[str, object]], *, top_k: int = 5) -> list[tuple[str, int]]:
+                    c: Counter[str] = Counter()
+                    for r in rows:
+                        v = r.get("after_nt6")
+                        if not isinstance(v, str) or not v:
+                            continue
+                        c[str(v)] += 1
+                    return c.most_common(int(top_k))
+
+                def _prefix_counts(rows: list[dict[str, object]]) -> Counter[str]:
+                    c: Counter[str] = Counter()
+                    for r in rows:
+                        rid = r.get("record_id")
+                        if not isinstance(rid, str) or not rid:
+                            continue
+                        prefix = rid.split("_", 1)[0] if "_" in rid else rid[:2]
+                        c[str(prefix)] += 1
+                    return c
+
+                for stop in STOP_CODONS:
+                    entry = by_stop.get(stop) or {}
+                    if not isinstance(entry, dict):
+                        continue
+                    high = entry.get("high_after") if isinstance(entry.get("high_after"), list) else []
+                    low = entry.get("low_after") if isinstance(entry.get("low_after"), list) else []
+                    high_rows = [r for r in high if isinstance(r, dict)]
+                    low_rows = [r for r in low if isinstance(r, dict)]
+
+                    c_hi = _plus4_counts(high_rows)
+                    c_lo = _plus4_counts(low_rows)
+                    hi_s = ", ".join(f"\\texttt{{{k}}}:{v}" for k, v in c_hi.most_common()) if c_hi else "NA"
+                    lo_s = ", ".join(f"\\texttt{{{k}}}:{v}" for k, v in c_lo.most_common()) if c_lo else "NA"
+                    top_hi = _top_nt6(high_rows, top_k=5)
+                    top_lo = _top_nt6(low_rows, top_k=5)
+                    top_hi_s = ", ".join(f"\\texttt{{{k}}}:{v}" for k, v in top_hi) if top_hi else "NA"
+                    top_lo_s = ", ".join(f"\\texttt{{{k}}}:{v}" for k, v in top_lo) if top_lo else "NA"
+
+                    p_hi = _prefix_counts(high_rows)
+                    p_lo = _prefix_counts(low_rows)
+                    p_hi_s = ", ".join(f"\\texttt{{{k}}}:{v}" for k, v in p_hi.most_common()) if p_hi else "NA"
+                    p_lo_s = ", ".join(f"\\texttt{{{k}}}:{v}" for k, v in p_lo.most_common()) if p_lo else "NA"
+
+                    stat_lines.append(
+                        f"{stop}: high-after ($n={len(high_rows)}$) id-prefix: {p_hi_s}. +4 counts: {hi_s}. Top after-nt6: {top_hi_s}."
+                    )
+                    stat_lines.append(
+                        f"{stop}: low-after ($n={len(low_rows)}$) id-prefix: {p_lo_s}. +4 counts: {lo_s}. Top after-nt6: {top_lo_s}."
+                    )
+
+                write_text(generated_dir() / f"{stem}_stats.tex", "\n\n".join(stat_lines) + "\n")
+
+                # ---- Matched-pair effect summary ----
+                matched_stats: list[str] = []
+                matched_stats.append(
+                    f"Matched-pair summaries (after-window GC+dinucleotide matching, candidate set \\path{{{cand_set}}}, $k={int(k_cand)}$)."
+                )
+                for stop in STOP_CODONS:
+                    pairs = matched_after.get(stop) or []
+                    if not isinstance(pairs, list):
+                        continue
+                    diffs: list[float] = []
+                    for p in pairs:
+                        if not isinstance(p, dict):
+                            continue
                         h = p.get("high") or {}
                         l = p.get("low") or {}
-                        if isinstance(h, dict):
-                            payload_h = dict(h)
-                            payload_h["match"] = {"eps_used": eps_used, "l1": l1, "role": "high"}
+                        if not isinstance(h, dict) or not isinstance(l, dict):
+                            continue
+                        ah = h.get("after_mean")
+                        al = l.get("after_mean")
+                        if ah is None or al is None:
+                            continue
+                        try:
+                            diffs.append(float(ah) - float(al))
+                        except Exception:
+                            continue
+                    if not diffs:
+                        continue
+                    diffs.sort()
+                    n = len(diffs)
+                    mean = sum(diffs) / float(n)
+                    med = diffs[n // 2] if (n % 2 == 1) else 0.5 * (diffs[n // 2 - 1] + diffs[n // 2])
+                    matched_stats.append(
+                        f"{stop}: matched pairs $n={n}$, mean $\\Delta\\overline{{U}}_{{\\mathrm{{after}}}}={mean:+.3f}$, median {med:+.3f}."
+                    )
+                write_text(generated_dir() / f"{stem}_matched_stats.tex", "\n\n".join(matched_stats) + "\n")
+
+                # JSONL export rows for Supabase import / downstream selection.
+                for stop in STOP_CODONS:
+                    entry = by_stop.get(stop) or {}
+                    if not isinstance(entry, dict):
+                        continue
+                    for group_key in ("high_after", "low_after", "high_diff", "low_diff"):
+                        lst = entry.get(group_key) or []
+                        if not isinstance(lst, list):
+                            continue
+                        for rank, r in enumerate(lst, start=1):
+                            if not isinstance(r, dict):
+                                continue
                             out_rows.append(
                                 {
                                     "dataset": "human_refseq_mrna",
@@ -494,67 +569,132 @@ def _emit_outputs_from_summary(summary: dict[str, object]) -> None:
                                     "candidate_set": str(cand_set),
                                     "k": int(k_cand),
                                     "stop_codon": str(stop),
-                                    "group_label": "matched_after_high",
+                                    "group_label": str(group_key),
                                     "rank": int(rank),
-                                    "record_id": h.get("record_id"),
-                                    "frame": h.get("frame"),
-                                    "start_base": h.get("start_base"),
-                                    "stop_base": h.get("stop_base"),
-                                    "before_seq_dna": h.get("before_seq_dna"),
-                                    "stop_codon_dna": h.get("stop_codon_dna"),
-                                    "after_seq_dna": h.get("after_seq_dna"),
-                                    "plus4_nt": h.get("plus4_nt"),
-                                    "after_nt6": h.get("after_nt6"),
-                                    "before_mean_delta": h.get("before_mean"),
-                                    "after_mean_delta": h.get("after_mean"),
-                                    "diff": h.get("diff"),
-                                    "before_gc": h.get("before_gc"),
-                                    "after_gc": h.get("after_gc"),
-                                    "before_dinuc": h.get("before_dinuc"),
-                                    "after_dinuc": h.get("after_dinuc"),
-                                    "payload": payload_h,
+                                    "record_id": r.get("record_id"),
+                                    "frame": r.get("frame"),
+                                    "start_base": r.get("start_base"),
+                                    "stop_base": r.get("stop_base"),
+                                    "before_seq_dna": r.get("before_seq_dna"),
+                                    "stop_codon_dna": r.get("stop_codon_dna"),
+                                    "after_seq_dna": r.get("after_seq_dna"),
+                                    "plus4_nt": r.get("plus4_nt"),
+                                    "after_nt6": r.get("after_nt6"),
+                                    "before_mean_delta": r.get("before_mean"),
+                                    "after_mean_delta": r.get("after_mean"),
+                                    "diff": r.get("diff"),
+                                    "before_gc": r.get("before_gc"),
+                                    "after_gc": r.get("after_gc"),
+                                    "before_dinuc": r.get("before_dinuc"),
+                                    "after_dinuc": r.get("after_dinuc"),
+                                    "payload": r,
                                 }
                             )
-                        if isinstance(l, dict):
-                            payload_l = dict(l)
-                            payload_l["match"] = {"eps_used": eps_used, "l1": l1, "role": "low"}
-                            out_rows.append(
-                                {
-                                    "dataset": "human_refseq_mrna",
-                                    "analysis_version": int(ANALYSIS_VERSION),
-                                    "candidate_set": str(cand_set),
-                                    "k": int(k_cand),
-                                    "stop_codon": str(stop),
-                                    "group_label": "matched_after_low",
-                                    "rank": int(rank),
-                                    "record_id": l.get("record_id"),
-                                    "frame": l.get("frame"),
-                                    "start_base": l.get("start_base"),
-                                    "stop_base": l.get("stop_base"),
-                                    "before_seq_dna": l.get("before_seq_dna"),
-                                    "stop_codon_dna": l.get("stop_codon_dna"),
-                                    "after_seq_dna": l.get("after_seq_dna"),
-                                    "plus4_nt": l.get("plus4_nt"),
-                                    "after_nt6": l.get("after_nt6"),
-                                    "before_mean_delta": l.get("before_mean"),
-                                    "after_mean_delta": l.get("after_mean"),
-                                    "diff": l.get("diff"),
-                                    "before_gc": l.get("before_gc"),
-                                    "after_gc": l.get("after_gc"),
-                                    "before_dinuc": l.get("before_dinuc"),
-                                    "after_dinuc": l.get("after_dinuc"),
-                                    "payload": payload_l,
-                                }
-                            )
+                    # Matched pairs -> two rows per pair (high/low), with match metadata in payload.
+                    pairs = matched_after.get(stop) or []
+                    if isinstance(pairs, list):
+                        for p in pairs:
+                            if not isinstance(p, dict):
+                                continue
+                            rank = int(p.get("rank", 0) or 0)
+                            eps_used = p.get("eps_used")
+                            l1 = p.get("l1")
+                            h = p.get("high") or {}
+                            l = p.get("low") or {}
+                            if isinstance(h, dict):
+                                payload_h = dict(h)
+                                payload_h["match"] = {"eps_used": eps_used, "l1": l1, "role": "high"}
+                                out_rows.append(
+                                    {
+                                        "dataset": "human_refseq_mrna",
+                                        "analysis_version": int(ANALYSIS_VERSION),
+                                        "candidate_set": str(cand_set),
+                                        "k": int(k_cand),
+                                        "stop_codon": str(stop),
+                                        "group_label": "matched_after_high",
+                                        "rank": int(rank),
+                                        "record_id": h.get("record_id"),
+                                        "frame": h.get("frame"),
+                                        "start_base": h.get("start_base"),
+                                        "stop_base": h.get("stop_base"),
+                                        "before_seq_dna": h.get("before_seq_dna"),
+                                        "stop_codon_dna": h.get("stop_codon_dna"),
+                                        "after_seq_dna": h.get("after_seq_dna"),
+                                        "plus4_nt": h.get("plus4_nt"),
+                                        "after_nt6": h.get("after_nt6"),
+                                        "before_mean_delta": h.get("before_mean"),
+                                        "after_mean_delta": h.get("after_mean"),
+                                        "diff": h.get("diff"),
+                                        "before_gc": h.get("before_gc"),
+                                        "after_gc": h.get("after_gc"),
+                                        "before_dinuc": h.get("before_dinuc"),
+                                        "after_dinuc": h.get("after_dinuc"),
+                                        "payload": payload_h,
+                                    }
+                                )
+                            if isinstance(l, dict):
+                                payload_l = dict(l)
+                                payload_l["match"] = {"eps_used": eps_used, "l1": l1, "role": "low"}
+                                out_rows.append(
+                                    {
+                                        "dataset": "human_refseq_mrna",
+                                        "analysis_version": int(ANALYSIS_VERSION),
+                                        "candidate_set": str(cand_set),
+                                        "k": int(k_cand),
+                                        "stop_codon": str(stop),
+                                        "group_label": "matched_after_low",
+                                        "rank": int(rank),
+                                        "record_id": l.get("record_id"),
+                                        "frame": l.get("frame"),
+                                        "start_base": l.get("start_base"),
+                                        "stop_base": l.get("stop_base"),
+                                        "before_seq_dna": l.get("before_seq_dna"),
+                                        "stop_codon_dna": l.get("stop_codon_dna"),
+                                        "after_seq_dna": l.get("after_seq_dna"),
+                                        "plus4_nt": l.get("plus4_nt"),
+                                        "after_nt6": l.get("after_nt6"),
+                                        "before_mean_delta": l.get("before_mean"),
+                                        "after_mean_delta": l.get("after_mean"),
+                                        "diff": l.get("diff"),
+                                        "before_gc": l.get("before_gc"),
+                                        "after_gc": l.get("after_gc"),
+                                        "before_dinuc": l.get("before_dinuc"),
+                                        "after_dinuc": l.get("after_dinuc"),
+                                        "payload": payload_l,
+                                    }
+                                )
+
+            for stem, cand_obj in bundles:
+                _emit_candidate_set(cand_obj, stem=stem)
+
+            # Write combined JSONL export once (covers all candidate_set labels found in the merged summary).
+            out_jsonl = root_dir() / "data" / "refseq_hsapiens_mrna" / "stop_context_candidates.jsonl"
+            out_jsonl.parent.mkdir(parents=True, exist_ok=True)
+            out_rows.sort(
+                key=lambda r: (
+                    str(r.get("candidate_set") or ""),
+                    str(r.get("stop_codon") or ""),
+                    str(r.get("group_label") or ""),
+                    int(r.get("rank") or 0),
+                    str(r.get("record_id") or ""),
+                    int(r.get("stop_base") or 0),
+                )
+            )
             with out_jsonl.open("w", encoding="utf-8") as f:
                 for r in out_rows:
                     f.write(json.dumps(r, ensure_ascii=False, sort_keys=True) + "\n")
         except Exception:
-            write_text(generated_dir() / "refseq_stop_context_candidates.tex", "Stop-context candidate sets unavailable.\n")
-            write_text(generated_dir() / "refseq_stop_context_candidates_matched.tex", "Stop-context candidate sets unavailable.\n")
+            for stem, _ in bundles:
+                write_text(generated_dir() / f"{stem}.tex", "Stop-context candidate sets unavailable.\n")
+                write_text(generated_dir() / f"{stem}_matched.tex", "Stop-context candidate sets unavailable.\n")
+                write_text(generated_dir() / f"{stem}_stats.tex", "Stop-context candidate sets unavailable.\n")
+                write_text(generated_dir() / f"{stem}_matched_stats.tex", "Stop-context candidate sets unavailable.\n")
     else:
+        # Back-compat: keep the original filenames present even when candidates are unavailable.
         write_text(generated_dir() / "refseq_stop_context_candidates.tex", "Stop-context candidate sets unavailable.\n")
         write_text(generated_dir() / "refseq_stop_context_candidates_matched.tex", "Stop-context candidate sets unavailable.\n")
+        write_text(generated_dir() / "refseq_stop_context_candidates_stats.tex", "Stop-context candidate sets unavailable.\n")
+        write_text(generated_dir() / "refseq_stop_context_candidates_matched_stats.tex", "Stop-context candidate sets unavailable.\n")
 
     null_s = (
         "Codon-usage summary over coding tokens (excluding terminal stops): "
@@ -953,6 +1093,7 @@ def main() -> None:
         "mu_star": MU_STAR,
         "candidate_limit": int(args.candidate_limit),
         "candidate_set": str(args.candidate_set),
+        "candidate_set_coding": str(args.candidate_set_coding),
     }
     merge_meta = {"cache_key": merge_key, "cache_digest": cache_key_digest(merge_key)}
     if (not args.force) and cache_hit(out_json, expected_meta=merge_meta, require_meta=True):
@@ -1013,6 +1154,7 @@ def main() -> None:
     # Candidate pools (merged from shard extrema) for reporter assay selection.
     cand_limit = max(1, int(args.candidate_limit))
     cand_set = str(args.candidate_set or "reporter_v1")
+    cand_set_coding = str(args.candidate_set_coding or "reporter_coding_v1")
     CAND_POOL_MAX_PER_STOP = 1000
     cand_seen: dict[str, set[tuple[str, int, int]]] = {s: set() for s in STOP_CODONS}
     cand_top_after: dict[str, list[tuple[float, str, int, int, dict[str, object]]]] = {s: [] for s in STOP_CODONS}
@@ -1479,6 +1621,45 @@ def main() -> None:
         for s in STOP_CODONS
     }
 
+    def _is_protein_coding_rid(rid: str) -> bool:
+        pref = rid.split("_", 1)[0] if "_" in rid else rid[:2]
+        return pref in ("NM", "XM")
+
+    def _filter_coding(rows: list[dict[str, object]]) -> list[dict[str, object]]:
+        out: list[dict[str, object]] = []
+        for r in rows:
+            rid = r.get("record_id")
+            if not isinstance(rid, str) or not rid:
+                continue
+            if _is_protein_coding_rid(rid):
+                out.append(r)
+        return out
+
+    # Protein-coding-only candidate sets (NM/XM), derived from the same merged pools.
+    stop_context_candidates_coding = {
+        "candidate_set": str(cand_set_coding),
+        "k": int(k_primary),
+        "limit_per_stop": int(cand_limit),
+        "by_stop": {
+            s: {
+                "high_after": _dedup_by_seq(_filter_coding(_heap_items(cand_top_after.get(s, []))), limit=int(cand_limit)),
+                "low_after": _dedup_by_seq(_filter_coding(_heap_items(cand_bottom_after.get(s, []))), limit=int(cand_limit)),
+                "high_diff": _dedup_by_seq(_filter_coding(_heap_items(cand_top_diff.get(s, []))), limit=int(cand_limit)),
+                "low_diff": _dedup_by_seq(_filter_coding(_heap_items(cand_bottom_diff.get(s, []))), limit=int(cand_limit)),
+            }
+            for s in STOP_CODONS
+        },
+    }
+    stop_context_candidates_coding["matched_after"] = {
+        s: _match_after_gc_dinuc(
+            high=list((stop_context_candidates_coding.get("by_stop") or {}).get(s, {}).get("high_after") or []),
+            low=list((stop_context_candidates_coding.get("by_stop") or {}).get(s, {}).get("low_after") or []),
+            gc_eps_schedule=gc_eps_schedule,
+            limit=int(cand_limit),
+        )
+        for s in STOP_CODONS
+    }
+
     # ---- Composition-adjusted stop-context (stratified bins + NN sample cross-check) ----
     def _paired_summary(diffs: list[float]) -> dict[str, object]:
         n = len(diffs)
@@ -1732,6 +1913,7 @@ def main() -> None:
         "stop_context_p_before": p_before,
         "stop_context_p_after": p_after,
         "stop_context_candidates": stop_context_candidates,
+        "stop_context_candidates_coding": stop_context_candidates_coding,
         "codon_counts": {k: int(v) for k, v in sorted(codon_counts.items())},
         "aa_counts": {k: int(v) for k, v in sorted(aa_counts.items())},
         "codon_usage": {"zbar": zbar, "ubar": ubar, "null": null},

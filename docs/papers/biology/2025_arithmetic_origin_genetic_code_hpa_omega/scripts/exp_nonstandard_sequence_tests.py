@@ -182,9 +182,21 @@ def main() -> None:
     m = read_manifest()
     panels = m.get("panels") or {}
     if not isinstance(panels, dict):
-        raise SystemExit("manifest.panels must be an object")
+        panels = {}
     pdef = panels.get(str(args.panel))
+
+    # Fallback: some data bundles may ship without manifest.panels. If a cached output JSON exists,
+    # reuse it and only re-emit LaTeX fragments.
     if not isinstance(pdef, dict):
+        if out_json.exists():
+            cached = _read_json_dict(out_json)
+            if cached is None:
+                raise SystemExit(f"Missing panel: {args.panel} (and cached summary is malformed: {out_json})")
+            if not args.no_latex:
+                _emit_latex_from_summary(cached)
+                print("Wrote LaTeX fragments into:", generated_dir())
+            print(f"[reuse] nonstandard_sequence_tests: manifest.panels missing '{args.panel}', using cached summary: {out_json}", flush=True)
+            return
         raise SystemExit(f"Missing panel: {args.panel}")
     items = pdef.get("items") or []
     if not isinstance(items, list) or not items:

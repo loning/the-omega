@@ -40,7 +40,20 @@ For each stop class $s\in\{\mathrm{UAA,UAG,UGA}\}$, build matched context sets:
 \item \textbf{High-$u_{\mathrm{after}}$ contexts}: choose flanking coding sequences whose predicted $u_{\mathrm{after}}(k)$ is high.
 \item \textbf{Low-$u_{\mathrm{after}}$ contexts}: choose flanking coding sequences whose predicted $u_{\mathrm{after}}(k)$ is low.
 \end{itemize}
-Candidate contexts can be harvested from the RefSeq scan or the corpus panel by selecting ORF stop neighborhoods with complete windows and specified $u_{\mathrm{after}}(k)$ bins; composition-matched selection can be enforced using the GC/dinucleotide controls defined in Appendix~\ref{app:composition_controls}.
+In this work we provide concrete candidate context lists from the RefSeq scan at $k=10$:
+\begin{itemize}
+\item a ranked list of high/low contexts per stop codon, with explicit upstream/downstream DNA windows and local downstream features (+4 base and after-nt6; Appendix~\ref{app:generated_tables}),
+\item and a composition-matched list of high/low pairs (matching after-window GC+dinucleotide; Appendix~\ref{app:generated_tables}).
+\end{itemize}
+For these RefSeq candidates, the composition-matched pairs preserve large predicted contrasts in the downstream window means:
+$\Delta\overline{U}_{\mathrm{after}}$ is on the order of $+43$ to $+48$ across the three stop classes (Appendix~\ref{app:generated_tables}).
+Candidate selection can be generalized to other taxa/corpora by applying the same window-completeness and composition-control rules (Appendix~\ref{app:composition_controls}).
+
+\paragraph{A minimal, falsifiable construct set.}
+For each stop codon class $s$, choose $n\ge 10$ matched pairs from the provided RefSeq list.
+Clone the context by placing the upstream window (before-seq), the stop codon, and the downstream window (after-seq) in-frame at the reporter junction; keep the reading frame fixed and verify that no additional in-frame stops occur within the inserted windows.
+For biological interpretability, prioritize protein-coding RefSeq accessions (e.g.\ \texttt{NM\_}/\texttt{XM\_}); non-coding accessions (e.g.\ \texttt{NR\_}/\texttt{XR\_}) may still be used as purely sequence-defined controls.
+The appendix also includes a protein-coding-only candidate set (NM/XM) with matched pairs, which can be used as a default experimental starting point (Appendix~\ref{app:generated_tables}).
 
 \paragraph{Primary endpoint.}
 Define the readthrough fraction as the normalized downstream reporter activity relative to an in-frame sense-codon control construct.
@@ -64,6 +77,7 @@ Connect the $\mathrm{UGA}$ recoding mechanism (Sec insertion) to the uplift-cont
 Use a Sec reporter with an in-frame $\mathrm{UGA}$ at a defined position and an appropriate SECIS element (eukaryotic 3' UTR SECIS for mammalian systems, or the corresponding bacterial mechanism where applicable).
 Select site contexts from the GenBank \texttt{transl\_except} dataset:
 the scripts provide per-site $u_{\mathrm{before}}(k)$ and $u_{\mathrm{after}}(k)$, composition features, and local downstream features (e.g.\ +4 base; Appendix~\ref{app:recoding_sites}).
+For executable assay design, a ranked candidate-context table (explicit DNA windows plus local downstream features) is provided in Appendix~\ref{app:recoding_sites}.
 
 \paragraph{Primary endpoints.}
 Depending on system, quantify Sec incorporation by reporter output, targeted mass spectrometry, or isotopic labeling.
@@ -83,6 +97,7 @@ Analogous to Sec, test whether $\mathrm{UAG}$ Pyl insertion is associated with u
 \paragraph{Construct design and endpoints.}
 Use a Pyl-capable system with a defined $\mathrm{UAG}$ site and the corresponding Pyl insertion machinery (PylRS/tRNA$^{\mathrm{Pyl}}$ and, where applicable, mRNA elements).
 Quantify insertion vs termination using a dual-reporter or tagged protein readout.
+Candidate contexts ranked by the predicted $u_{\mathrm{after}}(k)-u_{\mathrm{before}}(k)$ contrast are provided in Appendix~\ref{app:recoding_sites}.
 
 \paragraph{Falsifiable tests.}
 Compare Pyl insertion efficiencies across contexts stratified by $u_{\mathrm{before}}(k)$/$u_{\mathrm{after}}(k)$ and by local downstream features extracted by the scripts (Appendix~\ref{app:recoding_sites}).

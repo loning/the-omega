@@ -120,6 +120,26 @@ def main() -> None:
         rec_cmd += ["--force"]
     run(rec_cmd, cwd=cwd)
 
+    # 4b) Boundary enrichment inputs + tests (recoding CDS ORFs)
+    be_in_cmd = [py, "scripts/exp_recoding_boundary_enrichment_inputs.py", "--k-window", str(int(args.recoding_k))]
+    if int(args.recoding_max_files) > 0:
+        be_in_cmd += ["--max-files", str(int(args.recoding_max_files))]
+    if args.force:
+        be_in_cmd += ["--force"]
+    run(be_in_cmd, cwd=cwd)
+    be_cmd = [
+        py,
+        "scripts/exp_boundary_enrichment.py",
+        "--fasta",
+        "data/boundary_enrichment/recoding_cds_orfs.fasta.gz",
+        "--positions-tsv",
+        "data/boundary_enrichment/recoding_site_sets.tsv",
+        "--dataset",
+        "recoding_genbank_orf",
+        *(["--force"] if args.force else []),
+    ]
+    run(be_cmd, cwd=cwd)
+
     # 5) RefSeq transcriptome scan (sharded) + merge
     if refseq_quick:
         quick_dir.mkdir(parents=True, exist_ok=True)

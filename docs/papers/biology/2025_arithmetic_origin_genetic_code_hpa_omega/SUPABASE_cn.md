@@ -247,6 +247,19 @@ WITH (FORMAT csv, HEADER true, NULL '');
 SQL
 ```
 
+6) **导入 boundary enrichment 结果（含 FDR $q$ 值）**
+
+```bash
+psql "$DB_URL" -v ON_ERROR_STOP=1 <<'SQL'
+\copy public.boundary_enrichment_results(
+  dataset,analysis_version,label,method,
+  n_total,n_subset,boundary_rate_total,boundary_rate_subset,enrichment,p,q,
+  payload
+) FROM 'data/db_exports/boundary_enrichment_results.csv'
+WITH (FORMAT csv, HEADER true, NULL '');
+SQL
+```
+
 ### 常用查询示例
 
 - **查看 recoding 的分布（按 domain / codon / aa）**：
@@ -296,6 +309,14 @@ select
 from public.nonstandard_sequence_tests_items
 where present is true
 order by abs(stop_boundary_z) desc nulls last;
+```
+
+- **Boundary enrichment：按显著性排序（含 FDR $q$）**：
+
+```sql
+select dataset, label, n_subset, boundary_rate_subset, boundary_rate_total, enrichment, p, q
+from public.boundary_enrichment_results
+order by q asc nulls last, p asc nulls last;
 ```
 
 

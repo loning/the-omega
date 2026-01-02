@@ -30,6 +30,10 @@ from provenance_tools import infer_analysis_version
 
 DINUC_ORDER = [a + b for a in "ACGT" for b in "ACGT"]
 
+# Bump this when changing exported column sets or output formatting in a way that
+# should invalidate the export cache.
+EXPORT_VERSION = 1
+
 
 def _fingerprint_file(path: Path) -> dict[str, object]:
     if not path.exists():
@@ -413,6 +417,7 @@ def export_boundary_enrichment_results(*, in_jsonl: Path, out_csv: Path, heartbe
         "boundary_rate_subset",
         "enrichment",
         "p",
+        "q",
         "payload",
     ]
 
@@ -547,6 +552,7 @@ def main() -> None:
     cache_file = out_dir / "_export_supabase_tables_cache.json"
     cache_key = {
         "analysis": "export_supabase_tables",
+        "export_version": int(EXPORT_VERSION),
         "out_dir": str(out_dir),
         "inputs": {
             "recoding_jsonl": _fingerprint_file((root / str(args.recoding_jsonl)).resolve()),

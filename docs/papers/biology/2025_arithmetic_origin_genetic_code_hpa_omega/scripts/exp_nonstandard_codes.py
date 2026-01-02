@@ -13,6 +13,7 @@ Standard library only.
 from __future__ import annotations
 
 import argparse
+import itertools
 import json
 import re
 from dataclasses import dataclass
@@ -23,7 +24,7 @@ from genetic_code_tools import BOUNDARY_WORDS, fold_codon
 
 
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
-ANALYSIS_VERSION = 1
+ANALYSIS_VERSION = 2
 
 
 def root_dir() -> Path:
@@ -188,10 +189,57 @@ def codons_for_table(t: CodeTable) -> list[str]:
     return out
 
 
+def _base_perm_to_str(base_map: dict[str, str]) -> str:
+    """
+    Compact representation of a base permutation: images of A,C,G,U in that order.
+    Example: identity -> 'ACGU'.
+    """
+    return "".join(base_map[b] for b in "ACGU")
+
+
+def _apply_action(codon: str, *, pos: tuple[int, int, int], base_map: dict[str, str]) -> str:
+    return "".join(base_map[codon[i]] for i in pos)
+
+
+def _best_symmetry_action(
+    baseline_set: set[str],
+    target_set: set[str],
+    *,
+    actions: list[tuple[tuple[int, int, int], dict[str, str]]],
+) -> dict[str, object]:
+    """
+    Return the action (pos permutation + base permutation) that maximizes overlap between
+    image(baseline_set) and target_set. Report overlap and Jaccard similarity.
+    """
+    best: dict[str, object] | None = None
+    best_key: tuple[int, float, str, str] | None = None
+
+    for pos, base_map in actions:
+        img = {_apply_action(c, pos=pos, base_map=base_map) for c in baseline_set}
+        inter = len(img & target_set)
+        union = len(img | target_set)
+        j = (float(inter) / float(union)) if union > 0 else 1.0
+        pos_s = "".join(str(int(i) + 1) for i in pos)
+        base_s = _base_perm_to_str(base_map)
+        key = (int(inter), float(j), pos_s, base_s)
+        if best_key is None or key > best_key:
+            best_key = key
+            best = {
+                "pos": pos_s,
+                "base": base_s,
+                "overlap": int(inter),
+                "jaccard": float(j),
+            }
+
+    return best or {"pos": "123", "base": "ACGU", "overlap": 0, "jaccard": 0.0}
+
+
 def main() -> None:
     p = argparse.ArgumentParser(description="Nonstandard code scan (NCBI gc.prt)")
     p.add_argument("--out-rows", default=str(generated_dir() / "nonstandard_code_rows.tex"))
     p.add_argument("--out-summary", default=str(generated_dir() / "nonstandard_code_summary.tex"))
+    p.add_argument("--out-stop-migration-rows", default=str(generated_dir() / "nonstandard_stop_migration_rows.tex"))
+    p.add_argument("--out-stop-migration-summary", default=str(generated_dir() / "nonstandard_stop_migration_summary.tex"))
     p.add_argument("--out-json", default=str(data_root() / "nonstandard_codes_summary.json"))
     p.add_argument("--force", action="store_true", help="Force recomputation even if cached outputs exist.")
     args = p.parse_args()
@@ -217,6 +265,8 @@ def main() -> None:
 
     out_rows = Path(args.out_rows)
     out_summary = Path(args.out_summary)
+    out_stop_mig_rows = Path(args.out_stop_migration_rows)
+    out_stop_mig_summary = Path(args.out_stop_migration_summary)
     out_json = Path(args.out_json)
     cache_file = data_root() / "_cache" / f"nonstandard_codes_v{int(ANALYSIS_VERSION)}.json"
     cache_key = {
@@ -226,6 +276,8 @@ def main() -> None:
         "gc_prt": gc_sha,
         "out_rows": str(out_rows),
         "out_summary": str(out_summary),
+        "out_stop_migration_rows": str(out_stop_mig_rows),
+        "out_stop_migration_summary": str(out_stop_mig_summary),
         "out_json": str(out_json),
     }
     cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
@@ -234,6 +286,8 @@ def main() -> None:
         (not args.force)
         and out_rows.exists()
         and out_summary.exists()
+        and out_stop_mig_rows.exists()
+        and out_stop_mig_summary.exists()
         and out_json.exists()
         and cache_hit(cache_file, expected_meta=cache_meta, require_meta=True)
     ):
@@ -251,10 +305,29 @@ def main() -> None:
     max_ids: list[int] = []
     json_items: list[dict[str, object]] = []
 
+    # Baseline (standard genetic code) for migration and symmetry comparisons.
+    baseline = next((t for t in tables if int(t.code_id) == 1), tables[0])
+    baseline_codons = codons_for_table(baseline)
+    baseline_stops = {baseline_codons[i] for i, aa in enumerate(baseline.ncbieaa) if aa == "*"}
+    baseline_starts = {baseline_codons[i] for i, aa in enumerate(baseline.sncbieaa) if aa.upper() == "M"}
+
+    # Action group: base permutations (4!) × codon-position permutations (3!).
+    bases = "ACGU"
+    actions: list[tuple[tuple[int, int, int], dict[str, str]]] = []
+    for perm in itertools.permutations(bases):
+        base_map = dict(zip(bases, perm))
+        for pos in itertools.permutations((0, 1, 2)):
+            actions.append((pos, base_map))
+
+    stop_mig_rows: list[str] = []
+    perfect_stop_sym: list[tuple[int, str, str]] = []
+
     for t in tables:
         codons = codons_for_table(t)
         stops = [codons[i] for i, aa in enumerate(t.ncbieaa) if aa == "*"]
         starts = [codons[i] for i, aa in enumerate(t.sncbieaa) if aa.upper() == "M"]
+        stop_set = set(stops)
+        start_set = set(starts)
 
         stop_boundary_details = []
         for c in stops:
@@ -289,6 +362,33 @@ def main() -> None:
             f"{t.code_id} & {name} & {len(stops)} & {stop_str} & {len(stop_boundary)} & {stop_b_str} & "
             f"{len(starts)} & {start_str} & {len(start_boundary)} & {start_b_str} \\\\"
         )
+
+        # Stop-set migration vs baseline code.
+        added = sorted(stop_set - baseline_stops)
+        removed = sorted(baseline_stops - stop_set)
+        added_s = ", ".join(added) if added else "-"
+        removed_s = ", ".join(removed) if removed else "-"
+
+        # Best symmetry action (approximate): maximize overlap between image(baseline stops) and current stops.
+        best_stop = _best_symmetry_action(baseline_stops, stop_set, actions=actions)
+        pos_s = str(best_stop.get("pos") or "123")
+        base_s = str(best_stop.get("base") or "ACGU")
+        ov = int(best_stop.get("overlap") or 0)
+        jac = float(best_stop.get("jaccard") or 0.0)
+        sym_s = f"\\texttt{{pos{pos_s}/map{base_s}}}"
+        if jac == 1.0 and ov == len(stop_set):
+            perfect_stop_sym.append((int(t.code_id), pos_s, base_s))
+
+        # Boundary-stop word (if any) as the migration anchor in boundary space.
+        stop_b_one = "-"
+        if stop_boundary_details:
+            d0 = stop_boundary_details[0]
+            stop_b_one = f"{d0['codon']}(\\texttt{{{d0['w']}}})"
+
+        stop_mig_rows.append(
+            f"{t.code_id} & {len(stops)} & {stop_str} & {added_s} & {removed_s} & {stop_b_one} & {sym_s} & {ov} & {jac:.3f} \\\\"
+        )
+
         json_items.append(
             {
                 "code_id": int(t.code_id),
@@ -297,10 +397,31 @@ def main() -> None:
                 "starts": starts,
                 "stop_boundary": stop_boundary_details,
                 "start_boundary": start_boundary_details,
+                "baseline_code_id": int(baseline.code_id),
+                "stops_added": added,
+                "stops_removed": removed,
+                "starts_added": sorted(start_set - baseline_starts),
+                "starts_removed": sorted(baseline_starts - start_set),
+                "best_sym_stop": best_stop,
+                "best_sym_start": _best_symmetry_action(baseline_starts, start_set, actions=actions) if baseline_starts else None,
             }
         )
 
     write_text(Path(args.out_rows), "\n".join(rows) + "\n\\bottomrule\n")
+
+    # Stop migration fragment.
+    write_text(out_stop_mig_rows, "\n".join(stop_mig_rows) + "\n\\bottomrule\n")
+
+    mig_summary: list[str] = []
+    mig_summary.append(
+        f"Stop-set migration and symmetry scores are reported relative to baseline code ID {int(baseline.code_id)} "
+        f"(baseline stops: {', '.join(sorted(baseline_stops))}). "
+        f"The symmetry score maximizes overlap between the image of the baseline stop set under base/position permutations and the target stop set."
+    )
+    if perfect_stop_sym:
+        ids = ", ".join(str(x[0]) for x in sorted(perfect_stop_sym))
+        mig_summary.append(f"Perfect stop-set symmetry (Jaccard=1) occurs for code IDs: {ids}.")
+    write_text(out_stop_mig_summary, "\n".join(mig_summary) + "\n")
 
     summary = []
     summary.append(
@@ -314,13 +435,16 @@ def main() -> None:
     write_json_atomic(
         out_json,
         {
-            "schema_version": 1,
+            "schema_version": 2,
             "analysis_version": int(ANALYSIS_VERSION),
             "mu_star": MU_STAR,
             "gc_prt": gc_sha,
             "n_tables": int(len(tables)),
             "max_stop_boundary": int(max_stop_boundary),
             "max_ids": [int(x) for x in sorted(max_ids)],
+            "baseline_code_id": int(baseline.code_id),
+            "baseline_stops": sorted(baseline_stops),
+            "baseline_starts": sorted(baseline_starts),
             "items": json_items,
         },
     )

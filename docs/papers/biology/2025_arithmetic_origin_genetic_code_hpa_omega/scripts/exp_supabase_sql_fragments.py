@@ -143,7 +143,10 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--refseq-av", type=int, default=4, help="analysis_version for public.refseq_stop_context_comp_results.")
     p.add_argument("--refseq-k", type=int, default=10, help="k for public.refseq_stop_context_comp_results.")
     p.add_argument("--refseq-cand-set", default="reporter_v1", help="candidate_set for public.refseq_stop_context_candidates.")
+    p.add_argument("--refseq-cand-set-coding", default="reporter_coding_v1", help="candidate_set for protein-coding RefSeq candidates.")
     p.add_argument("--enrich-av", type=int, default=1, help="analysis_version for public.boundary_enrichment_results.")
+    p.add_argument("--nsc-dataset", default="ncbi_gc_prt", help="dataset for public.analysis_runs (nonstandard codes).")
+    p.add_argument("--nsc-av", type=int, default=2, help="analysis_version for public.analysis_runs (nonstandard codes).")
     return p.parse_args()
 
 
@@ -183,7 +186,10 @@ def main() -> None:
     ref_av = int(args.refseq_av)
     ref_k = int(args.refseq_k)
     ref_cand_set = str(args.refseq_cand_set)
+    ref_cand_set_coding = str(args.refseq_cand_set_coding)
     enrich_av = int(args.enrich_av)
+    nsc_av = int(args.nsc_av)
+    nsc_dataset = str(args.nsc_dataset)
 
     queries: list[QuerySpec] = [
         QuerySpec(
@@ -312,6 +318,76 @@ order by stop_codon, group_label, rank;
 """.strip(),
         ),
         QuerySpec(
+            name="sql_refseq_stop_context_candidates_coding_rows",
+            out_tex=generated_dir() / "sql_refseq_stop_context_candidates_coding_rows.tex",
+            sql=f"""
+select
+  stop_codon,
+  group_label,
+  rank,
+  record_id,
+  (stop_base + 1) as stop_pos_1based,
+  before_seq_dna,
+  stop_codon_dna,
+  after_seq_dna,
+  before_mean_delta,
+  after_mean_delta,
+  diff,
+  plus4_nt,
+  after_nt6
+from public.refseq_stop_context_candidates
+where dataset = '{str(args.refseq_dataset)}'
+  and analysis_version = {ref_av}
+  and candidate_set = '{ref_cand_set_coding}'
+  and k = {ref_k}
+order by stop_codon, group_label, rank;
+""".strip(),
+        ),
+        QuerySpec(
+            name="sql_refseq_stop_context_candidates_prefix_rows",
+            out_tex=generated_dir() / "sql_refseq_stop_context_candidates_prefix_rows.tex",
+            sql=f"""
+with x as (
+  select
+    stop_codon,
+    group_label,
+    split_part(record_id, '_', 1) as prefix,
+    count(*) as n
+  from public.refseq_stop_context_candidates
+  where dataset = '{str(args.refseq_dataset)}'
+    and analysis_version = {ref_av}
+    and candidate_set = '{ref_cand_set}'
+    and k = {ref_k}
+  group by 1,2,3
+)
+select stop_codon, group_label, prefix, n
+from x
+order by stop_codon, group_label, n desc, prefix asc;
+""".strip(),
+        ),
+        QuerySpec(
+            name="sql_refseq_stop_context_candidates_coding_prefix_rows",
+            out_tex=generated_dir() / "sql_refseq_stop_context_candidates_coding_prefix_rows.tex",
+            sql=f"""
+with x as (
+  select
+    stop_codon,
+    group_label,
+    split_part(record_id, '_', 1) as prefix,
+    count(*) as n
+  from public.refseq_stop_context_candidates
+  where dataset = '{str(args.refseq_dataset)}'
+    and analysis_version = {ref_av}
+    and candidate_set = '{ref_cand_set_coding}'
+    and k = {ref_k}
+  group by 1,2,3
+)
+select stop_codon, group_label, prefix, n
+from x
+order by stop_codon, group_label, n desc, prefix asc;
+""".strip(),
+        ),
+        QuerySpec(
             name="sql_boundary_enrichment_rank_rows",
             out_tex=generated_dir() / "sql_boundary_enrichment_rank_rows.tex",
             sql=f"""
@@ -322,11 +398,47 @@ select
   boundary_rate_subset,
   boundary_rate_total,
   enrichment,
-  p
+  p,
+  q
 from public.boundary_enrichment_results
 where analysis_version = {enrich_av}
 order by p asc nulls last
 limit 50;
+""".strip(),
+        ),
+        QuerySpec(
+            name="sql_nonstandard_stop_migration_rows",
+            out_tex=generated_dir() / "sql_nonstandard_stop_migration_rows.tex",
+            sql=f"""
+with run as (
+  select payload
+  from public.analysis_runs
+  where dataset = '{str(nsc_dataset).replace("'", "''")}'
+    and analysis = 'nonstandard_codes'
+    and analysis_version = {nsc_av}
+  order by inserted_at desc
+  limit 1
+),
+items as (
+  select jsonb_array_elements(run.payload->'items') as it
+  from run
+)
+select
+  (it->>'code_id')::int as code_id,
+  jsonb_array_length(it->'stops') as n_stop,
+  coalesce(array_to_string(array(select jsonb_array_elements_text(it->'stops') order by 1), ', '), '-') as stops,
+  coalesce(array_to_string(array(select jsonb_array_elements_text(it->'stops_added') order by 1), ', '), '-') as added_vs_1,
+  coalesce(array_to_string(array(select jsonb_array_elements_text(it->'stops_removed') order by 1), ', '), '-') as removed_vs_1,
+  case
+    when jsonb_typeof(it->'stop_boundary') = 'array' and jsonb_array_length(it->'stop_boundary') > 0
+      then (it->'stop_boundary'->0->>'codon') || '(' || (it->'stop_boundary'->0->>'w') || ')'
+    else '-'
+  end as stop_in_boundary,
+  ('pos' || (it->'best_sym_stop'->>'pos') || '/map' || (it->'best_sym_stop'->>'base')) as best_symmetry,
+  (it->'best_sym_stop'->>'overlap')::int as overlap,
+  (it->'best_sym_stop'->>'jaccard')::double precision as jaccard
+from items
+order by code_id;
 """.strip(),
         ),
     ]
@@ -387,11 +499,27 @@ limit 50;
                 )
                 or 0
             ),
+            "refseq_stop_context_candidates_coding_n": int(
+                _query_scalar(
+                    conn,
+                    "select count(*) from public.refseq_stop_context_candidates where dataset = %s and analysis_version = %s and candidate_set = %s and k = %s;",
+                    (str(args.refseq_dataset), ref_av, str(ref_cand_set_coding), ref_k),
+                )
+                or 0
+            ),
             "boundary_enrichment_results_n": int(
                 _query_scalar(
                     conn,
                     "select count(*) from public.boundary_enrichment_results where analysis_version = %s;",
                     (enrich_av,),
+                )
+                or 0
+            ),
+            "analysis_runs_nonstandard_codes_n": int(
+                _query_scalar(
+                    conn,
+                    "select count(*) from public.analysis_runs where dataset = %s and analysis = %s and analysis_version = %s;",
+                    (str(nsc_dataset), "nonstandard_codes", nsc_av),
                 )
                 or 0
             ),

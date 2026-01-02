@@ -21,6 +21,7 @@ from typing import Any
 from cache_manager import cache_hit, cache_key_digest, cache_meta_path, write_json_atomic
 from genetic_code_tools import BOUNDARY_WORDS, GENETIC_CODE, fold_codon, iter_fasta
 from progress_tools import Heartbeat
+from stats_tools import bh_fdr
 
 
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
@@ -154,6 +155,7 @@ class EnrichmentRow:
     boundary_rate_subset: float | None
     enrichment: float | None
     p: float | None
+    q: float | None
     payload: dict[str, object]
 
 
@@ -363,7 +365,7 @@ def main() -> None:
 
     p0 = k_total / float(n_total)
 
-    rows: list[EnrichmentRow] = []
+    raw: list[dict[str, object]] = []
     for lbl in sorted(positions_by_label.keys()):
         n_sub = int(subset_valid.get(lbl, 0))
         x_sub = int(subset_boundary.get(lbl, 0))
@@ -395,21 +397,45 @@ def main() -> None:
             },
         }
 
-        rows.append(
-            EnrichmentRow(
-                dataset=str(dataset),
-                analysis_version=int(ANALYSIS_VERSION),
-                label=str(lbl),
-                method="binomial",
-                n_total=int(n_total),
-                n_subset=int(n_sub),
-                boundary_rate_total=float(rate_total),
-                boundary_rate_subset=(float(rate_sub) if rate_sub is not None else None),
-                enrichment=(float(enrich) if enrich is not None else None),
-                p=(float(p_val) if p_val is not None else None),
-                payload=payload,
-            )
+        raw.append(
+            {
+                "dataset": str(dataset),
+                "analysis_version": int(ANALYSIS_VERSION),
+                "label": str(lbl),
+                "method": "binomial",
+                "n_total": int(n_total),
+                "n_subset": int(n_sub),
+                "boundary_rate_total": float(rate_total),
+                "boundary_rate_subset": (float(rate_sub) if rate_sub is not None else None),
+                "enrichment": (float(enrich) if enrich is not None else None),
+                "p": (float(p_val) if p_val is not None else None),
+                "q": None,
+                "payload": payload,
+            }
         )
+
+    # Multiple-testing correction (BH-FDR) over all label-level tests in this run.
+    p_list: list[float] = []
+    p_pos: list[int] = []
+    for i, r in enumerate(raw):
+        p = r.get("p")
+        if p is None:
+            continue
+        try:
+            p_list.append(float(p))
+            p_pos.append(int(i))
+        except Exception:
+            continue
+    q_list = bh_fdr(p_list) if p_list else []
+    for j, i in enumerate(p_pos):
+        raw[i]["q"] = float(q_list[j]) if j < len(q_list) else None
+
+    rows: list[EnrichmentRow] = []
+    for r in raw:
+        try:
+            rows.append(EnrichmentRow(**r))  # type: ignore[arg-type]
+        except Exception:
+            continue
 
     # Write JSONL rows (table import).
     out_jsonl.parent.mkdir(parents=True, exist_ok=True)
@@ -475,14 +501,18 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
         if not isinstance(r, dict):
             continue
         lbl = str(r.get("label") or "-")
+        # Minimal TeX escaping for labels (allow underscores from programmatic labels).
+        lbl = lbl.replace("\\", "\\textbackslash{}").replace("_", "\\_").replace("&", "\\&").replace("%", "\\%")
         n_sub = int(r.get("n_subset") or 0)
         rate_sub = r.get("boundary_rate_subset")
         enrich = r.get("enrichment")
         p = r.get("p")
+        q = r.get("q")
         rate_s = f"{float(rate_sub):.5f}" if rate_sub is not None else "-"
         enr_s = f"{float(enrich):.3f}" if enrich is not None else "-"
         p_s = f"{float(p):.3g}" if p is not None else "-"
-        tr.append(f"{lbl} & {n_sub} & {rate_s} & {enr_s} & {p_s} \\\\")
+        q_s = f"{float(q):.3g}" if q is not None else "-"
+        tr.append(f"{lbl} & {n_sub} & {rate_s} & {enr_s} & {p_s} & {q_s} \\\\")
     write_text(generated_dir() / "boundary_enrichment_rows.tex", "\n".join(tr) + "\n\\bottomrule\n")
 
 

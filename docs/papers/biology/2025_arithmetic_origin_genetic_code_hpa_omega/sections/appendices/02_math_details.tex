@@ -20,4 +20,91 @@ Thus there are exactly three boundary words:
 100001,\qquad 100101,\qquad 101001.
 \]
 
+\subsection{Preimages under \texorpdfstring{$\mathrm{Fold}_6$}{Fold6}}
+\label{app:fold6_preimages}
+
+We record a complete preimage characterization for $\mathrm{Fold}_6$ restricted to $\{0,\dots,63\}$.
+This makes the $m=6$ interface self-contained and yields closed-form proofs of Proposition~\ref{prop:boundary_preimages} and Theorem~\ref{thm:fold6_degeneracy}.
+
+\begin{proposition}[Preimage characterization at window length $6$]
+\label{prop:fold6_preimage_characterization}
+Fix $w=(w_1,\dots,w_6)\in X_6$ and let $v:=V(w)\in\{0,\dots,20\}$.
+Then every $N\in\{0,\dots,63\}$ satisfying $\mathrm{Fold}_6(N)=w$ has the form
+\[
+N=v+\delta,
+\qquad
+\delta\in\{0,21,34,55\}=\{0,F_8,F_9,F_{10}\},
+\]
+with the following admissibility constraints:
+\begin{itemize}
+\item if $w_6=1$ then necessarily $\delta\in\{0,34\}$;
+\item if $w_6=0$ then $\delta\in\{0,21,34\}$ always, and $\delta=55$ is admissible if and only if $v\le 8$.
+\end{itemize}
+Consequently, the only possible preimage sizes are $2$, $3$, and $4$.
+\end{proposition}
+
+\begin{proof}
+Let the Zeckendorf expansion of $N$ be
+\[
+N=\sum_{k\ge 1} c_k F_{k+1},
+\qquad
+c_k\in\{0,1\},
+\qquad
+c_k c_{k+1}=0.
+\]
+By definition $\mathrm{Fold}_6(N)=(c_1,\dots,c_6)=w$, hence
+\[
+N-V(w)=\sum_{k\ge 7} c_k F_{k+1}.
+\]
+Since $N\le 63$ and $F_{11}=89>63$, all digits beyond $k=9$ vanish and therefore
+\[
+\delta:=N-V(w)=c_7 F_8 + c_8 F_9 + c_9 F_{10}
+ = 21c_7 + 34c_8 + 55c_9.
+\]
+The Zeckendorf constraint forbids adjacent ones, so $(c_7,c_8,c_9)$ contains at most one $1$ and thus $\delta\in\{0,21,34,55\}$.
+
+If $w_6=c_6=1$ then adjacency forces $c_7=0$, hence $\delta\neq 21$.
+Also $v\ge 13$ whenever $w_6=1$, so $v+55>63$ and $\delta\neq 55$.
+Therefore $\delta\in\{0,34\}$.
+
+If $w_6=c_6=0$ then $c_7$ may be $1$, so $\delta=21$ is admissible, and $\delta=34$ is always admissible (it only requires $c_8=1$ and $c_7=0$).
+Finally, $\delta=55$ is admissible exactly when $v+55\le 63$, i.e.\ $v\le 8$.
+\end{proof}
+
+\begin{corollary}[Boundary preimages and the boundary index set]
+The boundary words have Zeckendorf values $V(100001)=14$, $V(101001)=17$, $V(100101)=19$.
+Since each boundary word has $w_6=1$, Proposition~\ref{prop:fold6_preimage_characterization} implies exactly two preimages differing by $34$:
+\[
+\mathrm{Fold}_6^{-1}(100001)=\{14,48\},\qquad
+\mathrm{Fold}_6^{-1}(101001)=\{17,51\},\qquad
+\mathrm{Fold}_6^{-1}(100101)=\{19,53\}.
+\]
+Hence
+\[
+\mathrm{Fold}_6^{-1}(X_6^{\mathrm{bdry}})=\{14,17,19,48,51,53\}.
+\]
+\end{corollary}
+
+\begin{corollary}[Degeneracy histogram for $\mathrm{Fold}_6$ on $\{0,\dots,63\}$]
+The degeneracy counts in Theorem~\ref{thm:fold6_degeneracy} follow from Proposition~\ref{prop:fold6_preimage_characterization}:
+\[
+\#\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=2\}=8,\quad
+\#\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=3\}=4,\quad
+\#\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=4\}=9.
+\]
+\end{corollary}
+
+\begin{proof}
+If $w_6=1$ then Proposition~\ref{prop:fold6_preimage_characterization} gives $|\mathrm{Fold}_6^{-1}(w)|=2$.
+The constraint $w_6=1$ forces $w_5=0$, and the remaining prefix $(w_1,\dots,w_4)$ is any admissible length-$4$ word.
+Thus there are $a_4=F_6=8$ such words.
+
+If $w_6=0$ and $v>8$, then $|\mathrm{Fold}_6^{-1}(w)|=3$ (the $\delta=55$ option is excluded by $v+55>63$).
+For admissible $w$ with $w_6=0$, one has $v>8$ if and only if $w_5=1$ and at least one of $(w_1,w_2,w_3)$ is $1$ (since $w_4$ must be $0$ by admissibility).
+The length-$3$ admissible prefixes are exactly $\{000,100,010,001,101\}$, so there are $4$ nonzero choices and hence $4$ such words.
+
+All remaining admissible words have $w_6=0$ and $v\le 8$, hence have preimage size $4$.
+Since $|X_6|=21$, the remaining count is $21-8-4=9$.
+\end{proof}
+
 

@@ -1455,11 +1455,25 @@ def _emit_latex_from_summary(out: dict[str, object]) -> None:
 def main() -> None:
     args = parse_args()
     m = read_manifest()
+    out_json = Path(args.out_json)
+
     panels = m.get("panels") or {}
     if not isinstance(panels, dict):
-        raise SystemExit("manifest.panels must be an object")
+        panels = {}
     pdef = panels.get(str(args.panel))
+
+    # Fallback: some data bundles may ship without manifest.panels. If an existing panel summary JSON
+    # is present, reuse it as the authoritative definition/output and only re-emit LaTeX.
     if not isinstance(pdef, dict):
+        if out_json.exists():
+            cached = _read_json_dict(out_json)
+            if cached is None:
+                raise SystemExit(f"Missing panel: {args.panel} (and cached summary is malformed: {out_json})")
+            if not args.no_latex:
+                _emit_latex_from_summary(cached)
+                print("Wrote LaTeX fragments into:", generated_dir())
+            print(f"[reuse] panel: manifest.panels missing '{args.panel}', using cached summary: {out_json}", flush=True)
+            return
         raise SystemExit(f"Missing panel: {args.panel}")
 
     k_list = [int(x) for x in (pdef.get("default_stop_window_list") or []) if int(x) >= 1]
@@ -1470,8 +1484,6 @@ def main() -> None:
     items = pdef.get("items") or []
     if not isinstance(items, list) or not items:
         raise SystemExit(f"Panel has no items: {args.panel}")
-
-    out_json = Path(args.out_json)
 
     # ---- Cache short-circuit ----
     datasets = m.get("datasets") if isinstance(m.get("datasets"), dict) else {}
