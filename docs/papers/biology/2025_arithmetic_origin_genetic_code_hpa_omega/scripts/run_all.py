@@ -16,7 +16,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-from exp_refseq_transcriptome import ANALYSIS_VERSION
+from exp_recoding_sites import ANALYSIS_VERSION as RECODING_ANALYSIS_VERSION
+from exp_refseq_transcriptome import ANALYSIS_VERSION as REFSEQ_ANALYSIS_VERSION
 
 
 def root_dir() -> Path:
@@ -157,13 +158,57 @@ def main() -> None:
     ]
     run(foldm_be_cmd, cwd=cwd)
 
+    # 4f) Codon-level contribution decomposition for Fold_m boundary enrichment (explains sign flips across m).
+    foldm_be_decomp_cmd = [
+        py,
+        "scripts/exp_foldm_boundary_enrichment_decomp.py",
+        "--m-list",
+        "6,7,8,9",
+        *(["--force"] if args.force else []),
+    ]
+    run(foldm_be_decomp_cmd, cwd=cwd)
+
+    # 4g) AA-preserving decomposition of Fold_m boundary enrichment differences (AA vs synonymous components).
+    foldm_be_aa_decomp_cmd = [
+        py,
+        "scripts/exp_foldm_boundary_enrichment_aa_decomp.py",
+        "--m-list",
+        "6,7,8,9",
+        *(["--force"] if args.force else []),
+    ]
+    run(foldm_be_aa_decomp_cmd, cwd=cwd)
+
+    # 4h) AA-level drivers for Fold_m boundary enrichment components (top AA contributors).
+    foldm_be_aa_drivers_cmd = [
+        py,
+        "scripts/exp_foldm_boundary_enrichment_aa_drivers.py",
+        "--m-list",
+        "6,7,8,9",
+        "--top-k",
+        "5",
+        *(["--force"] if args.force else []),
+    ]
+    run(foldm_be_aa_drivers_cmd, cwd=cwd)
+
+    # 4i) Compact cross-m driver matrix (top AA drivers for syn(sub) and AA(comp)).
+    foldm_be_driver_matrix_cmd = [
+        py,
+        "scripts/exp_foldm_boundary_enrichment_driver_matrix.py",
+        "--m-list",
+        "6,7,8,9",
+        "--top-k",
+        "3",
+        *(["--force"] if args.force else []),
+    ]
+    run(foldm_be_driver_matrix_cmd, cwd=cwd)
+
     # 4c) Rank-based discrimination summary (AUC) for recoding vs baselines (k-primary only).
     # Uses the JSONL produced by exp_recoding_sites.py (cached when available).
     rec_disc_cmd = [
         py,
         "scripts/exp_recoding_discrimination.py",
         "--analysis-version",
-        str(int(ANALYSIS_VERSION)),
+        str(int(RECODING_ANALYSIS_VERSION)),
         "--k",
         str(int(args.recoding_k)),
         *(["--force"] if args.force else []),
@@ -175,20 +220,21 @@ def main() -> None:
         py,
         "scripts/exp_recoding_discrimination_foldm.py",
         "--analysis-version",
-        str(int(ANALYSIS_VERSION)),
+        str(int(RECODING_ANALYSIS_VERSION)),
         "--k",
         str(int(args.recoding_k)),
         *(["--force"] if args.force else []),
     ]
     run(rec_disc_m_cmd, cwd=cwd)
+    run([py, "scripts/exp_recoding_discrimination_foldm_stability.py", *(["--force"] if args.force else [])], cwd=cwd)
 
     # 5) RefSeq transcriptome scan (sharded) + merge
     if refseq_quick:
         quick_dir.mkdir(parents=True, exist_ok=True)
-        shards_dir = quick_dir / "refseq_shards" / f"k{int(args.refseq_stop_window)}_v{ANALYSIS_VERSION}_mr{int(args.refseq_max_records)}_ms{int(args.refseq_max_shards)}"
+        shards_dir = quick_dir / "refseq_shards" / f"k{int(args.refseq_stop_window)}_v{REFSEQ_ANALYSIS_VERSION}_mr{int(args.refseq_max_records)}_ms{int(args.refseq_max_shards)}"
         merge_out_json = quick_dir / "transcriptome_summary.json"
     else:
-        shards_dir = cwd / "data" / "refseq_hsapiens_mrna" / "shards" / f"k{int(args.refseq_stop_window)}_v{ANALYSIS_VERSION}"
+        shards_dir = cwd / "data" / "refseq_hsapiens_mrna" / "shards" / f"k{int(args.refseq_stop_window)}_v{REFSEQ_ANALYSIS_VERSION}"
         merge_out_json = cwd / "data" / "refseq_hsapiens_mrna" / "transcriptome_summary.json"
     shards_dir.mkdir(parents=True, exist_ok=True)
 
@@ -259,6 +305,18 @@ def main() -> None:
         panel_cmd += ["--force"]
     run(panel_cmd, cwd=cwd)
     run([py, "scripts/exp_foldm_corpus_panel_codon_usage_null.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run(
+        [py, "scripts/exp_foldm_corpus_panel_codon_usage_null_stability.py", *(["--force"] if args.force else [])],
+        cwd=cwd,
+    )
+    run(
+        [
+            py,
+            "scripts/exp_foldm_corpus_panel_codon_usage_null_driver_matrix.py",
+            *(["--force"] if args.force else []),
+        ],
+        cwd=cwd,
+    )
 
     # 6b) Fold_m stop-context meta-analysis across eukaryotic RefSeq corpora (best ORF).
     run([py, "scripts/exp_foldm_stop_context_eukaryota.py", *(["--force"] if args.force else [])], cwd=cwd)
