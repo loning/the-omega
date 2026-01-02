@@ -74,7 +74,7 @@ def parse_label_map_from_rows(rows: List[str]) -> Dict[str, str]:
 
 
 def main() -> None:
-    m_list = [8, 10]
+    m_list = [8, 10, 12, 14, 16]
 
     base_rows = sml.generate_rows()
     label_of = parse_label_map_from_rows(base_rows)
@@ -88,12 +88,7 @@ def main() -> None:
     for m in m_list:
         Xm = xm.all_xm(m)
         Xm_of[m] = Xm
-        pre: Dict[str, List[int]] = defaultdict(list)
-        for n in range(1 << m):
-            w = foldm.foldm(n, m)
-            pre[w].append(n)
-        # Convert to degeneracy map.
-        gm = {w: len(ns) for (w, ns) in pre.items()}
+        gm = foldm.cached_degeneracy_map(m)
         if set(gm.keys()) != set(Xm):
             raise AssertionError(f"Fold_m image mismatch at m={m}.")
         gm_of[m] = gm

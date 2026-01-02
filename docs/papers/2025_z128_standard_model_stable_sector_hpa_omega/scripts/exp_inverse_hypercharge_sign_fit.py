@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Exploratory inverse fit: recover the sign of hypercharge Y from intrinsic invariants.
+Bounded-complexity inverse diagnostic: recover the sign of hypercharge Y from intrinsic invariants.
 
 Targets are the sign classes of the SM hypercharge numerator (in units of 1/6):
   sign(Y_num) in {-1,0,+1}.

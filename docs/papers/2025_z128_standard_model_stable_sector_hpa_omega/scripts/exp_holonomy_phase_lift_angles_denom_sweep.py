@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Denominator sweep for phase-lifted angle extraction (toy).
+Denominator sweep for phase-lifted angle extraction (finite diagnostic).
 
 For denom = 2^p in a bounded range, we compute phase-lifted plaquette holonomies,
 project+renormalize to an effective 3x3 unitary, extract PDG-style sines

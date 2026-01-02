@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Permutation-robust bounded-complexity fits for phase-lifted holonomy angles (toy).
+Permutation-robust bounded-complexity fits for phase-lifted holonomy angles (finite diagnostic).
 
 For each denom = 2^p in a bounded range, we:
   - compute effective 3x3 unitary matrices Q from phase-lifted plaquette holonomies

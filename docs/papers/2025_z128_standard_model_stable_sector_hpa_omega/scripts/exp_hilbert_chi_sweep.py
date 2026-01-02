@@ -24,7 +24,7 @@ import exp_hilbert_chirality_index as hil
 
 
 def main() -> None:
-    n_list = [3, 4, 5]
+    n_list = [3, 4, 5, 6, 7, 8]
     rows: List[str] = []
     for n_bits in n_list:
         path = hil.hilbert_curve(n_bits)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Exploratory inverse fit: recover (6Y)^2 classes from intrinsic invariants on X6.
+Bounded-complexity inverse diagnostic: recover (6Y)^2 classes from intrinsic invariants on X6.
 
 We treat the closed labeling assignment on the cyclic sector as supervised data:
   cyclic stable types w in X6  ->  SM fermion multiplets  ->  (6Y)^2 class.

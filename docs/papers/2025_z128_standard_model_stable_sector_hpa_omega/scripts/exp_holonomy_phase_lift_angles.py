@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Extract PDG-style angles from phase-lifted effective U(3) holonomy (toy).
+Extract PDG-style angles from phase-lifted effective U(3) holonomy (finite diagnostic).
 
 Given the phase-lifted plaquette holonomy H (4x4 unitary) on the n=3 grid:
   - project to sum-zero subspace -> M (3x3),

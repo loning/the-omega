@@ -23,18 +23,17 @@ from itertools import product
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+from common_cache import CACHE_VERSION, cache_path, load_or_compute
+import exp_xm_enumeration as xm_enum
+
 
 def is_admissible_word(s: str) -> bool:
     return "11" not in s
 
 
 def all_xm(m: int) -> List[str]:
-    out: List[str] = []
-    for bits in product("01", repeat=m):
-        s = "".join(bits)
-        if is_admissible_word(s):
-            out.append(s)
-    return sorted(out)
+    # Keep a local alias for backwards compatibility; use the cached implementation.
+    return sorted(xm_enum.all_xm(m))
 
 
 def fib_base_up_to(n: int) -> List[int]:
@@ -78,6 +77,62 @@ def foldm(n: int, m: int) -> str:
     return w
 
 
+def cached_foldm_outputs(m: int) -> List[str]:
+    """
+    Return outputs[k] = Fold_m(k) for k in {0..2^m-1}, cached on disk.
+    """
+    key = cache_path(f"foldm_outputs_m{m}_v{CACHE_VERSION}.pkl")
+
+    def compute() -> List[str]:
+        return [foldm(k, m) for k in range(1 << m)]
+
+    return load_or_compute(key, compute)
+
+
+def cached_degeneracy_map(m: int) -> Dict[str, int]:
+    """
+    Return gm[w] = |Fold_m^{-1}(w)| over k in {0..2^m-1}, cached on disk.
+    """
+    key = cache_path(f"foldm_deg_m{m}_v{CACHE_VERSION}.pkl")
+
+    def compute() -> Dict[str, int]:
+        outs = cached_foldm_outputs(m)
+        gm: Dict[str, int] = defaultdict(int)
+        for w in outs:
+            gm[w] += 1
+        return dict(gm)
+
+    return load_or_compute(key, compute)
+
+
+def cached_fiber4_map(m: int, rank: int = 4) -> Dict[str, List[int]]:
+    """
+    Return a padded first-`rank` preimage list for each stable word w in X_m.
+
+    The list is in increasing order and padded by repeating the last element if
+    the degeneracy is smaller than rank.
+    """
+    key = cache_path(f"foldm_fiber_rank{rank}_m{m}_v{CACHE_VERSION}.pkl")
+
+    def compute() -> Dict[str, List[int]]:
+        outs = cached_foldm_outputs(m)
+        pre: Dict[str, List[int]] = defaultdict(list)
+        for k, w in enumerate(outs):
+            xs = pre[w]
+            if len(xs) < rank:
+                xs.append(k)
+        out: Dict[str, List[int]] = {}
+        for w, xs in pre.items():
+            if not xs:
+                raise AssertionError("Empty fiber encountered.")
+            while len(xs) < rank:
+                xs.append(xs[-1])
+            out[w] = xs[:rank]
+        return out
+
+    return load_or_compute(key, compute)
+
+
 def hist_to_tex(hist: Counter[int]) -> str:
     # Compact string "k1:v1, k2:v2, ..."
     parts = [f"{k}:{hist[k]}" for k in sorted(hist)]
@@ -85,22 +140,19 @@ def hist_to_tex(hist: Counter[int]) -> str:
 
 
 def main() -> None:
-    m_list = [6, 7, 8, 9, 10]
+    m_list = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
     rows: List[str] = []
     for m in m_list:
         Xm = all_xm(m)
-        pre: Dict[str, List[int]] = defaultdict(list)
-        for n in range(1 << m):
-            w = foldm(n, m)
-            pre[w].append(n)
-        img = sorted(pre.keys())
+        gm = cached_degeneracy_map(m)
+        img = sorted(gm.keys())
         if set(img) != set(Xm):
             missing = sorted(set(Xm) - set(img))
             extra = sorted(set(img) - set(Xm))
             raise AssertionError(f"Image mismatch at m={m}. missing={missing[:10]}, extra={extra[:10]}")
 
-        degeneracies = [len(pre[w]) for w in Xm]
+        degeneracies = [gm[w] for w in Xm]
         hist = Counter(degeneracies)
         g_min = min(degeneracies)
         g_max = max(degeneracies)

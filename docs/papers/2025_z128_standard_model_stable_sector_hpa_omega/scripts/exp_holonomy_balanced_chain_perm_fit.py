@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Balanced-chain permutation-robust fits for phase-lifted holonomy angles (toy).
+Balanced-chain permutation-robust fits for phase-lifted holonomy angles (finite diagnostic).
 
-We extend the balanced chain sweep (n,m) = (3,6),(4,8),(5,10) by extracting
+We extend the balanced chain sweep (n,m) = (3,6),(4,8),(5,10),(6,12),(7,14),(8,16) by extracting
 effective 3x3 unitary holonomy matrices on plaquettes and performing a global
 S3xS3 relabeling fit to PMNS/CKM target sines.
 
@@ -35,8 +35,8 @@ from typing import Dict, List, Tuple
 
 import exp_foldm_stats as foldm
 import exp_hilbert_chirality_index as hil
-import exp_holonomy_phase_lift_angles as ang
 import exp_holonomy_phase_lift_cp_invariant as ph
+from common_progress import ProgressEvery
 from common_tex import write_lines
 
 
@@ -45,12 +45,37 @@ Perm4 = Tuple[int, int, int, int]
 Perm3 = Tuple[int, int, int]
 
 
-def bits_m(n: int, m: int) -> str:
-    return format(n, f"0{m}b")
+def hamming(a: int, b: int) -> int:
+    return (a ^ b).bit_count()
 
 
-def hamming(a: str, b: str) -> int:
-    return sum(1 for x, y in zip(a, b) if x != y)
+def phase_table(denom: int) -> List[complex]:
+    """
+    Return phases[k] = exp(2*pi*i*k/denom) for k=0..denom-1.
+    Constructed iteratively for determinism and speed.
+    """
+    if denom <= 0:
+        raise ValueError("denom must be positive.")
+    step = 2.0 * math.pi / float(denom)
+    root = complex(math.cos(step), math.sin(step))
+    out = [0j] * denom
+    z = 1.0 + 0j
+    for k in range(denom):
+        out[k] = z
+        z *= root
+    return out
+
+
+def compose_mono(p: Perm4, a: List[complex], q: Perm4, b: List[complex]) -> Tuple[Perm4, List[complex]]:
+    """
+    Compose two 4x4 monomial unitaries:
+      U_p * U_q  ->  U_r
+    where U_p has columns mapping i -> p[i] with phase a[i] at row p[i],
+    and similarly for (q,b).
+    """
+    r = compose4(p, q)
+    c = [a[q[i]] * b[i] for i in range(4)]
+    return r, c
 
 
 def preimages(m: int) -> Dict[str, List[int]]:
@@ -73,14 +98,12 @@ def fiber4(pre: Dict[str, List[int]], w: str) -> List[int]:
     return xs
 
 
-def best_perm(fa: List[int], fb: List[int], bits: List[str]) -> Perm4:
-    a_bits = [bits[x] for x in fa]
-    b_bits = [bits[x] for x in fb]
+def best_perm(fa: List[int], fb: List[int]) -> Perm4:
     best: Tuple[int, Perm4] | None = None
     for p in itertools.permutations((0, 1, 2, 3), 4):
         cost = 0
         for i in range(4):
-            cost += hamming(a_bits[i], b_bits[p[i]])
+            cost += hamming(fa[i], fb[p[i]])
         cand = (cost, p)
         if best is None or cand < best:
             best = cand
@@ -127,42 +150,6 @@ def cycle_type(p: Perm4) -> str:
     return "other"
 
 
-def matmul(A: List[List[complex]], B: List[List[complex]]) -> List[List[complex]]:
-    ra = len(A)
-    ca = len(A[0]) if A else 0
-    rb = len(B)
-    cb = len(B[0]) if B else 0
-    if ca != rb:
-        raise ValueError("Incompatible matrix shapes.")
-    out = [[0j] * cb for _ in range(ra)]
-    for i in range(ra):
-        for k in range(ca):
-            aik = A[i][k]
-            if aik == 0j:
-                continue
-            for j in range(cb):
-                out[i][j] += aik * B[k][j]
-    return out
-
-
-def adjoint(U: List[List[complex]]) -> List[List[complex]]:
-    n = len(U)
-    return [[U[j][i].conjugate() for j in range(n)] for i in range(n)]
-
-
-def perm_unitary(p: Perm4, fa: List[int], fb: List[int], denom: int) -> List[List[complex]]:
-    U = [[0j] * 4 for _ in range(4)]
-    for i in range(4):
-        j = p[i]
-        theta = 2.0 * math.pi * (float(fb[j] - fa[i]) / float(denom))
-        U[j][i] = complex(math.cos(theta), math.sin(theta))
-    return U
-
-
-def permute_3x3(Q: List[List[complex]], r: Perm3, c: Perm3) -> List[List[complex]]:
-    return [[Q[r[i]][c[j]] for j in range(3)] for i in range(3)]
-
-
 def abs_log_ratio(pred: float, ref: float) -> float:
     if pred <= 0.0 or ref <= 0.0:
         return float("inf")
@@ -173,68 +160,45 @@ def mean(xs: List[float]) -> float:
     return sum(xs) / float(len(xs)) if xs else float("nan")
 
 
-def best_perm_fit(Qs: List[List[List[complex]]], ref: Tuple[float, float, float]) -> Tuple[float, float, Perm3, Perm3, float, float, float]:
-    perms = list(itertools.permutations((0, 1, 2), 3))
-    best = None  # (Einf,E1,r,c)
-    best_pred = (float("nan"), float("nan"), float("nan"))
-    for r in perms:
-        for c in perms:
-            s12s: List[float] = []
-            s23s: List[float] = []
-            s13s: List[float] = []
-            for Q in Qs:
-                Qp = permute_3x3(Q, r=r, c=c)
-                s12, s23, s13, _delta_deg, _J = ang.extract_angles(Qp)
-                if math.isnan(s12) or math.isnan(s23) or math.isnan(s13):
-                    continue
-                s12s.append(s12)
-                s23s.append(s23)
-                s13s.append(s13)
-            s12 = mean(s12s)
-            s23 = mean(s23s)
-            s13 = mean(s13s)
-            e12 = abs_log_ratio(s12, ref[0])
-            e23 = abs_log_ratio(s23, ref[1])
-            e13 = abs_log_ratio(s13, ref[2])
-            Einf = max(e12, e23, e13)
-            E1 = e12 + e23 + e13
-            cand = (Einf, E1, r, c)
-            if best is None or cand < best:
-                best = cand
-                best_pred = (s12, s23, s13)
-    if best is None:
-        raise AssertionError("No permutations enumerated.")
-    Einf, E1, r, c = best
-    s12, s23, s13 = best_pred
-    return Einf, E1, r, c, s12, s23, s13
+def clamp(x: float, lo: float, hi: float) -> float:
+    return max(lo, min(hi, x))
 
 
-def sweep_one(n_bits: int, m: int) -> Tuple[List[List[List[complex]]], float, Dict[str, int]]:
+def sweep_one(n_bits: int, m: int) -> Tuple[List[Tuple[Perm3, Perm3, float, float, float, int]], float, Dict[str, int], int]:
     """
-    Return (Q3 list, mean_absJ, cycle-type histogram) for plaquettes at (n,m).
+    Return:
+      - permutation-pair means: list of (r,c,mean_s12,mean_s23,mean_s13,count)
+      - mean_absJ over valid plaquettes
+      - cycle-type histogram (over all plaquettes)
+      - number of valid plaquettes (rank-pass)
     """
     N = 1 << n_bits
     denom = 1 << m
-    bits = [bits_m(k, m) for k in range(1 << m)]
+    phases = phase_table(denom)
 
     path = hil.hilbert_curve(n_bits)
     idx_of: Dict[Coord, int] = {}
     for k, c in enumerate(path):
         idx_of[(int(c[0]), int(c[1]))] = k
 
+    outs = foldm.cached_foldm_outputs(m)
     labels: Dict[Coord, str] = {}
     for coord, k in idx_of.items():
-        labels[coord] = foldm.foldm(k, m)
+        labels[coord] = outs[k]
 
-    pre = preimages(m)
+    # Fiber4 map is cached on disk (padded to rank 4).
+    fibers = foldm.cached_fiber4_map(m, rank=4)
 
-    # Build edge permutation + unitary caches for undirected neighbor edges.
+    # Build undirected edge permutation cache for neighbor edges.
     perm_cache: Dict[Tuple[Coord, Coord], Perm4] = {}
-    U_cache: Dict[Tuple[Coord, Coord], List[List[complex]]] = {}
 
     def key(a: Coord, b: Coord) -> Tuple[Coord, Coord]:
         return (a, b) if a < b else (b, a)
 
+    total_edges = 2 * N * (N - 1)
+    prog_edges = ProgressEvery(label=f"permfit_edges n={n_bits} m={m}", total=total_edges, interval_s=60.0)
+    prog_edges.start()
+    done_edges = 0
     for x in range(N):
         for y in range(N):
             a = (x, y)
@@ -248,57 +212,125 @@ def sweep_one(n_bits: int, m: int) -> Tuple[List[List[List[complex]]], float, Di
                     continue
                 wa = labels[ka]
                 wb = labels[kb]
-                fa = fiber4(pre, wa)
-                fb = fiber4(pre, wb)
-                p = best_perm(fa, fb, bits=bits)
-                perm_cache[(ka, kb)] = p
-                U_cache[(ka, kb)] = perm_unitary(p, fa, fb, denom=denom)
+                fa = fibers[wa]
+                fb = fibers[wb]
+                perm_cache[(ka, kb)] = best_perm(fa, fb)
+                done_edges += 1
+                prog_edges.maybe(done_edges)
+    prog_edges.done(extra=f"edges={done_edges}")
 
-    def perm_oriented(a: Coord, b: Coord) -> Perm4:
+    def edge_mono(a: Coord, b: Coord) -> Tuple[Perm4, List[complex]]:
         ka, kb = key(a, b)
-        p = perm_cache[(ka, kb)]
-        return p if (a, b) == (ka, kb) else inv_perm4(p)
-
-    def U_oriented(a: Coord, b: Coord) -> List[List[complex]]:
-        ka, kb = key(a, b)
-        U = U_cache[(ka, kb)]
-        return U if (a, b) == (ka, kb) else adjoint(U)
+        p0 = perm_cache[(ka, kb)]
+        p = p0 if (a, b) == (ka, kb) else inv_perm4(p0)
+        wa = labels[a]
+        wb = labels[b]
+        fa = fibers[wa]
+        fb = fibers[wb]
+        a_phase = [phases[fb[p[i]]] * phases[fa[i]].conjugate() for i in range(4)]
+        return p, a_phase
 
     # Plaquettes.
     B = ph.basis_B()
-    Qs: List[List[List[complex]]] = []
-    Jabs: List[float] = []
     hist: Dict[str, int] = defaultdict(int)
+    Jabs_sum = 0.0
+    Jabs_n = 0
+
+    perms = list(itertools.permutations((0, 1, 2), 3))
+    pair_index: List[Tuple[Perm3, Perm3, int, int, int, int]] = []
+    for r in perms:
+        for c in perms:
+            pair_index.append((r, c, r[0], r[1], c[1], c[2]))
+    sums12 = [0.0] * len(pair_index)
+    sums23 = [0.0] * len(pair_index)
+    sums13 = [0.0] * len(pair_index)
+    counts = [0] * len(pair_index)
+    valid = 0
+
+    total_plaq = (N - 1) * (N - 1)
+    prog_plaq = ProgressEvery(label=f"permfit_plaquettes n={n_bits} m={m}", total=total_plaq, interval_s=60.0)
+    prog_plaq.start()
+    done_plaq = 0
     for x in range(N - 1):
         for y in range(N - 1):
+            done_plaq += 1
+            prog_plaq.maybe(done_plaq)
             a = (x, y)
             b = (x + 1, y)
             c = (x + 1, y + 1)
             d = (x, y + 1)
-            p_ab = perm_oriented(a, b)
-            p_bc = perm_oriented(b, c)
-            p_cd = perm_oriented(c, d)
-            p_da = perm_oriented(d, a)
-            hol_p = compose4(p_da, compose4(p_cd, compose4(p_bc, p_ab)))
+            p_ab, a_ab = edge_mono(a, b)
+            p_bc, a_bc = edge_mono(b, c)
+            p_cd, a_cd = edge_mono(c, d)
+            p_da, a_da = edge_mono(d, a)
+
+            hol_p, hol_a = compose_mono(p_bc, a_bc, p_ab, a_ab)
+            hol_p, hol_a = compose_mono(p_cd, a_cd, hol_p, hol_a)
+            hol_p, hol_a = compose_mono(p_da, a_da, hol_p, hol_a)
             hist[cycle_type(hol_p)] += 1
 
-            U_ab = U_oriented(a, b)
-            U_bc = U_oriented(b, c)
-            U_cd = U_oriented(c, d)
-            U_da = U_oriented(d, a)
-            H = matmul(U_da, matmul(U_cd, matmul(U_bc, U_ab)))
+            H = [[0j] * 4 for _ in range(4)]
+            for i in range(4):
+                H[hol_p[i]][i] = hol_a[i]
             M3 = ph.project_3x3(H, B=B)
             Q3 = ph.gram_schmidt_unitary(M3)
             if Q3 is None:
                 continue
-            Qs.append(Q3)
-            Jabs.append(abs(ph.jarlskog_invariant(Q3)))
+            valid += 1
+            Jabs_sum += abs(ph.jarlskog_invariant(Q3))
+            Jabs_n += 1
 
-    return Qs, mean(Jabs), dict(hist)
+            absQ = [[abs(Q3[i][j]) for j in range(3)] for i in range(3)]
+            for idx, (_r, _c, r0, r1, c1, c2) in enumerate(pair_index):
+                s13 = absQ[r0][c2]
+                s13 = clamp(s13, 0.0, 1.0)
+                c13 = math.sqrt(max(0.0, 1.0 - s13 * s13))
+                if c13 == 0.0:
+                    continue
+                s12 = clamp(absQ[r0][c1] / c13, 0.0, 1.0)
+                s23 = clamp(absQ[r1][c2] / c13, 0.0, 1.0)
+                sums12[idx] += s12
+                sums23[idx] += s23
+                sums13[idx] += s13
+                counts[idx] += 1
+
+    prog_plaq.done(extra=f"valid={valid}")
+    means: List[Tuple[Perm3, Perm3, float, float, float, int]] = []
+    for idx, (r, c, _r0, _r1, _c1, _c2) in enumerate(pair_index):
+        n = counts[idx]
+        if n <= 0:
+            continue
+        means.append((r, c, sums12[idx] / float(n), sums23[idx] / float(n), sums13[idx] / float(n), n))
+
+    Jm = (Jabs_sum / float(Jabs_n)) if Jabs_n > 0 else float("nan")
+    return means, Jm, dict(hist), valid
+
+
+def best_fit_from_means(
+    means: List[Tuple[Perm3, Perm3, float, float, float, int]],
+    ref: Tuple[float, float, float],
+) -> Tuple[float, float, Perm3, Perm3, float, float, float]:
+    best = None  # (Einf,E1,r,c)
+    best_pred = (float("nan"), float("nan"), float("nan"))
+    for r, c, s12, s23, s13, _n in means:
+        e12 = abs_log_ratio(s12, ref[0])
+        e23 = abs_log_ratio(s23, ref[1])
+        e13 = abs_log_ratio(s13, ref[2])
+        Einf = max(e12, e23, e13)
+        E1 = e12 + e23 + e13
+        cand = (Einf, E1, r, c)
+        if best is None or cand < best:
+            best = cand
+            best_pred = (s12, s23, s13)
+    if best is None:
+        raise AssertionError("No permutation pairs had any valid samples.")
+    Einf, E1, r, c = best
+    s12, s23, s13 = best_pred
+    return Einf, E1, r, c, s12, s23, s13
 
 
 def main() -> None:
-    chain = [(3, 6), (4, 8), (5, 10)]
+    chain = [(3, 6), (4, 8), (5, 10), (6, 12), (7, 14), (8, 16)]
     pmns = (math.sqrt(0.307), math.sqrt(0.545), math.sqrt(0.0218))
     ckm = (0.2243, 0.0422, 0.00394)
 
@@ -306,14 +338,14 @@ def main() -> None:
     ckm_rows: List[str] = []
 
     for n_bits, m in chain:
-        Qs, Jm, hist = sweep_one(n_bits, m)
-        Einf, E1, r, c, s12, s23, s13 = best_perm_fit(Qs, ref=pmns)
+        means, Jm, _hist, valid = sweep_one(n_bits, m)
+        Einf, E1, r, c, s12, s23, s13 = best_fit_from_means(means, ref=pmns)
         pmns_rows.append(
-            f"{n_bits} & {m} & {len(Qs)} & \\texttt{{{r}}}/\\texttt{{{c}}} & {s12:.4f} & {s23:.4f} & {s13:.4f} & {Einf:.3f} & {E1:.3f} & {Jm:.6g} \\\\"
+            f"{n_bits} & {m} & {valid} & \\texttt{{{r}}}/\\texttt{{{c}}} & {s12:.4f} & {s23:.4f} & {s13:.4f} & {Einf:.3f} & {E1:.3f} & {Jm:.6g} \\\\"
         )
-        Einf, E1, r, c, s12, s23, s13 = best_perm_fit(Qs, ref=ckm)
+        Einf, E1, r, c, s12, s23, s13 = best_fit_from_means(means, ref=ckm)
         ckm_rows.append(
-            f"{n_bits} & {m} & {len(Qs)} & \\texttt{{{r}}}/\\texttt{{{c}}} & {s12:.4f} & {s23:.4f} & {s13:.4f} & {Einf:.3f} & {E1:.3f} & {Jm:.6g} \\\\"
+            f"{n_bits} & {m} & {valid} & \\texttt{{{r}}}/\\texttt{{{c}}} & {s12:.4f} & {s23:.4f} & {s13:.4f} & {Einf:.3f} & {E1:.3f} & {Jm:.6g} \\\\"
         )
 
     pmns_rows.append("\\bottomrule")

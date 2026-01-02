@@ -6,6 +6,7 @@ This script is designed to:
   - Compute stable content hashes for paper sources (excluding build artifacts).
   - Plan which papers need rebuild (missing PDF or source hash mismatch).
   - Build planned papers using `latexmk` with an engine fallback chain.
+  - Optionally build all papers under the papers root (compile every directory that contains `main.tex`).
   - Write per-paper source-hash stamps under `.ci_cache/papers/**/sources.sha256`.
   - Verify that every `main.tex` has a corresponding `main.pdf`.
 
@@ -169,6 +170,13 @@ def plan_rebuilds(papers_root: Path, stamp_root: Path) -> tuple[list[Path], list
     return paper_dirs, to_build
 
 
+def plan_all_builds(papers_root: Path) -> tuple[list[Path], list[PlanItem]]:
+    """Plan a full rebuild: compile every directory under papers_root that contains main.tex."""
+    paper_dirs = find_paper_dirs(papers_root)
+    items = [PlanItem(d, compute_sources_hash(d)) for d in paper_dirs]
+    return paper_dirs, items
+
+
 def _run_latexmk(paper_dir: Path) -> None:
     cmds = [
         ["latexmk", "-quiet", "-pdf", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "main.tex"],
@@ -282,6 +290,11 @@ def main(argv: list[str]) -> int:
         action="store_true",
         help="If plan file is missing, recompute the plan instead of failing.",
     )
+    p_build.add_argument(
+        "--all",
+        action="store_true",
+        help="Build all papers under papers root (compile every directory that contains main.tex), ignoring the plan file.",
+    )
     clean_default = os.environ.get("CI", "").lower() in {"1", "true", "yes", "on"}
     clean_group = p_build.add_mutually_exclusive_group()
     clean_group.add_argument("--clean", dest="clean", action="store_true", help="Clean LaTeX aux files after build.")
@@ -317,7 +330,9 @@ def main(argv: list[str]) -> int:
         return 0
 
     if args.cmd == "build":
-        if not plan_file.exists():
+        if getattr(args, "all", False):
+            _, plan_items = plan_all_builds(papers_root)
+        elif not plan_file.exists():
             if not args.replan_if_missing:
                 raise FileNotFoundError(
                     f"Plan file not found: {plan_file}. Run `plan` first or pass --replan-if-missing."
