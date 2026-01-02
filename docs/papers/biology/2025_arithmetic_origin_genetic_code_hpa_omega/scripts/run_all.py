@@ -140,6 +140,47 @@ def main() -> None:
     ]
     run(be_cmd, cwd=cwd)
 
+    # 4d) Fold_m boundary enrichment (multi-resolution) on the same recoding ORF dataset/position sets.
+    foldm_be_cmd = [
+        py,
+        "scripts/exp_foldm_boundary_enrichment.py",
+        "--fasta",
+        "data/boundary_enrichment/recoding_cds_orfs.fasta.gz",
+        "--positions-tsv",
+        "data/boundary_enrichment/recoding_site_sets.tsv",
+        "--dataset",
+        "recoding_genbank_orf",
+        "--m-list",
+        "6,7,8,9",
+        *(["--force"] if args.force else []),
+    ]
+    run(foldm_be_cmd, cwd=cwd)
+
+    # 4c) Rank-based discrimination summary (AUC) for recoding vs baselines (k-primary only).
+    # Uses the JSONL produced by exp_recoding_sites.py (cached when available).
+    rec_disc_cmd = [
+        py,
+        "scripts/exp_recoding_discrimination.py",
+        "--analysis-version",
+        str(int(ANALYSIS_VERSION)),
+        "--k",
+        str(int(args.recoding_k)),
+        *(["--force"] if args.force else []),
+    ]
+    run(rec_disc_cmd, cwd=cwd)
+
+    # 4e) Multi-resolution (Fold_m) AUC summaries (requires window sequences in recoding_sites.jsonl).
+    rec_disc_m_cmd = [
+        py,
+        "scripts/exp_recoding_discrimination_foldm.py",
+        "--analysis-version",
+        str(int(ANALYSIS_VERSION)),
+        "--k",
+        str(int(args.recoding_k)),
+        *(["--force"] if args.force else []),
+    ]
+    run(rec_disc_m_cmd, cwd=cwd)
+
     # 5) RefSeq transcriptome scan (sharded) + merge
     if refseq_quick:
         quick_dir.mkdir(parents=True, exist_ok=True)
@@ -203,7 +244,7 @@ def main() -> None:
     run(merge_cmd, cwd=cwd)
 
     # 6) Cross-domain corpus panel + sequence-level nonstandard-code tests.
-    panel_cmd = [py, "scripts/exp_corpus_panel.py", "--panel", "corpus_panel_v1"]
+    panel_cmd = [py, "scripts/exp_corpus_panel.py", "--panel", "corpus_panel_v2"]
     if int(args.panel_max_records) > 0:
         panel_cmd += ["--max-records", str(int(args.panel_max_records))]
     if panel_quick:
@@ -216,6 +257,9 @@ def main() -> None:
     if args.force:
         panel_cmd += ["--force"]
     run(panel_cmd, cwd=cwd)
+
+    # 6b) Fold_m stop-context meta-analysis across eukaryotic RefSeq corpora (best ORF).
+    run([py, "scripts/exp_foldm_stop_context_eukaryota.py", *(["--force"] if args.force else [])], cwd=cwd)
 
     ns_cmd = [py, "scripts/exp_nonstandard_sequence_tests.py", "--panel", "nonstandard_examples_v1"]
     if int(args.nonstandard_max_records) > 0:

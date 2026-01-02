@@ -71,6 +71,11 @@ Instead it provides an explicit quantitative signal family $(Z,U)$ that can be e
 In this dataset, the most stable separation is an upstream uplift shift: recoding sites exhibit substantially larger $\overline{U}_{\mathrm{before}}$ than CDS-deduplicated terminal stops across multiple radii $k$, while the downstream contrast is more $k$-dependent (Appendix~\ref{app:recoding_sites}).
 This motivates multi-$k$ reporting and caution against treating a single-$k$ after-window contrast as an invariant signature.
 
+\paragraph{Multi-resolution sensitivity.}
+Because uplift $\Delta$ is defined relative to a finite Zeckendorf window, its empirical separability can change with resolution.
+Accordingly, we also report rank-based discrimination summaries (AUC) across Fold$_m$ for $m\in\{6,7,8,9\}$ in Appendix~\ref{app:recoding_sites}.
+At the codon scale ($N\in\{0,\dots,63\}$), $m=9$ is a saturating window and yields $\Delta_m\equiv 0$ (see Section~\ref{sec:resolution_upgrade}); the corresponding AUC entries therefore collapse to $0.5$ as a sanity check rather than a biological signal.
+
 \paragraph{Boundary-sector check.}
 A boundary-hit enrichment would be a distinct and stronger mechanism than an uplift shift.
 Instead, boundary-hit rates in the $k=10$ windows around Sec sites are significantly \emph{depleted} relative to the coding background in the same dataset (Appendix~\ref{app:boundary_enrichment_results}), indicating that the recoding-context signal is not reducible to boundary-sector proximity at $m=6$.
@@ -119,6 +124,12 @@ Higher windows $\mathrm{Fold}_m$ introduce new degrees of freedom, richer bounda
 \item \textbf{Sequence context.} Translation is context-sensitive (wobble pairing, recoding signals, local RNA structure).
 In the folding language, context dependence naturally corresponds to conditioning the spectrum traces on neighborhoods and on reading-frame-aligned patterns.
 \end{itemize}
+
+\paragraph{Saturating resolution at the codon scale.}
+In this paper the microstate index is codon-scale: $N\in\{0,\dots,63\}$ under a two-bit encoding.
+The Zeckendorf expansion of any $N\le 63$ uses at most nine Fibonacci weights ($1,2,3,5,8,13,21,34,55$), hence the length-$9$ window contains the full admissible digit string.
+Therefore $\mathrm{Fold}_m$ is lossless for $m\ge 9$ at this scale: $V_m(N)=N$ and the uplift vanishes identically, $\Delta_m(N)=N-V_m(N)\equiv 0$.
+Consequently, uplift-based statistics are nontrivial only for $m\le 8$ in the codon-scale model; including $m=9$ is useful as an internal consistency check but cannot carry discriminative signal in $\Delta_m$.
 
 \subsection{A research program}
 \label{sec:program}
