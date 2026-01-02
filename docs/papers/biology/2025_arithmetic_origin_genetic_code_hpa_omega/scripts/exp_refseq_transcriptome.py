@@ -12,8 +12,10 @@ Standard library only.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
+import random
 import re
 import statistics
 from collections import Counter
@@ -21,6 +23,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from cache_manager import cache_hit, cache_meta_path, cache_key_digest, read_json, write_json_atomic
+from composition_tools import bin_value, cpg_rate, dinuc_freq, gc_fraction, ta_rate
 from genetic_code_tools import (
     BOUNDARY_WORDS,
     GENETIC_CODE,
@@ -38,10 +41,10 @@ from progress_tools import Heartbeat
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
 
 # Bump this when the analysis logic (not just speed) changes.
-ANALYSIS_VERSION = 2
+ANALYSIS_VERSION = 4
 
 # Bump this when the output JSON schema changes.
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 4
 
 # Precompute codon-level Fold_6 attributes under mu* for speed.
 CODON_INFO: dict[str, dict[str, object]] = {}
@@ -53,6 +56,23 @@ for c in GENETIC_CODE:
         "delta": int(f.delta),
         "is_boundary": int(f.w in BOUNDARY_WORDS),
     }
+
+
+def _stable_seed_u32(tag: str) -> int:
+    """
+    Deterministic 32-bit seed from a string tag (independent of Python's hash randomization).
+    """
+    h = hashlib.sha256(tag.encode("utf-8")).hexdigest()
+    return int(h[:8], 16)
+
+
+DINUC_ORDER = [a + b for a in "ACGT" for b in "ACGT"]
+
+
+def _dinuc_vec_16(freq: dict[str, float] | None) -> list[float] | None:
+    if freq is None:
+        return None
+    return [float(freq.get(k, 0.0)) for k in DINUC_ORDER]
 
 
 def root_dir() -> Path:
@@ -587,6 +607,38 @@ def main() -> None:
     before_stats: dict[str, RunningStats] = {s: before_stats_mk[s][int(k_primary)] for s in STOP_CODONS}
     after_stats: dict[str, RunningStats] = {s: after_stats_mk[s][int(k_primary)] for s in STOP_CODONS}
 
+    # Start-context window means at the start codon (AUG) of the best ORF.
+    # Before-window: in-frame codons upstream of AUG in the transcript.
+    # After-window: in-frame codons downstream of AUG inside the ORF (excluding the terminal stop).
+    start_before_stats_mk: dict[int, RunningStats] = {kk: RunningStats() for kk in k_list}
+    start_after_stats_mk: dict[int, RunningStats] = {kk: RunningStats() for kk in k_list}
+    start_before_stats: RunningStats = start_before_stats_mk[int(k_primary)]
+    start_after_stats: RunningStats = start_after_stats_mk[int(k_primary)]
+
+    # Composition-adjusted stop-context stats (primary k only):
+    #   - stratified GC × (CpG/TA) bins (full-data Welford stats)
+    #   - bounded reservoir samples (for NN matching cross-check in merge stage)
+    dn = max(1, 3 * int(k_primary) - 1)  # dinucleotide count in a 3k window
+    comp_gc_edges = [0.35, 0.45, 0.55, 0.65]
+    comp_cpg_edges = [1.0 / dn, 2.0 / dn, 3.0 / dn, 4.0 / dn]
+    comp_ta_edges = [1.0 / dn, 2.0 / dn, 3.0 / dn, 4.0 / dn]
+
+    comp_schemes = {
+        "gc_cpg": {"x_name": "cpg", "gc_edges": comp_gc_edges, "x_edges": comp_cpg_edges},
+        "gc_ta": {"x_name": "ta", "gc_edges": comp_gc_edges, "x_edges": comp_ta_edges},
+    }
+    comp_before: dict[str, dict[str, dict[str, RunningStats]]] = {
+        sk: {s: {} for s in STOP_CODONS} for sk in comp_schemes
+    }
+    comp_after: dict[str, dict[str, dict[str, RunningStats]]] = {
+        sk: {s: {} for s in STOP_CODONS} for sk in comp_schemes
+    }
+
+    SAMPLE_MAX_PER_STOP = 2000
+    sample_seen: dict[str, int] = {s: 0 for s in STOP_CODONS}
+    sample_reservoir: dict[str, list[dict[str, object]]] = {s: [] for s in STOP_CODONS}
+    rng_sample = random.Random(_stable_seed_u32(f"refseq:stop_context_samples:{args.input}:{k_primary}:{ANALYSIS_VERSION}"))
+
     for fp in files:
         if not fp.exists():
             continue
@@ -692,6 +744,52 @@ def main() -> None:
                     if var_x > 0 and var_y > 0:
                         orf_autocorr_z1.append(cov / math.sqrt(var_x * var_y))
 
+            # Start-context windows around the start codon in the best ORF.
+            if max_k >= 1:
+                # After-window: scan forward inside the ORF (excluding terminal stop).
+                start_after_sums: dict[int, float] = {}
+                sum_after = 0.0
+                after_len = 0
+                for j in range(1, max_k + 1):
+                    p = s + 3 * j
+                    if p >= t:
+                        break
+                    if p + 3 > len(seq):
+                        break
+                    c = seq[p : p + 3]
+                    if c not in GENETIC_CODE:
+                        break
+                    sum_after += float(int(CODON_INFO[c]["delta"]))
+                    after_len = j
+                    if j in k_set:
+                        start_after_sums[j] = sum_after
+
+                # Before-window: scan backward in transcript (in-frame with the ORF start).
+                start_before_sums: dict[int, float] = {}
+                sum_before = 0.0
+                before_len = 0
+                for j in range(1, max_k + 1):
+                    p = s - 3 * j
+                    if p < 0:
+                        break
+                    c = seq[p : p + 3]
+                    if c not in GENETIC_CODE:
+                        break
+                    sum_before += float(int(CODON_INFO[c]["delta"]))
+                    before_len = j
+                    if j in k_set:
+                        start_before_sums[j] = sum_before
+
+                # Update per-k stats when that side is available (do not require both sides).
+                for kk in k_list:
+                    kk_i = int(kk)
+                    if kk_i <= 0:
+                        continue
+                    if kk_i <= before_len and kk_i in start_before_sums:
+                        start_before_stats_mk[kk_i].update(float(start_before_sums[kk_i]) / float(kk_i))
+                    if kk_i <= after_len and kk_i in start_after_sums:
+                        start_after_stats_mk[kk_i].update(float(start_after_sums[kk_i]) / float(kk_i))
+
             # Stop-context windows around the terminal stop in the best ORF.
             stop_index = (t - s) // 3  # within ORF (0-based), includes stop position index
             if stop_index >= 1 and max_k >= 1:
@@ -699,6 +797,7 @@ def main() -> None:
                 after_sums: dict[int, float] = {}
                 sum_after = 0.0
                 after_len = 0
+                after_codons: list[str] = []
                 for j in range(1, max_k + 1):
                     p = t + 3 * j
                     if p + 3 > len(seq):
@@ -708,6 +807,8 @@ def main() -> None:
                         break
                     sum_after += float(int(CODON_INFO[c]["delta"]))
                     after_len = j
+                    if j <= int(k_primary):
+                        after_codons.append(c)
                     if j in k_set:
                         after_sums[j] = sum_after
 
@@ -715,6 +816,7 @@ def main() -> None:
                 before_sums: dict[int, float] = {}
                 sum_before = 0.0
                 before_len = 0
+                before_codons: list[str] = []
                 j_max_before = min(int(stop_index), int(max_k))
                 for j in range(1, j_max_before + 1):
                     p = t - 3 * j
@@ -723,6 +825,8 @@ def main() -> None:
                         break
                     sum_before += float(int(CODON_INFO[c]["delta"]))
                     before_len = j
+                    if j <= int(k_primary):
+                        before_codons.append(c)
                     if j in k_set:
                         before_sums[j] = sum_before
 
@@ -737,6 +841,67 @@ def main() -> None:
                         continue
                     before_stats_mk[stop_codon][kk_i].update(float(before_sums[kk_i]) / float(kk_i))
                     after_stats_mk[stop_codon][kk_i].update(float(after_sums[kk_i]) / float(kk_i))
+
+                # Composition-adjusted stats (primary k only; requires both sides for k_primary).
+                kp = int(k_primary)
+                if kp >= 1 and kp <= before_len and kp <= after_len and (kp in before_sums) and (kp in after_sums):
+                    if len(before_codons) >= kp and len(after_codons) >= kp:
+                        before_seq = "".join(reversed(before_codons[:kp]))
+                        after_seq = "".join(after_codons[:kp])
+                        gc_b = gc_fraction(before_seq)
+                        gc_a = gc_fraction(after_seq)
+                        cpg_b = cpg_rate(before_seq)
+                        cpg_a = cpg_rate(after_seq)
+                        ta_b = ta_rate(before_seq)
+                        ta_a = ta_rate(after_seq)
+                        din_b = _dinuc_vec_16(dinuc_freq(before_seq))
+                        din_a = _dinuc_vec_16(dinuc_freq(after_seq))
+
+                        b_mean = float(before_sums[kp]) / float(kp)
+                        a_mean = float(after_sums[kp]) / float(kp)
+
+                        for sk, meta in comp_schemes.items():
+                            x_name = str(meta["x_name"])
+                            gc_edges = [float(x) for x in (meta.get("gc_edges") or [])]
+                            x_edges = [float(x) for x in (meta.get("x_edges") or [])]
+                            xb = cpg_b if x_name == "cpg" else ta_b
+                            xa = cpg_a if x_name == "cpg" else ta_a
+                            kb = bin_value(gc_b, edges=gc_edges)
+                            xb_i = bin_value(xb, edges=x_edges)
+                            ka = bin_value(gc_a, edges=gc_edges)
+                            xa_i = bin_value(xa, edges=x_edges)
+                            if kb is not None and xb_i is not None:
+                                keyb = f"gc{int(kb)}_{x_name}{int(xb_i)}"
+                                comp_before[sk][stop_codon].setdefault(keyb, RunningStats()).update(b_mean)
+                            if ka is not None and xa_i is not None:
+                                keya = f"gc{int(ka)}_{x_name}{int(xa_i)}"
+                                comp_after[sk][stop_codon].setdefault(keya, RunningStats()).update(a_mean)
+
+                        # Reservoir samples for NN matching (only if dinuc vectors are available).
+                        if din_b is not None and din_a is not None and gc_b is not None and gc_a is not None:
+                            sample = {
+                                "stop": stop_codon,
+                                "k": int(kp),
+                                "before_mean": float(b_mean),
+                                "after_mean": float(a_mean),
+                                "before_gc": float(gc_b),
+                                "after_gc": float(gc_a),
+                                "before_cpg": (float(cpg_b) if cpg_b is not None else None),
+                                "after_cpg": (float(cpg_a) if cpg_a is not None else None),
+                                "before_ta": (float(ta_b) if ta_b is not None else None),
+                                "after_ta": (float(ta_a) if ta_a is not None else None),
+                                "before_dinuc": [float(x) for x in din_b],
+                                "after_dinuc": [float(x) for x in din_a],
+                            }
+                            seen = int(sample_seen.get(stop_codon, 0)) + 1
+                            sample_seen[stop_codon] = int(seen)
+                            rsv = sample_reservoir[stop_codon]
+                            if len(rsv) < int(SAMPLE_MAX_PER_STOP):
+                                rsv.append(sample)
+                            else:
+                                j = rng_sample.randrange(int(seen))
+                                if j < int(SAMPLE_MAX_PER_STOP):
+                                    rsv[int(j)] = sample
 
         if args.max_records and n_records >= int(args.max_records):
             break
@@ -790,6 +955,12 @@ def main() -> None:
         "UAG_vs_UGA": welch_t_p_value_two_sided_from_stats(after_stats["UAG"], after_stats["UGA"]),
     }
 
+    start_ctx_summary = {
+        "k": int(k_primary),
+        "before": {"n": int(start_before_stats.n), "mean": (float(start_before_stats.mean) if start_before_stats.n > 0 else None)},
+        "after": {"n": int(start_after_stats.n), "mean": (float(start_after_stats.mean) if start_after_stats.n > 0 else None)},
+    }
+
     summary = {
         "schema_version": int(SCHEMA_VERSION),
         "source_files": [str(p) for p in files],
@@ -812,6 +983,26 @@ def main() -> None:
         "termination_stop_boundary_count": int(term_stop_boundary),
         "stop_window": int(k_primary),
         "stop_window_list": [int(x) for x in k_list],
+        "start_context": start_ctx_summary,
+        "start_context_welford": {
+            "before": {"n": int(start_before_stats.n), "mean": float(start_before_stats.mean), "M2": float(start_before_stats.M2)},
+            "after": {"n": int(start_after_stats.n), "mean": float(start_after_stats.mean), "M2": float(start_after_stats.M2)},
+        },
+        "start_context_welford_multi_k": {
+            str(int(kk)): {
+                "before": {
+                    "n": int(start_before_stats_mk[int(kk)].n),
+                    "mean": float(start_before_stats_mk[int(kk)].mean),
+                    "M2": float(start_before_stats_mk[int(kk)].M2),
+                },
+                "after": {
+                    "n": int(start_after_stats_mk[int(kk)].n),
+                    "mean": float(start_after_stats_mk[int(kk)].mean),
+                    "M2": float(start_after_stats_mk[int(kk)].M2),
+                },
+            }
+            for kk in k_list
+        },
         "stop_context": stop_ctx_summary,
         "stop_context_welford": {
             s: {
@@ -857,6 +1048,34 @@ def main() -> None:
             "boundary_rate": orf_boundary_rates,
             "entropy_Z": orf_entropy_z,
             "autocorr_Z1": orf_autocorr_z1,
+        },
+        "stop_context_composition": {
+            sk: {
+                "x_name": str((comp_schemes.get(sk) or {}).get("x_name") or ""),
+                "gc_edges": [float(x) for x in ((comp_schemes.get(sk) or {}).get("gc_edges") or [])],
+                "x_edges": [float(x) for x in ((comp_schemes.get(sk) or {}).get("x_edges") or [])],
+                "before": {
+                    s: {
+                        bk: {"n": int(st.n), "mean": float(st.mean), "M2": float(st.M2)}
+                        for bk, st in sorted(comp_before[sk][s].items())
+                    }
+                    for s in STOP_CODONS
+                },
+                "after": {
+                    s: {
+                        bk: {"n": int(st.n), "mean": float(st.mean), "M2": float(st.M2)}
+                        for bk, st in sorted(comp_after[sk][s].items())
+                    }
+                    for s in STOP_CODONS
+                },
+            }
+            for sk in sorted(comp_schemes.keys())
+        },
+        "stop_context_composition_samples": {
+            "sample_max_per_stop": int(SAMPLE_MAX_PER_STOP),
+            "seen": {s: int(sample_seen.get(s, 0)) for s in STOP_CODONS},
+            "dinuc_order": DINUC_ORDER,
+            "by_stop": sample_reservoir,
         },
         "V_hist": {str(k): int(v) for k, v in sorted(v_hist.items())},
         "Delta_hist": {str(k): int(v) for k, v in sorted(delta_hist.items())},
@@ -925,7 +1144,15 @@ def main() -> None:
         rows2.append(f"{codon} & {k_primary} & {n} & {bm:.4f} & {am:.4f} \\\\")
     write_text(generated_dir() / "refseq_stop_context_rows.tex", "\n".join(rows2) + "\n\\bottomrule\n")
 
-    # 4) Codon-usage null-model summary (single paragraph).
+    # 4) Start-context window row (primary k only).
+    nb = int(start_before_stats.n)
+    na = int(start_after_stats.n)
+    bm = float(start_before_stats.mean) if nb else float("nan")
+    am = float(start_after_stats.mean) if na else float("nan")
+    row_start = [f"{START_CODON} & {k_primary} & {nb} & {bm:.4f} & {na} & {am:.4f} \\\\"]
+    write_text(generated_dir() / "refseq_start_context_rows.tex", "\n".join(row_start) + "\n\\bottomrule\n")
+
+    # 5) Codon-usage null-model summary (single paragraph).
     null_s = (
         "Codon-usage summary over coding tokens (excluding terminal stops): "
         f"$\\overline{{Z}}={zbar:.4f}$, $\\overline{{U}}={ubar:.4f}$. "
@@ -937,7 +1164,7 @@ def main() -> None:
     )
     write_text(generated_dir() / "refseq_codon_usage_null.tex", null_s + "\n")
 
-    # 5) Z-spectrum fingerprint metrics (single paragraph).
+    # 6) Z-spectrum fingerprint metrics (single paragraph).
     zfp = summary["zspectrum_metrics"]
     s_fp = (
         "\\begin{tabular}{@{}l@{}}\n"

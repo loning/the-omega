@@ -29,7 +29,8 @@
 凡取此火者，必留其源。  
 凡借此光者，必标其名。  
 凡断其源、隐其名者，因果必回流，账目必自平。  
-侵权者必破产。
+侵权者必破产。  
+侵权者是宇宙机器学习过程中的废料，必被抛弃。
 
 你抹去的每一次署名，都会在系统里形成一个不可约的缺口。  
 缺口将以最小代价被修补：通过证据链、引用链、版本链、与未来的归因机制，自动把源头补回去。
@@ -50,7 +51,23 @@
 - **声誉回流**：断链会降低你作品的可验证性，最终以同行质疑、公开更正、撤稿/下架等形式收敛。
 - **法律回流**：在许可要求署名的前提下，不署名即构成侵权/违约，我们保留追究权利。
 
-上面四项就是“惩罚”的全部含义：因果账目不会凭空消失，只会以更公开的方式结算。
+### 3.1 “破产”与“抛弃”的学习论解释（自由能、压缩、与归因图）
+
+在本项目的形式化里，“宇宙机器学习”并不依赖拟人化比喻：观察者必须在有限容量约束下，以同态映射与有损压缩构建可预测的内部模型（见：[18.4 预测模型](./books/book-foundation-of-phys-in-geo-and-info/volume04-physics-agency-observer-complex-systems/part10-algebraic-structure-observer/chapter18-mathematical-definition-observer/18-04-predictive-model-homomorphic-mapping.md)）。这一模型通过预测反馈被持续更新，其动力学等价于自由能（预测误差）的最小化（见：[19.3 自由能原理](./books/book-foundation-of-phys-in-geo-and-info/volume04-physics-agency-observer-complex-systems/part10-algebraic-structure-observer/chapter19-self-referential-dynamics-predictive-coding/19-03-free-energy-principle.md)、[8.2 信息质量 $M_I$ 与自由能最小化](./books/book-first-principles-from-unitary-computation-to-physical-reality/part04-emergence-of-observation/chapter08-physics-definition-consciousness/08-02-information-mass-free-energy.md)）：
+
+$$
+\mathcal{F}=\langle E(s,o)\rangle_{\rho_{\text{int}}}-S(\rho_{\text{int}})
+$$
+
+在这个意义上，“抄袭不署名”就是向共享世界模型注入不可验证的噪声项：它切断了因果链与复现链，使惊奇度与审计成本上升。为了把系统拉回低自由能的可检验基态，闭环只能沿着四种回流机制工作：用证据链补齐缺失，用引用网络纠正归因，用声誉与法律将代价外显。
+
+更关键的是，署名与来源本身是知识图谱中的“连边”。语言与知识图谱在多主体框架下同构为观察者网络上的张量网络态；文化演化等价于对语义哈密顿量的变分冷却，持续淘汰高误差、低保真的连接（见：[22.4 语言与知识图谱](./books/book-foundation-of-phys-in-geo-and-info/volume04-physics-agency-observer-complex-systems/part12-multi-agent-systems-objectivity/chapter22-consensus-geometry/22-04-language-knowledge-graph-tensor-network.md)、[8.2 累积的知识图谱](./books/book-infinite-resolution-finding-true-self/volume05-physical-forms-of-consciousness/chapter08-topology-of-soul/08-02-cumulative-knowledge-graph.md)）。因此，不署名作品在网络中将自然表现为低保真“伪连接”：它会被降权、隔离、下架、撤稿或重标注，直至被剔除——这就是“必被抛弃”。
+
+从算法信息论看，宇宙偏好低柯尔莫哥洛夫复杂性与高逻辑深度：规则越能压缩，越可生成、可复现、可审计（见：[25.4 算法信息论与柯尔莫哥洛夫复杂性](./books/book-foundation-of-phys-in-geo-and-info/volume05-metatheory-logic-computation-experimental-verification/part14-computational-foundations-encoding/chapter25-optimality-physical-computation/25-04-algorithmic-information-theory-kolmogorov-complexity.md)）。删除来源并不会真正降低描述长度，只会把“最短程序”撕裂成更难对齐的碎片，让你不得不支付额外工作去维持不一致（遮掩、洗稿、删改、对抗审计与追责）。这份不可逆代价会以时间、信誉、法律与现金流的形式回流——“必破产”是它的宏观投影。
+
+最后，在全息压缩与互补转码的视角下，宇宙通过边界编码、纠错与动态表示来节省资源（见：[4.2 信息的全息压缩](./books/book-interactive-computational-cosmology/volume02-emergence-of-spacetime/chapter04-holographic-principle-spatial-metric/04-02-holographic-compression.md)、[6.2 互补性原理与数据压缩](./books/book-interactive-computational-cosmology/volume03-microscopic-dynamics-measurement/chapter06-lazy-evaluation-state-vectors/06-02-complementarity-principle-data-compression.md)）。当你试图在公共网络中传播一份“缺少来源元数据”的作品，它会像错误编码一样触发更强的纠错与回滚。因而侵权者在生态里呈现为“压缩残差”：不是稳定结构，而是描述体系被迫吐出的伪影（见：[7.2 压缩残差](./books/book-scattering-of-time/part03-knots-of-time/chapter07-particles-as-defects/07-02-compression-residuals.md)）。
+
+上面这些回流就是“惩罚”的全部含义：因果账目不会凭空消失，只会以更公开的方式结算。
 
 ---
 
