@@ -22,7 +22,7 @@
 
 ### Python 直连导入（PostgREST / REST，无需 psql）
 
-本仓库提供了一个**纯标准库**的导入脚本，直接走 Supabase 的 PostgREST 接口写入五张表（含 provenance 的 `analysis_runs`）。
+本仓库提供了一个**纯标准库**的导入脚本，直接走 Supabase 的 PostgREST 接口写入多张表（含 provenance 的 `analysis_runs`）。
 
 1) **准备连接信息文件（git ignore）**
 
@@ -137,8 +137,10 @@ python3 scripts/export_supabase_tables.py \
 会生成：
 - `data/db_exports/recoding_sites.csv`
 - `data/db_exports/refseq_stop_context_comp_results.csv`
+- （可选）`data/db_exports/refseq_stop_context_candidates.csv`
 - `data/db_exports/corpus_panel_items.csv`
 - `data/db_exports/nonstandard_sequence_tests_items.csv`
+- （可选）`data/db_exports/boundary_enrichment_results.csv`
 
 ### 产物一致性校验（推荐）
 
@@ -194,6 +196,7 @@ psql "$DB_URL" -v ON_ERROR_STOP=1 <<'SQL'
   terminal_stop,terminal_before_mean_delta,terminal_after_mean_delta,
   control_same_codon_before_mean_delta,control_same_codon_after_mean_delta,
   control_random_cds_before_mean_delta,control_random_cds_after_mean_delta,
+  before_seq_dna,after_seq_dna,
   before_gc,after_gc,before_cpg,after_cpg,before_ta,after_ta,before_dinuc,after_dinuc,
   terminal_before_gc,terminal_after_gc,terminal_before_cpg,terminal_after_cpg,terminal_before_ta,terminal_after_ta,
   terminal_before_dinuc,terminal_after_dinuc,

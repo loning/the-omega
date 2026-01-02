@@ -843,6 +843,9 @@ class RecodingSite:
     # Control-C: random internal coding positions from the same CDS (non-stop, excluding transl_except).
     control_random_cds_before_mean_delta: float | None
     control_random_cds_after_mean_delta: float | None
+    # Window sequences (DNA alphabet, translated orientation; k codons each side).
+    before_seq_dna: str | None = None
+    after_seq_dna: str | None = None
     # Composition features of the before/after windows (DNA, translation orientation; k codons each).
     before_gc: float | None = None
     after_gc: float | None = None
@@ -1478,6 +1481,8 @@ def extract_recoding_sites_from_record(
                     control_same_codon_after_mean_delta=ctrl_after_mean,
                     control_random_cds_before_mean_delta=rand_before_mean,
                     control_random_cds_after_mean_delta=rand_after_mean,
+                    before_seq_dna=before_seq,
+                    after_seq_dna=after_seq,
                     before_gc=before_gc,
                     after_gc=after_gc,
                     before_cpg=before_cpg,
@@ -1808,6 +1813,31 @@ def main() -> None:
     # ---- Summary / LaTeX outputs are emitted from a cached JSON summary ----
     ROW_LIMIT = 200
     top_sites = sorted(sites, key=lambda x: (x.aa, x.version, x.pos_start))[:ROW_LIMIT]
+
+    # Candidate contexts for downstream experimental design: extreme uplift-context contrasts.
+    CAND_LIMIT = 20
+
+    def _diff_after_before(s: RecodingSite) -> float | None:
+        if s.before_mean_delta is None or s.after_mean_delta is None:
+            return None
+        return float(s.after_mean_delta) - float(s.before_mean_delta)
+
+    cand_by_aa: dict[str, dict[str, list[RecodingSite]]] = {}
+    for aa0 in ("Sec", "Pyl"):
+        aa_sites = [
+            s
+            for s in sites
+            if (str(s.aa) == aa0)
+            and (s.before_mean_delta is not None)
+            and (s.after_mean_delta is not None)
+            and (s.before_seq_dna is not None)
+            and (s.after_seq_dna is not None)
+        ]
+        aa_sites.sort(key=lambda s: (-(float(_diff_after_before(s) or 0.0)), str(s.domain or ""), str(s.version), int(s.pos_start)))
+        top_diff = aa_sites[: int(CAND_LIMIT)]
+        aa_sites.sort(key=lambda s: ((float(_diff_after_before(s) or 0.0)), str(s.domain or ""), str(s.version), int(s.pos_start)))
+        bottom_diff = aa_sites[: int(CAND_LIMIT)]
+        cand_by_aa[str(aa0)] = {"top_diff": top_diff, "bottom_diff": bottom_diff}
 
     @dataclass
     class TestItem:
@@ -2412,6 +2442,11 @@ def main() -> None:
             "after_nt6_top_by_aa": {str(a): lst for a, lst in sorted(after_nt6_top_by_aa.items())},
             "tests_primary": [t.__dict__ for t in tests_primary],
             "top_rows": [s.__dict__ for s in top_sites],
+            "candidate_context_limit": int(CAND_LIMIT),
+            "candidate_contexts": {
+                str(aa0): {k0: [s.__dict__ for s in lst] for k0, lst in by_k.items()}
+                for aa0, by_k in sorted(cand_by_aa.items())
+            },
         },
         "multi_k_overall": mk_tests,
         "composition_controls": composition_controls,
@@ -2437,6 +2472,73 @@ def _write_recoding_rows_tex(top_sites: list[RecodingSite], *, row_limit: int) -
             f"\\texttt{{{s.w}}} & {s.v} & {s.delta} & {before_s} & {after_s} \\\\"
         )
     write_text(generated_dir() / "recoding_sites_rows.tex", "\n".join(rows) + "\n\\bottomrule\n")
+
+
+def _write_recoding_candidate_contexts_tex(
+    cand_by_aa: dict[str, dict[str, list[RecodingSite]]],
+    *,
+    k_primary: int,
+    limit: int,
+) -> None:
+    """
+    Emit a compact, self-contained LaTeX block listing candidate contexts for Sec/Pyl assays.
+    The intent is experimental design: pick extreme predicted contrasts while keeping contexts explicit.
+    """
+    lim = int(limit) if int(limit) > 0 else 20
+
+    lines: list[str] = []
+    lines.append(f"Candidate recoding contexts (window radius $k={int(k_primary)}$), ranked by $\\overline{{U}}_{{\\mathrm{{after}}}}-\\overline{{U}}_{{\\mathrm{{before}}}}$.")
+
+    # Build one table per amino acid, with top and bottom blocks.
+    for aa in ("Sec", "Pyl"):
+        by_dir = cand_by_aa.get(aa) or {}
+        top = list(by_dir.get("top_diff") or [])[:lim]
+        bot = list(by_dir.get("bottom_diff") or [])[:lim]
+        if not top and not bot:
+            continue
+
+        lines.append("\\begin{center}")
+        lines.append("\\scriptsize")
+        lines.append("\\setlength{\\tabcolsep}{3pt}")
+        lines.append("\\renewcommand{\\arraystretch}{1.10}")
+        lines.append("\\resizebox{\\textwidth}{!}{%")
+        lines.append("\\begin{tabular}{lllrlllrrrll}")
+        lines.append("\\toprule")
+        lines.append(
+            "aa & rank & domain & pos & record & before seq & codon & $\\overline{U}_{\\mathrm{before}}$ & "
+            "$\\overline{U}_{\\mathrm{after}}$ & diff & +4 & after-nt6 \\\\"
+        )
+        lines.append("\\midrule")
+
+        def _row(s: RecodingSite, *, tag: str) -> str:
+            b = float(s.before_mean_delta or 0.0)
+            a = float(s.after_mean_delta or 0.0)
+            diff = a - b
+            rec = s.version or "-"
+            dom = s.domain or "-"
+            before_seq = s.before_seq_dna or "-"
+            codon = s.codon_rna or "-"
+            plus4 = s.plus4_nt or "-"
+            after_nt6 = s.after_nt6 or "-"
+            return (
+                f"{aa} & {tag} & {dom} & {int(s.pos_start)} & \\path{{{rec}}} & "
+                f"\\texttt{{{before_seq}}} & \\texttt{{{codon}}} & {b:.3f} & {a:.3f} & {diff:+.3f} & "
+                f"\\texttt{{{plus4}}} & \\texttt{{{after_nt6}}} \\\\"
+            )
+
+        for s in top:
+            lines.append(_row(s, tag="top"))
+        if top and bot:
+            lines.append("\\midrule")
+        for s in bot:
+            lines.append(_row(s, tag="bottom"))
+
+        lines.append("\\bottomrule")
+        lines.append("\\end{tabular}%")
+        lines.append("}")
+        lines.append("\\end{center}")
+
+    write_text(generated_dir() / "recoding_candidate_contexts.tex", "\n\n".join(lines) + "\n")
 
 
 def _write_recoding_context_tests_tex(tests_primary: list[Any], *, k_primary: int) -> None:
@@ -2527,6 +2629,30 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
             except Exception:
                 continue
     _write_recoding_rows_tex(top_sites, row_limit=row_limit)
+
+    # Candidate contexts (stored in summary for reproducible rebuild without GenBank parsing).
+    cand_ctx = primary.get("candidate_contexts") or {}
+    cand_lim = int(primary.get("candidate_context_limit", 20) or 20)
+    cand_by_aa: dict[str, dict[str, list[RecodingSite]]] = {}
+    if isinstance(cand_ctx, dict):
+        for aa, by_dir in cand_ctx.items():
+            if not isinstance(by_dir, dict):
+                continue
+            out_dir: dict[str, list[RecodingSite]] = {}
+            for key, rows in by_dir.items():
+                if not isinstance(rows, list):
+                    continue
+                lst: list[RecodingSite] = []
+                for r in rows:
+                    if not isinstance(r, dict):
+                        continue
+                    try:
+                        lst.append(RecodingSite(**r))  # type: ignore[arg-type]
+                    except Exception:
+                        continue
+                out_dir[str(key)] = lst
+            cand_by_aa[str(aa)] = out_dir
+    _write_recoding_candidate_contexts_tex(cand_by_aa, k_primary=k_primary, limit=cand_lim)
 
     # Summary text.
     aa_counts = primary.get("aa_counts") or {}

@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import heapq
 import json
 import math
 import random
@@ -44,7 +45,7 @@ MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
 ANALYSIS_VERSION = 4
 
 # Bump this when the output JSON schema changes.
-SCHEMA_VERSION = 4
+SCHEMA_VERSION = 5
 
 # Precompute codon-level Fold_6 attributes under mu* for speed.
 CODON_INFO: dict[str, dict[str, object]] = {}
@@ -73,6 +74,13 @@ def _dinuc_vec_16(freq: dict[str, float] | None) -> list[float] | None:
     if freq is None:
         return None
     return [float(freq.get(k, 0.0)) for k in DINUC_ORDER]
+
+
+def _rna_to_dna(seq: str) -> str:
+    """
+    Convert RNA alphabet to DNA alphabet (U->T). Keeps other characters unchanged.
+    """
+    return (seq or "").replace("U", "T")
 
 
 def root_dir() -> Path:
@@ -639,6 +647,28 @@ def main() -> None:
     sample_reservoir: dict[str, list[dict[str, object]]] = {s: [] for s in STOP_CODONS}
     rng_sample = random.Random(_stable_seed_u32(f"refseq:stop_context_samples:{args.input}:{k_primary}:{ANALYSIS_VERSION}"))
 
+    # Candidate pools for downstream reporter assay selection (extrema at primary k).
+    CAND_POOL_MAX_PER_STOP = 200
+    cand_seen: dict[str, set[tuple[str, int, int]]] = {s: set() for s in STOP_CODONS}
+    cand_top_after: dict[str, list[tuple[float, str, int, int, dict[str, object]]]] = {s: [] for s in STOP_CODONS}
+    cand_bottom_after: dict[str, list[tuple[float, str, int, int, dict[str, object]]]] = {s: [] for s in STOP_CODONS}
+    cand_top_diff: dict[str, list[tuple[float, str, int, int, dict[str, object]]]] = {s: [] for s in STOP_CODONS}
+    cand_bottom_diff: dict[str, list[tuple[float, str, int, int, dict[str, object]]]] = {s: [] for s in STOP_CODONS}
+
+    def _push_topk(
+        heap: list[tuple[float, str, int, int, dict[str, object]]],
+        *,
+        score: float,
+        rid: str,
+        stop_base: int,
+        frame: int,
+        item: dict[str, object],
+        limit: int,
+    ) -> None:
+        heapq.heappush(heap, (float(score), str(rid), int(stop_base), int(frame), item))
+        if len(heap) > int(limit):
+            heapq.heappop(heap)
+
     for fp in files:
         if not fp.exists():
             continue
@@ -903,6 +933,69 @@ def main() -> None:
                                 if j < int(SAMPLE_MAX_PER_STOP):
                                     rsv[int(j)] = sample
 
+                            # Candidate pool update (store minimal provenance + explicit sequences for assays).
+                            # Use set-based deduplication per stop codon.
+                            key = (str(rid), int(t), int(frame))
+                            if key not in cand_seen[stop_codon]:
+                                cand_seen[stop_codon].add(key)
+                                before_seq_dna = _rna_to_dna(before_seq)
+                                after_seq_dna = _rna_to_dna(after_seq)
+                                cand = {
+                                    "record_id": str(rid),
+                                    "frame": int(frame),
+                                    "start_base": int(s),
+                                    "stop_base": int(t),
+                                    "stop_codon": str(stop_codon),
+                                    "stop_codon_dna": _rna_to_dna(str(stop_codon)),
+                                    "before_seq_dna": before_seq_dna,
+                                    "after_seq_dna": after_seq_dna,
+                                    "plus4_nt": (after_seq_dna[0] if after_seq_dna else None),
+                                    "after_nt6": (after_seq_dna[:6] if len(after_seq_dna) >= 6 else None),
+                                    "before_mean": float(b_mean),
+                                    "after_mean": float(a_mean),
+                                    "diff": float(a_mean - b_mean),
+                                    "before_gc": float(gc_b),
+                                    "after_gc": float(gc_a),
+                                    "before_dinuc": [float(x) for x in din_b],
+                                    "after_dinuc": [float(x) for x in din_a],
+                                }
+                                _push_topk(
+                                    cand_top_after[stop_codon],
+                                    score=float(a_mean),
+                                    rid=str(rid),
+                                    stop_base=int(t),
+                                    frame=int(frame),
+                                    item=cand,
+                                    limit=int(CAND_POOL_MAX_PER_STOP),
+                                )
+                                _push_topk(
+                                    cand_bottom_after[stop_codon],
+                                    score=-float(a_mean),
+                                    rid=str(rid),
+                                    stop_base=int(t),
+                                    frame=int(frame),
+                                    item=cand,
+                                    limit=int(CAND_POOL_MAX_PER_STOP),
+                                )
+                                _push_topk(
+                                    cand_top_diff[stop_codon],
+                                    score=float(a_mean - b_mean),
+                                    rid=str(rid),
+                                    stop_base=int(t),
+                                    frame=int(frame),
+                                    item=cand,
+                                    limit=int(CAND_POOL_MAX_PER_STOP),
+                                )
+                                _push_topk(
+                                    cand_bottom_diff[stop_codon],
+                                    score=-float(a_mean - b_mean),
+                                    rid=str(rid),
+                                    stop_base=int(t),
+                                    frame=int(frame),
+                                    item=cand,
+                                    limit=int(CAND_POOL_MAX_PER_STOP),
+                                )
+
         if args.max_records and n_records >= int(args.max_records):
             break
 
@@ -960,6 +1053,10 @@ def main() -> None:
         "before": {"n": int(start_before_stats.n), "mean": (float(start_before_stats.mean) if start_before_stats.n > 0 else None)},
         "after": {"n": int(start_after_stats.n), "mean": (float(start_after_stats.mean) if start_after_stats.n > 0 else None)},
     }
+
+    def _heap_items(heap: list[tuple[float, str, int, int, dict[str, object]]]) -> list[dict[str, object]]:
+        # Sort by score descending; tie-break by (record_id, stop_base, frame).
+        return [it[-1] for it in sorted(heap, key=lambda x: (float(x[0]), str(x[1]), int(x[2]), int(x[3])), reverse=True)]
 
     summary = {
         "schema_version": int(SCHEMA_VERSION),
@@ -1076,6 +1173,19 @@ def main() -> None:
             "seen": {s: int(sample_seen.get(s, 0)) for s in STOP_CODONS},
             "dinuc_order": DINUC_ORDER,
             "by_stop": sample_reservoir,
+        },
+        "stop_context_candidate_pool": {
+            "pool_max_per_stop": int(CAND_POOL_MAX_PER_STOP),
+            "seen": {s: int(len(cand_seen.get(s, set()))) for s in STOP_CODONS},
+            "by_stop": {
+                s: {
+                    "top_after": _heap_items(cand_top_after.get(s, [])),
+                    "bottom_after": _heap_items(cand_bottom_after.get(s, [])),
+                    "top_diff": _heap_items(cand_top_diff.get(s, [])),
+                    "bottom_diff": _heap_items(cand_bottom_diff.get(s, [])),
+                }
+                for s in STOP_CODONS
+            },
         },
         "V_hist": {str(k): int(v) for k, v in sorted(v_hist.items())},
         "Delta_hist": {str(k): int(v) for k, v in sorted(delta_hist.items())},

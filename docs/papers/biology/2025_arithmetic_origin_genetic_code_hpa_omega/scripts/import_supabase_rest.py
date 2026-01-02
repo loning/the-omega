@@ -204,6 +204,107 @@ def load_recoding_sites(
     return rows, n
 
 
+def load_boundary_enrichment_results(
+    jsonl_path: Path, *, analysis_version: int | None = None, heartbeat: Heartbeat | None = None
+) -> tuple[list[dict[str, Any]], int]:
+    rows: list[dict[str, Any]] = []
+    n = 0
+    with jsonl_path.open("r", encoding="utf-8") as f:
+        for line_no, line in enumerate(f, start=1):
+            if not line.strip():
+                continue
+            obj = json.loads(line)
+            if not isinstance(obj, dict):
+                continue
+
+            av = obj.get("analysis_version")
+            ds = obj.get("dataset")
+            lbl = obj.get("label")
+            method = obj.get("method")
+            try:
+                av_i = int(av)  # type: ignore[arg-type]
+            except Exception as e:
+                raise SystemExit(f"Invalid analysis_version at {jsonl_path}:{line_no}") from e
+            if av_i <= 0:
+                raise SystemExit(f"Invalid analysis_version at {jsonl_path}:{line_no}: {av_i}")
+            if analysis_version is not None and int(av_i) != int(analysis_version):
+                raise SystemExit(
+                    f"Mismatched analysis_version at {jsonl_path}:{line_no}: {av_i} vs expected {int(analysis_version)}"
+                )
+            if not isinstance(ds, str) or not ds.strip():
+                raise SystemExit(f"Invalid dataset at {jsonl_path}:{line_no}")
+            if not isinstance(lbl, str) or not lbl.strip():
+                raise SystemExit(f"Invalid label at {jsonl_path}:{line_no}")
+            if not isinstance(method, str) or not method.strip():
+                raise SystemExit(f"Invalid method at {jsonl_path}:{line_no}")
+
+            rows.append(obj)
+            n += 1
+            if heartbeat is not None and (line_no % 2000) == 0:
+                heartbeat.maybe(f"boundary_enrichment JSONL: parsed {n} rows")
+    return rows, n
+
+
+def load_refseq_stop_context_candidates(
+    jsonl_path: Path, *, analysis_version: int | None = None, heartbeat: Heartbeat | None = None
+) -> tuple[list[dict[str, Any]], int]:
+    rows: list[dict[str, Any]] = []
+    n = 0
+    with jsonl_path.open("r", encoding="utf-8") as f:
+        for line_no, line in enumerate(f, start=1):
+            if not line.strip():
+                continue
+            obj = json.loads(line)
+            if not isinstance(obj, dict):
+                continue
+
+            av = obj.get("analysis_version")
+            ds = obj.get("dataset")
+            cand_set = obj.get("candidate_set")
+            stop_codon = obj.get("stop_codon")
+            group_label = obj.get("group_label")
+            record_id = obj.get("record_id")
+            stop_base = obj.get("stop_base")
+            k = obj.get("k")
+
+            try:
+                av_i = int(av)  # type: ignore[arg-type]
+            except Exception as e:
+                raise SystemExit(f"Invalid analysis_version at {jsonl_path}:{line_no}") from e
+            if av_i <= 0:
+                raise SystemExit(f"Invalid analysis_version at {jsonl_path}:{line_no}: {av_i}")
+            if analysis_version is not None and int(av_i) != int(analysis_version):
+                raise SystemExit(
+                    f"Mismatched analysis_version at {jsonl_path}:{line_no}: {av_i} vs expected {int(analysis_version)}"
+                )
+            if not isinstance(ds, str) or not ds.strip():
+                raise SystemExit(f"Invalid dataset at {jsonl_path}:{line_no}")
+            if not isinstance(cand_set, str) or not cand_set.strip():
+                raise SystemExit(f"Invalid candidate_set at {jsonl_path}:{line_no}")
+            if not isinstance(stop_codon, str) or not stop_codon.strip():
+                raise SystemExit(f"Invalid stop_codon at {jsonl_path}:{line_no}")
+            if not isinstance(group_label, str) or not group_label.strip():
+                raise SystemExit(f"Invalid group_label at {jsonl_path}:{line_no}")
+            if not isinstance(record_id, str) or not record_id.strip():
+                raise SystemExit(f"Invalid record_id at {jsonl_path}:{line_no}")
+            try:
+                int(stop_base)  # type: ignore[arg-type]
+            except Exception as e:
+                raise SystemExit(f"Invalid stop_base at {jsonl_path}:{line_no}") from e
+            try:
+                k_i = int(k)  # type: ignore[arg-type]
+            except Exception as e:
+                raise SystemExit(f"Invalid k at {jsonl_path}:{line_no}") from e
+            if k_i <= 0:
+                raise SystemExit(f"Invalid k at {jsonl_path}:{line_no}: {k_i}")
+
+            rows.append(obj)
+            n += 1
+            if heartbeat is not None and (line_no % 2000) == 0:
+                heartbeat.maybe(f"refseq_stop_context_candidates JSONL: parsed {n} rows")
+    return rows, n
+
+
 def _artifact_digest(path: Path) -> str:
     """
     Stable-ish digest for caching import steps without re-reading large artifacts.
@@ -422,8 +523,11 @@ def load_analysis_runs(
     panel_summary_obj: dict[str, Any] | None = None,
     nonstandard_summary_path: Path | None = None,
     nonstandard_summary_obj: dict[str, Any] | None = None,
+    nonstandard_codes_path: Path | None = None,
+    nonstandard_codes_obj: dict[str, Any] | None = None,
     refseq_dataset: str,
     recoding_dataset: str,
+    nonstandard_codes_dataset: str,
 ) -> list[dict[str, Any]]:
     ref_av = infer_analysis_version(transcriptome_summary_path, summary_obj=transcriptome_summary_obj)
     if not ref_av:
@@ -476,6 +580,19 @@ def load_analysis_runs(
             }
         )
 
+    if nonstandard_codes_path is not None and nonstandard_codes_obj is not None:
+        cav = infer_analysis_version(nonstandard_codes_path, summary_obj=nonstandard_codes_obj)
+        if not cav:
+            raise SystemExit(f"Missing analysis_version for nonstandard codes summary: {nonstandard_codes_path}")
+        out.append(
+            {
+                "dataset": str(nonstandard_codes_dataset),
+                "analysis": "nonstandard_codes",
+                "analysis_version": cav,
+                "payload": nonstandard_codes_obj,
+            }
+        )
+
     return out
 
 
@@ -496,8 +613,10 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--force", action="store_true", help="Force import even if local import cache hits.")
     p.add_argument("--no-recoding", action="store_true", help="Skip importing recoding_sites.")
     p.add_argument("--no-refseq", action="store_true", help="Skip importing refseq_stop_context_comp_results.")
+    p.add_argument("--no-refseq-stop-candidates", action="store_true", help="Skip importing refseq_stop_context_candidates.")
     p.add_argument("--no-panel", action="store_true", help="Skip importing corpus_panel_items.")
     p.add_argument("--no-nonstandard", action="store_true", help="Skip importing nonstandard_sequence_tests_items.")
+    p.add_argument("--no-boundary-enrichment", action="store_true", help="Skip importing boundary_enrichment_results.")
     p.add_argument("--no-analysis-runs", action="store_true", help="Skip importing analysis_runs payloads.")
     p.add_argument(
         "--recoding-jsonl",
@@ -515,6 +634,11 @@ def parse_args() -> argparse.Namespace:
         help="Input RefSeq merged transcriptome summary JSON path (relative to project root by default).",
     )
     p.add_argument(
+        "--refseq-stop-candidates-jsonl",
+        default="data/refseq_hsapiens_mrna/stop_context_candidates.jsonl",
+        help="Input RefSeq stop-context candidates JSONL path (relative to project root by default).",
+    )
+    p.add_argument(
         "--panel-summary-json",
         default="data/panel/corpus_panel_summary.json",
         help="Input corpus panel summary JSON path (relative to project root by default).",
@@ -524,8 +648,19 @@ def parse_args() -> argparse.Namespace:
         default="data/nonstandard_sequence_tests.json",
         help="Input nonstandard sequence tests JSON path (relative to project root by default).",
     )
+    p.add_argument(
+        "--nonstandard-codes-json",
+        default="data/nonstandard_codes_summary.json",
+        help="Input nonstandard codes summary JSON path (relative to project root by default).",
+    )
+    p.add_argument(
+        "--boundary-enrichment-jsonl",
+        default="data/boundary_enrichment/boundary_enrichment_results.jsonl",
+        help="Input boundary enrichment results JSONL path (relative to project root by default).",
+    )
     p.add_argument("--recoding-dataset", default="ncbi_recoding_genbank", help="Dataset label for analysis_runs.")
     p.add_argument("--refseq-dataset", default="human_refseq_mrna", help="Dataset label for analysis_runs / refseq results.")
+    p.add_argument("--nonstandard-codes-dataset", default="ncbi_gc_prt", help="Dataset label for analysis_runs (nonstandard codes).")
     return p.parse_args()
 
 
@@ -565,13 +700,17 @@ def main() -> None:
     recoding_jsonl_path = (root / str(args.recoding_jsonl)).resolve()
     recoding_summary_path = (root / str(args.recoding_summary_json)).resolve()
     refseq_summary_path = (root / str(args.refseq_summary_json)).resolve()
+    refseq_candidates_jsonl_path = (root / str(args.refseq_stop_candidates_jsonl)).resolve()
     panel_summary_path = (root / str(args.panel_summary_json)).resolve()
     nonstandard_summary_path = (root / str(args.nonstandard_seqtests_json)).resolve()
+    nonstandard_codes_path = (root / str(args.nonstandard_codes_json)).resolve()
+    boundary_enrichment_jsonl_path = (root / str(args.boundary_enrichment_jsonl)).resolve()
 
     transcriptome_obj: dict[str, Any] | None = None
     recoding_summary_obj: dict[str, Any] | None = None
     panel_obj: dict[str, Any] | None = None
     nonstandard_obj: dict[str, Any] | None = None
+    nonstandard_codes_obj: dict[str, Any] | None = None
 
     if (not args.no_refseq) or (not args.no_analysis_runs):
         if not refseq_summary_path.exists():
@@ -595,6 +734,10 @@ def main() -> None:
             nonstandard_obj = _read_json_dict(nonstandard_summary_path, label="nonstandard_sequence_tests.json")
         elif not args.no_nonstandard:
             raise SystemExit(f"Missing nonstandard sequence tests JSON: {nonstandard_summary_path}")
+
+    if not args.no_analysis_runs:
+        if nonstandard_codes_path.exists():
+            nonstandard_codes_obj = _read_json_dict(nonstandard_codes_path, label="nonstandard_codes_summary.json")
 
     # 1) RefSeq comp results (small upsert)
     if not args.no_refseq:
@@ -629,6 +772,40 @@ def main() -> None:
             )
             write_json_atomic(cache_file, {"ok": True})
             write_json_atomic(cache_meta_path(cache_file), ref_cache_meta)
+
+    # 1b) RefSeq stop-context candidates (JSONL; small)
+    if not args.no_refseq_stop_candidates:
+        if not refseq_candidates_jsonl_path.exists():
+            print(f"[skip] refseq_stop_context_candidates: missing {refseq_candidates_jsonl_path}")
+        else:
+            cache_file = _import_cache_file(root, table="refseq_stop_context_candidates")
+            cand_cache_key = {
+                "analysis": "import_supabase_rest",
+                "import_version": int(IMPORT_VERSION),
+                "table": "refseq_stop_context_candidates",
+                "supabase_url": supabase_url,
+                "candidates_digest": _artifact_digest(refseq_candidates_jsonl_path),
+            }
+            cand_cache_meta = {"cache_key": cand_cache_key, "cache_digest": cache_key_digest(cand_cache_key)}
+            if (not args.force) and cache_hit(cache_file, expected_meta=cand_cache_meta, require_meta=True):
+                print(f"[cache] hit: {cache_file}")
+            else:
+                cand_rows, n_cand = load_refseq_stop_context_candidates(refseq_candidates_jsonl_path, heartbeat=hb)
+                if cand_rows:
+                    upsert_rows(
+                        supabase_url=supabase_url,
+                        supabase_key=supabase_key,
+                        table="refseq_stop_context_candidates",
+                        rows=cand_rows,
+                        on_conflict="dataset,analysis_version,candidate_set,k,stop_codon,group_label,record_id,stop_base",
+                        batch_size=int(args.batch_size),
+                        ssl_context=ssl_context,
+                        heartbeat=hb,
+                    )
+                    write_json_atomic(cache_file, {"ok": True, "rows": int(len(cand_rows))})
+                    write_json_atomic(cache_meta_path(cache_file), cand_cache_meta)
+                else:
+                    raise SystemExit(f"No refseq stop-context candidates rows found in JSONL (n={n_cand}).")
 
     # 2) Recoding sites (JSONL; larger)
     if not args.no_recoding:
@@ -686,8 +863,10 @@ def main() -> None:
             "recoding_summary_digest": _artifact_digest(recoding_summary_path),
             "panel_summary_digest": _artifact_digest(panel_summary_path) if panel_obj is not None else None,
             "nonstandard_summary_digest": _artifact_digest(nonstandard_summary_path) if nonstandard_obj is not None else None,
+            "nonstandard_codes_digest": _artifact_digest(nonstandard_codes_path) if nonstandard_codes_obj is not None else None,
             "refseq_dataset": str(args.refseq_dataset),
             "recoding_dataset": str(args.recoding_dataset),
+            "nonstandard_codes_dataset": str(args.nonstandard_codes_dataset),
         }
         runs_cache_meta = {"cache_key": runs_cache_key, "cache_digest": cache_key_digest(runs_cache_key)}
         if (not args.force) and cache_hit(cache_file, expected_meta=runs_cache_meta, require_meta=True):
@@ -702,8 +881,11 @@ def main() -> None:
                 panel_summary_obj=panel_obj,
                 nonstandard_summary_path=nonstandard_summary_path if nonstandard_obj is not None else None,
                 nonstandard_summary_obj=nonstandard_obj,
+                nonstandard_codes_path=nonstandard_codes_path if nonstandard_codes_obj is not None else None,
+                nonstandard_codes_obj=nonstandard_codes_obj,
                 refseq_dataset=str(args.refseq_dataset),
                 recoding_dataset=str(args.recoding_dataset),
+                nonstandard_codes_dataset=str(args.nonstandard_codes_dataset),
             )
             upsert_rows(
                 supabase_url=supabase_url,
@@ -776,12 +958,48 @@ def main() -> None:
             write_json_atomic(cache_file, {"ok": True, "rows": int(len(ns_rows))})
             write_json_atomic(cache_meta_path(cache_file), ns_cache_meta)
 
+    # 6) Boundary enrichment results (JSONL; small)
+    if not args.no_boundary_enrichment:
+        if not boundary_enrichment_jsonl_path.exists():
+            print(f"[skip] boundary_enrichment_results: missing {boundary_enrichment_jsonl_path}")
+        else:
+            cache_file = _import_cache_file(root, table="boundary_enrichment_results")
+            be_cache_key = {
+                "analysis": "import_supabase_rest",
+                "import_version": int(IMPORT_VERSION),
+                "table": "boundary_enrichment_results",
+                "supabase_url": supabase_url,
+                "boundary_enrichment_digest": _artifact_digest(boundary_enrichment_jsonl_path),
+            }
+            be_cache_meta = {"cache_key": be_cache_key, "cache_digest": cache_key_digest(be_cache_key)}
+            if (not args.force) and cache_hit(cache_file, expected_meta=be_cache_meta, require_meta=True):
+                print(f"[cache] hit: {cache_file}")
+            else:
+                be_rows, n_be = load_boundary_enrichment_results(boundary_enrichment_jsonl_path, heartbeat=hb)
+                if be_rows:
+                    upsert_rows(
+                        supabase_url=supabase_url,
+                        supabase_key=supabase_key,
+                        table="boundary_enrichment_results",
+                        rows=be_rows,
+                        on_conflict="dataset,analysis_version,label,method",
+                        batch_size=int(args.batch_size),
+                        ssl_context=ssl_context,
+                        heartbeat=hb,
+                    )
+                    write_json_atomic(cache_file, {"ok": True, "rows": int(len(be_rows))})
+                    write_json_atomic(cache_meta_path(cache_file), be_cache_meta)
+                else:
+                    raise SystemExit(f"No boundary enrichment rows found in JSONL (n={n_be}).")
+
     # 6) Quick verification (best-effort counts)
     for t in (
         "recoding_sites",
         "refseq_stop_context_comp_results",
+        "refseq_stop_context_candidates",
         "corpus_panel_items",
         "nonstandard_sequence_tests_items",
+        "boundary_enrichment_results",
         "analysis_runs",
     ):
         pk = "run_id" if t == "analysis_runs" else "id"

@@ -142,6 +142,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--refseq-dataset", default="human_refseq_mrna", help="dataset for public.refseq_stop_context_comp_results.")
     p.add_argument("--refseq-av", type=int, default=4, help="analysis_version for public.refseq_stop_context_comp_results.")
     p.add_argument("--refseq-k", type=int, default=10, help="k for public.refseq_stop_context_comp_results.")
+    p.add_argument("--refseq-cand-set", default="reporter_v1", help="candidate_set for public.refseq_stop_context_candidates.")
+    p.add_argument("--enrich-av", type=int, default=1, help="analysis_version for public.boundary_enrichment_results.")
     return p.parse_args()
 
 
@@ -180,6 +182,8 @@ def main() -> None:
     ns_av = int(args.ns_av)
     ref_av = int(args.refseq_av)
     ref_k = int(args.refseq_k)
+    ref_cand_set = str(args.refseq_cand_set)
+    enrich_av = int(args.enrich_av)
 
     queries: list[QuerySpec] = [
         QuerySpec(
@@ -221,6 +225,30 @@ order by aa, rn;
 """.strip(),
         ),
         QuerySpec(
+            name="sql_recoding_candidate_context_rows",
+            out_tex=generated_dir() / "sql_recoding_candidate_context_rows.tex",
+            sql=f"""
+select
+  aa,
+  codon_rna,
+  domain,
+  gene,
+  version,
+  pos_start,
+  before_seq_dna,
+  codon_dna,
+  after_seq_dna,
+  before_mean_delta,
+  after_mean_delta,
+  (after_mean_delta - before_mean_delta) as diff
+from public.recoding_sites
+where analysis_version = {rec_av} and k = {rec_k}
+  and before_seq_dna is not null and after_seq_dna is not null
+order by diff desc nulls last
+limit 50;
+""".strip(),
+        ),
+        QuerySpec(
             name="sql_panel_boundary_rates_rows",
             out_tex=generated_dir() / "sql_panel_boundary_rates_rows.tex",
             sql=f"""
@@ -255,6 +283,50 @@ select method, scheme, window_side, pair, diff, p, bins_used, n
 from public.refseq_stop_context_comp_results
 where dataset = '{str(args.refseq_dataset)}' and analysis_version = {ref_av} and k = {ref_k}
 order by method, scheme, window_side, pair;
+""".strip(),
+        ),
+        QuerySpec(
+            name="sql_refseq_stop_context_candidates_rows",
+            out_tex=generated_dir() / "sql_refseq_stop_context_candidates_rows.tex",
+            sql=f"""
+select
+  stop_codon,
+  group_label,
+  rank,
+  record_id,
+  (stop_base + 1) as stop_pos_1based,
+  before_seq_dna,
+  stop_codon_dna,
+  after_seq_dna,
+  before_mean_delta,
+  after_mean_delta,
+  diff,
+  plus4_nt,
+  after_nt6
+from public.refseq_stop_context_candidates
+where dataset = '{str(args.refseq_dataset)}'
+  and analysis_version = {ref_av}
+  and candidate_set = '{ref_cand_set}'
+  and k = {ref_k}
+order by stop_codon, group_label, rank;
+""".strip(),
+        ),
+        QuerySpec(
+            name="sql_boundary_enrichment_rank_rows",
+            out_tex=generated_dir() / "sql_boundary_enrichment_rank_rows.tex",
+            sql=f"""
+select
+  dataset,
+  label,
+  n_subset,
+  boundary_rate_subset,
+  boundary_rate_total,
+  enrichment,
+  p
+from public.boundary_enrichment_results
+where analysis_version = {enrich_av}
+order by p asc nulls last
+limit 50;
 """.strip(),
         ),
     ]
@@ -304,6 +376,22 @@ order by method, scheme, window_side, pair;
                     conn,
                     "select count(*) from public.refseq_stop_context_comp_results where dataset = %s and analysis_version = %s and k = %s;",
                     (str(args.refseq_dataset), ref_av, ref_k),
+                )
+                or 0
+            ),
+            "refseq_stop_context_candidates_n": int(
+                _query_scalar(
+                    conn,
+                    "select count(*) from public.refseq_stop_context_candidates where dataset = %s and analysis_version = %s and candidate_set = %s and k = %s;",
+                    (str(args.refseq_dataset), ref_av, str(ref_cand_set), ref_k),
+                )
+                or 0
+            ),
+            "boundary_enrichment_results_n": int(
+                _query_scalar(
+                    conn,
+                    "select count(*) from public.boundary_enrichment_results where analysis_version = %s;",
+                    (enrich_av,),
                 )
                 or 0
             ),

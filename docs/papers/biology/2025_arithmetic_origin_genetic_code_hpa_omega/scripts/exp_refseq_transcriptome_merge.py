@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 import hashlib
+import heapq
 import math
 import random
 import statistics
@@ -43,7 +44,7 @@ from stats_tools import (
     normal_two_sided_p,
 )
 
-MERGE_VERSION = 1
+MERGE_VERSION = 2
 
 
 def _stable_seed_u32(tag: str) -> int:
@@ -72,6 +73,8 @@ def parse_args() -> argparse.Namespace:
     )
     p.add_argument("--no-latex", action="store_true", help="Do not write LaTeX fragments.")
     p.add_argument("--force", action="store_true", help="Force merge and LaTeX regeneration (ignore cache).")
+    p.add_argument("--candidate-limit", type=int, default=20, help="Per-stop candidate count for high/low context lists.")
+    p.add_argument("--candidate-set", default="reporter_v1", help="Candidate set label (for exports / Supabase).")
     p.add_argument(
         "--heartbeat-s",
         type=float,
@@ -300,6 +303,258 @@ def _emit_outputs_from_summary(summary: dict[str, object]) -> None:
         f"$p(\\mathrm{{UAG}}\\!\\neq\\!\\mathrm{{UGA}}){op3}{val3}$."
     )
     write_text(generated_dir() / "refseq_stop_context_tests.tex", " ".join(tests_lines) + "\n")
+
+    # ---- Stop-context candidate sets for reporter assays (from merged summary) ----
+    cand = summary.get("stop_context_candidates")
+    if isinstance(cand, dict) and cand:
+        try:
+            k_cand = int(cand.get("k", k_primary) or k_primary)
+            cand_set = str(cand.get("candidate_set") or "reporter_v1")
+            by_stop = cand.get("by_stop") or {}
+            if not isinstance(by_stop, dict):
+                by_stop = {}
+            matched_after = cand.get("matched_after") or {}
+            if not isinstance(matched_after, dict):
+                matched_after = {}
+
+            lines: list[str] = []
+            lines.append(
+                f"Stop-context candidate sets for reporter assays (candidate set \\path{{{cand_set}}}, "
+                f"window radius $k={int(k_cand)}$). Sequences are DNA (U$\\mapsto$T)."
+            )
+            lines.append("\\begin{center}")
+            lines.append("\\scriptsize")
+            lines.append("\\setlength{\\tabcolsep}{3pt}")
+            lines.append("\\renewcommand{\\arraystretch}{1.10}")
+            lines.append("\\resizebox{\\textwidth}{!}{%")
+            lines.append("\\begin{tabular}{lllrllllrrrll}")
+            lines.append("\\toprule")
+            lines.append(
+                "stop & group & rank & pos (1-based) & record & before seq & stop & after seq & "
+                "$\\overline{U}_{\\mathrm{before}}$ & $\\overline{U}_{\\mathrm{after}}$ & diff & +4 & after-nt6 \\\\"
+            )
+            lines.append("\\midrule")
+
+            def _emit_rows(stop: str, group: str, rows: list[dict[str, object]]) -> None:
+                for j, r in enumerate(rows, start=1):
+                    rec = str(r.get("record_id") or "-")
+                    pos1 = int(r.get("stop_base", 0) or 0) + 1
+                    before_seq = str(r.get("before_seq_dna") or "-")
+                    stop_dna = str(r.get("stop_codon_dna") or "-")
+                    after_seq = str(r.get("after_seq_dna") or "-")
+                    b = r.get("before_mean")
+                    a = r.get("after_mean")
+                    d = r.get("diff")
+                    plus4 = str(r.get("plus4_nt") or "-")
+                    nt6 = str(r.get("after_nt6") or "-")
+                    b_s = f"{float(b):.3f}" if b is not None else "-"
+                    a_s = f"{float(a):.3f}" if a is not None else "-"
+                    d_s = f"{float(d):+.3f}" if d is not None else "-"
+                    lines.append(
+                        f"{stop} & {group} & {j} & {pos1} & \\path{{{rec}}} & "
+                        f"\\texttt{{{before_seq}}} & \\texttt{{{stop_dna}}} & \\texttt{{{after_seq}}} & "
+                        f"{b_s} & {a_s} & {d_s} & \\texttt{{{plus4}}} & \\texttt{{{nt6}}} \\\\"
+                    )
+
+            for stop in STOP_CODONS:
+                entry = by_stop.get(stop) or {}
+                if not isinstance(entry, dict):
+                    continue
+                high = entry.get("high_after") or []
+                low = entry.get("low_after") or []
+                if isinstance(high, list):
+                    _emit_rows(stop, "high", [r for r in high if isinstance(r, dict)])
+                if isinstance(low, list):
+                    _emit_rows(stop, "low", [r for r in low if isinstance(r, dict)])
+
+            lines.append("\\bottomrule")
+            lines.append("\\end{tabular}%")
+            lines.append("}")
+            lines.append("\\end{center}")
+            write_text(generated_dir() / "refseq_stop_context_candidates.tex", "\n".join(lines) + "\n")
+
+            # Matched pairs (after-window GC + dinuc).
+            m_lines: list[str] = []
+            m_lines.append(
+                f"Composition-matched high/low candidate pairs using after-window GC+dinucleotide (candidate set \\path{{{cand_set}}}, $k={int(k_cand)}$)."
+            )
+            m_lines.append("\\begin{center}")
+            m_lines.append("\\scriptsize")
+            m_lines.append("\\setlength{\\tabcolsep}{3pt}")
+            m_lines.append("\\renewcommand{\\arraystretch}{1.10}")
+            m_lines.append("\\resizebox{\\textwidth}{!}{%")
+            m_lines.append("\\begin{tabular}{lrrllrrllrrr}")
+            m_lines.append("\\toprule")
+            m_lines.append(
+                "stop & rank & pos$_H$ & record$_H$ & after-nt6$_H$ & $\\overline{U}_{\\mathrm{after},H}$ & "
+                "pos$_L$ & record$_L$ & after-nt6$_L$ & $\\overline{U}_{\\mathrm{after},L}$ & "
+                "$\\epsilon_{GC}$ & $\\ell_1$ \\\\"
+            )
+            m_lines.append("\\midrule")
+            for stop in STOP_CODONS:
+                pairs = matched_after.get(stop) or []
+                if not isinstance(pairs, list):
+                    continue
+                for p in pairs:
+                    if not isinstance(p, dict):
+                        continue
+                    h = p.get("high") or {}
+                    l = p.get("low") or {}
+                    if not isinstance(h, dict) or not isinstance(l, dict):
+                        continue
+                    rank = int(p.get("rank", 0) or 0)
+                    eps_used = p.get("eps_used")
+                    l1 = p.get("l1")
+
+                    pos_h = int(h.get("stop_base", 0) or 0) + 1
+                    rec_h = str(h.get("record_id") or "-")
+                    nt6_h = str(h.get("after_nt6") or "-")
+                    ua_h = h.get("after_mean")
+                    ua_h_s = f"{float(ua_h):.3f}" if ua_h is not None else "-"
+
+                    pos_l = int(l.get("stop_base", 0) or 0) + 1
+                    rec_l = str(l.get("record_id") or "-")
+                    nt6_l = str(l.get("after_nt6") or "-")
+                    ua_l = l.get("after_mean")
+                    ua_l_s = f"{float(ua_l):.3f}" if ua_l is not None else "-"
+
+                    eps_s = f"{float(eps_used):.2f}" if eps_used is not None else "-"
+                    l1_s = f"{float(l1):.3f}" if l1 is not None else "-"
+                    m_lines.append(
+                        f"{stop} & {rank} & {pos_h} & \\path{{{rec_h}}} & \\texttt{{{nt6_h}}} & {ua_h_s} & "
+                        f"{pos_l} & \\path{{{rec_l}}} & \\texttt{{{nt6_l}}} & {ua_l_s} & {eps_s} & {l1_s} \\\\"
+                    )
+            m_lines.append("\\bottomrule")
+            m_lines.append("\\end{tabular}%")
+            m_lines.append("}")
+            m_lines.append("\\end{center}")
+            write_text(generated_dir() / "refseq_stop_context_candidates_matched.tex", "\n".join(m_lines) + "\n")
+
+            # Also write a JSONL export for Supabase import / downstream selection.
+            out_jsonl = root_dir() / "data" / "refseq_hsapiens_mrna" / "stop_context_candidates.jsonl"
+            out_jsonl.parent.mkdir(parents=True, exist_ok=True)
+            out_rows: list[dict[str, object]] = []
+            for stop in STOP_CODONS:
+                entry = by_stop.get(stop) or {}
+                if not isinstance(entry, dict):
+                    continue
+                for group_key in ("high_after", "low_after", "high_diff", "low_diff"):
+                    lst = entry.get(group_key) or []
+                    if not isinstance(lst, list):
+                        continue
+                    for rank, r in enumerate(lst, start=1):
+                        if not isinstance(r, dict):
+                            continue
+                        out_rows.append(
+                            {
+                                "dataset": "human_refseq_mrna",
+                                "analysis_version": int(ANALYSIS_VERSION),
+                                "candidate_set": str(cand_set),
+                                "k": int(k_cand),
+                                "stop_codon": str(stop),
+                                "group_label": str(group_key),
+                                "rank": int(rank),
+                                "record_id": r.get("record_id"),
+                                "frame": r.get("frame"),
+                                "start_base": r.get("start_base"),
+                                "stop_base": r.get("stop_base"),
+                                "before_seq_dna": r.get("before_seq_dna"),
+                                "stop_codon_dna": r.get("stop_codon_dna"),
+                                "after_seq_dna": r.get("after_seq_dna"),
+                                "plus4_nt": r.get("plus4_nt"),
+                                "after_nt6": r.get("after_nt6"),
+                                "before_mean_delta": r.get("before_mean"),
+                                "after_mean_delta": r.get("after_mean"),
+                                "diff": r.get("diff"),
+                                "before_gc": r.get("before_gc"),
+                                "after_gc": r.get("after_gc"),
+                                "before_dinuc": r.get("before_dinuc"),
+                                "after_dinuc": r.get("after_dinuc"),
+                                "payload": r,
+                            }
+                        )
+                # Matched pairs -> two rows per pair (high/low), with match metadata in payload.
+                pairs = matched_after.get(stop) or []
+                if isinstance(pairs, list):
+                    for p in pairs:
+                        if not isinstance(p, dict):
+                            continue
+                        rank = int(p.get("rank", 0) or 0)
+                        eps_used = p.get("eps_used")
+                        l1 = p.get("l1")
+                        h = p.get("high") or {}
+                        l = p.get("low") or {}
+                        if isinstance(h, dict):
+                            payload_h = dict(h)
+                            payload_h["match"] = {"eps_used": eps_used, "l1": l1, "role": "high"}
+                            out_rows.append(
+                                {
+                                    "dataset": "human_refseq_mrna",
+                                    "analysis_version": int(ANALYSIS_VERSION),
+                                    "candidate_set": str(cand_set),
+                                    "k": int(k_cand),
+                                    "stop_codon": str(stop),
+                                    "group_label": "matched_after_high",
+                                    "rank": int(rank),
+                                    "record_id": h.get("record_id"),
+                                    "frame": h.get("frame"),
+                                    "start_base": h.get("start_base"),
+                                    "stop_base": h.get("stop_base"),
+                                    "before_seq_dna": h.get("before_seq_dna"),
+                                    "stop_codon_dna": h.get("stop_codon_dna"),
+                                    "after_seq_dna": h.get("after_seq_dna"),
+                                    "plus4_nt": h.get("plus4_nt"),
+                                    "after_nt6": h.get("after_nt6"),
+                                    "before_mean_delta": h.get("before_mean"),
+                                    "after_mean_delta": h.get("after_mean"),
+                                    "diff": h.get("diff"),
+                                    "before_gc": h.get("before_gc"),
+                                    "after_gc": h.get("after_gc"),
+                                    "before_dinuc": h.get("before_dinuc"),
+                                    "after_dinuc": h.get("after_dinuc"),
+                                    "payload": payload_h,
+                                }
+                            )
+                        if isinstance(l, dict):
+                            payload_l = dict(l)
+                            payload_l["match"] = {"eps_used": eps_used, "l1": l1, "role": "low"}
+                            out_rows.append(
+                                {
+                                    "dataset": "human_refseq_mrna",
+                                    "analysis_version": int(ANALYSIS_VERSION),
+                                    "candidate_set": str(cand_set),
+                                    "k": int(k_cand),
+                                    "stop_codon": str(stop),
+                                    "group_label": "matched_after_low",
+                                    "rank": int(rank),
+                                    "record_id": l.get("record_id"),
+                                    "frame": l.get("frame"),
+                                    "start_base": l.get("start_base"),
+                                    "stop_base": l.get("stop_base"),
+                                    "before_seq_dna": l.get("before_seq_dna"),
+                                    "stop_codon_dna": l.get("stop_codon_dna"),
+                                    "after_seq_dna": l.get("after_seq_dna"),
+                                    "plus4_nt": l.get("plus4_nt"),
+                                    "after_nt6": l.get("after_nt6"),
+                                    "before_mean_delta": l.get("before_mean"),
+                                    "after_mean_delta": l.get("after_mean"),
+                                    "diff": l.get("diff"),
+                                    "before_gc": l.get("before_gc"),
+                                    "after_gc": l.get("after_gc"),
+                                    "before_dinuc": l.get("before_dinuc"),
+                                    "after_dinuc": l.get("after_dinuc"),
+                                    "payload": payload_l,
+                                }
+                            )
+            with out_jsonl.open("w", encoding="utf-8") as f:
+                for r in out_rows:
+                    f.write(json.dumps(r, ensure_ascii=False, sort_keys=True) + "\n")
+        except Exception:
+            write_text(generated_dir() / "refseq_stop_context_candidates.tex", "Stop-context candidate sets unavailable.\n")
+            write_text(generated_dir() / "refseq_stop_context_candidates_matched.tex", "Stop-context candidate sets unavailable.\n")
+    else:
+        write_text(generated_dir() / "refseq_stop_context_candidates.tex", "Stop-context candidate sets unavailable.\n")
+        write_text(generated_dir() / "refseq_stop_context_candidates_matched.tex", "Stop-context candidate sets unavailable.\n")
 
     null_s = (
         "Codon-usage summary over coding tokens (excluding terminal stops): "
@@ -696,6 +951,8 @@ def main() -> None:
         "in_dir": str(in_dir),
         "shards": shard_meta,
         "mu_star": MU_STAR,
+        "candidate_limit": int(args.candidate_limit),
+        "candidate_set": str(args.candidate_set),
     }
     merge_meta = {"cache_key": merge_key, "cache_digest": cache_key_digest(merge_key)}
     if (not args.force) and cache_hit(out_json, expected_meta=merge_meta, require_meta=True):
@@ -753,6 +1010,30 @@ def main() -> None:
     nn_samples: dict[str, list[dict[str, object]]] = {s: [] for s in STOP_CODONS}
     rng_nn = random.Random(_stable_seed_u32(f"refseq:merge:nn:{ANALYSIS_VERSION}:{MERGE_VERSION}"))
 
+    # Candidate pools (merged from shard extrema) for reporter assay selection.
+    cand_limit = max(1, int(args.candidate_limit))
+    cand_set = str(args.candidate_set or "reporter_v1")
+    CAND_POOL_MAX_PER_STOP = 1000
+    cand_seen: dict[str, set[tuple[str, int, int]]] = {s: set() for s in STOP_CODONS}
+    cand_top_after: dict[str, list[tuple[float, str, int, int, dict[str, object]]]] = {s: [] for s in STOP_CODONS}
+    cand_bottom_after: dict[str, list[tuple[float, str, int, int, dict[str, object]]]] = {s: [] for s in STOP_CODONS}
+    cand_top_diff: dict[str, list[tuple[float, str, int, int, dict[str, object]]]] = {s: [] for s in STOP_CODONS}
+    cand_bottom_diff: dict[str, list[tuple[float, str, int, int, dict[str, object]]]] = {s: [] for s in STOP_CODONS}
+
+    def _push_topk(
+        heap: list[tuple[float, str, int, int, dict[str, object]]],
+        *,
+        score: float,
+        rid: str,
+        stop_base: int,
+        frame: int,
+        item: dict[str, object],
+        limit: int,
+    ) -> None:
+        heapq.heappush(heap, (float(score), str(rid), int(stop_base), int(frame), item))
+        if len(heap) > int(limit):
+            heapq.heappop(heap)
+
     source_files: list[str] = []
 
     hb = Heartbeat(every_s=float(args.heartbeat_s), prefix="[progress] refseq_transcriptome_merge")
@@ -761,7 +1042,7 @@ def main() -> None:
     for i, fp in enumerate(files, start=1):
         obj = json.loads(fp.read_text(encoding="utf-8"))
         shard_schema = int(obj.get("schema_version", 0) or 0)
-        if shard_schema not in (1, 2, 3, 4):
+        if shard_schema not in (1, 2, 3, 4, 5):
             raise SystemExit(f"Unexpected schema_version in {fp}: {shard_schema}")
         hb.maybe(f"merged_shards={i}/{len(files)} records={records} coding_tokens={coding_tokens}")
 
@@ -943,6 +1224,84 @@ def main() -> None:
                             if j < int(NN_SAMPLE_MAX_PER_STOP):
                                 rsv[int(j)] = item
 
+        # Reporter-candidate pools (extrema from shards; schema v5+).
+        cand_pool = obj.get("stop_context_candidate_pool") or {}
+        if isinstance(cand_pool, dict):
+            by_stop = cand_pool.get("by_stop") or {}
+            if isinstance(by_stop, dict):
+                for s in STOP_CODONS:
+                    entry = by_stop.get(s) or {}
+                    if not isinstance(entry, dict):
+                        continue
+                    for key0 in ("top_after", "bottom_after", "top_diff", "bottom_diff"):
+                        lst = entry.get(key0) or []
+                        if not isinstance(lst, list):
+                            continue
+                        for it in lst:
+                            if not isinstance(it, dict):
+                                continue
+                            rid = it.get("record_id")
+                            stop_base = it.get("stop_base")
+                            frame = it.get("frame", 0)
+                            if not isinstance(rid, str) or not rid.strip():
+                                continue
+                            try:
+                                stop_base_i = int(stop_base)  # type: ignore[arg-type]
+                                frame_i = int(frame)  # type: ignore[arg-type]
+                            except Exception:
+                                continue
+                            key = (str(rid), int(stop_base_i), int(frame_i))
+                            if key in cand_seen[s]:
+                                continue
+                            cand_seen[s].add(key)
+
+                            a = it.get("after_mean")
+                            b = it.get("before_mean")
+                            d = it.get("diff")
+                            try:
+                                a_f = float(a)  # type: ignore[arg-type]
+                                b_f = float(b)  # type: ignore[arg-type]
+                            except Exception:
+                                continue
+                            d_f = float(d) if d is not None else (a_f - b_f)
+
+                            _push_topk(
+                                cand_top_after[s],
+                                score=float(a_f),
+                                rid=str(rid),
+                                stop_base=int(stop_base_i),
+                                frame=int(frame_i),
+                                item=it,
+                                limit=int(CAND_POOL_MAX_PER_STOP),
+                            )
+                            _push_topk(
+                                cand_bottom_after[s],
+                                score=-float(a_f),
+                                rid=str(rid),
+                                stop_base=int(stop_base_i),
+                                frame=int(frame_i),
+                                item=it,
+                                limit=int(CAND_POOL_MAX_PER_STOP),
+                            )
+                            _push_topk(
+                                cand_top_diff[s],
+                                score=float(d_f),
+                                rid=str(rid),
+                                stop_base=int(stop_base_i),
+                                frame=int(frame_i),
+                                item=it,
+                                limit=int(CAND_POOL_MAX_PER_STOP),
+                            )
+                            _push_topk(
+                                cand_bottom_diff[s],
+                                score=-float(d_f),
+                                rid=str(rid),
+                                stop_base=int(stop_base_i),
+                                frame=int(frame_i),
+                                item=it,
+                                limit=int(CAND_POOL_MAX_PER_STOP),
+                            )
+
     if coding_tokens <= 0 or hist_total(orf_len_hist) <= 0:
         raise SystemExit("Merged shard summaries contain no coding tokens / ORFs.")
 
@@ -992,6 +1351,132 @@ def main() -> None:
         "UAA_vs_UAG": welch_t_p_value_two_sided_from_stats(after_stats["UAA"], after_stats["UAG"]),
         "UAA_vs_UGA": welch_t_p_value_two_sided_from_stats(after_stats["UAA"], after_stats["UGA"]),
         "UAG_vs_UGA": welch_t_p_value_two_sided_from_stats(after_stats["UAG"], after_stats["UGA"]),
+    }
+
+    def _heap_items(heap: list[tuple[float, str, int, int, dict[str, object]]]) -> list[dict[str, object]]:
+        return [it[-1] for it in sorted(heap, key=lambda x: (float(x[0]), str(x[1]), int(x[2]), int(x[3])), reverse=True)]
+
+    def _seq_sig(r: dict[str, object]) -> tuple[str, str, str]:
+        return (
+            str(r.get("before_seq_dna") or ""),
+            str(r.get("stop_codon_dna") or ""),
+            str(r.get("after_seq_dna") or ""),
+        )
+
+    def _dedup_by_seq(rows: list[dict[str, object]], *, limit: int) -> list[dict[str, object]]:
+        """
+        Deduplicate candidates by explicit context sequence (before + stop + after).
+        Keeps order (already ranked by score).
+        """
+        out: list[dict[str, object]] = []
+        seen: set[tuple[str, str, str]] = set()
+        for r in rows:
+            sig = _seq_sig(r)
+            if not sig[0] or not sig[2]:
+                continue
+            if sig in seen:
+                continue
+            seen.add(sig)
+            out.append(r)
+            if len(out) >= int(limit):
+                break
+        return out
+
+    def _match_after_gc_dinuc(
+        *,
+        high: list[dict[str, object]],
+        low: list[dict[str, object]],
+        gc_eps_schedule: list[float],
+        limit: int,
+    ) -> list[dict[str, object]]:
+        """
+        Build composition-matched pairs using after-window (GC + 16-dinuc L1).
+        Returns a list of pairs: {rank, high, low, eps_used, l1}.
+        """
+        out: list[dict[str, object]] = []
+        used_low: set[tuple[str, int, int]] = set()
+        for h in high:
+            if len(out) >= int(limit):
+                break
+            gc_h = h.get("after_gc")
+            vec_h = h.get("after_dinuc")
+            if gc_h is None or vec_h is None or (not isinstance(vec_h, list)) or len(vec_h) != 16:
+                continue
+            try:
+                gc_h_f = float(gc_h)
+                vec_h_f = [float(x) for x in vec_h]
+            except Exception:
+                continue
+
+            best: dict[str, object] | None = None
+            best_l1: float | None = None
+            best_eps: float | None = None
+            for eps in gc_eps_schedule:
+                for l in low:
+                    rid_l = l.get("record_id")
+                    stop_base_l = l.get("stop_base")
+                    frame_l = l.get("frame")
+                    if not isinstance(rid_l, str) or rid_l.strip() == "":
+                        continue
+                    try:
+                        key_l = (rid_l, int(stop_base_l or 0), int(frame_l or 0))
+                    except Exception:
+                        continue
+                    if key_l in used_low:
+                        continue
+
+                    gc_l = l.get("after_gc")
+                    vec_l = l.get("after_dinuc")
+                    if gc_l is None or vec_l is None or (not isinstance(vec_l, list)) or len(vec_l) != 16:
+                        continue
+                    try:
+                        gc_l_f = float(gc_l)
+                        vec_l_f = [float(x) for x in vec_l]
+                    except Exception:
+                        continue
+                    if abs(gc_l_f - gc_h_f) > float(eps):
+                        continue
+                    l1 = float(sum(abs(a - b) for a, b in zip(vec_h_f, vec_l_f)))
+                    if best_l1 is None or l1 < best_l1:
+                        best_l1 = float(l1)
+                        best_eps = float(eps)
+                        best = l
+                if best is not None:
+                    break
+
+            if best is None or best_l1 is None or best_eps is None:
+                continue
+
+            rid_l = str(best.get("record_id") or "")
+            used_low.add((rid_l, int(best.get("stop_base") or 0), int(best.get("frame") or 0)))
+            out.append({"rank": int(len(out) + 1), "high": h, "low": best, "eps_used": float(best_eps), "l1": float(best_l1)})
+        return out
+
+    stop_context_candidates = {
+        "candidate_set": str(cand_set),
+        "k": int(k_primary),
+        "limit_per_stop": int(cand_limit),
+        "by_stop": {
+            s: {
+                "high_after": _dedup_by_seq(_heap_items(cand_top_after.get(s, [])), limit=int(cand_limit)),
+                "low_after": _dedup_by_seq(_heap_items(cand_bottom_after.get(s, [])), limit=int(cand_limit)),
+                "high_diff": _dedup_by_seq(_heap_items(cand_top_diff.get(s, [])), limit=int(cand_limit)),
+                "low_diff": _dedup_by_seq(_heap_items(cand_bottom_diff.get(s, [])), limit=int(cand_limit)),
+            }
+            for s in STOP_CODONS
+        },
+    }
+
+    # Add after-window matched pairs (GC + dinuc) for the high/low-after sets.
+    gc_eps_schedule = [0.05, 0.10, 0.20, 0.30]
+    stop_context_candidates["matched_after"] = {
+        s: _match_after_gc_dinuc(
+            high=list((stop_context_candidates.get("by_stop") or {}).get(s, {}).get("high_after") or []),
+            low=list((stop_context_candidates.get("by_stop") or {}).get(s, {}).get("low_after") or []),
+            gc_eps_schedule=gc_eps_schedule,
+            limit=int(cand_limit),
+        )
+        for s in STOP_CODONS
     }
 
     # ---- Composition-adjusted stop-context (stratified bins + NN sample cross-check) ----
@@ -1156,7 +1641,7 @@ def main() -> None:
         raise SystemExit("Missing merged start-context stats (start_context_welford_multi_k).")
 
     summary = {
-        "schema_version": 5,
+        "schema_version": 6,
         "analysis_version": int(ANALYSIS_VERSION),
         "merge_version": int(MERGE_VERSION),
         "mu_star": MU_STAR,
@@ -1246,6 +1731,7 @@ def main() -> None:
         },
         "stop_context_p_before": p_before,
         "stop_context_p_after": p_after,
+        "stop_context_candidates": stop_context_candidates,
         "codon_counts": {k: int(v) for k, v in sorted(codon_counts.items())},
         "aa_counts": {k: int(v) for k, v in sorted(aa_counts.items())},
         "codon_usage": {"zbar": zbar, "ubar": ubar, "null": null},

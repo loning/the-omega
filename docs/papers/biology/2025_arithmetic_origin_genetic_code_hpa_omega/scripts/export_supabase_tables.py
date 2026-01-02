@@ -5,8 +5,10 @@ Export paper datasets to CSV for Supabase/Postgres ingestion (standard library o
 Exports:
   - recoding_sites.csv
   - refseq_stop_context_comp_results.csv
+  - refseq_stop_context_candidates.csv
   - corpus_panel_items.csv
   - nonstandard_sequence_tests_items.csv
+  - boundary_enrichment_results.csv
 
 Notes:
   - JSON objects are serialized as compact JSON strings (for jsonb columns).
@@ -95,6 +97,8 @@ def export_recoding_sites(*, in_jsonl: Path, out_csv: Path, heartbeat: Heartbeat
         "control_same_codon_after_mean_delta",
         "control_random_cds_before_mean_delta",
         "control_random_cds_after_mean_delta",
+        "before_seq_dna",
+        "after_seq_dna",
         "before_gc",
         "after_gc",
         "before_cpg",
@@ -397,6 +401,89 @@ def export_refseq_stop_context_comp_results(*, in_summary_json: Path, out_csv: P
     print("Wrote:", out_csv, f"(rows={len(rows)})")
 
 
+def export_boundary_enrichment_results(*, in_jsonl: Path, out_csv: Path, heartbeat: Heartbeat | None = None) -> None:
+    cols = [
+        "dataset",
+        "analysis_version",
+        "label",
+        "method",
+        "n_total",
+        "n_subset",
+        "boundary_rate_total",
+        "boundary_rate_subset",
+        "enrichment",
+        "p",
+        "payload",
+    ]
+
+    out_csv.parent.mkdir(parents=True, exist_ok=True)
+    with out_csv.open("w", encoding="utf-8", newline="") as f_out:
+        w = csv.DictWriter(f_out, fieldnames=cols, extrasaction="ignore")
+        w.writeheader()
+        n = 0
+        with in_jsonl.open("r", encoding="utf-8") as f_in:
+            for line_no, line in enumerate(f_in, start=1):
+                if not line.strip():
+                    continue
+                obj = json.loads(line)
+                if not isinstance(obj, dict):
+                    continue
+                row = {k: _csv_cell(obj.get(k)) for k in cols}
+                w.writerow(row)
+                n += 1
+                if heartbeat is not None and (line_no % 2000) == 0:
+                    heartbeat.maybe(f"export boundary_enrichment_results.csv: wrote {n} rows")
+    print("Wrote:", out_csv, f"(rows={n})")
+
+
+def export_refseq_stop_context_candidates(*, in_jsonl: Path, out_csv: Path, heartbeat: Heartbeat | None = None) -> None:
+    cols = [
+        "dataset",
+        "analysis_version",
+        "candidate_set",
+        "k",
+        "stop_codon",
+        "group_label",
+        "rank",
+        "record_id",
+        "frame",
+        "start_base",
+        "stop_base",
+        "before_seq_dna",
+        "stop_codon_dna",
+        "after_seq_dna",
+        "plus4_nt",
+        "after_nt6",
+        "before_mean_delta",
+        "after_mean_delta",
+        "diff",
+        "before_gc",
+        "after_gc",
+        "before_dinuc",
+        "after_dinuc",
+        "payload",
+    ]
+
+    out_csv.parent.mkdir(parents=True, exist_ok=True)
+    with out_csv.open("w", encoding="utf-8", newline="") as f_out:
+        w = csv.DictWriter(f_out, fieldnames=cols, extrasaction="ignore")
+        w.writeheader()
+        n = 0
+        with in_jsonl.open("r", encoding="utf-8") as f_in:
+            for line_no, line in enumerate(f_in, start=1):
+                if not line.strip():
+                    continue
+                obj = json.loads(line)
+                if not isinstance(obj, dict):
+                    continue
+                row = {k: _csv_cell(obj.get(k)) for k in cols}
+                w.writerow(row)
+                n += 1
+                if heartbeat is not None and (line_no % 2000) == 0:
+                    heartbeat.maybe(f"export refseq_stop_context_candidates.csv: wrote {n} rows")
+    print("Wrote:", out_csv, f"(rows={n})")
+
+
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Export datasets to CSV for Supabase/Postgres.")
     p.add_argument("--out-dir", default="data/db_exports", help="Output directory (relative to project root).")
@@ -421,11 +508,23 @@ def parse_args() -> argparse.Namespace:
         default="data/nonstandard_sequence_tests.json",
         help="Input nonstandard sequence tests JSON path (relative to project root by default).",
     )
+    p.add_argument(
+        "--boundary-enrichment-jsonl",
+        default="data/boundary_enrichment/boundary_enrichment_results.jsonl",
+        help="Input boundary enrichment results JSONL path (relative to project root by default).",
+    )
+    p.add_argument(
+        "--refseq-stop-candidates-jsonl",
+        default="data/refseq_hsapiens_mrna/stop_context_candidates.jsonl",
+        help="Input RefSeq stop-context candidates JSONL path (relative to project root by default).",
+    )
     p.add_argument("--refseq-dataset", default="human_refseq_mrna", help="Dataset label written into refseq CSV.")
     p.add_argument("--no-recoding", action="store_true", help="Skip exporting recoding_sites.csv.")
     p.add_argument("--no-refseq", action="store_true", help="Skip exporting refseq_stop_context_comp_results.csv.")
+    p.add_argument("--no-refseq-stop-candidates", action="store_true", help="Skip exporting refseq_stop_context_candidates.csv.")
     p.add_argument("--no-panel", action="store_true", help="Skip exporting corpus_panel_items.csv.")
     p.add_argument("--no-nonstandard", action="store_true", help="Skip exporting nonstandard_sequence_tests_items.csv.")
+    p.add_argument("--no-boundary-enrichment", action="store_true", help="Skip exporting boundary_enrichment_results.csv.")
     p.add_argument("--force", action="store_true", help="Force export even if cached outputs exist.")
     return p.parse_args()
 
@@ -438,6 +537,12 @@ def main() -> None:
 
     hb = Heartbeat(every_s=float(args.heartbeat_s), prefix="[progress]")
 
+    boundary_enrichment_in = (root / str(args.boundary_enrichment_jsonl)).resolve()
+    boundary_enrichment_enabled = (not args.no_boundary_enrichment) and boundary_enrichment_in.exists()
+
+    refseq_cand_in = (root / str(args.refseq_stop_candidates_jsonl)).resolve()
+    refseq_cand_enabled = (not args.no_refseq_stop_candidates) and refseq_cand_in.exists()
+
     # ---- Cache short-circuit (export-level) ----
     cache_file = out_dir / "_export_supabase_tables_cache.json"
     cache_key = {
@@ -448,12 +553,16 @@ def main() -> None:
             "refseq_summary_json": _fingerprint_file((root / str(args.refseq_summary_json)).resolve()),
             "panel_summary_json": _fingerprint_file((root / str(args.panel_summary_json)).resolve()),
             "nonstandard_seqtests_json": _fingerprint_file((root / str(args.nonstandard_seqtests_json)).resolve()),
+            "boundary_enrichment_jsonl": _fingerprint_file((root / str(args.boundary_enrichment_jsonl)).resolve()),
+            "refseq_stop_candidates_jsonl": _fingerprint_file((root / str(args.refseq_stop_candidates_jsonl)).resolve()),
         },
         "flags": {
             "no_recoding": bool(args.no_recoding),
             "no_refseq": bool(args.no_refseq),
+            "refseq_cand_enabled": bool(refseq_cand_enabled),
             "no_panel": bool(args.no_panel),
             "no_nonstandard": bool(args.no_nonstandard),
+            "boundary_enrichment_enabled": bool(boundary_enrichment_enabled),
             "refseq_dataset": str(args.refseq_dataset),
         },
     }
@@ -464,10 +573,14 @@ def main() -> None:
         expected_outputs.append(out_dir / "recoding_sites.csv")
     if not args.no_refseq:
         expected_outputs.append(out_dir / "refseq_stop_context_comp_results.csv")
+    if refseq_cand_enabled:
+        expected_outputs.append(out_dir / "refseq_stop_context_candidates.csv")
     if not args.no_panel:
         expected_outputs.append(out_dir / "corpus_panel_items.csv")
     if not args.no_nonstandard:
         expected_outputs.append(out_dir / "nonstandard_sequence_tests_items.csv")
+    if boundary_enrichment_enabled:
+        expected_outputs.append(out_dir / "boundary_enrichment_results.csv")
 
     if (
         (not args.force)
@@ -490,6 +603,12 @@ def main() -> None:
             out_csv=out_dir / "refseq_stop_context_comp_results.csv",
             dataset=str(args.refseq_dataset),
         )
+    if refseq_cand_enabled:
+        export_refseq_stop_context_candidates(
+            in_jsonl=refseq_cand_in,
+            out_csv=out_dir / "refseq_stop_context_candidates.csv",
+            heartbeat=hb,
+        )
     if not args.no_panel:
         export_corpus_panel_items(
             in_panel_json=(root / str(args.panel_summary_json)).resolve(),
@@ -499,6 +618,12 @@ def main() -> None:
         export_nonstandard_sequence_tests_items(
             in_json=(root / str(args.nonstandard_seqtests_json)).resolve(),
             out_csv=out_dir / "nonstandard_sequence_tests_items.csv",
+        )
+    if boundary_enrichment_enabled:
+        export_boundary_enrichment_results(
+            in_jsonl=boundary_enrichment_in,
+            out_csv=out_dir / "boundary_enrichment_results.csv",
+            heartbeat=hb,
         )
 
     write_json_atomic(cache_file, {"ok": True})

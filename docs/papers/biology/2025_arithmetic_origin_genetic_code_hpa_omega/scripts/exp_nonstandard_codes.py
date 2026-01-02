@@ -192,6 +192,7 @@ def main() -> None:
     p = argparse.ArgumentParser(description="Nonstandard code scan (NCBI gc.prt)")
     p.add_argument("--out-rows", default=str(generated_dir() / "nonstandard_code_rows.tex"))
     p.add_argument("--out-summary", default=str(generated_dir() / "nonstandard_code_summary.tex"))
+    p.add_argument("--out-json", default=str(data_root() / "nonstandard_codes_summary.json"))
     p.add_argument("--force", action="store_true", help="Force recomputation even if cached outputs exist.")
     args = p.parse_args()
 
@@ -216,6 +217,7 @@ def main() -> None:
 
     out_rows = Path(args.out_rows)
     out_summary = Path(args.out_summary)
+    out_json = Path(args.out_json)
     cache_file = data_root() / "_cache" / f"nonstandard_codes_v{int(ANALYSIS_VERSION)}.json"
     cache_key = {
         "analysis": "nonstandard_codes",
@@ -224,6 +226,7 @@ def main() -> None:
         "gc_prt": gc_sha,
         "out_rows": str(out_rows),
         "out_summary": str(out_summary),
+        "out_json": str(out_json),
     }
     cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
 
@@ -231,6 +234,7 @@ def main() -> None:
         (not args.force)
         and out_rows.exists()
         and out_summary.exists()
+        and out_json.exists()
         and cache_hit(cache_file, expected_meta=cache_meta, require_meta=True)
     ):
         print(f"[cache] hit: {cache_file}")
@@ -245,14 +249,25 @@ def main() -> None:
     rows = []
     max_stop_boundary = -1
     max_ids: list[int] = []
+    json_items: list[dict[str, object]] = []
 
     for t in tables:
         codons = codons_for_table(t)
         stops = [codons[i] for i, aa in enumerate(t.ncbieaa) if aa == "*"]
         starts = [codons[i] for i, aa in enumerate(t.sncbieaa) if aa.upper() == "M"]
 
-        stop_boundary = [c for c in stops if fold_codon(c, MU_STAR).w in BOUNDARY_WORDS]
-        start_boundary = [c for c in starts if fold_codon(c, MU_STAR).w in BOUNDARY_WORDS]
+        stop_boundary_details = []
+        for c in stops:
+            w = fold_codon(c, MU_STAR).w
+            if w in BOUNDARY_WORDS:
+                stop_boundary_details.append({"codon": c, "w": w})
+        start_boundary_details = []
+        for c in starts:
+            w = fold_codon(c, MU_STAR).w
+            if w in BOUNDARY_WORDS:
+                start_boundary_details.append({"codon": c, "w": w})
+        stop_boundary = [d["codon"] for d in stop_boundary_details]
+        start_boundary = [d["codon"] for d in start_boundary_details]
 
         if len(stop_boundary) > max_stop_boundary:
             max_stop_boundary = len(stop_boundary)
@@ -262,8 +277,8 @@ def main() -> None:
 
         stop_str = ", ".join(stops) if stops else "-"
         start_str = ", ".join(starts) if starts else "-"
-        stop_b_str = ", ".join(stop_boundary) if stop_boundary else "-"
-        start_b_str = ", ".join(start_boundary) if start_boundary else "-"
+        stop_b_str = ", ".join(f"{d['codon']}({d['w']})" for d in stop_boundary_details) if stop_boundary_details else "-"
+        start_b_str = ", ".join(f"{d['codon']}({d['w']})" for d in start_boundary_details) if start_boundary_details else "-"
 
         # Keep name short to avoid overfull boxes in tables.
         name = t.primary_name()
@@ -273,6 +288,16 @@ def main() -> None:
         rows.append(
             f"{t.code_id} & {name} & {len(stops)} & {stop_str} & {len(stop_boundary)} & {stop_b_str} & "
             f"{len(starts)} & {start_str} & {len(start_boundary)} & {start_b_str} \\\\"
+        )
+        json_items.append(
+            {
+                "code_id": int(t.code_id),
+                "name": t.primary_name(),
+                "stops": stops,
+                "starts": starts,
+                "stop_boundary": stop_boundary_details,
+                "start_boundary": start_boundary_details,
+            }
         )
 
     write_text(Path(args.out_rows), "\n".join(rows) + "\n\\bottomrule\n")
@@ -285,11 +310,27 @@ def main() -> None:
     )
     write_text(Path(args.out_summary), "\n".join(summary) + "\n")
 
+    out_json.parent.mkdir(parents=True, exist_ok=True)
+    write_json_atomic(
+        out_json,
+        {
+            "schema_version": 1,
+            "analysis_version": int(ANALYSIS_VERSION),
+            "mu_star": MU_STAR,
+            "gc_prt": gc_sha,
+            "n_tables": int(len(tables)),
+            "max_stop_boundary": int(max_stop_boundary),
+            "max_ids": [int(x) for x in sorted(max_ids)],
+            "items": json_items,
+        },
+    )
+
     cache_file.parent.mkdir(parents=True, exist_ok=True)
     write_json_atomic(cache_file, {"ok": True})
     write_json_atomic(cache_meta_path(cache_file), cache_meta)
 
     print("Wrote LaTeX fragments into:", generated_dir())
+    print("Wrote:", out_json)
 
 
 if __name__ == "__main__":
