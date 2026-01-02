@@ -7,6 +7,8 @@ This script produces *auditable* "look-elsewhere" context for several closures:
   - electroweak alpha^{-1}(mu_Z) ~ n*pi^2 and sin^2(theta_W) ~ p/q
   - CKM Jarlskog rigidity J ~ 1/(a*pi^n)
   - CKM magnitude closure (m,k23,k13) at B=20
+  - PMNS mixing-sine closure (p12/q12, p23/q23, k13) at B=20
+  - PMNS Dirac-phase closure delta = (k*pi)/q at Q=12 (bounded denominator, sign/quadrant anchored)
   - Mass-depth rigidity (a,b,c) at B=20
 
 We summarize, for each closure:
@@ -16,7 +18,7 @@ We summarize, for each closure:
   - counts of candidates within two fixed mismatch thresholds (<=1%, <=5%)
 
 We also report E_inf distribution quantiles for the two large-domain closures
-(CKM magnitudes and mass-depth rigidity) at B=20.
+(CKM magnitudes, PMNS sines, and mass-depth rigidity) at B=20.
 
 Outputs (LaTeX fragments):
   - sections/generated/audit_closure_metrics_rows.tex
@@ -34,6 +36,9 @@ from typing import Iterable, List, Optional, Tuple
 
 import exp_ckm_mixing_depth_rigidity as ckm
 import exp_mass_depth_rigidity as mdr
+import exp_pmns_matrix_closure as pmns_mat
+import exp_pmns_mixing_depth_rigidity as pmns
+from common_constants import PMNS_DELTA_REF_DEG, PMNS_SIN2_T12_REF, PMNS_SIN2_T13_REF, PMNS_SIN2_T23_REF
 
 
 PHI = (1.0 + math.sqrt(5.0)) / 2.0
@@ -257,6 +262,107 @@ def audit_ckm_magnitudes_B20() -> Tuple[MetricRow, List[float]]:
     )
 
 
+def audit_pmns_sines_B20() -> Tuple[MetricRow, List[float]]:
+    # Reference targets (sines of angles), consistent with exp_pmns_mixing_depth_rigidity.py.
+    s12_ref = math.sqrt(PMNS_SIN2_T12_REF)
+    s23_ref = math.sqrt(PMNS_SIN2_T23_REF)
+    s13_ref = math.sqrt(PMNS_SIN2_T13_REF)
+
+    B = 20
+    k_max = 2 * B
+    cand12 = pmns.rational_sine_candidates(B)
+    cand23 = pmns.rational_sine_candidates(B)
+
+    e_list: List[float] = []
+    cand: List[Tuple[Tuple, float]] = []
+    for p12, q12, s12 in cand12:
+        for p23, q23, s23 in cand23:
+            for k13 in range(1, k_max + 1):
+                maxe, sume = pmns.triple_objective(s12, s23, k13, s12_ref, s23_ref, s13_ref)
+                comp1 = q12 + q23 + k13
+                comp2 = p12 + p23
+                # Tie-break compatible with exp_pmns_mixing_depth_rigidity.py.
+                key = (maxe, sume, comp1, comp2, q12, p12, q23, p23, k13)
+                cand.append((key, maxe))
+                e_list.append(maxe)
+
+    best_key, best_e, _second_key, second_e = _best_two_by_key(cand)
+    _maxe, _sume, _c1, _c2, q12, p12, q23, p23, k13 = best_key
+    best_params_tex = rf"$(p_{{12}}/q_{{12}},p_{{23}}/q_{{23}},k_{{13}})=({p12}/{q12},{p23}/{q23},{k13})$"
+    return (
+        MetricRow(
+            name=r"PMNS sines",
+            family_tex=r"$s_{12}{=}\sqrt{p_{12}/q_{12}},\ s_{23}{=}\sqrt{p_{23}/q_{23}},\ s_{13}{=}\varphi^{-k_{13}/2}$",
+            domain_size=len(e_list),
+            best_params_tex=best_params_tex,
+            best_e=best_e,
+            second_e=second_e,
+            count_le_001=sum(1 for e in e_list if e <= 0.01),
+            count_le_005=sum(1 for e in e_list if e <= 0.05),
+        ),
+        e_list,
+    )
+
+
+def _sgn(x: float) -> int:
+    if x > 0.0:
+        return 1
+    if x < 0.0:
+        return -1
+    return 0
+
+
+def audit_pmns_delta_Q12() -> MetricRow:
+    """
+    Audit the bounded-denominator delta-closure used in exp_pmns_matrix_closure.py.
+    We treat the CP-odd sign and quadrant anchors as constraints and measure mismatch
+    by eJ := |log(|J_pred|/|J_ref|)|.
+    """
+    # Reference reconstruction (global-fit style inputs).
+    s12_ref = math.sqrt(PMNS_SIN2_T12_REF)
+    s23_ref = math.sqrt(PMNS_SIN2_T23_REF)
+    s13_ref = math.sqrt(PMNS_SIN2_T13_REF)
+    delta_ref = float(PMNS_DELTA_REF_DEG) * math.pi / 180.0
+    cos_ref_sign = _sgn(math.cos(delta_ref))
+    J_ref = pmns_mat.J_from_angles(s12_ref, s23_ref, s13_ref, delta_ref)
+
+    # Closed predicted angles from the PMNS sines closure at B=20.
+    best20 = pmns.best_triple_at_B(B=20, s12_ref=s12_ref, s23_ref=s23_ref, s13_ref=s13_ref)
+    s12_pred = math.sqrt(float(best20.p12) / float(best20.q12))
+    s23_pred = math.sqrt(float(best20.p23) / float(best20.q23))
+    s13_pred = PHI ** (-0.5 * float(best20.k13))
+
+    Q = 12
+    cands = pmns_mat.delta_candidates_bounded_denominator(Q)
+
+    e_list: List[float] = []
+    cand: List[Tuple[Tuple, float]] = []
+    for c in cands:
+        Jp = pmns_mat.J_from_angles(s12_pred, s23_pred, s13_pred, c.delta)
+        if _sgn(Jp) != _sgn(J_ref):
+            continue
+        if _sgn(math.cos(c.delta)) != cos_ref_sign:
+            continue
+        eJ = abs_log_ratio(abs(Jp), abs(J_ref)) if (Jp != 0.0 and J_ref != 0.0) else float("inf")
+        key = (eJ, c.q, c.k)
+        cand.append((key, eJ))
+        e_list.append(eJ)
+
+    best_key, best_e, _second_key, second_e = _best_two_by_key(cand)
+    _eJ, q, k = best_key
+    best_params_tex = rf"$\delta={k}\pi/{q}$"
+    return MetricRow(
+        name=r"PMNS $\delta$",
+        family_tex=r"$\delta=k\pi/q,\ 1\le q\le 12$",
+        domain_size=len(cands),
+        best_params_tex=best_params_tex,
+        best_e=best_e,
+        second_e=second_e,
+        count_le_001=sum(1 for e in e_list if e <= 0.01),
+        count_le_005=sum(1 for e in e_list if e <= 0.05),
+    )
+
+
 def audit_mass_depth_B20() -> Tuple[MetricRow, List[float]]:
     # Reproduce the candidate enumeration domain used in exp_mass_depth_rigidity.py at B=20,
     # but compute the primary objective as a log-mismatch on the {mu, tau} anchors.
@@ -379,6 +485,10 @@ def main() -> None:
     ckm_row, ckm_e = audit_ckm_magnitudes_B20()
     rows.append(ckm_row)
 
+    pmns_row, pmns_e = audit_pmns_sines_B20()
+    rows.append(pmns_row)
+    rows.append(audit_pmns_delta_Q12())
+
     md_row, md_e = audit_mass_depth_B20()
     rows.append(md_row)
 
@@ -386,6 +496,7 @@ def main() -> None:
         rows=rows,
         quantiles=[
             (r"CKM magnitudes ($B=20$)", ckm_e),
+            (r"PMNS sines ($B=20$)", pmns_e),
             (r"mass depth ($B=20$)", md_e),
         ],
     )

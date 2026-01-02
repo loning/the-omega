@@ -113,11 +113,36 @@ The explicit boundary words are obtained by finite enumeration (Appendix~\ref{ap
 \label{subsec:e_channel}
 
 The $\e$-channel expresses analytic stability through zeta functions and Abel normalization \cite{ArtinMazur1965,ParryPollicott1990,Ruelle1978}.
-For the golden mean shift, the Artin--Mazur zeta function admits the classical rational form
+For shifts of finite type with transition matrix $A$, the Artin--Mazur zeta function admits the standard rational form $\zeta(z)=1/\det(I-zA)$ \cite{ParryPollicott1990,LindMarcus1995,Ruelle1978}.
+For the golden mean shift, one can make $A$ explicit:
+\begin{lemma}[Golden mean shift: transition matrix and zeta]\label{lem:golden_zeta_matrix}
+Let $X\subset\{0,1\}^{\mathbb{Z}}$ be the shift of finite type defined by the forbidden word $11$.
+With state space $\{0,1\}$ and allowed transitions $0\to 0$, $0\to 1$, $1\to 0$, the transition matrix is
+\[
+A=\begin{pmatrix}
+1 & 1\\
+1 & 0
+\end{pmatrix}.
+\]
+Consequently,
 \begin{equation}\label{eq:golden_zeta}
-\zeta(z)=\frac{1}{\det(I-zA)}=\frac{1}{1-z-z^2},
+\zeta(z)=\frac{1}{\det(I-zA)}=\frac{1}{1-z-z^2}.
 \end{equation}
-where $A$ is the $2\times 2$ transition matrix of the shift of finite type.
+\end{lemma}
+\begin{proof}
+The transition rule encodes the forbidden substring ``11'', hence the stated adjacency matrix.
+Then
+\[
+I-zA=
+\begin{pmatrix}
+1-z & -z\\
+-z & 1
+\end{pmatrix},
+\qquad
+\det(I-zA)=(1-z)\cdot 1 - z^2=1-z-z^2,
+\]
+which gives \eqref{eq:golden_zeta}.
+\end{proof}
 Let $\varphi$ be the golden ratio and apply spectral normalization $z=r/\varphi$.
 Then
 \begin{equation}\label{eq:abel_normalized_zeta}
@@ -153,8 +178,33 @@ V(w):=\sum_{k=1}^{6} w_k F_{k+1}
 The map $V:X_6\to\{0,1,\dots,20\}$ is a bijection.
 \end{proposition}
 \begin{proof}
-Every integer $0\le M\le 20$ admits a unique Zeckendorf expansion using Fibonacci weights up to $F_7=13$, hence yields a unique digit word $(w_1,\dots,w_6)\in X_6$ with value $M$.
-Conversely, every admissible word $w\in X_6$ produces an integer $V(w)\le 1+3+8+13=25$, and the explicit table in Appendix~\ref{app:fold6_full_table} shows that the $21$ values realized are exactly $\{0,\dots,20\}$.
+By Zeckendorf's theorem \cite{Zeckendorf1972}, every integer $M\in\NN$ admits a unique expansion
+\[
+M=\sum_{k\ge 1} c_k F_{k+1},\qquad c_k\in\{0,1\},\qquad c_kc_{k+1}=0.
+\]
+For $0\le M\le 20$, this expansion uses no Fibonacci weight beyond $F_7=13$, hence the digit vector $(c_1,\dots,c_6)$ is well-defined and belongs to $X_6$, and satisfies $V(c_1\cdots c_6)=M$.
+This proves that $V$ is surjective onto $\{0,1,\dots,20\}$.
+
+For the range bound, if $w\in X_6$ has no adjacent ones, then the maximal value of $V(w)$ is attained by the alternating pattern $w=010101$, giving
+\[
+V(010101)=2+5+13=20,
+\]
+so indeed $V(X_6)\subset\{0,1,\dots,20\}$.
+Finally, the Zeckendorf expansion is unique, so the digit vector (and therefore the word in $X_6$) realizing a given $M$ is unique, hence $V$ is injective.
+\end{proof}
+
+\begin{lemma}[Surjectivity of $\mathrm{Fold}_6$]\label{lem:fold6_surjective}
+For every stable word $w\in X_6$, one has
+\[
+\mathrm{Fold}_6\!\bigl(V(w)\bigr)=w.
+\]
+In particular, $\mathrm{Fold}_6:\{0,\dots,63\}\twoheadrightarrow X_6$ is surjective.
+\end{lemma}
+\begin{proof}
+Fix $w=w_1\cdots w_6\in X_6$ and set $M:=V(w)$.
+By Proposition~\ref{prop:V_bijection}, $0\le M\le 20<21=F_8$, so the Zeckendorf expansion of $M$ uses only Fibonacci weights up to $F_7=13$ and has zero digits beyond $c_6$.
+Moreover, by construction of $V(w)$, the digit vector $(c_1,\dots,c_6)$ of this Zeckendorf expansion equals $(w_1,\dots,w_6)$.
+Therefore, by the definition \eqref{eq:fold6_def}, $\mathrm{Fold}_6(M)=(c_1,\dots,c_6)=w$.
 \end{proof}
 
 \begin{theorem}[Finite folding statistics at $m=6$]\label{thm:fold6_stats}
@@ -172,7 +222,8 @@ Moreover, the boundary-sector preimages are
 \]
 \end{theorem}
 \begin{proof}
-This is a finite check with closed-form characterization in \cite{Ma2025RF}; Appendix~\ref{app:generated_tables} records the full table and a reproducible script.
+Surjectivity follows from Lemma~\ref{lem:fold6_surjective}.
+The $(2,3,4)$ preimage-size restriction, the degeneracy histogram, and the explicit boundary-sector preimages are finite checks with a closed-form characterization in \cite{Ma2025RF}; Appendix~\ref{app:generated_tables} records the full table and a reproducible script.
 \end{proof}
 
 \paragraph{Degeneracy histogram.}
