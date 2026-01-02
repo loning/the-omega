@@ -505,7 +505,7 @@ def main() -> None:
         lines.append("\\renewcommand{\\arraystretch}{1.10}")
         lines.append("\\setlength{\\LTleft}{0pt}")
         lines.append("\\setlength{\\LTright}{0pt}")
-        lines.append("\\begin{longtable}{lllrlrrr}")
+        lines.append("\\begin{longtable}{lllrllrrr}")
         lines.append("\\toprule")
         lines.append("label & domain & mode & code id & codon & AA & $c_{\\mathrm{obs}}$ & $c_{\\mathrm{null}}$ & contrib \\\\")
         lines.append("\\midrule")

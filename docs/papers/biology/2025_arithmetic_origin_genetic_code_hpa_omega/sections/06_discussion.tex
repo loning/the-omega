@@ -67,6 +67,14 @@ Instead it provides an explicit quantitative signal family $(Z,U)$ that can be e
 \input{sections/generated/recoding_composition_controls}
 \input{sections/generated/recoding_terminal_stop_bias}
 
+\paragraph{Baseline dependence and scale.}
+In this dataset, the most stable separation is an upstream uplift shift: recoding sites exhibit substantially larger $\overline{U}_{\mathrm{before}}$ than CDS-deduplicated terminal stops across multiple radii $k$, while the downstream contrast is more $k$-dependent (Appendix~\ref{app:recoding_sites}).
+This motivates multi-$k$ reporting and caution against treating a single-$k$ after-window contrast as an invariant signature.
+
+\paragraph{Boundary-sector check.}
+A boundary-hit enrichment would be a distinct and stronger mechanism than an uplift shift.
+Instead, boundary-hit rates in the $k=10$ windows around Sec sites are significantly \emph{depleted} relative to the coding background in the same dataset (Appendix~\ref{app:boundary_enrichment_results}), indicating that the recoding-context signal is not reducible to boundary-sector proximity at $m=6$.
+
 \paragraph{CDS-level terminal-stop baselines and stratification.}
 Because a single CDS can contain multiple \texttt{transl\_except} sites, terminal-stop contexts are treated at CDS resolution: each CDS contributes at most one terminal-stop window to the reference distribution.
 We also report codon- and domain-stratified tests to make explicit which subsets drive the aggregate signal; in the present dataset, recoding is dominated by $\mathrm{UGA}$/Sec events and non-eukaryotic strata are small.
@@ -74,8 +82,9 @@ We also report codon- and domain-stratified tests to make explicit which subsets
 \paragraph{Within-CDS controls.}
 In coding regions, the stop codons $\mathrm{UGA}$ and $\mathrm{UAG}$ are normally forbidden as internal codons; thus an internal same-codon control (Control-B) is typically unavailable once \texttt{transl\_except} sites are excluded.
 Instead we compare each recoding site to random internal non-stop codon positions from the same CDS (Control-C), which provides a within-gene baseline for uplift-context windows.
-The resulting signal persists under this within-CDS control, indicating that the effect is not explained solely by between-gene variation.
-We additionally report composition-matched controls (GC and dinucleotide usage) to separate uplift differences from local base-composition effects (Appendix~\ref{app:composition_controls}).
+The resulting signal persists under this within-CDS random-internal baseline, indicating that the aggregate contrast is not explained solely by between-gene variation.
+However, composition-matched within-CDS controls can invert the direction of the comparison, showing that $U$-window statistics are strongly coupled to local GC and dinucleotide structure.
+Accordingly, we treat composition-adjusted analyses against terminal-stop baselines as the more interpretable summary for the recoding dataset (Appendix~\ref{app:composition_controls}).
 
 \subsection{Corpus-scale biases and spectrum fingerprints}
 \label{sec:corpus_biases}
@@ -88,6 +97,7 @@ Even after conditioning on amino-acid composition, the empirical coding-token av
 This does not by itself identify a mechanistic driver (e.g.\ mutational biases, translation kinetics, or selection on RNA structure), but it establishes that the folding-derived spectra are not statistically inert in a large human coding corpus.
 The same null-model deviations also appear across the cross-domain corpus panel, indicating that the effect is not unique to human RefSeq (Appendix~\ref{app:corpus_panel}).
 In the code-1 eukaryotic strata, the $\overline{U}$ deviation is dominated by a small set of amino-acid groups (notably Leu/Arg/Ser) under the same null (Appendix~\ref{app:corpus_panel}).
+Across the full panel, the sign of the $\overline{U}$ deviation is not uniform in Archaea/Bacteria, consistent with domain-specific constraints acting on synonymous choices.
 
 \paragraph{A compact spectrum fingerprint is available at the ORF level.}
 The per-ORF boundary rate, entropy of $Z$, and lag-1 autocorrelation provide a minimal feature vector that can be extracted from any genome without parameter fitting.
@@ -96,7 +106,8 @@ At least in human RefSeq mRNA, the lag-1 autocorrelation concentrates near zero;
 
 \paragraph{Cross-domain replication targets.}
 To avoid over-interpreting any single corpus, we also report a cross-domain corpus panel (Eukaryota/Bacteria/Archaea) with matched summaries under $\mu^\ast$, including start-context windows and stop-context effect sizes across datasets (Appendix~\ref{app:corpus_panel}).
-To summarize stability across datasets within each domain, we additionally report a fixed-effect meta-analysis of stop-context differences at $k=10$ (Appendix~\ref{app:corpus_panel}).
+To summarize stability across datasets within each domain, we additionally report fixed-effect meta-analyses of stop-context differences at $k=10$ and across multiple $k$ values (Appendix~\ref{app:corpus_panel}).
+In the current small panel, the fixed-effect summaries suggest that after-window contrasts in the code-1 eukaryotic strata are more stable across $k$ than the corresponding before-window contrasts, while archaeal and bacterial estimates are presently limited by the small number of items per domain.
 
 \subsection{Resolution upgrade and context}
 \label{sec:resolution_upgrade}
