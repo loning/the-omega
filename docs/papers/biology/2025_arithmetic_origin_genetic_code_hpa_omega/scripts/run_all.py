@@ -227,6 +227,62 @@ def main() -> None:
     ]
     run(rec_disc_m_cmd, cwd=cwd)
     run([py, "scripts/exp_recoding_discrimination_foldm_stability.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run(
+        [
+            py,
+            "scripts/exp_recoding_controlc_foldm_stratified.py",
+            "--analysis-version",
+            str(int(RECODING_ANALYSIS_VERSION)),
+            "--k",
+            str(int(args.recoding_k)),
+            "--m-list",
+            "6,7,8",
+            "--min-n",
+            "40",
+            *(["--force"] if args.force else []),
+        ],
+        cwd=cwd,
+    )
+    run(
+        [
+            py,
+            "scripts/exp_recoding_controlc_foldm_gc_coupling.py",
+            "--analysis-version",
+            str(int(RECODING_ANALYSIS_VERSION)),
+            "--k",
+            str(int(args.recoding_k)),
+            "--m-list",
+            "6,7,8",
+            "--min-n",
+            "200",
+            *(["--force"] if args.force else []),
+        ],
+        cwd=cwd,
+    )
+    run(
+        [
+            py,
+            "scripts/exp_recoding_controlc_foldm_codon_decomp.py",
+            "--analysis-version",
+            str(int(RECODING_ANALYSIS_VERSION)),
+            "--k",
+            str(int(args.recoding_k)),
+            "--aa",
+            "Sec",
+            "--codon-rna",
+            "UGA",
+            "--domain",
+            "Eukaryota",
+            "--m-list",
+            "6,7,8",
+            "--min-n",
+            "200",
+            "--top-n",
+            "12",
+            *(["--force"] if args.force else []),
+        ],
+        cwd=cwd,
+    )
 
     # 5) RefSeq transcriptome scan (sharded) + merge
     if refseq_quick:
