@@ -98,7 +98,13 @@ def _fmt_p_tex(p: float | None) -> tuple[str, str]:
     if p0 == 0.0:
         return "<", "10^{-300}"
     if p0 < 1e-4:
-        return "=", f"{p0:.2e}"
+        s = f"{p0:.2e}"
+        mant, exp = s.split("e", 1)
+        try:
+            exp_i = int(exp)
+        except Exception:
+            exp_i = int(float(exp))
+        return "=", f"{mant}\\times 10^{{{exp_i}}}"
     return "=", f"{p0:.4f}"
 
 
@@ -2956,10 +2962,11 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
                 se_diff = math.sqrt(p1 * (1.0 - p1) / float(n_term) + p2 * (1.0 - p2) / float(n2)) if (n_term > 0 and n2 > 0) else 0.0
                 ci_low = (p1 - p2) - 1.96 * se_diff
                 ci_high = (p1 - p2) + 1.96 * se_diff
+                op_p, p_s = _fmt_p_tex(float(pz))
                 bias_lines.append(
                     f"Compared to human RefSeq terminal stops (baseline $n={n2}$, UAA rate {p2:.4f}), "
                     f"recoding-CDS UAA rate {p1:.4f} differs by {p1 - p2:+.4f} "
-                    f"(CI$_{{95\\%}}$=[{ci_low:.4f},{ci_high:.4f}], $z={z:.2f}$, $p={pz:.4g}$)."
+                    f"(CI$_{{95\\%}}$=[{ci_low:.4f},{ci_high:.4f}], $z={z:.2f}$, $p{op_p}{p_s}$)."
                 )
         except Exception:
             bias_lines.append("Human RefSeq baseline comparison was skipped (failed to read transcriptome_summary.json).")

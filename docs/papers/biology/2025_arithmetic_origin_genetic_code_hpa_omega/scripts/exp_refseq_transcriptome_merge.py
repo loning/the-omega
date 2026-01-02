@@ -108,8 +108,62 @@ def _fmt_p_tex(p: float | None) -> tuple[str, str]:
     if p0 == 0.0:
         return "<", "10^{-300}"
     if p0 < 1e-4:
-        return "=", f"{p0:.2e}"
+        s = f"{p0:.2e}"
+        mant, exp = s.split("e", 1)
+        try:
+            exp_i = int(exp)
+        except Exception:
+            exp_i = int(float(exp))
+        return "=", f"{mant}\\times 10^{{{exp_i}}}"
     return "=", f"{p0:.4f}"
+
+
+def _logspace(lo: float, hi: float, n: int) -> list[float]:
+    if n <= 1:
+        return [float(lo)]
+    lo0 = float(lo)
+    hi0 = float(hi)
+    if lo0 <= 0 or hi0 <= 0:
+        raise ValueError("logspace bounds must be positive")
+    a = math.log(lo0)
+    b = math.log(hi0)
+    out = []
+    for i in range(int(n)):
+        t = i / float(int(n) - 1)
+        out.append(math.exp(a + (b - a) * t))
+    return out
+
+
+def _fit_saturating_exp(ks: list[int], ys: list[float]) -> dict[str, float] | None:
+    """
+    Fit D(k) = D_inf - A * exp(-k/kappa) by least squares.
+    Uses a grid search over kappa and closed-form linear regression for (D_inf, A) at fixed kappa.
+    Returns dict with keys: n, d_inf, kappa, r2 (plus sse).
+    """
+    if len(ks) != len(ys) or len(ks) < 3:
+        return None
+    xs_k = [float(k) for k in ks]
+    y = [float(v) for v in ys]
+    n = len(y)
+    y_mean = sum(y) / float(n)
+    sst = sum((v - y_mean) ** 2 for v in y)
+    best: dict[str, float] | None = None
+
+    for kappa in _logspace(0.5, 200.0, 240):
+        x = [math.exp(-k / float(kappa)) for k in xs_k]
+        x_mean = sum(x) / float(n)
+        var_x = sum((u - x_mean) ** 2 for u in x)
+        if var_x <= 0:
+            continue
+        cov_xy = sum((u - x_mean) * (v - y_mean) for u, v in zip(x, y))
+        b = cov_xy / var_x  # slope in y = a + b x
+        a = y_mean - b * x_mean  # intercept, equals D_inf
+        sse = sum((v - (a + b * u)) ** 2 for u, v in zip(x, y))
+        r2 = 1.0 - (sse / sst) if sst > 0 else 1.0
+        if best is None or sse < best["sse"]:
+            best = {"n": float(n), "d_inf": float(a), "kappa": float(kappa), "r2": float(r2), "sse": float(sse)}
+
+    return best
 
 
 def _write_tsv(path: Path, header: list[str], rows: list[list[object]]) -> None:
@@ -696,16 +750,18 @@ def _emit_outputs_from_summary(summary: dict[str, object]) -> None:
         write_text(generated_dir() / "refseq_stop_context_candidates_stats.tex", "Stop-context candidate sets unavailable.\n")
         write_text(generated_dir() / "refseq_stop_context_candidates_matched_stats.tex", "Stop-context candidate sets unavailable.\n")
 
+    op_pz, pz_s = _fmt_p_tex(float(null.get("p_zbar", float("nan"))))
+    op_pu, pu_s = _fmt_p_tex(float(null.get("p_ubar", float("nan"))))
     null_s = (
         "Codon-usage summary over coding tokens (excluding terminal stops): "
         f"$\\overline{{Z}}={zbar:.4f}$, $\\overline{{U}}={ubar:.4f}$. "
         "Under an amino-acid preserving null (uniform choice among synonymous codons), "
         f"$\\mathbb{{E}}[\\overline{{Z}}]={float(null.get('null_mu_zbar', float('nan'))):.4f}$ with "
         f"$\\mathrm{{sd}}={float(null.get('null_sd_zbar', float('nan'))):.6f}$ "
-        f"($z={float(null.get('z_zbar', float('nan'))):.2f}$, $p={float(null.get('p_zbar', float('nan'))):.4g}$), and "
+        f"($z={float(null.get('z_zbar', float('nan'))):.2f}$, $p{op_pz}{pz_s}$), and "
         f"$\\mathbb{{E}}[\\overline{{U}}]={float(null.get('null_mu_ubar', float('nan'))):.4f}$ with "
         f"$\\mathrm{{sd}}={float(null.get('null_sd_ubar', float('nan'))):.6f}$ "
-        f"($z={float(null.get('z_ubar', float('nan'))):.2f}$, $p={float(null.get('p_ubar', float('nan'))):.4g}$)."
+        f"($z={float(null.get('z_ubar', float('nan'))):.2f}$, $p{op_pu}{pu_s}$)."
     )
     write_text(generated_dir() / "refseq_codon_usage_null.tex", null_s + "\n")
 
@@ -845,6 +901,44 @@ def _emit_outputs_from_summary(summary: dict[str, object]) -> None:
     eff_lines.append("}")
     eff_lines.append("\\end{center}")
     write_text(generated_dir() / "refseq_stop_context_effects_table.tex", "\n".join(eff_lines) + "\n")
+
+    # ---- Stop-context response curve fit: D(s;k) = U_after(s;k) - U_before(s;k) ----
+    fit_rows: list[str] = []
+    fit_rows.append("\\begin{center}")
+    fit_rows.append("\\small")
+    fit_rows.append("\\setlength{\\tabcolsep}{6pt}")
+    fit_rows.append("\\renewcommand{\\arraystretch}{1.15}")
+    fit_rows.append("\\begin{tabular}{lrrrr}")
+    fit_rows.append("\\toprule")
+    fit_rows.append("stop & points & $D_{\\infty}$ & $\\kappa$ & $R^2$ \\\\")
+    fit_rows.append("\\midrule")
+
+    for s0 in STOP_CODONS:
+        ks_fit: list[int] = []
+        ys_fit: list[float] = []
+        for kk in k_list:
+            bs = before_stats_mk[str(s0)][int(kk)]
+            a_s = after_stats_mk[str(s0)][int(kk)]
+            if int(bs.n) <= 0 or int(a_s.n) <= 0:
+                continue
+            ys_fit.append(float(a_s.mean) - float(bs.mean))
+            ks_fit.append(int(kk))
+        fit = _fit_saturating_exp(ks_fit, ys_fit)
+        if fit is None:
+            fit_rows.append(f"{s0} & {len(ks_fit)} & - & - & - \\\\")
+            continue
+        fit_rows.append(
+            f"{s0} & {int(fit['n'])} & {float(fit['d_inf']):.4f} & {float(fit['kappa']):.3f} & {float(fit['r2']):.4f} \\\\"
+        )
+
+    fit_rows.append("\\bottomrule")
+    fit_rows.append("\\end{tabular}")
+    fit_rows.append("\\end{center}")
+    fit_note = (
+        "Stop-context response fit using $D(s;k)=\\overline{U}_{\\mathrm{after}}(s;k)-\\overline{U}_{\\mathrm{before}}(s;k)$ "
+        f"over $k\\in\\{{{', '.join(str(int(x)) for x in k_list)}\\}}$ (Appendix~\\ref{{app:stop_context_fit}})."
+    )
+    write_text(generated_dir() / "refseq_stop_context_response_fit.tex", fit_note + "\n" + "\n".join(fit_rows) + "\n")
 
     # ---- Composition-adjusted controls (stratified bins + NN sample cross-check) ----
     comp = summary.get("stop_context_composition")
@@ -1005,10 +1099,11 @@ def _emit_outputs_from_summary(summary: dict[str, object]) -> None:
     TOP_AA = 10
     TOP_CODON = 20
     u_lines = []
+    op_p_u, p_u_s = _fmt_p_tex(float(decomp_u.p_value))
     u_lines.append(
         "Amino-acid preserving null decomposition for $\\overline{U}$ (coding tokens, excluding terminal stops). "
         f"Observed $\\overline{{U}}={decomp_u.obs_mean:.4f}$ vs null $\\mathbb{{E}}[\\overline{{U}}]={decomp_u.null_mean:.4f}$ "
-        f"($\\mathrm{{sd}}={decomp_u.null_sd:.6f}$, $z={decomp_u.z_score:.2f}$, $p={decomp_u.p_value:.4g}$)."
+        f"($\\mathrm{{sd}}={decomp_u.null_sd:.6f}$, $z={decomp_u.z_score:.2f}$, $p{op_p_u}{p_u_s}$)."
     )
     u_lines.append("\\begin{center}")
     u_lines.append("\\scriptsize")

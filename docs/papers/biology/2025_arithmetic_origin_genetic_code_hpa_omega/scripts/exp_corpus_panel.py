@@ -1389,7 +1389,7 @@ def _emit_latex_from_summary(out: dict[str, object]) -> None:
         if math.isnan(p0):
             return "-"
         if p0 == 0.0:
-            return "0"
+            return "<1e-300"
         if p0 < 1e-4:
             return f"{p0:.2e}"
         return f"{p0:.4f}"
