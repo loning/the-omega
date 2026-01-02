@@ -1,0 +1,93 @@
+-- Fold_6 codon table under mu* (A->00, C->01, G->10, U->11).
+-- Stored as a static lookup for SQL-first analyses (e.g., codon-usage decompositions).
+
+create table if not exists public.codon_fold6_mu_star (
+  codon text primary key,
+  aa text not null,
+  bits text not null,
+  n integer not null,
+  w text not null,
+  v integer not null,
+  delta integer not null,
+  is_boundary boolean not null
+);
+
+insert into public.codon_fold6_mu_star (codon, aa, bits, n, w, v, delta, is_boundary) values
+  ('AAA','Lys','000000',0,'000000',0,0,false),
+  ('AAC','Asn','000001',1,'100000',1,0,false),
+  ('AAG','Lys','000010',2,'010000',2,0,false),
+  ('AAU','Asn','000011',3,'001000',3,0,false),
+  ('ACA','Thr','000100',4,'101000',4,0,false),
+  ('ACC','Thr','000101',5,'000100',5,0,false),
+  ('ACG','Thr','000110',6,'100100',6,0,false),
+  ('ACU','Thr','000111',7,'010100',7,0,false),
+  ('AGA','Arg','001000',8,'000010',8,0,false),
+  ('AGC','Ser','001001',9,'100010',9,0,false),
+  ('AGG','Arg','001010',10,'010010',10,0,false),
+  ('AGU','Ser','001011',11,'001010',11,0,false),
+  ('AUA','Ile','001100',12,'101010',12,0,false),
+  ('AUC','Ile','001101',13,'000001',13,0,false),
+  ('AUG','Met','001110',14,'100001',14,0,true),
+  ('AUU','Ile','001111',15,'010001',15,0,false),
+  ('CAA','Gln','010000',16,'001001',16,0,false),
+  ('CAC','His','010001',17,'101001',17,0,true),
+  ('CAG','Gln','010010',18,'000101',18,0,false),
+  ('CAU','His','010011',19,'100101',19,0,true),
+  ('CCA','Pro','010100',20,'010101',20,0,false),
+  ('CCC','Pro','010101',21,'000000',0,21,false),
+  ('CCG','Pro','010110',22,'100000',1,21,false),
+  ('CCU','Pro','010111',23,'010000',2,21,false),
+  ('CGA','Arg','011000',24,'001000',3,21,false),
+  ('CGC','Arg','011001',25,'101000',4,21,false),
+  ('CGG','Arg','011010',26,'000100',5,21,false),
+  ('CGU','Arg','011011',27,'100100',6,21,false),
+  ('CUA','Leu','011100',28,'010100',7,21,false),
+  ('CUC','Leu','011101',29,'000010',8,21,false),
+  ('CUG','Leu','011110',30,'100010',9,21,false),
+  ('CUU','Leu','011111',31,'010010',10,21,false),
+  ('GAA','Glu','100000',32,'001010',11,21,false),
+  ('GAC','Asp','100001',33,'101010',12,21,false),
+  ('GAG','Glu','100010',34,'000000',0,34,false),
+  ('GAU','Asp','100011',35,'100000',1,34,false),
+  ('GCA','Ala','100100',36,'010000',2,34,false),
+  ('GCC','Ala','100101',37,'001000',3,34,false),
+  ('GCG','Ala','100110',38,'101000',4,34,false),
+  ('GCU','Ala','100111',39,'000100',5,34,false),
+  ('GGA','Gly','101000',40,'100100',6,34,false),
+  ('GGC','Gly','101001',41,'010100',7,34,false),
+  ('GGG','Gly','101010',42,'000010',8,34,false),
+  ('GGU','Gly','101011',43,'100010',9,34,false),
+  ('GUA','Val','101100',44,'010010',10,34,false),
+  ('GUC','Val','101101',45,'001010',11,34,false),
+  ('GUG','Val','101110',46,'101010',12,34,false),
+  ('GUU','Val','101111',47,'000001',13,34,false),
+  ('UAA','Stop','110000',48,'100001',14,34,true),
+  ('UAC','Tyr','110001',49,'010001',15,34,false),
+  ('UAG','Stop','110010',50,'001001',16,34,false),
+  ('UAU','Tyr','110011',51,'101001',17,34,true),
+  ('UCA','Ser','110100',52,'000101',18,34,false),
+  ('UCC','Ser','110101',53,'100101',19,34,true),
+  ('UCG','Ser','110110',54,'010101',20,34,false),
+  ('UCU','Ser','110111',55,'000000',0,55,false),
+  ('UGA','Stop','111000',56,'100000',1,55,false),
+  ('UGC','Cys','111001',57,'010000',2,55,false),
+  ('UGG','Trp','111010',58,'001000',3,55,false),
+  ('UGU','Cys','111011',59,'101000',4,55,false),
+  ('UUA','Leu','111100',60,'000100',5,55,false),
+  ('UUC','Phe','111101',61,'100100',6,55,false),
+  ('UUG','Leu','111110',62,'010100',7,55,false),
+  ('UUU','Phe','111111',63,'000010',8,55,false)
+on conflict (codon) do update set
+  aa=excluded.aa,
+  bits=excluded.bits,
+  n=excluded.n,
+  w=excluded.w,
+  v=excluded.v,
+  delta=excluded.delta,
+  is_boundary=excluded.is_boundary;
+
+create index if not exists codon_fold6_mu_star_aa_idx on public.codon_fold6_mu_star (aa);
+create index if not exists codon_fold6_mu_star_delta_idx on public.codon_fold6_mu_star (delta);
+create index if not exists codon_fold6_mu_star_v_idx on public.codon_fold6_mu_star (v);
+
+

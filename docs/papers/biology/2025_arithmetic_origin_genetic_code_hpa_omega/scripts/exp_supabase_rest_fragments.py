@@ -195,6 +195,11 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--panel-name", default="corpus_panel_v1", help="panel name for corpus panel meta table.")
     p.add_argument("--panel-av", type=int, default=2, help="analysis_version for corpus panel meta table.")
     p.add_argument("--panel-k", type=int, default=10, help="k for corpus panel meta table.")
+    p.add_argument(
+        "--panel-k-list",
+        default="3,5,10,20",
+        help="Comma-separated k values for the corpus-panel stop-context meta multi-k table.",
+    )
     p.add_argument("--recoding-dataset", default="ncbi_recoding_genbank", help="dataset for recoding multi-k table.")
     p.add_argument("--recoding-av", type=int, default=7, help="analysis_version for recoding multi-k table.")
     p.add_argument("--heartbeat-s", type=float, default=60.0, help="Progress heartbeat interval (seconds).")
@@ -277,6 +282,254 @@ def main() -> None:
         write_json_atomic(cache_meta_path(out_meta), cache_meta)
         print("Wrote:", out_meta, f"(rows={len(rows)})")
 
+    # ---- 1b) Corpus-panel stop-context meta table (multi-k) ----
+    ks = _parse_k_list(str(args.panel_k_list))
+    out_meta_mk = generated_dir() / "corpus_panel_stop_context_meta_multi_k.tex"
+    cache_key = {
+        "analysis": "exp_supabase_rest_fragments",
+        "version": int(SCRIPT_VERSION),
+        "out": str(out_meta_mk),
+        "panel": str(args.panel_name),
+        "panel_av": int(args.panel_av),
+        "k_list": ks,
+    }
+    cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
+    if (not args.force) and cache_hit(out_meta_mk, expected_meta=cache_meta, require_meta=True):
+        print(f"[cache] hit: {out_meta_mk}")
+    else:
+        hb.force("fetching stop_context_meta_effects (multi-k)")
+        filters = {
+            "panel": f"eq.{str(args.panel_name)}",
+            "analysis_version": f"eq.{int(args.panel_av)}",
+        }
+        if ks:
+            filters["k"] = "in.(" + ",".join(str(int(k)) for k in ks) + ")"
+        rows = _get_rows(
+            supabase_url=supabase_url,
+            supabase_key=supabase_key,
+            relation="stop_context_meta_effects",
+            select="domain,window_side,k,pair,n_datasets,meta_diff,meta_se,z,p",
+            filters=filters,
+            order="domain.asc,window_side.asc,pair.asc,k.asc",
+            ssl_context=ssl_ctx,
+        )
+        hb.force(f"formatting meta multi-k table (rows={len(rows)})")
+        lines = []
+        lines.append("Fixed-effect meta-analysis of stop-context differences (by domain; multi-$k$).")
+        lines.append("")
+        lines.append("\\begingroup")
+        lines.append("\\hbadness=10000")
+        lines.append("\\scriptsize")
+        lines.append("\\setlength{\\tabcolsep}{4pt}")
+        lines.append("\\renewcommand{\\arraystretch}{1.10}")
+        lines.append("\\setlength{\\LTleft}{0pt}")
+        lines.append("\\setlength{\\LTright}{0pt}")
+        lines.append("\\begin{longtable}{lllrlrrrr}")
+        lines.append("\\toprule")
+        lines.append("domain & window & pair & $k$ & $n$ & meta diff & meta se & $z$ & $p$ \\\\")
+        lines.append("\\midrule")
+        for r in rows:
+            domain = _tex_escape(str(r.get("domain") or "-"))
+            window_side = _tex_escape(str(r.get("window_side") or "-"))
+            pair = _pair_tex(str(r.get("pair") or "-"))
+            k = _fmt_int(r.get("k"))
+            n = _fmt_int(r.get("n_datasets"))
+            meta_diff = _fmt_float(r.get("meta_diff"), nd=4)
+            meta_se = _fmt_float(r.get("meta_se"), nd=4)
+            z = _fmt_float(r.get("z"), nd=3)
+            p = _fmt_p(r.get("p"))
+            lines.append(f"{domain} & {window_side} & {pair} & {k} & {n} & {meta_diff} & {meta_se} & {z} & {p} \\\\")
+        lines.append("\\bottomrule")
+        lines.append("\\end{longtable}")
+        lines.append("\\endgroup")
+        lines.append("")
+        write_text_atomic(out_meta_mk, "\n".join(lines) + "\n")
+        write_json_atomic(cache_meta_path(out_meta_mk), cache_meta)
+        print("Wrote:", out_meta_mk, f"(rows={len(rows)})")
+
+    # ---- 1c) Corpus-panel codon-usage null summary ----
+    out_cu = generated_dir() / "corpus_panel_codon_usage_null_summary.tex"
+    cache_key = {
+        "analysis": "exp_supabase_rest_fragments",
+        "version": int(SCRIPT_VERSION),
+        "out": str(out_cu),
+        "panel": str(args.panel_name),
+        "panel_av": int(args.panel_av),
+    }
+    cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
+    if (not args.force) and cache_hit(out_cu, expected_meta=cache_meta, require_meta=True):
+        print(f"[cache] hit: {out_cu}")
+    else:
+        hb.force("fetching corpus_panel_codon_usage_null_summary")
+        rows = _get_rows(
+            supabase_url=supabase_url,
+            supabase_key=supabase_key,
+            relation="corpus_panel_codon_usage_null_summary",
+            select="label,domain,mode,code_id,total_codons,delta_zbar,z_zbar,delta_ubar,z_ubar",
+            filters={
+                "panel": f"eq.{str(args.panel_name)}",
+                "analysis_version": f"eq.{int(args.panel_av)}",
+            },
+            order="domain.asc,label.asc",
+            ssl_context=ssl_ctx,
+        )
+        hb.force(f"formatting codon-usage null table (rows={len(rows)})")
+        lines = []
+        lines.append("Codon-usage null-model deviations (amino-acid preserving) across the corpus panel.")
+        lines.append("")
+        lines.append("\\begin{center}")
+        lines.append("\\scriptsize")
+        lines.append("\\setlength{\\tabcolsep}{4pt}")
+        lines.append("\\renewcommand{\\arraystretch}{1.10}")
+        lines.append("\\resizebox{\\textwidth}{!}{%")
+        lines.append("\\begin{tabular}{lllrrrrrr}")
+        lines.append("\\toprule")
+        lines.append("label & domain & mode & code id & $n$ & $\\Delta\\overline{Z}$ & $z_Z$ & $\\Delta\\overline{U}$ & $z_U$ \\\\")
+        lines.append("\\midrule")
+        for r in rows:
+            label = _tex_escape(str(r.get("label") or "-"))
+            domain = _tex_escape(str(r.get("domain") or "-"))
+            mode = _tex_escape(str(r.get("mode") or "-"))
+            code_id = _fmt_int(r.get("code_id"))
+            n = _fmt_int(r.get("total_codons"))
+            dz = _fmt_float(r.get("delta_zbar"), nd=4)
+            zz = _fmt_float(r.get("z_zbar"), nd=2)
+            du = _fmt_float(r.get("delta_ubar"), nd=4)
+            zu = _fmt_float(r.get("z_ubar"), nd=2)
+            lines.append(f"{label} & {domain} & {mode} & {code_id} & {n} & {dz} & {zz} & {du} & {zu} \\\\")
+        lines.append("\\bottomrule")
+        lines.append("\\end{tabular}%")
+        lines.append("}")
+        lines.append("\\end{center}")
+        lines.append("")
+        write_text_atomic(out_cu, "\n".join(lines) + "\n")
+        write_json_atomic(cache_meta_path(out_cu), cache_meta)
+        print("Wrote:", out_cu, f"(rows={len(rows)})")
+
+    # ---- 1d) Corpus-panel codon-usage null decomposition for U (AA top-5, per dataset) ----
+    out_decomp_aa = generated_dir() / "corpus_panel_codon_usage_null_decomp_u_aa_top5.tex"
+    cache_key = {
+        "analysis": "exp_supabase_rest_fragments",
+        "version": int(SCRIPT_VERSION),
+        "out": str(out_decomp_aa),
+        "panel": str(args.panel_name),
+        "panel_av": int(args.panel_av),
+    }
+    cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
+    if (not args.force) and cache_hit(out_decomp_aa, expected_meta=cache_meta, require_meta=True):
+        print(f"[cache] hit: {out_decomp_aa}")
+    else:
+        hb.force("fetching corpus_panel_u_decomp_aa_top5")
+        rows = _get_rows(
+            supabase_url=supabase_url,
+            supabase_key=supabase_key,
+            relation="corpus_panel_u_decomp_aa_top5",
+            select="label,domain,mode,code_id,aa,n,obs_mean_u,null_mean_u,contrib_u",
+            filters={
+                "panel": f"eq.{str(args.panel_name)}",
+                "analysis_version": f"eq.{int(args.panel_av)}",
+            },
+            order="domain.asc,label.asc,rn.asc",
+            ssl_context=ssl_ctx,
+        )
+        hb.force(f"formatting U decomposition (AA) table (rows={len(rows)})")
+        lines = []
+        lines.append("Amino-acid preserving null decomposition for $\\overline{U}$ across the corpus panel (top-5 AA contributions per dataset; code id 1/11).")
+        lines.append("")
+        lines.append("\\begingroup")
+        lines.append("\\hbadness=10000")
+        lines.append("\\scriptsize")
+        lines.append("\\setlength{\\tabcolsep}{4pt}")
+        lines.append("\\renewcommand{\\arraystretch}{1.10}")
+        lines.append("\\setlength{\\LTleft}{0pt}")
+        lines.append("\\setlength{\\LTright}{0pt}")
+        lines.append("\\begin{longtable}{lllrlrrrr}")
+        lines.append("\\toprule")
+        lines.append("label & domain & mode & code id & AA & $n$ & $\\bar{U}_{\\mathrm{obs}}$ & $\\bar{U}_{\\mathrm{null}}$ & contrib \\\\")
+        lines.append("\\midrule")
+        for r in rows:
+            label = _tex_escape(str(r.get("label") or "-"))
+            domain = _tex_escape(str(r.get("domain") or "-"))
+            mode = _tex_escape(str(r.get("mode") or "-"))
+            code_id = _fmt_int(r.get("code_id"))
+            aa = _tex_escape(str(r.get("aa") or "-"))
+            n = _fmt_int(r.get("n"))
+            obs = _fmt_float(r.get("obs_mean_u"), nd=4)
+            nullm = _fmt_float(r.get("null_mean_u"), nd=4)
+            contrib = _fmt_float(r.get("contrib_u"), nd=5)
+            if contrib != "-" and not contrib.startswith("-"):
+                contrib = "+" + contrib
+            lines.append(f"{label} & {domain} & {mode} & {code_id} & {aa} & {n} & {obs} & {nullm} & {contrib} \\\\")
+        lines.append("\\bottomrule")
+        lines.append("\\end{longtable}")
+        lines.append("\\endgroup")
+        lines.append("")
+        write_text_atomic(out_decomp_aa, "\n".join(lines) + "\n")
+        write_json_atomic(cache_meta_path(out_decomp_aa), cache_meta)
+        print("Wrote:", out_decomp_aa, f"(rows={len(rows)})")
+
+    # ---- 1e) Corpus-panel codon-usage null decomposition for U (codon top-10, per dataset) ----
+    out_decomp_codon = generated_dir() / "corpus_panel_codon_usage_null_decomp_u_codon_top10.tex"
+    cache_key = {
+        "analysis": "exp_supabase_rest_fragments",
+        "version": int(SCRIPT_VERSION),
+        "out": str(out_decomp_codon),
+        "panel": str(args.panel_name),
+        "panel_av": int(args.panel_av),
+    }
+    cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
+    if (not args.force) and cache_hit(out_decomp_codon, expected_meta=cache_meta, require_meta=True):
+        print(f"[cache] hit: {out_decomp_codon}")
+    else:
+        hb.force("fetching corpus_panel_u_decomp_codon_top10")
+        rows = _get_rows(
+            supabase_url=supabase_url,
+            supabase_key=supabase_key,
+            relation="corpus_panel_u_decomp_codon_top10",
+            select="label,domain,mode,code_id,codon,aa,obs_count,exp_count,contrib_u",
+            filters={
+                "panel": f"eq.{str(args.panel_name)}",
+                "analysis_version": f"eq.{int(args.panel_av)}",
+            },
+            order="domain.asc,label.asc,rn.asc",
+            ssl_context=ssl_ctx,
+        )
+        hb.force(f"formatting U decomposition (codon) table (rows={len(rows)})")
+        lines = []
+        lines.append("Amino-acid preserving null decomposition for $\\overline{U}$ across the corpus panel (top-10 codon contributions per dataset; code id 1/11).")
+        lines.append("")
+        lines.append("\\begingroup")
+        lines.append("\\hbadness=10000")
+        lines.append("\\scriptsize")
+        lines.append("\\setlength{\\tabcolsep}{4pt}")
+        lines.append("\\renewcommand{\\arraystretch}{1.10}")
+        lines.append("\\setlength{\\LTleft}{0pt}")
+        lines.append("\\setlength{\\LTright}{0pt}")
+        lines.append("\\begin{longtable}{lllrlrrr}")
+        lines.append("\\toprule")
+        lines.append("label & domain & mode & code id & codon & AA & $c_{\\mathrm{obs}}$ & $c_{\\mathrm{null}}$ & contrib \\\\")
+        lines.append("\\midrule")
+        for r in rows:
+            label = _tex_escape(str(r.get("label") or "-"))
+            domain = _tex_escape(str(r.get("domain") or "-"))
+            mode = _tex_escape(str(r.get("mode") or "-"))
+            code_id = _fmt_int(r.get("code_id"))
+            codon = _tex_escape(str(r.get("codon") or "-"))
+            aa = _tex_escape(str(r.get("aa") or "-"))
+            obs = _fmt_int(r.get("obs_count"))
+            exp = _fmt_float(r.get("exp_count"), nd=1)
+            contrib = _fmt_float(r.get("contrib_u"), nd=5)
+            if contrib != "-" and not contrib.startswith("-"):
+                contrib = "+" + contrib
+            lines.append(f"{label} & {domain} & {mode} & {code_id} & {codon} & {aa} & {obs} & {exp} & {contrib} \\\\")
+        lines.append("\\bottomrule")
+        lines.append("\\end{longtable}")
+        lines.append("\\endgroup")
+        lines.append("")
+        write_text_atomic(out_decomp_codon, "\n".join(lines) + "\n")
+        write_json_atomic(cache_meta_path(out_decomp_codon), cache_meta)
+        print("Wrote:", out_decomp_codon, f"(rows={len(rows)})")
+
     # ---- 2) Recoding multi-k overall table ----
     out_rec = generated_dir() / "recoding_context_tests_multi_k.tex"
     cache_key = {
@@ -333,6 +586,22 @@ def main() -> None:
         print("Wrote:", out_rec, f"(rows={len(rows)})")
 
     hb.force("done")
+
+
+def _parse_k_list(s: str) -> list[int]:
+    ks: list[int] = []
+    for part in str(s or "").split(","):
+        t = part.strip()
+        if not t:
+            continue
+        try:
+            k = int(t)
+        except Exception:
+            continue
+        if k > 0 and k not in ks:
+            ks.append(k)
+    return ks
+
 
 
 if __name__ == "__main__":

@@ -132,6 +132,12 @@ python3 scripts/exp_supabase_refresh_derived_tables.py
 2) `python3 scripts/exp_supabase_refresh_derived_tables.py`（在 Supabase 内部执行 SQL，刷新派生表）
 3) `python3 scripts/exp_supabase_rest_fragments.py --force`（从表/视图拉取结果生成 `sections/generated/*.tex`）
 
+### Corpus panel：codon-usage null 分解（\(\overline{U}\)）
+
+项目中提供了 corpus panel 的 \(\overline{U}\) 偏差分解（AA top-5 / codon top-10），用于解释 \(\overline{U}-\mathbb{E}[\overline{U}]\) 的主要贡献来源。
+
+- 当前支持的 `code_id`：**1 / 11 / 4**（其中 **code4** 采用 NCBI 定义的特例：`UGA -> Trp`，不作为 Stop）。
+
 ### 导出 CSV
 
 - **导出**（在项目根目录 `docs/papers/biology/2025_arithmetic_origin_genetic_code_hpa_omega` 下运行）：
