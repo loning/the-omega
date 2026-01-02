@@ -178,6 +178,11 @@ closure & $|\Theta|$ & min & median & p90 & p99 & max \\
 To stress-test how stable the selected minimizers are under perturbations of the reference targets,
 we sample reference values within explicit uncertainty models and recompute the minimizer under the same tie-break rules.
 The sampling is deterministic (fixed RNG seed) and is intended as an audit-oriented robustness check.
+We use simple truncated-normal models designed to keep targets in their natural domains:
+for positive scalar targets $x^{\mathrm{ref}}>0$, we sample $x'\sim\mathcal{N}(x^{\mathrm{ref}},\sigma)$ truncated to remain positive;
+for mixing-angle targets quoted as $\sin^2\theta$, we sample $\sin^2\theta'\sim\mathcal{N}(\sin^2\theta,\sigma)$ truncated to $(0,1)$ and then use $s=\sqrt{\sin^2\theta'}$;
+and for a phase reference $\delta$ we sample $\delta'\sim\mathcal{N}(\delta,\sigma_\delta)$ truncated to $[0,360]$ degrees.
+When a standard reference uncertainty is explicitly quoted (e.g.\ PDG for $J$), we use it directly; otherwise (e.g.\ scheme-dependent electroweak quantities and matching-layer anchors) the adopted $\sigma$ values are recorded as conservative audit stress-test scales rather than as a statistical claim.
 
 \begin{table}[H]
 \centering

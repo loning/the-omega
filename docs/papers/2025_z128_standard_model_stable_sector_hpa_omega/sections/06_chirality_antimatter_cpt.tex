@@ -29,6 +29,15 @@ Parity transformation (spatial reflection) therefore corresponds to a protocol c
 \end{axiom}
 
 In this view, maximal parity violation in the weak sector is an effective statement: the weak compensation connection is defined only within the chosen protocol class, while its mirror is not available as an internal symmetry operation (it changes the readout basis).
+\begin{proposition}[A minimal parity-odd sign datum at finite resolution]\label{prop:parity_sign_datum}
+Fix a Hilbert order $n$ and any Hilbert layout within a chosen orientation class.
+Let $\chi$ be the discrete chirality index of the associated path, defined in \eqref{eq:hilbert_chi_def}.
+Then $P_{\mathrm{prot}}$ flips the sign of $\chi$ (Proposition~\ref{prop:chi_flip}), while any orientation-preserving protocol change leaves $\chi$ invariant.
+Consequently, any protocol-level observable that is a deterministic function of $\chi$ is parity-odd in the sense that it changes sign under $P_{\mathrm{prot}}$.
+\end{proposition}
+\begin{proof}
+This is immediate from Proposition~\ref{prop:chi_flip}.
+\end{proof}
 \paragraph{Why this targets the weak sector.}
 Within the three-channel template, the $\pi$-channel is the closure/topology channel, and the weak sector is the minimal non-abelian gauge sector $SU(2)$.
 If the corresponding compensation connection is implemented by protocol-local consistency rules that depend on Hilbert layout orientation, then the mirror layout is not a symmetry but a different protocol.
@@ -70,11 +79,32 @@ Then $\overline{z_n}=z'_{-n}$ for all $n\in\ZZ$.
 \begin{proof}
 This is the displayed computation.
 \end{proof}
+\begin{lemma}[Matched-window readout conjugation induces scan reversal]\label{lem:conjugation_readout_reversal}
+Let $W\subset\TT$ be a measurable readout window and write $\overline{W}:=\{\overline{z}:z\in W\}$.
+Let $(z_n)$ and $(z'_n)$ be as in Lemma~\ref{lem:conjugation_reversal}.
+Define readout sequences by
+\[
+w_n:=\ind\{z_n\in W\},\qquad
+w'_n:=\ind\{z'_n\in \overline{W}\}.
+\]
+Then $w'_n=w_{-n}$ for all $n\in\ZZ$.
+\end{lemma}
+\begin{proof}
+By Lemma~\ref{lem:conjugation_reversal}, $z'_n=\overline{z_{-n}}$.
+Therefore $z'_n\in\overline{W}$ if and only if $z_{-n}\in W$, hence $w'_n=\ind\{z_{-n}\in W\}=w_{-n}$.
+\end{proof}
 Consequently, in the rotation model the protocol operation $C_{\mathrm{prot}}$ is realized by traversal reversal together with an initial-phase flip, hence it is tied to the same discrete chirality sign datum as $T_{\mathrm{prot}}$:
 \[
 C_{\mathrm{prot}}\ \Longrightarrow\ \chi\mapsto -\chi.
 \]
-At the level of stable types, this motivates the definition of an antimatter dual $w\mapsto \overline{w}$ as the type induced by conjugate readout under matched windows.
+At the level of finite readout words, Lemma~\ref{lem:conjugation_readout_reversal} motivates a concrete antimatter dual:
+\begin{definition}[Scan-reversal dual of a finite word]\label{def:word_reversal_dual}
+For a finite binary word $w=w_1\cdots w_m$, define its scan-reversal dual by
+\[
+\overline{w}:=w_m\cdots w_1.
+\]
+\end{definition}
+If $w\in X_m$ (no adjacent ones), then $\overline{w}\in X_m$, and the $\pi$-channel boundary tag $D_\pi(w)$ is preserved under reversal.
 
 \paragraph{Massless limit heuristic.}
 In the relativistic massless limit, chirality coincides with helicity.
@@ -87,7 +117,8 @@ Under conjugation-as-reversal, a left-handed particle maps to a right-handed ant
 The scan layer is unitary and reversible by construction, so combined transformations can remain valid at the microscopic level.
 However, once a readout protocol is fixed (window choice plus Hilbert orientation class), $P$ and $T$ may no longer be symmetries within the same protocol: they change the readout basis.
 This provides a protocol-geometric route to understanding why effective theories may violate $P$ (and $CP$) while preserving $CPT$.
-\emph{Remark:} in standard local Lorentz-invariant quantum field theory under mild hypotheses, $CPT$ invariance is enforced by the $CPT$ theorem; see, e.g., \cite{StreaterWightman1989,WeinbergQFT1995}.
+\emph{Remark:} in standard local Lorentz-invariant quantum field theory under the usual assumptions (locality, a Hermitian Hamiltonian, and the spectrum condition), $CPT$ invariance is enforced by the $CPT$ theorem; see, e.g., \cite{StreaterWightman1989,WeinbergQFT1995}.
+Here we use the $CPT$ theorem only as a consistency reference point: $P_{\mathrm{prot}},T_{\mathrm{prot}},C_{\mathrm{prot}}$ are explicitly defined finite-resolution protocol operations, and no continuum-field axioms are used as premises in the folding layer.
 
 \subsection{Mirror protocols and a ``right-handed'' universe}
 \label{subsec:mirror_universe}

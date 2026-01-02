@@ -29,9 +29,18 @@ import exp_mass_depth_rigidity as mdr
 import exp_pmns_matrix_closure as pmns_mat
 import exp_pmns_mixing_depth_rigidity as pmns
 from common_constants import (
+    ALPHAZ_INV_PDG_SIGMA,
     ALPHAZ_INV_PDG,
+    ALPHA_INV_CODATA_2022_SIGMA,
     ALPHA_INV_CODATA_2022,
+    CKM_VCB_REF,
+    CKM_VCB_SIGMA,
+    CKM_VUB_REF,
+    CKM_VUB_SIGMA,
+    CKM_VUS_REF,
+    CKM_VUS_SIGMA,
     JARLSKOG_PDG_CENTRAL,
+    JARLSKOG_PDG_SIGMA,
     PMNS_DELTA_REF_DEG,
     PMNS_DELTA_SIGMA_DEG,
     PMNS_SIN2_T12_REF,
@@ -40,6 +49,7 @@ from common_constants import (
     PMNS_SIN2_T13_SIGMA,
     PMNS_SIN2_T23_REF,
     PMNS_SIN2_T23_SIGMA,
+    SIN2_THETAW_PDG_SIGMA,
     SIN2_THETAW_PDG,
 )
 
@@ -234,7 +244,7 @@ def main() -> None:
     rows: List[Row] = []
 
     # alpha_em^{-1} (CODATA-like): alpha_inv_ref ± 2.1e-8 (CODATA 2018/2022-style).
-    alpha_sigma = 2.1e-8
+    alpha_sigma = ALPHA_INV_CODATA_2022_SIGMA
     base_alpha = alpha_em_minimizer(ALPHA_INV_CODATA_2022)
     stable = 0
     for _ in range(N):
@@ -251,8 +261,8 @@ def main() -> None:
         )
     )
 
-    # alpha^{-1}(mu_Z): heuristic sigma.
-    alphaZ_sigma = 1.0e-2
+    # alpha^{-1}(mu_Z): explicit uncertainty scale for audit stress tests.
+    alphaZ_sigma = ALPHAZ_INV_PDG_SIGMA
     base_alphaZ = alphaZ_minimizer(ALPHAZ_INV_PDG)
     stable = 0
     for _ in range(N):
@@ -269,8 +279,8 @@ def main() -> None:
         )
     )
 
-    # sin^2(theta_W): heuristic sigma.
-    sin2_sigma = 3.0e-5
+    # sin^2(theta_W): explicit uncertainty scale for audit stress tests.
+    sin2_sigma = SIN2_THETAW_PDG_SIGMA
     base_sin2 = sin2_minimizer(SIN2_THETAW_PDG)
     stable = 0
     for _ in range(N):
@@ -288,7 +298,7 @@ def main() -> None:
     )
 
     # CKM J: use the paper-quoted PDG uncertainty (3.00 ± 0.15)×10^{-5}.
-    J_sigma = 0.15e-5
+    J_sigma = JARLSKOG_PDG_SIGMA
     base_J = jarlskog_minimizer(JARLSKOG_PDG_CENTRAL)
     stable = 0
     for _ in range(N):
@@ -306,9 +316,9 @@ def main() -> None:
     )
 
     # CKM magnitudes: representative sigma values.
-    vus_mu, vus_sigma = 0.2243, 5.0e-4
-    vcb_mu, vcb_sigma = 0.0422, 8.0e-4
-    vub_mu, vub_sigma = 0.00394, 3.6e-4
+    vus_mu, vus_sigma = CKM_VUS_REF, CKM_VUS_SIGMA
+    vcb_mu, vcb_sigma = CKM_VCB_REF, CKM_VCB_SIGMA
+    vub_mu, vub_sigma = CKM_VUB_REF, CKM_VUB_SIGMA
     base_ckm = ckm_magnitude_minimizer(vus_mu, vcb_mu, vub_mu)
     stable = 0
     for _ in range(N):

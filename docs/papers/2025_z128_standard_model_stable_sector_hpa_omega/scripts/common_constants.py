@@ -24,6 +24,14 @@ ALPHAZ_INV_PDG: float = 127.955
 SIN2_THETAW_PDG: float = 0.23122
 JARLSKOG_PDG_CENTRAL: float = 3.00e-5
 
+# Representative 1σ uncertainty scales used by audit scripts (explicit, deterministic stress tests).
+# When a standard uncertainty is quoted by PDG/CODATA (or representative global fits), we use it
+# directly; otherwise the audit scripts document the chosen stress-test scale.
+ALPHA_INV_CODATA_2022_SIGMA: float = 2.1e-8
+ALPHAZ_INV_PDG_SIGMA: float = 1.0e-2
+SIN2_THETAW_PDG_SIGMA: float = 3.0e-5
+JARLSKOG_PDG_SIGMA: float = 0.15e-5
+
 # Representative PMNS reference values (dimensionless).
 # These are used as *targets* for deterministic closure scripts and correspond to
 # representative global-fit central values under PDG conventions.
@@ -34,11 +42,19 @@ PMNS_SIN2_T13_REF: float = 0.0218
 # in the discrete delta-closure; see the paper for the audit separation.
 PMNS_DELTA_REF_DEG: float = 195.0
 
-# Heuristic uncertainty model parameters used by audit scripts (not a PDG claim).
+# Representative uncertainty model parameters used by audit scripts (explicit, deterministic stress tests).
 PMNS_SIN2_T12_SIGMA: float = 0.013
 PMNS_SIN2_T23_SIGMA: float = 0.021
 PMNS_SIN2_T13_SIGMA: float = 0.0007
 PMNS_DELTA_SIGMA_DEG: float = 30.0
+
+# Representative CKM magnitudes and uncertainty scales used by audit scripts (dimensionless).
+CKM_VUS_REF: float = 0.2243
+CKM_VUS_SIGMA: float = 5.0e-4
+CKM_VCB_REF: float = 0.0422
+CKM_VCB_SIGMA: float = 8.0e-4
+CKM_VUB_REF: float = 0.00394
+CKM_VUB_SIGMA: float = 3.6e-4
 
 # Electroweak reference scale (GeV), used for calibration-sweep diagnostics.
 # PDG 2024: Z pole mass.
