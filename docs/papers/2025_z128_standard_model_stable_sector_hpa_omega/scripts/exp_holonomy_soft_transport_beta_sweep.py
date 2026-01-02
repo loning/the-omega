@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Soft-transport connection: beta sweep for mixing/CP diagnostics (toy).
+Soft-transport connection: beta sweep for mixing/CP diagnostics (robustness diagnostic).
 
 The deterministic S4 edge transport uses a single minimum-cost matching between
 padded fibers. To introduce a continuous control parameter (while staying finite
@@ -107,7 +107,7 @@ def edge_unitary_soft(a: Coord, b: Coord, labels: Dict[Coord, str], pre: Dict[st
     """
     wa = labels[a]
     wb = labels[b]
-    # IMPORTANT: the original toy connection pads fibers by repeating the last element.
+    # IMPORTANT: the original sharp connection pads fibers by repeating the last element.
     # For unitary construction via Gram-Schmidt, repeated microstates create duplicate
     # columns and rank deficiency. Here we pad with distinct dummy basis tags.
 

@@ -1,9 +1,10 @@
-\section{Protocol connections and toy holonomy on the Hilbert grid}
+\section{Protocol connections and finite holonomy diagnostics on the Hilbert grid}
 \label{sec:protocol_connections_holonomy}
 
 This section records a minimal, auditable connection model that makes the slogan ``gauge fields as compensating connections'' concrete at finite resolution.
-The construction is a toy model: it is discrete, finite, and fully computable at the minimal balanced scale $(m,n)=(6,3)$.
-Its purpose is to exhibit, within the same protocol language as the rest of the paper, how nontrivial holonomy can arise when stable readout types are compared across neighboring Hilbert addresses.
+The construction is discrete, finite, and fully computable at the minimal balanced scale $(m,n)=(6,3)$.
+It is used here as a protocol-level diagnostic: every choice is explicit, every search domain is finite, and the reported fit objectives reuse the same log-mismatch norms as in Definition~\ref{def:bounded_complexity_closure}.
+No continuum limit is assumed in the computations below; any continuum interpretation is an interface hypothesis (Axiom~\ref{ax:gauge_compensation}).
 
 \subsection{Fibers under projection: stable types with finite degeneracy}
 \label{subsec:fiber_under_projection}
@@ -28,7 +29,7 @@ For each undirected nearest-neighbor grid edge $\{a,b\}$, we define a determinis
 \item Choose the minimum-cost bijection between the two length-$4$ padded fibers; this yields a permutation in $S_4$.
 \item For the reverse orientation, use the inverse permutation.
 \end{itemize}
-This produces a discrete, non-abelian toy connection on edges, designed to be auditable and fully reproducible by a finite exhaustive search over $4!$ matchings per edge.
+This produces a discrete, non-abelian edge connection on edges, designed to be auditable and fully reproducible by a finite exhaustive search over $4!$ matchings per edge.
 
 \begin{table}[t]
 \centering
@@ -64,7 +65,7 @@ quantile $q$ & min-match cost quantile \\
 \label{subsec:plaquette_holonomy}
 
 Given an $S_4$-valued edge transport rule, we define the holonomy of a unit-square plaquette by composing the four oriented edge permutations around its boundary.
-Because the connection takes values in a non-abelian group, holonomy can be nontrivial even in a finite toy model.
+Because the connection takes values in a non-abelian group, holonomy can be nontrivial even in a fully finite setting.
 We summarize holonomy values by $S_4$ cycle type.
 
 \begin{table}[t]
@@ -85,7 +86,38 @@ cycle type & count & fraction \\
 \subsection{A minimal \texorpdfstring{$SO(3)\subset SU(3)$}{SO(3) subset SU(3)} representation bridge}
 \label{subsec:holonomy_su3_bridge}
 
-To connect the discrete $S_4$ holonomy values to a continuous group action (as a skeleton for later mixing-matrix work), one can use the standard $4$-dimensional permutation representation restricted to the $3$-dimensional sum-zero subspace of $\mathbb{R}^4$, with a parity sign twist so that the image lies in $SO(3)$ (hence also in $SU(3)$ when viewed as real unitary matrices).
+To connect the discrete $S_4$ holonomy values to a continuous group action (as a skeleton for later mixing-matrix work), we use the standard permutation representation and its $3$-dimensional ``standard'' subrepresentation \cite{Serre1977}.
+Concretely, let $\rho:S_4\to O(4)$ act by permutation matrices on $\RR^4$, and let
+\[
+H:=\Bigl\{x\in\RR^4:\ \sum_{i=1}^4 x_i=0\Bigr\},
+\]
+the sum-zero subspace. Then $H$ is $\rho$-invariant and $\dim H=3$.
+
+\begin{lemma}[Sign-twisted standard representation $S_4\to SO(3)$]\label{lem:s4_so3_twist}
+Let $\rho_H:S_4\to O(H)\cong O(3)$ be the restriction of the permutation representation to $H$.
+Then $\det(\rho_H(\sigma))=\mathrm{sgn}(\sigma)$.
+Consequently the twisted representation
+\[
+\widetilde\rho(\sigma):=\mathrm{sgn}(\sigma)\,\rho_H(\sigma)
+\]
+lands in $SO(3)$.
+Viewing $SO(3)$ matrices as real unitary matrices gives an inclusion $SO(3)\subset SU(3)$.
+\end{lemma}
+\begin{proof}
+Permutation matrices satisfy $\det(\rho(\sigma))=\mathrm{sgn}(\sigma)$.
+Moreover $\RR^4$ decomposes as an orthogonal direct sum
+\[
+\RR^4=\mathrm{span}\{(1,1,1,1)\}\ \oplus\ H,
+\]
+and $\rho(\sigma)$ fixes $(1,1,1,1)$.
+Thus $\det(\rho(\sigma))=\det(\rho(\sigma)|_{\mathrm{span}\{(1,1,1,1)\}})\cdot \det(\rho_H(\sigma))=1\cdot \det(\rho_H(\sigma))$, proving $\det(\rho_H(\sigma))=\mathrm{sgn}(\sigma)$.
+Finally, on the $3$-dimensional space $H$, multiplication by the scalar $\mathrm{sgn}(\sigma)\in\{\pm 1\}$ contributes determinant $\mathrm{sgn}(\sigma)^3=\mathrm{sgn}(\sigma)$, hence
+\[
+\det(\widetilde\rho(\sigma))=\det(\mathrm{sgn}(\sigma)\,I_3)\,\det(\rho_H(\sigma))=\mathrm{sgn}(\sigma)\cdot \mathrm{sgn}(\sigma)=1,
+\]
+so $\widetilde\rho(\sigma)\in SO(3)$.
+The inclusion $SO(3)\subset SU(3)$ follows because a real orthogonal $3\times 3$ matrix is unitary over $\CC$, and determinant $1$ is preserved.
+\end{proof}
 Table~\ref{tab:holonomy_su3_rotation} summarizes the induced rotation angles (in degrees) by $S_4$ cycle type for the plaquette holonomies at $n=3$.
 
 \begin{table}[t]
@@ -103,16 +135,36 @@ cycle type & count & mean angle [deg] & min [deg] & max [deg] \\
 \label{tab:holonomy_su3_rotation}
 \end{table}
 
-\subsection{A phase-register lift and a CP-odd invariant (toy)}
+\subsection{A phase-register lift and a CP-odd invariant}
 \label{subsec:holonomy_phase_lift_cp}
 
 To allow CP-odd signatures in a holonomy-based description, one must go beyond purely real orthogonal representations.
 As a minimal protocol-level bridge consistent with the $\ZZ_{128}$ phase-register stance, we can attach a deterministic discrete phase to each microstate and lift the edge transport to a unitary (phase-weighted) transport.
+We make this lift fully explicit.
+Fix a dyadic denominator $\mathrm{denom}=2^p$ and a low-complexity index map $\tau:\{0,\dots,63\}\to\{0,\dots,63\}$ chosen from the family
+\[
+\tau_{\mathrm{id}}(k)=k,\qquad
+\tau_{\mathrm{gray}}(k)=k\oplus (k\!\gg\!1),\qquad
+\tau_{\mathrm{bitrev}}(k)=\mathrm{bitreverse}_6(k),\qquad
+\tau_{\mathrm{not}}(k)=63-k.
+\]
+Here $\oplus$ and $\gg$ denote bitwise XOR and right shift on $6$-bit integers, and $\mathrm{bitreverse}_6$ reverses the $6$-bit binary expansion.
+Define the phase register embedding
+\begin{equation}\label{eq:holonomy_phase_def}
+\phi(k):=2\pi\,\frac{\tau(k)}{\mathrm{denom}}.
+\end{equation}
+For an oriented edge $a\to b$ with padded fibers $f_a(i)$ and $f_b(i)$ ($i=0,1,2,3$) and transport permutation $p\in S_4$ (Section~\ref{subsec:deterministic_edge_connection}), define the phase-lifted edge transport $U_{a\to b}\in U(4)$ by
+\begin{equation}\label{eq:phase_lift_edge_transport}
+(U_{a\to b})_{p(i),i}:=\exp\!\Bigl(\iu\bigl(\phi(f_b(p(i)))-\phi(f_a(i))\bigr)\Bigr),
+\qquad i=0,1,2,3,
+\end{equation}
+with all other entries equal to $0$.
 Projecting the resulting $4\times 4$ unitary plaquette holonomy to the $3$-dimensional sum-zero subspace and renormalizing by a deterministic Gram--Schmidt procedure yields an effective $3\times 3$ unitary matrix.
 From this effective unitary one can compute a rephasing-invariant CP-odd quantity, e.g.\ the Jarlskog-type invariant
 \[
-J:=\Im\!\bigl(U_{00}U_{11}U_{01}^\ast U_{10}^\ast\bigr).
+J:=\Im\!\bigl(U_{11}U_{22}U_{12}^\ast U_{21}^\ast\bigr).
 \]
+This is the standard rephasing-invariant combination for $3\times 3$ unitary mixing matrices \cite{Jarlskog1985,PDGRPP2024}.
 Table~\ref{tab:holonomy_phase_lift_j} summarizes the induced values by underlying $S_4$ cycle type for the $n=3$ plaquettes.
 
 \begin{table}[t]
@@ -126,7 +178,7 @@ cycle type & count & mean $|J|$ & max $|J|$ & mean $J$ \\
 \midrule
 \input{sections/generated/holonomy_phase_lift_j_rows.tex}%
 \end{tabular}
-\caption{Phase-register lifted holonomy and a CP-odd invariant in a toy projection/renormalization model at $n=3$. Rows are generated by \texttt{scripts/exp\_holonomy\_phase\_lift\_cp\_invariant.py}.}
+\caption{Phase-register lifted holonomy and a CP-odd invariant in a finite projection/renormalization model at $n=3$. Rows are generated by \texttt{scripts/exp\_holonomy\_phase\_lift\_cp\_invariant.py}.}
 \label{tab:holonomy_phase_lift_j}
 \end{table}
 
@@ -145,12 +197,25 @@ $\mathrm{denom}$ & $p$ & mean $|J|$ (3) & mean $|J|$ (4) & mean $|J|$ (3/4) & $\
 \midrule
 \input{sections/generated/holonomy_phase_lift_family_rows.tex}%
 \end{tabular}
-\caption{Phase-denominator sweep for the toy phase-lifted holonomy CP invariant at $n=3$, over $\mathrm{denom}=2^p$ for a bounded range of $p$. Rows are generated by \texttt{scripts/exp\_holonomy\_phase\_lift\_family\_sweep.py}.}
+\caption{Phase-denominator sweep for the phase-lifted holonomy CP invariant at $n=3$, over $\mathrm{denom}=2^p$ for a bounded range of $p$. Rows are generated by \texttt{scripts/exp\_holonomy\_phase\_lift\_family\_sweep.py}.}
 \label{tab:holonomy_phase_lift_family}
 \end{table}
 
-\paragraph{Angle extraction (diagnostic).}
-From the effective $3\times 3$ unitary matrices produced by the phase-lifted holonomies, one can extract PDG-style angle sines $(s_{12},s_{23},s_{13})$ and a principal Dirac phase $\delta$ using standard identities, with $J$ providing the CP-odd anchor.
+\paragraph{Angle extraction (PDG convention, diagnostic).}
+From a $3\times 3$ unitary matrix $U$ in the PDG standard parameterization \cite{PDGRPP2024}, one can extract mixing sines by the identities
+\[
+s_{13}=|U_{13}|,\qquad
+c_{13}=\sqrt{1-s_{13}^2},\qquad
+s_{12}=\frac{|U_{12}|}{c_{13}},\qquad
+s_{23}=\frac{|U_{23}|}{c_{13}},
+\]
+and obtain a principal Dirac phase $\delta$ from the Jarlskog invariant via
+\[
+\sin\delta=\frac{J}{s_{12}s_{23}s_{13}c_{12}c_{23}c_{13}^2},
+\qquad
+c_{ij}=\sqrt{1-s_{ij}^2}.
+\]
+In the holonomy diagnostics below, because row/column identifications are not fixed \emph{a priori}, we also allow a global relabeling (a pair of permutations in $S_3\times S_3$) when comparing to PMNS/CKM targets.
 Table~\ref{tab:holonomy_phase_lift_angles} reports cycle-type aggregated mean values at the default phase denominator used in Table~\ref{tab:holonomy_phase_lift_j}.
 
 \begin{table}[t]
@@ -164,14 +229,14 @@ cycle type & count & mean $s_{12}$ & mean $s_{23}$ & mean $s_{13}$ & mean $\delt
 \midrule
 \input{sections/generated/holonomy_phase_lift_angles_rows.tex}%
 \end{tabular}
-\caption{PDG-style angle extraction from phase-lifted effective holonomy matrices at $n=3$ (toy model). Rows are generated by \texttt{scripts/exp\_holonomy\_phase\_lift\_angles.py}.}
+\caption{PDG-style angle extraction from phase-lifted effective holonomy matrices at $n=3$ (finite diagnostic). Rows are generated by \texttt{scripts/exp\_holonomy\_phase\_lift\_angles.py}.}
 \label{tab:holonomy_phase_lift_angles}
 \end{table}
 
 \subsection{Balanced-chain sweep across \texorpdfstring{$(n,m)=(3,6),(4,8),(5,10),(6,12),(7,14),(8,16)$}{(n,m)=(3,6),(4,8),(5,10),(6,12),(7,14),(8,16)}}
 \label{subsec:holonomy_balanced_chain_sweep}
 
-To probe how the toy connection/holonomy statistics behave under a minimal balanced refinement, we sweep the chain $m=2n$ for $n\in\{3,4,5,6,7,8\}$.
+To probe how the finite connection/holonomy statistics behave under a minimal balanced refinement, we sweep the chain $m=2n$ for $n\in\{3,4,5,6,7,8\}$.
 At each scale we build the same deterministic $S_4$-valued edge transport by truncating/padding each Fold$_m$ fiber to rank $4$ and selecting the minimum-cost bijection under Hamming distance on $m$-bit microstates.
 We then summarize plaquette holonomy cycle types and the phase-lifted CP-odd signal at the phase denominator $\mathrm{denom}=2^m$.
 
@@ -188,7 +253,7 @@ mean $|J|$ (3/4) & mean $J$ (3/4) & failures \\
 \midrule
 \input{sections/generated/holonomy_balanced_chain_rows.tex}%
 \end{tabular}
-\caption{Balanced-chain sweep for the toy holonomy and phase-lifted CP signal across $(n,m)\in\{(3,6),(4,8),(5,10),(6,12),(7,14),(8,16)\}$. Rows are generated by \texttt{scripts/exp\_holonomy\_balanced\_chain\_sweep.py}.}
+\caption{Balanced-chain sweep for the holonomy and phase-lifted CP signal across $(n,m)\in\{(3,6),(4,8),(5,10),(6,12),(7,14),(8,16)\}$. Rows are generated by \texttt{scripts/exp\_holonomy\_balanced\_chain\_sweep.py}.}
 \label{tab:holonomy_balanced_chain_sweep}
 \end{table}
 
@@ -207,7 +272,7 @@ $n$ & $m$ & plaquettes & best $(\sigma_r,\sigma_c)$ & $s_{12}$ & $s_{23}$ & $s_{
 \midrule
 \input{sections/generated/holonomy_balanced_chain_fit_pmns_rows.tex}%
 \end{tabular}
-\caption{Balanced-chain permutation-robust fit to PMNS target sines (toy model). Rows are generated by \texttt{scripts/exp\_holonomy\_balanced\_chain\_perm\_fit.py}.}
+\caption{Balanced-chain permutation-robust fit to PMNS target sines (finite diagnostic). Rows are generated by \texttt{scripts/exp\_holonomy\_balanced\_chain\_perm\_fit.py}.}
 \label{tab:holonomy_balanced_chain_fit_pmns}
 \end{table}
 
@@ -222,7 +287,7 @@ $n$ & $m$ & plaquettes & best $(\sigma_r,\sigma_c)$ & $s_{12}$ & $s_{23}$ & $s_{
 \midrule
 \input{sections/generated/holonomy_balanced_chain_fit_ckm_rows.tex}%
 \end{tabular}
-\caption{Balanced-chain permutation-robust fit to CKM target sines (toy model). Rows are generated by \texttt{scripts/exp\_holonomy\_balanced\_chain\_perm\_fit.py}.}
+\caption{Balanced-chain permutation-robust fit to CKM target sines (finite diagnostic). Rows are generated by \texttt{scripts/exp\_holonomy\_balanced\_chain\_perm\_fit.py}.}
 \label{tab:holonomy_balanced_chain_fit_ckm}
 \end{table}
 
@@ -344,7 +409,7 @@ $k$ & loops & 3/4 loops & best $(\sigma_r,\sigma_c)$ & $s_{12}$ & $s_{23}$ & $s_
 \midrule
 \input{sections/generated/holonomy_loop_scale_fit_pmns_rows.tex}%
 \end{tabular}
-\caption{Permutation-robust fit to PMNS target sines for $k\times k$ square holonomies (toy model), restricted to 3/4-cycle loops. Rows are generated by \texttt{scripts/exp\_holonomy\_loop\_scale\_sweep.py}.}
+\caption{Permutation-robust fit to PMNS target sines for $k\times k$ square holonomies (finite diagnostic), restricted to 3/4-cycle loops. Rows are generated by \texttt{scripts/exp\_holonomy\_loop\_scale\_sweep.py}.}
 \label{tab:holonomy_loop_scale_fit_pmns}
 \end{table}
 
@@ -359,7 +424,7 @@ $k$ & loops & 3/4 loops & best $(\sigma_r,\sigma_c)$ & $s_{12}$ & $s_{23}$ & $s_
 \midrule
 \input{sections/generated/holonomy_loop_scale_fit_ckm_rows.tex}%
 \end{tabular}
-\caption{Permutation-robust fit to CKM target sines for $k\times k$ square holonomies (toy model), restricted to 3/4-cycle loops. Rows are generated by \texttt{scripts/exp\_holonomy\_loop\_scale\_sweep.py}.}
+\caption{Permutation-robust fit to CKM target sines for $k\times k$ square holonomies (finite diagnostic), restricted to 3/4-cycle loops. Rows are generated by \texttt{scripts/exp\_holonomy\_loop\_scale\_sweep.py}.}
 \label{tab:holonomy_loop_scale_fit_ckm}
 \end{table}
 
@@ -378,11 +443,11 @@ $\mathrm{denom}$ & $p$ & mean $s_{12}$ (3/4) & mean $s_{23}$ (3/4) & mean $s_{13
 \midrule
 \input{sections/generated/holonomy_phase_lift_angles_denom_sweep_rows.tex}%
 \end{tabular}
-\caption{Phase-denominator sweep for mean extracted angles and mean $|J|$ on 3/4-cycle plaquettes at $n=3$ (toy model), together with the log mismatch to $J_{\mathrm{geo}}$. Rows are generated by \texttt{scripts/exp\_holonomy\_phase\_lift\_angles\_denom\_sweep.py}.}
+\caption{Phase-denominator sweep for mean extracted angles and mean $|J|$ on 3/4-cycle plaquettes at $n=3$ (finite diagnostic), together with the log mismatch to $J_{\mathrm{geo}}$. Rows are generated by \texttt{scripts/exp\_holonomy\_phase\_lift\_angles\_denom\_sweep.py}.}
 \label{tab:holonomy_phase_lift_angles_denom_sweep}
 \end{table}
 
-\paragraph{A bounded-denominator PMNS fit (toy).}
+\paragraph{A bounded-denominator PMNS fit (finite diagnostic).}
 As an illustrative closure-style diagnostic, we can select $\mathrm{denom}=2^p$ to fit representative PMNS sines $(s_{12},s_{23},s_{13})$ using the same 3/4-cycle aggregated mean angles.
 Table~\ref{tab:holonomy_pmns_denom_fit} reports the candidate sweep and the minimax/sum objectives.
 
@@ -397,7 +462,7 @@ $\mathrm{denom}$ & $p$ & $s_{12}$ (3/4) & $s_{23}$ (3/4) & $s_{13}$ (3/4) & $E_\
 \midrule
 \input{sections/generated/holonomy_phase_lift_pmns_denom_fit_rows.tex}%
 \end{tabular}
-\caption{Toy bounded-denominator fit to representative PMNS mixing sines using the phase-lifted holonomy angle extraction. Rows are generated by \texttt{scripts/exp\_holonomy\_phase\_lift\_pmns\_denom\_fit.py}.}
+\caption{Bounded-denominator fit to representative PMNS mixing sines using the phase-lifted holonomy angle extraction (finite diagnostic). Rows are generated by \texttt{scripts/exp\_holonomy\_phase\_lift\_pmns\_denom\_fit.py}.}
 \label{tab:holonomy_pmns_denom_fit}
 \end{table}
 
@@ -475,7 +540,7 @@ map & $\mathrm{denom}$ & $p$ & best $(\sigma_r,\sigma_c)$ & $s_{12}$ & $s_{23}$ 
 \label{subsec:holonomy_soft_transport}
 
 The strict minimum-cost matching rule produces a discrete $S_4$ transport on edges.
-As an additional toy diagnostic with a continuous control parameter, one can form a \emph{soft} transport matrix from the full $4\times 4$ cost matrix between padded fibers, weighted by a temperature-like parameter $\beta$ via $\exp(-\beta\,\mathrm{cost})$, and then deterministically orthonormalize columns to obtain a unitary edge transport.
+As an optional robustness diagnostic, one can form a \emph{soft} transport matrix from the full $4\times 4$ cost matrix between padded fibers, weighted by a temperature-like parameter $\beta$ via $\exp(-\beta\,\mathrm{cost})$, and then deterministically orthonormalize columns to obtain a unitary edge transport.
 Sweeping $\beta$ interpolates between a highly mixed transport ($\beta\to 0$) and a sharp near-minimum transport (large $\beta$).
 Tables~\ref{tab:holonomy_soft_transport_pmns} and \ref{tab:holonomy_soft_transport_ckm} report permutation-robust fits to PMNS- and CKM-style target sines under this soft transport, together with the mean $|J|$ on the resulting effective holonomies.
 
@@ -490,7 +555,7 @@ $\beta$ & plaquettes & best $(\sigma_r,\sigma_c)$ & $s_{12}$ & $s_{23}$ & $s_{13
 \midrule
 \input{sections/generated/holonomy_soft_transport_pmns_rows.tex}%
 \end{tabular}
-\caption{Soft-transport $\beta$ sweep with permutation-robust fit to PMNS target sines (toy model). Rows are generated by \texttt{scripts/exp\_holonomy\_soft\_transport\_beta\_sweep.py}.}
+\caption{Soft-transport $\beta$ sweep with permutation-robust fit to PMNS target sines (robustness diagnostic). Rows are generated by \texttt{scripts/exp\_holonomy\_soft\_transport\_beta\_sweep.py}.}
 \label{tab:holonomy_soft_transport_pmns}
 \end{table}
 
@@ -505,7 +570,7 @@ $\beta$ & plaquettes & best $(\sigma_r,\sigma_c)$ & $s_{12}$ & $s_{23}$ & $s_{13
 \midrule
 \input{sections/generated/holonomy_soft_transport_ckm_rows.tex}%
 \end{tabular}
-\caption{Soft-transport $\beta$ sweep with permutation-robust fit to CKM target sines (toy model). Rows are generated by \texttt{scripts/exp\_holonomy\_soft\_transport\_beta\_sweep.py}.}
+\caption{Soft-transport $\beta$ sweep with permutation-robust fit to CKM target sines (robustness diagnostic). Rows are generated by \texttt{scripts/exp\_holonomy\_soft\_transport\_beta\_sweep.py}.}
 \label{tab:holonomy_soft_transport_ckm}
 \end{table}
 

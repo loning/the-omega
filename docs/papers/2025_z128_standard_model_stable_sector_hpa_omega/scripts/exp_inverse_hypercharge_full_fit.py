@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Exploratory inverse fit: recover the full hypercharge numerator Y_num (units of 1/6).
+Bounded-complexity inverse diagnostic: recover the full hypercharge numerator Y_num (units of 1/6).
 
 Target set (per SM generation multiplets):
   Y_num ∈ {+1,+4,-2,-3,-6,0}

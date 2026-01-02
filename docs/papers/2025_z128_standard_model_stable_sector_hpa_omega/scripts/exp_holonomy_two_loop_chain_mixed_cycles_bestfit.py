@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Two-loop chain best-fit scan (mixed cycle types) for holonomy→mixing diagnostics (toy).
+Two-loop chain best-fit scan (mixed cycle types) for holonomy→mixing diagnostics (finite diagnostic).
 
 This is a bounded-complexity variant of exp_holonomy_two_loop_chain_bestfit.py that:
   - expands the admissible loop pool to include 2-, 2x2-, 3-, and 4-cycle S4 holonomies

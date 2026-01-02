@@ -12,7 +12,7 @@ the two endpoint stable types:
   - We pad each fiber deterministically to length 4 (the maximum degeneracy at m=6).
   - For an edge {a,b}, we choose the minimum-cost bijection between the padded
     fibers using Hamming distance on 6-bit binary words, yielding a permutation
-    in S4 that acts as a toy discrete connection element.
+    in S4 that acts as a finite discrete connection element.
 
 This script reports basic distributions needed for an auditable, finite-resolution
 connection model.

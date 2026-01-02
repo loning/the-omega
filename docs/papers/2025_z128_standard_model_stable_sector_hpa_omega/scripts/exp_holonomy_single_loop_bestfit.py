@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Single-loop best-fit scan for holonomy→mixing diagnostics (toy).
+Single-loop best-fit scan for holonomy→mixing diagnostics (finite diagnostic).
 
 Instead of averaging angles over a loop family, we scan individual k×k square loops
 (k=1..7) on the n=3 grid, together with a bounded phase-denominator family

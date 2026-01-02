@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Phase-map family sweep for phase-lifted holonomy fits (toy).
+Phase-map family sweep for phase-lifted holonomy fits (finite diagnostic).
 
 We extend the phase-lifted transport by allowing a small family of low-complexity
 index maps on microstate indices k in {0..63}:

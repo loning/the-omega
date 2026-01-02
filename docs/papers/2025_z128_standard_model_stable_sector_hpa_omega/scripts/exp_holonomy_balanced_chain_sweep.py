@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Balanced-chain sweep for toy holonomy and phase-lift CP signal.
+Balanced-chain sweep for finite holonomy and phase-lift CP signal.
 
 We consider the balanced chain m=2n with (n,m) in {(3,6),(4,8),(5,10),(6,12),(7,14),(8,16)}.
 For each pair we:

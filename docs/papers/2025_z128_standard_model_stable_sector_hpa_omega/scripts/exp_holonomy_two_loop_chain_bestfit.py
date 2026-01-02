@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Two-loop chain best-fit scan for holonomy→mixing diagnostics (toy).
+Two-loop chain best-fit scan for holonomy→mixing diagnostics (finite diagnostic).
 
 We restrict to the small, auditable set of square k×k loops (k<=7) whose underlying
 S4 holonomy permutation is a 3- or 4-cycle. For each such loop we compute an

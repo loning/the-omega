@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Loop-scale sweep for phase-lifted holonomy diagnostics (toy).
+Loop-scale sweep for phase-lifted holonomy diagnostics (finite diagnostic).
 
 We generalize the unit-plaquette holonomy to k×k square loops on the n=3 (8×8) grid,
 using the same deterministic S4 edge transport and the same phase-lifted unitary

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Wilson-loop style diagnostics for loop-scale phase-lifted holonomies (toy).
+Wilson-loop style diagnostics for loop-scale phase-lifted holonomies (finite diagnostic).
 
 For each k×k square loop on the n=3 (8×8) grid (k=1..7), we compute the phase-lifted
 4×4 unitary holonomy around the loop (denom=64), project to the 3D sum-zero subspace,

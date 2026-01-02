@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Balanced-chain permutation-robust fits for phase-lifted holonomy angles (toy).
+Balanced-chain permutation-robust fits for phase-lifted holonomy angles (finite diagnostic).
 
 We extend the balanced chain sweep (n,m) = (3,6),(4,8),(5,10),(6,12),(7,14),(8,16) by extracting
 effective 3x3 unitary holonomy matrices on plaquettes and performing a global

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Loop-scale sweep of SO(3)⊂SU(3) rotation angles for toy holonomy (k×k loops).
+Loop-scale sweep of SO(3)⊂SU(3) rotation angles for finite holonomy (k×k loops).
 
 We reuse the deterministic S4 edge transport on the n=3 (8×8) Hilbert grid and
 compute S4 holonomy permutations around k×k square loops for k=1..7.
