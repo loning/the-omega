@@ -177,9 +177,26 @@ which gives \eqref{eq:golden_zeta}.
 Let $\varphi$ be the golden ratio and apply spectral normalization $z=r/\varphi$.
 Then
 \begin{equation}\label{eq:abel_normalized_zeta}
-\zeta_\e(r):=\zeta(r/\varphi)=\frac{1}{(1-r)\bigl(1+\varphi^{-2}r\bigr)}.
+\zeta_\e(r):=\zeta(r/\varphi)=\frac{1}{1-\frac{r}{\varphi}-\frac{r^2}{\varphi^2}}
+=\frac{1}{(1-r)\bigl(1+\frac{r}{\varphi^2}\bigr)}.
 \end{equation}
 The principal pole at $r=1$ lies on the boundary of the unit disk and plays the role of an analytic ``pole barrier'' for Abel-type limits.
+
+\begin{lemma}[Golden normalization factorization]\label{lem:golden_normalization_factorization}
+One has the identity
+\[
+1-\frac{r}{\varphi}-\frac{r^2}{\varphi^2}=(1-r)\bigl(1+\frac{r}{\varphi^2}\bigr),
+\]
+so the poles of $\zeta_\e$ are located at $r=1$ and $r=-\varphi^{2}$.
+\end{lemma}
+\begin{proof}
+Using $1-\varphi^{-2}=\varphi^{-1}$ (equivalently $\varphi^2=\varphi+1$), expand
+\[
+(1-r)\bigl(1+\frac{r}{\varphi^2}\bigr)=1-r+\frac{r}{\varphi^2}-\frac{r^2}{\varphi^2}
+=1-\Bigl(1-\frac{1}{\varphi^2}\Bigr)r-\frac{r^2}{\varphi^2}
+=1-\frac{r}{\varphi}-\frac{r^2}{\varphi^2}.
+\]
+\end{proof}
 
 \begin{remark}[Finite window vs.\ higher-resolution distinction]\label{rem:e_channel_distinct}
 At the minimal window length $m=6$, the analytic channel is used here primarily as an \emph{interpretation layer} for stability (holomorphy domain and boundary pole), while the admissible-word selection is already enforced by the $\varphi$-grammar.
@@ -356,7 +373,7 @@ Let $w\in X_m$ and define its Zeckendorf value
 \[
 V_m(w):=\sum_{k=1}^{m} w_k F_{k+1}.
 \]
-It is standard that the admissible digit set $X_m$ has size $F_{m+2}$ and represents exactly the integers $\{0,\dots,F_{m+2}-1\}$ under $V_m$ (Lemma~\ref{lem:xm_fib}; see also \cite{Zeckendorf1972,AlloucheShallit2003}).
+It is standard that the admissible digit set $X_m$ has size $F_{m+2}$ and represents exactly the integers $\{0,\dots,F_{m+2}-1\}$ under $V_m$ (Lemma~\ref{lem:xm_fib}; see also \cite{Zeckendorf1972,AlloucheShallit2003,DemontignyEtAl2013FDecompositions,BenAriMiller2014ProbabilisticZeckendorf,Dekking2020StructureZeckendorf}).
 In particular, $V_m(w)\le F_{m+2}-1$.
 By Lemma~\ref{lem:fib_dyadic_bound}, $F_{m+2}\le 2^m$ for all $m\ge 1$, hence $V_m(w)\in\{0,\dots,2^m-1\}$.
 Moreover, the Zeckendorf expansion of $V_m(w)$ uses no Fibonacci weights beyond $F_{m+1}$, hence its digits beyond $c_m$ are zero and its first $m$ digits equal $w$.

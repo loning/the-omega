@@ -55,6 +55,36 @@ def _check_outputs(rel_paths: Iterable[str]) -> None:
         raise RuntimeError(msg)
 
 
+def _max_mtime(paths: Iterable[Path]) -> float:
+    mt = 0.0
+    for p in paths:
+        try:
+            mt = max(mt, p.stat().st_mtime)
+        except FileNotFoundError:
+            continue
+    return mt
+
+
+def _scripts_deps_mtime() -> float:
+    # Conservative invalidation: any change to any generator/helper in this directory
+    # makes all steps "not up-to-date".
+    #
+    # IMPORTANT: exclude this orchestrator itself; editing `run_all.py` should not
+    # force a full recompute of generated fragments.
+    py = [p for p in scripts_dir().glob("*.py") if p.name != "run_all.py"]
+    return _max_mtime(py)
+
+
+def _outputs_up_to_date(rel_paths: Iterable[str], deps_mtime: float) -> bool:
+    for rel in rel_paths:
+        p = paper_root() / rel
+        if not nonempty_file(p):
+            return False
+        if p.stat().st_mtime < deps_mtime:
+            return False
+    return True
+
+
 def build_steps() -> List[Step]:
     # Keep this list explicit and auditable.
     return [
@@ -473,6 +503,13 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Audit pi-polynomial null baseline",
+            script="exp_audit_pi_polynomial_null.py",
+            expected_outputs=[
+                "sections/generated/audit_pi_poly_null_rows.tex",
+            ],
+        ),
+        Step(
             name="Audit summary",
             script="exp_audit_summary.py",
             expected_outputs=[
@@ -485,6 +522,14 @@ def build_steps() -> List[Step]:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run all reproducible generators for this paper.")
     parser.add_argument(
+        "--skip-up-to-date",
+        action="store_true",
+        help=(
+            "Skip steps whose expected outputs exist, are non-empty, and are newer than all scripts "
+            "in this directory. Useful for iterative LaTeX work when generators have not changed."
+        ),
+    )
+    parser.add_argument(
         "--stop-after",
         default="",
         help="Optional step name prefix to stop after (for debugging).",
@@ -496,14 +541,19 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     steps = build_steps()
     all_expected: List[str] = []
+    deps_mtime = _scripts_deps_mtime() if args.skip_up_to_date else 0.0
 
     for step in steps:
         script_path = scripts_dir() / step.script
         if not script_path.is_file():
             raise FileNotFoundError(f"Missing script: {script_path}")
-        print(f"[run_all] {step.name} -> {step.script}")
-        _run_script(script_path, step_name=step.name)
-        _check_outputs(step.expected_outputs)
+        if args.skip_up_to_date and _outputs_up_to_date(step.expected_outputs, deps_mtime=deps_mtime):
+            print(f"[run_all] SKIP (up-to-date) {step.name}")
+            _check_outputs(step.expected_outputs)
+        else:
+            print(f"[run_all] {step.name} -> {step.script}")
+            _run_script(script_path, step_name=step.name)
+            _check_outputs(step.expected_outputs)
         all_expected.extend(list(step.expected_outputs))
         if args.stop_after and step.name.lower().startswith(args.stop_after.lower()):
             break
