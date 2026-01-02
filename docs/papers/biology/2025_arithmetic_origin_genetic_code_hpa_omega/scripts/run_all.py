@@ -97,6 +97,7 @@ def main() -> None:
 
     # 2b) Fold_m resolution scan (m>6)
     run([py, "scripts/exp_foldm_resolution_scan.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_foldm_control_objective_stability.py", *(["--force"] if args.force else [])], cwd=cwd)
 
     # 3) Nonstandard translation tables
     run([py, "scripts/exp_nonstandard_codes.py", *(["--force"] if args.force else [])], cwd=cwd)
@@ -257,6 +258,7 @@ def main() -> None:
     if args.force:
         panel_cmd += ["--force"]
     run(panel_cmd, cwd=cwd)
+    run([py, "scripts/exp_foldm_corpus_panel_codon_usage_null.py", *(["--force"] if args.force else [])], cwd=cwd)
 
     # 6b) Fold_m stop-context meta-analysis across eukaryotic RefSeq corpora (best ORF).
     run([py, "scripts/exp_foldm_stop_context_eukaryota.py", *(["--force"] if args.force else [])], cwd=cwd)
