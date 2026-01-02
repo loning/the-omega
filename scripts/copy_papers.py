@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Script to copy main.pdf files from docs/papers/ subdirectories to book/merged-papers/
+Script to copy main.pdf files from docs/papers/ subdirectories (including nested subdirectories) to book/merged-papers/
 Each PDF is renamed using the subdirectory name.
 """
 
@@ -20,21 +20,20 @@ def main():
     # Create output directory if it doesn't exist
     output_dir.mkdir(parents=True, exist_ok=True)
     
-    # Find all subdirectories in papers_dir
-    paper_dirs = [d for d in papers_dir.iterdir() if d.is_dir() and not d.name.startswith('.')]
+    # Recursively find all main.pdf files in subdirectories
+    main_pdfs = list(papers_dir.rglob("main.pdf"))
     
     copied_count = 0
     skipped_count = 0
     
-    print(f"Scanning {papers_dir}...")
-    print(f"Found {len(paper_dirs)} paper directories\n")
+    print(f"Scanning {papers_dir} (recursively)...")
+    print(f"Found {len(main_pdfs)} main.pdf files\n")
     
-    for paper_dir in sorted(paper_dirs):
-        main_pdf = paper_dir / "main.pdf"
+    for main_pdf in sorted(main_pdfs):
+        paper_dir = main_pdf.parent
         
-        if not main_pdf.exists():
-            print(f"⚠️  Skipping {paper_dir.name}: main.pdf not found")
-            skipped_count += 1
+        # Skip if directory name starts with '.'
+        if paper_dir.name.startswith('.'):
             continue
         
         # Use directory name as output filename
@@ -43,10 +42,13 @@ def main():
         
         try:
             shutil.copy2(main_pdf, output_path)
-            print(f"✓  Copied: {paper_dir.name} -> {output_filename}")
+            # Show relative path from papers_dir for nested directories
+            rel_path = paper_dir.relative_to(papers_dir)
+            print(f"✓  Copied: {rel_path} -> {output_filename}")
             copied_count += 1
         except Exception as e:
-            print(f"✗  Error copying {paper_dir.name}: {e}")
+            rel_path = paper_dir.relative_to(papers_dir)
+            print(f"✗  Error copying {rel_path}: {e}")
             skipped_count += 1
     
     print(f"\n{'='*60}")

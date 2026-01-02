@@ -99,7 +99,7 @@ def try_plot(thresholds: List[Tuple[int, float, float]]) -> None:
 
 def main() -> None:
     r_step = 2.0 * math.pi
-    m_list = list(range(6, 13))  # 6..12 (electron to tens of TeV in this calibration)
+    m_list = list(range(6, 17))  # 6..16 (electron to ultra-high energies in this calibration)
 
     rows: List[str] = []
     thresholds: List[Tuple[int, float, float]] = []

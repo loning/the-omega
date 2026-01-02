@@ -19,11 +19,13 @@ from __future__ import annotations
 import argparse
 import subprocess
 import sys
+from subprocess import CalledProcessError
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, List, Sequence
 
 from common_paths import generated_dir, paper_root, scripts_dir
+from common_progress import heartbeat_wait
 from common_tex import nonempty_file
 
 
@@ -34,9 +36,12 @@ class Step:
     expected_outputs: Sequence[str]
 
 
-def _run_script(script_path: Path) -> None:
+def _run_script(script_path: Path, step_name: str) -> None:
     cmd = [sys.executable, str(script_path)]
-    subprocess.run(cmd, cwd=str(paper_root()), check=True)
+    proc = subprocess.Popen(cmd, cwd=str(paper_root()))
+    rc = heartbeat_wait(proc, label=step_name, interval_s=60.0, poll_s=1.0)
+    if rc != 0:
+        raise CalledProcessError(rc, cmd)
 
 
 def _check_outputs(rel_paths: Iterable[str]) -> None:
@@ -69,6 +74,13 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Xm weight sweep",
+            script="exp_xm_weight_sweep.py",
+            expected_outputs=[
+                "sections/generated/xm_weight_sweep_rows.tex",
+            ],
+        ),
+        Step(
             name="Fold6 stats",
             script="exp_fold6_stats.py",
             expected_outputs=[
@@ -81,6 +93,20 @@ def build_steps() -> List[Step]:
             script="exp_foldm_stats.py",
             expected_outputs=[
                 "sections/generated/foldm_sweep_rows.tex",
+            ],
+        ),
+        Step(
+            name="Ghost sector violation diagnostics",
+            script="exp_ghost_sector_violation_stats.py",
+            expected_outputs=[
+                "sections/generated/ghost_sector_violation_rows.tex",
+            ],
+        ),
+        Step(
+            name="Ghost sector repair-cost diagnostics",
+            script="exp_ghost_sector_repair_cost_stats.py",
+            expected_outputs=[
+                "sections/generated/ghost_sector_repair_cost_rows.tex",
             ],
         ),
         Step(
@@ -119,7 +145,7 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="Edge mismatch decomposition (toy connection)",
+            name="Edge mismatch decomposition (finite connection)",
             script="exp_edge_mismatch_decomposition.py",
             expected_outputs=[
                 "sections/generated/edge_mismatch_deg_pair_rows.tex",
@@ -127,49 +153,49 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="Plaquette holonomy (toy connection)",
+            name="Plaquette holonomy (finite connection)",
             script="exp_holonomy_loops.py",
             expected_outputs=[
                 "sections/generated/holonomy_cycle_type_rows.tex",
             ],
         ),
         Step(
-            name="Holonomy SU(3) representation (toy)",
+            name="Holonomy SU(3) representation (finite diagnostic)",
             script="exp_holonomy_su3_representation.py",
             expected_outputs=[
                 "sections/generated/holonomy_su3_rotation_rows.tex",
             ],
         ),
         Step(
-            name="Holonomy phase lift (CP-odd invariant, toy)",
+            name="Holonomy phase lift (CP-odd invariant, finite diagnostic)",
             script="exp_holonomy_phase_lift_cp_invariant.py",
             expected_outputs=[
                 "sections/generated/holonomy_phase_lift_j_rows.tex",
             ],
         ),
         Step(
-            name="Holonomy phase denominator sweep (toy)",
+            name="Holonomy phase denominator sweep (finite diagnostic)",
             script="exp_holonomy_phase_lift_family_sweep.py",
             expected_outputs=[
                 "sections/generated/holonomy_phase_lift_family_rows.tex",
             ],
         ),
         Step(
-            name="Holonomy phase-lift angles (toy)",
+            name="Holonomy phase-lift angles (finite diagnostic)",
             script="exp_holonomy_phase_lift_angles.py",
             expected_outputs=[
                 "sections/generated/holonomy_phase_lift_angles_rows.tex",
             ],
         ),
         Step(
-            name="Holonomy balanced-chain sweep (toy)",
+            name="Holonomy balanced-chain sweep (finite diagnostic)",
             script="exp_holonomy_balanced_chain_sweep.py",
             expected_outputs=[
                 "sections/generated/holonomy_balanced_chain_rows.tex",
             ],
         ),
         Step(
-            name="Holonomy balanced-chain permutation fits (PMNS/CKM, toy)",
+            name="Holonomy balanced-chain permutation fits (PMNS/CKM, finite diagnostic)",
             script="exp_holonomy_balanced_chain_perm_fit.py",
             expected_outputs=[
                 "sections/generated/holonomy_balanced_chain_fit_pmns_rows.tex",
@@ -177,7 +203,7 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="Holonomy loop-scale sweep (toy)",
+            name="Holonomy loop-scale sweep (finite diagnostic)",
             script="exp_holonomy_loop_scale_sweep.py",
             expected_outputs=[
                 "sections/generated/holonomy_loop_scale_cycle_rows.tex",
@@ -186,21 +212,56 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="Holonomy phase-lift angles denom sweep (toy)",
+            name="Holonomy loop-scale SU(3) angles (finite diagnostic)",
+            script="exp_holonomy_loop_scale_su3_angle_sweep.py",
+            expected_outputs=[
+                "sections/generated/holonomy_loop_scale_su3_angle_rows.tex",
+            ],
+        ),
+        Step(
+            name="Holonomy Wilson loop sweep (finite diagnostic)",
+            script="exp_holonomy_wilson_loop_sweep.py",
+            expected_outputs=[
+                "sections/generated/holonomy_wilson_loop_rows.tex",
+            ],
+        ),
+        Step(
+            name="Holonomy single-loop best fits (finite diagnostic)",
+            script="exp_holonomy_single_loop_bestfit.py",
+            expected_outputs=[
+                "sections/generated/holonomy_single_loop_bestfit_rows.tex",
+            ],
+        ),
+        Step(
+            name="Holonomy two-loop chain best fits (finite diagnostic)",
+            script="exp_holonomy_two_loop_chain_bestfit.py",
+            expected_outputs=[
+                "sections/generated/holonomy_two_loop_chain_bestfit_rows.tex",
+            ],
+        ),
+        Step(
+            name="Holonomy two-loop chain best fits (mixed cycles, finite diagnostic)",
+            script="exp_holonomy_two_loop_chain_mixed_cycles_bestfit.py",
+            expected_outputs=[
+                "sections/generated/holonomy_two_loop_chain_mixed_cycles_bestfit_rows.tex",
+            ],
+        ),
+        Step(
+            name="Holonomy phase-lift angles denom sweep (finite diagnostic)",
             script="exp_holonomy_phase_lift_angles_denom_sweep.py",
             expected_outputs=[
                 "sections/generated/holonomy_phase_lift_angles_denom_sweep_rows.tex",
             ],
         ),
         Step(
-            name="Holonomy PMNS denom fit (toy)",
+            name="Holonomy PMNS denom fit (finite diagnostic)",
             script="exp_holonomy_phase_lift_pmns_denom_fit.py",
             expected_outputs=[
                 "sections/generated/holonomy_phase_lift_pmns_denom_fit_rows.tex",
             ],
         ),
         Step(
-            name="Holonomy permutation fits (PMNS/CKM, toy)",
+            name="Holonomy permutation fits (PMNS/CKM, finite diagnostic)",
             script="exp_holonomy_phase_lift_perm_fit.py",
             expected_outputs=[
                 "sections/generated/holonomy_perm_fit_pmns_rows.tex",
@@ -208,7 +269,7 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="Holonomy phase-map family sweep (toy)",
+            name="Holonomy phase-map family sweep (finite diagnostic)",
             script="exp_holonomy_phase_lift_map_family_sweep.py",
             expected_outputs=[
                 "sections/generated/holonomy_map_family_pmns_rows.tex",
@@ -216,7 +277,7 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="Holonomy soft-transport beta sweep (toy)",
+            name="Holonomy soft-transport beta sweep (robustness diagnostic)",
             script="exp_holonomy_soft_transport_beta_sweep.py",
             expected_outputs=[
                 "sections/generated/holonomy_soft_transport_pmns_rows.tex",
@@ -261,38 +322,59 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="Inverse hypercharge fit (toy)",
+            name="Inverse hypercharge fit (inverse diagnostic)",
             script="exp_inverse_hypercharge_fit.py",
             expected_outputs=[
                 "sections/generated/inverse_hypercharge_fit_rows.tex",
             ],
         ),
         Step(
-            name="Inverse hypercharge sign fit (toy)",
+            name="Inverse hypercharge sign fit (inverse diagnostic)",
             script="exp_inverse_hypercharge_sign_fit.py",
             expected_outputs=[
                 "sections/generated/inverse_hypercharge_sign_fit_rows.tex",
             ],
         ),
         Step(
-            name="Inverse hypercharge full fit (toy)",
+            name="Inverse hypercharge full fit (inverse diagnostic)",
             script="exp_inverse_hypercharge_full_fit.py",
             expected_outputs=[
                 "sections/generated/inverse_hypercharge_full_fit_rows.tex",
             ],
         ),
         Step(
-            name="Inverse rep-dimension fit (toy)",
+            name="Inverse rep-dimension fit (inverse diagnostic)",
             script="exp_inverse_rep_dim_fit.py",
             expected_outputs=[
                 "sections/generated/inverse_rep_dim_fit_rows.tex",
             ],
         ),
         Step(
-            name="Inverse generation fit (toy)",
+            name="Inverse generation fit (inverse diagnostic)",
             script="exp_inverse_generation_fit.py",
             expected_outputs=[
                 "sections/generated/inverse_generation_fit_rows.tex",
+            ],
+        ),
+        Step(
+            name="Inverse (high-m) hypercharge-squared fit (inverse diagnostic)",
+            script="exp_inverse_highm_hypercharge_fit.py",
+            expected_outputs=[
+                "sections/generated/inverse_highm_hypercharge_fit_rows.tex",
+            ],
+        ),
+        Step(
+            name="Inverse (high-m) hypercharge sign fit (inverse diagnostic)",
+            script="exp_inverse_highm_hypercharge_sign_fit.py",
+            expected_outputs=[
+                "sections/generated/inverse_highm_hypercharge_sign_fit_rows.tex",
+            ],
+        ),
+        Step(
+            name="Inverse (high-m) full hypercharge numerator fit (inverse diagnostic)",
+            script="exp_inverse_highm_hypercharge_full_fit.py",
+            expected_outputs=[
+                "sections/generated/inverse_highm_hypercharge_full_fit_rows.tex",
             ],
         ),
         Step(
@@ -347,6 +429,7 @@ def build_steps() -> List[Step]:
             name="PMNS matrix closure",
             script="exp_pmns_matrix_closure.py",
             expected_outputs=[
+                "sections/generated/pmns_delta_sweep_rows.tex",
                 "sections/generated/pmns_angles_rows.tex",
                 "sections/generated/pmns_matrix_rows.tex",
                 "sections/generated/pmns_unitarity_rows.tex",
@@ -418,7 +501,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         if not script_path.is_file():
             raise FileNotFoundError(f"Missing script: {script_path}")
         print(f"[run_all] {step.name} -> {step.script}")
-        _run_script(script_path)
+        _run_script(script_path, step_name=step.name)
         _check_outputs(step.expected_outputs)
         all_expected.extend(list(step.expected_outputs))
         if args.stop_after and step.name.lower().startswith(args.stop_after.lower()):

@@ -74,8 +74,8 @@ def main() -> None:
     if len(X6) != 21:
         raise AssertionError("Expected |X6|=21.")
 
-    # Select uplift values (balanced coupling m=2n gives m=8 and m=10 for n=4,5).
-    m_list = [8, 10]
+    # Select uplift values (balanced coupling m=2n gives m=8,10,12,14,16 for n=4..8).
+    m_list = [8, 10, 12, 14, 16]
 
     # Count preimages under the prefix lift.
     counts: Dict[Tuple[str, int], int] = {}
@@ -99,7 +99,10 @@ def main() -> None:
         last_bit = int(w6[-1])
         c8 = counts[(w6, 8)]
         c10 = counts[(w6, 10)]
-        out_rows.append(f"\\texttt{{{w6}}} & {lab} & {last_bit} & {c8} & {c10} \\\\")
+        c12 = counts[(w6, 12)]
+        c14 = counts[(w6, 14)]
+        c16 = counts[(w6, 16)]
+        out_rows.append(f"\\texttt{{{w6}}} & {lab} & {last_bit} & {c8} & {c10} & {c12} & {c14} & {c16} \\\\")
 
     out_rows.append("\\bottomrule")
 

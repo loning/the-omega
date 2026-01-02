@@ -2,7 +2,7 @@
 """
 Phase-denominator sweep for the phase-lifted holonomy CP invariant.
 
-We keep the same toy edge permutation connection on the n=3 grid, but vary the
+We keep the same finite edge permutation connection on the n=3 grid, but vary the
 phase register denominator used in the phase lift:
   phi(k) = 2*pi * k / denom.
 

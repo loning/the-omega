@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Exploratory inverse fits: recover SU(3)/SU(2) representation dimensions from invariants.
+Bounded-complexity inverse diagnostics: recover SU(3)/SU(2) representation dimensions from invariants.
 
 We use the cyclic sector data (w -> SM multiplet) induced by the closed labeling map.
 Targets:

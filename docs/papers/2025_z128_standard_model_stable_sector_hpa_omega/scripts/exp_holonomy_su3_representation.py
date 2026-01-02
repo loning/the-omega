@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-SO(3) ⊂ SU(3) representation summary for toy S4 plaquette holonomy.
+SO(3) ⊂ SU(3) representation summary for finite S4 plaquette holonomy.
 
-The toy connection in this paper assigns an S4-valued transport to each grid edge.
+The finite connection in this paper assigns an S4-valued transport to each grid edge.
 For each unit-square plaquette on the n=3 Hilbert grid, exp_holonomy_loops.py
 computes the loop holonomy as a permutation in S4.
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Toy holonomy computation on elementary plaquettes of the n=3 Hilbert grid.
+Finite holonomy computation on elementary plaquettes of the n=3 Hilbert grid.
 
 We use the same discrete-connection construction as exp_edge_mismatch_decomposition.py:
 an S4-valued transport map on each undirected edge, defined by a minimum-cost

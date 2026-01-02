@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Loop-scale sweep for phase-lifted holonomy diagnostics (toy).
+Loop-scale sweep for phase-lifted holonomy diagnostics (finite diagnostic).
 
 We generalize the unit-plaquette holonomy to k×k square loops on the n=3 (8×8) grid,
 using the same deterministic S4 edge transport and the same phase-lifted unitary
@@ -171,7 +171,7 @@ def best_perm_fit(Qs: List[U3], ref: Tuple[float, float, float]) -> Tuple[float,
 
 
 def main() -> None:
-    ks = [1, 2, 3]
+    ks = list(range(1, 8))
     denom = 64
 
     pmns = (math.sqrt(0.307), math.sqrt(0.545), math.sqrt(0.0218))
@@ -185,6 +185,7 @@ def main() -> None:
         Qs, hist = collect_Qs_for_k(k=k, denom=denom)
         total = (8 - k) * (8 - k)
         count34 = hist.get("3", 0) + hist.get("4", 0)
+        mean_absJ = mean([abs(ph.jarlskog_invariant(Q)) for Q in Qs])
 
         cycle_rows.append(
             f"{k} & {total} & {hist.get('1',0)} & {hist.get('2',0)} & {hist.get('2x2',0)} & {hist.get('3',0)} & {hist.get('4',0)} & {hist.get('other',0)} \\\\"
@@ -192,12 +193,12 @@ def main() -> None:
 
         Einf, E1, r, c, s12, s23, s13 = best_perm_fit(Qs, ref=pmns)
         pmns_rows.append(
-            f"{k} & {total} & {count34} & \\texttt{{{r}}}/\\texttt{{{c}}} & {s12:.4f} & {s23:.4f} & {s13:.4f} & {Einf:.3f} & {E1:.3f} \\\\"
+            f"{k} & {total} & {count34} & \\texttt{{{r}}}/\\texttt{{{c}}} & {s12:.4f} & {s23:.4f} & {s13:.4f} & {Einf:.3f} & {E1:.3f} & {mean_absJ:.6g} \\\\"
         )
 
         Einf, E1, r, c, s12, s23, s13 = best_perm_fit(Qs, ref=ckm)
         ckm_rows.append(
-            f"{k} & {total} & {count34} & \\texttt{{{r}}}/\\texttt{{{c}}} & {s12:.4f} & {s23:.4f} & {s13:.4f} & {Einf:.3f} & {E1:.3f} \\\\"
+            f"{k} & {total} & {count34} & \\texttt{{{r}}}/\\texttt{{{c}}} & {s12:.4f} & {s23:.4f} & {s13:.4f} & {Einf:.3f} & {E1:.3f} & {mean_absJ:.6g} \\\\"
         )
 
     cycle_rows.append("\\bottomrule")

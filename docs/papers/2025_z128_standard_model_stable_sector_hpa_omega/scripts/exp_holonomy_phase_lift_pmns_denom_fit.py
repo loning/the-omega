@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Bounded-complexity selection of denom=2^p to fit PMNS mixing sines (toy).
+Bounded-complexity selection of denom=2^p to fit PMNS mixing sines (finite diagnostic).
 
 We use the 3/4-cycle aggregated mean extracted angles from the phase-lifted
 effective holonomy matrices (n=3) and compare them to representative PMNS sines:

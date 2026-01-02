@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Exploratory inverse fit: recover the generation index from intrinsic invariants.
+Bounded-complexity inverse diagnostic: recover the generation index from intrinsic invariants.
 
 In the closed SM labeling, cyclic stable types (|X6|_cyc = 18) are paired with the
 18 chiral fermion multiplets ordered by a deterministic complexity key.

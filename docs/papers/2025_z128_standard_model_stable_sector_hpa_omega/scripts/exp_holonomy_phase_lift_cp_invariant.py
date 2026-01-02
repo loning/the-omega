@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Phase-lifted holonomy and a CP-odd invariant (toy, protocol-level).
+Phase-lifted holonomy and a CP-odd invariant (finite, protocol-level).
 
-This script extends the toy S4-valued edge connection on the n=3 Hilbert grid by
+This script extends the finite S4-valued edge connection on the n=3 Hilbert grid by
 attaching a deterministic Z_128-like phase register to microstates k in {0..63}.
 
 For each oriented edge a->b with padded fibers (size 4):
@@ -23,7 +23,7 @@ To obtain an effective 3x3 unitary matrix from H, we:
 We then compute a CP-odd invariant J(Q) := Im(Q_00 Q_11 Q_01^* Q_10^*), which is
 rephasing-invariant for 3x3 unitary matrices.
 
-This is an exploratory bridge script: it does not claim that this particular
+This is a finite diagnostic bridge script: it does not claim that this particular
 phase lift is physically unique; it makes the phase choice explicit, auditable,
 and computable.
 

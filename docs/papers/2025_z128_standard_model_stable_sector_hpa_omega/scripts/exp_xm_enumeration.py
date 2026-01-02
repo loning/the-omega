@@ -20,24 +20,31 @@ from __future__ import annotations
 from pathlib import Path
 from typing import List
 
+from common_cache import CACHE_VERSION, cache_path, load_or_compute
+
 
 def all_xm(m: int) -> List[str]:
     if m <= 0:
         raise ValueError("m must be positive.")
-    out: List[str] = []
+    key = cache_path(f"xm_words_m{m}_v{CACHE_VERSION}.pkl")
 
-    def rec(prefix: str, last: str) -> None:
-        if len(prefix) == m:
-            out.append(prefix)
-            return
-        # Always allowed to append 0.
-        rec(prefix + "0", "0")
-        # Append 1 only if last was not 1.
-        if last != "1":
-            rec(prefix + "1", "1")
+    def compute() -> List[str]:
+        out: List[str] = []
 
-    rec("", "0")
-    return out
+        def rec(prefix: str, last: str) -> None:
+            if len(prefix) == m:
+                out.append(prefix)
+                return
+            # Always allowed to append 0.
+            rec(prefix + "0", "0")
+            # Append 1 only if last was not 1.
+            if last != "1":
+                rec(prefix + "1", "1")
+
+        rec("", "0")
+        return out
+
+    return load_or_compute(key, compute)
 
 
 def is_boundary_word(w: str) -> bool:
@@ -45,8 +52,8 @@ def is_boundary_word(w: str) -> bool:
 
 
 def main() -> None:
-    # Sweep values used in the paper (m-uplift at fixed n=3; also covers balanced m=2n for n=3..5).
-    m_list = [6, 7, 8, 9, 10]
+    # Sweep values used in the paper (m-uplift at fixed n=3; also covers balanced m=2n for n=3..8).
+    m_list = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
     rows: List[str] = []
     for m in m_list:
