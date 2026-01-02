@@ -61,8 +61,16 @@ def zeckendorf_value_word(word: str) -> int:
 def _set_tex(xs: List[int]) -> str:
     if not xs:
         return r"$\varnothing$"
-    inner = ", ".join(str(x) for x in xs)
-    return rf"$\{{{inner}\}}$"
+    if len(xs) == 1:
+        return rf"$\{{{xs[0]}\}}$"
+    a, b = xs[0], xs[-1]
+    contiguous = xs == list(range(a, b + 1))
+    if contiguous:
+        return rf"$\{{{a},\dots,{b}\}}$"
+    if len(xs) <= 8:
+        inner = ", ".join(str(x) for x in xs)
+        return rf"$\{{{inner}\}}$"
+    return rf"$\{{{a},\dots,{b}\}}$"
 
 
 def _fmt_status(ok: bool) -> str:
