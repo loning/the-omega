@@ -540,6 +540,13 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Higgs--Z depth offset rigidity (scalar-sector diagnostic)",
+            script="exp_higgs_z_offset_rigidity.py",
+            expected_outputs=[
+                "sections/generated/higgs_z_offset_sweep_rows.tex",
+            ],
+        ),
+        Step(
             name="Mass matching layer",
             script="exp_mass_matching_layer.py",
             expected_outputs=[

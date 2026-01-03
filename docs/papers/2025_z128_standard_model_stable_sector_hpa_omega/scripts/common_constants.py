@@ -58,6 +58,8 @@ CKM_VUB_SIGMA: float = 3.6e-4
 
 # Electroweak reference scale (GeV), used for calibration-sweep diagnostics.
 # PDG 2024: Z pole mass.
+M_W_GEV: float = 80.377
 M_Z_GEV: float = 91.1876
+M_H_GEV: float = 125.25
 
 
