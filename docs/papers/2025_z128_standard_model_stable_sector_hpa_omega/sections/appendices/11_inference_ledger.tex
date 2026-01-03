@@ -1,0 +1,129 @@
+\section{Inference ledger: what is implied within the declared input set}
+\label{app:inference_ledger}
+
+This appendix answers a compact audit question that arises repeatedly in the HPA--$\Omega$ program:
+if one does \emph{not} introduce any additional axioms or free continuous inputs beyond what is explicitly declared in the main text, what physically meaningful conclusions can be inferred, and what is their dependency status?
+We summarize the answer as a layered ledger.
+The purpose is not to add new claims, but to make explicit which statements are (i) theorem-level consequences of finite combinatorics, (ii) finite protocol constructions, (iii) conditional interface implications under stated dictionaries, and (iv) bounded-complexity closures with reported mismatch factors.
+
+\paragraph{Notation for status tags.}
+We use four audit-facing tags:
+\begin{itemize}
+\item \textbf{[Math]} theorem-level statement in the mathematical layer (finite definitions and proofs).
+\item \textbf{[Prot]} finite protocol construction (explicit algorithm on a finite model; no continuum limit assumed).
+\item \textbf{[Iface]} physical identification statement (a dictionary/assumption stated in protocol language).
+\item \textbf{[CAP]} bounded-complexity closure (finite candidate family + deterministic tie-break rules).
+\end{itemize}
+Matching-layer dictionaries (units, scheme dependence, threshold conventions) are recorded explicitly as such in the main text; they are not treated as new premises here.
+
+\subsection{Declared inputs (minimal list)}
+The paper's declared protocol primitives and interface inputs are recorded in Table~\ref{tab:audit_facing_contract} and Figure~\ref{fig:inference_map}.
+For ease of reference, the items used by the ledger below are:
+\begin{itemize}
+\item \textbf{Readout sequentiality} (Axiom~\ref{ax:readout_sequentiality}) and finite window projection (Section~\ref{sec:hpa_readout}).
+\item \textbf{Golden branch} $\alpha=\varphi^{-1}$ as the CAP-minimal slope within the stated proxy class (Proposition~\ref{prop:golden_least_discrepancy}).
+\item \textbf{Three commuting channels} $\varphi$--$\pi$--$\e$ as explicit defect predicates/operators (Section~\ref{sec:folding_core}).
+\item \textbf{Balanced coupling} as a finite cardinality match (Lemma~\ref{lem:balanced_coupling_equiv}) with anchor $(m,n)=(6,3)$.
+\item \textbf{3D locality + 6-DoF lock} as an interface anchor/dictionary (Section~\ref{subsec:6dof_lock}).
+\item \textbf{CAP audit rule} as bounded-complexity closure with deterministic tie-breaks (Axiom~\ref{ax:cap}, Definition~\ref{def:bounded_complexity_closure}).
+\item \textbf{Scan--chirality locking (SCL)} as an explicit protocol assumption (Assumption~\ref{ax:scl}).
+\item \textbf{Geometric normalization dictionaries} for couplings and CP (Section~\ref{sec:couplings_cp}).
+\item \textbf{Dyadic phase registers} $\ZZ_{2^p}$ (Section~\ref{subsec:z128_label} and Section~\ref{subsec:holonomy_phase_lift_cp}) as explicit finite refinement knobs, not hidden degrees of freedom.
+\end{itemize}
+
+\subsection{Mathematical-layer consequences (no physical identification needed)}
+\paragraph{Stable-sector grammar and counts.}
+\begin{itemize}
+\item \textbf{[Math]} \textbf{Fibonacci admissible counts.}
+For every $m\ge 1$, the $\varphi$-admissible set $X_m\subset\Omega_m$ (forbidden substring ``11'') satisfies $|X_m|=F_{m+2}$ (Lemma~\ref{lem:xm_fib}).
+In particular, $|X_6|=21$.
+\item \textbf{[Math]} \textbf{Canonical $\pi$-split.}
+For $m\ge 4$, the wrap-around predicate $D_\pi$ induces a canonical cyclic/boundary split
+$X_m=X_m^{\mathrm{cyc}}\sqcup X_m^{\mathrm{bdry}}$ with
+$|X_m^{\mathrm{bdry}}|=F_{m-2}$ and $|X_m^{\mathrm{cyc}}|=F_{m+2}-F_{m-2}$
+(Proposition~\ref{prop:cyc_bdry_size}).
+At $m=6$ this is $21=18\oplus 3$ with explicit boundary words (Corollary~\ref{prop:cyc_bdry_6}).
+\item \textbf{[Math]} \textbf{Fold surjectivity.}
+The truncation folding map $\mathrm{Fold}_m:\{0,\dots,2^m-1\}\twoheadrightarrow X_m$ is surjective for every $m\ge 1$ (Proposition~\ref{prop:foldm_surjective}), and in particular $\mathrm{Fold}_6:\{0,\dots,63\}\twoheadrightarrow X_6$ (Lemma~\ref{lem:fold6_surjective}).
+\item \textbf{[Math]} \textbf{Canonical integer labeling of $X_6$.}
+The Zeckendorf-value map $V:X_6\to\{0,\dots,20\}$ is a bijection (Proposition~\ref{prop:V_bijection}).
+\end{itemize}
+
+\paragraph{Hilbert-path chirality sign law.}
+\begin{itemize}
+\item \textbf{[Math]} \textbf{Parity and traversal reversal flip $\chi$.}
+For the discrete Hilbert chirality index $\chi$ defined in \eqref{eq:hilbert_chi_def}, any reflection and traversal reversal flip its sign, while orientation-preserving rigid motions preserve it (Proposition~\ref{prop:chi_flip}).
+\end{itemize}
+
+\subsection{Finite protocol constructions (computable, no continuum limit assumed)}
+\paragraph{Discrete connection/holonomy skeleton at $(m,n)=(6,3)$.}
+\begin{itemize}
+\item \textbf{[Prot]} \textbf{A deterministic $S_4$ edge connection.}
+At the $m=6$ anchor, stable-type fibers satisfy $|P(w)|\in\{2,3,4\}$.
+Padding to $4$ slots and minimizing Hamming-cost matchings yields a deterministic edge transport $p_{a\to b}\in S_4$ (Lemma~\ref{lem:edge_transport_welldefined}).
+\item \textbf{[Prot]} \textbf{Gauge-invariant plaquette signatures.}
+Under local relabelings of fiber slots, plaquette holonomy transforms by conjugation, so its $S_4$ cycle type is invariant (Proposition~\ref{prop:cycle_type_gauge_invariant}).
+\item \textbf{[Prot]} \textbf{Dyadic phase-lift and a CP-odd invariant.}
+Given a bounded low-complexity phase map family $\tau$ and dyadic denominator $\mathrm{denom}=2^p$, the phase-lifted edge transport produces a finite holonomy model with an induced Jarlskog-type invariant $J$ (Section~\ref{subsec:holonomy_phase_lift_cp}).
+The role of $\ZZ_{128}$ is explicit at $p=7$ (Remark~\ref{rem:dyadic_phase_register}).
+\end{itemize}
+
+\subsection{Interface-level implications (conditional on stated dictionaries)}
+\paragraph{Geometric lower bound and the vacuum sector.}
+\begin{itemize}
+\item \textbf{[Iface]} \textbf{Localization admissibility threshold.}
+Under the 3D locality dictionary and the 6-DoF coarse-lock rule (Section~\ref{subsec:6dof_lock}), window lengths $m<6$ are sub-geometric for localized rigid-frame readout and are treated as protocol-rejected as matter (Section~\ref{subsubsec:geometric_vacuum}).
+\item \textbf{[Iface]} \textbf{Ghost-sector vacuum microstructure at fixed $m$.}
+Even at fixed $m$, microstates outside the admissible grammar are protocol-unstable.
+At $m=6$, the ghost-sector size is $|\Omega_6\setminus X_6|=64-21=43$ (Appendix~\ref{app:ghost_sector}).
+\end{itemize}
+
+\paragraph{Gauge fields as compensating connections.}
+\begin{itemize}
+\item \textbf{[Iface]} \textbf{Compensation is forced by finite fibers.}
+When stable labels have nontrivial fibers, cross-site comparison requires an additional transport rule; local relabelings imply a gauge redundancy (Proposition~\ref{ax:gauge_compensation}).
+\item \textbf{[Iface]+[CAP]} \textbf{Three-factor closure and the SM gauge triple.}
+If compensation decomposes into three commuting classes and gauge factors are modeled as compact unitary groups, then CAP-minimal selection within the stated factorization family yields $U(1)\times SU(2)\times SU(3)$ up to finite quotients (Proposition~\ref{prop:channel_to_gauge}).
+\end{itemize}
+
+\paragraph{Chirality, antimatter, and CP-sign anchoring.}
+\begin{itemize}
+\item \textbf{[Iface]} \textbf{Parity as protocol change.}
+Under SCL, the only physically distinguishable discrete choice in the $D_4$ layout family is the orientation class detected by $\mathrm{sgn}(\chi)$ (Assumption~\ref{ax:scl}, Proposition~\ref{prop:orientation_class_minimal}).
+\item \textbf{[Iface]} \textbf{Conjugation-as-reversal and antimatter dual.}
+Phase conjugation of the scan orbit corresponds to scan reversal up to an initial-phase flip (Lemma~\ref{lem:conjugation_reversal} and Lemma~\ref{lem:conjugation_readout_reversal}), motivating a protocol antimatter dual by word reversal (Definition~\ref{def:word_reversal_dual}).
+\item \textbf{[Iface]} \textbf{Chirality-anchored CP sign.}
+Within a fixed protocol class and a fixed PDG parameterization, CP-odd sign conventions are anchored by $\mathrm{sgn}(\chi)$ (Definition~\ref{ax:chi_cp_sign}).
+\end{itemize}
+
+\paragraph{Closed labeling and minimal chiral content.}
+\begin{itemize}
+\item \textbf{[Iface]+[CAP]} \textbf{Closed $21$-type labeling at the anchor.}
+Once one commits to the split semantics (cyclic $\leftrightarrow$ matter multiplets, boundary $\leftrightarrow$ gauge-factor classes) and to the stated deterministic ordering rules, the labeling map $\mathcal{L}_{\mathrm{SM}}$ is uniquely fixed (Theorem~\ref{thm:labeling_unique}).
+\item \textbf{[Iface]} \textbf{Anomaly-neutral closure forces a sterile $\nu_R$.}
+Closing the cyclic count to $18$ with the smallest anomaly-neutral extension selects a sterile singlet $\nu_R$ with $Y=0$; anomaly cancellation is unchanged by adding $\nu_R$ (Proposition~\ref{prop:anomaly_nur}).
+\end{itemize}
+
+\subsection{Quantitative rigidity targets and closures (within stated finite families)}
+The following are recorded in the main text as explicit low-complexity targets or bounded-complexity selections, together with mismatch factors and audit context (Appendix~\ref{app:generated_tables}):
+\begin{itemize}
+\item \textbf{[Iface]} \textbf{Electromagnetic impedance target.}
+$\alpha_{\mathrm{em}}^{-1}{}_{\mathrm{geo}}=4\pi^3+\pi^2+\pi$ (Theorem~\ref{thm:alpha_three_channel}).
+\item \textbf{[Iface]} \textbf{Electroweak volume target.}
+$\alpha^{-1}(\mu_Z)=13\pi^2$ and $\sin^2\theta_W(\mu_Z)=3/13$ (Theorem~\ref{thm:weinberg_angle}).
+\item \textbf{[Iface]} \textbf{CP volume/multiplicity target.}
+$J_{\mathrm{geo}}=1/(11\pi^7)$ (equation \eqref{eq:j_geo} and Proposition~\ref{prop:jarlskog_rigidity_stmt}).
+\item \textbf{[CAP]} \textbf{Discrete mixing closures.}
+CKM magnitudes (Proposition~\ref{prop:ckm_mixing_rigidity}) and PMNS mixing sines plus bounded-denominator $\delta$ closure (Proposition~\ref{prop:pmns_mixing_rigidity} and Table~\ref{tab:pmns_delta_sweep}).
+\item \textbf{[CAP]} \textbf{Mass-depth rigidity.}
+Within the bounded integer ansatz, the coefficients $(2,5,1)$ are rigidly selected (Proposition~\ref{prop:rhat_rigidity}).
+\item \textbf{[CAP]} \textbf{Resolution staircase calibration.}
+Within the bounded family $r_{\mathrm{step}}=k\pi$ ($1\le k\le 10$), the calibration $r_{\mathrm{step}}=2\pi$ is uniquely selected under the stated objectives (Proposition~\ref{prop:r_step_2pi}).
+\item \textbf{[CAP]} \textbf{Scalar-sector uplift marker.}
+The Higgs--$Z$ depth offset closure $\Delta r_{HZ}=2/3$ is selected within the stated bounded rational family (Proposition~\ref{prop:higgs_z_offset_rigidity}), consistent with treating scalar behavior as uplift/coarse-graining dependent rather than as a new $m=6$ stable type (Proposition~\ref{prop:scalar_sector_closed}).
+\end{itemize}
+
+\paragraph{Connection to falsifiability.}
+The falsifiability statements P1--P6 in Section~\ref{sec:falsifiability} are phrased entirely in this protocol language:
+they depend on the declared interface items above and on audited finite constructions, and they do not add new theorem-level premises beyond the stated input set.
+
