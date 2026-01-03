@@ -40,6 +40,12 @@ For each undirected nearest-neighbor grid edge $\{a,b\}$, we define a determinis
 \end{itemize}
 This produces a discrete, non-abelian edge connection on edges, designed to be auditable and fully reproducible by a finite exhaustive search over $4!$ matchings per edge.
 
+\begin{remark}[Why we pad fibers to $4$ and use Hamming cost]\label{rem:pad4_hamming_rationale}
+At $(m,n)=(6,3)$ the Fold$_6$ preimage sizes satisfy $|P(w)|\in\{2,3,4\}$ (Theorem~\ref{thm:fold6_stats}), so rank-$4$ padding is the unique smallest uniform slot count that accommodates every fiber without truncation.
+Repeating the last element is a deterministic minimal padding that does not introduce any new microstate index beyond the true fiber.
+For the cost, Hamming distance on $\{0,1\}^6$ is the canonical bit-flip metric induced by the readout alphabet itself; it measures the minimal number of elementary bit changes between microstates and is independent of any external geometric scale.
+\end{remark}
+
 \begin{definition}[Hamming distance on microstates]\label{def:hamming_microstates}
 Let $u,v\in\Omega_6=\{0,1\}^6$.
 Define the Hamming distance
@@ -146,6 +152,10 @@ Concretely, let $\rho:S_4\to O(4)$ act by permutation matrices on $\RR^4$, and l
 H:=\Bigl\{x\in\RR^4:\ \sum_{i=1}^4 x_i=0\Bigr\},
 \]
 the sum-zero subspace. Then $H$ is $\rho$-invariant and $\dim H=3$.
+\begin{remark}[Why the sum-zero subspace is canonical]\label{rem:sum_zero_canonical}
+The permutation representation of $S_4$ on $\RR^4$ contains a trivial one-dimensional invariant subspace spanned by $(1,1,1,1)$.
+Restricting to $H$ removes this trivial mode and yields the standard $3$-dimensional representation that captures the nontrivial mixing of slots; see, e.g., \cite{Serre1977}.
+\end{remark}
 
 \begin{lemma}[Sign-twisted standard representation $S_4\to SO(3)$]\label{lem:s4_so3_twist}
 Let $\rho_H:S_4\to O(H)\cong O(3)$ be the restriction of the permutation representation to $H$.
@@ -203,6 +213,11 @@ Fix a dyadic denominator $\mathrm{denom}=2^p$ and a low-complexity index map $\t
 \tau_{\mathrm{not}}(k)=63-k.
 \]
 Here $\oplus$ and $\gg$ denote bitwise XOR and right shift on $6$-bit integers, and $\mathrm{bitreverse}_6$ reverses the $6$-bit binary expansion.
+\begin{remark}[Why the phase-map family is bounded]\label{rem:tau_family_bounded}
+The map $\tau$ is a pure indexing convention for attaching phases to the finite microstate set $\{0,\dots,63\}$.
+To bound look-elsewhere freedom, we restrict to a small explicit family of invertible, bit-level transforms of minimal description complexity (identity, Gray map, bit reversal, and complement).
+This keeps the phase attachment auditable and makes any refinement of the map family an explicit change of the finite candidate set rather than an implicit tuning knob.
+\end{remark}
 \begin{remark}[Dyadic phase registers and \texorpdfstring{$\ZZ_{128}$}{Z128}]\label{rem:dyadic_phase_register}
 The choice $\mathrm{denom}=2^p$ matches the finite-ring phase-register stance in which phases are represented in $\ZZ_{2^p}$ rather than as continuous angles.
 In particular, $p=7$ corresponds to a $\ZZ_{128}$ register.
