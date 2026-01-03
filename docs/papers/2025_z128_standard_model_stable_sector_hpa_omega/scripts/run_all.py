@@ -640,6 +640,28 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Rigidity alpha coefficient simplex",
+            script="exp_alpha_coeff_rigidity.py",
+            expected_outputs=[
+                "sections/generated/alpha_coeff_rigidity_rows.tex",
+            ],
+        ),
+        Step(
+            name="Rigidity electroweak Z-scale",
+            script="exp_ew_rigidity.py",
+            expected_outputs=[
+                "sections/generated/ew_alpha_pi2_rigidity_rows.tex",
+                "sections/generated/ew_sin2_rational_rigidity_rows.tex",
+            ],
+        ),
+        Step(
+            name="Rigidity Jarlskog pi-ansatz",
+            script="exp_jarlskog_pi_rigidity.py",
+            expected_outputs=[
+                "sections/generated/jarlskog_pi_rigidity_rows.tex",
+            ],
+        ),
+        Step(
             name="Audit summary",
             script="exp_audit_summary.py",
             expected_outputs=[
