@@ -154,6 +154,13 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Coarse-grained scalar parity check",
+            script="exp_scalar_coarse_grain.py",
+            expected_outputs=[
+                "sections/generated/scalar_coarse_grain_rows.tex",
+            ],
+        ),
+        Step(
             name="Resolution-threshold staircase",
             script="exp_resolution_thresholds.py",
             expected_outputs=[
