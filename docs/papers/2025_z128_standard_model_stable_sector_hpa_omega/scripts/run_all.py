@@ -531,6 +531,20 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Inverse diagnostic summary (main-text)",
+            script="exp_inverse_diag_summary.py",
+            expected_outputs=[
+                "sections/generated/inverse_diag_summary_rows.tex",
+            ],
+        ),
+        Step(
+            name="Labeling order-key sensitivity (audit)",
+            script="exp_labeling_order_sensitivity.py",
+            expected_outputs=[
+                "sections/generated/labeling_order_sensitivity_rows.tex",
+            ],
+        ),
+        Step(
             name="Mass spectrum",
             script="exp_mass_spectrum.py",
             expected_outputs=[
@@ -559,6 +573,13 @@ def build_steps() -> List[Step]:
             script="exp_mass_depth_rigidity.py",
             expected_outputs=[
                 "sections/generated/mass_depth_rigidity_rows.tex",
+            ],
+        ),
+        Step(
+            name="Mass depth leave-one-out (robustness)",
+            script="exp_mass_depth_leave_one_out.py",
+            expected_outputs=[
+                "sections/generated/mass_depth_leave_one_out_rows.tex",
             ],
         ),
         Step(
@@ -594,6 +615,13 @@ def build_steps() -> List[Step]:
                 "sections/generated/pmns_angles_rows.tex",
                 "sections/generated/pmns_matrix_rows.tex",
                 "sections/generated/pmns_unitarity_rows.tex",
+            ],
+        ),
+        Step(
+            name="PMNS NO/IO stability diagnostic",
+            script="exp_pmns_no_io_stability.py",
+            expected_outputs=[
+                "sections/generated/pmns_no_io_stability_rows.tex",
             ],
         ),
         Step(
@@ -666,6 +694,13 @@ def build_steps() -> List[Step]:
             script="exp_quant_summary.py",
             expected_outputs=[
                 "sections/generated/quant_summary_rows.tex",
+            ],
+        ),
+        Step(
+            name="Sigma mismatch summary table",
+            script="exp_sigma_summary.py",
+            expected_outputs=[
+                "sections/generated/sigma_summary_rows.tex",
             ],
         ),
         Step(

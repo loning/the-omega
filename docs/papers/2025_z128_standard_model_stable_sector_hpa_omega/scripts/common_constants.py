@@ -38,8 +38,14 @@ JARLSKOG_PDG_SIGMA: float = 0.15e-5
 PMNS_SIN2_T12_REF: float = 0.307
 PMNS_SIN2_T23_REF: float = 0.545
 PMNS_SIN2_T13_REF: float = 0.0218
-# A representative Dirac phase (degrees). Used only to set the CP-odd anchor sign
-# in the discrete delta-closure; see the paper for the audit separation.
+# Representative inverted-ordering (IO) reference values (dimensionless), used only for
+# robustness/ordering-sensitivity diagnostics (not as mathematical premises).
+PMNS_SIN2_T12_REF_IO: float = 0.307
+PMNS_SIN2_T23_REF_IO: float = 0.551
+PMNS_SIN2_T13_REF_IO: float = 0.0220
+# A representative Dirac phase (degrees), used only for the reference reconstruction
+# and to set the magnitude target |J_l,ref| in the discrete delta-closure; see the paper
+# for the audit separation.
 PMNS_DELTA_REF_DEG: float = 195.0
 
 # Representative uncertainty model parameters used by audit scripts (explicit, deterministic stress tests).

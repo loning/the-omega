@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import Callable, List, Tuple
 
 import exp_ckm_mixing_depth_rigidity as ckm
+import exp_hilbert_chirality_index as hilb
 import exp_mass_depth_rigidity as mdr
 import exp_pmns_matrix_closure as pmns_mat
 import exp_pmns_mixing_depth_rigidity as pmns
@@ -145,14 +146,26 @@ def pmns_delta_minimizer(s12: float, s23: float, s13: float, delta_ref_deg: floa
     Discrete delta closure used by exp_pmns_matrix_closure.py, expressed as a minimizer.
     """
     delta_ref = float(delta_ref_deg) * math.pi / 180.0
-    J_ref = pmns_mat.J_from_angles(s12, s23, s13, delta_ref)
-    # Match the quadrant of the reference phase via sign(cos delta_ref).
-    c = math.cos(delta_ref)
-    cos_ref_sign = 0 if c == 0.0 else (1 if c > 0.0 else -1)
+    U_ref = pmns_mat.pmns_parameterization(s12, s23, s13, delta_ref)
+    J_ref_abs = abs(pmns_mat.J_from_angles(s12, s23, s13, delta_ref))
+
+    chi = hilb.chirality_index(hilb.hilbert_curve(n_bits=3))
+    chi_sign = 1 if chi > 0 else (-1 if chi < 0 else 0)
+    if chi_sign == 0:
+        raise AssertionError("Unexpected chi==0; cannot anchor CP-odd sign.")
+
     # Use the same bounded-denominator candidate family as the main PMNS closure.
     Q_MAX = 12
     cands = pmns_mat.delta_candidates_bounded_denominator(Q_MAX)
-    best = pmns_mat.select_delta_discrete(s12=s12, s23=s23, s13=s13, J_ref=J_ref, cos_ref_sign=cos_ref_sign, candidates=cands)
+    best = pmns_mat.select_delta_discrete(
+        s12=s12,
+        s23=s23,
+        s13=s13,
+        chi_sign=chi_sign,
+        J_ref_abs=J_ref_abs,
+        U_ref=U_ref,
+        candidates=cands,
+    )
     return float(best.delta)
 
 

@@ -3,6 +3,7 @@
 \label{sec:couplings_cp}
 
 This section records two interface points: (i) coupling constants as geometric normalization costs, and (ii) CP violation as a CP-odd phase-space volume with discrete multiplicity.
+We treat the closed expressions below as interface-level normalizations: they follow from explicitly stated axioms and canonical geometric data, and their mismatch to scheme-/scale-dependent experimental conventions is recorded as a matching-layer factor.
 
 \subsection{Three-channel impedance and the fine-structure constant}
 \label{subsec:alpha_impedance}
@@ -11,25 +12,101 @@ The inverse fine-structure constant admits a closed three-stratum geometric impe
 \begin{equation}\label{eq:alpha_geo}
 \alpha_{\mathrm{em}}^{-1}{}_{\mathrm{geo}}=4\pi^3+\pi^2+\pi\approx 137.0363037759.
 \end{equation}
-We record a short geometric derivation for completeness.
-\begin{proposition}[Three-stratum volume derivation of \texorpdfstring{$\alpha_{\mathrm{geo}}^{-1}$}{alpha-geo-inv}]\label{prop:alpha_geo_volume_derivation}
-Assume (i) serial composition of independent readout strata multiplies readout weights and therefore adds log-costs \cite{Shannon1948,CoverThomas2006}, and (ii) each stratum cost equals the canonical volume of a compact phase space (with quotient metrics for projective identifications).
-With the stratum assignment
+We make the interface assumptions explicit.
+
+\begin{axiom}[Serial composition and logarithmic impedance (interface)]\label{ax:serial_impedance}
+If a readout protocol must satisfy independent constraints in a fixed hierarchy (``strata'') in series, assign each stratum $j$ a multiplicative weight $w_j\in(0,1]$ and define its log-cost $V_j:=-\log w_j$ \cite{Shannon1948,CoverThomas2006}.
+The total weight is $w_{\mathrm{tot}}=\prod_j w_j$, and the corresponding impedance is the additive cost
+\[
+\alpha_{\mathrm{geo}}^{-1}:=-\log w_{\mathrm{tot}}=\sum_j V_j.
+\]
+\end{axiom}
+
+\begin{axiom}[Geometric cost as canonical phase volume (interface)]\label{ax:impedance_volume}
+For each stratum $j$, the cost is identified with a canonical geometric invariant of a compact phase space $\mathcal{M}_j$:
+\[
+V_j=\mathrm{Vol}(\mathcal{M}_j),
+\]
+where $\mathrm{Vol}$ is computed using the standard bi-invariant metric on compact Lie groups together with induced quotient metrics for projective $\ZZ_2$ identifications; see, e.g., \cite{Nakahara2003,HallLieGroups2015}.
+\end{axiom}
+
+\begin{axiom}[Electromagnetic three-stratum phase spaces (interface)]\label{ax:em_phase_spaces}
+For the electromagnetic normalization channel, take the three strata to be
 \[
 \mathcal{M}_{\mathrm{bulk}}\cong U(1)\times SU(2),\qquad
 \mathcal{M}_{\mathrm{boundary}}\cong SO(3),\qquad
-\mathcal{M}_{\mathrm{line}}\cong \mathbb{R}P^1,
+\mathcal{M}_{\mathrm{line}}\cong \mathbb{R}P^1.
 \]
-one obtains
+The projective quotients encode the ray-space $\ZZ_2$ identification intrinsic to readout.
+\end{axiom}
+
+\begin{lemma}[Canonical volumes of \texorpdfstring{$U(1)$}{U(1)}, \texorpdfstring{$SU(2)$}{SU(2)}, \texorpdfstring{$SO(3)$}{SO(3)}, and \texorpdfstring{$\mathbb{R}P^1$}{RP1}]\label{lem:group_volumes}
+With the standard unit-radius normalizations,
 \[
-\alpha_{\mathrm{geo}}^{-1}
-=\mathrm{Vol}(\mathcal{M}_{\mathrm{bulk}})+\mathrm{Vol}(\mathcal{M}_{\mathrm{boundary}})+\mathrm{Vol}(\mathcal{M}_{\mathrm{line}})
-=4\pi^3+\pi^2+\pi.
+\mathrm{Vol}(U(1))=2\pi,\qquad
+\mathrm{Vol}(SU(2))=\mathrm{Vol}(S^3)=2\pi^2.
+\]
+Moreover, the $\ZZ_2$ quotients satisfy
+\[
+\mathrm{Vol}(SO(3))=\mathrm{Vol}(SU(2)/\{\pm \ind\})=\pi^2,\qquad
+\mathrm{Vol}(\mathbb{R}P^1)=\mathrm{Vol}(U(1)/\{\pm 1\})=\pi.
+\]
+Consequently, $\mathrm{Vol}(U(1)\times SU(2))=4\pi^3$.
+\end{lemma}
+\begin{proof}
+The first identity is the circumference of the unit circle.
+For $SU(2)\cong S^3$, integrating the standard volume form on the unit $3$-sphere gives $\mathrm{Vol}(S^3)=2\pi^2$ \cite{Nakahara2003,HallLieGroups2015}.
+The quotient maps $SU(2)\to SO(3)=SU(2)/\{\pm \ind\}$ and $U(1)\to \mathbb{R}P^1=U(1)/\{\pm 1\}$ are two-sheeted Riemannian coverings under the induced quotient metrics, so the quotient volumes are halved.
+The product identity follows by multiplicativity of product volumes.
+\end{proof}
+
+\begin{proposition}[Primitive factorization rigidity for the electromagnetic strata]\label{prop:alpha_phase_factorization_rigidity}
+Fix the primitive candidate set
+\[
+\mathfrak{P}:=\{U(1),SU(2),SO(3),\mathbb{R}P^1\},
+\]
+equipped with the canonical volumes of Lemma~\ref{lem:group_volumes}.
+Restrict the bulk stratum to be a product of two primitives and restrict the boundary and line strata to be single primitives.
+Impose the target scalings
+\[
+\mathrm{Vol}(\mathcal{M}_{\mathrm{bulk}})=4\pi^3,\qquad
+\mathrm{Vol}(\mathcal{M}_{\mathrm{boundary}})=\pi^2,\qquad
+\mathrm{Vol}(\mathcal{M}_{\mathrm{line}})=\pi.
+\]
+Then, up to ordering, the strata are forced as
+\[
+\mathcal{M}_{\mathrm{bulk}}\cong U(1)\times SU(2),\qquad
+\mathcal{M}_{\mathrm{boundary}}\cong SO(3),\qquad
+\mathcal{M}_{\mathrm{line}}\cong \mathbb{R}P^1.
 \]
 \end{proposition}
 \begin{proof}
-Use the standard identities $\mathrm{Vol}(U(1))=2\pi$, $\mathrm{Vol}(SU(2))=2\pi^2$, $\mathrm{Vol}(SO(3))=\pi^2$ (as $SU(2)/\{\pm \ind\}$), and $\mathrm{Vol}(\mathbb{R}P^1)=\pi$ (as $U(1)/\{\pm 1\}$) under the induced quotient metrics; see, e.g., \cite{Nakahara2003,HallLieGroups2015}.
-Then $\mathrm{Vol}(U(1)\times SU(2))=(2\pi)(2\pi^2)=4\pi^3$, and summing the three stratum volumes gives \eqref{eq:alpha_geo}.
+By Lemma~\ref{lem:group_volumes}, the one-factor values in $\mathfrak{P}$ are $2\pi$, $2\pi^2$, $\pi^2$, and $\pi$.
+Any two-factor product has the form $2^m\pi^k$ with $m\in\{0,1,2\}$ and $k\in\{2,3,4\}$.
+The constraint $\mathrm{Vol}(\mathcal{M}_{\mathrm{bulk}})=4\pi^3$ forces exponent pattern $(1,2)$ and coefficient $4$, hence the factors must be $U(1)$ and $SU(2)$.
+For one-factor realizations, $\pi^2$ occurs only for $SO(3)$ and $\pi$ occurs only for $\mathbb{R}P^1$ in $\mathfrak{P}$, forcing the boundary and line strata.
+\end{proof}
+
+\begin{remark}[Serial aggregation is not interchangeable]\label{rem:alpha_aggregation_isolation}
+Under the serial semantics of Axiom~\ref{ax:serial_impedance}, the impedance is additive after the logarithmic readout map.
+For context, if one replaces serial aggregation by other standard aggregation rules acting on the three stratum costs $V_{\mathrm{bulk}}=4\pi^3$, $V_{\mathrm{boundary}}=\pi^2$, and $V_{\mathrm{line}}=\pi$, the resulting values are far from the CODATA reference:
+the Euclidean aggregation $\sqrt{V_{\mathrm{bulk}}^2+V_{\mathrm{boundary}}^2+V_{\mathrm{line}}^2}$ gives $124.4568430929$,
+the max aggregation $\max\{V_{\mathrm{bulk}},V_{\mathrm{boundary}},V_{\mathrm{line}}\}$ gives $124.0251067212$,
+and the parallel-impedance aggregation $(V_{\mathrm{bulk}}^{-1}+V_{\mathrm{boundary}}^{-1}+V_{\mathrm{line}}^{-1})^{-1}$ gives $2.3381204994$.
+\end{remark}
+\begin{theorem}[Three-stratum geometric impedance for \texorpdfstring{$\alpha_{\mathrm{em}}$}{alpha_em}]\label{thm:alpha_three_channel}
+Under Axioms~\ref{ax:serial_impedance}--\ref{ax:em_phase_spaces}, one has
+\[
+\alpha_{\mathrm{em}}^{-1}{}_{\mathrm{geo}}
+=\mathrm{Vol}(U(1)\times SU(2))+\mathrm{Vol}(SO(3))+\mathrm{Vol}(\mathbb{R}P^1)
+=4\pi^3+\pi^2+\pi,
+\]
+hence \eqref{eq:alpha_geo}.
+\end{theorem}
+\begin{proof}
+By Axiom~\ref{ax:serial_impedance} and Axiom~\ref{ax:impedance_volume}, the impedance equals the serial sum of the three stratum volumes.
+By Axiom~\ref{ax:em_phase_spaces} and Lemma~\ref{lem:group_volumes}, $\mathrm{Vol}(U(1)\times SU(2))=4\pi^3$, $\mathrm{Vol}(SO(3))=\pi^2$, and $\mathrm{Vol}(\mathbb{R}P^1)=\pi$.
+Summing gives \eqref{eq:alpha_geo}.
 \end{proof}
 This matches the philosophy of the present paper: coupling strength is not an arbitrary input, but a normalization cost induced by finite-resolution readout and compensation.
 \paragraph{Interface reading.}
@@ -40,12 +117,13 @@ In this sense, \eqref{eq:alpha_geo} is a numerical instance of the same template
 Let $\alpha^{-1}_{\mathrm{CODATA}}$ denote the CODATA recommended inverse fine-structure constant \cite{CODATA2022RMP}.
 The mismatch in inverse impedance is:
 \begin{equation}\label{eq:alpha_codata_mismatch}
-\Delta\alpha^{-1}:=\alpha_{\mathrm{geo}}^{-1}-\alpha_{\mathrm{CODATA}}^{-1}\approx 3.046\times 10^{-4},
+\Delta\alpha^{-1}:=\alpha_{\mathrm{em}}^{-1}{}_{\mathrm{geo}}-\alpha_{\mathrm{CODATA}}^{-1}\approx 3.046\times 10^{-4},
 \qquad
 \frac{\Delta\alpha^{-1}}{\alpha_{\mathrm{CODATA}}^{-1}}\approx 2.22\times 10^{-6}.
 \end{equation}
 Since the CODATA uncertainty on $\alpha^{-1}$ is at the $10^{-8}$ level \cite{CODATA2022RMP}, the ppm-scale deviation in \eqref{eq:alpha_codata_mismatch} should be read as a protocol-level matching factor between a closed normalization target and a renormalized experimental convention, not as an ``agreement within error bars'' claim.
 Equivalently, in the multiplicative weight variable $w=\exp(-\alpha^{-1})$, the interface mismatch is a single factor $s_\alpha=\exp(\Delta\alpha^{-1})\approx 1.0003046$.
+Using the one-loop dictionary in Remark~\ref{rem:qed_running_scale_shift}, the additive mismatch $\Delta\alpha^{-1}$ can be equivalently represented as a matching-layer scale ratio $\mu_\ast/\mu_0=\exp(-(2\pi/b)\Delta\alpha^{-1})$ at fixed one-loop coefficient $b$.
 
 \paragraph{Rigidity at bounded coefficient complexity.}
 At bounded coefficient complexity (small nonnegative integers in the ansatz $a\pi^3+b\pi^2+c\pi$), the triple $(a,b,c)=(4,1,1)$ is rigidly singled out as the unique best fit in a finite search domain in the audit log-mismatch norm.
@@ -79,18 +157,18 @@ and the gauge-sector normalizations can be written as
 \alpha_w^{-1}(\mu_Z)=3\pi^2,\qquad \alpha_Y^{-1}(\mu_Z)=10\pi^2,\qquad \alpha^{-1}(\mu_Z)=13\pi^2,
 \end{equation}
 under a canonical volume assignment consistent with the Standard Model relation between gauge couplings and the electromagnetic coupling \cite{Glashow1961,Weinberg1967,Salam1968,PeskinSchroeder1995,PDGRPP2024}.
-\begin{proposition}[Electroweak normalization from weighted volumes (closed model)]\label{prop:ew_volume_quantization}
-Assume the $Z$-scale inverse couplings are given by weighted canonical volumes
+\begin{axiom}[Electroweak inverse couplings as weighted volumes (interface)]\label{ax:ew_volumes}
+At the matching scale $\mu=\mu_Z$, define the inverse couplings by weighted canonical volumes
 \[
 \alpha_w^{-1}(\mu_Z)=\dim(\mathfrak{su}(2))\,\mathrm{Vol}(SO(3)),\qquad
 \alpha_Y^{-1}(\mu_Z)=\Bigl(\sum_{f\in\mathrm{SM}}Y_f^2\Bigr)\mathrm{Vol}(SO(3)),
 \]
 with hypercharge normalized by $Q=T_3+Y$.
-Then \eqref{eq:ew_inverse_alphas} holds and, consequently,
-\[
-\sin^2\theta_W(\mu_Z)=\frac{3}{13}.
-\]
-\end{proposition}
+\end{axiom}
+
+\begin{theorem}[Electroweak normalization and the Weinberg angle]\label{thm:weinberg_angle}
+Under Axiom~\ref{ax:ew_volumes}, one has \eqref{eq:ew_inverse_alphas} and, consequently, \eqref{eq:weinberg_3_13}.
+\end{theorem}
 \begin{proof}
 One has $\dim(\mathfrak{su}(2))=3$ (Lemma~\ref{lem:gauge_dim_order}) and $\sum_{f\in\mathrm{SM}}Y_f^2=10$ for three generations (Lemma~\ref{lem:hypercharge_sum_10}).
 With the canonical quotient metric, $\mathrm{Vol}(SO(3))=\pi^2$ \cite{Nakahara2003}.
@@ -179,25 +257,38 @@ Using the one-loop scale-shift dictionary in Remark~\ref{rem:qed_running_scale_s
 \label{subsec:cp_jarlskog}
 
 For quark mixing, a basis-independent measure of CP violation is the Jarlskog invariant $J$ \cite{Jarlskog1985}.
-CP violation is modeled here by a CP-odd phase-space assignment together with a discrete multiplicity factor:
+We adopt an explicit interface axiom and record the resulting canonical closed value.
+\begin{axiom}[CP-odd phase space (interface)]\label{ax:cp_phase_space}
+Define the CP-odd readout sector by
 \begin{equation}\label{eq:cp_phase_space}
-\mathcal{M}_{\mathrm{CP}}\cong SO(3)\times SO(3)\times SO(3)\times \mathbb{R}P^1,
-\qquad
-\mathrm{Vol}(\mathcal{M}_{\mathrm{CP}})=\pi^7,
+\mathcal{M}_{\mathrm{CP}}\cong SO(3)\times SO(3)\times SO(3)\times \mathbb{R}P^1.
 \end{equation}
-\begin{remark}[Normalization of $\mathrm{Vol}(\mathcal{M}_{\mathrm{CP}})$]
-The volume convention in \eqref{eq:cp_phase_space} uses the quotient metrics
-$SO(3)\cong SU(2)/\{\pm \ind\}$ and $\mathbb{R}P^1\cong S^1/\{\pm 1\}$ inherited from the unit spheres.
-With $\mathrm{Vol}(SU(2))=\mathrm{Vol}(S^3)=2\pi^2$, one has $\mathrm{Vol}(SO(3))=\pi^2$.
-Likewise $\mathrm{Vol}(\mathbb{R}P^1)=\pi$.
+\end{axiom}
+\begin{lemma}[Canonical volume of \texorpdfstring{$\mathcal{M}_{\mathrm{CP}}$}{M_CP}]\label{lem:cp_volume_pi7}
+Under the canonical quotient metrics, $\mathrm{Vol}(\mathcal{M}_{\mathrm{CP}})=\pi^7$.
+\end{lemma}
+\begin{proof}
+By Lemma~\ref{lem:group_volumes}, $\mathrm{Vol}(SO(3))=\pi^2$ and $\mathrm{Vol}(\mathbb{R}P^1)=\pi$.
 Therefore $\mathrm{Vol}(\mathcal{M}_{\mathrm{CP}})=(\pi^2)^3\cdot \pi=\pi^7$.
-\end{remark}
-and
+\end{proof}
 \begin{equation}\label{eq:j_geo}
 d_{\mathrm{CP}}:=\dim(\mathfrak{su}(3))+\dim(\mathfrak{su}(2))=8+3=11,
 \qquad
 J_{\mathrm{geo}}:=\frac{1}{d_{\mathrm{CP}}\,\mathrm{Vol}(\mathcal{M}_{\mathrm{CP}})}=\frac{1}{11\pi^7}.
 \end{equation}
+\begin{proposition}[Primitive factorization rigidity for the CP-odd phase space]\label{prop:cp_phase_factorization_rigidity}
+Fix the primitive candidate set $\mathfrak{P}=\{U(1),SU(2),SO(3),\mathbb{R}P^1\}$ with canonical volumes as in Lemma~\ref{lem:group_volumes}.
+Among products of primitives with $\mathrm{Vol}(\mathcal{M})=\pi^7$, the factorization is unique (up to ordering):
+\[
+\mathcal{M}\cong SO(3)\times SO(3)\times SO(3)\times \mathbb{R}P^1.
+\]
+\end{proposition}
+\begin{proof}
+From Lemma~\ref{lem:group_volumes}, each primitive volume is one of $2\pi$, $2\pi^2$, $\pi^2$, $\pi$.
+Any product therefore has the form $2^m\pi^k$ with $m\in\ZZ_{\ge 0}$.
+The constraint $\mathrm{Vol}(\mathcal{M})=\pi^7$ forces $m=0$, hence no factor can be $U(1)$ or $SU(2)$, and all factors must be chosen from $\{SO(3),\mathbb{R}P^1\}$.
+To achieve exponent $7$ with $SO(3)$ contributing $\pi^2$ and $\mathbb{R}P^1$ contributing $\pi$, the only possibility is three $SO(3)$ factors and one $\mathbb{R}P^1$ factor.
+\end{proof}
 The interpretation compatible with the present protocol picture is that attempting to ``pull back'' $CP$ (conjugation plus reflection) into a fixed readout protocol leaves an unavoidable residual geometric phase (holonomy), whose magnitude is controlled by a CP-odd phase-space volume and a discrete gauge-sector multiplicity.
 \paragraph{Connection viewpoint.}
 In the Standard Model, the CKM matrix is the unitary mixing matrix for quarks, with CP violation originating from an irreducible complex phase (three generations) \cite{Cabibbo1963,KobayashiMaskawa1973,PDGRPP2024}.
@@ -407,5 +498,22 @@ The closed expressions in Table~\ref{tab:quant_summary} are not free fit paramet
 The mismatch $\log(\mathrm{closed}/\mathrm{ref})$ is recorded as a protocol-level matching factor between an idealized closed normalization and a scheme-/scale-dependent reference convention.
 This plays the same structural role as the matching-layer depth shift $\Delta r$ used later for masses (Section~\ref{subsec:mass_matching_layer}).
 The corresponding finite rigidity enumerations (top candidates and gaps within the declared domains) are recorded in Appendix~\ref{app:generated_tables} (Tables~\ref{tab:alpha_coeff_rigidity}--\ref{tab:jarlskog_pi_rigidity}).
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrr}
+\toprule
+Quantity & closed value & reference & $\sigma$ (audit) & error & $|\mathrm{error}|/\sigma$ \\
+\midrule
+\input{sections/generated/sigma_summary_rows.tex}%
+\end{tabular}
+}%
+\caption{Sigma-normalized mismatch summary for selected key targets. Here $\sigma$ denotes the explicit uncertainty scales used by the audit scripts (either quoted uncertainties or deterministic stress-test scales; see \texttt{scripts/common\_constants.py}). This table is provided for interpretive convenience and does not replace the matching-layer interpretation when reference conventions are scheme/scale dependent or when the quoted mismatch is much larger than the reference uncertainty. Rows are generated by \texttt{scripts/exp\_sigma\_summary.py}.}
+\label{tab:sigma_summary}
+\end{table}
 
 
