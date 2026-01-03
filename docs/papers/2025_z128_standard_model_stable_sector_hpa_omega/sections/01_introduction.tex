@@ -75,8 +75,17 @@ A local rigid frame carries $d$ translational degrees of freedom and $d(d-1)/2$ 
 \[
 \dim SE(d)=d+\frac{d(d-1)}{2}=\frac{d(d+1)}{2}.
 \]
-Under the minimal bit-per-DoF hypothesis adopted here, a fundamental readout window supplies one bit per kinematic degree of freedom.
-Thus the minimal window length compatible with rigid localization at dimension $d$ is $m=\frac{d(d+1)}{2}$.
+We now state explicitly what the ``bit-per-DoF'' language means in this paper.
+The claim is \emph{not} that $m$ bits can encode a continuous pose in $SE(d)$ with arbitrary precision.
+Rather, it is a minimal coarse-lock assumption at the protocol interface: a length-$m$ window yields at most $2^m$ distinct binary readout classes, and to display a local rigid frame the protocol must be able to distinguish at least two coarse bins along each independent parameter of $SE(d)$.
+Equivalently, coarse-locking requires
+\[
+2^m\;\ge\;2^{\dim SE(d)}
+\qquad\Longleftrightarrow\qquad
+m\;\ge\;\dim SE(d)=\frac{d(d+1)}{2}.
+\]
+More generally, if one asks to specify an element of a $k$-dimensional Lie group up to an $\varepsilon$-scale resolution, the required number of bits scales as $m\gtrsim k\log(1/\varepsilon)$ (metric-entropy / quantization scaling) \cite{GrayNeuhoff1998Quantization,CoverThomas2006}.
+In the present paper we use only the minimal two-bin-per-parameter anchor, and we keep the 6-DoF lock strictly on the physical identification layer.
 
 \begin{proposition}[CAP-minimal rigidity lock selects the 3D six-bit anchor (interface)]\label{prop:cap_dim_lock}
 Within the balanced-coupling candidate family $m\in\{4,6,8,\dots\}$, the smallest window length that matches the rigid-frame count $m=\frac{d(d+1)}{2}$ for some integer $d\ge 1$ is $m=6$, realized uniquely at $d=3$.
@@ -122,7 +131,7 @@ The 6-DoF lock selects $m=6$, hence $n=3$ and $2^6=4^3=64$, giving the smallest 
   \node[align=center] at (0,-1.05) {3 translations\\ + 3 rotations};
 
   % Arrow: bit-per-DoF lock
-  \draw[->, thick] (1.55,0) -- (2.85,0) node[midway, above] {1 bit / DoF};
+  \draw[->, thick] (1.55,0) -- (2.85,0) node[midway, above] {two-bin / DoF};
 
   % Right: 6-bit slots
   \foreach \i/\lab in {0/1,1/2,2/3,3/4,4/5,5/6} {
@@ -131,14 +140,14 @@ The 6-DoF lock selects $m=6$, hence $n=3$ and $2^6=4^3=64$, giving the smallest 
   }
   \node[align=center] at (4.35,-1.05) {$m=6$ bits\\$\Omega_6=\{0,1\}^6$};
 \end{tikzpicture}
-\caption{The 6-DoF lock (interface language): in a $3$D locality dictionary, a local rigid frame has six degrees of freedom (three positional plus three orientational). A minimal bit-per-DoF hypothesis motivates a six-bit anchor window.}
+\caption{The 6-DoF lock (interface language): in a $3$D locality dictionary, a local rigid frame has six degrees of freedom (three positional plus three orientational). A minimal coarse-lock assumption (two bins per independent parameter) motivates a six-bit anchor window.}
 \label{fig:6dof_lock}
 \end{figure}
 
 \subsubsection{The geometric vacuum and protocol rejection}
 \label{subsubsec:geometric_vacuum}
 The 6-DoF lock has an immediate consequence: in a $3$D locality dictionary, any readout pattern that is to be displayed as a localized object must supply enough independent information to fix a local position--orientation frame.
-Under the minimal bit-per-DoF hypothesis adopted here, this means $m\ge 6$ is not a convenience but a geometric admissibility condition for matter-like localization at the protocol interface.
+Under the minimal coarse-lock hypothesis stated above (two bins per independent parameter), this means $m\ge 6$ is not a convenience but a geometric admissibility condition for matter-like localization at the protocol interface.
 
 For $m<6$, stable symbolic types still exist at the mathematical layer---indeed the golden-mean admissible set has size $|X_m|=F_{m+2}$ (Section~\ref{subsec:phi_channel})---but they are sub-geometric for a $3$D readout: they underdetermine the kinematic frame and cannot be consistently assigned to a unique local site-and-frame configuration.
 We therefore treat these modes as \emph{protocol-rejected as matter}: they do not appear as stable localized particles, but persist as a non-local background that can seed transient fluctuations when coupled to higher-resolution readout.
@@ -163,6 +172,28 @@ Definitions and provable finite-resolution statements (counts, explicit maps, an
 \item \textbf{Physical identification layer.}
 Mapping hypotheses and interface principles stated in a falsifiable form (no physical identification is used as a premise for the mathematical layer).
 \end{itemize}
+\paragraph{No-hidden-knobs contract (reader-facing).}
+To reduce post-hoc flexibility, the paper follows a strict audit contract: whenever a quantitative claim is reported, it is either (i) a theorem-level finite statement, or (ii) an interface-level statement whose remaining freedom is restricted to an explicitly declared finite candidate family with deterministic tie-break rules (Definition~\ref{def:bounded_complexity_closure}), together with generated audit tables (domain sizes, gaps/quantiles, robustness, counterfactual baselines; Appendix~\ref{app:generated_tables} and Appendix~\ref{app:reproducibility}).
+External reference targets (PDG/CODATA) enter only as comparison inputs; they are not fit parameters.
+When within-family frequencies such as $1/|\Theta|$ are mentioned, they are interpreted as \emph{within the stated family} look-elsewhere context, not as a universal significance claim across unrestricted expression classes (see Section~\ref{sec:limitations_related_work}).
+Across different reported closures, hypothesis classes share conventions and inputs and are therefore not statistically independent; we avoid multiplying within-family frequencies and use only conservative multiple-comparison bounds (e.g.\ Bonferroni) when summarizing several audited selections at once.
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.26\textwidth} p{0.66\textwidth}}
+\toprule
+category & status in this paper \\
+\midrule
+protocol primitives & fixed definitions (scan $\to$ window words, defect operators, Fold$_m$, admissible sets, Hilbert addressing for diagnostics) \\
+audited discrete knobs & explicit finite sweeps (e.g.\ $m$-sweeps, bounded-complexity budget $B$, phase denominator $\mathrm{denom}=2^p$, bounded rationals for mixing and phases, staircase step $r_{\mathrm{step}}$) \\
+external reference conventions & PDG/CODATA targets and scheme/scale choices treated as inputs at the matching layer (not fit) \\
+\bottomrule
+\end{tabular}
+\caption{Audit contract: what is fixed, what is swept under explicit finite bounds, and what is treated as an external reference convention.}
+\label{tab:no_hidden_knobs_contract}
+\end{table}
 This separation is essential because the folding core is exact and computable, while the Standard Model identification is an interface claim that must be constrained by data-level tests.
 
 \begin{table}[t]

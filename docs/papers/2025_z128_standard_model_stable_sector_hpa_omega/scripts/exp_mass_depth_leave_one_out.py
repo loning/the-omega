@@ -162,6 +162,7 @@ def main() -> None:
     baseline = _best_coeffs(anchors, electron_inv, leptonic_names=leptonic, include=base_set, B=20)
 
     rows: List[str] = []
+    diff_leave: List[str] = []
 
     def row(label: str, sel: Best) -> str:
         same = "SAME" if (sel.a, sel.b, sel.c) == (baseline.a, baseline.b, baseline.c) else "DIFF"
@@ -175,14 +176,28 @@ def main() -> None:
         inc = set(names)
         inc.remove(leave)
         sel = _best_coeffs(anchors, electron_inv, leptonic_names=leptonic, include=inc, B=20)
+        if (sel.a, sel.b, sel.c) != (baseline.a, baseline.b, baseline.c):
+            diff_leave.append(leave)
         rows.append(row(rf"\texttt{{-{leave}}}", sel))
     rows.append(r"\bottomrule")
+
+    # Summary: how often the baseline minimizer is preserved under leave-one-out.
+    n_total = len(names)
+    n_diff = len(diff_leave)
+    n_same = n_total - n_diff
+    diff_tex = ", ".join(rf"\texttt{{-{x}}}" for x in diff_leave) if diff_leave else r"$\varnothing$"
+    summary_rows: List[str] = [
+        rf"{n_total} & {n_same} & {n_diff} & {diff_tex} \\",
+        r"\bottomrule",
+    ]
 
     root = Path(__file__).resolve().parent.parent
     out_dir = root / "sections" / "generated"
     out_dir.mkdir(parents=True, exist_ok=True)
     write_lines(out_dir / "mass_depth_leave_one_out_rows.tex", rows)
     print("Wrote sections/generated/mass_depth_leave_one_out_rows.tex")
+    write_lines(out_dir / "mass_depth_leave_one_out_summary_rows.tex", summary_rows)
+    print("Wrote sections/generated/mass_depth_leave_one_out_summary_rows.tex")
 
 
 if __name__ == "__main__":

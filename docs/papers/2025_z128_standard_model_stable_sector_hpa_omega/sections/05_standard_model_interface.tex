@@ -17,12 +17,26 @@ The folding framework isolates three commuting stability channels:
 Independently, the Standard Model gauge group is a three-factor product $SU(3)\times SU(2)\times U(1)$ \cite{PeskinSchroeder1995}.
 We first record the protocol-level necessity of compensation under cross-site consistency, and then record a CAP-minimal gauge-factor closure under explicit compactness and factorization assumptions.
 
-\begin{proposition}[Defect mismatch forces compensating connections (interface)]
+\begin{proposition}[Finite-fiber mismatch forces a compensating connection datum (interface)]
 \label{ax:gauge_compensation}
-Embed stable readout types on a Hilbert-addressed grid at order $n$, and require protocol-consistent readout across neighboring sites.
-Then local mismatch produced by each defect channel must be absorbed by a compensating connection field.
-In a continuum modeling dictionary, such compensating fields are represented as gauge connections.
+Fix a window length $m$ and an addressing graph (e.g.\ a Hilbert-addressed grid).
+Let each site $x$ carry a stable label $w_x\in X_m$ and let its microstate fiber be
+\[
+P(w_x):=\mathrm{Fold}_m^{-1}(w_x)\subset\{0,\dots,2^m-1\},
+\]
+so that multiple microscopic indices can project to the same stable readout label.
+If protocol-consistent comparison/transport of stable labels is required across a neighbor edge $x\sim y$, then the stable labels alone are insufficient: one must specify an additional transport rule that matches the endpoint fibers.
+After embedding endpoint fibers into a common slot set of size $r:=\max_{w\in X_m}|P(w)|$ (by any deterministic padding convention), any such edge transport is represented by a permutation in $S_r$.
+Changing the local slot labeling at a vertex acts by conjugation on edge transports, so the transport rule is defined only up to local relabelings (a finite gauge redundancy).
+In a continuum modeling dictionary, such discrete connection data are represented by gauge connections on a bundle.
 \end{proposition}
+\begin{proof}
+The point is finite and protocol-internal.
+When $|P(w)|>1$, the stable label $w$ identifies only an equivalence class of microstates, so comparing two neighboring stable labels requires a choice of how the two equivalence classes are matched.
+Once a uniform slot count $r$ is fixed, such matchings are elements of the finite symmetry group $S_r$.
+Local relabelings at vertices change edge matchings by left/right multiplication and therefore conjugate loop products, which is the standard discrete gauge-transformation law on graphs \cite{Wilson1974,Rothe2012}.
+At the minimal anchor $(m,n)=(6,3)$ one has $r=4$, and Section~\ref{sec:protocol_connections_holonomy} gives an explicit deterministic construction of an $S_4$ edge connection and its plaquette holonomy diagnostics.
+\end{proof}
 
 \begin{proposition}[CAP-minimal three-factor gauge closure (interface)]\label{prop:channel_to_gauge}
 Assume a continuum modeling dictionary in which the compensation redundancy is internal and unitary (hence modeled by compact gauge factors) and in which the three defect channels induce three inequivalent compensation classes.
@@ -46,8 +60,18 @@ Assume that protocol mismatch certificates decompose into three commuting defect
 Then the minimal compensating connection splits into three independent connection components, so the effective local redundancy factorizes into a product of three gauge redundancies.
 \end{proposition}
 \begin{proof}
-If the three defect channels are independent and commuting, their mismatch certificates can be compared and canceled separately.
-Independent local basis changes for each channel imply three independent covariant-transport rules; bundling these rules yields a direct product structure at the level of local redundancy.
+Since the defect channels commute, a mismatch certificate can be represented as a triple of channelwise components and compared channel-by-channel.
+By assumption, each channel admits its own local basis redundancy, so at each site $x$ the modeling dictionary permits independent local changes $(g_\varphi(x),g_\pi(x),g_\e(x))$.
+Consequently, any channelwise covariant transport rule along an edge $x\sim y$ is a triple of group elements
+\[
+(A_\varphi,A_\pi,A_\e)_{x\to y}\in G_\varphi\times G_\pi\times G_\e,
+\]
+transforming under local basis changes as
+\[
+(A_\varphi,A_\pi,A_\e)_{x\to y}\ \mapsto\
+\bigl(g_\varphi(y)A_\varphi g_\varphi(x)^{-1},\ g_\pi(y)A_\pi g_\pi(x)^{-1},\ g_\e(y)A_\e g_\e(x)^{-1}\bigr).
+\]
+Thus the minimal redundancy group is the direct product of the three independent channel redundancies.
 \end{proof}
 
 \paragraph{Uniqueness at the Lie-algebra level.}

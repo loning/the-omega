@@ -580,6 +580,7 @@ def build_steps() -> List[Step]:
             script="exp_mass_depth_leave_one_out.py",
             expected_outputs=[
                 "sections/generated/mass_depth_leave_one_out_rows.tex",
+                "sections/generated/mass_depth_leave_one_out_summary_rows.tex",
             ],
         ),
         Step(
