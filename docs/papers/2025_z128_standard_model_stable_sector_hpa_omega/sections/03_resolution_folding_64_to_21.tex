@@ -66,7 +66,49 @@ If $D_1,D_2$ are defect functions, then the corresponding operators commute.
 \end{definition}
 
 In particular, the $\varphi$- and $\pi$-defects introduced below define commuting multiplication operators $D_\varphi,D_\pi$.
-The stable sector is the joint kernel of the defect operators (equivalently, the subspace supported on the admissible set).
+The $\varphi$-stable sector is the kernel of $D_\varphi$ (equivalently, the subspace supported on the admissible set $X_m$).
+The $\pi$-defect is a second commuting operator used to refine $X_m$ by a canonical cyclic/boundary split (Section~\ref{subsec:pi_channel}).
+
+\subsection{A minimal dynamical semantics for stability (interface)}
+\label{subsec:stability_dynamics}
+
+Although the folding core defines stability as a static constraint on finite words, the defect-operator viewpoint admits a canonical relaxational dynamics that drives generic readout states toward the admissible sector.
+This makes precise the sense in which stable types can be treated as attractors of a mismatch-suppressing evolution.
+
+\begin{definition}[Defect relaxation on $\ell^2(\Omega_m)$]\label{def:defect_relaxation}
+Fix $m$ and consider the nonnegative $\varphi$-defect operator $D_\varphi$ (Definition~\ref{def:defect_ops}).
+Define the defect-relaxation semigroup by the auxiliary-time evolution
+\begin{equation}
+\label{eq:defect_relaxation_semigroup}
+\frac{\dd}{\dd\tau}\psi(\tau)=-D_\varphi\,\psi(\tau),
+\qquad
+\psi(0)=\psi_0\in\ell^2(\Omega_m),
+\end{equation}
+where $\tau\ge 0$ indexes stabilization steps rather than scan iteration time.
+\end{definition}
+
+\begin{proposition}[Attractor: convergence to the admissible sector]\label{prop:defect_relaxation_to_phi}
+The solution of \eqref{eq:defect_relaxation_semigroup} is given pointwise by
+\[
+\psi(\tau)(w)=\e^{-\tau D_\varphi(w)}\psi_0(w).
+\]
+Consequently $\psi(\tau)\to P_\varphi\psi_0$ in $\ell^2(\Omega_m)$ as $\tau\to\infty$, where $P_\varphi$ is the orthogonal projection onto $\ell^2(X_m)$.
+Moreover the mismatch functional $\mathcal{M}(\tau):=\norm{D_\varphi\psi(\tau)}_2^2$ obeys the explicit decay law
+\[
+\mathcal{M}(\tau)=\e^{-2\tau}\,\mathcal{M}(0).
+\]
+\end{proposition}
+\begin{proof}
+Since $D_\varphi$ is a multiplication operator, \eqref{eq:defect_relaxation_semigroup} decouples on the basis $\{\delta_w\}_{w\in\Omega_m}$ and yields the stated closed form.
+Because $D_\varphi(w)\in\{0,1\}$, one has $\e^{-\tau D_\varphi(w)}\to \ind\{D_\varphi(w)=0\}=\ind\{w\in X_m\}$ as $\tau\to\infty$, which is exactly the action of $P_\varphi$ on basis vectors and therefore gives $\ell^2$ convergence.
+Finally, $D_\varphi\psi(\tau)=\e^{-\tau}D_\varphi\psi_0$, so $\mathcal{M}(\tau)=\e^{-2\tau}\mathcal{M}(0)$.
+\end{proof}
+
+\begin{remark}[Relation to least-discrepancy dynamics (context)]\label{rem:stability_relaxation_context}
+Equation~\eqref{eq:defect_relaxation_semigroup} is the minimal linear relaxation that suppresses defect support and makes the admissible sector an attractor.
+More general least-discrepancy dynamics can be formulated at the protocol layer as gradient flows on bounded parameter families, trading discrepancy certificates against implementation costs; see, e.g., \cite{Ma2025CAP,Ma2025HHU,Ma2025HPT,Ma2025CAPII}.
+In the present paper we use \eqref{eq:defect_relaxation_semigroup} only as a dynamical semantics for the static folding constraint and do not treat it as an additional premise for any theorem-level count.
+\end{remark}
 
 \subsection{The \texorpdfstring{$\varphi$}{phi}-channel: Zeckendorf grammar and \texorpdfstring{$|X_6|=21$}{|X6|=21}}
 \label{subsec:phi_channel}
