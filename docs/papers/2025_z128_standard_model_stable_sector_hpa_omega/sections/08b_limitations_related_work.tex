@@ -43,6 +43,38 @@ in Table~\ref{tab:audit_closure_metrics} gives the probability that a uniformly 
 When the minimizer is unique, the probability that a uniformly random candidate matches \emph{as well or better} than the selected minimizer is $1/|\Theta|$.
 Multiple-comparison adjustments across several simultaneously reported closures can be bounded conservatively (e.g.\ Bonferroni), but we emphasize that our audit tables are intended to provide transparent within-family look-elsewhere context, not a comprehensive search over unrestricted expression grammars.
 
+\subsection{Rigidity constraints and why key interface choices are forced}
+\label{subsec:rigidity_constraints_forced}
+
+Some parts of the physical identification layer are not yet derived from a full dynamical selection principle (Section~\ref{subsec:audit_layering}); nevertheless, at the minimal balanced scale the interface is subject to strong \emph{rigidity constraints} that sharply limit admissible choices.
+This subsection records, in audit language, the sense in which several design choices are ``forced'' once one commits to the stated protocol primitives and to minimality.
+
+\paragraph{(i) The $(m,n)=(6,3)$ anchor is uniquely locked by 3D rigidity (interface).}
+The balanced rule $m=2n$ is a theorem-level cardinality match $2^m=4^n$ (Lemma~\ref{lem:balanced_coupling_equiv}).
+On the physical identification layer, the 3D rigid-frame degree count $\dim SE(3)=6$ singles out $m=6$ as the minimal bit-per-DoF anchor (Section~\ref{subsec:6dof_lock}), hence uniquely $n=3$ under $m=2n$.
+This is the precise sense in which the minimal anchor is not arbitrary: it is the unique point where scan-bit budget, Hilbert addressing budget, and 3D rigid kinematics meet.
+
+\paragraph{(ii) The $18\oplus 3$ split forces a minimal chiral/gauge allocation at $m=6$.}
+The $\pi$-channel induces a canonical cyclic/boundary split $X_6^{\mathrm{cyc}}\oplus X_6^{\mathrm{bdry}}$ with sizes $18\oplus 3$ (Proposition~\ref{prop:cyc_bdry_6}).
+If one insists that boundary types represent gauge-factor connection classes while cyclic types represent matter multiplets (Axioms~\ref{ax:gauge_compensation} and \ref{ax:particles_as_types}), then the minimal chiral content compatible with three generations is rigidly constrained by cardinality.
+Closing $18$ cyclic labels with the smallest anomaly-neutral extension forces the addition of $\nu_R$ with $Y=0$ (Proposition~\ref{prop:anomaly_nur}), because any charged extension would require further compensating matter by standard anomaly constraints.
+
+\paragraph{(iii) The three boundary labels admit a unique monotone gauge-factor assignment.}
+The boundary set has exactly three elements with distinct intrinsic values $V(w)$ (Corollary~\ref{prop:cyc_bdry_6}).
+The gauge factors $\{U(1),SU(2),SU(3)\}$ have distinct Lie-algebra dimensions $1,3,8$ (Lemma~\ref{lem:gauge_dim_order}).
+Among the $3!=6$ possible assignments, the monotonicity requirement ``larger intrinsic boundary value $\leftrightarrow$ larger gauge-sector complexity'' selects a unique assignment (Theorem~\ref{thm:labeling_unique}).
+This eliminates a common source of post-hoc freedom.
+
+\paragraph{(iv) The mass-depth template is rigid within the minimal invariant language.}
+At $(m,n)=(6,3)$, the intrinsic stable-type invariants available for all $w\in X_6$ are discrete and low-entropy: $(V(w),g(w),|w|_1,D_\pi(w))$ with $V\in\{0,\dots,20\}$ and $g\in\{2,3,4\}$ (Definition~\ref{def:x6_invariants}).
+Requiring that a depth assignment be built only from these invariants and be auditable as a bounded-integer closure leads naturally to the integer ansatz \eqref{eq:rhat_abc_ansatz}, whose coefficients are rigidly selected as $(2,5,1)$ under the stated objective and tie-break rules (Proposition~\ref{prop:rhat_rigidity}).
+This is the precise, checkable meaning of ``mass is forced by rigidity'' within the declared hypothesis class.
+
+\paragraph{(v) Phase registers and holonomy diagnostics are controlled by explicit refinement knobs.}
+The dyadic phase-register family $\ZZ_{2^p}$ is treated as a protocol parameter, not a hidden degree of freedom:
+the phase denominator $\mathrm{denom}=2^p$ and the low-complexity index-map family $\tau$ are fixed as explicit finite candidate sets, and their influence is audited by bounded sweeps (Section~\ref{sec:protocol_connections_holonomy}).
+Thus, although the holonomy diagnostics are physical-layer constructs, they are \emph{not} free-form: the permitted choices are enumerated and their sensitivity is reported.
+
 \subsection{Status of the channel-to-gauge identification and anomaly constraints}
 The strongest theorem-level statements in the paper are finite combinatorial and operator facts about admissibility and projection (Sections~\ref{sec:hpa_readout} and \ref{sec:folding_core}).
 The mapping from the three stability channels to the Standard Model gauge factors is currently an \emph{interface identification} (Axiom~\ref{ax:gauge_compensation}), not a derived theorem.
