@@ -662,6 +662,13 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Quantitative summary table",
+            script="exp_quant_summary.py",
+            expected_outputs=[
+                "sections/generated/quant_summary_rows.tex",
+            ],
+        ),
+        Step(
             name="Audit summary",
             script="exp_audit_summary.py",
             expected_outputs=[
