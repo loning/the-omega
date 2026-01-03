@@ -162,7 +162,10 @@ def main() -> None:
         f"{unique_any}/{total} subsets (probability {p_unique_any:.6f}). "
         f"The specific event that $\\mu^\\ast$ is the unique maximizer has probability {p_mu_star_unique:.6f} "
         f"({mu_star_unique}/{total}); conditioning on $S_{{\\max}}=2$ gives {p_mu_star_unique_s2:.6f} "
-        f"({mu_star_unique_smax2}/{total}). "
+        f"({mu_star_unique_smax2}/{total})."
+    )
+    lines.append("")
+    lines.append(
         f"Under the stop-fixed null (fix $\\{{\\mathrm{{UAA,UAG,UGA}}\\}}$ and vary one additional codon), "
         f"the argmax is unique for {fixed_unique}/61 choices and equals $\\mu^\\ast$ for {fixed_mu_star}/61 "
         f"(probability {p_fixed_mu_star:.6f})."

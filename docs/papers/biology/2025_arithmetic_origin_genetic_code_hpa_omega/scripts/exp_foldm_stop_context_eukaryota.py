@@ -219,6 +219,16 @@ def _fmt_p(p: object) -> str:
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Fold_m stop-context scan (eukaryota RefSeq mRNA)")
+    p.add_argument(
+        "--dataset-keys",
+        default="",
+        help="Optional comma-separated manifest dataset keys to include (default: refseq_hsapiens_mrna, refseq_mmusculus_mrna, refseq_drerio_mrna).",
+    )
+    p.add_argument(
+        "--skip-missing-datasets",
+        action="store_true",
+        help="Skip dataset keys that are missing from the manifest or missing local files.",
+    )
     p.add_argument("--m-list", default="6,7,8,9", help="Comma-separated Zeckendorf window lengths m to evaluate.")
     p.add_argument("--k-list", default="3,5,10,20", help="Comma-separated stop-context window radii k.")
     p.add_argument("--heartbeat-s", type=float, default=60.0, help="Progress heartbeat seconds (0 disables).")
@@ -255,18 +265,43 @@ def main() -> None:
 
     out_tex = Path(args.out_tex)
     mfest = read_manifest()
-    ds_keys = [
+    default_ds_keys = [
         ("H_sapiens_mRNA_Prot", "refseq_hsapiens_mrna"),
         ("M_musculus_mRNA_Prot", "refseq_mmusculus_mrna"),
         ("D_rerio_mRNA_Prot", "refseq_drerio_mrna"),
     ]
+    label_map = {k: lbl for (lbl, k) in default_ds_keys}
+    ds_keys: list[tuple[str, str]] = []
+    if str(args.dataset_keys or "").strip():
+        for k in str(args.dataset_keys).split(","):
+            k = k.strip()
+            if not k:
+                continue
+            ds_keys.append((label_map.get(k, k), k))
+    else:
+        ds_keys = list(default_ds_keys)
+
     ds_files: dict[str, list[Path]] = {}
-    for _label, key in ds_keys:
-        files = dataset_files_from_manifest(mfest, key)
+    ds_keys_kept: list[tuple[str, str]] = []
+    for label, key in ds_keys:
+        try:
+            files = dataset_files_from_manifest(mfest, key)
+        except Exception as e:
+            if bool(args.skip_missing_datasets):
+                print(f"[warn] skipping dataset {key}: {e}", flush=True)
+                continue
+            raise
         missing = [fp for fp in files if not fp.exists()]
         if missing:
+            if bool(args.skip_missing_datasets):
+                print(f"[warn] skipping dataset {key}: missing files", flush=True)
+                continue
             raise SystemExit(f"Missing files for dataset {key}: {', '.join(str(p) for p in missing[:3])}")
         ds_files[key] = files
+        ds_keys_kept.append((label, key))
+    ds_keys = ds_keys_kept
+    if not ds_keys:
+        raise SystemExit("No datasets selected (after applying --skip-missing-datasets).")
 
     cache_key = {
         "analysis": "foldm_stop_context_eukaryota",

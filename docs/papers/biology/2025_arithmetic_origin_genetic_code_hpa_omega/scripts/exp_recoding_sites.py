@@ -3032,7 +3032,7 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
                 bias_lines.append(
                     f"Compared to human RefSeq terminal stops (baseline $n={n2}$, UAA rate {p2:.4f}), "
                     f"recoding-CDS UAA rate {p1:.4f} differs by {p1 - p2:+.4f} "
-                    f"(CI$_{{95\\%}}$=[{ci_low:.4f},{ci_high:.4f}], $z={z:.2f}$, $p{op_p}{p_s}$)."
+                    f"(CI$_{{95\\%}}$=[{ci_low:.4f},\\allowbreak {ci_high:.4f}], $z={z:.2f}$, $p{op_p}{p_s}$)."
                 )
         except Exception:
             bias_lines.append("Human RefSeq baseline comparison was skipped (failed to read transcriptome_summary.json).")

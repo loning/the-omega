@@ -391,21 +391,12 @@ def _emit_outputs_from_summary(summary: dict[str, object]) -> None:
                 title = "Stop-context candidate sets for reporter assays"
                 if stem.endswith("_coding"):
                     title = "Protein-coding stop-context candidate sets for reporter assays (NM/XM)"
-                lines.append(f"{title} (set \\path{{{cand_set}}}; $k={int(k_cand)}$).")
+                lines.append(f"{title}.")
+                lines.append("")
+                cand_tt = str(cand_set).replace("_", "\\_\\allowbreak{}")
+                lines.append(f"Candidate set: \\texttt{{{cand_tt}}}; $k={int(k_cand)}$.")
                 lines.append("Sequences are DNA (U$\\mapsto$T).")
-                lines.append("\\begin{center}")
-                lines.append("\\scriptsize")
-                lines.append("\\setlength{\\tabcolsep}{3pt}")
-                lines.append("\\renewcommand{\\arraystretch}{1.10}")
-                lines.append("\\resizebox{\\textwidth}{!}{%")
-                lines.append("\\begin{tabular}{lllrllllrrrll}")
-                lines.append("\\toprule")
-                lines.append(
-                    "stop & group & rank & pos (1-based) & record & before seq & stop & after seq & "
-                    "$\\overline{U}_{\\mathrm{before}}$ & $\\overline{U}_{\\mathrm{after}}$ & diff & +4 & after-nt6 \\\\"
-                )
-                lines.append("\\midrule")
-
+                lines.append("")
                 def _emit_rows(stop: str, group: str, rows: list[dict[str, object]]) -> None:
                     for j, r in enumerate(rows, start=1):
                         rec = str(r.get("record_id") or "-")
@@ -427,29 +418,53 @@ def _emit_outputs_from_summary(summary: dict[str, object]) -> None:
                             f"{b_s} & {a_s} & {d_s} & \\texttt{{{plus4}}} & \\texttt{{{nt6}}} \\\\"
                         )
 
+                def _emit_table(stop: str, *, high_rows: list[dict[str, object]], low_rows: list[dict[str, object]]) -> None:
+                    lines.append("\\begin{center}")
+                    lines.append("\\scriptsize")
+                    lines.append("\\setlength{\\tabcolsep}{3pt}")
+                    lines.append("\\renewcommand{\\arraystretch}{1.10}")
+                    lines.append("\\resizebox{\\textwidth}{!}{%")
+                    lines.append("\\begin{tabular}{lllrllllrrrll}")
+                    lines.append("\\toprule")
+                    lines.append(
+                        "stop & group & rank & pos (1-based) & record & before seq & stop & after seq & "
+                        "$\\overline{U}_{\\mathrm{before}}$ & $\\overline{U}_{\\mathrm{after}}$ & diff & +4 & after-nt6 \\\\"
+                    )
+                    lines.append("\\midrule")
+                    if high_rows:
+                        _emit_rows(stop, "high", high_rows)
+                    if low_rows:
+                        _emit_rows(stop, "low", low_rows)
+                    lines.append("\\bottomrule")
+                    lines.append("\\end{tabular}%")
+                    lines.append("}")
+                    lines.append("\\end{center}")
+
+                first = True
                 for stop in STOP_CODONS:
                     entry = by_stop.get(stop) or {}
                     if not isinstance(entry, dict):
                         continue
-                    high = entry.get("high_after") or []
-                    low = entry.get("low_after") or []
-                    if isinstance(high, list):
-                        _emit_rows(stop, "high", [r for r in high if isinstance(r, dict)])
-                    if isinstance(low, list):
-                        _emit_rows(stop, "low", [r for r in low if isinstance(r, dict)])
+                    high_rows = [r for r in (entry.get("high_after") or []) if isinstance(r, dict)]
+                    low_rows = [r for r in (entry.get("low_after") or []) if isinstance(r, dict)]
+                    if not high_rows and not low_rows:
+                        continue
+                    if not first:
+                        lines.append("\\medskip")
+                    first = False
+                    lines.append(f"\\noindent\\textbf{{$\\mathrm{{{stop}}}$}}")
+                    _emit_table(stop, high_rows=high_rows, low_rows=low_rows)
 
-                lines.append("\\bottomrule")
-                lines.append("\\end{tabular}%")
-                lines.append("}")
-                lines.append("\\end{center}")
+                if first:
+                    lines.append("Stop-context candidate sets unavailable.")
                 write_text(generated_dir() / f"{stem}.tex", "\n".join(lines) + "\n")
 
                 # Matched pairs (after-window GC + dinuc).
                 m_lines: list[str] = []
-                m_lines.append(
-                    f"Composition-matched high/low candidate pairs using after-window GC+dinucleotide "
-                    f"(candidate set \\path{{{cand_set}}}, $k={int(k_cand)}$)."
-                )
+                m_lines.append("Composition-matched high/low candidate pairs using after-window GC+dinucleotide.")
+                cand_tt2 = str(cand_set).replace("_", "\\_\\allowbreak{}")
+                m_lines.append(f"Candidate set: \\texttt{{{cand_tt2}}}; $k={int(k_cand)}$.")
+                m_lines.append("")
                 m_lines.append("\\begin{center}")
                 m_lines.append("\\scriptsize")
                 m_lines.append("\\setlength{\\tabcolsep}{3pt}")

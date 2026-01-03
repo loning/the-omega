@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-Boundary-sector sizes and boundary-codon counts across Fold_m under mu*.
+Coverage of boundary words within the codon-scale range N in [0,63] across Fold_m.
+
+For each m, we compare:
+  - the full boundary subset X_m^{bdry} (all admissible words with w1=wm=1)
+  - the realized boundary words among N<=63: {Fold_m(N) : N<=63 and Fold_m(N) is boundary}
 
 Outputs:
-  - sections/generated/foldm_boundary_sector_counts.tex (+ .meta.json)
+  - sections/generated/foldm_boundary_word_coverage.tex (+ .meta.json)
 """
 
 from __future__ import annotations
@@ -12,11 +16,10 @@ import argparse
 from pathlib import Path
 
 from cache_manager import cache_hit, cache_key_digest, cache_meta_path, write_json_atomic, write_text_atomic
-from genetic_code_tools import GENETIC_CODE, boundary_words_m, fold_codon_m, x_m
+from genetic_code_tools import boundary_words_m, fold_m, is_boundary_word
 
 
 SCRIPT_VERSION = 1
-MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
 
 
 def root_dir() -> Path:
@@ -43,11 +46,12 @@ def _parse_int_list(s: str) -> list[int]:
 
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Fold_m boundary-sector counts across m under mu*.")
+    p = argparse.ArgumentParser(description="Fold_m boundary-word coverage for N<=63.")
     p.add_argument("--m-list", default="6,7,8,9", help="Comma-separated m values.")
+    p.add_argument("--n-max", type=int, default=63, help="Max index N (default 63).")
     p.add_argument(
         "--out-tex",
-        default=str(generated_dir() / "foldm_boundary_sector_counts.tex"),
+        default=str(generated_dir() / "foldm_boundary_word_coverage.tex"),
         help="Output LaTeX fragment path.",
     )
     p.add_argument("--force", action="store_true", help="Ignore cache and recompute.")
@@ -57,13 +61,16 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     ms = _parse_int_list(str(args.m_list))
+    n_max = int(args.n_max)
+    if n_max < 0:
+        raise SystemExit("--n-max must be >= 0")
     out_tex = Path(args.out_tex)
 
     cache_key = {
-        "analysis": "foldm_boundary_sector_counts",
+        "analysis": "foldm_boundary_word_coverage",
         "version": int(SCRIPT_VERSION),
         "m_list": [int(m) for m in ms],
-        "mu_star": MU_STAR,
+        "n_max": int(n_max),
         "out": str(out_tex),
     }
     cache_meta = {"cache_key": cache_key, "cache_digest": cache_key_digest(cache_key)}
@@ -71,12 +78,19 @@ def main() -> None:
         print(f"[cache] hit: {out_tex}", flush=True)
         return
 
-    codons = sorted(GENETIC_CODE.keys())
-    if len(codons) != 64:
-        raise SystemExit("Expected 64 codons in GENETIC_CODE")
+    rows: list[tuple[int, int, int, list[str]]] = []
+    for m in ms:
+        all_bdry = set(boundary_words_m(int(m)))
+        realized: set[str] = set()
+        for n in range(0, n_max + 1):
+            w = fold_m(int(n), int(m))
+            if is_boundary_word(w):
+                realized.add(str(w))
+        missing = sorted(all_bdry - realized)
+        rows.append((int(m), int(len(all_bdry)), int(len(realized)), missing))
 
     lines: list[str] = []
-    lines.append("Boundary-sector sizes and boundary-codon counts across Fold$_m$ (codon-scale; $\\mu^\\ast$).")
+    lines.append(f"Boundary-word coverage on the codon-scale range $N\\le {n_max}$ across Fold$_m$.")
     lines.append("")
     lines.append("\\begin{center}")
     lines.append("\\small")
@@ -84,28 +98,22 @@ def main() -> None:
     lines.append("\\renewcommand{\\arraystretch}{1.15}")
     lines.append("\\begin{tabular}{r r r r}")
     lines.append("\\toprule")
-    lines.append("$m$ & $|X_m|$ & $|X_m^{\\mathrm{bdry}}|$ & \\#boundary codons \\\\")
+    lines.append("$m$ & $|X_m^{\\mathrm{bdry}}|$ & realized (distinct) & missing \\\\")
     lines.append("\\midrule")
-
-    for m in ms:
-        xm = x_m(int(m))
-        bm = boundary_words_m(int(m))
-        bc = 0
-        for c in codons:
-            if fold_codon_m(c, MU_STAR, m=int(m)).is_boundary:
-                bc += 1
-        lines.append(f"{int(m)} & {len(xm)} & {len(bm)} & {int(bc)} \\\\")
-
+    for m, total_b, realized_b, missing in rows:
+        lines.append(f"{m} & {total_b} & {realized_b} & {len(missing)} \\\\")
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
     lines.append("\\end{center}")
     lines.append("")
-    lines.append(
-        "At the codon scale (fixed index range $N\\le 63$), the boundary-codon count is encoding-independent: "
-        "any bijective two-bit encoding permutes the labels of the $64$ indices but preserves how many indices "
-        "satisfy the boundary condition."
-    )
-    lines.append("")
+
+    # List missing boundary words when any exist (notably for m>=9 on N<=63).
+    for m, total_b, realized_b, missing in rows:
+        if not missing:
+            continue
+        miss_s = ",\\allowbreak ".join(f"\\texttt{{{w}}}" for w in missing)
+        lines.append(f"For $m={m}$, the missing boundary words among $N\\le {n_max}$ are: {miss_s}.")
+        lines.append("")
 
     write_text_atomic(out_tex, "\n".join(lines) + "\n")
     write_json_atomic(cache_meta_path(out_tex), cache_meta)

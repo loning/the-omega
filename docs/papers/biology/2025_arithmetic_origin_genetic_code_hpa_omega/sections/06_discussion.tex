@@ -64,8 +64,12 @@ Instead it provides an explicit quantitative signal family $(Z,U)$ that can be e
 \input{sections/generated/recoding_dataset_composition}
 \input{sections/generated/recoding_context_tests}
 \input{sections/generated/recoding_context_controls}
+\begin{sloppypar}
 \input{sections/generated/recoding_composition_controls}
+\end{sloppypar}
+\begin{sloppypar}
 \input{sections/generated/recoding_terminal_stop_bias}
+\end{sloppypar}
 
 \paragraph{Baseline dependence and scale.}
 In this dataset, the most stable separation is an upstream uplift shift: recoding sites exhibit substantially larger $\overline{U}_{\mathrm{before}}$ than CDS-deduplicated terminal stops across multiple radii $k$, while the downstream contrast is more $k$-dependent (Appendix~\ref{app:recoding_sites}).
@@ -145,6 +149,9 @@ The Zeckendorf expansion of any $N\le 63$ uses at most nine Fibonacci weights ($
 Therefore $\mathrm{Fold}_m$ is lossless for $m\ge 9$ at this scale: $V_m(N)=N$ and the uplift vanishes identically, $\Delta_m(N)=N-V_m(N)\equiv 0$.
 Consequently, uplift-based statistics are nontrivial only for $m\le 8$ in the codon-scale model; including $m=9$ is useful as an internal consistency check but cannot carry discriminative signal in $\Delta_m$.
 At the same time, the cyclic boundary condition $w_1=w_m=1$ becomes increasingly restrictive as $m$ grows on a fixed $N\le 63$ range, so the set of boundary-mapping codons is not monotone in $m$; Appendix~\ref{app:generated_tables} records both the boundary-codon counts and the stop-codon signatures across $m\in\{6,7,8,9\}$ under $\mu^\ast$.
+On the index layer, this behavior is explained by the explicit boundary preimage sets $B_m(\le 63)=\{N\le 63:\mathrm{Fold}_m(N)\in X_m^{\mathrm{bdry}}\}$, which change sharply with $m$ (Appendix~\ref{app:generated_tables}): for example $|B_6(\le 63)|=6$ with $\{14,17,19,48,51,53\}$, whereas $B_7(\le 63)$ consists of five indices $\le 33$ and $B_9(\le 63)$ consists of three indices $\ge 55$.
+This implies that at $m=7$ any boundary hit necessarily has $\Delta_7=0$ (since all boundary indices lie below the missing weight $34$), and that at $m=9$ the only boundary hits are among the three indices that already carry the $55$-weight digit and the leading $1$ digit.
+Under $\mu^\ast$ this makes $\mathrm{UGA}$ boundary at $m=9$ but not $\mathrm{UAA}$ (Appendix~\ref{app:generated_tables}), while at $m=7$ the shared word $w_7(\mathrm{AUG})=w_7(\mathrm{UAA})=\texttt{1000010}$ fails the boundary condition because its last digit is $0$.
 
 \paragraph{What is $m=6$-specific and what is not.}
 The identification theorem and the start--stop $14/48$ symmetry are statements about the specific minimal-resolution interface $(\Omega_6,\mathrm{Fold}_6,X_6)$: changing $m$ changes both the target space and the boundary condition, and the same control set need not identify the same encoding.

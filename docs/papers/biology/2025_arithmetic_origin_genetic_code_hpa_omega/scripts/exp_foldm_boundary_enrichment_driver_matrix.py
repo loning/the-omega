@@ -384,10 +384,15 @@ def main() -> None:
     lines.append("$m$ & label & $n$ & total & syn(sub) drivers & AA(comp) & AA drivers & syn(bg) \\\\")
     lines.append("\\midrule")
     for r in rows:
+        lbl = str(r["label"])
+        # Allow wrapping in narrow table columns: insert discretionary breaks after "_" and ":".
+        lbl = lbl.replace("_", "\\_\\allowbreak{}").replace(":", ":\\allowbreak{}")
+        syn_sub = str(r["syn_sub_drivers"]).replace("_", "\\_")
+        aa_comp_dr = str(r["aa_comp_drivers"]).replace("_", "\\_")
         lines.append(
-            f"{int(r['m'])} & {str(r['label']).replace('_','\\_')} & {int(r['n'])} & "
-            f"{_fmt_float_signed(r['diff_total'], nd=6)} & {str(r['syn_sub_drivers']).replace('_','\\_')} & "
-            f"{_fmt_float_signed(r['aa_comp'], nd=6)} & {str(r['aa_comp_drivers']).replace('_','\\_')} & "
+            f"{int(r['m'])} & {lbl} & {int(r['n'])} & "
+            f"{_fmt_float_signed(r['diff_total'], nd=6)} & {syn_sub} & "
+            f"{_fmt_float_signed(r['aa_comp'], nd=6)} & {aa_comp_dr} & "
             f"{_fmt_float_signed(r['syn_bg'], nd=6)} \\\\"
         )
     lines.append("\\bottomrule")

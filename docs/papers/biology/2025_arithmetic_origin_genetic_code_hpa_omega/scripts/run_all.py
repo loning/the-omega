@@ -105,6 +105,11 @@ def main() -> None:
     run([py, "scripts/exp_foldm_control_objective_stability_maintex.py", *(["--force"] if args.force else [])], cwd=cwd)
     run([py, "scripts/exp_foldm_boundary_sector_counts.py", *(["--force"] if args.force else [])], cwd=cwd)
     run([py, "scripts/exp_stop_fine_structure_foldm.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_start_stop_homology_foldm.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_foldm_boundary_preimages_codon_range.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_foldm_boundary_word_coverage.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_foldm_boundary_codon_list_mu_star.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_foldm_control_objective_argmax_list.py", *(["--force"] if args.force else [])], cwd=cwd)
 
     # 3) Nonstandard translation tables
     run([py, "scripts/exp_nonstandard_codes.py", *(["--force"] if args.force else [])], cwd=cwd)

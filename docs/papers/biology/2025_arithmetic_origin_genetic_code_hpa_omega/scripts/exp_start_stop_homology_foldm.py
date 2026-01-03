@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Boundary-sector sizes and boundary-codon counts across Fold_m under mu*.
+Start/stop homology (AUG vs UAA) across Fold_m under the selected encoding mu*.
 
 Outputs:
-  - sections/generated/foldm_boundary_sector_counts.tex (+ .meta.json)
+  - sections/generated/start_stop_homology_foldm.tex (+ .meta.json)
 """
 
 from __future__ import annotations
@@ -12,7 +12,7 @@ import argparse
 from pathlib import Path
 
 from cache_manager import cache_hit, cache_key_digest, cache_meta_path, write_json_atomic, write_text_atomic
-from genetic_code_tools import GENETIC_CODE, boundary_words_m, fold_codon_m, x_m
+from genetic_code_tools import fold_codon_m
 
 
 SCRIPT_VERSION = 1
@@ -43,11 +43,11 @@ def _parse_int_list(s: str) -> list[int]:
 
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Fold_m boundary-sector counts across m under mu*.")
+    p = argparse.ArgumentParser(description="Start/stop (AUG,UAA) Fold_m homology table under mu*.")
     p.add_argument("--m-list", default="6,7,8,9", help="Comma-separated m values.")
     p.add_argument(
         "--out-tex",
-        default=str(generated_dir() / "foldm_boundary_sector_counts.tex"),
+        default=str(generated_dir() / "start_stop_homology_foldm.tex"),
         help="Output LaTeX fragment path.",
     )
     p.add_argument("--force", action="store_true", help="Ignore cache and recompute.")
@@ -60,7 +60,7 @@ def main() -> None:
     out_tex = Path(args.out_tex)
 
     cache_key = {
-        "analysis": "foldm_boundary_sector_counts",
+        "analysis": "start_stop_homology_foldm",
         "version": int(SCRIPT_VERSION),
         "m_list": [int(m) for m in ms],
         "mu_star": MU_STAR,
@@ -71,40 +71,32 @@ def main() -> None:
         print(f"[cache] hit: {out_tex}", flush=True)
         return
 
-    codons = sorted(GENETIC_CODE.keys())
-    if len(codons) != 64:
-        raise SystemExit("Expected 64 codons in GENETIC_CODE")
-
     lines: list[str] = []
-    lines.append("Boundary-sector sizes and boundary-codon counts across Fold$_m$ (codon-scale; $\\mu^\\ast$).")
+    lines.append("Start--stop homology across Fold$_m$ under $\\mu^\\ast$ ($\\mathrm{AUG}$ vs $\\mathrm{UAA}$).")
     lines.append("")
     lines.append("\\begin{center}")
     lines.append("\\small")
     lines.append("\\setlength{\\tabcolsep}{6pt}")
     lines.append("\\renewcommand{\\arraystretch}{1.15}")
-    lines.append("\\begin{tabular}{r r r r}")
+    lines.append("\\begin{tabular}{r l l r l r r l r}")
     lines.append("\\toprule")
-    lines.append("$m$ & $|X_m|$ & $|X_m^{\\mathrm{bdry}}|$ & \\#boundary codons \\\\")
+    lines.append("$m$ & codon & bits & $N$ & $w_m$ & $V_m$ & $\\Delta_m$ & boundary? & same $w_m$? \\\\")
     lines.append("\\midrule")
 
     for m in ms:
-        xm = x_m(int(m))
-        bm = boundary_words_m(int(m))
-        bc = 0
-        for c in codons:
-            if fold_codon_m(c, MU_STAR, m=int(m)).is_boundary:
-                bc += 1
-        lines.append(f"{int(m)} & {len(xm)} & {len(bm)} & {int(bc)} \\\\")
+        a = fold_codon_m("AUG", MU_STAR, m=int(m))
+        b = fold_codon_m("UAA", MU_STAR, m=int(m))
+        same = 1 if a.w == b.w else 0
+        for f in (a, b):
+            boundary = "yes" if bool(f.is_boundary) else "no"
+            lines.append(
+                f"{int(m)} & $\\mathrm{{{f.codon}}}$ & \\texttt{{{f.bits}}} & {int(f.n)} & "
+                f"\\texttt{{{f.w}}} & {int(f.v)} & {int(f.delta)} & {boundary} & {same} \\\\"
+            )
 
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
     lines.append("\\end{center}")
-    lines.append("")
-    lines.append(
-        "At the codon scale (fixed index range $N\\le 63$), the boundary-codon count is encoding-independent: "
-        "any bijective two-bit encoding permutes the labels of the $64$ indices but preserves how many indices "
-        "satisfy the boundary condition."
-    )
     lines.append("")
 
     write_text_atomic(out_tex, "\n".join(lines) + "\n")
