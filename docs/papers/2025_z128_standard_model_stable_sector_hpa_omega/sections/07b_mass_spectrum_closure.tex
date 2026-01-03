@@ -18,25 +18,59 @@ Equivalently, the exponential map is
 \end{equation}
 This is the same resolution-flow dictionary recorded in the constants-geometry sector \cite{Ma2025PCG}.
 
+\begin{remark}[Mass as a clock rate (matching dictionary)]\label{rem:mass_as_compton_clock}
+By the standard relations $E=mc^2$ and $E=\hbar\omega$ \cite{Einstein1905,NielsenChuang2010}, a mass scale $\mu$ defines a Compton angular frequency $\omega_C(\mu)=\mu c^2/\hbar$ and a Compton time scale $\tau_C(\mu)=1/\omega_C(\mu)=\hbar/(\mu c^2)$.
+Therefore the resolution coordinate \eqref{eq:r_of_mu_z128} is equivalently a log-frequency (or log-time) coordinate:
+\[
+r(\mu)=\log_\varphi\!\left(\frac{\omega_C(\mu)}{\omega_C(m_e)}\right)
+=-\log_\varphi\!\left(\frac{\tau_C(\mu)}{\tau_C(m_e)}\right).
+\]
+In particular, the depth mismatch $\Delta r=r-\widehat r$ reported later in this section is the same multiplicative mismatch in Compton-clock period, $\tau_C/\tau_{C,\mathrm{pred}}=\varphi^{-\Delta r}$, and can be compared to operational delay proxies (Appendix~\ref{app:time_mass_delay}) at the matching layer.
+\end{remark}
+
+\begin{remark}[Why the base $\varphi$ is natural on the golden branch]\label{rem:phi_base_entropy}
+Lemma~\ref{lem:xm_fib} gives $|X_m|=F_{m+2}$ for the admissible language at window length $m$.
+By Binet's formula, $F_{m+2}$ grows exponentially as $\varphi^{m}$ up to a fixed prefactor \cite{HardyWright2008}.
+Equivalently, the golden-mean shift has topological entropy $\log\varphi$ and its Artin--Mazur zeta function is $\zeta(z)=1/(1-z-z^2)$ (Lemma~\ref{lem:golden_zeta_matrix}) \cite{LindMarcus1995}.
+Thus using $\log\varphi$ as the denominator in \eqref{eq:r_of_mu_z128} matches the intrinsic exponential growth rate of the admissible symbolic language on the golden branch.
+\end{remark}
+
 \subsection{A closed depth assignment from stable-type invariants}
 \label{subsec:mass_depth_assignment}
 
 Let $w\in X_6$ and recall the intrinsic invariants $(V(w),g(w),D_\pi(w))$ (Definition~\ref{def:x6_invariants}).
 We use the effective protocol depth $r_\ast(w)$ from Definition~\ref{def:r_star}.
-The interpretation is that folding degeneracy counts extra protocol effort (additional scan density) in units of one spatial addressing order.
+The folding degeneracy $g(w)$ is the fiber size of the finite projection $\mathrm{Fold}_6$ and therefore measures the intrinsic multiplicity of microstates that share the same stable readout label (Section~\ref{sec:protocol_connections_holonomy}).
 
-\begin{remark}[Linear-ontology reading of protocol depth and mass]\label{rem:mass_as_scan_density}
-Under Axiom~0 (Section~\ref{subsec:axiom0_linearity}), the primitive description is a one-dimensional scan order.
-In this interface language, depth shifts and degeneracy penalties are naturally read as \emph{additional local scan length} required to implement and stabilize a readout pattern at a fixed finite resolution.
-Equivalently, larger effective depth corresponds to increased local scan density and longer protocol dwell time, which is precisely the operational content of inertia and mass in a scan-based identification dictionary.
-This can be read as an oversampling/compression effect:
-the 6-DoF lock motivates an $m=6$ anchor window for a $3$D locality dictionary (Section~\ref{subsec:6dof_lock}), while a resolution uplift to larger $m$ (e.g.\ to $m=10$ near the electroweak threshold in Section~\ref{subsec:p3_resolution_jumps}) attempts to resolve higher-bit texture in the same locality budget.
-Heuristically, excess information that cannot be unfolded spatially is absorbed as additional structure along the linear scan (``knotting'' of the readout stream), increasing the required scan length and therefore the effective inertia.
-In this sense, \emph{mass is the localized latency of processing high-resolution data on low-resolution hardware}.
-Physically, this corresponds to a knotted Hilbert stream: once the information density (effective $m$) exceeds the local geometric capacity (effective $6$ DoF), the directed readout must fold recursively into itself to store high-resolution structure within a bounded neighborhood.
-Such knotting resists acceleration (inertia) and forces additional scan steps to traverse local structure, providing a direct interface route to time-dilation-like effects in a scan-based matching dictionary.
-At the macroscopic level, \emph{gravity is the latency of processing high-resolution data on low-resolution hardware} organized into a locality dictionary: time dilation and redshift correspond to additional scan steps required to traverse knotted regions.
-The quantitative content of this interpretation in the present paper is the auditable closed template \eqref{eq:mass_template} together with the bounded-complexity rigidity signal for its integer coefficients (Proposition~\ref{prop:rhat_rigidity}).
+\begin{lemma}[Uniform fiber distribution and residual uncertainty]\label{lem:fiber_uncertainty}
+Let $N$ be uniformly distributed on $\{0,\dots,63\}$ and set $W:=\mathrm{Fold}_6(N)\in X_6$.
+Then for each $w\in X_6$ one has
+\[
+\mathbb{P}(W=w)=\frac{g(w)}{64},
+\qquad
+\mathbb{P}(N=k\mid W=w)=\frac{1}{g(w)}\ \ \text{for }k\in \mathrm{Fold}_6^{-1}(w),
+\]
+and the conditional Shannon entropy of $N$ given $W=w$ equals $\log g(w)$ (in nats) \cite{Shannon1948,CoverThomas2006}.
+\end{lemma}
+\begin{proof}
+Since $N$ is uniform, $\mathbb{P}(N=k)=1/64$ for all $k$.
+For fixed $w\in X_6$,
+\[
+\mathbb{P}(W=w)=\sum_{k\in \mathrm{Fold}_6^{-1}(w)}\mathbb{P}(N=k)=\frac{|\mathrm{Fold}_6^{-1}(w)|}{64}=\frac{g(w)}{64}.
+\]
+If $k\in \mathrm{Fold}_6^{-1}(w)$, then $\mathbb{P}(N=k,W=w)=\mathbb{P}(N=k)=1/64$, hence
+\[
+\mathbb{P}(N=k\mid W=w)=\frac{\mathbb{P}(N=k,W=w)}{\mathbb{P}(W=w)}=\frac{1/64}{g(w)/64}=\frac{1}{g(w)}.
+\]
+Therefore the conditional distribution of $N$ given $W=w$ is uniform on the fiber, and its Shannon entropy is
+$-\sum_{k\in \mathrm{Fold}_6^{-1}(w)} \frac{1}{g(w)}\log\!\bigl(\frac{1}{g(w)}\bigr)=\log g(w)$.
+\end{proof}
+
+\begin{remark}[Protocol depth as a cost coordinate (interface)]\label{rem:mass_as_scan_density}
+Lemma~\ref{lem:fiber_uncertainty} makes explicit that $g(w)$ controls the intrinsic residual multiplicity of microstates that share the same stable readout label at $m=6$.
+In a scan-based identification dictionary (Axiom~0), resolving or compensating such multiplicities across space requires additional protocol resources (extra scan steps, deeper matching, or additional connection data), motivating the use of $g(w)$ as a discrete cost term in $r_\ast$ and in the normalized depth \eqref{eq:r_hat_def}.
+The closed quantitative content used for mass matching in this paper is the auditable template \eqref{eq:mass_template} together with the bounded-complexity rigidity certificate for its integer coefficients (Proposition~\ref{prop:rhat_rigidity}).
+A stronger time/mass matching dictionary based on scattering delay (Wigner--Smith) and relativistic lapse/redshift templates is recorded in Appendix~\ref{app:time_mass_delay}; further dynamical derivations are deferred to the interface road map (Appendix~\ref{app:next_steps}).
 \end{remark}
 
 \begin{definition}[Closed mass template]\label{def:mass_template}
