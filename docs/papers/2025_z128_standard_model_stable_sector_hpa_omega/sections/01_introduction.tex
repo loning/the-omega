@@ -36,13 +36,14 @@ marker & -- & -- & -- & -- & non-local vacuum & electron/SM & nuclear & QCD & bo
 
 \subsection{Axiom 0: linearity of the readout stream (interface)}
 \label{subsec:axiom0_linearity}
-The physical identification layer in this paper is organized around a primitive interface axiom:
-the microscopic description is \emph{sequential}.
+\begin{axiom}[Readout sequentiality (interface)]\label{ax:readout_sequentiality}
+The microscopic description is \emph{sequential}.
 An observer couples to a single unitary scan order that produces a one-dimensional readout stream, and finite observability appears through window projection (Section~\ref{sec:hpa_readout}).
 Multi-dimensional language enters only through a choice of \emph{addressing basis} that folds the scan order into a locality structure (Section~\ref{sec:hilbert_addressing}); throughout, we use ``space'' and ``spacetime'' only in this protocol-level addressing sense (Conventions).
+\end{axiom}
 
 \paragraph{Time, signal rate, and matching dictionaries.}
-Under Axiom~0, ``time'' is operationally the iteration count along the scan.
+Under Axiom~\ref{ax:readout_sequentiality}, ``time'' is operationally the iteration count along the scan.
 Any conversion from the dimensionless scan rate to physical units is therefore a matching-layer and units dictionary: once a locality basis is fixed, a constant step advance defines a maximal protocol signal rate, while the measured constant $c$ appears only after choosing a physical calibration.
 We do not treat $c$ as a theorem-level output of the folding core.
 
@@ -68,7 +69,7 @@ Appendix~\ref{app:isomorphism_dictionary} records a protocol-level dictionary th
 
 \subsection{Interface principle: the 6-DoF lock in a 3D locality dictionary}
 \label{subsec:6dof_lock}
-While Axiom~0 fixes only sequentiality, any physical identification must choose a locality dictionary.
+While Axiom~\ref{ax:readout_sequentiality} fixes only sequentiality, any physical identification must choose a locality dictionary.
 Empirically, the observed locality structure is three-dimensional to high precision on laboratory and astrophysical scales.
 In a $3$D locality dictionary, a local rigid frame is naturally modeled by the Euclidean group
 \[
@@ -152,15 +153,75 @@ This separation is essential because the folding core is exact and computable, w
   box/.style={draw, rounded corners, align=left, inner sep=6pt, font=\footnotesize},
   >=Latex
 ]
-\node[box, text width=0.46\textwidth] (math) {\textbf{Mathematical layer.}\\
+\node[box, text width=0.44\textwidth] (math) {\textbf{Mathematical layer.}\\
 Finite-resolution definitions and provable statements (counts, explicit maps, rigid histograms), together with reproducible scripts and generated tables.};
-\node[box, text width=0.46\textwidth, right=8mm of math] (phys) {\textbf{Physical identification layer.}\\
+\node[box, text width=0.44\textwidth, right=6mm of math] (phys) {\textbf{Physical identification layer.}\\
 Falsifiable mapping hypotheses in protocol language, closed interface maps, and protocol-level predictions and audits.};
 \draw[->] (math) -- node[above, font=\footnotesize]{constrains} (phys);
 \end{tikzpicture}
-\caption{Auditable layering: theorem-level finite combinatorics are separated from falsifiable Standard Model interface identifications.}
+\caption{Auditable layering: theorem-level finite combinatorics vs.\ falsifiable interface identifications.}
 \label{fig:auditable_layering}
 \end{figure}
+
+\paragraph{Inference map (what depends on what).}
+For reader orientation, Figure~\ref{fig:inference_map} records a high-level dependency graph of the present paper.
+Solid arrows indicate definitional/theorem-level dependencies in the finite constructions; dashed arrows indicate physical-identification hypotheses (interface assumptions and modeling dictionaries); dotted arrows indicate CAP-style audited selection within explicit finite candidate families (Axiom~\ref{ax:cap}).
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[
+  >=Latex,
+  node distance=7mm and 8mm,
+  box/.style={draw, rounded corners, align=left, inner sep=6pt, font=\footnotesize, text width=0.44\textwidth},
+  solid/.style={->},
+  dashedEdge/.style={->, dashed},
+  dottedEdge/.style={->, dotted}
+]
+
+\node[box] (prim) {\textbf{Protocol primitives.}\\
+Readout sequentiality (Axiom~\ref{ax:readout_sequentiality}).\\
+Finite window readout and stability channels (Section~\ref{sec:hpa_readout}).};
+
+\node[box, below=of prim] (cap) {\textbf{CAP (selection principle).}\\
+Computational Action Principle (Axiom~\ref{ax:cap}) instantiated as bounded-complexity closure and deterministic tie-breaks (Definition~\ref{def:bounded_complexity_closure}).};
+
+\node[box, below=of cap] (assump) {\textbf{Interface assumptions / dictionaries.}\\
+3D locality dictionary + 6-DoF lock (Section~\ref{subsec:6dof_lock}).\\
+Scan--chirality locking, SCL (Assumption~\ref{ax:scl}).\\
+Three-channel $\leftrightarrow$ three gauge factors (Assumption~\ref{as:channel_to_gauge}).\\
+Geometric phase-volume dictionaries for normalization targets (Section~\ref{sec:couplings_cp}).};
+
+\node[box, right=8mm of prim] (core) {\textbf{Mathematical layer (finite constructions).}\\
+Folding core and invariants (Section~\ref{sec:folding_core}).\\
+At $(m,n)=(6,3)$: $64\to 21$ and $18\oplus 3$ (Section~\ref{sec:folding_core}).};
+
+\node[box, below=of core] (interfaces) {\textbf{Closed interface maps / audited closures.}\\
+Closed SM labeling $\mathcal{L}_{\mathrm{SM}}$ (Section~\ref{sec:sm_labeling_closure}).\\
+Mass-depth closure and rigidity certificates (Section~\ref{sec:mass_spectrum_closure}).\\
+Coupling/angle/CP rigidity targets (Section~\ref{sec:couplings_cp}).\\
+Resolution staircase selection and calibration (Section~\ref{sec:falsifiability}).};
+
+\node[box, below=of interfaces] (pred) {\textbf{Protocol-level predictions and tests.}\\
+Falsifiability statements P1--P6 (Section~\ref{sec:falsifiability}) and audit tables (Appendix~\ref{app:generated_tables}).};
+
+\draw[solid] (prim) -- (core);
+\draw[dashedEdge] (assump) -- (interfaces);
+\draw[solid] (core) -- (interfaces);
+\draw[dottedEdge] (cap) -- (interfaces);
+\draw[solid] (interfaces) -- (pred);
+
+\end{tikzpicture}
+\caption{Inference map of the paper (solid: theorem-level; dashed: interface assumptions; dotted: CAP-audited selection).}
+\label{fig:inference_map}
+\end{figure}
+
+\paragraph{Dependency checklist (selected).}
+\begin{itemize}
+\item \textbf{Mathematical layer.} The folding core and stable-sector counts (e.g.\ Lemma~\ref{lem:xm_fib}, Proposition~\ref{prop:cyc_bdry_size}, Proposition~\ref{prop:foldm_surjective}) are finite combinatorial/operator statements and do not use physical identification hypotheses as premises.
+\item \textbf{Physical identification layer.} Anchor and mapping claims (3D/6-DoF lock in Section~\ref{subsec:6dof_lock}, SCL in Assumption~\ref{ax:scl}, channel-to-gauge identification in Assumption~\ref{as:channel_to_gauge}, CP-sign anchoring in Definition~\ref{ax:chi_cp_sign}) are explicit interface inputs/dictionaries that are audited but not promoted to theorem-level premises for the folding core.
+\item \textbf{CAP closures.} Discrete numerical targets and calibrations are treated as bounded-complexity CAP selections (Axiom~\ref{ax:cap}, Definition~\ref{def:bounded_complexity_closure}) within explicitly declared finite candidate families.
+\item \textbf{Predictions.} Protocol-level falsifiability statements (Section~\ref{sec:falsifiability}) depend on the declared interface maps/closures and do not feed back into the mathematical-layer folding statements.
+\end{itemize}
 
 \subsection{Research questions and success criteria}
 \label{subsec:research_questions}
@@ -178,6 +239,11 @@ We treat a question as resolved at the present stage when it is reduced to a fin
 Several quantitative interface statements in this paper take the form of a \emph{bounded-complexity closure}:
 we specify a small, discrete candidate family for a target observable and select a unique minimizer by a deterministic rule under an explicit finite complexity bound.
 This is designed to address a standard audit concern in speculative constant/parameter matching: post-hoc freedom.
+
+\begin{axiom}[Computational Action Principle (CAP; interface)]\label{ax:cap}
+Within a fixed protocol class, realized effective structures are selected by minimizing accumulated readout mismatch (discrepancy) and implementation overhead subject to protocol constraints.
+In the finite audited setting of this paper, CAP is instantiated by explicit bounded candidate families and deterministic selection rules: given a declared finite complexity budget and an explicit objective measuring mismatch to reference targets, select the unique minimizer with a fully specified tie-break rule (Definition~\ref{def:bounded_complexity_closure}).
+\end{axiom}
 
 \begin{definition}[Bounded-complexity closure (audit form)]\label{def:bounded_complexity_closure}
 Fix reference targets $x_i^{\mathrm{ref}}>0$ and a candidate family $x_i(\theta)>0$ indexed by discrete parameters $\theta$.
@@ -242,7 +308,7 @@ We model phases by a finite dyadic register $\ZZ_{2^p}$ as a protocol parameter,
 At the minimal window $m=6$, a natural baseline is a one-bit-finer phase register $p=m+1=7$, i.e.\ $\ZZ_{128}$.
 In the concrete holonomy diagnostics of Section~\ref{sec:protocol_connections_holonomy}, the default phase embedding uses $\mathrm{denom}=2^m=64$, which is equivalently a $\ZZ_{128}$ register restricted to even residues since $2\pi\,\tau(k)/64=2\pi\,(2\tau(k))/128$.
 Importantly, $p$ is treated as an explicit refinement knob: we report bounded sweeps over $\mathrm{denom}=2^p$ (e.g.\ Table~\ref{tab:holonomy_phase_lift_family} and Tables~\ref{tab:holonomy_perm_fit_pmns}--\ref{tab:holonomy_perm_fit_ckm}), so the role of dyadic phase resolution is auditable rather than assumed.
-This is consistent with the stance adopted here that physical readout is fundamentally finite-resolution (Axiom~0 and Section~\ref{sec:hpa_readout}).
+This is consistent with the stance adopted here that physical readout is fundamentally finite-resolution (Axiom~\ref{ax:readout_sequentiality} and Section~\ref{sec:hpa_readout}).
 
 \begin{remark}[Avoiding a common confusion]\label{rem:z128_vs_omega6}
 The label $\ZZ_{128}$ refers to the \emph{ontic phase register} alphabet (a finite ring model for phase arithmetic).
@@ -256,7 +322,8 @@ These belong to different layers: a single phase register can induce multiple bi
 Building on the provable $64\to 21$ folding core, we propose three interface statements:
 \begin{itemize}
 \item \textbf{Gauge fields as compensating connections.}
-When stable types are embedded on a Hilbert-addressed grid and cross-site readout consistency is required, local mismatch must be absorbed by compensating connections, yielding three gauge sectors aligned with the $\varphi$--$\pi$--$\e$ channel factorization (Axiom~\ref{ax:gauge_compensation} and Section~\ref{subsec:gauge_as_compensation}).
+When stable types are embedded on a Hilbert-addressed grid and cross-site readout consistency is required, local mismatch must be absorbed by compensating connections (Proposition~\ref{ax:gauge_compensation}).
+The three-channel gauge-factor identification is recorded as an explicit interface hypothesis (Assumption~\ref{as:channel_to_gauge}; Section~\ref{subsec:gauge_as_compensation}).
 \item \textbf{Chirality as protocol selection.}
 Hilbert addressing is not unique: it comes in $D_4$ layout families, split into orientation-preserving and orientation-reversing classes \cite{Hilbert1891,Sagan1994}.
 Fixing a layout class at $t=0$ turns parity into a protocol change and provides a readout-geometric mechanism for maximal parity violation in the weak sector (Section~\ref{sec:chirality_antimatter}).
