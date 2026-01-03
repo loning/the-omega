@@ -44,6 +44,50 @@ From this viewpoint, discreteness is not a postulate but a consequence of finite
 The stable-sector viewpoint used in this paper has a natural control-theoretic dual: in open systems, long-lived low-entropy structure can be modeled as \emph{predictive active error correction} (AEC) that suppresses protocol-level mismatch relative to a passive baseline while paying dissipation and implementation costs \cite{Ma2025BioTeleology}.
 Appendix~\ref{app:isomorphism_dictionary} records a protocol-level dictionary that aligns stable-sector objects (alphabets, stability channels, degeneracies) with AEC objects (mismatch certificates, feedback, and audit constraints) without mixing mathematical-layer premises with physical identification claims.
 
+\subsection{Interface principle: the 6-DoF lock in a 3D locality dictionary}
+\label{subsec:6dof_lock}
+While Axiom~0 fixes only sequentiality, any physical identification must choose a locality dictionary.
+Empirically, the observed locality structure is three-dimensional to high precision on laboratory and astrophysical scales.
+In a $3$D locality dictionary, a local rigid frame is naturally modeled by the Euclidean group
+\[
+SE(3)\cong \RR^3\rtimes SO(3),
+\]
+specified by a position $x\in\RR^3$ and an orientation $R\in SO(3)$.
+Hence the minimal kinematic description carries six independent parameters: three translational plus three rotational degrees of freedom.
+
+We adopt a minimal interface hypothesis: a fundamental readout window supplies one bit per kinematic degree of freedom of a local frame.
+This motivates a six-bit anchor window $\Omega_6=\{0,1\}^6$.
+This statement belongs to the physical identification layer: it motivates a preferred anchor scale but is not used as a premise for any theorem-level folding statement.
+
+Once a locality-preserving addressing basis is fixed (e.g.\ Hilbert addressing), the balanced coupling rule $m=2n$ matches the $m$-bit readout alphabet size $2^m$ with the number of sites $4^n$ at Hilbert order $n$ (Lemma~\ref{lem:balanced_coupling_equiv}).
+The 6-DoF lock selects $m=6$, hence $n=3$ and $2^6=4^3=64$, giving the smallest nontrivial anchor at which local readout cardinality and spatial addressing cardinality coincide.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[>=Latex, font=\footnotesize]
+  % Left: 3D frame (schematic)
+  \coordinate (O) at (0,0);
+  \draw[->, thick] (O) -- (1.3,0) node[below] {$x$};
+  \draw[->, thick] (O) -- (0,1.2) node[left] {$y$};
+  \draw[->, thick] (O) -- (-0.85,-0.85) node[below] {$z$};
+  \draw[thick] (O) circle (0.45);
+  \draw[->, thick] (0.45,0) arc (0:-300:0.45);
+  \node[align=center] at (0,-1.05) {3 translations\\ + 3 rotations};
+
+  % Arrow: bit-per-DoF lock
+  \draw[->, thick] (1.55,0) -- (2.85,0) node[midway, above] {1 bit / DoF};
+
+  % Right: 6-bit slots
+  \foreach \i/\lab in {0/1,1/2,2/3,3/4,4/5,5/6} {
+    \draw[thick] (3+0.55*\i,-0.30) rectangle (3+0.55*\i+0.45,0.30);
+    \node at (3+0.55*\i+0.225,0) {$b_{\lab}$};
+  }
+  \node[align=center] at (4.35,-1.05) {$m=6$ bits\\$\Omega_6=\{0,1\}^6$};
+\end{tikzpicture}
+\caption{The 6-DoF lock (interface language): in a $3$D locality dictionary, a local rigid frame has six degrees of freedom (three positional plus three orientational). A minimal bit-per-DoF hypothesis motivates a six-bit anchor window.}
+\label{fig:6dof_lock}
+\end{figure}
+
 \subsection{Methodological note: auditable layering}
 \label{subsec:audit_layering}
 
