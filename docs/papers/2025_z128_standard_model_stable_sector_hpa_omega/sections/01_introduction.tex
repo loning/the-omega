@@ -70,7 +70,25 @@ Appendix~\ref{app:isomorphism_dictionary} records a protocol-level dictionary th
 \subsection{Interface principle: the 6-DoF lock in a 3D locality dictionary}
 \label{subsec:6dof_lock}
 While Axiom~\ref{ax:readout_sequentiality} fixes only sequentiality, any physical identification must choose a locality dictionary.
-Empirically, the observed locality structure is three-dimensional to high precision on laboratory and astrophysical scales.
+Let $d$ denote the effective spatial dimension of this dictionary at scales where rigid frames are meaningful.
+A local rigid frame carries $d$ translational degrees of freedom and $d(d-1)/2$ rotational degrees of freedom, hence
+\[
+\dim SE(d)=d+\frac{d(d-1)}{2}=\frac{d(d+1)}{2}.
+\]
+Under the minimal bit-per-DoF hypothesis adopted here, a fundamental readout window supplies one bit per kinematic degree of freedom.
+Thus the minimal window length compatible with rigid localization at dimension $d$ is $m=\frac{d(d+1)}{2}$.
+
+\begin{proposition}[CAP-minimal rigidity lock selects the 3D six-bit anchor (interface)]\label{prop:cap_dim_lock}
+Within the balanced-coupling candidate family $m\in\{4,6,8,\dots\}$, the smallest window length that matches the rigid-frame count $m=\frac{d(d+1)}{2}$ for some integer $d\ge 1$ is $m=6$, realized uniquely at $d=3$.
+\end{proposition}
+\begin{proof}
+For $d=1,2$ one has $\frac{d(d+1)}{2}\in\{1,3\}$, which is not in the even family $\{4,6,8,\dots\}$.
+For $d=3$ one has $\frac{d(d+1)}{2}=6$, which is in the family.
+For $d\ge 4$ one has $\frac{d(d+1)}{2}\ge 10>6$, so no smaller match exists.
+\end{proof}
+In CAP language (Axiom~\ref{ax:cap}), $d=3$ is the unique dimension that achieves an \emph{exact} rigid-frame lock at the smallest balanced scale.
+Empirically, the observed locality structure is three-dimensional to high precision on laboratory and astrophysical scales, providing an external consistency check.
+
 In a $3$D locality dictionary, a local rigid frame is naturally modeled by the Euclidean group
 \[
 SE(3)\cong \RR^3\rtimes SO(3),
@@ -147,6 +165,27 @@ Mapping hypotheses and interface principles stated in a falsifiable form (no phy
 \end{itemize}
 This separation is essential because the folding core is exact and computable, while the Standard Model identification is an interface claim that must be constrained by data-level tests.
 
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{5.5pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.25\textwidth} p{0.18\textwidth} p{0.23\textwidth} p{0.26\textwidth}}
+\toprule
+item & status & where defined & audit / falsifiability channel \\
+\midrule
+readout sequentiality & Axiom~\ref{ax:readout_sequentiality} & Section~\ref{subsec:axiom0_linearity} & Fold$_6$ checks; Appendix~\ref{app:reproducibility} \\
+CAP closure rule & Axiom~\ref{ax:cap}, Definition~\ref{def:bounded_complexity_closure} & Section~\ref{subsec:bounded_complexity_audit} & audit tables; Appendix~\ref{app:generated_tables} \\
+3D locality + 6-DoF lock & interface dictionary & Section~\ref{subsec:6dof_lock} & resolution staircase; Section~\ref{sec:falsifiability} \\
+Hilbert orientation class & Assumption~\ref{ax:scl} & Section~\ref{subsec:scl} & $\chi$ sign flips; Proposition~\ref{prop:chi_flip}; Prediction P2 \\
+three channels $\leftrightarrow$ three gauge factors & Proposition~\ref{prop:channel_to_gauge} & Section~\ref{subsec:gauge_as_compensation} & closed labeling; Theorem~\ref{thm:labeling_unique}; holonomy diagnostics; Section~\ref{sec:protocol_connections_holonomy} \\
+geometric normalization dictionaries & interface axioms in Section~\ref{sec:couplings_cp} & Section~\ref{sec:couplings_cp} & rigidity targets and audits; Table~\ref{tab:quant_summary}; Appendix~\ref{app:generated_tables} \\
+\bottomrule
+\end{tabular}
+\caption{Audit-facing interface contract: the small set of protocol-level inputs and where they are tested.}
+\label{tab:audit_facing_contract}
+\end{table}
+
 \begin{figure}[t]
 \centering
 \begin{tikzpicture}[
@@ -188,7 +227,7 @@ Computational Action Principle (Axiom~\ref{ax:cap}) instantiated as bounded-comp
 \node[box, below=of cap] (assump) {\textbf{Interface assumptions / dictionaries.}\\
 3D locality dictionary + 6-DoF lock (Section~\ref{subsec:6dof_lock}).\\
 Scan--chirality locking, SCL (Assumption~\ref{ax:scl}).\\
-Three-channel $\leftrightarrow$ three gauge factors (Assumption~\ref{as:channel_to_gauge}).\\
+CAP-minimal gauge-factor closure (Proposition~\ref{prop:channel_to_gauge}).\\
 Geometric phase-volume dictionaries for normalization targets (Section~\ref{sec:couplings_cp}).};
 
 \node[box, right=8mm of prim] (core) {\textbf{Mathematical layer (finite constructions).}\\
@@ -218,7 +257,7 @@ Falsifiability statements P1--P6 (Section~\ref{sec:falsifiability}) and audit ta
 \paragraph{Dependency checklist (selected).}
 \begin{itemize}
 \item \textbf{Mathematical layer.} The folding core and stable-sector counts (e.g.\ Lemma~\ref{lem:xm_fib}, Proposition~\ref{prop:cyc_bdry_size}, Proposition~\ref{prop:foldm_surjective}) are finite combinatorial/operator statements and do not use physical identification hypotheses as premises.
-\item \textbf{Physical identification layer.} Anchor and mapping claims (3D/6-DoF lock in Section~\ref{subsec:6dof_lock}, SCL in Assumption~\ref{ax:scl}, channel-to-gauge identification in Assumption~\ref{as:channel_to_gauge}, CP-sign anchoring in Definition~\ref{ax:chi_cp_sign}) are explicit interface inputs/dictionaries that are audited but not promoted to theorem-level premises for the folding core.
+\item \textbf{Physical identification layer.} Anchor and mapping claims (3D/6-DoF lock in Section~\ref{subsec:6dof_lock}, SCL in Assumption~\ref{ax:scl}, gauge-factor closure in Proposition~\ref{prop:channel_to_gauge}, CP-sign anchoring in Definition~\ref{ax:chi_cp_sign}) are explicit interface inputs/dictionaries that are audited but not promoted to theorem-level premises for the folding core.
 \item \textbf{CAP closures.} Discrete numerical targets and calibrations are treated as bounded-complexity CAP selections (Axiom~\ref{ax:cap}, Definition~\ref{def:bounded_complexity_closure}) within explicitly declared finite candidate families.
 \item \textbf{Predictions.} Protocol-level falsifiability statements (Section~\ref{sec:falsifiability}) depend on the declared interface maps/closures and do not feed back into the mathematical-layer folding statements.
 \end{itemize}
@@ -323,7 +362,7 @@ Building on the provable $64\to 21$ folding core, we propose three interface sta
 \begin{itemize}
 \item \textbf{Gauge fields as compensating connections.}
 When stable types are embedded on a Hilbert-addressed grid and cross-site readout consistency is required, local mismatch must be absorbed by compensating connections (Proposition~\ref{ax:gauge_compensation}).
-The three-channel gauge-factor identification is recorded as an explicit interface hypothesis (Assumption~\ref{as:channel_to_gauge}; Section~\ref{subsec:gauge_as_compensation}).
+The gauge-factor triple is recorded as a CAP-minimal interface closure (Proposition~\ref{prop:channel_to_gauge}; Section~\ref{subsec:gauge_as_compensation}).
 \item \textbf{Chirality as protocol selection.}
 Hilbert addressing is not unique: it comes in $D_4$ layout families, split into orientation-preserving and orientation-reversing classes \cite{Hilbert1891,Sagan1994}.
 Fixing a layout class at $t=0$ turns parity into a protocol change and provides a readout-geometric mechanism for maximal parity violation in the weak sector (Section~\ref{sec:chirality_antimatter}).
