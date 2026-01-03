@@ -95,10 +95,16 @@ def main() -> None:
 
     # 2) Core encoding scan + codon tables
     run([py, "scripts/exp_genetic_code_decompiler.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_mutual_information_rank.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_encoding_symmetry.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_control_objective_null_brief.py", *(["--force"] if args.force else [])], cwd=cwd)
 
     # 2b) Fold_m resolution scan (m>6)
     run([py, "scripts/exp_foldm_resolution_scan.py", *(["--force"] if args.force else [])], cwd=cwd)
     run([py, "scripts/exp_foldm_control_objective_stability.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_foldm_control_objective_stability_maintex.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_foldm_boundary_sector_counts.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_stop_fine_structure_foldm.py", *(["--force"] if args.force else [])], cwd=cwd)
 
     # 3) Nonstandard translation tables
     run([py, "scripts/exp_nonstandard_codes.py", *(["--force"] if args.force else [])], cwd=cwd)

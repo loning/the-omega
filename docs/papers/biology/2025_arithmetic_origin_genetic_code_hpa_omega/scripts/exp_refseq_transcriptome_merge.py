@@ -391,10 +391,8 @@ def _emit_outputs_from_summary(summary: dict[str, object]) -> None:
                 title = "Stop-context candidate sets for reporter assays"
                 if stem.endswith("_coding"):
                     title = "Protein-coding stop-context candidate sets for reporter assays (NM/XM)"
-                lines.append(
-                    f"{title} (candidate set \\path{{{cand_set}}}, window radius $k={int(k_cand)}$). "
-                    "Sequences are DNA (U$\\mapsto$T)."
-                )
+                lines.append(f"{title} (set \\path{{{cand_set}}}; $k={int(k_cand)}$).")
+                lines.append("Sequences are DNA (U$\\mapsto$T).")
                 lines.append("\\begin{center}")
                 lines.append("\\scriptsize")
                 lines.append("\\setlength{\\tabcolsep}{3pt}")

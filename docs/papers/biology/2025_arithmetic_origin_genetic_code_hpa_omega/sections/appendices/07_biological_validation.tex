@@ -31,7 +31,7 @@ The following outputs can be used to design and analyze experiments:
 \label{app:bio_validation_readthrough}
 
 \paragraph{Goal.}
-Test whether termination readthrough depends on (i) stop-codon class ($\mathrm{UAA/UAG/UGA}$) and/or (ii) the uplift-context statistics $u_{\mathrm{before}}(k)$ and $u_{\mathrm{after}}(k)$ computed from the surrounding coding sequence under $\mu^\ast$.
+Test whether termination readthrough depends on stop-codon class and on the uplift-context statistics $u_{\mathrm{before}}(k)$ and $u_{\mathrm{after}}(k)$ computed from the surrounding coding sequence under $\mu^\ast$.
 
 \paragraph{Construct design.}
 Use a dual-reporter readthrough system (e.g.\ Renilla--stop--Firefly) with a single in-frame stop codon between reporter ORFs.
@@ -43,7 +43,7 @@ For each stop class $s\in\{\mathrm{UAA,UAG,UGA}\}$, build matched context sets:
 In this work we provide concrete candidate context lists from the RefSeq scan at $k=10$:
 \begin{itemize}
 \item a ranked list of high/low contexts per stop codon, with explicit upstream/downstream DNA windows and local downstream features (+4 base and after-nt6; Appendix~\ref{app:generated_tables}),
-\item and a composition-matched list of high/low pairs (matching after-window GC+dinucleotide; Appendix~\ref{app:generated_tables}).
+\item and a composition-matched list of high/low pairs (matching after-window GC and dinucleotide composition; Appendix~\ref{app:generated_tables}).
 \end{itemize}
 For these RefSeq candidates, the composition-matched pairs preserve large predicted contrasts in the downstream window means:
 $\Delta\overline{U}_{\mathrm{after}}$ is on the order of $+43$ to $+48$ across the three stop classes (Appendix~\ref{app:generated_tables}).
@@ -110,7 +110,7 @@ To make the experimental program executable, the following selection rules map d
 \item \textbf{Window completeness}: require complete $k$-windows on the relevant side(s) as enforced by the scripts.
 \item \textbf{Composition control}: match GC and dinucleotide vectors between compared groups (Appendix~\ref{app:composition_controls}).
 \item \textbf{Effect-size targeting}: choose contexts that maximize the predicted difference in $u_{\mathrm{after}}(k)$ (or in $u_{\mathrm{after}}(k)-u_{\mathrm{before}}(k)$) while keeping codon identity fixed.
-\item \textbf{Provenance}: store selected context lists and summary JSON in \path{analysis\_runs.payload} and, when applicable, the per-item panel tables in Postgres for reproducibility (Appendix~\ref{app:reproducibility}).
+\item \textbf{Provenance}: store selected context lists and summary JSON in \texttt{analysis\_runs}\allowbreak\texttt{.payload}. When applicable, also store the per-item panel tables in Postgres for reproducibility (Appendix~\ref{app:reproducibility}).
 \end{itemize}
 
 

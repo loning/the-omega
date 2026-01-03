@@ -2920,6 +2920,8 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
     cc = summary.get("composition_controls") or {}
     cc_lines: list[str] = []
     cc_lines.append(f"Composition-adjusted controls for recoding-site context (primary window radius $k={k_primary}$).")
+    cc_lines.append("")
+    cc_items: list[str] = []
     if isinstance(cc, dict) and cc:
         nnw = cc.get("nn_within_cds") or {}
         if isinstance(nnw, dict):
@@ -2932,10 +2934,10 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
                 lo = b.get("ci_low")
                 hi = b.get("ci_high")
                 md_s = f"{float(md):+.4f}" if md is not None else "NA"
-                ci_s = f"[{float(lo):.4f},{float(hi):.4f}]" if (lo is not None and hi is not None) else "NA"
-                cc_lines.append(
+                ci_s = f"[{float(lo):.4f},\\allowbreak {float(hi):.4f}]" if (lo is not None and hi is not None) else "NA"
+                cc_items.append(
                     "Within-CDS GC+dinuc NN (Control-C), before-window: "
-                    f"diff {md_s} (CI$_{{95\\%}}$={ci_s}, paired $p{op}{p_s}$, sign-flip $p{op2}{p2_s}$; n={int(b.get('n') or 0)})."
+                    f"diff {md_s}; CI$_{{95\\%}}$={ci_s}; paired $p{op}{p_s}$; sign-flip $p{op2}{p2_s}$; $n={int(b.get('n') or 0)}$."
                 )
             if isinstance(a, dict):
                 op, p_s = _fmt_p_tex(a.get("p_paired_t"))
@@ -2944,10 +2946,10 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
                 lo = a.get("ci_low")
                 hi = a.get("ci_high")
                 md_s = f"{float(md):+.4f}" if md is not None else "NA"
-                ci_s = f"[{float(lo):.4f},{float(hi):.4f}]" if (lo is not None and hi is not None) else "NA"
-                cc_lines.append(
+                ci_s = f"[{float(lo):.4f},\\allowbreak {float(hi):.4f}]" if (lo is not None and hi is not None) else "NA"
+                cc_items.append(
                     "Within-CDS GC+dinuc NN (Control-C), after-window: "
-                    f"diff {md_s} (CI$_{{95\\%}}$={ci_s}, paired $p{op}{p_s}$, sign-flip $p{op2}{p2_s}$; n={int(a.get('n') or 0)})."
+                    f"diff {md_s}; CI$_{{95\\%}}$={ci_s}; paired $p{op}{p_s}$; sign-flip $p{op2}{p2_s}$; $n={int(a.get('n') or 0)}$."
                 )
         nnt = cc.get("nn_terminal_pool") or {}
         if isinstance(nnt, dict):
@@ -2958,18 +2960,18 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
                 op2, p2_s = _fmt_p_tex(b.get("p_signflip"))
                 md = b.get("mean_diff")
                 md_s = f"{float(md):+.4f}" if md is not None else "NA"
-                cc_lines.append(
+                cc_items.append(
                     "GC+dinuc NN to CDS-deduplicated terminal-stop pool, before-window: "
-                    f"diff {md_s} (paired $p{op}{p_s}$, sign-flip $p{op2}{p2_s}$; n={int(b.get('n') or 0)})."
+                    f"diff {md_s}; paired $p{op}{p_s}$; sign-flip $p{op2}{p2_s}$; $n={int(b.get('n') or 0)}$."
                 )
             if isinstance(a, dict):
                 op, p_s = _fmt_p_tex(a.get("p_paired_t"))
                 op2, p2_s = _fmt_p_tex(a.get("p_signflip"))
                 md = a.get("mean_diff")
                 md_s = f"{float(md):+.4f}" if md is not None else "NA"
-                cc_lines.append(
+                cc_items.append(
                     "GC+dinuc NN to CDS-deduplicated terminal-stop pool, after-window: "
-                    f"diff {md_s} (paired $p{op}{p_s}$, sign-flip $p{op2}{p2_s}$; n={int(a.get('n') or 0)})."
+                    f"diff {md_s}; paired $p{op}{p_s}$; sign-flip $p{op2}{p2_s}$; $n={int(a.get('n') or 0)}$."
                 )
         st = cc.get("stratified_terminal") or {}
         if isinstance(st, dict):
@@ -2983,15 +2985,20 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
                     op, p_s = _fmt_p_tex(b.get("p_perm"))
                     od = b.get("overall_diff")
                     od_s = f"{float(od):+.4f}" if od is not None else "NA"
-                    cc_lines.append(f"Stratified ({title}) recoding vs terminal, before-window: overall diff {od_s} (perm $p{op}{p_s}$).")
+                    cc_items.append(f"Stratified ({title}) recoding vs terminal, before-window: overall diff {od_s}; perm $p{op}{p_s}$.")
                 if isinstance(a, dict):
                     op, p_s = _fmt_p_tex(a.get("p_perm"))
                     od = a.get("overall_diff")
                     od_s = f"{float(od):+.4f}" if od is not None else "NA"
-                    cc_lines.append(f"Stratified ({title}) recoding vs terminal, after-window: overall diff {od_s} (perm $p{op}{p_s}$).")
+                    cc_items.append(f"Stratified ({title}) recoding vs terminal, after-window: overall diff {od_s}; perm $p{op}{p_s}$.")
+    if cc_items:
+        cc_lines.append("\\begin{itemize}")
+        for it in cc_items:
+            cc_lines.append("\\item " + it)
+        cc_lines.append("\\end{itemize}")
     else:
         cc_lines.append("Composition-adjusted controls unavailable in cached summary.")
-    write_text(generated_dir() / "recoding_composition_controls.tex", "\n\n".join(cc_lines) + "\n")
+    write_text(generated_dir() / "recoding_composition_controls.tex", "\n".join(cc_lines) + "\n")
 
     # Terminal-stop bias fragment: recompute vs current RefSeq baseline if available.
     term_stop_counts_i = Counter({str(k): int(v) for k, v in (term_stop_counts.items() if isinstance(term_stop_counts, dict) else [])})
