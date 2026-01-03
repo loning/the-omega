@@ -17,6 +17,8 @@ Notes:
 from __future__ import annotations
 
 import argparse
+import ast
+import hashlib
 import subprocess
 import sys
 from subprocess import CalledProcessError
@@ -24,6 +26,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, List, Sequence
 
+from common_cache import cache_disabled, cache_path, load_pickle, save_pickle_atomic
 from common_paths import generated_dir, paper_root, scripts_dir
 from common_progress import heartbeat_wait
 from common_tex import nonempty_file
@@ -34,6 +37,93 @@ class Step:
     name: str
     script: str
     expected_outputs: Sequence[str]
+
+
+RUN_ALL_CACHE_VERSION = 1
+
+
+def _run_all_cache_file() -> Path:
+    return cache_path("run_all_steps.pkl")
+
+
+def _load_run_all_cache() -> dict[str, str]:
+    """
+    Mapping: step.script -> dependency fingerprint (sha256 hex).
+    """
+    p = _run_all_cache_file()
+    if not p.is_file():
+        return {}
+    try:
+        obj = load_pickle(p)
+        if not isinstance(obj, dict):
+            return {}
+        if int(obj.get("version", -1)) != RUN_ALL_CACHE_VERSION:
+            return {}
+        steps = obj.get("steps", {})
+        if not isinstance(steps, dict):
+            return {}
+        out: dict[str, str] = {}
+        for k, v in steps.items():
+            if isinstance(k, str) and isinstance(v, str):
+                out[k] = v
+        return out
+    except Exception:
+        return {}
+
+
+def _save_run_all_cache(cache: dict[str, str]) -> None:
+    if cache_disabled():
+        return
+    try:
+        save_pickle_atomic(
+            _run_all_cache_file(),
+            {"version": RUN_ALL_CACHE_VERSION, "steps": dict(cache)},
+        )
+    except Exception:
+        # Best-effort; never fail the pipeline because of caching.
+        pass
+
+
+def _local_module_map() -> dict[str, Path]:
+    # Editing this orchestrator should not force a full recompute of fragments.
+    return {p.stem: p for p in scripts_dir().glob("*.py") if p.name != "run_all.py"}
+
+
+def _direct_local_imports(py_path: Path, module_map: dict[str, Path]) -> set[Path]:
+    """
+    Return local (same-directory) Python dependencies imported by this file.
+    If parsing fails for any reason, fall back to a conservative dependency set.
+    """
+    try:
+        src = py_path.read_text(encoding="utf-8")
+        tree = ast.parse(src, filename=str(py_path))
+    except Exception:
+        # Conservative fallback: assume it depends on all local modules.
+        return set(module_map.values())
+
+    mods: set[str] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                if alias.name:
+                    mods.add(alias.name.split(".")[0])
+        elif isinstance(node, ast.ImportFrom):
+            if node.level == 0 and node.module:
+                mods.add(node.module.split(".")[0])
+    return {module_map[m] for m in mods if m in module_map}
+
+
+def _script_deps_closure(root: Path, module_map: dict[str, Path], memo: dict[Path, set[Path]]) -> set[Path]:
+    """
+    Compute the transitive closure of local Python dependencies for a script.
+    """
+    if root in memo:
+        return memo[root]
+    deps: set[Path] = {root}
+    for dep in _direct_local_imports(root, module_map):
+        deps |= _script_deps_closure(dep, module_map, memo)
+    memo[root] = deps
+    return deps
 
 
 def _run_script(script_path: Path, step_name: str) -> None:
@@ -53,6 +143,32 @@ def _check_outputs(rel_paths: Iterable[str]) -> None:
     if missing:
         msg = "Missing/empty generated outputs:\n" + "\n".join(f"  - {m}" for m in missing)
         raise RuntimeError(msg)
+
+
+def _have_outputs(rel_paths: Iterable[str]) -> bool:
+    for rel in rel_paths:
+        p = paper_root() / rel
+        if not nonempty_file(p):
+            return False
+    return True
+
+
+def _deps_fingerprint(deps: Iterable[Path]) -> str:
+    """
+    Stable fingerprint for a set of local dependency files (content-based).
+    """
+    h = hashlib.sha256()
+    root = scripts_dir()
+    for p in sorted(set(deps), key=lambda x: str(x)):
+        try:
+            rel = str(p.resolve().relative_to(root.resolve()))
+        except Exception:
+            rel = str(p.resolve())
+        h.update(rel.encode("utf-8"))
+        h.update(b"\0")
+        h.update(p.read_bytes())
+        h.update(b"\0")
+    return h.hexdigest()
 
 
 def _max_mtime(paths: Iterable[Path]) -> float:
@@ -529,18 +645,31 @@ def build_steps() -> List[Step]:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run all reproducible generators for this paper.")
     parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Force recomputation (ignore cached/up-to-date outputs) and run all steps.",
+    )
+    parser.add_argument(
         "--skip-up-to-date",
+        dest="skip_up_to_date",
         action="store_true",
         help=(
-            "Skip steps whose expected outputs exist, are non-empty, and are newer than all scripts "
-            "in this directory. Useful for iterative LaTeX work when generators have not changed."
+            "Skip steps whose expected outputs exist, are non-empty, and are newer than the step's "
+            "local Python dependencies. Useful for iterative LaTeX work."
         ),
+    )
+    parser.add_argument(
+        "--no-skip-up-to-date",
+        dest="skip_up_to_date",
+        action="store_false",
+        help="Disable skipping and run all steps (unless --stop-after stops early).",
     )
     parser.add_argument(
         "--stop-after",
         default="",
         help="Optional step name prefix to stop after (for debugging).",
     )
+    parser.set_defaults(skip_up_to_date=True)
     args = parser.parse_args(list(argv) if argv is not None else None)
 
     gen = generated_dir()
@@ -548,15 +677,36 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     steps = build_steps()
     all_expected: List[str] = []
-    deps_mtime = _scripts_deps_mtime() if args.skip_up_to_date else 0.0
+    use_skip = bool(args.skip_up_to_date) and (not bool(args.force)) and (not cache_disabled())
+    module_map: dict[str, Path] = _local_module_map() if use_skip else {}
+    deps_memo: dict[Path, set[Path]] = {}
+    cache: dict[str, str] = _load_run_all_cache() if use_skip else {}
+    cache_dirty = False
 
     for step in steps:
         script_path = scripts_dir() / step.script
         if not script_path.is_file():
             raise FileNotFoundError(f"Missing script: {script_path}")
-        if args.skip_up_to_date and _outputs_up_to_date(step.expected_outputs, deps_mtime=deps_mtime):
-            print(f"[run_all] SKIP (up-to-date) {step.name}")
-            _check_outputs(step.expected_outputs)
+        if use_skip:
+            deps = _script_deps_closure(script_path, module_map, deps_memo)
+            fp = _deps_fingerprint(deps)
+            have = _have_outputs(step.expected_outputs)
+            cached_fp = cache.get(step.script)
+            if have and cached_fp == fp:
+                print(f"[run_all] SKIP (up-to-date) {step.name}")
+                _check_outputs(step.expected_outputs)
+            elif have and cached_fp is None:
+                # First run (or cache cleared): adopt existing outputs as the cache baseline.
+                print(f"[run_all] SKIP (cached) {step.name}")
+                _check_outputs(step.expected_outputs)
+                cache[step.script] = fp
+                cache_dirty = True
+            else:
+                print(f"[run_all] {step.name} -> {step.script}")
+                _run_script(script_path, step_name=step.name)
+                _check_outputs(step.expected_outputs)
+                cache[step.script] = fp
+                cache_dirty = True
         else:
             print(f"[run_all] {step.name} -> {step.script}")
             _run_script(script_path, step_name=step.name)
@@ -572,6 +722,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     # Minimal sanity: ensure the audit summary exists if we ran it.
     if (paper_root() / "sections/generated/audit_summary_rows.tex") in [paper_root() / p for p in all_expected]:
         _check_outputs(["sections/generated/audit_summary_rows.tex"])
+
+    if cache_dirty:
+        _save_run_all_cache(cache)
 
     print("[run_all] OK")
     return 0
