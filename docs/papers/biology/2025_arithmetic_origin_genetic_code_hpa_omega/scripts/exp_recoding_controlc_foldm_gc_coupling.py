@@ -40,7 +40,7 @@ from genetic_code_tools import GENETIC_CODE, fold_codon_m
 from progress_tools import Heartbeat
 
 
-SCRIPT_VERSION = 1
+SCRIPT_VERSION = 2
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
 
 
@@ -406,10 +406,7 @@ def main() -> None:
     rows.sort(key=lambda r: int(r["m"]))
 
     m_str = ",".join(str(int(m)) for m in ms)
-    s = (
-        "GC coupling of Control-C paired differences in the dominant recoding stratum (Sec/UGA/Eukaryota): "
-        f"$m\\in\\{{{m_str}\\}}$, $k={int(args.k)}$, analysis version {int(args.analysis_version)}."
-    )
+    s = f"GC coupling (Control-C; Sec/UGA/Eukaryota): $m\\in\\{{{m_str}\\}}$, $k={int(args.k)}$, v{int(args.analysis_version)}."
     write_text_atomic(out_summary, s + "\n")
 
     # LaTeX table.
@@ -417,7 +414,7 @@ def main() -> None:
     lines.append("\\begingroup")
     lines.append("\\hbadness=10000")
     lines.append("\\small")
-    lines.append("\\setlength{\\tabcolsep}{6pt}")
+    lines.append("\\setlength{\\tabcolsep}{2pt}")
     lines.append("\\renewcommand{\\arraystretch}{1.15}")
     lines.append("\\setlength{\\LTleft}{0pt}")
     lines.append("\\setlength{\\LTright}{0pt}")

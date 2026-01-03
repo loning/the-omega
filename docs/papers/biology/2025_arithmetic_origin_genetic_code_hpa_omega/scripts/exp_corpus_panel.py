@@ -1439,11 +1439,13 @@ def _emit_latex_from_summary(out: dict[str, object]) -> None:
     aa_lines.append("\\begingroup")
     aa_lines.append("\\hbadness=10000")
     aa_lines.append("\\scriptsize")
-    aa_lines.append("\\setlength{\\tabcolsep}{4pt}")
+    aa_lines.append("\\setlength{\\tabcolsep}{2pt}")
     aa_lines.append("\\renewcommand{\\arraystretch}{1.10}")
     aa_lines.append("\\setlength{\\LTleft}{0pt}")
     aa_lines.append("\\setlength{\\LTright}{0pt}")
-    aa_lines.append("\\begin{longtable}{lllrllrrr}")
+    aa_lines.append(
+        "\\begin{longtable}{>{\\raggedright\\arraybackslash}p{2.9cm} l >{\\raggedright\\arraybackslash}p{2.7cm} r l r r r r}"
+    )
     aa_lines.append("\\toprule")
     aa_lines.append("label & domain & mode & code id & AA & $n$ & $\\bar{U}_{\\mathrm{obs}}$ & $\\bar{U}_{\\mathrm{null}}$ & contrib \\\\")
     aa_lines.append("\\midrule")
@@ -1492,11 +1494,13 @@ def _emit_latex_from_summary(out: dict[str, object]) -> None:
     codon_lines.append("\\begingroup")
     codon_lines.append("\\hbadness=10000")
     codon_lines.append("\\scriptsize")
-    codon_lines.append("\\setlength{\\tabcolsep}{4pt}")
+    codon_lines.append("\\setlength{\\tabcolsep}{2pt}")
     codon_lines.append("\\renewcommand{\\arraystretch}{1.10}")
     codon_lines.append("\\setlength{\\LTleft}{0pt}")
     codon_lines.append("\\setlength{\\LTright}{0pt}")
-    codon_lines.append("\\begin{longtable}{lllrllrrr}")
+    codon_lines.append(
+        "\\begin{longtable}{>{\\raggedright\\arraybackslash}p{2.9cm} l >{\\raggedright\\arraybackslash}p{2.7cm} r l l r r r}"
+    )
     codon_lines.append("\\toprule")
     codon_lines.append("label & domain & mode & code id & codon & AA & $c_{\\mathrm{obs}}$ & $c_{\\mathrm{null}}$ & contrib \\\\")
     codon_lines.append("\\midrule")

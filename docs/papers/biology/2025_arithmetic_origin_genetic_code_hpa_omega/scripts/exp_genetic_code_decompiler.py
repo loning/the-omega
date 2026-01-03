@@ -40,7 +40,7 @@ from genetic_code_tools import (
 
 
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
-ANALYSIS_VERSION = 5
+ANALYSIS_VERSION = 6
 
 
 def root_dir() -> Path:
@@ -300,6 +300,85 @@ def generate_encoding_scan_summary() -> None:
     )
 
     write_text(generated_dir() / "encoding_scan_summary.tex", "\n".join(lines) + "\n")
+
+
+def generate_encoding_scan_table() -> None:
+    """
+    Full table over all 24 encodings with key diagnostics:
+      - control-boundary score S(mu) over K={AUG,UAA,UAG,UGA}
+      - number of stop codons landing in X6^bdry
+      - start/stop boundary homology flag
+      - mutual information I(Gen(C); w_mu(C)) under uniform codon prior
+    """
+    encs = all_encodings()
+    control_codons = ("AUG", "UAA", "UAG", "UGA")
+
+    # Identify the MI-optimal encoding for tagging in the table.
+    best_mu_mi: dict[str, str] | None = None
+    best_mi = None
+    for mu in encs:
+        mi = float(mutual_information_bits(mu))
+        if best_mi is None or mi > best_mi:
+            best_mi = mi
+            best_mu_mi = mu
+    assert best_mu_mi is not None and best_mi is not None
+
+    rows: list[dict[str, object]] = []
+    for mu in encs:
+        s = sum(1 for c in control_codons if fold_codon(c, mu).w in BOUNDARY_WORDS)
+        stop_b = sum(1 for c in STOP_CODONS if fold_codon(c, mu).w in BOUNDARY_WORDS)
+        hom = bool(satisfies_start_stop_boundary_homology(mu))
+        mi = float(mutual_information_bits(mu))
+        tag = "-"
+        if mu == MU_STAR:
+            tag = "$\\mu^\\ast$"
+        elif mu == best_mu_mi:
+            tag = "$\\mu_{\\mathrm{MI}}$"
+        rows.append(
+            {
+                "mu": mu,
+                "S": int(s),
+                "stopB": int(stop_b),
+                "hom": bool(hom),
+                "mi": float(mi),
+                "tag": str(tag),
+            }
+        )
+
+    rows.sort(key=lambda r: (-int(r["S"]), -int(bool(r["hom"])), -float(r["mi"]), _latex_encoding(r["mu"])))
+
+    tbl: list[str] = []
+    tbl.append("\\begin{center}")
+    tbl.append("\\scriptsize")
+    tbl.append("\\setlength{\\tabcolsep}{3pt}")
+    tbl.append("\\renewcommand{\\arraystretch}{1.10}")
+    tbl.append("\\resizebox{\\textwidth}{!}{%")
+    tbl.append("\\begin{tabular}{rccccrrcrl}")
+    tbl.append("\\toprule")
+    tbl.append("rank & $A$ & $C$ & $G$ & $U$ & $S(\\mu)$ & stopB & homology & $I$ (bits) & tag \\\\")
+    tbl.append("\\midrule")
+    for i, r in enumerate(rows, start=1):
+        mu = r["mu"]
+        assert isinstance(mu, dict)
+        a = mu["A"]
+        c = mu["C"]
+        g = mu["G"]
+        u = mu["U"]
+        s = int(r["S"])
+        stop_b = int(r["stopB"])
+        hom = "yes" if bool(r["hom"]) else "no"
+        mi = float(r["mi"])
+        tag = str(r["tag"])
+        tbl.append(
+            f"{i} & \\texttt{{{a}}} & \\texttt{{{c}}} & \\texttt{{{g}}} & \\texttt{{{u}}} & {s} & {stop_b} & {hom} & {mi:.6f} & {tag} \\\\"
+        )
+    tbl.append("\\bottomrule")
+    tbl.append("\\end{tabular}")
+    tbl.append("}")
+    tbl.append("\\end{center}")
+    tbl.append("")
+
+    write_text(generated_dir() / "encoding_scan_table.tex", "\n".join(tbl) + "\n")
 
 
 def _codon_bitmask_index() -> tuple[list[str], dict[str, int]]:
@@ -717,6 +796,7 @@ def main() -> None:
         "control_objective_null_summary.tex",
         "control_objective_null_table.tex",
         "encoding_scan_summary.tex",
+        "encoding_scan_table.tex",
         "mutual_information_summary.tex",
         "mutual_information_brief.tex",
         "fold6_invariants_summary.tex",
@@ -788,6 +868,7 @@ def main() -> None:
     generate_amino_acid_spectrum_rows(MU_STAR)
     generate_full_codon_table_rows(MU_STAR)
     generate_encoding_scan_summary()
+    generate_encoding_scan_table()
     generate_control_objective_null_over_all_4codon_sets()
     generate_mutual_information_summary()
     generate_fold6_invariants_summary()

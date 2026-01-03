@@ -31,7 +31,7 @@ from genetic_code_tools import GENETIC_CODE, fold_codon_m
 from stats_tools import aa_preserving_null_decomposition
 
 
-SCRIPT_VERSION = 1
+SCRIPT_VERSION = 2
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
 
 
@@ -242,17 +242,20 @@ def main() -> None:
     lines.append("\\begingroup")
     lines.append("\\hbadness=10000")
     lines.append("\\scriptsize")
-    lines.append("\\setlength{\\tabcolsep}{4pt}")
+    lines.append("\\setlength{\\tabcolsep}{2pt}")
     lines.append("\\renewcommand{\\arraystretch}{1.10}")
     lines.append("\\setlength{\\LTleft}{0pt}")
     lines.append("\\setlength{\\LTright}{0pt}")
-    lines.append("\\begin{longtable}{r l l r r r l l}")
+    lines.append(
+        "\\begin{longtable}{r >{\\raggedright\\arraybackslash}p{3.0cm} l r r r "
+        ">{\\raggedright\\arraybackslash}p{2.7cm} >{\\raggedright\\arraybackslash}p{3.8cm}}"
+    )
     lines.append("\\toprule")
     lines.append("$m$ & label & domain & code id & $n$ & $\\Delta\\overline{U}$ & top AA & top codons \\\\")
     lines.append("\\midrule")
     for r in rows:
         lines.append(
-            f"{int(r['m'])} & \\path{{{_escape_tex(str(r['label']))}}} & {r['domain']} & {int(r['code_id'])} & {int(r['n'])} & "
+            f"{int(r['m'])} & \\path{{{str(r['label'])}}} & {r['domain']} & {int(r['code_id'])} & {int(r['n'])} & "
             f"{_fmt_float_signed(r['diff_u'], nd=4)} & {_escape_tex(str(r['aa_drivers']))} & {_escape_tex(str(r['codon_drivers']))} \\\\"
         )
     lines.append("\\bottomrule")

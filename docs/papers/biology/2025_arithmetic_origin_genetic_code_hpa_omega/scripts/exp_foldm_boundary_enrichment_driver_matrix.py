@@ -35,7 +35,7 @@ from stats_tools import aa_preserving_null_decomposition
 
 
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
-SCRIPT_VERSION = 1
+SCRIPT_VERSION = 2
 
 
 def root_dir() -> Path:
@@ -372,11 +372,14 @@ def main() -> None:
     lines.append("\\begingroup")
     lines.append("\\hbadness=10000")
     lines.append("\\scriptsize")
-    lines.append("\\setlength{\\tabcolsep}{4pt}")
+    lines.append("\\setlength{\\tabcolsep}{2pt}")
     lines.append("\\renewcommand{\\arraystretch}{1.10}")
     lines.append("\\setlength{\\LTleft}{0pt}")
     lines.append("\\setlength{\\LTright}{0pt}")
-    lines.append("\\begin{longtable}{r l r r l r l r}")
+    lines.append(
+        "\\begin{longtable}{r >{\\raggedright\\arraybackslash}p{1.9cm} r r "
+        ">{\\raggedright\\arraybackslash}p{3.7cm} r >{\\raggedright\\arraybackslash}p{3.7cm} r}"
+    )
     lines.append("\\toprule")
     lines.append("$m$ & label & $n$ & total & syn(sub) drivers & AA(comp) & AA drivers & syn(bg) \\\\")
     lines.append("\\midrule")

@@ -26,7 +26,7 @@ from genetic_code_tools import GENETIC_CODE, fold_codon_m
 from progress_tools import Heartbeat
 
 
-SCRIPT_VERSION = 1
+SCRIPT_VERSION = 2
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
 
 
@@ -375,7 +375,7 @@ def main() -> None:
     lines.append("\\begingroup")
     lines.append("\\hbadness=10000")
     lines.append("\\small")
-    lines.append("\\setlength{\\tabcolsep}{6pt}")
+    lines.append("\\setlength{\\tabcolsep}{4pt}")
     lines.append("\\renewcommand{\\arraystretch}{1.15}")
     lines.append("\\setlength{\\LTleft}{0pt}")
     lines.append("\\setlength{\\LTright}{0pt}")
