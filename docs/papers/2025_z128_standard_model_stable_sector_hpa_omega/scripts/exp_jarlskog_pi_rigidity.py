@@ -7,8 +7,10 @@ We consider:
   J(a,n) = 1 / (a * pi^n)
 over the bounded domain 1 <= a <= A, 1 <= n <= N.
 
-We minimize absolute error to the PDG reference central value and report the top
-candidates.
+We minimize the audit-norm absolute log mismatch
+  e := |log(J / J_ref)|
+to the PDG reference central value and report the top candidates (together with
+the best/second-best gap).
 
 Only the Python standard library is used.
 """
@@ -31,6 +33,7 @@ class Candidate:
     abs_err: float
     rel_err: float
     sigma_err: float
+    log_mismatch: float
 
 
 def main() -> None:
@@ -47,6 +50,7 @@ def main() -> None:
             abs_err = abs(val - target)
             rel_err = abs_err / target
             sigma_err = abs_err / sigma if sigma > 0.0 else float("inf")
+            log_mismatch = abs(math.log(val / target))
             cands.append(
                 Candidate(
                     a=a,
@@ -55,18 +59,22 @@ def main() -> None:
                     abs_err=abs_err,
                     rel_err=rel_err,
                     sigma_err=sigma_err,
+                    log_mismatch=log_mismatch,
                 )
             )
 
-    # Deterministic sort by abs error; tie-break by (n,a).
-    cands_sorted = sorted(cands, key=lambda x: (x.abs_err, x.n, x.a))
+    # Deterministic sort: minimize log mismatch, then (a+n), then (a,n).
+    cands_sorted = sorted(cands, key=lambda x: (x.log_mismatch, x.a + x.n, x.a, x.n))
     top = cands_sorted[:10]
+    gap = cands_sorted[1].log_mismatch - cands_sorted[0].log_mismatch
 
     rows: List[str] = []
     for i, cand in enumerate(top, start=1):
         rows.append(
-            rf"{i} & $({cand.a},{cand.n})$ & {cand.value:.10e} & {cand.abs_err:.3e} & {cand.rel_err:.3e} & {cand.sigma_err:.3e} \\"
+            rf"{i} & $({cand.a},{cand.n})$ & {cand.value:.10e} & {cand.abs_err:.3e} & {cand.rel_err:.3e} & {cand.sigma_err:.3e} & {cand.log_mismatch:.3e} \\"
         )
+    rows.append(r"\addlinespace")
+    rows.append(rf"\multicolumn{{7}}{{l}}{{domain $|\Theta|={len(cands)}$;\ \ best/second gap $\Delta e={gap:.3e}$}} \\")
     rows.append(r"\bottomrule")
 
     out_dir = generated_dir()

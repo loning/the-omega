@@ -7,8 +7,9 @@ We record two finite searches used in the paper:
   (1) alpha^{-1}(mu_Z) ~ n*pi^2 with 1 <= n <= N
   (2) sin^2(theta_W)(mu_Z) ~ p/q with 1 <= q <= Q and gcd(p,q)=1
 
-We rank candidates by absolute error to the PDG reference targets, with
-deterministic tie-break rules.
+We rank candidates by the audit-norm absolute log mismatch
+  e := |log(x / x_ref)|,
+with deterministic tie-break rules.
 
 Only the Python standard library is used.
 """
@@ -29,6 +30,7 @@ class Pi2Cand:
     value: float
     abs_err: float
     rel_err: float
+    log_mismatch: float
 
 
 @dataclass(frozen=True)
@@ -37,6 +39,7 @@ class RatCand:
     q: int
     value: float
     abs_err: float
+    log_mismatch: float
 
 
 def gcd(a: int, b: int) -> int:
@@ -58,15 +61,20 @@ def main() -> None:
         val = n * pi2
         abs_err = abs(val - target_alpha)
         rel_err = abs_err / target_alpha
-        pi2_cands.append(Pi2Cand(n=n, value=val, abs_err=abs_err, rel_err=rel_err))
-    pi2_cands_sorted = sorted(pi2_cands, key=lambda x: (x.abs_err, x.n))
+        log_mismatch = abs(math.log(val / target_alpha))
+        pi2_cands.append(Pi2Cand(n=n, value=val, abs_err=abs_err, rel_err=rel_err, log_mismatch=log_mismatch))
+    # Tie-break: minimize log mismatch, then n.
+    pi2_cands_sorted = sorted(pi2_cands, key=lambda x: (x.log_mismatch, x.n))
     top_pi2 = pi2_cands_sorted[:10]
+    gap_pi2 = pi2_cands_sorted[1].log_mismatch - pi2_cands_sorted[0].log_mismatch
 
     rows_pi2: List[str] = []
     for i, cand in enumerate(top_pi2, start=1):
         rows_pi2.append(
-            rf"{i} & {cand.n} & {cand.value:.10f} & {cand.abs_err:.3e} & {cand.rel_err:.3e} \\"
+            rf"{i} & {cand.n} & {cand.value:.10f} & {cand.abs_err:.3e} & {cand.rel_err:.3e} & {cand.log_mismatch:.3e} \\"
         )
+    rows_pi2.append(r"\addlinespace")
+    rows_pi2.append(rf"\multicolumn{{6}}{{l}}{{domain $|\Theta|={len(pi2_cands)}$;\ \ best/second gap $\Delta e={gap_pi2:.3e}$}} \\")
     rows_pi2.append(r"\bottomrule")
     (out_dir / "ew_alpha_pi2_rigidity_rows.tex").write_text("\n".join(rows_pi2), encoding="utf-8")
     print("Wrote sections/generated/ew_alpha_pi2_rigidity_rows.tex")
@@ -83,13 +91,18 @@ def main() -> None:
                 continue
             val = p / q
             abs_err = abs(val - target_sin2)
-            rat_cands.append(RatCand(p=p, q=q, value=val, abs_err=abs_err))
-    rat_cands_sorted = sorted(rat_cands, key=lambda x: (x.abs_err, x.q, x.p))
+            log_mismatch = abs(math.log(val / target_sin2))
+            rat_cands.append(RatCand(p=p, q=q, value=val, abs_err=abs_err, log_mismatch=log_mismatch))
+    # Tie-break: minimize log mismatch, then denominator q, then numerator p.
+    rat_cands_sorted = sorted(rat_cands, key=lambda x: (x.log_mismatch, x.q, x.p))
     top_rat = rat_cands_sorted[:10]
+    gap_rat = rat_cands_sorted[1].log_mismatch - rat_cands_sorted[0].log_mismatch
 
     rows_rat: List[str] = []
     for i, cand in enumerate(top_rat, start=1):
-        rows_rat.append(rf"{i} & ${cand.p}/{cand.q}$ & {cand.value:.10f} & {cand.abs_err:.3e} \\")
+        rows_rat.append(rf"{i} & ${cand.p}/{cand.q}$ & {cand.value:.10f} & {cand.abs_err:.3e} & {cand.log_mismatch:.3e} \\")
+    rows_rat.append(r"\addlinespace")
+    rows_rat.append(rf"\multicolumn{{5}}{{l}}{{domain $|\Theta|={len(rat_cands)}$;\ \ best/second gap $\Delta e={gap_rat:.3e}$}} \\")
     rows_rat.append(r"\bottomrule")
     (out_dir / "ew_sin2_rational_rigidity_rows.tex").write_text("\n".join(rows_rat), encoding="utf-8")
     print("Wrote sections/generated/ew_sin2_rational_rigidity_rows.tex")

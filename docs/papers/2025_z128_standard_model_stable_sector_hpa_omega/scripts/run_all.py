@@ -725,9 +725,19 @@ def main(argv: Sequence[str] | None = None) -> int:
                 print(f"[run_all] SKIP (up-to-date) {step.name}")
                 _check_outputs(step.expected_outputs)
             elif have and cached_fp is None:
-                # First run (or cache cleared): adopt existing outputs as the cache baseline.
-                print(f"[run_all] SKIP (cached) {step.name}")
-                _check_outputs(step.expected_outputs)
+                # First run (or cache cleared):
+                # If outputs are older than the script/dependency mtimes, they may be stale
+                # relative to local edits. In that case, recompute once; otherwise adopt the
+                # existing outputs as the cache baseline (useful for fresh clones with
+                # committed generated fragments).
+                deps_mtime = _max_mtime(deps)
+                if _outputs_up_to_date(step.expected_outputs, deps_mtime):
+                    print(f"[run_all] SKIP (cached) {step.name}")
+                    _check_outputs(step.expected_outputs)
+                else:
+                    print(f"[run_all] {step.name} -> {step.script} (cache missing; outputs stale)")
+                    _run_script(script_path, step_name=step.name)
+                    _check_outputs(step.expected_outputs)
                 cache[step.script] = fp
                 cache_dirty = True
             else:
