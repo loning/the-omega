@@ -12,11 +12,12 @@ Fix a window length $m\ge 1$ and define the microstate readout space
 \Omega_m:=\{0,1\}^m,\qquad |\Omega_m|=2^m,
 \]
 with linearization $\mathcal{H}_m:=\ell^2(\Omega_m)$.
-We focus on the minimal balanced coupling $m=2n$ with $n=3$, hence $m=6$:
+To attach explicit spatial diagnostics later (Hilbert addressing, chirality, holonomy), we fix the classical $2$D Hilbert addressing as a readout screen (Section~\ref{sec:hilbert_addressing}) and adopt a balanced cardinality match on that screen, $2^m=4^n$ (equivalently $m=2n$).
+We focus on the minimal instance used in this paper, $n=3$ and hence $m=6$:
 \[
 \Omega_6=\{0,1\}^6,\qquad |\Omega_6|=64.
 \]
-At the same order $n=3$, the Hilbert-addressed grid has $4^n=64$ sites, yielding the minimal match between spatial addressing and local readout cardinality.
+At the same order $n=3$, the $2$D Hilbert-addressed grid has $4^n=64$ sites, matching the local readout cardinality.
 
 \begin{lemma}[Balanced coupling equivalences]\label{lem:balanced_coupling_equiv}
 For integers $m,n\ge 1$, the following are equivalent:
@@ -35,12 +36,19 @@ More generally, a $d$-dimensional hypercubic addressing basis at side length $2^
 We fix the $2$D Hilbert grid as an explicit readout screen for the diagnostics below; see Remark~\ref{rem:why_2d_hilbert} for the rationale and for a $3$D comparison.
 \end{remark}
 
-\paragraph{Principled motivation for $m=2n$ and for the ``minimal'' choice.}
+\paragraph{Operational motivation for $m=2n$ (2D screen) and for the ``minimal'' instance.}
 At Hilbert order $n$, the scan index ranges over $\{0,\dots,4^n-1\}$ and therefore carries exactly $2n$ bits of information.
-The balanced rule $m=2n$ identifies a readout window length with this canonical bit budget and yields the smallest scale at which a chosen locality-preserving addressing basis (e.g.\ Hilbert addressing) has matched cardinality with the local readout alphabet $\Omega_m$ (Lemma~\ref{lem:balanced_coupling_equiv}).
+The balanced rule $m=2n$ identifies a readout window length with this canonical bit budget and yields a simple one-to-one site labeling on the chosen $2$D screen (Lemma~\ref{lem:balanced_coupling_equiv}).
+\begin{remark}[Balanced coupling is a diagnostic convention]\label{rem:balanced_coupling_convention}
+Balanced coupling is not a theorem-level requirement of the folding core.
+All folding maps, admissible sets, and counting statements in this section are defined for every $m$.
+The balanced relation $2^m=4^n$ is adopted only when we attach spatial diagnostics by placing window words (or stable types) on an order-$n$ addressing grid with matched cardinality so that each site carries exactly one $m$-bit microstate label.
+Other couplings $2^m\neq 4^n$ correspond to non-bijective site$\leftrightarrow$window assignments and would require additional protocol conventions; they are not pursued here.
+\end{remark}
 \paragraph{Why $(m,n)=(6,3)$? The spatial constraint (interface).}
-The algebra permits any balanced pair $m=2n$, but a physical identification must also choose a locality dictionary.
-On the physical identification layer, adopting a $3$D locality dictionary together with the 6-DoF rigid-frame \emph{coarse-lock} convention selects the minimal single-window anchor $m=6$ (Section~\ref{subsec:6dof_lock}); with the $2$D Hilbert addressing used here this fixes $n=3$ via $m=2n$.
+The algebra permits any $m$ and any addressing basis; a physical identification must choose both a locality dictionary and a readout screen.
+On the physical identification layer, adopting a $3$D locality dictionary together with the 6-DoF rigid-frame \emph{coarse-lock} convention selects the minimal single-window anchor $m=6$ (Section~\ref{subsec:6dof_lock}).
+With the $2$D Hilbert screen used here, balanced cardinality then fixes $n=3$ via $m=2n$ (for a $3$D screen one would instead have $m=3n$ and $n=2$ at $m=6$; see Remark~\ref{rem:why_2d_hilbert}).
 We treat $(m,n)=(6,3)$ as a concrete anchor for fully explicit finite diagnostics; higher balanced pairs such as $(m,n)=(8,4)$ and $(10,5)$ are addressed uniformly by the same definitions and by the uplift sweeps recorded in Appendix~\ref{app:generated_tables}.
 In particular, the Fibonacci admissible sizes and the $\pi$-channel split persist for all $m$ (Lemma~\ref{lem:xm_fib} and Proposition~\ref{prop:cyc_bdry_size}): for example,
 \[
@@ -195,6 +203,7 @@ The explicit boundary words are obtained by finite enumeration (Appendix~\ref{ap
 \label{subsec:e_channel}
 
 The $\e$-channel expresses analytic stability through zeta functions and Abel normalization \cite{ArtinMazur1965,ParryPollicott1990,Ruelle1978}.
+For a compact, self-contained summary of the Abel-path and pole-barrier viewpoint used in this channel, see Appendix~\ref{app:protocol_primitives}.
 For a dynamical system $(X,f)$, the Artin--Mazur zeta function is defined by the periodic-point counts
 \begin{equation}\label{eq:artin_mazur_def}
 \zeta_f(z):=\exp\!\left(\sum_{n\ge 1}\frac{\#\mathrm{Fix}(f^n)}{n}\,z^n\right),

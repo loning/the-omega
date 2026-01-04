@@ -1,0 +1,96 @@
+\section{Protocol primitives and regularization conventions}
+\label{app:protocol_primitives}
+
+This appendix records, in one place, a compact set of protocol primitives and analytic conventions that are used throughout the paper.
+It introduces \emph{no new axioms or assumptions} beyond the declared input set in the main text; it only restates standard definitions and short supporting lemmas.
+
+\subsection{A Weyl pair viewpoint for scan dynamics}
+
+The scan orbit $x_n=x_0+n\alpha\pmod{1}$ can be encoded algebraically by a Weyl pair.
+One convenient realization is on $L^2(\TT)$ with the shift and multiplication operators.
+
+\begin{definition}[Weyl pair]\label{def:weyl_pair}
+Fix $\alpha\in\RR$.
+A \emph{Weyl pair} is a pair of unitary operators $(U,V)$ satisfying
+\[
+UV=\e^{2\pi\iu \alpha}\,VU.
+\]
+\end{definition}
+
+\begin{remark}[A canonical realization]\label{rem:weyl_pair_realization}
+On $L^2(\TT)$ with coordinate $x\in\RR/\ZZ$, define
+\[
+(Uf)(x):=f(x+\alpha),\qquad (Vf)(x):=\e^{2\pi\iu x}f(x).
+\]
+Then $U$ and $V$ are unitary and satisfy the Weyl relation in Definition~\ref{def:weyl_pair}.
+This algebraic encoding is used only as a bookkeeping device for ``shift'' and ``phase'' operations consistent with Axiom~\ref{ax:readout_sequentiality}.
+\end{remark}
+
+\subsection{Window projection as a readout map}
+
+Given a window $W\subset\TT$, define the indicator kernel $K_W:\TT\to\{0,1\}$ by $K_W(z)=\ind\{z\in W\}$.
+The (deterministic) binary readout induced by $W$ is
+\[
+w_n=K_W(z_n)=\ind\{\e^{2\pi\iu x_n}\in W\}\in\{0,1\}.
+\]
+Finite observability at window length $m$ is the restriction to words $w=w_1\cdots w_m\in\Omega_m=\{0,1\}^m$.
+
+\subsection{Zeckendorf admissibility and the golden branch}
+
+On the golden branch, admissibility is enforced by the forbidden word ``11'':
+\[
+X_m=\{w\in\Omega_m:\text{$w$ contains no adjacent ones}\}.
+\]
+Equivalently, if $c_k\in\{0,1\}$ are Zeckendorf digits, the admissibility constraint is $c_kc_{k+1}=0$.
+The Fibonacci count $|X_m|=F_{m+2}$ (Lemma~\ref{lem:xm_fib}) is the combinatorial backbone of the $\varphi$-channel.
+
+\subsection{Dyadic phase registers}
+
+For a phase resolution parameter $p\ge 1$, we model phases by the finite ring
+\[
+\ZZ_{2^p}=\ZZ/2^p\ZZ,
+\]
+equipped with the embedding into $\TT$ given by
+\[
+k\;\longmapsto\;\e^{2\pi\iu k/2^p}.
+\]
+In the holonomy diagnostics, the dyadic denominator $\mathrm{denom}=2^p$ is treated as an explicit refinement knob and is swept in bounded families rather than fixed as a hidden degree of freedom (Section~\ref{sec:protocol_connections_holonomy} and Appendix~\ref{app:generated_tables}).
+The label $\ZZ_{128}$ is the baseline choice at $p=7$ (Section~\ref{subsec:z128_label}).
+
+\subsection{Abel normalization and pole barriers}
+
+The $\e$-channel uses an Abel-type viewpoint: one studies an analytic generating function on the open unit disk and takes a limit along the \emph{Abel path} $\rho\uparrow 1$ with $\rho\in(0,1)$.
+This isolates the location of the first singularity (the ``pole barrier'') that obstructs extending the analytic object to the boundary.
+
+\begin{definition}[Abel-normalized sum]\label{def:abel_sum}
+Let $(a_n)_{n\ge 0}$ be a complex sequence and define, for $\rho\in(0,1)$,
+\[
+F(\rho):=\sum_{n\ge 0} a_n \rho^n,
+\]
+whenever the series converges.
+If the limit exists (finite or infinite), the \emph{Abel limit} is
+\[
+\lim_{\rho\uparrow 1} F(\rho).
+\]
+\end{definition}
+
+\begin{lemma}[Root-test pole barrier]\label{lem:abel_pole_barrier_root_test}
+Let $(a_n)$ be a sequence with
+\[
+\lambda:=\limsup_{n\to\infty} |a_n|^{1/n}\in[0,\infty].
+\]
+Then $F(\rho)=\sum_{n\ge 0} a_n \rho^n$ converges absolutely for $0\le \rho<1/\lambda$ (with the convention $1/0=\infty$) and diverges for $\rho>1/\lambda$.
+In particular, if $\lambda>1$ then the Abel path $\rho\uparrow 1$ necessarily encounters a singularity barrier at $\rho=1/\lambda<1$.
+\end{lemma}
+\begin{proof}
+This is the standard root test applied to the power series with coefficients $a_n$.
+For $\rho<1/\lambda$, one has $\limsup_n |a_n\rho^n|^{1/n}=\rho\lambda<1$, so the series converges absolutely.
+For $\rho>1/\lambda$, the limsup exceeds $1$, so the terms do not tend to zero and the series diverges.
+\end{proof}
+
+\begin{remark}[Connection to the $\e$-channel language]\label{rem:abel_pole_barrier_connection}
+In this paper, the phrase ``Abel pole barrier'' refers to the first singularity that obstructs analytic continuation along the Abel path in the relevant generating function (Section~\ref{subsec:e_channel}).
+The Artin--Mazur zeta framework supplies a canonical class of such generating functions in symbolic dynamics and provides a standard way to encode stability information through analyticity and singularity structure \cite{ArtinMazur1965,ParryPollicott1990,Ruelle1978}.
+\end{remark}
+
+

@@ -1,0 +1,81 @@
+\section{CAP closures: deterministic audit template}
+\label{app:cap_audit_template}
+
+This appendix collects a single, reusable audit template for bounded-complexity closures under the Computational Action Principle (Axiom~\ref{ax:cap}).
+It introduces \emph{no new axioms or assumptions} beyond those declared in the main text; it only makes explicit the finite selection logic already used throughout the paper.
+
+\subsection{Selection on a finite candidate family}
+
+The core reason the audit program is well-posed is finiteness: for each bound $B$, the candidate family $\Theta(B)$ is a finite set by construction (Definition~\ref{def:bounded_complexity_closure}).
+
+\begin{proposition}[Deterministic closure map]\label{prop:deterministic_closure_map}
+Fix a bound $B\in\NN$ and a finite candidate family $\Theta(B)$.
+Let $(E_\infty(\theta),E_1(\theta),T(\theta))$ be a triple of real-valued diagnostics on $\Theta(B)$, where $T$ denotes any fully specified secondary tie-break key (possibly vector-valued with a fixed lexicographic order).
+Then the lexicographic minimization rule
+\[
+\theta_B\in\operatorname*{argmin}_{\theta\in\Theta(B)}\;\bigl(E_\infty(\theta),E_1(\theta),T(\theta)\bigr)
+\]
+selects a nonempty minimizer set and defines a deterministic selection function once $T$ is chosen so that ties are fully resolved.
+\end{proposition}
+\begin{proof}
+Because $\Theta(B)$ is finite, the set of triples $\{(E_\infty(\theta),E_1(\theta),T(\theta)):\theta\in\Theta(B)\}$ is finite, hence admits at least one lexicographic minimum.
+If the tie-break key $T$ is defined so that equality of the full triple can occur for at most one element, the selected minimizer is unique and the rule becomes deterministic.
+\end{proof}
+
+\subsection{Audit outputs beyond point estimates}
+
+For each closure, the paper reports additional finite statistics that quantify within-family look-elsewhere context and stability under perturbations (Section~\ref{subsec:bounded_complexity_audit} and Appendix~\ref{app:generated_tables}).
+Two frequently used diagnostics are the candidate-domain size and a uniqueness gap.
+
+\begin{definition}[Domain size and uniqueness gap]\label{def:domain_gap}
+Let $\Theta$ be a finite candidate family and let $J(\theta)$ be an objective (e.g.\ $E_\infty(\theta)$).
+Define the domain size as $|\Theta|$.
+If the minimizer is unique, define the \emph{uniqueness gap} as
+\[
+\Delta J:=J(\theta^{(2)})-J(\theta^{(1)}),
+\]
+where $\theta^{(1)}$ is the minimizer and $\theta^{(2)}$ is the best competitor under the same tie-break ordering restricted to $J$.
+\end{definition}
+
+\subsection{Reference implementation sketch (audit form)}
+
+The following pseudocode summarizes the selection logic implemented by the deterministic scripts in this repository.
+It is intended as an audit aid (not as a new modeling premise).
+
+\begin{center}
+\begin{minipage}{0.92\textwidth}
+\begin{Verbatim}
+Input:
+  - finite candidate set Theta(B)
+  - reference targets x_ref[i] > 0
+  - candidate map x(theta)[i] > 0 for theta in Theta(B)
+  - objective: E_inf(theta) = max_i |log(x_i(theta)/x_ref[i])|
+               E_1(theta) = sum_i |log(x_i(theta)/x_ref[i])|
+  - tie-break key T(theta) (fully specified; lexicographic)
+
+Algorithm:
+  best <- None
+  for theta in Theta(B):
+      compute e_i(theta) = log(x_i(theta)/x_ref[i]) for all i
+      compute (E_inf(theta), E_1(theta), T(theta))
+      if best is None or (E_inf, E_1, T) is lexicographically smaller than best:
+          best <- (E_inf, E_1, T, theta)
+  output theta_B = best.theta
+
+Audit outputs (in addition to theta_B):
+  - |Theta(B)| (domain size)
+  - best/second-best gaps for E_inf and E_1 where feasible
+  - quantiles of E_inf over Theta(B) for large domains
+  - robustness under explicit target perturbations
+  - counterfactual baselines within stated families
+\end{Verbatim}
+\end{minipage}
+\end{center}
+
+\begin{remark}[Why this does not add hidden knobs]\label{rem:no_hidden_knobs_template}
+The only discretionary content in a closure is the explicit declaration of the finite family $\Theta(B)$, the objectives, and the tie-break key $T$.
+Once declared, the selection is a deterministic function of these finite inputs (Proposition~\ref{prop:deterministic_closure_map}).
+This is the operational meaning of the paper's ``no-hidden-knobs'' audit contract (Table~\ref{tab:no_hidden_knobs_contract}).
+\end{remark}
+
+

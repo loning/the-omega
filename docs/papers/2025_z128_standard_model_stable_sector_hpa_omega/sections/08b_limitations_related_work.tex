@@ -11,8 +11,10 @@ Within the declared protocol class, the remaining selection freedom is closed by
 Appendix~\ref{app:inference_ledger} records the resulting ``no-new-input'' dependency ledger in a compact audit form, separating theorem-level consequences, finite protocol constructions, conditional interface implications, and bounded-complexity closures.
 
 \subsection{On the minimal balanced coupling choice \texorpdfstring{$(m,n)=(6,3)$}{(m,n)=(6,3)}}
-The balanced coupling condition $m=2n$ is used to match two independent finite cardinalities:
+For the chosen $2$D Hilbert readout screen, the balanced coupling condition $m=2n$ is used to match two independent finite cardinalities:
 the local readout alphabet size $|\Omega_m|=2^m$ and the number of sites on the Hilbert-addressed grid $4^n$ (Section~\ref{subsec:microstate_space}).
+This is a diagnostic convention used to attach spatial statistics; it is not a theorem-level necessity for the folding core (Remark~\ref{rem:balanced_coupling_convention}).
+Other addressing dimensions correspond to $m=dn$ rather than $m=2n$ (Remark~\ref{rem:balanced_coupling_dimension}), and other space-filling curves can be used as alternative readout bases (Remark~\ref{rem:why_2d_hilbert}).
 The choice $(m,n)=(6,3)$ is then the smallest nontrivial instance of this match:
 $2^6=4^3=64$.
 This choice is an \emph{anchor scale} for an auditable finite model, not a claim that the dynamics must select $m=6$.
@@ -46,7 +48,8 @@ This subsection records, in audit language, the sense in which several design ch
 
 \paragraph{(i) The $(m,n)=(6,3)$ anchor is uniquely selected under the 3D rigid-frame coarse-lock dictionary (interface).}
 The balanced rule $m=2n$ is the theorem-level cardinality match specialized to the $2$D Hilbert addressing used for the explicit finite diagnostics in this paper, namely $2^m=4^n$ (Lemma~\ref{lem:balanced_coupling_equiv}; see also Remark~\ref{rem:balanced_coupling_dimension} for the $d$-dimensional general form).
-On the physical identification layer, the 3D rigid-frame degree count $\dim SE(3)=6$ singles out $m=6$ as the minimal \emph{single-window} two-bin-per-DoF anchor (Section~\ref{subsec:6dof_lock}), and within the fixed $2$D Hilbert addressing this pins $n=3$ under $m=2n$.
+On the physical identification layer, the 3D rigid-frame degree count $\dim SE(3)=6$ singles out $m=6$ as the minimal \emph{single-window} two-bin-per-DoF anchor (Section~\ref{subsec:6dof_lock}), and within the fixed $2$D Hilbert screen this selects $n=3$ under the balanced match $m=2n$.
+Other addressing dimensions would select different $n$ at the same $m$ (Remark~\ref{rem:balanced_coupling_dimension} and Remark~\ref{rem:why_2d_hilbert}).
 This is the precise sense in which the minimal anchor is not arbitrary within the declared protocol choices: it is the meeting point of the scan-bit budget, the chosen Hilbert addressing budget, and the stated coarse-lock dictionary (cf.\ Remark~\ref{rem:6dof_lock_scope}).
 
 \paragraph{(ii) The $18\oplus 3$ split forces a minimal chiral/gauge allocation at $m=6$.}
@@ -81,7 +84,7 @@ Thus, although the holonomy diagnostics are physical-layer constructs, they are 
 knob / input & meaning & status in this paper & where audited \\
 \midrule
 $m$ (window length) & readout resolution / admissible alphabet & anchor $m=6$; $m$-sweeps and refinement chains recorded & Appendix~\ref{app:generated_tables} (Tables~\ref{tab:xm_sweep}--\ref{tab:foldm_sweep}) \\
-$n$ (Hilbert order) & addressing resolution & anchor $n=3$ (via $m=2n$); chirality sweep recorded & Table~\ref{tab:hilbert_chi_sweep} \\
+$n$ (Hilbert order) & addressing resolution & anchor $n=3$ for the chosen $2$D screen (via $m=2n$); chirality sweep recorded & Table~\ref{tab:hilbert_chi_sweep} \\
 $B$ (closure budget) & finite search radius for bounded-complexity closures & reported as a sweep; stabilization is recorded when it occurs & e.g.\ Tables~\ref{tab:alpha_coeff_rigidity}, \ref{tab:ew_alpha_pi2_rigidity}, \ref{tab:ckm_mixing_rigidity}, \ref{tab:pmns_mixing_rigidity}, \ref{tab:mass_depth_rigidity} \\
 $Q$ (phase-denominator cap) & bounded rational-angle candidate family for $\delta$ & reported as a sweep $Q=1,\dots,12$ & Table~\ref{tab:pmns_delta_sweep} \\
 $\mathrm{denom}=2^p$ & dyadic phase register for holonomy diagnostics & explicit refinement knob, swept in finite diagnostics & Section~\ref{sec:protocol_connections_holonomy} and associated scripts \\
@@ -129,19 +132,34 @@ At $m=6$, admissibility is already enforced by the $\varphi$-grammar and the $\p
 Its technical role at minimal resolution is to fix a standard analytic stability template (Artin--Mazur zeta, Abel normalization) and to motivate the use of an Abel/pole-barrier viewpoint when defining resolution-flow coordinates and exponentially small weights.
 At higher resolution, weighted/pressure-like variants can make the analytic channel genuinely constraining beyond a single forbidden-word predicate.
 
-\subsection{Companion manuscripts in the same repository (internal context)}
-This paper isolates a minimal balanced anchor and closes a concrete Standard Model interface at $(m,n)=(6,3)$.
-Several companion manuscripts in the same \texttt{docs/papers} repository develop complementary layers of the same program in a way that is consistent with (but not used as a premise for) the finite folding core proved here.
-For audit clarity, we emphasize that no theorem-level results are imported from these companions: every protocol primitive and every finite closure used in the present paper is restated explicitly, and all tables can be reproduced from the scripts recorded in Appendix~\ref{app:reproducibility}.
-The internal citations below are therefore context rather than dependencies:
-\begin{itemize}
-\item \textbf{Phase registers and scan algebra.} Phase registers $\ZZ_{2^p}$ and the $\ZZ_{128}$ label are used here only as explicit protocol parameters and are restated in Section~\ref{subsec:z128_label} and in the finite holonomy phase-lift definitions in Section~\ref{subsec:holonomy_phase_lift_cp}; see \cite{Ma2025HPA} for broader HPA context.
-\item \textbf{CAP and dynamical closure templates.} CAP enters here only at the protocol/interface level: as the bounded-complexity closure rule with deterministic tie-breaks (Axiom~\ref{ax:cap} and Definition~\ref{def:bounded_complexity_closure}) and as a minimal defect-relaxation semantics for stability (Section~\ref{subsec:stability_dynamics}).
-Full covariant variational dynamics and routing-overhead closure are developed in \cite{Ma2025CAP,Ma2025CAPII}, while thermodynamic mismatch and least-discrepancy flow viewpoints are developed in \cite{Ma2025HPT,Ma2025HHU}.
-\item \textbf{Closed normalizations.} The specific $\alpha$/$\sin^2\theta_W$/CP targets used here are defined and audited in Section~\ref{sec:couplings_cp}; \cite{Ma2025PCG} records additional targets not needed in this paper.
-\item \textbf{Resolution folding template.} The admissible sets, folding maps, and the minimal $64\to 21$ anchor are proved and audited in this paper (Sections~\ref{sec:hpa_readout} and \ref{sec:folding_core}); \cite{Ma2025RF} develops the wider folding/uplift template.
-\item \textbf{Axiomatic framing.} Broader physical interfaces and axiomatic discussion are recorded in \cite{Ma2025HPOT,Ma2025FoP}; the present paper uses only the explicit interface statements recorded in its own Sections~\ref{sec:introduction}--\ref{sec:falsifiability}.
-\end{itemize}
+\subsection{Self-containment within the declared input set}
+This paper is written to be closed under its declared protocol primitives and interface inputs (Table~\ref{tab:audit_facing_contract} and Appendix~\ref{app:inference_ledger}).
+For audit clarity, we emphasize that no theorem-level results are imported from companion manuscripts: every protocol primitive and every finite closure used here is defined explicitly in the main text and appendices, and all tables are reproduced by deterministic scripts (Appendix~\ref{app:reproducibility}).
+
+For reader navigation, the following table indicates where the main components that may also appear in companion manuscripts are located \emph{inside this paper}:
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.36\textwidth} p{0.54\textwidth}}
+\toprule
+topic (in this paper) & where it is closed and audited here \\
+\midrule
+scan orbit, window projection, Weyl-pair viewpoint & Sections~\ref{subsec:weyl_scan} and \ref{subsec:window_projection}; Appendix~\ref{app:protocol_primitives} \\
+phase registers $\ZZ_{2^p}$ and \texorpdfstring{$\ZZ_{128}$}{Z128} label & Section~\ref{subsec:z128_label}; Section~\ref{subsec:holonomy_phase_lift_cp}; Appendix~\ref{app:protocol_primitives} \\
+folding core and uplift template ($\varphi$--$\pi$--$\e$) & Sections~\ref{sec:folding_core} and \ref{subsec:e_channel}; Appendix~\ref{app:generated_tables} and Appendix~\ref{app:functorial_refinement} \\
+CAP as bounded-complexity closure with deterministic tie-breaks & Axiom~\ref{ax:cap} and Definition~\ref{def:bounded_complexity_closure}; Appendix~\ref{app:cap_audit_template} \\
+connection/holonomy finite diagnostics & Section~\ref{sec:protocol_connections_holonomy}; Appendix~\ref{app:generated_tables} \\
+closed normalizations and rigidity audits ($\alpha$, $\sin^2\theta_W$, $J$) & Section~\ref{sec:couplings_cp}; Appendix~\ref{app:generated_tables} \\
+time/mass delay dictionaries (matching layer) & Appendix~\ref{app:time_mass_delay} \\
+\bottomrule
+\end{tabular}
+\caption{Internal closure map: where the main protocol ingredients and audit templates are contained within this paper.}
+\label{tab:internal_closure_map}
+\end{table}
+
+Companion manuscripts in the same repository remain useful as extended context and alternative presentations \cite{Ma2025HPA,Ma2025CAP,Ma2025CAPII,Ma2025HHU,Ma2025HPT,Ma2025PCG,Ma2025RF,Ma2025HPOT,Ma2025FoP}, but they are not required to follow the finite constructions and audited closures in the present paper.
 
 \subsection{Related discrete approaches and standard constraints}
 Several mature lines of work share the broad goal of extracting continuum physics from discrete or finite data:
