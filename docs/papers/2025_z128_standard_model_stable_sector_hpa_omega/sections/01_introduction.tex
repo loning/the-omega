@@ -91,6 +91,7 @@ The 6-DoF coarse-lock is an \emph{interface} convention, not a theorem about con
 It does not claim that $m=6$ is sufficient to ``lock'' a pose in $SE(3)$ at any fixed accuracy; continuous pose locking at accuracy $\varepsilon$ requires a bit budget scaling as $m\gtrsim 6\log(1/\varepsilon)$ in the standard quantization sense \cite{GrayNeuhoff1998Quantization,CoverThomas2006}.
 It also does not claim that $m\ge 6$ is necessary for localization under all possible protocols: multi-window temporal integration, analog readout features, or additional structure/constraints can reduce the effective information required at a given task.
 The role of the lock in this paper is narrower: it singles out $m=6$ as the smallest \emph{single-window} binary anchor that can support a coarse rigid-frame display in a $3$D locality dictionary under the stated minimal convention.
+In CAP language, once a $\mu\leftrightarrow m$ selection rule is fixed at the protocol layer (Corollary~\ref{ax:resolution_selection}), the protocol uses the smallest admissible anchor throughout the corresponding energy band; thus, under the $3$D coarse-lock dictionary, $m=6$ is the CAP-minimal effective resolution across the ordinary-energy band until an uplift threshold is crossed.
 \end{remark}
 
 \begin{proposition}[CAP-minimal rigidity lock selects the 3D six-bit anchor (interface)]\label{prop:cap_dim_lock}
@@ -212,8 +213,9 @@ This separation is essential because the folding core is exact and computable, w
 \toprule
 item & status & where defined & audit / falsifiability channel \\
 \midrule
-readout sequentiality & Axiom~\ref{ax:readout_sequentiality} & Section~\ref{subsec:axiom0_linearity} & Fold$_6$ checks; Appendix~\ref{app:reproducibility} \\
-CAP closure rule & Axiom~\ref{ax:cap}, Definition~\ref{def:bounded_complexity_closure} & Section~\ref{subsec:bounded_complexity_audit} & audit tables; Appendix~\ref{app:generated_tables} \\
+readout sequentiality & Axiom~\ref{ax:readout_sequentiality} & Section~\ref{subsec:axiom0_linearity}; Appendix~\ref{app:protocol_primitives} & Fold$_6$ checks; Appendix~\ref{app:reproducibility} \\
+CAP closure rule & Axiom~\ref{ax:cap}, Definition~\ref{def:bounded_complexity_closure} & Section~\ref{subsec:bounded_complexity_audit}; Appendix~\ref{app:cap_audit_template} & audit tables; Appendix~\ref{app:generated_tables} \\
+dyadic phase registers $\ZZ_{2^p}$ & explicit refinement knob & Section~\ref{subsec:z128_label} and Section~\ref{subsec:holonomy_phase_lift_cp}; Appendix~\ref{app:protocol_primitives} & bounded denom sweeps; Section~\ref{sec:protocol_connections_holonomy} \\
 3D locality + 6-DoF coarse-lock & interface dictionary & Section~\ref{subsec:6dof_lock} & resolution staircase; Section~\ref{sec:falsifiability} \\
 Hilbert orientation class & Assumption~\ref{ax:scl} & Section~\ref{subsec:scl} & $\chi$ sign flips; Proposition~\ref{prop:chi_flip}; Prediction P2 \\
 three channels $\leftrightarrow$ three gauge factors & Proposition~\ref{prop:channel_to_gauge} & Section~\ref{subsec:gauge_as_compensation} & closed labeling; Theorem~\ref{thm:labeling_unique}; holonomy diagnostics; Section~\ref{sec:protocol_connections_holonomy} \\
