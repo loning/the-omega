@@ -284,6 +284,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Hilbert-knot triptych (Figure 1)",
+            script="fig_hilbert_knot_triptych.py",
+            expected_outputs=[
+                "figures/hilbert_knot_triptych.pdf",
+                "figures/hilbert_knot_triptych.png",
+            ],
+        ),
+        Step(
             name="Resolution calibration sweep",
             script="exp_resolution_calibration_sweep.py",
             expected_outputs=[
