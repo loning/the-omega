@@ -263,6 +263,13 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Addressing-basis selection audit (Hilbert vs row-major)",
+            script="exp_addressing_selection.py",
+            expected_outputs=[
+                "sections/generated/addressing_selection_rows.tex",
+            ],
+        ),
+        Step(
             name="Hilbert chirality sweep",
             script="exp_hilbert_chi_sweep.py",
             expected_outputs=[

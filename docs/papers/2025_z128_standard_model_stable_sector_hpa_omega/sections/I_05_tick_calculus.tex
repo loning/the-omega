@@ -1,0 +1,146 @@
+\section{Tick calculus: deriving observables, space, gauge, and scale from sequential readout}
+\label{sec:tick_calculus}
+
+\paragraph{Aim.}
+This section fixes the time-first spine used throughout the paper.
+We treat the tick (scan iteration count) as the only primitive input and define all physical-language quantities as derived protocol structures.
+Mathematical-layer statements (counts, maps, and finite tables) remain as in Sections~\ref{sec:hpa_readout} and \ref{sec:folding_core}; the additional content here is a dictionary that maps each physical concept to an explicit mathematical object.
+
+\subsection{The tick as the only primitive input}
+\label{subsec:tick_only_input}
+
+\begin{definition}[Tick (scan time)]
+\label{def:tick}
+The \emph{tick} is the scan iteration index $t\in\ZZ$.
+The direction $t\mapsto t+1$ is the operational notion of forward time within the protocol.
+\end{definition}
+
+\paragraph{Status.}
+Definition~\ref{def:tick} is not an additional dynamical assumption; it is a notational declaration of what is meant by time in a scan-first ontology (Axiom~\ref{ax:readout_sequentiality}).
+
+\subsection{From ticks to finite observables: windows and words}
+\label{subsec:tick_to_words}
+
+\paragraph{Observable records are finite.}
+Fix a window length $m\ge 1$.
+Finite readout is represented by length-$m$ binary words
+\[
+\Omega_m:=\{0,1\}^m,
+\qquad |\Omega_m|=2^m,
+\]
+obtained by window projection of the scan stream (Section~\ref{subsec:window_projection}).
+The elementary observational record at resolution $m$ is therefore a pair \emph{(tick, word)}:
+the tick $t$ locates the sample in the ordered stream, while the word encodes what was seen through the chosen windowing predicate.
+
+\subsection{Stability as an intrinsic grammar: admissible types and folding}
+\label{subsec:tick_to_stability}
+
+\paragraph{Stability is a predicate on words.}
+At the golden branch, the $\varphi$-channel selects the admissible set $X_m\subset\Omega_m$ by a forbidden-word grammar (no adjacent ones), and one has the Fibonacci count $|X_m|=F_{m+2}$ (Lemma~\ref{lem:xm_fib}).
+The $\pi$-channel induces the cyclic/boundary split (Proposition~\ref{prop:cyc_bdry_size}).
+
+\paragraph{Microstates and projection.}
+At fixed $m$, the protocol distinguishes:
+\begin{itemize}
+\item microstate labels in $\Omega_m$ (what can appear at the raw window level), and
+\item stable type labels in $X_m$ (what survives the stability predicate).
+\end{itemize}
+The folding map $\mathrm{Fold}_m$ (Definition~\eqref{eq:foldm_def}) is the deterministic projection from the $2^m$ raw indices to the $|X_m|$ stable types; it is surjective for all $m$ (Proposition~\ref{prop:foldm_surjective}).
+
+\subsection{Space as addressing: display graphs, distance, and velocity}
+\label{subsec:tick_to_space}
+
+\paragraph{Space is a derived display structure.}
+To speak about locality, the protocol must choose an addressing basis that embeds a finite tick prefix into a neighborhood graph.
+At Hilbert order $n$, the canonical finite prefix is $t\in\{0,\dots,4^n-1\}$ and the Hilbert addressing map is a bijection
+\[
+H_n:\{0,1,\dots,4^n-1\}\to \{0,1,\dots,2^n-1\}^2
+\]
+(Section~\ref{sec:hilbert_addressing}).
+
+\begin{definition}[Addressing map and display graph]
+\label{def:addressing_map_graph}
+Fix an order $n$ and an addressing map $A_n$ from indices to sites.
+For the Hilbert screen, $A_n:=H_n$.
+Define the \emph{display graph} $G_n$ as the nearest-neighbor graph on the site set $A_n(\{0,\dots,4^n-1\})$, with edges given by unit Manhattan adjacency on the grid.
+\end{definition}
+
+\begin{definition}[Protocol distance]
+\label{def:protocol_distance}
+For sites $x,y$ in the display graph $G_n$, define the protocol distance
+\[
+d_n(x,y):=\text{shortest-path distance between $x$ and $y$ in $G_n$}.
+\]
+\end{definition}
+
+\paragraph{Tick-distance relation.}
+Definition~\ref{def:protocol_distance} makes the slogan ``distance is time'' precise at the protocol level:
+distance is the minimal number of adjacency moves needed to compare or transport readout between two displayed sites, hence a tick-count proxy once a per-move tick budget is fixed.
+
+\begin{definition}[Protocol velocity and maximal signal rate (tick units)]
+\label{def:protocol_velocity}
+Given a tick-indexed site trajectory $x(t)\in G_n$, define the protocol velocity (in sites per tick) by
+\[
+v(t_1,t_2):=\frac{d_n(x(t_1),x(t_2))}{|t_2-t_1|}\qquad (t_1\neq t_2).
+\]
+The maximal protocol signal rate on $G_n$ is the supremum of $v$ over admissible update rules.
+\end{definition}
+
+\begin{remark}[Physical units and the speed-of-light dictionary]
+\label{rem:tick_velocity_to_c}
+The quantities in Definitions~\ref{def:protocol_distance} and \ref{def:protocol_velocity} are dimensionless (graph units per tick).
+Any identification with meters/seconds, and hence any identification with the measured constant $c$, is a matching-layer calibration (Remark~\ref{rem:scan_rate_c_dictionary}).
+\end{remark}
+
+\subsection{Gauge data as fiber compensation}
+\label{subsec:tick_to_gauge}
+
+\paragraph{Why connections are forced.}
+At fixed $m$, stable labels $w\in X_m$ carry finite microstate fibers $P(w)=\mathrm{Fold}_m^{-1}(w)$.
+Once the protocol demands cross-site consistency on the display graph, stable labels alone are insufficient: one must also specify how fibers are matched between neighbors (Proposition~\ref{ax:gauge_compensation}).
+This is the finite origin of compensating connection data and gauge redundancy.
+
+\subsection{Overhead, delay, and scale: mass and energy as time dictionaries}
+\label{subsec:tick_to_mass_energy}
+
+\paragraph{Overhead as time-lag.}
+In a tick-first ontology, ``mass as depth'' is an operational statement about overhead: stabilizing a pattern consumes additional local protocol resources.
+At the matching layer, this overhead can be accessed through delay observables (Wigner--Smith; Appendix~\ref{app:time_mass_delay}) and compared to clock-rate/lapse dictionaries.
+
+\paragraph{A single log-time coordinate.}
+Fix the electron reference $\mu_0=m_e$ and define the resolution coordinate
+\[
+r(\mu):=\frac{\log(\mu/m_e)}{\log\varphi}.
+\]
+By the Compton-clock dictionary (Appendix~\ref{app:time_mass_delay}), $r$ is simultaneously a log-frequency and (up to a sign) a log-time coordinate.
+This is the sense in which mass and energy are derived from time in the present protocol language: they are calibrated re-expressions of time-scale ratios relative to the $m=6$ anchor.
+
+\subsection{Dictionary summary: physical concepts as mathematical objects}
+\label{subsec:tick_dictionary_summary}
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.18\textwidth} p{0.24\textwidth} p{0.26\textwidth} p{0.26\textwidth}}
+\toprule
+protocol concept & mathematical object & where fixed in this paper & operational proxy (matching layer) \\
+\midrule
+time (tick) & $t\in\ZZ$ (Definition~\ref{def:tick}) & Axiom~\ref{ax:readout_sequentiality}; Section~\ref{sec:tick_calculus} & laboratory clock ticks after calibration \\
+finite observables & $w\in\Omega_m=\{0,1\}^m$ & Section~\ref{subsec:window_projection} & binary readout stream / bit records \\
+stability (types) & $X_m\subset\Omega_m$ & Section~\ref{sec:folding_core} & persistent readout classes \\
+projection & $\mathrm{Fold}_m:\{0,\dots,2^m-1\}\twoheadrightarrow X_m$ & Section~\ref{subsec:foldm_uplift} & coarse graining / equivalence classes \\
+space (display) & addressing map $A_n$ and graph $G_n$ & Section~\ref{sec:hilbert_addressing}; Definition~\ref{def:addressing_map_graph} & locality graph used for audits \\
+distance & $d_n$ (graph metric) & Definition~\ref{def:protocol_distance} & hop count / minimal transport steps \\
+velocity (tick units) & $v=\Delta d/\Delta t$ & Definition~\ref{def:protocol_velocity} & propagation rate; $c$ after calibration \\
+gauge data & fiber matchings / holonomy & Section~\ref{sec:protocol_connections_holonomy} & plaquette holonomy statistics \\
+mass (overhead) & depth / delay dictionary & Sections~\ref{sec:mass_latency_coordinate}, \ref{sec:mass_spectrum_closure} & Compton time; Wigner--Smith delay \\
+energy/scale & $r(\mu)=\log_\varphi(\mu/m_e)$ & Section~\ref{subsec:mass_resolution_coordinate} & frequency/energy conventions \\
+\bottomrule
+\end{tabular}
+\caption{Tick-first dictionary: each physical-language concept used in this paper is identified with an explicit mathematical object derived from sequential readout.}
+\label{tab:tick_dictionary}
+\end{table}
+
+

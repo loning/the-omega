@@ -1,5 +1,5 @@
 
-\section{Introduction: from particles and forces to readout stability}
+\section{Introduction: from tick-only readout to stable sectors}
 \label{sec:introduction}
 
 The Standard Model (SM) organizes known non-gravitational interactions into the gauge structure
@@ -15,8 +15,9 @@ In this view, a ``particle'' is first a \emph{stable readout type}, and ``forces
 The present paper is written to be closed under its declared input set (Table~\ref{tab:audit_facing_contract} and Appendix~\ref{app:inference_ledger}): all finite constructions at the minimal anchor $(m,n)=(6,3)$ are defined and proved here, and all quantitative closures are reproduced by deterministic scripts.
 Companion manuscripts in the same \texttt{docs/papers} repository provide extended context and alternative presentations \cite{Ma2025HPA,Ma2025CAP,Ma2025CAPII,Ma2025HHU,Ma2025HPT,Ma2025PCG,Ma2025RF,Ma2025HPOT,Ma2025FoP}, but they are not required to follow the present paper's definitions, proofs, and audits.
 
-For reader navigation, Table~\ref{tab:resolution_spectrum} provides the global map of the resolution axis under the minimal calibration: below the 6-DoF anchor lies a sub-geometric vacuum phase, at the anchor lies the minimal matter-like stable sector, and above it hyper-geometric uplifts generate Fibonacci-constrained threshold structure.
-The paper's narrative can be read as a refinement of this map: first the scan--projection protocol and folding core (Sections~\ref{sec:hpa_readout} and \ref{sec:folding_core}), then interface closures for SM structure and mass/matching dictionaries.
+For reader navigation, Table~\ref{tab:resolution_spectrum} provides the global map of the resolution axis under the minimal calibration.
+In the tick-first spine used here, the only primitive physical input is \emph{time as tick} (scan iteration count); all physical-language notions (space, distance, velocity, gauge connections, mass/energy scales) are treated as derived protocol structures.
+Section~\ref{sec:tick_calculus} records the corresponding dictionary and fixes the time-first dependency order used throughout.
 
 \begin{table}[t]
 \centering
@@ -48,7 +49,7 @@ $m$ & $|X_m|$ & $\mu_{\mathrm{th}}(m)$ & physical correspondence (interface) & m
 \end{table}
 \FloatBarrier
 
-\subsection{Axiom 0: linearity of the readout stream (interface)}
+\subsection{Axiom 0: the tick (sequential readout) as the only primitive input (interface)}
 \label{subsec:axiom0_linearity}
 \begin{axiom}[Readout sequentiality (interface)]\label{ax:readout_sequentiality}
 The microscopic description is \emph{sequential}.
@@ -89,9 +90,10 @@ Appendix~\ref{app:isomorphism_dictionary} records a protocol-level dictionary th
 
 \input{sections/I_01_scan_to_knot_figure1}
 
-\subsection{Interface principle: 6-DoF rigid-frame coarse-lock in a 3D locality dictionary}
+\subsection{Derived localization anchor: the minimal rigid-frame display budget (interface)}
 \label{subsec:6dof_lock}
-While Axiom~\ref{ax:readout_sequentiality} fixes only sequentiality, any physical identification must choose a locality dictionary.
+While Axiom~\ref{ax:readout_sequentiality} fixes only sequentiality, any physical identification must specify what it means to \emph{display} a localized object.
+In the tick-first dictionary of Section~\ref{sec:tick_calculus}, locality is a derived addressing graph, and a ``localized rigid frame'' is an interface notion tied to coarse pose distinguishability.
 Let $d$ denote the effective spatial dimension of this dictionary at scales where rigid frames are meaningful.
 A local rigid frame carries $d$ translational degrees of freedom and $d(d-1)/2$ rotational degrees of freedom, hence
 \[
@@ -107,7 +109,7 @@ In this minimal two-bin-per-parameter convention, a sufficient single-window coa
 m\;\ge\;\dim SE(d)=\frac{d(d+1)}{2}.
 \]
 More generally, if one asks to specify an element of a $k$-dimensional Lie group up to an $\varepsilon$-scale resolution, the required number of bits scales as $m\gtrsim k\log(1/\varepsilon)$ (metric-entropy / quantization scaling) \cite{GrayNeuhoff1998Quantization,CoverThomas2006}.
-In the present paper we use only the minimal two-bin-per-parameter anchor, and we keep the 6-DoF coarse-lock strictly on the physical identification layer.
+In the present paper we use only the minimal two-bin-per-parameter anchor, and we keep the rigid-frame lock on the physical identification layer.
 \begin{remark}[What the 6-DoF ``lock'' does and does not assert]\label{rem:6dof_lock_scope}
 The 6-DoF coarse-lock is an \emph{interface} convention, not a theorem about continuous pose estimation.
 It does not claim that $m=6$ is sufficient to ``lock'' a pose in $SE(3)$ at any fixed accuracy; continuous pose locking at accuracy $\varepsilon$ requires a bit budget scaling as $m\gtrsim 6\log(1/\varepsilon)$ in the standard quantization sense \cite{GrayNeuhoff1998Quantization,CoverThomas2006}.
@@ -216,8 +218,9 @@ Across different reported closures, hypothesis classes share conventions and inp
 \toprule
 category & status in this paper \\
 \midrule
-protocol primitives & fixed definitions (scan $\to$ window words, defect operators, Fold$_m$, admissible sets, Hilbert addressing for diagnostics) \\
-audited discrete knobs & explicit finite sweeps (e.g.\ $m$-sweeps, bounded-complexity budget $B$, phase denominator $\mathrm{denom}=2^p$, bounded rationals for mixing and phases, staircase step $r_{\mathrm{step}}$) \\
+protocol primitive & the tick (scan iteration count) and window observables (Axiom~\ref{ax:readout_sequentiality}; Section~\ref{sec:tick_calculus}) \\
+derived protocol structures & admissible languages $X_m$, folding maps Fold$_m$, and intrinsic invariants (Sections~\ref{sec:hpa_readout}--\ref{sec:folding_core}) \\
+audited discrete closures & explicit finite candidate families selected by CAP (e.g.\ bounded-complexity budget $B$, phase denominator $\mathrm{denom}=2^p$, bounded rationals for mixing/phases, staircase step $r_{\mathrm{step}}$; Section~\ref{subsec:bounded_complexity_audit}) \\
 external reference conventions & PDG/CODATA targets and scheme/scale choices treated as inputs at the matching layer (not fit) \\
 \bottomrule
 \end{tabular}
@@ -235,10 +238,10 @@ This separation is essential because the folding core is exact and computable, w
 \toprule
 item & status & where defined & audit / falsifiability channel \\
 \midrule
-readout sequentiality & Axiom~\ref{ax:readout_sequentiality} & Section~\ref{subsec:axiom0_linearity}; Appendix~\ref{app:protocol_primitives} & Fold$_6$ checks; Appendix~\ref{app:reproducibility} \\
+tick-only primitive & Axiom~\ref{ax:readout_sequentiality} & Section~\ref{subsec:axiom0_linearity}; Section~\ref{sec:tick_calculus} & Fold$_6$ checks; Appendix~\ref{app:reproducibility} \\
 CAP closure rule & Axiom~\ref{ax:cap}, Definition~\ref{def:bounded_complexity_closure} & Section~\ref{subsec:bounded_complexity_audit}; Appendix~\ref{app:cap_audit_template} & audit tables; Appendix~\ref{app:generated_tables} \\
 dyadic phase registers $\ZZ_{2^p}$ & explicit refinement knob & Section~\ref{subsec:z128_label} and Section~\ref{subsec:holonomy_phase_lift_cp}; Appendix~\ref{app:protocol_primitives} & bounded denom sweeps; Section~\ref{sec:protocol_connections_holonomy} \\
-3D locality + 6-DoF coarse-lock & interface dictionary & Section~\ref{subsec:6dof_lock} & resolution staircase; Section~\ref{sec:falsifiability} \\
+rigid-frame display anchor & interface dictionary (derived localization criterion) & Section~\ref{subsec:6dof_lock}; Section~\ref{sec:tick_calculus} & resolution staircase; Section~\ref{sec:falsifiability} \\
 Hilbert orientation class & Assumption~\ref{ax:scl} & Section~\ref{subsec:scl} & $\chi$ sign flips; Proposition~\ref{prop:chi_flip}; Prediction P2 \\
 three channels $\leftrightarrow$ three gauge factors & Proposition~\ref{prop:channel_to_gauge} & Section~\ref{subsec:gauge_as_compensation} & closed labeling; Theorem~\ref{thm:labeling_unique}; holonomy diagnostics; Section~\ref{sec:protocol_connections_holonomy} \\
 geometric normalization dictionaries & interface axioms in Section~\ref{sec:couplings_cp} & Section~\ref{sec:couplings_cp} & rigidity targets and audits; Table~\ref{tab:quant_summary}; Appendix~\ref{app:generated_tables} \\
@@ -279,15 +282,15 @@ Solid arrows indicate definitional/theorem-level dependencies in the finite cons
   dottedEdge/.style={->, dotted}
 ]
 
-\node[box] (prim) {\textbf{Protocol primitives.}\\
-Readout sequentiality (Axiom~\ref{ax:readout_sequentiality}).\\
-Finite window readout and stability channels (Section~\ref{sec:hpa_readout}).};
+\node[box] (prim) {\textbf{Primitive input (tick).}\\
+Readout sequentiality: time as tick (Axiom~\ref{ax:readout_sequentiality}).\\
+Tick-first dictionary (Section~\ref{sec:tick_calculus}).};
 
-\node[box, below=of prim] (cap) {\textbf{CAP (selection principle).}\\
+\node[box, below=of prim] (cap) {\textbf{CAP (selection / minimality).}\\
 Computational Action Principle (Axiom~\ref{ax:cap}) instantiated as bounded-complexity closure and deterministic tie-breaks (Definition~\ref{def:bounded_complexity_closure}).};
 
-\node[box, below=of cap] (assump) {\textbf{Interface assumptions / dictionaries.}\\
-3D locality dictionary + 6-DoF coarse-lock (Section~\ref{subsec:6dof_lock}).\\
+\node[box, below=of cap] (assump) {\textbf{Derived interface dictionaries.}\\
+Rigid-frame display anchor and localization criterion (Section~\ref{subsec:6dof_lock}; Section~\ref{sec:tick_calculus}).\\
 Scan--chirality locking, SCL (Assumption~\ref{ax:scl}).\\
 CAP-minimal gauge-factor closure (Proposition~\ref{prop:channel_to_gauge}).\\
 Geometric phase-volume dictionaries for normalization targets (Section~\ref{sec:couplings_cp}).};
