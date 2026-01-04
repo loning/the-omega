@@ -20,7 +20,7 @@ The present paper is nevertheless self-contained at the level needed for the Sta
 \scriptsize
 \setlength{\tabcolsep}{3.5pt}
 \renewcommand{\arraystretch}{1.15}
-\caption{A compact roadmap of the $m=1\ldots 12$ resolution spectrum (interface). The geometric lower bound at $m=6$ (Section~\ref{subsec:6dof_lock}) partitions the axis into a sub-geometric vacuum ($m<6$), a geometric ground state ($m=6$), and hyper-geometric layers ($m>6$). A quantitative $m=1\ldots 12$ spectrum template (counts and threshold scales under the minimal calibration) is recorded later in Table~\ref{tab:resolution_spectrum}.}
+\caption{A compact roadmap of the $m=1\ldots 12$ resolution spectrum (interface). Under the $3$D rigid-frame coarse-lock dictionary (Section~\ref{subsec:6dof_lock}), the minimal single-window coarse-localization anchor is at $m=6$, which induces an interface partition into a sub-geometric vacuum ($m<6$), a geometric ground state ($m=6$), and hyper-geometric layers ($m>6$). A quantitative $m=1\ldots 12$ spectrum template (counts and threshold scales under the minimal calibration) is recorded later in Table~\ref{tab:resolution_spectrum}.}
 \label{tab:resolution_roadmap_strip}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{c ccccc c ccccccc}
@@ -67,7 +67,7 @@ From this viewpoint, discreteness is not a postulate but a consequence of finite
 The stable-sector viewpoint used in this paper has a natural control-theoretic dual: in open systems, long-lived low-entropy structure can be modeled as \emph{predictive active error correction} (AEC) that suppresses protocol-level mismatch relative to a passive baseline while paying dissipation and implementation costs \cite{AstromMurray2008FeedbackSystems,Landauer1961}.
 Appendix~\ref{app:isomorphism_dictionary} records a protocol-level dictionary that aligns stable-sector objects (alphabets, stability channels, degeneracies) with AEC objects (mismatch certificates, feedback, and audit constraints) without mixing mathematical-layer premises with physical identification claims.
 
-\subsection{Interface principle: the 6-DoF lock in a 3D locality dictionary}
+\subsection{Interface principle: 6-DoF rigid-frame coarse-lock in a 3D locality dictionary}
 \label{subsec:6dof_lock}
 While Axiom~\ref{ax:readout_sequentiality} fixes only sequentiality, any physical identification must choose a locality dictionary.
 Let $d$ denote the effective spatial dimension of this dictionary at scales where rigid frames are meaningful.
@@ -78,14 +78,20 @@ A local rigid frame carries $d$ translational degrees of freedom and $d(d-1)/2$ 
 We now state explicitly what the ``bit-per-DoF'' language means in this paper.
 The claim is \emph{not} that $m$ bits can encode a continuous pose in $SE(d)$ with arbitrary precision.
 Rather, it is a minimal coarse-lock assumption at the protocol interface: a length-$m$ window yields at most $2^m$ distinct binary readout classes, and to display a local rigid frame the protocol must be able to distinguish at least two coarse bins along each independent parameter of $SE(d)$.
-Equivalently, coarse-locking requires
+In this minimal two-bin-per-parameter convention, a sufficient single-window coarse-admissibility condition is
 \[
 2^m\;\ge\;2^{\dim SE(d)}
 \qquad\Longleftrightarrow\qquad
 m\;\ge\;\dim SE(d)=\frac{d(d+1)}{2}.
 \]
 More generally, if one asks to specify an element of a $k$-dimensional Lie group up to an $\varepsilon$-scale resolution, the required number of bits scales as $m\gtrsim k\log(1/\varepsilon)$ (metric-entropy / quantization scaling) \cite{GrayNeuhoff1998Quantization,CoverThomas2006}.
-In the present paper we use only the minimal two-bin-per-parameter anchor, and we keep the 6-DoF lock strictly on the physical identification layer.
+In the present paper we use only the minimal two-bin-per-parameter anchor, and we keep the 6-DoF coarse-lock strictly on the physical identification layer.
+\begin{remark}[What the 6-DoF ``lock'' does and does not assert]\label{rem:6dof_lock_scope}
+The 6-DoF coarse-lock is an \emph{interface} convention, not a theorem about continuous pose estimation.
+It does not claim that $m=6$ is sufficient to ``lock'' a pose in $SE(3)$ at any fixed accuracy; continuous pose locking at accuracy $\varepsilon$ requires a bit budget scaling as $m\gtrsim 6\log(1/\varepsilon)$ in the standard quantization sense \cite{GrayNeuhoff1998Quantization,CoverThomas2006}.
+It also does not claim that $m\ge 6$ is necessary for localization under all possible protocols: multi-window temporal integration, analog readout features, or additional structure/constraints can reduce the effective information required at a given task.
+The role of the lock in this paper is narrower: it singles out $m=6$ as the smallest \emph{single-window} binary anchor that can support a coarse rigid-frame display in a $3$D locality dictionary under the stated minimal convention.
+\end{remark}
 
 \begin{proposition}[CAP-minimal rigidity lock selects the 3D six-bit anchor (interface)]\label{prop:cap_dim_lock}
 Within the balanced-coupling candidate family $m\in\{4,6,8,\dots\}$, the smallest window length that matches the rigid-frame count $m=\frac{d(d+1)}{2}$ for some integer $d\ge 1$ is $m=6$, realized uniquely at $d=3$.
@@ -106,7 +112,7 @@ as a semidirect product; see, e.g., \cite{HallLieGroups2015}.
 It is specified by a position $x\in\RR^3$ and an orientation $R\in SO(3)$.
 Hence the minimal kinematic description carries six independent parameters: three translational plus three rotational degrees of freedom.
 
-We treat this as a geometric lock on the physical identification layer: a fundamental readout window supplies one bit per kinematic degree of freedom of a local frame.
+We treat this as a geometric coarse-lock on the physical identification layer: a fundamental readout window supplies one bit per kinematic degree of freedom of a local frame.
 In $3$D this locks the minimal window to six bits, $\Omega_6=\{0,1\}^6$.
 This statement belongs to the physical identification layer: it motivates a preferred anchor scale but is not used as a premise for any theorem-level folding statement.
 
@@ -116,7 +122,7 @@ Only in $3$D does the balanced length $m=6$ match exactly ($6=3+3$), yielding a 
 
 Once a locality-preserving addressing basis is fixed (e.g.\ Hilbert addressing), the balanced coupling rule $m=2n$ matches the $m$-bit readout alphabet size $2^m$ with the number of sites $4^n$ at Hilbert order $n$ (Lemma~\ref{lem:balanced_coupling_equiv}).
 Throughout this paper we use the classical $2$D Hilbert addressing (a square grid), so the matched site count is $4^n=(2^2)^n$ and the balanced relation takes the form $m=2n$; other addressing dimensions would change this arithmetic match (Remark~\ref{rem:balanced_coupling_dimension}).
-The 6-DoF lock selects $m=6$, hence $n=3$ and $2^6=4^3=64$, giving the smallest nontrivial anchor at which local readout cardinality and spatial addressing cardinality coincide.
+The 6-DoF coarse-lock anchor selects $m=6$, hence $n=3$ and $2^6=4^3=64$, giving the smallest nontrivial anchor at which local readout cardinality and spatial addressing cardinality coincide.
 
 \begin{figure}[t]
 \centering
@@ -140,27 +146,27 @@ The 6-DoF lock selects $m=6$, hence $n=3$ and $2^6=4^3=64$, giving the smallest 
   }
   \node[align=center] at (4.35,-1.05) {$m=6$ bits\\$\Omega_6=\{0,1\}^6$};
 \end{tikzpicture}
-\caption{The 6-DoF lock (interface language): in a $3$D locality dictionary, a local rigid frame has six degrees of freedom (three positional plus three orientational). A minimal coarse-lock assumption (two bins per independent parameter) motivates a six-bit anchor window.}
+\caption{The 6-DoF coarse-lock (interface language): in a $3$D locality dictionary, a local rigid frame has six degrees of freedom (three positional plus three orientational). A minimal coarse-lock assumption (two bins per independent parameter) motivates a six-bit anchor window.}
 \label{fig:6dof_lock}
 \end{figure}
 
 \subsubsection{The geometric vacuum and protocol rejection}
 \label{subsubsec:geometric_vacuum}
-The 6-DoF lock has an immediate consequence: in a $3$D locality dictionary, any readout pattern that is to be displayed as a localized object must supply enough independent information to fix a local position--orientation frame.
-Under the minimal coarse-lock hypothesis stated above (two bins per independent parameter), this means $m\ge 6$ is not a convenience but a geometric admissibility condition for matter-like localization at the protocol interface.
+The 6-DoF coarse-lock has an immediate consequence: in a $3$D locality dictionary, any readout pattern that is to be displayed as a localized object must supply enough independent information to fix a local position--orientation frame.
+Under the minimal coarse-lock hypothesis stated above (two bins per independent parameter), a single-window coarse display requires at least $m\ge 6$ binary distinctions; in this sense $m=6$ is the minimal interface anchor for matter-like localization in the stated dictionary.
 
 For $m<6$, stable symbolic types still exist at the mathematical layer---indeed the golden-mean admissible set has size $|X_m|=F_{m+2}$ (Section~\ref{subsec:phi_channel})---but they are sub-geometric for a $3$D readout: they underdetermine the kinematic frame and cannot be consistently assigned to a unique local site-and-frame configuration.
 We therefore treat these modes as \emph{protocol-rejected as matter}: they do not appear as stable localized particles, but persist as a non-local background that can seed transient fluctuations when coupled to higher-resolution readout.
 
 The near-threshold case $m=5$ is illustrative.
 It supports $|X_5|=F_7=13$ admissible types, and under the minimal staircase calibration used later (Section~\ref{subsec:p3_resolution_jumps}) its threshold scale lies at $\mu_{\mathrm{th}}(5)\sim 25\,\mathrm{keV}$.
-Yet it remains one bit short of the 6-DoF lock.
-In this interface language, quantum uncertainty is the geometric deficit of mapping sub-geometric codes into a $3$D locality dictionary: the missing degree(s) of freedom appear as irreducible non-locality and probabilistic readout rather than as a determinate particle trajectory.
+Yet it remains one bit short of the 6-DoF anchor.
+In this interface language, one may interpret quantum uncertainty as the coarse-lock deficit of mapping sub-geometric codes into a $3$D locality dictionary: the missing degree(s) of freedom appear as irreducible non-locality and probabilistic readout rather than as a determinate particle trajectory.
 
 \paragraph{Roadmap: the $m=1\ldots 12$ spectrum.}
-Although the technical core of this paper is anchored at the minimal balanced instance $(m,n)=(6,3)$, the geometric lower bound partitions the entire resolution axis into three forced regimes for a $3$D locality dictionary:
+Although the technical core of this paper is anchored at the minimal balanced instance $(m,n)=(6,3)$, the $3$D rigid-frame coarse-lock dictionary induces a natural interface partition of the resolution axis into three regimes:
 the sub-geometric vacuum ($m<6$), the geometric ground state ($m=6$), and hyper-geometric layers ($m>6$).
-We use this partition as the global narrative spine, and we summarize a compact $m=1\ldots 12$ spectrum template (counts and threshold scales under the minimal calibration) in Table~\ref{tab:resolution_spectrum}; the detailed falsifiability statement is then formulated in the protocol language in Section~\ref{subsec:p3_resolution_jumps}.
+We use this dictionary-induced partition as the global narrative spine, and we summarize a compact $m=1\ldots 12$ spectrum template (counts and threshold scales under the minimal calibration) in Table~\ref{tab:resolution_spectrum}; the detailed falsifiability statement is then formulated in the protocol language in Section~\ref{subsec:p3_resolution_jumps}.
 
 \subsection{Methodological note: auditable layering}
 \label{subsec:audit_layering}
@@ -207,7 +213,7 @@ item & status & where defined & audit / falsifiability channel \\
 \midrule
 readout sequentiality & Axiom~\ref{ax:readout_sequentiality} & Section~\ref{subsec:axiom0_linearity} & Fold$_6$ checks; Appendix~\ref{app:reproducibility} \\
 CAP closure rule & Axiom~\ref{ax:cap}, Definition~\ref{def:bounded_complexity_closure} & Section~\ref{subsec:bounded_complexity_audit} & audit tables; Appendix~\ref{app:generated_tables} \\
-3D locality + 6-DoF lock & interface dictionary & Section~\ref{subsec:6dof_lock} & resolution staircase; Section~\ref{sec:falsifiability} \\
+3D locality + 6-DoF coarse-lock & interface dictionary & Section~\ref{subsec:6dof_lock} & resolution staircase; Section~\ref{sec:falsifiability} \\
 Hilbert orientation class & Assumption~\ref{ax:scl} & Section~\ref{subsec:scl} & $\chi$ sign flips; Proposition~\ref{prop:chi_flip}; Prediction P2 \\
 three channels $\leftrightarrow$ three gauge factors & Proposition~\ref{prop:channel_to_gauge} & Section~\ref{subsec:gauge_as_compensation} & closed labeling; Theorem~\ref{thm:labeling_unique}; holonomy diagnostics; Section~\ref{sec:protocol_connections_holonomy} \\
 geometric normalization dictionaries & interface axioms in Section~\ref{sec:couplings_cp} & Section~\ref{sec:couplings_cp} & rigidity targets and audits; Table~\ref{tab:quant_summary}; Appendix~\ref{app:generated_tables} \\
@@ -256,7 +262,7 @@ Finite window readout and stability channels (Section~\ref{sec:hpa_readout}).};
 Computational Action Principle (Axiom~\ref{ax:cap}) instantiated as bounded-complexity closure and deterministic tie-breaks (Definition~\ref{def:bounded_complexity_closure}).};
 
 \node[box, below=of cap] (assump) {\textbf{Interface assumptions / dictionaries.}\\
-3D locality dictionary + 6-DoF lock (Section~\ref{subsec:6dof_lock}).\\
+3D locality dictionary + 6-DoF coarse-lock (Section~\ref{subsec:6dof_lock}).\\
 Scan--chirality locking, SCL (Assumption~\ref{ax:scl}).\\
 CAP-minimal gauge-factor closure (Proposition~\ref{prop:channel_to_gauge}).\\
 Geometric phase-volume dictionaries for normalization targets (Section~\ref{sec:couplings_cp}).};
@@ -288,7 +294,7 @@ Falsifiability statements P1--P6 (Section~\ref{sec:falsifiability}) and audit ta
 \paragraph{Dependency checklist (selected).}
 \begin{itemize}
 \item \textbf{Mathematical layer.} The folding core and stable-sector counts (e.g.\ Lemma~\ref{lem:xm_fib}, Proposition~\ref{prop:cyc_bdry_size}, Proposition~\ref{prop:foldm_surjective}) are finite combinatorial/operator statements and do not use physical identification hypotheses as premises.
-\item \textbf{Physical identification layer.} Anchor and mapping claims (3D/6-DoF lock in Section~\ref{subsec:6dof_lock}, SCL in Assumption~\ref{ax:scl}, gauge-factor closure in Proposition~\ref{prop:channel_to_gauge}, CP-sign anchoring in Definition~\ref{ax:chi_cp_sign}) are explicit interface inputs/dictionaries that are audited but not promoted to theorem-level premises for the folding core.
+\item \textbf{Physical identification layer.} Anchor and mapping claims (3D/6-DoF coarse-lock in Section~\ref{subsec:6dof_lock}, SCL in Assumption~\ref{ax:scl}, gauge-factor closure in Proposition~\ref{prop:channel_to_gauge}, CP-sign anchoring in Definition~\ref{ax:chi_cp_sign}) are explicit interface inputs/dictionaries that are audited but not promoted to theorem-level premises for the folding core.
 \item \textbf{CAP closures.} Discrete numerical targets and calibrations are treated as bounded-complexity CAP selections (Axiom~\ref{ax:cap}, Definition~\ref{def:bounded_complexity_closure}) within explicitly declared finite candidate families.
 \item \textbf{Predictions.} Protocol-level falsifiability statements (Section~\ref{sec:falsifiability}) depend on the declared interface maps/closures and do not feed back into the mathematical-layer folding statements.
 \end{itemize}
@@ -421,7 +427,7 @@ This is the precise sense in which the interface is ``forced by rigidity'' rathe
 A minimal audit path for the present paper is to verify the following rigidity checkpoints:
 \begin{itemize}
 \item the theorem-level folding core $64\to 21$ and the canonical $18\oplus 3$ split (Section~\ref{sec:folding_core});
-\item the unique geometric anchor at $(m,n)=(6,3)$ under the 6-DoF lock and balanced coupling (Section~\ref{subsec:6dof_lock} and Lemma~\ref{lem:balanced_coupling_equiv});
+\item the unique geometric anchor at $(m,n)=(6,3)$ under the 6-DoF coarse-lock anchor and balanced coupling (Section~\ref{subsec:6dof_lock} and Lemma~\ref{lem:balanced_coupling_equiv});
 \item the unique closed labeling map of $X_6$ into $18$ fermion multiplets and $3$ gauge-factor classes (Theorem~\ref{thm:labeling_unique});
 \item the rigidity of the bounded-integer mass-depth ansatz and its coefficient stabilization (Proposition~\ref{prop:rhat_rigidity});
 \item the bounded-parameter holonomy/phase-register diagnostics and their counterfactual baselines (Section~\ref{sec:protocol_connections_holonomy} and Appendix~\ref{app:generated_tables});
