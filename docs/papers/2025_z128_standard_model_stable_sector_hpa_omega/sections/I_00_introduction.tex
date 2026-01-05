@@ -12,11 +12,13 @@ Despite its predictive success, several structural features remain ``input-like'
 This paper adopts the HPA--$\Omega$ viewpoint: observability is not the presence of continuous fields \emph{a priori}, but the output of a finite-resolution protocol produced by unitary scanning and window projection (Section~\ref{sec:hpa_readout}).
 In this view, a ``particle'' is first a \emph{stable readout type}, and ``forces'' arise from the constraints required to keep readout consistent across space.
 
-The present paper is written to be closed under its declared input set (Table~\ref{tab:audit_facing_contract} and Appendix~\ref{app:inference_ledger}): the only primitive inputs are tick and CAP, and all finite constructions at the anchor $(m,n)=(6,3)$ are defined and proved here, while all quantitative closures are reproduced by deterministic scripts.
+The present paper is written to be closed under its declared input set (Table~\ref{tab:audit_facing_contract} and Appendix~\ref{app:inference_ledger}): the only primitives are the tick (Axiom~\ref{ax:readout_sequentiality}) and CAP (Axiom~\ref{ax:cap}).
+All other ingredients (addressing basis, anchor choice, orientation-bit convention, phase-register dictionary, and quantitative normalization targets) are outputs of explicit finite definitions and CAP-closures with deterministic tie-breaks and reproducible scripts.
 Companion manuscripts in the same \texttt{docs/papers} repository provide extended context and alternative presentations \cite{Ma2025HPA,Ma2025CAP,Ma2025CAPII,Ma2025HHU,Ma2025HPT,Ma2025PCG,Ma2025RF,Ma2025HPOT,Ma2025FoP}, but they are not required to follow the present paper's definitions, proofs, and audits.
 
 For reader navigation, Table~\ref{tab:resolution_spectrum} provides the global map of the resolution axis under the minimal calibration.
-In the tick-first spine used here, the only primitive physical input is \emph{time as tick} (scan iteration count); all physical-language notions (space, distance, velocity, gauge connections, mass/energy scales) are treated as derived protocol structures.
+In the tick-first spine used here, the only primitive physical input is \emph{time as tick} (scan iteration count), and the only primitive selection law is CAP.
+Accordingly, all physical-language notions (space, distance, velocity, gauge connections, mass/energy scales) are treated as derived protocol structures and/or CAP-closed interface components.
 Section~\ref{sec:tick_calculus} records the corresponding dictionary and fixes the time-first dependency order used throughout.
 Appendix~\ref{app:tick_cap_derivation} records the complete tick\,+\,CAP derivation spine (explicit candidate families, objectives, and deterministic tie-breaks for each closed interface component).
 
@@ -102,7 +104,7 @@ A local rigid frame carries $d$ translational degrees of freedom and $d(d-1)/2$ 
 \]
 We now state explicitly what the ``bit-per-DoF'' language means in this paper.
 The claim is \emph{not} that $m$ bits can encode a continuous pose in $SE(d)$ with arbitrary precision.
-Rather, it is a minimal coarse-lock assumption at the protocol interface: a length-$m$ window yields at most $2^m$ distinct binary readout classes, and to display a local rigid frame the protocol must be able to distinguish at least two coarse bins along each independent parameter of $SE(d)$.
+Rather, it is the minimal nontrivial coarse-lock convention at the protocol interface (Lemma~\ref{lem:minimal_one_bit_per_parameter}): a length-$m$ window yields at most $2^m$ distinct binary readout classes, and to display a local rigid frame the protocol must be able to distinguish at least two coarse bins along each independent parameter of $SE(d)$.
 In this minimal two-bin-per-parameter convention, a sufficient single-window coarse-admissibility condition is
 \[
 2^m\;\ge\;2^{\dim SE(d)}
@@ -234,7 +236,7 @@ item & status & where defined & audit / falsifiability channel \\
 tick-only primitive & Axiom~\ref{ax:readout_sequentiality} & Section~\ref{subsec:axiom0_linearity}; Section~\ref{sec:tick_calculus} & Fold$_6$ checks; Appendix~\ref{app:reproducibility} \\
 CAP closure rule & Axiom~\ref{ax:cap}, Definition~\ref{def:bounded_complexity_closure} & Section~\ref{subsec:bounded_complexity_audit}; Appendix~\ref{app:cap_audit_template} & audit tables; Appendix~\ref{app:generated_tables} \\
 dyadic phase registers $\ZZ_{2^p}$ & CAP-audited bounded closure (phase-lift dictionary) & Section~\ref{subsec:z128_label} and Section~\ref{subsec:holonomy_phase_lift_cp}; Appendix~\ref{app:protocol_primitives} & denom/map-family audits; Section~\ref{sec:protocol_connections_holonomy} \\
-addressing basis (screen) & CAP-audited counterfactual closure & Section~\ref{sec:hilbert_addressing}; Section~\ref{subsec:space_from_tick} & Table~\ref{tab:addressing_selection}; Appendix~\ref{app:reproducibility} \\
+addressing basis (screen) & CAP-audited counterfactual closure & Section~\ref{sec:hilbert_addressing}; Section~\ref{subsec:tick_to_space} & Table~\ref{tab:addressing_selection}; Appendix~\ref{app:reproducibility} \\
 rigid-frame display anchor & interface dictionary (derived localization criterion) & Section~\ref{subsec:6dof_lock}; Section~\ref{sec:tick_calculus} & resolution staircase; Section~\ref{sec:falsifiability} \\
 Hilbert orientation class & CAP tie-break (one-bit canonical representative) & Section~\ref{subsec:scl}; Definition~\ref{def:scl} & $\chi$ sign flips; Proposition~\ref{prop:chi_flip}; Prediction P2 \\
 three channels $\leftrightarrow$ three gauge factors & Proposition~\ref{prop:channel_to_gauge} & Section~\ref{subsec:gauge_as_compensation} & closed labeling; Theorem~\ref{thm:labeling_unique}; holonomy diagnostics; Section~\ref{sec:protocol_connections_holonomy} \\
@@ -276,11 +278,11 @@ Solid arrows indicate definitional/theorem-level dependencies in the finite cons
   dottedEdge/.style={->, dotted}
 ]
 
-\node[box] (prim) {\textbf{Primitive input (tick).}\\
+\node[box] (prim) {\textbf{Primitive axiom (tick input).}\\
 Readout sequentiality: time as tick (Axiom~\ref{ax:readout_sequentiality}).\\
 Tick-first dictionary (Section~\ref{sec:tick_calculus}).};
 
-\node[box, below=of prim] (cap) {\textbf{CAP (selection / minimality).}\\
+\node[box, below=of prim] (cap) {\textbf{Primitive axiom (CAP closure).}\\
 Computational Action Principle (Axiom~\ref{ax:cap}) instantiated as bounded-complexity closure and deterministic tie-breaks (Definition~\ref{def:bounded_complexity_closure}).};
 
 \node[box, below=of cap] (assump) {\textbf{CAP-closed interface components.}\\
@@ -309,7 +311,7 @@ Falsifiability statements P1--P6 (Section~\ref{sec:falsifiability}) and audit ta
 \draw[solid] (interfaces) -- (pred);
 
 \end{tikzpicture}
-\caption{Inference map of the paper (solid: theorem-level; dashed: interface dictionaries in protocol language; dotted: CAP-audited selection).}
+\caption{Inference map of the paper under the two-axiom spine (tick input and CAP closure). Solid: theorem-level; dashed: interface dictionaries in protocol language; dotted: CAP-audited selection.}
 \label{fig:inference_map}
 \end{figure}
 
