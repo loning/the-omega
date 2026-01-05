@@ -18,6 +18,7 @@ Companion manuscripts in the same \texttt{docs/papers} repository provide extend
 For reader navigation, Table~\ref{tab:resolution_spectrum} provides the global map of the resolution axis under the minimal calibration.
 In the tick-first spine used here, the only primitive physical input is \emph{time as tick} (scan iteration count); all physical-language notions (space, distance, velocity, gauge connections, mass/energy scales) are treated as derived protocol structures.
 Section~\ref{sec:tick_calculus} records the corresponding dictionary and fixes the time-first dependency order used throughout.
+Appendix~\ref{app:tick_cap_derivation} records the complete tick\,+\,CAP derivation spine (explicit candidate families, objectives, and deterministic tie-breaks for each closed interface component).
 
 \begin{table}[t]
 \centering
@@ -115,7 +116,7 @@ The 6-DoF coarse-lock is an \emph{interface} convention, not a theorem about con
 It does not claim that $m=6$ is sufficient to ``lock'' a pose in $SE(3)$ at any fixed accuracy; continuous pose locking at accuracy $\varepsilon$ requires a bit budget scaling as $m\gtrsim 6\log(1/\varepsilon)$ in the standard quantization sense \cite{GrayNeuhoff1998Quantization,CoverThomas2006}.
 It also does not claim that $m\ge 6$ is necessary for localization under all possible protocols: multi-window temporal integration, analog readout features, or additional structure/constraints can reduce the effective information required at a given task.
 The role of the lock in this paper is narrower: given the CAP-selected anchor bit budget $m=6$ and the minimal two-bin-per-parameter convention, CAP selects the bulk dimension $d=3$ (Proposition~\ref{prop:bulk_dimension_from_anchor}) and thereby identifies $m=6$ as the minimal \emph{single-window} coarse rigid-frame display budget in that derived dictionary.
-Once a $\mu\leftrightarrow m$ selection rule is fixed at the protocol layer (Corollary~\ref{ax:resolution_selection}), the protocol uses the smallest admissible $m$ throughout the corresponding energy band until an uplift threshold is crossed.
+Once a $\mu\leftrightarrow m$ selection rule is fixed at the protocol layer (Corollary~\ref{cor:resolution_selection}), the protocol uses the smallest admissible $m$ throughout the corresponding energy band until an uplift threshold is crossed.
 \end{remark}
 
 At the anchor $m=6$, CAP selects the maximal bulk dimension compatible with the rigid-frame budget, namely $d=3$ (Proposition~\ref{prop:bulk_dimension_from_anchor}).
@@ -235,7 +236,7 @@ CAP closure rule & Axiom~\ref{ax:cap}, Definition~\ref{def:bounded_complexity_cl
 dyadic phase registers $\ZZ_{2^p}$ & CAP-audited bounded closure (phase-lift dictionary) & Section~\ref{subsec:z128_label} and Section~\ref{subsec:holonomy_phase_lift_cp}; Appendix~\ref{app:protocol_primitives} & denom/map-family audits; Section~\ref{sec:protocol_connections_holonomy} \\
 addressing basis (screen) & CAP-audited counterfactual closure & Section~\ref{sec:hilbert_addressing}; Section~\ref{subsec:space_from_tick} & Table~\ref{tab:addressing_selection}; Appendix~\ref{app:reproducibility} \\
 rigid-frame display anchor & interface dictionary (derived localization criterion) & Section~\ref{subsec:6dof_lock}; Section~\ref{sec:tick_calculus} & resolution staircase; Section~\ref{sec:falsifiability} \\
-Hilbert orientation class & CAP tie-break (one-bit canonical representative) & Section~\ref{subsec:scl}; Definition~\ref{ax:scl} & $\chi$ sign flips; Proposition~\ref{prop:chi_flip}; Prediction P2 \\
+Hilbert orientation class & CAP tie-break (one-bit canonical representative) & Section~\ref{subsec:scl}; Definition~\ref{def:scl} & $\chi$ sign flips; Proposition~\ref{prop:chi_flip}; Prediction P2 \\
 three channels $\leftrightarrow$ three gauge factors & Proposition~\ref{prop:channel_to_gauge} & Section~\ref{subsec:gauge_as_compensation} & closed labeling; Theorem~\ref{thm:labeling_unique}; holonomy diagnostics; Section~\ref{sec:protocol_connections_holonomy} \\
 geometric normalization dictionaries & CAP-closed dictionaries (bounded families) & Section~\ref{sec:couplings_cp} & rigidity targets and audits; Table~\ref{tab:quant_summary}; Appendix~\ref{app:generated_tables} \\
 \bottomrule
@@ -262,7 +263,7 @@ Falsifiable mapping hypotheses in protocol language, closed interface maps, and 
 
 \paragraph{Inference map (what depends on what).}
 For reader orientation, Figure~\ref{fig:inference_map} records a high-level dependency graph of the present paper.
-Solid arrows indicate definitional/theorem-level dependencies in the finite constructions; dashed arrows indicate physical-identification hypotheses (interface assumptions and modeling dictionaries); dotted arrows indicate CAP-style audited selection within explicit finite candidate families (Axiom~\ref{ax:cap}).
+Solid arrows indicate definitional/theorem-level dependencies in the finite constructions; dashed arrows indicate physical-identification hypotheses (interface modeling dictionaries and closure declarations); dotted arrows indicate CAP-style audited selection within explicit finite candidate families (Axiom~\ref{ax:cap}).
 
 \begin{figure}[t]
 \centering
@@ -284,7 +285,7 @@ Computational Action Principle (Axiom~\ref{ax:cap}) instantiated as bounded-comp
 
 \node[box, below=of cap] (assump) {\textbf{CAP-closed interface components.}\\
 Rigid-frame display dictionary and derived bulk dimension (Section~\ref{subsec:6dof_lock}; Proposition~\ref{prop:bulk_dimension_from_anchor}).\\
-Orientation-class bit (CAP tie-break; Definition~\ref{ax:scl}).\\
+Orientation-class bit (CAP tie-break; Definition~\ref{def:scl}).\\
 CAP-minimal gauge-factor closure (Proposition~\ref{prop:channel_to_gauge}).\\
 CAP-closed phase-volume dictionaries for normalization targets (Section~\ref{sec:couplings_cp}).};
 
@@ -315,7 +316,7 @@ Falsifiability statements P1--P6 (Section~\ref{sec:falsifiability}) and audit ta
 \paragraph{Dependency checklist (selected).}
 \begin{itemize}
 \item \textbf{Mathematical layer.} The folding core and stable-sector counts (e.g.\ Lemma~\ref{lem:xm_fib}, Proposition~\ref{prop:cyc_bdry_size}, Proposition~\ref{prop:foldm_surjective}) are finite combinatorial/operator statements and do not use physical identification hypotheses as premises.
-\item \textbf{Physical identification layer.} Anchor and mapping claims (rigid-frame display dictionary and derived bulk dimension in Section~\ref{subsec:6dof_lock}, orientation-class tie-break in Definition~\ref{ax:scl}, gauge-factor closure in Proposition~\ref{prop:channel_to_gauge}, CP-sign anchoring in Definition~\ref{ax:chi_cp_sign}) are explicit protocol-level dictionaries and CAP-closed interface components; they are audited but not promoted to theorem-level premises for the folding core.
+\item \textbf{Physical identification layer.} Anchor and mapping claims (rigid-frame display dictionary and derived bulk dimension in Section~\ref{subsec:6dof_lock}, orientation-class tie-break in Definition~\ref{def:scl}, gauge-factor closure in Proposition~\ref{prop:channel_to_gauge}, CP-sign anchoring in Definition~\ref{def:chi_cp_sign}) are explicit protocol-level dictionaries and CAP-closed interface components; they are audited but not promoted to theorem-level premises for the folding core.
 \item \textbf{CAP closures.} Discrete numerical targets and calibrations are treated as bounded-complexity CAP selections (Axiom~\ref{ax:cap}, Definition~\ref{def:bounded_complexity_closure}) within explicitly declared finite candidate families.
 \item \textbf{Predictions.} Protocol-level falsifiability statements (Section~\ref{sec:falsifiability}) depend on the declared interface maps/closures and do not feed back into the mathematical-layer folding statements.
 \end{itemize}
@@ -423,7 +424,7 @@ These belong to different layers: a single phase register can induce multiple bi
 Building on the provable $64\to 21$ folding core, we propose three interface statements:
 \begin{itemize}
 \item \textbf{Gauge fields as compensating connections.}
-When stable types are embedded on a Hilbert-addressed grid and cross-site readout consistency is required, local mismatch must be absorbed by compensating connections (Proposition~\ref{ax:gauge_compensation}).
+When stable types are embedded on a Hilbert-addressed grid and cross-site readout consistency is required, local mismatch must be absorbed by compensating connections (Proposition~\ref{prop:gauge_compensation}).
 The gauge-factor triple is recorded as a CAP-minimal interface closure (Proposition~\ref{prop:channel_to_gauge}; Section~\ref{subsec:gauge_as_compensation}).
 \item \textbf{Chirality as protocol selection.}
 Hilbert addressing is not unique: it comes in $D_4$ layout families, split into orientation-preserving and orientation-reversing classes \cite{Hilbert1891,Sagan1994}.
