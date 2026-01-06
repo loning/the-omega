@@ -38,20 +38,21 @@ A bounded-complexity closure is the selection of a unique $\theta_B\in\Theta(B)$
 \end{definition}
 
 \begin{definition}[Rigidity certificate]\label{def:rigidity_certificate_audit}
-A closure is called \emph{rigid} on a tested range $B\in\{1,\dots,B_{\max}\}$ if the minimizer is unique at each $B$ and stabilizes: there exists $B_\ast\le B_{\max}$ such that $\theta_B=\theta_{B_\ast}$ for all $B_\ast\le B\le B_{\max}$.
+A closure is called \emph{rigid} on a tested range $1\le B\le B_{\max}$ if the minimizer is unique at each $B$ and stabilizes.
+That is, there exists $B_\ast\le B_{\max}$ such that $\theta_B=\theta_{B_\ast}$ for all $B_\ast\le B\le B_{\max}$.
 \end{definition}
 
 In this paper, the admissible domain is already finite and exact ($|\Theta|=24$), so uniqueness is a directly auditable property of the exhaustive search; Section~\ref{sec:results} and Appendix~\ref{app:reproducibility} record reproducible scripts and generated tables for the relevant objectives.
 
-\subsection{Isomorphism dictionary (stable sectors $\leftrightarrow$ genetic codes)}
+\subsection{Isomorphism dictionary (stable sectors and genetic codes)}
 Table~\ref{tab:isomorphism_dictionary} summarizes a protocol-level correspondence between stable-sector constructions and the genetic-code folding characterization used in this paper.
 
 \begin{table}[t]
 \centering
 \small
-\setlength{\tabcolsep}{8pt}
+\setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{1.15}
-\begin{tabular}{p{0.30\linewidth}p{0.34\linewidth}p{0.32\linewidth}}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.29\linewidth}>{\raggedright\arraybackslash}p{0.34\linewidth}>{\raggedright\arraybackslash}p{0.31\linewidth}}
 \toprule
 Interface object & Stable-sector language & Genetic-code language (this paper) \\
 \midrule
@@ -70,5 +71,21 @@ falsifiable outputs & rigid counts/histograms and thresholded stability changes 
 The stable-sector viewpoint used here has a control-theoretic dual developed elsewhere in the manuscript series: in open systems, sustained low-entropy structure can be modeled as predictive active error correction (AEC) that suppresses protocol-level mismatch relative to a passive baseline while paying dissipation and implementation costs.
 The interface objects in Table~\ref{tab:isomorphism_dictionary} are compatible with that dual: coarse graining and stability selection define what is visible under readout; active correction describes how biological systems maintain reliability against mismatch accumulation.
 \cite{Ma2025BioTeleology,Ma2025Z128SM}
+
+\subsection{Alignment with the Z128 stable-sector scanning program}
+\label{app:z128_alignment}
+
+The Z128 stable-sector program \cite{Ma2025Z128SM} studies a multi-resolution scan--projection readout in which finite microstates are indexed by a deterministic scan (e.g.\ Hilbert addressing) and are then compressed by stability constraints into a smaller visible sector.
+The genetic-code construction in this paper is a concrete, fully finite instance of the same protocol template \cite{Ma2025RF}:
+\begin{itemize}
+  \item \textbf{Resolution parameter.} The window length $m$ plays the role of a resolution control for the visible readout.
+  At codon scale, the microstate index is bounded ($N\in\{0,\dots,63\}$), so the Zeckendorf expansion uses at most nine Fibonacci weights; consequently $m\ge 9$ is saturating and the projection mismatch vanishes ($\Delta_m\equiv 0$), while $m\le 8$ yields nontrivial uplift statistics.
+  \item \textbf{Stable sector and boundary mechanism.} The admissible words $X_m$ (golden-mean grammar) define the stable readout sector, and the boundary subset $X_m^{\mathrm{bdry}}=\{w\in X_m:\,w_1=w_m=1\}$ provides a distinguished sparse endpoint class at each $m$.
+  In the genetic-code setting, boundary occupancy provides a computable control-site target, while sequence-level enrichment/depletion tests probe whether biological contexts preferentially occupy or avoid this endpoint class.
+  \item \textbf{Mismatch certificate.} The uplift $\Delta_m=N-V_m$ is an explicit, codon-scale mismatch certificate induced by the window truncation.
+  It quantifies what is erased by the stable-sector projection at fixed resolution and can be compared across contexts (terminal stops, recoding windows, corpus panels) under the same protocol.
+\end{itemize}
+
+These alignments are intentionally stated at the protocol level: they do not assert a unique physical mechanism, but they make precise how finite-resolution stability selection, endpoint structure, and mismatch measures can be transported across the manuscript series as falsifiable, reproducible objects.
 
 

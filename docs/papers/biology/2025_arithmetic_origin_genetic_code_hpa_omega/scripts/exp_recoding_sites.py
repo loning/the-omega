@@ -44,6 +44,7 @@ from stats_tools import bh_fdr, normal_two_sided_p, summarize_mean_diff
 
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
 ANALYSIS_VERSION = 7
+SCRIPT_VERSION = 2
 
 
 def _stable_seed_u32(tag: str) -> int:
@@ -852,6 +853,14 @@ class RecodingSite:
     # Window sequences (DNA alphabet, translated orientation; k codons each side).
     before_seq_dna: str | None = None
     after_seq_dna: str | None = None
+    # Terminal-stop window sequences for this CDS (if available).
+    terminal_before_seq_dna: str | None = None
+    terminal_after_seq_dna: str | None = None
+    # Control window sequences (translated orientation; each entry is 3k nt).
+    control_same_codon_before_seqs_dna: list[str] | None = None
+    control_same_codon_after_seqs_dna: list[str] | None = None
+    control_random_cds_before_seqs_dna: list[str] | None = None
+    control_random_cds_after_seqs_dna: list[str] | None = None
     # Composition features of the before/after windows (DNA, translation orientation; k codons each).
     before_gc: float | None = None
     after_gc: float | None = None
@@ -1415,6 +1424,8 @@ def extract_recoding_sites_from_record(
 
             ctrl_before_mean: float | None = None
             ctrl_after_mean: float | None = None
+            ctrl_before_seqs: list[str] = []
+            ctrl_after_seqs: list[str] = []
             if candidate_controls:
                 rng = random.Random(f"{version}:{pos_start}:{k}:same")
                 rng.shuffle(candidate_controls)
@@ -1433,6 +1444,25 @@ def extract_recoding_sites_from_record(
                         continue
                     ctrl_before_vals.append(float(b))
                     ctrl_after_vals.append(float(a))
+                    bseq = codon_window_seq_spliced(
+                        cds_seq_dna,
+                        int(p),
+                        int(k),
+                        translation_start_idx0=translation_start_idx0,
+                        n_codons=int(n_codons),
+                        direction="before",
+                    )
+                    aseq = codon_window_seq_spliced(
+                        cds_seq_dna,
+                        int(p),
+                        int(k),
+                        translation_start_idx0=translation_start_idx0,
+                        n_codons=int(n_codons),
+                        direction="after",
+                    )
+                    if bseq is not None and aseq is not None:
+                        ctrl_before_seqs.append(str(bseq))
+                        ctrl_after_seqs.append(str(aseq))
                 if ctrl_before_vals and ctrl_after_vals:
                     ctrl_before_mean = mean(ctrl_before_vals)
                     ctrl_after_mean = mean(ctrl_after_vals)
@@ -1440,6 +1470,8 @@ def extract_recoding_sites_from_record(
             # Control-C: random internal coding controls from the same CDS.
             rand_before_mean: float | None = None
             rand_after_mean: float | None = None
+            rand_before_seqs: list[str] = []
+            rand_after_seqs: list[str] = []
             if eligible_random_controls:
                 rng = random.Random(f"{version}:{pos_start}:{k}:rand")
                 picks = list(eligible_random_controls)
@@ -1450,6 +1482,26 @@ def extract_recoding_sites_from_record(
                 if rand_before_vals and rand_after_vals:
                     rand_before_mean = mean([float(x) for x in rand_before_vals])
                     rand_after_mean = mean([float(x) for x in rand_after_vals])
+                for idx0_i2, _b0, _a0 in picks:
+                    bseq = codon_window_seq_spliced(
+                        cds_seq_dna,
+                        int(idx0_i2),
+                        int(k),
+                        translation_start_idx0=translation_start_idx0,
+                        n_codons=int(n_codons),
+                        direction="before",
+                    )
+                    aseq = codon_window_seq_spliced(
+                        cds_seq_dna,
+                        int(idx0_i2),
+                        int(k),
+                        translation_start_idx0=translation_start_idx0,
+                        n_codons=int(n_codons),
+                        direction="after",
+                    )
+                    if bseq is not None and aseq is not None:
+                        rand_before_seqs.append(str(bseq))
+                        rand_after_seqs.append(str(aseq))
 
             out.append(
                 RecodingSite(
@@ -1489,6 +1541,12 @@ def extract_recoding_sites_from_record(
                     control_random_cds_after_mean_delta=rand_after_mean,
                     before_seq_dna=before_seq,
                     after_seq_dna=after_seq,
+                    terminal_before_seq_dna=term_before_seq,
+                    terminal_after_seq_dna=term_after_seq,
+                    control_same_codon_before_seqs_dna=(ctrl_before_seqs if ctrl_before_seqs else None),
+                    control_same_codon_after_seqs_dna=(ctrl_after_seqs if ctrl_after_seqs else None),
+                    control_random_cds_before_seqs_dna=(rand_before_seqs if rand_before_seqs else None),
+                    control_random_cds_after_seqs_dna=(rand_after_seqs if rand_after_seqs else None),
                     before_gc=before_gc,
                     after_gc=after_gc,
                     before_cpg=before_cpg,
@@ -1622,6 +1680,7 @@ def main() -> None:
     cache_key = {
         "analysis": "recoding_sites",
         "analysis_version": int(ANALYSIS_VERSION),
+        "script_version": int(SCRIPT_VERSION),
         "k_primary": int(k_primary),
         "k_list": [int(x) for x in k_list],
         "max_files": int(args.max_files or 0),
@@ -2861,6 +2920,8 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
     cc = summary.get("composition_controls") or {}
     cc_lines: list[str] = []
     cc_lines.append(f"Composition-adjusted controls for recoding-site context (primary window radius $k={k_primary}$).")
+    cc_lines.append("")
+    cc_items: list[str] = []
     if isinstance(cc, dict) and cc:
         nnw = cc.get("nn_within_cds") or {}
         if isinstance(nnw, dict):
@@ -2873,10 +2934,10 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
                 lo = b.get("ci_low")
                 hi = b.get("ci_high")
                 md_s = f"{float(md):+.4f}" if md is not None else "NA"
-                ci_s = f"[{float(lo):.4f},{float(hi):.4f}]" if (lo is not None and hi is not None) else "NA"
-                cc_lines.append(
+                ci_s = f"[{float(lo):.4f},\\allowbreak {float(hi):.4f}]" if (lo is not None and hi is not None) else "NA"
+                cc_items.append(
                     "Within-CDS GC+dinuc NN (Control-C), before-window: "
-                    f"diff {md_s} (CI$_{{95\\%}}$={ci_s}, paired $p{op}{p_s}$, sign-flip $p{op2}{p2_s}$; n={int(b.get('n') or 0)})."
+                    f"diff {md_s}; CI$_{{95\\%}}$={ci_s}; paired $p{op}{p_s}$; sign-flip $p{op2}{p2_s}$; $n={int(b.get('n') or 0)}$."
                 )
             if isinstance(a, dict):
                 op, p_s = _fmt_p_tex(a.get("p_paired_t"))
@@ -2885,10 +2946,10 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
                 lo = a.get("ci_low")
                 hi = a.get("ci_high")
                 md_s = f"{float(md):+.4f}" if md is not None else "NA"
-                ci_s = f"[{float(lo):.4f},{float(hi):.4f}]" if (lo is not None and hi is not None) else "NA"
-                cc_lines.append(
+                ci_s = f"[{float(lo):.4f},\\allowbreak {float(hi):.4f}]" if (lo is not None and hi is not None) else "NA"
+                cc_items.append(
                     "Within-CDS GC+dinuc NN (Control-C), after-window: "
-                    f"diff {md_s} (CI$_{{95\\%}}$={ci_s}, paired $p{op}{p_s}$, sign-flip $p{op2}{p2_s}$; n={int(a.get('n') or 0)})."
+                    f"diff {md_s}; CI$_{{95\\%}}$={ci_s}; paired $p{op}{p_s}$; sign-flip $p{op2}{p2_s}$; $n={int(a.get('n') or 0)}$."
                 )
         nnt = cc.get("nn_terminal_pool") or {}
         if isinstance(nnt, dict):
@@ -2899,18 +2960,18 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
                 op2, p2_s = _fmt_p_tex(b.get("p_signflip"))
                 md = b.get("mean_diff")
                 md_s = f"{float(md):+.4f}" if md is not None else "NA"
-                cc_lines.append(
+                cc_items.append(
                     "GC+dinuc NN to CDS-deduplicated terminal-stop pool, before-window: "
-                    f"diff {md_s} (paired $p{op}{p_s}$, sign-flip $p{op2}{p2_s}$; n={int(b.get('n') or 0)})."
+                    f"diff {md_s}; paired $p{op}{p_s}$; sign-flip $p{op2}{p2_s}$; $n={int(b.get('n') or 0)}$."
                 )
             if isinstance(a, dict):
                 op, p_s = _fmt_p_tex(a.get("p_paired_t"))
                 op2, p2_s = _fmt_p_tex(a.get("p_signflip"))
                 md = a.get("mean_diff")
                 md_s = f"{float(md):+.4f}" if md is not None else "NA"
-                cc_lines.append(
+                cc_items.append(
                     "GC+dinuc NN to CDS-deduplicated terminal-stop pool, after-window: "
-                    f"diff {md_s} (paired $p{op}{p_s}$, sign-flip $p{op2}{p2_s}$; n={int(a.get('n') or 0)})."
+                    f"diff {md_s}; paired $p{op}{p_s}$; sign-flip $p{op2}{p2_s}$; $n={int(a.get('n') or 0)}$."
                 )
         st = cc.get("stratified_terminal") or {}
         if isinstance(st, dict):
@@ -2924,15 +2985,20 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
                     op, p_s = _fmt_p_tex(b.get("p_perm"))
                     od = b.get("overall_diff")
                     od_s = f"{float(od):+.4f}" if od is not None else "NA"
-                    cc_lines.append(f"Stratified ({title}) recoding vs terminal, before-window: overall diff {od_s} (perm $p{op}{p_s}$).")
+                    cc_items.append(f"Stratified ({title}) recoding vs terminal, before-window: overall diff {od_s}; perm $p{op}{p_s}$.")
                 if isinstance(a, dict):
                     op, p_s = _fmt_p_tex(a.get("p_perm"))
                     od = a.get("overall_diff")
                     od_s = f"{float(od):+.4f}" if od is not None else "NA"
-                    cc_lines.append(f"Stratified ({title}) recoding vs terminal, after-window: overall diff {od_s} (perm $p{op}{p_s}$).")
+                    cc_items.append(f"Stratified ({title}) recoding vs terminal, after-window: overall diff {od_s}; perm $p{op}{p_s}$.")
+    if cc_items:
+        cc_lines.append("\\begin{itemize}")
+        for it in cc_items:
+            cc_lines.append("\\item " + it)
+        cc_lines.append("\\end{itemize}")
     else:
         cc_lines.append("Composition-adjusted controls unavailable in cached summary.")
-    write_text(generated_dir() / "recoding_composition_controls.tex", "\n\n".join(cc_lines) + "\n")
+    write_text(generated_dir() / "recoding_composition_controls.tex", "\n".join(cc_lines) + "\n")
 
     # Terminal-stop bias fragment: recompute vs current RefSeq baseline if available.
     term_stop_counts_i = Counter({str(k): int(v) for k, v in (term_stop_counts.items() if isinstance(term_stop_counts, dict) else [])})
@@ -2966,7 +3032,7 @@ def _emit_latex_from_cached_summary(summary: dict[str, object]) -> None:
                 bias_lines.append(
                     f"Compared to human RefSeq terminal stops (baseline $n={n2}$, UAA rate {p2:.4f}), "
                     f"recoding-CDS UAA rate {p1:.4f} differs by {p1 - p2:+.4f} "
-                    f"(CI$_{{95\\%}}$=[{ci_low:.4f},{ci_high:.4f}], $z={z:.2f}$, $p{op_p}{p_s}$)."
+                    f"(CI$_{{95\\%}}$=[{ci_low:.4f},\\allowbreak {ci_high:.4f}], $z={z:.2f}$, $p{op_p}{p_s}$)."
                 )
         except Exception:
             bias_lines.append("Human RefSeq baseline comparison was skipped (failed to read transcriptome_summary.json).")

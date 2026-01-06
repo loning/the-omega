@@ -7,15 +7,33 @@
 - **schema/migration**：`supabase/migrations/`（按时间顺序执行）
 - **导出脚本**：`scripts/export_supabase_tables.py`
 
-### 本地 Supabase（推荐）
+### 云端 Supabase（已连接）最短流程（推荐）
 
-- **启动**：
-  - 进入目录：`docs/papers/biology/2025_arithmetic_origin_genetic_code_hpa_omega`
-  - 运行 `supabase start`
-  - 运行 `supabase db reset`（会自动应用 `supabase/migrations/`）
-  - 用 `supabase status` 查看 DB 连接串
+本项目仅支持云端 Supabase，并默认你已经在 `supabase.env` 中配置好 `SUPABASE_URL` / `SUPABASE_KEY`。建议按以下最短流程执行（全程走 HTTPS/443，不依赖 5432）：
 
-### 云端 Supabase
+1) **导入基础表与 provenance（如需更新）**
+
+在项目根目录 `docs/papers/biology/2025_arithmetic_origin_genetic_code_hpa_omega` 下运行：
+
+```bash
+python3 scripts/import_supabase_rest.py --batch-size 200
+```
+
+如果你已经导入过且产物未变化，可跳过本步；脚本自带导入级缓存，也可用 `--force` 强制重导。
+
+2) **刷新派生表（在 Supabase 内部执行 SQL）**
+
+```bash
+python3 scripts/exp_supabase_refresh_derived_tables.py
+```
+
+3) **从派生表/视图生成论文 `.tex` 片段（写入 `sections/generated/`）**
+
+```bash
+python3 scripts/exp_supabase_rest_fragments.py --force
+```
+
+### 云端 Supabase（建库 / 迁移）
 
 - **创建项目**：在 Supabase 控制台创建项目（Postgres）
 - **应用 migration**：用 Supabase SQL Editor 按顺序执行 `supabase/migrations/*.sql`（或用 psql 连接后依次执行这些文件）
@@ -24,13 +42,14 @@
 
 本仓库提供了一个**纯标准库**的导入脚本，直接走 Supabase 的 PostgREST 接口写入多张表（含 provenance 的 `analysis_runs`）。
 
-1) **准备连接信息文件（git ignore）**
+1) **确认连接信息文件（git ignore）**
 
-- 复制模板：`supabase.env.template` → `supabase.env`
-- 填写：
+- 默认使用项目根目录的 `supabase.env`（已配置）。
+- 至少包含：
   - `SUPABASE_URL`
   - `SUPABASE_KEY`（建议使用可写入数据库的 key）
-  - `DATABASE_URL`（可选，仅用于你自己用 psql/驱动直连时）
+- `DATABASE_URL` 可选（仅用于你自己用 psql/驱动直连时）。
+- 如缺失，可参考 `supabase.env.template` 补齐字段。
 
 2) **执行导入**
 
@@ -215,7 +234,7 @@ python3 scripts/validate_artifacts.py \
 
 1) **设置数据库连接**
 
-从 `supabase status` 或 Supabase 控制台拿到 DB URL，例如设置：
+从 Supabase 控制台拿到 DB URL（Postgres connection string），例如设置：
 
 ```bash
 export DB_URL='postgresql://...'

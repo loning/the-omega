@@ -1299,6 +1299,40 @@ def _emit_latex_from_summary(out: dict[str, object]) -> None:
             return "-"
         return f"\\path{{{t}}}"
 
+    def _is_num(x: object) -> bool:
+        try:
+            v = float(x)  # type: ignore[arg-type]
+        except Exception:
+            return False
+        return (not math.isnan(v)) and math.isfinite(v)
+
+    def _fmt_float(x: object, *, nd: int = 4) -> str:
+        if not _is_num(x):
+            return "-"
+        return f"{float(x):.{int(nd)}f}"
+
+    def _fmt_float_signed(x: object, *, nd: int = 4) -> str:
+        if not _is_num(x):
+            return "-"
+        v = float(x)
+        s = f"{v:.{int(nd)}f}"
+        return s if s.startswith("-") else ("+" + s)
+
+    def _fmt_z(x: object) -> str:
+        if not _is_num(x):
+            return "-"
+        return f"{float(x):.2f}"
+
+    def _fmt_p(p: object) -> str:
+        if not _is_num(p):
+            return "-"
+        p0 = float(p)
+        if p0 == 0.0:
+            return "<1e-300"
+        if p0 < 1e-4:
+            return f"{p0:.2e}"
+        return f"{p0:.4f}"
+
     # LaTeX rows: one per item (compact).
     # Columns: label, domain, mode, code_id, n_used, boundary_rate, term UAA/UAG/UGA fractions, U null delta
     rows = []
@@ -1345,6 +1379,169 @@ def _emit_latex_from_summary(out: dict[str, object]) -> None:
     summary_lines = [f"Corpus panel {tex_path(panel)} generated $n={len(items)}$ item summaries with $k\\in\\{{{ks_s}\\}}$."]
     write_text(generated_dir() / "corpus_panel_summary.tex", "\n".join(summary_lines) + "\n")
 
+    # Codon-usage null-model deviations summary across the panel (amino-acid preserving).
+    # Columns: label, domain, mode, code id, n, dZ, zZ, dU, zU.
+    null_lines: list[str] = []
+    null_lines.append("Codon-usage null-model deviations (amino-acid preserving) across the corpus panel.")
+    null_lines.append("")
+    null_lines.append("\\begin{center}")
+    null_lines.append("\\scriptsize")
+    null_lines.append("\\setlength{\\tabcolsep}{4pt}")
+    null_lines.append("\\renewcommand{\\arraystretch}{1.10}")
+    null_lines.append("\\resizebox{\\textwidth}{!}{%")
+    null_lines.append("\\begin{tabular}{lllrrrrrr}")
+    null_lines.append("\\toprule")
+    null_lines.append("label & domain & mode & code id & $n$ & $\\Delta\\overline{Z}$ & $z_Z$ & $\\Delta\\overline{U}$ & $z_U$ \\\\")
+    null_lines.append("\\midrule")
+    for it in items:
+        if not isinstance(it, dict):
+            continue
+        label = tex_path(it.get("label", "-"))
+        domain = str(it.get("domain") or "-")
+        mode = tex_path(it.get("mode", "-"))
+        code_id = it.get("code_id", "-")
+        if not it.get("present"):
+            null_lines.append(f"{label} & {domain} & {mode} & {code_id} & - & - & - & - & - \\\\")
+            continue
+        summ = it.get("summary") or {}
+        if not isinstance(summ, dict):
+            summ = {}
+        cu = it.get("codon_usage_null") or {}
+        if not isinstance(cu, dict):
+            cu = {}
+        u = cu.get("U") or {}
+        z = cu.get("Z") or {}
+        if not isinstance(u, dict) or not isinstance(z, dict):
+            u = {} if not isinstance(u, dict) else u
+            z = {} if not isinstance(z, dict) else z
+        n = int(summ.get("coding_tokens", 0) or 0)
+        dz = (float(z.get("obs_mean")) - float(z.get("null_mean"))) if (_is_num(z.get("obs_mean")) and _is_num(z.get("null_mean"))) else None
+        du2 = (float(u.get("obs_mean")) - float(u.get("null_mean"))) if (_is_num(u.get("obs_mean")) and _is_num(u.get("null_mean"))) else None
+        null_lines.append(
+            f"{label} & {domain} & {mode} & {code_id} & {n} & {_fmt_float(dz, nd=4)} & {_fmt_z(z.get('z'))} & {_fmt_float(du2, nd=4)} & {_fmt_z(u.get('z'))} \\\\"
+        )
+    null_lines.append("\\bottomrule")
+    null_lines.append("\\end{tabular}%")
+    null_lines.append("}")
+    null_lines.append("\\end{center}")
+    null_lines.append("")
+    write_text(generated_dir() / "corpus_panel_codon_usage_null_summary.tex", "\n".join(null_lines) + "\n")
+
+    # Codon-usage null decomposition for U (top-k contributions).
+    # We recompute decomposition from the stored codon/aa counts so the LaTeX can be re-emitted on cache hits.
+    tt = load_translation_tables()
+    codon_u = {c: float(FOLD_INFO[c]["delta"]) for c in GENETIC_CODE}
+
+    # 1) Top-5 AA contributions per dataset.
+    aa_lines: list[str] = []
+    aa_lines.append("Amino-acid preserving null decomposition for $\\overline{U}$ across the corpus panel (top-5 AA contributions per dataset; code id varies).")
+    aa_lines.append("")
+    aa_lines.append("\\begingroup")
+    aa_lines.append("\\hbadness=10000")
+    aa_lines.append("\\scriptsize")
+    aa_lines.append("\\setlength{\\tabcolsep}{2pt}")
+    aa_lines.append("\\renewcommand{\\arraystretch}{1.10}")
+    aa_lines.append("\\setlength{\\LTleft}{0pt}")
+    aa_lines.append("\\setlength{\\LTright}{0pt}")
+    aa_lines.append(
+        "\\begin{longtable}{>{\\raggedright\\arraybackslash}p{2.9cm} l >{\\raggedright\\arraybackslash}p{2.7cm} r l r r r r}"
+    )
+    aa_lines.append("\\toprule")
+    aa_lines.append("label & domain & mode & code id & AA & $n$ & $\\bar{U}_{\\mathrm{obs}}$ & $\\bar{U}_{\\mathrm{null}}$ & contrib \\\\")
+    aa_lines.append("\\midrule")
+    for it in items:
+        if not isinstance(it, dict) or not it.get("present"):
+            continue
+        code_id = int(it.get("code_id") or 1)
+        if code_id not in tt:
+            continue
+        codon_to_aa, _stop_codons = tt[code_id]
+        summ = it.get("summary") or {}
+        if not isinstance(summ, dict):
+            continue
+        codon_counts = summ.get("codon_counts") or {}
+        aa_counts = summ.get("aa_counts") or {}
+        if not isinstance(codon_counts, dict) or not isinstance(aa_counts, dict):
+            continue
+        codons_by_aa = codons_by_aa_from_map(codon_to_aa)
+        try:
+            decomp_u = aa_preserving_null_decomposition(
+                aa_counts={str(k): int(v) for k, v in aa_counts.items()},
+                codon_counts={str(k): int(v) for k, v in codon_counts.items()},
+                codons_by_aa=codons_by_aa,
+                genetic_code=codon_to_aa,
+                codon_value=codon_u,
+                exclude_aas={"Stop"},
+            )
+        except Exception:
+            continue
+        top = decomp_u.aa_contribs[:5]
+        for r in top:
+            aa_lines.append(
+                f"{tex_path(it.get('label','-'))} & {str(it.get('domain') or '-')} & {tex_path(it.get('mode','-'))} & {int(code_id)} & "
+                f"{str(r.aa)} & {int(r.n)} & {_fmt_float(r.obs_mean, nd=4)} & {_fmt_float(r.null_mean, nd=4)} & {_fmt_float_signed(r.contrib, nd=5)} \\\\"
+            )
+    aa_lines.append("\\bottomrule")
+    aa_lines.append("\\end{longtable}")
+    aa_lines.append("\\endgroup")
+    aa_lines.append("")
+    write_text(generated_dir() / "corpus_panel_codon_usage_null_decomp_u_aa_top5.tex", "\n".join(aa_lines) + "\n")
+
+    # 2) Top-10 codon contributions per dataset.
+    codon_lines: list[str] = []
+    codon_lines.append("Amino-acid preserving null decomposition for $\\overline{U}$ across the corpus panel (top-10 codon contributions per dataset; code id varies).")
+    codon_lines.append("")
+    codon_lines.append("\\begingroup")
+    codon_lines.append("\\hbadness=10000")
+    codon_lines.append("\\scriptsize")
+    codon_lines.append("\\setlength{\\tabcolsep}{2pt}")
+    codon_lines.append("\\renewcommand{\\arraystretch}{1.10}")
+    codon_lines.append("\\setlength{\\LTleft}{0pt}")
+    codon_lines.append("\\setlength{\\LTright}{0pt}")
+    codon_lines.append(
+        "\\begin{longtable}{>{\\raggedright\\arraybackslash}p{2.9cm} l >{\\raggedright\\arraybackslash}p{2.7cm} r l l r r r}"
+    )
+    codon_lines.append("\\toprule")
+    codon_lines.append("label & domain & mode & code id & codon & AA & $c_{\\mathrm{obs}}$ & $c_{\\mathrm{null}}$ & contrib \\\\")
+    codon_lines.append("\\midrule")
+    for it in items:
+        if not isinstance(it, dict) or not it.get("present"):
+            continue
+        code_id = int(it.get("code_id") or 1)
+        if code_id not in tt:
+            continue
+        codon_to_aa, _stop_codons = tt[code_id]
+        summ = it.get("summary") or {}
+        if not isinstance(summ, dict):
+            continue
+        codon_counts = summ.get("codon_counts") or {}
+        aa_counts = summ.get("aa_counts") or {}
+        if not isinstance(codon_counts, dict) or not isinstance(aa_counts, dict):
+            continue
+        codons_by_aa = codons_by_aa_from_map(codon_to_aa)
+        try:
+            decomp_u = aa_preserving_null_decomposition(
+                aa_counts={str(k): int(v) for k, v in aa_counts.items()},
+                codon_counts={str(k): int(v) for k, v in codon_counts.items()},
+                codons_by_aa=codons_by_aa,
+                genetic_code=codon_to_aa,
+                codon_value=codon_u,
+                exclude_aas={"Stop"},
+            )
+        except Exception:
+            continue
+        top = decomp_u.codon_contribs[:10]
+        for r in top:
+            codon_lines.append(
+                f"{tex_path(it.get('label','-'))} & {str(it.get('domain') or '-')} & {tex_path(it.get('mode','-'))} & {int(code_id)} & "
+                f"{str(r.codon)} & {str(r.aa)} & {int(r.obs_count)} & {_fmt_float(r.null_count, nd=1)} & {_fmt_float_signed(r.contrib, nd=5)} \\\\"
+            )
+    codon_lines.append("\\bottomrule")
+    codon_lines.append("\\end{longtable}")
+    codon_lines.append("\\endgroup")
+    codon_lines.append("")
+    write_text(generated_dir() / "corpus_panel_codon_usage_null_decomp_u_codon_top10.tex", "\n".join(codon_lines) + "\n")
+
     # Start-context rows (primary k only).
     # Columns: label, domain, mode, code_id, n_used, k, n_before, before_mean, n_after, after_mean
     start_rows: list[str] = []
@@ -1379,32 +1576,6 @@ def _emit_latex_from_summary(out: dict[str, object]) -> None:
 
     # Stop-context effects rows (primary k only), before/after separately.
     # Columns: label, domain, mode, code_id, k, pair, n1, n2, diff, ci_low, ci_high, g, p
-    def _fmt_p(p: object) -> str:
-        if p is None:
-            return "-"
-        try:
-            p0 = float(p)
-        except Exception:
-            return "-"
-        if math.isnan(p0):
-            return "-"
-        if p0 == 0.0:
-            return "<1e-300"
-        if p0 < 1e-4:
-            return f"{p0:.2e}"
-        return f"{p0:.4f}"
-
-    def _fmt_float(x: object) -> str:
-        if x is None:
-            return "-"
-        try:
-            v = float(x)
-        except Exception:
-            return "-"
-        if math.isnan(v):
-            return "-"
-        return f"{v:.4f}"
-
     def _emit_effect_rows(side: str) -> list[str]:
         out_rows: list[str] = []
         for it in items:
@@ -1450,6 +1621,114 @@ def _emit_latex_from_summary(out: dict[str, object]) -> None:
         generated_dir() / "corpus_panel_stop_context_effects_after_rows.tex",
         "\n".join(_emit_effect_rows("after")) + "\n\\bottomrule\n",
     )
+
+    # Fixed-effect meta-analysis (by domain) for stop-context differences.
+    # Uses normal-approximation SE derived from the reported CI width.
+    def _meta_rows(*, ks: list[int]) -> list[str]:
+        out_rows: list[str] = []
+        for domain in sorted({str(it.get("domain") or "") for it in items if isinstance(it, dict) and it.get("domain")}):
+            for side in ("after", "before"):
+                for c1, c2 in _STOP_PAIRS:
+                    pair_key = f"{c1}_vs_{c2}"
+                    pair_tex = pair_key.replace("_vs_", "$\\,$vs$\\,$")
+                    for k in ks:
+                        diffs: list[float] = []
+                        ses: list[float] = []
+                        for it in items:
+                            if not isinstance(it, dict) or not it.get("present"):
+                                continue
+                            if str(it.get("domain") or "") != domain:
+                                continue
+                            summ = it.get("summary") or {}
+                            if not isinstance(summ, dict):
+                                continue
+                            eff = summ.get("stop_context_effects_multi_k") or {}
+                            side_obj = (eff.get(str(side)) if isinstance(eff, dict) else None) or {}
+                            k_obj = (side_obj.get(str(int(k))) if isinstance(side_obj, dict) else None) or {}
+                            r = (k_obj.get(pair_key) if isinstance(k_obj, dict) else None) or {}
+                            if not isinstance(r, dict):
+                                continue
+                            d = r.get("diff")
+                            lo = r.get("ci_low")
+                            hi = r.get("ci_high")
+                            if (d is None) or (lo is None) or (hi is None):
+                                continue
+                            if not (_is_num(d) and _is_num(lo) and _is_num(hi)):
+                                continue
+                            lo_f = float(lo)
+                            hi_f = float(hi)
+                            if hi_f <= lo_f:
+                                continue
+                            se = (hi_f - lo_f) / (2.0 * 1.96)
+                            if se <= 0:
+                                continue
+                            diffs.append(float(d))
+                            ses.append(float(se))
+                        if not diffs:
+                            continue
+                        wsum = 0.0
+                        wdiff = 0.0
+                        for d, se in zip(diffs, ses):
+                            w = 1.0 / (se * se)
+                            wsum += w
+                            wdiff += w * float(d)
+                        if wsum <= 0:
+                            continue
+                        meta_diff = wdiff / wsum
+                        meta_se = math.sqrt(1.0 / wsum)
+                        z = meta_diff / meta_se if meta_se > 0 else float("nan")
+                        p = normal_two_sided_p(float(z)) if meta_se > 0 else float("nan")
+                        out_rows.append(
+                            f"{domain} & {side} & {pair_tex} & {int(k)} & {len(diffs)} & {_fmt_float(meta_diff, nd=4)} & {_fmt_float(meta_se, nd=4)} & {_fmt_z(z)} & {_fmt_p(p)} \\\\"
+                        )
+        return out_rows
+
+    ks_all = sorted({int(x) for x in k_list if int(x) >= 1})
+    ks_k10 = [10] if 10 in ks_all else ([] if not ks_all else [min(ks_all)])
+
+    # k=10 only
+    meta_k10_lines: list[str] = []
+    meta_k10_lines.append("Fixed-effect meta-analysis of stop-context differences (by domain; $k=10$).")
+    meta_k10_lines.append("")
+    meta_k10_lines.append("\\begingroup")
+    meta_k10_lines.append("\\hbadness=10000")
+    meta_k10_lines.append("\\scriptsize")
+    meta_k10_lines.append("\\setlength{\\tabcolsep}{4pt}")
+    meta_k10_lines.append("\\renewcommand{\\arraystretch}{1.10}")
+    meta_k10_lines.append("\\setlength{\\LTleft}{0pt}")
+    meta_k10_lines.append("\\setlength{\\LTright}{0pt}")
+    meta_k10_lines.append("\\begin{longtable}{lllrlrrrr}")
+    meta_k10_lines.append("\\toprule")
+    meta_k10_lines.append("domain & window & pair & $k$ & $n$ & meta diff & meta se & $z$ & $p$ \\\\")
+    meta_k10_lines.append("\\midrule")
+    meta_k10_lines.extend(_meta_rows(ks=ks_k10))
+    meta_k10_lines.append("\\bottomrule")
+    meta_k10_lines.append("\\end{longtable}")
+    meta_k10_lines.append("\\endgroup")
+    meta_k10_lines.append("")
+    write_text(generated_dir() / "corpus_panel_stop_context_meta_k10.tex", "\n".join(meta_k10_lines) + "\n")
+
+    # multi-k
+    meta_mk_lines: list[str] = []
+    meta_mk_lines.append("Fixed-effect meta-analysis of stop-context differences (by domain; multi-$k$).")
+    meta_mk_lines.append("")
+    meta_mk_lines.append("\\begingroup")
+    meta_mk_lines.append("\\hbadness=10000")
+    meta_mk_lines.append("\\scriptsize")
+    meta_mk_lines.append("\\setlength{\\tabcolsep}{4pt}")
+    meta_mk_lines.append("\\renewcommand{\\arraystretch}{1.10}")
+    meta_mk_lines.append("\\setlength{\\LTleft}{0pt}")
+    meta_mk_lines.append("\\setlength{\\LTright}{0pt}")
+    meta_mk_lines.append("\\begin{longtable}{lllrlrrrr}")
+    meta_mk_lines.append("\\toprule")
+    meta_mk_lines.append("domain & window & pair & $k$ & $n$ & meta diff & meta se & $z$ & $p$ \\\\")
+    meta_mk_lines.append("\\midrule")
+    meta_mk_lines.extend(_meta_rows(ks=ks_all))
+    meta_mk_lines.append("\\bottomrule")
+    meta_mk_lines.append("\\end{longtable}")
+    meta_mk_lines.append("\\endgroup")
+    meta_mk_lines.append("")
+    write_text(generated_dir() / "corpus_panel_stop_context_meta_multi_k.tex", "\n".join(meta_mk_lines) + "\n")
 
 
 def main() -> None:

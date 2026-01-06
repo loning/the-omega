@@ -81,3 +81,6 @@ If you wish to further advance the geometric picture of "cosmic archiving" to th
 - [D. God's Compiler & Recursive Universe](appendix-d-gods-compiler-recursive-universe_en.md)
 
 
+
+
+

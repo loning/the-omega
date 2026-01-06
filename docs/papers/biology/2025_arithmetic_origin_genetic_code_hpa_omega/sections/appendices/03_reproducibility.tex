@@ -49,6 +49,35 @@ If your environment cannot validate the TLS certificate chain for NCBI/Ensembl e
 python3 scripts/run_all.py --download --insecure --pdf
 \end{verbatim}
 
+\subsection{Regenerating LaTeX fragments only (no network)}
+If the data bundles and cached JSON summaries are already present under \path{data/}, you can regenerate all LaTeX fragments without downloading anything:
+\begin{verbatim}
+python3 scripts/run_all.py --no-download
+\end{verbatim}
+This refreshes \path{sections/generated/} and updates any fragments emitted from cached summaries (e.g.\ RefSeq merge, recoding-site summaries) without forcing recomputation.
+
+\subsection{Quick run (smoke test)}
+For a fast local sanity check (small subsamples; no network), run:
+\begin{verbatim}
+python3 scripts/run_all.py --no-download --pdf \
+  --refseq-max-shards 1 --refseq-max-records 5000 \
+  --recoding-max-files 10 \
+  --panel-max-records 5000 \
+  --nonstandard-max-records 5000
+\end{verbatim}
+This is intended only to validate that scripts execute, fragments are produced, and the PDF builds; it does not reproduce the full reported statistics.
+
+\subsection{Sanity checks for generated artefacts}
+Two lightweight validators are included:
+\begin{verbatim}
+# Check that sections/generated/*.tex are non-empty
+# (and meta sidecars are well-formed when present)
+python3 scripts/validate_generated_fragments.py
+
+# Check key JSON artefacts used for Supabase import / cross-run consistency
+python3 scripts/validate_artifacts.py
+\end{verbatim}
+
 \subsection{Sequence spectrum CLI usage}
 The CLI requires at least one output. Use \path{--out} (per-codon TSV trace) and/or \path{--summary-out} (per-segment JSONL summary).
 The Zeckendorf window length can be set via \path{--m} (default: $m=6$).

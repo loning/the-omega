@@ -64,8 +64,25 @@ Instead it provides an explicit quantitative signal family $(Z,U)$ that can be e
 \input{sections/generated/recoding_dataset_composition}
 \input{sections/generated/recoding_context_tests}
 \input{sections/generated/recoding_context_controls}
+\begin{sloppypar}
 \input{sections/generated/recoding_composition_controls}
+\end{sloppypar}
+\begin{sloppypar}
 \input{sections/generated/recoding_terminal_stop_bias}
+\end{sloppypar}
+
+\paragraph{Baseline dependence and scale.}
+In this dataset, the most stable separation is an upstream uplift shift: recoding sites exhibit substantially larger $\overline{U}_{\mathrm{before}}$ than CDS-deduplicated terminal stops across multiple radii $k$, while the downstream contrast is more $k$-dependent (Appendix~\ref{app:recoding_sites}).
+This motivates multi-$k$ reporting and caution against treating a single-$k$ after-window contrast as an invariant signature.
+
+\paragraph{Multi-resolution sensitivity.}
+Because uplift $\Delta$ is defined relative to a finite Zeckendorf window, its empirical separability can change with resolution.
+Accordingly, we also report rank-based discrimination summaries (AUC) across Fold$_m$ for $m\in\{6,7,8,9\}$ in Appendix~\ref{app:recoding_sites}.
+At the codon scale ($N\in\{0,\dots,63\}$), $m=9$ is a saturating window and yields $\Delta_m\equiv 0$ (see Section~\ref{sec:resolution_upgrade}); the corresponding AUC entries therefore collapse to $0.5$ as a sanity check rather than a biological signal.
+
+\paragraph{Boundary-sector check.}
+A boundary-hit enrichment would be a distinct and stronger mechanism than an uplift shift.
+Instead, boundary-hit rates in the $k=10$ windows around Sec sites are significantly \emph{depleted} relative to the coding background in the same dataset (Appendix~\ref{app:boundary_enrichment_results}), indicating that the recoding-context signal is not reducible to boundary-sector proximity at $m=6$.
 
 \paragraph{CDS-level terminal-stop baselines and stratification.}
 Because a single CDS can contain multiple \texttt{transl\_except} sites, terminal-stop contexts are treated at CDS resolution: each CDS contributes at most one terminal-stop window to the reference distribution.
@@ -74,8 +91,11 @@ We also report codon- and domain-stratified tests to make explicit which subsets
 \paragraph{Within-CDS controls.}
 In coding regions, the stop codons $\mathrm{UGA}$ and $\mathrm{UAG}$ are normally forbidden as internal codons; thus an internal same-codon control (Control-B) is typically unavailable once \texttt{transl\_except} sites are excluded.
 Instead we compare each recoding site to random internal non-stop codon positions from the same CDS (Control-C), which provides a within-gene baseline for uplift-context windows.
-The resulting signal persists under this within-CDS control, indicating that the effect is not explained solely by between-gene variation.
-We additionally report composition-matched controls (GC and dinucleotide usage) to separate uplift differences from local base-composition effects (Appendix~\ref{app:composition_controls}).
+The resulting signal persists under this within-CDS random-internal baseline, indicating that the aggregate contrast is not explained solely by between-gene variation.
+However, composition-matched within-CDS controls can invert the direction of the comparison, showing that $U$-window statistics are strongly coupled to local GC and dinucleotide structure.
+Accordingly, we treat composition-adjusted analyses against terminal-stop baselines as the more interpretable summary for the recoding dataset (Appendix~\ref{app:composition_controls}).
+In the same dataset, the Control-C AUC sign reversals observed at $m=8$ are driven by the dominant Sec/UGA, eukaryotic stratum rather than by sparse Pyl events (Appendix~\ref{app:recoding_sites}).
+Within this dominant stratum, the paired Control-C differences $dU_{\mathrm{before}}$ and $dU_{\Delta}$ shift markedly across $m$, and the correlation between $dU_{\mathrm{before}}$ and the paired GC contrast $dGC_{\mathrm{before}}$ changes sign at $m=8$ (Appendix~\ref{app:recoding_sites}), consistent with composition-coupled resolution sensitivity.
 
 \subsection{Corpus-scale biases and spectrum fingerprints}
 \label{sec:corpus_biases}
@@ -87,7 +107,9 @@ Even after conditioning on amino-acid composition, the empirical coding-token av
 \input{sections/generated/refseq_codon_usage_null}
 This does not by itself identify a mechanistic driver (e.g.\ mutational biases, translation kinetics, or selection on RNA structure), but it establishes that the folding-derived spectra are not statistically inert in a large human coding corpus.
 The same null-model deviations also appear across the cross-domain corpus panel, indicating that the effect is not unique to human RefSeq (Appendix~\ref{app:corpus_panel}).
+Across Fold$_m$ with $m\in\{6,7,8\}$, the corpus-panel $\Delta\overline{U}$ deviations retain their sign for all current panel items and exhibit strong cross-$m$ concordance (Appendix~\ref{app:corpus_panel}).
 In the code-1 eukaryotic strata, the $\overline{U}$ deviation is dominated by a small set of amino-acid groups (notably Leu/Arg/Ser) under the same null (Appendix~\ref{app:corpus_panel}).
+Across the full panel, the sign of the $\overline{U}$ deviation is not uniform in Archaea/Bacteria, consistent with domain-specific constraints acting on synonymous choices.
 
 \paragraph{A compact spectrum fingerprint is available at the ORF level.}
 The per-ORF boundary rate, entropy of $Z$, and lag-1 autocorrelation provide a minimal feature vector that can be extracted from any genome without parameter fitting.
@@ -96,7 +118,8 @@ At least in human RefSeq mRNA, the lag-1 autocorrelation concentrates near zero;
 
 \paragraph{Cross-domain replication targets.}
 To avoid over-interpreting any single corpus, we also report a cross-domain corpus panel (Eukaryota/Bacteria/Archaea) with matched summaries under $\mu^\ast$, including start-context windows and stop-context effect sizes across datasets (Appendix~\ref{app:corpus_panel}).
-To summarize stability across datasets within each domain, we additionally report a fixed-effect meta-analysis of stop-context differences at $k=10$ (Appendix~\ref{app:corpus_panel}).
+To summarize stability across datasets within each domain, we additionally report fixed-effect meta-analyses of stop-context differences at $k=10$ and across multiple $k$ values (Appendix~\ref{app:corpus_panel}).
+In the current small panel, the fixed-effect summaries suggest that after-window contrasts in the code-1 eukaryotic strata are more stable across $k$ than the corresponding before-window contrasts, while archaeal and bacterial estimates are presently limited by the small number of items per domain.
 
 \subsection{Resolution upgrade and context}
 \label{sec:resolution_upgrade}
@@ -108,6 +131,31 @@ Higher windows $\mathrm{Fold}_m$ introduce new degrees of freedom, richer bounda
 \item \textbf{Sequence context.} Translation is context-sensitive (wobble pairing, recoding signals, local RNA structure).
 In the folding language, context dependence naturally corresponds to conditioning the spectrum traces on neighborhoods and on reading-frame-aligned patterns.
 \end{itemize}
+
+\paragraph{Stability of the control objective across $m$.}
+Because $m$ is a resolution parameter, it is natural to ask whether the same control-boundary alignment objective that identifies $\mu^\ast$ at $m=6$ remains stable when the Zeckendorf window is widened.
+We performed an exhaustive scan for $m\in\{6,7,8,9\}$ using the same control set $\{\mathrm{AUG,UAA,UAG,UGA}\}$ and the boundary-hit score $S_m$ (Definition~\ref{def:control_boundary_score} with $\mathrm{Fold}_6$ replaced by $\mathrm{Fold}_m$).
+At $m=6$, the optimum is unique and equals $\mu^\ast$ (Theorem~\ref{thm:unique_encoding}); at $m=7$, the maximal score remains $2$ but $\mu^\ast$ attains $0$, because the shared folded word of $\mathrm{AUG}$ and $\mathrm{UAA}$ is not in the boundary sector.
+For $m\in\{8,9\}$, the maximal score drops to $1$ and multiple encodings tie for the maximum.
+These facts, summarized in Appendix~\ref{app:generated_tables}, indicate that the $m=6$ identifiability is a minimal-resolution phenomenon tied to the special boundary preimage structure at window length $6$.
+Multi-resolution objectives (e.g.\ maximizing $\sum_{m\in M} S_m$ over $M=\{6,7,8\}$) can be considered, but are not used as premises in the present work.
+\begin{center}
+\input{sections/generated/foldm_control_objective_stability_maintex}
+\end{center}
+
+\paragraph{Saturating resolution at the codon scale.}
+In this paper the microstate index is codon-scale: $N\in\{0,\dots,63\}$ under a two-bit encoding.
+The Zeckendorf expansion of any $N\le 63$ uses at most nine Fibonacci weights ($1,2,3,5,8,13,21,34,55$), hence the length-$9$ window contains the full admissible digit string.
+Therefore $\mathrm{Fold}_m$ is lossless for $m\ge 9$ at this scale: $V_m(N)=N$ and the uplift vanishes identically, $\Delta_m(N)=N-V_m(N)\equiv 0$.
+Consequently, uplift-based statistics are nontrivial only for $m\le 8$ in the codon-scale model; including $m=9$ is useful as an internal consistency check but cannot carry discriminative signal in $\Delta_m$.
+At the same time, the cyclic boundary condition $w_1=w_m=1$ becomes increasingly restrictive as $m$ grows on a fixed $N\le 63$ range, so the set of boundary-mapping codons is not monotone in $m$; Appendix~\ref{app:generated_tables} records both the boundary-codon counts and the stop-codon signatures across $m\in\{6,7,8,9\}$ under $\mu^\ast$.
+On the index layer, this behavior is explained by the explicit boundary preimage sets $B_m(\le 63)=\{N\le 63:\mathrm{Fold}_m(N)\in X_m^{\mathrm{bdry}}\}$, which change sharply with $m$ (Appendix~\ref{app:generated_tables}): for example $|B_6(\le 63)|=6$ with $\{14,17,19,48,51,53\}$, whereas $B_7(\le 63)$ consists of five indices $\le 33$ and $B_9(\le 63)$ consists of three indices $\ge 55$.
+This implies that at $m=7$ any boundary hit necessarily has $\Delta_7=0$ (since all boundary indices lie below the missing weight $34$), and that at $m=9$ the only boundary hits are among the three indices that already carry the $55$-weight digit and the leading $1$ digit.
+Under $\mu^\ast$ this makes $\mathrm{UGA}$ boundary at $m=9$ but not $\mathrm{UAA}$ (Appendix~\ref{app:generated_tables}), while at $m=7$ the shared word $w_7(\mathrm{AUG})=w_7(\mathrm{UAA})=\texttt{1000010}$ fails the boundary condition because its last digit is $0$.
+
+\paragraph{What is $m=6$-specific and what is not.}
+The identification theorem and the start--stop $14/48$ symmetry are statements about the specific minimal-resolution interface $(\Omega_6,\mathrm{Fold}_6,X_6)$: changing $m$ changes both the target space and the boundary condition, and the same control set need not identify the same encoding.
+By contrast, the \emph{sequence-level} observables (context windows of $\Delta_m$ and derived rank/discrimination statistics) can be computed for any $m$ and are naturally treated as a robustness axis: effects that persist across $m\in\{6,7,8\}$ are stronger candidates for biological relevance than effects visible at only one resolution.
 
 \subsection{A research program}
 \label{sec:program}
