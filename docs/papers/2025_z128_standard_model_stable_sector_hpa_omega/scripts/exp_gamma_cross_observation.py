@@ -471,7 +471,7 @@ def main() -> None:
                 dataset=str(m["id"]),
                 gamma_hat=float(gamma_hat),
                 sigma=float(sigma),
-                note="map: A_L ≈ gamma^2 (power-spectrum amplitude)",
+                note="map: A_L approx gamma squared (power-spectrum amplitude)",
                 source=str(m.get("source", "")),
             )
         )
@@ -650,6 +650,7 @@ def main() -> None:
         )
         + " \\\\"
     )
+    rows.append(r"\bottomrule")
 
     write_lines(out_gen / "gamma_crossobs_rows.tex", rows)
 
@@ -713,13 +714,15 @@ def main() -> None:
             stab_rows.append(
                 " & ".join(
                     [
-                        "\\textbf{rotation_curves_sparc}",
+                        f"\\textbf{{{_tex_escape('rotation_curves_sparc')}}}",
                         "\\texttt{combined}",
                         _format_pm(g0, float(rc_comb.sigma)),
                         _format_cell_sci(gmin),
                         _format_cell_sci(gmax),
                         _format_cell_sci(dmax),
-                        _tex_escape("sweep over m∈{6,8}, thr∈{median,q=0.65}, g0∈{mean,median}, smooth_k∈{1,5,9}"),
+                        _tex_escape(
+                            "sweep over m in {6,8}, thr in {median,q=0.65}, g0 in {mean,median}, smooth_k in {1,5,9}"
+                        ),
                     ]
                 )
                 + " \\\\"
@@ -731,7 +734,7 @@ def main() -> None:
         stab_rows.append(
             " & ".join(
                 [
-                    "\\textbf{joint_LOO}",
+                    f"\\textbf{{{_tex_escape('joint_LOO')}}}",
                     f"\\texttt{{{_tex_escape(ch)}}}",
                     _format_pm(j.gamma_hat, j.sigma),
                     "",
@@ -745,6 +748,7 @@ def main() -> None:
 
     if not stab_rows:
         stab_rows.append("% (no stability rows generated)")
+    stab_rows.append(r"\bottomrule")
     write_lines(out_gen / "gamma_crossobs_stability_rows.tex", stab_rows)
 
     # ----------------------------

@@ -2,7 +2,9 @@ name: Deploy mdBook site to Pages
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "dev"]
+  pull_request:
+    branches: ["main", "dev"]
   workflow_dispatch:
 
 permissions:
@@ -11,7 +13,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -134,16 +136,19 @@ jobs:
             cargo install --version ${MDBOOK_MERMAID_VERSION} mdbook-mermaid
           fi
       - name: Setup Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         id: pages
         uses: actions/configure-pages@v4
       - name: Build with mdBook
         run: mdbook build
       - name: Upload artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./book
 
   deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
