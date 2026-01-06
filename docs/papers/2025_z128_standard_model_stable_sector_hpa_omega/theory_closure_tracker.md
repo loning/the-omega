@@ -33,7 +33,7 @@ flowchart TD
 
 说明：上图是**依赖关系**而非叙事顺序；叙事可从 `B`（等价语义+频率优先词典）开始，也可从 `A`（协议/读出）开始。
 
-## 已引入的“自包含闭合模块”（附录 24–33）
+## 已引入的“自包含闭合模块”（附录 24–34）
 
 - [x] **等价语义与频率优先词典**：`appendix 24`  
   - 位置：`sections/appendices/24_equivalence_semantics.tex`（`\label{app:equivalence_semantics}`）
@@ -65,6 +65,9 @@ flowchart TD
 - [x] **宇宙学：分辨率流与能量预算接口**：`appendix 32`  
   - 位置：`sections/appendices/32_cosmology_resolution_flow.tex`（`\label{app:cosmology_resolution_flow}`）
   - 要点：big bang 作为分辨率初始化；inflation=稳定容量增长；隐藏/稳定份额；离散能量预算拟合假设。
+- [x] **散射时间延迟的统一闭合（相位/频率/WS/红移/GR 参考）**：`appendix 34`  
+  - 位置：`sections/appendices/34_unified_delay_closure.tex`（`\label{app:time_mass_delay}`，`\label{app:time_mass_delay_reference}`）
+  - 要点：相位-频率-延迟统一接口；Wigner--Smith 延迟（含 trace/logdet 与校准/损耗处理）；delay→$\kappa$→lapse→redshift/Shapiro 的一致词典；相移/截面与时延同源的接口注记。
 
 ## 概念级闭合矩阵（频率优先）
 
@@ -96,7 +99,7 @@ flowchart TD
 ## “待闭合/高风险”清单（建议后续继续追踪）
 
 - [x] **从协议层到连续场的误差控制**：离散→连续代表的收敛界/稳定性与误差预算（见 `sections/appendices/33_protocol_to_continuum_error_control.tex`，`\label{app:protocol_to_continuum_error_control}`）。
-- [ ] **散射时间延迟的统一闭合**：将“几何光学/相位延迟/频率红移”与散射截面/相移的接口统一到同一套 CAP 词典下（目前已有片段，但可进一步整合为单一接口节）。
+- [x] **散射时间延迟的统一闭合**：已在 `appendix 34` 统一为单一接口模块（`app:time_mass_delay` / `app:time_mass_delay_reference`），把“相位延迟/频率红移/散射相移”与 delay→lapse→GR 参考的匹配层词典集中闭合。
 - [ ] **$\gamma$ 的跨观测一致性**：除旋转曲线外，引力透镜/时间延迟/红移的联合拟合与一致性检验（需要数据协议与脚本/表格）。
 - [ ] **宇宙学能量预算拟合的可复现脚本**：把 `appendix 32` 的接口假设落成可运行的拟合与图表（避免仅停留在文本接口）。
 
