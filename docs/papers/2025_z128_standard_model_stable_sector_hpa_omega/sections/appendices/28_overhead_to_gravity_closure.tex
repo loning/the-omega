@@ -91,6 +91,16 @@ In the small-error regime, $\sigma_{y,i}\approx 2v_i\sigma_i$, and the one-param
 =\frac{\sum_i (x_i y_i/\sigma_{y,i}^2)}{\sum_i (x_i^2/\sigma_{y,i}^2)}.
 \]
 
+\paragraph{Uncertainty propagation (audit).}
+\AuditTag If one treats the $x_i$ as known (design-known model) and assumes $\Var(y_i)=\sigma_{y,i}^2$, then Appendix~\ref{app:protocol_to_continuum_error_control} records the standard WLS variance formula
+$\Var(\widehat\gamma)=1/\sum_i (x_i^2/\sigma_{y,i}^2)$ (Proposition~\ref{prop:wls_gamma_variance}), yielding an immediate confidence interval under an approximate normality heuristic.
+In the present application, however, $x_i$ depends on a numerical derivative of $\chi$; Appendix~\ref{app:protocol_to_continuum_error_control} makes explicit the corresponding bias--noise tradeoff for $\chi'$ estimation (Proposition~\ref{prop:derivative_error_tradeoff}).
+Audit-facing practice is therefore to declare the derivative/smoothing rule and to report the stability of $\widehat\gamma$ under counterfactual step/regularization choices (Appendix~\ref{app:chi_reconstruction_protocol}).
+
+\paragraph{Discrete Laplacian and noise amplification (audit).}
+\AuditTag When forming $\rho_{\mathrm{eff}}$ from a reconstructed grid field $\widehat\chi_h$, one necessarily implements $\Delta\chi$ by a discrete Laplacian $\Delta_h$.
+Appendix~\ref{app:protocol_to_continuum_error_control} records the standard second-order truncation bound $|\Delta_h\chi-\Delta\chi|\lesssim h^2$ (Theorem~\ref{thm:laplacian_truncation}) and the explicit noise amplification $|\Delta_h\eta|\le (4d/h^2)\epsilon_\chi$ for bounded pointwise noise (Corollary~\ref{cor:laplacian_noise_amplification}), yielding an auditable error budget for $\widehat\rho_{\mathrm{eff}}$ (Corollary~\ref{cor:rho_eff_error_budget}).
+
 \paragraph{Relation to frequency-first observables.}
 \InterfaceTag Since $N=\e^{-\gamma\chi}$ controls local clock rate, the same $\gamma$ is in principle constrained by redshift and time-delay data:
 frequency ratios are primary observables in the tick-first semantics (Appendix~\ref{app:equivalence_semantics} and Appendix~\ref{app:time_mass_delay_reference}).

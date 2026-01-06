@@ -24,6 +24,8 @@ flowchart TD
   B --> E["热力学词典（熵/温度/自由能）"]
   D --> F["overhead/chi -> lapse -> g00 -> 弱场/Poisson"]
   F --> G["chi 重建协议（从数据到 chi(x)）"]
+  G --> K["协议→连续场误差控制（收敛界/误差预算）"]
+  F --> K
   B --> H["量子测量接口（POVM/仪器/Born）"]
   B --> I["RG：分辨率坐标 r 的耦合流"]
   I --> J["宇宙学：分辨率流/容量增长/能量预算拟合"]
@@ -31,7 +33,7 @@ flowchart TD
 
 说明：上图是**依赖关系**而非叙事顺序；叙事可从 `B`（等价语义+频率优先词典）开始，也可从 `A`（协议/读出）开始。
 
-## 已引入的“自包含闭合模块”（附录 24–32）
+## 已引入的“自包含闭合模块”（附录 24–33）
 
 - [x] **等价语义与频率优先词典**：`appendix 24`  
   - 位置：`sections/appendices/24_equivalence_semantics.tex`（`\label{app:equivalence_semantics}`）
@@ -51,6 +53,9 @@ flowchart TD
 - [x] **chi 重建协议**：`appendix 29`  
   - 位置：`sections/appendices/29_chi_reconstruction_protocol.tex`（`\label{app:chi_reconstruction_protocol}`）
   - 要点：Hilbert 分箱→窗口词→折叠统计→$\chi(x)$ 重建→测试与拟合。
+- [x] **协议层→连续场误差控制**：`appendix 33`  
+  - 位置：`sections/appendices/33_protocol_to_continuum_error_control.tex`（`\label{app:protocol_to_continuum_error_control}`）
+  - 要点：误差度量与分解；集中界→log 误差传播；差分算子截断误差与噪声放大；$\gamma$ 的 WLS 方差与 $\rho_{\mathrm{eff}}/\Phi$ 的误差预算。
 - [x] **量子测量与 Born 闭合**：`appendix 30`  
   - 位置：`sections/appendices/30_quantum_measurement_born.tex`（`\label{app:quantum_measurement_born}`）
   - 要点：POVM/仪器；Born 规则两条闭合路线（计数模板与 Gleason–Busch 唯一性）。
@@ -80,6 +85,7 @@ flowchart TD
 | 弱场 Poisson | $\Delta\Phi \propto \rho_{\mathrm{eff}}$ | Math | `subsec:weak_field_poisson`, `subsec:z128_poisson_template` | [x] |
 | overhead→引力 | $\chi\to N\to g_{00}\to\Phi$ | CAP/Math/Iface | `app:overhead_to_gravity_closure` | [x] |
 | $\rho_{\mathrm{eff}}$ | $\rho_{\mathrm{eff}}\propto-\Delta\chi$ | Math/Iface | `eq:z128_rho_eff_from_chi` | [x] |
+| 误差控制（协议→连续场） | 误差分解 + 收敛/稳定性界 + 误差传播预算 | Iface/Math/Audit/Prot | `app:protocol_to_continuum_error_control` | [x] |
 | 熵（entropy） | 粗粒化计数/通道容量 | Math/CAP | `eq:counting_entropy` | [x] |
 | 温度（temperature） | 频率共轭尺度 | Iface/Math | `def:temperature_conjugate` | [x] |
 | CAP 自由能原则 | 以自由能形式重述 CAP 选择 | CAP | `prop:cap_free_energy_closure` | [x] |
@@ -89,7 +95,7 @@ flowchart TD
 
 ## “待闭合/高风险”清单（建议后续继续追踪）
 
-- [ ] **从协议层到连续场的误差控制**：离散→连续代表的收敛界/稳定性（需要明确的误差度量与界）。
+- [x] **从协议层到连续场的误差控制**：离散→连续代表的收敛界/稳定性与误差预算（见 `sections/appendices/33_protocol_to_continuum_error_control.tex`，`\label{app:protocol_to_continuum_error_control}`）。
 - [ ] **散射时间延迟的统一闭合**：将“几何光学/相位延迟/频率红移”与散射截面/相移的接口统一到同一套 CAP 词典下（目前已有片段，但可进一步整合为单一接口节）。
 - [ ] **$\gamma$ 的跨观测一致性**：除旋转曲线外，引力透镜/时间延迟/红移的联合拟合与一致性检验（需要数据协议与脚本/表格）。
 - [ ] **宇宙学能量预算拟合的可复现脚本**：把 `appendix 32` 的接口假设落成可运行的拟合与图表（避免仅停留在文本接口）。
@@ -99,4 +105,5 @@ flowchart TD
 - **“概念→定义/闭合输出”总入口**：`tab:concept_index`（`app:equivalence_semantics` 内）
 - **“推导脊柱（Tick+CAP）”入口**：`sections/appendices/19_tick_cap_derivation.tex`
 - **“推断账本（哪些是 Iface/CAP/Math）”入口**：`sections/appendices/11_inference_ledger.tex`
+- **“协议→连续场误差控制”入口**：`sections/appendices/33_protocol_to_continuum_error_control.tex`
 
