@@ -235,6 +235,13 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Fold-family sensitivity (counterfactual audit)",
+            script="exp_fold_family_sensitivity.py",
+            expected_outputs=[
+                "sections/generated/fold_family_sensitivity_rows.tex",
+            ],
+        ),
+        Step(
             name="Foldm sweep",
             script="exp_foldm_stats.py",
             expected_outputs=[
@@ -267,6 +274,13 @@ def build_steps() -> List[Step]:
             script="exp_addressing_selection.py",
             expected_outputs=[
                 "sections/generated/addressing_selection_rows.tex",
+            ],
+        ),
+        Step(
+            name="Gauge-factor complexity sensitivity (audit)",
+            script="exp_gauge_complexity_sensitivity.py",
+            expected_outputs=[
+                "sections/generated/gauge_complexity_sensitivity_rows.tex",
             ],
         ),
         Step(
@@ -688,6 +702,14 @@ def build_steps() -> List[Step]:
             script="exp_alpha_coeff_rigidity.py",
             expected_outputs=[
                 "sections/generated/alpha_coeff_rigidity_rows.tex",
+            ],
+        ),
+        Step(
+            name="Aggregation and multiplicity baselines (audit)",
+            script="exp_aggregation_baselines.py",
+            expected_outputs=[
+                "sections/generated/alpha_aggregation_baselines_rows.tex",
+                "sections/generated/j_multiplicity_baselines_rows.tex",
             ],
         ),
         Step(

@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-Ordering sensitivity audit: how much does the induced cyclic labeling depend on the SM-side ordering key?
+Ordering sensitivity audit: how much does the induced cyclic labeling depend on the SM-side ordering key and tie-break?
 
 The closed labeling map on the cyclic sector is constructed as an order isomorphism between:
   - cyclic stable types ordered by (r_star, V, w),
   - SM fermion multiplets ordered by (generation, su3_dim, (6Y)^2, su2_dim, name).
 
 A reviewer can reasonably ask whether this ordering choice is arbitrary.
-This audit tests a small family of alternative SM-side ordering keys obtained by permuting
-the component order among {su3_dim, (6Y)^2, su2_dim} while keeping generation first and
-name as a final deterministic tie-break.
+This audit tests a bounded family of alternative SM-side ordering keys by varying:
+  - the component order among {su3_dim, (6Y)^2, su2_dim},
+  - whether the generation index appears first or later,
+  - whether the final deterministic tie-break uses the SM name or a name-free integer code.
 
 For each alternative ordering, we induce a cyclic assignment by rank matching and report
 how many of the 18 cyclic labels change relative to the baseline ordering used in the paper
@@ -101,19 +102,29 @@ def cyclic_types_sorted() -> List[str]:
     return sorted(cyc, key=lambda w: sml.stable_type_sort_key(w))
 
 
-def fields_sorted_by_key(order: Tuple[str, str, str]) -> List[sml.SMField]:
-    # order permutes among ("su3","y2","su2"), generation is always first, name always last.
+def fields_sorted_by_spec(spec: Tuple[str, ...]) -> List[sml.SMField]:
     fields = sml.fermion_targets()
 
-    def key(f: sml.SMField) -> Tuple[int, int, int, int, str]:
-        comp: Dict[str, int] = {
-            "su3": f.su3_dim,
-            "y2": f.Y_num * f.Y_num,  # (6Y)^2
-            "su2": f.su2_dim,
-        }
-        return (f.generation, comp[order[0]], comp[order[1]], comp[order[2]], f.name)
+    def key(f: sml.SMField) -> Tuple[object, ...]:
+        out: List[object] = []
+        for c in spec:
+            if c == "g":
+                out.append(f.generation)
+            elif c == "su3":
+                out.append(f.su3_dim)
+            elif c == "y2":
+                out.append(f.Y_num * f.Y_num)  # (6Y)^2
+            elif c == "su2":
+                out.append(f.su2_dim)
+            elif c == "Y":
+                out.append(f.Y_num)  # signed Y_num = 6Y
+            elif c == "name":
+                out.append(f.name)
+            else:
+                raise AssertionError(f"Unknown key component: {c}")
+        return tuple(out)
 
-    return sorted(fields, key=key)
+    return sorted(fields, key=key)  # deterministic
 
 
 def build_points_for_mapping(fields_sorted: List[sml.SMField]) -> List[Point]:
@@ -133,32 +144,54 @@ def build_points_for_mapping(fields_sorted: List[sml.SMField]) -> List[Point]:
     return pts
 
 
-def order_tex(order: Tuple[str, str, str]) -> str:
+def spec_tex(spec: Tuple[str, ...]) -> str:
     name = {
+        "g": r"g",
         "su3": r"\dim(SU(3))",
         "y2": r"(6Y)^2",
         "su2": r"\dim(SU(2))",
+        "Y": r"Y_{\mathrm{num}}",
+        "name": r"\text{name}",
     }
-    return rf"$(g,{name[order[0]]},{name[order[1]]},{name[order[2]]})$"
+    return "$(" + ",".join(name[c] for c in spec) + ")$"
 
 
 def main() -> None:
-    # Six permutations of the three nontrivial SM-key components (generation fixed first).
-    orders = list(itertools.permutations(("su3", "y2", "su2"), 3))
-    baseline = ("su3", "y2", "su2")
+    perms = list(itertools.permutations(("su3", "y2", "su2"), 3))
+    baseline_perm = ("su3", "y2", "su2")
+    baseline_spec = ("g",) + baseline_perm + ("name",)
 
     rows: List[str] = []
-    base_fields = fields_sorted_by_key(baseline)
+    base_fields = fields_sorted_by_spec(baseline_spec)
     base_names = [f.name for f in base_fields]
-    for order in orders:
-        fields = fields_sorted_by_key(order)
+    specs: List[Tuple[str, ...]] = []
+    # 6 permutations: generation first, name tie-break (baseline family from the paper).
+    for p in perms:
+        specs.append(("g",) + p + ("name",))
+    # Name-free variants for the baseline permutation (use signed Y_num as deterministic code).
+    specs.append(("g",) + baseline_perm + ("Y",))
+    # Generation moved later (tested only on the baseline permutation).
+    specs.append(baseline_perm + ("g", "name"))
+    specs.append(baseline_perm + ("g", "Y"))
+
+    # De-duplicate while preserving order.
+    seen = set()
+    uniq_specs: List[Tuple[str, ...]] = []
+    for s in specs:
+        if s in seen:
+            continue
+        seen.add(s)
+        uniq_specs.append(s)
+
+    for spec in uniq_specs:
+        fields = fields_sorted_by_spec(spec)
         names = [f.name for f in fields]
         diff = sum(1 for a, b in zip(names, base_names) if a != b)
         frac = float(diff) / float(len(base_names))
-        key_tex = order_tex(order)
+        key_tex = spec_tex(spec)
         diff_tex = f"{diff}"
         frac_tex = f"{frac:.3f}"
-        if order == baseline:
+        if spec == baseline_spec:
             key_tex = rf"\textbf{{{key_tex}}}"
             diff_tex = rf"\textbf{{{diff_tex}}}"
             frac_tex = rf"\textbf{{{frac_tex}}}"
