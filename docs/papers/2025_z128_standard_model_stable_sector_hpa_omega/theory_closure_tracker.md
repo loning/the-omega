@@ -100,7 +100,14 @@ flowchart TD
 
 - [x] **从协议层到连续场的误差控制**：离散→连续代表的收敛界/稳定性与误差预算（见 `sections/appendices/33_protocol_to_continuum_error_control.tex`，`\label{app:protocol_to_continuum_error_control}`）。
 - [x] **散射时间延迟的统一闭合**：已在 `appendix 34` 统一为单一接口模块（`app:time_mass_delay` / `app:time_mass_delay_reference`），把“相位延迟/频率红移/散射相移”与 delay→lapse→GR 参考的匹配层词典集中闭合。
-- [ ] **$\gamma$ 的跨观测一致性**：除旋转曲线外，引力透镜/时间延迟/红移的联合拟合与一致性检验（需要数据协议与脚本/表格）。
+- [x] **$\gamma$ 的跨观测一致性**：旋转曲线/透镜/时间延迟/红移的联合拟合与一致性检验（含数据协议与脚本/表格/图）。
+  - 位置（接口附录）：`sections/appendices/35_gamma_cross_observation_consistency.tex`（`\label{app:gamma_crossobs_consistency}`）
+  - 生成脚本：`scripts/exp_gamma_cross_observation.py`（已接入 `scripts/run_all.py`）
+  - 数据协议/小体量数据：`data/gamma_crossobs/`（`solar_system/`, `sparc/`, `strong_lensing/`, `weak_lensing/`）
+  - 生成物：
+    - `sections/generated/gamma_crossobs_rows.tex`
+    - `sections/generated/gamma_crossobs_stability_rows.tex`
+    - `figures/gamma_crossobs_consistency.pdf`（以及 `.png`）
 - [ ] **宇宙学能量预算拟合的可复现脚本**：把 `appendix 32` 的接口假设落成可运行的拟合与图表（避免仅停留在文本接口）。
 
 ## 快速入口（给维护者）

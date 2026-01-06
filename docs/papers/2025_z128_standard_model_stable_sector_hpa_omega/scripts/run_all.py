@@ -742,6 +742,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Gamma cross-observation consistency (audit)",
+            script="exp_gamma_cross_observation.py",
+            expected_outputs=[
+                "sections/generated/gamma_crossobs_rows.tex",
+                "sections/generated/gamma_crossobs_stability_rows.tex",
+                "figures/gamma_crossobs_consistency.pdf",
+                "figures/gamma_crossobs_consistency.png",
+            ],
+        ),
+        Step(
             name="Audit summary",
             script="exp_audit_summary.py",
             expected_outputs=[
