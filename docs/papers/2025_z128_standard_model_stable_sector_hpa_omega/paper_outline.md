@@ -11,6 +11,8 @@ $$
 
 注意：本大纲不要求改变任何已闭合定理/定义/审计输出；它只规定“先讲什么、后讲什么、哪些内容必须显式标注状态标签”。
 
+此外，本大纲允许在主文中使用一个解释性统一图景（\AuditTag；not used in proofs）以改善读者路径：**“黄金角扫描的平面全息球”**。其作用是把 Part B 的 golden branch（最难逼近/差异证书）与 Part D 的 screen/addressing（显示图表）拼接成一个可视化模型（叶序几何/向日葵盘），用于组织“均匀覆盖/各向同性代理”“距离=寻址步数”“质量=局部延迟/密度”等接口句子；该图景不引入新公理，也不得反向支撑任何 theorem-level 结论。
+
 ---
 
 ## 0. 不变约束（成稿时必须保持）
@@ -78,6 +80,10 @@ flowchart TD
   %% interface/programmatic overlay (必须标注 not used in proofs)
   W["“protocol-stable target datum (Wish)”"] -.-> M["“auditable objective functional (Motive)”"]
   M -.-> CAP
+  GB -.-> Phyl["“Phyllotaxis disk (golden-angle scan)”"]
+  Anchor -.-> Screen["“Planar holographic screen (stereographic chart)”"]
+  Phyl -.-> Screen
+  Screen -.-> Tests
   Tests -.-> Update["“Wish update (programmatic)”"]
   Update -.-> W
 
@@ -92,7 +98,7 @@ flowchart TD
   class Phi,Pi,Echan,Anchor,Gauge,SM,Mass core;
   class Dyn dyn;
   class Tests audit;
-  class W,M,Update prog;
+  class W,M,Update,Phyl,Screen prog;
 ```
 
 #### 1.3.1 逻辑一致性备注（避免“叙事覆盖证明链”）
@@ -169,6 +175,14 @@ flowchart TD
 - **物理化（\InterfaceTag）**：把 $w_t$ 解释为 coarse-graining/Abel 权重或演化算子族的权重；“箭头”由（i）单向半群 $t\ge 0$ 与（ii）coarse-graining 的非可逆性（信息丢失）共同给出，并通过 Lyapunov/熵单调性证书呈现（对应 F.0/F.3）。
 - **校准化（\MatchTag）**：把 $C\,\exp(\lambda t)$ 中的 $C$（或 $t_0$）视为时间零点/尺度校准输入；主文闭合链只使用比值/差分等不变组合（对应 C.3/F.0 与 2.2）。
 - **审计化（\AuditTag）**：把“自指/本征态/光滑扫描”这类解释性句子放在 \AuditTag 且标注 not used in proofs（已在 F.0 与 2.3(III) 落点）。
+
+#### 1.3.4 “黄金角扫描的平面全息球”（叶序几何）在本大纲中的层定位与挂接点
+
+- **数学核（\MathTag）**：对应 “CAP $\to$ golden branch” 的差异/Diophantine 刚性证书（RB-A/RB-D）以及旋转点列的差异界/均匀分布模板；黄金角不是外部输入，而是 CAP 在有限候选族上闭合出的优选角增量。
+- **接口核（\InterfaceTag）**：对应 “anchor / screen / addressing” 的显示坐标选择与距离度量约定；典型选择是把方向空间 $S^2$ 通过球极平面投影编码为复坐标 $z$（黎曼球 chart），再将 tick-indexed 事件映射为屏幕点列并给出可计算的均匀性/各向同性代理指标。
+- **解释核（\AuditTag；not used in proofs）**：把上述两核拼接成“向日葵盘/叶序”图像，用于叙事地解释均匀覆盖（各向同性代理）、稀疏/密集区域（真空/质量的视觉代理）与步数差（距离代理），但不进入任何 theorem-level 推理前提。
+- **匹配提醒（\MatchTag/\AuditTag）**：黄金角约为 $137.5^\circ$（角度单位），而 $1/\alpha_{\mathrm{em}}\approx 137.0$（无量纲比值）；任何将二者联系的句子必须显式标注层级与误差口径，且不得作为闭合链前提。
+- **落点建议（主文）**：B.2（数学证书与 CAP 选择）、B.3（点列与均匀覆盖代理）、D.1（平面球/显示坐标与距离度量）、E.2（mass-as-latency 与密度代理对齐）、F.6/H.4（宇宙学/递归叙事中的解释性统一图景）。
 
 ### 1.4 参考论文：可直接移植的 Wish/Motive 数学闭合模块
 
@@ -282,6 +296,18 @@ flowchart TD
   - **开工前必读（discrepancy/证书化稳定性）**：
     - `docs/papers/2025_motive_at_infinity_holographic_scanning_principle/sections/07_selection_principle.tex`
 
+- **B.3 黄金角点列与均匀覆盖代理（Iface+Audit）**
+  - 目的：把 B.2 的 golden branch 选择与后续的 screen/addressing（C.4/D.1）预先连起来，让读者在进入 folding core 前就能把“最难逼近”读成“最小共振/最均匀覆盖”的可操作图像。
+  - **接口陈述（\InterfaceTag）**：
+    - 以 golden branch 诱导的角增量（黄金角）生成 tick-indexed 的屏幕点列；其均匀覆盖可作为各向同性/无特殊方向的审计代理（并非 theorem-level 结论）。
+    - “距离”可协议化为寻址图上的路径长度或扫描序列上的步数差；“质量”可协议化为局部 revisit/延迟（与 E.2 的 mass-as-latency 字典对齐）。
+  - **审计陈述（\AuditTag；not used in proofs）**：
+    - 叶序几何（phyllotaxis）作为可视化：点列在盘上呈现近最优填充，用于组织稀疏/密集区域与尺度增长的直觉。
+    - 若以角度单位报告黄金角（约 $137.5^\circ$），或讨论与 $1/\alpha_{\mathrm{em}}$ 的数值接近，必须显式标注 \MatchTag/\AuditTag 的口径与误差预算；默认不建立同一性断言。
+  - **开工前必读（差异界与点列审计）**：
+    - `sections/appendices/28_discrepancy_ostrowski_bounds.tex`
+    - `docs/papers/2025_motive_at_infinity_holographic_scanning_principle/sections/07_selection_principle.tex`
+
 ### Part C — Periodic core: the (phi, pi, e) channels and the anchor
 
 - **C.1 $\varphi$ 通道：语法与 Fibonacci 稳定扇区（Math）**
@@ -312,11 +338,15 @@ flowchart TD
     - `docs/papers/2025_holographic_hilbert_universe_hpa_omega/sections/08_minimal_discrepancy_dynamics.tex`
 - **C.4 Anchor：屏幕、寻址、balanced coupling、最小非平凡 holonomy（CAP→Prot）**
   - 输出：$(m,n)=(6,3)$ 作为最小可审计锚点的必然性。
+  - **接口提示（Iface；不进入 theorem-level 前提）**：anchor 的 “screen/addressing” 可用一张具体图表来呈现（例如将方向空间 $S^2$ 通过球极平面投影编码为复坐标 $z$ 的黎曼球 chart），供 D.1 的空间显示字典引用。
 
 ### Part D — Structure: locality, gauge, chirality, antimatter (forced by consistency)
 
 - **D.1 空间作为显示结构（Iface）**
   - 内容：addressing basis、display graph、距离/速度字典。
+  - **平面球（planar sphere；\InterfaceTag）**：把方向空间 $S^2$ 通过球极平面投影（stereographic projection）编码为屏幕平面上的复坐标 $z$；该 chart 只是一种显示选择，用于把“天球/视网膜”语言压缩为可计算的寻址坐标，不引入新公理。
+  - **距离代理（\InterfaceTag）**：在给定 addressing basis 与 display graph 后，将距离协议化为图上的最短路径长度、或扫描序列上的步数差（与 B.3 对齐）；速度/红移等由该距离代理与 tick 组合得到，并在 \MatchTag 中记录必要的单位/校准输入。
+  - **密度代理（\InterfaceTag）**：将屏幕点列的局部密度/回访频率读作延迟/开销的视觉代理；其可证伪版本应通过延迟/散射/红移等观测通道给出（与 E.2/F.4 对齐）。
   - **开工前必读（constructive spacetime 模板；避免重复造轮子）**：
     - `docs/papers/2025_holographic_hilbert_universe_hpa_omega/sections/05_constructive_spacetime.tex`
 - **D.2 规范作为补偿（Prot→Iface）**
@@ -332,6 +362,7 @@ flowchart TD
   - 内容：$21$ stable types 的唯一标号闭合与最小 anomaly-neutral 扩展（$\nu_R$）。
 - **E.2 Mass as latency（Iface+CAP）**
   - 内容：log-time 坐标 $r(\mu)$、整数深度假设与刚性证书、延迟/钟慢字典作为观测接口。
+  - **接口提示（Iface）**：mass-as-latency 可在屏幕点列上呈现为局部 revisit/密度（D.1 的密度代理），但量化与可证伪口径仍以延迟/钟慢/散射等实验代理为准，不以图像本身为前提。
   - **开工前必读（mass/scale 的几何化与刚性搜索模板）**：
     - `docs/papers/2025_physical_constants_geometry_hpa_omega/sections/07_masses_mixing.tex`
 - **E.3 Couplings / CP / mixing closures（Iface+CAP+Match）**
@@ -388,6 +419,8 @@ flowchart TD
     - `docs/papers/2025_computational_action_principle_ii_dynamics_hpa_omega/sections/08_quantum_interfaces.tex`
 - **F.6 RG 与宇宙学（Iface）**
   - 内容：$r$ 坐标的运行耦合；宇宙学作为分辨率初始化/流。
+  - **\AuditTag 解释性图景（not used in proofs）**：把“随 tick 增长的分辨率/有效视界”画成盘的径向增长，把黄金角点列画成盘面事件分布（叶序/向日葵盘）；用于组织均匀性、尺度流与观测窗口的直觉，不作为宇宙学拟合与参数闭合的前提。
+  - **接口落地要求（Iface+Audit）**：若要将该图景用于可证伪宇宙学陈述，必须落到可复现拟合脚本、数据协议与误差预算（与 G.1/G.3 对齐）。
   - **开工前必读（跨尺度母体与离散骨架）**：
     - `docs/papers/2025_ramanujan_holographic_scanning_principle_hpa_omega/sections/03_modular_curve_stage.tex`
     - `docs/papers/2025_ramanujan_holographic_scanning_principle_hpa_omega/sections/04_scanning_as_modular_flow.tex`
@@ -418,6 +451,8 @@ flowchart TD
    - 目的：收束“$\mathrm{e}$ 通道”的解释性直觉，把 F.0（箭头）、F.1（频率/相位）、F.5（量子态与测量接口）串成一个不进入证明链的统一语言。
    - 解释性命题（必须标注 not used in proofs）：
      - **复指数分解**：把演化写成 $\exp((\lambda+\iu\omega)t)$：实部对应尺度/权重的单向半群语言（箭头/耗散），虚部对应相位旋转语言（干涉/幺正）。
+     - **平面全息屏幕与叶序点列**：将 anchor 的 screen/addressing 视作一张平面 chart，将 golden branch 诱导的角增量视作扫描步长，则 tick-indexed 事件在屏幕上形成叶序点列；该图像只用于连接 Part B/D/F 的阅读体验，不进入证明链。
+     - **数值对照必须分层**：黄金角的角度数值与 $1/\alpha_{\mathrm{em}}$ 的数值接近属于匹配/解释层现象；精细结构常数的闭合与误差口径属于 Part C.4/E.3/G.1，不与角度单位混用。
      - **幺正球面**：在复 Hilbert 空间中，幺正演化保持范数，态可读作单位球面上的轨道；本论文只把它当作对 F.5 的表述方式，而不把“宇宙本体=Hilbert 球”当作新公理。
      - **稠密/遍历是额外假设**：若要把“扫描轨迹在态空间稠密/遍历”当作结论，需要额外输入（动力系统假设、谱条件等），在本论文中应显式列为 \AuditTag 的解释性假设或 [Open]，不得暗中作为前提使用。
 
@@ -504,10 +539,13 @@ flowchart TD
   - **rigid-frame coarse-lock 约定**：例如“每自由度两箱”的最小 coarse-lock 标准（它决定了由 $m=6$ 推出 $d=3$ 的接口读法）。
   - **“稳定类型 ↔ 物理对象/场”语义**：例如粒子=稳定读出类型、gauge=补偿连接等语义映射（可被协议化与可证伪，但不是纯数学结论）。
   - **观测代理选择**：例如 Wigner--Smith delay、redshift/lapse、lensing proxy 的接口选取（属于“如何测”的协议声明）。
+  - **屏幕图表与投影约定**：例如将方向空间 $S^2$ 通过球极平面投影（stereographic chart）读成屏幕坐标 $z$；该选择影响“均匀覆盖/各向同性代理”与距离度量的计算口径，必须在 \InterfaceTag 中显式声明。
+  - **距离度量约定**：例如 addressing graph 的路径长度/步数差作为距离代理；其与单位/校准的关系必须在 \MatchTag 中明示。
 - **匹配输入（Match；外部基准只作为对比，不得反向支撑闭合链）**
   - **单位与常数校准**：$c,\hbar,k_B$、能标换算等。
   - **时间零点/尺度校准**：指数解 $C\,\exp(\lambda t)$ 中的 $C$（或等价的 $t\mapsto t+t_0$）属于校准/约定；闭合链只使用比值与差分等不变组合。
   - **PDG/CODATA 对照与阈值锚点**：用于报告 mismatch、定义对比尺度、或选择校准（例如 $r_{\mathrm{step}}$ 的锚点）。
+  - **角度/坐标约定（如需）**：若以黄金角的角度数值或屏幕坐标归一化做任何跨模块对照，必须将单位/归一化/误差口径作为 \MatchTag 输入记录。
 - **开放项（Open；必须在主文明示）**
   - **跨观测 $\gamma$ 一致性**：把旋转曲线之外的透镜/时间延迟/红移联合拟合纳入同一接口协议。
   - **宇宙学能量预算拟合脚本**：将接口假设落成可复现拟合与图表。
@@ -532,6 +570,10 @@ flowchart TD
     - **自指**：指数模态满足 $x'=\lambda x$（离散对应 $x_{t+1}=a x_t$），可作为“变化算子本征态”的最小直觉模型（C.3/F.0）。
     - **遗忘**：积分常数/初值只以校准形式残留（\MatchTag/\AuditTag），解释“观测到增长但难以反推起点”的结构性原因（F.0）。
     - **光滑扫描**：指数半群把加法时间变成乘法权重，可视为离散 tick 迭代的连续代表（C.3/F.0）。
+  - 叶序几何/向日葵盘的解释性图景（用 \AuditTag 标注；不进入证明链）：
+    - **均匀覆盖**：golden branch 诱导的黄金角点列在盘上的近最优填充，用于组织“各向同性代理”的读者直觉（B.3）。
+    - **平面球显示**：将方向空间用一张平面 chart 表示（例如球极投影），把“天球”语言压缩为屏幕坐标的可计算模型（D.1）。
+    - **距离/质量代理**：步数差/图距离与局部密度/延迟作为可视化代理，但其可证伪版本必须落到明确观测通道与误差预算（D.1/E.2/G.1）。
   - 明确哪些是可证伪建议，哪些仅为解释性命名
 
 ---
@@ -552,6 +594,7 @@ flowchart TD
 | $\pi$ 通道离散 monodromy（C.2） | `2025_resolution_folding_phi_pi_e_hpa_omega/sections/04_pi_constraint_discrete_monodromy.tex` | cyclic closure vs endpoint closure；$18\oplus 3$ 的来源；trace/图表示法一致性 |
 | $\mathrm{e}$ 通道 pole barrier（C.3；2.1） | `2025_resolution_folding_phi_pi_e_hpa_omega/sections/05_e_constraint_abel_zeta_pole_barrier.tex`；`2025_holographic_hilbert_universe_hpa_omega/sections/appendices/03_abel_finite_part_notes.tex` | 变量与归一化（$r$、$z$、$s$）；Abel-first/finite part 纪律；全纯域语言 |
 | 时间箭头（F.0；与 C.3/F.3 对齐） | `2025_holographic_hilbert_universe_hpa_omega/sections/08_minimal_discrepancy_dynamics.tex`；`2025_holographic_phase_thermodynamics_hpa_omega/sections/03_asm.tex` | 指数半群（记忆无关核）+ 单调性证书（Lyapunov/熵）；初值/时间零点作为校准输入的标注位置 |
+| 平面球 chart 与叶序点列（B.3/D.1/H.4） | `2025_holographic_hilbert_universe_hpa_omega/sections/05_constructive_spacetime.tex`；`2025_motive_at_infinity_holographic_scanning_principle/sections/07_selection_principle.tex` | 投影/坐标约定的接口边界；差异界与“均匀覆盖代理”的审计口径；距离度量与单位/归一化的匹配输入 |
 | trace-formula pole barrier 模板（2.1） | `2025_riemann_ground_state_hpa_omega/sections/05_trace_formula_rigidity.tex` | “全纯 vs 内点极点”刚性模板的抽象层次；避免引入多余主题输入 |
 | anchored worked example + gap 模板（anchor/刚性写法） | `2025_physical_constants_geometry_hpa_omega/sections/05_alpha_anchor.tex` | 有限搜索域 + 唯一极小化 + gap-robustness 的呈现方式；与 gap-stability lemma 对齐 |
 | holonomy 数学模板（D.2） | `2025_physical_constants_geometry_hpa_omega/sections/appendices/05_holonomy.tex` | holonomy 形式上“什么都能实现”，因此必须靠刚性/最小性约束获得预测性（避免自由拟合） |
