@@ -114,6 +114,20 @@ D_\varphi(w):=\ind\{w\text{ contains the substring }11\},
 \]
 so that $\varphi$-stability is $D_\varphi(w)=0$ and the $\varphi$-stable sector is exactly $X_m$.
 
+\begin{remark}[Sturmian readout language vs.\ golden-mean admissible language]
+\label{rem:sturmian_vs_golden_mean}
+The set $X_m$ is the length-$m$ \emph{block language} of the golden-mean shift
+(the shift of finite type forbidding the word $11$), hence $|X_m|=F_{m+2}$ and
+its associated topological entropy is $\log\varphi$
+(Lemma~\ref{lem:xm_fib} and Remark~\ref{rem:phi_base_entropy}).
+This should not be confused with the factor language of the \emph{Sturmian}
+time-series readout produced by an irrational scan and a canonical two-interval
+window partition, which has factor complexity $p(m)=m+1$ and zero entropy rate
+(Appendix~\ref{app:sturmian_entropy}).
+The two notions are compatible because the Sturmian language is a strict subset
+of the golden-mean admissible block language (Appendix~\ref{app:sturmian_vs_golden_mean}).
+\end{remark}
+
 \begin{lemma}[Fibonacci count of admissible words]\label{lem:xm_fib}
 For all $m\ge 1$, one has $|X_m|=F_{m+2}$. In particular, $|X_6|=F_8=21$.
 \end{lemma}
@@ -197,7 +211,12 @@ X_6^{\mathrm{bdry}}=\{100001,\ 100101,\ 101001\}.
 \end{corollary}
 \begin{proof}
 The sizes follow from Proposition~\ref{prop:cyc_bdry_size} and Lemma~\ref{lem:xm_fib}.
-The explicit boundary words are obtained by finite enumeration (Appendix~\ref{app:generated_tables}).
+For the explicit list, use the bijection in the proof of
+Proposition~\ref{prop:cyc_bdry_size}: every boundary word at $m=6$ has the form
+$w=10\,u\,01$ with $u\in X_{2}$.
+Now $X_2=\{00,01,10\}$, hence
+$X_6^{\mathrm{bdry}}=\{10\,00\,01,\ 10\,01\,01,\ 10\,10\,01\}
+=\{100001,100101,101001\}$.
 \end{proof}
 
 \subsection{The \texorpdfstring{$\e$}{e}-channel: Artin--Mazur zeta and Abel pole barrier}
@@ -287,6 +306,7 @@ The folding map $\mathrm{Fold}_m$ used in this paper is the explicit determinist
 This is a \MathTag definition of the finite folding layer.
 Other deterministic base-change/repair conventions from $\{0,\dots,2^m-1\}$ to $X_m$ are possible and would, in general, induce different fiber statistics.
 To make this dependence auditable, Appendix~\ref{app:fold_family_sensitivity} records a bounded counterfactual family of alternative maps at $m=6$ and summarizes the resulting finite invariants.
+Within that bounded family, the additional natural fixed-point constraint $F(V(w))=w$ for all $w\in X_6$ (Definition~\ref{def:value_consistency_anchor}) selects the Zeckendorf-truncation map uniquely (Proposition~\ref{prop:value_consistency_selects_foldz}).
 \end{remark}
 
 \begin{definition}[Zeckendorf value of a stable word]\label{def:zeckendorf_value}
@@ -300,9 +320,29 @@ V(w):=\sum_{k=1}^{6} w_k F_{k+1}
 \begin{proposition}[Value labeling of the $21$ stable types]\label{prop:V_bijection}
 The map $V:X_6\to\{0,1,\dots,20\}$ is a bijection.
 \end{proposition}
-\begin{proof}[Proof sketch]
-This is a direct consequence of Zeckendorf uniqueness together with the range bound $V(X_6)\subset\{0,\dots,20\}$.
-A full proof is recorded in Appendix~\ref{app:folding_core_proofs}.
+\begin{proof}
+\textbf{Step 1 (range).}
+Since $w\in X_6$ has no adjacent ones, the maximal value is attained by the
+admissible choice $w=010101$, giving
+\[
+V(w)=2+5+13=20.
+\]
+Thus $0\le V(w)\le 20$ for all $w\in X_6$, so $V$ maps into $\{0,\ldots,20\}$.
+
+\medskip
+\noindent\textbf{Step 2 (injectivity).}
+Let $w,w'\in X_6$ and suppose $V(w)=V(w')=:N$.
+By Step~1, $N\le 20<21=F_8$, so the Zeckendorf expansion of $N$ uses only
+Fibonacci weights up to $F_7=13$ and has zero digits beyond position $6$.
+Therefore the length-$6$ Zeckendorf digit vector of $N$ is uniquely defined.
+Since $w$ and $w'$ are both admissible digit vectors yielding the same value
+$N$, Zeckendorf uniqueness forces $w=w'$.
+Hence $V$ is injective.
+
+\medskip
+\noindent\textbf{Step 3 (bijectivity).}
+By Lemma~\ref{lem:xm_fib}, $|X_6|=21$, and $|\{0,\ldots,20\}|=21$.
+An injective map between two finite sets of equal size is bijective.
 \end{proof}
 
 \begin{lemma}[Surjectivity of $\mathrm{Fold}_6$]\label{lem:fold6_surjective}
@@ -329,9 +369,55 @@ Then $\mathrm{Fold}_6^{-1}(w)$ is given explicitly by:
 \end{itemize}
 In particular, every stable type has preimage size in $\{2,3,4\}$.
 \end{lemma}
-\begin{proof}[Proof sketch]
-Write $N=v+21c_7+34c_8+55c_9$ and enumerate admissible tail digits under the cutoff $N\le 63$.
-The full proof is recorded in Appendix~\ref{app:folding_core_proofs}.
+\begin{proof}
+Fix $w\in X_6$ and write $v:=V(w)$.
+By definition, $\mathrm{Fold}_6(N)=w$ iff the Zeckendorf digit string of $N$
+begins with $(c_1,\ldots,c_6)=w$.
+Write the Zeckendorf expansion of $N$ as
+\[
+N=v+\sum_{k\ge 7} c_k F_{k+1}
+=v+21c_7+34c_8+55c_9+\sum_{k\ge 10} c_k F_{k+1},
+\]
+using $F_8=21$, $F_9=34$, $F_{10}=55$.
+Since $0\le N\le 63$, one must have $c_k=0$ for all $k\ge 10$ because
+$F_{11}=89>63$.
+Hence
+\[
+N=v+21c_7+34c_8+55c_9,\qquad c_7,c_8,c_9\in\{0,1\},
+\]
+with Zeckendorf admissibility constraints
+\[
+w_6c_7=0,\qquad c_7c_8=0,\qquad c_8c_9=0.
+\]
+We now enumerate admissible $(c_7,c_8,c_9)$ and enforce $N\le 63$.
+
+\medskip
+\noindent\textbf{Case 1: $w_6=1$.}
+Then $c_7=0$.
+If $c_8=1$ then $c_9=0$ and $N=v+34$.
+If $c_8=0$, then either $c_9=0$ giving $N=v$, or $c_9=1$ giving $N=v+55$.
+But when $w_6=1$ one has $v\ge 13$, hence $v+55\ge 68>63$, so $c_9=1$
+is impossible.
+Thus $\mathrm{Fold}_6^{-1}(w)=\{v,v+34\}$.
+
+\medskip
+\noindent\textbf{Case 2: $w_6=0$.}
+Now $c_7$ may be $0$ or $1$.
+If $c_7=1$ then $c_8=0$, and $c_9$ may be $0$ or $1$:
+this yields $N=v+21$ or $N=v+76$.
+The latter exceeds $63$, so only $N=v+21$ remains.
+If $c_7=0$, then $c_8$ may be $0$ or $1$.
+If $c_8=1$ then $c_9=0$ and $N=v+34$.
+If $c_8=0$ then $c_9$ may be $0$ or $1$, yielding $N=v$ or $N=v+55$.
+The option $N=v+55$ is admissible iff $v\le 8$.
+Finally, note that for $w_6=0$ one always has $v\le 12$ (the maximal value
+without the $F_7=13$ digit).
+Therefore:
+\begin{itemize}
+\item if $v\le 8$, all three values $v$, $v+21$, $v+34$, $v+55$ lie in $[0,63]$;
+\item if $9\le v\le 12$, $v+55>63$ and the preimage reduces to $\{v,v+21,v+34\}$.
+\end{itemize}
+This proves the stated cases and the preimage-size set $\{2,3,4\}$.
 \end{proof}
 
 \begin{theorem}[Finite folding statistics at $m=6$]\label{thm:fold6_stats}
@@ -348,10 +434,41 @@ Moreover, the boundary-sector preimages are
 \mathrm{Fold}_6^{-1}(101001)=\{17,51\}.
 \]
 \end{theorem}
-\begin{proof}[Proof sketch]
-Surjectivity follows from Lemma~\ref{lem:fold6_surjective}.
-Lemma~\ref{lem:fold6_fiber_explicit} gives $|\mathrm{Fold}_6^{-1}(w)|\in\{2,3,4\}$ and reduces the histogram to a finite count on the value coordinate $v=V(w)$.
-A full proof is recorded in Appendix~\ref{app:folding_core_proofs}.
+\begin{proof}
+Surjectivity is Lemma~\ref{lem:fold6_surjective}.
+Lemma~\ref{lem:fold6_fiber_explicit} gives $|\mathrm{Fold}_6^{-1}(w)|\in\{2,3,4\}$.
+
+\medskip
+\noindent\textbf{Histogram.}
+First count words with $w_6=1$.
+Such words satisfy $w_5=0$ and the prefix $w_1\cdots w_4$ is any admissible
+word in $X_4$, hence there are $|X_4|=F_6=8$ such words.
+By Lemma~\ref{lem:fold6_fiber_explicit} (case $w_6=1$) they have fiber size $2$,
+so $|V_2|=8$.
+
+Now consider words with $w_6=0$.
+Then $w_1\cdots w_5\in X_5$, so there are $|X_5|=F_7=13$ such words.
+Among them, those with $w_5=1$ have $w_4=0$ and the remaining triple
+$(w_1,w_2,w_3)$ can be any admissible length-$3$ word not equal to $000$.
+Indeed, if $(w_1,w_2,w_3)=000$ then $v=8$, while any other admissible triple
+adds at least $1$ to the value, giving $v\in\{9,10,11,12\}$.
+There are exactly $4$ admissible triples with sum $\ge 1$, namely
+$100,010,001,101$.
+Hence there are $4$ words in $X_6$ with $w_6=0$ and $v\in\{9,10,11,12\}$, and
+by Lemma~\ref{lem:fold6_fiber_explicit} they have fiber size $3$.
+Thus $|V_3|=4$.
+The remaining $13-4=9$ words with $w_6=0$ have $v\le 8$ and therefore fiber
+size $4$, so $|V_4|=9$.
+This yields $(|V_2|,|V_3|,|V_4|)=(8,4,9)$.
+
+\medskip
+\noindent\textbf{Boundary-sector preimages.}
+Using Definition~\ref{def:zeckendorf_value}, compute the boundary values:
+\[
+V(100001)=1+13=14,\quad V(100101)=1+5+13=19,\quad V(101001)=1+3+13=17.
+\]
+All three have $w_6=1$, so Lemma~\ref{lem:fold6_fiber_explicit} gives
+$\mathrm{Fold}_6^{-1}(w)=\{V(w),V(w)+34\}$, yielding the displayed pairs.
 \end{proof}
 
 \paragraph{Degeneracy histogram (supplement).}
@@ -405,6 +522,54 @@ In particular, $V_m(w)\le F_{m+2}-1$.
 By Lemma~\ref{lem:fib_dyadic_bound}, $F_{m+2}\le 2^m$ for all $m\ge 1$, hence $V_m(w)\in\{0,\dots,2^m-1\}$.
 Moreover, the Zeckendorf expansion of $V_m(w)$ uses no Fibonacci weights beyond $F_{m+1}$, hence its digits beyond $c_m$ are zero and its first $m$ digits equal $w$.
 Therefore $\mathrm{Fold}_m(V_m(w))=w$.
+\end{proof}
+
+\paragraph{A canonicality criterion for the digit window.}
+Beyond surjectivity, one may ask whether the choice of the \emph{digit window}
+$(c_1,\ldots,c_m)$ in \eqref{eq:foldm_def} is forced within natural nearby
+variants.
+The following simple fixed-point condition rules out ``shifted'' Zeckendorf
+digit windows.
+
+\begin{definition}[Shifted Zeckendorf-window maps]
+\label{def:foldm_shifted}
+For $m\ge 1$ and an integer shift $s\ge 0$, define the shifted map
+\[
+\mathrm{Fold}_{m}^{(s)}(N):=(c_{1+s},c_{2+s},\ldots,c_{m+s})\in X_m,
+\]
+where $(c_k)_{k\ge 1}$ are the Zeckendorf digits of $N$ (padding by zeros for
+indices beyond the expansion length).
+Thus $\mathrm{Fold}_{m}^{(0)}=\mathrm{Fold}_m$ and $s=1$ is the ``FoldZ-shift''
+counterfactual at $m=6$ (Appendix~\ref{app:fold_family_sensitivity}).
+\end{definition}
+
+\begin{definition}[Value consistency at window length $m$]
+\label{def:value_consistency_m}
+A deterministic map $F:\{0,\ldots,2^m-1\}\to X_m$ is \emph{value-consistent} if
+\[
+F(V_m(w))=w\qquad\text{for all }w\in X_m,
+\]
+where $V_m(w)=\sum_{k=1}^m w_k F_{k+1}$ is the Zeckendorf value used above.
+\end{definition}
+
+\begin{proposition}[Value consistency forbids Zeckendorf window shifts]
+\label{prop:value_consistency_forbids_shift}
+Fix $m\ge 1$.
+Within the shifted Zeckendorf-window family $\{\mathrm{Fold}_m^{(s)}:s\ge 0\}$,
+the only value-consistent map (Definition~\ref{def:value_consistency_m}) is the
+unshifted map $\mathrm{Fold}_m^{(0)}=\mathrm{Fold}_m$.
+\end{proposition}
+\begin{proof}
+Let $w=10\cdots 0\in X_m$ (a single $1$ followed by zeros).
+Then $V_m(w)=F_2=1$.
+The Zeckendorf digits of $1$ satisfy $c_1=1$ and $c_k=0$ for all $k\ge 2$.
+Therefore, for any shift $s\ge 1$,
+\[
+\mathrm{Fold}_m^{(s)}(V_m(w))=(c_{1+s},\ldots,c_{m+s})=(0,\ldots,0)\neq w,
+\]
+so $\mathrm{Fold}_m^{(s)}$ is not value-consistent.
+On the other hand, $\mathrm{Fold}_m^{(0)}(V_m(w))=\mathrm{Fold}_m(1)=w$ by the
+definition of $\mathrm{Fold}_m$ and Zeckendorf uniqueness.
 \end{proof}
 
 \paragraph{Degeneracy as truncated Zeckendorf tails.}

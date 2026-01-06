@@ -1,0 +1,139 @@
+\section{Sturmian readout language vs.\ golden-mean admissible language}
+\label{app:sturmian_vs_golden_mean}
+\noindent
+The main text uses two closely related but \emph{different} symbolic objects:
+\begin{itemize}
+  \item the \emph{Sturmian} word produced by a scan--projection readout
+  (Section~\ref{sec:hpa_readout} and Appendix~\ref{app:sturmian_entropy}), and
+  \item the \emph{Zeckendorf-admissible} digit language $X_m$
+  (Section~\ref{sec:folding_core}), equivalently the length-$m$ block language
+  of the golden-mean shift.
+\end{itemize}
+This appendix records the precise relationship and resolves a common point
+of confusion: a Sturmian readout has zero entropy rate, while the
+golden-mean admissible language has exponential growth with rate $\log\varphi$.
+There is no contradiction because the Sturmian factor language is a strict
+subset of the golden-mean admissible block language.
+
+\subsection{Golden-mean shift and its block language}
+\label{app:golden_mean_shift_def}
+\begin{definition}[Golden-mean shift]
+\label{def:golden_mean_shift}
+Let
+\[
+\Sigma_{\mathrm{GM}}
+:=\{x\in\{0,1\}^{\ZZ}:\ x_i x_{i+1}=0\ \forall i\in\ZZ\},
+\]
+and let $\sigma:\Sigma_{\mathrm{GM}}\to\Sigma_{\mathrm{GM}}$ be the left shift
+$(\sigma x)_i=x_{i+1}$.
+\end{definition}
+
+\begin{definition}[Block language]
+\label{def:block_language}
+For $n\ge 1$, define the length-$n$ block language of $\Sigma_{\mathrm{GM}}$ by
+\[
+\mathcal{L}_n(\Sigma_{\mathrm{GM}})
+:=\{x_i x_{i+1}\cdots x_{i+n-1}:\ x\in\Sigma_{\mathrm{GM}},\ i\in\ZZ\}.
+\]
+Equivalently, $\mathcal{L}_n(\Sigma_{\mathrm{GM}})$ is the set of all
+length-$n$ binary words containing no adjacent $1$'s.
+\end{definition}
+
+\begin{lemma}[Identification with $X_n$ and Fibonacci growth]
+\label{lem:golden_mean_language_equals_Xn}
+For every $n\ge 1$ one has
+\[
+\mathcal{L}_n(\Sigma_{\mathrm{GM}})=X_n,
+\qquad
+|X_n|=F_{n+2}.
+\]
+In particular, the topological entropy of $\Sigma_{\mathrm{GM}}$ is
+$h_{\mathrm{top}}(\Sigma_{\mathrm{GM}})=\log\varphi$.
+\end{lemma}
+\begin{proof}
+The identification $\mathcal{L}_n(\Sigma_{\mathrm{GM}})=X_n$ is immediate from
+the forbidden-adjacency definition.
+The Fibonacci count is Lemma~\ref{lem:xm_fib}.
+Finally,
+$h_{\mathrm{top}}(\Sigma_{\mathrm{GM}})
+=\lim_{n\to\infty}\frac{1}{n}\log|\mathcal{L}_n(\Sigma_{\mathrm{GM}})|
+=\lim_{n\to\infty}\frac{1}{n}\log F_{n+2}
+=\log\varphi$
+by Binet asymptotics (Remark~\ref{rem:phi_base_entropy}).
+\end{proof}
+
+\subsection{A Sturmian representative inside the golden-mean shift}
+\label{app:fib_word_in_gm_shift}
+\begin{definition}[Fibonacci word (substitution fixed point)]
+\label{def:fibonacci_word}
+Let $\tau$ be the substitution on $\{0,1\}$ given by
+\[
+\tau(0)=01,\qquad \tau(1)=0.
+\]
+Starting from $0$ and iterating $\tau$ yields a nested sequence of finite
+words $\tau^k(0)$.
+Their limit in the product topology is a one-sided infinite word
+$f=f_0 f_1 f_2\cdots$, called the Fibonacci word.
+\end{definition}
+
+\begin{lemma}[No adjacent ones; no triple zeros]
+\label{lem:fib_no11_no000}
+The Fibonacci word $f$ contains no adjacent ones.
+Moreover, it contains no factor $000$.
+\end{lemma}
+\begin{proof}
+\textbf{No adjacent ones.}
+In $\tau(0)=01$ the symbol $1$ is always followed by $0$, and $\tau(1)=0$
+contains no $1$ at all.
+Therefore, in every iterate $\tau^k(0)$ any occurrence of $1$ is followed by
+$0$, so the factor $11$ never appears.
+Passing to the limit preserves forbidden factors, hence $f$ contains no $11$.
+
+\medskip
+\noindent\textbf{No triple zeros.}
+Every $0$ in $\tau^k(0)$ is either the image of a $1$ (namely $\tau(1)=0$) or
+the first symbol of $\tau(0)=01$.
+In particular, every $0$ produced as the first symbol of $\tau(0)$ is
+immediately followed by a $1$.
+Thus a run of zeros can only arise from a pattern where a $1$-image $0$
+is adjacent to the initial $0$ of some $\tau(0)$ block, creating at most
+two consecutive zeros.
+Since $11$ never occurs, two $1$-images cannot be adjacent, so runs of zeros
+have length at most $2$ and $000$ is impossible.
+\end{proof}
+
+\begin{corollary}[Strict language inclusion]
+\label{cor:sturmian_language_strict_subset}
+Let $\mathcal{L}_n(f)$ denote the set of length-$n$ factors of the Fibonacci
+word $f$.
+Then for every $n\ge 1$,
+\[
+\mathcal{L}_n(f)\subseteq X_n,
+\]
+and the inclusion is strict for all $n\ge 3$.
+\end{corollary}
+\begin{proof}
+By Lemma~\ref{lem:fib_no11_no000}, $f$ contains no $11$, hence every factor of
+length $n$ contains no $11$ and therefore lies in $X_n$.
+For strictness at $n\ge 3$, the word $000$ is in $X_3$ but is not a factor of
+$f$ by Lemma~\ref{lem:fib_no11_no000}, so $\mathcal{L}_3(f)\neq X_3$ and hence
+$\mathcal{L}_n(f)\neq X_n$ for all $n\ge 3$.
+\end{proof}
+
+\subsection{Two entropies and what \texorpdfstring{$\log\varphi$}{log phi} means here}
+\label{app:two_entropies}
+The Fibonacci word is Sturmian (it is the canonical characteristic word on
+the golden branch), so its factor complexity satisfies
+$|\mathcal{L}_n(f)|=n+1$ and its entropy rate is zero
+(Appendix~\ref{app:sturmian_entropy}).
+In contrast, the full admissible block language $X_n$ grows as $F_{n+2}$ and
+defines a positive topological entropy $\log\varphi$
+(Lemma~\ref{lem:golden_mean_language_equals_Xn}).
+\par
+\noindent
+In this paper, the base $\varphi$ in the resolution coordinate is tied to the
+\emph{capacity/growth rate of the admissible stable-type language} $X_n$
+(Remark~\ref{rem:phi_base_entropy}), not to the Shannon entropy rate of the
+Sturmian time-series readout.
+
+

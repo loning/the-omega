@@ -1,0 +1,214 @@
+\section{Discrepancy certificates from continued fractions (Ostrowski/Denjoy--Koksma)}
+\label{app:discrepancy_ostrowski}
+\noindent
+This appendix makes explicit the quantitative link used in
+Section~\ref{subsubsec:discrepancy_certificates}:
+continued-fraction data of the scan slope $\alpha$ yield deterministic
+finite-$N$ discrepancy bounds for the Kronecker orbit
+$x_n=x_0+n\alpha\ (\mathrm{mod}\ 1)$.
+We keep the discussion in the one-dimensional setting relevant to window
+counts, where the key estimate reduces to interval indicators.
+
+\subsection{Star discrepancy and a rational baseline}
+\label{app:discrepancy_def}
+For a finite point set $P_N=\{x_0,\dots,x_{N-1}\}\subset[0,1)$, the
+one-dimensional star discrepancy is
+\[
+D_N^\ast(P_N):=\sup_{a\in[0,1]}
+\left|
+\frac{1}{N}\#\{0\le n\le N-1:\ x_n<a\}-a
+\right|.
+\]
+
+\begin{lemma}[Equally spaced points have discrepancy $1/N$]
+\label{lem:equally_spaced_discrepancy}
+Let $y_n=\{y_0+n/N\}$ for $n=0,\ldots,N-1$.
+Then $D_N^\ast(\{y_0,\ldots,y_{N-1}\})=1/N$.
+\end{lemma}
+\begin{proof}
+The set $\{y_n\}$ is a translate of the uniform grid $\{j/N\}_{j=0}^{N-1}$,
+and star discrepancy is translation invariant on the circle.
+For the grid, for any $a\in[0,1]$ the count
+$\#\{j/N<a\}$ equals either $\lfloor Na\rfloor$ or $\lceil Na\rceil-1$,
+so the normalized error differs from $a$ by at most $1/N$.
+Taking $a=j/N$ shows the bound is attained, hence $D_N^\ast=1/N$.
+\end{proof}
+
+\subsection{Continued fractions and convergents}
+\label{app:continued_fractions}
+Let $\alpha\in(0,1)\setminus\QQ$ with continued fraction
+$\alpha=[0;a_1,a_2,\ldots]$ and convergents $p_k/q_k$.
+We use the standard recurrences
+\[
+q_{-1}=0,\ q_0=1,\qquad q_{k+1}=a_{k+1}q_k+q_{k-1}\quad (k\ge 0),
+\]
+and similarly for $p_k$.
+
+\begin{lemma}[Best-approximation error of convergents]
+\label{lem:convergent_error}
+For every $k\ge 0$,
+\[
+\left|\alpha-\frac{p_k}{q_k}\right|
+<\frac{1}{q_k q_{k+1}}
+\le \frac{1}{q_k^2}.
+\]
+\end{lemma}
+\begin{proof}
+This is a standard continued-fraction property; see, e.g.,
+\cite[Ch.\ 10]{HardyWright2008} or \cite{KuipersNiederreiter1974}.
+\end{proof}
+
+\subsection{A discrepancy bound at convergent lengths}
+\label{app:discrepancy_convergent_lengths}
+Let $x_n=\{x_0+n\alpha\}$ be the scan orbit.
+At convergent lengths $N=q_k$, the orbit is uniformly close to the rational
+orbit with step $p_k/q_k$.
+This yields a simple $O(1/N)$ discrepancy bound with an explicit constant.
+
+\begin{lemma}[Convergent-length discrepancy bound]
+\label{lem:convergent_length_discrepancy}
+Fix $k\ge 0$ and set $N:=q_k$.
+Let $P_N(\alpha)=\{x_0,\dots,x_{N-1}\}$ with $x_n=\{x_0+n\alpha\}$.
+Then
+\[
+D_N^\ast(P_N(\alpha))\le \frac{8}{N}.
+\]
+\end{lemma}
+\begin{proof}
+Let $\beta:=p_k/q_k$ and define the rational reference points
+$y_n:=\{x_0+n\beta\}$.
+Since $\gcd(p_k,q_k)=1$, the set $\{y_n\}_{n=0}^{N-1}$ is exactly an equally
+spaced grid (a permutation of $\{x_0+j/N\}$), so by
+Lemma~\ref{lem:equally_spaced_discrepancy} one has $D_N^\ast(\{y_n\})=1/N$.
+
+By Lemma~\ref{lem:convergent_error}, $\delta:=|\alpha-\beta|<1/N^2$.
+For each $n\in\{0,\ldots,N-1\}$, the points $x_n$ and $y_n$ differ by the
+rotation $n(\alpha-\beta)$ on the circle, so their \emph{circular distance}
+obeys
+\[
+d_{\TT}(x_n,y_n)\le n\,\delta < \frac{1}{N},
+\qquad
+d_{\TT}(u,v):=\min\{|u-v|,\,1-|u-v|\}.
+\]
+
+Fix $a\in[0,1]$ and compare the counts
+$C_x(a):=\#\{0\le n\le N-1:\ x_n<a\}$ and
+$C_y(a):=\#\{0\le n\le N-1:\ y_n<a\}$.
+If $x_n$ and $y_n$ fall on different sides of the interval boundary
+of $[0,a)$, then $y_n$ must lie within circular distance $<1/N$ of one of the
+two boundary points $\{0,a\}$ (otherwise a $<1/N$ perturbation cannot change
+membership in the half-open interval).
+Since the $y_n$ are $1/N$-spaced, there are at most $3$ indices $n$ within
+circular distance $<1/N$ of each boundary point, hence
+$|C_x(a)-C_y(a)|\le 6$ for every $a$.
+
+Hence
+\[
+\left|\frac{C_x(a)}{N}-a\right|
+\le
+\left|\frac{C_y(a)}{N}-a\right|
+\;+\;
+\frac{|C_x(a)-C_y(a)|}{N}
+\le \frac{1}{N}+\frac{6}{N}=\frac{7}{N},
+\]
+uniformly over $a$.
+Taking the supremum gives $D_N^\ast(P_N(\alpha))\le 7/N$.
+We state the slightly looser constant $8/N$ for a clean margin.
+\end{proof}
+
+\subsection{Ostrowski decomposition and a general finite-\texorpdfstring{$N$}{N} bound}
+\label{app:ostrowski_discrepancy}
+The convergent-length bound uplifts to arbitrary $N$ using the Ostrowski
+representation, which decomposes $N$ into a sum of convergent denominators.
+
+\begin{definition}[Ostrowski representation (statement)]
+\label{def:ostrowski_representation_statement}
+Let $\alpha=[0;a_1,a_2,\ldots]$ be irrational with convergent denominators
+$q_k$.
+Every integer $N\ge 1$ admits a (unique) representation
+\[
+N=\sum_{k=0}^{m} b_k q_k,
+\qquad
+0\le b_k\le a_{k+1},
+\]
+with the usual local admissibility constraint
+$b_k=a_{k+1}\Rightarrow b_{k-1}=0$ for $k\ge 1$.
+\end{definition}
+
+\begin{proposition}[Digit-sum discrepancy bound]
+\label{prop:digit_sum_discrepancy}
+Let $x_n=\{x_0+n\alpha\}$ and let $P_N(\alpha)=\{x_0,\ldots,x_{N-1}\}$.
+Write $N=\sum_{k=0}^{m} b_k q_k$ in Ostrowski form.
+Then
+\[
+D_N^\ast(P_N(\alpha))
+\le
+\frac{8}{N}\sum_{k=0}^{m} b_k.
+\]
+\end{proposition}
+\begin{proof}
+Decompose the prefix $\{0,1,\ldots,N-1\}$ into consecutive blocks of lengths
+$q_k$, repeated $b_k$ times for each $k$ (largest $k$ to smallest).
+For each such block of length $q_k$, apply
+Lemma~\ref{lem:convergent_length_discrepancy} with the intercept shifted to the
+block start (i.e.\ replace $x_0$ by $x_t$ for the corresponding start index
+$t$).
+This bounds the star discrepancy of each length-$q_k$ block by $8/q_k$,
+equivalently its \emph{count error} (unnormalized) by at most $8$.
+Summing count errors over all blocks yields a total count error bounded by
+$8\sum_k b_k$ uniformly in the threshold $a$.
+Dividing by $N$ and taking the supremum in the definition of $D_N^\ast$
+gives the stated bound.
+\end{proof}
+
+\subsection{Bounded type and why the golden branch is minimax}
+\label{app:bounded_type}
+\begin{corollary}[Bounded-type logarithmic rate]
+\label{cor:bounded_type_discrepancy}
+Assume $\alpha$ has bounded partial quotients: $a_k\le A$ for all $k$.
+Then for every $N\ge 1$,
+\[
+D_N^\ast(P_N(\alpha))
+\le
+\frac{8A}{N}\,\Bigl(4+\log_\varphi N\Bigr),
+\qquad
+E_N:=N D_N^\ast(P_N(\alpha))\ \le\ 8A\,(4+\log_\varphi N).
+\]
+\end{corollary}
+\begin{proof}
+Let $N=\sum_{k=0}^m b_k q_k$ be the Ostrowski representation.
+Since $b_k\le a_{k+1}\le A$, one has $\sum_{k=0}^m b_k\le A(m+1)$.
+
+Next, since $a_{k+1}\ge 1$ for all $k$, the denominators satisfy
+$q_{k+1}=a_{k+1}q_k+q_{k-1}\ge q_k+q_{k-1}$.
+With $q_0=1$ and $q_1\ge 1$, this implies $q_m\ge F_{m+1}$ for all $m\ge 1$.
+By Binet's formula, $F_{m+1}\ge \varphi^{m-1}/\sqrt{5}$ for $m\ge 1$, hence
+if $q_m\le N$ then
+\[
+m-1\le \log_\varphi(\sqrt{5}\,N)\le 2+\log_\varphi N.
+\]
+Therefore $m+1\le 4+\log_\varphi N$.
+
+Combining with Proposition~\ref{prop:digit_sum_discrepancy} yields
+\[
+D_N^\ast(P_N(\alpha))
+\le \frac{8}{N}\sum_{k=0}^{m} b_k
+\le \frac{8A(m+1)}{N}
+\le \frac{8A}{N}\bigl(4+\log_\varphi N\bigr),
+\]
+and multiplying by $N$ gives the bound on $E_N$.
+\end{proof}
+
+\begin{remark}[Golden branch as a minimax bounded-type choice]
+\label{rem:golden_minimax_discrepancy}
+The constant in Corollary~\ref{cor:bounded_type_discrepancy} depends
+monotonically on the bound $A$ on continued-fraction digits.
+The golden branch is characterized by $a_k\equiv 1$, i.e.\ it is the unique
+irrational of constant type with the minimal possible bound $A=1$.
+Thus, within the bounded-type class, it is the canonical minimax choice for
+discrepancy certificates at finite $N$:
+it gives the smallest explicit worst-case upper bound in the audited family
+of certificates derived from digit sums.
+\end{remark}
+
+
