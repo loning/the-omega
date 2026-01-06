@@ -1,0 +1,272 @@
+
+\section{Introduction: from tick-only readout to stable sectors}
+\label{sec:introduction}
+
+The Standard Model (SM) organizes known non-gravitational interactions into the gauge structure
+\[
+SU(3)\times SU(2)\times U(1),
+\]
+with chiral matter content and experimentally established parity violation and CP violation; see, e.g., \cite{PeskinSchroeder1995,PDGRPP2024}.
+Despite its predictive success, several structural features remain ``input-like'' at the microscopic explanatory level: the origin of chirality, the meaning of gauge redundancy, and the origin of small CP-odd invariants.
+
+This paper adopts the HPA--$\Omega$ viewpoint: observability is not the presence of continuous fields \emph{a priori}, but the output of a finite-resolution protocol produced by unitary scanning and window projection (Section~\ref{sec:hpa_readout}).
+In this view, a ``particle'' is first a \emph{stable readout type}, and ``forces'' arise from the constraints required to keep readout consistent across space.
+
+The present paper is written to be closed under its declared input set (Table~\ref{tab:audit_facing_contract} and Appendix~\ref{app:inference_ledger}): the only primitives are the tick (Axiom~\ref{ax:readout_sequentiality}) and CAP (Axiom~\ref{ax:cap}).
+All other ingredients (addressing basis, anchor choice, orientation-bit convention, phase-register dictionary, and quantitative normalization targets) are outputs of explicit finite definitions and CAP-closures with deterministic tie-breaks and reproducible scripts.
+Companion manuscripts in the same \texttt{docs/papers} repository provide extended context and alternative presentations \cite{Ma2025HPA,Ma2025CAP,Ma2025CAPII,Ma2025HHU,Ma2025HPT,Ma2025PCG,Ma2025RF,Ma2025HPOT,Ma2025FoP}, but they are not required to follow the present paper's definitions, proofs, and audits.
+
+\paragraph{Audit note.}
+\AuditTag \textbf{Status:} \AuditTag.
+\textbf{Depends on:} the reader-facing audit contract (Table~\ref{tab:audit_facing_contract}) and the bounded-closure template (Appendix~\ref{app:cap_audit_template}).
+\textbf{If:} any quantitative interface component is reported, it is either a finite theorem-level statement or a CAP-closure over an explicitly declared finite family with deterministic tie-breaks; external PDG/CODATA values enter only as matching-layer reference conventions.
+
+For reader navigation, Table~\ref{tab:resolution_spectrum} provides the global map of the resolution axis under the minimal calibration.
+In the tick-first spine used here, the only primitive physical input is \emph{time as tick} (scan iteration count), and the only primitive selection law is CAP.
+Accordingly, all physical-language notions (space, distance, velocity, gauge connections, mass/energy scales) are treated as derived protocol structures and/or CAP-closed interface components.
+Section~\ref{sec:tick_calculus} records the corresponding dictionary and fixes the time-first dependency order used throughout.
+Appendix~\ref{app:tick_cap_derivation} records the complete tick\,+\,CAP derivation spine (explicit candidate families, objectives, and deterministic tie-breaks for each closed interface component).
+Appendix~\ref{app:forced_interface_lemmas} records short ``forced-by-rigidity'' interface lemmas (minimal coarse locking, compactness of probability-preserving redundancy, channelwise factorization, and minimal anomaly-neutral closures) that are repeatedly used as audit-level justifications in the main text.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\caption{The holographic resolution spectrum under the minimal calibration $r_{\mathrm{step}}=2\pi$ (Section~\ref{subsec:p3_resolution_jumps}). Under the rigid-frame coarse-lock budget at the anchor (Section~\ref{subsec:6dof_lock}; Proposition~\ref{prop:bulk_dimension_from_anchor}), the bulk dimension is selected as $d=3$ and the minimal single-window coarse-localization anchor is at $m=6$, inducing an interface partition into a sub-geometric vacuum ($m<6$), a geometric ground state ($m=6$), and hyper-geometric layers ($m>6$). Stable-type counts obey $|X_m|=F_{m+2}$ (Lemma~\ref{lem:xm_fib}); threshold energies use the $\mu_{\mathrm{th}}(m)$ rule defined in Section~\ref{subsec:p3_resolution_jumps}.}
+\label{tab:resolution_spectrum}
+\begin{tabular}{c c l >{\raggedright\arraybackslash}p{0.25\textwidth} >{\raggedright\arraybackslash}p{0.33\textwidth}}
+\toprule
+$m$ & $|X_m|$ & $\mu_{\mathrm{th}}(m)$ & physical correspondence (interface) & mechanism (protocol language) \\
+\midrule
+\multicolumn{5}{c}{\textit{Phase I: Sub-geometric (the vacuum)}} \\
+1--4 & 2--8 & -- & pre-geometric logic & finite bits, causality, addressability \\
+5 & 13 & $\sim 25\,\mathrm{keV}$ & sub-geometric vacuum (non-local) & coarse-lock deficit: one bit short of the $m=6$ anchor \\
+\midrule
+\multicolumn{5}{c}{\textit{Phase II: Geometric ground state (matter)}} \\
+6 & 21 & $0.511\,\mathrm{MeV}$ & electron / minimal SM anchor & coarse-lock anchor: minimal localized rigid-frame display \\
+\midrule
+\multicolumn{5}{c}{\textit{Phase III: Hyper-geometric (mass \& thresholds)}} \\
+7 & 34 & $\sim 10\,\mathrm{MeV}$ & nuclear binding scale & binding bridge between $m=6$ matter and hadronic confinement \\
+8 & 55 & $\sim 0.2\,\mathrm{GeV}$ & QCD onset & confinement-scale template at the protocol interface \\
+9 & 89 & $\sim 4.4\,\mathrm{GeV}$ & bottom threshold & heavy-flavor onset in the staircase \\
+10 & 144 & $\sim 91\,\mathrm{GeV}$ & electroweak (Z/H) layer & uplift/coarse graining: protocol-level mass generation \\
+11 & 233 & $\sim 1.9\,\mathrm{TeV}$ & BSM frontier & first hyper-compressed layer; constrained topological capacity \\
+12 & 377 & $\sim 38\,\mathrm{TeV}$ & deep structure & candidate scale for further refinement (preons/extra dimensions) \\
+\bottomrule
+\end{tabular}
+\end{table}
+\FloatBarrier
+
+\subsection{Axiom 0: the tick (sequential readout) as the only primitive input (interface)}
+\label{subsec:axiom0_linearity}
+\begin{axiom}[Readout sequentiality (interface)]\label{ax:readout_sequentiality}
+The microscopic description is \emph{sequential}.
+An observer couples to a single unitary scan order that produces a one-dimensional readout stream, and finite observability appears through window projection (Section~\ref{sec:hpa_readout}).
+Multi-dimensional language enters only through a choice of \emph{addressing basis} that folds the scan order into a locality structure (Section~\ref{sec:hilbert_addressing}); throughout, we use ``space'' and ``spacetime'' only in this protocol-level addressing sense (Conventions).
+\end{axiom}
+
+\paragraph{Time, signal rate, and matching dictionaries.}
+Under Axiom~\ref{ax:readout_sequentiality}, ``time'' is operationally the iteration count along the scan.
+Any conversion from the dimensionless scan rate to physical units is therefore a matching-layer and units dictionary: once a locality basis is fixed, a constant step advance defines a maximal protocol signal rate, while the measured constant $c$ appears only after choosing a physical calibration.
+We do not treat $c$ as a theorem-level output of the folding core.
+
+\paragraph{Matter as recurrent patterns and mass as protocol cost.}
+In a linear ontology, stable excitations are not points placed in an ontic background, but persistent patterns in the readout stream that are stable under the chosen channels.
+On the physical identification layer, we adopt the interface identification that an observed mass scale corresponds to protocol overhead required to resolve and stabilize a pattern at a given resolution (e.g.\ increased local scan density, deeper matching shifts, or larger folding-degeneracy costs in the finite invariants).
+This paper makes this identification auditable by a closed depth coordinate and a reproducible mass-spectrum template (Section~\ref{sec:mass_spectrum_closure}).
+
+\begin{remark}[Static ontology vs.\ sequential readout (interface)]\label{rem:static_ontology}
+Although the paper is written in the scan-first language of Axiom~\ref{ax:readout_sequentiality}, one may also adopt a complementary interface dictionary: the scan order together with the chosen addressing dictionary can be regarded as a fixed (already-defined) structure, while ``time'' is the ordered traversal experienced by a coupled observer.
+In this reading, dynamical episodes are a playback effect of sequential readout on a static protocol substrate (a block-universe style viewpoint), not the construction of that substrate.
+We record this only as an interface dictionary viewpoint; none of the theorem-level finite folding statements depends on it as a premise.
+\end{remark}
+
+\begin{remark}[A historical analogy: Wheeler's one-electron universe]\label{rem:wheeler_one_electron}
+As a historical analogy, Wheeler suggested to Feynman that the identity of electrons might admit a radical kinematic explanation: a single electron world-line could thread the observed phenomenology, with positrons interpreted as the same object propagating backward in time in the spacetime picture.
+We use this only as an analogy for the present linear-ontology interface: a sequential primitive can generate rich multi-body effective structure once it is read through an addressing basis and a matching dictionary, without promoting the analogy to a premise of the mathematical layer.
+See, e.g., \cite{Feynman1949TheoryPositrons,Feynman1965NobelLecture}.
+\end{remark}
+
+The key inversion relative to conventional field-first narratives is methodological:
+we treat the problem of ``what particles and forces exist'' as a problem of \emph{which readout types are stable under a fixed protocol}.
+Finite windows induce symbolic compression; stability constraints induce further compression; and the effective ``spectrum'' is the surviving stable sector.
+From this viewpoint, discreteness is not a postulate but a consequence of finite-resolution projection.
+
+\paragraph{Stability and agency as dual interface viewpoints.}
+The stable-sector viewpoint used in this paper admits a control-theoretic dual dictionary: in open systems, long-lived low-entropy structure can be modeled as \emph{predictive active error correction} (AEC) that suppresses protocol-level mismatch relative to a passive baseline while paying dissipation and implementation costs \cite{AstromMurray2008FeedbackSystems,Landauer1961}.
+Appendix~\ref{app:isomorphism_dictionary} records a protocol-level dictionary that aligns stable-sector objects (alphabets, stability channels, degeneracies) with AEC objects (mismatch certificates, feedback, and audit constraints) without mixing mathematical-layer premises with physical identification claims.
+
+\input{sections/I_01_scan_to_knot_figure1}
+
+\subsection{Derived bulk dimension: rigid-frame display budget at the anchor (interface)}
+\label{subsec:6dof_lock}
+While Axiom~\ref{ax:readout_sequentiality} fixes only sequentiality, any physical identification must specify what it means to \emph{display} a localized object.
+In the tick-first dictionary of Section~\ref{sec:tick_calculus}, locality is a derived addressing graph, and a ``localized rigid frame'' is an interface notion tied to coarse pose distinguishability.
+Let $d$ denote a candidate bulk dimension of such a rigid-frame display dictionary.
+A local rigid frame carries $d$ translational degrees of freedom and $d(d-1)/2$ rotational degrees of freedom, hence
+\[
+\dim SE(d)=d+\frac{d(d-1)}{2}=\frac{d(d+1)}{2}.
+\]
+We now state explicitly what the ``bit-per-DoF'' language means in this paper.
+The claim is \emph{not} that $m$ bits can encode a continuous pose in $SE(d)$ with arbitrary precision.
+Rather, it is the minimal nontrivial coarse-lock convention at the protocol interface (Lemma~\ref{lem:minimal_one_bit_per_parameter}): a length-$m$ window yields at most $2^m$ distinct binary readout classes, and to display a local rigid frame the protocol must be able to distinguish at least two coarse bins along each independent parameter of $SE(d)$.
+In this minimal two-bin-per-parameter convention, a sufficient single-window coarse-admissibility condition is
+\[
+2^m\;\ge\;2^{\dim SE(d)}
+\qquad\Longleftrightarrow\qquad
+m\;\ge\;\dim SE(d)=\frac{d(d+1)}{2}.
+\]
+More generally, if one asks to specify an element of a $k$-dimensional Lie group up to an $\varepsilon$-scale resolution, the required number of bits scales as $m\gtrsim k\log(1/\varepsilon)$ (metric-entropy / quantization scaling) \cite{GrayNeuhoff1998Quantization,CoverThomas2006}.
+In the present paper we use only the minimal two-bin-per-parameter anchor, and we keep the rigid-frame lock on the physical identification layer.
+\begin{remark}[What the 6-DoF ``lock'' does and does not assert]\label{rem:6dof_lock_scope}
+The 6-DoF coarse-lock is an \emph{interface} convention, not a theorem about continuous pose estimation.
+It does not claim that $m=6$ is sufficient to ``lock'' a pose in $SE(3)$ at any fixed accuracy; continuous pose locking at accuracy $\varepsilon$ requires a bit budget scaling as $m\gtrsim 6\log(1/\varepsilon)$ in the standard quantization sense \cite{GrayNeuhoff1998Quantization,CoverThomas2006}.
+It also does not claim that $m\ge 6$ is necessary for localization under all possible protocols: multi-window temporal integration, analog readout features, or additional structure/constraints can reduce the effective information required at a given task.
+The role of the lock in this paper is narrower: given the CAP-selected anchor bit budget $m=6$ and the minimal two-bin-per-parameter convention, CAP selects the bulk dimension $d=3$ (Proposition~\ref{prop:bulk_dimension_from_anchor}) and thereby identifies $m=6$ as the minimal \emph{single-window} coarse rigid-frame display budget in that derived dictionary.
+Once a $\mu\leftrightarrow m$ selection rule is fixed at the protocol layer (Corollary~\ref{cor:resolution_selection}), the protocol uses the smallest admissible $m$ throughout the corresponding energy band until an uplift threshold is crossed.
+\end{remark}
+
+At the anchor $m=6$, CAP selects the maximal bulk dimension compatible with the rigid-frame budget, namely $d=3$ (Proposition~\ref{prop:bulk_dimension_from_anchor}).
+Empirically, the observed locality structure is three-dimensional to high precision on laboratory and astrophysical scales, providing an external consistency check.
+
+\paragraph{Audit note.}
+\AuditTag \textbf{Status:} \InterfaceTag\,+\,CAP.
+\textbf{Depends on:} the minimal coarse-lock criterion (Lemma~\ref{lem:minimal_one_bit_per_parameter}) and Proposition~\ref{prop:bulk_dimension_from_anchor}.
+\textbf{If:} the coarse-lock is interpreted in the minimal two-bin-per-parameter sense and applied as a single-window admissibility criterion; the resulting $d$ is a protocol-interface output and is not used as a premise for the folding core.
+
+At $d=3$, a local rigid frame is modeled by the Euclidean group
+\[
+SE(3)\cong \RR^3\rtimes SO(3),
+\]
+as a semidirect product; see, e.g., \cite{HallLieGroups2015}.
+It is specified by a position $x\in\RR^3$ and an orientation $R\in SO(3)$.
+Hence the minimal kinematic description carries six independent parameters: three translational plus three rotational degrees of freedom.
+
+We treat this as a geometric coarse-lock on the physical identification layer: a fundamental readout window supplies one bit per kinematic degree of freedom of a local frame.
+In $3$D this locks the minimal window to six bits, $\Omega_6=\{0,1\}^6$.
+This statement belongs to the physical identification layer: it fixes the preferred anchor scale under the minimal nontrivial coarse-lock convention but is not used as a premise for any theorem-level folding statement.
+
+To make the geometric exclusivity explicit, compare the first few balanced candidates $m\in\{4,6,8,\dots\}$ against the rigid-frame degree count $\frac{d(d+1)}{2}$ \cite{HallLieGroups2015}:
+in $2$D one has $3$ DoF, so the balanced code length $m=4$ overspecifies the kinematics ($4>3$); in $4$D one has $10$ DoF, so the next balanced length $m=8$ underspecifies it ($8<10$).
+Only at $d=3$ does the balanced length $m=6$ match exactly ($6=3+3$), yielding a unique geometric lock at the anchor that selects the bulk dimension.
+
+Once a locality-preserving addressing basis is fixed (e.g.\ Hilbert addressing on a chosen readout screen), one may adopt a balanced coupling convention that matches the $m$-bit readout alphabet size $2^m$ with the number of sites at Hilbert order $n$ (Lemma~\ref{lem:balanced_coupling_equiv}).
+Throughout this paper we use the classical $2$D Hilbert addressing (a square grid), so the matched site count is $4^n=(2^2)^n$ and the balanced relation takes the form $m=2n$; other addressing dimensions would change this arithmetic match (Remark~\ref{rem:balanced_coupling_dimension} and Remark~\ref{rem:why_2d_hilbert}).
+Balanced coupling is used only to attach spatial diagnostics and is not a theorem-level necessity for the folding core (Remark~\ref{rem:balanced_coupling_convention}).
+At the chosen anchor $m=6$ on the $2$D screen, balanced coupling yields $n=3$ and $2^6=4^3=64$.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[>=Latex, font=\footnotesize]
+  % Left: 3D frame (schematic)
+  \coordinate (O) at (0,0);
+  \draw[->, thick] (O) -- (1.3,0) node[below] {$x$};
+  \draw[->, thick] (O) -- (0,1.2) node[left] {$y$};
+  \draw[->, thick] (O) -- (-0.85,-0.85) node[below] {$z$};
+  \draw[thick] (O) circle (0.45);
+  \draw[->, thick] (0.45,0) arc (0:-300:0.45);
+  \node[align=center] at (0,-1.05) {3 translations\\ + 3 rotations};
+
+  % Arrow: bit-per-DoF lock
+  \draw[->, thick] (1.55,0) -- (2.85,0) node[midway, above] {two-bin / DoF};
+
+  % Right: 6-bit slots
+  \foreach \i/\lab in {0/1,1/2,2/3,3/4,4/5,5/6} {
+    \draw[thick] (3+0.55*\i,-0.30) rectangle (3+0.55*\i+0.45,0.30);
+    \node at (3+0.55*\i+0.225,0) {$b_{\lab}$};
+  }
+  \node[align=center] at (4.35,-1.05) {$m=6$ bits\\$\Omega_6=\{0,1\}^6$};
+\end{tikzpicture}
+\caption{The 6-DoF coarse-lock (interface language): at the anchor $m=6$, CAP selects bulk dimension $d=3$ under the minimal coarse-lock convention (Proposition~\ref{prop:bulk_dimension_from_anchor}), so a local rigid frame has six degrees of freedom (three positional plus three orientational).}
+\label{fig:6dof_lock}
+\end{figure}
+
+\subsubsection{The geometric vacuum and protocol rejection}
+\label{subsubsec:geometric_vacuum}
+The rigid-frame coarse-lock has an immediate consequence: in the derived $d=3$ locality dictionary, any readout pattern that is to be displayed as a localized object must supply enough independent information to fix a local position--orientation frame.
+Under the minimal coarse-lock hypothesis stated above (two bins per independent parameter), a single-window coarse display requires at least $m\ge 6$ binary distinctions; in this sense $m=6$ is the minimal interface anchor for matter-like localization in the derived dictionary.
+
+For $m<6$, stable symbolic types still exist at the mathematical layer---indeed the golden-mean admissible set has size $|X_m|=F_{m+2}$ (Section~\ref{subsec:phi_channel})---but they are sub-geometric for a $d=3$ readout: they underdetermine the kinematic frame and cannot be consistently assigned to a unique local site-and-frame configuration.
+We therefore treat these modes as \emph{protocol-rejected as matter}: they do not appear as stable localized particles, but persist as a non-local background that can seed transient fluctuations when coupled to higher-resolution readout.
+\InterfaceTag Below the anchor, these modes are treated as sub-geometric vacuum/ghost-sector degrees of freedom; diagnostic sweeps are recorded in Appendix~\ref{app:ghost_sector}.
+
+\paragraph{Roadmap: the $m=1\ldots 12$ spectrum.}
+Although the technical core of this paper is anchored at the CAP-minimal holonomy instance $(m,n)=(6,3)$ on the chosen $2$D screen, the derived $d=3$ rigid-frame coarse-lock dictionary induces a canonical interface partition of the resolution axis into three regimes:
+the sub-geometric vacuum ($m<6$), the geometric ground state ($m=6$), and hyper-geometric layers ($m>6$).
+We use this dictionary-induced partition as the global narrative spine, and we summarize a compact $m=1\ldots 12$ spectrum template (counts and threshold scales under the minimal calibration) in Table~\ref{tab:resolution_spectrum}; the detailed falsifiability statement is then formulated in the protocol language in Section~\ref{subsec:p3_resolution_jumps}.
+
+\subsection{Methodological note: auditable layering}
+\label{subsec:audit_layering}
+\paragraph{No-hidden-knobs contract (reader-facing).}
+\AuditTag Whenever a quantitative claim is reported, it is either a finite theorem-level statement or an audited interface closure within an explicitly declared finite candidate family with deterministic tie-break rules (Definition~\ref{def:bounded_complexity_closure}; Appendix~\ref{app:generated_tables} and Appendix~\ref{app:reproducibility}).
+\MatchTag External reference targets (PDG/CODATA, scheme/scale conventions) enter only as comparison inputs and are not fit parameters.
+The compact audit contract table is recorded in Appendix~\ref{app:cap_audit_template} (Table~\ref{tab:no_hidden_knobs_contract}).
+
+\paragraph{Audit-facing contract and inference map (supplement).}
+\AuditTag The reader-facing audit contract and the dependency map are recorded compactly in Appendix~\ref{app:audit_overview} (Table~\ref{tab:audit_facing_contract} and Figure~\ref{fig:inference_map}).
+
+\paragraph{Layer separation.}
+\MathTag The finite folding statements constrain \InterfaceTag the falsifiable mapping/identification layer; Appendix~\ref{app:inference_ledger} records the dependency status in compact form.
+
+\paragraph{Inference map (what depends on what).}
+Figure~\ref{fig:inference_map} is recorded in Appendix~\ref{app:audit_overview}; we use its legend throughout: solid arrows are theorem-level dependencies, dashed arrows are interface dictionaries, and dotted arrows indicate CAP-audited selections within explicit finite families.
+
+\paragraph{Dependency checklist.}
+Appendix~\ref{app:inference_ledger} provides the compact checklist of which statements are \MathTag theorem-level, which are \InterfaceTag interface dictionaries/closures, and which are \MatchTag matching conventions.
+
+\subsection{Research questions (summary)}
+\label{subsec:research_questions}
+\InterfaceTag The paper closes (i) minimal stable-sector structure at the anchor, (ii) a deterministic SM labeling map consistent with anomaly constraints, and (iii) protocol-level falsifiability routes; the compact dependency status is recorded in Appendix~\ref{app:inference_ledger}.
+
+\subsection{Audit protocol: bounded-complexity closure and rigidity certificates}
+\label{subsec:bounded_complexity_audit}
+
+Several quantitative interface statements in this paper take the form of a \emph{bounded-complexity closure}:
+we specify a small, discrete candidate family for a target observable and select a unique minimizer by a deterministic rule under an explicit finite complexity bound.
+This is designed to address a standard audit concern in speculative constant/parameter matching: post-hoc freedom.
+
+\begin{axiom}[Computational Action Principle (CAP; interface)]\label{ax:cap}
+Within a fixed protocol class, realized effective structures are selected by minimizing accumulated readout mismatch (discrepancy) and implementation overhead subject to protocol constraints.
+In the finite audited setting of this paper, CAP is instantiated by explicit bounded candidate families and deterministic selection rules: given a declared finite complexity budget and an explicit objective measuring mismatch to reference targets, select the unique minimizer with a fully specified tie-break rule (Definition~\ref{def:bounded_complexity_closure}).
+\end{axiom}
+\paragraph{Audit form (supplement).}
+\AuditTag The formal closure definition, log-mismatch rationale, rigidity certificate, and audit-output conventions are recorded in Appendix~\ref{app:cap_audit_template} and Appendix~\ref{app:generated_tables}.
+
+\subsection{A minimal falsifiable anchor: \texorpdfstring{$64\to 21$}{64->21} stability at \texorpdfstring{$(m,n)=(6,3)$}{(m,n)=(6,3)}}
+\label{subsec:minimal_anchor}
+
+\MathTag We work at the fully explicit finite anchor $(m,n)=(6,3)$ on the chosen $2$D Hilbert screen (Table~\ref{tab:holonomy_balanced_chain_sweep}).
+At $m=6$ the folding core yields $64\to 21$ and the canonical split $21=18\oplus 3$ (Section~\ref{sec:folding_core}).
+
+\subsection{\texorpdfstring{$\ZZ_{128}$}{Z128} as a phase-register label}
+\label{subsec:z128_label}
+
+\InterfaceTag We represent internal phases by a finite dyadic register $\ZZ_{2^p}$ (Appendix~\ref{app:protocol_primitives}).
+At the anchor window $m=6$, the baseline choice is $p=m+1=7$, i.e.\ $\ZZ_{128}$.
+The remaining bounded phase-lift freedom (denominators and low-complexity phase maps) is audited by deterministic sweeps (Appendix~\ref{app:generated_tables} and Appendix~\ref{app:closure_audit_details}).
+
+\subsection{Main interface closures}
+\label{subsec:intro_contrib}
+
+Building on the provable $64\to 21$ folding core, we record three interface closures:
+\InterfaceTag gauge as compensation (Section~\ref{subsec:gauge_as_compensation}),
+\InterfaceTag chirality as protocol selection (Section~\ref{sec:chirality_antimatter}),
+and \InterfaceTag antimatter as conjugate readout (Section~\ref{sec:chirality_antimatter}).
+
+We emphasize the audit separation: the folding counts and tables are mathematical-layer facts, while the SM identifications are recorded as falsifiable mapping problems.
+\paragraph{Quantitative anchor.}
+The closed-theory rigidity targets and their CODATA/PDG deviations are summarized in Table~\ref{tab:quant_summary}.
+
+\paragraph{Closure deliverables at $(m,n)=(6,3)$.}
+\MathTag the folding core $64\to 21$ and $18\oplus 3$ (Section~\ref{sec:folding_core});
+\InterfaceTag a unique SM labeling map (Section~\ref{sec:sm_labeling_closure});
+\InterfaceTag a closed mass-depth template (Section~\ref{sec:mass_spectrum_closure}).
+
+\paragraph{Rigidity doctrine (interface).}
+\InterfaceTag Once one commits to finite readout primitives and CAP-style bounded closure, many interface components become sharply constrained at the anchor; Appendix~\ref{app:inference_ledger} records the compact dependency status.
+
+\paragraph{Reader guide: rigidity checkpoints (supplement).}
+\AuditTag A compact checkpoint list is recorded in Appendix~\ref{app:inference_ledger}.
+
+

@@ -17,6 +17,8 @@ Notes:
 from __future__ import annotations
 
 import argparse
+import ast
+import hashlib
 import subprocess
 import sys
 from subprocess import CalledProcessError
@@ -24,6 +26,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, List, Sequence
 
+from common_cache import cache_disabled, cache_path, load_pickle, save_pickle_atomic
 from common_paths import generated_dir, paper_root, scripts_dir
 from common_progress import heartbeat_wait
 from common_tex import nonempty_file
@@ -34,6 +37,93 @@ class Step:
     name: str
     script: str
     expected_outputs: Sequence[str]
+
+
+RUN_ALL_CACHE_VERSION = 1
+
+
+def _run_all_cache_file() -> Path:
+    return cache_path("run_all_steps.pkl")
+
+
+def _load_run_all_cache() -> dict[str, str]:
+    """
+    Mapping: step.script -> dependency fingerprint (sha256 hex).
+    """
+    p = _run_all_cache_file()
+    if not p.is_file():
+        return {}
+    try:
+        obj = load_pickle(p)
+        if not isinstance(obj, dict):
+            return {}
+        if int(obj.get("version", -1)) != RUN_ALL_CACHE_VERSION:
+            return {}
+        steps = obj.get("steps", {})
+        if not isinstance(steps, dict):
+            return {}
+        out: dict[str, str] = {}
+        for k, v in steps.items():
+            if isinstance(k, str) and isinstance(v, str):
+                out[k] = v
+        return out
+    except Exception:
+        return {}
+
+
+def _save_run_all_cache(cache: dict[str, str]) -> None:
+    if cache_disabled():
+        return
+    try:
+        save_pickle_atomic(
+            _run_all_cache_file(),
+            {"version": RUN_ALL_CACHE_VERSION, "steps": dict(cache)},
+        )
+    except Exception:
+        # Best-effort; never fail the pipeline because of caching.
+        pass
+
+
+def _local_module_map() -> dict[str, Path]:
+    # Editing this orchestrator should not force a full recompute of fragments.
+    return {p.stem: p for p in scripts_dir().glob("*.py") if p.name != "run_all.py"}
+
+
+def _direct_local_imports(py_path: Path, module_map: dict[str, Path]) -> set[Path]:
+    """
+    Return local (same-directory) Python dependencies imported by this file.
+    If parsing fails for any reason, fall back to a conservative dependency set.
+    """
+    try:
+        src = py_path.read_text(encoding="utf-8")
+        tree = ast.parse(src, filename=str(py_path))
+    except Exception:
+        # Conservative fallback: assume it depends on all local modules.
+        return set(module_map.values())
+
+    mods: set[str] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                if alias.name:
+                    mods.add(alias.name.split(".")[0])
+        elif isinstance(node, ast.ImportFrom):
+            if node.level == 0 and node.module:
+                mods.add(node.module.split(".")[0])
+    return {module_map[m] for m in mods if m in module_map}
+
+
+def _script_deps_closure(root: Path, module_map: dict[str, Path], memo: dict[Path, set[Path]]) -> set[Path]:
+    """
+    Compute the transitive closure of local Python dependencies for a script.
+    """
+    if root in memo:
+        return memo[root]
+    deps: set[Path] = {root}
+    for dep in _direct_local_imports(root, module_map):
+        deps |= _script_deps_closure(dep, module_map, memo)
+    memo[root] = deps
+    return deps
 
 
 def _run_script(script_path: Path, step_name: str) -> None:
@@ -53,6 +143,62 @@ def _check_outputs(rel_paths: Iterable[str]) -> None:
     if missing:
         msg = "Missing/empty generated outputs:\n" + "\n".join(f"  - {m}" for m in missing)
         raise RuntimeError(msg)
+
+
+def _have_outputs(rel_paths: Iterable[str]) -> bool:
+    for rel in rel_paths:
+        p = paper_root() / rel
+        if not nonempty_file(p):
+            return False
+    return True
+
+
+def _deps_fingerprint(deps: Iterable[Path]) -> str:
+    """
+    Stable fingerprint for a set of local dependency files (content-based).
+    """
+    h = hashlib.sha256()
+    root = scripts_dir()
+    for p in sorted(set(deps), key=lambda x: str(x)):
+        try:
+            rel = str(p.resolve().relative_to(root.resolve()))
+        except Exception:
+            rel = str(p.resolve())
+        h.update(rel.encode("utf-8"))
+        h.update(b"\0")
+        h.update(p.read_bytes())
+        h.update(b"\0")
+    return h.hexdigest()
+
+
+def _max_mtime(paths: Iterable[Path]) -> float:
+    mt = 0.0
+    for p in paths:
+        try:
+            mt = max(mt, p.stat().st_mtime)
+        except FileNotFoundError:
+            continue
+    return mt
+
+
+def _scripts_deps_mtime() -> float:
+    # Conservative invalidation: any change to any generator/helper in this directory
+    # makes all steps "not up-to-date".
+    #
+    # IMPORTANT: exclude this orchestrator itself; editing `run_all.py` should not
+    # force a full recompute of generated fragments.
+    py = [p for p in scripts_dir().glob("*.py") if p.name != "run_all.py"]
+    return _max_mtime(py)
+
+
+def _outputs_up_to_date(rel_paths: Iterable[str], deps_mtime: float) -> bool:
+    for rel in rel_paths:
+        p = paper_root() / rel
+        if not nonempty_file(p):
+            return False
+        if p.stat().st_mtime < deps_mtime:
+            return False
+    return True
 
 
 def build_steps() -> List[Step]:
@@ -89,6 +235,13 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Fold-family sensitivity (counterfactual audit)",
+            script="exp_fold_family_sensitivity.py",
+            expected_outputs=[
+                "sections/generated/fold_family_sensitivity_rows.tex",
+            ],
+        ),
+        Step(
             name="Foldm sweep",
             script="exp_foldm_stats.py",
             expected_outputs=[
@@ -117,6 +270,20 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Addressing-basis selection audit (Hilbert vs row-major)",
+            script="exp_addressing_selection.py",
+            expected_outputs=[
+                "sections/generated/addressing_selection_rows.tex",
+            ],
+        ),
+        Step(
+            name="Gauge-factor complexity sensitivity (audit)",
+            script="exp_gauge_complexity_sensitivity.py",
+            expected_outputs=[
+                "sections/generated/gauge_complexity_sensitivity_rows.tex",
+            ],
+        ),
+        Step(
             name="Hilbert chirality sweep",
             script="exp_hilbert_chi_sweep.py",
             expected_outputs=[
@@ -124,10 +291,25 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Coarse-grained scalar parity check",
+            script="exp_scalar_coarse_grain.py",
+            expected_outputs=[
+                "sections/generated/scalar_coarse_grain_rows.tex",
+            ],
+        ),
+        Step(
             name="Resolution-threshold staircase",
             script="exp_resolution_thresholds.py",
             expected_outputs=[
                 "sections/generated/resolution_thresholds_rows.tex",
+            ],
+        ),
+        Step(
+            name="Hilbert-knot triptych (Figure 1)",
+            script="fig_hilbert_knot_triptych.py",
+            expected_outputs=[
+                "figures/hilbert_knot_triptych.pdf",
+                "figures/hilbert_knot_triptych.png",
             ],
         ),
         Step(
@@ -378,6 +560,20 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Inverse diagnostic summary (main-text)",
+            script="exp_inverse_diag_summary.py",
+            expected_outputs=[
+                "sections/generated/inverse_diag_summary_rows.tex",
+            ],
+        ),
+        Step(
+            name="Labeling order-key sensitivity (audit)",
+            script="exp_labeling_order_sensitivity.py",
+            expected_outputs=[
+                "sections/generated/labeling_order_sensitivity_rows.tex",
+            ],
+        ),
+        Step(
             name="Mass spectrum",
             script="exp_mass_spectrum.py",
             expected_outputs=[
@@ -387,10 +583,18 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Higgs--Z depth offset rigidity (scalar-sector diagnostic)",
+            script="exp_higgs_z_offset_rigidity.py",
+            expected_outputs=[
+                "sections/generated/higgs_z_offset_sweep_rows.tex",
+            ],
+        ),
+        Step(
             name="Mass matching layer",
             script="exp_mass_matching_layer.py",
             expected_outputs=[
                 "sections/generated/mass_matching_layer_rows.tex",
+                "sections/generated/mass_matching_layer_summary_rows.tex",
             ],
         ),
         Step(
@@ -398,6 +602,14 @@ def build_steps() -> List[Step]:
             script="exp_mass_depth_rigidity.py",
             expected_outputs=[
                 "sections/generated/mass_depth_rigidity_rows.tex",
+            ],
+        ),
+        Step(
+            name="Mass depth leave-one-out (robustness)",
+            script="exp_mass_depth_leave_one_out.py",
+            expected_outputs=[
+                "sections/generated/mass_depth_leave_one_out_rows.tex",
+                "sections/generated/mass_depth_leave_one_out_summary_rows.tex",
             ],
         ),
         Step(
@@ -433,6 +645,13 @@ def build_steps() -> List[Step]:
                 "sections/generated/pmns_angles_rows.tex",
                 "sections/generated/pmns_matrix_rows.tex",
                 "sections/generated/pmns_unitarity_rows.tex",
+            ],
+        ),
+        Step(
+            name="PMNS NO/IO stability diagnostic",
+            script="exp_pmns_no_io_stability.py",
+            expected_outputs=[
+                "sections/generated/pmns_no_io_stability_rows.tex",
             ],
         ),
         Step(
@@ -472,6 +691,67 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Audit pi-polynomial null baseline",
+            script="exp_audit_pi_polynomial_null.py",
+            expected_outputs=[
+                "sections/generated/audit_pi_poly_null_rows.tex",
+            ],
+        ),
+        Step(
+            name="Rigidity alpha coefficient simplex",
+            script="exp_alpha_coeff_rigidity.py",
+            expected_outputs=[
+                "sections/generated/alpha_coeff_rigidity_rows.tex",
+            ],
+        ),
+        Step(
+            name="Aggregation and multiplicity baselines (audit)",
+            script="exp_aggregation_baselines.py",
+            expected_outputs=[
+                "sections/generated/alpha_aggregation_baselines_rows.tex",
+                "sections/generated/j_multiplicity_baselines_rows.tex",
+            ],
+        ),
+        Step(
+            name="Rigidity electroweak Z-scale",
+            script="exp_ew_rigidity.py",
+            expected_outputs=[
+                "sections/generated/ew_alpha_pi2_rigidity_rows.tex",
+                "sections/generated/ew_sin2_rational_rigidity_rows.tex",
+            ],
+        ),
+        Step(
+            name="Rigidity Jarlskog pi-ansatz",
+            script="exp_jarlskog_pi_rigidity.py",
+            expected_outputs=[
+                "sections/generated/jarlskog_pi_rigidity_rows.tex",
+            ],
+        ),
+        Step(
+            name="Quantitative summary table",
+            script="exp_quant_summary.py",
+            expected_outputs=[
+                "sections/generated/quant_summary_rows.tex",
+            ],
+        ),
+        Step(
+            name="Sigma mismatch summary table",
+            script="exp_sigma_summary.py",
+            expected_outputs=[
+                "sections/generated/sigma_summary_rows.tex",
+            ],
+        ),
+        Step(
+            name="Gamma cross-observation consistency (audit)",
+            script="exp_gamma_cross_observation.py",
+            expected_outputs=[
+                "sections/generated/gamma_crossobs_rows.tex",
+                "sections/generated/gamma_crossobs_stability_rows.tex",
+                "figures/gamma_crossobs_consistency.pdf",
+                "figures/gamma_crossobs_consistency.png",
+            ],
+        ),
+        Step(
             name="Audit summary",
             script="exp_audit_summary.py",
             expected_outputs=[
@@ -484,10 +764,31 @@ def build_steps() -> List[Step]:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run all reproducible generators for this paper.")
     parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Force recomputation (ignore cached/up-to-date outputs) and run all steps.",
+    )
+    parser.add_argument(
+        "--skip-up-to-date",
+        dest="skip_up_to_date",
+        action="store_true",
+        help=(
+            "Skip steps whose expected outputs exist, are non-empty, and are newer than the step's "
+            "local Python dependencies. Useful for iterative LaTeX work."
+        ),
+    )
+    parser.add_argument(
+        "--no-skip-up-to-date",
+        dest="skip_up_to_date",
+        action="store_false",
+        help="Disable skipping and run all steps (unless --stop-after stops early).",
+    )
+    parser.add_argument(
         "--stop-after",
         default="",
         help="Optional step name prefix to stop after (for debugging).",
     )
+    parser.set_defaults(skip_up_to_date=True)
     args = parser.parse_args(list(argv) if argv is not None else None)
 
     gen = generated_dir()
@@ -495,14 +796,50 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     steps = build_steps()
     all_expected: List[str] = []
+    use_skip = bool(args.skip_up_to_date) and (not bool(args.force)) and (not cache_disabled())
+    module_map: dict[str, Path] = _local_module_map() if use_skip else {}
+    deps_memo: dict[Path, set[Path]] = {}
+    cache: dict[str, str] = _load_run_all_cache() if use_skip else {}
+    cache_dirty = False
 
     for step in steps:
         script_path = scripts_dir() / step.script
         if not script_path.is_file():
             raise FileNotFoundError(f"Missing script: {script_path}")
-        print(f"[run_all] {step.name} -> {step.script}")
-        _run_script(script_path, step_name=step.name)
-        _check_outputs(step.expected_outputs)
+        if use_skip:
+            deps = _script_deps_closure(script_path, module_map, deps_memo)
+            fp = _deps_fingerprint(deps)
+            have = _have_outputs(step.expected_outputs)
+            cached_fp = cache.get(step.script)
+            if have and cached_fp == fp:
+                print(f"[run_all] SKIP (up-to-date) {step.name}")
+                _check_outputs(step.expected_outputs)
+            elif have and cached_fp is None:
+                # First run (or cache cleared):
+                # If outputs are older than the script/dependency mtimes, they may be stale
+                # relative to local edits. In that case, recompute once; otherwise adopt the
+                # existing outputs as the cache baseline (useful for fresh clones with
+                # committed generated fragments).
+                deps_mtime = _max_mtime(deps)
+                if _outputs_up_to_date(step.expected_outputs, deps_mtime):
+                    print(f"[run_all] SKIP (cached) {step.name}")
+                    _check_outputs(step.expected_outputs)
+                else:
+                    print(f"[run_all] {step.name} -> {step.script} (cache missing; outputs stale)")
+                    _run_script(script_path, step_name=step.name)
+                    _check_outputs(step.expected_outputs)
+                cache[step.script] = fp
+                cache_dirty = True
+            else:
+                print(f"[run_all] {step.name} -> {step.script}")
+                _run_script(script_path, step_name=step.name)
+                _check_outputs(step.expected_outputs)
+                cache[step.script] = fp
+                cache_dirty = True
+        else:
+            print(f"[run_all] {step.name} -> {step.script}")
+            _run_script(script_path, step_name=step.name)
+            _check_outputs(step.expected_outputs)
         all_expected.extend(list(step.expected_outputs))
         if args.stop_after and step.name.lower().startswith(args.stop_after.lower()):
             break
@@ -514,6 +851,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     # Minimal sanity: ensure the audit summary exists if we ran it.
     if (paper_root() / "sections/generated/audit_summary_rows.tex") in [paper_root() / p for p in all_expected]:
         _check_outputs(["sections/generated/audit_summary_rows.tex"])
+
+    if cache_dirty:
+        _save_run_all_cache(cache)
 
     print("[run_all] OK")
     return 0

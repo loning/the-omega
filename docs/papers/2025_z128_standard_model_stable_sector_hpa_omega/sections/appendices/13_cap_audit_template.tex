@@ -1,0 +1,126 @@
+\section{CAP closures: deterministic audit template}
+\label{app:cap_audit_template}
+
+This appendix collects a single, reusable audit template for bounded-complexity closures under the Computational Action Principle (Axiom~\ref{ax:cap}).
+It introduces \emph{no new axioms or independent inputs} beyond those declared in the main text; it only makes explicit the finite selection logic already used throughout the paper.
+
+\subsection{Selection on a finite candidate family}
+
+The core reason the audit program is well-posed is finiteness: for each bound $B$, the candidate family $\Theta(B)$ is a finite set by construction (Definition~\ref{def:bounded_complexity_closure}).
+
+\begin{definition}[Bounded-complexity closure (audit form)]\label{def:bounded_complexity_closure}
+Fix reference targets $x_i^{\mathrm{ref}}>0$ and a candidate family $x_i(\theta)>0$ indexed by discrete parameters $\theta$.
+For a bound $B\in\NN$, let $\Theta(B)$ be a finite domain of admissible parameters (the ``complexity box'').
+Define the log-mismatch vector
+\[
+e_i(\theta):=\log\!\left(\frac{x_i(\theta)}{x_i^{\mathrm{ref}}}\right),
+\]
+and the summary objectives
+\[
+E_\infty(\theta):=\max_i |e_i(\theta)|,\qquad E_1(\theta):=\sum_i |e_i(\theta)|.
+\]
+A bounded-complexity closure is the selection of a unique $\theta_B\in\Theta(B)$ by lexicographic minimization:
+first minimize $E_\infty$, then $E_1$, then any stated secondary criteria (e.g.\ coefficient sum), with a fully specified tie-break rule.
+\end{definition}
+
+\begin{remark}[Why log-mismatch is used]\label{rem:log_mismatch}
+The log mismatch is dimensionless and symmetric under inversion: $\log(x/x^{\mathrm{ref}})=-\log(x^{\mathrm{ref}}/x)$.
+It also linearizes multiplicative matching factors: if $x=s\,x^{\mathrm{ref}}$, then $\log(x/x^{\mathrm{ref}})=\log s$.
+For small deviations, $|\log(x/x^{\mathrm{ref}})|\approx |x-x^{\mathrm{ref}}|/x^{\mathrm{ref}}$.
+\end{remark}
+
+\begin{proposition}[Deterministic closure map]\label{prop:deterministic_closure_map}
+Fix a bound $B\in\NN$ and a finite candidate family $\Theta(B)$.
+Let $(E_\infty(\theta),E_1(\theta),T(\theta))$ be a triple of real-valued diagnostics on $\Theta(B)$, where $T$ denotes any fully specified secondary tie-break key (possibly vector-valued with a fixed lexicographic order).
+Then the lexicographic minimization rule
+\[
+\theta_B\in\operatorname*{argmin}_{\theta\in\Theta(B)}\;\bigl(E_\infty(\theta),E_1(\theta),T(\theta)\bigr)
+\]
+selects a nonempty minimizer set and defines a deterministic selection function once $T$ is chosen so that ties are fully resolved.
+\end{proposition}
+\begin{proof}
+Because $\Theta(B)$ is finite, the set of triples $\{(E_\infty(\theta),E_1(\theta),T(\theta)):\theta\in\Theta(B)\}$ is finite, hence admits at least one lexicographic minimum.
+If the tie-break key $T$ is defined so that equality of the full triple can occur for at most one element, the selected minimizer is unique and the rule becomes deterministic.
+\end{proof}
+
+\subsection{Audit outputs beyond point estimates}
+
+For each closure, the paper reports additional finite statistics that quantify within-family look-elsewhere context and stability under perturbations (Section~\ref{subsec:bounded_complexity_audit} and Appendix~\ref{app:generated_tables}).
+Two frequently used diagnostics are the candidate-domain size and a uniqueness gap.
+
+\begin{definition}[Rigidity certificate]\label{def:rigidity_certificate}
+A closure is called \emph{rigid} on a tested range $B\in\{1,\dots,B_{\max}\}$ if the minimizer is unique at each $B$ and stabilizes:
+there exists $B_\ast\le B_{\max}$ such that $\theta_B=\theta_{B_\ast}$ for all $B_\ast\le B\le B_{\max}$.
+\end{definition}
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.26\textwidth} p{0.66\textwidth}}
+\toprule
+category & status in this paper \\
+\midrule
+protocol primitive & the tick (scan iteration count) and window observables (Axiom~\ref{ax:readout_sequentiality}; Section~\ref{sec:tick_calculus}) \\
+derived protocol structures & admissible languages $X_m$, folding maps Fold$_m$, and intrinsic invariants (Sections~\ref{sec:hpa_readout}--\ref{sec:folding_core}) \\
+audited discrete closures & explicit finite candidate families selected by CAP (e.g.\ bounded-complexity budget $B$, phase denominator $\mathrm{denom}=2^p$, bounded rationals for mixing/phases, staircase step $r_{\mathrm{step}}$; Section~\ref{subsec:bounded_complexity_audit}) \\
+external reference conventions & PDG/CODATA targets and scheme/scale choices treated as inputs at the matching layer (not fit) \\
+\bottomrule
+\end{tabular}
+\caption{Audit contract: what is fixed, what is swept under explicit finite bounds, and what is treated as an external reference convention.}
+\label{tab:no_hidden_knobs_contract}
+\end{table}
+
+\begin{definition}[Domain size and uniqueness gap]\label{def:domain_gap}
+Let $\Theta$ be a finite candidate family and let $J(\theta)$ be an objective (e.g.\ $E_\infty(\theta)$).
+Define the domain size as $|\Theta|$.
+If the minimizer is unique, define the \emph{uniqueness gap} as
+\[
+\Delta J:=J(\theta^{(2)})-J(\theta^{(1)}),
+\]
+where $\theta^{(1)}$ is the minimizer and $\theta^{(2)}$ is the best competitor under the same tie-break ordering restricted to $J$.
+\end{definition}
+
+\subsection{Reference implementation sketch (audit form)}
+
+The following pseudocode summarizes the selection logic implemented by the deterministic scripts in this repository.
+It is intended as an audit aid (not as a new modeling premise).
+
+\begin{center}
+\begin{minipage}{0.92\textwidth}
+\begin{Verbatim}
+Input:
+  - finite candidate set Theta(B)
+  - reference targets x_ref[i] > 0
+  - candidate map x(theta)[i] > 0 for theta in Theta(B)
+  - objective: E_inf(theta) = max_i |log(x_i(theta)/x_ref[i])|
+               E_1(theta) = sum_i |log(x_i(theta)/x_ref[i])|
+  - tie-break key T(theta) (fully specified; lexicographic)
+
+Algorithm:
+  best <- None
+  for theta in Theta(B):
+      compute e_i(theta) = log(x_i(theta)/x_ref[i]) for all i
+      compute (E_inf(theta), E_1(theta), T(theta))
+      if best is None or (E_inf, E_1, T) is lexicographically smaller than best:
+          best <- (E_inf, E_1, T, theta)
+  output theta_B = best.theta
+
+Audit outputs (in addition to theta_B):
+  - |Theta(B)| (domain size)
+  - best/second-best gaps for E_inf and E_1 where feasible
+  - quantiles of E_inf over Theta(B) for large domains
+  - robustness under explicit target perturbations
+  - counterfactual baselines within stated families
+\end{Verbatim}
+\end{minipage}
+\end{center}
+
+\begin{remark}[Why this does not add hidden knobs]\label{rem:no_hidden_knobs_template}
+The only discretionary content in a closure is the explicit declaration of the finite family $\Theta(B)$, the objectives, and the tie-break key $T$.
+Once declared, the selection is a deterministic function of these finite inputs (Proposition~\ref{prop:deterministic_closure_map}).
+This is the operational meaning of the paper's ``no-hidden-knobs'' audit contract (Table~\ref{tab:no_hidden_knobs_contract}).
+\end{remark}
+
+

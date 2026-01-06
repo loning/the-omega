@@ -1,0 +1,371 @@
+\section{Protocol connections and finite holonomy diagnostics on a tick-addressed grid}
+\label{sec:protocol_connections_holonomy}
+
+This section records a minimal, auditable connection model that makes the slogan ``gauge fields as compensating connections'' concrete at finite resolution.
+The construction is discrete, finite, and fully computable at the chosen anchor scale $(m,n)=(6,3)$.
+It is used here as a protocol-level diagnostic: every choice is explicit, every search domain is finite, and the reported fit objectives reuse the same log-mismatch norms as in Definition~\ref{def:bounded_complexity_closure}.
+No continuum limit is assumed in the computations below; any continuum interpretation is an interface dictionary (see Proposition~\ref{prop:channel_to_gauge}).
+As an audit-oriented look-elsewhere check, Appendix~\ref{app:generated_tables} includes counterfactual baselines for selected holonomy fits (e.g.\ Hilbert vs.\ row-major addressing) in Table~\ref{tab:audit_counterfactual}.
+In the tick-first spine, the addressing basis is part of the display dictionary (Section~\ref{sec:tick_calculus}); its minimality at the anchor is made explicit by the addressing audit in Table~\ref{tab:addressing_selection}.
+
+\begin{center}
+\fbox{\begin{minipage}{0.96\linewidth}
+\small
+\textbf{Non-circular diagnostic contract.}
+The holonomy outputs in this section are \emph{diagnostics} and are not used as premises for the CKM/PMNS closures in Sections~\ref{subsec:ckm_mixing_depths} and \ref{sec:pmns_neutrino_closure}.
+Whenever PDG/global-fit targets appear, they enter only as external comparison values to score a finite family of protocol outputs under the shared audit norm (Definition~\ref{def:bounded_complexity_closure}).
+\end{minipage}}
+\end{center}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[
+  >=Latex,
+  node distance=6mm and 7mm,
+  box/.style={draw, rounded corners, align=center, font=\scriptsize, inner sep=5pt}
+]
+\node[box] (fold) {projection fibers\\$P(w)$ under Fold$_6$};
+\node[box, right=of fold] (edge) {deterministic edge\\transport $p_{a\to b}\in S_4$};
+\node[box, right=of edge] (hol) {plaquette holonomy\\$p_\square$ (cycle type)};
+\node[box, right=of hol] (rep) {$SU(3)$ embedding\\(standard subrep.)};
+\node[box, below=of rep] (lift) {dyadic phase lift\\$\mathrm{denom}=2^p$};
+\node[box, left=of lift] (u3) {effective $3\times 3$\\unitary $U$};
+\node[box, left=of u3] (inv) {invariants\\angles, $J$};
+\draw[->] (fold) -- (edge);
+\draw[->] (edge) -- (hol);
+\draw[->] (hol) -- (rep);
+\draw[->] (rep) -- (lift);
+\draw[->] (lift) -- (u3);
+\draw[->] (u3) -- (inv);
+\end{tikzpicture}
+\caption{Holonomy diagnostic pipeline (finite, auditable): deterministic edge matching induces an $S_4$ connection on the Hilbert grid; plaquette holonomies are embedded into an $SU(3)$ skeleton and optionally phase-lifted to yield effective unitary matrices and rephasing-invariant summaries.}
+\label{fig:holonomy_pipeline}
+\end{figure}
+
+\paragraph{Fit objective and deterministic tie-breaks (audit rule).}
+Whenever we report a ``best fit'' of a finite holonomy construction to a target triple of mixing sines $(s_{12},s_{23},s_{13})$ in PDG conventions, we use the same audit norm as elsewhere in the paper:
+for each component $s_i$ with reference $s_i^{\mathrm{ref}}>0$ we set $e_i:=|\log(s_i/s_i^{\mathrm{ref}})|$, then summarize by
+\[
+E_\infty:=\max_i e_i,\qquad E_1:=\sum_i e_i.
+\]
+Candidates are selected by lexicographic minimization of $(E_\infty,E_1)$, followed by an explicitly stated deterministic complexity tie-break (e.g.\ phase-denominator exponent $p$, discrete phase map family, loop indices, and global $S_3\times S_3$ relabelings), so that reported best fits are unique within the declared finite search domains.
+
+\begin{remark}[Diagnostic status and non-circular use of mixing targets]\label{rem:holonomy_diagnostic_status}
+The holonomy constructions in this section are \emph{diagnostics}: they do not supply premises for the CKM/PMNS closures in Sections~\ref{subsec:ckm_mixing_depths} and \ref{sec:pmns_neutrino_closure}.
+Whenever PDG/global-fit targets appear here, they enter only as external comparison values used to score a finite family of protocol outputs under the audit norm.
+In particular, we do not tune the connection rule, the phase-map family, or the phase denominator by importing Standard Model targets into the folding core; we instead report bounded sweeps over these explicit finite protocol parameters and record uniqueness/gap information within each declared search domain.
+\end{remark}
+
+\subsection{Fibers under projection: stable types with finite degeneracy}
+\label{subsec:fiber_under_projection}
+
+At $m=6$, the folding map $\mathrm{Fold}_6:\{0,\dots,63\}\to X_6$ is surjective and each stable type $w\in X_6$ has a finite preimage
+\[
+P(w):=\mathrm{Fold}_6^{-1}(w)\subset\{0,\dots,63\},
+\qquad |P(w)|\in\{2,3,4\}.
+\]
+From the protocol viewpoint, $P(w)$ is a finite \emph{fiber} of microstates that project to the same stable readout label.
+Comparing stable labels across space requires a convention for how these fibers are identified, which is the discrete origin of a compensating connection.
+
+\subsection{A deterministic discrete connection on grid edges}
+\label{subsec:deterministic_edge_connection}
+
+Fix Hilbert order $n=3$ and embed indices $k\in\{0,\dots,63\}$ into an $8\times 8$ grid via Hilbert addressing (Section~\ref{sec:hilbert_addressing}).
+Label each site by its stable type $w=\mathrm{Fold}_6(k)$.
+For each undirected nearest-neighbor grid edge $\{a,b\}$, we define a deterministic transport map between the two endpoint fibers by the following rule:
+\begin{itemize}
+\item For each stable type $w$, list its fiber $P(w)$ in increasing order and pad it deterministically to length $4$ (the maximal degeneracy at $m=6$) by repeating its last element.
+\item Define a cost between microstates by Hamming distance on their $6$-bit binary words.
+\item Choose the minimum-cost bijection between the two length-$4$ padded fibers; if multiple bijections attain the same minimum cost, select the lexicographically smallest permutation. This yields a well-defined permutation in $S_4$.
+\item For the reverse orientation, use the inverse permutation.
+\end{itemize}
+This produces a discrete, non-abelian edge connection on edges, designed to be auditable and fully reproducible by a finite exhaustive search over $4!$ matchings per edge.
+
+\begin{remark}[Why we pad fibers to $4$ and use Hamming cost]\label{rem:pad4_hamming_rationale}
+At $(m,n)=(6,3)$ the Fold$_6$ preimage sizes satisfy $|P(w)|\in\{2,3,4\}$ (Theorem~\ref{thm:fold6_stats}), so rank-$4$ padding is the unique smallest uniform slot count that accommodates every fiber without truncation.
+Repeating the last element is a deterministic minimal padding that does not introduce any new microstate index beyond the true fiber.
+For the cost, Hamming distance on $\{0,1\}^6$ is the canonical bit-flip metric induced by the readout alphabet itself; it measures the minimal number of elementary bit changes between microstates and is independent of any external geometric scale.
+\end{remark}
+
+\begin{definition}[Hamming distance on microstates]\label{def:hamming_microstates}
+Let $u,v\in\Omega_6=\{0,1\}^6$.
+Define the Hamming distance
+\[
+d_H(u,v):=\sum_{i=1}^{6} |u_i-v_i|.
+\]
+For indices $k,\ell\in\{0,\dots,63\}$, write $\mathrm{bin}(k)\in\{0,1\}^6$ for the $6$-bit binary word of $k$ and set $d_H(k,\ell):=d_H(\mathrm{bin}(k),\mathrm{bin}(\ell))$.
+\end{definition}
+
+\begin{lemma}[Well-defined edge transport in $S_4$]\label{lem:edge_transport_welldefined}
+For any oriented neighbor edge $a\to b$, the above rule produces a unique permutation $p_{a\to b}\in S_4$.
+Moreover, the reverse-edge rule $p_{b\to a}:=p_{a\to b}^{-1}$ makes the transport involutive under orientation reversal.
+\end{lemma}
+\begin{proof}
+Each endpoint has a padded fiber list of length $4$.
+There are finitely many bijections between two $4$-element index sets, namely $4!$ permutations.
+The cost of a permutation is a finite sum of Hamming distances (Definition~\ref{def:hamming_microstates}), hence each cost is well-defined and real-valued.
+Therefore a minimum-cost permutation exists.
+If the minimum is attained by more than one permutation, the fixed lexicographic tie-break selects a unique one, giving a unique $p_{a\to b}\in S_4$.
+Defining the reverse-edge transport as the inverse permutation is then deterministic and satisfies $(p_{a\to b})^{-1}=p_{b\to a}$ by construction.
+\end{proof}
+
+\begin{definition}[Vertex relabelings and cycle-type invariance]\label{def:s4_vertex_gauge}
+At a vertex $x$, relabeling the padded fiber positions is modeled by a permutation $g_x\in S_4$ acting on the local index $i\in\{0,1,2,3\}$.
+Under such a local relabeling field $g:\text{vertices}\to S_4$, the edge transport transforms as
+\[
+p_{a\to b}\ \mapsto\ p'_{a\to b}:=g_b\,p_{a\to b}\,g_a^{-1}.
+\]
+\end{definition}
+
+\begin{proposition}[Plaquette cycle type is invariant under local relabelings]\label{prop:cycle_type_gauge_invariant}
+Let $p_\square$ be the plaquette holonomy obtained by composing the four oriented edge permutations around a unit square.
+Under the local relabeling action of Definition~\ref{def:s4_vertex_gauge}, the holonomy transforms by conjugation, hence its $S_4$ cycle type is invariant.
+\end{proposition}
+\begin{proof}
+This is the standard lattice-gauge transformation law: edge transports change by left/right multiplication at endpoints, so the ordered product around a closed loop changes by conjugation by the vertex relabeling at the basepoint \cite{Wilson1974,Rothe2012}.
+Conjugation preserves cycle type in $S_4$, so the cycle-type summary in Table~\ref{tab:holonomy_cycle_types} is gauge invariant under local fiber relabelings.
+\end{proof}
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lrr}
+\toprule
+degeneracy pair $(|P(w_a)|,|P(w_b)|)$ & count & fraction \\
+\midrule
+\input{sections/generated/edge_mismatch_deg_pair_rows.tex}%
+\end{tabular}
+\caption{Distribution of preimage-size (fiber degeneracy) pairs across nearest-neighbor edges on the $8\times 8$ grid at $n=3$. Rows are reproduced by the deterministic script \texttt{scripts/exp\_edge\_mismatch\_decomposition.py}.}
+\label{tab:edge_deg_pairs}
+\end{table}
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lr}
+\toprule
+quantile $q$ & min-match cost quantile \\
+\midrule
+\input{sections/generated/edge_mismatch_cost_quantiles_rows.tex}%
+\end{tabular}
+\caption{Quantiles of the minimum matching cost (sum of Hamming distances under the chosen optimal bijection) across all nearest-neighbor edges. Rows are reproduced by the deterministic script \texttt{scripts/exp\_edge\_mismatch\_decomposition.py}.}
+\label{tab:edge_cost_quantiles}
+\end{table}
+
+\subsection{Elementary plaquette holonomy}
+\label{subsec:plaquette_holonomy}
+
+Given an $S_4$-valued edge transport rule, we define the holonomy of a unit-square plaquette by composing the four oriented edge permutations around its boundary.
+Because the connection takes values in a non-abelian group, holonomy can be nontrivial even in a fully finite setting.
+This is the standard lattice-gauge notion of plaquette holonomy as a minimal loop observable \cite{Wilson1974,Rothe2012}.
+We summarize holonomy values by $S_4$ cycle type.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lrr}
+\toprule
+cycle type & count & fraction \\
+\midrule
+\input{sections/generated/holonomy_cycle_type_rows.tex}%
+\end{tabular}
+\caption{Holonomy distribution on the $7\times 7$ family of unit-square plaquettes in the $8\times 8$ grid at $n=3$, under the deterministic $S_4$ edge transport rule. Rows are reproduced by the deterministic script \texttt{scripts/exp\_holonomy\_loops.py}.}
+\label{tab:holonomy_cycle_types}
+\end{table}
+
+\begin{remark}[Why we emphasize 3/4-cycle holonomies]\label{rem:why_34_cycles}
+In the standard $S_4$ action on four fiber slots, $3$- and $4$-cycles are the simplest nontrivial cycle types that move at least three slots.
+Under the $3$-dimensional sum-zero (standard) representation used below, these cycle types induce genuine rotations in $SO(3)$ with nonzero angles, providing the minimal finite skeleton for later $3\times 3$ mixing-matrix diagnostics \cite{Serre1977}.
+\end{remark}
+
+\subsection{A minimal \texorpdfstring{$SO(3)\subset SU(3)$}{SO(3) subset SU(3)} representation bridge}
+\label{subsec:holonomy_su3_bridge}
+
+To connect the discrete $S_4$ holonomy values to a continuous group action (as a skeleton for later mixing-matrix work), we use the standard permutation representation and its $3$-dimensional ``standard'' subrepresentation \cite{Serre1977}.
+Concretely, let $\rho:S_4\to O(4)$ act by permutation matrices on $\RR^4$, and let
+\[
+H:=\Bigl\{x\in\RR^4:\ \sum_{i=1}^4 x_i=0\Bigr\},
+\]
+the sum-zero subspace. Then $H$ is $\rho$-invariant and $\dim H=3$.
+\begin{remark}[Why the sum-zero subspace is canonical]\label{rem:sum_zero_canonical}
+The permutation representation of $S_4$ on $\RR^4$ contains a trivial one-dimensional invariant subspace spanned by $(1,1,1,1)$.
+Restricting to $H$ removes this trivial mode and yields the standard $3$-dimensional representation that captures the nontrivial mixing of slots; see, e.g., \cite{Serre1977}.
+\end{remark}
+
+\begin{lemma}[Sign-twisted standard representation $S_4\to SO(3)$]\label{lem:s4_so3_twist}
+Let $\rho_H:S_4\to O(H)\cong O(3)$ be the restriction of the permutation representation to $H$.
+Then $\det(\rho_H(\sigma))=\mathrm{sgn}(\sigma)$.
+Consequently the twisted representation
+\[
+\widetilde\rho(\sigma):=\mathrm{sgn}(\sigma)\,\rho_H(\sigma)
+\]
+lands in $SO(3)$.
+Viewing $SO(3)$ matrices as real unitary matrices gives an inclusion $SO(3)\subset SU(3)$.
+\end{lemma}
+\begin{proof}
+Permutation matrices satisfy $\det(\rho(\sigma))=\mathrm{sgn}(\sigma)$.
+Moreover $\RR^4$ decomposes as an orthogonal direct sum
+\[
+\RR^4=\mathrm{span}\{(1,1,1,1)\}\ \oplus\ H,
+\]
+and $\rho(\sigma)$ fixes $(1,1,1,1)$.
+Thus $\det(\rho(\sigma))=\det(\rho(\sigma)|_{\mathrm{span}\{(1,1,1,1)\}})\cdot \det(\rho_H(\sigma))=1\cdot \det(\rho_H(\sigma))$, proving $\det(\rho_H(\sigma))=\mathrm{sgn}(\sigma)$.
+Finally, on the $3$-dimensional space $H$, multiplication by the scalar $\mathrm{sgn}(\sigma)\in\{\pm 1\}$ contributes determinant $\mathrm{sgn}(\sigma)^3=\mathrm{sgn}(\sigma)$, hence
+\[
+\det(\widetilde\rho(\sigma))=\det(\mathrm{sgn}(\sigma)\,I_3)\,\det(\rho_H(\sigma))=\mathrm{sgn}(\sigma)\cdot \mathrm{sgn}(\sigma)=1,
+\]
+so $\widetilde\rho(\sigma)\in SO(3)$.
+The inclusion $SO(3)\subset SU(3)$ follows because a real orthogonal $3\times 3$ matrix is unitary over $\CC$, and determinant $1$ is preserved.
+\end{proof}
+Table~\ref{tab:holonomy_su3_rotation} summarizes the induced rotation angles (in degrees) by $S_4$ cycle type for the plaquette holonomies at $n=3$.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lrrrr}
+\toprule
+cycle type & count & mean angle [deg] & min [deg] & max [deg] \\
+\midrule
+\input{sections/generated/holonomy_su3_rotation_rows.tex}%
+\end{tabular}
+\caption{Rotation-angle summary for the sign-twisted standard $SO(3)\subset SU(3)$ representation of plaquette holonomies at $n=3$. Rows are reproduced by the deterministic script \texttt{scripts/exp\_holonomy\_su3\_representation.py}.}
+\label{tab:holonomy_su3_rotation}
+\end{table}
+
+\subsection{A phase-register lift and a CP-odd invariant}
+\label{subsec:holonomy_phase_lift_cp}
+
+To allow CP-odd signatures in a holonomy-based description, one must go beyond purely real orthogonal representations.
+As a minimal protocol-level bridge consistent with the $\ZZ_{128}$ phase-register stance, we can attach a deterministic discrete phase to each microstate and lift the edge transport to a unitary (phase-weighted) transport.
+We make this lift fully explicit.
+Fix a dyadic denominator $\mathrm{denom}=2^p$ and a low-complexity index map $\tau:\{0,\dots,63\}\to\{0,\dots,63\}$ chosen from the family
+\[
+\tau_{\mathrm{id}}(k)=k,\qquad
+\tau_{\mathrm{gray}}(k)=k\oplus (k\!\gg\!1),\qquad
+\tau_{\mathrm{bitrev}}(k)=\mathrm{bitreverse}_6(k),\qquad
+\tau_{\mathrm{not}}(k)=63-k.
+\]
+Here $\oplus$ and $\gg$ denote bitwise XOR and right shift on $6$-bit integers, and $\mathrm{bitreverse}_6$ reverses the $6$-bit binary expansion.
+\begin{remark}[Why the phase-map family is bounded]\label{rem:tau_family_bounded}
+The map $\tau$ is a pure indexing convention for attaching phases to the finite microstate set $\{0,\dots,63\}$.
+To bound look-elsewhere freedom, we restrict to a small explicit family of invertible, bit-level transforms of minimal description complexity (identity, Gray map, bit reversal, and complement).
+Within this bounded family, the protocol adopts a canonical representative by CAP tie-break (Axiom~\ref{ax:cap}): the baseline choice is $\tau=\tau_{\mathrm{id}}$ unless an explicitly stated bounded-complexity closure selects otherwise.
+This keeps the phase attachment auditable and makes any refinement of the map family an explicit change of the finite candidate set rather than an implicit tuning knob.
+\end{remark}
+\begin{remark}[Dyadic phase registers and \texorpdfstring{$\ZZ_{128}$}{Z128}]\label{rem:dyadic_phase_register}
+The choice $\mathrm{denom}=2^p$ matches the finite-ring phase-register stance in which phases are represented in $\ZZ_{2^p}$ rather than as continuous angles.
+In particular, $p=7$ corresponds to a $\ZZ_{128}$ register.
+At the minimal window $m=6$, the default choice $\mathrm{denom}=2^m=64$ used in several tables is equivalently a $\ZZ_{128}$ register restricted to even residues, since $2\pi\,\tau(k)/64=2\pi\,(2\tau(k))/128$.
+Smaller $p$ coarsen the phase resolution, while larger $p$ refine it; the dyadic family provides a nested, auditable refinement chain.
+In CAP audit language, denominators of the form $\mathrm{denom}=2^p$ are treated as an explicit bounded candidate family: the baseline uses the anchor-coherent choice $\mathrm{denom}=2^m$ and the bounded sweeps record sensitivity and counterfactuals (Appendix~\ref{app:generated_tables} and Appendix~\ref{app:holonomy_sweeps_extended}).
+This is consistent with standard dyadic phase encodings used in finite-register quantum information models; see, e.g., \cite{NielsenChuang2010}.
+\end{remark}
+Define the phase register embedding
+\begin{equation}\label{eq:holonomy_phase_def}
+\phi(k):=2\pi\,\frac{\tau(k)}{\mathrm{denom}}.
+\end{equation}
+For an oriented edge $a\to b$ with padded fibers $f_a(i)$ and $f_b(i)$ ($i=0,1,2,3$) and transport permutation $p\in S_4$ (Section~\ref{subsec:deterministic_edge_connection}), define the phase-lifted edge transport $U_{a\to b}\in U(4)$ by
+\begin{equation}\label{eq:phase_lift_edge_transport}
+(U_{a\to b})_{p(i),i}:=\exp\!\Bigl(\iu\bigl(\phi(f_b(p(i)))-\phi(f_a(i))\bigr)\Bigr),
+\qquad i=0,1,2,3,
+\end{equation}
+with all other entries equal to $0$.
+
+\begin{lemma}[Phase-lifted edge transport is unitary]\label{lem:phase_lift_edge_unitary}
+For each oriented edge $a\to b$, the matrix $U_{a\to b}$ defined in \eqref{eq:phase_lift_edge_transport} is unitary.
+\end{lemma}
+\begin{proof}
+Each column $i$ has exactly one nonzero entry, located at row $p(i)$, and this entry has modulus $1$.
+Since $p$ is a permutation, distinct columns have disjoint nonzero rows, hence the columns are orthonormal.
+Therefore $U_{a\to b}^\ast U_{a\to b}=I_4$, so $U_{a\to b}\in U(4)$.
+\end{proof}
+
+Projecting the resulting $4\times 4$ unitary plaquette holonomy to the $3$-dimensional sum-zero subspace and renormalizing by a deterministic Gram--Schmidt procedure yields an effective $3\times 3$ unitary matrix.
+\begin{remark}[When projection/renormalization can fail]\label{rem:gram_schmidt_failures}
+The projection to the sum-zero subspace can produce a rank-deficient $3\times 3$ matrix for certain degenerate holonomies or phase choices.
+In that case Gram--Schmidt cannot produce a full orthonormal basis and the effective unitary is undefined.
+Our scripts treat such cases as deterministic failures and record the failure counts explicitly in the relevant tables (e.g.\ Tables~\ref{tab:holonomy_phase_lift_family} and \ref{tab:holonomy_balanced_chain_sweep}).
+\end{remark}
+From this effective unitary one can compute a rephasing-invariant CP-odd quantity, e.g.\ the Jarlskog-type invariant
+\[
+J:=\Im\!\bigl(U_{11}U_{22}U_{12}^\ast U_{21}^\ast\bigr).
+\]
+This is the standard rephasing-invariant combination for $3\times 3$ unitary mixing matrices \cite{Jarlskog1985,PDGRPP2024}.
+Table~\ref{tab:holonomy_phase_lift_j} summarizes the induced values by underlying $S_4$ cycle type for the $n=3$ plaquettes.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lrrrr}
+\toprule
+cycle type & count & mean $|J|$ & max $|J|$ & mean $J$ \\
+\midrule
+\input{sections/generated/holonomy_phase_lift_j_rows.tex}%
+\end{tabular}
+\caption{Phase-register lifted holonomy and a CP-odd invariant in a finite projection/renormalization model at $n=3$. The baseline CAP choice here is $\tau=\tau_{\mathrm{id}}$ and $\mathrm{denom}=64$ (equivalently a $\ZZ_{128}$ register restricted to even residues; Remark~\ref{rem:dyadic_phase_register}). Rows are reproduced by the deterministic script \texttt{scripts/exp\_holonomy\_phase\_lift\_cp\_invariant.py}.}
+\label{tab:holonomy_phase_lift_j}
+\end{table}
+
+\paragraph{A bounded family sweep over the phase denominator.}
+To make the phase-lift choice auditable, we can sweep a bounded candidate family for the phase denominator $\mathrm{denom}=2^p$ and record the induced mean $|J|$ on the nontrivial plaquettes (3- and 4-cycles).
+Table~\ref{tab:holonomy_phase_lift_family} reports the resulting values and the log mismatch to the constant-geometry target $J_{\mathrm{geo}}=1/(11\pi^7)$.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{rrrrrrrr}
+\toprule
+$\mathrm{denom}$ & $p$ & mean $|J|$ (3) & mean $|J|$ (4) & mean $|J|$ (3/4) & $\log(\mathrm{mean}/J_{\mathrm{geo}})$ & $|\cdot|$ & failures \\
+\midrule
+\input{sections/generated/holonomy_phase_lift_family_rows.tex}%
+\end{tabular}
+\caption{Phase-denominator sweep for the phase-lifted holonomy CP invariant at $n=3$, over $\mathrm{denom}=2^p$ for a bounded range of $p$. Rows are reproduced by the deterministic script \texttt{scripts/exp\_holonomy\_phase\_lift\_family\_sweep.py}.}
+\label{tab:holonomy_phase_lift_family}
+\end{table}
+
+\paragraph{Angle extraction (PDG convention, diagnostic).}
+From a $3\times 3$ unitary matrix $U$ in the PDG standard parameterization \cite{PDGRPP2024}, one can extract mixing sines by the identities
+\[
+s_{13}=|U_{13}|,\qquad
+c_{13}=\sqrt{1-s_{13}^2},\qquad
+s_{12}=\frac{|U_{12}|}{c_{13}},\qquad
+s_{23}=\frac{|U_{23}|}{c_{13}},
+\]
+and obtain a principal Dirac phase $\delta$ from the Jarlskog invariant via
+\[
+\sin\delta=\frac{J}{s_{12}s_{23}s_{13}c_{12}c_{23}c_{13}^2},
+\qquad
+c_{ij}=\sqrt{1-s_{ij}^2}.
+\]
+In the holonomy diagnostics below, because row/column identifications are not fixed \emph{a priori}, we also allow a global relabeling (a pair of permutations in $S_3\times S_3$) when comparing to PMNS/CKM targets.
+Table~\ref{tab:holonomy_phase_lift_angles} reports cycle-type aggregated mean values at the default phase denominator used in Table~\ref{tab:holonomy_phase_lift_j}.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lrrrrrr}
+\toprule
+cycle type & count & mean $s_{12}$ & mean $s_{23}$ & mean $s_{13}$ & mean $\delta$ [deg] & mean $|J|$ \\
+\midrule
+\input{sections/generated/holonomy_phase_lift_angles_rows.tex}%
+\end{tabular}
+\caption{PDG-style angle extraction from phase-lifted effective holonomy matrices at $n=3$ (finite diagnostic). The default choice here is $\tau=\tau_{\mathrm{id}}$ and $\mathrm{denom}=64$ (the same choice as Table~\ref{tab:holonomy_phase_lift_j}). Rows are reproduced by the deterministic script \texttt{scripts/exp\_holonomy\_phase\_lift\_angles.py}.}
+\label{tab:holonomy_phase_lift_angles}
+\end{table}
+
+\paragraph{Extended sweeps and robustness diagnostics (supplement).}
+The balanced-chain sweep across higher balanced pairs, loop-scale/denominator scans, phase-map family sweeps, and the soft-transport variant are recorded in Appendix~\ref{app:holonomy_sweeps_extended}.

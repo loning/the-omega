@@ -2,7 +2,7 @@
 """
 Balanced-chain sweep for finite holonomy and phase-lift CP signal.
 
-We consider the balanced chain m=2n with (n,m) in {(3,6),(4,8),(5,10),(6,12),(7,14),(8,16)}.
+We consider the balanced chain m=2n with (n,m) in {(1,2),(2,4),(3,6),(4,8),(5,10),(6,12),(7,14),(8,16)}.
 For each pair we:
   - embed indices k in {0..4^n-1} on a 2^n x 2^n grid via Hilbert addressing,
   - label each site by the stable word w = Fold_m(k),
@@ -366,7 +366,7 @@ def sweep_one(n_bits: int, m: int) -> Tuple[Counter[str], Dict[str, float], Dict
 
 
 def main() -> None:
-    chain = [(3, 6), (4, 8), (5, 10), (6, 12), (7, 14), (8, 16)]
+    chain = [(1, 2), (2, 4), (3, 6), (4, 8), (5, 10), (6, 12), (7, 14), (8, 16)]
 
     rows: List[str] = []
     for n_bits, m in chain:

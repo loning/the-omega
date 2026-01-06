@@ -1,0 +1,120 @@
+\section{Closure: mass spectrum as resolution depth and protocol cost}
+\label{sec:mass_spectrum_closure}
+
+This section closes the interface by connecting the field-level labeling map (Section~\ref{sec:sm_labeling_closure}) to a concrete, reproducible mass-spectrum template.
+We work with dimensionless ratios relative to the electron reference, and we phrase running/threshold effects in the Fibonacci resolution coordinate of the golden branch.
+
+We use the resolution-depth coordinate and the operational delay/lapse dictionaries recorded in Section~\ref{sec:mass_latency_coordinate} and Section~\ref{app:time_mass_delay}.
+
+\paragraph{Tick-only interpretation.}
+The closure below is written in the $r$-coordinate precisely because $r$ is a log-time coordinate: it linearizes multiplicative time-scale ratios.
+On this view, the predicted depth $\widehat r$ is a discrete protocol overhead (in tick-derived units), while the mismatch $\Delta r=r-\widehat r$ is a matching-layer time-scale factor (Compton-clock and delay dictionaries; Appendix~\ref{app:time_mass_delay}).
+
+\subsection{A closed depth assignment from stable-type invariants}
+\label{subsec:mass_depth_assignment}
+
+Let $w\in X_6$ and recall the intrinsic invariants $(V(w),g(w),D_\pi(w))$ (Definition~\ref{def:x6_invariants}).
+We use the effective protocol depth $r_\ast(w)$ from Definition~\ref{def:r_star}.
+The folding degeneracy $g(w)$ is the fiber size of the finite projection $\mathrm{Fold}_6$ and therefore measures the intrinsic multiplicity of microstates that share the same stable readout label (Section~\ref{sec:protocol_connections_holonomy}).
+
+\begin{lemma}[Uniform fiber distribution and residual uncertainty]\label{lem:fiber_uncertainty}
+Let $N$ be uniformly distributed on $\{0,\dots,63\}$ and set $W:=\mathrm{Fold}_6(N)\in X_6$.
+Then for each $w\in X_6$ one has
+\[
+\mathbb{P}(W=w)=\frac{g(w)}{64},
+\qquad
+\mathbb{P}(N=k\mid W=w)=\frac{1}{g(w)}\ \ \text{for }k\in \mathrm{Fold}_6^{-1}(w),
+\]
+and the conditional Shannon entropy of $N$ given $W=w$ equals $\log g(w)$ (in nats) \cite{Shannon1948,CoverThomas2006}.
+\end{lemma}
+\begin{proof}
+Immediate from uniformity and Bayes' rule; see, e.g., \cite{CoverThomas2006}.
+\end{proof}
+
+\begin{remark}[Protocol depth as a cost coordinate (interface)]\label{rem:mass_as_scan_density}
+Lemma~\ref{lem:fiber_uncertainty} makes explicit that $g(w)$ controls the intrinsic residual multiplicity of microstates that share the same stable readout label at $m=6$.
+In a scan-based identification dictionary (Axiom~\ref{ax:readout_sequentiality}), resolving or compensating such multiplicities across space requires additional protocol resources (extra scan steps, deeper matching, or additional connection data), and therefore fixes the use of $g(w)$ as a discrete cost term in $r_\ast$ and in the normalized depth \eqref{eq:r_hat_def}.
+The closed quantitative content used for mass matching in this paper is the auditable template \eqref{eq:mass_template} together with the bounded-complexity rigidity certificate for its integer coefficients (Proposition~\ref{prop:rhat_rigidity}).
+A stronger time/mass matching dictionary based on scattering delay (Wigner--Smith) and relativistic lapse/redshift templates is recorded in Section~\ref{app:time_mass_delay} and provides the operational closure used at the matching layer.
+\end{remark}
+
+\begin{definition}[Closed mass template]\label{def:mass_template}
+Fix the electron reference field $e:=e_R^{(1)}$ and let $w_e\in X_6$ denote its stable-type label under $\mathcal{L}_{\mathrm{SM}}$.
+Define the normalized depth
+\begin{equation}\label{eq:r_hat_def}
+\widehat r(f):=\kappa\bigl(r_\ast(w_f)-r_\ast(w_e)\bigr)
+\;+\;\bigl(|w_f|_1-|w_e|_1\bigr)
+\;+\;\bigl(g(w_e)-g(w_f)\bigr),
+\end{equation}
+where $w_f\in X_6$ satisfies $\mathcal{L}_{\mathrm{SM}}(w_f)=f$, $\kappa:=m/n=2$ for the balanced coupling at the chosen anchor $(m,n)=(6,3)$ on the $2$D Hilbert screen, $|w|_1$ is Hamming weight, and $g(w)$ is folding degeneracy (Definition~\ref{def:x6_invariants}).
+Then define the closed template mass prediction by
+\begin{equation}\label{eq:mass_template}
+\mu_{\mathrm{pred}}(f):=m_e\,\varphi^{\,\widehat r(f)}.
+\end{equation}
+\end{definition}
+
+\begin{remark}[Choice of charged-lepton reference]\label{rem:electron_reference_choice}
+We take $e:=e_R^{(1)}$ as the charged-lepton reference because the three singlet multiplets $\{e_R^{(1)},e_R^{(2)},e_R^{(3)}\}$ form a minimal family already present in the field-level labeling closure (Section~\ref{sec:sm_labeling_closure}).
+Since \eqref{eq:r_hat_def} uses only depth differences relative to $w_e$, any global normalization shift is absorbed into the matching-layer depth shift $\Delta r$ (Section~\ref{subsec:mass_matching_layer}).
+\end{remark}
+
+It is useful to express $\widehat r$ directly as a bounded-complexity integer combination of stable-type differences.
+\begin{proposition}[Simplified depth formula]\label{prop:rhat_simplified}
+Let $\Delta V:=V(w_f)-V(w_e)$, $\Delta g:=g(w_f)-g(w_e)$, and $\Delta|w|_1:=|w_f|_1-|w_e|_1$.
+Under Definition~\ref{def:mass_template} at $(m,n)=(6,3)$ one has
+\begin{equation}\label{eq:rhat_251}
+\widehat r(f)=2\,\Delta V+5\,\Delta g+\Delta|w|_1.
+\end{equation}
+\end{proposition}
+\begin{proof}
+By Definition~\ref{def:r_star}, $r_\ast(w)=V(w)+3(g(w)-2)$ at $n=3$.
+Hence $\kappa(r_\ast(w_f)-r_\ast(w_e))=2\Delta V+6\Delta g$.
+The remaining two correction terms in \eqref{eq:r_hat_def} contribute $\Delta|w|_1-(\Delta g)$, yielding $2\Delta V+5\Delta g+\Delta|w|_1$.
+\end{proof}
+
+Equation~\eqref{eq:mass_template} yields a discrete spectrum of reference scales.
+Threshold and scheme effects are recorded as multiplicative matching factors (equivalently, additive shifts in $r$) as in effective field theory \cite{PeskinSchroeder1995,PDGRPP2024}.
+
+\subsection{Predicted spectrum and PDG/CODATA comparisons}
+\label{subsec:mass_spectrum_table}
+
+Table \ref{tab:mass_spectrum} records the closed template values.
+Standard reference values are listed using PDG and CODATA conventions.
+For quarks we use a scheme-dependent reference (e.g.\ $\overline{\mathrm{MS}}$ running masses) and treat scheme dependence as a matching input rather than an integer-depth anchor, consistent with the resolution-map calibration philosophy used in this paper.
+For neutrinos we record an order-of-magnitude reference scale inferred from oscillation data, but we do not fix a unique absolute mass prediction at this minimal resolution \cite{PDGRPP2024,Esteban2020NuFIT}.
+For $W$, $Z$, and $H$ we include the canonical electroweak anchor depths as discrete reference points in the $r$-coordinate.
+These bosonic rows are not identified with individual stable types in $X_6$; they serve as protocol-calibration thresholds for the electroweak interface in the same sense as the $Z$-scale normalization recorded in Section~\ref{sec:couplings_cp} \cite{PDGRPP2024}.
+\begin{remark}[Bosonic anchor depths as nearest-integer reference points]\label{rem:boson_anchor_depths}
+The bosonic anchor depths reported for $W$, $Z$, and $H$ are taken as the nearest-integer reference points to $r(\mu)=\log(\mu/m_e)/\log\varphi$ at the corresponding PDG masses.
+This keeps the bosonic thresholds fully discrete (no continuous fit) while allowing the residual mismatch to be recorded explicitly in the same additive form $\Delta r$ used elsewhere.
+The same nearest-depth convention is used in the minimal neutrino-scale interface table (Table~\ref{tab:neutrino_mass_interface}).
+\end{remark}
+\paragraph{Scheme dependence and matching inputs.}
+For light quarks, PDG masses are convention-dependent and quoted as running masses in a chosen scheme; even for heavy quarks, perturbative matching and threshold conventions affect the quoted reference values \cite{PDGRPP2024}.
+Accordingly, the extended fermion rows in Table~\ref{tab:mass_spectrum} are diagnostic: they record the implied depth mismatch $\Delta r$ and the corresponding multiplicative matching factor $\mu/\mu_{\mathrm{pred}}$ under the stated reference convention, rather than serving as scheme-independent rigidity anchors.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lrrrrr}
+\toprule
+field & reference $\mu$ [GeV] & $r(\mu)$ & $\widehat r$ & $\Delta r:=r-\widehat r$ & $\mu/\mu_{\mathrm{pred}}$ \\
+\midrule
+\textbf{Anchor scales} & & & & & \\
+\input{sections/generated/mass_spectrum_anchor_rows.tex}
+\textbf{Quark refs (scheme)} & & & & & \\
+\input{sections/generated/mass_spectrum_quark_rows.tex}
+\textbf{Neutrino scale} & & & & & \\
+\input{sections/generated/mass_spectrum_neutrino_rows.tex}
+\end{tabular}
+\caption{Mass-spectrum closure in the resolution-depth language. The predicted values use the normalized depth \eqref{eq:r_hat_def} (equivalently \eqref{eq:rhat_251}) together with the exponential map \eqref{eq:mu_of_r_z128}. The depth mismatch $\Delta r$ is additive, while $\mu/\mu_{\mathrm{pred}}=\varphi^{\Delta r}$ is the corresponding multiplicative matching factor. All rows are reproduced by the deterministic script \texttt{scripts/exp\_mass\_spectrum.py}.}
+\label{tab:mass_spectrum}
+\end{table}
+\paragraph{Rigidity audits and matching-layer summaries (supplement).}
+Bounded-coefficient rigidity searches, leave-one-out robustness diagnostics, and the quantized matching-layer tables are recorded in Appendix~\ref{app:mass_rigidity_details}.
+
+\paragraph{Audit reading and failure criteria.}
+\AuditTag The depth-coefficient closure is anchored on the scheme-stable charged-lepton set $\{\mu,\tau\}$ (Appendix~\ref{subsec:mass_depth_rigidity}); quark rows are treated as diagnostic matching inputs under a stated scheme convention rather than as scheme-independent rigidity anchors.
+Operationally, the closure would be falsified \emph{within its stated hypothesis class} if (i) the bounded-integer minimizer for $(a,b,c)$ were not unique or did not stabilize across modest bound increases, or (ii) the matching-layer residuals required substantially finer denominators than the minimal dyadic quarter-step lattice to be compactly summarized (Appendix~\ref{subsec:mass_matching_layer}).

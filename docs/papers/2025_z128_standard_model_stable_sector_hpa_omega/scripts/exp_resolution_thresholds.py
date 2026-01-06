@@ -86,6 +86,30 @@ def try_plot(thresholds: List[Tuple[int, float, float]]) -> None:
     ax.set_title("Resolution-uplift staircase (r_step = 2*pi)")
     ax.grid(True, alpha=0.25)
 
+    # Key physical anchors (labels are narrative only; values are from the same calibration).
+    x_of_m: dict[int, float] = {m: math.log10(mu) for m, _r, mu in thresholds}
+    anchors = [
+        (6, "m=6: electron anchor"),
+        (8, "m=8: QCD (~0.2 GeV)"),
+        (10, "m=10: electroweak (Z pole / Higgs sector)"),
+    ]
+    for m, label in anchors:
+        if m not in x_of_m:
+            continue
+        x = x_of_m[m]
+        y = float(m)
+        ax.scatter([x], [y], s=28)
+        ax.annotate(
+            label,
+            xy=(x, y),
+            xytext=(8, 8),
+            textcoords="offset points",
+            fontsize=8,
+            ha="left",
+            va="bottom",
+            arrowprops={"arrowstyle": "->", "linewidth": 0.8},
+        )
+
     root = Path(__file__).resolve().parent.parent
     fig_dir = root / "figures"
     fig_dir.mkdir(parents=True, exist_ok=True)

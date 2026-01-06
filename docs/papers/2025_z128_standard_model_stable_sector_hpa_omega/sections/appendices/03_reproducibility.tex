@@ -15,103 +15,198 @@ The scripts reproduce:
 \item Hamming-weight distribution of $X_6$ and the $18\oplus 3$ cyclic/boundary split (Proposition~\ref{prop:cyc_bdry_6});
 \item computation of $\mathrm{Fold}_6(N)$ for $N=0,\dots,63$, including surjectivity and the degeneracy histogram (Theorem~\ref{thm:fold6_stats});
 \item generation of a complete Fold$_6$ table (Appendix~\ref{app:fold6_full_table});
+\item a bounded counterfactual fold-family sensitivity sweep at $m=6$ (Appendix~\ref{app:fold_family_sensitivity}).
 \item computation of the Hilbert chirality index $\chi$ at order $n=3$ and its sign flips under reflection and traversal reversal (Proposition~\ref{prop:chi_flip}).
-\item generation of the closed $21\to$SM labeling table (Table~\ref{tab:sm_labeling_table});
+\item an addressing-basis audit (Hilbert vs.\ a row-major counterfactual) that makes the tick-first locality choice explicit at the minimal anchor (Table~\ref{tab:addressing_selection}).
+\item a bounded sensitivity sweep for gauge-factor selection under alternative complexity labels (Appendix~\ref{app:gauge_complexity_sensitivity}).
+\item a coarse-grained scalar parity check on the $n=3$ Hilbert grid that contrasts the parity-odd chirality index with parity-even block-averaged intrinsic observables (Table~\ref{tab:scalar_coarse_grain}).
+\item reproduction of the closed $21\to$SM labeling table (Table~\ref{tab:sm_labeling_table}), whose underlying labeling map is uniquely fixed by Theorem~\ref{thm:labeling_unique} once the declared ordering keys are chosen (Remark~\ref{rem:labeling_script_status});
 \item generation of the mass-spectrum closure table (Table~\ref{tab:mass_spectrum}).
 \item bounded-coefficient rigidity search for the depth ansatz (Table~\ref{tab:mass_depth_rigidity}).
 \item generation of a PMNS mixing-angle closure and its induced matrix tables (Section~\ref{sec:pmns_neutrino_closure}).
 \item generation of a resolution-threshold staircase table for Fibonacci-structured uplifts (Section~\ref{subsec:p3_resolution_jumps}).
 \item generation of finite-resolution connection/holonomy audit tables on the $n=3$ Hilbert grid (Section~\ref{sec:protocol_connections_holonomy}).
-\item generation of uncertainty-robustness and counterfactual-baseline audit tables (Appendix~\ref{app:audit_uncertainty} and Appendix~\ref{app:audit_counterfactual}).
+\item generation of uncertainty-robustness audit tables (Appendix~\ref{app:audit_uncertainty}).
+\item generation of counterfactual baseline audit tables (Appendix~\ref{app:audit_counterfactual}).
+\item generation of systematic aggregation/multiplicity baselines for the $\alpha_{\mathrm{em}}^{-1}$ and $J$ normalization dictionaries (Section~\ref{subsec:alpha_impedance} and Section~\ref{subsec:cp_jarlskog}).
+\item generation of the quantitative rigidity-target summary table used in the main text (Table~\ref{tab:quant_summary}).
 \end{itemize}
 
 \subsection{Main entry points}
 \begin{sloppypar}
 \begin{itemize}
-\item \path{run_all.py}: runs the full deterministic pipeline in a fixed order and checks that the expected generated fragments exist.
-\item \path{exp_x6_enumeration.py}: enumerates $X_6$ and writes \path{sections/generated/x6_*.tex}.
-\item \path{exp_xm_enumeration.py}: enumerates $X_m$ for an $m$-sweep and writes:
+\item \path{scripts/run_all.py}: runs the full deterministic pipeline in a fixed order and checks that the expected generated fragments exist.
+\item \path{scripts/exp_x6_enumeration.py}: enumerates $X_6$ and writes \path{sections/generated/x6_*.tex}.
+\item \path{scripts/exp_xm_enumeration.py}: enumerates $X_m$ for an $m$-sweep and writes:
 \begin{itemize}
 \item \path{sections/generated/xm_sweep_rows.tex}
 \end{itemize}
-\item \path{exp_fold6_stats.py}: computes Fold$_6$ statistics and writes \path{sections/generated/fold6_*.tex}.
-\item \path{exp_foldm_stats.py}: computes Fold$_m$ statistics for an $m$-sweep and writes:
+\item \path{scripts/exp_fold6_stats.py}: computes Fold$_6$ statistics and writes \path{sections/generated/fold6_*.tex}.
+\item \path{scripts/exp_fold_family_sensitivity.py}: generates a bounded counterfactual fold-family sensitivity fragment:
+\begin{itemize}
+\item \path{sections/generated/fold_family_sensitivity_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_foldm_stats.py}: computes Fold$_m$ statistics for an $m$-sweep and writes:
 \begin{itemize}
 \item \path{sections/generated/foldm_sweep_rows.tex}
 \end{itemize}
-\item \path{exp_hilbert_chirality_index.py}: computes $\chi$ on the $n=3$ Hilbert path and writes \path{sections/generated/hilbert_chi_summary.tex}.
-\item \path{exp_hilbert_chi_sweep.py}: sweeps $\chi$ across multiple Hilbert orders and writes:
+\item \path{scripts/exp_hilbert_chirality_index.py}: computes $\chi$ on the $n=3$ Hilbert path and writes \path{sections/generated/hilbert_chi_summary.tex}.
+\item \path{scripts/exp_addressing_selection.py}: compares Hilbert addressing to a row-major counterfactual by protocol-internal locality and computability metrics and writes:
+\begin{itemize}
+\item \path{sections/generated/addressing_selection_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_gauge_complexity_sensitivity.py}: generates a bounded sensitivity sweep for gauge-factor complexity-label choices and writes:
+\begin{itemize}
+\item \path{sections/generated/gauge_complexity_sensitivity_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_hilbert_chi_sweep.py}: sweeps $\chi$ across multiple Hilbert orders and writes:
 \begin{itemize}
 \item \path{sections/generated/hilbert_chi_sweep_rows.tex}
 \end{itemize}
-\item \path{exp_resolution_thresholds.py}: generates a resolution-threshold staircase table fragment and (optionally) a plot:
+\item \path{scripts/exp_scalar_coarse_grain.py}: generates a coarse-grained scalar parity table fragment and writes:
+\begin{itemize}
+\item \path{sections/generated/scalar_coarse_grain_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_resolution_thresholds.py}: generates a resolution-threshold staircase table fragment and (optionally) a plot:
 \begin{itemize}
 \item \path{sections/generated/resolution_thresholds_rows.tex}
 \item \path{figures/resolution_thresholds_staircase.pdf} (optional)
 \end{itemize}
-\item \path{exp_edge_mismatch_decomposition.py}: generates edge-connection audit fragments:
+\item \path{scripts/exp_edge_mismatch_decomposition.py}: generates edge-connection audit fragments:
 \begin{itemize}
 \item \path{sections/generated/edge_mismatch_deg_pair_rows.tex}
 \item \path{sections/generated/edge_mismatch_cost_quantiles_rows.tex}
 \end{itemize}
-\item \path{exp_holonomy_loops.py}: generates a plaquette-holonomy distribution fragment:
+\item \path{scripts/exp_holonomy_loops.py}: generates a plaquette-holonomy distribution fragment:
 \begin{itemize}
 \item \path{sections/generated/holonomy_cycle_type_rows.tex}
 \end{itemize}
-\item \path{exp_sm_labeling_solver.py}: constructs the deterministic labeling map and writes \path{sections/generated/sm_labeling_rows.tex}.
-\item \path{exp_labeling_lift_consistency.py}: audits a functorial label lift under the prefix projection $\pi_{m\to 6}$ and writes:
+\item \path{scripts/exp_sm_labeling_solver.py}: implements the deterministic rank-matching construction of Theorem~\ref{thm:labeling_unique} and writes \path{sections/generated/sm_labeling_rows.tex} (Remark~\ref{rem:labeling_script_status}).
+\item \path{scripts/exp_labeling_lift_consistency.py}: audits a functorial label lift under the prefix projection $\pi_{m\to 6}$ and writes:
 \begin{itemize}
 \item \path{sections/generated/label_lift_rows.tex}
 \end{itemize}
-\item \path{exp_mass_spectrum.py}: generates the mass-spectrum table fragments:
+\item \path{scripts/exp_mass_spectrum.py}: generates the mass-spectrum table fragments:
 \begin{itemize}
 \item \path{sections/generated/mass_spectrum_anchor_rows.tex}
 \item \path{sections/generated/mass_spectrum_quark_rows.tex}
 \item \path{sections/generated/mass_spectrum_neutrino_rows.tex}
 \item \path{sections/generated/mass_spectrum_rows.tex} (combined)
 \end{itemize}
-\item \path{exp_mass_matching_layer.py}: computes a minimal quantized matching-layer summary for the mass-spectrum closure and writes:
+\item \path{scripts/exp_higgs_z_offset_rigidity.py}: generates a bounded-denominator rigidity sweep for the Higgs--$Z$ depth offset and writes:
+\begin{itemize}
+\item \path{sections/generated/higgs_z_offset_sweep_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_mass_matching_layer.py}: computes a minimal quantized matching-layer summary for the mass-spectrum closure and writes:
 \begin{itemize}
 \item \path{sections/generated/mass_matching_layer_rows.tex}
+\item \path{sections/generated/mass_matching_layer_summary_rows.tex}
 \end{itemize}
-\item \path{exp_mass_depth_rigidity.py}: runs a bounded-coefficient search (20 iterations) and writes \path{sections/generated/mass_depth_rigidity_rows.tex}.
-\item \path{exp_ckm_mixing_depth_rigidity.py}: runs a bounded-complexity minimax search for CKM magnitudes (20 iterations) and writes \path{sections/generated/ckm_mixing_*.tex}.
-\item \path{exp_ckm_matrix_closure.py}: reconstructs a full CKM matrix from three magnitudes and a Jarlskog anchor (both a PDG-consistent reference reconstruction and the closed prediction) and writes:
+\item \path{scripts/exp_mass_depth_rigidity.py}: runs a bounded-coefficient search (20 iterations) and writes \path{sections/generated/mass_depth_rigidity_rows.tex}.
+\item \path{scripts/exp_mass_depth_leave_one_out.py}: runs a leave-one-out robustness sweep for the mass-depth coefficient search and writes:
+\begin{itemize}
+\item \path{sections/generated/mass_depth_leave_one_out_rows.tex}
+\item \path{sections/generated/mass_depth_leave_one_out_summary_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_ckm_mixing_depth_rigidity.py}: runs a bounded-complexity minimax search for CKM magnitudes (20 iterations) and writes \path{sections/generated/ckm_mixing_*.tex}.
+\item \path{scripts/exp_ckm_matrix_closure.py}: reconstructs a full CKM matrix from three magnitudes and a Jarlskog anchor (both a PDG-consistent reference reconstruction and the closed prediction) and writes:
 \begin{itemize}
 \item \path{sections/generated/ckm_angles_rows.tex}
 \item \path{sections/generated/ckm_matrix_rows.tex}
 \item \path{sections/generated/ckm_unitarity_rows.tex}
 \end{itemize}
-\item \path{exp_pmns_mixing_depth_rigidity.py}: runs a bounded-complexity minimax search for PMNS mixing sines and writes:
+\item \path{scripts/exp_pmns_mixing_depth_rigidity.py}: runs a bounded-complexity minimax search for PMNS mixing sines and writes:
 \begin{itemize}
 \item \path{sections/generated/pmns_mixing_rigidity_rows.tex}
 \item \path{sections/generated/pmns_mixing_rows.tex}
 \end{itemize}
-\item \path{exp_pmns_matrix_closure.py}: reconstructs a PMNS matrix from the bounded-complexity angles and a discrete CP-phase closure and writes:
+\item \path{scripts/exp_pmns_matrix_closure.py}: reconstructs a PMNS matrix from the bounded-complexity angles and a discrete CP-phase closure and writes:
 \begin{itemize}
 \item \path{sections/generated/pmns_delta_sweep_rows.tex}
 \item \path{sections/generated/pmns_angles_rows.tex}
 \item \path{sections/generated/pmns_matrix_rows.tex}
 \item \path{sections/generated/pmns_unitarity_rows.tex}
 \end{itemize}
-\item \path{exp_neutrino_mass_interface.py}: generates a minimal neutrino mass-scale interface table fragment:
+\item \path{scripts/exp_pmns_no_io_stability.py}: runs a NO/IO robustness diagnostic for the PMNS closures and writes:
+\begin{itemize}
+\item \path{sections/generated/pmns_no_io_stability_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_neutrino_mass_interface.py}: generates a minimal neutrino mass-scale interface table fragment:
 \begin{itemize}
 \item \path{sections/generated/neutrino_mass_interface_rows.tex}
 \end{itemize}
-\item \path{exp_audit_closure_metrics.py}: generates bounded-complexity audit metrics (domain sizes, uniqueness gaps, quantiles) and writes:
+\item \path{scripts/exp_inverse_hypercharge_fit.py}: generates the inverse diagnostic fragment:
+\begin{itemize}
+\item \path{sections/generated/inverse_hypercharge_fit_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_inverse_hypercharge_sign_fit.py}: generates the inverse diagnostic fragment:
+\begin{itemize}
+\item \path{sections/generated/inverse_hypercharge_sign_fit_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_inverse_hypercharge_full_fit.py}: generates the inverse diagnostic fragment:
+\begin{itemize}
+\item \path{sections/generated/inverse_hypercharge_full_fit_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_inverse_rep_dim_fit.py}: generates the inverse diagnostic fragment:
+\begin{itemize}
+\item \path{sections/generated/inverse_rep_dim_fit_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_inverse_generation_fit.py}: generates the inverse diagnostic fragment:
+\begin{itemize}
+\item \path{sections/generated/inverse_generation_fit_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_inverse_diag_summary.py}: aggregates a compact main-text summary across inverse diagnostics and writes:
+\begin{itemize}
+\item \path{sections/generated/inverse_diag_summary_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_labeling_order_sensitivity.py}: measures SM-side ordering-key sensitivity of the induced cyclic labeling and writes:
+\begin{itemize}
+\item \path{sections/generated/labeling_order_sensitivity_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_audit_closure_metrics.py}: generates bounded-complexity audit metrics (domain sizes, uniqueness gaps, quantiles) and writes:
 \begin{itemize}
 \item \path{sections/generated/audit_closure_metrics_rows.tex}
 \item \path{sections/generated/audit_closure_quantiles_rows.tex}
 \end{itemize}
-\item \path{exp_audit_uncertainty_robustness.py}: generates minimizer stability rates under sampled target perturbations and writes:
+\item \path{scripts/exp_audit_uncertainty_robustness.py}: generates minimizer stability rates under sampled target perturbations and writes:
 \begin{itemize}
 \item \path{sections/generated/audit_uncertainty_robustness_rows.tex}
 \end{itemize}
-\item \path{exp_audit_counterfactual_baselines.py}: generates counterfactual baseline comparisons and writes:
+\item \path{scripts/exp_audit_counterfactual_baselines.py}: generates counterfactual baseline comparisons and writes:
 \begin{itemize}
 \item \path{sections/generated/audit_counterfactual_rows.tex}
 \end{itemize}
-\item \path{exp_audit_summary.py}: generates the audit summary fragment:
+\item \path{scripts/exp_audit_pi_polynomial_null.py}: generates a broader $\pi$-polynomial null baseline sweep for $\alpha^{-1}$ and writes:
+\begin{itemize}
+\item \path{sections/generated/audit_pi_poly_null_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_alpha_coeff_rigidity.py}: runs the bounded simplex search for the $\alpha^{-1}$ coefficient rigidity statement and writes:
+\begin{itemize}
+\item \path{sections/generated/alpha_coeff_rigidity_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_aggregation_baselines.py}: generates systematic aggregation and multiplicity baseline fragments and writes:
+\begin{itemize}
+\item \path{sections/generated/alpha_aggregation_baselines_rows.tex}
+\item \path{sections/generated/j_multiplicity_baselines_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_ew_rigidity.py}: runs finite searches for the electroweak $Z$-scale rigidity statements and writes:
+\begin{itemize}
+\item \path{sections/generated/ew_alpha_pi2_rigidity_rows.tex}
+\item \path{sections/generated/ew_sin2_rational_rigidity_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_jarlskog_pi_rigidity.py}: runs the bounded $(a,n)$ search for the $J=1/(a\pi^n)$ rigidity statement and writes:
+\begin{itemize}
+\item \path{sections/generated/jarlskog_pi_rigidity_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_quant_summary.py}: generates the quantitative summary fragment used in Table~\ref{tab:quant_summary} and writes:
+\begin{itemize}
+\item \path{sections/generated/quant_summary_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_sigma_summary.py}: generates a sigma-normalized mismatch summary fragment (using the explicit audit sigma scales in \path{scripts/common_constants.py}) and writes:
+\begin{itemize}
+\item \path{sections/generated/sigma_summary_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_audit_summary.py}: generates the audit summary fragment:
 \begin{itemize}
 \item \path{sections/generated/audit_summary_rows.tex}
 \end{itemize}
@@ -120,6 +215,7 @@ The scripts reproduce:
 
 \subsection{How to run (examples)}
 \begin{itemize}
+\item \texttt{cd docs/papers/2025\_z128\_standard\_model\_stable\_sector\_hpa\_omega}
 \item \texttt{python3 -m pip install -r requirements.txt}
 \item \texttt{python3 scripts/run\_all.py}
 \item \texttt{python3 scripts/exp\_x6\_enumeration.py}
@@ -130,6 +226,7 @@ The scripts reproduce:
 \item \texttt{python3 scripts/exp\_mass\_depth\_rigidity.py}
 \item \texttt{python3 scripts/exp\_ckm\_mixing\_depth\_rigidity.py}
 \item \texttt{python3 scripts/exp\_audit\_summary.py}
+\item \texttt{latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex}
 \end{itemize}
 
 \subsection{Generated LaTeX fragments}
@@ -137,6 +234,7 @@ The scripts write small LaTeX fragments into:
 \begin{center}
 \path{docs/papers/2025_z128_standard_model_stable_sector_hpa_omega/sections/generated/}
 \end{center}
+These fragments are generated outputs and should not be edited by hand; re-run the scripts to regenerate them deterministically from the stated constructions and bounded sweeps.
 This repository includes the generated fragments so the paper can compile out of the box, but they can be regenerated at any time.
 
 

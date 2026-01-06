@@ -1,0 +1,77 @@
+\section{Audit overview: contract and inference map (supplement)}
+\label{app:audit_overview}
+
+This appendix records two reader-facing audit summaries used throughout the main text: the audit-facing interface contract and the inference map.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{5.5pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.25\textwidth} p{0.18\textwidth} p{0.23\textwidth} p{0.26\textwidth}}
+\toprule
+item & status & where defined & audit / falsifiability channel \\
+\midrule
+tick-only primitive & Axiom~\ref{ax:readout_sequentiality} & Section~\ref{subsec:axiom0_linearity}; Section~\ref{sec:tick_calculus} & Fold$_6$ checks; Appendix~\ref{app:reproducibility} \\
+CAP closure rule & Axiom~\ref{ax:cap}, Definition~\ref{def:bounded_complexity_closure} & Section~\ref{subsec:bounded_complexity_audit}; Appendix~\ref{app:cap_audit_template} & audit tables; Appendix~\ref{app:generated_tables} \\
+dyadic phase registers $\ZZ_{2^p}$ & CAP-audited bounded closure (phase-lift dictionary) & Section~\ref{subsec:z128_label} and Section~\ref{subsec:holonomy_phase_lift_cp}; Appendix~\ref{app:protocol_primitives} & denom/map-family audits; Section~\ref{sec:protocol_connections_holonomy} \\
+addressing basis (screen) & CAP-audited counterfactual closure & Section~\ref{sec:hilbert_addressing}; Section~\ref{subsec:tick_to_space} & Table~\ref{tab:addressing_selection}; Appendix~\ref{app:reproducibility} \\
+rigid-frame display anchor & interface dictionary (derived localization criterion) & Section~\ref{subsec:6dof_lock}; Section~\ref{sec:tick_calculus} & resolution staircase; Section~\ref{sec:falsifiability} \\
+Hilbert orientation class & CAP tie-break (one-bit canonical representative) & Section~\ref{subsec:scl}; Definition~\ref{def:scl} & $\chi$ sign flips; Proposition~\ref{prop:chi_flip}; Prediction P2 \\
+three channels $\leftrightarrow$ three gauge factors & Proposition~\ref{prop:channel_to_gauge} & Section~\ref{subsec:gauge_as_compensation} & closed labeling; Theorem~\ref{thm:labeling_unique}; holonomy diagnostics; Section~\ref{sec:protocol_connections_holonomy} \\
+geometric normalization dictionaries & CAP-closed dictionaries (bounded families) & Section~\ref{sec:couplings_cp} & rigidity targets and audits; Table~\ref{tab:quant_summary}; Appendix~\ref{app:generated_tables} \\
+\bottomrule
+\end{tabular}
+\caption{Audit-facing interface contract: tick and CAP as the primitive inputs; all other interface components are CAP-closed within explicit finite candidate families and audited by the listed channels.}
+\label{tab:audit_facing_contract}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[
+  >=Latex,
+  node distance=7mm and 8mm,
+  box/.style={draw, rounded corners, align=left, inner sep=6pt, font=\footnotesize, text width=0.44\textwidth},
+  solid/.style={->},
+  dashedEdge/.style={->, dashed},
+  dottedEdge/.style={->, dotted}
+]
+
+\node[box] (prim) {\textbf{Primitive axiom (tick input).}\\
+Readout sequentiality: time as tick (Axiom~\ref{ax:readout_sequentiality}).\\
+Tick-first dictionary (Section~\ref{sec:tick_calculus}).};
+
+\node[box, below=of prim] (cap) {\textbf{Primitive axiom (CAP closure).}\\
+Computational Action Principle (Axiom~\ref{ax:cap}) instantiated as bounded-complexity closure and deterministic tie-breaks (Definition~\ref{def:bounded_complexity_closure}).};
+
+\node[box, below=of cap] (assump) {\textbf{CAP-closed interface components.}\\
+Rigid-frame display dictionary and derived bulk dimension (Section~\ref{subsec:6dof_lock}; Proposition~\ref{prop:bulk_dimension_from_anchor}).\\
+Orientation-class bit (CAP tie-break; Definition~\ref{def:scl}).\\
+CAP-minimal gauge-factor closure (Proposition~\ref{prop:channel_to_gauge}).\\
+CAP-closed phase-volume dictionaries for normalization targets (Section~\ref{sec:couplings_cp}).};
+
+\node[box, right=8mm of prim] (core) {\textbf{Mathematical layer (finite constructions).}\\
+Folding core and invariants (Section~\ref{sec:folding_core}).\\
+At $(m,n)=(6,3)$: $64\to 21$ and $18\oplus 3$ (Section~\ref{sec:folding_core}).};
+
+\node[box, below=of core] (interfaces) {\textbf{Closed interface maps / audited closures.}\\
+Closed SM labeling $\mathcal{L}_{\mathrm{SM}}$ (Section~\ref{sec:sm_labeling_closure}).\\
+Mass-depth closure and rigidity certificates (Section~\ref{sec:mass_spectrum_closure}).\\
+Coupling/angle/CP rigidity targets (Section~\ref{sec:couplings_cp}).\\
+Resolution staircase selection and calibration (Section~\ref{sec:falsifiability}).};
+
+\node[box, below=of interfaces] (pred) {\textbf{Protocol-level predictions and tests.}\\
+Falsifiability statements P1--P6 (Section~\ref{sec:falsifiability}) and audit tables (Appendix~\ref{app:generated_tables}).};
+
+\draw[solid] (prim) -- (core);
+\draw[dashedEdge] (assump) -- (interfaces);
+\draw[solid] (core) -- (interfaces);
+\draw[dottedEdge] (cap) -- (interfaces);
+\draw[solid] (interfaces) -- (pred);
+
+\end{tikzpicture}
+\caption{Inference map of the paper under the two-axiom spine (tick input and CAP closure). Solid: theorem-level; dashed: interface dictionaries in protocol language; dotted: CAP-audited selection.}
+\label{fig:inference_map}
+\end{figure}
+
+

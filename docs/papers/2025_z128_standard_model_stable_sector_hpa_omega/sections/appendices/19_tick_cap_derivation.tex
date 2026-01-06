@@ -1,0 +1,318 @@
+\section{Tick\,+\,CAP derivation spine: from the sole input to all interface outputs}
+\label{app:tick_cap_derivation}
+
+This appendix records the full ``tick\,+\,CAP'' derivation spine in one place.
+It introduces \emph{no additional axioms or independent physical inputs} beyond:
+(i) tick as the sequential update index (Axiom~\ref{ax:readout_sequentiality}), and
+(ii) CAP as the universal closure/selection rule on explicit finite candidate families (Axiom~\ref{ax:cap} and Appendix~\ref{app:cap_audit_template}).
+All other ingredients used throughout the paper are either theorem-level definitions/proofs in the finite model, or CAP-closed interface components whose candidate families and tie-break rules are explicit and audited by deterministic scripts.
+External reference conventions (PDG/CODATA targets, renormalization schemes, threshold choices) enter only at the matching layer as comparison inputs and are never used as premises for theorem-level folding statements.
+
+\paragraph{Two-axiom spine (reader contract).}
+Within this paper, ``physics'' means the executed protocol outputs of a run.
+The only primitive \emph{input} to that execution is the tick stream, and the only primitive \emph{rule} for closing otherwise underdetermined interface components is CAP.
+Accordingly, every nontrivial interface component below is recorded in one of two forms: a theorem-level finite construction, or a CAP-closure over an explicitly declared bounded candidate family with deterministic tie-break rules.
+
+\subsection{Reading guide and dependency convention}
+\label{subsec:tick_cap_derivation_reading_guide}
+
+We use the following status tags consistently:
+\begin{itemize}
+\item \textbf{[Tick]} definitional use of the sequential tick stream and finite window records.
+\item \textbf{[Math]} theorem-level finite constructions (counts, maps, explicit tables).
+\item \textbf{[CAP]} bounded-complexity closure: explicit finite candidate family + deterministic objective/tie-break.
+\item \textbf{[Match]} matching-layer comparison to external conventions (PDG/CODATA, scheme/scale).
+\end{itemize}
+Appendix~\ref{app:inference_ledger} provides a compact ledger of these dependencies; the present appendix expands each nontrivial CAP-closure step in full audit form (candidate family, objective, tie-break, and where it is reproduced).
+
+\subsection{Tick to finite observables: words}
+\label{subsec:tick_cap_words}
+
+\paragraph{[Tick] Finite observability is windowed.}
+Given the tick stream (Axiom~\ref{ax:readout_sequentiality}), finite observation at resolution $m$ is represented by binary words $w\in\Omega_m=\{0,1\}^m$ obtained by window projection (Section~\ref{sec:hpa_readout} and Appendix~\ref{app:protocol_primitives}).
+This fixes the basic data type used throughout: \emph{(tick, word)}.
+
+\subsection{CAP selection of the golden branch and the Fibonacci base}
+\label{subsec:tick_cap_golden_branch}
+
+\paragraph{[CAP] Candidate family.}
+At the scan layer one may choose an irrational slope $\alpha\in(0,1)\setminus\QQ$ in the Kronecker orbit.
+Within the audited proxy class of finite-depth continued-fraction complexity at depth $m$,
+\[
+C_m(\alpha):=\sum_{k=0}^{m} a_{k+1}\qquad\text{for }\alpha=[0;a_1,a_2,\dots],
+\]
+CAP selects the unique minimizer at every depth.
+
+\paragraph{[CAP] Objective and tie-break.}
+Minimize $C_m(\alpha)$ at each depth $m$; the tie-break is trivial because the minimizer is unique.
+
+\paragraph{[CAP] Result (rigidity).}
+Proposition~\ref{prop:golden_least_discrepancy} shows that $\alpha=\varphi^{-1}=[0;1,1,1,\dots]$ is the unique minimizer at every finite depth.
+This rigidly closes the symbolic/arithmetic bridge to the Zeckendorf/Fibonacci digit system used downstream (Section~\ref{sec:hpa_readout}).
+
+\paragraph{[Math] Consequence: Fibonacci grammar and counts.}
+On the golden branch, admissible digit strings satisfy the forbidden-word grammar (no adjacent ones), yielding the Fibonacci stable-sector sizes $|X_m|=F_{m+2}$ (Lemma~\ref{lem:xm_fib}) and the canonical $\pi$-channel split (Proposition~\ref{prop:cyc_bdry_size}).
+
+\subsection{CAP selection of a locality screen and an addressing basis}
+\label{subsec:tick_cap_addressing}
+
+\paragraph{[CAP] Screen dimension.}
+Closed-loop transport diagnostics require cycles.
+In a one-dimensional display graph there are no plaquettes, hence no holonomy; therefore the minimal screen dimension that supports the finite holonomy diagnostics of Section~\ref{sec:protocol_connections_holonomy} is $2$.
+Accordingly, CAP selects a $2$D screen as the minimal choice that admits an auditable loop-based diagnostic.
+
+\paragraph{[CAP] Addressing basis on the chosen screen.}
+Given a $2$D screen, an addressing basis is a bijection from a finite tick prefix to grid sites.
+We treat the choice of addressing basis as a CAP-closed selection in an explicit finite counterfactual family:
+\begin{itemize}
+\item \textbf{candidates:} Hilbert vs.\ row-major on the same $8\times 8$ screen at the anchor;
+\item \textbf{objectives:} protocol-internal locality/overhead metrics (scan-path jump quantiles, neighbor fiber-matching overhead quantiles, phase-lift computability failure rate);
+\item \textbf{tie-break:} lexicographic ordering of the objective vector.
+\end{itemize}
+The resulting comparison and the deterministic selection are recorded in Table~\ref{tab:addressing_selection} and reproduced by \texttt{scripts/exp\_addressing\_selection.py}.
+
+\subsection{CAP selection of balanced coupling and of the anchor \texorpdfstring{$(n,m)=(3,6)$}{(n,m)=(3,6)}}
+\label{subsec:tick_cap_anchor}
+
+\paragraph{[CAP] Balanced coupling as minimal overhead.}
+On a fixed screen, attaching spatial diagnostics requires assigning microstate labels to sites.
+CAP selects the bijective coupling (Remark~\ref{rem:balanced_coupling_convention}): on the $2$D screen, $2^m=4^n$ (equivalently $m=2n$) so that each site carries exactly one $m$-bit microstate label and no additional mapping conventions are required.
+
+\paragraph{[CAP] Anchor selection by minimal nontrivial holonomy.}
+Within the balanced chain $m=2n$, CAP selects the smallest $n$ for which the deterministic finite connection yields nontrivial plaquette holonomies (3/4 cycles) and a nonzero phase-lift signal.
+The balanced-chain sweep in Table~\ref{tab:holonomy_balanced_chain_sweep} shows that $n=1,2$ yield only trivial (identity) holonomy, while $n=3$ is the first scale with nontrivial 3/4-cycle content.
+Therefore the anchor on the chosen screen is $(n,m)=(3,6)$.
+
+\subsection{The folding core and stable types at the anchor}
+\label{subsec:tick_cap_folding_core}
+
+\paragraph{[Math] Folding is a finite theorem-level layer.}
+Given the golden-branch grammar and the explicit Fold$_m$ projection, the folding core is a finite combinatorial statement:
+at $m=6$ one has $64\to 21$ with the canonical split $21=18\oplus 3$ (Section~\ref{sec:folding_core}).
+No additional physical identification is used as a premise.
+
+\subsection{CAP derivation of bulk dimension from the anchor bit budget}
+\label{subsec:tick_cap_bulk_dimension}
+
+\paragraph{[CAP] Rigid-frame coarse-lock as a finite interface criterion.}
+At the protocol interface, ``bulk dimension'' enters only when one defines what it means to display a localized rigid frame and compare poses across sites.
+Under the minimal two-bin-per-parameter coarse-lock convention, a single $m$-bit window can coarse-lock a rigid frame in dimension $d$ only if
+\[
+m\ge \dim SE(d)=\frac{d(d+1)}{2}
+\]
+(Definition~\ref{def:rigid_frame_budget}).
+
+\paragraph{[CAP] Objective.}
+At fixed anchor $m=6$, CAP selects the maximal bulk dimension $d$ compatible with the coarse-lock budget.
+
+\paragraph{[CAP] Result.}
+Proposition~\ref{prop:bulk_dimension_from_anchor} shows that $d=3$ is the unique maximal admissible dimension at $m=6$ under the minimal convention.
+Thus the $3$D rigid-frame dictionary is not an external input: it is a CAP output of the anchor budget.
+
+\subsection{CAP tie-break for the orientation-class bit (chirality sign)}
+\label{subsec:tick_cap_orientation_bit}
+
+\paragraph{[CAP] Candidate family.}
+On the $2$D Hilbert screen, the global layout family is $D_4$ and splits into two orientation classes (Section~\ref{sec:hilbert_addressing}).
+Reflection swaps the two classes and flips the sign of the discrete chirality index $\chi$ (Proposition~\ref{prop:chi_flip}).
+
+\paragraph{[CAP] Tie-break.}
+Because the two orientation classes are symmetry-related and cost-degenerate under the locality diagnostics, CAP fixes a canonical representative by deterministic tie-break: the forward-traversal layout at $n=3$ is chosen so that $\chi<0$ (Definition~\ref{def:scl}; Appendix~\ref{app:generated_tables}).
+The reflected layout defines the mirror protocol.
+
+\subsection{CAP-closed phase-register and phase-map dictionary (holonomy lift)}
+\label{subsec:tick_cap_phase_register}
+
+\paragraph{[CAP] Baseline closure.}
+Phases are represented by a dyadic register $\ZZ_{2^p}$ and the phase lift uses $\mathrm{denom}=2^p$ together with a low-complexity index map $\tau$ (Section~\ref{subsec:holonomy_phase_lift_cp}).
+The baseline choices are fixed by CAP as canonical minimal-description representatives coherent with the anchor window:
+\begin{itemize}
+\item choose $\mathrm{denom}=2^m$ (anchor-coherent dyadic denominator);
+\item choose $\tau=\tau_{\mathrm{id}}$ (identity map as the minimal bit-level transform).
+\end{itemize}
+
+\paragraph{[CAP] Audited bounded counterfactual families.}
+The dyadic refinement chain and the bounded phase-map family are not hidden knobs: their influence is recorded by deterministic sweeps and counterfactual baselines.
+In particular, the denominator sweep is reported in Table~\ref{tab:holonomy_phase_lift_family} and the phase-map family sweep is reported in Tables~\ref{tab:holonomy_map_family_pmns}--\ref{tab:holonomy_map_family_ckm}, all reproduced by scripts listed in Appendix~\ref{app:reproducibility}.
+
+\subsection{CAP-closed coupling/CP normalizations from phase-volume data}
+\label{subsec:tick_cap_couplings_cp}
+
+\paragraph{[CAP] Electromagnetic normalization.}
+Section~\ref{subsec:alpha_impedance} fixes the three-stratum impedance template and closes the phase-volume dictionary by CAP within an explicit finite primitive family (Definitions~\ref{def:impedance_volume}--\ref{def:em_phase_spaces}).
+This yields the closed geometric impedance value $\alpha_{\mathrm{em}}^{-1}{}_{\mathrm{geo}}=4\pi^3+\pi^2+\pi$ (Theorem~\ref{thm:alpha_three_channel}).
+
+\paragraph{[CAP] Electroweak normalization.}
+At the $Z$ scale, the electroweak normalization is closed by CAP from discrete weights already fixed by the closed labeling at the anchor (Definition~\ref{def:ew_volumes}), yielding $\alpha^{-1}(\mu_Z)=13\pi^2$ and $\sin^2\theta_W(\mu_Z)=3/13$ (Theorem~\ref{thm:weinberg_angle}).
+
+\paragraph{[CAP] CP normalization.}
+The CP-odd phase space is CAP-closed within the same primitive family (Definition~\ref{def:cp_phase_space} and Proposition~\ref{prop:cp_phase_factorization_rigidity}), yielding the closed normalization target $J_{\mathrm{geo}}=1/(11\pi^7)$ (equation \eqref{eq:j_geo}).
+
+\paragraph{[Match] External comparisons are not premises.}
+CODATA/PDG values enter only to report mismatch sizes, stability under perturbations, and within-family look-elsewhere context (Appendix~\ref{app:generated_tables}); they are not used as premises for the theorem-level folding core or for the CAP-closed normalization dictionaries above.
+
+\subsection{Gauge fields as compensating connections (from fiber mismatch)}
+\label{subsec:tick_cap_gauge}
+
+\paragraph{[Tick,\;Math] Cross-site comparison forces extra transport data.}
+At any fixed window length $m$, a stable label $w\in X_m$ stands for an entire microstate fiber $\mathrm{Fold}_m^{-1}(w)$.
+Therefore, if the protocol requires comparing or transporting stable labels across neighboring sites in a display graph, then stable labels alone are insufficient: one must choose how the endpoint fibers are matched.
+This necessity is finite and intrinsic to window projection and stability folding.
+Proposition~\ref{prop:gauge_compensation} formalizes the point and shows that, after a deterministic padding to a uniform slot size $r=\max_{w\in X_m}|\mathrm{Fold}_m^{-1}(w)|$, each edge transport is represented by a permutation in $S_r$, with local relabelings acting by conjugation (a finite gauge redundancy).
+
+\paragraph{[Math] Deterministic discrete holonomy at the anchor.}
+At the CAP-minimal anchor $m=6$ one has $r=4$, and the paper provides a deterministic $S_4$ edge-connection construction together with plaquette holonomy diagnostics (Section~\ref{sec:protocol_connections_holonomy}).
+This is the finite, protocol-internal origin of the connection/holonomy language used throughout.
+
+\paragraph{[CAP] Three commuting channels close a three-factor compensation structure.}
+The folding template isolates three commuting defect channels $(\varphi,\pi,\e)$.
+If compensation is defined only up to independent local basis changes associated with each channel, then the minimal redundancy factorizes into three independent components (Proposition~\ref{prop:three_factor_compensation}).
+
+\paragraph{[CAP] Gauge-factor closure (bounded family, objective, tie-break).}
+To pass from the finite graph connection to a continuum dictionary, we treat gauge redundancy as internal and unitary (hence compact at the group level), and we restrict to three-factor products with one abelian phase sector and two inequivalent compact simple non-abelian factors.
+Within the explicit bounded family
+\[
+U(1)\times G_2\times G_3,
+\]
+with $G_2$ and $G_3$ compact, simple, non-abelian and non-isomorphic, we use $\dim(\mathfrak{g})$ as the intrinsic complexity label and apply CAP as lexicographic minimization of $(\dim\mathfrak{g}_2,\dim\mathfrak{g}_3)$ (Proposition~\ref{prop:channel_to_gauge}).
+The unique minimizer is $U(1)\times SU(2)\times SU(3)$ (up to finite quotients), by the compact Lie classification and Lemma~\ref{lem:su2_su3_unique_by_dim}.
+
+\subsection{Closed Standard Model labeling as a CAP-minimal rank matching}
+\label{subsec:tick_cap_labeling}
+
+\paragraph{[Math] The $18\oplus 3$ target cardinalities are fixed at the anchor.}
+At $(m,n)=(6,3)$ the stable sector is $X_6=X_6^{\mathrm{cyc}}\sqcup X_6^{\mathrm{bdry}}$ with $|X_6^{\mathrm{cyc}}|=18$ and $|X_6^{\mathrm{bdry}}|=3$ (Section~\ref{sec:folding_core}).
+Any SM identification at the anchor must respect this split.
+
+\paragraph{[CAP] Minimal closure of the cyclic target set.}
+On the SM side we require $18$ chiral multiplets (field-level labels) to match the $18$ cyclic stable types.
+Within the bounded family of minimal extensions of the SM fermion content at fixed three generations, CAP selects the anomaly-neutral minimal addition that closes the cardinality: a sterile singlet $\nu_R$ with $Y=0$ (Proposition~\ref{prop:anomaly_nur}).
+This closes $\mathcal{F}_{\mathrm{SM}}$ to $18$ multiplets without changing anomaly sums or introducing new charged matter.
+
+\paragraph{[CAP] Candidate family and objective for the labeling map.}
+Consider the finite family of split-compatible maps
+\[
+\mathcal{L}_{\mathrm{SM}}:X_6\to \mathcal{F}_{\mathrm{SM}}\sqcup\mathcal{G}_{\mathrm{SM}},
+\]
+where $\mathcal{G}_{\mathrm{SM}}=\{U(1),SU(2),SU(3)\}$ are the three gauge-factor connection classes.
+CAP closes the map by minimizing ordering mismatch subject to split compatibility:
+\begin{itemize}
+\item \textbf{cyclic sector:} fix a deterministic intrinsic order $\prec_X$ on $X_6^{\mathrm{cyc}}$ using only stable-type invariants (Definitions~\ref{def:r_star} and \ref{def:order_x6}), and fix a deterministic SM-side order $\prec_F$ on $\mathcal{F}_{\mathrm{SM}}$ using only discrete quantum-number invariants (Definition~\ref{def:order_fsm});
+\item \textbf{objective:} minimize the number of inversions between the induced pairing and the target orders (equivalently: enforce order preservation);
+\item \textbf{tie-break:} deterministic rank matching (order isomorphism) on the cyclic sector; and on the boundary sector, monotone matching of intrinsic boundary value $V(w)$ to gauge-sector complexity $\dim(\mathfrak{g})$ (Lemma~\ref{lem:gauge_dim_order} and Remark~\ref{rem:boundary_monotone_cap}).
+\end{itemize}
+
+\paragraph{[Math] Result (uniqueness).}
+Theorem~\ref{thm:labeling_unique} shows that the minimizer is unique: the cyclic assignment is the unique order isomorphism between two finite total orders, and the boundary assignment is the unique monotone permutation among $3!=6$ candidates.
+The explicit labeling table is recorded in Table~\ref{tab:sm_labeling_table} and reproduced by \texttt{scripts/exp\_sm\_labeling\_solver.py}.
+
+\subsection{Mass as latency: CAP-closed integer depth ansatz and rigidity}
+\label{subsec:tick_cap_mass}
+
+\paragraph{[Tick] Mass/energy are time-scale ratios in a log-time coordinate.}
+The Fibonacci resolution coordinate
+\[
+r(\mu)=\frac{\log(\mu/m_e)}{\log\varphi}
+\]
+is used because it linearizes multiplicative time-scale ratios (Section~\ref{sec:mass_latency_coordinate}).
+In tick-first language, a depth mismatch $\Delta r$ is a multiplicative mismatch of Compton-clock period and can be compared to operational delay proxies (Remark~\ref{rem:mass_as_compton_clock} and Appendix~\ref{app:time_mass_delay}).
+
+\paragraph{[Math] Intrinsic stable-type invariants supply a discrete cost basis.}
+At the anchor, each stable type carries intrinsic invariants $(V(w),g(w),|w|_1)$ (Definition~\ref{def:x6_invariants}).
+The degeneracy $g(w)=|\mathrm{Fold}_6^{-1}(w)|$ measures residual microstate uncertainty under window projection (Lemma~\ref{lem:fiber_uncertainty}) and is therefore the protocol-native discrete overhead term in a protocol-cost dictionary.
+
+\paragraph{[CAP\,+\,Match] Bounded integer closure for the depth map.}
+To make the depth assignment auditable as a low-complexity closure, we restrict to the explicit bounded family of integer-linear depth maps
+\[
+\widehat r(w)=a\,\Delta V+b\,\Delta g+c\,\Delta|w|_1,\qquad a,b,c\in\ZZ,\qquad |a|,|b|,|c|\le B
+\]
+(Appendix~\ref{app:mass_rigidity_details}, equation \eqref{eq:rhat_abc_ansatz}).
+The objective is evaluated on the scheme-stable charged-lepton anchors $\{\mu,\tau\}$ in the resolution coordinate $r(\mu)$, with deterministic lexicographic tie-break rules; an extended quark set is recorded as a diagnostic.
+
+\paragraph{[CAP\,+\,Match] Result (rigidity).}
+Proposition~\ref{prop:rhat_rigidity} shows that the unique minimizer stabilizes at $(a,b,c)=(2,5,1)$ by $B=5$ and remains constant up to $B=20$ (Table~\ref{tab:mass_depth_rigidity}), reproduced by \texttt{scripts/exp\_mass\_depth\_rigidity.py}.
+Once the coefficients are fixed, the closed template mass prediction is $\mu_{\mathrm{pred}}(f)=m_e\,\varphi^{\widehat r(f)}$ (Definition~\ref{def:mass_template}), and all remaining deviations are recorded explicitly as matching-layer shifts $\Delta r$ (Section~\ref{sec:mass_spectrum_closure} and Appendix~\ref{app:mass_rigidity_details}).
+
+\subsection{Resolution staircase: CAP-closed calibration and deterministic selection}
+\label{subsec:tick_cap_staircase}
+
+\paragraph{[CAP\,+\,Match] Candidate family for the step size.}
+To close the energy$\leftrightarrow$m interface at the protocol layer, we fix a deterministic staircase template $\mu_{\mathrm{th}}(m)$ whose only free discrete choice is the step size $r_{\mathrm{step}}$ (Section~\ref{subsec:p3_resolution_jumps}).
+We restrict to the explicit bounded family
+\[
+r_{\mathrm{step}}=k\pi,\qquad 1\le k\le 10,
+\]
+audited by deterministic sweeps.
+
+\paragraph{[CAP\,+\,Match] Objectives and tie-break.}
+Two deterministic calibration objectives are recorded:
+\begin{itemize}
+\item \textbf{single-anchor}: match the electroweak anchor by minimizing $|\log(\mu_{\mathrm{th}}(10)/m_Z)|$ over the candidate family (Table~\ref{tab:resolution_calibration_sweep});
+\item \textbf{two-anchor minimax}: minimize the maximum absolute mismatch across $(m=10,m_Z)$ and $(m=8,\mu_{\mathrm{QCD}})$ with deterministic tie-break rules (Table~\ref{tab:resolution_calibration_multianchor}).
+\end{itemize}
+
+\paragraph{[CAP\,+\,Match] Result.}
+Proposition~\ref{prop:r_step_2pi} records that $r_{\mathrm{step}}=2\pi$ is the unique minimizer under both audited objectives within the stated bounded family.
+With $r_{\mathrm{step}}$ fixed, the effective resolution map $m_{\mathrm{eff}}(\mu)$ is selected deterministically by least discrepancy (Corollary~\ref{cor:resolution_selection}).
+
+\subsection{Frequency-first continuum representative: equivalence, action, and equations}
+\label{subsec:tick_cap_continuum_representative}
+
+\paragraph{[Iface] Equivalence semantics fixes what counts as ``the same physics''.}
+Appendix~\ref{app:equivalence_semantics} records the semantic quotients already used throughout the paper (tick-origin shift, projection-fiber equivalence, local basis relabeling/gauge, coarse-graining preorder, and action equivalence).
+In particular, frequency is treated as a primary derived quantity in tick units via phase advance $\omega=\Delta\theta/\Delta t$ (Definition~\ref{def:frequency_from_phase}).
+
+\paragraph{[Iface\,+\,CAP] CAP-closed action representative on a finite family.}
+To obtain a continuum dynamical representative without introducing new primitives, we treat the choice of action as a CAP closure:
+\begin{itemize}
+\item \textbf{candidates:} a finite term-type dictionary of local covariant invariants (gravity, gauge, information/overhead sector, matter placeholder) together with a bounded rational coefficient box (Appendix~\ref{app:cap_continuum_action_closure});
+\item \textbf{objective:} lexicographic minimality in derivative order and description complexity, compatible with the equivalence semantics and coarse-graining monotonicity;
+\item \textbf{tie-break:} deterministic complexity key (term count, denominator height, and declared group-dimension keys where applicable).
+\end{itemize}
+The resulting CAP-minimal action skeleton is recorded in Proposition~\ref{prop:cap_minimal_action_skeleton}.
+
+\paragraph{[Math] Field equations by standard variation.}
+Once the representative action is fixed, the dynamical equations are the Euler--Lagrange equations of that action.
+Appendix~\ref{app:variational_field_equations} records the resulting Einstein equation with total stress (Theorem~\ref{thm:einstein_equation_total_stress}), Yang--Mills equations (Proposition~\ref{prop:ym_equation}), and the $\chi$-sector amplitude equation (Proposition~\ref{prop:chi_eom}), together with the weak-field Poisson template (Section~\ref{subsec:weak_field_poisson}).
+
+\subsection{Thermodynamics as coarse-graining and CAP free-energy closure}
+\label{subsec:tick_cap_thermo}
+
+\paragraph{[Iface\,+\,CAP] Entropy/temperature and entropic force.}
+Appendix~\ref{app:thermodynamics_from_equivalence} records a thermodynamic closure compatible with the same equivalence semantics:
+entropy is defined by coarse-grained state counting (or boundary channel capacity), temperature is the conjugate frequency scale, and equilibrium selection is a CAP closure on a finite family (Proposition~\ref{prop:cap_free_energy_closure}).
+Force is treated as a response functional (free-energy/action gradient), aligning the entropic-force dictionary with the weak-field gravitational potential dictionary.
+
+\subsection{Overhead-to-gravity closure and a data protocol for $\chi$}
+\label{subsec:tick_cap_overhead_gravity}
+
+\paragraph{[Iface] Overhead and lapse dictionaries.}
+Appendix~\ref{app:overhead_to_gravity_closure} records a minimal overhead-to-lapse closure:
+define $\chi=\log(\kappa/\kappa_0)$ and set $N=\e^{-\gamma\chi}$ as the lapse proxy (Definition~\ref{def:z128_overhead_lapse}).
+In a static gauge, set $g_{00}\approx -N^2$ and identify the weak-field potential by $g_{00}\approx -(1+2\Phi/c^2)$, yielding $\Phi=-\gamma c^2(\chi-\chi_0)$.
+This closes a weak-field Poisson source template $\rho_{\mathrm{eff}}\propto -\Delta\chi$ (equation \eqref{eq:z128_rho_eff_from_chi}) with a single calibration parameter $\gamma$.
+
+\paragraph{[Prot] $\chi(x)$ reconstruction protocol.}
+Appendix~\ref{app:chi_reconstruction_protocol} records an executable pipeline:
+Hilbert binning $\to$ window words $\to$ folding statistics $\bar g_m$ (or defect proxies) $\to$ $\chi(x)=\log(\bar g_m/\bar g_0)$.
+Given $\chi(x)$, $\gamma$ can be fit by rotation curves, lensing, or delay/redshift proxies.
+
+\subsection{Quantum readout and Born-probability rigidity}
+\label{subsec:tick_cap_quantum_born}
+
+\paragraph{[Iface] POVM readout.}
+Appendix~\ref{app:quantum_measurement_born} records finite-resolution readout by POVMs and instruments, giving Born probabilities $P_k=\Tr(\rho E_k)$.
+
+\paragraph{[Iface] Closure routes for Born weights.}
+Two complementary closures are recorded: (i) a projection-induced counting template compatible with the finite fiber semantics of this paper (Theorem~\ref{thm:z128_born_counting_template}), and (ii) a mature uniqueness theorem (Gleason--Busch; Theorem~\ref{thm:z128_gleason_busch}) that forces the Born form under noncontextual additivity.
+
+\subsection{Running couplings and cosmology as resolution flow (self-contained interfaces)}
+\label{subsec:tick_cap_rg_cosmo}
+
+\paragraph{[Iface] RG in the $r$ coordinate.}
+Appendix~\ref{app:running_couplings_resolution_flow} records the chain-rule form $\dd g/\dd r=(\log\varphi)\beta(g)$ and standard one-loop templates, together with threshold matching as discrete uplifts in the protocol flow.
+
+\paragraph{[Iface] Cosmology as resolution initialization and capacity growth.}
+Appendix~\ref{app:cosmology_resolution_flow} records a minimal cosmology interface: big bang as resolution bootstrapping, inflation as exponential growth of stable capacity $|X_m|\sim \varphi^m$ under approximately linear $m(t)$, and a discrete energy-budget matching hypothesis on the stable fraction $f_{\mathrm{stab}}(m)=F_{m+2}/2^m$.
+
+

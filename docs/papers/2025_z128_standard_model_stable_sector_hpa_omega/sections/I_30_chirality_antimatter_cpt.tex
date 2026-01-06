@@ -1,0 +1,178 @@
+
+\section{Chirality, antimatter, and \texorpdfstring{$CPT$}{CPT} as protocol geometry}
+\label{sec:chirality_antimatter}
+
+\subsection{Protocol-level \texorpdfstring{$P,T,C$}{P,T,C}: definitions}
+\label{subsec:ptc_definitions}
+
+\begin{definition}[Protocol-level discrete symmetries]\label{def:ptc_protocol}
+Fix a Hilbert order $n$ and a window length $m$.
+We define:
+\begin{itemize}
+\item $P_{\mathrm{prot}}$: a spatial reflection (an orientation-reversing element of the $D_4$ layout family acting on the Hilbert-addressed grid);
+\item $T_{\mathrm{prot}}$: scan traversal reversal (replacing the scan index order $k\mapsto 4^n-1-k$ on the Hilbert path);
+\item $C_{\mathrm{prot}}$: phase conjugation on the scan orbit, $z_n\mapsto \overline{z_n}$, with window conjugation chosen so that admissible readout is compared within matched protocols.
+\end{itemize}
+These are protocol transformations; they need not coincide with the continuum-field definitions of $P,T,C$ in standard QFT, but are designed to be auditable at finite resolution.
+In particular, $T_{\mathrm{prot}}$ reverses the execution orientation of a finite tick prefix, and is therefore a protocol change relative to a given initialized run in the tick-only language (Section~\ref{subsec:tick_time_arrow}).
+\end{definition}
+
+\subsection{Scan--chirality locking}
+\label{subsec:scl}
+
+Hilbert addressing admits both orientation-preserving and orientation-reversing layout families (Section~\ref{sec:hilbert_addressing}).
+The $D_4$ layout family therefore splits into two orientation classes exchanged by reflection, and this exchange flips the sign of the discrete chirality index $\chi$ (Proposition~\ref{prop:chi_flip}).
+
+\begin{definition}[Orientation class bit and canonical representative (CAP tie-break)]
+\label{def:scl}
+The orientation class is a one-bit protocol datum: it specifies whether the initialized addressing layout lies in the orientation-preserving or orientation-reversing class.
+Since the two classes are cost-degenerate under the tick-only locality diagnostics of Section~\ref{sec:hilbert_addressing}, we fix a canonical representative by the deterministic tie-break rule of CAP (Axiom~\ref{ax:cap}): at the $n=3$ anchor, use the standard Hilbert layout for which the forward-traversal chirality index satisfies $\chi<0$ (Appendix~\ref{app:generated_tables}).
+The reflected layout defines the mirror protocol and has $\chi>0$.
+Accordingly, protocol-level parity is implemented as a protocol swap to the mirror layout rather than as a symmetry within a fixed protocol.
+\end{definition}
+
+\paragraph{Which $D_4$ choices are physically distinguishable.}
+The $D_4$ family consists of $4$ rotations and $4$ reflections (Lemma~\ref{lem:d4_layouts}).
+In an isotropic setting, a global rotation of the spatial grid is a coordinate convention and does not define a distinct physical protocol once the observer's coordinate frame is fixed.
+The nontrivial discrete choice is therefore the \emph{orientation class} (rotation vs.\ reflection), which is detected by the sign of the discrete chirality index $\chi$ (Proposition~\ref{prop:chi_flip}).
+This is why SCL is formulated as an orientation-class selection rather than as a choice among all eight layouts.
+
+\begin{proposition}[Orientation class as the minimal discrete protocol datum]\label{prop:orientation_class_minimal}
+Fix a Hilbert order $n$ and an observer coordinate frame.
+Within the $D_4$ layout family, orientation-preserving layouts are related by rigid motions of the grid and are coordinate conventions, while orientation-reversing layouts flip the sign of the discrete chirality index $\chi$.
+Consequently, modulo orientation-preserving conventions, the only physically distinguishable discrete choice is the orientation class, and it is detected by $\mathrm{sgn}(\chi)$.
+\end{proposition}
+\begin{proof}
+Lemma~\ref{lem:d4_layouts} gives the $D_4$ split into rotations and reflections.
+Proposition~\ref{prop:chi_flip} shows that rotations preserve $\chi$ while reflections flip its sign.
+\end{proof}
+
+In this view, parity violation in the weak sector is a protocol statement: the weak compensation connection is defined within a chosen protocol class, while its mirror requires a protocol swap (it changes the readout basis).
+\begin{proposition}[A minimal parity-odd sign datum at finite resolution]\label{prop:parity_sign_datum}
+Fix a Hilbert order $n$ and any Hilbert layout within a chosen orientation class.
+Let $\chi$ be the discrete chirality index of the associated path, defined in \eqref{eq:hilbert_chi_def}.
+Then $P_{\mathrm{prot}}$ flips the sign of $\chi$ (Proposition~\ref{prop:chi_flip}), while any orientation-preserving protocol change leaves $\chi$ invariant.
+Consequently, any protocol-level observable that is a deterministic function of $\chi$ is parity-odd in the sense that it changes sign under $P_{\mathrm{prot}}$.
+\end{proposition}
+\begin{proof}
+This is immediate from Proposition~\ref{prop:chi_flip}.
+\end{proof}
+\paragraph{Why this targets the weak sector.}
+Within the three-channel template, the $\pi$-channel is the closure/topology channel, and the weak sector is the minimal non-abelian gauge sector $SU(2)$.
+If the corresponding compensation connection is implemented by protocol-local consistency rules that depend on Hilbert layout orientation, then the mirror layout is not a symmetry but a different protocol.
+This provides a readout-geometric route to parity asymmetry: the ``right-handed'' copy is not an internal symmetry operation within the fixed protocol.
+
+\paragraph{Observable consequences of different orientation classes.}
+If different orientation classes occur in different spacetime domains (different initializations), then parity-odd observables tied to $\chi$ should flip sign between domains while remaining invariant under orientation-preserving layout changes; see Prediction P2 in Section~\ref{subsec:p2_domain_walls}.
+Conversely, if a single global protocol class is selected, then all parity-odd statistics should be coherent with a fixed sign of $\chi$ at a given scale.
+
+\subsection{Time reversal and discrete chirality}
+\label{subsec:time_reversal_chi}
+
+The chirality index $\chi$ in \eqref{eq:hilbert_chi_def} flips sign under traversal reversal (Proposition~\ref{prop:chi_flip}).
+Since traversal reversal is the discrete operational avatar of time reversal in a scan process, this provides an auditable finite-resolution coupling:
+\[
+T\ \text{reversal} \quad\Longleftrightarrow\quad \chi\mapsto -\chi.
+\]
+Appendix~\ref{app:generated_tables} records the $n=3$ computation (generated by \texttt{scripts/exp\_hilbert\_chirality\_index.py}) that $\chi(\text{path})=-2$ and $\chi(\text{reversed path})=+2$.
+
+\paragraph{A discrete proxy for geometric phase.}
+The index $\chi$ counts the signed turning of a locality-preserving address curve.
+In continuous settings, signed turning and orientation couple naturally to geometric phase (Berry phase) and to spinorial sign structures \cite{Berry1984,Nakahara2003}.
+The finite $n=3$ computation therefore provides a minimal auditable finite-resolution model for the statement
+\[
+T\ \text{reversal}\ \Longleftrightarrow\ \text{chirality/spin sign flip},
+\]
+at the protocol layer: both traversal reversal (time reversal) and reflection (parity) flip the same discrete sign datum.
+
+\subsection{Antimatter as conjugate readout}
+\label{subsec:antimatter_duality}
+
+Consider the scan orbit $z_n=\e^{2\pi\iu(x_0+n\alpha)}$.
+Complex conjugation yields
+\[
+\overline{z_n}=\e^{-2\pi\iu(x_0+n\alpha)}=\e^{2\pi\iu((-x_0)+(-n)\alpha)}.
+\]
+Thus phase conjugation is equivalent to scan reversal $n\mapsto -n$ up to a phase shift.
+Formally:
+\begin{lemma}[Conjugation equals reversal up to an initial-phase flip]\label{lem:conjugation_reversal}
+Let $z_n=\e^{2\pi\iu(x_0+n\alpha)}$ and define $z'_n:=\e^{2\pi\iu(x_0'+n\alpha)}$ with $x_0'=-x_0$.
+Then $\overline{z_n}=z'_{-n}$ for all $n\in\ZZ$.
+\end{lemma}
+\begin{proof}
+This is the displayed computation.
+\end{proof}
+\begin{lemma}[Matched-window readout conjugation induces scan reversal]\label{lem:conjugation_readout_reversal}
+Let $W\subset\TT$ be a measurable readout window and write $\overline{W}:=\{\overline{z}:z\in W\}$.
+Let $(z_n)$ and $(z'_n)$ be as in Lemma~\ref{lem:conjugation_reversal}.
+Define readout sequences by
+\[
+w_n:=\ind\{z_n\in W\},\qquad
+w'_n:=\ind\{z'_n\in \overline{W}\}.
+\]
+Then $w'_n=w_{-n}$ for all $n\in\ZZ$.
+\end{lemma}
+\begin{proof}
+By Lemma~\ref{lem:conjugation_reversal}, $z'_n=\overline{z_{-n}}$.
+Therefore $z'_n\in\overline{W}$ if and only if $z_{-n}\in W$, hence $w'_n=\ind\{z_{-n}\in W\}=w_{-n}$.
+\end{proof}
+Consequently, in the rotation model the protocol operation $C_{\mathrm{prot}}$ is realized by traversal reversal together with an initial-phase flip, hence it is tied to the same discrete chirality sign datum as $T_{\mathrm{prot}}$:
+\[
+C_{\mathrm{prot}}\ \Longrightarrow\ \chi\mapsto -\chi.
+\]
+\paragraph{A CP-sign anchor from chirality.}
+Complex conjugation flips the sign of any conjugation-odd (hence CP-odd) holonomy residue.
+Since $C_{\mathrm{prot}}$ is realized at the scan layer by conjugation-as-reversal, the protocol already contains a canonical orientation sign datum, $\mathrm{sgn}(\chi)$, that can be used to fix the CP-odd sign convention within a chosen protocol class.
+We record the resulting interface rule:
+\begin{definition}[Chirality-anchored CP-odd sign convention (interface)]\label{def:chi_cp_sign}
+Let $J_{\mathrm{CP}}$ be a CP-odd rephasing-invariant holonomy residue (e.g.\ a Jarlskog invariant) expressed in a fixed PDG convention.
+Within a fixed protocol class, its sign is anchored by the chirality sign datum:
+\[
+\mathrm{sgn}(J_{\mathrm{CP}})=\mathrm{sgn}(\chi).
+\]
+Switching to the mirror protocol (reflection) flips $\chi$ and therefore flips the anchored sign.
+\end{definition}
+\begin{remark}[Convention dependence of CP-odd signs]\label{rem:cp_sign_convention}
+The sign of a CP-odd invariant depends on phase conventions and on bookkeeping conventions (e.g.\ generation ordering and parameterization), even when the magnitude is rephasing invariant.
+In this paper, whenever a CP-odd sign is used, we keep the PDG parameterization fixed and treat the chirality sign $\mathrm{sgn}(\chi)$ as a protocol-internal orientation datum that removes the remaining quadrant ambiguity in a deterministic way (cf.\ the PMNS phase closure in Section~\ref{subsec:pmns_matrix_closure}).
+Observable consequences are therefore phrased at the protocol level as parity-sensitive statistical contrasts (Prediction P2), rather than as a standalone claim about a convention-free sign.
+\end{remark}
+At the level of finite readout words, Lemma~\ref{lem:conjugation_readout_reversal} yields a concrete antimatter dual:
+\begin{definition}[Scan-reversal dual of a finite word]\label{def:word_reversal_dual}
+For a finite binary word $w=w_1\cdots w_m$, define its scan-reversal dual by
+\[
+\overline{w}:=w_m\cdots w_1.
+\]
+\end{definition}
+\begin{lemma}[Reversal preserves admissibility and the $\pi$-tag]\label{lem:reverse_preserves_admissibility}
+If $w\in X_m$ (no adjacent ones), then $\overline{w}\in X_m$.
+Moreover, the $\pi$-channel boundary tag is preserved: $D_\pi(\overline{w})=D_\pi(w)$.
+\end{lemma}
+\begin{proof}
+The forbidden substring ``11'' occurs in $w$ if and only if it occurs in the reversed word $\overline{w}$, so Zeckendorf admissibility is preserved.
+For the boundary tag, $D_\pi(w)=\ind\{w_1=w_m=1\}$ and reversal swaps endpoints, hence $D_\pi(\overline{w})=\ind\{\overline{w}_1=\overline{w}_m=1\}=D_\pi(w)$.
+\end{proof}
+
+\paragraph{Massless-limit matching dictionary (consistency check).}
+In the relativistic massless limit, chirality coincides with helicity \cite{PeskinSchroeder1995,WeinbergQFT1995}.
+Under conjugation-as-reversal, a left-handed particle maps to a right-handed antiparticle, matching the standard massless-limit dictionary between chirality and helicity when combined with scan-direction reversal.
+\emph{Remark:} we record this only as a matching-layer consistency check with standard QFT kinematics, not as a premise of the folding layer.
+
+\subsection{\texorpdfstring{$CPT$}{CPT} at the scan layer vs.\ symmetry breaking at the protocol layer}
+\label{subsec:cpt_protocol}
+
+The scan layer is unitary and reversible by construction, so combined transformations can remain valid at the microscopic level.
+However, once a readout protocol is fixed (window choice plus Hilbert orientation class), $P$ and $T$ may no longer be symmetries within the same protocol: they change the readout basis.
+This provides a protocol-geometric route to understanding why effective theories may violate $P$ (and $CP$) while preserving $CPT$.
+\emph{Remark:} in standard local Lorentz-invariant quantum field theory under the usual assumptions (locality, a Hermitian Hamiltonian, and the spectrum condition), $CPT$ invariance is enforced by the $CPT$ theorem; see, e.g., \cite{StreaterWightman1989,WeinbergQFT1995}.
+Here we use the $CPT$ theorem only as a consistency reference point: $P_{\mathrm{prot}},T_{\mathrm{prot}},C_{\mathrm{prot}}$ are explicitly defined finite-resolution protocol operations, and no continuum-field axioms are used as premises in the folding layer.
+
+\subsection{Mirror protocols and a ``right-handed'' universe}
+\label{subsec:mirror_universe}
+
+If the initialization at $t=0$ selects the opposite Hilbert orientation class, then the protocol-level chirality sign flips globally.
+In such a mirror protocol, the weak sector would appear right-handed rather than left-handed.
+This provides a precise sense in which a ``mirror universe'' is not a different Lagrangian, but a different readout protocol (Hilbert layout class).
+If protocol domains existed in the early universe, their boundaries would be protocol defects, yielding the domain-wall prediction in Section~\ref{subsec:p2_domain_walls}.
+
+

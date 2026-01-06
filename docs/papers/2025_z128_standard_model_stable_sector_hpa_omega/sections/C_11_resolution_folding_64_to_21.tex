@@ -1,0 +1,588 @@
+
+\section{Resolution folding core: \texorpdfstring{$\Omega_6\to X_6$}{Omega6->X6} and the \texorpdfstring{$64\to 21$}{64->21} stable sector}
+\label{sec:folding_core}
+
+This section records the finite-resolution mathematical layer of the construction with fully explicit definitions and proofs.
+The broader resolution-folding and recursive uplift program (beyond the $m=6$ anchor emphasized here) is developed in the companion manuscript \cite{Ma2025RF}.
+
+\subsection{Microstate readout space and balanced coupling}
+\label{subsec:microstate_space}
+
+Fix a window length $m\ge 1$ and define the microstate readout space
+\[
+\Omega_m:=\{0,1\}^m,\qquad |\Omega_m|=2^m,
+\]
+with linearization $\mathcal{H}_m:=\ell^2(\Omega_m)$.
+To attach explicit spatial diagnostics later (Hilbert addressing, chirality, holonomy), we use an addressing basis as a readout screen (Section~\ref{sec:hilbert_addressing}); at the minimal anchor this choice is made explicit and auditable (Table~\ref{tab:addressing_selection}).
+We adopt the classical $2$D Hilbert addressing and a balanced cardinality match on that screen, $2^m=4^n$ (equivalently $m=2n$).
+We focus on the minimal instance used in this paper, $n=3$ and hence $m=6$:
+\[
+\Omega_6=\{0,1\}^6,\qquad |\Omega_6|=64.
+\]
+At the same order $n=3$, the $2$D Hilbert-addressed grid has $4^n=64$ sites, matching the local readout cardinality.
+
+\begin{lemma}[Balanced coupling equivalences]\label{lem:balanced_coupling_equiv}
+For integers $m,n\ge 1$, the following are equivalent:
+\[
+2^m=4^n,\qquad m=2n.
+\]
+Equivalently, an order-$n$ Hilbert grid has the same number of sites as the $m$-bit readout alphabet $\Omega_m$ if and only if $m=2n$.
+\end{lemma}
+\begin{proof}
+Since $4^n=(2^2)^n=2^{2n}$, the equality $2^m=4^n$ holds if and only if $m=2n$.
+\end{proof}
+
+\begin{remark}[Balanced coupling and addressing dimension]\label{rem:balanced_coupling_dimension}
+Lemma~\ref{lem:balanced_coupling_equiv} is the cardinality match specialized to the $2$D Hilbert addressing used for the explicit finite diagnostics in this paper: an order-$n$ square grid has $4^n=(2^2)^n$ sites, hence $2^m=4^n\iff m=2n$.
+More generally, a $d$-dimensional hypercubic addressing basis at side length $2^n$ has $(2^n)^d=2^{dn}$ sites, and matching $|\Omega_m|=2^m$ corresponds to $m=dn$.
+We use the $2$D Hilbert grid as an explicit readout screen for the diagnostics below; see Remark~\ref{rem:why_2d_hilbert} for the rationale, Table~\ref{tab:addressing_selection} for the bounded counterfactual audit, and the $3$D comparison in Remark~\ref{rem:why_2d_hilbert}.
+\end{remark}
+
+\paragraph{Operational forcing rationale for $m=2n$ (2D screen) and for the ``minimal'' instance.}
+At Hilbert order $n$, the scan index ranges over $\{0,\dots,4^n-1\}$ and therefore carries exactly $2n$ bits of information.
+The balanced rule $m=2n$ identifies a readout window length with this canonical bit budget and yields a simple one-to-one site labeling on the chosen $2$D screen (Lemma~\ref{lem:balanced_coupling_equiv}).
+\begin{remark}[Balanced coupling is a diagnostic convention]\label{rem:balanced_coupling_convention}
+Balanced coupling is not a theorem-level requirement of the folding core.
+All folding maps, admissible sets, and counting statements in this section are defined for every $m$.
+The balanced relation $2^m=4^n$ is adopted only when we attach spatial diagnostics by placing window words (or stable types) on an order-$n$ addressing grid with matched cardinality so that each site carries exactly one $m$-bit microstate label.
+Within the tick-only interface of this paper, this choice is CAP-minimal among couplings on a fixed screen: a bijective site$\leftrightarrow$window assignment avoids additional protocol conventions and mapping overhead.
+Other couplings $2^m\neq 4^n$ correspond to non-bijective site$\leftrightarrow$window assignments and would require additional protocol conventions; they are not pursued here.
+\end{remark}
+\paragraph{Why $(m,n)=(6,3)$? A minimal holonomy anchor (CAP).}
+The algebra permits any $m$ and any addressing basis; attaching locality and transport diagnostics requires additional protocol structure.
+A closed-loop holonomy diagnostic requires at least a two-dimensional display graph, so we use a $2$D screen (Section~\ref{sec:hilbert_addressing}).
+Given a fixed $2$D screen and an addressing basis, balanced coupling $2^m=4^n$ is CAP-minimal because it yields a bijective site$\leftrightarrow$microstate assignment and avoids additional mapping overhead (Remark~\ref{rem:balanced_coupling_convention}).
+Among balanced pairs, CAP then selects the smallest $n$ for which the deterministic finite connection yields nontrivial plaquette holonomies (3/4 cycles) and a nonzero phase-lift signal; the balanced-chain sweep in Table~\ref{tab:holonomy_balanced_chain_sweep} shows that $n=1,2$ produce only trivial holonomy while $n=3$ is the first scale with nontrivial 3/4-cycle content.
+Thus the minimal anchor on this screen is $(n,m)=(3,6)$.
+We treat $(m,n)=(6,3)$ as a concrete anchor for fully explicit finite diagnostics; higher balanced pairs such as $(m,n)=(8,4)$ and $(10,5)$ are addressed uniformly by the same definitions and by the uplift sweeps recorded in Appendix~\ref{app:generated_tables}.
+In particular, the Fibonacci admissible sizes and the $\pi$-channel split persist for all $m$ (Lemma~\ref{lem:xm_fib} and Proposition~\ref{prop:cyc_bdry_size}): for example,
+\[
+2^8\to |X_8|=55,\qquad 55=47\oplus 8,
+\]
+and
+\[
+2^{10}\to |X_{10}|=144,\qquad 144=123\oplus 21,
+\]
+as recorded in Table~\ref{tab:xm_sweep}.
+
+\subsection{Three stability channels (summary)}
+\label{subsec:defect_operators}
+
+At finite window length, stability is organized by three channels, denoted $\varphi$--$\pi$--$\e$.
+For the mainline narrative we treat them as explicit predicates/definitions on finite words.
+An equivalent defect-operator viewpoint and an optional relaxation dynamics are recorded in Appendix~\ref{app:folding_core_proofs}.
+
+\paragraph{Three stability channels (fully explicit at finite window length).}
+The $64\to 21$ claim at $m=6$ is not obtained by fitting or post-hoc filtering: it follows deterministically from explicit defect predicates on finite words (the $\varphi$ and $\pi$ channels) together with a standard analytic template (the $\e$ channel).
+For reader convenience, Table~\ref{tab:three_channels_definitions} summarizes the precise channel definitions used in this paper and points to the theorem-level count statements that follow.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.12\textwidth} p{0.80\textwidth}}
+\toprule
+channel & explicit finite-$m$ definition and derived output at $m=6$ \\
+\midrule
+$\varphi$ (grammar) &
+Forbidden-word legality: $X_m:=\{w\in\{0,1\}^m:\ w_iw_{i+1}=0\}$, equivalently $D_\varphi(w)=\ind\{w\text{ contains }11\}$ and $\varphi$-stability is $D_\varphi(w)=0$ (Equation~\eqref{eq:Xm_def}).
+Then $|X_m|=F_{m+2}$ and in particular $|X_6|=F_8=21$ (Lemma~\ref{lem:xm_fib}).\\
+$\pi$ (wrap-around) &
+Cyclic closure at finite window length: $D_\pi(w)=\ind\{w_1=w_m=1\}$ and $X_m=X_m^{\mathrm{cyc}}\sqcup X_m^{\mathrm{bdry}}$ with
+$X_m^{\mathrm{cyc}}=\{w\in X_m:\ w_1w_m=0\}$ and $X_m^{\mathrm{bdry}}=\{w\in X_m:\ w_1=w_m=1\}$ (Section~\ref{subsec:pi_channel}).
+Then $|X_m^{\mathrm{bdry}}|=F_{m-2}$ and at $m=6$ one has the canonical split $21=18\oplus 3$ with explicit boundary words (Proposition~\ref{prop:cyc_bdry_size} and Corollary~\ref{prop:cyc_bdry_6}).\\
+$\e$ (analytic) &
+Analytic stability template: Artin--Mazur zeta and Abel normalization for the golden mean shift, yielding $\zeta(z)=1/(1-z-z^2)$ and the Abel pole barrier at $r=1$ under $z=r/\varphi$ (Section~\ref{subsec:e_channel}).
+At $m=6$ this channel is used as an interpretation layer rather than to further reduce $X_6$ (Remark~\ref{rem:e_channel_distinct}).\\
+\bottomrule
+\end{tabular}
+\caption{The three stability channels as explicit finite constructions. The reduction $64\to 21$ at $m=6$ is enforced by the $\varphi$-grammar (admissible words), while the $\pi$-channel induces the canonical $18\oplus 3$ cyclic/boundary split; the $\e$-channel supplies an analytic stability template used for interpretation and for higher-resolution variants.}
+\label{tab:three_channels_definitions}
+\end{table}
+
+\subsection{The \texorpdfstring{$\varphi$}{phi}-channel: Zeckendorf grammar and \texorpdfstring{$|X_6|=21$}{|X6|=21}}
+\label{subsec:phi_channel}
+
+Define the golden-mean admissible set (forbidden substring ``11'')
+\begin{equation}\label{eq:Xm_def}
+X_m:=\{w\in\{0,1\}^m:\ w_i w_{i+1}=0\ \text{for all }i=1,\dots,m-1\}.
+\end{equation}
+Equivalently, define the defect function
+\[
+D_\varphi(w):=\ind\{w\text{ contains the substring }11\},
+\]
+so that $\varphi$-stability is $D_\varphi(w)=0$ and the $\varphi$-stable sector is exactly $X_m$.
+
+\begin{remark}[Sturmian readout language vs.\ golden-mean admissible language]
+\label{rem:sturmian_vs_golden_mean}
+The set $X_m$ is the length-$m$ \emph{block language} of the golden-mean shift
+(the shift of finite type forbidding the word $11$), hence $|X_m|=F_{m+2}$ and
+its associated topological entropy is $\log\varphi$
+(Lemma~\ref{lem:xm_fib} and Remark~\ref{rem:phi_base_entropy}).
+This should not be confused with the factor language of the \emph{Sturmian}
+time-series readout produced by an irrational scan and a canonical two-interval
+window partition, which has factor complexity $p(m)=m+1$ and zero entropy rate
+(Appendix~\ref{app:sturmian_entropy}).
+The two notions are compatible because the Sturmian language is a strict subset
+of the golden-mean admissible block language (Appendix~\ref{app:sturmian_vs_golden_mean}).
+\end{remark}
+
+\begin{lemma}[Fibonacci count of admissible words]\label{lem:xm_fib}
+For all $m\ge 1$, one has $|X_m|=F_{m+2}$. In particular, $|X_6|=F_8=21$.
+\end{lemma}
+\begin{proof}
+Let $a_m:=|X_m|$.
+An admissible length-$m$ word either starts with $0$ followed by an admissible length-$(m-1)$ word, or starts with $10$ followed by an admissible length-$(m-2)$ word.
+Thus $a_m=a_{m-1}+a_{m-2}$ with initial values $a_1=2$, $a_2=3$, hence $a_m=F_{m+2}$.
+\end{proof}
+
+\begin{remark}[Sub-geometric stable types at $m<6$ (interface)]\label{rem:subgeometric_xm}
+Lemma~\ref{lem:xm_fib} shows that admissible stable types exist at every window length, including the near-threshold case $m=5$ with $|X_5|=F_7=13$.
+Under the rigid-frame coarse-lock budget at the anchor (Section~\ref{subsec:6dof_lock}; Proposition~\ref{prop:bulk_dimension_from_anchor}), $m=6$ is the minimal \emph{single-window} anchor compatible with coarse localized rigid-frame display at the protocol interface, so $m<6$ admissible types are \emph{sub-geometric} in this interface sense (cf.\ Remark~\ref{rem:6dof_lock_scope}).
+We refer to Section~\ref{subsubsec:geometric_vacuum} and Section~\ref{app:ghost_sector} for the complementary protocol interpretations of the vacuum sector (sub-geometric admissibility versus protocol-unstable microstates).
+\end{remark}
+
+\begin{remark}[The ghost sector: protocol-unstable microstates (interface)]\label{rem:ghost_sector_interface}
+In the HPA scan--projection paradigm, a vacuum is not the absence of microstates but the absence of \emph{stable localized outputs} under a fixed finite-resolution protocol.
+In addition to sub-geometric admissible types at $m<6$ (Section~\ref{subsubsec:geometric_vacuum}), a second contribution is present already at fixed $m$:
+the protocol-unstable complement $\Omega_m\setminus X_m$ consisting of readout words that violate the admissibility grammar.
+We refer to $\Omega_m\setminus X_m$ as the \emph{ghost sector}.
+
+At the anchor $m=6$, one has $|\Omega_6|=64$ and $|X_6|=21$, hence $|\Omega_6\setminus X_6|=64-21=43$.
+This same count also appears as projection redundancy in the many-to-one folding map $\mathrm{Fold}_6$ (Section~\ref{subsec:fold6_map}): stable readout labels retain $21$ degrees of freedom while $43$ microscopic degrees of freedom are suppressed by projection.
+
+\paragraph{A minimal instability witness.}
+Define the adjacent-ones count
+\[
+N_{11}(w):=\#\{\,i\in\{1,\dots,m-1\}\ :\ w_i=w_{i+1}=1\,\}.
+\]
+Then $X_m=\{w\in\Omega_m:\ N_{11}(w)=0\}$ and the ghost sector is $\Omega_m\setminus X_m=\{w\in\Omega_m:\ N_{11}(w)\ge 1\}$.
+Section~\ref{app:ghost_sector} records diagnostic $m$-sweeps for the ghost sector (violation distributions and minimal repair costs) generated by deterministic scripts.
+\end{remark}
+
+Define the $\varphi$-stable projection $P_\varphi:\mathcal{H}_m\to \mathcal{H}_m$ as the orthogonal projection onto $\ell^2(X_m)$.
+At $m=6$, this is the first rigid compression:
+\[
+\rank(P_\varphi)=|X_6|=21.
+\]
+
+\subsection{The \texorpdfstring{$\pi$}{pi}-channel: cyclic closure and the \texorpdfstring{$18\oplus 3$}{18+3} split}
+\label{subsec:pi_channel}
+
+At finite window length, the $\pi$-channel refines stability by imposing a cyclic wrap-around admissibility.
+Define the wrap-around defect
+\[
+D_\pi(w):=\ind\{w_1=w_m=1\}.
+\]
+For a window length $m\ge 4$, define
+\[
+X_m^{\mathrm{cyc}}:=\{w\in X_m:\ w_1 w_m=0\},
+\qquad
+X_m^{\mathrm{bdry}}:=\{w\in X_m:\ w_1=w_m=1\}.
+\]
+
+\begin{proposition}[Cyclic/boundary split size for the $\pi$-channel]\label{prop:cyc_bdry_size}
+For every $m\ge 4$, the boundary set has Fibonacci size
+\[
+|X_m^{\mathrm{bdry}}|=F_{m-2},
+\]
+and therefore, using Lemma~\ref{lem:xm_fib},
+\[
+|X_m^{\mathrm{cyc}}|=|X_m|-|X_m^{\mathrm{bdry}}|=F_{m+2}-F_{m-2}.
+\]
+\end{proposition}
+\begin{proof}
+If $w\in X_m^{\mathrm{bdry}}$, then $w_1=w_m=1$ and Zeckendorf admissibility forces $w_2=w_{m-1}=0$.
+Thus the middle substring $w_3\cdots w_{m-2}$ is an admissible word of length $m-4$ with no adjacent ones, i.e.\ an element of $X_{m-4}$.
+Conversely, any $u\in X_{m-4}$ yields a boundary word $w=10\,u\,01\in X_m^{\mathrm{bdry}}$.
+This gives a bijection $X_m^{\mathrm{bdry}}\cong X_{m-4}$, hence
+\[
+|X_m^{\mathrm{bdry}}|=|X_{m-4}|=F_{(m-4)+2}=F_{m-2}
+\]
+by Lemma~\ref{lem:xm_fib}.
+\end{proof}
+
+\begin{corollary}[Canonical $18\oplus 3$ split at $m=6$]\label{prop:cyc_bdry_6}
+At $m=6$, one has $|X_6^{\mathrm{cyc}}|=18$ and $|X_6^{\mathrm{bdry}}|=3$, and
+\[
+X_6^{\mathrm{bdry}}=\{100001,\ 100101,\ 101001\}.
+\]
+\end{corollary}
+\begin{proof}
+The sizes follow from Proposition~\ref{prop:cyc_bdry_size} and Lemma~\ref{lem:xm_fib}.
+For the explicit list, use the bijection in the proof of
+Proposition~\ref{prop:cyc_bdry_size}: every boundary word at $m=6$ has the form
+$w=10\,u\,01$ with $u\in X_{2}$.
+Now $X_2=\{00,01,10\}$, hence
+$X_6^{\mathrm{bdry}}=\{10\,00\,01,\ 10\,01\,01,\ 10\,10\,01\}
+=\{100001,100101,101001\}$.
+\end{proof}
+
+\subsection{The \texorpdfstring{$\e$}{e}-channel: Artin--Mazur zeta and Abel pole barrier}
+\label{subsec:e_channel}
+
+The $\e$-channel expresses analytic stability through zeta functions and Abel normalization \cite{ArtinMazur1965,ParryPollicott1990,Ruelle1978}.
+For a compact, self-contained summary of the Abel-path and pole-barrier viewpoint used in this channel, see Appendix~\ref{app:protocol_primitives}.
+For a dynamical system $(X,f)$, the Artin--Mazur zeta function is defined by the periodic-point counts
+\begin{equation}\label{eq:artin_mazur_def}
+\zeta_f(z):=\exp\!\left(\sum_{n\ge 1}\frac{\#\mathrm{Fix}(f^n)}{n}\,z^n\right),
+\end{equation}
+whenever the series is well-defined \cite{ArtinMazur1965,ParryPollicott1990}.
+For shifts of finite type with transition matrix $A$, the Artin--Mazur zeta function admits the standard rational form $\zeta(z)=1/\det(I-zA)$ \cite{ParryPollicott1990,LindMarcus1995,Ruelle1978}.
+For the golden mean shift, one can make $A$ explicit:
+\begin{lemma}[Golden mean shift: transition matrix and zeta]\label{lem:golden_zeta_matrix}
+Let $X\subset\{0,1\}^{\mathbb{Z}}$ be the shift of finite type defined by the forbidden word $11$.
+With state space $\{0,1\}$ and allowed transitions $0\to 0$, $0\to 1$, $1\to 0$, the transition matrix is
+\[
+A=\begin{pmatrix}
+1 & 1\\
+1 & 0
+\end{pmatrix}.
+\]
+Consequently,
+\begin{equation}\label{eq:golden_zeta}
+\zeta(z)=\frac{1}{\det(I-zA)}=\frac{1}{1-z-z^2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The transition rule encodes the forbidden substring ``11'', hence the stated adjacency matrix.
+Then
+\[
+I-zA=
+\begin{pmatrix}
+1-z & -z\\
+-z & 1
+\end{pmatrix},
+\qquad
+\det(I-zA)=(1-z)\cdot 1 - z^2=1-z-z^2,
+\]
+which gives \eqref{eq:golden_zeta}.
+\end{proof}
+Let $\varphi$ be the golden ratio and apply spectral normalization $z=r/\varphi$.
+Then
+\begin{equation}\label{eq:abel_normalized_zeta}
+\zeta_\e(r):=\zeta(r/\varphi)=\frac{1}{1-\frac{r}{\varphi}-\frac{r^2}{\varphi^2}}
+=\frac{1}{(1-r)\bigl(1+\frac{r}{\varphi^2}\bigr)}.
+\end{equation}
+The principal pole at $r=1$ lies on the boundary of the unit disk and plays the role of an analytic ``pole barrier'' for Abel-type limits.
+
+\begin{lemma}[Golden normalization factorization]\label{lem:golden_normalization_factorization}
+One has the identity
+\[
+1-\frac{r}{\varphi}-\frac{r^2}{\varphi^2}=(1-r)\bigl(1+\frac{r}{\varphi^2}\bigr),
+\]
+so the poles of $\zeta_\e$ are located at $r=1$ and $r=-\varphi^{2}$.
+\end{lemma}
+\begin{proof}
+Using $1-\varphi^{-2}=\varphi^{-1}$ (equivalently $\varphi^2=\varphi+1$), expand
+\[
+(1-r)\bigl(1+\frac{r}{\varphi^2}\bigr)=1-r+\frac{r}{\varphi^2}-\frac{r^2}{\varphi^2}
+=1-\Bigl(1-\frac{1}{\varphi^2}\Bigr)r-\frac{r^2}{\varphi^2}
+=1-\frac{r}{\varphi}-\frac{r^2}{\varphi^2}.
+\]
+\end{proof}
+
+\begin{remark}[Finite window vs.\ higher-resolution distinction]\label{rem:e_channel_distinct}
+At the minimal window length $m=6$, the analytic channel is used here primarily as an \emph{interpretation layer} for stability (holomorphy domain and boundary pole), while the admissible-word selection is already enforced by the $\varphi$-grammar.
+At higher resolution, weighted/pressure-like variants can make $\e$ genuinely distinct from a single forbidden-word predicate.
+\end{remark}
+
+\subsection{The folding map \texorpdfstring{$\mathrm{Fold}_6$}{Fold6}: from 64 indices to 21 stable types}
+\label{subsec:fold6_map}
+
+Index the microstate words by integers $\{0,\dots,2^m-1\}$ via the usual binary identification.
+For $N\in\{0,\dots,63\}$, let $(c_k)$ be the Zeckendorf digits of $N$ as in \eqref{eq:zeckendorf}.
+Define the length-$6$ folding map by truncation:
+\begin{equation}\label{eq:fold6_def}
+\mathrm{Fold}_6(N):=(c_1,\dots,c_6)\in X_6,
+\end{equation}
+padding by zeros if the expansion length is $<6$.
+
+\begin{remark}[Dyadic microstates versus Zeckendorf digits]\label{rem:fold_dyadic_zeckendorf}
+At fixed window length $m$, there are two distinct binary coordinate systems in play.
+The microstate register $\{0,\dots,2^m-1\}$ is dyadic (a size-$2^m$ index set), while the stable sector $X_m$ is defined as a Zeckendorf-admissible digit language (no adjacent ones) on the golden branch.
+The folding map $\mathrm{Fold}_m$ used in this paper is the explicit deterministic bridge between these coordinates: it converts a dyadic index $N$ to its Zeckendorf digits and then takes a length-$m$ prefix (Definition~\eqref{eq:foldm_def}).
+This is a \MathTag definition of the finite folding layer.
+Other deterministic base-change/repair conventions from $\{0,\dots,2^m-1\}$ to $X_m$ are possible and would, in general, induce different fiber statistics.
+To make this dependence auditable, Appendix~\ref{app:fold_family_sensitivity} records a bounded counterfactual family of alternative maps at $m=6$ and summarizes the resulting finite invariants.
+Within that bounded family, the additional natural fixed-point constraint $F(V(w))=w$ for all $w\in X_6$ (Definition~\ref{def:value_consistency_anchor}) selects the Zeckendorf-truncation map uniquely (Proposition~\ref{prop:value_consistency_selects_foldz}).
+\end{remark}
+
+\begin{definition}[Zeckendorf value of a stable word]\label{def:zeckendorf_value}
+For $w=w_1\cdots w_6\in X_6$, define its Zeckendorf value
+\begin{equation}\label{eq:Vw_def}
+V(w):=\sum_{k=1}^{6} w_k F_{k+1}
+=w_1\cdot 1+w_2\cdot 2+w_3\cdot 3+w_4\cdot 5+w_5\cdot 8+w_6\cdot 13.
+\end{equation}
+\end{definition}
+
+\begin{proposition}[Value labeling of the $21$ stable types]\label{prop:V_bijection}
+The map $V:X_6\to\{0,1,\dots,20\}$ is a bijection.
+\end{proposition}
+\begin{proof}
+\textbf{Step 1 (range).}
+Since $w\in X_6$ has no adjacent ones, the maximal value is attained by the
+admissible choice $w=010101$, giving
+\[
+V(w)=2+5+13=20.
+\]
+Thus $0\le V(w)\le 20$ for all $w\in X_6$, so $V$ maps into $\{0,\ldots,20\}$.
+
+\medskip
+\noindent\textbf{Step 2 (injectivity).}
+Let $w,w'\in X_6$ and suppose $V(w)=V(w')=:N$.
+By Step~1, $N\le 20<21=F_8$, so the Zeckendorf expansion of $N$ uses only
+Fibonacci weights up to $F_7=13$ and has zero digits beyond position $6$.
+Therefore the length-$6$ Zeckendorf digit vector of $N$ is uniquely defined.
+Since $w$ and $w'$ are both admissible digit vectors yielding the same value
+$N$, Zeckendorf uniqueness forces $w=w'$.
+Hence $V$ is injective.
+
+\medskip
+\noindent\textbf{Step 3 (bijectivity).}
+By Lemma~\ref{lem:xm_fib}, $|X_6|=21$, and $|\{0,\ldots,20\}|=21$.
+An injective map between two finite sets of equal size is bijective.
+\end{proof}
+
+\begin{lemma}[Surjectivity of $\mathrm{Fold}_6$]\label{lem:fold6_surjective}
+For every stable word $w\in X_6$, one has
+\[
+\mathrm{Fold}_6\!\bigl(V(w)\bigr)=w.
+\]
+In particular, $\mathrm{Fold}_6:\{0,\dots,63\}\twoheadrightarrow X_6$ is surjective.
+\end{lemma}
+\begin{proof}
+Fix $w=w_1\cdots w_6\in X_6$ and set $M:=V(w)$.
+By Proposition~\ref{prop:V_bijection}, $0\le M\le 20<21=F_8$, so the Zeckendorf expansion of $M$ uses only Fibonacci weights up to $F_7=13$ and has zero digits beyond $c_6$.
+Moreover, by construction of $V(w)$, the digit vector $(c_1,\dots,c_6)$ of this Zeckendorf expansion equals $(w_1,\dots,w_6)$.
+Therefore, by the definition \eqref{eq:fold6_def}, $\mathrm{Fold}_6(M)=(c_1,\dots,c_6)=w$.
+\end{proof}
+
+\begin{lemma}[Explicit fiber description of $\mathrm{Fold}_6$]\label{lem:fold6_fiber_explicit}
+Let $w\in X_6$ and write $v:=V(w)\in\{0,\dots,20\}$.
+Then $\mathrm{Fold}_6^{-1}(w)$ is given explicitly by:
+\begin{itemize}
+\item If $w_6=1$, then $\mathrm{Fold}_6^{-1}(w)=\{v,\ v+34\}$.
+\item If $w_6=0$ and $v\le 8$, then $\mathrm{Fold}_6^{-1}(w)=\{v,\ v+21,\ v+34,\ v+55\}$.
+\item If $w_6=0$ and $9\le v\le 12$, then $\mathrm{Fold}_6^{-1}(w)=\{v,\ v+21,\ v+34\}$.
+\end{itemize}
+In particular, every stable type has preimage size in $\{2,3,4\}$.
+\end{lemma}
+\begin{proof}
+Fix $w\in X_6$ and write $v:=V(w)$.
+By definition, $\mathrm{Fold}_6(N)=w$ iff the Zeckendorf digit string of $N$
+begins with $(c_1,\ldots,c_6)=w$.
+Write the Zeckendorf expansion of $N$ as
+\[
+N=v+\sum_{k\ge 7} c_k F_{k+1}
+=v+21c_7+34c_8+55c_9+\sum_{k\ge 10} c_k F_{k+1},
+\]
+using $F_8=21$, $F_9=34$, $F_{10}=55$.
+Since $0\le N\le 63$, one must have $c_k=0$ for all $k\ge 10$ because
+$F_{11}=89>63$.
+Hence
+\[
+N=v+21c_7+34c_8+55c_9,\qquad c_7,c_8,c_9\in\{0,1\},
+\]
+with Zeckendorf admissibility constraints
+\[
+w_6c_7=0,\qquad c_7c_8=0,\qquad c_8c_9=0.
+\]
+We now enumerate admissible $(c_7,c_8,c_9)$ and enforce $N\le 63$.
+
+\medskip
+\noindent\textbf{Case 1: $w_6=1$.}
+Then $c_7=0$.
+If $c_8=1$ then $c_9=0$ and $N=v+34$.
+If $c_8=0$, then either $c_9=0$ giving $N=v$, or $c_9=1$ giving $N=v+55$.
+But when $w_6=1$ one has $v\ge 13$, hence $v+55\ge 68>63$, so $c_9=1$
+is impossible.
+Thus $\mathrm{Fold}_6^{-1}(w)=\{v,v+34\}$.
+
+\medskip
+\noindent\textbf{Case 2: $w_6=0$.}
+Now $c_7$ may be $0$ or $1$.
+If $c_7=1$ then $c_8=0$, and $c_9$ may be $0$ or $1$:
+this yields $N=v+21$ or $N=v+76$.
+The latter exceeds $63$, so only $N=v+21$ remains.
+If $c_7=0$, then $c_8$ may be $0$ or $1$.
+If $c_8=1$ then $c_9=0$ and $N=v+34$.
+If $c_8=0$ then $c_9$ may be $0$ or $1$, yielding $N=v$ or $N=v+55$.
+The option $N=v+55$ is admissible iff $v\le 8$.
+Finally, note that for $w_6=0$ one always has $v\le 12$ (the maximal value
+without the $F_7=13$ digit).
+Therefore:
+\begin{itemize}
+\item if $v\le 8$, all three values $v$, $v+21$, $v+34$, $v+55$ lie in $[0,63]$;
+\item if $9\le v\le 12$, $v+55>63$ and the preimage reduces to $\{v,v+21,v+34\}$.
+\end{itemize}
+This proves the stated cases and the preimage-size set $\{2,3,4\}$.
+\end{proof}
+
+\begin{theorem}[Finite folding statistics at $m=6$]\label{thm:fold6_stats}
+The map $\mathrm{Fold}_6:\{0,\dots,63\}\twoheadrightarrow X_6$ is surjective.
+Every stable type has preimage size $2$, $3$, or $4$, with degeneracy histogram
+\[
+(|V_2|,|V_3|,|V_4|)=(8,4,9),
+\]
+where $V_k:=\{w\in X_6:\ |\mathrm{Fold}_6^{-1}(w)|=k\}$.
+Moreover, the boundary-sector preimages are
+\[
+\mathrm{Fold}_6^{-1}(100001)=\{14,48\},\quad
+\mathrm{Fold}_6^{-1}(100101)=\{19,53\},\quad
+\mathrm{Fold}_6^{-1}(101001)=\{17,51\}.
+\]
+\end{theorem}
+\begin{proof}
+Surjectivity is Lemma~\ref{lem:fold6_surjective}.
+Lemma~\ref{lem:fold6_fiber_explicit} gives $|\mathrm{Fold}_6^{-1}(w)|\in\{2,3,4\}$.
+
+\medskip
+\noindent\textbf{Histogram.}
+First count words with $w_6=1$.
+Such words satisfy $w_5=0$ and the prefix $w_1\cdots w_4$ is any admissible
+word in $X_4$, hence there are $|X_4|=F_6=8$ such words.
+By Lemma~\ref{lem:fold6_fiber_explicit} (case $w_6=1$) they have fiber size $2$,
+so $|V_2|=8$.
+
+Now consider words with $w_6=0$.
+Then $w_1\cdots w_5\in X_5$, so there are $|X_5|=F_7=13$ such words.
+Among them, those with $w_5=1$ have $w_4=0$ and the remaining triple
+$(w_1,w_2,w_3)$ can be any admissible length-$3$ word not equal to $000$.
+Indeed, if $(w_1,w_2,w_3)=000$ then $v=8$, while any other admissible triple
+adds at least $1$ to the value, giving $v\in\{9,10,11,12\}$.
+There are exactly $4$ admissible triples with sum $\ge 1$, namely
+$100,010,001,101$.
+Hence there are $4$ words in $X_6$ with $w_6=0$ and $v\in\{9,10,11,12\}$, and
+by Lemma~\ref{lem:fold6_fiber_explicit} they have fiber size $3$.
+Thus $|V_3|=4$.
+The remaining $13-4=9$ words with $w_6=0$ have $v\le 8$ and therefore fiber
+size $4$, so $|V_4|=9$.
+This yields $(|V_2|,|V_3|,|V_4|)=(8,4,9)$.
+
+\medskip
+\noindent\textbf{Boundary-sector preimages.}
+Using Definition~\ref{def:zeckendorf_value}, compute the boundary values:
+\[
+V(100001)=1+13=14,\quad V(100101)=1+5+13=19,\quad V(101001)=1+3+13=17.
+\]
+All three have $w_6=1$, so Lemma~\ref{lem:fold6_fiber_explicit} gives
+$\mathrm{Fold}_6^{-1}(w)=\{V(w),V(w)+34\}$, yielding the displayed pairs.
+\end{proof}
+
+\paragraph{Degeneracy histogram (supplement).}
+The rigid $(2,3,4)$ degeneracy histogram is recorded in Appendix~\ref{app:folding_core_proofs}.
+
+\paragraph{Summary at minimal resolution.}
+At $(m,n)=(6,3)$, the three-channel stability mechanism yields an explicit, auditable chain:
+\[
+\Omega_6\ (64\ \text{microstates})
+\xrightarrow[\text{$\varphi$-projection}]{\text{forbidden grammar}}
+X_6\ (21\ \text{stable types})
+\xrightarrow[\text{$\pi$-split}]{\text{cyclic closure}}
+X_6^{\mathrm{cyc}}\oplus X_6^{\mathrm{bdry}}\ (18\oplus 3).
+\]
+This $64\to 21$ and $18\oplus 3$ structure is not a metaphor but a finite combinatorial theorem with explicit tables.
+The remainder of the paper treats this rigid finite skeleton as the stable-sector substrate for Standard Model interface hypotheses.
+
+\subsection{Uplift: \texorpdfstring{$\mathrm{Fold}_m$}{Foldm} and persistence across \texorpdfstring{$m$}{m}}
+\label{subsec:foldm_uplift}
+
+The $m=6$ map $\mathrm{Fold}_6$ is the first nontrivial instance of a general truncation map at arbitrary window length.
+For $m\ge 1$ and $N\in\{0,\dots,2^m-1\}$, let $(c_k)_{k\ge 1}$ be the Zeckendorf digits of $N$ (no adjacent ones) and define
+\begin{equation}\label{eq:foldm_def}
+\mathrm{Fold}_m(N):=(c_1,\dots,c_m)\in X_m,
+\end{equation}
+padding by zeros if the digit vector length is $<m$.
+
+\begin{lemma}[Dyadic bound for Fibonacci growth]\label{lem:fib_dyadic_bound}
+For all $m\ge 1$, one has $F_{m+2}\le 2^m$.
+\end{lemma}
+\begin{proof}
+At $m=1$, $F_3=2=2^1$.
+Assume $F_{m+2}\le 2^m$ and $F_{m+1}\le 2^{m-1}$ for some $m\ge 2$ (the second inequality holds by the induction hypothesis at $m-1$).
+Then
+\[
+F_{m+3}=F_{m+2}+F_{m+1}\le 2^m+2^{m-1}<2^{m+1}.
+\]
+Thus $F_{m+3}\le 2^{m+1}$, completing the induction.
+\end{proof}
+
+\begin{proposition}[Surjectivity of $\mathrm{Fold}_m$ onto $X_m$]\label{prop:foldm_surjective}
+For every $m\ge 1$, the map $\mathrm{Fold}_m:\{0,\dots,2^m-1\}\twoheadrightarrow X_m$ is surjective.
+\end{proposition}
+\begin{proof}
+Let $w\in X_m$ and define its Zeckendorf value
+\[
+V_m(w):=\sum_{k=1}^{m} w_k F_{k+1}.
+\]
+It is standard that the admissible digit set $X_m$ has size $F_{m+2}$ and represents exactly the integers $\{0,\dots,F_{m+2}-1\}$ under $V_m$ (Lemma~\ref{lem:xm_fib}; see also \cite{Zeckendorf1972,AlloucheShallit2003,DemontignyEtAl2013FDecompositions,BenAriMiller2014ProbabilisticZeckendorf,Dekking2020StructureZeckendorf}).
+In particular, $V_m(w)\le F_{m+2}-1$.
+By Lemma~\ref{lem:fib_dyadic_bound}, $F_{m+2}\le 2^m$ for all $m\ge 1$, hence $V_m(w)\in\{0,\dots,2^m-1\}$.
+Moreover, the Zeckendorf expansion of $V_m(w)$ uses no Fibonacci weights beyond $F_{m+1}$, hence its digits beyond $c_m$ are zero and its first $m$ digits equal $w$.
+Therefore $\mathrm{Fold}_m(V_m(w))=w$.
+\end{proof}
+
+\paragraph{A canonicality criterion for the digit window.}
+Beyond surjectivity, one may ask whether the choice of the \emph{digit window}
+$(c_1,\ldots,c_m)$ in \eqref{eq:foldm_def} is forced within natural nearby
+variants.
+The following simple fixed-point condition rules out ``shifted'' Zeckendorf
+digit windows.
+
+\begin{definition}[Shifted Zeckendorf-window maps]
+\label{def:foldm_shifted}
+For $m\ge 1$ and an integer shift $s\ge 0$, define the shifted map
+\[
+\mathrm{Fold}_{m}^{(s)}(N):=(c_{1+s},c_{2+s},\ldots,c_{m+s})\in X_m,
+\]
+where $(c_k)_{k\ge 1}$ are the Zeckendorf digits of $N$ (padding by zeros for
+indices beyond the expansion length).
+Thus $\mathrm{Fold}_{m}^{(0)}=\mathrm{Fold}_m$ and $s=1$ is the ``FoldZ-shift''
+counterfactual at $m=6$ (Appendix~\ref{app:fold_family_sensitivity}).
+\end{definition}
+
+\begin{definition}[Value consistency at window length $m$]
+\label{def:value_consistency_m}
+A deterministic map $F:\{0,\ldots,2^m-1\}\to X_m$ is \emph{value-consistent} if
+\[
+F(V_m(w))=w\qquad\text{for all }w\in X_m,
+\]
+where $V_m(w)=\sum_{k=1}^m w_k F_{k+1}$ is the Zeckendorf value used above.
+\end{definition}
+
+\begin{proposition}[Value consistency forbids Zeckendorf window shifts]
+\label{prop:value_consistency_forbids_shift}
+Fix $m\ge 1$.
+Within the shifted Zeckendorf-window family $\{\mathrm{Fold}_m^{(s)}:s\ge 0\}$,
+the only value-consistent map (Definition~\ref{def:value_consistency_m}) is the
+unshifted map $\mathrm{Fold}_m^{(0)}=\mathrm{Fold}_m$.
+\end{proposition}
+\begin{proof}
+Let $w=10\cdots 0\in X_m$ (a single $1$ followed by zeros).
+Then $V_m(w)=F_2=1$.
+The Zeckendorf digits of $1$ satisfy $c_1=1$ and $c_k=0$ for all $k\ge 2$.
+Therefore, for any shift $s\ge 1$,
+\[
+\mathrm{Fold}_m^{(s)}(V_m(w))=(c_{1+s},\ldots,c_{m+s})=(0,\ldots,0)\neq w,
+\]
+so $\mathrm{Fold}_m^{(s)}$ is not value-consistent.
+On the other hand, $\mathrm{Fold}_m^{(0)}(V_m(w))=\mathrm{Fold}_m(1)=w$ by the
+definition of $\mathrm{Fold}_m$ and Zeckendorf uniqueness.
+\end{proof}
+
+\paragraph{Degeneracy as truncated Zeckendorf tails.}
+For a fixed $w\in X_m$, the preimage size $g_m(w):=|\mathrm{Fold}_m^{-1}(w)|$ counts how many Zeckendorf expansions of numbers $N\in\{0,\dots,2^m-1\}$ share the same first $m$ digits.
+Equivalently, writing
+\[
+N=V_m(w)+\sum_{k\ge m+1} c_k F_{k+1},
+\]
+the fiber size is the number of admissible tail digit strings $(c_{m+1},c_{m+2},\dots)$ (with $c_m=w_m$ enforcing $c_m c_{m+1}=0$) whose tail value keeps $N$ in the finite domain.
+Thus finite preimage degeneracy is a direct consequence of Zeckendorf truncation at finite window length and the cutoff $N<2^m$; it is not an artifact of the $m=6$ case.
+
+\paragraph{Uplift evidence.}
+Appendix~\ref{app:generated_tables} records an $m$-sweep (generated by \texttt{scripts/exp\_foldm\_stats.py}) that verifies $\mathrm{Im}(\mathrm{Fold}_m)=X_m$ and reports the full degeneracy histograms for $m=6,\dots,16$ (Table~\ref{tab:foldm_sweep}).
+In particular, the support $\{2,3,4\}$ at $m=6$ uplifts to larger, still highly structured degeneracy values at $m=8$ and $m=10$ (Table~\ref{tab:foldm_sweep}), consistent with the tail-count interpretation above.
+
+

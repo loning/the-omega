@@ -1,0 +1,354 @@
+\section{Closure: field-level labeling of the \texorpdfstring{$21$}{21} stable types}
+\label{sec:sm_labeling_closure}
+
+This section closes the Standard Model labeling interface by giving an explicit, computable assignment of field-level labels to the finite stable type set $X_6$.
+We work at the chosen anchor scale $(m,n)=(6,3)$, where $|X_6|=21$ and $X_6=X_6^{\mathrm{cyc}}\sqcup X_6^{\mathrm{bdry}}$ with $|X_6^{\mathrm{cyc}}|=18$ and $|X_6^{\mathrm{bdry}}|=3$ (Proposition~\ref{prop:cyc_bdry_6}).
+
+\subsection{Field-level targets and audit discipline}
+\label{subsec:sm_labeling_targets}
+
+We use ``field-level'' in the Standard Model sense of chiral multiplets per generation (rather than individual Weyl components), with the unique minimal extension forced by the closure of the $18$ cyclic types under anomaly-neutrality (Proposition~\ref{prop:nur_forced_by_minimal_anomaly}).
+Concretely, for each generation $g\in\{1,2,3\}$, we consider the six chiral multiplets
+\[
+Q_L^{(g)},\ u_R^{(g)},\ d_R^{(g)},\ L_L^{(g)},\ e_R^{(g)},\ \nu_R^{(g)},
+\]
+with the usual $SU(3)\times SU(2)\times U(1)$ quantum numbers under the PDG convention $Q=T_3+Y$ \cite{PeskinSchroeder1995,PDGRPP2024}.
+Here $\nu_R^{(g)}$ denotes a neutral singlet (hypercharge $Y=0$) that is absent in the minimal SM, but standard in minimal sterile extensions used to parametrize neutrino mass interfaces \cite{PDGRPP2024}.
+Within the explicit minimal candidate family ``one additional multiplet per generation'', anomaly neutrality and the global $SU(2)$ consistency condition force the choice of a sterile singlet with $Y=0$ (Proposition~\ref{prop:nur_forced_by_minimal_anomaly}); in particular, adding a gauge singlet with $Y=0$ does not change the SM anomaly-cancellation identities (Proposition~\ref{prop:anomaly_nur}).
+This yields $18$ fermion multiplets.
+The remaining three stable types in the $18\oplus 3$ split are reserved for the three gauge-factor connection classes, aligned with the three-channel template (Proposition~\ref{prop:channel_to_gauge}).
+\begin{remark}[Higgs sector and what is (not) covered by the $21$ stable types]\label{rem:higgs_not_in_21}
+The $21$ stable types at $(m,n)=(6,3)$ are used here to close a minimal \emph{chiral labeling} interface: $18$ cyclic labels for fermion multiplets and $3$ boundary labels for gauge-factor classes.
+This does not, by itself, provide a stable-type label for the Higgs doublet.
+Accordingly, when we discuss a field-theoretic embedding (Appendix~\ref{app:protocol_eft_embedding}), the Higgs is treated as an additional field required for a renormalizable SM EFT, not as a claim that it must appear as a distinct stable type at the minimal window length.
+At the protocol-geometry layer, Hilbert addressing enters through an oriented scan order on the grid, and parity-odd sign data such as the discrete chirality index $\chi$ in \eqref{eq:hilbert_chi_def} are built from signed turns along this order (Section~\ref{sec:hilbert_addressing}).
+Accordingly, the minimal labeling interface closed at $(m,n)=(6,3)$ emphasizes chiral/gauge degrees of freedom tied to the orientation-class choice (Section~\ref{sec:chirality_antimatter}).
+By contrast, Lorentz-scalar sectors carry no intrinsic handedness and are treated, in the present interface language, as composite or protocol-emergent modes whose effective appearance depends on resolution uplift and on the choice of coarse graining, rather than on the minimal $m=6$ stable alphabet.
+The corresponding scalar-sector closure in protocol language is recorded in Proposition~\ref{prop:scalar_sector_closed}.
+\end{remark}
+
+\paragraph{Non-negotiable interface constraints (audit contract).}
+From an audit viewpoint, the labeling stage is closed under an explicit constraint set:
+\begin{itemize}
+\item \textbf{Split compatibility.} Cyclic vs.\ boundary types are fixed by the $\pi$-predicate $D_\pi$, so the $18\oplus 3$ split is not negotiable (Section~\ref{sec:folding_core}); we therefore require $\mathcal{L}_{\mathrm{SM}}(X_6^{\mathrm{cyc}})\subset\mathcal{F}_{\mathrm{SM}}$ and $\mathcal{L}_{\mathrm{SM}}(X_6^{\mathrm{bdry}})\subset\mathcal{G}_{\mathrm{SM}}$.
+\item \textbf{Standard consistency constraints.} The field-level target set obeys the standard anomaly-cancellation identities and hypercharge quantization under $Q=T_3+Y$ \cite{PeskinSchroeder1995,PDGRPP2024}; adding a sterile $\nu_R$ with $Y=0$ is the minimal anomaly-neutral closure of the cyclic count (Proposition~\ref{prop:anomaly_nur}).
+\item \textbf{No numerical SM targets in the labeling stage.} Masses, couplings, and fit-derived continuous parameters are not used to construct $\mathcal{L}_{\mathrm{SM}}$; only discrete quantum-number invariants enter (representation dimensions and the integer invariant $(6Y)^2$).
+\item \textbf{Deterministic closure.} Any remaining ties are resolved by explicit deterministic rules (Definitions~\ref{def:order_x6} and \ref{def:order_fsm}), and the sensitivity to the SM-side ordering-key choice is audited (Table~\ref{tab:labeling_order_sensitivity}).
+\end{itemize}
+Within this contract, the labeling is not a free-form assignment: once the protocol-side order and SM-side order are fixed, the cyclic-sector bijection is forced as the unique order isomorphism (Theorem~\ref{thm:labeling_unique}).
+To address the concern that the result is a vacuous relabeling, we additionally report inverse diagnostics that test recoverability of several SM quantum-number patterns from intrinsic stable-type invariants by bounded-complexity rules (Table~\ref{tab:inverse_diag_summary} and Appendix~\ref{app:inverse_quantum_numbers}).
+
+\begin{definition}[Gauge-sector complexity order]\label{def:gauge_sector_complexity}
+For a gauge factor $G\in\{U(1),SU(2),SU(3)\}$, define its protocol-level complexity by the Lie-algebra dimension
+\[
+\dim(\mathfrak{g}),
+\]
+equivalently the number of gauge bosons in the corresponding factor.
+\end{definition}
+
+\begin{lemma}[Dimension order of the SM gauge factors]\label{lem:gauge_dim_order}
+For the Standard Model gauge factors one has
+\[
+\dim(\mathfrak{u}(1))=1,\qquad \dim(\mathfrak{su}(2))=3,\qquad \dim(\mathfrak{su}(3))=8,
+\]
+hence $U(1)\prec SU(2)\prec SU(3)$ in the complexity order of Definition~\ref{def:gauge_sector_complexity}.
+\end{lemma}
+\begin{proof}
+This is standard: $\dim(\mathfrak{u}(1))=1$ and $\dim(\mathfrak{su}(N))=N^2-1$; see, e.g., \cite{PeskinSchroeder1995}.
+\end{proof}
+
+\begin{lemma}[Uniqueness of compact simple factors at dimensions $3$ and $8$ (standard)]\label{lem:su2_su3_unique_by_dim}
+Among compact simple real Lie algebras, the only isomorphism class of dimension $3$ is $\mathfrak{su}(2)\cong\mathfrak{so}(3)$, and the only isomorphism class of dimension $8$ is $\mathfrak{su}(3)$.
+Consequently, if the gauge-sector complexity in Definition~\ref{def:gauge_sector_complexity} is identified with $\dim(\mathfrak{g})$ and one assumes compact (semi)simple gauge factors, then the dimension triple $(1,3,8)$ pins the factor Lie algebras uniquely to
+\[
+\mathfrak{u}(1)\oplus \mathfrak{su}(2)\oplus \mathfrak{su}(3),
+\]
+up to finite quotients at the group level.
+\end{lemma}
+\begin{proof}
+This follows from the Cartan--Killing classification of compact simple Lie algebras and their dimension formulas; see, e.g., \cite{HallLieGroups2015,FultonHarris1991RepresentationTheory}.
+\end{proof}
+
+\begin{lemma}[A standard $\ZZ_6$ quotient in the global gauge group]\label{lem:sm_global_gauge_group_z6}
+Let $G:=SU(3)\times SU(2)\times U(1)$ and normalize hypercharge by $Q=T_3+Y$ so that $6Y\in\ZZ$ (Lemma~\ref{lem:hypercharge_six_integer}).
+Let the $U(1)$ factor act on a field of hypercharge $Y$ by the integer charge $Q_Y:=6Y$, i.e.\ $u\in U(1)$ acts as $u^{Q_Y}$.
+Define the central element
+\[
+z:=\left(\e^{2\pi\iu/3}\,\ind_3,\ -\ind_2,\ \e^{\iu\pi/3}\right)\in SU(3)\times SU(2)\times U(1).
+\]
+Then $z$ acts trivially on all Standard Model fermion multiplets used in this paper (including a sterile $\nu_R$), and the resulting faithful gauge group may be taken as $G/\langle z\rangle\cong (SU(3)\times SU(2)\times U(1))/\ZZ_6$.
+\end{lemma}
+\begin{proof}
+For each multiplet $(SU(3),SU(2))_Y$, the $SU(3)$ center contributes $\e^{2\pi\iu/3}$ on triplets and $1$ on singlets, the $SU(2)$ center contributes $-1$ on doublets and $1$ on singlets, and the $U(1)$ factor contributes $\e^{\iu\pi Q_Y/3}=\e^{\iu\pi(6Y)/3}$.
+Using the standard hypercharges under $Q=T_3+Y$ for $Q_L,u_R,d_R,L_L,e_R,\nu_R$ \cite{PeskinSchroeder1995,PDGRPP2024}, one checks that the product phase equals $1$ in each case.
+\end{proof}
+
+We note two standard consistency facts for this fermion content (per generation), recorded here as audit-level requirements and referenced to the standard literature:
+(i) the hypercharge-squared sum (with multiplicities) equals $\sum Y^2=10/3$ under $Q=T_3+Y$ (Lemma~\ref{lem:hypercharge_sum_10}), and
+(ii) the gauge and mixed gravitational anomalies cancel (a neutral singlet does not affect these cancellations) \cite{BouchiatIliopoulosMeyer1972,PeskinSchroeder1995,PDGRPP2024}.
+
+\begin{proposition}[Anomaly cancellation is unchanged by adding $\nu_R$]\label{prop:anomaly_nur}
+Under the PDG convention $Q=T_3+Y$, the Standard Model chiral fermion content (per generation, without $\nu_R$) has vanishing gauge and mixed gravitational anomalies.
+Adding a sterile singlet $\nu_R$ with $Y=0$ preserves these cancellations.
+\end{proposition}
+\begin{proof}
+The anomaly-cancellation identities for the Standard Model hypercharge assignments are standard \cite{BouchiatIliopoulosMeyer1972,PeskinSchroeder1995,PDGRPP2024}.
+A sterile singlet $\nu_R$ contributes $Y=0$ to all anomaly sums and therefore does not change them.
+\end{proof}
+
+\begin{lemma}[Explicit anomaly sums in a left-handed basis (one generation)]\label{lem:sm_anomaly_sums}
+Under the PDG convention $Q=T_3+Y$, write one generation in a left-handed Weyl basis
+\[
+Q_L,\quad u^c,\quad d^c,\quad L_L,\quad e^c
+\qquad (\text{and optionally }\nu^c\text{ with }Y=0),
+\]
+with hypercharges $Y(Q_L)=1/6$, $Y(u^c)=-2/3$, $Y(d^c)=1/3$, $Y(L_L)=-1/2$, and $Y(e^c)=1$.
+Then the mixed gravitational--hypercharge anomaly and the cubic hypercharge anomaly vanish:
+\[
+\sum Y=0,\qquad \sum Y^3=0,
+\]
+where the sums include multiplicities from color and weak isospin components.
+Moreover, the mixed non-abelian anomalies vanish:
+\[
+SU(3)^2U(1):\quad 2\cdot \frac{1}{6}-\frac{2}{3}+\frac{1}{3}=0,
+\qquad
+SU(2)^2U(1):\quad 3\cdot \frac{1}{6}-\frac{1}{2}=0,
+\]
+equivalently $\sum Y\,T(R)=0$ for each non-abelian factor (with $T$ the Dynkin index of the fundamental representation).
+\end{lemma}
+\begin{proof}
+For the gravitational sum, include multiplicities of left-handed Weyl components:
+\[
+6\left(\frac{1}{6}\right)+3\left(-\frac{2}{3}\right)+3\left(\frac{1}{3}\right)+2\left(-\frac{1}{2}\right)+1\cdot (1)=0.
+\]
+For the cubic $U(1)_Y^3$ sum:
+\[
+6\left(\frac{1}{6}\right)^3+3\left(-\frac{2}{3}\right)^3+3\left(\frac{1}{3}\right)^3+2\left(-\frac{1}{2}\right)^3+1\cdot (1)^3=0.
+\]
+For $SU(3)^2U(1)$, only color triplets contribute, and all fundamental/antifundamental contributions share the same Dynkin index; factoring it out yields $2Y(Q_L)+Y(u^c)+Y(d^c)=0$.
+For $SU(2)^2U(1)$, only weak doublets contribute; factoring out the $SU(2)$ fundamental Dynkin index yields $3Y(Q_L)+Y(L_L)=0$.
+These are the standard anomaly-cancellation identities in a chiral left-handed basis \cite{BouchiatIliopoulosMeyer1972,PeskinSchroeder1995,PDGRPP2024}.
+\end{proof}
+
+\begin{remark}[Why the minimal extension is chosen as a neutral singlet]\label{rem:nur_minimal_choice}
+The role of $\nu_R$ in this paper is purely interface-level and audit-driven: it closes the cyclic-cardinality count to $18$ using the smallest additional bookkeeping burden.
+Adding new chiral multiplets charged under $U(1)$ and/or $SU(3)$ would introduce nontrivial local anomaly contributions unless accompanied by additional compensating matter \cite{PeskinSchroeder1995,PDGRPP2024}.
+Moreover, adding $SU(2)$ doublets is constrained by the global $SU(2)$ anomaly (Witten anomaly), which depends on the parity of half-integer isospin representations \cite{Witten1982SU2Anomaly}.
+Choosing $\nu_R$ as a sterile singlet with $Y=0$ preserves both the standard local anomaly cancellations and the $SU(2)$ global consistency condition while matching a minimal sterile extension widely used in neutrino-mass parametrizations \cite{PDGRPP2024}.
+\end{remark}
+
+The construction is auditable in the finite protocol language:
+we build the labeling map from intrinsic invariants of stable types (Definition~\ref{def:x6_invariants}), with the Hilbert order entering through the depth assignment in Definition~\ref{def:r_star}.
+
+\subsection{Nontriviality checks: inverse diagnostics and ordering sensitivity}
+\label{subsec:labeling_nontriviality}
+
+The closed labeling map in this section is an explicit deterministic rank-matching between two finite ordered sets (Theorem~\ref{thm:labeling_unique}).
+To demonstrate that this assignment is not a vacuous relabeling, we record two audit-level nontriviality diagnostics.
+
+\paragraph{Inverse interface diagnostics (recoverability of quantum-number patterns).}
+Appendix~\ref{app:inverse_quantum_numbers} treats the closed labeling as supervised data on the cyclic stable types and asks, for several Standard Model targets, whether bounded-complexity rules built from intrinsic invariants can recover target patterns above fixed chance/majority baselines (and in some targets exactly).
+Table~\ref{tab:inverse_diag_summary} summarizes those inverse diagnostics; full details and model families are recorded in Appendix~\ref{app:inverse_quantum_numbers}.
+These inverse diagnostics are not premises for any result in the main text: they are post-hoc audits of structure.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lccc}
+\toprule
+target & baseline & best accuracy & detail \\
+\midrule
+\input{sections/generated/inverse_diag_summary_rows.tex}%
+\end{tabular}
+\caption{Summary of inverse interface diagnostics on cyclic stable types at $m=6$: each row compares a fixed chance/majority baseline to the best bounded-complexity accuracy achieved by a reproducible inverse diagnostic (Appendix~\ref{app:inverse_quantum_numbers}).
+Rows are reproduced by the deterministic bounded sweeps described in Appendix~\ref{app:inverse_quantum_numbers} (\texttt{scripts/exp\_inverse\_diag\_summary.py}).}
+\label{tab:inverse_diag_summary}
+\end{table}
+
+\paragraph{Ordering sensitivity.}
+To test how much the induced cyclic assignment depends on SM-side ordering conventions in Definition~\ref{def:order_fsm}, we run a bounded sensitivity sweep that varies:
+(i) the component order among $\{\dim(SU(3)),(6Y)^2,\dim(SU(2))\}$,
+(ii) whether the generation index appears first or later,
+and (iii) whether the final deterministic tie-break uses the SM name or a name-free integer code (e.g.\ $Y_{\mathrm{num}}=6Y$).
+For each variant we recompute the induced cyclic pairing by rank matching.
+As a summary metric we report, for each induced pairing, the Hamming distance (and fraction) between the resulting ordered multiplet-type list and the baseline ordering used in this paper.
+Table~\ref{tab:labeling_order_sensitivity} records the resulting sensitivity sweep.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lrr}
+\toprule
+SM ordering key & labels changed (of $18$) & fraction \\
+\midrule
+\input{sections/generated/labeling_order_sensitivity_rows.tex}%
+\end{tabular}
+\caption{Ordering sensitivity audit: varying SM-side ordering conventions (component order, generation placement, and name vs.\ name-free tie-break) and counting how many cyclic multiplet labels change relative to the baseline ordering used in Definition~\ref{def:order_fsm}. The bold row is the baseline.
+Rows are reproduced by a deterministic finite sweep over the stated ordering-key variants (\texttt{scripts/exp\_labeling\_order\_sensitivity.py}).}
+\label{tab:labeling_order_sensitivity}
+\end{table}
+
+\subsection{A canonical labeling map}
+\label{subsec:sm_labeling_map}
+
+We first define an intrinsic protocol depth from stable-type invariants.
+\begin{definition}[Effective protocol depth at $(m,n)=(6,3)$]\label{def:r_star}
+For $w\in X_6$, define
+\begin{equation}\label{eq:r_star_def}
+r_\ast(w):=V(w)+n\,(g(w)-2),
+\end{equation}
+where $V(w)\in\{0,\dots,20\}$ is the Zeckendorf value, $g(w)\in\{2,3,4\}$ is the folding degeneracy, and $n=3$ is the Hilbert order at the chosen anchor $(m,n)=(6,3)$.
+\end{definition}
+
+\begin{lemma}[Discrete range of $r_\ast$ at $(m,n)=(6,3)$]\label{lem:rstar_range}
+At the minimal anchor $(m,n)=(6,3)$ one has $r_\ast(w)\in\{0,1,\dots,26\}$ for every $w\in X_6$.
+\end{lemma}
+\begin{proof}
+By Proposition~\ref{prop:V_bijection}, $V(w)\in\{0,\dots,20\}$.
+By Theorem~\ref{thm:fold6_stats}, $g(w)\in\{2,3,4\}$, hence $n(g(w)-2)\in\{0,3,6\}$ for $n=3$.
+Therefore $r_\ast(w)=V(w)+n(g(w)-2)\in[0,20]+[0,6]=\{0,\dots,26\}$.
+\end{proof}
+
+\paragraph{Why $r_\ast$ is used in the labeling order.}
+The quantity $r_\ast(w)$ is an intrinsic protocol-level scalar built only from finite-resolution invariants at $(m,n)=(6,3)$.
+It is reused consistently across the paper: it is the same unnormalized depth that enters the closed mass template (Definition~\ref{def:mass_template}) and therefore ties the labeling interface to the resolution-depth spectrum closure by a shared protocol cost coordinate.
+Using $r_\ast$ in the cyclic ordering makes the labeling stage deterministic without importing any Standard-Model numerical targets as premises.
+
+We now turn the labeling into a closed optimization statement.
+
+\begin{definition}[Ordering of cyclic stable types]\label{def:order_x6}
+On the cyclic sector $X_6^{\mathrm{cyc}}$, define the total order $\prec_X$ by
+\[
+w_1\prec_X w_2
+\quad\Longleftrightarrow\quad
+\bigl(r_\ast(w_1),V(w_1),w_1\bigr)\ \text{is lexicographically smaller than}\ \bigl(r_\ast(w_2),V(w_2),w_2\bigr).
+\]
+\end{definition}
+
+\begin{definition}[Ordering of SM fermion multiplets]\label{def:order_fsm}
+Let $\mathcal{F}_{\mathrm{SM}}$ be the set of $18$ chiral fermion multiplets used in Section~\ref{subsec:sm_labeling_targets}.
+Define the total order $\prec_F$ on $\mathcal{F}_{\mathrm{SM}}$ by lexicographic comparison of the tuple
+\[
+\Bigl(g,\ \dim(SU(3)\text{-rep}),\ (6Y)^2,\ \dim(SU(2)\text{-rep}),\ \text{name}\Bigr),
+\]
+where $g\in\{1,2,3\}$ is the generation index and $Y$ is the hypercharge under the PDG convention $Q=T_3+Y$ \cite{PeskinSchroeder1995,PDGRPP2024}.
+\end{definition}
+
+\begin{lemma}[Hypercharge quantization and the integer invariant $(6Y)^2$]\label{lem:hypercharge_six_integer}
+Under the PDG convention $Q=T_3+Y$, every Standard Model chiral multiplet (including a sterile singlet $\nu_R$ with $Y=0$) has hypercharge $Y\in \frac{1}{6}\ZZ$.
+Consequently $6Y\in\ZZ$ and $(6Y)^2\in\NN$ is an intrinsic integer invariant of the field-level label.
+\end{lemma}
+\begin{proof}
+This is the standard hypercharge assignment for one generation: $Y(Q_L)=1/6$, $Y(u_R)=2/3$, $Y(d_R)=-1/3$, $Y(L_L)=-1/2$, $Y(e_R)=-1$, and $Y(\nu_R)=0$ under $Q=T_3+Y$ \cite{PeskinSchroeder1995,PDGRPP2024}.
+Each value is an integer multiple of $1/6$.
+\end{proof}
+
+\begin{remark}[Why $(6Y)^2$ is used in the ordering]\label{rem:why_6Y_squared}
+Using $(6Y)^2$ replaces the rational invariant $Y^2$ by the minimal integer normalization compatible with Lemma~\ref{lem:hypercharge_six_integer}.
+This keeps the ordering rule fully discrete and bounded-complexity.
+For the minimal fermion multiplet set used here, the discrete gauge-quantum-number tuple already distinguishes the six multiplet types within each generation, so the final deterministic tie-break can be taken either as the SM name or as a name-free integer code (Table~\ref{tab:labeling_order_sensitivity}).
+\end{remark}
+
+\begin{lemma}[Representation dimensions in the SM multiplet set]\label{lem:sm_rep_dims}
+Within the Standard Model fermion multiplets used in this paper, the $SU(3)$ representation is either the singlet ($\dim=1$) or the fundamental triplet ($\dim=3$), and the $SU(2)$ representation is either the singlet ($\dim=1$) or the fundamental doublet ($\dim=2$).
+\end{lemma}
+\begin{proof}
+This is standard for the chiral matter content of the Standard Model (per generation): $Q_L$ and $(u_R,d_R)$ are color triplets, while leptons are color singlets; $Q_L$ and $L_L$ are weak doublets, while the right-handed singlets are weak singlets \cite{PeskinSchroeder1995,PDGRPP2024}.
+\end{proof}
+
+\begin{remark}[Generation labels and deterministic tie-breaks]\label{rem:order_fsm_generation}
+The generation index $g$ in Definition~\ref{def:order_fsm} is a bookkeeping label for the three copies of the same gauge-quantum-number pattern; any permutation of $\{1,2,3\}$ corresponds to a relabeling at the level of gauge interactions.
+We fix the conventional naming order and take $g=1$ to be the charged-lepton reference generation used later in the mass template (Definition~\ref{def:mass_template}).
+The final ``name'' entry is used only as a deterministic tie-break when the gauge-quantum-number tuple is otherwise identical.
+Within the multiplet set $\mathcal{F}_{\mathrm{SM}}$ used in this paper, that name tie-break is redundant: the tuple $(\dim(SU(3)),(6Y)^2,\dim(SU(2)))$ already separates the six multiplet types per generation.
+Table~\ref{tab:labeling_order_sensitivity} includes a name-free variant (replacing the final name tie-break by $Y_{\mathrm{num}}$) and confirms that the induced cyclic labeling is unchanged.
+\end{remark}
+
+We define a labeling map
+\[
+\mathcal{L}_{\mathrm{SM}}:X_6\to \mathcal{F}_{\mathrm{SM}}\sqcup \mathcal{G}_{\mathrm{SM}},
+\]
+where $\mathcal{G}_{\mathrm{SM}}:=\{SU(3),SU(2),U(1)\}$ denotes the three gauge-factor connection classes.
+The map is chosen to satisfy:
+\begin{itemize}
+\item \textbf{(split compatibility)} $\mathcal{L}_{\mathrm{SM}}(X_6^{\mathrm{cyc}})\subset \mathcal{F}_{\mathrm{SM}}$ and $\mathcal{L}_{\mathrm{SM}}(X_6^{\mathrm{bdry}})\subset \mathcal{G}_{\mathrm{SM}}$;
+\item \textbf{(protocol covariance)} rotations preserve labels while reflections/traversal reversal act by the protocol-level $P_{\mathrm{prot}}/T_{\mathrm{prot}}$ rules (Section~\ref{sec:chirality_antimatter});
+\item \textbf{(minimality)} among all assignments satisfying the above, we select the unique minimal-complexity solution under a fixed lexical tie-break rule.
+\end{itemize}
+
+\begin{theorem}[Closed labeling as the unique order-preserving assignment]\label{thm:labeling_unique}
+There exists a unique labeling map $\mathcal{L}_{\mathrm{SM}}$ such that:
+\begin{itemize}
+\item it is split-compatible;
+\item on the cyclic sector it is order-preserving:
+\[
+w_1\prec_X w_2\quad\Longrightarrow\quad \mathcal{L}_{\mathrm{SM}}(w_1)\prec_F \mathcal{L}_{\mathrm{SM}}(w_2);
+\]
+\item on the boundary sector, it assigns the three boundary types in increasing $V(w)$ order to $\{U(1),SU(2),SU(3)\}$ in increasing gauge-sector complexity order (Lemma~\ref{lem:gauge_dim_order}).
+\end{itemize}
+\end{theorem}
+\begin{proof}
+Both $(X_6^{\mathrm{cyc}},\prec_X)$ and $(\mathcal{F}_{\mathrm{SM}},\prec_F)$ are finite totally ordered sets with the same cardinality $18$, hence admit a unique order isomorphism given by matching ranks.
+The boundary words in $X_6^{\mathrm{bdry}}$ have distinct values $V(w)$, hence a unique increasing order.
+Likewise, the three gauge factors have distinct complexity values $\dim(\mathfrak{g})$, hence a unique increasing order by Lemma~\ref{lem:gauge_dim_order}.
+Matching ranks gives the unique order-preserving boundary assignment.
+\end{proof}
+
+\begin{remark}[CAP minimality of the monotone boundary assignment]\label{rem:boundary_monotone_cap}
+Among the $3!=6$ boundary permutations, the monotone assignment is the unique one compatible with the complexity order of Definition~\ref{def:gauge_sector_complexity} and therefore the unique CAP-minimal choice under any monotone mismatch cost between intrinsic boundary value and gauge-sector complexity.
+Any non-monotone assignment would map a larger intrinsic boundary value to a lower-complexity gauge factor, creating an avoidable ordering mismatch that must be compensated elsewhere in the interface.
+\end{remark}
+
+Operationally, the assignment is therefore constructed as follows (equivalently: among the $3!=6$ boundary permutations, it is the unique one that is monotone in the intrinsic value $V(w)$ and the gauge-sector complexity).
+\begin{itemize}
+\item The three boundary types are sorted by $V(w)$ and assigned to $\{U(1),SU(2),SU(3)\}$ in increasing gauge-sector complexity order (Definition~\ref{def:gauge_sector_complexity}).
+\item The $18$ cyclic types are sorted by $\prec_X$ and assigned to the $18$ fermion multiplets sorted by $\prec_F$.
+\end{itemize}
+
+\begin{remark}[Explicit boundary-value order at $m=6$]\label{rem:boundary_value_order}
+At $m=6$, the boundary words are $100001$, $101001$, and $100101$ (Corollary~\ref{prop:cyc_bdry_6}).
+Their Zeckendorf values are $V(100001)=14$, $V(101001)=17$, and $V(100101)=19$ (Definition~\ref{def:zeckendorf_value}).
+Thus the intrinsic increasing boundary order is
+\[
+100001\ \prec\ 101001\ \prec\ 100101,
+\]
+which is the order used for the unique monotone assignment to $U(1)\prec SU(2)\prec SU(3)$ (Lemma~\ref{lem:gauge_dim_order}).
+\end{remark}
+
+\begin{remark}[Determinism vs.\ reproducibility]
+\label{rem:labeling_script_status}
+Theorem~\ref{thm:labeling_unique} is the logical closure: it pins a unique map
+$\mathcal{L}_{\mathrm{SM}}$ once the two total orders $\prec_X$ and $\prec_F$
+and the boundary monotonicity convention are fixed.
+The script \texttt{scripts/exp\_sm\_labeling\_solver.py} is only a deterministic
+implementation of this rank-matching construction used to \emph{reproduce} the
+table rows and to avoid manual transcription errors; it is not an additional
+premise and it does not select among multiple solutions.
+\end{remark}
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{llllllll}
+\toprule
+stable type $w$ & $V(w)$ & $g(w)$ & $|w|_1$ & $r_\ast(w)$ & $D_\pi(w)$ & label $\mathcal{L}_{\mathrm{SM}}(w)$ & $(SU(3),SU(2))_Y$ \\
+\midrule
+\input{sections/generated/sm_labeling_rows.tex}%
+\\
+\bottomrule
+\end{tabular}
+\caption{Closed field-level labeling of the $21$ stable types at $(m,n)=(6,3)$.
+The labeling map is the unique order-preserving assignment of
+Theorem~\ref{thm:labeling_unique}.
+Rows are reproduced by a deterministic implementation of the same rank-matching
+construction (\texttt{scripts/exp\_sm\_labeling\_solver.py}).}
+\label{tab:sm_labeling_table}
+\end{table}
+
+

@@ -1,0 +1,116 @@
+\subsection{Thermodynamics from equivalence: entropy, temperature, and entropic force (frequency-first)}
+\label{app:thermodynamics_from_equivalence}
+
+This appendix closes a thermodynamic dictionary compatible with the tick\,+\,CAP spine and the equivalence semantics of Appendix~\ref{app:equivalence_semantics}.
+The goal is not to import thermodynamics as an independent axiom set, but to record how the standard thermodynamic notions can be treated as \emph{derived} from:
+(i) finite observability (many-to-one coarse graining) and
+(ii) CAP selection of minimal-cost macroscopic representatives.
+
+\subsubsection{Entropy as coarse-grained state counting}
+\label{subsec:entropy_as_counting}
+
+\paragraph{Macrostate as an equivalence class.}
+\InterfaceTag Fix a coarse-graining map $\mathsf{C}$ from microscopic protocol data to macroscopic descriptors.
+Two microdescriptions are macroscopically equivalent if they map to the same coarse descriptor.
+This is the semantic content of the coarse-graining equivalence in Section~\ref{subsec:equivalence_relations_minimal}.
+
+\paragraph{Counting entropy (finite).}
+\InterfaceTag For a macrostate $M$ with microstate set $\Gamma(M)$, define the counting entropy
+\begin{equation}
+\label{eq:counting_entropy}
+S(M):=\log|\Gamma(M)|,
+\end{equation}
+optionally scaled to physical units by $k_B$.
+At fixed window length $m$, the simplest instance is the fiber-count entropy $S_{\mathrm{fib}}(w)=\log|P(w)|$ for a stable type $w\in X_m$ (Appendix~\ref{subsec:entropy_state_counting}).
+
+\paragraph{Boundary/channel entropy.}
+\InterfaceTag In boundary-screen settings (black-hole or holographic cuts), the same idea is channel capacity:
+if $\mathcal{N}_\partial$ is the maximum number of distinguishable boundary outcomes at a given resolution, then $S=k_B\log\mathcal{N}_\partial$ (Appendix~\ref{app:bh_wormholes_pointer}).
+
+\subsubsection{Energy and temperature as frequency dictionaries}
+\label{subsec:energy_temperature_frequency}
+
+\paragraph{Energy as frequency (ratio-first).}
+\InterfaceTag In the tick-first stance, a primary dimensionless quantity is a frequency ratio.
+Mass/energy scales are therefore organized by the log-frequency coordinate $r(\mu)=\log_\varphi(\mu/m_e)$ (Section~\ref{subsec:mass_resolution_coordinate} and Appendix~\ref{app:time_mass_delay}).
+In matching form one may use $E=\hbar\omega$ and $E=mc^2$ (Appendix~\ref{app:time_mass_delay}), but the present program prefers ratios where constants cancel.
+
+\paragraph{Temperature as a frequency scale.}
+\InterfaceTag Temperature is the natural ``frequency scale'' of coarse excitations:
+in thermal field theory one has Matsubara frequencies $\omega_n=2\pi n k_BT/\hbar$, and in classical statistical mechanics $k_BT$ sets typical energy increments.
+Accordingly, in the frequency-first dictionary we treat $T$ as the scale conjugate to entropy, with the $k_B$ and $\hbar$ conversion treated as matching-layer calibration.
+
+\begin{definition}[Thermodynamic temperature (conjugate definition)]
+\label{def:temperature_conjugate}
+Let $E(M)$ be an effective energy functional of macrostates and $S(M)$ an entropy functional.
+In regimes where $E$ can be treated as a function of $S$ along a one-parameter family, define temperature by
+\[
+\frac{1}{T}:=\frac{\partial S}{\partial E}.
+\]
+\end{definition}
+
+\subsubsection{CAP as a free-energy principle}
+\label{subsec:cap_free_energy}
+
+\paragraph{Free energy as CAP objective.}
+\InterfaceTag A standard thermodynamic closure defines a free energy functional
+\[
+\mathcal{F}(M):=E(M)-T\,S(M),
+\]
+and asserts that equilibria minimize $\mathcal{F}$ subject to constraints.
+In the present program, this is read as a CAP closure:
+among all coarse representatives compatible with the protocol constraints, the realized representative minimizes a total cost that includes (i) mismatch/overhead and (ii) residual uncertainty.
+
+\begin{proposition}[CAP free-energy closure (audit form)]
+\label{prop:cap_free_energy_closure}
+Fix a finite coarse-graining family $\{\mathsf{C}_\theta:\theta\in\Theta(B)\}$ and a finite parameter family of macroscopic representatives $M(\theta)$.
+Define an objective of the form
+\[
+J(\theta)=\kappa\,E(M(\theta))+\kappa_S\,(-S(M(\theta)))+\kappa_c\,\mathrm{Comp}(\theta),
+\]
+with a deterministic tie-break key as in Appendix~\ref{app:cap_audit_template}.
+Then CAP selects a unique minimizer $\theta_B$ and therefore a unique macroscopic representative $M(\theta_B)$ within the declared finite family.
+\end{proposition}
+
+\paragraph{Interpretation.}
+\InterfaceTag The minus sign in $-S$ reflects the conventional role of entropy as a stabilizing/typicality factor in equilibrium selection.
+Whether one writes the objective as $E-TS$ or as a weighted sum depends on which quantities are treated as fixed constraints and which as adjustable parameters; the audit requirement is only that the candidate family is finite and the tie-break is explicit.
+
+\subsubsection{The three laws (protocol reading)}
+\label{subsec:three_laws_protocol}
+
+\paragraph{First law (bookkeeping identity).}
+\InterfaceTag Once an energy functional $E$ is fixed at the coarse level, the first law is a bookkeeping identity for how $E$ changes under (i) changes of macrostate multiplicity (heat) and (ii) changes of external constraints (work).
+In a frequency-first description, the ``internal energy'' is a frequency/clock-rate functional, and work corresponds to controlled changes in constraints that shift that functional.
+
+\paragraph{Second law (monotonicity under coarse graining).}
+\InterfaceTag Irreversibility does not require a new axiom here: it follows from many-to-one projection and coarse graining.
+When only macrovariables are tracked, information about microhistories is discarded (Section~\ref{subsec:tick_time_arrow}), and the counting entropy \eqref{eq:counting_entropy} is naturally nondecreasing under refinement-forgetting operations.
+CAP additionally selects representatives of minimal cost, giving a Lyapunov-style monotonicity for a total objective (Proposition~\ref{prop:cap_free_energy_closure}).
+
+\paragraph{Third law (stability floor and unattainability).}
+\InterfaceTag In protocol terms, the third law is a statement about the existence of a minimal stable background (a reference macrostate) and about the cost of reaching lower-entropy configurations:
+as $T\to 0$ (frequency scale of fluctuations collapses), the reachable macrostates shrink toward a stable sector whose residual entropy is determined by the remaining coarse-grained degeneracy (e.g.\ fiber multiplicities at the anchor).
+In the CAP language, reaching strictly zero entropy would require eliminating all residual equivalence-class multiplicity, which generally requires unbounded resources/resolution.
+
+\subsubsection{Entropic force and the gravity/delay dictionary}
+\label{subsec:entropic_force_gravity}
+
+\paragraph{Entropic force as response.}
+\InterfaceTag Given a free energy (or any CAP objective) depending on a position-like parameter $x$,
+force is defined as the response
+\[
+F(x)=-\nabla_x \mathcal{F}(x).
+\]
+If $E$ is approximately constant while $S$ varies with $x$, this yields the entropic-force form
+\[
+F(x)\approx T\,\nabla_x S(x).
+\]
+
+\paragraph{Relation to lapse and delay.}
+\InterfaceTag The delay/lapse dictionary (Appendix~\ref{app:time_mass_delay}) identifies overhead with clock-rate slowdown,
+so spatial variation of overhead induces spatial variation of local clock frequency.
+In the weak-field limit of Section~\ref{subsec:weak_field_poisson}, the same variation is encoded by $g_{00}\approx -(1+2\phi)$ and therefore by a potential $\phi$.
+Thus, in a frequency-first language, ``gravitational force'' is equivalently the response of frequency/clock-rate structure to spatial displacement, consistent with the response definition above.
+
+
