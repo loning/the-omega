@@ -1,0 +1,78 @@
+\subsection{Protocol to reconstruct an overhead proxy field $\chi(x)$ from data or simulations}
+\label{app:chi_reconstruction_protocol}
+
+This appendix records an executable, audit-facing protocol for reconstructing an overhead proxy field $\chi$ from data.
+It is written to be self-contained: the only inputs are (i) a spatial dataset (survey, simulation, or laboratory array), and (ii) the folding vocabulary already defined in this paper (windows, words, and the folding degeneracy proxy).
+
+\subsubsection{Step 0: choose resolution and addressing}
+\label{subsec:chi_step0}
+
+Fix a spatial order $n$ and a bounding box for the data.
+Discretize the region into a $2^n\times 2^n$ grid (for a 2D screen) or a $2^n\times 2^n\times 2^n$ grid (for a 3D volume with a chosen space-filling curve).
+Use Hilbert addressing (Section~\ref{sec:hilbert_addressing}) to assign an index $s$ to each cell.
+This produces a one-dimensional sequence of cell-level statistics $\{x_s\}$ in Hilbert order.
+
+\subsubsection{Step 1: window words from a thresholded statistic}
+\label{subsec:chi_step1_words}
+
+Choose a window length $m$ and define sliding windows $W_s=(s,s+1,\dots,s+m-1)$ on the Hilbert index axis.
+Choose a scalar statistic per cell, e.g.\ density contrast $\delta_s$.
+Fix a threshold $\tau$ (two common choices are $\tau=0$ or a fixed quantile to control sparsity), and define the $m$-bit word
+\[
+w_{s,j}:=\ind\{\delta_{s+j}\ge \tau\},\qquad j=0,\dots,m-1,
+\]
+so that $w_s:=w_{s,0}\cdots w_{s,m-1}\in\Omega_m$.
+Map the word to an integer index $N_s:=\mathrm{int}_m(w_s)$ (the standard binary-to-integer map used throughout this paper).
+
+\subsubsection{Step 2: folding statistics inside each window}
+\label{subsec:chi_step2_stats}
+
+For each window $W_s$, compute at least one of the following coarse statistics:
+\begin{itemize}
+\item \textbf{Degeneracy proxy (primary).}
+Define the folding degeneracy for an index $N$ by
+\[
+g_m(N):=\bigl|\mathrm{Fold}_m^{-1}(\mathrm{Fold}_m(N))\bigr|.
+\]
+Within window $W_s$, define the local mean degeneracy proxy by an empirical average
+\[
+\bar g_m(W_s):=\frac{1}{m}\sum_{j=0}^{m-1} g_m(N_{s+j}).
+\]
+At $m=6$, $g_6$ is exactly computable from the finite Fold$_6$ preimage table (Section~\ref{sec:protocol_connections_holonomy} and the generated tables appendix); at larger $m$ one uses the corresponding Fold$_m$ computation pipeline already used in the scripts in this repository.
+\item \textbf{$\varphi$-defect proxy (fallback).}
+If full $g_m$ evaluation is unavailable, compute the local forbidden-word defect rate (adjacent-$11$ frequency) as a proxy for leaving the admissible sector.
+\end{itemize}
+
+\subsubsection{Step 3: reconstruct $\chi$ and map back to space}
+\label{subsec:chi_step3_reconstruct}
+
+Fix a baseline degeneracy $\bar g_0>0$ (e.g.\ global mean or median over the dataset).
+Define the overhead proxy on the index axis by
+\begin{equation}
+\label{eq:chi_reconstruct_def}
+\chi(s):=\log\frac{\bar g_m(W_s)}{\bar g_0}.
+\end{equation}
+Map $\chi(s)$ back to a spatial field $\chi(x)$ by inverting the Hilbert indexing on the grid.
+
+\subsubsection{Step 4: comparison tests and the $\gamma$ fit}
+\label{subsec:chi_step4_tests}
+
+Use the reconstructed $\chi(x)$ as input to the overhead-to-gravity dictionary in Appendix~\ref{app:overhead_to_gravity_closure}:
+\[
+N(x)=\e^{-\gamma\chi(x)},
+\qquad
+\Phi(x)= -\gamma c^2(\chi(x)-\chi_0),
+\qquad
+\rho_{\mathrm{eff}}(x)=-\frac{\gamma c^2}{4\pi G}\,\Delta\chi(x).
+\]
+Depending on available data, compare against:
+\begin{itemize}
+\item \textbf{Rotation curves:} fit $\gamma$ using \eqref{eq:z128_vc_from_chi} and weighted least squares (Section~\ref{subsec:z128_gamma_fit}).
+\item \textbf{Lensing:} compare the predicted convergence (a Laplacian of an integrated potential) to reconstructed lensing maps; the prediction is linear in $\gamma$ at fixed $\chi$.
+\item \textbf{Time delays / redshifts:} compare frequency/clock-rate variations implied by $N(x)$ to time-delay proxies (Appendix~\ref{app:time_mass_delay_reference}).
+\end{itemize}
+
+\paragraph{Audit note.}
+\AuditTag The protocol above has only discrete choices (the pair $(m,n)$, the threshold rule for words, and the baseline $\bar g_0$ definition) plus the single continuous fit parameter $\gamma$.
+All discrete choices should be declared and swept as counterfactual baselines where feasible, in the same audit spirit as the rest of this paper.
+

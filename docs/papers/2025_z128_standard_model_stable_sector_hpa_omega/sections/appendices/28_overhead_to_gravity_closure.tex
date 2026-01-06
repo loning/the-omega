@@ -1,0 +1,97 @@
+\subsection{Overhead-to-gravity closure: from $\kappa/\chi$ to lapse, potential, and weak-field tests}
+\label{app:overhead_to_gravity_closure}
+
+This appendix makes the $\kappa/\chi\rightarrow N\rightarrow g_{00}\rightarrow \Phi$ chain fully explicit \emph{within this paper},
+so that the weak-field gravity dictionary is no longer only a pointer to external companion manuscripts.
+The logic is interface-level: it does not modify the finite folding core, but it closes a minimal, testable mapping from protocol overhead to gravitational proxies.
+
+\subsubsection{Overhead, lapse, and the $\chi$ field}
+\label{subsec:z128_overhead_lapse}
+
+\begin{definition}[Routing/implementation overhead and lapse proxy]
+\label{def:z128_overhead_lapse}
+Let $\kappa(x)$ denote a local implementation overhead (e.g.\ routing/compilation depth) and fix a reference $\kappa_0>0$.
+Define the dimensionless overhead ratio and its logarithm,
+\[
+s(x):=\frac{\kappa(x)}{\kappa_0},\qquad \chi(x):=\log s(x),
+\]
+and define a lapse-like factor
+\begin{equation}
+\label{eq:z128_lapse_from_chi}
+N(x):=\e^{-\gamma\chi(x)} = s(x)^{-\gamma},
+\qquad \gamma>0,
+\end{equation}
+where $\gamma$ is a dimensionless coupling constant.
+\end{definition}
+
+\paragraph{Operational reading.}
+\InterfaceTag Larger overhead means fewer effective local logical updates per unit tick budget, hence a slower local clock.
+Equation~\eqref{eq:z128_lapse_from_chi} is the minimal monotone dictionary that turns an overhead proxy into a clock-rate factor.
+The exponent $\gamma$ is a single-parameter calibration to be constrained empirically (Section~\ref{subsec:z128_gamma_fit}).
+
+\subsubsection{Effective metric dictionary and weak-field potential}
+\label{subsec:z128_metric_dictionary}
+
+\paragraph{Metric representative (static gauge).}
+\InterfaceTag In a static or adiabatic regime, adopt the standard continuum identification
+\begin{equation}
+\label{eq:z128_g00_lapse_dictionary}
+g_{00}(x)\approx -N(x)^2.
+\end{equation}
+This is the GR lapse dictionary written in protocol variables.
+
+\paragraph{Weak-field expansion.}
+\InterfaceTag In the Newtonian limit one writes
+\[
+g_{00}\approx -(1+2\Phi/c^2),
+\]
+where $\Phi$ is the Newtonian potential.
+Using \eqref{eq:z128_lapse_from_chi}--\eqref{eq:z128_g00_lapse_dictionary} and expanding $\e^{-2\gamma\chi}\approx 1-2\gamma\chi$ gives the leading-order identification
+\begin{equation}
+\label{eq:z128_phi_from_chi}
+\Phi(x)= -\gamma c^2\bigl(\chi(x)-\chi_0\bigr),
+\end{equation}
+where $\chi_0$ is an arbitrary reference (constant shifts of $\chi$ do not change forces).
+
+\subsubsection{Closed weak-field source and Poisson template}
+\label{subsec:z128_poisson_template}
+
+\paragraph{Poisson form.}
+\InterfaceTag Taking $\Delta\Phi=4\pi G\,\rho_{\mathrm{eff}}$ as the standard weak-field template, \eqref{eq:z128_phi_from_chi} yields
+\begin{equation}
+\label{eq:z128_rho_eff_from_chi}
+\rho_{\mathrm{eff}}(x)=-\frac{\gamma c^2}{4\pi G}\,\Delta\chi(x),
+\end{equation}
+so the overhead proxy $\chi$ defines an effective source through its Laplacian.
+
+\paragraph{$1/r$ exterior.}
+\InterfaceTag Outside compact sources, $\Delta\Phi=0$ and the spherically symmetric exterior solution is $\Phi(r)=-GM/r$.
+In the present dictionary, this corresponds to $\chi(r)$ behaving (up to constants) as a harmonic potential in the exterior region.
+
+\subsubsection{Rotation curves and a one-parameter fit for $\gamma$}
+\label{subsec:z128_gamma_fit}
+
+\paragraph{Circular velocity.}
+For a static, spherically symmetric potential, the circular velocity satisfies
+\[
+v_c^2(r)=r\,\Phi'(r).
+\]
+Using \eqref{eq:z128_phi_from_chi}, this becomes
+\begin{equation}
+\label{eq:z128_vc_from_chi}
+v_c^2(r)=-\gamma c^2\,r\,\chi'(r).
+\end{equation}
+
+\paragraph{Weighted least squares for $\gamma$.}
+\InterfaceTag Given measured $(r_i,v_i,\sigma_i)$ and a reconstructed profile $\chi(r)$ (Appendix~\ref{app:chi_reconstruction_protocol}),
+define $y_i:=v_i^2$ and $x_i:=-c^2 r_i\chi'(r_i)$.
+In the small-error regime, $\sigma_{y,i}\approx 2v_i\sigma_i$, and the one-parameter weighted least-squares estimator is
+\[
+\widehat\gamma
+=\frac{\sum_i (x_i y_i/\sigma_{y,i}^2)}{\sum_i (x_i^2/\sigma_{y,i}^2)}.
+\]
+
+\paragraph{Relation to frequency-first observables.}
+\InterfaceTag Since $N=\e^{-\gamma\chi}$ controls local clock rate, the same $\gamma$ is in principle constrained by redshift and time-delay data:
+frequency ratios are primary observables in the tick-first semantics (Appendix~\ref{app:equivalence_semantics} and Appendix~\ref{app:time_mass_delay_reference}).
+
