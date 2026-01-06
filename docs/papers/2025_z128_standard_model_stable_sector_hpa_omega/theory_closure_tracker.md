@@ -108,7 +108,7 @@ flowchart TD
     - `sections/generated/gamma_crossobs_rows.tex`
     - `sections/generated/gamma_crossobs_stability_rows.tex`
     - `figures/gamma_crossobs_consistency.pdf`（以及 `.png`）
-- [ ] **宇宙学能量预算拟合的可复现脚本**：把 `appendix 32` 的接口假设落成可运行的拟合与图表（避免仅停留在文本接口）。
+- [x] **宇宙学能量预算拟合的可复现脚本**：生成器 `scripts/exp_cosmology_energy_budget_fit.py` 输出 `sections/generated/cosmology_energy_budget_fit_equation.tex`（由 `sections/appendices/32_cosmology_resolution_flow.tex` 引用；关联 `app:cosmology_resolution_flow` / `ass:occupancy_energy_z128`），并必选生成 `figures/cosmology_energy_budget_fit.png`（Appendix 32 已插入图 `fig:cosmology_energy_budget_fit`）。
 
 ## 快速入口（给维护者）
 

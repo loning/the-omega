@@ -305,6 +305,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Cosmology energy-budget fit",
+            script="exp_cosmology_energy_budget_fit.py",
+            expected_outputs=[
+                "sections/generated/cosmology_energy_budget_fit_equation.tex",
+                "figures/cosmology_energy_budget_fit.png",
+            ],
+        ),
+        Step(
             name="Hilbert-knot triptych (Figure 1)",
             script="fig_hilbert_knot_triptych.py",
             expected_outputs=[
