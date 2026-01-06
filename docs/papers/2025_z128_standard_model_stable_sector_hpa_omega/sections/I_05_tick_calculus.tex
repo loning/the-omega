@@ -25,27 +25,8 @@ The direction $t\mapsto t+1$ is the operational notion of forward time within th
 \InterfaceTag At the mathematical layer, the scan orbit can be indexed by $\ZZ$ and is formally symmetric under reversal $t\mapsto -t$.
 In the executed protocol, ``time'' is the operational update order (Definition~\ref{def:tick}), so $t\mapsto t+1$ is the forward direction by definition.
 
-\paragraph{Origin choice and the Big Bang as a protocol start.}
+\paragraph{Origin choice.}
 \InterfaceTag Protocol observables depend only on tick differences (e.g.\ Definition~\ref{def:protocol_velocity}), so shifting $t\mapsto t+t_0$ is a coordinate convention away from boundary conditions.
-In tick-only language, ``Big Bang'' is the statement that an executed run has a start event; we denote it by choosing $t=0$ and reading the realized history as $t\ge 0$ (while keeping $t\in\ZZ$ for algebraic convenience).
-
-\begin{definition}[Local observer clock (birth as a local origin)]
-\label{def:local_observer_clock}
-Fix a global tick coordinate $t$ and a local initialization tick $t_\ast\in\ZZ$ at which an observer's record begins (``birth'' in protocol language).
-The observer's intrinsic tick coordinate is the translated clock
-\[
-t_{\mathrm{obs}}:=t-t_\ast\in\ZZ.
-\]
-The observer's forward direction is $t_{\mathrm{obs}}\mapsto t_{\mathrm{obs}}+1$, inherited from $t\mapsto t+1$.
-\end{definition}
-
-\begin{remark}[Big Bang arrow versus observer arrow]
-\label{rem:bang_equals_birth_arrow}
-In tick-only language, both the Big Bang and an observer's birth are instances of the same mathematical operation: selecting an origin on the tick line.
-A global start fixes the universe-wide origin $t=0$, while an observer start fixes a local origin $t_{\mathrm{obs}}=0$ (Definition~\ref{def:local_observer_clock}).
-Up to the translation gauge $t\mapsto t+t_0$, the two are equivalent: they carry the same oriented tick direction and differ only by an offset.
-If the protocol were to admit domains initialized with different orientation data (cf.\ the orientation-class bit and mirror protocol, Definition~\ref{def:scl}), then parity-/time-odd sign data tied to protocol orientation would flip across such domains; see the domain-wall test language in Prediction P2.
-\end{remark}
 
 \paragraph{Irreversibility from finite observability (no new axiom).}
 \InterfaceTag The arrow is not postulated as an extra dynamical law: it arises because ``physics'' here is the finite record after window projection and stability folding, both many-to-one.
@@ -62,7 +43,7 @@ Finite readout is represented by length-$m$ binary words
 \qquad |\Omega_m|=2^m,
 \]
 obtained by window projection of the scan stream (Section~\ref{subsec:window_projection}).
-At resolution $m$, an elementary record is the pair \emph{(tick, word)}.
+\MathTag At resolution $m$, an elementary record is the pair \emph{(tick, word)}.
 
 \subsection{Stability as an intrinsic grammar: admissible types and folding}
 \label{subsec:tick_to_stability}
@@ -72,12 +53,7 @@ At the golden branch, the $\varphi$-channel selects the admissible set $X_m\subs
 The $\pi$-channel induces the cyclic/boundary split (Proposition~\ref{prop:cyc_bdry_size}).
 
 \paragraph{Microstates and projection.}
-At fixed $m$, the protocol distinguishes:
-\begin{itemize}
-\item microstate labels in $\Omega_m$ (what can appear at the raw window level), and
-\item stable type labels in $X_m$ (what survives the stability predicate).
-\end{itemize}
-The folding map $\mathrm{Fold}_m$ (Definition~\eqref{eq:foldm_def}) is the deterministic projection from the $2^m$ raw indices to the $|X_m|$ stable types; it is surjective for all $m$ (Proposition~\ref{prop:foldm_surjective}).
+\MathTag The folding map $\mathrm{Fold}_m$ (Definition~\eqref{eq:foldm_def}) deterministically projects microstate indices in $\Omega_m$ to stable types in $X_m$; it is surjective for all $m$ (Proposition~\ref{prop:foldm_surjective}).
 
 \subsection{Space as addressing: display graphs, distance, and velocity}
 \label{subsec:tick_to_space}
@@ -106,8 +82,7 @@ d_n(x,y):=\text{shortest-path distance between $x$ and $y$ in $G_n$}.
 \end{definition}
 
 \paragraph{Tick-distance relation.}
-Definition~\ref{def:protocol_distance} makes the slogan ``distance is time'' precise at the protocol level:
-distance is the minimal number of adjacency moves needed to compare or transport readout between two displayed sites, hence a tick-count proxy once a per-move tick budget is fixed.
+\InterfaceTag Distance is a tick-count proxy once a per-move tick budget is fixed (Definition~\ref{def:protocol_distance}).
 
 \begin{definition}[Protocol velocity and maximal signal rate (tick units)]
 \label{def:protocol_velocity}
@@ -202,5 +177,8 @@ energy/scale & $r(\mu)=\log_\varphi(\mu/m_e)$ & Section~\ref{subsec:mass_resolut
 \caption{Tick-first dictionary: each physical-language concept used in this paper is identified with an explicit mathematical object derived from sequential readout.}
 \label{tab:tick_dictionary}
 \end{table}
+
+\paragraph{Full derivation spine (supplement).}
+\AuditTag Appendix~\ref{app:tick_cap_derivation} records the full tick\,+\,CAP derivation spine (candidate families, objectives, and deterministic tie-breaks) behind the interface components summarized here.
 
 

@@ -193,83 +193,14 @@ We use this dictionary-induced partition as the global narrative spine, and we s
 \MatchTag External reference targets (PDG/CODATA, scheme/scale conventions) enter only as comparison inputs and are not fit parameters.
 The compact audit contract table is recorded in Appendix~\ref{app:cap_audit_template} (Table~\ref{tab:no_hidden_knobs_contract}).
 
-\begin{table}[t]
-\centering
-\scriptsize
-\setlength{\tabcolsep}{5.5pt}
-\renewcommand{\arraystretch}{1.15}
-\begin{tabular}{p{0.25\textwidth} p{0.18\textwidth} p{0.23\textwidth} p{0.26\textwidth}}
-\toprule
-item & status & where defined & audit / falsifiability channel \\
-\midrule
-tick-only primitive & Axiom~\ref{ax:readout_sequentiality} & Section~\ref{subsec:axiom0_linearity}; Section~\ref{sec:tick_calculus} & Fold$_6$ checks; Appendix~\ref{app:reproducibility} \\
-CAP closure rule & Axiom~\ref{ax:cap}, Definition~\ref{def:bounded_complexity_closure} & Section~\ref{subsec:bounded_complexity_audit}; Appendix~\ref{app:cap_audit_template} & audit tables; Appendix~\ref{app:generated_tables} \\
-dyadic phase registers $\ZZ_{2^p}$ & CAP-audited bounded closure (phase-lift dictionary) & Section~\ref{subsec:z128_label} and Section~\ref{subsec:holonomy_phase_lift_cp}; Appendix~\ref{app:protocol_primitives} & denom/map-family audits; Section~\ref{sec:protocol_connections_holonomy} \\
-addressing basis (screen) & CAP-audited counterfactual closure & Section~\ref{sec:hilbert_addressing}; Section~\ref{subsec:tick_to_space} & Table~\ref{tab:addressing_selection}; Appendix~\ref{app:reproducibility} \\
-rigid-frame display anchor & interface dictionary (derived localization criterion) & Section~\ref{subsec:6dof_lock}; Section~\ref{sec:tick_calculus} & resolution staircase; Section~\ref{sec:falsifiability} \\
-Hilbert orientation class & CAP tie-break (one-bit canonical representative) & Section~\ref{subsec:scl}; Definition~\ref{def:scl} & $\chi$ sign flips; Proposition~\ref{prop:chi_flip}; Prediction P2 \\
-three channels $\leftrightarrow$ three gauge factors & Proposition~\ref{prop:channel_to_gauge} & Section~\ref{subsec:gauge_as_compensation} & closed labeling; Theorem~\ref{thm:labeling_unique}; holonomy diagnostics; Section~\ref{sec:protocol_connections_holonomy} \\
-geometric normalization dictionaries & CAP-closed dictionaries (bounded families) & Section~\ref{sec:couplings_cp} & rigidity targets and audits; Table~\ref{tab:quant_summary}; Appendix~\ref{app:generated_tables} \\
-\bottomrule
-\end{tabular}
-\caption{Audit-facing interface contract: tick and CAP as the primitive inputs; all other interface components are CAP-closed within explicit finite candidate families and audited by the listed channels.}
-\label{tab:audit_facing_contract}
-\end{table}
+\paragraph{Audit-facing contract and inference map (supplement).}
+\AuditTag The reader-facing audit contract and the dependency map are recorded compactly in Appendix~\ref{app:audit_overview} (Table~\ref{tab:audit_facing_contract} and Figure~\ref{fig:inference_map}).
 
 \paragraph{Layer separation.}
 \MathTag The finite folding statements constrain \InterfaceTag the falsifiable mapping/identification layer; Appendix~\ref{app:inference_ledger} records the dependency status in compact form.
 
 \paragraph{Inference map (what depends on what).}
-For reader orientation, Figure~\ref{fig:inference_map} records a high-level dependency graph of the present paper.
-Solid arrows indicate definitional/theorem-level dependencies in the finite constructions; dashed arrows indicate physical-identification hypotheses (interface modeling dictionaries and closure declarations); dotted arrows indicate CAP-style audited selection within explicit finite candidate families (Axiom~\ref{ax:cap}).
-
-\begin{figure}[t]
-\centering
-\begin{tikzpicture}[
-  >=Latex,
-  node distance=7mm and 8mm,
-  box/.style={draw, rounded corners, align=left, inner sep=6pt, font=\footnotesize, text width=0.44\textwidth},
-  solid/.style={->},
-  dashedEdge/.style={->, dashed},
-  dottedEdge/.style={->, dotted}
-]
-
-\node[box] (prim) {\textbf{Primitive axiom (tick input).}\\
-Readout sequentiality: time as tick (Axiom~\ref{ax:readout_sequentiality}).\\
-Tick-first dictionary (Section~\ref{sec:tick_calculus}).};
-
-\node[box, below=of prim] (cap) {\textbf{Primitive axiom (CAP closure).}\\
-Computational Action Principle (Axiom~\ref{ax:cap}) instantiated as bounded-complexity closure and deterministic tie-breaks (Definition~\ref{def:bounded_complexity_closure}).};
-
-\node[box, below=of cap] (assump) {\textbf{CAP-closed interface components.}\\
-Rigid-frame display dictionary and derived bulk dimension (Section~\ref{subsec:6dof_lock}; Proposition~\ref{prop:bulk_dimension_from_anchor}).\\
-Orientation-class bit (CAP tie-break; Definition~\ref{def:scl}).\\
-CAP-minimal gauge-factor closure (Proposition~\ref{prop:channel_to_gauge}).\\
-CAP-closed phase-volume dictionaries for normalization targets (Section~\ref{sec:couplings_cp}).};
-
-\node[box, right=8mm of prim] (core) {\textbf{Mathematical layer (finite constructions).}\\
-Folding core and invariants (Section~\ref{sec:folding_core}).\\
-At $(m,n)=(6,3)$: $64\to 21$ and $18\oplus 3$ (Section~\ref{sec:folding_core}).};
-
-\node[box, below=of core] (interfaces) {\textbf{Closed interface maps / audited closures.}\\
-Closed SM labeling $\mathcal{L}_{\mathrm{SM}}$ (Section~\ref{sec:sm_labeling_closure}).\\
-Mass-depth closure and rigidity certificates (Section~\ref{sec:mass_spectrum_closure}).\\
-Coupling/angle/CP rigidity targets (Section~\ref{sec:couplings_cp}).\\
-Resolution staircase selection and calibration (Section~\ref{sec:falsifiability}).};
-
-\node[box, below=of interfaces] (pred) {\textbf{Protocol-level predictions and tests.}\\
-Falsifiability statements P1--P6 (Section~\ref{sec:falsifiability}) and audit tables (Appendix~\ref{app:generated_tables}).};
-
-\draw[solid] (prim) -- (core);
-\draw[dashedEdge] (assump) -- (interfaces);
-\draw[solid] (core) -- (interfaces);
-\draw[dottedEdge] (cap) -- (interfaces);
-\draw[solid] (interfaces) -- (pred);
-
-\end{tikzpicture}
-\caption{Inference map of the paper under the two-axiom spine (tick input and CAP closure). Solid: theorem-level; dashed: interface dictionaries in protocol language; dotted: CAP-audited selection.}
-\label{fig:inference_map}
-\end{figure}
+Figure~\ref{fig:inference_map} is recorded in Appendix~\ref{app:audit_overview}; we use its legend throughout: solid arrows are theorem-level dependencies, dashed arrows are interface dictionaries, and dotted arrows indicate CAP-audited selections within explicit finite families.
 
 \paragraph{Dependency checklist.}
 Appendix~\ref{app:inference_ledger} provides the compact checklist of which statements are \MathTag theorem-level, which are \InterfaceTag interface dictionaries/closures, and which are \MatchTag matching conventions.
@@ -289,124 +220,43 @@ This is designed to address a standard audit concern in speculative constant/par
 Within a fixed protocol class, realized effective structures are selected by minimizing accumulated readout mismatch (discrepancy) and implementation overhead subject to protocol constraints.
 In the finite audited setting of this paper, CAP is instantiated by explicit bounded candidate families and deterministic selection rules: given a declared finite complexity budget and an explicit objective measuring mismatch to reference targets, select the unique minimizer with a fully specified tie-break rule (Definition~\ref{def:bounded_complexity_closure}).
 \end{axiom}
-
-\begin{definition}[Bounded-complexity closure (audit form)]\label{def:bounded_complexity_closure}
-Fix reference targets $x_i^{\mathrm{ref}}>0$ and a candidate family $x_i(\theta)>0$ indexed by discrete parameters $\theta$.
-For a bound $B\in\NN$, let $\Theta(B)$ be a finite domain of admissible parameters (the ``complexity box'').
-Define the log-mismatch vector
-\[
-e_i(\theta):=\log\!\left(\frac{x_i(\theta)}{x_i^{\mathrm{ref}}}\right),
-\]
-and the summary objectives
-\[
-E_\infty(\theta):=\max_i |e_i(\theta)|,\qquad E_1(\theta):=\sum_i |e_i(\theta)|.
-\]
-A bounded-complexity closure is the selection of a unique $\theta_B\in\Theta(B)$ by lexicographic minimization:
-first minimize $E_\infty$, then $E_1$, then any stated secondary criteria (e.g.\ coefficient sum), with a fully specified tie-break rule.
-\end{definition}
-\begin{remark}[A reusable audit template]\label{rem:cap_audit_template_pointer}
-Appendix~\ref{app:cap_audit_template} records a compact deterministic template (including a reference pseudocode sketch) for the bounded-complexity closure rule used throughout the paper.
-\end{remark}
-\begin{remark}[Why log-mismatch is used]\label{rem:log_mismatch}
-The log mismatch is dimensionless and symmetric under inversion: $\log(x/x^{\mathrm{ref}})=-\log(x^{\mathrm{ref}}/x)$.
-It also linearizes multiplicative matching factors: if $x=s\,x^{\mathrm{ref}}$, then $\log(x/x^{\mathrm{ref}})=\log s$.
-For small deviations, $|\log(x/x^{\mathrm{ref}})|\approx |x-x^{\mathrm{ref}}|/x^{\mathrm{ref}}$.
-\end{remark}
-
-\begin{definition}[Rigidity certificate]\label{def:rigidity_certificate}
-A closure is called \emph{rigid} on a tested range $B\in\{1,\dots,B_{\max}\}$ if the minimizer is unique at each $B$ and stabilizes:
-there exists $B_\ast\le B_{\max}$ such that $\theta_B=\theta_{B_\ast}$ for all $B_\ast\le B\le B_{\max}$.
-We record such stabilization tables when available (e.g.\ Table~\ref{tab:mass_depth_rigidity} and Table~\ref{tab:ckm_mixing_rigidity}).
-\end{definition}
-
-\paragraph{Audit outputs beyond point estimates.}
-To reduce look-elsewhere and post-hoc flexibility, for each bounded-complexity closure we also record auditable auxiliary statistics:
-the candidate-domain size $|\Theta|$, best/second-best gaps, and (for large domains) distribution quantiles (Table~\ref{tab:audit_closure_metrics} and Table~\ref{tab:audit_closure_quantiles}).
-We additionally report minimizer stability rates under explicit target-perturbation models (Table~\ref{tab:audit_uncertainty_robustness}) and counterfactual baseline comparisons (Table~\ref{tab:audit_counterfactual}).
-These tables are generated by deterministic scripts and are part of the paper's reproducibility contract (Appendix~\ref{app:reproducibility}).
+\paragraph{Audit form (supplement).}
+\AuditTag The formal closure definition, log-mismatch rationale, rigidity certificate, and audit-output conventions are recorded in Appendix~\ref{app:cap_audit_template} and Appendix~\ref{app:generated_tables}.
 
 \subsection{A minimal falsifiable anchor: \texorpdfstring{$64\to 21$}{64->21} stability at \texorpdfstring{$(m,n)=(6,3)$}{(m,n)=(6,3)}}
 \label{subsec:minimal_anchor}
 
-We anchor the discussion at a fully explicit finite model at the CAP-minimal holonomy instance within the balanced family on the chosen $2$D Hilbert screen, $(m,n)=(6,3)$, defined in Sections~\ref{sec:hpa_readout} and \ref{sec:folding_core}.
-This is the first balanced scale on that screen at which the plaquette holonomy diagnostic becomes nontrivial (Table~\ref{tab:holonomy_balanced_chain_sweep}).
-Let
-\[
-\Omega_m:=\{0,1\}^m,\qquad |\Omega_m|=2^m,
-\]
-be the microstate readout alphabet at window length $m$.
-At balanced coupling on this screen, $m=2n$ with $n=3$ one obtains $m=6$ and $|\Omega_6|=64$.
-This matches the cardinality of the $2$D Hilbert-addressed grid at order $n=3$, namely $4^n=64$ (Section~\ref{sec:hilbert_addressing}; see also Remark~\ref{rem:balanced_coupling_convention} for scope).
-
-Stability is organized by three commuting channels, denoted $\varphi$--$\pi$--$\e$.
-At window length $6$, the joint stability constraint yields a rigid compression
-\[
-64\to 21,
-\]
-and the stable sector admits a canonical split
-\[
-21=18\oplus 3,
-\]
-into cyclic and boundary types (Section~\ref{sec:folding_core}).
-This finite combinatorics is the mathematical layer on which the physical identification layer is built.
+\MathTag We work at the fully explicit finite anchor $(m,n)=(6,3)$ on the chosen $2$D Hilbert screen (Table~\ref{tab:holonomy_balanced_chain_sweep}).
+At $m=6$ the folding core yields $64\to 21$ and the canonical split $21=18\oplus 3$ (Section~\ref{sec:folding_core}).
 
 \subsection{\texorpdfstring{$\ZZ_{128}$}{Z128} as a phase-register label}
 \label{subsec:z128_label}
 
-We model phases by a finite dyadic register $\ZZ_{2^p}$ as a protocol parameter, rather than by a continuous angle.
-At the anchor window $m=6$, we fix a canonical baseline phase register by CAP: within the dyadic family, use the smallest one-bit refinement of the window resolution, $p=m+1=7$, i.e.\ $\ZZ_{128}$.
-In the concrete holonomy diagnostics of Section~\ref{sec:protocol_connections_holonomy}, the default phase embedding uses $\mathrm{denom}=2^m=64$, which is equivalently a $\ZZ_{128}$ register restricted to even residues since $2\pi\,\tau(k)/64=2\pi\,(2\tau(k))/128$.
-Importantly, the remaining finite freedom in the phase-lift dictionary (bounded denominator and bounded low-complexity phase maps) is treated in CAP audit form: we report the explicit candidate families and their deterministic sweeps (e.g.\ Table~\ref{tab:holonomy_phase_lift_family} and Tables~\ref{tab:holonomy_perm_fit_pmns}--\ref{tab:holonomy_perm_fit_ckm}), so the role of dyadic phase resolution is auditable and closed rather than an implicit tuning knob.
-This is consistent with the stance adopted here that physical readout is fundamentally finite-resolution (Axiom~\ref{ax:readout_sequentiality} and Section~\ref{sec:hpa_readout}).
-
-\begin{remark}[Avoiding a common confusion]\label{rem:z128_vs_omega6}
-The label $\ZZ_{128}$ refers to the \emph{ontic phase register} alphabet (a finite ring model for phase arithmetic).
-By contrast, $\Omega_6=\{0,1\}^6$ is the \emph{phenomenal readout window} alphabet produced after window projection and binarization.
-These belong to different layers: a single phase register can induce multiple binary readout features, and the chosen balanced-coupling anchor $(m,n)=(6,3)$ on the chosen $2$D Hilbert screen is about the readout window length and Hilbert order, not about the size of the phase alphabet.
-\end{remark}
+\InterfaceTag We represent internal phases by a finite dyadic register $\ZZ_{2^p}$ (Appendix~\ref{app:protocol_primitives}).
+At the anchor window $m=6$, the baseline choice is $p=m+1=7$, i.e.\ $\ZZ_{128}$.
+The remaining bounded phase-lift freedom (denominators and low-complexity phase maps) is audited by deterministic sweeps (Appendix~\ref{app:generated_tables} and Appendix~\ref{app:closure_audit_details}).
 
 \subsection{Main interface closures}
 \label{subsec:intro_contrib}
 
-Building on the provable $64\to 21$ folding core, we record three interface statements on the physical identification layer:
-\begin{itemize}
-\item \textbf{Gauge fields as compensating connections.}
-When stable types are embedded on a Hilbert-addressed grid and cross-site readout consistency is required, local mismatch must be absorbed by compensating connections (Proposition~\ref{prop:gauge_compensation}).
-The gauge-factor triple is recorded as a CAP-minimal interface closure (Proposition~\ref{prop:channel_to_gauge}; Section~\ref{subsec:gauge_as_compensation}).
-\item \textbf{Chirality as protocol selection.}
-Hilbert addressing is not unique: it comes in $D_4$ layout families, split into orientation-preserving and orientation-reversing classes \cite{Hilbert1891,Sagan1994}.
-Fixing a layout class at $t=0$ turns parity into a protocol change and provides a readout-geometric mechanism for maximal parity violation in the weak sector (Section~\ref{sec:chirality_antimatter}).
-\item \textbf{Antimatter as conjugate readout.}
-Phase conjugation of the scan orbit is equivalent to scan reversal up to a phase shift; thus charge conjugation appears as a conjugate protocol and is tied to the same chirality sign datum at finite resolution (Section~\ref{sec:chirality_antimatter}).
-\end{itemize}
+Building on the provable $64\to 21$ folding core, we record three interface closures:
+\InterfaceTag gauge as compensation (Section~\ref{subsec:gauge_as_compensation}),
+\InterfaceTag chirality as protocol selection (Section~\ref{sec:chirality_antimatter}),
+and \InterfaceTag antimatter as conjugate readout (Section~\ref{sec:chirality_antimatter}).
 
 We emphasize the audit separation: the folding counts and tables are mathematical-layer facts, while the SM identifications are recorded as falsifiable mapping problems.
 \paragraph{Quantitative anchor.}
 The closed-theory rigidity targets and their CODATA/PDG deviations are summarized in Table~\ref{tab:quant_summary}.
 
 \paragraph{Closure deliverables at $(m,n)=(6,3)$.}
-Beyond the folding core, this paper provides two closed, auditable interface deliverables:
-\begin{itemize}
-\item a unique field-level labeling map of the $21$ stable types (Section~\ref{sec:sm_labeling_closure}, Table~\ref{tab:sm_labeling_table});
-\item a closed mass-spectrum depth formula $\widehat r$ and its bounded-complexity rigidity signal (Section~\ref{sec:mass_spectrum_closure}, Table~\ref{tab:mass_spectrum} and Table~\ref{tab:mass_depth_rigidity}).
-\end{itemize}
+\MathTag the folding core $64\to 21$ and $18\oplus 3$ (Section~\ref{sec:folding_core});
+\InterfaceTag a unique SM labeling map (Section~\ref{sec:sm_labeling_closure});
+\InterfaceTag a closed mass-depth template (Section~\ref{sec:mass_spectrum_closure}).
 
 \paragraph{Rigidity doctrine (interface).}
-The main methodological claim of this paper is not that the Standard Model is already a theorem of the folding core, but that \emph{once one commits} to finite readout primitives and explicit bounded-complexity closure rules, the locality dictionary (including bulk dimension via the rigid-frame budget) is selected at the anchor and many interface choices are sharply constrained.
-At the minimal anchor, the stable-sector skeleton ($64\to 21$ and $18\oplus 3$) is exact and computable; the remaining identification work is then reduced to a finite set of auditable selection problems (labeling, depth assignments, phase-register diagnostics) with explicit candidate families, deterministic tie-break rules, and reported robustness/baseline context.
-This is the precise sense in which the interface is ``forced by rigidity'' rather than chosen by continuous post-hoc fitting.
+\InterfaceTag Once one commits to finite readout primitives and CAP-style bounded closure, many interface components become sharply constrained at the anchor; Appendix~\ref{app:inference_ledger} records the compact dependency status.
 
-\paragraph{Reader guide: rigidity checkpoints (why it must be this way).}
-A minimal audit path for the present paper is to verify the following rigidity checkpoints:
-\begin{itemize}
-\item the theorem-level folding core $64\to 21$ and the canonical $18\oplus 3$ split (Section~\ref{sec:folding_core});
-\item the geometric anchor at $(m,n)=(6,3)$ on the chosen $2$D Hilbert screen, selected as the CAP-minimal nontrivial holonomy instance within the balanced chain (Lemma~\ref{lem:balanced_coupling_equiv}; Table~\ref{tab:holonomy_balanced_chain_sweep}; see Remark~\ref{rem:balanced_coupling_convention} and Remark~\ref{rem:why_2d_hilbert} for scope);
-\item the unique closed labeling map of $X_6$ into $18$ fermion multiplets and $3$ gauge-factor classes (Theorem~\ref{thm:labeling_unique});
-\item the rigidity of the bounded-integer mass-depth ansatz and its coefficient stabilization (Proposition~\ref{prop:rhat_rigidity});
-\item the bounded-parameter holonomy/phase-register diagnostics and their counterfactual baselines (Section~\ref{sec:protocol_connections_holonomy} and Appendix~\ref{app:generated_tables});
-\item the operational time/mass delay dictionary (Wigner--Smith, lapse/redshift) used only at the matching layer (Section~\ref{app:time_mass_delay}).
-\end{itemize}
-These checkpoints summarize the sense in which several interface choices are strongly constrained once one commits to finite readout primitives and to explicit bounded-complexity closure rules.
-Appendix~\ref{app:inference_ledger} provides a compact ledger that records which conclusions are theorem-level consequences of the folding core, which are finite protocol constructions, and which are conditional interface implications within the declared input set.
+\paragraph{Reader guide: rigidity checkpoints (supplement).}
+\AuditTag A compact checkpoint list is recorded in Appendix~\ref{app:inference_ledger}.
 
 

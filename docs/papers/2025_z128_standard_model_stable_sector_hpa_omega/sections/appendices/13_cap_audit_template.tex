@@ -8,6 +8,27 @@ It introduces \emph{no new axioms or independent inputs} beyond those declared i
 
 The core reason the audit program is well-posed is finiteness: for each bound $B$, the candidate family $\Theta(B)$ is a finite set by construction (Definition~\ref{def:bounded_complexity_closure}).
 
+\begin{definition}[Bounded-complexity closure (audit form)]\label{def:bounded_complexity_closure}
+Fix reference targets $x_i^{\mathrm{ref}}>0$ and a candidate family $x_i(\theta)>0$ indexed by discrete parameters $\theta$.
+For a bound $B\in\NN$, let $\Theta(B)$ be a finite domain of admissible parameters (the ``complexity box'').
+Define the log-mismatch vector
+\[
+e_i(\theta):=\log\!\left(\frac{x_i(\theta)}{x_i^{\mathrm{ref}}}\right),
+\]
+and the summary objectives
+\[
+E_\infty(\theta):=\max_i |e_i(\theta)|,\qquad E_1(\theta):=\sum_i |e_i(\theta)|.
+\]
+A bounded-complexity closure is the selection of a unique $\theta_B\in\Theta(B)$ by lexicographic minimization:
+first minimize $E_\infty$, then $E_1$, then any stated secondary criteria (e.g.\ coefficient sum), with a fully specified tie-break rule.
+\end{definition}
+
+\begin{remark}[Why log-mismatch is used]\label{rem:log_mismatch}
+The log mismatch is dimensionless and symmetric under inversion: $\log(x/x^{\mathrm{ref}})=-\log(x^{\mathrm{ref}}/x)$.
+It also linearizes multiplicative matching factors: if $x=s\,x^{\mathrm{ref}}$, then $\log(x/x^{\mathrm{ref}})=\log s$.
+For small deviations, $|\log(x/x^{\mathrm{ref}})|\approx |x-x^{\mathrm{ref}}|/x^{\mathrm{ref}}$.
+\end{remark}
+
 \begin{proposition}[Deterministic closure map]\label{prop:deterministic_closure_map}
 Fix a bound $B\in\NN$ and a finite candidate family $\Theta(B)$.
 Let $(E_\infty(\theta),E_1(\theta),T(\theta))$ be a triple of real-valued diagnostics on $\Theta(B)$, where $T$ denotes any fully specified secondary tie-break key (possibly vector-valued with a fixed lexicographic order).
@@ -26,6 +47,11 @@ If the tie-break key $T$ is defined so that equality of the full triple can occu
 
 For each closure, the paper reports additional finite statistics that quantify within-family look-elsewhere context and stability under perturbations (Section~\ref{subsec:bounded_complexity_audit} and Appendix~\ref{app:generated_tables}).
 Two frequently used diagnostics are the candidate-domain size and a uniqueness gap.
+
+\begin{definition}[Rigidity certificate]\label{def:rigidity_certificate}
+A closure is called \emph{rigid} on a tested range $B\in\{1,\dots,B_{\max}\}$ if the minimizer is unique at each $B$ and stabilizes:
+there exists $B_\ast\le B_{\max}$ such that $\theta_B=\theta_{B_\ast}$ for all $B_\ast\le B\le B_{\max}$.
+\end{definition}
 
 \begin{table}[t]
 \centering
