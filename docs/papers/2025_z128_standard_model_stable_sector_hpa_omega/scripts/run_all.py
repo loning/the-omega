@@ -390,6 +390,7 @@ def build_steps() -> List[Step]:
             script="exp_holonomy_balanced_chain_sweep.py",
             expected_outputs=[
                 "sections/generated/holonomy_balanced_chain_rows.tex",
+                "sections/generated/holonomy_balanced_chain_wilson_rows.tex",
             ],
         ),
         Step(
@@ -712,6 +713,14 @@ def build_steps() -> List[Step]:
             script="exp_audit_pi_polynomial_null.py",
             expected_outputs=[
                 "sections/generated/audit_pi_poly_null_rows.tex",
+            ],
+        ),
+        Step(
+            name="Audit global model selection (MDL, cross-family)",
+            script="exp_audit_global_model_selection_mdl.py",
+            expected_outputs=[
+                "sections/generated/audit_global_mdl_family_rows.tex",
+                "sections/generated/audit_global_mdl_summary.tex",
             ],
         ),
         Step(

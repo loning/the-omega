@@ -109,6 +109,8 @@ flowchart TB
   P_fold("coarse-graining 压缩（稳定扇区统计）<br/>类型：代理<br/>label: subsec:fold6_map<br/>Ω₆={0,1}⁶ (|Ω₆|=64), X₆⊂Ω₆ (|X₆|=21) ⇒ 64→21")
   M_fold -.- P_fold
 
+  M_op2_fold_uniqueness["OP2：Fold 家族唯一性闭合（协议局部）<br/>类型：闭合<br/>label: app:fold_family_uniqueness<br/>value-consistency + uplift-locality ⇒ Fold_m unique"]
+
   M_anchor["锚点（m=6，n=3）<br/>类型：构造<br/>label: sec:folding_core<br/>(m,n)=(6,3)"]
   P_screen("屏幕显示（planar screen chart）<br/>类型：代理<br/>label: subsec:planar_screen_chart<br/>z(ω)=(ω₁+iω₂)/(1−ω₃)")
   M_anchor -.- P_screen
@@ -130,6 +132,10 @@ flowchart TB
   M_graphzeta["Graph ζ（Ihara/Bass determinant）<br/>类型：审计<br/>label: app:graph_zeta_holonomy / thm:bass_determinant_formula<br/>Z_G(u)⁻¹=(1−u²)^{|E|−|V|}·det(I−uA+(D−I)u²)"]
   P_graphzeta("holonomy-weighted loop generating function<br/>类型：审计<br/>label: def:holonomy_weighted_graph_zeta / prop:cycle_type_stats_determine_class_sums<br/>Z_{G,ρ}(u)=∏ det(I−u^{|C|}ρ(Hol(C)))⁻¹")
   M_graphzeta -.- P_graphzeta
+
+  M_op3_yang_mills["OP3：holonomy→YM/EFT 代表闭合<br/>类型：连续<br/>label: app:continuum_yang_mills_from_holonomy<br/>finite holonomy → Wilson proxy → Tr(F^2) representative"]
+  P_wilson("Wilson-loop 代理（W,1-W）<br/>类型：观测<br/>label: tab:holonomy_balanced_chain_wilson<br/>W := Re(tr(Q))/3;  A := 1 - W")
+  M_op3_yang_mills -.- P_wilson
 
   M_transport_audit["transport rule 稳定性（padding/truncation/tie-break）<br/>类型：审计<br/>label: tab:holonomy_transport_rule_sensitivity<br/>TV distance + frac_{3/4} envelope"]
   P_transport_audit("transport rule 反事实族（look-elsewhere 审计）<br/>类型：审计<br/>label: tab:holonomy_transport_rule_sensitivity<br/>bounded counterfactual families")
@@ -239,6 +245,10 @@ flowchart TB
   P_inputs("External inputs inventory（Match；非前提）<br/>类型：审计<br/>label: subsec:external_inputs_inventory<br/>PDG/CODATA/Planck/NuFIT + vendored subsets")
   M_inputs -.- P_inputs
 
+  M_mdl_global["全局模型选择（MDL / prefix-code）<br/>类型：审计<br/>label: app:global_model_selection_mdl<br/>family registry + prefix-code prior + global mixture bound"]
+  P_mdl_global("全局 look-elsewhere 上界（registry 内）<br/>类型：审计<br/>label: tab:audit_global_mdl_family_registry<br/>p_global(ε) via weighted N_{<=ε}/|Θ|")
+  M_mdl_global -.- P_mdl_global
+
   M_test["可证伪输出（预测与审计）<br/>类型：审计"]
   P_test("可证伪检验（跨观测一致性）<br/>类型：审计")
   M_test -.- P_test
@@ -279,6 +289,7 @@ flowchart TB
 
   M_pi --> M_fold
   M_fold --> M_anchor
+  M_fold --> M_op2_fold_uniqueness
   P_fold --> P_screen
 
   M_anchor --> M_addr
@@ -290,6 +301,10 @@ flowchart TB
 
   M_conn --> M_holo
   P_conn --> P_holo
+
+  M_holo --> M_op3_yang_mills
+  M_action --> M_op3_yang_mills
+  P_holo --> P_wilson
 
   M_holo --> M_gauge
   P_holo --> P_gauge
@@ -335,6 +350,9 @@ flowchart TB
   M_selberg --> M_test
   M_hecke_like --> M_test
   M_inputs --> M_test
+  M_cap --> M_mdl_global
+  M_inputs --> M_mdl_global
+  M_mdl_global --> M_test
   M_e --> M_test
 
   P_equiv --> P_quotient --> P_proj
@@ -356,6 +374,7 @@ flowchart TB
   P_selberg --> P_test
   P_hecke_like --> P_test
   P_inputs --> P_test
+  P_inputs --> P_mdl_global --> P_test
 
   %% -------------------------
   %% Styling (Material Design palette; math vs physics)
@@ -379,16 +398,16 @@ flowchart TB
   %% Math node groups
   class M_tick,M_cap math_axiom;
   class M_readout,M_phi,M_fold,M_anchor,M_addr,M_conn,M_holo,M_gauge,M_equiv,M_quotient,M_proj,M_freq math_construct;
-  class M_golden,M_pi,M_periodic,M_e,M_sm,M_mass,M_thermo,M_grav,M_qm,M_rg,M_entropy_gap,M_rm math_closure;
-  class M_action,M_eom math_cont;
+  class M_golden,M_pi,M_periodic,M_e,M_sm,M_mass,M_thermo,M_grav,M_qm,M_rg,M_entropy_gap,M_rm,M_op2_fold_uniqueness math_closure;
+  class M_action,M_eom,M_op3_yang_mills math_cont;
   class M_cosmo math_assumption;
-  class M_morita,M_gauss,M_abel,M_capinv,M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_recon,M_err,M_gamma_proxy,M_gamma_direct,M_transport_audit,M_inputs,M_test math_audit;
+  class M_morita,M_gauss,M_abel,M_capinv,M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_recon,M_err,M_gamma_proxy,M_gamma_direct,M_transport_audit,M_inputs,M_mdl_global,M_test math_audit;
   %% Physics node groups
   class P_dt,P_scan,P_phi,P_pi,P_e,P_fold,P_screen,P_addr,P_local,P_conn,P_gauge,P_dyn phys_proxy;
-  class P_obs,P_periodic,P_holo,P_mass,P_lens,P_qm phys_obs;
+  class P_obs,P_periodic,P_holo,P_mass,P_lens,P_qm,P_wilson phys_obs;
   class P_types,P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_am_euler,P_entropy_gap,P_rm phys_dict;
   class P_abel,P_action,P_eom,P_rg,P_cosmo phys_model;
-  class P_morita,P_gauss,P_capinv,P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_select,P_recon,P_err,P_gamma_proxy,P_gamma_direct,P_transport_audit,P_inputs,P_test phys_audit;
+  class P_morita,P_gauss,P_capinv,P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_select,P_recon,P_err,P_gamma_proxy,P_gamma_direct,P_transport_audit,P_inputs,P_mdl_global,P_test phys_audit;
 
   style M_test stroke-width:4px;
   style P_test stroke-width:4px;
@@ -431,6 +450,7 @@ flowchart TB
 | `P_abel` | `\label{rem:abel_first_pole_barrier_discipline}` | `FP_{r↑1} extracts constant term (audit-facing discipline)` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `M_fold` | `\label{subsec:fold6_map}` | `eq:fold6_def — Fold₆(N):=(c₁,…,c₆) ∈ X₆` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `P_fold` | `\label{subsec:fold6_map}` | `Ω₆={0,1}⁶ (card=64), X₆⊂Ω₆ (card=21) ⇒ 64→21` | `sections/C_11_resolution_folding_64_to_21.tex` |
+| `M_op2_fold_uniqueness` | `\label{app:fold_family_uniqueness}` | `thm:fold_family_uniqueness — value-consistency + uplift-locality ⇒ F_m = Fold_m` | `sections/appendices/44_fold_family_uniqueness.tex` |
 | `M_anchor` | `\label{tab:addressing_selection}` | `anchor: (m,n)=(6,3)` | `sections/I_10_hilbert_addressing_chirality.tex` |
 | `P_screen` | `\label{subsec:planar_screen_chart}` | `z(ω)=(ω₁+iω₂)/(1−ω₃)` | `sections/I_09_planar_screen_chart.tex` |
 | `M_addr` | `\label{sec:hilbert_addressing}` | `Hₙ:{0,…,4ⁿ−1}→{0,…,2ⁿ−1}² (Hilbert addressing)` | `sections/I_10_hilbert_addressing_chirality.tex` |
@@ -442,6 +462,8 @@ flowchart TB
 | `P_holo` | `\label{app:holonomy_sweeps_extended}` | `prop:cycle_type_gauge_invariant — cycle type of p_□ is invariant under conjugation` | `sections/appendices/15_holonomy_sweeps_extended.tex` |
 | `M_graphzeta` | `\label{app:graph_zeta_holonomy}` | `Z_G(u)⁻¹=(1−u²)^{|E|−|V|}·det(I−uA+(D−I)u²) (Bass determinant)` | `sections/appendices/45_graph_zeta_holonomy.tex` |
 | `P_graphzeta` | `\label{def:holonomy_weighted_graph_zeta}` | `Z_{G,ρ}(u)=∏ det(I−u^{|C|}ρ(Hol(C)))⁻¹ (holonomy-weighted prime-cycle zeta)` | `sections/appendices/45_graph_zeta_holonomy.tex` |
+| `M_op3_yang_mills` | `\label{app:continuum_yang_mills_from_holonomy}` | `finite holonomy → Wilson proxy → Tr(F^2) representative (CAP)` | `sections/appendices/36_continuum_yang_mills_from_holonomy.tex` |
+| `P_wilson` | `\label{tab:holonomy_balanced_chain_wilson}` | `W := Re(tr(Q))/3; A := 1 − W (rows: sections/generated/holonomy_balanced_chain_wilson_rows.tex)` | `sections/appendices/36_continuum_yang_mills_from_holonomy.tex` |
 | `M_gauge` | `\label{sec:protocol_connections_holonomy}` | `def:s4_vertex_gauge — p_{a→b} ↦ g_b p_{a→b} g_a⁻¹` | `sections/I_21_protocol_connections_holonomy.tex` |
 | `P_gauge` | `\label{sec:protocol_connections_holonomy}` | `p_□ ↦ g p_□ g⁻¹ (gauge conjugation on loops)` | `sections/I_21_protocol_connections_holonomy.tex` |
 | `M_sm` | `\label{sec:sm_labeling_closure}` | `thm:labeling_unique — 𝓛_SM:X₆→𝓕_SM⊔{U(1),SU(2),SU(3)} (order-preserving)` | `sections/V_30_sm_field_labeling_closure.tex` |
@@ -493,6 +515,8 @@ flowchart TB
 | `P_transport_audit` | `\label{tab:holonomy_transport_rule_sensitivity}` | `bounded counterfactual families for padding/truncation/tie-break (audit)` | `sections/appendices/15_holonomy_sweeps_extended.tex` |
 | `M_inputs` | `\label{subsec:external_inputs_inventory}` | `MatchTag external inputs inventory (non-premises)` | `sections/appendices/11_inference_ledger.tex` |
 | `P_inputs` | `\label{subsec:external_inputs_inventory}` | `external targets: PDG/CODATA/Planck/NuFIT + vendored subsets (audit)` | `sections/appendices/11_inference_ledger.tex` |
+| `M_mdl_global` | `\label{app:global_model_selection_mdl}` | `MDL/prefix-code prior on declared family registry; cross-family mixture bound` | `sections/appendices/42_global_model_selection_mdl.tex` |
+| `P_mdl_global` | `\label{tab:audit_global_mdl_family_registry}` | `global look-elsewhere bound within registry (generated rows/summary)` | `sections/appendices/42_global_model_selection_mdl.tex` |
 | `M_test` | `\label{sec:falsifiability}` | `P1–P6 falsifiable statements (audited thresholds/calibrations)` | `sections/V_40_falsifiability_predictions.tex` |
 | `P_test` | `\label{sec:falsifiability}` | `protocolized tests + error budgets (cross-checks)` | `sections/V_40_falsifiability_predictions.tex` |
 
