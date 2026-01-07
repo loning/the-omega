@@ -5,16 +5,30 @@
 
 ## 图例
 
+- **节点内类型标注**：每个节点第二行以 `类型：...` 显示（与颜色/边框分型一致）
 - **数学节点（Math）**：
   - **命名**：以 `M_` 开头
   - **外形**：矩形 `[...]`
-  - **颜色**：蓝色系（`classDef math`）
+  - **颜色**：蓝色系（同色系分型：`math_axiom` / `math_construct` / `math_closure` / `math_cont` / `math_audit` / `math_assumption`）
   - **含义**：闭合层的对象/构造/命题链（Tick+CAP 约束下的有限构造、折叠、锚点、连续代表等）
+  - **同色系区分（蓝系）**：
+    - **`math_axiom`（类型：公理）**：公理/原语（更深填充 + 粗边 + 加粗）
+    - **`math_construct`（类型：构造）**：定义/构造/映射（浅蓝实线边）
+    - **`math_closure`（类型：闭合）**：命题/定理/闭合结论（中蓝填充）
+    - **`math_cont`（类型：连续）**：连续代表（偏青蓝填充）
+    - **`math_assumption`（类型：假设）**：假设（蓝系 + 节点边框虚线）
+    - **`math_audit`（类型：审计）**：审计/误差/可证伪输出（蓝系 + 节点边框点虚线）
 - **物理节点（Physics / Iface）**：
   - **命名**：以 `P_` 开头
   - **外形**：圆角矩形 `(...)`
-  - **颜色**：绿色系（`classDef phys`）
+  - **颜色**：绿色系（同色系分型：`phys_proxy` / `phys_obs` / `phys_dict` / `phys_model` / `phys_audit`）
   - **含义**：可操作量与观测链（协议化的可观测/可拟合/可证伪代理）
+  - **同色系区分（绿系）**：
+    - **`phys_proxy`（类型：代理）**：操作代理/坐标/几何口径（浅绿）
+    - **`phys_obs`（类型：观测）**：观测量/通道（更深填充 + 加粗）
+    - **`phys_dict`（类型：字典）**：识别字典/语义映射（中绿填充）
+    - **`phys_model`（类型：模型）**：连续模型代理（偏黄绿/浅绿灰）
+    - **`phys_audit`（类型：审计）**：拟合/反演/误差/检验（绿系 + 节点边框点虚线）
 - **接口目标节点（Wish/Motive）**：
   - **外形**：圆角矩形 `(...)`
   - **颜色**：粉色系（`classDef iface`）
@@ -33,132 +47,132 @@ flowchart TB
   %% -------------------------
   %% Interface target (optional)
   %% -------------------------
-  P_wish("Wish（协议稳定目标数据）<br/>label: def:wish_protocol_stable_data<br/>Wish := (stable readout type, invariants)")
-  P_motive("Motive（目标函数：误差/代价/熵）<br/>label: def:motive_objective_functional<br/>J := mismatch + overhead + (optional) entropy")
+  P_wish("Wish（协议稳定目标数据）<br/>类型：接口<br/>label: def:wish_protocol_stable_data<br/>Wish := (stable readout type, invariants)")
+  P_motive("Motive（目标函数：误差/代价/熵）<br/>类型：接口<br/>label: def:motive_objective_functional<br/>J := mismatch + overhead + (optional) entropy")
 
   %% -------------------------
   %% Paired nodes (math rectangle, physics rounded)
   %% -------------------------
-  M_tick["Tick（读出序列性）<br/>label: ax:readout_sequentiality<br/>t = 0,1,2,…"]
-  P_dt("时间步（可操作 tick）<br/>label: sec:tick_calculus<br/>Δt := t₂ − t₁")
+  M_tick["Tick（读出序列性）<br/>类型：公理<br/>label: ax:readout_sequentiality<br/>t = 0,1,2,…"]
+  P_dt("时间步（可操作 tick）<br/>类型：代理<br/>label: sec:tick_calculus<br/>Δt := t₂ − t₁")
   M_tick -.- P_dt
 
-  M_readout["有限读出原语（scan/window/word）<br/>label: sec:hpa_readout<br/>wₙ := 𝟙{zₙ∈W} ∈ {0,1} (eq:window_word)"]
-  P_obs("有限观测对象（窗口词/事件序列）<br/>label: subsec:window_projection<br/>wₙ := 𝟙{zₙ∈W} ∈ {0,1} (eq:window_word)")
+  M_readout["有限读出原语（scan/window/word）<br/>类型：构造<br/>label: sec:hpa_readout<br/>wₙ := 𝟙{zₙ∈W} ∈ {0,1} (eq:window_word)"]
+  P_obs("有限观测对象（窗口词/事件序列）<br/>类型：观测<br/>label: subsec:window_projection<br/>wₙ := 𝟙{zₙ∈W} ∈ {0,1} (eq:window_word)")
   M_readout -.- P_obs
 
-  M_cap["CAP（有界复杂度闭合算子）<br/>label: ax:cap<br/>c* := argmin_{c∈C} J(c)"]
-  P_select("审计选择（候选族+目标函数+tie-break）<br/>label: app:cap_audit_template<br/>θ* := argmin_{θ∈Θ(B)} J(θ)")
+  M_cap["CAP（有界复杂度闭合算子）<br/>类型：公理<br/>label: ax:cap<br/>c* := argmin_{c∈C} J(c)"]
+  P_select("审计选择（候选族+目标函数+tie-break）<br/>类型：审计<br/>label: app:cap_audit_template<br/>θ* := argmin_{θ∈Θ(B)} J(θ)")
   M_cap -.- P_select
 
-  M_golden["黄金分支（最小差异证书）<br/>label: prop:golden_least_discrepancy<br/>D*ₙ := sup_{a∈[0,1]} abs((1/N)·∑_{k=0}^{N−1} 𝟙_{[0,a)}(xₖ) − a)"]
-  P_scan("均匀扫描代理（覆盖/各向同性）<br/>label: subsec:phyllotaxis_overlay<br/>Δθ = 2π/φ² (golden-angle step)")
+  M_golden["黄金分支（最小差异证书）<br/>类型：闭合<br/>label: prop:golden_least_discrepancy<br/>D*ₙ := sup_{a∈[0,1]} abs((1/N)·∑_{k=0}^{N−1} 𝟙_{[0,a)}(xₖ) − a)"]
+  P_scan("均匀扫描代理（覆盖/各向同性）<br/>类型：代理<br/>label: subsec:phyllotaxis_overlay<br/>Δθ = 2π/φ² (golden-angle step)")
   M_golden -.- P_scan
 
-  M_phi["phi 通道（admissible Xₘ / Fibonacci 计数）<br/>label: subsec:phi_channel<br/>Xₘ := {w∈{0,1}ᵐ : wᵢwᵢ₊₁ = 0} (eq:Xm_def)"]
-  P_phi("尺度代理（分辨率坐标 r / RG step）<br/>label: eq:r_of_mu_z128<br/>r(μ)=ln(μ/m_e)/ln φ;  μ(r)=m_e·φ^r (eq:mu_of_r_z128)")
+  M_phi["phi 通道（admissible Xₘ / Fibonacci 计数）<br/>类型：构造<br/>label: subsec:phi_channel<br/>Xₘ := {w∈{0,1}ᵐ : wᵢwᵢ₊₁ = 0} (eq:Xm_def)"]
+  P_phi("尺度代理（分辨率坐标 r / RG step）<br/>类型：代理<br/>label: eq:r_of_mu_z128<br/>r(μ)=ln(μ/m_e)/ln φ;  μ(r)=m_e·φ^r (eq:mu_of_r_z128)")
   M_phi -.- P_phi
 
-  M_pi["pi 通道（cyclic/boundary 划分 18⊕3）<br/>label: subsec:pi_channel<br/>X₆ = X₆^cyc ⊔ X₆^bdry; |X₆^cyc|=18; |X₆^bdry|=3 (prop:cyc_bdry_6)"]
-  P_pi("回路一致性代理（局部闭合/monodromy）<br/>label: def:s4_vertex_gauge<br/>p'_{a→b}=g_b p_{a→b} g_a⁻¹ ⇒ p'_□ = g p_□ g⁻¹")
+  M_pi["pi 通道（cyclic/boundary 划分 18⊕3）<br/>类型：闭合<br/>label: subsec:pi_channel<br/>X₆ = X₆^cyc ⊔ X₆^bdry; |X₆^cyc|=18; |X₆^bdry|=3 (prop:cyc_bdry_6)"]
+  P_pi("回路一致性代理（局部闭合/monodromy）<br/>类型：代理<br/>label: def:s4_vertex_gauge<br/>p'_{a→b}=g_b p_{a→b} g_a⁻¹ ⇒ p'_□ = g p_□ g⁻¹")
   M_pi -.- P_pi
 
-  M_e["e 通道（Abel–zeta 解析稳定 / pole barrier）<br/>label: subsec:e_channel<br/>ζₑ(r)=ζ(r/φ)=1/((1−r)(1+r/φ²)) (eq:abel_normalized_zeta)"]
-  P_e("时间箭头代理（指数权重/Abel kernel）<br/>label: prop:discrete_memoryless_exponential<br/>w_{t+s}=w_t w_s, w₀=1 ⇒ w_t=r^t")
+  M_e["e 通道（Abel–zeta 解析稳定 / pole barrier）<br/>类型：闭合<br/>label: subsec:e_channel<br/>ζₑ(r)=ζ(r/φ)=1/((1−r)(1+r/φ²)) (eq:abel_normalized_zeta)"]
+  P_e("时间箭头代理（指数权重/Abel kernel）<br/>类型：代理<br/>label: prop:discrete_memoryless_exponential<br/>w_{t+s}=w_t w_s, w₀=1 ⇒ w_t=r^t")
   M_e -.- P_e
 
-  M_fold["Fold6 映射（64→21；像/原像结构）<br/>label: subsec:fold6_map<br/>Fold₆(N):=(c₁,…,c₆) ∈ X₆ (eq:fold6_def)"]
-  P_fold("coarse-graining 压缩（稳定扇区统计）<br/>label: subsec:fold6_map<br/>Ω₆={0,1}⁶ (|Ω₆|=64), X₆⊂Ω₆ (|X₆|=21) ⇒ 64→21")
+  M_fold["Fold6 映射（64→21；像/原像结构）<br/>类型：构造<br/>label: subsec:fold6_map<br/>Fold₆(N):=(c₁,…,c₆) ∈ X₆ (eq:fold6_def)"]
+  P_fold("coarse-graining 压缩（稳定扇区统计）<br/>类型：代理<br/>label: subsec:fold6_map<br/>Ω₆={0,1}⁶ (|Ω₆|=64), X₆⊂Ω₆ (|X₆|=21) ⇒ 64→21")
   M_fold -.- P_fold
 
-  M_anchor["锚点（m=6，n=3）<br/>label: sec:folding_core<br/>(m,n)=(6,3)"]
-  P_screen("屏幕显示（planar screen chart）<br/>label: subsec:planar_screen_chart<br/>z(ω)=(ω₁+iω₂)/(1−ω₃)")
+  M_anchor["锚点（m=6，n=3）<br/>类型：构造<br/>label: sec:folding_core<br/>(m,n)=(6,3)"]
+  P_screen("屏幕显示（planar screen chart）<br/>类型：代理<br/>label: subsec:planar_screen_chart<br/>z(ω)=(ω₁+iω₂)/(1−ω₃)")
   M_anchor -.- P_screen
 
-  M_addr["寻址基（addressing basis）<br/>label: sec:hilbert_addressing<br/>Hₙ:{0,…,4ⁿ−1}→{0,…,2ⁿ−1}²"]
-  P_addr("距离代理（寻址步数/图距离）<br/>label: def:protocol_distance<br/>dₙ(x,y):=dist_{Gₙ}(x,y)")
+  M_addr["寻址基（addressing basis）<br/>类型：构造<br/>label: sec:hilbert_addressing<br/>Hₙ:{0,…,4ⁿ−1}→{0,…,2ⁿ−1}²"]
+  P_addr("距离代理（寻址步数/图距离）<br/>类型：代理<br/>label: def:protocol_distance<br/>dₙ(x,y):=dist_{Gₙ}(x,y)")
   M_addr -.- P_addr
 
-  P_local("局域性代理（邻接/近邻）<br/>label: def:addressing_map_graph<br/>Gₙ: nearest-neighbor graph on display sites")
+  P_local("局域性代理（邻接/近邻）<br/>类型：代理<br/>label: def:addressing_map_graph<br/>Gₙ: nearest-neighbor graph on display sites")
 
-  M_conn["连接（有限 transport 数据）<br/>label: def:hamming_microstates<br/>d_H(u,v)=∑_{i=1}⁶ |uᵢ−vᵢ|"]
-  P_conn("transport 代理（edge mismatch / 传输补偿）<br/>label: lem:edge_transport_welldefined<br/>p_{a→b}∈S₄ (min-cost + lex tie-break)")
+  M_conn["连接（有限 transport 数据）<br/>类型：构造<br/>label: def:hamming_microstates<br/>d_H(u,v)=∑_{i=1}⁶ |uᵢ−vᵢ|"]
+  P_conn("transport 代理（edge mismatch / 传输补偿）<br/>类型：代理<br/>label: lem:edge_transport_welldefined<br/>p_{a→b}∈S₄ (min-cost + lex tie-break)")
   M_conn -.- P_conn
 
-  M_holo["holonomy（回路不变量）<br/>label: prop:cycle_type_gauge_invariant<br/>p_□ := p_{a→b}·p_{b→c}·p_{c→d}·p_{d→a}"]
-  P_holo("曲率代理（plaquette/loop 统计）<br/>label: prop:cycle_type_gauge_invariant<br/>p_□ ↦ g p_□ g⁻¹ ⇒ cycle type invariant")
+  M_holo["holonomy（回路不变量）<br/>类型：构造<br/>label: prop:cycle_type_gauge_invariant<br/>p_□ := p_{a→b}·p_{b→c}·p_{c→d}·p_{d→a}"]
+  P_holo("曲率代理（plaquette/loop 统计）<br/>类型：观测<br/>label: prop:cycle_type_gauge_invariant<br/>p_□ ↦ g p_□ g⁻¹ ⇒ cycle type invariant")
   M_holo -.- P_holo
 
-  M_gauge["gauge 补偿（局部重标记冗余）<br/>label: def:s4_vertex_gauge<br/>p_{a→b} ↦ g_b p_{a→b} g_a⁻¹"]
-  P_gauge("规范冗余/场代理（补偿数据）<br/>label: def:s4_vertex_gauge<br/>loop holonomy: p_□ ↦ g p_□ g⁻¹")
+  M_gauge["gauge 补偿（局部重标记冗余）<br/>类型：构造<br/>label: def:s4_vertex_gauge<br/>p_{a→b} ↦ g_b p_{a→b} g_a⁻¹"]
+  P_gauge("规范冗余/场代理（补偿数据）<br/>类型：代理<br/>label: def:s4_vertex_gauge<br/>loop holonomy: p_□ ↦ g p_□ g⁻¹")
   M_gauge -.- P_gauge
 
-  M_sm["SM 标号闭合（21 stable labels）<br/>label: thm:labeling_unique<br/>𝓛_SM: X₆ → 𝓕_SM ⊔ {U(1),SU(2),SU(3)}"]
-  P_types("识别字典（stable types ↔ 粒子/场）<br/>label: tab:sm_labeling_table<br/>stable types ↔ (fermion multiplets, gauge factors)")
+  M_sm["SM 标号闭合（21 stable labels）<br/>类型：闭合<br/>label: thm:labeling_unique<br/>𝓛_SM: X₆ → 𝓕_SM ⊔ {U(1),SU(2),SU(3)}"]
+  P_types("识别字典（stable types ↔ 粒子/场）<br/>类型：字典<br/>label: tab:sm_labeling_table<br/>stable types ↔ (fermion multiplets, gauge factors)")
   M_sm -.- P_types
 
-  M_mass["质量谱闭合（depth/latency）<br/>label: eq:r_of_mu_z128<br/>r(μ)=ln(μ/m_e)/ln φ"]
-  P_mass("质量代理（延迟/钟慢/散射）<br/>label: rem:mass_as_compton_clock<br/>ω_C=μc²/ħ;  τ_C=ħ/(μc²)")
+  M_mass["质量谱闭合（depth/latency）<br/>类型：闭合<br/>label: eq:r_of_mu_z128<br/>r(μ)=ln(μ/m_e)/ln φ"]
+  P_mass("质量代理（延迟/钟慢/散射）<br/>类型：观测<br/>label: rem:mass_as_compton_clock<br/>ω_C=μc²/ħ;  τ_C=ħ/(μc²)")
   M_mass -.- P_mass
 
   %% -------------------------
   %% Continuum representative
   %% -------------------------
-  M_equiv["等价语义（semantic quotients）<br/>label: subsec:equivalence_relations_minimal<br/>t ~ t+t₀;  k ~_m k' ⇔ Fold_m(k)=Fold_m(k')<br/>p_{a→b} ↦ g_b p_{a→b} g_a⁻¹;  S ~ S + boundary term"]
-  P_equiv("语义契约（对象/可观测）<br/>label: subsec:equivalence_physical_objects<br/>物理对象 := 等价类 [obj]_{~}<br/>可观测 := O([obj]) ∈ ℝ (invariant / monotone)")
+  M_equiv["等价语义（semantic quotients）<br/>类型：构造<br/>label: subsec:equivalence_relations_minimal<br/>t ~ t+t₀;  k ~_m k' ⇔ Fold_m(k)=Fold_m(k')<br/>p_{a→b} ↦ g_b p_{a→b} g_a⁻¹;  S ~ S + boundary term"]
+  P_equiv("语义契约（对象/可观测）<br/>类型：字典<br/>label: subsec:equivalence_physical_objects<br/>物理对象 := 等价类 [obj]_{~}<br/>可观测 := O([obj]) ∈ ℝ (invariant / monotone)")
   M_equiv -.- P_equiv
 
-  M_freq["频率（相位推进/ tick）<br/>label: def:frequency_from_phase<br/>ω(t₁,t₂)=Δθ/Δt,  Δt=t₂−t₁"]
-  P_freq("频率优先字典（ratio-first）<br/>label: subsec:frequency_first_spine<br/>ω ratios ↔ energy/mass/T/redshift/delay")
+  M_freq["频率（相位推进/ tick）<br/>类型：构造<br/>label: def:frequency_from_phase<br/>ω(t₁,t₂)=Δθ/Δt,  Δt=t₂−t₁"]
+  P_freq("频率优先字典（ratio-first）<br/>类型：字典<br/>label: subsec:frequency_first_spine<br/>ω ratios ↔ energy/mass/T/redshift/delay")
   M_freq -.- P_freq
 
-  M_action["Seff：CAP 选出的作用量骨架<br/>label: eq:cap_minimal_action_skeleton<br/>S_eff=∫ d⁴x √(−g)[(R−2Λ)/(16πG) − λ_F(∇χ)² − V(χ²) − ∑_a Tr(F_a²)/(4g_a²) + 𝓛_m]"]
-  P_action("有效作用量代理（连续代表）<br/>label: prop:cap_minimal_action_skeleton<br/>CAP selects S_eff within a finite candidate family")
+  M_action["Seff：CAP 选出的作用量骨架<br/>类型：连续<br/>label: eq:cap_minimal_action_skeleton<br/>S_eff=∫ d⁴x √(−g)[(R−2Λ)/(16πG) − λ_F(∇χ)² − V(χ²) − ∑_a Tr(F_a²)/(4g_a²) + 𝓛_m]"]
+  P_action("有效作用量代理（连续代表）<br/>类型：模型<br/>label: prop:cap_minimal_action_skeleton<br/>CAP selects S_eff within a finite candidate family")
   M_action -.- P_action
 
-  M_eom["变分场方程（Einstein/YM/chi）<br/>label: eq:einstein_total_stress<br/>G_{μν}+Λg_{μν}=8πG(T^m_{μν}+T^χ_{μν}+T^YM_{μν})"]
-  P_eom("连续动力学代理（EOM 作为接口模型）<br/>label: eq:ym_equation / eq:chi_eom<br/>∇_μ(F^{μν}/g²)=J^ν;  2λ_F□χ − dV/dχ = 0")
+  M_eom["变分场方程（Einstein/YM/chi）<br/>类型：连续<br/>label: eq:einstein_total_stress<br/>G_{μν}+Λg_{μν}=8πG(T^m_{μν}+T^χ_{μν}+T^YM_{μν})"]
+  P_eom("连续动力学代理（EOM 作为接口模型）<br/>类型：模型<br/>label: eq:ym_equation / eq:chi_eom<br/>∇_μ(F^{μν}/g²)=J^ν;  2λ_F□χ − dV/dχ = 0")
   M_eom -.- P_eom
 
-  M_thermo["热力学闭合（熵/温度/自由能）<br/>label: eq:counting_entropy<br/>S(M)=log|Γ(M)|;  𝓕=E−TS"]
-  P_thermo("热力学字典（熵/温度/自由能代理）<br/>label: def:temperature_conjugate<br/>T⁻¹ := ∂S/∂E")
+  M_thermo["热力学闭合（熵/温度/自由能）<br/>类型：闭合<br/>label: eq:counting_entropy<br/>S(M)=log|Γ(M)|;  𝓕=E−TS"]
+  P_thermo("热力学字典（熵/温度/自由能代理）<br/>类型：字典<br/>label: def:temperature_conjugate<br/>T⁻¹ := ∂S/∂E")
   M_thermo -.- P_thermo
 
-  M_grav["overhead→gravity（chi→lapse→potential）<br/>label: eq:z128_lapse_from_chi<br/>N=exp(−γχ);  Φ=−γc²(χ−χ₀);  ρ_eff=−(γc²/(4πG))Δχ"]
-  P_dyn("弱场引力代理（Poisson/rho_eff）<br/>label: eq:z128_vc_from_chi<br/>v_c²(r)=−γc²·r·χ′(r)")
+  M_grav["overhead→gravity（chi→lapse→potential）<br/>类型：闭合<br/>label: eq:z128_lapse_from_chi<br/>N=exp(−γχ);  Φ=−γc²(χ−χ₀);  ρ_eff=−(γc²/(4πG))Δχ"]
+  P_dyn("弱场引力代理（Poisson/rho_eff）<br/>类型：代理<br/>label: eq:z128_vc_from_chi<br/>v_c²(r)=−γc²·r·χ′(r)")
   M_grav -.- P_dyn
 
-  P_lens("观测通道（透镜/时间延迟/红移）<br/>label: eq:wigner_smith_omega<br/>Q(ω)=−i S(ω)† dS/dω;  τ_WS(ω)=Tr Q(ω)")
+  P_lens("观测通道（透镜/时间延迟/红移）<br/>类型：观测<br/>label: eq:wigner_smith_omega<br/>Q(ω)=−i S(ω)† dS/dω;  τ_WS(ω)=Tr Q(ω)")
 
-  M_recon["chi 重建协议（算法/证明边界）"]
-  P_recon("反演代理（从数据到 chi(x)）")
+  M_recon["chi 重建协议（算法/证明边界）<br/>类型：审计"]
+  P_recon("反演代理（从数据到 chi(x)）<br/>类型：审计")
   M_recon -.- P_recon
 
-  M_err["协议→连续场误差控制（界/预算）"]
-  P_err("误差预算代理（不确定性/鲁棒性）")
+  M_err["协议→连续场误差控制（界/预算）<br/>类型：审计"]
+  P_err("误差预算代理（不确定性/鲁棒性）<br/>类型：审计")
   M_err -.- P_err
 
-  M_qm["量子测量闭合（POVM/Born）<br/>label: eq:z128_born_povm<br/>P_k=Tr(ρE_k)"]
-  P_qm("测量代理（Born 概率/仪器）<br/>label: eq:z128_born_povm<br/>P_k=Tr(ρE_k)")
+  M_qm["量子测量闭合（POVM/Born）<br/>类型：闭合<br/>label: eq:z128_born_povm<br/>P_k=Tr(ρE_k)"]
+  P_qm("测量代理（Born 概率/仪器）<br/>类型：观测<br/>label: eq:z128_born_povm<br/>P_k=Tr(ρE_k)")
   M_qm -.- P_qm
 
   %% -------------------------
   %% Scale flow & validation
   %% -------------------------
-  M_rg["RG：耦合运行（r 坐标）<br/>label: eq:rg_in_r<br/>dg/dr = (ln φ)β(g)"]
-  P_rg("耦合运行代理（阈值/匹配口径）<br/>label: eq:rg_in_r<br/>dg/dr = (ln φ)β(g)")
+  M_rg["RG：耦合运行（r 坐标）<br/>类型：闭合<br/>label: eq:rg_in_r<br/>dg/dr = (ln φ)β(g)"]
+  P_rg("耦合运行代理（阈值/匹配口径）<br/>类型：模型<br/>label: eq:rg_in_r<br/>dg/dr = (ln φ)β(g)")
   M_rg -.- P_rg
 
-  M_cosmo["宇宙学：分辨率流接口（假设/闭合）<br/>label: ass:occupancy_energy_z128<br/>f_stab(m)=F_{m+2}/2ᵐ;  f_hid=1−f_stab"]
-  P_cosmo("能量预算拟合代理（数据/误差口径）<br/>label: ass:occupancy_energy_z128<br/>Ω_vis,0≈f_stab(m);  Ω_dark,0≈1−f_stab(m)")
+  M_cosmo["宇宙学：分辨率流接口（假设/闭合）<br/>类型：假设<br/>label: ass:occupancy_energy_z128<br/>f_stab(m)=F_{m+2}/2ᵐ;  f_hid=1−f_stab"]
+  P_cosmo("能量预算拟合代理（数据/误差口径）<br/>类型：模型<br/>label: ass:occupancy_energy_z128<br/>Ω_vis,0≈f_stab(m);  Ω_dark,0≈1−f_stab(m)")
   M_cosmo -.- P_cosmo
 
-  M_gamma["gamma 跨观测一致性（协议/统计检验）"]
-  P_gamma("跨观测一致性检验（联合拟合）")
+  M_gamma["gamma 跨观测一致性（协议/统计检验）<br/>类型：审计"]
+  P_gamma("跨观测一致性检验（联合拟合）<br/>类型：审计")
   M_gamma -.- P_gamma
 
-  M_test["可证伪输出（预测与审计）"]
-  P_test("可证伪检验（跨观测一致性）")
+  M_test["可证伪输出（预测与审计）<br/>类型：审计"]
+  P_test("可证伪检验（跨观测一致性）<br/>类型：审计")
   M_test -.- P_test
 
   %% -------------------------
@@ -239,12 +253,34 @@ flowchart TB
   %% Styling (Material Design palette; math vs physics)
   %% -------------------------
   classDef iface fill:#FCE4EC,stroke:#D81B60,color:#880E4F,stroke-width:2px;
-  classDef math fill:#E3F2FD,stroke:#1E88E5,color:#0D47A1,stroke-width:2px;
-  classDef phys fill:#E8F5E9,stroke:#43A047,color:#1B5E20,stroke-width:2px;
+  %% Math (blue family)
+  classDef math_axiom fill:#BBDEFB,stroke:#1565C0,color:#0D47A1,stroke-width:3px,font-weight:700;
+  classDef math_construct fill:#E3F2FD,stroke:#1E88E5,color:#0D47A1,stroke-width:2px;
+  classDef math_closure fill:#90CAF9,stroke:#1976D2,color:#0D47A1,stroke-width:2px;
+  classDef math_cont fill:#E1F5FE,stroke:#039BE5,color:#01579B,stroke-width:2px;
+  classDef math_assumption fill:#E3F2FD,stroke:#1E88E5,color:#0D47A1,stroke-width:2px,stroke-dasharray: 6 3;
+  classDef math_audit fill:#E3F2FD,stroke:#0D47A1,color:#0D47A1,stroke-width:2px,stroke-dasharray: 2 2;
+  %% Physics (green family)
+  classDef phys_proxy fill:#E8F5E9,stroke:#43A047,color:#1B5E20,stroke-width:2px;
+  classDef phys_obs fill:#C8E6C9,stroke:#2E7D32,color:#1B5E20,stroke-width:2px,font-weight:700;
+  classDef phys_dict fill:#A5D6A7,stroke:#388E3C,color:#1B5E20,stroke-width:2px;
+  classDef phys_model fill:#F1F8E9,stroke:#558B2F,color:#1B5E20,stroke-width:2px;
+  classDef phys_audit fill:#F1F8E9,stroke:#33691E,color:#1B5E20,stroke-width:2px,stroke-dasharray: 2 2;
 
   class P_wish,P_motive iface;
-  class M_tick,M_readout,M_cap,M_golden,M_phi,M_pi,M_e,M_fold,M_anchor,M_addr,M_conn,M_holo,M_gauge,M_sm,M_mass,M_equiv,M_freq,M_action,M_eom,M_thermo,M_grav,M_recon,M_err,M_qm,M_rg,M_cosmo,M_gamma,M_test math;
-  class P_dt,P_obs,P_select,P_scan,P_phi,P_pi,P_e,P_fold,P_screen,P_addr,P_local,P_conn,P_holo,P_gauge,P_types,P_mass,P_equiv,P_freq,P_action,P_eom,P_thermo,P_dyn,P_lens,P_recon,P_err,P_qm,P_rg,P_cosmo,P_gamma,P_test phys;
+  %% Math node groups
+  class M_tick,M_cap math_axiom;
+  class M_readout,M_phi,M_fold,M_anchor,M_addr,M_conn,M_holo,M_gauge,M_equiv,M_freq math_construct;
+  class M_golden,M_pi,M_e,M_sm,M_mass,M_thermo,M_grav,M_qm,M_rg math_closure;
+  class M_action,M_eom math_cont;
+  class M_cosmo math_assumption;
+  class M_recon,M_err,M_gamma,M_test math_audit;
+  %% Physics node groups
+  class P_dt,P_scan,P_phi,P_pi,P_e,P_fold,P_screen,P_addr,P_local,P_conn,P_gauge,P_dyn phys_proxy;
+  class P_obs,P_holo,P_mass,P_lens,P_qm phys_obs;
+  class P_types,P_equiv,P_freq,P_thermo phys_dict;
+  class P_action,P_eom,P_rg,P_cosmo phys_model;
+  class P_select,P_recon,P_err,P_gamma,P_test phys_audit;
 
   style M_test stroke-width:4px;
   style P_test stroke-width:4px;
