@@ -89,9 +89,9 @@ flowchart TD
 - [x] **RG：分辨率坐标 r 的耦合流**：`appendix 31`  
   - 位置：`sections/appendices/31_running_couplings_resolution_flow.tex`（`\label{app:running_couplings_resolution_flow}`）
   - 要点：$\mu(r)=\mu_0\varphi^r$ 与链式法则；QED/QCD 一环；阈值匹配的离散解释。
-- [~] **宇宙学：分辨率流与能量预算接口**：`appendix 32`  
+- [x] **宇宙学：分辨率流与能量预算接口**：`appendix 32`  
   - 位置：`sections/appendices/32_cosmology_resolution_flow.tex`（`\label{app:cosmology_resolution_flow}`，`\label{ass:occupancy_energy_z128}`）
-  - 要点：big bang 作为分辨率初始化；inflation=稳定容量增长；隐藏/稳定份额；能量预算部分以显式接口假设（占据计数）给出，并提供可复现拟合脚本与图。
+  - 要点：big bang 作为分辨率初始化；inflation=稳定容量增长；隐藏/稳定份额；能量预算部分以显式接口假设（占据计数）给出，使用 Planck-2018 的 $\Omega_{\mathrm{b},0}$ 作为紧凑目标，并提供可复现拟合脚本与图；脚本同时生成 summary/stability 片段用于审计与敏感性口径统一。
 - [x] **散射时间延迟的统一闭合（相位/频率/WS/红移/GR 参考）**：`appendix 34`  
   - 位置：`sections/appendices/34_unified_delay_closure.tex`（`\label{app:time_mass_delay}`，`\label{app:time_mass_delay_reference}`）
   - 要点：相位-频率-延迟统一接口；Wigner--Smith 延迟（含 trace/logdet 与校准/损耗处理）；delay→$\kappa$→lapse→redshift/Shapiro 的一致词典；相移/截面与时延同源的接口注记。
@@ -132,7 +132,7 @@ flowchart TD
 | 质量谱/深度刚性（mass-depth rigidity） | 有界整数 ansatz 下系数 $(2,5,1)$ 的刚性闭合 | CAP/Audit | `sec:mass_spectrum_closure`, `prop:rhat_rigidity` | [x] |
 | 耦合/CP/混合闭合（rigidity targets） | 规范化词典与有界复杂度闭合（含审计表） | Iface/CAP/Match/Audit | `sec:couplings_cp`, `sec:pmns_neutrino_closure` | [x] |
 | 分辨率阶梯标定 | 在有界族内闭合 $r_{\mathrm{step}}=2\pi$（匹配层锚点仅作对比输入） | CAP/Match/Audit | `prop:r_step_2pi` | [x] |
-| 宇宙学接口 | 分辨率初始化/容量增长/能量预算拟合 | Iface/CAP | `app:cosmology_resolution_flow`, `ass:occupancy_energy_z128` | [~] |
+| 宇宙学接口 | 分辨率初始化/容量增长/能量预算拟合 | Iface/CAP | `app:cosmology_resolution_flow`, `ass:occupancy_energy_z128` | [x] |
 
 ## “待闭合/高风险”清单（建议后续继续追踪）
 
@@ -145,9 +145,21 @@ flowchart TD
   - 生成物：
     - `sections/generated/gamma_crossobs_rows.tex`
     - `sections/generated/gamma_crossobs_stability_rows.tex`
+    - `sections/generated/gamma_crossobs_diagnostics.tex`
     - `figures/gamma_crossobs_consistency.png`
-- [x] **宇宙学能量预算拟合的可复现脚本**：生成器 `scripts/exp_cosmology_energy_budget_fit.py` 输出 `sections/generated/cosmology_energy_budget_fit_equation.tex`（由 `sections/appendices/32_cosmology_resolution_flow.tex` 引用；关联 `app:cosmology_resolution_flow` / `ass:occupancy_energy_z128`），并必选生成 `figures/cosmology_energy_budget_fit.png`（Appendix 32 已插入图 `fig:cosmology_energy_budget_fit`）。
+- [x] **宇宙学能量预算拟合的可复现脚本**：生成器 `scripts/exp_cosmology_energy_budget_fit.py`（已接入 `scripts/run_all.py`）
+  - 入口：`sections/appendices/32_cosmology_resolution_flow.tex`（`app:cosmology_resolution_flow` / `ass:occupancy_energy_z128`，图 `fig:cosmology_energy_budget_fit`）
+  - 生成物：
+    - `sections/generated/cosmology_energy_budget_fit_equation.tex`
+    - `sections/generated/cosmology_energy_budget_fit_summary.tex`
+    - `sections/generated/cosmology_energy_budget_fit_stability.tex`
+    - `figures/cosmology_energy_budget_fit.png`
 - [~] **宇宙学能量预算的占据假设（Iface）**：`Assumption~\ref{ass:occupancy_energy_z128}` 将“能量份额”与读出微态集合的长期占据率做比例对应；该假设已被显式标注为接口假设并给出可证伪路径，但不属于 tick+CAP 的数学闭合输出（见 `app:cosmology_resolution_flow` / `subsec:cosmo_energy_budget_fit`）。
+
+- [x] **有限连接 transport rule 的反事实稳定性（look-elsewhere 审计）**：padding/truncation/tie-break 的有界反事实族对 gauge-invariant holonomy cycle-type 统计的影响包络（TV 距离、3/4-cycle 分数、边代价分位）。
+  - 位置（补充附录）：`sections/appendices/15_holonomy_sweeps_extended.tex`（`subsec:holonomy_transport_rule_sensitivity`，表 `tab:holonomy_transport_rule_sensitivity`）
+  - 生成脚本：`scripts/exp_holonomy_transport_rule_sensitivity.py`（已接入 `scripts/run_all.py`）
+  - 生成物：`sections/generated/holonomy_transport_rule_sensitivity_rows.tex`
 
 - [ ] **（OP1）超出候选族的规范群唯一性**：当前仅在显式有界候选族（紧致/三因子可交换分解/复杂度标签）内由 CAP 闭合（`prop:channel_to_gauge`）；候选族本身的第一性导出或无家族唯一性仍未闭合。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`（`sec:limitations_related_work`）。
 - [ ] **（OP2）Fold 家族的唯一性/不可避免性（或 universality）**：已在有界反事实族内给出部分选择（`app:fold_family_sensitivity`；`prop:value_consistency_selects_foldz` / `prop:value_consistency_forbids_shift`），但全局唯一性与“桥不敏感”的操作性 universality 仍未闭合。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`。
@@ -160,6 +172,7 @@ flowchart TD
 - **“概念→定义/闭合输出”总入口**：`tab:concept_index`（`app:equivalence_semantics` 内）
 - **“推导脊柱（Tick+CAP）”入口**：`sections/appendices/19_tick_cap_derivation.tex`
 - **“推断账本（哪些是 Iface/CAP/Math）”入口**：`sections/appendices/11_inference_ledger.tex`
+- **“外部 matching 输入清单”入口**：`subsec:external_inputs_inventory` / `tab:external_inputs_inventory`（位于 `sections/appendices/11_inference_ledger.tex`）
 - **“Open problems 清单”入口**：`subsec:ledger_open_problems`（并在 `sec:limitations_related_work` 的 `subsec:open_problems_audit_tagged` 提供更详细讨论）
 - **“协议→连续场误差控制”入口**：`sections/appendices/33_protocol_to_continuum_error_control.tex`
 

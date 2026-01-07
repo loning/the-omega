@@ -309,6 +309,8 @@ def build_steps() -> List[Step]:
             script="exp_cosmology_energy_budget_fit.py",
             expected_outputs=[
                 "sections/generated/cosmology_energy_budget_fit_equation.tex",
+                "sections/generated/cosmology_energy_budget_fit_summary.tex",
+                "sections/generated/cosmology_energy_budget_fit_stability.tex",
                 "figures/cosmology_energy_budget_fit.png",
             ],
         ),
@@ -346,6 +348,13 @@ def build_steps() -> List[Step]:
             script="exp_holonomy_loops.py",
             expected_outputs=[
                 "sections/generated/holonomy_cycle_type_rows.tex",
+            ],
+        ),
+        Step(
+            name="Holonomy transport-rule sensitivity (audit)",
+            script="exp_holonomy_transport_rule_sensitivity.py",
+            expected_outputs=[
+                "sections/generated/holonomy_transport_rule_sensitivity_rows.tex",
             ],
         ),
         Step(
@@ -754,6 +763,7 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "sections/generated/gamma_crossobs_rows.tex",
                 "sections/generated/gamma_crossobs_stability_rows.tex",
+                "sections/generated/gamma_crossobs_diagnostics.tex",
                 "figures/gamma_crossobs_consistency.png",
             ],
         ),

@@ -48,6 +48,12 @@ C_KM_S: float = 299_792.458
 PLANCK18_H0_KM_S_MPC: float = 67.4
 PLANCK18_H0_SIGMA_KM_S_MPC: float = 0.5
 
+# Late-time distance-ladder reference used only as a bounded sensitivity diagnostic
+# for the same time-delay proxy map (kept separate from the baseline joint estimate).
+# SH0ES (Riess et al. 2019): H0 = 74.03 ± 1.42 km/s/Mpc.
+SH0ES19_H0_KM_S_MPC: float = 74.03
+SH0ES19_H0_SIGMA_KM_S_MPC: float = 1.42
+
 
 @dataclass(frozen=True)
 class GammaEstimate:
@@ -434,12 +440,12 @@ def main() -> None:
             # PPN: Shapiro delay / light deflection scale with (1 + gamma_PPN).
             gamma_hat = 0.5 * (1.0 + val)
             sigma = 0.5 * sig
-            note = "map: gamma := (1+gamma_PPN)/2"
+            note = "map: gamma_dict := (1+gamma_PPN)/2"
         elif obs == "redshift_alpha":
             # Redshift test: (1+alpha) is a fractional amplitude deviation.
             gamma_hat = 1.0 + val
             sigma = sig
-            note = "map: gamma := 1+alpha"
+            note = "map: gamma_dict := 1+alpha"
         else:
             raise ValueError(f"Unknown solar observable: {obs}")
         solar_est.append(
@@ -458,6 +464,7 @@ def main() -> None:
     # ----------------------------
     wl = _read_json(data_root / "weak_lensing" / "cmb_lensing_amplitude.json")["measurements"]
     wl_est: List[GammaEstimate] = []
+    wl_est_alt: List[GammaEstimate] = []
     for m in wl:
         A = float(m["value"])
         sA = float(m["sigma"])
@@ -471,7 +478,18 @@ def main() -> None:
                 dataset=str(m["id"]),
                 gamma_hat=float(gamma_hat),
                 sigma=float(sigma),
-                note="map: A_L approx gamma squared (power-spectrum amplitude)",
+                note="map: gamma_dict := sqrt(A_L) (amplitude proxy)",
+                source=str(m.get("source", "")),
+            )
+        )
+        # Bounded counterfactual mapping (sensitivity diagnostic): gamma_dict := A_L.
+        wl_est_alt.append(
+            GammaEstimate(
+                channel=str(m["channel"]),
+                dataset=str(m["id"]),
+                gamma_hat=float(A),
+                sigma=float(sA),
+                note="map: gamma_dict := A_L (counterfactual sensitivity)",
                 source=str(m.get("source", "")),
             )
         )
@@ -481,6 +499,7 @@ def main() -> None:
     # ----------------------------
     td = _read_json(data_root / "strong_lensing" / "h0_time_delay.json")["measurements"]
     td_est: List[GammaEstimate] = []
+    td_est_alt: List[GammaEstimate] = []
     for m in td:
         H0 = float(m["value"])
         sp = float(m.get("sigma_plus", 0.0))
@@ -498,7 +517,21 @@ def main() -> None:
                 dataset=str(m["id"]),
                 gamma_hat=float(gamma_hat),
                 sigma=float(sigma),
-                note="map: time-delay H0 ratio (H0_td / H0_Planck18)",
+                note="map: gamma_dict := H0_TD / H0_ref (ref=Planck18)",
+                source=str(m.get("source", "")),
+            )
+        )
+        # Bounded counterfactual reference (sensitivity diagnostic): SH0ES19.
+        gamma_hat_alt = H0 / SH0ES19_H0_KM_S_MPC
+        rel2_alt = (sH / H0) ** 2 + (SH0ES19_H0_SIGMA_KM_S_MPC / SH0ES19_H0_KM_S_MPC) ** 2
+        sigma_alt = abs(gamma_hat_alt) * math.sqrt(rel2_alt)
+        td_est_alt.append(
+            GammaEstimate(
+                channel=str(m["channel"]),
+                dataset=str(m["id"]),
+                gamma_hat=float(gamma_hat_alt),
+                sigma=float(sigma_alt),
+                note="map: gamma_dict := H0_TD / H0_ref (ref=SH0ES19)",
                 source=str(m.get("source", "")),
             )
         )
@@ -592,6 +625,14 @@ def main() -> None:
     chi2, dof, pval = _chi2_consistency(all_est, gamma_joint)
     zmax, zpair = _pairwise_max_z(all_est)
 
+    # Mapping sensitivity diagnostics (not part of the baseline joint estimate).
+    wl_map_delta: List[Tuple[str, float, float]] = []
+    for base, alt in zip(wl_est, wl_est_alt):
+        wl_map_delta.append((base.dataset, float(base.gamma_hat), float(alt.gamma_hat)))
+    td_ref_delta: List[Tuple[str, float, float]] = []
+    for base, alt in zip(td_est, td_est_alt):
+        td_ref_delta.append((base.dataset, float(base.gamma_hat), float(alt.gamma_hat)))
+
     # Leave-one-channel-out joint estimates (by channel).
     loo: Dict[str, GammaEstimate] = {}
     for ch in sorted({e.channel for e in all_est}):
@@ -653,6 +694,17 @@ def main() -> None:
     rows.append(r"\bottomrule")
 
     write_lines(out_gen / "gamma_crossobs_rows.tex", rows)
+
+    # Write a compact diagnostics fragment for the LaTeX appendix (single paragraph).
+    diag_pair = _tex_escape(zpair) if zpair else "n/a"
+    diag_line = (
+        "Baseline-map joint estimate: "
+        f"$\\widehat\\gamma_{{\\mathrm{{dict}}}}={_format_sci_tex(gamma_joint, digits=6)}"
+        f" \\pm {_format_sci_tex(joint.sigma, digits=6)}$."
+        f" Consistency: $\\chi^2={chi2:.2f}$, $\\mathrm{{dof}}={dof}$, $p={pval:.3g}$."
+        f" Max pairwise tension: $|z|_{{\\max}}={zmax:.2f}$ (\\texttt{{{diag_pair}}})."
+    )
+    write_lines(out_gen / "gamma_crossobs_diagnostics.tex", [diag_line])
 
     stab_rows: List[str] = []
     if rc_comb is not None:
@@ -727,6 +779,52 @@ def main() -> None:
                 )
                 + " \\\\"
             )
+
+    # Weak-lensing proxy-map sensitivity row: sqrt(A_L) vs A_L.
+    if wl_est and wl_est_alt:
+        base = wl_est[0]
+        alt = wl_est_alt[0]
+        g0 = float(base.gamma_hat)
+        gmin = float(min(base.gamma_hat, alt.gamma_hat))
+        gmax = float(max(base.gamma_hat, alt.gamma_hat))
+        dmax = float(abs(alt.gamma_hat - base.gamma_hat))
+        stab_rows.append(
+            " & ".join(
+                [
+                    f"\\textbf{{{_tex_escape(base.channel)}}}",
+                    f"\\texttt{{{_tex_escape(base.dataset)}}}",
+                    _format_pm(g0, float(base.sigma)),
+                    _format_cell_sci(gmin),
+                    _format_cell_sci(gmax),
+                    _format_cell_sci(dmax),
+                    _tex_escape("bounded proxy-map family: gamma_dict := sqrt(A_L) (baseline) vs gamma_dict := A_L (counterfactual)"),
+                ]
+            )
+            + " \\\\"
+        )
+
+    # Strong-lensing proxy-map sensitivity row: Planck18 vs SH0ES19 reference H0.
+    if td_est and td_est_alt:
+        base = td_est[0]
+        alt = td_est_alt[0]
+        g0 = float(base.gamma_hat)
+        gmin = float(min(base.gamma_hat, alt.gamma_hat))
+        gmax = float(max(base.gamma_hat, alt.gamma_hat))
+        dmax = float(abs(alt.gamma_hat - base.gamma_hat))
+        stab_rows.append(
+            " & ".join(
+                [
+                    f"\\textbf{{{_tex_escape(base.channel)}}}",
+                    f"\\texttt{{{_tex_escape(base.dataset)}}}",
+                    _format_pm(g0, float(base.sigma)),
+                    _format_cell_sci(gmin),
+                    _format_cell_sci(gmax),
+                    _format_cell_sci(dmax),
+                    _tex_escape("bounded reference family: H0_ref = Planck18 (baseline) vs SH0ES19 (counterfactual)"),
+                ]
+            )
+            + " \\\\"
+        )
 
     # Leave-one-out rows
     for ch in sorted(loo.keys()):

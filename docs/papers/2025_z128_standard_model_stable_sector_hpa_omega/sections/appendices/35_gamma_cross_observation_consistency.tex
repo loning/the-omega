@@ -2,13 +2,14 @@
 \label{app:gamma_crossobs_consistency}
 
 This appendix closes an interface-audit deliverable flagged in \texttt{theory\_closure\_tracker.md}:
-a concrete multi-channel consistency test for the single parameter $\gamma$ in the dictionary
+a concrete multi-channel consistency test for the single parameter $\gamma_{\mathrm{dict}}$ in the dictionary
 \[
-N=\e^{-\gamma\chi},\qquad
-\Phi=-\gamma c^2(\chi-\chi_0),
+N=\e^{-\gamma_{\mathrm{dict}}\chi},\qquad
+\Phi=-\gamma_{\mathrm{dict}} c^2(\chi-\chi_0),
 \]
 connecting a reconstructed overhead proxy field $\chi$ to clock-rate (lapse) and weak-field gravitational proxies
 (Section~\ref{app:overhead_to_gravity_closure} and Appendix~\ref{app:time_mass_delay_reference}).
+\AuditTag We use the notation $\gamma_{\mathrm{dict}}$ in this appendix to avoid confusion with the PPN parameter $\gamma_{\mathrm{PPN}}$; it denotes the same dictionary coefficient written as $\gamma$ in Section~\ref{app:overhead_to_gravity_closure}.
 
 \paragraph{Scope and status.}
 \InterfaceTag The purpose of this module is \emph{not} to import external physics as theorem-level premises.
@@ -20,7 +21,8 @@ it produces a deterministic estimate (and a declared uncertainty/stability envel
 \texttt{scripts/exp\_gamma\_cross\_observation.py} from a small vendored data subset under
 \texttt{data/gamma\_crossobs/}. The script writes the LaTeX fragments
 \texttt{sections/generated/gamma\_crossobs\_rows.tex} and
-\texttt{sections/generated/gamma\_crossobs\_stability\_rows.tex} and the figure
+\texttt{sections/generated/gamma\_crossobs\_stability\_rows.tex} and
+\texttt{sections/generated/gamma\_crossobs\_diagnostics.tex}, and the figure
 \texttt{figures/gamma\_crossobs\_consistency.png}.
 
 \subsubsection{Channel-level estimators (summary)}
@@ -38,16 +40,77 @@ of Section~\ref{app:chi_reconstruction_protocol}; the derivative/smoothing rule 
 \InterfaceTag For compact vendored cross-check channels, we use published summary parameters as small-footprint audit inputs.
 These are treated as matching-layer constraints and are not premises for the folding core.
 
+\subsubsection{Channel-to-\texorpdfstring{$\gamma_{\mathrm{dict}}$}{gamma\_dict} maps and assumption footprints}
+\label{subsec:gamma_crossobs_maps}
+
+\paragraph{Notation and scope.}
+\InterfaceTag The parameter $\gamma_{\mathrm{dict}}$ is the single dictionary coefficient in
+$N=\e^{-\gamma_{\mathrm{dict}}\chi}$ and $\Phi=-\gamma_{\mathrm{dict}}c^2(\chi-\chi_0)$
+(Section~\ref{app:overhead_to_gravity_closure}).
+\MatchTag Solar-system constraints, lensing-amplitude summaries, and time-delay $H_0$ inferences are not imported as theorem-level premises.
+They are used here only as compact, auditable comparison inputs to form proxy estimates for $\gamma_{\mathrm{dict}}$ under explicit assumption footprints.
+
+\paragraph{Solar-system Shapiro / light-deflection constraints (PPN).}
+\MatchTag A solar-system test reports the PPN parameter $\gamma_{\mathrm{PPN}}$ (e.g.\ Cassini Shapiro delay and VLBI deflection constraints)
+\cite{BertottiIessTortora2003,FomalontKopeikin2009}.
+To compare such constraints to the single-parameter dictionary used here, we adopt the normalization proxy
+\[
+\widehat\gamma_{\mathrm{dict}}:=\frac{1+\gamma_{\mathrm{PPN}}}{2},
+\]
+so that general relativity ($\gamma_{\mathrm{PPN}}=1$) corresponds to $\gamma_{\mathrm{dict}}=1$.
+\AuditTag Assumption footprint: weak-field static regime; a single scalar coefficient governs both the lapse/potential amplitude used in the
+dictionary and the dominant Shapiro/deflection amplitude in the PPN limit; deviations are summarized by a one-parameter rescaling proxy.
+
+\paragraph{Solar-system gravitational redshift test.}
+\MatchTag Redshift tests often report a fractional amplitude deviation parameter $\alpha$ defined by a measured shift of the form
+$\Delta\nu/\nu=(1+\alpha)\Delta U/c^2$ under a standard weak-field dictionary \cite{Delva2018GalileoRedshift}.
+We use the compact proxy map
+\[
+\widehat\gamma_{\mathrm{dict}}:=1+\alpha,
+\]
+so $\alpha=0$ maps to $\gamma_{\mathrm{dict}}=1$.
+\AuditTag Assumption footprint: the same weak-field redshift amplitude that is tested by $\alpha$ is identified with the single-coefficient lapse dictionary
+used here (up to the declared normalization).
+
+\paragraph{Weak-lensing map proxy (CMB lensing amplitude \texorpdfstring{$A_L$}{A\_L}).}
+\MatchTag We use the phenomenological lensing-amplitude parameter $A_L$ reported in Planck-2018 cosmological-parameter fits
+as a compact weak-lensing-map proxy \cite{Planck2018Parameters}.
+As the baseline map we set
+\[
+\widehat\gamma_{\mathrm{dict}}:=\sqrt{A_L},
+\]
+motivated by the heuristic that a linear amplitude rescaling of the lensing potential propagates quadratically to a power-spectrum amplitude.
+\AuditTag As a bounded counterfactual, we also report the alternative proxy $\widehat\gamma_{\mathrm{dict}}:=A_L$ as a sensitivity diagnostic;
+both are treated as matching-layer conventions.
+
+\paragraph{Strong-lensing time-delay proxy (\texorpdfstring{$H_0$}{H0} inference).}
+\MatchTag We use a published $H_0$ inference from time-delay strong lensing as a compact proxy channel \cite{Wong2019H0LiCOWXIII}.
+As a baseline, we map the ratio to a Planck-2018 reference value \cite{Planck2018Parameters} by
+\[
+\widehat\gamma_{\mathrm{dict}}:=\frac{H_0^{\mathrm{TD}}}{H_0^{\mathrm{ref}}},
+\qquad
+H_0^{\mathrm{ref}}:=H_0^{\mathrm{Planck18}}.
+\]
+\AuditTag Assumption footprint: the time-delay distance scale is treated as inversely proportional to $H_0$ under a fixed background model,
+and any additional amplitude rescaling of the delay/potential contribution is summarized by a one-parameter ratio proxy. As a bounded sensitivity diagnostic,
+we also report the same ratio using a late-time distance-ladder reference value (SH0ES) \cite{Riess2019SH0ES}.
+
+\paragraph{Rotation curves (SPARC) via reconstructed \texorpdfstring{$\chi(r)$}{chi(r)}.}
+\InterfaceTag This is the closest-to-dictionary channel in the present audit: we reconstruct a proxy $\widehat\chi(r)$ from a scalar profile and use the WLS
+fit $v^2=\gamma_{\mathrm{dict}}(-c^2 r\chi'(r))$ as stated above.
+\MatchTag The SPARC rotmod files used here are a tiny vendored subset of the public SPARC dataset \cite{LelliMcGaughSchombert2016SPARC}; they serve as compact
+audit inputs only, with the protocol-level reconstruction and derivative regularization declared and swept.
+
 \subsubsection{Results and consistency diagnostics}
 \label{subsec:gamma_crossobs_results}
 
 \begin{table}[t]
 \centering
-\caption{Cross-observation $\gamma$ estimates from the vendored audit channels. The ``pull'' is $(\widehat\gamma-\widehat\gamma_{\mathrm{joint}})/\sigma$ under the joint inverse-variance estimate.}
+\caption{Cross-observation $\gamma_{\mathrm{dict}}$ proxy estimates from the vendored audit channels. The ``pull'' is $(\widehat\gamma_{\mathrm{dict}}-\widehat\gamma_{\mathrm{dict,joint}})/\sigma$ under the joint inverse-variance estimate.}
 \label{tab:gamma_crossobs_estimates}
 \begin{tabular}{llllp{7.2cm}}
 \toprule
-Channel & Dataset & $\widehat\gamma \pm \sigma$ & Pull & Notes \\
+Channel & Dataset & $\widehat\gamma_{\mathrm{dict}} \pm \sigma$ & Pull & Notes \\
 \midrule
 \input{sections/generated/gamma_crossobs_rows}%
 \end{tabular}
@@ -59,7 +122,7 @@ Channel & Dataset & $\widehat\gamma \pm \sigma$ & Pull & Notes \\
 \label{tab:gamma_crossobs_stability}
 \begin{tabular}{llllllp{7.2cm}}
 \toprule
-Block & Dataset & $\widehat\gamma \pm \sigma$ & $\gamma_{\min}$ & $\gamma_{\max}$ & $\max|\Delta\gamma|$ & Notes \\
+Block & Dataset & $\widehat\gamma_{\mathrm{dict}} \pm \sigma$ & $\gamma_{\min}$ & $\gamma_{\max}$ & $\max|\Delta\gamma|$ & Notes \\
 \midrule
 \input{sections/generated/gamma_crossobs_stability_rows}%
 \end{tabular}
@@ -68,7 +131,10 @@ Block & Dataset & $\widehat\gamma \pm \sigma$ & $\gamma_{\min}$ & $\gamma_{\max}
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.92\linewidth]{figures/gamma_crossobs_consistency.png}
-\caption{Visual summary of the vendored cross-observation $\gamma$ estimates with the joint estimate shown as a vertical band.}
+\caption{Visual summary of the vendored cross-observation $\gamma_{\mathrm{dict}}$ estimates with the joint estimate shown as a vertical band.}
 \label{fig:gamma_crossobs_consistency}
 \end{figure}
+
+\paragraph{Consistency diagnostics (baseline proxy maps).}
+\AuditTag \input{sections/generated/gamma_crossobs_diagnostics.tex}
 
