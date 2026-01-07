@@ -103,6 +103,10 @@ flowchart TB
   P_holo("曲率代理（plaquette/loop 统计）<br/>类型：观测<br/>label: prop:cycle_type_gauge_invariant<br/>p_□ ↦ g p_□ g⁻¹ ⇒ cycle type invariant")
   M_holo -.- P_holo
 
+  M_op3_yang_mills["OP3：holonomy→YM/EFT 代表闭合<br/>类型：连续<br/>label: app:continuum_yang_mills_from_holonomy<br/>finite holonomy → Wilson proxy → Tr(F^2) representative"]
+  P_wilson("Wilson-loop 代理（W,1-W）<br/>类型：观测<br/>label: tab:holonomy_balanced_chain_wilson<br/>W := Re(tr(Q))/3;  A := 1 - W")
+  M_op3_yang_mills -.- P_wilson
+
   M_transport_audit["transport rule 稳定性（padding/truncation/tie-break）<br/>类型：审计<br/>label: tab:holonomy_transport_rule_sensitivity<br/>TV distance + frac_{3/4} envelope"]
   P_transport_audit("transport rule 反事实族（look-elsewhere 审计）<br/>类型：审计<br/>label: tab:holonomy_transport_rule_sensitivity<br/>bounded counterfactual families")
   M_transport_audit -.- P_transport_audit
@@ -224,6 +228,10 @@ flowchart TB
   M_conn --> M_holo
   P_conn --> P_holo
 
+  M_holo --> M_op3_yang_mills
+  M_action --> M_op3_yang_mills
+  P_holo --> P_wilson
+
   M_holo --> M_gauge
   P_holo --> P_gauge
 
@@ -297,12 +305,12 @@ flowchart TB
   class M_tick,M_cap math_axiom;
   class M_readout,M_phi,M_fold,M_anchor,M_addr,M_conn,M_holo,M_gauge,M_equiv,M_freq math_construct;
   class M_golden,M_pi,M_e,M_sm,M_mass,M_thermo,M_grav,M_qm,M_rg math_closure;
-  class M_action,M_eom math_cont;
+  class M_action,M_eom,M_op3_yang_mills math_cont;
   class M_cosmo math_assumption;
   class M_recon,M_err,M_gamma_proxy,M_gamma_direct,M_transport_audit,M_inputs,M_test math_audit;
   %% Physics node groups
   class P_dt,P_scan,P_phi,P_pi,P_e,P_fold,P_screen,P_addr,P_local,P_conn,P_gauge,P_dyn phys_proxy;
-  class P_obs,P_holo,P_mass,P_lens,P_qm phys_obs;
+  class P_obs,P_holo,P_mass,P_lens,P_qm,P_wilson phys_obs;
   class P_types,P_equiv,P_freq,P_thermo phys_dict;
   class P_action,P_eom,P_rg,P_cosmo phys_model;
   class P_select,P_recon,P_err,P_gamma_proxy,P_gamma_direct,P_transport_audit,P_inputs,P_test phys_audit;
@@ -345,6 +353,8 @@ flowchart TB
 | `P_conn` | `\label{sec:protocol_connections_holonomy}` | `lem:edge_transport_welldefined — p_{a→b}∈S₄ (min-cost + lex tie-break)` | `sections/I_21_protocol_connections_holonomy.tex` |
 | `M_holo` | `\label{sec:protocol_connections_holonomy}` | `p_□ := p_{a→b}·p_{b→c}·p_{c→d}·p_{d→a} (plaquette product)` | `sections/I_21_protocol_connections_holonomy.tex` |
 | `P_holo` | `\label{app:holonomy_sweeps_extended}` | `prop:cycle_type_gauge_invariant — cycle type of p_□ is invariant under conjugation` | `sections/appendices/15_holonomy_sweeps_extended.tex` |
+| `M_op3_yang_mills` | `\label{app:continuum_yang_mills_from_holonomy}` | `finite holonomy → Wilson proxy → Tr(F^2) representative (CAP)` | `sections/appendices/36_continuum_yang_mills_from_holonomy.tex` |
+| `P_wilson` | `\label{tab:holonomy_balanced_chain_wilson}` | `W := Re(tr(Q))/3; A := 1 − W (rows: sections/generated/holonomy_balanced_chain_wilson_rows.tex)` | `sections/appendices/36_continuum_yang_mills_from_holonomy.tex` |
 | `M_gauge` | `\label{sec:protocol_connections_holonomy}` | `def:s4_vertex_gauge — p_{a→b} ↦ g_b p_{a→b} g_a⁻¹` | `sections/I_21_protocol_connections_holonomy.tex` |
 | `P_gauge` | `\label{sec:protocol_connections_holonomy}` | `p_□ ↦ g p_□ g⁻¹ (gauge conjugation on loops)` | `sections/I_21_protocol_connections_holonomy.tex` |
 | `M_sm` | `\label{sec:sm_labeling_closure}` | `thm:labeling_unique — 𝓛_SM:X₆→𝓕_SM⊔{U(1),SU(2),SU(3)} (order-preserving)` | `sections/V_30_sm_field_labeling_closure.tex` |

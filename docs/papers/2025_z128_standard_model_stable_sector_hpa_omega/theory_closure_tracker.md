@@ -169,7 +169,11 @@ flowchart TD
 
 - [ ] **（OP1）超出候选族的规范群唯一性**：当前仅在显式有界候选族（紧致/三因子可交换分解/复杂度标签）内由 CAP 闭合（`prop:channel_to_gauge`）；候选族本身的第一性导出或无家族唯一性仍未闭合。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`（`sec:limitations_related_work`）。
 - [ ] **（OP2）Fold 家族的唯一性/不可避免性（或 universality）**：已在有界反事实族内给出部分选择（`app:fold_family_sensitivity`；`prop:value_consistency_selects_foldz` / `prop:value_consistency_forbids_shift`），但全局唯一性与“桥不敏感”的操作性 universality 仍未闭合。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`。
-- [ ] **（OP3）有限连接的连续极限：Yang--Mills/EFT 涌现**：已闭合有限 connection/holonomy 诊断（`sec:protocol_connections_holonomy`），但从有限骨架推出连续 YM 作用量/动力学与低能参数稳定性仍未闭合。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`。
+- [x] **（OP3）有限连接→连续 Yang--Mills/EFT 的代表闭合**：已在本文以“代表闭合”的口径完成：从有限 holonomy/loop 不变量出发给出曲率与局域 gauge 动能项的接口字典，并在 CAP-候选族内选出连续 Yang--Mills/EFT 的最小代表。  
+  - 位置：`sections/appendices/36_continuum_yang_mills_from_holonomy.tex`（`\label{app:continuum_yang_mills_from_holonomy}`，表 `tab:holonomy_balanced_chain_wilson`）  
+  - 主依赖：有限 holonomy 诊断 `sec:protocol_connections_holonomy`；扩展 sweep `app:holonomy_sweeps_extended`（含 `tab:holonomy_wilson_loop`）；曲率语义 `subsec:curvature_as_loops`；连续代表作用量 `app:cap_continuum_action_closure`；场方程 `app:variational_field_equations`。
+  - 生成脚本：`scripts/exp_holonomy_balanced_chain_sweep.py`（已接入 `scripts/run_all.py`）
+  - 生成物：`sections/generated/holonomy_balanced_chain_wilson_rows.tex`
 - [ ] **（OP4）跨家族的全局模型选择（look-elsewhere）**：当前提供“家族内”审计（域大小/gap/反事实/量化表格，见 `app:generated_tables`），但比较不同候选家族的全局 prior/MDL 量化原则仍未闭合。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`。
 - [ ] **（OP5）标量/Yukawa 与 RG running 的闭合**：标量在本论文中作为 uplift/coarse-graining 依赖接口处理（`app:scalar_interface_audits`；并明确 $21$ 类型不含 Higgs：`rem:higgs_not_in_21`），但从有限协议导出 Yukawa 结构与 SM $\beta$-函数仍未闭合。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`。
 
@@ -189,7 +193,6 @@ flowchart TD
 #### 已提及但未在当前闭合链内完成（显式假设/外部输入/指针/仅匹配层口径）
 
 - [~] **规范群唯一性（超出有界候选族）**：三因子 $U(1)\times SU(2)\times SU(3)$ 仅在显式候选族内 CAP-闭合；候选族本身的第一性导出与无家族唯一性为 OP1（`prop:channel_to_gauge`；`subsec:ledger_open_problems`）。
-- [~] **有限 connection 的连续极限：连续 Yang–Mills/EFT 涌现**：有限 holonomy 诊断已给出，但连续极限与低能参数稳定性为 OP3（`sec:protocol_connections_holonomy`；`subsec:ledger_open_problems`）。
 - [~] **标量/Higgs/Yukawa 与 RG $\beta$-函数**：标量作为 uplift/coarse-graining 依赖接口处理；Yukawa 与 $\beta$-函数闭合为 OP5（`app:scalar_interface_audits`；`subsec:ledger_open_problems`）。
 - [~] **暗部门能量预算（暗物质/暗能量口径）**：以占据计数假设把 $f_{\mathrm{stab}}(m),f_{\mathrm{hid}}(m)$ 映射到 $\Omega_{\mathrm{vis},0},\Omega_{\mathrm{dark},0}$；该条被显式标注为接口假设并提供可复现拟合（`ass:occupancy_energy_z128`；并在生成摘要中区分 “dark=DM-only vs dark=total hidden” 的匹配口径）。
 - [~] **宇宙学常数/真空能密度问题（$\Lambda$ 的选择与自然尺度）**：连续代表作用量允许 $\Lambda$ 项，但本文未闭合其数值/符号/稳定性与观测对应（`app:cap_continuum_action_closure`）。

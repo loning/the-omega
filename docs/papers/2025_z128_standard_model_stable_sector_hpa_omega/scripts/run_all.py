@@ -390,6 +390,7 @@ def build_steps() -> List[Step]:
             script="exp_holonomy_balanced_chain_sweep.py",
             expected_outputs=[
                 "sections/generated/holonomy_balanced_chain_rows.tex",
+                "sections/generated/holonomy_balanced_chain_wilson_rows.tex",
             ],
         ),
         Step(
