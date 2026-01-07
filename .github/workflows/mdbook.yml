@@ -19,12 +19,52 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      site_changed: ${{ steps.site_changes.outputs.site_changed }}
     env:
       MDBOOK_VERSION: 0.4.52
       MDBOOK_MERMAID_VERSION: 0.15.0
       MDBOOK_KATEX_VERSION: 0.9.4
     steps:
       - uses: actions/checkout@v4
+      
+      - name: Detect site-relevant changes (skip Pages deploy if none)
+        id: site_changes
+        shell: bash
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          # Default: treat non-push events as "changed" so CI/PR builds behave normally.
+          if [[ "${GITHUB_EVENT_NAME}" != "push" ]]; then
+            echo "site_changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # New branch or force-push edge case: always allow deploy.
+          if [[ "$BEFORE" == "0000000000000000000000000000000000000000" ]]; then
+            echo "site_changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Ensure the 'before' commit object exists in shallow checkouts.
+          if ! git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then
+            git fetch --no-tags --prune origin "$BEFORE"
+          fi
+
+          changed="$(git diff --name-only "$BEFORE" "$AFTER")"
+
+          echo "changed_files<<'EOF'" >> "$GITHUB_OUTPUT"
+          echo "$changed" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+          if echo "$changed" | grep -Eq '^(docs/|book\.toml$)'; then
+            echo "site_changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "site_changed=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Compute papers cache key
         id: papers_cache_key
@@ -135,20 +175,25 @@ jobs:
           if ! command -v mdbook-mermaid &> /dev/null || ! mdbook-mermaid --version 2>&1 | grep -q "$MDBOOK_MERMAID_VERSION"; then
             cargo install --version ${MDBOOK_MERMAID_VERSION} mdbook-mermaid
           fi
+
+      - name: Skip Pages deploy (no site changes)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.site_changes.outputs.site_changed != 'true'
+        run: |
+          echo "No docs/ or book.toml changes detected; skipping Pages deploy."
       - name: Setup Pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.site_changes.outputs.site_changed == 'true'
         id: pages
         uses: actions/configure-pages@v4
       - name: Build with mdBook
         run: mdbook build
       - name: Upload artifact
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.site_changes.outputs.site_changed == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./book
 
   deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.build.outputs.site_changed == 'true'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
