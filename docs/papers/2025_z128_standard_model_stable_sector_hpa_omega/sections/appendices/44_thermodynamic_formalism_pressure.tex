@@ -1,0 +1,101 @@
+\section{Thermodynamic formalism and pressure for the golden-mean shift (notes)}
+\label{app:thermodynamic_formalism_pressure}
+
+\AuditTag This appendix records a standard thermodynamic-formalism viewpoint on the $\e$-channel: transfer operators, pressure, and the analytic encoding of stability by zeta functions.
+It is included as an optional mathematical backbone for the Abel/pole-barrier language and for the free-energy interpretation of CAP.
+No statement here is used as a premise in the folding proofs; all theorem-level folding statements remain finite and combinatorial.
+
+\subsection{Ruelle transfer operator for a shift of finite type}
+\label{subsec:ruelle_transfer_operator_sft}
+
+Let $(X,\sigma)$ be the golden-mean shift (Lemma~\ref{lem:golden_zeta_matrix}): $X\subset\{0,1\}^{\ZZ}$ consists of bi-infinite $0$--$1$ sequences with forbidden word $11$.
+For a potential $\phi:X\to\RR$ and a test function $g:X\to\RR$, the (Ruelle) transfer operator is
+\begin{equation}
+\label{eq:ruelle_transfer_operator}
+(\mathcal{L}_\phi g)(x):=\sum_{\sigma y=x} \e^{\phi(y)}\,g(y),
+\end{equation}
+where the sum ranges over the finitely many one-step preimages of $x$ under $\sigma$ \cite{Ruelle1978,ParryPollicott1990,LindMarcus1995}.
+
+\begin{theorem}[Pressure as log spectral radius (standard)]
+\label{thm:pressure_spectral_radius_standard}
+\MathTag For a mixing shift of finite type $(X,\sigma)$ and a H\"older potential $\phi$, the topological pressure $P(\phi)$ satisfies
+\[
+P(\phi)=\log \lambda_\phi,
+\]
+where $\lambda_\phi$ is the spectral radius of $\mathcal{L}_\phi$ acting on a standard Banach space of H\"older functions.
+Moreover, the variational principle holds:
+\[
+P(\phi)=\sup_{\mu\in\mathcal{M}_\sigma(X)}\Bigl(h_\mu(\sigma)+\int \phi\,\dd\mu\Bigr),
+\]
+where $\mathcal{M}_\sigma(X)$ is the set of $\sigma$-invariant Borel probability measures and $h_\mu(\sigma)$ is the measure-theoretic entropy \cite{Ruelle1978,ParryPollicott1990,LindMarcus1995}.
+\end{theorem}
+
+\begin{lemma}[Golden-mean normalization: $P(0)=\log\varphi$]
+\label{lem:pressure_zero_potential_gm}
+\MathTag For the golden-mean shift $(X,\sigma)$, the pressure of the zero potential satisfies $P(0)=\log\varphi$.
+\end{lemma}
+\begin{proof}
+For a one-step shift of finite type, the transfer operator for the zero potential reduces to the adjacency action of the transition matrix $A$ (Lemma~\ref{lem:golden_zeta_matrix}).
+The spectral radius of $A=\bigl(\begin{smallmatrix}1&1\\1&0\end{smallmatrix}\bigr)$ is $\varphi$, hence by Theorem~\ref{thm:pressure_spectral_radius_standard} one has $P(0)=\log\varphi$.
+\end{proof}
+
+\begin{lemma}[Full shift and the entropy gap $\log(2/\varphi)$]\label{lem:full_shift_entropy_gap}
+\MathTag Let $\Sigma_2:=\{0,1\}^{\ZZ}$ be the full two-shift with the left shift $\sigma$.
+Then $P_{\Sigma_2}(0)=h_{\mathrm{top}}(\Sigma_2)=\log 2$.
+For the golden-mean shift $\Sigma_{\mathrm{GM}}$ one has $P_{\Sigma_{\mathrm{GM}}}(0)=h_{\mathrm{top}}(\Sigma_{\mathrm{GM}})=\log\varphi$ (Lemma~\ref{lem:pressure_zero_potential_gm}).
+Therefore the entropy (capacity) gap between the full dyadic language and the golden-mean admissible language is
+\[
+\log 2-\log\varphi=\log(2/\varphi),
+\]
+which is exactly the exponential growth rate of the mean degeneracy $d_m=2^m/F_{m+2}$ (Lemma~\ref{lem:entropy_gap_hidden_exponent_cosmo}).
+\end{lemma}
+\begin{proof}
+For the full shift on two symbols, the number of admissible length-$n$ words is $2^n$, hence $h_{\mathrm{top}}=\lim_{n\to\infty}(1/n)\log 2^n=\log 2$; see, e.g., \cite{LindMarcus1995}.
+The remaining statements are the cited lemmas and the identity $\log 2-\log\varphi=\log(2/\varphi)$.
+\end{proof}
+
+\subsection{Zeta functions, pole barriers, and primitive Euler products}
+\label{subsec:zeta_pressure_pole_barrier}
+
+For a dynamical system $(X,f)$, the Artin--Mazur zeta function is defined by periodic-point counts (Section~\ref{subsec:e_channel}):
+\[
+\zeta_f(z):=\exp\!\left(\sum_{n\ge 1}\frac{\#\mathrm{Fix}(f^n)}{n}\,z^n\right).
+\]
+For shifts of finite type, $\zeta(z)$ is rational and is controlled by the transition matrix (Lemma~\ref{lem:golden_zeta_matrix}).
+In particular, the dominant singularity occurs at $|z|=\rho(A)^{-1}$, so normalizing $z=r/\rho(A)$ places the leading pole barrier at $r=1$.
+This is the minimal algebraic content behind the ``Abel path'' and ``pole barrier'' language used in the $\e$-channel.
+
+\begin{lemma}[Primitive periodic-orbit Euler product (standard)]
+\label{lem:artin_mazur_euler_product}
+\MathTag Let $(X,f)$ be a dynamical system such that the Artin--Mazur zeta function is well-defined as a formal power series.
+Let $\mathcal{P}$ denote the set of primitive periodic orbits of $f$ (primitive cycles modulo cyclic rotation), and write $|p|$ for the prime period of $p\in\mathcal{P}$.
+Then one has the formal Euler product
+\[
+\zeta_f(z)=\prod_{p\in\mathcal{P}}\left(1-z^{|p|}\right)^{-1}.
+\]
+\end{lemma}
+\begin{proof}
+For each $n\ge 1$, let $a_n$ denote the number of primitive periodic orbits of prime period $n$.
+Every periodic point of period $n$ belongs to a unique primitive orbit of prime period $d\mid n$, and each such primitive orbit contributes exactly $d$ points to $\mathrm{Fix}(f^n)$.
+Thus $\#\mathrm{Fix}(f^n)=\sum_{d\mid n} d\,a_d$.
+Substituting into the defining exponential series and using the identity
+\[
+-\log(1-u)=\sum_{k\ge 1}\frac{u^k}{k}
+\]
+gives
+\[
+\log \zeta_f(z)=\sum_{n\ge 1}\frac{1}{n}\left(\sum_{d\mid n} d\,a_d\right)z^n
+=\sum_{d\ge 1}a_d\sum_{k\ge 1}\frac{z^{kd}}{k}
+=-\sum_{d\ge 1}a_d\log(1-z^d),
+\]
+which exponentiates to the stated product.
+\end{proof}
+
+\subsection{CAP and finite-family variational closure}
+\label{subsec:cap_pressure_variational}
+
+\InterfaceTag The thermodynamic-formalism variational principle in Theorem~\ref{thm:pressure_spectral_radius_standard} is a supremum over an infinite set of invariant measures.
+In contrast, the CAP discipline used in this paper is explicitly \emph{finite-family}: one declares a finite candidate set and a deterministic tie-break, then selects a unique minimizer (Appendix~\ref{app:cap_audit_template}).
+Appendix~\ref{app:thermodynamics_from_equivalence} records the corresponding free-energy closure (Proposition~\ref{prop:cap_free_energy_closure}), which is the audit-facing finite analogue of a variational principle.
+
+

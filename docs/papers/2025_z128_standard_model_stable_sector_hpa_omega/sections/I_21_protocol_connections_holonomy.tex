@@ -67,6 +67,38 @@ P(w):=\mathrm{Fold}_6^{-1}(w)\subset\{0,\dots,63\},
 From the protocol viewpoint, $P(w)$ is a finite \emph{fiber} of microstates that project to the same stable readout label.
 Comparing stable labels across space requires a convention for how these fibers are identified, which is the discrete origin of a compensating connection.
 
+\begin{proposition}[Maximal fiber degeneracy forces a permutation gauge]\label{prop:max_fiber_deg_forces_perm_gauge}
+\MathTag Fix a window length $m\ge 1$ and let $K_m:=\{0,\dots,2^m-1\}$.
+For $w\in X_m$, write $P_m(w):=\mathrm{Fold}_m^{-1}(w)\subset K_m$ and define the maximal fiber degeneracy
+\[
+r_m:=\max_{w\in X_m}|P_m(w)|.
+\]
+Any construction that assigns to every stable label $w\in X_m$ a \emph{uniform} ordered slot list of length $r$ that contains all elements of $P_m(w)$ (allowing deterministic padding but forbidding truncation) must satisfy $r\ge r_m$.
+For any such $r$, comparing two length-$r$ slot lists across an oriented edge is canonically an element of the permutation group $S_r$, and local relabelings of slots act by conjugation.
+Therefore, the minimal nontrivial uniform slot gauge associated with the folding fibers at resolution $m$ is $S_{r_m}$.
+In particular, at the anchor $m=6$ one has $r_6=4$ by Theorem~\ref{thm:fold6_stats}, hence the minimal uniform slot gauge is $S_4$.
+\end{proposition}
+\begin{proof}
+If $r<r_m$, then there exists a label $w$ with $|P_m(w)|=r_m$ that cannot be placed into $r$ slots without truncation.
+Thus any truncation-free uniform slot model must have $r\ge r_m$.
+Given a fixed slot set $\{0,1,\dots,r-1\}$ at each vertex, any deterministic identification of ordered slot positions between two endpoints is a bijection of this set, hence a permutation in $S_r$.
+Relabeling slots at a vertex by $g_x\in S_r$ conjugates loop products, so conjugacy invariants are gauge invariant.
+The minimality claim follows by taking $r=r_m$.
+\end{proof}
+
+\begin{corollary}[Resolution growth of the minimal slot count]\label{cor:rm_growth_rate}
+\MathTag Let $r_m=\max_{w\in X_m}|\mathrm{Fold}_m^{-1}(w)|$ be the maximal fiber degeneracy at window length $m$.
+Then
+\[
+\log r_m = m\log(2/\varphi)+O(1),
+\qquad
+\lim_{m\to\infty}\frac{1}{m}\log r_m=\log(2/\varphi).
+\]
+\end{corollary}
+\begin{proof}
+This is Proposition~\ref{prop:rm_entropy_gap_rate} in Section~\ref{subsec:foldm_uplift}.
+\end{proof}
+
 \subsection{A deterministic discrete connection on grid edges}
 \label{subsec:deterministic_edge_connection}
 

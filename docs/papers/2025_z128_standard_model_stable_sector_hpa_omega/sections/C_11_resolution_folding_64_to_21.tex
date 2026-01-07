@@ -224,6 +224,7 @@ $X_6^{\mathrm{bdry}}=\{10\,00\,01,\ 10\,01\,01,\ 10\,10\,01\}
 
 The $\e$-channel expresses analytic stability through zeta functions and Abel normalization \cite{ArtinMazur1965,ParryPollicott1990,Ruelle1978}.
 For a compact, self-contained summary of the Abel-path and pole-barrier viewpoint used in this channel, see Appendix~\ref{app:protocol_primitives}.
+For the corresponding thermodynamic-formalism viewpoint (transfer operators and pressure) that packages the same stability information, see Appendix~\ref{app:thermodynamic_formalism_pressure}.
 For a dynamical system $(X,f)$, the Artin--Mazur zeta function is defined by the periodic-point counts
 \begin{equation}\label{eq:artin_mazur_def}
 \zeta_f(z):=\exp\!\left(\sum_{n\ge 1}\frac{\#\mathrm{Fix}(f^n)}{n}\,z^n\right),
@@ -259,6 +260,40 @@ I-zA=
 \]
 which gives \eqref{eq:golden_zeta}.
 \end{proof}
+%
+\begin{lemma}[Periodic points and the $\pi$-channel cyclic sector]\label{lem:cyc_periodic_points}
+Let $(X,\sigma)$ be the golden mean shift from Lemma~\ref{lem:golden_zeta_matrix}.
+Then for every $m\ge 1$,
+\[
+\#\mathrm{Fix}(\sigma^m)=\mathrm{tr}(A^m)=|X_m^{\mathrm{cyc}}|,
+\]
+where $X_m^{\mathrm{cyc}}=\{w\in X_m:\ w_1w_m=0\}$ is the $\pi$-channel cyclic subset (Section~\ref{subsec:pi_channel}).
+\end{lemma}
+\begin{proof}
+A point $x\in X$ lies in $\mathrm{Fix}(\sigma^m)$ if and only if $x_{k+m}=x_k$ for all $k\in\ZZ$.
+Such an $x$ is determined uniquely by its length-$m$ fundamental block $w=x_1\cdots x_m$, and the golden-mean constraint $x_kx_{k+1}=0$ implies $w\in X_m$.
+The periodicity condition also enforces the wrap-around admissibility $x_mx_{m+1}=x_mx_1=0$, i.e.\ $w_1w_m=0$, hence $w\in X_m^{\mathrm{cyc}}$.
+Conversely, given any $w\in X_m^{\mathrm{cyc}}$, repeating $w$ periodically defines a bi-infinite sequence $x\in X$ with $\sigma^m x=x$.
+Thus $\#\mathrm{Fix}(\sigma^m)=|X_m^{\mathrm{cyc}}|$.
+\par
+Finally, for a shift of finite type, $\mathrm{tr}(A^m)$ counts length-$m$ closed paths in the transition graph; these are exactly the admissible length-$m$ cycles and therefore coincide with $\#\mathrm{Fix}(\sigma^m)$.
+\end{proof}
+%
+\begin{corollary}[Lucas count for the cyclic sector]\label{cor:cyc_lucas}
+For every $m\ge 1$, one has $|X_m^{\mathrm{cyc}}|=L_m$, where $(L_m)$ are the Lucas numbers with $L_1=1$, $L_2=3$ (equivalently, $L_{m+2}=L_{m+1}+L_m$).
+In particular, $|X_6^{\mathrm{cyc}}|=L_6=18$.
+\end{corollary}
+\begin{proof}
+Let $t_m:=\mathrm{tr}(A^m)$.
+Since $A=\bigl(\begin{smallmatrix}1&1\\[2pt]1&0\end{smallmatrix}\bigr)$ satisfies $A^2=A+I$, one has $A^{m+2}=A^{m+1}+A^m$ and therefore $t_{m+2}=t_{m+1}+t_m$.
+Moreover $t_1=\mathrm{tr}(A)=1$ and $t_2=\mathrm{tr}(A^2)=3$.
+Thus $(t_m)$ is exactly the Lucas sequence, and the claim follows from Lemma~\ref{lem:cyc_periodic_points}.
+\end{proof}
+%
+\begin{remark}[$\pi$-channel cyclic counts as zeta coefficients]\label{rem:pi_channel_zeta_coeffs}
+Lemma~\ref{lem:cyc_periodic_points} shows that the periodic-point counts in \eqref{eq:artin_mazur_def} coincide with the $\pi$-channel cyclic counts $|X_m^{\mathrm{cyc}}|$.
+Thus the $\e$-channel zeta function is an analytic packaging of the same cyclic sector that appears combinatorially as the canonical $18\oplus 3$ split at $m=6$.
+\end{remark}
 Let $\varphi$ be the golden ratio and apply spectral normalization $z=r/\varphi$.
 Then
 \begin{equation}\label{eq:abel_normalized_zeta}
@@ -286,6 +321,12 @@ Using $1-\varphi^{-2}=\varphi^{-1}$ (equivalently $\varphi^2=\varphi+1$), expand
 \begin{remark}[Finite window vs.\ higher-resolution distinction]\label{rem:e_channel_distinct}
 At the minimal window length $m=6$, the analytic channel is used here primarily as an \emph{interpretation layer} for stability (holomorphy domain and boundary pole), while the admissible-word selection is already enforced by the $\varphi$-grammar.
 At higher resolution, weighted/pressure-like variants can make $\e$ genuinely distinct from a single forbidden-word predicate.
+\end{remark}
+\begin{remark}[Abel-first stability discipline and pole-barrier rigidity (audit)]\label{rem:abel_first_pole_barrier_discipline}
+\AuditTag The $\e$-channel is formulated in an Abel-first language: one packages protocol data into a holomorphic generating function on the unit disk and approaches the boundary along the Abel path.
+In this discipline, the location of the first singular obstruction along the Abel path (the ``pole barrier'') is a canonical stability diagnostic; competing representations that would force an \emph{interior} pole are incompatible with unit-disk holomorphy.
+Appendix~\ref{app:abel_finite_part_notes} records a finite-part/resolvent template for bounded orbit sums, and Appendix~\ref{app:trace_pole_barrier_template} records the abstract holomorphy-versus-interior-poles rigidity motif used for audit-facing consistency checks.
+These templates serve as analytic discipline and are not used as additional premises in the theorem-level folding proofs.
 \end{remark}
 
 \subsection{The folding map \texorpdfstring{$\mathrm{Fold}_6$}{Fold6}: from 64 indices to 21 stable types}
@@ -580,6 +621,92 @@ N=V_m(w)+\sum_{k\ge m+1} c_k F_{k+1},
 \]
 the fiber size is the number of admissible tail digit strings $(c_{m+1},c_{m+2},\dots)$ (with $c_m=w_m$ enforcing $c_m c_{m+1}=0$) whose tail value keeps $N$ in the finite domain.
 Thus finite preimage degeneracy is a direct consequence of Zeckendorf truncation at finite window length and the cutoff $N<2^m$; it is not an artifact of the $m=6$ case.
+
+\begin{definition}[Maximal degeneracy at window length $m$]\label{def:rm_max_degeneracy}
+\MathTag For $m\ge 1$ and $w\in X_m$, define the folding degeneracy
+\[
+g_m(w):=\left|\mathrm{Fold}_m^{-1}(w)\right|.
+\]
+Define the maximal degeneracy (minimal uniform slot count)
+\[
+r_m:=\max_{w\in X_m} g_m(w).
+\]
+\end{definition}
+
+\begin{lemma}[The maximal degeneracy is attained at the zero prefix]\label{lem:rm_attained_at_zero_prefix}
+\MathTag Let $0^m\in X_m$ denote the all-zero word.
+Then for every $m\ge 1$ one has
+\[
+g_m(w)\le g_m(0^m)\qquad\text{for all }w\in X_m,
+\]
+hence $r_m=g_m(0^m)$.
+\end{lemma}
+\begin{proof}
+Fix $w\in X_m$ and let $N\in\mathrm{Fold}_m^{-1}(w)$.
+Write the Zeckendorf digits of $N$ as $(c_k)_{k\ge 1}$.
+By definition of $\mathrm{Fold}_m$ in \eqref{eq:foldm_def}, the first $m$ digits satisfy $c_1\cdots c_m=w$.
+Let
+\[
+T:=\sum_{k\ge m+1} c_k F_{k+1}\ \ge\ 0
+\]
+be the tail value, so that $N=V_m(w)+T$.
+Since $N\le 2^m-1$ and $V_m(w)\ge 0$, one has $T\le 2^m-1$.
+Therefore the Zeckendorf digit string of $T$ has first $m$ digits equal to $0^m$ and satisfies the same no-adjacent-ones constraint.
+In particular, $T\in \mathrm{Fold}_m^{-1}(0^m)$.
+\par
+The map $N\mapsto T=N-V_m(w)$ is injective on $\mathrm{Fold}_m^{-1}(w)$, hence
+$g_m(w)\le g_m(0^m)$.
+Taking the maximum over $w$ yields $r_m=g_m(0^m)$.
+\end{proof}
+
+\begin{proposition}[Bounds and exponential rate of $r_m$]\label{prop:rm_entropy_gap_rate}
+\MathTag Define
+\[
+k(m):=\max\{k\ge 0:\ F_{m+k+2}\le 2^m\}.
+\]
+Then
+\[
+F_{k(m)+2}\le r_m\le F_{k(m)+4}.
+\]
+Consequently,
+\[
+\log r_m = m\log(2/\varphi)+O(1),
+\qquad
+\lim_{m\to\infty}\frac{1}{m}\log r_m=\log(2/\varphi)=\log 2-\log\varphi.
+\]
+\end{proposition}
+\begin{proof}
+By Lemma~\ref{lem:rm_attained_at_zero_prefix}, $r_m=g_m(0^m)$ counts the integers $N\in\{0,\dots,2^m-1\}$ whose Zeckendorf digits satisfy $c_1=\cdots=c_m=0$.
+\par
+\noindent\textbf{Lower bound.}
+If $F_{m+k+2}\le 2^m$, then every integer $N\in\{0,\dots,F_{m+k+2}-1\}$ has Zeckendorf digits supported in $\{1,\dots,m+k\}$.
+Requiring $c_1=\cdots=c_m=0$ is equivalent to choosing an admissible length-$k$ digit string $(c_{m+1},\dots,c_{m+k})$ with no adjacent ones.
+There are exactly $|X_k|=F_{k+2}$ such strings (Lemma~\ref{lem:xm_fib}), hence $g_m(0^m)\ge F_{k+2}$.
+Taking $k=k(m)$ gives $r_m\ge F_{k(m)+2}$.
+\par
+\noindent\textbf{Upper bound.}
+Since $k(m)$ is maximal, one has $2^m<F_{m+k(m)+3}<F_{m+k(m)+4}$.
+Therefore
+\[
+r_m=g_m(0^m)\le \#\{N\in\ZZ_{\ge 0}:\ N<F_{m+k(m)+4},\ c_1=\cdots=c_m=0\}.
+\]
+Every integer $N<F_{m+k(m)+4}$ has Zeckendorf digits supported in $\{1,\dots,m+k(m)+2\}$, so after fixing $c_1=\cdots=c_m=0$ we may choose an admissible length-$(k(m)+2)$ tail.
+There are $|X_{k(m)+2}|=F_{k(m)+4}$ such tails, giving $r_m\le F_{k(m)+4}$.
+\par
+\noindent\textbf{Exponential rate.}
+From the definition of $k(m)$ one has
+$F_{m+k(m)+2}\le 2^m< F_{m+k(m)+3}$.
+By Binet asymptotics (Remark~\ref{rem:phi_base_entropy}), $\log F_n = n\log\varphi-\frac12\log 5+O(\varphi^{-2n})$, hence
+\[
+\frac{m+k(m)}{m}=\frac{\log 2}{\log\varphi}-1+O(1/m),
+\]
+so $k(m)=(\log(2/\varphi)/\log\varphi)\,m+O(1)$.
+Using the Fibonacci bounds above, $\log r_m$ is sandwiched between $\log F_{k(m)+2}$ and $\log F_{k(m)+4}$, hence
+\[
+\log r_m = k(m)\log\varphi+O(1)=m\log(2/\varphi)+O(1),
+\]
+which implies the claimed limit.
+\end{proof}
 
 \paragraph{Uplift evidence.}
 Appendix~\ref{app:generated_tables} records an $m$-sweep (generated by \texttt{scripts/exp\_foldm\_stats.py}) that verifies $\mathrm{Im}(\mathrm{Fold}_m)=X_m$ and reports the full degeneracy histograms for $m=6,\dots,16$ (Table~\ref{tab:foldm_sweep}).

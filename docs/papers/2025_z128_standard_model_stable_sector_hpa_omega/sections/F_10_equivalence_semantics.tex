@@ -34,6 +34,31 @@ Each item below is a \emph{semantic quotient}: it does not add new dynamical ass
 \MathTag At fixed $m$, microstates $k,k'\in\{0,\dots,2^m-1\}$ are observationally equivalent if they project to the same stable type:
 $k\sim_m k'$ iff $\mathrm{Fold}_m(k)=\mathrm{Fold}_m(k')$.
 This is the formal core of finite observability and is the origin of degeneracy/fiber data.
+%
+\begin{proposition}[Observable quotient at fixed window length]\label{prop:omega_quotient_equals_Xm}
+\MathTag Fix $m\ge 1$ and let $K_m:=\{0,\dots,2^m-1\}$.
+Define $k\sim_m k'$ by $\mathrm{Fold}_m(k)=\mathrm{Fold}_m(k')$.
+Then $\sim_m$ is an equivalence relation and the induced map
+\[
+\overline{\mathrm{Fold}}_m:\ K_m/\!\sim_m\ \longrightarrow\ X_m,\qquad [k]\mapsto \mathrm{Fold}_m(k),
+\]
+is a bijection.
+Equivalently, the stable-type set $X_m$ is the observable quotient of the microstate index set at resolution $m$.
+In particular, $\mathrm{Fold}_m$ factors canonically as
+\[
+K_m\ \twoheadrightarrow\ K_m/\!\sim_m\ \xrightarrow[\cong]{\ \overline{\mathrm{Fold}}_m\ }\ X_m.
+\]
+\end{proposition}
+\begin{proof}
+Reflexivity, symmetry, and transitivity of $\sim_m$ are immediate from the definition.
+The map $\overline{\mathrm{Fold}}_m$ is well-defined because $\mathrm{Fold}_m$ is constant on equivalence classes by construction.
+It is surjective because $\mathrm{Fold}_m$ is surjective onto $X_m$ (Proposition~\ref{prop:foldm_surjective}).
+It is injective because if $\overline{\mathrm{Fold}}_m([k])=\overline{\mathrm{Fold}}_m([k'])$, then $\mathrm{Fold}_m(k)=\mathrm{Fold}_m(k')$ and hence $k\sim_m k'$, i.e.\ $[k]=[k']$.
+\end{proof}
+\begin{remark}[Fibers and residual uncertainty]\label{rem:fold_fibers_residual_uncertainty}
+\InterfaceTag Under this quotient, each stable label $w\in X_m$ represents a fiber $P(w):=\mathrm{Fold}_m^{-1}(w)\subset K_m$ of observationally indistinguishable microstates.
+Finite preimage degeneracy is a direct consequence of Zeckendorf truncation at finite window length and the cutoff $k<2^m$; see Section~\ref{subsec:foldm_uplift} for the explicit tail interpretation and degeneracy structure.
+\end{remark}
 
 \paragraph{(E3) Local fiber-slot relabelings (finite gauge redundancy).}
 \MathTag In the padded-fiber connection model (Section~\ref{sec:protocol_connections_holonomy}), relabeling local fiber slots at a vertex is $g_x\in S_r$ and acts by conjugation on loop products (Definition~\ref{def:s4_vertex_gauge}).
@@ -42,11 +67,65 @@ Therefore, loop holonomy is physical only through conjugacy invariants (e.g.\ cy
 \paragraph{(E4) Coarse graining (stochastic/Markov morphisms).}
 \InterfaceTag Any finite observer induces a coarse-graining preorder: one readout description is less informative if it is obtained from another by a stochastic map (a Markov morphism).
 This is the semantic input behind monotonicity requirements used when selecting canonical statistical quadratic forms (cf.\ C{\v{e}}ncov uniqueness in the CAP action closure; Section~\ref{app:cap_continuum_action_closure}).
+%
+\subsection{Resolution refinement as a projective semantics (uplift in $m$)}
+\label{subsec:resolution_projective_semantics}
+\paragraph{Deterministic refinement/forgetting by prefix projections.}
+\MathTag For $m\ge k\ge 1$, define the prefix projection
+\[
+\pi_{m\to k}:X_m\to X_k,\qquad
+\pi_{m\to k}(w_1\cdots w_m):=w_1\cdots w_k.
+\]
+This map is well-defined because $X_m$ is a forbidden-word language: a prefix of an admissible word is admissible.
+It is surjective because any $u\in X_k$ extends to $u0\cdots 0\in X_m$.
+Moreover, the family is functorial: for $m\ge \ell\ge k$ one has $\pi_{m\to k}=\pi_{\ell\to k}\circ \pi_{m\to \ell}$.
+Appendix~\ref{app:functorial_refinement} records this structure explicitly (at $k=6$) together with deterministic refinement multiplicities used in the SM-label uplift audits.
+
+\paragraph{Projective physical objects (resolution-consistent families).}
+\InterfaceTag A finite observer may change resolution (window length) from $m$ to $m'$.
+To treat ``the same object'' across such refinements without adding a new axiom, we use a projective semantics:
+a resolution-consistent object is a family of stable labels $(w_m)_{m\ge m_0}$ such that
+\[
+\pi_{m\to k}(w_m)=w_k\qquad\text{for all }m\ge k\ge m_0.
+\]
+Equivalently, objects live in the inverse limit $\varprojlim_{m} X_m$ under the prefix projections.
+This is the canonical finite-resolution backbone behind the informal phrase ``uplift in $m$'' used elsewhere in the paper.
+
+\paragraph{Relation to stochastic coarse graining (E4).}
+\InterfaceTag The prefix maps above are the deterministic prototype of coarse graining: they forget the last $(m-k)$ bits.
+Markov morphisms in (E4) are the stochastic generalization: they allow further loss of information beyond deterministic forgetting.
+Monotonicity requirements (e.g.\ for entropy-like functionals or quadratic forms) are to be read as monotonicity with respect to this preorder, with deterministic forgetting as a special case.
 
 \paragraph{(E5) Action equivalence (boundary terms and field redefinitions).}
 \InterfaceTag When we speak of ``an action'' at the continuum closure level, the physical content is the induced equations of motion.
 Accordingly, actions related by adding a boundary term, or by invertible local field redefinitions, are treated as physically equivalent.
 CAP selection is applied to equivalence classes (by choosing canonical representatives under a stated tie-break) rather than to raw coordinate expressions.
+%
+\begin{proposition}[CAP is well-defined on equivalence classes (audit form)]\label{prop:cap_on_equiv_classes}
+\AuditTag Let $\sim$ be an equivalence relation on a finite candidate family $\mathcal{C}$.
+Assume the objective $J:\mathcal{C}\to\RR$ is invariant under $\sim$ (i.e.\ $c\sim c'\Rightarrow J(c)=J(c')$) and that the deterministic tie-break key $\kappa:\mathcal{C}\to\mathcal{K}$ (with a fixed total order on $\mathcal{K}$) is also invariant under $\sim$.
+Then CAP selection on $\mathcal{C}$ induces a unique selected equivalence class $[c_\ast]_\sim\in \mathcal{C}/\!\sim$ and a canonical representative $c_\ast$ within that class.
+Equivalently, the CAP output is representation-independent in the sense of the declared equivalence semantics.
+\end{proposition}
+\begin{proof}
+Since $\mathcal{C}$ is finite, CAP selects the lexicographically minimal pair $(J(c),\kappa(c))$.
+By invariance, both $J$ and $\kappa$ are constant on each equivalence class, so the induced map
+\[
+\mathcal{C}/\!\sim\ \longrightarrow\ \RR\times\mathcal{K},\qquad [c]\mapsto (J(c),\kappa(c)),
+\]
+is well-defined.
+Minimizing on $\mathcal{C}$ is therefore equivalent to minimizing on the finite quotient set $\mathcal{C}/\!\sim$, yielding a unique class $[c_\ast]_\sim$ and hence a canonical representative $c_\ast$.
+\end{proof}
+\begin{remark}[Audit checklist: minimal failure point]\label{rem:cap_equiv_audit_failure}
+\AuditTag If the tie-break key $\kappa$ depends on a coordinate expression rather than on an invariant of the equivalence class, then the CAP output can violate the equivalence semantics even when $J$ is invariant.
+Accordingly, audit form requires that both the candidate family and the tie-break specification be stated at the invariant level (Appendix~\ref{app:cap_audit_template}).
+\end{remark}
+
+\paragraph{(E6) Morita equivalence as a declared scan-level quotient (optional).}
+\AuditTag In the Weyl-pair scan language, the slope parameter $\alpha$ controls the commutation phase (Equation~\eqref{eq:weyl_pair}).
+If one declares an additional equivalence relation that identifies scan algebras up to Morita equivalence (an $\mathrm{SL}_2(\ZZ)$ action on $\alpha$), then distinct microscopic scan parametrizations can be treated as the same geometry at the semantic level.
+We record this as an optional extension of the equivalence semantics; it is not used as a premise in the folding or continuum-closure proofs.
+See Appendix~\ref{app:morita_fourier_exchange} for the precise statement and standard references.
 
 \subsection{Frequency as a primary derived quantity (frequency-first spine)}
 \label{subsec:frequency_first_spine}
@@ -171,6 +250,36 @@ S_{\mathrm{fib}}(w):=\log |P(w)|,
 \]
 optionally scaled by $k_B$ in physical units.
 More generally, any coarse-graining map induces macrostates as equivalence classes; entropy is the logarithm of the macrostate multiplicity, or of an effective channel capacity in boundary settings (Appendix~\ref{app:bh_wormholes_pointer}).
+
+\begin{lemma}[Mean degeneracy and fiber-entropy control]\label{lem:mean_degeneracy_fiber_entropy_bounds}
+\MathTag Fix $m\ge 1$ and let $K_m:=\{0,\dots,2^m-1\}$.
+Let $\mathrm{Fold}_m:K_m\to X_m$ be the folding map and define fibers $P(w):=\mathrm{Fold}_m^{-1}(w)$ for $w\in X_m$.
+Then:
+\begin{enumerate}
+\item The fibers partition $K_m$, hence
+\[
+\sum_{w\in X_m}|P(w)|=|K_m|=2^m.
+\]
+In particular the mean degeneracy satisfies
+\[
+d_m:=\frac{|K_m|}{|X_m|}=\frac{1}{|X_m|}\sum_{w\in X_m}|P(w)|.
+\]
+\item The uniform mean fiber-count entropy is controlled by $d_m$:
+\[
+\frac{1}{|X_m|}\sum_{w\in X_m}\log|P(w)|\ \le\ \log d_m.
+\]
+\item Writing the stable fraction as $f_{\mathrm{stab}}(m):=|X_m|/2^m$, one has $d_m=1/f_{\mathrm{stab}}(m)$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Since $\mathrm{Fold}_m$ is a map onto $X_m$, the sets $\{P(w)\}_{w\in X_m}$ form a disjoint partition of $K_m$, so summing their sizes gives $|K_m|=2^m$.
+The mean-degeneracy identity is then immediate by dividing by $|X_m|$.
+For the entropy bound, apply Jensen's inequality to the concave function $\log$ on the positive numbers $\{|P(w)|\}_{w\in X_m}$:
+\[
+\frac{1}{|X_m|}\sum_{w\in X_m}\log|P(w)|\le \log\!\left(\frac{1}{|X_m|}\sum_{w\in X_m}|P(w)|\right)=\log d_m.
+\]
+Finally $d_m=2^m/|X_m|=1/f_{\mathrm{stab}}(m)$ by definition.
+\end{proof}
 
 \paragraph{Second-law semantics.}
 \InterfaceTag A key reason ``irreversibility'' can be discussed without adding a new axiom is that the map from microscopic histories to observable records is many-to-one (Section~\ref{subsec:tick_time_arrow}):

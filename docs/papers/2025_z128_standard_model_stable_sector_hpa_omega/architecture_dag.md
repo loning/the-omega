@@ -41,7 +41,7 @@
   - **含义**：依赖/推导顺序（保持有向无环）
 
 ```mermaid
-%%{init: {"flowchart": {"useMaxWidth": false, "nodeSpacing": 25, "rankSpacing": 40}, "themeVariables": {"fontSize": "12px"}}}%%
+%%{init: {"flowchart": {"useMaxWidth": false, "nodeSpacing": 25, "rankSpacing": 40}, "themeVariables": {"fontSize": "10px"}}}%%
 flowchart TB
 
   %% -------------------------
@@ -61,6 +61,10 @@ flowchart TB
   P_obs("有限观测对象（窗口词/事件序列）<br/>类型：观测<br/>label: subsec:window_projection<br/>wₙ := 𝟙{zₙ∈W} ∈ {0,1} (eq:window_word)")
   M_readout -.- P_obs
 
+  M_morita["Weyl pair 对偶/等价（Fourier exchange / Morita）<br/>类型：审计<br/>label: rem:weyl_morita_fourier_exchange<br/>U↔V (Fourier);  α'=(aα+b)/(cα+d) (Morita)"]
+  P_morita("scan↔readout 对偶代理（频率/谱读出）<br/>类型：审计<br/>label: rem:weyl_morita_fourier_exchange<br/>translation ↔ phase; representation exchange")
+  M_morita -.- P_morita
+
   M_cap["CAP（有界复杂度闭合算子）<br/>类型：公理<br/>label: ax:cap<br/>c* := argmin_{c∈C} J(c)"]
   P_select("审计选择（候选族+目标函数+tie-break）<br/>类型：审计<br/>label: app:cap_audit_template<br/>θ* := argmin_{θ∈Θ(B)} J(θ)")
   M_cap -.- P_select
@@ -68,6 +72,10 @@ flowchart TB
   M_golden["黄金分支（有限深度 continued-fraction 最小性）<br/>类型：闭合<br/>label: prop:golden_least_discrepancy<br/>C_m(α) := Σ_{k=0..m} a_{k+1}  (α=[0;a1,a2,…])"]
   P_scan("均匀扫描代理（覆盖/各向同性）<br/>类型：代理<br/>label: subsec:phyllotaxis_overlay<br/>Δθ = 2π/φ² (golden-angle step)")
   M_golden -.- P_scan
+
+  M_gauss["Gauss map 重整化（黄金分支固定点）<br/>类型：审计<br/>label: rem:gauss_map_fixed_point<br/>G(ξ)={1/ξ};  α=1/φ is a fixed point"]
+  P_gauss("扫描参数重整化代理（renormalization-stable）<br/>类型：审计<br/>label: rem:gauss_map_fixed_point<br/>α=[0;1,1,1,…] (all CF digits minimal)")
+  M_gauss -.- P_gauss
 
   M_phi["phi 通道（admissible Xₘ / Fibonacci 计数）<br/>类型：构造<br/>label: subsec:phi_channel<br/>Xₘ := {w∈{0,1}ᵐ : wᵢwᵢ₊₁ = 0} (eq:Xm_def)"]
   P_phi("尺度代理（分辨率坐标 r / RG step）<br/>类型：代理<br/>label: eq:r_of_mu_z128<br/>r(μ)=ln(μ/m_e)/ln φ;  μ(r)=m_e·φ^r (eq:mu_of_r_z128)")
@@ -77,9 +85,25 @@ flowchart TB
   P_pi("回路一致性代理（局部闭合/monodromy）<br/>类型：代理<br/>label: def:s4_vertex_gauge<br/>p'_{a→b}=g_b p_{a→b} g_a⁻¹ ⇒ p'_□ = g p_□ g⁻¹")
   M_pi -.- P_pi
 
+  M_periodic["周期点计数（π↔ε 桥）<br/>类型：闭合<br/>label: lem:cyc_periodic_points<br/>#Fix(σ^m)=tr(A^m)=|X_m^cyc|=L_m (cor:cyc_lucas)"]
+  P_periodic("周期轨/回路计数代理（cycle statistics）<br/>类型：观测<br/>label: rem:pi_channel_zeta_coeffs<br/>cyc counts ↔ zeta coefficients (Artin–Mazur)")
+  M_periodic -.- P_periodic
+
+  M_am_euler["Artin–Mazur ζ 的 Euler product（primitive cycles）<br/>类型：审计<br/>label: lem:artin_mazur_euler_product<br/>ζ(z)=∏_{p∈𝓟}(1−z^{|p|})⁻¹"]
+  P_am_euler("prime-cycle bookkeeping（primitive orbit ↔ generator）<br/>类型：字典<br/>label: rem:prime_cycles_structural_analogy<br/>primitive ↦ generator; iterates ↦ powers")
+  M_am_euler -.- P_am_euler
+
+  M_pressure["pressure/transfer operator（谱半径稳定指标）<br/>类型：审计<br/>label: app:thermodynamic_formalism_pressure / thm:pressure_spectral_radius_standard<br/>P(ϕ)=log λ_ϕ = sup_μ(h_μ+∫ϕ dμ)"]
+  P_pressure("谱稳定代理（pressure ↔ pole barrier）<br/>类型：审计<br/>label: app:thermodynamic_formalism_pressure<br/>dominant pole ↔ spectral radius; normalize r↑1")
+  M_pressure -.- P_pressure
+
   M_e["e 通道（Abel–zeta 解析稳定 / pole barrier）<br/>类型：闭合<br/>label: subsec:e_channel<br/>ζₑ(r)=ζ(r/φ)=1/((1−r)(1+r/φ²)) (eq:abel_normalized_zeta)"]
   P_e("时间箭头代理（指数权重/Abel kernel）<br/>类型：代理<br/>label: prop:discrete_memoryless_exponential<br/>w_{t+s}=w_t w_s, w₀=1 ⇒ w_t=r^t")
   M_e -.- P_e
+
+  M_abel["Abel-first/极点屏障纪律<br/>类型：审计<br/>label: rem:abel_first_pole_barrier_discipline<br/>unit disk holomorphy; Abel path r↑1; no interior poles"]
+  P_abel("解析稳定代理（finite part / pole barrier）<br/>类型：模型<br/>label: rem:abel_first_pole_barrier_discipline<br/>FP_{r↑1} extracts constant term; pole barrier at r=1")
+  M_abel -.- P_abel
 
   M_fold["Fold6 映射（64→21；像/原像结构）<br/>类型：构造<br/>label: subsec:fold6_map<br/>Fold₆(N):=(c₁,…,c₆) ∈ X₆ (eq:fold6_def)"]
   P_fold("coarse-graining 压缩（稳定扇区统计）<br/>类型：代理<br/>label: subsec:fold6_map<br/>Ω₆={0,1}⁶ (|Ω₆|=64), X₆⊂Ω₆ (|X₆|=21) ⇒ 64→21")
@@ -103,6 +127,10 @@ flowchart TB
   P_holo("曲率代理（plaquette/loop 统计）<br/>类型：观测<br/>label: prop:cycle_type_gauge_invariant<br/>p_□ ↦ g p_□ g⁻¹ ⇒ cycle type invariant")
   M_holo -.- P_holo
 
+  M_graphzeta["Graph ζ（Ihara/Bass determinant）<br/>类型：审计<br/>label: app:graph_zeta_holonomy / thm:bass_determinant_formula<br/>Z_G(u)⁻¹=(1−u²)^{|E|−|V|}·det(I−uA+(D−I)u²)"]
+  P_graphzeta("holonomy-weighted loop generating function<br/>类型：审计<br/>label: def:holonomy_weighted_graph_zeta / prop:cycle_type_stats_determine_class_sums<br/>Z_{G,ρ}(u)=∏ det(I−u^{|C|}ρ(Hol(C)))⁻¹")
+  M_graphzeta -.- P_graphzeta
+
   M_transport_audit["transport rule 稳定性（padding/truncation/tie-break）<br/>类型：审计<br/>label: tab:holonomy_transport_rule_sensitivity<br/>TV distance + frac_{3/4} envelope"]
   P_transport_audit("transport rule 反事实族（look-elsewhere 审计）<br/>类型：审计<br/>label: tab:holonomy_transport_rule_sensitivity<br/>bounded counterfactual families")
   M_transport_audit -.- P_transport_audit
@@ -125,6 +153,18 @@ flowchart TB
   M_equiv["等价语义（semantic quotients）<br/>类型：构造<br/>label: subsec:equivalence_relations_minimal<br/>t ~ t+t₀;  k ~_m k' ⇔ Fold_m(k)=Fold_m(k')<br/>p_{a→b} ↦ g_b p_{a→b} g_a⁻¹;  S ~ S + boundary term"]
   P_equiv("语义契约（对象/可观测）<br/>类型：字典<br/>label: subsec:equivalence_physical_objects<br/>物理对象 := 等价类 [obj]_{~}<br/>可观测 := O([obj]) ∈ ℝ (invariant / monotone)")
   M_equiv -.- P_equiv
+
+  M_quotient["可观测商（K_m/~_m ≅ X_m）<br/>类型：构造<br/>label: prop:omega_quotient_equals_Xm<br/>K_m={0,…,2^m−1};  K_m/~_m ≅ X_m;  P(w)=Fold_m⁻¹(w)"]
+  P_quotient("对象=等价类标签（finite observability）<br/>类型：字典<br/>label: rem:fold_fibers_residual_uncertainty<br/>w ↦ fiber P(w);  entropy ~ log|P(w)|")
+  M_quotient -.- P_quotient
+
+  M_proj["分辨率提升（projective semantics / inverse limit）<br/>类型：构造<br/>label: subsec:resolution_projective_semantics<br/>π_{m→k}(w_m)=w_k;  objects ∈ lim← X_m"]
+  P_proj("跨分辨率同一对象（兼容族）<br/>类型：字典<br/>label: subsec:resolution_projective_semantics<br/>deterministic forgetting (π) ⊂ Markov coarse graining")
+  M_proj -.- P_proj
+
+  M_capinv["CAP 在等价类上良定义<br/>类型：审计<br/>label: prop:cap_on_equiv_classes<br/>J,κ invariants ⇒ CAP output is representation independent"]
+  P_capinv("审计清单：tie-break 必须不变量<br/>类型：审计<br/>label: rem:cap_equiv_audit_failure<br/>κ coordinate-dependent ⇒ violates equivalence semantics")
+  M_capinv -.- P_capinv
 
   M_freq["频率（相位推进/ tick）<br/>类型：构造<br/>label: def:frequency_from_phase<br/>ω(t₁,t₂)=Δθ/Δt,  Δt=t₂−t₁"]
   P_freq("频率优先字典（ratio-first）<br/>类型：字典<br/>label: subsec:frequency_first_spine<br/>ω ratios ↔ energy/mass/T/redshift/delay")
@@ -171,6 +211,22 @@ flowchart TB
   P_cosmo("能量预算拟合代理（离散匹配 + 稳定性）<br/>类型：模型<br/>label: app:cosmology_resolution_flow / ass:occupancy_energy_z128<br/>Ω_vis,0≈f_stab(m);  m* ∈ Z (discrete match)")
   M_cosmo -.- P_cosmo
 
+  M_entropy_gap["熵差/压缩率（log2−logφ）<br/>类型：闭合<br/>label: lem:entropy_gap_hidden_exponent_cosmo<br/>lim (1/m)log f_stab = log(φ/2);  lim (1/m)log d_m = log(2/φ)"]
+  P_entropy_gap("信息预算代理（hidden exponent）<br/>类型：字典<br/>label: lem:full_shift_entropy_gap<br/>full shift: log2;  GM: logφ;  gap=log(2/φ)")
+  M_entropy_gap -.- P_entropy_gap
+
+  M_rm["最大退化跑动（r_m）<br/>类型：闭合<br/>label: prop:rm_entropy_gap_rate<br/>r_m=max_w|Fold_m^{-1}(w)|;  log r_m = m·log(2/φ)+O(1)"]
+  P_rm("最小 slot gauge 复杂度<br/>类型：字典<br/>label: cor:rm_growth_rate<br/>minimal uniform slot count grows ~ (2/φ)^m")
+  M_rm -.- P_rm
+
+  M_selberg["Selberg ζ / trace 统一层（prime geodesics）<br/>类型：审计<br/>label: app:selberg_zeta_trace_bridge<br/>Z_X(s)=∏_{p∈C_prim}∏_{k≥0}(1−e^{-(s+k)ℓ(p)})"]
+  P_selberg("谱↔prime-cycle 约束代理（trace formula）<br/>类型：审计<br/>label: thm:selberg_trace_formula_template<br/>Σ_j h(r_j)=vol-term + Σ_{p,k} ℓ(p)/(2sinh(kℓ/2))·g(kℓ)")
+  M_selberg -.- P_selberg
+
+  M_hecke_like["Hecke-like refinement（矩阵/递推骨架）<br/>类型：审计<br/>label: lem:trace_recurrence_2x2 / rem:extension_counts_matrix_view<br/>|Ext_m(u)| = e_{u6}^T A^{m-6} 1;  tr(M^{n+1})=tr(M)tr(M^n)−det(M)tr(M^{n-1})"]
+  P_hecke_like("跨尺度算子模板（结构类比）<br/>类型：审计<br/>label: rem:hecke_trace_recurrence_skeleton<br/>Hecke: T_{p^{r+1}}=T_pT_{p^r}−p^{k−1}T_{p^{r−1}} (skeleton)")
+  M_hecke_like -.- P_hecke_like
+
   M_gamma_proxy["gamma 代理通道审计（gamma_proxy；通道映射+检验）<br/>类型：审计<br/>label: app:gamma_crossobs_consistency<br/>proxy-only compression + internal consistency (χ²/p, pairwise tension, LOO)"]
   P_gamma_proxy("gamma 代理通道（可操作代理）<br/>类型：审计<br/>label: app:gamma_crossobs_consistency<br/>solar-system / lensing / time-delay / redshift proxies")
   M_gamma_proxy -.- P_gamma_proxy
@@ -194,20 +250,31 @@ flowchart TB
 
   M_tick --> M_readout
   P_dt --> P_obs
+  M_readout --> M_morita
+  P_obs --> P_morita
 
   M_cap --> M_golden
   M_readout --> M_golden
   P_select --> P_scan
   P_obs --> P_scan
+  M_golden --> M_gauss
+  P_scan --> P_gauss
 
   M_golden --> M_phi
   P_scan --> P_phi
 
   M_phi --> M_pi
   M_phi --> M_e
+  M_pi --> M_periodic --> M_am_euler --> M_e
+  M_e --> M_abel
+  M_e --> M_pressure --> M_abel
   M_phi --> M_fold
   P_phi --> P_pi
   P_phi --> P_e
+  P_pi --> P_periodic
+  P_periodic --> P_am_euler --> P_e
+  P_e --> P_abel
+  P_e --> P_pressure --> P_abel
   P_pi --> P_fold
 
   M_pi --> M_fold
@@ -226,6 +293,8 @@ flowchart TB
 
   M_holo --> M_gauge
   P_holo --> P_gauge
+  M_holo --> M_graphzeta
+  P_holo --> P_graphzeta
 
   M_conn --> M_transport_audit
   M_holo --> M_transport_audit
@@ -241,9 +310,14 @@ flowchart TB
   M_mass --> M_rg
   P_mass --> P_rg
   P_rg --> P_cosmo
+  M_cosmo --> M_entropy_gap --> M_rm --> M_gauge
+  P_cosmo --> P_entropy_gap --> P_rm --> P_gauge
 
   M_tick --> M_equiv
   M_cap --> M_equiv
+  M_equiv --> M_quotient --> M_proj
+  M_cap --> M_capinv
+  M_equiv --> M_capinv --> M_action
   M_equiv --> M_freq
   M_equiv --> M_action --> M_eom --> M_grav --> M_recon --> M_err
   M_equiv --> M_thermo
@@ -257,9 +331,15 @@ flowchart TB
   M_gamma_proxy --> M_test
   M_gamma_direct --> M_test
   M_transport_audit --> M_test
+  M_graphzeta --> M_test
+  M_selberg --> M_test
+  M_hecke_like --> M_test
   M_inputs --> M_test
   M_e --> M_test
 
+  P_equiv --> P_quotient --> P_proj
+  P_select --> P_capinv --> P_action
+  P_equiv --> P_capinv
   P_equiv --> P_freq
   P_freq --> P_mass
   P_freq --> P_thermo
@@ -272,6 +352,9 @@ flowchart TB
   P_equiv --> P_qm --> P_test
   P_cosmo --> P_test
   P_transport_audit --> P_test
+  P_graphzeta --> P_test
+  P_selberg --> P_test
+  P_hecke_like --> P_test
   P_inputs --> P_test
 
   %% -------------------------
@@ -295,17 +378,17 @@ flowchart TB
   class P_wish,P_motive iface;
   %% Math node groups
   class M_tick,M_cap math_axiom;
-  class M_readout,M_phi,M_fold,M_anchor,M_addr,M_conn,M_holo,M_gauge,M_equiv,M_freq math_construct;
-  class M_golden,M_pi,M_e,M_sm,M_mass,M_thermo,M_grav,M_qm,M_rg math_closure;
+  class M_readout,M_phi,M_fold,M_anchor,M_addr,M_conn,M_holo,M_gauge,M_equiv,M_quotient,M_proj,M_freq math_construct;
+  class M_golden,M_pi,M_periodic,M_e,M_sm,M_mass,M_thermo,M_grav,M_qm,M_rg,M_entropy_gap,M_rm math_closure;
   class M_action,M_eom math_cont;
   class M_cosmo math_assumption;
-  class M_recon,M_err,M_gamma_proxy,M_gamma_direct,M_transport_audit,M_inputs,M_test math_audit;
+  class M_morita,M_gauss,M_abel,M_capinv,M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_recon,M_err,M_gamma_proxy,M_gamma_direct,M_transport_audit,M_inputs,M_test math_audit;
   %% Physics node groups
   class P_dt,P_scan,P_phi,P_pi,P_e,P_fold,P_screen,P_addr,P_local,P_conn,P_gauge,P_dyn phys_proxy;
-  class P_obs,P_holo,P_mass,P_lens,P_qm phys_obs;
-  class P_types,P_equiv,P_freq,P_thermo phys_dict;
-  class P_action,P_eom,P_rg,P_cosmo phys_model;
-  class P_select,P_recon,P_err,P_gamma_proxy,P_gamma_direct,P_transport_audit,P_inputs,P_test phys_audit;
+  class P_obs,P_periodic,P_holo,P_mass,P_lens,P_qm phys_obs;
+  class P_types,P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_am_euler,P_entropy_gap,P_rm phys_dict;
+  class P_abel,P_action,P_eom,P_rg,P_cosmo phys_model;
+  class P_morita,P_gauss,P_capinv,P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_select,P_recon,P_err,P_gamma_proxy,P_gamma_direct,P_transport_audit,P_inputs,P_test phys_audit;
 
   style M_test stroke-width:4px;
   style P_test stroke-width:4px;
@@ -324,16 +407,28 @@ flowchart TB
 | `P_dt` | `\label{sec:tick_calculus}` | `Δt := t₂ − t₁` | `sections/I_05_tick_calculus.tex` |
 | `M_readout` | `\label{sec:hpa_readout}` | `eq:window_word — wₙ := 𝟙{zₙ∈W} ∈ {0,1}` | `sections/C_10_hpa_readout_dynamics.tex` |
 | `P_obs` | `\label{subsec:window_projection}` | `eq:window_word — wₙ := 𝟙{zₙ∈W} ∈ {0,1}` | `sections/C_10_hpa_readout_dynamics.tex` |
+| `M_morita` | `\label{rem:weyl_morita_fourier_exchange}` | `U↔V (Fourier exchange);  α'=(aα+b)/(cα+d) (Morita)` | `sections/C_10_hpa_readout_dynamics.tex` |
+| `P_morita` | `\label{rem:weyl_morita_fourier_exchange}` | `translation ↔ phase; scan↔readout representation exchange` | `sections/C_10_hpa_readout_dynamics.tex` |
 | `M_cap` | `\label{ax:cap}` | `c* = argmin_{c∈C} J(c) (deterministic tie-break)` | `sections/I_00_introduction.tex` |
 | `P_select` | `\label{app:cap_audit_template}` | `θ* = argmin_{θ∈Θ(B)} J(θ) (deterministic tie-break)` | `sections/appendices/13_cap_audit_template.tex` |
 | `M_golden` | `\label{prop:golden_least_discrepancy}` | `C_m(α) := Σ_{k=0..m} a_{k+1} (finite-depth continued-fraction digit-sum proxy);  mismatch certificates: eq:star_discrepancy_def — D*ₙ` | `sections/C_10_hpa_readout_dynamics.tex` |
 | `P_scan` | `\label{subsec:phyllotaxis_overlay}` | `Δθ = 2π/φ² (golden-angle step)` | `sections/I_04_golden_angle_phyllotaxis_overlay.tex` |
+| `M_gauss` | `\label{rem:gauss_map_fixed_point}` | `G(ξ)={1/ξ};  α=φ⁻¹ is a fixed point;  α=[0;1,1,1,…]` | `sections/C_10_hpa_readout_dynamics.tex` |
+| `P_gauss` | `\label{rem:gauss_map_fixed_point}` | `renormalization-stable scan slope (audit viewpoint)` | `sections/C_10_hpa_readout_dynamics.tex` |
 | `M_phi` | `\label{subsec:phi_channel}` | `eq:Xm_def — Xₘ := {w∈{0,1}ᵐ : wᵢwᵢ₊₁=0}` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `P_phi` | `\label{tab:three_channels_definitions}` | `eq:r_of_mu_z128 — r(μ)=ln(μ/m_e)/ln φ; μ(r)=m_e·φʳ` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `M_pi` | `\label{subsec:pi_channel}` | `prop:cyc_bdry_6 — X₆ = X₆^cyc ⊔ X₆^bdry; card(X₆^cyc)=18; card(X₆^bdry)=3` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `P_pi` | `\label{tab:three_channels_definitions}` | `def:s4_vertex_gauge — p'_{a→b}=g_b p_{a→b} g_a⁻¹ ⇒ p'_□ = g p_□ g⁻¹` | `sections/C_11_resolution_folding_64_to_21.tex` |
+| `M_periodic` | `\label{lem:cyc_periodic_points}` | `#Fix(σ^m)=tr(A^m)=|X_m^cyc|=L_m (Lucas)` | `sections/C_11_resolution_folding_64_to_21.tex` |
+| `P_periodic` | `\label{rem:pi_channel_zeta_coeffs}` | `cyc counts ↔ zeta coefficients (Artin–Mazur)` | `sections/C_11_resolution_folding_64_to_21.tex` |
+| `M_am_euler` | `\label{lem:artin_mazur_euler_product}` | `ζ(z)=∏_{p∈𝓟}(1−z^{|p|})⁻¹ (primitive periodic-orbit Euler product)` | `sections/appendices/44_thermodynamic_formalism_pressure.tex` |
+| `P_am_euler` | `\label{rem:prime_cycles_structural_analogy}` | `primitive periodic orbits (“prime cycles”) generate iterates (analogy to prime powers)` | `sections/appendices/39_hecke_prime_skeleton.tex` |
+| `M_pressure` | `\label{app:thermodynamic_formalism_pressure}` | `P(ϕ)=log λ_ϕ = sup_μ(h_μ+∫ϕ dμ) (pressure/transfer-operator variational principle)` | `sections/appendices/44_thermodynamic_formalism_pressure.tex` |
+| `P_pressure` | `\label{app:thermodynamic_formalism_pressure}` | `dominant pole ↔ spectral radius; normalize r↑1 (pole barrier language)` | `sections/appendices/44_thermodynamic_formalism_pressure.tex` |
 | `M_e` | `\label{subsec:e_channel}` | `eq:abel_normalized_zeta — ζₑ(r)=ζ(r/φ)=1/((1−r)(1+r/φ²))` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `P_e` | `\label{app:arrow_of_time_semigroup_notes}` | `prop:discrete_memoryless_exponential — w_{t+s}=w_t w_s, w₀=1 ⇒ w_t=rᵗ;  prop:continuous_semigroup_exponential — w(t)=exp(λt)` | `sections/F_00_arrow_of_time_semigroup.tex` |
+| `M_abel` | `\label{rem:abel_first_pole_barrier_discipline}` | `unit disk holomorphy + Abel path r↑1; pole barrier; no interior poles` | `sections/C_11_resolution_folding_64_to_21.tex` |
+| `P_abel` | `\label{rem:abel_first_pole_barrier_discipline}` | `FP_{r↑1} extracts constant term (audit-facing discipline)` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `M_fold` | `\label{subsec:fold6_map}` | `eq:fold6_def — Fold₆(N):=(c₁,…,c₆) ∈ X₆` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `P_fold` | `\label{subsec:fold6_map}` | `Ω₆={0,1}⁶ (card=64), X₆⊂Ω₆ (card=21) ⇒ 64→21` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `M_anchor` | `\label{tab:addressing_selection}` | `anchor: (m,n)=(6,3)` | `sections/I_10_hilbert_addressing_chirality.tex` |
@@ -345,6 +440,8 @@ flowchart TB
 | `P_conn` | `\label{sec:protocol_connections_holonomy}` | `lem:edge_transport_welldefined — p_{a→b}∈S₄ (min-cost + lex tie-break)` | `sections/I_21_protocol_connections_holonomy.tex` |
 | `M_holo` | `\label{sec:protocol_connections_holonomy}` | `p_□ := p_{a→b}·p_{b→c}·p_{c→d}·p_{d→a} (plaquette product)` | `sections/I_21_protocol_connections_holonomy.tex` |
 | `P_holo` | `\label{app:holonomy_sweeps_extended}` | `prop:cycle_type_gauge_invariant — cycle type of p_□ is invariant under conjugation` | `sections/appendices/15_holonomy_sweeps_extended.tex` |
+| `M_graphzeta` | `\label{app:graph_zeta_holonomy}` | `Z_G(u)⁻¹=(1−u²)^{|E|−|V|}·det(I−uA+(D−I)u²) (Bass determinant)` | `sections/appendices/45_graph_zeta_holonomy.tex` |
+| `P_graphzeta` | `\label{def:holonomy_weighted_graph_zeta}` | `Z_{G,ρ}(u)=∏ det(I−u^{|C|}ρ(Hol(C)))⁻¹ (holonomy-weighted prime-cycle zeta)` | `sections/appendices/45_graph_zeta_holonomy.tex` |
 | `M_gauge` | `\label{sec:protocol_connections_holonomy}` | `def:s4_vertex_gauge — p_{a→b} ↦ g_b p_{a→b} g_a⁻¹` | `sections/I_21_protocol_connections_holonomy.tex` |
 | `P_gauge` | `\label{sec:protocol_connections_holonomy}` | `p_□ ↦ g p_□ g⁻¹ (gauge conjugation on loops)` | `sections/I_21_protocol_connections_holonomy.tex` |
 | `M_sm` | `\label{sec:sm_labeling_closure}` | `thm:labeling_unique — 𝓛_SM:X₆→𝓕_SM⊔{U(1),SU(2),SU(3)} (order-preserving)` | `sections/V_30_sm_field_labeling_closure.tex` |
@@ -353,6 +450,12 @@ flowchart TB
 | `P_mass` | `\label{sec:mass_latency_coordinate}` | `ω_C(μ)=μc²/ħ, τ_C(μ)=ħ/(μc²) (Compton clock)` | `sections/I_25_mass_latency_coordinate.tex` |
 | `M_equiv` | `\label{subsec:equivalence_relations_minimal}` | `t ~ t+t₀;  k ~_m k' ⇔ Fold_m(k)=Fold_m(k');  p_{a→b} ↦ g_b p_{a→b} g_a⁻¹;  S ~ S + boundary term` | `sections/F_10_equivalence_semantics.tex` |
 | `P_equiv` | `\label{subsec:equivalence_physical_objects}` | `物理对象 := 等价类 [obj]_{~};  可观测 := O([obj]) ∈ ℝ (invariant / monotone)` | `sections/F_10_equivalence_semantics.tex` |
+| `M_quotient` | `\label{prop:omega_quotient_equals_Xm}` | `K_m={0,…,2^m−1};  K_m/~_m ≅ X_m;  P(w)=Fold_m⁻¹(w)` | `sections/F_10_equivalence_semantics.tex` |
+| `P_quotient` | `\label{rem:fold_fibers_residual_uncertainty}` | `w ∈ X_m ↦ fiber P(w) ⊂ K_m; residual uncertainty ~ log|P(w)|` | `sections/F_10_equivalence_semantics.tex` |
+| `M_proj` | `\label{subsec:resolution_projective_semantics}` | `π_{m→k}(w_m)=w_k;  objects ∈ lim← X_m` | `sections/F_10_equivalence_semantics.tex` |
+| `P_proj` | `\label{subsec:resolution_projective_semantics}` | `deterministic forgetting (π) ⊂ Markov coarse graining` | `sections/F_10_equivalence_semantics.tex` |
+| `M_capinv` | `\label{prop:cap_on_equiv_classes}` | `J,κ invariants ⇒ CAP output is representation independent on C/~` | `sections/F_10_equivalence_semantics.tex` |
+| `P_capinv` | `\label{rem:cap_equiv_audit_failure}` | `tie-break κ must be invariant; coordinate-dependent κ breaks semantics` | `sections/F_10_equivalence_semantics.tex` |
 | `M_freq` | `\label{def:frequency_from_phase}` | `ω(t₁,t₂)=Δθ/Δt,  Δt=t₂−t₁` | `sections/F_10_equivalence_semantics.tex` |
 | `P_freq` | `\label{subsec:frequency_first_spine}` | `ω ratios ↔ energy/mass/T/redshift/delay` | `sections/F_10_equivalence_semantics.tex` |
 | `M_action` | `\label{app:cap_continuum_action_closure}` | `eq:cap_minimal_action_skeleton — S_eff=∫ d⁴x √−g[(R−2Λ)/(16πG) − λ_F(∇χ)² − V(χ²) − ∑_a Tr(F_a²)/(4g_a²) + 𝓛_m]` | `sections/F_20_cap_continuum_action_closure.tex` |
@@ -374,6 +477,14 @@ flowchart TB
 | `P_rg` | `\label{app:running_couplings_resolution_flow}` | `dg/dr = (ln φ)β(g) (running in resolution coordinate)` | `sections/appendices/31_running_couplings_resolution_flow.tex` |
 | `M_cosmo` | `\label{app:cosmology_resolution_flow}` | `ass:occupancy_energy_z128 — f_stab(m)=Fₘ₊₂/2ᵐ, f_hid=1−f_stab` | `sections/appendices/32_cosmology_resolution_flow.tex` |
 | `P_cosmo` | `\label{app:cosmology_resolution_flow}` | `Ω_vis,0≈f_stab(m), Ω_dark,0≈1−f_stab(m)` | `sections/appendices/32_cosmology_resolution_flow.tex` |
+| `M_entropy_gap` | `\label{lem:entropy_gap_hidden_exponent_cosmo}` | `lim (1/m)log f_stab = log(φ/2);  lim (1/m)log d_m = log(2/φ);  Binet error: |η_m| ≤ 2·φ^{−2m−4}` | `sections/appendices/32_cosmology_resolution_flow.tex` |
+| `P_entropy_gap` | `\label{lem:full_shift_entropy_gap}` | `full shift: log2;  golden-mean: logφ;  gap=log(2/φ) (= hidden exponent)` | `sections/appendices/44_thermodynamic_formalism_pressure.tex` |
+| `M_rm` | `\label{prop:rm_entropy_gap_rate}` | `r_m=max_w|Fold_m^{-1}(w)|;  log r_m = m·log(2/φ)+O(1)` | `sections/C_11_resolution_folding_64_to_21.tex` |
+| `P_rm` | `\label{cor:rm_growth_rate}` | `minimal slot count r_m grows at rate log(2/φ)` | `sections/I_21_protocol_connections_holonomy.tex` |
+| `M_selberg` | `\label{app:selberg_zeta_trace_bridge}` | `Z_X(s)=∏_{p∈C_prim}∏_{k≥0}(1−e^{-(s+k)ℓ(p)})` | `sections/appendices/46_selberg_zeta_trace_bridge.tex` |
+| `P_selberg` | `\label{thm:selberg_trace_formula_template}` | `Σ_j h(r_j)=area term + Σ_{p,k} ℓ(p)/(2sinh(kℓ/2))·g(kℓ)` | `sections/appendices/46_selberg_zeta_trace_bridge.tex` |
+| `M_hecke_like` | `\label{lem:trace_recurrence_2x2}` | `tr(M^{n+1})=tr(M)tr(M^n)−det(M)tr(M^{n−1});  |Ext_m(u)|=e_{u6}^T A^{m−6}1` | `sections/appendices/05_functorial_refinement.tex` |
+| `P_hecke_like` | `\label{rem:hecke_trace_recurrence_skeleton}` | `Hecke prime-power recurrence skeleton; structural analogue only` | `sections/appendices/39_hecke_prime_skeleton.tex` |
 | `M_gamma_proxy` | `\label{app:gamma_crossobs_consistency}` | `gamma_proxy: proxy-only compression + internal consistency diagnostics` | `sections/appendices/35_gamma_cross_observation_consistency.tex` |
 | `P_gamma_proxy` | `\label{app:gamma_crossobs_consistency}` | `proxy channels: solar system / lensing / time-delay / redshift (vendored audit subset)` | `sections/appendices/35_gamma_cross_observation_consistency.tex` |
 | `M_gamma_direct` | `\label{app:gamma_crossobs_consistency}` | `gamma_dict: rotation-curve calibration + internal consistency diagnostics` | `sections/appendices/35_gamma_cross_observation_consistency.tex` |

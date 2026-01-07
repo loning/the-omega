@@ -41,6 +41,87 @@ d_m:=\frac{|\Omega_m|}{|X_m|}=\frac{2^m}{F_{m+2}}.
 \]
 Since $F_{m+2}\asymp \varphi^m$ and $\varphi<2$, one has $f_{\mathrm{stab}}(m)\to 0$ and $f_{\mathrm{hid}}(m)\to 1$ as $m\to\infty$; equivalently $d_m\asymp (2/\varphi)^m$ grows exponentially.
 
+\paragraph{Degeneracy as fiber size and pushforward occupancy.}
+\MathTag At fixed $m$, the equivalence semantics of Section~\ref{app:equivalence_semantics} identifies stable labels with projection fibers.
+Let $P(w):=\mathrm{Fold}_m^{-1}(w)$ be the microstate fiber of a stable type $w\in X_m$.
+Then the mean degeneracy $d_m$ is exactly the mean fiber size, and the mean fiber-count entropy is controlled by $d_m$ (Lemma~\ref{lem:mean_degeneracy_fiber_entropy_bounds}).
+Under the maximal-ignorance counting measure on $\Omega_m$, the induced (pushforward) distribution on stable labels is therefore
+\[
+\mu_m(w):=\frac{|P(w)|}{|\Omega_m|}=\frac{|P(w)|}{2^m},
+\]
+so stable labels are weighted in proportion to degeneracy.
+
+\begin{lemma}[Entropy gap and hidden exponent]\label{lem:entropy_gap_hidden_exponent_cosmo}
+\MathTag Let $\varphi=(1+\sqrt{5})/2$ and define $f_{\mathrm{stab}}(m)=F_{m+2}/2^m$ and $d_m=2^m/F_{m+2}$ as above.
+Then
+\[
+\lim_{m\to\infty}\frac{1}{m}\log f_{\mathrm{stab}}(m)=\log\varphi-\log 2,
+\qquad
+\lim_{m\to\infty}\frac{1}{m}\log d_m=\log(2/\varphi).
+\]
+Moreover, writing $\psi:=(1-\sqrt{5})/2=-\varphi^{-1}$, one has the exact Binet identity
+\[
+F_{m+2}=\frac{\varphi^{m+2}-\psi^{m+2}}{\sqrt{5}}
+=\frac{\varphi^{m+2}}{\sqrt{5}}\Bigl(1-(-\varphi^{-2})^{m+2}\Bigr),
+\]
+and therefore
+\[
+\log f_{\mathrm{stab}}(m)
+=m\log(\varphi/2)+\log(\varphi^2/\sqrt{5})+\eta_m,
+\qquad
+|\eta_m|\le 2\,\varphi^{-2m-4},
+\]
+so the convergence to $\log(\varphi/2)$ is exponentially fast in $m$.
+\end{lemma}
+\begin{proof}
+By Binet's formula (see, e.g., \cite{HardyWright2008}),
+$
+F_{m+2}=(\varphi^{m+2}-\psi^{m+2})/\sqrt{5}
+$
+with $\psi=-\varphi^{-1}$, giving the stated exact identity.
+Dividing by $2^m$ yields $f_{\mathrm{stab}}(m)$ and taking reciprocals yields $d_m$, hence
+\[
+\frac{1}{m}\log f_{\mathrm{stab}}(m)=\log(\varphi/2)+\frac{1}{m}\log(\varphi^2/\sqrt{5})+\frac{1}{m}\log\!\left(1-(-\varphi^{-2})^{m+2}\right),
+\]
+so the limit is $\log(\varphi/2)=\log\varphi-\log 2$.
+The statement for $d_m$ follows because $\log d_m=-\log f_{\mathrm{stab}}(m)$.
+For the error bound, set $x_m:=-(-\varphi^{-2})^{m+2}$.
+Then $|x_m|=\varphi^{-2m-4}<1/2$ for all $m\ge 1$, and the elementary bound $|\log(1+x)|\le 2|x|$ for $|x|\le 1/2$ gives
+$
+|\eta_m|=|\log(1+x_m)|\le 2|x_m|=2\varphi^{-2m-4}.
+$
+\end{proof}
+
+\begin{proposition}[Closed-form matching estimate for $m_\ast$]\label{prop:cosmo_mstar_closed_form}
+\MathTag Fix a target $\Omega_{\mathrm{vis},0}\in(0,1)$ and define the continuous approximation
+\[
+\widehat m(\Omega_{\mathrm{vis},0})
+:=\frac{\log(\Omega_{\mathrm{vis},0})-\log(\varphi^2/\sqrt{5})}{\log(\varphi/2)}
+=\frac{\log(\Omega_{\mathrm{vis},0}\sqrt{5}/\varphi^2)}{\log(\varphi/2)}.
+\]
+If an integer $m$ satisfies the relative-fit condition
+\[
+\left|\log\!\left(\frac{f_{\mathrm{stab}}(m)}{\Omega_{\mathrm{vis},0}}\right)\right|\le \varepsilon
+\]
+for some $\varepsilon\ge 0$ (e.g.\ a declared log-uncertainty budget), then
+\[
+\left|m-\widehat m(\Omega_{\mathrm{vis},0})\right|
+\le \frac{\varepsilon+2\,\varphi^{-2m-4}}{|\log(\varphi/2)|}.
+\]
+\end{proposition}
+\begin{proof}
+From Lemma~\ref{lem:entropy_gap_hidden_exponent_cosmo},
+\[
+\log f_{\mathrm{stab}}(m)=m\log(\varphi/2)+\log(\varphi^2/\sqrt{5})+\eta_m,\qquad |\eta_m|\le 2\varphi^{-2m-4}.
+\]
+Subtract $\log\Omega_{\mathrm{vis},0}$ from both sides and divide by $\log(\varphi/2)\neq 0$, to obtain
+\[
+m-\widehat m(\Omega_{\mathrm{vis},0})
+\;=\;\frac{\log(f_{\mathrm{stab}}(m)/\Omega_{\mathrm{vis},0})-\eta_m}{\log(\varphi/2)}.
+\]
+Taking absolute values and using the assumed relative-fit bound and $|\eta_m|\le 2\varphi^{-2m-4}$ gives the claim.
+\end{proof}
+
 \subsubsection{A discrete energy-budget fit (interface hypothesis)}
 \label{subsec:cosmo_energy_budget_fit}
 
