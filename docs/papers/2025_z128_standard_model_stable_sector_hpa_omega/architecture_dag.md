@@ -65,7 +65,7 @@ flowchart TB
   P_select("审计选择（候选族+目标函数+tie-break）<br/>类型：审计<br/>label: app:cap_audit_template<br/>θ* := argmin_{θ∈Θ(B)} J(θ)")
   M_cap -.- P_select
 
-  M_golden["黄金分支（最小差异证书）<br/>类型：闭合<br/>label: prop:golden_least_discrepancy<br/>D*ₙ := sup_{a∈[0,1]} abs((1/N)·∑_{k=0}^{N−1} 𝟙_{[0,a)}(xₖ) − a)"]
+  M_golden["黄金分支（有限深度 continued-fraction 最小性）<br/>类型：闭合<br/>label: prop:golden_least_discrepancy<br/>C_m(α) := Σ_{k=0..m} a_{k+1}  (α=[0;a1,a2,…])"]
   P_scan("均匀扫描代理（覆盖/各向同性）<br/>类型：代理<br/>label: subsec:phyllotaxis_overlay<br/>Δθ = 2π/φ² (golden-angle step)")
   M_golden -.- P_scan
 
@@ -102,6 +102,10 @@ flowchart TB
   M_holo["holonomy（回路不变量）<br/>类型：构造<br/>label: prop:cycle_type_gauge_invariant<br/>p_□ := p_{a→b}·p_{b→c}·p_{c→d}·p_{d→a}"]
   P_holo("曲率代理（plaquette/loop 统计）<br/>类型：观测<br/>label: prop:cycle_type_gauge_invariant<br/>p_□ ↦ g p_□ g⁻¹ ⇒ cycle type invariant")
   M_holo -.- P_holo
+
+  M_transport_audit["transport rule 稳定性（padding/truncation/tie-break）<br/>类型：审计<br/>label: tab:holonomy_transport_rule_sensitivity<br/>TV distance + frac_{3/4} envelope"]
+  P_transport_audit("transport rule 反事实族（look-elsewhere 审计）<br/>类型：审计<br/>label: tab:holonomy_transport_rule_sensitivity<br/>bounded counterfactual families")
+  M_transport_audit -.- P_transport_audit
 
   M_gauge["gauge 补偿（局部重标记冗余）<br/>类型：构造<br/>label: def:s4_vertex_gauge<br/>p_{a→b} ↦ g_b p_{a→b} g_a⁻¹"]
   P_gauge("规范冗余/场代理（补偿数据）<br/>类型：代理<br/>label: def:s4_vertex_gauge<br/>loop holonomy: p_□ ↦ g p_□ g⁻¹")
@@ -163,13 +167,17 @@ flowchart TB
   P_rg("耦合运行代理（阈值/匹配口径）<br/>类型：模型<br/>label: eq:rg_in_r<br/>dg/dr = (ln φ)β(g)")
   M_rg -.- P_rg
 
-  M_cosmo["宇宙学：分辨率流接口（假设/闭合）<br/>类型：假设<br/>label: ass:occupancy_energy_z128<br/>f_stab(m)=F_{m+2}/2ᵐ;  f_hid=1−f_stab"]
-  P_cosmo("能量预算拟合代理（数据/误差口径）<br/>类型：模型<br/>label: ass:occupancy_energy_z128<br/>Ω_vis,0≈f_stab(m);  Ω_dark,0≈1−f_stab(m)")
+  M_cosmo["宇宙学：分辨率流接口（占据假设 + 离散匹配）<br/>类型：假设<br/>label: app:cosmology_resolution_flow / ass:occupancy_energy_z128<br/>f_stab(m)=F_{m+2}/2ᵐ;  f_hid=1−f_stab"]
+  P_cosmo("能量预算拟合代理（离散匹配 + 稳定性）<br/>类型：模型<br/>label: app:cosmology_resolution_flow / ass:occupancy_energy_z128<br/>Ω_vis,0≈f_stab(m);  m* ∈ Z (discrete match)")
   M_cosmo -.- P_cosmo
 
-  M_gamma["gamma 跨观测一致性（协议/统计检验）<br/>类型：审计"]
-  P_gamma("跨观测一致性检验（联合拟合）<br/>类型：审计")
+  M_gamma["gamma 跨观测一致性（单参数 γ(dict)；通道映射+检验）<br/>类型：审计<br/>label: app:gamma_crossobs_consistency<br/>joint + LOO + χ²/p + max|z|"]
+  P_gamma("跨观测一致性检验（联合拟合）<br/>类型：审计<br/>label: app:gamma_crossobs_consistency<br/>RC/lensing/time-delay/redshift")
   M_gamma -.- P_gamma
+
+  M_inputs["外部 matching 输入清单（非前提）<br/>类型：审计<br/>label: subsec:external_inputs_inventory<br/>tab: tab:external_inputs_inventory"]
+  P_inputs("External inputs inventory（Match；非前提）<br/>类型：审计<br/>label: subsec:external_inputs_inventory<br/>PDG/CODATA/Planck/NuFIT + vendored subsets")
+  M_inputs -.- P_inputs
 
   M_test["可证伪输出（预测与审计）<br/>类型：审计"]
   P_test("可证伪检验（跨观测一致性）<br/>类型：审计")
@@ -215,6 +223,11 @@ flowchart TB
   M_holo --> M_gauge
   P_holo --> P_gauge
 
+  M_conn --> M_transport_audit
+  M_holo --> M_transport_audit
+  P_conn --> P_transport_audit
+  P_holo --> P_transport_audit
+
   M_gauge --> M_sm
   P_gauge --> P_types
 
@@ -237,6 +250,8 @@ flowchart TB
   M_cosmo --> M_test
   M_qm --> M_test
   M_gamma --> M_test
+  M_transport_audit --> M_test
+  M_inputs --> M_test
   M_e --> M_test
 
   P_equiv --> P_freq
@@ -248,6 +263,8 @@ flowchart TB
   P_equiv --> P_thermo --> P_test
   P_equiv --> P_qm --> P_test
   P_cosmo --> P_test
+  P_transport_audit --> P_test
+  P_inputs --> P_test
 
   %% -------------------------
   %% Styling (Material Design palette; math vs physics)
@@ -274,13 +291,13 @@ flowchart TB
   class M_golden,M_pi,M_e,M_sm,M_mass,M_thermo,M_grav,M_qm,M_rg math_closure;
   class M_action,M_eom math_cont;
   class M_cosmo math_assumption;
-  class M_recon,M_err,M_gamma,M_test math_audit;
+  class M_recon,M_err,M_gamma,M_transport_audit,M_inputs,M_test math_audit;
   %% Physics node groups
   class P_dt,P_scan,P_phi,P_pi,P_e,P_fold,P_screen,P_addr,P_local,P_conn,P_gauge,P_dyn phys_proxy;
   class P_obs,P_holo,P_mass,P_lens,P_qm phys_obs;
   class P_types,P_equiv,P_freq,P_thermo phys_dict;
   class P_action,P_eom,P_rg,P_cosmo phys_model;
-  class P_select,P_recon,P_err,P_gamma,P_test phys_audit;
+  class P_select,P_recon,P_err,P_gamma,P_transport_audit,P_inputs,P_test phys_audit;
 
   style M_test stroke-width:4px;
   style P_test stroke-width:4px;
@@ -301,7 +318,7 @@ flowchart TB
 | `P_obs` | `\label{subsec:window_projection}` | `eq:window_word — wₙ := 𝟙{zₙ∈W} ∈ {0,1}` | `sections/C_10_hpa_readout_dynamics.tex` |
 | `M_cap` | `\label{ax:cap}` | `c* = argmin_{c∈C} J(c) (deterministic tie-break)` | `sections/I_00_introduction.tex` |
 | `P_select` | `\label{app:cap_audit_template}` | `θ* = argmin_{θ∈Θ(B)} J(θ) (deterministic tie-break)` | `sections/appendices/13_cap_audit_template.tex` |
-| `M_golden` | `\label{prop:golden_least_discrepancy}` | `eq:star_discrepancy_def — D*ₙ := sup_{a∈[0,1]} abs((1/N)·∑_{k=0}^{N−1} 𝟙_{[0,a)}(xₖ) − a)` | `sections/C_10_hpa_readout_dynamics.tex` |
+| `M_golden` | `\label{prop:golden_least_discrepancy}` | `C_m(α) := Σ_{k=0..m} a_{k+1} (finite-depth continued-fraction digit-sum proxy);  mismatch certificates: eq:star_discrepancy_def — D*ₙ` | `sections/C_10_hpa_readout_dynamics.tex` |
 | `P_scan` | `\label{subsec:phyllotaxis_overlay}` | `Δθ = 2π/φ² (golden-angle step)` | `sections/I_04_golden_angle_phyllotaxis_overlay.tex` |
 | `M_phi` | `\label{subsec:phi_channel}` | `eq:Xm_def — Xₘ := {w∈{0,1}ᵐ : wᵢwᵢ₊₁=0}` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `P_phi` | `\label{tab:three_channels_definitions}` | `eq:r_of_mu_z128 — r(μ)=ln(μ/m_e)/ln φ; μ(r)=m_e·φʳ` | `sections/C_11_resolution_folding_64_to_21.tex` |
@@ -351,6 +368,10 @@ flowchart TB
 | `P_cosmo` | `\label{app:cosmology_resolution_flow}` | `Ω_vis,0≈f_stab(m), Ω_dark,0≈1−f_stab(m)` | `sections/appendices/32_cosmology_resolution_flow.tex` |
 | `M_gamma` | `\label{app:gamma_crossobs_consistency}` | `γ consistency across RC/lensing/time-delay/redshift (audit)` | `sections/appendices/35_gamma_cross_observation_consistency.tex` |
 | `P_gamma` | `\label{app:gamma_crossobs_consistency}` | `joint-fit consistency test for γ across observation channels` | `sections/appendices/35_gamma_cross_observation_consistency.tex` |
+| `M_transport_audit` | `\label{tab:holonomy_transport_rule_sensitivity}` | `transport rule sensitivity envelope: TV(p,q)=0.5·Σ_k |p_k−q_k|;  frac_{3/4} range` | `sections/appendices/15_holonomy_sweeps_extended.tex` |
+| `P_transport_audit` | `\label{tab:holonomy_transport_rule_sensitivity}` | `bounded counterfactual families for padding/truncation/tie-break (audit)` | `sections/appendices/15_holonomy_sweeps_extended.tex` |
+| `M_inputs` | `\label{subsec:external_inputs_inventory}` | `MatchTag external inputs inventory (non-premises)` | `sections/appendices/11_inference_ledger.tex` |
+| `P_inputs` | `\label{subsec:external_inputs_inventory}` | `external targets: PDG/CODATA/Planck/NuFIT + vendored subsets (audit)` | `sections/appendices/11_inference_ledger.tex` |
 | `M_test` | `\label{sec:falsifiability}` | `P1–P6 falsifiable statements (audited thresholds/calibrations)` | `sections/V_40_falsifiability_predictions.tex` |
 | `P_test` | `\label{sec:falsifiability}` | `protocolized tests + error budgets (cross-checks)` | `sections/V_40_falsifiability_predictions.tex` |
 
