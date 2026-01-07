@@ -10,7 +10,6 @@ target present-day visible fraction Omega_vis,0 (e.g., baryon fraction).
 Outputs:
   - sections/generated/cosmology_energy_budget_fit_equation.tex
   - figures/cosmology_energy_budget_fit.png (required; requires matplotlib)
-  - figures/cosmology_energy_budget_fit.pdf (best-effort; ignored by git)
 
 Core computation is standard-library only. Plotting is required.
 """
@@ -141,13 +140,6 @@ def try_plot(
     out_png = fig_dir / "cosmology_energy_budget_fit.png"
     fig.tight_layout()
     fig.savefig(out_png, dpi=200)
-
-    # Best-effort PDF (kept for local high-quality builds; ignored by git via *.pdf).
-    try:
-        out_pdf = fig_dir / "cosmology_energy_budget_fit.pdf"
-        fig.savefig(out_pdf)
-    except Exception:
-        pass
     plt.close(fig)
 
 

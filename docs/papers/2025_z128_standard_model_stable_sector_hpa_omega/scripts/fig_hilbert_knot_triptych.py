@@ -7,7 +7,6 @@ changing any theorem-level content (which is anchored on a 2D Hilbert screen for
 finite diagnostics elsewhere in the paper).
 
 Outputs:
-  - figures/hilbert_knot_triptych.pdf
   - figures/hilbert_knot_triptych.png
 """
 
@@ -192,7 +191,6 @@ def main() -> None:
     _set_equal_3d(ax)
 
     fig.tight_layout(w_pad=1.2)
-    fig.savefig(out_dir / "hilbert_knot_triptych.pdf")
     fig.savefig(out_dir / "hilbert_knot_triptych.png", dpi=220)
     plt.close(fig)
 

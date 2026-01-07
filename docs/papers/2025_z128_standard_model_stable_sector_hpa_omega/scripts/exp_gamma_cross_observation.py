@@ -776,13 +776,12 @@ def main() -> None:
     plt.ylim(y.min() - 1, y.max() + 1)
     plt.grid(True, axis="x", alpha=0.3)
     plt.tight_layout()
-    plt.savefig(out_fig / "gamma_crossobs_consistency.pdf")
     plt.savefig(out_fig / "gamma_crossobs_consistency.png", dpi=200)
     plt.close()
 
     print("[gamma_crossobs] wrote sections/generated/gamma_crossobs_rows.tex")
     print("[gamma_crossobs] wrote sections/generated/gamma_crossobs_stability_rows.tex")
-    print("[gamma_crossobs] wrote figures/gamma_crossobs_consistency.pdf/.png")
+    print("[gamma_crossobs] wrote figures/gamma_crossobs_consistency.png")
 
 
 if __name__ == "__main__":
