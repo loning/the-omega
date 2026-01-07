@@ -89,9 +89,9 @@ flowchart TD
 - [x] **RG：分辨率坐标 r 的耦合流**：`appendix 31`  
   - 位置：`sections/appendices/31_running_couplings_resolution_flow.tex`（`\label{app:running_couplings_resolution_flow}`）
   - 要点：$\mu(r)=\mu_0\varphi^r$ 与链式法则；QED/QCD 一环；阈值匹配的离散解释。
-- [x] **宇宙学：分辨率流与能量预算接口**：`appendix 32`  
-  - 位置：`sections/appendices/32_cosmology_resolution_flow.tex`（`\label{app:cosmology_resolution_flow}`）
-  - 要点：big bang 作为分辨率初始化；inflation=稳定容量增长；隐藏/稳定份额；离散能量预算拟合假设。
+- [~] **宇宙学：分辨率流与能量预算接口**：`appendix 32`  
+  - 位置：`sections/appendices/32_cosmology_resolution_flow.tex`（`\label{app:cosmology_resolution_flow}`，`\label{ass:occupancy_energy_z128}`）
+  - 要点：big bang 作为分辨率初始化；inflation=稳定容量增长；隐藏/稳定份额；能量预算部分以显式接口假设（占据计数）给出，并提供可复现拟合脚本与图。
 - [x] **散射时间延迟的统一闭合（相位/频率/WS/红移/GR 参考）**：`appendix 34`  
   - 位置：`sections/appendices/34_unified_delay_closure.tex`（`\label{app:time_mass_delay}`，`\label{app:time_mass_delay_reference}`）
   - 要点：相位-频率-延迟统一接口；Wigner--Smith 延迟（含 trace/logdet 与校准/损耗处理）；delay→$\kappa$→lapse→redshift/Shapiro 的一致词典；相移/截面与时延同源的接口注记。
@@ -121,6 +121,17 @@ flowchart TD
 | CAP 自由能原则 | 以自由能形式重述 CAP 选择 | CAP | `prop:cap_free_energy_closure` | [x] |
 | Born 概率 | $P_k=\mathrm{Tr}(\rho E_k)$ | Iface/Math | `eq:z128_born_povm` | [x] |
 | RG 运行 | $\mathrm{d}g/\mathrm{d}r=(\log\varphi)\beta(g)$ | Math | `eq:rg_in_r` | [x] |
+| 稳定扇区计数（grammar/counts） | $X_m\subset\Omega_m$；$|X_m|=F_{m+2}$ | Math | `lem:xm_fib` | [x] |
+| $\pi$-split（$18\oplus 3$） | $X_m=X_m^{\mathrm{cyc}}\sqcup X_m^{\mathrm{bdry}}$；$m=6$ 时 $21=18\oplus 3$ | Math | `prop:cyc_bdry_size`, `prop:cyc_bdry_6` | [x] |
+| Fold 映射（离散折叠） | $\mathrm{Fold}_m:\{0,\dots,2^m-1\}\twoheadrightarrow X_m$；退化度统计/全表 | Math/Audit/Prot | `prop:foldm_surjective`, `thm:fold6_stats`, `app:fold6_full_table` | [x] |
+| Hilbert 手性指标（chirality index） | $\chi$ 的反射/反向翻转律（符号律） | Math/Audit/Prot | `prop:chi_flip` | [x] |
+| 规范补偿（gauge as compensation） | 纤维非平凡 $\Rightarrow$ 需要 transport；局部重标记 $\Rightarrow$ gauge 冗余 | Iface | `prop:gauge_compensation` | [x] |
+| 三因子 gauge 闭合（条件性） | 在显式候选族内 CAP 最小闭合 $U(1)\times SU(2)\times SU(3)$（up to quotient） | Iface/CAP | `prop:channel_to_gauge` | [~] |
+| SM 标号闭合（$21\to$SM labeling） | $\mathcal{L}_{\mathrm{SM}}$ 的唯一闭合（给定排序键/语义约定） | Iface/CAP/Math | `sec:sm_labeling_closure`, `thm:labeling_unique` | [x] |
+| Higgs/标量扇区（uplift 依赖） | $21$ 稳定类型不包含 Higgs；标量作为 uplift/coarse-graining 依赖的接口闭合/审计 | Iface/CAP/Audit | `rem:higgs_not_in_21`, `app:scalar_interface_audits` | [~] |
+| 质量谱/深度刚性（mass-depth rigidity） | 有界整数 ansatz 下系数 $(2,5,1)$ 的刚性闭合 | CAP/Audit | `sec:mass_spectrum_closure`, `prop:rhat_rigidity` | [x] |
+| 耦合/CP/混合闭合（rigidity targets） | 规范化词典与有界复杂度闭合（含审计表） | Iface/CAP/Match/Audit | `sec:couplings_cp`, `sec:pmns_neutrino_closure` | [x] |
+| 分辨率阶梯标定 | 在有界族内闭合 $r_{\mathrm{step}}=2\pi$（匹配层锚点仅作对比输入） | CAP/Match/Audit | `prop:r_step_2pi` | [x] |
 | 宇宙学接口 | 分辨率初始化/容量增长/能量预算拟合 | Iface/CAP | `app:cosmology_resolution_flow`, `ass:occupancy_energy_z128` | [~] |
 
 ## “待闭合/高风险”清单（建议后续继续追踪）
@@ -136,11 +147,19 @@ flowchart TD
     - `sections/generated/gamma_crossobs_stability_rows.tex`
     - `figures/gamma_crossobs_consistency.png`
 - [x] **宇宙学能量预算拟合的可复现脚本**：生成器 `scripts/exp_cosmology_energy_budget_fit.py` 输出 `sections/generated/cosmology_energy_budget_fit_equation.tex`（由 `sections/appendices/32_cosmology_resolution_flow.tex` 引用；关联 `app:cosmology_resolution_flow` / `ass:occupancy_energy_z128`），并必选生成 `figures/cosmology_energy_budget_fit.png`（Appendix 32 已插入图 `fig:cosmology_energy_budget_fit`）。
+- [~] **宇宙学能量预算的占据假设（Iface）**：`Assumption~\ref{ass:occupancy_energy_z128}` 将“能量份额”与读出微态集合的长期占据率做比例对应；该假设已被显式标注为接口假设并给出可证伪路径，但不属于 tick+CAP 的数学闭合输出（见 `app:cosmology_resolution_flow` / `subsec:cosmo_energy_budget_fit`）。
+
+- [ ] **（OP1）超出候选族的规范群唯一性**：当前仅在显式有界候选族（紧致/三因子可交换分解/复杂度标签）内由 CAP 闭合（`prop:channel_to_gauge`）；候选族本身的第一性导出或无家族唯一性仍未闭合。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`（`sec:limitations_related_work`）。
+- [ ] **（OP2）Fold 家族的唯一性/不可避免性（或 universality）**：已在有界反事实族内给出部分选择（`app:fold_family_sensitivity`；`prop:value_consistency_selects_foldz` / `prop:value_consistency_forbids_shift`），但全局唯一性与“桥不敏感”的操作性 universality 仍未闭合。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`。
+- [ ] **（OP3）有限连接的连续极限：Yang--Mills/EFT 涌现**：已闭合有限 connection/holonomy 诊断（`sec:protocol_connections_holonomy`），但从有限骨架推出连续 YM 作用量/动力学与低能参数稳定性仍未闭合。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`。
+- [ ] **（OP4）跨家族的全局模型选择（look-elsewhere）**：当前提供“家族内”审计（域大小/gap/反事实/量化表格，见 `app:generated_tables`），但比较不同候选家族的全局 prior/MDL 量化原则仍未闭合。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`。
+- [ ] **（OP5）标量/Yukawa 与 RG running 的闭合**：标量在本论文中作为 uplift/coarse-graining 依赖接口处理（`app:scalar_interface_audits`；并明确 $21$ 类型不含 Higgs：`rem:higgs_not_in_21`），但从有限协议导出 Yukawa 结构与 SM $\beta$-函数仍未闭合。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`。
 
 ## 快速入口（给维护者）
 
 - **“概念→定义/闭合输出”总入口**：`tab:concept_index`（`app:equivalence_semantics` 内）
 - **“推导脊柱（Tick+CAP）”入口**：`sections/appendices/19_tick_cap_derivation.tex`
 - **“推断账本（哪些是 Iface/CAP/Math）”入口**：`sections/appendices/11_inference_ledger.tex`
+- **“Open problems 清单”入口**：`subsec:ledger_open_problems`（并在 `sec:limitations_related_work` 的 `subsec:open_problems_audit_tagged` 提供更详细讨论）
 - **“协议→连续场误差控制”入口**：`sections/appendices/33_protocol_to_continuum_error_control.tex`
 
