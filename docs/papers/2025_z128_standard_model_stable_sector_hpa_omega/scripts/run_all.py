@@ -316,7 +316,6 @@ def build_steps() -> List[Step]:
             name="Hilbert-knot triptych (Figure 1)",
             script="fig_hilbert_knot_triptych.py",
             expected_outputs=[
-                "figures/hilbert_knot_triptych.pdf",
                 "figures/hilbert_knot_triptych.png",
             ],
         ),
@@ -755,7 +754,6 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "sections/generated/gamma_crossobs_rows.tex",
                 "sections/generated/gamma_crossobs_stability_rows.tex",
-                "figures/gamma_crossobs_consistency.pdf",
                 "figures/gamma_crossobs_consistency.png",
             ],
         ),

@@ -14,7 +14,7 @@ stable-type count uplifts may occur if effective window length changes with ener
 
 Outputs:
   - sections/generated/resolution_thresholds_rows.tex
-  - figures/resolution_thresholds_staircase.{pdf,png} (optional; requires matplotlib)
+  - figures/resolution_thresholds_staircase.png (optional; requires matplotlib)
 
 Only the Python standard library is required for the table fragment. Plotting is optional.
 """
@@ -113,10 +113,8 @@ def try_plot(thresholds: List[Tuple[int, float, float]]) -> None:
     root = Path(__file__).resolve().parent.parent
     fig_dir = root / "figures"
     fig_dir.mkdir(parents=True, exist_ok=True)
-    fig_path_pdf = fig_dir / "resolution_thresholds_staircase.pdf"
     fig_path_png = fig_dir / "resolution_thresholds_staircase.png"
     fig.tight_layout()
-    fig.savefig(fig_path_pdf)
     fig.savefig(fig_path_png, dpi=200)
     plt.close(fig)
 
