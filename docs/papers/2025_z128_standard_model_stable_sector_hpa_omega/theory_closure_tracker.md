@@ -57,25 +57,28 @@ flowchart TD
 
 说明：上图是**依赖关系**而非叙事顺序；叙事可从 `B`（等价语义+频率优先词典）开始，也可从 `A`（协议/读出）开始。
 
-## 已引入的“自包含闭合模块”（附录 24–34）
+## 已引入的“自包含闭合模块”（Part F 主文 + 附录）
 
-- [x] **等价语义与频率优先词典**：`appendix 24`  
-  - 位置：`sections/appendices/24_equivalence_semantics.tex`（`\label{app:equivalence_semantics}`）
+- [x] **时间箭头（指数半群/Abel-first）**：`Part F.0`  
+  - 位置：`sections/F_00_arrow_of_time_semigroup.tex`（`\label{app:arrow_of_time_semigroup_notes}`）
+  - 要点：指数半群骨架、遗忘常数、与 Abel-first/pole-barrier 语言对齐；作为后续单调性与不可逆证书的最小数学核。
+- [x] **等价语义与频率优先词典**：`Part F.1`  
+  - 位置：`sections/F_10_equivalence_semantics.tex`（`\label{app:equivalence_semantics}`）
   - 要点：物理对象=等价类；物理量=不变泛函；频率作为优先派生量；力/曲率/熵等作为不变性或闭合输出。
-- [x] **CAP-闭合连续代表作用量**：`appendix 25`  
-  - 位置：`sections/appendices/25_cap_continuum_action_closure.tex`（`\label{app:cap_continuum_action_closure}`）
+- [x] **CAP-闭合连续代表作用量**：`Part F.2`  
+  - 位置：`sections/F_20_cap_continuum_action_closure.tex`（`\label{app:cap_continuum_action_closure}`）
   - 要点：在有限候选族上闭合局域协变不变量项，输出最小骨架 `S_eff`。
-- [x] **变分场方程（Einstein/YM/chi）**：`appendix 26`  
-  - 位置：`sections/appendices/26_variational_field_equations.tex`（`\label{app:variational_field_equations}`）
+- [x] **变分场方程（Einstein/YM/chi）**：`Part F.2`  
+  - 位置：`sections/F_21_variational_field_equations.tex`（`\label{app:variational_field_equations}`）
   - 要点：由 `S_eff` 推出场方程、守恒与弱场模板。
 - [x] **热力学（从等价/粗粒化到熵/温度/自由能）**：`appendix 27`  
   - 位置：`sections/appendices/27_thermodynamics_from_equivalence.tex`（`\label{app:thermodynamics_from_equivalence}`）
   - 要点：熵=计数；温度=频率共轭尺度；CAP=自由能原则；三定律；熵力与引力词典对齐。
-- [x] **overhead/chi -> 引力闭合链**：`appendix 28`  
-  - 位置：`sections/appendices/28_overhead_to_gravity_closure.tex`（`\label{app:overhead_to_gravity_closure}`）
+- [x] **overhead/chi -> 引力闭合链**：`Part F.4`  
+  - 位置：`sections/F_40_overhead_to_gravity_closure.tex`（`\label{app:overhead_to_gravity_closure}`）
   - 要点：$\kappa \to \chi \to N \to g_{00} \to \Phi$；弱场下 $\rho_{\mathrm{eff}} \propto -\Delta \chi$；$\gamma$ 拟合模板。
-- [x] **chi 重建协议**：`appendix 29`  
-  - 位置：`sections/appendices/29_chi_reconstruction_protocol.tex`（`\label{app:chi_reconstruction_protocol}`）
+- [x] **chi 重建协议**：`Part F.4`  
+  - 位置：`sections/F_41_chi_reconstruction_protocol.tex`（`\label{app:chi_reconstruction_protocol}`）
   - 要点：Hilbert 分箱→窗口词→折叠统计→$\chi(x)$ 重建→测试与拟合。
 - [x] **协议层→连续场误差控制**：`appendix 33`  
   - 位置：`sections/appendices/33_protocol_to_continuum_error_control.tex`（`\label{app:protocol_to_continuum_error_control}`）
