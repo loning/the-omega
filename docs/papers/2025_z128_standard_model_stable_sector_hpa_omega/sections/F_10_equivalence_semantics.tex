@@ -281,6 +281,64 @@ For the entropy bound, apply Jensen's inequality to the concave function $\log$ 
 Finally $d_m=2^m/|X_m|=1/f_{\mathrm{stab}}(m)$ by definition.
 \end{proof}
 
+\begin{proposition}[Folding as conditional entropy: fiber entropy and relative entropy]\label{prop:folding_relative_entropy_decomposition}
+\MathTag Fix $m\ge 1$ and let $N$ be uniformly distributed on $K_m=\{0,\dots,2^m-1\}$.
+Let $W:=\mathrm{Fold}_m(N)\in X_m$ and write
+\[
+\mu_m(w):=\PP(W=w)=\frac{|P(w)|}{2^m},\qquad w\in X_m,
+\]
+for the induced distribution on stable labels.
+Let $u_m$ denote the uniform distribution on $X_m$.
+Using natural logarithms (entropy in nats), one has:
+\begin{enumerate}
+\item \textbf{Fiber entropy identity:}
+\[
+H(N\mid W)=\EE_{\mu_m}\!\left[\log |P(W)|\right].
+\]
+\item \textbf{Relative-entropy decomposition:}
+\[
+H(N\mid W)=\log d_m + D(\mu_m\Vert u_m),
+\qquad
+d_m=\frac{2^m}{|X_m|},
+\]
+where $D(\mu\Vert\nu)=\sum_w \mu(w)\log\!\bigl(\mu(w)/\nu(w)\bigr)$ is the Kullback--Leibler divergence.
+\item \textbf{Entropy-rate consequence:}
+\[
+\lim_{m\to\infty}\frac{1}{m}H(N\mid W)=\log(2/\varphi).
+\]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\textbf{(1)} Since $W$ is a deterministic function of $N$, conditioning on $W=w$ restricts $N$ to the fiber $P(w)$.
+Because $N$ is uniform on $K_m$ and all elements in $P(w)$ are equally likely given $W=w$, one has $H(N\mid W=w)=\log|P(w)|$.
+Taking expectation over $w\sim \mu_m$ yields the identity.
+\par
+\textbf{(2)} Because $W$ is a function of $N$, one has $H(N,W)=H(N)$.
+Therefore $H(N\mid W)=H(N)-H(W)=\log|K_m|-H(\mu_m)=m\log 2-H(\mu_m)$.
+On the other hand,
+\[
+D(\mu_m\Vert u_m)
+=\sum_{w\in X_m}\mu_m(w)\log\!\left(\frac{\mu_m(w)}{1/|X_m|}\right)
+=-H(\mu_m)+\log|X_m|.
+\]
+Since $\log d_m=\log(2^m/|X_m|)=m\log 2-\log|X_m|$, adding gives
+$\log d_m+D(\mu_m\Vert u_m)=m\log 2-H(\mu_m)=H(N\mid W)$.
+\par
+\textbf{(3)} From Proposition~\ref{prop:rm_entropy_gap_rate} one has $\log r_m=m\log(2/\varphi)+O(1)$ for the maximal degeneracy $r_m=\max_w|P(w)|$.
+From Lemma~\ref{lem:entropy_gap_hidden_exponent_cosmo} one has $\log d_m=m\log(2/\varphi)+O(1)$.
+Moreover,
+\[
+D(\mu_m\Vert u_m)=\EE_{\mu_m}\!\left[\log\!\left(\frac{\mu_m(W)}{u_m(W)}\right)\right]
+=\EE_{\mu_m}\!\left[\log\!\left(\frac{|P(W)|}{d_m}\right)\right]
+\le \log\!\left(\frac{r_m}{d_m}\right)=O(1),
+\]
+so $(1/m)D(\mu_m\Vert u_m)\to 0$.
+Dividing the identity in (2) by $m$ therefore yields
+$
+\lim_{m\to\infty} (1/m)H(N\mid W)=\lim_{m\to\infty}(1/m)\log d_m=\log(2/\varphi).
+$
+\end{proof}
+
 \paragraph{Second-law semantics.}
 \InterfaceTag A key reason ``irreversibility'' can be discussed without adding a new axiom is that the map from microscopic histories to observable records is many-to-one (Section~\ref{subsec:tick_time_arrow}):
 coarse graining and stability folding discard information, so entropy in the counting sense is naturally nondecreasing along protocol time when described only at the coarse level.

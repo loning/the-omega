@@ -233,6 +233,14 @@ flowchart TB
   P_hecke_like("跨尺度算子模板（结构类比）<br/>类型：审计<br/>label: rem:hecke_trace_recurrence_skeleton<br/>Hecke: T_{p^{r+1}}=T_pT_{p^r}−p^{k−1}T_{p^{r−1}} (skeleton)")
   M_hecke_like -.- P_hecke_like
 
+  M_relent["相对熵/纤维熵分解（folding 信息恒等式）<br/>类型：闭合<br/>label: prop:folding_relative_entropy_decomposition<br/>H(N|W)=Eμ[log|P(W)|]=log d_m + D(μ||u)"]
+  P_relent("信息损失代理（KL 修正）<br/>类型：字典<br/>label: prop:folding_relative_entropy_decomposition<br/>μ(w)=|P(w)|/2^m;  u=uniform on X_m;  D(μ||u)=Eμ log(|P|/d_m)")
+  M_relent -.- P_relent
+
+  M_protoHecke["协议 Hecke-like 算子族（refinement operators）<br/>类型：审计<br/>label: app:protocol_hecke_operators / def:refinement_operators_TL<br/>T_L:=A^L;  T_{L+M}=T_L T_M;  T_{L+1}=T_L+T_{L−1}"]
+  P_protoHecke("跨尺度算子代理（可计算模板）<br/>类型：审计<br/>label: prop:ext_count_operator_formula<br/>|Ext_m(u)|=e_{u6}^T T_{m−6} 1 (operator evaluation)")
+  M_protoHecke -.- P_protoHecke
+
   M_gamma_proxy["gamma 代理通道审计（gamma_proxy；通道映射+检验）<br/>类型：审计<br/>label: app:gamma_crossobs_consistency<br/>proxy-only compression + internal consistency (χ²/p, pairwise tension, LOO)"]
   P_gamma_proxy("gamma 代理通道（可操作代理）<br/>类型：审计<br/>label: app:gamma_crossobs_consistency<br/>solar-system / lensing / time-delay / redshift proxies")
   M_gamma_proxy -.- P_gamma_proxy
@@ -326,7 +334,11 @@ flowchart TB
   P_mass --> P_rg
   P_rg --> P_cosmo
   M_cosmo --> M_entropy_gap --> M_rm --> M_gauge
+  M_entropy_gap --> M_relent --> M_rm
+  M_hecke_like --> M_protoHecke
   P_cosmo --> P_entropy_gap --> P_rm --> P_gauge
+  P_entropy_gap --> P_relent --> P_rm
+  P_hecke_like --> P_protoHecke
 
   M_tick --> M_equiv
   M_cap --> M_equiv
@@ -398,16 +410,16 @@ flowchart TB
   %% Math node groups
   class M_tick,M_cap math_axiom;
   class M_readout,M_phi,M_fold,M_anchor,M_addr,M_conn,M_holo,M_gauge,M_equiv,M_quotient,M_proj,M_freq math_construct;
-  class M_golden,M_pi,M_periodic,M_e,M_sm,M_mass,M_thermo,M_grav,M_qm,M_rg,M_entropy_gap,M_rm,M_op2_fold_uniqueness math_closure;
+  class M_golden,M_pi,M_periodic,M_e,M_sm,M_mass,M_thermo,M_grav,M_qm,M_rg,M_entropy_gap,M_rm,M_relent,M_op2_fold_uniqueness math_closure;
   class M_action,M_eom,M_op3_yang_mills math_cont;
   class M_cosmo math_assumption;
-  class M_morita,M_gauss,M_abel,M_capinv,M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_recon,M_err,M_gamma_proxy,M_gamma_direct,M_transport_audit,M_inputs,M_mdl_global,M_test math_audit;
+  class M_morita,M_gauss,M_abel,M_capinv,M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_recon,M_err,M_gamma_proxy,M_gamma_direct,M_transport_audit,M_inputs,M_mdl_global,M_test math_audit;
   %% Physics node groups
   class P_dt,P_scan,P_phi,P_pi,P_e,P_fold,P_screen,P_addr,P_local,P_conn,P_gauge,P_dyn phys_proxy;
   class P_obs,P_periodic,P_holo,P_mass,P_lens,P_qm,P_wilson phys_obs;
-  class P_types,P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_am_euler,P_entropy_gap,P_rm phys_dict;
+  class P_types,P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_am_euler,P_entropy_gap,P_rm,P_relent phys_dict;
   class P_abel,P_action,P_eom,P_rg,P_cosmo phys_model;
-  class P_morita,P_gauss,P_capinv,P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_select,P_recon,P_err,P_gamma_proxy,P_gamma_direct,P_transport_audit,P_inputs,P_mdl_global,P_test phys_audit;
+  class P_morita,P_gauss,P_capinv,P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_select,P_recon,P_err,P_gamma_proxy,P_gamma_direct,P_transport_audit,P_inputs,P_mdl_global,P_test phys_audit;
 
   style M_test stroke-width:4px;
   style P_test stroke-width:4px;
@@ -507,6 +519,10 @@ flowchart TB
 | `P_selberg` | `\label{thm:selberg_trace_formula_template}` | `Σ_j h(r_j)=area term + Σ_{p,k} ℓ(p)/(2sinh(kℓ/2))·g(kℓ)` | `sections/appendices/46_selberg_zeta_trace_bridge.tex` |
 | `M_hecke_like` | `\label{lem:trace_recurrence_2x2}` | `tr(M^{n+1})=tr(M)tr(M^n)−det(M)tr(M^{n−1});  |Ext_m(u)|=e_{u6}^T A^{m−6}1` | `sections/appendices/05_functorial_refinement.tex` |
 | `P_hecke_like` | `\label{rem:hecke_trace_recurrence_skeleton}` | `Hecke prime-power recurrence skeleton; structural analogue only` | `sections/appendices/39_hecke_prime_skeleton.tex` |
+| `M_relent` | `\label{prop:folding_relative_entropy_decomposition}` | `H(N|W)=Eμ log|P(W)|=log d_m + D(μ||u);  (1/m)H(N|W)→log(2/φ)` | `sections/F_10_equivalence_semantics.tex` |
+| `P_relent` | `\label{prop:folding_relative_entropy_decomposition}` | `μ(w)=|P(w)|/2^m;  D(μ||u)=Eμ log(|P|/d_m)` | `sections/F_10_equivalence_semantics.tex` |
+| `M_protoHecke` | `\label{app:protocol_hecke_operators}` | `T_L:=A^L;  T_{L+M}=T_L T_M;  T_{L+1}=T_L+T_{L−1}` | `sections/appendices/47_protocol_hecke_operators.tex` |
+| `P_protoHecke` | `\label{prop:ext_count_operator_formula}` | `|Ext_m(u)|=e_{u6}^T T_{m−6} 1 (operator evaluation)` | `sections/appendices/47_protocol_hecke_operators.tex` |
 | `M_gamma_proxy` | `\label{app:gamma_crossobs_consistency}` | `gamma_proxy: proxy-only compression + internal consistency diagnostics` | `sections/appendices/35_gamma_cross_observation_consistency.tex` |
 | `P_gamma_proxy` | `\label{app:gamma_crossobs_consistency}` | `proxy channels: solar system / lensing / time-delay / redshift (vendored audit subset)` | `sections/appendices/35_gamma_cross_observation_consistency.tex` |
 | `M_gamma_direct` | `\label{app:gamma_crossobs_consistency}` | `gamma_dict: rotation-curve calibration + internal consistency diagnostics` | `sections/appendices/35_gamma_cross_observation_consistency.tex` |

@@ -1,0 +1,78 @@
+\section{Protocol Hecke-like operators for refinement under uplift (notes)}
+\label{app:protocol_hecke_operators}
+
+\AuditTag This appendix records a minimal, fully computable ``operator algebra'' viewpoint on window refinement.
+It turns the extension/refinement multiplicities under uplift into a semigroup of explicit linear operators, and highlights a rigid second-order recurrence (a prime-power skeleton) shared with classical Hecke templates.
+The results are mathematical bookkeeping statements; they introduce no new axiom and are not used as premises in theorem-level folding proofs.
+
+\subsection{Two-state refinement operators from the golden-mean transition matrix}
+\label{subsec:protocol_hecke_two_state}
+
+Let $A=\bigl(\begin{smallmatrix}1&1\\1&0\end{smallmatrix}\bigr)$ be the golden-mean transition matrix (Lemma~\ref{lem:golden_zeta_matrix}).
+We regard vectors in $\CC^2$ as functions on the two ``boundary states'' $\{0,1\}$ (the last bit of a prefix).
+
+\begin{definition}[Refinement operators $T_L$]\label{def:refinement_operators_TL}
+\MathTag For each $L\in\ZZ_{\ge 0}$ define the linear operator
+\[
+T_L:\CC^2\to\CC^2,\qquad T_L v:=A^L v.
+\]
+Equivalently, $(T_L)_{ij}$ counts admissible length-$L$ extensions from state $i$ to state $j$ in the golden-mean transition graph.
+\end{definition}
+
+\begin{proposition}[Semigroup and commutativity]\label{prop:TL_semigroup_commute}
+\MathTag For all $L,M\ge 0$ one has
+\[
+T_L\circ T_M=T_{L+M},\qquad T_L T_M=T_M T_L.
+\]
+\end{proposition}
+\begin{proof}
+This is the law of matrix powers: $A^{L}A^{M}=A^{L+M}$.
+Commutativity follows because all $T_L$ are polynomials in the same matrix $A$.
+\end{proof}
+
+\begin{proposition}[Prime-power recurrence (Cayley--Hamilton)]\label{prop:TL_prime_power_recurrence}
+\MathTag Let $t:=\mathrm{tr}(A)=1$ and $\delta:=\det(A)=-1$.
+Then the family $(T_L)$ satisfies the second-order recurrence
+\[
+T_{L+1}=t\,T_L-\delta\,T_{L-1}=T_L+T_{L-1}\qquad(L\ge 1),
+\]
+with initial conditions $T_0=I$ and $T_1=A$.
+\end{proposition}
+\begin{proof}
+By Cayley--Hamilton, $A^2-(\mathrm{tr}A)A+(\det A)I=0$.
+Multiplying by $A^{L-1}$ gives $A^{L+1}=(\mathrm{tr}A)A^L-(\det A)A^{L-1}$ for $L\ge 1$, i.e.\ the recurrence for $T_L=A^L$.
+\end{proof}
+
+\subsection{Extension multiplicities as operator evaluations}
+\label{subsec:ext_counts_operator_eval}
+
+Fix the base window $6$ and let $u=u_1\cdots u_6\in X_6$.
+For $m\ge 6$ write $L=m-6$.
+Recall
+\[
+\mathrm{Ext}_m(u):=\{w\in X_m:\ \pi_{m\to 6}(w)=u\}
+\]
+from Proposition~\ref{prop:prefix_extension_count}.
+
+\begin{proposition}[Operator expression for $|\mathrm{Ext}_m(u)|$]\label{prop:ext_count_operator_formula}
+\MathTag Let $\mathbf{1}=(1,1)^{\mathsf{T}}$ and $e_0=(1,0)^{\mathsf{T}}$, $e_1=(0,1)^{\mathsf{T}}$.
+Then for $L=m-6$ one has
+\[
+|\mathrm{Ext}_m(u)|=e_{u_6}^{\mathsf{T}}\,T_L\,\mathbf{1}.
+\]
+\end{proposition}
+\begin{proof}
+The entries of $A^L$ count admissible length-$L$ continuations between end states.
+Summing over the terminal state corresponds to multiplying by $\mathbf{1}$, and selecting the starting state $u_6$ corresponds to left-multiplying by $e_{u_6}^{\mathsf{T}}$.
+This is the matrix viewpoint recorded in Remark~\ref{rem:extension_counts_matrix_view}.
+\end{proof}
+
+\subsection{Structural comparison to the Hecke prime skeleton}
+\label{subsec:protocol_hecke_comparison}
+
+\AuditTag The Hecke prime-power recurrence (Equation~\eqref{eq:hecke_prime_power_z128}) has the same second-order skeleton as Proposition~\ref{prop:TL_prime_power_recurrence}.
+In this paper the resemblance is used as an audit template for ``cross-scale constraint propagation'' only:
+the refinement operators $T_L$ are explicit protocol-side objects (powers of a fixed $2\times2$ matrix),
+while the Hecke operators act on modular forms and satisfy additional multiplicative relations beyond a single matrix-power semigroup (Appendix~\ref{app:hecke_prime_skeleton}).
+
+
