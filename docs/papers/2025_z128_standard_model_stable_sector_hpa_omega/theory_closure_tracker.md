@@ -174,7 +174,11 @@ flowchart TD
   - 主依赖：有限 holonomy 诊断 `sec:protocol_connections_holonomy`；扩展 sweep `app:holonomy_sweeps_extended`（含 `tab:holonomy_wilson_loop`）；曲率语义 `subsec:curvature_as_loops`；连续代表作用量 `app:cap_continuum_action_closure`；场方程 `app:variational_field_equations`。
   - 生成脚本：`scripts/exp_holonomy_balanced_chain_sweep.py`（已接入 `scripts/run_all.py`）
   - 生成物：`sections/generated/holonomy_balanced_chain_wilson_rows.tex`
-- [ ] **（OP4）跨家族的全局模型选择（look-elsewhere）**：当前提供“家族内”审计（域大小/gap/反事实/量化表格，见 `app:generated_tables`），但比较不同候选家族的全局 prior/MDL 量化原则仍未闭合。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`。
+- [x] **（OP4）跨家族的全局模型选择（MDL / prefix-code；registry 内闭合）**：已在“声明家族注册表（主线候选族 + 已审计 baselines）”的口径内闭合：用前缀码/MDL 为家族分配显式权重，并把家族内的 $N_{\le\epsilon}/|\Theta|$ 升级为跨家族的加权 look-elsewhere 上界。  
+  - 位置：`sections/appendices/42_global_model_selection_mdl.tex`（`\label{app:global_model_selection_mdl}`，表 `tab:audit_global_mdl_family_registry`）  
+  - 生成脚本：`scripts/exp_audit_global_model_selection_mdl.py`（已接入 `scripts/run_all.py`）  
+  - 生成物：`sections/generated/audit_global_mdl_family_rows.tex`，`sections/generated/audit_global_mdl_summary.tex`  
+  - 主依赖：家族内审计表 `app:generated_tables`（含 `tab:audit_closure_metrics` / `tab:audit_counterfactual` / `tab:audit_pi_poly_null`）与 CAP 审计模板 `app:cap_audit_template`。
 - [ ] **（OP5）标量/Yukawa 与 RG running 的闭合**：标量在本论文中作为 uplift/coarse-graining 依赖接口处理（`app:scalar_interface_audits`；并明确 $21$ 类型不含 Higgs：`rem:higgs_not_in_21`），但从有限协议导出 Yukawa 结构与 SM $\beta$-函数仍未闭合。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`。
 
 ### 经典未决问题：本文覆盖范围对照（建议单列追踪）

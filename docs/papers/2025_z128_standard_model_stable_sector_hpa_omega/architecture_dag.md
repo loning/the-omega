@@ -187,6 +187,10 @@ flowchart TB
   P_inputs("External inputs inventory（Match；非前提）<br/>类型：审计<br/>label: subsec:external_inputs_inventory<br/>PDG/CODATA/Planck/NuFIT + vendored subsets")
   M_inputs -.- P_inputs
 
+  M_mdl_global["全局模型选择（MDL / prefix-code）<br/>类型：审计<br/>label: app:global_model_selection_mdl<br/>family registry + prefix-code prior + global mixture bound"]
+  P_mdl_global("全局 look-elsewhere 上界（registry 内）<br/>类型：审计<br/>label: tab:audit_global_mdl_family_registry<br/>p_global(ε) via weighted N_{<=ε}/|Θ|")
+  M_mdl_global -.- P_mdl_global
+
   M_test["可证伪输出（预测与审计）<br/>类型：审计"]
   P_test("可证伪检验（跨观测一致性）<br/>类型：审计")
   M_test -.- P_test
@@ -266,6 +270,9 @@ flowchart TB
   M_gamma_direct --> M_test
   M_transport_audit --> M_test
   M_inputs --> M_test
+  M_cap --> M_mdl_global
+  M_inputs --> M_mdl_global
+  M_mdl_global --> M_test
   M_e --> M_test
 
   P_equiv --> P_freq
@@ -281,6 +288,7 @@ flowchart TB
   P_cosmo --> P_test
   P_transport_audit --> P_test
   P_inputs --> P_test
+  P_inputs --> P_mdl_global --> P_test
 
   %% -------------------------
   %% Styling (Material Design palette; math vs physics)
@@ -308,12 +316,13 @@ flowchart TB
   class M_action,M_eom,M_op3_yang_mills math_cont;
   class M_cosmo math_assumption;
   class M_recon,M_err,M_gamma_proxy,M_gamma_direct,M_transport_audit,M_inputs,M_test math_audit;
+  class M_mdl_global math_audit;
   %% Physics node groups
   class P_dt,P_scan,P_phi,P_pi,P_e,P_fold,P_screen,P_addr,P_local,P_conn,P_gauge,P_dyn phys_proxy;
   class P_obs,P_holo,P_mass,P_lens,P_qm,P_wilson phys_obs;
   class P_types,P_equiv,P_freq,P_thermo phys_dict;
   class P_action,P_eom,P_rg,P_cosmo phys_model;
-  class P_select,P_recon,P_err,P_gamma_proxy,P_gamma_direct,P_transport_audit,P_inputs,P_test phys_audit;
+  class P_select,P_recon,P_err,P_gamma_proxy,P_gamma_direct,P_transport_audit,P_inputs,P_test,P_mdl_global phys_audit;
 
   style M_test stroke-width:4px;
   style P_test stroke-width:4px;
@@ -392,6 +401,8 @@ flowchart TB
 | `P_transport_audit` | `\label{tab:holonomy_transport_rule_sensitivity}` | `bounded counterfactual families for padding/truncation/tie-break (audit)` | `sections/appendices/15_holonomy_sweeps_extended.tex` |
 | `M_inputs` | `\label{subsec:external_inputs_inventory}` | `MatchTag external inputs inventory (non-premises)` | `sections/appendices/11_inference_ledger.tex` |
 | `P_inputs` | `\label{subsec:external_inputs_inventory}` | `external targets: PDG/CODATA/Planck/NuFIT + vendored subsets (audit)` | `sections/appendices/11_inference_ledger.tex` |
+| `M_mdl_global` | `\label{app:global_model_selection_mdl}` | `MDL/prefix-code prior on declared family registry; cross-family mixture bound` | `sections/appendices/42_global_model_selection_mdl.tex` |
+| `P_mdl_global` | `\label{tab:audit_global_mdl_family_registry}` | `global look-elsewhere bound within registry (generated rows/summary)` | `sections/appendices/42_global_model_selection_mdl.tex` |
 | `M_test` | `\label{sec:falsifiability}` | `P1–P6 falsifiable statements (audited thresholds/calibrations)` | `sections/V_40_falsifiability_predictions.tex` |
 | `P_test` | `\label{sec:falsifiability}` | `protocolized tests + error budgets (cross-checks)` | `sections/V_40_falsifiability_predictions.tex` |
 

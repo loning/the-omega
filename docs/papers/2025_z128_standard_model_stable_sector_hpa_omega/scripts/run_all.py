@@ -716,6 +716,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Audit global model selection (MDL, cross-family)",
+            script="exp_audit_global_model_selection_mdl.py",
+            expected_outputs=[
+                "sections/generated/audit_global_mdl_family_rows.tex",
+                "sections/generated/audit_global_mdl_summary.tex",
+            ],
+        ),
+        Step(
             name="Rigidity alpha coefficient simplex",
             script="exp_alpha_coeff_rigidity.py",
             expected_outputs=[
