@@ -51,14 +51,26 @@ jobs:
 
           # Ensure the 'before' commit object exists in shallow checkouts.
           if ! git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then
-            git fetch --no-tags --prune origin "$BEFORE"
+            if ! git fetch --no-tags --prune origin "$BEFORE" 2>/dev/null; then
+              # If fetch fails, the commit might not exist (e.g., deleted branch).
+              # Treat as changed to be safe.
+              echo "site_changed=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            # Verify the commit exists after fetch
+            if ! git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then
+              echo "site_changed=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
           fi
 
-          changed="$(git diff --name-only "$BEFORE" "$AFTER")"
+          changed="$(git diff --name-only "$BEFORE" "$AFTER" || true)"
 
-          echo "changed_files<<'EOF'" >> "$GITHUB_OUTPUT"
-          echo "$changed" >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
+          {
+            echo "changed_files<<EOF"
+            echo "$changed"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
           if echo "$changed" | grep -Eq '^(docs/|book\.toml$)'; then
             echo "site_changed=true" >> "$GITHUB_OUTPUT"
