@@ -1,0 +1,104 @@
+\section{Uniqueness of the folding-map family under protocol locality (closure)}
+\label{app:fold_family_uniqueness}
+
+This appendix closes (OP2) by recording a minimal ``protocol-local/implementable'' notion of a folding-map \emph{family} and proving that, under this notion, the folding bridge is uniquely forced to be the Zeckendorf-truncation family $\mathrm{Fold}_m$ (Definition~\eqref{eq:foldm_def}).
+The key point is that OP2 is not about whether alternative deterministic maps $\{0,\dots,2^m-1\}\to X_m$ exist at a \emph{fixed} window length (they do, and Appendix~\ref{app:fold_family_sensitivity} audits a bounded family at $m=6$), but about whether a \emph{principled} choice is forced once one commits to a locality/implementability contract for how the dyadic register is refined.
+
+\begin{center}
+\fbox{\begin{minipage}{0.96\linewidth}
+\small
+\textbf{Audit note (status).}
+The result below is a closure \emph{within} an explicit contract:
+\emph{value consistency} (Definition~\ref{def:value_consistency_m}) together with a \emph{no-backreaction refinement rule} (Definition~\ref{def:protocol_local_fold_family}).
+This does not claim invariance under arbitrary dyadic$\to X_m$ repairs; rather, it shows that once one requires a protocol-local family compatible with window uplift, the only possibility is the Zeckendorf-truncation family already used in the folding core.
+\end{minipage}}
+\end{center}
+
+\subsection{Protocol-local folding families}
+\label{subsec:protocol_local_fold_family}
+
+We write $X_m\subset\{0,1\}^m$ for the admissible language (no adjacent ones) on the golden branch, and we use the prefix projection (Appendix~\ref{app:functorial_refinement})
+\[
+\pi_{m\to k}:X_m\to X_k,\qquad
+\pi_{m\to k}(w_1\cdots w_m):=w_1\cdots w_k
+\qquad (m\ge k\ge 1).
+\]
+We also use the natural set inclusion $\{0,\dots,2^m-1\}\subset\{0,\dots,2^{m+1}-1\}$ to regard an $m$-bit dyadic index $N$ as the same integer when a longer register is available.
+
+\begin{definition}[Protocol-local folding-map family]\label{def:protocol_local_fold_family}
+A \emph{protocol-local folding-map family} is a collection of deterministic maps
+\[
+F_m:\{0,\dots,2^m-1\}\to X_m,\qquad m\ge 1,
+\]
+such that:
+\begin{enumerate}
+\item \textbf{Value consistency.} For every $m\ge 1$, the map $F_m$ is value-consistent in the sense of Definition~\ref{def:value_consistency_m}, i.e.
+\[
+F_m\!\bigl(V_m(w)\bigr)=w\qquad\text{for all }w\in X_m,
+\]
+where $V_m(w)=\sum_{k=1}^m w_k F_{k+1}$ is the Zeckendorf value used in Proposition~\ref{prop:foldm_surjective}.
+\item \textbf{Refinement locality (no backreaction under dyadic uplift).}
+For every $m\ge 1$ and every $N\in\{0,\dots,2^m-1\}$, the $m$-digit output at window length $m$ is the prefix of the $(m+1)$-digit output at window length $m+1$:
+\begin{equation}\label{eq:fold_family_refinement_locality}
+\pi_{m+1\to m}\!\bigl(F_{m+1}(N)\bigr)=F_m(N).
+\end{equation}
+\end{enumerate}
+\end{definition}
+
+\paragraph{Interpretation.}
+Equation \eqref{eq:fold_family_refinement_locality} is a minimal implementability constraint: increasing the dyadic register budget by one bit is allowed to \emph{refine} the stable word by adding one more admissible digit, but it is not allowed to rewrite the previously reported prefix.
+Equivalently, the outputs form a projective system under the truncation maps $\pi_{m+1\to m}$, in the same sense that the label lift $\mathcal{L}_m=\mathcal{L}_{\mathrm{SM}}\circ\pi_{m\to 6}$ is functorial under prefix refinement (Appendix~\ref{app:functorial_refinement}).
+
+\subsection{Uniqueness theorem}
+\label{subsec:fold_family_uniqueness_theorem}
+
+\begin{theorem}[Uniqueness of $\mathrm{Fold}_m$ under protocol locality]\label{thm:fold_family_uniqueness}
+Let $(F_m)_{m\ge 1}$ be a protocol-local folding-map family in the sense of Definition~\ref{def:protocol_local_fold_family}.
+Then for every $m\ge 1$ and every $N\in\{0,\dots,2^m-1\}$ one has
+\[
+F_m(N)=\mathrm{Fold}_m(N),
+\]
+where $\mathrm{Fold}_m$ is the Zeckendorf-truncation folding map defined in \eqref{eq:foldm_def}.
+In particular, the folding-map family is unique under the stated contract.
+\end{theorem}
+\begin{proof}
+Fix $m\ge 1$ and $N\in\{0,\dots,2^m-1\}$.
+Choose an integer $M\ge m$ such that
+\begin{equation}\label{eq:choose_M_for_value_consistency}
+N<F_{M+2}.
+\end{equation}
+Such an $M$ exists because $F_{k}\to\infty$ as $k\to\infty$.
+
+Let $w:=\mathrm{Fold}_M(N)\in X_M$ be the length-$M$ Zeckendorf digit prefix of $N$ (Definition~\eqref{eq:foldm_def}).
+Condition \eqref{eq:choose_M_for_value_consistency} implies that the Zeckendorf expansion of $N$ uses no Fibonacci weights beyond $F_{M+1}$, hence the digits beyond position $M$ are zero and the length-$M$ digit string $w$ is the full Zeckendorf digit string of $N$ padded by zeros.
+Equivalently,
+\begin{equation}\label{eq:VM_of_foldM_is_N}
+V_M(w)=N.
+\end{equation}
+
+By value consistency (Definition~\ref{def:protocol_local_fold_family}(1) and Definition~\ref{def:value_consistency_m}),
+\[
+F_M(N)=F_M\!\bigl(V_M(w)\bigr)=w=\mathrm{Fold}_M(N).
+\]
+Applying refinement locality \eqref{eq:fold_family_refinement_locality} repeatedly (from $M$ down to $m$) yields
+\[
+F_m(N)=\pi_{M\to m}\!\bigl(F_M(N)\bigr)=\pi_{M\to m}\!\bigl(\mathrm{Fold}_M(N)\bigr)=\mathrm{Fold}_m(N),
+\]
+since truncating the first $M$ Zeckendorf digits to length $m$ is exactly the definition of $\mathrm{Fold}_m$.
+\end{proof}
+
+\subsection{Relation to the bounded counterfactual audit at \texorpdfstring{$m=6$}{m=6}}
+\label{subsec:fold_family_uniqueness_relation_m6}
+
+Appendix~\ref{app:fold_family_sensitivity} records a bounded family of deterministic counterfactual maps at $m=6$.
+Within that fixed-$m$ family, value consistency already selects FoldZ uniquely (Proposition~\ref{prop:value_consistency_selects_foldz}), and within the shifted Zeckendorf-window family it forbids all nonzero shifts (Proposition~\ref{prop:value_consistency_forbids_shift}).
+Theorem~\ref{thm:fold_family_uniqueness} upgrades this to a global statement: once one additionally requires refinement locality across window lengths (the minimal implementability contract), the only possible folding-map family is $\mathrm{Fold}_m$.
+
+\subsection{Scope (what is not claimed)}
+\label{subsec:fold_family_uniqueness_scope}
+
+The closure here is \emph{not} an invariance claim under arbitrary changes of the dyadic$\to X_m$ bridge.
+It is a principled selection theorem: within the stated protocol-local family class, the bridge is uniquely forced and introduces no residual freedom.
+If one drops refinement locality or value consistency, then many alternative families exist (one can modify the map on dyadic indices outside $\{0,\dots,F_{m+2}-1\}$ at fixed $m$, or allow backreaction under uplift), and OP2 would remain genuinely open.
+
+
