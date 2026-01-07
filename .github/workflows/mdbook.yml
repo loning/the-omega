@@ -19,12 +19,49 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      site_changed: ${{ steps.deploy_gate.outputs.site_changed }}
     env:
       MDBOOK_VERSION: 0.4.52
       MDBOOK_MERMAID_VERSION: 0.15.0
       MDBOOK_KATEX_VERSION: 0.9.4
     steps:
       - uses: actions/checkout@v4
+      
+      - name: Detect site-relevant changes (skip Pages deploy if none)
+        id: site_changes
+        shell: bash
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          # Only gate deploy on push events; keep PR/dispatch behavior unchanged.
+          if [[ "${GITHUB_EVENT_NAME}" != "push" ]]; then
+            echo "site_changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # New branch creation / unknown base: allow deploy.
+          if [[ "${BEFORE}" == "0000000000000000000000000000000000000000" ]]; then
+            echo "site_changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Ensure BEFORE commit exists (actions/checkout is shallow by default).
+          if ! git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then
+            if ! git fetch --no-tags --prune origin "${BEFORE}"; then
+              echo "site_changed=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+
+          if git diff --name-only "${BEFORE}" "${AFTER}" | grep -Eq '^(docs/|scripts/|book\\.toml$|\\.github/workflows/mdbook\\.yml$)'; then
+            echo "site_changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "site_changed=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Compute papers cache key
         id: papers_cache_key
@@ -50,6 +87,28 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/build_papers_pdfs.py plan --github-output
+      
+      - name: Decide whether to deploy Pages (docs change or new PDFs)
+        id: deploy_gate
+        shell: bash
+        env:
+          DIFF_CHANGED: ${{ steps.site_changes.outputs.site_changed }}
+          PAPERS_TO_BUILD: ${{ steps.papers_plan.outputs.papers_to_build }}
+        run: |
+          set -euo pipefail
+
+          if [[ "${DIFF_CHANGED}" == "true" ]]; then
+            echo "site_changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # If the CI plans to (re)build any paper PDF, the published site should be refreshed
+          # to include the newly generated artifacts (PDFs are not tracked by git).
+          if [[ "${PAPERS_TO_BUILD}" != "0" ]]; then
+            echo "site_changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "site_changed=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Cache APT archives (TeX)
         if: steps.papers_plan.outputs.papers_to_build != '0'
@@ -136,19 +195,19 @@ jobs:
             cargo install --version ${MDBOOK_MERMAID_VERSION} mdbook-mermaid
           fi
       - name: Setup Pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.deploy_gate.outputs.site_changed == 'true'
         id: pages
         uses: actions/configure-pages@v4
       - name: Build with mdBook
         run: mdbook build
       - name: Upload artifact
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.deploy_gate.outputs.site_changed == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./book
 
   deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.build.outputs.site_changed == 'true'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
