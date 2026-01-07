@@ -1,0 +1,82 @@
+\section{Wish and Motive as auditable interface objects (template)}\label{app:wish_motive_definitions}
+
+\paragraph{Scope and status.}
+\AuditTag This appendix records a reader-facing template that formalizes the terms \emph{Wish} and \emph{Motive} as interface/audit objects used to organize the narrative.
+They introduce no additional axioms beyond tick and CAP, and they are not used as premises in theorem-level proofs.
+
+\subsection{Wish: protocol-stable target data}\label{subsec:wish_protocol_stable_data}
+
+\begin{definition}[Wish (protocol-stable target data)]\label{def:wish_protocol_stable_data}
+\InterfaceTag A \emph{Wish} is a protocol-stable target datum/structure specified as a finite list of invariants and admissibility predicates that an observer wishes to reproduce under a fixed readout protocol.
+Concretely, a Wish can be represented by a tuple
+\[
+W := \bigl(m,\ \mathcal{I}_m,\ \mathcal{C}_m,\ \varepsilon\bigr),
+\]
+where $m$ is the window length, $\mathcal{I}_m$ is a finite set of computable invariants on finite observables (e.g.\ stable-type statistics on $X_m$), $\mathcal{C}_m$ is a finite set of admissibility/consistency predicates (e.g.\ cross-site constraints on a chosen display graph), and $\varepsilon$ is an explicit tolerance budget for audit comparison.
+\end{definition}
+
+\paragraph{Audit note.}
+\AuditTag \textbf{Status:} \InterfaceTag.
+\textbf{Depends on:} the tick-first dictionary (Section~\ref{sec:tick_calculus}) and the declared audit discipline (Appendix~\ref{app:cap_audit_template}, Appendix~\ref{app:inference_ledger}).
+\textbf{If:} Wish is treated as a data-structure specification (invariants + predicates + tolerance) rather than as a new physical axiom.
+
+\subsection{Motive: auditable objective functional}\label{subsec:motive_objective_functional}
+
+\begin{definition}[Motive (auditable objective functional)]\label{def:motive_objective_functional}
+\InterfaceTag Given a Wish $W=(m,\mathcal{I}_m,\mathcal{C}_m,\varepsilon)$ and a finite candidate family $\mathcal{F}$ of protocol choices/closures, a \emph{Motive} is an explicitly declared objective functional
+\[
+J:\mathcal{F}\to \RR,
+\qquad
+J = J_{\mathrm{mismatch}} + \lambda\,J_{\mathrm{cost}} + \eta\,J_{\mathrm{robust}},
+\]
+where $J_{\mathrm{mismatch}}$ quantifies violation of the Wish tolerance (mismatch certificate), $J_{\mathrm{cost}}$ quantifies bounded implementation/description cost, and $J_{\mathrm{robust}}$ optionally quantifies stability under a bounded counterfactual family.
+The coefficients $\lambda,\eta\ge 0$ are declared as part of the audit specification.
+\end{definition}
+
+\paragraph{Audit note.}
+\AuditTag \textbf{Status:} \AuditTag\,+\,\InterfaceTag.
+\textbf{Depends on:} an explicitly declared finite candidate family $\mathcal{F}$, objective decomposition, and deterministic tie-break rules (Appendix~\ref{app:cap_audit_template}).
+\textbf{If:} all reported selections are CAP-closures over explicit finite families with deterministic tie-breaks; external targets enter only at the matching layer.
+
+\subsection{CAP closure of Motive (template)}\label{subsec:motive_cap_closure_template}
+
+\begin{definition}[CAP closure (finite family)]\label{def:motive_cap_closure}
+\AuditTag Let $\mathcal{F}$ be a finite candidate family and let $J:\mathcal{F}\to\RR$ be an auditable objective functional.
+The CAP-closed output is the unique minimizer
+\[
+f_\star := \operatorname*{arg\,min}_{f\in\mathcal{F}} J(f),
+\]
+with deterministic tie-break rules specified when the minimum is degenerate.
+\end{definition}
+
+\begin{remark}[Programmatic reading (not used in proofs)]\label{rem:wish_motive_programmatic}
+\AuditTag One may read the paper's audited interface closures as a sequence of CAP-closed choices in explicit finite families, each of which can be interpreted as minimizing a Motive induced by a Wish.
+This programmatic interpretation is reader-facing only and is not used as a premise in theorem-level proofs.
+\end{remark}
+
+\subsection{A generic teleological dynamics statement (template)}\label{subsec:wish_motive_generic_dynamics}
+
+\paragraph{Scope.}
+\AuditTag This subsection records a generic Lyapunov-type template that is often used to connect an explicit objective functional to an arrow of update time in a parameter space.
+It is included for reuse and is not used as a premise in the theorem-level folding core.
+
+\begin{proposition}[Generic Lyapunov monotonicity (template)]\label{prop:wish_motive_generic_lyapunov}
+\MathTag Let $U:\RR^d\to\RR$ be continuously differentiable and consider the gradient flow
+\[
+\dot{\theta}(t)=-\nabla U(\theta(t)).
+\]
+Then along any solution one has
+\[
+\frac{\dd}{\dd t}U(\theta(t))=-\|\nabla U(\theta(t))\|^2\le 0,
+\]
+so $U$ is non-increasing and serves as a Lyapunov certificate for the induced arrow of update time.
+\end{proposition}
+
+\begin{proof}
+By the chain rule,
+\[
+\frac{\dd}{\dd t}U(\theta(t))=\nabla U(\theta(t))\cdot \dot{\theta}(t)
+=\nabla U(\theta(t))\cdot\bigl(-\nabla U(\theta(t))\bigr)
+=-\|\nabla U(\theta(t))\|^2\le 0.
+\]
+\end{proof}

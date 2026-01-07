@@ -643,27 +643,27 @@ flowchart TD
 
 | 勾选 | 旧文件（当前） | 当前入口 | 新归属（终稿） | 动作（建议） |
 |---|---|---|---|---|
-| [ ] | `sections/00_frontmatter.tex` | `main.tex` | Part A（A.0 为主）+ 前置摘要 | 抽象/关键词保留前置；把 reader guide/层纪律契约迁移到 Part A；其余按需拆分 |
-| [ ] | `sections/I_00_introduction.tex` | P01 | Part A（A.*） | 作为 A.0/A.3 的引入段或“读者动机”；保持核心定义边界不变 |
-| [ ] | `sections/I_05_tick_calculus.tex` | P01 | Part B（B.1） | 作为 tick-first 主入口；保持 `sec:tick_calculus` 等关键 label |
-| [ ] | `sections/C_10_hpa_readout_dynamics.tex` | P02 | Part B（B.1/B.2） | 与 tick/window/readout 紧耦合，放入 Part B；必要时在文件内加小节标题以贴合新叙事 |
-| [ ] | `sections/C_11_resolution_folding_64_to_21.tex` | P02 | Part C（C.1/C.2） | 作为 folding core 主体；保持 `sec:folding_core` 等关键 label |
-| [ ] | `sections/I_10_hilbert_addressing_chirality.tex` | P02 | Part D（D.1 为主；部分材料可能归 D.3） | 先整体放入 Part D；若内容同时覆盖“空间字典”与“手性约定”，后续再拆分 |
-| [ ] | `sections/I_12_vacuum_ghost_sector.tex` | Appendix | Part C（补充）或 Part D（接口补充） | 现为附录输入；主文只保留指针与关键结论，细节留附录 |
-| [ ] | `sections/I_20_standard_model_interface.tex` | P03 | Part E（E.1/E.3 的接口入口） | 作为“SM interface closures”前置接口字典；保持引用到 appendices 的补充指针 |
-| [ ] | `sections/I_21_protocol_connections_holonomy.tex` | P03 | Part D（D.2） | 连接/holonomy 属于“规范作为补偿”的协议骨架；主文可在 Part D 引入、Part E 复用 |
-| [ ] | `sections/V_30_sm_field_labeling_closure.tex` | P03 | Part E（E.1） | 保留 theorem/prop label；wrapper 调整其出现位置 |
-| [ ] | `sections/I_25_mass_latency_coordinate.tex` | P03 | Part E（E.2）+ Part F（F.4 接口回指） | 先放 Part E；F.4 以引用方式调用（避免重复定义） |
-| [ ] | `sections/I_30_chirality_antimatter_cpt.tex` | P03 | Part D（D.3） | 保持现有结构；必要时把“接口字典”显式标注 \InterfaceTag |
-| [ ] | `sections/V_32_couplings_cp_summary.tex` | P04 | Part E（E.3）或 Part G（G.1 的前置） | 若是“闭合输出+摘要”，建议并入 Part E；验证/误差预算部分在 Part G 汇总 |
-| [ ] | `sections/V_32_couplings_cp_violation.tex` | 未直接输入（由 summary 引用/或未来输入） | Part E（E.3） | 作为细节版本；由 wrapper 决定主文是否直接输入或只引用 |
-| [ ] | `sections/V_33_pmns_neutrino_summary.tex` | P04 | Part E（E.3） | 与 mixing closures 同组；验证口径在 Part G 汇总 |
-| [ ] | `sections/V_33_pmns_neutrino_closure.tex` | 未直接输入（由 summary 引用/或未来输入） | Part E（E.3） | 作为细节版本；同上 |
-| [ ] | `sections/V_31_mass_spectrum_closure.tex` | P04 | Part E（E.2/E.3）+ Part G（审计口径回指） | 主要闭合在 Part E；“rigidity 仅在候选族内成立”用 \AuditTag 明确 |
-| [ ] | `sections/V_40_falsifiability_predictions.tex` | P04 | Part G（G.1） | 原样迁入 Part G 作为收束 |
-| [ ] | `sections/V_41_limitations_related_work.tex` | P04 | Part G（G.2） | 原样迁入 Part G；Open 项与台账一致 |
-| [ ] | `sections/V_43_final_synthesis.tex` | P04 | Part H（或作为 G→H 的桥段） | 先放 Part H；不改变其“接口闭合”定位 |
-| [ ] | `sections/V_42_conclusion.tex` | P04 | Part G（结尾）或 Part H（结尾） | 依终稿叙事决定；保持“未闭合项”显式列出 |
+| [x] | `sections/00_frontmatter.tex` | `main.tex` | Part A（A.0 为主）+ 前置摘要 | 抽象/关键词保留前置；把 reader guide/层纪律契约迁移到 Part A；其余按需拆分 |
+| [x] | `sections/I_00_introduction.tex` | P01 | Part A（A.*） | 作为 A.0/A.3 的引入段或“读者动机”；保持核心定义边界不变 |
+| [x] | `sections/I_05_tick_calculus.tex` | P01 | Part B（B.1） | 作为 tick-first 主入口；保持 `sec:tick_calculus` 等关键 label |
+| [x] | `sections/C_10_hpa_readout_dynamics.tex` | P02 | Part B（B.1/B.2） | 与 tick/window/readout 紧耦合，放入 Part B；必要时在文件内加小节标题以贴合新叙事 |
+| [x] | `sections/C_11_resolution_folding_64_to_21.tex` | P02 | Part C（C.1/C.2） | 作为 folding core 主体；保持 `sec:folding_core` 等关键 label |
+| [x] | `sections/I_10_hilbert_addressing_chirality.tex` | P02 | Part D（D.1 为主；部分材料可能归 D.3） | 先整体放入 Part D；若内容同时覆盖“空间字典”与“手性约定”，后续再拆分 |
+| [x] | `sections/I_12_vacuum_ghost_sector.tex` | Appendix | Part C（补充）或 Part D（接口补充） | 现为附录输入；主文只保留指针与关键结论，细节留附录 |
+| [x] | `sections/I_20_standard_model_interface.tex` | P03 | Part E（E.1/E.3 的接口入口） | 作为“SM interface closures”前置接口字典；保持引用到 appendices 的补充指针 |
+| [x] | `sections/I_21_protocol_connections_holonomy.tex` | P03 | Part D（D.2） | 连接/holonomy 属于“规范作为补偿”的协议骨架；主文可在 Part D 引入、Part E 复用 |
+| [x] | `sections/V_30_sm_field_labeling_closure.tex` | P03 | Part E（E.1） | 保留 theorem/prop label；wrapper 调整其出现位置 |
+| [x] | `sections/I_25_mass_latency_coordinate.tex` | P03 | Part E（E.2）+ Part F（F.4 接口回指） | 先放 Part E；F.4 以引用方式调用（避免重复定义） |
+| [x] | `sections/I_30_chirality_antimatter_cpt.tex` | P03 | Part D（D.3） | 保持现有结构；必要时把“接口字典”显式标注 \InterfaceTag |
+| [x] | `sections/V_32_couplings_cp_summary.tex` | P04 | Part E（E.3）或 Part G（G.1 的前置） | 若是“闭合输出+摘要”，建议并入 Part E；验证/误差预算部分在 Part G 汇总 |
+| [ ] | `sections/V_32_couplings_cp_violation.tex` | 未直接输入（由 summary 引用/或未来输入） | Part E（E.3） | 作为细节版本；由 wrapper 决定主文是否直接输入或只引用（可选：保持未输入） |
+| [x] | `sections/V_33_pmns_neutrino_summary.tex` | P04 | Part E（E.3） | 与 mixing closures 同组；验证口径在 Part G 汇总 |
+| [ ] | `sections/V_33_pmns_neutrino_closure.tex` | 未直接输入（由 summary 引用/或未来输入） | Part E（E.3） | 作为细节版本；同上（可选：保持未输入） |
+| [x] | `sections/V_31_mass_spectrum_closure.tex` | P04 | Part E（E.2/E.3）+ Part G（审计口径回指） | 主要闭合在 Part E；“rigidity 仅在候选族内成立”用 \AuditTag 明确 |
+| [x] | `sections/V_40_falsifiability_predictions.tex` | P04 | Part G（G.1） | 原样迁入 Part G 作为收束 |
+| [x] | `sections/V_41_limitations_related_work.tex` | P04 | Part G（G.2） | 原样迁入 Part G；Open 项与台账一致 |
+| [x] | `sections/V_43_final_synthesis.tex` | P04 | Part H（或作为 G→H 的桥段） | 先放 Part H；不改变其“接口闭合”定位 |
+| [x] | `sections/V_42_conclusion.tex` | P04 | Part G（结尾）或 Part H（结尾） | 依终稿叙事决定；保持“未闭合项”显式列出 |
 
 ### 4.3 迁移映射（附录层：现有 `sections/appendices/*.tex` → 新 Part 的支撑模块）
 
@@ -671,74 +671,75 @@ flowchart TD
 
 | 勾选 | 附录文件（现有） | 新主文回指点（终稿） | 备注（台账定位/用途） |
 |---|---|---|---|
-| [ ] | `appendices/23_audit_overview.tex` | A.0；第 1 节 | 审计契约与推理图源；主文应引用 `fig:inference_map` 与 `tab:audit_facing_contract` |
-| [ ] | `appendices/11_inference_ledger.tex` | A.0；第 1 节；G.2/G.3 | 台账五状态的权威来源；Open 项必须一致 |
-| [ ] | `appendices/19_tick_cap_derivation.tex` | A.2；B.1/B.2 | tick+CAP spine（候选族/目标函数/tie-break）；支撑 \AuditTag 声明 |
-| [ ] | `appendices/13_cap_audit_template.tex` | A.0；A.2；G.1 | CAP 审计模板；所有 bounded-family 闭合应回指 |
-| [ ] | `appendices/12_protocol_primitives.tex` | A.0；B.1 | 协议原语的集中声明；避免在多处重复定义 |
-| [ ] | `appendices/14_folding_core_proofs.tex` | C.1/C.2 | folding core 的证明细节与表格事实支撑 |
-| [ ] | `appendices/28_discrepancy_ostrowski_bounds.tex` | B.2；C.* | 黄金分支/差异界的硬证书（RB-D） |
-| [ ] | `appendices/26_sturmian_entropy.tex` | C.*；F.3 | 熵/复杂度相关的数学底座（与热力学接口对齐） |
-| [ ] | `appendices/27_sturmian_vs_golden_mean_shift.tex` | B.2；C.* | golden vs sturmian 对比；用于刚性/鲁棒性解释 |
-| [ ] | `appendices/24_equivalence_semantics.tex` | F.1 | 等价语义底座；频率优先字典与对象=等价类 |
-| [ ] | `appendices/25_cap_continuum_action_closure.tex` | F.2 | CAP→作用量代表的闭合；正则化路径须审计化 |
-| [ ] | `appendices/26_variational_field_equations.tex` | F.2 | 场方程与连续代表；主文只给最小主线，细节留附录 |
-| [ ] | `appendices/27_thermodynamics_from_equivalence.tex` | F.3 | 热力学闭合细节；与 ASM/相对熵单调性对齐 |
-| [ ] | `appendices/28_overhead_to_gravity_closure.tex` | F.4 | overhead→lapse/potential；误差传播与可证伪代理 |
-| [ ] | `appendices/29_chi_reconstruction_protocol.tex` | F.4 | $\chi(x)$ 重建协议；与引力/延迟接口同组 |
-| [ ] | `appendices/34_unified_delay_closure.tex` | F.4 | 宏观红移与微观散射延迟的统一接口（delay family） |
-| [ ] | `appendices/30_quantum_measurement_born.tex` | F.5 | POVM/instrument 与 Born 接口闭合路线 |
-| [ ] | `appendices/31_running_couplings_resolution_flow.tex` | F.6 | running/RG in $r$ 坐标；匹配输入边界要清晰 |
-| [ ] | `appendices/32_cosmology_resolution_flow.tex` | F.6 | cosmology as resolution flow；假设必须标注接口定位 |
-| [ ] | `appendices/35_gamma_cross_observation_consistency.tex` | G.3（Open） | 跨观测一致性闭合/开放项；与脚本与数据一致 |
-| [ ] | `appendices/18_mass_rigidity_details.tex` | E.2/E.3；G.* | mass-depth 细节审计与敏感性 |
-| [ ] | `appendices/17_closure_audit_details.tex` | E.*；G.* | 各类闭合细节与审计表支撑 |
-| [ ] | `appendices/15_holonomy_sweeps_extended.tex` | D.2 | holonomy sweeps 与扩展诊断 |
-| [ ] | `appendices/21_protocol_eft_embedding.tex` | D.2/E.* | EFT embedding；主文可保留简短指针 |
-| [ ] | `appendices/24_fold_family_sensitivity.tex` | G.2 | folding 家族敏感性与 look-elsewhere |
-| [ ] | `appendices/25_gauge_complexity_sensitivity.tex` | G.2 | gauge 候选族/复杂度敏感性 |
-| [ ] | `appendices/02_generated_tables.tex` | G.1；A.0 | 所有数值表的审计输出；禁止手改 |
-| [ ] | `appendices/03_reproducibility.tex` | A.0；G.1 | 一键复现入口与脚本说明 |
-| [ ] | `appendices/01_symbols.tex` | A.0 | 记号表；新文件引入符号需同步更新 |
-| [ ] | `appendices/06_isomorphism_dictionary.tex` | F.1（可选） | AEC/同构字典模板；是否进入主文取决于叙事需要 |
-| [ ] | `appendices/05_functorial_refinement.tex` | F.1（可选） | functorial 视角补充；不应成为主链前提 |
-| [ ] | `appendices/07_inverse_quantum_numbers.tex` | E.*（可选） | 逆量子数辞典；作为补充模块 |
-| [ ] | `appendices/10_black_holes_wormholes.tex` | F/H（可选） | 主题拓展；主文中如保留应明确其层定位 |
-| [ ] | `appendices/04_next_steps.tex` | G.3 | 下一步闭合清单；与台账 Open 对齐 |
+| [x] | `appendices/00_wish_motive_definitions.tex` | A.0；H.* | Wish/Motive/teleological dynamics 的模板化定义与最小数学陈述（显式 not used in proofs 边界） |
+| [x] | `appendices/23_audit_overview.tex` | A.0；第 1 节 | 审计契约与推理图源；主文应引用 `fig:inference_map` 与 `tab:audit_facing_contract` |
+| [x] | `appendices/11_inference_ledger.tex` | A.0；第 1 节；G.2/G.3 | 台账五状态的权威来源；Open 项必须一致 |
+| [x] | `appendices/19_tick_cap_derivation.tex` | A.2；B.1/B.2 | tick+CAP spine（候选族/目标函数/tie-break）；支撑 \AuditTag 声明 |
+| [x] | `appendices/13_cap_audit_template.tex` | A.0；A.2；G.1 | CAP 审计模板；所有 bounded-family 闭合应回指 |
+| [x] | `appendices/12_protocol_primitives.tex` | A.0；B.1 | 协议原语的集中声明；避免在多处重复定义 |
+| [x] | `appendices/14_folding_core_proofs.tex` | C.1/C.2 | folding core 的证明细节与表格事实支撑 |
+| [x] | `appendices/28_discrepancy_ostrowski_bounds.tex` | B.2；C.* | 黄金分支/差异界的硬证书（RB-D） |
+| [x] | `appendices/26_sturmian_entropy.tex` | C.*；F.3 | 熵/复杂度相关的数学底座（与热力学接口对齐） |
+| [x] | `appendices/27_sturmian_vs_golden_mean_shift.tex` | B.2；C.* | golden vs sturmian 对比；用于刚性/鲁棒性解释 |
+| [x] | `appendices/24_equivalence_semantics.tex` | F.1 | 等价语义底座；频率优先字典与对象=等价类 |
+| [x] | `appendices/25_cap_continuum_action_closure.tex` | F.2 | CAP→作用量代表的闭合；正则化路径须审计化 |
+| [x] | `appendices/26_variational_field_equations.tex` | F.2 | 场方程与连续代表；主文只给最小主线，细节留附录 |
+| [x] | `appendices/27_thermodynamics_from_equivalence.tex` | F.3 | 热力学闭合细节；与 ASM/相对熵单调性对齐 |
+| [x] | `appendices/28_overhead_to_gravity_closure.tex` | F.4 | overhead→lapse/potential；误差传播与可证伪代理 |
+| [x] | `appendices/29_chi_reconstruction_protocol.tex` | F.4 | $\chi(x)$ 重建协议；与引力/延迟接口同组 |
+| [x] | `appendices/34_unified_delay_closure.tex` | F.4 | 宏观红移与微观散射延迟的统一接口（delay family） |
+| [x] | `appendices/30_quantum_measurement_born.tex` | F.5 | POVM/instrument 与 Born 接口闭合路线 |
+| [x] | `appendices/31_running_couplings_resolution_flow.tex` | F.6 | running/RG in $r$ 坐标；匹配输入边界要清晰 |
+| [x] | `appendices/32_cosmology_resolution_flow.tex` | F.6 | cosmology as resolution flow；假设必须标注接口定位 |
+| [x] | `appendices/35_gamma_cross_observation_consistency.tex` | G.3（Open） | 跨观测一致性闭合/开放项；与脚本与数据一致 |
+| [x] | `appendices/18_mass_rigidity_details.tex` | E.2/E.3；G.* | mass-depth 细节审计与敏感性 |
+| [x] | `appendices/17_closure_audit_details.tex` | E.*；G.* | 各类闭合细节与审计表支撑 |
+| [x] | `appendices/15_holonomy_sweeps_extended.tex` | D.2 | holonomy sweeps 与扩展诊断 |
+| [x] | `appendices/21_protocol_eft_embedding.tex` | D.2/E.* | EFT embedding；主文可保留简短指针 |
+| [x] | `appendices/24_fold_family_sensitivity.tex` | G.2 | folding 家族敏感性与 look-elsewhere |
+| [x] | `appendices/25_gauge_complexity_sensitivity.tex` | G.2 | gauge 候选族/复杂度敏感性 |
+| [x] | `appendices/02_generated_tables.tex` | G.1；A.0 | 所有数值表的审计输出；禁止手改 |
+| [x] | `appendices/03_reproducibility.tex` | A.0；G.1 | 一键复现入口与脚本说明 |
+| [x] | `appendices/01_symbols.tex` | A.0 | 记号表；新文件引入符号需同步更新 |
+| [x] | `appendices/06_isomorphism_dictionary.tex` | F.1（可选） | AEC/同构字典模板；是否进入主文取决于叙事需要 |
+| [x] | `appendices/05_functorial_refinement.tex` | F.1（可选） | functorial 视角补充；不应成为主链前提 |
+| [x] | `appendices/07_inverse_quantum_numbers.tex` | E.*（可选） | 逆量子数辞典；作为补充模块 |
+| [x] | `appendices/10_black_holes_wormholes.tex` | F/H（可选） | 主题拓展；主文中如保留应明确其层定位 |
+| [x] | `appendices/04_next_steps.tex` | G.3 | 下一步闭合清单；与台账 Open 对齐 |
 
 ### 4.4 工作清单（按阶段；每项可直接勾选）
 
 - **Phase 0：对齐与门禁**
-  - [ ] 锁定两原语与四标签边界（第 0 节），并检查大纲中是否有反向依赖语句
-  - [ ] 按第 3 节索引完成 “开工前必读” 的对齐阅读（只对齐定义/记号/模板，不引入额外公理）
-  - [ ] 列出将被引用的外部模板文件清单（用于后续移植时核对一致性）
+  - [x] 锁定两原语与四标签边界（第 0 节），并检查大纲中是否有反向依赖语句
+  - [x] 按第 3 节索引完成 “开工前必读” 的对齐阅读（只对齐定义/记号/模板，不引入额外公理）
+  - [x] 列出将被引用的外部模板文件清单（用于后续移植时核对一致性）
 
 - **Phase 1：文件骨架落地（先 wrapper，后拆分）**
-  - [ ] 创建 `sections/PA_contract.tex`…`sections/PH_recursive_closure.tex` 八个 wrapper 文件
-  - [ ] 在每个 wrapper 中仅做两件事：`\part{...}` + `\input{...}`（先不改被输入文件内容）
-  - [ ] 依照 4.2 的映射，把现有主文文件逐一挂接到对应 wrapper
-  - [ ] 新增 `sections/appendices/00_wish_motive_definitions.tex`（只放可复用定义/模板；避免引入新前提）
+  - [x] 创建 `sections/PA_contract.tex`…`sections/PH_recursive_closure.tex` 八个 wrapper 文件
+  - [x] 在每个 wrapper 中仅做两件事：`\part{...}` + `\input{...}`（先不改被输入文件内容）
+  - [x] 依照 4.2 的映射，把现有主文文件逐一挂接到对应 wrapper
+  - [x] 新增 `sections/appendices/00_wish_motive_definitions.tex`（只放可复用定义/模板；避免引入新前提）
 
 - **Phase 2：改入口并跑通编译**
-  - [ ] 更新 `main.tex`：用 `PA_...` 到 `PH_...` 替换现有 `P01..P04`
-  - [ ] 更新 `sections/00_frontmatter.tex`：abstract/keywords 前置保留；把 reader guide 改写为 Part A–H 的阅读路径
-  - [ ] 保持 `sections/90_appendix.tex` 先不动（或只做最小回指调整），确保全文可编译
+  - [x] 更新 `main.tex`：用 `PA_...` 到 `PH_...` 替换现有 `P01..P04`
+  - [x] 更新 `sections/00_frontmatter.tex`：abstract/keywords 前置保留；把 reader guide 改写为 Part A–H 的阅读路径
+  - [x] 保持 `sections/90_appendix.tex` 先不动（或只做最小回指调整），确保全文可编译
 
 - **Phase 3：精细迁移与拆分（在结构稳定后进行）**
-  - [ ] 若 `I_10_hilbert_addressing_chirality.tex` 同时承担 D.1 与 D.3，按新 Part 拆分成两个文件并保持原 label 兼容
-  - [ ] 将 Wish/Motive 的叙事段统一改为 \AuditTag（not used in proofs），并在 Part A 与 F.0 位置落地
-  - [ ] 对所有 bounded-family 闭合段落，补齐 \AuditTag 指针（候选族/目标函数/tie-break 的来源）
-  - [ ] 在 Part G 统一收束可证伪命题与 Open 列表，并与 `appendices/11_inference_ledger.tex` 对齐
+  - [x] 若 `I_10_hilbert_addressing_chirality.tex` 同时承担 D.1 与 D.3，按新 Part 拆分成两个文件并保持原 label 兼容（已由 `I_30_chirality_antimatter_cpt.tex` 承担 D.3 主体，无需额外拆分）
+  - [x] 将 Wish/Motive 的叙事段统一改为 \AuditTag（not used in proofs），并在 Part A 与 F.0 位置落地
+  - [x] 对所有 bounded-family 闭合段落，补齐 \AuditTag 指针（候选族/目标函数/tie-break 的来源）
+  - [x] 在 Part G 统一收束可证伪命题与 Open 列表，并与 `appendices/11_inference_ledger.tex` 对齐
 
 - **Phase 4：附录分组与“读者体验优化”**
-  - [ ] 将 `sections/90_appendix.tex` 按新 Part 分组（contract/spine/core/protocol/dynamics/audit/repro），保持每个附录文件本体不变
-  - [ ] 更新符号表 `appendices/01_symbols.tex`：新增符号与外部模板对齐
-  - [ ] 最终检查：目录结构、交叉引用、推理图回指、复现入口均可一键定位
+  - [x] 将 `sections/90_appendix.tex` 按新 Part 分组（contract/spine/core/protocol/dynamics/audit/repro），保持每个附录文件本体不变
+  - [x] 更新符号表 `appendices/01_symbols.tex`：新增符号与外部模板对齐
+  - [x] 最终检查：目录结构、交叉引用、推理图回指、复现入口均可一键定位
 
 ### 4.5 完整性门禁（不丢信息的检查单）
 
-- [ ] `main.tex` 的输入树覆盖了旧结构中被 `P01..P04` 与 `90_appendix` 引入的所有文件（无遗漏）
-- [ ] 4.2/4.3 两个映射表的每一行都已勾选完成或明确标注为“可选模块”
-- [ ] 所有关键 `\label{...}` 仍可被交叉引用（尽量不改 label 名）
-- [ ] `sections/generated/*.tex` 未被改动；脚本仍能生成同名输出并被正确引用
-- [ ] 台账 `appendices/11_inference_ledger.tex` 的五状态与主文叙事不冲突：主文解释不反向支撑 closed-theory
+- [x] `main.tex` 的输入树覆盖了旧结构中被 `P01..P04` 与 `90_appendix` 引入的所有文件（无遗漏）
+- [x] 4.2/4.3 两个映射表的每一行都已勾选完成或明确标注为“可选模块”
+- [x] 所有关键 `\label{...}` 仍可被交叉引用（尽量不改 label 名）
+- [x] `sections/generated/*.tex` 未被改动；脚本仍能生成同名输出并被正确引用
+- [x] 台账 `appendices/11_inference_ledger.tex` 的五状态与主文叙事不冲突：主文解释不反向支撑 closed-theory
