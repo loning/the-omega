@@ -1,0 +1,102 @@
+\section{Rigidity-bridge certificates and mainline checklist (audit)}
+\label{app:rigidity_bridge_checklist}
+
+\AuditTag This appendix records a compact checklist for ``rigidity bridges'': auditable certificate forms that turn a narrative step into a verifiable implication with an explicit minimal input set.
+It is reader-facing audit infrastructure and is not used as a premise in theorem-level folding proofs.
+
+\subsection{Certificate forms (RB-A/B/C/D)}
+\label{subsec:rb_certificate_forms}
+
+We use four certificate templates:
+\begin{itemize}
+  \item \textbf{RB-A (finite-family minimization).}
+  A finite candidate family $\mathcal{F}$, an explicit objective functional $J:\mathcal{F}\to\RR$, and a deterministic tie-break rule; the output is a unique (or near-unique with a gap) minimizer $f_\star=\arg\min_{\mathcal{F}}J$.
+  \item \textbf{RB-B (incompatibility / obstruction).}
+  A ``bad'' structure would force an obstruction (e.g.\ an interior pole) that is incompatible with an established analytic domain or stability certificate; hence the bad structure is excluded.
+  \item \textbf{RB-C (counting/classification rigidity).}
+  A finite classification, counting identity, or image--preimage structure forces a unique decomposition (e.g.\ $64\to 21$, $18\oplus 3$).
+  \item \textbf{RB-D (gap-stability / robustness).}
+  A quantitative gap or sensitivity bound shows that the conclusion persists under bounded counterfactual families or perturbations, upgrading ``accidental alignment'' to a robust closure.
+\end{itemize}
+
+\subsection{Mainline checklist (where each bridge is realized in this paper)}
+\label{subsec:rb_mainline_checklist}
+
+\begin{center}
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{p{0.18\textwidth} p{0.18\textwidth} p{0.14\textwidth} p{0.18\textwidth} p{0.24\textwidth}}
+\toprule
+mainline jump & closure output & RB form & minimal inputs & where in this paper \\
+\midrule
+Tick $\to$ CAP &
+deterministic finite-family closure rule &
+RB-A &
+tick + bounded complexity + tie-break &
+Axioms~\ref{ax:readout_sequentiality}, \ref{ax:cap}; Appendix~\ref{app:tick_cap_derivation}; Appendix~\ref{app:cap_audit_template} \\
+
+CAP $\to$ golden branch &
+finite-depth least-discrepancy selection of $\alpha=\varphi^{-1}$ &
+RB-A/RB-D &
+continued-fraction proxy + audited discrepancy bound &
+Proposition~\ref{prop:golden_least_discrepancy}; Subsubsection~\ref{subsubsec:discrepancy_certificates}; Appendix~\ref{app:discrepancy_ostrowski} \\
+
+golden branch $\to$ $\varphi$-grammar &
+admissible set $X_m$ with $|X_m|=F_{m+2}$ &
+RB-C &
+Zeckendorf admissibility &
+Lemma~\ref{lem:xm_fib}; Appendix~\ref{app:protocol_primitives} \\
+
+$\varphi$-grammar $\to$ $\pi$-closure &
+cyclic/boundary split and $18\oplus 3$ at $m=6$ &
+RB-C &
+wrap-around constraint + Fibonacci counts &
+Proposition~\ref{prop:cyc_bdry_size}; Corollary~\ref{prop:cyc_bdry_6} \\
+
+$(\varphi,\pi)\to \mathrm{e}$ stability &
+zeta/Abel normalization and pole-barrier template &
+RB-B/RB-D &
+unit-disk holomorphy + Abel path conventions &
+Section~\ref{subsec:e_channel}; Appendix~\ref{app:protocol_primitives}; Appendix~\ref{app:abel_finite_part_notes}; Appendix~\ref{app:trace_pole_barrier_template} \\
+
+$\pi$-closure $\to$ anchor &
+minimal explicit screen anchor $(m,n)=(6,3)$ and audited addressing choice &
+RB-A/RB-C &
+finite screen family + cardinality match + tie-break &
+Section~\ref{sec:folding_core}; Remark~\ref{rem:balanced_coupling_convention}; Table~\ref{tab:addressing_selection} \\
+
+anchor $\to$ gauge/holonomy &
+finite connection/holonomy invariants modulo local relabeling &
+RB-C/RB-D &
+local fiber relabeling + loop invariants + bounded families &
+Section~\ref{sec:protocol_connections_holonomy}; Appendix~\ref{app:holonomy_sweeps_extended} \\
+
+gauge $\to$ SM labeling/mass &
+bounded-family labeling closures at the anchor &
+RB-A/RB-D &
+explicit candidate families + gap/robustness audits &
+Section~\ref{sec:sm_labeling_closure}; Appendix~\ref{app:generated_tables}; Appendix~\ref{app:closure_audit_details} \\
+
+overhead $\to$ gravity/dynamics &
+overhead-to-lapse/potential closure with error control &
+RB-B/RB-D &
+error budget + counterfactual regularization sweeps &
+Appendix~\ref{app:overhead_to_gravity_closure}; Appendix~\ref{app:protocol_to_continuum_error_control} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{A minimal workflow for upgrading intuition to audit statements}
+\label{subsec:rb_workflow}
+
+\AuditTag When adding an interface intuition, we recommend the following minimal workflow:
+\begin{itemize}
+  \item \textbf{Step 0 (decide the layer).} Decide whether the target sentence belongs to the theorem layer (\MathTag), the operational dictionary (\InterfaceTag), external calibration (\MatchTag), or audit/provenance (\AuditTag).
+  \item \textbf{Step 1 (objectify and constrain).} Replace narrative words (``stable'', ``unique'', ``memoryless'') by explicit objects and constraints (functional equation, finite minimization, counting identity, or obstruction).
+  \item \textbf{Step 2 (choose a certificate form).} Record which RB form (A/B/C/D) certifies the step, and state the minimal inputs used.
+  \item \textbf{Step 3 (separate matching inputs).} Move unit choices, reference scales, and external targets into \MatchTag and/or the inference ledger, never as premises.
+  \item \textbf{Step 4 (audit hooks).} Record the candidate family, objective, tie-break, and reproduction script entry points when applicable.
+\end{itemize}
+
+
