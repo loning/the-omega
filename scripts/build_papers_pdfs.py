@@ -179,9 +179,9 @@ def plan_all_builds(papers_root: Path) -> tuple[list[Path], list[PlanItem]]:
 
 def _run_latexmk(paper_dir: Path) -> None:
     cmds = [
-        ["latexmk", "-quiet", "-pdf", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "main.tex"],
-        ["latexmk", "-quiet", "-pdfxe", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "main.tex"],
-        ["latexmk", "-quiet", "-pdflua", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "main.tex"],
+        ["latexmk", "-quiet", "-pdf", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
+        ["latexmk", "-quiet", "-pdfxe", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
+        ["latexmk", "-quiet", "-pdflua", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
     ]
 
     last_rc: int | None = None
