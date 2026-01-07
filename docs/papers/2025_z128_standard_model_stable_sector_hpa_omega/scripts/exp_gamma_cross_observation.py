@@ -440,12 +440,12 @@ def main() -> None:
             # PPN: Shapiro delay / light deflection scale with (1 + gamma_PPN).
             gamma_hat = 0.5 * (1.0 + val)
             sigma = 0.5 * sig
-            note = "map: gamma_dict := (1+gamma_PPN)/2"
+            note = "proxy map: gamma_proxy := (1+gamma_PPN)/2"
         elif obs == "redshift_alpha":
             # Redshift test: (1+alpha) is a fractional amplitude deviation.
             gamma_hat = 1.0 + val
             sigma = sig
-            note = "map: gamma_dict := 1+alpha"
+            note = "proxy map: gamma_proxy := 1+alpha"
         else:
             raise ValueError(f"Unknown solar observable: {obs}")
         solar_est.append(
@@ -478,18 +478,18 @@ def main() -> None:
                 dataset=str(m["id"]),
                 gamma_hat=float(gamma_hat),
                 sigma=float(sigma),
-                note="map: gamma_dict := sqrt(A_L) (amplitude proxy)",
+                note="proxy map: gamma_proxy := sqrt(A_L) (amplitude proxy)",
                 source=str(m.get("source", "")),
             )
         )
-        # Bounded counterfactual mapping (sensitivity diagnostic): gamma_dict := A_L.
+        # Bounded counterfactual mapping (sensitivity diagnostic): gamma_proxy := A_L.
         wl_est_alt.append(
             GammaEstimate(
                 channel=str(m["channel"]),
                 dataset=str(m["id"]),
                 gamma_hat=float(A),
                 sigma=float(sA),
-                note="map: gamma_dict := A_L (counterfactual sensitivity)",
+                note="proxy map: gamma_proxy := A_L (counterfactual sensitivity)",
                 source=str(m.get("source", "")),
             )
         )
@@ -517,7 +517,7 @@ def main() -> None:
                 dataset=str(m["id"]),
                 gamma_hat=float(gamma_hat),
                 sigma=float(sigma),
-                note="map: gamma_dict := H0_TD / H0_ref (ref=Planck18)",
+                note="proxy map: gamma_proxy := H0_TD / H0_ref (ref=Planck18)",
                 source=str(m.get("source", "")),
             )
         )
@@ -531,16 +531,35 @@ def main() -> None:
                 dataset=str(m["id"]),
                 gamma_hat=float(gamma_hat_alt),
                 sigma=float(sigma_alt),
-                note="map: gamma_dict := H0_TD / H0_ref (ref=SH0ES19)",
+                note="proxy map: gamma_proxy := H0_TD / H0_ref (ref=SH0ES19)",
                 source=str(m.get("source", "")),
             )
         )
 
     # ----------------------------
-    # 4) Rotation curves (SPARC) via chi reconstruction + WLS gamma fit
+    # 4) Proxy-only joint estimate + diagnostics (do NOT mix with direct gamma_dict)
+    # ----------------------------
+    proxy_est: List[GammaEstimate] = []
+    proxy_est.extend(solar_est)
+    proxy_est.extend(wl_est)
+    proxy_est.extend(td_est)
+
+    proxy_joint0 = _combine_inverse_variance(proxy_est)
+    if proxy_joint0 is None:
+        raise RuntimeError("No proxy gamma estimates were produced.")
+
+    gamma_proxy_joint = float(proxy_joint0.gamma_hat)
+    chi2_proxy, dof_proxy, p_proxy = _chi2_consistency(proxy_est, gamma_proxy_joint)
+    zmax_proxy, zpair_proxy = _pairwise_max_z(proxy_est)
+
+    # ----------------------------
+    # 5) Rotation curves (SPARC) via chi reconstruction + WLS gamma_dict fit (direct)
     # ----------------------------
     sparc_dir = data_root / "sparc"
-    sparc_files = ["NGC2403_rotmod.dat", "NGC3198_rotmod.dat"]
+    sparc_manifest = _read_json(sparc_dir / "manifest.json")
+    sparc_files = [str(x["path"]) for x in sparc_manifest.get("files", []) if "path" in x]
+    if not sparc_files:
+        raise RuntimeError("SPARC manifest contains no files.")
     rc_fits: List[RotationCurveFit] = []
 
     # Default reconstruction knobs (audit will sweep later).
@@ -560,6 +579,11 @@ def main() -> None:
         # Use disk surface brightness as the scalar statistic (independent of Vobs).
         scalar = np.asarray(dat["sbdisk_l_pc2"], dtype=float)
         r_kpc = np.asarray(dat["r_kpc"], dtype=float)
+
+        if len(r_kpc) < (2 * m_word - 1):
+            # Too few samples to support the minimal window-local statistic used by the 1D chi protocol.
+            prog.maybe(i + 1, extra=f"galaxy={gname} SKIP (n={len(r_kpc)} < 2m-1)")
+            continue
 
         recon = reconstruct_chi_from_1d_scalar(
             r_kpc=r_kpc,
@@ -583,6 +607,8 @@ def main() -> None:
 
     rc_est: List[GammaEstimate] = []
     for fit in rc_fits:
+        if not (np.isfinite(fit.gamma_hat) and np.isfinite(fit.sigma) and float(fit.sigma) > 0.0):
+            continue
         src = "SPARC rotmod subset (see data/gamma_crossobs/sparc/manifest.json)"
         rc_est.append(
             GammaEstimate(
@@ -595,77 +621,29 @@ def main() -> None:
             )
         )
 
-    # Channel-level combine (rotation curves across galaxies).
-    rc_comb = _combine_inverse_variance(rc_est)
-    if rc_comb is not None:
-        rc_comb = GammaEstimate(
-            channel="rotation_curves_sparc",
-            dataset="combined",
-            gamma_hat=rc_comb.gamma_hat,
-            sigma=rc_comb.sigma,
-            note="inverse-variance combine across galaxies",
-            source=rc_comb.source,
-        )
+    # Direct joint estimate (rotation curves across galaxies).
+    direct_joint0 = _combine_inverse_variance(rc_est)
+    if direct_joint0 is None:
+        raise RuntimeError("No direct (rotation-curve) gamma estimates were produced.")
+    gamma_direct_joint = float(direct_joint0.gamma_hat)
+    chi2_direct, dof_direct, p_direct = _chi2_consistency(rc_est, gamma_direct_joint)
+    zmax_direct, zpair_direct = _pairwise_max_z(rc_est)
 
     # ----------------------------
-    # 5) Joint estimate + diagnostics
+    # 6) Write LaTeX fragments (proxy-only vs direct; never mixed)
     # ----------------------------
-    all_est: List[GammaEstimate] = []
-    all_est.extend(solar_est)
-    all_est.extend(wl_est)
-    all_est.extend(td_est)
-    if rc_comb is not None:
-        all_est.append(rc_comb)
-
-    joint = _combine_inverse_variance(all_est)
-    if joint is None:
-        raise RuntimeError("No valid gamma estimates were produced.")
-
-    gamma_joint = joint.gamma_hat
-    chi2, dof, pval = _chi2_consistency(all_est, gamma_joint)
-    zmax, zpair = _pairwise_max_z(all_est)
-
-    # Mapping sensitivity diagnostics (not part of the baseline joint estimate).
-    wl_map_delta: List[Tuple[str, float, float]] = []
-    for base, alt in zip(wl_est, wl_est_alt):
-        wl_map_delta.append((base.dataset, float(base.gamma_hat), float(alt.gamma_hat)))
-    td_ref_delta: List[Tuple[str, float, float]] = []
-    for base, alt in zip(td_est, td_est_alt):
-        td_ref_delta.append((base.dataset, float(base.gamma_hat), float(alt.gamma_hat)))
-
-    # Leave-one-channel-out joint estimates (by channel).
-    loo: Dict[str, GammaEstimate] = {}
-    for ch in sorted({e.channel for e in all_est}):
-        subset = [e for e in all_est if e.channel != ch]
-        j = _combine_inverse_variance(subset)
-        if j is None:
-            continue
-        loo[ch] = GammaEstimate(
-            channel="joint_leave_one_out",
-            dataset=ch,
-            gamma_hat=j.gamma_hat,
-            sigma=j.sigma,
-            note="leave-one-channel-out joint",
-            source="",
-        )
-
     # ----------------------------
-    # 6) Write LaTeX fragments
+    # 6a) Proxy rows + diagnostics
     # ----------------------------
-    rows: List[str] = []
-    # Summary header row is provided by the LaTeX wrapper; this file contains only rows.
-    ordered = [
+    proxy_rows: List[str] = []
+    ordered_proxy = [
         *sorted(solar_est, key=lambda e: (e.channel, e.dataset)),
         *sorted(wl_est, key=lambda e: (e.channel, e.dataset)),
         *sorted(td_est, key=lambda e: (e.channel, e.dataset)),
     ]
-    if rc_comb is not None:
-        ordered.append(rc_comb)
-
-    # Compute pulls w.r.t. joint.
-    for e in ordered:
-        pull = (e.gamma_hat - gamma_joint) / e.sigma if (e.sigma > 0) else float("nan")
-        rows.append(
+    for e in ordered_proxy:
+        pull = (e.gamma_hat - gamma_proxy_joint) / e.sigma if (e.sigma > 0) else float("nan")
+        proxy_rows.append(
             " & ".join(
                 [
                     _tex_escape(e.channel),
@@ -677,110 +655,35 @@ def main() -> None:
             )
             + " \\\\"
         )
-
-    # Add a joint row.
-    rows.append(
+    proxy_rows.append(
         " & ".join(
             [
                 "\\textbf{joint}",
-                "\\texttt{all}",
-                _format_pm(gamma_joint, joint.sigma),
+                "\\texttt{proxy}",
+                _format_pm(gamma_proxy_joint, float(proxy_joint0.sigma)),
                 f"{0.00:+.2f}",
-                _tex_escape(f"chi2={chi2:.2f} dof={dof} p={pval:.3g} |z|max={zmax:.2f} ({zpair})"),
+                _tex_escape(
+                    f"chi2={chi2_proxy:.2f} dof={dof_proxy} p={p_proxy:.3g} |z|max={zmax_proxy:.2f} ({zpair_proxy})"
+                ),
             ]
         )
         + " \\\\"
     )
-    rows.append(r"\bottomrule")
+    proxy_rows.append(r"\bottomrule")
+    write_lines(out_gen / "gamma_crossobs_proxy_rows.tex", proxy_rows)
 
-    write_lines(out_gen / "gamma_crossobs_rows.tex", rows)
-
-    # Write a compact diagnostics fragment for the LaTeX appendix (single paragraph).
-    diag_pair = _tex_escape(zpair) if zpair else "n/a"
-    diag_line = (
-        "Baseline-map joint estimate: "
-        f"$\\widehat\\gamma_{{\\mathrm{{dict}}}}={_format_sci_tex(gamma_joint, digits=6)}"
-        f" \\pm {_format_sci_tex(joint.sigma, digits=6)}$."
-        f" Consistency: $\\chi^2={chi2:.2f}$, $\\mathrm{{dof}}={dof}$, $p={pval:.3g}$."
-        f" Max pairwise tension: $|z|_{{\\max}}={zmax:.2f}$ (\\texttt{{{diag_pair}}})."
+    diag_pair_proxy = _tex_escape(zpair_proxy) if zpair_proxy else "n/a"
+    diag_line_proxy = (
+        "Baseline proxy-joint estimate: "
+        f"$\\widehat\\gamma_{{\\mathrm{{proxy}}}}={_format_sci_tex(gamma_proxy_joint, digits=6)}"
+        f" \\pm {_format_sci_tex(float(proxy_joint0.sigma), digits=6)}$."
+        f" Consistency: $\\chi^2={chi2_proxy:.2f}$, $\\mathrm{{dof}}={dof_proxy}$, $p={p_proxy:.3g}$."
+        f" Max pairwise tension: $|z|_{{\\max}}={zmax_proxy:.2f}$ (\\texttt{{{diag_pair_proxy}}})."
     )
-    write_lines(out_gen / "gamma_crossobs_diagnostics.tex", [diag_line])
+    write_lines(out_gen / "gamma_crossobs_proxy_diagnostics.tex", [diag_line_proxy])
 
-    stab_rows: List[str] = []
-    if rc_comb is not None:
-        # Counterfactual sweeps for the rotation-curve pipeline (Appendix 29 audit knobs).
-        sweep_m = [6, 8]
-        sweep_thr = ["median", "quantile:0.65"]
-        sweep_g0 = ["mean", "median"]
-        sweep_smooth = [1, 5, 9]
-
-        sweep_vals: List[float] = []
-        sweep_notes: List[str] = []
-        for mm in sweep_m:
-            for tr in sweep_thr:
-                for br in sweep_g0:
-                    for sk in sweep_smooth:
-                        per_gal: List[GammaEstimate] = []
-                        for fn in sparc_files:
-                            p = sparc_dir / fn
-                            gname = fn.replace("_rotmod.dat", "")
-                            dat = _parse_sparc_rotmod(p)
-                            scalar = np.asarray(dat["sbdisk_l_pc2"], dtype=float)
-                            r_kpc = np.asarray(dat["r_kpc"], dtype=float)
-                            recon = reconstruct_chi_from_1d_scalar(
-                                r_kpc=r_kpc,
-                                scalar=scalar,
-                                m=mm,
-                                threshold_rule=tr,
-                                baseline_rule=br,
-                            )
-                            fit = fit_gamma_from_rotation_curve(
-                                galaxy=gname,
-                                r_kpc_full=r_kpc,
-                                vobs_kms_full=np.asarray(dat["vobs_kms"], dtype=float),
-                                verr_kms_full=np.asarray(dat["verr_kms"], dtype=float),
-                                chi_recon=recon,
-                                smooth_k=sk,
-                            )
-                            per_gal.append(
-                                GammaEstimate(
-                                    channel="rotation_curves_sparc",
-                                    dataset=gname,
-                                    gamma_hat=float(fit.gamma_hat),
-                                    sigma=float(fit.sigma),
-                                    note="",
-                                    source="",
-                                )
-                            )
-                        comb = _combine_inverse_variance(per_gal)
-                        if comb is None:
-                            continue
-                        sweep_vals.append(float(comb.gamma_hat))
-                        sweep_notes.append(f"m={mm},thr={tr},g0={br},smooth_k={sk}")
-
-        if sweep_vals:
-            g0 = float(rc_comb.gamma_hat)
-            gmin = float(np.min(sweep_vals))
-            gmax = float(np.max(sweep_vals))
-            dmax = float(np.max(np.abs(np.asarray(sweep_vals) - g0)))
-            stab_rows.append(
-                " & ".join(
-                    [
-                        f"\\textbf{{{_tex_escape('rotation_curves_sparc')}}}",
-                        "\\texttt{combined}",
-                        _format_pm(g0, float(rc_comb.sigma)),
-                        _format_cell_sci(gmin),
-                        _format_cell_sci(gmax),
-                        _format_cell_sci(dmax),
-                        _tex_escape(
-                            "sweep over m in {6,8}, thr in {median,q=0.65}, g0 in {mean,median}, smooth_k in {1,5,9}"
-                        ),
-                    ]
-                )
-                + " \\\\"
-            )
-
-    # Weak-lensing proxy-map sensitivity row: sqrt(A_L) vs A_L.
+    # Proxy stability rows: bounded counterfactual mapping/reference choices.
+    proxy_stab_rows: List[str] = []
     if wl_est and wl_est_alt:
         base = wl_est[0]
         alt = wl_est_alt[0]
@@ -788,7 +691,7 @@ def main() -> None:
         gmin = float(min(base.gamma_hat, alt.gamma_hat))
         gmax = float(max(base.gamma_hat, alt.gamma_hat))
         dmax = float(abs(alt.gamma_hat - base.gamma_hat))
-        stab_rows.append(
+        proxy_stab_rows.append(
             " & ".join(
                 [
                     f"\\textbf{{{_tex_escape(base.channel)}}}",
@@ -797,13 +700,11 @@ def main() -> None:
                     _format_cell_sci(gmin),
                     _format_cell_sci(gmax),
                     _format_cell_sci(dmax),
-                    _tex_escape("bounded proxy-map family: gamma_dict := sqrt(A_L) (baseline) vs gamma_dict := A_L (counterfactual)"),
+                    _tex_escape("bounded proxy-map family: gamma_proxy := sqrt(A_L) (baseline) vs gamma_proxy := A_L (counterfactual)"),
                 ]
             )
             + " \\\\"
         )
-
-    # Strong-lensing proxy-map sensitivity row: Planck18 vs SH0ES19 reference H0.
     if td_est and td_est_alt:
         base = td_est[0]
         alt = td_est_alt[0]
@@ -811,7 +712,7 @@ def main() -> None:
         gmin = float(min(base.gamma_hat, alt.gamma_hat))
         gmax = float(max(base.gamma_hat, alt.gamma_hat))
         dmax = float(abs(alt.gamma_hat - base.gamma_hat))
-        stab_rows.append(
+        proxy_stab_rows.append(
             " & ".join(
                 [
                     f"\\textbf{{{_tex_escape(base.channel)}}}",
@@ -825,61 +726,255 @@ def main() -> None:
             )
             + " \\\\"
         )
+    if not proxy_stab_rows:
+        proxy_stab_rows.append("% (no proxy stability rows generated)")
+    proxy_stab_rows.append(r"\bottomrule")
+    write_lines(out_gen / "gamma_crossobs_proxy_stability_rows.tex", proxy_stab_rows)
 
-    # Leave-one-out rows
-    for ch in sorted(loo.keys()):
-        j = loo[ch]
-        stab_rows.append(
+    # ----------------------------
+    # 6b) Direct (rotation-curve) rows + diagnostics + stability
+    # ----------------------------
+    direct_rows: List[str] = []
+    ordered_direct = sorted(rc_est, key=lambda e: e.dataset)
+    for e in ordered_direct:
+        pull = (e.gamma_hat - gamma_direct_joint) / e.sigma if (e.sigma > 0) else float("nan")
+        direct_rows.append(
             " & ".join(
                 [
-                    f"\\textbf{{{_tex_escape('joint_LOO')}}}",
-                    f"\\texttt{{{_tex_escape(ch)}}}",
-                    _format_pm(j.gamma_hat, j.sigma),
-                    "",
-                    "",
-                    "",
-                    _tex_escape("leave-one-channel-out joint estimate"),
+                    _tex_escape(e.channel),
+                    f"\\texttt{{{_tex_escape(e.dataset)}}}",
+                    _format_pm(e.gamma_hat, e.sigma),
+                    f"{pull:+.2f}",
+                    _tex_escape(e.note),
+                ]
+            )
+            + " \\\\"
+        )
+    direct_rows.append(
+        " & ".join(
+            [
+                "\\textbf{joint}",
+                "\\texttt{rotation\\_curves}",
+                _format_pm(gamma_direct_joint, float(direct_joint0.sigma)),
+                f"{0.00:+.2f}",
+                _tex_escape(
+                    f"chi2={chi2_direct:.2f} dof={dof_direct} p={p_direct:.3g} |z|max={zmax_direct:.2f} ({zpair_direct})"
+                ),
+            ]
+        )
+        + " \\\\"
+    )
+    direct_rows.append(r"\bottomrule")
+    write_lines(out_gen / "gamma_crossobs_direct_rows.tex", direct_rows)
+
+    diag_pair_direct = _tex_escape(zpair_direct) if zpair_direct else "n/a"
+    diag_line_direct = (
+        "Rotation-curve joint estimate: "
+        f"$\\widehat\\gamma_{{\\mathrm{{dict}}}}={_format_sci_tex(gamma_direct_joint, digits=6)}"
+        f" \\pm {_format_sci_tex(float(direct_joint0.sigma), digits=6)}$."
+        f" Consistency: $\\chi^2={chi2_direct:.2f}$, $\\mathrm{{dof}}={dof_direct}$, $p={p_direct:.3g}$."
+        f" Max pairwise tension: $|z|_{{\\max}}={zmax_direct:.2f}$ (\\texttt{{{diag_pair_direct}}})."
+    )
+    write_lines(out_gen / "gamma_crossobs_direct_diagnostics.tex", [diag_line_direct])
+
+    direct_stab_rows: List[str] = []
+    # Counterfactual sweeps for the rotation-curve pipeline (Appendix 29 audit knobs).
+    sweep_m = [6, 8]
+    sweep_thr = ["median", "quantile:0.65"]
+    sweep_g0 = ["mean", "median"]
+    sweep_smooth = [1, 5, 9]
+
+    # Use a fixed sweep-eligible subset so comparisons across m are not confounded by changing data support.
+    max_m = max(sweep_m)
+    sweep_files: List[str] = []
+    for fn in sparc_files:
+        dat0 = _parse_sparc_rotmod(sparc_dir / fn)
+        n0 = int(len(dat0.get("r_kpc", [])))
+        if n0 >= (2 * max_m - 1):
+            sweep_files.append(fn)
+
+    sweep_vals: List[float] = []
+    for mm in sweep_m:
+        for tr in sweep_thr:
+            for br in sweep_g0:
+                for sk in sweep_smooth:
+                    per_gal: List[GammaEstimate] = []
+                    for fn in sweep_files:
+                        p = sparc_dir / fn
+                        gname = fn.replace("_rotmod.dat", "")
+                        dat = _parse_sparc_rotmod(p)
+                        scalar = np.asarray(dat["sbdisk_l_pc2"], dtype=float)
+                        r_kpc = np.asarray(dat["r_kpc"], dtype=float)
+                        recon = reconstruct_chi_from_1d_scalar(
+                            r_kpc=r_kpc,
+                            scalar=scalar,
+                            m=mm,
+                            threshold_rule=tr,
+                            baseline_rule=br,
+                        )
+                        fit = fit_gamma_from_rotation_curve(
+                            galaxy=gname,
+                            r_kpc_full=r_kpc,
+                            vobs_kms_full=np.asarray(dat["vobs_kms"], dtype=float),
+                            verr_kms_full=np.asarray(dat["verr_kms"], dtype=float),
+                            chi_recon=recon,
+                            smooth_k=sk,
+                        )
+                        if not (np.isfinite(fit.gamma_hat) and np.isfinite(fit.sigma) and float(fit.sigma) > 0.0):
+                            continue
+                        per_gal.append(
+                            GammaEstimate(
+                                channel="rotation_curves_sparc",
+                                dataset=gname,
+                                gamma_hat=float(fit.gamma_hat),
+                                sigma=float(fit.sigma),
+                                note="",
+                                source="",
+                            )
+                        )
+                    comb = _combine_inverse_variance(per_gal)
+                    if comb is None:
+                        continue
+                    sweep_vals.append(float(comb.gamma_hat))
+
+    if sweep_vals:
+        sweep_gal = {fn.replace("_rotmod.dat", "") for fn in sweep_files}
+        rc_est_sweep = [e for e in rc_est if e.dataset in sweep_gal]
+        j0 = _combine_inverse_variance(rc_est_sweep)
+        if j0 is None:
+            g0 = float(gamma_direct_joint)
+            s0 = float(direct_joint0.sigma)
+            K = len(rc_est_sweep)
+        else:
+            g0 = float(j0.gamma_hat)
+            s0 = float(j0.sigma)
+            K = len(rc_est_sweep)
+
+        gmin = float(np.min(sweep_vals))
+        gmax = float(np.max(sweep_vals))
+        dmax = float(np.max(np.abs(np.asarray(sweep_vals) - g0)))
+        direct_stab_rows.append(
+            " & ".join(
+                [
+                    f"\\textbf{{{_tex_escape('rotation_curves_sparc')}}}",
+                    "\\texttt{joint}",
+                    _format_pm(g0, s0),
+                    _format_cell_sci(gmin),
+                    _format_cell_sci(gmax),
+                    _format_cell_sci(dmax),
+                    _tex_escape(
+                        f"sweep over m in {{6,8}}, thr in {{median,q=0.65}}, g0 in {{mean,median}}, smooth_k in {{1,5,9}}; fixed subset n>={2*max_m-1} (K={K})"
+                    ),
                 ]
             )
             + " \\\\"
         )
 
-    if not stab_rows:
-        stab_rows.append("% (no stability rows generated)")
-    stab_rows.append(r"\bottomrule")
-    write_lines(out_gen / "gamma_crossobs_stability_rows.tex", stab_rows)
+    # Leave-one-galaxy-out joint estimates (direct only).
+    for ds in sorted({e.dataset for e in rc_est}):
+        subset = [e for e in rc_est if e.dataset != ds]
+        j = _combine_inverse_variance(subset)
+        if j is None:
+            continue
+        direct_stab_rows.append(
+            " & ".join(
+                [
+                    f"\\textbf{{{_tex_escape('joint_LOO')}}}",
+                    f"\\texttt{{{_tex_escape(ds)}}}",
+                    _format_pm(float(j.gamma_hat), float(j.sigma)),
+                    "",
+                    "",
+                    "",
+                    _tex_escape("leave-one-galaxy-out joint estimate"),
+                ]
+            )
+            + " \\\\"
+        )
+
+    if not direct_stab_rows:
+        direct_stab_rows.append("% (no direct stability rows generated)")
+    direct_stab_rows.append(r"\bottomrule")
+    write_lines(out_gen / "gamma_crossobs_direct_stability_rows.tex", direct_stab_rows)
 
     # ----------------------------
-    # 7) Figure: channel estimates with joint band
+    # 7) Figures (proxy-only vs direct)
     # ----------------------------
-    fig_items = ordered + [joint]
-    labels = [f"{e.channel}\n{e.dataset}" for e in fig_items]
-    gvals = [e.gamma_hat for e in fig_items]
-    svals = [e.sigma for e in fig_items]
-
-    y = np.arange(len(fig_items))[::-1]
-    plt.figure(figsize=(9.0, 0.6 + 0.5 * len(fig_items)))
+    # Proxy figure
+    proxy_fig_items = ordered_proxy + [
+        GammaEstimate(
+            channel="joint",
+            dataset="proxy",
+            gamma_hat=float(gamma_proxy_joint),
+            sigma=float(proxy_joint0.sigma),
+            note="proxy joint",
+            source="",
+        )
+    ]
+    labels = [f"{e.channel}\n{e.dataset}" for e in proxy_fig_items]
+    gvals = [e.gamma_hat for e in proxy_fig_items]
+    svals = [e.sigma for e in proxy_fig_items]
+    y = np.arange(len(proxy_fig_items))[::-1]
+    plt.figure(figsize=(9.0, 0.6 + 0.5 * len(proxy_fig_items)))
     plt.errorbar(gvals, y, xerr=svals, fmt="o", color="black", ecolor="black", capsize=3)
-    plt.axvline(gamma_joint, color="tab:blue", linewidth=2, label="joint")
+    plt.axvline(gamma_proxy_joint, color="tab:blue", linewidth=2, label="proxy joint")
     plt.fill_betweenx(
         [y.min() - 1, y.max() + 1],
-        gamma_joint - joint.sigma,
-        gamma_joint + joint.sigma,
+        gamma_proxy_joint - float(proxy_joint0.sigma),
+        gamma_proxy_joint + float(proxy_joint0.sigma),
         color="tab:blue",
         alpha=0.15,
         linewidth=0,
     )
     plt.yticks(y, labels)
-    plt.xlabel("gamma estimate")
+    plt.xlabel("proxy gamma estimate")
     plt.ylim(y.min() - 1, y.max() + 1)
     plt.grid(True, axis="x", alpha=0.3)
     plt.tight_layout()
-    plt.savefig(out_fig / "gamma_crossobs_consistency.png", dpi=200)
+    plt.savefig(out_fig / "gamma_crossobs_proxy.png", dpi=200)
     plt.close()
 
-    print("[gamma_crossobs] wrote sections/generated/gamma_crossobs_rows.tex")
-    print("[gamma_crossobs] wrote sections/generated/gamma_crossobs_stability_rows.tex")
-    print("[gamma_crossobs] wrote figures/gamma_crossobs_consistency.png")
+    # Direct figure
+    direct_fig_items = ordered_direct + [
+        GammaEstimate(
+            channel="joint",
+            dataset="rotation_curves",
+            gamma_hat=float(gamma_direct_joint),
+            sigma=float(direct_joint0.sigma),
+            note="direct joint",
+            source="",
+        )
+    ]
+    labels = [f"{e.channel}\n{e.dataset}" for e in direct_fig_items]
+    gvals = [e.gamma_hat for e in direct_fig_items]
+    svals = [e.sigma for e in direct_fig_items]
+    y = np.arange(len(direct_fig_items))[::-1]
+    plt.figure(figsize=(9.0, 0.6 + 0.5 * len(direct_fig_items)))
+    plt.errorbar(gvals, y, xerr=svals, fmt="o", color="black", ecolor="black", capsize=3)
+    plt.axvline(gamma_direct_joint, color="tab:blue", linewidth=2, label="direct joint")
+    plt.fill_betweenx(
+        [y.min() - 1, y.max() + 1],
+        gamma_direct_joint - float(direct_joint0.sigma),
+        gamma_direct_joint + float(direct_joint0.sigma),
+        color="tab:blue",
+        alpha=0.15,
+        linewidth=0,
+    )
+    plt.yticks(y, labels)
+    plt.xlabel("direct gamma_dict estimate")
+    plt.ylim(y.min() - 1, y.max() + 1)
+    plt.grid(True, axis="x", alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(out_fig / "gamma_crossobs_direct.png", dpi=200)
+    plt.close()
+
+    print("[gamma_crossobs] wrote sections/generated/gamma_crossobs_proxy_rows.tex")
+    print("[gamma_crossobs] wrote sections/generated/gamma_crossobs_proxy_diagnostics.tex")
+    print("[gamma_crossobs] wrote sections/generated/gamma_crossobs_proxy_stability_rows.tex")
+    print("[gamma_crossobs] wrote figures/gamma_crossobs_proxy.png")
+    print("[gamma_crossobs] wrote sections/generated/gamma_crossobs_direct_rows.tex")
+    print("[gamma_crossobs] wrote sections/generated/gamma_crossobs_direct_diagnostics.tex")
+    print("[gamma_crossobs] wrote sections/generated/gamma_crossobs_direct_stability_rows.tex")
+    print("[gamma_crossobs] wrote figures/gamma_crossobs_direct.png")
 
 
 if __name__ == "__main__":

@@ -596,6 +596,7 @@ def build_steps() -> List[Step]:
                 "sections/generated/mass_spectrum_anchor_rows.tex",
                 "sections/generated/mass_spectrum_quark_rows.tex",
                 "sections/generated/mass_spectrum_neutrino_rows.tex",
+                "sections/generated/mass_spectrum_anchor_summary.tex",
             ],
         ),
         Step(
@@ -761,10 +762,14 @@ def build_steps() -> List[Step]:
             name="Gamma cross-observation consistency (audit)",
             script="exp_gamma_cross_observation.py",
             expected_outputs=[
-                "sections/generated/gamma_crossobs_rows.tex",
-                "sections/generated/gamma_crossobs_stability_rows.tex",
-                "sections/generated/gamma_crossobs_diagnostics.tex",
-                "figures/gamma_crossobs_consistency.png",
+                "sections/generated/gamma_crossobs_proxy_rows.tex",
+                "sections/generated/gamma_crossobs_proxy_diagnostics.tex",
+                "sections/generated/gamma_crossobs_proxy_stability_rows.tex",
+                "figures/gamma_crossobs_proxy.png",
+                "sections/generated/gamma_crossobs_direct_rows.tex",
+                "sections/generated/gamma_crossobs_direct_diagnostics.tex",
+                "sections/generated/gamma_crossobs_direct_stability_rows.tex",
+                "figures/gamma_crossobs_direct.png",
             ],
         ),
         Step(

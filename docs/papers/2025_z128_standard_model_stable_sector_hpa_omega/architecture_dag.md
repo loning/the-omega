@@ -171,9 +171,13 @@ flowchart TB
   P_cosmo("能量预算拟合代理（离散匹配 + 稳定性）<br/>类型：模型<br/>label: app:cosmology_resolution_flow / ass:occupancy_energy_z128<br/>Ω_vis,0≈f_stab(m);  m* ∈ Z (discrete match)")
   M_cosmo -.- P_cosmo
 
-  M_gamma["gamma 跨观测一致性（单参数 γ(dict)；通道映射+检验）<br/>类型：审计<br/>label: app:gamma_crossobs_consistency<br/>joint + LOO + χ²/p + max|z|"]
-  P_gamma("跨观测一致性检验（联合拟合）<br/>类型：审计<br/>label: app:gamma_crossobs_consistency<br/>RC/lensing/time-delay/redshift")
-  M_gamma -.- P_gamma
+  M_gamma_proxy["gamma 代理通道审计（gamma_proxy；通道映射+检验）<br/>类型：审计<br/>label: app:gamma_crossobs_consistency<br/>proxy-only compression + internal consistency (χ²/p, pairwise tension, LOO)"]
+  P_gamma_proxy("gamma 代理通道（可操作代理）<br/>类型：审计<br/>label: app:gamma_crossobs_consistency<br/>solar-system / lensing / time-delay / redshift proxies")
+  M_gamma_proxy -.- P_gamma_proxy
+
+  M_gamma_direct["gamma 直接通道审计（gamma_dict；旋转曲线标定）<br/>类型：审计<br/>label: app:gamma_crossobs_consistency<br/>direct-only calibration + internal consistency (χ²/p, pairwise tension, LOO)"]
+  P_gamma_direct("gamma 直接通道（旋转曲线）<br/>类型：审计<br/>label: app:gamma_crossobs_consistency<br/>SPARC rotation-curve fits")
+  M_gamma_direct -.- P_gamma_direct
 
   M_inputs["外部 matching 输入清单（非前提）<br/>类型：审计<br/>label: subsec:external_inputs_inventory<br/>tab: tab:external_inputs_inventory"]
   P_inputs("External inputs inventory（Match；非前提）<br/>类型：审计<br/>label: subsec:external_inputs_inventory<br/>PDG/CODATA/Planck/NuFIT + vendored subsets")
@@ -245,11 +249,13 @@ flowchart TB
   M_equiv --> M_thermo
   M_equiv --> M_qm
 
-  M_grav --> M_gamma
+  M_grav --> M_gamma_proxy
+  M_grav --> M_gamma_direct
   M_err --> M_test
   M_cosmo --> M_test
   M_qm --> M_test
-  M_gamma --> M_test
+  M_gamma_proxy --> M_test
+  M_gamma_direct --> M_test
   M_transport_audit --> M_test
   M_inputs --> M_test
   M_e --> M_test
@@ -258,7 +264,9 @@ flowchart TB
   P_freq --> P_mass
   P_freq --> P_thermo
   P_freq --> P_lens
-  P_equiv --> P_action --> P_eom --> P_dyn --> P_lens --> P_gamma --> P_test
+  P_equiv --> P_action --> P_eom --> P_dyn --> P_lens
+  P_lens --> P_gamma_proxy --> P_test
+  P_dyn --> P_gamma_direct --> P_test
   P_lens --> P_recon --> P_err --> P_test
   P_equiv --> P_thermo --> P_test
   P_equiv --> P_qm --> P_test
@@ -291,13 +299,13 @@ flowchart TB
   class M_golden,M_pi,M_e,M_sm,M_mass,M_thermo,M_grav,M_qm,M_rg math_closure;
   class M_action,M_eom math_cont;
   class M_cosmo math_assumption;
-  class M_recon,M_err,M_gamma,M_transport_audit,M_inputs,M_test math_audit;
+  class M_recon,M_err,M_gamma_proxy,M_gamma_direct,M_transport_audit,M_inputs,M_test math_audit;
   %% Physics node groups
   class P_dt,P_scan,P_phi,P_pi,P_e,P_fold,P_screen,P_addr,P_local,P_conn,P_gauge,P_dyn phys_proxy;
   class P_obs,P_holo,P_mass,P_lens,P_qm phys_obs;
   class P_types,P_equiv,P_freq,P_thermo phys_dict;
   class P_action,P_eom,P_rg,P_cosmo phys_model;
-  class P_select,P_recon,P_err,P_gamma,P_transport_audit,P_inputs,P_test phys_audit;
+  class P_select,P_recon,P_err,P_gamma_proxy,P_gamma_direct,P_transport_audit,P_inputs,P_test phys_audit;
 
   style M_test stroke-width:4px;
   style P_test stroke-width:4px;
@@ -366,8 +374,10 @@ flowchart TB
 | `P_rg` | `\label{app:running_couplings_resolution_flow}` | `dg/dr = (ln φ)β(g) (running in resolution coordinate)` | `sections/appendices/31_running_couplings_resolution_flow.tex` |
 | `M_cosmo` | `\label{app:cosmology_resolution_flow}` | `ass:occupancy_energy_z128 — f_stab(m)=Fₘ₊₂/2ᵐ, f_hid=1−f_stab` | `sections/appendices/32_cosmology_resolution_flow.tex` |
 | `P_cosmo` | `\label{app:cosmology_resolution_flow}` | `Ω_vis,0≈f_stab(m), Ω_dark,0≈1−f_stab(m)` | `sections/appendices/32_cosmology_resolution_flow.tex` |
-| `M_gamma` | `\label{app:gamma_crossobs_consistency}` | `γ consistency across RC/lensing/time-delay/redshift (audit)` | `sections/appendices/35_gamma_cross_observation_consistency.tex` |
-| `P_gamma` | `\label{app:gamma_crossobs_consistency}` | `joint-fit consistency test for γ across observation channels` | `sections/appendices/35_gamma_cross_observation_consistency.tex` |
+| `M_gamma_proxy` | `\label{app:gamma_crossobs_consistency}` | `gamma_proxy: proxy-only compression + internal consistency diagnostics` | `sections/appendices/35_gamma_cross_observation_consistency.tex` |
+| `P_gamma_proxy` | `\label{app:gamma_crossobs_consistency}` | `proxy channels: solar system / lensing / time-delay / redshift (vendored audit subset)` | `sections/appendices/35_gamma_cross_observation_consistency.tex` |
+| `M_gamma_direct` | `\label{app:gamma_crossobs_consistency}` | `gamma_dict: rotation-curve calibration + internal consistency diagnostics` | `sections/appendices/35_gamma_cross_observation_consistency.tex` |
+| `P_gamma_direct` | `\label{app:gamma_crossobs_consistency}` | `direct channel: SPARC rotation-curve fits (vendored audit subset)` | `sections/appendices/35_gamma_cross_observation_consistency.tex` |
 | `M_transport_audit` | `\label{tab:holonomy_transport_rule_sensitivity}` | `transport rule sensitivity envelope: TV(p,q)=0.5·Σ_k |p_k−q_k|;  frac_{3/4} range` | `sections/appendices/15_holonomy_sweeps_extended.tex` |
 | `P_transport_audit` | `\label{tab:holonomy_transport_rule_sensitivity}` | `bounded counterfactual families for padding/truncation/tie-break (audit)` | `sections/appendices/15_holonomy_sweeps_extended.tex` |
 | `M_inputs` | `\label{subsec:external_inputs_inventory}` | `MatchTag external inputs inventory (non-premises)` | `sections/appendices/11_inference_ledger.tex` |
