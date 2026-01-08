@@ -113,7 +113,9 @@ def _direct_local_imports(py_path: Path, module_map: dict[str, Path]) -> set[Pat
     return {module_map[m] for m in mods if m in module_map}
 
 
-def _script_deps_closure(root: Path, module_map: dict[str, Path], memo: dict[Path, set[Path]]) -> set[Path]:
+def _script_deps_closure(
+    root: Path, module_map: dict[str, Path], memo: dict[Path, set[Path]]
+) -> set[Path]:
     """
     Compute the transitive closure of local Python dependencies for a script.
     """
@@ -141,7 +143,9 @@ def _check_outputs(rel_paths: Iterable[str]) -> None:
         if not nonempty_file(p):
             missing.append(rel)
     if missing:
-        msg = "Missing/empty generated outputs:\n" + "\n".join(f"  - {m}" for m in missing)
+        msg = "Missing/empty generated outputs:\n" + "\n".join(
+            f"  - {m}" for m in missing
+        )
         raise RuntimeError(msg)
 
 
@@ -788,11 +792,23 @@ def build_steps() -> List[Step]:
                 "sections/generated/audit_summary_rows.tex",
             ],
         ),
+        Step(
+            name="Yukawa/beta-function closure (OP5)",
+            script="exp_yukawa_beta_closure.py",
+            expected_outputs=[
+                "sections/generated/yukawa_eigenvalue_rows.tex",
+                "sections/generated/beta_representation_rows.tex",
+                "sections/generated/beta_summary.tex",
+                "sections/generated/yukawa_beta_closure_summary_rows.tex",
+            ],
+        ),
     ]
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Run all reproducible generators for this paper.")
+    parser = argparse.ArgumentParser(
+        description="Run all reproducible generators for this paper."
+    )
     parser.add_argument(
         "--force",
         action="store_true",
@@ -826,7 +842,9 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     steps = build_steps()
     all_expected: List[str] = []
-    use_skip = bool(args.skip_up_to_date) and (not bool(args.force)) and (not cache_disabled())
+    use_skip = (
+        bool(args.skip_up_to_date) and (not bool(args.force)) and (not cache_disabled())
+    )
     module_map: dict[str, Path] = _local_module_map() if use_skip else {}
     deps_memo: dict[Path, set[Path]] = {}
     cache: dict[str, str] = _load_run_all_cache() if use_skip else {}
@@ -855,7 +873,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                     print(f"[run_all] SKIP (cached) {step.name}")
                     _check_outputs(step.expected_outputs)
                 else:
-                    print(f"[run_all] {step.name} -> {step.script} (cache missing; outputs stale)")
+                    print(
+                        f"[run_all] {step.name} -> {step.script} (cache missing; outputs stale)"
+                    )
                     _run_script(script_path, step_name=step.name)
                     _check_outputs(step.expected_outputs)
                 cache[step.script] = fp
@@ -879,7 +899,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         raise RuntimeError("Missing generated directory.")
 
     # Minimal sanity: ensure the audit summary exists if we ran it.
-    if (paper_root() / "sections/generated/audit_summary_rows.tex") in [paper_root() / p for p in all_expected]:
+    if (paper_root() / "sections/generated/audit_summary_rows.tex") in [
+        paper_root() / p for p in all_expected
+    ]:
         _check_outputs(["sections/generated/audit_summary_rows.tex"])
 
     if cache_dirty:
@@ -891,5 +913,3 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
-
