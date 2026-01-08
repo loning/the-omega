@@ -31,15 +31,19 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ### 1. 在论文目录读取跟踪文档
 
-读取相关markdown文档, 了解论文需要解决的问题
+使用 @plan agent 读取相关markdown文档, 了解论文需要解决的问题
 
 ### 2. 选取一个最容易解决的任务
 
+让 @oracle 做任务选择决策
+
 ### 3. 按照规范修改论文
+
+1. 让 @oracle 修改论文
 
 ### 4. 修改完后验证修改结果
 
-使用独立agent进行验证
+让 @ validator 进行验证
 if(!验证未通过){
     goto 3; \\继续修改论文
 }

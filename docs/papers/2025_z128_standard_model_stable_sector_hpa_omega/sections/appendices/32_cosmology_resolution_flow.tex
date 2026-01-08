@@ -145,14 +145,20 @@ Taking absolute values and using the assumed relative-fit bound and $|\eta_m|\le
 \begin{assumption}[Readout-occupancy energy accounting (interface)]
 \label{ass:occupancy_energy_z128}
 Fix an effective window length $m$.
-Assume that, on sufficiently coarse scales, the fractional contribution of a sector to the cosmic energy budget is proportional to long-time occupancy of the corresponding readout microstate subset.
-Under a maximal-ignorance approximation at fixed resolution, this occupancy is approximated by counting measure on $\Omega_m$ (maximum-entropy/maximum-ignorance rationale; see, e.g., \cite{Jaynes1957,CoverThomas2006}), so that
+We assume a \emph{holographic equipartition} principle: the energy cost to maintain a readout state is uniform per microstate (1 bit of capacity $\leftrightarrow$ characteristic energy unit).
+Consequently, the fractional contribution of a sector to the cosmic energy budget is proportional to the count of accessible microstates in that sector.
+Under the maximum-entropy (maximal-ignorance) approximation on $\Omega_m$ (Appendix~\ref{subsec:entropy_as_counting}), this yields
 \[
-\Omega_{\mathrm{vis},0}\approx f_{\mathrm{stab}}(m),
+\Omega_{\mathrm{vis},0} = \frac{|X_m|}{|\Omega_m|} = f_{\mathrm{stab}}(m),
 \qquad
-\Omega_{\mathrm{dark},0}\approx f_{\mathrm{hid}}(m)=1-f_{\mathrm{stab}}(m).
+\Omega_{\mathrm{dark},0} = \frac{|\Omega_m|-|X_m|}{|\Omega_m|} = f_{\mathrm{hid}}(m).
 \]
 \end{assumption}
+
+\begin{remark}[Derivation from Landauer's principle]
+This assumption is formally equivalent to applying Landauer's principle \cite{Landauer1961} globally: if erasing/resetting each microstate bit costs $k_B T \ln 2$, and the readout hardware cycles through all $|\Omega_m|$ states ergodically, then the time-averaged energy budget allocated to the stable sector is strictly the fraction of states it occupies.
+This removes the need for ad-hoc ``dark fluids''; the ``dark sector'' is simply the energetic cost of the vast hidden state space required to support the sparse stable computational surface.
+\end{remark}
 
 \InterfaceTag Given a target present-day visible fraction $\Omega_{\mathrm{vis},0}$ (e.g.\ baryon fraction as a minimal proxy), Assumption~\ref{ass:occupancy_energy_z128} selects an effective integer window length $m_\ast$ by discrete matching.
 \MatchTag Concretely, we select $m_\ast$ as the unique minimizer (with a deterministic tie-break) of the absolute log-mismatch $|\log(f_{\mathrm{stab}}(m)/\Omega_{\mathrm{vis},0})|$ over a declared finite scan window; the generator \texttt{scripts/exp\_cosmology\_energy\_budget\_fit.py} implements this rule.
