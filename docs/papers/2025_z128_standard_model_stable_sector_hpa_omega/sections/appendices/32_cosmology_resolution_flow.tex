@@ -157,6 +157,24 @@ Under a maximal-ignorance approximation at fixed resolution, this occupancy is a
 \InterfaceTag Given a target present-day visible fraction $\Omega_{\mathrm{vis},0}$ (e.g.\ baryon fraction as a minimal proxy), Assumption~\ref{ass:occupancy_energy_z128} selects an effective integer window length $m_\ast$ by discrete matching.
 \MatchTag Concretely, we select $m_\ast$ as the unique minimizer (with a deterministic tie-break) of the absolute log-mismatch $|\log(f_{\mathrm{stab}}(m)/\Omega_{\mathrm{vis},0})|$ over a declared finite scan window; the generator \texttt{scripts/exp\_cosmology\_energy\_budget\_fit.py} implements this rule.
 Lemma~\ref{lem:f_stab_monotone} implies $f_{\mathrm{stab}}(m)$ is strictly decreasing, so the induced Voronoi cells in this one-dimensional matching problem are contiguous and the stability diagnostic is well defined.
+\begin{lemma}[Voronoi boundaries for absolute log-mismatch]\label{lem:log_voronoi_geometric_mean}
+\MathTag Fix two positive values $a>b>0$ and consider the distance on $(0,\infty)$ given by $d(x,y)=|\log(x/y)|$.
+Then the set of targets $x>0$ that are at least as close to $a$ as to $b$ is the interval
+\[
+\{x>0:\ d(x,a)\le d(x,b)\}=[\sqrt{ab},\infty).
+\]
+Equivalently, the bisector between $a$ and $b$ under $d$ is the geometric mean $\sqrt{ab}$.
+\end{lemma}
+\begin{proof}
+Since $a>b>0$, for $x>0$ one has
+\[
+|\log(x/a)|\le |\log(x/b)|
+\quad\Longleftrightarrow\quad
+|\log x-\log a|\le |\log x-\log b|.
+\]
+On the real line, the set of points closer to $\log a$ than to $\log b$ is the half-line $\log x\ge (\log a+\log b)/2$.
+Exponentiating yields $x\ge \exp\bigl((\log a+\log b)/2\bigr)=\sqrt{ab}$.
+\end{proof}
 \MatchTag Using the Planck-2018 baryon fraction $\Omega_{\mathrm{b},0}\approx 0.0493$ as a compact target \cite{Planck2018Parameters}, the discrete match is
 \[
 \input{sections/generated/cosmology_energy_budget_fit_equation.tex}%
@@ -176,6 +194,15 @@ Figure~\ref{fig:cosmology_energy_budget_fit} provides a direct visualization of 
 \paragraph{Status and falsifiability.}
 \AuditTag The assumption is explicitly flagged as an interface hypothesis.
 Its falsifiability route is to compare the implied hidden/stable ratio $f_{\mathrm{hid}}(m_\ast)/f_{\mathrm{stab}}(m_\ast)=d_{m_\ast}-1$ with an observationally declared reference ratio.
+\MatchTag Concretely,
+\[
+\frac{f_{\mathrm{hid}}(m_\ast)}{f_{\mathrm{stab}}(m_\ast)}
+=\frac{1-f_{\mathrm{stab}}(m_\ast)}{f_{\mathrm{stab}}(m_\ast)}
+  =\frac{1}{f_{\mathrm{stab}}(m_\ast)}-1
+  =d_{m_\ast}-1,
+\]
+so a log-mismatch against a chosen reference ratio $R_{\mathrm{ref}}$ is
+$\log\!\bigl((d_{m_\ast}-1)/R_{\mathrm{ref}}\bigr)$; this is reported in the generated summary fragment for transparency.
 \MatchTag Under the literal reading of Assumption~\ref{ass:occupancy_energy_z128} with $\Omega_{\mathrm{dark},0}=1-\Omega_{\mathrm{vis},0}$, the reference ratio is $(1-\Omega_{\mathrm{vis},0})/\Omega_{\mathrm{vis},0}$ (fixed once $\Omega_{\mathrm{vis},0}$ is chosen).
 \MatchTag If instead one interprets ``dark'' as ``dark matter only'' while treating dark energy separately, one may compare to $\Omega_{\mathrm{DM}}/\Omega_{\mathrm{b}}$ (Planck-2018 baseline; \cite{Planck2018Parameters}), as reported in the generated summary for transparency.
 Independently, one can test whether reconstructed overhead proxy fields (Section~\ref{app:chi_reconstruction_protocol}) show the predicted address-aware invariances and correlations under declared counterfactual baselines.
