@@ -25,6 +25,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 - 对于内部引用, 请在本文中完整封闭表述.
 - 关注第一性原理.
 - 注意控制正文跟附录比例.
+- 不用管DOI
 
 ## 工作步骤
 
