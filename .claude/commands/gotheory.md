@@ -14,10 +14,10 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 严格高质量的完成研究工作
 
-## Operating Constraints
+## 注意事项
 
 - 作为封闭理论给出强定量推导与拟合. 把不明确的地方都尝试引用或者证明一下(能引用就引用). 
-- 在未经用户允许情况下不增加新公理
+- 不允许增加公理, 如果需要增加公理, 则先回写回跟踪文件然后跳过该任务
 - 不要为了发表进行弱化, 如无法解决加入到跟踪文档
 - 直接在正文或者附录引用或证明即可(成熟的结果请直接引用外部论文结果,能引用别证明, 公认事实无需程序模拟实验, 众所周知的无需解释)
 - 请充分利用同目录的其他论文, 有些“解释”性的就可能因为几何刚性变成“不得不这样”
@@ -26,7 +26,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 - 关注第一性原理.
 - 注意控制正文跟附录比例.
 
-## Execution Steps
+## 工作步骤
 
 ### 1. 在论文目录读取跟踪文档
 
@@ -38,14 +38,12 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ### 4. 修改完后验证修改结果
 
-var flag = 独立agent进行验证
-if(!flag){
-    goto 3; \\修改论文
+使用独立agent进行验证
+if(!验证未通过){
+    goto 3; \\继续修改论文
 }
 
 ### 5. 标记相关任务完成
-
-### 6. 重复步骤1 直到处理完所有文档
 
 ## Context
 
