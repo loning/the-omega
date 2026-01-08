@@ -145,6 +145,73 @@ flowchart TB
   P_gauge("规范冗余/场代理（补偿数据）<br/>类型：代理<br/>label: def:s4_vertex_gauge<br/>loop holonomy: p_□ ↦ g p_□ g⁻¹")
   M_gauge -.- P_gauge
 
+  %% -------------------------
+  %% Conditional interface closures and open/scope tracking
+  %% -------------------------
+  M_gauge3["三因子 gauge 因子闭合（条件闭合）<br/>类型：审计<br/>label: prop:channel_to_gauge<br/>output: U(1)×SU(2)×SU(3) within stated family"]
+  P_gauge3("三因子 gauge 因子识别（接口）<br/>类型：字典<br/>label: prop:channel_to_gauge<br/>three channels -> U(1), SU(2), SU(3) (conditional)")
+  M_gauge3 -.- P_gauge3
+
+  M_gauge3_assump["条件包：gauge 因子闭合所需假设束（G1–G4）<br/>类型：假设<br/>label: subsec:gauge_as_compensation<br/>compactness + factorization + candidate family + complexity label"]
+  P_gauge3_assump("条件包（接口可审计）<br/>类型：审计<br/>label: subsec:gauge_as_compensation<br/>assumption bundle for channel->gauge")
+  M_gauge3_assump -.- P_gauge3_assump
+
+  M_scalar_iface["标量/ Higgs 扇区（uplift/coarse-graining 依赖）<br/>类型：审计<br/>label: app:scalar_interface_audits / rem:higgs_not_in_21<br/>status: scalar is protocol-emergent; no primitive label at m=6"]
+  P_scalar_iface("标量/ Higgs 识别（接口与审计）<br/>类型：审计<br/>label: app:scalar_interface_audits / rem:higgs_not_in_21<br/>uplift/coarse-graining dependent scalar observables")
+  M_scalar_iface -.- P_scalar_iface
+
+  M_lambda_open["宇宙学常数/真空能密度（未闭合）<br/>类型：未闭合<br/>label: app:cap_continuum_action_closure<br/>open: value/sign/stability/observation match"]
+  P_lambda_open("Lambda 观测对应（未闭合）<br/>类型：未闭合<br/>label: app:cap_continuum_action_closure<br/>Lambda matching not closed")
+  M_lambda_open -.- P_lambda_open
+
+  M_bh_pointer["黑洞/虫洞类通道（指针性结构）<br/>类型：未闭合<br/>label: app:bh_wormholes_pointer<br/>status: external targets + interface pointer"]
+  P_bh_pointer("强场/边界通道代理（指针）<br/>类型：未闭合<br/>label: app:bh_wormholes_pointer<br/>area law / throat / pointer-jump (pointer)")
+  M_bh_pointer -.- P_bh_pointer
+
+  M_neutrino_majorana["中微子质量机制与 Majorana 相位（未闭合）<br/>类型：未闭合<br/>label: sec:pmns_neutrino_closure<br/>status: oscillation-focused; mechanism/phases not closed"]
+  P_neutrino_majorana("中微子机制/相位接口（未闭合）<br/>类型：未闭合<br/>label: sec:pmns_neutrino_closure<br/>Majorana phases not included")
+  M_neutrino_majorana -.- P_neutrino_majorana
+
+  M_qcd_gap["QCD 禁闭/质量隙（严格问题未闭合）<br/>类型：未闭合<br/>label: app:continuum_yang_mills_from_holonomy<br/>note: representative YM closed; confinement/mass gap open"]
+  P_qcd_gap("QCD 非微扰检验（未闭合）<br/>类型：未闭合<br/>label: app:continuum_yang_mills_from_holonomy<br/>confinement/mass-gap not closed")
+  M_qcd_gap -.- P_qcd_gap
+
+  M_gut_scope["大统一/质子衰变等高能结构（未闭合/未覆盖）<br/>类型：范围外<br/>label: sec:limitations_related_work<br/>status: benchmark mention only"]
+  P_gut_scope("GUT/质子衰变观测链（范围外）<br/>类型：范围外<br/>label: sec:limitations_related_work<br/>not in closure/audit chain")
+  M_gut_scope -.- P_gut_scope
+
+  M_op1["OP1：规范群唯一性（超出声明候选族）<br/>类型：Open<br/>label: subsec:ledger_open_problems / subsec:open_problems_audit_tagged<br/>goal: derive candidate family or prove universality"]
+  P_op1("OP1：去条件化的 gauge 唯一性<br/>类型：Open<br/>label: subsec:open_problems_audit_tagged<br/>no hand-declared bounded family")
+  M_op1 -.- P_op1
+
+  M_op5["OP5：标量/Yukawa + RG running 的闭合<br/>类型：Open<br/>label: subsec:ledger_open_problems / subsec:open_problems_audit_tagged<br/>goal: generate Yukawa and SM beta from protocol"]
+  P_op5("OP5：Yukawa/RG 物理接口闭合<br/>类型：Open<br/>label: subsec:open_problems_audit_tagged<br/>beta functions as outputs, not inputs")
+  M_op5 -.- P_op5
+
+  M_baryogenesis_scope["重子不对称/重子生成（未覆盖）<br/>类型：范围外<br/>label: theory_closure_tracker<br/>status: not in main proof/audit chain"]
+  P_baryogenesis_scope("重子生成观测/拟合（范围外）<br/>类型：范围外<br/>label: theory_closure_tracker<br/>eta_B closure not attempted")
+  M_baryogenesis_scope -.- P_baryogenesis_scope
+
+  M_strongcp_scope["强 CP 与 theta_QCD（未覆盖）<br/>类型：范围外<br/>label: theory_closure_tracker<br/>status: no protocol variable/selection"]
+  P_strongcp_scope("EDM/强 CP 约束链（范围外）<br/>类型：范围外<br/>label: theory_closure_tracker<br/>theta_QCD not modeled")
+  M_strongcp_scope -.- P_strongcp_scope
+
+  M_bhinfo_scope["黑洞信息悖论（未覆盖）<br/>类型：范围外<br/>label: theory_closure_tracker<br/>status: evaporation/Page curve not treated"]
+  P_bhinfo_scope("Page 曲线/信息回收检验（范围外）<br/>类型：范围外<br/>label: theory_closure_tracker<br/>not in current closure")
+  M_bhinfo_scope -.- P_bhinfo_scope
+
+  M_qg_scope["量子引力（普朗克尺度闭合，未覆盖）<br/>类型：范围外<br/>label: theory_closure_tracker<br/>status: no Planck-scale dynamics closed"]
+  P_qg_scope("普朗克尺度普适检验（范围外）<br/>类型：范围外<br/>label: theory_closure_tracker<br/>no computable universal tests")
+  M_qg_scope -.- P_qg_scope
+
+  M_cosmo_tension_scope["现代宇宙学张力（H0, S8/sigma8 等，未覆盖）<br/>类型：范围外<br/>label: theory_closure_tracker<br/>status: systematics model not included"]
+  P_cosmo_tension_scope("张力数据/系统误差模型（范围外）<br/>类型：范围外<br/>label: theory_closure_tracker<br/>not audited here")
+  M_cosmo_tension_scope -.- P_cosmo_tension_scope
+
+  M_bsm_scope["更高能 BSM（SUSY/弦论等，未覆盖）<br/>类型：范围外<br/>label: theory_closure_tracker<br/>status: not in closure chain"]
+  P_bsm_scope("高能 BSM 观测链（范围外）<br/>类型：范围外<br/>label: theory_closure_tracker<br/>not included")
+  M_bsm_scope -.- P_bsm_scope
+
   M_sm["SM 标号闭合（21 stable labels）<br/>类型：闭合<br/>label: thm:labeling_unique<br/>𝓛_SM: X₆ → 𝓕_SM ⊔ {U(1),SU(2),SU(3)}"]
   P_types("识别字典（stable types ↔ 粒子/场）<br/>类型：字典<br/>label: tab:sm_labeling_table<br/>stable types ↔ (fermion multiplets, gauge factors)")
   M_sm -.- P_types
@@ -324,8 +391,15 @@ flowchart TB
   P_conn --> P_transport_audit
   P_holo --> P_transport_audit
 
-  M_gauge --> M_sm
-  P_gauge --> P_types
+  M_gauge --> M_gauge3_assump --> M_gauge3 --> M_sm
+  P_gauge --> P_gauge3_assump --> P_gauge3 --> P_types
+
+  M_sm --> M_scalar_iface
+  M_rg --> M_scalar_iface
+  M_proj --> M_scalar_iface
+  P_types --> P_scalar_iface
+  P_rg --> P_scalar_iface
+  P_proj --> P_scalar_iface
 
   M_sm --> M_mass
   P_types --> P_mass
@@ -349,6 +423,55 @@ flowchart TB
   M_equiv --> M_action --> M_eom --> M_grav --> M_recon --> M_err
   M_equiv --> M_thermo
   M_equiv --> M_qm
+
+  %% -------------------------
+  %% Dependencies into open / not-closed / out-of-scope trackers
+  %% -------------------------
+  M_gauge3 --> M_op1
+  M_gauge3_assump --> M_op1
+  M_equiv --> M_op1
+  M_cap --> M_op1
+
+  M_scalar_iface --> M_op5
+  M_rg --> M_op5
+  M_action --> M_op5
+
+  M_action --> M_lambda_open
+  M_cosmo --> M_lambda_open
+
+  M_grav --> M_bh_pointer
+  M_thermo --> M_bh_pointer
+  M_qm --> M_bh_pointer
+
+  M_op3_yang_mills --> M_qcd_gap
+  M_rg --> M_qcd_gap
+
+  M_sm --> M_neutrino_majorana
+  M_qm --> M_neutrino_majorana
+
+  M_rg --> M_gut_scope
+  M_sm --> M_gut_scope
+
+  M_sm --> M_baryogenesis_scope
+  M_thermo --> M_baryogenesis_scope
+
+  M_op3_yang_mills --> M_strongcp_scope
+  M_sm --> M_strongcp_scope
+
+  M_bh_pointer --> M_bhinfo_scope
+  M_qm --> M_bhinfo_scope
+
+  M_action --> M_qg_scope
+  M_grav --> M_qg_scope
+  M_qm --> M_qg_scope
+  M_bh_pointer --> M_qg_scope
+
+  M_cosmo --> M_cosmo_tension_scope
+  M_gamma_proxy --> M_cosmo_tension_scope
+  M_gamma_direct --> M_cosmo_tension_scope
+
+  M_sm --> M_bsm_scope
+  M_rg --> M_bsm_scope
 
   M_grav --> M_gamma_proxy
   M_grav --> M_gamma_direct
@@ -392,6 +515,10 @@ flowchart TB
   %% Styling (Material Design palette; math vs physics)
   %% -------------------------
   classDef iface fill:#FCE4EC,stroke:#D81B60,color:#880E4F,stroke-width:2px;
+  %% Open / not-closed / out-of-scope trackers (Material Design warm/neutral)
+  classDef open_problem fill:#FFEBEE,stroke:#C62828,color:#B71C1C,stroke-width:2px,font-weight:700;
+  classDef not_closed fill:#FFF3E0,stroke:#EF6C00,color:#E65100,stroke-width:2px;
+  classDef scope_gap fill:#EEEEEE,stroke:#616161,color:#212121,stroke-width:2px,stroke-dasharray: 2 2;
   %% Math (blue family)
   classDef math_axiom fill:#BBDEFB,stroke:#1565C0,color:#0D47A1,stroke-width:3px,font-weight:700;
   classDef math_construct fill:#E3F2FD,stroke:#1E88E5,color:#0D47A1,stroke-width:2px;
@@ -414,12 +541,20 @@ flowchart TB
   class M_action,M_eom,M_op3_yang_mills math_cont;
   class M_cosmo math_assumption;
   class M_morita,M_gauss,M_abel,M_capinv,M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_recon,M_err,M_gamma_proxy,M_gamma_direct,M_transport_audit,M_inputs,M_mdl_global,M_test math_audit;
+  class M_gauge3,M_scalar_iface,M_lambda_open,M_bh_pointer,M_neutrino_majorana,M_qcd_gap not_closed;
+  class M_op1,M_op5 open_problem;
+  class M_gut_scope,M_baryogenesis_scope,M_strongcp_scope,M_bhinfo_scope,M_qg_scope,M_cosmo_tension_scope,M_bsm_scope scope_gap;
+  class M_gauge3_assump math_assumption;
   %% Physics node groups
   class P_dt,P_scan,P_phi,P_pi,P_e,P_fold,P_screen,P_addr,P_local,P_conn,P_gauge,P_dyn phys_proxy;
   class P_obs,P_periodic,P_holo,P_mass,P_lens,P_qm,P_wilson phys_obs;
   class P_types,P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_am_euler,P_entropy_gap,P_rm,P_relent phys_dict;
   class P_abel,P_action,P_eom,P_rg,P_cosmo phys_model;
   class P_morita,P_gauss,P_capinv,P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_select,P_recon,P_err,P_gamma_proxy,P_gamma_direct,P_transport_audit,P_inputs,P_mdl_global,P_test phys_audit;
+  class P_gauge3,P_scalar_iface,P_lambda_open,P_bh_pointer,P_neutrino_majorana,P_qcd_gap not_closed;
+  class P_op1,P_op5 open_problem;
+  class P_gut_scope,P_baryogenesis_scope,P_strongcp_scope,P_bhinfo_scope,P_qg_scope,P_cosmo_tension_scope,P_bsm_scope scope_gap;
+  class P_gauge3_assump phys_audit;
 
   style M_test stroke-width:4px;
   style P_test stroke-width:4px;
@@ -535,5 +670,28 @@ flowchart TB
 | `P_mdl_global` | `\label{tab:audit_global_mdl_family_registry}` | `global look-elsewhere bound within registry (generated rows/summary)` | `sections/appendices/42_global_model_selection_mdl.tex` |
 | `M_test` | `\label{sec:falsifiability}` | `P1–P6 falsifiable statements (audited thresholds/calibrations)` | `sections/V_40_falsifiability_predictions.tex` |
 | `P_test` | `\label{sec:falsifiability}` | `protocolized tests + error budgets (cross-checks)` | `sections/V_40_falsifiability_predictions.tex` |
+
+### 未闭合/未覆盖节点补充（追踪用）
+
+下表用于把 Open/未闭合/范围外条目纳入同一 DAG 追踪口径；其中部分条目在论文中并无独立 `\label{...}`，以 `theory_closure_tracker.md` 作为维护入口。
+
+| 节点 | 入口（label/track） | 状态 | 依赖（DAG 上游） | 文件/入口 |
+|---|---|---|---|---|
+| `M_gauge3_assump` / `P_gauge3_assump` | `\label{subsec:gauge_as_compensation}` | 条件束 | `M_gauge`, `M_cap`, `M_equiv` | `sections/I_20_standard_model_interface.tex` |
+| `M_gauge3` / `P_gauge3` | `\label{prop:channel_to_gauge}` | 条件闭合（声明族内） | `M_gauge3_assump` | `sections/I_20_standard_model_interface.tex` |
+| `M_op1` / `P_op1` | `\label{subsec:ledger_open_problems}` / `\label{subsec:open_problems_audit_tagged}` | Open | `M_gauge3`, `M_gauge3_assump`, `M_cap`, `M_equiv` | `sections/appendices/11_inference_ledger.tex`; `sections/V_41_limitations_related_work.tex` |
+| `M_scalar_iface` / `P_scalar_iface` | `\label{app:scalar_interface_audits}` / `\label{rem:higgs_not_in_21}` | 未闭合（接口/审计形态） | `M_sm`, `M_rg`, `M_proj` | `sections/appendices/22_scalar_interface_audits.tex`; `sections/I_20_standard_model_interface.tex` |
+| `M_op5` / `P_op5` | `\label{subsec:ledger_open_problems}` / `\label{subsec:open_problems_audit_tagged}` | Open | `M_scalar_iface`, `M_rg`, `M_action` | `sections/appendices/11_inference_ledger.tex`; `sections/V_41_limitations_related_work.tex` |
+| `M_lambda_open` / `P_lambda_open` | `\label{app:cap_continuum_action_closure}` | 未闭合 | `M_action`, `M_cosmo` | `sections/F_20_cap_continuum_action_closure.tex`; `theory_closure_tracker.md` |
+| `M_bh_pointer` / `P_bh_pointer` | `\label{app:bh_wormholes_pointer}` | 未闭合（指针/外部输入） | `M_grav`, `M_thermo`, `M_qm` | `sections/appendices/10_black_holes_wormholes.tex`; `theory_closure_tracker.md` |
+| `M_neutrino_majorana` / `P_neutrino_majorana` | `\label{sec:pmns_neutrino_closure}` | 未闭合 | `M_sm`, `M_qm` | `sections/V_33_pmns_neutrino_summary.tex`; `theory_closure_tracker.md` |
+| `M_qcd_gap` / `P_qcd_gap` | `\label{app:continuum_yang_mills_from_holonomy}` | 未闭合（严格问题） | `M_op3_yang_mills`, `M_rg` | `sections/appendices/36_continuum_yang_mills_from_holonomy.tex`; `theory_closure_tracker.md` |
+| `M_gut_scope` / `P_gut_scope` | `\label{sec:limitations_related_work}` | 范围外（benchmark 指针） | `M_rg`, `M_sm` | `sections/V_41_limitations_related_work.tex`; `theory_closure_tracker.md` |
+| `M_baryogenesis_scope` / `P_baryogenesis_scope` | `theory_closure_tracker.md` | 范围外 | `M_sm`, `M_thermo` | `theory_closure_tracker.md` |
+| `M_strongcp_scope` / `P_strongcp_scope` | `theory_closure_tracker.md` | 范围外 | `M_op3_yang_mills`, `M_sm` | `theory_closure_tracker.md` |
+| `M_bhinfo_scope` / `P_bhinfo_scope` | `theory_closure_tracker.md` | 范围外 | `M_bh_pointer`, `M_qm` | `theory_closure_tracker.md` |
+| `M_qg_scope` / `P_qg_scope` | `theory_closure_tracker.md` | 范围外 | `M_action`, `M_grav`, `M_qm`, `M_bh_pointer` | `theory_closure_tracker.md` |
+| `M_cosmo_tension_scope` / `P_cosmo_tension_scope` | `theory_closure_tracker.md` | 范围外 | `M_cosmo`, `M_gamma_proxy`, `M_gamma_direct` | `theory_closure_tracker.md` |
+| `M_bsm_scope` / `P_bsm_scope` | `theory_closure_tracker.md` | 范围外 | `M_sm`, `M_rg` | `theory_closure_tracker.md` |
 
 
