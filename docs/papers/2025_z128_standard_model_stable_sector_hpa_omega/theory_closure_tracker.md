@@ -169,6 +169,7 @@ flowchart TD
   - 生成物：`sections/generated/holonomy_transport_rule_sensitivity_rows.tex`
 
 - [ ] **（OP1）超出候选族的规范群唯一性**：当前仅在显式有界候选族（紧致/三因子可交换分解/复杂度标签）内由 CAP 闭合（`prop:channel_to_gauge`）；候选族本身的第一性导出或无家族唯一性仍未闭合。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`（`sec:limitations_related_work`）。
+  - 可选解除口径（相对扩展输入集）：可采用“物理共识输入”附录 `sections/appendices/49_physics_consensus_inputs.tex`（`app:physics_consensus_inputs`，尤其 `ass:consensus_three_factor_gauge`）与/或“内部纤维 $G_2$ 微观实现”附录 `sections/appendices/50_internal_fiber_g2_optional.tex`（`app:internal_fiber_g2_optional`，`ass:m2star_internal_fiber_g2`）作为候选族来源；此时 OP1 可在接口层视为相对输入集已解除，但不把该解除提升为 tick+CAP 的 theorem-level 输出。
 - [x] **（OP2）Fold 家族的唯一性/不可避免性（协议局部口径闭合）**：在“value-consistency + dyadic uplift 下的无回写局部性”这一最小可实现性契约下，Fold 家族被唯一强迫为 Zeckendorf-truncation `\mathrm{Fold}_m`（Theorem `thm:fold_family_uniqueness`）。  
   - 位置：`sections/appendices/44_fold_family_uniqueness.tex`（`\label{app:fold_family_uniqueness}`）  
   - 主依赖：折叠定义 `eq:foldm_def`；value-consistency `def:value_consistency_m`；前缀投影/可函子 uplift（`app:functorial_refinement`）；反事实族审计 `app:fold_family_sensitivity`。
