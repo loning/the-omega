@@ -73,7 +73,8 @@ def best_fit_m(omega_vis0: float, m_min: int, m_max: int) -> FitResult:
     best_err: float | None = None
     for m in range(int(m_min), int(m_max) + 1):
         num, den, v = f_stab(m)
-        err = abs(v - omega_vis0)
+        # Use scale-invariant log-mismatch in line with Appendix 32.
+        err = abs(math.log(v / omega_vis0))
         if best is None or best_err is None or err < best_err or (err == best_err and m < best.m_star):
             f_hid = 1.0 - v
             ratio = f_hid / v
@@ -130,7 +131,7 @@ def _clamp01(x: float) -> float:
 
 def stability_ms(omega_vis0: float, omega_vis0_sigma: float, m_min: int, m_max: int) -> List[int]:
     """
-    Return the discrete set of m values whose Voronoi cell (by absolute-error matching
+    Return the discrete set of m values whose Voronoi cell (by absolute-log-mismatch matching
     against f_stab(m)) intersects the uncertainty interval [omega-sigma, omega+sigma].
     """
     if omega_vis0_sigma < 0.0:
@@ -151,11 +152,12 @@ def stability_ms(omega_vis0: float, omega_vis0_sigma: float, m_min: int, m_max: 
         if i == 0:
             left = 1.0
         else:
-            left = 0.5 * (vals[i - 1][1] + v)
+            # Boundary between neighbors under |log(v/omega)| distance is the geometric mean.
+            left = math.sqrt(vals[i - 1][1] * v)
         if i == len(vals) - 1:
             right = 0.0
         else:
-            right = 0.5 * (v + vals[i + 1][1])
+            right = math.sqrt(v * vals[i + 1][1])
         # Cell is (right, left] within [0,1].
         cell_lo = max(0.0, right)
         cell_hi = min(1.0, left)
