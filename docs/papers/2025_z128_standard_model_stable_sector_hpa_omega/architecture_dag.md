@@ -33,6 +33,9 @@
   - **外形**：圆角矩形 `(...)`
   - **颜色**：粉色系（`classDef iface`）
   - **含义**：组织语言与审计目标（不作为数学层前提，仅用于接口层/审计层叙事与选择说明）
+- **输入节点（Input）**：
+  - **外形**：I/O 倾斜平行四边形（Lean Left）`@{ shape: lean-l, label: "..." }`
+  - **含义**：基础输入（公理/假设/外部 matching 输入/可选候选族输入等）。倾斜平行四边形仅用于视觉标记“输入”属性；其类型/颜色仍按节点内 `类型：...` 与 class 分型显示。
 - **对应关系（Math ↔ Physics）**：
   - **形式**：每对相邻的 `M_*` 与 `P_*` 用 **`-.-`** 连接
   - **含义**：字典式对应（无箭头；**对应≠同一概念**，仅表示接口层对数学对象的物理识别/代理）
@@ -53,7 +56,7 @@ flowchart TB
   %% -------------------------
   %% Paired nodes (math rectangle, physics rounded)
   %% -------------------------
-  M_tick["Tick（读出序列性）<br/>类型：公理<br/>label: ax:readout_sequentiality<br/>t = 0,1,2,…"]
+  M_tick@{ shape: lean-l, label: "Tick（读出序列性）<br/>类型：公理<br/>label: ax:readout_sequentiality<br/>t = 0,1,2,…" }
   P_dt("时间步（可操作 tick）<br/>类型：代理<br/>label: sec:tick_calculus<br/>Δt := t₂ − t₁")
   M_tick -.- P_dt
 
@@ -65,7 +68,7 @@ flowchart TB
   P_morita("scan↔readout 对偶代理（频率/谱读出）<br/>类型：审计<br/>label: rem:weyl_morita_fourier_exchange<br/>translation ↔ phase; representation exchange")
   M_morita -.- P_morita
 
-  M_cap["CAP（有界复杂度闭合算子）<br/>类型：公理<br/>label: ax:cap<br/>c* := argmin_{c∈C} J(c)"]
+  M_cap@{ shape: lean-l, label: "CAP（有界复杂度闭合算子）<br/>类型：公理<br/>label: ax:cap<br/>c* := argmin_{c∈C} J(c)" }
   P_select("审计选择（候选族+目标函数+tie-break）<br/>类型：审计<br/>label: app:cap_audit_template<br/>θ* := argmin_{θ∈Θ(B)} J(θ)")
   M_cap -.- P_select
 
@@ -152,16 +155,16 @@ flowchart TB
   P_gauge3("三因子 gauge 因子识别（接口）<br/>类型：字典<br/>label: prop:channel_to_gauge<br/>three channels -> U(1), SU(2), SU(3) (conditional)")
   M_gauge3 -.- P_gauge3
 
-  M_gauge3_assump["条件包：gauge 因子闭合所需假设束（G1–G4）<br/>类型：假设<br/>label: subsec:gauge_as_compensation<br/>compactness + factorization + candidate family + complexity label"]
+  M_gauge3_assump@{ shape: lean-l, label: "条件包：gauge 因子闭合所需假设束（G1–G4）<br/>类型：假设<br/>label: subsec:gauge_as_compensation<br/>compactness + factorization + candidate family + complexity label" }
   P_gauge3_assump("条件包（接口可审计）<br/>类型：审计<br/>label: subsec:gauge_as_compensation<br/>assumption bundle for channel->gauge")
   M_gauge3_assump -.- P_gauge3_assump
 
-  M_consensus_inputs["物理共识输入（可选）<br/>类型：假设<br/>label: app:physics_consensus_inputs"]
-  P_consensus_inputs("物理共识输入（Match；非前提）<br/>类型：审计<br/>label: app:physics_consensus_inputs")
+  M_consensus_inputs@{ shape: lean-l, label: "物理共识输入（可选）<br/>类型：假设<br/>label: app:physics_consensus_inputs" }
+  P_consensus_inputs@{ shape: lean-l, label: "物理共识输入（Match；非前提）<br/>类型：审计<br/>label: app:physics_consensus_inputs" }
   M_consensus_inputs -.- P_consensus_inputs
 
-  M_internal_fiber_g2["内部纤维：守范数组合律→Hurwitz→三通道最小性⇒八元数 O；G2=Aut(O)（可选）<br/>类型：假设<br/>label: app:internal_fiber_g2_optional / ass:m2star_internal_fiber_g2 / cor:octonion_three_channel_minimality"]
-  P_internal_fiber_g2("内部纤维微观路线（Hurwitz+最小性；Match）<br/>类型：审计<br/>label: app:internal_fiber_g2_optional")
+  M_internal_fiber_g2@{ shape: lean-l, label: "内部纤维：守范数组合律→Hurwitz→三通道最小性⇒八元数 O；G2=Aut(O)（可选）<br/>类型：假设<br/>label: app:internal_fiber_g2_optional / ass:m2star_internal_fiber_g2 / cor:octonion_three_channel_minimality" }
+  P_internal_fiber_g2@{ shape: lean-l, label: "内部纤维微观路线（Hurwitz+最小性；Match）<br/>类型：审计<br/>label: app:internal_fiber_g2_optional" }
   M_internal_fiber_g2 -.- P_internal_fiber_g2
 
   M_scalar_iface["标量/ Higgs 扇区（uplift/coarse-graining 依赖）<br/>类型：审计<br/>label: app:scalar_interface_audits / rem:higgs_not_in_21<br/>status: scalar is protocol-emergent; no primitive label at m=6"]
@@ -292,7 +295,7 @@ flowchart TB
   P_rg("耦合运行代理（阈值/匹配口径）<br/>类型：模型<br/>label: eq:rg_in_r<br/>dg/dr = (ln φ)β(g)")
   M_rg -.- P_rg
 
-  M_cosmo["宇宙学：分辨率流接口（占据假设 + 离散匹配）<br/>类型：假设<br/>label: app:cosmology_resolution_flow / ass:occupancy_energy_z128<br/>f_stab(m)=F_{m+2}/2ᵐ;  f_hid=1−f_stab"]
+  M_cosmo@{ shape: lean-l, label: "宇宙学：分辨率流接口（占据假设 + 离散匹配）<br/>类型：假设<br/>label: app:cosmology_resolution_flow / ass:occupancy_energy_z128<br/>f_stab(m)=F_{m+2}/2ᵐ;  f_hid=1−f_stab" }
   P_cosmo("能量预算拟合代理（离散匹配 + 稳定性）<br/>类型：模型<br/>label: app:cosmology_resolution_flow / ass:occupancy_energy_z128<br/>Ω_vis,0≈f_stab(m);  m* ∈ Z (discrete match)")
   M_cosmo -.- P_cosmo
 
@@ -328,8 +331,8 @@ flowchart TB
   P_gamma_direct("gamma 直接通道（旋转曲线）<br/>类型：审计<br/>label: app:gamma_crossobs_consistency<br/>SPARC rotation-curve fits")
   M_gamma_direct -.- P_gamma_direct
 
-  M_inputs["外部 matching 输入清单（非前提）<br/>类型：审计<br/>label: subsec:external_inputs_inventory<br/>tab: tab:external_inputs_inventory"]
-  P_inputs("External inputs inventory（Match；非前提）<br/>类型：审计<br/>label: subsec:external_inputs_inventory<br/>PDG/CODATA/Planck/NuFIT + vendored subsets")
+  M_inputs@{ shape: lean-l, label: "外部 matching 输入清单（非前提）<br/>类型：审计<br/>label: subsec:external_inputs_inventory<br/>tab: tab:external_inputs_inventory" }
+  P_inputs@{ shape: lean-l, label: "External inputs inventory（Match；非前提）<br/>类型：审计<br/>label: subsec:external_inputs_inventory<br/>PDG/CODATA/Planck/NuFIT + vendored subsets" }
   M_inputs -.- P_inputs
 
   M_mdl_global["全局模型选择（MDL / prefix-code）<br/>类型：审计<br/>label: app:global_model_selection_mdl<br/>family registry + prefix-code prior + global mixture bound"]
