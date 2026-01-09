@@ -168,8 +168,9 @@ flowchart TD
   - 生成脚本：`scripts/exp_holonomy_transport_rule_sensitivity.py`（已接入 `scripts/run_all.py`）
   - 生成物：`sections/generated/holonomy_transport_rule_sensitivity_rows.tex`
 
-- [ ] **（OP1）超出候选族的规范群唯一性**：当前仅在显式有界候选族（紧致/三因子可交换分解/复杂度标签）内由 CAP 闭合（`prop:channel_to_gauge`）；候选族本身的第一性导出或无家族唯一性仍未闭合。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`（`sec:limitations_related_work`）。
-  - 可选解除口径（相对扩展输入集）：可采用“物理共识输入”附录 `sections/appendices/49_physics_consensus_inputs.tex`（`app:physics_consensus_inputs`，尤其 `ass:consensus_three_factor_gauge`）与/或“内部纤维 $G_2$ 微观实现”附录 `sections/appendices/50_internal_fiber_g2_optional.tex`（`app:internal_fiber_g2_optional`，`ass:m2star_internal_fiber_g2`）作为候选族来源；此时 OP1 可在接口层视为相对输入集已解除，但不把该解除提升为 tick+CAP 的 theorem-level 输出。
+- [x] **（OP1）超出候选族的规范群唯一性（相对 Q 扩展输入集闭合）**：在显式 Q 扩展输入包下，“候选族来源 + 三因子字典”已闭合：三通道锚点给出最小 $2^3=8$ 的内部记录规模（`lem:three_channel_8_state_minimal_record`），守范数可逆复合与 Hurwitz 分类锁定八元数分支并给出紧致非阿贝尔内部冗余来源（`ass:m2star_internal_fiber_g2`，`prop:hurwitz_normed_division_algebras`，`cor:octonion_three_channel_minimality`），并与相干/事件化读出接口相容（`prop:qcomp_implies_qwave_weak`，`lem:z128_interference_vs_mixture`）；在此基础上由 CAP 完成因子选择（`prop:channel_to_gauge`）。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`（`sec:limitations_related_work`）。
+  - Q 包入口：`sections/appendices/30_quantum_measurement_born.tex`（`app:quantum_measurement_born`，`lem:z128_interference_vs_mixture`）与 `sections/appendices/50_internal_fiber_g2_optional.tex`（`app:internal_fiber_g2_optional`，`ass:m2star_internal_fiber_g2`，`lem:three_channel_8_state_minimal_record`，`prop:hurwitz_normed_division_algebras`，`prop:qcomp_implies_qwave_weak`，`cor:octonion_three_channel_minimality`）。
+  - 备注：若采用“物理共识输入”口径（`app:physics_consensus_inputs`，`ass:consensus_three_factor_gauge`），同样可作为候选族来源的匹配层输入；本文将 OP1 的闭合口径以 Q 包为主记账。
 - [x] **（OP2）Fold 家族的唯一性/不可避免性（协议局部口径闭合）**：在“value-consistency + dyadic uplift 下的无回写局部性”这一最小可实现性契约下，Fold 家族被唯一强迫为 Zeckendorf-truncation `\mathrm{Fold}_m`（Theorem `thm:fold_family_uniqueness`）。  
   - 位置：`sections/appendices/44_fold_family_uniqueness.tex`（`\label{app:fold_family_uniqueness}`）  
   - 主依赖：折叠定义 `eq:foldm_def`；value-consistency `def:value_consistency_m`；前缀投影/可函子 uplift（`app:functorial_refinement`）；反事实族审计 `app:fold_family_sensitivity`。
@@ -200,7 +201,7 @@ flowchart TD
 
 #### 已提及但未在当前闭合链内完成（显式假设/外部输入/指针/仅匹配层口径）
 
-- [~] **规范群唯一性（超出有界候选族）**：三因子 $U(1)\times SU(2)\times SU(3)$ 仅在显式候选族内 CAP-闭合；候选族本身的第一性导出与无家族唯一性为 OP1（`prop:channel_to_gauge`；`subsec:ledger_open_problems`）。
+- [x] **规范群唯一性（超出有界候选族；相对 Q 闭合）**：在 Q 扩展输入包下，“候选族来源 + 三因子字典”已闭合；并由 CAP 在 `prop:channel_to_gauge` 完成因子选择（见 `app:internal_fiber_g2_optional` 与 `app:quantum_measurement_born`；入口 `subsec:ledger_open_problems`）。
 - [~] **标量/Higgs/Yukawa 与 RG $\beta$-函数**：标量作为 uplift/coarse-graining 依赖接口处理；Yukawa 与 $\beta$-函数闭合为 OP5（`app:scalar_interface_audits`；`subsec:ledger_open_problems`）。
 - [~] **暗部门能量预算（暗物质/暗能量口径）**：以占据计数假设把 $f_{\mathrm{stab}}(m),f_{\mathrm{hid}}(m)$ 映射到 $\Omega_{\mathrm{vis},0},\Omega_{\mathrm{dark},0}$；该条被显式标注为接口假设并提供可复现拟合（`ass:occupancy_energy_z128`；离散匹配采用 log-mismatch，Voronoi 边界为几何均值见 `lem:log_voronoi_geometric_mean`；并在生成摘要中区分 “dark=DM-only vs dark=total hidden” 的匹配口径）。
 - [~] **宇宙学常数/真空能密度问题（$\Lambda$ 的选择与自然尺度）**：连续代表作用量允许 $\Lambda$ 项，但本文未闭合其数值/符号/稳定性与观测对应（`app:cap_continuum_action_closure`；见 `rem:lambda_status`）。

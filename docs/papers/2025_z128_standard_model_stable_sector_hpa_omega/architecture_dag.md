@@ -156,12 +156,12 @@ flowchart TB
   P_gauge3_assump("条件包（接口可审计）<br/>类型：审计<br/>label: subsec:gauge_as_compensation<br/>assumption bundle for channel->gauge")
   M_gauge3_assump -.- P_gauge3_assump
 
-  M_consensus_inputs["物理共识输入（可选） 类型：假设 label: app:physics_consensus_inputs"]
-  P_consensus_inputs("物理共识输入（Match；非前提） 类型：审计 label: app:physics_consensus_inputs")
+  M_consensus_inputs["物理共识输入（可选）<br/>类型：假设<br/>label: app:physics_consensus_inputs"]
+  P_consensus_inputs("物理共识输入（Match；非前提）<br/>类型：审计<br/>label: app:physics_consensus_inputs")
   M_consensus_inputs -.- P_consensus_inputs
 
-  M_internal_fiber_g2["内部纤维 G2 微观实现（可选） 类型：假设 label: app:internal_fiber_g2_optional / ass:m2star_internal_fiber_g2"]
-  P_internal_fiber_g2("内部纤维 G2 路线（Match；非前提） 类型：审计 label: app:internal_fiber_g2_optional")
+  M_internal_fiber_g2["内部纤维：守范数组合律→Hurwitz→三通道最小性⇒八元数 O；G2=Aut(O)（可选）<br/>类型：假设<br/>label: app:internal_fiber_g2_optional / ass:m2star_internal_fiber_g2 / cor:octonion_three_channel_minimality"]
+  P_internal_fiber_g2("内部纤维微观路线（Hurwitz+最小性；Match）<br/>类型：审计<br/>label: app:internal_fiber_g2_optional")
   M_internal_fiber_g2 -.- P_internal_fiber_g2
 
   M_scalar_iface["标量/ Higgs 扇区（uplift/coarse-graining 依赖）<br/>类型：审计<br/>label: app:scalar_interface_audits / rem:higgs_not_in_21<br/>status: scalar is protocol-emergent; no primitive label at m=6"]
@@ -188,8 +188,8 @@ flowchart TB
   P_gut_scope("GUT/质子衰变观测链（范围外）<br/>类型：范围外<br/>label: sec:limitations_related_work<br/>not in closure/audit chain")
   M_gut_scope -.- P_gut_scope
 
-  M_op1["OP1：规范群唯一性（超出声明候选族）<br/>类型：Open<br/>label: subsec:ledger_open_problems / subsec:open_problems_audit_tagged<br/>goal: derive candidate family or prove universality"]
-  P_op1("OP1：去条件化的 gauge 唯一性<br/>类型：Open<br/>label: subsec:open_problems_audit_tagged<br/>no hand-declared bounded family")
+  M_op1["OP1：候选族来源与三因子字典（Q 输入下闭合）<br/>类型：审计<br/>label: app:internal_fiber_g2_optional / app:quantum_measurement_born<br/>proof: 2^3=8 minimal record + Hurwitz + CAP"]
+  P_op1("OP1：三因子字典接口闭合（Q）<br/>类型：审计<br/>label: app:internal_fiber_g2_optional / app:quantum_measurement_born<br/>candidate-family source closed under Q")
   M_op1 -.- P_op1
 
   M_op5["OP5：标量/Yukawa + RG running 的闭合<br/>类型：Open<br/>label: subsec:ledger_open_problems / subsec:open_problems_audit_tagged<br/>goal: generate Yukawa and SM beta from protocol"]
@@ -443,6 +443,8 @@ flowchart TB
   %% -------------------------
   M_gauge3 --> M_op1
   M_gauge3_assump --> M_op1
+  M_internal_fiber_g2 --> M_op1
+  M_qm --> M_op1
   M_equiv --> M_op1
   M_cap --> M_op1
 
@@ -556,7 +558,8 @@ flowchart TB
   class M_cosmo,M_gauge3_assump,M_consensus_inputs,M_internal_fiber_g2 math_assumption;
   class M_morita,M_gauss,M_abel,M_capinv,M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_recon,M_err,M_gamma_proxy,M_gamma_direct,M_transport_audit,M_inputs,M_mdl_global,M_test math_audit;
   class M_gauge3,M_scalar_iface,M_lambda_open,M_bh_pointer,M_neutrino_majorana,M_qcd_gap not_closed;
-  class M_op1,M_op5 open_problem;
+  class M_op5 open_problem;
+  class M_op1 math_audit;
   class M_gut_scope,M_baryogenesis_scope,M_strongcp_scope,M_bhinfo_scope,M_qg_scope,M_cosmo_tension_scope,M_bsm_scope scope_gap;
   %% Physics node groups
   class P_dt,P_scan,P_phi,P_pi,P_e,P_fold,P_screen,P_addr,P_local,P_conn,P_gauge,P_dyn phys_proxy;
@@ -565,7 +568,8 @@ flowchart TB
   class P_abel,P_action,P_eom,P_rg,P_cosmo phys_model;
   class P_morita,P_gauss,P_capinv,P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_select,P_recon,P_err,P_gamma_proxy,P_gamma_direct,P_transport_audit,P_inputs,P_consensus_inputs,P_internal_fiber_g2,P_mdl_global,P_test phys_audit;
   class P_gauge3,P_scalar_iface,P_lambda_open,P_bh_pointer,P_neutrino_majorana,P_qcd_gap not_closed;
-  class P_op1,P_op5 open_problem;
+  class P_op5 open_problem;
+  class P_op1 phys_audit;
   class P_gut_scope,P_baryogenesis_scope,P_strongcp_scope,P_bhinfo_scope,P_qg_scope,P_cosmo_tension_scope,P_bsm_scope scope_gap;
   class P_gauge3_assump phys_audit;
 
@@ -681,7 +685,7 @@ flowchart TB
 | `P_inputs` | `\label{subsec:external_inputs_inventory}` | `external targets: PDG/CODATA/Planck/NuFIT + vendored subsets (audit)` | `sections/appendices/11_inference_ledger.tex` |
 | `M_consensus_inputs` | `\label{app:physics_consensus_inputs}` | `MatchTag: SM+GR EFT; three-factor gauge; matching scale + RG dictionary` | `sections/appendices/49_physics_consensus_inputs.tex` |
 | `P_consensus_inputs` | `\label{app:physics_consensus_inputs}` | `physics-consensus interface/matching inputs (non-premises)` | `sections/appendices/49_physics_consensus_inputs.tex` |
-| `M_internal_fiber_g2` | `\label{app:internal_fiber_g2_optional}` | `optional microscopic route: dim(H_int)=8; octonion/G2 organization (non-premises)` | `sections/appendices/50_internal_fiber_g2_optional.tex` |
+| `M_internal_fiber_g2` | `\label{app:internal_fiber_g2_optional}` / `\label{cor:octonion_three_channel_minimality}` | `norm-multiplicative composition N(xy)=N(x)N(y); Hurwitz dims {1,2,4,8}; three-channel minimality selects 8 ⇒ octonions; G2=Aut(O)` | `sections/appendices/50_internal_fiber_g2_optional.tex` |
 | `P_internal_fiber_g2` | `\label{app:internal_fiber_g2_optional}` | `optional micro-implementation route (audit-facing pointer)` | `sections/appendices/50_internal_fiber_g2_optional.tex` |
 | `M_mdl_global` | `\label{app:global_model_selection_mdl}` | `MDL/prefix-code prior on declared family registry; cross-family mixture bound` | `sections/appendices/42_global_model_selection_mdl.tex` |
 | `P_mdl_global` | `\label{tab:audit_global_mdl_family_registry}` | `global look-elsewhere bound within registry (generated rows/summary)` | `sections/appendices/42_global_model_selection_mdl.tex` |
@@ -696,7 +700,7 @@ flowchart TB
 |---|---|---|---|---|
 | `M_gauge3_assump` / `P_gauge3_assump` | `\label{subsec:gauge_as_compensation}` | 条件束 | `M_gauge`, `M_cap`, `M_equiv`, `M_consensus_inputs` (optional), `M_internal_fiber_g2` (optional) | `sections/I_20_standard_model_interface.tex` |
 | `M_gauge3` / `P_gauge3` | `\label{prop:channel_to_gauge}` | 条件闭合（声明族内） | `M_gauge3_assump` | `sections/I_20_standard_model_interface.tex` |
-| `M_op1` / `P_op1` | `\label{subsec:ledger_open_problems}` / `\label{subsec:open_problems_audit_tagged}` | Open | `M_gauge3`, `M_gauge3_assump`, `M_cap`, `M_equiv`, `M_consensus_inputs` (optional), `M_internal_fiber_g2` (optional) | `sections/appendices/11_inference_ledger.tex`; `sections/V_41_limitations_related_work.tex` |
+| `M_op1` / `P_op1` | `\label{app:internal_fiber_g2_optional}` / `\label{app:quantum_measurement_born}` | 闭合（Q） | `M_qm`, `M_internal_fiber_g2`, `M_gauge3`, `M_gauge3_assump`, `M_cap`, `M_equiv` | `sections/appendices/50_internal_fiber_g2_optional.tex`; `sections/appendices/30_quantum_measurement_born.tex`; `sections/appendices/11_inference_ledger.tex`; `sections/V_41_limitations_related_work.tex` |
 | `M_scalar_iface` / `P_scalar_iface` | `\label{app:scalar_interface_audits}` / `\label{rem:higgs_not_in_21}` | 未闭合（接口/审计形态） | `M_sm`, `M_rg`, `M_proj` | `sections/appendices/22_scalar_interface_audits.tex`; `sections/I_20_standard_model_interface.tex` |
 | `M_op5` / `P_op5` | `\label{subsec:ledger_open_problems}` / `\label{subsec:open_problems_audit_tagged}` | Open | `M_scalar_iface`, `M_rg`, `M_action` | `sections/appendices/11_inference_ledger.tex`; `sections/V_41_limitations_related_work.tex` |
 | `M_lambda_open` / `P_lambda_open` | `\label{app:cap_continuum_action_closure}` | 未闭合 | `M_action`, `M_cosmo` | `sections/F_20_cap_continuum_action_closure.tex`; `theory_closure_tracker.md` |

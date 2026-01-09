@@ -1,23 +1,84 @@
-\section{Optional microscopic internal-fiber input (octonion/\texorpdfstring{$G_2$}{G2} route)}
+\section{Optional microscopic internal-fiber input (composition-algebra / octonion route)}
 \label{app:internal_fiber_g2_optional}
 
 \AuditTag This appendix records an optional microscopic architecture input that may be adopted at the interface layer.
 It is not used as a premise in the theorem-level folding core.
 Its purpose is to supply a concrete microscopic route behind the gauge-factor candidate-family component that is otherwise left as a declared interface family in Proposition~\ref{prop:channel_to_gauge} (OP1).
 
-\begin{assumption}[M2$^\star$ (On-site internal fiber and octonion/\texorpdfstring{$G_2$}{G2} organization)]
+\begin{assumption}[M2$^\star$ (On-site internal fiber admits a probability-preserving composition law)]
 \label{ass:m2star_internal_fiber_g2}
 Assume that, at the site level of the readout/addressing graph, the effective local Hilbert space admits a factorization
 \[
 \mathcal{H}_x \cong \mathcal{H}_{x,\mathrm{orb}}\otimes \mathcal{H}_{x,\mathrm{int}},
-\qquad \dim \mathcal{H}_{x,\mathrm{int}}=8,
 \]
-and that the internal sector is organized by an octonionic/\texorpdfstring{$G_2$}{G2} structure as a microscopic ansatz for Standard-Model-like internal quantum numbers, in the sense recorded in \cite{Ma2025FoP}.
+and that the internal sector admits an additional \emph{probability-preserving composition} structure in the following sense.
+There exists a finite-dimensional real vector space $V_{\mathrm{int}}$ and an identification
+$
+\mathcal{H}_{x,\mathrm{int}} \cong \mathbb{C}\otimes_{\mathbb{R}} V_{\mathrm{int}}
+$
+such that $V_{\mathrm{int}}$ carries:
+(i) a bilinear product $(u,v)\mapsto uv$ and
+(ii) a positive-definite quadratic form $N:V_{\mathrm{int}}\to \mathbb{R}_{\ge 0}$
+with the multiplicativity property
+\[
+N(uv)=N(u)N(v)\qquad \text{for all }u,v\in V_{\mathrm{int}},
+\]
+and with $N(u)=0 \Rightarrow u=0$ (division/no zero divisors).
+Operationally, $N$ serves as an internal probability/weight norm, while the product encodes an internally reversible composition compatible with probability preservation.
 \end{assumption}
 
+\begin{proposition}[Hurwitz classification of finite-dimensional normed division algebras]
+\label{prop:hurwitz_normed_division_algebras}
+Any finite-dimensional real normed division algebra $(V,\,\cdot,\,N)$ with positive-definite multiplicative norm is isomorphic to exactly one of
+$
+\mathbb{R},\mathbb{C},\mathbb{H},\mathbb{O}
+$
+and in particular $\dim_{\mathbb{R}} V\in\{1,2,4,8\}$.
+See, e.g., \cite{Baez2002,SpringerVeldkamp2000}.
+\end{proposition}
+
+\begin{lemma}[Three-channel independence yields an eight-state minimal record at the $m=6,n=3$ anchor]
+\label{lem:three_channel_8_state_minimal_record}
+At the anchor $(m,n)=(6,3)$, the protocol exposes three commuting defect channels (the $\varphi$--$\pi$--$\e$ template).
+If each channel is coarse-grained to a binary certificate (pass/fail) and the three certificates are treated as independent recordable interface outputs, then any perfectly faithful internal record that can encode the full joint certificate must support at least $2^3=8$ mutually distinguishable states.
+In the notation of Assumption~\ref{ass:m2star_internal_fiber_g2}, this implies $\dim_{\mathbb{C}}\mathcal{H}_{x,\mathrm{int}}\ge 8$, hence $\dim_{\mathbb{R}}V_{\mathrm{int}}\ge 8$.
+\end{lemma}
+\begin{proof}
+The joint certificate space is $\{0,1\}^3$, of cardinality $8$.
+Perfectly faithful recordability means that the $8$ possible certificates can be recovered without error from the internal state by some finite-resolution readout (POVM/instrument) on $\mathcal{H}_{x,\mathrm{int}}$.
+In quantum information terms, this requires $8$ mutually perfectly distinguishable states, which in turn forces their supports to be orthogonal and hence requires $\dim_{\mathbb{C}}\mathcal{H}_{x,\mathrm{int}}\ge 8$ (see, e.g., \cite{NielsenChuang2000}).
+Finally, since $\mathcal{H}_{x,\mathrm{int}}\cong \mathbb{C}\otimes_{\mathbb{R}}V_{\mathrm{int}}$, one has $\dim_{\mathbb{C}}\mathcal{H}_{x,\mathrm{int}}=\dim_{\mathbb{R}}V_{\mathrm{int}}$.
+\end{proof}
+
+\begin{proposition}[Weak Q-comp $\Rightarrow$ Q-wave: coherent versus event-record readout behavior]
+\label{prop:qcomp_implies_qwave_weak}
+Under Assumption~\ref{ass:m2star_internal_fiber_g2}, the quadratic form $N$ induces a positive-definite inner product on $V_{\mathrm{int}}$ by polarization,
+\[
+\langle u,v\rangle := \frac{1}{2}\bigl(N(u+v)-N(u)-N(v)\bigr),
+\]
+and hence a canonical Hilbert-space norm on $\mathcal{H}_{x,\mathrm{int}}\cong \mathbb{C}\otimes_{\mathbb{R}}V_{\mathrm{int}}$.
+Combined with the standard finite-resolution quantum readout semantics (Appendix~\ref{app:quantum_measurement_born}), this yields the coherent-versus-decohered dichotomy: coherent superpositions exhibit cross terms in Born probabilities, while event-record/decohered readout removes those cross terms (Lemma~\ref{lem:z128_interference_vs_mixture}).
+\end{proposition}
+
+\begin{corollary}[Octonionic minimal realization compatible with three independent channels]
+\label{cor:octonion_three_channel_minimality}
+By Lemma~\ref{lem:three_channel_8_state_minimal_record}, $\dim_{\mathbb{R}} V_{\mathrm{int}}\ge 8$.
+Therefore Proposition~\ref{prop:hurwitz_normed_division_algebras} forces $\dim_{\mathbb{R}} V_{\mathrm{int}}=8$ and $V_{\mathrm{int}}\cong \mathbb{O}$.
+Consequently, the connected compact internal automorphism group is the exceptional Lie group
+\[
+G_2=\mathrm{Aut}(\mathbb{O}),
+\]
+providing an explicit microscopic route to a compact non-abelian internal redundancy sector (cf.\ \cite{Baez2002,SpringerVeldkamp2000}).
+\end{corollary}
+
+\begin{remark}[Beyond octonions and probabilistic degeneration]
+\AuditTag The Cayley--Dickson doubling beyond $\mathbb{O}$ loses the norm-multiplicativity/division property (e.g.\ the appearance of zero divisors).
+In the interface semantics used in this paper, a loss of probability-preserving reversibility means that such higher-dimensional ``number systems'' no longer function as internal symmetry/redundancy carriers; they are more naturally modeled as non-invertible channels (coarse-graining / mixing / probabilistic operations) rather than as compact redundancy groups.
+\end{remark}
+
 \begin{remark}[Interface role for OP1]
-\AuditTag Assumption~\ref{ass:m2star_internal_fiber_g2} is a \emph{microscopic} route to the gauge candidate family: it provides an explicit internal-sector organization that can underwrite a three-factor gauge-dictionary viewpoint in which (i) a local rephasing sector yields an abelian $U(1)$ factor and (ii) non-abelian compact factors arise as internal probability-preserving redundancies tied to the internal organization.
-Relative to the extended input set in which Assumption~\ref{ass:m2star_internal_fiber_g2} is adopted, the ``candidate family'' component of Proposition~\ref{prop:channel_to_gauge} is supplied by a declared microscopic architecture rather than by a hand-declared abstract hypothesis family.
+\AuditTag Assumption~\ref{ass:m2star_internal_fiber_g2}, together with Proposition~\ref{prop:hurwitz_normed_division_algebras} and Corollary~\ref{cor:octonion_three_channel_minimality}, provides a \emph{microscopic} route to the gauge candidate family: it turns the internal-sector input from a hand-declared bounded hypothesis class into a structured ``probability-preserving composition'' requirement whose admissible realizations are sharply classified, and whose three-channel minimality selects the octonionic branch.
+Relative to the extended input set in which this route is adopted, the ``candidate family'' component of Proposition~\ref{prop:channel_to_gauge} is supplied by a declared microscopic architecture rather than by a hand-declared abstract family.
 \end{remark}
 
 \begin{remark}[No equivalence claim]
