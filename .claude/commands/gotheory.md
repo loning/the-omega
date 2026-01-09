@@ -18,6 +18,8 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 - 作为封闭理论给出强定量推导与拟合. 把不明确的地方都尝试引用或者证明一下(能引用就引用). 
 - 不允许增加公理, 如果需要增加公理, 则先回写回跟踪文件然后跳过该任务
+- 可以添加物理学公认的假设输入
+- 同目录其他论文的公理可以作为适当的假设输入
 - 不要为了发表进行弱化, 如无法解决加入到跟踪文档
 - 直接在正文或者附录引用或证明即可(成熟的结果请直接引用外部论文结果,能引用别证明, 公认事实无需程序模拟实验, 众所周知的无需解释)
 - 请充分利用同目录的其他论文, 有些“解释”性的就可能因为几何刚性变成“不得不这样”
@@ -31,24 +33,27 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ### 1. 在论文目录读取跟踪文档
 
-使用 @plan agent 读取相关markdown文档, 了解论文需要解决的问题
+使用 agent @plan 读取相关markdown文档, 了解论文需要解决的问题
 
 ### 2. 选取一个最容易解决的任务
 
-让 @oracle 做任务选择决策
+让 agent @oracle 做任务选择决策
 
 ### 3. 按照规范修改论文
 
-1. 让 @oracle 修改论文
+1. 让 agent @oracle 修改论文
 
 ### 4. 修改完后验证修改结果
 
-让 @ validator 进行验证
+让 agent @validator 进行验证
 if(!验证未通过){
     goto 3; \\继续修改论文
 }
 
 ### 5. 标记相关任务完成
+
+1. 让 agent @validator 标记任务完成情况
+2. 如有DAG文档更新DAG文档
 
 ## Context
 
