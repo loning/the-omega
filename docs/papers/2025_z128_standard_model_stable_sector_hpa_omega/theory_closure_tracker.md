@@ -50,7 +50,8 @@ flowchart TD
   F --> G["chi 重建协议（从数据到 chi(x)）"]
   G --> K["协议→连续场误差控制（收敛界/误差预算）"]
   F --> K
-  B --> H["量子测量接口（POVM/仪器/Born）"]
+  B --> H0["状态泛函/GNS 背景（记号对齐）"]
+  H0 --> H["量子测量接口（POVM/仪器/Born）"]
   H --> H2["波粒二象性/延迟选择（读出接口解释）"]
   B --> I["RG：分辨率坐标 r 的耦合流"]
   I --> J["宇宙学：分辨率流/容量增长/能量预算拟合"]
@@ -87,6 +88,9 @@ flowchart TD
 - [x] **量子测量与 Born 闭合**：`appendix 30`  
   - 位置：`sections/appendices/30_quantum_measurement_born.tex`（`\label{app:quantum_measurement_born}`）
   - 要点：POVM/仪器；Born 规则两条闭合路线（计数模板与 Gleason–Busch 唯一性）。
+- [x] **状态泛函/GNS 背景（记号对齐；不计为新增原语）**：`appendix 30c`  
+  - 位置：`sections/appendices/30c_state_gns_background.tex`（`\label{app:state_gns_background}`）
+  - 要点：状态 $\omega$ 作为正且归一的线性泛函；GNS 表示给出 $\omega(A)=\langle\Omega|\pi(A)\Omega\rangle$；并将 $P(E)=\omega(E)$ 与 $P=\Tr(\rho E)$ 的等价关系写成纯数学口径，用于与本论文的 POVM/Born 写法对齐。
 - [x] **波粒二象性/延迟选择/量子擦除（接口解释）**：`appendix 30b`  
   - 位置：`sections/appendices/30b_wave_particle_delayed_choice.tex`（`\label{app:wave_particle_delayed_choice}`）
   - 要点：以 Born 概率的交叉项/去相干混合（`lem:z128_interference_vs_mixture`）为最小代数核，给出互补性界 $V^2+D^2\le 1$、Mach–Zehnder delayed-choice、delayed-choice quantum eraser 与 Wheeler “Great Smoky Dragon” 的可审计口径，并与 Q 输入包对齐（`prop:qcomp_implies_qwave_weak`）。
