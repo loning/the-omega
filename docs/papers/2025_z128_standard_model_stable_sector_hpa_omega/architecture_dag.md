@@ -36,6 +36,9 @@
 - **输入节点（Input）**：
   - **外形**：I/O 倾斜平行四边形（Lean Left）`@{ shape: lean-l, label: "..." }`
   - **含义**：基础输入（公理/假设/外部 matching 输入/可选候选族输入等）。倾斜平行四边形仅用于视觉标记“输入”属性；其类型/颜色仍按节点内 `类型：...` 与 class 分型显示。
+- **可证伪预测节点（Predictions）**：
+  - **外形**：I/O 倾斜平行四边形（Lean Right）`@{ shape: lean-r, label: "..." }`
+  - **含义**：论文 `\label{sec:falsifiability}` 中逐条列出的可证伪陈述（P1–P7）。每个节点绑定其自身的 `\label{subsec:p*_...}`，并通过少量关键依赖边指向其所需的观测通道/字典/审计协议。
 - **对应关系（Math ↔ Physics）**：
   - **形式**：每对相邻的 `M_*` 与 `P_*` 用 **`-.-`** 连接
   - **含义**：字典式对应（无箭头；**对应≠同一概念**，仅表示接口层对数学对象的物理识别/代理）
@@ -118,11 +121,81 @@ flowchart TB
   P_screen("屏幕显示（planar screen chart）<br/>类型：代理<br/>label: subsec:planar_screen_chart<br/>z(ω)=(ω₁+iω₂)/(1−ω₃)")
   M_anchor -.- P_screen
 
+  %% -------------------------
+  %% 6-DoF coarse-lock and derived bulk dimension (interface; de-aggregated)
+  %% -------------------------
+  M_min_coarse_lock["最小 coarse-lock：每独立参数至少 1 bit（单窗）<br/>类型：审计<br/>label: lem:minimal_one_bit_per_parameter<br/>|Ω_m|=2^m ≥ 2^k ⇒ m≥k"]
+  P_min_coarse_lock("最小 coarse-lock（接口约定；审计）<br/>类型：审计<br/>label: lem:minimal_one_bit_per_parameter<br/>single-window binning lower bound")
+  M_min_coarse_lock -.- P_min_coarse_lock
+
+  M_6dof_lock["6-DoF coarse-lock（刚体帧显示预算）<br/>类型：审计<br/>label: subsec:6dof_lock / rem:6dof_lock_scope<br/>m ≥ dim SE(d)=d(d+1)/2 (two-bin/DoF)"]
+  P_6dof_lock("6-DoF coarse-lock（接口：局域显示阈值）<br/>类型：字典<br/>label: subsec:6dof_lock<br/>m=6 anchors single-window coarse localization")
+  M_6dof_lock -.- P_6dof_lock
+
+  M_bulk_dim["由锚点预算选出 bulk 维度<br/>类型：审计<br/>label: prop:bulk_dimension_from_anchor<br/>m=6 ⇒ CAP selects d=3 (max admissible)"]
+  P_bulk_dim("bulk dimension d=3（接口输出）<br/>类型：代理<br/>label: prop:bulk_dimension_from_anchor<br/>d=3 selected at anchor")
+  M_bulk_dim -.- P_bulk_dim
+
+  M_geometric_vacuum["几何真空/协议拒绝（m<6）<br/>类型：审计<br/>label: subsubsec:geometric_vacuum<br/>sub-geometric modes treated as non-local background"]
+  P_geometric_vacuum("sub-geometric vacuum / ghost-sector（接口）<br/>类型：代理<br/>label: subsubsec:geometric_vacuum<br/>below anchor: non-local background modes")
+  M_geometric_vacuum -.- P_geometric_vacuum
+
   M_addr["寻址基（addressing basis）<br/>类型：构造<br/>label: sec:hilbert_addressing<br/>Hₙ:{0,…,4ⁿ−1}→{0,…,2ⁿ−1}²"]
   P_addr("距离代理（寻址步数/图距离）<br/>类型：代理<br/>label: def:protocol_distance<br/>dₙ(x,y):=dist_{Gₙ}(x,y)")
   M_addr -.- P_addr
 
   P_local("局域性代理（邻接/近邻）<br/>类型：代理<br/>label: def:addressing_map_graph<br/>Gₙ: nearest-neighbor graph on display sites")
+
+  %% -------------------------
+  %% Chirality / antimatter / CPT (protocol geometry; de-aggregated)
+  %% -------------------------
+  M_d4_layouts["D4 布局族与取向类（rotation/reflection）<br/>类型：审计<br/>label: lem:d4_layouts<br/>8 layouts split into 2 orientation classes"]
+  P_d4_layouts("D4 layout family（interface dictionary）<br/>类型：字典<br/>label: lem:d4_layouts<br/>orientation class is the nontrivial discrete choice")
+  M_d4_layouts -.- P_d4_layouts
+
+  M_chi_def["离散 Hilbert 手性指标 χ（定义）<br/>类型：构造<br/>label: eq:hilbert_chi_def<br/>signed turning / orientation datum"]
+  P_chi_def("chirality index χ（audit-visible sign datum）<br/>类型：字典<br/>label: eq:hilbert_chi_def<br/>parity-odd protocol observable")
+  M_chi_def -.- P_chi_def
+
+  M_chi_flip["Parity 与 traversal reversal 翻转 χ<br/>类型：闭合<br/>label: prop:chi_flip<br/>reflection or path reversal ⇒ χ↦−χ"]
+  P_chi_flip("χ sign flip law（protocol parity/time reversal proxy）<br/>类型：审计<br/>label: prop:chi_flip<br/>rotation preserves χ; reflection reverses")
+  M_chi_flip -.- P_chi_flip
+
+  M_ptc_defs["协议层 P,T,C：离散操作定义<br/>类型：构造<br/>label: subsec:ptc_definitions / def:ptc_protocol<br/>P_prot,T_prot,C_prot on finite readout"]
+  P_ptc_defs("protocol P/T/C definitions（interface）<br/>类型：字典<br/>label: subsec:ptc_definitions<br/>auditable finite-resolution operations")
+  M_ptc_defs -.- P_ptc_defs
+
+  M_scl["Scan–chirality locking（SCL：取向类 bit + CAP tie-break）<br/>类型：审计<br/>label: subsec:scl / def:scl<br/>canonical class chosen; mirror flips sgn(χ)"]
+  P_scl("SCL（orientation-class bit; mirror protocol）<br/>类型：字典<br/>label: def:scl<br/>mirror protocol swap ↔ χ sign flip")
+  M_scl -.- P_scl
+
+  M_orientation_min["取向类是最小离散协议 datum（仅一比特可辨）<br/>类型：闭合<br/>label: prop:orientation_class_minimal<br/>physically distinguishable choice = orientation class"]
+  P_orientation_min("orientation class minimality（interface）<br/>类型：审计<br/>label: prop:orientation_class_minimal<br/>rotations are conventions; reflection is distinct")
+  M_orientation_min -.- P_orientation_min
+
+  M_conj_reversal["共轭=反向（初相位翻转）<br/>类型：闭合<br/>label: lem:conjugation_reversal<br/>conjugation ↔ n↦−n up to x0 flip"]
+  P_conj_reversal("conjugation-as-reversal（scan layer）<br/>类型：审计<br/>label: lem:conjugation_reversal<br/>finite protocol avatar of C_prot")
+  M_conj_reversal -.- P_conj_reversal
+
+  M_conj_readout_rev["匹配窗口下：共轭读出诱导 scan reversal<br/>类型：闭合<br/>label: lem:conjugation_readout_reversal<br/>w'_n = w_{−n}"]
+  P_conj_readout_rev("matched-window conjugation induces readout reversal<br/>类型：审计<br/>label: lem:conjugation_readout_reversal<br/>auditable word-level duality")
+  M_conj_readout_rev -.- P_conj_readout_rev
+
+  M_antimatter_dual["反物质=共轭读出（word reversal dual）<br/>类型：构造<br/>label: subsec:antimatter_duality / def:word_reversal_dual<br/>w ↦ w_rev"]
+  P_antimatter_dual("antimatter as conjugate readout（interface）<br/>类型：字典<br/>label: subsec:antimatter_duality<br/>word reversal dual within matched protocol")
+  M_antimatter_dual -.- P_antimatter_dual
+
+  M_cp_sign_anchor["CP-odd 符号锚定：sgn(J_CP)=sgn(χ)<br/>类型：审计<br/>label: def:chi_cp_sign / rem:cp_sign_convention<br/>fix sign within fixed PDG convention"]
+  P_cp_sign_anchor("chirality-anchored CP sign convention（interface）<br/>类型：审计<br/>label: def:chi_cp_sign<br/>resolves δ ↔ π−δ ambiguity")
+  M_cp_sign_anchor -.- P_cp_sign_anchor
+
+  M_cpt_protocol["scan 层 CPT vs 协议层对称破缺（接口解释）<br/>类型：审计<br/>label: subsec:cpt_protocol<br/>P/T may be protocol swaps; CPT as consistency reference"]
+  P_cpt_protocol("CPT at scan layer vs protocol layer（audit-facing）<br/>类型：审计<br/>label: subsec:cpt_protocol<br/>no continuum axioms used as premises")
+  M_cpt_protocol -.- P_cpt_protocol
+
+  M_mirror_universe["mirror protocol / right-handed universe（取向类翻转）<br/>类型：审计<br/>label: subsec:mirror_universe<br/>global χ sign flip; domain walls ⇒ P2"]
+  P_mirror_universe("mirror protocol domains（prediction-facing）<br/>类型：审计<br/>label: subsec:mirror_universe<br/>domain boundaries are protocol defects")
+  M_mirror_universe -.- P_mirror_universe
 
   M_conn["连接（有限 transport 数据）<br/>类型：构造<br/>label: def:hamming_microstates<br/>d_H(u,v)=∑_{i=1}⁶ |uᵢ−vᵢ|"]
   P_conn("transport 代理（edge mismatch / 传输补偿）<br/>类型：代理<br/>label: lem:edge_transport_welldefined<br/>p_{a→b}∈S₄ (min-cost + lex tie-break)")
@@ -131,6 +204,29 @@ flowchart TB
   M_holo["holonomy（回路不变量）<br/>类型：构造<br/>label: prop:cycle_type_gauge_invariant<br/>p_□ := p_{a→b}·p_{b→c}·p_{c→d}·p_{d→a}"]
   P_holo("曲率代理（plaquette/loop 统计）<br/>类型：观测<br/>label: prop:cycle_type_gauge_invariant<br/>p_□ ↦ g p_□ g⁻¹ ⇒ cycle type invariant")
   M_holo -.- P_holo
+
+  %% -------------------------
+  %% Z128 phase register and phase-lift CP bridge (protocol; auditable)
+  %% -------------------------
+  M_z128_label["Z128 相位寄存器（dyadic register）<br/>类型：审计<br/>label: subsec:z128_label<br/>phase ∈ Z_{2^p}, baseline p=7 at m=6"]
+  P_z128_label("Z128 phase-register dictionary（dyadic）<br/>类型：字典<br/>label: subsec:z128_label<br/>p=m+1=7 at anchor; bounded sweeps audited")
+  M_z128_label -.- P_z128_label
+
+  M_tau_family["相位映射 τ 的有界族（bit-level maps）<br/>类型：审计<br/>label: rem:tau_family_bounded<br/>τ ∈ {id, gray, bitrev, not} (CAP tie-break)"]
+  P_tau_family("phase-map family τ（audit-bounded）<br/>类型：审计<br/>label: rem:tau_family_bounded<br/>explicit finite family + CAP tie-break")
+  M_tau_family -.- P_tau_family
+
+  M_dyadic_phase_register["dyadic 相位寄存器与 denom=2^p（含 Z128）<br/>类型：审计<br/>label: rem:dyadic_phase_register<br/>denom=2^p; p=7 ↔ Z128"]
+  P_dyadic_phase_register("dyadic phase register（audit）<br/>类型：审计<br/>label: rem:dyadic_phase_register<br/>nested refinement chain 2^p")
+  M_dyadic_phase_register -.- P_dyadic_phase_register
+
+  M_phase_lift_cp["相位寄存器提升：edge transport → unitary holonomy<br/>类型：审计<br/>label: subsec:holonomy_phase_lift_cp<br/>U_{a→b} ∈ U(4) (phase-weighted)"]
+  P_phase_lift_cp("phase-lift holonomy（CP-odd 可检验代理）<br/>类型：审计<br/>label: subsec:holonomy_phase_lift_cp<br/>extract mixing angles/δ (PDG diagnostic)")
+  M_phase_lift_cp -.- P_phase_lift_cp
+
+  M_cp_odd_J["CP-odd 不变量 J（phase-lift holonomy）<br/>类型：审计<br/>label: tab:holonomy_phase_lift_j / tab:holonomy_phase_lift_family<br/>J := Im(U11 U22 U12* U21*)"]
+  P_cp_odd_J("CP-odd Jarlskog-type proxy J（audit output）<br/>类型：观测<br/>label: tab:holonomy_phase_lift_j / tab:holonomy_phase_lift_family<br/>bounded denom sweeps + failures")
+  M_cp_odd_J -.- P_cp_odd_J
 
   M_graphzeta["Graph ζ（Ihara/Bass determinant）<br/>类型：审计<br/>label: app:graph_zeta_holonomy / thm:bass_determinant_formula<br/>Z_G(u)⁻¹=(1−u²)^{|E|−|V|}·det(I−uA+(D−I)u²)"]
   P_graphzeta("holonomy-weighted loop generating function<br/>类型：审计<br/>label: def:holonomy_weighted_graph_zeta / prop:cycle_type_stats_determine_class_sums<br/>Z_{G,ρ}(u)=∏ det(I−u^{|C|}ρ(Hol(C)))⁻¹")
@@ -155,13 +251,32 @@ flowchart TB
   P_gauge3("三因子 gauge 因子识别（接口）<br/>类型：字典<br/>label: prop:channel_to_gauge<br/>three channels -> U(1), SU(2), SU(3) (conditional)")
   M_gauge3 -.- P_gauge3
 
-  M_gauge3_assump@{ shape: lean-l, label: "条件包：gauge 因子闭合所需假设束（G1–G4）<br/>类型：假设<br/>label: subsec:gauge_as_compensation<br/>compactness + factorization + candidate family + complexity label" }
-  P_gauge3_assump("条件包（接口可审计）<br/>类型：审计<br/>label: subsec:gauge_as_compensation<br/>assumption bundle for channel->gauge")
-  M_gauge3_assump -.- P_gauge3_assump
+  %% -------------------------
+  %% Assumption bundle (de-aggregated): G1–G4
+  %% -------------------------
+  M_g1@{ shape: lean-l, label: "G1：三通道因子化（独立冗余立场）<br/>类型：审计<br/>label: lem:three_channel_factorization" }
+  P_g1@{ shape: lean-l, label: "G1：三通道因子化（接口审计）<br/>类型：审计<br/>label: lem:three_channel_factorization" }
+  M_g1 -.- P_g1
 
-  M_consensus_inputs@{ shape: lean-l, label: "物理共识输入（可选）<br/>类型：假设<br/>label: app:physics_consensus_inputs" }
-  P_consensus_inputs@{ shape: lean-l, label: "物理共识输入（Match；非前提）<br/>类型：审计<br/>label: app:physics_consensus_inputs" }
-  M_consensus_inputs -.- P_consensus_inputs
+  M_g2@{ shape: lean-l, label: "G2：概率保持冗余 ⇒ 紧致性（connected）<br/>类型：审计<br/>label: prop:unitary_implies_compact_redundancy" }
+  P_g2@{ shape: lean-l, label: "G2：紧致冗余（建模字典前提）<br/>类型：审计<br/>label: prop:unitary_implies_compact_redundancy" }
+  M_g2 -.- P_g2
+
+  M_g4@{ shape: lean-l, label: "G4：复杂度标号与 tie-break（族敏感性审计）<br/>类型：审计<br/>label: app:gauge_complexity_sensitivity / prop:gauge_label_robustness" }
+  P_g4@{ shape: lean-l, label: "G4：复杂度标号与 tie-break（接口审计）<br/>类型：审计<br/>label: app:gauge_complexity_sensitivity / prop:gauge_label_robustness" }
+  M_g4 -.- P_g4
+
+  M_consensus_p1@{ shape: lean-l, label: "P1：低能 EFT 共识（SM+GR）<br/>类型：假设<br/>label: ass:consensus_sm_gr_eft" }
+  P_consensus_p1@{ shape: lean-l, label: "P1：低能 EFT 共识（SM+GR；Match）<br/>类型：审计<br/>label: ass:consensus_sm_gr_eft" }
+  M_consensus_p1 -.- P_consensus_p1
+
+  M_consensus_p2@{ shape: lean-l, label: "P2：三因子规范结构（接口）<br/>类型：假设<br/>label: ass:consensus_three_factor_gauge" }
+  P_consensus_p2@{ shape: lean-l, label: "P2：三因子规范结构（Match）<br/>类型：审计<br/>label: ass:consensus_three_factor_gauge" }
+  M_consensus_p2 -.- P_consensus_p2
+
+  M_consensus_p3@{ shape: lean-l, label: "P3：匹配尺度 μ* 与 RG 字典<br/>类型：假设<br/>label: ass:consensus_matching_scale_rg" }
+  P_consensus_p3@{ shape: lean-l, label: "P3：匹配尺度 μ* 与 RG 字典（Match）<br/>类型：审计<br/>label: ass:consensus_matching_scale_rg" }
+  M_consensus_p3 -.- P_consensus_p3
 
   M_internal_fiber_g2@{ shape: lean-l, label: "内部纤维：守范数组合律→Hurwitz→三通道最小性⇒八元数 O；G2=Aut(O)（可选）<br/>类型：假设<br/>label: app:internal_fiber_g2_optional / ass:m2star_internal_fiber_g2 / cor:octonion_three_channel_minimality" }
   P_internal_fiber_g2@{ shape: lean-l, label: "内部纤维微观路线（Hurwitz+最小性；Match）<br/>类型：审计<br/>label: app:internal_fiber_g2_optional" }
@@ -227,6 +342,41 @@ flowchart TB
   P_types("识别字典（stable types ↔ 粒子/场）<br/>类型：字典<br/>label: tab:sm_labeling_table<br/>stable types ↔ (fermion multiplets, gauge factors)")
   M_sm -.- P_types
 
+  %% -------------------------
+  %% Couplings & CP: CAP-closed geometric normalization dictionaries (de-aggregated)
+  %% -------------------------
+  M_alpha_geo["α_em^{-1} 的三层几何阻抗闭合<br/>类型：审计<br/>label: subsec:alpha_impedance / eq:alpha_geo / thm:alpha_three_channel<br/>α_em^{-1} = 4π^3 + π^2 + π"]
+  P_alpha_geo("α_em^{-1}（CODATA/PDG 对照；mismatch 作为 matching）<br/>类型：审计<br/>label: subsec:alpha_impedance<br/>audit: bounded-family closure + log mismatch")
+  M_alpha_geo -.- P_alpha_geo
+
+  M_ew_weinberg["电弱归一化与 Weinberg 角闭合<br/>类型：审计<br/>label: subsec:weinberg_angle / thm:weinberg_angle<br/>sin^2θ_W(μ_Z)=3/13;  α^{-1}(μ_Z)=13π^2"]
+  P_ew_weinberg("Weinberg angle / α(μ_Z)（PDG 对照）<br/>类型：审计<br/>label: subsec:weinberg_angle<br/>bounded rigidity + mismatch")
+  M_ew_weinberg -.- P_ew_weinberg
+
+  M_cp_volume["CP 破坏：CP-odd 相空间体积刚性目标<br/>类型：审计<br/>label: subsec:cp_jarlskog / eq:j_geo / prop:jarlskog_rigidity_stmt<br/>J_geo = 1/(11π^7)"]
+  P_cp_volume("CP violation rigidity target（CKM Jarlskog 对照）<br/>类型：审计<br/>label: subsec:cp_jarlskog<br/>data channel: CKM fits; fail criterion explicit")
+  M_cp_volume -.- P_cp_volume
+
+  M_ckm_mag["CKM 混合幅度：bounded-complexity 深度闭合<br/>类型：审计<br/>label: subsec:ckm_mixing_depths / prop:ckm_mixing_rigidity<br/>r_mix(x):= -log x / log φ (candidate family)"]
+  P_ckm_mag("CKM magnitudes（PDG 参考目标）<br/>类型：审计<br/>label: subsec:ckm_mixing_depths<br/>finite family + deterministic tie-break + gaps")
+  M_ckm_mag -.- P_ckm_mag
+
+  M_ckm_matrix["CKM 矩阵重建（PDG 参数化；诊断）<br/>类型：审计<br/>label: subsec:ckm_matrix_closure<br/>angles+δ extracted; unitarity diagnostics"]
+  P_ckm_matrix("CKM matrix reconstruction（audit output）<br/>类型：审计<br/>label: subsec:ckm_matrix_closure<br/>tables: |V_ij|, angles, unitarity")
+  M_ckm_matrix -.- P_ckm_matrix
+
+  M_pmns_mag["PMNS 混合幅度闭合（bounded family）<br/>类型：审计<br/>label: subsec:pmns_mixing_depths / prop:pmns_mixing_rigidity<br/>targets: s12, s23, s13"]
+  P_pmns_mag("PMNS mixing targets（NuFIT/PDG 对照）<br/>类型：审计<br/>label: subsec:pmns_mixing_depths<br/>table: tab:pmns_mixing")
+  M_pmns_mag -.- P_pmns_mag
+
+  M_pmns_matrix["PMNS 矩阵与 Dirac δ 离散闭合<br/>类型：审计<br/>label: subsec:pmns_matrix_closure / tab:pmns_delta_sweep<br/>bounded-denominator δ selection + unitarity diagnostics"]
+  P_pmns_matrix("PMNS matrix/δ closure（audit output）<br/>类型：审计<br/>label: subsec:pmns_matrix_closure<br/>tables: tab:pmns_matrix; tab:pmns_delta_sweep")
+  M_pmns_matrix -.- P_pmns_matrix
+
+  M_neutrino_mass_iface["中微子质量尺度接口（nearest-integer depth）<br/>类型：审计<br/>label: subsec:neutrino_mass_interface / tab:neutrino_mass_interface<br/>r(μ)=ln(μ/m_e)/ln φ → r_hat ∈ ℤ"]
+  P_neutrino_mass_iface("neutrino mass-scale interface（NuFIT/PDG 对照）<br/>类型：审计<br/>label: subsec:neutrino_mass_interface<br/>table: tab:neutrino_mass_interface")
+  M_neutrino_mass_iface -.- P_neutrino_mass_iface
+
   M_mass["质量谱闭合（depth/latency）<br/>类型：闭合<br/>label: eq:r_of_mu_z128<br/>r(μ)=ln(μ/m_e)/ln φ"]
   P_mass("质量代理（延迟/钟慢/散射）<br/>类型：观测<br/>label: rem:mass_as_compton_clock<br/>ω_C=μc²/ħ;  τ_C=ħ/(μc²)")
   M_mass -.- P_mass
@@ -284,6 +434,10 @@ flowchart TB
   P_qm("测量代理（Born 概率/仪器）<br/>类型：观测<br/>label: eq:z128_born_povm<br/>P_k=Tr(ρE_k)")
   M_qm -.- P_qm
 
+  M_state_gns["状态泛函/GNS 背景（记号对齐）<br/>类型：审计<br/>label: app:state_gns_background<br/>ω(·) state;  ω(A)=⟨Ω|π(A)Ω⟩ (GNS);  ω(A)=Tr(ρA) (finite-dim)"]
+  P_state_gns("状态表示字典（ω/ρ 互译）<br/>类型：审计<br/>label: app:state_gns_background<br/>P(E)=ω(E) ↔ P=Tr(ρE)")
+  M_state_gns -.- P_state_gns
+
   M_wave_particle["波粒二象性/延迟选择（读出接口解释）<br/>类型：审计<br/>label: app:wave_particle_delayed_choice<br/>cross terms vs mixtures; V^2+D^2≤1; delayed-choice/eraser; Great Smoky Dragon"]
   P_wave_particle("干涉/哪路/延迟选择代理（实验口径）<br/>类型：审计<br/>label: app:wave_particle_delayed_choice<br/>interface: coherent vs event-record readout")
   M_wave_particle -.- P_wave_particle
@@ -331,17 +485,36 @@ flowchart TB
   P_gamma_direct("gamma 直接通道（旋转曲线）<br/>类型：审计<br/>label: app:gamma_crossobs_consistency<br/>SPARC rotation-curve fits")
   M_gamma_direct -.- P_gamma_direct
 
-  M_inputs@{ shape: lean-l, label: "外部 matching 输入清单（非前提）<br/>类型：审计<br/>label: subsec:external_inputs_inventory<br/>tab: tab:external_inputs_inventory" }
-  P_inputs@{ shape: lean-l, label: "External inputs inventory（Match；非前提）<br/>类型：审计<br/>label: subsec:external_inputs_inventory<br/>PDG/CODATA/Planck/NuFIT + vendored subsets" }
-  M_inputs -.- P_inputs
+  M_input_pdg@{ shape: lean-l, label: "PDG（粒子数据）<br/>类型：审计<br/>label: subsec:external_inputs_inventory" }
+  P_input_pdg@{ shape: lean-l, label: "PDG（targets；Match）<br/>类型：审计<br/>label: subsec:external_inputs_inventory" }
+  M_input_pdg -.- P_input_pdg
+
+  M_input_codata@{ shape: lean-l, label: "CODATA（基本常数）<br/>类型：审计<br/>label: subsec:external_inputs_inventory" }
+  P_input_codata@{ shape: lean-l, label: "CODATA（targets；Match）<br/>类型：审计<br/>label: subsec:external_inputs_inventory" }
+  M_input_codata -.- P_input_codata
+
+  M_input_planck@{ shape: lean-l, label: "Planck（CMB/宇宙学参数）<br/>类型：审计<br/>label: subsec:external_inputs_inventory" }
+  P_input_planck@{ shape: lean-l, label: "Planck（targets；Match）<br/>类型：审计<br/>label: subsec:external_inputs_inventory" }
+  M_input_planck -.- P_input_planck
+
+  M_input_nufit@{ shape: lean-l, label: "NuFIT（中微子振荡全局拟合）<br/>类型：审计<br/>label: subsec:external_inputs_inventory" }
+  P_input_nufit@{ shape: lean-l, label: "NuFIT（targets；Match）<br/>类型：审计<br/>label: subsec:external_inputs_inventory" }
+  M_input_nufit -.- P_input_nufit
 
   M_mdl_global["全局模型选择（MDL / prefix-code）<br/>类型：审计<br/>label: app:global_model_selection_mdl<br/>family registry + prefix-code prior + global mixture bound"]
   P_mdl_global("全局 look-elsewhere 上界（registry 内）<br/>类型：审计<br/>label: tab:audit_global_mdl_family_registry<br/>p_global(ε) via weighted N_{<=ε}/|Θ|")
   M_mdl_global -.- P_mdl_global
 
-  M_test["可证伪输出（预测与审计）<br/>类型：审计"]
-  P_test("可证伪检验（跨观测一致性）<br/>类型：审计")
-  M_test -.- P_test
+  %% -------------------------
+  %% Falsifiability predictions (P1–P7)
+  %% -------------------------
+  P_p1@{ shape: lean-r, label: "P1：右手中微子作为协议外/ghost 模式<br/>类型：审计<br/>label: subsec:p1_rh_neutrino" }
+  P_p2@{ shape: lean-r, label: "P2：手性域缺陷与大尺度奇偶统计签名<br/>类型：审计<br/>label: subsec:p2_domain_walls" }
+  P_p3@{ shape: lean-r, label: "P3：分辨率跃迁与 Fibonacci 批量阈值结构（依赖校准）<br/>类型：审计<br/>label: subsec:p3_resolution_jumps" }
+  P_p4@{ shape: lean-r, label: "P4：CP 破坏量级的刚性归一化目标<br/>类型：审计<br/>label: subsec:p4_cp_volume" }
+  P_p5@{ shape: lean-r, label: "P5：离散混合预测与量化鲁棒性（CKM/PMNS）<br/>类型：审计<br/>label: subsec:p5_quantified_predictions" }
+  P_p6@{ shape: lean-r, label: "P6：散射延迟作为 lapse 代理（时间字典）<br/>类型：审计<br/>label: subsec:p6_wigner_smith_delay" }
+  P_p7@{ shape: lean-r, label: "P7：γ_dict 跨观测一致性（旋转曲线/代理通道）<br/>类型：审计<br/>label: subsec:p7_gamma_crossobs" }
 
   %% -------------------------
   %% Derivation edges (solid arrows)
@@ -382,15 +555,45 @@ flowchart TB
   M_fold --> M_op2_fold_uniqueness
   P_fold --> P_screen
 
+  %% 6-DoF coarse-lock and derived bulk dimension (interface; not used in theorem-level folding proofs)
+  M_anchor --> M_6dof_lock --> M_bulk_dim --> M_geometric_vacuum
+  M_min_coarse_lock --> M_6dof_lock
+  M_cap --> M_bulk_dim
+
   M_anchor --> M_addr
   P_screen --> P_addr
 
   P_addr --> P_local
+
+  %% Chirality / antimatter / CPT protocol geometry
+  M_addr --> M_d4_layouts --> M_chi_def --> M_chi_flip --> M_scl --> M_mirror_universe
+  M_chi_flip --> M_orientation_min --> M_scl
+  M_d4_layouts --> M_ptc_defs
+  M_tick --> M_ptc_defs
+  M_ptc_defs --> M_cpt_protocol
+
+  M_readout --> M_conj_reversal --> M_conj_readout_rev --> M_antimatter_dual
+  M_scl --> M_cp_sign_anchor
+  M_cp_odd_J --> M_cp_sign_anchor
+
+  P_addr --> P_d4_layouts --> P_chi_def --> P_chi_flip --> P_scl --> P_mirror_universe
+  P_ptc_defs --> P_cpt_protocol
+  P_conj_reversal --> P_conj_readout_rev --> P_antimatter_dual
+  P_cp_sign_anchor --> P_p5
+  P_mirror_universe --> P_p2
+
   M_addr --> M_conn
   P_local --> P_conn
 
   M_conn --> M_holo
   P_conn --> P_holo
+
+  %% Phase register (Z128) and phase-lift CP bridge (audited finite family)
+  M_anchor --> M_z128_label --> M_dyadic_phase_register
+  M_cap --> M_tau_family
+  M_conn --> M_phase_lift_cp --> M_cp_odd_J
+  M_dyadic_phase_register --> M_phase_lift_cp
+  M_tau_family --> M_phase_lift_cp
 
   M_holo --> M_op3_yang_mills
   M_action --> M_op3_yang_mills
@@ -406,8 +609,57 @@ flowchart TB
   P_conn --> P_transport_audit
   P_holo --> P_transport_audit
 
-  M_gauge --> M_gauge3_assump --> M_gauge3 --> M_sm
-  P_gauge --> P_gauge3_assump --> P_gauge3 --> P_types
+  M_gauge --> M_gauge3 --> M_sm
+  M_g1 --> M_gauge3
+  M_g2 --> M_gauge3
+  M_g4 --> M_gauge3
+
+  P_gauge --> P_gauge3 --> P_types
+  P_g1 --> P_gauge3
+  P_g2 --> P_gauge3
+  P_g4 --> P_gauge3
+
+  %% Couplings & CP interface closures (CAP-closed; audited against PDG/CODATA)
+  M_cap --> M_alpha_geo
+  M_gauge3 --> M_alpha_geo
+  M_input_codata --> M_alpha_geo
+
+  M_cap --> M_ew_weinberg
+  M_gauge3 --> M_ew_weinberg
+  M_sm --> M_ew_weinberg
+  M_input_pdg --> M_ew_weinberg
+
+  M_cap --> M_cp_volume
+  M_cp_odd_J --> M_cp_volume
+  M_input_pdg --> M_cp_volume
+
+  M_cap --> M_ckm_mag --> M_ckm_matrix
+  M_input_pdg --> M_ckm_mag
+  M_cp_volume --> M_ckm_matrix
+
+  M_cap --> M_pmns_mag --> M_pmns_matrix
+  M_sm --> M_pmns_mag
+  M_input_nufit --> M_pmns_mag
+  M_input_pdg --> M_pmns_mag
+  M_cp_sign_anchor --> M_pmns_matrix
+
+  M_mass --> M_neutrino_mass_iface
+  M_input_nufit --> M_neutrino_mass_iface
+  M_input_pdg --> M_neutrino_mass_iface
+  M_pmns_matrix --> M_neutrino_majorana
+  M_neutrino_mass_iface --> M_neutrino_majorana
+
+  P_input_codata --> P_alpha_geo
+  P_input_pdg --> P_ew_weinberg
+  P_input_pdg --> P_cp_volume
+  P_input_pdg --> P_ckm_mag --> P_ckm_matrix
+  P_cp_volume --> P_ckm_matrix
+
+  P_input_nufit --> P_pmns_mag --> P_pmns_matrix
+  P_input_pdg --> P_pmns_mag
+  P_cp_sign_anchor --> P_pmns_matrix
+  P_input_nufit --> P_neutrino_mass_iface
+  P_input_pdg --> P_neutrino_mass_iface
 
   M_sm --> M_scalar_iface
   M_rg --> M_scalar_iface
@@ -439,18 +691,19 @@ flowchart TB
   M_equiv --> M_thermo
   M_equiv --> M_qm
   M_qm --> M_wave_particle
+  M_qm --> M_state_gns
 
-  %% Optional candidate-family inputs for the gauge-factor interface bundle (do not enter theorem-level folding proofs)
-  M_consensus_inputs --> M_gauge3_assump
-  M_internal_fiber_g2 --> M_gauge3_assump
-  P_consensus_inputs --> P_gauge3_assump
-  P_internal_fiber_g2 --> P_gauge3_assump
+  %% Optional candidate-family inputs for the gauge-factor interface closure (do not enter theorem-level folding proofs)
+  %% (de-aggregated: consensus P2 is the direct candidate-family route)
+  M_consensus_p2 --> M_gauge3
+  M_internal_fiber_g2 --> M_gauge3
+  P_consensus_p2 --> P_gauge3
+  P_internal_fiber_g2 --> P_gauge3
 
   %% -------------------------
   %% Dependencies into open / not-closed / out-of-scope trackers
   %% -------------------------
   M_gauge3 --> M_op1
-  M_gauge3_assump --> M_op1
   M_internal_fiber_g2 --> M_op1
   M_qm --> M_op1
   M_equiv --> M_op1
@@ -499,20 +752,11 @@ flowchart TB
 
   M_grav --> M_gamma_proxy
   M_grav --> M_gamma_direct
-  M_err --> M_test
-  M_cosmo --> M_test
-  M_qm --> M_test
-  M_gamma_proxy --> M_test
-  M_gamma_direct --> M_test
-  M_transport_audit --> M_test
-  M_graphzeta --> M_test
-  M_selberg --> M_test
-  M_hecke_like --> M_test
-  M_inputs --> M_test
   M_cap --> M_mdl_global
-  M_inputs --> M_mdl_global
-  M_mdl_global --> M_test
-  M_e --> M_test
+  M_input_pdg --> M_mdl_global
+  M_input_codata --> M_mdl_global
+  M_input_planck --> M_mdl_global
+  M_input_nufit --> M_mdl_global
 
   P_equiv --> P_quotient --> P_proj
   P_select --> P_capinv --> P_action
@@ -522,19 +766,37 @@ flowchart TB
   P_freq --> P_thermo
   P_freq --> P_lens
   P_equiv --> P_action --> P_eom --> P_dyn --> P_lens
-  P_lens --> P_gamma_proxy --> P_test
-  P_dyn --> P_gamma_direct --> P_test
-  P_lens --> P_recon --> P_err --> P_test
-  P_equiv --> P_thermo --> P_test
-  P_equiv --> P_qm --> P_test
+  P_lens --> P_gamma_proxy
+  P_dyn --> P_gamma_direct
+  P_lens --> P_recon --> P_err
+  P_equiv --> P_thermo
+  P_equiv --> P_qm
   P_qm --> P_wave_particle
-  P_cosmo --> P_test
-  P_transport_audit --> P_test
-  P_graphzeta --> P_test
-  P_selberg --> P_test
-  P_hecke_like --> P_test
-  P_inputs --> P_test
-  P_inputs --> P_mdl_global --> P_test
+  P_qm --> P_state_gns
+  P_input_pdg --> P_mdl_global
+  P_input_codata --> P_mdl_global
+  P_input_planck --> P_mdl_global
+  P_input_nufit --> P_mdl_global
+
+  %% Predictions: minimal wiring (keep DAG readable)
+  P_types --> P_p1
+  P_scl --> P_p1
+  P_addr --> P_p2
+  P_cosmo --> P_p2
+  P_mass --> P_p3
+  P_6dof_lock --> P_p3
+  P_input_pdg --> P_p3
+  P_input_codata --> P_p3
+  P_input_pdg --> P_p4
+  P_cp_volume --> P_p4
+  P_input_pdg --> P_p5
+  P_input_nufit --> P_p5
+  P_ckm_matrix --> P_p5
+  P_pmns_matrix --> P_p5
+  P_lens --> P_p6
+  P_gamma_proxy --> P_p7
+  P_gamma_direct --> P_p7
+  P_err --> P_p7
 
   %% -------------------------
   %% Styling (Material Design palette; math vs physics)
@@ -561,31 +823,35 @@ flowchart TB
   class P_wish,P_motive iface;
   %% Math node groups
   class M_tick,M_cap math_axiom;
-  class M_readout,M_phi,M_fold,M_anchor,M_addr,M_conn,M_holo,M_gauge,M_equiv,M_quotient,M_proj,M_freq math_construct;
-  class M_golden,M_pi,M_periodic,M_e,M_sm,M_mass,M_thermo,M_grav,M_qm,M_rg,M_entropy_gap,M_rm,M_relent,M_op2_fold_uniqueness math_closure;
+  class M_readout,M_phi,M_fold,M_anchor,M_addr,M_conn,M_holo,M_gauge,M_equiv,M_quotient,M_proj,M_freq,M_chi_def,M_ptc_defs,M_antimatter_dual math_construct;
+  class M_golden,M_pi,M_periodic,M_e,M_sm,M_mass,M_thermo,M_grav,M_qm,M_rg,M_entropy_gap,M_rm,M_relent,M_op2_fold_uniqueness,M_chi_flip,M_orientation_min,M_conj_reversal,M_conj_readout_rev math_closure;
   class M_action,M_eom,M_op3_yang_mills math_cont;
-  class M_cosmo,M_gauge3_assump,M_consensus_inputs,M_internal_fiber_g2 math_assumption;
-  class M_morita,M_gauss,M_abel,M_capinv,M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_recon,M_err,M_gamma_proxy,M_gamma_direct,M_transport_audit,M_inputs,M_mdl_global,M_test math_audit;
+  class M_cosmo,M_consensus_p1,M_consensus_p2,M_consensus_p3,M_internal_fiber_g2 math_assumption;
+  class M_morita,M_gauss,M_abel,M_capinv,M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_recon,M_err,M_gamma_proxy,M_gamma_direct,M_transport_audit,M_state_gns,M_input_pdg,M_input_codata,M_input_planck,M_input_nufit,M_mdl_global,M_g1,M_g2,M_g4,M_min_coarse_lock,M_6dof_lock,M_bulk_dim,M_geometric_vacuum,M_z128_label,M_tau_family,M_dyadic_phase_register,M_phase_lift_cp,M_cp_odd_J,M_d4_layouts,M_scl,M_cp_sign_anchor,M_cpt_protocol,M_mirror_universe,M_alpha_geo,M_ew_weinberg,M_cp_volume,M_ckm_mag,M_ckm_matrix,M_pmns_mag,M_pmns_matrix,M_neutrino_mass_iface math_audit;
   class M_gauge3,M_scalar_iface,M_lambda_open,M_bh_pointer,M_neutrino_majorana,M_qcd_gap not_closed;
   class M_op5 open_problem;
   class M_op1 math_audit;
   class M_wave_particle math_audit;
   class M_gut_scope,M_baryogenesis_scope,M_strongcp_scope,M_bhinfo_scope,M_qg_scope,M_cosmo_tension_scope,M_bsm_scope scope_gap;
   %% Physics node groups
-  class P_dt,P_scan,P_phi,P_pi,P_e,P_fold,P_screen,P_addr,P_local,P_conn,P_gauge,P_dyn phys_proxy;
-  class P_obs,P_periodic,P_holo,P_mass,P_lens,P_qm,P_wilson phys_obs;
-  class P_types,P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_am_euler,P_entropy_gap,P_rm,P_relent phys_dict;
+  class P_dt,P_scan,P_phi,P_pi,P_e,P_fold,P_screen,P_addr,P_local,P_conn,P_gauge,P_dyn,P_bulk_dim,P_geometric_vacuum phys_proxy;
+  class P_obs,P_periodic,P_holo,P_mass,P_lens,P_qm,P_wilson,P_cp_odd_J phys_obs;
+  class P_types,P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_am_euler,P_entropy_gap,P_rm,P_relent,P_6dof_lock,P_z128_label,P_d4_layouts,P_chi_def,P_ptc_defs,P_scl,P_antimatter_dual phys_dict;
   class P_abel,P_action,P_eom,P_rg,P_cosmo phys_model;
-  class P_morita,P_gauss,P_capinv,P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_select,P_recon,P_err,P_gamma_proxy,P_gamma_direct,P_transport_audit,P_inputs,P_consensus_inputs,P_internal_fiber_g2,P_mdl_global,P_test phys_audit;
+  class P_morita,P_gauss,P_capinv,P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_select,P_recon,P_err,P_gamma_proxy,P_gamma_direct,P_transport_audit,P_state_gns,P_input_pdg,P_input_codata,P_input_planck,P_input_nufit,P_consensus_p1,P_consensus_p2,P_consensus_p3,P_internal_fiber_g2,P_mdl_global,P_g1,P_g2,P_g4,P_min_coarse_lock,P_tau_family,P_dyadic_phase_register,P_phase_lift_cp,P_chi_flip,P_orientation_min,P_conj_reversal,P_conj_readout_rev,P_cp_sign_anchor,P_cpt_protocol,P_mirror_universe,P_alpha_geo,P_ew_weinberg,P_cp_volume,P_ckm_mag,P_ckm_matrix,P_pmns_mag,P_pmns_matrix,P_neutrino_mass_iface,P_p1,P_p2,P_p3,P_p4,P_p5,P_p6,P_p7 phys_audit;
   class P_gauge3,P_scalar_iface,P_lambda_open,P_bh_pointer,P_neutrino_majorana,P_qcd_gap not_closed;
   class P_op5 open_problem;
   class P_op1 phys_audit;
   class P_wave_particle phys_audit;
   class P_gut_scope,P_baryogenesis_scope,P_strongcp_scope,P_bhinfo_scope,P_qg_scope,P_cosmo_tension_scope,P_bsm_scope scope_gap;
-  class P_gauge3_assump phys_audit;
 
-  style M_test stroke-width:4px;
-  style P_test stroke-width:4px;
+  style P_p1 stroke-width:4px;
+  style P_p2 stroke-width:4px;
+  style P_p3 stroke-width:4px;
+  style P_p4 stroke-width:4px;
+  style P_p5 stroke-width:4px;
+  style P_p6 stroke-width:4px;
+  style P_p7 stroke-width:4px;
 ```
 
 ## 节点—标签对照（主标签 + 核心公式）
@@ -670,6 +936,8 @@ flowchart TB
 | `P_err` | `\label{app:protocol_to_continuum_error_control}` | `uncertainty/robustness budget for fitted proxies (audit)` | `sections/appendices/33_protocol_to_continuum_error_control.tex` |
 | `M_qm` | `\label{app:quantum_measurement_born}` | `eq:z128_born_povm — P_k=Tr(ρE_k)` | `sections/appendices/30_quantum_measurement_born.tex` |
 | `P_qm` | `\label{app:quantum_measurement_born}` | `eq:z128_born_povm — P_k=Tr(ρE_k)` | `sections/appendices/30_quantum_measurement_born.tex` |
+| `M_state_gns` | `\label{app:state_gns_background}` | `ω(A)=⟨Ω|π(A)Ω⟩ (GNS);  ω(A)=Tr(ρA) (finite-dim)` | `sections/appendices/30c_state_gns_background.tex` |
+| `P_state_gns` | `\label{app:state_gns_background}` | `P(E)=ω(E) ↔ P=Tr(ρE)` | `sections/appendices/30c_state_gns_background.tex` |
 | `M_wave_particle` | `\label{app:wave_particle_delayed_choice}` | `cross terms vs mixture; V^2+D^2≤1; delayed-choice/eraser (interface)` | `sections/appendices/30b_wave_particle_delayed_choice.tex` |
 | `P_wave_particle` | `\label{app:wave_particle_delayed_choice}` | `delayed-choice / quantum eraser / Wheeler “Great Smoky Dragon” (audit-facing)` | `sections/appendices/30b_wave_particle_delayed_choice.tex` |
 | `M_rg` | `\label{app:running_couplings_resolution_flow}` | `eq:rg_in_r — dg/dr = (ln φ)β(g)` | `sections/appendices/31_running_couplings_resolution_flow.tex` |
@@ -694,16 +962,85 @@ flowchart TB
 | `P_gamma_direct` | `\label{app:gamma_crossobs_consistency}` | `direct channel: SPARC rotation-curve fits (vendored audit subset)` | `sections/appendices/35_gamma_cross_observation_consistency.tex` |
 | `M_transport_audit` | `\label{tab:holonomy_transport_rule_sensitivity}` | `transport rule sensitivity envelope: TV(p,q)=0.5·Σ_k |p_k−q_k|;  frac_{3/4} range` | `sections/appendices/15_holonomy_sweeps_extended.tex` |
 | `P_transport_audit` | `\label{tab:holonomy_transport_rule_sensitivity}` | `bounded counterfactual families for padding/truncation/tie-break (audit)` | `sections/appendices/15_holonomy_sweeps_extended.tex` |
-| `M_inputs` | `\label{subsec:external_inputs_inventory}` | `MatchTag external inputs inventory (non-premises)` | `sections/appendices/11_inference_ledger.tex` |
-| `P_inputs` | `\label{subsec:external_inputs_inventory}` | `external targets: PDG/CODATA/Planck/NuFIT + vendored subsets (audit)` | `sections/appendices/11_inference_ledger.tex` |
-| `M_consensus_inputs` | `\label{app:physics_consensus_inputs}` | `MatchTag: SM+GR EFT; three-factor gauge; matching scale + RG dictionary` | `sections/appendices/49_physics_consensus_inputs.tex` |
-| `P_consensus_inputs` | `\label{app:physics_consensus_inputs}` | `physics-consensus interface/matching inputs (non-premises)` | `sections/appendices/49_physics_consensus_inputs.tex` |
+| `M_input_pdg` | `\label{subsec:external_inputs_inventory}` | `PDG targets (particles)` | `sections/appendices/11_inference_ledger.tex` |
+| `P_input_pdg` | `\label{subsec:external_inputs_inventory}` | `PDG targets (Match)` | `sections/appendices/11_inference_ledger.tex` |
+| `M_input_codata` | `\label{subsec:external_inputs_inventory}` | `CODATA targets (constants)` | `sections/appendices/11_inference_ledger.tex` |
+| `P_input_codata` | `\label{subsec:external_inputs_inventory}` | `CODATA targets (Match)` | `sections/appendices/11_inference_ledger.tex` |
+| `M_input_planck` | `\label{subsec:external_inputs_inventory}` | `Planck targets (CMB/cosmology)` | `sections/appendices/11_inference_ledger.tex` |
+| `P_input_planck` | `\label{subsec:external_inputs_inventory}` | `Planck targets (Match)` | `sections/appendices/11_inference_ledger.tex` |
+| `M_input_nufit` | `\label{subsec:external_inputs_inventory}` | `NuFIT targets (neutrino oscillations)` | `sections/appendices/11_inference_ledger.tex` |
+| `P_input_nufit` | `\label{subsec:external_inputs_inventory}` | `NuFIT targets (Match)` | `sections/appendices/11_inference_ledger.tex` |
+| `M_consensus_p1` | `\label{ass:consensus_sm_gr_eft}` | `P1: low-energy EFT consensus (SM+GR)` | `sections/appendices/49_physics_consensus_inputs.tex` |
+| `P_consensus_p1` | `\label{ass:consensus_sm_gr_eft}` | `P1: low-energy EFT consensus (Match)` | `sections/appendices/49_physics_consensus_inputs.tex` |
+| `M_consensus_p2` | `\label{ass:consensus_three_factor_gauge}` | `P2: three-factor gauge structure (interface)` | `sections/appendices/49_physics_consensus_inputs.tex` |
+| `P_consensus_p2` | `\label{ass:consensus_three_factor_gauge}` | `P2: three-factor gauge structure (Match)` | `sections/appendices/49_physics_consensus_inputs.tex` |
+| `M_consensus_p3` | `\label{ass:consensus_matching_scale_rg}` | `P3: matching scale μ* and RG propagation dictionary` | `sections/appendices/49_physics_consensus_inputs.tex` |
+| `P_consensus_p3` | `\label{ass:consensus_matching_scale_rg}` | `P3: matching scale μ* and RG propagation dictionary (Match)` | `sections/appendices/49_physics_consensus_inputs.tex` |
 | `M_internal_fiber_g2` | `\label{app:internal_fiber_g2_optional}` / `\label{cor:octonion_three_channel_minimality}` | `norm-multiplicative composition N(xy)=N(x)N(y); Hurwitz dims {1,2,4,8}; three-channel minimality selects 8 ⇒ octonions; G2=Aut(O)` | `sections/appendices/50_internal_fiber_g2_optional.tex` |
 | `P_internal_fiber_g2` | `\label{app:internal_fiber_g2_optional}` | `optional micro-implementation route (audit-facing pointer)` | `sections/appendices/50_internal_fiber_g2_optional.tex` |
 | `M_mdl_global` | `\label{app:global_model_selection_mdl}` | `MDL/prefix-code prior on declared family registry; cross-family mixture bound` | `sections/appendices/42_global_model_selection_mdl.tex` |
 | `P_mdl_global` | `\label{tab:audit_global_mdl_family_registry}` | `global look-elsewhere bound within registry (generated rows/summary)` | `sections/appendices/42_global_model_selection_mdl.tex` |
-| `M_test` | `\label{sec:falsifiability}` | `P1–P6 falsifiable statements (audited thresholds/calibrations)` | `sections/V_40_falsifiability_predictions.tex` |
-| `P_test` | `\label{sec:falsifiability}` | `protocolized tests + error budgets (cross-checks)` | `sections/V_40_falsifiability_predictions.tex` |
+| `M_min_coarse_lock` | `\label{lem:minimal_one_bit_per_parameter}` | `card(Ω_m)=2^m ≥ 2^k ⇒ m≥k` | `sections/appendices/20_forced_interface_lemmas.tex` |
+| `P_min_coarse_lock` | `\label{lem:minimal_one_bit_per_parameter}` | `single-window binning lower bound (audit)` | `sections/appendices/20_forced_interface_lemmas.tex` |
+| `M_6dof_lock` | `\label{subsec:6dof_lock}` / `\label{rem:6dof_lock_scope}` | `m ≥ dim SE(d)=d(d+1)/2 (two-bin/DoF)` | `sections/I_00_introduction.tex` |
+| `P_6dof_lock` | `\label{subsec:6dof_lock}` | `anchor coarse-lock: m=6 (display budget threshold)` | `sections/I_00_introduction.tex` |
+| `M_bulk_dim` | `\label{prop:bulk_dimension_from_anchor}` | `m=6 ⇒ CAP selects d=3 (max admissible)` | `sections/I_05_tick_calculus.tex` |
+| `P_bulk_dim` | `\label{prop:bulk_dimension_from_anchor}` | `bulk dimension output: d=3` | `sections/I_05_tick_calculus.tex` |
+| `M_geometric_vacuum` | `\label{subsubsec:geometric_vacuum}` | `m<6 ⇒ sub-geometric modes treated as non-local background` | `sections/I_00_introduction.tex` |
+| `P_geometric_vacuum` | `\label{subsubsec:geometric_vacuum}` | `sub-geometric vacuum / ghost-sector (interface proxy)` | `sections/I_00_introduction.tex` |
+| `M_d4_layouts` | `\label{lem:d4_layouts}` | `8 layouts → 2 orientation classes (rotation/reflection split)` | `sections/I_10_hilbert_addressing_chirality.tex` |
+| `P_d4_layouts` | `\label{lem:d4_layouts}` | `orientation-class audit basis (D4 layouts)` | `sections/I_10_hilbert_addressing_chirality.tex` |
+| `M_chi_def` | `\label{eq:hilbert_chi_def}` | `χ: discrete chirality/orientation sign datum` | `sections/I_10_hilbert_addressing_chirality.tex` |
+| `P_chi_def` | `\label{eq:hilbert_chi_def}` | `χ: parity-odd protocol observable (audit-visible sign)` | `sections/I_10_hilbert_addressing_chirality.tex` |
+| `M_chi_flip` | `\label{prop:chi_flip}` | `rotation preserves χ; reflection reverses` | `sections/I_10_hilbert_addressing_chirality.tex` |
+| `P_chi_flip` | `\label{prop:chi_flip}` | `χ sign flip law under reflection-like swaps` | `sections/I_10_hilbert_addressing_chirality.tex` |
+| `M_ptc_defs` | `\label{subsec:ptc_definitions}` / `\label{def:ptc_protocol}` | `protocol P_prot/T_prot/C_prot defined on finite readout` | `sections/I_30_chirality_antimatter_cpt.tex` |
+| `P_ptc_defs` | `\label{subsec:ptc_definitions}` | `auditable discrete symmetry operations (interface)` | `sections/I_30_chirality_antimatter_cpt.tex` |
+| `M_scl` | `\label{subsec:scl}` / `\label{def:scl}` | `scan–chirality locking (orientation bit + CAP tie-break)` | `sections/I_30_chirality_antimatter_cpt.tex` |
+| `P_scl` | `\label{def:scl}` | `mirror protocol swap ↔ χ sign flip (dictionary)` | `sections/I_30_chirality_antimatter_cpt.tex` |
+| `M_antimatter_dual` | `\label{subsec:antimatter_duality}` | `antimatter as conjugate readout; word-reversal dual` | `sections/I_30_chirality_antimatter_cpt.tex` |
+| `P_antimatter_dual` | `\label{subsec:antimatter_duality}` | `conjugate readout interface (matched protocol)` | `sections/I_30_chirality_antimatter_cpt.tex` |
+| `M_conj_reversal` | `\label{lem:conjugation_reversal}` | `conjugation equals reversal up to an initial-phase flip` | `sections/I_30_chirality_antimatter_cpt.tex` |
+| `P_conj_reversal` | `\label{lem:conjugation_reversal}` | `finite protocol avatar of C_prot (audit lemma)` | `sections/I_30_chirality_antimatter_cpt.tex` |
+| `M_cp_sign_anchor` | `\label{def:chi_cp_sign}` / `\label{rem:cp_sign_convention}` | `sgn(J_CP)=sgn(χ) (fix CP-odd sign in PDG conventions)` | `sections/I_30_chirality_antimatter_cpt.tex` |
+| `P_cp_sign_anchor` | `\label{def:chi_cp_sign}` | `resolves δ ↔ π−δ ambiguity (interface)` | `sections/I_30_chirality_antimatter_cpt.tex` |
+| `M_cpt_protocol` | `\label{subsec:cpt_protocol}` | `scan-layer CPT vs protocol-layer swaps (consistency reference)` | `sections/I_30_chirality_antimatter_cpt.tex` |
+| `P_cpt_protocol` | `\label{subsec:cpt_protocol}` | `CPT at scan layer (audit-facing statement)` | `sections/I_30_chirality_antimatter_cpt.tex` |
+| `M_mirror_universe` | `\label{subsec:mirror_universe}` | `mirror protocol: global χ sign flip; boundaries are protocol defects` | `sections/I_30_chirality_antimatter_cpt.tex` |
+| `P_mirror_universe` | `\label{subsec:mirror_universe}` | `orientation-domain boundaries → P2 test channel` | `sections/I_30_chirality_antimatter_cpt.tex` |
+| `M_z128_label` | `\label{subsec:z128_label}` | `phase ∈ Z_{2^p}; baseline p=7 at m=6 (Z128)` | `sections/I_00_introduction.tex` |
+| `P_z128_label` | `\label{subsec:z128_label}` | `dyadic phase register interface (audit)` | `sections/I_00_introduction.tex` |
+| `M_tau_family` | `\label{rem:tau_family_bounded}` | `τ ∈ {id, gray, bitrev, not} (bounded family + CAP)` | `sections/I_21_protocol_connections_holonomy.tex` |
+| `P_tau_family` | `\label{rem:tau_family_bounded}` | `phase-map family (audit-bounded)` | `sections/I_21_protocol_connections_holonomy.tex` |
+| `M_dyadic_phase_register` | `\label{rem:dyadic_phase_register}` | `denom=2^p; p=7 ↔ Z128 (nested refinement)` | `sections/I_21_protocol_connections_holonomy.tex` |
+| `P_dyadic_phase_register` | `\label{rem:dyadic_phase_register}` | `dyadic phase register (audit)` | `sections/I_21_protocol_connections_holonomy.tex` |
+| `M_phase_lift_cp` | `\label{subsec:holonomy_phase_lift_cp}` | `phase-weighted holonomy: U_{a→b} ∈ U(4)` | `sections/I_21_protocol_connections_holonomy.tex` |
+| `P_phase_lift_cp` | `\label{subsec:holonomy_phase_lift_cp}` | `extract mixing angles/δ (PDG diagnostic; audit)` | `sections/I_21_protocol_connections_holonomy.tex` |
+| `M_cp_odd_J` | `\label{tab:holonomy_phase_lift_j}` / `\label{tab:holonomy_phase_lift_family}` | `J := Im(U11·U22·U12*·U21*) (CP-odd proxy)` | `sections/I_21_protocol_connections_holonomy.tex` |
+| `P_cp_odd_J` | `\label{tab:holonomy_phase_lift_j}` / `\label{tab:holonomy_phase_lift_family}` | `J proxy output (bounded-denominator sweeps)` | `sections/I_21_protocol_connections_holonomy.tex` |
+| `M_alpha_geo` | `\label{subsec:alpha_impedance}` / `\label{eq:alpha_geo}` / `\label{thm:alpha_three_channel}` | `α_em^{-1}=4π^3+π^2+π` | `sections/V_32_couplings_cp_violation.tex` |
+| `P_alpha_geo` | `\label{subsec:alpha_impedance}` | `α_em^{-1} target (CODATA/PDG match-layer audit)` | `sections/V_32_couplings_cp_violation.tex` |
+| `M_ew_weinberg` | `\label{subsec:weinberg_angle}` / `\label{thm:weinberg_angle}` | `sin^2θ_W(μ_Z)=3/13;  α^{-1}(μ_Z)=13π^2` | `sections/V_32_couplings_cp_violation.tex` |
+| `P_ew_weinberg` | `\label{subsec:weinberg_angle}` | `Weinberg angle / α(μ_Z) targets (PDG match-layer audit)` | `sections/V_32_couplings_cp_violation.tex` |
+| `M_cp_volume` | `\label{subsec:cp_jarlskog}` / `\label{eq:j_geo}` / `\label{prop:jarlskog_rigidity_stmt}` | `J_geo=1/(11π^7) (CP-odd phase-space volume target)` | `sections/V_32_couplings_cp_violation.tex` |
+| `P_cp_volume` | `\label{subsec:cp_jarlskog}` | `CKM Jarlskog audit against J_geo target` | `sections/V_32_couplings_cp_violation.tex` |
+| `M_ckm_mag` | `\label{subsec:ckm_mixing_depths}` / `\label{prop:ckm_mixing_rigidity}` / `\label{tab:ckm_mixing}` | `r_mix(x)=−log x / log φ (finite candidate family)` | `sections/V_32_couplings_cp_violation.tex` |
+| `P_ckm_mag` | `\label{subsec:ckm_mixing_depths}` | `CKM magnitude targets (PDG match-layer audit)` | `sections/V_32_couplings_cp_violation.tex` |
+| `M_ckm_matrix` | `\label{subsec:ckm_matrix_closure}` / `\label{tab:ckm_matrix_closure}` | `PDG parameter reconstruction + unitarity diagnostics` | `sections/V_32_couplings_cp_violation.tex` |
+| `P_ckm_matrix` | `\label{subsec:ckm_matrix_closure}` | `CKM matrix closure output (abs(V_ij), angles, unitarity)` | `sections/V_32_couplings_cp_violation.tex` |
+| `M_pmns_mag` | `\label{subsec:pmns_mixing_depths}` / `\label{prop:pmns_mixing_rigidity}` / `\label{tab:pmns_mixing}` | `PMNS mixing sines: bounded-complexity discrete targets` | `sections/V_33_pmns_neutrino_summary.tex`; `sections/V_33_pmns_neutrino_closure.tex` |
+| `P_pmns_mag` | `\label{subsec:pmns_mixing_depths}` | `PMNS targets (NuFIT/PDG match-layer audit)` | `sections/V_33_pmns_neutrino_summary.tex`; `sections/V_33_pmns_neutrino_closure.tex` |
+| `M_pmns_matrix` | `\label{subsec:pmns_matrix_closure}` / `\label{tab:pmns_delta_sweep}` / `\label{tab:pmns_matrix}` | `bounded-denominator δ selection + PMNS unitarity diagnostics` | `sections/V_33_pmns_neutrino_summary.tex`; `sections/V_33_pmns_neutrino_closure.tex` |
+| `P_pmns_matrix` | `\label{subsec:pmns_matrix_closure}` | `PMNS closure output (abs(U_ij), angles, δ, unitarity)` | `sections/V_33_pmns_neutrino_summary.tex`; `sections/V_33_pmns_neutrino_closure.tex` |
+| `M_neutrino_mass_iface` | `\label{subsec:neutrino_mass_interface}` / `\label{tab:neutrino_mass_interface}` | `r(μ)=log(μ/m_e)/log φ → nearest integer r̂; Δr mismatch` | `sections/V_33_pmns_neutrino_summary.tex` |
+| `P_neutrino_mass_iface` | `\label{subsec:neutrino_mass_interface}` | `mass-scale interface bookkeeping (not an absolute-mass prediction)` | `sections/V_33_pmns_neutrino_summary.tex` |
+| `P_p1` | `\label{subsec:p1_rh_neutrino}` | `P1: protocol-external / ghost-like ν_R` | `sections/V_40_falsifiability_predictions.tex` |
+| `P_p2` | `\label{subsec:p2_domain_walls}` | `P2: chirality-domain defects & parity-odd signatures` | `sections/V_40_falsifiability_predictions.tex` |
+| `P_p3` | `\label{subsec:p3_resolution_jumps}` | `P3: resolution jumps & Fibonacci-structured thresholds` | `sections/V_40_falsifiability_predictions.tex` |
+| `P_p4` | `\label{subsec:p4_cp_volume}` | `P4: CP violation magnitude rigidity target` | `sections/V_40_falsifiability_predictions.tex` |
+| `P_p5` | `\label{subsec:p5_quantified_predictions}` | `P5: discrete CKM/PMNS mixing closures & robustness` | `sections/V_40_falsifiability_predictions.tex` |
+| `P_p6` | `\label{subsec:p6_wigner_smith_delay}` | `P6: scattering delay as lapse proxy` | `sections/V_40_falsifiability_predictions.tex` |
+| `P_p7` | `\label{subsec:p7_gamma_crossobs}` | `P7: γ_dict cross-observation consistency` | `sections/V_40_falsifiability_predictions.tex` |
 
 ### 未闭合/未覆盖节点补充（追踪用）
 
@@ -711,14 +1048,13 @@ flowchart TB
 
 | 节点 | 入口（label/track） | 状态 | 依赖（DAG 上游） | 文件/入口 |
 |---|---|---|---|---|
-| `M_gauge3_assump` / `P_gauge3_assump` | `\label{subsec:gauge_as_compensation}` | 条件束 | `M_gauge`, `M_cap`, `M_equiv`, `M_consensus_inputs` (optional), `M_internal_fiber_g2` (optional) | `sections/I_20_standard_model_interface.tex` |
-| `M_gauge3` / `P_gauge3` | `\label{prop:channel_to_gauge}` | 条件闭合（声明族内） | `M_gauge3_assump` | `sections/I_20_standard_model_interface.tex` |
-| `M_op1` / `P_op1` | `\label{app:internal_fiber_g2_optional}` / `\label{app:quantum_measurement_born}` | 闭合（Q） | `M_qm`, `M_internal_fiber_g2`, `M_gauge3`, `M_gauge3_assump`, `M_cap`, `M_equiv` | `sections/appendices/50_internal_fiber_g2_optional.tex`; `sections/appendices/30_quantum_measurement_born.tex`; `sections/appendices/11_inference_ledger.tex`; `sections/V_41_limitations_related_work.tex` |
+| `M_gauge3` / `P_gauge3` | `\label{prop:channel_to_gauge}` | 条件闭合（声明族内） | `M_gauge`, `M_g1`, `M_g2`, `M_g4`, `M_consensus_p2` (optional), `M_internal_fiber_g2` (optional) | `sections/I_20_standard_model_interface.tex` |
+| `M_op1` / `P_op1` | `\label{app:internal_fiber_g2_optional}` / `\label{app:quantum_measurement_born}` | 闭合（Q） | `M_qm`, `M_internal_fiber_g2`, `M_gauge3`, `M_cap`, `M_equiv` | `sections/appendices/50_internal_fiber_g2_optional.tex`; `sections/appendices/30_quantum_measurement_born.tex`; `sections/appendices/11_inference_ledger.tex`; `sections/V_41_limitations_related_work.tex` |
 | `M_scalar_iface` / `P_scalar_iface` | `\label{app:scalar_interface_audits}` / `\label{rem:higgs_not_in_21}` | 未闭合（接口/审计形态） | `M_sm`, `M_rg`, `M_proj` | `sections/appendices/22_scalar_interface_audits.tex`; `sections/I_20_standard_model_interface.tex` |
 | `M_op5` / `P_op5` | `\label{subsec:ledger_open_problems}` / `\label{subsec:open_problems_audit_tagged}` | Open | `M_scalar_iface`, `M_rg`, `M_action` | `sections/appendices/11_inference_ledger.tex`; `sections/V_41_limitations_related_work.tex` |
 | `M_lambda_open` / `P_lambda_open` | `\label{app:cap_continuum_action_closure}` | 未闭合 | `M_action`, `M_cosmo` | `sections/F_20_cap_continuum_action_closure.tex`; `theory_closure_tracker.md` |
 | `M_bh_pointer` / `P_bh_pointer` | `\label{app:bh_wormholes_pointer}` | 未闭合（指针/外部输入） | `M_grav`, `M_thermo`, `M_qm` | `sections/appendices/10_black_holes_wormholes.tex`; `theory_closure_tracker.md` |
-| `M_neutrino_majorana` / `P_neutrino_majorana` | `\label{sec:pmns_neutrino_closure}` | 未闭合 | `M_sm`, `M_qm` | `sections/V_33_pmns_neutrino_summary.tex`; `theory_closure_tracker.md` |
+| `M_neutrino_majorana` / `P_neutrino_majorana` | `\label{sec:pmns_neutrino_closure}` | 未闭合 | `M_sm`, `M_qm`, `M_pmns_matrix`, `M_neutrino_mass_iface` | `sections/V_33_pmns_neutrino_summary.tex`; `theory_closure_tracker.md` |
 | `M_qcd_gap` / `P_qcd_gap` | `\label{app:continuum_yang_mills_from_holonomy}` | 未闭合（严格问题） | `M_op3_yang_mills`, `M_rg` | `sections/appendices/36_continuum_yang_mills_from_holonomy.tex`; `theory_closure_tracker.md` |
 | `M_gut_scope` / `P_gut_scope` | `\label{sec:limitations_related_work}` | 范围外（benchmark 指针） | `M_rg`, `M_sm` | `sections/V_41_limitations_related_work.tex`; `theory_closure_tracker.md` |
 | `M_baryogenesis_scope` / `P_baryogenesis_scope` | `theory_closure_tracker.md` | 范围外 | `M_sm`, `M_thermo` | `theory_closure_tracker.md` |
