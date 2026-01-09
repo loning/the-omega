@@ -1,0 +1,77 @@
+\subsection{State functionals and the GNS representation (mathematical background)}
+\label{app:state_gns_background}
+
+\paragraph{Scope and status.}
+\AuditTag This appendix records a purely mathematical background that aligns the paper's Hilbert-space notation with the operator-algebraic ``state'' viewpoint used throughout the HPA--$\Omega$ repository.
+It introduces no additional protocol primitives beyond tick and CAP, and it is not used as a premise in any theorem-level folding statement.
+
+\subsubsection{States as normalized positive linear functionals}
+\label{subsec:state_functional_definition}
+
+Let $\mathfrak{A}$ be a unital $*$-algebra over $\mathbb{C}$ (e.g.\ a unital $C^{*}$-algebra).
+A \emph{state} on $\mathfrak{A}$ is a linear functional $\omega:\mathfrak{A}\to\mathbb{C}$ such that
+\[
+\omega(A^{*}A)\ge 0\quad\text{for all }A\in\mathfrak{A},
+\qquad
+\omega(\mathbf{1})=1.
+\]
+If $E\in\mathfrak{A}$ is an \emph{effect} ($0\preceq E\preceq \mathbf{1}$ in a $C^{*}$-setting), then $\omega(E)\in[0,1]$.
+Thus, at the level of abstract algebra, readout probabilities can be written in the state-functional form
+\[
+P(E)=\omega(E),
+\]
+which is the operator-algebraic counterpart of the Hilbert-space Born form in Appendix~\ref{app:quantum_measurement_born}.
+
+\subsubsection{GNS representation and the ``single vector'' notation}
+\label{subsec:gns_representation}
+
+\begin{proposition}[GNS representation (standard)]
+\label{prop:gns_representation_standard}
+Let $\mathfrak{A}$ be a unital $C^{*}$-algebra and let $\omega$ be a state on $\mathfrak{A}$.
+Then there exist a Hilbert space $\mathcal{H}_{\omega}$, a $*$-representation $\pi_{\omega}:\mathfrak{A}\to\mathcal{B}(\mathcal{H}_{\omega})$, and a cyclic vector $|\Omega_{\omega}\rangle\in\mathcal{H}_{\omega}$ such that
+\[
+\omega(A)=\langle \Omega_{\omega}|\pi_{\omega}(A)\Omega_{\omega}\rangle
+\qquad\text{for all }A\in\mathfrak{A}.
+\]
+Moreover, the triple $(\mathcal{H}_{\omega},\pi_{\omega},|\Omega_{\omega}\rangle)$ is unique up to unitary equivalence.
+\end{proposition}
+\begin{proof}[Reference]
+See standard texts on operator algebras, e.g.\ \cite{BratteliRobinson1987,KadisonRingrose1997}.
+\end{proof}
+
+\paragraph{Interpretation for this paper.}
+\InterfaceTag Proposition~\ref{prop:gns_representation_standard} justifies writing a state as a ``single normalized vector'' \emph{in a chosen representation}.
+The representation choice is not unique; the invariant object is the state functional $\omega$.
+Accordingly, when one uses language such as ``a fixed state vector'' in an auxiliary explanation, it can be read as shorthand for a fixed state $\omega$ together with a chosen GNS (or finite-dimensional) representation.
+
+\subsubsection{Finite-dimensional specialization and the density-matrix form}
+\label{subsec:state_density_matrix_specialization}
+
+In the finite-dimensional setting $\mathfrak{A}=\mathcal{B}(\mathcal{H}_{\mathrm{eff}})$ with $\dim\mathcal{H}_{\mathrm{eff}}<\infty$, every state has the form
+\[
+\omega(A)=\Tr(\rho\,A)
+\]
+for a unique density operator $\rho\succeq 0$ with $\Tr(\rho)=1$.
+Therefore, for a POVM $\{E_k\}_k$ one has the equivalent forms
+\[
+P_k=\Tr(\rho\,E_k)=\omega(E_k),
+\]
+which is the same readout rule recorded in \eqref{eq:z128_born_povm}.
+
+\subsubsection{Integer-time correlations and tick indexing}
+\label{subsec:state_tick_correlators}
+
+Let $\mathcal{U}:\mathfrak{A}\to\mathfrak{A}$ be a unital $*$-automorphism.
+Then correlations along an integer iterate can be written as
+\[
+t\in\mathbb{Z}
+\qquad\mapsto\qquad
+\omega\!\left(\mathcal{U}^{t}(A)\right),
+\]
+and, in a Hilbert-space representation implemented by a unitary $U$ with $\mathcal{U}(A)=U^{*}AU$, as $\omega(U^{*t}\,A\,U^{t})$.
+This matches the tick-first convention of the paper: the primitive operational time variable is an integer iteration index (Definition~\ref{def:tick}), and physical observables are defined from finite records indexed by tick differences (Section~\ref{sec:tick_calculus}).
+\par
+\InterfaceTag Finite-resolution readout is modeled by effects/instruments acting on an effective state (Appendix~\ref{app:quantum_measurement_born}).
+Irreversibility and arrow-of-time language in this paper arise from many-to-one record formation (window projection and folding) and from protocol-level coarse graining (Section~\ref{subsec:tick_time_arrow} and Appendix~\ref{app:arrow_of_time_semigroup_notes}), not from a postulated time-indexed family of states.
+
+
