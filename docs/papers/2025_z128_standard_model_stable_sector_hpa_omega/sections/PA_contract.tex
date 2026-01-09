@@ -1,7 +1,7 @@
 \part{Contract: Wish, Motive, and the Two-Axiom Spine}
 
-\section*{Reader-facing contract (audit discipline)}
-\addcontentsline{toc}{section}{Reader-facing contract (audit discipline)}
+\section*{A.0 Reader-facing contract (audit discipline)}
+\addcontentsline{toc}{section}{A.0 Reader-facing contract (audit discipline)}
 
 \paragraph{Layer tags used in the main text.}
 \MathTag marks theorem-level finite constructions and proofs (counts, maps, finite tables).
@@ -13,19 +13,50 @@
 The inference ledger (Appendix~\ref{app:inference_ledger}) records dependency status using the five tags \textsf{[Math]}, \textsf{[Prot]}, \textsf{[Iface]}, \textsf{[CAP]}, and \textsf{[Open]}.
 These ledger statuses are not additional main-text layer tags; they are used only for audit and dependency tracking.
 
-\paragraph{Wish and Motive (interface language; not used in proofs).}
-\InterfaceTag We use \emph{Wish} as shorthand for a protocol-stable target datum/structure (a reproducible stable readout type and its associated invariants), and \emph{Motive} as shorthand for an auditable objective functional that combines mismatch certificates with bounded implementation cost.
-\AuditTag These names are organizational and reader-facing: they do not add new axioms, and they are not used as premises in theorem-level proofs.
-For a compact template definition (reader-facing; not used in proofs), see Appendix~\ref{app:wish_motive_definitions}.
-The only primitives are the tick (Axiom~\ref{ax:readout_sequentiality}) and CAP (Axiom~\ref{ax:cap}); see also Figure~\ref{fig:inference_map} and Appendix~\ref{app:tick_cap_derivation}.
-
 \paragraph{No reverse dependence (legend discipline).}
 \AuditTag We follow the dependency legend in Figure~\ref{fig:inference_map}: theorem-level implications flow along solid arrows, while interface dictionaries and audit overlays (dashed/dotted arrows) never serve as premises for theorem-level proofs.
 
-\paragraph{Three channels as the mainline.}
-\InterfaceTag The core finite stability reduction is organized by three channels, denoted $\varphi$--$\pi$--$\mathrm{e}$: grammar admissibility, cyclic closure, and an analytic stability template.
+\section*{A.1 Wish: Protocol-stable target data (interface)}
+\addcontentsline{toc}{section}{A.1 Wish: Protocol-stable target data (interface)}
+
+\InterfaceTag We use \emph{Wish} as shorthand for a protocol-stable target datum/structure (a reproducible stable readout type and its associated invariants).
+It is defined not as a psychological object, but as a data structure tuple $W := (m, \mathcal{I}_m, \mathcal{C}_m, \varepsilon)$ containing window length, computable invariants, consistency predicates, and an explicit tolerance budget.
+\AuditTag This name is organizational and reader-facing: it does not add new axioms, and it is not used as a premise in theorem-level proofs.
+For the compact template definition (reader-facing; not used in proofs), see Appendix~\ref{app:wish_motive_definitions}.
+
+\section*{A.2 Motive: Auditable objective functional (interface+CAP)}
+\addcontentsline{toc}{section}{A.2 Motive: Auditable objective functional (interface+CAP)}
+
+\InterfaceTag We use \emph{Motive} as shorthand for an auditable objective functional that combines mismatch certificates with bounded implementation cost.
+Formally, given a Wish, a Motive is a functional $J$ on a finite candidate family that quantifies mismatch, cost, and stability.
+The CAP axiom (Axiom~\ref{ax:cap}) then selects the unique minimizer of this functional.
+\AuditTag Like Wish, this term is organizational: the only primitives are the tick (Axiom~\ref{ax:readout_sequentiality}) and CAP (Axiom~\ref{ax:cap}); see also Figure~\ref{fig:inference_map} and Appendix~\ref{app:tick_cap_derivation}.
+
+\section*{A.3 Three channels as the mainline (interface)}
+\addcontentsline{toc}{section}{A.3 Three channels as the mainline (interface)}
+
+\InterfaceTag The core finite stability reduction is organized by three channels, denoted $\varphi$--$\pi$--$\mathrm{e}$:
+\begin{itemize}
+    \item $\varphi$-channel: grammar admissibility and Fibonacci growth (discrete scale).
+    \item $\pi$-channel: cyclic closure and boundary split (phase/topology).
+    \item $\mathrm{e}$-channel: analytic stability template (limit/semigroup).
+\end{itemize}
 The fully explicit finite reduction at the anchor is recorded in Section~\ref{sec:folding_core}.
-\AuditTag For a compact checklist of auditable ``rigidity bridge'' certificate forms and where each mainline step is realized in this paper, see Appendix~\ref{app:rigidity_bridge_checklist}.
+
+\AuditTag \textbf{Unified view (Add $\to$ Mult):}
+These three channels can be understood as the decomposition of a single structural requirement: how additive structure (sequential ticks) becomes multiplicative/closed structure (stable objects) under auditable constraints.
+$\varphi$ provides the discrete scale basis (logarithmic), $\pi$ provides the phase closure (rotation/loop), and $\mathrm{e}$ provides the exponential semigroup (analytic continuation).
+This unified view is an interpretive overlay (not used in proofs) to organize the reader's intuition for the stability certificates.
+
+For a compact checklist of auditable ``rigidity bridge'' certificate forms and where each mainline step is realized in this paper, see Appendix~\ref{app:rigidity_bridge_checklist}.
+
+\section*{A.4 Motive's math template (math)}
+\addcontentsline{toc}{section}{A.4 Motive's math template (math)}
+
+\MathTag To support the audit of teleological dynamics without introducing new axioms, we formalize the Wish-Motive relationship using a generic Lyapunov template.
+This template (Proposition~\ref{prop:wish_motive_generic_lyapunov}) establishes that any gradient flow on a Motive functional induces a monotonic arrow of update time.
+This generic math statement serves as the structural template for protocol evolution and stability arguments, ensuring they remain grounded in standard analysis.
+For the full statement, see Appendix~\ref{subsec:wish_motive_generic_dynamics}.
 
 \section*{Reader guide (recommended paths)}
 \addcontentsline{toc}{section}{Reader guide (recommended paths)}
