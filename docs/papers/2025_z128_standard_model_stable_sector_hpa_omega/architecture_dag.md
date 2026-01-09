@@ -281,6 +281,10 @@ flowchart TB
   P_qm("测量代理（Born 概率/仪器）<br/>类型：观测<br/>label: eq:z128_born_povm<br/>P_k=Tr(ρE_k)")
   M_qm -.- P_qm
 
+  M_wave_particle["波粒二象性/延迟选择（读出接口解释）<br/>类型：审计<br/>label: app:wave_particle_delayed_choice<br/>cross terms vs mixtures; V^2+D^2≤1; delayed-choice/eraser; Great Smoky Dragon"]
+  P_wave_particle("干涉/哪路/延迟选择代理（实验口径）<br/>类型：审计<br/>label: app:wave_particle_delayed_choice<br/>interface: coherent vs event-record readout")
+  M_wave_particle -.- P_wave_particle
+
   %% -------------------------
   %% Scale flow & validation
   %% -------------------------
@@ -431,6 +435,7 @@ flowchart TB
   M_equiv --> M_action --> M_eom --> M_grav --> M_recon --> M_err
   M_equiv --> M_thermo
   M_equiv --> M_qm
+  M_qm --> M_wave_particle
 
   %% Optional candidate-family inputs for the gauge-factor interface bundle (do not enter theorem-level folding proofs)
   M_consensus_inputs --> M_gauge3_assump
@@ -519,6 +524,7 @@ flowchart TB
   P_lens --> P_recon --> P_err --> P_test
   P_equiv --> P_thermo --> P_test
   P_equiv --> P_qm --> P_test
+  P_qm --> P_wave_particle
   P_cosmo --> P_test
   P_transport_audit --> P_test
   P_graphzeta --> P_test
@@ -560,6 +566,7 @@ flowchart TB
   class M_gauge3,M_scalar_iface,M_lambda_open,M_bh_pointer,M_neutrino_majorana,M_qcd_gap not_closed;
   class M_op5 open_problem;
   class M_op1 math_audit;
+  class M_wave_particle math_audit;
   class M_gut_scope,M_baryogenesis_scope,M_strongcp_scope,M_bhinfo_scope,M_qg_scope,M_cosmo_tension_scope,M_bsm_scope scope_gap;
   %% Physics node groups
   class P_dt,P_scan,P_phi,P_pi,P_e,P_fold,P_screen,P_addr,P_local,P_conn,P_gauge,P_dyn phys_proxy;
@@ -570,6 +577,7 @@ flowchart TB
   class P_gauge3,P_scalar_iface,P_lambda_open,P_bh_pointer,P_neutrino_majorana,P_qcd_gap not_closed;
   class P_op5 open_problem;
   class P_op1 phys_audit;
+  class P_wave_particle phys_audit;
   class P_gut_scope,P_baryogenesis_scope,P_strongcp_scope,P_bhinfo_scope,P_qg_scope,P_cosmo_tension_scope,P_bsm_scope scope_gap;
   class P_gauge3_assump phys_audit;
 
@@ -659,6 +667,8 @@ flowchart TB
 | `P_err` | `\label{app:protocol_to_continuum_error_control}` | `uncertainty/robustness budget for fitted proxies (audit)` | `sections/appendices/33_protocol_to_continuum_error_control.tex` |
 | `M_qm` | `\label{app:quantum_measurement_born}` | `eq:z128_born_povm — P_k=Tr(ρE_k)` | `sections/appendices/30_quantum_measurement_born.tex` |
 | `P_qm` | `\label{app:quantum_measurement_born}` | `eq:z128_born_povm — P_k=Tr(ρE_k)` | `sections/appendices/30_quantum_measurement_born.tex` |
+| `M_wave_particle` | `\label{app:wave_particle_delayed_choice}` | `cross terms vs mixture; V^2+D^2≤1; delayed-choice/eraser (interface)` | `sections/appendices/30b_wave_particle_delayed_choice.tex` |
+| `P_wave_particle` | `\label{app:wave_particle_delayed_choice}` | `delayed-choice / quantum eraser / Wheeler “Great Smoky Dragon” (audit-facing)` | `sections/appendices/30b_wave_particle_delayed_choice.tex` |
 | `M_rg` | `\label{app:running_couplings_resolution_flow}` | `eq:rg_in_r — dg/dr = (ln φ)β(g)` | `sections/appendices/31_running_couplings_resolution_flow.tex` |
 | `P_rg` | `\label{app:running_couplings_resolution_flow}` | `dg/dr = (ln φ)β(g) (running in resolution coordinate)` | `sections/appendices/31_running_couplings_resolution_flow.tex` |
 | `M_cosmo` | `\label{app:cosmology_resolution_flow}` | `ass:occupancy_energy_z128 — f_stab(m)=Fₘ₊₂/2ᵐ, f_hid=1−f_stab` | `sections/appendices/32_cosmology_resolution_flow.tex` |
