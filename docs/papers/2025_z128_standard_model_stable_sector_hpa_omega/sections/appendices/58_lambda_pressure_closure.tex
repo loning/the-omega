@@ -4,7 +4,7 @@
 \paragraph{Scope and status.}
 \InterfaceTag The continuum representative action selected by CAP includes a cosmological-constant term as the lowest-complexity gravity-sector invariant (Remark~\ref{rem:lambda_status}).
 This appendix records a compact \emph{audit-facing} closure route that links a vacuum normalization to the $\e$-channel pressure viewpoint, without importing any new theorem-level premises into the folding core.
-\MatchTag Numerical values are fixed only through explicitly declared matching-layer targets (Planck-2018).
+\MatchTag Numerical values are fixed only through explicitly declared matching-layer targets and compact audit inputs (all listed in Appendix~\ref{app:inference_ledger}).
 \AuditTag The goal is to provide a deterministic and reproducible mapping
 \[
 \text{(pressure normalization)}\ \longrightarrow\ \Omega_{\Lambda,0}\ \longrightarrow\ \Lambda,
@@ -39,7 +39,8 @@ s_0:=\log_2\varphi,
 
 \paragraph{Candidate family.}
 \AuditTag To keep the closure finite-family and auditable (as required by the CAP doctrine in Appendix~\ref{app:cap_audit_template}), we use a short dyadic-weighted pressure family.
-Fix a finite index set $K:=\{0,1,2\}$ and define dyadic weights $w_k:=2^{-k}$.
+Fix a finite index set $K:=\{0,1,2,\dots,8\}$ and define dyadic weights $w_k:=2^{-k}$.
+\AuditTag The explicit bound on $K$ makes the ``look-elsewhere'' footprint transparent: the candidate family size is $|\mathcal{C}_\Lambda|=2|K|$.
 Consider the one-parameter weighted golden-mean transfer matrix
 \begin{equation}
 \label{eq:lambda_pressure_weighted_matrix}
@@ -66,17 +67,25 @@ We then declare the candidate family
 \item $\Omega_{\Lambda,0}=1-s_k$: vacuum normalization identified with the corresponding complementary share relative to the full dyadic baseline.
 \end{itemize}
 
-\paragraph{Selection rule and mismatch.}
-\MatchTag Let $\Omega_{\Lambda,0}^{\mathrm{ref}}$ denote a declared matching-layer target (Planck-2018).
-\AuditTag We select a unique representative $\widehat\Omega_{\Lambda,0}$ by the deterministic minimizer
+\paragraph{Selection rule (finite-family closure) and mismatch report.}
+\AuditTag The closure output is the \emph{finite-family} choice obtained by a deterministic complexity-first tie-break:
+we select the smallest dyadic index $k_\ast:=\min K$ and pick the share $s_{k_\ast}$ rather than its complement.
+Equivalently,
 \begin{equation}
 \label{eq:lambda_pressure_selection_rule}
 \widehat\Omega_{\Lambda,0}
 \;:=\;
-\operatorname*{arg\,min}_{\Omega\in\{s_k,1-s_k:\ k\in K\}}
-\left|\log\!\left(\frac{\Omega}{\Omega_{\Lambda,0}^{\mathrm{ref}}}\right)\right|,
+s_{k_\ast},
+\qquad
+k_\ast:=\min K.
 \end{equation}
-with a fixed tie-break preferring smaller $k$, and then preferring $s_k$ over $1-s_k$ if the mismatch is identical.
+\MatchTag Given a declared matching-layer target $\Omega_{\Lambda,0}^{\mathrm{ref}}$ (Planck-2018), we then report the mismatch
+\[
+\Delta_\Lambda(\Omega):=\left|\log\!\left(\frac{\Omega}{\Omega_{\Lambda,0}^{\mathrm{ref}}}\right)\right|
+\]
+for $\widehat\Omega_{\Lambda,0}$ and for the bounded counterfactual baselines in \eqref{eq:lambda_pressure_candidate_family}.
+As a supplementary audit diagnostic, the generator also reports whether the mismatch-minimizer over the same finite family coincides with \eqref{eq:lambda_pressure_selection_rule}, and whether this agreement is stable under a $\pm1\sigma$ perturbation of $\Omega_{\Lambda,0}^{\mathrm{ref}}$.
+\AuditTag As an additional bounded-complexity (MDL-style) audit, one can penalize larger $k$ values by a simple code-length proxy and report the resulting penalized minimizer within the same finite family; this is recorded by the generator as a diagnostic and does not change the closure output \eqref{eq:lambda_pressure_selection_rule}.
 
 \subsection{From \texorpdfstring{$\Omega_{\Lambda,0}$}{OmegaLambda0} to \texorpdfstring{$\Lambda$}{Lambda} (matching dictionary)}
 \label{subsec:lambda_pressure_to_lambda_dictionary}
@@ -96,20 +105,27 @@ Therefore,
 \;=\;
 \frac{3H_0^2}{c^2}\,\Omega_{\Lambda,0}.
 \end{equation}
-\MatchTag The external targets $(H_0,\Omega_{\Lambda,0}^{\mathrm{ref}})$ used for numerical reporting are recorded explicitly in the matching-input inventory (Appendix~\ref{app:inference_ledger}) and are vendored under \path{data/cosmology_lambda/}.
+
+\paragraph{Finite \texorpdfstring{$H_0$}{H0} audit family (closure) and sensitivity.}
+\AuditTag To keep the calibration auditable while acknowledging the well-known early/late tension, we treat $H_0$ as a bounded candidate family rather than a single hard-coded input.
+Let $\mathcal{C}_{H_0}$ be the finite family recorded under \path{data/cosmology_lambda/h0_candidates.json} (Planck-2018, H0LiCOW XIII, SH0ES19).
+We select $\widehat H_0\in\mathcal{C}_{H_0}$ by a deterministic precision rule (minimize the fractional uncertainty $\sigma_{H_0}/H_0$ with a fixed tie-break), and report the implied $\widehat\Lambda$ under \eqref{eq:lambda_from_omega_lambda_h0} together with the sensitivity across all candidates.
+
+\MatchTag Reference values used for mismatch auditing (e.g.\ $\Omega_{\Lambda,0}^{\mathrm{ref}}$, $\Omega_{m,0}^{\mathrm{ref}}$, $\Omega_{b,0}^{\mathrm{ref}}$ and the Planck-2018 $H_0$ target) are recorded explicitly in the matching-input inventory (Appendix~\ref{app:inference_ledger}) and are vendored under \path{data/cosmology_lambda/planck2018_targets.json}.
 
 \subsection{Reproducible artifact (generated fragments)}
 \label{subsec:lambda_pressure_generated}
 
 \AuditTag The deterministic generator \path{scripts/exp_lambda_pressure_closure.py} reads the vendored Planck-2018 targets under
-\path{data/cosmology_lambda/planck2018_targets.json} and writes the LaTeX fragments
+\path{data/cosmology_lambda/planck2018_targets.json} (for mismatch auditing) and the finite $H_0$ family under
+\path{data/cosmology_lambda/h0_candidates.json} (for calibration), and writes the LaTeX fragments
 \path{sections/generated/lambda_pressure_closure_equations.tex} and
 \path{sections/generated/lambda_pressure_closure_summary.tex}.
 These fragments report:
 \begin{itemize}
 \item the distinguished $k=0$ constants $s_0=\log_2\varphi$ and $1-s_0=\log_2(2/\varphi)$ together with the declared finite family \eqref{eq:lambda_pressure_candidate_family};
-\item the selected $\widehat\Omega_{\Lambda,0}$ under \eqref{eq:lambda_pressure_selection_rule}, its mismatch to $\Omega_{\Lambda,0}^{\mathrm{ref}}$, and a stability check under a $\pm 1\sigma$ perturbation of the target;
-\item the induced $\widehat\Lambda$ via \eqref{eq:lambda_from_omega_lambda_h0}, including a matching-layer uncertainty propagation and bounded $H_0$ sensitivity diagnostics.
+\item the selected $\widehat\Omega_{\Lambda,0}$ under \eqref{eq:lambda_pressure_selection_rule}, its mismatch to $\Omega_{\Lambda,0}^{\mathrm{ref}}$, and bounded counterfactual mismatches within the same family (including a $\pm 1\sigma$ stability check of the mismatch-minimizer diagnostic);
+\item the induced $\widehat\Lambda$ via \eqref{eq:lambda_from_omega_lambda_h0}, including a matching-layer uncertainty propagation and bounded $H_0$ family sensitivity diagnostics.
 \end{itemize}
 
 \[
