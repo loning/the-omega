@@ -49,7 +49,7 @@
 ### 图 1：接口目标与读出/扫描骨架（Tick → Readout → CAP → golden scan → φ 通道）
 
 ```mermaid
-%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 70}, "themeVariables": {"fontSize": "10px"}}}%%
+%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 50}, "themeVariables": {"fontSize": "10px"}}}%%
 flowchart TB
 
   P_wish("Wish（协议稳定目标数据）<br/>类型：接口<br/>label: def:wish_protocol_stable_data<br/>Wish := (stable readout type, invariants)")
@@ -129,7 +129,7 @@ flowchart TB
 ### 图 2：三通道与折叠锚点（φ/π/ε → Fold → Anchor）
 
 ```mermaid
-%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 70}, "themeVariables": {"fontSize": "10px"}}}%%
+%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 50}, "themeVariables": {"fontSize": "10px"}}}%%
 flowchart TB
 
   M_phi["phi 通道（admissible Xₘ / Fibonacci 计数）<br/>类型：构造<br/>label: subsec:phi_channel<br/>Xₘ := {w∈{0,1}ᵐ : wᵢwᵢ₊₁ = 0} (eq:Xm_def)"]
@@ -218,7 +218,7 @@ flowchart TB
 ### 图 3：显示预算与空间寻址（6-DoF coarse-lock → bulk d=3 → addressing/local）
 
 ```mermaid
-%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 70}, "themeVariables": {"fontSize": "10px"}}}%%
+%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 50}, "themeVariables": {"fontSize": "10px"}}}%%
 flowchart TB
 
   M_cap@{ shape: lean-l, label: "CAP（有界复杂度闭合算子）<br/>类型：公理<br/>label: ax:cap<br/>c* := argmin_{c∈C} J(c)" }
@@ -292,7 +292,7 @@ flowchart TB
 ### 图 4：手性/反物质/CPT 协议几何（χ、SCL、mirror protocol）
 
 ```mermaid
-%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 70}, "themeVariables": {"fontSize": "10px"}}}%%
+%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 50}, "themeVariables": {"fontSize": "10px"}}}%%
 flowchart TB
 
   M_tick@{ shape: lean-l, label: "Tick（读出序列性）<br/>类型：公理<br/>label: ax:readout_sequentiality<br/>t = 0,1,2,…" }
@@ -319,6 +319,7 @@ flowchart TB
   P_chi_flip("χ sign flip law（protocol parity/time reversal proxy）<br/>类型：审计<br/>label: prop:chi_flip<br/>rotation preserves χ; reflection reverses")
   M_chi_flip -.- P_chi_flip
 
+  M_ptc_defs["protocol P/T/C definitions（协议 P/T/C 定义）<br/>类型：构造<br/>label: subsec:ptc_definitions / def:ptc_protocol<br/>P_prot,T_prot,C_prot defined on finite readout"]
   P_ptc_defs("protocol P/T/C definitions（interface）<br/>类型：字典<br/>label: subsec:ptc_definitions<br/>auditable finite-resolution operations")
   M_ptc_defs -.- P_ptc_defs
 
@@ -412,7 +413,7 @@ flowchart TB
 ### 图 5：连接、holonomy 与 Z128 相位提升（phase-lift CP bridge）
 
 ```mermaid
-%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 70}, "themeVariables": {"fontSize": "10px"}}}%%
+%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 50}, "themeVariables": {"fontSize": "10px"}}}%%
 flowchart TB
 
   M_cap@{ shape: lean-l, label: "CAP（有界复杂度闭合算子）<br/>类型：公理<br/>label: ax:cap<br/>c* := argmin_{c∈C} J(c)" }
@@ -530,7 +531,7 @@ flowchart TB
 ### 图 6：三因子字典与 SM 标号闭合（含耦合/CKM/PMNS 审计）
 
 ```mermaid
-%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 70}, "themeVariables": {"fontSize": "10px"}}}%%
+%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 50}, "themeVariables": {"fontSize": "10px"}}}%%
 flowchart TB
 
   M_cap@{ shape: lean-l, label: "CAP（有界复杂度闭合算子）<br/>类型：公理<br/>label: ax:cap<br/>c* := argmin_{c∈C} J(c)" }
@@ -704,7 +705,7 @@ flowchart TB
 ### 图 7：质量谱与中微子机制审计闭合链（Majorana/Weinberg/seesaw）
 
 ```mermaid
-%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 70}, "themeVariables": {"fontSize": "10px"}}}%%
+%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 50}, "themeVariables": {"fontSize": "10px"}}}%%
 flowchart TB
 
   M_consensus_p1@{ shape: lean-l, label: "P1：低能 EFT 共识（SM+GR）<br/>类型：假设<br/>label: ass:consensus_sm_gr_eft" }
@@ -735,6 +736,7 @@ flowchart TB
   P_neutrino_weinberg_operator_closure("Weinberg 尺度输出（审计）<br/>类型：审计<br/>label: app:neutrino_weinberg_operator_closure<br/>outputs: neutrino_weinberg_scale_rows/summary")
   M_neutrino_weinberg_operator_closure -.- P_neutrino_weinberg_operator_closure
 
+  M_neutrino_typeI_seesaw_closure["Type-I seesaw 尺度（审计）<br/>类型：审计<br/>label: app:neutrino_typeI_seesaw_closure / tab:neutrino_seesaw_scale<br/>M_R from mν,max and yν,eff (cap vs match)"]
   P_neutrino_typeI_seesaw_closure("Seesaw 尺度输出（审计）<br/>类型：审计<br/>label: app:neutrino_typeI_seesaw_closure<br/>outputs: neutrino_seesaw_scale_rows/summary")
   M_neutrino_typeI_seesaw_closure -.- P_neutrino_typeI_seesaw_closure
 
@@ -768,6 +770,8 @@ flowchart TB
   P_proj("跨分辨率同一对象（兼容族）<br/>类型：字典<br/>label: subsec:resolution_projective_semantics<br/>deterministic forgetting (π) ⊂ Markov coarse graining")
   M_proj -.- P_proj
 
+  M_qm["量子测量（Born 规则 / POVM）<br/>类型：闭合<br/>label: app:quantum_measurement_born<br/>eq:z128_born_povm — P_k=Tr(ρE_k)"]
+  P_qm("Born rule / POVM（量子测量）<br/>类型：观测<br/>label: app:quantum_measurement_born<br/>eq:z128_born_povm — P_k=Tr(ρE_k)")
   M_qm -.- P_qm
 
   M_hecke_like["Hecke-like refinement（矩阵/递推骨架）<br/>类型：审计<br/>label: lem:trace_recurrence_2x2 / rem:extension_counts_matrix_view<br/>|Ext_m(u)| = e_{u6}^T A^{m-6} 1;  tr(M^{n+1})=tr(M)tr(M^n)−det(M)tr(M^{n-1})"]
@@ -870,7 +874,7 @@ flowchart TB
 ### 图 8：等价语义与连续代表（action/EOM/gravity/thermo/QM）
 
 ```mermaid
-%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 70}, "themeVariables": {"fontSize": "10px"}}}%%
+%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 50}, "themeVariables": {"fontSize": "10px"}}}%%
 flowchart TB
 
   M_tick@{ shape: lean-l, label: "Tick（读出序列性）<br/>类型：公理<br/>label: ax:readout_sequentiality<br/>t = 0,1,2,…" }
@@ -925,6 +929,8 @@ flowchart TB
   P_err("误差预算代理（不确定性/鲁棒性）<br/>类型：审计")
   M_err -.- P_err
 
+  M_qm["量子测量（Born 规则 / POVM）<br/>类型：闭合<br/>label: app:quantum_measurement_born<br/>eq:z128_born_povm — P_k=Tr(ρE_k)"]
+  P_qm("Born rule / POVM（量子测量）<br/>类型：观测<br/>label: app:quantum_measurement_born<br/>eq:z128_born_povm — P_k=Tr(ρE_k)")
   M_qm -.- P_qm
 
   M_state_gns["状态泛函/GNS 背景（记号对齐）<br/>类型：审计<br/>label: app:state_gns_background<br/>ω(·) state;  ω(A)=⟨Ω|π(A)Ω⟩ (GNS);  ω(A)=Tr(ρA) (finite-dim)"]
@@ -993,7 +999,7 @@ flowchart TB
 ### 图 9：尺度流与验证通道（RG/cosmology/entropy gap/Hecke/Selberg/γ/MDL）
 
 ```mermaid
-%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 70}, "themeVariables": {"fontSize": "10px"}}}%%
+%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 50}, "themeVariables": {"fontSize": "10px"}}}%%
 flowchart TB
 
   M_am_euler["Artin–Mazur ζ 的 Euler product（primitive cycles）<br/>类型：审计<br/>label: lem:artin_mazur_euler_product<br/>ζ(z)=∏_{p∈𝓟}(1−z^{|p|})⁻¹"]
@@ -1138,7 +1144,7 @@ flowchart TB
 ### 图 10：可证伪预测 wiring（P1–P7）
 
 ```mermaid
-%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 70}, "themeVariables": {"fontSize": "10px"}}}%%
+%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 50}, "themeVariables": {"fontSize": "10px"}}}%%
 flowchart TB
 
   P_6dof_lock("6-DoF coarse-lock（接口：局域显示阈值）<br/>类型：字典<br/>label: subsec:6dof_lock<br/>m=6 anchors single-window coarse localization")
@@ -1241,7 +1247,7 @@ flowchart TB
 ### 图 11：开放问题/范围外追踪（Λ、BH、QCD gap、GUT 等）
 
 ```mermaid
-%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 70}, "themeVariables": {"fontSize": "10px"}}}%%
+%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 50}, "themeVariables": {"fontSize": "10px"}}}%%
 flowchart TB
 
   M_cap@{ shape: lean-l, label: "CAP（有界复杂度闭合算子）<br/>类型：公理<br/>label: ax:cap<br/>c* := argmin_{c∈C} J(c)" }
@@ -1332,6 +1338,8 @@ flowchart TB
   P_dyn("弱场引力代理（Poisson/rho_eff）<br/>类型：代理<br/>label: eq:z128_vc_from_chi<br/>v_c²(r)=−γc²·r·χ′(r)")
   M_grav -.- P_dyn
 
+  M_qm["量子测量（Born 规则 / POVM）<br/>类型：闭合<br/>label: app:quantum_measurement_born<br/>eq:z128_born_povm — P_k=Tr(ρE_k)"]
+  P_qm("Born rule / POVM（量子测量）<br/>类型：观测<br/>label: app:quantum_measurement_born<br/>eq:z128_born_povm — P_k=Tr(ρE_k)")
   M_qm -.- P_qm
 
   M_rg["RG：耦合运行（r 坐标）<br/>类型：闭合<br/>label: eq:rg_in_r<br/>dg/dr = (ln φ)β(g)"]
