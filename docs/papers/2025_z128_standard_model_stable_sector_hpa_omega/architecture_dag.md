@@ -47,7 +47,7 @@
   - **含义**：依赖/推导顺序（保持有向无环）
 
 ```mermaid
-%%{init: {"flowchart": {"useMaxWidth": false, "nodeSpacing": 25, "rankSpacing": 40}, "themeVariables": {"fontSize": "10px"}}}%%
+%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 25, "rankSpacing": 40}, "themeVariables": {"fontSize": "10px"}}}%%
 flowchart TB
 
   %% -------------------------
@@ -294,13 +294,33 @@ flowchart TB
   P_bh_pointer("强场/边界通道代理（指针）<br/>类型：未闭合<br/>label: app:bh_wormholes_pointer<br/>area law / throat / pointer-jump (pointer)")
   M_bh_pointer -.- P_bh_pointer
 
-  M_neutrino_majorana["中微子质量机制与 Majorana 相位（未闭合）<br/>类型：未闭合<br/>label: sec:pmns_neutrino_closure<br/>status: oscillation-focused; mechanism/phases not closed (external audit channels recorded)"]
-  P_neutrino_majorana("中微子机制/相位接口（未闭合）<br/>类型：未闭合<br/>label: sec:pmns_neutrino_closure<br/>Majorana phases not included")
+  M_neutrino_majorana["中微子质量机制与 Majorana 相位（条件闭合：机制注册表 + 相位闭合）<br/>类型：审计<br/>label: sec:pmns_neutrino_closure<br/>status: bounded candidate families + deterministic CAP/tie-break; external channels as feasibility/audit"]
+  P_neutrino_majorana("中微子机制/相位接口（条件闭合）<br/>类型：审计<br/>label: sec:pmns_neutrino_closure<br/>mechanism registry + Majorana-phase closure under mββ bound")
   M_neutrino_majorana -.- P_neutrino_majorana
 
   M_neutrino_external_audit["中微子外部审计通道（0νββ, Σmν, mβ, sterile）<br/>类型：审计<br/>label: app:neutrino_external_audit_channels / tab:neutrino_external_audit_ledger<br/>status: Match/Audit only; not used in CAP selection"]
   P_neutrino_external_audit("外部通道账本与失败条件（审计）<br/>类型：审计<br/>label: app:neutrino_external_audit_channels<br/>inputs: data/neutrino_external_audit/inputs.json")
   M_neutrino_external_audit -.- P_neutrino_external_audit
+
+  M_neutrino_mech_registry["中微子质量机制候选族注册表（C1--C4；审计）<br/>类型：审计<br/>label: app:neutrino_mass_mechanism_candidates / tab:neutrino_mechanism_candidates / tab:neutrino_mechanism_scoreboard<br/>status: bounded registry + deterministic selection + audit scoreboard"]
+  P_neutrino_mech_registry("机制候选族与失败点计分板（审计）<br/>类型：审计<br/>label: app:neutrino_mass_mechanism_candidates<br/>inputs: data/neutrino_mass_mechanisms/registry.json")
+  M_neutrino_mech_registry -.- P_neutrino_mech_registry
+
+  M_neutrino_majorana_phase_closure["Majorana 相位闭合（bounded family；审计）<br/>类型：审计<br/>label: app:neutrino_majorana_phase_closure / tab:neutrino_majorana_phase_closure<br/>status: finite phase family + feasibility under mββ bound + deterministic key"]
+  P_neutrino_majorana_phase_closure("Majorana 相位离散闭合输出（审计）<br/>类型：审计<br/>label: app:neutrino_majorana_phase_closure<br/>outputs: neutrino_majorana_phase_closure_rows/summary")
+  M_neutrino_majorana_phase_closure -.- P_neutrino_majorana_phase_closure
+
+  M_neutrino_splitting_depth_closure["中微子分裂（Δm²）的有界有理 r-offset 尝试（审计）<br/>类型：审计<br/>label: app:neutrino_splitting_depth_closure / tab:neutrino_splitting_depth_closure<br/>status: protocol-only CAP-min vs match-min; bounded rationals q≤12"]
+  P_neutrino_splitting_depth_closure("Δm² 压缩/失败点计分板（审计）<br/>类型：审计<br/>label: app:neutrino_splitting_depth_closure<br/>outputs: neutrino_splitting_depth_closure_rows/summary")
+  M_neutrino_splitting_depth_closure -.- P_neutrino_splitting_depth_closure
+
+  M_neutrino_weinberg_operator_closure["Weinberg 维五算符尺度（审计/接口）<br/>类型：审计<br/>label: app:neutrino_weinberg_operator_closure / tab:neutrino_weinberg_scale<br/>status: Λ_W from mν,max; compare to staircase thresholds"]
+  P_neutrino_weinberg_operator_closure("Weinberg 尺度输出（审计）<br/>类型：审计<br/>label: app:neutrino_weinberg_operator_closure<br/>outputs: neutrino_weinberg_scale_rows/summary")
+  M_neutrino_weinberg_operator_closure -.- P_neutrino_weinberg_operator_closure
+
+  M_neutrino_typeI_seesaw_closure["Type-I seesaw 尺度（审计/接口）<br/>类型：审计<br/>label: app:neutrino_typeI_seesaw_closure / tab:neutrino_seesaw_scale<br/>status: M_R from mν,max and yν,eff (cap vs match)"]
+  P_neutrino_typeI_seesaw_closure("Seesaw 尺度输出（审计）<br/>类型：审计<br/>label: app:neutrino_typeI_seesaw_closure<br/>outputs: neutrino_seesaw_scale_rows/summary")
+  M_neutrino_typeI_seesaw_closure -.- P_neutrino_typeI_seesaw_closure
 
   M_qcd_gap["QCD 禁闭/质量隙（严格问题未闭合）<br/>类型：未闭合<br/>label: app:continuum_yang_mills_from_holonomy<br/>note: representative YM closed; confinement/mass gap open"]
   P_qcd_gap("QCD 非微扰检验（未闭合）<br/>类型：未闭合<br/>label: app:continuum_yang_mills_from_holonomy<br/>confinement/mass-gap not closed")
@@ -314,8 +334,8 @@ flowchart TB
   P_op1("OP1：三因子字典接口闭合（Q）<br/>类型：审计<br/>label: app:internal_fiber_g2_optional / app:quantum_measurement_born<br/>candidate-family source closed under Q")
   M_op1 -.- P_op1
 
-  M_op5["OP5：标量/Yukawa + RG running 的闭合<br/>类型：Open<br/>label: subsec:ledger_open_problems / subsec:open_problems_audit_tagged<br/>goal: generate Yukawa and SM beta from protocol"]
-  P_op5("OP5：Yukawa/RG 物理接口闭合<br/>类型：Open<br/>label: subsec:open_problems_audit_tagged<br/>beta functions as outputs, not inputs")
+  M_op5["OP5：标量/Yukawa 与 β 系数闭合（接口假设内）<br/>类型：审计<br/>label: app:yukawa_beta_protocol_closure<br/>outputs: Yukawa spectrum/mixings; one-loop β coefficients"]
+  P_op5("OP5：Yukawa/β 系数接口闭合（审计输出）<br/>类型：审计<br/>label: app:yukawa_beta_protocol_closure<br/>beta functions as outputs, not inputs")
   M_op5 -.- P_op5
 
   M_baryogenesis_scope["重子不对称/重子生成（未覆盖）<br/>类型：范围外<br/>label: theory_closure_tracker<br/>status: not in main proof/audit chain"]
@@ -380,6 +400,8 @@ flowchart TB
   M_neutrino_mass_iface["中微子质量尺度接口（nearest-integer depth）<br/>类型：审计<br/>label: subsec:neutrino_mass_interface / tab:neutrino_mass_interface<br/>r(μ)=ln(μ/m_e)/ln φ → r_hat ∈ ℤ"]
   P_neutrino_mass_iface("neutrino mass-scale interface（NuFIT/PDG 对照）<br/>类型：审计<br/>label: subsec:neutrino_mass_interface<br/>table: tab:neutrino_mass_interface")
   M_neutrino_mass_iface -.- P_neutrino_mass_iface
+
+  M_neutrino_smallness_iface["中微子微小性接口假说（不入证明链）<br/>类型：假设<br/>label: subsec:neutrino_interface_hypothesis<br/>smallness ≈ protocol-decoupling maintenance cost"]
 
   M_mass["质量谱闭合（depth/latency）<br/>类型：闭合<br/>label: eq:r_of_mu_z128<br/>r(μ)=ln(μ/m_e)/ln φ"]
   P_mass("质量代理（延迟/钟慢/散射）<br/>类型：观测<br/>label: rem:mass_as_compton_clock<br/>ω_C=μc²/ħ;  τ_C=ħ/(μc²)")
@@ -568,6 +590,11 @@ flowchart TB
   M_min_coarse_lock --> M_6dof_lock
   M_cap --> M_bulk_dim
 
+  P_screen --> P_6dof_lock
+  P_min_coarse_lock --> P_6dof_lock
+  P_6dof_lock --> P_bulk_dim --> P_geometric_vacuum
+  P_select --> P_bulk_dim
+
   M_anchor --> M_addr
   P_screen --> P_addr
 
@@ -585,6 +612,7 @@ flowchart TB
   M_cp_odd_J --> M_cp_sign_anchor
 
   P_addr --> P_d4_layouts --> P_chi_def --> P_chi_flip --> P_scl --> P_mirror_universe
+  P_chi_flip --> P_orientation_min --> P_scl
   P_ptc_defs --> P_cpt_protocol
   P_conj_reversal --> P_conj_readout_rev --> P_antimatter_dual
   P_cp_sign_anchor --> P_p5
@@ -602,6 +630,14 @@ flowchart TB
   M_conn --> M_phase_lift_cp --> M_cp_odd_J
   M_dyadic_phase_register --> M_phase_lift_cp
   M_tau_family --> M_phase_lift_cp
+
+  P_screen --> P_z128_label --> P_dyadic_phase_register
+  P_select --> P_tau_family
+  P_conn --> P_phase_lift_cp --> P_cp_odd_J
+  P_dyadic_phase_register --> P_phase_lift_cp
+  P_tau_family --> P_phase_lift_cp
+  P_scl --> P_cp_sign_anchor
+  P_cp_odd_J --> P_cp_sign_anchor
 
   M_holo --> M_op3_yang_mills
   M_action --> M_op3_yang_mills
@@ -656,15 +692,36 @@ flowchart TB
   M_input_pdg --> M_neutrino_mass_iface
   M_pmns_matrix --> M_neutrino_external_audit
   M_neutrino_mass_iface --> M_neutrino_external_audit
-  M_neutrino_external_audit --> M_neutrino_majorana
+  M_neutrino_mass_iface --> M_neutrino_smallness_iface
+  M_neutrino_external_audit --> M_neutrino_mech_registry --> M_neutrino_majorana_phase_closure --> M_neutrino_majorana
+  M_neutrino_mech_registry --> M_neutrino_splitting_depth_closure --> M_neutrino_majorana
+  M_pmns_matrix --> M_neutrino_mech_registry
+  M_neutrino_mass_iface --> M_neutrino_mech_registry
+  M_mass_flow_uplift --> M_neutrino_mech_registry
+  M_pmns_matrix --> M_neutrino_majorana_phase_closure
+  M_neutrino_external_audit --> M_neutrino_majorana_phase_closure
+  M_input_nufit --> M_neutrino_splitting_depth_closure
+  M_mass --> M_neutrino_splitting_depth_closure
+
+  M_consensus_p1 --> M_neutrino_weinberg_operator_closure
+  M_op5 --> M_neutrino_weinberg_operator_closure
+  M_neutrino_mech_registry --> M_neutrino_weinberg_operator_closure --> M_neutrino_majorana
+  M_neutrino_weinberg_operator_closure --> M_neutrino_typeI_seesaw_closure --> M_neutrino_majorana
+  M_consensus_p1 --> M_neutrino_typeI_seesaw_closure
+  M_op5 --> M_neutrino_typeI_seesaw_closure
 
   M_mass --> M_mass_flow_uplift
   M_proj --> M_mass_flow_uplift
   M_hecke_like --> M_mass_flow_uplift
 
+  P_mass --> P_mass_flow_uplift
+  P_proj --> P_mass_flow_uplift
+  P_hecke_like --> P_mass_flow_uplift
+
   P_input_codata --> P_alpha_geo
   P_input_pdg --> P_ew_weinberg
   P_input_pdg --> P_cp_volume
+  P_cp_odd_J --> P_cp_volume
   P_input_pdg --> P_ckm_mag --> P_ckm_matrix
   P_cp_volume --> P_ckm_matrix
 
@@ -675,7 +732,22 @@ flowchart TB
   P_input_pdg --> P_neutrino_mass_iface
   P_pmns_matrix --> P_neutrino_external_audit
   P_neutrino_mass_iface --> P_neutrino_external_audit
-  P_neutrino_external_audit --> P_neutrino_majorana
+  P_neutrino_external_audit --> P_neutrino_mech_registry --> P_neutrino_majorana_phase_closure --> P_neutrino_majorana
+  P_neutrino_mech_registry --> P_neutrino_splitting_depth_closure --> P_neutrino_majorana
+  P_pmns_matrix --> P_neutrino_mech_registry
+  P_neutrino_mass_iface --> P_neutrino_mech_registry
+  P_mass_flow_uplift --> P_neutrino_mech_registry
+  P_pmns_matrix --> P_neutrino_majorana_phase_closure
+  P_neutrino_external_audit --> P_neutrino_majorana_phase_closure
+  P_input_nufit --> P_neutrino_splitting_depth_closure
+  P_mass --> P_neutrino_splitting_depth_closure
+
+  P_consensus_p1 --> P_neutrino_weinberg_operator_closure
+  P_op5 --> P_neutrino_weinberg_operator_closure
+  P_neutrino_mech_registry --> P_neutrino_weinberg_operator_closure --> P_neutrino_majorana
+  P_neutrino_weinberg_operator_closure --> P_neutrino_typeI_seesaw_closure --> P_neutrino_majorana
+  P_consensus_p1 --> P_neutrino_typeI_seesaw_closure
+  P_op5 --> P_neutrino_typeI_seesaw_closure
 
   M_sm --> M_scalar_iface
   M_rg --> M_scalar_iface
@@ -697,6 +769,13 @@ flowchart TB
   P_entropy_gap --> P_relent --> P_rm
   P_hecke_like --> P_protoHecke
 
+  M_graphzeta --> M_selberg
+  M_am_euler --> M_selberg
+  M_pressure --> M_selberg
+  P_graphzeta --> P_selberg
+  P_am_euler --> P_selberg
+  P_pressure --> P_selberg
+
   M_tick --> M_equiv
   M_cap --> M_equiv
   M_equiv --> M_quotient --> M_proj
@@ -711,10 +790,13 @@ flowchart TB
 
   %% Optional candidate-family inputs for the gauge-factor interface closure (do not enter theorem-level folding proofs)
   %% (de-aggregated: consensus P2 is the direct candidate-family route)
+  M_consensus_p1 --> M_consensus_p2 --> M_consensus_p3
   M_consensus_p2 --> M_gauge3
   M_internal_fiber_g2 --> M_gauge3
+  P_consensus_p1 --> P_consensus_p2 --> P_consensus_p3
   P_consensus_p2 --> P_gauge3
   P_internal_fiber_g2 --> P_gauge3
+  P_consensus_p3 --> P_rg
 
   %% -------------------------
   %% Dependencies into open / not-closed / out-of-scope trackers
@@ -725,19 +807,39 @@ flowchart TB
   M_equiv --> M_op1
   M_cap --> M_op1
 
+  P_gauge3 --> P_op1
+  P_internal_fiber_g2 --> P_op1
+  P_qm --> P_op1
+  P_equiv --> P_op1
+  P_select --> P_op1
+
   M_scalar_iface --> M_op5
   M_rg --> M_op5
   M_action --> M_op5
 
+  P_scalar_iface --> P_op5
+  P_rg --> P_op5
+  P_action --> P_op5
+
   M_action --> M_lambda_open
   M_cosmo --> M_lambda_open
+
+  P_action --> P_lambda_open
+  P_cosmo --> P_lambda_open
 
   M_grav --> M_bh_pointer
   M_thermo --> M_bh_pointer
   M_qm --> M_bh_pointer
 
+  P_dyn --> P_bh_pointer
+  P_thermo --> P_bh_pointer
+  P_qm --> P_bh_pointer
+
   M_op3_yang_mills --> M_qcd_gap
   M_rg --> M_qcd_gap
+
+  P_wilson --> P_qcd_gap
+  P_rg --> P_qcd_gap
 
   M_sm --> M_neutrino_majorana
   M_qm --> M_neutrino_majorana
@@ -745,26 +847,50 @@ flowchart TB
   M_rg --> M_gut_scope
   M_sm --> M_gut_scope
 
+  P_rg --> P_gut_scope
+  P_types --> P_gut_scope
+
   M_sm --> M_baryogenesis_scope
   M_thermo --> M_baryogenesis_scope
+
+  P_types --> P_baryogenesis_scope
+  P_thermo --> P_baryogenesis_scope
 
   M_op3_yang_mills --> M_strongcp_scope
   M_sm --> M_strongcp_scope
 
+  P_wilson --> P_strongcp_scope
+  P_types --> P_strongcp_scope
+
   M_bh_pointer --> M_bhinfo_scope
   M_qm --> M_bhinfo_scope
+
+  P_bh_pointer --> P_bhinfo_scope
+  P_qm --> P_bhinfo_scope
 
   M_action --> M_qg_scope
   M_grav --> M_qg_scope
   M_qm --> M_qg_scope
   M_bh_pointer --> M_qg_scope
 
+  P_action --> P_qg_scope
+  P_dyn --> P_qg_scope
+  P_qm --> P_qg_scope
+  P_bh_pointer --> P_qg_scope
+
   M_cosmo --> M_cosmo_tension_scope
   M_gamma_proxy --> M_cosmo_tension_scope
   M_gamma_direct --> M_cosmo_tension_scope
 
+  P_cosmo --> P_cosmo_tension_scope
+  P_gamma_proxy --> P_cosmo_tension_scope
+  P_gamma_direct --> P_cosmo_tension_scope
+
   M_sm --> M_bsm_scope
   M_rg --> M_bsm_scope
+
+  P_types --> P_bsm_scope
+  P_rg --> P_bsm_scope
 
   M_grav --> M_gamma_proxy
   M_grav --> M_gamma_direct
@@ -842,10 +968,10 @@ flowchart TB
   class M_readout,M_phi,M_fold,M_anchor,M_addr,M_conn,M_holo,M_gauge,M_equiv,M_quotient,M_proj,M_freq,M_chi_def,M_ptc_defs,M_antimatter_dual math_construct;
   class M_golden,M_pi,M_periodic,M_e,M_sm,M_mass,M_thermo,M_grav,M_qm,M_rg,M_entropy_gap,M_rm,M_relent,M_op2_fold_uniqueness,M_chi_flip,M_orientation_min,M_conj_reversal,M_conj_readout_rev math_closure;
   class M_action,M_eom,M_op3_yang_mills math_cont;
-  class M_cosmo,M_consensus_p1,M_consensus_p2,M_consensus_p3,M_internal_fiber_g2 math_assumption;
-  class M_morita,M_gauss,M_abel,M_capinv,M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_recon,M_err,M_gamma_proxy,M_gamma_direct,M_transport_audit,M_state_gns,M_input_pdg,M_input_codata,M_input_planck,M_input_nufit,M_mdl_global,M_g1,M_g2,M_g4,M_min_coarse_lock,M_6dof_lock,M_bulk_dim,M_geometric_vacuum,M_z128_label,M_tau_family,M_dyadic_phase_register,M_phase_lift_cp,M_cp_odd_J,M_d4_layouts,M_scl,M_cp_sign_anchor,M_cpt_protocol,M_mirror_universe,M_alpha_geo,M_ew_weinberg,M_cp_volume,M_ckm_mag,M_ckm_matrix,M_pmns_mag,M_pmns_matrix,M_neutrino_mass_iface,M_mass_flow_uplift,M_neutrino_external_audit math_audit;
-  class M_gauge3,M_scalar_iface,M_lambda_open,M_bh_pointer,M_neutrino_majorana,M_qcd_gap not_closed;
-  class M_op5 open_problem;
+  class M_cosmo,M_consensus_p1,M_consensus_p2,M_consensus_p3,M_internal_fiber_g2,M_neutrino_smallness_iface math_assumption;
+  class M_morita,M_gauss,M_abel,M_capinv,M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_recon,M_err,M_gamma_proxy,M_gamma_direct,M_transport_audit,M_state_gns,M_input_pdg,M_input_codata,M_input_planck,M_input_nufit,M_mdl_global,M_g1,M_g2,M_g4,M_min_coarse_lock,M_6dof_lock,M_bulk_dim,M_geometric_vacuum,M_z128_label,M_tau_family,M_dyadic_phase_register,M_phase_lift_cp,M_cp_odd_J,M_d4_layouts,M_scl,M_cp_sign_anchor,M_cpt_protocol,M_mirror_universe,M_alpha_geo,M_ew_weinberg,M_cp_volume,M_ckm_mag,M_ckm_matrix,M_pmns_mag,M_pmns_matrix,M_neutrino_mass_iface,M_mass_flow_uplift,M_neutrino_external_audit,M_neutrino_mech_registry,M_neutrino_majorana_phase_closure,M_neutrino_splitting_depth_closure,M_neutrino_weinberg_operator_closure,M_neutrino_typeI_seesaw_closure,M_neutrino_majorana math_audit;
+  class M_gauge3,M_scalar_iface,M_lambda_open,M_bh_pointer,M_qcd_gap not_closed;
+  class M_op5 math_audit;
   class M_op1 math_audit;
   class M_wave_particle math_audit;
   class M_gut_scope,M_baryogenesis_scope,M_strongcp_scope,M_bhinfo_scope,M_qg_scope,M_cosmo_tension_scope,M_bsm_scope scope_gap;
@@ -854,9 +980,9 @@ flowchart TB
   class P_obs,P_periodic,P_holo,P_mass,P_lens,P_qm,P_wilson,P_cp_odd_J phys_obs;
   class P_types,P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_am_euler,P_entropy_gap,P_rm,P_relent,P_6dof_lock,P_z128_label,P_d4_layouts,P_chi_def,P_ptc_defs,P_scl,P_antimatter_dual phys_dict;
   class P_abel,P_action,P_eom,P_rg,P_cosmo phys_model;
-  class P_morita,P_gauss,P_capinv,P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_select,P_recon,P_err,P_gamma_proxy,P_gamma_direct,P_transport_audit,P_state_gns,P_input_pdg,P_input_codata,P_input_planck,P_input_nufit,P_consensus_p1,P_consensus_p2,P_consensus_p3,P_internal_fiber_g2,P_mdl_global,P_g1,P_g2,P_g4,P_min_coarse_lock,P_tau_family,P_dyadic_phase_register,P_phase_lift_cp,P_chi_flip,P_orientation_min,P_conj_reversal,P_conj_readout_rev,P_cp_sign_anchor,P_cpt_protocol,P_mirror_universe,P_alpha_geo,P_ew_weinberg,P_cp_volume,P_ckm_mag,P_ckm_matrix,P_pmns_mag,P_pmns_matrix,P_neutrino_mass_iface,P_mass_flow_uplift,P_neutrino_external_audit,P_p1,P_p2,P_p3,P_p4,P_p5,P_p6,P_p7 phys_audit;
-  class P_gauge3,P_scalar_iface,P_lambda_open,P_bh_pointer,P_neutrino_majorana,P_qcd_gap not_closed;
-  class P_op5 open_problem;
+  class P_morita,P_gauss,P_capinv,P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_select,P_recon,P_err,P_gamma_proxy,P_gamma_direct,P_transport_audit,P_state_gns,P_input_pdg,P_input_codata,P_input_planck,P_input_nufit,P_consensus_p1,P_consensus_p2,P_consensus_p3,P_internal_fiber_g2,P_mdl_global,P_g1,P_g2,P_g4,P_min_coarse_lock,P_tau_family,P_dyadic_phase_register,P_phase_lift_cp,P_chi_flip,P_orientation_min,P_conj_reversal,P_conj_readout_rev,P_cp_sign_anchor,P_cpt_protocol,P_mirror_universe,P_alpha_geo,P_ew_weinberg,P_cp_volume,P_ckm_mag,P_ckm_matrix,P_pmns_mag,P_pmns_matrix,P_neutrino_mass_iface,P_mass_flow_uplift,P_neutrino_external_audit,P_neutrino_mech_registry,P_neutrino_majorana_phase_closure,P_neutrino_splitting_depth_closure,P_neutrino_weinberg_operator_closure,P_neutrino_typeI_seesaw_closure,P_neutrino_majorana,P_p1,P_p2,P_p3,P_p4,P_p5,P_p6,P_p7 phys_audit;
+  class P_gauge3,P_scalar_iface,P_lambda_open,P_bh_pointer,P_qcd_gap not_closed;
+  class P_op5 phys_audit;
   class P_op1 phys_audit;
   class P_wave_particle phys_audit;
   class P_gut_scope,P_baryogenesis_scope,P_strongcp_scope,P_bhinfo_scope,P_qg_scope,P_cosmo_tension_scope,P_bsm_scope scope_gap;
@@ -1055,6 +1181,16 @@ flowchart TB
 | `P_neutrino_mass_iface` | `\label{subsec:neutrino_mass_interface}` | `mass-scale interface bookkeeping (not an absolute-mass prediction)` | `sections/V_33_pmns_neutrino_summary.tex` |
 | `M_neutrino_external_audit` | `\label{app:neutrino_external_audit_channels}` / `\label{tab:neutrino_external_audit_ledger}` | `external audit channels: Σmν, mβ, mββ (0νββ), sterile/N_eff (Match/Audit only)` | `sections/appendices/52_neutrino_external_audit_channels.tex` |
 | `P_neutrino_external_audit` | `\label{app:neutrino_external_audit_channels}` | `audit ledger + fail conditions; inputs: data/neutrino_external_audit/inputs.json` | `sections/appendices/52_neutrino_external_audit_channels.tex` |
+| `M_neutrino_mech_registry` | `\label{app:neutrino_mass_mechanism_candidates}` / `\label{tab:neutrino_mechanism_candidates}` / `\label{tab:neutrino_mechanism_scoreboard}` | `bounded registry of bridge hypotheses (C1--C4) + deterministic selection + audit scoreboard` | `sections/appendices/53_neutrino_mass_mechanism_candidates.tex` |
+| `P_neutrino_mech_registry` | `\label{app:neutrino_mass_mechanism_candidates}` | `registry inputs: data/neutrino_mass_mechanisms/registry.json; outputs: candidates table + scoreboard` | `sections/appendices/53_neutrino_mass_mechanism_candidates.tex` |
+| `M_neutrino_majorana_phase_closure` | `\label{app:neutrino_majorana_phase_closure}` / `\label{tab:neutrino_majorana_phase_closure}` | `bounded Majorana phase family + feasibility under mββ bound + deterministic key` | `sections/appendices/54_neutrino_majorana_phase_closure.tex` |
+| `P_neutrino_majorana_phase_closure` | `\label{app:neutrino_majorana_phase_closure}` | `outputs: neutrino_majorana_phase_closure_rows/summary (generated)` | `sections/appendices/54_neutrino_majorana_phase_closure.tex` |
+| `M_neutrino_splitting_depth_closure` | `\label{app:neutrino_splitting_depth_closure}` / `\label{tab:neutrino_splitting_depth_closure}` | `bounded rational r-offset attempt for Δm² (protocol-only vs match)` | `sections/appendices/55_neutrino_splitting_depth_closure.tex` |
+| `P_neutrino_splitting_depth_closure` | `\label{app:neutrino_splitting_depth_closure}` | `outputs: neutrino_splitting_depth_closure_rows/summary (generated)` | `sections/appendices/55_neutrino_splitting_depth_closure.tex` |
+| `M_neutrino_weinberg_operator_closure` | `\label{app:neutrino_weinberg_operator_closure}` / `\label{tab:neutrino_weinberg_scale}` | `dimension-5 Weinberg operator scale Λ_W from mν,max + nearest staircase threshold` | `sections/appendices/56_neutrino_weinberg_operator_closure.tex` |
+| `P_neutrino_weinberg_operator_closure` | `\label{app:neutrino_weinberg_operator_closure}` | `outputs: neutrino_weinberg_scale_rows/summary (generated)` | `sections/appendices/56_neutrino_weinberg_operator_closure.tex` |
+| `M_neutrino_typeI_seesaw_closure` | `\label{app:neutrino_typeI_seesaw_closure}` / `\label{tab:neutrino_seesaw_scale}` | `Type-I seesaw scale M_R from mν,max and yν,eff (cap vs match)` | `sections/appendices/57_neutrino_typeI_seesaw_closure.tex` |
+| `P_neutrino_typeI_seesaw_closure` | `\label{app:neutrino_typeI_seesaw_closure}` | `outputs: neutrino_seesaw_scale_rows/summary (generated)` | `sections/appendices/57_neutrino_typeI_seesaw_closure.tex` |
 | `P_p1` | `\label{subsec:p1_rh_neutrino}` | `P1: protocol-external / ghost-like ν_R` | `sections/V_40_falsifiability_predictions.tex` |
 | `P_p2` | `\label{subsec:p2_domain_walls}` | `P2: chirality-domain defects & parity-odd signatures` | `sections/V_40_falsifiability_predictions.tex` |
 | `P_p3` | `\label{subsec:p3_resolution_jumps}` | `P3: resolution jumps & Fibonacci-structured thresholds` | `sections/V_40_falsifiability_predictions.tex` |
@@ -1072,10 +1208,10 @@ flowchart TB
 | `M_gauge3` / `P_gauge3` | `\label{prop:channel_to_gauge}` | 条件闭合（声明族内） | `M_gauge`, `M_g1`, `M_g2`, `M_g4`, `M_consensus_p2` (optional), `M_internal_fiber_g2` (optional) | `sections/I_20_standard_model_interface.tex` |
 | `M_op1` / `P_op1` | `\label{app:internal_fiber_g2_optional}` / `\label{app:quantum_measurement_born}` | 闭合（Q） | `M_qm`, `M_internal_fiber_g2`, `M_gauge3`, `M_cap`, `M_equiv` | `sections/appendices/50_internal_fiber_g2_optional.tex`; `sections/appendices/30_quantum_measurement_born.tex`; `sections/appendices/11_inference_ledger.tex`; `sections/V_41_limitations_related_work.tex` |
 | `M_scalar_iface` / `P_scalar_iface` | `\label{app:scalar_interface_audits}` / `\label{rem:higgs_not_in_21}` | 未闭合（接口/审计形态） | `M_sm`, `M_rg`, `M_proj` | `sections/appendices/22_scalar_interface_audits.tex`; `sections/I_20_standard_model_interface.tex` |
-| `M_op5` / `P_op5` | `\label{subsec:ledger_open_problems}` / `\label{subsec:open_problems_audit_tagged}` | Open | `M_scalar_iface`, `M_rg`, `M_action` | `sections/appendices/11_inference_ledger.tex`; `sections/V_41_limitations_related_work.tex` |
+| `M_op5` / `P_op5` | `\label{app:yukawa_beta_protocol_closure}` | 已闭合（接口假设内） | `M_sm`, `M_gauge3`, `M_scalar_iface`, `M_mass`, `M_ckm_matrix`, `M_pmns_matrix`, `M_rg` | `sections/appendices/48_yukawa_beta_protocol_closure.tex`; `sections/appendices/22_scalar_interface_audits.tex`; `sections/appendices/31_running_couplings_resolution_flow.tex` |
 | `M_lambda_open` / `P_lambda_open` | `\label{app:cap_continuum_action_closure}` | 未闭合 | `M_action`, `M_cosmo` | `sections/F_20_cap_continuum_action_closure.tex`; `theory_closure_tracker.md` |
 | `M_bh_pointer` / `P_bh_pointer` | `\label{app:bh_wormholes_pointer}` | 未闭合（指针/外部输入） | `M_grav`, `M_thermo`, `M_qm` | `sections/appendices/10_black_holes_wormholes.tex`; `theory_closure_tracker.md` |
-| `M_neutrino_majorana` / `P_neutrino_majorana` | `\label{sec:pmns_neutrino_closure}` | 未闭合 | `M_sm`, `M_qm`, `M_pmns_matrix`, `M_neutrino_mass_iface`, `M_neutrino_external_audit` | `sections/V_33_pmns_neutrino_summary.tex`; `sections/appendices/52_neutrino_external_audit_channels.tex`; `theory_closure_tracker.md` |
+| `M_neutrino_majorana` / `P_neutrino_majorana` | `\label{sec:pmns_neutrino_closure}` | 条件闭合（审计/接口） | `M_sm`, `M_qm`, `M_pmns_matrix`, `M_neutrino_mass_iface`, `M_neutrino_external_audit`, `M_neutrino_mech_registry`, `M_neutrino_majorana_phase_closure`, `M_neutrino_splitting_depth_closure`, `M_neutrino_weinberg_operator_closure`, `M_neutrino_typeI_seesaw_closure` | `sections/V_33_pmns_neutrino_summary.tex`; `sections/appendices/52_neutrino_external_audit_channels.tex`; `sections/appendices/53_neutrino_mass_mechanism_candidates.tex`; `sections/appendices/54_neutrino_majorana_phase_closure.tex`; `sections/appendices/55_neutrino_splitting_depth_closure.tex`; `sections/appendices/56_neutrino_weinberg_operator_closure.tex`; `sections/appendices/57_neutrino_typeI_seesaw_closure.tex`; `theory_closure_tracker.md` |
 | `M_qcd_gap` / `P_qcd_gap` | `\label{app:continuum_yang_mills_from_holonomy}` | 未闭合（严格问题） | `M_op3_yang_mills`, `M_rg` | `sections/appendices/36_continuum_yang_mills_from_holonomy.tex`; `theory_closure_tracker.md` |
 | `M_gut_scope` / `P_gut_scope` | `\label{sec:limitations_related_work}` | 范围外（benchmark 指针） | `M_rg`, `M_sm` | `sections/V_41_limitations_related_work.tex`; `theory_closure_tracker.md` |
 | `M_baryogenesis_scope` / `P_baryogenesis_scope` | `theory_closure_tracker.md` | 范围外 | `M_sm`, `M_thermo` | `theory_closure_tracker.md` |

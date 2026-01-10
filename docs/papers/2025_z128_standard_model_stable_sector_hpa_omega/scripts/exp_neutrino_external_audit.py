@@ -100,6 +100,34 @@ def fmt_status(ch: Channel) -> str:
         return r"\textit{pending}"
     return r"\textit{recorded}"
 
+def fmt_channel_name(ch: Channel) -> str:
+    """
+    Return a LaTeX-safe channel display name for tables.
+
+    Notes:
+      - Avoid raw Unicode Greek letters (pdfLaTeX text mode).
+      - Avoid underscores in text mode by placing symbols in math mode.
+      - Keep deterministic wording, keyed by channel id.
+    """
+    if ch.id == "0nubb":
+        return r"$0\nu\beta\beta$ (neutrinoless double beta decay)"
+    if ch.id == "cosmo_sigma_mnu":
+        return r"Cosmology ($\Sigma m_\nu$)"
+    if ch.id == "katrin_mbeta":
+        return r"KATRIN ($m_\beta$)"
+    if ch.id == "sterile_neff":
+        return r"Sterile / extra radiation ($N_\mathrm{eff}$ or $\Delta N_\mathrm{eff}$)"
+    # Fallback: sanitize minimally (escape underscores); prefer explicit ids above.
+    return ch.name.replace("_", r"\_")
+
+def fmt_observable_key(ch: Channel) -> str:
+    """
+    Return a LaTeX-safe observable key for ledger tables.
+
+    We keep the JSON key visible (audit convenience) but escape underscores.
+    """
+    return r"\texttt{" + ch.observable.replace("_", r"\_") + "}"
+
 
 def _parse_pmns_s12_s13_pred(pmns_angles_rows: Path) -> tuple[float, float]:
     """
@@ -238,6 +266,8 @@ def main() -> None:
     recorded = 0
     pending = 0
     for ch in channels:
+        name = fmt_channel_name(ch)
+        obs = fmt_observable_key(ch)
         b = fmt_bound(ch)
         refs = fmt_refs(ch)
         role = fmt_role()
@@ -247,7 +277,7 @@ def main() -> None:
         else:
             recorded += 1
         # 4-column table: channel | observable/bound | role | status
-        rows.append(f"{ch.name} & {ch.observable}: {b}{refs} & {role} & {status} \\\\")
+        rows.append(f"{name} & {obs}: {b}{refs} & {role} & {status} \\\\")
 
     rows.append(r"\bottomrule")
 

@@ -542,6 +542,24 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Neutrino mass mechanisms (candidate registry; audit)",
+            script="exp_neutrino_mass_mechanisms.py",
+            expected_outputs=[
+                "sections/generated/neutrino_mechanism_candidates_rows.tex",
+                "sections/generated/neutrino_mechanism_scoreboard_rows.tex",
+                "sections/generated/neutrino_mechanism_global_rows.tex",
+                "sections/generated/neutrino_mechanism_global_summary.tex",
+                "sections/generated/neutrino_majorana_phase_closure_rows.tex",
+                "sections/generated/neutrino_majorana_phase_closure_summary.tex",
+                "sections/generated/neutrino_splitting_depth_closure_rows.tex",
+                "sections/generated/neutrino_splitting_depth_closure_summary.tex",
+                "sections/generated/neutrino_weinberg_scale_rows.tex",
+                "sections/generated/neutrino_weinberg_scale_summary.tex",
+                "sections/generated/neutrino_seesaw_scale_rows.tex",
+                "sections/generated/neutrino_seesaw_scale_summary.tex",
+            ],
+        ),
+        Step(
             name="Inverse hypercharge fit (inverse diagnostic)",
             script="exp_inverse_hypercharge_fit.py",
             expected_outputs=[

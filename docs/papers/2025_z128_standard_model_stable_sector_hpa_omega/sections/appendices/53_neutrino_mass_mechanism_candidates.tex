@@ -1,0 +1,144 @@
+\section{Neutrino mass-mechanism candidate registry (audit; conditional closures)}
+\label{app:neutrino_mass_mechanism_candidates}
+
+This appendix continues the neutrino interface by enumerating a small \emph{registry} of candidate bridge assumptions that attempt to turn protocol-native discrete costs into an absolute neutrino mass scale.
+Each candidate is treated as a \textbf{conditional} closure: a finite hypothesis class is declared, a deterministic CAP selection rule is specified, and the resulting output is checked against the external audit channels recorded in Appendix~\ref{app:neutrino_external_audit_channels}.
+
+\paragraph{Status and scope.}
+\AuditTag The mechanisms below are not used as premises in any theorem-level folding argument.
+They are interface/audit modules whose purpose is to (i) make candidate mass-generation narratives explicit as finite, auditable objects and (ii) expose minimal failure points under the standard external channels.
+
+\subsection{Common interface: spectra and audit observables}
+\label{subsec:neutrino_mech_common_interface}
+
+\paragraph{Spectrum completion from splittings (interface).}
+For each candidate we specify an ordering $\mathsf{O}\in\{\mathrm{NO},\mathrm{IO}\}$ and a lightest mass $m_{\mathrm{lightest}}\ge 0$.
+We complete $(m_1,m_2,m_3)$ using representative oscillation splittings as in Section~\ref{subsec:neutrino_mass_interface}.
+This keeps the candidate families finite while separating the absolute-scale question (the mechanism target of this appendix) from the oscillation closure.
+
+\paragraph{Audit observables.}
+Given a spectrum and the closed PMNS moduli, we compute $\Sigma m_\nu$, $m_\beta$, and the phase-agnostic interval
+$[m_{\beta\beta}^{\min},m_{\beta\beta}^{\max}]$ exactly as in Appendix~\ref{app:neutrino_external_audit_channels}.
+For extra radiation we use the proxy relation $\Delta N_\mathrm{eff}\approx n_R\xi^4$ (Equation~\eqref{eq:delta_neff_proxy}) as an audit-facing bound check, not as a mechanism premise.
+
+\subsection{Four bridge families (C1--C4)}
+\label{subsec:neutrino_mech_bridge_families}
+
+We register four bridge families. Each one is a finite candidate family with an explicit deterministic selection key.
+Failures are recorded rather than hidden: if a family cannot pass the external audit bounds in Appendix~\ref{app:neutrino_external_audit_channels} within its declared box, it is marked as \emph{excluded in that audit model}.
+
+\paragraph{C1: ghost-sector repair-cost accumulation.}
+\AuditTag Use the ghost-sector minimal repair cost $c(w)$ (Appendix~\ref{app:ghost_sector}) as a proxy for the overhead required to keep a neutral mode stable against forbidden-grammar excursions.
+Let $\overline c_{\mathrm{ghost}}(m)$ denote the mean repair cost restricted to the ghost sector $\Omega_m\setminus X_m$ at window length $m$ (Table~\ref{tab:ghost_sector_repair_cost}).
+Declare a finite parameter box $(m_{\mathrm{dec}},a,\mathsf{round})$ and set a depth suppression exponent
+\[
+K:=\mathsf{round}\!\bigl(a\,m_{\mathrm{dec}}\,\overline c_{\mathrm{ghost}}(m_{\mathrm{dec}})\bigr),
+\qquad
+r_0:=-K,
+\qquad
+m_{\mathrm{lightest}}:=m_e\,\varphi^{\,r_0}.
+\]
+This is a candidate bridge that converts a repair/maintenance overhead into an absolute mass scale.
+
+\paragraph{C2: visibility/temperature ratio (\texorpdfstring{$\xi$}{xi}) as the shared suppression source.}
+\AuditTag Use the external extra-radiation bound $|\Delta N_\mathrm{eff}|<B$ to constrain the sterile visibility proxy $\xi:=T_R/T_\nu$ via $\Delta N_\mathrm{eff}\approx n_R\xi^4$.
+Declare a finite parameter box $(n_R,p,\xi_{\mathrm{frac}},\mathsf{round})$ and set
+\[
+\xi:=\xi_{\mathrm{frac}}\Bigl(\frac{B}{n_R}\Bigr)^{1/4},
+\qquad
+r_0:=\mathsf{round}\!\bigl(p\,\log_\varphi \xi\bigr),
+\qquad
+m_{\mathrm{lightest}}:=m_e\,\varphi^{\,r_0}.
+\]
+This family makes the shared-source hypothesis explicit: the same barrier that suppresses sterile thermalization suppresses neutrino masses.
+
+\paragraph{C3: refinement dilution under uplift.}
+\AuditTag Use functorial refinement multiplicities $|\mathrm{Ext}_m(u)|$ (Appendix~\ref{app:functorial_refinement} and Appendix~\ref{app:protocol_hecke_operators}) as a dilution proxy:
+a neutral label spreads over many high-$m$ refinements, suppressing its effective low-energy mass scale.
+Declare a finite parameter box $(u,m_{\mathrm{high}},a,\mathsf{round})$ and set
+\[
+r_0:=\widehat r(u;6)-\mathsf{round}\!\bigl(a\,\log_\varphi|\mathrm{Ext}_{m_{\mathrm{high}}}(u)|\bigr),
+\qquad
+m_{\mathrm{lightest}}:=m_e\,\varphi^{\,r_0},
+\]
+where $\widehat r(u;6)$ is the fixed-anchor depth template (Section~\ref{sec:mass_spectrum_closure}) evaluated on the chosen neutral base label $u$.
+
+\paragraph{C4: unbalanced coupling and parity-mismatch overhead.}
+\AuditTag On the fixed $2$D Hilbert screen, balanced coupling $2^m=4^n$ (equivalently $m=2n$) is a CAP-minimal diagnostic convention because it yields a bijective site$\leftrightarrow$window assignment and avoids additional mapping overhead (Remark~\ref{rem:balanced_coupling_convention}).
+As a deliberately simple counterfactual bridge family, we model a parity-mismatch relaxation by counting the number of odd-to-even coupling corrections along a growth spine:
+if $m=2n+1$ is an unbalanced intermediate, declare a finite parameter box $(m_{\mathrm{odd}},a)$ and set
+\[
+K:=a\,n,\qquad r_0:=-K,\qquad m_{\mathrm{lightest}}:=m_e\,\varphi^{\,r_0}.
+\]
+This family is included to make the ``odd $m$ as a non-bijective intermediate'' intuition testable as a bounded auditable hypothesis.
+
+\subsection{CAP selection keys and generated scoreboard}
+\label{subsec:neutrino_mech_selection_and_scoreboard}
+
+\paragraph{Registry and deterministic generator.}
+\AuditTag The finite candidate boxes, selection keys, and tie-break order are declared in
+\path{data/neutrino_mass_mechanisms/registry.json} and enumerated by the deterministic script
+\path{scripts/exp_neutrino_mass_mechanisms.py}.
+The script writes:
+\begin{itemize}
+\item \path{sections/generated/neutrino_mechanism_candidates_rows.tex}
+\item \path{sections/generated/neutrino_mechanism_scoreboard_rows.tex}
+\item \path{sections/generated/neutrino_mechanism_global_rows.tex}
+\item \path{sections/generated/neutrino_mechanism_global_summary.tex}
+\item \path{sections/generated/neutrino_majorana_phase_closure_rows.tex}
+\item \path{sections/generated/neutrino_majorana_phase_closure_summary.tex}
+\item \path{sections/generated/neutrino_splitting_depth_closure_rows.tex}
+\item \path{sections/generated/neutrino_splitting_depth_closure_summary.tex}
+\end{itemize}
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{llllrrrr}
+\toprule
+mechanism & selection & ordering & params &
+$m_{\mathrm{lightest}}$ [eV] & $\Sigma m_\nu$ [eV] & $m_\beta$ [eV] & $[m_{\beta\beta}^{\min},m_{\beta\beta}^{\max}]$ [eV] \\
+\midrule
+\input{sections/generated/neutrino_mechanism_candidates_rows.tex}%
+\end{tabular}
+\caption{Best candidates per mechanism family in the declared registry. ``selection'' distinguishes the raw CAP minimizer inside the declared finite box from the audit-feasible minimizer (if any) that additionally satisfies the external bounds recorded in Appendix~\ref{app:neutrino_external_audit_channels}. Rows are generated by \texttt{scripts/exp\_neutrino\_mass\_mechanisms.py}.}
+\label{tab:neutrino_mechanism_candidates}
+\end{table}
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lllllll}
+\toprule
+mechanism & selection &
+$\Sigma m_\nu$ & $m_\beta$ & $m_{\beta\beta}$ & $\Delta N_\mathrm{eff}$ & $\Delta m^2$ \\
+\midrule
+\input{sections/generated/neutrino_mechanism_scoreboard_rows.tex}%
+\end{tabular}
+\caption{Audit scoreboard for the selected candidates against the external channels recorded in Appendix~\ref{app:neutrino_external_audit_channels} and the oscillation-splitting interface used to complete the spectrum. Rows are generated by \texttt{scripts/exp\_neutrino\_mass\_mechanisms.py}.}
+\label{tab:neutrino_mechanism_scoreboard}
+\end{table}
+
+\paragraph{Global registry selection (audit).}
+\AuditTag The global registry selection (raw CAP minimizer, a protocol-side \texttt{proto} selector, and the external-feasible minimizer) is generated by the same script:
+\input{sections/generated/neutrino_mechanism_global_summary.tex}%
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{llllrrrr}
+\toprule
+selection & mechanism & ordering & params &
+$m_{\mathrm{lightest}}$ [eV] & $\Sigma m_\nu$ [eV] & $m_\beta$ [eV] & $[m_{\beta\beta}^{\min},m_{\beta\beta}^{\max}]$ [eV] \\
+\midrule
+\input{sections/generated/neutrino_mechanism_global_rows.tex}%
+\end{tabular}
+\caption{Global selection across the declared registry: the raw CAP minimizer (\texttt{cap}), a protocol-side \texttt{proto} selector, and the external-feasible minimizer (\texttt{feasible}).}
+\label{tab:neutrino_mechanism_global}
+\end{table}
