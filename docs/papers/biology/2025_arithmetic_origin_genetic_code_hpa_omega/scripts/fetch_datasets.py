@@ -23,13 +23,16 @@ from progress_tools import Heartbeat
 
 
 DEFAULT_GITHUB_REPO = "loning/the-omega"
-DEFAULT_GITHUB_RELEASE_TAG = "latest"
+# NOTE: the repository's "latest" release may be a code release without the data bundle assets.
+# We therefore pin the default to the latest known data-bundle tag for reproducibility.
+DEFAULT_GITHUB_RELEASE_TAG = "genetic-code-data-v1.1"
 DEFAULT_GITHUB_RELEASE_ASSET_NAME = "genetic-code-data.tar.gz"
 DEFAULT_GITHUB_RELEASE_META_NAME = "genetic-code-data.meta.json"
 _KNOWN_RELEASE_SHA256: dict[str, str] = {
     # Pinned historical releases (optional). New releases should ship a meta JSON file so
     # the downloader can verify integrity without hardcoding SHA256 in the codebase.
     "genetic-code-data-v1.0": "53246e0563de007d85c9ec15e1991004a7ff237f966ab26eac3abb836e248ae7",
+    "genetic-code-data-v1.1": "42027ce10160919685dcc12cd19feab9008913fcbed3feef44f10ea09f8c2287",
 }
 
 
