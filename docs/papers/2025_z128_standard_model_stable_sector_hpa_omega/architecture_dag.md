@@ -624,6 +624,18 @@ flowchart TB
   P_input_nufit@{ shape: lean-l, label: "NuFIT（targets；Match）<br/>类型：审计<br/>label: subsec:external_inputs_inventory" }
   M_input_nufit -.- P_input_nufit
 
+  M_input_bhplanck@{ shape: lean-l, label: "BH/Planck（面积律/熵界/普朗克单位）<br/>类型：审计<br/>label: subsec:external_inputs_inventory" }
+  P_input_bhplanck@{ shape: lean-l, label: "BH/Planck（targets；Match）<br/>类型：审计<br/>label: subsec:external_inputs_inventory" }
+  M_input_bhplanck -.- P_input_bhplanck
+
+  M_bh_planck_calib["边界–普朗克容量校准（BH 信息→(m,n)）<br/>类型：审计<br/>label: app:bh_planck_capacity_calibration<br/>output: (m*,n*), n(m), mismatch"]
+  P_bh_planck_calib("边界容量校准代理（BH 信息↔协议容量）<br/>类型：审计<br/>label: app:bh_planck_capacity_calibration<br/>I_BH vs I_prot(m,n); finite-family CAP; generated fragments")
+  M_bh_planck_calib -.- P_bh_planck_calib
+
+  M_mass_flow_uplift["质量流（window uplift pooled depth）<br/>类型：审计<br/>label: app:mass_flow_under_uplift<br/>output: rhat_CAP(u;m), rhat_FE(u;m)"]
+  P_mass_flow_uplift("uplift pooled depth（代表态池化：CAP vs free-energy）<br/>类型：审计<br/>label: app:mass_flow_under_uplift")
+  M_mass_flow_uplift -.- P_mass_flow_uplift
+
   M_cp_odd_J --> M_cp_sign_anchor
 
   P_cp_odd_J --> P_cp_sign_anchor
@@ -1130,6 +1142,13 @@ flowchart TB
   P_kernel_view --> P_ext_boundary_check
   P_kernel_view --> P_info_cert
 
+  M_input_bhplanck --> M_bh_planck_calib
+  P_input_bhplanck --> P_bh_planck_calib
+  M_kernel_view --> M_bh_planck_calib
+  P_kernel_view --> P_bh_planck_calib
+  M_bh_planck_calib --> M_mass_flow_uplift
+  P_bh_planck_calib --> P_mass_flow_uplift
+
   M_graphzeta --> M_selberg
   M_am_euler --> M_selberg
   M_pressure --> M_selberg
@@ -1169,12 +1188,12 @@ flowchart TB
 
   class M_mass,M_grav,M_rg,M_entropy_gap,M_rm,M_relent math_closure;
   class M_cosmo math_assumption;
-  class M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_gamma_proxy,M_gamma_direct,M_input_pdg,M_input_codata,M_input_planck,M_input_nufit,M_mdl_global,M_kernel_view,M_kernel_rg_flow,M_ext_boundary_check,M_info_cert math_audit;
+  class M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_gamma_proxy,M_gamma_direct,M_input_pdg,M_input_codata,M_input_planck,M_input_nufit,M_input_bhplanck,M_mdl_global,M_kernel_view,M_kernel_rg_flow,M_ext_boundary_check,M_info_cert,M_bh_planck_calib,M_mass_flow_uplift math_audit;
   class P_dyn phys_proxy;
   class P_mass,P_lens phys_obs;
   class P_am_euler,P_entropy_gap,P_rm,P_relent phys_dict;
   class P_rg,P_cosmo phys_model;
-  class P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_err,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_planck,P_input_nufit,P_mdl_global,P_kernel_view,P_kernel_rg_flow,P_ext_boundary_check,P_info_cert phys_audit;
+  class P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_err,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_planck,P_input_nufit,P_input_bhplanck,P_mdl_global,P_kernel_view,P_kernel_rg_flow,P_ext_boundary_check,P_info_cert,P_bh_planck_calib,P_mass_flow_uplift phys_audit;
 ```
 
 ### 图 10：可证伪预测 wiring（P1–P7）

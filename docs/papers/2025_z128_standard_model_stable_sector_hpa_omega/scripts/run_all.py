@@ -597,6 +597,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="BH/Planck capacity calibration (boundary vs protocol capacity)",
+            script="exp_bh_planck_capacity_calibration.py",
+            expected_outputs=[
+                "sections/generated/bh_planck_capacity_rows.tex",
+                "sections/generated/bh_planck_capacity_summary.tex",
+                "sections/generated/bh_capacity_calibrated_uplift_path_rows.tex",
+            ],
+        ),
+        Step(
             name="Neutrino external audit ledger (Match/Audit only)",
             script="exp_neutrino_external_audit.py",
             expected_outputs=[
