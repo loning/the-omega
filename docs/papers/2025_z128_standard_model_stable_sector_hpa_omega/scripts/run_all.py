@@ -253,6 +253,20 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Kernel summary (m-sweep)",
+            script="exp_fractal_kernel_summary.py",
+            expected_outputs=[
+                "sections/generated/fractal_kernel_sweep_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel mu/r bridge (demo)",
+            script="exp_kernel_mu_r_bridge_demo.py",
+            expected_outputs=[
+                "sections/generated/kernel_mu_r_bridge_rows.tex",
+            ],
+        ),
+        Step(
             name="Ghost sector violation diagnostics",
             script="exp_ghost_sector_violation_stats.py",
             expected_outputs=[

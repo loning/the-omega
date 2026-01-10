@@ -1048,6 +1048,10 @@ flowchart TB
   P_rm("最小 slot gauge 复杂度<br/>类型：字典<br/>label: cor:rm_growth_rate<br/>minimal uniform slot count grows ~ (2/φ)^m")
   M_rm -.- P_rm
 
+  M_kernel_view["Kernel view（语言核+折叠核+协议 RG 核）<br/>类型：审计<br/>label: sec:kernel_view<br/>X_m + Fold_m + uplift/coarse-graining + r/RG dictionary"]
+  P_kernel_view("跨尺度计算入口（generated tables）<br/>类型：审计<br/>label: tab:fractal_kernel_sweep / tab:kernel_mu_r_bridge<br/>m-sweep summary; μ/r staircase demo")
+  M_kernel_view -.- P_kernel_view
+
   M_selberg["Selberg ζ / trace 统一层（prime geodesics）<br/>类型：审计<br/>label: app:selberg_zeta_trace_bridge<br/>Z_X(s)=∏_{p∈C_prim}∏_{k≥0}(1−e^{-(s+k)ℓ(p)})"]
   P_selberg("谱↔prime-cycle 约束代理（trace formula）<br/>类型：审计<br/>label: thm:selberg_trace_formula_template<br/>Σ_j h(r_j)=vol-term + Σ_{p,k} ℓ(p)/(2sinh(kℓ/2))·g(kℓ)")
   M_selberg -.- P_selberg
@@ -1100,6 +1104,13 @@ flowchart TB
   P_entropy_gap --> P_relent --> P_rm
   P_hecke_like --> P_protoHecke
 
+  M_rm --> M_kernel_view
+  M_rg --> M_kernel_view
+  M_pressure --> M_kernel_view
+  P_rm --> P_kernel_view
+  P_rg --> P_kernel_view
+  P_pressure --> P_kernel_view
+
   M_graphzeta --> M_selberg
   M_am_euler --> M_selberg
   M_pressure --> M_selberg
@@ -1139,12 +1150,12 @@ flowchart TB
 
   class M_mass,M_grav,M_rg,M_entropy_gap,M_rm,M_relent math_closure;
   class M_cosmo math_assumption;
-  class M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_gamma_proxy,M_gamma_direct,M_input_pdg,M_input_codata,M_input_planck,M_input_nufit,M_mdl_global math_audit;
+  class M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_gamma_proxy,M_gamma_direct,M_input_pdg,M_input_codata,M_input_planck,M_input_nufit,M_mdl_global,M_kernel_view math_audit;
   class P_dyn phys_proxy;
   class P_mass,P_lens phys_obs;
   class P_am_euler,P_entropy_gap,P_rm,P_relent phys_dict;
   class P_rg,P_cosmo phys_model;
-  class P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_err,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_planck,P_input_nufit,P_mdl_global phys_audit;
+  class P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_err,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_planck,P_input_nufit,P_mdl_global,P_kernel_view phys_audit;
 ```
 
 ### 图 10：可证伪预测 wiring（P1–P7）
