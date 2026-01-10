@@ -15,7 +15,9 @@ Pre-registered tasks (scores "higher is better"):
     Score = mean_{k in K_ref} |AUC(D(k)) - 0.5|.
     (Exploratory: report the k=10 AUCs for u_before, u_after, and D separately.)
   Task B (transl_except): AUC for discriminating recoding sites vs CDS-deduplicated
-    terminal stops using u_before(k) computed under μ. Score = |AUC - 0.5|.
+    terminal stops using D = u_after(k) - u_before(k) computed under μ (k fixed by the dataset).
+    Score = |AUC(D) - 0.5|.
+    (Exploratory: report the k=10 AUCs for u_before, u_after, and D separately.)
   Task C (nonstandard codes): Fisher score over translation tables using stop-set
     boundary-hit enrichment under μ (table-level hypergeometric tail p-values combined
     by Fisher's statistic). Score = Fisher statistic (larger is better).
@@ -371,16 +373,26 @@ def _maybe_add_refseq_record(
     _reservoir_add(heaps[stop], item=it, key_u64=key, n_max=target_per_class)
 
 
-def _parse_recoding_windows(*, k: int, analysis_version: int) -> tuple[list[bytes], list[bytes]]:
+def _parse_recoding_windows(
+    *, k: int, analysis_version: int
+) -> tuple[list[bytes], list[bytes], list[tuple[bytes, bytes]], list[bytes], list[bytes], list[tuple[bytes, bytes]]]:
     """
-    Return (recoding_before_windows, terminal_before_windows_dedup) as codon-id bytes.
+    Return windows as codon-id bytes:
+      - rec_before: list[bytes]
+      - rec_after:  list[bytes]
+      - rec_both:   list[(before, after)] where both exist
+      - term_before: list[bytes] (CDS-deduplicated)
+      - term_after:  list[bytes] (CDS-deduplicated)
+      - term_both:   list[(before, after)] CDS-dedup where both exist
     """
     in_jsonl = data_root() / "recoding_genbank" / "recoding_sites.jsonl"
     if not in_jsonl.exists():
         raise FileNotFoundError(f"Missing {in_jsonl}. Run exp_recoding_sites.py or run_all.py --download.")
 
     rec_before: list[bytes] = []
-    term_by_cds: dict[tuple[str, str, int], bytes] = {}
+    rec_after: list[bytes] = []
+    rec_both: list[tuple[bytes, bytes]] = []
+    term_by_cds: dict[tuple[str, str, int], dict[str, bytes]] = {}
 
     def to_ids(seq_dna: str | None) -> bytes | None:
         if not seq_dna:
@@ -413,16 +425,29 @@ def _parse_recoding_windows(*, k: int, analysis_version: int) -> tuple[list[byte
                 continue
             group = (version, cds_location, int(ts))
 
-            rec_ids = to_ids(r.get("before_seq_dna"))
-            if rec_ids is not None:
-                rec_before.append(rec_ids)
+            rec_b = to_ids(r.get("before_seq_dna"))
+            rec_a = to_ids(r.get("after_seq_dna"))
+            if rec_b is not None:
+                rec_before.append(rec_b)
+            if rec_a is not None:
+                rec_after.append(rec_a)
+            if (rec_b is not None) and (rec_a is not None):
+                rec_both.append((rec_b, rec_a))
 
-            term_ids = to_ids(r.get("terminal_before_seq_dna"))
-            if term_ids is not None:
-                term_by_cds[group] = term_ids
+            tb = to_ids(r.get("terminal_before_seq_dna"))
+            ta = to_ids(r.get("terminal_after_seq_dna"))
+            if tb is not None or ta is not None:
+                cur = term_by_cds.get(group) or {}
+                if tb is not None:
+                    cur["before"] = tb
+                if ta is not None:
+                    cur["after"] = ta
+                term_by_cds[group] = cur
 
-    term_before = list(term_by_cds.values())
-    return rec_before, term_before
+    term_before = [d["before"] for d in term_by_cds.values() if "before" in d]
+    term_after = [d["after"] for d in term_by_cds.values() if "after" in d]
+    term_both = [(d["before"], d["after"]) for d in term_by_cds.values() if ("before" in d and "after" in d)]
+    return rec_before, rec_after, rec_both, term_before, term_after, term_both
 
 
 def _hypergeom_tail_p(*, N: int, K: int, n: int, k: int) -> float:
@@ -529,7 +554,9 @@ def main() -> None:
     ref_uga = refseq["UGA"]
 
     # ----- Task B: Recoding vs terminal AUC -----
-    rec_before, term_before = _parse_recoding_windows(k=k, analysis_version=analysis_version)
+    rec_before, rec_after, rec_both, term_before, term_after, term_both = _parse_recoding_windows(
+        k=k, analysis_version=analysis_version
+    )
 
     # ----- Task C: nonstandard Fisher score -----
     encs = all_encodings()
@@ -575,11 +602,29 @@ def main() -> None:
 
         sA = float(sum(scores_A)) / float(len(scores_A)) if scores_A else 0.0
 
-        # Task B: recoding vs terminal
-        posB = [_mean_delta_from_rna_codons(w, delta_by_id=d, k=k) for w in rec_before]
-        negB = [_mean_delta_from_rna_codons(w, delta_by_id=d, k=k) for w in term_before]
-        aucB = auc_mann_whitney(posB, negB).auc
-        sB = abs(float(aucB) - 0.5)
+        # Task B: primary score uses D = u_after - u_before (k fixed by dataset).
+        posB_D = [
+            float(
+                _mean_delta_from_rna_codons(a, delta_by_id=d, k=k) - _mean_delta_from_rna_codons(b, delta_by_id=d, k=k)
+            )
+            for (b, a) in rec_both
+        ]
+        negB_D = [
+            float(
+                _mean_delta_from_rna_codons(a, delta_by_id=d, k=k) - _mean_delta_from_rna_codons(b, delta_by_id=d, k=k)
+            )
+            for (b, a) in term_both
+        ]
+        aucB_D = auc_mann_whitney(posB_D, negB_D).auc
+        sB = abs(float(aucB_D) - 0.5)
+
+        # Exploratory: k=10 AUCs for u_before and u_after.
+        posB_b = [_mean_delta_from_rna_codons(w, delta_by_id=d, k=k) for w in rec_before]
+        negB_b = [_mean_delta_from_rna_codons(w, delta_by_id=d, k=k) for w in term_before]
+        aucB_before = auc_mann_whitney(posB_b, negB_b).auc
+        posB_a = [_mean_delta_from_rna_codons(w, delta_by_id=d, k=k) for w in rec_after]
+        negB_a = [_mean_delta_from_rna_codons(w, delta_by_id=d, k=k) for w in term_after]
+        aucB_after = auc_mann_whitney(posB_a, negB_a).auc
 
         # Task C: nonstandard Fisher score (uses boundary hits, but not the K-identification objective).
         fisherC, mean_hitC = _nonstandard_fisher_score(mu)
@@ -595,7 +640,9 @@ def main() -> None:
                 "taskA_auc_k10_before": float(aucA_k10_before),
                 "taskA_auc_k10_after": float(aucA_k10_after),
                 "taskA_auc_k10_D": float(aucA_k10_D),
-                "taskB_auc": float(aucB),
+                "taskB_auc_D": float(aucB_D),
+                "taskB_auc_before": float(aucB_before),
+                "taskB_auc_after": float(aucB_after),
                 "taskB_score": float(sB),
                 "taskC_fisher": float(sC),
                 "taskC_mean_hit_table": float(mean_hitC),
@@ -661,7 +708,7 @@ def main() -> None:
     tbl.append(r"\begin{tabular}{rccccrrrrrrl}")
     tbl.append(r"\toprule")
     tbl.append(
-        r"rank & $A$ & $C$ & $G$ & $U$ & A $\overline{|\\mathrm{AUC}_D-0.5|}$ & B $|\mathrm{AUC}-0.5|$ & C Fisher & rA & rB & rC & sum-rank & tag \\"
+        r"rank & $A$ & $C$ & $G$ & $U$ & A $\overline{|\\mathrm{AUC}_D-0.5|}$ & B $|\\mathrm{AUC}_D-0.5|$ & C Fisher & rA & rB & rC & sum-rank & tag \\"
     )
     tbl.append(r"\midrule")
     for i, r in enumerate(rows_sorted, start=1):
@@ -683,7 +730,8 @@ def main() -> None:
         "Cross-task validation across three non-identification tasks (RefSeq stop-context AUC; transl\\_except recoding AUC; nonstandard-table Fisher score), evaluated over all $24$ encodings."
         f" Task A (primary): mean over $k\\in\\{{{', '.join(str(x) for x in k_list_ref)}\\}}$ of $|\\mathrm{{AUC}}(D(k))-0.5|$ with $D=u_{{after}}-u_{{before}}$ at terminal stops."
         f" Sample sizes: n(UGA)={len(ref_uga)}, n(UAA)={len(ref_uaa)} (k_max={k_max_ref})."
-        f" Task B: n(recoding)={len(rec_before)}, n(terminal)={len(term_before)}."
+        f" Task B (primary): $|\\mathrm{{AUC}}(D)-0.5|$ on transl\\_except windows (k={k}), using only sites with both before/after windows."
+        f" Sample sizes: n(recoding)={len(rec_both)}, n(terminal)={len(term_both)}."
         f" Under the uniform encoding prior, $\\mu^\\ast$ ranks {rankA_mu}/24 (A), {rankB_mu}/24 (B), {rankC_mu}/24 (C),"
         f" giving p-values $p_A={pA:.4f}$, $p_B={pB:.4f}$, $p_C={pC:.4f}$."
         f" Combining the three with Fisher's statistic yields $p_\\mathrm{{comb}}={p_comb:.4f}$ under the exact encoding-null (enumeration over 24 encodings)."
@@ -698,7 +746,7 @@ def main() -> None:
         "refseq_target_per_class": refseq_target,
         "seed": seed,
         "taskA": {"n_uga": len(ref_uga), "n_uaa": len(ref_uaa)},
-        "taskB": {"n_rec": len(rec_before), "n_term": len(term_before)},
+        "taskB": {"n_rec_both": len(rec_both), "n_term_both": len(term_both), "k": k},
         "mu_star_ranks": {"A": rankA_mu, "B": rankB_mu, "C": rankC_mu, "p_comb": p_comb},
         "rows": rows_sorted,
         "latex_table": latex_table,
