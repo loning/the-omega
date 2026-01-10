@@ -1033,6 +1033,7 @@ flowchart TB
 | `M_pmns_matrix` | `\label{subsec:pmns_matrix_closure}` / `\label{tab:pmns_delta_sweep}` / `\label{tab:pmns_matrix}` | `bounded-denominator δ selection + PMNS unitarity diagnostics` | `sections/V_33_pmns_neutrino_summary.tex`; `sections/V_33_pmns_neutrino_closure.tex` |
 | `P_pmns_matrix` | `\label{subsec:pmns_matrix_closure}` | `PMNS closure output (abs(U_ij), angles, δ, unitarity)` | `sections/V_33_pmns_neutrino_summary.tex`; `sections/V_33_pmns_neutrino_closure.tex` |
 | `M_neutrino_mass_iface` | `\label{subsec:neutrino_mass_interface}` / `\label{tab:neutrino_mass_interface}` | `r(μ)=log(μ/m_e)/log φ → nearest integer r̂; Δr mismatch` | `sections/V_33_pmns_neutrino_summary.tex` |
+| `M_neutrino_smallness_iface` | `\label{subsec:neutrino_interface_hypothesis}` | `interface-only hypothesis: neutrino smallness as protocol-decoupling maintenance cost (not used in proofs)` | `sections/V_33_pmns_neutrino_summary.tex` |
 | `P_neutrino_mass_iface` | `\label{subsec:neutrino_mass_interface}` | `mass-scale interface bookkeeping (not an absolute-mass prediction)` | `sections/V_33_pmns_neutrino_summary.tex` |
 | `P_p1` | `\label{subsec:p1_rh_neutrino}` | `P1: protocol-external / ghost-like ν_R` | `sections/V_40_falsifiability_predictions.tex` |
 | `P_p2` | `\label{subsec:p2_domain_walls}` | `P2: chirality-domain defects & parity-odd signatures` | `sections/V_40_falsifiability_predictions.tex` |
