@@ -267,6 +267,27 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Kernel RG flow (balanced chain)",
+            script="exp_kernel_rg_flow_balanced_chain.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_flow_balanced_rows.tex",
+            ],
+        ),
+        Step(
+            name="Ext boundary operator check (uplift refinement audit)",
+            script="exp_ext_boundary_operator_check.py",
+            expected_outputs=[
+                "sections/generated/ext_boundary_operator_check_rows.tex",
+            ],
+        ),
+        Step(
+            name="Folding entropy decomposition (numeric certificate)",
+            script="exp_folding_entropy_decomposition.py",
+            expected_outputs=[
+                "sections/generated/folding_entropy_decomposition_rows.tex",
+            ],
+        ),
+        Step(
             name="Ghost sector violation diagnostics",
             script="exp_ghost_sector_violation_stats.py",
             expected_outputs=[
@@ -345,6 +366,20 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "sections/generated/lambda_pressure_closure_equations.tex",
                 "sections/generated/lambda_pressure_closure_summary.tex",
+            ],
+        ),
+        Step(
+            name="Weighted pressure sweep toy (e-channel; audit)",
+            script="exp_weighted_pressure_sweep.py",
+            expected_outputs=[
+                "sections/generated/weighted_pressure_sweep_rows.tex",
+            ],
+        ),
+        Step(
+            name="Pole-barrier mode toy (audit)",
+            script="exp_pole_barrier_mode_toy.py",
+            expected_outputs=[
+                "sections/generated/pole_barrier_mode_toy_rows.tex",
             ],
         ),
         Step(

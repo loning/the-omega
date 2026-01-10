@@ -1049,8 +1049,20 @@ flowchart TB
   M_rm -.- P_rm
 
   M_kernel_view["Kernel view（语言核+折叠核+协议 RG 核）<br/>类型：审计<br/>label: sec:kernel_view<br/>X_m + Fold_m + uplift/coarse-graining + r/RG dictionary"]
-  P_kernel_view("跨尺度计算入口（generated tables）<br/>类型：审计<br/>label: tab:fractal_kernel_sweep / tab:kernel_mu_r_bridge<br/>m-sweep summary; μ/r staircase demo")
+  P_kernel_view("跨尺度计算入口（generated tables）<br/>类型：审计<br/>label: tab:fractal_kernel_sweep / tab:folding_entropy_decomposition / tab:kernel_mu_r_bridge / tab:kernel_rg_flow_balanced / tab:ext_boundary_operator_check<br/>kernel+entropy checks; μ/r staircase; balanced-chain coarse flow; uplift-operator audit")
   M_kernel_view -.- P_kernel_view
+
+  M_kernel_rg_flow["Kernel RG flow（balanced chain coarse-graining）<br/>类型：审计<br/>label: tab:kernel_rg_flow_balanced<br/>m=2n sweep; 4x4 block coarse summary"]
+  P_kernel_rg_flow("跨尺度 coarse-grained 标量统计<br/>类型：审计<br/>label: tab:kernel_rg_flow_balanced<br/>μ/Var of block averages on Hilbert screen")
+  M_kernel_rg_flow -.- P_kernel_rg_flow
+
+  M_ext_boundary_check["Ext boundary operator check（uplift refinement）<br/>类型：审计<br/>label: tab:ext_boundary_operator_check<br/>A^L evaluation vs X_m enumeration"]
+  P_ext_boundary_check("uplift 纤维/边界子集算子核对<br/>类型：审计<br/>label: tab:ext_boundary_operator_check<br/>max abs error = 0 across u∈X_6")
+  M_ext_boundary_check -.- P_ext_boundary_check
+
+  M_info_cert["folding entropy certificate（H=log d + KL）<br/>类型：审计<br/>label: tab:folding_entropy_decomposition<br/>numeric identity check"]
+  P_info_cert("信息论证书（KL 修正）<br/>类型：审计<br/>label: tab:folding_entropy_decomposition<br/>diff ≈ 0 (nats)")
+  M_info_cert -.- P_info_cert
 
   M_selberg["Selberg ζ / trace 统一层（prime geodesics）<br/>类型：审计<br/>label: app:selberg_zeta_trace_bridge<br/>Z_X(s)=∏_{p∈C_prim}∏_{k≥0}(1−e^{-(s+k)ℓ(p)})"]
   P_selberg("谱↔prime-cycle 约束代理（trace formula）<br/>类型：审计<br/>label: thm:selberg_trace_formula_template<br/>Σ_j h(r_j)=vol-term + Σ_{p,k} ℓ(p)/(2sinh(kℓ/2))·g(kℓ)")
@@ -1111,6 +1123,13 @@ flowchart TB
   P_rg --> P_kernel_view
   P_pressure --> P_kernel_view
 
+  M_kernel_view --> M_kernel_rg_flow
+  M_kernel_view --> M_ext_boundary_check
+  M_kernel_view --> M_info_cert
+  P_kernel_view --> P_kernel_rg_flow
+  P_kernel_view --> P_ext_boundary_check
+  P_kernel_view --> P_info_cert
+
   M_graphzeta --> M_selberg
   M_am_euler --> M_selberg
   M_pressure --> M_selberg
@@ -1150,12 +1169,12 @@ flowchart TB
 
   class M_mass,M_grav,M_rg,M_entropy_gap,M_rm,M_relent math_closure;
   class M_cosmo math_assumption;
-  class M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_gamma_proxy,M_gamma_direct,M_input_pdg,M_input_codata,M_input_planck,M_input_nufit,M_mdl_global,M_kernel_view math_audit;
+  class M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_gamma_proxy,M_gamma_direct,M_input_pdg,M_input_codata,M_input_planck,M_input_nufit,M_mdl_global,M_kernel_view,M_kernel_rg_flow,M_ext_boundary_check,M_info_cert math_audit;
   class P_dyn phys_proxy;
   class P_mass,P_lens phys_obs;
   class P_am_euler,P_entropy_gap,P_rm,P_relent phys_dict;
   class P_rg,P_cosmo phys_model;
-  class P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_err,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_planck,P_input_nufit,P_mdl_global,P_kernel_view phys_audit;
+  class P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_err,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_planck,P_input_nufit,P_mdl_global,P_kernel_view,P_kernel_rg_flow,P_ext_boundary_check,P_info_cert phys_audit;
 ```
 
 ### 图 10：可证伪预测 wiring（P1–P7）
