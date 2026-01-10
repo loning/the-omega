@@ -319,6 +319,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Lambda pressure closure (e-channel; audit)",
+            script="exp_lambda_pressure_closure.py",
+            expected_outputs=[
+                "sections/generated/lambda_pressure_closure_equations.tex",
+                "sections/generated/lambda_pressure_closure_summary.tex",
+            ],
+        ),
+        Step(
             name="Hilbert-knot triptych (Figure 1)",
             script="fig_hilbert_knot_triptych.py",
             expected_outputs=[

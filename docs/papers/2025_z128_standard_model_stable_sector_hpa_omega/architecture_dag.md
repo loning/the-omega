@@ -1270,8 +1270,8 @@ flowchart TB
   P_scalar_iface("标量/ Higgs 识别（接口与审计）<br/>类型：审计<br/>label: app:scalar_interface_audits / rem:higgs_not_in_21<br/>uplift/coarse-graining dependent scalar observables")
   M_scalar_iface -.- P_scalar_iface
 
-  M_lambda_open["宇宙学常数/真空能密度（未闭合）<br/>类型：未闭合<br/>label: app:cap_continuum_action_closure<br/>open: value/sign/stability/observation match"]
-  P_lambda_open("Lambda 观测对应（未闭合）<br/>类型：未闭合<br/>label: app:cap_continuum_action_closure<br/>Lambda matching not closed")
+  M_lambda_open["宇宙学常数/真空能密度（pressure 审计闭合）<br/>类型：审计<br/>label: app:lambda_pressure_closure / rem:lambda_status<br/>family: Ω_Λ,0 ∈ {s_k, 1−s_k} with k∈{0,1,2}; Planck-2018 match"]
+  P_lambda_open("Lambda 观测对应（pressure 审计闭合）<br/>类型：审计<br/>label: app:lambda_pressure_closure<br/>Ω_Λ,0 via finite pressure family + Planck targets; Λ from (H0, Ω_Λ,0)")
   M_lambda_open -.- P_lambda_open
 
   M_bh_pointer["黑洞/虫洞类通道（指针性结构）<br/>类型：未闭合<br/>label: app:bh_wormholes_pointer<br/>status: external targets + interface pointer"]
@@ -1389,10 +1389,12 @@ flowchart TB
   P_select --> P_op1
 
   M_action --> M_lambda_open
-  M_cosmo --> M_lambda_open
+  M_pressure --> M_lambda_open
+  M_input_planck --> M_lambda_open
 
   P_action --> P_lambda_open
-  P_cosmo --> P_lambda_open
+  P_pressure --> P_lambda_open
+  P_input_planck --> P_lambda_open
 
   M_grav --> M_bh_pointer
   M_thermo --> M_bh_pointer
@@ -1485,16 +1487,18 @@ flowchart TB
   class M_action,M_op3_yang_mills math_cont;
   class M_cosmo,M_internal_fiber_g2 math_assumption;
   class M_gamma_proxy,M_gamma_direct math_audit;
-  class M_gauge3,M_scalar_iface,M_lambda_open,M_bh_pointer,M_qcd_gap not_closed;
+  class M_gauge3,M_scalar_iface,M_bh_pointer,M_qcd_gap not_closed;
   class M_op1 math_audit;
+  class M_lambda_open math_audit;
   class M_gut_scope,M_baryogenesis_scope,M_strongcp_scope,M_bhinfo_scope,M_qg_scope,M_cosmo_tension_scope,M_bsm_scope scope_gap;
   class P_dyn phys_proxy;
   class P_qm,P_wilson phys_obs;
   class P_types,P_equiv,P_proj,P_thermo phys_dict;
   class P_action,P_rg,P_cosmo phys_model;
   class P_select,P_gamma_proxy,P_gamma_direct,P_internal_fiber_g2 phys_audit;
-  class P_gauge3,P_scalar_iface,P_lambda_open,P_bh_pointer,P_qcd_gap not_closed;
+  class P_gauge3,P_scalar_iface,P_bh_pointer,P_qcd_gap not_closed;
   class P_op1 phys_audit;
+  class P_lambda_open phys_audit;
   class P_gut_scope,P_baryogenesis_scope,P_strongcp_scope,P_bhinfo_scope,P_qg_scope,P_cosmo_tension_scope,P_bsm_scope scope_gap;
 ```
 
@@ -1711,7 +1715,7 @@ flowchart TB
 | `M_op1` / `P_op1` | `\label{app:internal_fiber_g2_optional}` / `\label{app:quantum_measurement_born}` | 闭合（Q） | `M_qm`, `M_internal_fiber_g2`, `M_gauge3`, `M_cap`, `M_equiv` | `sections/appendices/50_internal_fiber_g2_optional.tex`; `sections/appendices/30_quantum_measurement_born.tex`; `sections/appendices/11_inference_ledger.tex`; `sections/V_41_limitations_related_work.tex` |
 | `M_scalar_iface` / `P_scalar_iface` | `\label{app:scalar_interface_audits}` / `\label{rem:higgs_not_in_21}` | 未闭合（接口/审计形态） | `M_sm`, `M_rg`, `M_proj` | `sections/appendices/22_scalar_interface_audits.tex`; `sections/I_20_standard_model_interface.tex` |
 | `M_op5` / `P_op5` | `\label{app:yukawa_beta_protocol_closure}` | 已闭合（接口假设内） | `M_sm`, `M_gauge3`, `M_scalar_iface`, `M_mass`, `M_ckm_matrix`, `M_pmns_matrix`, `M_rg` | `sections/appendices/48_yukawa_beta_protocol_closure.tex`; `sections/appendices/22_scalar_interface_audits.tex`; `sections/appendices/31_running_couplings_resolution_flow.tex` |
-| `M_lambda_open` / `P_lambda_open` | `\label{app:cap_continuum_action_closure}` | 未闭合 | `M_action`, `M_cosmo` | `sections/F_20_cap_continuum_action_closure.tex`; `theory_closure_tracker.md` |
+| `M_lambda_open` / `P_lambda_open` | `\label{app:lambda_pressure_closure}` / `\label{rem:lambda_status}` | 已闭合（Match/Audit；pressure） | `M_action`, `M_pressure`, `M_input_planck` | `sections/appendices/58_lambda_pressure_closure.tex`; `sections/F_20_cap_continuum_action_closure.tex`; `data/cosmology_lambda/planck2018_targets.json`; `scripts/exp_lambda_pressure_closure.py` |
 | `M_bh_pointer` / `P_bh_pointer` | `\label{app:bh_wormholes_pointer}` | 未闭合（指针/外部输入） | `M_grav`, `M_thermo`, `M_qm` | `sections/appendices/10_black_holes_wormholes.tex`; `theory_closure_tracker.md` |
 | `M_neutrino_majorana` / `P_neutrino_majorana` | `\label{sec:pmns_neutrino_closure}` | 条件闭合（审计/接口） | `M_sm`, `M_qm`, `M_pmns_matrix`, `M_neutrino_mass_iface`, `M_neutrino_external_audit`, `M_neutrino_mech_registry`, `M_neutrino_majorana_phase_closure`, `M_neutrino_splitting_depth_closure`, `M_neutrino_weinberg_operator_closure`, `M_neutrino_typeI_seesaw_closure` | `sections/V_33_pmns_neutrino_summary.tex`; `sections/appendices/52_neutrino_external_audit_channels.tex`; `sections/appendices/53_neutrino_mass_mechanism_candidates.tex`; `sections/appendices/54_neutrino_majorana_phase_closure.tex`; `sections/appendices/55_neutrino_splitting_depth_closure.tex`; `sections/appendices/56_neutrino_weinberg_operator_closure.tex`; `sections/appendices/57_neutrino_typeI_seesaw_closure.tex`; `theory_closure_tracker.md` |
 | `M_qcd_gap` / `P_qcd_gap` | `\label{app:continuum_yang_mills_from_holonomy}` | 未闭合（严格问题） | `M_op3_yang_mills`, `M_rg` | `sections/appendices/36_continuum_yang_mills_from_holonomy.tex`; `theory_closure_tracker.md` |
