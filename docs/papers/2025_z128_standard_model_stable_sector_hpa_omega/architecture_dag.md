@@ -294,9 +294,13 @@ flowchart TB
   P_bh_pointer("强场/边界通道代理（指针）<br/>类型：未闭合<br/>label: app:bh_wormholes_pointer<br/>area law / throat / pointer-jump (pointer)")
   M_bh_pointer -.- P_bh_pointer
 
-  M_neutrino_majorana["中微子质量机制与 Majorana 相位（未闭合）<br/>类型：未闭合<br/>label: sec:pmns_neutrino_closure<br/>status: oscillation-focused; mechanism/phases not closed"]
+  M_neutrino_majorana["中微子质量机制与 Majorana 相位（未闭合）<br/>类型：未闭合<br/>label: sec:pmns_neutrino_closure<br/>status: oscillation-focused; mechanism/phases not closed (external audit channels recorded)"]
   P_neutrino_majorana("中微子机制/相位接口（未闭合）<br/>类型：未闭合<br/>label: sec:pmns_neutrino_closure<br/>Majorana phases not included")
   M_neutrino_majorana -.- P_neutrino_majorana
+
+  M_neutrino_external_audit["中微子外部审计通道（0νββ, Σmν, mβ, sterile）<br/>类型：审计<br/>label: app:neutrino_external_audit_channels / tab:neutrino_external_audit_ledger<br/>status: Match/Audit only; not used in CAP selection"]
+  P_neutrino_external_audit("外部通道账本与失败条件（审计）<br/>类型：审计<br/>label: app:neutrino_external_audit_channels<br/>inputs: data/neutrino_external_audit/inputs.json")
+  M_neutrino_external_audit -.- P_neutrino_external_audit
 
   M_qcd_gap["QCD 禁闭/质量隙（严格问题未闭合）<br/>类型：未闭合<br/>label: app:continuum_yang_mills_from_holonomy<br/>note: representative YM closed; confinement/mass gap open"]
   P_qcd_gap("QCD 非微扰检验（未闭合）<br/>类型：未闭合<br/>label: app:continuum_yang_mills_from_holonomy<br/>confinement/mass-gap not closed")
@@ -380,6 +384,10 @@ flowchart TB
   M_mass["质量谱闭合（depth/latency）<br/>类型：闭合<br/>label: eq:r_of_mu_z128<br/>r(μ)=ln(μ/m_e)/ln φ"]
   P_mass("质量代理（延迟/钟慢/散射）<br/>类型：观测<br/>label: rem:mass_as_compton_clock<br/>ω_C=μc²/ħ;  τ_C=ħ/(μc²)")
   M_mass -.- P_mass
+
+  M_mass_flow_uplift["质量流（window uplift 下的 pooled depth）<br/>类型：审计<br/>label: app:mass_flow_under_uplift / tab:mass_flow_uplift<br/>output: rhat_CAP(u;m), rhat_FE(u;m)"]
+  P_mass_flow_uplift("uplift pooled depth（代表态池化：CAP vs free-energy）<br/>类型：审计<br/>label: app:mass_flow_under_uplift<br/>Ext_m(u) fiber pooling + deterministic tie-break")
+  M_mass_flow_uplift -.- P_mass_flow_uplift
 
   %% -------------------------
   %% Continuum representative
@@ -646,8 +654,13 @@ flowchart TB
   M_mass --> M_neutrino_mass_iface
   M_input_nufit --> M_neutrino_mass_iface
   M_input_pdg --> M_neutrino_mass_iface
-  M_pmns_matrix --> M_neutrino_majorana
-  M_neutrino_mass_iface --> M_neutrino_majorana
+  M_pmns_matrix --> M_neutrino_external_audit
+  M_neutrino_mass_iface --> M_neutrino_external_audit
+  M_neutrino_external_audit --> M_neutrino_majorana
+
+  M_mass --> M_mass_flow_uplift
+  M_proj --> M_mass_flow_uplift
+  M_hecke_like --> M_mass_flow_uplift
 
   P_input_codata --> P_alpha_geo
   P_input_pdg --> P_ew_weinberg
@@ -660,6 +673,9 @@ flowchart TB
   P_cp_sign_anchor --> P_pmns_matrix
   P_input_nufit --> P_neutrino_mass_iface
   P_input_pdg --> P_neutrino_mass_iface
+  P_pmns_matrix --> P_neutrino_external_audit
+  P_neutrino_mass_iface --> P_neutrino_external_audit
+  P_neutrino_external_audit --> P_neutrino_majorana
 
   M_sm --> M_scalar_iface
   M_rg --> M_scalar_iface
@@ -827,7 +843,7 @@ flowchart TB
   class M_golden,M_pi,M_periodic,M_e,M_sm,M_mass,M_thermo,M_grav,M_qm,M_rg,M_entropy_gap,M_rm,M_relent,M_op2_fold_uniqueness,M_chi_flip,M_orientation_min,M_conj_reversal,M_conj_readout_rev math_closure;
   class M_action,M_eom,M_op3_yang_mills math_cont;
   class M_cosmo,M_consensus_p1,M_consensus_p2,M_consensus_p3,M_internal_fiber_g2 math_assumption;
-  class M_morita,M_gauss,M_abel,M_capinv,M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_recon,M_err,M_gamma_proxy,M_gamma_direct,M_transport_audit,M_state_gns,M_input_pdg,M_input_codata,M_input_planck,M_input_nufit,M_mdl_global,M_g1,M_g2,M_g4,M_min_coarse_lock,M_6dof_lock,M_bulk_dim,M_geometric_vacuum,M_z128_label,M_tau_family,M_dyadic_phase_register,M_phase_lift_cp,M_cp_odd_J,M_d4_layouts,M_scl,M_cp_sign_anchor,M_cpt_protocol,M_mirror_universe,M_alpha_geo,M_ew_weinberg,M_cp_volume,M_ckm_mag,M_ckm_matrix,M_pmns_mag,M_pmns_matrix,M_neutrino_mass_iface math_audit;
+  class M_morita,M_gauss,M_abel,M_capinv,M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_recon,M_err,M_gamma_proxy,M_gamma_direct,M_transport_audit,M_state_gns,M_input_pdg,M_input_codata,M_input_planck,M_input_nufit,M_mdl_global,M_g1,M_g2,M_g4,M_min_coarse_lock,M_6dof_lock,M_bulk_dim,M_geometric_vacuum,M_z128_label,M_tau_family,M_dyadic_phase_register,M_phase_lift_cp,M_cp_odd_J,M_d4_layouts,M_scl,M_cp_sign_anchor,M_cpt_protocol,M_mirror_universe,M_alpha_geo,M_ew_weinberg,M_cp_volume,M_ckm_mag,M_ckm_matrix,M_pmns_mag,M_pmns_matrix,M_neutrino_mass_iface,M_mass_flow_uplift,M_neutrino_external_audit math_audit;
   class M_gauge3,M_scalar_iface,M_lambda_open,M_bh_pointer,M_neutrino_majorana,M_qcd_gap not_closed;
   class M_op5 open_problem;
   class M_op1 math_audit;
@@ -838,7 +854,7 @@ flowchart TB
   class P_obs,P_periodic,P_holo,P_mass,P_lens,P_qm,P_wilson,P_cp_odd_J phys_obs;
   class P_types,P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_am_euler,P_entropy_gap,P_rm,P_relent,P_6dof_lock,P_z128_label,P_d4_layouts,P_chi_def,P_ptc_defs,P_scl,P_antimatter_dual phys_dict;
   class P_abel,P_action,P_eom,P_rg,P_cosmo phys_model;
-  class P_morita,P_gauss,P_capinv,P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_select,P_recon,P_err,P_gamma_proxy,P_gamma_direct,P_transport_audit,P_state_gns,P_input_pdg,P_input_codata,P_input_planck,P_input_nufit,P_consensus_p1,P_consensus_p2,P_consensus_p3,P_internal_fiber_g2,P_mdl_global,P_g1,P_g2,P_g4,P_min_coarse_lock,P_tau_family,P_dyadic_phase_register,P_phase_lift_cp,P_chi_flip,P_orientation_min,P_conj_reversal,P_conj_readout_rev,P_cp_sign_anchor,P_cpt_protocol,P_mirror_universe,P_alpha_geo,P_ew_weinberg,P_cp_volume,P_ckm_mag,P_ckm_matrix,P_pmns_mag,P_pmns_matrix,P_neutrino_mass_iface,P_p1,P_p2,P_p3,P_p4,P_p5,P_p6,P_p7 phys_audit;
+  class P_morita,P_gauss,P_capinv,P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_select,P_recon,P_err,P_gamma_proxy,P_gamma_direct,P_transport_audit,P_state_gns,P_input_pdg,P_input_codata,P_input_planck,P_input_nufit,P_consensus_p1,P_consensus_p2,P_consensus_p3,P_internal_fiber_g2,P_mdl_global,P_g1,P_g2,P_g4,P_min_coarse_lock,P_tau_family,P_dyadic_phase_register,P_phase_lift_cp,P_chi_flip,P_orientation_min,P_conj_reversal,P_conj_readout_rev,P_cp_sign_anchor,P_cpt_protocol,P_mirror_universe,P_alpha_geo,P_ew_weinberg,P_cp_volume,P_ckm_mag,P_ckm_matrix,P_pmns_mag,P_pmns_matrix,P_neutrino_mass_iface,P_mass_flow_uplift,P_neutrino_external_audit,P_p1,P_p2,P_p3,P_p4,P_p5,P_p6,P_p7 phys_audit;
   class P_gauge3,P_scalar_iface,P_lambda_open,P_bh_pointer,P_neutrino_majorana,P_qcd_gap not_closed;
   class P_op5 open_problem;
   class P_op1 phys_audit;
@@ -911,6 +927,8 @@ flowchart TB
 | `P_types` | `\label{sec:sm_interface}` | `tab:sm_labeling_table — stable types ↔ (fermion multiplets, gauge factors)` | `sections/I_20_standard_model_interface.tex` |
 | `M_mass` | `\label{sec:mass_spectrum_closure}` | `eq:r_of_mu_z128 — r(μ)=ln(μ/m_e)/ln φ; μ(r)=m_e·φʳ` | `sections/V_31_mass_spectrum_closure.tex` |
 | `P_mass` | `\label{sec:mass_latency_coordinate}` | `ω_C(μ)=μc²/ħ, τ_C(μ)=ħ/(μc²) (Compton clock)` | `sections/I_25_mass_latency_coordinate.tex` |
+| `M_mass_flow_uplift` | `\label{app:mass_flow_under_uplift}` / `\label{tab:mass_flow_uplift}` | `uplift pooled depths on Ext_m(u): rhat_CAP(u;m) vs rhat_FE(u;m)` | `sections/appendices/51_mass_flow_under_uplift.tex` |
+| `P_mass_flow_uplift` | `\label{app:mass_flow_under_uplift}` | `audit rule: CAP representative vs free-energy representative on lift fibers` | `sections/appendices/51_mass_flow_under_uplift.tex` |
 | `M_equiv` | `\label{subsec:equivalence_relations_minimal}` | `t ~ t+t₀;  k ~_m k' ⇔ Fold_m(k)=Fold_m(k');  p_{a→b} ↦ g_b p_{a→b} g_a⁻¹;  S ~ S + boundary term` | `sections/F_10_equivalence_semantics.tex` |
 | `P_equiv` | `\label{subsec:equivalence_physical_objects}` | `物理对象 := 等价类 [obj]_{~};  可观测 := O([obj]) ∈ ℝ (invariant / monotone)` | `sections/F_10_equivalence_semantics.tex` |
 | `M_quotient` | `\label{prop:omega_quotient_equals_Xm}` | `K_m={0,…,2^m−1};  K_m/~_m ≅ X_m;  P(w)=Fold_m⁻¹(w)` | `sections/F_10_equivalence_semantics.tex` |
@@ -1034,6 +1052,8 @@ flowchart TB
 | `P_pmns_matrix` | `\label{subsec:pmns_matrix_closure}` | `PMNS closure output (abs(U_ij), angles, δ, unitarity)` | `sections/V_33_pmns_neutrino_summary.tex`; `sections/V_33_pmns_neutrino_closure.tex` |
 | `M_neutrino_mass_iface` | `\label{subsec:neutrino_mass_interface}` / `\label{tab:neutrino_mass_interface}` | `r(μ)=log(μ/m_e)/log φ → nearest integer r̂; Δr mismatch` | `sections/V_33_pmns_neutrino_summary.tex` |
 | `P_neutrino_mass_iface` | `\label{subsec:neutrino_mass_interface}` | `mass-scale interface bookkeeping (not an absolute-mass prediction)` | `sections/V_33_pmns_neutrino_summary.tex` |
+| `M_neutrino_external_audit` | `\label{app:neutrino_external_audit_channels}` / `\label{tab:neutrino_external_audit_ledger}` | `external audit channels: Σmν, mβ, mββ (0νββ), sterile/N_eff (Match/Audit only)` | `sections/appendices/52_neutrino_external_audit_channels.tex` |
+| `P_neutrino_external_audit` | `\label{app:neutrino_external_audit_channels}` | `audit ledger + fail conditions; inputs: data/neutrino_external_audit/inputs.json` | `sections/appendices/52_neutrino_external_audit_channels.tex` |
 | `P_p1` | `\label{subsec:p1_rh_neutrino}` | `P1: protocol-external / ghost-like ν_R` | `sections/V_40_falsifiability_predictions.tex` |
 | `P_p2` | `\label{subsec:p2_domain_walls}` | `P2: chirality-domain defects & parity-odd signatures` | `sections/V_40_falsifiability_predictions.tex` |
 | `P_p3` | `\label{subsec:p3_resolution_jumps}` | `P3: resolution jumps & Fibonacci-structured thresholds` | `sections/V_40_falsifiability_predictions.tex` |
@@ -1054,7 +1074,7 @@ flowchart TB
 | `M_op5` / `P_op5` | `\label{subsec:ledger_open_problems}` / `\label{subsec:open_problems_audit_tagged}` | Open | `M_scalar_iface`, `M_rg`, `M_action` | `sections/appendices/11_inference_ledger.tex`; `sections/V_41_limitations_related_work.tex` |
 | `M_lambda_open` / `P_lambda_open` | `\label{app:cap_continuum_action_closure}` | 未闭合 | `M_action`, `M_cosmo` | `sections/F_20_cap_continuum_action_closure.tex`; `theory_closure_tracker.md` |
 | `M_bh_pointer` / `P_bh_pointer` | `\label{app:bh_wormholes_pointer}` | 未闭合（指针/外部输入） | `M_grav`, `M_thermo`, `M_qm` | `sections/appendices/10_black_holes_wormholes.tex`; `theory_closure_tracker.md` |
-| `M_neutrino_majorana` / `P_neutrino_majorana` | `\label{sec:pmns_neutrino_closure}` | 未闭合 | `M_sm`, `M_qm`, `M_pmns_matrix`, `M_neutrino_mass_iface` | `sections/V_33_pmns_neutrino_summary.tex`; `theory_closure_tracker.md` |
+| `M_neutrino_majorana` / `P_neutrino_majorana` | `\label{sec:pmns_neutrino_closure}` | 未闭合 | `M_sm`, `M_qm`, `M_pmns_matrix`, `M_neutrino_mass_iface`, `M_neutrino_external_audit` | `sections/V_33_pmns_neutrino_summary.tex`; `sections/appendices/52_neutrino_external_audit_channels.tex`; `theory_closure_tracker.md` |
 | `M_qcd_gap` / `P_qcd_gap` | `\label{app:continuum_yang_mills_from_holonomy}` | 未闭合（严格问题） | `M_op3_yang_mills`, `M_rg` | `sections/appendices/36_continuum_yang_mills_from_holonomy.tex`; `theory_closure_tracker.md` |
 | `M_gut_scope` / `P_gut_scope` | `\label{sec:limitations_related_work}` | 范围外（benchmark 指针） | `M_rg`, `M_sm` | `sections/V_41_limitations_related_work.tex`; `theory_closure_tracker.md` |
 | `M_baryogenesis_scope` / `P_baryogenesis_scope` | `theory_closure_tracker.md` | 范围外 | `M_sm`, `M_thermo` | `theory_closure_tracker.md` |

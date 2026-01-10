@@ -1,0 +1,195 @@
+\section{Mass flow under window uplift: CAP representative vs.\ free-energy representative (supplement)}
+\label{app:mass_flow_under_uplift}
+
+This appendix records a minimal, auditable \emph{mass-flow} construction under window uplift
+$m\mapsto m'$ along the functorial refinement spine of Appendix~\ref{app:functorial_refinement}.
+The purpose is to extend the fixed-anchor mass-as-latency closure (Section~\ref{sec:mass_spectrum_closure})
+to a \emph{resolution-dependent} effective depth assignment that is computed on explicit finite fibers
+and selected by deterministic rules.
+
+\paragraph{Status and scope.}
+\InterfaceTag This appendix is an interface/audit module.
+It introduces no new theorem-level folding premise beyond the already-defined objects:
+the admissible sets $X_m$, the projection $\pi_{m\to 6}$, and the folding degeneracies $g_m$.
+All selections are CAP closures on explicit finite candidate families with deterministic tie-breaks.
+
+\subsection{Lift fibers and intrinsic refinement indices}
+\label{subsec:mass_flow_lifts}
+
+Fix the base window $6$.
+For any $m\ge 6$, recall the prefix projection
+\[
+\pi_{m\to 6}:X_m\to X_6,\qquad \pi_{m\to 6}(w_1\cdots w_m)=w_1\cdots w_6,
+\]
+and the associated lift (extension) fiber of a base type $u\in X_6$,
+\[
+\mathrm{Ext}_m(u):=\{w\in X_m:\ \pi_{m\to 6}(w)=u\},
+\]
+as in Appendix~\ref{app:functorial_refinement}.
+Proposition~\ref{prop:prefix_extension_count} gives the exact lift multiplicities
+and Table~\ref{tab:label_lift_counts} provides a compact audit check for $m\in\{8,10,12,14,16\}$.
+
+\paragraph{Intrinsic invariants used by the mass-flow construction.}
+For $w\in X_m$ we use:
+\begin{itemize}
+\item the folding degeneracy
+\[
+g_m(w):=\left|\mathrm{Fold}_m^{-1}(w)\right|
+\]
+as defined in Definition~\ref{def:rm_max_degeneracy} (see also Section~\ref{subsec:foldm_uplift});
+\item the $\pi$-channel wrap-around tag at window length $m$ (boundary vs.\ cyclic),
+as audited in Appendix~\ref{app:functorial_refinement}, Section~\ref{subsec:lift_highm_invariants};
+\item the free suffix index $\rho(w)$ from Definition~\ref{def:free_suffix_index},
+which enumerates lifts inside $\mathrm{Ext}_m(u)$ deterministically.
+\end{itemize}
+
+\paragraph{A suffix depth from the free suffix index.}
+To translate $\rho$ into a compact additive depth-like coordinate,
+we define a discrete suffix depth by a Fibonacci cutoff.
+Let $(F_k)$ be Fibonacci numbers with $F_1=F_2=1$.
+\begin{definition}[Suffix depth from $\rho$]\label{def:rho_suffix_depth}
+For a lift $w\in X_m$ with free suffix index $\rho(w)\in\ZZ_{\ge 0}$, define
+\[
+r_{\mathrm{suf}}(w)
+:=\min\left\{\,\ell\in\ZZ_{\ge 0}:\ \rho(w)<F_{\ell+2}\right\}.
+\]
+\end{definition}
+\begin{remark}[Scale]\label{rem:rho_depth_scale}
+Since $F_{\ell+2}\asymp \varphi^{\ell}$, one has
+$r_{\mathrm{suf}}(w)=O(\log_\varphi(\rho(w)+1))$.
+At fixed $m$ the range of $\rho$ is bounded by Proposition~\ref{prop:prefix_extension_count},
+so $r_{\mathrm{suf}}$ is a bounded intrinsic integer in the audit window $m\in\{6,8,10,12,14,16\}$.
+\end{remark}
+
+\subsection{Two deterministic pooling rules on lift fibers}
+\label{subsec:mass_flow_pooling}
+
+Although the coarse lift $\mathcal{L}_m=\mathcal{L}_{\mathrm{SM}}\circ \pi_{m\to 6}$
+labels all $w\in\mathrm{Ext}_m(u)$ identically (Appendix~\ref{app:functorial_refinement}),
+the higher window length provides additional intrinsic invariants ($g_m$, $\rho$, boundary tags)
+that can be used to select a canonical representative inside each fiber.
+We record two deterministic selection rules:
+a minimal-input CAP representative and an entropic/free-energy representative.
+
+\paragraph{Candidate family (finite).}
+Fix $m\ge 6$ and a base type $u\in X_6$.
+The candidate family is the finite set $\mathrm{Ext}_m(u)$.
+
+\paragraph{CAP representative (no entropy term).}
+Define the CAP key on $\mathrm{Ext}_m(u)$ by lexicographic comparison of
+\[
+K_{\mathrm{CAP}}(w)
+:=\Bigl(g_m(w),\ r_{\mathrm{suf}}(w),\ |w|_1,\ \rho(w),\ w\Bigr),
+\]
+where $|w|_1$ is Hamming weight and the final entry $w$ is the deterministic tie-break.
+Let $w^{\mathrm{CAP}}_{u}(m)\in \mathrm{Ext}_m(u)$ denote the unique minimizer of $K_{\mathrm{CAP}}$.
+
+\paragraph{Free-energy representative (entropy-aware).}
+Following Appendix~\ref{app:thermodynamics_from_equivalence},
+we treat a representative selection as a CAP closure on a finite family with an objective of
+``energy minus entropy'' form (Proposition~\ref{prop:cap_free_energy_closure}).
+On $\mathrm{Ext}_m(u)$ define:
+\[
+E_m(w):=g_m(w)+r_{\mathrm{suf}}(w)+|w|_1,
+\qquad
+S_m(w):=\log g_m(w),
+\qquad
+\mathcal{F}_m(w):=E_m(w)-S_m(w).
+\]
+Let $w^{\mathrm{FE}}_{u}(m)\in \mathrm{Ext}_m(u)$ denote the minimizer of
+the pair $(\mathcal{F}_m(w),K_{\mathrm{CAP}}(w))$ under lexicographic ordering
+(first minimize $\mathcal{F}_m$, then break ties by $K_{\mathrm{CAP}}$).
+\begin{remark}[Audit note]\label{rem:free_energy_audit_note}
+This choice uses no external data and introduces no tunable continuous parameter:
+the objective is evaluated on a finite set and tie-breaks are explicit.
+The ``entropy'' term uses only the intrinsic multiplicity proxy $g_m(w)$,
+which is already a protocol-native invariant (Lemma~\ref{lem:fiber_uncertainty} at $m=6$,
+and its uplift analogue via Fold$_m$).
+\end{remark}
+
+\subsection{Effective depth under uplift and the $m=6$ consistency check}
+\label{subsec:mass_flow_effective_depth}
+
+We now define an uplift-dependent effective depth on base types
+by pooling within lift fibers and comparing to the electron reference.
+
+\paragraph{Reference base type.}
+Let $u_e\in X_6$ denote the base stable type labeled as $e_R^{(1)}$ by the closed labeling map
+(Table~\ref{tab:sm_labeling_table}).
+For each $m$ and each pooling rule $\sigma\in\{\mathrm{CAP},\mathrm{FE}\}$,
+let $w_{e}^{\sigma}(m):=w^{\sigma}_{u_e}(m)\in \mathrm{Ext}_m(u_e)$ be the selected electron lift.
+
+\paragraph{Base-value term.}
+Let $V(u)$ be the Zeckendorf value at window length $6$
+(Definition~\ref{def:zeckendorf_value}).
+The term $2\bigl(V(u)-V(u_e)\bigr)$ is exactly the value contribution to the $m=6$ mass template
+(Proposition~\ref{prop:rhat_simplified}).
+
+\begin{definition}[Uplift effective depth (two pooled variants)]\label{def:mass_flow_rhat}
+Fix $m\in\{6,8,10,12,14,16\}$ and let $u\in X_6$ be a cyclic base type (a fermion multiplet label).
+For $\sigma\in\{\mathrm{CAP},\mathrm{FE}\}$ define
+\begin{equation}\label{eq:mass_flow_rhat_def}
+\widehat r_{\sigma}(u;m)
+:=
+2\bigl(V(u)-V(u_e)\bigr)
+ + 5\Bigl(g_m(w_u^{\sigma}(m)) - g_m(w_e^{\sigma}(m))\Bigr)
+ + \Bigl(|w_u^{\sigma}(m)|_1-|w_e^{\sigma}(m)|_1\Bigr)
+ + 2\Bigl(r_{\mathrm{suf}}(w_u^{\sigma}(m)) - r_{\mathrm{suf}}(w_e^{\sigma}(m))\Bigr),
+\end{equation}
+where $w_u^{\sigma}(m)\in \mathrm{Ext}_m(u)$ is the pooled representative under rule $\sigma$.
+\end{definition}
+
+\begin{proposition}[$m=6$ consistency with the closed mass template]\label{prop:mass_flow_m6_consistency}
+At $m=6$, for every cyclic base type $u\in X_6^{\mathrm{cyc}}$ and both pooling rules
+$\sigma\in\{\mathrm{CAP},\mathrm{FE}\}$, one has
+\[
+\widehat r_{\sigma}(u;6)=\widehat r(u)
+\]
+where $\widehat r(u)$ is the normalized depth of the closed $m=6$ mass template
+in Section~\ref{sec:mass_spectrum_closure} (equivalently \eqref{eq:rhat_251}).
+\end{proposition}
+\begin{proof}
+At $m=6$, each fiber $\mathrm{Ext}_6(u)$ is the singleton $\{u\}$,
+so $w_u^{\sigma}(6)=u$ and $w_e^{\sigma}(6)=u_e$ for both $\sigma$.
+Moreover, the free suffix index is $\rho=0$ and therefore $r_{\mathrm{suf}}=0$ by
+Definition~\ref{def:rho_suffix_depth}.
+Finally, $g_6(w)$ coincides with the folding degeneracy $g(w)$ used in the $m=6$ template.
+Substituting these identities into \eqref{eq:mass_flow_rhat_def} yields
+\[
+\widehat r_{\sigma}(u;6)
+=2\Delta V + 5\Delta g + \Delta |w|_1,
+\]
+which is exactly \eqref{eq:rhat_251}.
+\end{proof}
+
+\subsection{Generated tables (audit)}
+\label{subsec:mass_flow_generated_tables}
+
+\AuditTag The pooled uplift depths $\widehat r_{\mathrm{CAP}}(u;m)$ and $\widehat r_{\mathrm{FE}}(u;m)$
+for $m\in\{6,8,10,12,14,16\}$ are tabulated and reproduced by a deterministic script:
+\[
+\texttt{scripts/exp\_mass\_flow\_uplift.py}.
+\]
+The script writes:
+\begin{itemize}
+\item \texttt{sections/generated/mass\_flow\_uplift\_rows.tex} (main table rows),
+\item \texttt{sections/generated/mass\_flow\_uplift\_summary.tex} (difference summary).
+\end{itemize}
+\vspace{0.5em}
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{rllrrrrrr}
+\toprule
+$m$ & base type $u$ & label &
+$\widehat r_{\mathrm{CAP}}$ & $w^{\mathrm{CAP}}$ & $g_m$ & $r_{\mathrm{suf}}$ &
+$\widehat r_{\mathrm{FE}}$ & $w^{\mathrm{FE}}$ \\
+\midrule
+\input{sections/generated/mass_flow_uplift_rows.tex}%
+\end{tabular}
+\caption{Uplift mass-flow table: pooled effective depths under the CAP representative and the free-energy representative on the lift fibers $\mathrm{Ext}_m(u)$ for $m\in\{6,8,10,12,14,16\}$. Rows are reproduced by \texttt{scripts/exp\_mass\_flow\_uplift.py}.}
+\label{tab:mass_flow_uplift}
+\end{table}
+
