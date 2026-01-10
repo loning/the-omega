@@ -468,6 +468,8 @@ def main() -> None:
                     "scripts/exp_encoding_cross_task_validation.py",
                     "--k",
                     str(int(args.refseq_stop_window)),
+                    "--refseq-k-list",
+                    "3,5,10,20",
                     "--analysis-version",
                     str(int(RECODING_ANALYSIS_VERSION)),
                     "--refseq-target-per-class",

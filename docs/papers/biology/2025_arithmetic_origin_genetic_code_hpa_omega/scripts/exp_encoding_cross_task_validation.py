@@ -8,9 +8,12 @@ Goal:
   objective (K-boundary hit counting).
 
 Pre-registered tasks (scores "higher is better"):
-  Task A (RefSeq stop-context): AUC for discriminating UGA vs UAA terminal stops
-    using u_before(k) (last-k codons before the terminal stop) computed under μ.
-    Score = |AUC - 0.5|.
+  Task A (RefSeq stop-context; primary = multi-k D):
+    For each k in K_ref={3,5,10,20}, compute the stop-context contrast feature
+      D(k) = u_after(k) - u_before(k)
+    at terminal stops, and evaluate AUC for discriminating UGA vs UAA under μ.
+    Score = mean_{k in K_ref} |AUC(D(k)) - 0.5|.
+    (Exploratory: report the k=10 AUCs for u_before, u_after, and D separately.)
   Task B (transl_except): AUC for discriminating recoding sites vs CDS-deduplicated
     terminal stops using u_before(k) computed under μ. Score = |AUC - 0.5|.
   Task C (nonstandard codes): Fisher score over translation tables using stop-set
@@ -224,7 +227,8 @@ def _best_orf_across_frames(seq: str) -> BestOrf | None:
 @dataclass(frozen=True)
 class RefseqWin:
     stop: str  # UAA or UGA
-    before_ids: bytes  # length=k
+    before_ids: bytes  # length=k_max
+    after_ids: bytes  # length=k_max
 
 
 def _reservoir_add(
@@ -250,10 +254,15 @@ def _reservoir_add(
         heapq.heapreplace(heap, (neg, item))
 
 
-def _refseq_task_windows(*, k: int, target_per_class: int, seed: int, heartbeat_s: float) -> dict[str, list[RefseqWin]]:
+def _refseq_task_windows(*, k_list: list[int], target_per_class: int, seed: int, heartbeat_s: float) -> dict[str, list[RefseqWin]]:
     """
-    Deterministic sample of terminal-stop before windows for UAA and UGA.
+    Deterministic sample of terminal-stop windows for UAA and UGA, storing
+    before/after windows at k_max=max(k_list) to support multi-k evaluation.
     """
+    if not k_list:
+        raise ValueError("empty k_list")
+    k_list = sorted(set(int(x) for x in k_list))
+    k_max = max(k_list)
     shards = _iter_refseq_fasta_shards()
     if not shards:
         raise FileNotFoundError("No RefSeq FASTA shards found under data/refseq_hsapiens_mrna/. Run with --download.")
@@ -276,7 +285,7 @@ def _refseq_task_windows(*, k: int, target_per_class: int, seed: int, heartbeat_
                         _maybe_add_refseq_record(
                             rid=str(rid),
                             seq=seq,
-                            k=k,
+                            k_max=k_max,
                             target_per_class=target_per_class,
                             seed=seed,
                             heaps=heaps,
@@ -294,7 +303,7 @@ def _refseq_task_windows(*, k: int, target_per_class: int, seed: int, heartbeat_
                 _maybe_add_refseq_record(
                     rid=str(rid),
                     seq=seq,
-                    k=k,
+                    k_max=k_max,
                     target_per_class=target_per_class,
                     seed=seed,
                     heaps=heaps,
@@ -304,7 +313,7 @@ def _refseq_task_windows(*, k: int, target_per_class: int, seed: int, heartbeat_
     out: dict[str, list[RefseqWin]] = {}
     for stop in ("UAA", "UGA"):
         items = [it for (_neg, it) in heaps[stop]]
-        items.sort(key=lambda x: x.before_ids)  # deterministic
+        items.sort(key=lambda x: (x.before_ids, x.after_ids))  # deterministic
         out[stop] = items
     # Basic sanity.
     if len(out["UAA"]) < max(500, min(2000, target_per_class // 4)) or len(out["UGA"]) < max(500, min(2000, target_per_class // 4)):
@@ -316,7 +325,7 @@ def _maybe_add_refseq_record(
     *,
     rid: str,
     seq: str,
-    k: int,
+    k_max: int,
     target_per_class: int,
     seed: int,
     heaps: dict[str, list[tuple[int, RefseqWin]]],
@@ -324,28 +333,41 @@ def _maybe_add_refseq_record(
     best = _best_orf_across_frames(seq)
     if best is None:
         return
-    if best.length_codons_including_stop < k + 1:
+    if best.length_codons_including_stop < k_max + 1:
         return
     start_base = int(best.start_base)
     stop_base = int(best.stop_base)
     stop = seq[stop_base : stop_base + 3]
     if stop not in ("UAA", "UGA"):
         return
-    win_start = stop_base - 3 * k
+    win_start = stop_base - 3 * k_max
     win_end = stop_base
     if win_start < start_base:
         return
-    codons = [seq[i : i + 3] for i in range(win_start, win_end, 3)]
-    if len(codons) != k:
+    codons_before = [seq[i : i + 3] for i in range(win_start, win_end, 3)]
+    if len(codons_before) != k_max:
         return
-    if any(c not in GENETIC_CODE for c in codons):
+    if any(c not in GENETIC_CODE for c in codons_before):
         return
+
+    # After window (k_max codons immediately after stop)
+    after_start = stop_base + 3
+    after_end = after_start + 3 * k_max
+    if after_end > len(seq):
+        return
+    codons_after = [seq[i : i + 3] for i in range(after_start, after_end, 3)]
+    if len(codons_after) != k_max:
+        return
+    if any(c not in GENETIC_CODE for c in codons_after):
+        return
+
     try:
-        ids = bytes([CODON_ID[c] for c in codons])
+        ids_before = bytes([CODON_ID[c] for c in codons_before])
+        ids_after = bytes([CODON_ID[c] for c in codons_after])
     except Exception:
         return
-    it = RefseqWin(stop=stop, before_ids=ids)
-    key = _stable_u64(f"{rid}|{seed}|{stop}|k{k}")
+    it = RefseqWin(stop=stop, before_ids=ids_before, after_ids=ids_after)
+    key = _stable_u64(f"{rid}|{seed}|{stop}|kmax{k_max}")
     _reservoir_add(heaps[stop], item=it, key_u64=key, n_max=target_per_class)
 
 
@@ -457,6 +479,7 @@ def _fisher_stat(ps: list[float]) -> float:
 def main() -> None:
     ap = argparse.ArgumentParser(description="24-encoding cross-task validation (no control-objective reuse).")
     ap.add_argument("--k", type=int, default=10, help="Window radius k (codons) for u_before.")
+    ap.add_argument("--refseq-k-list", type=str, default="3,5,10,20", help="Comma-separated k list for RefSeq Task A (primary = mean over k of AUC(D(k))).")
     ap.add_argument(
         "--analysis-version",
         type=int,
@@ -473,6 +496,11 @@ def main() -> None:
     analysis_version = int(args.analysis_version)
     refseq_target = int(args.refseq_target_per_class)
     seed = int(args.seed)
+    k_list_ref = [int(x) for x in str(args.refseq_k_list).split(",") if str(x).strip()]
+    k_list_ref = sorted(set(k_list_ref))
+    if not k_list_ref:
+        raise SystemExit("Empty --refseq-k-list")
+    k_max_ref = max(k_list_ref)
 
     out_json = cache_dir() / "encoding_cross_task_validation_v1.json"
     out_table = generated_dir() / "encoding_cross_task_validation_table.tex"
@@ -482,6 +510,7 @@ def main() -> None:
         "analysis": "encoding_cross_task_validation",
         "analysis_version": ANALYSIS_VERSION,
         "k": k,
+        "refseq_k_list": k_list_ref,
         "analysis_version_recoding": analysis_version,
         "refseq_target_per_class": refseq_target,
         "seed": seed,
@@ -494,10 +523,10 @@ def main() -> None:
         write_text(out_sum, str(obj["latex_summary"]) + "\n")
         return
 
-    # ----- Task A: RefSeq stop-context AUC (UGA as positive) -----
-    refseq = _refseq_task_windows(k=k, target_per_class=refseq_target, seed=seed, heartbeat_s=float(args.heartbeat_s))
-    ref_uaa = [it.before_ids for it in refseq["UAA"]]
-    ref_uga = [it.before_ids for it in refseq["UGA"]]
+    # ----- Task A: RefSeq stop-context AUC (UGA as positive), primary=mean over k of AUC(D(k)). -----
+    refseq = _refseq_task_windows(k_list=k_list_ref, target_per_class=refseq_target, seed=seed, heartbeat_s=float(args.heartbeat_s))
+    ref_uaa = refseq["UAA"]
+    ref_uga = refseq["UGA"]
 
     # ----- Task B: Recoding vs terminal AUC -----
     rec_before, term_before = _parse_recoding_windows(k=k, analysis_version=analysis_version)
@@ -515,11 +544,36 @@ def main() -> None:
     # Compute all task scores per encoding.
     for idx, mu in enumerate(encs):
         d = delta_by_mu[idx]
-        # Task A: u_before over windows
-        pos = [_mean_delta_from_rna_codons(w, delta_by_id=d, k=k) for w in ref_uga]
-        neg = [_mean_delta_from_rna_codons(w, delta_by_id=d, k=k) for w in ref_uaa]
-        aucA = auc_mann_whitney(pos, neg).auc
-        sA = abs(float(aucA) - 0.5)
+        # Task A: primary score = mean_k |AUC(D(k)) - 0.5| where D=u_after-u_before.
+        scores_A = []
+        aucA_k10_before = float("nan")
+        aucA_k10_after = float("nan")
+        aucA_k10_D = float("nan")
+        for kk in k_list_ref:
+            pos_D = []
+            neg_D = []
+            for it in ref_uga:
+                ub = _mean_delta_from_rna_codons(it.before_ids[-kk:], delta_by_id=d, k=kk)
+                ua = _mean_delta_from_rna_codons(it.after_ids[:kk], delta_by_id=d, k=kk)
+                pos_D.append(float(ua - ub))
+            for it in ref_uaa:
+                ub = _mean_delta_from_rna_codons(it.before_ids[-kk:], delta_by_id=d, k=kk)
+                ua = _mean_delta_from_rna_codons(it.after_ids[:kk], delta_by_id=d, k=kk)
+                neg_D.append(float(ua - ub))
+            auc = auc_mann_whitney(pos_D, neg_D).auc
+            scores_A.append(abs(float(auc) - 0.5))
+
+            if kk == 10:
+                # Exploratory: k=10 AUCs for u_before/u_after/D.
+                pos_b = [_mean_delta_from_rna_codons(it.before_ids[-kk:], delta_by_id=d, k=kk) for it in ref_uga]
+                neg_b = [_mean_delta_from_rna_codons(it.before_ids[-kk:], delta_by_id=d, k=kk) for it in ref_uaa]
+                pos_a = [_mean_delta_from_rna_codons(it.after_ids[:kk], delta_by_id=d, k=kk) for it in ref_uga]
+                neg_a = [_mean_delta_from_rna_codons(it.after_ids[:kk], delta_by_id=d, k=kk) for it in ref_uaa]
+                aucA_k10_before = auc_mann_whitney(pos_b, neg_b).auc
+                aucA_k10_after = auc_mann_whitney(pos_a, neg_a).auc
+                aucA_k10_D = auc
+
+        sA = float(sum(scores_A)) / float(len(scores_A)) if scores_A else 0.0
 
         # Task B: recoding vs terminal
         posB = [_mean_delta_from_rna_codons(w, delta_by_id=d, k=k) for w in rec_before]
@@ -536,8 +590,11 @@ def main() -> None:
                 "mu": encoding_to_str(mu),
                 "mu_bits": mu,
                 "is_mu_star": bool(all(mu.get(b) == MU_STAR[b] for b in ("A", "C", "G", "U"))),
-                "taskA_auc": float(aucA),
                 "taskA_score": float(sA),
+                "taskA_k_list": list(k_list_ref),
+                "taskA_auc_k10_before": float(aucA_k10_before),
+                "taskA_auc_k10_after": float(aucA_k10_after),
+                "taskA_auc_k10_D": float(aucA_k10_D),
                 "taskB_auc": float(aucB),
                 "taskB_score": float(sB),
                 "taskC_fisher": float(sC),
@@ -604,7 +661,7 @@ def main() -> None:
     tbl.append(r"\begin{tabular}{rccccrrrrrrl}")
     tbl.append(r"\toprule")
     tbl.append(
-        r"rank & $A$ & $C$ & $G$ & $U$ & A $|\mathrm{AUC}-0.5|$ & B $|\mathrm{AUC}-0.5|$ & C Fisher & rA & rB & rC & sum-rank & tag \\"
+        r"rank & $A$ & $C$ & $G$ & $U$ & A $\overline{|\\mathrm{AUC}_D-0.5|}$ & B $|\mathrm{AUC}-0.5|$ & C Fisher & rA & rB & rC & sum-rank & tag \\"
     )
     tbl.append(r"\midrule")
     for i, r in enumerate(rows_sorted, start=1):
@@ -624,7 +681,8 @@ def main() -> None:
     summary = []
     summary.append(
         "Cross-task validation across three non-identification tasks (RefSeq stop-context AUC; transl\\_except recoding AUC; nonstandard-table Fisher score), evaluated over all $24$ encodings."
-        f" Task A: n(UGA)={len(ref_uga)}, n(UAA)={len(ref_uaa)} (k={k})."
+        f" Task A (primary): mean over $k\\in\\{{{', '.join(str(x) for x in k_list_ref)}\\}}$ of $|\\mathrm{{AUC}}(D(k))-0.5|$ with $D=u_{{after}}-u_{{before}}$ at terminal stops."
+        f" Sample sizes: n(UGA)={len(ref_uga)}, n(UAA)={len(ref_uaa)} (k_max={k_max_ref})."
         f" Task B: n(recoding)={len(rec_before)}, n(terminal)={len(term_before)}."
         f" Under the uniform encoding prior, $\\mu^\\ast$ ranks {rankA_mu}/24 (A), {rankB_mu}/24 (B), {rankC_mu}/24 (C),"
         f" giving p-values $p_A={pA:.4f}$, $p_B={pB:.4f}$, $p_C={pC:.4f}$."
