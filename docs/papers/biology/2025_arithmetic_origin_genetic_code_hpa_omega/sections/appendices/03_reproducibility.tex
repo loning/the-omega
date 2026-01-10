@@ -3,7 +3,8 @@
 
 This paper includes minimal, auditable scripts that reproduce the finite encoding search, codon tables, and sequence-spectrum extraction.
 Appendix~\ref{app:isomorphism_dictionary} records the shared interface template in which these scripts serve as auditable instances (bounded search, stable-sector folding, and protocol-level statistics).
-All scripts are standard-library Python and live under:
+Most scripts are standard-library Python. A small number of Monte Carlo / plotting experiments use \texttt{numpy}/\texttt{matplotlib} for performance and visualization.
+All scripts live under:
 \begin{center}
 \path{docs/papers/biology/2025_arithmetic_origin_genetic_code_hpa_omega/scripts/}
 \end{center}
@@ -29,14 +30,25 @@ The only ``search'' performed is over a finite, explicitly bounded space (the $2
 \subsection{Main entry points}
 \begin{itemize}
 \item \path{exp_genetic_code_decompiler.py}: generates all fragments in \path{sections/generated/} and prints key checks.
+\item \path{exp_random_code_monte_carlo.py}: Monte Carlo null over randomized genetic codes (degeneracy-preserving) for the reverse-compilation pattern.
+\item \path{exp_control_objective_robustness.py}: robustness stress test over a pre-registered family of control sets and objective variants (exhaustive over 24 encodings).
+\item \path{exp_out_of_sample_mu_star_ranking.py}: out-of-sample encoding validation across independent buckets (RefSeq stop-context, \texttt{transl\_except}, and nonstandard codes).
+\item \path{exp_incremental_predictive_power.py}: nested predictive models quantifying incremental AUC gain of uplift-window features beyond composition and local covariates.
+\item \path{exp_stop_context_null_synonymous_orf.py}: protein-preserving synonymous-codon permutation null for terminal-stop uplift-window statistics (RefSeq).
+\item \path{exp_stop_context_null_dicodon_orf.py}: dicodon-preserving ORF shuffle null (Eulerian trail) for terminal-stop uplift-window statistics (RefSeq).
+\item \path{exp_stop_context_position_curves.py}: position-decomposed terminal-stop curves $\bar U_{\mathrm{before}}(s;j)$ and $\bar U_{\mathrm{after}}(s;j)$ (shape evidence).
+\item \path{exp_start_stop_symmetry_statistic.py}: corpus-level start/stop symmetry statistic $T_k$ with exact encoding-null over $24$ encodings (RefSeq).
+\item \path{exp_encoding_cross_task_validation.py}: cross-task validation ranking the $24$ encodings on multiple non-identification tasks (RefSeq stop-context AUC; recoding AUC; nonstandard-code Fisher score).
 \item \path{fetch_datasets.py}: downloads public datasets described in \path{data/manifest.json} and updates checksums.
 \item RefSeq transcriptome scan: \path{exp_refseq_transcriptome.py}.
 \item RefSeq shard merge: \path{exp_refseq_transcriptome_merge.py}.
 \item \path{exp_recoding_sites.py}: recoding-site extraction and summary tables (Sec/Pyl).
 \item \path{exp_nonstandard_codes.py}: nonstandard translation-table scan from \path{gc.prt}.
+\item \path{exp_nonstandard_codes_meta_analysis.py}: nonstandard-code meta-analysis with 24-encoding negative control (translation-table level).
 \item \path{exp_nonstandard_sequence_tests.py}: sequence-level nonstandard-code tests driven by \path{manifest.json}.
 \item \path{exp_corpus_panel.py}: cross-domain corpus panel scan driven by \path{manifest.json}.
 \item \path{seq_spectrum_cli.py}: command-line sequence spectrum tool (FASTA input, frame/ORF options, TSV/JSONL outputs).
+\item \path{exp_uplift_curve_case_studies.py}: generates case-study uplift-trace figures for included transcripts (HBB/INS).
 \end{itemize}
 
 \subsection{One-command end-to-end run}

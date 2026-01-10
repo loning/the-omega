@@ -98,6 +98,9 @@ def main() -> None:
     run([py, "scripts/exp_mutual_information_rank.py", *(["--force"] if args.force else [])], cwd=cwd)
     run([py, "scripts/exp_encoding_symmetry.py", *(["--force"] if args.force else [])], cwd=cwd)
     run([py, "scripts/exp_control_objective_null_brief.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_control_objective_robustness.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_random_code_monte_carlo.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_uplift_curve_case_studies.py", *(["--force"] if args.force else [])], cwd=cwd)
 
     # 2b) Fold_m resolution scan (m>6)
     run([py, "scripts/exp_foldm_resolution_scan.py", *(["--force"] if args.force else [])], cwd=cwd)
@@ -113,6 +116,7 @@ def main() -> None:
 
     # 3) Nonstandard translation tables
     run([py, "scripts/exp_nonstandard_codes.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_nonstandard_codes_meta_analysis.py", *(["--force"] if args.force else [])], cwd=cwd)
 
     # 4) Recoding sites (Sec/Pyl)
     rec_cmd = [py, "scripts/exp_recoding_sites.py", "--k", str(int(args.recoding_k))]
@@ -132,6 +136,32 @@ def main() -> None:
     if args.force:
         rec_cmd += ["--force"]
     run(rec_cmd, cwd=cwd)
+
+    # 4aa) Purely computational checks: out-of-sample encoding ranking + incremental predictive power (uses recoding_sites.jsonl).
+    run(
+        [
+            py,
+            "scripts/exp_out_of_sample_mu_star_ranking.py",
+            "--k",
+            str(int(args.recoding_k)),
+            "--analysis-version",
+            str(int(RECODING_ANALYSIS_VERSION)),
+            *(["--force"] if args.force else []),
+        ],
+        cwd=cwd,
+    )
+    run(
+        [
+            py,
+            "scripts/exp_incremental_predictive_power.py",
+            "--k",
+            str(int(args.recoding_k)),
+            "--analysis-version",
+            str(int(RECODING_ANALYSIS_VERSION)),
+            *(["--force"] if args.force else []),
+        ],
+        cwd=cwd,
+    )
 
     # 4b) Boundary enrichment inputs + tests (recoding CDS ORFs)
     be_in_cmd = [py, "scripts/exp_recoding_boundary_enrichment_inputs.py", "--k-window", str(int(args.recoding_k))]
@@ -356,6 +386,74 @@ def main() -> None:
         *(["--force"] if args.force else []),
     ]
     run(merge_cmd, cwd=cwd)
+
+    # 5b) Protein-preserving synonymous-codon permutation null for terminal-stop windows (RefSeq).
+    if not refseq_quick:
+        run(
+            [
+                py,
+                "scripts/exp_stop_context_null_synonymous_orf.py",
+                "--k",
+                str(int(args.refseq_stop_window)),
+                *(["--force"] if args.force else []),
+            ],
+            cwd=cwd,
+        )
+        run(
+            [
+                py,
+                "scripts/exp_stop_context_null_dicodon_orf.py",
+                "--k",
+                str(int(args.refseq_stop_window)),
+                "--n-per-stop",
+                "1000",
+                "--n-perm",
+                "100",
+                "--seed",
+                "0",
+                *(["--force"] if args.force else []),
+            ],
+            cwd=cwd,
+        )
+        run(
+            [
+                py,
+                "scripts/exp_stop_context_position_curves.py",
+                "--k-max",
+                "60",
+                *(["--force"] if args.force else []),
+            ],
+            cwd=cwd,
+        )
+        run(
+            [
+                py,
+                "scripts/exp_start_stop_symmetry_statistic.py",
+                "--n-sample",
+                "20000",
+                "--seed",
+                "0",
+                *(["--force"] if args.force else []),
+            ],
+            cwd=cwd,
+        )
+        if not recoding_quick:
+            run(
+                [
+                    py,
+                    "scripts/exp_encoding_cross_task_validation.py",
+                    "--k",
+                    str(int(args.refseq_stop_window)),
+                    "--analysis-version",
+                    str(int(RECODING_ANALYSIS_VERSION)),
+                    "--refseq-target-per-class",
+                    "5000",
+                    "--seed",
+                    "0",
+                    *(["--force"] if args.force else []),
+                ],
+                cwd=cwd,
+            )
 
     # 6) Cross-domain corpus panel + sequence-level nonstandard-code tests.
     panel_cmd = [py, "scripts/exp_corpus_panel.py", "--panel", "corpus_panel_v2"]

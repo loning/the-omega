@@ -71,6 +71,13 @@ Instead it provides an explicit quantitative signal family $(Z,U)$ that can be e
 \input{sections/generated/recoding_terminal_stop_bias}
 \end{sloppypar}
 
+\paragraph{Incremental predictive power beyond composition and local stop features.}
+To test whether uplift-window statistics add discriminative information beyond obvious covariates, we fit nested, group-aware cross-validated classifiers on the same \texttt{transl\_except} dataset, comparing recoding sites (positive) against CDS-deduplicated terminal stops (negative).
+Model M0 uses only stop identity and the local +4 base; M1 adds GC and dinucleotide composition summaries for the before/after windows; M2 further adds the uplift-window statistics.
+The resulting AUCs and permutation test are:
+\input{sections/generated/incremental_predictive_power_summary}
+\input{sections/generated/incremental_predictive_power_table}
+
 \paragraph{Baseline dependence and scale.}
 In this dataset, the most stable separation is an upstream uplift shift: recoding sites exhibit substantially larger $\overline{U}_{\mathrm{before}}$ than CDS-deduplicated terminal stops across multiple radii $k$, while the downstream contrast is more $k$-dependent (Appendix~\ref{app:recoding_sites}).
 This motivates multi-$k$ reporting and caution against treating a single-$k$ after-window contrast as an invariant signature.

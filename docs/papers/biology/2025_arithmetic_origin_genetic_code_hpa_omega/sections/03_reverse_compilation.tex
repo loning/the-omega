@@ -215,6 +215,12 @@ Appendix~\ref{app:control_set_null} reports the exact distribution over all $\bi
 \input{sections/generated/control_objective_null_brief}
 \end{remark}
 
+\begin{remark}[Protocol robustness under a pre-registered objective family]
+Beyond the fixed control set $\mathcal{K}=\{\mathrm{AUG,UAA,UAG,UGA}\}$, we also stress-test the identification against a small, pre-registered family of reasonable $\mathcal{K}$ variants and objective variants (still exhaustively scanning all $24$ encodings).
+The full grid summary and a nonstandard-translation-table scan are reported below.
+\input{sections/generated/control_objective_robustness}
+\end{remark}
+
 \subsection{An information-theoretic alignment diagnostic (optional)}
 \label{sec:mutual_information}
 
@@ -229,5 +235,23 @@ We compute this quantity for all encodings as an auxiliary diagnostic; it is not
 \input{sections/generated/mutual_information_brief}
 \input{sections/generated/mutual_information_rank}
 Additional scan details (including the top encodings by mutual information) are recorded in Appendix~\ref{app:generated_tables}.
+
+\subsection{Monte Carlo null over randomized genetic codes (statistical significance)}
+\label{sec:random_code_monte_carlo}
+
+Even though the reverse-compilation scan is exact over a finite space ($|\Theta|=24$ encodings), one may still ask whether the identification of $\mu^\ast$ is a generic accident of the genetic code table.
+To test this, we construct a degeneracy-preserving random-code null:
+we keep the multiset of amino-acid/stop labels fixed (i.e.\ each label keeps its synonymous-codon count) and randomly permute these $64$ labels over the codon alphabet.
+For each randomized table we define the control set $\mathcal{K}$ to be the unique Met codon together with the three Stop codons, and we repeat the same reverse-compilation objective $S_{\mathcal{K}}(\mu)$ over the $24$ encodings.
+We then measure how often a random code reproduces the real-code pattern: $\mu^\ast$ is the unique maximizer and the Met/Stop pair exhibits boundary homology under $\mu^\ast$.
+
+\input{sections/generated/random_code_monte_carlo_summary}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{sections/generated/random_code_monte_carlo_hist.png}
+\caption{Degeneracy-preserving Monte Carlo null for reverse compilation (random genetic codes; control set = Met and Stop). The vertical line marks the symmetry score attained by the standard genetic code.}
+\label{fig:random_code_monte_carlo_hist}
+\end{figure}
 
 
