@@ -525,6 +525,23 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Mass flow under uplift (CAP vs free-energy)",
+            script="exp_mass_flow_uplift.py",
+            expected_outputs=[
+                "sections/generated/mass_flow_uplift_rows.tex",
+                "sections/generated/mass_flow_uplift_summary.tex",
+            ],
+        ),
+        Step(
+            name="Neutrino external audit ledger (Match/Audit only)",
+            script="exp_neutrino_external_audit.py",
+            expected_outputs=[
+                "sections/generated/neutrino_external_audit_rows.tex",
+                "sections/generated/neutrino_external_audit_summary.tex",
+                "sections/generated/neutrino_external_audit_internal_rows.tex",
+            ],
+        ),
+        Step(
             name="Inverse hypercharge fit (inverse diagnostic)",
             script="exp_inverse_hypercharge_fit.py",
             expected_outputs=[
