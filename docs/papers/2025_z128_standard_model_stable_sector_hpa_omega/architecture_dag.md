@@ -564,6 +564,10 @@ flowchart TB
   P_g4@{ shape: lean-l, label: "G4：复杂度标号与 tie-break（接口审计）<br/>类型：审计<br/>label: app:gauge_complexity_sensitivity / prop:gauge_label_robustness" }
   M_g4 -.- P_g4
 
+  M_holonomy_diag@{ shape: lean-l, label: "G3c：holonomy/phase-lift 诊断→候选族闭合（接口规则）<br/>类型：审计<br/>label: app:gauge3_holonomy_candidate_closure / def:holonomy_to_candidate_family_rule" }
+  P_holonomy_diag@{ shape: lean-l, label: "G3c：holonomy/phase-lift 诊断（接口审计）<br/>类型：审计<br/>label: app:gauge3_holonomy_candidate_closure" }
+  M_holonomy_diag -.- P_holonomy_diag
+
   M_consensus_p2@{ shape: lean-l, label: "P2：三因子规范结构（接口）<br/>类型：假设<br/>label: ass:consensus_three_factor_gauge" }
   P_consensus_p2@{ shape: lean-l, label: "P2：三因子规范结构（Match）<br/>类型：审计<br/>label: ass:consensus_three_factor_gauge" }
   M_consensus_p2 -.- P_consensus_p2
@@ -628,11 +632,13 @@ flowchart TB
   M_g1 --> M_gauge3
   M_g2 --> M_gauge3
   M_g4 --> M_gauge3
+  M_holonomy_diag --> M_gauge3
 
   P_gauge --> P_gauge3 --> P_types
   P_g1 --> P_gauge3
   P_g2 --> P_gauge3
   P_g4 --> P_gauge3
+  P_holonomy_diag --> P_gauge3
 
   M_cap --> M_alpha_geo
   M_gauge3 --> M_alpha_geo
@@ -668,10 +674,10 @@ flowchart TB
   P_input_pdg --> P_pmns_mag
   P_cp_sign_anchor --> P_pmns_matrix
 
-  M_consensus_p2 --> M_gauge3
-  M_internal_fiber_g2 --> M_gauge3
-  P_consensus_p2 --> P_gauge3
-  P_internal_fiber_g2 --> P_gauge3
+  M_consensus_p2 -.-> M_gauge3
+  M_internal_fiber_g2 -.-> M_gauge3
+  P_consensus_p2 -.-> P_gauge3
+  P_internal_fiber_g2 -.-> P_gauge3
 
   classDef iface fill:#FCE4EC,stroke:#D81B60,color:#880E4F,stroke-width:2px;
   classDef open_problem fill:#FFEBEE,stroke:#C62828,color:#B71C1C,stroke-width:2px,font-weight:700;
@@ -694,12 +700,12 @@ flowchart TB
   class M_sm math_closure;
   class M_consensus_p2,M_consensus_p3,M_internal_fiber_g2 math_assumption;
   class M_input_pdg,M_input_codata,M_input_nufit,M_g1,M_g2,M_g4,M_cp_odd_J,M_cp_sign_anchor,M_alpha_geo,M_ew_weinberg,M_cp_volume,M_ckm_mag,M_ckm_matrix,M_pmns_mag,M_pmns_matrix math_audit;
-  class M_gauge3 not_closed;
+  class M_gauge3,M_holonomy_diag math_audit;
   class P_gauge phys_proxy;
   class P_cp_odd_J phys_obs;
   class P_types phys_dict;
-  class P_input_pdg,P_input_codata,P_input_nufit,P_consensus_p2,P_consensus_p3,P_internal_fiber_g2,P_g1,P_g2,P_g4,P_cp_sign_anchor,P_alpha_geo,P_ew_weinberg,P_cp_volume,P_ckm_mag,P_ckm_matrix,P_pmns_mag,P_pmns_matrix phys_audit;
-  class P_gauge3 not_closed;
+  class P_input_pdg,P_input_codata,P_input_nufit,P_consensus_p2,P_consensus_p3,P_internal_fiber_g2,P_g1,P_g2,P_g4,P_holonomy_diag,P_cp_sign_anchor,P_alpha_geo,P_ew_weinberg,P_cp_volume,P_ckm_mag,P_ckm_matrix,P_pmns_mag,P_pmns_matrix phys_audit;
+  class P_gauge3 phys_dict;
 ```
 
 ### 图 7：质量谱与中微子机制审计闭合链（Majorana/Weinberg/seesaw）
@@ -1373,8 +1379,8 @@ flowchart TB
   M_equiv --> M_thermo
   M_equiv --> M_qm
 
-  M_internal_fiber_g2 --> M_gauge3
-  P_internal_fiber_g2 --> P_gauge3
+  M_internal_fiber_g2 -.-> M_gauge3
+  P_internal_fiber_g2 -.-> P_gauge3
 
   M_gauge3 --> M_op1
   M_internal_fiber_g2 --> M_op1
@@ -1484,16 +1490,16 @@ flowchart TB
   class M_sm,M_thermo,M_grav,M_qm,M_rg math_closure;
   class M_action,M_op3_yang_mills math_cont;
   class M_cosmo,M_internal_fiber_g2 math_assumption;
-  class M_gamma_proxy,M_gamma_direct math_audit;
-  class M_gauge3,M_scalar_iface,M_lambda_open,M_bh_pointer,M_qcd_gap not_closed;
+  class M_gamma_proxy,M_gamma_direct,M_gauge3,M_holonomy_diag math_audit;
+  class M_scalar_iface,M_lambda_open,M_bh_pointer,M_qcd_gap not_closed;
   class M_op1 math_audit;
   class M_gut_scope,M_baryogenesis_scope,M_strongcp_scope,M_bhinfo_scope,M_qg_scope,M_cosmo_tension_scope,M_bsm_scope scope_gap;
   class P_dyn phys_proxy;
   class P_qm,P_wilson phys_obs;
-  class P_types,P_equiv,P_proj,P_thermo phys_dict;
+  class P_types,P_equiv,P_proj,P_thermo,P_gauge3 phys_dict;
   class P_action,P_rg,P_cosmo phys_model;
-  class P_select,P_gamma_proxy,P_gamma_direct,P_internal_fiber_g2 phys_audit;
-  class P_gauge3,P_scalar_iface,P_lambda_open,P_bh_pointer,P_qcd_gap not_closed;
+  class P_select,P_gamma_proxy,P_gamma_direct,P_internal_fiber_g2,P_holonomy_diag phys_audit;
+  class P_scalar_iface,P_lambda_open,P_bh_pointer,P_qcd_gap not_closed;
   class P_op1 phys_audit;
   class P_gut_scope,P_baryogenesis_scope,P_strongcp_scope,P_bhinfo_scope,P_qg_scope,P_cosmo_tension_scope,P_bsm_scope scope_gap;
 ```
@@ -1707,7 +1713,7 @@ flowchart TB
 
 | 节点 | 入口（label/track） | 状态 | 依赖（DAG 上游） | 文件/入口 |
 |---|---|---|---|---|
-| `M_gauge3` / `P_gauge3` | `\label{prop:channel_to_gauge}` | 条件闭合（声明族内） | `M_gauge`, `M_g1`, `M_g2`, `M_g4`, `M_consensus_p2` (optional), `M_internal_fiber_g2` (optional) | `sections/I_20_standard_model_interface.tex` |
+| `M_gauge3` / `P_gauge3` | `\label{prop:channel_to_gauge}` / `\label{def:holonomy_to_candidate_family_rule}` | 闭合（holonomy 接口规则内） | `M_gauge`, `M_g1`, `M_g2`, `M_g4`, `M_holonomy_diag`, `M_consensus_p2` (optional), `M_internal_fiber_g2` (optional) | `sections/I_20_standard_model_interface.tex`; `sections/appendices/29_gauge3_holonomy_candidate_closure.tex` |
 | `M_op1` / `P_op1` | `\label{app:internal_fiber_g2_optional}` / `\label{app:quantum_measurement_born}` | 闭合（Q） | `M_qm`, `M_internal_fiber_g2`, `M_gauge3`, `M_cap`, `M_equiv` | `sections/appendices/50_internal_fiber_g2_optional.tex`; `sections/appendices/30_quantum_measurement_born.tex`; `sections/appendices/11_inference_ledger.tex`; `sections/V_41_limitations_related_work.tex` |
 | `M_scalar_iface` / `P_scalar_iface` | `\label{app:scalar_interface_audits}` / `\label{rem:higgs_not_in_21}` | 未闭合（接口/审计形态） | `M_sm`, `M_rg`, `M_proj` | `sections/appendices/22_scalar_interface_audits.tex`; `sections/I_20_standard_model_interface.tex` |
 | `M_op5` / `P_op5` | `\label{app:yukawa_beta_protocol_closure}` | 已闭合（接口假设内） | `M_sm`, `M_gauge3`, `M_scalar_iface`, `M_mass`, `M_ckm_matrix`, `M_pmns_matrix`, `M_rg` | `sections/appendices/48_yukawa_beta_protocol_closure.tex`; `sections/appendices/22_scalar_interface_audits.tex`; `sections/appendices/31_running_couplings_resolution_flow.tex` |
