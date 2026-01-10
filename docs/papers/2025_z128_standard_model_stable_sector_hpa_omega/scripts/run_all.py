@@ -288,6 +288,13 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Gauge3 holonomy candidate closure (audit)",
+            script="exp_gauge3_holonomy_candidate_closure.py",
+            expected_outputs=[
+                "sections/generated/gauge3_holonomy_candidate_closure_rows.tex",
+            ],
+        ),
+        Step(
             name="Hilbert chirality sweep",
             script="exp_hilbert_chi_sweep.py",
             expected_outputs=[
