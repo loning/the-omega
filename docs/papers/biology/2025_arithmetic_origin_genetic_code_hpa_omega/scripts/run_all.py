@@ -392,6 +392,16 @@ def main() -> None:
         run(
             [
                 py,
+                "scripts/exp_stop_context_plus4_stratified_controls.py",
+                "--k",
+                str(int(args.refseq_stop_window)),
+                *(["--force"] if args.force else []),
+            ],
+            cwd=cwd,
+        )
+        run(
+            [
+                py,
                 "scripts/exp_stop_context_null_synonymous_orf.py",
                 "--k",
                 str(int(args.refseq_stop_window)),
