@@ -1287,8 +1287,8 @@ flowchart TB
   P_scalar_iface("标量/ Higgs 识别（接口与审计）<br/>类型：审计<br/>label: app:scalar_interface_audits / rem:higgs_not_in_21<br/>uplift/coarse-graining dependent scalar observables")
   M_scalar_iface -.- P_scalar_iface
 
-  M_lambda_open["宇宙学常数/真空能密度（pressure 审计闭合）<br/>类型：审计<br/>label: app:lambda_pressure_closure / rem:lambda_status<br/>family: Ω_Λ,0 ∈ {s_k, 1−s_k} with k∈{0,1,2}; Planck-2018 match"]
-  P_lambda_open("Lambda 观测对应（pressure 审计闭合）<br/>类型：审计<br/>label: app:lambda_pressure_closure<br/>Ω_Λ,0 via finite pressure family + Planck targets; Λ from (H0, Ω_Λ,0)")
+  M_lambda_open["宇宙学常数/真空能密度（pressure 审计闭合）<br/>类型：审计<br/>label: app:lambda_pressure_closure / rem:lambda_status<br/>family: Ω_Λ,0 ∈ {s_k, 1−s_k} with k∈{0,…,8}; select k*=min K (complexity); Planck mismatch audit; H0 via finite audit family"]
+  P_lambda_open("Lambda 观测对应（pressure 审计闭合）<br/>类型：审计<br/>label: app:lambda_pressure_closure<br/>Ω_Λ,0 via finite pressure family (complexity-first); Planck targets for mismatch; H0 selected from finite family; Λ from (H0, Ω_Λ,0)")
   M_lambda_open -.- P_lambda_open
 
   M_bh_pointer["黑洞/虫洞类通道（指针性结构）<br/>类型：未闭合<br/>label: app:bh_wormholes_pointer<br/>status: external targets + interface pointer"]
