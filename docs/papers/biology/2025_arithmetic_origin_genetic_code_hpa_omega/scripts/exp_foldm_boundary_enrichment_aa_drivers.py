@@ -320,8 +320,9 @@ def main() -> None:
             aa_contribs = list(de_sub.aa_contribs)  # type: ignore[attr-defined]
             top = aa_contribs[: int(top_k)]
             for r in top:
+                lbl_escaped = str(lbl).replace("_", "\\_")
                 synsub_lines.append(
-                    f"{int(m)} & {str(lbl).replace('_','\\_')} & {str(r.aa)} & {int(r.n)} & "
+                    f"{int(m)} & {lbl_escaped} & {str(r.aa)} & {int(r.n)} & "
                     f"{_fmt_float(r.obs_mean, nd=5)} & {_fmt_float(r.null_mean, nd=5)} & {_fmt_float_signed(r.contrib, nd=6)} \\\\"
                 )
     synsub_lines.append("\\bottomrule")
@@ -365,8 +366,9 @@ def main() -> None:
             contribs.sort(key=lambda x: abs(x[1]), reverse=True)
             for aa, contrib in contribs[: int(top_k)]:
                 n_aa = int(sub_aa_counts[lbl].get(aa, 0))
+                lbl_escaped = str(lbl).replace("_", "\\_")
                 aacomp_lines.append(
-                    f"{int(m)} & {str(lbl).replace('_','\\_')} & {aa} & {n_aa} & "
+                    f"{int(m)} & {lbl_escaped} & {aa} & {n_aa} & "
                     f"{_fmt_float(sub_freq.get(aa, 0.0), nd=5)} & {_fmt_float(bg_freq_aa.get(aa, 0.0), nd=5)} & "
                     f"{_fmt_float(aa_bdry_mean_by_m[int(m)].get(aa, 0.0), nd=5)} & {_fmt_float_signed(contrib, nd=6)} \\\\"
                 )

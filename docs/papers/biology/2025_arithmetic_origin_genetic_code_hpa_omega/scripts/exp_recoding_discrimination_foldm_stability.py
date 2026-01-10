@@ -311,8 +311,10 @@ def main() -> None:
     fl.append("\\midrule")
     if flip_rows:
         for r in flip_rows:
+            cmp_escaped = str(r["comparison"]).replace("_", "\\_")
+            metric_escaped = str(r["metric"]).replace("_", "\\_")
             fl.append(
-                f"{int(r['m1'])} & {int(r['m2'])} & {str(r['comparison']).replace('_','\\_')} & {str(r['metric']).replace('_','\\_')} & "
+                f"{int(r['m1'])} & {int(r['m2'])} & {cmp_escaped} & {metric_escaped} & "
                 f"{_fmt_float(r['auc1'], nd=4)} & {_fmt_float(r['auc2'], nd=4)} \\\\"
             )
     else:

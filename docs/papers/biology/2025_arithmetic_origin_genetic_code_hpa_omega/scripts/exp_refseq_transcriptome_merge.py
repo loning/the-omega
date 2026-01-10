@@ -984,8 +984,9 @@ def _emit_outputs_from_summary(summary: dict[str, object]) -> None:
                         bins_used = int(r.get("bins_used", 0) or 0)
                         diff_s = f"{float(diff):+.4f}" if diff is not None else "NA"
                         op, p_s = _fmt_p_tex(p)
+                        pair_tex = pair.replace("_vs_", "$\\,$vs$\\,$")
                         comp_lines.append(
-                            f"Stratified ({window}-window): {pair.replace('_vs_', '$\\\\,$vs$\\\\,$')} diff {diff_s} (bins {bins_used}, $p{op}{p_s}$)."
+                            f"Stratified ({window}-window): {pair_tex} diff {diff_s} (bins {bins_used}, $p{op}{p_s}$)."
                         )
         if isinstance(nn, dict):
             comp_lines.append("GC+dinuc nearest-neighbor matching on bounded reservoirs (cross-check).")
@@ -1002,8 +1003,9 @@ def _emit_outputs_from_summary(summary: dict[str, object]) -> None:
                     n = int(r.get("n", 0) or 0)
                     diff_s = f"{float(diff):+.4f}" if diff is not None else "NA"
                     op, p_s = _fmt_p_tex(p)
+                    pair_tex = pair.replace("_vs_", "$\\,$vs$\\,$")
                     comp_lines.append(
-                        f"NN ({window}-window): {pair.replace('_vs_', '$\\\\,$vs$\\\\,$')} diff {diff_s} (n={n}, $p{op}{p_s}$)."
+                        f"NN ({window}-window): {pair_tex} diff {diff_s} (n={n}, $p{op}{p_s}$)."
                     )
     write_text(generated_dir() / "refseq_stop_context_composition_controls.tex", "\n\n".join(comp_lines) + "\n")
 

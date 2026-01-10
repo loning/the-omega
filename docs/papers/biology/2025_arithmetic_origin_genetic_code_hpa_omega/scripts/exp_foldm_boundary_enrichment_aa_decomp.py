@@ -346,8 +346,9 @@ def main() -> None:
     )
     lines.append("\\midrule")
     for r in out_rows:
+        lbl_escaped = str(r["label"]).replace("_", "\\_")
         lines.append(
-            f"{int(r['m'])} & {str(r['label']).replace('_','\\_')} & {int(r['n'])} & "
+            f"{int(r['m'])} & {lbl_escaped} & {int(r['n'])} & "
             f"{_fmt_float(r['p_sub'], nd=5)} & {_fmt_float(r['p_bg'], nd=5)} & {_fmt_float(r['p_null_sub'], nd=5)} & {_fmt_float(r['p_null_bg'], nd=5)} & "
             f"{_fmt_float_signed(r['diff_total'], nd=6)} & {_fmt_float_signed(r['diff_syn_sub'], nd=6)} & {_fmt_float_signed(r['diff_aa'], nd=6)} & {_fmt_float_signed(r['diff_syn_bg'], nd=6)} \\\\"
         )

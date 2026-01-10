@@ -309,8 +309,9 @@ def main() -> None:
     lines.append("$m$ & label & codon & AA & $n$ & $c_{\\mathrm{sub}}$ & $p_{\\mathrm{sub}}$ & $\\Delta p$ \\\\")
     lines.append("\\midrule")
     for m, lbl, codon, aa, n_sub, c_sub, p_sub, d in out_rows:
+        lbl_escaped = lbl.replace("_", "\\_")
         lines.append(
-            f"{m} & {lbl.replace('_','\\_')} & {codon} & {aa} & {n_sub} & {c_sub} & {_fmt_prob(p_sub, nd=5)} & {_fmt_signed(d, nd=6)} \\\\"
+            f"{m} & {lbl_escaped} & {codon} & {aa} & {n_sub} & {c_sub} & {_fmt_prob(p_sub, nd=5)} & {_fmt_signed(d, nd=6)} \\\\"
         )
     lines.append("\\bottomrule")
     lines.append("\\end{longtable}")
