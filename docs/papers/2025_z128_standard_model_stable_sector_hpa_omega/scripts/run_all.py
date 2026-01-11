@@ -520,6 +520,17 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="QCD confinement proxy (Wilson-loop area/perimeter; audit)",
+            script="exp_qcd_confinement_proxy_audit.py",
+            expected_outputs=[
+                "sections/generated/qcd_confinement_proxy_rows.tex",
+                "sections/generated/qcd_confinement_proxy_summary.tex",
+                "sections/generated/qcd_confinement_proxy_robustness_rows.tex",
+                "sections/generated/qcd_confinement_proxy_sigma_rows.tex",
+                "sections/generated/qcd_confinement_proxy_sigma_summary.tex",
+            ],
+        ),
+        Step(
             name="Holonomy single-loop best fits (finite diagnostic)",
             script="exp_holonomy_single_loop_bestfit.py",
             expected_outputs=[

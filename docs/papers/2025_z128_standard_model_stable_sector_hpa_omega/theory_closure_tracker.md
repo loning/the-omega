@@ -309,7 +309,7 @@ flowchart TD
   - $\Delta m^2$ 偏移压缩（Audit）：有界有理 $r$-offset 的 protocol-only vs match 对照见 `app:neutrino_splitting_depth_closure`（表 `tab:neutrino_splitting_depth_closure`）。
   - Weinberg 维五算符尺度（Audit）：由 $m_{\nu,\max}$ 给出 $\Lambda_W$ 并对照分辨率阶梯阈值，见 `app:neutrino_weinberg_operator_closure`（表 `tab:neutrino_weinberg_scale`）。
   - Type-I seesaw 尺度（Audit）：给出 $M_R$ 的 \texttt{cap} vs \texttt{match} 两种模式，见 `app:neutrino_typeI_seesaw_closure`（表 `tab:neutrino_seesaw_scale`）。
-- [~] **QCD 禁闭/质量隙相关的严格问题**：本文只在分辨率阶梯上给出 QCD/hadronic 尺度的匹配层 benchmark 与阈值预测条目，并在多处显式声明“不触及 Yang–Mills 质量隙/禁闭机制”（`sec:introduction` 的分辨率谱；`sec:falsifiability` 的阈值预测；`app:continuum_yang_mills_from_holonomy` 的范围声明与内部指针到 `app:quark_mass_scheme_notes` / `app:running_couplings_resolution_flow`；以及 `sec:limitations_related_work` 的 OP3 讨论）。
+- [~] **QCD 禁闭/质量隙相关的严格问题**：本文在闭合链中只给出 Yang--Mills/EFT 的\emph{代表闭合}（`app:continuum_yang_mills_from_holonomy`），并在多处显式声明“不触及 Yang--Mills 质量隙/禁闭机制”（`sec:introduction` 的分辨率谱；`sec:falsifiability` 的阈值预测；`sec:limitations_related_work` 的 OP3 讨论）。作为补充，本文记录了一个基于有限 Wilson-loop 诊断的\AuditTag{}禁闭代理审计（面积/周长 proxy；`app:qcd_confinement_proxy_audit`），用于提供非微扰敏感的有限统计量，而不作为 theorem-level 前提。
 - [~] **大统一/质子衰变等高能结构**：仅作为 benchmark 口径提及（如 $SU(5)$ 的 $\sin^2\theta_W=3/8$），未进入闭合链或可证伪审计；并在限制章节交叉指向 benchmark 的尺度/匹配层边界（`rem:gutsin2_benchmark`）。
 
 #### 本文未覆盖（未进入正文论证与审计链路）
