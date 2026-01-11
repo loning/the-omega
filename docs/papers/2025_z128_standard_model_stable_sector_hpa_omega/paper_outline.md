@@ -354,7 +354,7 @@ flowchart TD
   - **开工前必读（holonomy 模板与“需要刚性才可预测”的提醒）**：【外部参考（源文）】
     - `docs/papers/2025_physical_constants_geometry_hpa_omega/sections/appendices/05_holonomy.tex`【外部参考（源文）】
 - **D.3 手性/反物质/CPT 的协议几何（Prot→Iface）**【论文位置：`sections/I_30_chirality_antimatter_cpt.tex`（\label{sec:chirality_antimatter}）】
-  - 内容：orientation class bit、$\chi$ 符号律、conjugation-as-reversal 与 antimatter dual。
+  - 内容：orientation class bit、$\chi_H$ 符号律、conjugation-as-reversal 与 antimatter dual。
 
 ### Part E — Matter: Standard Model interface closures at the anchor
 
@@ -409,6 +409,7 @@ flowchart TD
     - `docs/papers/2025_holographic_phase_thermodynamics_hpa_omega/sections/03_asm.tex`【外部参考（源文）】
 - **F.4 overhead→gravity 与 $\chi$ 重建（Iface+Prot）**【论文位置：`sections/F_40_overhead_to_gravity_closure.tex`（\label{app:overhead_to_gravity_closure}），`sections/F_41_chi_reconstruction_protocol.tex`（\label{app:chi_reconstruction_protocol}），延迟统一：`sections/appendices/34_unified_delay_closure.tex`（\label{app:time_mass_delay}）】
   - 内容：$\chi\to N\to g_{00}\to\Phi$ 与误差控制；为跨观测 $\gamma$ 一致性准备统一接口。
+  - 内容补充：预算触发的 $\chi$-视界（$\chi_\star,\ \partial\mathcal R_\star$）与 $\chi$-云域容量→面积代表 $A_\chi$ 的接口闭合（\InterfaceTag/\MatchTag；主文 `F_41` 内新增小节 \label{subsec:chi_budget_horizon_area_law}），并与 Appendix `protocol horizon`（\label{app:protocol_horizon_tick_trap}）与 BH 容量校准（\label{app:bh_planck_capacity_calibration}）形成闭环指针。
   - **开工前必读（lapse/overhead/Poisson closure 与 time-delay 观测代理）**：【外部参考（源文）】
     - `docs/papers/2025_holographic_hilbert_universe_hpa_omega/sections/07_computational_lapse_gravity.tex`【外部参考（源文）】
     - `docs/papers/2025_holographic_hilbert_universe_hpa_omega/sections/08_minimal_discrepancy_dynamics.tex`【外部参考（源文）】

@@ -298,7 +298,7 @@ flowchart TB
   class P_select,P_min_coarse_lock phys_audit;
 ```
 
-### 图 4：手性/反物质/CPT 协议几何（χ、SCL、mirror protocol） / Fig. 4: Protocol Geometry for Chirality/Antimatter/CPT (χ, SCL, mirror protocol)
+### 图 4：手性/反物质/CPT 协议几何（χ_H、SCL、mirror protocol） / Fig. 4: Protocol Geometry for Chirality/Antimatter/CPT (χ_H, SCL, mirror protocol)
 
 ```mermaid
 %%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 50}, "themeVariables": {"fontSize": "10px"}}}%%
@@ -320,20 +320,20 @@ flowchart TB
   P_d4_layouts("D4 layout family（D4 布局族；interface dictionary）<br/>类型：字典 / Dictionary<br/>label: lem:d4_layouts<br/>orientation class is the nontrivial discrete choice")
   M_d4_layouts -.- P_d4_layouts
 
-  M_chi_def["离散 Hilbert 手性指标 χ（定义）<br/>类型：构造 / Construction<br/>label: eq:hilbert_chi_def<br/>signed turning / orientation datum"]
-  P_chi_def("chirality index χ（手性指标 χ；audit-visible sign datum）<br/>类型：字典 / Dictionary<br/>label: eq:hilbert_chi_def<br/>parity-odd protocol observable")
+  M_chi_def["离散 Hilbert 手性指标 χ_H（定义）<br/>类型：构造 / Construction<br/>label: eq:hilbert_chi_def<br/>signed turning / orientation datum"]
+  P_chi_def("chirality index χ_H（手性指标 χ_H；audit-visible sign datum）<br/>类型：字典 / Dictionary<br/>label: eq:hilbert_chi_def<br/>parity-odd protocol observable")
   M_chi_def -.- P_chi_def
 
-  M_chi_flip["Parity 与 traversal reversal 翻转 χ<br/>类型：闭合 / Closure<br/>label: prop:chi_flip<br/>reflection or path reversal ⇒ χ↦−χ"]
-  P_chi_flip("χ sign flip law（χ 符号翻转律；protocol parity/time reversal proxy）<br/>类型：审计 / Audit<br/>label: prop:chi_flip<br/>rotation preserves χ; reflection reverses")
+  M_chi_flip["Parity 与 traversal reversal 翻转 χ_H<br/>类型：闭合 / Closure<br/>label: prop:chi_flip<br/>reflection or path reversal ⇒ χ_H↦−χ_H"]
+  P_chi_flip("χ_H sign flip law（χ_H 符号翻转律；protocol parity/time reversal proxy）<br/>类型：审计 / Audit<br/>label: prop:chi_flip<br/>rotation preserves χ_H; reflection reverses")
   M_chi_flip -.- P_chi_flip
 
   M_ptc_defs["protocol P/T/C definitions（协议 P/T/C 定义）<br/>类型：构造 / Construction<br/>label: subsec:ptc_definitions / def:ptc_protocol<br/>P_prot,T_prot,C_prot defined on finite readout"]
   P_ptc_defs("protocol P/T/C definitions（协议 P/T/C 定义；interface）<br/>类型：字典 / Dictionary<br/>label: subsec:ptc_definitions<br/>auditable finite-resolution operations")
   M_ptc_defs -.- P_ptc_defs
 
-  M_scl["Scan–chirality locking（SCL：取向类 bit + CAP tie-break）<br/>类型：审计 / Audit<br/>label: subsec:scl / def:scl<br/>canonical class chosen; mirror flips sgn(χ)"]
-  P_scl("SCL（取向类 bit；mirror protocol）<br/>类型：字典 / Dictionary<br/>label: def:scl<br/>mirror protocol swap ↔ χ sign flip")
+  M_scl["Scan–chirality locking（SCL：取向类 bit + CAP tie-break）<br/>类型：审计 / Audit<br/>label: subsec:scl / def:scl<br/>canonical class chosen; mirror flips sgn(χ_H)"]
+  P_scl("SCL（取向类 bit；mirror protocol）<br/>类型：字典 / Dictionary<br/>label: def:scl<br/>mirror protocol swap ↔ χ_H sign flip")
   M_scl -.- P_scl
 
   M_orientation_min["取向类是最小离散协议 datum（仅一比特可辨）<br/>类型：闭合 / Closure<br/>label: prop:orientation_class_minimal<br/>physically distinguishable choice = orientation class"]
@@ -352,7 +352,7 @@ flowchart TB
   P_antimatter_dual("antimatter as conjugate readout（反物质=共轭读出；interface）<br/>类型：字典 / Dictionary<br/>label: subsec:antimatter_duality<br/>word reversal dual within matched protocol")
   M_antimatter_dual -.- P_antimatter_dual
 
-  M_cp_sign_anchor["CP-odd 符号锚定：sgn(J_CP)=sgn(χ)<br/>类型：审计 / Audit<br/>label: def:chi_cp_sign / rem:cp_sign_convention<br/>fix sign within fixed PDG convention"]
+  M_cp_sign_anchor["CP-odd 符号锚定：sgn(J_CP)=sgn(χ_H)<br/>类型：审计 / Audit<br/>label: def:chi_cp_sign / rem:cp_sign_convention<br/>fix sign within fixed PDG convention"]
   P_cp_sign_anchor("chirality-anchored CP sign convention（手性锚定的 CP 符号约定；interface）<br/>类型：审计 / Audit<br/>label: def:chi_cp_sign<br/>resolves δ ↔ π−δ ambiguity")
   M_cp_sign_anchor -.- P_cp_sign_anchor
 
@@ -360,7 +360,7 @@ flowchart TB
   P_cpt_protocol("CPT at scan layer vs protocol layer（扫描层 vs 协议层；audit-facing）<br/>类型：审计 / Audit<br/>label: subsec:cpt_protocol<br/>no continuum axioms used as premises")
   M_cpt_protocol -.- P_cpt_protocol
 
-  M_mirror_universe["mirror protocol / right-handed universe（取向类翻转）<br/>类型：审计 / Audit<br/>label: subsec:mirror_universe<br/>global χ sign flip; domain walls ⇒ P2"]
+  M_mirror_universe["mirror protocol / right-handed universe（取向类翻转）<br/>类型：审计 / Audit<br/>label: subsec:mirror_universe<br/>global χ_H sign flip; domain walls ⇒ P2"]
   P_mirror_universe("mirror protocol domains（镜像协议域；prediction-facing）<br/>类型：审计 / Audit<br/>label: subsec:mirror_universe<br/>domain boundaries are protocol defects")
   M_mirror_universe -.- P_mirror_universe
 
@@ -956,6 +956,22 @@ flowchart TB
   P_recon("反演代理（从数据到 chi(x)）<br/>类型：审计 / Audit")
   M_recon -.- P_recon
 
+  M_chi_horizon_budget["chiHorizon（预算触发）<br/>类型：审计 / Audit<br/>label: subsec:chi_budget_horizon_area_law<br/>cloud boundary from chi(x) and I_obs"]
+  P_chi_horizon_budget("chiHorizon proxy（budget-triggered）<br/>类型：审计 / Audit<br/>label: subsec:chi_budget_horizon_area_law<br/>operational information boundary")
+  M_chi_horizon_budget -.- P_chi_horizon_budget
+
+  M_cloud_capacity["cloudCapacityBits（m,n）<br/>类型：构造 / Construction<br/>label: def:chi_cloud_capacity_bits<br/>I_chi := m·|R_star|"]
+  P_cloud_capacity("cloud capacity proxy（bits）<br/>类型：字典 / Dictionary<br/>label: def:chi_cloud_capacity_bits<br/>I_chi (m,n) from chi-cloud count")
+  M_cloud_capacity -.- P_cloud_capacity
+
+  M_area_rep["areaRepresentative（A_chi）<br/>类型：假设 / Assumption<br/>label: ass:chi_channel_area_calibration<br/>A_chi := 4 l_P^2 ln2 · I_chi"]
+  P_area_rep("area representative proxy（A_chi）<br/>类型：审计 / Audit<br/>label: ass:chi_channel_area_calibration<br/>bit-to-area saturation calibration")
+  M_area_rep -.- P_area_rep
+
+  M_bh_match["bhCapacityMatching（A_chi vs I_BH）<br/>类型：审计 / Audit<br/>label: app:bh_planck_capacity_calibration<br/>log mismatch + finite-family CAP"]
+  P_bh_match("BH capacity matching proxy<br/>类型：审计 / Audit<br/>label: app:bh_planck_capacity_calibration<br/>I_BH vs I_prot / A_chi")
+  M_bh_match -.- P_bh_match
+
   M_err["协议→连续场误差控制（界/预算 / Protocol→Continuum-Field Error Control (Bounds/Budget)）<br/>类型：审计 / Audit"]
   P_err("误差预算代理（不确定性/鲁棒性 / Error-Budget Proxy (Uncertainty/Robustness)）<br/>类型：审计 / Audit")
   M_err -.- P_err
@@ -979,7 +995,7 @@ flowchart TB
   M_equiv --> M_capinv --> M_action
   M_equiv --> M_opMotherDict --> M_action
   M_equiv --> M_freq
-  M_equiv --> M_action --> M_eom --> M_grav --> M_recon --> M_err
+  M_equiv --> M_action --> M_eom --> M_grav --> M_recon --> M_chi_horizon_budget --> M_cloud_capacity --> M_area_rep --> M_bh_match --> M_err
   M_equiv --> M_thermo
   M_equiv --> M_qm
   M_qm --> M_wave_particle
@@ -993,7 +1009,7 @@ flowchart TB
   P_freq --> P_thermo
   P_freq --> P_lens
   P_equiv --> P_action --> P_eom --> P_dyn --> P_lens
-  P_lens --> P_recon --> P_err
+  P_lens --> P_recon --> P_chi_horizon_budget --> P_cloud_capacity --> P_area_rep --> P_bh_match --> P_err
   P_equiv --> P_thermo
   P_equiv --> P_qm
   P_qm --> P_wave_particle
@@ -1016,16 +1032,16 @@ flowchart TB
   classDef phys_audit fill:#F1F8E9,stroke:#33691E,color:#1B5E20,stroke-width:2px,stroke-dasharray: 2 2;
 
   class M_tick,M_cap math_axiom;
-  class M_equiv,M_quotient,M_proj,M_freq math_construct;
+  class M_equiv,M_quotient,M_proj,M_freq,M_cloud_capacity math_construct;
   class M_thermo,M_grav,M_qm math_closure;
   class M_action,M_eom math_cont;
-  class M_capinv,M_recon,M_err,M_state_gns,M_opMotherDict math_audit;
+  class M_capinv,M_recon,M_chi_horizon_budget,M_area_rep,M_bh_match,M_err,M_state_gns,M_opMotherDict math_audit;
   class M_wave_particle math_audit;
   class P_dyn phys_proxy;
   class P_lens,P_qm phys_obs;
-  class P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_opMotherDict phys_dict;
+  class P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_cloud_capacity,P_opMotherDict phys_dict;
   class P_action,P_eom phys_model;
-  class P_capinv,P_select,P_recon,P_err,P_state_gns phys_audit;
+  class P_capinv,P_select,P_recon,P_chi_horizon_budget,P_area_rep,P_bh_match,P_err,P_state_gns phys_audit;
   class P_wave_particle phys_audit;
 ```
 
@@ -1756,8 +1772,8 @@ flowchart TB
 | `P_geometric_vacuum` | `\label{subsubsec:geometric_vacuum}` | `sub-geometric vacuum / ghost-sector (interface proxy)` | `sections/I_00_introduction.tex` |
 | `M_d4_layouts` | `\label{lem:d4_layouts}` | `8 layouts → 2 orientation classes (rotation/reflection split)` | `sections/I_10_hilbert_addressing_chirality.tex` |
 | `P_d4_layouts` | `\label{lem:d4_layouts}` | `orientation-class audit basis (D4 layouts)` | `sections/I_10_hilbert_addressing_chirality.tex` |
-| `M_chi_def` | `\label{eq:hilbert_chi_def}` | `χ: discrete chirality/orientation sign datum` | `sections/I_10_hilbert_addressing_chirality.tex` |
-| `P_chi_def` | `\label{eq:hilbert_chi_def}` | `χ: parity-odd protocol observable (audit-visible sign)` | `sections/I_10_hilbert_addressing_chirality.tex` |
+| `M_chi_def` | `\label{eq:hilbert_chi_def}` | `χ_H: discrete chirality/orientation sign datum` | `sections/I_10_hilbert_addressing_chirality.tex` |
+| `P_chi_def` | `\label{eq:hilbert_chi_def}` | `χ_H: parity-odd protocol observable (audit-visible sign)` | `sections/I_10_hilbert_addressing_chirality.tex` |
 | `M_chi_flip` | `\label{prop:chi_flip}` | `rotation preserves χ; reflection reverses` | `sections/I_10_hilbert_addressing_chirality.tex` |
 | `P_chi_flip` | `\label{prop:chi_flip}` | `χ sign flip law under reflection-like swaps` | `sections/I_10_hilbert_addressing_chirality.tex` |
 | `M_ptc_defs` | `\label{subsec:ptc_definitions}` / `\label{def:ptc_protocol}` | `protocol P_prot/T_prot/C_prot defined on finite readout` | `sections/I_30_chirality_antimatter_cpt.tex` |
@@ -1768,7 +1784,7 @@ flowchart TB
 | `P_antimatter_dual` | `\label{subsec:antimatter_duality}` | `conjugate readout interface (matched protocol)` | `sections/I_30_chirality_antimatter_cpt.tex` |
 | `M_conj_reversal` | `\label{lem:conjugation_reversal}` | `conjugation equals reversal up to an initial-phase flip` | `sections/I_30_chirality_antimatter_cpt.tex` |
 | `P_conj_reversal` | `\label{lem:conjugation_reversal}` | `finite protocol avatar of C_prot (audit lemma)` | `sections/I_30_chirality_antimatter_cpt.tex` |
-| `M_cp_sign_anchor` | `\label{def:chi_cp_sign}` / `\label{rem:cp_sign_convention}` | `sgn(J_CP)=sgn(χ) (fix CP-odd sign in PDG conventions)` | `sections/I_30_chirality_antimatter_cpt.tex` |
+| `M_cp_sign_anchor` | `\label{def:chi_cp_sign}` / `\label{rem:cp_sign_convention}` | `sgn(J_CP)=sgn(χ_H) (fix CP-odd sign in PDG conventions)` | `sections/I_30_chirality_antimatter_cpt.tex` |
 | `P_cp_sign_anchor` | `\label{def:chi_cp_sign}` | `resolves δ ↔ π−δ ambiguity (interface)` | `sections/I_30_chirality_antimatter_cpt.tex` |
 | `M_cpt_protocol` | `\label{subsec:cpt_protocol}` | `scan-layer CPT vs protocol-layer swaps (consistency reference)` | `sections/I_30_chirality_antimatter_cpt.tex` |
 | `P_cpt_protocol` | `\label{subsec:cpt_protocol}` | `CPT at scan layer (audit-facing statement)` | `sections/I_30_chirality_antimatter_cpt.tex` |
