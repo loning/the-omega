@@ -1120,7 +1120,7 @@ flowchart TB
 
   %% === Core hubs ===
   M_kernel_view["Kernel view（语言核+折叠核+协议 RG 核）<br/>类型：审计 / Audit<br/>label: sec:kernel_view<br/>X_m + Fold_m + uplift/coarse-graining + r/RG dictionary"]
-  P_kernel_view("跨尺度计算入口（generated tables）<br/>类型：审计 / Audit<br/>label: tab:fractal_kernel_sweep / tab:folding_entropy_decomposition / tab:kernel_mu_r_bridge / tab:kernel_rg_flow_balanced / tab:ext_boundary_operator_check<br/>kernel+entropy checks; μ/r staircase; balanced-chain coarse flow; uplift-operator audit")
+  P_kernel_view("跨尺度计算入口（generated tables）<br/>类型：审计 / Audit<br/>label: tab:fractal_kernel_sweep / tab:folding_entropy_decomposition / tab:kernel_mu_r_bridge / tab:kernel_rg_flow_balanced / tab:kernel_rg_operator_sanity / tab:kernel_rg_operator_backreaction / tab:kernel_rg_resolvent_trace_audit / tab:kernel_rg_weighted_pole_barrier / tab:ext_boundary_operator_check<br/>kernel+entropy checks; μ/r staircase; balanced-chain coarse flow; uplift-operator audit")
   M_kernel_view -.- P_kernel_view
 
   M_operator_mother["算子母空间（resolvent/determinant；finite-rank 更新）<br/>类型：审计 / Audit<br/>label: app:operator_mother_space<br/>trace-class F;  Tr(K(I−rF)⁻¹);  det(I−rF);  Δ finite-rank ⇒ F↦F+Δ"]
@@ -1238,7 +1238,7 @@ flowchart TB
   M_rm -.- P_rm
 
   M_kernel_view["Kernel view（语言核+折叠核+协议 RG 核）<br/>类型：审计 / Audit<br/>label: sec:kernel_view<br/>X_m + Fold_m + uplift/coarse-graining + r/RG dictionary"]
-  P_kernel_view("跨尺度计算入口（generated tables）<br/>类型：审计 / Audit<br/>label: tab:fractal_kernel_sweep / tab:folding_entropy_decomposition / tab:kernel_mu_r_bridge / tab:kernel_rg_flow_balanced / tab:ext_boundary_operator_check<br/>kernel+entropy checks; μ/r staircase; balanced-chain coarse flow; uplift-operator audit")
+  P_kernel_view("跨尺度计算入口（generated tables）<br/>类型：审计 / Audit<br/>label: tab:fractal_kernel_sweep / tab:folding_entropy_decomposition / tab:kernel_mu_r_bridge / tab:kernel_rg_flow_balanced / tab:kernel_rg_operator_sanity / tab:kernel_rg_operator_backreaction / tab:kernel_rg_resolvent_trace_audit / tab:kernel_rg_weighted_pole_barrier / tab:ext_boundary_operator_check<br/>kernel+entropy checks; μ/r staircase; balanced-chain coarse flow; uplift-operator audit")
   M_kernel_view -.- P_kernel_view
 
   M_protocol_horizon["协议视界（tick-trap）<br/>类型：审计 / Audit<br/>label: app:protocol_horizon_tick_trap"]
@@ -1827,6 +1827,7 @@ flowchart TB
 | `P_abel` | `\label{rem:abel_first_pole_barrier_discipline}` | `FP_{r↑1} extracts constant term (audit-facing discipline)` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `M_operator_mother` | `\label{app:operator_mother_space}` | `trace-class F; Tr(K(I−rF)⁻¹); det(I−rF); finite-rank Δ ⇒ F↦F+Δ (bookkeeping)` | `sections/appendices/59_operator_mother_space.tex` |
 | `P_operator_mother` | `\label{app:operator_mother_space}` | `audit-facing operator mother space viewpoint (resolvent/determinant; pointer-jump ↔ Δ)` | `sections/appendices/59_operator_mother_space.tex` |
+| `M_protocol_rg_operator_closure` | `\label{app:protocol_rg_operator_closure}` | `protocol RG operator closure: explicit 16x16 block-quotient RG operator F_n and weighted family \\hat F_n(t); tensor-kernel/tensor-resolvent readouts` | `sections/appendices/68_protocol_rg_operator_closure.tex` |
 | `M_fold` | `\label{subsec:fold6_map}` | `eq:fold6_def — Fold₆(N):=(c₁,…,c₆) ∈ X₆` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `P_fold` | `\label{subsec:fold6_map}` | `Ω₆={0,1}⁶ (card=64), X₆⊂Ω₆ (card=21) ⇒ 64→21` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `M_op2_fold_uniqueness` | `\label{app:fold_family_uniqueness}` | `thm:fold_family_uniqueness — value-consistency + uplift-locality ⇒ F_m = Fold_m` | `sections/appendices/44_fold_family_uniqueness.tex` |

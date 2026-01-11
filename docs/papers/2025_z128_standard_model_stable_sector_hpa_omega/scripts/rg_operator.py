@@ -1,0 +1,329 @@
+# -*- coding: utf-8 -*-
+"""
+Finite-dimensional protocol RG operators on the balanced Hilbert screen.
+
+This module implements the explicit 16x16 coarse RG operator used in the
+"protocol RG operator closure" narrative:
+  - microstate index set Omega_n = {0..4^n-1}, placed on a 2^n x 2^n Hilbert screen,
+  - a fixed axis-aligned 4x4 block partition (block side = 2^(n-2)),
+  - block projection P_n (averaging) and lift P_n^* (block-constant pullback),
+  - dyadic uplift u_n(k') = floor(k'/4) and Koopman pullback U_n,
+  - F_n = P_{n+1} U_n P_n^* as a 16x16 matrix,
+  - a weighted family \\hat{F}_n(t) = P_{n+1} U_n exp(t * phi_n) P_n^*,
+    where phi_n(k)=log g_{2n}(Fold_{2n}(k)).
+
+Only the Python standard library is used, but we reuse deterministic local
+helpers from this paper's scripts (Hilbert curve and folding caches).
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+import math
+from typing import Dict, List, Tuple
+
+import exp_hilbert_chirality_index as hil
+from common_cache import CACHE_VERSION, cache_path, load_or_compute
+from common_progress import ProgressEvery
+from protocol_kernel import cached_degeneracy_map, cached_foldm_outputs
+
+
+Mat = List[List[float]]
+Vec = List[float]
+
+
+def _n_micro(n_bits: int) -> int:
+    if n_bits < 0:
+        raise ValueError("n_bits must be nonnegative.")
+    return 1 << (2 * n_bits)
+
+
+def block_size(n_bits: int) -> int:
+    if n_bits < 3:
+        raise ValueError("n_bits must be >= 3 for a 4x4 block partition.")
+    return 1 << (n_bits - 2)
+
+
+def _block_id_from_xy(x: int, y: int, *, bsz: int) -> int:
+    bx = x // bsz
+    by = y // bsz
+    if not (0 <= bx < 4 and 0 <= by < 4):
+        raise ValueError("Computed block index out of range.")
+    return by * 4 + bx
+
+
+def block_id_by_index(n_bits: int) -> List[int]:
+    """
+    Return a list block_id[k] in {0..15} for k in {0..4^n-1}, using the
+    deterministic Hilbert path ordering as the microstate index order.
+    """
+    if n_bits < 3:
+        raise ValueError("n_bits must be >= 3.")
+
+    key = cache_path(f"rg_block_id_n{n_bits}_v{CACHE_VERSION}.pkl")
+
+    def compute() -> List[int]:
+        path = hil.hilbert_curve(n_bits)
+        if len(path) != _n_micro(n_bits):
+            raise AssertionError("Unexpected Hilbert path length.")
+        bsz = block_size(n_bits)
+        out: List[int] = []
+        for (x, y) in path:
+            out.append(_block_id_from_xy(x, y, bsz=bsz))
+        return out
+
+    return load_or_compute(key, compute)
+
+
+def block_average_vector(n_bits: int, values: List[float]) -> Vec:
+    """
+    Compute the 16-vector of block averages for a micro-field `values[k]`
+    aligned with Hilbert index order k in {0..4^n-1}.
+    """
+    N = _n_micro(n_bits)
+    if len(values) != N:
+        raise ValueError("values must have length 4^n.")
+    bids = block_id_by_index(n_bits)
+    sums = [0.0] * 16
+    for k, v in enumerate(values):
+        sums[bids[k]] += float(v)
+    denom = float(N // 16)
+    return [s / denom for s in sums]
+
+
+def mat_vec(A: Mat, x: Vec) -> Vec:
+    if not A:
+        raise ValueError("Empty matrix.")
+    n = len(A)
+    m = len(A[0])
+    if len(x) != m:
+        raise ValueError("Dimension mismatch.")
+    out = [0.0] * n
+    for i in range(n):
+        row = A[i]
+        s = 0.0
+        for j in range(m):
+            s += float(row[j]) * float(x[j])
+        out[i] = s
+    return out
+
+
+def mat_transpose(A: Mat) -> Mat:
+    if not A:
+        raise ValueError("Empty matrix.")
+    n = len(A)
+    m = len(A[0])
+    return [[A[i][j] for i in range(n)] for j in range(m)]
+
+
+def mat_mul(A: Mat, B: Mat) -> Mat:
+    if not A or not B:
+        raise ValueError("Empty matrix.")
+    n = len(A)
+    k = len(A[0])
+    if len(B) != k:
+        raise ValueError("Dimension mismatch.")
+    m = len(B[0])
+    out: Mat = [[0.0] * m for _ in range(n)]
+    for i in range(n):
+        for t in range(k):
+            a = float(A[i][t])
+            if a == 0.0:
+                continue
+            bt = B[t]
+            for j in range(m):
+                out[i][j] += a * float(bt[j])
+    return out
+
+
+def det(A: Mat) -> float:
+    """
+    Determinant by Gaussian elimination with partial pivoting (float).
+    Intended for small matrices (<= 16).
+    """
+    n = len(A)
+    if n == 0 or any(len(row) != n for row in A):
+        raise ValueError("A must be a non-empty square matrix.")
+    M = [row[:] for row in A]
+    sign = 1.0
+    d = 1.0
+    for i in range(n):
+        # Pivot.
+        piv = i
+        piv_abs = abs(M[i][i])
+        for r in range(i + 1, n):
+            ar = abs(M[r][i])
+            if ar > piv_abs:
+                piv_abs = ar
+                piv = r
+        if piv_abs == 0.0:
+            return 0.0
+        if piv != i:
+            M[i], M[piv] = M[piv], M[i]
+            sign *= -1.0
+        pivv = float(M[i][i])
+        d *= pivv
+        # Eliminate below.
+        for r in range(i + 1, n):
+            fac = float(M[r][i]) / pivv
+            if fac == 0.0:
+                continue
+            for c in range(i, n):
+                M[r][c] -= fac * float(M[i][c])
+    return sign * d
+
+
+def solve_linear(A: Mat, b: Vec) -> Vec:
+    """
+    Solve A x = b by Gaussian elimination with partial pivoting (float).
+    """
+    n = len(A)
+    if n == 0 or any(len(row) != n for row in A):
+        raise ValueError("A must be a non-empty square matrix.")
+    if len(b) != n:
+        raise ValueError("Dimension mismatch.")
+    M = [row[:] + [float(bi)] for row, bi in zip(A, b, strict=True)]
+    # Forward elimination.
+    for i in range(n):
+        piv = i
+        piv_abs = abs(M[i][i])
+        for r in range(i + 1, n):
+            ar = abs(M[r][i])
+            if ar > piv_abs:
+                piv_abs = ar
+                piv = r
+        if piv_abs == 0.0:
+            raise ValueError("Singular matrix.")
+        if piv != i:
+            M[i], M[piv] = M[piv], M[i]
+        pivv = float(M[i][i])
+        for r in range(i + 1, n):
+            fac = float(M[r][i]) / pivv
+            if fac == 0.0:
+                continue
+            for c in range(i, n + 1):
+                M[r][c] -= fac * float(M[i][c])
+    # Back substitution.
+    x = [0.0] * n
+    for i in range(n - 1, -1, -1):
+        s = float(M[i][n])
+        for j in range(i + 1, n):
+            s -= float(M[i][j]) * x[j]
+        x[i] = s / float(M[i][i])
+    return x
+
+
+def power_iteration_rho(A: Mat, iters: int = 200) -> float:
+    """
+    Crude spectral-radius estimate for nonnegative matrices.
+    """
+    n = len(A)
+    x = [1.0] * n
+    lam = 0.0
+    for _ in range(max(1, iters)):
+        y = mat_vec(A, x)
+        norm = max(abs(v) for v in y)
+        if norm == 0.0:
+            return 0.0
+        y = [v / norm for v in y]
+        x = y
+        lam = norm
+    return float(lam)
+
+
+def build_F_matrix(n_bits: int) -> Mat:
+    """
+    Build the 16x16 matrix for F_n = P_{n+1} U_n P_n^*.
+    """
+    if n_bits < 3:
+        raise ValueError("n_bits must be >= 3.")
+    bids_n = block_id_by_index(n_bits)
+    bids_np1 = block_id_by_index(n_bits + 1)
+    Np1 = _n_micro(n_bits + 1)
+    denom = float(Np1 // 16)
+
+    counts: List[List[float]] = [[0.0] * 16 for _ in range(16)]
+    prog = ProgressEvery(label=f"build_F_matrix n={n_bits}", total=Np1, interval_s=60.0)
+    prog.start()
+    for kp1 in range(Np1):
+        if kp1 % 4096 == 0:
+            prog.maybe(kp1)
+        i = bids_np1[kp1]
+        parent = kp1 >> 2
+        j = bids_n[parent]
+        counts[i][j] += 1.0
+    prog.done()
+
+    return [[counts[i][j] / denom for j in range(16)] for i in range(16)]
+
+
+def build_weighted_F_matrix(n_bits: int, t: float) -> Mat:
+    """
+    Build the 16x16 weighted matrix:
+      \\hat F_n(t) = P_{n+1} U_n exp(t * phi_n) P_n^*,
+    where phi_n(k)=log g_{2n}(Fold_{2n}(k)) for k in Omega_n.
+    """
+    if n_bits < 3:
+        raise ValueError("n_bits must be >= 3.")
+    m = 2 * n_bits
+    outs = cached_foldm_outputs(m)
+    gm = cached_degeneracy_map(m)
+    if len(outs) != _n_micro(n_bits):
+        raise AssertionError("Unexpected Fold_m output length for balanced coupling.")
+    phi = [math.log(float(gm[w])) for w in outs]
+
+    bids_n = block_id_by_index(n_bits)
+    bids_np1 = block_id_by_index(n_bits + 1)
+    Np1 = _n_micro(n_bits + 1)
+    denom = float(Np1 // 16)
+
+    sums: List[List[float]] = [[0.0] * 16 for _ in range(16)]
+    prog = ProgressEvery(label=f"build_weighted_F_matrix n={n_bits} t={t}", total=Np1, interval_s=60.0)
+    prog.start()
+    for kp1 in range(Np1):
+        if kp1 % 4096 == 0:
+            prog.maybe(kp1)
+        i = bids_np1[kp1]
+        parent = kp1 >> 2
+        j = bids_n[parent]
+        w = math.exp(float(t) * float(phi[parent]))
+        sums[i][j] += w
+    prog.done()
+
+    return [[sums[i][j] / denom for j in range(16)] for i in range(16)]
+
+
+def micro_q_fields_for_balanced_chain(n_bits: int) -> Dict[str, List[float]]:
+    """
+    Return micro-fields aligned with k in {0..4^n-1} for the four intrinsic scalars
+    used by the balanced-chain RG-flow table:
+      - weight: |w|_1
+      - value:  V_m(w) (Fibonacci-weight value)
+      - dpi:    D_pi(w)=1_{w1=wm=1}
+      - logg:   log g_m(w)
+    """
+    if n_bits < 3:
+        raise ValueError("n_bits must be >= 3.")
+    m = 2 * n_bits
+    outs = cached_foldm_outputs(m)
+    gm = cached_degeneracy_map(m)
+
+    # Fibonacci weights for V_m(w): [F2..F_{m+1}] = [1,2,3,5,...].
+    weights: List[int] = [1, 2]
+    while len(weights) < m:
+        weights.append(weights[-1] + weights[-2])
+
+    q_weight: List[float] = []
+    q_value: List[float] = []
+    q_dpi: List[float] = []
+    q_logg: List[float] = []
+
+    for w in outs:
+        g = gm[w]
+        q_weight.append(float(w.count("1")))
+        q_value.append(float(sum((1 if w[i] == "1" else 0) * weights[i] for i in range(m))))
+        q_dpi.append(1.0 if (w[0] == "1" and w[-1] == "1") else 0.0)
+        q_logg.append(math.log(float(g)))
+
+    return {"weight": q_weight, "value": q_value, "dpi": q_dpi, "logg": q_logg}
+
