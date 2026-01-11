@@ -160,6 +160,10 @@ flowchart TB
   P_abel("解析稳定代理（finite part / pole barrier）<br/>类型：模型 / Model<br/>label: rem:abel_first_pole_barrier_discipline<br/>FP_{r↑1} extracts constant term; pole barrier at r=1")
   M_abel -.- P_abel
 
+  M_operator_mother["算子母空间（resolvent/determinant；finite-rank 更新）<br/>类型：审计 / Audit<br/>label: app:operator_mother_space<br/>trace-class F;  Tr(K(I−rF)⁻¹);  det(I−rF);  Δ finite-rank ⇒ F↦F+Δ"]
+  P_operator_mother("算子母空间口径（审计/字典层）<br/>类型：审计 / Audit<br/>label: app:operator_mother_space<br/>pole barrier ↔ interior resolvent poles; pointer-jump ↔ finite-rank Δ")
+  M_operator_mother -.- P_operator_mother
+
   M_fold["Fold6 映射（64→21；像/原像结构）<br/>类型：构造 / Construction<br/>label: subsec:fold6_map<br/>Fold₆(N):=(c₁,…,c₆) ∈ X₆ (eq:fold6_def)"]
   P_fold("coarse-graining 压缩（稳定扇区统计）<br/>类型：代理 / Proxy<br/>label: subsec:fold6_map<br/>Ω₆={0,1}⁶ (|Ω₆|=64), X₆⊂Ω₆ (|X₆|=21) ⇒ 64→21")
   M_fold -.- P_fold
@@ -175,6 +179,9 @@ flowchart TB
   M_pi --> M_periodic --> M_am_euler --> M_e
   M_e --> M_abel
   M_e --> M_pressure --> M_abel
+  M_pressure --> M_operator_mother
+  M_abel --> M_operator_mother
+  M_am_euler --> M_operator_mother
   M_phi --> M_fold
   P_phi --> P_pi
   P_phi --> P_e
@@ -208,11 +215,13 @@ flowchart TB
   class M_phi,M_fold,M_anchor math_construct;
   class M_pi,M_periodic,M_e,M_op2_fold_uniqueness math_closure;
   class M_abel,M_am_euler,M_pressure math_audit;
+  class M_operator_mother math_audit;
   class P_phi,P_pi,P_e,P_fold,P_screen phys_proxy;
   class P_periodic phys_obs;
   class P_am_euler phys_dict;
   class P_abel phys_model;
   class P_pressure phys_audit;
+  class P_operator_mother phys_audit;
 ```
 
 ### 图 3：显示预算与空间寻址（6-DoF coarse-lock → bulk d=3 → addressing/local） / Fig. 3: Display Budget and Spatial Addressing (6-DoF coarse-lock → bulk d=3 → addressing/local)
@@ -921,6 +930,10 @@ flowchart TB
   P_freq("频率优先字典（ratio-first）<br/>类型：字典 / Dictionary<br/>label: subsec:frequency_first_spine<br/>ω ratios ↔ energy/mass/T/redshift/delay")
   M_freq -.- P_freq
 
+  M_opMotherDict["算子母空间字典入口（resolvent/determinant）<br/>类型：审计 / Audit<br/>label: app:operator_mother_space_dictionary<br/>F trace-class;  T_K(r)=Tr(K(I−rF)⁻¹);  det(I−rF);  F↦F+Δ"]
+  P_opMotherDict("算子母空间字典（观察者/意识口径）<br/>类型：字典 / Dictionary<br/>label: app:operator_mother_space_dictionary<br/>observer: K; consciousness: finite-rank Δ (dictionary)")
+  M_opMotherDict -.- P_opMotherDict
+
   M_action["Seff：CAP 选出的作用量骨架<br/>类型：连续 / Continuum<br/>label: eq:cap_minimal_action_skeleton<br/>S_eff=∫ d⁴x √(−g)[(R−2Λ)/(16πG) − λ_F(∇χ)² − V(χ²) − ∑_a Tr(F_a²)/(4g_a²) + 𝓛_m]"]
   P_action("有效作用量代理（连续代表 / Effective Action Proxy (Continuous Representative)）<br/>类型：模型 / Model<br/>label: prop:cap_minimal_action_skeleton<br/>CAP selects S_eff within a finite candidate family")
   M_action -.- P_action
@@ -964,6 +977,7 @@ flowchart TB
   M_equiv --> M_quotient --> M_proj
   M_cap --> M_capinv
   M_equiv --> M_capinv --> M_action
+  M_equiv --> M_opMotherDict --> M_action
   M_equiv --> M_freq
   M_equiv --> M_action --> M_eom --> M_grav --> M_recon --> M_err
   M_equiv --> M_thermo
@@ -974,6 +988,7 @@ flowchart TB
   P_equiv --> P_quotient --> P_proj
   P_select --> P_capinv --> P_action
   P_equiv --> P_capinv
+  P_equiv --> P_opMotherDict --> P_action
   P_equiv --> P_freq
   P_freq --> P_thermo
   P_freq --> P_lens
@@ -1004,11 +1019,11 @@ flowchart TB
   class M_equiv,M_quotient,M_proj,M_freq math_construct;
   class M_thermo,M_grav,M_qm math_closure;
   class M_action,M_eom math_cont;
-  class M_capinv,M_recon,M_err,M_state_gns math_audit;
+  class M_capinv,M_recon,M_err,M_state_gns,M_opMotherDict math_audit;
   class M_wave_particle math_audit;
   class P_dyn phys_proxy;
   class P_lens,P_qm phys_obs;
-  class P_equiv,P_quotient,P_proj,P_freq,P_thermo phys_dict;
+  class P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_opMotherDict phys_dict;
   class P_action,P_eom phys_model;
   class P_capinv,P_select,P_recon,P_err,P_state_gns phys_audit;
   class P_wave_particle phys_audit;
@@ -1064,20 +1079,20 @@ flowchart TB
   P_kernel_view("跨尺度计算入口（generated tables）<br/>类型：审计 / Audit<br/>label: tab:fractal_kernel_sweep / tab:folding_entropy_decomposition / tab:kernel_mu_r_bridge / tab:kernel_rg_flow_balanced / tab:ext_boundary_operator_check<br/>kernel+entropy checks; μ/r staircase; balanced-chain coarse flow; uplift-operator audit")
   M_kernel_view -.- P_kernel_view
 
-  M_protocol_horizon["协议视界（tick-trap） 类型：审计 / Audit label: app:protocol_horizon_tick_trap"]
-  P_protocol_horizon("协议视界代理 类型：审计 / Audit label: app:protocol_horizon_tick_trap")
+  M_protocol_horizon["协议视界（tick-trap）<br/>类型：审计 / Audit<br/>label: app:protocol_horizon_tick_trap"]
+  P_protocol_horizon("协议视界代理（Protocol-Horizon Proxy）<br/>类型：审计 / Audit<br/>label: app:protocol_horizon_tick_trap")
   M_protocol_horizon -.- P_protocol_horizon
 
-  M_leakage_kernel["泄漏核（decay/evap as exit） 类型：审计 / Audit label: app:leakage_kernel"]
-  P_leakage_kernel("泄漏核代理（Γ/τ/通道分解） 类型：审计 / Audit label: app:leakage_kernel")
+  M_leakage_kernel["泄漏核（decay/evap as exit）<br/>类型：审计 / Audit<br/>label: app:leakage_kernel"]
+  P_leakage_kernel("泄漏核代理（Γ/τ/通道分解 / Leakage-Kernel Proxy (Γ/τ/Channel Decomposition)）<br/>类型：审计 / Audit<br/>label: app:leakage_kernel")
   M_leakage_kernel -.- P_leakage_kernel
 
-  M_low_leak_phase["低泄漏相（low T as low leakage） 类型：审计 / Audit label: app:protected_low_leakage_phase"]
-  P_low_leak_phase("低泄漏相代理 类型：审计 / Audit label: app:protected_low_leakage_phase")
+  M_low_leak_phase["低泄漏相（low T as low leakage）<br/>类型：审计 / Audit<br/>label: app:protected_low_leakage_phase"]
+  P_low_leak_phase("低泄漏相代理（Low-Leakage-Phase Proxy）<br/>类型：审计 / Audit<br/>label: app:protected_low_leakage_phase")
   M_low_leak_phase -.- P_low_leak_phase
 
-  M_m6_trap_exit["m=6 trap/exit 审计表 类型：审计 / Audit label: app:leakage_kernel"]
-  P_m6_trap_exit("m=6 trap/exit 代理 类型：审计 / Audit label: app:leakage_kernel")
+  M_m6_trap_exit["m=6 trap/exit 审计表（m=6 trap/exit audit table）<br/>类型：审计 / Audit<br/>label: app:leakage_kernel"]
+  P_m6_trap_exit("m=6 trap/exit 代理（m=6 trap/exit proxy）<br/>类型：审计 / Audit<br/>label: app:leakage_kernel")
   M_m6_trap_exit -.- P_m6_trap_exit
 
   M_k4_delay_audit["K4 delay 字典审计 类型：审计 / Audit label: app:k4_delay_audit"]
@@ -1375,6 +1390,9 @@ flowchart TB
   P_bh_pointer("强场/边界通道代理（指针 / Strong-Field/Boundary Channel Proxy (Pointer)）<br/>类型：未闭合 / Not Closed<br/>label: app:bh_wormholes_pointer<br/>area law / throat / pointer-jump (pointer)")
   M_bh_pointer -.- P_bh_pointer
 
+  %% dictionary-only alignment: pointer-jump bookkeeping ↔ operator mother space
+  M_bh_pointer -.- M_operator_mother
+
   M_qcd_gap["QCD 禁闭/质量隙（严格问题未闭合）<br/>类型：未闭合 / Not Closed<br/>label: app:continuum_yang_mills_from_holonomy<br/>note: representative YM closed; confinement/mass gap open"]
   P_qcd_gap("QCD 非微扰检验（未闭合）<br/>类型：未闭合 / Not Closed<br/>label: app:continuum_yang_mills_from_holonomy<br/>confinement/mass-gap not closed")
   M_qcd_gap -.- P_qcd_gap
@@ -1632,6 +1650,8 @@ flowchart TB
 | `P_e` | `\label{app:arrow_of_time_semigroup_notes}` | `prop:discrete_memoryless_exponential — w_{t+s}=w_t w_s, w₀=1 ⇒ w_t=rᵗ;  prop:continuous_semigroup_exponential — w(t)=exp(λt)` | `sections/F_00_arrow_of_time_semigroup.tex` |
 | `M_abel` | `\label{rem:abel_first_pole_barrier_discipline}` | `unit disk holomorphy + Abel path r↑1; pole barrier; no interior poles` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `P_abel` | `\label{rem:abel_first_pole_barrier_discipline}` | `FP_{r↑1} extracts constant term (audit-facing discipline)` | `sections/C_11_resolution_folding_64_to_21.tex` |
+| `M_operator_mother` | `\label{app:operator_mother_space}` | `trace-class F; Tr(K(I−rF)⁻¹); det(I−rF); finite-rank Δ ⇒ F↦F+Δ (bookkeeping)` | `sections/appendices/59_operator_mother_space.tex` |
+| `P_operator_mother` | `\label{app:operator_mother_space}` | `audit-facing operator mother space viewpoint (resolvent/determinant; pointer-jump ↔ Δ)` | `sections/appendices/59_operator_mother_space.tex` |
 | `M_fold` | `\label{subsec:fold6_map}` | `eq:fold6_def — Fold₆(N):=(c₁,…,c₆) ∈ X₆` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `P_fold` | `\label{subsec:fold6_map}` | `Ω₆={0,1}⁶ (card=64), X₆⊂Ω₆ (card=21) ⇒ 64→21` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `M_op2_fold_uniqueness` | `\label{app:fold_family_uniqueness}` | `thm:fold_family_uniqueness — value-consistency + uplift-locality ⇒ F_m = Fold_m` | `sections/appendices/44_fold_family_uniqueness.tex` |
@@ -1666,6 +1686,7 @@ flowchart TB
 | `P_capinv` | `\label{rem:cap_equiv_audit_failure}` | `tie-break κ must be invariant; coordinate-dependent κ breaks semantics` | `sections/F_10_equivalence_semantics.tex` |
 | `M_freq` | `\label{def:frequency_from_phase}` | `ω(t₁,t₂)=Δθ/Δt,  Δt=t₂−t₁` | `sections/F_10_equivalence_semantics.tex` |
 | `P_freq` | `\label{subsec:frequency_first_spine}` | `ω ratios ↔ energy/mass/T/redshift/delay` | `sections/F_10_equivalence_semantics.tex` |
+| `M_opMotherDict` / `P_opMotherDict` | `\label{app:operator_mother_space_dictionary}` | `operator mother space dictionary (F, K; resolvent/det; finite-rank Δ updates; observer/consciousness dictionary)` | `sections/F_05_operator_mother_space_dictionary.tex` |
 | `M_action` | `\label{app:cap_continuum_action_closure}` | `eq:cap_minimal_action_skeleton — S_eff=∫ d⁴x √−g[(R−2Λ)/(16πG) − λ_F(∇χ)² − V(χ²) − ∑_a Tr(F_a²)/(4g_a²) + 𝓛_m]` | `sections/F_20_cap_continuum_action_closure.tex` |
 | `P_action` | `\label{app:cap_continuum_action_closure}` | `S_eff is a continuum proxy selected by CAP within a finite candidate family` | `sections/F_20_cap_continuum_action_closure.tex` |
 | `M_eom` | `\label{app:variational_field_equations}` | `eq:einstein_total_stress — G_{μν}+Λg_{μν}=8πG(T^m_{μν}+T^χ_{μν}+T^YM_{μν})` | `sections/F_21_variational_field_equations.tex` |

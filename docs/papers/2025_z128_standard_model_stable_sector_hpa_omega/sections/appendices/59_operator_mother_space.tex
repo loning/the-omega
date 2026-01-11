@@ -1,0 +1,93 @@
+\section{An operator mother space: resolvents, determinants, and finite-rank pointer jumps (notes)}
+\label{app:operator_mother_space}
+
+\paragraph{Scope and status.}
+\AuditTag This appendix records a compact operator-theoretic ``mother space'' that unifies several analytic bookkeeping motifs used across the paper (Abel-first regularization, pole barriers, prime-cycle Euler products, and auditable finite-family selection).
+It introduces no new theorem-level premise into the folding core: it is an audit-facing unification layer and is \emph{not used} as a premise in any folding proof.
+For the main-text dictionary entry point that introduces the same viewpoint in the Dynamics narrative (including the observer/kernel and finite-rank update vocabulary), see Section~\ref{app:operator_mother_space_dictionary}.
+For the Abel finite-part template and the pole-barrier rigidity template that this operator viewpoint aligns with, see Appendix~\ref{app:abel_finite_part_notes} and Appendix~\ref{app:trace_pole_barrier_template}.
+For the Abel-first definitions used elsewhere, see Appendix~\ref{app:protocol_primitives} and Appendix~\ref{app:abel_finite_part_notes}.
+For zeta/prime-cycle Euler-product templates, see Appendix~\ref{app:graph_zeta_holonomy} and Appendix~\ref{app:selberg_zeta_trace_bridge}.
+
+\subsection{Trace-class resolvents and Fredholm determinants}
+\label{subsec:operator_mother_space_traceclass}
+
+\paragraph{A minimal operator class.}
+\MathTag Let $\mathcal{H}$ be a separable Hilbert space and let $F\in\mathcal{L}^1(\mathcal{H})$ be a trace-class operator.
+For $|r|<\|F\|^{-1}$ the resolvent $(I-rF)^{-1}$ is well-defined as a bounded operator.
+
+\begin{definition}[Kernel-weighted resolvent trace]\label{def:kernel_weighted_resolvent_trace}
+\MathTag Fix a bounded operator $K\in\mathcal{B}(\mathcal{H})$.
+Define
+\[
+T_K(r):=\Tr\!\bigl(K(I-rF)^{-1}\bigr),
+\qquad |r|<\|F\|^{-1},
+\]
+whenever the trace exists (in particular, when $K(I-rF)^{-1}$ is trace class).
+\end{definition}
+
+\begin{definition}[Fredholm determinant for a trace-class operator]\label{def:fredholm_det_traceclass}
+\MathTag For $F\in\mathcal{L}^1(\mathcal{H})$, define the Fredholm determinant
+\[
+D(r):=\det(I-rF),
+\qquad |r|<\|F\|^{-1}.
+\]
+\end{definition}
+
+\begin{remark}[Trace expansion of $\log\det$]\label{rem:logdet_trace_expansion}
+\MathTag In the trace-class setting one has the standard identity
+\[
+\log \det(I-rF)
+=-\sum_{n\ge 1}\frac{r^n}{n}\Tr(F^n),
+\]
+on a neighborhood of $r=0$ where the series converges.
+This packages orbit/loop traces into a determinant object, paralleling the zeta/determinant templates used elsewhere in this paper.
+\end{remark}
+
+\subsection{Pole barriers as interior resolvent singularities (Abel-first viewpoint)}
+\label{subsec:operator_mother_space_pole_barrier}
+
+\paragraph{Abel coordinate.}
+\InterfaceTag The Abel-first discipline in this paper treats a canonical path $r\uparrow 1$ (with $r\in(0,1)$) as the preferred regulator direction; see Appendix~\ref{app:protocol_primitives} and Appendix~\ref{app:abel_finite_part_notes}.
+In operator language, factors of the form $(1-r\lambda)^{-1}$ are resolvent kernels.
+
+\begin{definition}[Pole-barrier radius (operator form)]\label{def:pole_barrier_radius_operator}
+\MathTag Let $T(r)$ be a meromorphic function defined at least on a neighborhood of the closed interval $(0,1)$.
+Define the \emph{pole-barrier radius} as
+\[
+r_\star:=\inf\{\,|r_0|:\ r_0\ \text{is a pole of}\ T(r)\,\},
+\]
+with the convention $r_\star=\infty$ if $T$ has no poles.
+\end{definition}
+
+\begin{remark}[Interior poles as a stability obstruction]\label{rem:interior_pole_obstruction_operator}
+\AuditTag In the Abel-first language, an interior pole $|r_0|<1$ is a canonical obstruction to unit-disk holomorphy.
+This matches the ``pole barrier'' usage across the paper: competing representations that force an interior pole are incompatible with a unit-disk holomorphy discipline.
+\end{remark}
+
+\subsection{HTF-op as an interface bridge (not used in proofs)}
+\label{subsec:operator_mother_space_htf}
+
+\paragraph{Mode factors.}
+\AuditTag In the companion trace manuscripts \cite{Ma2025RGS,Ma2025HHU}, one packages a prime/periodic-orbit side and a zero/spectral side into a trace identity via Abel-weighted mode factors of the form
+\[
+M_\rho(r):=\frac{1}{1-r\,\e^{(\rho-\frac12)}},
+\]
+so that $\RePart(\rho)>\tfrac12$ produces an interior pole at $|r|=\e^{-(\RePart(\rho)-\frac12)}<1$.
+This appendix records only the interface-level operator reading: such mode factors are resolvent kernels, and a ``trace formula bridge'' can be read as asserting that a suitably regularized resolvent trace contains the corresponding spectral modes.
+We do \emph{not} use this bridge as a premise in any theorem-level statement of the present paper.
+
+\subsection{Finite-rank pointer jumps as trace-class perturbations (dictionary)}
+\label{subsec:operator_mother_space_pointer_jump}
+
+\paragraph{A minimal perturbation class.}
+\AuditTag Let $F\in\mathcal{L}^1(\mathcal{H})$ and let $\Delta$ be a finite-rank operator on $\mathcal{H}$.
+Then $F+\Delta$ is again trace class.
+Accordingly, resolvent-trace and determinant bookkeeping remains well-defined within the same operator mother space under such finite-rank updates.
+
+\begin{remark}[Dictionary pointer-jump $\leadsto$ finite-rank update]\label{rem:pointer_jump_finite_rank_dictionary}
+\AuditTag In protocol language, a wormhole-like channel is modeled as an additional pointer edge (Definition~\ref{def:wormhole_pointer_jump}) that relaxes locality by a controlled nonlocal jump.
+At the operator level, the minimal abstract encoding of such an added shortcut is a finite-rank (or, more generally, trace-class) perturbation $\Delta$ of the underlying operator $F$.
+This is a dictionary-only identification used to keep ``wormhole-like'' language strictly at the interface level; it is not a claim about traversable Lorentzian wormholes in GR.
+\end{remark}
+
