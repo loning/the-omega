@@ -100,6 +100,61 @@ def _safe_log_mismatch(a: float, b: float) -> float:
     return float(abs(math.log(a / b)))
 
 
+def _interval_from_resonance(r: Dict[str, Any]) -> Tuple[Optional[float], Optional[float]]:
+    """
+    Return (gamma_low, gamma_high) if present; otherwise (None, None).
+    """
+    gl = r.get("gamma_low", None)
+    gh = r.get("gamma_high", None)
+    try:
+        glf = float(gl) if gl is not None else None
+    except Exception:
+        glf = None
+    try:
+        ghf = float(gh) if gh is not None else None
+    except Exception:
+        ghf = None
+    if glf is None or ghf is None:
+        return (None, None)
+    if not (math.isfinite(glf) and math.isfinite(ghf)):
+        return (None, None)
+    if glf <= 0.0 or ghf <= 0.0:
+        return (None, None)
+    if glf > ghf:
+        glf, ghf = ghf, glf
+    return (glf, ghf)
+
+
+def _tau_gamma_interval(gamma_low: float, gamma_high: float) -> Tuple[float, float]:
+    """
+    tau_gamma = 4/gamma. For gamma in [low, high], tau in [4/high, 4/low].
+    Returns (tau_min, tau_max).
+    """
+    tau_min = float(4.0 / float(gamma_high))
+    tau_max = float(4.0 / float(gamma_low))
+    return (tau_min, tau_max)
+
+
+def _mismatch_interval(tau_phase_abs: float, tau_min: float, tau_max: float) -> Tuple[float, float]:
+    """
+    e(tau) = |log(tau_phase_abs / tau)| for tau in [tau_min, tau_max], tau>0.
+    Return (e_min, e_max).
+    """
+    if not (tau_phase_abs > 0 and tau_min > 0 and tau_max > 0):
+        return (float("inf"), float("inf"))
+    if tau_min > tau_max:
+        tau_min, tau_max = tau_max, tau_min
+    e_a = _safe_log_mismatch(tau_phase_abs, tau_min)
+    e_b = _safe_log_mismatch(tau_phase_abs, tau_max)
+    # If tau_phase lies inside the interval, the minimum mismatch can be 0 (achieved at tau=tau_phase).
+    if tau_min <= tau_phase_abs <= tau_max:
+        e_min = 0.0
+    else:
+        e_min = float(min(e_a, e_b))
+    e_max = float(max(e_a, e_b))
+    return (e_min, e_max)
+
+
 def main() -> None:
     reg = _read_json(paper_root() / "data" / "k4_matching" / "scattering_phase_registry.json")
     ds = list(reg.get("datasets", []))
@@ -112,7 +167,8 @@ def main() -> None:
     rows: List[str] = []
     coord_rows: List[str] = []
     n_cmp = 0
-    mismatches: List[float] = []
+    mismatches_min: List[float] = []
+    mismatches_max: List[float] = []
     coord_i = 0
 
     for d in ds:
@@ -123,14 +179,23 @@ def main() -> None:
 
         for r in list(d.get("resonances", [])):
             E0 = float(r["E0"])
-            gamma = float(r["gamma"])
             unit = str(r.get("gamma_unit", ab.unit))
-            if gamma <= 0:
-                continue
             # Proxy convention: tau_proxy(E0) ~ 4/gamma when gamma is expressed in the same abscissa units.
             if unit != ab.unit:
                 continue
-            tau_pred = float(4.0 / gamma)
+
+            gl, gh = _interval_from_resonance(r)
+            if gl is not None and gh is not None:
+                gamma_low = float(gl)
+                gamma_high = float(gh)
+            else:
+                gamma = float(r["gamma"])
+                if gamma <= 0:
+                    continue
+                gamma_low = float(gamma)
+                gamma_high = float(gamma)
+
+            tau_min, tau_max = _tau_gamma_interval(gamma_low, gamma_high)
             # Report a small, bounded window family (k=1..3) to make discretization sensitivity explicit.
             for k in (1, 2, 3):
                 slope = _local_linear_slope(pts, E0=E0, k=int(k), coord=None)
@@ -138,9 +203,11 @@ def main() -> None:
                     continue
                 tau_from_phase = float(2.0 * slope)
                 sgn = "+" if tau_from_phase >= 0.0 else "-"
+
                 # Compare magnitudes but keep sign as a separate audit output.
-                e = _safe_log_mismatch(abs(tau_from_phase), abs(tau_pred))
-                mismatches.append(e)
+                e_min, e_max = _mismatch_interval(abs(tau_from_phase), tau_min=tau_min, tau_max=tau_max)
+                mismatches_min.append(e_min)
+                mismatches_max.append(e_max)
                 n_cmp += 1
                 rows.append(
                     " & ".join(
@@ -149,12 +216,15 @@ def main() -> None:
                             ab.symbol.replace("_", r"\_"),
                             ab.unit.replace("_", r"\_"),
                             _fmt(E0, 6),
-                            _fmt(gamma, 6),
+                            _fmt(gamma_low, 6),
+                            _fmt(gamma_high, 6),
                             str(int(k)),
                             _fmt(tau_from_phase, 6),
-                            _fmt(tau_pred, 6),
+                            _fmt(tau_min, 6),
+                            _fmt(tau_max, 6),
                             sgn,
-                            _fmt(e, 6),
+                            _fmt(e_min, 6),
+                            _fmt(e_max, 6),
                         ]
                     )
                     + r" \\"
@@ -184,10 +254,13 @@ def main() -> None:
                         if jac == 0.0 or not math.isfinite(jac):
                             continue
                         tau_phase_y = float(tau_from_phase / jac)
-                        gamma_y = float(gamma * jac)
-                        tau_gamma_y = float(4.0 / gamma_y) if (gamma_y > 0.0) else float("nan")
+                        gamma_low_y = float(gamma_low * jac)
+                        gamma_high_y = float(gamma_high * jac)
+                        if gamma_low_y <= 0.0 or gamma_high_y <= 0.0:
+                            continue
+                        tau_y_min, tau_y_max = _tau_gamma_interval(gamma_low_y, gamma_high_y)
                         sgn_y = "+" if tau_phase_y >= 0.0 else "-"
-                        e_y = _safe_log_mismatch(abs(tau_phase_y), abs(tau_gamma_y))
+                        e_y_min, e_y_max = _mismatch_interval(abs(tau_phase_y), tau_min=tau_y_min, tau_max=tau_y_max)
                         coord_i += 1
                         coord_rows.append(
                             " & ".join(
@@ -199,9 +272,11 @@ def main() -> None:
                                     yunit.replace("_", r"\_"),
                                     str(int(k)),
                                     _fmt(tau_phase_y, 6),
-                                    _fmt(tau_gamma_y, 6),
+                                    _fmt(tau_y_min, 6),
+                                    _fmt(tau_y_max, 6),
                                     sgn_y,
-                                    _fmt(e_y, 6),
+                                    _fmt(e_y_min, 6),
+                                    _fmt(e_y_max, 6),
                                 ]
                             )
                             + r" \\"
@@ -221,21 +296,27 @@ def main() -> None:
         )
         return
 
-    mismatches.sort()
-    med = mismatches[len(mismatches) // 2]
-    mx = mismatches[-1]
-    mn = mismatches[0]
+    mismatches_min.sort()
+    mismatches_max.sort()
+    med_min = mismatches_min[len(mismatches_min) // 2]
+    mx_min = mismatches_min[-1]
+    mn_min = mismatches_min[0]
+    med_max = mismatches_max[len(mismatches_max) // 2]
+    mx_max = mismatches_max[-1]
+    mn_max = mismatches_max[0]
     write_lines(
         sum_path,
         [
             r"\paragraph{Audit summary (WS proxy vs linewidth proxy).} \AuditTag "
             + rf"Comparisons: {n_cmp}. "
             + r"We estimate a phase-derived delay proxy by $\tau_{\mathrm{phase}}\approx 2\,\mathrm{d}\delta/\mathrm{d}x$ "
-            + r"and compare it to the single-resonance linewidth proxy $\tau_{\gamma}\approx 4/\gamma$ in the same abscissa units. "
-            + r"We report (i) the sign of $\tau_{\mathrm{phase}}$ and (ii) an absolute log mismatch on magnitudes "
-            + r"$e=\lvert\log(\lvert\tau_{\mathrm{phase}}\rvert/\lvert\tau_{\gamma}\rvert)\rvert$.",
+            + r"and compare it to the single-resonance linewidth proxy $\tau_{\gamma}\approx 4/\gamma$ (or an interval if $\gamma$ is specified as a range) in the same abscissa units. "
+            + r"We report (i) the sign of $\tau_{\mathrm{phase}}$ and (ii) an absolute log mismatch envelope on magnitudes "
+            + r"$e=\lvert\log(\lvert\tau_{\mathrm{phase}}\rvert/\lvert\tau_{\gamma}\rvert)\rvert$ over the allowed $\tau_{\gamma}$ interval.",
             r"\noindent\AuditTag "
-            + rf"Mismatch summary over the bounded window family: min/median/max $e=({_fmt(mn,6)},{_fmt(med,6)},{_fmt(mx,6)})$.",
+            + rf"Mismatch envelope summary over the bounded window family: "
+            + rf"$e_{{\min}}=({_fmt(mn_min,6)},{_fmt(med_min,6)},{_fmt(mx_min,6)})$, "
+            + rf"$e_{{\max}}=({_fmt(mn_max,6)},{_fmt(med_max,6)},{_fmt(mx_max,6)})$ (min/median/max).",
         ],
     )
 
