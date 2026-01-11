@@ -176,9 +176,18 @@ $\Delta\mathrm{AUC}_{M2-M1}=-0.0015$ with $p=0.57$ under a permutation test (App
 This indicates that, in the current recoding-vs-terminal discrimination task, the $u$-window features are largely redundant with composition features.
 A different task or a larger dataset may reveal incremental signal, but the present data do not support this claim.
 
-\paragraph{Dicodon-preserving null absorbs the stop-class contrast.}
-Under a Markov-surrogate null that preserves the dicodon (codon-pair) transition structure of each ORF, the observed stop-class differences in $\overline{U}_{\mathrm{before}}$ are no longer significant ($p>0.29$ for all pairwise contrasts; Appendix~\ref{app:generated_tables}).
-This suggests that the observed differences may be explained by dicodon-level sequence structure rather than by a mechanism specific to the arithmetic folding layer.
+\paragraph{Generative null models: dicodon vs dinucleotide.}
+We tested two complementary generative nulls to assess whether stop-class differences survive sequence shuffling.
+Under the \emph{ORF-level dicodon null} (Eulerian-path permutation preserving the full CDS+stop codon-pair multiset), the observed stop-class differences in $\overline{U}_{\mathrm{before}}$ are no longer significant ($p>0.29$ for all pairwise contrasts; Appendix~\ref{app:generated_tables}).
+However, under the \emph{per-window dinucleotide null} (Eulerian-path permutation of the $k$-codon window sequence preserving dinucleotide counts), the before-window contrasts remain highly significant:
+\input{sections/generated/stop_context_window_dinuc_null}
+This discrepancy suggests that the codon-pair (dicodon) structure at the ORF level is a stronger confounder than the dinucleotide structure at the window level, and that some residual stop-class signal in the before-window persists after dinucleotide shuffling.
+
+\paragraph{Uplift--structure correlation is fully explained by composition.}
+To test whether uplift encodes RNA secondary structure information beyond simple composition, we computed Spearman correlations between $\overline{U}(k)$ and a GC-based structure proxy (higher GC $\to$ more stable folding) for $k=10$ windows around terminal stops.
+\input{sections/generated/stop_context_window_structure_corr}
+The raw correlation is significant ($\rho\approx -0.16$, $p<0.001$), but after partialling out GC and dinucleotide composition, the correlation vanishes ($\rho\approx 0$, $p>0.9$).
+This confirms that uplift does not capture structural information beyond what is already present in composition features, consistent with the lack of incremental predictive power in the nested-model analysis.
 
 \paragraph{Cross-task validation yields mixed rankings.}
 Under a uniform prior over all $24$ encodings, $\mu^\ast$ does not dominate the independent validation tasks:
