@@ -1580,8 +1580,8 @@ flowchart TB
   M_bh_pointer -.- M_operator_mother
   P_bh_pointer -.- P_operator_mother
 
-  M_qcd_gap["QCD 禁闭/质量隙（严格问题未闭合）<br/>类型：未闭合 / Not Closed<br/>label: app:continuum_yang_mills_from_holonomy<br/>note: representative YM closed; confinement/mass gap open"]
-  P_qcd_gap("QCD 非微扰检验（未闭合）<br/>类型：未闭合 / Not Closed<br/>label: app:continuum_yang_mills_from_holonomy<br/>confinement/mass-gap not closed")
+  M_qcd_gap["QCD 禁闭/质量隙（严格问题未闭合）<br/>类型：未闭合 / Not Closed<br/>label: app:continuum_yang_mills_from_holonomy<br/>note: representative YM closed; confinement/mass gap open; audit proxy: app:qcd_confinement_proxy_audit"]
+  P_qcd_gap("QCD 非微扰检验（严格问题未闭合）<br/>类型：未闭合 / Not Closed<br/>label: app:continuum_yang_mills_from_holonomy<br/>confinement/mass-gap not closed; audit proxy: app:qcd_confinement_proxy_audit")
   M_qcd_gap -.- P_qcd_gap
 
   M_gut_scope["大统一/质子衰变等高能结构（未闭合/未覆盖 / High-Energy Structures (GUT/Proton Decay, etc.) (Not Closed/Not Covered)）<br/>类型：范围外 / Out of Scope<br/>label: sec:limitations_related_work<br/>status: benchmark mention only"]
