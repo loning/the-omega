@@ -164,6 +164,47 @@ Under $\mu^\ast$ this makes $\mathrm{UGA}$ boundary at $m=9$ but not $\mathrm{UA
 The identification theorem and the start--stop $14/48$ symmetry are statements about the specific minimal-resolution interface $(\Omega_6,\mathrm{Fold}_6,X_6)$: changing $m$ changes both the target space and the boundary condition, and the same control set need not identify the same encoding.
 By contrast, the \emph{sequence-level} observables (context windows of $\Delta_m$ and derived rank/discrimination statistics) can be computed for any $m$ and are naturally treated as a robustness axis: effects that persist across $m\in\{6,7,8\}$ are stronger candidates for biological relevance than effects visible at only one resolution.
 
+\subsection{Negative results and transparent reporting}
+\label{sec:negative_results}
+
+Scientific integrity requires reporting results that do not support the main hypothesis alongside those that do.
+We document several negative or null findings from the computational reinforcement program:
+
+\paragraph{Incremental predictive power is absent.}
+When uplift-window statistics are added to a classifier that already includes stop identity, +4 base, GC, and dinucleotide composition, the cross-validated AUC does \emph{not} improve:
+$\Delta\mathrm{AUC}_{M2-M1}=-0.0015$ with $p=0.57$ under a permutation test (Appendix~\ref{app:generated_tables}).
+This indicates that, in the current recoding-vs-terminal discrimination task, the $u$-window features are largely redundant with composition features.
+A different task or a larger dataset may reveal incremental signal, but the present data do not support this claim.
+
+\paragraph{Dicodon-preserving null absorbs the stop-class contrast.}
+Under a Markov-surrogate null that preserves the dicodon (codon-pair) transition structure of each ORF, the observed stop-class differences in $\overline{U}_{\mathrm{before}}$ are no longer significant ($p>0.29$ for all pairwise contrasts; Appendix~\ref{app:generated_tables}).
+This suggests that the observed differences may be explained by dicodon-level sequence structure rather than by a mechanism specific to the arithmetic folding layer.
+
+\paragraph{Cross-task validation yields mixed rankings.}
+Under a uniform prior over all $24$ encodings, $\mu^\ast$ does not dominate the independent validation tasks:
+it ranks $8/24$ on the RefSeq stop-class AUC task, $5/24$ on the recoding AUC task, and $3/24$ on the nonstandard-table Fisher score (Appendix~\ref{app:cross_task_validation}).
+The combined Fisher $p$-value is $0.0833$, which is suggestive but not strongly significant at conventional thresholds.
+In particular, the RefSeq stop-class task alone yields $p_A=0.33$, indicating that $\mu^\ast$ is not exceptional for that specific metric.
+
+\paragraph{Out-of-sample RefSeq bucket is weak.}
+In the three-bucket out-of-sample design, the RefSeq bucket (B1) shows $\mu^\ast$ at rank $14/24$ ($p=0.58$), while the recoding and nonstandard buckets are more favorable ($3/24$ and $2/24$ respectively; Appendix~\ref{app:out_of_sample_validation}).
+This asymmetry suggests that the biological signal, if present, is domain- or task-dependent.
+
+\paragraph{Start--stop corpus-level symmetry is not detected.}
+The $14/48$ start--stop boundary coincidence is an arithmetic fact under $\mu^\ast$.
+However, when we test whether this structure manifests as a corpus-level symmetry statistic $T_k$, $\mu^\ast$ ranks $20/24$ ($p=0.83$) under the encoding null (Appendix~\ref{app:generated_tables}).
+Thus, the ``arithmetic symmetry'' does not translate into a detectable corpus-level pattern in the current RefSeq sample.
+
+\paragraph{Control-set sensitivity.}
+The uniqueness of $\mu^\ast$ as the control-boundary optimum depends on the choice of control set $\mathcal{K}$.
+When $\mathcal{K}$ is extended to include alternative start codons or reduced to stops only, $\mu^\ast$ is no longer uniquely optimal (Appendix~\ref{app:generated_tables}).
+This underscores that the identification result is contingent on the minimal prior $\mathcal{K}=\{\mathrm{AUG,UAA,UAG,UGA}\}$.
+
+\paragraph{Interpretation.}
+These negative results do not invalidate the arithmetic framework, but they constrain its empirical scope.
+The $m=6$ identification theorem and the $14/48$ symmetry remain mathematically exact; however, the downstream sequence-level predictions are either weak, task-dependent, or confounded by composition.
+Future work should (i) seek independent datasets where uplift provides incremental signal, (ii) design controlled experiments (Appendix~\ref{app:bio_validation}) that isolate arithmetic contributions from compositional correlates, and (iii) explore whether higher-resolution templates ($m>6$) reveal stronger or more stable biological signatures.
+
 \subsection{A research program}
 \label{sec:program}
 
