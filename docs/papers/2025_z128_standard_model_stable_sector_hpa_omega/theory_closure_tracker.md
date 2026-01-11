@@ -158,6 +158,24 @@ flowchart TD
 - [x] **U1 单群候选 registry（SU(5)/SO(10)/E6）**：`appendix 72`  
   - 位置：`sections/appendices/72_u1_simple_group_registry_audit.tex`（`\label{app:u1_simple_group_registry_audit}`）
   - 要点：以有界 registry 的方式记录常见单群候选，并用显式 complexity keys（$\dim\mathfrak g$, $d_{\min}$）说明其在当前 H2/H3 的最小性键下并非 CAP-minimal；保持 benchmark/audit 语义，不提升为 theorem-level U1。
+- [x] **U3 归一化/嵌入约定 registry**：`appendix 73`  
+  - 位置：`sections/appendices/73_u3_normalization_embedding_registry.tex`（`\label{app:u3_normalization_embedding_registry}`）
+  - 要点：将超荷归一化/嵌入的约定差异登记为有界 registry（如 $c^2\in\{1,5/3\}$），作为 U2 审计输出跨文献口径对齐的台账，不引入 fit 目标。
+- [x] **U1→U2 可证伪接口链（最小失败点）**：`appendix 74`  
+  - 位置：`sections/appendices/74_u1_to_u2_falsifiable_interface_chains.tex`（`\label{app:u1_to_u2_falsifiable_interface_chains}`）
+  - 要点：把“单群→耦合关系”的叙述拆成 C1–C3 三条可审计链，并列出每条的最小失败点；保持 audit/iface 语义，不升级 U1。
+- [x] **散射反向一致性审计（phase→delay→phase）**：`appendix 75`  
+  - 位置：`sections/appendices/75_scattering_inverse_consistency_audit.tex`（`\label{app:scattering_inverse_consistency_audit}`）
+  - 要点：在 vendored 相移点云上，对有限估计族（CD/LL + smoothing）执行“导数→积分”反向一致性检查，输出残差范数表。
+- [x] **scheme 不变性契约（字典层）**：`appendix 76`  
+  - 位置：`sections/appendices/76_scheme_invariance_audit_contract.tex`（`\label{app:scheme_invariance_audit_contract}`）
+  - 要点：明确 scheme reparam 下哪些量必须视为不变量、哪些允许变化，并给出未来 audit 的最小 checklist。
+- [x] **QCD proxy↔Padé pole-barrier 一致性/互否 gate**：`appendix 67/68` 补充  
+  - 位置：`sections/appendices/67_qcd_confinement_proxy_audit.tex`（`\label{subsec:qcd_proxy_polebarrier_consistency_loop}`）
+  - 要点：把两种有限诊断压缩成 gate 表（area-signal vs interior-poles），明确冲突/一致的 failure labels；保持“严格未解”状态不变。
+- [x] **多体+观测反馈的 orbit/gauge/force 接口**：`appendix 77`  
+  - 位置：`sections/appendices/77_orbit_gauge_force_manybody_measurement_feedback.tex`（`\label{app:orbit_gauge_force_manybody_measurement_feedback}`）
+  - 要点：用 instrument/CPTP 语言闭合“测量/反馈→有效泛函→响应力→轨道偏离”的接口闭环。
 - [x] **统一：轨道/规范/力（connection + response）**：`appendix 67`  
   - 位置：`sections/appendices/67_unified_orbit_gauge_force.tex`（`\label{app:unified_orbit_gauge_force}`）
   - 要点：把“轨道=(基路径+内部态)”与“规范=协变运输/平行运输结构”以及“力=action/自由能响应导致的偏离”合并为一条接口层闭合链；不新增原语，不反哺 folding 证明链。
@@ -273,6 +291,14 @@ flowchart TD
 | 统一分岔/反事实审计 | (U1) 群结构 vs (U2) 耦合统一 vs (U3) 归一化；有界 registry + no-fit 契约 | Audit/Match | `app:unification_branching_counterfactual_audit` | [x] |
 | 耦合统一（U2）审计 | one-loop affine running（r 坐标）+ 有界 $\alpha_3^{-1}(\mu_Z)=n\pi^2$；intersection mismatch 最小化 | Match/Audit | `app:coupling_unification_audit_in_r`, `tab:coupling_unification_audit_in_r` | [x] |
 | U1 单群候选 registry | SU(5)/SO(10)/E6 的有界表；complexity keys 用于 benchmark/audit（非 theorem-level） | Audit/Match | `app:u1_simple_group_registry_audit`, `tab:u1_simple_group_registry` | [x] |
+| U3 归一化/嵌入 registry | 超荷归一化/嵌入约定台账（α_Y↔α_1） | Audit/Match | `app:u3_normalization_embedding_registry` | [x] |
+| U1→U2 可证伪接口链 | C1–C3 最小失败点（不升级 U1） | Audit/Iface | `app:u1_to_u2_falsifiable_interface_chains` | [x] |
+| 散射反向一致性审计 | phase→delay→phase 反演一致性残差范数表 | Audit | `app:scattering_inverse_consistency_audit`, `tab:scattering_inverse_consistency_audit` | [x] |
+| 散射坐标变换 sign gate | 坐标族 $y(x)$ 下导数符号守恒（Jacobian>0）gate | Audit | `tab:scattering_inverse_coord_gate` | [x] |
+| 相位-延迟-线宽三角审计 | $\tau_{\mathrm{phase}}$ vs $\tau_\gamma$ 的有界一致性表 | Audit | `app:scattering_delay_linewidth_triangle_audit`, `tab:scattering_delay_linewidth_triangle_audit` | [x] |
+| scheme 不变性契约 | scheme reparam 下 invariants/allowed non-invariants + checklist | Match/Audit | `app:scheme_invariance_audit_contract` | [x] |
+| QCD proxy↔pole-barrier gate | area-signal vs interior-poles 的互否式 gate 表（未解不变） | Audit | `subsec:qcd_proxy_polebarrier_consistency_loop`, `tab:qcd_proxy_polebarrier_failure` | [x] |
+| 多体+观测反馈接口 | instrument/feedback channel→有效泛函→响应力→轨道偏离 | Iface | `app:orbit_gauge_force_manybody_measurement_feedback` | [x] |
 | 算子母空间字典入口（operator mother space dictionary） | source operator + readout kernels + determinant bookkeeping；finite-rank 更新闭合（字典层） | Iface/Audit | `app:operator_mother_space_dictionary` | [x] |
 | 算子母空间（operator mother space） | trace-class resolvent/行列式 bookkeeping；finite-rank 更新闭合（字典层） | Math/Audit | `app:operator_mother_space` | [x] |
 | 波粒二象性/延迟选择 | 相干交叉项 vs 事件化/去相干混合；互补性界 $V^2+D^2\le 1$；delayed-choice/eraser | Iface/Audit | `app:wave_particle_delayed_choice` | [x] |

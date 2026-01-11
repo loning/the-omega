@@ -1057,6 +1057,30 @@ flowchart TB
   P_unify_coupling_audit("耦合统一分岔输出（Match/Audit）<br/>类型：模型 / Model<br/>label: app:coupling_unification_audit_in_r<br/>bounded α_3^{-1}(μ_Z)=nπ²; minimize E_∞")
   M_unify_coupling_audit -.- P_unify_coupling_audit
 
+  M_u3_registry["U3 归一化/嵌入 registry（超荷约定台账）<br/>类型：审计 / Audit<br/>label: app:u3_normalization_embedding_registry<br/>α_Y ↔ α_1 conversion ledger"]
+  P_u3_registry("U3 conversion ledger（benchmark 对齐）<br/>类型：审计 / Audit<br/>label: app:u3_normalization_embedding_registry<br/>bounded convention registry")
+  M_u3_registry -.- P_u3_registry
+
+  M_u1_u2_falsify["U1→U2 可反驳接口链（最小失败点）<br/>类型：审计 / Audit<br/>label: app:u1_to_u2_falsifiable_interface_chains<br/>C1–C3 chains"]
+  P_u1_u2_falsify("U1→U2 falsifiability hooks（chain list）<br/>类型：审计 / Audit<br/>label: app:u1_to_u2_falsifiable_interface_chains<br/>minimal failure points")
+  M_u1_u2_falsify -.- P_u1_u2_falsify
+
+  M_scatt_inverse["散射反向一致性审计（phase→delay→phase）<br/>类型：审计 / Audit<br/>label: app:scattering_inverse_consistency_audit<br/>bounded estimator family"]
+  P_scatt_inverse("反向一致性输出（residual norms）<br/>类型：审计 / Audit<br/>label: app:scattering_inverse_consistency_audit<br/>tables")
+  M_scatt_inverse -.- P_scatt_inverse
+
+  M_scheme_contract["scheme 不变性契约（字典层）<br/>类型：审计 / Audit<br/>label: app:scheme_invariance_audit_contract<br/>invariants vs allowed non-invariants"]
+  P_scheme_contract("scheme invariance contract（checklist）<br/>类型：审计 / Audit<br/>label: app:scheme_invariance_audit_contract<br/>audit contract")
+  M_scheme_contract -.- P_scheme_contract
+
+  M_qcd_loop_gate["QCD proxy↔pole-barrier gate（互否式审计）<br/>类型：审计 / Audit<br/>label: subsec:qcd_proxy_polebarrier_consistency_loop<br/>gate table"]
+  P_qcd_loop_gate("QCD gate 输出（row）<br/>类型：审计 / Audit<br/>label: tab:qcd_proxy_polebarrier_failure<br/>verdict row")
+  M_qcd_loop_gate -.- P_qcd_loop_gate
+
+  M_manybody_feedback["多体+观测反馈（orbit/gauge/force）<br/>类型：接口 / Iface<br/>label: app:orbit_gauge_force_manybody_measurement_feedback<br/>instrument→control→response"]
+  P_manybody_feedback("多体反馈字典（ρ update loop）<br/>类型：接口 / Iface<br/>label: app:orbit_gauge_force_manybody_measurement_feedback<br/>channels + feedback"]
+  M_manybody_feedback -.- P_manybody_feedback
+
   M_state_gns["状态泛函/GNS 背景（记号对齐）<br/>类型：审计 / Audit<br/>label: app:state_gns_background<br/>ω(·) state;  ω(A)=⟨Ω|π(A)Ω⟩ (GNS);  ω(A)=Tr(ρA) (finite-dim)"]
   P_state_gns("状态表示字典（ω/ρ 互译 / State-Representation Dictionary (ω/ρ Translation)）<br/>类型：审计 / Audit<br/>label: app:state_gns_background<br/>P(E)=ω(E) ↔ P=Tr(ρE)")
   M_state_gns -.- P_state_gns
@@ -1093,6 +1117,16 @@ flowchart TB
 
   M_rg --> M_unify_coupling_audit
   M_unify_branch --> M_unify_coupling_audit
+  M_u1_registry --> M_u3_registry --> M_u1_u2_falsify --> M_unify_coupling_audit
+  M_scheme_contract --> M_unify_coupling_audit
+
+  M_scattering_iface --> M_scatt_inverse --> M_force_delay_audit
+
+  M_qcd_proxy --> M_qcd_loop_gate
+  M_qcd_pade --> M_qcd_loop_gate
+
+  M_unified_force --> M_manybody_feedback
+  M_qchannels --> M_manybody_feedback
 
   P_equiv --> P_quotient --> P_proj
   P_select --> P_capinv --> P_action
@@ -1758,6 +1792,16 @@ flowchart TB
   P_types --> P_gut_scope
   P_gauge3 --> P_unify_branch
   P_unify_branch --> P_u1_registry
+  P_u1_registry --> P_u3_registry --> P_u1_u2_falsify --> P_unify_coupling_audit
+  P_scheme_contract --> P_unify_coupling_audit
+
+  P_scattering_iface --> P_scatt_inverse --> P_force_delay_audit
+
+  P_qcd_proxy --> P_qcd_loop_gate
+  P_qcd_pade --> P_qcd_loop_gate
+
+  P_unified_force --> P_manybody_feedback
+  P_qchannels --> P_manybody_feedback
 
   M_sm --> M_baryogenesis_scope
   M_thermo --> M_baryogenesis_scope
@@ -1829,7 +1873,7 @@ flowchart TB
   class M_sm,M_thermo,M_grav,M_qm,M_rg math_closure;
   class M_action,M_op3_yang_mills math_cont;
   class M_cosmo,M_internal_fiber_g2 math_assumption;
-  class M_gamma_proxy,M_gamma_direct,M_gauge3,M_pressure,M_input_planck,M_operator_mother,M_unify_branch,M_u1_registry math_audit;
+  class M_gamma_proxy,M_gamma_direct,M_gauge3,M_pressure,M_input_planck,M_operator_mother,M_unify_branch,M_u1_registry,M_u3_registry,M_u1_u2_falsify,M_scatt_inverse,M_scheme_contract,M_qcd_loop_gate math_audit;
   class M_scalar_iface,M_lambda_open,M_bh_pointer,M_qcd_gap not_closed;
   class M_op1 math_audit;
   class M_gut_scope,M_baryogenesis_scope,M_strongcp_scope,M_bhinfo_scope,M_qg_scope,M_cosmo_tension_scope,M_bsm_scope scope_gap;
@@ -1837,7 +1881,7 @@ flowchart TB
   class P_qm,P_wilson phys_obs;
   class P_types,P_equiv,P_proj,P_thermo,P_gauge3 phys_dict;
   class P_action,P_rg,P_cosmo phys_model;
-  class P_select,P_gamma_proxy,P_gamma_direct,P_pressure,P_input_planck,P_internal_fiber_g2,P_operator_mother,P_unify_branch,P_u1_registry phys_audit;
+  class P_select,P_gamma_proxy,P_gamma_direct,P_pressure,P_input_planck,P_internal_fiber_g2,P_operator_mother,P_unify_branch,P_u1_registry,P_u3_registry,P_u1_u2_falsify,P_scatt_inverse,P_scheme_contract,P_qcd_loop_gate phys_audit;
   class P_scalar_iface,P_lambda_open,P_bh_pointer,P_qcd_gap not_closed;
   class P_op1 phys_audit;
   class P_gut_scope,P_baryogenesis_scope,P_strongcp_scope,P_bhinfo_scope,P_qg_scope,P_cosmo_tension_scope,P_bsm_scope scope_gap;
@@ -1964,6 +2008,18 @@ flowchart TB
 | `P_unify_branch` | `\label{app:unification_branching_counterfactual_audit}` | `counterfactual unification audit dictionary (benchmark only; not in theorem chain)` | `sections/appendices/69_unification_branching_counterfactual_audit.tex` |
 | `M_u1_registry` | `\label{app:u1_simple_group_registry_audit}` | `bounded U1 registry: SU(5), SO(10), E6 with complexity keys` | `sections/appendices/72_u1_simple_group_registry_audit.tex` |
 | `P_u1_registry` | `\label{app:u1_simple_group_registry_audit}` | `U1 registry dictionary (audit notes + complexity keys)` | `sections/appendices/72_u1_simple_group_registry_audit.tex` |
+| `M_u3_registry` | `\label{app:u3_normalization_embedding_registry}` | `bounded U3 registry: hypercharge normalization/embedding conventions` | `sections/appendices/73_u3_normalization_embedding_registry.tex` |
+| `P_u3_registry` | `\label{app:u3_normalization_embedding_registry}` | `U3 conversion ledger (α_Y ↔ α_1 benchmark alignment)` | `sections/appendices/73_u3_normalization_embedding_registry.tex` |
+| `M_u1_u2_falsify` | `\label{app:u1_to_u2_falsifiable_interface_chains}` | `U1→U2 falsifiable interface chains (minimal failure points)` | `sections/appendices/74_u1_to_u2_falsifiable_interface_chains.tex` |
+| `P_u1_u2_falsify` | `\label{app:u1_to_u2_falsifiable_interface_chains}` | `chain list C1–C3 (audit hooks)` | `sections/appendices/74_u1_to_u2_falsifiable_interface_chains.tex` |
+| `M_scatt_inverse` | `\label{app:scattering_inverse_consistency_audit}` | `inverse consistency audit phase→delay→phase (bounded estimator family)` | `sections/appendices/75_scattering_inverse_consistency_audit.tex` |
+| `P_scatt_inverse` | `\label{app:scattering_inverse_consistency_audit}` | `inverse consistency output table (residual norms)` | `sections/appendices/75_scattering_inverse_consistency_audit.tex` |
+| `M_scheme_contract` | `\label{app:scheme_invariance_audit_contract}` | `scheme reparam invariance contract (invariants vs allowed non-invariants)` | `sections/appendices/76_scheme_invariance_audit_contract.tex` |
+| `P_scheme_contract` | `\label{app:scheme_invariance_audit_contract}` | `scheme invariance checklist (audit contract)` | `sections/appendices/76_scheme_invariance_audit_contract.tex` |
+| `M_qcd_loop_gate` | `\label{subsec:qcd_proxy_polebarrier_consistency_loop}` | `QCD proxy↔pole-barrier gate (mutual exclusion table)` | `sections/appendices/67_qcd_confinement_proxy_audit.tex` |
+| `P_qcd_loop_gate` | `\label{tab:qcd_proxy_polebarrier_failure}` | `QCD gate verdict row (generated)` | `sections/appendices/67_qcd_confinement_proxy_audit.tex` |
+| `M_manybody_feedback` | `\label{app:orbit_gauge_force_manybody_measurement_feedback}` | `many-body + measurement feedback interface for orbit/gauge/force` | `sections/appendices/77_orbit_gauge_force_manybody_measurement_feedback.tex` |
+| `P_manybody_feedback` | `\label{app:orbit_gauge_force_manybody_measurement_feedback}` | `feedback dictionary (instrument→control→response loop)` | `sections/appendices/77_orbit_gauge_force_manybody_measurement_feedback.tex` |
 | `M_unify_coupling_audit` | `\label{app:coupling_unification_audit_in_r}` | `one-loop affine running in r; bounded α_3^{-1}(μ_Z)=nπ²; minimize intersection mismatch` | `sections/appendices/71_coupling_unification_audit_in_r.tex` |
 | `P_unify_coupling_audit` | `\label{app:coupling_unification_audit_in_r}` | `coupling-unification audit output table (Match/Audit)` | `sections/appendices/71_coupling_unification_audit_in_r.tex` |
 | `M_wave_particle` | `\label{app:wave_particle_delayed_choice}` | `cross terms vs mixture; V^2+D^2≤1; delayed-choice/eraser (interface)` | `sections/appendices/30b_wave_particle_delayed_choice.tex` |
