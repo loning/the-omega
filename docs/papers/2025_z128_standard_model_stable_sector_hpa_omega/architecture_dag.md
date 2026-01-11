@@ -956,6 +956,22 @@ flowchart TB
   P_recon("反演代理（从数据到 chi(x)）<br/>类型：审计 / Audit")
   M_recon -.- P_recon
 
+  M_chi_horizon_budget["chiHorizon（预算触发）<br/>类型：审计 / Audit<br/>label: subsec:chi_budget_horizon_area_law<br/>cloud boundary from chi(x) and I_obs"]
+  P_chi_horizon_budget("chiHorizon proxy（budget-triggered）<br/>类型：审计 / Audit<br/>label: subsec:chi_budget_horizon_area_law<br/>operational information boundary")
+  M_chi_horizon_budget -.- P_chi_horizon_budget
+
+  M_cloud_capacity["cloudCapacityBits（m,n）<br/>类型：构造 / Construction<br/>label: def:chi_cloud_capacity_bits<br/>I_chi := m·|R_star|"]
+  P_cloud_capacity("cloud capacity proxy（bits）<br/>类型：字典 / Dictionary<br/>label: def:chi_cloud_capacity_bits<br/>I_chi (m,n) from chi-cloud count")
+  M_cloud_capacity -.- P_cloud_capacity
+
+  M_area_rep["areaRepresentative（A_chi）<br/>类型：假设 / Assumption<br/>label: ass:chi_channel_area_calibration<br/>A_chi := 4 l_P^2 ln2 · I_chi"]
+  P_area_rep("area representative proxy（A_chi）<br/>类型：审计 / Audit<br/>label: ass:chi_channel_area_calibration<br/>bit-to-area saturation calibration")
+  M_area_rep -.- P_area_rep
+
+  M_bh_match["bhCapacityMatching（A_chi vs I_BH）<br/>类型：审计 / Audit<br/>label: app:bh_planck_capacity_calibration<br/>log mismatch + finite-family CAP"]
+  P_bh_match("BH capacity matching proxy<br/>类型：审计 / Audit<br/>label: app:bh_planck_capacity_calibration<br/>I_BH vs I_prot / A_chi")
+  M_bh_match -.- P_bh_match
+
   M_err["协议→连续场误差控制（界/预算 / Protocol→Continuum-Field Error Control (Bounds/Budget)）<br/>类型：审计 / Audit"]
   P_err("误差预算代理（不确定性/鲁棒性 / Error-Budget Proxy (Uncertainty/Robustness)）<br/>类型：审计 / Audit")
   M_err -.- P_err
@@ -979,7 +995,7 @@ flowchart TB
   M_equiv --> M_capinv --> M_action
   M_equiv --> M_opMotherDict --> M_action
   M_equiv --> M_freq
-  M_equiv --> M_action --> M_eom --> M_grav --> M_recon --> M_err
+  M_equiv --> M_action --> M_eom --> M_grav --> M_recon --> M_chi_horizon_budget --> M_cloud_capacity --> M_area_rep --> M_bh_match --> M_err
   M_equiv --> M_thermo
   M_equiv --> M_qm
   M_qm --> M_wave_particle
@@ -993,7 +1009,7 @@ flowchart TB
   P_freq --> P_thermo
   P_freq --> P_lens
   P_equiv --> P_action --> P_eom --> P_dyn --> P_lens
-  P_lens --> P_recon --> P_err
+  P_lens --> P_recon --> P_chi_horizon_budget --> P_cloud_capacity --> P_area_rep --> P_bh_match --> P_err
   P_equiv --> P_thermo
   P_equiv --> P_qm
   P_qm --> P_wave_particle
@@ -1016,16 +1032,16 @@ flowchart TB
   classDef phys_audit fill:#F1F8E9,stroke:#33691E,color:#1B5E20,stroke-width:2px,stroke-dasharray: 2 2;
 
   class M_tick,M_cap math_axiom;
-  class M_equiv,M_quotient,M_proj,M_freq math_construct;
+  class M_equiv,M_quotient,M_proj,M_freq,M_cloud_capacity math_construct;
   class M_thermo,M_grav,M_qm math_closure;
   class M_action,M_eom math_cont;
-  class M_capinv,M_recon,M_err,M_state_gns,M_opMotherDict math_audit;
+  class M_capinv,M_recon,M_chi_horizon_budget,M_area_rep,M_bh_match,M_err,M_state_gns,M_opMotherDict math_audit;
   class M_wave_particle math_audit;
   class P_dyn phys_proxy;
   class P_lens,P_qm phys_obs;
-  class P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_opMotherDict phys_dict;
+  class P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_cloud_capacity,P_opMotherDict phys_dict;
   class P_action,P_eom phys_model;
-  class P_capinv,P_select,P_recon,P_err,P_state_gns phys_audit;
+  class P_capinv,P_select,P_recon,P_chi_horizon_budget,P_area_rep,P_bh_match,P_err,P_state_gns phys_audit;
   class P_wave_particle phys_audit;
 ```
 
