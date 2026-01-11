@@ -113,4 +113,192 @@ To make the experimental program executable, the following selection rules map d
 \item \textbf{Provenance}: store selected context lists and summary JSON in \texttt{analysis\_runs}\allowbreak\texttt{.payload}. When applicable, also store the per-item panel tables in Postgres for reproducibility (Appendix~\ref{app:reproducibility}).
 \end{itemize}
 
+%% ============================================================================
+%% ENHANCED WET EXPERIMENTS (CAUSAL / MECHANISTIC TESTS)
+%% ============================================================================
+
+\subsection{Enhanced experiment A: Synthetic library for causal stop-readthrough testing}
+\label{app:bio_exp_a_synthetic}
+
+\paragraph{Goal.}
+Replace naturally derived contexts with \emph{designed} synthetic contexts in which $u_{\mathrm{after}}(k)$ is an experimentally controlled variable.
+This directly tests the causal contribution of the arithmetic uplift statistic, minimizing confounding from the myriad features of natural sequences.
+
+\paragraph{Construct design.}
+\begin{enumerate}
+\item \textbf{Fixed backbone.}
+Use a standard dual-luciferase (Renilla--stop--Firefly) or equivalent readthrough reporter with a defined stop codon (start with $\mathrm{UGA}$; replicate with $\mathrm{UAA}$/$\mathrm{UAG}$).
+\item \textbf{Fixed +4 base.}
+Hold the first nucleotide after the stop codon constant (e.g.\ all $\mathrm{A}$ or all $\mathrm{C}$) to neutralize known +4 positional effects \cite{TateBrownPoole1996,McCaughanBrownDalphinBerryTate1995}.
+\item \textbf{Synthetic downstream library ($10$--$20$ codons).}
+Design a library of downstream coding windows under the following constraints:
+  \begin{itemize}
+  \item \textbf{Composition lock}: fix the GC content and the 16 dinucleotide frequencies to narrow bands across the entire library (reusing the composition-matching logic from Appendix~\ref{app:composition_controls}).
+  \item \textbf{Uplift stratification}: by choosing different synonymous codon combinations, partition the library into $\ge 5$ strata of predicted $u_{\mathrm{after}}(k=10)$, spanning a wide dynamic range (e.g.\ from $\sim 10$ to $\sim 45$).
+  \item \textbf{Secondary structure control}: predict RNA folding energy (e.g.\ RNAfold minimum free energy) for the downstream segment and enforce similar distributions across uplift strata, thereby decoupling uplift from local RNA structure.
+  \end{itemize}
+\item \textbf{Library size.}
+Target $50$--$100$ variants per uplift stratum, for a total of $250$--$500$ constructs per stop codon.
+\item \textbf{Barcoding and pooled assay.}
+Attach unique barcodes to each variant.
+Perform pooled transfection; use barcode sequencing to normalize expression, and read out downstream reporter activity (e.g.\ Firefly luminescence or fluorescent protein abundance) to quantify readthrough.
+\end{enumerate}
+
+\paragraph{Primary analysis (pre-registered).}
+\[
+\log(\text{readthrough}) \;\sim\; u_{\mathrm{after}}(k) + \Delta G_{\mathrm{fold}} + \text{tAI} + \text{barcode\_abundance} + \varepsilon
+\]
+where $\Delta G_{\mathrm{fold}}$ is the predicted RNA folding free energy and tAI is the tRNA adaptation index.
+A significant, direction-stable coefficient on $u_{\mathrm{after}}(k)$ across stop-codon classes provides strong causal evidence.
+
+\paragraph{Why this is strong.}
+Natural sequences carry countless confounds (gene-specific regulation, mRNA stability signals, unknown motifs).
+Synthetic design converts $u_{\mathrm{after}}$ from a correlate into a controlled treatment, enabling a quasi-causal test.
+
+\subsection{Enhanced experiment B: Cell-free translation replication}
+\label{app:bio_exp_b_cellfree}
+
+\paragraph{Goal.}
+Demonstrate that stop-context readthrough effects persist in a defined in vitro translation system, ruling out cell-level explanations (NMD, mRNA decay, transcriptional feedback).
+
+\paragraph{Construct design.}
+\begin{enumerate}
+\item Select $n\ge 10$ matched pairs per stop codon from the RefSeq composition-matched candidate lists (Appendix~\ref{app:generated_tables}).
+\item Prepare mRNA by in vitro transcription from identical promoter templates.
+\item Translate in parallel in:
+  \begin{itemize}
+  \item live cells (HEK293 or equivalent),
+  \item rabbit reticulocyte lysate (RRL) or wheat germ extract (WGE) for eukaryotic signal,
+  \item \textit{E.~coli} S30 extract for prokaryotic comparison (where applicable).
+  \end{itemize}
+\item Quantify readthrough by dual-reporter ratio or Western blot for readthrough product.
+\end{enumerate}
+
+\paragraph{Falsifiable test.}
+Compute the Spearman rank correlation of readthrough across the $n$ constructs between in vivo and in vitro systems.
+High concordance ($\rho > 0.6$, $p < 0.01$) indicates that the effect is intrinsic to the ribosome-mRNA interface, not to cellular regulatory layers.
+
+\paragraph{Why this is strong.}
+Cell-free translation strips away mRNA turnover, localization, and stress responses.
+If the $u_{\mathrm{after}}$ signal survives, it points toward a direct translation-level mechanism.
+
+\subsection{Enhanced experiment C: Sec insertion---component dependency and site confirmation}
+\label{app:bio_exp_c_sec_mechanistic}
+
+\paragraph{Goal.}
+Upgrade the Sec assay (Section~\ref{app:bio_validation_sec}) from a correlation to a mechanistic test by adding three essential controls.
+
+\paragraph{Control 1: SECIS disruption/rescue.}
+\begin{itemize}
+\item Construct a reporter with a wild-type 3' UTR SECIS element.
+\item Introduce point mutations in the conserved SECIS stem-loop that abolish Sec insertion.
+\item Restore Sec insertion with compensatory mutations that rescue the stem-loop.
+\end{itemize}
+This confirms that the assay reads Sec-specific recoding rather than generic readthrough.
+
+\paragraph{Control 2: Factor dependency.}
+\begin{itemize}
+\item In mammalian cells, overexpress or siRNA knockdown SBP2 (SECIS-binding protein 2) and measure the effect on Sec insertion.
+\item In bacterial systems, use a $\Delta\textit{selB}$ background with complementation.
+\end{itemize}
+Dependence on the canonical Sec machinery validates that the reporter measures true Sec insertion.
+
+\paragraph{Control 3: Site confirmation by mass spectrometry.}
+For representative constructs spanning the $u_{\mathrm{after}}$ range, purify the readthrough product and perform targeted LC--MS/MS.
+Confirm that the amino acid at the $\mathrm{UGA}$ position is selenocysteine (or selenomethionine after Se-Met labeling) rather than tryptophan, cysteine, or stop.
+
+\paragraph{Extended analysis.}
+After validating the above controls, stratify Sec insertion efficiency by:
+\[
+\text{Sec\_fraction} \;\sim\; u_{\mathrm{before}}(k) + u_{\mathrm{after}}(k) + \text{(+4 base)} + \text{composition} + \varepsilon
+\]
+Pre-register a competing hypothesis: $u_{\mathrm{before}}$ is the dominant contributor (as suggested by the current dataset AUC ordering) versus $u_{\mathrm{after}}$.
+
+\paragraph{Why this is strong.}
+SECIS dependence and factor knockdown/rescue provide direct mechanistic links; mass spectrometry provides molecular proof of identity.
+Together they transform a correlational signal into a causal, biochemically verified claim.
+
+\subsection{Enhanced experiment D: Pyl insertion---minimal closed-loop validation}
+\label{app:bio_exp_d_pyl_mechanistic}
+
+\paragraph{Goal.}
+Establish a definitive, component-controlled Pyl insertion assay before interpreting $u$-window correlations.
+
+\paragraph{Minimal configuration (pre-registered).}
+Use a single reporter with a defined $\mathrm{UAG}$ site and identical upstream/downstream windows.
+Compare three conditions:
+\begin{enumerate}
+\item \textbf{Complete}: PylRS + tRNA$^{\mathrm{Pyl}}$ + pyrrolysine (or synthetic Pyl analog) supplied.
+\item \textbf{$\Delta$tRNA}: PylRS + Pyl, no tRNA$^{\mathrm{Pyl}}$.
+\item \textbf{Dead PylRS}: catalytically inactive PylRS mutant + tRNA$^{\mathrm{Pyl}}$ + Pyl.
+\end{enumerate}
+Readthrough in condition 1 minus background in conditions 2/3 defines Pyl-specific insertion.
+
+\paragraph{Mass-spec confirmation.}
+As with Sec, confirm Pyl identity at the $\mathrm{UAG}$ position by LC--MS/MS on purified product.
+
+\paragraph{Extended analysis.}
+Once the component dependency is established, vary the downstream context (from the ranked candidate list) and regress Pyl insertion on $u_{\mathrm{after}}(k)$ and $u_{\mathrm{before}}(k)$ with composition controls.
+
+\paragraph{Why this is strong.}
+Closed-loop component dependency (supply/withdraw/dead enzyme) is the gold standard for non-canonical amino acid systems.
+Without it, any correlation could reflect promiscuous readthrough or mistranslation.
+
+\subsection{Mechanistic bridge: ribosome pausing and mRNA secondary structure}
+\label{app:bio_mech_bridge}
+
+\paragraph{Rationale.}
+The arithmetic uplift $\Delta$ is a measure of sequence complexity under Zeckendorf folding.
+We hypothesize that high-$\Delta$ regions impose ``phase friction'' on the ribosome, potentially via:
+\begin{itemize}
+\item increased mRNA secondary structure stability (slower unwinding),
+\item altered tRNA selection kinetics (rare codon effects captured by $\Delta$),
+\item ribosome pausing at specific codon clusters.
+\end{itemize}
+
+\paragraph{Computational analysis (executable).}
+\begin{enumerate}
+\item \textbf{Structure correlation.}
+For each stop-context window in the RefSeq scan, compute the predicted minimum free energy ($\Delta G_{\mathrm{fold}}$) using RNAfold or equivalent.
+Test the Pearson/Spearman correlation between $u_{\mathrm{after}}(k)$ and $\Delta G_{\mathrm{fold}}$.
+A significant negative correlation (higher uplift $\to$ more stable structure) would provide a physical link.
+\item \textbf{Ribosome profiling overlay.}
+Map published ribosome profiling (Ribo-seq) data onto the RefSeq corpus.
+Compute the mean ribosome occupancy in the $\pm k$ window around terminal stops, stratified by stop codon class and $u_{\mathrm{after}}$ quintiles.
+Test whether high-$u_{\mathrm{after}}$ windows exhibit elevated pause scores.
+\item \textbf{Codon-level decomposition.}
+Identify which codons drive the $u$-window signal (already available in the codon-decomposition tables).
+Cross-reference with known slow codons (low tAI, rare tRNA) to test whether $\Delta$-heavy codons overlap with translation bottlenecks.
+\end{enumerate}
+
+\paragraph{Why this is important.}
+Connecting arithmetic uplift to a physical observable (structure, pause) bridges the abstract folding layer to ribosome dynamics, addressing the reviewer question ``why should arithmetic affect chemistry?''
+
+\subsection{Dinucleotide-shuffling null model (enhanced composition control)}
+\label{app:bio_dinuc_shuffle}
+
+\paragraph{Rationale.}
+The current composition controls match GC and dinucleotide \emph{frequencies} between groups.
+A stronger null preserves the exact dinucleotide transition structure via Markov shuffling.
+
+\paragraph{Procedure.}
+For each terminal-stop window:
+\begin{enumerate}
+\item Extract the codon sequence of the $k$-codon before-window or after-window.
+\item Construct a first-order Markov model on dinucleotides from the observed sequence.
+\item Generate $n_{\mathrm{perm}}=100$ surrogate sequences via Eulerian-path shuffling (preserving the exact dinucleotide multiset).
+\item Recompute $u_{\mathrm{before}}$ or $u_{\mathrm{after}}$ on each surrogate.
+\item Compare the observed stop-class differences to the null distribution.
+\end{enumerate}
+
+\paragraph{Implementation note.}
+This analysis extends the existing dicodon-preserving null (Appendix~\ref{app:generated_tables}) to a per-window basis and can be run via the same script infrastructure with minor modifications.
+
+\paragraph{Falsifiable test.}
+If the observed stop-class differences fall within the dinucleotide-shuffled null, the $u$-window signal is fully explained by local sequence composition.
+If the observed differences remain significant outliers, the signal contains information beyond dinucleotide structure.
+
+\paragraph{Why this is strong.}
+Dinucleotide shuffling is a stricter control than frequency matching and directly addresses the reviewer concern that $U$-window statistics may be proxies for known sequence features.
+
 
