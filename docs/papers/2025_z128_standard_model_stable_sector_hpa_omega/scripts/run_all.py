@@ -588,6 +588,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Wormhole-like pointer jump audit (protocol-only)",
+            script="exp_wormhole_pointer_jump_audit.py",
+            expected_outputs=[
+                "sections/generated/wormhole_pointer_jump_rows.tex",
+                "sections/generated/wormhole_pointer_jump_summary.tex",
+            ],
+        ),
+        Step(
             name="Budget-triggered chi-horizon occupancy (capacity-only table)",
             script="exp_chi_horizon_budget_occupancy.py",
             expected_outputs=[
