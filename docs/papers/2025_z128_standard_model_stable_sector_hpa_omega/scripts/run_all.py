@@ -279,6 +279,34 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Kernel RG operator sanity (16x16 matrix audit)",
+            script="exp_kernel_rg_operator_matrix_audit.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_sanity_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG operator predict-vs-recompute (backreaction audit)",
+            script="exp_kernel_rg_operator_predict_vs_recompute.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_backreaction_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG resolvent-trace audit (one-point / two-point)",
+            script="exp_kernel_rg_resolvent_trace_audit.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_resolvent_trace_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG weighted operator pole-barrier summary",
+            script="exp_kernel_rg_weighted_operator_pole_barrier.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_weighted_pole_barrier_rows.tex",
+            ],
+        ),
+        Step(
             name="Ext boundary operator check (uplift refinement audit)",
             script="exp_ext_boundary_operator_check.py",
             expected_outputs=[
@@ -528,6 +556,14 @@ def build_steps() -> List[Step]:
                 "sections/generated/qcd_confinement_proxy_robustness_rows.tex",
                 "sections/generated/qcd_confinement_proxy_sigma_rows.tex",
                 "sections/generated/qcd_confinement_proxy_sigma_summary.tex",
+            ],
+        ),
+        Step(
+            name="QCD confinement proxy Padé pole-barrier audit (analytic continuation; audit)",
+            script="exp_qcd_confinement_pade_pole_barrier_audit.py",
+            expected_outputs=[
+                "sections/generated/qcd_confinement_pade_pole_rows.tex",
+                "sections/generated/qcd_confinement_pade_pole_summary.tex",
             ],
         ),
         Step(

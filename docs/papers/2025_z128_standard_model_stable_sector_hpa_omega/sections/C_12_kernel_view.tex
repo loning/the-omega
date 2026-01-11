@@ -111,6 +111,129 @@ $\dd g/\dd r=(\log\varphi)\beta(g)$ (Proposition~\ref{prop:rg_dictionary_r}) con
 Threshold matching is then interpreted as a discrete uplift along the resolution axis (Appendix~\ref{subsec:threshold_matching}).
 This is the intended division of labor: the theorem-level kernel fixes the discrete objects and their uplift semantics, while RG is used as an auditable translation dictionary for scheme/scale dependence in EFT embeddings.
 
+\subsection{A finite-dimensional operator closure of the protocol RG kernel (mother-space realization)}
+\label{subsec:kernel_operator_closure}
+
+The kernel view is designed to make an \emph{iterable} object explicit.
+This can be made fully concrete in a finite-dimensional operator language that aligns directly with the resolvent/determinant bookkeeping of the operator mother space (Section~\ref{app:operator_mother_space_dictionary} and Appendix~\ref{app:operator_mother_space}).
+The construction below introduces no new empirical inputs: it only packages already fixed protocol choices (Hilbert addressing, block coarse graining, and dyadic uplift) into an explicit linear operator.
+
+\begin{definition}[Balanced-chain microstate index spaces and a fixed $4\times 4$ block quotient]
+\label{def:balanced_chain_block_quotient}
+\InterfaceTag Fix a Hilbert order $n\ge 3$ and set the balanced coupling $m:=2n$.
+Define the microstate index set
+\[
+\Omega_n:=\{0,1,\dots,4^n-1\}=\{0,1,\dots,2^m-1\}.
+\]
+Let $H_n:\Omega_n\to\{0,\dots,2^n-1\}^2$ be the protocol-fixed Hilbert addressing map (Section~\ref{sec:hilbert_addressing}).
+Partition the $2^n\times 2^n$ grid into a fixed axis-aligned $4\times 4$ block grid (block side length $2^{n-2}$), yielding $16$ blocks.
+Let $\mathcal{B}_n\cong\RR^{16}$ denote the corresponding block-constant quotient space.
+
+Define the deterministic projection (block averaging)
+\[
+P_n:\RR^{\Omega_n}\to\RR^{16},
+\qquad
+(P_nf)_b:=\frac{1}{|B_{n,b}|}\sum_{k\in B_{n,b}} f(k),
+\]
+and the deterministic lift (block-constant pullback)
+\[
+P_n^\ast:\RR^{16}\to\RR^{\Omega_n},
+\qquad
+(P_n^\ast v)(k):=v_{b(k)},
+\]
+where $B_{n,b}\subset\Omega_n$ is the $b$-th block and $b(k)\in\{1,\dots,16\}$ is the block index of the site $H_n(k)$.
+\end{definition}
+
+\begin{definition}[Dyadic uplift and Koopman pullback]\label{def:dyadic_uplift_koopman}
+\InterfaceTag Define the dyadic uplift map
+\[
+u_n:\Omega_{n+1}\to\Omega_n,
+\qquad
+u_n(k'):=\left\lfloor \frac{k'}{4}\right\rfloor,
+\]
+and the corresponding Koopman pullback operator
+\[
+U_n:\RR^{\Omega_n}\to\RR^{\Omega_{n+1}},
+\qquad
+(U_nf)(k'):=f(u_n(k')).
+\]
+\end{definition}
+
+\begin{definition}[Protocol RG kernel as an explicit $16\times 16$ operator]\label{def:protocol_rg_operator_Fn}
+\InterfaceTag With $P_n,U_n$ as above, define the finite-dimensional protocol RG operator
+\[
+F_n:\RR^{16}\to\RR^{16},
+\qquad
+F_n:=P_{n+1}\circ U_n\circ P_n^\ast.
+\]
+This operator is protocol-deterministic: it depends only on the fixed Hilbert addressing and the fixed $4\times 4$ block coarse graining, and it is iterable along the balanced chain $m=2n$.
+\end{definition}
+
+\begin{definition}[A folding-weighted operator family]\label{def:weighted_protocol_rg_operator}
+\InterfaceTag Let $\mathrm{Fold}_m$ be the deterministic folding map (Definition~\eqref{eq:foldm_def}) and let $g_m(w)=|\mathrm{Fold}_m^{-1}(w)|$ be its degeneracy function (Definition~\ref{def:rm_max_degeneracy}).
+At balanced coupling $m=2n$, define the microstate potential
+\[
+\varphi_n(k):=\log g_{2n}\!\bigl(\mathrm{Fold}_{2n}(k)\bigr),
+\qquad k\in\Omega_n,
+\]
+and the corresponding diagonal multiplication operator $M_{\varphi_n}$ on $\RR^{\Omega_n}$.
+For $t\in\RR$, define the weighted protocol RG operator
+\[
+\widehat F_n(t):=P_{n+1}\circ U_n\circ \e^{tM_{\varphi_n}}\circ P_n^\ast:\RR^{16}\to\RR^{16}.
+\]
+\end{definition}
+
+\begin{theorem}[One-point and two-point readout for block-averaged observables]\label{thm:block_readout_one_two_point}
+\MathTag Fix $n\ge 3$ and let $q:\Omega_n\to\RR$ be any microstate observable (e.g.\ $q(k)=|w(k)|_1$, $q(k)=V_m(w(k))$, $q(k)=D_\pi(w(k))$, or $q(k)=\log g_m(w(k))$ as in Table~\ref{tab:kernel_rg_flow_balanced}).
+Let $a:=P_n q\in\RR^{16}$ be the $4\times 4$ block-average vector.
+Define the block mean and (population) variance by
+\[
+\mu(a):=\frac{1}{16}\sum_{b=1}^{16} a_b,
+\qquad
+\Var(a):=\frac{1}{16}\sum_{b=1}^{16}(a_b-\mu(a))^2.
+\]
+Then $\mu(a)$ is a one-point linear readout and $\Var(a)$ is a two-point (tensor) readout in the operator-mother-space sense.
+Indeed, identifying $a$ with the diagonal operator $Q_a$ on $\RR^{16}$ given by $Q_a e_b=a_b e_b$, one may take
+\[
+K^{(1)}:=\frac{1}{16}I_{16}
+\quad\Longrightarrow\quad
+\mu(a)=\Tr(K^{(1)}Q_a),
+\]
+and, on $\RR^{16}\otimes\RR^{16}$, one may take the diagonal projector
+\[
+K^{(2)}:=\frac{1}{16}\sum_{b=1}^{16}\ket{e_b\otimes e_b}\bra{e_b\otimes e_b}
+\quad\Longrightarrow\quad
+\frac{1}{16}\sum_{b=1}^{16} a_b^2=\Tr\!\bigl(K^{(2)}(Q_a\otimes Q_a)\bigr).
+\]
+In particular, $\Var(a)=\frac{1}{16}\sum_b a_b^2-\mu(a)^2$.
+\end{theorem}
+
+\begin{theorem}[Resolvent-trace closure for iterated one-point and two-point statistics]\label{thm:resolvent_trace_closure_protocol_rg}
+\MathTag Fix $n\ge 3$ and let $F$ denote either $F_n$ or $\widehat F_n(t)$ acting on $\RR^{16}$.
+Let $\ell:\RR^{16}\to\RR$ be any fixed one-point linear readout (e.g.\ the block mean functional $\ell(a)=\mu(a)$) and let $Q:\RR^{16}\to\RR$ be any quadratic two-point readout that can be represented by a linear functional on $\RR^{16}\otimes\RR^{16}$ (e.g.\ the block second moment $a\mapsto \frac{1}{16}\sum_b a_b^2$).
+Then for $|z|<\rho(F)^{-1}$ one has the Neumann-series identities
+\[
+\sum_{t\ge 0} z^t\,\ell(F^t v)=\ell\!\bigl((I-zF)^{-1}v\bigr),
+\]
+and, writing $F^{\otimes 2}:=F\otimes F$,
+\[
+\sum_{t\ge 0} z^t\,Q(F^t v)=Q\!\bigl((I-zF^{\otimes 2})^{-1}(v\otimes v)\bigr),
+\]
+where the right-hand sides are resolvent-trace readouts in the operator-mother-space sense.
+Full details (including the explicit tensor-kernel reduction used by the variance readout) are recorded in Appendix~\ref{app:protocol_rg_operator_closure}.
+\end{theorem}
+
+\begin{proposition}[RG pole barrier as a spectral radius]\label{prop:rg_pole_barrier_radius}
+\MathTag Let $F$ be any finite-dimensional protocol RG operator (e.g.\ $F_n$ or $\widehat F_n(t)$).
+Define
+\[
+|z|_\star(F):=\rho(F)^{-1}.
+\]
+Then $|z|_\star(F)$ is the natural pole-barrier radius for the corresponding resolvent and determinant objects:
+the resolvent $(I-zF)^{-1}$ is analytic for $|z|<|z|_\star(F)$ and encounters a singular obstruction at $|z|=|z|_\star(F)$.
+Normalizing $z=r/\rho(F)$ places the leading obstruction at $r=1$, directly paralleling the $\e$-channel Abel normalization $z=r/\varphi$ (Equation~\eqref{eq:abel_normalized_zeta}).
+\end{proposition}
+
 \paragraph{Companion pointers (context, not required).}
 The companion folding manuscript \cite{Ma2025RF} develops the three-channel framework and its iterability interface at higher resolution (weighted transfer-operator variants and infinite-state extensions).
 The stairway manuscript \cite{Ma2025STI} records a broader renormalization-flow narrative and an Abel-first regularization discipline for regulated-to-continuum passages.

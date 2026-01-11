@@ -1,0 +1,141 @@
+\section{Protocol RG operator closure: a finite-dimensional mother-space realization (notes)}
+\label{app:protocol_rg_operator_closure}
+
+\paragraph{Scope and status.}
+\AuditTag This appendix records a finite-dimensional operator closure of the protocol RG kernel described in Section~\ref{sec:kernel_view}.
+It is included to make the iterable object explicit and auditable (finite matrices, determinants, resolvents, and tensor-kernel readouts).
+No statement here is used as a premise in the folding proofs.
+
+\subsection{Microstate index spaces, Hilbert addressing, and a fixed block quotient}
+\label{subsec:rg_operator_micro_blocks}
+
+\paragraph{Balanced chain.}
+\MathTag Fix $n\ge 3$ and set $m:=2n$.
+Define the microstate index set
+\[
+\Omega_n:=\{0,1,\dots,4^n-1\}=\{0,1,\dots,2^m-1\}.
+\]
+
+\paragraph{Hilbert addressing and blocks.}
+\MathTag Let $H_n:\Omega_n\to\{0,\dots,2^n-1\}^2$ be the protocol-fixed Hilbert addressing map (Section~\ref{sec:hilbert_addressing}).
+Partition the $2^n\times 2^n$ grid into a fixed axis-aligned $4\times 4$ block grid with block side length $2^{n-2}$, yielding $16$ equal-size blocks.
+Let $B_{n,1},\dots,B_{n,16}\subset\Omega_n$ denote the induced partition of $\Omega_n$ (each $B_{n,b}$ has size $2^{2(n-2)}$).
+Let $\mathcal{B}_n\cong\RR^{16}$ denote the block-constant quotient space.
+
+\begin{definition}[Block projection and lift]\label{def:block_projection_and_lift}
+\MathTag Define the deterministic block projection (averaging)
+\[
+P_n:\RR^{\Omega_n}\to\RR^{16},
+\qquad
+(P_nf)_b:=\frac{1}{|B_{n,b}|}\sum_{k\in B_{n,b}} f(k),
+\]
+and the deterministic lift (block-constant pullback)
+\[
+P_n^\ast:\RR^{16}\to\RR^{\Omega_n},
+\qquad
+(P_n^\ast v)(k):=v_b\ \ \text{for}\ k\in B_{n,b}.
+\]
+\end{definition}
+
+\subsection{Dyadic uplift and the finite-dimensional RG operator}
+\label{subsec:rg_operator_uplift}
+
+\begin{definition}[Dyadic uplift and Koopman pullback]\label{def:dyadic_uplift_koopman_appendix}
+\MathTag Define the dyadic uplift map
+\[
+u_n:\Omega_{n+1}\to\Omega_n,
+\qquad
+u_n(k'):=\left\lfloor \frac{k'}{4}\right\rfloor,
+\]
+and the corresponding Koopman pullback operator
+\[
+U_n:\RR^{\Omega_n}\to\RR^{\Omega_{n+1}},
+\qquad
+(U_nf)(k'):=f(u_n(k')).
+\]
+\end{definition}
+
+\begin{definition}[Protocol RG operator on the $4\times 4$ block quotient]\label{def:protocol_rg_operator_appendix}
+\MathTag Define the protocol RG operator
+\[
+F_n:\mathcal{B}_n\to\mathcal{B}_{n+1},
+\qquad
+F_n:=P_{n+1}\circ U_n\circ P_n^\ast.
+\]
+\end{definition}
+
+\begin{lemma}[Stochasticity and constant preservation]\label{lem:Fn_constant_preserving}
+\MathTag The operator $F_n$ preserves constants: if $v\in\RR^{16}$ is constant across blocks, then $F_nv$ is constant with the same value.
+Equivalently, every row of the matrix representation of $F_n$ sums to $1$.
+\end{lemma}
+\begin{proof}
+If $v_b\equiv c$, then $(P_n^\ast v)(k)\equiv c$ on $\Omega_n$, hence $(U_nP_n^\ast v)(k')\equiv c$ on $\Omega_{n+1}$.
+Applying $P_{n+1}$ returns the constant block-average vector with value $c$.
+\end{proof}
+
+\subsection{Folding weights as a diagonal potential and a weighted operator family}
+\label{subsec:rg_operator_weighted}
+
+\begin{definition}[Folding potential on microstates]\label{def:folding_potential_microstates}
+\MathTag Let $\mathrm{Fold}_m$ be the folding map (Definition~\eqref{eq:foldm_def}) and let $g_m(w)=|\mathrm{Fold}_m^{-1}(w)|$ be its degeneracy function (Definition~\ref{def:rm_max_degeneracy}).
+At balanced coupling $m=2n$, define the microstate potential
+\[
+\varphi_n(k):=\log g_{2n}\!\bigl(\mathrm{Fold}_{2n}(k)\bigr),
+\qquad k\in\Omega_n,
+\]
+and the diagonal multiplication operator $M_{\varphi_n}$ on $\RR^{\Omega_n}$ given by $(M_{\varphi_n}f)(k)=\varphi_n(k)f(k)$.
+\end{definition}
+
+\begin{definition}[Weighted protocol RG operator]\label{def:weighted_protocol_rg_operator_appendix}
+\MathTag For $t\in\RR$, define the weighted operator
+\[
+\widehat F_n(t):=P_{n+1}\circ U_n\circ \e^{tM_{\varphi_n}}\circ P_n^\ast:\mathcal{B}_n\to\mathcal{B}_{n+1}.
+\]
+\end{definition}
+
+\subsection{Mother-space objects: determinants, resolvents, and pole barriers}
+\label{subsec:rg_operator_mother_space_objects}
+
+\paragraph{Finite-dimensional determinant and resolvent.}
+\MathTag For any finite-dimensional operator $F$ (e.g.\ $F_n$ or $\widehat F_n(t)$), define
+\[
+D_F(z):=\det(I-zF),
+\qquad
+R_F(z):=(I-zF)^{-1},
+\]
+whenever the inverse exists.
+The pole-barrier radius is $|z|_\star(F)=\rho(F)^{-1}$, consistent with Proposition~\ref{prop:rg_pole_barrier_radius}.
+
+\subsection{One-point and two-point readouts (variance via a tensor lift)}
+\label{subsec:rg_operator_one_two_point_readouts}
+
+\paragraph{One-point readout.}
+\MathTag Let $\ell:\RR^{16}\to\RR$ be the block-mean functional $\ell(a)=\frac{1}{16}\sum_{b=1}^{16}a_b$.
+Then $\ell(F^t v)$ packages iterated one-point coarse statistics for any iterated block state $F^t v$.
+For $|z|<\rho(F)^{-1}$ one has
+\[
+\sum_{t\ge 0} z^t\,\ell(F^t v)=\ell\!\bigl((I-zF)^{-1}v\bigr)
+\]
+by the Neumann-series identity.
+
+\paragraph{Two-point readout and tensor lift.}
+\MathTag The block second moment is
+\[
+M_2(a):=\frac{1}{16}\sum_{b=1}^{16} a_b^2,
+\]
+and the block variance is $\Var(a)=M_2(a)-\ell(a)^2$.
+To keep $M_2$ within the same resolvent framework, move to the tensor mother space $\RR^{16}\otimes\RR^{16}$, with source operator $F^{\otimes 2}:=F\otimes F$.
+Let $w:=v\otimes v$.
+Then $M_2(F^t v)$ is a one-point readout on the tensor space:
+\[
+M_2(F^t v)=\Tr\!\bigl(K^{(2)}(Q_{F^t v}\otimes Q_{F^t v})\bigr),
+\]
+as in Theorem~\ref{thm:block_readout_one_two_point}.
+Equivalently, one may package the iterated second-moment readout by a tensor resolvent:
+\[
+\sum_{t\ge 0} z^t\,M_2(F^t v)=\mathcal{M}_2\!\bigl((I-zF^{\otimes 2})^{-1}w\bigr),
+\qquad |z|<\rho(F)^{-1},
+\]
+where $\mathcal{M}_2$ is the linear functional on $\RR^{16}\otimes\RR^{16}$ that extracts the diagonal $(b,b)$ components and averages them.
+This is the finite-dimensional specialization of the tensor-resolvent viewpoint recorded in Appendix~\ref{subsec:operator_mother_space_tensor_resolvent}.
+
