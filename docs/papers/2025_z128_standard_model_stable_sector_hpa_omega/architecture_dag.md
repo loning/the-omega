@@ -1041,6 +1041,10 @@ flowchart TB
   P_renorm_dict("renormalization dictionary（Match/Iface 边界）<br/>类型：审计 / Audit<br/>label: app:renormalization_dictionary_and_boundaries<br/>running conventions and explicit scope limits")
   M_renorm_dict -.- P_renorm_dict
 
+  M_unified_force["统一：轨道/规范/力（connection + response）<br/>类型：审计 / Audit<br/>label: app:unified_orbit_gauge_force<br/>orbit=(x_t,ψ_t);  parallel transport D_t ψ=0;  force = −∇ 𝓕 or −∂S_eff/∂x"]
+  P_unified_force("统一口径字典（no-force transport vs deflection）<br/>类型：字典 / Dictionary<br/>label: app:unified_orbit_gauge_force<br/>gauge: covariant transport; force: response/deflection")
+  M_unified_force -.- P_unified_force
+
   M_state_gns["状态泛函/GNS 背景（记号对齐）<br/>类型：审计 / Audit<br/>label: app:state_gns_background<br/>ω(·) state;  ω(A)=⟨Ω|π(A)Ω⟩ (GNS);  ω(A)=Tr(ρA) (finite-dim)"]
   P_state_gns("状态表示字典（ω/ρ 互译 / State-Representation Dictionary (ω/ρ Translation)）<br/>类型：审计 / Audit<br/>label: app:state_gns_background<br/>P(E)=ω(E) ↔ P=Tr(ρE)")
   M_state_gns -.- P_state_gns
@@ -1065,6 +1069,10 @@ flowchart TB
   M_qm --> M_state_gns
   M_qm --> M_compSys --> M_qchannels --> M_qm_lib
   M_state_gns --> M_aqft_net --> M_aqft_gns --> M_aqft_micro --> M_wightman_bridge --> M_scattering_iface --> M_renorm_dict
+  M_equiv --> M_unified_force
+  M_action --> M_unified_force
+  M_thermo --> M_unified_force
+  M_grav --> M_unified_force
 
   P_equiv --> P_quotient --> P_proj
   P_select --> P_capinv --> P_action
@@ -1081,6 +1089,10 @@ flowchart TB
   P_qm --> P_state_gns
   P_qm --> P_compSys --> P_qchannels --> P_qm_lib
   P_state_gns --> P_aqft_net --> P_aqft_gns --> P_aqft_micro --> P_wightman_bridge --> P_scattering_iface --> P_renorm_dict
+  P_equiv --> P_unified_force
+  P_action --> P_unified_force
+  P_thermo --> P_unified_force
+  P_dyn --> P_unified_force
 
   classDef iface fill:#FCE4EC,stroke:#D81B60,color:#880E4F,stroke-width:2px;
   classDef open_problem fill:#FFEBEE,stroke:#C62828,color:#B71C1C,stroke-width:2px,font-weight:700;
@@ -1102,11 +1114,11 @@ flowchart TB
   class M_equiv,M_quotient,M_proj,M_freq,M_cloud_capacity math_construct;
   class M_thermo,M_grav,M_qm math_closure;
   class M_action,M_eom math_cont;
-  class M_capinv,M_recon,M_chi_horizon_budget,M_area_rep,M_bh_match,M_err,M_state_gns,M_opMotherDict,M_compSys,M_qchannels,M_qm_lib,M_aqft_net,M_aqft_gns,M_aqft_micro,M_wightman_bridge,M_scattering_iface,M_renorm_dict math_audit;
+  class M_capinv,M_recon,M_chi_horizon_budget,M_area_rep,M_bh_match,M_err,M_state_gns,M_opMotherDict,M_compSys,M_qchannels,M_qm_lib,M_aqft_net,M_aqft_gns,M_aqft_micro,M_wightman_bridge,M_scattering_iface,M_renorm_dict,M_unified_force math_audit;
   class M_wave_particle math_audit;
   class P_dyn phys_proxy;
   class P_lens,P_qm phys_obs;
-  class P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_cloud_capacity,P_opMotherDict phys_dict;
+  class P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_cloud_capacity,P_opMotherDict,P_unified_force phys_dict;
   class P_action,P_eom phys_model;
   class P_capinv,P_select,P_recon,P_chi_horizon_budget,P_area_rep,P_bh_match,P_err,P_state_gns,P_compSys,P_qchannels,P_qm_lib,P_aqft_net,P_aqft_gns,P_aqft_micro,P_wightman_bridge,P_scattering_iface,P_renorm_dict phys_audit;
   class P_wave_particle phys_audit;
@@ -1871,6 +1883,8 @@ flowchart TB
 | `M_thermo` | `\label{app:thermodynamics_from_equivalence}` | `eq:counting_entropy — S(M)=log(card Γ(M));  F=E−TS` | `sections/appendices/27_thermodynamics_from_equivalence.tex` |
 | `P_thermo` | `\label{app:thermodynamics_from_equivalence}` | `T⁻¹=∂S/∂E; CAP objective can be read as weighted (E−TS)` | `sections/appendices/27_thermodynamics_from_equivalence.tex` |
 | `M_grav` | `\label{app:overhead_to_gravity_closure}` | `eq:z128_lapse_from_chi — N(x)=exp(−γχ); eq:z128_phi_from_chi — Φ=−γc²(χ−χ₀); eq:z128_rho_eff_from_chi — ρ_eff=−(γc²/(4πG))Δχ` | `sections/F_40_overhead_to_gravity_closure.tex` |
+| `M_unified_force` | `\label{app:unified_orbit_gauge_force}` | `def:protocol_orbit_base_internal — orbit=(x_t,ψ_t); def:covariant_transport_along_orbit — D_t ψ=0; prop:force_as_deflection_relative_to_connection — force as response/deflection` | `sections/appendices/67_unified_orbit_gauge_force.tex` |
+| `P_unified_force` | `\label{app:unified_orbit_gauge_force}` | `unified dictionary — gauge as covariant transport; force as response/deflection` | `sections/appendices/67_unified_orbit_gauge_force.tex` |
 | `P_dyn` | `\label{app:overhead_to_gravity_closure}` | `eq:z128_vc_from_chi — v_c²(r)=−γc² r χ′(r)` | `sections/F_40_overhead_to_gravity_closure.tex` |
 | `P_lens` | `\label{app:time_mass_delay}` | `eq:wigner_smith_omega — Q(ω)=−i S(ω)† dS/dω; eq:tau_ws_trace_omega — τ_WS(ω)=Tr Q(ω)` | `sections/appendices/34_unified_delay_closure.tex` |
 | `M_recon` | `\label{app:chi_reconstruction_protocol}` | `protocol stats → χ(x) (reconstruction algorithm; audit-bounded)` | `sections/F_41_chi_reconstruction_protocol.tex` |

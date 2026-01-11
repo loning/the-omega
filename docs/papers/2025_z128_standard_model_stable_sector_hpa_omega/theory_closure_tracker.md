@@ -44,9 +44,12 @@
 ```mermaid
 flowchart TD
   A["Tick + 协议原语"] --> B["等价语义与不变性词典"]
+  B --> U["统一：轨道/规范/力（连接 + 响应）"]
   B --> C["CAP-闭合的连续代表作用量"]
   C --> D["变分场方程（Einstein/YM/chi）"]
   B --> E["热力学词典（熵/温度/自由能）"]
+  C --> U
+  E --> U
   D --> F["overhead/chi -> lapse -> g00 -> 弱场/Poisson"]
   F --> G["chi 重建协议（从数据到 chi(x)）"]
   G --> K["协议→连续场误差控制（收敛界/误差预算）"]
@@ -134,6 +137,9 @@ flowchart TD
 - [x] **重整化字典与边界（scheme/matching）**：`appendix 66`  
   - 位置：`sections/appendices/66_renormalization_dictionary_and_boundaries.tex`（`\label{app:renormalization_dictionary_and_boundaries}`）
   - 要点：把 scheme/scale 依赖收口为 Match/Iface 边界；不主张 4D 相互作用构造性重整化的 theorem-level 闭合。
+- [x] **统一：轨道/规范/力（connection + response）**：`appendix 67`  
+  - 位置：`sections/appendices/67_unified_orbit_gauge_force.tex`（`\label{app:unified_orbit_gauge_force}`）
+  - 要点：把“轨道=(基路径+内部态)”与“规范=协变运输/平行运输结构”以及“力=action/自由能响应导致的偏离”合并为一条接口层闭合链；不新增原语，不反哺 folding 证明链。
 - [x] **状态泛函/GNS 背景（记号对齐；不计为新增原语）**：`appendix 30c`  
   - 位置：`sections/appendices/30c_state_gns_background.tex`（`\label{app:state_gns_background}`）
   - 要点：状态 $\omega$ 作为正且归一的线性泛函；GNS 表示给出 $\omega(A)=\langle\Omega|\pi(A)\Omega\rangle$；并将 $P(E)=\omega(E)$ 与 $P=\Tr(\rho E)$ 的等价关系写成纯数学口径，用于与本论文的 POVM/Born 写法对齐。
@@ -255,6 +261,7 @@ flowchart TD
 | weighted pressure / pole-barrier toy（审计） | $2\\times2$ weighted transfer-matrix 的谱半径/pressure sweep 与极点屏障阈值 toy，用于对齐 Abel-first 归一化语言 | Audit | `tab:weighted_pressure_sweep`, `tab:pole_barrier_mode_toy` | [x] |
 | Hilbert 手性指标（chirality index） | $\chi$ 的反射/反向翻转律（符号律） | Math/Audit/Prot | `prop:chi_flip` | [x] |
 | 规范补偿（gauge as compensation） | 纤维非平凡 $\Rightarrow$ 需要 transport；局部重标记 $\Rightarrow$ gauge 冗余 | Iface | `prop:gauge_compensation` | [x] |
+| 轨道/平行运输/偏离（orbit/parallel-transport/deflection） | 轨道 $(x_t,\psi_t)$；规范=协变运输（平行运输）结构；力=响应导致的偏离 | Iface/Math/CAP | `app:unified_orbit_gauge_force` | [x] |
 | 三因子 gauge 闭合（holonomy 接口规则内） | 由 holonomy/phase-lift 诊断供给候选族来源，在有界紧致候选族内 CAP 最小闭合 $U(1)\times SU(2)\times SU(3)$（up to quotient） | Iface/CAP/Audit | `prop:channel_to_gauge`, `app:gauge3_holonomy_candidate_closure` | [x] |
 | SM 标号闭合（$21\to$SM labeling） | $\mathcal{L}_{\mathrm{SM}}$ 的唯一闭合（给定排序键/语义约定） | Iface/CAP/Math | `sec:sm_labeling_closure`, `thm:labeling_unique` | [x] |
 | Higgs/标量扇区（uplift 依赖） | $21$ 稳定类型不包含 Higgs；标量作为 uplift/coarse-graining 依赖的接口闭合/审计 | Iface/CAP/Audit | `rem:higgs_not_in_21`, `app:scalar_interface_audits` | [x] |

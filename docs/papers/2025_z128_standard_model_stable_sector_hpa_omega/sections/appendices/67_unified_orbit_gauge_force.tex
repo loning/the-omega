@@ -1,0 +1,96 @@
+\subsection{Unified orbit--gauge--force closure (protocol and continuum representatives)}
+\label{app:unified_orbit_gauge_force}
+
+This appendix records a unified, audit-friendly closure of three notions that appear repeatedly in the paper:
+\emph{orbit} (what it means to ``follow a trajectory''), \emph{gauge field} (a compensating connection required for cross-site comparability), and \emph{force} (a response/deflection notion).
+The purpose is not to add new primitives beyond tick and CAP, but to package existing modules into a single minimal chain with explicit layer boundaries.
+
+\subsubsection{Orbit data: base motion plus internal state}
+\begin{definition}[Protocol orbit (base path + internal state)]
+\label{def:protocol_orbit_base_internal}
+Fix a tick-indexed base path $x_t$ on the chosen addressing graph (Section~\ref{sec:hilbert_addressing}) and an internal state $\psi_t$ that lives in a fiber/state space attached to $x_t$.
+An \emph{orbit} is the pair
+\[
+\mathcal{O}:=\bigl(x_t,\psi_t\bigr)_{t\in\NN}.
+\]
+\end{definition}
+
+\paragraph{Interface reading.}
+\InterfaceTag The base path $x_t$ is the observable addressing-level motion; the internal state $\psi_t$ is the part that needs a transport rule to be compared across sites (fiber slot labels, phase registers, effective internal multiplets).
+This is exactly the situation in which a compensating connection is forced (Section~\ref{sec:protocol_connections_holonomy}).
+
+\subsubsection{Gauge/connection as the structure that defines ``no-force transport''}
+\paragraph{Discrete connection (finite).}
+At the anchor $(m,n)=(6,3)$, the paper defines a deterministic edge transport $p_{a\to b}\in S_4$ on nearest-neighbor edges (Lemma~\ref{lem:edge_transport_welldefined}) with local relabelings acting as
+$p_{a\to b}\mapsto g_b p_{a\to b} g_a^{-1}$ (Definition~\ref{def:s4_vertex_gauge}).
+Loop products (plaquette holonomies) are gauge invariant up to conjugacy (Proposition~\ref{prop:cycle_type_gauge_invariant}).
+
+\paragraph{Continuum connection (representative).}
+\InterfaceTag In a continuum representative where a connection one-form $A$ is available, the corresponding curvature is $F=\dd A + A\wedge A$, and holonomy controls curvature flux through infinitesimal loops (Section~\ref{subsec:curvature_as_loops}).
+The paper records a CAP-closed continuum representative in which Yang--Mills kinetic terms $\Tr(F_{\mu\nu}F^{\mu\nu})$ appear (Section~\ref{app:cap_continuum_action_closure}) and the Euler--Lagrange equations include the Yang--Mills equations (Section~\ref{app:variational_field_equations}).
+
+\begin{definition}[Covariant transport along an orbit (discrete and continuum)]
+\label{def:covariant_transport_along_orbit}
+\begin{itemize}
+\item \textbf{Discrete:} given an orbit base path $x_0\to x_1\to\cdots$, define covariant transport of internal states by
+\[
+\psi_{t+1} := p_{x_t\to x_{t+1}}\,\psi_t,
+\]
+in any chosen representation of the finite transport group on the internal state space.
+\item \textbf{Continuum (interface):} given a smooth path $x(t)$ and a connection $A$, define the covariant derivative along the path by
+\[
+D_t\psi := \frac{\dd\psi}{\dd t} + A\bigl(\dot x(t)\bigr)\psi,
+\]
+with the \emph{parallel transport} condition $D_t\psi=0$.
+\end{itemize}
+\end{definition}
+
+\begin{proposition}[Gauge defines the structural ``no-force'' condition]
+\label{prop:gauge_defines_no_force_transport}
+\InterfaceTag For the internal state component of an orbit, ``no force'' at the structural level is the statement that the state is transported covariantly (parallel transport): $D_t\psi=0$ in the continuum dictionary, or $\psi_{t+1}=p_{x_t\to x_{t+1}}\psi_t$ in the discrete model.
+Any deviation from this rule is a protocol-level disturbance (additional interaction beyond mere comparability).
+\end{proposition}
+
+\subsubsection{Force as deflection/response (unified)}
+\paragraph{Response definition already fixed in the paper.}
+Force is treated as a response functional in two compatible ways:
+\begin{itemize}
+\item action response: $F_i=-\partial S_{\mathrm{eff}}/\partial x^i$ (Section~\ref{subsec:force_as_response});
+\item free-energy response: $F=-\nabla \mathcal{F}$ and the entropic-force form $F\approx T\nabla S$ (Appendix~\ref{app:thermodynamics_from_equivalence}).
+\end{itemize}
+
+\begin{proposition}[Force as deflection relative to the geometric structure]
+\label{prop:force_as_deflection_relative_to_connection}
+\InterfaceTag Once a geometric representative is fixed (metric/connection; Section~\ref{app:cap_continuum_action_closure}) and an effective action or free-energy functional is fixed (CAP-closed representative and/or thermodynamic closure),
+``force'' is the term that drives \emph{deviation} from the corresponding no-force orbit.
+Concretely, in any setting where a coordinate $x$ parametrizes the orbit and a response functional exists, the force is the response $F=-\nabla_x\mathcal{F}$ (or equivalently a variational derivative of $S_{\mathrm{eff}}$), while the connection/metric specifies what counts as covariant differentiation and therefore what counts as deflection.
+\end{proposition}
+
+\paragraph{Gravity as a worked subcase (already closed).}
+\InterfaceTag In the overhead-to-gravity dictionary (Section~\ref{app:overhead_to_gravity_closure}),
+the potential is $\Phi=-\gamma c^2(\chi-\chi_0)$ and weak-field acceleration is the response to gradients of $\Phi$, which is the same response notion as above in a frequency-first language.
+
+\subsubsection{Minimal unification table (dictionary view)}
+\paragraph{Dictionary summary.}
+\InterfaceTag The following table records the unified reading at the interface layer; it does not add new theorem-level premises.
+\begin{center}
+\begin{tabular}{p{0.22\textwidth} p{0.34\textwidth} p{0.36\textwidth}}
+\toprule
+interaction class & ``field'' (structure) & ``force'' (response/deflection) \\
+\midrule
+gauge (EM/weak/strong) &
+connection $A$ on an internal bundle; curvature $F$ (holonomy/field strength) &
+deflection terms derived from the CAP-closed representative action via Euler--Lagrange equations; operational proxies include scattering phase/delay dictionaries \\
+gravity &
+metric / Levi--Civita connection; lapse/potential dictionary via $\chi\to N\to g_{00}\to\Phi$ &
+response to $\Phi$ gradients (weak field), equivalently response of clock-rate/frequency structure to displacement \\
+entropic/statistical &
+coarse-graining/entropy functional $S$ and temperature scale $T$ &
+$F=-\nabla(E-TS)\approx T\nabla S$ (entropic force as response) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Scope note.}
+\AuditTag This module unifies the \emph{conceptual closure} of orbit/gauge/force in the paper's layer discipline.
+It does not claim a unique derivation of all interaction terms from the finite folding core; the unique-minimizer claims remain tied to explicitly declared finite candidate families and CAP audits in their respective modules.
