@@ -1616,6 +1616,10 @@ flowchart TB
   P_unify_branch("统一分岔字典（counterfactual registry / no-fit contract）<br/>类型：审计 / Audit<br/>label: app:unification_branching_counterfactual_audit<br/>benchmark only; not in theorem chain")
   M_unify_branch -.- P_unify_branch
 
+  M_u1_registry["U1 单群候选 registry（SU(5)/SO(10)/E6）<br/>类型：审计 / Audit<br/>label: app:u1_simple_group_registry_audit<br/>keys: dim(g), d_min; benchmark-only"]
+  P_u1_registry("U1 registry 字典（complexity keys）<br/>类型：审计 / Audit<br/>label: app:u1_simple_group_registry_audit<br/>bounded candidate list + audit notes")
+  M_u1_registry -.- P_u1_registry
+
   M_gut_scope["大统一/质子衰变等高能结构（未闭合/未覆盖 / High-Energy Structures (GUT/Proton Decay, etc.) (Not Closed/Not Covered)）<br/>类型：范围外 / Out of Scope<br/>label: sec:limitations_related_work<br/>status: benchmark mention only"]
   P_gut_scope("GUT/质子衰变观测链（范围外）<br/>类型：范围外 / Out of Scope<br/>label: sec:limitations_related_work<br/>not in closure/audit chain")
   M_gut_scope -.- P_gut_scope
@@ -1748,10 +1752,12 @@ flowchart TB
   M_sm --> M_gut_scope
 
   M_gauge3 --> M_unify_branch
+  M_unify_branch --> M_u1_registry
 
   P_rg --> P_unify_branch --> P_gut_scope
   P_types --> P_gut_scope
   P_gauge3 --> P_unify_branch
+  P_unify_branch --> P_u1_registry
 
   M_sm --> M_baryogenesis_scope
   M_thermo --> M_baryogenesis_scope
@@ -1823,7 +1829,7 @@ flowchart TB
   class M_sm,M_thermo,M_grav,M_qm,M_rg math_closure;
   class M_action,M_op3_yang_mills math_cont;
   class M_cosmo,M_internal_fiber_g2 math_assumption;
-  class M_gamma_proxy,M_gamma_direct,M_gauge3,M_pressure,M_input_planck,M_operator_mother,M_unify_branch math_audit;
+  class M_gamma_proxy,M_gamma_direct,M_gauge3,M_pressure,M_input_planck,M_operator_mother,M_unify_branch,M_u1_registry math_audit;
   class M_scalar_iface,M_lambda_open,M_bh_pointer,M_qcd_gap not_closed;
   class M_op1 math_audit;
   class M_gut_scope,M_baryogenesis_scope,M_strongcp_scope,M_bhinfo_scope,M_qg_scope,M_cosmo_tension_scope,M_bsm_scope scope_gap;
@@ -1831,7 +1837,7 @@ flowchart TB
   class P_qm,P_wilson phys_obs;
   class P_types,P_equiv,P_proj,P_thermo,P_gauge3 phys_dict;
   class P_action,P_rg,P_cosmo phys_model;
-  class P_select,P_gamma_proxy,P_gamma_direct,P_pressure,P_input_planck,P_internal_fiber_g2,P_operator_mother,P_unify_branch phys_audit;
+  class P_select,P_gamma_proxy,P_gamma_direct,P_pressure,P_input_planck,P_internal_fiber_g2,P_operator_mother,P_unify_branch,P_u1_registry phys_audit;
   class P_scalar_iface,P_lambda_open,P_bh_pointer,P_qcd_gap not_closed;
   class P_op1 phys_audit;
   class P_gut_scope,P_baryogenesis_scope,P_strongcp_scope,P_bhinfo_scope,P_qg_scope,P_cosmo_tension_scope,P_bsm_scope scope_gap;
@@ -1956,6 +1962,8 @@ flowchart TB
 | `P_renorm_dict` | `\label{app:renormalization_dictionary_and_boundaries}` | `renormalization dictionary and scope boundaries (Match/Iface)` | `sections/appendices/66_renormalization_dictionary_and_boundaries.tex` |
 | `M_unify_branch` | `\label{app:unification_branching_counterfactual_audit}` | `U1 group vs U2 coupling vs U3 normalization; bounded counterfactual registry; no-fit contract` | `sections/appendices/69_unification_branching_counterfactual_audit.tex` |
 | `P_unify_branch` | `\label{app:unification_branching_counterfactual_audit}` | `counterfactual unification audit dictionary (benchmark only; not in theorem chain)` | `sections/appendices/69_unification_branching_counterfactual_audit.tex` |
+| `M_u1_registry` | `\label{app:u1_simple_group_registry_audit}` | `bounded U1 registry: SU(5), SO(10), E6 with complexity keys` | `sections/appendices/72_u1_simple_group_registry_audit.tex` |
+| `P_u1_registry` | `\label{app:u1_simple_group_registry_audit}` | `U1 registry dictionary (audit notes + complexity keys)` | `sections/appendices/72_u1_simple_group_registry_audit.tex` |
 | `M_unify_coupling_audit` | `\label{app:coupling_unification_audit_in_r}` | `one-loop affine running in r; bounded α_3^{-1}(μ_Z)=nπ²; minimize intersection mismatch` | `sections/appendices/71_coupling_unification_audit_in_r.tex` |
 | `P_unify_coupling_audit` | `\label{app:coupling_unification_audit_in_r}` | `coupling-unification audit output table (Match/Audit)` | `sections/appendices/71_coupling_unification_audit_in_r.tex` |
 | `M_wave_particle` | `\label{app:wave_particle_delayed_choice}` | `cross terms vs mixture; V^2+D^2≤1; delayed-choice/eraser (interface)` | `sections/appendices/30b_wave_particle_delayed_choice.tex` |
