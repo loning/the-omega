@@ -8,6 +8,8 @@
   - `[x]`：已闭合（给出定义/闭合输出 + 关键方程/命题 + 指向明确位置）
   - `[~]`：部分闭合（定义明确但推导/审计/匹配仍缺）
   - `[ ]`：待闭合（缺定义或缺闭合输出/接口）
+- **`[Open]` 语义（与 `inference_ledger` 对齐）**
+  - `[Open]`：未在 tick+CAP 的输入集下完成 theorem-level 闭合；即便该模块已作为 Iface/Audit 写入并可编译，也可标为 `[Open]` 以提示其“非定理闭合”的层级边界。
 - **四层一致性（建议每项都标注）**
   - **Iface**：可操作/接口层（实验/协议可观测）
   - **CAP**：在有限候选族上的 CAP 闭合（选择/最小化/词典）
@@ -50,6 +52,8 @@ flowchart TD
   B --> E["热力学词典（熵/温度/自由能）"]
   C --> U
   E --> U
+  U --> U2["轨道动力学接口（粒子EOM + force↔delay）"]
+  C --> U2
   D --> F["overhead/chi -> lapse -> g00 -> 弱场/Poisson"]
   F --> G["chi 重建协议（从数据到 chi(x)）"]
   G --> K["协议→连续场误差控制（收敛界/误差预算）"]
@@ -69,8 +73,10 @@ flowchart TD
   Q3 --> Q4["Wightman 桥接（AQFT↔Wightman）"]
   Q4 --> Q5["散射接口（S-matrix 与延迟字典对齐）"]
   Q5 --> Q6["重整化字典与边界（scheme/matching/scope）"]
+  Q5 --> U2
   B --> I["RG：分辨率坐标 r 的耦合流"]
   I --> J["宇宙学：分辨率流/容量增长/能量预算拟合"]
+  I --> U3["统一分岔/反事实审计（benchmark registry）"]
 ```
 
 说明：上图是**依赖关系**而非叙事顺序；叙事可从 `B`（等价语义+频率优先词典）开始，也可从 `A`（协议/读出）开始。
@@ -128,15 +134,27 @@ flowchart TD
 - [x] **AQFT：微因果/谱条件边界与开放项**：`appendix 63`  
   - 位置：`sections/appendices/63_microcausality_spectrum_covariance.tex`（`\label{app:microcausality_spectrum_covariance}`）
   - 要点：明确微因果/谱条件作为接口层承诺；场域重建与相互作用构造作为显式边界项。
-- [x] **Wightman 桥接（hybrid）**：`appendix 64`  
+- [~] **Wightman 桥接（hybrid）**：`appendix 64`（[Open]：非 theorem-level）  
   - 位置：`sections/appendices/64_wightman_bridge_and_reconstruction.tex`（`\label{app:wightman_bridge_and_reconstruction}`）
   - 要点：AQFT→Wightman 与 Wightman→AQFT 的桥接路线与前提边界（域/正则性/生成域问题不偷渡）。
-- [x] **散射接口（Haag–Ruelle/LSZ 前提显式）**：`appendix 65`  
+- [~] **散射接口（Haag–Ruelle/LSZ 前提显式）**：`appendix 65`（[Open]：非 theorem-level）  
   - 位置：`sections/appendices/65_scattering_haag_ruelle_lsz_interface.tex`（`\label{app:scattering_haag_ruelle_lsz_interface}`）
   - 要点：散射对象以接口层语言记录，并与统一延迟字典（Wigner–Smith）对齐；必要前提作为审计边界显式列出。
-- [x] **重整化字典与边界（scheme/matching）**：`appendix 66`  
+- [~] **重整化字典与边界（scheme/matching）**：`appendix 66`（[Open]：非 theorem-level）  
   - 位置：`sections/appendices/66_renormalization_dictionary_and_boundaries.tex`（`\label{app:renormalization_dictionary_and_boundaries}`）
   - 要点：把 scheme/scale 依赖收口为 Match/Iface 边界；不主张 4D 相互作用构造性重整化的 theorem-level 闭合。
+- [x] **轨道动力学接口 + force↔delay 桥接（粒子EOM）**：`appendix 68`  
+  - 位置：`sections/appendices/68_orbit_dynamics_and_force_scattering_bridge.tex`（`\label{app:orbit_dynamics_and_force_scattering_bridge}`）
+  - 要点：给出最小 worldline reduction 与 Lorentz-force 形式的接口模板，并把“力的响应扰动→相位扰动→WS 延迟扰动”写成最小闭环桥。
+- [x] **统一/非统一分岔 + 反事实候选审计（registry）**：`appendix 69`  
+  - 位置：`sections/appendices/69_unification_branching_counterfactual_audit.tex`（`\label{app:unification_branching_counterfactual_audit}`）
+  - 要点：分离 (U1) 群结构统一、(U2) 耦合统一、(U3) 归一化约定，并登记有界反事实候选与“no tuning from global fits”的审计契约。
+- [x] **力→相位→延迟审计闭环（稳定性与误差预算模板）**：`appendix 70`  
+  - 位置：`sections/appendices/70_force_phase_delay_audit.tex`（`\label{app:force_phase_delay_audit}`）
+  - 要点：把 phase→delay 的数值微分、相位解缠与噪声放大问题显式化为 bounded sweep + envelope 报告；给出 $O(\Delta\omega^2)+O(\sigma/\Delta\omega)$ 的误差拆分模板，并与 `app:protocol_to_continuum_error_control` 的审计纪律对齐。
+- [x] **耦合统一（U2）：$r$ 坐标的有界匹配审计**：`appendix 71`  
+  - 位置：`sections/appendices/71_coupling_unification_audit_in_r.tex`（`\label{app:coupling_unification_audit_in_r}`）
+  - 要点：在 one-loop affine running 字典下，把“是否存在统一尺度”变成显式的有限候选族审计问题（电弱锚点由 `thm:weinberg_angle` 闭合，$\alpha_3^{-1}(\mu_Z)$ 作为 $n\pi^2$ 的有界族登记），输出 intersection mismatch 表并给出确定性选择。
 - [x] **统一：轨道/规范/力（connection + response）**：`appendix 67`  
   - 位置：`sections/appendices/67_unified_orbit_gauge_force.tex`（`\label{app:unified_orbit_gauge_force}`）
   - 要点：把“轨道=(基路径+内部态)”与“规范=协变运输/平行运输结构”以及“力=action/自由能响应导致的偏离”合并为一条接口层闭合链；不新增原语，不反哺 folding 证明链。
@@ -243,9 +261,14 @@ flowchart TD
 | QM 定理库（core） | Wigner/Stone/不确定性/Schmidt（结构定理条目） | Math/Audit | `app:qm_theorem_library_core` | [x] |
 | AQFT：局域网（net） | O↦A(O)；微因果/协变/谱条件打包（结构） | Iface/Audit | `app:aqft_axioms_local_nets` | [x] |
 | AQFT：GNS 网（net realization） | state→representation；M_ω(O)=π(A(O))'' | Math/Audit | `app:aqft_states_representations_gns_nets` | [x] |
-| Wightman 桥接 | AQFT↔Wightman 桥（前提边界显式） | Iface/Audit | `app:wightman_bridge_and_reconstruction` | [x] |
-| 散射接口 | S-matrix 与延迟字典对齐（前提显式） | Iface/Audit | `app:scattering_haag_ruelle_lsz_interface` | [x] |
-| 重整化边界 | scheme/matching/scope 字典与限制 | Match/Iface/Audit | `app:renormalization_dictionary_and_boundaries` | [x] |
+| Wightman 桥接 | AQFT↔Wightman 桥（前提边界显式；[Open]：非 theorem-level） | Iface/Audit | `app:wightman_bridge_and_reconstruction` | [~] |
+| 散射接口 | S-matrix 与延迟字典对齐（前提显式；[Open]：非 theorem-level） | Iface/Audit | `app:scattering_haag_ruelle_lsz_interface` | [~] |
+| 轨道动力学接口（particle orbit） | worldline reduction + Lorentz-force 模板；EOM 与曲率/连接对齐 | Iface/Audit | `app:orbit_dynamics_and_force_scattering_bridge` | [x] |
+| force↔phase/delay 桥 | action 响应扰动→相位扰动→WS 延迟扰动（频率导数闭环） | Iface/Audit | `app:orbit_dynamics_and_force_scattering_bridge` | [x] |
+| force→phase→delay 审计闭环 | 相位解缠+数值微分稳定性 sweep；误差拆分 $O(\Delta\omega^2)+O(\sigma/\Delta\omega)$ | Audit | `app:force_phase_delay_audit`, `tab:force_phase_delay_audit_knobs` | [x] |
+| 重整化边界 | scheme/matching/scope 字典与限制（[Open]：非 theorem-level） | Match/Iface/Audit | `app:renormalization_dictionary_and_boundaries` | [~] |
+| 统一分岔/反事实审计 | (U1) 群结构 vs (U2) 耦合统一 vs (U3) 归一化；有界 registry + no-fit 契约 | Audit/Match | `app:unification_branching_counterfactual_audit` | [x] |
+| 耦合统一（U2）审计 | one-loop affine running（r 坐标）+ 有界 $\alpha_3^{-1}(\mu_Z)=n\pi^2$；intersection mismatch 最小化 | Match/Audit | `app:coupling_unification_audit_in_r`, `tab:coupling_unification_audit_in_r` | [x] |
 | 算子母空间字典入口（operator mother space dictionary） | source operator + readout kernels + determinant bookkeeping；finite-rank 更新闭合（字典层） | Iface/Audit | `app:operator_mother_space_dictionary` | [x] |
 | 算子母空间（operator mother space） | trace-class resolvent/行列式 bookkeeping；finite-rank 更新闭合（字典层） | Math/Audit | `app:operator_mother_space` | [x] |
 | 波粒二象性/延迟选择 | 相干交叉项 vs 事件化/去相干混合；互补性界 $V^2+D^2\le 1$；delayed-choice/eraser | Iface/Audit | `app:wave_particle_delayed_choice` | [x] |
