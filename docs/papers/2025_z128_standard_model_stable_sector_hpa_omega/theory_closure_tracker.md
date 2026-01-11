@@ -137,6 +137,27 @@ flowchart TD
     - `sections/generated/low_leakage_phase_rows.tex`
     - `sections/generated/low_leakage_phase_summary.tex`
 
+- [x] **K4→数据匹配审计（delay / PDG leakage / alpha link）**：`appendix 08e/08f/08g`
+  - 位置：
+    - `sections/appendices/08e_k4_delay_audit.tex`（`\label{app:k4_delay_audit}`）
+    - `sections/appendices/08f_k4_pdg_leakage_audit.tex`（`\label{app:k4_pdg_leakage_audit}`）
+    - `sections/appendices/08g_k4_alpha_link_audit.tex`（`\label{app:k4_alpha_link_audit}`）
+  - 要点：
+    - **delay**：复用 vendored 引力时间延迟相关通道（solar-system + strong-lensing），在有限 mapping/reference 家族上对单一无量纲尺度 $\kappa$ 做一致性审计（候选族+确定性 tie-break）。
+    - **PDG leakage**：以最小寿命 mini-set（vendored）把 $\Gamma=1/\tau$ 作为泄漏率代理，引入有限解释族（离散深度/通道偏置等）并做 CAP/MDL 选择。
+    - **alpha link**：用 $m=6$ trap/exit 的 $U(1)$ 权重做低复杂度聚合映射审计，检验其是否提供除既有阻抗闭合之外的额外一致性证据（audit-only）。
+  - 数据：
+    - `data/k4_matching/delay_channel_registry.json`
+    - `data/k4_matching/pdg_decay_miniset.json`
+  - 生成脚本（均已接入 `scripts/run_all.py`）：
+    - `scripts/exp_k4_delay_dictionary_audit.py`
+    - `scripts/exp_k4_pdg_leakage_audit.py`
+    - `scripts/exp_k4_alpha_link_audit.py`
+  - 生成物：
+    - `sections/generated/k4_delay_audit_rows.tex`, `sections/generated/k4_delay_audit_summary.tex`
+    - `sections/generated/k4_pdg_leakage_rows.tex`, `sections/generated/k4_pdg_leakage_summary.tex`
+    - `sections/generated/k4_alpha_link_rows.tex`, `sections/generated/k4_alpha_link_summary.tex`
+
 ## 概念级闭合矩阵（频率优先）
 
 下表只做“定位与状态”追踪；具体定义/公式以对应附录/章节为准。

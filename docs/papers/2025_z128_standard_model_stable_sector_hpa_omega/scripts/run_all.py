@@ -98,8 +98,9 @@ def _direct_local_imports(py_path: Path, module_map: dict[str, Path]) -> set[Pat
         src = py_path.read_text(encoding="utf-8")
         tree = ast.parse(src, filename=str(py_path))
     except Exception:
-        # Conservative fallback: assume it depends on all local modules.
-        return set(module_map.values())
+        # Conservative fallback: assume it depends on all local modules *except itself*.
+        # This avoids self-dependency cycles in the dependency-closure recursion.
+        return {p for p in module_map.values() if p != py_path}
 
     mods: set[str] = set()
     for node in ast.walk(tree):
@@ -121,8 +122,12 @@ def _script_deps_closure(
     """
     if root in memo:
         return memo[root]
+    # Provisional memo entry to break cycles (including self-dependency via fallback).
+    memo[root] = {root}
     deps: set[Path] = {root}
     for dep in _direct_local_imports(root, module_map):
+        if dep == root:
+            continue
         deps |= _script_deps_closure(dep, module_map, memo)
     memo[root] = deps
     return deps
@@ -580,6 +585,49 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "sections/generated/protocol_horizon_examples_rows.tex",
                 "sections/generated/protocol_horizon_examples_summary.tex",
+            ],
+        ),
+        Step(
+            name="K4 delay dictionary audit (gravitational time-delay channels)",
+            script="exp_k4_delay_dictionary_audit.py",
+            expected_outputs=[
+                "sections/generated/k4_delay_audit_rows.tex",
+                "sections/generated/k4_delay_audit_summary.tex",
+            ],
+        ),
+        Step(
+            name="K4 scattering phase -> delay audit (benchmark interface)",
+            script="exp_k4_scattering_phase_delay_audit.py",
+            expected_outputs=[
+                "sections/generated/k4_scattering_phase_delay_rows.tex",
+                "sections/generated/k4_scattering_phase_delay_window_rows.tex",
+                "sections/generated/k4_scattering_phase_delay_coord_rows.tex",
+                "sections/generated/k4_scattering_phase_delay_summary.tex",
+            ],
+        ),
+        Step(
+            name="K4 WS-linewidth calibration audit (interface)",
+            script="exp_k4_ws_linewidth_audit.py",
+            expected_outputs=[
+                "sections/generated/k4_ws_linewidth_rows.tex",
+                "sections/generated/k4_ws_linewidth_coord_rows.tex",
+                "sections/generated/k4_ws_linewidth_summary.tex",
+            ],
+        ),
+        Step(
+            name="K4 leakage audit vs PDG mini-set",
+            script="exp_k4_pdg_leakage_audit.py",
+            expected_outputs=[
+                "sections/generated/k4_pdg_leakage_rows.tex",
+                "sections/generated/k4_pdg_leakage_summary.tex",
+            ],
+        ),
+        Step(
+            name="K4 alpha link audit (m=6 exit weights)",
+            script="exp_k4_alpha_link_audit.py",
+            expected_outputs=[
+                "sections/generated/k4_alpha_link_rows.tex",
+                "sections/generated/k4_alpha_link_summary.tex",
             ],
         ),
         Step(

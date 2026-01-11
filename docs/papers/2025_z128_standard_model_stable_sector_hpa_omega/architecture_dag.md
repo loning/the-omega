@@ -1080,6 +1080,18 @@ flowchart TB
   P_m6_trap_exit("m=6 trap/exit 代理 类型：审计 / Audit label: app:leakage_kernel")
   M_m6_trap_exit -.- P_m6_trap_exit
 
+  M_k4_delay_audit["K4 delay 字典审计 类型：审计 / Audit label: app:k4_delay_audit"]
+  P_k4_delay_audit("K4 delay 字典审计代理 类型：审计 / Audit label: app:k4_delay_audit")
+  M_k4_delay_audit -.- P_k4_delay_audit
+
+  M_k4_pdg_leakage["K4 泄漏 vs PDG mini-set 审计 类型：审计 / Audit label: app:k4_pdg_leakage_audit"]
+  P_k4_pdg_leakage("K4 泄漏 vs PDG mini-set 审计代理 类型：审计 / Audit label: app:k4_pdg_leakage_audit")
+  M_k4_pdg_leakage -.- P_k4_pdg_leakage
+
+  M_k4_alpha_link["K4 exit-weights→alpha 审计 类型：审计 / Audit label: app:k4_alpha_link_audit"]
+  P_k4_alpha_link("K4 exit-weights→alpha 审计代理 类型：审计 / Audit label: app:k4_alpha_link_audit")
+  M_k4_alpha_link -.- P_k4_alpha_link
+
   M_kernel_rg_flow["Kernel RG flow（核 RG 流；balanced chain coarse-graining）<br/>类型：审计 / Audit<br/>label: tab:kernel_rg_flow_balanced<br/>m=2n sweep; 4x4 block coarse summary"]
   P_kernel_rg_flow("跨尺度 coarse-grained 标量统计<br/>类型：审计 / Audit<br/>label: tab:kernel_rg_flow_balanced<br/>μ/Var of block averages on Hilbert screen")
   M_kernel_rg_flow -.- P_kernel_rg_flow
@@ -1166,6 +1178,12 @@ flowchart TB
   M_leakage_kernel --> M_m6_trap_exit
   P_leakage_kernel --> P_m6_trap_exit
 
+  P_lens --> P_k4_delay_audit
+  M_leakage_kernel --> M_k4_pdg_leakage
+  P_leakage_kernel --> P_k4_pdg_leakage
+  M_m6_trap_exit --> M_k4_alpha_link
+  P_m6_trap_exit --> P_k4_alpha_link
+
   M_input_bhplanck --> M_bh_planck_calib
   P_input_bhplanck --> P_bh_planck_calib
   M_kernel_view --> M_bh_planck_calib
@@ -1212,12 +1230,12 @@ flowchart TB
 
   class M_mass,M_grav,M_rg,M_entropy_gap,M_rm,M_relent math_closure;
   class M_cosmo math_assumption;
-  class M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_gamma_proxy,M_gamma_direct,M_input_pdg,M_input_codata,M_input_planck,M_input_nufit,M_input_bhplanck,M_mdl_global,M_kernel_view,M_kernel_rg_flow,M_ext_boundary_check,M_info_cert,M_bh_planck_calib,M_mass_flow_uplift,M_protocol_horizon,M_leakage_kernel,M_low_leak_phase,M_m6_trap_exit math_audit;
+  class M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_gamma_proxy,M_gamma_direct,M_input_pdg,M_input_codata,M_input_planck,M_input_nufit,M_input_bhplanck,M_mdl_global,M_kernel_view,M_kernel_rg_flow,M_ext_boundary_check,M_info_cert,M_bh_planck_calib,M_mass_flow_uplift,M_protocol_horizon,M_leakage_kernel,M_low_leak_phase,M_m6_trap_exit,M_k4_delay_audit,M_k4_pdg_leakage,M_k4_alpha_link math_audit;
   class P_dyn phys_proxy;
   class P_mass,P_lens phys_obs;
   class P_am_euler,P_entropy_gap,P_rm,P_relent phys_dict;
   class P_rg,P_cosmo phys_model;
-  class P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_err,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_planck,P_input_nufit,P_input_bhplanck,P_mdl_global,P_kernel_view,P_kernel_rg_flow,P_ext_boundary_check,P_info_cert,P_bh_planck_calib,P_mass_flow_uplift,P_protocol_horizon,P_leakage_kernel,P_low_leak_phase,P_m6_trap_exit phys_audit;
+  class P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_err,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_planck,P_input_nufit,P_input_bhplanck,P_mdl_global,P_kernel_view,P_kernel_rg_flow,P_ext_boundary_check,P_info_cert,P_bh_planck_calib,P_mass_flow_uplift,P_protocol_horizon,P_leakage_kernel,P_low_leak_phase,P_m6_trap_exit,P_k4_delay_audit,P_k4_pdg_leakage,P_k4_alpha_link phys_audit;
 ```
 
 ### 图 10：可证伪预测 wiring（P1–P7） / Fig. 10: Falsifiable Prediction Wiring (P1–P7)
