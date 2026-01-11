@@ -89,7 +89,47 @@ This yields a covariant transport $T_{4}^\nabla$ on micro $\psi$-fields, and the
 Table~\ref{tab:kernel_rg_operator_covariant_spectral_gap} records a reproducible mixing diagnostic for $F_3^\nabla$, including contraction on the internal mean-zero subspace (removing the trivial internal representation).
 \AuditTag Table~\ref{tab:kernel_rg_operator_covariant_reduction} records a reduction/decomposition certificate: slot averaging gives an exact intertwining $S F_3^\nabla E = F_3$ (trivial-representation reduction), and the lifted slot-constant subspace is invariant.
 \AuditTag Table~\ref{tab:kernel_rg_operator_covariant_gauge_audit} records a gauge-covariance certificate at the construction level: under blockwise local relabelings $g_B\in S_{r_8}$, the operator transforms by conjugation and the scalar reduction remains invariant.
-\AuditTag Table~\ref{tab:kernel_rg_operator_covariant_internal_resolvent} audits resolvent-trace identities on an internal-mode reduction $F_{\mathrm{int}}$ of $F_3^\nabla$ (dimension $16(r_8-1)$), aligning the internal-mode dynamics with the mother-space resolvent-trace readout contract.
+\AuditTag Table~\ref{tab:kernel_rg_operator_covariant_internal_resolvent} audits a gauge-invariant quadratic (two-point) resolvent-trace identity on an internal-mode reduction $F_{\mathrm{int}}$ of $F_3^\nabla$ (dimension $16(r_8-1)$), aligning the internal-mode dynamics with the mother-space two-point readout contract.
+\end{remark}
+
+\begin{proposition}[Internal standard representation and gauge-invariant quadratic readouts]\label{prop:internal_standard_rep_gauge_invariant_readouts}
+\MathTag Fix the anchor $n=3$ and write $r=r_8$.
+Let $H_r:=\{x\in\RR^r:\ \sum_{i=1}^r x_i=0\}$ and choose an orthonormal basis $B\in\RR^{r\times(r-1)}$ of $H_r$.
+Define the internal-mode operator in standard coordinates by
+\[
+F_{\mathrm{std}} := (I\otimes B^\top)\,F_3^\nabla\,(I\otimes B)\ \in\ \RR^{16(r-1)\times 16(r-1)}.
+\]
+For a blockwise relabeling field $g_B\in S_r$, let $H$ be the induced block-diagonal action on internal coordinates,
+\[
+H := \mathrm{diag}\bigl(H_B\bigr)_{B=1}^{16},
+\qquad
+H_B := B^\top\,P(g_B)\,B\ \in\ O(r-1),
+\]
+where $P(g_B)$ is the permutation matrix of $g_B$ on $\RR^r$.
+Then the internal-mode operator transforms by orthogonal conjugation:
+\[
+F_{\mathrm{std}}^{\,g} = H\,F_{\mathrm{std}}\,H^{-1}=H\,F_{\mathrm{std}}\,H^\top.
+\]
+Consequently, any quadratic readout built from the Euclidean inner product on internal coordinates is gauge invariant; in particular, for any $v$ and any positive semidefinite matrix $W$ one has
+\[
+\|H v\|^2=\|v\|^2,
+\qquad
+\mathrm{Tr}(HWH^\top)=\mathrm{Tr}(W).
+\]
+\end{proposition}
+\begin{proof}
+Because $B$ has orthonormal columns spanning the sum-zero subspace, $B^\top P(g_B) B$ is an orthogonal change of basis on $H_r$, hence $H_B\in O(r-1)$ and $H^{-1}=H^\top$.
+Blockwise relabelings act on $F_3^\nabla$ by conjugation in the full slot space; projecting with $(I\otimes B^\top)$ on the left and $(I\otimes B)$ on the right yields the stated conjugacy for $F_{\mathrm{std}}$.
+The quadratic invariances follow from orthogonality.
+\end{proof}
+
+\begin{remark}[Internal gauge covariance certificate]\label{rem:internal_gauge_covariance_certificate}
+\AuditTag Table~\ref{tab:kernel_rg_operator_covariant_internal_gauge_audit} records a construction-level audit of the orthogonal conjugacy $F_{\mathrm{std}}^{\,g}=H F_{\mathrm{std}} H^\top$ and the orthogonality defect of $H$ (both within floating tolerance).
+\end{remark}
+
+\begin{remark}[Internal closure triplet certificate]\label{rem:internal_closure_triplet_certificate}
+\AuditTag Table~\ref{tab:kernel_rg_operator_covariant_internal_closure_triplet} packages the internal closure triplet into a single reproducible audit:
+orthogonal conjugacy in internal standard coordinates, invariance of the trace-based quadratic readout under gauge (with the corresponding coordinate transform $v\mapsto Hv$), and the quadratic resolvent-trace identity.
 \end{remark}
 
 \begin{lemma}[Exact coarse intertwining]\label{lem:rg_exact_coarse_intertwining}

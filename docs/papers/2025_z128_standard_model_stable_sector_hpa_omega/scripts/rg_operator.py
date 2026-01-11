@@ -865,6 +865,147 @@ def build_F_covariant_internal_anchor(n_bits: int) -> Tuple[Mat, int]:
     return F_int, r
 
 
+def build_sum_zero_orthonormal_basis(r: int) -> Mat:
+    """
+    Build an r x (r-1) matrix B whose columns form an orthonormal basis of
+      H_r := {x in R^r : sum_i x_i = 0},
+    using Gram-Schmidt on the canonical difference vectors e_i - e_{r-1}.
+    """
+    if r < 2:
+        raise ValueError("r must be >= 2.")
+
+    def dot(u: List[float], v: List[float]) -> float:
+        return sum(float(a) * float(b) for a, b in zip(u, v, strict=True))
+
+    def norm(u: List[float]) -> float:
+        return math.sqrt(dot(u, u))
+
+    # Start with r-1 independent vectors.
+    vs: List[List[float]] = []
+    for i in range(r - 1):
+        v = [0.0] * r
+        v[i] = 1.0
+        v[r - 1] = -1.0
+        vs.append(v)
+
+    cols: List[List[float]] = []
+    for v in vs:
+        w = v[:]
+        for q in cols:
+            # subtract projection onto q
+            c = dot(q, w)
+            for k in range(r):
+                w[k] -= c * float(q[k])
+        nw = norm(w)
+        if nw == 0.0:
+            raise AssertionError("Unexpected dependent vector in Gram-Schmidt.")
+        w = [float(x) / nw for x in w]
+        cols.append(w)
+
+    # Pack as matrix with columns = cols.
+    B: Mat = [[0.0] * (r - 1) for _ in range(r)]
+    for j, col in enumerate(cols):
+        for i in range(r):
+            B[i][j] = float(col[i])
+    return B
+
+
+def build_F_covariant_internal_orthonormal_anchor(n_bits: int) -> Tuple[Mat, int]:
+    """
+    Build the internal-mode reduced operator using an orthonormal basis of the
+    sum-zero subspace at each block:
+
+      F_std = (I ⊗ B^T) F^∇ (I ⊗ B),
+
+    where B is an r x (r-1) orthonormal basis of H_r = {sum x = 0}.
+    In this coordinate, blockwise permutation gauges act orthogonally, and the
+    Euclidean quadratic readouts (trace / norm^2) are gauge invariant.
+    """
+    F, r = build_F_covariant_anchor(n_bits)
+    B = build_sum_zero_orthonormal_basis(r)  # r x (r-1)
+    Bt = mat_transpose(B)  # (r-1) x r
+
+    dim_full = 16 * r
+    dim_int = 16 * (r - 1)
+
+    # Build Q = I ⊗ B  (dim_full x dim_int)
+    Q: Mat = [[0.0] * dim_int for _ in range(dim_full)]
+    for b in range(16):
+        for i in range(r):
+            for j in range(r - 1):
+                Q[b * r + i][b * (r - 1) + j] = float(B[i][j])
+
+    # Build L = I ⊗ B^T (dim_int x dim_full)
+    Lm: Mat = [[0.0] * dim_full for _ in range(dim_int)]
+    for b in range(16):
+        for i in range(r - 1):
+            for j in range(r):
+                Lm[b * (r - 1) + i][b * r + j] = float(Bt[i][j])
+
+    F_std = mat_mul(mat_mul(Lm, F), Q)
+    return F_std, r
+
+
+def internal_gauge_matrix_from_perm(p: Tuple[int, ...], B: Mat) -> Mat:
+    """
+    Given a permutation p in S_r and an orthonormal basis B (r x (r-1)) of H_r,
+    return the induced (r-1)x(r-1) orthogonal matrix:
+      H = B^T P(p) B,
+    where P(p) is the r x r permutation matrix in the same convention as _perm_matrix.
+    """
+    r = len(p)
+    if len(B) != r:
+        raise ValueError("B row dimension mismatch.")
+    if r < 2 or any(len(row) != (r - 1) for row in B):
+        raise ValueError("B must be r x (r-1).")
+    Pm = _perm_matrix(p, r)  # r x r
+    Bt = mat_transpose(B)  # (r-1) x r
+    return mat_mul(mat_mul(Bt, Pm), B)  # (r-1) x (r-1)
+
+
+def block_diag_internal_gauge(g_block: List[Tuple[int, ...]], B: Mat) -> Mat:
+    """
+    Build block-diagonal internal gauge matrix H of size (16*(r-1)) x (16*(r-1)),
+    with blocks H_b = B^T P(g_b) B.
+    """
+    if len(g_block) != 16:
+        raise ValueError("g_block must have length 16.")
+    r = len(g_block[0])
+    dim = 16 * (r - 1)
+    H: Mat = [[0.0] * dim for _ in range(dim)]
+    for b in range(16):
+        p = g_block[b]
+        if len(p) != r:
+            raise ValueError("Permutation length mismatch in g_block.")
+        Hb = internal_gauge_matrix_from_perm(p, B)  # (r-1)x(r-1)
+        for i in range(r - 1):
+            for j in range(r - 1):
+                H[b * (r - 1) + i][b * (r - 1) + j] = float(Hb[i][j])
+    return H
+
+
+def build_F_covariant_internal_orthonormal_from_full(F_full: Mat, r: int) -> Mat:
+    """
+    Project a full covariant operator F_full (16*r)x(16*r) to the internal orthonormal
+    coordinates using the canonical orthonormal basis B.
+    """
+    B = build_sum_zero_orthonormal_basis(r)
+    Bt = mat_transpose(B)
+    dim_full = 16 * r
+    dim_int = 16 * (r - 1)
+    Q: Mat = [[0.0] * dim_int for _ in range(dim_full)]
+    for b in range(16):
+        for i in range(r):
+            for j in range(r - 1):
+                Q[b * r + i][b * (r - 1) + j] = float(B[i][j])
+    Lm: Mat = [[0.0] * dim_full for _ in range(dim_int)]
+    for b in range(16):
+        for i in range(r - 1):
+            for j in range(r):
+                Lm[b * (r - 1) + i][b * r + j] = float(Bt[i][j])
+    return mat_mul(mat_mul(Lm, F_full), Q)
+
+
 def build_weighted_F_matrix(n_bits: int, t: float) -> Mat:
     """
     Build the 16x16 weighted matrix:

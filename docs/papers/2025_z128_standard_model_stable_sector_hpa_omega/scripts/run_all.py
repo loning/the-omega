@@ -385,6 +385,20 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Kernel RG covariant internal-mode gauge covariance (anchor)",
+            script="exp_kernel_rg_operator_covariant_internal_gauge_audit.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_covariant_internal_gauge_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG covariant internal closure triplet (anchor)",
+            script="exp_kernel_rg_operator_covariant_internal_closure_triplet_audit.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_covariant_internal_closure_triplet_rows.tex",
+            ],
+        ),
+        Step(
             name="Ext boundary operator check (uplift refinement audit)",
             script="exp_ext_boundary_operator_check.py",
             expected_outputs=[
