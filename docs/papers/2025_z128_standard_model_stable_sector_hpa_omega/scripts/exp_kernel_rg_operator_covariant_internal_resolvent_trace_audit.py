@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Internal-mode resolvent-trace audit for the covariant RG operator (anchor).
+Internal-mode (gauge-invariant) resolvent-trace audit for the covariant RG operator (anchor).
 
 We reduce the covariant operator F_3^∇ (dim 16*r_8) to an internal-mode operator
 F_int of dimension 16*(r_8-1) by an exact coordinate transform:
@@ -8,10 +8,9 @@ F_int of dimension 16*(r_8-1) by an exact coordinate transform:
 where Q embeds internal coordinates into per-block slot-sum-zero vectors, and L
 takes differences against a reference slot (so LQ=I).
 
-We then audit standard resolvent identities on this reduced operator:
-  - one-point: mean((I - z F_int)^{-1} v) equals truncated sum of z^t mean(F_int^t v),
+We audit a gauge-invariant quadratic resolvent identity on this reduced operator:
   - two-point: fixed-point W = W0 + z F_int W F_int^T yields trace(W)/dim matching
-    truncated sum of z^t second-moment.
+    truncated sum of z^t * (||F_int^t v||^2 / dim).
 
 Output (LaTeX fragment):
   - sections/generated/kernel_rg_operator_covariant_internal_resolvent_rows.tex
@@ -25,7 +24,7 @@ from typing import List, Tuple
 
 from common_paths import generated_dir
 from common_tex import write_lines
-from rg_operator import build_F_covariant_internal_anchor, mat_mul, mat_transpose, mat_vec, solve_linear
+from rg_operator import build_F_covariant_internal_orthonormal_anchor, mat_mul, mat_transpose, mat_vec, solve_linear
 
 
 def _mean(v: List[float]) -> float:
@@ -75,7 +74,7 @@ def _fixed_point_W(F: List[List[float]], z: float, W0: List[List[float]], iters:
 
 
 def main() -> None:
-    F, r = build_F_covariant_internal_anchor(3)
+    F, r = build_F_covariant_internal_orthonormal_anchor(3)
     dim = len(F)
     if dim != 16 * (r - 1):
         raise AssertionError("Unexpected internal dimension.")
@@ -95,17 +94,7 @@ def main() -> None:
         z = min(0.1, 0.10 / (abs_row_sum * abs_row_sum))
     T = 12
 
-    # one-point
-    x = _solve_resolvent(F, z=z, v=v)
-    mean_res = _mean(x)
-    vt = v[:]
-    s_mean = 0.0
-    for t in range(T + 1):
-        s_mean += (z**t) * _mean(vt)
-        vt = mat_vec(F, vt)
-    mean_diff = abs(mean_res - s_mean)
-
-    # two-point
+    # two-point (gauge-invariant quadratic readout)
     W0 = _outer(v)
     W, resid = _fixed_point_W(F, z=z, W0=W0, iters=160)
     m2_res = _trace(W) / float(dim)
@@ -117,8 +106,8 @@ def main() -> None:
     m2_diff = abs(m2_res - s_m2)
 
     rows: List[str] = []
-    # Columns: n, m=2(n+1), r, dim_int, z, T, mean_diff, m2_diff, W_resid
-    rows.append(f"3 & 8 & {r} & {dim} & {z:.3e} & {T} & {_fmt(mean_diff)} & {_fmt(m2_diff)} & {_fmt(resid)} \\\\")
+    # Columns: n, m=2(n+1), r, dim_int, z, T, quad_diff, W_resid
+    rows.append(f"3 & 8 & {r} & {dim} & {z:.3e} & {T} & {_fmt(m2_diff)} & {_fmt(resid)} \\\\")
     rows.append("\\bottomrule")
 
     out = generated_dir() / "kernel_rg_operator_covariant_internal_resolvent_rows.tex"
