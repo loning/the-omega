@@ -74,39 +74,41 @@ def _fmt(x: float) -> str:
 
 
 def main() -> None:
-    F_cov, r = build_F_covariant_anchor(3)
-    F = build_F_matrix(3)
-
-    # Deterministic test vectors on R^16 (include mean-zero and non-mean-zero).
-    tests: List[List[float]] = []
-    tests.append([1.0] * 16)
-    tests.append([float((i % 7) - 3) for i in range(16)])
-    tests.append([float((i % 5) - 2) for i in range(16)])
-    tests.append([0.0] * 8 + [1.0] * 8)
-
-    red_err = 0.0
-    inv_err = 0.0
-    for v in tests:
-        x = lift_E(v, r)
-        y = mat_vec(F_cov, x)
-        Sv = proj_S(y, r)
-        Fv = mat_vec(F, v)
-        red_err = max(red_err, max_abs_diff(Sv, Fv))
-
-        # invariance of Im(E) measured by distance to its projection E S.
-        ESy = lift_E(proj_S(y, r), r)
-        inv_err = max(inv_err, max_abs_diff(y, ESy))
-
-    lam2_scalar = second_eigenvalue_abs(F, iters=1400)
-    gap_scalar = 1.0 - float(abs(lam2_scalar))
-    lam_int = second_eigenvalue_abs_internal(F_cov, r, iters=1400)
-    gap_int = 1.0 - float(abs(lam_int))
-
     rows: List[str] = []
+    # Deterministic test vectors on R^16 (include mean-zero and non-mean-zero).
+    tests: List[List[float]] = [
+        [1.0] * 16,
+        [float((i % 7) - 3) for i in range(16)],
+        [float((i % 5) - 2) for i in range(16)],
+        [0.0] * 8 + [1.0] * 8,
+    ]
+
     # Columns: n, m=2(n+1), r, dim, reduction_err, invariance_err, |lam2_scalar|, gap_scalar, |lam_int|, gap_int
-    rows.append(
-        f"3 & 8 & {r} & {16*r} & {_fmt(red_err)} & {_fmt(inv_err)} & {lam2_scalar:.6f} & {gap_scalar:.6f} & {lam_int:.6f} & {gap_int:.6f} \\\\"
-    )
+    for n in (3, 4):
+        F_cov, r = build_F_covariant_anchor(n)
+        F = build_F_matrix(n)
+
+        red_err = 0.0
+        inv_err = 0.0
+        for v in tests:
+            x = lift_E(v, r)
+            y = mat_vec(F_cov, x)
+            Sv = proj_S(y, r)
+            Fv = mat_vec(F, v)
+            red_err = max(red_err, max_abs_diff(Sv, Fv))
+
+            # invariance of Im(E) measured by distance to its projection E S.
+            ESy = lift_E(proj_S(y, r), r)
+            inv_err = max(inv_err, max_abs_diff(y, ESy))
+
+        lam2_scalar = second_eigenvalue_abs(F, iters=1600)
+        gap_scalar = 1.0 - float(abs(lam2_scalar))
+        lam_int = second_eigenvalue_abs_internal(F_cov, r, iters=1600)
+        gap_int = 1.0 - float(abs(lam_int))
+
+        rows.append(
+            f"{n} & {2*(n+1)} & {r} & {16*r} & {_fmt(red_err)} & {_fmt(inv_err)} & {lam2_scalar:.6f} & {gap_scalar:.6f} & {lam_int:.6f} & {gap_int:.6f} \\\\"
+        )
     rows.append("\\bottomrule")
 
     out = generated_dir() / "kernel_rg_operator_covariant_reduction_rows.tex"

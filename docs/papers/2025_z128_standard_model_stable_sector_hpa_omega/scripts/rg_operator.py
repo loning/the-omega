@@ -497,19 +497,94 @@ def _best_perm_between_fibers(fa: List[int], fb: List[int]) -> Tuple[int, ...]:
     r = len(fa)
     if len(fb) != r:
         raise ValueError("Fiber length mismatch.")
-    best_key = None
-    best_p: Tuple[int, ...] | None = None
-    for p in itertools.permutations(range(r), r):
-        cost = 0
-        for i in range(r):
-            cost += int((int(fa[i]) ^ int(fb[p[i]])).bit_count())
-        key = (cost, p)
-        if best_key is None or key < best_key:
-            best_key = key
-            best_p = p
-    if best_p is None:
-        raise AssertionError("No permutations enumerated.")
-    return best_p
+    # Use bitmask DP for assignment (O(r^2 2^r)) with lexicographic tie-break.
+    if r > 20:
+        # Safety fallback: r! is impossible; refuse rather than hang.
+        raise ValueError("r too large for exact matching in this implementation.")
+
+    # Cost matrix c[i][j].
+    c: List[List[int]] = [[0] * r for _ in range(r)]
+    for i in range(r):
+        ai = int(fa[i])
+        row = c[i]
+        for j in range(r):
+            row[j] = int((ai ^ int(fb[j])).bit_count())
+
+    # dp[i][mask] = minimal cost for assigning rows i..r-1 using available columns (~mask).
+    # We implement as dp[mask] for current i and iterate backwards in i.
+    size = 1 << r
+    INF = 10**18
+    dp_next = [0] * size  # for i=r, cost=0 for all masks
+    for i in range(r - 1, -1, -1):
+        dp = [INF] * size
+        row = c[i]
+        for mask in range(size):
+            # choose a column j not in mask
+            best = INF
+            # small r: brute over j
+            for j in range(r):
+                if (mask >> j) & 1:
+                    continue
+                nm = mask | (1 << j)
+                val = row[j] + dp_next[nm]
+                if val < best:
+                    best = val
+            dp[mask] = best
+        dp_next = dp
+
+    # Reconstruct lexicographically smallest minimizer.
+    p_out: List[int] = []
+    mask = 0
+    for i in range(r):
+        row = c[i]
+        target = dp_next[mask]
+        chosen = None
+        for j in range(r):
+            if (mask >> j) & 1:
+                continue
+            nm = mask | (1 << j)
+            # dp for next i is stored in dp cache? We don't have per-i dp now.
+            # Recompute forward dp for remaining steps by a small recursion using cached backward tables.
+            # To keep it simple and deterministic for small r, rebuild a local backward table once.
+            chosen = j
+            break
+        # We need correct reconstruction; rebuild full backward table for all i once.
+        # (Done below outside the loop.)
+        p_out = []
+        break
+
+    # Full backward DP cache for reconstruction (still O(r 2^r)).
+    dp_i: List[List[int]] = [[0] * size for _ in range(r + 1)]
+    for mask in range(size):
+        dp_i[r][mask] = 0
+    for i in range(r - 1, -1, -1):
+        row = c[i]
+        for mask in range(size):
+            best = INF
+            for j in range(r):
+                if (mask >> j) & 1:
+                    continue
+                nm = mask | (1 << j)
+                val = row[j] + dp_i[i + 1][nm]
+                if val < best:
+                    best = val
+            dp_i[i][mask] = best
+
+    mask = 0
+    for i in range(r):
+        row = c[i]
+        best_cost = dp_i[i][mask]
+        for j in range(r):
+            if (mask >> j) & 1:
+                continue
+            nm = mask | (1 << j)
+            if row[j] + dp_i[i + 1][nm] == best_cost:
+                p_out.append(j)
+                mask = nm
+                break
+    if len(p_out) != r:
+        raise AssertionError("Failed to reconstruct permutation.")
+    return tuple(int(x) for x in p_out)
 
 
 def _preimages_from_outputs(outs: List[str]) -> Dict[str, List[int]]:
@@ -544,8 +619,8 @@ def build_F_covariant_anchor(n_bits: int) -> Tuple[Mat, int]:
 
     Returns (F_covariant, r).
     """
-    if n_bits != 3:
-        raise ValueError("This covariant anchor is implemented for n_bits=3 only (m=8, r_8 manageable).")
+    if n_bits not in (3, 4):
+        raise ValueError("This covariant builder is implemented for n_bits in {3,4} (exact matching manageable).")
 
     n1 = n_bits + 1  # transport scale
     m = 2 * n1  # balanced coupling for the transport-scale screen
@@ -649,8 +724,8 @@ def build_F_covariant_anchor_block_gauge(n_bits: int, g_block: List[Tuple[int, .
 
     Returns (F_gauged, r). Implemented for n_bits=3.
     """
-    if n_bits != 3:
-        raise ValueError("Implemented for n_bits=3 only.")
+    if n_bits not in (3, 4):
+        raise ValueError("Implemented for n_bits in {3,4} only.")
 
     # Use the cached r to validate g_block.
     _, r = build_F_covariant_anchor(n_bits)
@@ -1047,6 +1122,101 @@ def build_weighted_F_matrix(n_bits: int, t: float) -> Mat:
     prog.done()
 
     return [[sums[i][j] / denom for j in range(16)] for i in range(16)]
+
+
+def build_weighted_F_covariant_anchor(n_bits: int, t: float) -> Tuple[Mat, int]:
+    """
+    Build the covariant weighted operator at scale n_bits in {3,4}:
+
+      \\hat F_n^∇(t) = P_{n+1}^∇ T_{n+1}^∇ U_n exp(t * phi_n) P_n^{∇*},
+
+    where phi_n(k)=log g_{2n}(Fold_{2n}(k)) for k in Omega_n, and the covariant
+    transport uses the deterministic S_{r_{2(n+1)}} connection induced from Fold_{2(n+1)}
+    fibers at the transport scale.
+
+    Returns (F_weighted_covariant, r) with dimension 16*r.
+    """
+    if n_bits not in (3, 4):
+        raise ValueError("Implemented for n_bits in {3,4} only.")
+
+    # Potential on Omega_n from Fold_{2n}.
+    m_phi = 2 * n_bits
+    outs_phi = cached_foldm_outputs(m_phi)
+    gm_phi = cached_degeneracy_map(m_phi)
+    if len(outs_phi) != _n_micro(n_bits):
+        raise AssertionError("Unexpected Fold_{2n} output length for phi.")
+    phi = [math.log(float(gm_phi[w])) for w in outs_phi]
+
+    # Connection labels on Omega_{n+1} from Fold_{2(n+1)}.
+    n1 = n_bits + 1
+    m = 2 * n1
+    outs = cached_foldm_outputs(m)  # length 4^{n+1}
+    gm = cached_degeneracy_map(m)
+    r = int(max(int(v) for v in gm.values()))
+
+    key = cache_path(f"rg_F_covariant_weighted_n{n_bits}_m{m}_r{r}_t{t}_v{CACHE_VERSION}.pkl")
+
+    def compute() -> Tuple[Mat, int]:
+        pre = _preimages_from_outputs(outs)
+        fibers: Dict[str, List[int]] = {w: _fiber_pad_r(pre, w, r) for w in pre}
+
+        perm_cache: Dict[Tuple[str, str], Tuple[int, ...]] = {}
+
+        def perm_for_labels(ws: str, wd: str) -> Tuple[int, ...]:
+            key2 = (ws, wd)
+            if key2 in perm_cache:
+                return perm_cache[key2]
+            p = _best_perm_between_fibers(fibers[ws], fibers[wd])
+            perm_cache[key2] = p
+            return p
+
+        bids_n = block_id_by_index(n_bits)
+        bids_n1 = block_id_by_index(n1)
+        parents = parent_index_map(n_bits)  # Omega_{n+1} -> Omega_n
+        path = hil.hilbert_curve(n1)
+        inv = hilbert_inverse_index_map(n1)
+        L = (1 << n1) - 1
+        N1 = _n_micro(n1)
+        denom = float(N1 // 16)
+        p_stay = 0.5
+
+        counts: List[List[Mat]] = [
+            [[[0.0] * r for _ in range(r)] for _ in range(16)] for _ in range(16)
+        ]
+        prog = ProgressEvery(label=f"build_weighted_F_covariant n={n_bits} t={t} (m={m}, r={r})", total=N1, interval_s=60.0)
+        prog.start()
+        for k_dest, (x, y) in enumerate(path):
+            if k_dest % 4096 == 0:
+                prog.maybe(k_dest)
+            i_blk = bids_n1[k_dest]
+            wd = outs[k_dest]
+            srcs = _transport_source_weights_for_dest(int(x), int(y), inv=inv, L=L, p_stay=p_stay)
+            for k_src, wT in srcs:
+                ws = outs[k_src]
+                parent = parents[k_src]
+                j_blk = bids_n[parent]
+                w = float(wT) * math.exp(float(t) * float(phi[parent]))
+                P = perm_for_labels(ws, wd)
+                M = _perm_matrix(P, r)
+                C = counts[i_blk][j_blk]
+                for a in range(r):
+                    row = C[a]
+                    Mr = M[a]
+                    for b in range(r):
+                        row[b] += float(w) * float(Mr[b])
+        prog.done()
+
+        dim = 16 * r
+        Fw: Mat = [[0.0] * dim for _ in range(dim)]
+        for i_blk in range(16):
+            for j_blk in range(16):
+                C = counts[i_blk][j_blk]
+                for a in range(r):
+                    for b in range(r):
+                        Fw[i_blk * r + a][j_blk * r + b] = float(C[a][b]) / denom
+        return Fw, r
+
+    return load_or_compute(key, compute)
 
 
 def micro_q_fields_for_balanced_chain(n_bits: int) -> Dict[str, List[float]]:

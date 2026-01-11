@@ -102,14 +102,36 @@ def quadratic_resolvent_audit(F: List[List[float]], *, z: float, T: int, v: List
     return abs(m2_res - s_m2), float(resid), float(m2_res)
 
 
-def choose_safe_z(F: List[List[float]]) -> float:
-    # Conservative for two-point equation: roughly z * rho(F)^2 < 1.
-    abs_row_sum = 0.0
+def choose_safe_z(F: List[List[float]]) -> tuple[float, float, float]:
+    """
+    Return (rho_bound, z, margin) where margin := z * rho_bound^2.
+    We use the operator-norm upper bound rho_bound := max_i sum_j |F_ij|
+    and choose z so that margin <= 0.10.
+    """
+    rho_bound = 0.0
     for row in F:
-        abs_row_sum = max(abs_row_sum, sum(abs(float(x)) for x in row))
-    if abs_row_sum <= 0.0:
-        return 0.1
-    return min(0.1, 0.10 / (abs_row_sum * abs_row_sum))
+        rho_bound = max(rho_bound, sum(abs(float(x)) for x in row))
+    if rho_bound <= 0.0:
+        z = 0.1
+    else:
+        z = min(0.1, 0.10 / (rho_bound * rho_bound))
+    margin = float(z) * float(rho_bound) * float(rho_bound)
+    return float(rho_bound), float(z), float(margin)
+
+
+def orth_err(H: List[List[float]]) -> float:
+    # max abs of (H H^T - I)
+    Ht = mat_transpose(H)
+    HHt = mat_mul(H, Ht)
+    n = len(HHt)
+    m = 0.0
+    for i in range(n):
+        for j in range(n):
+            target = 1.0 if i == j else 0.0
+            d = abs(float(HHt[i][j]) - target)
+            if d > m:
+                m = d
+    return m
 
 
 def main() -> None:
@@ -134,14 +156,15 @@ def main() -> None:
     # Under gauge, internal coordinates transform by v_g = H v for the same physical field.
     v_g = mat_vec(H, v)
 
-    z = choose_safe_z(F_std)
+    rho_bound, z, margin = choose_safe_z(F_std)
     T = 12
     quad_diff, resid, trW = quadratic_resolvent_audit(F_std, z=z, T=T, v=v)
     quad_diff_g, resid_g, trW_g = quadratic_resolvent_audit(F_std_g, z=z, T=T, v=v_g)
     tr_invar_err = abs(trW_g - trW)
 
+    ortho = orth_err(H)
     rows = [
-        f"3 & 8 & {r} & {dim_int} & {z:.3e} & {T} & {_fmt(conj_err)} & {_fmt(tr_invar_err)} & {_fmt(quad_diff)} & {_fmt(resid)} \\\\",
+        f"3 & 8 & {r} & {dim_int} & {rho_bound:.3e} & {z:.3e} & {margin:.3e} & {T} & {_fmt(conj_err)} & {_fmt(ortho)} & {_fmt(tr_invar_err)} & {_fmt(quad_diff)} & {_fmt(resid)} \\\\",
         "\\bottomrule",
     ]
     out = generated_dir() / "kernel_rg_operator_covariant_internal_closure_triplet_rows.tex"

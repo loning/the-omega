@@ -32,18 +32,18 @@ def _fmt(x: float) -> str:
 
 
 def main() -> None:
-    F, r = build_F_covariant_anchor(3)
-    max_err, rmin, rmax = row_sum_stats(F)
-    lam2 = second_eigenvalue_abs_general(F, iters=1600)
-    gap = 1.0 - float(abs(lam2))
-    lam_int = second_eigenvalue_abs_internal(F, r, iters=1600)
-    gap_int = 1.0 - float(abs(lam_int))
-
     rows: List[str] = []
     # Columns: n, m(transport), r_m, dim, row_err, |lam2|, gap, |lam_int|, gap_int
-    rows.append(
-        f"3 & 8 & {r} & {16*r} & {max_err:.3e} & {_fmt(lam2)} & {_fmt(gap)} & {_fmt(lam_int)} & {_fmt(gap_int)} \\\\"
-    )
+    for n in (3, 4):
+        F, r = build_F_covariant_anchor(n)
+        max_err, _rmin, _rmax = row_sum_stats(F)
+        lam2 = second_eigenvalue_abs_general(F, iters=2000)
+        gap = 1.0 - float(abs(lam2))
+        lam_int = second_eigenvalue_abs_internal(F, r, iters=2000)
+        gap_int = 1.0 - float(abs(lam_int))
+        rows.append(
+            f"{n} & {2*(n+1)} & {r} & {16*r} & {max_err:.3e} & {_fmt(lam2)} & {_fmt(gap)} & {_fmt(lam_int)} & {_fmt(gap_int)} \\\\"
+        )
     rows.append("\\bottomrule")
 
     out = generated_dir() / "kernel_rg_operator_covariant_spectral_gap_rows.tex"

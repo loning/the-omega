@@ -74,36 +74,37 @@ def max_abs_diff_vec(a: List[float], b: List[float]) -> float:
 
 
 def main() -> None:
-    F, r = build_F_covariant_anchor(3)
-    rng = random.Random(20260111)
-    perms = list(itertools.permutations(range(r), r))
-    g_block = [perms[rng.randrange(len(perms))] for _ in range(16)]
-    Fg, _ = build_F_covariant_anchor_block_gauge(3, g_block=g_block)
-
-    G = block_diag_perm_matrix(g_block, r)
-    Ginv = block_diag_perm_matrix([_inv_perm(p) for p in g_block], r)
-    conj = mat_mul(mat_mul(G, F), Ginv)
-    gauge_err = max_abs_diff_mat(Fg, conj)
-
-    # Scalar reduction invariance: S Fg E = F3.
-    F3 = build_F_matrix(3)
+    rows: List[str] = []
     tests = [
         [1.0] * 16,
         [float((i % 7) - 3) for i in range(16)],
         [0.0] * 8 + [1.0] * 8,
     ]
-    red_err = 0.0
-    for v in tests:
-        x = lift_E(v, r)
-        y = mat_vec(Fg, x)
-        Sv = proj_S(y, r)
-        Fv = mat_vec(F3, v)
-        red_err = max(red_err, max_abs_diff_vec(Sv, Fv))
 
-    rows = [
-        f"3 & 8 & {r} & {16*r} & {gauge_err:.3e} & {red_err:.3e} \\\\",
-        "\\bottomrule",
-    ]
+    for n in (3, 4):
+        F, r = build_F_covariant_anchor(n)
+        rng = random.Random(20260111 + n)
+        perms = list(itertools.permutations(range(r), r))
+        g_block = [perms[rng.randrange(len(perms))] for _ in range(16)]
+        Fg, _ = build_F_covariant_anchor_block_gauge(n, g_block=g_block)
+
+        G = block_diag_perm_matrix(g_block, r)
+        Ginv = block_diag_perm_matrix([_inv_perm(p) for p in g_block], r)
+        conj = mat_mul(mat_mul(G, F), Ginv)
+        gauge_err = max_abs_diff_mat(Fg, conj)
+
+        # Scalar reduction invariance: S Fg E = F_n.
+        Fsc = build_F_matrix(n)
+        red_err = 0.0
+        for v in tests:
+            x = lift_E(v, r)
+            y = mat_vec(Fg, x)
+            Sv = proj_S(y, r)
+            Fv = mat_vec(Fsc, v)
+            red_err = max(red_err, max_abs_diff_vec(Sv, Fv))
+
+        rows.append(f"{n} & {2*(n+1)} & {r} & {16*r} & {gauge_err:.3e} & {red_err:.3e} \\\\")
+    rows.append("\\bottomrule")
     out = generated_dir() / "kernel_rg_operator_covariant_gauge_rows.tex"
     write_lines(out, rows)
     print("Wrote sections/generated/kernel_rg_operator_covariant_gauge_rows.tex")

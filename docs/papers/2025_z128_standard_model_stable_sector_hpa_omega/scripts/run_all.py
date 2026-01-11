@@ -378,24 +378,38 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="Kernel RG covariant internal-mode resolvent trace (anchor)",
-            script="exp_kernel_rg_operator_covariant_internal_resolvent_trace_audit.py",
-            expected_outputs=[
-                "sections/generated/kernel_rg_operator_covariant_internal_resolvent_rows.tex",
-            ],
-        ),
-        Step(
-            name="Kernel RG covariant internal-mode gauge covariance (anchor)",
-            script="exp_kernel_rg_operator_covariant_internal_gauge_audit.py",
-            expected_outputs=[
-                "sections/generated/kernel_rg_operator_covariant_internal_gauge_rows.tex",
-            ],
-        ),
-        Step(
             name="Kernel RG covariant internal closure triplet (anchor)",
             script="exp_kernel_rg_operator_covariant_internal_closure_triplet_audit.py",
             expected_outputs=[
                 "sections/generated/kernel_rg_operator_covariant_internal_closure_triplet_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG covariant internal singular-value contraction (n=3,4)",
+            script="exp_kernel_rg_operator_covariant_internal_singular_value.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_covariant_internal_sigma_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG weighted covariant operator pole-barrier (n=3,4)",
+            script="exp_kernel_rg_weighted_covariant_pole_barrier.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_weighted_covariant_pole_barrier_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG weighted covariant operator Doob normalization (n=3,4)",
+            script="exp_kernel_rg_weighted_covariant_doob.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_weighted_covariant_doob_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG weighted covariant operator pressure proxy (n=3,4)",
+            script="exp_kernel_rg_weighted_covariant_pressure.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_weighted_covariant_pressure_rows.tex",
             ],
         ),
         Step(
