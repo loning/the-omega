@@ -1073,6 +1073,10 @@ flowchart TB
   P_scheme_contract("scheme invariance contract（checklist）<br/>类型：审计 / Audit<br/>label: app:scheme_invariance_audit_contract<br/>audit contract")
   M_scheme_contract -.- P_scheme_contract
 
+  M_uplift_fusion_horizon["分辨率提升/融合/视界形成统一模块（有限容量；CAP 选择）<br/>类型：审计 / Audit<br/>label: app:resolution_uplift_fusion_horizon_unification<br/>I_prot(m,n)=m4^n; CAP key → (m*,n*); n-blocked ⇒ m-expand; staging dictionary"]
+  P_uplift_fusion_horizon("uplift/horizon unification proxy（CAP-selected uplift path）<br/>类型：审计 / Audit<br/>label: tab:resolution_uplift_cap_choice<br/>generated fragments: resolution_uplift_cap_choice_*")
+  M_uplift_fusion_horizon -.- P_uplift_fusion_horizon
+
   M_qcd_loop_gate["QCD proxy↔pole-barrier gate（互否式审计）<br/>类型：审计 / Audit<br/>label: subsec:qcd_proxy_polebarrier_consistency_loop<br/>gate table"]
   P_qcd_loop_gate("QCD gate 输出（row）<br/>类型：审计 / Audit<br/>label: tab:qcd_proxy_polebarrier_failure<br/>verdict row")
   M_qcd_loop_gate -.- P_qcd_loop_gate
@@ -1097,6 +1101,11 @@ flowchart TB
   M_equiv --> M_opMotherDict --> M_action
   M_equiv --> M_freq
   M_equiv --> M_action --> M_eom --> M_grav --> M_recon --> M_chi_horizon_budget --> M_cloud_capacity --> M_area_rep --> M_bh_match --> M_err
+  M_mass --> M_uplift_fusion_horizon
+  M_chi_horizon_budget --> M_uplift_fusion_horizon
+  M_protocol_horizon --> M_uplift_fusion_horizon
+  M_bh_planck_calib --> M_uplift_fusion_horizon
+  M_kernel_view --> M_uplift_fusion_horizon
   M_grav --> M_grav_curvature
   M_err --> M_grav_curvature
   M_equiv --> M_thermo
@@ -1137,6 +1146,11 @@ flowchart TB
   P_freq --> P_lens
   P_equiv --> P_action --> P_eom --> P_dyn --> P_lens
   P_lens --> P_recon --> P_chi_horizon_budget --> P_cloud_capacity --> P_area_rep --> P_bh_match --> P_err
+  P_mass --> P_uplift_fusion_horizon
+  P_chi_horizon_budget --> P_uplift_fusion_horizon
+  P_protocol_horizon --> P_uplift_fusion_horizon
+  P_bh_planck_calib --> P_uplift_fusion_horizon
+  P_kernel_view --> P_uplift_fusion_horizon
   P_equiv --> P_thermo
   P_equiv --> P_qm
   P_qm --> P_wave_particle
@@ -1493,12 +1507,12 @@ flowchart TB
 
   class M_mass,M_grav,M_rg,M_entropy_gap,M_rm,M_relent math_closure;
   class M_cosmo math_assumption;
-  class M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_gamma_proxy,M_gamma_direct,M_input_pdg,M_input_codata,M_input_planck,M_input_nufit,M_input_bhplanck,M_mdl_global,M_kernel_view,M_kernel_rg_flow,M_ext_boundary_check,M_info_cert,M_bh_planck_calib,M_mass_flow_uplift,M_protocol_horizon,M_leakage_kernel,M_low_leak_phase,M_m6_trap_exit,M_k4_delay_audit,M_k4_pdg_leakage,M_k4_alpha_link math_audit;
+  class M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_gamma_proxy,M_gamma_direct,M_input_pdg,M_input_codata,M_input_planck,M_input_nufit,M_input_bhplanck,M_mdl_global,M_kernel_view,M_kernel_rg_flow,M_ext_boundary_check,M_info_cert,M_bh_planck_calib,M_mass_flow_uplift,M_protocol_horizon,M_uplift_fusion_horizon,M_leakage_kernel,M_low_leak_phase,M_m6_trap_exit,M_k4_delay_audit,M_k4_pdg_leakage,M_k4_alpha_link math_audit;
   class P_dyn phys_proxy;
   class P_mass,P_lens phys_obs;
   class P_am_euler,P_entropy_gap,P_rm,P_relent phys_dict;
   class P_rg,P_cosmo phys_model;
-  class P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_err,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_planck,P_input_nufit,P_input_bhplanck,P_mdl_global,P_kernel_view,P_kernel_rg_flow,P_ext_boundary_check,P_info_cert,P_bh_planck_calib,P_mass_flow_uplift,P_protocol_horizon,P_leakage_kernel,P_low_leak_phase,P_m6_trap_exit,P_k4_delay_audit,P_k4_pdg_leakage,P_k4_alpha_link phys_audit;
+  class P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_err,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_planck,P_input_nufit,P_input_bhplanck,P_mdl_global,P_kernel_view,P_kernel_rg_flow,P_ext_boundary_check,P_info_cert,P_bh_planck_calib,P_mass_flow_uplift,P_protocol_horizon,P_uplift_fusion_horizon,P_leakage_kernel,P_low_leak_phase,P_m6_trap_exit,P_k4_delay_audit,P_k4_pdg_leakage,P_k4_alpha_link phys_audit;
 ```
 
 ### 图 10：可证伪预测 wiring（P1–P7） / Fig. 10: Falsifiable Prediction Wiring (P1–P7)
@@ -2020,6 +2034,8 @@ flowchart TB
 | `P_qcd_loop_gate` | `\label{tab:qcd_proxy_polebarrier_failure}` | `QCD gate verdict row (generated)` | `sections/appendices/67_qcd_confinement_proxy_audit.tex` |
 | `M_manybody_feedback` | `\label{app:orbit_gauge_force_manybody_measurement_feedback}` | `many-body + measurement feedback interface for orbit/gauge/force` | `sections/appendices/77_orbit_gauge_force_manybody_measurement_feedback.tex` |
 | `P_manybody_feedback` | `\label{app:orbit_gauge_force_manybody_measurement_feedback}` | `feedback dictionary (instrument→control→response loop)` | `sections/appendices/77_orbit_gauge_force_manybody_measurement_feedback.tex` |
+| `M_uplift_fusion_horizon` | `\label{app:resolution_uplift_fusion_horizon_unification}` | `resolution uplift + fusion staging + horizon vocabulary: capacity-first CAP selection on finite (m,n) families; staging dictionary hooks` | `sections/appendices/79_resolution_uplift_fusion_horizon_unification.tex` |
+| `P_uplift_fusion_horizon` | `\label{tab:resolution_uplift_cap_choice}` | `CAP-selected uplift path table under constraints (generated rows/summary)` | `sections/appendices/02_generated_tables.tex` |
 | `M_unify_coupling_audit` | `\label{app:coupling_unification_audit_in_r}` | `one-loop affine running in r; bounded α_3^{-1}(μ_Z)=nπ²; minimize intersection mismatch` | `sections/appendices/71_coupling_unification_audit_in_r.tex` |
 | `P_unify_coupling_audit` | `\label{app:coupling_unification_audit_in_r}` | `coupling-unification audit output table (Match/Audit)` | `sections/appendices/71_coupling_unification_audit_in_r.tex` |
 | `M_wave_particle` | `\label{app:wave_particle_delayed_choice}` | `cross terms vs mixture; V^2+D^2≤1; delayed-choice/eraser (interface)` | `sections/appendices/30b_wave_particle_delayed_choice.tex` |

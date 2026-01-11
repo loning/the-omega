@@ -779,6 +779,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Resolution uplift CAP choice under constraints (capacity-driven staging)",
+            script="exp_resolution_uplift_cap_choice.py",
+            expected_outputs=[
+                "sections/generated/resolution_uplift_cap_choice_rows.tex",
+                "sections/generated/resolution_uplift_cap_choice_summary.tex",
+            ],
+        ),
+        Step(
             name="K4 delay dictionary audit (gravitational time-delay channels)",
             script="exp_k4_delay_dictionary_audit.py",
             expected_outputs=[

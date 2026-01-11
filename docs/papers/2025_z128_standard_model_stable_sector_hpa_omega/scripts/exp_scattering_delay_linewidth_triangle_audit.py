@@ -142,7 +142,7 @@ def main() -> None:
             + r"For datasets with a coarse resonance linewidth proxy $\gamma$, we compare "
             + r"$\tau_{\mathrm{phase}}\approx 2\,\mathrm{d}\delta/\mathrm{d}E$ to $\tau_\gamma\approx 4/\gamma$ "
             + r"under a bounded local-linear window family $k\in\{1,2,3\}$. "
-            + f"Best abs-log mismatch row: dataset {best_did.replace('_', r'\\_')}, k={int(best_k)}, abs-log mismatch {_fmt(best_abslog,6)}.",
+            + f"Best abs-log mismatch row: dataset {best_did.replace('_', r'\_')}, k={int(best_k)}, abs-log mismatch {_fmt(best_abslog,6)}.",
         ],
     )
 

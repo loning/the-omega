@@ -203,6 +203,14 @@ flowchart TD
     - `sections/generated/bh_planck_capacity_summary.tex`
     - `sections/generated/bh_capacity_calibrated_uplift_path_rows.tex`
 
+- [x] **分辨率提升/融合/视界形成统一模块（有限容量；CAP 选择；高能≃融合阶段）**：`appendix 79`  
+  - 位置：`sections/appendices/79_resolution_uplift_fusion_horizon_unification.tex`（`\label{app:resolution_uplift_fusion_horizon_unification}`）
+  - 要点：在不新增 theorem-level 原语的前提下，把“高能过程=分辨率提升/信息聚集导致的融合阶段”翻译为一个有限容量模块：定义协议屏幕容量 $I_{\mathrm{prot}}(m,n)=m4^n$ 与目标需求 $I_{\mathrm{tar}}$，并用可审计的 CAP lexicographic key 在显式有限候选族上确定性选取 $(m^\ast,n^\ast)$；给出存在唯一性、随 $I_{\mathrm{tar}}$ 的单调性与阈值跳变命题，并形式化 “$n$ 被锁死 $\Rightarrow m$ 扩张” 的刚性情形。同时补充 staging dictionary：把已闭合的 $m_{\mathrm{eff}}(\mu)$ 阶梯（resolution-first）与 capacity-first 的 $I_{\mathrm{tar}}$ 视角并列，并记录从 $\chi$-云容量/观察者预算/延迟代理到 $I_{\mathrm{tar}}$ 的接口钩子，用于把黑洞/视界词汇组织为预算饱和阶段，而不预设 GR 事件视界。
+  - 生成脚本：`scripts/exp_resolution_uplift_cap_choice.py`（已接入 `scripts/run_all.py`）
+  - 生成物：
+    - `sections/generated/resolution_uplift_cap_choice_summary.tex`
+    - `sections/generated/resolution_uplift_cap_choice_rows.tex`
+
 - [x] **协议视界（tick-trap；相对黑洞判据；K4 入口）**：`appendix 08`  
   - 位置：`sections/appendices/08_protocol_horizon_tick_trap.tex`（`\label{app:protocol_horizon_tick_trap}`）
   - 要点：把“黑洞/视界”降格为观察者预算下的协议不可分辨边界（H2），并把“质量=延迟”的接口字典接入相对判据；不预设 GR 事件视界（H1），只在 PBH* 条件下允许对齐。
@@ -274,6 +282,7 @@ flowchart TD
 | $\rho_{\mathrm{eff}}$ | $\rho_{\mathrm{eff}}\propto-\Delta\chi$ | Math/Iface | `eq:z128_rho_eff_from_chi` | [x] |
 | 误差控制（协议→连续场） | 误差分解 + 收敛/稳定性界 + 误差传播预算 | Iface/Math/Audit/Prot | `app:protocol_to_continuum_error_control` | [x] |
 | 熵（entropy） | 粗粒化计数/通道容量 | Math/CAP | `eq:counting_entropy` | [x] |
+| 分辨率提升/融合（capacity-first） | 以 $I_{\mathrm{prot}}(m,n)=m4^n$ 与 $I_{\mathrm{tar}}$ 为接口量，在有限候选族上用 CAP key 确定性选取 $(m^\ast,n^\ast)$；并给出单调性/阈值跳变与 “$n$-blocked$\Rightarrow m$-expand” 刚性命题；补充 resolution-first vs capacity-first 的 staging dictionary 与 $\chi$/预算/延迟钩子 | Iface/CAP/Math/Audit | `app:resolution_uplift_fusion_horizon_unification`, `tab:resolution_uplift_cap_choice` | [x] |
 | 温度（temperature） | 频率共轭尺度 | Iface/Math | `def:temperature_conjugate` | [x] |
 | CAP 自由能原则 | 以自由能形式重述 CAP 选择 | CAP | `prop:cap_free_energy_closure` | [x] |
 | Born 概率 | $P_k=\mathrm{Tr}(\rho E_k)$ | Iface/Math | `eq:z128_born_povm` | [x] |
