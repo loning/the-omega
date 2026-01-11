@@ -230,6 +230,19 @@ flowchart TB
 %%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 50}, "themeVariables": {"fontSize": "10px"}}}%%
 flowchart TB
 
+  %% === Shared upstream audit bridges referenced below (avoid unlabeled ID boxes) ===
+  M_input_planck@{ shape: lean-l, label: "Planck（CMB/宇宙学参数）<br/>类型：审计 / Audit<br/>label: subsec:external_inputs_inventory" }
+  P_input_planck@{ shape: lean-l, label: "Planck（目标 / targets；Match）<br/>类型：审计 / Audit<br/>label: subsec:external_inputs_inventory" }
+  M_input_planck -.- P_input_planck
+
+  M_pressure["pressure/transfer operator（谱半径稳定指标）<br/>类型：审计 / Audit<br/>label: app:thermodynamic_formalism_pressure / thm:pressure_spectral_radius_standard<br/>P(ϕ)=log λ_ϕ = sup_μ(h_μ+∫ϕ dμ)"]
+  P_pressure("谱稳定代理（pressure ↔ pole barrier）<br/>类型：审计 / Audit<br/>label: app:thermodynamic_formalism_pressure<br/>dominant pole ↔ spectral radius; normalize r↑1")
+  M_pressure -.- P_pressure
+
+  M_operator_mother["算子母空间（resolvent/determinant；finite-rank 更新）<br/>类型：审计 / Audit<br/>label: app:operator_mother_space<br/>trace-class F;  Tr(K(I−rF)⁻¹);  det(I−rF);  Δ finite-rank ⇒ F↦F+Δ"]
+  P_operator_mother("算子母空间口径（审计/字典层）<br/>类型：审计 / Audit<br/>label: app:operator_mother_space<br/>pole barrier ↔ interior resolvent poles; pointer-jump ↔ finite-rank Δ")
+  M_operator_mother -.- P_operator_mother
+
   M_cap@{ shape: lean-l, label: "CAP（有界复杂度闭合算子）<br/>类型：公理 / Axiom<br/>label: ax:cap<br/>c* := argmin_{c∈C} J(c)" }
   P_select("审计选择（候选族+目标函数+tie-break）<br/>类型：审计 / Audit<br/>label: app:cap_audit_template<br/>θ* := argmin_{θ∈Θ(B)} J(θ)")
   M_cap -.- P_select
@@ -661,6 +674,11 @@ flowchart TB
   P_g4 --> P_gauge3
   P_holonomy_diag --> P_gauge3
 
+  %% BH/Planck capacity calibration and uplift-mass-flow audits (attach to main chain via CAP)
+  M_cap --> M_bh_planck_calib
+  M_input_bhplanck --> M_bh_planck_calib --> M_mass_flow_uplift
+  P_input_bhplanck --> P_bh_planck_calib --> P_mass_flow_uplift
+
   M_cap --> M_alpha_geo
   M_gauge3 --> M_alpha_geo
   M_input_codata --> M_alpha_geo
@@ -720,12 +738,12 @@ flowchart TB
   class M_gauge math_construct;
   class M_sm math_closure;
   class M_consensus_p2,M_consensus_p3,M_internal_fiber_g2 math_assumption;
-  class M_input_pdg,M_input_codata,M_input_nufit,M_g1,M_g2,M_g4,M_cp_odd_J,M_cp_sign_anchor,M_alpha_geo,M_ew_weinberg,M_cp_volume,M_ckm_mag,M_ckm_matrix,M_pmns_mag,M_pmns_matrix math_audit;
+  class M_input_pdg,M_input_codata,M_input_nufit,M_input_bhplanck,M_bh_planck_calib,M_mass_flow_uplift,M_g1,M_g2,M_g4,M_cp_odd_J,M_cp_sign_anchor,M_alpha_geo,M_ew_weinberg,M_cp_volume,M_ckm_mag,M_ckm_matrix,M_pmns_mag,M_pmns_matrix math_audit;
   class M_gauge3,M_holonomy_diag math_audit;
   class P_gauge phys_proxy;
   class P_cp_odd_J phys_obs;
   class P_types phys_dict;
-  class P_input_pdg,P_input_codata,P_input_nufit,P_consensus_p2,P_consensus_p3,P_internal_fiber_g2,P_g1,P_g2,P_g4,P_holonomy_diag,P_cp_sign_anchor,P_alpha_geo,P_ew_weinberg,P_cp_volume,P_ckm_mag,P_ckm_matrix,P_pmns_mag,P_pmns_matrix phys_audit;
+  class P_input_pdg,P_input_codata,P_input_nufit,P_input_bhplanck,P_bh_planck_calib,P_mass_flow_uplift,P_consensus_p2,P_consensus_p3,P_internal_fiber_g2,P_g1,P_g2,P_g4,P_holonomy_diag,P_cp_sign_anchor,P_alpha_geo,P_ew_weinberg,P_cp_volume,P_ckm_mag,P_ckm_matrix,P_pmns_mag,P_pmns_matrix phys_audit;
   class P_gauge3 phys_dict;
 ```
 
@@ -1045,6 +1063,85 @@ flowchart TB
   class P_wave_particle phys_audit;
 ```
 
+### 图 8b：Kernel view × 算子母空间枢纽（pressure/RG/prime-cycle/graph-ζ → kernel view + operator mother space） / Fig. 8b: Kernel View × Operator-Mother-Space Hub (pressure/RG/prime-cycle/graph-ζ → kernel view + operator mother space)
+
+```mermaid
+%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 55}, "themeVariables": {"fontSize": "10px"}}}%%
+flowchart TB
+
+  %% === Core hubs ===
+  M_kernel_view["Kernel view（语言核+折叠核+协议 RG 核）<br/>类型：审计 / Audit<br/>label: sec:kernel_view<br/>X_m + Fold_m + uplift/coarse-graining + r/RG dictionary"]
+  P_kernel_view("跨尺度计算入口（generated tables）<br/>类型：审计 / Audit<br/>label: tab:fractal_kernel_sweep / tab:folding_entropy_decomposition / tab:kernel_mu_r_bridge / tab:kernel_rg_flow_balanced / tab:ext_boundary_operator_check<br/>kernel+entropy checks; μ/r staircase; balanced-chain coarse flow; uplift-operator audit")
+  M_kernel_view -.- P_kernel_view
+
+  M_operator_mother["算子母空间（resolvent/determinant；finite-rank 更新）<br/>类型：审计 / Audit<br/>label: app:operator_mother_space<br/>trace-class F;  Tr(K(I−rF)⁻¹);  det(I−rF);  Δ finite-rank ⇒ F↦F+Δ"]
+  P_operator_mother("算子母空间口径（审计/字典层）<br/>类型：审计 / Audit<br/>label: app:operator_mother_space<br/>pole barrier ↔ interior resolvent poles; pointer-jump ↔ finite-rank Δ")
+  M_operator_mother -.- P_operator_mother
+
+  %% === Shared upstream bridge (minimal) ===
+  M_pressure["pressure/transfer operator（谱半径稳定指标）<br/>类型：审计 / Audit<br/>label: app:thermodynamic_formalism_pressure / thm:pressure_spectral_radius_standard<br/>P(ϕ)=log λ_ϕ = sup_μ(h_μ+∫ϕ dμ)"]
+  P_pressure("谱稳定代理（pressure ↔ pole barrier）<br/>类型：审计 / Audit<br/>label: app:thermodynamic_formalism_pressure<br/>dominant pole ↔ spectral radius; normalize r↑1")
+  M_pressure -.- P_pressure
+
+  M_rg["RG：耦合运行（r 坐标）<br/>类型：闭合 / Closure<br/>label: eq:rg_in_r<br/>dg/dr = (ln φ)β(g)"]
+  P_rg("耦合运行代理（阈值/匹配口径 / Coupling-Running Proxy (Thresholds/Matching Convention)）<br/>类型：模型 / Model<br/>label: eq:rg_in_r<br/>dg/dr = (ln φ)β(g)")
+  M_rg -.- P_rg
+
+  M_am_euler["Artin–Mazur ζ 的 Euler product（primitive cycles）<br/>类型：审计 / Audit<br/>label: lem:artin_mazur_euler_product<br/>ζ(z)=∏_{p∈𝓟}(1−z^{|p|})⁻¹"]
+  P_am_euler("prime-cycle bookkeeping（素周期 bookkeeping）<br/>类型：字典 / Dictionary<br/>label: rem:prime_cycles_structural_analogy<br/>primitive ↦ generator; iterates ↦ powers")
+  M_am_euler -.- P_am_euler
+
+  M_graphzeta["Graph ζ（图 ζ；Ihara/Bass determinant）<br/>类型：审计 / Audit<br/>label: app:graph_zeta_holonomy / thm:bass_determinant_formula<br/>Z_G(u)⁻¹=(1−u²)^{|E|−|V|}·det(I−uA+(D−I)u²)"]
+  P_graphzeta("holonomy-weighted loop generating function（holonomy 加权回路生成函数）<br/>类型：审计 / Audit<br/>label: def:holonomy_weighted_graph_zeta / prop:cycle_type_stats_determine_class_sums<br/>Z_{G,ρ}(u)=∏ det(I−u^{|C|}ρ(Hol(C)))⁻¹")
+  M_graphzeta -.- P_graphzeta
+
+  %% === Wiring: pressure is the shared bridge; kernel view also consumes RG; mother space consumes prime-cycle/graph-ζ ===
+  M_rg --> M_kernel_view
+  P_rg --> P_kernel_view
+
+  M_pressure --> M_kernel_view
+  P_pressure --> P_kernel_view
+
+  M_pressure --> M_operator_mother
+  P_pressure --> P_operator_mother
+
+  M_am_euler --> M_operator_mother
+  P_am_euler --> P_operator_mother
+
+  M_graphzeta --> M_operator_mother
+  P_graphzeta --> P_operator_mother
+
+  %% === Optional dictionary entry (kept compact): mother space viewpoint in equivalence semantics layer ===
+  M_opMotherDict["算子母空间字典入口（resolvent/determinant）<br/>类型：审计 / Audit<br/>label: app:operator_mother_space_dictionary<br/>F trace-class;  T_K(r)=Tr(K(I−rF)⁻¹);  det(I−rF);  F↦F+Δ"]
+  P_opMotherDict("算子母空间字典（观察者/意识口径）<br/>类型：字典 / Dictionary<br/>label: app:operator_mother_space_dictionary<br/>observer: K; consciousness: finite-rank Δ (dictionary)")
+  M_opMotherDict -.- P_opMotherDict
+
+  M_operator_mother --> M_opMotherDict
+  P_operator_mother --> P_opMotherDict
+
+  classDef iface fill:#FCE4EC,stroke:#D81B60,color:#880E4F,stroke-width:2px;
+  classDef open_problem fill:#FFEBEE,stroke:#C62828,color:#B71C1C,stroke-width:2px,font-weight:700;
+  classDef not_closed fill:#FFF3E0,stroke:#EF6C00,color:#E65100,stroke-width:2px;
+  classDef scope_gap fill:#EEEEEE,stroke:#616161,color:#212121,stroke-width:2px,stroke-dasharray: 2 2;
+  classDef math_axiom fill:#BBDEFB,stroke:#1565C0,color:#0D47A1,stroke-width:3px,font-weight:700;
+  classDef math_construct fill:#E3F2FD,stroke:#1E88E5,color:#0D47A1,stroke-width:2px;
+  classDef math_closure fill:#90CAF9,stroke:#1976D2,color:#0D47A1,stroke-width:2px;
+  classDef math_cont fill:#E1F5FE,stroke:#039BE5,color:#01579B,stroke-width:2px;
+  classDef math_assumption fill:#E3F2FD,stroke:#1E88E5,color:#0D47A1,stroke-width:2px,stroke-dasharray: 6 3;
+  classDef math_audit fill:#E3F2FD,stroke:#0D47A1,color:#0D47A1,stroke-width:2px,stroke-dasharray: 2 2;
+  classDef phys_proxy fill:#E8F5E9,stroke:#43A047,color:#1B5E20,stroke-width:2px;
+  classDef phys_obs fill:#C8E6C9,stroke:#2E7D32,color:#1B5E20,stroke-width:2px,font-weight:700;
+  classDef phys_dict fill:#A5D6A7,stroke:#388E3C,color:#1B5E20,stroke-width:2px;
+  classDef phys_model fill:#F1F8E9,stroke:#558B2F,color:#1B5E20,stroke-width:2px;
+  classDef phys_audit fill:#F1F8E9,stroke:#33691E,color:#1B5E20,stroke-width:2px,stroke-dasharray: 2 2;
+
+  class M_kernel_view,M_operator_mother,M_opMotherDict,M_pressure,M_am_euler,M_graphzeta math_audit;
+  class M_rg math_closure;
+  class P_kernel_view,P_operator_mother,P_pressure,P_graphzeta phys_audit;
+  class P_rg phys_model;
+  class P_am_euler,P_opMotherDict phys_dict;
+```
+
 ### 图 9：尺度流与验证通道（RG/cosmology/entropy gap/Hecke/Selberg/γ/MDL） / Fig. 9: Scale Flow and Verification Channels (RG/cosmology/entropy gap/Hecke/Selberg/γ/MDL)
 
 ```mermaid
@@ -1174,6 +1271,18 @@ flowchart TB
   M_input_nufit@{ shape: lean-l, label: "NuFIT（中微子振荡全局拟合）<br/>类型：审计 / Audit<br/>label: subsec:external_inputs_inventory" }
   P_input_nufit@{ shape: lean-l, label: "NuFIT（目标 / targets；Match）<br/>类型：审计 / Audit<br/>label: subsec:external_inputs_inventory" }
   M_input_nufit -.- P_input_nufit
+
+  M_input_bhplanck@{ shape: lean-l, label: "BH/Planck（面积律/熵界/普朗克单位）<br/>类型：审计 / Audit<br/>label: subsec:external_inputs_inventory" }
+  P_input_bhplanck@{ shape: lean-l, label: "BH/Planck（目标 / targets；Match）<br/>类型：审计 / Audit<br/>label: subsec:external_inputs_inventory" }
+  M_input_bhplanck -.- P_input_bhplanck
+
+  M_bh_planck_calib["边界–普朗克容量校准（BH 信息→(m,n)）<br/>类型：审计 / Audit<br/>label: app:bh_planck_capacity_calibration<br/>output: (m*,n*), n(m), mismatch"]
+  P_bh_planck_calib("边界容量校准代理（BH 信息↔协议容量）<br/>类型：审计 / Audit<br/>label: app:bh_planck_capacity_calibration<br/>I_BH vs I_prot(m,n); finite-family CAP; generated fragments")
+  M_bh_planck_calib -.- P_bh_planck_calib
+
+  M_mass_flow_uplift["质量流（window uplift pooled depth）<br/>类型：审计 / Audit<br/>label: app:mass_flow_under_uplift<br/>output: rhat_CAP(u;m), rhat_FE(u;m)"]
+  P_mass_flow_uplift("uplift pooled depth（代表态池化：CAP vs free-energy）<br/>类型：审计 / Audit<br/>label: app:mass_flow_under_uplift")
+  M_mass_flow_uplift -.- P_mass_flow_uplift
 
   M_mdl_global["全局模型选择（MDL / prefix-code）<br/>类型：审计 / Audit<br/>label: app:global_model_selection_mdl<br/>family registry + prefix-code prior + global mixture bound"]
   P_mdl_global("全局 look-elsewhere 上界（registry 内）<br/>类型：审计 / Audit<br/>label: tab:audit_global_mdl_family_registry<br/>p_global(ε) via weighted N_{<=ε}/|Θ|")
@@ -1408,6 +1517,7 @@ flowchart TB
 
   %% dictionary-only alignment: pointer-jump bookkeeping ↔ operator mother space
   M_bh_pointer -.- M_operator_mother
+  P_bh_pointer -.- P_operator_mother
 
   M_qcd_gap["QCD 禁闭/质量隙（严格问题未闭合）<br/>类型：未闭合 / Not Closed<br/>label: app:continuum_yang_mills_from_holonomy<br/>note: representative YM closed; confinement/mass gap open"]
   P_qcd_gap("QCD 非微扰检验（未闭合）<br/>类型：未闭合 / Not Closed<br/>label: app:continuum_yang_mills_from_holonomy<br/>confinement/mass-gap not closed")
@@ -1617,7 +1727,7 @@ flowchart TB
   class M_sm,M_thermo,M_grav,M_qm,M_rg math_closure;
   class M_action,M_op3_yang_mills math_cont;
   class M_cosmo,M_internal_fiber_g2 math_assumption;
-  class M_gamma_proxy,M_gamma_direct,M_gauge3,M_holonomy_diag math_audit;
+  class M_gamma_proxy,M_gamma_direct,M_gauge3,M_pressure,M_input_planck,M_operator_mother math_audit;
   class M_scalar_iface,M_lambda_open,M_bh_pointer,M_qcd_gap not_closed;
   class M_op1 math_audit;
   class M_gut_scope,M_baryogenesis_scope,M_strongcp_scope,M_bhinfo_scope,M_qg_scope,M_cosmo_tension_scope,M_bsm_scope scope_gap;
@@ -1625,7 +1735,7 @@ flowchart TB
   class P_qm,P_wilson phys_obs;
   class P_types,P_equiv,P_proj,P_thermo,P_gauge3 phys_dict;
   class P_action,P_rg,P_cosmo phys_model;
-  class P_select,P_gamma_proxy,P_gamma_direct,P_internal_fiber_g2,P_holonomy_diag phys_audit;
+  class P_select,P_gamma_proxy,P_gamma_direct,P_pressure,P_input_planck,P_internal_fiber_g2,P_operator_mother phys_audit;
   class P_scalar_iface,P_lambda_open,P_bh_pointer,P_qcd_gap not_closed;
   class P_op1 phys_audit;
   class P_gut_scope,P_baryogenesis_scope,P_strongcp_scope,P_bhinfo_scope,P_qg_scope,P_cosmo_tension_scope,P_bsm_scope scope_gap;

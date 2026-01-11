@@ -23,13 +23,15 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 import exp_sm_labeling_solver as sml
-from common_constants import LOG_PHI, M_E_GEV, PHI
+from common_constants import LOG_PHI, M_E_GEV, M_Z_GEV, PHI
 from common_tex import write_lines
 
 
 # Unit conversion.
 M_E_EV = M_E_GEV * 1.0e9  # GeV -> eV
-V_EW_GEV = 246.0  # Higgs VEV (matching-layer calibration; see Appendix 48)
+# Electroweak VEV from the Z-scale interface dictionary:
+# v = 2 m_Z sqrt(15 pi / 26), using the closed electroweak normalization at μ_Z.
+V_EW_GEV = 2.0 * float(M_Z_GEV) * math.sqrt(15.0 * math.pi / 26.0)
 
 
 def _log_phi(x: float) -> float:
@@ -827,7 +829,7 @@ def main() -> None:
         )
         weinberg_rows.append("\\bottomrule")
         weinberg_summary.append(
-            rf"\textbf{{Weinberg scale (audit):}} using $m_{{\nu,\max}}={_fmt_ev(m_max)}\,\mathrm{{eV}}$ and $v=246\,\mathrm{{GeV}}$, "
+            rf"\textbf{{Weinberg scale (audit):}} using $m_{{\nu,\max}}={_fmt_ev(m_max)}\,\mathrm{{eV}}$ and $v={V_EW_GEV:.6g}\,\mathrm{{GeV}}$ (from the $Z$-scale dictionary), "
             rf"the coefficient-normalized estimate gives $\Lambda_W={lam:.6g}\,\mathrm{{GeV}}$; "
             rf"the nearest staircase threshold is $m={m_star}$ with $\mu_\mathrm{{th}}={mu_th:.6g}\,\mathrm{{GeV}}$ (log mismatch {err:.3f})."
         )
