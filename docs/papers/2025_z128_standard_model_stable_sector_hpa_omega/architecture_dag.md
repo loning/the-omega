@@ -1132,7 +1132,7 @@ flowchart TB
 
   %% === Core hubs ===
   M_kernel_view["Kernel view（语言核+折叠核+协议 RG 核）<br/>类型：审计 / Audit<br/>label: sec:kernel_view<br/>X_m + Fold_m + uplift/coarse-graining + r/RG dictionary"]
-  P_kernel_view("跨尺度计算入口（generated tables）<br/>类型：审计 / Audit<br/>label: tab:fractal_kernel_sweep / tab:folding_entropy_decomposition / tab:kernel_mu_r_bridge / tab:kernel_rg_flow_balanced / tab:kernel_rg_operator_sanity / tab:kernel_rg_operator_backreaction / tab:kernel_rg_resolvent_trace_audit / tab:kernel_rg_weighted_pole_barrier / tab:ext_boundary_operator_check<br/>kernel+entropy checks; μ/r staircase; balanced-chain coarse flow; uplift-operator audit")
+  P_kernel_view("跨尺度计算入口（generated tables）<br/>类型：审计 / Audit<br/>label: tab:fractal_kernel_sweep / tab:folding_entropy_decomposition / tab:kernel_mu_r_bridge / tab:kernel_rg_flow_balanced / tab:kernel_rg_operator_sanity / tab:kernel_rg_operator_backreaction / tab:kernel_rg_operator_error_budget / tab:kernel_rg_operator_spectral_gap / tab:kernel_rg_operator_covariance / tab:kernel_rg_operator_layout_sensitivity / tab:kernel_rg_resolvent_trace_audit / tab:kernel_rg_weighted_pole_barrier / tab:kernel_rg_weighted_doob / tab:kernel_rg_weighted_pressure / tab:ext_boundary_operator_check<br/>kernel+entropy checks; μ/r staircase; balanced-chain coarse flow; uplift-operator audit")
   M_kernel_view -.- P_kernel_view
 
   M_operator_mother["算子母空间（resolvent/determinant；finite-rank 更新）<br/>类型：审计 / Audit<br/>label: app:operator_mother_space<br/>trace-class F;  Tr(K(I−rF)⁻¹);  det(I−rF);  Δ finite-rank ⇒ F↦F+Δ"]
@@ -1250,7 +1250,7 @@ flowchart TB
   M_rm -.- P_rm
 
   M_kernel_view["Kernel view（语言核+折叠核+协议 RG 核）<br/>类型：审计 / Audit<br/>label: sec:kernel_view<br/>X_m + Fold_m + uplift/coarse-graining + r/RG dictionary"]
-  P_kernel_view("跨尺度计算入口（generated tables）<br/>类型：审计 / Audit<br/>label: tab:fractal_kernel_sweep / tab:folding_entropy_decomposition / tab:kernel_mu_r_bridge / tab:kernel_rg_flow_balanced / tab:kernel_rg_operator_sanity / tab:kernel_rg_operator_backreaction / tab:kernel_rg_resolvent_trace_audit / tab:kernel_rg_weighted_pole_barrier / tab:ext_boundary_operator_check<br/>kernel+entropy checks; μ/r staircase; balanced-chain coarse flow; uplift-operator audit")
+  P_kernel_view("跨尺度计算入口（generated tables）<br/>类型：审计 / Audit<br/>label: tab:fractal_kernel_sweep / tab:folding_entropy_decomposition / tab:kernel_mu_r_bridge / tab:kernel_rg_flow_balanced / tab:kernel_rg_operator_sanity / tab:kernel_rg_operator_backreaction / tab:kernel_rg_operator_error_budget / tab:kernel_rg_operator_spectral_gap / tab:kernel_rg_operator_covariance / tab:kernel_rg_operator_layout_sensitivity / tab:kernel_rg_resolvent_trace_audit / tab:kernel_rg_weighted_pole_barrier / tab:kernel_rg_weighted_doob / tab:kernel_rg_weighted_pressure / tab:ext_boundary_operator_check<br/>kernel+entropy checks; μ/r staircase; balanced-chain coarse flow; uplift-operator audit")
   M_kernel_view -.- P_kernel_view
 
   M_protocol_horizon["协议视界（tick-trap）<br/>类型：审计 / Audit<br/>label: app:protocol_horizon_tick_trap"]

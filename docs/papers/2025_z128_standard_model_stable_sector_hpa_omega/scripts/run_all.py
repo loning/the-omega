@@ -293,6 +293,34 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Kernel RG operator error-budget decomposition (certificate)",
+            script="exp_kernel_rg_operator_error_bound_certificate.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_error_budget_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG operator spectral-gap diagnostic",
+            script="exp_kernel_rg_operator_spectral_gap.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_spectral_gap_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG operator 2-point library (covariance audit)",
+            script="exp_kernel_rg_operator_covariance_audit.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_covariance_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG operator D4 layout sensitivity (conjugacy audit)",
+            script="exp_kernel_rg_operator_layout_sensitivity.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_layout_rows.tex",
+            ],
+        ),
+        Step(
             name="Kernel RG resolvent-trace audit (one-point / two-point)",
             script="exp_kernel_rg_resolvent_trace_audit.py",
             expected_outputs=[
@@ -304,6 +332,20 @@ def build_steps() -> List[Step]:
             script="exp_kernel_rg_weighted_operator_pole_barrier.py",
             expected_outputs=[
                 "sections/generated/kernel_rg_weighted_pole_barrier_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG weighted operator Doob normalization (Markov audit)",
+            script="exp_kernel_rg_weighted_doob_normalization.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_weighted_doob_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG weighted operator pressure proxy (log spectral radius)",
+            script="exp_kernel_rg_weighted_pressure_summary.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_weighted_pressure_rows.tex",
             ],
         ),
         Step(

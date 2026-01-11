@@ -7,7 +7,7 @@ This module implements the explicit 16x16 coarse RG operator used in the
   - microstate index set Omega_n = {0..4^n-1}, placed on a 2^n x 2^n Hilbert screen,
   - a fixed axis-aligned 4x4 block partition (block side = 2^(n-2)),
   - block projection P_n (averaging) and lift P_n^* (block-constant pullback),
-  - dyadic uplift u_n(k') = floor(k'/4) and Koopman pullback U_n,
+  - Hilbert-recursive uplift u_n via parent-cell projection on the 2D screen,
   - F_n = P_{n+1} U_n P_n^* as a 16x16 matrix,
   - a weighted family \\hat{F}_n(t) = P_{n+1} U_n exp(t * phi_n) P_n^*,
     where phi_n(k)=log g_{2n}(Fold_{2n}(k)).
@@ -75,6 +75,59 @@ def block_id_by_index(n_bits: int) -> List[int]:
     return load_or_compute(key, compute)
 
 
+def hilbert_inverse_index_map(n_bits: int) -> Dict[Tuple[int, int], int]:
+    """
+    Invert the deterministic Hilbert addressing map H_n by tabulating (x,y) -> k.
+    """
+    if n_bits < 0:
+        raise ValueError("n_bits must be nonnegative.")
+
+    key = cache_path(f"hilbert_inv_xy_to_k_n{n_bits}_v{CACHE_VERSION}.pkl")
+
+    def compute() -> Dict[Tuple[int, int], int]:
+        path = hil.hilbert_curve(n_bits)
+        out: Dict[Tuple[int, int], int] = {}
+        for k, (x, y) in enumerate(path):
+            out[(int(x), int(y))] = int(k)
+        # Basic sanity: full grid.
+        side = 1 << n_bits
+        if len(out) != side * side:
+            raise AssertionError("Unexpected inverse-map size for Hilbert curve.")
+        return out
+
+    return load_or_compute(key, compute)
+
+
+def parent_index_map(n_bits: int) -> List[int]:
+    """
+    Hilbert-recursive parent map u_n: Omega_{n+1} -> Omega_n, realized in index space.
+
+    For k' in {0..4^{n+1}-1} with H_{n+1}(k')=(x',y'), define the parent cell
+    (x,y)=(floor(x'/2), floor(y'/2)) on the 2^n x 2^n screen, and set
+    u_n(k') := H_n^{-1}(x,y).
+
+    Returns a list parent[k'] = u_n(k') of length 4^{n+1}.
+    """
+    if n_bits < 0:
+        raise ValueError("n_bits must be nonnegative.")
+
+    key = cache_path(f"rg_parent_map_n{n_bits}_v{CACHE_VERSION}.pkl")
+
+    def compute() -> List[int]:
+        path_np1 = hil.hilbert_curve(n_bits + 1)
+        inv_n = hilbert_inverse_index_map(n_bits)
+        out: List[int] = []
+        for (x2, y2) in path_np1:
+            x = int(x2) >> 1
+            y = int(y2) >> 1
+            out.append(inv_n[(x, y)])
+        if len(out) != _n_micro(n_bits + 1):
+            raise AssertionError("Unexpected parent-map length.")
+        return out
+
+    return load_or_compute(key, compute)
+
+
 def block_average_vector(n_bits: int, values: List[float]) -> Vec:
     """
     Compute the 16-vector of block averages for a micro-field `values[k]`
@@ -114,6 +167,128 @@ def mat_transpose(A: Mat) -> Mat:
     n = len(A)
     m = len(A[0])
     return [[A[i][j] for i in range(n)] for j in range(m)]
+
+
+def vec_mean(x: Vec) -> float:
+    if not x:
+        raise ValueError("Empty vector.")
+    return sum(float(v) for v in x) / float(len(x))
+
+
+def vec_norm2(x: Vec) -> float:
+    return math.sqrt(sum(float(v) * float(v) for v in x))
+
+
+def project_mean_zero(x: Vec) -> Vec:
+    """
+    Project onto the codimension-1 subspace orthogonal to the constant vector,
+    using the uniform mean on the 16-block quotient.
+    """
+    m = vec_mean(x)
+    return [float(v) - m for v in x]
+
+
+def second_eigenvalue_abs(A: Mat, *, iters: int = 800) -> float:
+    """
+    Estimate |lambda_2| for a row-stochastic 16x16 matrix A by power iteration
+    on the mean-zero subspace (deflating the trivial eigenvalue 1).
+    """
+    n = len(A)
+    if n == 0 or any(len(row) != n for row in A):
+        raise ValueError("A must be a square matrix.")
+    if iters <= 0:
+        raise ValueError("iters must be positive.")
+
+    # Deterministic non-constant seed.
+    v = [float((i % 7) - 3) for i in range(n)]
+    v = project_mean_zero(v)
+    nv = vec_norm2(v)
+    if nv == 0.0:
+        raise AssertionError("Unexpected zero seed after projection.")
+    v = [vv / nv for vv in v]
+
+    lam = 0.0
+    for _ in range(iters):
+        w = mat_vec(A, v)
+        w = project_mean_zero(w)
+        nw = vec_norm2(w)
+        if nw == 0.0:
+            return 0.0
+        # Rayleigh-like ratio in norm.
+        lam = nw
+        v = [ww / nw for ww in w]
+
+    return float(abs(lam))
+
+
+def row_sum_stats(A: Mat) -> Tuple[float, float, float]:
+    """
+    Return (max_abs_row_sum_err_from_1, row_sum_min, row_sum_max).
+    """
+    if not A:
+        raise ValueError("Empty matrix.")
+    errs: List[float] = []
+    sums: List[float] = []
+    for row in A:
+        s = sum(float(v) for v in row)
+        sums.append(s)
+        errs.append(abs(s - 1.0))
+    return (max(errs), min(sums), max(sums))
+
+
+def pf_right_eigenpair(A: Mat, *, iters: int = 1200) -> Tuple[float, Vec]:
+    """
+    Approximate the Perron-Frobenius dominant eigenpair (lambda, h) for a
+    nonnegative square matrix A using power iteration on the right.
+    """
+    n = len(A)
+    if n == 0 or any(len(row) != n for row in A):
+        raise ValueError("A must be a square matrix.")
+    if iters <= 0:
+        raise ValueError("iters must be positive.")
+
+    # Positive deterministic seed (L1-normalized).
+    v = [1.0 / float(n)] * n
+    lam = 1.0
+    for _ in range(iters):
+        w = mat_vec(A, v)
+        s = sum(float(x) for x in w)
+        if s <= 0.0:
+            raise ValueError("Nonpositive iterate; A may be zero.")
+        lam = float(s)  # since sum(v)=1, use L1 growth as eigenvalue proxy
+        v = [float(x) / lam for x in w]
+
+    # Normalize h to mean 1 for stability.
+    m = vec_mean(v)
+    if m <= 0.0:
+        raise AssertionError("Unexpected nonpositive PF eigenvector mean.")
+    h = [float(x) / m for x in v]
+    return (float(lam), h)
+
+
+def doob_row_stochastic(A: Mat, lam: float, h: Vec) -> Mat:
+    """
+    Doob transform (finite-dimensional): build a row-stochastic matrix P from A
+    given a positive right eigenpair A h = lam h:
+
+      P_ij = A_ij * h_j / (lam * h_i).
+    """
+    n = len(A)
+    if n == 0 or any(len(row) != n for row in A):
+        raise ValueError("A must be a square matrix.")
+    if len(h) != n:
+        raise ValueError("Dimension mismatch for h.")
+    if lam <= 0.0:
+        raise ValueError("lam must be positive.")
+
+    P: Mat = [[0.0] * n for _ in range(n)]
+    for i in range(n):
+        hi = float(h[i])
+        if hi <= 0.0:
+            raise ValueError("h must be positive.")
+        for j in range(n):
+            P[i][j] = float(A[i][j]) * float(h[j]) / (float(lam) * hi)
+    return P
 
 
 def mat_mul(A: Mat, B: Mat) -> Mat:
@@ -239,6 +414,7 @@ def build_F_matrix(n_bits: int) -> Mat:
         raise ValueError("n_bits must be >= 3.")
     bids_n = block_id_by_index(n_bits)
     bids_np1 = block_id_by_index(n_bits + 1)
+    parents = parent_index_map(n_bits)
     Np1 = _n_micro(n_bits + 1)
     denom = float(Np1 // 16)
 
@@ -249,7 +425,7 @@ def build_F_matrix(n_bits: int) -> Mat:
         if kp1 % 4096 == 0:
             prog.maybe(kp1)
         i = bids_np1[kp1]
-        parent = kp1 >> 2
+        parent = parents[kp1]
         j = bids_n[parent]
         counts[i][j] += 1.0
     prog.done()
@@ -274,6 +450,7 @@ def build_weighted_F_matrix(n_bits: int, t: float) -> Mat:
 
     bids_n = block_id_by_index(n_bits)
     bids_np1 = block_id_by_index(n_bits + 1)
+    parents = parent_index_map(n_bits)
     Np1 = _n_micro(n_bits + 1)
     denom = float(Np1 // 16)
 
@@ -284,7 +461,7 @@ def build_weighted_F_matrix(n_bits: int, t: float) -> Mat:
         if kp1 % 4096 == 0:
             prog.maybe(kp1)
         i = bids_np1[kp1]
-        parent = kp1 >> 2
+        parent = parents[kp1]
         j = bids_n[parent]
         w = math.exp(float(t) * float(phi[parent]))
         sums[i][j] += w
