@@ -477,6 +477,18 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Curvature bridge end-to-end (protocolized input -> chi -> curvature proxy)",
+            script="exp_curvature_bridge_end_to_end.py",
+            expected_outputs=[
+                "sections/generated/curvature_e2e_rows.tex",
+                "sections/generated/curvature_e2e_summary.tex",
+                "sections/generated/curvature_e2e_gamma_rows.tex",
+                "sections/generated/curvature_e2e_gamma_summary.tex",
+                "sections/generated/curvature_e2e_gamma_stability_rows.tex",
+                "sections/generated/curvature_e2e_gamma_stability_summary.tex",
+            ],
+        ),
+        Step(
             name="Holonomy balanced-chain permutation fits (PMNS/CKM, finite diagnostic)",
             script="exp_holonomy_balanced_chain_perm_fit.py",
             expected_outputs=[
