@@ -10,6 +10,8 @@ Outputs (LaTeX fragments):
   - sections/generated/bh_planck_capacity_rows.tex
   - sections/generated/bh_planck_capacity_summary.tex
   - sections/generated/bh_capacity_calibrated_uplift_path_rows.tex
+  - sections/generated/bh_planck_capacity_known_rows.tex
+  - sections/generated/bh_planck_capacity_known_summary.tex
 
 Design goals (repo conventions):
   - Deterministic output (no timestamps).
@@ -113,6 +115,17 @@ class CalibRow:
     delta: float
 
 
+@dataclass(frozen=True)
+class KnownRow:
+    name: str
+    m_over_msun: float
+    m_over_mp: float
+    m: int
+    n: int
+    i_bh_bits: float
+    delta: float
+
+
 def _candidate_m() -> List[int]:
     return [6, 8, 10, 12, 14, 16]
 
@@ -125,16 +138,44 @@ def _mass_family_alpha() -> List[int]:
     return [1, 2, 4, 8, 16, 32, 64]
 
 
+def _candidate_n_known(max_n: int = 200) -> List[int]:
+    # Finite but sufficiently wide to cover reference astrophysical black-hole masses.
+    return list(range(0, int(max_n) + 1))
+
+
+def _known_bh_family_m_over_msun() -> List[Tuple[str, float]]:
+    """
+    Reference masses (in solar-mass units), used only as matching-layer examples.
+    Values are nominal/rounded and intentionally treated as external inputs.
+    """
+    return [
+        ("Solar-mass BH (1 $M_\\odot$)", 1.0),
+        ("Cygnus X-1 (21.2 $M_\\odot$)", 21.2),
+        ("GW150914 remnant ($\\sim 62\\,M_\\odot$)", 62.0),
+        ("Sgr A* ($4.297\\times 10^6\\,M_\\odot$)", 4.297e6),
+        ("M87* ($6.5\\times 10^9\\,M_\\odot$)", 6.5e9),
+    ]
+
+
+def _m_sun_kg() -> float:
+    # Nominal solar mass (IAU 2015), treated as an external matching constant.
+    return 1.988_47e30
+
+
 def _best_mn_for_mass(i_bh_bits: float, m_set: Sequence[int], n_set: Sequence[int]) -> Tuple[int, int, int, float]:
     """
     Return (m, n, I_prot, delta) for the lexicographic key:
       (delta, n, m).
     """
+    if i_bh_bits <= 0.0 or not math.isfinite(i_bh_bits):
+        raise ValueError("i_bh_bits must be positive and finite")
+    log_i_bh = math.log(float(i_bh_bits))
     best: Tuple[float, int, int, int] | None = None  # (delta, n, m, I_prot)
     for m in m_set:
         for n in n_set:
             ip = _i_prot_bits(m, n)
-            d = _delta_log_ratio(ip, i_bh_bits)
+            # Use log-space mismatch to avoid float overflow for large n.
+            d = abs((math.log(float(m)) + float(n) * math.log(4.0)) - log_i_bh)
             key = (d, int(n), int(m), int(ip))
             if best is None or key < best:
                 best = key
@@ -162,10 +203,13 @@ def _best_n_for_fixed_m(i_bh_bits: float, m: int, n_set: Sequence[int]) -> Tuple
     Return (n, I_prot, delta) for fixed m with lexicographic key:
       (delta, n).
     """
+    if i_bh_bits <= 0.0 or not math.isfinite(i_bh_bits):
+        raise ValueError("i_bh_bits must be positive and finite")
+    log_i_bh = math.log(float(i_bh_bits))
     best: Tuple[float, int, int] | None = None  # (delta, n, I_prot)
     for n in n_set:
         ip = _i_prot_bits(m, n)
-        d = _delta_log_ratio(ip, i_bh_bits)
+        d = abs((math.log(float(m)) + float(n) * math.log(4.0)) - log_i_bh)
         key = (d, int(n), int(ip))
         if best is None or key < best:
             best = key
@@ -250,6 +294,49 @@ def _write_summary(
     write_lines(out, lines if lines else ["% (empty)"])
 
 
+def _write_known_rows(rows: Sequence[KnownRow]) -> None:
+    lines: List[str] = []
+    for r in rows:
+        i_prot_tex = rf"${int(r.m)}\,4^{{{int(r.n)}}}$"
+        m_over_mp_tex = rf"${_fmt_sci_tex(r.m_over_mp, digits=6)}$"
+        i_bh_tex = rf"${_fmt_sci_tex(r.i_bh_bits, digits=6)}$"
+        lines.append(
+            " & ".join(
+                [
+                    r.name,
+                    _fmt_float(r.m_over_msun, digits=6),
+                    m_over_mp_tex,
+                    _fmt_int(r.m),
+                    _fmt_int(r.n),
+                    i_prot_tex,
+                    i_bh_tex,
+                    _fmt_float(r.delta, digits=6),
+                ]
+            )
+            + r" \\"
+        )
+    out = generated_dir() / "bh_planck_capacity_known_rows.tex"
+    write_lines(out, lines if lines else ["% (no rows)"])
+
+
+def _write_known_summary(
+    m_set: Sequence[int],
+    n_set_known: Sequence[int],
+    names: Sequence[str],
+) -> None:
+    m_list = ", ".join(str(int(x)) for x in m_set)
+    n_min = int(min(n_set_known)) if n_set_known else 0
+    n_max = int(max(n_set_known)) if n_set_known else 0
+    items = "; ".join(names) if names else "(none)"
+    lines: List[str] = [
+        r"\paragraph{Audit summary (reference black holes).} \AuditTag "
+        + rf"Candidate family: $m\in\{{{m_list}\}}$, $n\in\{{{n_min},\dots,{n_max}\}}$ (bounded finite set).",
+        r"\noindent\AuditTag " + rf"Reference objects: {items}.",
+    ]
+    out = generated_dir() / "bh_planck_capacity_known_summary.tex"
+    write_lines(out, lines if lines else ["% (empty)"])
+
+
 def main() -> None:
     m_set = _candidate_m()
     n_set = _candidate_n()
@@ -283,6 +370,28 @@ def main() -> None:
     _write_capacity_rows(rows)
     _write_uplift_path_rows(m_set, n_set, i_bh_ref_bits, alpha_ref)
     _write_summary(m_set, n_set, alpha_set, mp_kg, lp2, i_anchor_bits, alpha_ref, i_bh_ref_bits)
+
+    # Reference black holes (known objects) under an extended but still finite n-family.
+    n_set_known = _candidate_n_known(max_n=200)
+    msun_kg = _m_sun_kg()
+    known_rows: List[KnownRow] = []
+    for name, m_over_msun in _known_bh_family_m_over_msun():
+        mass_kg = float(m_over_msun) * msun_kg
+        i_bh = _i_bh_bits_from_mass(mass_kg)
+        m_star, n_star, _ip_star, d_star = _best_mn_for_mass(i_bh, m_set, n_set_known)
+        known_rows.append(
+            KnownRow(
+                name=str(name),
+                m_over_msun=float(m_over_msun),
+                m_over_mp=float(mass_kg / mp_kg),
+                m=int(m_star),
+                n=int(n_star),
+                i_bh_bits=float(i_bh),
+                delta=float(d_star),
+            )
+        )
+    _write_known_rows(known_rows)
+    _write_known_summary(m_set, n_set_known, [r.name for r in known_rows])
 
 
 if __name__ == "__main__":

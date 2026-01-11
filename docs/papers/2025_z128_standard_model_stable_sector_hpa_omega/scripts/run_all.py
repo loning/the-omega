@@ -698,6 +698,8 @@ def build_steps() -> List[Step]:
                 "sections/generated/bh_planck_capacity_rows.tex",
                 "sections/generated/bh_planck_capacity_summary.tex",
                 "sections/generated/bh_capacity_calibrated_uplift_path_rows.tex",
+                "sections/generated/bh_planck_capacity_known_rows.tex",
+                "sections/generated/bh_planck_capacity_known_summary.tex",
             ],
         ),
         Step(
