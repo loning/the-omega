@@ -930,6 +930,10 @@ flowchart TB
   P_freq("频率优先字典（ratio-first）<br/>类型：字典 / Dictionary<br/>label: subsec:frequency_first_spine<br/>ω ratios ↔ energy/mass/T/redshift/delay")
   M_freq -.- P_freq
 
+  M_opMotherDict["算子母空间字典入口（resolvent/determinant）<br/>类型：审计 / Audit<br/>label: app:operator_mother_space_dictionary<br/>F trace-class;  T_K(r)=Tr(K(I−rF)⁻¹);  det(I−rF);  F↦F+Δ"]
+  P_opMotherDict("算子母空间字典（观察者/意识口径）<br/>类型：字典 / Dictionary<br/>label: app:operator_mother_space_dictionary<br/>observer: K; consciousness: finite-rank Δ (dictionary)")
+  M_opMotherDict -.- P_opMotherDict
+
   M_action["Seff：CAP 选出的作用量骨架<br/>类型：连续 / Continuum<br/>label: eq:cap_minimal_action_skeleton<br/>S_eff=∫ d⁴x √(−g)[(R−2Λ)/(16πG) − λ_F(∇χ)² − V(χ²) − ∑_a Tr(F_a²)/(4g_a²) + 𝓛_m]"]
   P_action("有效作用量代理（连续代表 / Effective Action Proxy (Continuous Representative)）<br/>类型：模型 / Model<br/>label: prop:cap_minimal_action_skeleton<br/>CAP selects S_eff within a finite candidate family")
   M_action -.- P_action
@@ -973,6 +977,7 @@ flowchart TB
   M_equiv --> M_quotient --> M_proj
   M_cap --> M_capinv
   M_equiv --> M_capinv --> M_action
+  M_equiv --> M_opMotherDict --> M_action
   M_equiv --> M_freq
   M_equiv --> M_action --> M_eom --> M_grav --> M_recon --> M_err
   M_equiv --> M_thermo
@@ -983,6 +988,7 @@ flowchart TB
   P_equiv --> P_quotient --> P_proj
   P_select --> P_capinv --> P_action
   P_equiv --> P_capinv
+  P_equiv --> P_opMotherDict --> P_action
   P_equiv --> P_freq
   P_freq --> P_thermo
   P_freq --> P_lens
@@ -1013,11 +1019,11 @@ flowchart TB
   class M_equiv,M_quotient,M_proj,M_freq math_construct;
   class M_thermo,M_grav,M_qm math_closure;
   class M_action,M_eom math_cont;
-  class M_capinv,M_recon,M_err,M_state_gns math_audit;
+  class M_capinv,M_recon,M_err,M_state_gns,M_opMotherDict math_audit;
   class M_wave_particle math_audit;
   class P_dyn phys_proxy;
   class P_lens,P_qm phys_obs;
-  class P_equiv,P_quotient,P_proj,P_freq,P_thermo phys_dict;
+  class P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_opMotherDict phys_dict;
   class P_action,P_eom phys_model;
   class P_capinv,P_select,P_recon,P_err,P_state_gns phys_audit;
   class P_wave_particle phys_audit;
@@ -1662,6 +1668,7 @@ flowchart TB
 | `P_capinv` | `\label{rem:cap_equiv_audit_failure}` | `tie-break κ must be invariant; coordinate-dependent κ breaks semantics` | `sections/F_10_equivalence_semantics.tex` |
 | `M_freq` | `\label{def:frequency_from_phase}` | `ω(t₁,t₂)=Δθ/Δt,  Δt=t₂−t₁` | `sections/F_10_equivalence_semantics.tex` |
 | `P_freq` | `\label{subsec:frequency_first_spine}` | `ω ratios ↔ energy/mass/T/redshift/delay` | `sections/F_10_equivalence_semantics.tex` |
+| `M_opMotherDict` / `P_opMotherDict` | `\label{app:operator_mother_space_dictionary}` | `operator mother space dictionary (F, K; resolvent/det; finite-rank Δ updates; observer/consciousness dictionary)` | `sections/F_05_operator_mother_space_dictionary.tex` |
 | `M_action` | `\label{app:cap_continuum_action_closure}` | `eq:cap_minimal_action_skeleton — S_eff=∫ d⁴x √−g[(R−2Λ)/(16πG) − λ_F(∇χ)² − V(χ²) − ∑_a Tr(F_a²)/(4g_a²) + 𝓛_m]` | `sections/F_20_cap_continuum_action_closure.tex` |
 | `P_action` | `\label{app:cap_continuum_action_closure}` | `S_eff is a continuum proxy selected by CAP within a finite candidate family` | `sections/F_20_cap_continuum_action_closure.tex` |
 | `M_eom` | `\label{app:variational_field_equations}` | `eq:einstein_total_stress — G_{μν}+Λg_{μν}=8πG(T^m_{μν}+T^χ_{μν}+T^YM_{μν})` | `sections/F_21_variational_field_equations.tex` |
