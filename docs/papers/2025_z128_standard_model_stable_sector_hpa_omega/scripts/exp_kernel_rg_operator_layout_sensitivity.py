@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Protocol RG operator: D4 layout sensitivity audit.
+Protocol RG operator: D4 layout sensitivity audit (with transport).
 
 We treat a layout as a D4 symmetry g acting on the Hilbert screen coordinates:
   H_n^g(k) := g(H_n(k)).
 The block partition remains axis-aligned in the transformed coordinates.
 
 For each n=3..8 and each g in a fixed D4 family, we:
-  - build the 16x16 operator F_n^g from the transformed addressing,
+  - build the 16x16 operator F_n^g from the transformed addressing, including
+    the same protocol-local transport step (lazy random walk on the screen graph),
   - compute the induced permutation pi_g on the 4x4 block grid,
   - check the conjugacy identity: F_n^g ≈ P(pi_g) F_n P(pi_g)^{-1},
   - report the maximum absolute entry error of that conjugacy check.
@@ -25,15 +26,7 @@ from typing import Callable, Dict, List, Tuple
 import exp_hilbert_chirality_index as hil
 from common_paths import generated_dir
 from common_tex import write_lines
-from rg_operator import (
-    _n_micro,
-    block_size,
-    det,
-    mat_mul,
-    mat_transpose,
-    parent_index_map,
-    power_iteration_rho,
-)
+from rg_operator import _n_micro, block_size, det, mat_mul, mat_transpose, power_iteration_rho
 
 Mat = List[List[float]]
 
@@ -78,14 +71,54 @@ def _parent_map_layout(n_bits: int, g: Callable[[int, int, int], Tuple[int, int]
     return out
 
 
-def _build_F_from_maps(bids_n: List[int], bids_np1: List[int], parents: List[int]) -> Mat:
+def _neighbors_4(x: int, y: int, *, L: int) -> List[Tuple[int, int]]:
+    out: List[Tuple[int, int]] = []
+    if x > 0:
+        out.append((x - 1, y))
+    if x < L:
+        out.append((x + 1, y))
+    if y > 0:
+        out.append((x, y - 1))
+    if y < L:
+        out.append((x, y + 1))
+    return out
+
+
+def _build_F_from_layout(n_bits: int, g: Callable[[int, int, int], Tuple[int, int]]) -> Mat:
+    """
+    Build F_n^{(g)} with the same transport-upgraded rule:
+      F_n^{(g)} = P_{n+1}^{(g)} T_{n+1}^{(g)} U_n^{(g)} (P_n^{(g)})^*,
+    realized as a 16x16 matrix on the block quotient in transformed coordinates.
+    """
+    p_stay = 0.5
+    bids_n = _build_block_ids(n_bits, g)
+    bids_np1 = _build_block_ids(n_bits + 1, g)
+    parents_np1 = _parent_map_layout(n_bits, g)
+    inv_np1 = _inv_map_from_path(n_bits + 1, g)
+    Lnp1 = (1 << (n_bits + 1)) - 1
+
     Np1 = len(bids_np1)
     denom = float(Np1 // 16)
     counts: Mat = [[0.0] * 16 for _ in range(16)]
-    for kp1 in range(Np1):
-        i = bids_np1[kp1]
-        j = bids_n[parents[kp1]]
-        counts[i][j] += 1.0
+
+    # Iterate destinations in the Hilbert index order; use transformed coordinates via inv_np1 keys.
+    # Reuse the transformed path for coordinate access.
+    path_np1 = hil.hilbert_curve(n_bits + 1)
+    for k_dest, (x, y) in enumerate(path_np1):
+        xg, yg = g(int(x), int(y), Lnp1)
+        i = bids_np1[k_dest]
+        neigh = _neighbors_4(int(xg), int(yg), L=Lnp1)
+        deg = len(neigh)
+        # self
+        j_self = bids_n[parents_np1[k_dest]]
+        counts[i][j_self] += float(p_stay)
+        if deg > 0 and p_stay < 1.0:
+            w = (1.0 - float(p_stay)) / float(deg)
+            for (xn, yn) in neigh:
+                k_src = inv_np1[(xn, yn)]
+                j = bids_n[parents_np1[k_src]]
+                counts[i][j] += w
+
     return [[c / denom for c in row] for row in counts]
 
 
@@ -184,21 +217,13 @@ def main() -> None:
     rows: List[str] = []
     # Columns: n, layout, conj_max_abs, rho, |det(I-F)|.
     for n in range(3, 9):
-        # Baseline.
-        bids_n0 = _build_block_ids(n, _g_id)
-        bids_np10 = _build_block_ids(n + 1, _g_id)
-        parents0 = parent_index_map(n)
-        F0 = _build_F_from_maps(bids_n0, bids_np10, parents0)
+        # Baseline (with transport).
+        F0 = _build_F_from_layout(n, _g_id)
         rho0 = power_iteration_rho(F0)
         det0 = abs(det(_I_minus(F0)))
 
         for name, g in layouts:
-            bids_n = _build_block_ids(n, g)
-            bids_np1 = _build_block_ids(n + 1, g)
-            parents = _parent_map_layout(n, g)
-            if len(parents) != _n_micro(n + 1):
-                raise AssertionError("Unexpected parent-map length under layout.")
-            Fg = _build_F_from_maps(bids_n, bids_np1, parents)
+            Fg = _build_F_from_layout(n, g)
 
             pi = _perm_from_layout(n, g)
             P = _perm_matrix(pi)

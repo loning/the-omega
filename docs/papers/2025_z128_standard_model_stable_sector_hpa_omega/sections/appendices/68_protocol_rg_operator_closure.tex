@@ -58,18 +58,22 @@ U_n:\RR^{\Omega_n}\to\RR^{\Omega_{n+1}},
 \end{definition}
 
 \begin{definition}[Protocol RG operator on the $4\times 4$ block quotient]\label{def:protocol_rg_operator_appendix}
-\MathTag Define the protocol RG operator
+\MathTag Define a protocol-local transport operator $T_{n+1}$ on $\Omega_{n+1}$ as a single lazy nearest-neighbor random-walk step on the $2^{n+1}\times 2^{n+1}$ Hilbert screen graph (reflecting boundary), and define the protocol RG operator
 \[
 F_n:\mathcal{B}_n\to\mathcal{B}_{n+1},
 \qquad
-F_n:=P_{n+1}\circ U_n\circ P_n^\ast.
+F_n:=P_{n+1}\circ T_{n+1}\circ U_n\circ P_n^\ast.
+\]
+\AuditTag For comparison, define the untransported block operator
+\[
+F_n^{(0)}:=P_{n+1}\circ U_n\circ P_n^\ast.
 \]
 \end{definition}
 
 \begin{lemma}[Exact coarse intertwining]\label{lem:rg_exact_coarse_intertwining}
 \MathTag For every microstate field $f\in\RR^{\Omega_n}$,
 \[
-P_{n+1}(U_nf)=F_n(P_nf).
+P_{n+1}(U_nf)=F_n^{(0)}(P_nf).
 \]
 \end{lemma}
 \begin{proof}
@@ -82,7 +86,7 @@ Then
 \]
 By construction, the map $u_n$ is the Hilbert-recursive parent-cell projection on the $2^n\times 2^n$ screen and the $4\times 4$ block partition is axis-aligned.
 Hence for each $b$, the multiset $\{u_n(k'):k'\in B_{n+1,b}\}$ decomposes into a union of full blocks at resolution $n$ with block-dependent multiplicities.
-Therefore the average above depends on $f$ only through its block averages $P_nf$, and the resulting linear combination of these block averages is exactly the matrix action $F_n(P_nf)$.
+Therefore the average above depends on $f$ only through its block averages $P_nf$, and the resulting linear combination of these block averages is exactly the matrix action $F_n^{(0)}(P_nf)$.
 \end{proof}
 
 \begin{lemma}[D4 layout covariance (block-permutation conjugacy)]\label{lem:rg_d4_layout_conjugacy}
@@ -100,23 +104,24 @@ Equivalently, every row of the matrix representation of $F_n$ sums to $1$.
 \end{lemma}
 \begin{proof}
 If $v_b\equiv c$, then $(P_n^\ast v)(k)\equiv c$ on $\Omega_n$, hence $(U_nP_n^\ast v)(k')\equiv c$ on $\Omega_{n+1}$.
+Since $T_{n+1}$ is a stochastic averaging operator, it preserves constants, so $(T_{n+1}U_nP_n^\ast v)(k')\equiv c$.
 Applying $P_{n+1}$ returns the constant block-average vector with value $c$.
 \end{proof}
 
 \begin{lemma}[Error-budget decomposition for recompute versus operator prediction]\label{lem:rg_error_budget_decomposition}
 \MathTag Let $\tilde q_n\in\RR^{\Omega_n}$ be any microstate field and write $v_n:=P_n\tilde q_n\in\RR^{16}$.
-Define the recomputed next block state $v_{\mathrm{true}}:=P_{n+1}\tilde q_{n+1}$, the operator prediction $v_{\mathrm{pred}}:=F_n v_n$, and the micro-uplifted coarse state $v_{\mathrm{uplift}}:=P_{n+1}(U_n\tilde q_n)$.
+Define the recomputed next block state $v_{\mathrm{true}}:=P_{n+1}\tilde q_{n+1}$, the operator prediction $v_{\mathrm{pred}}:=F_n v_n$, and the transported uplifted state $v_{\mathrm{trans}}:=P_{n+1}(T_{n+1}U_n\tilde q_n)$.
 Then
 \[
 v_{\mathrm{true}}-v_{\mathrm{pred}}
 \;=\;
-\underbrace{\bigl(v_{\mathrm{true}}-v_{\mathrm{uplift}}\bigr)}_{\text{\emph{recompute/refinement}}}
+\underbrace{\bigl(v_{\mathrm{true}}-v_{\mathrm{trans}}\bigr)}_{\text{\emph{recompute/refinement}}}
 \;+\;
-\underbrace{\bigl(v_{\mathrm{uplift}}-v_{\mathrm{pred}}\bigr)}_{\text{\emph{coarse-graining loss}}}.
+\underbrace{\bigl(v_{\mathrm{trans}}-v_{\mathrm{pred}}\bigr)}_{\text{\emph{coarse-graining loss}}}.
 \]
 \end{lemma}
 \begin{proof}
-Add and subtract $v_{\mathrm{uplift}}$.
+Add and subtract $v_{\mathrm{trans}}$.
 \end{proof}
 
 \begin{remark}[A 2-point readout library beyond variance]\label{rem:rg_two_point_library}
@@ -147,7 +152,7 @@ and the diagonal multiplication operator $M_{\varphi_n}$ on $\RR^{\Omega_n}$ giv
 \begin{definition}[Weighted protocol RG operator]\label{def:weighted_protocol_rg_operator_appendix}
 \MathTag For $t\in\RR$, define the weighted operator
 \[
-\widehat F_n(t):=P_{n+1}\circ U_n\circ \e^{tM_{\varphi_n}}\circ P_n^\ast:\mathcal{B}_n\to\mathcal{B}_{n+1}.
+\widehat F_n(t):=P_{n+1}\circ T_{n+1}\circ U_n\circ \e^{tM_{\varphi_n}}\circ P_n^\ast:\mathcal{B}_n\to\mathcal{B}_{n+1}.
 \]
 \end{definition}
 

@@ -8,8 +8,9 @@ This module implements the explicit 16x16 coarse RG operator used in the
   - a fixed axis-aligned 4x4 block partition (block side = 2^(n-2)),
   - block projection P_n (averaging) and lift P_n^* (block-constant pullback),
   - Hilbert-recursive uplift u_n via parent-cell projection on the 2D screen,
-  - F_n = P_{n+1} U_n P_n^* as a 16x16 matrix,
-  - a weighted family \\hat{F}_n(t) = P_{n+1} U_n exp(t * phi_n) P_n^*,
+  - a protocol-local transport (parallel-transport) operator T_n on the screen graph,
+  - F_n = P_{n+1} T_{n+1} U_n P_n^* as a 16x16 matrix,
+  - a weighted family \\hat{F}_n(t) = P_{n+1} T_{n+1} U_n exp(t * phi_n) P_n^*,
     where phi_n(k)=log g_{2n}(Fold_{2n}(k)).
 
 Only the Python standard library is used, but we reuse deterministic local
@@ -126,6 +127,36 @@ def parent_index_map(n_bits: int) -> List[int]:
         return out
 
     return load_or_compute(key, compute)
+
+def _neighbors_4(x: int, y: int, *, L: int) -> List[Tuple[int, int]]:
+    out: List[Tuple[int, int]] = []
+    if x > 0:
+        out.append((x - 1, y))
+    if x < L:
+        out.append((x + 1, y))
+    if y > 0:
+        out.append((x, y - 1))
+    if y < L:
+        out.append((x, y + 1))
+    return out
+
+
+def _transport_source_weights_for_dest(
+    x: int, y: int, *, inv: Dict[Tuple[int, int], int], L: int, p_stay: float
+) -> List[Tuple[int, float]]:
+    """
+    Return a list of (k_source, weight) contributing to (T f)(k_dest) for a lazy
+    nearest-neighbor random walk on the 2D grid with reflecting boundary.
+    """
+    k_self = inv[(x, y)]
+    neigh = _neighbors_4(x, y, L=L)
+    deg = len(neigh)
+    out: List[Tuple[int, float]] = [(k_self, float(p_stay))]
+    if deg > 0 and p_stay < 1.0:
+        w = (1.0 - float(p_stay)) / float(deg)
+        for (xn, yn) in neigh:
+            out.append((inv[(xn, yn)], w))
+    return out
 
 
 def block_average_vector(n_bits: int, values: List[float]) -> Vec:
@@ -408,26 +439,35 @@ def power_iteration_rho(A: Mat, iters: int = 200) -> float:
 
 def build_F_matrix(n_bits: int) -> Mat:
     """
-    Build the 16x16 matrix for F_n = P_{n+1} U_n P_n^*.
+    Build the 16x16 matrix for
+      F_n = P_{n+1} T_{n+1} U_n P_n^*,
+    where T_{n+1} is the scalar (lazy random-walk) parallel-transport operator
+    on the 2^{n+1} x 2^{n+1} screen graph.
     """
     if n_bits < 3:
         raise ValueError("n_bits must be >= 3.")
+    p_stay = 0.5
     bids_n = block_id_by_index(n_bits)
     bids_np1 = block_id_by_index(n_bits + 1)
-    parents = parent_index_map(n_bits)
+    parents_np1 = parent_index_map(n_bits)  # maps Omega_{n+1} index -> Omega_n index
+    path_np1 = hil.hilbert_curve(n_bits + 1)
+    inv_np1 = hilbert_inverse_index_map(n_bits + 1)
+    L = (1 << (n_bits + 1)) - 1
+
     Np1 = _n_micro(n_bits + 1)
     denom = float(Np1 // 16)
 
     counts: List[List[float]] = [[0.0] * 16 for _ in range(16)]
     prog = ProgressEvery(label=f"build_F_matrix n={n_bits}", total=Np1, interval_s=60.0)
     prog.start()
-    for kp1 in range(Np1):
-        if kp1 % 4096 == 0:
-            prog.maybe(kp1)
-        i = bids_np1[kp1]
-        parent = parents[kp1]
-        j = bids_n[parent]
-        counts[i][j] += 1.0
+    for k_dest, (x, y) in enumerate(path_np1):
+        if k_dest % 4096 == 0:
+            prog.maybe(k_dest)
+        i = bids_np1[k_dest]
+        srcs = _transport_source_weights_for_dest(int(x), int(y), inv=inv_np1, L=L, p_stay=p_stay)
+        for k_src, w in srcs:
+            j = bids_n[parents_np1[k_src]]
+            counts[i][j] += float(w)
     prog.done()
 
     return [[counts[i][j] / denom for j in range(16)] for i in range(16)]
@@ -436,7 +476,7 @@ def build_F_matrix(n_bits: int) -> Mat:
 def build_weighted_F_matrix(n_bits: int, t: float) -> Mat:
     """
     Build the 16x16 weighted matrix:
-      \\hat F_n(t) = P_{n+1} U_n exp(t * phi_n) P_n^*,
+      \\hat F_n(t) = P_{n+1} T_{n+1} U_n exp(t * phi_n) P_n^*,
     where phi_n(k)=log g_{2n}(Fold_{2n}(k)) for k in Omega_n.
     """
     if n_bits < 3:
@@ -448,23 +488,29 @@ def build_weighted_F_matrix(n_bits: int, t: float) -> Mat:
         raise AssertionError("Unexpected Fold_m output length for balanced coupling.")
     phi = [math.log(float(gm[w])) for w in outs]
 
+    p_stay = 0.5
     bids_n = block_id_by_index(n_bits)
     bids_np1 = block_id_by_index(n_bits + 1)
-    parents = parent_index_map(n_bits)
+    parents_np1 = parent_index_map(n_bits)
+    path_np1 = hil.hilbert_curve(n_bits + 1)
+    inv_np1 = hilbert_inverse_index_map(n_bits + 1)
+    L = (1 << (n_bits + 1)) - 1
     Np1 = _n_micro(n_bits + 1)
     denom = float(Np1 // 16)
 
     sums: List[List[float]] = [[0.0] * 16 for _ in range(16)]
     prog = ProgressEvery(label=f"build_weighted_F_matrix n={n_bits} t={t}", total=Np1, interval_s=60.0)
     prog.start()
-    for kp1 in range(Np1):
-        if kp1 % 4096 == 0:
-            prog.maybe(kp1)
-        i = bids_np1[kp1]
-        parent = parents[kp1]
-        j = bids_n[parent]
-        w = math.exp(float(t) * float(phi[parent]))
-        sums[i][j] += w
+    for k_dest, (x, y) in enumerate(path_np1):
+        if k_dest % 4096 == 0:
+            prog.maybe(k_dest)
+        i = bids_np1[k_dest]
+        srcs = _transport_source_weights_for_dest(int(x), int(y), inv=inv_np1, L=L, p_stay=p_stay)
+        for k_src, wT in srcs:
+            parent = parents_np1[k_src]
+            j = bids_n[parent]
+            w = float(wT) * math.exp(float(t) * float(phi[parent]))
+            sums[i][j] += w
     prog.done()
 
     return [[sums[i][j] / denom for j in range(16)] for i in range(16)]
