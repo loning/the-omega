@@ -51,6 +51,9 @@ flowchart TD
   F --> G["chi 重建协议（从数据到 chi(x)）"]
   G --> K["协议→连续场误差控制（收敛界/误差预算）"]
   F --> K
+  F --> L["弱场曲率分量（G00 作为曲率代理）"]
+  K --> L
+  K --> T["曲率桥审计表（弱场 Δ_h 缩放 + Wilson residual 缩放）"]
   B --> H0["状态泛函/GNS 背景（记号对齐）"]
   H0 --> H["量子测量接口（POVM/仪器/Born）"]
   H --> H2["波粒二象性/延迟选择（读出接口解释）"]
@@ -89,6 +92,9 @@ flowchart TD
 - [x] **协议层→连续场误差控制**：`appendix 33`  
   - 位置：`sections/appendices/33_protocol_to_continuum_error_control.tex`（`\label{app:protocol_to_continuum_error_control}`）
   - 要点：误差度量与分解；集中界→log 误差传播；差分算子截断误差与噪声放大；$\gamma$ 的 WLS 方差与 $\rho_{\mathrm{eff}}/\Phi$ 的误差预算。
+- [x] **弱场曲率分量（从 $\chi$ 到 $G_{00}$；离散估计与误差预算）**：`appendix 60`  
+  - 位置：`sections/appendices/60_weak_field_curvature_from_chi.tex`（`\label{app:weak_field_curvature_from_chi}`）
+  - 要点：在标准弱场规约下给出 $G_{00}$ 的拉普拉斯形式，并通过 $\Phi=-\gamma c^2(\chi-\chi_0)$ 将其写成 $\Delta\chi$ 的曲率代理；定义离散曲率估计量 $\widehat G_{00,h}=-2\widehat\gamma\,\Delta_h\widehat\chi_h$，并将 Appendix~\ref{app:protocol_to_continuum_error_control} 的截断/噪声放大界接入误差预算。
 - [x] **量子测量与 Born 闭合**：`appendix 30`  
   - 位置：`sections/appendices/30_quantum_measurement_born.tex`（`\label{app:quantum_measurement_born}`）
   - 要点：POVM/仪器；Born 规则两条闭合路线（计数模板与 Gleason–Busch 唯一性）。
@@ -175,6 +181,7 @@ flowchart TD
 | 相位/频率（phase/frequency） | $\omega=\Delta\theta/\Delta t$ 等价定义族 | Iface/Math | `def:frequency_from_phase`, `rem:frequency_alt_definitions` | [x] |
 | 等价语义（objects/observables） | 物理对象=等价类；可观测=不变泛函 | Math | `subsec:equivalence_physical_objects`, `subsec:equivalence_relations_minimal` | [x] |
 | 曲率（curvature） | 回路/holonomy 的不变响应 | Math | `subsec:curvature_as_loops` | [x] |
+| 弱场曲率（weak-field curvature） | $G_{00}$ 的拉普拉斯代理与 $\chi$-曲率桥（含离散估计与误差预算） | Math/Audit | `app:weak_field_curvature_from_chi`, `thm:weak_field_G00_laplacian`, `cor:discrete_G00_error_budget` | [x] |
 | 力（force） | 响应/梯度/变分（不变性下） | Math/CAP | `subsec:force_as_response` | [x] |
 | 连续代表作用量 $S_{\mathrm{eff}}$ | CAP 在候选族中选最小骨架 | CAP/Math | `prop:cap_minimal_action_skeleton` | [x] |
 | Einstein 方程 | $G_{\mu\nu}=8\pi G\,T^{\mathrm{tot}}_{\mu\nu}$ | Math | `thm:einstein_equation_total_stress` | [x] |
@@ -260,8 +267,13 @@ flowchart TD
 - [x] **（OP3）有限连接→连续 Yang--Mills/EFT 的代表闭合**：已在本文以“代表闭合”的口径完成：从有限 holonomy/loop 不变量出发给出曲率与局域 gauge 动能项的接口字典，并在 CAP-候选族内选出连续 Yang--Mills/EFT 的最小代表。  
   - 位置：`sections/appendices/36_continuum_yang_mills_from_holonomy.tex`（`\label{app:continuum_yang_mills_from_holonomy}`，表 `tab:holonomy_balanced_chain_wilson`）  
   - 主依赖：有限 holonomy 诊断 `sec:protocol_connections_holonomy`；扩展 sweep `app:holonomy_sweeps_extended`（含 `tab:holonomy_wilson_loop`）；曲率语义 `subsec:curvature_as_loops`；连续代表作用量 `app:cap_continuum_action_closure`；场方程 `app:variational_field_equations`。
-  - 生成脚本：`scripts/exp_holonomy_balanced_chain_sweep.py`（已接入 `scripts/run_all.py`）
-  - 生成物：`sections/generated/holonomy_balanced_chain_wilson_rows.tex`
+  - 定理级桥：Wilson 小环展开已作为标准定理条目纳入（`thm:wilson_small_plaquette_expansion`），用于把 $1-\frac1N\Re\Tr(U_\square)$ 与 $\Tr(F_{\mu\nu}F^{\mu\nu})$ 的局域动能密度联系到可控余项阶。
+  - 生成脚本：
+    - `scripts/exp_holonomy_balanced_chain_sweep.py`（已接入 `scripts/run_all.py`）
+    - `scripts/exp_curvature_bridge_audit.py`（已接入 `scripts/run_all.py`；生成曲率桥缩放审计表）
+  - 生成物：
+    - `sections/generated/holonomy_balanced_chain_wilson_rows.tex`
+    - `sections/generated/curvature_bridge_wilson_rows.tex`, `sections/generated/curvature_bridge_wilson_summary.tex`
 - [x] **（OP4）跨家族的全局模型选择（MDL / prefix-code；registry 内闭合）**：已在“声明家族注册表（主线候选族 + 已审计 baselines）”的口径内闭合：用前缀码/MDL 为家族分配显式权重，并把家族内的 $N_{\le\epsilon}/|\Theta|$ 升级为跨家族的加权 look-elsewhere 上界。  
   - 位置：`sections/appendices/42_global_model_selection_mdl.tex`（`\label{app:global_model_selection_mdl}`，表 `tab:audit_global_mdl_family_registry`）  
   - 生成脚本：`scripts/exp_audit_global_model_selection_mdl.py`（已接入 `scripts/run_all.py`）  

@@ -1,0 +1,62 @@
+\subsection{Composite systems and tensor products (minimal quantum structural package)}
+\label{app:composite_systems_tensor_products}
+
+This appendix records a minimal composite-system package used to organize quantum and QFT structures in the same audit discipline as the rest of the manuscript.
+It is written as an interface-facing structure statement: the finite readout interface (Appendix~\ref{app:quantum_measurement_born}) already provides POVMs and instrument updates, while composite systems specify how multiple readout sectors combine.
+
+\subsubsection{Tensor products and product states}
+\paragraph{Hilbert tensor product (finite-dimensional baseline).}
+Let $\mathcal{H}_A,\mathcal{H}_B$ be finite-dimensional complex Hilbert spaces.
+The composite system space is the tensor product $\mathcal{H}_{AB}:=\mathcal{H}_A\otimes \mathcal{H}_B$.
+Operators on $\mathcal{H}_A$ and $\mathcal{H}_B$ embed as $A\mapsto A\otimes I_B$ and $B\mapsto I_A\otimes B$.
+
+\paragraph{States and product states.}
+A state on $\mathcal{H}_A$ is a density operator $\rho_A\succeq 0$ with $\Tr(\rho_A)=1$, and similarly for $\rho_B$.
+The product state on the composite is $\rho_{AB}:=\rho_A\otimes \rho_B$.
+
+\subsubsection{Partial trace and reduced states}
+\paragraph{Definition (finite-dimensional).}
+For a composite state $\rho_{AB}$, the reduced state on $A$ is
+\[
+\rho_A:=\Tr_B(\rho_{AB}),
+\]
+defined by the identity $\Tr(\rho_A X)=\Tr(\rho_{AB}(X\otimes I_B))$ for all operators $X$ on $\mathcal{H}_A$.
+The reduced state on $B$ is defined analogously.
+
+\paragraph{Operational reading.}
+\InterfaceTag Discarding subsystem $B$ (no access to the corresponding readout record) is modeled by the partial trace $\Tr_B$, and expectation values of observables on $A$ are computed from the reduced state.
+
+\subsubsection{Product POVMs and joint outcome probabilities}
+\paragraph{Product POVMs.}
+Let $\{E_i\}_i$ be a POVM on $\mathcal{H}_A$ and $\{F_j\}_j$ be a POVM on $\mathcal{H}_B$.
+Then $\{E_i\otimes F_j\}_{i,j}$ is a POVM on $\mathcal{H}_{AB}$.
+
+\begin{lemma}[Born joint law for product readout]
+\label{lem:born_joint_product_povm}
+Let $\rho_{AB}$ be a density operator on $\mathcal{H}_A\otimes\mathcal{H}_B$ and let $\{E_i\}_i$, $\{F_j\}_j$ be POVMs on $\mathcal{H}_A$, $\mathcal{H}_B$.
+Then the joint readout probabilities are
+\[
+P(i,j)=\Tr\!\bigl(\rho_{AB}(E_i\otimes F_j)\bigr),
+\]
+and the $A$-marginal satisfies $P_A(i)=\sum_j P(i,j)=\Tr(\rho_A E_i)$ with $\rho_A=\Tr_B(\rho_{AB})$.
+\end{lemma}
+\begin{proof}
+Since $\sum_{i,j}E_i\otimes F_j=(\sum_i E_i)\otimes(\sum_j F_j)=I_A\otimes I_B$, the family is a POVM.
+For the marginal,
+\[
+\sum_j \Tr(\rho_{AB}(E_i\otimes F_j))
+=\Tr\!\bigl(\rho_{AB}(E_i\otimes \sum_j F_j)\bigr)
+=\Tr(\rho_{AB}(E_i\otimes I_B))
+=\Tr(\rho_A E_i),
+\]
+using the defining property of the partial trace.
+\end{proof}
+
+\subsubsection{Remark on scope and alternatives}
+\paragraph{Scope.}
+\AuditTag The tensor-product structure above is used here as the standard minimal composite-system convention for finite observer sectors.
+In infinite-dimensional settings and in algebraic QFT one typically formulates composites at the level of observable algebras and states (Appendix~\ref{app:state_gns_background}), and additional locality/causality constraints constrain admissible composites.
+
+\paragraph{Open boundary.}
+\AuditTag A fully protocol-derived account of why composite systems must be represented by tensor products (as opposed to alternative monoidal structures) would require explicit protocol primitives for independence, parallel readout, and no-signaling as theorem-level constraints.
+We treat this as an interface-level structural package consistent with the present readout semantics.

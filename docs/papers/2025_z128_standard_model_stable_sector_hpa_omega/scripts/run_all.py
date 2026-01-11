@@ -467,6 +467,28 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Curvature-bridge sanity checks (weak-field Laplacian + Wilson scaling)",
+            script="exp_curvature_bridge_audit.py",
+            expected_outputs=[
+                "sections/generated/curvature_bridge_weak_field_rows.tex",
+                "sections/generated/curvature_bridge_weak_field_summary.tex",
+                "sections/generated/curvature_bridge_wilson_rows.tex",
+                "sections/generated/curvature_bridge_wilson_summary.tex",
+            ],
+        ),
+        Step(
+            name="Curvature bridge end-to-end (protocolized input -> chi -> curvature proxy)",
+            script="exp_curvature_bridge_end_to_end.py",
+            expected_outputs=[
+                "sections/generated/curvature_e2e_rows.tex",
+                "sections/generated/curvature_e2e_summary.tex",
+                "sections/generated/curvature_e2e_gamma_rows.tex",
+                "sections/generated/curvature_e2e_gamma_summary.tex",
+                "sections/generated/curvature_e2e_gamma_stability_rows.tex",
+                "sections/generated/curvature_e2e_gamma_stability_summary.tex",
+            ],
+        ),
+        Step(
             name="Holonomy balanced-chain permutation fits (PMNS/CKM, finite diagnostic)",
             script="exp_holonomy_balanced_chain_perm_fit.py",
             expected_outputs=[
@@ -588,6 +610,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Wormhole-like pointer jump audit (protocol-only)",
+            script="exp_wormhole_pointer_jump_audit.py",
+            expected_outputs=[
+                "sections/generated/wormhole_pointer_jump_rows.tex",
+                "sections/generated/wormhole_pointer_jump_summary.tex",
+            ],
+        ),
+        Step(
             name="Budget-triggered chi-horizon occupancy (capacity-only table)",
             script="exp_chi_horizon_budget_occupancy.py",
             expected_outputs=[
@@ -690,6 +720,8 @@ def build_steps() -> List[Step]:
                 "sections/generated/bh_planck_capacity_rows.tex",
                 "sections/generated/bh_planck_capacity_summary.tex",
                 "sections/generated/bh_capacity_calibrated_uplift_path_rows.tex",
+                "sections/generated/bh_planck_capacity_known_rows.tex",
+                "sections/generated/bh_planck_capacity_known_summary.tex",
             ],
         ),
         Step(

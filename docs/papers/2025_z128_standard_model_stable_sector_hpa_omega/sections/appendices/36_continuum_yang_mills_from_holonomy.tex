@@ -60,21 +60,41 @@ $n$ & $m$ & plaquettes & 3/4 plaquettes & mean $W$ & mean $1-W$ \\
 \label{tab:holonomy_balanced_chain_wilson}
 \end{table}
 
-\paragraph{Continuum dictionary: $1-W$ as a gauge-action proxy.}
-In standard lattice gauge theory, the Wilson plaquette observable provides a local proxy for the continuum action density.
-Let $U_\square\in SU(N)$ denote the holonomy around a small square plaquette of side length $a$ in the $\mu\nu$-plane, built from a smooth connection $A$.
-Then one has the small-loop expansion (see, e.g., \cite{Wilson1974,Rothe2012})
+\paragraph{From loop holonomy to a local kinetic density (theorem-level weak-loop expansion).}
+In lattice gauge theory, Wilson-loop observables encode curvature through their small-loop expansion.
+We record the standard statement in a form usable as a theorem-level bridge for this paper.
+
+\begin{theorem}[Small-plaquette expansion (standard)]
+\label{thm:wilson_small_plaquette_expansion}
+\MathTag Let $A=A_\mu(x)\,\dd x^\mu$ be a $C^2$ Lie-algebra-valued connection one-form on a neighborhood of a point $x$,
+with curvature $F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu+[A_\mu,A_\nu]$.
+Let $U_\square\in SU(N)$ denote the path-ordered holonomy around the boundary of an axis-aligned square plaquette of side length $a$ in the $\mu\nu$ plane, based at $x$.
+Then, as $a\downarrow 0$,
 \begin{equation}
 \label{eq:wilson_small_loop_expansion}
 U_\square
-=\exp\!\bigl(\iu\,a^{2}F_{\mu\nu} + O(a^{3})\bigr),
-\qquad
-1-\frac{1}{N}\RePart\Tr(U_\square)
-=\frac{a^{4}}{2N}\Tr\!\bigl(F_{\mu\nu}F^{\mu\nu}\bigr)+O(a^{6}),
+=\exp\!\Bigl(\iu\,a^{2}F_{\mu\nu}(x) + O(a^{3})\Bigr),
 \end{equation}
-where $F_{\mu\nu}$ is the curvature of $A$.
-Equation \eqref{eq:wilson_small_loop_expansion} is used here purely as an \emph{interface dictionary}:
-it explains why the protocol-level scalar $A=1-W$ is the natural coarse readout proxy for a local gauge kinetic term at the resolution scale implicit in the loop family.
+and consequently
+\begin{equation}
+\label{eq:wilson_action_density_expansion}
+1-\frac{1}{N}\RePart\Tr(U_\square)
+=\frac{a^{4}}{2N}\Tr\!\bigl(F_{\mu\nu}(x)F^{\mu\nu}(x)\bigr)+O(a^{6}).
+\end{equation}
+The $O(\cdot)$ remainders depend on local bounds on $A$ and its first two derivatives near $x$.
+\end{theorem}
+
+\begin{proof}[Proof sketch (reference)]
+This is the standard plaquette expansion obtained by Taylor-expanding the path-ordered exponential for each edge transport and combining the four factors using the Baker--Campbell--Hausdorff formula; see, e.g., \cite{Wilson1974,Rothe2012}.
+\end{proof}
+
+\begin{remark}[Protocol use and scaling convention]
+\label{rem:wilson_proxy_protocol_use}
+\InterfaceTag In this paper, $W=\frac13\RePart\Tr(Q)$ and $A=1-W$ (equation~\eqref{eq:wilson_loop_style_W}) are finite protocol diagnostics computed on explicit loop families.
+Theorem~\ref{thm:wilson_small_plaquette_expansion} supplies the theorem-level continuum bridge:
+in any regime where a smooth continuum representative exists and the loop family is interpreted as sampling plaquettes of effective side length $a$, the observable $A=1-W$ is (up to scale) a local proxy for $\Tr(F_{\mu\nu}F^{\mu\nu})$ at that resolution.
+The choice of mapping from protocol parameters (loop index scale on the addressing graph) to a continuum length $a$ is part of the interface/matching dictionary and must be declared when numerical identification is attempted.
+\end{remark}
 
 \subsection{CAP-minimal gauge-sector representative and Yang--Mills dynamics}
 \label{subsec:op3_cap_yang_mills_representative}
@@ -99,5 +119,4 @@ In this sense, the finite holonomy diagnostics supply an auditable protocol-leve
 The closure in this appendix is a \emph{representative} closure: it identifies the minimal local continuum gauge dynamics compatible with the protocol invariants and the stated CAP discipline.
 It does not address nonperturbative questions such as confinement or a Yang--Mills mass gap \cite{JaffeWitten2000YangMillsMassGap,Greensite2011Confinement}, which are outside the present paper's theorem-level folding core and are not required for the finite audited closures reported here.
 Within this paper, confinement-sensitive quantities (e.g.\ quark ``masses'') are therefore treated strictly at the matching layer (Appendix~\ref{app:quark_mass_scheme_notes}), and standard scheme/threshold running is used only as a translation dictionary in the $r$ coordinate (Appendix~\ref{app:running_couplings_resolution_flow}).
-
 

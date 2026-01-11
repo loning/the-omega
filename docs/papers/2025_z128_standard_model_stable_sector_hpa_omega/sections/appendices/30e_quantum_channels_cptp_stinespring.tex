@@ -1,0 +1,75 @@
+\subsection{Quantum channels, coarse-graining, and monotonicity certificates (CPTP layer)}
+\label{app:quantum_channels_cptp_stinespring}
+
+This appendix records a minimal channel layer compatible with the tick\,+\,CAP discipline.
+It connects the finite readout interface (POVMs and instruments; Appendix~\ref{app:quantum_measurement_born}) to auditable irreversibility certificates used elsewhere in the paper (e.g.\ arrow-of-time and thermodynamic monotonicity templates).
+
+\subsubsection{CPTP maps and Kraus form (finite-dimensional baseline)}
+\begin{definition}[Quantum channel (CPTP map)]
+\label{def:z128_cptp_channel}
+Let $\mathcal{H}$ be a finite-dimensional Hilbert space and let $\mathcal{B}(\mathcal{H})$ denote linear operators on $\mathcal{H}$.
+A \emph{quantum channel} is a linear map $\Phi:\mathcal{B}(\mathcal{H})\to\mathcal{B}(\mathcal{H})$ that is completely positive and trace preserving (CPTP).
+\end{definition}
+
+\begin{theorem}[Kraus representation (finite-dimensional)]
+\label{thm:z128_kraus_representation}
+Let $\Phi:\mathcal{B}(\mathcal{H})\to\mathcal{B}(\mathcal{H})$ be CPTP on a finite-dimensional $\mathcal{H}$.
+Then there exist operators $\{K_\alpha\}_\alpha$ on $\mathcal{H}$ such that
+\[
+\Phi(\rho)=\sum_\alpha K_\alpha \rho K_\alpha^\dagger,
+\qquad
+\sum_\alpha K_\alpha^\dagger K_\alpha = I.
+\]
+\end{theorem}
+\begin{proof}[Reference]
+This is standard; see, e.g., \cite{Kraus1983,NielsenChuang2000}.
+\end{proof}
+
+\paragraph{Instruments as channel refinements.}
+An instrument $\{\mathcal{I}_k\}_k$ (Appendix~\ref{app:quantum_measurement_born}) is a family of completely positive maps whose sum $\sum_k \mathcal{I}_k$ is CPTP; thus an instrument refines a channel into outcome-conditioned branches.
+
+\subsubsection{Stinespring dilation viewpoint (structural bookkeeping)}
+\begin{theorem}[Stinespring dilation (structural form)]
+\label{thm:z128_stinespring_structural}
+Let $\Phi$ be a completely positive map on $\mathcal{B}(\mathcal{H})$.
+Then there exists an auxiliary Hilbert space $\mathcal{K}$ and an operator $V:\mathcal{H}\to\mathcal{H}\otimes\mathcal{K}$ such that
+\[
+\Phi(\rho)=\Tr_{\mathcal{K}}\!\bigl(V\rho V^\dagger\bigr).
+\]
+If $\Phi$ is trace preserving then $V^\dagger V=I$ (an isometry).
+\end{theorem}
+\begin{proof}[Reference]
+See \cite{Stinespring1955}; a finite-dimensional proof follows from the Kraus form by choosing $\mathcal{K}$ with an orthonormal basis indexed by Kraus operators.
+\end{proof}
+
+\paragraph{Interface reading.}
+\InterfaceTag A channel can be interpreted as ``unitary coupling to an environment + discarding the environment''.
+This is the minimal formal statement of coarse-graining/forgetting at the operator level.
+It does not assert a physical environment ontology; it provides a structural representation that supports auditable monotonicity bounds.
+
+\subsubsection{A minimal monotonicity certificate: trace-distance contraction}
+\begin{proposition}[Trace-distance contraction for CPTP maps (finite-dimensional)]
+\label{prop:z128_trace_distance_contraction}
+Let $\Phi$ be CPTP on $\mathcal{B}(\mathcal{H})$ with $\dim\mathcal{H}<\infty$.
+Then for any density matrices $\rho,\sigma$,
+\[
+\norm{\Phi(\rho)-\Phi(\sigma)}_1 \le \norm{\rho-\sigma}_1,
+\]
+where $\norm{X}_1:=\Tr\sqrt{X^\dagger X}$ is the trace norm.
+\end{proposition}
+\begin{proof}
+By Stinespring (Theorem~\ref{thm:z128_stinespring_structural}), write $\Phi(\cdot)=\Tr_{\mathcal{K}}(V(\cdot)V^\dagger)$ with $V^\dagger V=I$.
+The trace norm is invariant under isometries: $\norm{VXV^\dagger}_1=\norm{X}_1$ for all $X$.
+It remains to use that partial trace is a contraction for the trace norm, i.e.\ $\norm{\Tr_{\mathcal{K}}(Y)}_1\le\norm{Y}_1$.
+Applying these with $X=\rho-\sigma$ and $Y=VXV^\dagger$ yields the claim.
+\end{proof}
+
+\paragraph{Arrow-of-time reading.}
+\InterfaceTag Proposition~\ref{prop:z128_trace_distance_contraction} is an explicit irreversibility certificate:
+once a protocol step is modeled by a nontrivial channel (discarding some degrees of freedom), distinguishability cannot increase.
+This provides a concrete monotonicity backbone compatible with the semigroup viewpoint (Appendix~\ref{app:arrow_of_time_semigroup_notes}) and with the coarse-grained thermodynamic closure (Appendix~\ref{app:thermodynamics_from_equivalence}).
+
+\subsubsection{Remark on stronger monotonicity (relative entropy)}
+\paragraph{Scope note.}
+\AuditTag Stronger monotonicity statements (e.g.\ data processing for quantum relative entropy) are standard and will be recorded as needed in the QM/QFT theorem library.
+In the present appendix we record only the minimal contraction certificate required to express ``no increase of distinguishability under coarse-graining'' in a self-contained way consistent with our audit discipline.
