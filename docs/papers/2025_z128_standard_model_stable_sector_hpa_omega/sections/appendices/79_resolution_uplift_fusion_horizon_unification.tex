@@ -32,6 +32,63 @@ as in \eqref{eq:bh_capacity_I_prot_def}.
 \AuditTag Fix finite candidate sets $M\subset\NN$ and $N\subset\NN$ and optional hard bounds $m\le m_{\max}$, $n\le n_{\max}$ by restricting $M$ and $N$.
 We treat these as declared finite hypothesis classes, consistent with the paper's bounded-complexity discipline.
 
+\subsection{A staging dictionary: from \texorpdfstring{$r(\mu)$}{r(mu)} to an information demand \texorpdfstring{$I_{\mathrm{tar}}$}{I_tar}}
+\label{subsec:uplift_staging_dictionary}
+
+\paragraph{Resolution-first staging (existing interface rule).}
+\InterfaceTag The main text already records a deterministic resolution selection rule $m_{\mathrm{eff}}(\mu)$ once a staircase calibration is fixed (Corollary~\ref{cor:resolution_selection}).
+This is a \emph{resolution-first} organization: it selects an effective window length as a function of the scale $\mu$ via the resolution coordinate $r(\mu)$ and a fixed step size $r_{\mathrm{step}}$.
+
+\paragraph{Capacity-first staging (this appendix).}
+\InterfaceTag The present appendix provides a complementary \emph{capacity-first} organization:
+given a target information demand $I_{\mathrm{tar}}$ (bits) induced by a stabilization goal, one selects a feasible $(m,n)$ in a declared bounded family by CAP (Definition~\eqref{eq:uplift_cap_minimizer_def}).
+This makes explicit the statement ``$n$ cannot expand $\Rightarrow m$ must expand'' as a deterministic consequence of the constrained candidate family (Proposition~\ref{prop:n_blocked_implies_m_expand}).
+
+\paragraph{A canonical coupling on a fixed 2D screen (dictionary).}
+\InterfaceTag When one works on the paper's $2$D Hilbert screen, the balanced coupling relation $m=2n$ supplies a canonical way to associate an addressing depth to a chosen window length.
+In that setting, a natural capacity target associated to $\mu$ is the screen capacity at the corresponding effective resolution,
+\[
+I_{\mathrm{tar}}(\mu)\ :=\ I_{\mathrm{prot}}(m_{\mathrm{eff}}(\mu), n_{\mathrm{bal}}(m_{\mathrm{eff}}(\mu))),
+\qquad
+n_{\mathrm{bal}}(m):=\left\lfloor\frac{m}{2}\right\rfloor,
+\]
+which is a dictionary choice for staging and not a theorem-level identification.
+
+\paragraph{Audit hook.}
+\AuditTag The end-to-end staircase demo table (Table~\ref{tab:kernel_mu_r_bridge} in Appendix~\ref{app:generated_tables}) already reports $m_{\mathrm{eff}}(\mu)$ at the threshold energies and includes folding-degeneracy summaries.
+The present appendix adds a capacity-driven selection rule that can be applied to the same staircase targets to obtain a discrete $(m,n)$ uplift path under explicit constraints (Table~\ref{tab:resolution_uplift_cap_choice}).
+
+\subsection{Stage labels (chemistry, fusion, electroweak, strong-field): an interface taxonomy}
+\label{subsec:uplift_stage_labels_taxonomy}
+
+\paragraph{Status.}
+\InterfaceTag The stage labels in this subsection are \emph{organizational}: they name typical physical regimes in which a specific class of constraints dominates the protocol cost of stabilization.
+They do not add new theorem-level inputs, and they do not assert that every instance of the named physical regime corresponds to a unique $(m,n)$.
+
+\paragraph{A minimal stage dictionary.}
+\InterfaceTag Fix the calibrated staircase $m_{\mathrm{eff}}(\mu)$ (Corollary~\ref{cor:resolution_selection}) and the threshold table (Table~\ref{tab:resolution_thresholds}).
+We use the following conservative stage naming convention:
+\begin{itemize}
+\item \textbf{Chemical staging (within-band organization).}
+Within a fixed effective window length $m_{\mathrm{eff}}(\mu)=m$, stable composites and reactions are modeled as changes in protocol boundary conditions and coarse-graining choices \emph{without} requiring an uplift event.
+In this regime, the primary handles are interface-level: effective temperature mapping (Appendix~\ref{app:effective_temperature_mapping}) and low-leakage signatures (Appendix~\ref{app:protected_low_leakage_phase}).
+\item \textbf{Fusion staging (uplift events).}
+A \emph{fusion event} is a discrete change in the CAP-selected uplift pair $(m^\ast,n^\ast)$ induced by increasing demand (Corollary~\ref{cor:uplift_fusion_thresholds_finite}).
+The physical reading is: information aggregation forces additional protocol capacity, hence a discrete resolution transition becomes necessary.
+\item \textbf{Electroweak staging (illustrative anchor band).}
+Under the calibrated staircase used in the paper (Section~\ref{subsec:p3_resolution_jumps}), the $m=10$ threshold lies near the electroweak scale and serves as an illustrative band boundary for ``active renormalization'' (colliders as forced zoom).
+Scalar-sector uplift markers (Appendix~\ref{app:scalar_interface_audits}) can be treated as stage diagnostics within this narrative.
+\item \textbf{Strong-field / horizon staging (capacity saturation).}
+When a stabilized structure becomes horizon-like relative to an observer budget (Appendix~\ref{app:protocol_horizon_tick_trap}), the regime is characterized by budget saturation and delay-dominated response proxies.
+This staging uses the protocol-horizon vocabulary and does not require importing a GR event-horizon premise.
+\end{itemize}
+
+\paragraph{Falsifiability hooks (minimal).}
+\AuditTag The stage dictionary above becomes falsifiable only after a concrete observable channel is declared.
+Examples already present in the paper include:
+delay/lapse proxies (Appendix~\ref{app:time_mass_delay} and P6),
+and protocol-horizon budget criteria (Appendix~\ref{app:protocol_horizon_tick_trap} together with the capacity-only table \ref{tab:chi_horizon_budget_occupancy}).
+
 \subsection{A CAP key for ``fusion'' under capacity constraints}
 \label{subsec:uplift_cap_key}
 
@@ -138,6 +195,37 @@ Within the present module, a natural way to organize the horizon vocabulary is:
 large $I_{\mathrm{tar}}$ forces larger $(m^\ast,n^\ast)$ and typically larger overhead proxies (Section~\ref{app:overhead_to_gravity_closure});
 when the internal compatible microstate multiplicity exceeds observer budget, the target becomes horizon-like relative to $\mathcal O$.
 No theorem-level identification is asserted here; this is a dictionary-level hook for composing modules.
+
+\subsection{A concrete bridge: choosing \texorpdfstring{$I_{\mathrm{tar}}$}{I_tar} from \texorpdfstring{$\chi$}{chi} and delay proxies}
+\label{subsec:uplift_I_tar_from_chi_delay}
+
+\paragraph{Status.}
+\InterfaceTag This subsection records a practical bridge from existing protocol fields (reconstructed $\chi$ and delay proxies) to an information-demand target $I_{\mathrm{tar}}$.
+It is an interface dictionary used to \emph{instantiate} the abstract CAP selection rule of this appendix on real datasets.
+No theorem-level claim is made that ``bits = seconds''; all bridges are mediated by explicitly declared dictionaries (Appendix~\ref{app:bh_wormholes_pointer}, Appendix~\ref{app:time_mass_delay}).
+
+\paragraph{Capacity target from a $\chi$-cloud.}
+\InterfaceTag Given a reconstructed overhead proxy field $\chi(x)$ (Section~\ref{app:chi_reconstruction_protocol}), any threshold $\vartheta$ defines a high-overhead region $\mathcal R_\vartheta$ and its cloud capacity bits
+\[
+I_\chi(m,n;\vartheta):=m\,|\mathcal R_\vartheta|
+\]
+(Definitions~\ref{def:chi_cloud_region_threshold}--\ref{def:chi_cloud_capacity_bits}).
+Accordingly, a conservative information-demand target can be taken as
+\[
+I_{\mathrm{tar}}:=I_\chi(m,n;\vartheta)
+\]
+for a declared threshold rule (e.g.\ a fixed quantile, or the budget-triggered $\chi_\star$ of Definition~\ref{def:chi_budget_threshold_horizon}).
+Feeding this $I_{\mathrm{tar}}$ into the CAP key \eqref{eq:uplift_cap_key_def} yields a deterministic uplift selection under explicit constraints.
+
+\paragraph{Budget-triggered horizon target.}
+\InterfaceTag If one is specifically organizing a horizon-like regime, the natural target is the observer budget:
+given $I_{\mathrm{obs}}(\mathcal O)$ and a margin $c>1$, define $I_{\mathrm{tar}}:=c\,I_{\mathrm{obs}}(\mathcal O)$.
+This matches the horizon vocabulary of Appendix~\ref{app:protocol_horizon_tick_trap} and makes the ``budget saturation'' phrase operational.
+
+\paragraph{Delay-dominated regime as an empirical tag.}
+\AuditTag In practical data settings, one may use delay proxies as empirical tags to decide whether a given aggregation episode is in a delay-dominated regime:
+Wigner--Smith delay (Appendix~\ref{app:time_mass_delay}) and the phase-to-delay interface audits (Appendices~\ref{app:scattering_inverse_consistency_audit} and \ref{app:scattering_delay_linewidth_triangle_audit}) supply bounded, auditable diagnostics.
+Within this paper, such tags are used only as interface annotations; they do not alter the theorem-level selection rule.
 
 \paragraph{Scalar sectors as uplift markers (interface).}
 \InterfaceTag In this paper, scalar behavior is treated as uplift/coarse-graining dependent rather than as a primitive $m=6$ stable type (Appendix~\ref{app:scalar_interface_audits}).
