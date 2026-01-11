@@ -57,6 +57,15 @@ flowchart TD
   B --> H0["状态泛函/GNS 背景（记号对齐）"]
   H0 --> H["量子测量接口（POVM/仪器/Born）"]
   H --> H2["波粒二象性/延迟选择（读出接口解释）"]
+  H --> H3["复合系统（张量积/部分迹/联合读出）"]
+  H3 --> H4["量子信道（CPTP/Kraus/Stinespring）"]
+  H4 --> H5["QM 定理库（Wigner/Stone/uncertainty/Schmidt）"]
+  H0 --> Q1["AQFT：局域网（local net）"]
+  Q1 --> Q2["AQFT：状态/表示与 GNS 网"]
+  Q2 --> Q3["AQFT：微因果/谱条件边界"]
+  Q3 --> Q4["Wightman 桥接（AQFT↔Wightman）"]
+  Q4 --> Q5["散射接口（S-matrix 与延迟字典对齐）"]
+  Q5 --> Q6["重整化字典与边界（scheme/matching/scope）"]
   B --> I["RG：分辨率坐标 r 的耦合流"]
   I --> J["宇宙学：分辨率流/容量增长/能量预算拟合"]
 ```
@@ -98,6 +107,33 @@ flowchart TD
 - [x] **量子测量与 Born 闭合**：`appendix 30`  
   - 位置：`sections/appendices/30_quantum_measurement_born.tex`（`\label{app:quantum_measurement_born}`）
   - 要点：POVM/仪器；Born 规则两条闭合路线（计数模板与 Gleason–Busch 唯一性）。
+- [x] **复合系统（张量积/部分迹/联合读出）**：`appendix 30d`  
+  - 位置：`sections/appendices/30d_composite_systems_tensor_products.tex`（`\label{app:composite_systems_tensor_products}`）
+  - 要点：张量积、部分迹与联合读出（product POVM）作为最小复合系统接口；为纠缠与局域性讨论提供结构底座。
+- [x] **量子信道（CPTP/Kraus/Stinespring；单调性证书）**：`appendix 30e`  
+  - 位置：`sections/appendices/30e_quantum_channels_cptp_stinespring.tex`（`\label{app:quantum_channels_cptp_stinespring}`）
+  - 要点：CPTP/Kraus/Stinespring 结构与最小可审计不可逆证书（trace-distance contraction）；为时间箭头/热力学单调性提供硬桥。
+- [x] **QM 定理库（核心结构定理）**：`appendix 30f`  
+  - 位置：`sections/appendices/30f_qm_theorem_library_core.tex`（`\label{app:qm_theorem_library_core}`）
+  - 要点：Wigner/Stone、不确定性、Schmidt 等核心结构定理，以“定理 vs 接口读法”分层记录。
+- [x] **AQFT：局域网与公理包（结构）**：`appendix 61`  
+  - 位置：`sections/appendices/61_aqft_axioms_local_nets.tex`（`\label{app:aqft_axioms_local_nets}`）
+  - 要点：局域网、微因果、协变/谱条件的结构打包；作为混合 AQFT↔Wightman 桥的底座（接口层约束，不反哺 folding 证明链）。
+- [x] **AQFT：状态/表示与 GNS 网**：`appendix 62`  
+  - 位置：`sections/appendices/62_states_representations_gns_nets.tex`（`\label{app:aqft_states_representations_gns_nets}`）
+  - 要点：把 state/GNS 背景升级到局域网：由准局域代数上的状态诱导 GNS net（局域 von Neumann 代数族）。
+- [x] **AQFT：微因果/谱条件边界与开放项**：`appendix 63`  
+  - 位置：`sections/appendices/63_microcausality_spectrum_covariance.tex`（`\label{app:microcausality_spectrum_covariance}`）
+  - 要点：明确微因果/谱条件作为接口层承诺；场域重建与相互作用构造作为显式边界项。
+- [x] **Wightman 桥接（hybrid）**：`appendix 64`  
+  - 位置：`sections/appendices/64_wightman_bridge_and_reconstruction.tex`（`\label{app:wightman_bridge_and_reconstruction}`）
+  - 要点：AQFT→Wightman 与 Wightman→AQFT 的桥接路线与前提边界（域/正则性/生成域问题不偷渡）。
+- [x] **散射接口（Haag–Ruelle/LSZ 前提显式）**：`appendix 65`  
+  - 位置：`sections/appendices/65_scattering_haag_ruelle_lsz_interface.tex`（`\label{app:scattering_haag_ruelle_lsz_interface}`）
+  - 要点：散射对象以接口层语言记录，并与统一延迟字典（Wigner–Smith）对齐；必要前提作为审计边界显式列出。
+- [x] **重整化字典与边界（scheme/matching）**：`appendix 66`  
+  - 位置：`sections/appendices/66_renormalization_dictionary_and_boundaries.tex`（`\label{app:renormalization_dictionary_and_boundaries}`）
+  - 要点：把 scheme/scale 依赖收口为 Match/Iface 边界；不主张 4D 相互作用构造性重整化的 theorem-level 闭合。
 - [x] **状态泛函/GNS 背景（记号对齐；不计为新增原语）**：`appendix 30c`  
   - 位置：`sections/appendices/30c_state_gns_background.tex`（`\label{app:state_gns_background}`）
   - 要点：状态 $\omega$ 作为正且归一的线性泛函；GNS 表示给出 $\omega(A)=\langle\Omega|\pi(A)\Omega\rangle$；并将 $P(E)=\omega(E)$ 与 $P=\Tr(\rho E)$ 的等价关系写成纯数学口径，用于与本论文的 POVM/Born 写法对齐。
@@ -196,6 +232,14 @@ flowchart TD
 | 温度（temperature） | 频率共轭尺度 | Iface/Math | `def:temperature_conjugate` | [x] |
 | CAP 自由能原则 | 以自由能形式重述 CAP 选择 | CAP | `prop:cap_free_energy_closure` | [x] |
 | Born 概率 | $P_k=\mathrm{Tr}(\rho E_k)$ | Iface/Math | `eq:z128_born_povm` | [x] |
+| 复合系统（composite） | 张量积/部分迹/联合读出（最小接口包） | Iface/Math | `app:composite_systems_tensor_products` | [x] |
+| 量子信道（channel） | CPTP/Kraus/Stinespring + trace-distance 收缩证书 | Iface/Math/Audit | `app:quantum_channels_cptp_stinespring` | [x] |
+| QM 定理库（core） | Wigner/Stone/不确定性/Schmidt（结构定理条目） | Math/Audit | `app:qm_theorem_library_core` | [x] |
+| AQFT：局域网（net） | O↦A(O)；微因果/协变/谱条件打包（结构） | Iface/Audit | `app:aqft_axioms_local_nets` | [x] |
+| AQFT：GNS 网（net realization） | state→representation；M_ω(O)=π(A(O))'' | Math/Audit | `app:aqft_states_representations_gns_nets` | [x] |
+| Wightman 桥接 | AQFT↔Wightman 桥（前提边界显式） | Iface/Audit | `app:wightman_bridge_and_reconstruction` | [x] |
+| 散射接口 | S-matrix 与延迟字典对齐（前提显式） | Iface/Audit | `app:scattering_haag_ruelle_lsz_interface` | [x] |
+| 重整化边界 | scheme/matching/scope 字典与限制 | Match/Iface/Audit | `app:renormalization_dictionary_and_boundaries` | [x] |
 | 算子母空间字典入口（operator mother space dictionary） | source operator + readout kernels + determinant bookkeeping；finite-rank 更新闭合（字典层） | Iface/Audit | `app:operator_mother_space_dictionary` | [x] |
 | 算子母空间（operator mother space） | trace-class resolvent/行列式 bookkeeping；finite-rank 更新闭合（字典层） | Math/Audit | `app:operator_mother_space` | [x] |
 | 波粒二象性/延迟选择 | 相干交叉项 vs 事件化/去相干混合；互补性界 $V^2+D^2\le 1$；delayed-choice/eraser | Iface/Audit | `app:wave_particle_delayed_choice` | [x] |
