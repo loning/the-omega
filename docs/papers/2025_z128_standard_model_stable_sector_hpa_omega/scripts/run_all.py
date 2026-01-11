@@ -560,6 +560,37 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Leakage kernel demo (audit illustration)",
+            script="exp_leakage_kernel_demo.py",
+            expected_outputs=[
+                "sections/generated/leakage_kernel_demo_rows.tex",
+            ],
+        ),
+        Step(
+            name="Leakage kernel m=6 trap/exit audit table",
+            script="exp_leakage_kernel_m6_trap_exit.py",
+            expected_outputs=[
+                "sections/generated/leakage_kernel_m6_trap_exit_rows.tex",
+                "sections/generated/leakage_kernel_m6_trap_exit_summary.tex",
+            ],
+        ),
+        Step(
+            name="Protocol horizon illustration (tick-trap)",
+            script="exp_protocol_horizon_tick_trap_examples.py",
+            expected_outputs=[
+                "sections/generated/protocol_horizon_examples_rows.tex",
+                "sections/generated/protocol_horizon_examples_summary.tex",
+            ],
+        ),
+        Step(
+            name="Low-leakage phase signatures (audit illustration)",
+            script="exp_low_leakage_phase_signatures.py",
+            expected_outputs=[
+                "sections/generated/low_leakage_phase_rows.tex",
+                "sections/generated/low_leakage_phase_summary.tex",
+            ],
+        ),
+        Step(
             name="Label lift consistency",
             script="exp_labeling_lift_consistency.py",
             expected_outputs=[

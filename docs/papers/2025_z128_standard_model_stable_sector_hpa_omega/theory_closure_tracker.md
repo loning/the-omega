@@ -112,6 +112,31 @@ flowchart TD
     - `sections/generated/bh_planck_capacity_summary.tex`
     - `sections/generated/bh_capacity_calibrated_uplift_path_rows.tex`
 
+- [x] **协议视界（tick-trap；相对黑洞判据；K4 入口）**：`appendix 08`  
+  - 位置：`sections/appendices/08_protocol_horizon_tick_trap.tex`（`\label{app:protocol_horizon_tick_trap}`）
+  - 要点：把“黑洞/视界”降格为观察者预算下的协议不可分辨边界（H2），并把“质量=延迟”的接口字典接入相对判据；不预设 GR 事件视界（H1），只在 PBH* 条件下允许对齐。
+  - 生成脚本：`scripts/exp_protocol_horizon_tick_trap_examples.py`（已接入 `scripts/run_all.py`）
+  - 生成物：
+    - `sections/generated/protocol_horizon_examples_rows.tex`
+    - `sections/generated/protocol_horizon_examples_summary.tex`
+
+- [x] **泄漏核（衰变/蒸发统一为 exit；18-trap/3-exit）**：`appendix 08b`  
+  - 位置：`sections/appendices/08b_leakage_kernel_decay_evaporation.tex`（`\label{app:leakage_kernel}`）
+  - 要点：用有限候选族生存核 $P(t)$ 与 $\Gamma/\tau$ 代理把“衰变/蒸发/辐射”统一为泄漏过程；在 $m=6$ 特例中，把 18 个 cyclic types 视为 trap categories，把 3 个 boundary types 视为 exit channels（并在 SM labeling 闭合下读作 $U(1),SU(2),SU(3)$ 通道族，而非直接等同“光子”）。
+  - 生成脚本：`scripts/exp_leakage_kernel_demo.py`，`scripts/exp_leakage_kernel_m6_trap_exit.py`（已接入 `scripts/run_all.py`）
+  - 生成物：
+    - `sections/generated/leakage_kernel_demo_rows.tex`
+    - `sections/generated/leakage_kernel_m6_trap_exit_rows.tex`
+    - `sections/generated/leakage_kernel_m6_trap_exit_summary.tex`
+
+- [x] **低温=受保护低泄漏相（主签名A；派生诊断B）**：`appendix 08d`  
+  - 位置：`sections/appendices/08d_protected_low_leakage_phase.tex`（`\label{app:protected_low_leakage_phase}`）
+  - 要点：把“低温/超导/晶体态”统一翻译为“低泄漏相”：$\Gamma$ 极小、$\tau_{\mathrm{WS}}$ 极大；“近无耗散传输”只作为派生诊断；若要进一步把低泄漏映射到温度语言，必须显式引用 `app:physics_consensus_inputs` 的 PDR/PPL 可选字典包。
+  - 生成脚本：`scripts/exp_low_leakage_phase_signatures.py`（已接入 `scripts/run_all.py`）
+  - 生成物：
+    - `sections/generated/low_leakage_phase_rows.tex`
+    - `sections/generated/low_leakage_phase_summary.tex`
+
 ## 概念级闭合矩阵（频率优先）
 
 下表只做“定位与状态”追踪；具体定义/公式以对应附录/章节为准。

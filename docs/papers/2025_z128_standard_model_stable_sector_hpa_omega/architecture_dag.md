@@ -1064,6 +1064,22 @@ flowchart TB
   P_kernel_view("跨尺度计算入口（generated tables）<br/>类型：审计<br/>label: tab:fractal_kernel_sweep / tab:folding_entropy_decomposition / tab:kernel_mu_r_bridge / tab:kernel_rg_flow_balanced / tab:ext_boundary_operator_check<br/>kernel+entropy checks; μ/r staircase; balanced-chain coarse flow; uplift-operator audit")
   M_kernel_view -.- P_kernel_view
 
+  M_protocol_horizon["协议视界（tick-trap） 类型：审计 label: app:protocol_horizon_tick_trap"]
+  P_protocol_horizon("协议视界代理 类型：审计 label: app:protocol_horizon_tick_trap")
+  M_protocol_horizon -.- P_protocol_horizon
+
+  M_leakage_kernel["泄漏核（decay/evap as exit） 类型：审计 label: app:leakage_kernel"]
+  P_leakage_kernel("泄漏核代理（Γ/τ/通道分解） 类型：审计 label: app:leakage_kernel")
+  M_leakage_kernel -.- P_leakage_kernel
+
+  M_low_leak_phase["低泄漏相（low T as low leakage） 类型：审计 label: app:protected_low_leakage_phase"]
+  P_low_leak_phase("低泄漏相代理 类型：审计 label: app:protected_low_leakage_phase")
+  M_low_leak_phase -.- P_low_leak_phase
+
+  M_m6_trap_exit["m=6 trap/exit 审计表 类型：审计 label: app:leakage_kernel"]
+  P_m6_trap_exit("m=6 trap/exit 代理 类型：审计 label: app:leakage_kernel")
+  M_m6_trap_exit -.- P_m6_trap_exit
+
   M_kernel_rg_flow["Kernel RG flow（balanced chain coarse-graining）<br/>类型：审计<br/>label: tab:kernel_rg_flow_balanced<br/>m=2n sweep; 4x4 block coarse summary"]
   P_kernel_rg_flow("跨尺度 coarse-grained 标量统计<br/>类型：审计<br/>label: tab:kernel_rg_flow_balanced<br/>μ/Var of block averages on Hilbert screen")
   M_kernel_rg_flow -.- P_kernel_rg_flow
@@ -1142,6 +1158,14 @@ flowchart TB
   P_kernel_view --> P_ext_boundary_check
   P_kernel_view --> P_info_cert
 
+  M_kernel_view --> M_protocol_horizon --> M_leakage_kernel --> M_low_leak_phase
+  P_kernel_view --> P_protocol_horizon --> P_leakage_kernel --> P_low_leak_phase
+
+  P_mass --> P_protocol_horizon
+  P_lens --> P_leakage_kernel
+  M_leakage_kernel --> M_m6_trap_exit
+  P_leakage_kernel --> P_m6_trap_exit
+
   M_input_bhplanck --> M_bh_planck_calib
   P_input_bhplanck --> P_bh_planck_calib
   M_kernel_view --> M_bh_planck_calib
@@ -1188,12 +1212,12 @@ flowchart TB
 
   class M_mass,M_grav,M_rg,M_entropy_gap,M_rm,M_relent math_closure;
   class M_cosmo math_assumption;
-  class M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_gamma_proxy,M_gamma_direct,M_input_pdg,M_input_codata,M_input_planck,M_input_nufit,M_input_bhplanck,M_mdl_global,M_kernel_view,M_kernel_rg_flow,M_ext_boundary_check,M_info_cert,M_bh_planck_calib,M_mass_flow_uplift math_audit;
+  class M_am_euler,M_pressure,M_graphzeta,M_selberg,M_hecke_like,M_protoHecke,M_gamma_proxy,M_gamma_direct,M_input_pdg,M_input_codata,M_input_planck,M_input_nufit,M_input_bhplanck,M_mdl_global,M_kernel_view,M_kernel_rg_flow,M_ext_boundary_check,M_info_cert,M_bh_planck_calib,M_mass_flow_uplift,M_protocol_horizon,M_leakage_kernel,M_low_leak_phase,M_m6_trap_exit math_audit;
   class P_dyn phys_proxy;
   class P_mass,P_lens phys_obs;
   class P_am_euler,P_entropy_gap,P_rm,P_relent phys_dict;
   class P_rg,P_cosmo phys_model;
-  class P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_err,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_planck,P_input_nufit,P_input_bhplanck,P_mdl_global,P_kernel_view,P_kernel_rg_flow,P_ext_boundary_check,P_info_cert,P_bh_planck_calib,P_mass_flow_uplift phys_audit;
+  class P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_err,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_planck,P_input_nufit,P_input_bhplanck,P_mdl_global,P_kernel_view,P_kernel_rg_flow,P_ext_boundary_check,P_info_cert,P_bh_planck_calib,P_mass_flow_uplift,P_protocol_horizon,P_leakage_kernel,P_low_leak_phase,P_m6_trap_exit phys_audit;
 ```
 
 ### 图 10：可证伪预测 wiring（P1–P7）
