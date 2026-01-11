@@ -1064,20 +1064,20 @@ flowchart TB
   P_kernel_view("跨尺度计算入口（generated tables）<br/>类型：审计 / Audit<br/>label: tab:fractal_kernel_sweep / tab:folding_entropy_decomposition / tab:kernel_mu_r_bridge / tab:kernel_rg_flow_balanced / tab:ext_boundary_operator_check<br/>kernel+entropy checks; μ/r staircase; balanced-chain coarse flow; uplift-operator audit")
   M_kernel_view -.- P_kernel_view
 
-  M_protocol_horizon["协议视界（tick-trap） 类型：审计 / Audit label: app:protocol_horizon_tick_trap"]
-  P_protocol_horizon("协议视界代理 类型：审计 / Audit label: app:protocol_horizon_tick_trap")
+  M_protocol_horizon["协议视界（tick-trap）<br/>类型：审计 / Audit<br/>label: app:protocol_horizon_tick_trap"]
+  P_protocol_horizon("协议视界代理（Protocol-Horizon Proxy）<br/>类型：审计 / Audit<br/>label: app:protocol_horizon_tick_trap")
   M_protocol_horizon -.- P_protocol_horizon
 
-  M_leakage_kernel["泄漏核（decay/evap as exit） 类型：审计 / Audit label: app:leakage_kernel"]
-  P_leakage_kernel("泄漏核代理（Γ/τ/通道分解） 类型：审计 / Audit label: app:leakage_kernel")
+  M_leakage_kernel["泄漏核（decay/evap as exit）<br/>类型：审计 / Audit<br/>label: app:leakage_kernel"]
+  P_leakage_kernel("泄漏核代理（Γ/τ/通道分解 / Leakage-Kernel Proxy (Γ/τ/Channel Decomposition)）<br/>类型：审计 / Audit<br/>label: app:leakage_kernel")
   M_leakage_kernel -.- P_leakage_kernel
 
-  M_low_leak_phase["低泄漏相（low T as low leakage） 类型：审计 / Audit label: app:protected_low_leakage_phase"]
-  P_low_leak_phase("低泄漏相代理 类型：审计 / Audit label: app:protected_low_leakage_phase")
+  M_low_leak_phase["低泄漏相（low T as low leakage）<br/>类型：审计 / Audit<br/>label: app:protected_low_leakage_phase"]
+  P_low_leak_phase("低泄漏相代理（Low-Leakage-Phase Proxy）<br/>类型：审计 / Audit<br/>label: app:protected_low_leakage_phase")
   M_low_leak_phase -.- P_low_leak_phase
 
-  M_m6_trap_exit["m=6 trap/exit 审计表 类型：审计 / Audit label: app:leakage_kernel"]
-  P_m6_trap_exit("m=6 trap/exit 代理 类型：审计 / Audit label: app:leakage_kernel")
+  M_m6_trap_exit["m=6 trap/exit 审计表（m=6 trap/exit audit table）<br/>类型：审计 / Audit<br/>label: app:leakage_kernel"]
+  P_m6_trap_exit("m=6 trap/exit 代理（m=6 trap/exit proxy）<br/>类型：审计 / Audit<br/>label: app:leakage_kernel")
   M_m6_trap_exit -.- P_m6_trap_exit
 
   M_kernel_rg_flow["Kernel RG flow（核 RG 流；balanced chain coarse-graining）<br/>类型：审计 / Audit<br/>label: tab:kernel_rg_flow_balanced<br/>m=2n sweep; 4x4 block coarse summary"]
