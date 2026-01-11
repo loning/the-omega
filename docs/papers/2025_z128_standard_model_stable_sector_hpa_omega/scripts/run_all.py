@@ -1072,6 +1072,17 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "sections/generated/coupling_unification_audit_rows.tex",
                 "sections/generated/coupling_unification_audit_summary.tex",
+                "sections/generated/coupling_unification_threshold_registry_rows.tex",
+                "sections/generated/coupling_unification_threshold_audit_rows.tex",
+                "sections/generated/coupling_unification_threshold_audit_summary.tex",
+            ],
+        ),
+        Step(
+            name="Force->phase->delay toy audit (numerical stability; audit)",
+            script="exp_force_phase_delay_audit_toy.py",
+            expected_outputs=[
+                "sections/generated/force_phase_delay_audit_toy_rows.tex",
+                "sections/generated/force_phase_delay_audit_toy_summary.tex",
             ],
         ),
         Step(

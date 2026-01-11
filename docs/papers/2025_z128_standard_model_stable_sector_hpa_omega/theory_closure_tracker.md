@@ -155,6 +155,9 @@ flowchart TD
 - [x] **耦合统一（U2）：$r$ 坐标的有界匹配审计**：`appendix 71`  
   - 位置：`sections/appendices/71_coupling_unification_audit_in_r.tex`（`\label{app:coupling_unification_audit_in_r}`）
   - 要点：在 one-loop affine running 字典下，把“是否存在统一尺度”变成显式的有限候选族审计问题（电弱锚点由 `thm:weinberg_angle` 闭合，$\alpha_3^{-1}(\mu_Z)$ 作为 $n\pi^2$ 的有界族登记），输出 intersection mismatch 表并给出确定性选择。
+- [x] **U1 单群候选 registry（SU(5)/SO(10)/E6）**：`appendix 72`  
+  - 位置：`sections/appendices/72_u1_simple_group_registry_audit.tex`（`\label{app:u1_simple_group_registry_audit}`）
+  - 要点：以有界 registry 的方式记录常见单群候选，并用显式 complexity keys（$\dim\mathfrak g$, $d_{\min}$）说明其在当前 H2/H3 的最小性键下并非 CAP-minimal；保持 benchmark/audit 语义，不提升为 theorem-level U1。
 - [x] **统一：轨道/规范/力（connection + response）**：`appendix 67`  
   - 位置：`sections/appendices/67_unified_orbit_gauge_force.tex`（`\label{app:unified_orbit_gauge_force}`）
   - 要点：把“轨道=(基路径+内部态)”与“规范=协变运输/平行运输结构”以及“力=action/自由能响应导致的偏离”合并为一条接口层闭合链；不新增原语，不反哺 folding 证明链。
@@ -269,6 +272,7 @@ flowchart TD
 | 重整化边界 | scheme/matching/scope 字典与限制（[Open]：非 theorem-level） | Match/Iface/Audit | `app:renormalization_dictionary_and_boundaries` | [~] |
 | 统一分岔/反事实审计 | (U1) 群结构 vs (U2) 耦合统一 vs (U3) 归一化；有界 registry + no-fit 契约 | Audit/Match | `app:unification_branching_counterfactual_audit` | [x] |
 | 耦合统一（U2）审计 | one-loop affine running（r 坐标）+ 有界 $\alpha_3^{-1}(\mu_Z)=n\pi^2$；intersection mismatch 最小化 | Match/Audit | `app:coupling_unification_audit_in_r`, `tab:coupling_unification_audit_in_r` | [x] |
+| U1 单群候选 registry | SU(5)/SO(10)/E6 的有界表；complexity keys 用于 benchmark/audit（非 theorem-level） | Audit/Match | `app:u1_simple_group_registry_audit`, `tab:u1_simple_group_registry` | [x] |
 | 算子母空间字典入口（operator mother space dictionary） | source operator + readout kernels + determinant bookkeeping；finite-rank 更新闭合（字典层） | Iface/Audit | `app:operator_mother_space_dictionary` | [x] |
 | 算子母空间（operator mother space） | trace-class resolvent/行列式 bookkeeping；finite-rank 更新闭合（字典层） | Math/Audit | `app:operator_mother_space` | [x] |
 | 波粒二象性/延迟选择 | 相干交叉项 vs 事件化/去相干混合；互补性界 $V^2+D^2\le 1$；delayed-choice/eraser | Iface/Audit | `app:wave_particle_delayed_choice` | [x] |
