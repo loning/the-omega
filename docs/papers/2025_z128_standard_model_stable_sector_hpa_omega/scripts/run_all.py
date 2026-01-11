@@ -349,6 +349,13 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Kernel RG covariant transport lift (S4 anchor certificate)",
+            script="exp_kernel_rg_covariant_transport_anchor.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_covariant_transport_anchor_rows.tex",
+            ],
+        ),
+        Step(
             name="Ext boundary operator check (uplift refinement audit)",
             script="exp_ext_boundary_operator_check.py",
             expected_outputs=[
