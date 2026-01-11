@@ -27,6 +27,7 @@ import exp_hilbert_chirality_index as hil
 from common_cache import CACHE_VERSION, cache_path, load_or_compute
 from common_progress import ProgressEvery
 from protocol_kernel import cached_degeneracy_map, cached_foldm_outputs
+import itertools
 
 
 Mat = List[List[float]]
@@ -471,6 +472,397 @@ def build_F_matrix(n_bits: int) -> Mat:
     prog.done()
 
     return [[counts[i][j] / denom for j in range(16)] for i in range(16)]
+
+
+def _perm_matrix(p: Tuple[int, ...], r: int) -> Mat:
+    M: Mat = [[0.0] * r for _ in range(r)]
+    for i, j in enumerate(p):
+        M[int(j)][int(i)] = 1.0
+    return M
+
+
+def _inv_perm(p: Tuple[int, ...]) -> Tuple[int, ...]:
+    r = len(p)
+    inv = [0] * r
+    for i, j in enumerate(p):
+        inv[int(j)] = int(i)
+    return tuple(inv)
+
+
+def _best_perm_between_fibers(fa: List[int], fb: List[int]) -> Tuple[int, ...]:
+    """
+    Deterministic minimum-cost bijection between two padded fibers (same length r),
+    using Hamming distance on m-bit indices (via XOR bit_count), with lexicographic tie-break.
+    """
+    r = len(fa)
+    if len(fb) != r:
+        raise ValueError("Fiber length mismatch.")
+    best_key = None
+    best_p: Tuple[int, ...] | None = None
+    for p in itertools.permutations(range(r), r):
+        cost = 0
+        for i in range(r):
+            cost += int((int(fa[i]) ^ int(fb[p[i]])).bit_count())
+        key = (cost, p)
+        if best_key is None or key < best_key:
+            best_key = key
+            best_p = p
+    if best_p is None:
+        raise AssertionError("No permutations enumerated.")
+    return best_p
+
+
+def _preimages_from_outputs(outs: List[str]) -> Dict[str, List[int]]:
+    pre: Dict[str, List[int]] = {}
+    for k, w in enumerate(outs):
+        pre.setdefault(w, []).append(int(k))
+    for w in pre:
+        pre[w].sort()
+    return pre
+
+
+def _fiber_pad_r(pre: Dict[str, List[int]], w: str, r: int) -> List[int]:
+    xs = list(pre[w])
+    if not xs:
+        raise AssertionError("Empty fiber.")
+    if len(xs) >= r:
+        return xs[:r]
+    while len(xs) < r:
+        xs.append(xs[-1])
+    return xs
+
+
+def build_F_covariant_anchor(n_bits: int) -> Tuple[Mat, int]:
+    """
+    Anchor covariant RG operator with internal slot state.
+
+    We build a (16*r) x (16*r) matrix for n_bits=3 using the first RG step:
+      F_n^∇ = P_{n+1}^∇ T_{n+1}^∇ U_n P_n^{∇*},
+    where T_{n+1}^∇ is a lazy nearest-neighbor transport on the 2^{n+1}x2^{n+1} screen,
+    with a deterministic S_{r_m}-valued edge connection induced from Fold_m fibers at m=2(n+1),
+    and r_m := max_w |Fold_m^{-1}(w)|.
+
+    Returns (F_covariant, r).
+    """
+    if n_bits != 3:
+        raise ValueError("This covariant anchor is implemented for n_bits=3 only (m=8, r_8 manageable).")
+
+    n1 = n_bits + 1  # transport scale
+    m = 2 * n1  # balanced coupling for the transport-scale screen
+    outs = cached_foldm_outputs(m)  # length 4^{n+1}
+    gm = cached_degeneracy_map(m)
+    r = int(max(int(v) for v in gm.values()))
+
+    key = cache_path(f"rg_F_covariant_anchor_n{n_bits}_m{m}_r{r}_v{CACHE_VERSION}.pkl")
+
+    def compute() -> Tuple[Mat, int]:
+        pre = _preimages_from_outputs(outs)
+        fibers: Dict[str, List[int]] = {w: _fiber_pad_r(pre, w, r) for w in pre}
+
+        perm_cache: Dict[Tuple[str, str], Tuple[int, ...]] = {}
+
+        def perm_for_labels(ws: str, wd: str) -> Tuple[int, ...]:
+            key2 = (ws, wd)
+            if key2 in perm_cache:
+                return perm_cache[key2]
+            p = _best_perm_between_fibers(fibers[ws], fibers[wd])
+            perm_cache[key2] = p
+            return p
+
+        bids_n = block_id_by_index(n_bits)
+        bids_n1 = block_id_by_index(n1)
+        parents = parent_index_map(n_bits)  # Omega_{n+1} -> Omega_n
+        path = hil.hilbert_curve(n1)
+        inv = hilbert_inverse_index_map(n1)
+        L = (1 << n1) - 1
+
+        N1 = _n_micro(n1)
+        denom = float(N1 // 16)
+        p_stay = 0.5
+
+        # counts[out_block][in_block] is an r x r matrix.
+        counts: List[List[Mat]] = [
+            [[[0.0] * r for _ in range(r)] for _ in range(16)] for _ in range(16)
+        ]
+
+        prog = ProgressEvery(label=f"build_F_covariant_anchor n={n_bits} (m={m}, r={r})", total=N1, interval_s=60.0)
+        prog.start()
+        for k_dest, (x, y) in enumerate(path):
+            if k_dest % 4096 == 0:
+                prog.maybe(k_dest)
+            i_blk = bids_n1[k_dest]
+            wd = outs[k_dest]
+            srcs = _transport_source_weights_for_dest(int(x), int(y), inv=inv, L=L, p_stay=p_stay)
+            for k_src, w in srcs:
+                ws = outs[k_src]
+                j_blk = bids_n[parents[k_src]]
+                P = perm_for_labels(ws, wd)
+                M = _perm_matrix(P, r)
+                C = counts[i_blk][j_blk]
+                for a in range(r):
+                    row = C[a]
+                    Mr = M[a]
+                    for b in range(r):
+                        row[b] += float(w) * float(Mr[b])
+        prog.done()
+
+        dim = 16 * r
+        F: Mat = [[0.0] * dim for _ in range(dim)]
+        for i_blk in range(16):
+            for j_blk in range(16):
+                C = counts[i_blk][j_blk]
+                for a in range(r):
+                    for b in range(r):
+                        F[i_blk * r + a][j_blk * r + b] = float(C[a][b]) / denom
+        return F, r
+
+    return load_or_compute(key, compute)
+
+
+def block_diag_perm_matrix(g_block: List[Tuple[int, ...]], r: int) -> Mat:
+    """
+    Build a (16*r)x(16*r) block-diagonal permutation matrix G from blockwise permutations.
+    Convention matches _perm_matrix: slot i maps to slot p[i] so M[p[i],i]=1.
+    """
+    if len(g_block) != 16:
+        raise ValueError("g_block must have length 16.")
+    dim = 16 * r
+    G: Mat = [[0.0] * dim for _ in range(dim)]
+    for b in range(16):
+        p = g_block[b]
+        if len(p) != r:
+            raise ValueError("Permutation length mismatch.")
+        M = _perm_matrix(p, r)
+        for i in range(r):
+            for j in range(r):
+                G[b * r + i][b * r + j] = float(M[i][j])
+    return G
+
+
+def build_F_covariant_anchor_block_gauge(n_bits: int, g_block: List[Tuple[int, ...]]) -> Tuple[Mat, int]:
+    """
+    Construct the gauged covariant anchor operator F^{∇,g} using blockwise local relabelings.
+
+    We apply a blockwise gauge transformation at the micro transport level:
+      p_{src->dest}  ->  g_{B(dest)} ∘ p_{src->dest} ∘ g_{B(src)}^{-1},
+    where g_B ∈ S_r is constant on each coarse 4x4 block (B is block id at scale n+1).
+
+    Returns (F_gauged, r). Implemented for n_bits=3.
+    """
+    if n_bits != 3:
+        raise ValueError("Implemented for n_bits=3 only.")
+
+    # Use the cached r to validate g_block.
+    _, r = build_F_covariant_anchor(n_bits)
+    if len(g_block) != 16:
+        raise ValueError("g_block must have length 16.")
+    for p in g_block:
+        if len(p) != r:
+            raise ValueError("Permutation length mismatch in g_block.")
+
+    # Construct F^{∇,g} directly by conjugating each block-to-block slot transport:
+    #   M_{i<-j} -> g_i M_{i<-j} g_j^{-1}.
+    n1 = n_bits + 1
+    m = 2 * n1
+    outs = cached_foldm_outputs(m)
+    gm = cached_degeneracy_map(m)
+    r_check = int(max(int(v) for v in gm.values()))
+    if r_check != r:
+        raise AssertionError("Unexpected r mismatch at anchor.")
+
+    pre = _preimages_from_outputs(outs)
+    fibers: Dict[str, List[int]] = {w: _fiber_pad_r(pre, w, r) for w in pre}
+
+    perm_cache: Dict[Tuple[str, str], Tuple[int, ...]] = {}
+
+    def perm_for_labels(ws: str, wd: str) -> Tuple[int, ...]:
+        key2 = (ws, wd)
+        if key2 in perm_cache:
+            return perm_cache[key2]
+        p = _best_perm_between_fibers(fibers[ws], fibers[wd])
+        perm_cache[key2] = p
+        return p
+
+    bids_n = block_id_by_index(n_bits)
+    bids_n1 = block_id_by_index(n1)
+    parents = parent_index_map(n_bits)
+    path = hil.hilbert_curve(n1)
+    inv = hilbert_inverse_index_map(n1)
+    L = (1 << n1) - 1
+    N1 = _n_micro(n1)
+    denom = float(N1 // 16)
+    p_stay = 0.5
+
+    # Precompute r×r permutation matrices for g_i and g_i^{-1}.
+    Gblk: List[Mat] = []
+    Gblk_inv: List[Mat] = []
+    for b in range(16):
+        gb = g_block[b]
+        Gblk.append(_perm_matrix(gb, r))
+        Gblk_inv.append(_perm_matrix(_inv_perm(gb), r))
+
+    counts: List[List[Mat]] = [
+        [[[0.0] * r for _ in range(r)] for _ in range(16)] for _ in range(16)
+    ]
+    prog = ProgressEvery(label=f"build_F_covariant_anchor_block_gauge n={n_bits} (m={m}, r={r})", total=N1, interval_s=60.0)
+    prog.start()
+    for k_dest, (x, y) in enumerate(path):
+        if k_dest % 4096 == 0:
+            prog.maybe(k_dest)
+        i_blk = bids_n1[k_dest]
+        wd = outs[k_dest]
+        srcs = _transport_source_weights_for_dest(int(x), int(y), inv=inv, L=L, p_stay=p_stay)
+        for k_src, w in srcs:
+            ws = outs[k_src]
+            j_blk = bids_n[parents[k_src]]
+            P = perm_for_labels(ws, wd)
+            M = _perm_matrix(P, r)
+            # gauge-conjugate at the coarse blocks (codomain block i, domain block j)
+            Mg = mat_mul(mat_mul(Gblk[i_blk], M), Gblk_inv[j_blk])
+            C = counts[i_blk][j_blk]
+            for a in range(r):
+                row = C[a]
+                Mr = Mg[a]
+                for b in range(r):
+                    row[b] += float(w) * float(Mr[b])
+    prog.done()
+
+    dim = 16 * r
+    Fg: Mat = [[0.0] * dim for _ in range(dim)]
+    for i_blk in range(16):
+        for j_blk in range(16):
+            C = counts[i_blk][j_blk]
+            for a in range(r):
+                for b in range(r):
+                    Fg[i_blk * r + a][j_blk * r + b] = float(C[a][b]) / denom
+    return Fg, r
+
+
+def project_mean_zero_general(x: Vec) -> Vec:
+    m = vec_mean(x)
+    return [float(v) - m for v in x]
+
+
+def second_eigenvalue_abs_general(A: Mat, *, iters: int = 1200) -> float:
+    n = len(A)
+    if n == 0 or any(len(row) != n for row in A):
+        raise ValueError("A must be a square matrix.")
+    if iters <= 0:
+        raise ValueError("iters must be positive.")
+    v = [float((i % 11) - 5) for i in range(n)]
+    v = project_mean_zero_general(v)
+    nv = vec_norm2(v)
+    if nv == 0.0:
+        raise AssertionError("Unexpected zero seed.")
+    v = [vv / nv for vv in v]
+    lam = 0.0
+    for _ in range(iters):
+        w = mat_vec(A, v)
+        w = project_mean_zero_general(w)
+        nw = vec_norm2(w)
+        if nw == 0.0:
+            return 0.0
+        lam = nw
+        v = [ww / nw for ww in w]
+    return float(abs(lam))
+
+
+def project_block_internal_mean_zero(x: Vec, r: int) -> Vec:
+    """
+    Project onto the subspace with zero slot-mean within each block (kills trivial internal rep).
+    """
+    if len(x) != 16 * r:
+        raise ValueError("Dimension mismatch.")
+    out = x[:]
+    for b in range(16):
+        s = 0.0
+        for j in range(r):
+            s += float(x[b * r + j])
+        m = s / float(r)
+        for j in range(r):
+            out[b * r + j] = float(x[b * r + j]) - m
+    return out
+
+
+def second_eigenvalue_abs_internal(A: Mat, r: int, *, iters: int = 1200) -> float:
+    """
+    Estimate contraction on the internal (per-block mean-zero) subspace.
+    """
+    n = len(A)
+    if n != 16 * r or any(len(row) != n for row in A):
+        raise ValueError("A must be (16*r)x(16*r).")
+    v = [float((i % 13) - 6) for i in range(n)]
+    v = project_block_internal_mean_zero(v, r)
+    nv = vec_norm2(v)
+    if nv == 0.0:
+        raise AssertionError("Unexpected zero seed for internal subspace.")
+    v = [vv / nv for vv in v]
+    lam = 0.0
+    for _ in range(iters):
+        w = mat_vec(A, v)
+        w = project_block_internal_mean_zero(w, r)
+        nw = vec_norm2(w)
+        if nw == 0.0:
+            return 0.0
+        lam = nw
+        v = [ww / nw for ww in w]
+    return float(abs(lam))
+
+
+def build_internal_transform_matrices(r: int) -> Tuple[Mat, Mat]:
+    """
+    Build (L, Q) for the internal (per-block slot-mean-zero) coordinates.
+
+    - Q maps internal coordinates (dim 16*(r-1)) to full coordinates (dim 16*r)
+      by embedding each block's (r-1) vector u into slot differences:
+        x_j = u_j for j=0..r-2, and x_{r-1} = -sum_{j=0}^{r-2} u_j.
+      Hence sum_j x_j = 0 within each block.
+
+    - L maps full coordinates to internal coordinates by taking differences
+      against the reference slot r-1:
+        u_j = x_j - x_{r-1} for j=0..r-2.
+
+    Then L Q = I exactly (in exact arithmetic).
+    """
+    if r < 2:
+        raise ValueError("r must be >= 2.")
+    dim_full = 16 * r
+    dim_int = 16 * (r - 1)
+
+    Q: Mat = [[0.0] * dim_int for _ in range(dim_full)]
+    Lm: Mat = [[0.0] * dim_full for _ in range(dim_int)]
+
+    for b in range(16):
+        # indices
+        base_full = b * r
+        base_int = b * (r - 1)
+
+        # Q embedding
+        # x_j = u_j (j=0..r-2)
+        for j in range(r - 1):
+            Q[base_full + j][base_int + j] = 1.0
+        # x_{r-1} = -sum u_j
+        for j in range(r - 1):
+            Q[base_full + (r - 1)][base_int + j] = -1.0
+
+        # L difference coordinates u_j = x_j - x_{r-1}
+        for j in range(r - 1):
+            Lm[base_int + j][base_full + j] = 1.0
+            Lm[base_int + j][base_full + (r - 1)] = -1.0
+
+    return Lm, Q
+
+
+def build_F_covariant_internal_anchor(n_bits: int) -> Tuple[Mat, int]:
+    """
+    Build the internal-mode reduced operator F_int = L F^∇ Q at the anchor.
+
+    Returns (F_int, r) where F_int has dimension 16*(r-1).
+    """
+    F, r = build_F_covariant_anchor(n_bits)
+    Lm, Q = build_internal_transform_matrices(r)
+    F_int = mat_mul(mat_mul(Lm, F), Q)
+    return F_int, r
 
 
 def build_weighted_F_matrix(n_bits: int, t: float) -> Mat:

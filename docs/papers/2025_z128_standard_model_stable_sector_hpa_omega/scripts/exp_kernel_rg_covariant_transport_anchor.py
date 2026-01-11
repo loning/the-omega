@@ -18,8 +18,9 @@ We audit gauge covariance under blockwise relabelings g_B∈S4:
   T^{∇}[p'] = G T^{∇}[p] G^{-1}, where p'_{a->b} = g_{B(b)} p_{a->b} g_{B(a)}^{-1},
 and G is block-diagonal with ρ(g_B).
 
-Output (LaTeX fragment):
+Output (LaTeX fragments):
   - sections/generated/kernel_rg_covariant_transport_anchor_rows.tex
+  - sections/generated/kernel_rg_covariant_transport_reduction_rows.tex
 
 Only the Python standard library is used.
 """
@@ -55,6 +56,69 @@ def perm_matrix(p: Perm4) -> List[List[float]]:
     for i, j in enumerate(p):
         M[j][i] = 1.0
     return M
+
+
+def perm_sign(p: Perm4) -> int:
+    # Sign of permutation (parity) via inversion count.
+    inv = 0
+    for i in range(4):
+        for j in range(i + 1, 4):
+            if p[i] > p[j]:
+                inv += 1
+    return -1 if (inv % 2 == 1) else 1
+
+
+def project_sum_zero_basis() -> List[List[float]]:
+    """
+    Return a fixed 4x3 matrix whose columns form a basis of
+    H = {x in R^4 : sum x = 0}.
+    Basis vectors: e1-e4, e2-e4, e3-e4.
+    """
+    return [
+        [1.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0],
+        [0.0, 0.0, 1.0],
+        [-1.0, -1.0, -1.0],
+    ]
+
+
+def gram_matrix(B: List[List[float]]) -> List[List[float]]:
+    # G = B^T B (3x3)
+    Bt = mat_transpose(B)
+    return mat_mul(Bt, B)
+
+
+def mat_inv_3x3(A: List[List[float]]) -> List[List[float]]:
+    a, b, c = A[0]
+    d, e, f = A[1]
+    g, h, i = A[2]
+    det = a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g)
+    if det == 0.0:
+        raise ValueError("Singular 3x3 matrix.")
+    inv_det = 1.0 / det
+    return [
+        [(e * i - f * h) * inv_det, (c * h - b * i) * inv_det, (b * f - c * e) * inv_det],
+        [(f * g - d * i) * inv_det, (a * i - c * g) * inv_det, (c * d - a * f) * inv_det],
+        [(d * h - e * g) * inv_det, (b * g - a * h) * inv_det, (a * e - b * d) * inv_det],
+    ]
+
+
+def rep_H_twisted(p: Perm4) -> List[List[float]]:
+    """
+    3x3 twisted standard representation \\tilde rho on the sum-zero subspace H:
+      - rho(p) is the 4x4 permutation matrix on R^4,
+      - restrict to H in the basis B (4x3) by coordinate projection
+        M_H = (B^T B)^{-1} B^T rho(p) B,
+      - twist by sign(p) to land in SO(3): \\tilde rho = sign(p) * M_H.
+    """
+    R = perm_matrix(p)  # 4x4
+    B = project_sum_zero_basis()  # 4x3
+    Bt = mat_transpose(B)  # 3x4
+    G = gram_matrix(B)  # 3x3
+    Ginv = mat_inv_3x3(G)
+    MH = mat_mul(Ginv, mat_mul(Bt, mat_mul(R, B)))  # 3x3
+    s = float(perm_sign(p))
+    return [[s * float(MH[i][j]) for j in range(3)] for i in range(3)]
 
 
 def mat_mul(A: List[List[float]], B: List[List[float]]) -> List[List[float]]:
@@ -162,6 +226,41 @@ def build_T_covariant(edge_p: Dict[Tuple[Coord, Coord], Perm4], *, p_stay: float
     return T
 
 
+def build_T_covariant_H(edge_p: Dict[Tuple[Coord, Coord], Perm4], *, p_stay: float = 0.5) -> List[List[float]]:
+    # 48x48 matrix on blocks×H (16 blocks × 3).
+    if not (0.0 <= p_stay <= 1.0):
+        raise ValueError("p_stay must be in [0,1].")
+    dim = 16 * 3
+    T = [[0.0] * dim for _ in range(dim)]
+    for b_to in range(16):
+        neigh = block_neighbors(b_to)
+        deg = len(neigh)
+        # stay on the same block (identity on H)
+        for s in range(3):
+            T[3 * b_to + s][3 * b_to + s] += float(p_stay)
+        if deg == 0 or p_stay == 1.0:
+            continue
+        w_nb = (1.0 - float(p_stay)) / float(deg)
+        for b_from in neigh:
+            edges = micro_edges_between_blocks(b_from, b_to)
+            if not edges:
+                continue
+            acc = [[0.0] * 3 for _ in range(3)]
+            for a, b in edges:
+                M = rep_H_twisted(edge_p[(a, b)])
+                for i in range(3):
+                    for j in range(3):
+                        acc[i][j] += float(M[i][j])
+            inv = 1.0 / float(len(edges))
+            for i in range(3):
+                for j in range(3):
+                    acc[i][j] *= inv
+            for i in range(3):
+                for j in range(3):
+                    T[3 * b_to + i][3 * b_from + j] += w_nb * float(acc[i][j])
+    return T
+
+
 def blockwise_gauge_relabel(edge_p: Dict[Tuple[Coord, Coord], Perm4], g_block: Dict[int, Perm4]) -> Dict[Tuple[Coord, Coord], Perm4]:
     out: Dict[Tuple[Coord, Coord], Perm4] = {}
     for (a, b), p in edge_p.items():
@@ -183,14 +282,83 @@ def block_diag_G(g_block: Dict[int, Perm4]) -> List[List[float]]:
     return G
 
 
+def block_diag_G_H(g_block: Dict[int, Perm4]) -> List[List[float]]:
+    dim = 16 * 3
+    G = [[0.0] * dim for _ in range(dim)]
+    for b in range(16):
+        M = rep_H_twisted(g_block[b])
+        for i in range(3):
+            for j in range(3):
+                G[3 * b + i][3 * b + j] = float(M[i][j])
+    return G
+
+
+def block_diag_G_H_inv(g_block: Dict[int, Perm4]) -> List[List[float]]:
+    dim = 16 * 3
+    Ginv = [[0.0] * dim for _ in range(dim)]
+    for b in range(16):
+        M = rep_H_twisted(g_block[b])
+        Minv = mat_inv_3x3(M)
+        for i in range(3):
+            for j in range(3):
+                Ginv[3 * b + i][3 * b + j] = float(Minv[i][j])
+    return Ginv
+
+
+def scalar_block_kernel_4x4(*, p_stay: float = 0.5) -> List[List[float]]:
+    # 16x16 lazy random-walk kernel on the 4x4 block grid.
+    if not (0.0 <= p_stay <= 1.0):
+        raise ValueError("p_stay must be in [0,1].")
+    K = [[0.0] * 16 for _ in range(16)]
+    for b_to in range(16):
+        neigh = block_neighbors(b_to)
+        deg = len(neigh)
+        K[b_to][b_to] += float(p_stay)
+        if deg > 0 and p_stay < 1.0:
+            w = (1.0 - float(p_stay)) / float(deg)
+            for b_from in neigh:
+                K[b_to][b_from] += w
+    return K
+
+
+def lift_scalar_to_slots(v: List[float]) -> List[float]:
+    # E: R^16 -> R^(16*4) by replicating into 4 slots.
+    out: List[float] = []
+    for b in range(16):
+        for _ in range(4):
+            out.append(float(v[b]))
+    return out
+
+
+def project_slots_to_scalar(x: List[float]) -> List[float]:
+    # S: R^(16*4) -> R^16 by averaging over slots.
+    if len(x) != 16 * 4:
+        raise ValueError("Expected length 64.")
+    out = [0.0] * 16
+    for b in range(16):
+        s = 0.0
+        for j in range(4):
+            s += float(x[4 * b + j])
+        out[b] = s / 4.0
+    return out
+
+
+def mat_vec_mul(A: List[List[float]], x: List[float]) -> List[float]:
+    return [
+        sum(float(aij) * float(xj) for aij, xj in zip(row, x, strict=True)) for row in A
+    ]
+
+
 def main() -> None:
     # Build deterministic anchor edge transport on 8x8.
     labels = hol.grid_labels(n_bits=3)
     pre = hol.preimages()
     edge_p = hol.edge_perm_cache(labels, pre)
 
-    # Baseline covariant transport.
-    T = build_T_covariant(edge_p, p_stay=0.5)
+    p_stay = 0.5
+    # Baseline covariant transport (4-slot rep) and 3-dim standard lift.
+    T = build_T_covariant(edge_p, p_stay=p_stay)
+    TH = build_T_covariant_H(edge_p, p_stay=p_stay)
 
     # Gauge covariance check under deterministic pseudo-random block relabelings.
     rng = random.Random(1337)
@@ -198,21 +366,43 @@ def main() -> None:
     g_block: Dict[int, Perm4] = {b: all_perms[rng.randrange(len(all_perms))] for b in range(16)}
 
     edge_p2 = blockwise_gauge_relabel(edge_p, g_block)
-    T2 = build_T_covariant(edge_p2, p_stay=0.5)
+    T2 = build_T_covariant(edge_p2, p_stay=p_stay)
+    TH2 = build_T_covariant_H(edge_p2, p_stay=p_stay)
 
     G = block_diag_G(g_block)
     Ginv = mat_transpose(G)
     conj = mat_mul(mat_mul(G, T), Ginv)
 
     err = max_abs_diff(T2, conj)
+    GH = block_diag_G_H(g_block)
+    GHinv = block_diag_G_H_inv(g_block)
+    conjH = mat_mul(mat_mul(GH, TH), GHinv)
+    errH = max_abs_diff(TH2, conjH)
+
+    # Scalar reduction (trivial rep): S T E should match the scalar block kernel.
+    K = scalar_block_kernel_4x4(p_stay=p_stay)
+    v = [float((i % 5) - 2) for i in range(16)]
+    lhs = project_slots_to_scalar(mat_vec_mul(T, lift_scalar_to_slots(v)))
+    rhs = mat_vec_mul(K, v)
+    red_err = max(abs(float(a) - float(b)) for a, b in zip(lhs, rhs, strict=True))
 
     rows = [
-        f"anchor & 0.5 & {err:.3e} \\\\",
+        f"anchor & {p_stay:.2f} & {err:.3e} \\\\",
         "\\bottomrule",
     ]
     out = generated_dir() / "kernel_rg_covariant_transport_anchor_rows.tex"
     write_lines(out, rows)
     print("Wrote sections/generated/kernel_rg_covariant_transport_anchor_rows.tex")
+
+    rows2 = [
+        f"gauge4d & {p_stay:.2f} & {err:.3e} \\\\",
+        f"gauge3d & {p_stay:.2f} & {errH:.3e} \\\\",
+        f"scalar_reduction & {p_stay:.2f} & {red_err:.3e} \\\\",
+        "\\bottomrule",
+    ]
+    out2 = generated_dir() / "kernel_rg_covariant_transport_reduction_rows.tex"
+    write_lines(out2, rows2)
+    print("Wrote sections/generated/kernel_rg_covariant_transport_reduction_rows.tex")
 
 
 if __name__ == "__main__":

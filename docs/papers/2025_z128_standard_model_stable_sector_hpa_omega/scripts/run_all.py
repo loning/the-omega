@@ -353,6 +353,35 @@ def build_steps() -> List[Step]:
             script="exp_kernel_rg_covariant_transport_anchor.py",
             expected_outputs=[
                 "sections/generated/kernel_rg_covariant_transport_anchor_rows.tex",
+                "sections/generated/kernel_rg_covariant_transport_reduction_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG covariant operator spectral gap (anchor)",
+            script="exp_kernel_rg_operator_covariant_spectral_gap.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_covariant_spectral_gap_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG covariant operator reduction / decomposition (anchor)",
+            script="exp_kernel_rg_operator_covariant_reduction_audit.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_covariant_reduction_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG covariant operator gauge covariance (anchor)",
+            script="exp_kernel_rg_operator_covariant_gauge_audit.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_covariant_gauge_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG covariant internal-mode resolvent trace (anchor)",
+            script="exp_kernel_rg_operator_covariant_internal_resolvent_trace_audit.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_covariant_internal_resolvent_rows.tex",
             ],
         ),
         Step(
