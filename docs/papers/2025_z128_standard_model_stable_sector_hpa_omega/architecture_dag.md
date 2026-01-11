@@ -465,9 +465,12 @@ flowchart TB
   P_graphzeta("holonomy-weighted loop generating function（holonomy 加权回路生成函数）<br/>类型：审计 / Audit<br/>label: def:holonomy_weighted_graph_zeta / prop:cycle_type_stats_determine_class_sums<br/>Z_{G,ρ}(u)=∏ det(I−u^{|C|}ρ(Hol(C)))⁻¹")
   M_graphzeta -.- P_graphzeta
 
-  M_op3_yang_mills["OP3：holonomy→YM/EFT 代表闭合<br/>类型：连续 / Continuum<br/>label: app:continuum_yang_mills_from_holonomy<br/>finite holonomy → Wilson proxy → Tr(F^2) representative"]
+  M_op3_yang_mills["OP3：holonomy→YM/EFT（代表闭合 + 小环定理桥）<br/>类型：连续 / Continuum<br/>label: app:continuum_yang_mills_from_holonomy<br/>finite holonomy → Wilson proxy → Tr(F^2) + O(a^6) (thm:wilson_small_plaquette_expansion)"]
   P_wilson("Wilson-loop 代理（W,1-W）<br/>类型：观测 / Observation<br/>label: tab:holonomy_balanced_chain_wilson<br/>W := Re(tr(Q))/3;  A := 1 - W")
   M_op3_yang_mills -.- P_wilson
+
+  P_wilson_residual("Wilson residual 缩放审计（commuting SU(2) toy）<br/>类型：审计 / Audit<br/>label: tab:curvature_bridge_wilson<br/>residual := |(1−ReTr/N) − (a^4/(2N))Tr(F^2)|;  residual/a^6")
+  M_op3_yang_mills -.- P_wilson_residual
 
   M_transport_audit["transport rule 稳定性（padding/truncation/tie-break）<br/>类型：审计 / Audit<br/>label: tab:holonomy_transport_rule_sensitivity<br/>TV distance + frac_{3/4} envelope"]
   P_transport_audit("transport rule 反事实族（look-elsewhere 审计）<br/>类型：审计 / Audit<br/>label: tab:holonomy_transport_rule_sensitivity<br/>bounded counterfactual families")
@@ -976,6 +979,10 @@ flowchart TB
   P_err("误差预算代理（不确定性/鲁棒性 / Error-Budget Proxy (Uncertainty/Robustness)）<br/>类型：审计 / Audit")
   M_err -.- P_err
 
+  M_grav_curvature["弱场曲率分量（G00 from chi；含离散估计/误差预算）<br/>类型：审计 / Audit<br/>label: app:weak_field_curvature_from_chi<br/>G00 ≈ (2/c^2)ΔΦ = -2γΔχ;  G00_hat=-2γ_hat Δ_h χ_hat"]
+  P_grav_curvature("曲率代理（G00）与误差预算审计<br/>类型：审计 / Audit<br/>label: tab:curvature_bridge_weak_field<br/>Δ_h χ vs Δχ scaling; truncation + noise amplification")
+  M_grav_curvature -.- P_grav_curvature
+
   M_qm["量子测量（Born 规则 / POVM）<br/>类型：闭合 / Closure<br/>label: app:quantum_measurement_born<br/>eq:z128_born_povm — P_k=Tr(ρE_k)"]
   P_qm("Born rule / POVM（量子测量）<br/>类型：观测 / Observation<br/>label: app:quantum_measurement_born<br/>eq:z128_born_povm — P_k=Tr(ρE_k)")
   M_qm -.- P_qm
@@ -996,6 +1003,8 @@ flowchart TB
   M_equiv --> M_opMotherDict --> M_action
   M_equiv --> M_freq
   M_equiv --> M_action --> M_eom --> M_grav --> M_recon --> M_chi_horizon_budget --> M_cloud_capacity --> M_area_rep --> M_bh_match --> M_err
+  M_grav --> M_grav_curvature
+  M_err --> M_grav_curvature
   M_equiv --> M_thermo
   M_equiv --> M_qm
   M_qm --> M_wave_particle
@@ -1682,8 +1691,9 @@ flowchart TB
 | `P_holo` | `\label{app:holonomy_sweeps_extended}` | `prop:cycle_type_gauge_invariant — cycle type of p_□ is invariant under conjugation` | `sections/appendices/15_holonomy_sweeps_extended.tex` |
 | `M_graphzeta` | `\label{app:graph_zeta_holonomy}` | `Z_G(u)⁻¹=(1−u²)^{|E|−|V|}·det(I−uA+(D−I)u²) (Bass determinant)` | `sections/appendices/45_graph_zeta_holonomy.tex` |
 | `P_graphzeta` | `\label{def:holonomy_weighted_graph_zeta}` | `Z_{G,ρ}(u)=∏ det(I−u^{|C|}ρ(Hol(C)))⁻¹ (holonomy-weighted prime-cycle zeta)` | `sections/appendices/45_graph_zeta_holonomy.tex` |
-| `M_op3_yang_mills` | `\label{app:continuum_yang_mills_from_holonomy}` | `finite holonomy → Wilson proxy → Tr(F^2) representative (CAP)` | `sections/appendices/36_continuum_yang_mills_from_holonomy.tex` |
+| `M_op3_yang_mills` | `\label{app:continuum_yang_mills_from_holonomy}` | `finite holonomy → Wilson proxy → Tr(F^2) + O(a^6) (thm:wilson_small_plaquette_expansion)` | `sections/appendices/36_continuum_yang_mills_from_holonomy.tex` |
 | `P_wilson` | `\label{tab:holonomy_balanced_chain_wilson}` | `W := Re(tr(Q))/3; A := 1 − W (rows: sections/generated/holonomy_balanced_chain_wilson_rows.tex)` | `sections/appendices/36_continuum_yang_mills_from_holonomy.tex` |
+| `P_wilson_residual` | `\label{tab:curvature_bridge_wilson}` | `residual scaling audit for Wilson small-loop remainder (rows: sections/generated/curvature_bridge_wilson_rows.tex)` | `sections/appendices/02_generated_tables.tex` |
 | `M_gauge` | `\label{sec:protocol_connections_holonomy}` | `def:s4_vertex_gauge — p_{a→b} ↦ g_b p_{a→b} g_a⁻¹` | `sections/I_21_protocol_connections_holonomy.tex` |
 | `P_gauge` | `\label{sec:protocol_connections_holonomy}` | `p_□ ↦ g p_□ g⁻¹ (gauge conjugation on loops)` | `sections/I_21_protocol_connections_holonomy.tex` |
 | `M_sm` | `\label{sec:sm_labeling_closure}` | `thm:labeling_unique — 𝓛_SM:X₆→𝓕_SM⊔{U(1),SU(2),SU(3)} (order-preserving)` | `sections/V_30_sm_field_labeling_closure.tex` |
@@ -1716,6 +1726,8 @@ flowchart TB
 | `P_recon` | `\label{app:chi_reconstruction_protocol}` | `data → χ(x) (inverse proxy)` | `sections/F_41_chi_reconstruction_protocol.tex` |
 | `M_err` | `\label{app:protocol_to_continuum_error_control}` | `error decomposition + propagation bounds (protocol → continuum)` | `sections/appendices/33_protocol_to_continuum_error_control.tex` |
 | `P_err` | `\label{app:protocol_to_continuum_error_control}` | `uncertainty/robustness budget for fitted proxies (audit)` | `sections/appendices/33_protocol_to_continuum_error_control.tex` |
+| `M_grav_curvature` | `\label{app:weak_field_curvature_from_chi}` | `weak-field curvature proxy: G00 ≈ (2/c^2)ΔΦ = -2γΔχ; discrete estimator G00_hat=-2γ_hat Δ_h χ_hat` | `sections/appendices/60_weak_field_curvature_from_chi.tex` |
+| `P_grav_curvature` | `\label{tab:curvature_bridge_weak_field}` | `Δ_h χ vs Δχ scaling audit for the curvature bridge (rows: sections/generated/curvature_bridge_weak_field_rows.tex)` | `sections/appendices/02_generated_tables.tex` |
 | `M_qm` | `\label{app:quantum_measurement_born}` | `eq:z128_born_povm — P_k=Tr(ρE_k)` | `sections/appendices/30_quantum_measurement_born.tex` |
 | `P_qm` | `\label{app:quantum_measurement_born}` | `eq:z128_born_povm — P_k=Tr(ρE_k)` | `sections/appendices/30_quantum_measurement_born.tex` |
 | `M_state_gns` | `\label{app:state_gns_background}` | `ω(A)=⟨Ω|π(A)Ω⟩ (GNS);  ω(A)=Tr(ρA) (finite-dim)` | `sections/appendices/30c_state_gns_background.tex` |

@@ -467,6 +467,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Curvature-bridge sanity checks (weak-field Laplacian + Wilson scaling)",
+            script="exp_curvature_bridge_audit.py",
+            expected_outputs=[
+                "sections/generated/curvature_bridge_weak_field_rows.tex",
+                "sections/generated/curvature_bridge_weak_field_summary.tex",
+                "sections/generated/curvature_bridge_wilson_rows.tex",
+                "sections/generated/curvature_bridge_wilson_summary.tex",
+            ],
+        ),
+        Step(
             name="Holonomy balanced-chain permutation fits (PMNS/CKM, finite diagnostic)",
             script="exp_holonomy_balanced_chain_perm_fit.py",
             expected_outputs=[
