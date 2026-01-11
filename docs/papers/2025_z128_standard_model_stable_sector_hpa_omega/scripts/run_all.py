@@ -588,6 +588,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Budget-triggered chi-horizon occupancy (capacity-only table)",
+            script="exp_chi_horizon_budget_occupancy.py",
+            expected_outputs=[
+                "sections/generated/chi_horizon_budget_occupancy_rows.tex",
+                "sections/generated/chi_horizon_budget_occupancy_summary.tex",
+            ],
+        ),
+        Step(
             name="K4 delay dictionary audit (gravitational time-delay channels)",
             script="exp_k4_delay_dictionary_audit.py",
             expected_outputs=[

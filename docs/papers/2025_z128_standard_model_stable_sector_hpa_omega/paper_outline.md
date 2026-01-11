@@ -354,7 +354,7 @@ flowchart TD
   - **开工前必读（holonomy 模板与“需要刚性才可预测”的提醒）**：【外部参考（源文）】
     - `docs/papers/2025_physical_constants_geometry_hpa_omega/sections/appendices/05_holonomy.tex`【外部参考（源文）】
 - **D.3 手性/反物质/CPT 的协议几何（Prot→Iface）**【论文位置：`sections/I_30_chirality_antimatter_cpt.tex`（\label{sec:chirality_antimatter}）】
-  - 内容：orientation class bit、$\chi$ 符号律、conjugation-as-reversal 与 antimatter dual。
+  - 内容：orientation class bit、$\chi_H$ 符号律、conjugation-as-reversal 与 antimatter dual。
 
 ### Part E — Matter: Standard Model interface closures at the anchor
 
