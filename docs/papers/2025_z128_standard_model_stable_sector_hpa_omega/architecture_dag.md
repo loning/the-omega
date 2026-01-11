@@ -1005,6 +1005,42 @@ flowchart TB
   P_qm("Born rule / POVM（量子测量）<br/>类型：观测 / Observation<br/>label: app:quantum_measurement_born<br/>eq:z128_born_povm — P_k=Tr(ρE_k)")
   M_qm -.- P_qm
 
+  M_compSys["复合系统（张量积/边缘态）<br/>类型：构造 / Construction<br/>label: app:composite_systems_tensor_products<br/>H_AB=H_A⊗H_B;  rho_A=Tr_B(rho_AB)"]
+  P_compSys("复合系统接口（联合读出/边缘态）<br/>类型：字典 / Dictionary<br/>label: app:composite_systems_tensor_products<br/>joint POVM on AB; marginal via partial trace")
+  M_compSys -.- P_compSys
+
+  M_qchannels["量子信道（CPTP/Kraus/Stinespring）<br/>类型：审计 / Audit<br/>label: app:quantum_channels_cptp_stinespring<br/>Phi(rho)=Σ K rho K†;  rho↦Tr_env(V rho V†)"]
+  P_qchannels("粗粒化/不可逆证书（trace-distance contraction）<br/>类型：审计 / Audit<br/>label: app:quantum_channels_cptp_stinespring<br/>||Phi(rho)−Phi(sigma)||_1 ≤ ||rho−sigma||_1")
+  M_qchannels -.- P_qchannels
+
+  M_qm_lib["QM 定理库（Wigner/Stone/uncertainty/Schmidt）<br/>类型：审计 / Audit<br/>label: app:qm_theorem_library_core<br/>symmetry→(anti)unitary;  U(t)=exp(−i t H)"]
+  P_qm_lib("QM 结构定理的接口读法（不入证明链）<br/>类型：审计 / Audit<br/>label: app:qm_theorem_library_core<br/>rigidity statements for symmetry/dynamics/readout bounds")
+  M_qm_lib -.- P_qm_lib
+
+  M_aqft_net["AQFT：局域网（local net）<br/>类型：审计 / Audit<br/>label: app:aqft_axioms_local_nets<br/>O ↦ A(O); isotony + microcausality"]
+  P_aqft_net("AQFT 接口（局域性/协变/谱条件打包）<br/>类型：审计 / Audit<br/>label: app:aqft_axioms_local_nets<br/>locality as commutativity; covariance as automorphisms")
+  M_aqft_net -.- P_aqft_net
+
+  M_aqft_gns["AQFT：状态与 GNS 网（net realization）<br/>类型：审计 / Audit<br/>label: app:aqft_states_representations_gns_nets<br/>omega(A)=<Omega|pi(A)Omega>"]
+  P_aqft_gns("AQFT 表示字典（state→representation）<br/>类型：审计 / Audit<br/>label: app:aqft_states_representations_gns_nets<br/>GNS net: M_omega(O)=pi(A(O))''")
+  M_aqft_gns -.- P_aqft_gns
+
+  M_aqft_micro["AQFT：微因果/谱条件边界（scope）<br/>类型：审计 / Audit<br/>label: app:microcausality_spectrum_covariance<br/>microcausality + spectrum as scoped commitments"]
+  P_aqft_micro("AQFT scope 边界（场域/相互作用构造不在此闭合）<br/>类型：审计 / Audit<br/>label: app:microcausality_spectrum_covariance<br/>field-domain + interacting-model construction are explicit boundaries")
+  M_aqft_micro -.- P_aqft_micro
+
+  M_wightman_bridge["Wightman 桥接（AQFT↔Wightman）<br/>类型：审计 / Audit<br/>label: app:wightman_bridge_and_reconstruction<br/>net↔field bridge with explicit prerequisites"]
+  P_wightman_bridge("Wightman bridge（域/正则性前提显式）<br/>类型：审计 / Audit<br/>label: app:wightman_bridge_and_reconstruction<br/>no implicit field reconstruction")
+  M_wightman_bridge -.- P_wightman_bridge
+
+  M_scattering_iface["散射接口（S-matrix/WS delay 对齐）<br/>类型：审计 / Audit<br/>label: app:scattering_haag_ruelle_lsz_interface<br/>S(ω) ↔ phase ↔ delay dictionary"]
+  P_scattering_iface("散射/延迟统一口径（接口）<br/>类型：审计 / Audit<br/>label: app:scattering_haag_ruelle_lsz_interface<br/>delay as derivative of scattering phase")
+  M_scattering_iface -.- P_scattering_iface
+
+  M_renorm_dict["重整化边界（scheme/matching/scope）<br/>类型：审计 / Audit<br/>label: app:renormalization_dictionary_and_boundaries<br/>scheme dependence as Match; constructive renorm not claimed"]
+  P_renorm_dict("renormalization dictionary（Match/Iface 边界）<br/>类型：审计 / Audit<br/>label: app:renormalization_dictionary_and_boundaries<br/>running conventions and explicit scope limits")
+  M_renorm_dict -.- P_renorm_dict
+
   M_state_gns["状态泛函/GNS 背景（记号对齐）<br/>类型：审计 / Audit<br/>label: app:state_gns_background<br/>ω(·) state;  ω(A)=⟨Ω|π(A)Ω⟩ (GNS);  ω(A)=Tr(ρA) (finite-dim)"]
   P_state_gns("状态表示字典（ω/ρ 互译 / State-Representation Dictionary (ω/ρ Translation)）<br/>类型：审计 / Audit<br/>label: app:state_gns_background<br/>P(E)=ω(E) ↔ P=Tr(ρE)")
   M_state_gns -.- P_state_gns
@@ -1027,6 +1063,8 @@ flowchart TB
   M_equiv --> M_qm
   M_qm --> M_wave_particle
   M_qm --> M_state_gns
+  M_qm --> M_compSys --> M_qchannels --> M_qm_lib
+  M_state_gns --> M_aqft_net --> M_aqft_gns --> M_aqft_micro --> M_wightman_bridge --> M_scattering_iface --> M_renorm_dict
 
   P_equiv --> P_quotient --> P_proj
   P_select --> P_capinv --> P_action
@@ -1041,6 +1079,8 @@ flowchart TB
   P_equiv --> P_qm
   P_qm --> P_wave_particle
   P_qm --> P_state_gns
+  P_qm --> P_compSys --> P_qchannels --> P_qm_lib
+  P_state_gns --> P_aqft_net --> P_aqft_gns --> P_aqft_micro --> P_wightman_bridge --> P_scattering_iface --> P_renorm_dict
 
   classDef iface fill:#FCE4EC,stroke:#D81B60,color:#880E4F,stroke-width:2px;
   classDef open_problem fill:#FFEBEE,stroke:#C62828,color:#B71C1C,stroke-width:2px,font-weight:700;
@@ -1062,13 +1102,13 @@ flowchart TB
   class M_equiv,M_quotient,M_proj,M_freq,M_cloud_capacity math_construct;
   class M_thermo,M_grav,M_qm math_closure;
   class M_action,M_eom math_cont;
-  class M_capinv,M_recon,M_chi_horizon_budget,M_area_rep,M_bh_match,M_err,M_state_gns,M_opMotherDict math_audit;
+  class M_capinv,M_recon,M_chi_horizon_budget,M_area_rep,M_bh_match,M_err,M_state_gns,M_opMotherDict,M_compSys,M_qchannels,M_qm_lib,M_aqft_net,M_aqft_gns,M_aqft_micro,M_wightman_bridge,M_scattering_iface,M_renorm_dict math_audit;
   class M_wave_particle math_audit;
   class P_dyn phys_proxy;
   class P_lens,P_qm phys_obs;
   class P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_cloud_capacity,P_opMotherDict phys_dict;
   class P_action,P_eom phys_model;
-  class P_capinv,P_select,P_recon,P_chi_horizon_budget,P_area_rep,P_bh_match,P_err,P_state_gns phys_audit;
+  class P_capinv,P_select,P_recon,P_chi_horizon_budget,P_area_rep,P_bh_match,P_err,P_state_gns,P_compSys,P_qchannels,P_qm_lib,P_aqft_net,P_aqft_gns,P_aqft_micro,P_wightman_bridge,P_scattering_iface,P_renorm_dict phys_audit;
   class P_wave_particle phys_audit;
 ```
 
@@ -1840,8 +1880,26 @@ flowchart TB
 | `P_grav_curvature` | `\label{tab:curvature_bridge_weak_field}` | `Δ_h χ vs Δχ scaling audit for the curvature bridge (rows: sections/generated/curvature_bridge_weak_field_rows.tex)` | `sections/appendices/02_generated_tables.tex` |
 | `M_qm` | `\label{app:quantum_measurement_born}` | `eq:z128_born_povm — P_k=Tr(ρE_k)` | `sections/appendices/30_quantum_measurement_born.tex` |
 | `P_qm` | `\label{app:quantum_measurement_born}` | `eq:z128_born_povm — P_k=Tr(ρE_k)` | `sections/appendices/30_quantum_measurement_born.tex` |
+| `M_compSys` | `\label{app:composite_systems_tensor_products}` | `H_AB=H_A⊗H_B;  ρ_A=Tr_B(ρ_AB);  product POVM: {E_i⊗F_j}` | `sections/appendices/30d_composite_systems_tensor_products.tex` |
+| `P_compSys` | `\label{app:composite_systems_tensor_products}` | `joint readout + marginalization via partial trace (interface)` | `sections/appendices/30d_composite_systems_tensor_products.tex` |
+| `M_qchannels` | `\label{app:quantum_channels_cptp_stinespring}` | `Φ(ρ)=Σ K ρ K†;  ||Φ(ρ)−Φ(σ)||₁ ≤ ||ρ−σ||₁` | `sections/appendices/30e_quantum_channels_cptp_stinespring.tex` |
+| `P_qchannels` | `\label{app:quantum_channels_cptp_stinespring}` | `coarse-graining monotonicity certificate (trace distance contraction)` | `sections/appendices/30e_quantum_channels_cptp_stinespring.tex` |
+| `M_qm_lib` | `\label{app:qm_theorem_library_core}` | `Wigner: transition-probability symmetry → (anti)unitary; Stone: U(t)=exp(−i t H)` | `sections/appendices/30f_qm_theorem_library_core.tex` |
+| `P_qm_lib` | `\label{app:qm_theorem_library_core}` | `QM structure theorems (audit-facing library + interface readings)` | `sections/appendices/30f_qm_theorem_library_core.tex` |
 | `M_state_gns` | `\label{app:state_gns_background}` | `ω(A)=⟨Ω|π(A)Ω⟩ (GNS);  ω(A)=Tr(ρA) (finite-dim)` | `sections/appendices/30c_state_gns_background.tex` |
 | `P_state_gns` | `\label{app:state_gns_background}` | `P(E)=ω(E) ↔ P=Tr(ρE)` | `sections/appendices/30c_state_gns_background.tex` |
+| `M_aqft_net` | `\label{app:aqft_axioms_local_nets}` | `local net: O ↦ A(O); isotony + microcausality; covariance packaging` | `sections/appendices/61_aqft_axioms_local_nets.tex` |
+| `P_aqft_net` | `\label{app:aqft_axioms_local_nets}` | `locality as commutativity; covariance as automorphisms (interface)` | `sections/appendices/61_aqft_axioms_local_nets.tex` |
+| `M_aqft_gns` | `\label{app:aqft_states_representations_gns_nets}` | `state ω on quasi-local algebra → GNS; local von Neumann algebras M_ω(O)=π(A(O))''` | `sections/appendices/62_states_representations_gns_nets.tex` |
+| `P_aqft_gns` | `\label{app:aqft_states_representations_gns_nets}` | `state→representation dictionary for nets (audit-facing)` | `sections/appendices/62_states_representations_gns_nets.tex` |
+| `M_aqft_micro` | `\label{app:microcausality_spectrum_covariance}` | `microcausality/spectrum as scoped commitments; explicit boundary items` | `sections/appendices/63_microcausality_spectrum_covariance.tex` |
+| `P_aqft_micro` | `\label{app:microcausality_spectrum_covariance}` | `scope boundary: field-domain + interacting-model construction not claimed` | `sections/appendices/63_microcausality_spectrum_covariance.tex` |
+| `M_wightman_bridge` | `\label{app:wightman_bridge_and_reconstruction}` | `AQFT↔Wightman bridge as interface map; prerequisites explicit` | `sections/appendices/64_wightman_bridge_and_reconstruction.tex` |
+| `P_wightman_bridge` | `\label{app:wightman_bridge_and_reconstruction}` | `no implicit field reconstruction; domain/regularity prerequisites explicit` | `sections/appendices/64_wightman_bridge_and_reconstruction.tex` |
+| `M_scattering_iface` | `\label{app:scattering_haag_ruelle_lsz_interface}` | `S(ω) ↔ phase ↔ delay (Wigner–Smith dictionary alignment)` | `sections/appendices/65_scattering_haag_ruelle_lsz_interface.tex` |
+| `P_scattering_iface` | `\label{app:scattering_haag_ruelle_lsz_interface}` | `scattering interface aligned with delay dictionary (audit-facing prerequisites)` | `sections/appendices/65_scattering_haag_ruelle_lsz_interface.tex` |
+| `M_renorm_dict` | `\label{app:renormalization_dictionary_and_boundaries}` | `scheme dependence as Match; regularization discipline; constructive renorm not claimed` | `sections/appendices/66_renormalization_dictionary_and_boundaries.tex` |
+| `P_renorm_dict` | `\label{app:renormalization_dictionary_and_boundaries}` | `renormalization dictionary and scope boundaries (Match/Iface)` | `sections/appendices/66_renormalization_dictionary_and_boundaries.tex` |
 | `M_wave_particle` | `\label{app:wave_particle_delayed_choice}` | `cross terms vs mixture; V^2+D^2≤1; delayed-choice/eraser (interface)` | `sections/appendices/30b_wave_particle_delayed_choice.tex` |
 | `P_wave_particle` | `\label{app:wave_particle_delayed_choice}` | `delayed-choice / quantum eraser / Wheeler “Great Smoky Dragon” (audit-facing)` | `sections/appendices/30b_wave_particle_delayed_choice.tex` |
 | `M_rg` | `\label{app:running_couplings_resolution_flow}` | `eq:rg_in_r — dg/dr = (ln φ)β(g)` | `sections/appendices/31_running_couplings_resolution_flow.tex` |
