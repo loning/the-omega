@@ -37,6 +37,7 @@
   - `docs/papers/2025_riemann_ground_state_hpa_omega/sections/appendices/03_orbit_calculus_abel_fp.tex`
   - `docs/papers/2025_riemann_ground_state_hpa_omega/sections/05_trace_formula_rigidity.tex`
   - `docs/papers/2025_holographic_hilbert_universe_hpa_omega/sections/09_trace_formula_rigidity.tex`
+  - `docs/papers/2025_z128_standard_model_stable_sector_hpa_omega/sections/appendices/59_operator_mother_space.tex`
 
 ## 闭合依赖图（模块级）
 
@@ -137,6 +138,10 @@ flowchart TD
     - `sections/generated/low_leakage_phase_rows.tex`
     - `sections/generated/low_leakage_phase_summary.tex`
 
+- [x] **算子母空间（resolvent/determinant + finite-rank 更新；统一口径）**：`appendix 59`  
+  - 位置：`sections/appendices/59_operator_mother_space.tex`（`\label{app:operator_mother_space}`）
+  - 要点：以 trace-class resolvent 与 Fredholm 行列式为最小算子底座，对齐 Abel-first 的 pole-barrier 语言，并为 pointer-jump（虫洞类通道）与有限候选族 CAP 选择提供统一的纯数学 bookkeeping 层；该模块是审计/叙事统一层，不进入 theorem-level folding 依赖链。
+
 ## 概念级闭合矩阵（频率优先）
 
 下表只做“定位与状态”追踪；具体定义/公式以对应附录/章节为准。
@@ -161,6 +166,7 @@ flowchart TD
 | 温度（temperature） | 频率共轭尺度 | Iface/Math | `def:temperature_conjugate` | [x] |
 | CAP 自由能原则 | 以自由能形式重述 CAP 选择 | CAP | `prop:cap_free_energy_closure` | [x] |
 | Born 概率 | $P_k=\mathrm{Tr}(\rho E_k)$ | Iface/Math | `eq:z128_born_povm` | [x] |
+| 算子母空间（operator mother space） | trace-class resolvent/行列式 bookkeeping；finite-rank 更新闭合（字典层） | Math/Audit | `app:operator_mother_space` | [x] |
 | 波粒二象性/延迟选择 | 相干交叉项 vs 事件化/去相干混合；互补性界 $V^2+D^2\le 1$；delayed-choice/eraser | Iface/Audit | `app:wave_particle_delayed_choice` | [x] |
 | RG 运行 | $\mathrm{d}g/\mathrm{d}r=(\log\varphi)\beta(g)$ | Math | `eq:rg_in_r` | [x] |
 | 稳定扇区计数（grammar/counts） | $X_m\subset\Omega_m$；$|X_m|=F_{m+2}$ | Math | `lem:xm_fib` | [x] |

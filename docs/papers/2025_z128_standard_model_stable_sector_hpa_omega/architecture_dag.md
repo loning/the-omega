@@ -160,6 +160,10 @@ flowchart TB
   P_abel("解析稳定代理（finite part / pole barrier）<br/>类型：模型 / Model<br/>label: rem:abel_first_pole_barrier_discipline<br/>FP_{r↑1} extracts constant term; pole barrier at r=1")
   M_abel -.- P_abel
 
+  M_operator_mother["算子母空间（resolvent/determinant；finite-rank 更新）<br/>类型：审计 / Audit<br/>label: app:operator_mother_space<br/>trace-class F;  Tr(K(I−rF)⁻¹);  det(I−rF);  Δ finite-rank ⇒ F↦F+Δ"]
+  P_operator_mother("算子母空间口径（审计/字典层）<br/>类型：审计 / Audit<br/>label: app:operator_mother_space<br/>pole barrier ↔ interior resolvent poles; pointer-jump ↔ finite-rank Δ")
+  M_operator_mother -.- P_operator_mother
+
   M_fold["Fold6 映射（64→21；像/原像结构）<br/>类型：构造 / Construction<br/>label: subsec:fold6_map<br/>Fold₆(N):=(c₁,…,c₆) ∈ X₆ (eq:fold6_def)"]
   P_fold("coarse-graining 压缩（稳定扇区统计）<br/>类型：代理 / Proxy<br/>label: subsec:fold6_map<br/>Ω₆={0,1}⁶ (|Ω₆|=64), X₆⊂Ω₆ (|X₆|=21) ⇒ 64→21")
   M_fold -.- P_fold
@@ -175,6 +179,9 @@ flowchart TB
   M_pi --> M_periodic --> M_am_euler --> M_e
   M_e --> M_abel
   M_e --> M_pressure --> M_abel
+  M_pressure --> M_operator_mother
+  M_abel --> M_operator_mother
+  M_am_euler --> M_operator_mother
   M_phi --> M_fold
   P_phi --> P_pi
   P_phi --> P_e
@@ -208,11 +215,13 @@ flowchart TB
   class M_phi,M_fold,M_anchor math_construct;
   class M_pi,M_periodic,M_e,M_op2_fold_uniqueness math_closure;
   class M_abel,M_am_euler,M_pressure math_audit;
+  class M_operator_mother math_audit;
   class P_phi,P_pi,P_e,P_fold,P_screen phys_proxy;
   class P_periodic phys_obs;
   class P_am_euler phys_dict;
   class P_abel phys_model;
   class P_pressure phys_audit;
+  class P_operator_mother phys_audit;
 ```
 
 ### 图 3：显示预算与空间寻址（6-DoF coarse-lock → bulk d=3 → addressing/local） / Fig. 3: Display Budget and Spatial Addressing (6-DoF coarse-lock → bulk d=3 → addressing/local)
@@ -1357,6 +1366,9 @@ flowchart TB
   P_bh_pointer("强场/边界通道代理（指针 / Strong-Field/Boundary Channel Proxy (Pointer)）<br/>类型：未闭合 / Not Closed<br/>label: app:bh_wormholes_pointer<br/>area law / throat / pointer-jump (pointer)")
   M_bh_pointer -.- P_bh_pointer
 
+  %% dictionary-only alignment: pointer-jump bookkeeping ↔ operator mother space
+  M_bh_pointer -.- M_operator_mother
+
   M_qcd_gap["QCD 禁闭/质量隙（严格问题未闭合）<br/>类型：未闭合 / Not Closed<br/>label: app:continuum_yang_mills_from_holonomy<br/>note: representative YM closed; confinement/mass gap open"]
   P_qcd_gap("QCD 非微扰检验（未闭合）<br/>类型：未闭合 / Not Closed<br/>label: app:continuum_yang_mills_from_holonomy<br/>confinement/mass-gap not closed")
   M_qcd_gap -.- P_qcd_gap
@@ -1614,6 +1626,8 @@ flowchart TB
 | `P_e` | `\label{app:arrow_of_time_semigroup_notes}` | `prop:discrete_memoryless_exponential — w_{t+s}=w_t w_s, w₀=1 ⇒ w_t=rᵗ;  prop:continuous_semigroup_exponential — w(t)=exp(λt)` | `sections/F_00_arrow_of_time_semigroup.tex` |
 | `M_abel` | `\label{rem:abel_first_pole_barrier_discipline}` | `unit disk holomorphy + Abel path r↑1; pole barrier; no interior poles` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `P_abel` | `\label{rem:abel_first_pole_barrier_discipline}` | `FP_{r↑1} extracts constant term (audit-facing discipline)` | `sections/C_11_resolution_folding_64_to_21.tex` |
+| `M_operator_mother` | `\label{app:operator_mother_space}` | `trace-class F; Tr(K(I−rF)⁻¹); det(I−rF); finite-rank Δ ⇒ F↦F+Δ (bookkeeping)` | `sections/appendices/59_operator_mother_space.tex` |
+| `P_operator_mother` | `\label{app:operator_mother_space}` | `audit-facing operator mother space viewpoint (resolvent/determinant; pointer-jump ↔ Δ)` | `sections/appendices/59_operator_mother_space.tex` |
 | `M_fold` | `\label{subsec:fold6_map}` | `eq:fold6_def — Fold₆(N):=(c₁,…,c₆) ∈ X₆` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `P_fold` | `\label{subsec:fold6_map}` | `Ω₆={0,1}⁶ (card=64), X₆⊂Ω₆ (card=21) ⇒ 64→21` | `sections/C_11_resolution_folding_64_to_21.tex` |
 | `M_op2_fold_uniqueness` | `\label{app:fold_family_uniqueness}` | `thm:fold_family_uniqueness — value-consistency + uplift-locality ⇒ F_m = Fold_m` | `sections/appendices/44_fold_family_uniqueness.tex` |
