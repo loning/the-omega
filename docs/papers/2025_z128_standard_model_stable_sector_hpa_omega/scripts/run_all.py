@@ -1086,6 +1086,70 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Coupling unification audit (two-loop + threshold uncertainty; audit)",
+            script="exp_coupling_unification_audit_2loop_thresholds.py",
+            expected_outputs=[
+                "sections/generated/coupling_unification_2loop_threshold_audit_rows.tex",
+                "sections/generated/coupling_unification_2loop_threshold_audit_summary.tex",
+            ],
+        ),
+        Step(
+            name="Coupling unification audit (two-loop missing-sector perturbations; audit)",
+            script="exp_coupling_unification_2loop_yukawa_scalar_perturbation_audit.py",
+            expected_outputs=[
+                "sections/generated/coupling_unification_2loop_yukawa_scalar_audit_rows.tex",
+                "sections/generated/coupling_unification_2loop_yukawa_scalar_audit_summary.tex",
+            ],
+        ),
+        Step(
+            name="Coupling unification threshold correlation modes (audit)",
+            script="exp_coupling_unification_threshold_correlation_modes.py",
+            expected_outputs=[
+                "sections/generated/coupling_unification_threshold_corr_modes_rows.tex",
+                "sections/generated/coupling_unification_threshold_corr_modes_summary.tex",
+            ],
+        ),
+        Step(
+            name="Scattering inverse consistency audit (phase->delay->phase; audit)",
+            script="exp_scattering_inverse_consistency_audit.py",
+            expected_outputs=[
+                "sections/generated/scattering_inverse_consistency_rows.tex",
+                "sections/generated/scattering_inverse_consistency_summary.tex",
+            ],
+        ),
+        Step(
+            name="Scattering inverse consistency coord-gate (audit)",
+            script="exp_scattering_inverse_consistency_coord_audit.py",
+            expected_outputs=[
+                "sections/generated/scattering_inverse_coord_rows.tex",
+                "sections/generated/scattering_inverse_coord_summary.tex",
+            ],
+        ),
+        Step(
+            name="Scattering delay-linewidth triangle audit (audit)",
+            script="exp_scattering_delay_linewidth_triangle_audit.py",
+            expected_outputs=[
+                "sections/generated/scattering_delay_linewidth_triangle_rows.tex",
+                "sections/generated/scattering_delay_linewidth_triangle_summary.tex",
+            ],
+        ),
+        Step(
+            name="QCD proxy<->pole-barrier consistency loop (audit)",
+            script="exp_qcd_proxy_polebarrier_mutual_exclusion.py",
+            expected_outputs=[
+                "sections/generated/qcd_proxy_polebarrier_failure_rows.tex",
+                "sections/generated/qcd_proxy_polebarrier_failure_summary.tex",
+            ],
+        ),
+        Step(
+            name="Scheme reparam invariance demo (audit)",
+            script="exp_scheme_reparam_invariance_audit.py",
+            expected_outputs=[
+                "sections/generated/scheme_invariance_demo_rows.tex",
+                "sections/generated/scheme_invariance_demo_summary.tex",
+            ],
+        ),
+        Step(
             name="Rigidity Jarlskog pi-ansatz",
             script="exp_jarlskog_pi_rigidity.py",
             expected_outputs=[
