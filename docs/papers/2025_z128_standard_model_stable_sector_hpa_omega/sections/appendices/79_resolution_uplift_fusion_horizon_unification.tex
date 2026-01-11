@@ -1,0 +1,151 @@
+\section[Resolution uplift and horizon unification]{Resolution uplift, fusion staging, and horizon formation: a finite-capacity unification module}
+\label{app:resolution_uplift_fusion_horizon_unification}
+
+\paragraph{Scope and status.}
+This appendix records a compact unification module that formalizes the following protocol-level intuition in an auditable, finite form:
+when information aggregates into a stable structure, additional protocol capacity is required; if addressing depth cannot expand, window length must expand.
+The module is designed to be compatible with the paper's layer discipline:
+the only theorem-level inputs are Tick and CAP (Appendix~\ref{app:inference_ledger}),
+while any link to continuum strong-field statements (area law, Schwarzschild package) remains an explicitly scoped matching-layer dictionary (Appendix~\ref{subsec:external_inputs_inventory}).
+
+\paragraph{Where it plugs in.}
+\InterfaceTag This module connects the resolution coordinate $r(\mu)$ (Section~\ref{sec:mass_latency_coordinate}),
+the finite protocol capacity $I_{\mathrm{prot}}(m,n)$ (Appendix~\ref{app:bh_planck_capacity_calibration}),
+and the protocol-horizon vocabulary (Appendix~\ref{app:protocol_horizon_tick_trap})
+into a single finite selection rule that produces a discrete uplift path $(m,n)$ under explicit constraints.
+\InterfaceTag It is compatible with (but does not depend on) the kernel/RG operator viewpoint of Section~\ref{sec:kernel_view}:
+the present appendix formalizes a capacity-driven uplift rule, while the kernel view provides dynamical and spectral diagnostics along declared refinement chains.
+\AuditTag It is also designed to produce reproducible table artifacts (Appendix~\ref{app:generated_tables}) by a deterministic finite sweep.
+
+\subsection{Protocol capacity and constrained uplift families}
+\label{subsec:uplift_capacity_families}
+
+\paragraph{Screen capacity.}
+\InterfaceTag At protocol resolution $(m,n)$, the local alphabet is $\Omega_m=\{0,1\}^m$ and the $2$D Hilbert screen has $4^n$ sites.
+Define the maximal screen microstate capacity in bits by
+\begin{equation}\label{eq:uplift_I_prot_def}
+I_{\mathrm{prot}}(m,n):=m\,4^n,
+\end{equation}
+as in \eqref{eq:bh_capacity_I_prot_def}.
+
+\paragraph{Constrained candidate families.}
+\AuditTag Fix finite candidate sets $M\subset\NN$ and $N\subset\NN$ and optional hard bounds $m\le m_{\max}$, $n\le n_{\max}$ by restricting $M$ and $N$.
+We treat these as declared finite hypothesis classes, consistent with the paper's bounded-complexity discipline.
+
+\subsection{A CAP key for ``fusion'' under capacity constraints}
+\label{subsec:uplift_cap_key}
+
+\paragraph{Target information demand.}
+\InterfaceTag Let $I_{\mathrm{tar}}>0$ be a target information demand (in bits) induced by a declared stabilization goal.
+In this appendix, $I_{\mathrm{tar}}$ is an interface quantity: it summarizes the amount of distinguishable microstate information that must be supported to stabilize the aggregated structure at the chosen protocol class.
+
+\paragraph{Feasibility-first CAP key.}
+\AuditTag For $(m,n)\in M\times N$, define the feasibility flag
+\[
+f(m,n\mid I_{\mathrm{tar}}):=\ind\!\left\{I_{\mathrm{prot}}(m,n)\ge I_{\mathrm{tar}}\right\}\in\{0,1\}.
+\]
+\AuditTag For audit reporting, define the log-mismatch
+\[
+\Delta_I(m,n\mid I_{\mathrm{tar}}):=\left|\log\!\left(\frac{I_{\mathrm{prot}}(m,n)}{I_{\mathrm{tar}}}\right)\right|.
+\]
+Define the deterministic CAP key
+\begin{equation}\label{eq:uplift_cap_key_def}
+K_{\mathrm{cap}}(m,n\mid I_{\mathrm{tar}})
+:=
+\Bigl(1-f(m,n\mid I_{\mathrm{tar}}),\ n,\ m\Bigr),
+\end{equation}
+ordered lexicographically.
+The intended semantics is: satisfy the capacity requirement first; among feasible candidates, minimize addressing depth $n$ (global complexity); then minimize window length $m$ (local complexity).
+The mismatch $\Delta_I$ is recorded as an audit diagnostic but does not affect the selection once feasibility and complexity are fixed.
+
+\paragraph{CAP-selected uplift output.}
+\AuditTag Define the CAP-selected uplift pair as the unique minimizer
+\begin{equation}\label{eq:uplift_cap_minimizer_def}
+(m^\ast,n^\ast)(I_{\mathrm{tar}})\ :=\ \arg\min_{(m,n)\in M\times N}\ K_{\mathrm{cap}}(m,n\mid I_{\mathrm{tar}}).
+\end{equation}
+When the feasible set is nonempty, this selects the lowest-complexity $(m,n)$ supporting $I_{\mathrm{tar}}$ within the declared family.
+
+\subsection{Deterministic uplift theorems (finite, auditable)}
+\label{subsec:uplift_theorems}
+
+\begin{lemma}[Existence and uniqueness of the CAP minimizer]\label{lem:uplift_cap_unique}
+Fix a finite candidate family $M\times N$ and a target $I_{\mathrm{tar}}>0$.
+Then the minimizer \eqref{eq:uplift_cap_minimizer_def} exists and is unique.
+\end{lemma}
+\begin{proof}
+The set $M\times N$ is finite, so a lexicographic minimum of the key \eqref{eq:uplift_cap_key_def} exists.
+Uniqueness holds because the key includes $(n,m)$ as final coordinates: no two distinct pairs can share the same key value.
+\end{proof}
+
+\begin{lemma}[Monotonicity in information demand]\label{lem:uplift_monotone_in_Itar}
+Let $0<I_1\le I_2$.
+Let $(m_1^\ast,n_1^\ast):=(m^\ast,n^\ast)(I_1)$ and $(m_2^\ast,n_2^\ast):=(m^\ast,n^\ast)(I_2)$.
+Assume the feasible set at $I_2$ is nonempty, i.e.\ there exists $(m,n)\in M\times N$ with $I_{\mathrm{prot}}(m,n)\ge I_2$.
+Then one has
+\[
+n_1^\ast\le n_2^\ast,
+\qquad
+m_1^\ast\le m_2^\ast.
+\]
+\end{lemma}
+\begin{proof}
+If $I_{\mathrm{prot}}(m,n)\ge I_2$ then also $I_{\mathrm{prot}}(m,n)\ge I_1$, hence feasibility for $I_2$ implies feasibility for $I_1$.
+Thus the feasible set for $I_2$ is a subset of the feasible set for $I_1$.
+Since the CAP key \eqref{eq:uplift_cap_key_def} selects the lexicographically smallest $(n,m)$ among feasible pairs, restricting the feasible set cannot produce a strictly smaller minimizer in either coordinate.
+\end{proof}
+
+\begin{proposition}[$n$-blocked implies $m$-expansion]\label{prop:n_blocked_implies_m_expand}
+Assume the addressing depth is blocked by a singleton candidate set $N=\{n_0\}$.
+Assume the feasible set at $I_{\mathrm{tar}}$ is nonempty.
+Then the CAP minimizer has $n^\ast(I_{\mathrm{tar}})=n_0$, and
+\[
+m^\ast(I_{\mathrm{tar}})=\min\{m\in M:\ m\,4^{n_0}\ge I_{\mathrm{tar}}\}.
+\]
+In particular, as $I_{\mathrm{tar}}$ increases, uplift can occur only by increasing $m$.
+\end{proposition}
+\begin{proof}
+With $N=\{n_0\}$, every candidate has the same $n$, so the key \eqref{eq:uplift_cap_key_def} reduces to feasibility-first minimization of $m$.
+The displayed formula is exactly the feasibility condition $m\,4^{n_0}\ge I_{\mathrm{tar}}$ minimized over $M$.
+\end{proof}
+
+\begin{corollary}[Fusion events are finite threshold crossings]\label{cor:uplift_fusion_thresholds_finite}
+Fix $M\times N$.
+As $I_{\mathrm{tar}}$ varies over $(0,\infty)$, the CAP-selected pair $(m^\ast,n^\ast)(I_{\mathrm{tar}})$ changes only at finitely many thresholds, and is constant on the intervals between them.
+\end{corollary}
+\begin{proof}
+The only values of $I_{\mathrm{tar}}$ at which feasibility changes are the finitely many capacities $I_{\mathrm{prot}}(m,n)$ over $(m,n)\in M\times N$.
+Between consecutive such values, the set of feasible candidates is unchanged, hence the minimizer is unchanged.
+\end{proof}
+
+\begin{remark}[Executable audit instance]\label{rem:uplift_cap_choice_table}
+\AuditTag A compact finite-family instantiation of the CAP key \eqref{eq:uplift_cap_key_def} (including $n$-blocked and $m$-blocked scenarios) is reported in Table~\ref{tab:resolution_uplift_cap_choice} (Appendix~\ref{app:generated_tables}).
+\end{remark}
+
+\subsection{Fusion staging and horizon vocabulary (dictionary hooks)}
+\label{subsec:uplift_fusion_horizon_hooks}
+
+\paragraph{Fusion events (discrete staging).}
+\InterfaceTag As $I_{\mathrm{tar}}$ increases, the CAP minimizer $(m^\ast,n^\ast)(I_{\mathrm{tar}})$ changes only when $I_{\mathrm{tar}}$ crosses one of the finitely many capacities $\{I_{\mathrm{prot}}(m,n):(m,n)\in M\times N\}$.
+We call such a change point a \emph{fusion event}: it is the protocol-level statement that an aggregated structure cannot be stabilized at the previous resolution and must transition to a new $(m,n)$.
+
+\paragraph{The ``$n$-blocked $\Rightarrow m$-expand'' regime.}
+\InterfaceTag In regimes where $n$ is effectively blocked (for example by a fixed screen geometry, locality requirements, or a declared budget $n\le n_{\max}$), uplift can only increase capacity by increasing $m$.
+Within this appendix, this statement is made precise by the explicit hard bound encoded in the finite candidate set $N$ and Proposition~\ref{prop:n_blocked_implies_m_expand}.
+
+\paragraph{Protocol horizon as a saturation regime (interface pointer).}
+\InterfaceTag Appendix~\ref{app:protocol_horizon_tick_trap} defines a protocol horizon and a relative black-hole criterion using an observer budget $I_{\mathrm{obs}}(\mathcal O)$ and delay-dominated response proxies.
+Within the present module, a natural way to organize the horizon vocabulary is:
+large $I_{\mathrm{tar}}$ forces larger $(m^\ast,n^\ast)$ and typically larger overhead proxies (Section~\ref{app:overhead_to_gravity_closure});
+when the internal compatible microstate multiplicity exceeds observer budget, the target becomes horizon-like relative to $\mathcal O$.
+No theorem-level identification is asserted here; this is a dictionary-level hook for composing modules.
+
+\paragraph{Scalar sectors as uplift markers (interface).}
+\InterfaceTag In this paper, scalar behavior is treated as uplift/coarse-graining dependent rather than as a primitive $m=6$ stable type (Appendix~\ref{app:scalar_interface_audits}).
+Accordingly, scalar-sector rigidity targets (e.g.\ the bounded-denominator closure of the Higgs--$Z$ offset, Proposition~\ref{prop:higgs_z_offset_rigidity}) can be used as stage markers within an uplift narrative without changing the theorem-level folding core.
+
+\paragraph{Relation to strong-field black-hole targets (explicitly conditional).}
+\MatchTag Under the boundary/Planck information pack (Appendix~\ref{app:physics_consensus_inputs}),
+one may set $I_{\mathrm{tar}}=I_{\mathrm{BH}}(A(M))$ and obtain a deterministic mapping $M\mapsto(m^\ast,n^\ast)$ within a bounded family,
+as recorded in Appendix~\ref{app:bh_planck_capacity_calibration}.
+This appendix does not use the strong-field pack as a premise; it only provides the finite-capacity unification rule that such modules can reuse.
+

@@ -169,7 +169,7 @@ def main() -> None:
             r"\paragraph{Audit summary (inverse consistency with coordinate transforms).} \AuditTag "
             + r"We compare the sign of $\mathrm{d}\delta/\mathrm{d}y$ under bounded coordinate transforms $y(x)$ "
             + r"to the sign of $\mathrm{d}\delta/\mathrm{d}x$ on the interior grid (central differences). "
-            + f"Best (minimum sign-mismatch fraction) row: dataset {best_did.replace('_', r'\\_')}, transform {best_name.replace('_', r'\\_')}, mismatch fraction {_fmt(best_m,6)}.",
+            + f"Best (minimum sign-mismatch fraction) row: dataset {best_did.replace('_', r'\_')}, transform {best_name.replace('_', r'\_')}, mismatch fraction {_fmt(best_m,6)}.",
         ],
     )
 

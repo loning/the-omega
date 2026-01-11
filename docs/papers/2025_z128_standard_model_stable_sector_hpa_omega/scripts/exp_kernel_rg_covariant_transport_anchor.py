@@ -397,7 +397,7 @@ def main() -> None:
     rows2 = [
         f"gauge4d & {p_stay:.2f} & {err:.3e} \\\\",
         f"gauge3d & {p_stay:.2f} & {errH:.3e} \\\\",
-        f"scalar_reduction & {p_stay:.2f} & {red_err:.3e} \\\\",
+        f"scalar\\_reduction & {p_stay:.2f} & {red_err:.3e} \\\\",
         "\\bottomrule",
     ]
     out2 = generated_dir() / "kernel_rg_covariant_transport_reduction_rows.tex"
