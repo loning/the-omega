@@ -1049,6 +1049,14 @@ flowchart TB
   P_orbit_dyn("轨道动力学字典（EOM 与散射延迟闭环）<br/>类型：字典 / Dictionary<br/>label: app:orbit_dynamics_and_force_scattering_bridge<br/>action response → phase shift → WS delay; orbit deflection via curvature")
   M_orbit_dyn -.- P_orbit_dyn
 
+  M_force_delay_audit["力→相位→延迟审计闭环（数值微分/稳定性/误差预算）<br/>类型：审计 / Audit<br/>label: app:force_phase_delay_audit<br/>Δω sweep; unwrapping; O(Δω²)+O(σ/Δω) error split"]
+  P_force_delay_audit("延迟估计管线（phase→τ_WS）与稳定性包络<br/>类型：审计 / Audit<br/>label: app:force_phase_delay_audit<br/>bounded sweeps; envelope reporting")
+  M_force_delay_audit -.- P_force_delay_audit
+
+  M_unify_coupling_audit["耦合统一审计（U2，r 坐标；有限候选族）<br/>类型：审计 / Audit<br/>label: app:coupling_unification_audit_in_r<br/>α_i^{-1}(r)=α_i^{-1}(0)−(b_i lnφ/(2π))r; r_ij intersections"]
+  P_unify_coupling_audit("耦合统一分岔输出（Match/Audit）<br/>类型：模型 / Model<br/>label: app:coupling_unification_audit_in_r<br/>bounded α_3^{-1}(μ_Z)=nπ²; minimize E_∞")
+  M_unify_coupling_audit -.- P_unify_coupling_audit
+
   M_state_gns["状态泛函/GNS 背景（记号对齐）<br/>类型：审计 / Audit<br/>label: app:state_gns_background<br/>ω(·) state;  ω(A)=⟨Ω|π(A)Ω⟩ (GNS);  ω(A)=Tr(ρA) (finite-dim)"]
   P_state_gns("状态表示字典（ω/ρ 互译 / State-Representation Dictionary (ω/ρ Translation)）<br/>类型：审计 / Audit<br/>label: app:state_gns_background<br/>P(E)=ω(E) ↔ P=Tr(ρE)")
   M_state_gns -.- P_state_gns
@@ -1080,6 +1088,11 @@ flowchart TB
   M_unified_force --> M_orbit_dyn
   M_action --> M_orbit_dyn
   M_scattering_iface --> M_orbit_dyn
+  M_orbit_dyn --> M_force_delay_audit
+  M_scattering_iface --> M_force_delay_audit
+
+  M_rg --> M_unify_coupling_audit
+  M_unify_branch --> M_unify_coupling_audit
 
   P_equiv --> P_quotient --> P_proj
   P_select --> P_capinv --> P_action
@@ -1103,6 +1116,11 @@ flowchart TB
   P_unified_force --> P_orbit_dyn
   P_scattering_iface --> P_orbit_dyn
   P_lens --> P_orbit_dyn
+  P_orbit_dyn --> P_force_delay_audit
+  P_scattering_iface --> P_force_delay_audit
+
+  P_rg --> P_unify_coupling_audit
+  P_unify_branch --> P_unify_coupling_audit
 
   classDef iface fill:#FCE4EC,stroke:#D81B60,color:#880E4F,stroke-width:2px;
   classDef open_problem fill:#FFEBEE,stroke:#C62828,color:#B71C1C,stroke-width:2px,font-weight:700;
@@ -1124,13 +1142,13 @@ flowchart TB
   class M_equiv,M_quotient,M_proj,M_freq,M_cloud_capacity math_construct;
   class M_thermo,M_grav,M_qm math_closure;
   class M_action,M_eom math_cont;
-  class M_capinv,M_recon,M_chi_horizon_budget,M_area_rep,M_bh_match,M_err,M_state_gns,M_opMotherDict,M_compSys,M_qchannels,M_qm_lib,M_aqft_net,M_aqft_gns,M_aqft_micro,M_wightman_bridge,M_scattering_iface,M_renorm_dict,M_unified_force,M_orbit_dyn math_audit;
+  class M_capinv,M_recon,M_chi_horizon_budget,M_area_rep,M_bh_match,M_err,M_state_gns,M_opMotherDict,M_compSys,M_qchannels,M_qm_lib,M_aqft_net,M_aqft_gns,M_aqft_micro,M_wightman_bridge,M_scattering_iface,M_renorm_dict,M_unified_force,M_orbit_dyn,M_force_delay_audit,M_unify_coupling_audit math_audit;
   class M_wave_particle math_audit;
   class P_dyn phys_proxy;
   class P_lens,P_qm phys_obs;
   class P_equiv,P_quotient,P_proj,P_freq,P_thermo,P_cloud_capacity,P_opMotherDict,P_unified_force,P_orbit_dyn phys_dict;
-  class P_action,P_eom phys_model;
-  class P_capinv,P_select,P_recon,P_chi_horizon_budget,P_area_rep,P_bh_match,P_err,P_state_gns,P_compSys,P_qchannels,P_qm_lib,P_aqft_net,P_aqft_gns,P_aqft_micro,P_wightman_bridge,P_scattering_iface,P_renorm_dict phys_audit;
+  class P_action,P_eom,P_unify_coupling_audit phys_model;
+  class P_capinv,P_select,P_recon,P_chi_horizon_budget,P_area_rep,P_bh_match,P_err,P_state_gns,P_compSys,P_qchannels,P_qm_lib,P_aqft_net,P_aqft_gns,P_aqft_micro,P_wightman_bridge,P_scattering_iface,P_renorm_dict,P_force_delay_audit phys_audit;
   class P_wave_particle phys_audit;
 ```
 
@@ -1904,6 +1922,8 @@ flowchart TB
 | `P_unified_force` | `\label{app:unified_orbit_gauge_force}` | `unified dictionary — gauge as covariant transport; force as response/deflection` | `sections/appendices/67_unified_orbit_gauge_force.tex` |
 | `M_orbit_dyn` | `\label{app:orbit_dynamics_and_force_scattering_bridge}` | `prop:lorentz_force_from_minimal_coupling_interface — m D\\dot x/dλ = q F·\\dot x; prop:force_to_delay_via_phase_derivative_interface — Δτ(ω)≈(1/ħ) d/dω ΔS_red(ω)` | `sections/appendices/68_orbit_dynamics_and_force_scattering_bridge.tex` |
 | `P_orbit_dyn` | `\label{app:orbit_dynamics_and_force_scattering_bridge}` | `orbit dynamics dictionary — action response → phase shift → WS delay; curvature-driven deflection` | `sections/appendices/68_orbit_dynamics_and_force_scattering_bridge.tex` |
+| `M_force_delay_audit` | `\label{app:force_phase_delay_audit}` | `phase→delay audit knobs; error split O(Δω²)+O(σ/Δω)` | `sections/appendices/70_force_phase_delay_audit.tex` |
+| `P_force_delay_audit` | `\label{app:force_phase_delay_audit}` | `audited pipeline: phase extraction/unwrapping → finite differences → stability envelope` | `sections/appendices/70_force_phase_delay_audit.tex` |
 | `P_dyn` | `\label{app:overhead_to_gravity_closure}` | `eq:z128_vc_from_chi — v_c²(r)=−γc² r χ′(r)` | `sections/F_40_overhead_to_gravity_closure.tex` |
 | `P_lens` | `\label{app:time_mass_delay}` | `eq:wigner_smith_omega — Q(ω)=−i S(ω)† dS/dω; eq:tau_ws_trace_omega — τ_WS(ω)=Tr Q(ω)` | `sections/appendices/34_unified_delay_closure.tex` |
 | `M_recon` | `\label{app:chi_reconstruction_protocol}` | `protocol stats → χ(x) (reconstruction algorithm; audit-bounded)` | `sections/F_41_chi_reconstruction_protocol.tex` |
@@ -1936,6 +1956,8 @@ flowchart TB
 | `P_renorm_dict` | `\label{app:renormalization_dictionary_and_boundaries}` | `renormalization dictionary and scope boundaries (Match/Iface)` | `sections/appendices/66_renormalization_dictionary_and_boundaries.tex` |
 | `M_unify_branch` | `\label{app:unification_branching_counterfactual_audit}` | `U1 group vs U2 coupling vs U3 normalization; bounded counterfactual registry; no-fit contract` | `sections/appendices/69_unification_branching_counterfactual_audit.tex` |
 | `P_unify_branch` | `\label{app:unification_branching_counterfactual_audit}` | `counterfactual unification audit dictionary (benchmark only; not in theorem chain)` | `sections/appendices/69_unification_branching_counterfactual_audit.tex` |
+| `M_unify_coupling_audit` | `\label{app:coupling_unification_audit_in_r}` | `one-loop affine running in r; bounded α_3^{-1}(μ_Z)=nπ²; minimize intersection mismatch` | `sections/appendices/71_coupling_unification_audit_in_r.tex` |
+| `P_unify_coupling_audit` | `\label{app:coupling_unification_audit_in_r}` | `coupling-unification audit output table (Match/Audit)` | `sections/appendices/71_coupling_unification_audit_in_r.tex` |
 | `M_wave_particle` | `\label{app:wave_particle_delayed_choice}` | `cross terms vs mixture; V^2+D^2≤1; delayed-choice/eraser (interface)` | `sections/appendices/30b_wave_particle_delayed_choice.tex` |
 | `P_wave_particle` | `\label{app:wave_particle_delayed_choice}` | `delayed-choice / quantum eraser / Wheeler “Great Smoky Dragon” (audit-facing)` | `sections/appendices/30b_wave_particle_delayed_choice.tex` |
 | `M_rg` | `\label{app:running_couplings_resolution_flow}` | `eq:rg_in_r — dg/dr = (ln φ)β(g)` | `sections/appendices/31_running_couplings_resolution_flow.tex` |

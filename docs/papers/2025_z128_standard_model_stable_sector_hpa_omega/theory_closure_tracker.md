@@ -149,6 +149,12 @@ flowchart TD
 - [x] **统一/非统一分岔 + 反事实候选审计（registry）**：`appendix 69`  
   - 位置：`sections/appendices/69_unification_branching_counterfactual_audit.tex`（`\label{app:unification_branching_counterfactual_audit}`）
   - 要点：分离 (U1) 群结构统一、(U2) 耦合统一、(U3) 归一化约定，并登记有界反事实候选与“no tuning from global fits”的审计契约。
+- [x] **力→相位→延迟审计闭环（稳定性与误差预算模板）**：`appendix 70`  
+  - 位置：`sections/appendices/70_force_phase_delay_audit.tex`（`\label{app:force_phase_delay_audit}`）
+  - 要点：把 phase→delay 的数值微分、相位解缠与噪声放大问题显式化为 bounded sweep + envelope 报告；给出 $O(\Delta\omega^2)+O(\sigma/\Delta\omega)$ 的误差拆分模板，并与 `app:protocol_to_continuum_error_control` 的审计纪律对齐。
+- [x] **耦合统一（U2）：$r$ 坐标的有界匹配审计**：`appendix 71`  
+  - 位置：`sections/appendices/71_coupling_unification_audit_in_r.tex`（`\label{app:coupling_unification_audit_in_r}`）
+  - 要点：在 one-loop affine running 字典下，把“是否存在统一尺度”变成显式的有限候选族审计问题（电弱锚点由 `thm:weinberg_angle` 闭合，$\alpha_3^{-1}(\mu_Z)$ 作为 $n\pi^2$ 的有界族登记），输出 intersection mismatch 表并给出确定性选择。
 - [x] **统一：轨道/规范/力（connection + response）**：`appendix 67`  
   - 位置：`sections/appendices/67_unified_orbit_gauge_force.tex`（`\label{app:unified_orbit_gauge_force}`）
   - 要点：把“轨道=(基路径+内部态)”与“规范=协变运输/平行运输结构”以及“力=action/自由能响应导致的偏离”合并为一条接口层闭合链；不新增原语，不反哺 folding 证明链。
@@ -259,8 +265,10 @@ flowchart TD
 | 散射接口 | S-matrix 与延迟字典对齐（前提显式；[Open]：非 theorem-level） | Iface/Audit | `app:scattering_haag_ruelle_lsz_interface` | [~] |
 | 轨道动力学接口（particle orbit） | worldline reduction + Lorentz-force 模板；EOM 与曲率/连接对齐 | Iface/Audit | `app:orbit_dynamics_and_force_scattering_bridge` | [x] |
 | force↔phase/delay 桥 | action 响应扰动→相位扰动→WS 延迟扰动（频率导数闭环） | Iface/Audit | `app:orbit_dynamics_and_force_scattering_bridge` | [x] |
+| force→phase→delay 审计闭环 | 相位解缠+数值微分稳定性 sweep；误差拆分 $O(\Delta\omega^2)+O(\sigma/\Delta\omega)$ | Audit | `app:force_phase_delay_audit`, `tab:force_phase_delay_audit_knobs` | [x] |
 | 重整化边界 | scheme/matching/scope 字典与限制（[Open]：非 theorem-level） | Match/Iface/Audit | `app:renormalization_dictionary_and_boundaries` | [~] |
 | 统一分岔/反事实审计 | (U1) 群结构 vs (U2) 耦合统一 vs (U3) 归一化；有界 registry + no-fit 契约 | Audit/Match | `app:unification_branching_counterfactual_audit` | [x] |
+| 耦合统一（U2）审计 | one-loop affine running（r 坐标）+ 有界 $\alpha_3^{-1}(\mu_Z)=n\pi^2$；intersection mismatch 最小化 | Match/Audit | `app:coupling_unification_audit_in_r`, `tab:coupling_unification_audit_in_r` | [x] |
 | 算子母空间字典入口（operator mother space dictionary） | source operator + readout kernels + determinant bookkeeping；finite-rank 更新闭合（字典层） | Iface/Audit | `app:operator_mother_space_dictionary` | [x] |
 | 算子母空间（operator mother space） | trace-class resolvent/行列式 bookkeeping；finite-rank 更新闭合（字典层） | Math/Audit | `app:operator_mother_space` | [x] |
 | 波粒二象性/延迟选择 | 相干交叉项 vs 事件化/去相干混合；互补性界 $V^2+D^2\le 1$；delayed-choice/eraser | Iface/Audit | `app:wave_particle_delayed_choice` | [x] |

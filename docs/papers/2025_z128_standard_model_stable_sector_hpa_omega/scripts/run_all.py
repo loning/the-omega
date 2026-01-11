@@ -1025,6 +1025,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Coupling unification audit in r (bounded family; match/audit)",
+            script="exp_coupling_unification_audit_in_r.py",
+            expected_outputs=[
+                "sections/generated/coupling_unification_audit_rows.tex",
+                "sections/generated/coupling_unification_audit_summary.tex",
+            ],
+        ),
+        Step(
             name="Rigidity Jarlskog pi-ansatz",
             script="exp_jarlskog_pi_rigidity.py",
             expected_outputs=[
