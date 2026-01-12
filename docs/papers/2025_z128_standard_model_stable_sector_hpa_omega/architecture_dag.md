@@ -1029,6 +1029,11 @@ flowchart TB
   P_aqft_micro("AQFT scope 边界（场域/相互作用构造不在此闭合）<br/>类型：审计 / Audit<br/>label: app:microcausality_spectrum_covariance<br/>field-domain + interacting-model construction are explicit boundaries")
   M_aqft_micro -.- P_aqft_micro
 
+  M_prot_net["协议诱导局域网（finite readout → local net）<br/>类型：构造 / Construction<br/>label: app:construct_local_net_from_protocol<br/>O_prot ↦ A_prot(O) (inductive limit)"]
+  M_prot_micro["协议微因果（tensor readout 子类）<br/>类型：闭合 / Closure<br/>label: app:protocol_subclass_tensor_net<br/>microcausality is structural (PT carrier)"]
+  M_prot_cov["协议协变 PT 载体（window action → automorphisms）<br/>类型：闭合 / Closure<br/>label: app:covariance_from_window_action<br/>window/refinement action induces *-automorphisms"]
+  M_prot_spec_sur["谱条件替代契约（windowed surrogate）<br/>类型：假设 / Assumption<br/>label: app:spectrum_surrogate_contract<br/>auditable substitute (not full spectrum condition)"]
+
   M_wightman_bridge["Wightman 桥接（AQFT↔Wightman）<br/>类型：审计 / Audit<br/>label: app:wightman_bridge_and_reconstruction<br/>net↔field bridge with explicit prerequisites"]
   P_wightman_bridge("Wightman bridge（域/正则性前提显式）<br/>类型：审计 / Audit<br/>label: app:wightman_bridge_and_reconstruction<br/>no implicit field reconstruction")
   M_wightman_bridge -.- P_wightman_bridge
@@ -1082,7 +1087,7 @@ flowchart TB
   M_qcd_loop_gate -.- P_qcd_loop_gate
 
   M_manybody_feedback["多体+观测反馈（orbit/gauge/force）<br/>类型：接口 / Iface<br/>label: app:orbit_gauge_force_manybody_measurement_feedback<br/>instrument→control→response"]
-  P_manybody_feedback("多体反馈字典（ρ update loop）<br/>类型：接口 / Iface<br/>label: app:orbit_gauge_force_manybody_measurement_feedback<br/>channels + feedback"]
+  P_manybody_feedback("多体反馈字典（ρ update loop）<br/>类型：接口 / Iface<br/>label: app:orbit_gauge_force_manybody_measurement_feedback<br/>channels + feedback")
   M_manybody_feedback -.- P_manybody_feedback
 
   M_state_gns["状态泛函/GNS 背景（记号对齐）<br/>类型：审计 / Audit<br/>label: app:state_gns_background<br/>ω(·) state;  ω(A)=⟨Ω|π(A)Ω⟩ (GNS);  ω(A)=Tr(ρA) (finite-dim)"]
@@ -1113,7 +1118,10 @@ flowchart TB
   M_qm --> M_wave_particle
   M_qm --> M_state_gns
   M_qm --> M_compSys --> M_qchannels --> M_qm_lib
-  M_state_gns --> M_aqft_net --> M_aqft_gns --> M_aqft_micro --> M_wightman_bridge --> M_scattering_iface --> M_renorm_dict
+  M_state_gns --> M_prot_net --> M_aqft_net --> M_aqft_gns --> M_aqft_micro --> M_wightman_bridge --> M_scattering_iface --> M_renorm_dict
+  M_prot_net --> M_prot_micro --> M_aqft_micro
+  M_prot_net --> M_prot_cov --> M_aqft_micro
+  M_prot_net --> M_prot_spec_sur --> M_aqft_micro
   M_equiv --> M_unified_force
   M_action --> M_unified_force
   M_thermo --> M_unified_force
@@ -1190,6 +1198,9 @@ flowchart TB
   class M_equiv,M_quotient,M_proj,M_freq,M_cloud_capacity math_construct;
   class M_thermo,M_grav,M_qm math_closure;
   class M_action,M_eom math_cont;
+  class M_prot_net math_construct;
+  class M_prot_micro,M_prot_cov math_closure;
+  class M_prot_spec_sur math_assumption;
   class M_capinv,M_recon,M_chi_horizon_budget,M_area_rep,M_bh_match,M_err,M_state_gns,M_opMotherDict,M_compSys,M_qchannels,M_qm_lib,M_aqft_net,M_aqft_gns,M_aqft_micro,M_wightman_bridge,M_scattering_iface,M_renorm_dict,M_unified_force,M_orbit_dyn,M_force_delay_audit,M_unify_coupling_audit math_audit;
   class M_wave_particle math_audit;
   class P_dyn phys_proxy;
@@ -2012,6 +2023,10 @@ flowchart TB
 | `P_aqft_gns` | `\label{app:aqft_states_representations_gns_nets}` | `state→representation dictionary for nets (audit-facing)` | `sections/appendices/62_states_representations_gns_nets.tex` |
 | `M_aqft_micro` | `\label{app:microcausality_spectrum_covariance}` | `microcausality/spectrum as scoped commitments; explicit boundary items` | `sections/appendices/63_microcausality_spectrum_covariance.tex` |
 | `P_aqft_micro` | `\label{app:microcausality_spectrum_covariance}` | `scope boundary: field-domain + interacting-model construction not claimed` | `sections/appendices/63_microcausality_spectrum_covariance.tex` |
+| `M_prot_net` | `\label{app:construct_local_net_from_protocol}` | `finite readout → inductive-limit local net O_prot ↦ A_prot(O)` | `sections/appendices/8k_construct_local_net_from_protocol.tex` |
+| `M_prot_micro` | `\label{app:protocol_subclass_tensor_net}` | `tensor readout subclass ⇒ microcausality is structural (PT carrier)` | `sections/appendices/8u_protocol_subclass_tensor_net.tex` |
+| `M_prot_cov` | `\label{app:covariance_from_window_action}` | `window/refinement action ⇒ induced *-automorphisms (covariance PT carrier)` | `sections/appendices/8v_covariance_from_window_action.tex` |
+| `M_prot_spec_sur` | `\label{app:spectrum_surrogate_contract}` | `windowed spectrum surrogate contract (auditable substitute; not full spectrum condition)` | `sections/appendices/8x_spectrum_surrogate_contract.tex` |
 | `M_wightman_bridge` | `\label{app:wightman_bridge_and_reconstruction}` | `AQFT↔Wightman bridge as interface map; prerequisites explicit` | `sections/appendices/64_wightman_bridge_and_reconstruction.tex` |
 | `P_wightman_bridge` | `\label{app:wightman_bridge_and_reconstruction}` | `no implicit field reconstruction; domain/regularity prerequisites explicit` | `sections/appendices/64_wightman_bridge_and_reconstruction.tex` |
 | `M_scattering_iface` | `\label{app:scattering_haag_ruelle_lsz_interface}` | `S(ω) ↔ phase ↔ delay (Wigner–Smith dictionary alignment)` | `sections/appendices/65_scattering_haag_ruelle_lsz_interface.tex` |

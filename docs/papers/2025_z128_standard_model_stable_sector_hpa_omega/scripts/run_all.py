@@ -1287,6 +1287,27 @@ def build_steps() -> List[Step]:
                 "sections/generated/eg_power_counting_registry_rows.tex",
             ],
         ),
+        Step(
+            name="EG counterterm basis registry (strong-closure PT infrastructure)",
+            script="exp_eg_counterterm_basis.py",
+            expected_outputs=[
+                "sections/generated/eg_counterterm_basis_rows.tex",
+            ],
+        ),
+        Step(
+            name="Protocol-net axiom checklist (PT/CP evidence pointers)",
+            script="exp_protocol_net_axiom_checks.py",
+            expected_outputs=[
+                "sections/generated/protocol_net_axiom_checks_rows.tex",
+            ],
+        ),
+        Step(
+            name="Failure-point evidence map (PT/CP pointers)",
+            script="exp_failurepoint_evidence_map.py",
+            expected_outputs=[
+                "sections/generated/failurepoint_evidence_map_rows.tex",
+            ],
+        ),
     ]
 
 
