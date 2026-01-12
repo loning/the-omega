@@ -17,6 +17,7 @@ Writes:
 from __future__ import annotations
 
 import math
+from fractions import Fraction
 from pathlib import Path
 from typing import Dict, List, Tuple
 
@@ -77,7 +78,20 @@ def main() -> None:
     pi2 = pi * pi
 
     alpha2_inv_0 = 3.0 * pi2
-    alpha1_inv_0 = 10.0 * pi2
+    alpha1_inv_0 = 10.0 * pi2  # fallback: W_Y=10 (three generations)
+
+    # If the joint protocol-state selector is available, derive alpha_Y^{-1} from the selected kernel-closed EW weight.
+    try:
+        import exp_ew_resolution_weighted_match_family as ewfam
+        import protocol_state_selection as psel
+
+        sel = psel.load_selected_state("mu_Z")
+        u_to_field = ewfam._build_x6_to_field_map()  # type: ignore[attr-defined]
+        t = Fraction(str(sel.kernel.t))
+        c = ewfam._candidate(m=int(sel.m), t=t, u_to_field=u_to_field)  # type: ignore[attr-defined]
+        alpha1_inv_0 = float(c.W) * pi2
+    except Exception:
+        pass
 
     b1_full = 41.0 / 6.0
     b2_full = -19.0 / 6.0

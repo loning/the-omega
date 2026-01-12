@@ -23,6 +23,7 @@ from __future__ import annotations
 import json
 import math
 from dataclasses import dataclass
+from fractions import Fraction
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
@@ -35,6 +36,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
 import exp_foldm_stats as foldm
+import exp_gamma_kernel_family_sweep as gks
+import protocol_state_selection as psel
 from common_paths import figures_dir, generated_dir, paper_root
 from common_progress import ProgressEvery
 from common_tex import write_lines
@@ -563,10 +566,19 @@ def main() -> None:
     rc_fits: List[RotationCurveFit] = []
 
     # Default reconstruction knobs (audit will sweep later).
-    m_word = 6
+    sel_gamma = None
+    try:
+        sel_gamma = psel.load_selected_state("gamma_direct")
+    except Exception:
+        sel_gamma = None
+
+    m_word = int(sel_gamma.m) if sel_gamma is not None else 6
     thr_rule = "median"
     base_rule = "mean"
     smooth_k = 5  # odd
+    t_kernel = Fraction(0, 1)
+    if sel_gamma is not None and sel_gamma.kernel.family == "tempered_deg":
+        t_kernel = Fraction(str(sel_gamma.kernel.t))
 
     prog = ProgressEvery("rotation-curve fits", total=len(sparc_files), interval_s=60.0)
     prog.start()
@@ -585,12 +597,13 @@ def main() -> None:
             prog.maybe(i + 1, extra=f"galaxy={gname} SKIP (n={len(r_kpc)} < 2m-1)")
             continue
 
-        recon = reconstruct_chi_from_1d_scalar(
+        recon = gks.reconstruct_chi_from_1d_scalar_kernel(
             r_kpc=r_kpc,
             scalar=scalar,
             m=m_word,
             threshold_rule=thr_rule,
             baseline_rule=base_rule,
+            t=t_kernel,
         )
         fit = fit_gamma_from_rotation_curve(
             galaxy=gname,
@@ -616,7 +629,10 @@ def main() -> None:
                 dataset=fit.galaxy,
                 gamma_hat=float(fit.gamma_hat),
                 sigma=float(fit.sigma),
-                note=f"chi from SBdisk, m={fit.recon.m}, thr={fit.recon.threshold_rule}, g0={fit.recon.baseline_rule}, smooth_k={fit.smooth_k}, used={fit.n_used}/{fit.n_total}",
+                note=(
+                    f"chi from SBdisk, m={fit.recon.m}, t={t_kernel}, thr={fit.recon.threshold_rule}, "
+                    f"g0={fit.recon.baseline_rule}, smooth_k={fit.smooth_k}, used={fit.n_used}/{fit.n_total}"
+                ),
                 source=src,
             )
         )
@@ -679,6 +695,7 @@ def main() -> None:
         f" \\pm {_format_sci_tex(float(proxy_joint0.sigma), digits=6)}$."
         f" Consistency: $\\chi^2={chi2_proxy:.2f}$, $\\mathrm{{dof}}={dof_proxy}$, $p={p_proxy:.3g}$."
         f" Max pairwise tension: $|z|_{{\\max}}={zmax_proxy:.2f}$ (\\texttt{{{diag_pair_proxy}}})."
+        r" \texttt{protocol\_state}: proxy-only channels; no chi readout kernel used."
     )
     write_lines(out_gen / "gamma_crossobs_proxy_diagnostics.tex", [diag_line_proxy])
 
@@ -774,6 +791,9 @@ def main() -> None:
         f" \\pm {_format_sci_tex(float(direct_joint0.sigma), digits=6)}$."
         f" Consistency: $\\chi^2={chi2_direct:.2f}$, $\\mathrm{{dof}}={dof_direct}$, $p={p_direct:.3g}$."
         f" Max pairwise tension: $|z|_{{\\max}}={zmax_direct:.2f}$ (\\texttt{{{diag_pair_direct}}})."
+        f" \\texttt{{protocol\\_state}}: 1D chi reconstruction with m={m_word}, t={_tex_escape(str(t_kernel))}, "
+        r"threshold\_rule=median, baseline\_rule=mean, and kernel-weighted window aggregation "
+        "(kernel-family sensitivity is audited separately)."
     )
     write_lines(out_gen / "gamma_crossobs_direct_diagnostics.tex", [diag_line_direct])
 

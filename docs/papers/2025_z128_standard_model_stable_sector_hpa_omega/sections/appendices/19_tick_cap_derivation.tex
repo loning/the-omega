@@ -19,6 +19,38 @@ Concretely, the protocol state at a target scale is represented by a triple $(m,
 $m$ is the window length, $n$ is the addressing order on the chosen display basis when spatial diagnostics are invoked, and $K$ is a declared readout kernel (equivalently: a declared weighting rule / probability assignment on the finite objects at that resolution).
 \AuditTag The paper never treats $K$ as an implicit background measure: kernel choice is closed within an explicit finite family, by an explicit objective and deterministic tie-break, and its influence is audited by bounded counterfactual sweeps when relevant.
 
+\subsection{Joint CAP closure of the protocol state: a single key \texorpdfstring{$J_\mu$}{J_mu} (theory-first)}
+\label{subsec:tick_cap_joint_key_contract}
+
+\paragraph{[CAP] One-shot closure contract for \texorpdfstring{$(m,n,K)$}{(m,n,K)}.}
+\AuditTag In the most explicit ``theory-first'' stance, we do not select $(m,n)$ by one rule and $K$ by a separate ad hoc rule.
+Instead, for each target scale $\mu$ at which a quantitative interface readout is reported, we declare a finite candidate family
+\[
+\mathcal{F}_\mu \subset \mathcal{M}\times \mathcal{N}\times \mathcal{K}
+\]
+and close the protocol state in one shot by minimizing a single joint key
+\[
+(m^\ast(\mu),n^\ast(\mu),K^\ast(\mu)):=\arg\min_{(m,n,K)\in\mathcal{F}_\mu} J_\mu(m,n,K),
+\]
+with a deterministic tie-break.
+
+\paragraph{[CAP] Theory-first objective and tie-break.}
+We take the joint key in the additive audit form
+\[
+J_\mu(m,n,K):=\mathrm{MDL}_\mu(m,n,K)\;+\;\lambda\,\mathrm{Sens}_\mu(m,n,K),
+\]
+where:
+(i) $\mathrm{MDL}_\mu$ is a prefix-code/description-length proxy for the protocol-state hypothesis (resolution/addressing/kernel complexity and declared family sizes), and
+(ii) $\mathrm{Sens}_\mu$ is a bounded sensitivity/robustness score computed from explicit counterfactual sweeps (e.g.\ kernel-family envelopes, bounded rule perturbations) within the same finite audit budget.
+The constant $\lambda$ is treated as a fixed convention in the declared protocol contract (Section~\ref{sec:paper_contract}) rather than as a tunable continuous hyperparameter.
+The tie-break is deterministic and complexity-first:
+smaller $J_\mu$ $\to$ smaller kernel complexity $\to$ smaller $n$ $\to$ smaller $m$,
+and only then (if needed) secondary mismatch metrics are used as audit annotations rather than as premises.
+
+\paragraph{[CAP+MDL] No hidden scans.}
+Any time $K$ is allowed to vary in a finite kernel family or a bounded counterfactual family is scanned to compute $\mathrm{Sens}_\mu$, the corresponding search-space enlargement is recorded explicitly as part of $\mathrm{MDL}_\mu$.
+This is the protocol-level analogue of the registry-level MDL closure recorded in Appendix~\ref{app:global_model_selection_mdl}.
+
 \subsection{Reading guide and dependency convention}
 \label{subsec:tick_cap_derivation_reading_guide}
 

@@ -657,6 +657,11 @@ def main() -> None:
     out_dir = generated_dir()
     write_lines(out_dir / "lambda_pressure_closure_equations.tex", [eq_line])
     write_lines(out_dir / "lambda_pressure_closure_summary.tex", [summary])
+    print(
+        "[protocol_state] Lambda pressure closure is a finite-family audit closure: "
+        "Omega_Lambda,0 in {s_k,1-s_k} with k in {0..8} and a finite H0 candidate family; "
+        "no readout kernel K is used beyond explicitly declared matching-layer targets."
+    )
 
 
 if __name__ == "__main__":

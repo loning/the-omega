@@ -15,6 +15,11 @@ import math
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+from fractions import Fraction
+
+import exp_ew_resolution_weighted_match_family as ewfam
+import protocol_state_selection as psel
+
 
 def fmt(x: float, nd: int = 3) -> str:
     return f"{x:.{nd}f}"
@@ -93,7 +98,17 @@ def main() -> None:
 
     # Anchor at mu_Z, with r=0 at mu_Z.
     alpha2_inv_0 = 3.0 * pi2  # alpha_w^{-1}
-    alpha1_inv_0 = 10.0 * pi2  # alpha_Y^{-1} with Q = T3 + Y convention used in the paper
+    alpha1_inv_0 = 10.0 * pi2  # fallback: W_Y=10 (three generations)
+
+    # If the joint protocol-state selector is available, derive alpha_Y^{-1} from the selected kernel-closed EW weight.
+    try:
+        sel = psel.load_selected_state("mu_Z")
+        u_to_field = ewfam._build_x6_to_field_map()  # type: ignore[attr-defined]
+        t = Fraction(str(sel.kernel.t))
+        c = ewfam._candidate(m=int(sel.m), t=t, u_to_field=u_to_field)  # type: ignore[attr-defined]
+        alpha1_inv_0 = float(c.W) * pi2
+    except Exception:
+        pass
 
     def r_ij(alpha_i_inv: float, alpha_j_inv: float, bi: float, bj: float) -> float:
         return (2.0 * pi * (alpha_i_inv - alpha_j_inv)) / ((bi - bj) * logphi)

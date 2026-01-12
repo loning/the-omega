@@ -25,6 +25,7 @@ import numpy as np
 
 import exp_foldm_stats as foldm
 import exp_gamma_cross_observation as gx
+import protocol_state_selection as psel
 from common_paths import generated_dir, paper_root
 from common_progress import ProgressEvery
 from common_tex import write_lines
@@ -156,8 +157,13 @@ def main() -> int:
     out_gen = generated_dir()
     out_gen.mkdir(parents=True, exist_ok=True)
 
-    # Match the baseline knobs used in exp_gamma_cross_observation.py.
-    m_word = 6
+    # Match the baseline knobs used in exp_gamma_cross_observation.py, but align m to the
+    # joint protocol-state selection when available.
+    try:
+        sel = psel.load_selected_state("gamma_direct")
+        m_word = int(sel.m)
+    except Exception:
+        m_word = 6
     thr_rule = "median"
     base_rule = "mean"
     smooth_k = 5  # odd
@@ -272,6 +278,12 @@ def main() -> int:
     tex_rows.append(r"\bottomrule")
 
     write_lines(out_gen / "gamma_crossobs_direct_kernel_family_rows.tex", tex_rows)
+    print(
+        "[protocol_state] Gamma kernel-family sweep (direct): "
+        "scan a finite tempered degeneracy-kernel family K_t inside the chi-aggregator "
+        "(t in a fixed rational grid), holding the dataset and proxy channels fixed; "
+        "report the resulting sensitivity envelope for the direct gamma_dict estimate."
+    )
 
     return 0
 

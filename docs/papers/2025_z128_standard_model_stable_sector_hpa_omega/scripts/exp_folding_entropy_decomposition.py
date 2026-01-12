@@ -78,6 +78,10 @@ def main() -> None:
     out = generated_dir() / "folding_entropy_decomposition_rows.tex"
     write_lines(out, rows)
     print("Wrote sections/generated/folding_entropy_decomposition_rows.tex")
+    print(
+        "[protocol_state] Folding entropy decomposition uses the microstate-pushforward kernel "
+        "mu_m(w)=|Fold_m^{-1}(w)|/2^m on X_m, with m in {6..16} and no addressing order n."
+    )
 
 
 if __name__ == "__main__":

@@ -18,6 +18,7 @@ Only the Python standard library is used.
 from __future__ import annotations
 
 import itertools
+import json
 import math
 from dataclasses import dataclass
 from pathlib import Path
@@ -123,6 +124,26 @@ def _parse_audit_closure_metrics(gen_dir: Path) -> Dict[str, Tuple[int, int, int
         n005 = int(cols[-1].rstrip("\\").strip())
         out[closure_tex] = (domain_size, n001, n005)
     return out
+
+
+def _try_protocol_state_scan_factor(gen_dir: Path, tag: str) -> int:
+    """
+    Optional extra scan factor from the joint protocol-state selection family size |F_mu|.
+    If present, this represents an explicit finite search-space enlargement that should be
+    accounted for conservatively by the same union-bound style count inflation.
+    """
+    p = gen_dir / "protocol_state_selected.json"
+    if not p.is_file():
+        return 1
+    try:
+        obj = json.loads(p.read_text(encoding="utf-8"))
+        sel = obj.get("selected", {}).get(tag, None)
+        if not isinstance(sel, dict):
+            return 1
+        k = int(sel.get("family_size", 1))
+        return k if k >= 1 else 1
+    except Exception:
+        return 1
 
 
 def _parse_audit_pi_poly_null(gen_dir: Path) -> Tuple[int, int, int]:
@@ -439,12 +460,16 @@ def _build_registry(gen_dir: Path) -> List[FamilyRow]:
 
     # Finite kernel-family scan factors (audit-facing; union bound).
     #
-    # These are explicit, bounded registry choices: enlarging a kernel family enlarges
-    # the audited search space. Here we record the minimal kernel family size used in
-    # the kernel-closure appendix for electroweak normalization.
+    # These are explicit, bounded registry choices: enlarging a kernel family (or allowing
+    # a joint protocol-state scan over (m,n,K)) enlarges the audited search space.
+    # We record these scan factors explicitly and apply a conservative union-bound adjustment.
+    #
+    # For electroweak normalization, the joint protocol-state selector scans a finite family
+    # F_{mu_Z} ⊂ M×N×K; we treat its size as an explicit scan factor when present.
+    muZ_scan = _try_protocol_state_scan_factor(gen_dir, tag="mu_Z")
     kernel_scan_factor_by_closure_tex: Dict[str, int] = {
-        r"$\alpha^{-1}(\mu_Z)$": 5,
-        r"$\sin^2\theta_W(\mu_Z)$": 5,
+        r"$\alpha^{-1}(\mu_Z)$": max(5, muZ_scan),
+        r"$\sin^2\theta_W(\mu_Z)$": max(5, muZ_scan),
     }
 
     # ---------- alpha_em^{-1} ----------
