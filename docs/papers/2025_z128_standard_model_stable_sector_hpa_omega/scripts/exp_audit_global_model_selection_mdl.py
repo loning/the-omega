@@ -81,6 +81,22 @@ class FamilyRow:
         return mdl_weight(self.L_fam)
 
 
+def _apply_kernel_scan(dom: int, n001: int, n005: int, k: int) -> Tuple[int, int, int]:
+    """
+    Audit-facing union bound for a finite kernel-family scan.
+
+    If a closure is evaluated under a finite kernel family of size k and CAP selects
+    the best kernel within that family, then the within-family success frequency
+    at a fixed threshold is (conservatively) bounded by
+      p' <= min(1, k * p).
+    In count form (with domain size dom), this is implemented as
+      N' <= min(dom, k * N).
+    """
+    if k <= 1:
+        return dom, n001, n005
+    return dom, min(dom, k * n001), min(dom, k * n005)
+
+
 def _parse_audit_closure_metrics(gen_dir: Path) -> Dict[str, Tuple[int, int, int]]:
     """
     Parse sections/generated/audit_closure_metrics_rows.tex.
@@ -421,6 +437,16 @@ def _build_registry(gen_dir: Path) -> List[FamilyRow]:
 
     rows: List[FamilyRow] = []
 
+    # Finite kernel-family scan factors (audit-facing; union bound).
+    #
+    # These are explicit, bounded registry choices: enlarging a kernel family enlarges
+    # the audited search space. Here we record the minimal kernel family size used in
+    # the kernel-closure appendix for electroweak normalization.
+    kernel_scan_factor_by_closure_tex: Dict[str, int] = {
+        r"$\alpha^{-1}(\mu_Z)$": 5,
+        r"$\sin^2\theta_W(\mu_Z)$": 5,
+    }
+
     # ---------- alpha_em^{-1} ----------
     cl_key = "alpha_em_inv"
     cl_tex = r"$\alpha_{\mathrm{em}}^{-1}$"
@@ -468,12 +494,13 @@ def _build_registry(gen_dir: Path) -> List[FamilyRow]:
     cl_key = "alphaZ_inv"
     cl_tex = r"$\alpha^{-1}(\mu_Z)$"
     dom, n001, n005 = need(cl_tex)
+    dom, n001, n005 = _apply_kernel_scan(dom, n001, n005, kernel_scan_factor_by_closure_tex.get(cl_tex, 1))
     rows.append(
         FamilyRow(
             closure_key=cl_key,
             closure_tex=cl_tex,
             family_key="n_pi2",
-            family_tex=r"$n\pi^2$",
+            family_tex=r"$n\pi^2$ (kernel-scan $|\mathcal{K}|=5$)",
             domain_size=dom,
             n_le_001=n001,
             n_le_005=n005,
@@ -485,12 +512,13 @@ def _build_registry(gen_dir: Path) -> List[FamilyRow]:
     cl_key = "sin2_thetaW"
     cl_tex = r"$\sin^2\theta_W(\mu_Z)$"
     dom, n001, n005 = need(cl_tex)
+    dom, n001, n005 = _apply_kernel_scan(dom, n001, n005, kernel_scan_factor_by_closure_tex.get(cl_tex, 1))
     rows.append(
         FamilyRow(
             closure_key=cl_key,
             closure_tex=cl_tex,
             family_key="pq_rational",
-            family_tex=r"$p/q$",
+            family_tex=r"$p/q$ (kernel-scan $|\mathcal{K}|=5$)",
             domain_size=dom,
             n_le_001=n001,
             n_le_005=n005,

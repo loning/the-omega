@@ -326,6 +326,9 @@ flowchart TD
 | uplift refinement 的算子核对（Ext/边界子集） | Ext$_m(u)$ 与末位/边界子集计数的 $2\times2$ 矩阵幂评估公式，与 $X_m$ 枚举核对（误差为 0） | Math/Audit/Prot | `app:protocol_hecke_operators`, `tab:ext_boundary_operator_check` | [x] |
 | folding 信息论分解证书 | 数值验证恒等式 $H(N|W)=\\log d_m + D(\\mu_m\\Vert u_m)$（diff≈0），并给出 KL 修正规模 | Math/Audit/Prot | `prop:folding_relative_entropy_decomposition`, `tab:folding_entropy_decomposition` | [x] |
 | weighted pressure / pole-barrier toy（审计） | $2\\times2$ weighted transfer-matrix 的谱半径/pressure sweep 与极点屏障阈值 toy，用于对齐 Abel-first 归一化语言 | Audit | `tab:weighted_pressure_sweep`, `tab:pole_barrier_mode_toy` | [x] |
+| 协议态（$m,n,K$；联合 CAP 主线） | 把“分辨率/寻址/读出加权”统一为协议态 $(m,n,K)$，并在显式有限候选族 $\mathcal{F}_\mu\subset\mathcal{M}\times\mathcal{N}\times\mathcal{K}$ 上用联合 key $J_\mu$ 一次性闭合 $(m^\*(\mu),n^\*(\mu),K^\*(\mu))$；并将既有的 holonomy anchor、resolution-first 阶梯与 capacity-first uplift 归并为该联合 key 的特例/约束极限 | Iface/CAP/Audit | `subsec:tick_cap_joint_protocol_state` | [x] |
+| 读出核家族闭合（kernel-family CAP closure） | 将“加权读出/期望/有效份额”所依赖的读出核 $K$ 明确为有限候选族并由 CAP 闭合；提供推前/细化一致性口径，并以电弱归一化为首个完整示例（分辨率推前 sweep + kernel-family sweep） | Iface/CAP/Audit/Prot | `app:kernel_family_cap_closure`, `tab:ew_kernel_resolution_weighted`, `tab:ew_kernel_family_anchor` | [x] |
+| 电弱归一化（kernel-closed；审计表） | 以 $W_Y(K)$ 的 kernel-dependent 有效超荷平方权重闭合 $\alpha^{-1}(\mu_Z)$ 与 $\sin^2\theta_W(\mu_Z)$；并提供分辨率推前与有限 kernel-family 的 mismatch/stability 表 | Iface/CAP/Match/Audit | `def:ew_volumes`, `tab:ew_kernel_resolution_weighted`, `tab:ew_kernel_family_anchor` | [x] |
 | Hilbert 手性指标（chirality index） | $\chi$ 的反射/反向翻转律（符号律） | Math/Audit/Prot | `prop:chi_flip` | [x] |
 | 规范补偿（gauge as compensation） | 纤维非平凡 $\Rightarrow$ 需要 transport；局部重标记 $\Rightarrow$ gauge 冗余 | Iface | `prop:gauge_compensation` | [x] |
 | 轨道/平行运输/偏离（orbit/parallel-transport/deflection） | 轨道 $(x_t,\psi_t)$；规范=协变运输（平行运输）结构；力=响应导致的偏离 | Iface/Math/CAP | `app:unified_orbit_gauge_force` | [x] |
@@ -352,6 +355,8 @@ flowchart TD
 - [x] **$\gamma$ 审计（proxy 与 direct 分离）**：弱场代理通道的 $\gamma_{\mathrm{proxy}}$ 压缩一致性检验 + 旋转曲线通道的 $\gamma_{\mathrm{dict}}$ 直接标定（含数据协议与脚本/表格/图）。
   - 位置（接口附录）：`sections/appendices/35_gamma_cross_observation_consistency.tex`（`\label{app:gamma_crossobs_consistency}`）
   - 生成脚本：`scripts/exp_gamma_cross_observation.py`（已接入 `scripts/run_all.py`）
+  - kernel-family 敏感性（direct $\widehat\gamma_{\mathrm{dict}}$；有限族）：`scripts/exp_gamma_kernel_family_sweep.py`（已接入 `scripts/run_all.py`）
+  - kernel-family 敏感性（$\widehat\chi$ 重建统计；有限族）：`scripts/exp_chi_kernel_family_sweep.py`（已接入 `scripts/run_all.py`）
   - 数据协议/小体量数据：`data/gamma_crossobs/`（`solar_system/`, `sparc/`, `strong_lensing/`, `weak_lensing/`）
   - 生成物：
     - `sections/generated/gamma_crossobs_proxy_rows.tex`
@@ -361,6 +366,8 @@ flowchart TD
     - `sections/generated/gamma_crossobs_direct_rows.tex`
     - `sections/generated/gamma_crossobs_direct_diagnostics.tex`
     - `sections/generated/gamma_crossobs_direct_stability_rows.tex`
+    - `sections/generated/gamma_crossobs_direct_kernel_family_rows.tex`
+    - `sections/generated/chi_kernel_family_sweep_rows.tex`
     - `figures/gamma_crossobs_direct.png`
 - [x] **宇宙学能量预算拟合的可复现脚本**：生成器 `scripts/exp_cosmology_energy_budget_fit.py`（已接入 `scripts/run_all.py`）
   - 入口：`sections/appendices/32_cosmology_resolution_flow.tex`（`app:cosmology_resolution_flow` / `ass:occupancy_energy_z128`，图 `fig:cosmology_energy_budget_fit`）
@@ -397,6 +404,7 @@ flowchart TD
   - 位置：`sections/appendices/42_global_model_selection_mdl.tex`（`\label{app:global_model_selection_mdl}`，表 `tab:audit_global_mdl_family_registry`）  
   - 生成脚本：`scripts/exp_audit_global_model_selection_mdl.py`（已接入 `scripts/run_all.py`）  
   - 生成物：`sections/generated/audit_global_mdl_family_rows.tex`，`sections/generated/audit_global_mdl_summary.tex`  
+  - 备注：对 kernel-dependent 闭合，registry 内将有限 kernel-family 扫描的 look-elsewhere 扩张显式计入（保守 union bound：$N_{\le\epsilon}\mapsto\min(|\Theta|,|\mathcal{K}|N_{\le\epsilon})$），避免把 $K$ 作为隐含自由度。
   - 主依赖：家族内审计表 `app:generated_tables`（含 `tab:audit_closure_metrics` / `tab:audit_counterfactual` / `tab:audit_pi_poly_null`）与 CAP 审计模板 `app:cap_audit_template`。
 - [x] **（OP5）标量/Yukawa 与 RG running 的闭合（接口口径）**：标量在本论文中作为 uplift/coarse-graining 依赖接口处理（`app:scalar_interface_audits`；并明确 $21$ 类型不含 Higgs：`rem:higgs_not_in_21`）。Yukawa 可观测量（本征谱与混合矩阵）及 SM $\beta$-函数系数已在接口口径内闭合（`app:yukawa_beta_protocol_closure`）：本征值由深度模板给出，混合矩阵由 holonomy 机制固定，$\beta$-系数由闭合标号上的表示计数导出。VEV $v$（等价 $y_e$）由 $m_Z$ 与闭合电弱归一化字典固定（`prop:vev_from_mz_closed_ew`）；最小 Higgs 计数 $N_H=1$ 在有界候选族内以 CAP 最小化固定（`prop:minimal_higgs_doublet_count`）。右手旋转仍作为不可观测冗余处理。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`。
 

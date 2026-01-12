@@ -1139,6 +1139,20 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Electroweak resolution-weighted match (kernel pushforward sweep; audit)",
+            script="exp_ew_resolution_weighted_match.py",
+            expected_outputs=[
+                "sections/generated/ew_resolution_weighted_match_rows.tex",
+            ],
+        ),
+        Step(
+            name="Electroweak kernel-family sweep at anchor (audit)",
+            script="exp_ew_resolution_weighted_match_family.py",
+            expected_outputs=[
+                "sections/generated/ew_resolution_weighted_match_family_rows.tex",
+            ],
+        ),
+        Step(
             name="Coupling unification audit in r (bounded family; match/audit)",
             script="exp_coupling_unification_audit_in_r.py",
             expected_outputs=[
@@ -1254,6 +1268,20 @@ def build_steps() -> List[Step]:
                 "sections/generated/gamma_crossobs_direct_diagnostics.tex",
                 "sections/generated/gamma_crossobs_direct_stability_rows.tex",
                 "figures/gamma_crossobs_direct.png",
+            ],
+        ),
+        Step(
+            name="Gamma kernel-family sweep (direct; audit)",
+            script="exp_gamma_kernel_family_sweep.py",
+            expected_outputs=[
+                "sections/generated/gamma_crossobs_direct_kernel_family_rows.tex",
+            ],
+        ),
+        Step(
+            name="Chi kernel-family sweep (audit)",
+            script="exp_chi_kernel_family_sweep.py",
+            expected_outputs=[
+                "sections/generated/chi_kernel_family_sweep_rows.tex",
             ],
         ),
         Step(
