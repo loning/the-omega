@@ -505,6 +505,40 @@ flowchart TD
   - BH6（等价岛机制 / 不双计数的代数重建）[~]：落点：`app:bh_island_equiv`（`sections/appendices/10d_bh_island_equivalent_reconstruction.tex`）。生成物：`scripts/exp_bh_island_equivalent_reconstruction.py`（toy），`scripts/exp_bh_island_equiv_sweep.py`（`bh_island_equiv_sweep_*`）。失败点：若重建需隐藏 knobs 或违反预算，则回退为 BH4+BH5 的 Iface/Audit 口径（见 `app:bh_scope_contract`）。
   - BH-P0（可逆黑盒队列原型：单一 $w$ 流 + 合法吸收 + Page-like surrogate）[x]：`scripts/exp_black_hole_queue_equivalence.py`（单一稳定类型记录、CAP 选参、合法吸收子字母表、零先验自解码与可逆恢复；并内置 absorption-mode sweep）。
 - [ ] **量子引力（普朗克尺度闭合）**：未给出普朗克尺度的统一闭合动力学与可计算的普适检验。
+  - **最小交付口径（建议作为“可审计的普适检验”定义）**：
+    - 在一个显式声明的“普朗克窗口/UV 窗口”内，固定协议态 $(m,n,K)$（见 `subsec:tick_cap_joint_protocol_state`），并固定一个有限可观测注册表 $\mathfrak{Obs}_{\le N}$（见 T1 路线图与 `app:observable_algebra_state_base`）。
+    - 给出窗口化可比性命题（EFT 级最小目标）：
+      $$
+      \forall\,\mathcal{O}\in\mathfrak{Obs}_{\le N},\qquad
+      \left|\langle\mathcal{O}\rangle_{\mathrm{prot}}-\langle\mathcal{O}\rangle_{\mathrm{EFT}\le N}\right|
+      \le \epsilon_N(m,n,K),
+      $$
+      其中 $\epsilon_N$ 的每一项都必须能在本文的有限族/脚本框架下被审计（而不是口头“高阶小/方案可忽略”）。
+  - **最短强闭合里程碑（建议 M1–M3；失败点全部走 `app:minimal_failure_point_templates` 的统一门禁）**：
+    - QG9-M1（窗口化可比性 + 误差预算闭合）[ ]：
+      - 目标：把“UV/普朗克尺度问题”改写成“窗口内、有限观测类上的误差预算命题”，并将 scheme/threshold 不确定性显式并入 $\epsilon_N$。
+      - 依赖：`app:matching_envelope_theoremization`（有限 scheme/threshold 家族 envelope；对应失败点 R1/R2）、`app:eft_error_bounds`（误差分解骨架）。
+      - 回退：若触发 R3（需要非微扰存在性/完备性等）则降级为 proxy/audit-level（仅保留窗口内可复现审计与 envelope 上界，不作 UV 完备宣称）。
+    - QG9-M2（量子化/重整化强闭合载体：EG + BRST/Ward 门禁）[ ]：
+      - 目标：在声明的截断阶与窗口内，把“量子化/重整化满足 BRST/Ward/异常过滤”推进为强闭合条件包（S=CP），并把任何破坏项写成显式预算项进入 $\epsilon_N$。
+      - 依赖：`app:eg_causal_perturbation_framework`（EG 载体）、`app:strong_eft_remainder_bounds`（截断余项 envelope；对应 WBR3）、`app:renormalization_dictionary_and_boundaries`（范围边界；对应 R3）。
+      - 回退：触发 WBR1/WBR2/WBR3 时必须按门禁降级（BRST 仅作接口假设/修改 registry/显式 remainder budget），不得将失败点“隐含消去”。
+    - QG9-M3（强场/黑洞信息的可证伪表述：记录代数 + recovery surrogate +（可选）BH6）[ ]：
+      - 目标：把“黑洞信息/强场量子引力”的宣称统一表述为外部记录代数 $\mathcal{A}_{\mathrm{out}}$ 上的可恢复性命题（而不是热谱/几何直觉），并给出可审计的 surrogate 与失败点。
+      - 依赖：`app:bh_scope_contract`（BH 信息闭合契约与 CP→PT 门禁）、`app:bh_page_surrogate`（BH5）、`app:bh_island_equiv`（BH6，若启用）。
+      - 回退：若 island-equivalent 重建需要隐藏 knobs 或违反预算，则回退为 BH4+BH5 的 Iface/Audit 口径，不宣称 BH6 机制成立。
+    - 依赖关系（文本版 DAG；用于写作与宣称门禁对齐）：
+      - QG9-M1 $\rightarrow$ QG9-M2：以 $\epsilon_N$ 预算为承载，把 R1/R2 的 matching envelope 与 WBR1–WBR3 的量子化/余项破坏项统一入账；触发 R3 时在此处截断并降级为 proxy/audit-level。
+      - QG9-M2 $\rightarrow$（可选）散射/场论普适检验：若需要以散射/场作为检验载体，则必须显式通过 S1–S3 与 W1–W3 门禁；失败即回退到 delay 字典或 AQFT 账本。
+      -（QG9-M1 或 QG9-M2）$\rightarrow$ QG9-M3：强场/黑洞信息只允许以记录代数上的 recovery surrogate 表述，并受 `app:bh_scope_contract` 的 CP→PT gate 管控；BH6 失败点触发则回退 BH4+BH5。
+  - **最小门禁集合（用于“是否允许宣称量子引力闭合”的统一判定）**：
+    - **R3（非微扰边界）**：一旦主张需要“4D 相互作用 QFT 存在性/质量隙/渐近完备性/非微扰完备性”等控制，则必须降级为 proxy/audit-level（见 `app:renormalization_dictionary_and_boundaries`）。
+    - **WBR1–WBR3（Ward/BRST）**：量子化/重整化若破坏 BRST、异常不消、或截断余项不可控，则必须降级并显式预算（见 `app:eg_causal_perturbation_framework` 与 `app:strong_eft_remainder_bounds`）。
+    - **CL1–CL4（离散→连续极限桥）**：若把有限 holonomy/loop 升级为“连续场动力学是其极限”，必须通过 refinement/尺度映射/正则性/\Gamma-limit 门禁；否则只能保留“连续代表（representative）闭合”（见 `app:minimal_failure_point_templates`）。
+    - **S1–S3（散射层）与 W1–W3（场/桥接层）**：任何以散射/场为“普适检验”载体的表述都必须显式声明前提与失败点；失败即回退为 delay 字典或 AQFT 账本（见 `app:scattering_haag_ruelle_lsz_interface` 与 `app:wightman_bridge_and_reconstruction`）。
+  - **宣称句式门禁（建议写入主文的固定句式）**：
+    - 允许：在“声明窗口 + 有限观测类 + 显式 $\epsilon_N$ 预算 + 失败点门禁”口径下陈述结果；scheme/threshold 仅以有限族 envelope 进入误差预算（R1/R2）。
+    - 禁止：无条件宣称“量子引力已解决/黑洞信息悖论已解决/4D 相互作用 QFT 非微扰完备已证明/渐近完备性已建立”等（触发 R3 或 BH 合同门禁即自动不满足）。
 - [ ] **现代宇宙学张力（$H_0$ tension、$S_8/\sigma_8$ tension）**：未讨论相关张力问题及其数据/系统误差模型；建议参考与入口：Planck-2018 参数 \cite{Planck2018Parameters2020AandA}，SH0ES 距离梯 \cite{RiessEtAl2022SH0ESApJL}，弱透镜/多探针基准 \cite{AsgariEtAl2021KiDS1000CosmicShear,DESY3Cosmo2022PRD}，综述 \cite{VerdeTreuRiess2019TensionsReview}；本文对应范围边界与引用指针已集中放在 `sec:limitations_related_work` 的 `subsec:open_problems_audit_tagged`。
 - [ ] **更高能 BSM 框架（SUSY/弦论等）与质子衰变**：未进入闭合推导链或审计化可证伪预测。
 
