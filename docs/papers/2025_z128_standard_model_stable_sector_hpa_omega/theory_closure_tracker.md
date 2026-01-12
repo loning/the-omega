@@ -444,3 +444,191 @@ flowchart TD
 - **“Open problems 清单”入口**：`subsec:ledger_open_problems`（并在 `sec:limitations_related_work` 的 `subsec:open_problems_audit_tagged` 提供更详细讨论）
 - **“协议→连续场误差控制”入口**：`sections/appendices/33_protocol_to_continuum_error_control.tex`
 
+
+
+---
+
+## 定理级闭合路线图（从接口包走向 theorem-level）
+
+本节给出一条“把 interface/matching/audit 语句升级为 theorem-level 结论”的工作路线图，面向后续多轮迭代维护。目标不是一次性“证明完整 4D 相互作用标准模型 QFT 的构造性存在”，而是把当前已明确标注为边界/开放的桥接点，逐条转化为可证伪、可证明、可累积的定理链（或在显式假设包下的定理链）。
+
+### 0. 目标层级（建议按台阶推进）
+
+- **Level T1（EFT 级定理闭合）**：在给定分辨率窗口与有限阶截断下，构造一个连续代表（EFT 到有限算符维数/有限 loop 阶），并证明其满足规范一致性（Ward/BRST）、异常一致性与可计算误差界。典型结论形式：
+
+$$
+\forall\,\mathcal{O}\in\mathfrak{Obs}_{\le N},\qquad
+\left|\langle\mathcal{O}\rangle_{\mathrm{prot}}-\langle\mathcal{O}\rangle_{\mathrm{SM,EFT}\le N}\right|
+\le \epsilon_N(m,n).
+$$
+
+- **Level T2（AQFT 网的定理闭合）**：从 uplift/coarse-graining 的有向系统构造局域代数网，并证明其满足（至少）isotony、microcausality、（弱形式的）协变/谱条件。
+- **Level T3（Wightman 场与域控制）**：在额外可检查条件下，实现 net→field（或 field→net）桥接的定理化版本：给出场生成、域稳定性与能量界。
+- **Level T4（散射与可比性）**：在质量隙/渐近完备等条件下实现 Haag–Ruelle/LSZ 可用的散射定理，给出 S 矩阵或等价的时间延迟可观测的严格联系。
+- **Level T5（构造性重整化/非微扰完备性）**：目标最强、代价最高；除非选定受控子类（低维、超可重整、或特殊构造），否则不建议作为近期主线。
+
+### 1. 依赖 DAG（任务级）
+
+```mermaid
+flowchart TD
+  %% Level T1: EFT theorem closure
+  P0["“P0: protocol flow as directed system”"] --> T1A["“T1A: finite-order EFT representative construction”"]
+  T1A --> T1B["“T1B: Ward/BRST consistency proofs”"]
+  T1A --> T1C["“T1C: anomaly constraints as theorem-level filters”"]
+  T1A --> T1D["“T1D: quantitative error bounds epsilon_N(m,n)”"]
+
+  %% Level T2: AQFT net closure
+  P0 --> T2A["“T2A: local algebra net from finite readout”"]
+  T2A --> T2B["“T2B: microcausality from constructible non-disturbance”"]
+  T2A --> T2C["“T2C: covariance/spectrum in a declared dynamics class”"]
+
+  %% Level T3: Wightman bridge
+  T2A --> T3A["“T3A: domain control for unbounded generators”"]
+  T3A --> T3B["“T3B: field generation / reconstruction theorem”"]
+
+  %% Level T4: scattering
+  T3B --> T4A["“T4A: Haag–Ruelle scattering (gapped sector)”"]
+  T4A --> T4B["“T4B: LSZ interface and time-delay equivalence”"]
+
+  %% Parallel cross-cutting infrastructure
+  T1D --> X0["“X0: proof ledger + minimal failure points formalization”"]
+  T2B --> X0
+  T3A --> X0
+  T4B --> X0
+
+  classDef p fill:#BBDEFB,stroke:#1E88E5,color:#0D47A1;
+  classDef t1 fill:#C8E6C9,stroke:#43A047,color:#1B5E20;
+  classDef t2 fill:#FFE0B2,stroke:#FB8C00,color:#E65100;
+  classDef t3 fill:#E1BEE7,stroke:#8E24AA,color:#4A148C;
+  classDef t4 fill:#FFCDD2,stroke:#E53935,color:#B71C1C;
+  classDef x fill:#F8BBD0,stroke:#D81B60,color:#880E4F;
+  class P0 p;
+  class T1A,T1B,T1C,T1D t1;
+  class T2A,T2B,T2C t2;
+  class T3A,T3B t3;
+  class T4A,T4B t4;
+  class X0 x;
+```
+
+### 2. 可执行任务清单（含依赖与并行性）
+
+说明：
+- **依赖**：写成“必须先完成/可复用”的最小输入。
+- **可并行**：同一并行组内任务在逻辑上互不阻塞；共享基础设施时只需协调接口与符号。
+- **落点文件**：建议写入的位置（新增或改造的 `.tex` / `.py` / 表格生成入口）。
+
+#### P0：把动态分辨率写成可组合的数学对象（主干基础设施）
+
+- [ ] **P0-1 协议流的有向系统化（Math）**
+  - **目标**：将 uplift/coarse-graining 组织成一个有向系统（对象：分辨率参数；态/观测：代数或函数空间），给出组合律与函子性（至少在有限对象层面严格成立）。
+  - **依赖**：已存在的 uplift/coarse-graining 定义与表（`sec:kernel_view`、`app:functorial_refinement`、`def:protocol_flow_step`）。
+  - **落点文件**：新增 `sections/appendices/8x_protocol_flow_directed_system.tex`（建议编号靠近现有 flow/renorm 附录）；并在 `theory_closure_tracker.md` 与 `inference_ledger` 增加条目指针。
+  - **可并行**：与 T1/T2 可并行（只要先冻结接口：对象/态/观测的类型）。
+
+- [ ] **P0-2 观测代数与状态的统一底座（Math）**
+  - **目标**：明确“有限读出可观测”的代数结构（例如有限字母表上的函数代数、或有限矩阵代数），并给出状态作为正归一线性泛函的统一表述；要求与现有 GNS/POVM 记法兼容。
+  - **依赖**：`app:state_gns_background`、`app:quantum_measurement_born`、`app:aqft_axioms_local_nets`。
+  - **落点文件**：可扩写 `sections/appendices/30c_state_gns_background.tex` 或新增 `sections/appendices/8y_observable_algebra_base.tex`。
+  - **可并行**：可与 P0-1、T2A 并行。
+
+#### T1：EFT 级定理闭合（近期主线，最建议优先）
+
+- [ ] **T1-1 EFT 代表构造（Math）**
+  - **目标**：在给定分辨率窗口（或 uplift path）上，给出一个有限阶连续代表（算符基 + 截断阶 + 规范对称性实现），并把系数空间限制为可审计的有界候选族（避免“无限自由度”）。
+  - **依赖**：`app:cap_continuum_action_closure`（已有 action skeleton 口径）、`app:continuum_yang_mills_from_holonomy`（代表闭合链）、标号闭合（`sec:sm_labeling_closure`）。
+  - **落点文件**：新增 `sections/appendices/8a_eft_representative_construction.tex`；配套脚本 `scripts/exp_eft_basis_audit.py` 生成基/系数域表。
+  - **可并行**：与 T1-3/T1-4 并行（只要约定 EFT 的阶与观测类）。
+
+- [ ] **T1-2 Ward/BRST 一致性定理（Math）**
+  - **目标**：对 T1-1 的有限阶代表，证明规范一致性条件（Ward 恒等式或 BRST nilpotency）在截断意义下成立，并给出失配项的阶（作为可审计误差预算）。
+  - **依赖**：T1-1；以及“观测代数/态”的底座（P0-2）。
+  - **落点文件**：新增 `sections/appendices/8b_ward_brst_consistency.tex`。
+  - **可并行**：与 T1-3/T1-4 并行推进（共享符号与截断约定）。
+
+- [ ] **T1-3 异常约束的 theorem-level 过滤（Math）**
+  - **目标**：把 anomaly cancellation 从“接口要求”提升为“代表可存在/可延拓的必要条件”，并对现有最小扩展（含 $\nu_R$）给出严格陈述；同时明确哪些异常仍依赖外部输入（如强 CP/EDM）。
+  - **依赖**：`sec:sm_labeling_closure`（已有 anomaly 计算）、P0-2（代数/态一致记法）。
+  - **落点文件**：在 `sections/V_30_sm_field_labeling_closure.tex` 附录化重排或新增 `sections/appendices/8c_anomaly_theorem_filters.tex`。
+  - **可并行**：可与 T1-1/T1-2 并行。
+
+- [ ] **T1-4 误差界 $\epsilon_N(m,n)$ 的定理化（Math/Audit）**
+  - **目标**：把“协议→连续代表”的误差控制升级为 EFT 可观测的误差界：明确观测类、截断阶、以及随分辨率/样本量/平滑参数变化的上界形式。
+  - **依赖**：`app:protocol_to_continuum_error_control`、`app:chi_reconstruction_protocol`、T1-1（观测类定义）。
+  - **落点文件**：新增 `sections/appendices/8d_eft_error_bounds.tex`；脚本 `scripts/exp_eft_error_budget_sweep.py` 生成稳定性表。
+  - **可并行**：可与 T1-1/T1-2 并行（先冻结观测类与误差度量）。
+
+#### T2：AQFT 网的定理闭合（中期主线）
+
+- [ ] **T2-1 从有限读出构造局域网（Math）**
+  - **目标**：给出由有限寻址/窗口读出诱导的区域族与局域代数赋值，并证明 isotony 在构造层面成立。
+  - **依赖**：寻址与局域结构（`sec:hilbert_addressing`、`sec:tick_calculus`）、P0-1/P0-2。
+  - **落点文件**：新增 `sections/appendices/8e_construct_local_net_from_protocol.tex`，并与 `app:aqft_axioms_local_nets` 对齐符号。
+  - **可并行**：可与 T1 组并行（弱耦合：共享“观测代数”定义）。
+
+- [ ] **T2-2 microcausality 从可构造非扰动性推出（Math）**
+  - **目标**：把 microcausality 从“接口承诺”升级为定理：在某个明确的协议可实现性类（例如局域读出 + 受控反馈）下，证明时空类空分离区域的可观测交换性或可操作的 no-signaling 不等式。
+  - **依赖**：T2-1；量子信道/粗粒化收缩（`app:quantum_channels_cptp_stinespring`）可作为技术输入。
+  - **落点文件**：新增 `sections/appendices/8f_microcausality_from_protocol_non_disturbance.tex`。
+  - **可并行**：与 T2-3 并行（但都依赖 T2-1）。
+
+- [ ] **T2-3 协变/谱条件的“可证明版本”与最小动力学假设包（Math）**
+  - **目标**：明确一个最小动力学类（不必是完整 SM），在其中证明协变实现与正能谱条件（或其可用替代，如半群谱约束）成立；同时把失败点写成可检验条件。
+  - **依赖**：T2-1；时间箭头半群模板（`app:arrow_of_time_semigroup_notes`）与协议流（P0-1）。
+  - **落点文件**：新增 `sections/appendices/8g_covariance_spectrum_from_protocol_dynamics.tex`。
+  - **可并行**：与 T2-2 并行。
+
+#### T3：Wightman/场域桥接（高难度，建议先做受限版）
+
+- [ ] **T3-1 域控制（Math）**
+  - **目标**：给出一类可控的“生成元”（可能是 smeared 的有限分辨率极限对象），证明存在共同稠密不变域并在该域上闭合所需代数运算。
+  - **依赖**：T2-1/T2-3；以及桥接失败点清单（`app:wightman_bridge_and_reconstruction`）。
+  - **落点文件**：新增 `sections/appendices/8h_domain_control_for_generators.tex`。
+  - **可并行**：与 T4 可并行度低（通常先过域控制）。
+
+- [ ] **T3-2 field generation / net→field 定理（Math）**
+  - **目标**：在显式假设包下实现 net→field 的可证明版本，并把技术条件（能量界、局域化、正则性）写成可审计清单。
+  - **依赖**：T3-1。
+  - **落点文件**：新增 `sections/appendices/8i_field_reconstruction_theorems.tex`。
+  - **可并行**：与 T4-1 可以部分并行（先在假设包层面同步条件）。
+
+#### T4：散射与等价性（最接近“SM 等价”直觉的层，但依赖很重）
+
+- [ ] **T4-1 质量隙子扇区的 Haag–Ruelle 散射定理（Math）**
+  - **目标**：在一类可证质量隙/谱隔离的子扇区内，建立入射/出射态与渐近完备的可用版本。
+  - **依赖**：T2-3（谱条件可用形式）与 T3-1/3-2（或等价的可用替代假设包）。
+  - **落点文件**：新增 `sections/appendices/8j_scattering_haag_ruelle_theorems.tex`。
+  - **可并行**：与 T3-2 可做条件并行（先固定假设包接口）。
+
+- [ ] **T4-2 LSZ/时间延迟等价接口的定理化（Math/Iface）**
+  - **目标**：把现有的“delay 字典 + 散射接口”从 audit/iface 升级为：在明确条件下，WS 延迟与相移/截面/散射振幅的关系可作为定理使用，并给出误差界。
+  - **依赖**：T4-1（或等价的散射可用性）、现有统一延迟字典（`app:time_mass_delay`）。
+  - **落点文件**：在 `sections/appendices/65_scattering_haag_ruelle_lsz_interface.tex` 基础上拆分：保留接口词典，新增 theorem 部分 `sections/appendices/8k_lsz_delay_theorem_layer.tex`。
+  - **可并行**：与 T1-4 的误差界工作可并行（共享“误差预算语义”）。
+
+#### X0：跨任务的“最小失败点”形式化与并行协调（强烈建议早做）
+
+- [ ] **X0-1 把 W/R 失败点表述升级为“定理条件模板”（Audit→Math）**
+  - **目标**：将当前桥接文档里的失败点（例如 (W1)(W2)(W3) 与 (R1)(R2)(R3)）整理成统一模板：每个失败点对应“可验证条件/反例触发/影响范围/回退策略”。
+  - **依赖**：`app:wightman_bridge_and_reconstruction`、`app:renormalization_dictionary_and_boundaries`、`app:microcausality_spectrum_covariance`。
+  - **落点文件**：新增 `sections/appendices/8z_minimal_failure_point_templates.tex`；并在 `inference_ledger` 增加“theoremization checklist”条目。
+  - **可并行**：可与所有任务并行（是并行协调器）。
+
+### 3. 并行分组建议（减少互相等待）
+
+- **并行组 G1（EFT 主线）**：T1-1、T1-2、T1-3、T1-4  
+  - **共享接口**：观测类定义、截断阶 $N$、误差度量与 tie-break 纪律。
+- **并行组 G2（AQFT 网构造）**：P0-1、P0-2、T2-1、T2-2、T2-3  
+  - **共享接口**：区域族定义、局域代数的生成规则、粗粒化在代数上的作用。
+- **并行组 G3（桥接与散射准备）**：T3-1、T3-2、T4-1、T4-2  
+  - **共享接口**：域控制条件、谱/质量隙假设包、散射可用性与可观测映射。
+- **并行组 GX（横向基础设施）**：X0-1  
+  - **作用**：统一“失败点→条件模板”，避免不同章节反复定义、口径漂移。
++
+### 4. 最小提交策略（确保每次工作都能落到可见闭合）
++
+- **优先闭合顺序**：G1（T1）→ G2（T2）→ G3（T3/T4）→ T5（如需）。
+- **每个任务的最小可交付物**：
+  - **定理/命题文本**：明确输入假设与输出结论（可审计）。
+  - **失败点**：至少列出 1 个可明确失败的条件与回退策略。
+  - **脚本与表格（如涉及数值/候选族）**：必须接入 `scripts/run_all.py`，并产出 `sections/generated/` 片段供审计复现。
++
