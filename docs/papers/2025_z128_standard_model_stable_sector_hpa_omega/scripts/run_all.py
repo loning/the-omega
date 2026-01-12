@@ -919,6 +919,39 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="BH5 Page surrogate U(t) (queue-equivalent single-stream)",
+            script="exp_bh_page_surrogate_u_curve.py",
+            expected_outputs=[
+                "sections/generated/bh_page_surrogate_u_curve_rows.tex",
+                "sections/generated/bh_page_surrogate_u_curve_summary.tex",
+                "figures/bh_page_surrogate_u_curve.png",
+            ],
+        ),
+        Step(
+            name="BH5 Page surrogate RB-D robustness audit (m, mode, seed)",
+            script="exp_bh_page_surrogate_robustness_audit.py",
+            expected_outputs=[
+                "sections/generated/bh_page_surrogate_rb_d_rows.tex",
+                "sections/generated/bh_page_surrogate_rb_d_summary.tex",
+            ],
+        ),
+        Step(
+            name="BH5 Page surrogate record-noise audit (interface robustness)",
+            script="exp_bh_page_surrogate_record_noise_audit.py",
+            expected_outputs=[
+                "sections/generated/bh_page_record_noise_audit_rows.tex",
+                "sections/generated/bh_page_record_noise_audit_summary.tex",
+            ],
+        ),
+        Step(
+            name="BH5 Page surrogate record-noise ECC audit (repetition family)",
+            script="exp_bh_page_surrogate_record_noise_ecc_audit.py",
+            expected_outputs=[
+                "sections/generated/bh_page_record_noise_ecc_audit_rows.tex",
+                "sections/generated/bh_page_record_noise_ecc_audit_summary.tex",
+            ],
+        ),
+        Step(
             name="BH absorption-mode sweep (audit; legal absorption subalphabet)",
             script="exp_bh_absorption_mode_sweep.py",
             expected_outputs=[
@@ -947,6 +980,14 @@ def build_steps() -> List[Step]:
             script="exp_bh_island_equivalent_reconstruction.py",
             expected_outputs=[
                 "sections/generated/bh_island_equiv_diagnostics.tex",
+            ],
+        ),
+        Step(
+            name="BH6 island-equivalent sweep (m, mode; audit)",
+            script="exp_bh_island_equiv_sweep.py",
+            expected_outputs=[
+                "sections/generated/bh_island_equiv_sweep_rows.tex",
+                "sections/generated/bh_island_equiv_sweep_summary.tex",
             ],
         ),
         Step(
