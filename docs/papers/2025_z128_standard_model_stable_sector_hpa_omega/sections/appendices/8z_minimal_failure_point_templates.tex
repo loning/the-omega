@@ -1,0 +1,115 @@
+\subsection{Minimal failure-point templates (audit $\rightarrow$ strong-closure normalization)}
+\label{app:minimal_failure_point_templates}
+
+\AuditTag This appendix normalizes the manuscript-wide representation of ``minimal failure points''.
+Whenever a theorem-leaning statement depends on additional conditions (microcausality/spectrum, field reconstruction, scattering, renormalization, quantization), those conditions must be recorded as explicit failure points with:
+\begin{itemize}
+\item a \emph{trigger} (what can concretely fail),
+\item a \emph{check} (what is to be audited/verified in the declared window),
+\item an \emph{impact scope} (what downstream statements become invalid),
+\item a \emph{fallback} (what the manuscript reverts to when the failure occurs).
+\end{itemize}
+
+\subsubsection{Template}
+\begin{definition}[Failure-point record (template)]
+\label{def:failure_point_record_template}
+\MathTag A \emph{failure-point record} is a quadruple
+\[
+(\mathrm{Trigger},\mathrm{Check},\mathrm{Impact},\mathrm{Fallback})
+\]
+attached to a named interface/strong-closure claim, with the semantics listed above.
+\end{definition}
+
+\subsubsection{Canonical failure-point instances used in this manuscript}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.7cm} p{3.4cm} p{3.6cm} p{3.6cm}}
+\toprule
+code & trigger & check & fallback \\
+\midrule
+\input{sections/generated/failure_point_registry_rows.tex}%
+\end{tabular}
+\caption{Canonical minimal failure-point registry used across the strong-closure interfaces. Rows are reproduced by the deterministic script \texttt{scripts/exp\_failure\_point\_checklists.py}.}
+\label{tab:failure_point_registry}
+\end{table}
+
+\paragraph{Wightman bridge (Appendix~\ref{app:wightman_bridge_and_reconstruction}).}
+\begin{itemize}
+\item \textbf{(W1) Domain control.}
+  Trigger: no common dense invariant domain for the needed unbounded generators.
+  Check: existence of a stable domain $\mathcal{D}$ for the declared smeared fields/operators.
+  Impact: Wightman$\to$net and net$\to$field maps are not well-defined at the stated regularity.
+  Fallback: remain in AQFT net/state bookkeeping only.
+\item \textbf{(W2) Field generation.}
+  Trigger: the net has no pointlike generating fields in the declared class.
+  Check: generating family exists with required energy bounds/regularity.
+  Impact: reconstruction theorems cannot be invoked; correlator statements become external matching inputs.
+  Fallback: treat field-level statements as interface/matching only.
+\item \textbf{(W3) Locality encoding mismatch.}
+  Trigger: graded/braided locality differs from naive commutativity.
+  Check: confirm the correct locality notion for the sector and encode it consistently.
+  Impact: microcausality identifications must be re-ledgered.
+  Fallback: keep locality as a declared interface pack with explicit variant.
+\end{itemize}
+
+\paragraph{Scattering interface (Appendix~\ref{app:scattering_haag_ruelle_lsz_interface}).}
+\begin{itemize}
+\item \textbf{(S1) Approximate unitarity window.}
+  Trigger: $S(\omega)$ not (approximately) unitary on the declared band.
+  Check: calibration/loss model and stability sweeps on the same band.
+  Impact: Wigner--Smith delay becomes a proxy with explicit loss error.
+  Fallback: revert to delay-as-proxy without asymptotic particle claims.
+\item \textbf{(S2) One-particle stability/mass gap.}
+  Trigger: no isolated stable one-particle sector.
+  Check: spectral isolation / threshold dominance audit in the declared window.
+  Impact: Haag--Ruelle/LSZ interpretation fails.
+  Fallback: keep only operational phase/delay dictionary and AQFT bookkeeping.
+\item \textbf{(S3) Asymptotic completeness.}
+  Trigger: asymptotic completeness unknown/false.
+  Check: declare it explicitly as hypothesis or restrict to a gapped subsector.
+  Impact: $S$ cannot be interpreted as complete channel map.
+  Fallback: treat $S$ as effective interface object only.
+\end{itemize}
+
+\paragraph{Renormalization boundary (Appendix~\ref{app:renormalization_dictionary_and_boundaries}).}
+\begin{itemize}
+\item \textbf{(R1) Scheme dependence.}
+  Trigger: changing scheme shifts numeric parameters.
+  Check: keep a bounded finite scheme family and report sensitivity.
+  Impact: any numeric matching must be reinterpreted as matching-layer shift.
+  Fallback: restrict to scheme-invariant relations or bounded-family envelopes.
+\item \textbf{(R2) Threshold conventions.}
+  Trigger: decoupling/effective content changes running segments.
+  Check: declare finite threshold family and audit variations.
+  Impact: beta-function based claims become family-dependent.
+  Fallback: keep only family-invariant comparisons.
+\item \textbf{(R3) Nonperturbative boundary.}
+  Trigger: claim requires constructive/nonperturbative control (4D existence, mass gap, asymptotic completeness).
+  Check: explicitly mark as open/conditional and provide falsifiability hooks.
+  Impact: strong-closure claims must not be asserted.
+  Fallback: revert to proxy-level/audit-level statements.
+\end{itemize}
+
+\paragraph{Ward/BRST (Appendix~\ref{app:ward_brst_consistency} and EG strong-closure appendices).}
+\begin{itemize}
+\item \textbf{(WBR1) Regularization/scheme breaking.}
+  Trigger: a regulator or renormalization choice violates BRST.
+  Check: restoration by admissible counterterms to the declared order.
+  Impact: ST identities fail unless restored; gauge invariance is not theorem-usable.
+  Fallback: treat BRST as interface assumption; track resulting error terms.
+\item \textbf{(WBR2) Gauge anomaly.}
+  Trigger: anomaly coefficients nonzero (Appendix~\ref{app:anomaly_theorem_filters}).
+  Check: anomaly filters and cohomology obstruction test.
+  Impact: ST cannot be restored by local counterterms.
+  Fallback: modify field registry/scope; otherwise no strong-closure gauge claim.
+\item \textbf{(WBR3) Truncation mismatch.}
+  Trigger: enforcing identities only up to $D_{\max}$ leaves higher-order breaking.
+  Check: encode remainder as explicit truncation budget term.
+  Impact: Ward/BRST holds only up to the stated order.
+  Fallback: enlarge truncation or weaken the claimed identity scope.
+\end{itemize}
+
