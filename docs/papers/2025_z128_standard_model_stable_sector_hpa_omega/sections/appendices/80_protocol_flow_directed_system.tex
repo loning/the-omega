@@ -1,0 +1,129 @@
+\section{Protocol flow as a directed system (resolution uplift and coarse graining)}
+\label{app:protocol_flow_directed_system}
+
+This appendix upgrades the narrative notion of ``dynamic resolution'' into a compact mathematical object.
+The goal is to make the composability of resolution updates explicit, without importing any new physical inputs.
+We work in the tick\,+\,CAP discipline: the finite objects are primary, and any continuum/QFT language is used only as an interface dictionary.
+
+\subsection{Resolution parameters and refinement maps}
+
+\paragraph{Resolution index set.}
+Let $\mathcal{I}\subseteq \NN\times \NN$ be the set of admissible protocol resolutions $(m,n)$ used by the manuscript:
+$m$ is the window length (finite readout resolution) and $n$ is the Hilbert addressing order (spatial readout scale).
+In many audited constructions the paper restricts to a chosen subfamily (e.g.\ a balanced chain), but this appendix keeps the index set abstract.
+
+\paragraph{Window refinement by prefix projection.}
+For integers $m'\ge m$, the paper already fixes a deterministic truncation map on stable words (prefix projection)
+\[
+\pi_{m'\to m}:X_{m'}\to X_m,
+\qquad
+\pi_{m'\to m}(w_1\cdots w_{m'}) := w_1\cdots w_m,
+\]
+specialized to $m=6$ in Appendix~\ref{app:functorial_refinement}.
+The key structural point is that these maps form a directed inverse system.
+
+\begin{lemma}[Functoriality of prefix projections]\label{lem:prefix_projection_functoriality}
+\MathTag For all integers $m''\ge m'\ge m\ge 1$ one has
+\[
+\pi_{m''\to m}=\pi_{m'\to m}\circ \pi_{m''\to m'}.
+\]
+\end{lemma}
+\begin{proof}
+Both sides drop the last $m''-m$ bits of a length-$m''$ word, hence agree.
+\end{proof}
+
+\paragraph{Resolution preorder.}
+Define a preorder on $\mathcal{I}$ by declaring
+$(m,n)\preceq (m',n')$ if $m\le m'$ and $n\le n'$.
+This preorder captures the intended refinement direction: larger parameters correspond to finer readout resolution and/or finer spatial addressing.
+
+\subsection{Observable families and refinement transport}
+
+The paper uses multiple finite observable families at each resolution: stable-type counts, degeneracy histograms, holonomy distributions, coarse-grained scalar summaries, and derived effective parameters (Definition~\ref{def:protocol_flow_step}).
+To avoid over-specifying, we record a minimal abstract package that covers all such examples.
+
+\begin{definition}[Finite observable space at resolution]\label{def:protocol_observable_space}
+\MathTag Fix $(m,n)\in\mathcal{I}$.
+Let $\mathcal{O}_{m,n}$ denote a chosen real vector space of protocol observables at resolution $(m,n)$.
+Concretely, elements of $\mathcal{O}_{m,n}$ are functions of the finite readout data at $(m,n)$ (for example, functions on $X_m$, or functions of spatially indexed $X_m$-labels on a Hilbert-addressed grid at order $n$).
+\end{definition}
+
+\begin{definition}[Refinement pullback along window uplift]\label{def:window_uplift_pullback}
+\MathTag For $m'\ge m$ and fixed $n$, define the pullback operator
+\[
+\pi_{m'\to m}^\ast:\ \mathcal{O}_{m,n}\to \mathcal{O}_{m',n}
+\]
+whenever the observable family is compatible with prefix projection, by the rule
+\[
+(\pi_{m'\to m}^\ast q)(\text{data at }(m',n)) := q(\text{data at }(m,n)\ \text{obtained by applying }\pi_{m'\to m}\text{ pointwise}).
+\]
+In words: an observable at window length $m$ is evaluated on an $m'$-resolution configuration by first truncating each local stable label to its length-$m$ prefix.
+\end{definition}
+
+\begin{lemma}[Pullback functoriality]\label{lem:window_pullback_functoriality}
+\MathTag If $(\pi_{m'\to m}^\ast)$ is defined on a compatible observable family, then for all $m''\ge m'\ge m$ one has
+\[
+\pi_{m''\to m}^\ast=\pi_{m''\to m'}^\ast\circ \pi_{m'\to m}^\ast.
+\]
+\end{lemma}
+\begin{proof}
+This is immediate from Lemma~\ref{lem:prefix_projection_functoriality} and the definition of pullback.
+\end{proof}
+
+\subsection{Coarse graining as a morphism family}
+
+Spatial coarse graining is treated in the manuscript as a declared deterministic map $\mathsf{C}$ (block averaging, kernel readout, etc.; Definition~\ref{def:protocol_flow_step} and Section~\ref{sec:kernel_view}).
+For theorem-level bookkeeping, it is useful to record the minimal algebraic structure needed for composable multi-step flows.
+
+\begin{definition}[Coarse-graining operators]\label{def:coarse_graining_operators}
+\MathTag For each comparable pair $(m,n)\preceq(m',n')$ in $\mathcal{I}$, let
+\[
+\mathsf{C}_{(m',n')\to(m,n)}:\ \mathcal{O}_{m',n'}\to \mathcal{O}_{m,n}
+\]
+be a deterministic coarse-graining operator (for example: block averaging from a Hilbert grid of order $n'$ to order $n$, optionally together with histogramming or other fixed summarization rules).
+\end{definition}
+
+\begin{assumption}[Composable coarse graining]\label{ass:coarse_graining_composable}
+\AuditTag For all $(m,n)\preceq(m',n')\preceq(m'',n'')$ in $\mathcal{I}$, assume
+\[
+\mathsf{C}_{(m'',n'')\to(m,n)}=
+\mathsf{C}_{(m',n')\to(m,n)}\circ \mathsf{C}_{(m'',n'')\to(m',n')}.
+\]
+This is a consistency requirement on the declared coarse-graining rules.
+When a bounded counterfactual family of coarse-graining choices is audited, this assumption is checked within the declared family rather than imposed globally.
+\end{assumption}
+
+\subsection{The directed-system view of protocol flow}
+
+\paragraph{Two complementary viewpoints.}
+There are two equivalent ways to package the protocol flow algebraically:
+\begin{itemize}
+\item \textbf{(V1) Refinement as an inverse system.}
+The prefix maps $\pi_{m'\to m}$ define an inverse system of finite objects in $m$, and observables transport contravariantly by pullback $\pi^\ast$.
+\item \textbf{(V2) Flow step as an endomorphism generator.}
+Given a chosen coarse-graining rule $\mathsf{C}$, a single protocol step can be written as
+\[
+\mathcal{R}_{(m,n)\to(m',n')}:=
+\mathsf{C}_{(m',n')\to(m',n')}\circ \pi_{m'\to m}^\ast,
+\]
+matching the kernel-view notation in Section~\ref{sec:kernel_view} (where $\mathcal{R}$ is introduced as a bookkeeping symbol for an iterable step operator).
+\end{itemize}
+
+\begin{proposition}[Protocol flow as a directed system of observable spaces]\label{prop:protocol_flow_directed_system}
+\MathTag Fix an admissible index set $\mathcal{I}$ and a compatible observable family $\{\mathcal{O}_{m,n}\}_{(m,n)\in\mathcal{I}}$.
+Assume window-uplift pullbacks $\pi_{m'\to m}^\ast$ are defined and functorial (Lemma~\ref{lem:window_pullback_functoriality}), and assume coarse-graining operators $\mathsf{C}$ are composable (Assumption~\ref{ass:coarse_graining_composable}).
+Then the collection $\{\mathcal{O}_{m,n}\}$ together with the morphisms generated by $\pi^\ast$ and $\mathsf{C}$ forms a directed system in the sense that multi-step protocol flows can be composed unambiguously and reduced to a single morphism between endpoints.
+\end{proposition}
+\begin{proof}
+Functoriality of $\pi^\ast$ gives unambiguous composition along window-uplift chains.
+Composable coarse graining gives unambiguous composition along addressing/coarse-graining chains.
+Combining the two yields an unambiguous composite for any finite zig-zag that refines by pullback and then summarizes by coarse graining, provided the intermediate objects lie in $\mathcal{I}$.
+\end{proof}
+
+\paragraph{Audit-facing failure points.}
+\AuditTag The theorem-level content above is deliberately minimal: it only records that, once one declares (i) a refinement transport rule and (ii) a composable coarse-graining rule, then multi-step resolution updates are mathematically well-posed.
+Failure modes are therefore explicit and checkable:
+(a) an observable family may be incompatible with pointwise prefix truncation (so $\pi^\ast$ is undefined),
+or (b) a coarse-graining family may fail the composability check, in which case the flow depends on the chosen intermediate staging.
+In both cases the remedy is to (re)declare the observable family and coarse-graining operators as part of the audited protocol pack, and to record bounded sensitivity within that declared family.
+

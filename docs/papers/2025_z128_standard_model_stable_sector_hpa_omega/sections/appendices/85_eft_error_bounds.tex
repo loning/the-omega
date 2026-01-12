@@ -1,0 +1,143 @@
+\section{Theoremized error budget for finite-order EFT observables}
+\label{app:eft_error_bounds}
+
+This appendix records an auditable, theorem-facing error bound of the form
+$
+|\langle\mathcal{O}\rangle_{\mathrm{prot}}-\langle\mathcal{O}\rangle_{\mathrm{EFT}\le N}|
+\le \epsilon_N(m,n)
+$
+for a declared finite registry of observables at finite protocol resolution.
+The purpose is not to claim a universal QFT construction, but to keep every source of mismatch explicit:
+sampling/concentration, protocol bias, discretization/derivative amplification, EFT truncation, and scheme/matching conventions.
+
+\subsection{A finite observable registry and the definition of $\epsilon_N(m,n)$}
+
+\begin{definition}[Finite observable registry]\label{def:obs_registry_finite}
+\AuditTag Fix an integer $N\ge 1$.
+Let $\mathfrak{Obs}_{\le N}$ be a \emph{finite} registry of observables to be compared between the protocol pipeline and the EFT representative.
+Each element $\mathcal{O}\in\mathfrak{Obs}_{\le N}$ must come with:
+\begin{itemize}
+\item a precise evaluation rule on protocol outputs (which estimators are used; which discretizations/coarse graining are applied),
+\item a precise evaluation rule in the EFT representative at order $N$ (which truncation order $D_{\max}$, which renormalization scheme/scale, and which matching dictionaries are used),
+\item a declared norm/metric in which error is measured (e.g.\ absolute error of a scalar statistic).
+\end{itemize}
+Write $M_N:=|\mathfrak{Obs}_{\le N}|$ for the registry size.
+\end{definition}
+
+\begin{definition}[High-probability error bound]\label{def:epsilon_N_mn}
+\MathTag Fix $(m,n)$ and confidence level $\delta\in(0,1)$.
+An \emph{auditable error bound} $\epsilon_N(m,n;\delta)$ is any deterministic quantity such that
+for every $\mathcal{O}\in\mathfrak{Obs}_{\le N}$,
+\[
+\mathbb{P}\!\left(\left|\widehat{\mathcal{O}}_{m,n}-\mathcal{O}_{\mathrm{EFT}\le N}\right|
+\le \epsilon_N(m,n;\delta)\right)\ge 1-\delta,
+\]
+where $\widehat{\mathcal{O}}_{m,n}$ is the protocol-side estimator computed from finite data at resolution $(m,n)$, and $\mathcal{O}_{\mathrm{EFT}\le N}$ is the corresponding EFT-side target value under the declared truncation and matching conventions.
+\end{definition}
+
+\subsection{A minimal decomposition: five explicit sources of mismatch}
+
+\paragraph{Protocol-to-continuum bridge.}
+Appendix~\ref{app:protocol_to_continuum_error_control} already provides a self-contained decomposition and explicit bounds for the reconstructed overhead proxy field $\widehat\chi$ and its derivative-dependent descendants.
+We reuse those bounds as building blocks inside $\epsilon_N$.
+
+\begin{definition}[Error components]\label{def:epsilon_components}
+\AuditTag Fix $\mathcal{O}\in\mathfrak{Obs}_{\le N}$.
+We decompose the total mismatch into five components:
+\begin{align*}
+E_{\mathrm{stat}}(\mathcal{O}) &:\ \text{finite-sample statistical error (concentration)},\\
+E_{\mathrm{bias}}(\mathcal{O}) &:\ \text{protocol bias (thresholding/modeling choices)},\\
+E_{\mathrm{disc}}(\mathcal{O}) &:\ \text{discretization and derivative amplification (grid/finite differences)},\\
+E_{\mathrm{trunc}}(\mathcal{O}) &:\ \text{EFT truncation remainder (finite order)},\\
+E_{\mathrm{match}}(\mathcal{O}) &:\ \text{matching/scheme conventions (scale and renormalization)}.
+\end{align*}
+\end{definition}
+
+\subsection{A theorem-level error-budget template}
+
+\begin{assumption}[Lipschitz observable dependence on reconstructed fields]\label{ass:obs_lipschitz}
+\AuditTag For each $\mathcal{O}\in\mathfrak{Obs}_{\le N}$, assume there exists a deterministic constant $L_{\mathcal{O}}\ge 0$ such that
+the observable estimator depends on the reconstructed fields only through a finite list of grid-evaluated quantities
+(e.g.\ $\widehat\chi_h$, $D_h\widehat\chi$, $\Delta_h\widehat\chi$, holonomy summaries, etc.)
+and is Lipschitz in those inputs with respect to the sup norm on the involved stencils.
+The constant $L_{\mathcal{O}}$ is part of the registry specification.
+\end{assumption}
+
+\begin{theorem}[Auditable bound $\epsilon_N(m,n)$ from explicit components]\label{thm:epsilon_N_error_budget}
+\MathTag Fix $(m,n)$, $N$, and a confidence level $\delta\in(0,1)$.
+Assume Definition~\ref{def:obs_registry_finite} and Assumption~\ref{ass:obs_lipschitz}.
+Then an admissible choice of $\epsilon_N(m,n;\delta)$ in Definition~\ref{def:epsilon_N_mn} is
+\[
+\epsilon_N(m,n;\delta)
+:=
+\max_{\mathcal{O}\in\mathfrak{Obs}_{\le N}}
+\Bigl(
+E_{\mathrm{stat}}(\mathcal{O};\delta/M_N)
+ +E_{\mathrm{bias}}(\mathcal{O})
+ +E_{\mathrm{disc}}(\mathcal{O})
+ +E_{\mathrm{trunc}}(\mathcal{O})
+ +E_{\mathrm{match}}(\mathcal{O})
+\Bigr),
+\]
+where the confidence split $\delta/M_N$ is a union-bound allocation over the finite registry.
+\end{theorem}
+\begin{proof}
+For a fixed observable, the triangle inequality yields
+$
+|\widehat{\mathcal{O}}_{m,n}-\mathcal{O}_{\mathrm{EFT}\le N}|
+\le
+\sum_{k\in\{\mathrm{stat,bias,disc,trunc,match}\}} E_k(\mathcal{O}).
+$
+Since the registry is finite, applying the union bound with per-observable failure probability $\delta/M_N$ yields the stated $1-\delta$ confidence.
+\end{proof}
+
+\subsection{Concrete reusable bounds from the protocol-to-continuum module}
+
+\paragraph{Statistical component.}
+For observables that depend on the reconstructed $\widehat\chi$ field through folding statistics, the concentration bound of Theorem~\ref{thm:gm_concentration} and the log-ratio propagation bound of Corollary~\ref{cor:chi_error_bar} provide a canonical high-probability term:
+for each local statistic with effective sample size $K_{\mathrm{eff}}$, one may take
+\[
+E_{\mathrm{stat}}(\chi;\delta)
+\;\;\text{from}\;\;
+\text{Theorem~\ref{thm:gm_concentration} and Corollary~\ref{cor:chi_error_bar}}.
+\]
+The mapping from a $\widehat\chi$ error bar to an observable error bar is then controlled by $L_{\mathcal{O}}$ (Assumption~\ref{ass:obs_lipschitz}).
+
+\paragraph{Discretization and derivative amplification.}
+Whenever an observable uses derivatives of $\widehat\chi_h$, the finite-difference bounds in Appendix~\ref{app:protocol_to_continuum_error_control} provide explicit terms:
+\begin{itemize}
+\item Laplacian truncation: Theorem~\ref{thm:laplacian_truncation} gives $O(h^2)$ bias;
+\item Laplacian noise amplification: Corollary~\ref{cor:laplacian_noise_amplification} gives an explicit $(4d/h^2)\epsilon$ amplification;
+\item First-derivative tradeoff: Proposition~\ref{prop:derivative_error_tradeoff} gives $O(h^2)+O(\epsilon/h)$.
+\end{itemize}
+These bounds directly instantiate $E_{\mathrm{disc}}(\mathcal{O})$ once the registry fixes the grid spacing $h$ and the noise level $\epsilon_\chi$ for $\widehat\chi_h$.
+
+\subsection{EFT truncation and matching components (scoped)}
+
+\paragraph{Truncation remainder.}
+\AuditTag The truncation component $E_{\mathrm{trunc}}$ depends on the chosen EFT truncation order (Definition~\ref{def:eft_truncation_order}) and on a declared suppression scale $\Lambda$ in the EFT power counting.
+Since the manuscript does not claim nonperturbative control, $E_{\mathrm{trunc}}$ must be recorded as an explicit registry input:
+either by restricting $\mathfrak{Obs}_{\le N}$ to observables insensitive to higher-dimension operators beyond $D_{\max}$ at the quoted accuracy,
+or by declaring an explicit remainder model (e.g.\ $O(\Lambda^{-(D_{\max}-4)})$) consistent with the truncation scope.
+This matches the truncation failure point (WBR3) recorded in Appendix~\ref{app:ward_brst_consistency}.
+
+\paragraph{Matching/scheme dependence.}
+\MatchTag The matching component $E_{\mathrm{match}}$ collects scheme and threshold conventions (Appendix~\ref{app:renormalization_dictionary_and_boundaries}).
+It is a controlled term only once the registry declares:
+(i) the renormalization scheme (e.g.\ $\overline{\mathrm{MS}}$ vs.\ on-shell),
+(ii) the scale(s) at which parameters are quoted,
+and (iii) the threshold/decoupling conventions.
+If a bounded counterfactual family of conventions is audited, then $E_{\mathrm{match}}$ is reported as an envelope over that finite family.
+
+\subsection{Audit-facing minimal failure points}
+
+\AuditTag The theoremization in this appendix is intentionally ``format-level'': it produces a clean, auditable decomposition and points to reusable hard bounds already proved in Appendix~\ref{app:protocol_to_continuum_error_control}.
+It can fail only if the registry is underspecified.
+Minimal failure points are:
+\begin{itemize}
+\item \textbf{(E1) Non-finite registry.} If $\mathfrak{Obs}_{\le N}$ is not finite or not explicitly declared, the union-bound quantification is ill-posed.
+\item \textbf{(E2) Missing estimator semantics.} If the protocol-side estimator (smoothing, differencing, subsampling) is not declared, $E_{\mathrm{stat}}/E_{\mathrm{disc}}$ cannot be audited.
+\item \textbf{(E3) Missing truncation scope.} If $D_{\max}$ and the remainder model are not declared, $E_{\mathrm{trunc}}$ cannot be bounded.
+\item \textbf{(E4) Missing scheme scope.} If scheme/threshold conventions are not declared (or not bounded into a finite family), $E_{\mathrm{match}}$ cannot be bounded.
+\end{itemize}
+
