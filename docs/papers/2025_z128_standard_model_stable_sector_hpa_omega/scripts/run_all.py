@@ -960,6 +960,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="BH5 Page surrogate record-noise ECC CAP selection (minimal r*; finite family)",
+            script="exp_bh_page_surrogate_record_noise_ecc_cap_select.py",
+            expected_outputs=[
+                "sections/generated/bh_page_record_noise_ecc_cap_select_rows.tex",
+                "sections/generated/bh_page_record_noise_ecc_cap_select_summary.tex",
+            ],
+        ),
+        Step(
             name="BH absorption-mode sweep (audit; legal absorption subalphabet)",
             script="exp_bh_absorption_mode_sweep.py",
             expected_outputs=[
