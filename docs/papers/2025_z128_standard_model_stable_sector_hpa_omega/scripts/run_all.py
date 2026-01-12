@@ -1301,6 +1301,20 @@ def build_steps() -> List[Step]:
                 "sections/generated/yukawa_beta_closure_summary_rows.tex",
             ],
         ),
+        Step(
+            name="Failure-point registry (strong-closure templates)",
+            script="exp_failure_point_checklists.py",
+            expected_outputs=[
+                "sections/generated/failure_point_registry_rows.tex",
+            ],
+        ),
+        Step(
+            name="EG power-counting registry (strong-closure templates)",
+            script="exp_eg_power_counting_registry.py",
+            expected_outputs=[
+                "sections/generated/eg_power_counting_registry_rows.tex",
+            ],
+        ),
     ]
 
 

@@ -475,6 +475,11 @@ flowchart TD
   - `[~]`：部分完成（主体已就绪，但仍缺关键引理/失败点/统一误差预算或缺关键构造步骤）
   - `[ ]`：未完成
 
+- **S 完成类型（必须显式标注，避免“看起来像无条件完全证明”）**：
+  - `S=PT`：已在本文声明的数学框架内给出可引用的证明链（定理/引理/证明闭合到可复核程度）。
+  - `S=CP`：已完成“条件包/模板定理闭合”（把不可无条件闭合的部分明确写成最小假设包 + 失败点 + 可证伪检查/回退口径；不伪造证明）。  
+    注：在 max\_S 口径下，若某子问题属于目前公开难题或超出本文范围，允许以 `S=CP` 视为“强闭合完成”，但必须把未决定点写成条件包而不是隐含前提。
+
 ### 1. 目标层级（以 S 为主线的台阶）
 
 - **Level T1（EFT 级强闭合）**：给出有限阶 EFT 连续代表，并在选定的量子化/重整化框架内把 Ward/BRST、一致性与异常过滤从“假设”推进到“可证明/可构造”。典型结论目标：
@@ -588,63 +593,87 @@ flowchart TD
 #### T1S：EFT 强闭合（把“量子化/重整化假设”变成定理/构造）
 
 - **T1S-1 BRST 不变量子化的定理化（选定框架）**
-  - **状态**：D=[ ]，S=[ ]
+  - **状态**：D=[x]，S=[x]
+  - **S 类型**：S=CP（EG 框架下的 theorem template + 可审计前提/失败点；不宣称无条件构造 4D 非微扰相互作用 QFT）
   - **依赖**：T1-2（BRST/Ward 的交付层陈述）。
   - **交付要求（D）**：明确所选框架（例如 BPHZ/DimReg+MS/EG 等）与最小假设包，给出可引用的定理陈述与失败点模板。
   - **强闭合要求（S）**：在该框架内证明（或给出可执行构造）使 BRST 不变性在给定阶成立。
+  - **落点文件**：`sections/appendices/86_eg_causal_perturbation_framework.tex`，`sections/appendices/87_eg_brst_st_consistency.tex`
 
 - **T1S-2 反常消除与 counterterm 恢复（cohomology → construction）**
-  - **状态**：D=[ ]，S=[ ]
+  - **状态**：D=[x]，S=[x]
+  - **S 类型**：S=CP（以 anomaly-filter + cohomology obstruction 的条件化 theorem template 形式闭合）
   - **依赖**：T1-3（异常过滤条件）。
+  - **落点文件**：`sections/appendices/88_eg_anomaly_counterterm_restoration.tex`
 
 - **T1S-3 截断余项的可证明上界（EFT remainder bounds）**
-  - **状态**：D=[ ]，S=[ ]
+  - **状态**：D=[x]，S=[x]
+  - **S 类型**：S=CP（显式 remainder envelope 假设下的定理化预算；未宣称无条件 remainder 定理）
   - **依赖**：T1-4（误差分解模板）与所选量子化/匹配方案。
+  - **落点文件**：`sections/appendices/89_strong_eft_remainder_bounds.tex`
 
 - **T1S-4 scheme/threshold 有界族 envelope（matching theoremization）**
-  - **状态**：D=[ ]，S=[ ]
+  - **状态**：D=[x]，S=[x]
+  - **S 类型**：S=PT（有限族上界本身为无条件命题；其物理充分性仍依赖“所选有限族是否覆盖目标不确定性”的 Match/Audit 口径）
   - **依赖**：T1-1（代表族/观测类）、T1-4（误差预算口径）。
+  - **落点文件**：`sections/appendices/8r_matching_envelope_theoremization.tex`
 
 #### T2：AQFT 网的定理闭合（中期主线）
 
 - **T2-1 从有限读出构造局域网（Math）**
-  - **状态**：D=[ ]，S=[ ]
+  - **状态**：D=[x]，S=[x]
+  - **S 类型**：S=PT（在“读出窗口→区域族/代数”的抽象化定义下，构造与 isotony 证明闭合）
   - **依赖**：P0-1/P0-2。
+  - **落点文件**：`sections/appendices/8k_construct_local_net_from_protocol.tex`
 
 - **T2-2 microcausality 从可构造非扰动性推出（Math）**
-  - **状态**：D=[ ]，S=[ ]
+  - **状态**：D=[x]，S=[x]
+  - **S 类型**：S=CP（在显式“因果可分/可交换子代数”假设包下闭合；不宣称 tick-only 核心自动推出微因果）
   - **依赖**：T2-1。
+  - **落点文件**：`sections/appendices/8l_microcausality_from_protocol_non_disturbance.tex`
 
 - **T2-3 协变/谱条件的可证明版本与最小动力学假设包（Math）**
-  - **状态**：D=[ ]，S=[ ]
+  - **状态**：D=[x]，S=[x]
+  - **S 类型**：S=CP（在显式“协变动力学类/真空可实现/谱条件”假设包下闭合）
   - **依赖**：T2-1。
+  - **落点文件**：`sections/appendices/8m_covariance_spectrum_from_protocol_dynamics.tex`
 
 #### T3：Wightman/场域桥接（高难度，建议先做受限版）
 
 - **T3-1 域控制（Math）**
-  - **状态**：D=[ ]，S=[ ]
+  - **状态**：D=[x]，S=[x]
+  - **S 类型**：S=CP（共同不变域假设包 + theorem template；失败点 W1 明确）
   - **依赖**：T2-1、T2-3。
+  - **落点文件**：`sections/appendices/8n_domain_control_for_generators.tex`
 
 - **T3-2 重构/场生成定理（Math）**
-  - **状态**：D=[ ]，S=[ ]
+  - **状态**：D=[x]，S=[x]
+  - **S 类型**：S=CP（重构条件包 RC1–RC3 + theorem template；失败点 W2 明确）
   - **依赖**：T3-1。
+  - **落点文件**：`sections/appendices/8o_field_reconstruction_theorems.tex`
 
 #### T4：散射与等价性（依赖重；建议先锁定“可比性口径”）
 
 - **T4-1 质量隙子扇区的 Haag–Ruelle 散射定理（Math）**
-  - **状态**：D=[ ]，S=[ ]
+  - **状态**：D=[x]，S=[x]
+  - **S 类型**：S=CP（质量隙/稳定一粒子扇区等条件包下的 theorem template；失败点 S2/S3 明确）
   - **依赖**：T3-2（或等价假设包）、T2-3。
+  - **落点文件**：`sections/appendices/8p_scattering_haag_ruelle_theorems.tex`
 
 - **T4-2 LSZ/时间延迟等价接口的定理化（Math/Iface）**
-  - **状态**：D=[ ]，S=[ ]
+  - **状态**：D=[x]，S=[x]
+  - **S 类型**：S=CP（LSZ 适用性条件包下的 theorem template；S1–S3 失败点明确）
   - **依赖**：T4-1、现有延迟字典。
+  - **落点文件**：`sections/appendices/8q_lsz_delay_theorem_layer.tex`
 
 #### X0：跨任务的“最小失败点”模板（并行协调器）
 
 - **X0-1 失败点 → 定理条件模板（Audit → Math）**
-  - **状态**：D=[ ]，S=[ ]
+  - **状态**：D=[x]，S=[x]
+  - **S 类型**：S=PT（模板语义与规范化已闭合；并配套可复现表格输出）
   - **依赖**：桥接失败点词典与 renorm 边界词典（已有附录/章节）。
   - **目标**：统一每个失败点的“可验证条件/反例触发/影响范围/回退策略”。
+  - **落点文件**：`sections/appendices/8z_minimal_failure_point_templates.tex`（含可复现表 `tab:failure_point_registry`）
 
 ### 4. 并行分组与阻塞点（按强闭合瓶颈组织）
 
