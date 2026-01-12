@@ -75,9 +75,9 @@ def main() -> None:
 
     summary = [
         r"\paragraph{Capacity-calibrated queue parameters for known black holes (audit).} \AuditTag "
-        r"This fragment combines the matching-layer CAP calibration $M\mapsto(m^\*(M),n^\*(M))$ "
+        r"This fragment combines the matching-layer CAP calibration $M\mapsto(m^\ast(M),n^\ast(M))$ "
         r"(Appendix~\ref{app:bh_planck_capacity_calibration}) with the protocol queue model at the selected "
-        r"window length $m^\*(M)$. The addressing scale $n^\*(M)$ is reported as a capacity/screen indicator "
+        r"window length $m^\ast(M)$. The addressing scale $n^\ast(M)$ is reported as a capacity/screen indicator "
         r"but is not simulated explicitly here. The queue model is evaluated under the BH-like absorption mode "
         r"\texttt{cyclic\_only}.",
     ]
