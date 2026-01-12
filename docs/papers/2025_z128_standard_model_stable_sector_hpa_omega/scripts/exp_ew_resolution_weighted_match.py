@@ -186,6 +186,16 @@ def main() -> None:
         f"Best joint:   m={best_joint.m} e_sum={(best_joint.e_alpha + best_joint.e_sin2):.6e} "
         f"W_Y_eff={best_joint.w_y_eff:.6f}"
     )
+    print(
+        "[protocol_state] Electroweak resolution-weighted match: "
+        "for each m in {6,8,10,12,14,16} use the microstate-pushforward kernel on X_m "
+        "induced by uniform sampling on Omega_m, push forward to X_6 by pi_{m->6}, "
+        "and compute W_Y^eff and the implied alpha^{-1}(mu_Z), sin^2(theta_W)."
+    )
+    print(
+        "[protocol_state] Note: the joint protocol-state selector J_{mu_Z} is reported via the "
+        "finite kernel-family sweep table (tempered family); this script is the microstate-pushforward baseline."
+    )
 
 
 if __name__ == "__main__":

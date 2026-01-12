@@ -23,6 +23,7 @@ import numpy as np
 
 import exp_gamma_kernel_family_sweep as gks
 import exp_gamma_cross_observation as gx
+import protocol_state_selection as psel
 from common_paths import generated_dir, paper_root
 from common_progress import ProgressEvery
 from common_tex import write_lines
@@ -56,7 +57,12 @@ def main() -> int:
     out_gen = generated_dir()
     out_gen.mkdir(parents=True, exist_ok=True)
 
-    m_word = 6
+    # Align m to the joint protocol-state selection used for the direct gamma/chi pipeline when available.
+    try:
+        sel = psel.load_selected_state("gamma_direct")
+        m_word = int(sel.m)
+    except Exception:
+        m_word = 6
     thr_rule = "median"
     base_rule = "mean"
 
@@ -141,6 +147,12 @@ def main() -> int:
         )
     tex_rows.append(r"\bottomrule")
     write_lines(out_gen / "chi_kernel_family_sweep_rows.tex", tex_rows)
+    print(
+        "[protocol_state] Chi kernel-family sweep: "
+        "scan a finite tempered degeneracy-kernel family K_t inside the window-level chi aggregator "
+        "(t in a fixed rational grid) on the vendored SPARC subset; "
+        "report simple summary-statistic sensitivity (mean std, mean |chi|)."
+    )
 
     return 0
 

@@ -234,7 +234,31 @@ def main() -> None:
     )
     args = p.parse_args()
 
-    res = best_fit_m(omega_vis0=float(args.omega_vis0), m_min=int(args.m_min), m_max=int(args.m_max))
+    # Joint protocol-state selection (theory-first) may override the default mismatch minimizer.
+    # We keep CLI flags as the ultimate authority for reproducibility overrides.
+    m_star_override: int | None = None
+    try:
+        import protocol_state_selection as psel
+
+        sel = psel.load_selected_state("cosmo_z0")
+        m_star_override = int(sel.m)
+    except Exception:
+        m_star_override = None
+
+    if m_star_override is not None and int(args.m_min) <= int(m_star_override) <= int(args.m_max):
+        num, den, v = f_stab(int(m_star_override))
+        f_hid = 1.0 - v
+        ratio = f_hid / v
+        res = FitResult(
+            m_star=int(m_star_override),
+            num=int(num),
+            den=int(den),
+            f_stab=float(v),
+            f_hid=float(f_hid),
+            ratio_hid_to_stab=float(ratio),
+        )
+    else:
+        res = best_fit_m(omega_vis0=float(args.omega_vis0), m_min=int(args.m_min), m_max=int(args.m_max))
     ms = stability_ms(
         omega_vis0=float(args.omega_vis0),
         omega_vis0_sigma=float(args.omega_vis0_sigma),
@@ -305,6 +329,13 @@ def main() -> None:
     print(f"[fit] log mismatch (pred/ref, hid/vis)={log_mismatch_hidden_over_vis:.12g}")
     print(f"[fit] ref Omega_DM/Omega_b={ratio_ref_dm_over_b:.12g}")
     print(f"[fit] log mismatch (pred/ref, dm/b)={log_mismatch_dm_over_b:.12g}")
+    print(
+        "[protocol_state] Cosmology energy-budget fit uses the deterministic stable fraction "
+        "f_stab(m)=|X_m|/2^m as an interface readout; any probabilistic interpretation is "
+        "conditional on a declared readout kernel K (baseline: microstate-pushforward on Omega_m)."
+    )
+    if m_star_override is not None:
+        print(f"[protocol_state] Using selected m* from protocol_state_selection: m*={m_star_override}")
 
     points: List[Tuple[int, float]] = []
     for m in range(int(args.m_min), int(args.m_max) + 1):

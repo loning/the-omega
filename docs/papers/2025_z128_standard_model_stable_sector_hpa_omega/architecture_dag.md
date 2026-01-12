@@ -126,6 +126,46 @@ flowchart TB
   class P_morita,P_gauss,P_select phys_audit;
 ```
 
+### 图 1.5：联合协议态（m,n,K）闭合与可复现工件链（run_all → generated → LaTeX） / Fig. 1.5: Joint Protocol-State Closure and Reproducible Artifacts (run_all → generated → LaTeX)
+
+```mermaid
+%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 12, "rankSpacing": 55}, "themeVariables": {"fontSize": "10px"}}}%%
+flowchart TB
+
+  M_joint["联合协议态闭合（m,n,K）<br/>类型：审计 / Audit<br/>label: subsec:tick_cap_joint_key_contract<br/>J_mu 选择 (m*,n*,K*) 于有限候选族"] 
+
+  M_runall["run_all（复现入口）<br/>类型：审计 / Audit<br/>path: scripts/run_all.py<br/>固定步骤序列 + 确定性输出"] 
+
+  M_selector["协议态选择器（一次性闭合）<br/>类型：审计 / Audit<br/>path: scripts/protocol_state_selection.py<br/>输出：protocol_state_selected.{json,tex}"] 
+
+  M_state_io@{ shape: lean-r, label: "生成工件：protocol_state_selected<br/>类型：审计 / Audit<br/>paths: sections/generated/protocol_state_selected.json + .tex" }
+
+  M_downstream["下游统一读取选中态（接口/审计脚本）<br/>类型：审计 / Audit<br/>示例：EW family sweep / cosmology / gamma direct / coupling unification"] 
+
+  M_registry["协议态注册表（审计索引）<br/>类型：审计 / Audit<br/>path: scripts/exp_protocol_state_registry.py<br/>输出：protocol_state_registry.tex"] 
+
+  M_tex_includes["论文包含生成片段<br/>类型：审计 / Audit<br/>label: app:generated_tables + app:reproducibility<br/>sections/generated/*.tex 由脚本产出"] 
+
+  M_pdf@{ shape: lean-r, label: "输出：main.pdf<br/>类型：审计 / Audit<br/>path: main.tex -> latexmk" }
+
+  %% edges
+  M_joint --> M_selector
+  M_runall --> M_selector
+  M_selector --> M_state_io
+  M_state_io --> M_downstream
+  M_runall --> M_downstream
+  M_state_io --> M_registry
+  M_registry --> M_tex_includes
+  M_downstream --> M_tex_includes
+  M_tex_includes --> M_pdf
+
+  %% style (Material Design palettes)
+  classDef math_audit fill:#E3F2FD,stroke:#0D47A1,color:#0D47A1,stroke-width:2px,stroke-dasharray: 2 2;
+  classDef phys_audit fill:#F1F8E9,stroke:#33691E,color:#1B5E20,stroke-width:2px,stroke-dasharray: 2 2;
+
+  class M_joint,M_runall,M_selector,M_downstream,M_registry,M_tex_includes math_audit;
+```
+
 ### 图 2：三通道与折叠锚点（φ/π/ε → Fold → Anchor） / Fig. 2: Three Channels and Folding Anchor (φ/π/ε → Fold → Anchor)
 
 ```mermaid

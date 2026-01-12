@@ -577,7 +577,8 @@ def _write_outputs(
 
     summary_lines = [
         r"\noindent\AuditTag End-to-end curvature bridge demo: synthetic protocolized scalar input on a $2^n\times 2^n$ grid is ordered by Hilbert addressing, thresholded to window words at $m=6$, mapped to $g_6(N)$ via Fold$_6$, and reconstructed into $\widehat\chi(x)=\log(\bar g/g_0)$. "
-        r"We then form the weak-field curvature proxy $\widehat G_{00,h}:=-2\widehat\gamma\,\Delta_h\widehat\chi_h$ (Appendix~\ref{app:weak_field_curvature_from_chi}) and audit the Laplacian-stage error budget in the Appendix~\ref{app:protocol_to_continuum_error_control} form: truncation $C h^2$ plus noise amplification $(4d/h^2)\epsilon_\chi$ (with $d=2$).",
+        r"We then form the weak-field curvature proxy $\widehat G_{00,h}:=-2\widehat\gamma\,\Delta_h\widehat\chi_h$ (Appendix~\ref{app:weak_field_curvature_from_chi}) and audit the Laplacian-stage error budget in the Appendix~\ref{app:protocol_to_continuum_error_control} form: truncation $C h^2$ plus noise amplification $(4d/h^2)\epsilon_\chi$ (with $d=2$). "
+        r"\texttt{protocol\_state}: this demo uses the balanced Hilbert screen ($n$), window length $m=6$, and the implicit readout kernel induced by the deterministic reconstruction rule (uniform averaging in the window-level aggregator).",
     ]
     write_lines(out_summary, summary_lines)
 

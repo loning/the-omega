@@ -51,6 +51,7 @@
 ```mermaid
 flowchart TD
   A["Tick + 协议原语"] --> B["等价语义与不变性词典"]
+  B --> PS["协议态（m,n,K）与联合闭合（J_mu）"]
   B --> U["统一：轨道/规范/力（连接 + 响应）"]
   B --> C["CAP-闭合的连续代表作用量"]
   C --> D["变分场方程（Einstein/YM/chi）"]
@@ -82,6 +83,11 @@ flowchart TD
   B --> I["RG：分辨率坐标 r 的耦合流"]
   I --> J["宇宙学：分辨率流/容量增长/能量预算拟合"]
   I --> U3["统一分岔/反事实审计（benchmark registry）"]
+
+  %% protocol-state convention touches multiple interface modules
+  PS -.-> G
+  PS -.-> I
+  PS -.-> J
 ```
 
 说明：上图是**依赖关系**而非叙事顺序；叙事可从 `B`（等价语义+频率优先词典）开始，也可从 `A`（协议/读出）开始。
@@ -326,7 +332,7 @@ flowchart TD
 | uplift refinement 的算子核对（Ext/边界子集） | Ext$_m(u)$ 与末位/边界子集计数的 $2\times2$ 矩阵幂评估公式，与 $X_m$ 枚举核对（误差为 0） | Math/Audit/Prot | `app:protocol_hecke_operators`, `tab:ext_boundary_operator_check` | [x] |
 | folding 信息论分解证书 | 数值验证恒等式 $H(N|W)=\\log d_m + D(\\mu_m\\Vert u_m)$（diff≈0），并给出 KL 修正规模 | Math/Audit/Prot | `prop:folding_relative_entropy_decomposition`, `tab:folding_entropy_decomposition` | [x] |
 | weighted pressure / pole-barrier toy（审计） | $2\\times2$ weighted transfer-matrix 的谱半径/pressure sweep 与极点屏障阈值 toy，用于对齐 Abel-first 归一化语言 | Audit | `tab:weighted_pressure_sweep`, `tab:pole_barrier_mode_toy` | [x] |
-| 协议态（$m,n,K$；联合 CAP 主线） | 把“分辨率/寻址/读出加权”统一为协议态 $(m,n,K)$，并在显式有限候选族 $\mathcal{F}_\mu\subset\mathcal{M}\times\mathcal{N}\times\mathcal{K}$ 上用联合 key $J_\mu$ 一次性闭合 $(m^\*(\mu),n^\*(\mu),K^\*(\mu))$；并将既有的 holonomy anchor、resolution-first 阶梯与 capacity-first uplift 归并为该联合 key 的特例/约束极限 | Iface/CAP/Audit | `subsec:tick_cap_joint_protocol_state` | [x] |
+| 协议态（$m,n,K$；联合 CAP 主线） | 把“分辨率/寻址/读出加权”统一为协议态 $(m,n,K)$，并在显式有限候选族 $\mathcal{F}_\mu\subset\mathcal{M}\times\mathcal{N}\times\mathcal{K}$ 上用联合 key $J_\mu$ 一次性闭合 $(m^\ast(\mu),n^\ast(\mu),K^\ast(\mu))$；同时将选中态固化为可复现工件（`sections/generated/protocol_state_selected.json` 与 `sections/generated/protocol_state_selected.tex`，脚本 `scripts/protocol_state_selection.py`），并将既有的 holonomy anchor、resolution-first 阶梯与 capacity-first uplift 归并为该联合 key 的特例/约束极限 | Iface/CAP/Audit | `subsec:tick_cap_joint_key_contract`, `subsec:tick_cap_joint_protocol_state` | [x] |
 | 读出核家族闭合（kernel-family CAP closure） | 将“加权读出/期望/有效份额”所依赖的读出核 $K$ 明确为有限候选族并由 CAP 闭合；提供推前/细化一致性口径，并以电弱归一化为首个完整示例（分辨率推前 sweep + kernel-family sweep） | Iface/CAP/Audit/Prot | `app:kernel_family_cap_closure`, `tab:ew_kernel_resolution_weighted`, `tab:ew_kernel_family_anchor` | [x] |
 | 电弱归一化（kernel-closed；审计表） | 以 $W_Y(K)$ 的 kernel-dependent 有效超荷平方权重闭合 $\alpha^{-1}(\mu_Z)$ 与 $\sin^2\theta_W(\mu_Z)$；并提供分辨率推前与有限 kernel-family 的 mismatch/stability 表 | Iface/CAP/Match/Audit | `def:ew_volumes`, `tab:ew_kernel_resolution_weighted`, `tab:ew_kernel_family_anchor` | [x] |
 | Hilbert 手性指标（chirality index） | $\chi$ 的反射/反向翻转律（符号律） | Math/Audit/Prot | `prop:chi_flip` | [x] |

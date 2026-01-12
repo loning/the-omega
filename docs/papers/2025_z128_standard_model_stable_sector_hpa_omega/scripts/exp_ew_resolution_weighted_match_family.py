@@ -43,6 +43,7 @@ from common_paths import generated_dir
 
 import exp_sm_labeling_solver as sml
 import protocol_kernel as pk
+import protocol_state_selection as psel
 
 
 @dataclass(frozen=True)
@@ -161,6 +162,11 @@ def main() -> None:
         ),
     )
 
+    # Joint protocol-state selection (theory-first): read the selected (m,t) from protocol_state_selection.
+    sel = psel.load_selected_state("mu_Z")
+    sel_t = Fraction(str(sel.kernel.t))
+    sel_cand = next((x for x in cands if x.m == int(sel.m) and x.t == sel_t), None)
+
     # Emit a compact table: for each m, list all t in the fixed grid.
     lines: List[str] = []
     for m in m_list:
@@ -175,6 +181,11 @@ def main() -> None:
         rf"\multicolumn{{7}}{{l}}{{best (min $e_\alpha+e_{{\sin^2}}$): $m={best.m}$, $t={best.t}$, "
         rf"$W={best.W:.6f}$, $e_\alpha={best.e_alpha:.3e}$, $e_{{\sin^2}}={best.e_sin2:.3e}$}} \\"
     )
+    if sel_cand is not None:
+        lines.append(
+            rf"\multicolumn{{7}}{{l}}{{selected by joint key $J_{{\mu_Z}}$ (theory-first): $m={sel_cand.m}$, $t={sel_cand.t}$, "
+            rf"$W={sel_cand.W:.6f}$, $e_\alpha={sel_cand.e_alpha:.3e}$, $e_{{\sin^2}}={sel_cand.e_sin2:.3e}$}} \\"
+        )
     lines.append(r"\bottomrule")
 
     out_path = out_dir / "ew_resolution_weighted_match_family_rows.tex"
@@ -184,6 +195,17 @@ def main() -> None:
     print(
         f"Best (joint): m={best.m} t={best.t} W={best.W:.6f} "
         f"e_alpha={best.e_alpha:.6e} e_sin2={best.e_sin2:.6e}"
+    )
+    if sel_cand is not None:
+        print(
+            f"Selected by J_muZ: m={sel_cand.m} t={sel_cand.t} W={sel_cand.W:.6f} "
+            f"e_alpha={sel_cand.e_alpha:.6e} e_sin2={sel_cand.e_sin2:.6e}"
+        )
+    print(
+        "[protocol_state] Electroweak kernel-family sweep: "
+        "scan a finite tempered family K_t on X_m with t in a fixed rational grid; "
+        "objective is joint mismatch (e_alpha+e_sin2) with deterministic tie-break "
+        "preferring lower t-complexity, then smaller m."
     )
 
 

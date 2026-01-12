@@ -258,6 +258,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Joint protocol-state selection (theory-first)",
+            script="protocol_state_selection.py",
+            expected_outputs=[
+                "sections/generated/protocol_state_selected.json",
+                "sections/generated/protocol_state_selected.tex",
+            ],
+        ),
+        Step(
             name="Kernel summary (m-sweep)",
             script="exp_fractal_kernel_summary.py",
             expected_outputs=[
@@ -1338,6 +1346,13 @@ def build_steps() -> List[Step]:
             script="exp_chi_kernel_family_sweep.py",
             expected_outputs=[
                 "sections/generated/chi_kernel_family_sweep_rows.tex",
+            ],
+        ),
+        Step(
+            name="Protocol-state registry (audit index)",
+            script="exp_protocol_state_registry.py",
+            expected_outputs=[
+                "sections/generated/protocol_state_registry.tex",
             ],
         ),
         Step(
