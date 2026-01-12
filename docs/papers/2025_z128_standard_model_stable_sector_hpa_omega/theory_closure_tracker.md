@@ -112,6 +112,7 @@ flowchart TD
 - [x] **热力学（从等价/粗粒化到熵/温度/自由能）**：`appendix 27`  
   - 位置：`sections/appendices/27_thermodynamics_from_equivalence.tex`（`\label{app:thermodynamics_from_equivalence}`）
   - 要点：熵=计数；温度=频率共轭尺度；CAP=自由能原则；三定律；熵力与引力词典对齐。
+  - 边界：温度标尺（尤其 $T_{\mathrm{eff}}$）与第二定律的“可审计单调性证书”需要额外的匹配/算子族前提；见本文末“热力学统一（口径边界与最小失败点）”追踪条目。
 - [x] **overhead/chi -> 引力闭合链**：`Part F.4`  
   - 位置：`sections/F_40_overhead_to_gravity_closure.tex`（`\label{app:overhead_to_gravity_closure}`）
   - 要点：$\kappa \to \chi \to N \to g_{00} \to \Phi$；弱场下 $\rho_{\mathrm{eff}} \propto -\Delta \chi$；$\gamma$ 拟合模板。
@@ -295,8 +296,12 @@ flowchart TD
 | 误差控制（协议→连续场） | 误差分解 + 收敛/稳定性界 + 误差传播预算 | Iface/Math/Audit/Prot | `app:protocol_to_continuum_error_control` | [x] |
 | 熵（entropy） | 粗粒化计数/通道容量 | Math/CAP | `eq:counting_entropy` | [x] |
 | 分辨率提升/融合（capacity-first） | 以 $I_{\mathrm{prot}}(m,n)=m4^n$ 与 $I_{\mathrm{tar}}$ 为接口量，在有限候选族上用 CAP key 确定性选取 $(m^\ast,n^\ast)$；并给出单调性/阈值跳变与 “$n$-blocked$\Rightarrow m$-expand” 刚性命题；补充 resolution-first vs capacity-first 的 staging dictionary 与 $\chi$/预算/延迟钩子 | Iface/CAP/Math/Audit | `app:resolution_uplift_fusion_horizon_unification`, `tab:resolution_uplift_cap_choice` | [x] |
-| 温度（temperature） | 频率共轭尺度 | Iface/Math | `def:temperature_conjugate` | [x] |
-| CAP 自由能原则 | 以自由能形式重述 CAP 选择 | CAP | `prop:cap_free_energy_closure` | [x] |
+| 温度（temperature） | 频率共轭尺度（共轭定义；需指定 $E(M)$ 与一参数可微族） | Iface/Math | `def:temperature_conjugate` | [x] |
+| 有效温度映射（$T_{\mathrm{eff}}$） | 泄漏/辐射强度/寿命宽度代理 $\to$ 温度语言的可选匹配字典（外部输入包） | Match/Audit | `app:effective_temperature_mapping`, `app:physics_consensus_inputs`（PDR/PPL） | [~] |
+| CAP 自由能原则 | 以自由能形式重述 CAP 选择（有限候选族 + tie-break 模板） | CAP | `prop:cap_free_energy_closure` | [x] |
+| CAP 权重 $\leftrightarrow T$ 标尺 | $J=\kappa E+\kappa_S(-S)+\cdots$ 与 $E-TS$ 的标尺/单位对齐（$k_B,\hbar$ 等作为匹配层输入） | Iface/Match/Audit | `app:thermodynamics_from_equivalence`, `app:physics_consensus_inputs` | [~] |
+| 第二定律（单调性证书） | 在声明的粗粒化/信道族下，给出计数熵/自由能目标的单调性或收缩证书（与时间箭头/信道收缩对齐） | Math/Iface/Audit | `app:thermodynamics_from_equivalence`, `app:arrow_of_time_semigroup_notes`, `app:quantum_channels_cptp_stinespring` | [~] |
+| pressure（Ruelle/转移算子）$\leftrightarrow$ CAP | 将压力变分原理（无限测度族上确界）与 CAP 有限族闭合在同一口径下做极限化/一致性桥接 | Math/Audit | `app:thermodynamic_formalism_pressure` | [~] |
 | Born 概率 | $P_k=\mathrm{Tr}(\rho E_k)$ | Iface/Math | `eq:z128_born_povm` | [x] |
 | 复合系统（composite） | 张量积/部分迹/联合读出（最小接口包） | Iface/Math | `app:composite_systems_tensor_products` | [x] |
 | 量子信道（channel） | CPTP/Kraus/Stinespring + trace-distance 收缩证书 | Iface/Math/Audit | `app:quantum_channels_cptp_stinespring` | [x] |
@@ -414,6 +419,28 @@ flowchart TD
   - 备注：对 kernel-dependent 闭合，registry 内将有限 kernel-family 扫描的 look-elsewhere 扩张显式计入（保守 union bound：$N_{\le\epsilon}\mapsto\min(|\Theta|,|\mathcal{K}|N_{\le\epsilon})$），避免把 $K$ 作为隐含自由度。
   - 主依赖：家族内审计表 `app:generated_tables`（含 `tab:audit_closure_metrics` / `tab:audit_counterfactual` / `tab:audit_pi_poly_null`）与 CAP 审计模板 `app:cap_audit_template`。
 - [x] **（OP5）标量/Yukawa 与 RG running 的闭合（接口口径）**：标量在本论文中作为 uplift/coarse-graining 依赖接口处理（`app:scalar_interface_audits`；并明确 $21$ 类型不含 Higgs：`rem:higgs_not_in_21`）。Yukawa 可观测量（本征谱与混合矩阵）及 SM $\beta$-函数系数已在接口口径内闭合（`app:yukawa_beta_protocol_closure`）：本征值由深度模板给出，混合矩阵由 holonomy 机制固定，$\beta$-系数由闭合标号上的表示计数导出。VEV $v$（等价 $y_e$）由 $m_Z$ 与闭合电弱归一化字典固定（`prop:vev_from_mz_closed_ew`）；最小 Higgs 计数 $N_H=1$ 在有界候选族内以 CAP 最小化固定（`prop:minimal_higgs_doublet_count`）。右手旋转仍作为不可观测冗余处理。入口：`subsec:ledger_open_problems`，讨论：`subsec:open_problems_audit_tagged`。
+
+### 热力学统一（口径边界与最小失败点）
+
+- [~] **温度的可用域（共轭定义的适用条件）**：`def:temperature_conjugate` 以 $1/T=\partial S/\partial E$ 定义温度，但需要（i）明确的宏观能量泛函 $E(M)$，（ii）沿一参数族把 $E$ 视为 $S$ 的函数，且（iii）可微结构在所用粗粒化/参数化上成立。若缺少这些条件，温度仅是词典级符号而非可比较量。  
+  - 位置：`sections/appendices/27_thermodynamics_from_equivalence.tex`（`def:temperature_conjugate`）
+  - 最小失败点：无法在声明的宏态空间上给出一致的 $E$ 或无法规约到一参数可微族（导数无意义/多参歧义）。
+
+- [~] **有效温度 $T_{\mathrm{eff}}$ 的外部字典边界**：将泄漏率/辐射强度代理（如 $\Gamma$、功率 proxy）翻译为温度语言需要额外匹配输入包（PDR/PPL）；该映射不由协议结构内生。  
+  - 位置：`sections/appendices/08c_effective_temperature_mapping.tex`（`app:effective_temperature_mapping`），`sections/appendices/49_physics_consensus_inputs.tex`（`ass:pdr_lifetime_width`, `ass:pdr_thermal_proxy`, `ass:ppl_low_leakage_low_temp`, `ass:ppl_gap_suppression_model`）
+  - 最小失败点：比较类/报告约定未声明，或泄漏 proxy 与温度 proxy 的单调关系在数据上不成立。
+
+- [~] **CAP 自由能模板的标尺对齐**：`prop:cap_free_energy_closure` 给出 $J=\kappa E+\kappa_S(-S)+\kappa_c\mathrm{Comp}$ 的有限族闭合模板；若要把其读作 $E-TS$ 的物理自由能，需要在匹配层显式给出 $(\kappa,\kappa_S)\leftrightarrow T$ 的标尺/单位字典（含 $k_B,\hbar$ 的换算约定）。  
+  - 位置：`sections/appendices/27_thermodynamics_from_equivalence.tex`（`prop:cap_free_energy_closure`），`sections/appendices/49_physics_consensus_inputs.tex`（匹配层输入包）
+  - 最小失败点：权重与单位/约定不闭合，导致不同模块之间的“温度/自由能”不可比较。
+
+- [~] **第二定律的可审计单调性证书**：当前“不可逆”主要由粗粒化多对一与 CAP 选择的叙述给出；需要把允许的粗粒化/信道族明确为可审计对象，并在所选熵/自由能函数类上给出单调性或收缩证书（可复用量子信道的收缩证书作为硬桥，但需明确熵函数与通道类）。  
+  - 位置：`sections/appendices/27_thermodynamics_from_equivalence.tex`（第二定律叙述），`sections/appendices/30e_quantum_channels_cptp_stinespring.tex`（收缩证书），`sections/F_00_arrow_of_time_semigroup.tex`（半群骨架）
+  - 最小失败点：粗粒化算子族未声明或不满足所需的收缩/单调性条件；熵函数类不匹配（计数熵/相对熵/可区分性代理混用）。
+
+- [~] **pressure/转移算子与 CAP 的桥接**：`app:thermodynamic_formalism_pressure` 给出 pressure/转移算子/变分原理的标准形式（无限对象：不变测度的上确界），但本文 CAP 纪律是有限候选族闭合。二者要形成“统一”，需要一个显式的极限化/一致性桥：有限族离散化如何逼近 pressure 口径、误差如何控制、以及何时只应当保留审计类比而不升级为 theorem-level 前提。  
+  - 位置：`sections/appendices/44_thermodynamic_formalism_pressure.tex`（`app:thermodynamic_formalism_pressure`）
+  - 最小失败点：缺少一致的离散化族/正则性条件或误差界，导致 pressure 语言只能作为审计叙述而无法与 CAP 闭合互认。
 
 ### 经典未决问题：本文覆盖范围对照（建议单列追踪）
 
