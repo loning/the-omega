@@ -486,6 +486,13 @@ flowchart TD
   - `S=CP`：已完成“条件包/模板定理闭合”（把不可无条件闭合的部分明确写成最小假设包 + 失败点 + 可证伪检查/回退口径；不伪造证明）。  
     注：在 max\_S 口径下，若某子问题属于目前公开难题或超出本文范围，允许以 `S=CP` 视为“强闭合完成”，但必须把未决定点写成条件包而不是隐含前提。
 
+- **S=PT 门禁模板（统一判据，后续所有 CP→PT 都按此验收）**：
+  - **(PT1) 定理链闭合**：给出“定义/引理/定理/推论”的可追溯链条；每个节点都明确依赖与使用范围（窗口/阶/类）。
+  - **(PT2) 外部引用精确化**：引用外部结果时，必须写明其被使用的精确形式（定理陈述、条件、常数/界）与可复核位置；不得只写“标准结果/众所周知”。
+  - **(PT3) 假设包穷尽**：若仍需假设，必须进入显式“最小假设包”，并标注最小失败点（触发条件、影响范围、回退策略）。
+  - **(PT4) 证据指针**：每个关键假设/失败点必须对应证据指针（本文位置/表格/脚本输出/外部引用），形成可审计闭环。
+  - **(PT5) 与复现管线一致**：凡涉及候选族/清单/误差预算，必须接入 `scripts/run_all.py` 生成并在文中引用生成片段。
+
 ### 1. 目标层级（以 S 为主线的台阶）
 
 - **Level T1（EFT 级强闭合）**：给出有限阶 EFT 连续代表，并在选定的量子化/重整化框架内把 Ward/BRST、一致性与异常过滤从“假设”推进到“可证明/可构造”。典型结论目标：
@@ -514,12 +521,16 @@ flowchart TD
 
   %% AQFT chain
   T2A --> T2B["T2-2: microcausality theorem"]
-  T2A --> T2C["T2-3: covariance/spectrum theorem"]
+  T2A --> T2Ccov["T2-3a: covariance carrier (window action)"]
+  T2A --> T2Cs["T2-3b: spectrum surrogate contract"]
+  T2Ccov --> T2C["T2-3: covariance/spectrum theorem"]
+  T2Cs --> T2C
 
   %% Bridge and scattering
   T2A --> T3A["T3-1: domain control"]
   T3A --> T3B["T3-2: reconstruction / field generation"]
   T3B --> T4A["T4-1: Haag-Ruelle (gapped sector)"]
+  T2Cs --> T4A
   T4A --> T4B["T4-2: LSZ + delay interface theorem"]
 
   %% Cross-cutting failure-point normalization
@@ -546,7 +557,7 @@ flowchart TD
   class P0 p;
   class T1D d;
   class T1S s;
-  class T2A,T2B,T2C t2;
+  class T2A,T2B,T2C,T2Ccov,T2Cs t2;
   class T3A,T3B t3;
   class T4A,T4B t4;
   class X0 x;
@@ -601,6 +612,10 @@ flowchart TD
 - **T1S-1 BRST 不变量子化的定理化（选定框架）**
   - **状态**：D=[x]，S=[x]
   - **S 类型**：S=CP（EG 框架下的 theorem template + 可审计前提/失败点；不宣称无条件构造 4D 非微扰相互作用 QFT）
+  - **PT 缺口清单**：
+    - (缺口1) EG 构造中“允许的局域泛函空间/配置空间/对角线分解/缩放度”的精确定义仍需补齐到可复核程度。
+    - (缺口2) ST/BRST 归一化条件与“逐阶恢复算法”需给出明确的归纳步骤与可引用定理（含适用条件/阶数）。
+    - (缺口3) 把 `app:anomaly_theorem_filters` 的 anomaly 系数与 EG/BRST 同调障碍之间的映射写成严格命题（含引用形式与符号对齐）。
   - **依赖**：T1-2（BRST/Ward 的交付层陈述）。
   - **交付要求（D）**：明确所选框架（例如 BPHZ/DimReg+MS/EG 等）与最小假设包，给出可引用的定理陈述与失败点模板。
   - **强闭合要求（S）**：在该框架内证明（或给出可执行构造）使 BRST 不变性在给定阶成立。
@@ -609,12 +624,18 @@ flowchart TD
 - **T1S-2 反常消除与 counterterm 恢复（cohomology → construction）**
   - **状态**：D=[x]，S=[x]
   - **S 类型**：S=CP（以 anomaly-filter + cohomology obstruction 的条件化 theorem template 形式闭合）
+  - **PT 缺口清单**：
+    - (缺口1) 给出“障碍类为零 ⇒ 存在局域 counterterm 恢复 ST”的精确版本（阶数、允许的局域项空间、归一化自由度），并标注外部引用的精确形式。
+    - (缺口2) 把“可移除 breaking term”的构造写成可执行步骤（或在已选框架下引用可复核构造定理）。
   - **依赖**：T1-3（异常过滤条件）。
   - **落点文件**：`sections/appendices/88_eg_anomaly_counterterm_restoration.tex`
 
 - **T1S-3 截断余项的可证明上界（EFT remainder bounds）**
   - **状态**：D=[x]，S=[x]
   - **S 类型**：S=CP（显式 remainder envelope 假设下的定理化预算；未宣称无条件 remainder 定理）
+  - **PT 缺口清单**：
+    - (缺口1) 把 remainder envelope 从“假设”拆成可证的充分条件族（至少在受限观测类/尺度窗口），并把不可证部分明确标注为公开难题接口。
+    - (缺口2) 给出常数/界的来源与可审计估计路径（幂计数、尺度比、scheme/threshold envelope）。
   - **依赖**：T1-4（误差分解模板）与所选量子化/匹配方案。
   - **落点文件**：`sections/appendices/89_strong_eft_remainder_bounds.tex`
 
@@ -635,12 +656,21 @@ flowchart TD
 - **T2-2 microcausality 从可构造非扰动性推出（Math）**
   - **状态**：D=[x]，S=[x]
   - **S 类型**：S=CP（在显式“因果可分/可交换子代数”假设包下闭合；不宣称 tick-only 核心自动推出微因果）
+  - **PT 缺口清单**：
+    - (缺口1) 选定一个明确“协议子类”（例如张量积读出/局域信道组合规则），在该子类内把假设转为构造性命题（由结构保证可交换性）。
+    - (缺口2) 明确“operationally disjoint/union”与 addressing/tick calculus 的绑定定义，避免抽象层引入不可检验自由度。
   - **依赖**：T2-1。
   - **落点文件**：`sections/appendices/8l_microcausality_from_protocol_non_disturbance.tex`
 
 - **T2-3 协变/谱条件的可证明版本与最小动力学假设包（Math）**
   - **状态**：D=[x]，S=[x]
-  - **S 类型**：S=CP（在显式“协变动力学类/真空可实现/谱条件”假设包下闭合）
+  - **S 类型**：S=CP（协变已可 PT 化为“窗口作用→自同构”载体；谱条件仍为条件化/替代契约）
+  - **PT/CP 分解**：
+    - covariance：PT（载体见 `sections/appendices/8v_covariance_from_window_action.tex`）
+    - spectrum：CP（模板见 `sections/appendices/8m_covariance_spectrum_from_protocol_dynamics.tex`；替代契约见 `sections/appendices/8x_spectrum_surrogate_contract.tex`）
+  - **PT 缺口清单**：
+    - (缺口1) 给出动力学类的可构造实现（在协议/粗粒化层面如何产生 $^\ast$-自同构作用与其 GNS 实现）。
+    - (缺口2) 把谱条件拆成可审计的替代条件族（半群谱约束、能量界、窗口化正能）并给出充要/充分链条。
   - **依赖**：T2-1。
   - **落点文件**：`sections/appendices/8m_covariance_spectrum_from_protocol_dynamics.tex`
 
@@ -649,6 +679,9 @@ flowchart TD
 - **T3-1 域控制（Math）**
   - **状态**：D=[x]，S=[x]
   - **S 类型**：S=CP（共同不变域假设包 + theorem template；失败点 W1 明确）
+  - **PT 缺口清单**：
+    - (缺口1) 选定可控生成元类（例如 Weyl 代数/有界生成元）以消除“共同不变域”的非构造性依赖，或给出能量界推出共同域的定理链。
+    - (缺口2) 把域稳定性需要的具体闭包/估计写成可核查条件（并映射到证据指针）。
   - **依赖**：T2-1、T2-3。
   - **落点文件**：`sections/appendices/8n_domain_control_for_generators.tex`
 
@@ -656,6 +689,9 @@ flowchart TD
   - **状态**：D=[x]，S=[x]
   - **S 类型**：S=CP（重构条件包 RC1–RC3 + theorem template；失败点 W2 明确）
   - **依赖**：T3-1。
+  - **PT 缺口清单**：
+    - (缺口1) 指定可引用的重构定理版本（所需的核条件/能量界/正则性），并把 RC1–RC3 精确化为该定理的条件。
+    - (缺口2) 在本文选择的受控类中，尽可能把 RC 条件以可验证方式落地（证据表/脚本输出/已知定理适用性检查）。
   - **落点文件**：`sections/appendices/8o_field_reconstruction_theorems.tex`
 
 #### T4：散射与等价性（依赖重；建议先锁定“可比性口径”）
@@ -663,12 +699,18 @@ flowchart TD
 - **T4-1 质量隙子扇区的 Haag–Ruelle 散射定理（Math）**
   - **状态**：D=[x]，S=[x]
   - **S 类型**：S=CP（质量隙/稳定一粒子扇区等条件包下的 theorem template；失败点 S2/S3 明确）
+  - **PT 缺口清单**：
+    - (缺口1) 把“质量隙/稳定一粒子扇区”的条件写成可审计证据链：哪些谱隔离诊断/窗口化证据足以支持 HR 定理的适用。
+    - (缺口2) 指定 HR 定理的精确版本（假设/结论/常数）并与本文 net/谱条件口径对齐。
   - **依赖**：T3-2（或等价假设包）、T2-3。
   - **落点文件**：`sections/appendices/8p_scattering_haag_ruelle_theorems.tex`
 
 - **T4-2 LSZ/时间延迟等价接口的定理化（Math/Iface）**
   - **状态**：D=[x]，S=[x]
   - **S 类型**：S=CP（LSZ 适用性条件包下的 theorem template；S1–S3 失败点明确）
+  - **PT 缺口清单**：
+    - (缺口1) 固化 LSZ 适用性条件的精确版本（场正则性/插值场存在/能量界），并与本文重构/域控制条件对接。
+    - (缺口2) 把 delay 等价中的校准/损耗误差模型写成可复核界，并并入 $\epsilon_N$ 或 failure-point evidence map。
   - **依赖**：T4-1、现有延迟字典。
   - **落点文件**：`sections/appendices/8q_lsz_delay_theorem_layer.tex`
 

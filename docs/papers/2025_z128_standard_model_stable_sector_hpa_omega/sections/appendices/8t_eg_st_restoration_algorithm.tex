@@ -1,0 +1,50 @@
+\subsection{ST restoration as an order-by-order EG algorithm (T1S-PT infrastructure)}
+\label{app:eg_st_restoration_algorithm}
+
+\AuditTag This appendix records a PT-facing algorithmic form of ``ST/BRST restoration'' in the EG carrier.
+It makes explicit what is meant by ``choose renormalization freedoms so that Slavnov--Taylor holds to a given order'' and how anomaly cancellation enters as the sole obstruction class in the admissible local space.
+
+\subsubsection{Setup}
+\paragraph{Input objects.}
+Fix:
+\begin{itemize}
+\item an EFT truncation $(D_{\max},L_{\max})$ and an admissible counterterm basis registry (Appendix~\ref{app:eg_normalization_freedom_basis}),
+\item a classical BRST differential $s$ on local functionals (Appendix~\ref{app:ward_brst_consistency}),
+\item anomaly filters for the declared field content (Appendix~\ref{app:anomaly_theorem_filters}).
+\end{itemize}
+
+\paragraph{Carrier theorem (external input).}
+\AuditTag The existence of time-ordered products satisfying causal factorization and locality, and the characterization of renormalization freedom as local diagonal extensions, are standard results in causal perturbation theory; see \cite{EpsteinGlaser1973,BrunettiFredenhagen2000Microlocal,Dutsch2019pAQFT}.
+
+\subsubsection{Algorithm (finite order)}
+\paragraph{Step 0: choose a reference normalization.}
+Pick a reference EG normalization scheme (a choice of extensions on all relevant diagonals) consistent with the truncation.
+This yields a reference family $T_n^{(0)}$ and an S-matrix $S^{(0)}(V)$.
+
+\paragraph{Step 1: compute the ST breaking at order $n$.}
+At each perturbative order $n$, compute the induced breaking term $\Delta_n$ in the ST identity.
+By locality and power counting, $\Delta_n$ is a local functional supported on the diagonal and belongs to a finite-dimensional admissible space of ghost number $1$.
+
+\paragraph{Step 2: check the obstruction class.}
+Use the Wess--Zumino consistency condition (Appendix~\ref{app:ward_brst_consistency}) to see that $\Delta_n$ defines a BRST cohomology class.
+If the anomaly filters fail, the class can be nontrivial and no restoration is possible (obstruction).
+If anomaly filters hold, the cohomology class is trivial in the admissible space.
+
+\paragraph{Step 3: solve a finite counterterm system.}
+If the class is trivial, choose a counterterm shift $\delta S_n$ in the admissible counterterm basis (Appendix~\ref{app:eg_normalization_freedom_basis}) such that the induced finite renormalization cancels $\Delta_n$.
+This reduces to a finite linear (or polynomial, depending on chosen parametrization) constraint system for the basis coefficients.
+
+\paragraph{Step 4: iterate.}
+Define the updated normalization $T_n^{(1)}$ and proceed inductively to the next order until the target order consistent with $(D_{\max},L_{\max})$ is reached.
+
+\subsubsection{PT-facing theorem statement}
+\begin{theorem}[ST restoration algorithm (finite order, PT-facing form)]
+\label{thm:st_restoration_algorithm_pt}
+\MathTag Fix a truncation $(D_{\max},L_{\max})$ and a target perturbative order.
+Assume the anomaly filters in Appendix~\ref{app:anomaly_theorem_filters} hold for the declared field content.
+Then the above inductive procedure can be carried out to the target order: there exists a choice of finite renormalizations within the admissible counterterm basis that restores the ST identity to that order.
+\end{theorem}
+
+\AuditTag Theorem~\ref{thm:st_restoration_algorithm_pt} is a PT-facing reformulation of the standard causal/BRST renormalization results:
+the nontrivial content is (i) locality/power counting (carrier), (ii) anomaly cohomology (obstruction test), and (iii) the finiteness of admissible counterterm freedom at the declared truncation.
+
