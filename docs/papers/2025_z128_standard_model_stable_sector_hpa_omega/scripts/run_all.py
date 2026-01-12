@@ -606,6 +606,14 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "sections/generated/holonomy_balanced_chain_rows.tex",
                 "sections/generated/holonomy_balanced_chain_wilson_rows.tex",
+                "sections/generated/holonomy_balanced_chain_convergence_rows.tex",
+            ],
+        ),
+        Step(
+            name="Scale-map family on the balanced chain (normalized, CL2 audit)",
+            script="exp_scale_map_balanced_chain.py",
+            expected_outputs=[
+                "sections/generated/scale_map_balanced_chain_rows.tex",
             ],
         ),
         Step(

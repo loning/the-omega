@@ -522,6 +522,19 @@ flowchart TB
   P_wilson("Wilson-loop 代理（W,1-W）<br/>类型：观测 / Observation<br/>label: tab:holonomy_balanced_chain_wilson<br/>W := Re(tr(Q))/3;  A := 1 - W")
   M_op3_yang_mills -.- P_wilson
 
+  M_cl1["CL1：refinement compatibility（跨尺度兼容）\n类型：审计 / Audit\nlabel: app:discrete_connection_family_and_refinement"]
+  P_cl1("CL1 audit（balanced-chain TV/MaxΔ）\n类型：审计 / Audit\nlabel: tab:holonomy_balanced_chain_convergence_audit")
+  M_cl1 -.- P_cl1
+
+  M_cl2["CL2：scale map family（尺度映射有限族）\n类型：审计 / Audit\nlabel: app:scale_map_and_small_loop_regularity_contract"]
+  P_cl2("CL2 table（scale-map family, normalized）\n类型：审计 / Audit\nlabel: tab:scale_map_balanced_chain_family")
+  M_cl2 -.- P_cl2
+
+  M_cl3["CL3：small-loop regularity（正则性 bundle）\n类型：假设 / Assumption\nlabel: ass:small_loop_regularity_bundle"]
+  M_cl4["CL4：variational convergence（Gamma-limit bridge）\n类型：假设 / Assumption\nlabel: app:gamma_convergence_wilson_to_yang_mills"]
+
+  M_holo --> M_cl1 --> M_cl2 --> M_cl3 --> M_cl4 --> M_op3_yang_mills
+
   P_wilson_residual("Wilson residual 缩放审计（commuting SU(2) toy）<br/>类型：审计 / Audit<br/>label: tab:curvature_bridge_wilson<br/>residual := |(1−ReTr/N) − (a^4/(2N))Tr(F^2)|;  residual/a^6")
   M_op3_yang_mills -.- P_wilson_residual
 
@@ -585,7 +598,8 @@ flowchart TB
   class M_cap math_axiom;
   class M_anchor,M_conn,M_holo,M_gauge math_construct;
   class M_action,M_op3_yang_mills math_cont;
-  class M_graphzeta,M_transport_audit,M_z128_label,M_tau_family,M_dyadic_phase_register,M_phase_lift_cp,M_cp_odd_J math_audit;
+  class M_graphzeta,M_transport_audit,M_z128_label,M_tau_family,M_dyadic_phase_register,M_phase_lift_cp,M_cp_odd_J,M_cl1,M_cl2 math_audit;
+  class M_cl3,M_cl4 math_assumption;
   class P_screen,P_conn,P_gauge phys_proxy;
   class P_holo,P_wilson,P_cp_odd_J phys_obs;
   class P_z128_label phys_dict;
@@ -2006,6 +2020,12 @@ flowchart TB
 | `P_graphzeta` | `\label{def:holonomy_weighted_graph_zeta}` | `Z_{G,ρ}(u)=∏ det(I−u^{|C|}ρ(Hol(C)))⁻¹ (holonomy-weighted prime-cycle zeta)` | `sections/appendices/45_graph_zeta_holonomy.tex` |
 | `M_op3_yang_mills` | `\label{app:continuum_yang_mills_from_holonomy}` | `finite holonomy → Wilson proxy → Tr(F^2) + O(a^6) (thm:wilson_small_plaquette_expansion)` | `sections/appendices/36_continuum_yang_mills_from_holonomy.tex` |
 | `P_wilson` | `\label{tab:holonomy_balanced_chain_wilson}` | `W := Re(tr(Q))/3; A := 1 − W (rows: sections/generated/holonomy_balanced_chain_wilson_rows.tex)` | `sections/appendices/36_continuum_yang_mills_from_holonomy.tex` |
+| `M_cl1` | `\label{app:discrete_connection_family_and_refinement}` | `CL1 refinement compatibility contract (directed family + observable-level convergence)` | `sections/appendices/36a_discrete_connection_family_and_refinement.tex` |
+| `P_cl1` | `\label{tab:holonomy_balanced_chain_convergence_audit}` | `TV/MaxΔ audit rows (rows: sections/generated/holonomy_balanced_chain_convergence_rows.tex)` | `sections/appendices/36a_discrete_connection_family_and_refinement.tex` |
+| `M_cl2` | `\label{app:scale_map_and_small_loop_regularity_contract}` | `CL2 bounded scale-map family (balanced chain, normalized)` | `sections/appendices/36b_scale_map_and_small_loop_regularity_contract.tex` |
+| `P_cl2` | `\label{tab:scale_map_balanced_chain_family}` | `scale-map family rows (rows: sections/generated/scale_map_balanced_chain_rows.tex)` | `sections/appendices/36b_scale_map_and_small_loop_regularity_contract.tex` |
+| `M_cl3` | `\label{ass:small_loop_regularity_bundle}` | `CL3 regularity bundle for small-loop expansion` | `sections/appendices/36b_scale_map_and_small_loop_regularity_contract.tex` |
+| `M_cl4` | `\label{app:gamma_convergence_wilson_to_yang_mills}` | `CL4 variational convergence bridge (Gamma-limit template)` | `sections/appendices/36d_gamma_convergence_wilson_to_yang_mills.tex` |
 | `P_wilson_residual` | `\label{tab:curvature_bridge_wilson}` | `residual scaling audit for Wilson small-loop remainder (rows: sections/generated/curvature_bridge_wilson_rows.tex)` | `sections/appendices/02_generated_tables.tex` |
 | `M_gauge` | `\label{sec:protocol_connections_holonomy}` | `def:s4_vertex_gauge — p_{a→b} ↦ g_b p_{a→b} g_a⁻¹` | `sections/I_21_protocol_connections_holonomy.tex` |
 | `P_gauge` | `\label{sec:protocol_connections_holonomy}` | `p_□ ↦ g p_□ g⁻¹ (gauge conjugation on loops)` | `sections/I_21_protocol_connections_holonomy.tex` |

@@ -29,6 +29,20 @@ from common_tex import write_lines
 import exp_black_hole_queue_equivalence as bhq
 
 
+def _escape_tex(s: str) -> str:
+    return (
+        s.replace("\\", "\\textbackslash{}")
+        .replace("&", "\\&")
+        .replace("%", "\\%")
+        .replace("#", "\\#")
+        .replace("_", "\\_")
+        .replace("{", "\\{")
+        .replace("}", "\\}")
+        .replace("^", "\\^{}")
+        .replace("~", "\\~{}")
+    )
+
+
 def main() -> None:
     m = 6
     base_vacuum_mass = 64
@@ -42,7 +56,7 @@ def main() -> None:
         rows.append(
             " & ".join(
                 [
-                    r["mode"],
+                    _escape_tex(r["mode"]),
                     r["allowed_card"],
                     r["t"],
                     r["digit_base"],
