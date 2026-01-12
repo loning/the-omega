@@ -902,6 +902,62 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="BH4 evaporation/leak channel summary (Fold_m information flow)",
+            script="exp_bh_evaporation_leak_channel.py",
+            expected_outputs=[
+                "sections/generated/bh_evaporation_rate_rows.tex",
+                "sections/generated/bh_leak_channel_summary.tex",
+            ],
+        ),
+        Step(
+            name="BH5 Page surrogate (protocol recovery curve)",
+            script="exp_bh_page_surrogate.py",
+            expected_outputs=[
+                "sections/generated/bh_page_surrogate_curve_rows.tex",
+                "figures/bh_page_surrogate.png",
+            ],
+        ),
+        Step(
+            name="BH5 Page surrogate (mixed single-stream refinement)",
+            script="exp_bh_page_surrogate_mixed_stream.py",
+            expected_outputs=[
+                "sections/generated/bh_page_surrogate_mixed_curve_rows.tex",
+                "sections/generated/bh_page_surrogate_mixed_summary.tex",
+                "figures/bh_page_surrogate_mixed.png",
+            ],
+        ),
+        Step(
+            name="BH absorption-mode sweep (audit; legal absorption subalphabet)",
+            script="exp_bh_absorption_mode_sweep.py",
+            expected_outputs=[
+                "sections/generated/bh_absorption_mode_sweep_rows.tex",
+                "sections/generated/bh_absorption_mode_sweep_summary.tex",
+            ],
+        ),
+        Step(
+            name="BH legal absorption registry (candidates; no selection)",
+            script="exp_bh_legal_absorption_registry.py",
+            expected_outputs=[
+                "sections/generated/bh_legal_absorption_registry_rows.tex",
+                "sections/generated/bh_legal_absorption_registry_summary.tex",
+            ],
+        ),
+        Step(
+            name="BH capacity-calibrated queue parameters (known BHs; audit)",
+            script="exp_bh_capacity_calibrated_queue_params.py",
+            expected_outputs=[
+                "sections/generated/bh_capacity_calibrated_queue_params_rows.tex",
+                "sections/generated/bh_capacity_calibrated_queue_params_summary.tex",
+            ],
+        ),
+        Step(
+            name="BH6 island-equivalent reconstruction (finite toy diagnostic)",
+            script="exp_bh_island_equivalent_reconstruction.py",
+            expected_outputs=[
+                "sections/generated/bh_island_equiv_diagnostics.tex",
+            ],
+        ),
+        Step(
             name="Neutrino external audit ledger (Match/Audit only)",
             script="exp_neutrino_external_audit.py",
             expected_outputs=[
