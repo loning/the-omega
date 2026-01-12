@@ -36,6 +36,17 @@ Formally, given a Wish, a Motive is a functional $J$ on a finite candidate famil
 The CAP axiom (Axiom~\ref{ax:cap}) then selects the unique minimizer of this functional.
 \AuditTag Like Wish, this term is organizational: the only primitives are the tick (Axiom~\ref{ax:readout_sequentiality}) and CAP (Axiom~\ref{ax:cap}); see also Figure~\ref{fig:inference_map} and Appendix~\ref{app:tick_cap_derivation}.
 
+\paragraph{Protocol state variables and what CAP actually selects.}
+\InterfaceTag In this paper, CAP is used not only to pick numerical constants inside a finite ansatz class, but also to close discrete protocol-state choices that would otherwise be underdetermined at the interface level.
+Concretely, the protocol state at a target scale is treated as a triple
+\[
+(m,n,K),
+\]
+where $m$ is the window length (word resolution), $n$ is the addressing order on the chosen display basis when spatial diagnostics are invoked, and $K$ is a declared readout kernel (equivalently: a declared readout weighting rule / probability assignment on the finite objects at that resolution).
+\AuditTag Each component is selected only within an explicitly declared finite candidate family, by an explicit objective and deterministic tie-break, and is recorded in the tick\,+\,CAP derivation spine (Appendix~\ref{app:tick_cap_derivation}).
+This convention is critical for avoiding hidden knobs: kernel choice is treated as part of the interface state, not as an implicit background assumption.
+\AuditTag When an interface output depends on multiple protocol-state components simultaneously, the default closure object is the joint CAP-selected state $(m^\*(\mu),n^\*(\mu),K^\*(\mu))$ at the target scale $\mu$ under an explicit finite candidate family and a lexicographic joint key; see Appendix~\ref{subsec:tick_cap_joint_protocol_state}.
+
 \section*{A.3 Three channels as the mainline (interface)}
 \addcontentsline{toc}{section}{A.3 Three channels as the mainline (interface)}
 
@@ -75,6 +86,8 @@ Read the tick dictionary (Section~\ref{sec:tick_calculus}), then the folding cor
 If you want one minimal spine: \textit{Section~\ref{sec:tick_calculus} $\to$ Section~\ref{sec:folding_core} $\to$ Section~\ref{sec:sm_labeling_closure} $\to$ Section~\ref{subsec:p3_resolution_jumps}.}
 \item \textbf{Kernel view (cross-scale computation guide).}
 Read the folding core (Section~\ref{sec:folding_core}) and then the kernel view summary (Section~\ref{sec:kernel_view}) to see the iterable ``language + folding + protocol flow'' object explicitly, before diving into interface closures and matching dictionaries.
+\item \textbf{Kernel-choice path (readout kernels as CAP-closed state).}
+If you want to track how discrete readout kernels enter numerical interface outputs, start from Appendix~\ref{app:tick_cap_derivation} (protocol-state closures), then read the operator mother-space dictionary (Section~\ref{app:operator_mother_space_dictionary}), and then follow a concrete example (e.g.\ electroweak normalization in Section~\ref{subsec:weinberg_angle}) where the relevant weights are recorded as kernel-dependent readouts closed by CAP.
 \item \textbf{Frequency-first dynamical closure (equivalence $\to$ action $\to$ EOM $\to$ thermo).}
 Read the equivalence semantics and frequency-first dictionary (Section~\ref{app:equivalence_semantics}), then the CAP closure of a minimal continuum action (Section~\ref{app:cap_continuum_action_closure}), then the variational field equations (Section~\ref{app:variational_field_equations}), and finally the thermodynamic closure (Appendix~\ref{app:thermodynamics_from_equivalence}).
 For matching-layer delay/redshift templates used as operational proxies, see Appendix~\ref{app:time_mass_delay} and Appendix~\ref{app:time_mass_delay_reference}.
