@@ -281,6 +281,7 @@ flowchart TD
 | 相位/频率（phase/frequency） | $\omega=\Delta\theta/\Delta t$ 等价定义族 | Iface/Math | `def:frequency_from_phase`, `rem:frequency_alt_definitions` | [x] |
 | 等价语义（objects/observables） | 物理对象=等价类；可观测=不变泛函 | Math | `subsec:equivalence_physical_objects`, `subsec:equivalence_relations_minimal` | [x] |
 | 曲率（curvature） | 回路/holonomy 的不变响应 | Math | `subsec:curvature_as_loops` | [x] |
+| holonomy$\to$连续 YM（CL1--CL4） | refinement 兼容 + 尺度映射族 + 正则性 bundle + 变分收敛（$\Gamma$-limit） | Math/Audit | `app:discrete_connection_family_and_refinement`, `app:scale_map_and_small_loop_regularity_contract`, `app:holonomy_to_connection_convergence_theorems`, `app:gamma_convergence_wilson_to_yang_mills`, `app:variation_limit_exchange_and_yang_mills_eom` | [~] |
 | 弱场曲率（weak-field curvature） | $G_{00}$ 的拉普拉斯代理与 $\chi$-曲率桥（含离散估计与误差预算） | Math/Audit | `app:weak_field_curvature_from_chi`, `thm:weak_field_G00_laplacian`, `cor:discrete_G00_error_budget` | [x] |
 | 力（force） | 响应/梯度/变分（不变性下） | Math/CAP | `subsec:force_as_response` | [x] |
 | 连续代表作用量 $S_{\mathrm{eff}}$ | CAP 在候选族中选最小骨架 | CAP/Math | `prop:cap_minimal_action_skeleton` | [x] |

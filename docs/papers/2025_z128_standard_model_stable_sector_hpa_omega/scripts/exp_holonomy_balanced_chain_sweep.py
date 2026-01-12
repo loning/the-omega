@@ -380,11 +380,19 @@ def sweep_one(
     return hist, mean_abs, mean_signed, mean_W, mean_A, failures
 
 
+def _tv_distance(p: Dict[str, float], q: Dict[str, float]) -> float:
+    keys = set(p.keys()) | set(q.keys())
+    return 0.5 * sum(abs(p.get(k, 0.0) - q.get(k, 0.0)) for k in keys)
+
+
 def main() -> None:
     chain = [(1, 2), (2, 4), (3, 6), (4, 8), (5, 10), (6, 12), (7, 14), (8, 16)]
 
     rows: List[str] = []
     rows_wilson: List[str] = []
+    rows_conv: List[str] = []
+
+    prev_dist: Dict[str, float] | None = None
     for n_bits, m in chain:
         hist, mean_abs, mean_signed, mean_W, mean_A, failures = sweep_one(n_bits, m)
         Np = (1 << n_bits) - 1
@@ -407,16 +415,31 @@ def main() -> None:
             f"{n_bits} & {m} & {total_plaq} & {c34} & {meanW34:.6g} & {meanA34:.6g} \\\\"
         )
 
+        # CL1-facing convergence audit: cycle-type distribution distances across scales.
+        dist = {}
+        for ct in ["1", "2", "2x2", "3", "4", "other"]:
+            dist[ct] = float(hist.get(ct, 0)) / float(max(1, total_plaq))
+        if prev_dist is None:
+            rows_conv.append(f"{n_bits} & {m} & -- & -- \\\\")
+        else:
+            tv = _tv_distance(prev_dist, dist)
+            max_abs = max(abs(prev_dist.get(ct, 0.0) - dist.get(ct, 0.0)) for ct in dist.keys())
+            rows_conv.append(f"{n_bits} & {m} & {tv:.6g} & {max_abs:.6g} \\\\")
+        prev_dist = dist
+
     rows.append("\\bottomrule")
     rows_wilson.append("\\bottomrule")
+    rows_conv.append("\\bottomrule")
 
     root = Path(__file__).resolve().parent.parent
     out_dir = root / "sections" / "generated"
     out_dir.mkdir(parents=True, exist_ok=True)
     write_lines(out_dir / "holonomy_balanced_chain_rows.tex", rows)
     write_lines(out_dir / "holonomy_balanced_chain_wilson_rows.tex", rows_wilson)
+    write_lines(out_dir / "holonomy_balanced_chain_convergence_rows.tex", rows_conv)
     print("Wrote sections/generated/holonomy_balanced_chain_rows.tex")
     print("Wrote sections/generated/holonomy_balanced_chain_wilson_rows.tex")
+    print("Wrote sections/generated/holonomy_balanced_chain_convergence_rows.tex")
 
 
 if __name__ == "__main__":

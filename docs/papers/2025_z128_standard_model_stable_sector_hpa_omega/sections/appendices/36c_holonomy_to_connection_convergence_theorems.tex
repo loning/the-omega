@@ -1,0 +1,77 @@
+\section{Holonomy to connection: convergence theorems (CL1--CL3 carrier)}
+\label{app:holonomy_to_connection_convergence_theorems}
+
+This appendix records the theorem-facing bridge from a refinement family of finite holonomy data to a continuum connection/curvature object.
+It is the point at which ``finite loop diagnostics'' can be upgraded from an interface semantics to an explicit limit theorem, provided the compatibility and scale-map bundles are discharged (CL1--CL3 in Appendix~\ref{app:minimal_failure_point_templates}).
+
+\subsection{Continuum characterization: connection as parallel transport}
+\paragraph{Parallel transport determines a connection (standard fact).}
+\MathTag On a smooth manifold, a principal $G$-bundle connection is equivalent to a smooth parallel-transport assignment along paths satisfying functoriality, locality, and smooth dependence on the path.
+We record this equivalence in a form usable as a theorem-level target.
+
+\begin{theorem}[Connection $\leftrightarrow$ smooth parallel transport (standard)]
+\label{thm:connection_parallel_transport_equivalence}
+\MathTag Let $M$ be a smooth manifold and $G$ a Lie group.
+There is a one-to-one correspondence between:
+\begin{itemize}
+\item smooth principal $G$-bundle connections on $M$, and
+\item smooth parallel transport functors assigning to each piecewise-smooth path $\gamma$ in $M$ a group element $U(\gamma)\in G$ such that $U(\gamma_2\circ\gamma_1)=U(\gamma_2)U(\gamma_1)$, $U(\gamma^{-1})=U(\gamma)^{-1}$, and $U$ depends smoothly on $\gamma$ in the appropriate sense.
+\end{itemize}
+\end{theorem}
+
+\begin{proof}[Reference]
+This is standard differential geometry; see, e.g., \cite{KobayashiNomizu1963,MilnorStasheff1974}.
+\end{proof}
+
+\subsection{Refinement-limit hypothesis and reconstruction template}
+\begin{assumption}[Holonomy convergence bundle (CL1--CL3)]
+\label{ass:holonomy_convergence_bundle}
+\AuditTag Assume:
+\begin{itemize}
+\item \textbf{(H1) Directed family:} a refinement family of discrete connections/holonomies exists as in Appendix~\ref{app:discrete_connection_family_and_refinement} (CL1).
+\item \textbf{(H2) Scale map:} a bounded family of scale maps $a_k$ is declared as in Appendix~\ref{app:scale_map_and_small_loop_regularity_contract} (CL2).
+\item \textbf{(H3) Regularity regime:} a subsector/regime is declared in which the small-loop regularity bundle holds (Assumption~\ref{ass:small_loop_regularity_bundle}) (CL3).
+\item \textbf{(H4) Approximate functoriality:} for any fixed macroscopic path $\gamma$ approximated by a sequence of discrete edge paths $\gamma_k$ on the $n_k$ grids, the discrete transports $U_k(\gamma_k)$ are Cauchy in $G$ uniformly over the declared path family, with an explicit modulus of continuity in the discretization scale.
+\end{itemize}
+\end{assumption}
+
+\begin{theorem}[Holonomy $\Rightarrow$ connection (template)]
+\label{thm:holonomy_implies_connection_template}
+\MathTag Under Assumption~\ref{ass:holonomy_convergence_bundle}, there exists a Lie group $G$ and a smooth parallel transport assignment $U(\gamma)\in G$ on the continuum representative manifold such that for each declared path family $\gamma$ and each admissible approximating sequence $\gamma_k$ one has
+\[
+U_k(\gamma_k)\to U(\gamma)\quad (k\to\infty).
+\]
+Consequently, by Theorem~\ref{thm:connection_parallel_transport_equivalence}, there exists a (bundle-)connection $A$ whose path-ordered exponential reproduces $U(\gamma)$ and whose curvature $F=\dd A + A\wedge A$ controls small-loop holonomy.
+\end{theorem}
+
+\AuditTag Theorem~\ref{thm:holonomy_implies_connection_template} is the theorem-facing bridge point.
+If (H1)--(H4) cannot be discharged, then CL1/CL2/CL3 trigger and the manuscript must remain at finite diagnostic / representative level.
+
+\subsection{A local curvature estimator from small-loop holonomy (explicit carrier)}
+\label{subsec:local_curvature_estimator_from_holonomy}
+\paragraph{Motivation.}
+\InterfaceTag Beyond existence, one often wants an explicit local object that is reconstructed from loop holonomy when the loops are small.
+This subsection records the standard estimator and its branch/regularity conditions.
+
+\begin{definition}[Local curvature estimator from plaquette holonomy]
+\label{def:curvature_estimator_log_holonomy}
+\MathTag Let $U_\square\in SU(N)$ be the holonomy around a small plaquette of effective side length $a$ (as declared by a scale map).
+Assume $U_\square$ lies in a neighborhood of the identity where the principal matrix logarithm $\log$ is well-defined.
+Define the Lie-algebra estimator
+\[
+\widehat F_{\mu\nu}(x)\;:=\;\frac{1}{\iu\,a^2}\,\log(U_\square).
+\]
+\end{definition}
+
+\begin{proposition}[Consistency under the small-plaquette expansion (template)]
+\label{prop:curvature_estimator_consistency_template}
+\MathTag Under the small-loop regularity bundle (Assumption~\ref{ass:small_loop_regularity_bundle}) and the small-plaquette expansion (Theorem~\ref{thm:wilson_small_plaquette_expansion}), one has
+\[
+\widehat F_{\mu\nu}(x)=F_{\mu\nu}(x)+O(a),
+\]
+with the remainder controlled by local bounds on $A$ and its first two derivatives in the sampled neighborhood.
+\end{proposition}
+
+\paragraph{Gauge covariance.}
+\MathTag Under a gauge transformation, holonomy transforms by conjugation $U_\square\mapsto g\,U_\square\,g^{-1}$, hence $\log(U_\square)$ transforms by conjugation in the same neighborhood and $\widehat F_{\mu\nu}$ transforms in the adjoint representation.
+Branch failure or leaving the neighborhood triggers CL3 (regularity/scale-map regime not usable).
