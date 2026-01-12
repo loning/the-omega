@@ -170,11 +170,14 @@ By contrast, the \emph{sequence-level} observables (context windows of $\Delta_m
 Scientific integrity requires reporting results that do not support the main hypothesis alongside those that do.
 We document several negative or null findings from the computational reinforcement program:
 
-\paragraph{Incremental predictive power is absent.}
-When uplift-window statistics are added to a classifier that already includes stop identity, +4 base, GC, and dinucleotide composition, the cross-validated AUC does \emph{not} improve:
-$\Delta\mathrm{AUC}_{M2-M1}=-0.0015$ with $p=0.57$ under a permutation test (Appendix~\ref{app:generated_tables}).
-This indicates that, in the current recoding-vs-terminal discrimination task, the $u$-window features are largely redundant with composition features.
-A different task or a larger dataset may reveal incremental signal, but the present data do not support this claim.
+\paragraph{Incremental predictive power: mixed evidence.}
+We tested two versions of the nested-model analysis for incremental uplift signal.
+In the original M0/M1/M2 hierarchy (Appendix~\ref{app:generated_tables}), adding uplift to composition features yielded $\Delta\mathrm{AUC}_{M2-M1}=-0.0015$ with $p=0.57$, suggesting redundancy.
+However, an extended model hierarchy (M0--M5) incorporating explicit structure proxies and translation-rate features reveals a different picture:
+\input{sections/generated/nested_models_extended_table}
+In this extended analysis, uplift provides \emph{significant} incremental AUC ($\Delta\mathrm{AUC}_{M2-M1}=+0.0017$, $p=0.01$; $\Delta\mathrm{AUC}_{M4-M3}=+0.0039$, $p=0.01$) after controlling for GC, dinucleotide, and structure features.
+Translation-rate proxies (tAI) also contribute additional signal ($\Delta\mathrm{AUC}_{M5-M4}=+0.0014$, $p=0.01$).
+The discrepancy between analyses may reflect differences in model specification or sampling; we report both for transparency.
 
 \paragraph{Generative null models: dicodon vs dinucleotide.}
 We tested two complementary generative nulls to assess whether stop-class differences survive sequence shuffling.
@@ -224,18 +227,23 @@ The scripts provided here are designed to support a sustained experimental progr
 \item compare codon-usage biases with the folding-derived spectra to probe whether organisms preferentially select codons with certain $(Z,U)$ profiles under ecological or translational constraints.
 \end{itemize}
 
-\paragraph{Mechanistic bridge: RNA structure and ribosome pausing.}
-A critical question for future work is whether the arithmetic uplift $\Delta$ captures any mechanistic aspect of translation beyond sequence composition.
-Two specific analyses are prioritized:
+\paragraph{Mechanistic bridge: translation rate proxies.}
+A critical question is whether the arithmetic uplift $\Delta$ captures any mechanistic aspect of translation beyond sequence composition.
+We tested the correlation between uplift and tRNA Adaptation Index (tAI), a standard proxy for translation rate:
+\input{sections/generated/uplift_translation_rate_proxy}
+At the codon level, uplift and tAI are uncorrelated ($\rho=0.005$, $p=0.97$), indicating that the arithmetic structure does not directly encode translational efficiency.
+At the window level, the raw correlation is negative (high uplift $\to$ low tAI), but this reverses after controlling for GC content, suggesting that GC is a strong confounder in the uplift--translation-rate relationship.
+
+\paragraph{Future directions: RNA structure and ribosome pausing.}
+Two additional analyses remain as future work:
 \begin{itemize}
-\item \textbf{RNA secondary structure correlation.}
-Test whether $\overline{U}_{\mathrm{after}}(k)$ correlates with predicted mRNA folding stability (e.g.\ minimum free energy from ViennaRNA) after controlling for GC and dinucleotide composition.
-If a significant partial correlation remains, it would suggest that uplift encodes structural information beyond simple composition proxies.
-The current data (dicodon-preserving null) indicate that stop-context differences are largely explained by codon-pair structure, motivating explicit structure-vs-composition decomposition.
+\item \textbf{RNA secondary structure with RNAfold.}
+Direct MFE calculations (rather than GC proxies) would provide a stronger test of whether uplift encodes structural information.
+Preliminary GC-proxy analysis shows the correlation vanishes after composition control (Section~\ref{sec:negative_results}).
 \item \textbf{Ribosome profiling overlay.}
 Map published Ribo-seq data onto the RefSeq corpus and test whether high-$\overline{U}_{\mathrm{after}}$ windows exhibit elevated ribosome pause scores after within-gene normalization and composition stratification.
 This would provide a direct mechanistic link between arithmetic uplift and translation dynamics.
 \end{itemize}
-These analyses require additional data infrastructure (per-window sequences with structure annotations, Ribo-seq alignments) and are documented as executable protocols in Appendix~\ref{app:bio_mech_bridge}.
+These analyses require additional data infrastructure and are documented as executable protocols in Appendix~\ref{app:bio_mech_bridge}.
 
 
