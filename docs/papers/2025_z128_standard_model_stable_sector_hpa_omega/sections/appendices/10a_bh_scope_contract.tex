@@ -1,0 +1,110 @@
+\section{Black-hole information closure contract (scope, targets, and failure points)}
+\label{app:bh_scope_contract}
+
+\paragraph{Purpose.}
+\AuditTag This appendix records a reader-facing contract for any future attempt to close
+black-hole evaporation and information recovery inside the tick\,+\,CAP discipline.
+It is a \emph{scope and gatekeeping} module: it introduces no new theorem-level premises
+into the folding core.
+
+\paragraph{Context.}
+This paper already contains three black-hole-facing infrastructure modules:
+(i) the protocol-horizon / tick-trap notion (Appendix~\ref{app:protocol_horizon_tick_trap}),
+(ii) a deterministic capacity calibration that links black-hole boundary information to
+protocol resolution parameters $(m,n)$ (Appendix~\ref{app:bh_planck_capacity_calibration}),
+and (iii) a capacity-first uplift/fusion/horizon staging vocabulary (Appendix~\ref{app:resolution_uplift_fusion_horizon_unification}).
+In addition, a finite-family leakage-kernel vocabulary unifies decay and evaporation as
+exits from tick traps (Appendix~\ref{app:leakage_kernel}).
+
+\paragraph{What is \emph{not} closed in this paper.}
+\AuditTag This manuscript does \emph{not} close black-hole evaporation dynamics or the
+black-hole information paradox (Page curve, islands/QES, replica wormholes). These topics
+are explicitly kept beyond-scope in the main limitations section
+(Section~\ref{sec:limitations_related_work}).
+The present appendix defines what it would mean to close them in a protocol-auditable form.
+
+\subsection{Contract C0: external record algebra (what the outside can access)}
+\label{subsec:bh_contract_record_algebra}
+
+\paragraph{Record-algebra requirement.}
+\AuditTag Any black-hole information statement must begin by declaring the externally accessible
+record algebra $\mathcal{A}_{\mathrm{out}}$.
+In the paper's protocol language, this can be implemented by one of the following concrete choices:
+\begin{itemize}
+\item \textbf{Window-word record.} A record stream of finite window outcomes (Section~\ref{sec:hpa_readout}).
+\item \textbf{Stable-type record.} A record stream of stable labels $w_t\in X_m$ induced by fixed-resolution
+coarse readout, with $w_t=\mathrm{Fold}_m(N_t)$ for microstates $N_t\in\{0,\dots,2^m-1\}$.
+\item \textbf{Exit-channel record.} A record stream of coarse exit-channel symbols, as in the leakage-kernel
+module (Appendix~\ref{app:leakage_kernel}).
+\end{itemize}
+The record choice is an \InterfaceTag interface declaration and must be audited as a finite protocol specification.
+
+\paragraph{Causal inaccessibility is a statement about $\mathcal{A}_{\mathrm{out}}$.}
+\AuditTag ``Causal inaccessibility'' in this program is formalized as: the exterior observer's
+predictions and reconstructions are functions only of $\mathcal{A}_{\mathrm{out}}$ (and declared matching inputs),
+with no privileged access to internal bookkeeping variables.
+
+\subsection{Contract C1: unitarity target is a \texorpdfstring{$\mathcal{A}_{\mathrm{out}}$}{Aout}-level recovery statement}
+\label{subsec:bh_contract_unitarity_target}
+
+\paragraph{Unitarity target (interface form).}
+\InterfaceTag The unitarity target for black-hole evaporation is not ``the spectrum is thermal'',
+but a recovery statement about information in the \emph{external record}:
+even if low-order statistics of $\mathcal{A}_{\mathrm{out}}$ appear approximately thermal/featureless for a long
+epoch, the full record must contain sufficient higher-order correlations to allow information recovery
+in the long-time limit (within declared error tolerance and budget constraints).
+
+\paragraph{Page behavior as a record-entropy surrogate (audit form).}
+\AuditTag In this paper's discipline, the Page-curve content should be expressed through a
+protocol-computable surrogate functional $S_{\mathrm{sur}}(R_{0:t})$ on finite record prefixes,
+for example an MDL/compression-rate proxy or an explicitly declared recovery error bound.
+The surrogate must be tied to a declared finite hypothesis class and must provide
+clear failure conditions (Appendix~\ref{app:minimal_failure_point_templates}).
+
+\subsection{Contract C2: CP\texorpdfstring{$\to$}{->}PT gate (what must be proved vs.\ assumed)}
+\label{subsec:bh_contract_cp_to_pt_gate}
+
+\paragraph{Why a CP gate is unavoidable.}
+\AuditTag Black-hole information recovery in full quantum gravity typically relies on strong inputs
+(nonperturbative control, replica saddles, or duality assumptions).
+In the present paper, the admissible approach is to spell out the minimal assumption package and its
+failure points (CP), and to promote individual steps to theorem-level statements (PT) whenever possible.
+
+\paragraph{Minimum CP package (recommended).}
+\AuditTag Any CP-level black-hole information closure claimed within this project must explicitly include:
+\begin{itemize}
+\item \textbf{(CP1) A declared protocol state $(m,n,K)$.} (Appendix~\ref{subsec:tick_cap_joint_protocol_state}).
+\item \textbf{(CP2) A record algebra $\mathcal{A}_{\mathrm{out}}$ and its reconstruction target.}
+(Contract C0).
+\item \textbf{(CP3) A resource ledger.} A discrete mass/energy/overhead budget that decreases under emission,
+preventing perpetual emission without a source (required for physical interpretability).
+\item \textbf{(CP4) A stability/spectrum surrogate.} If scattering/LSZ-style interfaces are invoked,
+the windowed spectrum-surrogate contract must be declared (Appendix~\ref{app:spectrum_surrogate_contract}).
+\item \textbf{(CP5) A recovery surrogate with a falsifiable failure point.} (Contract C1) together with an
+evidence-map pointer (Appendix~\ref{app:minimal_failure_point_templates}).
+\end{itemize}
+
+\paragraph{PT promotion checklist.}
+\AuditTag Steps are eligible for PT promotion if they can be stated as one of the rigidity-bridge certificates
+of Appendix~\ref{app:rigidity_bridge_checklist} (finite-family minimization, obstruction, counting, or robustness),
+with all finite families and tie-breaks declared and reproducible.
+
+\subsection{Contract C3: fallbacks and failure recording}
+\label{subsec:bh_contract_failures}
+
+\paragraph{Failure recording rule.}
+\AuditTag If any CP item cannot be discharged (e.g.\ no viable emission ledger, no recovery surrogate,
+or no stable record-algebra choice), the manuscript must downgrade the claim to interface-only language
+and record the failure in the evidence map (Appendix~\ref{app:minimal_failure_point_templates}).
+
+\paragraph{Allowed fallbacks (conservative).}
+\AuditTag The following downgrades are acceptable and must be explicitly labeled:
+\begin{itemize}
+\item \textbf{Delay-only closure.} Keep only delay/lapse and trap-leakage diagnostics (Appendix~\ref{app:leakage_kernel})
+without claiming information recovery.
+\item \textbf{Capacity-only closure.} Keep only area/capacity mapping (Appendix~\ref{app:bh_planck_capacity_calibration})
+without claiming evaporation dynamics.
+\item \textbf{Pointer-only closure.} Keep only external rigidity targets and observational hooks
+(Appendix~\ref{app:bh_wormholes_pointer}).
+\end{itemize}
+
