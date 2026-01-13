@@ -38,9 +38,11 @@ class Step:
     name: str
     script: str
     expected_outputs: Sequence[str]
+    depends_on: Sequence[str] = ()
+    always_run: bool = False
 
 
-RUN_ALL_CACHE_VERSION = 1
+RUN_ALL_CACHE_VERSION = 2
 
 
 def _run_all_cache_file() -> Path:
@@ -201,6 +203,14 @@ def _deps_fingerprint(deps: Iterable[Path]) -> str:
         h.update(p.read_bytes())
         h.update(b"\0")
     return h.hexdigest()
+
+
+def _extra_input_paths(rel_paths: Sequence[str]) -> List[Path]:
+    out: List[Path] = []
+    for rel in rel_paths:
+        p = paper_root() / rel
+        out.append(p)
+    return out
 
 
 def _max_mtime(paths: Iterable[Path]) -> float:
@@ -816,6 +826,85 @@ def build_steps() -> List[Step]:
                 "sections/generated/chi_horizon_budget_occupancy_rows.tex",
                 "sections/generated/chi_horizon_budget_occupancy_summary.tex",
             ],
+        ),
+        Step(
+            name="QG interface suite (chi->curvature, horizon trigger, scattering delay)",
+            script="exp_qg_interface_suite.py",
+            expected_outputs=[
+                "sections/generated/qg_interface_suite_rows.tex",
+                "sections/generated/qg_interface_suite_summary.tex",
+            ],
+        ),
+        Step(
+            name="Orbit force propagation and relaxation (toy dynamics)",
+            script="exp_orbit_force_relaxation_dynamics.py",
+            expected_outputs=[
+                "sections/generated/orbit_force_relax_rows.tex",
+                "sections/generated/orbit_force_relax_summary.tex",
+            ],
+        ),
+        Step(
+            name="Fusion: orbit/force propagation + scattering delay + BH-like trapping (toy)",
+            script="exp_orbit_force_relaxation_scattering_bh_fusion.py",
+            expected_outputs=[
+                "sections/generated/orbit_force_relax_bh_rows.tex",
+                "sections/generated/orbit_force_relax_bh_summary.tex",
+            ],
+        ),
+        Step(
+            name="Full fusion: BH + wormhole-like pointers + measurement (toy)",
+            script="exp_full_fusion_bh_wormhole_measurement.py",
+            expected_outputs=[
+                "sections/generated/full_fusion_nowh_rows.tex",
+                "sections/generated/full_fusion_compare_rows.tex",
+                "sections/generated/full_fusion_rows.tex",
+                "sections/generated/full_fusion_summary.tex",
+            ],
+        ),
+        Step(
+            name="Full fusion wormhole parameter sweep (metrics-only audit)",
+            script="exp_full_fusion_wormhole_sweep.py",
+            expected_outputs=[
+                "sections/generated/full_fusion_wormhole_sweep_rows.tex",
+                "sections/generated/full_fusion_wormhole_sweep_summary.tex",
+                "sections/generated/full_fusion_wormhole_pareto_rows.tex",
+                "sections/generated/full_fusion_wormhole_pareto_summary.tex",
+                "sections/generated/full_fusion_wormhole_pareto_delay_rows.tex",
+                "sections/generated/full_fusion_wormhole_pareto_delaywh_rows.tex",
+                "sections/generated/full_fusion_wormhole_pareto_emit_rows.tex",
+                "sections/generated/full_fusion_wormhole_pareto_jump_rows.tex",
+                "sections/generated/full_fusion_wormhole_pareto_multi_summary.tex",
+            ],
+        ),
+        Step(
+            name="Full fusion wormhole adaptive search (budgeted recommendations)",
+            script="exp_full_fusion_wormhole_adaptive_search.py",
+            expected_outputs=[
+                "sections/generated/full_fusion_wormhole_adaptive_rows.tex",
+                "sections/generated/full_fusion_wormhole_adaptive_summary.tex",
+                "sections/generated/full_fusion_opt_delay_rows.tex",
+                "sections/generated/full_fusion_opt_delay_nowh_rows.tex",
+                "sections/generated/full_fusion_opt_delay_compare_rows.tex",
+                "sections/generated/full_fusion_opt_delay_summary.tex",
+                "sections/generated/full_fusion_opt_emit_rows.tex",
+                "sections/generated/full_fusion_opt_emit_nowh_rows.tex",
+                "sections/generated/full_fusion_opt_emit_compare_rows.tex",
+                "sections/generated/full_fusion_opt_emit_summary.tex",
+            ],
+            depends_on=[
+                "sections/generated/full_fusion_wormhole_pareto_rows.tex",
+                "sections/generated/full_fusion_wormhole_pareto_emit_rows.tex",
+                "sections/generated/full_fusion_wormhole_pareto_delay_rows.tex",
+            ],
+        ),
+        Step(
+            name="Artifact hash registry (script/deps -> outputs)",
+            script="exp_artifact_hash_registry.py",
+            expected_outputs=[
+                "sections/generated/artifact_hash_registry.json",
+                "sections/generated/artifact_hash_registry_summary.tex",
+            ],
+            always_run=True,
         ),
         Step(
             name="Resolution uplift CAP choice under constraints (capacity-driven staging)",
@@ -1622,18 +1711,28 @@ def main(argv: Sequence[str] | None = None) -> int:
     deps_memo: dict[Path, set[Path]] = {}
     cache: dict[str, str] = _load_run_all_cache() if use_skip else {}
     cache_dirty = False
+    ran_registry_step = False
 
     for step in steps:
         step_t0 = time.perf_counter()
         script_path = scripts_dir() / step.script
         if not script_path.is_file():
             raise FileNotFoundError(f"Missing script: {script_path}")
+        if step.script == "exp_artifact_hash_registry.py":
+            ran_registry_step = True
         if use_skip:
             deps = _script_deps_closure(script_path, module_map, deps_memo)
-            fp = _deps_fingerprint(deps)
+            extra_inputs = _extra_input_paths(step.depends_on)
+            fp = _deps_fingerprint(set(deps) | set(extra_inputs))
             have = _have_outputs(step.expected_outputs)
             cached_fp = cache.get(step.script)
-            if have and cached_fp == fp:
+            if step.always_run:
+                print(f"[run_all] {step.name} -> {step.script}", flush=True)
+                _run_script(script_path, step_name=step.name)
+                _check_outputs(step.expected_outputs)
+                cache[step.script] = fp
+                cache_dirty = True
+            elif have and cached_fp == fp:
                 print(f"[run_all] SKIP (up-to-date) {step.name}", flush=True)
                 _check_outputs(step.expected_outputs)
                 elapsed_s = float(time.perf_counter() - step_t0)
@@ -1691,6 +1790,21 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if cache_dirty:
         _save_run_all_cache(cache)
+
+    # Refresh the artifact hash registry after every run_all invocation.
+    # This guarantees the dictionary is updated even when the run was stopped early.
+    if not ran_registry_step:
+        reg_script = scripts_dir() / "exp_artifact_hash_registry.py"
+        if reg_script.is_file():
+            step_name = "Artifact hash registry (post-run refresh)"
+            print(f"[run_all] {step_name} -> exp_artifact_hash_registry.py", flush=True)
+            _run_script(reg_script, step_name=step_name)
+            _check_outputs(
+                [
+                    "sections/generated/artifact_hash_registry.json",
+                    "sections/generated/artifact_hash_registry_summary.tex",
+                ]
+            )
 
     print("[run_all] OK", flush=True)
     return 0
