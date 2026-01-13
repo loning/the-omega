@@ -146,6 +146,81 @@ flowchart TD
   - `sections/V_40_falsifiability_predictions.tex`：P5 的边界说明（cycle-type-only）
 - **层级**：Audit/Iface（诊断管线的结构说明）
 
+### IC-6：容量 bits ↔ 计数熵（capacity = log-count entropy）与折叠挤压约束
+
+- **内容**：在本文口径里，容量（bits）与计数熵（log-count entropy）是同一对象的两种刻度；凡以容量作为控制参数（screen capacity、$\chi$-cloud capacity、BH capacity matching），都应与“有限可观测折叠”产生的挤压界相容，尤其是纤维熵/相对熵挤压（RB‑E 型）给出的非均匀性 $O(1)$ 约束。  
+- **文稿定位**：
+  - `sections/F_12_rigidity_bridge_spine.tex`：`\ref{rem:rigidity_capacity_bits_entropy}`（capacity bits = entropy 的统一口径）
+  - `sections/F_12_rigidity_bridge_spine.tex`：`\ref{prop:fiber_entropy_relative_entropy_squeezing}`（RB‑E squeezing）
+  - `sections/appendices/09_bh_planck_capacity_calibration.tex`：容量校准与 area representative
+  - `sections/appendices/27_thermodynamics_from_equivalence.tex`：计数熵字典（$S=\log|\Gamma|$）
+- **层级**：Iface/Audit（不把 BH/热力学当作 folding 定理前提）
+- **最小失败点**：若某处用容量数值推出“熵/均匀性/稳定性”而未声明其对应的 coarse-graining/quotient 与适用窗口（或将可观测挤压界当作可调旋钮），则应降级为 matching-only，并显式扩大候选族或补充误差预算。
+
+### IC-7：scheme reparam ↔ \texorpdfstring{$r$}{r} 原点平移 ↔ tick-origin shift（坐标规约几何）
+
+- **内容**：在 $\mu(r)=\mu_0\varphi^{\,r}$ 的分辨率坐标里，$\mu_0$ 选择只是 $r$ 的原点选择；而 RG 字典中的 $\Lambda$ 重标定 $\Lambda'\!=c\Lambda$ 等价于 $r$ 的加法平移。它与等价语义中的 tick-origin shift（E1）属于同一类“坐标规约自由度”，必须通过 scheme contract 显式管理（不变/允许变）。  
+- **文稿定位**：
+  - `sections/F_12_rigidity_bridge_spine.tex`：`\ref{cor:rigidity_scheme_shift_origin_r}`
+  - `sections/F_10_equivalence_semantics.tex`：tick-origin shift（E1）与 CAP-on-quotients 语义
+  - `sections/appendices/31_running_couplings_resolution_flow.tex`：`\ref{lem:lambda_rescaling_shift_r}`
+  - `sections/appendices/76_scheme_invariance_audit_contract.tex`：scheme invariance contract
+- **层级**：Audit/Match（EFT/RG 仍是字典层）
+- **最小失败点**：若某数值闭合对 scheme/$\mu_0$ 敏感但未在合同中显式记账，则必须回退为“bounded scheme family + sensitivity envelope”，禁止把坐标自由度当作隐含调参。
+
+### IC-8：WS delay ↔ \texorpdfstring{$\log\det S$}{logdet S} ↔ \texorpdfstring{$\log\det$}{logdet}/trace bookkeeping（实验侧解析证书接口）
+
+- **内容**：在 unitary band 上，Wigner–Smith 延迟满足 $\Tr Q(\omega)=-i\,\dd(\log\det S)/\dd\omega$，因此 delay 是 log-determinant 的频率导数。它把“实验可观测的 delay”与本文的 determinant/trace/解析域证书体系对齐，使得 delay audit 能以同一类 logdet 证书语言挂回 pole-barrier/mother-space 口径（但前提窗口必须显式）。  
+- **文稿定位**：
+  - `sections/F_12_rigidity_bridge_spine.tex`：`\ref{lem:wigner_smith_trace_logdet}` 与 `\ref{rem:rigidity_ws_logdet_bridge}`
+  - `sections/appendices/34_unified_delay_closure.tex`：WS delay 字典与 logdet identity（接口层）
+  - `sections/appendices/59_operator_mother_space.tex`：logdet/trace 与 pole-barrier 口径
+  - `sections/appendices/65_scattering_haag_ruelle_lsz_interface.tex`：散射接口与失败点（S1 等）
+- **层级**：Iface/Audit
+- **最小失败点**：若 $S(\omega)$ 在声明带宽内不近似幺正/不可微/unwrap 不稳定（S1），则必须把 WS delay 降级为 proxy，并停止任何“解析证书升级”的叙事提升。
+
+### IC-9：CPTP/DPI ↔ 第二定律证书 ↔ 多体反馈（单调性约束面）
+
+- **内容**：把 coarse-graining/forgetting 表述为 channel（Markov 或 CPTP）时，DPI（相对熵单调性）提供可审计的不可逆证书；热力学“第二定律”在本文口径下应理解为“在声明 channel family 上的 DPI 证书”，并能与多体+测量反馈（instrument/control loop）接口同构对齐。  
+- **文稿定位**：
+  - `sections/F_12_rigidity_bridge_spine.tex`：`\ref{cor:rigidity_dpi_irreversibility_certificate}`
+  - `sections/appendices/30e_quantum_channels_cptp_stinespring.tex`：`\ref{thm:z128_quantum_dpi_channel}`
+  - `sections/appendices/27_thermodynamics_from_equivalence.tex`：thermo 的 channel/单调性口径
+  - `sections/appendices/77_orbit_gauge_force_manybody_measurement_feedback.tex`：多体反馈接口
+- **层级**：Math/Iface（DPI 为数学定理；物理解释为接口）
+- **最小失败点**：若实际 pipeline 不满足声明的 CPTP/Markov 条件、或 channel family 未界定，则“第二定律证书”必须回退为经验叙述并显式记录误差/违约项。
+
+### IC-10：MDL 全局 look-elsewhere ↔ CAP 局部选择（扩族记账约束）
+
+- **内容**：CAP 在单一有限族内给出局部闭合；跨族比较必须通过显式 family registry 与 prefix-code prior（MDL）记账。任何“扩族/多重扫描/更换核族”都必须进入 registry（或显式 union/mixture 修正），否则属于未记账的 look-elsewhere。  
+- **文稿定位**：
+  - `sections/appendices/42_global_model_selection_mdl.tex`：`\ref{app:global_model_selection_mdl}`（registry + mixture bound）
+  - `sections/appendices/11_inference_ledger.tex`：外部输入/候选族口径与 joint protocol-state scan 记账
+  - `architecture_dag.md`：Fig.9 的 MDL↔kernel-view 约束边（见 IC-10 的虚线）
+- **层级**：Audit
+- **最小失败点**：出现未登记的 family enlargement（增加候选表达式/核族/阈值扫描）时，必须回退为“within-family 结果”并补齐 registry 与全局上界。
+
+### IC-11：\texorpdfstring{$r_m$}{r_m}（最大纤维）↔ 最小 slot gauge ↔ gauge 复杂度敏感性
+
+- **内容**：$r_m$ 不仅是折叠冗余的最大退化，它还强迫最小截断自由的 uniform slot gauge 至少为 $S_{r_m}$；因此任何 gauge-复杂度/内部维度的敏感性声明都必须与 $r_m$ 的增长率以及 RB‑E squeezing 的非均匀性控制一致。  
+- **文稿定位**：
+  - `sections/I_21_protocol_connections_holonomy.tex`：`\ref{prop:max_fiber_deg_forces_perm_gauge}` 与 `\ref{cor:rm_growth_rate}`
+  - `sections/F_12_rigidity_bridge_spine.tex`：`\ref{prop:fiber_entropy_relative_entropy_squeezing}`
+  - `sections/C_12_kernel_view.tex`：$r_m$ 与 kernel 视角的冗余率解释
+- **层级**：Math/Prot（$r_m$ 与 gauge 最小性为定理/构造；物理解释为接口）
+- **最小失败点**：若实际构造对纤维进行了 truncation/非声明 padding，或把 representation-dependent tie-break 当作 gauge invariant，则必须降级为“表示依赖诊断”，并重新声明 slot/gauge 约束。
+
+### IC-12：kernel weighted pressure monotonicity ↔ thermodynamic pressure ↔ pole barrier
+
+- **内容**：kernel view 的 weighted pressure proxy $P_n(t)=\log\rho(\widehat F_n(t))$ 与 thermodynamic-formalism 的 pressure $P(\phi)=\log\rho(\mathcal{L}_\phi)$ 是同一类 $\log$-谱半径对象；其 pole-barrier 统一为 $\exp(-P)$ 的解析域证书。  
+- **文稿定位**：
+  - `sections/F_12_rigidity_bridge_spine.tex`：`\ref{cor:rigidity_kernel_pressure_polebarrier_alignment}`
+  - `sections/C_12_kernel_view.tex`：weighted operator family 与 P8 单调性
+  - `sections/appendices/44_thermodynamic_formalism_pressure.tex`：pressure=spectral radius（标准）
+  - `sections/appendices/59_operator_mother_space.tex`：det/resolvent 的 pole-barrier 口径
+- **层级**：Audit/Math（对齐为证书体系，不引入新物理前提）
+- **最小失败点**：若 weighted potential 或 operator assembly 导致 PF 单调性/非负性违约，则 P8/pressure 解释必须回退为“表格级 audit 输出”，并记录违约触发条件。
+
 ## 已引入的“自包含闭合模块”（Part F 主文 + 附录）
 
 - [x] **时间箭头（指数半群/Abel-first）**：`Part F.0`  

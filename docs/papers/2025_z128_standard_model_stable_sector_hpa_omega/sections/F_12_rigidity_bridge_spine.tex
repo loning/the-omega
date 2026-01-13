@@ -115,6 +115,84 @@ For a one-step SFT, $P(0)=\log\rho(A)$ (Theorem~\ref{thm:pressure_spectral_radiu
 The determinant/zeta rational form is controlled by $\det(I-zA)$, whose smallest-modulus singularity lies at $|z|=\rho(A)^{-1}$.
 \end{proof}
 
+\subsection{Scattering delay as a \texorpdfstring{$\log\det$}{logdet} derivative (unitary rigidity)}
+\label{subsec:rigidity_scattering_delay_logdet}
+
+\begin{lemma}[Wigner--Smith trace as a frequency derivative of \texorpdfstring{$\log\det S$}{logdet S}]\label{lem:wigner_smith_trace_logdet}
+\MathTag Let $S(\omega)$ be a differentiable family of \emph{unitary} matrices on a frequency band.
+Define the Wigner--Smith matrix
+\[
+Q(\omega):=-\iu\,S(\omega)^\dagger\frac{\dd S}{\dd \omega}.
+\]
+Then
+\[
+\Tr Q(\omega)=-\iu\,\frac{\dd}{\dd\omega}\log\det S(\omega).
+\]
+\end{lemma}
+\begin{proof}
+For an invertible differentiable matrix $S(\omega)$ one has the standard identity
+\[
+\frac{\dd}{\dd\omega}\log\det S(\omega)=\Tr\!\left(S(\omega)^{-1}\frac{\dd S}{\dd\omega}\right).
+\]
+Under unitarity, $S^{-1}=S^\dagger$, hence
+\[
+-\iu\,\frac{\dd}{\dd\omega}\log\det S(\omega)
+=-\iu\,\Tr\!\left(S^\dagger\frac{\dd S}{\dd\omega}\right)
+=\Tr\!\left(-\iu\,S^\dagger\frac{\dd S}{\dd\omega}\right)
+=\Tr Q(\omega).
+\]
+\end{proof}
+
+\begin{remark}[Why this is a rigidity bridge]\label{rem:rigidity_ws_logdet_bridge}
+\AuditTag Lemma~\ref{lem:wigner_smith_trace_logdet} makes the phase/delay interface in Appendix~\ref{app:time_mass_delay} algebraically compatible with the determinant/trace bookkeeping used throughout the $\e$-channel and the operator mother-space vocabulary:
+delay is a derivative of a \emph{log-determinant}.
+This is the minimal reason that ``delay audits'' can be discussed in the same certificate language as pole-barrier and logdet/trace expansions, without importing any additional dynamical axiom beyond the declared unitarity window.
+\end{remark}
+
+\subsection{Resolution-origin shifts: scheme reparametrization as a coordinate convention}
+\label{subsec:rigidity_scheme_shift_as_origin_shift}
+
+\begin{corollary}[Scheme rescaling and origin shifts in the \texorpdfstring{$r$}{r} coordinate]\label{cor:rigidity_scheme_shift_origin_r}
+\AuditTag The equivalence semantics of Section~\ref{app:equivalence_semantics} treats tick-origin shifts $t\sim t+t_0$ as coordinate conventions (E1).
+Likewise, in the Fibonacci scale map $\mu(r)=\mu_0\varphi^r$, changing the reference scale $\mu_0$ is an additive shift of $r$.
+In the RG dictionary, a scheme rescaling $\Lambda'\!=c\,\Lambda$ is precisely the same additive shift in the $\Lambda$-relative coordinate $r_\Lambda(\mu)=\log_\varphi(\mu/\Lambda)$ (Lemma~\ref{lem:lambda_rescaling_shift_r}).
+Therefore, within the declared scheme contract, scheme rescalings are to be treated as \emph{origin choices} in the $r$ coordinate rather than as hidden continuous knobs.
+\end{corollary}
+
+\subsection{Coarse graining and irreversibility: data processing as a second-law certificate}
+\label{subsec:rigidity_dpi_second_law}
+
+\begin{corollary}[Data processing as an auditable irreversibility certificate]\label{cor:rigidity_dpi_irreversibility_certificate}
+\AuditTag Whenever a protocol step is modeled as a channel (classical Markov kernel or quantum CPTP map), relative-entropy monotonicity provides a canonical irreversibility certificate:
+\[
+D(\Phi(\rho)\Vert \Phi(\sigma))\le D(\rho\Vert \sigma)
+\]
+for CPTP $\Phi$ (Theorem~\ref{thm:z128_quantum_dpi_channel}).
+Appendix~\ref{app:thermodynamics_from_equivalence} uses this as the theorem-level backbone behind the interface reading of a ``second law'' under declared coarse-graining/channel families.
+\end{corollary}
+
+\subsection{Capacity bits and counting entropy: a compatibility constraint}
+\label{subsec:rigidity_capacity_entropy_compatibility}
+
+\begin{remark}[Capacity bits are log-count entropy in the protocol language]\label{rem:rigidity_capacity_bits_entropy}
+\AuditTag The protocol screen capacity and the $\chi$-cloud capacity are defined as \emph{bit counts} (Appendix~\ref{app:bh_planck_capacity_calibration} and Definition~\ref{def:chi_cloud_capacity_bits}).
+In the counting-entropy dictionary of Appendix~\ref{app:thermodynamics_from_equivalence}, the same content is simply $S=\log|\Gamma|$ (up to the $k_B$ and $\ln 2$ matching factors).
+This means that any place the manuscript uses capacity bits as a control parameter is also (implicitly) using an entropy proxy, and must respect the finite-observability squeezing constraints such as Proposition~\ref{prop:fiber_entropy_relative_entropy_squeezing} when those capacities are formed from folding/coarse-graining quotients.
+\end{remark}
+
+\subsection{Kernel pressure and thermodynamic pressure: the same \texorpdfstring{$\log\rho$}{log rho} object}
+\label{subsec:rigidity_kernel_pressure_alignment}
+
+\begin{corollary}[Kernel weighted pressure proxy aligns with the pole-barrier/pressure certificate]\label{cor:rigidity_kernel_pressure_polebarrier_alignment}
+\AuditTag In the kernel view (Section~\ref{sec:kernel_view}) the finite-dimensional weighted operator family $\widehat F_n(t)$ yields a pressure proxy
+$P_n(t)=\log\rho(\widehat F_n(t))$ (Prediction P8; Section~\ref{subsec:p8_weighted_pressure_monotonicity}).
+By the same spectral-radius identity as in Corollary~\ref{cor:pole_barrier_equals_exp_minus_pressure}, the corresponding determinant/resolvent package has dominant barrier at
+\[
+|r|_\star=\rho(\widehat F_n(t))^{-1}=\exp(-P_n(t)).
+\]
+Thus the kernel-view ``weighted pressure'' and the thermodynamic-formalism pressure share the same rigidity meaning: they are both $\log$ spectral radii, and their pole barriers are the corresponding exponentials.
+\end{corollary}
+
 \subsection{Audit legality: CAP on equivalence classes and scheme contracts}
 \label{subsec:rigidity_legality_cap_scheme}
 

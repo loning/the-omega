@@ -1010,6 +1010,10 @@ flowchart TB
   P_cloud_capacity("cloud capacity proxy（bits）<br/>类型：字典 / Dictionary<br/>label: def:chi_cloud_capacity_bits<br/>I_chi (m,n) from chi-cloud count")
   M_cloud_capacity -.- P_cloud_capacity
 
+  %% Capacity bits are entropy proxies (counting-entropy dictionary)
+  M_cloud_capacity -.-> M_thermo
+  P_cloud_capacity -.-> P_thermo
+
   M_area_rep["areaRepresentative（A_chi）<br/>类型：假设 / Assumption<br/>label: ass:chi_channel_area_calibration<br/>A_chi := 4 l_P^2 ln2 · I_chi"]
   P_area_rep("area representative proxy（A_chi）<br/>类型：审计 / Audit<br/>label: ass:chi_channel_area_calibration<br/>bit-to-area saturation calibration")
   M_area_rep -.- P_area_rep
@@ -1037,6 +1041,10 @@ flowchart TB
   M_qchannels["量子信道（CPTP/Kraus/Stinespring）<br/>类型：审计 / Audit<br/>label: app:quantum_channels_cptp_stinespring<br/>Phi(rho)=Σ K rho K†;  rho↦Tr_env(V rho V†)"]
   P_qchannels("粗粒化/不可逆证书（trace-distance contraction）<br/>类型：审计 / Audit<br/>label: app:quantum_channels_cptp_stinespring<br/>||Phi(rho)−Phi(sigma)||_1 ≤ ||rho−sigma||_1")
   M_qchannels -.- P_qchannels
+
+  %% DPI/channel monotonicity underlies thermodynamic irreversibility certificates
+  M_qchannels -.-> M_thermo
+  P_qchannels -.-> P_thermo
 
   M_qm_lib["QM 定理库（Wigner/Stone/uncertainty/Schmidt）<br/>类型：审计 / Audit<br/>label: app:qm_theorem_library_core<br/>symmetry→(anti)unitary;  U(t)=exp(−i t H)"]
   P_qm_lib("QM 结构定理的接口读法（不入证明链）<br/>类型：审计 / Audit<br/>label: app:qm_theorem_library_core<br/>rigidity statements for symmetry/dynamics/readout bounds")
@@ -1066,6 +1074,10 @@ flowchart TB
   M_scattering_iface["散射接口（S-matrix/WS delay 对齐）<br/>类型：审计 / Audit<br/>label: app:scattering_haag_ruelle_lsz_interface<br/>S(ω) ↔ phase ↔ delay dictionary"]
   P_scattering_iface("散射/延迟统一口径（接口）<br/>类型：审计 / Audit<br/>label: app:scattering_haag_ruelle_lsz_interface<br/>delay as derivative of scattering phase")
   M_scattering_iface -.- P_scattering_iface
+
+  %% Delay/logdet interface aligns with operator mother-space bookkeeping
+  M_scattering_iface -.-> M_opMotherDict
+  P_lens -.-> P_opMotherDict
 
   M_renorm_dict["重整化边界（scheme/matching/scope）<br/>类型：审计 / Audit<br/>label: app:renormalization_dictionary_and_boundaries<br/>scheme dependence as Match; constructive renorm not claimed"]
   P_renorm_dict("renormalization dictionary（Match/Iface 边界）<br/>类型：审计 / Audit<br/>label: app:renormalization_dictionary_and_boundaries<br/>running conventions and explicit scope limits")
@@ -1102,6 +1114,10 @@ flowchart TB
   M_scheme_contract["scheme 不变性契约（字典层）<br/>类型：审计 / Audit<br/>label: app:scheme_invariance_audit_contract<br/>invariants vs allowed non-invariants"]
   P_scheme_contract("scheme invariance contract（checklist）<br/>类型：审计 / Audit<br/>label: app:scheme_invariance_audit_contract<br/>audit contract")
   M_scheme_contract -.- P_scheme_contract
+
+  %% Scheme contract is an instance of the equivalence semantics (origin-shift contract)
+  M_equiv -.-> M_scheme_contract
+  P_equiv -.-> P_scheme_contract
 
   M_uplift_fusion_horizon["分辨率提升/融合/视界形成统一模块（有限容量；CAP 选择）<br/>类型：审计 / Audit<br/>label: app:resolution_uplift_fusion_horizon_unification<br/>I_prot(m,n)=m4^n; CAP key → (m*,n*); n-blocked ⇒ m-expand; staging dictionary"]
   P_uplift_fusion_horizon("uplift/horizon unification proxy（CAP-selected uplift path）<br/>类型：审计 / Audit<br/>label: tab:resolution_uplift_cap_choice<br/>generated fragments: resolution_uplift_cap_choice_*")
@@ -1471,6 +1487,10 @@ flowchart TB
   M_mdl_global["全局模型选择（MDL / prefix-code）<br/>类型：审计 / Audit<br/>label: app:global_model_selection_mdl<br/>family registry + prefix-code prior + global mixture bound"]
   P_mdl_global("全局 look-elsewhere 上界（registry 内）<br/>类型：审计 / Audit<br/>label: tab:audit_global_mdl_family_registry<br/>p_global(ε) via weighted N_{<=ε}/|Θ|")
   M_mdl_global -.- P_mdl_global
+
+  %% Cross-family enlargement accounting constrains downstream multi-module comparisons
+  M_mdl_global -.-> M_kernel_view
+  P_mdl_global -.-> P_kernel_view
 
   M_mass --> M_rg
   P_mass --> P_rg
