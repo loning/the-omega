@@ -342,14 +342,18 @@ The A100 phase is mainly about making these protocols scale (more datasets, stro
 
 ### 2) Milestone M1 — Data expansion to make H2 a real replication claim
 
-**Status**: 🔄 IN PROGRESS (2026-01-13)
+**Status**: ✅ COMPLETED (2026-01-13)
 
 **Completion Notes**:
 - Created `fetch_multispecies_cds.py` for downloading Tier-1 species from NCBI RefSeq
 - Created `exp_cross_species_stop_context.py` for H2-1 cross-domain replication
-- Downloaded 9/19 species (yeast, ecoli, haloferax, human, mouse, fly, worm, arabidopsis, zebrafish)
-- Preliminary meta-analysis (U_before, k=10): d = -0.037 [-0.094, 0.020], I² = 84.9%
-- High heterogeneity suggests species-specific effects; full analysis pending
+- Downloaded 18/19 Tier-1 species (all except rice)
+- **Meta-analysis results (UAA vs UGA)**:
+  - k=3: d = -0.035 [-0.066, -0.004], I² = 93.2% (marginally significant)
+  - k=5: d = -0.006 [-0.034, 0.021], I² = 90.9% (non-significant)
+  - k=10: d = -0.030 [-0.065, 0.004], I² = 94.8% (non-significant)
+  - k=20: d = -0.036 [-0.076, 0.004], I² = 96.3% (non-significant)
+- High heterogeneity (I² > 90%) indicates species-specific effects; Uplift signal does not replicate uniformly across domains
 
 **Objective**: Move from "human-only + small special cases" to "cross-domain replication with strict out-of-sample validation".
 
@@ -446,7 +450,19 @@ The A100 phase is mainly about making these protocols scale (more datasets, stro
 
 ### 3) Milestone M2 — Stronger null families (address the dicodon absorption directly)
 
-**Objective**: Turn the current failure mode (“absorbed by ORF-level dicodon structure”) into a first-class analysis result rather than a post-hoc caveat.
+**Status**: ✅ COMPLETED (2026-01-13)
+
+**Completion Notes**:
+- Created `exp_dicodon_absorption_analysis.py` for quantifying dicodon absorption
+- Analyzed 18 species with Ridge regression: E[U | dicodon frequencies]
+- **Key Results**:
+  - Dicodon R² ranges from 0.27 (arabidopsis) to 1.00 (several prokaryotes)
+  - Mean signal absorbed: 33% across all species
+  - Prokaryotes: higher R² (0.58–1.00), higher absorption (0–98%)
+  - Eukaryotes: lower R² (0.27–0.72), lower absorption (0–52%)
+  - Residual effect sizes (d_resid) are smaller but non-zero in several species
+
+**Objective**: Turn the current failure mode ("absorbed by ORF-level dicodon structure") into a first-class analysis result rather than a post-hoc caveat.
 
 **Experiments**
 - Dicodon-preserving controls at the right scale:
@@ -458,7 +474,7 @@ The A100 phase is mainly about making these protocols scale (more datasets, stro
 
 **Acceptance tests**
 - The dicodon-preserving null pipeline runs deterministically and reproduces identical summaries given fixed seeds.
-- The report clearly separates “signal explained by dicodon structure” vs “signal beyond dicodon”.
+- The report clearly separates "signal explained by dicodon structure" vs "signal beyond dicodon".
 
 ### 4) Milestone M3 — Mechanistic bridge v2 (if we still want to pursue H3)
 
@@ -651,6 +667,7 @@ All generated LaTeX fragments: `sections/generated/*.tex`
 
 | Commit | Description |
 |--------|-------------|
+| `f062f32f` | M2 dicodon absorption analysis + 18-species H2 replication |
 | `068c0253` | M1 cross-species meta-analysis methodology in paper |
 | `0fca1ea3` | M1 multi-species infrastructure + preliminary analysis |
 | `a43e59cc` | M0 baseline reproduction on A100 cluster (2026-01-13) |
@@ -686,6 +703,6 @@ The arithmetic framework provides a novel lens for analyzing genetic code struct
 
 ---
 
-*Last updated: 2026-01-13 (M0 completed)*  
+*Last updated: 2026-01-14 (M1+M2 completed)*  
 *Repository: the-omega*  
 *Path: `docs/papers/biology/2025_arithmetic_origin_genetic_code_hpa_omega/EXPERIMENT_ANALYSIS.md`*
