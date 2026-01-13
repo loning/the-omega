@@ -126,46 +126,6 @@ flowchart TB
   class P_morita,P_gauss,P_select phys_audit;
 ```
 
-### 图 1.5：联合协议态（m,n,K）闭合与可复现工件链（run_all → generated → LaTeX） / Fig. 1.5: Joint Protocol-State Closure and Reproducible Artifacts (run_all → generated → LaTeX)
-
-```mermaid
-%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 12, "rankSpacing": 55}, "themeVariables": {"fontSize": "10px"}}}%%
-flowchart TB
-
-  M_joint["联合协议态闭合（m,n,K）<br/>类型：审计 / Audit<br/>label: subsec:tick_cap_joint_key_contract<br/>J_mu 选择 (m*,n*,K*) 于有限候选族"] 
-
-  M_runall["run_all（复现入口）<br/>类型：审计 / Audit<br/>path: scripts/run_all.py<br/>固定步骤序列 + 确定性输出"] 
-
-  M_selector["协议态选择器（一次性闭合）<br/>类型：审计 / Audit<br/>path: scripts/protocol_state_selection.py<br/>输出：protocol_state_selected.{json,tex}"] 
-
-  M_state_io@{ shape: lean-r, label: "生成工件：protocol_state_selected<br/>类型：审计 / Audit<br/>paths: sections/generated/protocol_state_selected.json + .tex" }
-
-  M_downstream["下游统一读取选中态（接口/审计脚本）<br/>类型：审计 / Audit<br/>示例：EW family sweep / cosmology / gamma direct / coupling unification"] 
-
-  M_registry["协议态注册表（审计索引）<br/>类型：审计 / Audit<br/>path: scripts/exp_protocol_state_registry.py<br/>输出：protocol_state_registry.tex"] 
-
-  M_tex_includes["论文包含生成片段<br/>类型：审计 / Audit<br/>label: app:generated_tables + app:reproducibility<br/>sections/generated/*.tex 由脚本产出"] 
-
-  M_pdf@{ shape: lean-r, label: "输出：main.pdf<br/>类型：审计 / Audit<br/>path: main.tex -> latexmk" }
-
-  %% edges
-  M_joint --> M_selector
-  M_runall --> M_selector
-  M_selector --> M_state_io
-  M_state_io --> M_downstream
-  M_runall --> M_downstream
-  M_state_io --> M_registry
-  M_registry --> M_tex_includes
-  M_downstream --> M_tex_includes
-  M_tex_includes --> M_pdf
-
-  %% style (Material Design palettes)
-  classDef math_audit fill:#E3F2FD,stroke:#0D47A1,color:#0D47A1,stroke-width:2px,stroke-dasharray: 2 2;
-  classDef phys_audit fill:#F1F8E9,stroke:#33691E,color:#1B5E20,stroke-width:2px,stroke-dasharray: 2 2;
-
-  class M_joint,M_runall,M_selector,M_downstream,M_registry,M_tex_includes math_audit;
-```
-
 ### 图 2：三通道与折叠锚点（φ/π/ε → Fold → Anchor） / Fig. 2: Three Channels and Folding Anchor (φ/π/ε → Fold → Anchor)
 
 ```mermaid
@@ -1753,9 +1713,58 @@ flowchart TB
   P_bhinfo_scope("Page 曲线/信息回收检验（范围外）<br/>类型：范围外 / Out of Scope<br/>label: theory_closure_tracker<br/>not in current closure")
   M_bhinfo_scope -.- P_bhinfo_scope
 
-  M_qg_scope["量子引力（普朗克尺度闭合，未覆盖 / Quantum Gravity (Planck-Scale Closure, Not Covered)）<br/>类型：范围外 / Out of Scope<br/>label: theory_closure_tracker<br/>status: no Planck-scale dynamics closed"]
-  P_qg_scope("普朗克尺度普适检验（范围外 / Planck-Scale Universal Tests (Out of Scope)）<br/>类型：范围外 / Out of Scope<br/>label: theory_closure_tracker<br/>no computable universal tests")
+  M_qg_scope["量子引力（普朗克尺度闭合，未闭合 / Quantum Gravity (Planck-Scale Closure, Not Closed)）<br/>类型：未闭合 / Not Closed<br/>label: theory_closure_tracker<br/>roadmap: QG9-M1..M3 (windowed tests + EG/BRST gates + BH recovery surrogate)"]
+  P_qg_scope("普朗克窗口普适检验（未闭合 / Planck-Window Universal Tests (Not Closed)）<br/>类型：未闭合 / Not Closed<br/>label: theory_closure_tracker<br/>deliverable: finite observables + explicit error budgets + failure-point gates")
   M_qg_scope -.- P_qg_scope
+
+  %% QG9 roadmap (strong-closure milestones; audit-facing, windowed, falsifiable)
+  M_qg9_obs["有限观测注册表（Obs_{<=N}；窗口化）<br/>类型：审计 / Audit<br/>label: app:observable_algebra_state_base<br/>finite observable registry for windowed tests"]
+  P_qg9_obs("有限观测类（Obs_{<=N}）<br/>类型：审计 / Audit<br/>label: app:observable_algebra_state_base<br/>audit-visible observable list")
+  M_qg9_obs -.- P_qg9_obs
+
+  M_qg9_state["固定协议态（m,n,K；窗口化）<br/>类型：审计 / Audit<br/>label: subsec:tick_cap_joint_protocol_state<br/>fix (m,n,K) in a declared UV window"]
+  P_qg9_state("协议态窗口固定（m,n,K）<br/>类型：审计 / Audit<br/>label: subsec:tick_cap_joint_protocol_state<br/>protocol-state fixed for comparisons")
+  M_qg9_state -.- P_qg9_state
+
+  M_qg9_env["matching envelope（scheme/threshold 有限族）<br/>类型：审计 / Audit<br/>label: app:matching_envelope_theoremization<br/>finite family + envelope bound; failure points R1/R2"]
+  P_qg9_env("matching envelope（有限族包络）<br/>类型：审计 / Audit<br/>label: app:matching_envelope_theoremization<br/>envelope audit for scheme/threshold freedom")
+  M_qg9_env -.- P_qg9_env
+
+  M_qg9_eft_err["EFT 误差分解骨架（窗口化预算）<br/>类型：审计 / Audit<br/>label: app:eft_error_bounds<br/>explicit error decomposition into epsilon_N terms"]
+  P_qg9_eft_err("EFT error budget proxy（epsilon_N）<br/>类型：审计 / Audit<br/>label: app:eft_error_bounds<br/>auditable epsilon_N ledger"]
+  M_qg9_eft_err -.- P_qg9_eft_err
+
+  M_qg9_m1["QG9-M1：窗口化可比性 + 误差预算闭合<br/>类型：未闭合 / Not Closed<br/>label: theory_closure_tracker<br/>goal: |<O>_prot - <O>_EFT| <= epsilon_N (auditable)"]
+  P_qg9_m1("QG9-M1：windowed comparability test<br/>类型：未闭合 / Not Closed<br/>label: theory_closure_tracker<br/>finite-observable audit inequality (epsilon_N)"]
+  M_qg9_m1 -.- P_qg9_m1
+
+  M_qg9_eg["EG 载体（causal perturbation）<br/>类型：审计 / Audit<br/>label: app:eg_causal_perturbation_framework<br/>quantization/renorm carrier in a declared window"]
+  P_qg9_eg("EG carrier proxy（audit）<br/>类型：审计 / Audit<br/>label: app:eg_causal_perturbation_framework<br/>windowed quantization carrier")
+  M_qg9_eg -.- P_qg9_eg
+
+  M_qg9_remainder["截断余项 envelope（strong EFT remainder）<br/>类型：审计 / Audit<br/>label: app:strong_eft_remainder_bounds<br/>remainder terms enter epsilon_N budget"]
+  P_qg9_remainder("remainder envelope proxy<br/>类型：审计 / Audit<br/>label: app:strong_eft_remainder_bounds<br/>explicit remainder budget terms"]
+  M_qg9_remainder -.- P_qg9_remainder
+
+  M_qg9_m2["QG9-M2：量子化/重整化强闭合门禁（EG + BRST/Ward）<br/>类型：未闭合 / Not Closed<br/>label: theory_closure_tracker<br/>goal: BRST/Ward/anomaly gates; violations enter epsilon_N"]
+  P_qg9_m2("QG9-M2：EG+BRST/Ward gates (audit)<br/>类型：未闭合 / Not Closed<br/>label: theory_closure_tracker<br/>gate pass/fail + explicit budget terms"]
+  M_qg9_m2 -.- P_qg9_m2
+
+  M_qg9_bh_scope["BH scope contract（CP→PT gate）<br/>类型：审计 / Audit<br/>label: app:bh_scope_contract<br/>allowed claims and failure-point gates for BH recovery"]
+  P_qg9_bh_scope("BH scope contract (audit)<br/>类型：审计 / Audit<br/>label: app:bh_scope_contract<br/>CP→PT gate for strong-field claims")
+  M_qg9_bh_scope -.- P_qg9_bh_scope
+
+  M_qg9_page["BH5：Page surrogate（record-noise/ECC/CAP）<br/>类型：审计 / Audit<br/>label: app:bh_page_surrogate<br/>auditable surrogate for recovery vs leakage/noise"]
+  P_qg9_page("Page surrogate proxy (BH5)<br/>类型：审计 / Audit<br/>label: app:bh_page_surrogate<br/>generated audit fragments"]
+  M_qg9_page -.- P_qg9_page
+
+  M_qg9_island["BH6：island-equivalent reconstruction（optional）<br/>类型：审计 / Audit<br/>label: app:bh_island_equivalent_reconstruction<br/>optional recovery mechanism under explicit gates"]
+  P_qg9_island("island-equivalent proxy (BH6 optional)<br/>类型：审计 / Audit<br/>label: app:bh_island_equivalent_reconstruction<br/>gate-scoped mechanism")
+  M_qg9_island -.- P_qg9_island
+
+  M_qg9_m3["QG9-M3：强场/黑洞信息的可证伪表述（record algebra + recovery surrogate）<br/>类型：未闭合 / Not Closed<br/>label: theory_closure_tracker<br/>goal: recovery surrogate on external record algebra"]
+  P_qg9_m3("QG9-M3：BH recovery surrogate test<br/>类型：未闭合 / Not Closed<br/>label: theory_closure_tracker<br/>record-algebra recovery statement (audit)"]
+  M_qg9_m3 -.- P_qg9_m3
 
   M_cosmo_tension_scope["现代宇宙学张力（H0, S8/sigma8 等，未覆盖）<br/>类型：范围外 / Out of Scope<br/>label: theory_closure_tracker<br/>status: systematics model not included"]
   P_cosmo_tension_scope("张力数据/系统误差模型（范围外 / Tension Data/Systematics Model (Out of Scope)）<br/>类型：范围外 / Out of Scope<br/>label: theory_closure_tracker<br/>not audited here")
@@ -1900,15 +1909,57 @@ flowchart TB
   P_bh_pointer --> P_bhinfo_scope
   P_qm --> P_bhinfo_scope
 
-  M_action --> M_qg_scope
-  M_grav --> M_qg_scope
-  M_qm --> M_qg_scope
-  M_bh_pointer --> M_qg_scope
+  %% QG9 dependencies (windowed universal-test roadmap)
+  M_action --> M_qg9_m1
+  M_grav --> M_qg9_m1
+  M_qm --> M_qg9_m1
+  M_renorm_dict --> M_qg9_m1
+  M_qg9_state --> M_qg9_m1
+  M_qg9_obs --> M_qg9_m1
+  M_qg9_env --> M_qg9_m1
+  M_qg9_eft_err --> M_qg9_m1
 
-  P_action --> P_qg_scope
-  P_dyn --> P_qg_scope
-  P_qm --> P_qg_scope
-  P_bh_pointer --> P_qg_scope
+  M_qg9_m1 --> M_qg9_m2
+  M_qg9_eg --> M_qg9_m2
+  M_qg9_remainder --> M_qg9_m2
+  M_renorm_dict --> M_qg9_m2
+
+  %% optional escalation to scattering/field carriers must pass explicit gates (kept as audit-only links here)
+  M_qg9_m2 -.-> M_wightman_bridge
+  M_qg9_m2 -.-> M_scattering_iface
+
+  M_qg9_m2 --> M_qg9_m3
+  M_bh_pointer --> M_qg9_m3
+  M_qg9_bh_scope --> M_qg9_m3
+  M_qg9_page --> M_qg9_m3
+  M_qg9_island -.-> M_qg9_m3
+
+  M_qg9_m3 --> M_qg_scope
+
+  P_action --> P_qg9_m1
+  P_dyn --> P_qg9_m1
+  P_qm --> P_qg9_m1
+  P_renorm_dict --> P_qg9_m1
+  P_qg9_state --> P_qg9_m1
+  P_qg9_obs --> P_qg9_m1
+  P_qg9_env --> P_qg9_m1
+  P_qg9_eft_err --> P_qg9_m1
+
+  P_qg9_m1 --> P_qg9_m2
+  P_qg9_eg --> P_qg9_m2
+  P_qg9_remainder --> P_qg9_m2
+  P_renorm_dict --> P_qg9_m2
+
+  P_qg9_m2 -.-> P_wightman_bridge
+  P_qg9_m2 -.-> P_scattering_iface
+
+  P_qg9_m2 --> P_qg9_m3
+  P_bh_pointer --> P_qg9_m3
+  P_qg9_bh_scope --> P_qg9_m3
+  P_qg9_page --> P_qg9_m3
+  P_qg9_island -.-> P_qg9_m3
+
+  P_qg9_m3 --> P_qg_scope
 
   M_cosmo --> M_cosmo_tension_scope
   M_gamma_proxy --> M_cosmo_tension_scope
@@ -1953,17 +2004,17 @@ flowchart TB
   class M_action,M_op3_yang_mills math_cont;
   class M_cosmo,M_internal_fiber_g2 math_assumption;
   class M_gamma_proxy,M_gamma_direct,M_gauge3,M_pressure,M_input_planck,M_operator_mother,M_unify_branch,M_u1_registry,M_u3_registry,M_u1_u2_falsify,M_scatt_inverse,M_scheme_contract,M_qcd_loop_gate math_audit;
-  class M_scalar_iface,M_lambda_open,M_bh_pointer,M_qcd_gap not_closed;
+  class M_scalar_iface,M_lambda_open,M_bh_pointer,M_qcd_gap,M_qg_scope,M_qg9_m1,M_qg9_m2,M_qg9_m3 not_closed;
   class M_op1 math_audit;
-  class M_gut_scope,M_baryogenesis_scope,M_strongcp_scope,M_bhinfo_scope,M_qg_scope,M_cosmo_tension_scope,M_bsm_scope scope_gap;
+  class M_gut_scope,M_baryogenesis_scope,M_strongcp_scope,M_bhinfo_scope,M_cosmo_tension_scope,M_bsm_scope scope_gap;
   class P_dyn phys_proxy;
   class P_qm,P_wilson phys_obs;
   class P_types,P_equiv,P_proj,P_thermo,P_gauge3 phys_dict;
   class P_action,P_rg,P_cosmo phys_model;
   class P_select,P_gamma_proxy,P_gamma_direct,P_pressure,P_input_planck,P_internal_fiber_g2,P_operator_mother,P_unify_branch,P_u1_registry,P_u3_registry,P_u1_u2_falsify,P_scatt_inverse,P_scheme_contract,P_qcd_loop_gate phys_audit;
-  class P_scalar_iface,P_lambda_open,P_bh_pointer,P_qcd_gap not_closed;
+  class P_scalar_iface,P_lambda_open,P_bh_pointer,P_qcd_gap,P_qg_scope,P_qg9_m1,P_qg9_m2,P_qg9_m3 not_closed;
   class P_op1 phys_audit;
-  class P_gut_scope,P_baryogenesis_scope,P_strongcp_scope,P_bhinfo_scope,P_qg_scope,P_cosmo_tension_scope,P_bsm_scope scope_gap;
+  class P_gut_scope,P_baryogenesis_scope,P_strongcp_scope,P_bhinfo_scope,P_cosmo_tension_scope,P_bsm_scope scope_gap;
 ```
 
 ## 节点—标签对照（主标签 + 核心公式）
@@ -2248,7 +2299,10 @@ flowchart TB
 | `M_baryogenesis_scope` / `P_baryogenesis_scope` | `theory_closure_tracker.md` | 范围外 | `M_sm`, `M_thermo` | `theory_closure_tracker.md` |
 | `M_strongcp_scope` / `P_strongcp_scope` | `theory_closure_tracker.md` | 范围外 | `M_op3_yang_mills`, `M_sm` | `theory_closure_tracker.md` |
 | `M_bhinfo_scope` / `P_bhinfo_scope` | `theory_closure_tracker.md` | 范围外 | `M_bh_pointer`, `M_qm` | `theory_closure_tracker.md` |
-| `M_qg_scope` / `P_qg_scope` | `theory_closure_tracker.md` | 范围外 | `M_action`, `M_grav`, `M_qm`, `M_bh_pointer` | `theory_closure_tracker.md` |
+| `M_qg_scope` / `P_qg_scope` | `theory_closure_tracker.md` | 未闭合（QG9 路线图） | `M_action`, `M_grav`, `M_qm`, `M_renorm_dict`, `M_bh_pointer` | `theory_closure_tracker.md` |
+| `M_qg9_m1` / `P_qg9_m1` | `theory_closure_tracker.md` | 未闭合（窗口化可比性 + 误差预算） | `M_action`, `M_grav`, `M_qm`, `M_renorm_dict`, `M_qg9_state`, `M_qg9_obs`, `M_qg9_env`, `M_qg9_eft_err` | `theory_closure_tracker.md` |
+| `M_qg9_m2` / `P_qg9_m2` | `theory_closure_tracker.md` | 未闭合（EG + BRST/Ward 门禁） | `M_qg9_m1`, `M_qg9_eg`, `M_qg9_remainder`, `M_renorm_dict` | `theory_closure_tracker.md` |
+| `M_qg9_m3` / `P_qg9_m3` | `theory_closure_tracker.md` | 未闭合（BH recovery surrogate） | `M_qg9_m2`, `M_bh_pointer`, `M_qg9_bh_scope`, `M_qg9_page`, `M_qg9_island` (optional) | `theory_closure_tracker.md` |
 | `M_cosmo_tension_scope` / `P_cosmo_tension_scope` | `theory_closure_tracker.md` | 范围外 | `M_cosmo`, `M_gamma_proxy`, `M_gamma_direct` | `theory_closure_tracker.md` |
 | `M_bsm_scope` / `P_bsm_scope` | `theory_closure_tracker.md` | 范围外 | `M_sm`, `M_rg` | `theory_closure_tracker.md` |
 
