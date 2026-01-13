@@ -1,8 +1,8 @@
-# Computational Validation: Experiment Analysis Report
+# Computational Validation: Experiment Analysis & Next-Phase Development Plan
 
 **Project**: Arithmetic Origin of the Genetic Code  
 **Date**: 2026-01-13  
-**Status**: Computational validation phase complete
+**Status**: Validation complete; roadmap active (living document)
 
 ---
 
@@ -16,6 +16,8 @@ This document summarizes all computational experiments conducted to validate the
 
 **Key Finding**: The arithmetic framework is mathematically valid, but the mechanistic bridge to translation dynamics is not supported by current evidence.
 
+**Living doc note (主开发文档说明)**: Sections above are the consolidated computational validation record; **Next Steps** below is the active development roadmap for the A100 migration (data, experiments, acceptance tests, and operational checklist).
+
 ---
 
 ## Table of Contents
@@ -25,8 +27,8 @@ This document summarizes all computational experiments conducted to validate the
 3. [Results by Category](#results-by-category)
 4. [Detailed Findings](#detailed-findings)
 5. [Negative Results Analysis](#negative-results-analysis)
-6. [Future Work](#future-work)
-7. [Reproducibility](#reproducibility)
+6. [Next Steps (A100 Migration)](#next-steps-a100-migration)
+7. [Reproducibility & Acceptance Tests](#reproducibility--acceptance-tests)
 
 ---
 
@@ -217,71 +219,408 @@ The arithmetic framework is **mathematically elegant but biologically underdeter
 
 ---
 
-## Future Work
+## Next Steps (A100 Migration)
 
-### High Priority (Recommended)
+This section is the **main development plan** for scaling the project on an A100 machine (Linux preferred) and for tightening H2/H3 with more data and stronger tests.
 
-1. **Controlled Synthetic Library**
-   - Design sequences with matched GC/structure but varying Uplift
-   - Measure readthrough directly
-   - This is the only way to establish causality
+### 0) Goalposts (what “proving H2/H3” means operationally)
 
-2. **Cross-Domain Corpus Expansion**
-   - Add ≥10 species per domain (Bacteria, Archaea, Eukarya)
-   - Include extremophiles (thermophiles, halophiles)
-   - Test if patterns hold across evolutionary distance
+**H2 (“Uplift signal”) should be treated as a replication claim, not a p-value claim.** For the next phase we treat H2 as supported only if we can show, on **held-out datasets**, that at least one pre-registered stop/recoding endpoint:
 
-3. **Full Ribo-seq Analysis**
-   - Download raw BigWig data (requires Linux/WSL)
-   - Compute window-level pause scores
-   - Test Uplift-pause correlation at biological scales
+- reproduces across domains/species (meta-analysis with heterogeneity reported);
+- survives stronger confound controls (GC + dinucleotide + dicodon / codon-pair structure);
+- has a practically non-negligible effect size (report both effect size and CI, not just p).
 
-### Medium Priority
+**H3 (“mechanistic bridge”) should be tested with metrics that reduce GC mediation.** Raw MFE/tAI are too GC-coupled; the next phase should prioritize *composition-conditioned* structure/translation metrics (e.g., MFE z-scores vs composition-matched shuffles; window-scale pause scores from raw Ribo-seq).
 
-4. **Cell-Free Translation**
-   - Test same constructs in vitro
-   - Separate NMD/stability effects from translation
+### 0.1) Evidence ladder (how to “prove” H2/H3 without fooling ourselves)
 
-5. **SECIS Element Analysis**
-   - Detailed structural analysis of Sec insertion elements
-   - Test if Uplift signature is independent of known motifs
+This is the recommended evidence ladder (stronger ⇒ harder, but more convincing):
 
-### Lower Priority
+- **E0 (in-sample signal)**: significant stop/recoding contrasts in one corpus with basic controls.
+- **E1 (replication)**: same endpoint reproduces in independent corpora/species; report heterogeneity.
+- **E2 (confound-tight replication)**: endpoint persists under composition controls and stronger null families (especially dicodon/codon-pair).
+- **E3 (mechanistic association)**: endpoint correlates with a mechanistic observable *after* confound conditioning (e.g., zMFE, window pausing), and replicates across studies.
+- **E4 (causality)**: manipulating Uplift (or residual-Uplift) in matched constructs changes readthrough/recoding in a reporter/cell-free assay.
 
-6. **Alternative Encodings**
-   - Test if other high-scoring encodings (rank 1, 3) show similar patterns
-   - Strengthen μ\* uniqueness claim
+Target state:
+- H2 can be considered “supported” at **E1–E2**.
+- H3 requires **E3** at minimum, and only becomes high-impact with **E4**.
 
-7. **Non-Standard Code Organisms**
-   - Obtain sequence data from ciliate, mitochondrial genomes
-   - Test framework on "stress cases"
+### 0.2) Statistical contract (pre-registration for the next phase)
+
+To avoid “p-hacking by data expansion”, we should pre-register (in a small JSON/YAML spec in-repo) before large A100 runs:
+
+- **Primary endpoints** (choose 1–2, keep them stable):
+  - stop-context window means: `U_before(s;k)` and/or `U_after(s;k)` at a fixed k (e.g. k=10),
+  - net contrast: `D(s;k)=U_after(s;k)-U_before(s;k)`,
+  - recoding vs terminal: AUC using `(u_before, u_after, u_after-u_before)` as predictors.
+- **Primary comparison(s)**: which stop pairs (UAA vs UGA, etc.) and which event classes (terminal vs recoding).
+- **Train/test protocol**: e.g., leave-one-species-out; or hold out entire studies for Ribo-seq.
+- **Effect size thresholds**: define “not negligible” (e.g., Cohen’s d ≥ 0.2, or AUC uplift ≥ 0.01 with CI).
+- **Multiple-testing policy**: which tests are confirmatory vs exploratory; BH-FDR on exploratory families.
+
+Reference: the test-statistic definitions already exist in `sections/appendices/05_statistical_tests.tex` (stop/start windows, composition matching, effect sizes, multi-k).
+
+### 0.3) Data model (what we store for large-scale H2/H3 runs)
+
+For large corpora and cross-study analyses, the safest pattern is:
+
+- **Event-level records** (JSONL/Parquet): one row per stop (terminal) / start / recoding site.
+  - Required fields: `dataset`, `species`, `code_table_id`, `record_id`, `frame`, `pos`, `stop_codon`, `k`, `u_before`, `u_after`, `gc_before`, `gc_after`, `dinuc_before`, `dinuc_after`, plus any stratifiers (+4, after_nt6, last_aa, gene_length, etc.).
+- **Per-record provenance**: `analysis_version`, `script`, `seed`, `manifest_digest`, input file digests.
+- **Derived summaries**: Welford stats per class and per-k, effect sizes + CI, and meta-analysis outputs.
+
+This project already has most of the schema machinery (summary JSON + `.meta.json` digests; optional Supabase import). The next phase should extend it across new datasets rather than inventing a parallel format.
+
+### 0.4) Where “how to prove it” is already written (local retrieval / protocol index)
+
+This repo already contains two protocol appendices that are essentially “how to prove H2/H3”:
+
+- **Statistical protocols**: `sections/appendices/05_statistical_tests.tex`
+  - defines stop/start windows, composition-matched controls, effect sizes, multi-k sensitivity, and response-curve fits.
+- **Biological/assay protocols**: `sections/appendices/07_biological_validation.tex`
+  - reporter readthrough design, cell-free concordance test, Sec/Pyl mechanistic controls (SECIS disruption/rescue; factor dependency; MS confirmation), and mechanistic bridge rationale.
+
+The A100 phase is mainly about making these protocols scale (more datasets, stronger null families, and better mechanistic observables).
+
+### 1) Milestone M0 — A100 migration & reproducibility hardening (first priority)
+
+**Objective**: From a clean checkout on the A100 box, reproduce *all* claims already present in the paper and in this report (including mechanistic-proxy negatives), with a fast smoke path and a full path.
+
+**Tasks (repo-side)**
+- Make dependency tiers explicit:
+  - `requirements.txt` = core scientific stack used by most experiments.
+  - Add/define an “extras” tier for: `scikit-learn` (nested models), `ViennaRNA` (true MFE), and any Ribo-seq tooling.
+- Unify orchestration:
+  - Ensure `scripts/run_all.py` covers every script needed to regenerate `sections/generated/validation_summary.tex` and the mechanistic-proxy fragments (`uplift_mfe_correlation`, `uplift_structure_deconfound`, `uplift_translation_rate_proxy`, `riboseq_pause_correlation`, `nested_models_extended`).
+  - Add a **smoke mode** (small `--n` for Monte Carlo, small record limits for transcriptomes/recoding) that finishes in minutes and validates the pipeline end-to-end.
+- Determinism:
+  - Standardize RNG seeds across scripts; ensure caches record seed + analysis version in `.meta.json`.
+
+**Tasks (machine-side / ops)**
+- Prefer Linux on the A100 host (ViennaRNA, Ribo-seq tooling, and batch processing are smoother than Windows).
+- Environment bootstrap (example strategy; adapt to your infra):
+  - Create a clean Python env and install `requirements.txt`.
+  - Install extras needed by mechanistic proxies:
+    - `scikit-learn` (for `exp_nested_models_extended.py`, `exp_uplift_structure_deconfound.py`)
+    - ViennaRNA Python bindings (`RNA` module) for `exp_uplift_mfe_correlation.py` / structure features
+  - Optional: TeX toolchain (`latexmk` + TeX Live) if you want to build `main.pdf` on the server.
+- Data staging:
+  - Copy the full `data/` bundle to **local NVMe / scratch** (avoid network FS bottlenecks).
+  - If needed, use a symlink so the repo still sees `./data`.
+  - Validate checksums against `data/manifest.json` before running full jobs.
+
+**Data required (minimum to reproduce current results)**
+- `data/gc.prt` (NCBI translation tables)
+- `data/refseq_hsapiens_mrna/` (human RefSeq mRNA bundle)
+- `data/recoding_genbank/` (recoding GenBank bundle + derived `recoding_sites.jsonl`)
+- `data/boundary_enrichment/` (if boundary-enrichment figures are part of the current paper build)
+
+**Acceptance tests (must-pass on A100)**
+- Smoke (fast, not paper-grade): run in a scratch clone or expect `sections/generated/` to be overwritten with quick outputs.
+  - `python scripts/exp_genetic_code_decompiler.py --force`
+  - `python scripts/exp_random_code_monte_carlo.py --n 20000 --seed 0 --chunk 2000 --force`
+  - `mkdir -p data/_quick/smoke && python scripts/exp_recoding_sites.py --k 10 --max-files 20 --no-latex --out-jsonl data/_quick/smoke/recoding_sites.jsonl --out-summary-json data/_quick/smoke/recoding_sites_summary.json --force`
+  - `python scripts/exp_out_of_sample_mu_star_ranking.py --k 10 --refseq-max-shards 1 --refseq-max-records 2000 --force`
+- Full: one command that reproduces the full PDF and all generated fragments (exact command to be finalized once `run_all.py` is aligned).
+
+**Acceptance tests (validation scripts)**
+- Dataset presence (offline): `python scripts/validate_manifest_local_files.py`
+- Generated fragments sanity: `python scripts/validate_generated_fragments.py --require-meta`
+- Artifacts needed for DB/import pipelines: `python scripts/validate_artifacts.py`
+
+### 2) Milestone M1 — Data expansion to make H2 a real replication claim
+
+**Objective**: Move from “human-only + small special cases” to “cross-domain replication with strict out-of-sample validation”.
+
+**Data to add (minimum useful set)**
+
+| Dataset | Why we need it | Format (recommended) | Proposed location |
+|---|---|---|---|
+| Multi-species coding corpus (≥10 species per domain) | H2 replication + heterogeneity | FASTA(.gz) + minimal metadata JSON | `data/corpora/<domain>/<species>/` |
+| Species translation tables (nonstandard codes) | stress-test μ\* + stop fine structure | `gc.prt` subset or per-species table JSON | `data/nonstandard/` |
+| Curated recoding/readthrough events across taxa | increase positive-class n for “recoding vs terminal” | JSONL (site records + sequences) | `data/recoding_curated/` |
+| tRNA gene sets per species (for tAI) | mechanism proxy at scale | GtRNAdb/tRNAscan outputs | `data/trna/<species>/` |
+| Ribo-seq raw coverage (BigWig/BAM/FASTQ) for ≥2 studies | window-scale pausing tests | BigWig preferred for throughput | `data/riboseq/<study_id>/` |
+
+**Practical sourcing notes (可操作建议)**
+- For cross-domain coding corpora, prefer **annotated CDS FASTA** (not “longest ORF from mRNA”) for Bacteria/Archaea to avoid start-codon variability (GUG/UUG etc.) and ORF-calling artifacts.
+- Start with code-1 species (standard code) to reduce translation-table confounds; record translation table IDs explicitly per dataset.
+- “Curated recoding/readthrough” JSONL should minimally include: `species`, `event_type` (Sec/Pyl/readthrough/frameshift), `stop_codon`, `context_seq` (at least ±k window), coordinate/provenance fields, and any confidence label.
+
+**Suggested Tier-1 species list (first pass; adjust as needed)**
+- Eukarya: human, mouse, yeast, fly, worm, arabidopsis (choose those with good CDS annotations and (ideally) available Ribo-seq).
+- Bacteria: *E. coli*, *B. subtilis*, plus 8–10 diverse phyla representatives with high-quality RefSeq annotations.
+- Archaea: include at least one halophile, one methanogen, one thermophile (quality > novelty for the first replication pass).
+
+**Data QA gates (must satisfy before entering analysis)**
+- Sequence normalization: strict alphabet handling (DNA `T→U`), remove/flag ambiguous bases.
+- ORF definition policy: document whether we use “longest ORF across frames” vs annotated CDS; keep consistent per dataset.
+- Provenance: every dataset must have a version string + checksum recorded in `data/manifest.json` (or a new `data/manifest_v2.json` if schema changes).
+
+**H2 replication experiments to run once data is in place**
+- Cross-domain stop-context replication:
+  - pre-register 1–2 primary endpoints (e.g., pairwise Δ of `U_after(k=10)` between stop classes) and run per species;
+  - report effect sizes + CIs + heterogeneity (random-effects meta).
+- Recoding vs terminal replication:
+  - expand beyond human Sec to multi-taxa Sec (and Pyl/readthrough if curated);
+  - evaluate out-of-sample AUC (train on subset of species, test on held-out species).
+
+**Concrete experiment list (H2 workstream; “do even if it fails”)**
+
+- **H2-1: Cross-domain stop-context replication at scale**
+  - Data: multi-species CDS corpora (+ translation table id per species).
+  - Endpoint: `U_after(s;k)` and `D(s;k)` for s∈{UAA,UAG,UGA}, k∈{3,5,10,20}.
+  - Controls: composition matching (GC+dinuc); report both raw and matched.
+  - Output: per-species JSON summary + meta-analysis fragment (extend `exp_corpus_panel.py` / manifest schema).
+  - Failure mode: high heterogeneity or vanishing effect sizes → still publishable as “non-universality”.
+
+- **H2-2: Leave-one-species-out (LOSO) generalization**
+  - Data: same as H2-1.
+  - Endpoint: sign-consistency + held-out effect size CI for the primary stop-pair contrast.
+  - Failure mode: effect is domain-specific; still clarifies scope conditions.
+
+- **H2-3: ORF policy sensitivity**
+  - Compare: annotated CDS vs “best ORF across frames” (for datasets where both are available).
+  - Goal: show H2 is not an ORF-calling artifact.
+
+- **H2-4: Dicodon/codon-pair absorption quantified (turn the negative into a result)**
+  - Null: dicodon-preserving shuffles at ORF scale (already exists as CR3B for a focused setting).
+  - Deliverable: a table: “% of H2 signal explained by dicodon structure” per dataset/species.
+
+- **H2-5: Position-shape replication (beyond mean windows)**
+  - Use per-position curves (like CR4) across species to see if shape is conserved.
+  - Failure mode: shape is not conserved → tells us window means are a lossy summary.
+
+- **H2-6: Recoding expansion beyond human Sec**
+  - Data: curated Sec/Pyl/readthrough events across taxa; ensure true positives with provenance.
+  - Endpoint: out-of-sample AUC for recoding vs terminal using only pre-registered features.
+  - Failure mode: no AUC gain → suggests current recoding dataset is special-case or confounded.
+
+- **H2-7: Nonstandard code stress tests**
+  - Data: organisms with alternative stop assignments (mitochondria/ciliates, etc.).
+  - Endpoint: boundary-hit enrichment and stop fine-structure predictions under μ\*.
+  - Failure mode: inconsistent mapping → sharp boundary conditions for the theory.
+
+- **H2-8: Multi-resolution Fold_m sensitivity for H2 endpoints**
+  - Recompute key endpoints for m∈{6,7,8,9}.
+  - Goal: separate m=6-specific artifacts from stable effects.
+  - Failure mode: only m=6 shows signal → still informative (but lowers biological generality).
+
+- **H2-9: Negative controls that must stay null**
+  - Random in-frame positions matched by codon identity/composition should not reproduce stop-specific contrasts.
+  - A “null-of-null” suite is essential before trusting new big-data results.
+
+- **H2-10: Stop-context response curves (k→∞ shape)**
+  - Fit the saturating response model from `sections/appendices/05_statistical_tests.tex` (the `D(s;k)` curve).
+  - Goal: compress multi-k behavior into interpretable parameters `(D_∞, κ)` and test cross-species stability.
+  - Failure mode: unstable fits / species-specific κ → suggests window choice is biology-dependent.
+
+- **H2-11: Hierarchical models with blocking (gene/study as random effects)**
+  - Replace per-stop i.i.d. tests with mixed-effects models that block by gene and study.
+  - Goal: ensure significance is not driven by a few long/highly expressed genes.
+
+**Acceptance criteria (H2 “supported” at next checkpoint)**
+- At least one endpoint meets: consistent direction in ≥2 domains, meta-analytic CI excludes 0, and effect size is not negligible (threshold to be pre-registered).
+- Confound-controlled robustness: endpoint remains when conditioning on GC+dinuc and when adding dicodon/codon-pair controls (either via matched nulls or regression residualization).
+
+### 3) Milestone M2 — Stronger null families (address the dicodon absorption directly)
+
+**Objective**: Turn the current failure mode (“absorbed by ORF-level dicodon structure”) into a first-class analysis result rather than a post-hoc caveat.
+
+**Experiments**
+- Dicodon-preserving controls at the right scale:
+  - keep ORF-level dicodon counts fixed while shuffling within constraints;
+  - re-evaluate stop-context and recoding contrasts under this null.
+- Residual-Uplift analysis:
+  - compute `U_resid = U - E[U | GC, dinuc, dicodon]` (model choice pre-registered);
+  - re-run H2 endpoints on `U_resid` to test whether any signal remains.
+
+**Acceptance tests**
+- The dicodon-preserving null pipeline runs deterministically and reproduces identical summaries given fixed seeds.
+- The report clearly separates “signal explained by dicodon structure” vs “signal beyond dicodon”.
+
+### 4) Milestone M3 — Mechanistic bridge v2 (if we still want to pursue H3)
+
+**Objective**: Replace GC-mediated proxies with composition-conditioned mechanistic measurements, and test at biologically relevant window scales.
+
+**Data required**
+- ViennaRNA enabled environment for large-scale structure computation (CPU-parallel).
+- Raw Ribo-seq coverage with known P-site offsets (or a standardized pipeline to infer them).
+
+**Experiments**
+- Structure:
+  - move from raw MFE to **MFE z-score** (real window MFE vs composition-matched shuffled windows) to reduce GC mediation;
+  - test whether `U` or `U_resid` predicts zMFE at 30–120nt windows.
+- Translation dynamics:
+  - compute window-level pause metrics from raw Ribo-seq (not only precompiled codon-level scores);
+  - test whether `U`/`U_resid` predicts pausing after controlling for GC/dinuc/codon identity and expression proxies.
+
+**Concrete experiment list (H3 workstream; “do even if it fails”)**
+
+- **H3-1: zMFE and ensemble features (composition-conditioned structure)**
+  - Replace raw MFE correlation with:
+    - zMFE (real MFE vs matched-shuffle MFE distribution),
+    - ensemble diversity, pairing probability summaries, local accessibility (ViennaRNA).
+  - Endpoint: partial correlation / ΔR² of these features predicted by `U` or `U_resid`.
+
+- **H3-2: Structure at the right scale**
+  - Evaluate 30–120nt windows (and align to biological features: stop + downstream).
+  - Failure mode: still null after z-scoring → strong evidence against “structure mediation”.
+
+- **H3-3: Ribo-seq from raw coverage (window-scale pausing)**
+  - Data: at least 2 independent human studies (BigWig/BAM); ideally add yeast/bacteria.
+  - Compute: window pause indices around stops; replicate across studies.
+  - Endpoint: association of pausing with `U_after` / zMFE / composition controls.
+
+- **H3-4: Termination-specific pausing signature**
+  - Focus on windows centered at terminal stop; compare stop classes.
+  - Ask: does `U_after` predict the *shape* or *magnitude* of the stop-proximal occupancy peak?
+
+- **H3-5: Expanded translation-rate proxies**
+  - Beyond tAI: CAI/ncCAI, codon-pair bias, species-specific tRNA supply models.
+  - Endpoint: does `U_resid` add predictive power beyond known codon-usage metrics?
+  - Failure mode: `U` collapses to known metrics → reposition as reparameterization/feature.
+
+- **H3-6: Mechanistic mediation analysis (if any association appears)**
+  - If we see `U → zMFE` and `zMFE → pausing/readthrough`, test mediation models.
+  - This is exploratory unless pre-registered.
+
+- **H3-7: Structure probing (SHAPE/DMS) cross-check (high value if data exists)**
+  - Data: public in vivo probing tracks (DMS/SHAPE-MaP) aligned to transcripts.
+  - Endpoint: does `U`/`U_resid` correlate with measured accessibility/reactivity beyond composition?
+  - Failure mode: null result strengthens the claim that uplift is not a structural proxy.
+
+- **H3-8: GPU-optional deep model probes (high-risk / exploratory)**
+  - Use an A100 host to run pretrained nucleotide language models / structure predictors on windows.
+  - Test whether `U` predicts model-derived structure/translation embeddings, and whether `U` adds predictive power for pausing/readthrough beyond embeddings.
+  - Failure mode: redundancy (U adds nothing) is still informative: uplift behaves like a reparameterization of common sequence features.
+
+**Compute note**
+- Even on an A100 host, most of the above is **CPU/IO-bound** (FASTA scanning, ViennaRNA folding, BigWig processing). The main advantage of the A100 box is typically: more cores, more RAM, and faster local storage; GPU becomes relevant only if we add deep-learning structure/translation predictors later.
+
+**Decision rule**
+- If H3 remains null after these upgraded tests, freeze H3 as “not supported” and keep the framework positioned as descriptive/structural (avoid mechanism over-claiming).
+
+### 5) Milestone M4 — Causal test design (wet-lab or cell-free; parallel track)
+
+**Objective**: If we want a mechanistic/causal story, the only clean route is a controlled synthetic library where GC/structure are matched and Uplift is the manipulated variable.
+
+**Design sketch**
+- Construct sets of sequences with:
+  - matched amino-acid sequence (synonymous design) or matched composition + predicted structure;
+  - stratified Uplift bins (≥5 strata across a wide dynamic range).
+- Assay: direct readthrough/recoding measurement (reporter or cell-free translation), with SECIS dependence as a control for Sec.
+
+**Acceptance criteria**
+- Causal separation: changing Uplift while holding GC/structure fixed produces a reproducible change in readthrough/recoding rate.
+
+**Executable construct-library support (already in repo)**
+- Candidate contexts are produced by the RefSeq merge pipeline as JSONL:
+  - `data/refseq_hsapiens_mrna/stop_context_candidates.jsonl` (includes composition-matched pairs)
+- Convert candidate contexts to assay-ready construct JSONL:
+  - `python scripts/exp_assay_construct_library.py --candidate-set reporter_v1 --group-labels matched_after_high,matched_after_low --k 10 --max-per-stop 10`
+- Output (default): `data/assays/readthrough_constructs.jsonl` (idempotent construct_key suitable for DB upserts)
 
 ---
 
-## Reproducibility
+## Reproducibility & Acceptance Tests
 
 ### Environment
 
 ```
 Python: 3.11+
 Key packages:
-  - numpy, scipy, scikit-learn
-  - viennarna (for MFE calculation)
-  - matplotlib (for figures)
+  - core: numpy, scipy, pandas, matplotlib
+  - extras: scikit-learn (nested models), viennarna (true MFE), pg8000 (optional DB)
 ```
 
-### Running All Experiments
+### Setup (fresh machine)
+
+Core Python deps:
 
 ```bash
 cd docs/papers/biology/2025_arithmetic_origin_genetic_code_hpa_omega
-python scripts/run_all.py
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
 ```
+
+Extras (mechanistic proxy scripts):
+- `scikit-learn`: install via `pip install scikit-learn`
+- ViennaRNA Python bindings (`import RNA`):
+  - recommended: install via Conda (e.g., `conda install -c bioconda viennarna`)
+  - fallback: system packages / local build (cluster-dependent)
+
+Optional (build PDF on server):
+- `latexmk` + TeX Live toolchain (or use a container with TeX preinstalled)
+
+### Minimal “smoke” run (recommended on a fresh A100 box)
+
+Goal: validate Python env + data layout + caching + LaTeX fragment generation in minutes.
+Note: this run is **not paper-grade** (reduced compute / subset scans) and may overwrite `sections/generated/`; run it in a scratch clone/worktree if you need to preserve current fragments.
+
+```bash
+cd docs/papers/biology/2025_arithmetic_origin_genetic_code_hpa_omega
+python scripts/exp_genetic_code_decompiler.py --force
+python scripts/exp_control_objective_robustness.py --force
+python scripts/exp_random_code_monte_carlo.py --n 20000 --seed 0 --chunk 2000 --force
+mkdir -p data/_quick/smoke
+python scripts/exp_recoding_sites.py --k 10 --max-files 20 --no-latex --out-jsonl data/_quick/smoke/recoding_sites.jsonl --out-summary-json data/_quick/smoke/recoding_sites_summary.json --force
+python scripts/exp_out_of_sample_mu_star_ranking.py --k 10 --refseq-max-shards 1 --refseq-max-records 2000 --force
+```
+
+Optional: validate “extras” dependencies (ViennaRNA + scikit-learn) are actually usable:
+
+```bash
+python scripts/exp_riboseq_pause_analysis.py
+python scripts/exp_uplift_translation_rate_proxy.py --k 10 --n-per-stop 100 --seed 0 --force
+python scripts/exp_uplift_mfe_correlation.py --k 10 --n-per-stop 50 --seed 0 --force
+python scripts/exp_uplift_structure_deconfound.py --window-sizes 30,60 --n-samples 120 --seed 0 --force
+python scripts/exp_nested_models_extended.py --k 10 --n-perm 10 --seed 0 --force
+```
+
+### Full reproduction (current baseline)
+
+```bash
+cd docs/papers/biology/2025_arithmetic_origin_genetic_code_hpa_omega
+python scripts/run_all.py --no-download --force
+```
+
+Optional: build `main.pdf` (requires TeX toolchain):
+
+```bash
+python scripts/run_all.py --no-download --force --pdf
+```
+
+### Expected artifacts (sanity checklist)
+
+After a full run, the following should exist (non-empty) in `sections/generated/`.
+Note: until Milestone M0 aligns `scripts/run_all.py` with all mechanistic scripts, some items may require running the corresponding scripts directly (see the optional “extras” block above).
+- `control_objective_brief.tex`, `control_objective_robustness.tex`
+- `random_code_monte_carlo_summary.tex`
+- `validation_summary.tex`
+- `uplift_translation_rate_proxy.tex`, `uplift_mfe_correlation.tex`, `uplift_structure_deconfound.tex`, `riboseq_pause_correlation.tex`, `nested_models_extended_summary.tex`
 
 ### Data Requirements
 
-- Human RefSeq mRNA: `data/refseq_hsapiens_mrna/`
-- Recoding sites: `data/recoding_genbank/recoding_sites.jsonl`
 - Genetic code tables: `data/gc.prt`
+- Human RefSeq mRNA: `data/refseq_hsapiens_mrna/`
+- Recoding GenBank bundle + derived sites: `data/recoding_genbank/`
+- Release manifest/checksums: `data/manifest.json`
+
+If you need to rehydrate the full data bundle (network required):
+
+```bash
+python scripts/fetch_datasets.py --dataset all
+```
+
+If the host has TLS certificate issues (rare on Linux; common on Windows):
+
+```bash
+python scripts/fetch_datasets.py --dataset all --insecure
+```
 
 ### Output
 
@@ -325,6 +664,6 @@ The arithmetic framework provides a novel lens for analyzing genetic code struct
 
 ---
 
-*Document generated: 2026-01-13*  
+*Last updated: 2026-01-13*  
 *Repository: the-omega*  
 *Path: `docs/papers/biology/2025_arithmetic_origin_genetic_code_hpa_omega/EXPERIMENT_ANALYSIS.md`*
