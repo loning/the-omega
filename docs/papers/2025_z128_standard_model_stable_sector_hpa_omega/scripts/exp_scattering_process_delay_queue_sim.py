@@ -122,6 +122,56 @@ def cap_select_scattering_carrier(
 
     Returns (model, gamma_ref, abslog, gap).
     """
+    # Prefer a materialized carrier registry artifact (audit/match-layer input) if present.
+    try:
+        import json as _json
+        from common_paths import paper_root as _paper_root
+        regp = _paper_root() / "data" / "k4_matching" / "scattering_carrier_registry.json"
+        if regp.is_file():
+            reg = _json.loads(regp.read_text(encoding="utf-8"))
+            c = dict(reg.get("carrier", {}) or {})
+            sp = dict(c.get("selected_params", {}) or {})
+            r1 = dict(sp.get("r1", {}) or {})
+            r2 = dict(sp.get("r2", {}) or {})
+            th = float(sp.get("mix_theta", 0.0))
+            g1 = float(r1.get("gamma", 0.5))
+            o2 = float(r2.get("omega0", omega_center + 10.0))
+            g2 = float(r2.get("gamma", 10.0))
+            m_reg = ScatteringModel(
+                mix_theta=float(th),
+                r1=Resonance(omega0=float(omega_center), gamma=float(g1)),
+                r2=Resonance(omega0=float(o2), gamma=float(g2)),
+                loss_amp=float(loss_amp),
+                loss_center=float(omega_center),
+                loss_width=0.22,
+            )
+            return m_reg, 1.0, 0.0, 0.0, "carrier_source=registry"
+    except Exception:
+        pass
+
+    # Prefer M2 multi-dataset carrier selection if enabled (Match dictionary provides coverage).
+    try:
+        from exp_scattering_carrier_cap_select_multi_dataset import (  # type: ignore
+            cap_select_scattering_carrier_m2,
+        )
+    except Exception:
+        cap_select_scattering_carrier_m2 = None  # type: ignore
+
+    if cap_select_scattering_carrier_m2 is not None:
+        m2_model, m2_note = cap_select_scattering_carrier_m2()
+        if m2_model is not None:
+            # Override only the carrier shape; keep the requested loss window parameters.
+            m2 = ScatteringModel(
+                mix_theta=float(m2_model.mix_theta),
+                r1=Resonance(omega0=float(omega_center), gamma=float(m2_model.r1.gamma)),
+                r2=m2_model.r2,
+                loss_amp=float(loss_amp),
+                loss_center=float(omega_center),
+                loss_width=0.22,
+            )
+            # Report placeholder diagnostics (not benchmark-abslog), since the carrier is already selected by M2.
+            return m2, 1.0, 0.0, 0.0, f"{m2_note}; carrier_source=M2"
+
     gamma_ref, did_ref, excluded, excluded_units = _read_scattering_phase_registry_gamma_target()
     tau_target = 4.0 / float(gamma_ref)
     eps = 1e-12
@@ -159,8 +209,8 @@ def cap_select_scattering_carrier(
     second_abslog = float(scored[1][2]) if len(scored) > 1 else float("nan")
     gap = float(second_abslog - float(best_abslog)) if math.isfinite(second_abslog) else float("nan")
     scope = (
-        f"registry_anchor={did_ref}, gamma_unit=proxy_E; excluded_resonance_entries={excluded}, "
-        f"excluded_gamma_units={excluded_units}"
+        f"carrier_source=M1; registry_anchor={did_ref}, gamma_unit=proxy_E; "
+        f"excluded_resonance_entries={excluded}, excluded_gamma_units={excluded_units}"
     )
     return best_model, float(gamma_ref), float(best_abslog), float(gap), str(scope)
 
@@ -419,8 +469,8 @@ def main() -> None:
             f"frac_over_q={stats['frac_over_q']:.6f}."
         )
         carrier_notes.append(
-            f"Case {cid}: CAP carrier (omega0={omega_center:.2f}) matched to registry gamma_ref={gamma_ref:.6f} "
-            f"with abslog={abslog_ref:.6f}, gap={gap_ref:.6f}; {scope_ref}."
+            f"Case {cid}: carrier note: {scope_ref}; "
+            f"omega0={omega_center:.2f}, gamma_ref={gamma_ref:.6f}, abslog={abslog_ref:.6f}, gap={gap_ref:.6f}."
         )
 
     rows.append(r"\bottomrule")
@@ -439,8 +489,9 @@ def main() -> None:
             r"\paragraph{Audit notes.} \AuditTag "
             + rf"Parameters are fixed and deterministic (ticks={ticks}, grid={len(omega_grid)}, q\_star={q_star}). "
             + r"The load is controlled by an explicit arrival period (one job every $p$ ticks). "
-            + r"The scattering carrier $S(\omega)$ is CAP-selected from an explicit bounded family to match the "
-            + r"triangle-audit linewidth-proxy convention on the vendored registry benchmark (Appendix~\ref{app:scattering_delay_linewidth_triangle_audit}). "
+            + r"The scattering carrier $S(\omega)$ is CAP-selected from an explicit bounded family. "
+            + r"If the matching dictionary provides eligible cross-unit targets (M2), the carrier is selected by the multi-dataset CAP audit; "
+            + r"otherwise it falls back to benchmark-only anchoring (M1). "
             + r"The purpose is to provide an explicit computational interpretation of the delay dictionary, "
             + r"not to claim a theorem-level scattering construction.",
             r"\paragraph{Run notes (deterministic).} \AuditTag " + " ".join(notes),

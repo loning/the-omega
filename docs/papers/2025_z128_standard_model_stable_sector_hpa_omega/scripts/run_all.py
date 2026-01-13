@@ -1388,6 +1388,30 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Scattering energy-match dictionary coverage (audit)",
+            script="exp_scattering_energy_match_dictionary_audit.py",
+            expected_outputs=[
+                "sections/generated/scattering_energy_match_dictionary_rows.tex",
+                "sections/generated/scattering_energy_match_dictionary_summary.tex",
+            ],
+        ),
+        Step(
+            name="Scattering carrier CAP-select (multi-dataset; M2 audit)",
+            script="exp_scattering_carrier_cap_select_multi_dataset.py",
+            expected_outputs=[
+                "sections/generated/scattering_carrier_cap_select_rows.tex",
+                "sections/generated/scattering_carrier_cap_select_summary.tex",
+            ],
+        ),
+        Step(
+            name="Scattering carrier registry materialization (audit)",
+            script="exp_scattering_carrier_registry_generate.py",
+            expected_outputs=[
+                "sections/generated/scattering_carrier_registry_rows.tex",
+                "sections/generated/scattering_carrier_registry_summary.tex",
+            ],
+        ),
+        Step(
             name="QCD proxy<->pole-barrier consistency loop (audit)",
             script="exp_qcd_proxy_polebarrier_mutual_exclusion.py",
             expected_outputs=[

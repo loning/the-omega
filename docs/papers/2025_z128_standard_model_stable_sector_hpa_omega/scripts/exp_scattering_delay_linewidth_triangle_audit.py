@@ -95,8 +95,14 @@ def main() -> None:
         r0 = dict(res[0])
         E0 = float(r0.get("E0", 0.0))
         gamma = float(r0.get("gamma", float("nan")))
-        if not math.isfinite(gamma) or gamma <= 0.0:
-            continue
+        if not (math.isfinite(gamma) and gamma > 0.0):
+            # Support PDG-band style metadata: use midpoint of (gamma_low, gamma_high) if present.
+            gl = float(r0.get("gamma_low", float("nan")))
+            gh = float(r0.get("gamma_high", float("nan")))
+            if math.isfinite(gl) and math.isfinite(gh) and gl > 0.0 and gh > 0.0:
+                gamma = 0.5 * (float(gl) + float(gh))
+            else:
+                continue
         tau_gamma = 4.0 / float(gamma)
 
         for k in (1, 2, 3):
