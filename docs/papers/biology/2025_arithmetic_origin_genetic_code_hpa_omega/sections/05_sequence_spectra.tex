@@ -130,6 +130,25 @@ Possible explanations include:
 \end{itemize}
 Further analysis with UTR-inclusive transcriptome data and domain-specific stratification is needed to disentangle these factors.
 
+\subsection{Dicodon structure absorption (M2 analysis)}
+\label{sec:dicodon_absorption}
+
+A key question from the null-model experiments (Section~\ref{sec:null_models}) is how much of the stop-context Uplift signal can be explained by ORF-level dicodon (codon-pair) frequencies.
+To quantify this ``absorption'' effect, we fit a Ridge regression model predicting $\overline{U}_{\mathrm{before}}(k=10)$ from normalized dicodon frequency vectors, then compute residual-Uplift values $U_{\mathrm{resid}} = U - \hat{E}[U \mid \text{dicodon}]$.
+
+The per-species results are:
+\input{sections/generated/dicodon_absorption_k10}
+
+Key findings:
+\begin{itemize}
+\item Dicodon frequencies explain a highly variable fraction of the Uplift signal (0\%--98\% absorbed).
+\item Prokaryotes tend to show higher $R^2$ values (0.58--1.00) and higher absorption rates.
+\item Eukaryotes show lower $R^2$ values (0.27--0.72), suggesting less of the Uplift signal is captured by global dicodon usage.
+\item After removing dicodon-explained variance, residual effect sizes ($d_{\mathrm{resid}}$) are generally smaller but non-zero in several species.
+\end{itemize}
+
+This analysis converts the ``absorbed by dicodon structure'' negative result into a quantitative characterization: the stop-context Uplift signal is partially but not entirely explained by codon-pair frequencies, with domain-specific patterns.
+
 \subsection{Human transcript case studies: HBB and INS}
 \label{sec:human_case_studies}
 

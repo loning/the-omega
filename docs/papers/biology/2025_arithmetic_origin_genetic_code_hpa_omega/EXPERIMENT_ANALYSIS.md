@@ -651,6 +651,7 @@ All generated LaTeX fragments: `sections/generated/*.tex`
 
 | Commit | Description |
 |--------|-------------|
+| `068c0253` | M1 cross-species meta-analysis methodology in paper |
 | `0fca1ea3` | M1 multi-species infrastructure + preliminary analysis |
 | `a43e59cc` | M0 baseline reproduction on A100 cluster (2026-01-13) |
 | `3a664c0d` | Effect size analysis (Cohen's d) |
