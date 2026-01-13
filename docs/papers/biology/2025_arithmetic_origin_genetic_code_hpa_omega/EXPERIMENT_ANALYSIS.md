@@ -1,8 +1,56 @@
 # Computational Validation: Experiment Analysis & Next-Phase Development Plan
 
 **Project**: Arithmetic Origin of the Genetic Code  
-**Date**: 2026-01-13  
-**Status**: Validation complete; roadmap active (living document)
+**Date**: 2026-01-14  
+**Status**: Phase 2 active; systematic validation in progress (living document)
+
+---
+
+## 项目目标（一句人话）
+
+我们提出一个最小接口层，把 64 个密码子通过稳定语言规则压缩为 21 类，并得到唯一编码解。我们将用**大规模跨物种语料**、**强 null 对照**、以及 **RNA 结构与 Ribo-seq 暂停**这两个中介量验证：这个折叠规则不是统计换皮，而是翻译系统稳定读取语言的一部分。
+
+### 我们要证明的三件事
+
+1. **64→21 不是随便压缩的**：在一个非常小的候选空间里，我们的规则能产生"唯一且刚性"的结构解。
+2. **这个规则不是坐标系装饰**：它在真实生物数据里对应到翻译过程的可观测差异，且在强控制后仍然站得住。
+3. **它在多个系统可复现**：跨物种、跨数据库、跨实验数据都能复现。
+
+---
+
+## 三绿灯成功判据
+
+### 🟢 绿灯 A：唯一性与不可替代性
+
+在 24 种核苷酸 2-bit 编码里，μ\* 不仅在"识别目标"上最好，还要在一组**独立任务**上表现为极值或接近极值。换句话说，不是"我们挑出来的 μ\*"，而是"μ\* 在独立任务里也最像自然界用的那把尺"。
+
+**验证任务**：
+- A1: 终止位点附近 stop 类别的 U_before/U_after 差异强度
+- A2: Recoding vs terminal stop 的可分性（AUC / effect size）
+- A3: 跨物种一致性（效应方向在多少物种里一致）
+- A4: Readthrough/PRF 预测性能
+
+**通过标准**：μ\* 在多个任务里稳定靠前（rank ≤ 3/24），而不是只在一个任务赢。
+
+### 🟢 绿灯 B：不是 GC 换皮
+
+在控制 GC、二核苷酸、已知局部规则后，Uplift 相关效应仍然存在；或者 Uplift 至少能稳定对应一个中介量（如 RNA 局部结构或核糖体暂停）。
+
+**null 层级**：
+- B1: 成分匹配 null（GC + dinucleotide matched controls）
+- B2: 生成式 dinucleotide shuffle（Eulerian trail 保持）
+- B3: 保持阅读框的 codon/dicodon shuffle
+
+**通过标准**：在 B2 或 B3 强 null 下，效应仍比随机显著大。
+
+### 🟢 绿灯 C：跨系统复现
+
+不只在人类 RefSeq 上有效，跨真核、细菌、古菌以及多个数据库版本都能看到同向效应。
+
+**通过标准**：
+- 效应方向在 ≥60% 物种中一致
+- Meta-analysis 汇总效应 CI 不含零
+- 异质性 I² < 80% 或可解释的分层结构
 
 ---
 
@@ -16,7 +64,7 @@ This document summarizes all computational experiments conducted to validate the
 
 **Key Finding**: The arithmetic framework is mathematically valid, but the mechanistic bridge to translation dynamics is not supported by current evidence.
 
-**Living doc note (主开发文档说明)**: Sections above are the consolidated computational validation record; **Next Steps** below is the active development roadmap for the A100 migration (data, experiments, acceptance tests, and operational checklist).
+**Living doc note (主开发文档说明)**: Sections above are the consolidated computational validation record; **Next Steps** below is the active development roadmap for systematic validation.
 
 ---
 
@@ -222,6 +270,180 @@ The arithmetic framework is **mathematically elegant but biologically underdeter
 ## Next Steps (A100 Migration)
 
 This section is the **main development plan** for scaling the project on an A100 machine (Linux preferred) and for tightening H2/H3 with more data and stronger tests.
+
+---
+
+## 核心计算实验模块（7 模块系统验证计划）
+
+以下模块按优先级排序，可并行执行。每个模块都有明确的"反驳点"和"堵回去的实验"。
+
+### 模块 A：24 编码全对照的独立验证
+
+**目的**：堵住"μ\* 是你们用同一套信息挑出来的"这种反驳。
+
+**状态**：🔄 部分完成
+
+**做法**：
+1. 识别阶段固定，永远只用识别规则选出 μ\*，不再动
+2. 设计 3-5 个独立验证任务，全部不包含识别时用的目标量
+
+**验证任务**：
+| 任务 | 描述 | 脚本 | 状态 |
+|------|------|------|------|
+| A1 | 终止位点 U_before/U_after 差异强度 | `exp_encoding_cross_task_validation.py` | ✅ |
+| A2 | Recoding vs terminal AUC | `exp_out_of_sample_mu_star_ranking.py` | ✅ |
+| A3 | 跨物种一致性 | `exp_loso_generalization.py` | ✅ (50%) |
+| A4 | Readthrough/PRF 预测 | (pending) | ⏳ |
+
+**当前结果**：
+- μ\* ranks 2/24 in meta-analysis (Fisher score 59.05)
+- LOSO sign consistency: 50% (at chance level)
+- **结论**：绿灯 A 部分亮起，但跨物种一致性不足
+
+---
+
+### 模块 B：强 null 攻击（证明不是换皮统计）
+
+**目的**：堵住"你这就是 GC 或 motif"这种反驳。
+
+**状态**：🔄 进行中
+
+**三类 null**：
+
+#### B1：成分匹配 null
+| 实验 | 脚本 | 状态 | 结果 |
+|------|------|------|------|
+| GC+dinuc 匹配对照 | `exp_stop_context_window_analysis.py` | ✅ | p<0.001 survives |
+
+#### B2：生成式 dinucleotide shuffle
+| 实验 | 脚本 | 状态 | 结果 |
+|------|------|------|------|
+| 窗口级 dinuc shuffle | `exp_stop_context_dinuc_shuffle_window.py` | ✅ | p<0.001 survives |
+
+#### B3：保持阅读框的 codon/dicodon shuffle
+| 实验 | 脚本 | 状态 | 结果 |
+|------|------|------|------|
+| ORF-level dicodon null | `exp_stop_context_null_dicodon_orf.py` | ✅ | **FAILS** p>0.29 |
+| Dicodon 吸收量化 | `exp_dicodon_absorption_analysis.py` | ✅ | 33% absorbed (k=10) |
+
+**当前结果**：
+- B1/B2 通过，B3 失败
+- Dicodon 结构解释 33% 信号（k=10）
+- **结论**：绿灯 B 部分亮起，但 dicodon 吸收是主要问题
+
+---
+
+### 模块 C：m 与 k 的鲁棒性扫描
+
+**目的**：堵住"你们只在一个参数上成立"的反驳。
+
+**状态**：✅ 完成
+
+**做法**：
+- k 扫描：k ∈ {3, 5, 10, 20}
+- m 扫描：m ∈ {6, 7, 8, 9}
+
+**当前结果**：
+| k | Meta d (UAA vs UGA) | 95% CI | I² |
+|---|---------------------|--------|-----|
+| 3 | -0.035 | [-0.066, -0.004] | 93.2% |
+| 5 | -0.006 | [-0.034, 0.021] | 90.9% |
+| 10 | -0.030 | [-0.065, 0.004] | 94.8% |
+| 20 | -0.036 | [-0.076, 0.004] | 96.3% |
+
+**结论**：只有 k=3 边界显著，高异质性在所有 k 值持续
+
+---
+
+### 模块 D：RNAfold 结构桥接
+
+**目的**：把 Uplift 从"抽象张力"接到"可观测物理代理"。
+
+**状态**：❌ 未通过
+
+**三层证据要求**：
+1. 描述性：U_after 与 MFE 相关性 → ρ = -0.22 (raw), ≈0 (GC-controlled)
+2. 控制后：ΔR² = 0.000 (Uplift 无独立解释力)
+3. 独立解释力：嵌套模型无增益
+
+**当前结果**：
+```
+Raw correlation:        ρ = -0.22 (Uplift-MFE)
+Partial (GC-controlled): ρ ≈ 0
+ΔR² contribution:       0.000
+```
+
+**结论**：绿灯 D 未亮。关系完全由 GC 中介。需要 zMFE（成分匹配 shuffle）重新测试。
+
+---
+
+### 模块 E：Ribo-seq 暂停桥接
+
+**目的**：直接把 Uplift 接到"核糖体是否卡住"。
+
+**状态**：❌ 未通过
+
+**当前结果**：
+```
+Uplift-Pause (codon):   ρ = -0.12 (ns)
+Within-family:          avg ρ = -0.09
+```
+
+**待做**：
+- [ ] 窗口级 pause score（不是 codon 级）
+- [ ] 多数据集复现（≥3 独立 Ribo-seq 数据集）
+- [ ] 按 U_after 分位数分层比较
+
+---
+
+### 模块 F：非标准遗传密码表压力测试
+
+**目的**：堵住"你们只解释标准遗传码"的反驳。
+
+**状态**：🔄 部分完成
+
+**当前结果**：
+- μ\* ranks 2/24 across nonstandard codes (meta-analysis)
+- 边界对齐在多数非标准码中保持
+
+**待做**：
+- [ ] 系统收集所有 NCBI 遗传密码表
+- [ ] 对每个代码计算边界对齐统计
+- [ ] 测试"语义迁移但边界角色保留"现象
+
+---
+
+### 模块 G：Sec/Pyl 分层策略
+
+**目的**：扩展 recoding 分析到更多事件类型。
+
+**状态**：✅ Sec 完成，⏳ Pyl 待扩展
+
+**当前结果（Sec）**：
+- 75% Sec sites show elevated U_before
+- Effect concentrated at distal positions (j=-10: diff=+11.3)
+
+**策略**：
+- Sec：统计主战场，按域/SECIS类型分层
+- Pyl：案例库模式，输出极端候选作为湿实验目标
+
+---
+
+## 优先级与执行计划
+
+推荐执行顺序（最快把 64→21 从"结构"变成"强生物学证据"）：
+
+1. ✅ 模块 A：24 编码独立验证 → 部分完成
+2. ✅ 模块 B：强 null 攻击 → 部分完成，dicodon 问题已量化
+3. ⏳ 模块 D：RNAfold 桥接 → 需用 zMFE 重测
+4. ✅ 模块 C：鲁棒性扫描 → 完成
+5. ⏳ 模块 E：Ribo-seq 桥接 → 需窗口级分析
+6. ⏳ 模块 F：非标准遗传码压力测试
+7. ⏳ 模块 G：Sec/Pyl 分层扩展
+
+**前 3 个模块能把最大反驳点基本堵死。**
+
+---
 
 ### 0) Goalposts (what “proving H2/H3” means operationally)
 
@@ -667,6 +889,8 @@ All generated LaTeX fragments: `sections/generated/*.tex`
 
 | Commit | Description |
 |--------|-------------|
+| `4f0c2a9a` | H2-5 Position-shape replication (weak cross-species r=0.14) |
+| `5143951c` | H2-2 LOSO generalization test (50% sign consistency) |
 | `f062f32f` | M2 dicodon absorption analysis + 18-species H2 replication |
 | `068c0253` | M1 cross-species meta-analysis methodology in paper |
 | `0fca1ea3` | M1 multi-species infrastructure + preliminary analysis |
