@@ -342,7 +342,16 @@ The A100 phase is mainly about making these protocols scale (more datasets, stro
 
 ### 2) Milestone M1 — Data expansion to make H2 a real replication claim
 
-**Objective**: Move from “human-only + small special cases” to “cross-domain replication with strict out-of-sample validation”.
+**Status**: 🔄 IN PROGRESS (2026-01-13)
+
+**Completion Notes**:
+- Created `fetch_multispecies_cds.py` for downloading Tier-1 species from NCBI RefSeq
+- Created `exp_cross_species_stop_context.py` for H2-1 cross-domain replication
+- Downloaded 9/19 species (yeast, ecoli, haloferax, human, mouse, fly, worm, arabidopsis, zebrafish)
+- Preliminary meta-analysis (U_before, k=10): d = -0.037 [-0.094, 0.020], I² = 84.9%
+- High heterogeneity suggests species-specific effects; full analysis pending
+
+**Objective**: Move from "human-only + small special cases" to "cross-domain replication with strict out-of-sample validation".
 
 **Data to add (minimum useful set)**
 
@@ -642,7 +651,7 @@ All generated LaTeX fragments: `sections/generated/*.tex`
 
 | Commit | Description |
 |--------|-------------|
-| `pending` | M0 baseline reproduction on A100 cluster (2026-01-13) |
+| `a43e59cc` | M0 baseline reproduction on A100 cluster (2026-01-13) |
 | `3a664c0d` | Effect size analysis (Cohen's d) |
 | `1fc538c9` | +4 detailed analysis + Bootstrap CI |
 | `bf781a63` | Gene length, codon context, usage bias |
