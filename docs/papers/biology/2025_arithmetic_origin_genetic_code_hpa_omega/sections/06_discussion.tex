@@ -240,16 +240,19 @@ We tested the correlation between uplift and tRNA Adaptation Index (tAI), a stan
 At the codon level, uplift and tAI are uncorrelated ($\rho=0.005$, $p=0.97$), indicating that the arithmetic structure does not directly encode translational efficiency.
 At the window level, the raw correlation is negative (high uplift $\to$ low tAI), but this reverses after controlling for GC content, suggesting that GC is a strong confounder in the uplift--translation-rate relationship.
 
-\paragraph{Future directions: RNA structure and ribosome pausing.}
-Two additional analyses remain as future work:
-\begin{itemize}
-\item \textbf{RNA secondary structure with RNAfold.}
-Direct MFE calculations (rather than GC proxies) would provide a stronger test of whether uplift encodes structural information.
-Preliminary GC-proxy analysis shows the correlation vanishes after composition control (Section~\ref{sec:negative_results}).
-\item \textbf{Ribosome profiling overlay.}
-Map published Ribo-seq data onto the RefSeq corpus and test whether high-$\overline{U}_{\mathrm{after}}$ windows exhibit elevated ribosome pause scores after within-gene normalization and composition stratification.
-This would provide a direct mechanistic link between arithmetic uplift and translation dynamics.
-\end{itemize}
-These analyses require additional data infrastructure and are documented as executable protocols in Appendix~\ref{app:bio_mech_bridge}.
+\paragraph{RNA secondary structure: actual MFE analysis.}
+Using ViennaRNA, we computed actual minimum free energy (MFE) for stop-context windows and tested whether ``arithmetic friction'' manifests as thermodynamic instability:
+\input{sections/generated/uplift_mfe_correlation}
+\textbf{Counterintuitively}, high Uplift correlates with \emph{lower} MFE (more stable structure, $\rho\approx -0.2$), contrary to the hypothesis that arithmetic friction corresponds to energetic instability.
+However, after controlling for GC content, the correlation effectively vanishes ($|\rho|<0.08$), indicating that this relationship is entirely mediated by composition: high-GC sequences simultaneously have low Uplift and stable structures.
+
+\paragraph{Selenocysteine case study: a positive signal.}
+To test whether uplift patterns distinguish recoding sites qualitatively, we performed a case study on well-characterized selenocysteine (Sec) insertion sites:
+\input{sections/generated/secis_case_study}
+This finding---that 75\% of Sec sites show elevated upstream Uplift relative to terminal stops---is consistent with the hypothesis that recoding contexts carry a distinctive arithmetic signature, though the mechanism remains unclear.
+
+\paragraph{Ribosome profiling: future work.}
+Direct mapping of Ribo-seq data onto the RefSeq corpus to test whether high-$\overline{U}_{\mathrm{after}}$ windows exhibit elevated ribosome pause scores remains as future work.
+This would provide the most direct mechanistic link between arithmetic uplift and translation dynamics, connecting ``arithmetic friction'' to observable ribosome behavior.
 
 
