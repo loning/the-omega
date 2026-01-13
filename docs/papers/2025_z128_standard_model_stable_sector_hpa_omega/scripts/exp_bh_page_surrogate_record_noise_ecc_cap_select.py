@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import Dict, List
 
 from common_paths import generated_dir
+from common_progress import ProgressEvery
 from common_tex import write_lines
 
 from exp_bh_page_surrogate_record_noise_ecc_audit import _run_trials
@@ -71,10 +72,19 @@ def main() -> None:
     ok_threshold = 0.95
 
     rows: List[str] = []
+    total = len(m_list) * len(modes) * len(corrs) * len(ps)
+    prog = ProgressEvery(label="bh_record_noise_ecc_cap_select combos", total=total, interval_s=60.0)
+    prog.start()
+    k = 0
     for m in m_list:
         for mode in modes:
             for corr in corrs:
                 for p in ps:
+                    k += 1
+                    prog.maybe(
+                        k,
+                        extra=f"m={m} mode={mode} corr={corr} p={float(p):.3f}",
+                    )
                     out = _cap_select_r_star(
                         m=m,
                         mode=mode,
@@ -101,13 +111,14 @@ def main() -> None:
                         )
                         + r" \\"
                     )
+    prog.done(extra=f"rows={len(rows)}")
     rows.append(r"\bottomrule")
     write_lines(generated_dir() / "bh_page_record_noise_ecc_cap_select_rows.tex", rows)
 
     summary = [
         r"\paragraph{CAP-selected redundancy for record-noise recovery (finite family).} \AuditTag "
         r"For each noise budget $p$ and corruption model, we CAP-select the minimal repetition factor "
-        r"$r^\*(p)\\in\\{1,3,5,7\\}$ that reaches a target exact-recovery rate (here: $\\ge 0.95$) under the "
+        r"$r^\ast(p)\\in\\{1,3,5,7\\}$ that reaches a target exact-recovery rate (here: $\\ge 0.95$) under the "
         r"record-noise audit. This turns a robustness audit into a deterministic protocol choice over a finite family.",
     ]
     write_lines(generated_dir() / "bh_page_record_noise_ecc_cap_select_summary.tex", summary)

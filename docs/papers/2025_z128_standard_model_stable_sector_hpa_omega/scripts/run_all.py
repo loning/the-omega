@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import ast
 import hashlib
+import time
 import subprocess
 import sys
 from subprocess import CalledProcessError
@@ -135,10 +136,32 @@ def _script_deps_closure(
 
 def _run_script(script_path: Path, step_name: str) -> None:
     cmd = [sys.executable, str(script_path)]
+    t0 = time.perf_counter()
     proc = subprocess.Popen(cmd, cwd=str(paper_root()))
     rc = heartbeat_wait(proc, label=step_name, interval_s=60.0, poll_s=1.0)
+    elapsed_s = float(time.perf_counter() - t0)
     if rc != 0:
         raise CalledProcessError(rc, cmd)
+    print(f"[run_all] DONE {step_name} elapsed={_format_duration(elapsed_s)}", flush=True)
+    if elapsed_s >= 60.0:
+        print(
+            "[run_all] HINT: For long-running scripts, emit a per-minute heartbeat inside the script "
+            "using common_progress.ProgressEvery(...).maybe(...).",
+            flush=True,
+        )
+
+
+def _format_duration(seconds: float) -> str:
+    s = max(0.0, float(seconds))
+    if s < 60.0:
+        return f"{s:.2f}s"
+    m = int(s // 60.0)
+    rem = s - 60.0 * float(m)
+    if m < 60:
+        return f"{m:d}m{rem:05.2f}s"
+    h = int(m // 60)
+    mm = int(m % 60)
+    return f"{h:d}h{mm:02d}m{rem:05.2f}s"
 
 
 def _check_outputs(rel_paths: Iterable[str]) -> None:
@@ -830,6 +853,30 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Toy scattering process simulation (delay->queue; interface)",
+            script="exp_scattering_process_delay_queue_sim.py",
+            expected_outputs=[
+                "sections/generated/scattering_process_delay_queue_rows.tex",
+                "sections/generated/scattering_process_delay_queue_summary.tex",
+            ],
+        ),
+        Step(
+            name="Scattering vs BH queue equivalence (toy; audit)",
+            script="exp_scattering_bh_queue_equivalence_audit.py",
+            expected_outputs=[
+                "sections/generated/scattering_bh_queue_equivalence_rows.tex",
+                "sections/generated/scattering_bh_queue_equivalence_summary.tex",
+            ],
+        ),
+        Step(
+            name="Scattering vs BH Page-surrogate equivalence (toy; audit)",
+            script="exp_scattering_bh_page_surrogate_equivalence.py",
+            expected_outputs=[
+                "sections/generated/scattering_bh_page_surrogate_rows.tex",
+                "sections/generated/scattering_bh_page_surrogate_summary.tex",
+            ],
+        ),
+        Step(
             name="K4 leakage audit vs PDG mini-set",
             script="exp_k4_pdg_leakage_audit.py",
             expected_outputs=[
@@ -1513,6 +1560,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     cache_dirty = False
 
     for step in steps:
+        step_t0 = time.perf_counter()
         script_path = scripts_dir() / step.script
         if not script_path.is_file():
             raise FileNotFoundError(f"Missing script: {script_path}")
@@ -1522,8 +1570,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             have = _have_outputs(step.expected_outputs)
             cached_fp = cache.get(step.script)
             if have and cached_fp == fp:
-                print(f"[run_all] SKIP (up-to-date) {step.name}")
+                print(f"[run_all] SKIP (up-to-date) {step.name}", flush=True)
                 _check_outputs(step.expected_outputs)
+                elapsed_s = float(time.perf_counter() - step_t0)
+                print(
+                    f"[run_all] DONE {step.name} elapsed={_format_duration(elapsed_s)} (skipped)",
+                    flush=True,
+                )
             elif have and cached_fp is None:
                 # First run (or cache cleared):
                 # If outputs are older than the script/dependency mtimes, they may be stale
@@ -1532,24 +1585,30 @@ def main(argv: Sequence[str] | None = None) -> int:
                 # committed generated fragments).
                 deps_mtime = _max_mtime(deps)
                 if _outputs_up_to_date(step.expected_outputs, deps_mtime):
-                    print(f"[run_all] SKIP (cached) {step.name}")
+                    print(f"[run_all] SKIP (cached) {step.name}", flush=True)
                     _check_outputs(step.expected_outputs)
+                    elapsed_s = float(time.perf_counter() - step_t0)
+                    print(
+                        f"[run_all] DONE {step.name} elapsed={_format_duration(elapsed_s)} (skipped)",
+                        flush=True,
+                    )
                 else:
                     print(
-                        f"[run_all] {step.name} -> {step.script} (cache missing; outputs stale)"
+                        f"[run_all] {step.name} -> {step.script} (cache missing; outputs stale)",
+                        flush=True,
                     )
                     _run_script(script_path, step_name=step.name)
                     _check_outputs(step.expected_outputs)
                 cache[step.script] = fp
                 cache_dirty = True
             else:
-                print(f"[run_all] {step.name} -> {step.script}")
+                print(f"[run_all] {step.name} -> {step.script}", flush=True)
                 _run_script(script_path, step_name=step.name)
                 _check_outputs(step.expected_outputs)
                 cache[step.script] = fp
                 cache_dirty = True
         else:
-            print(f"[run_all] {step.name} -> {step.script}")
+            print(f"[run_all] {step.name} -> {step.script}", flush=True)
             _run_script(script_path, step_name=step.name)
             _check_outputs(step.expected_outputs)
         all_expected.extend(list(step.expected_outputs))
@@ -1569,7 +1628,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     if cache_dirty:
         _save_run_all_cache(cache)
 
-    print("[run_all] OK")
+    print("[run_all] OK", flush=True)
     return 0
 
 

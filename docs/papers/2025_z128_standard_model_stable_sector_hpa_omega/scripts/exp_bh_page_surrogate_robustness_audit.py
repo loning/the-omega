@@ -35,6 +35,13 @@ from common_tex import write_lines
 import exp_black_hole_queue_equivalence as bhq
 
 
+def _tex_escape_text(s: str) -> str:
+    """
+    Minimal LaTeX text-mode escaping for generated fragments.
+    """
+    return str(s).replace("\\", r"\textbackslash{}").replace("_", r"\_")
+
+
 def _page_like(U: List[float], tol: float = 1e-9) -> Tuple[bool, int]:
     """
     Page-like surrogate criterion:
@@ -135,7 +142,7 @@ def main() -> None:
                     " & ".join(
                         [
                             r["m"],
-                            r["mode"],
+                            rf"\texttt{{{_tex_escape_text(r['mode'])}}}",
                             r["seed"],
                             r["ok"],
                             r["page_ok"],

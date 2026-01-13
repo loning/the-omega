@@ -28,6 +28,13 @@ def _fmt(x: float, digits: int = 6) -> str:
     return f"{float(x):.{int(digits)}f}"
 
 
+def _tex_escape_text(s: str) -> str:
+    """
+    Minimal LaTeX text-mode escaping for generated fragments.
+    """
+    return str(s).replace("\\", r"\textbackslash{}").replace("_", r"\_")
+
+
 def main() -> None:
     m = 6
     base_vacuum_mass = 64
@@ -101,7 +108,7 @@ def main() -> None:
         r"\paragraph{BH5 Page surrogate $U(t)$ (queue-equivalent single-stream model).} \AuditTag "
         r"This fragment reports a deterministic record-level surrogate $U(t)$ (remaining micro-ambiguity bits) "
         r"computed from the folding fibers under a CAP-selected emission schedule (payload vs recovery). "
-        rf"Parameters: mode=\texttt{{{mode}}}, $m={m}$, $L={L}$, $t={t}$, "
+        rf"Parameters: mode=\texttt{{{_tex_escape_text(mode)}}}, $m={m}$, $L={L}$, $t={t}$, "
         rf"scramble\_delay={int(meta['scramble_delay'])}, exponent={int(meta['exponent'])}, "
         rf"vacuum tail={base_vacuum_mass}.",
     ]

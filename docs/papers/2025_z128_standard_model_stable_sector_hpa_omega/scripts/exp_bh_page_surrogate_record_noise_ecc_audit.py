@@ -26,9 +26,17 @@ import random
 from typing import Dict, List
 
 from common_paths import generated_dir
+from common_progress import ProgressEvery
 from common_tex import write_lines
 
 import exp_black_hole_queue_equivalence as bhq
+
+
+def _tex_escape_text(s: str) -> str:
+    """
+    Minimal LaTeX text-mode escaping for generated fragments.
+    """
+    return str(s).replace("\\", r"\textbackslash{}").replace("_", r"\_")
 
 
 def _choose_indices(rng: random.Random, n: int, k: int) -> List[int]:
@@ -130,7 +138,14 @@ def _run_trials(m: int, mode: str, corr: str, p: float, r: int, trials: int, see
     ok = 0
     wrong = 0
     exc = 0
-    for _ in range(int(trials)):
+
+    prog = ProgressEvery(
+        label=f"bh_record_noise_ecc trials m={m} mode={mode} corr={corr} p={float(p):.3f} r={int(r)}",
+        total=int(trials),
+        interval_s=60.0,
+    )
+    prog.start()
+    for ti in range(int(trials)):
         rrng = random.Random(rng.randrange(0, 2**31 - 1))
         noisy = _corrupt_record(
             rng=rrng,
@@ -152,6 +167,8 @@ def _run_trials(m: int, mode: str, corr: str, p: float, r: int, trials: int, see
                 wrong += 1
         except Exception:
             exc += 1
+        prog.maybe(ti + 1, extra=f"ok={ok} wrong={wrong} exc={exc}")
+    prog.done(extra=f"ok={ok} wrong={wrong} exc={exc}")
 
     tr = int(trials)
     return {
@@ -177,17 +194,26 @@ def main() -> None:
     seed0 = 20260112
 
     rows: List[str] = []
+    total = len(m_list) * len(modes) * len(corrs) * len(ps) * len(rs)
+    prog = ProgressEvery(label="bh_record_noise_ecc_audit combos", total=total, interval_s=60.0)
+    prog.start()
+    k = 0
     for m in m_list:
         for mode in modes:
             for corr in corrs:
                 for p in ps:
                     for r in rs:
+                        k += 1
+                        prog.maybe(
+                            k,
+                            extra=f"m={m} mode={mode} corr={corr} p={float(p):.3f} r={int(r)}",
+                        )
                         out = _run_trials(m=m, mode=mode, corr=corr, p=p, r=r, trials=trials, seed=seed0)
                         rows.append(
                             " & ".join(
                                 [
                                     out["m"],
-                                    out["mode"],
+                                    rf"\texttt{{{_tex_escape_text(out['mode'])}}}",
                                     out["corr"],
                                     out["p"],
                                     out["r"],
@@ -199,6 +225,7 @@ def main() -> None:
                             )
                             + r" \\"
                         )
+    prog.done(extra=f"rows={len(rows)}")
     rows.append(r"\bottomrule")
     write_lines(generated_dir() / "bh_page_record_noise_ecc_audit_rows.tex", rows)
 
