@@ -442,6 +442,8 @@ flowchart TB
   P_select("审计选择（候选族+目标函数+tie-break）<br/>类型：审计 / Audit<br/>label: app:cap_audit_template<br/>θ* := argmin_{θ∈Θ(B)} J(θ)")
   M_cap -.- P_select
 
+  M_capinv_local["CAP 在等价类上良定义（合法性门槛）<br/>类型：审计 / Audit<br/>label: prop:cap_on_equiv_classes<br/>J,κ invariants ⇒ CAP output well-defined"]
+
   M_anchor["锚点（m=6，n=3）<br/>类型：构造 / Construction<br/>label: sec:folding_core<br/>(m,n)=(6,3)"]
   P_screen("屏幕显示（planar screen chart）<br/>类型：代理 / Proxy<br/>label: subsec:planar_screen_chart<br/>z(ω)=(ω₁+iω₂)/(1−ω₃)")
   M_anchor -.- P_screen
@@ -465,6 +467,8 @@ flowchart TB
   M_dyadic_phase_register["dyadic 相位寄存器与 denom=2^p（含 Z128）<br/>类型：审计 / Audit<br/>label: rem:dyadic_phase_register<br/>denom=2^p; p=7 ↔ Z128"]
   P_dyadic_phase_register("dyadic phase register（dyadic 相位寄存器；audit）<br/>类型：审计 / Audit<br/>label: rem:dyadic_phase_register<br/>nested refinement chain 2^p")
   M_dyadic_phase_register -.- P_dyadic_phase_register
+
+  M_cosmo_pin@{ shape: lean-r, label: "cosmology pin（m*≈15 与 dyadic baseline）<br/>类型：审计 / Audit<br/>label: sec:rigidity_bridge_spine / cor:dyadic_cosmology_consistency_pin<br/>m* matches m_b*=2p+1 at p=7" }
 
   M_phase_lift_cp["相位寄存器提升：edge transport → unitary holonomy<br/>类型：审计 / Audit<br/>label: subsec:holonomy_phase_lift_cp<br/>U_{a→b} ∈ U(4) (phase-weighted)"]
   P_phase_lift_cp("phase-lift holonomy（CP-odd 可检验代理）<br/>类型：审计 / Audit<br/>label: subsec:holonomy_phase_lift_cp<br/>extract mixing angles/δ (PDG diagnostic)")
@@ -516,14 +520,21 @@ flowchart TB
   M_anchor --> M_z128_label --> M_dyadic_phase_register
   M_cap --> M_tau_family
   M_conn --> M_phase_lift_cp --> M_cp_odd_J
+  M_holo -.-> M_phase_lift_cp
   M_dyadic_phase_register --> M_phase_lift_cp
   M_tau_family --> M_phase_lift_cp
+  M_dyadic_phase_register -.-> M_cosmo_pin
 
   P_screen --> P_z128_label --> P_dyadic_phase_register
   P_select --> P_tau_family
   P_conn --> P_phase_lift_cp --> P_cp_odd_J
   P_dyadic_phase_register --> P_phase_lift_cp
   P_tau_family --> P_phase_lift_cp
+  P_dyadic_phase_register -.-> P_cosmo_pin
+
+  M_capinv_local -.-> M_tau_family
+  M_capinv_local -.-> M_transport_audit
+  M_capinv_local -.-> M_phase_lift_cp
 
   M_holo --> M_op3_yang_mills
   M_action --> M_op3_yang_mills
@@ -558,7 +569,7 @@ flowchart TB
   class M_cap math_axiom;
   class M_anchor,M_conn,M_holo,M_gauge math_construct;
   class M_action,M_op3_yang_mills math_cont;
-  class M_graphzeta,M_transport_audit,M_z128_label,M_tau_family,M_dyadic_phase_register,M_phase_lift_cp,M_cp_odd_J,M_cl1,M_cl2 math_audit;
+  class M_graphzeta,M_transport_audit,M_z128_label,M_tau_family,M_dyadic_phase_register,M_phase_lift_cp,M_cp_odd_J,M_cl1,M_cl2,M_capinv_local,M_cosmo_pin math_audit;
   class M_cl3,M_cl4 math_assumption;
   class P_screen,P_conn,P_gauge phys_proxy;
   class P_holo,P_wilson,P_cp_odd_J phys_obs;
@@ -1100,6 +1111,10 @@ flowchart TB
   P_qcd_loop_gate("QCD gate 输出（row）<br/>类型：审计 / Audit<br/>label: tab:qcd_proxy_polebarrier_failure<br/>verdict row")
   M_qcd_loop_gate -.- P_qcd_loop_gate
 
+  %% QCD pole-barrier gate is an instance of the same resolvent/determinant analyticity certificate family
+  M_opMotherDict -.-> M_qcd_loop_gate
+  M_renorm_dict -.-> M_qcd_loop_gate
+
   M_manybody_feedback["多体+观测反馈（orbit/gauge/force）<br/>类型：接口 / Iface<br/>label: app:orbit_gauge_force_manybody_measurement_feedback<br/>instrument→control→response"]
   P_manybody_feedback("多体反馈字典（ρ update loop）<br/>类型：接口 / Iface<br/>label: app:orbit_gauge_force_manybody_measurement_feedback<br/>channels + feedback")
   M_manybody_feedback -.- P_manybody_feedback
@@ -1338,9 +1353,16 @@ flowchart TB
   P_rg("耦合运行代理（阈值/匹配口径 / Coupling-Running Proxy (Thresholds/Matching Convention)）<br/>类型：模型 / Model<br/>label: eq:rg_in_r<br/>dg/dr = (ln φ)β(g)")
   M_rg -.- P_rg
 
+  M_dyadic_baseline@{ shape: lean-l, label: "dyadic baseline（Z128）<br/>类型：审计 / Audit<br/>label: subsec:z128_label<br/>baseline p=7 at m=6" }
+  P_dyadic_baseline("dyadic baseline（Z128；dictionary）<br/>类型：审计 / Audit<br/>label: subsec:z128_label<br/>p=m+1=7 at anchor")
+  M_dyadic_baseline -.- P_dyadic_baseline
+
   M_cosmo@{ shape: lean-l, label: "宇宙学：分辨率流接口（占据假设 + 离散匹配 / Cosmology: Resolution-Flow Interface (Occupancy Assumption + Discrete Match)）<br/>类型：假设 / Assumption<br/>label: app:cosmology_resolution_flow / ass:occupancy_energy_z128<br/>f_stab(m)=F_{m+2}/2ᵐ;  f_hid=1−f_stab" }
   P_cosmo("能量预算拟合代理（离散匹配 + 稳定性 / Energy-Budget Fitting Proxy (Discrete Match + Stability)）<br/>类型：模型 / Model<br/>label: app:cosmology_resolution_flow / ass:occupancy_energy_z128<br/>Ω_vis,0≈f_stab(m);  m* ∈ Z (discrete match)")
   M_cosmo -.- P_cosmo
+
+  M_dyadic_baseline -.-> M_cosmo
+  P_dyadic_baseline -.-> P_cosmo
 
   M_entropy_gap["熵差/压缩率（log2−logφ）<br/>类型：闭合 / Closure<br/>label: lem:entropy_gap_hidden_exponent_cosmo<br/>lim (1/m)log f_stab = log(φ/2);  lim (1/m)log d_m = log(2/φ)"]
   P_entropy_gap("信息预算代理（hidden exponent）<br/>类型：字典 / Dictionary<br/>label: lem:full_shift_entropy_gap<br/>full shift: log2;  GM: logφ;  gap=log(2/φ)")
@@ -1554,6 +1576,8 @@ flowchart TB
 
   P_types("识别字典（stable types ↔ 粒子/场）<br/>类型：字典 / Dictionary<br/>label: tab:sm_labeling_table<br/>stable types ↔ (fermion multiplets, gauge factors)")
 
+  P_holo_stats("holonomy cycle-type 统计（class-function 完备信息）<br/>类型：审计 / Audit<br/>label: prop:cycle_type_gauge_invariant / sec:protocol_connections_holonomy<br/>cycle type histogram")
+
   P_cp_volume("CP violation rigidity target（CKM Jarlskog 对照）<br/>类型：审计 / Audit<br/>label: subsec:cp_jarlskog<br/>data channel: CKM fits; fail criterion explicit")
 
   P_ckm_matrix("CKM matrix reconstruction（CKM 矩阵重建；audit output）<br/>类型：审计 / Audit<br/>label: subsec:ckm_matrix_closure<br/>tables: |V_ij|, angles, unitarity")
@@ -1607,6 +1631,7 @@ flowchart TB
   P_input_nufit --> P_p5
   P_ckm_matrix --> P_p5
   P_pmns_matrix --> P_p5
+  P_holo_stats -.-> P_p5
   P_lens --> P_p6
   P_gamma_proxy --> P_p7
   P_gamma_direct --> P_p7
@@ -1632,7 +1657,7 @@ flowchart TB
   class P_mass,P_lens phys_obs;
   class P_types,P_6dof_lock,P_scl phys_dict;
   class P_cosmo phys_model;
-  class P_err,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_nufit,P_cp_volume,P_ckm_matrix,P_pmns_matrix,P_p1,P_p2,P_p3,P_p4,P_p5,P_p6,P_p7 phys_audit;
+  class P_err,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_nufit,P_cp_volume,P_ckm_matrix,P_pmns_matrix,P_holo_stats,P_p1,P_p2,P_p3,P_p4,P_p5,P_p6,P_p7 phys_audit;
 
   style P_p1 stroke-width:4px;
   style P_p2 stroke-width:4px;

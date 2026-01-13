@@ -92,6 +92,60 @@ flowchart TD
 
 说明：上图是**依赖关系**而非叙事顺序；叙事可从 `B`（等价语义+频率优先词典）开始，也可从 `A`（协议/读出）开始。
 
+## 隐含约束注册表（Implicit constraint registry）
+
+本节记录在 DAG 中以虚线边呈现、并在正文/附录中已明确化的“隐含几何约束/刚性门槛”。它们不是新增原语，而是把分散在不同模块的约束收口为可复用的**结构门禁**与**最小失败点**。
+
+### IC-1：dyadic baseline ↔ cosmology 离散匹配的一致性 pin（Z128–cosmo pin）
+
+- **内容**：在 dyadic baseline 取 $p=7$（$\ZZ_{128}$）的前提下，内部低复杂度关系 $m_b^\ast=2p+1$ 给出 $m_b^\ast=15$，与 cosmology 离散匹配得到的 $m_\ast\approx 15$ 形成跨模块一致性 pin。若不一致，必须显式暴露“改 baseline/改关系/扩展假设类”。  
+- **文稿定位**：
+  - `sections/I_00_introduction.tex`：`\ref{subsec:z128_label}`（Z128 baseline 叙事处给出跨模块指针）
+  - `sections/F_12_rigidity_bridge_spine.tex`：`\ref{cor:dyadic_cosmology_consistency_pin}`
+  - `sections/appendices/32_cosmology_resolution_flow.tex`：`m_\ast` 离散匹配段落（并回引 pin）
+- **层级**：Audit/Iface（不提升为 theorem-level cosmology）
+- **最小失败点**：pin 失配意味着 cosmology 的“占据假设/拟合口径”或 dyadic baseline/关系式之一需要显式扩展，不能作为隐含旋钮。
+
+### IC-2：QCD proxy↔Padé pole-barrier gate 属于同一 pole-barrier 证书体系（QCD gate ↔ mother-space/pressure spine）
+
+- **内容**：QCD 的“pole-barrier pass”（Padé 分母在单位圆内无根）是 Abel-first/pole-barrier 纪律的有限短序列实例化；它在可定义 transfer-operator/矩阵包的情形下与谱半径/pressure 的门禁等价形式对齐（pole barrier = exp(-pressure) 的叙事骨架）。  
+- **文稿定位**：
+  - `sections/appendices/67_qcd_confinement_proxy_audit.tex`：`\ref{subsec:qcd_proxy_polebarrier_consistency_loop}`
+  - `sections/appendices/68_qcd_confinement_pade_pole_barrier_audit.tex`：开头（显式挂回母空间/pressure spine）
+  - `sections/F_12_rigidity_bridge_spine.tex`：`\ref{cor:pole_barrier_equals_exp_minus_pressure}`
+  - `sections/appendices/59_operator_mother_space.tex`：母空间口径（resolvent/det 的解析域门禁）
+- **层级**：Audit（明确“非 confinement/mass gap 定理闭合”）
+- **最小失败点**：短/稀疏级数 + 有界 Padé 阶族导致的假极点/阶不稳定，必须继续以 bounded extension + stability gates 方式升级，不能直接升格为强结论。
+
+### IC-3：CAP 在等价类上良定义 ⇒ tie-break 必须不变量（legality threshold）
+
+- **内容**：任何希望作为“语义对象/不变量 verdict”输出的 CAP 选择，都要求目标函数与 tie-break key 在声明的等价关系下不变；否则即便目标函数不变也会违约。  
+- **文稿定位**：
+  - `sections/F_12_rigidity_bridge_spine.tex`：`\ref{prop:rigidity_legality_invariant_verdicts}`
+  - `sections/I_21_protocol_connections_holonomy.tex`：tie-break 段落显式引用该门槛
+  - `sections/appendices/15_holonomy_sweeps_extended.tex`：bounded sweeps 的合法性注记
+  - `sections/appendices/76_scheme_invariance_audit_contract.tex`：scheme 合同（哪些量允许变化）
+- **层级**：Audit/Prot（用于防止“隐藏自由度”）
+- **最小失败点**：一旦 tie-break 依赖坐标/表示/未声明约定，则输出不再是等价类上的对象，需降级为“representation-dependent diagnostic”或补充合同。
+
+### IC-4：holonomy cycle-type-only summaries 的可识别性边界（identifiability boundary）
+
+- **内容**：若观测/汇总仅给出 cycle-type histogram（或等价地仅给出 class-function/trace summaries），则它对内部实现的区分能力存在硬边界：同 histogram 的两实现对所有 class functions 不可区分。要区分必须扩大 loop family 或引入非 class-function readout。  
+- **文稿定位**：
+  - `sections/F_12_rigidity_bridge_spine.tex`：`\ref{prop:cycle_type_identifiability_boundary}`
+  - `sections/I_21_protocol_connections_holonomy.tex`：`\ref{rem:holonomy_identifiability_boundary}`
+  - `sections/V_40_falsifiability_predictions.tex`：`\ref{subsec:p5_quantified_predictions}`（P5 的 applicability/failure-point）
+- **层级**：Audit（信息论边界/适用范围）
+- **最小失败点**：若数据可用信息退化为 cycle-type-only，则任何声称“提取更多 CP/相位结构”的结论都超出该可观测族的信息含量，必须改变读出对象或扩大 loop family。
+
+### IC-5：phase-lift 是 holonomy 的读出分支（保持 conjugacy 结构）
+
+- **内容**：phase-lift 不应被理解为“另起炉灶的 CP 模块”，而是对同一 loop holonomy 的一种读出提升；因此它继承 cycle-type/conjugacy 的结构约束与可识别性边界。  
+- **文稿定位**：
+  - `sections/I_21_protocol_connections_holonomy.tex`：phase-lift 定义段与上述可识别性边界 remark
+  - `sections/V_40_falsifiability_predictions.tex`：P5 的边界说明（cycle-type-only）
+- **层级**：Audit/Iface（诊断管线的结构说明）
+
 ## 已引入的“自包含闭合模块”（Part F 主文 + 附录）
 
 - [x] **时间箭头（指数半群/Abel-first）**：`Part F.0`  

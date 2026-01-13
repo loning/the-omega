@@ -19,6 +19,35 @@ We use four certificate templates:
   A quantitative gap or sensitivity bound shows that the conclusion persists under bounded counterfactual families or perturbations, upgrading ``accidental alignment'' to a robust closure.
 \end{itemize}
 
+\subsection{RB-E (squeezing/inequality rigidity): bounding freedom by universal inequalities}
+\label{subsec:rb_e_squeezing}
+\AuditTag RB-E certificates are used when the narrative step is not an exact identity but a \emph{rigid bound} that prevents hidden degrees of freedom from growing with resolution.
+The typical pattern is: (i) define an intrinsic mean quantity and an intrinsic extremal quantity, and (ii) show that the relevant observable is squeezed between them, with any non-uniformity contributing at most an $O(1)$ term rather than an $O(m)$ rate.
+
+\begin{lemma}[A generic fiber-entropy squeezing template]\label{lem:rb_e_fiber_entropy_squeezing_template}
+\MathTag Let $f:\Omega\to X$ be a surjection between finite sets and let $N$ be uniform on $\Omega$.
+Write $W=f(N)$, fibers $P(w)=f^{-1}(w)$, mean degeneracy $d=|\Omega|/|X|$, maximal degeneracy $r=\max_{w}|P(w)|$, induced distribution $\mu(w)=|P(w)|/|\Omega|$, and uniform distribution $u$ on $X$.
+Then
+\[
+\log d\le H(N\mid W)\le \log r,
+\qquad
+0\le D(\mu\Vert u)\le \log(r/d),
+\]
+and $H(N\mid W)=\log d + D(\mu\Vert u)$.
+\end{lemma}
+\begin{proof}
+The identity $H(N\mid W)=\mathbb{E}[\log|P(W)|]$ gives the upper bound $H(N\mid W)\le \log r$ and the Jensen bound $H(N\mid W)\ge \log \mathbb{E}[|P(W)|]=\log d$.
+Moreover,
+\[
+D(\mu\Vert u)=\sum_w \mu(w)\log\!\left(\frac{\mu(w)}{u(w)}\right)
+=\mathbb{E}\!\left[\log\!\left(\frac{|P(W)|}{d}\right)\right]
+\le \log(r/d),
+\]
+since $|P(W)|\le r$.
+\end{proof}
+
+\AuditTag In the manuscript, this template is instantiated by the folding map $\mathrm{Fold}_m$ and yields Proposition~\ref{prop:fiber_entropy_relative_entropy_squeezing}, which upgrades the constant $\log(2/\varphi)$ from a shared rate into a bound on how much non-uniformity can contribute beyond the rate.
+
 \subsection{Mainline checklist (where each bridge is realized in this paper)}
 \label{subsec:rb_mainline_checklist}
 
