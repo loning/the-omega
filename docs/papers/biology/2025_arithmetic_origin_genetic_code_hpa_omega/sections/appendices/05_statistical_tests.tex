@@ -201,6 +201,43 @@ z=\frac{\widehat{p}_1-\widehat{p}_2}{\sqrt{\widehat{p}(1-\widehat{p})(1/n_1+1/n_
 \widehat{p}=\frac{x_1+x_2}{n_1+n_2}.
 \]
 
+\subsection{Cross-species meta-analysis for H2 replication}
+\label{app:cross_species_meta}
+
+To assess whether stop-context Uplift differences replicate across phylogenetically diverse species, we perform random-effects meta-analysis using the DerSimonian--Laird estimator \cite{DerSimonianLaird1986}.
+
+\paragraph{Species panel.}
+The analysis includes Tier-1 species from three domains:
+\begin{itemize}
+\item \emph{Eukarya} (translation table 1): human, mouse, yeast, fly, worm, arabidopsis, zebrafish;
+\item \emph{Bacteria} (translation table 11): \emph{E.~coli}, \emph{B.~subtilis}, \emph{Pseudomonas}, \emph{Mycobacterium}, \emph{Streptomyces}, \emph{Synechocystis}, \emph{Caulobacter}, \emph{Thermus};
+\item \emph{Archaea} (translation table 11): \emph{Haloferax}, \emph{Methanococcus}, \emph{Sulfolobus}, \emph{Pyrococcus}.
+\end{itemize}
+
+\paragraph{Data source.}
+For each species, we use annotated CDS sequences from NCBI RefSeq genome assemblies (\texttt{*\_cds\_from\_genomic.fna.gz}).
+This differs from mRNA-based data (which includes UTRs) by containing only the coding region; thus we analyze $\overline{U}_{\mathrm{before}}(s;k)$ (upstream coding context) rather than $\overline{U}_{\mathrm{after}}(s;k)$ (downstream, typically UTR).
+
+\paragraph{Effect size.}
+For each species and stop-codon pair $(s_1, s_2)$, we compute Cohen's $d$:
+\[
+d = \frac{\overline{U}_{\mathrm{before}}(s_1;k) - \overline{U}_{\mathrm{before}}(s_2;k)}{s_{\mathrm{pooled}}},
+\]
+where $s_{\mathrm{pooled}}$ is the pooled standard deviation.
+
+\paragraph{Random-effects model.}
+Let $d_i$ be the effect size for species $i$ with standard error $\mathrm{SE}_i$.
+The random-effects estimate is:
+\[
+\hat{d}_{\mathrm{RE}} = \frac{\sum_i w_i^* d_i}{\sum_i w_i^*},
+\qquad w_i^* = \frac{1}{\mathrm{SE}_i^2 + \hat\tau^2},
+\]
+where $\hat\tau^2$ is the between-study variance estimated by the DerSimonian--Laird method.
+We report the random-effects estimate, its 95\% confidence interval, and the heterogeneity statistic $I^2$.
+
+\paragraph{Acceptance criterion.}
+H2 is considered \emph{supported} if the random-effects 95\% CI excludes zero in the same direction across at least two domains.
+
 \subsection{Nonstandard-code sequence-level tests}
 \label{app:nonstandard_sequence_tests_protocols}
 
