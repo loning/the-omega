@@ -39,6 +39,27 @@ class FailurePoint:
 def main() -> None:
     fps = [
         FailurePoint(
+            code="H0a",
+            trigger="Holographic claim uses hidden knobs / non-invariant tie-breaks",
+            check="List reconstruction knobs, tie-breaks, and kernel choices; verify invariance under declared equivalences",
+            impact="Verdict not well-defined on equivalence classes; violates audit legality",
+            fallback="Downgrade to representation-dependent diagnostic or report only invariant envelopes",
+        ),
+        FailurePoint(
+            code="H0b",
+            trigger="Boundary/bulk comparability class not closed (units/scheme/matching mismatch)",
+            check="Declare scheme/threshold/units dictionary or bounded matching envelope for the compared quantities",
+            impact="Holographic statement is ill-typed; numeric comparison not meaningful",
+            fallback="Revert to matching-layer envelope statements or ledger as [Open]",
+        ),
+        FailurePoint(
+            code="H0c",
+            trigger="Identifiability boundary: boundary summaries too coarse (class-function-only)",
+            check="Verify whether retained observables reduce to class functions / cycle-type histograms in the declared family",
+            impact="Reconstruction/discrimination claim not identifiable from stated boundary content",
+            fallback="Enlarge observable family (non-class-function readouts) or downgrade to interpretive overlay",
+        ),
+        FailurePoint(
             code="W1",
             trigger="No common invariant domain for unbounded generators",
             check="Verify existence/stability of a dense domain D for declared operators",
@@ -149,6 +170,20 @@ def main() -> None:
             check="Encode remainder as explicit truncation budget term",
             impact="Ward/BRST holds only to stated order",
             fallback="Enlarge truncation or weaken identity scope",
+        ),
+        FailurePoint(
+            code="H4a",
+            trigger="Reconstruction requires hidden resources beyond declared budget (m,n,K) or region factorization",
+            check="Audit that the tensor-product subclass (region factorization) applies and that the recovery map is supported on the declared region",
+            impact="PT reconstruction carrier inapplicable; cannot claim region-supported recovery",
+            fallback="Restrict to the controlled subclass/region family or downgrade to surrogate-level recovery only",
+        ),
+        FailurePoint(
+            code="H4b",
+            trigger="Only approximate recovery available but no auditable epsilon budget is provided",
+            check="Provide an explicit epsilon_N(m,n,K) bound from bounded-family envelopes and/or norm-distance surrogates",
+            impact="Cannot report reconstruction in the manuscript's allowed claim format",
+            fallback="State only qualitative recovery surrogate (audit) or mark as [Open] with explicit missing budget term",
         ),
     ]
 

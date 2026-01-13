@@ -570,6 +570,42 @@ flowchart TD
   - BH5（Page surrogate：单一 $w$ 记录的可恢复性/相关性闭合）[~]：落点：`app:bh_page_surrogate`（`sections/appendices/10c_bh_page_surrogate.tex`）。生成物：`scripts/exp_bh_page_surrogate.py`、`scripts/exp_bh_page_surrogate_mixed_stream.py`、`scripts/exp_bh_page_surrogate_u_curve.py`（`bh_page_surrogate_u_curve_*`，`figures/bh_page_surrogate_u_curve.png`）、`scripts/exp_bh_page_surrogate_robustness_audit.py`（`bh_page_surrogate_rb_d_*`）、`scripts/exp_bh_page_surrogate_record_noise_audit.py`（`bh_page_record_noise_audit_*`）、`scripts/exp_bh_page_surrogate_record_noise_ecc_audit.py`（`bh_page_record_noise_ecc_audit_*`）、`scripts/exp_bh_page_surrogate_record_noise_ecc_cap_select.py`（`bh_page_record_noise_ecc_cap_select_*`）。RB-A：CAP 选参（有限族）+ 纠错冗余 $r^\*(p)$ 的有限族选择；RB-D：跨 $(m,\texttt{mode},\texttt{seed})$ 与 record-noise 的鲁棒性已给出审计表；PT（接口层）补充：块有界扰动下重复码多数表决的确定性精确恢复引理（见 `app:bh_page_surrogate` 的 block-bounded 段落）。
   - BH6（等价岛机制 / 不双计数的代数重建）[~]：落点：`app:bh_island_equiv`（`sections/appendices/10d_bh_island_equivalent_reconstruction.tex`）。生成物：`scripts/exp_bh_island_equivalent_reconstruction.py`（toy），`scripts/exp_bh_island_equiv_sweep.py`（`bh_island_equiv_sweep_*`）。失败点：若重建需隐藏 knobs 或违反预算，则回退为 BH4+BH5 的 Iface/Audit 口径（见 `app:bh_scope_contract`）。
   - BH-P0（可逆黑盒队列原型：单一 $w$ 流 + 合法吸收 + Page-like surrogate）[x]：`scripts/exp_black_hole_queue_equivalence.py`（单一稳定类型记录、CAP 选参、合法吸收子字母表、零先验自解码与可逆恢复；并内置 absorption-mode sweep）。
+
+- [~] **全息等价（Holographic equivalence）— Track 路线图（Holo0–Holo6）**：本文将“全息等价”作为可选强桥接追踪：它不是默认公理，也不等价于 AdS/CFT 的无条件对偶；它的交付闭合口径是把“边界可观测代数/记录代数”与“体相（bulk）连续代表/算子母空间 bookkeeping”之间的对应写成条件包（S=CP）+ 失败点 + 可复现审计。若触发失败点，则回退为现有 Iface/Audit 口径（delay 字典、记录代数 surrogate、AQFT 账本、matching envelope），不提升为 theorem-level 对偶宣称。
+  - Holo0（范围契约/术语口径/允许宣称句式）[x]：
+    - 目标：给出本文内部可审计的“全息等价”最小定义：指定边界对象 $\mathcal{A}_{\partial}$（可观测/记录代数族）、体相对象 $\mathcal{O}_{\mathrm{bulk}}$（连续代表/算子母空间可报告量族），以及一组在声明窗口内的对应关系 $\mathfrak{D}_{\mathrm{holo}}$（dictionary），并把“等价”限定为在有限观测注册表上可比的关系（带误差预算/门禁），而非“所有相关函数完全一致”的无条件宣称。
+    - 依赖：`app:equivalence_semantics`（对象=等价类）、`app:operator_mother_space`（det/resolvent bookkeeping）、`app:observable_algebra_state_base`（代数/状态底座）。
+    - 落点：`sections/appendices/10e_holographic_equivalence_scope_contract.tex`（`\label{app:holo_scope_contract}`；并在 `sec:limitations_related_work` 交叉指针）。
+    - 最小失败点：H0a（词典依赖隐藏 knobs/未声明约定）；H0b（比较类不闭合导致数值不可比）。
+  - Holo1（边界代数：屏幕/区域/子代数族与可识别性边界）[x]：
+    - 目标：把“边界”在本文中落实为 Hilbert screen/读出窗口的代数子族：$R\mapsto\mathcal{A}_{\partial}(R)$（或记录代数 $\mathcal{A}_{\mathrm{out}}(R)$），并把可识别性边界（cycle-type-only 等）作为全息重构的硬门禁（复用 IC-4/IC-5）。
+    - 依赖：`sec:kernel_view`、`subsec:kernel_operator_closure`（屏幕与读出核）、IC-4/IC-5（identifiability boundary）。
+    - 落点：`sections/appendices/10f_boundary_algebra_from_screens.tex`（`\label{app:holo_boundary_algebra_from_screens}`）。
+    - 最小失败点：H1-1（边界读出退化为 class-function summaries，导致重构不可识别）；H1-2（代数族随表示/约定漂移，违背 IC-3 合法性门禁）。
+  - Holo2（体相对象：连续代表/母空间变量的可报告集合）[x]：
+    - 目标：明确 $\mathcal{O}_{\mathrm{bulk}}$ 的范围：优先选择在本文已闭合链内出现的量（例如 $\chi$、弱场曲率代理 $\widehat G_{00}$、pressure/pole-barrier 证书、有限 EFT 代表项的系数与其 envelope），并把它们写成算子母空间/核读出语言中的不变泛函。
+    - 依赖：`app:overhead_to_gravity_closure`、`app:weak_field_curvature_from_chi`、`app:thermodynamic_formalism_pressure`、`app:operator_mother_space_dictionary`/`app:operator_mother_space`。
+    - 落点：`sections/appendices/10g_bulk_observables_registry.tex`（`\label{app:holo_bulk_observables_registry}`）。
+    - 最小失败点：H2-1（体相量需要超出本文 window 的额外结构/无界极限，触发 R3 类非微扰边界）；H2-2（不同 scheme 下该量并非不变量，违反 `app:scheme_invariance_audit_contract`）。
+  - Holo3（RT/面积律的协议版本：容量上界与单位锚定）[x]：
+    - 目标：在本文口径下把“面积律/RT”降格为容量上界命题：对边界子代数/记录流的熵或歧义量 $S_{\partial}(R)$，给出 $S_{\partial}(R)\le I_{\mathrm{prot}}(m,n;R)$（或在 PBH 输入包下 $\le I_{\mathrm{BH}}$）的可审计上界，并把“等号/系数”类主张全部放入匹配层字典与失败点（不偷渡）。
+    - 依赖：`app:thermodynamics_from_equivalence`（计数熵）、`app:bh_planck_capacity_calibration`（单位锚定）、`app:resolution_uplift_fusion_horizon_unification`（容量阶段）。
+    - 落点：`sections/appendices/10h_holographic_capacity_bound.tex`（`\label{app:holo_capacity_bound}`）。
+    - 最小失败点：H3-1（所用熵函数/歧义代理与容量定义不匹配）；H3-2（边界字母表/噪声模型未声明，导致上界不可审计）。
+  - Holo4（重构/纠错的协议版本：从边界到体相的有限误差命题）[x]：
+    - 目标：把“重构/纠错”写成窗口化可审计命题：在固定协议态 $(m,n,K)$ 与有限观测注册表 $\mathfrak{Obs}_{\le N}$ 下，存在从边界记录/子代数到体相可报告量的重构映射 $\mathcal{R}$，使得对 $\mathcal{O}\in\mathfrak{Obs}_{\le N}$ 有 $\left|\langle\mathcal{O}\rangle_{\mathrm{bulk}}-\langle\mathcal{R}(\mathcal{O})\rangle_{\partial}\right|\le \epsilon_N(m,n,K)$；其中 $\epsilon_N$ 只能由有限族 envelope/误差预算给出（复用 QG9-M1 的口径）。
+    - 依赖：QG9-M1（窗口化可比性/误差预算）、BH5/BH6（record-algebra recovery surrogate，可选启用）、`app:quantum_channels_cptp_stinespring`（收缩/纠错证书）。
+    - 落点：`sections/appendices/10i_holographic_reconstruction_surrogate.tex`（`\label{app:holo_reconstruction_surrogate}`；并已登记到 `app:minimal_failure_point_templates` 的 H* 门禁表）。
+    - 最小失败点：H4-1（重构需隐藏旋钮/超预算资源）；H4-2（误差预算不可控或依赖未声明外部输入）。
+  - Holo5（散射/边界相关：将散射接口作为边界可观测的条件化输出）[x]：
+    - 目标：把“散射数据编码 bulk 几何/黑洞通道”等表述统一降格为：在满足 S1–S3 的散射前提与 matching 词典前提下，$S(\omega)$/延迟不变量可被纳入 $\mathcal{A}_{\partial}$ 的可观测族，并与 Holo2/Holo4 的体相可报告量形成可审计对照；失败则回退为 `app:time_mass_delay` 的 delay-as-proxy 管线与 AQFT 账本。
+    - 依赖：`app:scattering_haag_ruelle_lsz_interface`（S1–S3 门禁）、`app:time_mass_delay`（延迟字典）、`app:scattering_bh_toy_equivalence_audits`（toy 并排证据）。
+    - 落点：`sections/appendices/10j_holographic_scattering_boundary_notes.tex`（`\label{app:holo_scattering_boundary_notes}`）。
+  - Holo6（可证伪与复现：最小工件与审计表）[x]：
+    - 目标：给出最小可复现工件集合：边界代数样本、体相可报告量注册表、Holo3 上界表、Holo4 重构误差表；并明确哪些证据只属于 Iface/Audit（toy）不能升级。
+    - 依赖：`scripts/run_all.py` 管线、`app:scheme_invariance_audit_contract`、`app:matching_envelope_theoremization`。
+    - 生成脚本：`scripts/exp_holo_boundary_algebra_sample.py`、`scripts/exp_holo_bulk_registry_sample.py`、`scripts/exp_holo_capacity_bound_audit.py`、`scripts/exp_holo_reconstruction_surrogate_audit.py`（均接入 `scripts/run_all.py`，输出 `sections/generated/holo_*` 片段并被 10f/10g/10h/10i 引用）。
+    - 验收标准：每一项都必须给出（i）依赖链，（ii）失败点触发条件与回退，（iii）可复现表/summary 片段引用位置。
 - [ ] **量子引力（普朗克尺度闭合）**：未给出普朗克尺度的统一闭合动力学与可计算的普适检验。
   - **最小交付口径（建议作为“可审计的普适检验”定义）**：
     - 在一个显式声明的“普朗克窗口/UV 窗口”内，固定协议态 $(m,n,K)$（见 `subsec:tick_cap_joint_protocol_state`），并固定一个有限可观测注册表 $\mathfrak{Obs}_{\le N}$（见 T1 路线图与 `app:observable_algebra_state_base`）。

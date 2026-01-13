@@ -14,6 +14,9 @@ from common_tex import write_lines
 def main() -> None:
     # Keep content ASCII-only (pdfLaTeX compatibility).
     rows = [
+        r"H0a & Appendix~\ref{app:holo_scope_contract} & Hidden knobs / non-invariant tie-breaks in holographic dictionary; downgrade to representation-dependent diagnostic \\",
+        r"H0b & Appendix~\ref{app:holo_scope_contract} & Boundary/bulk comparability not closed (scheme/units); revert to matching envelope or mark [Open] \\",
+        r"H0c & Appendix~\ref{app:holo_scope_contract} & Identifiability boundary (class-function-only boundary summaries); enlarge observable family or downgrade \\",
         r"W1 & Appendix~\ref{app:domain_control_for_generators} & Attempting to use unbounded generators without a stable domain; revert to bounded net generation \\",
         r"W2 & Appendix~\ref{app:field_reconstruction_theorems} & No generating fields in declared class / no energy bounds; treat field statements as interface only \\",
         r"W3 & Appendix~\ref{app:wightman_bridge_and_reconstruction} & Graded/braided locality required; naive commutativity mismatch \\",
@@ -31,6 +34,8 @@ def main() -> None:
         r"WBR1 & Appendices~\ref{app:eg_causal_perturbation_framework}--\ref{app:eg_st_restoration_algorithm} & BRST broken by normalization; restore via admissible counterterms or record failure \\",
         r"WBR2 & Appendix~\ref{app:anomaly_theorem_filters} & Nonzero anomaly coefficients; ST not restorable by local counterterms \\",
         r"WBR3 & Appendix~\ref{app:strong_eft_remainder_bounds} & Truncation leaves higher-order breaking; include explicit remainder budget \\",
+        r"H4a & Appendix~\ref{app:holo_reconstruction_surrogate} & Region-supported recovery carrier fails (subclass/budget); restrict subclass or downgrade \\",
+        r"H4b & Appendix~\ref{app:holo_reconstruction_surrogate} & Only approximate recovery but no auditable epsilon budget; provide epsilon_N or downgrade \\",
     ]
     out = generated_dir() / "failurepoint_evidence_map_rows.tex"
     write_lines(out, rows)

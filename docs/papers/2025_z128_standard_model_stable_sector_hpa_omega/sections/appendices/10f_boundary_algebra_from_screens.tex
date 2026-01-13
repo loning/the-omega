@@ -1,0 +1,103 @@
+\section{Boundary algebra from screens (holographic boundary object)}
+\label{app:holo_boundary_algebra_from_screens}
+
+\paragraph{Purpose.}
+\AuditTag This appendix instantiates the boundary object of Appendix~\ref{app:holo_scope_contract}:
+it fixes a concrete region family on the protocol screen and defines the corresponding boundary algebras
+as a restriction of the protocol-induced local net.
+
+\subsection{Holo1: screen regions as a concrete region family}
+\label{subsec:holo1_screen_regions}
+
+\paragraph{Screen and regions.}
+\InterfaceTag When spatial statistics are invoked, the manuscript fixes an addressing basis and a finite screen
+at order $n$ (Section~\ref{sec:hilbert_addressing}).
+Let $S_n$ denote the finite site set on the chosen addressing screen at order $n$
+(e.g.\ a $2^n\times 2^n$ grid for the 2D Hilbert screen).
+A \emph{screen region} is a subset $R\subseteq S_n$.
+
+\paragraph{Region-to-window association.}
+\AuditTag A screen region $R$ should be viewed as a quotient class of concrete finite windows whose readouts
+are supported on $R$.
+This matches the abstract region construction $\mathfrak{R}_{\mathrm{prot}}=\mathcal{W}/\sim$
+in Appendix~\ref{app:construct_local_net_from_protocol}.
+
+\subsection{Holo1: definition of the boundary algebra}
+\label{subsec:holo1_boundary_algebra_def}
+
+\begin{definition}[Boundary algebra on a screen region]
+\label{def:holo_boundary_algebra}
+\MathTag Fix a protocol state $(m,n,K)$ and a screen site set $S_n$.
+For a screen region $R\subseteq S_n$, define the \emph{boundary algebra}
+\[
+\mathcal{A}_{\partial}(R)\ :=\ \mathcal{A}_{\mathrm{prot}}(\mathcal{O}_R),
+\]
+where $\mathcal{O}_R\in\mathfrak{R}_{\mathrm{prot}}$ is the protocol region class represented by windows supported on $R$
+in the operational inclusion sense (Appendix~\ref{app:construct_local_net_from_protocol}).
+\end{definition}
+
+\paragraph{Concrete finite models.}
+\InterfaceTag At fixed finite resolution, one may realize $\mathcal{A}_{\partial}(R)$ in either of the two
+canonical finite-resolution models of Appendix~\ref{app:observable_algebra_state_base}:
+\begin{itemize}
+\item \textbf{Classical readout:} $\mathcal{A}_{\partial}(R)=\mathcal{A}_{\mathrm{cl}}(\Omega_R)=\{f:\Omega_R\to\CC\}$,
+for a finite outcome set $\Omega_R$.
+\item \textbf{Quantum readout:} $\mathcal{A}_{\partial}(R)\cong \mathcal{B}(\mathcal{H}_R)\cong M_{d(R)}(\CC)$
+for a finite-dimensional Hilbert space $\mathcal{H}_R$ representing a declared local register on $R$.
+\end{itemize}
+The manuscript treats the chosen realization as part of the declared interface/modeling layer (ledger-scoped).
+
+\subsection{Holo1: PT properties inherited from the protocol-induced net}
+\label{subsec:holo1_pt_properties}
+
+\begin{proposition}[Isotony of the boundary algebra]
+\label{prop:holo_boundary_isotony}
+\MathTag If $R_1\subseteq R_2\subseteq S_n$ (as subsets of sites), then
+\[
+\mathcal{A}_{\partial}(R_1)\subseteq \mathcal{A}_{\partial}(R_2)
+\]
+as a unital $^\ast$-subalgebra inclusion under the inductive-limit embeddings.
+\end{proposition}
+\begin{proof}
+This is the restriction of Proposition~\ref{prop:prot_net_isotony} to the screen-induced region family:
+operational inclusion $R_1\subseteq R_2$ induces $\mathcal{O}_{R_1}\subseteq \mathcal{O}_{R_2}$ in $\mathfrak{R}_{\mathrm{prot}}$.
+\end{proof}
+
+\begin{corollary}[Microcausality in the tensor-product subclass (PT carrier)]
+\label{cor:holo_boundary_microcausality_tensor_subclass}
+\MathTag In the tensor-product readout subclass (Definition~\ref{def:tensor_product_readout_subclass}),
+the boundary net $R\mapsto\mathcal{A}_{\partial}(R)$ satisfies microcausality for operationally disjoint regions.
+\end{corollary}
+\begin{proof}
+This is immediate from Corollary~\ref{cor:microcausality_tensor_subclass} applied to the restricted region family.
+\end{proof}
+
+\subsection{Holo1: identifiability boundary (what boundary summaries can and cannot encode)}
+\label{subsec:holo1_identifiability_boundary}
+
+\paragraph{Class-function summaries are informationally bounded.}
+\AuditTag Many protocol diagnostics report only class-function loop summaries (e.g.\ cycle-type histograms for $S_4$ holonomy).
+In such cases, the boundary data is subject to the identifiability boundary:
+two realizations with identical cycle-type histograms are indistinguishable by all class-function observables
+(Proposition~\ref{prop:cycle_type_identifiability_boundary}).
+Any holographic claim that requires distinguishing such realizations must therefore enlarge the observable family
+or be downgraded (Failure point H0c of Appendix~\ref{app:holo_scope_contract}).
+
+\paragraph{Deterministic sample fragment (region chain).}
+\AuditTag The following generated fragment instantiates a small nested region chain and its protocol-capacity summaries,
+as an auditable companion to isotony:
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{c c c c}
+\toprule
+region & $|R|$ & $I_{\mathrm{prot}}(m,n;R)$ (bits) & included in \\
+\midrule
+\input{sections/generated/holo_boundary_algebra_sample_rows.tex}%
+\end{tabular}
+\caption{Boundary-region sample (nested chain) for isotony bookkeeping. Rows are generated by \texttt{scripts/exp\_holo\_boundary\_algebra\_sample.py}.}
+\label{tab:holo_boundary_algebra_sample}
+\end{table}
+\input{sections/generated/holo_boundary_algebra_sample_summary.tex}%

@@ -1535,6 +1535,46 @@ def build_steps() -> List[Step]:
                 "sections/generated/failurepoint_evidence_map_rows.tex",
             ],
         ),
+        Step(
+            name="Holographic capacity bound audit (Holo3)",
+            script="exp_holo_capacity_bound_audit.py",
+            expected_outputs=[
+                "sections/generated/holo_capacity_bound_rows.tex",
+                "sections/generated/holo_capacity_bound_summary.tex",
+            ],
+        ),
+        Step(
+            name="Holographic reconstruction surrogate audit (Holo4)",
+            script="exp_holo_reconstruction_surrogate_audit.py",
+            expected_outputs=[
+                "sections/generated/holo_reconstruction_surrogate_rows.tex",
+                "sections/generated/holo_reconstruction_surrogate_summary.tex",
+            ],
+        ),
+        Step(
+            name="Holographic boundary-algebra sample (Holo1)",
+            script="exp_holo_boundary_algebra_sample.py",
+            expected_outputs=[
+                "sections/generated/holo_boundary_algebra_sample_rows.tex",
+                "sections/generated/holo_boundary_algebra_sample_summary.tex",
+            ],
+        ),
+        Step(
+            name="Holographic bulk-registry sample (Holo2)",
+            script="exp_holo_bulk_registry_sample.py",
+            expected_outputs=[
+                "sections/generated/holo_bulk_registry_sample_rows.tex",
+                "sections/generated/holo_bulk_registry_sample_summary.tex",
+            ],
+        ),
+        Step(
+            name="Holographic upgrade boundary table (Holo6)",
+            script="exp_holo_upgrade_boundary_table.py",
+            expected_outputs=[
+                "sections/generated/holo_upgrade_boundary_rows.tex",
+                "sections/generated/holo_upgrade_boundary_summary.tex",
+            ],
+        ),
     ]
 
 
