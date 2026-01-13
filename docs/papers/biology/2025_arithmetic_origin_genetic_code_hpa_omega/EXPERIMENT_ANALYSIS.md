@@ -286,6 +286,16 @@ The A100 phase is mainly about making these protocols scale (more datasets, stro
 
 ### 1) Milestone M0 — A100 migration & reproducibility hardening (first priority)
 
+**Status**: ✅ COMPLETED (2026-01-13)
+
+**Completion Notes**:
+- Environment validated: Python 3.12.11 with numpy, scipy, pandas, matplotlib, scikit-learn
+- Data bundle restored from GitHub Release `genetic-code-data-v1.1` (220.8 MiB)
+- All smoke tests passed: `exp_genetic_code_decompiler.py`, `exp_random_code_monte_carlo.py`, `exp_recoding_sites.py`, `exp_out_of_sample_mu_star_ranking.py`
+- Full `run_all.py --no-download --force` completed (151 LaTeX fragments generated)
+- ViennaRNA not available (requires Conda); MFE experiments use cached results
+- Missing: `corpus_panel_v2` (deferred to M1 for multi-species expansion)
+
 **Objective**: From a clean checkout on the A100 box, reproduce *all* claims already present in the paper and in this report (including mechanistic-proxy negatives), with a fast smoke path and a full path.
 
 **Tasks (repo-side)**
@@ -632,6 +642,7 @@ All generated LaTeX fragments: `sections/generated/*.tex`
 
 | Commit | Description |
 |--------|-------------|
+| `pending` | M0 baseline reproduction on A100 cluster (2026-01-13) |
 | `3a664c0d` | Effect size analysis (Cohen's d) |
 | `1fc538c9` | +4 detailed analysis + Bootstrap CI |
 | `bf781a63` | Gene length, codon context, usage bias |
@@ -664,6 +675,6 @@ The arithmetic framework provides a novel lens for analyzing genetic code struct
 
 ---
 
-*Last updated: 2026-01-13*  
+*Last updated: 2026-01-13 (M0 completed)*  
 *Repository: the-omega*  
 *Path: `docs/papers/biology/2025_arithmetic_origin_genetic_code_hpa_omega/EXPERIMENT_ANALYSIS.md`*
