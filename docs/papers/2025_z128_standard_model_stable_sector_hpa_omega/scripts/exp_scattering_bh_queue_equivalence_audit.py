@@ -92,20 +92,15 @@ def _run_scattering_queue(
 ) -> ScatStats:
     # Import locally to keep dependency explicit and avoid code duplication.
     from exp_scattering_process_delay_queue_sim import (  # type: ignore
-        Resonance,
         ScatteringModel,
         _eta,
         _tau_ws_trace,
         _simulate_case,
+        cap_select_scattering_carrier,
     )
 
-    base = ScatteringModel(
-        mix_theta=0.37,
-        r1=Resonance(omega0=1.0, gamma=0.08),
-        r2=Resonance(omega0=1.7, gamma=0.12),
-        loss_amp=float(loss_amp),
-        loss_center=1.35,
-        loss_width=0.22,
+    base, _gamma_ref, _abslog_ref, _gap_ref, _scope_ref = cap_select_scattering_carrier(
+        loss_amp=float(loss_amp), omega_center=1.35
     )
 
     stats, record = _simulate_case(

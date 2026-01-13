@@ -158,6 +158,7 @@ flowchart TD
   - 关键对齐：
     - 外部记录代数统一为单一 emitted stream：散射 toy 与 BH toy 均使用稳定字母表 $X_6$，并用显式 token \texttt{X} 表示 loss/leak（便于并排压缩率/饱和度审计）。
     - 散射侧的 loss 门禁采用 S1 风格 $\eta_{\min}$；BH 侧引入可饱和的 batch 吸收与 queue-length 驱动的 leak_amp（以同一 token \texttt{X} 对齐 loss 语义）。
+    - 散射载体的 Match 边界：散射 toy 的 $S(\omega)$ 载体仅以 \texttt{proxy\_E} benchmark 的 linewidth-proxy 约定作锚定；对于 MeV 等真实单位的数据集，只有“数据集内 triangle 审计”被使用（见 `app:scattering_delay_linewidth_triangle_audit` 的 Match boundary 段落），不做跨单位聚合的 CAP carrier 选择。
   - 生成脚本（可复现生成物接入编译链）：
     - `scripts/exp_scattering_process_delay_queue_sim.py`（`sections/generated/scattering_process_delay_queue_*`）
     - `scripts/exp_scattering_bh_queue_equivalence_audit.py`（`sections/generated/scattering_bh_queue_equivalence_*`）

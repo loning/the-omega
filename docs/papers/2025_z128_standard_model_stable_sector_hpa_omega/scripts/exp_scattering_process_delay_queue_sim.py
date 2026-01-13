@@ -26,12 +26,13 @@ Outputs (LaTeX fragments):
 from __future__ import annotations
 
 import cmath
+import json
 import math
 import zlib
 from dataclasses import dataclass
 from typing import List, Tuple
 
-from common_paths import generated_dir
+from common_paths import generated_dir, paper_root
 from common_tex import write_lines
 from protocol_kernel import fold_m
 
@@ -80,6 +81,88 @@ class ScatteringModel:
     loss_amp: float
     loss_center: float
     loss_width: float
+
+
+def _read_scattering_phase_registry_gamma_target() -> Tuple[float, str, int, List[str]]:
+    """
+    Match-anchor for the scattering toy carrier:
+    read the vendored registry and extract a benchmark resonance gamma (proxy units).
+    We use the benchmark entry to avoid importing assumptions about physical unit conventions.
+    """
+    p = paper_root() / "data" / "k4_matching" / "scattering_phase_registry.json"
+    reg = json.loads(p.read_text(encoding="utf-8"))
+    excluded_units: List[str] = []
+    excluded = 0
+    for d in list(reg.get("datasets", [])):
+        if str(d.get("id", "")).strip() == "breit_wigner_single_resonance_demo":
+            res = list(d.get("resonances", []) or [])
+            if not res:
+                break
+            g = float(res[0].get("gamma", float("nan")))
+            if math.isfinite(g) and g > 0.0:
+                # Count resonance-tagged datasets that are not in proxy_E units (not comparable without Match dictionary).
+                for dd in list(reg.get("datasets", [])):
+                    for rr in list(dd.get("resonances", []) or []):
+                        u = str(rr.get("gamma_unit", "")).strip()
+                        if u and u != "proxy_E":
+                            excluded += 1
+                            if u not in excluded_units:
+                                excluded_units.append(u)
+                return float(g), "breit_wigner_single_resonance_demo", int(excluded), excluded_units
+    # Fallback: keep the script total-order deterministic even if registry changes.
+    return 1.0, "fallback_gamma_1", int(excluded), excluded_units
+
+
+def cap_select_scattering_carrier(
+    *, loss_amp: float, omega_center: float
+) -> Tuple[ScatteringModel, float, float, float, str]:
+    """
+    CAP-select a minimal scattering carrier from an explicit bounded family by matching the
+    triangle-audit linewidth proxy convention tau_gamma ~ 4/gamma on the benchmark registry.
+
+    Returns (model, gamma_ref, abslog, gap).
+    """
+    gamma_ref, did_ref, excluded, excluded_units = _read_scattering_phase_registry_gamma_target()
+    tau_target = 4.0 / float(gamma_ref)
+    eps = 1e-12
+
+    # Explicit bounded family (Iface/CAP knob set).
+    mix_family = [0.0, 0.37, 0.79]
+    # Interpret Resonance.gamma as the "g" in delta=atan2(g, w0-w), i.e. gamma_ref ≈ 2g for BW.
+    g1_family = [0.5 * gamma_ref, 0.25 * gamma_ref, 0.125 * gamma_ref, 0.08]
+    # Make the second resonance either far-away or very broad so it does not contaminate the benchmark.
+    r2_family = [
+        Resonance(omega0=float(omega_center + 10.0), gamma=10.0),
+        Resonance(omega0=float(omega_center + 2.0), gamma=5.0),
+    ]
+
+    scored: List[Tuple[Tuple[float, float, float, float], ScatteringModel, float]] = []
+    for th in mix_family:
+        for g1 in g1_family:
+            for r2 in r2_family:
+                m = ScatteringModel(
+                    mix_theta=float(th),
+                    r1=Resonance(omega0=float(omega_center), gamma=float(g1)),
+                    r2=r2,
+                    loss_amp=float(loss_amp),
+                    loss_center=float(omega_center),
+                    loss_width=0.22,
+                )
+                tau = float(_tau_ws_trace(float(omega_center), m))
+                abslog = abs(math.log((abs(tau) + eps) / (abs(tau_target) + eps)))
+                # tie-breaks are encoded into the key in a deterministic order
+                key = (float(abslog), float(th), float(g1), float(r2.gamma))
+                scored.append((key, m, float(abslog)))
+
+    scored.sort(key=lambda x: x[0])
+    best_key, best_model, best_abslog = scored[0]
+    second_abslog = float(scored[1][2]) if len(scored) > 1 else float("nan")
+    gap = float(second_abslog - float(best_abslog)) if math.isfinite(second_abslog) else float("nan")
+    scope = (
+        f"registry_anchor={did_ref}, gamma_unit=proxy_E; excluded_resonance_entries={excluded}, "
+        f"excluded_gamma_units={excluded_units}"
+    )
+    return best_model, float(gamma_ref), float(best_abslog), float(gap), str(scope)
 
 
 def _delta(omega: float, r: Resonance) -> float:
@@ -278,17 +361,8 @@ def main() -> None:
     rows_path = out / "scattering_process_delay_queue_rows.tex"
     sum_path = out / "scattering_process_delay_queue_summary.tex"
 
-    # Fixed toy scattering model.
-    model_base = ScatteringModel(
-        mix_theta=0.37,
-        r1=Resonance(omega0=1.0, gamma=0.08),
-        r2=Resonance(omega0=1.7, gamma=0.12),
-        loss_amp=0.0,
-        loss_center=1.35,
-        loss_width=0.22,
-    )
-
     omega_grid = [0.6 + 0.02 * i for i in range(81)]  # deterministic grid
+    omega_center = 1.35
     ticks = 6000
     q_star = 50
     seed = 20260112
@@ -302,14 +376,10 @@ def main() -> None:
 
     rows: List[str] = []
     notes: List[str] = []
+    carrier_notes: List[str] = []
     for cid, arrival_period, service_scale, loss_amp in cases:
-        m = ScatteringModel(
-            mix_theta=model_base.mix_theta,
-            r1=model_base.r1,
-            r2=model_base.r2,
-            loss_amp=float(loss_amp),
-            loss_center=model_base.loss_center,
-            loss_width=model_base.loss_width,
+        m, gamma_ref, abslog_ref, gap_ref, scope_ref = cap_select_scattering_carrier(
+            loss_amp=float(loss_amp), omega_center=float(omega_center)
         )
         stats, _ = _simulate_case(
             m=m,
@@ -348,6 +418,10 @@ def main() -> None:
             f"eta_min={stats['eta_min']:.6f}, max_q={stats['max_q']}, "
             f"frac_over_q={stats['frac_over_q']:.6f}."
         )
+        carrier_notes.append(
+            f"Case {cid}: CAP carrier (omega0={omega_center:.2f}) matched to registry gamma_ref={gamma_ref:.6f} "
+            f"with abslog={abslog_ref:.6f}, gap={gap_ref:.6f}; {scope_ref}."
+        )
 
     rows.append(r"\bottomrule")
     write_lines(rows_path, rows if rows else ["% (no rows)"])
@@ -365,9 +439,12 @@ def main() -> None:
             r"\paragraph{Audit notes.} \AuditTag "
             + rf"Parameters are fixed and deterministic (ticks={ticks}, grid={len(omega_grid)}, q\_star={q_star}). "
             + r"The load is controlled by an explicit arrival period (one job every $p$ ticks). "
+            + r"The scattering carrier $S(\omega)$ is CAP-selected from an explicit bounded family to match the "
+            + r"triangle-audit linewidth-proxy convention on the vendored registry benchmark (Appendix~\ref{app:scattering_delay_linewidth_triangle_audit}). "
             + r"The purpose is to provide an explicit computational interpretation of the delay dictionary, "
             + r"not to claim a theorem-level scattering construction.",
             r"\paragraph{Run notes (deterministic).} \AuditTag " + " ".join(notes),
+            r"\paragraph{Carrier selection notes (deterministic).} \AuditTag " + " ".join(carrier_notes),
         ],
     )
 
