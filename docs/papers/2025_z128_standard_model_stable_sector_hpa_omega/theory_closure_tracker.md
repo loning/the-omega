@@ -206,6 +206,17 @@ flowchart TD
 - [~] **散射接口（Haag–Ruelle/LSZ 前提显式）**：`appendix 65`（[Open]：非 theorem-level）  
   - 位置：`sections/appendices/65_scattering_haag_ruelle_lsz_interface.tex`（`\label{app:scattering_haag_ruelle_lsz_interface}`）
   - 要点：散射对象以接口层语言记录，并与统一延迟字典（Wigner–Smith）对齐；必要前提作为审计边界显式列出。
+- [x] **Toy 等价审计：散射延迟队列 ↔ 黑洞饱和队列 ↔ Page-surrogate（同一记录代数语言）**：`appendix 8ac`  
+  - 位置：`sections/appendices/8ac_scattering_bh_toy_equivalence_audits.tex`（`\label{app:scattering_bh_toy_equivalence_audits}`）
+  - 层级：Iface/Audit（CS 语言 toy），不提升为 theorem-level 等价。
+  - 关键对齐：
+    - 外部记录代数统一为单一 emitted stream：散射 toy 与 BH toy 均使用稳定字母表 $X_6$，并用显式 token \texttt{X} 表示 loss/leak（便于并排压缩率/饱和度审计）。
+    - 散射侧的 loss 门禁采用 S1 风格 $\eta_{\min}$；BH 侧引入可饱和的 batch 吸收与 queue-length 驱动的 leak_amp（以同一 token \texttt{X} 对齐 loss 语义）。
+    - 散射载体的 Match 边界：散射 toy 的 $S(\omega)$ 载体仅以 \texttt{proxy\_E} benchmark 的 linewidth-proxy 约定作锚定；对于 MeV 等真实单位的数据集，只有“数据集内 triangle 审计”被使用（见 `app:scattering_delay_linewidth_triangle_audit` 的 Match boundary 段落），不做跨单位聚合的 CAP carrier 选择。
+  - 生成脚本（可复现生成物接入编译链）：
+    - `scripts/exp_scattering_process_delay_queue_sim.py`（`sections/generated/scattering_process_delay_queue_*`）
+    - `scripts/exp_scattering_bh_queue_equivalence_audit.py`（`sections/generated/scattering_bh_queue_equivalence_*`）
+    - `scripts/exp_scattering_bh_page_surrogate_equivalence.py`（`sections/generated/scattering_bh_page_surrogate_*`）
 - [~] **重整化字典与边界（scheme/matching）**：`appendix 66`（[Open]：非 theorem-level）  
   - 位置：`sections/appendices/66_renormalization_dictionary_and_boundaries.tex`（`\label{app:renormalization_dictionary_and_boundaries}`）
   - 要点：把 scheme/scale 依赖收口为 Match/Iface 边界；不主张 4D 相互作用构造性重整化的 theorem-level 闭合。
@@ -581,6 +592,7 @@ flowchart TD
       - 目标：把“黑洞信息/强场量子引力”的宣称统一表述为外部记录代数 $\mathcal{A}_{\mathrm{out}}$ 上的可恢复性命题（而不是热谱/几何直觉），并给出可审计的 surrogate 与失败点。
       - 依赖：`app:bh_scope_contract`（BH 信息闭合契约与 CP→PT 门禁）、`app:bh_page_surrogate`（BH5）、`app:bh_island_equiv`（BH6，若启用）。
       - 回退：若 island-equivalent 重建需要隐藏 knobs 或违反预算，则回退为 BH4+BH5 的 Iface/Audit 口径，不宣称 BH6 机制成立。
+      - 交付闭合补丁（toy 级）[x]：已给出“散射延迟队列↔黑洞饱和队列↔Page-surrogate”的同语言并排审计产物（见 `app:scattering_bh_toy_equivalence_audits`），用于将“强场/回收”叙述严格降格为记录代数上的可审计 toy 命题；但这不等价于 QG9-M3 的普朗克尺度强场动力学闭合。
     - 依赖关系（文本版 DAG；用于写作与宣称门禁对齐）：
       - QG9-M1 $\rightarrow$ QG9-M2：以 $\epsilon_N$ 预算为承载，把 R1/R2 的 matching envelope 与 WBR1–WBR3 的量子化/余项破坏项统一入账；触发 R3 时在此处截断并降级为 proxy/audit-level。
       - QG9-M2 $\rightarrow$（可选）散射/场论普适检验：若需要以散射/场作为检验载体，则必须显式通过 S1–S3 与 W1–W3 门禁；失败即回退到 delay 字典或 AQFT 账本。

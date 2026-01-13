@@ -27,6 +27,7 @@ from pathlib import Path
 from typing import List, Tuple
 
 import exp_sm_labeling_solver as sml
+from common_progress import ProgressEvery
 from common_tex import write_lines
 
 
@@ -69,10 +70,20 @@ def fit_binary(pts: List[Point], target: str, classes: Tuple[int, int], B: int =
         raise ValueError("Classes must differ.")
 
     best = None  # (errors, complexity, a,b,c,d,T)
+    total = int(2 * B + 1) ** 4
+    prog = ProgressEvery(
+        label=f"inverse_rep_dim_fit target={target} B={int(B)}",
+        total=total,
+        interval_s=60.0,
+    )
+    prog.start()
+    k = 0
     for a in range(-B, B + 1):
         for b in range(-B, B + 1):
             for c in range(-B, B + 1):
                 for d in range(-B, B + 1):
+                    k += 1
+                    prog.maybe(k, extra=f"a={a} b={b} c={c} d={d}")
                     # Candidate thresholds: scan a modest integer range.
                     # Score values are small; include a safety margin.
                     for T in range(-200, 201):
@@ -92,6 +103,7 @@ def fit_binary(pts: List[Point], target: str, classes: Tuple[int, int], B: int =
 
     if best is None:
         raise AssertionError("No candidates enumerated.")
+    prog.done(extra=f"best_err={best[0] if best else 'NA'}")
     err, _comp, a, b, c, d, T = best
     return err, a, b, c, d, T
 

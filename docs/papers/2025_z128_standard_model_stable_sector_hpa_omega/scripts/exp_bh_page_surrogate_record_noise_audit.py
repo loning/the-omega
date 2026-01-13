@@ -34,6 +34,13 @@ from common_tex import write_lines
 import exp_black_hole_queue_equivalence as bhq
 
 
+def _tex_escape_text(s: str) -> str:
+    """
+    Minimal LaTeX text-mode escaping for generated fragments.
+    """
+    return str(s).replace("\\", r"\textbackslash{}").replace("_", r"\_")
+
+
 def _choose_indices(rng: random.Random, n: int, k: int) -> List[int]:
     if k <= 0:
         return []
@@ -156,7 +163,7 @@ def main() -> None:
                         " & ".join(
                             [
                                 r["m"],
-                                r["mode"],
+                                rf"\texttt{{{_tex_escape_text(r['mode'])}}}",
                                 r["corr"],
                                 r["p"],
                                 r["trials"],

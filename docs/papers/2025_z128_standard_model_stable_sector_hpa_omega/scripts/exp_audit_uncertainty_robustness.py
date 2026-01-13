@@ -53,6 +53,7 @@ from common_constants import (
     SIN2_THETAW_PDG_SIGMA,
     SIN2_THETAW_PDG,
 )
+from common_progress import ProgressEvery
 
 
 def abs_log_ratio(pred: float, ref: float) -> float:
@@ -261,10 +262,14 @@ def main() -> None:
     alpha_sigma = ALPHA_INV_CODATA_2022_SIGMA
     base_alpha = alpha_em_minimizer(ALPHA_INV_CODATA_2022)
     stable = 0
-    for _ in range(N):
+    prog = ProgressEvery(label="uncertainty_robustness alpha_em", total=N, interval_s=60.0)
+    prog.start()
+    for i in range(N):
         ref = rng.gauss(ALPHA_INV_CODATA_2022, alpha_sigma)
         if alpha_em_minimizer(ref) == base_alpha:
             stable += 1
+        prog.maybe(i + 1, extra=f"stable={stable}")
+    prog.done(extra=f"stable={stable}")
     rows.append(
         Row(
             name=r"$\alpha_{\mathrm{em}}^{-1}$",
@@ -280,10 +285,14 @@ def main() -> None:
     alphaZ_sigma = ALPHAZ_INV_PDG_SIGMA
     base_alphaZ = alphaZ_minimizer(ALPHAZ_INV_PDG)
     stable = 0
-    for _ in range(N):
+    prog = ProgressEvery(label="uncertainty_robustness alphaZ", total=N, interval_s=60.0)
+    prog.start()
+    for i in range(N):
         ref = rng.gauss(ALPHAZ_INV_PDG, alphaZ_sigma)
         if alphaZ_minimizer(ref) == base_alphaZ:
             stable += 1
+        prog.maybe(i + 1, extra=f"stable={stable}")
+    prog.done(extra=f"stable={stable}")
     rows.append(
         Row(
             name=r"$\alpha^{-1}(\mu_Z)$",
@@ -299,10 +308,14 @@ def main() -> None:
     sin2_sigma = SIN2_THETAW_PDG_SIGMA
     base_sin2 = sin2_minimizer(SIN2_THETAW_PDG)
     stable = 0
-    for _ in range(N):
+    prog = ProgressEvery(label="uncertainty_robustness sin2", total=N, interval_s=60.0)
+    prog.start()
+    for i in range(N):
         ref = truncated_normal(rng, SIN2_THETAW_PDG, sin2_sigma, lo=1e-6, hi=1.0 - 1e-6)
         if sin2_minimizer(ref) == base_sin2:
             stable += 1
+        prog.maybe(i + 1, extra=f"stable={stable}")
+    prog.done(extra=f"stable={stable}")
     rows.append(
         Row(
             name=r"$\sin^2\theta_W(\mu_Z)$",
@@ -318,10 +331,14 @@ def main() -> None:
     J_sigma = JARLSKOG_PDG_SIGMA
     base_J = jarlskog_minimizer(JARLSKOG_PDG_CENTRAL)
     stable = 0
-    for _ in range(N):
+    prog = ProgressEvery(label="uncertainty_robustness J_ckm", total=N, interval_s=60.0)
+    prog.start()
+    for i in range(N):
         ref = truncated_normal(rng, JARLSKOG_PDG_CENTRAL, J_sigma, lo=1e-12, hi=1.0)
         if jarlskog_minimizer(ref) == base_J:
             stable += 1
+        prog.maybe(i + 1, extra=f"stable={stable}")
+    prog.done(extra=f"stable={stable}")
     rows.append(
         Row(
             name=r"$J$ (CKM)",
@@ -339,12 +356,16 @@ def main() -> None:
     vub_mu, vub_sigma = CKM_VUB_REF, CKM_VUB_SIGMA
     base_ckm = ckm_magnitude_minimizer(vus_mu, vcb_mu, vub_mu)
     stable = 0
-    for _ in range(N):
+    prog = ProgressEvery(label="uncertainty_robustness CKM_magnitudes", total=N, interval_s=60.0)
+    prog.start()
+    for i in range(N):
         vus = truncated_normal(rng, vus_mu, vus_sigma, lo=1e-6, hi=1.0)
         vcb = truncated_normal(rng, vcb_mu, vcb_sigma, lo=1e-6, hi=1.0)
         vub = truncated_normal(rng, vub_mu, vub_sigma, lo=1e-6, hi=1.0)
         if ckm_magnitude_minimizer(vus, vcb, vub) == base_ckm:
             stable += 1
+        prog.maybe(i + 1, extra=f"stable={stable}")
+    prog.done(extra=f"stable={stable}")
     rows.append(
         Row(
             name=r"CKM magnitudes",
@@ -365,7 +386,9 @@ def main() -> None:
     s13_mu = math.sqrt(sin2_t13_mu)
     base_pmns = pmns_magnitude_minimizer(s12_mu, s23_mu, s13_mu)
     stable = 0
-    for _ in range(N):
+    prog = ProgressEvery(label="uncertainty_robustness PMNS_sines", total=N, interval_s=60.0)
+    prog.start()
+    for i in range(N):
         s2_12 = truncated_normal(rng, sin2_t12_mu, sin2_t12_sigma, lo=1e-8, hi=1.0 - 1e-8)
         s2_23 = truncated_normal(rng, sin2_t23_mu, sin2_t23_sigma, lo=1e-8, hi=1.0 - 1e-8)
         s2_13 = truncated_normal(rng, sin2_t13_mu, sin2_t13_sigma, lo=1e-10, hi=1.0 - 1e-10)
@@ -374,6 +397,8 @@ def main() -> None:
         s13 = math.sqrt(s2_13)
         if pmns_magnitude_minimizer(s12, s23, s13) == base_pmns:
             stable += 1
+        prog.maybe(i + 1, extra=f"stable={stable}")
+    prog.done(extra=f"stable={stable}")
     rows.append(
         Row(
             name=r"PMNS sines",
@@ -391,10 +416,14 @@ def main() -> None:
     delta_sigma = PMNS_DELTA_SIGMA_DEG
     base_delta = pmns_delta_minimizer(s12_mu, s23_mu, s13_mu, delta_ref_deg=delta_mu)
     stable = 0
-    for _ in range(N):
+    prog = ProgressEvery(label="uncertainty_robustness PMNS_delta", total=N, interval_s=60.0)
+    prog.start()
+    for i in range(N):
         d = truncated_normal(rng, delta_mu, delta_sigma, lo=0.0, hi=360.0)
         if pmns_delta_minimizer(s12_mu, s23_mu, s13_mu, delta_ref_deg=d) == base_delta:
             stable += 1
+        prog.maybe(i + 1, extra=f"stable={stable}")
+    prog.done(extra=f"stable={stable}")
     base_deg = base_delta * 180.0 / math.pi
     rows.append(
         Row(
@@ -413,11 +442,15 @@ def main() -> None:
     rel_sigma = 5.0e-4  # 0.05% (audit stress test)
     base_depth = solve_depth(mu0, tau0)
     stable = 0
-    for _ in range(N):
+    prog = ProgressEvery(label="uncertainty_robustness mass_depth", total=N, interval_s=60.0)
+    prog.start()
+    for i in range(N):
         mu_ref = truncated_normal(rng, mu0, rel_sigma * mu0, lo=1e-9, hi=1e3)
         tau_ref = truncated_normal(rng, tau0, rel_sigma * tau0, lo=1e-9, hi=1e3)
         if solve_depth(mu_ref, tau_ref) == base_depth:
             stable += 1
+        prog.maybe(i + 1, extra=f"stable={stable}")
+    prog.done(extra=f"stable={stable}")
     rows.append(
         Row(
             name=r"mass depth (leptons)",
