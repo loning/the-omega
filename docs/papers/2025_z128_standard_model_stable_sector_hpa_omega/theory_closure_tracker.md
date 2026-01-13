@@ -307,11 +307,11 @@ flowchart TD
 | 熵（entropy） | 粗粒化计数/通道容量 | Math/CAP | `eq:counting_entropy` | [x] |
 | 分辨率提升/融合（capacity-first） | 以 $I_{\mathrm{prot}}(m,n)=m4^n$ 与 $I_{\mathrm{tar}}$ 为接口量，在有限候选族上用 CAP key 确定性选取 $(m^\ast,n^\ast)$；并给出单调性/阈值跳变与 “$n$-blocked$\Rightarrow m$-expand” 刚性命题；补充 resolution-first vs capacity-first 的 staging dictionary 与 $\chi$/预算/延迟钩子 | Iface/CAP/Math/Audit | `app:resolution_uplift_fusion_horizon_unification`, `tab:resolution_uplift_cap_choice` | [x] |
 | 温度（temperature） | 频率共轭尺度（共轭定义；需指定 $E(M)$ 与一参数可微族） | Iface/Math | `def:temperature_conjugate` | [x] |
-| 有效温度映射（$T_{\mathrm{eff}}$） | 泄漏/辐射强度/寿命宽度代理 $\to$ 温度语言的可选匹配字典（外部输入包） | Match/Audit | `app:effective_temperature_mapping`, `app:physics_consensus_inputs`（PDR/PPL） | [~] |
+| 有效温度映射（$T_{\mathrm{eff}}$） | 泄漏/辐射强度/寿命宽度代理 $\to$ 温度语言的可证伪匹配字典（比较类/映射族/失败点；外部输入包） | Match/Audit | `app:effective_temperature_mapping`, `app:physics_consensus_inputs`（PDR/PPL） | [x] |
 | CAP 自由能原则 | 以自由能形式重述 CAP 选择（有限候选族 + tie-break 模板） | CAP | `prop:cap_free_energy_closure` | [x] |
-| CAP 权重 $\leftrightarrow T$ 标尺 | $J=\kappa E+\kappa_S(-S)+\cdots$ 与 $E-TS$ 的标尺/单位对齐（$k_B,\hbar$ 等作为匹配层输入） | Iface/Match/Audit | `app:thermodynamics_from_equivalence`, `app:physics_consensus_inputs` | [~] |
-| 第二定律（单调性证书） | 在声明的粗粒化/信道族下，给出计数熵/自由能目标的单调性或收缩证书（与时间箭头/信道收缩对齐） | Math/Iface/Audit | `app:thermodynamics_from_equivalence`, `app:arrow_of_time_semigroup_notes`, `app:quantum_channels_cptp_stinespring` | [~] |
-| pressure（Ruelle/转移算子）$\leftrightarrow$ CAP | 将压力变分原理（无限测度族上确界）与 CAP 有限族闭合在同一口径下做极限化/一致性桥接 | Math/Audit | `app:thermodynamic_formalism_pressure` | [~] |
+| CAP 权重 $\leftrightarrow T$ 标尺 | $\beta_{\mathrm{CAP}}=\kappa/\kappa_S$（无量纲自由能口径）+ 单位约定收口到匹配层（$k_B,\hbar$） | Iface/Match/Audit | `app:thermodynamics_from_equivalence`, `app:physics_consensus_inputs`（PDR0） | [x] |
+| 第二定律（单调性证书） | 在声明的粗粒化/信道族下，以 DPI/收缩证书给出可审计单调性骨架（避免把计数熵的单调性偷渡为无条件定理） | Math/Iface/Audit | `app:thermodynamics_from_equivalence`, `app:quantum_channels_cptp_stinespring`, `app:arrow_of_time_semigroup_notes` | [x] |
+| pressure（Ruelle/转移算子）$\leftrightarrow$ CAP | 以有限 pressure 候选族把 $-P$ 读作自由能型目标并由 CAP 闭合；极限/无穷对象升级需额外输入（边界显式） | Math/Audit | `app:thermodynamic_formalism_pressure` | [x] |
 | Born 概率 | $P_k=\mathrm{Tr}(\rho E_k)$ | Iface/Math | `eq:z128_born_povm` | [x] |
 | 复合系统（composite） | 张量积/部分迹/联合读出（最小接口包） | Iface/Math | `app:composite_systems_tensor_products` | [x] |
 | 量子信道（channel） | CPTP/Kraus/Stinespring + trace-distance 收缩证书 | Iface/Math/Audit | `app:quantum_channels_cptp_stinespring` | [x] |
@@ -451,6 +451,24 @@ flowchart TD
 - [~] **pressure/转移算子与 CAP 的桥接**：`app:thermodynamic_formalism_pressure` 给出 pressure/转移算子/变分原理的标准形式（无限对象：不变测度的上确界），但本文 CAP 纪律是有限候选族闭合。二者要形成“统一”，需要一个显式的极限化/一致性桥：有限族离散化如何逼近 pressure 口径、误差如何控制、以及何时只应当保留审计类比而不升级为 theorem-level 前提。  
   - 位置：`sections/appendices/44_thermodynamic_formalism_pressure.tex`（`app:thermodynamic_formalism_pressure`）
   - 最小失败点：缺少一致的离散化族/正则性条件或误差界，导致 pressure 语言只能作为审计叙述而无法与 CAP 闭合互认。
+
+### 热力学统一（更强口径：仍待闭合）
+
+- [~] **自由能/熵产生的动力学单调性（而非仅 DPI）**：目前已闭合的是 coarse-graining 下的最小不可逆证书（DPI/收缩）；若要升级到经典热力学风格的“熵随时间增加”或“自由能随时间下降”，需要显式给出动力学生成元/半群（Markov/Lindblad 等）、参考态（Gibbs/不动点）与详细平衡类条件，并在这些条件下证明 $t\mapsto D(\rho_t\Vert\rho_\beta)$ 或对应自由能泛函的单调性。  
+  - 位置（现有最小证书）：`sections/appendices/27_thermodynamics_from_equivalence.tex`（`subsec:second_law_data_processing`），`sections/appendices/30e_quantum_channels_cptp_stinespring.tex`（`subsec:z128_quantum_relative_entropy_dpi`）
+  - 最小失败点：未声明动力学类/生成元与不动点结构，导致无法从 DPI 推出“物理自由能/熵产生”的时间单调律。
+
+- [~] **$\beta_{\mathrm{CAP}}$ 的绝对温标闭合（无模型可预测）**：已闭合 $\beta_{\mathrm{CAP}}=\kappa/\kappa_S$ 的内部标尺与单位约定（PDR0）；但“无需额外校准输入即可确定物理温度 $T$ 的绝对标定”尚未闭合。  
+  - 位置：`sections/appendices/27_thermodynamics_from_equivalence.tex`（CAP weights 段），`sections/appendices/49_physics_consensus_inputs.tex`（`ass:pdr_entropy_energy_temperature_units`）
+  - 最小失败点：缺少外部校准目标/参考（或缺少把 $E$ 固化为可测能量的匹配层字典），导致只能得到无量纲温标而非绝对温标。
+
+- [~] **pressure↔CAP 的极限等价（sup over measures 的逼近）**：已闭合有限 pressure 候选族上的 CAP 选择桥；若要进一步主张“随着候选族细化，CAP 恢复 pressure 的无穷变分上确界/谱半径口径”，需要显式的候选族穷尽序列、正则性与误差控制。  
+  - 位置（现有桥）：`sections/appendices/44_thermodynamic_formalism_pressure.tex`（`subsec:pressure_cap_bridge`）
+  - 最小失败点：缺少穷尽/紧性/误差界，导致极限等价只能停留在审计类比而非定理。
+
+- [~] **$T_{\mathrm{eff}}$ 的“跨比较类规范化”**：已闭合 $T_{\mathrm{eff}}$ 的比较类/映射族/失败点口径（可证伪字典）；但“哪一个比较类是规范且跨模块唯一”的选择仍是匹配层约定问题。  
+  - 位置：`sections/appendices/08c_effective_temperature_mapping.tex`（`subsec:teff_comparison_class`，`subsec:teff_failure_points`）
+  - 最小失败点：不同模块采用不同泄漏 proxy/估计器/单位约定或 baseline，导致 $T_{\mathrm{eff}}$ 数值不可比。
 
 ### 经典未决问题：本文覆盖范围对照（建议单列追踪）
 

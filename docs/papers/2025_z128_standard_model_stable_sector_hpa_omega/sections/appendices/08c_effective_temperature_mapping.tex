@@ -20,6 +20,64 @@ To do so, one must add an explicit matching dictionary that maps leak observable
 This matching dictionary is not derived from protocol structure alone.
 For compact bookkeeping of such optional inputs, see Appendix~\ref{app:physics_consensus_inputs} (Assumptions~\ref{ass:ppl_low_leakage_low_temp}--\ref{ass:ppl_gap_suppression_model}).
 
+\subsection{Comparison class and auditable proxy maps}
+\label{subsec:teff_comparison_class}
+
+\paragraph{Why a comparison class is required.}
+\AuditTag A statement such as ``lower leakage means lower temperature'' is only meaningful within a declared comparison class: one must specify which conventions are held fixed when comparing two systems or two regimes.
+
+\begin{definition}[Comparison class for $T_{\mathrm{eff}}$ reporting]\label{def:z128_teff_comparison_class}
+\MatchTag A \emph{comparison class} for reporting $T_{\mathrm{eff}}$ is a declared set of conventions that remain fixed across the comparison, including:
+(i) the leakage observable used (rate proxy, width proxy, power proxy),
+(ii) the extraction protocol (windowing, smoothing, estimator family),
+(iii) the unit conventions for $E,S,T$ (Appendix~\ref{app:physics_consensus_inputs}, Assumption~\ref{ass:pdr_entropy_energy_temperature_units}),
+and (iv) the baseline/reference family (if one is used to interpret $T_{\mathrm{eff}}$).
+\end{definition}
+
+\paragraph{Proxy map family (monotone dictionary).}
+\MatchTag Under the low-leakage pack (Assumption~\ref{ass:ppl_low_leakage_low_temp}), $T_{\mathrm{eff}}$ is defined by an explicit monotone proxy map on the declared comparison class.
+
+\begin{definition}[Monotone $T_{\mathrm{eff}}$ proxy map family]\label{def:z128_teff_proxy_map_family}
+\MatchTag Fix a comparison class (Definition~\ref{def:z128_teff_comparison_class}) and a leakage/intensity proxy $\Gamma$ (e.g.\ $\Gamma=1/\tau$ from Assumption~\ref{ass:pdr_lifetime_width}).
+A \emph{monotone $T_{\mathrm{eff}}$ map family} is a declared family of functions
+\[
+T_{\mathrm{eff}}=f(\Gamma;\vartheta),
+\qquad
+\vartheta\in\mathcal{V},
+\]
+such that $f(\cdot;\vartheta)$ is monotone nondecreasing in $\Gamma$ for each $\vartheta$.
+The family $\mathcal{V}$ and the parameter-selection rule (if any) must be declared by the module that reports $T_{\mathrm{eff}}$.
+\end{definition}
+
+\paragraph{A worked proxy inversion under a gap-suppression model.}
+\MatchTag Under the optional gap-suppression model family (Assumption~\ref{ass:ppl_gap_suppression_model}), one can invert $\Gamma(T)$ to obtain a closed-form proxy map.
+
+\begin{proposition}[Gap-suppression inversion proxy]\label{prop:z128_teff_gap_suppression_inversion}
+\MatchTag Assume Assumption~\ref{ass:ppl_gap_suppression_model} with parameters $(\Gamma_0,\Delta)$ and suppose $0<\Gamma\le\Gamma_0$.
+Define
+\[
+T_{\mathrm{eff}}(\Gamma):=\frac{\Delta}{k_B\,\log(\Gamma_0/\Gamma)}.
+\]
+Then $\Gamma(T_{\mathrm{eff}}(\Gamma))=\Gamma$ in the model, and $T_{\mathrm{eff}}(\Gamma)$ is monotone nondecreasing in $\Gamma$ on $(0,\Gamma_0]$.
+\end{proposition}
+\begin{proof}
+Algebra gives $\log(\Gamma/\Gamma_0)=-\Delta/(k_B T)$, hence $T=\Delta/(k_B\log(\Gamma_0/\Gamma))$.
+Monotonicity follows since $\log(\Gamma_0/\Gamma)$ decreases as $\Gamma$ increases.
+\end{proof}
+
+\subsection{Falsifiability and minimal failure points}
+\label{subsec:teff_failure_points}
+
+\paragraph{Failure point (F1): missing comparison class.}
+\AuditTag If the comparison class is not declared (Definition~\ref{def:z128_teff_comparison_class}), then $T_{\mathrm{eff}}$ values are not comparable across modules, and statements such as ``low leakage implies low temperature'' are ill-posed.
+
+\paragraph{Failure point (F2): non-monotone proxy behavior.}
+\AuditTag Assumption~\ref{ass:ppl_low_leakage_low_temp} is falsified within a comparison class if the reported leakage proxy $\Gamma$ and the reported $T_{\mathrm{eff}}$ violate the claimed monotonic relationship.
+
+\paragraph{Failure point (F3): model mismatch in the gap-suppression inversion.}
+\AuditTag In Proposition~\ref{prop:z128_teff_gap_suppression_inversion}, the inversion requires $0<\Gamma\le\Gamma_0$ and a stable parameter pair $(\Gamma_0,\Delta)$ for the comparison class.
+If fitted parameters drift across the comparison or if the observed $\Gamma(T)$ deviates systematically from the exponential form, then the derived $T_{\mathrm{eff}}$ is only a reporting convenience (Assumption~\ref{ass:pdr_thermal_proxy}) and must not be treated as an equilibrium temperature.
+
 \subsection{Black-hole specialization under \texorpdfstring{$P_{\mathrm{phys}}$}{Pphys}}
 \label{subsec:teff_bh_specialization}
 

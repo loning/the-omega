@@ -62,6 +62,46 @@ In regimes where $E$ can be treated as a function of $S$ along a one-parameter f
 \]
 \end{definition}
 
+\subsubsection{Coarse-graining channels and entropy functionals (auditable operator form)}
+\label{subsec:thermo_channels_entropy_functionals}
+
+\paragraph{Coarse graining as a many-to-one channel.}
+\InterfaceTag In the present paper, the words ``coarse graining'', ``forgetting'', and ``finite observability'' are operationally represented by a map that reduces distinguishability.
+At the finite level this is a many-to-one map on microdescriptions, but for probabilistic or quantum descriptions it is more convenient to record it as a channel.
+
+\begin{definition}[Classical coarse-graining channel (finite)]\label{def:z128_classical_channel}
+\MathTag Let $\Omega$ and $\mathcal{Y}$ be finite sets.
+A \emph{(classical) channel} is a Markov kernel $K:\Omega\to\Delta(\mathcal{Y})$, written $K(y|x)$ with $K(y|x)\ge 0$ and $\sum_{y\in\mathcal{Y}}K(y|x)=1$ for all $x\in\Omega$.
+It maps an input distribution $p\in\Delta(\Omega)$ to an output distribution $q\in\Delta(\mathcal{Y})$ by
+\[
+q(y)=(Kp)(y):=\sum_{x\in\Omega}K(y|x)\,p(x).
+\]
+\end{definition}
+
+\begin{definition}[Quantum coarse-graining channel (CPTP)]\label{def:z128_quantum_channel_thermo}
+\MathTag A \emph{quantum channel} is a completely positive trace-preserving (CPTP) map $\Phi:\mathcal{B}(\mathcal{H})\to\mathcal{B}(\mathcal{H})$ on a finite-dimensional Hilbert space $\mathcal{H}$ (Appendix~\ref{app:quantum_channels_cptp_stinespring}, Definition~\ref{def:z128_cptp_channel}).
+\end{definition}
+
+\paragraph{Entropy functionals: counting vs information-theoretic.}
+\InterfaceTag The counting entropy \eqref{eq:counting_entropy} is a coarse state-counting dictionary on equivalence classes (macrostates).
+For monotonicity/irreversibility statements under channels, a more robust object is \emph{relative entropy} (classical or quantum), which is defined on probability states and contracts under coarse graining.
+
+\begin{definition}[Classical relative entropy (finite)]\label{def:z128_classical_relative_entropy}
+\MathTag For distributions $p,q\in\Delta(\Omega)$ with $\mathrm{supp}(p)\subseteq \mathrm{supp}(q)$, define
+\[
+D(p\Vert q):=\sum_{x\in\Omega} p(x)\log\frac{p(x)}{q(x)}.
+\]
+If $\mathrm{supp}(p)\not\subseteq \mathrm{supp}(q)$ set $D(p\Vert q)=+\infty$.
+\end{definition}
+
+\begin{definition}[Quantum relative entropy (Umegaki)]\label{def:z128_quantum_relative_entropy}
+\MathTag For density matrices $\rho,\sigma$ on a finite-dimensional $\mathcal{H}$ with $\mathrm{supp}(\rho)\subseteq \mathrm{supp}(\sigma)$, define
+\[
+D(\rho\Vert\sigma):=\Tr\!\bigl(\rho(\log\rho-\log\sigma)\bigr).
+\]
+If $\mathrm{supp}(\rho)\not\subseteq \mathrm{supp}(\sigma)$ set $D(\rho\Vert\sigma)=+\infty$.
+\end{definition}
+
 \subsubsection{CAP as a free-energy principle}
 \label{subsec:cap_free_energy}
 
@@ -90,6 +130,16 @@ Then CAP selects a unique minimizer $\theta_B$ and therefore a unique macroscopi
 \InterfaceTag The minus sign in $-S$ reflects the conventional role of entropy as a stabilizing/typicality factor in equilibrium selection.
 Whether one writes the objective as $E-TS$ or as a weighted sum depends on which quantities are treated as fixed constraints and which as adjustable parameters; the audit requirement is only that the candidate family is finite and the tie-break is explicit.
 
+\paragraph{CAP weights and the inverse-temperature scale.}
+\InterfaceTag When $\kappa_S>0$, the CAP objective in Proposition~\ref{prop:cap_free_energy_closure} can be rewritten in the dimensionless free-energy form
+\[
+\frac{1}{\kappa_S}J(\theta)=\beta_{\mathrm{CAP}}\,E(M(\theta)) - S(M(\theta)) + \frac{\kappa_c}{\kappa_S}\,\mathrm{Comp}(\theta),
+\qquad
+\beta_{\mathrm{CAP}}:=\frac{\kappa}{\kappa_S}.
+\]
+Thus $\beta_{\mathrm{CAP}}$ plays the role of an \emph{inverse-temperature scale} in the internal dimensionless dictionary.
+To interpret this scale in conventional thermodynamic units one must additionally fix the energy and entropy unit conventions (Appendix~\ref{app:physics_consensus_inputs}, Assumption~\ref{ass:pdr_entropy_energy_temperature_units}), i.e.\ whether $\beta_{\mathrm{CAP}}$ corresponds to $1/T$ or to $1/(k_B T)$, and whether $E$ is recorded in frequency units ($E=\omega$) or in energy units ($E_{\mathrm{phys}}=\hbar\omega$).
+
 \subsubsection{The three laws (protocol reading)}
 \label{subsec:three_laws_protocol}
 
@@ -98,9 +148,45 @@ Whether one writes the objective as $E-TS$ or as a weighted sum depends on which
 In a frequency-first description, the ``internal energy'' is a frequency/clock-rate functional, and work corresponds to controlled changes in constraints that shift that functional.
 
 \paragraph{Second law (monotonicity under coarse graining).}
-\InterfaceTag Irreversibility does not require a new axiom here: it follows from many-to-one projection and coarse graining.
-When only macrovariables are tracked, information about microhistories is discarded (Section~\ref{subsec:tick_time_arrow}), and the counting entropy \eqref{eq:counting_entropy} is naturally nondecreasing under refinement-forgetting operations.
-CAP additionally selects representatives of minimal cost, giving a Lyapunov-style monotonicity for a total objective (Proposition~\ref{prop:cap_free_energy_closure}).
+\InterfaceTag Irreversibility does not require a new axiom here: it is the generic signature of many-to-one coarse graining.
+At the theorem level, the paper uses \emph{contractive distinguishability/relative-entropy certificates} for channels (Definitions~\ref{def:z128_classical_channel}--\ref{def:z128_quantum_relative_entropy}), which are monotone under coarse graining and therefore provide an auditable ``second-law'' backbone.
+Counting entropy \eqref{eq:counting_entropy} is still the canonical state-counting dictionary on macrostates, but its monotonicity depends on the declared coarse-graining preorder.
+CAP additionally selects representatives of minimal cost, giving a Lyapunov-style monotonicity for a declared finite-family objective (Proposition~\ref{prop:cap_free_energy_closure}).
+
+\subsubsection{Second law as data processing: auditable monotonicity certificates}
+\label{subsec:second_law_data_processing}
+
+\begin{theorem}[Classical data processing inequality (finite)]
+\label{thm:z128_classical_dpi}
+\MathTag Let $K$ be a classical channel as in Definition~\ref{def:z128_classical_channel}.
+Then for any distributions $p,q\in\Delta(\Omega)$ one has
+\[
+D(Kp\Vert Kq)\le D(p\Vert q).
+\]
+\end{theorem}
+\begin{proof}[Reference]
+This is standard; see, e.g., \cite{CoverThomas2006}.
+\end{proof}
+
+\begin{theorem}[Quantum data processing inequality (finite-dimensional)]
+\label{thm:z128_quantum_dpi}
+\MathTag Let $\Phi$ be a CPTP map as in Definition~\ref{def:z128_quantum_channel_thermo}.
+Then for any density matrices $\rho,\sigma$ one has
+\[
+D(\Phi(\rho)\Vert \Phi(\sigma))\le D(\rho\Vert \sigma).
+\]
+\end{theorem}
+\begin{proof}[Reference]
+This is standard (monotonicity of Umegaki relative entropy under CPTP maps); see, e.g., \cite{NielsenChuang2000}.
+\end{proof}
+
+\begin{remark}[From data processing to ``thermodynamic'' monotonicity statements]
+\label{rem:z128_second_law_reading_dpi}
+\InterfaceTag The DPI theorems above express the minimal irreversibility content: \emph{coarse graining cannot increase distinguishability}.
+To specialize this to a familiar thermodynamic statement (e.g.\ monotonic decay of a free-energy functional), one must (i) declare which entropy functional is used (counting/Shannon/von Neumann) and (ii) declare the comparison class or reference state (e.g.\ a Gibbs family) that defines the free-energy target.
+Those additional identifications are interface/matching choices in this paper and must be explicitly scoped when used.
+\end{remark}
+
 
 \paragraph{Third law (stability floor and unattainability).}
 \InterfaceTag In protocol terms, the third law is a statement about the existence of a minimal stable background (a reference macrostate) and about the cost of reaching lower-entropy configurations:

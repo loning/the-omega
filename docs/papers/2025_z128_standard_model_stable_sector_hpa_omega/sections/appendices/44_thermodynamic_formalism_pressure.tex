@@ -154,4 +154,41 @@ which exponentiates to the stated product.
 In contrast, the CAP discipline used in this paper is explicitly \emph{finite-family}: one declares a finite candidate set and a deterministic tie-break, then selects a unique minimizer (Appendix~\ref{app:cap_audit_template}).
 Appendix~\ref{app:thermodynamics_from_equivalence} records the corresponding free-energy closure (Proposition~\ref{prop:cap_free_energy_closure}), which is the audit-facing finite analogue of a variational principle.
 
+\subsection{Pressure as a finite CAP objective (bridge statement)}
+\label{subsec:pressure_cap_bridge}
+
+\paragraph{Why a bridge is needed.}
+\AuditTag Pressure $P(\phi)$ is defined as a variational supremum over an infinite object set (invariant measures) and is equivalently the log spectral radius of an infinite-dimensional transfer operator.
+CAP, by design, never optimizes over infinite families.
+The bridge used in this paper is therefore \emph{finite-family}: we only compare finitely many declared pressure candidates and select one deterministically.
+
+\begin{definition}[Finite pressure candidate family]\label{def:z128_finite_pressure_family}
+\AuditTag Fix a mixing shift of finite type $(X,\sigma)$.
+Let $\Phi=\{\phi_\theta:\theta\in\Theta\}$ be a finite family of H\"older potentials on $X$.
+For each $\theta$, let $P(\phi_\theta)=\log\lambda_{\phi_\theta}$ be the pressure (Theorem~\ref{thm:pressure_spectral_radius_standard}).
+\end{definition}
+
+\begin{proposition}[Pressure-to-CAP bridge (finite-family free-energy form)]
+\label{prop:z128_pressure_cap_bridge}
+\AuditTag Let $\Phi=\{\phi_\theta\}_{\theta\in\Theta}$ be a finite pressure candidate family (Definition~\ref{def:z128_finite_pressure_family}).
+Define the finite-family objective
+\[
+J_{\mathrm{press}}(\theta):=-P(\phi_\theta)+\kappa_c\,\mathrm{Comp}(\theta),
+\]
+equipped with a deterministic tie-break key as in Appendix~\ref{app:cap_audit_template}.
+Then CAP selects a unique minimizer $\theta_\ast\in\Theta$ and therefore a unique pressure representative $P(\phi_{\theta_\ast})$ within the declared finite family.
+\end{proposition}
+
+\paragraph{Interface reading (free energy).}
+\InterfaceTag The sign convention in Proposition~\ref{prop:z128_pressure_cap_bridge} reflects the usual relation between pressure and free energy: $P$ is a log growth rate (partition function rate), while $-P$ is the corresponding dimensionless free-energy rate.
+When one additionally fixes an inverse-temperature scale $\beta$ (Appendix~\ref{app:thermodynamics_from_equivalence}, $\beta_{\mathrm{CAP}}$ discussion), one may compare families of the form $\phi_\theta=-\beta E_\theta$ as the standard Gibbs deformation; the present paper keeps this as a matching/interface dictionary choice rather than a theorem-level identification.
+
+\begin{remark}[Scope boundary: no automatic continuum/limit identification]
+\label{rem:z128_pressure_cap_limit_boundary}
+\AuditTag Theorem~\ref{thm:pressure_spectral_radius_standard} is an infinite-object theorem about a fixed $(X,\sigma)$ and a fixed potential $\phi$.
+Proposition~\ref{prop:z128_pressure_cap_bridge} is a finite-family selection statement.
+Upgrading the bridge to a limiting statement (e.g.\ ``as the candidate family grows, CAP recovers the full variational supremum'') requires explicit additional inputs: a declared exhaustion of candidate families, regularity/compactness, and an auditable error control on $P(\phi_\theta)$ across the exhaustion.
+This paper does not assume such inputs unless they are explicitly stated by the module that uses them.
+\end{remark}
+
 
