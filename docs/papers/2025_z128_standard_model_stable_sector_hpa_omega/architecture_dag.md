@@ -1582,7 +1582,33 @@ flowchart TB
   class P_pressure,P_graphzeta,P_selberg,P_hecke_like,P_protoHecke,P_err,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_planck,P_input_nufit,P_input_bhplanck,P_mdl_global,P_kernel_view,P_kernel_rg_flow,P_ext_boundary_check,P_info_cert,P_bh_planck_calib,P_mass_flow_uplift,P_protocol_horizon,P_uplift_fusion_horizon,P_leakage_kernel,P_low_leak_phase,P_m6_trap_exit,P_k4_delay_audit,P_k4_pdg_leakage,P_k4_alpha_link phys_audit;
 ```
 
-### 图 10：可证伪预测 wiring（P1–P7） / Fig. 10: Falsifiable Prediction Wiring (P1–P7)
+### 图 9B：QG-interface / full-fusion 可审计生成链（run\_all → artifacts → 叙事/门禁） / Fig. 9B: Auditable QG-interface / Full-Fusion Generation Chain (run\_all → artifacts → narrative/gates)
+
+```mermaid
+%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 50}, "themeVariables": {"fontSize": "10px"}}}%%
+flowchart TB
+
+  M_run_all@{ shape: lean-l, label: "单一可复现入口：scripts/run_all.py<br/>类型：审计 / Audit<br/>label: sec:validation_entry_points<br/>regenerates sections/generated/ + figures; cache indexed by content hashes" }
+
+  M_artifact_registry("Artifact hash registry（provenance gate）<br/>类型：审计 / Audit<br/>label: sec:validation_entry_points<br/>outputs: sections/generated/artifact_hash_registry.json + artifact_hash_registry_summary.tex")
+
+  M_qg_suite("QG interface suite（χ→G00，预算视界，延迟基准）<br/>类型：审计 / Audit<br/>label: subsec:qg_interface_suite_maintext<br/>script: exp_qg_interface_suite.py; artifacts: qg_interface_suite_*.tex + qg_interface_suite.png")
+
+  M_full_fusion("Full fusion（force + BH-like trapping/leakage + WH-like pointer + measurement）<br/>类型：审计 / Audit<br/>label: subsec:full_fusion_maintext<br/>script: exp_full_fusion_bh_wormhole_measurement.py; artifacts: full_fusion_*.tex + full_fusion.png")
+
+  M_wh_sweep("Wormhole sweep/adaptive（Pareto + budgeted recommendations）<br/>类型：审计 / Audit<br/>label: subsec:wormhole_pareto_maintext<br/>scripts: exp_full_fusion_wormhole_sweep.py / exp_full_fusion_wormhole_adaptive_search.py; artifacts: full_fusion_wormhole_* + figures")
+
+  M_rigidity@{ shape: lean-r, label: "R1–R5：刚性限制/可识别性边界<br/>类型：审计 / Audit<br/>label: subsec:full_fusion_rigidity_takeaways<br/>cost–gain tradeoff; horizon saturation; observation-class; budget normalization; gated sparsity" }
+
+  P_p9@{ shape: lean-r, label: "P9：full-fusion interface gates（可证伪）<br/>类型：审计 / Audit<br/>label: subsec:p9_full_fusion_interface_gates<br/>ledger closure + V^2+D^2≤1 + counterfactual deltas" }
+
+  M_run_all --> M_artifact_registry
+  M_run_all --> M_qg_suite --> M_full_fusion --> M_wh_sweep
+  M_full_fusion --> M_rigidity --> P_p9
+  M_wh_sweep --> M_rigidity
+```
+
+### 图 10：可证伪预测 wiring（P1–P7, P9） / Fig. 10: Falsifiable Prediction Wiring (P1–P7, P9)
 
 ```mermaid
 %%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 50}, "themeVariables": {"fontSize": "10px"}}}%%
@@ -1610,6 +1636,8 @@ flowchart TB
 
   P_err("误差预算代理（不确定性/鲁棒性 / Error-Budget Proxy (Uncertainty/Robustness)）<br/>类型：审计 / Audit")
 
+  P_wave_particle("波粒二象性读出证书（V/D）<br/>类型：审计 / Audit<br/>label: app:wave_particle_delayed_choice<br/>V^2+D^2≤1 as an audited interface certificate")
+
   P_cosmo("能量预算拟合代理（离散匹配 + 稳定性 / Energy-Budget Fitting Proxy (Discrete Match + Stability)）<br/>类型：模型 / Model<br/>label: app:cosmology_resolution_flow / ass:occupancy_energy_z128<br/>Ω_vis,0≈f_stab(m);  m* ∈ Z (discrete match)")
 
   P_gamma_proxy("gamma 代理通道（可操作代理）<br/>类型：审计 / Audit<br/>label: app:gamma_crossobs_consistency<br/>solar-system / lensing / time-delay / redshift proxies")
@@ -1629,6 +1657,7 @@ flowchart TB
   P_p5@{ shape: lean-r, label: "P5：离散混合预测与量化鲁棒性（CKM/PMNS）<br/>类型：审计 / Audit<br/>label: subsec:p5_quantified_predictions" }
   P_p6@{ shape: lean-r, label: "P6：散射延迟作为 lapse 代理（时间字典）<br/>类型：审计 / Audit<br/>label: subsec:p6_wigner_smith_delay" }
   P_p7@{ shape: lean-r, label: "P7：γ_dict 跨观测一致性（旋转曲线/代理通道）<br/>类型：审计 / Audit<br/>label: subsec:p7_gamma_crossobs" }
+  P_p9@{ shape: lean-r, label: "P9：full-fusion interface gates（能量台账/互补性/反事实）<br/>类型：审计 / Audit<br/>label: subsec:p9_full_fusion_interface_gates" }
 
   P_input_pdg --> P_cp_volume
   P_cp_volume --> P_ckm_matrix
@@ -1656,6 +1685,9 @@ flowchart TB
   P_gamma_proxy --> P_p7
   P_gamma_direct --> P_p7
   P_err --> P_p7
+  P_lens --> P_p9
+  P_wave_particle --> P_p9
+  P_err --> P_p9
 
   classDef iface fill:#FCE4EC,stroke:#D81B60,color:#880E4F,stroke-width:2px;
   classDef open_problem fill:#FFEBEE,stroke:#C62828,color:#B71C1C,stroke-width:2px,font-weight:700;
@@ -1677,7 +1709,7 @@ flowchart TB
   class P_mass,P_lens phys_obs;
   class P_types,P_6dof_lock,P_scl phys_dict;
   class P_cosmo phys_model;
-  class P_err,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_nufit,P_cp_volume,P_ckm_matrix,P_pmns_matrix,P_holo_stats,P_p1,P_p2,P_p3,P_p4,P_p5,P_p6,P_p7 phys_audit;
+  class P_err,P_wave_particle,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_nufit,P_cp_volume,P_ckm_matrix,P_pmns_matrix,P_holo_stats,P_p1,P_p2,P_p3,P_p4,P_p5,P_p6,P_p7,P_p9 phys_audit;
 
   style P_p1 stroke-width:4px;
   style P_p2 stroke-width:4px;
@@ -1686,6 +1718,7 @@ flowchart TB
   style P_p5 stroke-width:4px;
   style P_p6 stroke-width:4px;
   style P_p7 stroke-width:4px;
+  style P_p9 stroke-width:4px;
 ```
 
 ### 图 11：开放问题/范围外追踪（Λ、BH、QCD gap、GUT 等） / Fig. 11: Open Problems / Out-of-Scope Tracking (Λ, BH, QCD gap, GUT, etc.)
@@ -2211,6 +2244,10 @@ flowchart TB
 | `P_unify_coupling_audit` | `\label{app:coupling_unification_audit_in_r}` | `coupling-unification audit output table (Match/Audit)` | `sections/appendices/71_coupling_unification_audit_in_r.tex` |
 | `M_wave_particle` | `\label{app:wave_particle_delayed_choice}` | `cross terms vs mixture; V^2+D^2≤1; delayed-choice/eraser (interface)` | `sections/appendices/30b_wave_particle_delayed_choice.tex` |
 | `P_wave_particle` | `\label{app:wave_particle_delayed_choice}` | `delayed-choice / quantum eraser / Wheeler “Great Smoky Dragon” (audit-facing)` | `sections/appendices/30b_wave_particle_delayed_choice.tex` |
+| `M_qg_if_full_fusion` | `\label{sec:qg_interface_full_fusion}` | `QG-interface and full-fusion auditable interface closures (χ→G00 proxy → budget horizon → delay/leakage response; plus WH-like pointer shortcuts with explicit cost ledger and measurement readout gates)` | `sections/F_50_qg_interface_full_fusion.tex`; `sections/PG_validation.tex` |
+| `P_qg_if_full_fusion` | `\label{sec:qg_interface_full_fusion}` | `generated artifact family: qg_interface_suite_*.tex, full_fusion_*.tex, full_fusion_wormhole_* + figures (reproducibility-first)` | `sections/F_50_qg_interface_full_fusion.tex`; `sections/PG_validation.tex`; `scripts/exp_qg_interface_suite.py`; `scripts/exp_full_fusion_bh_wormhole_measurement.py`; `scripts/exp_full_fusion_wormhole_sweep.py`; `scripts/exp_full_fusion_wormhole_adaptive_search.py` |
+| `M_artifact_registry` | `\label{sec:validation_entry_points}` | `artifact hash registry (content-addressable provenance): script+deps fingerprint → output hashes; independent of mtimes` | `scripts/exp_artifact_hash_registry.py`; `scripts/run_all.py`; `sections/generated/artifact_hash_registry.json`; `sections/generated/artifact_hash_registry_summary.tex` |
+| `P_artifact_registry` | `\label{sec:validation_entry_points}` | `registry outputs used as provenance gate and cache index` | `sections/PG_validation.tex`; `sections/generated/artifact_hash_registry_summary.tex` |
 | `M_rg` | `\label{app:running_couplings_resolution_flow}` | `eq:rg_in_r — dg/dr = (ln φ)β(g)` | `sections/appendices/31_running_couplings_resolution_flow.tex` |
 | `P_rg` | `\label{app:running_couplings_resolution_flow}` | `dg/dr = (ln φ)β(g) (running in resolution coordinate)` | `sections/appendices/31_running_couplings_resolution_flow.tex` |
 | `M_cosmo` | `\label{app:cosmology_resolution_flow}` | `ass:occupancy_energy_z128 — f_stab(m)=Fₘ₊₂/2ᵐ, f_hid=1−f_stab` | `sections/appendices/32_cosmology_resolution_flow.tex` |
@@ -2325,6 +2362,7 @@ flowchart TB
 | `P_p5` | `\label{subsec:p5_quantified_predictions}` | `P5: discrete CKM/PMNS mixing closures & robustness` | `sections/V_40_falsifiability_predictions.tex` |
 | `P_p6` | `\label{subsec:p6_wigner_smith_delay}` | `P6: scattering delay as lapse proxy` | `sections/V_40_falsifiability_predictions.tex` |
 | `P_p7` | `\label{subsec:p7_gamma_crossobs}` | `P7: γ_dict cross-observation consistency` | `sections/V_40_falsifiability_predictions.tex` |
+| `P_p9` | `\label{subsec:p9_full_fusion_interface_gates}` | `P9: full-fusion interface gates (energy ledger closure; V^2+D^2≤1 certificate; wormhole on/off counterfactual deltas; observation-class identifiability boundary explicit)` | `sections/V_40_falsifiability_predictions.tex`; `sections/F_50_qg_interface_full_fusion.tex` |
 
 ### 未闭合/未覆盖节点补充（追踪用）
 

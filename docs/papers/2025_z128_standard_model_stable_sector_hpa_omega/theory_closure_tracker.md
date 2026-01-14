@@ -682,6 +682,44 @@ flowchart TD
     - 生成脚本：`scripts/exp_holo_boundary_algebra_sample.py`、`scripts/exp_holo_bulk_registry_sample.py`、`scripts/exp_holo_capacity_bound_audit.py`、`scripts/exp_holo_reconstruction_surrogate_audit.py`（均接入 `scripts/run_all.py`，输出 `sections/generated/holo_*` 片段并被 10f/10g/10h/10i 引用）。
     - 验收标准：每一项都必须给出（i）依赖链，（ii）失败点触发条件与回退，（iii）可复现表/summary 片段引用位置。
 - [ ] **量子引力（普朗克尺度闭合）**：未给出普朗克尺度的统一闭合动力学与可计算的普适检验。
+  - **已完成的前置“接口闭合实验族”（QG‑IF / Full‑Fusion）**：以下条目属于 Iface/Audit/CAP 的可审计闭合，它们把“量子引力问题”拆成可复现、可对照、可记账的接口模块；但不把强闭合（非微扰完备、4D 相互作用构造、强场量子化）偷换为定理结论。
+    - QG‑IF0（工件/依赖闭环：内容哈希 registry + run_all 强制刷新）[x]：
+      - **目标**：把“结果来自哪个脚本/依赖/输入、是否过期、是否可复现”固化为内容寻址 registry，避免 mtime 缓存造成的静默陈旧。
+      - **入口**：`scripts/run_all.py`（内置 registry step + post-run refresh）；`scripts/exp_artifact_hash_registry.py`
+      - **生成物**：`sections/generated/artifact_hash_registry.json`，`sections/generated/artifact_hash_registry_summary.tex`
+      - **验收**：每次执行 `run_all.py` 后 registry 必定刷新；registry 记录（i）脚本哈希，（ii）依赖闭包 fingerprint，（iii）预期输出与实际输出哈希。
+      - **层级**：Audit/Prot（基础设施门禁；不涉及物理宣称）
+    - QG‑IF1（chi 重建→弱场曲率代理→误差预算：端到端流水线）[x]：
+      - **目标**：以“从数据读出到 $\widehat\chi(x)$ 再到 $\widehat G_{00}$”的端到端可复现链条，给出弱场曲率代理与误差预算的可审计实现。
+      - **入口**：`scripts/exp_qg_interface_suite.py`（复用 `exp_curvature_bridge_end_to_end.py` 的 $\chi$ 重建管线）
+      - **输出**：生成表/图（suite 内部生成；并以 summary 片段写入 `sections/generated/`）
+      - **验收**：曲率代理 $\widehat G_{00,h}=-2\widehat\gamma\,\Delta_h\widehat\chi_h$ 与误差预算条款一致（对齐 `app:weak_field_curvature_from_chi` 与 `app:protocol_to_continuum_error_control`）。
+      - **层级**：Iface/Audit（桥接到弱场 GR 仅为接口词典）
+    - QG‑IF2（预算触发“协议视界云”诊断：面积/周长/峰值一致性）[x]：
+      - **目标**：把“视界/黑洞”以观察者预算下的协议不可分辨边界落实为可审计对象，并输出几何诊断（面积分数、周长、曲率峰等）。
+      - **入口**：`scripts/exp_qg_interface_suite.py`（budget-triggered horizon cloud）
+      - **验收**：视界判据、可行性检查、边界几何诊断输出齐备；不把其等同 GR 事件视界（对齐 `app:protocol_horizon_tick_trap`）。
+      - **层级**：Iface/Audit
+    - QG‑IF3（散射延迟基准：WS delay↔lapse 的可审计 proxy）[x]：
+      - **目标**：用 unitary 基准模型输出可比的延迟量，并把延迟作为 lapse/overhead 的接口 proxy（避免把载体细节偷渡为强结论）。
+      - **入口**：`scripts/exp_qg_interface_suite.py`（one-channel Breit–Wigner benchmark）
+      - **验收**：幺正性、unwrap 稳定性与带宽门禁显式；延迟 proxy 与 `app:time_mass_delay` 的字典一致。
+      - **层级**：Iface/Audit
+    - QG‑IF4（Full‑Fusion：force propagation + BH-like trap + leakage + WH pointer-jump + measurement）[x]：
+      - **目标**：把“力导致偏离→传播→散射/延迟→泄漏/蒸发→新周期轨道”与“虫洞类指针跳跃/观测读出”统一到一个能量台账闭合的模拟里，并给出反事实对照（wormhole on/off）。
+      - **入口**：`scripts/exp_full_fusion_bh_wormhole_measurement.py`
+      - **生成物**：`sections/generated/full_fusion_rows.tex`，`sections/generated/full_fusion_summary.tex`，以及 nowh/compare 对照表（见 `run_all.py` step 列表）
+      - **验收（硬门禁）**：
+        - 台账闭合：$E_{\mathrm{tot}}=E_{\mathrm{part}}+E_{\mathrm{field}}+E_{\mathrm{emit}}+E_{\mathrm{wh}}$（wormhole 不是能量源）
+        - 互补性证书：$V^2+D^2\le 1$（可见度/可区分度的标准读出）
+        - 反事实一致性：wormhole off 作为基线；报告 $\Delta$-指标（delay/leak/jump）不得混用未声明旋钮
+      - **层级**：Iface/Audit（wormhole/black hole 均为指针/协议层对象；不升级为 GR 几何实体）
+    - QG‑IF5（虫洞参数扫描：Pareto 前沿与预算内最优推荐）[x]：
+      - **目标**：在显式预算 $E_{\mathrm{wh}}$ 下做多目标权衡：提升可观测增益（延迟/泄漏/跳跃等）同时控制成本，并输出 Pareto 前沿与预算内推荐点。
+      - **入口**：`scripts/exp_full_fusion_wormhole_sweep.py`（全量扫描，含心跳）；`scripts/exp_full_fusion_wormhole_adaptive_search.py`（预算内自适应搜索 + 生成 full runs）
+      - **生成物**：`sections/generated/full_fusion_wormhole_*` 系列表；`figures/full_fusion_wormhole_pareto_multi.png`，`figures/full_fusion_opt_delay.png`，`figures/full_fusion_opt_emit.png`
+      - **验收**：Pareto 规则与指标定义固定；sweep 与 adaptive 的推荐点在预算内可复现；所有输出进入 hash registry。
+      - **层级**：Audit/CAP（多目标选择=显式候选族 + 规则；不把“选得好”混同为定理）
   - **最小交付口径（建议作为“可审计的普适检验”定义）**：
     - 在一个显式声明的“普朗克窗口/UV 窗口”内，固定协议态 $(m,n,K)$（见 `subsec:tick_cap_joint_protocol_state`），并固定一个有限可观测注册表 $\mathfrak{Obs}_{\le N}$（见 T1 路线图与 `app:observable_algebra_state_base`）。
     - 给出窗口化可比性命题（EFT 级最小目标）：

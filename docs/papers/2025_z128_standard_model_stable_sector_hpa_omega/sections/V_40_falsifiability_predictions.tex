@@ -84,6 +84,47 @@ Therefore its Perron--Frobenius eigenvalue $\lambda_n(t)=\rho(\widehat F_n(t))$ 
 \paragraph{Fail condition.}
 If a protocol-consistent recomputation produces a decreasing $\lambda_n(t)$ as $t$ increases over the same $t$ grid, the weighted-operator construction is inconsistent with the nonnegative folding potential assumption or with the stated operator assembly.
 
+\subsubsection{P9: full-fusion interface gates and wormhole counterfactual deltas (auditable)}
+\label{subsec:p9_full_fusion_interface_gates}
+
+The full-fusion suite (Section~\ref{sec:qg_interface_full_fusion}) provides a deterministic, protocol-language channel that composes
+overhead-derived forces, delay proxies, a budget-triggered horizon proxy, leakage/evaporation bookkeeping, wormhole-like pointer shortcuts with an explicit cost ledger, and a measurement readout.
+This yields falsifiable \emph{interface gates}: not claims about the folding core, but mandatory consistency constraints for this specific interface implementation.
+
+\paragraph{Test strategy.}
+Regenerate the deterministic artifacts in Section~\ref{sec:qg_interface_full_fusion} and verify the following gates:
+\begin{enumerate}
+\item \textbf{Energy ledger closure.}
+The reported totals must satisfy
+\[
+E_{\mathrm{tot}}(t)=E_{\mathrm{part}}(t)+E_{\mathrm{field}}(t)+E_{\mathrm{emit}}(t)+E_{\mathrm{wh}}(t),
+\]
+so wormhole-like shortcut channels are not free energy sources.
+\item \textbf{Complementarity certificate.}
+The measurement proxies must satisfy
+\[
+V^2+D^2\le 1
+\]
+(reported for free vs trapped branches).
+\item \textbf{Counterfactual isolation.}
+Wormhole effects must be isolatable by the wormhole-off baseline ($\varepsilon_{\mathrm{ptr}}=0$),
+reported side-by-side with on/off deltas in \texttt{sections/generated/full\_fusion\_compare\_rows.tex}.
+\end{enumerate}
+
+\paragraph{Data channel.}
+This is a protocol-level falsifiability channel: it can be evaluated by reproducing the deterministic artifacts
+\texttt{sections/generated/full\_fusion\_*.tex} and the associated figures (Section~\ref{sec:validation_entry_points}).
+
+\paragraph{Identifiability boundary (observation class).}
+\AuditTag The default wormhole-on/off comparison artifact \texttt{full\_fusion\_compare\_rows.tex} reports a single final-snapshot delta.
+This observation class is intended to be robust for accumulated or steady-state differences (e.g.\ $\Delta E_{\mathrm{emit}}$ and late-time $\Delta\tau_{\mathrm{trap}}$),
+but it can miss gated or intermittent effects such as endpoint-gated $\tau_{\mathrm{wh}}$ contributions or rare pointer-jump events.
+\AuditTag When probing such gated channels, the falsifiable carrier should be upgraded to an explicit window statistic or conditional statistic (e.g.\ maxima over time windows or conditional means on the gated subset), rather than a single final snapshot.
+
+\paragraph{Fail condition.}
+Any reproducible implementation that claims the same interface contract but violates ledger closure, violates $V^2+D^2\le 1$, or fails to provide a coherent wormhole on/off counterfactual baseline and delta reporting,
+falsifies the specific full-fusion interface closure recorded here.
+
 \subsection{Calibration-dependent staircase prediction (requires a calibrated \texorpdfstring{$r_{\mathrm{step}}$}{r\_step})}
 \label{subsec:calibration_dependent_predictions}
 

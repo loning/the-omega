@@ -1,5 +1,47 @@
 \part{Validation and falsifiability (and open closures)}
 
+\section*{Validation suite entry points (reproducibility-first)}
+\addcontentsline{toc}{section}{Validation suite entry points (reproducibility-first)}
+\label{sec:validation_entry_points}
+
+\paragraph{Single entry point.}
+\AuditTag A single deterministic entry point \texttt{python3 scripts/run\_all.py} regenerates \texttt{sections/generated/} and the figures (Appendix~\ref{app:reproducibility}).
+The scripts are a reference implementation of the paper's explicit finite constructions and bounded-family audits; they are provided to reproduce artifacts and to avoid manual transcription errors, not to introduce additional modeling freedom.
+
+\paragraph{Key generated artifacts for the QG-interface and full-fusion closure family.}
+\AuditTag The closed interface chain is summarized in Section~\ref{sec:qg_interface_full_fusion}.
+The corresponding generated fragments and figures are:
+\begin{itemize}
+\item \textbf{QG interface suite.}
+  \texttt{sections/generated/qg\_interface\_suite\_summary.tex},
+  \texttt{sections/generated/qg\_interface\_suite\_rows.tex},
+  and \texttt{figures/qg\_interface\_suite.png}.
+\item \textbf{Full fusion (wormhole on/off).}
+  \texttt{sections/generated/full\_fusion\_summary.tex},
+  \texttt{sections/generated/full\_fusion\_rows.tex},
+  \texttt{sections/generated/full\_fusion\_nowh\_rows.tex},
+  \texttt{sections/generated/full\_fusion\_compare\_rows.tex},
+  and \texttt{figures/full\_fusion.png}.
+\item \textbf{Wormhole sweep/adaptive search (Pareto and recommended configs).}
+  \texttt{sections/generated/full\_fusion\_wormhole\_sweep\_summary.tex},
+  \texttt{sections/generated/full\_fusion\_wormhole\_pareto\_multi\_summary.tex},
+  \texttt{sections/generated/full\_fusion\_wormhole\_adaptive\_summary.tex},
+  and figures \texttt{figures/full\_fusion\_wormhole\_sweep.png},
+  \texttt{figures/full\_fusion\_wormhole\_pareto\_multi.png},
+  \texttt{figures/full\_fusion\_opt\_delay.png},
+  \texttt{figures/full\_fusion\_opt\_emit.png}.
+\end{itemize}
+
+\paragraph{Observation class and budget comparability (audit note).}
+\AuditTag The wormhole sweep and adaptive-search scripts evaluate a metrics-only oracle that reports a single final snapshot and on/off deltas by contract.
+This observation class is robust for accumulated or steady-state quantities (e.g.\ $\Delta E_{\mathrm{emit}}$ and late-time $\Delta\tau_{\mathrm{trap}}$), but it can be insensitive to intermittent or gated channels (e.g.\ endpoint-gated $\tau_{\mathrm{wh}}$ contributions or rare pointer-jump events).
+\AuditTag Moreover, since the shortcut ledger $E_{\mathrm{wh}}$ is accumulated over time, an absolute budget constraint $E_{\mathrm{wh}}\le B$ is not directly comparable across different run lengths unless a normalization convention (e.g.\ $E_{\mathrm{wh}}/T$ or $E_{\mathrm{wh}}/\text{steps}$) or matched step budgets is used.
+
+\paragraph{Artifact hash registry (provenance gate).}
+\AuditTag To make “what ran, with which local dependencies, producing which outputs” auditable independently of mtimes,
+the pipeline writes a content-addressable artifact hash registry:
+\input{sections/generated/artifact_hash_registry_summary}
+
 \input{sections/V_40_falsifiability_predictions}
 \input{sections/V_41_limitations_related_work}
 \section*{Ledger-tagged items beyond the theorem-level core (not used in proofs)}
