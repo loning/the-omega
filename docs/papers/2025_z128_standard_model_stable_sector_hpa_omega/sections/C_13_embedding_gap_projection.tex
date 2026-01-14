@@ -1,0 +1,145 @@
+\section{Embedding and projection readout: additive closure as an interface problem}
+\label{sec:embedding_gap_projection}
+
+\paragraph{Scope.}
+\AuditTag This section records an HPA-style embedding and projection-readout module as an \InterfaceTag interface layer that can be composed with the tick-first scan/readout core (Section~\ref{sec:hpa_readout}).
+It introduces no new premises into the folding core; in particular, none of the results in Section~\ref{sec:folding_core} depend on the present section.
+
+\subsection{A multiplicative coordinate: phase weights and a polar embedding}
+\label{subsec:hpa_embedding_polar}
+
+\paragraph{Multiplicative phase.}
+\InterfaceTag Let $M:=(\NN_{>0},\cdot)$ be the multiplicative monoid.
+Fix a \emph{prime phase weight} $\beta:\PP\to\RR$.
+For $n\in M$ with prime factorization $n=\prod_{p\in\PP}p^{a_p(n)}$, define the multiplicative phase
+\begin{equation}
+\label{eq:theta_times_def}
+\theta_\times(n)\equiv \sum_{p\in\PP} a_p(n)\,\beta(p)\pmod{2\pi}.
+\end{equation}
+Then $\theta_\times(mn)\equiv\theta_\times(m)+\theta_\times(n)\ (\mathrm{mod}\ 2\pi)$ by additivity of prime exponents.
+
+\paragraph{Polar embedding.}
+\InterfaceTag Fix a radial character $\rho:M\to\RR_{>0}$ that is multiplicative, $\rho(mn)=\rho(m)\rho(n)$, and define
+\begin{equation}
+\label{eq:Z_embedding_def}
+\mathcal{Z}(n):=\rho(n)\,\e^{\iu\theta_\times(n)}\in\CC^*.
+\end{equation}
+This satisfies $\mathcal{Z}(mn)=\mathcal{Z}(m)\mathcal{Z}(n)$.
+The minimal radial choice $\rho(n)=n$ will be used below to make the projection/readout well-defined.
+
+\begin{remark}[Status and relation to the scan phase]
+\AuditTag The phase $\theta_\times(n)$ is a multiplicative coordinate on $M$.
+It is distinct from scan phase/readout phase coordinates such as the dyadic register $\ZZ_{2^p}$ used in the scan/readout pipeline (Section~\ref{subsec:z128_label} and Appendix~\ref{app:protocol_primitives}).
+Any identification between these coordinates is a \MatchTag matching decision and must be explicitly declared when used.
+\end{remark}
+
+\subsection{A structural no-go: exact additivity cannot coexist with nontrivial multiplicativity}
+\label{subsec:additive_no_go}
+
+\begin{theorem}[Additive completeness no-go]
+\label{thm:additive_completeness_no_go}
+\MathTag Let $\Phi:\NN_{>0}\to\CC$ satisfy, for all $m,n,a,b\in\NN_{>0}$,
+\[
+\Phi(mn)=\Phi(m)\Phi(n)
+\quad\text{and}\quad
+\Phi(a+b)=\Phi(a)+\Phi(b).
+\]
+Then either $\Phi\equiv 0$ or $\Phi(n)=n$ for all $n\in\NN_{>0}$.
+\end{theorem}
+\begin{proof}
+Let $z:=\Phi(1)$. Multiplicativity gives $z=\Phi(1)=\Phi(1\cdot 1)=\Phi(1)^2=z^2$, hence $z\in\{0,1\}$.
+If $z=0$, then for any $n$ one has $\Phi(n)=\Phi(n\cdot 1)=\Phi(n)\Phi(1)=0$, so $\Phi\equiv 0$.
+If $z=1$, then by additivity,
+\[
+\Phi(n)=\Phi(\underbrace{1+\cdots+1}_{n\text{ terms}})=n\,\Phi(1)=n.
+\]
+\end{proof}
+
+\begin{remark}[Readout meaning]
+\InterfaceTag Theorem~\ref{thm:additive_completeness_no_go} formalizes the core obstruction:
+if one insists on a \emph{nontrivial} multiplicative coordinate system, then exact linear additivity cannot be a closed microscopic law on that coordinate image.
+In this program, ``addition'' is therefore treated as a readout/projection problem, not as a primitive ontic operation.
+\end{remark}
+
+\subsection{Projection readout and the quantum gap}
+\label{subsec:projection_readout_quantum_gap}
+
+\paragraph{Vector synthesis (interface).}
+\InterfaceTag Given $a,b\in M$, define the synthesized vector
+\begin{equation}
+\label{eq:v_synthesis}
+v(a,b):=\mathcal{Z}(a)+\mathcal{Z}(b)\in\CC.
+\end{equation}
+Unless the embedding is trivial, $v(a,b)$ will typically not lie in the discrete image $\mathcal{Z}(M)$; the no-go above guarantees that one cannot demand closure under addition without collapsing the embedding.
+
+\paragraph{Nearest-point readout (deterministic).}
+\InterfaceTag Under the minimal radial choice $\rho(n)=n$, define a projection/readout map
+\begin{equation}
+\label{eq:nearest_point_projection}
+\pi(v):=\operatorname*{argmin}_{n\in M}\,|v-\mathcal{Z}(n)|,
+\end{equation}
+with a fixed tie-break rule (choose the smallest minimizer).
+Define the residual (gap)
+\begin{equation}
+\label{eq:quantum_gap_delta}
+\delta(a,b):=v(a,b)-\mathcal{Z}\big(\pi(v(a,b))\big).
+\end{equation}
+We refer to $\delta$ as a \emph{quantum gap} in the sense that it is the part of synthesis not representable inside the chosen discrete coordinate image.
+
+\paragraph{Soft projection kernel (probabilistic).}
+\InterfaceTag Fix $\sigma>0$ and define a probability kernel on $M$ by
+\begin{equation}
+\label{eq:projection_kernel_pi_sigma}
+\pi_\sigma(c\mid v)
+:=
+\frac{\exp\!\bigl(-|v-\mathcal{Z}(c)|^2/\sigma^2\bigr)}
+{\sum_{n\in M}\exp\!\bigl(-|v-\mathcal{Z}(n)|^2/\sigma^2\bigr)}.
+\end{equation}
+Sampling $C\sim\pi_\sigma(\cdot\mid v(a,b))$ yields a randomized additive readout with residual $\delta=v(a,b)-\mathcal{Z}(C)$.
+
+\begin{remark}[Compatibility with window-word / Fold$_m$ readout]
+\AuditTag The projection kernel \eqref{eq:projection_kernel_pi_sigma} is a \emph{different} readout protocol family from the window-word pipeline of Section~\ref{sec:hpa_readout} and the folding map $\mathrm{Fold}_m$ used in the stable-sector closure.
+The window-word/Fold$_m$ route produces discrete outcomes by finite observation at a declared window length $m$; the present route produces discrete outcomes by embedding into $\CC$ followed by a projection back to $M$.
+Both can be treated as admissible protocol choices, but they must not be conflated unless an explicit \MatchTag identification is declared.
+\end{remark}
+
+\subsection{Gap cohomology: protected residuals vs.\ pure gauge}
+\label{subsec:gap_cohomology}
+
+\paragraph{Interaction complex (interface).}
+\InterfaceTag Let $\mathcal{K}$ be a finite oriented simplicial complex with vertex set $V$ and oriented edge set $E$ (and optional oriented $2$-faces).
+Vertices represent a declared finite set of internal states; edges represent declared elementary interaction/readout events.
+The choice of $\mathcal{K}$ is part of the protocol specification.
+
+\paragraph{Cochains as discrete forms.}
+\InterfaceTag Let $A$ be an abelian group (typically $A=(\CC,+)$ for the complex embedding).
+Define $C^k(\mathcal{K};A)$ to be the group of $A$-valued simplicial $k$-cochains.
+The coboundary operators $d^0:C^0\to C^1$ and $d^1:C^1\to C^2$ are defined on oriented simplices by
+\[
+(d^0 f)(u,v):=f(v)-f(u),
+\qquad
+(d^1\omega)(u,v,w):=\omega(v,w)-\omega(u,w)+\omega(u,v).
+\]
+
+\paragraph{Gap field as a $1$-form.}
+\InterfaceTag A \emph{gap field} is a cochain $\omega\in C^1(\mathcal{K};A)$ that assigns to each oriented edge $(u,v)$ a gap residual $\omega(u,v)$ (e.g.\ the measured or inferred $\delta$ for that interaction).
+We interpret:
+\begin{itemize}
+\item \textbf{Exact gaps (pure gauge).} $\omega$ is exact if $\omega=d^0 f$ for some $f\in C^0(\mathcal{K};A)$; then the residual can be absorbed by rephasing/reparametrizing vertex potentials.
+\item \textbf{Closed gaps.} $\omega$ is closed if $d^1\omega=0$ on every oriented $2$-simplex; this expresses local loop-consistency.
+\end{itemize}
+
+\paragraph{Cohomology class as obstruction.}
+\InterfaceTag The first cohomology group
+\[
+H^1(\mathcal{K};A):=\ker(d^1)/\operatorname{im}(d^0)
+\]
+classifies closed gap fields modulo pure-gauge ones.
+Nontrivial classes represent \emph{topologically protected} residual structure that cannot be removed by any global potential assignment.
+
+\begin{remark}[Audit interface: failure points and registries]
+\AuditTag In the audit language of this paper, a nontrivial cohomology class $[\omega]\ne 0$ is a structured failure mode:
+one cannot globally eliminate the residuals while preserving declared local loop-consistency constraints.
+Accordingly, whenever this module is invoked one must record (i) the declared interaction complex $\mathcal{K}$, (ii) the coefficient group $A$, and (iii) the observed/tested loop-consistency constraints, together with an explicit failure-point statement (Appendix~\ref{app:minimal_failure_point_templates}).
+\end{remark}
+

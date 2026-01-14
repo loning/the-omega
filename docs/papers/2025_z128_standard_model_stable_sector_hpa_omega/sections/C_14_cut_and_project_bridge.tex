@@ -1,0 +1,75 @@
+\section{Cut-and-project geometry as a bridge: from window words to model sets}
+\label{sec:cut_and_project_bridge}
+
+\paragraph{Scope.}
+\AuditTag This section records a standard cut-and-project model-set construction as a mathematical bridge that makes the window-projection geometry explicit.
+It introduces no new premises into the folding core and is not used by the proofs of Section~\ref{sec:folding_core}.
+Its role is to provide a canonical geometric picture that aligns (i) window words and their staircase statistics in Section~\ref{sec:hpa_readout} with (ii) the discrete point-set viewpoint used elsewhere in the repository.
+For background on cut-and-project sets and model sets, see, e.g., \cite{Moody2000}.
+
+\subsection{The cut-and-project scheme for an irrational slope}
+\label{subsec:cut_project_scheme}
+
+\paragraph{Lattice and splitting.}
+\MathTag Fix an irrational slope $\alpha\in(0,1)\setminus\QQ$ and consider the lattice $L:=\ZZ^2\subset\RR^2$.
+Define the one-dimensional subspaces
+\[
+E_\parallel:=\mathrm{span}\{(1,\alpha)\},
+\qquad
+E_\perp:=\mathrm{span}\{(-\alpha,1)\}.
+\]
+Let $\pi_\parallel$ and $\pi_\perp$ denote the orthogonal projections onto $E_\parallel$ and $E_\perp$.
+
+\begin{definition}[Model set from a window]
+\label{def:model_set_lambda_W}
+\MathTag Let $W\subset E_\perp$ be a bounded interval (or, more generally, a bounded measurable set) whose boundary has Lebesgue measure zero in $E_\perp$.
+Define the associated cut-and-project model set
+\[
+\Lambda(W):=\{\pi_\parallel(\ell)\ :\ \ell\in L,\ \pi_\perp(\ell)\in W\}\subset E_\parallel.
+\]
+\end{definition}
+
+\begin{remark}[Golden branch specialization]
+\AuditTag For the golden branch $\alpha=\varphi^{-1}$ and a standard half-open interval $W$ in internal space, $\Lambda(W)$ is the classical Fibonacci model set; its gap sequence yields the Fibonacci tiling (two spacings in a nonperiodic order).
+This provides a geometric realization of the same Zeckendorf/Sturmian grammar used in the folding layer.
+\end{remark}
+
+\subsection{Window words and the staircase path}
+\label{subsec:staircase_prefix_sum}
+
+\paragraph{Window word and prefix sums.}
+\MathTag In the window-projection pipeline of Section~\ref{subsec:window_projection}, the binary readout is
+\[
+w_n=\ind\{z_n\in W_\alpha\}\in\{0,1\}.
+\]
+Define its prefix-sum staircase coordinate by
+\[
+S_N:=\sum_{k=0}^{N-1} w_k,\qquad N\ge 1,
+\]
+and the lattice staircase path by $\gamma_N:=(N,S_N)\in\ZZ^2$.
+
+\begin{proposition}[Staircase line law for mechanical words]
+\label{prop:staircase_line_law}
+\MathTag If $w_k$ is a mechanical word coding of the irrational rotation (as in the standard two-interval partition), then there exists an intercept $\beta\in[0,1)$ such that
+\[
+S_N=\lfloor N\alpha+\beta\rfloor \qquad (N\ge 1).
+\]
+Equivalently, the staircase path $\gamma_N=(N,S_N)$ is a digital approximation to the line $y=\alpha x+\beta$.
+\end{proposition}
+
+\begin{proof}
+This is the standard telescoping identity for mechanical words:
+\[
+S_N=\sum_{k=0}^{N-1}\Big(\lfloor (k+1)\alpha+\beta\rfloor-\lfloor k\alpha+\beta\rfloor\Big)
+=\lfloor N\alpha+\beta\rfloor-\lfloor\beta\rfloor
+=\lfloor N\alpha+\beta\rfloor,
+\]
+where $\lfloor\beta\rfloor=0$ for $\beta\in[0,1)$.
+\end{proof}
+
+\begin{remark}[How this interfaces with the audit certificates]
+\AuditTag Proposition~\ref{prop:staircase_line_law} is the geometric bridge behind the discrepancy certificates recorded in Section~\ref{subsubsec:discrepancy_certificates}:
+discrepancy bounds quantify how well the finite staircase prefixes approximate the line and how mismatch accumulates in finite time.
+The cut-and-project set $\Lambda(W)$ packages the same content as a point-set/tiling object; the certificate family in this paper remains stated in protocol/audit form on window words.
+\end{remark}
+

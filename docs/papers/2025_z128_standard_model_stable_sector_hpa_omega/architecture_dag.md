@@ -63,6 +63,14 @@ flowchart TB
   P_obs("有限观测对象（窗口词/事件序列 / Finite Observables (Window-Word/Event Sequence)）<br/>类型：观测 / Observation<br/>label: subsec:window_projection<br/>wₙ := 𝟙{zₙ∈W} ∈ {0,1} (eq:window_word)")
   M_readout -.- P_obs
 
+  M_embed_gap["嵌入+投影读出（加法=投影；gap 失败点）<br/>类型：审计 / Audit<br/>label: sec:embedding_gap_projection<br/>Z(n)=ρ(n)e^{iθ×(n)};  πσ(c|v) ∝ exp(−|v−Z(c)|²/σ²)"]
+  P_embed_gap("投影读出代理（gap/上同调失败点；协议声明）<br/>类型：审计 / Audit<br/>label: sec:embedding_gap_projection<br/>δ=v−Z(π(v));  H¹≠0 ⇒ residual not removable")
+  M_embed_gap -.- P_embed_gap
+
+  M_cut_project["cut-and-project（窗口→模型集 Λ(W)）<br/>类型：审计 / Audit<br/>label: sec:cut_and_project_bridge<br/>Λ(W)={π∥(ℓ): ℓ∈Z², π⊥(ℓ)∈W}"]
+  P_cut_project("模型集/tiling 代理（staircase 证书母语）<br/>类型：审计 / Audit<br/>label: sec:cut_and_project_bridge<br/>S_N=Σ_{k< N} w_k ≈ ⌊Nα+β⌋")
+  M_cut_project -.- P_cut_project
+
   M_morita["Weyl pair 对偶/等价（Fourier exchange / Morita）<br/>类型：审计 / Audit<br/>label: rem:weyl_morita_fourier_exchange<br/>U↔V (Fourier);  α'=(aα+b)/(cα+d) (Morita)"]
   P_morita("scan↔readout 对偶代理（频率/谱读出）<br/>类型：审计 / Audit<br/>label: rem:weyl_morita_fourier_exchange<br/>translation ↔ phase; representation exchange")
   M_morita -.- P_morita
@@ -89,6 +97,11 @@ flowchart TB
   P_dt --> P_obs
   M_readout --> M_morita
   P_obs --> P_morita
+
+  M_readout --> M_embed_gap
+  P_obs --> P_embed_gap
+  M_readout --> M_cut_project
+  P_obs --> P_cut_project
 
   M_cap --> M_golden
   M_readout --> M_golden
@@ -120,10 +133,10 @@ flowchart TB
   class M_tick,M_cap math_axiom;
   class M_readout,M_phi math_construct;
   class M_golden math_closure;
-  class M_morita,M_gauss math_audit;
+  class M_morita,M_gauss,M_embed_gap,M_cut_project math_audit;
   class P_dt,P_scan,P_phi phys_proxy;
   class P_obs phys_obs;
-  class P_morita,P_gauss,P_select phys_audit;
+  class P_morita,P_gauss,P_select,P_embed_gap,P_cut_project phys_audit;
 ```
 
 ### 图 2：三通道与折叠锚点（φ/π/ε → Fold → Anchor） / Fig. 2: Three Channels and Folding Anchor (φ/π/ε → Fold → Anchor)
@@ -147,6 +160,10 @@ flowchart TB
   M_am_euler["Artin–Mazur ζ 的 Euler product（primitive cycles）<br/>类型：审计 / Audit<br/>label: lem:artin_mazur_euler_product<br/>ζ(z)=∏_{p∈𝓟}(1−z^{|p|})⁻¹"]
   P_am_euler("prime-cycle bookkeeping（素周期 bookkeeping；primitive orbit ↔ generator）<br/>类型：字典 / Dictionary<br/>label: rem:prime_cycles_structural_analogy<br/>primitive ↦ generator; iterates ↦ powers")
   M_am_euler -.- P_am_euler
+
+  M_adelic_prime_orbit["adelic prime-orbit（prime 谓词内生化候选）<br/>类型：审计 / Audit<br/>label: sec:adelic_prime_orbit_module<br/>period(𝒪_p)=log p; primes ↔ primitive periodic orbits"]
+  P_adelic_prime_orbit("prime-orbit 解释模板（背景/失败点纪律）<br/>类型：审计 / Audit<br/>label: sec:adelic_prime_orbit_module<br/>background-only or finite surrogate (explicit registry)")
+  M_adelic_prime_orbit -.- P_adelic_prime_orbit
 
   M_pressure["pressure/transfer operator（谱半径稳定指标）<br/>类型：审计 / Audit<br/>label: app:thermodynamic_formalism_pressure / thm:pressure_spectral_radius_standard<br/>P(ϕ)=log λ_ϕ = sup_μ(h_μ+∫ϕ dμ)"]
   P_pressure("谱稳定代理（pressure ↔ pole barrier）<br/>类型：审计 / Audit<br/>label: app:thermodynamic_formalism_pressure<br/>dominant pole ↔ spectral radius; normalize r↑1")
@@ -177,6 +194,7 @@ flowchart TB
   M_phi --> M_pi
   M_phi --> M_e
   M_pi --> M_periodic --> M_am_euler --> M_e
+  M_am_euler --> M_adelic_prime_orbit
   M_e --> M_abel
   M_e --> M_pressure --> M_abel
   M_pressure --> M_operator_mother
@@ -187,6 +205,7 @@ flowchart TB
   P_phi --> P_e
   P_pi --> P_periodic
   P_periodic --> P_am_euler --> P_e
+  P_am_euler --> P_adelic_prime_orbit
   P_e --> P_abel
   P_e --> P_pressure --> P_abel
   P_pi --> P_fold
@@ -214,13 +233,13 @@ flowchart TB
 
   class M_phi,M_fold,M_anchor math_construct;
   class M_pi,M_periodic,M_e,M_op2_fold_uniqueness math_closure;
-  class M_abel,M_am_euler,M_pressure math_audit;
+  class M_abel,M_am_euler,M_pressure,M_adelic_prime_orbit math_audit;
   class M_operator_mother math_audit;
   class P_phi,P_pi,P_e,P_fold,P_screen phys_proxy;
   class P_periodic phys_obs;
   class P_am_euler phys_dict;
   class P_abel phys_model;
-  class P_pressure phys_audit;
+  class P_pressure,P_adelic_prime_orbit phys_audit;
   class P_operator_mother phys_audit;
 ```
 
@@ -2108,6 +2127,10 @@ flowchart TB
 | `P_dt` | `\label{sec:tick_calculus}` | `Δt := t₂ − t₁` | `sections/I_05_tick_calculus.tex` |
 | `M_readout` | `\label{sec:hpa_readout}` | `eq:window_word — wₙ := 𝟙{zₙ∈W} ∈ {0,1}` | `sections/C_10_hpa_readout_dynamics.tex` |
 | `P_obs` | `\label{subsec:window_projection}` | `eq:window_word — wₙ := 𝟙{zₙ∈W} ∈ {0,1}` | `sections/C_10_hpa_readout_dynamics.tex` |
+| `M_embed_gap` | `\label{sec:embedding_gap_projection}` | `Z(n)=ρ(n)e^{iθ×(n)};  πσ(c|v)∝exp(−|v−Z(c)|²/σ²);  δ=v−Z(π(v))` | `sections/C_13_embedding_gap_projection.tex` |
+| `P_embed_gap` | `\label{sec:embedding_gap_projection}` | `projection readout + gap residual;  H¹≠0 ⇒ residual not removable (failure mode)` | `sections/C_13_embedding_gap_projection.tex` |
+| `M_cut_project` | `\label{sec:cut_and_project_bridge}` / `\label{def:model_set_lambda_W}` | `Λ(W)={π∥(ℓ):ℓ∈Z²,π⊥(ℓ)∈W};  staircase: S_N=Σ_{k<N} w_k` | `sections/C_14_cut_and_project_bridge.tex` |
+| `P_cut_project` | `\label{sec:cut_and_project_bridge}` | `model-set/tiling proxy for window words;  S_N≈⌊Nα+β⌋` | `sections/C_14_cut_and_project_bridge.tex` |
 | `M_morita` | `\label{rem:weyl_morita_fourier_exchange}` | `U↔V (Fourier exchange);  α'=(aα+b)/(cα+d) (Morita)` | `sections/C_10_hpa_readout_dynamics.tex` |
 | `P_morita` | `\label{rem:weyl_morita_fourier_exchange}` | `translation ↔ phase; scan↔readout representation exchange` | `sections/C_10_hpa_readout_dynamics.tex` |
 | `M_cap` | `\label{ax:cap}` | `c* = argmin_{c∈C} J(c) (deterministic tie-break)` | `sections/I_00_introduction.tex` |
@@ -2286,6 +2309,12 @@ flowchart TB
 | `P_consensus_p3` | `\label{ass:consensus_matching_scale_rg}` | `P3: matching scale μ* and RG propagation dictionary (Match)` | `sections/appendices/49_physics_consensus_inputs.tex` |
 | `M_internal_fiber_g2` | `\label{app:internal_fiber_g2_optional}` / `\label{cor:octonion_three_channel_minimality}` | `norm-multiplicative composition N(xy)=N(x)N(y); Hurwitz dims {1,2,4,8}; three-channel minimality selects 8 ⇒ octonions; G2=Aut(O)` | `sections/appendices/50_internal_fiber_g2_optional.tex` |
 | `P_internal_fiber_g2` | `\label{app:internal_fiber_g2_optional}` | `optional micro-implementation route (audit-facing pointer)` | `sections/appendices/50_internal_fiber_g2_optional.tex` |
+| `M_octonion_lift` | `\label{sec:octonion_g2_internal_phase}` | `octonions O; prime shells O_p={π∈O_Hur:N(π)=p}; lift L(p)∈O_p; G2 gauge freedom` | `sections/C_15_octonion_g2_internal_phase.tex` |
+| `P_octonion_lift` | `\label{sec:octonion_g2_internal_phase}` | `internal non-abelian phase candidate; must be finite-family + registry/MDL if invoked` | `sections/C_15_octonion_g2_internal_phase.tex` |
+| `M_dispersion_time_advance` | `\label{sec:dispersion_time_advance}` / `\label{prop:dispersion_exact}` | `P²=(4/ε²)sin²(Eε/2);  dE/dP=1/sqrt(1-(εP/2)²)` | `sections/F_15_dispersion_time_advance.tex` |
+| `P_dispersion_time_advance` | `\label{sec:dispersion_time_advance}` | `time-advance channel (group-velocity slope); causality defense; separate from delay channel` | `sections/F_15_dispersion_time_advance.tex` |
+| `M_adelic_prime_orbit` | `\label{sec:adelic_prime_orbit_module}` | `X_Q=A_Q/Q×; scaling flow; primes ↔ primitive periodic orbits (period=log p)` | `sections/C_16_adelic_prime_orbit_module.tex` |
+| `P_adelic_prime_orbit` | `\label{sec:adelic_prime_orbit_module}` | `background-only or finite surrogate; explicit failure-point discipline` | `sections/C_16_adelic_prime_orbit_module.tex` |
 | `M_mdl_global` | `\label{app:global_model_selection_mdl}` | `MDL/prefix-code prior on declared family registry; cross-family mixture bound` | `sections/appendices/42_global_model_selection_mdl.tex` |
 | `P_mdl_global` | `\label{tab:audit_global_mdl_family_registry}` | `global look-elsewhere bound within registry (generated rows/summary)` | `sections/appendices/42_global_model_selection_mdl.tex` |
 | `M_min_coarse_lock` | `\label{lem:minimal_one_bit_per_parameter}` | `card(Ω_m)=2^m ≥ 2^k ⇒ m≥k` | `sections/appendices/20_forced_interface_lemmas.tex` |

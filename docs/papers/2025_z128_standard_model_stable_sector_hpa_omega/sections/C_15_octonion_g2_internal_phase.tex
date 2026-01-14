@@ -1,0 +1,95 @@
+\section{Octonionic internal phase lifts and \texorpdfstring{$G_2$}{G2} gauge freedom (interface)}
+\label{sec:octonion_g2_internal_phase}
+
+\paragraph{Scope.}
+\AuditTag This section records a candidate internal-phase lift based on the octonions as an interface module.
+It is included to make explicit one concrete mechanism by which a higher-dimensional, non-abelian ``phase'' space can coexist with the externally readable dyadic phase registers $\ZZ_{2^p}$ (Section~\ref{subsec:z128_label}).
+No statement in the folding core or in the SM labeling closure depends on this section.
+
+\subsection{Octonions, norm, and the unit sphere}
+\label{subsec:octonions_norm_unit_sphere}
+
+\begin{definition}[Octonions, conjugation, and norm]
+\label{def:octonions_conj_norm}
+\MathTag Let $\OO$ denote the real octonion algebra; see, e.g., \cite{Baez2002}.
+Write $x=x_0+\sum_{i=1}^7 x_i e_i$ with $x_i\in\RR$.
+Define octonionic conjugation $\bar{x}:=x_0-\sum_{i=1}^7 x_i e_i$ and the norm $N(x):=x\bar{x}=\bar{x}x\in\RR_{\ge 0}$.
+Write $\|x\|:=\sqrt{N(x)}$ and define the unit sphere $S^7:=\{u\in\OO:\ N(u)=1\}$.
+\end{definition}
+
+\begin{proposition}[Composition of the norm]
+\label{prop:octonion_norm_composition}
+\MathTag For all $x,y\in\OO$, one has $N(xy)=N(x)N(y)$.
+\end{proposition}
+
+\subsection{Hurwitz/Octavian lattice and prime shells}
+\label{subsec:hurwitz_lattice_prime_shells}
+
+\begin{definition}[Hurwitz/Octavian integer lattice]
+\label{def:hurwitz_octavian_lattice}
+\AuditTag Let $\OHur\subset\OO$ be a maximal order (integral octonions), often called the octavian integers.
+As a Euclidean lattice with respect to the octonion norm, $\OHur$ is isometric to a scaled $E_8$ root lattice.
+\AuditTag For background and explicit constructions, see, e.g., \cite{ConwaySmith2003}.
+\end{definition}
+
+\begin{definition}[Prime shells]
+\label{def:octonion_prime_shells}
+\InterfaceTag For a rational prime $p\in\PP$, define the norm-$p$ shell
+\[
+\OO_p:=\{\pi\in\OHur:\ N(\pi)=p\}.
+\]
+\end{definition}
+
+\begin{remark}[\texorpdfstring{$G_2$}{G2} gauge freedom]
+\label{rem:g2_gauge_freedom}
+\AuditTag The automorphism group $\mathrm{Aut}(\OO)\cong G_2$ preserves multiplication and the norm.
+Therefore it acts on each shell $\OO_p$.
+Any choice of a distinguished representative in $\OO_p$ is a gauge choice; observable claims should be formulated in a $G_2$-covariant or $G_2$-invariant way when possible.
+\end{remark}
+
+\subsection{A prime lift family and a non-associative product}
+\label{subsec:octonion_prime_lift_product}
+
+\begin{definition}[Octonionic prime lift]
+\label{def:octonion_prime_lift}
+\InterfaceTag An octonionic lift is a map $\mathcal{L}:\PP\to\OHur$ such that $\mathcal{L}(p)\in\OO_p$ for all primes $p$.
+\end{definition}
+
+\begin{definition}[Canonical left-normed prime product]
+\label{def:left_normed_prime_product}
+\InterfaceTag For $n\in\NN_{>0}$ with prime factor multiset written as an ordered list with multiplicity
+\[
+n=p_1p_2\cdots p_k,\qquad p_1\le \cdots\le p_k,
+\]
+define
+\[
+\Pi_{\mathcal{L}}(n):=\big(\cdots((\mathcal{L}(p_1)\mathcal{L}(p_2))\mathcal{L}(p_3))\cdots \big)\mathcal{L}(p_k)\in\OO,
+\qquad
+\Pi_{\mathcal{L}}(1):=1.
+\]
+Define the associated unit direction
+\[
+U_{\mathcal{L}}(n):=\frac{\Pi_{\mathcal{L}}(n)}{\sqrt{n}}\in S^7.
+\]
+\end{definition}
+
+\begin{proposition}[Norm consistency]
+\label{prop:octonion_lift_norm_consistency}
+\MathTag For all $n\in\NN_{>0}$, one has $N(\Pi_{\mathcal{L}}(n))=n$ and hence $U_{\mathcal{L}}(n)\in S^7$.
+\end{proposition}
+\begin{proof}
+By Proposition~\ref{prop:octonion_norm_composition} and $N(\mathcal{L}(p_i))=p_i$,
+\[
+N(\Pi_{\mathcal{L}}(n))=\prod_{i=1}^k N(\mathcal{L}(p_i))=\prod_{i=1}^k p_i=n.
+\]
+\end{proof}
+
+\subsection{Interface contract: how this module is used in this paper}
+\label{subsec:octonion_module_contract}
+
+\begin{remark}[External dyadic readout vs.\ internal octonionic lift]
+\AuditTag In this manuscript, externally readable phases are modeled by the finite dyadic registers $\ZZ_{2^p}$ (Appendix~\ref{app:protocol_primitives}), and phase-lift freedom is audited via explicit bounded candidate families (Section~\ref{sec:protocol_connections_holonomy}).
+The octonionic lift module above is an \emph{optional} internal-phase candidate that can be invoked to provide a non-abelian internal state space while keeping external readout finite.
+It must not be treated as a hidden continuous knob: any use of $\mathcal{L}$ must declare a finite candidate family of lifts (e.g.\ restricted to primes up to a bound and a finite gauge-fixing rule), and any selection must be accounted for by the manuscript-wide registry/MDL discipline (Appendix~\ref{app:global_model_selection_mdl}).
+\end{remark}
+

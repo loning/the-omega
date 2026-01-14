@@ -1,0 +1,59 @@
+\section{Adelic prime-orbit module: internalizing the prime predicate (audit/interface)}
+\label{sec:adelic_prime_orbit_module}
+
+\paragraph{Scope.}
+\AuditTag This section records an adelic/trace-formula viewpoint as a \emph{candidate} internalization of the prime predicate.
+It is included to align the paper's ``prime skeleton'' narrative with a well-known noncommutative-geometry implementation in which primes arise as primitive periodic orbits of a canonical scaling flow.
+This module is not used as a premise in the folding core or in any CAP closure; it is recorded as an audit-facing ontology option.
+For background and the trace-formula viewpoint, see, e.g., \cite{Connes1994,Connes1999,BostConnes1995}.
+
+\subsection{Adeles and the adele class space}
+\label{subsec:adele_class_space}
+
+\begin{definition}[Adeles and the adele class space]
+\label{def:adeles_adele_class_space}
+\AuditTag Let $\mathbb{A}_{\QQ}$ be the ring of adeles of $\QQ$ and let $\mathbb{A}_{\QQ}^\times$ be the ideles.
+The diagonal embedding of $\QQ^\times$ acts by multiplication on $\mathbb{A}_{\QQ}$.
+The adele class space is the quotient
+\[
+X_{\QQ}:=\mathbb{A}_{\QQ}/\QQ^\times,
+\]
+understood in the measured groupoid/$C^*$-algebra sense.
+\end{definition}
+
+\paragraph{Scaling flow.}
+\AuditTag The multiplicative group $\RR_{>0}$ acts on $\mathbb{A}_{\QQ}$ by scaling the real component (and trivially on the $p$-adic components), inducing an $\RR_{>0}$-action on $X_{\QQ}$ (the \emph{scaling flow}).
+
+\subsection{Primes as primitive periodic orbits (candidate internal predicate)}
+\label{subsec:primes_as_orbits}
+
+\begin{proposition}[Prime periodic orbits of the scaling flow (standard result)]
+\label{prop:adelic_prime_orbits}
+\AuditTag In the adelic module, the scaling flow on $X_{\QQ}$ admits periodic orbits with periods $\log p$ indexed by rational primes $p\in\PP$, and prime powers arise as iterates of these primitive periodic trajectories.
+Equivalently, one obtains an internal prime predicate:
+\[
+P(\mathcal{O})\quad\Longleftrightarrow\quad \mathcal{O}\ \text{is a primitive periodic orbit of the scaling flow}.
+\]
+\end{proposition}
+
+\begin{remark}[Euler product as an orbit product (interface dictionary)]
+\InterfaceTag If one assigns to each primitive orbit $\mathcal{O}_p$ the length $L(\mathcal{O}_p)=\log p$, then the formal orbit product
+\[
+Z(s):=\prod_{\mathcal{O}\ \mathrm{primitive}}\frac{1}{1-\exp(-sL(\mathcal{O}))}
+\]
+reduces to the Euler product $\prod_{p\in\PP}(1-p^{-s})^{-1}$ in $\Re(s)>1$.
+This expresses, within the module, the principle ``composites are iterates/tensorizations, not new primitives''.
+\end{remark}
+
+\subsection{Audit contract: how this module may be invoked in z128-style closures}
+\label{subsec:adelic_module_contract}
+
+\begin{remark}[Failure-point discipline]
+\AuditTag This module relies on substantial external theory (noncommutative quotients, trace formulas, and analytic continuation).
+Within the z128 audit discipline, it must therefore be used in one of two explicitly labeled ways:
+\begin{itemize}
+\item \textbf{Background-only (Audit).} Use it only as an ontology mnemonic for why primes can be treated as primitive periodic data, without importing any analytic claims into the closure chain.
+\item \textbf{Interface-level hypothesis pack.} If one uses this module to motivate a concrete finite surrogate (e.g.\ a bounded prime-orbit family up to a cutoff with an explicit periodic-orbit registry), then the surrogate family must be declared finite and audited, and any reliance on external analytic statements must be recorded as a scoped assumption pack with explicit failure conditions.
+\end{itemize}
+\end{remark}
+

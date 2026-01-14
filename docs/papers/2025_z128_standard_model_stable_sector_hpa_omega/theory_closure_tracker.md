@@ -223,12 +223,24 @@ flowchart TD
 
 ## 已引入的“自包含闭合模块”（Part F 主文 + 附录）
 
+- [x] **HPA 融入：embedding 与投影读出（加法作为投影问题；gap/上同调失败点）**：`Part B（Tick-first）`  
+  - 位置：`sections/C_13_embedding_gap_projection.tex`（`\label{sec:embedding_gap_projection}`）
+  - 要点：引入可选的乘法相位 $\theta_\times$ 与极坐标嵌入 $\mathcal{Z}$；给出“乘法同态 + 加法同态不可兼得”的 no-go；定义最近点/软投影核 $\pi,\pi_\sigma$ 与 residual gap $\delta$；以 interaction complex 上的 $H^1$ 作为“残差不可全局规约”的结构化失败点。  
+  - 层级：Math（no-go 定理）+ Iface/Audit（投影读出与 gap/cohomology 作为协议模块；不进入 folding 证明链）。
+- [x] **HPA 融入：cut-and-project 几何桥（窗口词→模型集→staircase 证书）**：`Part B（Tick-first）`  
+  - 位置：`sections/C_14_cut_and_project_bridge.tex`（`\label{sec:cut_and_project_bridge}`）
+  - 要点：显式写出 $\ZZ^2$ 的 cut-and-project / model set $\Lambda(W)$；把窗口词的前缀和 staircase 与机械词的直线逼近命题对齐；作为 discrepancy 证书的几何母语，不进入 folding 证明链。
+  - 层级：Math/Audit（桥接性；不引入新物理前提）。
 - [x] **时间箭头（指数半群/Abel-first）**：`Part F.0`  
   - 位置：`sections/F_00_arrow_of_time_semigroup.tex`（`\label{app:arrow_of_time_semigroup_notes}`）
   - 要点：指数半群骨架、遗忘常数、与 Abel-first/pole-barrier 语言对齐；连续半群的 Cauchy 方程解采用标准结果并给出引用；作为后续单调性与不可逆证书的最小数学核。
 - [x] **等价语义与频率优先词典**：`Part F.1`  
   - 位置：`sections/F_10_equivalence_semantics.tex`（`\label{app:equivalence_semantics}`）
   - 要点：物理对象=等价类；物理量=不变泛函；频率作为优先派生量；力/曲率/熵等作为不变性或闭合输出。
+- [x] **HPA 融入：离散扫描色散与 time-advance 通道（群速度斜率；因果性防线）**：`Part F（Dynamics）`  
+  - 位置：`sections/F_15_dispersion_time_advance.tex`（`\label{sec:dispersion_time_advance}`）
+  - 要点：在“scan step 是 unitary + difference-norm momentum”的声明下，导出精确色散 $E(P)$ 与 $\dd E/\dd P>1$ 的 time-advance 签名；明确 group velocity 与 front/signal velocity 的分离；并与 delay/lapse 通道并列而不混用。
+  - 层级：Math（色散恒等式）+ Iface/Match（把 slope 解释为可观测信号需匹配层声明；不进入 folding 证明链）。
 - [x] **算子母空间字典入口（resolvent/determinant；观察者/意识口径）**：`Part F.1`  
   - 位置：`sections/F_05_operator_mother_space_dictionary.tex`（`\label{app:operator_mother_space_dictionary}`）
   - 要点：以 trace-class 源算子 $F$、读出核 $K$ 与 Fredholm 行列式为统一 bookkeeping 层，把 Abel-first/pole-barrier、prime-cycle 生成函数、以及 CAP 的有限族更新 $F\mapsto F+\Delta$ 放进同一字典口径；其中 observer:=kernel choice、consciousness:=finite-rank update 仅作为接口字典，不进入 theorem-level folding 依赖链。
@@ -347,6 +359,16 @@ flowchart TD
 - [x] **散射时间延迟的统一闭合（相位/频率/WS/红移/GR 参考）**：`appendix 34`  
   - 位置：`sections/appendices/34_unified_delay_closure.tex`（`\label{app:time_mass_delay}`，`\label{app:time_mass_delay_reference}`）
   - 要点：相位-频率-延迟统一接口；Wigner--Smith 延迟（含 trace/logdet 与校准/损耗处理）；delay→$\kappa$→lapse→redshift/Shapiro 的一致词典；相移/截面与时延同源的接口注记。
+
+- [x] **HPA 融入：八元数/G2 内部相位 lift（候选模块；不进闭合链）**：`Part D（Structure）`  
+  - 位置：`sections/C_15_octonion_g2_internal_phase.tex`（`\label{sec:octonion_g2_internal_phase}`）
+  - 要点：以 $\OO$ 与 Hurwitz/Octavian 格给出 prime shell 与 lift 族；强调 $G_2=\mathrm{Aut}(\OO)$ 的 gauge 自由；作为“内部相位空间候选”，与外部 dyadic phase register 并存；若调用必须以有限候选族+MDL 记账显式化。
+  - 层级：Iface/Audit（可选候选；不进入 theorem-level folding/SM labeling 的依赖链）。
+
+- [x] **HPA 融入：adelic prime-orbit 模块（prime 谓词内生化；审计背景）**：`Part C（Periodic Core）`  
+  - 位置：`sections/C_16_adelic_prime_orbit_module.tex`（`\label{sec:adelic_prime_orbit_module}`）
+  - 要点：记录 $X_\QQ=\mathbb{A}_\QQ/\QQ^\times$ 的 scaling flow 视角下 primes 作为 primitive periodic orbits 的候选解释；在本文口径中仅作为 audit/interface 背景；若要用于闭合必须降格为“显式有限 surrogate”并给出失败点。
+  - 层级：Audit/Iface（背景；不进入闭合链）。
 - [x] **边界–普朗克容量校准（黑洞信息→$(m,n)$ 分辨率；扩展审计模块）**：`appendix 09`  
   - 位置：`sections/appendices/09_bh_planck_capacity_calibration.tex`（`\label{app:bh_planck_capacity_calibration}`）
   - 要点：引入显式物理输入包的最小子集（Planck 单位与面积律/熵界，见 `app:physics_consensus_inputs` 的 PBH1–PBH5），把黑洞边界信息容量 $I_{\mathrm{BH}}$ 与协议屏幕容量 $I_{\mathrm{prot}}(m,n)=m4^n$ 在有限候选族上做确定性 CAP 校准，并输出一个可复现的 capacity-calibrated uplift path $(m,n(m))$ 供 uplift 依赖模块对齐（与 `sec:kernel_view` 的可迭代 $(m,n)$ 视角兼容）。
