@@ -1,15 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Bulk reportables registry sample (deterministic, standard-library only).
-
-This script emits a compact, reproducible table that mirrors Appendix 10g's
-bulk registry list as an auditable artifact.
-
-Outputs (LaTeX fragments):
-  - sections/generated/holo_bulk_registry_sample_rows.tex
-  - sections/generated/holo_bulk_registry_sample_summary.tex
-"""
-
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -64,9 +52,9 @@ def main() -> None:
         rows.append(
             " & ".join(
                 [
-                    it.name.replace("_", r"\_"),
-                    it.layer.replace("_", r"\_"),
-                    it.pointer.replace("_", r"\_"),
+                    it.name,
+                    it.layer,
+                    it.pointer,
                 ]
             )
             + r" \\"
@@ -84,4 +72,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

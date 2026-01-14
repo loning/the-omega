@@ -187,6 +187,47 @@ To specialize this to a familiar thermodynamic statement (e.g.\ monotonic decay 
 Those additional identifications are interface/matching choices in this paper and must be explicitly scoped when used.
 \end{remark}
 
+\begin{definition}[Coarse-graining semigroup and reference state]
+\label{def:z128_cg_semigroup_reference_state}
+\InterfaceTag A \emph{coarse-graining semigroup} is a family $(\Phi_t)_{t\ge 0}$ of CPTP maps on a fixed finite-dimensional $\mathcal{H}$ such that $\Phi_0=\mathrm{Id}$ and $\Phi_{t+s}=\Phi_t\circ\Phi_s$.
+A \emph{reference state} for this semigroup is a density matrix $\sigma$ satisfying $\Phi_t(\sigma)=\sigma$ for all $t\ge 0$ (a fixed point of the declared coarse-graining flow).
+\end{definition}
+
+\begin{proposition}[DPI-based Lyapunov certificate along coarse graining]
+\label{prop:z128_dpi_lyapunov_semigroup}
+\MathTag Let $(\Phi_t)_{t\ge 0}$ and $\sigma$ be as in Definition~\ref{def:z128_cg_semigroup_reference_state}.
+Then for any density matrix $\rho$ and any $t,s\ge 0$ one has
+\[
+D\bigl(\Phi_{t+s}(\rho)\Vert\sigma\bigr)\le D\bigl(\Phi_t(\rho)\Vert\sigma\bigr)\le D(\rho\Vert\sigma).
+\]
+In particular, $t\mapsto D(\Phi_t(\rho)\Vert\sigma)$ is nonincreasing along the declared coarse-graining flow.
+\end{proposition}
+\begin{proof}
+Apply Theorem~\ref{thm:z128_quantum_dpi} to $\Phi_s$ and the pair $(\Phi_t(\rho),\sigma)$.
+Since $\Phi_s(\sigma)=\sigma$ and $\Phi_s(\Phi_t(\rho))=\Phi_{t+s}(\rho)$ by the semigroup law, we obtain
+$D(\Phi_{t+s}(\rho)\Vert\sigma)\le D(\Phi_t(\rho)\Vert\sigma)$.
+Taking $t=0$ yields $D(\Phi_s(\rho)\Vert\sigma)\le D(\rho\Vert\sigma)$.
+\end{proof}
+
+\begin{proposition}[Relative entropy as a free-energy difference (finite-dimensional)]
+\label{prop:z128_relative_entropy_free_energy_identity}
+\MathTag Let $H$ be a Hermitian operator on $\mathcal{H}$ and fix $\beta>0$.
+Define the Gibbs state $\sigma_\beta:=\mathrm{e}^{-\beta H}/Z$ where $Z:=\Tr(\mathrm{e}^{-\beta H})$.
+Then for any density matrix $\rho$ on $\mathcal{H}$,
+\[
+D(\rho\Vert\sigma_\beta)=\beta\,\Tr(\rho H)-S(\rho)+\log Z.
+\]
+Equivalently, if one defines the Helmholtz free energy functional $F_\beta(\rho):=\Tr(\rho H)-\beta^{-1}S(\rho)$, then
+\[
+D(\rho\Vert\sigma_\beta)=\beta\bigl(F_\beta(\rho)-F_\beta(\sigma_\beta)\bigr).
+\]
+\end{proposition}
+\begin{proof}
+By definition,
+$D(\rho\Vert\sigma_\beta)=\Tr\bigl(\rho(\log\rho-\log\sigma_\beta)\bigr)$.
+Since $\log\sigma_\beta=-\beta H-\log Z$, the claim follows by rearranging and using $S(\rho)=-\Tr(\rho\log\rho)$.
+\end{proof}
+
 
 \paragraph{Third law (stability floor and unattainability).}
 \InterfaceTag In protocol terms, the third law is a statement about the existence of a minimal stable background (a reference macrostate) and about the cost of reaching lower-entropy configurations:

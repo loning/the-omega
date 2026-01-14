@@ -585,9 +585,9 @@ flowchart TD
 
 ### 热力学统一（更强口径：仍待闭合）
 
-- [~] **自由能/熵产生的动力学单调性（而非仅 DPI）**：目前已闭合的是 coarse-graining 下的最小不可逆证书（DPI/收缩）；若要升级到经典热力学风格的“熵随时间增加”或“自由能随时间下降”，需要显式给出动力学生成元/半群（Markov/Lindblad 等）、参考态（Gibbs/不动点）与详细平衡类条件，并在这些条件下证明 $t\mapsto D(\rho_t\Vert\rho_\beta)$ 或对应自由能泛函的单调性。  
-  - 位置（现有最小证书）：`sections/appendices/27_thermodynamics_from_equivalence.tex`（`subsec:second_law_data_processing`），`sections/appendices/30e_quantum_channels_cptp_stinespring.tex`（`subsec:z128_quantum_relative_entropy_dpi`）
-  - 最小失败点：未声明动力学类/生成元与不动点结构，导致无法从 DPI 推出“物理自由能/熵产生”的时间单调律。
+- [x] **自由能/熵产生的动力学单调性（而非仅 DPI）**：在本论文口径下把“热力学单调性”落实为一个\emph{可审计的粗粒化半群} $(\Phi_t)_{t\ge 0}$（CPTP/Markov；接口声明）与其不动参考态 $\sigma$（Gibbs 或固定点）。在该声明之下，DPI 直接给出 $t\mapsto D(\Phi_t(\rho)\Vert\sigma)$ 的 Lyapunov 单调性（从而在 Gibbs 情形等价于自由能差的单调性）。  
+  - 位置：`sections/appendices/27_thermodynamics_from_equivalence.tex`（`subsec:second_law_data_processing`，Definition~`def:z128_cg_semigroup_reference_state`，Prop.~`prop:z128_dpi_lyapunov_semigroup`，Prop.~`prop:z128_relative_entropy_free_energy_identity`），`sections/appendices/30e_quantum_channels_cptp_stinespring.tex`（`subsec:z128_quantum_relative_entropy_dpi`）
+  - 最小失败点：若所用动力学不属于声明的粗粒化半群、或参考态并非不动点/比较类不闭合，则只能保留 DPI 的“不可逆最小证书”而不升级为物理自由能叙事。  
 
 - [~] **$\beta_{\mathrm{CAP}}$ 的绝对温标闭合（无模型可预测）**：已闭合 $\beta_{\mathrm{CAP}}=\kappa/\kappa_S$ 的内部标尺与单位约定（PDR0）；但“无需额外校准输入即可确定物理温度 $T$ 的绝对标定”尚未闭合。  
   - 位置：`sections/appendices/27_thermodynamics_from_equivalence.tex`（CAP weights 段），`sections/appendices/49_physics_consensus_inputs.tex`（`ass:pdr_entropy_energy_temperature_units`）
@@ -717,7 +717,7 @@ flowchart TD
   - **宣称句式门禁（建议写入主文的固定句式）**：
     - 允许：在“声明窗口 + 有限观测类 + 显式 $\epsilon_N$ 预算 + 失败点门禁”口径下陈述结果；scheme/threshold 仅以有限族 envelope 进入误差预算（R1/R2）。
     - 禁止：无条件宣称“量子引力已解决/黑洞信息悖论已解决/4D 相互作用 QFT 非微扰完备已证明/渐近完备性已建立”等（触发 R3 或 BH 合同门禁即自动不满足）。
-- [ ] **现代宇宙学张力（$H_0$ tension、$S_8/\sigma_8$ tension）**：未讨论相关张力问题及其数据/系统误差模型；建议参考与入口：Planck-2018 参数 \cite{Planck2018Parameters2020AandA}，SH0ES 距离梯 \cite{RiessEtAl2022SH0ESApJL}，弱透镜/多探针基准 \cite{AsgariEtAl2021KiDS1000CosmicShear,DESY3Cosmo2022PRD}，综述 \cite{VerdeTreuRiess2019TensionsReview}；本文对应范围边界与引用指针已集中放在 `sec:limitations_related_work` 的 `subsec:open_problems_audit_tagged`。
+- [ ] **现代宇宙学张力（$H_0$ tension、$S_8/\sigma_8$ tension）**：未讨论相关张力问题及其数据/系统误差模型；建议参考与入口：Planck-2018 参数 \cite{Planck2018Parameters2020AandA}，SH0ES 距离梯 \cite{RiessEtAl2022SH0ESApJL}，弱透镜/多探针基准 \cite{AsgariEtAl2021KiDS1000CosmicShear,DESY3Cosmo2022PRD}，综述 \cite{VerdeTreuRiess2019TensionsReview}；本文对应范围边界与引用指针已集中放在 `sec:limitations_related_work` 的 `subsec:open_problems_audit_tagged`（并已在正文该段补充引用以确保 bib 键被实际使用）。
 - [ ] **更高能 BSM 框架（SUSY/弦论等）与质子衰变**：未进入闭合推导链或审计化可证伪预测。
 
 ## 快速入口（给维护者）

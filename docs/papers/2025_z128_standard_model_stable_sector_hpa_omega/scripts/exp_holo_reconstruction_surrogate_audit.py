@@ -60,14 +60,17 @@ def main() -> None:
         ),
     ]
 
+    def escape_cell_text(s: str) -> str:
+        return s.replace("_", r"\_")
+
     lines: List[str] = []
     for r in rows_data:
         lines.append(
             " & ".join(
                 [
-                    r.item.replace("_", r"\_"),
-                    r.status.replace("_", r"\_"),
-                    r.pointer.replace("_", r"\_"),
+                    escape_cell_text(r.item),
+                    escape_cell_text(r.status),
+                    r.pointer,
                 ]
             )
             + r" \\"
@@ -86,4 +89,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

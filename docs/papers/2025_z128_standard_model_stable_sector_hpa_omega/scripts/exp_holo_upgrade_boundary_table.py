@@ -59,21 +59,25 @@ def main() -> None:
         ),
     ]
 
+    def escape_cell_text(s: str) -> str:
+        return s.replace("_", r"\_")
+
     tex_lines: List[str] = []
     for r in rows:
         tex_lines.append(
             " & ".join(
                 [
-                    r.evidence.replace("_", r"\_"),
-                    r.allowed_use.replace("_", r"\_"),
-                    r.forbidden_upgrade.replace("_", r"\_"),
-                    r.gates.replace("_", r"\_"),
-                    r.pointer.replace("_", r"\_"),
+                    escape_cell_text(r.evidence),
+                    escape_cell_text(r.allowed_use),
+                    escape_cell_text(r.forbidden_upgrade),
+                    escape_cell_text(r.gates),
+                    r.pointer,
                 ]
             )
             + r" \\"
         )
     tex_lines.append(r"\bottomrule")
+
     write_lines(rows_path, tex_lines if tex_lines else ["% (no rows)"])
 
     summary = [
@@ -87,4 +91,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
