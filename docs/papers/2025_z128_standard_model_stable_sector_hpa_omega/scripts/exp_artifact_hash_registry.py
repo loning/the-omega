@@ -91,7 +91,10 @@ def main() -> None:
     }
 
     out_json = generated_dir() / "artifact_hash_registry.json"
-    out_json.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+    new_json = json.dumps(payload, indent=2, sort_keys=True)
+    old_json = out_json.read_text(encoding="utf-8") if out_json.is_file() else ""
+    if new_json != old_json:
+        out_json.write_text(new_json, encoding="utf-8")
 
     # Minimal LaTeX summary.
     summary = [
@@ -101,7 +104,11 @@ def main() -> None:
         r"This provides a content-addressable cache index independent of mtimes. "
         rf"File: \texttt{{{_rel_to_paper(out_json)}}}.",
     ]
-    write_lines(generated_dir() / "artifact_hash_registry_summary.tex", summary)
+    out_tex = generated_dir() / "artifact_hash_registry_summary.tex"
+    new_tex = "\n".join(summary) + "\n"
+    old_tex = out_tex.read_text(encoding="utf-8") if out_tex.is_file() else ""
+    if new_tex != old_tex:
+        write_lines(out_tex, summary)
 
 
 if __name__ == "__main__":

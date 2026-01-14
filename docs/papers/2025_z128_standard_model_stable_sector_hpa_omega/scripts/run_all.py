@@ -828,11 +828,41 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="QG interface suite (chi->curvature, horizon trigger, scattering delay)",
-            script="exp_qg_interface_suite.py",
+            name="QG full pack (interface suite + full-fusion + sweeps + QG9-M1)",
+            script="exp_qg_full_pack.py",
             expected_outputs=[
                 "sections/generated/qg_interface_suite_rows.tex",
                 "sections/generated/qg_interface_suite_summary.tex",
+                "sections/generated/full_fusion_nowh_rows.tex",
+                "sections/generated/full_fusion_compare_rows.tex",
+                "sections/generated/full_fusion_rows.tex",
+                "sections/generated/full_fusion_summary.tex",
+                "sections/generated/full_fusion_wormhole_sweep_rows.tex",
+                "sections/generated/full_fusion_wormhole_sweep_summary.tex",
+                "sections/generated/full_fusion_wormhole_pareto_rows.tex",
+                "sections/generated/full_fusion_wormhole_pareto_summary.tex",
+                "sections/generated/full_fusion_wormhole_pareto_delay_rows.tex",
+                "sections/generated/full_fusion_wormhole_pareto_delaywh_rows.tex",
+                "sections/generated/full_fusion_wormhole_pareto_emit_rows.tex",
+                "sections/generated/full_fusion_wormhole_pareto_jump_rows.tex",
+                "sections/generated/full_fusion_wormhole_pareto_multi_summary.tex",
+                "sections/generated/full_fusion_wormhole_adaptive_rows.tex",
+                "sections/generated/full_fusion_wormhole_adaptive_summary.tex",
+                "sections/generated/full_fusion_opt_delay_rows.tex",
+                "sections/generated/full_fusion_opt_delay_nowh_rows.tex",
+                "sections/generated/full_fusion_opt_delay_compare_rows.tex",
+                "sections/generated/full_fusion_opt_delay_summary.tex",
+                "sections/generated/full_fusion_opt_emit_rows.tex",
+                "sections/generated/full_fusion_opt_emit_nowh_rows.tex",
+                "sections/generated/full_fusion_opt_emit_compare_rows.tex",
+                "sections/generated/full_fusion_opt_emit_summary.tex",
+                "sections/generated/qg9_windowed_comparability_default_instance.tex",
+                "sections/generated/qg9_windowed_comparability_registry.tex",
+                "sections/generated/qg9_windowed_comparability_budget.tex",
+                "sections/generated/qg9_windowed_comparability_evidence.tex",
+                "sections/generated/qg9_windowed_comparability_acceptance_checklist.tex",
+                "sections/generated/qg9_windowed_comparability_numeric_summary.tex",
+                "sections/generated/qg9_windowed_comparability_numeric.tex",
             ],
         ),
         Step(
@@ -850,61 +880,6 @@ def build_steps() -> List[Step]:
                 "sections/generated/orbit_force_relax_bh_rows.tex",
                 "sections/generated/orbit_force_relax_bh_summary.tex",
             ],
-        ),
-        Step(
-            name="Full fusion: BH + wormhole-like pointers + measurement (toy)",
-            script="exp_full_fusion_bh_wormhole_measurement.py",
-            expected_outputs=[
-                "sections/generated/full_fusion_nowh_rows.tex",
-                "sections/generated/full_fusion_compare_rows.tex",
-                "sections/generated/full_fusion_rows.tex",
-                "sections/generated/full_fusion_summary.tex",
-            ],
-        ),
-        Step(
-            name="Full fusion wormhole parameter sweep (metrics-only audit)",
-            script="exp_full_fusion_wormhole_sweep.py",
-            expected_outputs=[
-                "sections/generated/full_fusion_wormhole_sweep_rows.tex",
-                "sections/generated/full_fusion_wormhole_sweep_summary.tex",
-                "sections/generated/full_fusion_wormhole_pareto_rows.tex",
-                "sections/generated/full_fusion_wormhole_pareto_summary.tex",
-                "sections/generated/full_fusion_wormhole_pareto_delay_rows.tex",
-                "sections/generated/full_fusion_wormhole_pareto_delaywh_rows.tex",
-                "sections/generated/full_fusion_wormhole_pareto_emit_rows.tex",
-                "sections/generated/full_fusion_wormhole_pareto_jump_rows.tex",
-                "sections/generated/full_fusion_wormhole_pareto_multi_summary.tex",
-            ],
-        ),
-        Step(
-            name="Full fusion wormhole adaptive search (budgeted recommendations)",
-            script="exp_full_fusion_wormhole_adaptive_search.py",
-            expected_outputs=[
-                "sections/generated/full_fusion_wormhole_adaptive_rows.tex",
-                "sections/generated/full_fusion_wormhole_adaptive_summary.tex",
-                "sections/generated/full_fusion_opt_delay_rows.tex",
-                "sections/generated/full_fusion_opt_delay_nowh_rows.tex",
-                "sections/generated/full_fusion_opt_delay_compare_rows.tex",
-                "sections/generated/full_fusion_opt_delay_summary.tex",
-                "sections/generated/full_fusion_opt_emit_rows.tex",
-                "sections/generated/full_fusion_opt_emit_nowh_rows.tex",
-                "sections/generated/full_fusion_opt_emit_compare_rows.tex",
-                "sections/generated/full_fusion_opt_emit_summary.tex",
-            ],
-            depends_on=[
-                "sections/generated/full_fusion_wormhole_pareto_rows.tex",
-                "sections/generated/full_fusion_wormhole_pareto_emit_rows.tex",
-                "sections/generated/full_fusion_wormhole_pareto_delay_rows.tex",
-            ],
-        ),
-        Step(
-            name="Artifact hash registry (script/deps -> outputs)",
-            script="exp_artifact_hash_registry.py",
-            expected_outputs=[
-                "sections/generated/artifact_hash_registry.json",
-                "sections/generated/artifact_hash_registry_summary.tex",
-            ],
-            always_run=True,
         ),
         Step(
             name="Resolution uplift CAP choice under constraints (capacity-driven staging)",
@@ -1664,6 +1639,14 @@ def build_steps() -> List[Step]:
                 "sections/generated/holo_upgrade_boundary_summary.tex",
             ],
         ),
+        Step(
+            name="Artifact hash registry (script/deps -> outputs)",
+            script="exp_artifact_hash_registry.py",
+            expected_outputs=[
+                "sections/generated/artifact_hash_registry.json",
+                "sections/generated/artifact_hash_registry_summary.tex",
+            ],
+        ),
     ]
 
 
@@ -1672,31 +1655,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         description="Run all reproducible generators for this paper."
     )
     parser.add_argument(
-        "--force",
-        action="store_true",
-        help="Force recomputation (ignore cached/up-to-date outputs) and run all steps.",
-    )
-    parser.add_argument(
-        "--skip-up-to-date",
-        dest="skip_up_to_date",
-        action="store_true",
-        help=(
-            "Skip steps whose expected outputs exist, are non-empty, and are newer than the step's "
-            "local Python dependencies. Useful for iterative LaTeX work."
-        ),
-    )
-    parser.add_argument(
-        "--no-skip-up-to-date",
-        dest="skip_up_to_date",
-        action="store_false",
-        help="Disable skipping and run all steps (unless --stop-after stops early).",
-    )
-    parser.add_argument(
         "--stop-after",
         default="",
         help="Optional step name prefix to stop after (for debugging).",
     )
-    parser.set_defaults(skip_up_to_date=True)
     args = parser.parse_args(list(argv) if argv is not None else None)
 
     gen = generated_dir()
@@ -1704,14 +1666,14 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     steps = build_steps()
     all_expected: List[str] = []
-    use_skip = (
-        bool(args.skip_up_to_date) and (not bool(args.force)) and (not cache_disabled())
-    )
+    # Always use the content-hash cache path when available; full recomputation flags are intentionally removed.
+    use_skip = not cache_disabled()
     module_map: dict[str, Path] = _local_module_map() if use_skip else {}
     deps_memo: dict[Path, set[Path]] = {}
     cache: dict[str, str] = _load_run_all_cache() if use_skip else {}
     cache_dirty = False
     ran_registry_step = False
+    any_step_ran = False
 
     for step in steps:
         step_t0 = time.perf_counter()
@@ -1726,12 +1688,16 @@ def main(argv: Sequence[str] | None = None) -> int:
             fp = _deps_fingerprint(set(deps) | set(extra_inputs))
             have = _have_outputs(step.expected_outputs)
             cached_fp = cache.get(step.script)
-            if step.always_run:
+            effective_always_run = bool(step.always_run) or (
+                step.script == "exp_artifact_hash_registry.py" and any_step_ran
+            )
+            if effective_always_run:
                 print(f"[run_all] {step.name} -> {step.script}", flush=True)
                 _run_script(script_path, step_name=step.name)
                 _check_outputs(step.expected_outputs)
                 cache[step.script] = fp
                 cache_dirty = True
+                any_step_ran = True
             elif have and cached_fp == fp:
                 print(f"[run_all] SKIP (up-to-date) {step.name}", flush=True)
                 _check_outputs(step.expected_outputs)
@@ -1762,6 +1728,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                     )
                     _run_script(script_path, step_name=step.name)
                     _check_outputs(step.expected_outputs)
+                    any_step_ran = True
                 cache[step.script] = fp
                 cache_dirty = True
             else:
@@ -1770,10 +1737,12 @@ def main(argv: Sequence[str] | None = None) -> int:
                 _check_outputs(step.expected_outputs)
                 cache[step.script] = fp
                 cache_dirty = True
+                any_step_ran = True
         else:
             print(f"[run_all] {step.name} -> {step.script}", flush=True)
             _run_script(script_path, step_name=step.name)
             _check_outputs(step.expected_outputs)
+            any_step_ran = True
         all_expected.extend(list(step.expected_outputs))
         if args.stop_after and step.name.lower().startswith(args.stop_after.lower()):
             break
@@ -1790,21 +1759,6 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if cache_dirty:
         _save_run_all_cache(cache)
-
-    # Refresh the artifact hash registry after every run_all invocation.
-    # This guarantees the dictionary is updated even when the run was stopped early.
-    if not ran_registry_step:
-        reg_script = scripts_dir() / "exp_artifact_hash_registry.py"
-        if reg_script.is_file():
-            step_name = "Artifact hash registry (post-run refresh)"
-            print(f"[run_all] {step_name} -> exp_artifact_hash_registry.py", flush=True)
-            _run_script(reg_script, step_name=step_name)
-            _check_outputs(
-                [
-                    "sections/generated/artifact_hash_registry.json",
-                    "sections/generated/artifact_hash_registry_summary.tex",
-                ]
-            )
 
     print("[run_all] OK", flush=True)
     return 0

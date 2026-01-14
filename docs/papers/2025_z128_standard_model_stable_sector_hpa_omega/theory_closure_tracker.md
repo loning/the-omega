@@ -730,9 +730,11 @@ flowchart TD
       $$
       其中 $\epsilon_N$ 的每一项都必须能在本文的有限族/脚本框架下被审计（而不是口头“高阶小/方案可忽略”）。
   - **最短强闭合里程碑（建议 M1–M3；失败点全部走 `app:minimal_failure_point_templates` 的统一门禁）**：
-    - QG9-M1（窗口化可比性 + 误差预算闭合）[ ]：
+    - QG9-M1（窗口化可比性 + 误差预算闭合）[~]：
       - 目标：把“UV/普朗克尺度问题”改写成“窗口内、有限观测类上的误差预算命题”，并将 scheme/threshold 不确定性显式并入 $\epsilon_N$。
       - 依赖：`app:matching_envelope_theoremization`（有限 scheme/threshold 家族 envelope；对应失败点 R1/R2）、`app:eft_error_bounds`（误差分解骨架）。
+      - 落点：`sections/appendices/8ad_qg9_m1_windowed_comparability.tex`（`\label{app:qg9_m1_windowed_comparability}`）；相关生成片段 `sections/generated/qg9_windowed_comparability_*.tex`（统一入口脚本 `scripts/exp_qg9_windowed_comparability_pack.py`）。
+      - 验收门禁（可审计交付口径）：默认实例/注册表/预算映射/证据指针/验收清单均以生成片段形式固化在 `sections/generated/`，并由 `scripts/run_all.py` 统一再生与校验（见 `qg9_windowed_comparability_{default_instance,registry,budget,evidence,acceptance_checklist}.tex`）。
       - 回退：若触发 R3（需要非微扰存在性/完备性等）则降级为 proxy/audit-level（仅保留窗口内可复现审计与 envelope 上界，不作 UV 完备宣称）。
     - QG9-M2（量子化/重整化强闭合载体：EG + BRST/Ward 门禁）[ ]：
       - 目标：在声明的截断阶与窗口内，把“量子化/重整化满足 BRST/Ward/异常过滤”推进为强闭合条件包（S=CP），并把任何破坏项写成显式预算项进入 $\epsilon_N$。
