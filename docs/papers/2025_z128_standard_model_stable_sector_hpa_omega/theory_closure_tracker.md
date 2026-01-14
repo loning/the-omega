@@ -234,12 +234,30 @@ flowchart TD
 - **内容**：把“黑洞/虫洞统一四组二元”的叙事收束为一个 audit-only 的**rigidity contract form**：统一的不是本体同一性，而是跨模块的可审计声明格式与门禁——trapping 只能通过 delay/overhead/linewidth 代理报告；wormhole-like 只能作为 paid pointer-jump（显式台账 + 反事实基线 + 互补性证书）；连续代表仅在声明的 matching/windowed-comparability 合同下使用；任何桥接失败必须触发最小回退而不影响 theorem-level folding 链。
 - **文稿定位**：
   - `sections/F_16_geometric_dynamics_hpa_system.tex`：Proposition~`\ref{prop:four_way_unification_contract_form}` 与 Remark~`\ref{rem:bh_wh_additional_unifications_checklist}`（正文权威入口）
+  - `sections/F_16_geometric_dynamics_hpa_system.tex`：Remark~`\ref{rem:bh_wh_scattering_topological_equivalence_ladder}`（黑洞/虫洞–散射拓扑等价阶梯：BH=饱和高能粒子起点）
   - `sections/I_00_introduction.tex`：引言总论指针（Four-way unification thesis）
   - `sections/V_31_mass_spectrum_closure.tex`：微观统一入口（delay/linewidth ↔ return-rate proxy；并指向该命题）
+  - `sections/appendices/8ac_scattering_bh_toy_equivalence_audits.tex`：scattering↔BH queue toy 等价审计（Table~`\ref{tab:scattering_bh_queue_equivalence_toy}`）
+  - `sections/appendices/8ae_equivalence_ladder_certificates.tex`：拓扑等价链的证书注册表（Table~`\ref{tab:equivalence_ladder_registry}`；权威入口）
+  - `sections/appendices/08b_leakage_kernel_decay_evaporation.tex`：decay/evaporation 作为 tick trap exit 的统一核族字典（`\ref{def:survival_kernel_family}`）
   - `sections/appendices/8z_minimal_failure_point_templates.tex`：散射/桥接失败点（S1--S3；IC13）
   - `sections/appendices/92_interface_bridge_assumptions_failure_modes.tex`：B5（HTF-lite 回退口径）
+- **复现工件（证书注册表 + finite-rank→delay/logdet）**：
+  - `scripts/exp_equivalence_ladder_registry.py` → `sections/generated/equivalence_ladder_registry_rows.tex`, `sections/generated/equivalence_ladder_registry_summary.tex`
+  - `scripts/exp_wormhole_finite_rank_delay_logdet_audit.py` → `sections/generated/wormhole_finite_rank_delay_logdet_rows.tex`, `sections/generated/wormhole_finite_rank_delay_logdet_summary.tex`
+  - `scripts/exp_added_edge_det_update_audit.py` → `sections/generated/added_edge_det_update_rows.tex`, `sections/generated/added_edge_det_update_summary.tex`
+  - `scripts/exp_det_phase_delay_scattering_proxy_audit.py` → `sections/generated/det_phase_delay_proxy_rows.tex`, `sections/generated/det_phase_delay_proxy_summary.tex`
+  - `scripts/exp_det_phase_delay_scattering_proxy_audit.py` → `sections/generated/det_phase_delay_trace_identity_rows.tex`, `sections/generated/det_phase_delay_trace_identity_summary.tex`
+  - `scripts/exp_det_to_unitary_smatrix_ws_delay_audit.py` → `sections/generated/det_to_smatrix_ws_delay_rows.tex`, `sections/generated/det_to_smatrix_ws_delay_summary.tex`
+  - `scripts/exp_det_delay_resonance_linewidth_audit.py` → `sections/generated/det_delay_linewidth_rows.tex`, `sections/generated/det_delay_linewidth_summary.tex`
+  - `scripts/exp_linewidth_to_survival_kernel_audit.py` → `sections/generated/linewidth_survival_kernel_rows.tex`, `sections/generated/linewidth_survival_kernel_summary.tex`
+  - `scripts/exp_linewidth_survival_finite_family_audit.py` → `sections/generated/survival_finite_family_rows.tex`, `sections/generated/survival_finite_family_summary.tex`
+  - `scripts/exp_ihara_hashimoto_added_edge_audit.py` → `sections/generated/ihara_hashimoto_added_edge_rows.tex`, `sections/generated/ihara_hashimoto_added_edge_summary.tex`
+  - `scripts/exp_hashimoto_added_edge_schur_ratio_audit.py` → `sections/generated/hashimoto_added_edge_schur_rows.tex`, `sections/generated/hashimoto_added_edge_schur_summary.tex`
+  - 以上脚本已接入 `scripts/run_all.py` 的可复现流水线。
 - **层级**：Audit/Iface（叙事门禁与回退纪律；不进入 theorem-level folding 依赖链）
 - **最小失败点**：若匹配层字典/窗口 comparability 未声明或不稳定，则必须降级为 within-protocol 的账本/反事实陈述；若 HTF-lite 失败（B5/IC13）则禁止任何 zeta-zero 叙事；若散射幺正窗失效（S1）则 delay/linewidth 只能作为 proxy 并停止解析证书升级。
+  - （补充）若 shortcut/update 叙事试图提升为 det/logdet/delay 的“全局证书”但未给出小接口因子化（Woodbury/Schur）与 baseline，则触发 (LF1) 并降级为仅账本/基线陈述（见 Appendix~\ref{app:minimal_failure_point_templates} 的注册表与证据映射）。
 
 ### IC-15：Sel/Upd/gap 统一词汇的“显式有限族”门槛（branching/selection rigidity gate）
 
@@ -593,6 +611,7 @@ flowchart TD
 | 算子母空间（operator mother space） | trace-class resolvent/行列式 bookkeeping；finite-rank 更新闭合（字典层） | Math/Audit | `app:operator_mother_space` | [x] |
 | HTF-lite bridge（audit-only） | unit-disk holomorphy ↔ interior poles 的桥接门禁；有限核族/有限窗口证据工件 | Audit/Math | `ass:htf_lite_operator_pack`, `tab:htf_lite_zero_mode_pole_audit`, `tab:htf_lite_resolvent_identity_audit`, `tab:htf_lite_detectability_audit`, `tab:htf_lite_detectability_finite_window_audit` | [x] |
 | BH/WH 四重统一合同（audit-only） | 四组二元统一为“合同形状/门禁格式”而非本体同一；并给出失败点回退 | Audit/Iface | `prop:four_way_unification_contract_form`, `rem:bh_wh_additional_unifications_checklist` | [x] |
+| 黑洞/虫洞–散射拓扑等价阶梯证书注册表（audit-only） | BH/WH $\leftrightarrow$ scattering/decay 的 ladder 证书化登记；并接入 finite-rank→delay/logdet 审计工件 | Audit/Iface | `app:equivalence_ladder_certificates`, `tab:equivalence_ladder_registry`, `wormhole_finite_rank_delay_logdet_*` | [x] |
 | 波粒二象性/延迟选择 | 相干交叉项 vs 事件化/去相干混合；互补性界 $V^2+D^2\le 1$；delayed-choice/eraser | Iface/Audit | `app:wave_particle_delayed_choice` | [x] |
 | RG 运行 | $\mathrm{d}g/\mathrm{d}r=(\log\varphi)\beta(g)$ | Math | `eq:rg_in_r` | [x] |
 | 稳定扇区计数（grammar/counts） | $X_m\subset\Omega_m$；$|X_m|=F_{m+2}$ | Math | `lem:xm_fib` | [x] |

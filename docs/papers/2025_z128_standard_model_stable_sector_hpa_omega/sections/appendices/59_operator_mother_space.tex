@@ -44,6 +44,25 @@ on a neighborhood of $r=0$ where the series converges.
 This packages orbit/loop traces into a determinant object, paralleling the zeta/determinant templates used elsewhere in this paper.
 \end{remark}
 
+\begin{lemma}[Derivative of $\log\det$ as a resolvent trace (finite-dimensional)]\label{lem:logdet_derivative_resolvent_trace}
+\MathTag Let $\mathcal{H}$ be finite-dimensional and let $F\in\mathcal{B}(\mathcal{H})$.
+For any $z\in\CC$ such that $I-zF$ is invertible, one has
+\[
+\frac{\dd}{\dd z}\log\det(I-zF)=-\Tr\!\bigl(F(I-zF)^{-1}\bigr).
+\]
+\end{lemma}
+
+\begin{remark}[Audit reading: determinant phase derivative]\label{rem:det_phase_derivative_audit_reading}
+\AuditTag If $z(\omega)=r\e^{\iu\omega}$ with fixed $r\in(0,1)$, then by Lemma~\ref{lem:logdet_derivative_resolvent_trace},
+\[
+\frac{\dd}{\dd\omega}\log\det(I-z(\omega)F)
+=-\,\iu\,z(\omega)\,\Tr\!\bigl(F(I-z(\omega)F)^{-1}\bigr),
+\]
+and the phase-derivative delay proxy is the imaginary part of the left-hand side.
+This is the operator-mother-space form of the ``phase--delay--logdet'' alignment used as an audit certificate in Appendix~\ref{app:equivalence_ladder_certificates},
+Table~\ref{tab:det_phase_delay_trace_identity_audit}.
+\end{remark}
+
 \subsection{Two-point readout and tensor resolvents (finite-dimensional instance)}
 \label{subsec:operator_mother_space_tensor_resolvent}
 
@@ -268,3 +287,53 @@ At the operator level, the minimal abstract encoding of such an added shortcut i
 This is a dictionary-only identification used to keep ``wormhole-like'' language strictly at the interface level; it is not a claim about traversable Lorentzian wormholes in GR.
 \end{remark}
 
+\paragraph{Finite-rank update identities (determinant and resolvent).}
+\MathTag In finite dimension, and more generally for trace-class operators with finite-rank perturbations, finite-rank updates admit closed bookkeeping identities.
+They provide the minimal rigorous meaning of ``added edge $\leadsto$ determinant/logdet increment'' inside the operator mother space.
+
+\begin{lemma}[Rank-one determinant lemma and Sherman--Morrison]\label{lem:rank_one_det_sherman_morrison}
+\MathTag Let $A$ be an invertible linear operator on a finite-dimensional Hilbert space and let $u,v$ be vectors.
+Then
+\[
+\det(A+u v^\top)=\det(A)\,\bigl(1+v^\top A^{-1}u\bigr),
+\]
+and, whenever $1+v^\top A^{-1}u\neq 0$,
+\[
+(A+u v^\top)^{-1}=A^{-1}-\frac{A^{-1}u v^\top A^{-1}}{1+v^\top A^{-1}u}.
+\]
+\end{lemma}
+
+\begin{lemma}[Finite-rank determinant lemma and Woodbury]\label{lem:finite_rank_det_woodbury}
+\MathTag Let $A$ be invertible and let $U,V$ be $n\times k$ matrices (rank-$k$ update).
+Then
+\[
+\det(A+U V^\top)=\det(A)\,\det\!\bigl(I_k+V^\top A^{-1}U\bigr),
+\]
+and, whenever $I_k+V^\top A^{-1}U$ is invertible,
+\[
+(A+U V^\top)^{-1}=A^{-1}-A^{-1}U\bigl(I_k+V^\top A^{-1}U\bigr)^{-1}V^\top A^{-1}.
+\]
+\end{lemma}
+
+\begin{remark}[Audit reading: finite-rank pointer jump $\Rightarrow$ logdet and resolvent-trace deltas]\label{rem:finite_rank_logdet_resolvent_delta}
+\AuditTag In the Abel-first bookkeeping used throughout the manuscript, determinant packages are evaluated on operators of the form $A(r)=I-rF$.
+If a pointer jump is encoded as a finite-rank update $F\mapsto F+\Delta$, then for each declared $r$ in the resolvent domain,
+Lemmas~\ref{lem:rank_one_det_sherman_morrison}--\ref{lem:finite_rank_det_woodbury} provide an explicit formula for the logdet increment
+$\log\det(I-r(F+\Delta))-\log\det(I-rF)$ via a small $k\times k$ determinant.
+Moreover, the resolvent update identity yields explicit trace deltas for $A(r)^{-1}$, hence for any resolvent-trace readout
+and for derivative-based delay proxies of the form $\tau(r)=\Tr(F(I-rF)^{-1})$.
+For a deterministic finite toy artifact reporting these increments side-by-side (wormhole-off/on), see Appendix~\ref{app:equivalence_ladder_certificates},
+Table~\ref{tab:wormhole_finite_rank_delay_logdet_audit}.
+\end{remark}
+
+\begin{remark}[Local interface factorization: Woodbury and Schur as the same contract form]\label{rem:local_interface_factorization_contract}
+\AuditTag The ``added shortcut channel only enters through a small interface factor'' principle appears in two algebraic guises in this manuscript:
+(i) \emph{same-dimension} finite-rank updates, where the determinant ratio reduces to a $k\times k$ Woodbury factor
+(Lemmas~\ref{lem:rank_one_det_sherman_morrison}--\ref{lem:finite_rank_det_woodbury});
+and (ii) \emph{dimension-changing} updates (e.g.\ Hashimoto/non-backtracking packages under an added edge), where a block determinant identity yields
+an update ratio equal to a small Schur complement determinant.
+Both are audit-level manifestations of the same local-interface contract shape: the global determinant bookkeeping changes by a small-dimensional factor
+whose entries are computed from the baseline resolvent restricted to the update interface.
+Concrete toy artifacts for (i) and (ii) are recorded in Appendix~\ref{app:equivalence_ladder_certificates},
+Tables~\ref{tab:wormhole_finite_rank_delay_logdet_audit} and \ref{tab:hashimoto_added_edge_schur_audit}.
+\end{remark}

@@ -685,6 +685,88 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Equivalence-ladder certificate registry (audit)",
+            script="exp_equivalence_ladder_registry.py",
+            expected_outputs=[
+                "sections/generated/equivalence_ladder_registry_rows.tex",
+                "sections/generated/equivalence_ladder_registry_summary.tex",
+            ],
+        ),
+        Step(
+            name="Wormhole finite-rank update: delay/logdet audit (toy)",
+            script="exp_wormhole_finite_rank_delay_logdet_audit.py",
+            expected_outputs=[
+                "sections/generated/wormhole_finite_rank_delay_logdet_rows.tex",
+                "sections/generated/wormhole_finite_rank_delay_logdet_summary.tex",
+            ],
+        ),
+        Step(
+            name="Added-edge to det packaging audit (toy)",
+            script="exp_added_edge_det_update_audit.py",
+            expected_outputs=[
+                "sections/generated/added_edge_det_update_rows.tex",
+                "sections/generated/added_edge_det_update_summary.tex",
+            ],
+        ),
+        Step(
+            name="Det-to-phase delay proxy (scattering proxy; toy)",
+            script="exp_det_phase_delay_scattering_proxy_audit.py",
+            expected_outputs=[
+                "sections/generated/det_phase_delay_proxy_rows.tex",
+                "sections/generated/det_phase_delay_proxy_summary.tex",
+                "sections/generated/det_phase_delay_trace_identity_rows.tex",
+                "sections/generated/det_phase_delay_trace_identity_summary.tex",
+            ],
+        ),
+        Step(
+            name="Det-to-unitary S-matrix WS delay audit (toy)",
+            script="exp_det_to_unitary_smatrix_ws_delay_audit.py",
+            expected_outputs=[
+                "sections/generated/det_to_smatrix_ws_delay_rows.tex",
+                "sections/generated/det_to_smatrix_ws_delay_summary.tex",
+            ],
+        ),
+        Step(
+            name="Det-delay resonance linewidth audit (toy)",
+            script="exp_det_delay_resonance_linewidth_audit.py",
+            expected_outputs=[
+                "sections/generated/det_delay_linewidth_rows.tex",
+                "sections/generated/det_delay_linewidth_summary.tex",
+            ],
+        ),
+        Step(
+            name="Linewidth to survival-kernel audit (toy)",
+            script="exp_linewidth_to_survival_kernel_audit.py",
+            expected_outputs=[
+                "sections/generated/linewidth_survival_kernel_rows.tex",
+                "sections/generated/linewidth_survival_kernel_summary.tex",
+            ],
+        ),
+        Step(
+            name="Survival-kernel finite-family CAP audit (toy)",
+            script="exp_linewidth_survival_finite_family_audit.py",
+            expected_outputs=[
+                "sections/generated/survival_finite_family_rows.tex",
+                "sections/generated/survival_finite_family_summary.tex",
+            ],
+        ),
+        Step(
+            name="Ihara/Hashimoto/Bass det packaging + added-edge update audit (toy)",
+            script="exp_ihara_hashimoto_added_edge_audit.py",
+            expected_outputs=[
+                "sections/generated/ihara_hashimoto_added_edge_rows.tex",
+                "sections/generated/ihara_hashimoto_added_edge_summary.tex",
+            ],
+        ),
+        Step(
+            name="Hashimoto added-edge ratio via Schur complement (toy)",
+            script="exp_hashimoto_added_edge_schur_ratio_audit.py",
+            expected_outputs=[
+                "sections/generated/hashimoto_added_edge_schur_rows.tex",
+                "sections/generated/hashimoto_added_edge_schur_summary.tex",
+            ],
+        ),
+        Step(
             name="Hilbert-knot triptych (Figure 1)",
             script="fig_hilbert_knot_triptych.py",
             expected_outputs=[

@@ -36,6 +36,7 @@ def main() -> None:
         r"WBR3 & Appendix~\ref{app:strong_eft_remainder_bounds} & Truncation leaves higher-order breaking; include explicit remainder budget \\",
         r"H4a & Appendix~\ref{app:holo_reconstruction_surrogate} & Region-supported recovery carrier fails (subclass/budget); restrict subclass or downgrade \\",
         r"H4b & Appendix~\ref{app:holo_reconstruction_surrogate} & Only approximate recovery but no auditable epsilon budget; provide epsilon_N or downgrade \\",
+        r"LF1 & Appendix~\ref{app:operator_mother_space} & Local interface factorization missing (no k×k Woodbury/Schur factor + baseline); downgrade update claims to ledger/baseline only \\",
     ]
     out = generated_dir() / "failurepoint_evidence_map_rows.tex"
     write_lines(out, rows)

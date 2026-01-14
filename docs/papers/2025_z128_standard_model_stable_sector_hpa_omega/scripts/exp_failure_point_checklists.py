@@ -185,6 +185,13 @@ def main() -> None:
             impact="Cannot report reconstruction in the manuscript's allowed claim format",
             fallback="State only qualitative recovery surrogate (audit) or mark as [Open] with explicit missing budget term",
         ),
+        FailurePoint(
+            code="LF1",
+            trigger="Shortcut/update claim lacks a small interface factorization (hidden degrees of freedom)",
+            check="Provide baseline+counterfactual and a k×k update factor (Woodbury for same-dimension, Schur factor for dimension-changing); report k and the declared split",
+            impact="Global det/logdet/delay upgrade is not audit-valid; update cannot be treated as a controlled channel",
+            fallback="Downgrade to narrative-only shortcut language; keep only ledger/baseline statements without determinant promotion",
+        ),
     ]
 
     rows = []

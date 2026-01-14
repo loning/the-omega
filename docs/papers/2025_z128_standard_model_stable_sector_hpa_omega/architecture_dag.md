@@ -237,6 +237,52 @@ flowchart TB
   M_abel -.-> P_four_way_contract
   M_htf_lite_pack -.-> P_four_way_contract
 
+  P_equiv_ladder_registry("黑洞/虫洞–散射拓扑等价阶梯注册表（audit） / BH/WH--scattering topological equivalence ladder registry (audit)<br/>类型：审计 / Audit<br/>label: app:equivalence_ladder_certificates<br/>run_all: exp_equivalence_ladder_registry")
+  P_wh_finite_rank_delay_audit("Finite-rank update → delay/logdet (audit); 类型：审计 / Audit; label: wormhole_finite_rank_delay_logdet_* (generated); run_all: exp_wormhole_finite_rank_delay_logdet_audit")
+  P_added_edge_det_audit("Added edge → det ratio (audit); 类型：审计 / Audit; label: added_edge_det_update_* (generated); run_all: exp_added_edge_det_update_audit")
+  P_det_phase_delay_audit("Det phase → delay proxy (audit); 类型：审计 / Audit; label: det_phase_delay_* (generated); run_all: exp_det_phase_delay_scattering_proxy_audit")
+  P_det_to_smatrix_ws_audit("Det phase → unitary S → WS delay (audit); 类型：审计 / Audit; label: det_to_smatrix_ws_delay_* (generated); run_all: exp_det_to_unitary_smatrix_ws_delay_audit")
+  P_det_delay_linewidth_audit("Det delay → linewidth proxy (audit); 类型：审计 / Audit; label: det_delay_linewidth_* (generated); run_all: exp_det_delay_resonance_linewidth_audit")
+  P_linewidth_survival_audit("Linewidth → survival kernel (audit); 类型：审计 / Audit; label: linewidth_survival_kernel_* (generated); run_all: exp_linewidth_to_survival_kernel_audit")
+  P_survival_finite_family_audit("Survival finite-family CAP (audit); 类型：审计 / Audit; label: survival_finite_family_* (generated); run_all: exp_linewidth_survival_finite_family_audit")
+  P_ihara_hashimoto_edge_audit("Ihara/Hashimoto det + added-edge (audit); 类型：审计 / Audit; label: ihara_hashimoto_added_edge_* (generated); run_all: exp_ihara_hashimoto_added_edge_audit")
+  P_hashimoto_schur_audit("Hashimoto added-edge Schur factor (audit); 类型：审计 / Audit; label: hashimoto_added_edge_schur_* (generated); run_all: exp_hashimoto_added_edge_schur_ratio_audit")
+  P_four_way_checklist --> P_equiv_ladder_registry
+  P_equiv_ladder_registry --> P_wh_finite_rank_delay_audit
+  P_equiv_ladder_registry --> P_added_edge_det_audit
+  P_equiv_ladder_registry --> P_det_phase_delay_audit
+  P_equiv_ladder_registry --> P_det_to_smatrix_ws_audit
+  P_equiv_ladder_registry --> P_det_delay_linewidth_audit
+  P_equiv_ladder_registry --> P_linewidth_survival_audit
+  P_equiv_ladder_registry --> P_survival_finite_family_audit
+  P_equiv_ladder_registry --> P_ihara_hashimoto_edge_audit
+  P_equiv_ladder_registry --> P_hashimoto_schur_audit
+
+  P_lf1_gate("LF1 local interface factorization gate (audit); 类型：审计 / Audit; label: LF1 / failure-point registry; Woodbury or Schur factor required")
+  P_equiv_ladder_registry --> P_lf1_gate
+  M_operator_mother -.-> P_lf1_gate
+  M_operator_mother -.-> P_equiv_ladder_registry
+  M_abel -.-> P_equiv_ladder_registry
+  M_htf_lite_pack -.-> P_equiv_ladder_registry
+  M_operator_mother -.-> P_wh_finite_rank_delay_audit
+  M_abel -.-> P_wh_finite_rank_delay_audit
+  M_operator_mother -.-> P_added_edge_det_audit
+  M_abel -.-> P_added_edge_det_audit
+  M_operator_mother -.-> P_det_phase_delay_audit
+  M_abel -.-> P_det_phase_delay_audit
+  M_operator_mother -.-> P_det_to_smatrix_ws_audit
+  M_abel -.-> P_det_to_smatrix_ws_audit
+  M_operator_mother -.-> P_det_delay_linewidth_audit
+  M_abel -.-> P_det_delay_linewidth_audit
+  M_operator_mother -.-> P_linewidth_survival_audit
+  M_abel -.-> P_linewidth_survival_audit
+  M_operator_mother -.-> P_survival_finite_family_audit
+  M_abel -.-> P_survival_finite_family_audit
+  M_operator_mother -.-> P_ihara_hashimoto_edge_audit
+  M_abel -.-> P_ihara_hashimoto_edge_audit
+  M_operator_mother -.-> P_hashimoto_schur_audit
+  M_abel -.-> P_hashimoto_schur_audit
+
   M_fold["Fold6 映射（64→21；像/原像结构）<br/>类型：构造 / Construction<br/>label: subsec:fold6_map<br/>Fold₆(N):=(c₁,…,c₆) ∈ X₆ (eq:fold6_def)"]
   P_fold("coarse-graining 压缩（稳定扇区统计）<br/>类型：代理 / Proxy<br/>label: subsec:fold6_map<br/>Ω₆={0,1}⁶ (|Ω₆|=64), X₆⊂Ω₆ (|X₆|=21) ⇒ 64→21")
   M_fold -.- P_fold
@@ -299,7 +345,107 @@ flowchart TB
   class P_pressure,P_adelic_prime_orbit phys_audit;
   class P_operator_mother phys_audit;
   class P_htf_lite_evidence phys_audit;
-  class P_four_way_contract,P_four_way_checklist phys_audit;
+  class P_four_way_contract,P_four_way_checklist,P_equiv_ladder_registry,P_wh_finite_rank_delay_audit,P_added_edge_det_audit,P_det_phase_delay_audit,P_det_to_smatrix_ws_audit,P_det_delay_linewidth_audit,P_linewidth_survival_audit,P_survival_finite_family_audit,P_ihara_hashimoto_edge_audit,P_hashimoto_schur_audit,P_lf1_gate phys_audit;
+```
+
+### 图 2A：黑洞/虫洞–散射拓扑等价阶梯（详图；证书链与门禁） / Fig. 2A: BH/WH--Scattering Topological Equivalence Ladder (Detailed; Certificates + Gates)
+
+```mermaid
+%%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 18, "rankSpacing": 60}, "themeVariables": {"fontSize": "10px"}}}%%
+flowchart TB
+
+  %% =========================
+  %% Core ladder (audit-only)
+  %% =========================
+
+  subgraph S0["Topological carrier (protocol/topology)"]
+    A0["BH-like saturation (protocol)<br/>carrier: full-fusion saturation<br/>pointer: F_16 rem:bh_wh_scattering_topological_equivalence_ladder"]
+    A1["Screen partition<br/>R* vs complement<br/>carrier: graph cut"]
+    A2["Queue/record toy<br/>backlog vs saturation<br/>artifact: scattering_bh_queue_equivalence_toy"]
+    A3["Leakage/evaporation dictionary<br/>survival kernels<br/>carrier: finite families"]
+  end
+
+  subgraph S1["Scattering/decay carrier (phase/delay/width)"]
+    B0["Scattering delay (WS)<br/>tau_WS as dwell proxy"]
+    B1["Linewidth proxy<br/>Gamma as exit/return-rate"]
+    B2["Survival kernel<br/>P(t)=exp(-Gamma t)"]
+    B3["Finite-family CAP selection<br/>explicit candidates + tie-break"]
+  end
+
+  subgraph S2["Determinant/resolvent carrier (packaging)"]
+    C0["Wormhole-like shortcut<br/>pointer jump<br/>dictionary: finite-rank update"]
+    C1["Finite-rank update<br/>F -> F + Delta<br/>logdet + delay proxy<br/>artifact: wormhole_finite_rank_delay_logdet"]
+    C2["Added edge<br/>graph shortcut<br/>rank-2 update<br/>artifact: added_edge_det_update"]
+    C3["Det package<br/>D(z)=det(I - z A)"]
+    C4["Det phase -> delay proxy<br/>phi(omega), tau(omega)<br/>artifact: det_phase_delay"]
+    C5["Trace identity gate<br/>fd vs trace<br/>artifact: det_phase_delay_trace_identity"]
+    C6["Unitary S proxy -> WS delay<br/>artifact: det_to_smatrix_ws_delay"]
+    C7["Resonance peak -> linewidth<br/>FWHM + 4/tau_max<br/>artifact: det_delay_linewidth"]
+  end
+
+  subgraph S3["Graph zeta carrier (dimension-changing update)"]
+    D0["Ihara/Hashimoto/Bass det packaging<br/>artifact: ihara_hashimoto_added_edge"]
+    D1["Schur factor (dimension change)<br/>small k x k factor<br/>artifact: hashimoto_added_edge_schur"]
+  end
+
+  subgraph SG["Hard gates / failure points"]
+    G0["Hard gates (full-fusion)<br/>ledger + complementarity + baseline"]
+    G1["LF1/C15 gate<br/>local interface factorization<br/>Woodbury (same-dim) OR Schur (dim-change)<br/>baseline required"]
+  end
+
+  %% =========================
+  %% Ladder edges (C1..C15)
+  %% =========================
+
+  A0 -->|"C1<br/>saturation vs backlog"| A2
+  A0 -->|"protocol cut"| A1
+  A1 -->|"topology -> toy"| A2
+
+  A2 -->|"C2<br/>exit/decay vocabulary"| A3
+  A3 -->|"C11<br/>Gamma -> P(t)"| B2
+  A3 -->|"C12<br/>finite family + CAP"| B3
+
+  B0 -->|"C3<br/>phase/logdet dictionary"| C4
+  C4 -->|"C8<br/>trace identity audit"| C5
+  C4 -->|"C9<br/>unitary S proxy"| C6
+  C4 -->|"C10<br/>linewidth from delay"| C7
+  C7 -->|"C11<br/>Gamma -> P(t)"| B2
+  C7 -->|"C10 target"| B1
+
+  %% Wormhole/update dictionary
+  C0 -->|"protocol -> operator"| C1
+  C0 -->|"topology"| C2
+  C2 -->|"det packaging"| C3
+
+  %% Graph zeta packaging
+  C2 -->|"C13<br/>zeta/det packaging"| D0
+  D0 -->|"C14<br/>Schur ratio"| D1
+
+  %% =========================
+  %% Gates (LF1, full-fusion)
+  %% =========================
+
+  G0 -.->|"required for any shortcut dynamics"| C0
+  G1 -.->|"required for det/logdet/delay promotion"| C1
+  G1 -.->|"required for det ratio under added edge"| C3
+  G1 -.->|"required for phase/delay delta under update"| C4
+  G1 -.->|"required for dimension-change ratio"| D1
+
+  %% =========================
+  %% Styling (Material Design palette)
+  %% =========================
+
+  classDef topo fill:#E8EAF6,stroke:#3949AB,color:#1A237E,stroke-width:2px;
+  classDef scat fill:#E0F7FA,stroke:#00838F,color:#004D40,stroke-width:2px;
+  classDef det fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20,stroke-width:2px;
+  classDef zeta fill:#FFF3E0,stroke:#EF6C00,color:#E65100,stroke-width:2px;
+  classDef gate fill:#FCE4EC,stroke:#D81B60,color:#880E4F,stroke-width:2px,stroke-dasharray: 2 2;
+
+  class A0,A1,A2,A3 topo;
+  class B0,B1,B2,B3 scat;
+  class C0,C1,C2,C3,C4,C5,C6,C7 det;
+  class D0,D1 zeta;
+  class G0,G1 gate;
 ```
 
 ### 图 3：显示预算与空间寻址（6-DoF coarse-lock → bulk d=3 → addressing/local） / Fig. 3: Display Budget and Spatial Addressing (6-DoF coarse-lock → bulk d=3 → addressing/local)
