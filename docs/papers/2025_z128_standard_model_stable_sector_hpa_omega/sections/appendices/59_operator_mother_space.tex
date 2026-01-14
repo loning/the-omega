@@ -104,13 +104,155 @@ This matches the ``pole barrier'' usage across the paper: competing representati
 \label{subsec:operator_mother_space_htf}
 
 \paragraph{Mode factors.}
-\AuditTag In the companion trace manuscripts \cite{Ma2025RGS,Ma2025HHU}, one packages a prime/periodic-orbit side and a zero/spectral side into a trace identity via Abel-weighted mode factors of the form
+\AuditTag A commonly used HTF-style bridge packages a prime/periodic-orbit side and a zero/spectral side into a trace identity via Abel-weighted mode factors of the form
 \[
 M_\rho(r):=\frac{1}{1-r\,\e^{(\rho-\frac12)}},
 \]
 so that $\RePart(\rho)>\tfrac12$ produces an interior pole at $|r|=\e^{-(\RePart(\rho)-\frac12)}<1$.
 This appendix records only the interface-level operator reading: such mode factors are resolvent kernels, and a ``trace formula bridge'' can be read as asserting that a suitably regularized resolvent trace contains the corresponding spectral modes.
 We do \emph{not} use this bridge as a premise in any theorem-level statement of the present paper.
+
+\paragraph{HTF-lite assumption pack (self-contained, audit-only).}
+\AuditTag The following assumption pack is recorded solely to make the ``interior pole obstruction'' logic explicit in a self-contained way.
+It is not used as a premise in any theorem-level statement.
+
+\begin{assumption}[HTF-lite (audit-only trace bridge to zeta zeros)]
+\label{ass:htf_lite_operator_pack}
+Fix an Abel coordinate $r\in\CC$ with $|r|<1$ and a declared family of Abel-regularized trace observables $T_K(r)$ indexed by kernels $K$.
+Assume:
+\begin{enumerate}
+\item[\textbf{(H1) Geometric-side unit-disk holomorphy.}]
+For each $K$, the function $T_K(r)$ is holomorphic on the open unit disk $|r|<1$ (e.g.\ because it is a bounded Abel generating function;
+see Appendix~\ref{app:abel_finite_part_notes}, Subsection~\ref{subsec:abel_holomorphy}).
+\item[\textbf{(H2) Meromorphic bridge with zero-mode factors.}]
+For each $K$, there exists a decomposition on $|r|<1$ of the form
+\[
+T_K(r)=T_K^{\mathrm{reg}}(r)+\sum_{\rho} c_\rho(K)\,M_\rho(r),
+\qquad
+M_\rho(r)=\frac{1}{1-r\,\e^{(\rho-\frac12)}},
+\]
+where $T_K^{\mathrm{reg}}(r)$ is holomorphic on $|r|<1$, the sum ranges over nontrivial zeros $\rho$ of the Riemann zeta function,
+and the chosen summation/renormalization convention defines a meromorphic function on $|r|<1$ whose principal parts are those of the mode factors.
+\item[\textbf{(H3) Detectability / noncancellation gate.}]
+If $\RePart(\rho)>\tfrac12$, then there exists some $K$ such that the total principal part at the pole location $r_\rho=\e^{-(\rho-\frac12)}$
+of the spectral-side sum is nonzero (i.e.\ the pole is not canceled by a same-point cancellation under the chosen convention).
+\end{enumerate}
+\end{assumption}
+
+\begin{remark}[Rigidity consequence of HTF-lite (interior pole obstruction)]
+\AuditTag Under Assumption~\ref{ass:htf_lite_operator_pack}, if there exists a nontrivial zero $\rho$ with $\RePart(\rho)>\tfrac12$,
+then the spectral side contains an interior pole at $r_\rho=\e^{-(\rho-\frac12)}$ with $|r_\rho|<1$,
+which is incompatible with the geometric-side holomorphy of $T_K(r)$ on the full unit disk.
+Therefore, within this audit-only bridge, unit-disk holomorphy forces all detected zero modes to satisfy $\RePart(\rho)=\tfrac12$.
+\end{remark}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{r r r r r r}
+\toprule
+$\gamma$ (ref.) & $\beta$ & $|r_\rho|$ & $\RePart(r_\rho)$ & $\ImPart(r_\rho)$ \\
+\midrule
+\input{sections/generated/htf_lite_zero_mode_pole_rows.tex}%
+\end{tabular}
+\caption{HTF-lite pole locations for mode factors $M_\rho(r)=(1-r\,\e^{(\rho-\frac12)})^{-1}$ with $\rho=\beta+\iu\gamma$.
+For $\beta=\tfrac12$ (critical line), $|r_\rho|=1$ lies on the unit-circle boundary; for $\beta>\tfrac12$, $|r_\rho|=\e^{-(\beta-\frac12)}<1$ is an interior pole radius.
+This is an audit-only numeric illustration of the interior-pole obstruction template (Appendix~\ref{app:trace_pole_barrier_template}).}
+\label{tab:htf_lite_zero_mode_pole_audit}
+\end{table}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{r r r r r r r}
+\toprule
+$m$ & $T$ & $M=\max_t|a_t|$ & $r$ & $\sum_{t<T} a_t r^t$ & $M/(1-r)$ & ratio \\
+\midrule
+\input{sections/generated/htf_lite_kernel_holomorphy_rows.tex}%
+\end{tabular}
+\caption{Finite-kernel holomorphy sanity check: bounded scan readout sequences $a_t$ (rotation scan with kernels $K_m(x)=\cos(2\pi m x)$) imply Abel generating functions holomorphic on $|r|<1$
+with the standard bound $|\sum_{t\ge 0} a_t r^t|\le M/(1-|r|)$ (Appendix~\ref{app:abel_finite_part_notes}, Subsection~\ref{subsec:abel_holomorphy}).}
+\label{tab:htf_lite_kernel_holomorphy_audit}
+\end{table}
+
+\input{sections/generated/htf_lite_bridge_audit_summary.tex}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{r r r p{0.25\textwidth} p{0.25\textwidth} r r}
+\toprule
+$m$ & $T$ & $r$ & $S_T(r)=\sum_{t<T} r^t f_m(x_t)$ & $S_{\mathrm{cf}}(r)=\frac{\e^{2\pi\iu m x_0}}{1-r\,\e^{2\pi\iu m\alpha}}$ & $|S_T-S_{\mathrm{cf}}|$ & tail bound \\
+\midrule
+\input{sections/generated/htf_lite_resolvent_identity_rows.tex}%
+\end{tabular}
+\caption{HTF-lite finite identity audit: for the irrational rotation scan and the Fourier kernel $f_m(x)=\e^{2\pi\iu m x}$, the Abel trace has a closed resolvent-mode form on $|r|<1$.
+The table compares a long finite sum $S_T(r)$ to the closed form $S_{\mathrm{cf}}(r)$ and records a deterministic truncation tail bound.
+This provides a concrete finite analogue of an HTF-style ``trace $\leftrightarrow$ mode factors'' decomposition in a setting where all modes lie on the unit circle.}
+\label{tab:htf_lite_resolvent_identity_audit}
+\end{table}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{r r r r r}
+\toprule
+$m$ & $\delta$ & $|r_\star|$ & $\RePart(r_\star)$ & $\ImPart(r_\star)$ \\
+\midrule
+\input{sections/generated/htf_lite_resolvent_pole_rows.tex}%
+\end{tabular}
+\caption{Pole-radius audit for a resolvent factor $\bigl(1-r\,\e^\delta\,\e^{2\pi\iu m\alpha}\bigr)^{-1}$.
+At $\delta=0$ one has $|r_\star|=1$ (boundary pole). Any amplitude shift $\delta>0$ moves the pole to $|r_\star|=\e^{-\delta}<1$,
+illustrating the interior-pole obstruction motif used in the pole-barrier template.}
+\label{tab:htf_lite_resolvent_pole_audit}
+\end{table}
+
+\input{sections/generated/htf_lite_resolvent_identity_summary.tex}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{r r r r p{0.22\textwidth} p{0.22\textwidth} r}
+\toprule
+$m$ & $\delta$ & $|r_\star|$ & $\epsilon$ & $(1-r\lambda_m)S_m(r)$ (est.) & $\e^{2\pi\iu m x_0}$ (target) & error \\
+\midrule
+\input{sections/generated/htf_lite_detectability_rows.tex}%
+\end{tabular}
+\caption{Finite-family detectability audit in the rotation-scan Fourier mode model: the residue at the pole is extracted by the estimator $(1-r\lambda_m)S_m(r)$ evaluated at $r=r_\star(1-\epsilon)$.
+For $\delta>0$ the pole moves inside the unit disk with $|r_\star|=\e^{-\delta}$, and the same finite-kernel estimator remains well-defined and detects the residue.
+This is an audit-only finite analogue of the HTF-lite detectability/noncancellation gate (H3).}
+\label{tab:htf_lite_detectability_audit}
+\end{table}
+
+\input{sections/generated/htf_lite_detectability_summary.tex}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{r r r r r p{0.22\textwidth} p{0.22\textwidth} r}
+\toprule
+$m$ & $\delta$ & $|r_\star|$ & $T$ & $\epsilon$ & proxy $\e^{2\pi\iu m x_0}(1-(1-\epsilon)^T)$ & target $\e^{2\pi\iu m x_0}$ & error \\
+\midrule
+\input{sections/generated/htf_lite_detectability_finite_window_rows.tex}%
+\end{tabular}
+\caption{Finite-window detectability proxy: a truncated Abel sum yields a residue proxy whose error is explicitly controlled as $(1-\epsilon)^T$ when approaching the pole along $r=r_\star(1-\epsilon)$.
+This is an audit-only finite-family illustration of a detectability gate with an explicit convergence rate in bounded window length $T$.}
+\label{tab:htf_lite_detectability_finite_window_audit}
+\end{table}
+
+\input{sections/generated/htf_lite_detectability_finite_window_summary.tex}
 
 \subsection{Finite-rank pointer jumps as trace-class perturbations (dictionary)}
 \label{subsec:operator_mother_space_pointer_jump}

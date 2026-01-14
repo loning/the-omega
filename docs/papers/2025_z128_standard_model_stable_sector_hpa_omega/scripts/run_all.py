@@ -651,6 +651,40 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="HTF-lite bridge audit (finite kernels; audit-only evidence)",
+            script="exp_htf_lite_bridge_audit.py",
+            expected_outputs=[
+                "sections/generated/htf_lite_kernel_holomorphy_rows.tex",
+                "sections/generated/htf_lite_zero_mode_pole_rows.tex",
+                "sections/generated/htf_lite_bridge_audit_summary.tex",
+            ],
+        ),
+        Step(
+            name="HTF-lite resolvent identity audit (finite Fourier kernels; audit-only evidence)",
+            script="exp_htf_lite_resolvent_identity_audit.py",
+            expected_outputs=[
+                "sections/generated/htf_lite_resolvent_identity_rows.tex",
+                "sections/generated/htf_lite_resolvent_pole_rows.tex",
+                "sections/generated/htf_lite_resolvent_identity_summary.tex",
+            ],
+        ),
+        Step(
+            name="HTF-lite detectability audit (finite Fourier kernels; audit-only evidence)",
+            script="exp_htf_lite_detectability_audit.py",
+            expected_outputs=[
+                "sections/generated/htf_lite_detectability_rows.tex",
+                "sections/generated/htf_lite_detectability_summary.tex",
+            ],
+        ),
+        Step(
+            name="HTF-lite finite-window detectability audit (nontrivial error; audit-only evidence)",
+            script="exp_htf_lite_detectability_finite_window_audit.py",
+            expected_outputs=[
+                "sections/generated/htf_lite_detectability_finite_window_rows.tex",
+                "sections/generated/htf_lite_detectability_finite_window_summary.tex",
+            ],
+        ),
+        Step(
             name="Hilbert-knot triptych (Figure 1)",
             script="fig_hilbert_knot_triptych.py",
             expected_outputs=[

@@ -211,7 +211,25 @@ flowchart TD
 - **层级**：Math/Prot（$r_m$ 与 gauge 最小性为定理/构造；物理解释为接口）
 - **最小失败点**：若实际构造对纤维进行了 truncation/非声明 padding，或把 representation-dependent tie-break 当作 gauge invariant，则必须降级为“表示依赖诊断”，并重新声明 slot/gauge 约束。
 
-### IC-13：Sel/Upd/gap 统一词汇的“显式有限族”门槛（branching/selection rigidity gate）
+### IC-13：HTF-lite bridge gate（unit-disk holomorphy ↔ interior poles；有限核族证据）
+
+- **内容**：把“unit-disk holomorphy”与“内点极点阻碍”的刚性模板收束为一个审计型桥接门禁：若某模态分解包含增长模态，则其 resolvent-mode 因子会在 $|r|<1$ 产生内点极点；与几何侧的 Abel 生成函数全纯性不相容。该门禁在本文中以 audit-only 的 HTF-lite 假设包登记（不进入 theorem-level folding 依赖链），并配套有限窗口/有限核族的可复现实验模块作为证据工件。
+- **文稿定位**：
+  - `sections/appendices/59_operator_mother_space.tex`：Assumption~`\ref{ass:htf_lite_operator_pack}`（HTF-lite bridge pack）与配套审计表
+  - `sections/appendices/40_abel_finite_part_resolvent_notes.tex`：`\ref{subsec:abel_holomorphy}`（bounded Abel generating function ⇒ unit disk holomorphy）
+  - `sections/appendices/41_trace_formula_pole_barrier_template.tex`：`\ref{lem:interior_pole_exponential_mode}`（增长模态 ⇒ 内点极点）
+  - `sections/appendices/92_interface_bridge_assumptions_failure_modes.tex`：Table~`\ref{tab:bridge_assumptions_failure_modes}` 的 (B5)（桥接假设/回退口径登记）
+  - `sections/appendices/8z_minimal_failure_point_templates.tex`：IC13（HTF-lite bridge gate 的触发/检查/回退模板）
+- **复现工件（有限窗口/有限核族）**：
+  - `scripts/exp_htf_lite_bridge_audit.py` → `sections/generated/htf_lite_kernel_holomorphy_rows.tex`, `sections/generated/htf_lite_zero_mode_pole_rows.tex`, `sections/generated/htf_lite_bridge_audit_summary.tex`
+  - `scripts/exp_htf_lite_resolvent_identity_audit.py` → `sections/generated/htf_lite_resolvent_identity_rows.tex`, `sections/generated/htf_lite_resolvent_pole_rows.tex`, `sections/generated/htf_lite_resolvent_identity_summary.tex`
+  - `scripts/exp_htf_lite_detectability_audit.py` → `sections/generated/htf_lite_detectability_rows.tex`, `sections/generated/htf_lite_detectability_summary.tex`
+  - `scripts/exp_htf_lite_detectability_finite_window_audit.py` → `sections/generated/htf_lite_detectability_finite_window_rows.tex`, `sections/generated/htf_lite_detectability_finite_window_summary.tex`
+  - 以上脚本均已接入 `scripts/run_all.py` 的可复现流水线。
+- **层级**：Audit/Math（证书门禁与有限工件）；Iface 仅允许作为解释性桥接词典，不允许反向支撑 folding core。
+- **最小失败点**：若桥接恒等式/核族/重整化约定不可审计，或 detectability/noncancellation 依赖未声明的同点抵消，则必须将“zeta-zero mode”叙事回退为 pole-barrier 的通用模板，并保持 wormhole-like 通道仅在 pointer-jump + 账本 + 反事实基线的协议层口径内成立。
+
+### IC-15：Sel/Upd/gap 统一词汇的“显式有限族”门槛（branching/selection rigidity gate）
 
 - **内容**：任何关于“分岔/切换/更新”的叙事，若要在本文纪律下成为可审计陈述，必须落到显式有限候选族 $\mathcal F$、显式目标 $J$、与确定性 tie-break（从而可写成 $\mathsf{Sel}(\mathcal F,J,\prec)$，并在必要时给出 objective gap 与稳定性门槛）。所谓“prefix-consistent switching”必须明确保留哪类约束（例如前缀投影约束）并将更新限制在相应 extension fiber 内。
 - **文稿定位**：
@@ -495,6 +513,13 @@ flowchart TD
 - [x] **算子母空间（resolvent/determinant + finite-rank 更新；统一口径）**：`appendix 59`  
   - 位置：`sections/appendices/59_operator_mother_space.tex`（`\label{app:operator_mother_space}`）
   - 要点：以 trace-class resolvent 与 Fredholm 行列式为最小算子底座，对齐 Abel-first 的 pole-barrier 语言，并为 pointer-jump（虫洞类通道）与有限候选族 CAP 选择提供统一的纯数学 bookkeeping 层；该模块是审计/叙事统一层，不进入 theorem-level folding 依赖链。
+  - HTF-lite bridge pack（audit-only）：Assumption~`\ref{ass:htf_lite_operator_pack}`，并配套有限核族/有限窗口证据表（均由脚本生成并接入 `scripts/run_all.py`）：
+    - `tab:htf_lite_zero_mode_pole_audit`：零点模态的极点半径表（示例）
+    - `tab:htf_lite_kernel_holomorphy_audit`：bounded Abel trace 的 unit-disk bound sanity check
+    - `tab:htf_lite_resolvent_identity_audit`：rotation scan + Fourier 核族下的 resolvent 恒等式审计
+    - `tab:htf_lite_resolvent_pole_audit`：幅度偏移导致的内点极点半径对照
+    - `tab:htf_lite_detectability_audit`：留数提取的有限核族 detectability 审计
+    - `tab:htf_lite_detectability_finite_window_audit`：有限窗口截断下的非平凡误差/收敛审计
 
 ## 概念级闭合矩阵（频率优先）
 
@@ -554,6 +579,7 @@ flowchart TD
 | 多体+观测反馈接口 | instrument/feedback channel→有效泛函→响应力→轨道偏离 | Iface | `app:orbit_gauge_force_manybody_measurement_feedback` | [x] |
 | 算子母空间字典入口（operator mother space dictionary） | source operator + readout kernels + determinant bookkeeping；finite-rank 更新闭合（字典层） | Iface/Audit | `app:operator_mother_space_dictionary` | [x] |
 | 算子母空间（operator mother space） | trace-class resolvent/行列式 bookkeeping；finite-rank 更新闭合（字典层） | Math/Audit | `app:operator_mother_space` | [x] |
+| HTF-lite bridge（audit-only） | unit-disk holomorphy ↔ interior poles 的桥接门禁；有限核族/有限窗口证据工件 | Audit/Math | `ass:htf_lite_operator_pack`, `tab:htf_lite_zero_mode_pole_audit`, `tab:htf_lite_resolvent_identity_audit`, `tab:htf_lite_detectability_audit`, `tab:htf_lite_detectability_finite_window_audit` | [x] |
 | 波粒二象性/延迟选择 | 相干交叉项 vs 事件化/去相干混合；互补性界 $V^2+D^2\le 1$；delayed-choice/eraser | Iface/Audit | `app:wave_particle_delayed_choice` | [x] |
 | RG 运行 | $\mathrm{d}g/\mathrm{d}r=(\log\varphi)\beta(g)$ | Math | `eq:rg_in_r` | [x] |
 | 稳定扇区计数（grammar/counts） | $X_m\subset\Omega_m$；$|X_m|=F_{m+2}$ | Math | `lem:xm_fib` | [x] |

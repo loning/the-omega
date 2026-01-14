@@ -224,6 +224,12 @@ flowchart TB
   P_operator_mother("算子母空间口径（审计/字典层）<br/>类型：审计 / Audit<br/>label: app:operator_mother_space<br/>pole barrier ↔ interior resolvent poles; pointer-jump ↔ finite-rank Δ")
   M_operator_mother -.- P_operator_mother
 
+  M_htf_lite_pack["HTF-lite bridge pack（unit-disk holomorphy ↔ interior poles）<br/>类型：假设 / Assumption<br/>label: ass:htf_lite_operator_pack<br/>audit-only bridge gate + failure-point fallback"]
+  P_htf_lite_evidence("HTF-lite 证据工件（有限核族/有限窗口）<br/>类型：审计 / Audit<br/>label: htf_lite_* (generated)<br/>run_all: exp_htf_lite_*")
+  M_operator_mother --> M_htf_lite_pack
+  M_abel --> M_htf_lite_pack
+  M_htf_lite_pack -.-> P_htf_lite_evidence
+
   M_fold["Fold6 映射（64→21；像/原像结构）<br/>类型：构造 / Construction<br/>label: subsec:fold6_map<br/>Fold₆(N):=(c₁,…,c₆) ∈ X₆ (eq:fold6_def)"]
   P_fold("coarse-graining 压缩（稳定扇区统计）<br/>类型：代理 / Proxy<br/>label: subsec:fold6_map<br/>Ω₆={0,1}⁶ (|Ω₆|=64), X₆⊂Ω₆ (|X₆|=21) ⇒ 64→21")
   M_fold -.- P_fold
@@ -278,12 +284,14 @@ flowchart TB
   class M_pi,M_periodic,M_e,M_op2_fold_uniqueness math_closure;
   class M_abel,M_am_euler,M_pressure,M_adelic_prime_orbit math_audit;
   class M_operator_mother math_audit;
+  class M_htf_lite_pack math_assumption;
   class P_phi,P_pi,P_e,P_fold,P_screen phys_proxy;
   class P_periodic phys_obs;
   class P_am_euler phys_dict;
   class P_abel phys_model;
   class P_pressure,P_adelic_prime_orbit phys_audit;
   class P_operator_mother phys_audit;
+  class P_htf_lite_evidence phys_audit;
 ```
 
 ### 图 3：显示预算与空间寻址（6-DoF coarse-lock → bulk d=3 → addressing/local） / Fig. 3: Display Budget and Spatial Addressing (6-DoF coarse-lock → bulk d=3 → addressing/local)
