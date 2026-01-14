@@ -52,6 +52,7 @@
 flowchart TD
   A["Tick + 协议原语"] --> B["等价语义与不变性词典"]
   B --> PS["协议态（m,n,K）与联合闭合（J_mu）"]
+  B --> SU["选择/更新统一词汇（Sel/Upd/gap）"]
   B --> U["统一：轨道/规范/力（连接 + 响应）"]
   B --> C["CAP-闭合的连续代表作用量"]
   C --> D["变分场方程（Einstein/YM/chi）"]
@@ -209,6 +210,16 @@ flowchart TD
   - `sections/C_12_kernel_view.tex`：$r_m$ 与 kernel 视角的冗余率解释
 - **层级**：Math/Prot（$r_m$ 与 gauge 最小性为定理/构造；物理解释为接口）
 - **最小失败点**：若实际构造对纤维进行了 truncation/非声明 padding，或把 representation-dependent tie-break 当作 gauge invariant，则必须降级为“表示依赖诊断”，并重新声明 slot/gauge 约束。
+
+### IC-13：Sel/Upd/gap 统一词汇的“显式有限族”门槛（branching/selection rigidity gate）
+
+- **内容**：任何关于“分岔/切换/更新”的叙事，若要在本文纪律下成为可审计陈述，必须落到显式有限候选族 $\mathcal F$、显式目标 $J$、与确定性 tie-break（从而可写成 $\mathsf{Sel}(\mathcal F,J,\prec)$，并在必要时给出 objective gap 与稳定性门槛）。所谓“prefix-consistent switching”必须明确保留哪类约束（例如前缀投影约束）并将更新限制在相应 extension fiber 内。
+- **文稿定位**：
+  - `sections/U_00_unified_spine.tex`：`\ref{sec:unified_spine}`（统一入口）
+  - `sections/appendices/69a_branching_selection_rigidity.tex`：`\ref{app:branching_selection_rigidity}`（Sel/Upd/gap 的纯数学载体）
+  - `sections/appendices/19_tick_cap_derivation.tex`：tick+CAP 闭合骨架（统一把闭合步读作 Sel 实例）
+- **层级**：Math/Audit（数学载体 + 审计门槛；不作为 theorem-level folding 前提）
+- **最小失败点**：若更新/切换叙事依赖未声明的候选族扩大、未声明的 tie-break、或不可审计的连续超参数，则必须降级为解释性语言（\AuditTag）并回指 `minimal_failure_point_templates` 的“隐藏扫描/扩族”类失败点。
 
 ### IC-12：kernel weighted pressure monotonicity ↔ thermodynamic pressure ↔ pole barrier
 

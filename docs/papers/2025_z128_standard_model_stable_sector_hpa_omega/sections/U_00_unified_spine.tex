@@ -1,0 +1,52 @@
+\section*{Unified spine (time, selection, updates, and resolution)}
+\addcontentsline{toc}{section}{Unified spine (time, selection, updates, and resolution)}
+\label{sec:unified_spine}
+
+\paragraph{Purpose.}
+\AuditTag This reader-facing section compresses a recurring set of structural themes into a single vocabulary:
+(i) time as tick and as executed update order,
+(ii) deterministic CAP closure as finite-family selection with explicit tie-breaks,
+(iii) updates and branching as changes of admissible candidates/objectives under fixed constraints,
+and (iv) resolution flow (uplift/RG/forced zoom) as an update trajectory of protocol states.
+None of this section is used as a premise in theorem-level folding proofs; it is an organizational index.
+
+\subsection*{Three time notions and their layer placement}
+\AuditTag We distinguish three time notions throughout:
+\begin{itemize}
+\item \textbf{tick time} $t_{\mathrm{tick}}$: the scan iteration index (Definition~\ref{def:tick});
+\item \textbf{update time} $t_{\mathrm{upd}}$: the executed order of protocol updates (e.g.\ CAP closures or objective updates), indexed discretely and used to state monotonicity certificates (Section~\ref{subsec:wish_motive_generic_dynamics});
+\item \textbf{physical time} $t_{\mathrm{phys}}$: any mapping from tick/update indices to SI units (seconds) or laboratory clock readings, which is always a matching-layer calibration (Remark~\ref{rem:tick_velocity_to_c} and Section~\ref{subsec:arrow_time_calibration_constants}).
+\end{itemize}
+\AuditTag The first two are intrinsic to the protocol language; the third is a dictionary layer.
+
+\subsection*{Finite-family selection as the universal closure form}
+\AuditTag The CAP rule is implemented throughout as deterministic selection on explicit finite candidate families.
+Abstractly, a selection problem is a triple $(\mathcal{F},J,\prec)$ consisting of a finite candidate family $\mathcal{F}$,
+an explicit objective functional $J:\mathcal{F}\to\RR$, and a deterministic tie-break order $\prec$.
+The corresponding deterministic selector $\mathsf{Sel}(\mathcal{F},J,\prec)$ is formalized in Appendix~\ref{app:branching_selection_rigidity}
+and instantiated in audit form across the tick\,+\,CAP derivation spine (Appendix~\ref{app:tick_cap_derivation}).
+
+\paragraph{Gaps and robustness.}
+\AuditTag When a quantitative objective gap is present, bounded perturbations cannot change the selected minimizer
+(gap-stability; Appendix~\ref{app:branching_selection_rigidity} and the RB-D template in Appendix~\ref{app:rigidity_bridge_checklist}).
+This is the paper's normalized way to state that a closure is robust rather than an accidental alignment.
+
+\subsection*{Updates, branching, and prefix-consistency}
+\AuditTag What is informally called ``branching'' is expressed in finite mathematics by prefix projections and extension fibers:
+distinct continuations may share an audited prefix while differing in admissible extensions.
+This is formalized by extension fibers $\mathrm{Ext}_m(u)$ under prefix projections $\pi_{m\to m_0}$ (Appendix~\ref{app:branching_selection_rigidity}).
+\AuditTag Updates are modeled as maps $(\mathcal{F},J,\prec)\mapsto(\mathcal{F}',J',\prec')$; a ``switch'' occurs when the selected minimizer changes.
+If a prefix constraint is preserved, any switch is confined to the corresponding extension fiber (Proposition~\ref{prop:prefix_consistent_switching_constraint}).
+
+\subsection*{Resolution flow as protocol-state updates}
+\AuditTag Many interface outputs depend on a protocol state $(m,n,K)$ (window length, addressing order, readout kernel),
+which is closed by CAP within explicit finite families (Section~\ref{sec:paper_contract} and Appendix~\ref{app:tick_cap_derivation}).
+In this paper, three recurring narratives are treated as instances of the same update viewpoint:
+\begin{itemize}
+\item \textbf{uplift}: changing the window length $m$ and selecting fiber representatives under refinement (Appendix~\ref{app:mass_flow_under_uplift});
+\item \textbf{RG}: describing running in the resolution coordinate $r(\mu)$ with explicit scheme/threshold boundaries (Appendix~\ref{app:running_couplings_resolution_flow});
+\item \textbf{forced zoom}: engineered threshold crossing that changes the effective admissible protocol budget (Section~\ref{subsec:active_renormalization_synthesis}).
+\end{itemize}
+\AuditTag The mathematical-layer carrier for these statements is always finite (candidate families, prefix fibers, and deterministic keys);
+any calibration to laboratory units remains at the matching layer.
+
