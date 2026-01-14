@@ -275,7 +275,7 @@ This section is the **main development plan** for scaling the project on an A100
 
 ### Task Claims
 
-- 2026-01-14 — **CLAIMED**: 模块 E（Ribo-seq 暂停桥接）窗口级 pause score + 按 `U_after` 分位数分层比较（先做可复现的 window-level proxy；后续再接 raw Ribo-seq 多数据集复现）。Branch: `paper-bio`.
+- 2026-01-14 — **COMPLETED**: 模块 E（Ribo-seq 暂停桥接）窗口级 pause score + 按 `U_after` 分位数分层比较（先做可复现的 window-level proxy；raw Ribo-seq 多数据集复现仍待做）。产物：`exp_riboseq_pause_window_proxy.py` + `sections/generated/riboseq_pause_window_proxy.tex`. Branch: `paper-bio`.
 
 ## 核心计算实验模块（7 模块系统验证计划）
 
@@ -391,12 +391,14 @@ Partial (GC-controlled): ρ ≈ 0
 ```
 Uplift-Pause (codon):   ρ = -0.12 (ns)
 Within-family:          avg ρ = -0.09
+Window proxy (k=10):    ρ(U_before, pause_before) = -0.36 (p<0.001)
+                         high U_after vs low U_after: d=-0.06 (p=0.66), matched d=-0.03 (p=0.80)
 ```
 
 **待做**：
-- [ ] 窗口级 pause score（不是 codon 级）
+- [x] 窗口级 pause score（不是 codon 级；先做可复现的 window-level proxy）
 - [ ] 多数据集复现（≥3 独立 Ribo-seq 数据集）
-- [ ] 按 U_after 分位数分层比较
+- [x] 按 U_after 分位数分层比较（含成分匹配对照）
 
 ---
 

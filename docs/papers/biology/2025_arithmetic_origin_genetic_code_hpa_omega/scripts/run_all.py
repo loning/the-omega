@@ -387,6 +387,28 @@ def main() -> None:
     ]
     run(merge_cmd, cwd=cwd)
 
+    # 5a) Mechanistic proxy: window-level pause-score proxy (codon-score average) on RefSeq stop-context candidates.
+    # This is a lightweight offline check (not read-level Ribo-seq); it requires the merged candidate JSONL.
+    if not refseq_quick:
+        run(
+            [
+                py,
+                "scripts/exp_riboseq_pause_analysis.py",
+                *(["--force"] if args.force else []),
+            ],
+            cwd=cwd,
+        )
+        run(
+            [
+                py,
+                "scripts/exp_riboseq_pause_window_proxy.py",
+                "--k",
+                "10",
+                *(["--force"] if args.force else []),
+            ],
+            cwd=cwd,
+        )
+
     # 5b) Protein-preserving synonymous-codon permutation null for terminal-stop windows (RefSeq).
     if not refseq_quick:
         run(
@@ -534,5 +556,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
 

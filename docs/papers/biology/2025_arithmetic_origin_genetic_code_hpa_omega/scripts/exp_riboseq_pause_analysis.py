@@ -169,6 +169,7 @@ def analyze_by_amino_acid() -> dict:
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--force", action="store_true", help="Compatibility flag (no caching in this script).")
     args = ap.parse_args()
     
     out_tex = generated_dir() / "riboseq_pause_correlation.tex"
