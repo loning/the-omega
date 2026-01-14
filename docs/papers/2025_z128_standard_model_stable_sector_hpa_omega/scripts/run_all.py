@@ -767,6 +767,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="GWOSC ringdown linewidth audit (real data; optional)",
+            script="exp_gwosc_ringdown_linewidth_audit.py",
+            expected_outputs=[
+                "sections/generated/gwosc_ringdown_linewidth_rows.tex",
+                "sections/generated/gwosc_ringdown_linewidth_summary.tex",
+            ],
+        ),
+        Step(
             name="Hilbert-knot triptych (Figure 1)",
             script="fig_hilbert_knot_triptych.py",
             expected_outputs=[

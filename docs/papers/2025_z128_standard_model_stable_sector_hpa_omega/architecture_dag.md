@@ -243,6 +243,7 @@ flowchart TB
   P_det_phase_delay_audit("Det phase → delay proxy (audit); 类型：审计 / Audit; label: det_phase_delay_* (generated); run_all: exp_det_phase_delay_scattering_proxy_audit")
   P_det_to_smatrix_ws_audit("Det phase → unitary S → WS delay (audit); 类型：审计 / Audit; label: det_to_smatrix_ws_delay_* (generated); run_all: exp_det_to_unitary_smatrix_ws_delay_audit")
   P_det_delay_linewidth_audit("Det delay → linewidth proxy (audit); 类型：审计 / Audit; label: det_delay_linewidth_* (generated); run_all: exp_det_delay_resonance_linewidth_audit")
+  P_gwosc_ringdown_audit("GWOSC ringdown linewidth audit（real data；windowed gates）<br/>类型：审计 / Audit<br/>artifact: gwosc_ringdown_linewidth_* (generated)<br/>run_all: exp_gwosc_ringdown_linewidth_audit<br/>gates: WELCH_LOCAL, PEAKEDGE, TAUFAIL/TAUBOUND/ENVFAIL")
   P_linewidth_survival_audit("Linewidth → survival kernel (audit); 类型：审计 / Audit; label: linewidth_survival_kernel_* (generated); run_all: exp_linewidth_to_survival_kernel_audit")
   P_survival_finite_family_audit("Survival finite-family CAP (audit); 类型：审计 / Audit; label: survival_finite_family_* (generated); run_all: exp_linewidth_survival_finite_family_audit")
   P_ihara_hashimoto_edge_audit("Ihara/Hashimoto det + added-edge (audit); 类型：审计 / Audit; label: ihara_hashimoto_added_edge_* (generated); run_all: exp_ihara_hashimoto_added_edge_audit")
@@ -253,6 +254,7 @@ flowchart TB
   P_equiv_ladder_registry --> P_det_phase_delay_audit
   P_equiv_ladder_registry --> P_det_to_smatrix_ws_audit
   P_equiv_ladder_registry --> P_det_delay_linewidth_audit
+  P_det_delay_linewidth_audit --> P_gwosc_ringdown_audit
   P_equiv_ladder_registry --> P_linewidth_survival_audit
   P_equiv_ladder_registry --> P_survival_finite_family_audit
   P_equiv_ladder_registry --> P_ihara_hashimoto_edge_audit
@@ -345,7 +347,7 @@ flowchart TB
   class P_pressure,P_adelic_prime_orbit phys_audit;
   class P_operator_mother phys_audit;
   class P_htf_lite_evidence phys_audit;
-  class P_four_way_contract,P_four_way_checklist,P_equiv_ladder_registry,P_wh_finite_rank_delay_audit,P_added_edge_det_audit,P_det_phase_delay_audit,P_det_to_smatrix_ws_audit,P_det_delay_linewidth_audit,P_linewidth_survival_audit,P_survival_finite_family_audit,P_ihara_hashimoto_edge_audit,P_hashimoto_schur_audit,P_lf1_gate phys_audit;
+  class P_four_way_contract,P_four_way_checklist,P_equiv_ladder_registry,P_wh_finite_rank_delay_audit,P_added_edge_det_audit,P_det_phase_delay_audit,P_det_to_smatrix_ws_audit,P_det_delay_linewidth_audit,P_gwosc_ringdown_audit,P_linewidth_survival_audit,P_survival_finite_family_audit,P_ihara_hashimoto_edge_audit,P_hashimoto_schur_audit,P_lf1_gate phys_audit;
 ```
 
 ### 图 2A：黑洞/虫洞–散射拓扑等价阶梯（详图；证书链与门禁） / Fig. 2A: BH/WH--Scattering Topological Equivalence Ladder (Detailed; Certificates + Gates)
