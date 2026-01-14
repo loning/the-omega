@@ -218,6 +218,8 @@ flowchart TD
   - `sections/U_00_unified_spine.tex`：`\ref{sec:unified_spine}`（统一入口）
   - `sections/appendices/69a_branching_selection_rigidity.tex`：`\ref{app:branching_selection_rigidity}`（Sel/Upd/gap 的纯数学载体）
   - `sections/appendices/19_tick_cap_derivation.tex`：tick+CAP 闭合骨架（统一把闭合步读作 Sel 实例）
+  - `sections/C_13_embedding_gap_projection.tex`：`\ref{sec:embedding_gap_projection}`（投影读出作为 Sel 实例；gap/cohomology 作为失败点）
+  - `sections/C_14_cut_and_project_bridge.tex`：`\ref{sec:cut_and_project_bridge}`（prefix/fiber 的几何母语：staircase 与模型集）
 - **层级**：Math/Audit（数学载体 + 审计门槛；不作为 theorem-level folding 前提）
 - **最小失败点**：若更新/切换叙事依赖未声明的候选族扩大、未声明的 tie-break、或不可审计的连续超参数，则必须降级为解释性语言（\AuditTag）并回指 `minimal_failure_point_templates` 的“隐藏扫描/扩族”类失败点。
 
@@ -252,6 +254,30 @@ flowchart TD
   - 位置：`sections/F_15_dispersion_time_advance.tex`（`\label{sec:dispersion_time_advance}`）
   - 要点：在“scan step 是 unitary + difference-norm momentum”的声明下，导出精确色散 $E(P)$ 与 $\dd E/\dd P>1$ 的 time-advance 签名；明确 group velocity 与 front/signal velocity 的分离；并与 delay/lapse 通道并列而不混用。
   - 层级：Math（色散恒等式）+ Iface/Match（把 slope 解释为可观测信号需匹配层声明；不进入 folding 证明链）。
+
+- [x] **HPA 缺口闭合：cyclic calculus（Θ-差分 / 轨道 trace / Abel finite-part）**：`App 40b`  
+  - 位置：`sections/appendices/40b_cyclic_calculus_theta_fp.tex`（`\label{app:cyclic_calculus_theta_fp}`）
+  - 要点：有限差分 Δ_Θ 与轨道 trace；FP_Θ（Abel-first 常数项提取）把“更新步/离散导数”与 det/trace/Abel 口径统一。
+  - 层级：Audit（解析稳定性与更新叙事模板；不进入 theorem-level folding 依赖链）。
+  - 最小失败点：若被用作“连续极限的隐式假设”，必须显式降级为仅记账模板。
+
+- [x] **HPA 缺口闭合：参考态与 cut 顺序敏感谱模板（window-word→投影测量极限）**：`App 30g`  
+  - 位置：`sections/appendices/30g_reference_state_and_cuts.tex`（`\label{app:reference_state_and_cuts}`）
+  - 要点：`⟨ω_{x0,δ}, Π_W Θ^n ω_{x0,δ}⟩→1_W(x0+nα)` 的投影测量极限；对易/非对易 positive cuts 的实谱/复谱最小矩阵模板。
+  - 层级：Audit（读出语义对齐；顺序敏感失败点模板；不进入 folding 证明链）。
+  - 最小失败点：若把复谱直接物理化，必须给出显式 matching 字典；否则只作为顺序敏感告警模板。
+
+- [x] **HPA 缺口闭合：Zeckendorf shift primitive cycles（Möbius/ζ/det 细化）**：`App 28b`  
+  - 位置：`sections/appendices/28b_zeckendorf_shift_prime_cycles.tex`（`\label{app:zeckendorf_shift_prime_cycles}`）
+  - 要点：$P_n=\mathrm{tr}(A^n)$ 与 primitive-cycle 计数 $\pi_n$ 的 Möbius 反演；Euler product 与 $\det(I-zA)$ 的有限态实例。
+  - 层级：Math/Audit（纯有限态细化；不进入 folding 证明链）。
+  - 最小失败点：若被误读为“算术素数内部化”，必须声明这只是 prime-cycle bookkeeping 模板。
+
+- [x] **候选模块登记：Jordan/triality（为何三）与 $\alpha_{\mathrm{geo}}$ 阻抗候选**：`App 50c + App 08k`  
+  - 位置：`sections/appendices/50c_jordan_triality_candidate.tex`（`\label{app:jordan_triality_candidate}`）；`sections/appendices/08k_alpha_geo_impedance_candidate.tex`（`\label{app:alpha_geo_impedance_candidate}`）
+  - 要点：$J_3(\OO)$/triality 作为“三扇区”对称模板；$\alpha_{\mathrm{geo}}^{-1}=V_{\mathrm{bulk}}+V_{\mathrm{boundary}}+V_{\mathrm{line}}$ 作为对照字典；均必须走“显式有限候选族 + registry/MDL”门禁。
+  - 层级：Audit（候选族登记，不入闭合链）。
+  - 最小失败点：任何把其当作“隐藏自由度/无门禁拟合”的用法都必须拒绝或降级。
 - [x] **算子母空间字典入口（resolvent/determinant；观察者/意识口径）**：`Part F.1`  
   - 位置：`sections/F_05_operator_mother_space_dictionary.tex`（`\label{app:operator_mother_space_dictionary}`）
   - 要点：以 trace-class 源算子 $F$、读出核 $K$ 与 Fredholm 行列式为统一 bookkeeping 层，把 Abel-first/pole-barrier、prime-cycle 生成函数、以及 CAP 的有限族更新 $F\mapsto F+\Delta$ 放进同一字典口径；其中 observer:=kernel choice、consciousness:=finite-rank update 仅作为接口字典，不进入 theorem-level folding 依赖链。

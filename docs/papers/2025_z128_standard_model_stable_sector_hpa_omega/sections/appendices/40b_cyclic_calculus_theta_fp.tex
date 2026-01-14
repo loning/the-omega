@@ -1,0 +1,103 @@
+\section{Cyclic calculus on scan orbits: finite differences, orbit traces, and Abel finite parts (notes)}
+\label{app:cyclic_calculus_theta_fp}
+
+\paragraph{Scope and status.}
+\AuditTag This appendix records a compact finite-mathematics ``cyclic calculus'' template for scan orbits:
+finite differences along the scan step, a Newton-type reconstruction identity, and an Abel finite-part prescription for orbit sums.
+It is included as an audit-facing bridge between the tick-first scan vocabulary and the paper's Abel/resolvent/determinant bookkeeping language.
+No statement here is used as a premise in theorem-level folding proofs.
+
+\subsection{Scan difference as a discrete derivative surrogate}
+\label{subsec:cyclic_calculus_difference}
+
+\MathTag Fix $\alpha\in(0,1)\setminus\QQ$ and let $X:=\RR/\ZZ$ with Haar probability measure $\mu$.
+Let $\Theta$ denote the irrational-rotation scan,
+\[
+(\Theta f)(x):=f(x+\alpha).
+\]
+Define the scan difference and its normalized variant by
+\[
+(\Delta_\Theta f)(x):=(\Theta-I)f(x)=f(x+\alpha)-f(x),
+\qquad
+(\mathcal{D}_\Theta f)(x):=\frac{\Delta_\Theta f(x)}{\alpha}.
+\]
+These operators provide a canonical discrete surrogate for derivatives along the scan step (without taking any small-$\alpha$ limit).
+
+\subsection{A Newton-type identity for scan iteration}
+\label{subsec:cyclic_calculus_newton}
+
+\begin{proposition}[Binomial scan expansion]\label{prop:cyclic_binomial_scan_expansion}
+\MathTag For every integer $n\ge 0$ one has the operator identity
+\[
+\Theta^n=(I+\Delta_\Theta)^n=\sum_{k=0}^{n}\binom{n}{k}\Delta_\Theta^k.
+\]
+Equivalently, for every $f$ and $x\in X$,
+\[
+f(x+n\alpha)=\sum_{k=0}^{n}\binom{n}{k}(\Delta_\Theta^k f)(x).
+\]
+\end{proposition}
+
+\begin{proof}
+Since $\Theta=I+\Delta_\Theta$, the first identity is the binomial theorem in the algebra of operators.
+Applying both sides to $f$ and evaluating at $x$ yields the pointwise identity.
+\end{proof}
+
+\begin{remark}[Explicit $k$th difference]\label{rem:cyclic_kth_difference_formula}
+\MathTag For $k\ge 0$,
+\[
+\Delta_\Theta^k=\sum_{j=0}^{k}(-1)^{k-j}\binom{k}{j}\Theta^{j},
+\qquad
+(\Delta_\Theta^k f)(x)=\sum_{j=0}^{k}(-1)^{k-j}\binom{k}{j}f(x+j\alpha).
+\]
+\end{remark}
+
+\subsection{Orbit trace as an integral surrogate}
+\label{subsec:cyclic_calculus_orbit_trace}
+
+\MathTag For continuous $f:X\to\CC$, define the orbit average
+\[
+A_N(f;x_0):=\frac{1}{N}\sum_{k=0}^{N-1} f(x_0+k\alpha).
+\]
+By unique ergodicity of irrational rotations, the limit exists and equals the space average:
+\[
+\mathrm{Tr}_\Theta(f):=\lim_{N\to\infty}A_N(f;x_0)=\int_X f\,\dd\mu,
+\]
+independently of $x_0$; see, e.g., \cite{Weyl1916,KuipersNiederreiter1974}.
+In this paper, $\mathrm{Tr}_\Theta$ is used only as an audit-facing replacement for ``integration along the scan'' in purely finite/Abel-first constructions.
+
+\subsection{Abel finite parts along scan orbits}
+\label{subsec:cyclic_calculus_fp_theta}
+
+\paragraph{Abel orbit sum.}
+\MathTag Let $u_k:=f(x_0+k\alpha)$ and define the Abel orbit sum
+\[
+S_f(r):=\sum_{k=0}^{\infty} u_k r^k,\qquad 0<r<1.
+\]
+If $f$ is bounded then $S_f(r)$ converges absolutely for every $r\in(0,1)$.
+
+\paragraph{Finite-part prescription.}
+\MathTag If as $r\uparrow 1$ the function admits an asymptotic expansion
+\[
+S_f(r)=\frac{c_{-1}}{1-r}+c_0+c_1(1-r)+\cdots,
+\qquad (r\uparrow 1),
+\]
+then define the orbit finite part by
+\[
+\FP_\Theta(f):=c_0.
+\]
+\AuditTag This is the same constant-term prescription used in Appendix~\ref{app:abel_finite_part_notes}; the present appendix records its scan-orbit interpretation.
+
+\paragraph{Fourier--resolvent form (audit-facing).}
+\MathTag If $f$ has absolutely summable Fourier coefficients $f(x)=\sum_{m\in\ZZ}\widehat f(m)\e^{2\pi\iu m x}$ with $\sum_m|\widehat f(m)|<\infty$, then for $0<r<1$,
+\[
+S_f(r)=\sum_{m\in\ZZ}\widehat f(m)\e^{2\pi\iu m x_0}\frac{1}{1-r\e^{2\pi\iu m\alpha}},
+\]
+and the only universal pole occurs at $m=0$.
+This is the explicit scan-orbit analogue of the Abel resolvent template in Appendix~\ref{app:abel_finite_part_notes} and explains why the Abel-first discipline is stable under changes of bounded Fourier/readout kernel classes.
+
+\begin{remark}[How this is used in z128 (dictionary only)]\label{rem:cyclic_calculus_usage_in_z128}
+\AuditTag In the unified selection/update vocabulary (Section~\ref{sec:unified_spine}), many narrative ``rates'' in this manuscript should be read as finite differences along the executed update order rather than as continuum derivatives.
+This appendix provides a canonical finite calculus template for such differences, and Appendix~\ref{app:abel_finite_part_notes} provides the corresponding Abel-first renormalization discipline for orbit sums and resolvent-mode denominators.
+Neither is used as a theorem-level premise in folding proofs.
+\end{remark}
+

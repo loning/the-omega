@@ -1,0 +1,95 @@
+\subsection{Zeckendorf shift: primitive cycles, M\"obius inversion, and zeta/determinant packaging (notes)}
+\label{app:zeckendorf_shift_prime_cycles}
+
+\paragraph{Scope.}
+\MathTag This appendix records a fully finite symbolic-dynamics template that refines the determinant/trace/zeta bookkeeping chain
+by separating periodic-point counts into primitive-cycle counts via M\"obius inversion.
+It introduces no new physical identification and is not used as a premise in theorem-level folding proofs.
+
+\subsubsection{The Zeckendorf shift as a finite-state grammar}
+\label{subsec:zeckendorf_shift_definition}
+
+\MathTag Let $\Sigma_Z$ be the set of bi-infinite binary sequences with the local forbidden law ``no adjacent ones'':
+\[
+\Sigma_Z:=\{c\in\{0,1\}^{\ZZ}:\ c_k c_{k+1}=0\ \forall k\in\ZZ\},
+\]
+and let $\sigma:\Sigma_Z\to\Sigma_Z$ be the left shift $(\sigma c)_k:=c_{k+1}$.
+Equivalently, $\Sigma_Z$ is the mixing shift of finite type with adjacency matrix
+\[
+A:=\begin{pmatrix}1&1\\ 1&0\end{pmatrix},
+\]
+where $A_{ij}=1$ encodes an allowed transition $i\to j$; see, e.g., \cite{LindMarcus1995}.
+
+\subsubsection{Periodic points as traces}
+\label{subsec:zeckendorf_shift_traces}
+
+\begin{proposition}[Periodic-point trace formula]\label{prop:zeckendorf_shift_trace_formula}
+\MathTag For $n\ge 1$ let $P_n:=\#\mathrm{Fix}(\sigma^n)$.
+Then $P_n=\mathrm{tr}(A^n)$.
+\end{proposition}
+
+\begin{proof}
+A point fixed by $\sigma^n$ is determined by a cyclic word of length $n$ whose adjacent pairs avoid the forbidden transition $11$ (including wrap-around).
+Such cyclic words are in bijection with closed walks of length $n$ on the directed graph with adjacency matrix $A$.
+The number of closed walks of length $n$ is $\sum_i(A^n)_{ii}=\mathrm{tr}(A^n)$.
+\end{proof}
+
+\subsubsection{Primitive cycles and M\"obius inversion}
+\label{subsec:zeckendorf_shift_primitive_mobius}
+
+\begin{definition}[Primitive cycles]\label{def:zeckendorf_shift_primitive_cycles}
+A \emph{primitive cycle of length $n$} (primitive periodic orbit) is a $\sigma$-periodic orbit whose minimal period is $n$.
+Let $\pi_n$ denote the number of primitive cycles of length $n$.
+\end{definition}
+
+\begin{proposition}[M\"obius inversion for primitive-cycle counts]\label{prop:zeckendorf_shift_mobius_inversion}
+\MathTag For every $n\ge 1$,
+\[
+P_n=\sum_{d\mid n} d\,\pi_d,
+\qquad
+\pi_n=\frac{1}{n}\sum_{d\mid n}\mu_{\mathrm{Mob}}(d)\,P_{n/d}
+=\frac{1}{n}\sum_{d\mid n}\mu_{\mathrm{Mob}}(d)\,\mathrm{tr}(A^{n/d}),
+\]
+where $\mu_{\mathrm{Mob}}$ is the M\"obius function.
+\end{proposition}
+
+\begin{proof}
+Each primitive orbit of length $d$ contributes exactly $d$ fixed points to $\mathrm{Fix}(\sigma^n)$ whenever $d\mid n$, and none otherwise, yielding the first identity.
+The second identity is M\"obius inversion on the divisor lattice.
+\end{proof}
+
+\subsubsection{Zeta, Euler product, and determinant identity}
+\label{subsec:zeckendorf_shift_zeta_det}
+
+\begin{proposition}[Zeta and determinant packaging]\label{prop:zeckendorf_shift_zeta_det}
+\MathTag Define the Artin--Mazur zeta function
+\[
+\zeta_Z(z):=\exp\!\left(\sum_{n\ge 1}\frac{P_n}{n}z^n\right).
+\]
+Then for $|z|$ sufficiently small one has the Euler product over primitive cycles
+\[
+\zeta_Z(z)=\prod_{n\ge 1}(1-z^n)^{-\pi_n},
+\]
+and the determinant identity
+\[
+\zeta_Z(z)=\frac{1}{\det(I-zA)}=\frac{1}{1-z-z^2}.
+\]
+\end{proposition}
+
+\begin{proof}
+Using Proposition~\ref{prop:zeckendorf_shift_mobius_inversion},
+\[
+\sum_{n\ge 1}\frac{P_n}{n}z^n
+=\sum_{n\ge 1}\sum_{d\mid n}\pi_d z^n
+=\sum_{d\ge 1}\pi_d\sum_{m\ge 1}\frac{z^{dm}}{m}
+=-\sum_{d\ge 1}\pi_d\log(1-z^d),
+\]
+so exponentiating yields the Euler product.
+The determinant identity follows from the standard formal identity $-\log\det(I-zA)=\sum_{n\ge 1}\mathrm{tr}(A^n)z^n/n$ (Lemma~\ref{lem:rigidity_logdet_trace_series}) and the explicit computation of $\det(I-zA)$.
+\end{proof}
+
+\begin{remark}[Structural role in z128]\label{rem:zeckendorf_shift_structural_role}
+\AuditTag This appendix supplies a concrete finite-state model of ``prime cycles'' (primitive periodic orbits) for the golden-branch grammar.
+It is used only as a rigidity template for bookkeeping and does not identify these primitive cycles with arithmetic primes or with Hecke generators.
+\end{remark}
+
