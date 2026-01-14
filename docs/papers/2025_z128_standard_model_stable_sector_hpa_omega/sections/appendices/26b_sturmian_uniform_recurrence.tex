@@ -1,0 +1,111 @@
+\section{Sturmian readouts: uniform recurrence (bounded gaps of factors)}
+\label{app:sturmian_uniform_recurrence}
+\noindent
+This appendix upgrades the informal phrase ``continued exploration without thermal death'' to a theorem-facing property of the canonical rotation-window coding:
+\emph{every finite factor reappears with a uniform bound on the gap size}.
+The proof uses only (i) minimality of irrational rotations and (ii) a compactness/finite-subcover argument that makes return times to open sets syndetic.
+
+\subsection{Minimality and syndetic return times for irrational rotations}
+\label{subsec:sturmian_syndetic_rotation}
+
+\begin{lemma}[Minimality of irrational rotation]\label{lem:irrational_rotation_minimal}
+\MathTag Fix $\alpha\in(0,1)\setminus\QQ$ and let $R_\alpha:\TT\to\TT$ be the rotation $R_\alpha(x)=x+\alpha\ (\mathrm{mod}\ 1)$.
+Then for every $x\in\TT$, the orbit $\{R_\alpha^n(x):n\in\ZZ\}$ is dense in $\TT$.
+\end{lemma}
+
+\begin{proof}
+It suffices to prove density for $x=0$ because translation is a homeomorphism of $\TT$.
+Let $I\subset\TT$ be any nonempty open arc. Choose an integer $N\ge 1$ so large that $1/N<|I|$ (arc length).
+Consider the $N+1$ points $\{0,\alpha,2\alpha,\ldots,N\alpha\}$ in $\TT$.
+By the pigeonhole principle, among these $N+1$ points there exist $0\le i<j\le N$ whose distance on the circle is $<1/N$, hence lies inside some translate of $I$.
+Therefore $(j-i)\alpha$ lies in a translate of $I$, so some iterate $n\alpha$ lands in $I$.
+Since $I$ was arbitrary, $\{n\alpha\ (\mathrm{mod}\ 1):n\in\ZZ\}$ is dense.
+\end{proof}
+
+\begin{definition}[Syndetic subset of integers]\label{def:syndetic_subset}
+\MathTag A subset $S\subset\ZZ$ is \emph{syndetic} if there exists $L\in\NN$ such that every interval of $L$ consecutive integers intersects $S$.
+\end{definition}
+
+\begin{lemma}[Return times to open sets are syndetic in minimal systems]\label{lem:return_times_syndetic}
+\MathTag Let $T:X\to X$ be a homeomorphism of a compact metric space $X$ and assume $(X,T)$ is minimal.
+Then for every nonempty open set $U\subset X$ and every $x\in X$, the return-time set
+\[
+N(x,U):=\{n\in\ZZ:\ T^n x\in U\}
+\]
+is syndetic.
+\end{lemma}
+
+\begin{proof}
+Fix nonempty open $U$ and $x\in X$.
+By minimality, for every $y\in X$ there exists an integer $n_y$ such that $T^{n_y}y\in U$, i.e.\ $y\in T^{-n_y}(U)$.
+Thus the family of open sets $\{T^{-n}(U)\}_{n\in\ZZ}$ is an open cover of the compact space $X$.
+By compactness, there exists a finite subcover: $X=\bigcup_{i=1}^m T^{-n_i}(U)$ for some integers $n_1,\ldots,n_m$.
+Let $L:=\max_i n_i-\min_i n_i$.
+We claim that every interval of $L+1$ consecutive integers intersects $N(x,U)$.
+Indeed, fix $k\in\ZZ$.
+Then $T^k x\in X$, so $T^k x\in T^{-n_i}(U)$ for some $i$, hence $T^{k+n_i}x\in U$.
+Since $n_i\in[\min n_j,\max n_j]$, one has $k+n_i\in[k+\min n_j,\ k+\max n_j]$, an interval of length $L$.
+Therefore $N(x,U)$ intersects every such interval, i.e.\ it is syndetic.
+\end{proof}
+
+\subsection{Uniform recurrence of factors for the canonical rotation-window coding}
+\label{subsec:sturmian_uniform_recurrence_proof}
+
+\begin{definition}[Canonical rotation-window coding]\label{def:canonical_rotation_window_coding}
+\MathTag Fix $\alpha\in(0,1)\setminus\QQ$ and $\rho\in\RR$.
+Let $x_n:=\rho+n\alpha\ (\mathrm{mod}\ 1)$ and let $W_\alpha=[1-\alpha,1)\subset\TT$.
+Define the bi-infinite binary readout $w=(w_n)_{n\in\ZZ}$ by $w_n:=\ind\{x_n\in W_\alpha\}$.
+\end{definition}
+
+\begin{remark}[Boundary-avoidance convention]\label{rem:sturmian_boundary_avoidance}
+\AuditTag To avoid discontinuity issues at the half-open window boundary, we assume (as in Theorem~\ref{thm:sturmian_complexity}) that the orbit never hits the boundary points:
+$x_n\notin\{0,1-\alpha\}$ for all $n\in\ZZ$.
+This is an explicit convention on $(\rho,\alpha)$ and does not affect the factor language.
+\end{remark}
+
+\begin{definition}[Factor occurrence times]\label{def:factor_occurrence_times}
+\MathTag For a finite word $u\in\{0,1\}^m$, define the set of occurrence times in $w$ by
+\[
+\mathrm{Occ}_w(u):=\{k\in\ZZ:\ w_k w_{k+1}\cdots w_{k+m-1}=u\}.
+\]
+\end{definition}
+
+\begin{theorem}[Uniform recurrence of factors]\label{thm:sturmian_uniform_recurrence}
+\MathTag Let $w$ be the canonical rotation-window coding from Definition~\ref{def:canonical_rotation_window_coding}, under the boundary-avoidance convention of Remark~\ref{rem:sturmian_boundary_avoidance}.
+Then every factor that occurs in $w$ is uniformly recurrent:
+for every $u\in\mathcal{L}_m(w)$ there exists $L=L(u)\in\NN$ such that $\mathrm{Occ}_w(u)$ is syndetic (Definition~\ref{def:syndetic_subset}).
+Equivalently, occurrences of $u$ in $w$ have gaps bounded by $L$.
+\end{theorem}
+
+\begin{proof}
+Fix $m\ge 1$ and a factor $u\in\mathcal{L}_m(w)$.
+Define the length-$m$ block map (as in the proof of Theorem~\ref{thm:sturmian_complexity})
+\[
+F_m:\TT\to\{0,1\}^m,\qquad
+F_m(x):=\big(\ind\{x\in W_\alpha\},\ind\{x+\alpha\in W_\alpha\},\ldots,\ind\{x+(m-1)\alpha\in W_\alpha\}\big).
+\]
+Let $U_u:=F_m^{-1}(\{u\})$.
+By construction, $k\in\mathrm{Occ}_w(u)$ if and only if $x_k\in U_u$.
+
+\medskip
+\noindent\textbf{Step 1: $U_u$ contains a nonempty open set.}
+By the breakpoint analysis in Theorem~\ref{thm:sturmian_complexity}, the circle is partitioned by the finite breakpoint set
+$B_m=\{-k\alpha:\ k=0,1,\ldots,m\}$ into $m+1$ half-open intervals on each of which $F_m$ is constant.
+Since $u$ occurs in $w$, there exists $k$ with $F_m(x_k)=u$, hence $x_k\in U_u$.
+Because the orbit avoids the breakpoints by Remark~\ref{rem:sturmian_boundary_avoidance}, $x_k$ lies in the interior of some partition interval on which $F_m$ is constant equal to $u$.
+Therefore $U_u$ contains a nonempty open arc $V_u\subset U_u$.
+
+\medskip
+\noindent\textbf{Step 2: return times to $V_u$ are syndetic.}
+By Lemma~\ref{lem:irrational_rotation_minimal}, the rotation system $(\TT,R_\alpha)$ is minimal.
+Apply Lemma~\ref{lem:return_times_syndetic} with $X=\TT$, $T=R_\alpha$, $x=x_0:=\rho\ (\mathrm{mod}\ 1)$, and the nonempty open set $V_u$.
+Then the set $\{n\in\ZZ:\ R_\alpha^n(x_0)\in V_u\}$ is syndetic.
+But $R_\alpha^n(x_0)=x_n$, so $\{n:\ x_n\in V_u\}\subseteq \{n:\ x_n\in U_u\}=\mathrm{Occ}_w(u)$.
+Hence $\mathrm{Occ}_w(u)$ is syndetic as well.
+\end{proof}
+
+\begin{remark}[Interpretive boundary]\label{rem:uniform_recurrence_interpretive_boundary}
+\AuditTag Theorem~\ref{thm:sturmian_uniform_recurrence} is a theorem about symbolic return times in the canonical rotation-window readout.
+Interpreting it as a claim about biological persistence, negentropy, or ``avoidance of thermal death'' is an interface-level hypothesis and must be marked as such.
+\end{remark}
+

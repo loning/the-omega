@@ -216,12 +216,36 @@ flowchart TD
 - **内容**：任何关于“分岔/切换/更新”的叙事，若要在本文纪律下成为可审计陈述，必须落到显式有限候选族 $\mathcal F$、显式目标 $J$、与确定性 tie-break（从而可写成 $\mathsf{Sel}(\mathcal F,J,\prec)$，并在必要时给出 objective gap 与稳定性门槛）。所谓“prefix-consistent switching”必须明确保留哪类约束（例如前缀投影约束）并将更新限制在相应 extension fiber 内。
 - **文稿定位**：
   - `sections/U_00_unified_spine.tex`：`\ref{sec:unified_spine}`（统一入口）
+  - `sections/U_00_unified_spine.tex`：`\ref{subsec:protocol_sampling_certificate_unification}` 与 Table~`\ref{tab:protocol_readout_certificate_gate}`（协议对象→读出→证书→门禁的一张统一表）
+  - `sections/U_00_unified_spine.tex`：Definition~`\ref{def:obstruction_functional}` 与 Remark~`\ref{rem:obstruction_functional_instances}`（把失败点统一写成“更新图不交换”的 obstruction）
   - `sections/appendices/69a_branching_selection_rigidity.tex`：`\ref{app:branching_selection_rigidity}`（Sel/Upd/gap 的纯数学载体）
   - `sections/appendices/19_tick_cap_derivation.tex`：tick+CAP 闭合骨架（统一把闭合步读作 Sel 实例）
   - `sections/C_13_embedding_gap_projection.tex`：`\ref{sec:embedding_gap_projection}`（投影读出作为 Sel 实例；gap/cohomology 作为失败点）
   - `sections/C_14_cut_and_project_bridge.tex`：`\ref{sec:cut_and_project_bridge}`（prefix/fiber 的几何母语：staircase 与模型集）
 - **层级**：Math/Audit（数学载体 + 审计门槛；不作为 theorem-level folding 前提）
 - **最小失败点**：若更新/切换叙事依赖未声明的候选族扩大、未声明的 tie-break、或不可审计的连续超参数，则必须降级为解释性语言（\AuditTag）并回指 `minimal_failure_point_templates` 的“隐藏扫描/扩族”类失败点。
+
+### IC-14：Sturmian 持续性证书族（复杂度/熵率 + 回归/return time 尺度）
+
+- **内容**：把“持续探索/不热寂化”的叙事压缩为一组可审计的符号动力学证书：
+  - Sturmian 最小复杂度 $p(n)=n+1$ 与零熵率 $h_{\mathrm{top}}=0$；
+  - uniform recurrence：每个出现过的因子以有界间隔复现；
+  - 两尺度回归上界：当 $q_k\le m<q_{k+1}$ 时，任意长度-$m$ 因子满足回归间隔 $\tau\le q_k+q_{k+1}$；
+  - bounded-type 线性上界：若 partial quotients 有界 $a_i\le A$，则进一步得到 $\tau\le (A+2)m$；黄金分支 $A=1$ 给出 $\tau\le 3m$ 的最小常数（在该有界类内）；
+  - （补充）由 discrepancy 在 convergent 长度上的证书导出的区间命中时间上界。
+  - **桥接（joint minimax）**：同一个 bounded-type 常数 $A$ 同时控制 discrepancy 的显式常数与 return-gap 的显式常数；因此 CAP 选择黄金分支（$A=1$）不仅最小化 mismatch 证书族常数，也最小化 persistence 证书族常数（见 `sections/C_10_hpa_readout_dynamics.tex` 的 rigidity bridge 注记）。
+  该 IC 的目的不是赋予“生命”以定理地位，而是提供一条 theorem-facing 的“结构持续性”证书链，供接口层在需要时引用。
+- **文稿定位**：
+  - `sections/C_10_hpa_readout_dynamics.tex`：discrepancy 证书段落中的统一指针
+  - `sections/F_16_geometric_dynamics_hpa_system.tex`：X.2.2（Sturmian/回归尺度）与 X.5（统一结论）
+  - `sections/appendices/26_sturmian_entropy.tex`：`p(n)=n+1` 与零熵率（`thm:sturmian_complexity`，`cor:sturmian_top_entropy`）
+  - `sections/appendices/26b_sturmian_uniform_recurrence.tex`：uniform recurrence（`thm:sturmian_uniform_recurrence`）
+  - `sections/appendices/26d_sturmian_return_times_qk.tex`：$\tau\le q_k+q_{k+1}$（`thm:sturmian_return_time_qk_bound`）
+    与 bounded-type 线性上界（`cor:sturmian_return_bounded_type_linear`）
+  - `sections/appendices/26c_rotation_hitting_time_from_discrepancy.tex`：convergent-scale hitting bound（`thm:rotation_interval_hitting_convergent`）
+  - `sections/appendices/28_discrepancy_ostrowski_bounds.tex`：discrepancy 证书（`app:discrepancy_ostrowski`）
+- **层级**：Math（复杂度/回归定理）+ Audit（统一指针与解释边界）；Iface 只允许把这些证书当作 proxy，不允许反向支撑 folding core。
+- **最小失败点**：若读出窗口/分割不满足 Sturmian 的 canonical 条件（例如窗口长度不等于 slope，或命中边界导致不连续），则上述证书链需改写为对应窗口族的证书或降级为 Audit，并显式记录条件违约。
 
 ### IC-12：kernel weighted pressure monotonicity ↔ thermodynamic pressure ↔ pole barrier
 

@@ -107,6 +107,12 @@ flowchart TB
   P_scan("均匀扫描代理（覆盖/各向同性 / Uniform-Scan Proxy (Coverage/Isotropy)）<br/>类型：代理 / Proxy<br/>label: subsec:phyllotaxis_overlay<br/>Δθ = 2π/φ² (golden-angle step)")
   M_golden -.- P_scan
 
+  M_sturmian_persist["Sturmian 持续性证书族（complexity/return scales）<br/>类型：审计 / Audit<br/>label: app:sturmian_return_times_qk / app:sturmian_entropy / app:sturmian_uniform_recurrence<br/>p(n)=n+1; h_top=0; τ≤q_k+q_{k+1}; bounded-type: τ≤(A+2)m (golden: 3m)"]
+  P_sturmian_persist("持续性/回归尺度代理（persistence / return-time proxies）<br/>类型：审计 / Audit<br/>label: app:sturmian_return_times_qk<br/>bounded gaps; q_k-scales; joint-minimax at A=1")
+  M_sturmian_persist -.- P_sturmian_persist
+
+  M_golden --> M_sturmian_persist
+
   M_gauss["Gauss map 重整化（黄金分支固定点）<br/>类型：审计 / Audit<br/>label: rem:gauss_map_fixed_point<br/>G(ξ)={1/ξ};  α=1/φ is a fixed point"]
   P_gauss("扫描参数重整化代理（renormalization-stable）<br/>类型：审计 / Audit<br/>label: rem:gauss_map_fixed_point<br/>α=[0;1,1,1,…] (all CF digits minimal)")
   M_gauss -.- P_gauss
@@ -2190,8 +2196,16 @@ flowchart TB
 | `M_cap` | `\label{ax:cap}` | `c* = argmin_{c∈C} J(c) (deterministic tie-break)` | `sections/I_00_introduction.tex` |
 | `P_select` | `\label{app:cap_audit_template}` | `θ* = argmin_{θ∈Θ(B)} J(θ) (deterministic tie-break)` | `sections/appendices/13_cap_audit_template.tex` |
 | `M_selupd` | `\label{sec:unified_spine}` | `Sel(F,J,≺);  Upd:(F,J,≺)→(F',J',≺');  gap-stability (RB-D)` | `sections/U_00_unified_spine.tex` |
+| `M_selupd` | `\label{subsec:protocol_sampling_certificate_unification}` | `Prot=(X,Θ;K;R); certificates-as-objectives J; Sel/Upd/gap gate for readout/certificates` | `sections/U_00_unified_spine.tex` |
+| `M_selupd` | `\label{tab:protocol_readout_certificate_gate}` | `protocol/readout→certificate→gate→failure-point table (deep reuse index)` | `sections/U_00_unified_spine.tex` |
+| `M_selupd` | `\label{def:readout_certificate_composition}` | `Cert_C(K)=(C∘R)(X,Θ,K) as minimal functorial packaging` | `sections/U_00_unified_spine.tex` |
+| `M_selupd` | `\label{rem:obstruction_as_noncommuting_diagram}` | `obstruction channel = non-commuting update diagram (gap/cohomology, finite-part, noncommuting cuts)` | `sections/U_00_unified_spine.tex` |
+| `M_selupd` | `\label{def:obstruction_functional}` | `Obs(Upd;C;K)=Cert_C(Upd(K))−Upd_C(Cert_C(K)) (undefined if no induced rule)` | `sections/U_00_unified_spine.tex` |
+| `M_selupd` | `\label{rem:obstruction_functional_instances}` | `instances: H^1(gap), finite-part coordinate dependence, noncommuting cuts` | `sections/U_00_unified_spine.tex` |
 | `P_selupd` | `\label{app:branching_selection_rigidity}` | `prefix projection π;  Ext_m(u);  objective gap and switching discipline` | `sections/appendices/69a_branching_selection_rigidity.tex` |
 | `M_golden` | `\label{prop:golden_least_discrepancy}` | `C_m(α) := Σ_{k=0..m} a_{k+1} (finite-depth continued-fraction digit-sum proxy);  mismatch certificates: eq:star_discrepancy_def — D*ₙ` | `sections/C_10_hpa_readout_dynamics.tex` |
+| `M_sturmian_persist` | `\label{app:sturmian_entropy}` / `\label{app:sturmian_uniform_recurrence}` / `\label{app:sturmian_return_times_qk}` | `Sturmian persistence certificates: p(n)=n+1 ⇒ h_top=0; uniform recurrence; τ≤q_k+q_{k+1}; bounded-type τ≤(A+2)m (golden: 3m)` | `sections/appendices/26_sturmian_entropy.tex` / `sections/appendices/26b_sturmian_uniform_recurrence.tex` / `sections/appendices/26d_sturmian_return_times_qk.tex` |
+| `P_sturmian_persist` | `\label{app:sturmian_return_times_qk}` | `persistence/return-time proxy family (audit)` | `sections/F_16_geometric_dynamics_hpa_system.tex` |
 | `P_scan` | `\label{subsec:phyllotaxis_overlay}` | `Δθ = 2π/φ² (golden-angle step)` | `sections/I_04_golden_angle_phyllotaxis_overlay.tex` |
 | `M_gauss` | `\label{rem:gauss_map_fixed_point}` | `G(ξ)={1/ξ};  α=φ⁻¹ is a fixed point;  α=[0;1,1,1,…]` | `sections/C_10_hpa_readout_dynamics.tex` |
 | `P_gauss` | `\label{rem:gauss_map_fixed_point}` | `renormalization-stable scan slope (audit viewpoint)` | `sections/C_10_hpa_readout_dynamics.tex` |
