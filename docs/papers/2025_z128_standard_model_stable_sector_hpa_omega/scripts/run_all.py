@@ -42,11 +42,15 @@ class Step:
     always_run: bool = False
 
 
-RUN_ALL_CACHE_VERSION = 2
+RUN_ALL_CACHE_VERSION = 3
+RUN_ALL_FILEHASH_CACHE_VERSION = 1
 
 
 def _run_all_cache_file() -> Path:
     return cache_path("run_all_steps.pkl")
+
+def _run_all_filehash_cache_file() -> Path:
+    return cache_path("run_all_filehash.pkl")
 
 
 def _load_run_all_cache() -> dict[str, str]:
@@ -81,6 +85,55 @@ def _save_run_all_cache(cache: dict[str, str]) -> None:
         save_pickle_atomic(
             _run_all_cache_file(),
             {"version": RUN_ALL_CACHE_VERSION, "steps": dict(cache)},
+        )
+    except Exception:
+        # Best-effort; never fail the pipeline because of caching.
+        pass
+
+
+def _load_run_all_filehash_cache() -> dict[str, tuple[int, int, str]]:
+    """
+    Mapping: absolute_path -> (mtime_ns, size_bytes, sha256_hex).
+
+    This cache avoids re-reading unchanged dependency files when computing
+    content fingerprints for steps. It is safe because we key by (mtime_ns, size).
+    """
+    p = _run_all_filehash_cache_file()
+    if cache_disabled() or (not p.is_file()):
+        return {}
+    try:
+        obj = load_pickle(p)
+        if not isinstance(obj, dict):
+            return {}
+        if int(obj.get("version", -1)) != RUN_ALL_FILEHASH_CACHE_VERSION:
+            return {}
+        files = obj.get("files", {})
+        if not isinstance(files, dict):
+            return {}
+        out: dict[str, tuple[int, int, str]] = {}
+        for k, v in files.items():
+            if not isinstance(k, str):
+                continue
+            if (
+                isinstance(v, tuple)
+                and len(v) == 3
+                and isinstance(v[0], int)
+                and isinstance(v[1], int)
+                and isinstance(v[2], str)
+            ):
+                out[k] = (int(v[0]), int(v[1]), str(v[2]))
+        return out
+    except Exception:
+        return {}
+
+
+def _save_run_all_filehash_cache(file_cache: dict[str, tuple[int, int, str]]) -> None:
+    if cache_disabled():
+        return
+    try:
+        save_pickle_atomic(
+            _run_all_filehash_cache_file(),
+            {"version": RUN_ALL_FILEHASH_CACHE_VERSION, "files": dict(file_cache)},
         )
     except Exception:
         # Best-effort; never fail the pipeline because of caching.
@@ -191,6 +244,41 @@ def _deps_fingerprint(deps: Iterable[Path]) -> str:
     """
     Stable fingerprint for a set of local dependency files (content-based).
     """
+    return _deps_fingerprint_cached(deps, file_cache=None, file_cache_dirty=None)
+
+
+def _file_sha256_cached(
+    p: Path,
+    *,
+    file_cache: dict[str, tuple[int, int, str]] | None,
+    file_cache_dirty: list[bool] | None,
+) -> str:
+    """
+    Return sha256(content) for p, using a per-file cache keyed by (mtime_ns, size).
+    """
+    if file_cache is None:
+        return hashlib.sha256(p.read_bytes()).hexdigest()
+
+    key = str(p.resolve())
+    st = p.stat()
+    cur = (int(getattr(st, "st_mtime_ns", int(st.st_mtime * 1e9))), int(st.st_size))
+    prev = file_cache.get(key)
+    if prev is not None and prev[0] == cur[0] and prev[1] == cur[1]:
+        return prev[2]
+
+    h = hashlib.sha256(p.read_bytes()).hexdigest()
+    file_cache[key] = (cur[0], cur[1], h)
+    if file_cache_dirty is not None:
+        file_cache_dirty[0] = True
+    return h
+
+
+def _deps_fingerprint_cached(
+    deps: Iterable[Path],
+    *,
+    file_cache: dict[str, tuple[int, int, str]] | None,
+    file_cache_dirty: list[bool] | None,
+) -> str:
     h = hashlib.sha256()
     root = scripts_dir()
     for p in sorted(set(deps), key=lambda x: str(x)):
@@ -200,7 +288,7 @@ def _deps_fingerprint(deps: Iterable[Path]) -> str:
             rel = str(p.resolve())
         h.update(rel.encode("utf-8"))
         h.update(b"\0")
-        h.update(p.read_bytes())
+        h.update(_file_sha256_cached(p, file_cache=file_cache, file_cache_dirty=file_cache_dirty).encode("utf-8"))
         h.update(b"\0")
     return h.hexdigest()
 
@@ -1674,6 +1762,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     cache_dirty = False
     ran_registry_step = False
     any_step_ran = False
+    file_cache = _load_run_all_filehash_cache() if use_skip else {}
+    file_cache_dirty = [False]
 
     for step in steps:
         step_t0 = time.perf_counter()
@@ -1685,7 +1775,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         if use_skip:
             deps = _script_deps_closure(script_path, module_map, deps_memo)
             extra_inputs = _extra_input_paths(step.depends_on)
-            fp = _deps_fingerprint(set(deps) | set(extra_inputs))
+            fp = _deps_fingerprint_cached(
+                set(deps) | set(extra_inputs),
+                file_cache=file_cache,
+                file_cache_dirty=file_cache_dirty,
+            )
             have = _have_outputs(step.expected_outputs)
             cached_fp = cache.get(step.script)
             effective_always_run = bool(step.always_run) or (
@@ -1759,6 +1853,8 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if cache_dirty:
         _save_run_all_cache(cache)
+    if use_skip and file_cache_dirty[0]:
+        _save_run_all_filehash_cache(file_cache)
 
     print("[run_all] OK", flush=True)
     return 0

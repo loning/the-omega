@@ -46,13 +46,19 @@ def main() -> None:
     steps = run_all.build_steps()
     module_map = run_all._local_module_map()
     deps_memo: dict[Path, set[Path]] = {}
+    file_cache = run_all._load_run_all_filehash_cache()
+    file_cache_dirty = [False]
 
     records: List[Dict[str, Any]] = []
     for st in steps:
         script_path = scripts_dir() / st.script
         deps = run_all._script_deps_closure(script_path, module_map, deps_memo)
         extra_inputs = [paper_root() / p for p in getattr(st, "depends_on", [])]
-        dep_fp = run_all._deps_fingerprint(set(deps) | set(extra_inputs))
+        dep_fp = run_all._deps_fingerprint_cached(
+            set(deps) | set(extra_inputs),
+            file_cache=file_cache,
+            file_cache_dirty=file_cache_dirty,
+        )
         script_hash = _sha256_file(script_path) if script_path.is_file() else ""
 
         outputs: List[Dict[str, Any]] = []
@@ -95,6 +101,8 @@ def main() -> None:
     old_json = out_json.read_text(encoding="utf-8") if out_json.is_file() else ""
     if new_json != old_json:
         out_json.write_text(new_json, encoding="utf-8")
+    if file_cache_dirty[0]:
+        run_all._save_run_all_filehash_cache(file_cache)
 
     # Minimal LaTeX summary.
     summary = [
