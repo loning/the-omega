@@ -424,6 +424,71 @@ Platforms with measurable near-unitary scattering matrices (microwave/optical ca
 \paragraph{Fail condition.}
 If delay-derived lapse ratios fail to correlate with independently measured clock-rate/redshift proxies under the same platform identification (beyond stated experimental/systematic uncertainty), the overhead--lapse matching dictionary is disfavored.
 
+\subsubsection{P11: bandwidth--window stability as a macroscopic comparability contract (interface/audit)}
+\label{subsec:p11_bandwidth_window_stability}
+
+\paragraph{Statement.}
+\AuditTag Any promotion of frequency-domain readouts (phase, delay, linewidth) to protocol claims is conditional on \emph{windowed comparability}:
+within a declared protocol state and a declared platform identification, the inferred scalar readout must be stable under bounded changes of
+(i) the frequency band $B$ and (ii) the time window $W$ used to construct the estimator.
+This is a macroscopic, data-facing prediction: it does not require black-hole interior access.
+
+\paragraph{Observable.}
+Let $\widehat\theta(B,W)$ be a scalar readout extracted from data using a declared procedure on band $B$ and window $W$.
+Concrete examples include:
+(i) a delay summary $\widehat\tau_{\mathrm{WS}}(B,W)$ from a near-unitary $S(\omega)$ (Section~\ref{subsec:p6_wigner_smith_delay}),
+(ii) a linewidth proxy $\widehat\Gamma(B,W)$ from a resonance peak, or
+(iii) any logdet/phase-derived proxy routed through the determinant carrier (Appendix~\ref{app:operator_mother_space} and Appendix~\ref{app:time_mass_delay}).
+
+\paragraph{Stability gate (finite families).}
+\AuditTag Declare finite families $\mathcal B$ (bands) and $\mathcal W$ (windows) and compute the stability envelope
+\[
+\Delta_\theta := \operatorname{median}_{B\in\mathcal B,\,W\in\mathcal W}\Bigl|\widehat\theta(B,W)-\operatorname{median}_{B',W'}\widehat\theta(B',W')\Bigr|.
+\]
+The prediction is that, \emph{conditional on the stated gates}, $\Delta_\theta$ is small relative to the stated uncertainty budget and does not require ad hoc choices of $(B,W)$.
+In particular, the conclusion should not flip from ``pass'' to ``fail'' merely by moving within the declared bounded families.
+
+\paragraph{Quantitative rejection envelope (recommended).}
+\AuditTag To turn ``stability'' into a rejectable macroscopic hypothesis, report a dimensionless instability ratio
+\[
+\delta_\theta:=\frac{\Delta_\theta}{\max\{|\tilde\theta|,\theta_{\min}\}},
+\qquad
+\tilde\theta:=\operatorname{median}_{B\in\mathcal B,\,W\in\mathcal W}\widehat\theta(B,W),
+\]
+with an explicit floor $\theta_{\min}>0$ appropriate to the platform units (to avoid dividing by a vanishing median).
+The rejection envelope should be stated as a single auditable bound
+\[
+\delta_\theta \le \epsilon_{\mathrm{BW}},
+\]
+where $\epsilon_{\mathrm{BW}}$ is decomposed into declared contributions (measurement/systematics, estimator discretization, and window/band effects),
+in the same spirit as the QG9-M1 error-budget discipline (Appendix~\ref{app:qg9_m1_windowed_comparability} and Appendix~\ref{app:eft_error_bounds}).
+If $\epsilon_{\mathrm{BW}}$ is not declared, the statement remains interpretive rather than falsifiable.
+
+\paragraph{Coverage gate (admissible fraction).}
+\AuditTag Let $\mathcal A\subseteq\mathcal B\times\mathcal W$ be the admissible subset that passes the declared gates.
+To avoid post-hoc selection, the comparability contract requires that $|\mathcal A|$ be a nontrivial fraction of $|\mathcal B||\mathcal W|$ under the stated family choices.
+If the admissible fraction is too small (e.g.\ dominated by edge/bound failures), the correct outcome is not ``pass by cherry-picking'' but ``inconclusive under the declared families'': enlarge data, change the platform identification, or revise the estimator family with an explicit registry update.
+
+\paragraph{Minimal failure points (why a window is ``not comparable'').}
+\AuditTag If a window/band choice violates a declared gate, it is not admissible for the comparability test and must be reported as such rather than used to tune conclusions.
+Canonical gate failures include:
+\begin{enumerate}
+\item \textbf{Band-edge peak / peak localization failure.} A resonance peak sits at the band boundary (edge artifact), so a linewidth/FWHM statistic is ill-posed (``PEAKEDGE'').
+\item \textbf{Time-domain damping non-identifiable.} The inferred damping time constant is pinned to a declared upper bound or fails a declared envelope-quality gate (``TAUBOUND/TAUFAIL/ENVFAIL'').
+\item \textbf{Non-unitary / non-smooth scattering band.} $S(\omega)$ is not near-unitary or is not stably differentiable/unwrap-able in the declared band (S1 boundary), so WS delay must be downgraded to a proxy.
+\end{enumerate}
+
+\paragraph{Data channel.}
+Any macroscopic platform with measurable transfer/scattering response is admissible:
+microwave/optical cavities (S-parameters), mechanical resonators (Q/linewidth), and other systems with reproducible resonance structure.
+As a real-data audit instance, the manuscript includes a windowed gate table for GWOSC strain ringdown segments generated by
+\texttt{scripts/exp\_gwosc\_ringdown\_linewidth\_audit.py} (artifacts \texttt{gwosc\_ringdown\_linewidth\_*.tex}).
+
+\paragraph{Fail condition.}
+If, after excluding non-admissible windows via the declared gates, the remaining admissible family still yields large instability $\Delta_\theta$ without a corresponding declared uncertainty budget,
+or if stable conclusions require untracked changes of $(B,W)$ outside the declared bounded families,
+then the ``frequency readout $\rightarrow$ protocol claim'' comparability contract is falsified as stated for that platform/channel.
+
 
 \subsubsection{P7: \texorpdfstring{$\gamma_{\mathrm{dict}}$}{gamma\_dict} cross-observation consistency (interface/audit)}
 \label{subsec:p7_gamma_crossobs}
