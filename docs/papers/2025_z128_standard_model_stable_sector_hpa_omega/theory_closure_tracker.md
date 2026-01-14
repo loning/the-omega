@@ -216,6 +216,8 @@ flowchart TD
 - **内容**：任何关于“分岔/切换/更新”的叙事，若要在本文纪律下成为可审计陈述，必须落到显式有限候选族 $\mathcal F$、显式目标 $J$、与确定性 tie-break（从而可写成 $\mathsf{Sel}(\mathcal F,J,\prec)$，并在必要时给出 objective gap 与稳定性门槛）。所谓“prefix-consistent switching”必须明确保留哪类约束（例如前缀投影约束）并将更新限制在相应 extension fiber 内。
 - **文稿定位**：
   - `sections/U_00_unified_spine.tex`：`\ref{sec:unified_spine}`（统一入口）
+  - `sections/U_00_unified_spine.tex`：`\ref{subsec:protocol_sampling_certificate_unification}` 与 Table~`\ref{tab:protocol_readout_certificate_gate}`（协议对象→读出→证书→门禁的一张统一表）
+  - `sections/U_00_unified_spine.tex`：Definition~`\ref{def:obstruction_functional}` 与 Remark~`\ref{rem:obstruction_functional_instances}`（把失败点统一写成“更新图不交换”的 obstruction）
   - `sections/appendices/69a_branching_selection_rigidity.tex`：`\ref{app:branching_selection_rigidity}`（Sel/Upd/gap 的纯数学载体）
   - `sections/appendices/19_tick_cap_derivation.tex`：tick+CAP 闭合骨架（统一把闭合步读作 Sel 实例）
   - `sections/C_13_embedding_gap_projection.tex`：`\ref{sec:embedding_gap_projection}`（投影读出作为 Sel 实例；gap/cohomology 作为失败点）

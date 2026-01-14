@@ -2183,6 +2183,12 @@ flowchart TB
 | `M_cap` | `\label{ax:cap}` | `c* = argmin_{c∈C} J(c) (deterministic tie-break)` | `sections/I_00_introduction.tex` |
 | `P_select` | `\label{app:cap_audit_template}` | `θ* = argmin_{θ∈Θ(B)} J(θ) (deterministic tie-break)` | `sections/appendices/13_cap_audit_template.tex` |
 | `M_selupd` | `\label{sec:unified_spine}` | `Sel(F,J,≺);  Upd:(F,J,≺)→(F',J',≺');  gap-stability (RB-D)` | `sections/U_00_unified_spine.tex` |
+| `M_selupd` | `\label{subsec:protocol_sampling_certificate_unification}` | `Prot=(X,Θ;K;R); certificates-as-objectives J; Sel/Upd/gap gate for readout/certificates` | `sections/U_00_unified_spine.tex` |
+| `M_selupd` | `\label{tab:protocol_readout_certificate_gate}` | `protocol/readout→certificate→gate→failure-point table (deep reuse index)` | `sections/U_00_unified_spine.tex` |
+| `M_selupd` | `\label{def:readout_certificate_composition}` | `Cert_C(K)=(C∘R)(X,Θ,K) as minimal functorial packaging` | `sections/U_00_unified_spine.tex` |
+| `M_selupd` | `\label{rem:obstruction_as_noncommuting_diagram}` | `obstruction channel = non-commuting update diagram (gap/cohomology, finite-part, noncommuting cuts)` | `sections/U_00_unified_spine.tex` |
+| `M_selupd` | `\label{def:obstruction_functional}` | `Obs(Upd;C;K)=Cert_C(Upd(K))−Upd_C(Cert_C(K)) (undefined if no induced rule)` | `sections/U_00_unified_spine.tex` |
+| `M_selupd` | `\label{rem:obstruction_functional_instances}` | `instances: H^1(gap), finite-part coordinate dependence, noncommuting cuts` | `sections/U_00_unified_spine.tex` |
 | `P_selupd` | `\label{app:branching_selection_rigidity}` | `prefix projection π;  Ext_m(u);  objective gap and switching discipline` | `sections/appendices/69a_branching_selection_rigidity.tex` |
 | `M_golden` | `\label{prop:golden_least_discrepancy}` | `C_m(α) := Σ_{k=0..m} a_{k+1} (finite-depth continued-fraction digit-sum proxy);  mismatch certificates: eq:star_discrepancy_def — D*ₙ` | `sections/C_10_hpa_readout_dynamics.tex` |
 | `P_scan` | `\label{subsec:phyllotaxis_overlay}` | `Δθ = 2π/φ² (golden-angle step)` | `sections/I_04_golden_angle_phyllotaxis_overlay.tex` |
