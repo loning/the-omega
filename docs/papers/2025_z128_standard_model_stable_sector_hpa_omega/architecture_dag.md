@@ -230,6 +230,13 @@ flowchart TB
   M_abel --> M_htf_lite_pack
   M_htf_lite_pack -.-> P_htf_lite_evidence
 
+  P_four_way_contract("BH/WH four-way contract (audit-only)<br/>类型：审计 / Audit<br/>label: prop:four_way_unification_contract_form<br/>unification = contract form (not ontology)")
+  P_four_way_checklist("BH/WH contract checklist (audit)<br/>类型：审计 / Audit<br/>label: rem:bh_wh_additional_unifications_checklist<br/>gates + ledgers + baselines + fallback")
+  P_four_way_contract --> P_four_way_checklist
+  M_operator_mother -.-> P_four_way_contract
+  M_abel -.-> P_four_way_contract
+  M_htf_lite_pack -.-> P_four_way_contract
+
   M_fold["Fold6 映射（64→21；像/原像结构）<br/>类型：构造 / Construction<br/>label: subsec:fold6_map<br/>Fold₆(N):=(c₁,…,c₆) ∈ X₆ (eq:fold6_def)"]
   P_fold("coarse-graining 压缩（稳定扇区统计）<br/>类型：代理 / Proxy<br/>label: subsec:fold6_map<br/>Ω₆={0,1}⁶ (|Ω₆|=64), X₆⊂Ω₆ (|X₆|=21) ⇒ 64→21")
   M_fold -.- P_fold
@@ -292,6 +299,7 @@ flowchart TB
   class P_pressure,P_adelic_prime_orbit phys_audit;
   class P_operator_mother phys_audit;
   class P_htf_lite_evidence phys_audit;
+  class P_four_way_contract,P_four_way_checklist phys_audit;
 ```
 
 ### 图 3：显示预算与空间寻址（6-DoF coarse-lock → bulk d=3 → addressing/local） / Fig. 3: Display Budget and Spatial Addressing (6-DoF coarse-lock → bulk d=3 → addressing/local)

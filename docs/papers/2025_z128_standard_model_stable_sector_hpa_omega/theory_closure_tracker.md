@@ -229,6 +229,18 @@ flowchart TD
 - **层级**：Audit/Math（证书门禁与有限工件）；Iface 仅允许作为解释性桥接词典，不允许反向支撑 folding core。
 - **最小失败点**：若桥接恒等式/核族/重整化约定不可审计，或 detectability/noncancellation 依赖未声明的同点抵消，则必须将“zeta-zero mode”叙事回退为 pole-barrier 的通用模板，并保持 wormhole-like 通道仅在 pointer-jump + 账本 + 反事实基线的协议层口径内成立。
 
+### IC-16：BH/WH 四重统一合同（micro/macro + quantum/classical + discrete/continuous + space/time）
+
+- **内容**：把“黑洞/虫洞统一四组二元”的叙事收束为一个 audit-only 的**rigidity contract form**：统一的不是本体同一性，而是跨模块的可审计声明格式与门禁——trapping 只能通过 delay/overhead/linewidth 代理报告；wormhole-like 只能作为 paid pointer-jump（显式台账 + 反事实基线 + 互补性证书）；连续代表仅在声明的 matching/windowed-comparability 合同下使用；任何桥接失败必须触发最小回退而不影响 theorem-level folding 链。
+- **文稿定位**：
+  - `sections/F_16_geometric_dynamics_hpa_system.tex`：Proposition~`\ref{prop:four_way_unification_contract_form}` 与 Remark~`\ref{rem:bh_wh_additional_unifications_checklist}`（正文权威入口）
+  - `sections/I_00_introduction.tex`：引言总论指针（Four-way unification thesis）
+  - `sections/V_31_mass_spectrum_closure.tex`：微观统一入口（delay/linewidth ↔ return-rate proxy；并指向该命题）
+  - `sections/appendices/8z_minimal_failure_point_templates.tex`：散射/桥接失败点（S1--S3；IC13）
+  - `sections/appendices/92_interface_bridge_assumptions_failure_modes.tex`：B5（HTF-lite 回退口径）
+- **层级**：Audit/Iface（叙事门禁与回退纪律；不进入 theorem-level folding 依赖链）
+- **最小失败点**：若匹配层字典/窗口 comparability 未声明或不稳定，则必须降级为 within-protocol 的账本/反事实陈述；若 HTF-lite 失败（B5/IC13）则禁止任何 zeta-zero 叙事；若散射幺正窗失效（S1）则 delay/linewidth 只能作为 proxy 并停止解析证书升级。
+
 ### IC-15：Sel/Upd/gap 统一词汇的“显式有限族”门槛（branching/selection rigidity gate）
 
 - **内容**：任何关于“分岔/切换/更新”的叙事，若要在本文纪律下成为可审计陈述，必须落到显式有限候选族 $\mathcal F$、显式目标 $J$、与确定性 tie-break（从而可写成 $\mathsf{Sel}(\mathcal F,J,\prec)$，并在必要时给出 objective gap 与稳定性门槛）。所谓“prefix-consistent switching”必须明确保留哪类约束（例如前缀投影约束）并将更新限制在相应 extension fiber 内。
@@ -580,6 +592,7 @@ flowchart TD
 | 算子母空间字典入口（operator mother space dictionary） | source operator + readout kernels + determinant bookkeeping；finite-rank 更新闭合（字典层） | Iface/Audit | `app:operator_mother_space_dictionary` | [x] |
 | 算子母空间（operator mother space） | trace-class resolvent/行列式 bookkeeping；finite-rank 更新闭合（字典层） | Math/Audit | `app:operator_mother_space` | [x] |
 | HTF-lite bridge（audit-only） | unit-disk holomorphy ↔ interior poles 的桥接门禁；有限核族/有限窗口证据工件 | Audit/Math | `ass:htf_lite_operator_pack`, `tab:htf_lite_zero_mode_pole_audit`, `tab:htf_lite_resolvent_identity_audit`, `tab:htf_lite_detectability_audit`, `tab:htf_lite_detectability_finite_window_audit` | [x] |
+| BH/WH 四重统一合同（audit-only） | 四组二元统一为“合同形状/门禁格式”而非本体同一；并给出失败点回退 | Audit/Iface | `prop:four_way_unification_contract_form`, `rem:bh_wh_additional_unifications_checklist` | [x] |
 | 波粒二象性/延迟选择 | 相干交叉项 vs 事件化/去相干混合；互补性界 $V^2+D^2\le 1$；delayed-choice/eraser | Iface/Audit | `app:wave_particle_delayed_choice` | [x] |
 | RG 运行 | $\mathrm{d}g/\mathrm{d}r=(\log\varphi)\beta(g)$ | Math | `eq:rg_in_r` | [x] |
 | 稳定扇区计数（grammar/counts） | $X_m\subset\Omega_m$；$|X_m|=F_{m+2}$ | Math | `lem:xm_fib` | [x] |
