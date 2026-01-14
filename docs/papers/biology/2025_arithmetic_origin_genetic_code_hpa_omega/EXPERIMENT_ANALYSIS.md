@@ -276,6 +276,7 @@ This section is the **main development plan** for scaling the project on an A100
 ### Task Claims
 
 - 2026-01-14 — **COMPLETED**: 模块 E（Ribo-seq 暂停桥接）窗口级 pause score + 按 `U_after` 分位数分层比较（先做可复现的 window-level proxy；raw Ribo-seq 多数据集复现仍待做）。产物：`exp_riboseq_pause_window_proxy.py` + `sections/generated/riboseq_pause_window_proxy.tex`. Branch: `paper-bio`.
+- 2026-01-14 — **CLAIMED**: 模块 E（Ribo-seq 暂停桥接）多数据集复现（≥3 独立 Ribo-seq bigWig 数据集；先做人类 hg* bigWig 窗口 pausing 与 Uplift 关联/分层，再汇总跨数据集一致性）。目标数据集（GEO）：GSE148965 / GSE199387 / GSE211536. Branch: `paper-bio`.
 
 ## 核心计算实验模块（7 模块系统验证计划）
 
