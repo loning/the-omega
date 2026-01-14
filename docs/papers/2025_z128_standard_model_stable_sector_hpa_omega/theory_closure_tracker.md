@@ -496,6 +496,8 @@ flowchart TD
 | 误差控制（协议→连续场） | 误差分解 + 收敛/稳定性界 + 误差传播预算 | Iface/Math/Audit/Prot | `app:protocol_to_continuum_error_control` | [x] |
 | 熵（entropy） | 粗粒化计数/通道容量 | Math/CAP | `eq:counting_entropy` | [x] |
 | 分辨率提升/融合（capacity-first） | 以 $I_{\mathrm{prot}}(m,n)=m4^n$ 与 $I_{\mathrm{tar}}$ 为接口量，在有限候选族上用 CAP key 确定性选取 $(m^\ast,n^\ast)$；并给出单调性/阈值跳变与 “$n$-blocked$\Rightarrow m$-expand” 刚性命题；补充 resolution-first vs capacity-first 的 staging dictionary 与 $\chi$/预算/延迟钩子 | Iface/CAP/Math/Audit | `app:resolution_uplift_fusion_horizon_unification`, `tab:resolution_uplift_cap_choice` | [x] |
+| 视界占用分数（capacity-only） | 预算触发云：$m|\mathcal R_\star|\ge cI_{\mathrm{obs}}$；占用 $f_{\mathrm{hor}}=|\mathcal R_\star|/4^n$；显式标注可行/饱和边界 | Iface/Audit/Prot | `subsec:p10_horizon_saturation_trapping`, `tab:chi_horizon_budget_occupancy`, `fig:chi_horizon_occupancy_phase` | [x] |
+| trapping 转折（量化；$\Delta\tau$–$f_{\mathrm{hor}}$） | 在 full-fusion 接口合同下把“转折”量化为 $\Delta\tau=\tau_{\mathrm{trap}}-\tau_{\mathrm{free}}$，并给出变点 $f^\star_{\mathrm{hor}}$ 与敏感性扫表（退化/饱和 case 显式标注） | Iface/Audit/Prot | `subsec:p10_horizon_saturation_trapping`, `fig:full_fusion_trapping_transition`, `tab:full_fusion_trapping_transition_sensitivity` | [x] |
 | 温度（temperature） | 频率共轭尺度（共轭定义；需指定 $E(M)$ 与一参数可微族） | Iface/Math | `def:temperature_conjugate` | [x] |
 | 有效温度映射（$T_{\mathrm{eff}}$） | 泄漏/辐射强度/寿命宽度代理 $\to$ 温度语言的可证伪匹配字典（比较类/映射族/失败点；外部输入包） | Match/Audit | `app:effective_temperature_mapping`, `app:physics_consensus_inputs`（PDR/PPL） | [x] |
 | CAP 自由能原则 | 以自由能形式重述 CAP 选择（有限候选族 + tie-break 模板） | CAP | `prop:cap_free_energy_closure` | [x] |
@@ -523,6 +525,7 @@ flowchart TD
 | 散射坐标变换 sign gate | 坐标族 $y(x)$ 下导数符号守恒（Jacobian>0）gate | Audit | `tab:scattering_inverse_coord_gate` | [x] |
 | 相位-延迟-线宽三角审计 | $\tau_{\mathrm{phase}}$ vs $\tau_\gamma$ 的有界一致性表 | Audit | `app:scattering_delay_linewidth_triangle_audit`, `tab:scattering_delay_linewidth_triangle_audit` | [x] |
 | scheme 不变性契约 | scheme reparam 下 invariants/allowed non-invariants + checklist | Match/Audit | `app:scheme_invariance_audit_contract` | [x] |
+| 桥接假设/失败点一页审计图 | 关键接口桥接假设（校准/容量/视界/CP 乘法字典）与失败模式/回退口径的集中登记 | Audit/Iface | `app:interface_bridge_assumptions_failure_modes`, `tab:bridge_assumptions_failure_modes` | [x] |
 | QCD proxy↔pole-barrier gate | area-signal vs interior-poles 的互否式 gate 表（未解不变） | Audit | `subsec:qcd_proxy_polebarrier_consistency_loop`, `tab:qcd_proxy_polebarrier_failure` | [x] |
 | 多体+观测反馈接口 | instrument/feedback channel→有效泛函→响应力→轨道偏离 | Iface | `app:orbit_gauge_force_manybody_measurement_feedback` | [x] |
 | 算子母空间字典入口（operator mother space dictionary） | source operator + readout kernels + determinant bookkeeping；finite-rank 更新闭合（字典层） | Iface/Audit | `app:operator_mother_space_dictionary` | [x] |
@@ -555,7 +558,7 @@ flowchart TD
 || Weinberg 维五算符尺度（审计/接口） | 采用标准 EFT Weinberg 算符，给出由 $m_{\nu,\max}$ 推出的 $\Lambda_W$ 尺度估计，并对照分辨率阶梯阈值 $\mu_{\mathrm{th}}(m)$ 的最近邻 | Audit/Iface | `app:neutrino_weinberg_operator_closure`, `tab:neutrino_weinberg_scale` | [x] |
 || Type-I seesaw 尺度（审计/接口） | 采用标准 Type-I seesaw，给出 $M_R=v^2y_{\nu,\mathrm{eff}}^2/(2m_{\nu,\max})$ 的尺度估计；并以 \texttt{cap}（协议侧复杂度）与 \texttt{match}（阈值对齐）两种模式展示最小不定性 | Audit/Iface | `app:neutrino_typeI_seesaw_closure`, `tab:neutrino_seesaw_scale` | [x] |
 | 夸克参考质量（scheme 依赖；matching layer） | 夸克参考值作为重整化方案/尺度约定，仅用于报告 $\Delta r$ 与 $\mu/\mu_{\mathrm{pred}}=\varphi^{\Delta r}$ 的匹配层偏移 | Match/Audit | `app:quark_mass_scheme_notes`, `tab:mass_spectrum_quark_refs` | [x] |
-| 耦合/CP/混合闭合（rigidity targets） | 规范化词典与有界复杂度闭合（含审计表）；中微子绝对质量仅作最小尺度接口（nearest-integer depth），并追加一段显式标注的接口假说解释“为何微小”（不进入 theorem 前提） | Iface/CAP/Match/Audit | `sec:couplings_cp`, `sec:pmns_neutrino_closure`, `subsec:neutrino_mass_interface`, `subsec:neutrino_interface_hypothesis` | [x] |
+| 耦合/CP/混合闭合（rigidity targets） | 规范化词典与有界复杂度闭合（含审计表）；CP 归一化包含“离散乘法字典强制性”补丁（$d_{\mathrm{CP}}$ 的非阿贝尔计数与失败点）；中微子绝对质量仅作最小尺度接口（nearest-integer depth），并追加一段显式标注的接口假说解释“为何微小”（不进入 theorem 前提） | Iface/CAP/Match/Audit | `sec:couplings_cp`, `subsec:cp_jarlskog`（含 `prop:dcp_forced_11`）, `sec:pmns_neutrino_closure`, `subsec:neutrino_mass_interface`, `subsec:neutrino_interface_hypothesis` | [x] |
 | 分辨率阶梯标定 | 在有界族内闭合 $r_{\mathrm{step}}=2\pi$（匹配层锚点仅作对比输入） | CAP/Match/Audit | `prop:r_step_2pi` | [x] |
 | 宇宙学接口 | 分辨率初始化/容量增长/能量预算拟合 | Iface/CAP | `app:cosmology_resolution_flow`, `ass:occupancy_energy_z128` | [x] |
 | $\gamma$ 跨观测审计（proxy/direct 分离） | $\gamma_{\mathrm{proxy}}$ 的代理通道压缩一致性检验 + $\gamma_{\mathrm{dict}}$ 的旋转曲线直接标定（两套内部一致性诊断与稳定性扫掠） | Iface/Audit/Prot | `app:gamma_crossobs_consistency` | [x] |
@@ -768,6 +771,10 @@ flowchart TD
       - **目标**：把“力导致偏离→传播→散射/延迟→泄漏/蒸发→新周期轨道”与“虫洞类指针跳跃/观测读出”统一到一个能量台账闭合的模拟里，并给出反事实对照（wormhole on/off）。
       - **入口**：`scripts/exp_full_fusion_bh_wormhole_measurement.py`
       - **生成物**：`sections/generated/full_fusion_rows.tex`，`sections/generated/full_fusion_summary.tex`，以及 nowh/compare 对照表（见 `run_all.py` step 列表）
+      - **量化补丁（P10 支撑工件）**：
+        - metrics-only 扫描：`scripts/exp_full_fusion_trapping_transition_scan.py`（生成 `figures/full_fusion_trapping_transition.png` 与 `sections/generated/full_fusion_trapping_transition_scan_rows.tex`）
+        - 变点估计：`scripts/exp_full_fusion_trapping_transition_changepoint.py`（生成 `sections/generated/full_fusion_trapping_transition_changepoint_summary.tex`）
+        - 敏感性扫表：`scripts/exp_full_fusion_trapping_transition_sensitivity.py`（生成 `sections/generated/full_fusion_trapping_transition_sensitivity_{rows,summary}.tex`；对退化/饱和 case 显式标注）
       - **验收（硬门禁）**：
         - 台账闭合：$E_{\mathrm{tot}}=E_{\mathrm{part}}+E_{\mathrm{field}}+E_{\mathrm{emit}}+E_{\mathrm{wh}}$（wormhole 不是能量源）
         - 互补性证书：$V^2+D^2\le 1$（可见度/可区分度的标准读出）

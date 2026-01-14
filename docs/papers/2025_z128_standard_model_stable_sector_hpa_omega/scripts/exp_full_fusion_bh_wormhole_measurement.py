@@ -153,7 +153,11 @@ def main() -> None:
     # -----------------------
     # Deterministic parameters (auditable).
     # -----------------------
-    n = 6
+    # Allow scanning some interface knobs via environment variables while keeping
+    # the default manuscript instance unchanged.
+    n = int(os.environ.get("FULL_FUSION_N", "6"))
+    if n <= 0:
+        raise ValueError("FULL_FUSION_N must be positive")
     side = int(2**n)
     h = 1.0
     dt = float(os.environ.get("FULL_FUSION_DT", "0.02"))
@@ -190,9 +194,11 @@ def main() -> None:
     bh_sigma = 4.0
 
     # Protocol horizon budget (keep region small to compare free vs trapped).
-    i_obs = 64
-    margin_c = 16
-    m_window = 6
+    i_obs = int(os.environ.get("FULL_FUSION_I_OBS", "64"))
+    margin_c = int(os.environ.get("FULL_FUSION_MARGIN_C", "16"))
+    m_window = int(os.environ.get("FULL_FUSION_M_WINDOW", "6"))
+    if i_obs <= 0 or margin_c <= 0 or m_window <= 0:
+        raise ValueError("FULL_FUSION_I_OBS, FULL_FUSION_MARGIN_C, FULL_FUSION_M_WINDOW must be positive integers")
 
     # Leakage ledger (toy, but resource-accounted).
     leak_base = 0.08
@@ -536,6 +542,12 @@ def main() -> None:
         r_off = rows_nowh[-1]
         payload = {
             "t": r_on.t,
+            "n": n,
+            "m_window": m_window,
+            "i_obs": i_obs,
+            "margin_c": margin_c,
+            "horizon_frac_on": r_on.horizon_frac,
+            "horizon_frac_off": r_off.horizon_frac,
             "ptr_eps": ptr_eps,
             "ptr_radius": ptr_radius,
             "ptr_jump_rate0": ptr_jump_rate0,

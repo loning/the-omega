@@ -954,6 +954,32 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="P10: trapping transition scan (metrics-only; Δtau vs occupancy)",
+            script="exp_full_fusion_trapping_transition_scan.py",
+            expected_outputs=[
+                "sections/generated/full_fusion_trapping_transition_scan_rows.tex",
+                "sections/generated/full_fusion_trapping_transition_scan_summary.tex",
+            ],
+        ),
+        Step(
+            name="P10: trapping transition changepoint estimate (two-segment fit)",
+            script="exp_full_fusion_trapping_transition_changepoint.py",
+            expected_outputs=[
+                "sections/generated/full_fusion_trapping_transition_changepoint_summary.tex",
+            ],
+            depends_on=[
+                "sections/generated/full_fusion_trapping_transition_scan_rows.tex",
+            ],
+        ),
+        Step(
+            name="P10: trapping transition sensitivity sweep (I_obs,c family)",
+            script="exp_full_fusion_trapping_transition_sensitivity.py",
+            expected_outputs=[
+                "sections/generated/full_fusion_trapping_transition_sensitivity_rows.tex",
+                "sections/generated/full_fusion_trapping_transition_sensitivity_summary.tex",
+            ],
+        ),
+        Step(
             name="Orbit force propagation and relaxation (toy dynamics)",
             script="exp_orbit_force_relaxation_dynamics.py",
             expected_outputs=[

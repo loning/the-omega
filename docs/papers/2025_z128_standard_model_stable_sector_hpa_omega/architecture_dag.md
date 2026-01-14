@@ -1652,6 +1652,8 @@ flowchart TB
 
   M_full_fusion("Full fusion（force + BH-like trapping/leakage + WH-like pointer + measurement）<br/>类型：审计 / Audit<br/>label: subsec:full_fusion_maintext<br/>script: exp_full_fusion_bh_wormhole_measurement.py; artifacts: full_fusion_*.tex + full_fusion.png")
 
+  M_trap_quant("Trapping transition quantification（Δtau vs occupancy）<br/>类型：审计 / Audit<br/>label: subsec:p10_horizon_saturation_trapping<br/>scripts: exp_full_fusion_trapping_transition_scan.py / exp_full_fusion_trapping_transition_changepoint.py / exp_full_fusion_trapping_transition_sensitivity.py; artifacts: full_fusion_trapping_transition_* + figure")
+
   M_wh_sweep("Wormhole sweep/adaptive（Pareto + budgeted recommendations）<br/>类型：审计 / Audit<br/>label: subsec:wormhole_pareto_maintext<br/>scripts: exp_full_fusion_wormhole_sweep.py / exp_full_fusion_wormhole_adaptive_search.py; artifacts: full_fusion_wormhole_* + figures")
 
   M_rigidity@{ shape: lean-r, label: "R1–R5：刚性限制/可识别性边界<br/>类型：审计 / Audit<br/>label: subsec:full_fusion_rigidity_takeaways<br/>cost–gain tradeoff; horizon saturation; observation-class; budget normalization; gated sparsity" }
@@ -1662,9 +1664,11 @@ flowchart TB
   M_run_all --> M_qg_suite --> M_full_fusion --> M_wh_sweep
   M_full_fusion --> M_rigidity --> P_p9
   M_wh_sweep --> M_rigidity
+  M_full_fusion --> M_trap_quant
+  M_trap_quant --> M_rigidity
 ```
 
-### 图 10：可证伪预测 wiring（P1–P7, P9） / Fig. 10: Falsifiable Prediction Wiring (P1–P7, P9)
+### 图 10：可证伪预测 wiring（P1–P7, P9–P10） / Fig. 10: Falsifiable Prediction Wiring (P1–P7, P9–P10)
 
 ```mermaid
 %%{init: {"maxTextSize": 100000, "flowchart": {"useMaxWidth": false, "nodeSpacing": 10, "rankSpacing": 50}, "themeVariables": {"fontSize": "10px"}}}%%
@@ -1714,6 +1718,7 @@ flowchart TB
   P_p6@{ shape: lean-r, label: "P6：散射延迟作为 lapse 代理（时间字典）<br/>类型：审计 / Audit<br/>label: subsec:p6_wigner_smith_delay" }
   P_p7@{ shape: lean-r, label: "P7：γ_dict 跨观测一致性（旋转曲线/代理通道）<br/>类型：审计 / Audit<br/>label: subsec:p7_gamma_crossobs" }
   P_p9@{ shape: lean-r, label: "P9：full-fusion interface gates（能量台账/互补性/反事实）<br/>类型：审计 / Audit<br/>label: subsec:p9_full_fusion_interface_gates" }
+  P_p10@{ shape: lean-r, label: "P10：视界占用饱和与 trapping 转折（量化）<br/>类型：审计 / Audit<br/>label: subsec:p10_horizon_saturation_trapping<br/>occupancy saturation + delta-tau changepoint + sensitivity envelope" }
 
   P_input_pdg --> P_cp_volume
   P_cp_volume --> P_ckm_matrix
@@ -1744,6 +1749,7 @@ flowchart TB
   P_lens --> P_p9
   P_wave_particle --> P_p9
   P_err --> P_p9
+  P_p9 --> P_p10
 
   classDef iface fill:#FCE4EC,stroke:#D81B60,color:#880E4F,stroke-width:2px;
   classDef open_problem fill:#FFEBEE,stroke:#C62828,color:#B71C1C,stroke-width:2px,font-weight:700;
@@ -1765,7 +1771,7 @@ flowchart TB
   class P_mass,P_lens phys_obs;
   class P_types,P_6dof_lock,P_scl phys_dict;
   class P_cosmo phys_model;
-  class P_err,P_wave_particle,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_nufit,P_cp_volume,P_ckm_matrix,P_pmns_matrix,P_holo_stats,P_p1,P_p2,P_p3,P_p4,P_p5,P_p6,P_p7,P_p9 phys_audit;
+  class P_err,P_wave_particle,P_gamma_proxy,P_gamma_direct,P_input_pdg,P_input_codata,P_input_nufit,P_cp_volume,P_ckm_matrix,P_pmns_matrix,P_holo_stats,P_p1,P_p2,P_p3,P_p4,P_p5,P_p6,P_p7,P_p9,P_p10 phys_audit;
 
   style P_p1 stroke-width:4px;
   style P_p2 stroke-width:4px;
@@ -1775,6 +1781,7 @@ flowchart TB
   style P_p6 stroke-width:4px;
   style P_p7 stroke-width:4px;
   style P_p9 stroke-width:4px;
+  style P_p10 stroke-width:4px;
 ```
 
 ### 图 11：开放问题/范围外追踪（Λ、BH、QCD gap、GUT 等） / Fig. 11: Open Problems / Out-of-Scope Tracking (Λ, BH, QCD gap, GUT, etc.)
@@ -2317,7 +2324,7 @@ flowchart TB
 | `M_wave_particle` | `\label{app:wave_particle_delayed_choice}` | `cross terms vs mixture; V^2+D^2≤1; delayed-choice/eraser (interface)` | `sections/appendices/30b_wave_particle_delayed_choice.tex` |
 | `P_wave_particle` | `\label{app:wave_particle_delayed_choice}` | `delayed-choice / quantum eraser / Wheeler “Great Smoky Dragon” (audit-facing)` | `sections/appendices/30b_wave_particle_delayed_choice.tex` |
 | `M_qg_if_full_fusion` | `\label{sec:qg_interface_full_fusion}` | `QG-interface and full-fusion auditable interface closures (χ→G00 proxy → budget horizon → delay/leakage response; plus WH-like pointer shortcuts with explicit cost ledger and measurement readout gates)` | `sections/F_50_qg_interface_full_fusion.tex`; `sections/PG_validation.tex` |
-| `P_qg_if_full_fusion` | `\label{sec:qg_interface_full_fusion}` | `generated artifact family: qg_interface_suite_*.tex, full_fusion_*.tex, full_fusion_wormhole_* + figures (reproducibility-first)` | `sections/F_50_qg_interface_full_fusion.tex`; `sections/PG_validation.tex`; `scripts/exp_qg_interface_suite.py`; `scripts/exp_full_fusion_bh_wormhole_measurement.py`; `scripts/exp_full_fusion_wormhole_sweep.py`; `scripts/exp_full_fusion_wormhole_adaptive_search.py` |
+| `P_qg_if_full_fusion` | `\label{sec:qg_interface_full_fusion}` | `generated artifact family: qg_interface_suite_*.tex, full_fusion_*.tex, full_fusion_wormhole_* + figures; plus optional P10 quantification artifacts (scan/changepoint/sensitivity) (reproducibility-first)` | `sections/F_50_qg_interface_full_fusion.tex`; `sections/PG_validation.tex`; `scripts/exp_qg_interface_suite.py`; `scripts/exp_full_fusion_bh_wormhole_measurement.py`; `scripts/exp_full_fusion_wormhole_sweep.py`; `scripts/exp_full_fusion_wormhole_adaptive_search.py`; `scripts/exp_full_fusion_trapping_transition_scan.py`; `scripts/exp_full_fusion_trapping_transition_changepoint.py`; `scripts/exp_full_fusion_trapping_transition_sensitivity.py` |
 | `M_artifact_registry` | `\label{sec:validation_entry_points}` | `artifact hash registry (content-addressable provenance): script+deps fingerprint → output hashes; independent of mtimes` | `scripts/exp_artifact_hash_registry.py`; `scripts/run_all.py`; `sections/generated/artifact_hash_registry.json`; `sections/generated/artifact_hash_registry_summary.tex` |
 | `P_artifact_registry` | `\label{sec:validation_entry_points}` | `registry outputs used as provenance gate and cache index` | `sections/PG_validation.tex`; `sections/generated/artifact_hash_registry_summary.tex` |
 | `M_rg` | `\label{app:running_couplings_resolution_flow}` | `eq:rg_in_r — dg/dr = (ln φ)β(g)` | `sections/appendices/31_running_couplings_resolution_flow.tex` |
@@ -2441,6 +2448,7 @@ flowchart TB
 | `P_p6` | `\label{subsec:p6_wigner_smith_delay}` | `P6: scattering delay as lapse proxy` | `sections/V_40_falsifiability_predictions.tex` |
 | `P_p7` | `\label{subsec:p7_gamma_crossobs}` | `P7: γ_dict cross-observation consistency` | `sections/V_40_falsifiability_predictions.tex` |
 | `P_p9` | `\label{subsec:p9_full_fusion_interface_gates}` | `P9: full-fusion interface gates (energy ledger closure; V^2+D^2≤1 certificate; wormhole on/off counterfactual deltas; observation-class identifiability boundary explicit)` | `sections/V_40_falsifiability_predictions.tex`; `sections/F_50_qg_interface_full_fusion.tex` |
+| `P_p10` | `\label{subsec:p10_horizon_saturation_trapping}` | `P10: horizon occupancy saturation + trapping transition quantification (Δtau vs f_hor; changepoint + sensitivity envelope; degenerate cases flagged)` | `sections/V_40_falsifiability_predictions.tex`; `scripts/exp_chi_horizon_occupancy_phase_diagram.py`; `scripts/exp_full_fusion_trapping_transition_scan.py`; `scripts/exp_full_fusion_trapping_transition_changepoint.py`; `scripts/exp_full_fusion_trapping_transition_sensitivity.py` |
 
 ### 未闭合/未覆盖节点补充（追踪用）
 
