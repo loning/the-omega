@@ -71,6 +71,10 @@ flowchart TB
   P_select("审计选择（候选族+目标函数+tie-break）<br/>类型：审计 / Audit<br/>label: app:cap_audit_template<br/>θ* := argmin_{θ∈Θ(B)} J(θ)")
   M_cap -.- P_select
 
+  M_selupd["Sel/Upd/gap（分岔/切换的有限数学载体）<br/>类型：审计 / Audit<br/>label: sec:unified_spine<br/>Sel(F,J,≺), Upd: (F,J,≺)→(F',J',≺')"]
+  P_selupd("分岔/切换统一词汇（prefix/fiber + gap-stability）<br/>类型：审计 / Audit<br/>label: app:branching_selection_rigidity<br/>prefix projection π; Ext_m(u); gap-stability")
+  M_selupd -.- P_selupd
+
   M_golden["黄金分支（有限深度 continued-fraction 最小性）<br/>类型：闭合 / Closure<br/>label: prop:golden_least_discrepancy<br/>C_m(α) := Σ_{k=0..m} a_{k+1}  (α=[0;a1,a2,…])"]
   P_scan("均匀扫描代理（覆盖/各向同性 / Uniform-Scan Proxy (Coverage/Isotropy)）<br/>类型：代理 / Proxy<br/>label: subsec:phyllotaxis_overlay<br/>Δθ = 2π/φ² (golden-angle step)")
   M_golden -.- P_scan
@@ -92,6 +96,8 @@ flowchart TB
 
   M_cap --> M_golden
   M_readout --> M_golden
+  M_cap --> M_selupd
+  P_select --> P_selupd
   P_select --> P_scan
   P_obs --> P_scan
   M_golden --> M_gauss
