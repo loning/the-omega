@@ -307,7 +307,9 @@ def main() -> None:
             r"\paragraph{Gate and deterministic error.} \AuditTag "
             + rf"We gate phase-difference auditing by requiring $|D(r\e^{{\iu\omega}})|\ge {eps_det:g}$ and use domega={domega}. "
             + rf"Over the gated points (count={n_used}), the maximum absolute discrepancies are "
-            + rf"max|τ0_ws-τ0_tr|≈{_fmt(max_err0,6)}, max|τ1_ws-τ1_tr|≈{_fmt(max_err1,6)}, and max|Δτ_ws-Δτ_tr|≈{_fmt(max_errd,6)}.",
+            + rf"$\max|\tau_{{0,\mathrm{{ws}}}}-\tau_{{0,\mathrm{{tr}}}}|\approx{_fmt(max_err0,6)}$, "
+            + rf"$\max|\tau_{{1,\mathrm{{ws}}}}-\tau_{{1,\mathrm{{tr}}}}|\approx{_fmt(max_err1,6)}$, "
+            + rf"and $\max|\Delta\tau_{{\mathrm{{ws}}}}-\Delta\tau_{{\mathrm{{tr}}}}|\approx{_fmt(max_errd,6)}$.",
         ],
     )
 

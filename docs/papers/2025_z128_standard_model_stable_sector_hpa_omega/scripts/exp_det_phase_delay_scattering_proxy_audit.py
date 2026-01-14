@@ -337,7 +337,7 @@ def main() -> None:
             + r"We compare base vs added-edge update and report the increments $\Delta\phi$ and $\Delta\tau$ on a declared grid.",
             r"\paragraph{Deterministic grid witness.} \AuditTag "
             + rf"With n={n}, added edge ({i},{j}), r={_fmt(r,3)}, omega-grid size k={k} with step {domega}, "
-            + rf"the maximal observed magnitudes are max|Δφ|≈{_fmt(max_dphi,6)} and max|Δτ|≈{_fmt(max_dtau,6)}.",
+            + rf"the maximal observed magnitudes are $\max|\Delta\phi|\approx{_fmt(max_dphi,6)}$ and $\max|\Delta\tau|\approx{_fmt(max_dtau,6)}$.",
         ],
     )
 
@@ -352,8 +352,9 @@ def main() -> None:
             r"\paragraph{Deterministic error on the declared grid.} \AuditTag "
             + rf"With r={_fmt(r,3)} and domega={domega}, we gate phase-difference auditing by requiring "
             + rf"$|D(r\e^{{\iu\omega}})|\ge {eps_det:g}$. Over the remaining points, the maximum absolute discrepancies are "
-            + rf"max|τ0_fd-τ0_tr|≈{_fmt(max_id_err0,6)}, max|τ1_fd-τ1_tr|≈{_fmt(max_id_err1,6)}, "
-            + rf"and max|Δτ_fd-Δτ_tr|≈{_fmt(max_id_errd,6)}.",
+            + rf"$\max|\tau_{{0,\mathrm{{fd}}}}-\tau_{{0,\mathrm{{tr}}}}|\approx{_fmt(max_id_err0,6)}$, "
+            + rf"$\max|\tau_{{1,\mathrm{{fd}}}}-\tau_{{1,\mathrm{{tr}}}}|\approx{_fmt(max_id_err1,6)}$, "
+            + rf"and $\max|\Delta\tau_{{\mathrm{{fd}}}}-\Delta\tau_{{\mathrm{{tr}}}}|\approx{_fmt(max_id_errd,6)}$.",
         ],
     )
 

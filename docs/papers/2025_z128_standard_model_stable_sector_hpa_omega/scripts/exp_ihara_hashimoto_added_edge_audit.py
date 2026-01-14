@@ -275,7 +275,7 @@ def main() -> None:
             r"\paragraph{Deterministic agreement and update magnitude.} \AuditTag "
             + rf"On u-grid {u_grid}, the maximum relative discrepancy between Hashimoto and Bass determinants is {max_rel_err:.6f} "
             + rf"(at case={max_err_at[0]}, u={max_err_at[1]:.3f}). "
-            + rf"The maximum observed |Δlog|det|| for the edge/base ratio is {max_ratio_shift:.6f}.",
+            + rf"The maximum observed magnitude of $\Delta\log|\det(I-uB)|$ for the edge/base ratio is {max_ratio_shift:.6f}.",
         ],
     )
 
