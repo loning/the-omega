@@ -276,7 +276,7 @@ This section is the **main development plan** for scaling the project on an A100
 ### Task Claims
 
 - 2026-01-14 — **COMPLETED**: 模块 E（Ribo-seq 暂停桥接）窗口级 pause score + 按 `U_after` 分位数分层比较（先做可复现的 window-level proxy；raw Ribo-seq 多数据集复现仍待做）。产物：`exp_riboseq_pause_window_proxy.py` + `sections/generated/riboseq_pause_window_proxy.tex`. Branch: `paper-bio`.
-- 2026-01-14 — **CLAIMED**: 模块 E（Ribo-seq 暂停桥接）多数据集复现（≥3 独立 Ribo-seq bigWig 数据集；先做人类 hg* bigWig 窗口 pausing 与 Uplift 关联/分层，再汇总跨数据集一致性）。目标数据集（GEO）：GSE148965 / GSE199387 / GSE211536. Branch: `paper-bio`.
+- 2026-01-14 — **COMPLETED**: 模块 E（Ribo-seq 暂停桥接）多数据集复现（≥3 独立 Ribo-seq bigWig 数据集；人类 hg* bigWig 窗口 pausing 与 Uplift 关联/分层 + 简单 meta-analysis）。目标数据集（GEO）：GSE148965 / GSE199387 / GSE211536。产物：`fetch_geo_riboseq_bigwig.py` + `exp_riboseq_pause_bigwig_window.py` + `sections/generated/riboseq_pause_bigwig_window.tex`. Branch: `paper-bio`.
 
 ## 核心计算实验模块（7 模块系统验证计划）
 
@@ -394,11 +394,12 @@ Uplift-Pause (codon):   ρ = -0.12 (ns)
 Within-family:          avg ρ = -0.09
 Window proxy (k=10):    ρ(U_before, pause_before) = -0.36 (p<0.001)
                          high U_after vs low U_after: d=-0.06 (p=0.66), matched d=-0.03 (p=0.80)
+BigWig (3 studies):     pause-index vs ΔU: ρ=0.12–0.41; meta d(high ΔU vs low)=0.30 [-0.06, 0.66], I²=0%
 ```
 
 **待做**：
 - [x] 窗口级 pause score（不是 codon 级；先做可复现的 window-level proxy）
-- [ ] 多数据集复现（≥3 独立 Ribo-seq 数据集）
+- [x] 多数据集复现（≥3 独立 Ribo-seq bigWig 数据集：GSE148965 / GSE199387 / GSE211536）
 - [x] 按 U_after 分位数分层比较（含成分匹配对照）
 
 ---
