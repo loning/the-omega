@@ -97,6 +97,76 @@ We refer to $\delta$ as a \emph{quantum gap} in the sense that it is the part of
 \end{equation}
 Sampling $C\sim\pi_\sigma(\cdot\mid v(a,b))$ yields a randomized additive readout with residual $\delta=v(a,b)-\mathcal{Z}(C)$.
 
+\subsubsection{Well-posedness gates (audit): when projection readout is defined}
+\label{subsubsec:projection_readout_wellposedness_gates}
+
+\AuditTag The deterministic nearest-point rule \eqref{eq:nearest_point_projection} and the soft kernel \eqref{eq:projection_kernel_pi_sigma} are \emph{protocol definitions} only when their minimizers/normalizers are well-defined.
+The minimal choice $\rho(n)=n$ suffices, but the same readout discipline can be stated for broader radial families.
+
+\begin{definition}[Radial properness (gate)]\label{def:radial_properness_gate}
+Let $\rho:M\to\RR_{>0}$ be a multiplicative radial character.
+We say $\rho$ is \emph{proper} if for every $R>0$ the set $\{n\in M:\rho(n)\le R\}$ is finite.
+\end{definition}
+
+\begin{proposition}[Nearest-point minimizers are finite under properness]\label{prop:nearest_point_finite_under_properness}
+\MathTag If $\rho$ is proper, then for every $v\in\CC$ the minimizer set
+\[
+\operatorname*{Argmin}_{n\in M}|v-\mathcal{Z}(n)|
+\]
+is nonempty and finite. Hence a deterministic nearest-point readout is well-defined once a tie-break is declared.
+\end{proposition}
+
+\begin{assumption}[Polynomial radial growth for Gaussian normalization]\label{ass:poly_radial_growth_gate}
+There exist constants $c>0$ and $s>0$ such that $\rho(n)\ge c\,n^s$ for all $n\in M$.
+\end{assumption}
+
+\begin{proposition}[Soft kernel normalization under polynomial radial growth]\label{prop:soft_kernel_normalization_under_growth}
+\MathTag Under Assumption~\ref{ass:poly_radial_growth_gate}, for every $v\in\CC$ and $\sigma>0$ the normalizing sum
+\[
+\sum_{n\in M}\exp\!\bigl(-|v-\mathcal{Z}(n)|^2/\sigma^2\bigr)
+\]
+converges and is strictly positive. Hence \eqref{eq:projection_kernel_pi_sigma} defines a probability distribution on $M$.
+\end{proposition}
+
+\begin{remark}[Failure mode: non-proper radial choices]\label{rem:nonproper_radial_failure_mode}
+\AuditTag If $\rho$ is not proper (e.g.\ some prime direction forces $\rho(p^k)\to 0$), then $\mathcal{Z}(M)$ can accumulate and nearest-point/soft-kernel readouts require additional conventions.
+In the paper's audit language, this is a minimal failure point of the embedding+projection module: the declared protocol must either restrict to a proper radial family or explicitly record a counterterm/tie-break that restores well-posedness.
+\end{remark}
+
+\subsubsection{Random-phase gap baseline (audit): a falsifiability comparator}
+\label{subsubsec:random_phase_gap_baseline}
+
+\AuditTag The gap residual $\delta$ depends on arithmetic correlations of the multiplicative phase $\theta_\times$.
+To separate \emph{geometric} constraints from \emph{arithmetic} structure, it is useful to compare to a random-phase baseline that preserves only the radial constraint.
+This is not a physical postulate; it is an ablation/comparator model used to decide whether observed gap statistics exhibit nontrivial structure beyond geometric packing.
+
+\begin{assumption}[Random-phase spiral baseline]\label{ass:random_phase_spiral_baseline}
+Assume the minimal radial choice $\rho(n)=n$ and replace the deterministic phases by i.i.d.\ uniform angles $\vartheta_n\sim \mathrm{Unif}[0,2\pi)$.
+Define random points $\mathcal{Z}_{\mathrm{rnd}}(n):=n\,\e^{\iu\vartheta_n}$.
+\end{assumption}
+
+\begin{definition}[Random-phase distance-to-image and gap]\label{def:random_phase_gap_def}
+For $v\in\CC$ set $g_{\mathrm{rnd}}(v):=\min_{n\ge 1}|v-\mathcal{Z}_{\mathrm{rnd}}(n)|$ and define the residual
+\[
+\delta_{\mathrm{rnd}}(v):=v-\mathcal{Z}_{\mathrm{rnd}}(\pi_{\mathrm{rnd}}(v)),
+\]
+where $\pi_{\mathrm{rnd}}(v)$ is any measurable nearest-point selector.
+Then $|\delta_{\mathrm{rnd}}(v)|=g_{\mathrm{rnd}}(v)$.
+\end{definition}
+
+\begin{proposition}[A tail bound for random-phase gaps (baseline)]\label{prop:random_phase_gap_tail_baseline}
+\MathTag Under Assumption~\ref{ass:random_phase_spiral_baseline}, fix $v\in\CC$ with $r:=|v|\ge 1$.
+Then for every integer $L$ with $1\le L\le r$,
+\[
+\PP\!\left(g_{\mathrm{rnd}}(v)>2L\right)\le \exp\!\left(-\frac{L^2}{\pi r}\right).
+\]
+\end{proposition}
+
+\begin{remark}[How to use the baseline]\label{rem:random_phase_baseline_usage}
+\AuditTag The baseline bound above provides an auditable expectation for the scale of typical projection residuals if prime phases behave ``randomly'' at the relevant resolution.
+Significant, reproducible deviations (e.g.\ systematically smaller residuals, long-tail anomalies, or topology-protected gap patterns as in Subsection~\ref{subsec:gap_cohomology}) are then interpretable as nontrivial structure beyond geometric packing, and should be recorded as falsifiability hooks rather than absorbed by hidden parameter changes.
+\end{remark}
+
 \begin{remark}[Compatibility with window-word / Fold$_m$ readout]
 \AuditTag The projection kernel \eqref{eq:projection_kernel_pi_sigma} is a \emph{different} readout protocol family from the window-word pipeline of Section~\ref{sec:hpa_readout} and the folding map $\mathrm{Fold}_m$ used in the stable-sector closure.
 The window-word/Fold$_m$ route produces discrete outcomes by finite observation at a declared window length $m$; the present route produces discrete outcomes by embedding into $\CC$ followed by a projection back to $M$.

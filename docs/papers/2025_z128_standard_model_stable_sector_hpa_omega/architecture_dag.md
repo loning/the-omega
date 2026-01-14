@@ -71,6 +71,10 @@ flowchart TB
   P_cut_project("模型集/tiling 代理（staircase 证书母语）<br/>类型：审计 / Audit<br/>label: sec:cut_and_project_bridge<br/>S_N=Σ_{k< N} w_k ≈ ⌊Nα+β⌋")
   M_cut_project -.- P_cut_project
 
+  M_cyclic_calc["cyclic calculus（Θ-差分/轨道 trace/Abel finite part）<br/>类型：审计 / Audit<br/>label: app:cyclic_calculus_theta_fp<br/>Δ_Θ; Tr_Θ; FP_Θ"]
+  P_cyclic_calc("有限差分/有限部统一模板（更新步微积分）<br/>类型：审计 / Audit<br/>label: app:cyclic_calculus_theta_fp<br/>finite differences + Abel-first")
+  M_cyclic_calc -.- P_cyclic_calc
+
   M_morita["Weyl pair 对偶/等价（Fourier exchange / Morita）<br/>类型：审计 / Audit<br/>label: rem:weyl_morita_fourier_exchange<br/>U↔V (Fourier);  α'=(aα+b)/(cα+d) (Morita)"]
   P_morita("scan↔readout 对偶代理（频率/谱读出）<br/>类型：审计 / Audit<br/>label: rem:weyl_morita_fourier_exchange<br/>translation ↔ phase; representation exchange")
   M_morita -.- P_morita
@@ -82,6 +86,22 @@ flowchart TB
   M_selupd["Sel/Upd/gap（分岔/切换的有限数学载体）<br/>类型：审计 / Audit<br/>label: sec:unified_spine<br/>Sel(F,J,≺), Upd: (F,J,≺)→(F',J',≺')"]
   P_selupd("分岔/切换统一词汇（prefix/fiber + gap-stability）<br/>类型：审计 / Audit<br/>label: app:branching_selection_rigidity<br/>prefix projection π; Ext_m(u); gap-stability")
   M_selupd -.- P_selupd
+
+  M_ref_state["参考态/投影极限（window-word→投影测量）<br/>类型：审计 / Audit<br/>label: app:reference_state_and_cuts<br/>⟨ω_{x0,δ}, Π_W Θ^n ω_{x0,δ}⟩ → 1_W(x0+nα)"]
+  P_ref_state("cut 顺序敏感与谱模板（对易→实谱；非对易→复谱）<br/>类型：审计 / Audit<br/>label: app:reference_state_and_cuts<br/>PHQ spectrum template")
+  M_ref_state -.- P_ref_state
+
+  M_zeck_primecycles["Zeckendorf shift primitive cycles（Möbius/ζ/det）<br/>类型：审计 / Audit<br/>label: app:zeckendorf_shift_prime_cycles<br/>P_n=tr(A^n); π_n via Möbius"]
+  P_zeck_primecycles("primitive-cycle 细化模板（prime cycles bookkeeping）<br/>类型：审计 / Audit<br/>label: app:zeckendorf_shift_prime_cycles<br/>Euler product over primitive cycles")
+  M_zeck_primecycles -.- P_zeck_primecycles
+
+  M_jordan_triality["Jordan/triality 候选（为何三）<br/>类型：审计 / Audit<br/>label: app:jordan_triality_candidate<br/>J_3(O); triality as template"]
+  P_jordan_triality("三扇区候选本体（仅登记，不入闭合）<br/>类型：审计 / Audit<br/>label: app:jordan_triality_candidate<br/>registry/MDL gate if invoked")
+  M_jordan_triality -.- P_jordan_triality
+
+  M_alpha_geo["α_geo 三通道阻抗候选（仅对照）<br/>类型：审计 / Audit<br/>label: app:alpha_geo_impedance_candidate<br/>α_geo^{-1}=V_bulk+V_boundary+V_line"]
+  P_alpha_geo("α 候选族/匹配对照（显式有限族门禁）<br/>类型：审计 / Audit<br/>label: app:alpha_geo_impedance_candidate<br/>Sel(Fα,J,≺) + MDL registry")
+  M_alpha_geo -.- P_alpha_geo
 
   M_golden["黄金分支（有限深度 continued-fraction 最小性）<br/>类型：闭合 / Closure<br/>label: prop:golden_least_discrepancy<br/>C_m(α) := Σ_{k=0..m} a_{k+1}  (α=[0;a1,a2,…])"]
   P_scan("均匀扫描代理（覆盖/各向同性 / Uniform-Scan Proxy (Coverage/Isotropy)）<br/>类型：代理 / Proxy<br/>label: subsec:phyllotaxis_overlay<br/>Δθ = 2π/φ² (golden-angle step)")
@@ -106,13 +126,24 @@ flowchart TB
   P_obs --> P_embed_gap
   M_readout --> M_cut_project
   P_obs --> P_cut_project
+  M_readout --> M_cyclic_calc
+  M_cyclic_calc --> M_embed_gap
+  M_embed_gap --> M_alpha_geo
+  M_embed_gap --> M_jordan_triality
 
   M_cap --> M_golden
   M_readout --> M_golden
   M_cap --> M_selupd
   P_select --> P_selupd
+  M_selupd --> M_embed_gap
+  M_selupd --> M_cut_project
+  M_selupd --> M_alpha_geo
+  M_selupd --> M_jordan_triality
   P_select --> P_scan
   P_obs --> P_scan
+  P_obs --> P_ref_state
+  M_readout --> M_ref_state
+  M_zeck_primecycles --> M_morita
   M_golden --> M_gauss
   P_scan --> P_gauss
 
@@ -2137,10 +2168,22 @@ flowchart TB
 | `P_embed_gap` | `\label{sec:embedding_gap_projection}` | `projection readout + gap residual;  H¹≠0 ⇒ residual not removable (failure mode)` | `sections/C_13_embedding_gap_projection.tex` |
 | `M_cut_project` | `\label{sec:cut_and_project_bridge}` / `\label{def:model_set_lambda_W}` | `Λ(W)={π∥(ℓ):ℓ∈Z²,π⊥(ℓ)∈W};  staircase: S_N=Σ_{k<N} w_k` | `sections/C_14_cut_and_project_bridge.tex` |
 | `P_cut_project` | `\label{sec:cut_and_project_bridge}` | `model-set/tiling proxy for window words;  S_N≈⌊Nα+β⌋` | `sections/C_14_cut_and_project_bridge.tex` |
+| `M_cyclic_calc` | `\label{app:cyclic_calculus_theta_fp}` | `Δ_Θ; Tr_Θ; FP_Θ (finite differences + Abel-first constant term)` | `sections/appendices/40b_cyclic_calculus_theta_fp.tex` |
+| `P_cyclic_calc` | `\label{app:cyclic_calculus_theta_fp}` | `finite-difference calculus template for update/scan narratives` | `sections/appendices/40b_cyclic_calculus_theta_fp.tex` |
+| `M_ref_state` | `\label{app:reference_state_and_cuts}` | `⟨ω_{x0,δ}, Π_W Θ^n ω_{x0,δ}⟩ → 1_W(x0+nα)` | `sections/appendices/30g_reference_state_and_cuts.tex` |
+| `P_ref_state` | `\label{app:reference_state_and_cuts}` | `commuting vs noncommuting cut spectrum template (PHQ)` | `sections/appendices/30g_reference_state_and_cuts.tex` |
+| `M_zeck_primecycles` | `\label{app:zeckendorf_shift_prime_cycles}` | `P_n=tr(A^n);  π_n via Möbius;  ζ=Π(1−z^n)^{−π_n}` | `sections/appendices/28b_zeckendorf_shift_prime_cycles.tex` |
+| `P_zeck_primecycles` | `\label{app:zeckendorf_shift_prime_cycles}` | `primitive-cycle refinement of det/trace/zeta packaging` | `sections/appendices/28b_zeckendorf_shift_prime_cycles.tex` |
+| `M_jordan_triality` | `\label{app:jordan_triality_candidate}` | `J_3(O); triality as a three-sector symmetry template` | `sections/appendices/50c_jordan_triality_candidate.tex` |
+| `P_jordan_triality` | `\label{app:jordan_triality_candidate}` | `audit-only candidate; must be finite-family + registry/MDL if invoked` | `sections/appendices/50c_jordan_triality_candidate.tex` |
+| `M_alpha_geo` | `\label{app:alpha_geo_impedance_candidate}` | `α_geo^{-1}=V_bulk+V_boundary+V_line (candidate dictionary)` | `sections/appendices/08k_alpha_geo_impedance_candidate.tex` |
+| `P_alpha_geo` | `\label{app:alpha_geo_impedance_candidate}` | `audit gate: explicit finite family + objective + MDL registry` | `sections/appendices/08k_alpha_geo_impedance_candidate.tex` |
 | `M_morita` | `\label{rem:weyl_morita_fourier_exchange}` | `U↔V (Fourier exchange);  α'=(aα+b)/(cα+d) (Morita)` | `sections/C_10_hpa_readout_dynamics.tex` |
 | `P_morita` | `\label{rem:weyl_morita_fourier_exchange}` | `translation ↔ phase; scan↔readout representation exchange` | `sections/C_10_hpa_readout_dynamics.tex` |
 | `M_cap` | `\label{ax:cap}` | `c* = argmin_{c∈C} J(c) (deterministic tie-break)` | `sections/I_00_introduction.tex` |
 | `P_select` | `\label{app:cap_audit_template}` | `θ* = argmin_{θ∈Θ(B)} J(θ) (deterministic tie-break)` | `sections/appendices/13_cap_audit_template.tex` |
+| `M_selupd` | `\label{sec:unified_spine}` | `Sel(F,J,≺);  Upd:(F,J,≺)→(F',J',≺');  gap-stability (RB-D)` | `sections/U_00_unified_spine.tex` |
+| `P_selupd` | `\label{app:branching_selection_rigidity}` | `prefix projection π;  Ext_m(u);  objective gap and switching discipline` | `sections/appendices/69a_branching_selection_rigidity.tex` |
 | `M_golden` | `\label{prop:golden_least_discrepancy}` | `C_m(α) := Σ_{k=0..m} a_{k+1} (finite-depth continued-fraction digit-sum proxy);  mismatch certificates: eq:star_discrepancy_def — D*ₙ` | `sections/C_10_hpa_readout_dynamics.tex` |
 | `P_scan` | `\label{subsec:phyllotaxis_overlay}` | `Δθ = 2π/φ² (golden-angle step)` | `sections/I_04_golden_angle_phyllotaxis_overlay.tex` |
 | `M_gauss` | `\label{rem:gauss_map_fixed_point}` | `G(ξ)={1/ξ};  α=φ⁻¹ is a fixed point;  α=[0;1,1,1,…]` | `sections/C_10_hpa_readout_dynamics.tex` |
