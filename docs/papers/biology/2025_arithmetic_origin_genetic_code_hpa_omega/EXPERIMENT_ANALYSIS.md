@@ -273,6 +273,10 @@ This section is the **main development plan** for scaling the project on an A100
 
 ---
 
+### Task Claims
+
+- 2026-01-14 — **CLAIMED**: 模块 E（Ribo-seq 暂停桥接）窗口级 pause score + 按 `U_after` 分位数分层比较（先做可复现的 window-level proxy；后续再接 raw Ribo-seq 多数据集复现）。Branch: `paper-bio`.
+
 ## 核心计算实验模块（7 模块系统验证计划）
 
 以下模块按优先级排序，可并行执行。每个模块都有明确的"反驳点"和"堵回去的实验"。
