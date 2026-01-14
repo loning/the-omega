@@ -68,7 +68,7 @@ flowchart TB
   M_embed_gap -.- P_embed_gap
 
   M_cut_project["cut-and-project（窗口→模型集 Λ(W)）<br/>类型：审计 / Audit<br/>label: sec:cut_and_project_bridge<br/>Λ(W)={π∥(ℓ): ℓ∈Z², π⊥(ℓ)∈W}"]
-  P_cut_project("模型集/tiling 代理（staircase 证书母语）<br/>类型：审计 / Audit<br/>label: sec:cut_and_project_bridge<br/>S_N=Σ_{k< N} w_k ≈ ⌊Nα+β⌋")
+  P_cut_project("模型集/tiling 代理（staircase 证书母语）<br/>类型：审计 / Audit<br/>label: sec:cut_and_project_bridge<br/>S_N=Σ_{k＜N} w_k ≈ ⌊Nα+β⌋")
   M_cut_project -.- P_cut_project
 
   M_cyclic_calc["cyclic calculus（Θ-差分/轨道 trace/Abel finite part）<br/>类型：审计 / Audit<br/>label: app:cyclic_calculus_theta_fp<br/>Δ_Θ; Tr_Θ; FP_Θ"]
@@ -333,7 +333,7 @@ flowchart TB
   P_bulk_dim("bulk dimension d=3（接口输出）<br/>类型：代理 / Proxy<br/>label: prop:bulk_dimension_from_anchor<br/>d=3 selected at anchor")
   M_bulk_dim -.- P_bulk_dim
 
-  M_geometric_vacuum["几何真空/协议拒绝（m<6）<br/>类型：审计 / Audit<br/>label: subsubsec:geometric_vacuum<br/>sub-geometric modes treated as non-local background"]
+  M_geometric_vacuum["几何真空/协议拒绝（m＜6）<br/>类型：审计 / Audit<br/>label: subsubsec:geometric_vacuum<br/>sub-geometric modes treated as non-local background"]
   P_geometric_vacuum("sub-geometric vacuum / ghost-sector（接口）<br/>类型：代理 / Proxy<br/>label: subsubsec:geometric_vacuum<br/>below anchor: non-local background modes")
   M_geometric_vacuum -.- P_geometric_vacuum
 
@@ -1124,7 +1124,7 @@ flowchart TB
   P_aqft_net("AQFT 接口（局域性/协变/谱条件打包）<br/>类型：审计 / Audit<br/>label: app:aqft_axioms_local_nets<br/>locality as commutativity; covariance as automorphisms")
   M_aqft_net -.- P_aqft_net
 
-  M_aqft_gns["AQFT：状态与 GNS 网（net realization）<br/>类型：审计 / Audit<br/>label: app:aqft_states_representations_gns_nets<br/>omega(A)=<Omega|pi(A)Omega>"]
+  M_aqft_gns["AQFT：状态与 GNS 网（net realization）<br/>类型：审计 / Audit<br/>label: app:aqft_states_representations_gns_nets<br/>ω(A)=⟨Ω|π(A)Ω⟩"]
   P_aqft_gns("AQFT 表示字典（state→representation）<br/>类型：审计 / Audit<br/>label: app:aqft_states_representations_gns_nets<br/>GNS net: M_omega(O)=pi(A(O))''")
   M_aqft_gns -.- P_aqft_gns
 
@@ -1555,7 +1555,7 @@ flowchart TB
   M_mass_flow_uplift -.- P_mass_flow_uplift
 
   M_mdl_global["全局模型选择（MDL / prefix-code）<br/>类型：审计 / Audit<br/>label: app:global_model_selection_mdl<br/>family registry + prefix-code prior + global mixture bound"]
-  P_mdl_global("全局 look-elsewhere 上界（registry 内）<br/>类型：审计 / Audit<br/>label: tab:audit_global_mdl_family_registry<br/>p_global(ε) via weighted N_{<=ε}/|Θ|")
+  P_mdl_global("全局 look-elsewhere 上界（registry 内）<br/>类型：审计 / Audit<br/>label: tab:audit_global_mdl_family_registry<br/>p_global(ε) via weighted N_{≤ε}/|Θ|")
   M_mdl_global -.- P_mdl_global
 
   %% Cross-family enlargement accounting constrains downstream multi-module comparisons
@@ -1873,8 +1873,8 @@ flowchart TB
   M_qg_scope -.- P_qg_scope
 
   %% QG9 roadmap (strong-closure milestones; audit-facing, windowed, falsifiable)
-  M_qg9_obs["有限观测注册表（Obs_{<=N}；窗口化）<br/>类型：审计 / Audit<br/>label: app:observable_algebra_state_base<br/>finite observable registry for windowed tests"]
-  P_qg9_obs("有限观测类（Obs_{<=N}）<br/>类型：审计 / Audit<br/>label: app:observable_algebra_state_base<br/>audit-visible observable list")
+  M_qg9_obs["有限观测注册表（Obs_{≤N}；窗口化）<br/>类型：审计 / Audit<br/>label: app:observable_algebra_state_base<br/>finite observable registry for windowed tests"]
+  P_qg9_obs("有限观测类（Obs_{≤N}）<br/>类型：审计 / Audit<br/>label: app:observable_algebra_state_base<br/>audit-visible observable list")
   M_qg9_obs -.- P_qg9_obs
 
   M_qg9_state["固定协议态（m,n,K；窗口化）<br/>类型：审计 / Audit<br/>label: subsec:tick_cap_joint_protocol_state<br/>fix (m,n,K) in a declared UV window"]
@@ -1889,7 +1889,7 @@ flowchart TB
   P_qg9_eft_err("EFT error budget proxy（epsilon_N）<br/>类型：审计 / Audit<br/>label: app:eft_error_bounds<br/>auditable epsilon_N ledger"]
   M_qg9_eft_err -.- P_qg9_eft_err
 
-  M_qg9_m1["QG9-M1：窗口化可比性 + 误差预算闭合<br/>类型：未闭合 / Not Closed<br/>label: theory_closure_tracker<br/>goal: |<O>_prot - <O>_EFT| <= epsilon_N (auditable)"]
+  M_qg9_m1["QG9-M1：窗口化可比性 + 误差预算闭合<br/>类型：未闭合 / Not Closed<br/>label: theory_closure_tracker<br/>goal: |⟨O⟩_prot − ⟨O⟩_EFT| ≤ ε_N (auditable)"]
   P_qg9_m1("QG9-M1：windowed comparability test<br/>类型：未闭合 / Not Closed<br/>label: theory_closure_tracker<br/>finite-observable audit inequality (epsilon_N)"]
   M_qg9_m1 -.- P_qg9_m1
 
