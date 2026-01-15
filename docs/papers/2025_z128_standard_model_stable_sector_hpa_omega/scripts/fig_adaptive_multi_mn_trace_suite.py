@@ -23,7 +23,7 @@ Outputs (multi-page, fixed names for reproducibility):
 from __future__ import annotations
 
 from pathlib import Path
-from typing import List, Sequence, Tuple
+from typing import Dict, List, NamedTuple, Sequence, Tuple
 
 import numpy as np
 
@@ -32,6 +32,7 @@ import matplotlib
 matplotlib.use("Agg")  # type: ignore
 import matplotlib.pyplot as plt  # noqa: E402
 from matplotlib.collections import LineCollection  # noqa: E402
+from matplotlib.patches import FancyArrowPatch  # noqa: E402
 from mpl_toolkits.mplot3d.art3d import Line3DCollection  # noqa: E402
 
 import exp_foldm_stats as fm  # noqa: E402
@@ -42,6 +43,15 @@ from screen_universal_vfs import bits_per_level, effective_dimension, embedding_
 
 
 Pair = Tuple[int, int]
+
+
+class BundleLayout(NamedTuple):
+    L: int
+    gap: float
+    unique_s: List[int]
+    nx: int
+    ny: int
+    s_to_rank: Dict[int, int]
 
 
 def bits_m(k: int, m: int) -> str:
@@ -126,6 +136,350 @@ def _projection_pairs(D: int) -> List[Tuple[int, int]]:
     if d_show == 3:
         return [(0, 1), (0, 2), (1, 2)]
     return [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)]
+
+def _bundle_display_coords(coords: np.ndarray, *, n: int, gap: float = 0.9) -> Tuple[np.ndarray, np.ndarray, BundleLayout]:
+    """
+    For D>=4, interpret:
+      - internal 3D object coords: (x0,x1,x2)
+      - index dims: (x3,...)
+    Flatten the index dims into a single integer s in base L=2^n.
+
+    Return:
+      disp: (N,3) display coords
+      s: (N,)  flattened cube index
+      layout: bundle placement metadata (a 2D grid of cubes; non-collinear by design)
+    """
+    L = 1 << n
+    D = int(coords.shape[1])
+    if D < 4:
+        raise ValueError("Bundle view requires D>=4.")
+    idx = coords[:, 3:].astype(int)  # (N, D-3)
+    s = np.zeros((len(coords),), dtype=int)
+    base = 1
+    for j in range(idx.shape[1]):
+        s += idx[:, j] * base
+        base *= L
+
+    # Place cubes on a 2D grid (NOT on a single line) so dashed inter-cube connectors
+    # are visually distinguishable from intra-cube segments.
+    unique_s = sorted(set(int(x) for x in s.tolist()))
+    s_to_rank: Dict[int, int] = {sv: i for i, sv in enumerate(unique_s)}
+    nc = max(1, len(unique_s))
+    nx = int(np.ceil(np.sqrt(float(nc))))
+    ny = int(np.ceil(float(nc) / float(nx)))
+
+    # Per-point cube rank and its (ix,iy) cell in the grid.
+    ranks = np.array([s_to_rank[int(x)] for x in s.tolist()], dtype=int)
+    ix = ranks % nx
+    iy = ranks // nx
+    ox = ix.astype(float) * float(L + gap)
+    oy = iy.astype(float) * float(L + gap)
+    disp = np.stack([coords[:, 0] + ox, coords[:, 1] + oy, coords[:, 2]], axis=1)
+    layout = BundleLayout(L=L, gap=float(gap), unique_s=unique_s, nx=nx, ny=ny, s_to_rank=s_to_rank)
+    return disp, s, layout
+
+
+def _bundle_offsets(layout: BundleLayout, s_vals: Sequence[int]) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Convert cube indices s to bundle grid offsets (ox,oy) in display coordinates.
+    """
+    ranks = np.array([layout.s_to_rank[int(sv)] for sv in s_vals], dtype=int)
+    ix = ranks % int(layout.nx)
+    iy = ranks // int(layout.nx)
+    ox = ix.astype(float) * float(layout.L + layout.gap)
+    oy = iy.astype(float) * float(layout.L + layout.gap)
+    return ox, oy
+
+
+def _decimate_segments(segs: np.ndarray, t: np.ndarray, max_keep: int) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Keep at most max_keep segments by uniform stride (deterministic).
+    """
+    if len(segs) <= max_keep:
+        return segs, t
+    stride = int(np.ceil(float(len(segs)) / float(max_keep)))
+    return segs[::stride], t[::stride]
+
+
+def _local_segment_mask_from_ks(N: int, ks: Sequence[int], *, radius: int) -> np.ndarray:
+    """
+    Build a boolean mask over segment indices i=0..N-2 selecting a local window around ks.
+    """
+    mask = np.zeros((max(0, N - 1),), dtype=bool)
+    if N <= 1:
+        return mask
+    if radius <= 0 or len(ks) == 0:
+        return mask
+    for k in ks:
+        k0 = int(max(0, int(k) - radius))
+        k1 = int(min(N - 2, int(k) + radius))
+        mask[k0 : k1 + 1] = True
+    return mask
+
+
+def _render_bundle_detail(
+    *,
+    m: int,
+    n: int,
+    coords: np.ndarray,
+    ks: List[int],
+    scheme: str,
+    out_dir: Path,
+) -> None:
+    """
+    For D>=4 cases, generate two big, readable figures:
+      - points-only (no lines)
+      - point-to-point (k->k+1) with special connector styling between cubes
+    """
+    D = int(coords.shape[1])
+    if D < 4:
+        return
+    N = 1 << m
+    L = 1 << n
+    views = [(22, -55), (22, 35), (70, -45)]
+
+    disp, s, layout = _bundle_display_coords(coords, n=n, gap=0.9)
+    segs = np.stack([disp[:-1], disp[1:]], axis=1)
+    jump = (s[1:] != s[:-1])
+
+    unique_s = layout.unique_s
+
+    def _draw_wire_cube(ax3, s_val: int) -> None:
+        r = int(layout.s_to_rank[int(s_val)])
+        ix = int(r % int(layout.nx))
+        iy = int(r // int(layout.nx))
+        ox = float(ix) * float(L + layout.gap)
+        oy = float(iy) * float(L + layout.gap)
+        x0 = ox - 0.5
+        x1 = x0 + float(L)
+        y0 = oy - 0.5
+        y1 = y0 + float(L)
+        z0 = -0.5
+        z1 = z0 + float(L)
+        c = "#B0BEC5"
+        lw = 0.7
+        a = 0.35
+        edges = [
+            ((x0, y0, z0), (x1, y0, z0)),
+            ((x0, y1, z0), (x1, y1, z0)),
+            ((x0, y0, z1), (x1, y0, z1)),
+            ((x0, y1, z1), (x1, y1, z1)),
+            ((x0, y0, z0), (x0, y1, z0)),
+            ((x1, y0, z0), (x1, y1, z0)),
+            ((x0, y0, z1), (x0, y1, z1)),
+            ((x1, y0, z1), (x1, y1, z1)),
+            ((x0, y0, z0), (x0, y0, z1)),
+            ((x1, y0, z0), (x1, y0, z1)),
+            ((x0, y1, z0), (x0, y1, z1)),
+            ((x1, y1, z0), (x1, y1, z1)),
+        ]
+        for (p, q) in edges:
+            ax3.plot([p[0], q[0]], [p[1], q[1]], [p[2], q[2]], color=c, lw=lw, alpha=a, zorder=0)
+
+    def _setup_ax(ax3, elev: float, azim: float) -> None:
+        xmax = float(max(0, int(layout.nx) - 1)) * float(L + layout.gap) + float(L) - 0.5
+        ymax = float(max(0, int(layout.ny) - 1)) * float(L + layout.gap) + float(L) - 0.5
+        ax3.set_xlim(-0.6, xmax + 0.2)
+        ax3.set_ylim(-0.6, ymax + 0.2)
+        ax3.set_zlim(-0.6, L - 0.4)
+        ax3.view_init(elev=float(elev), azim=float(azim))
+        ax3.set_box_aspect((max(1, int(layout.nx)), max(1, int(layout.ny)), 1))
+        ax3.set_xticks([])
+        ax3.set_yticks([])
+        ax3.set_zticks([])
+        ax3.grid(False)
+        for axis in (ax3.xaxis, ax3.yaxis, ax3.zaxis):
+            axis.pane.set_edgecolor("0.92")
+            axis.pane.set_facecolor((1.0, 1.0, 1.0, 0.0))
+        for sv in unique_s:
+            _draw_wire_cube(ax3, int(sv))
+
+    # ---------------- points-only ----------------
+    fig = plt.figure(figsize=(18.6, 6.2))
+    for i, (elev, azim) in enumerate(views):
+        ax3 = fig.add_subplot(1, 3, i + 1, projection="3d")
+        _setup_ax(ax3, elev=elev, azim=azim)
+        # Dense groups: use tiny dot markers, no outlines.
+        t_pts = np.linspace(0.0, 1.0, len(disp))
+        ax3.scatter(disp[:, 0], disp[:, 1], disp[:, 2], s=2, c=t_pts, cmap="viridis", alpha=0.18, depthshade=False, edgecolors="none", marker=".")
+        # Highlight selected points.
+        disp_hi = disp[np.array(ks, dtype=int), :]
+        ax3.scatter(disp_hi[:, 0], disp_hi[:, 1], disp_hi[:, 2], s=28, c="#D84315", depthshade=False, edgecolors="white", linewidths=0.4, alpha=0.95)
+        # Start/end.
+        ax3.scatter([disp[0, 0]], [disp[0, 1]], [disp[0, 2]], s=60, c="#D84315", depthshade=False, edgecolors="white", linewidths=0.6)
+        ax3.scatter([disp[-1, 0]], [disp[-1, 1]], [disp[-1, 2]], s=60, c="#1B5E20", depthshade=False, edgecolors="white", linewidths=0.6)
+        ax3.set_title(f"points only (el={int(elev)}, az={int(azim)})", fontsize=11, pad=4)
+    fig.suptitle(f"Detail (D≥4 bundle) — {scheme}  (m,n)=({m},{n})  N=2^{m}={N}  |cubes|={len(unique_s)}", fontsize=14, y=0.98)
+    out_points = out_dir / f"detail_bundle_{scheme}_m{m}_n{n}_points.png"
+    fig.savefig(out_points, dpi=300, bbox_inches="tight")
+    plt.close(fig)
+    print(f"Wrote {out_points}")
+
+    # ---------------- point-to-point path ----------------
+    fig = plt.figure(figsize=(18.6, 6.2))
+    for i, (elev, azim) in enumerate(views):
+        ax3 = fig.add_subplot(1, 3, i + 1, projection="3d")
+        _setup_ax(ax3, elev=elev, azim=azim)
+
+        t_segs = np.linspace(0.0, 1.0, len(segs))
+        if np.any(~jump):
+            segs_intra = segs[~jump]
+            t_intra = t_segs[~jump]
+            # For large N, the full intra-cube polyline becomes visually saturated.
+            segs_intra, t_intra = _decimate_segments(segs_intra, t_intra, max_keep=2400)
+            lc_intra = Line3DCollection(segs_intra, array=t_intra, cmap="viridis", linewidths=0.95, alpha=0.22)
+            ax3.add_collection3d(lc_intra)
+        if np.any(jump):
+            lc_jump = Line3DCollection(segs[jump], colors="#607D8B", linewidths=1.15, linestyles="dashed", alpha=0.45)
+            ax3.add_collection3d(lc_jump)
+            # Mark connector endpoints (small filled dots, no gradient).
+            jidx = np.where(jump)[0]
+            if len(jidx) > 0:
+                pts = np.vstack([disp[jidx], disp[jidx + 1]])
+                ax3.scatter(pts[:, 0], pts[:, 1], pts[:, 2], s=10, c="#455A64", alpha=0.45, depthshade=False, edgecolors="none", marker=".")
+                ax3.text2D(0.02, 0.02, "dashed=connector (distance 0 in higher-D)", transform=ax3.transAxes, fontsize=9.5, color="#607D8B")
+
+        disp_hi = disp[np.array(ks, dtype=int), :]
+        ax3.scatter(disp_hi[:, 0], disp_hi[:, 1], disp_hi[:, 2], s=28, c="#D84315", depthshade=False, edgecolors="white", linewidths=0.4, alpha=0.95)
+        ax3.scatter([disp[0, 0]], [disp[0, 1]], [disp[0, 2]], s=60, c="#D84315", depthshade=False, edgecolors="white", linewidths=0.6)
+        ax3.scatter([disp[-1, 0]], [disp[-1, 1]], [disp[-1, 2]], s=60, c="#1B5E20", depthshade=False, edgecolors="white", linewidths=0.6)
+        ax3.set_title(f"path k→k+1 (el={int(elev)}, az={int(azim)})", fontsize=11, pad=4)
+
+    fig.suptitle(f"Detail (D≥4 bundle) — {scheme}  (m,n)=({m},{n})  intra-cube gradient + grey dashed connectors", fontsize=14, y=0.98)
+    out_path = out_dir / f"detail_bundle_{scheme}_m{m}_n{n}_path.png"
+    fig.savefig(out_path, dpi=300, bbox_inches="tight")
+    plt.close(fig)
+    print(f"Wrote {out_path}")
+
+    # ---------------- 4D slice view (D==4): per-slice 3D cubes + 2D slice-transition map ----------------
+    # This view is designed to be readable when N is large: it avoids drawing the entire 4D path
+    # in a single 3D "woven fabric".
+    if D == 4:
+        # In D=4, the bundle index dims is exactly x3, hence s == x3.
+        # We'll show: (A) a 2D map of slice transitions, (B) per-slice 3D cubes (local coords) with decimated intra paths.
+        unique_s = layout.unique_s
+        # Transition counts between slices.
+        counts: Dict[Tuple[int, int], int] = {}
+        for i0 in np.where(jump)[0].tolist():
+            a = int(s[i0])
+            b = int(s[i0 + 1])
+            counts[(a, b)] = counts.get((a, b), 0) + 1
+
+        fig = plt.figure(figsize=(20.8, 10.8))
+        gs = fig.add_gridspec(nrows=2, ncols=1, height_ratios=[1.1, 2.4], hspace=0.18)
+
+        # ---- (A) 2D slice-transition map ----
+        axm = fig.add_subplot(gs[0, 0])
+        axm.set_aspect("equal")
+        axm.set_xticks([])
+        axm.set_yticks([])
+        axm.set_title("slice map (x3 levels): dashed arrows = inter-slice jumps (aggregated)", fontsize=12.5, pad=8)
+
+        # Draw slice cells and labels.
+        centers: Dict[int, Tuple[float, float]] = {}
+        for sv in unique_s:
+            ox, oy = _bundle_offsets(layout, [int(sv)])
+            cx = float(ox[0]) + float(layout.L) / 2.0
+            cy = float(oy[0]) + float(layout.L) / 2.0
+            centers[int(sv)] = (cx, cy)
+            rect = plt.Rectangle((float(ox[0]) - 0.5, float(oy[0]) - 0.5), float(layout.L), float(layout.L), fill=False, ec="#B0BEC5", lw=1.2, alpha=0.8)
+            axm.add_patch(rect)
+            axm.text(cx, cy, f"x3={int(sv)}", ha="center", va="center", fontsize=10.5, color="#37474F")
+
+        # Highlight which slices contain highlighted ks.
+        hi_s = sorted(set(int(s[int(k)]) for k in ks))
+        for sv in hi_s:
+            if sv not in centers:
+                continue
+            ox, oy = _bundle_offsets(layout, [int(sv)])
+            rect = plt.Rectangle((float(ox[0]) - 0.5, float(oy[0]) - 0.5), float(layout.L), float(layout.L), fill=False, ec="#D84315", lw=2.4, alpha=0.85)
+            axm.add_patch(rect)
+
+        # Draw aggregated arrows with thickness by count (no gradient).
+        if counts:
+            max_c = max(counts.values())
+            for (a, b), c in sorted(counts.items(), key=lambda kv: -kv[1])[:120]:
+                if a not in centers or b not in centers:
+                    continue
+                (x0, y0) = centers[a]
+                (x1, y1) = centers[b]
+                if (x0, y0) == (x1, y1):
+                    continue
+                lw = 0.6 + 2.4 * (float(c) / float(max_c))
+                arr = FancyArrowPatch(
+                    (x0, y0),
+                    (x1, y1),
+                    arrowstyle="-|>",
+                    mutation_scale=9.0,
+                    lw=lw,
+                    linestyle="dashed",
+                    color="#607D8B",
+                    alpha=0.35,
+                )
+                axm.add_patch(arr)
+
+        xmax = float(max(0, int(layout.nx) - 1)) * float(layout.L + layout.gap) + float(layout.L) - 0.5
+        ymax = float(max(0, int(layout.ny) - 1)) * float(layout.L + layout.gap) + float(layout.L) - 0.5
+        axm.set_xlim(-0.9, xmax + 0.9)
+        axm.set_ylim(-0.9, ymax + 0.9)
+
+        # ---- (B) per-slice 3D cubes (local coords) ----
+        # Arrange per-slice cubes in a compact grid (bigger panels than the bundle grid).
+        ns = len(unique_s)
+        nx = int(min(4, max(1, ns)))
+        ny = int(np.ceil(float(ns) / float(nx)))
+        gs2 = gs[1, 0].subgridspec(nrows=ny, ncols=nx, wspace=0.05, hspace=0.10)
+        t_global = np.linspace(0.0, 1.0, len(coords))
+        # Precompute per-segment global t for color continuity.
+        t_seg_global = np.linspace(0.0, 1.0, len(coords) - 1)
+
+        # Local-window selection around highlighted points (per-slice).
+        # This avoids the "woven fabric" effect for large N.
+        local_radius = int(max(40, (1 << m) // 256))
+        seg_local = _local_segment_mask_from_ks(1 << m, ks, radius=local_radius)
+        # Also keep a sparse global backbone so the slice has a faint global context.
+        backbone_stride = int(max(6, (1 << m) // 900))
+        seg_backbone = np.zeros((max(0, (1 << m) - 1),), dtype=bool)
+        seg_backbone[::backbone_stride] = True
+        seg_keep_global = seg_local | seg_backbone
+
+        for j, sv in enumerate(unique_s):
+            ix = int(j % nx)
+            iy = int(j // nx)
+            ax3 = fig.add_subplot(gs2[iy, ix], projection="3d")
+            _style_3d(ax3, layout.L, elev=22, azim=-55)
+            ax3.set_title(f"x3={int(sv)}", fontsize=10, pad=1)
+
+            mask_pts = (s == int(sv))
+            # Segments within the same slice.
+            mask_seg = (s[:-1] == int(sv)) & (s[1:] == int(sv)) & seg_keep_global
+            segs_loc = np.stack([coords[:-1, :3], coords[1:, :3]], axis=1)[mask_seg]
+            t_loc = t_seg_global[mask_seg]
+            segs_loc, t_loc = _decimate_segments(segs_loc, t_loc, max_keep=420)
+            if len(segs_loc) > 0:
+                lc = Line3DCollection(segs_loc, array=t_loc, cmap="viridis", linewidths=0.95, alpha=0.55)
+                ax3.add_collection3d(lc)
+
+            # Highlight points inside this slice.
+            ks_in = [int(k) for k in ks if int(s[int(k)]) == int(sv)]
+            if ks_in:
+                hi = coords[np.array(ks_in, dtype=int), :3]
+                ax3.scatter(hi[:, 0], hi[:, 1], hi[:, 2], s=22, c="#D84315", depthshade=False, edgecolors="white", linewidths=0.5, alpha=0.95)
+
+            # Optional faint sampled points for context (avoid full cloud).
+            pts = coords[mask_pts, :3]
+            if len(pts) > 0:
+                # Sample up to ~140 points per slice.
+                step = max(1, int(np.ceil(float(len(pts)) / 140.0)))
+                pts_s = pts[::step]
+                tt = t_global[np.where(mask_pts)[0]][::step]
+                ax3.scatter(pts_s[:, 0], pts_s[:, 1], pts_s[:, 2], s=2, c=tt, cmap="viridis", alpha=0.08, depthshade=False, edgecolors="none", marker=".")
+
+        fig.suptitle(f"Detail (D=4 slice view) — {scheme}  (m,n)=({m},{n})  per-slice 3D cubes + aggregated slice jumps", fontsize=14, y=0.99)
+        out_slice = out_dir / f"detail_bundle_{scheme}_m{m}_n{n}_slice4.png"
+        fig.savefig(out_slice, dpi=300, bbox_inches="tight")
+        plt.close(fig)
+        print(f"Wrote {out_slice}")
 
 
 def _render_row(axA, axB, axT, *, m: int, n: int, scheme: str) -> None:
@@ -278,25 +632,23 @@ def _render_row(axA, axB, axT, *, m: int, n: int, scheme: str) -> None:
         # Bundle convention:
         #   - internal 3D object coordinates: (x0,x1,x2)
         #   - bundle index coordinates: (x3,...,x_{D-1})
-        # We flatten the bundle index into a single chain coordinate s (row-major in base L),
-        # and place each 3D object as a cube shifted along +x by s*(L+gap).
+        # We flatten the bundle index into a single coordinate s (row-major in base L),
+        # and place each 3D object as a cube on a 2D grid (NOT collinear) to avoid
+        # dashed inter-cube connectors looking parallel to intra-cube segments.
         gap = 0.9  # separation between 3D objects
-        if D < 4:
-            raise AssertionError("Bundle view requires D>=4.")
-        idx = coords[:, 3:].astype(int)  # (N, D-3)
-        s = np.zeros((len(coords),), dtype=int)
-        base = 1
-        for j in range(idx.shape[1]):
-            s += idx[:, j] * base
-            base *= L
-
-        disp = np.stack([coords[:, 0] + s.astype(float) * float(L + gap), coords[:, 1], coords[:, 2]], axis=1)
+        disp, s, layout = _bundle_display_coords(coords, n=n, gap=gap)
         disp_hi = disp[np.array(ks, dtype=int), :]
         segs3 = np.stack([disp[:-1], disp[1:]], axis=1)  # (N-1,2,3)
         t3 = np.linspace(0.0, 1.0, len(segs3))
+        jump = (s[1:] != s[:-1])  # True for inter-cube connectors (index changes)
+        # Jump endpoints (for annotation).
+        jump_idx = np.where(jump)[0]
+        jump_pts = None
+        if len(jump_idx) > 0:
+            jump_pts = np.vstack([disp[jump_idx], disp[jump_idx + 1]])  # (2*J,3)
 
         # Which 3D objects (s-values) to outline.
-        unique_s = sorted(set(int(x) for x in s.tolist()))
+        unique_s = layout.unique_s
         if len(unique_s) <= 80:
             cubes_to_draw = unique_s
         else:
@@ -313,9 +665,14 @@ def _render_row(axA, axB, axT, *, m: int, n: int, scheme: str) -> None:
 
         def _draw_wire_cube(ax3, s_val: int) -> None:
             # Cube bounds for a single 3D object in display coords.
-            x0 = float(s_val) * float(L + gap) - 0.5
+            r = int(layout.s_to_rank[int(s_val)])
+            ix = int(r % int(layout.nx))
+            iy = int(r // int(layout.nx))
+            ox = float(ix) * float(L + layout.gap)
+            oy = float(iy) * float(L + layout.gap)
+            x0 = ox - 0.5
             x1 = x0 + float(L)
-            y0 = -0.5
+            y0 = oy - 0.5
             y1 = y0 + float(L)
             z0 = -0.5
             z1 = z0 + float(L)
@@ -342,13 +699,14 @@ def _render_row(axA, axB, axT, *, m: int, n: int, scheme: str) -> None:
 
         def _ax3d_bundle(x0, y0, w, h, elev, azim):
             ax3 = axB.inset_axes([x0, y0, w, h], projection="3d")
-            # Set limits: x spans the cube chain; y,z are within a cube.
-            xmax = float(max(unique_s) if unique_s else 0) * float(L + gap) + float(L) - 0.5
+            # Set limits: x/y span the cube grid; z is within a cube.
+            xmax = float(max(0, int(layout.nx) - 1)) * float(L + layout.gap) + float(L) - 0.5
+            ymax = float(max(0, int(layout.ny) - 1)) * float(L + layout.gap) + float(L) - 0.5
             ax3.set_xlim(-0.6, xmax + 0.2)
-            ax3.set_ylim(-0.6, L - 0.4)
+            ax3.set_ylim(-0.6, ymax + 0.2)
             ax3.set_zlim(-0.6, L - 0.4)
             ax3.view_init(elev=float(elev), azim=float(azim))
-            ax3.set_box_aspect((3, 1, 1))
+            ax3.set_box_aspect((max(1, int(layout.nx)), max(1, int(layout.ny)), 1))
             ax3.set_xticks([])
             ax3.set_yticks([])
             ax3.set_zticks([])
@@ -361,8 +719,20 @@ def _render_row(axA, axB, axT, *, m: int, n: int, scheme: str) -> None:
             for sv in cubes_to_draw:
                 _draw_wire_cube(ax3, int(sv))
 
-            lc3 = Line3DCollection(segs3, array=t3, cmap="viridis", linewidths=1.1, alpha=0.72)
-            ax3.add_collection3d(lc3)
+            # Draw intra-cube segments with color gradient; draw inter-cube connectors as
+            # faint dashed guide links (not a "distance" in the original higher-D space).
+            if np.any(~jump):
+                lc_intra = Line3DCollection(segs3[~jump], array=t3[~jump], cmap="viridis", linewidths=1.15, alpha=0.78)
+                ax3.add_collection3d(lc_intra)
+            if np.any(jump):
+                lc_jump = Line3DCollection(
+                    segs3[jump],
+                    colors="#607D8B",
+                    linewidths=1.25,
+                    linestyles="dashed",
+                    alpha=0.35,
+                )
+                ax3.add_collection3d(lc_jump)
             # Do not scatter all points: keep the 3D "thread through cubes" readable.
             ax3.scatter(
                 disp_hi[:, 0],
@@ -378,6 +748,8 @@ def _render_row(axA, axB, axT, *, m: int, n: int, scheme: str) -> None:
             ax3.scatter([disp[0, 0]], [disp[0, 1]], [disp[0, 2]], s=50, c="#D84315", depthshade=False, edgecolors="white", linewidths=0.6)
             ax3.scatter([disp[-1, 0]], [disp[-1, 1]], [disp[-1, 2]], s=50, c="#1B5E20", depthshade=False, edgecolors="white", linewidths=0.6)
             ax3.set_title(f"3D view (el={int(elev)}, az={int(azim)})", fontsize=9.2, pad=1)
+            if np.any(jump):
+                ax3.text2D(0.02, 0.02, "dashed=connector", transform=ax3.transAxes, fontsize=8.0, color="#607D8B")
             return ax3
 
         y3 = 0.05
@@ -444,7 +816,13 @@ def _render_pages(pairs: Sequence[Pair], *, scheme: str, out_dir: Path, rows_per
     for pi in range(pages):
         chunk = list(pairs[pi * rows_per_page : (pi + 1) * rows_per_page])
         nrows = len(chunk)
-        fig, axes = plt.subplots(nrows=nrows, ncols=3, figsize=(17.8, 4.8 * nrows))
+        # Make the central visualization column wider so dense groups are readable.
+        fig, axes = plt.subplots(
+            nrows=nrows,
+            ncols=3,
+            figsize=(18.8, 4.8 * nrows),
+            gridspec_kw={"width_ratios": [1.0, 2.3, 1.0]},
+        )
         if nrows == 1:
             axes = np.array([axes])  # type: ignore
         for r, (m, n) in enumerate(chunk):
@@ -456,7 +834,7 @@ def _render_pages(pairs: Sequence[Pair], *, scheme: str, out_dir: Path, rows_per
             y=0.995,
         )
         out_path = out_dir / f"adaptive_{scheme}_trace_p{pi+1:02d}.png"
-        fig.savefig(out_path, dpi=220, bbox_inches="tight")
+        fig.savefig(out_path, dpi=260, bbox_inches="tight")
         plt.close(fig)
         out_paths.append(out_path)
         print(f"Wrote {out_path}")
@@ -472,6 +850,25 @@ def main() -> None:
     # Two complementary suites.
     _render_pages(pairs, scheme="vfs", out_dir=out_dir, rows_per_page=5)
     _render_pages(pairs, scheme="hilbert", out_dir=out_dir, rows_per_page=5)
+
+    # Extra detail figures for D>=4 cases (big, readable).
+    detail_dir = out_dir / "detail"
+    detail_dir.mkdir(parents=True, exist_ok=True)
+    for scheme in ("vfs", "hilbert"):
+        for (m, n) in pairs:
+            D = embedding_dimension(m, n)
+            if D < 4:
+                continue
+            N = 1 << m
+            w0 = "0" * m
+            ks = [k for k in range(N) if fm.foldm(k, m) == w0]
+            if not ks:
+                continue
+            if scheme == "vfs":
+                coords = _coords_vfs(m, n)
+            else:
+                coords = _coords_hilbert_face(m, n)
+            _render_bundle_detail(m=m, n=n, coords=coords, ks=ks, scheme=scheme, out_dir=detail_dir)
 
 
 if __name__ == "__main__":
