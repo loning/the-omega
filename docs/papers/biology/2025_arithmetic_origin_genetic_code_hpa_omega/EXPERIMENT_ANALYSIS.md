@@ -277,7 +277,8 @@ This section is the **main development plan** for scaling the project on an A100
 
 - 2026-01-14 — **COMPLETED**: 模块 E（Ribo-seq 暂停桥接）窗口级 pause score + 按 `U_after` 分位数分层比较（先做可复现的 window-level proxy；raw Ribo-seq 多数据集复现仍待做）。产物：`exp_riboseq_pause_window_proxy.py` + `sections/generated/riboseq_pause_window_proxy.tex`. Branch: `paper-bio`.
 - 2026-01-14 — **COMPLETED**: 模块 E（Ribo-seq 暂停桥接）多数据集复现（≥3 独立 Ribo-seq bigWig 数据集；人类 hg* bigWig 窗口 pausing 与 Uplift 关联/分层 + 简单 meta-analysis）。目标数据集（GEO）：GSE148965 / GSE199387 / GSE211536。产物：`fetch_geo_riboseq_bigwig.py` + `exp_riboseq_pause_bigwig_window.py` + `sections/generated/riboseq_pause_bigwig_window.tex`. Branch: `paper-bio`.
-- 2026-01-15 — **CLAIMED**: `H2-1b` UTR-inclusive cross-species replication（RefSeq `*_rna_from_genomic.fna.gz`；把 `U_after/ΔU` 纳入跨物种主端点并输出可引用的 meta-analysis fragment）。Branch: `paper-bio`.
+- 2026-01-15 — **COMPLETED**: `H2-1b` UTR-inclusive cross-species replication（RefSeq `*_rna_from_genomic.fna.gz`；把 `U_after/ΔU` 纳入跨物种主端点并输出可引用的 meta-analysis fragment）。Branch: `paper-bio`.
+  - Result (2026-01-15): 在 eukarya 子面板上用 `ΔU = U_after - U_before`（k=10）做跨物种随机效应 meta（UAA vs UGA），得到 $d=-0.04$ [-0.06, -0.01]，$I^2=92.4\\%$；产物：`sections/generated/cross_species_stop_context_mrna_eukarya_k10.tex`（已写入 paper）。限制：RefSeq 的 `*_rna_from_genomic` 在细菌/古菌通常不是 UTR-inclusive mRNA 转录本形态，跨域 ΔU 需要换数据源/注释体系。
 - 2026-01-15 — **CLAIMED**: `H3-3b` Ribo-seq bigWig pausing replication tightening（扩展到更多 human studies；改为配置驱动的 track 选择/多 study runner；收紧 meta-analysis CI）。Branch: `paper-bio`.
   - Progress (2026-01-15): 修复 GEO supplementary 抓取；新增 `config/riboseq_bigwig_studies.json` 并让 `exp_riboseq_pause_bigwig_window.py` 支持配置驱动。对候选数据集做了可复现筛查：`GSE211535_RAW.tar` / `GSE296858_RAW.tar` 的 bigWig 全为 RNA-seq；`GSE246727` / `GSE246786` 的可用 bigWig 在当前 pause-index 定义下出现 body coverage $\approx 0$（更像 APA/3'UTR 轨道而非 Ribo-seq），暂不纳入 pausing meta。下一步需要找到真正的 Ribo-seq bigWig 或改为 raw BAM/FASTQ pipeline。
 
@@ -292,7 +293,7 @@ This section is the **main development plan** for scaling the project on an A100
    - endpoint: 预注册 1–2 个主端点（建议 `ΔU=U_after-U_before` at k=10 + 1 个 stop pair），做分域 random-effects meta-analysis + 报告异质性。  
    - acceptance: 至少两个 domain 上 random-effects 95% CI 同向排除 0（见 `sections/appendices/05_statistical_tests.tex`），并报告效应量阈值（例如 |d|≥0.2 或 AUC uplift ≥0.01）。  
    - compute: 下载规模 ~0.5–3 GB（视物种/版本）；CPU 级扫描与统计（可本地/Slurm），预计 <2–6 CPU hours。  
-   - implementation sketch: 新增 `scripts/fetch_multispecies_rna.py`（复用 assembly_summary 选择逻辑）→ 扩展/复用 `exp_cross_species_stop_context.py` 以支持转录本 + `U_after` → 输出 `sections/generated/cross_species_stop_context_mrna_k10.tex`。
+   - implementation sketch: 新增 `scripts/fetch_multispecies_rna.py`（复用 assembly_summary 选择逻辑）→ 扩展/复用 `exp_cross_species_stop_context.py` 以支持转录本 + `U_after/ΔU` → 输出 `sections/generated/cross_species_stop_context_mrna_eukarya_k10.tex`。
 
 2) **H3-3b: Ribo-seq bigWig pausing replication tightening (more human studies + better track picking)**  
    - task_id: `H3-3b`  
@@ -639,6 +640,7 @@ The A100 phase is mainly about making these protocols scale (more datasets, stro
 - Created `exp_cross_species_stop_context.py` for H2-1 cross-domain replication
 - Downloaded 18/19 Tier-1 species (all except rice)
 - 2026-01-15 — Corrected cross-species window definition: interpret $k$ in codons (3k nt windows) and use window-mean uplift; regenerated k=3/5/10/20 outputs and updated the paper table.
+- 2026-01-15 — Added UTR-inclusive replication endpoint (H2-1b, eukarya only): $\Delta U=U_{\mathrm{after}}-U_{\mathrm{before}}$ at k=10 gives random-effects $d=-0.04$ [-0.06, -0.01], $I^2=92.4\\%$; see `sections/generated/cross_species_stop_context_mrna_eukarya_k10.tex`.
 - **Meta-analysis results (UAA vs UGA)**:
   - k=3: d = -0.026 [-0.050, -0.001], I² = 88.3% (significant)
   - k=5: d = -0.029 [-0.054, -0.004], I² = 88.1% (significant)
