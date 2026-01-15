@@ -380,6 +380,13 @@ def build_steps() -> List[Step]:
             depends_on=["exp_sm_labeling_solver.py"],
         ),
         Step(
+            name="m=1 to m=16 full resolution spectrum (figure)",
+            script="fig_m1_to_m16_full_visualization.py",
+            expected_outputs=[
+                "figures/m1_to_m16_full_visualization.png",
+            ],
+        ),
+        Step(
             name="Fold6 21-type bit-cube 3D shapes (figure)",
             script="fig_fold6_21_types_bitcube_3d.py",
             expected_outputs=[
