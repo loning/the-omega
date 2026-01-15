@@ -1976,8 +1976,8 @@ flowchart TB
   P_internal_fiber_g2@{ shape: lean-l, label: "内部纤维微观路线（Hurwitz+最小性；Match）<br/>类型：审计 / Audit<br/>label: app:internal_fiber_g2_optional" }
   M_internal_fiber_g2 -.- P_internal_fiber_g2
 
-  M_scalar_iface["标量/ Higgs 扇区（uplift/coarse-graining 依赖）<br/>类型：审计 / Audit<br/>label: app:scalar_interface_audits / rem:higgs_not_in_21<br/>status: scalar is protocol-emergent; no primitive label at m=6"]
-  P_scalar_iface("标量/ Higgs 识别（接口与审计）<br/>类型：审计 / Audit<br/>label: app:scalar_interface_audits / rem:higgs_not_in_21<br/>uplift/coarse-graining dependent scalar observables")
+  M_scalar_iface["标量/ Higgs 扇区（uplift/coarse-graining 依赖）<br/>类型：审计 / Audit<br/>label: app:scalar_interface_audits / rem:higgs_not_in_21 / subsec:higgs_doublet_uplift_geometry<br/>status: scalar is protocol-emergent; no primitive label at m=6; m=10 uplift admits a deterministic Hilbert-geometry doublet certificate (2D/3D)"]
+  P_scalar_iface("标量/ Higgs 识别（接口与审计）<br/>类型：审计 / Audit<br/>label: app:scalar_interface_audits / rem:higgs_not_in_21 / subsec:higgs_doublet_uplift_geometry<br/>artifacts: higgs_doublet_structure_m10(_3d).png + JSON certificates")
   M_scalar_iface -.- P_scalar_iface
 
   M_lambda_open["宇宙学常数/真空能密度（pressure 审计闭合）<br/>类型：审计 / Audit<br/>label: app:lambda_pressure_closure / rem:lambda_status<br/>family: Ω_Λ,0 ∈ {s_k, 1−s_k} with k∈{0,…,8}; select k*=min K (complexity); Planck mismatch audit; H0 via finite audit family"]
@@ -2315,7 +2315,7 @@ flowchart TB
   class M_action,M_op3_yang_mills math_cont;
   class M_cosmo,M_internal_fiber_g2 math_assumption;
   class M_gamma_proxy,M_gamma_direct,M_gauge3,M_pressure,M_input_planck,M_operator_mother,M_unify_branch,M_u1_registry,M_u3_registry,M_u1_u2_falsify,M_scatt_inverse,M_scheme_contract,M_qcd_loop_gate math_audit;
-  class M_scalar_iface,M_lambda_open,M_bh_pointer,M_qcd_gap,M_qg_scope,M_qg9_m1,M_qg9_m2,M_qg9_m3 not_closed;
+  class M_lambda_open,M_bh_pointer,M_qcd_gap,M_qg_scope,M_qg9_m1,M_qg9_m2,M_qg9_m3 not_closed;
   class M_op1 math_audit;
   class M_gut_scope,M_baryogenesis_scope,M_strongcp_scope,M_bhinfo_scope,M_cosmo_tension_scope,M_bsm_scope scope_gap;
   class P_dyn phys_proxy;
@@ -2323,7 +2323,7 @@ flowchart TB
   class P_types,P_equiv,P_proj,P_thermo,P_gauge3 phys_dict;
   class P_action,P_rg,P_cosmo phys_model;
   class P_select,P_gamma_proxy,P_gamma_direct,P_pressure,P_input_planck,P_internal_fiber_g2,P_operator_mother,P_unify_branch,P_u1_registry,P_u3_registry,P_u1_u2_falsify,P_scatt_inverse,P_scheme_contract,P_qcd_loop_gate phys_audit;
-  class P_scalar_iface,P_lambda_open,P_bh_pointer,P_qcd_gap,P_qg_scope,P_qg9_m1,P_qg9_m2,P_qg9_m3 not_closed;
+  class P_lambda_open,P_bh_pointer,P_qcd_gap,P_qg_scope,P_qg9_m1,P_qg9_m2,P_qg9_m3 not_closed;
   class P_op1 phys_audit;
   class P_gut_scope,P_baryogenesis_scope,P_strongcp_scope,P_bhinfo_scope,P_cosmo_tension_scope,P_bsm_scope scope_gap;
 ```
@@ -2636,7 +2636,7 @@ flowchart TB
 |---|---|---|---|---|
 | `M_gauge3` / `P_gauge3` | `\label{prop:channel_to_gauge}` / `\label{def:holonomy_to_candidate_family_rule}` | 闭合（holonomy 接口规则内） | `M_gauge`, `M_g1`, `M_g2`, `M_g4`, `M_holonomy_diag`, `M_consensus_p2` (optional), `M_internal_fiber_g2` (optional) | `sections/I_20_standard_model_interface.tex`; `sections/appendices/29_gauge3_holonomy_candidate_closure.tex` |
 | `M_op1` / `P_op1` | `\label{app:internal_fiber_g2_optional}` / `\label{app:quantum_measurement_born}` | 闭合（Q） | `M_qm`, `M_internal_fiber_g2`, `M_gauge3`, `M_cap`, `M_equiv` | `sections/appendices/50_internal_fiber_g2_optional.tex`; `sections/appendices/30_quantum_measurement_born.tex`; `sections/appendices/11_inference_ledger.tex`; `sections/V_41_limitations_related_work.tex` |
-| `M_scalar_iface` / `P_scalar_iface` | `\label{app:scalar_interface_audits}` / `\label{rem:higgs_not_in_21}` | 未闭合（接口/审计形态） | `M_sm`, `M_rg`, `M_proj` | `sections/appendices/22_scalar_interface_audits.tex`; `sections/I_20_standard_model_interface.tex` |
+| `M_scalar_iface` / `P_scalar_iface` | `\label{app:scalar_interface_audits}` / `\label{rem:higgs_not_in_21}` / `\label{subsec:higgs_doublet_uplift_geometry}` | 已闭合（接口/审计形态；m=10 uplift 几何双重态证书） | `M_sm`, `M_rg`, `M_proj` | `sections/appendices/22_scalar_interface_audits.tex`; `sections/I_20_standard_model_interface.tex`; artifacts: `figures/adaptive/higgs_geometry/higgs_doublet_structure_m10.png`, `figures/adaptive/higgs_geometry/higgs_doublet_structure_m10_3d.png`, `figures/adaptive/higgs_geometry/higgs_uplift_texture_m10.png`; scripts: `scripts/fig_higgs_geometry_candidates_m10.py`, `scripts/fig_higgs_doublet_structure_m10.py`, `scripts/fig_higgs_doublet_structure_m10_3d.py` |
 | `M_op5` / `P_op5` | `\label{app:yukawa_beta_protocol_closure}` | 已闭合（接口假设内） | `M_sm`, `M_gauge3`, `M_scalar_iface`, `M_mass`, `M_ckm_matrix`, `M_pmns_matrix`, `M_rg` | `sections/appendices/48_yukawa_beta_protocol_closure.tex`; `sections/appendices/22_scalar_interface_audits.tex`; `sections/appendices/31_running_couplings_resolution_flow.tex` |
 | `M_lambda_open` / `P_lambda_open` | `\label{app:lambda_pressure_closure}` / `\label{rem:lambda_status}` | 已闭合（Match/Audit；pressure） | `M_action`, `M_pressure`, `M_input_planck` | `sections/appendices/58_lambda_pressure_closure.tex`; `sections/F_20_cap_continuum_action_closure.tex`; `data/cosmology_lambda/planck2018_targets.json`; `scripts/exp_lambda_pressure_closure.py` |
 | `M_bh_pointer` / `P_bh_pointer` | `\label{app:bh_wormholes_pointer}` | 未闭合（指针/外部输入） | `M_grav`, `M_thermo`, `M_qm` | `sections/appendices/10_black_holes_wormholes.tex`; `theory_closure_tracker.md` |
