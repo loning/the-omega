@@ -678,16 +678,17 @@ def main() -> None:
 
     lines: list[str] = [
         "\\paragraph{Ribo-seq pausing from bigWig tracks (multi-study replication).}",
-        "We analyzed independent Ribo-seq bigWig coverage tracks and computed a stop-proximal pause index per transcript, defined as the mean coverage in the $k$-codon window immediately upstream of the terminal stop divided by a same-length baseline window 300 nt upstream (within CDS when available).",
+        "We analyzed Ribo-seq bigWig coverage tracks and computed a stop-proximal pause index per transcript, defined as the mean coverage in the $k$-codon window immediately upstream of the terminal stop divided by a same-length baseline window 300 nt upstream (within CDS when available).",
+        "The table reports per-track results (including within-series WT/KO conditions and replicates), and a random-effects meta-analysis across tracks (not necessarily independent studies).",
         "",
         "\\begin{center}\\small",
         "\\begin{tabular}{lrrrrr}\\toprule",
-        "Study & $n$ & $\\rho(PI, U_{\\mathrm{before}})$ & $\\rho(PI,\\Delta U)$ & $d(\\Delta U\\uparrow\\downarrow)$ & $p$ \\\\",
+        "Track & $n$ & $\\rho(PI, U_{\\mathrm{before}})$ & $\\rho(PI,\\Delta U)$ & $d(\\Delta U\\uparrow\\downarrow)$ & $p$ \\\\",
         "\\midrule",
     ]
 
     for s in study_results:
-        study_id = str(s.get("study_id", "") or "")[:24]
+        study_id = str(s.get("study_id", "") or "")
         study_tex = (r"\path{" + study_id + r"}") if study_id else ""
         corr = s.get("correlations", {}).get("pause_index_vs_u_before", {})
         corr_d = s.get("correlations", {}).get("pause_index_vs_diff", {})
