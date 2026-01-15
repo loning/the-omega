@@ -123,6 +123,12 @@ def _z_p_from_stats(m1: float, v1: float, n1: int, m2: float, v2: float, n2: int
     return float(z), float(normal_two_sided_p(float(z)))
 
 
+def _latex_escape_underscores(s: str) -> str:
+    # Many summary strings contain identifiers like "UAA_vs_UGA". In LaTeX text mode,
+    # underscores must be escaped.
+    return str(s).replace("_", r"\_")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--k-max", type=int, default=60, help="Max relative position j for curves (j=1..k_max).")
@@ -153,7 +159,7 @@ def main() -> None:
 
     if (not args.force) and cache_hit(out_json, expected_meta=expected_meta, require_meta=True):
         obj = read_json(out_json)
-        write_text(out_sum, str(obj["latex_summary"]) + "\n")
+        write_text(out_sum, _latex_escape_underscores(str(obj["latex_summary"])) + "\n")
         # Re-render plot deterministically from cached means.
         _write_plot(out_png, obj)
         return
@@ -289,7 +295,7 @@ def main() -> None:
                 f" j=1 diff={diffs[0]:+.3f} (q={qvals[0]:.3g})."
             )
 
-    latex_summary = (
+    latex_summary = _latex_escape_underscores(
         f"Position-decomposed stop-context curves under $\\mu^\\ast$ (Human RefSeq mRNA; best ORF per transcript)."
         f" Relative positions $j=1..{k_max}$ (codons) around terminal stops."
         f" Records scanned={n_scanned}, with ORF={n_with_orf}, with terminal stop={n_with_stop}."
@@ -363,4 +369,3 @@ def _write_plot(path: Path, obj: dict[str, object]) -> None:
 
 if __name__ == "__main__":
     main()
-

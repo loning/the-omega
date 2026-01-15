@@ -571,11 +571,13 @@ def main() -> None:
     ]
 
     for s in study_results:
+        study_id = str(s.get("study_id", "") or "")[:24]
+        study_tex = (r"\path{" + study_id + r"}") if study_id else ""
         corr = s.get("correlations", {}).get("pause_index_vs_u_before", {})
         corr_d = s.get("correlations", {}).get("pause_index_vs_diff", {})
         comp = s.get("pairwise_comparisons", {}).get("high_diff_vs_low_diff", {})
         lines.append(
-            f"{s.get('study_id','')[:24]} & {int(s.get('n_used_pause',0))} & "
+            f"{study_tex} & {int(s.get('n_used_pause',0))} & "
             f"{_fmt(corr.get('rho'))} & {_fmt(corr_d.get('rho'))} & "
             f"{_fmt(comp.get('cohens_d'), nd=2)} & {_p_fmt(comp.get('p'))} \\\\"
         )

@@ -300,9 +300,9 @@ def main() -> None:
         "(the unique Met codon plus the three Stop codons), and compute the boundary-hit objective "
         "$S_{\\mathcal{K}}(\\mu)=\\sum_{c\\in\\mathcal{K}}\\mathbf{1}\\{w_\\mu(c)\\in X_6^{\\mathrm{bdry}}\\}$, "
         "selecting the maximizing encoding(s). "
-        f"For the real genetic code, $S_\\max={smax_real}$ with argmax multiplicity $M={m_real}$ and unique maximizer $\\mu^\\ast$ "
+        f"For the real genetic code, $S_{{\\mathrm{{max}}}}={smax_real}$ with argmax multiplicity $M={m_real}$ and unique maximizer $\\mu^\\ast$ "
         f"(start/stop boundary homology on \\texttt{{{target_boundary_word}}} under $\\mu^\\ast$: {('yes' if hom_real else 'no')}). "
-        f"Across the random tables, the $S_\\max$ histogram is $\\{{{smax_hist_tex}\\}}$ and the symmetry-score histogram is "
+        f"Across the random tables, the $S_{{\\mathrm{{max}}}}$ histogram is $\\{{{smax_hist_tex}\\}}$ and the symmetry-score histogram is "
         f"$\\{{{score_hist_tex}\\}}$, where score $0$ means $\\mu^\\ast$ is not the unique maximizer, score $1$ means $\\mu^\\ast$ is the unique maximizer, "
         "and score $2$ means additionally that the Met codon and a Stop codon share the same \\emph{specific} boundary word "
         f"\\texttt{{{target_boundary_word}}} under $\\mu^\\ast$. "
@@ -360,4 +360,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

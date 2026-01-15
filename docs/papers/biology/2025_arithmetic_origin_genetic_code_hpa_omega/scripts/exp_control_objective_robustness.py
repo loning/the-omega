@@ -56,6 +56,12 @@ def write_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def _latex_path(s: str) -> str:
+    # \path{} (from the url package) safely renders underscores and other
+    # filename-like identifiers without requiring manual escaping.
+    return r"\path{" + str(s) + "}"
+
+
 @dataclass(frozen=True)
 class KSpec:
     key: str
@@ -251,7 +257,7 @@ def main() -> None:
     for O in Obj_list:
         ts = table_scan.get(O.key, {})
         tbl_lines.append(
-            f"{O.key}: mu* in argmax {ts.get('mu_star_in',0)}/{ts.get('n_tables',0)}, unique {ts.get('mu_star_unique',0)}/{ts.get('n_tables',0)}"
+            f"{_latex_path(O.key)}: $\\mu^\\ast$ in argmax {ts.get('mu_star_in',0)}/{ts.get('n_tables',0)}, unique {ts.get('mu_star_unique',0)}/{ts.get('n_tables',0)}"
         )
     table_summary = "; ".join(tbl_lines)
 
@@ -265,7 +271,7 @@ def main() -> None:
     tex.append(r"\renewcommand{\arraystretch}{1.20}")
     tex.append(r"\begin{tabular}{l" + "c" * len(Obj_list) + r"}")
     tex.append(r"\toprule")
-    tex.append(r"$\mathcal{K}$ variant & " + " & ".join([O.key for O in Obj_list]) + r" \\")
+    tex.append(r"$\mathcal{K}$ variant & " + " & ".join([_latex_path(O.key) for O in Obj_list]) + r" \\")
     tex.append(r"\midrule")
     tex.extend(rows)
     tex.append(r"\bottomrule")
@@ -294,4 +300,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

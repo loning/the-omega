@@ -227,7 +227,7 @@ def main() -> None:
             f"Start $({int(f_start.v)},{int(f_start.delta)})$ at \\texttt{{{start_codon}}}; "
             f"terminal stop $({int(f_stop.v)},{int(f_stop.delta)})$ at \\texttt{{{stop_codon}}}. "
             f"Uplift composition: $U=0$:{u0}, $21$:{u21}, $34$:{u34}, $55$:{u55}; "
-            f"$\\overline{{U}}={u_mean:.2f}$, $U_\\max={u_max}$. "
+            f"$\\overline{{U}}={u_mean:.2f}$, $U_{{\\mathrm{{max}}}}={u_max}$. "
             f"Smoothed peak: $\\max \\overline{{U}}_w\\approx {peak_val:.2f}$ at codon {peak_i} "
             f"(distance to stop: {dist_to_stop} codons). "
             f"Pre-stop mean (last {tail_n} codons before stop): $\\overline{{U}}_{{\\mathrm{{tail}}}}={u_tail:.2f}$."
@@ -248,4 +248,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -705,10 +705,10 @@ def main() -> None:
     tbl.append(r"\setlength{\tabcolsep}{4pt}")
     tbl.append(r"\renewcommand{\arraystretch}{1.10}")
     tbl.append(r"\resizebox{\textwidth}{!}{%")
-    tbl.append(r"\begin{tabular}{rccccrrrrrrl}")
+    tbl.append(r"\begin{tabular}{rccccrrrrrrrl}")
     tbl.append(r"\toprule")
     tbl.append(
-        r"rank & $A$ & $C$ & $G$ & $U$ & A $\overline{|\\mathrm{AUC}_D-0.5|}$ & B $|\\mathrm{AUC}_D-0.5|$ & C Fisher & rA & rB & rC & sum-rank & tag \\"
+        r"rank & $A$ & $C$ & $G$ & $U$ & A $\overline{|\mathrm{AUC}_D-0.5|}$ & B $|\mathrm{AUC}_D-0.5|$ & C Fisher & rA & rB & rC & sum-rank & tag \\"
     )
     tbl.append(r"\midrule")
     for i, r in enumerate(rows_sorted, start=1):
@@ -729,7 +729,7 @@ def main() -> None:
     summary.append(
         "Cross-task validation across three non-identification tasks (RefSeq stop-context AUC; transl\\_except recoding AUC; nonstandard-table Fisher score), evaluated over all $24$ encodings."
         f" Task A (primary): mean over $k\\in\\{{{', '.join(str(x) for x in k_list_ref)}\\}}$ of $|\\mathrm{{AUC}}(D(k))-0.5|$ with $D=u_{{after}}-u_{{before}}$ at terminal stops."
-        f" Sample sizes: n(UGA)={len(ref_uga)}, n(UAA)={len(ref_uaa)} (k_max={k_max_ref})."
+        f" Sample sizes: n(UGA)={len(ref_uga)}, n(UAA)={len(ref_uaa)} (k\\_max={k_max_ref})."
         f" Task B (primary): $|\\mathrm{{AUC}}(D)-0.5|$ on transl\\_except windows (k={k}), using only sites with both before/after windows."
         f" Sample sizes: n(recoding)={len(rec_both)}, n(terminal)={len(term_both)}."
         f" Under the uniform encoding prior, $\\mu^\\ast$ ranks {rankA_mu}/24 (A), {rankB_mu}/24 (B), {rankC_mu}/24 (C),"
@@ -763,4 +763,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
