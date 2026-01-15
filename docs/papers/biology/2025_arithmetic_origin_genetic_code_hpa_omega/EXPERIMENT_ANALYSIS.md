@@ -278,6 +278,63 @@ This section is the **main development plan** for scaling the project on an A100
 - 2026-01-14 — **COMPLETED**: 模块 E（Ribo-seq 暂停桥接）窗口级 pause score + 按 `U_after` 分位数分层比较（先做可复现的 window-level proxy；raw Ribo-seq 多数据集复现仍待做）。产物：`exp_riboseq_pause_window_proxy.py` + `sections/generated/riboseq_pause_window_proxy.tex`. Branch: `paper-bio`.
 - 2026-01-14 — **COMPLETED**: 模块 E（Ribo-seq 暂停桥接）多数据集复现（≥3 独立 Ribo-seq bigWig 数据集；人类 hg* bigWig 窗口 pausing 与 Uplift 关联/分层 + 简单 meta-analysis）。目标数据集（GEO）：GSE148965 / GSE199387 / GSE211536。产物：`fetch_geo_riboseq_bigwig.py` + `exp_riboseq_pause_bigwig_window.py` + `sections/generated/riboseq_pause_bigwig_window.tex`. Branch: `paper-bio`.
 
+### Proposed Next Sprint (Scout) — 2026-01-15
+
+**Top-3 recommended tasks**
+
+1) **H2-1b: UTR-inclusive cross-species replication (mRNA FASTA, not CDS-only)**  
+   - task_id: `H2-1b`  
+   - why now: 当前跨物种分析使用 `*_cds_from_genomic.fna.gz` 只能测 `U_before`，且异质性很高；要把 H2 变成“可复现 replication claim”，必须用含 UTR 的转录本数据把 `U_after/ΔU` 纳入主端点。  
+   - dataset: NCBI RefSeq 物种面板（沿用 `scripts/fetch_multispecies_cds.py` 的 Tier-1 list），下载每个物种参考组装的 `*_rna_from_genomic.fna.gz`（UTR-inclusive）。  
+   - endpoint: 预注册 1–2 个主端点（建议 `ΔU=U_after-U_before` at k=10 + 1 个 stop pair），做分域 random-effects meta-analysis + 报告异质性。  
+   - acceptance: 至少两个 domain 上 random-effects 95% CI 同向排除 0（见 `sections/appendices/05_statistical_tests.tex`），并报告效应量阈值（例如 |d|≥0.2 或 AUC uplift ≥0.01）。  
+   - compute: 下载规模 ~0.5–3 GB（视物种/版本）；CPU 级扫描与统计（可本地/Slurm），预计 <2–6 CPU hours。  
+   - implementation sketch: 新增 `scripts/fetch_multispecies_rna.py`（复用 assembly_summary 选择逻辑）→ 扩展/复用 `exp_cross_species_stop_context.py` 以支持转录本 + `U_after` → 输出 `sections/generated/cross_species_stop_context_mrna_k10.tex`。
+
+2) **H3-3b: Ribo-seq bigWig pausing replication tightening (more human studies + better track picking)**  
+   - task_id: `H3-3b`  
+   - why now: 现有 3-study bigWig meta d(high ΔU vs low)=0.30 [-0.06, 0.66] 仍不够收敛；需要扩大到 ≥6–10 studies 才能把 CI 缩到“能判真伪”的程度，并排查 track 选择/链特异导致的噪声。  
+   - dataset: 在现有 GSE148965 / GSE199387 / GSE211536 基础上，优先加入（均为 Homo sapiens 且有 BIGWIG 补充文件）：  
+     - `GSE246727`（Union CPM Norm bigWig：27–37 MB；另有 `RAW.tar` 1.6 GB）  
+     - `GSE246786`（`GSE246786_APA_Union_CPM_NORM.bigWig` 36.5 MB）  
+     - `GSE296858`（`RAW.tar` 1.5 GB）  
+     - `GSE211535`（RNA-seq bigWig `RAW.tar` 1.0 GB，用作 mRNA 覆盖协变量/对照）  
+   - endpoint: pause-index vs `U_before`/`ΔU` 的相关 + 分位数分层 d（保持与 `exp_riboseq_pause_bigwig_window.py` 一致），并做随机效应 meta-analysis（重点看 `high_diff_vs_low_diff`）。  
+   - acceptance: meta-analysis d 的 95% CI 排除 0（或预注册阈值），且方向在大多数 studies 一致；报告 $I^2$ 与 leave-one-study-out 稳健性。  
+   - compute: 新增数据下载 0.1–4 GB（取决于是否拉大 tar）；单 study 计算 ~分钟级到 1h 级（取决于 bigWig 大小与映射命中数）。  
+   - implementation sketch: 让 `exp_riboseq_pause_bigwig_window.py` 支持从 JSON/YAML 读 study config（dir + 过滤 regex + 可选 plus/minus 命名规则），避免硬编码；同时把 bigWig 选择规则扩展到 `*_plus/*.minus` 命名。
+
+3) **H3-7: Structure probing track cross-check (DMS/SHAPE) with the same stop-window endpoints**  
+   - task_id: `H3-7`  
+   - why now: 目前“Uplift–结构”关联在控制 GC/dinuc 后消失；用 in vivo probing track（比 RNAfold proxy 更直接）做一次窗口级复现，可作为 H3 的高价值证据补全或强负结果。  
+   - dataset: GEO 结构探针数据（可直接作为轨道/bedGraph 使用）：  
+     - `GSE95465` (Homo sapiens) — `GSE95465_DMS-treated-ctrl-100-AC-dif.bedgraph.gz` (~7.8 MB, BEDGRAPH)  
+     - `GSE95567` (E. coli) — `GSE95567_RAW.tar` (~29.9 MB, TAR of BEDGRAPH)  
+   - endpoint: stop 上下游窗口内的平均 reactivity/structure signal vs `U_before`/`U_after`/`ΔU`（并做 composition-matched 对照或 partial correlation 控 GC/dinuc）。  
+   - acceptance: 至少一个 dataset 上在控制成分后仍有可复现的相关（或明确“全为 null”并写入 paper 的边界条件）。  
+   - compute: 数据下载 <0.1 GB；CPU 解析 + 基因坐标映射（可复用 `exp_riboseq_pause_bigwig_window.py` 的 refGene 映射逻辑），预计 <1–3 CPU hours。  
+   - implementation sketch: 新增 `scripts/fetch_geo_suppl_files.py`（泛化：支持 BIGWIG/BEDGRAPH/TAR）→ 新增 `exp_structure_probing_stop_windows.py`（输出 `sections/generated/structure_probing_stop_windows.tex`）。
+
+**Data acquisition checklist**
+
+- Ribo-seq bigWig（已支持）：`python scripts/fetch_geo_riboseq_bigwig.py --gse <GSE> [--regex ...] [--extract]`
+  - `GSE148965`: `--regex '_RP\\.bigWig$'`
+  - `GSE199387`: `--regex '_RP\\.bigWig$'`
+  - `GSE211536`: `--extract`
+  - `GSE246727`: `--regex 'Union_.*BOTH\\.bigWig$'`（可先不拉 `RAW.tar`）
+  - `GSE246786`: `--file GSE246786_APA_Union_CPM_NORM.bigWig`
+  - `GSE296858`: `--extract`
+  - `GSE211535`: `--extract`（RNA-seq 对照）
+- Structure probing（待新增 downloader；也可直接用 NCBI FTP URL）：
+  - `GSE95465`: `https://ftp.ncbi.nlm.nih.gov/geo/series/GSE95nnn/GSE95465/suppl/GSE95465_DMS-treated-ctrl-100-AC-dif.bedgraph.gz`
+  - `GSE95567`: `https://ftp.ncbi.nlm.nih.gov/geo/series/GSE95nnn/GSE95567/suppl/GSE95567_RAW.tar`
+
+**Risk register**
+
+- H2-1b failure mode: UTR-inclusive 仍高异质/不跨域 → 负结果可用于把 H2 明确改写为“域/物种依赖”的 replication claim，并把“为何 CDS-only 不够”写成限制与解释。  
+- H3-3b failure mode: 加数据后 meta 仍不收敛/方向不稳 → 负结果可用于冻结 H3（见 M3 建议），并把 pause-index 作为“强 null”写进 paper。  
+- H3-7 failure mode: probing track 与 stop-window endpoint 对不上（覆盖不足/坐标映射误差）→ 负结果可转化为“数据形态不适配窗口级端点”的边界条件，并给出后续替代（zMFE 或 raw BAM pileup）。
+
 ## 核心计算实验模块（7 模块系统验证计划）
 
 以下模块按优先级排序，可并行执行。每个模块都有明确的"反驳点"和"堵回去的实验"。
