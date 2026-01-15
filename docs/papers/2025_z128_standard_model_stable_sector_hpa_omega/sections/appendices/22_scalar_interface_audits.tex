@@ -60,4 +60,53 @@ observable & canonical & reflected \\
 \label{tab:scalar_coarse_grain}
 \end{table}
 
+\subsection{Uplift microtexture at \texorpdfstring{$m=10$}{m=10} and a Higgs-doublet representative (2D/3D Hilbert screens)}
+\label{subsec:higgs_doublet_uplift_geometry}
+
+\paragraph{Scope and status.}
+\AuditTag This subsection records a deterministic, geometry-first certificate for the scalar-sector uplift narrative at $m=10$ used in the main text (Section~\ref{subsec:scalar_sectors_interface}).
+It constructs protocol-local parity-even scalar observables from the uplift microtexture and bundles them into a canonical complex doublet representative, displayed on both a balanced $2$D Hilbert screen and a $3$D Hilbert screen.
+The purpose is to provide an auditable, machine-checkable representative at the interface layer; it is not used as a premise for the theorem-level folding core.
+
+\paragraph{Protocol objects.}
+\AuditTag Fix $m=10$ and, for each scan index $k\in\{0,\dots,2^{10}-1\}$, write
+$w=\mathrm{Fold}_{10}(k)\in X_{10}$.
+On a chosen Hilbert screen (2D or 3D), each $k$ occupies a site $x$ under the corresponding addressing map, and we consider the suffix bits
+$w_{7..10}$ as the uplift microtexture beyond the $X_6$ prefix label.
+Define four site fields $b_j(x)=w_{6+j}(x)\in\{0,1\}$ and coarse-grain them by fixed block averaging on the screen:
+in 2D we use $4\times 4$ blocks on the balanced $(m,n)=(10,5)$ screen; in 3D we use $2\times 2\times 2$ blocks on the $(m,n_3)=(10,4)$ cube, averaging over occupied sites in each block.
+
+\paragraph{Deterministic doublet bundling.}
+\AuditTag The generator selects a canonical bundling of the four coarse-grained scalar channels into a complex doublet by a fixed deterministic rule:
+it contrasts the parity-even coarse scalar channels against a parity-odd traversal-turn sign field on the same screen and selects the pairing that minimizes a declared correlation-based objective (no free parameters).
+For the present $m=10$ instance, the selected representative is
+\[
+H_1=\overline b_0+\iu\,\overline b_3,
+\qquad
+H_2=\overline b_1+\iu\,\overline b_2,
+\]
+agreeing between the 2D and 3D displays (Figures~\ref{fig:higgs_doublet_structure_m10_2d} and \ref{fig:higgs_doublet_structure_m10_3d}).
+
+\paragraph{Reproducible artifacts (figures and JSON certificates).}
+\AuditTag The deterministic generators write the following artifacts under \path{figures/adaptive/higgs\_geometry/}:
+\begin{itemize}
+\item \path{figures/adaptive/higgs_geometry/higgs_uplift_texture_m10.png} (2D uplift-texture visualization),
+\item \path{figures/adaptive/higgs_geometry/higgs_doublet_structure_m10.png} (2D doublet display; Figure~\ref{fig:higgs_doublet_structure_m10_2d}),
+\item \path{figures/adaptive/higgs_geometry/higgs_doublet_structure_m10_3d.png} (3D doublet display; Figure~\ref{fig:higgs_doublet_structure_m10_3d}),
+\item \path{figures/adaptive/higgs_geometry/data/higgs_uplift_texture_m10.json} (site fields and block averages),
+\item \path{figures/adaptive/higgs_geometry/data/higgs_doublet_structure_m10.json} (2D channel statistics + selected pairing),
+\item \path{figures/adaptive/higgs_geometry/data/higgs_doublet_structure_m10_3d.json} (3D channel statistics + selected pairing).
+\end{itemize}
+The corresponding generator scripts are:
+\path{scripts/fig_higgs_geometry_candidates_m10.py},
+\path{scripts/fig_higgs_doublet_structure_m10.py}, and
+\path{scripts/fig_higgs_doublet_structure_m10_3d.py}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/adaptive/higgs_geometry/higgs_uplift_texture_m10}
+\caption{Uplift microtexture at $m=10$ on the balanced $2$D Hilbert screen (interface/audit). The left panel shows the site field given by the suffix Hamming weight $|w_{7..10}|_1$, while the right panel shows a $4\times 4$ block-averaged coarse scalar field on the same screen, illustrating the parity-even scalar-texture viewpoint used in the main text.}
+\label{fig:higgs_uplift_texture_m10}
+\end{figure}
+
 

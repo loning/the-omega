@@ -31,6 +31,7 @@ Under figures/adaptive/hilbert_tree/:
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Dict, List, Tuple
 
@@ -306,6 +307,51 @@ def _edges(levels: Dict[int, List[str]]) -> List[Tuple[int, str, int, str]]:
     return es
 
 
+def _build_tree_catalog_for_u(*, u: str, label: str) -> Dict[str, object]:
+    """
+    Build a deterministic, machine-readable catalog of the refinement tree:
+      - nodes grouped by m
+      - parent relation via prefix projection
+      - per-node invariants: boundary tag and g_m(w)
+    """
+    levels = _build_tree_nodes(u)
+    es = _edges(levels)
+
+    # Precompute degeneracy maps (cached on disk by exp_foldm_stats).
+    gm_by_m: Dict[int, Dict[str, int]] = {m: foldm.cached_degeneracy_map(m) for m in (6, 7, 8, 9, 10)}
+
+    def node_obj(m: int, w: str) -> Dict[str, object]:
+        gm = int(gm_by_m[int(m)][w])
+        return {
+            "m": int(m),
+            "w": str(w),
+            "prefix6": str(w[:6]),
+            "is_boundary": bool(xm.is_boundary_word(w)),
+            "g": gm,
+        }
+
+    nodes: Dict[str, List[Dict[str, object]]] = {}
+    for m in (6, 7, 8, 9, 10):
+        nodes[str(m)] = [node_obj(m, w) for w in levels[m]]
+
+    edges: List[Dict[str, object]] = []
+    for mp, wp, mc, wc in es:
+        edges.append(
+            {
+                "parent": {"m": int(mp), "w": str(wp)},
+                "child": {"m": int(mc), "w": str(wc)},
+            }
+        )
+
+    return {
+        "root_u": str(u),
+        "root_label": str(label),
+        "root_V": int(sml.zeckendorf_value(u)),
+        "levels": nodes,
+        "edges": edges,
+    }
+
+
 def _render_tree_for_u(*, u: str, label: str, base_color: str, out_png: Path) -> None:
     levels = _build_tree_nodes(u)
     es = _edges(levels)
@@ -455,6 +501,8 @@ def _render_tree_for_u(*, u: str, label: str, base_color: str, out_png: Path) ->
 def main() -> None:
     out_dir = figures_dir() / "adaptive" / "hilbert_tree"
     out_dir.mkdir(parents=True, exist_ok=True)
+    data_dir = out_dir / "data"
+    data_dir.mkdir(parents=True, exist_ok=True)
 
     label_map = _get_sm_labeling_map()
     X6 = sml.all_x6()
@@ -463,11 +511,30 @@ def main() -> None:
     if len(X6_sorted) != 21 or len(palette) < 21:
         raise AssertionError("Expected 21 base types/colors.")
 
+    catalog_all: Dict[str, object] = {"m_range": [6, 10], "trees": []}
     for i, u in enumerate(X6_sorted):
         lab = label_map[u]
         col = palette[i]
         out_png = out_dir / f"hilbert_tree_m6to10_u_{u}.png"
         _render_tree_for_u(u=u, label=lab, base_color=col, out_png=out_png)
+
+        # Also write a deterministic per-tree data file with all "new states" at m>6.
+        cat = _build_tree_catalog_for_u(u=u, label=lab)
+        (data_dir / f"hilbert_tree_m6to10_u_{u}.json").write_text(
+            json.dumps(cat, ensure_ascii=False, indent=2, sort_keys=True),
+            encoding="utf-8",
+        )
+        cast_list = catalog_all["trees"]
+        if not isinstance(cast_list, list):
+            raise AssertionError("catalog_all['trees'] must be a list.")
+        cast_list.append(cat)
+
+    # One combined catalog for convenience.
+    (data_dir / "hilbert_tree_m6to10_catalog.json").write_text(
+        json.dumps(catalog_all, ensure_ascii=False, indent=2, sort_keys=True),
+        encoding="utf-8",
+    )
+    print(f"Wrote {data_dir / 'hilbert_tree_m6to10_catalog.json'}")
 
 
 if __name__ == "__main__":

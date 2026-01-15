@@ -657,6 +657,32 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Higgs uplift microtexture (m=10; 2D Hilbert) and geometry exports",
+            script="fig_higgs_geometry_candidates_m10.py",
+            expected_outputs=[
+                "figures/adaptive/higgs_geometry/higgs_geometry_candidates_m10.png",
+                "figures/adaptive/higgs_geometry/higgs_uplift_texture_m10.png",
+                "figures/adaptive/higgs_geometry/data/higgs_geometry_m10_ranked.json",
+                "figures/adaptive/higgs_geometry/data/higgs_uplift_texture_m10.json",
+            ],
+        ),
+        Step(
+            name="Higgs-like scalar doublet from uplift microtexture (m=10; 2D Hilbert)",
+            script="fig_higgs_doublet_structure_m10.py",
+            expected_outputs=[
+                "figures/adaptive/higgs_geometry/higgs_doublet_structure_m10.png",
+                "figures/adaptive/higgs_geometry/data/higgs_doublet_structure_m10.json",
+            ],
+        ),
+        Step(
+            name="Higgs-like scalar doublet from uplift microtexture (m=10; 3D Hilbert)",
+            script="fig_higgs_doublet_structure_m10_3d.py",
+            expected_outputs=[
+                "figures/adaptive/higgs_geometry/higgs_doublet_structure_m10_3d.png",
+                "figures/adaptive/higgs_geometry/data/higgs_doublet_structure_m10_3d.json",
+            ],
+        ),
+        Step(
             name="Resolution-threshold staircase",
             script="exp_resolution_thresholds.py",
             expected_outputs=[
