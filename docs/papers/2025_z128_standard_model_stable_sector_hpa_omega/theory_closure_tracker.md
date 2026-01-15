@@ -180,6 +180,18 @@ flowchart TD
 - **层级**：Iface/Audit
 - **最小失败点**：若 $S(\omega)$ 在声明带宽内不近似幺正/不可微/unwrap 不稳定（S1），则必须把 WS delay 降级为 proxy，并停止任何“解析证书升级”的叙事提升。
 
+### IC-17：GWOSC ringdown 的频域-时域一致性可辨识性门禁（real data；windowed audit）
+
+- **内容**：将“线宽（FWHM）↔ 阻尼时间常数”的频域-时域对照落实为一个**可辨识性门禁审计**：在声明的带宽与时间窗族上，对 GWOSC 公开 strain 数据做（i）噪声窗 Welch PSD 白化（本地噪声窗为默认；长时段 PSD 作为后续升级），（ii）频域峰/半高宽门禁（避免 band-edge 伪峰：`PEAKEDGE`），（iii）时间域阻尼可辨识性门禁（网格上界命中 `TAUBOUND`、包络估计失败 `ENVFAIL`、或总体 `TAUFAIL`），并将每条失败以显式原因写入表格。该 IC 的目标不是“证明某个物理恒等式”，而是把**为何不可比**写成可复核的最小失败点，从而为下一步（更长 PSD/多事件 stacking/更稳健的频域拟合宽度）提供可证伪的升级路线。
+- **文稿定位**：
+  - `sections/appendices/8z_minimal_failure_point_templates.tex`：散射/桥接失败点（S1--S3）与 windowed-comparability 纪律（对齐此 IC 的失败原因标签）
+  - `sections/V_40_falsifiability_predictions.tex`：与“相位-延迟-线宽三角一致性”的可证伪口径并列（real data 作为审计实例，不进入 theorem-level 依赖链）
+- **复现工件（真实数据；审计表与摘要）**：
+  - `scripts/exp_gwosc_ringdown_linewidth_audit.py` → `sections/generated/gwosc_ringdown_linewidth_rows.tex`, `sections/generated/gwosc_ringdown_linewidth_summary.tex`
+  - 数据缓存（可选）：`data/real_world/gwosc/*-32.txt.gz`（ringdown 片段）；长时段 `*-4096.txt.gz` 作为下一步用于更稳定 PSD 的升级输入（当前环境下载不稳定时不作为必需前提）
+- **层级**：Audit/Match（真实数据的门禁审计；不进入 theorem-level folding 依赖链）
+- **最小失败点**：若频域峰落在带宽边界（`PEAKEDGE`）或时间域阻尼不可辨识（`TAUFAIL/TAUBOUND/ENVFAIL`），则该窗口在本文口径下不可用于 $\tau_{\mathrm{time}}$ 与 $\tau_{\mathrm{fft}}$ 的对照；必须改变带宽/估计器/或提升 PSD/事件数，而不能以单次窗口的数值输出替代门禁。
+
 ### IC-9：CPTP/DPI ↔ 第二定律证书 ↔ 多体反馈（单调性约束面）
 
 - **内容**：把 coarse-graining/forgetting 表述为 channel（Markov 或 CPTP）时，DPI（相对熵单调性）提供可审计的不可逆证书；热力学“第二定律”在本文口径下应理解为“在声明 channel family 上的 DPI 证书”，并能与多体+测量反馈（instrument/control loop）接口同构对齐。  
@@ -254,6 +266,7 @@ flowchart TD
   - `scripts/exp_linewidth_survival_finite_family_audit.py` → `sections/generated/survival_finite_family_rows.tex`, `sections/generated/survival_finite_family_summary.tex`
   - `scripts/exp_ihara_hashimoto_added_edge_audit.py` → `sections/generated/ihara_hashimoto_added_edge_rows.tex`, `sections/generated/ihara_hashimoto_added_edge_summary.tex`
   - `scripts/exp_hashimoto_added_edge_schur_ratio_audit.py` → `sections/generated/hashimoto_added_edge_schur_rows.tex`, `sections/generated/hashimoto_added_edge_schur_summary.tex`
+  - `scripts/exp_gwosc_ringdown_linewidth_audit.py` → `sections/generated/gwosc_ringdown_linewidth_rows.tex`, `sections/generated/gwosc_ringdown_linewidth_summary.tex`（real data：windowed gate diagnostics）
   - 以上脚本已接入 `scripts/run_all.py` 的可复现流水线。
 - **层级**：Audit/Iface（叙事门禁与回退纪律；不进入 theorem-level folding 依赖链）
 - **最小失败点**：若匹配层字典/窗口 comparability 未声明或不稳定，则必须降级为 within-protocol 的账本/反事实陈述；若 HTF-lite 失败（B5/IC13）则禁止任何 zeta-zero 叙事；若散射幺正窗失效（S1）则 delay/linewidth 只能作为 proxy 并停止解析证书升级。
