@@ -372,6 +372,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="18+3 particles Hilbert visualization (figure)",
+            script="fig_18_3_particles_hilbert_visualization.py",
+            expected_outputs=[
+                "figures/18_3_particles_hilbert_visualization.png",
+            ],
+            depends_on=["exp_sm_labeling_solver.py"],
+        ),
+        Step(
             name="Fold6 21-type bit-cube 3D shapes (figure)",
             script="fig_fold6_21_types_bitcube_3d.py",
             expected_outputs=[
