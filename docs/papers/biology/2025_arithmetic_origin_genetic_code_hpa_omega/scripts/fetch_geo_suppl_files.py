@@ -42,10 +42,15 @@ def probing_dir() -> Path:
 
 
 def geo_suppl_base_url(gse: str) -> str:
-    # GEO FTP layout groups by thousands: GSE148965 -> .../GSE148nnn/GSE148965/suppl/
-    if not re.match(r"^GSE\d+$", gse):
+    # GEO FTP layout groups by thousands:
+    #   GSE148965 -> .../GSE148nnn/GSE148965/suppl/
+    #   GSE95465  -> .../GSE95nnn/GSE95465/suppl/
+    m = re.match(r"^GSE(\d+)$", gse)
+    if not m:
         raise ValueError(f"Invalid GSE accession: {gse}")
-    prefix = gse[:6] + "nnn"
+    digits = m.group(1)
+    prefix_digits = digits[:-3] if len(digits) > 3 else ""
+    prefix = "GSE" + prefix_digits + "nnn"
     return f"https://ftp.ncbi.nlm.nih.gov/geo/series/{prefix}/{gse}/suppl/"
 
 
