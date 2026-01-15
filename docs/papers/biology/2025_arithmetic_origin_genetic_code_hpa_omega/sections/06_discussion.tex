@@ -268,9 +268,13 @@ Across all window sizes (30--120nt), partial correlations controlling for GC and
 This does not invalidate Uplift as a descriptor, but it means any biological interpretation must account for its strong collinearity with GC content.
 
 \paragraph{Structure probing track cross-check (H3-7).}
-To move beyond RNAfold-style proxies, we attempted to use an in vivo structure probing track from GEO (DMS bedGraph; GSE95465) and compute the same stop-window endpoints via RefSeq-to-genome mapping.
-In this dataset the overlap between the probing track and our stop-window candidate set is very small at $k=10$ (hg19 coordinates), so the resulting statistics are not decisive; we report it as a reproducible data-shape/coverage check:
+To move beyond RNAfold-style proxies, we attempted two complementary in vivo structure probing sources.
+First, a genome-coordinate DMS bedGraph track from GEO (GSE95465) has very small overlap with our RefSeq stop-window candidate set at $k=10$ under hg19 mapping, so the resulting statistics are not decisive; we report it as a reproducible coverage check:
 \input{sections/generated/structure_probing_stop_windows}
+Second, we analyzed transcriptome-wide icSHAPE reactivity matrices from GEO (GSE132099; in vivo and in vitro) and computed stop-proximal window means using Ensembl cDNA sequences to locate the best-ORF terminal stop.
+Across thousands of transcripts we observe a small negative association between probing reactivity and Uplift window endpoints (consistent across in vivo/in vitro), with a residual correlation after GC conditioning:
+\input{sections/generated/structure_probing_stop_windows_GSE132099_icSHAPE_invivo}
+\input{sections/generated/structure_probing_stop_windows_GSE132099_icSHAPE_invitro}
 
 \paragraph{Selenocysteine case study: a positive signal.}
 To test whether uplift patterns distinguish recoding sites qualitatively, we performed a case study on well-characterized selenocysteine (Sec) insertion sites:
