@@ -191,16 +191,6 @@ def _bundle_offsets(layout: BundleLayout, s_vals: Sequence[int]) -> Tuple[np.nda
     return ox, oy
 
 
-def _decimate_segments(segs: np.ndarray, t: np.ndarray, max_keep: int) -> Tuple[np.ndarray, np.ndarray]:
-    """
-    Keep at most max_keep segments by uniform stride (deterministic).
-    """
-    if len(segs) <= max_keep:
-        return segs, t
-    stride = int(np.ceil(float(len(segs)) / float(max_keep)))
-    return segs[::stride], t[::stride]
-
-
 def _local_segment_mask_from_ks(N: int, ks: Sequence[int], *, radius: int) -> np.ndarray:
     """
     Build a boolean mask over segment indices i=0..N-2 selecting a local window around ks.
@@ -325,8 +315,6 @@ def _render_bundle_detail(
         if np.any(~jump):
             segs_intra = segs[~jump]
             t_intra = t_segs[~jump]
-            # For large N, the full intra-cube polyline becomes visually saturated.
-            segs_intra, t_intra = _decimate_segments(segs_intra, t_intra, max_keep=2400)
             lc_intra = Line3DCollection(segs_intra, array=t_intra, cmap="viridis", linewidths=0.95, alpha=0.22)
             ax3.add_collection3d(lc_intra)
         if np.any(jump):
@@ -455,7 +443,6 @@ def _render_bundle_detail(
             mask_seg = (s[:-1] == int(sv)) & (s[1:] == int(sv)) & seg_keep_global
             segs_loc = np.stack([coords[:-1, :3], coords[1:, :3]], axis=1)[mask_seg]
             t_loc = t_seg_global[mask_seg]
-            segs_loc, t_loc = _decimate_segments(segs_loc, t_loc, max_keep=420)
             if len(segs_loc) > 0:
                 lc = Line3DCollection(segs_loc, array=t_loc, cmap="viridis", linewidths=0.95, alpha=0.55)
                 ax3.add_collection3d(lc)
