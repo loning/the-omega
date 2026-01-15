@@ -365,6 +365,27 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Fold6 21-type Hilbert panels (figure)",
+            script="fig_fold6_21_types_hilbert_panels.py",
+            expected_outputs=[
+                "figures/fold6_21_types_hilbert_panels.png",
+            ],
+        ),
+        Step(
+            name="Fold6 21-type bit-cube 3D shapes (figure)",
+            script="fig_fold6_21_types_bitcube_3d.py",
+            expected_outputs=[
+                "figures/fold6_21_types_bitcube_3d.png",
+            ],
+        ),
+        Step(
+            name="Three-channel alluvial (figure)",
+            script="fig_three_channel_alluvial.py",
+            expected_outputs=[
+                "figures/three_channel_alluvial.png",
+            ],
+        ),
+        Step(
             name="Fold-family sensitivity (counterfactual audit)",
             script="exp_fold_family_sensitivity.py",
             expected_outputs=[
@@ -767,10 +788,73 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="Hilbert-knot triptych (Figure 1)",
+            name="Hilbert-knot triptych (concept figure)",
             script="fig_hilbert_knot_triptych.py",
             expected_outputs=[
                 "figures/hilbert_knot_triptych.png",
+            ],
+        ),
+        Step(
+            name="Hilbert path n=3 (figure)",
+            script="fig_hilbert_path_n3.py",
+            expected_outputs=[
+                "figures/hilbert_path_n3.png",
+            ],
+        ),
+        Step(
+            name="Hilbert->Fold6 overview (figure)",
+            script="fig_hilbert_fold6_overview.py",
+            expected_outputs=[
+                "figures/hilbert_fold6_overview.png",
+            ],
+        ),
+        Step(
+            name="3D screen (m=3n) Foldm trace gallery (figure)",
+            script="fig_3d_screen_foldm_trace_gallery.py",
+            expected_outputs=[
+                "figures/screen3d_foldm_trace_gallery.png",
+            ],
+        ),
+        Step(
+            name="Fractal screen (Sierpiński) trace gallery (figure)",
+            script="fig_fractal_screen_sierpinski_trace_gallery.py",
+            expected_outputs=[
+                "figures/fractal_screen_sierpinski_trace_gallery.png",
+            ],
+        ),
+        Step(
+            name="Universal VFS holographic boundary-face gallery (figure)",
+            script="fig_universal_screen_vfs_holo_face_gallery.py",
+            expected_outputs=[
+                "figures/universal_screen_vfs_holo_face_gallery.png",
+            ],
+        ),
+        Step(
+            name="Universal holographic Hilbert-face gallery (locality-optimal) (figure)",
+            script="fig_universal_screen_holo_hilbert_face_gallery.py",
+            expected_outputs=[
+                "figures/universal_screen_holo_hilbert_face_gallery.png",
+            ],
+        ),
+        Step(
+            name="CAP selection audit: visualization schemes (boundary-face)",
+            script="exp_cap_visualization_selection.py",
+            expected_outputs=[
+                "sections/generated/cap_visualization_selection_rows.tex",
+            ],
+        ),
+        Step(
+            name="Adaptive multi-(m,n) trace suite (VFS vs Hilbert) (figures)",
+            script="fig_adaptive_multi_mn_trace_suite.py",
+            expected_outputs=[
+                "figures/adaptive/adaptive_vfs_trace_p01.png",
+                "figures/adaptive/adaptive_vfs_trace_p02.png",
+                "figures/adaptive/adaptive_vfs_trace_p03.png",
+                "figures/adaptive/adaptive_vfs_trace_p04.png",
+                "figures/adaptive/adaptive_hilbert_trace_p01.png",
+                "figures/adaptive/adaptive_hilbert_trace_p02.png",
+                "figures/adaptive/adaptive_hilbert_trace_p03.png",
+                "figures/adaptive/adaptive_hilbert_trace_p04.png",
             ],
         ),
         Step(
