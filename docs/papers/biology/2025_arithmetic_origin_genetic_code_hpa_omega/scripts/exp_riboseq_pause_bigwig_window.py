@@ -77,6 +77,61 @@ def riboseq_dir() -> Path:
     return d
 
 
+@dataclass(frozen=True)
+class StudySpec:
+    study_id: str
+    dir: Path
+    prefer_regex: re.Pattern[str] | None = None
+    plus_regex: re.Pattern[str] | None = None
+    minus_regex: re.Pattern[str] | None = None
+
+
+def _compile_regex(rx: object) -> re.Pattern[str] | None:
+    s = str(rx or "").strip()
+    if not s:
+        return None
+    return re.compile(s, re.I)
+
+
+def _default_studies_json() -> Path:
+    return root_dir() / "config" / "riboseq_bigwig_studies.json"
+
+
+def load_studies_json(path: Path) -> list[StudySpec]:
+    obj = json.loads(path.read_text(encoding="utf-8"))
+    raw = obj.get("studies") if isinstance(obj, dict) else obj
+    if not isinstance(raw, list):
+        raise SystemExit(f"Invalid studies JSON (expected list or {{'studies': [...]}}): {path}")
+
+    out: list[StudySpec] = []
+    for entry in raw:
+        if not isinstance(entry, dict):
+            raise SystemExit(f"Invalid study entry (expected object): {entry}")
+        study_id = str(entry.get("study_id") or "").strip()
+        dir_s = str(entry.get("dir") or "").strip()
+        if not study_id or not dir_s:
+            raise SystemExit(f"Each study must have 'study_id' and 'dir': {entry}")
+        study_dir = Path(dir_s)
+        if not study_dir.is_absolute():
+            study_dir = root_dir() / study_dir
+
+        plus_rx = _compile_regex(entry.get("plus_regex"))
+        minus_rx = _compile_regex(entry.get("minus_regex"))
+        if (plus_rx is None) != (minus_rx is None):
+            raise SystemExit(f"Study {study_id} must set both plus_regex and minus_regex (or neither).")
+
+        out.append(
+            StudySpec(
+                study_id=study_id,
+                dir=study_dir,
+                prefer_regex=_compile_regex(entry.get("prefer_regex")),
+                plus_regex=plus_rx,
+                minus_regex=minus_rx,
+            )
+        )
+    return out
+
+
 def _fetch(url: str) -> bytes:
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=120) as r:
@@ -314,8 +369,16 @@ def _load_stop_candidates(path: Path, *, k: int) -> list[dict[str, Any]]:
     return rows
 
 
+def _iter_bigwig_paths(study_dir: Path) -> list[Path]:
+    try:
+        paths = [p for p in study_dir.iterdir() if p.is_file()]
+    except FileNotFoundError:
+        return []
+    return sorted([p for p in paths if re.search(r"\.(bw|bigwig)$", p.name, re.I)])
+
+
 def _pick_bigwig_file(study_dir: Path, *, prefer_regex: re.Pattern[str] | None) -> Path | None:
-    cands = [p for p in study_dir.glob("*.bigWig")] + [p for p in study_dir.glob("*.bw")] + [p for p in study_dir.glob("*.bigwig")]
+    cands = _iter_bigwig_paths(study_dir)
     if not cands:
         return None
     if prefer_regex is not None:
@@ -327,15 +390,51 @@ def _pick_bigwig_file(study_dir: Path, *, prefer_regex: re.Pattern[str] | None) 
     return cands[0]
 
 
-def _pick_bigwig_tracks(study_dir: Path, *, prefer_regex: re.Pattern[str] | None) -> tuple[list[Path], list[Path]]:
+def _pick_bigwig_tracks(
+    study_dir: Path,
+    *,
+    prefer_regex: re.Pattern[str] | None,
+    plus_regex: re.Pattern[str] | None = None,
+    minus_regex: re.Pattern[str] | None = None,
+) -> tuple[list[Path], list[Path]]:
     """
     Return (plus_tracks, minus_tracks).
 
     If the directory contains separate forward/reverse tracks (common in GEO tar bundles),
     use them; otherwise, treat it as unstranded and return the same single track for both.
     """
-    fw = sorted([p for p in study_dir.glob("*FW*.bigwig")])
-    rev = sorted([p for p in study_dir.glob("*Rev*.bigwig")])
+    all_bw = _iter_bigwig_paths(study_dir)
+    if not all_bw:
+        return [], []
+
+    if (plus_regex is None) != (minus_regex is None):
+        raise SystemExit(f"Study config must set both plus_regex and minus_regex (or neither): {study_dir}")
+
+    if plus_regex is not None and minus_regex is not None:
+        plus = sorted([p for p in all_bw if plus_regex.search(p.name)])
+        minus = sorted([p for p in all_bw if minus_regex.search(p.name)])
+        if not plus or not minus:
+            raise SystemExit(
+                f"No bigWig tracks matched plus/minus regex under {study_dir} "
+                f"(plus={len(plus)}, minus={len(minus)})."
+            )
+        return plus, minus
+
+    # Heuristic: prefer stranded forward/reverse (or plus/minus) tracks if present.
+    fw = sorted(
+        [
+            p
+            for p in all_bw
+            if re.search(r"(?:^|[^A-Za-z])(?:FW|FWD)(?:[^A-Za-z]|$)|_plus(?:[^A-Za-z]|$)", p.name, re.I)
+        ]
+    )
+    rev = sorted(
+        [
+            p
+            for p in all_bw
+            if re.search(r"(?:^|[^A-Za-z])(?:REV|REVERSE)(?:[^A-Za-z]|$)|_minus(?:[^A-Za-z]|$)", p.name, re.I)
+        ]
+    )
     if fw and rev:
         return fw, rev
 
@@ -487,6 +586,11 @@ def main() -> None:
         default=str(data_dir() / "refseq_hsapiens_mrna" / "stop_context_candidates.jsonl"),
         help="Input stop-context candidates JSONL.",
     )
+    ap.add_argument(
+        "--studies-json",
+        default=str(_default_studies_json()),
+        help="Optional JSON file listing bigWig studies (default: config/riboseq_bigwig_studies.json if present).",
+    )
     ap.add_argument("--force", action="store_true", help="Force recomputation (ignore cached outputs).")
     args = ap.parse_args()
 
@@ -498,44 +602,56 @@ def main() -> None:
     if not rows:
         raise SystemExit(f"No rows with k={args.k} found in {in_path}")
 
-    studies = [
-        {
-            "study_id": "GSE148965_HelaS3_WT_RP",
-            "dir": riboseq_dir() / "GSE148965",
-            "prefer": re.compile(r"WT.*_RP\.bigWig$", re.I),
-        },
-        {
-            "study_id": "GSE199387_H9_WT_RP",
-            "dir": riboseq_dir() / "GSE199387",
-            "prefer": re.compile(r"WT.*_RP\.bigWig$", re.I),
-        },
-        {
-            "study_id": "GSE211536_LS180_Ribo",
-            "dir": riboseq_dir() / "GSE211536",
-            "prefer": re.compile(r"ribo|rpf|rp", re.I),
-        },
-    ]
+    studies_json = Path(str(args.studies_json)) if str(args.studies_json).strip() else None
+    if studies_json is not None and studies_json.exists():
+        studies = load_studies_json(studies_json)
+    else:
+        studies = [
+            StudySpec(
+                study_id="GSE148965_HelaS3_WT_RP",
+                dir=riboseq_dir() / "GSE148965",
+                prefer_regex=re.compile(r"WT.*_RP\.bigWig$", re.I),
+            ),
+            StudySpec(
+                study_id="GSE199387_H9_WT_RP",
+                dir=riboseq_dir() / "GSE199387",
+                prefer_regex=re.compile(r"WT.*_RP\.bigWig$", re.I),
+            ),
+            StudySpec(
+                study_id="GSE211536_LS180_Ribo",
+                dir=riboseq_dir() / "GSE211536",
+                prefer_regex=re.compile(r"ribo|rpf|rp", re.I),
+            ),
+        ]
 
-    missing_dirs = [s["dir"] for s in studies if not Path(s["dir"]).exists()]
-    if missing_dirs:
+    missing = [s for s in studies if not s.dir.exists()]
+    if missing:
+        details = "\n".join([f"  - {s.study_id}: {s.dir}" for s in missing])
         raise SystemExit(
-            "Missing staged bigWig directories. Download via:\n"
-            "  python scripts/fetch_geo_riboseq_bigwig.py --gse GSE148965 --regex '_RP\\\\.bigWig$'\n"
-            "  python scripts/fetch_geo_riboseq_bigwig.py --gse GSE199387 --regex '_RP\\\\.bigWig$'\n"
-            "  python scripts/fetch_geo_riboseq_bigwig.py --gse GSE211536 --extract\n"
+            "Missing staged bigWig directories:\n"
+            f"{details}\n\n"
+            "Download via:\n"
+            "  python scripts/fetch_geo_riboseq_bigwig.py --gse <GSE> --list\n"
+            "  python scripts/fetch_geo_riboseq_bigwig.py --gse <GSE> --regex '<pattern>'\n"
+            "  python scripts/fetch_geo_riboseq_bigwig.py --gse <GSE> --extract\n"
         )
 
     study_results: list[dict[str, Any]] = []
     for s in studies:
-        d = Path(s["dir"])
-        bw_plus_paths, bw_minus_paths = _pick_bigwig_tracks(d, prefer_regex=s["prefer"])
+        d = Path(s.dir)
+        bw_plus_paths, bw_minus_paths = _pick_bigwig_tracks(
+            d,
+            prefer_regex=s.prefer_regex,
+            plus_regex=s.plus_regex,
+            minus_regex=s.minus_regex,
+        )
         if not bw_plus_paths or not bw_minus_paths:
             raise SystemExit(f"No bigWig found under {d} (did you run fetch+extract?)")
         shown = Path(bw_plus_paths[0]).name if bw_plus_paths else "?"
-        print(f"[run] {s['study_id']} -> {shown}", flush=True)
+        print(f"[run] {s.study_id} -> {shown}", flush=True)
         study_results.append(
             analyze_one_bigwig(
-                study_id=str(s["study_id"]),
+                study_id=str(s.study_id),
                 bw_plus_paths=bw_plus_paths,
                 bw_minus_paths=bw_minus_paths,
                 rows=rows,
@@ -597,6 +713,8 @@ def main() -> None:
         "k": int(args.k),
         "body_offset_nt": int(args.body_offset_nt),
         "n_studies": int(len(study_results)),
+        "studies_json": str(studies_json) if studies_json is not None else "",
+        "study_ids": [str(s.get("study_id", "") or "") for s in study_results],
     }
     write_text_atomic(out_tex, "\n".join(lines) + "\n")
     write_json_atomic(cache_meta_path(out_tex), meta_out)
