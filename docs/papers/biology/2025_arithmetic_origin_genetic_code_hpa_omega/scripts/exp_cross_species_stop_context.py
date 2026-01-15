@@ -61,23 +61,26 @@ STOP_CODONS = {"UAA", "UAG", "UGA"}
 class StopContext:
     """Context around a stop codon."""
     stop_codon: str
-    before_seq: str  # k nucleotides before stop
-    after_seq: str   # k nucleotides after stop (including stop)
-    u_before: float  # Uplift sum for before window
-    u_after: float   # Uplift sum for after window
-    gc_before: float # GC content of before window
-    gc_after: float  # GC content of after window
+    before_seq: str  # 3k nucleotides (k codons) before stop (excluding stop)
+    after_seq: str   # 3k nucleotides (k codons) after stop (excluding stop)
+    u_before: float  # mean Uplift over k codons (Fold_6 delta)
+    u_after: float   # mean Uplift over k codons (Fold_6 delta)
+    gc_before: float # GC fraction of before window (over 3k nt)
+    gc_after: float  # GC fraction of after window (over 3k nt)
 
 
-def compute_uplift(seq: str) -> float:
-    """Compute Uplift sum for a sequence using Fold_6 under μ*."""
+def window_mean_uplift(seq: str) -> float:
+    """Compute mean Uplift (Fold_6 delta) over in-frame codons in a window sequence."""
     total = 0.0
+    n = 0
     for i in range(0, len(seq) - 2, 3):
-        codon = seq[i:i+3]
-        if len(codon) == 3 and all(c in "ACGU" for c in codon):
-            fold = fold_codon(codon, MU_STAR)
-            total += fold.delta
-    return total
+        codon = seq[i : i + 3]
+        if len(codon) != 3 or (not all(c in "ACGU" for c in codon)):
+            return float("nan")
+        fold = fold_codon(codon, MU_STAR)
+        total += float(fold.delta)
+        n += 1
+    return (total / n) if n else float("nan")
 
 
 def gc_content(seq: str) -> float:
@@ -111,76 +114,200 @@ def parse_cds_fasta(path: Path) -> Iterator[tuple[str, str]]:
             yield header, "".join(seq_parts)
 
 
-def extract_stop_contexts(
-    cds_seq: str,
-    k: int,
-    translation_table: int = 1,
-) -> list[StopContext]:
-    """Extract stop codon contexts from a CDS sequence.
-    
-    Note: CDS FASTA files typically end at the stop codon without downstream UTR.
-    We compute:
-    - before_seq: k nucleotides upstream of stop (coding region)
-    - after_seq: the stop codon + up to k nucleotides (may be shorter or just stop)
+@dataclass(frozen=True)
+class BestOrf:
+    frame: int
+    start_base: int
+    stop_base: int
+    length_codons_including_stop: int
+
+
+def best_orf_across_frames(seq: str, *, min_codons: int) -> BestOrf | None:
     """
-    # Normalize to RNA
+    Longest ORF across frames using AUG start and standard stops.
+    Tie-breakers:
+      - longer ORF wins
+      - earlier start wins
+      - lower frame wins
+    """
+    best: BestOrf | None = None
+    for frame in (0, 1, 2):
+        in_orf = False
+        start_pos: int | None = None
+        best_frame: BestOrf | None = None
+        for pos in range(frame, len(seq) - 2, 3):
+            codon = seq[pos : pos + 3]
+            if len(codon) != 3 or (not all(c in "ACGU" for c in codon)):
+                in_orf = False
+                start_pos = None
+                continue
+            if not in_orf:
+                if codon == "AUG":
+                    in_orf = True
+                    start_pos = pos
+            else:
+                if codon in STOP_CODONS:
+                    if start_pos is not None:
+                        length_codons = (pos - start_pos) // 3 + 1
+                        if length_codons >= int(min_codons):
+                            cand = BestOrf(
+                                frame=frame,
+                                start_base=start_pos,
+                                stop_base=pos,
+                                length_codons_including_stop=length_codons,
+                            )
+                            if best_frame is None:
+                                best_frame = cand
+                            else:
+                                key = (cand.length_codons_including_stop, -cand.start_base, -cand.frame)
+                                key_best = (
+                                    best_frame.length_codons_including_stop,
+                                    -best_frame.start_base,
+                                    -best_frame.frame,
+                                )
+                                if key > key_best:
+                                    best_frame = cand
+                    in_orf = False
+                    start_pos = None
+        if best_frame is None:
+            continue
+        if best is None:
+            best = best_frame
+            continue
+        key = (best_frame.length_codons_including_stop, -best_frame.start_base, -best_frame.frame)
+        key_best = (best.length_codons_including_stop, -best.start_base, -best.frame)
+        if key > key_best:
+            best = best_frame
+    return best
+
+
+def extract_stop_contexts_cds(
+    cds_seq: str,
+    k_codons: int,
+) -> list[StopContext]:
+    """
+    Extract stop codon contexts from an annotated CDS sequence.
+
+    Note: CDS FASTA typically ends at the stop codon and has no downstream UTR.
+    We therefore compute only the before-window (k codons upstream of the terminal stop).
+    """
     seq = cds_seq.replace("T", "U")
-    
-    # Minimum length check: need at least start + k codons + stop
-    if len(seq) < k + 3:
+    k_nt = 3 * int(k_codons)
+
+    # Need at least k codons before stop + stop codon.
+    if len(seq) < k_nt + 3:
         return []
-    
-    # Find the stop codon at the end
-    stop_start = len(seq) - 3
-    stop_codon = seq[stop_start:stop_start + 3]
-    
+
+    stop_base = len(seq) - 3
+    stop_codon = seq[stop_base : stop_base + 3]
     if stop_codon not in STOP_CODONS:
         return []
-    
-    # Extract before window (k nucleotides upstream of stop)
-    before_start = stop_start - k
+
+    before_start = stop_base - k_nt
     if before_start < 0:
         return []
-    
-    before_seq = seq[before_start:stop_start]
-    
-    # For CDS, "after" is just the stop codon (no downstream UTR available)
-    # We include what's available up to k nucleotides after stop_start
-    after_end = min(stop_start + 3 + k, len(seq))
-    after_seq = seq[stop_start:after_end]
-    
-    # Validate before sequence (no ambiguous bases)
+
+    before_seq = seq[before_start:stop_base]
+    if len(before_seq) != k_nt:
+        return []
     if not all(c in "ACGU" for c in before_seq):
         return []
-    
-    # Compute Uplift for before window (this is the main signal)
-    u_before = compute_uplift(before_seq)
-    
-    # For after, compute only for the stop codon portion we have
-    # (In CDS, after_seq is typically just the 3-nt stop codon)
-    u_after = compute_uplift(after_seq) if len(after_seq) >= 3 else 0.0
-    
-    return [StopContext(
-        stop_codon=stop_codon,
-        before_seq=before_seq,
-        after_seq=after_seq,
-        u_before=u_before,
-        u_after=u_after,
-        gc_before=gc_content(before_seq),
-        gc_after=gc_content(after_seq),
-    )]
+
+    u_before = window_mean_uplift(before_seq)
+    if not math.isfinite(u_before):
+        return []
+
+    return [
+        StopContext(
+            stop_codon=stop_codon,
+            before_seq=before_seq,
+            after_seq="",
+            u_before=float(u_before),
+            u_after=float("nan"),
+            gc_before=gc_content(before_seq),
+            gc_after=float("nan"),
+        )
+    ]
+
+
+def extract_stop_contexts_mrna(
+    mrna_seq: str,
+    k_codons: int,
+    *,
+    min_orf_codons: int,
+) -> list[StopContext]:
+    """
+    Extract stop-context windows from an mRNA/transcript sequence by selecting the best ORF.
+
+    We require:
+      - best ORF uses AUG start and standard stops
+      - k codons before the terminal stop are inside the ORF
+      - k codons after the stop are present in the transcript (same frame)
+    """
+    seq = mrna_seq.replace("T", "U")
+    best = best_orf_across_frames(seq, min_codons=int(min_orf_codons))
+    if best is None:
+        return []
+
+    stop_base = int(best.stop_base)
+    start_base = int(best.start_base)
+    stop_codon = seq[stop_base : stop_base + 3]
+    if stop_codon not in STOP_CODONS:
+        return []
+
+    k_nt = 3 * int(k_codons)
+    before_start = stop_base - k_nt
+    after_start = stop_base + 3
+    if before_start < start_base:
+        return []
+    if after_start + k_nt > len(seq):
+        return []
+
+    before_seq = seq[before_start:stop_base]
+    after_seq = seq[after_start : after_start + k_nt]
+    if len(before_seq) != k_nt or len(after_seq) != k_nt:
+        return []
+    if not all(c in "ACGU" for c in before_seq):
+        return []
+    if not all(c in "ACGU" for c in after_seq):
+        return []
+
+    u_before = window_mean_uplift(before_seq)
+    u_after = window_mean_uplift(after_seq)
+    if not (math.isfinite(u_before) and math.isfinite(u_after)):
+        return []
+
+    return [
+        StopContext(
+            stop_codon=stop_codon,
+            before_seq=before_seq,
+            after_seq=after_seq,
+            u_before=float(u_before),
+            u_after=float(u_after),
+            gc_before=gc_content(before_seq),
+            gc_after=gc_content(after_seq),
+        )
+    ]
 
 
 def analyze_species(
     species_dir: Path,
     k: int,
+    *,
+    source: str,
+    min_orf_codons: int,
     max_records: int | None = None,
 ) -> dict[str, Any] | None:
     """Analyze stop-context Uplift for a single species."""
     meta_path = species_dir / "metadata.json"
     cds_path = species_dir / "cds_from_genomic.fna.gz"
+    mrna_path = species_dir / "rna_from_genomic.fna.gz"
     
-    if not meta_path.exists() or not cds_path.exists():
+    if not meta_path.exists():
+        return None
+    if source == "cds" and not cds_path.exists():
+        return None
+    if source == "rna" and not mrna_path.exists():
         return None
     
     metadata = json.loads(meta_path.read_text())
@@ -191,12 +318,16 @@ def analyze_species(
     n_records = 0
     n_valid = 0
     
-    for header, seq in parse_cds_fasta(cds_path):
+    fasta_path = cds_path if source == "cds" else mrna_path
+    for header, seq in parse_cds_fasta(fasta_path):
         n_records += 1
         if max_records and n_records > max_records:
             break
         
-        contexts = extract_stop_contexts(seq, k, translation_table=tt)
+        if source == "cds":
+            contexts = extract_stop_contexts_cds(seq, k_codons=int(k))
+        else:
+            contexts = extract_stop_contexts_mrna(seq, k_codons=int(k), min_orf_codons=int(min_orf_codons))
         for ctx in contexts:
             contexts_by_stop[ctx.stop_codon].append(ctx)
             n_valid += 1
@@ -212,24 +343,36 @@ def analyze_species(
         if not ctxs:
             continue
         
-        u_before_vals = [c.u_before for c in ctxs]
-        u_after_vals = [c.u_after for c in ctxs]
-        u_diff_vals = [c.u_after - c.u_before for c in ctxs]
+        u_before_vals = [c.u_before for c in ctxs if math.isfinite(c.u_before)]
+        u_after_vals = [c.u_after for c in ctxs if math.isfinite(c.u_after)]
+        u_diff_vals = [c.u_after - c.u_before for c in ctxs if math.isfinite(c.u_before) and math.isfinite(c.u_after)]
         gc_before_vals = [c.gc_before for c in ctxs]
-        gc_after_vals = [c.gc_after for c in ctxs]
+        gc_after_vals = [c.gc_after for c in ctxs if math.isfinite(c.gc_after)]
         
         n = len(ctxs)
         
         stop_stats[stop] = {
             "n": n,
-            "u_before_mean": sum(u_before_vals) / n,
-            "u_before_std": math.sqrt(sum((x - sum(u_before_vals)/n)**2 for x in u_before_vals) / n) if n > 1 else 0,
-            "u_after_mean": sum(u_after_vals) / n,
-            "u_after_std": math.sqrt(sum((x - sum(u_after_vals)/n)**2 for x in u_after_vals) / n) if n > 1 else 0,
-            "u_diff_mean": sum(u_diff_vals) / n,
-            "u_diff_std": math.sqrt(sum((x - sum(u_diff_vals)/n)**2 for x in u_diff_vals) / n) if n > 1 else 0,
-            "gc_before_mean": sum(gc_before_vals) / n,
-            "gc_after_mean": sum(gc_after_vals) / n,
+            "u_before_mean": (sum(u_before_vals) / len(u_before_vals)) if u_before_vals else float("nan"),
+            "u_before_std": (
+                math.sqrt(sum((x - (sum(u_before_vals) / len(u_before_vals))) ** 2 for x in u_before_vals) / len(u_before_vals))
+                if len(u_before_vals) > 1
+                else 0.0
+            ),
+            "u_after_mean": (sum(u_after_vals) / len(u_after_vals)) if u_after_vals else float("nan"),
+            "u_after_std": (
+                math.sqrt(sum((x - (sum(u_after_vals) / len(u_after_vals))) ** 2 for x in u_after_vals) / len(u_after_vals))
+                if len(u_after_vals) > 1
+                else 0.0
+            ),
+            "u_diff_mean": (sum(u_diff_vals) / len(u_diff_vals)) if u_diff_vals else float("nan"),
+            "u_diff_std": (
+                math.sqrt(sum((x - (sum(u_diff_vals) / len(u_diff_vals))) ** 2 for x in u_diff_vals) / len(u_diff_vals))
+                if len(u_diff_vals) > 1
+                else 0.0
+            ),
+            "gc_before_mean": (sum(gc_before_vals) / len(gc_before_vals)) if gc_before_vals else float("nan"),
+            "gc_after_mean": (sum(gc_after_vals) / len(gc_after_vals)) if gc_after_vals else float("nan"),
         }
     
     # Pairwise comparisons (UAA vs UGA, etc.)
@@ -246,9 +389,9 @@ def analyze_species(
         if len(ctxs1) < 10 or len(ctxs2) < 10:
             continue
         
-        # Compare U_before (upstream coding context - available in CDS FASTA)
-        vals1 = [c.u_before for c in ctxs1]
-        vals2 = [c.u_before for c in ctxs2]
+        # Compare U_before (upstream coding context; always defined for CDS, and defined for mRNA when a best ORF exists)
+        vals1 = [c.u_before for c in ctxs1 if math.isfinite(c.u_before)]
+        vals2 = [c.u_before for c in ctxs2 if math.isfinite(c.u_before)]
         
         summary = summarize_mean_diff(vals1, vals2)
         d = cohen_d(vals1, vals2)
@@ -367,16 +510,20 @@ def generate_latex_summary(
     results: list[dict[str, Any]],
     meta_results: dict[str, dict[str, Any]],
     k: int,
+    *,
+    source: str,
 ) -> str:
     """Generate LaTeX summary table."""
+    src_note = "RefSeq CDS" if source == "cds" else "RefSeq mRNA (UTR-inclusive; best ORF)"
+    out_tag = "upstream window" if source == "cds" else "before/after windows"
     lines = [
-        f"% Cross-species stop-context analysis (k={k})",
+        f"% Cross-species stop-context analysis ({src_note}; k={k} codons)",
         f"% Generated by exp_cross_species_stop_context.py",
-        f"% Note: Using U_before (upstream coding context) since CDS FASTA lacks downstream UTR",
+        f"% Note: {out_tag}",
         "",
         r"\begin{table}[htbp]",
         r"\centering",
-        r"\caption{Cross-species stop-context Uplift replication (k=" + str(k) + r", upstream window)}",
+        r"\caption{Cross-species stop-context Uplift replication (" + src_note + r"; $k=" + str(k) + r"$ codons)}",
         r"\label{tab:cross_species_stop_context}",
         r"\begin{tabular}{llrrrrr}",
         r"\toprule",
@@ -392,12 +539,12 @@ def generate_latex_summary(
         uaa_stats = result.get("stop_stats", {}).get("UAA", {})
         uga_stats = result.get("stop_stats", {}).get("UGA", {})
         
-        uaa_mean = uaa_stats.get("u_before_mean", 0)
-        uga_mean = uga_stats.get("u_before_mean", 0)
+        uaa_mean = float(uaa_stats.get("u_before_mean", float("nan")))
+        uga_mean = float(uga_stats.get("u_before_mean", float("nan")))
         
         comp = result.get("pairwise_comparisons", {}).get("UAA_vs_UGA", {})
-        diff = comp.get("diff", uaa_mean - uga_mean)
-        d = comp.get("cohens_d", 0)
+        diff = float(comp.get("diff", uaa_mean - uga_mean))
+        d = float(comp.get("cohens_d", float("nan")))
         
         lines.append(
             f"{species} & {domain} & {n:,} & {uaa_mean:.2f} & {uga_mean:.2f} & {diff:+.2f} & {d:+.2f} \\\\"
@@ -433,9 +580,11 @@ def generate_latex_summary(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="H2-1: Cross-species stop-context analysis")
-    parser.add_argument("--k", default="10", help="Window size(s), comma-separated")
+    parser.add_argument("--k", default="10", help="Window size(s) in codons, comma-separated")
     parser.add_argument("--species", help="Specific species to analyze (comma-separated)")
     parser.add_argument("--domain", help="Analyze only species from this domain")
+    parser.add_argument("--source", choices=["cds", "rna"], default="cds", help="Input source per species (cds_from_genomic vs rna_from_genomic).")
+    parser.add_argument("--min-orf-codons", type=int, default=30, help="Minimum ORF length for --source rna (codons, including stop).")
     parser.add_argument("--max-records", type=int, help="Max CDS records per species")
     parser.add_argument("--force", action="store_true", help="Overwrite existing results")
     args = parser.parse_args()
@@ -476,7 +625,13 @@ def main() -> None:
         
         for sp_dir in sorted(species_dirs):
             print(f"  [{sp_dir.parent.name}/{sp_dir.name}]", end=" ", flush=True)
-            result = analyze_species(sp_dir, k, max_records=args.max_records)
+            result = analyze_species(
+                sp_dir,
+                k,
+                source=str(args.source),
+                min_orf_codons=int(args.min_orf_codons),
+                max_records=args.max_records,
+            )
             if result:
                 results.append(result)
                 n = result.get("n_valid_stops", 0)
@@ -508,8 +663,11 @@ def main() -> None:
         print(f"  Wrote: {out_json.relative_to(root_dir())}")
         
         # Write LaTeX
-        latex = generate_latex_summary(results, meta_results, k)
-        out_tex = generated_dir() / f"cross_species_stop_context_k{k}.tex"
+        latex = generate_latex_summary(results, meta_results, k, source=str(args.source))
+        stem = f"cross_species_stop_context_k{k}"
+        if str(args.source) == "rna":
+            stem = f"cross_species_stop_context_mrna_k{k}"
+        out_tex = generated_dir() / f"{stem}.tex"
         write_text_atomic(out_tex, latex)
         print(f"  Wrote: {out_tex.relative_to(root_dir())}")
         
