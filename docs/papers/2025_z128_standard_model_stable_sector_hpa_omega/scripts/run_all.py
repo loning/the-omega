@@ -377,7 +377,7 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "figures/18_3_particles_hilbert_visualization.png",
             ],
-            depends_on=["exp_sm_labeling_solver.py"],
+            depends_on=["scripts/exp_sm_labeling_solver.py"],
         ),
         Step(
             name="m=1 to m=16 full resolution spectrum (figure)",
@@ -385,6 +385,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "figures/m1_to_m16_full_visualization.png",
             ],
+        ),
+        Step(
+            name="Particle energy level analysis (figure)",
+            script="fig_particle_energy_level_analysis.py",
+            expected_outputs=[
+                "figures/particle_energy_level_analysis.png",
+                "sections/generated/particle_energy_level_summary.tex",
+            ],
+            depends_on=["scripts/exp_sm_labeling_solver.py", "scripts/exp_mass_spectrum.py"],
         ),
         Step(
             name="Fold6 21-type bit-cube 3D shapes (figure)",
@@ -1347,6 +1356,14 @@ def build_steps() -> List[Step]:
                 "sections/generated/bh_capacity_calibrated_uplift_path_rows.tex",
                 "sections/generated/bh_planck_capacity_known_rows.tex",
                 "sections/generated/bh_planck_capacity_known_summary.tex",
+            ],
+        ),
+        Step(
+            name="Universe horizon capacity calibration (Hubble vs de Sitter targets)",
+            script="exp_universe_planck_capacity_calibration.py",
+            expected_outputs=[
+                "sections/generated/universe_planck_capacity_rows.tex",
+                "sections/generated/universe_planck_capacity_summary.tex",
             ],
         ),
         Step(
