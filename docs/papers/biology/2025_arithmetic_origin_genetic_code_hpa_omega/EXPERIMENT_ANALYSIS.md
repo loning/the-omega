@@ -282,6 +282,7 @@ This section is the **main development plan** for scaling the project on an A100
 - 2026-01-15 — **CLAIMED**: `H3-3b` Ribo-seq bigWig pausing replication tightening（扩展到更多 human studies；改为配置驱动的 track 选择/多 study runner；收紧 meta-analysis CI）。Branch: `paper-bio`.
   - Progress (2026-01-15): 修复 GEO supplementary 抓取；新增 `config/riboseq_bigwig_studies.json` 并让 `exp_riboseq_pause_bigwig_window.py` 支持配置驱动。对候选数据集做了可复现筛查：`GSE211535_RAW.tar` / `GSE296858_RAW.tar` 的 bigWig 全为 RNA-seq；`GSE246727` / `GSE246786` 的可用 bigWig 在当前 pause-index 定义下出现 body coverage $\approx 0$（更像 APA/3'UTR 轨道而非 Ribo-seq），暂不纳入 pausing meta。下一步需要找到真正的 Ribo-seq bigWig 或改为 raw BAM/FASTQ pipeline。
   - Progress (2026-01-15): 在仅有的 3 个可用 human Ribo-seq bigWig series（GSE148965/GSE199387/GSE211536）内，加入 WT/KO 与 replicate tracks（共 6 个 track）作为 robustness check；更新 `config/riboseq_bigwig_studies.json` 并重跑 `exp_riboseq_pause_bigwig_window.py`，得到 track-level 随机效应 meta：$d=0.15$ [-0.11, 0.41], $I^2=5.5\\%$（仍不显著）。结论：GEO 上 human Ribo-seq bigWig 过于稀缺，H3 的“多研究收敛 CI”无法靠 bigWig 路线完成，需要 pivot 到标准化 raw-read pipeline（BAM/FASTQ）或外部 track hub。
+- 2026-01-15 — **CLAIMED**: `H3-7` Structure probing track cross-check（DMS/SHAPE bedGraph/track；以同一 stop-window 端点检验是否存在 composition-conditioned 的结构信号）。Branch: `paper-bio`.
 
 ### Proposed Next Sprint (Scout) — 2026-01-15
 
