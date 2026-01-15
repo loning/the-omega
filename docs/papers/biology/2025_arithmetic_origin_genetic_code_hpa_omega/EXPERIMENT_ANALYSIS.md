@@ -278,6 +278,7 @@ This section is the **main development plan** for scaling the project on an A100
 - 2026-01-14 — **COMPLETED**: 模块 E（Ribo-seq 暂停桥接）窗口级 pause score + 按 `U_after` 分位数分层比较（先做可复现的 window-level proxy；raw Ribo-seq 多数据集复现仍待做）。产物：`exp_riboseq_pause_window_proxy.py` + `sections/generated/riboseq_pause_window_proxy.tex`. Branch: `paper-bio`.
 - 2026-01-14 — **COMPLETED**: 模块 E（Ribo-seq 暂停桥接）多数据集复现（≥3 独立 Ribo-seq bigWig 数据集；人类 hg* bigWig 窗口 pausing 与 Uplift 关联/分层 + 简单 meta-analysis）。目标数据集（GEO）：GSE148965 / GSE199387 / GSE211536。产物：`fetch_geo_riboseq_bigwig.py` + `exp_riboseq_pause_bigwig_window.py` + `sections/generated/riboseq_pause_bigwig_window.tex`. Branch: `paper-bio`.
 - 2026-01-15 — **CLAIMED**: `H3-3b` Ribo-seq bigWig pausing replication tightening（扩展到更多 human studies；改为配置驱动的 track 选择/多 study runner；收紧 meta-analysis CI）。Branch: `paper-bio`.
+  - Progress (2026-01-15): 修复 GEO supplementary 抓取；新增 `config/riboseq_bigwig_studies.json` 并让 `exp_riboseq_pause_bigwig_window.py` 支持配置驱动。对候选数据集做了可复现筛查：`GSE211535_RAW.tar` / `GSE296858_RAW.tar` 的 bigWig 全为 RNA-seq；`GSE246727` / `GSE246786` 的可用 bigWig 在当前 pause-index 定义下出现 body coverage $\approx 0$（更像 APA/3'UTR 轨道而非 Ribo-seq），暂不纳入 pausing meta。下一步需要找到真正的 Ribo-seq bigWig 或改为 raw BAM/FASTQ pipeline。
 
 ### Proposed Next Sprint (Scout) — 2026-01-15
 
