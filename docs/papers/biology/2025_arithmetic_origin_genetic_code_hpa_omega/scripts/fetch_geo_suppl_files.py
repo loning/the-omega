@@ -207,7 +207,8 @@ def main() -> None:
         download(url, dest, force=bool(args.force))
         downloaded.append(dest)
 
-        if args.extract and dest.suffix.lower() in {".tar", ".tgz"}:
+        is_tar = dest.name.lower().endswith((".tar", ".tar.gz", ".tgz", ".tar.bz2", ".tar.xz"))
+        if args.extract and is_tar:
             print(f"[extract] {dest}", flush=True)
             extracted.extend(extract_tar_members(dest, out_dir, member_regex=member_rx, force=bool(args.force)))
 
