@@ -73,11 +73,11 @@ def list_geo_suppl_files(gse: str) -> list[GeoSupplFile]:
     # The supplementary file table contains rows like:
     # <tr valign="top"><td>NAME</td><td>SIZE</td><td>...</td><td>TYPE</td></tr>
     row_re = re.compile(
-        r'<tr\\s+valign="top">\\s*'
-        r"<td[^>]*>([^<]+)</td>\\s*"
-        r"<td[^>]*>([^<]+)</td>\\s*"
-        r"<td[^>]*>.*?</td>\\s*"
-        r"<td[^>]*>([^<]+)</td>\\s*"
+        r'<tr\s+valign="top">\s*'
+        r"<td[^>]*>([^<]+)</td>\s*"
+        r"<td[^>]*>([^<]+)</td>\s*"
+        r"<td[^>]*>.*?</td>\s*"
+        r"<td[^>]*>([^<]+)</td>\s*"
         r"</tr>",
         re.I | re.S,
     )
