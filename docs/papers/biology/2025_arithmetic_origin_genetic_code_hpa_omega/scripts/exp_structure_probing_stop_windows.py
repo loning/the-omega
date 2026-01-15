@@ -129,6 +129,7 @@ class BedGraphIndex:
         end: int,
         *,
         min_covered_frac: float,
+        min_covered_bases: int,
     ) -> float:
         if end <= start:
             return float("nan")
@@ -165,6 +166,8 @@ class BedGraphIndex:
 
         if covered <= 0:
             return float("nan")
+        if int(covered) < int(min_covered_bases):
+            return float("nan")
         if float(covered) / float(total_len) < float(min_covered_frac):
             return float("nan")
         return float(acc / float(covered))
@@ -175,6 +178,7 @@ class BedGraphIndex:
         intervals: Iterable[tuple[int, int]],
         *,
         min_covered_frac: float,
+        min_covered_bases: int,
     ) -> float:
         total = 0
         covered = 0
@@ -214,17 +218,19 @@ class BedGraphIndex:
 
         if total <= 0 or covered <= 0:
             return float("nan")
+        if int(covered) < int(min_covered_bases):
+            return float("nan")
         if float(covered) / float(total) < float(min_covered_frac):
             return float("nan")
         return float(acc / float(covered))
 
 
-def _spearman(x: list[float], y: list[float]) -> dict[str, float]:
+def _spearman(x: list[float], y: list[float], *, min_n: int) -> dict[str, float]:
     xs = np.array(x, dtype=float)
     ys = np.array(y, dtype=float)
     m = np.isfinite(xs) & np.isfinite(ys)
     n = int(np.sum(m))
-    if n < 10:
+    if n < int(min_n):
         return {"n": float(n), "rho": float("nan"), "p": float("nan")}
     rho, p = stats.spearmanr(xs[m], ys[m])
     return {"n": float(n), "rho": float(rho), "p": float(p)}
@@ -268,8 +274,20 @@ def main() -> None:
     ap.add_argument(
         "--min-covered-frac",
         type=float,
-        default=0.8,
+        default=0.0,
         help="Minimum fraction of queried bases that must have bedGraph coverage (per window).",
+    )
+    ap.add_argument(
+        "--min-covered-bases",
+        type=int,
+        default=10,
+        help="Minimum number of covered bases required per window (useful for sparse probing tracks).",
+    )
+    ap.add_argument(
+        "--min-n-corr",
+        type=int,
+        default=30,
+        help="Minimum n required to report Spearman correlations (else shown as '--').",
     )
     ap.add_argument("--force", action="store_true", help="Overwrite existing outputs.")
     args = ap.parse_args()
@@ -346,8 +364,18 @@ def main() -> None:
         if before_t0 < start_base_i:
             continue
 
-        r_before = bg.mean_over_intervals(chrom, before_iv, min_covered_frac=float(args.min_covered_frac))
-        r_after = bg.mean_over_intervals(chrom, after_iv, min_covered_frac=float(args.min_covered_frac))
+        r_before = bg.mean_over_intervals(
+            chrom,
+            before_iv,
+            min_covered_frac=float(args.min_covered_frac),
+            min_covered_bases=int(args.min_covered_bases),
+        )
+        r_after = bg.mean_over_intervals(
+            chrom,
+            after_iv,
+            min_covered_frac=float(args.min_covered_frac),
+            min_covered_bases=int(args.min_covered_bases),
+        )
         if not (np.isfinite(r_before) and np.isfinite(r_after)):
             continue
 
@@ -366,8 +394,16 @@ def main() -> None:
         )
 
     corr = {
-        "react_before_vs_u_before": _spearman([rr["react_before"] for rr in out_rows], [rr["u_before"] for rr in out_rows]),
-        "react_diff_vs_diff": _spearman([rr["react_diff"] for rr in out_rows], [rr["diff"] for rr in out_rows]),
+        "react_before_vs_u_before": _spearman(
+            [rr["react_before"] for rr in out_rows],
+            [rr["u_before"] for rr in out_rows],
+            min_n=int(args.min_n_corr),
+        ),
+        "react_diff_vs_diff": _spearman(
+            [rr["react_diff"] for rr in out_rows],
+            [rr["diff"] for rr in out_rows],
+            min_n=int(args.min_n_corr),
+        ),
     }
 
     by_group: dict[str, list[float]] = {}
@@ -385,6 +421,8 @@ def main() -> None:
         "build": str(args.build),
         "k_codons": int(args.k),
         "min_covered_frac": float(args.min_covered_frac),
+        "min_covered_bases": int(args.min_covered_bases),
+        "min_n_corr": int(args.min_n_corr),
         "n_candidates": int(len(rows)),
         "n_mapped_refgene": int(n_mapped),
         "n_used": int(n_used),
@@ -420,6 +458,10 @@ def main() -> None:
             "\\end{center}",
         ]
     )
+    if int(n_used) < int(args.min_n_corr):
+        lines.append(
+            f"\\emph{{Note:}} Only $n={int(n_used)}$ stop-window candidates overlap this probing track under {str(args.build)} mapping; correlations are omitted by design."
+        )
 
     write_text_atomic(out_tex, "\n".join(lines) + "\n")
     write_json_atomic(
@@ -430,6 +472,8 @@ def main() -> None:
             "k": int(args.k),
             "build": str(args.build),
             "min_covered_frac": float(args.min_covered_frac),
+            "min_covered_bases": int(args.min_covered_bases),
+            "min_n_corr": int(args.min_n_corr),
             "bedgraph": str(bg_path),
         },
     )
