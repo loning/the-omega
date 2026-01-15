@@ -637,12 +637,13 @@ The A100 phase is mainly about making these protocols scale (more datasets, stro
 - Created `fetch_multispecies_cds.py` for downloading Tier-1 species from NCBI RefSeq
 - Created `exp_cross_species_stop_context.py` for H2-1 cross-domain replication
 - Downloaded 18/19 Tier-1 species (all except rice)
+- 2026-01-15 — Corrected cross-species window definition: interpret $k$ in codons (3k nt windows) and use window-mean uplift; regenerated k=3/5/10/20 outputs and updated the paper table.
 - **Meta-analysis results (UAA vs UGA)**:
-  - k=3: d = -0.035 [-0.066, -0.004], I² = 93.2% (marginally significant)
-  - k=5: d = -0.006 [-0.034, 0.021], I² = 90.9% (non-significant)
-  - k=10: d = -0.030 [-0.065, 0.004], I² = 94.8% (non-significant)
-  - k=20: d = -0.036 [-0.076, 0.004], I² = 96.3% (non-significant)
-- High heterogeneity (I² > 90%) indicates species-specific effects; Uplift signal does not replicate uniformly across domains
+  - k=3: d = -0.026 [-0.050, -0.001], I² = 88.3% (significant)
+  - k=5: d = -0.029 [-0.054, -0.004], I² = 88.1% (significant)
+  - k=10: d = -0.022 [-0.048, 0.003], I² = 89.2% (non-significant)
+  - k=20: d = -0.036 [-0.068, -0.005], I² = 93.5% (significant)
+- High heterogeneity (I² ≈ 88–94%) indicates species-specific effects; Uplift signal does not replicate uniformly across domains
 
 **Objective**: Move from "human-only + small special cases" to "cross-domain replication with strict out-of-sample validation".
 
