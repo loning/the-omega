@@ -287,7 +287,9 @@ This section is the **main development plan** for scaling the project on an A100
   - Progress (2026-01-15): 引入 transcriptome-level probing：下载 icSHAPE transcriptome reactivity 矩阵（GSE132099；`GSE132099_icSHAPE_invivo.out.txt.gz`/`GSE132099_icSHAPE_invitro.out.txt.gz`）。新增 `scripts/exp_structure_probing_icshape_stop_windows.py`（Ensembl REST cDNA 定位 best-ORF stop；输出 stop-window $\Delta U$ 与 probing $\Delta R$ 的相关/分位数效应量，并给出 GC-conditioned partial correlation；带本地 `data/_cache/ensembl_cdna/` 缓存）。产物：`sections/generated/structure_probing_stop_windows_GSE132099_icSHAPE_invivo.tex`（$n=9242$，$\rho(R_{\\mathrm{before}},U_{\\mathrm{before}})=-0.102$；$\rho(\\Delta R,\\Delta U)=-0.090$；GC partial：-0.080/-0.062；$d=-0.23$, $p<0.001$）与 `sections/generated/structure_probing_stop_windows_GSE132099_icSHAPE_invitro.tex`（$n=6665$，$\rho=-0.091/-0.048$；GC partial：-0.073/-0.022；$d=-0.11$, $p=0.004$）。结论：在大样本 probing 数据上存在小幅负相关（方向与 RNAfold/MFE proxy 一致），但效应量较小；后续需要进一步控制 dinucleotide/dicodon 或做 composition-matched 对照以判定是否独立于成分。
 - 2026-01-16 — **COMPLETED**: `H3-7b` icSHAPE probing deconfounding tightening（在 GSE132099 上加入更强成分控制：dinucleotide / codon-level proxies；检验 $\Delta R$–$\Delta U$ 是否在强控制下仍保留非零效应量，并输出可引用 fragment + 写入 paper）。Branch: `paper-bio`.
   - Progress (2026-01-16): 更新 `scripts/exp_structure_probing_icshape_stop_windows.py`：在 per-window GC partial 的基础上加入 dinucleotide-frequency（16 维）强控制，并在 fragment 内同时报告 GC-controlled 与 dinucleotide-controlled partial correlations。重跑 GSE132099（in vivo/in vitro）并覆盖更新片段：`sections/generated/structure_probing_stop_windows_GSE132099_icSHAPE_invivo.tex` 与 `sections/generated/structure_probing_stop_windows_GSE132099_icSHAPE_invitro.tex`。关键结果：dinucleotide-controlled partial correlations 接近 0（in vivo: $\rho(R_{\\mathrm{before}},U_{\\mathrm{before}}\\mid \\mathrm{dinuc}_{\\mathrm{before}})=0.008$，$\rho(\\Delta R,\\Delta U\\mid \\mathrm{dinuc}_{\\mathrm{before}},\\mathrm{dinuc}_{\\mathrm{after}})=-0.020$；in vitro: -0.015 / 0.008），与“uplift–structure 主要由序列成分驱动”一致；因此 H3 的 mechanistic bridge 在更强成分控制下倾向于 null（负结果但可复现）。
-- 2026-01-16 — **CLAIMED**: `F-1` 模块 F（非标准遗传密码表压力测试）补全待做项（系统收集 NCBI 遗传密码表、逐表边界对齐统计、以及“语义迁移但边界角色保留”的可复现检验），并同步更新 paper 与本分析文档。Branch: `paper-bio`.
+- 2026-01-16 — **COMPLETED**: `F-1` 模块 F（非标准遗传密码表压力测试）补全待做项（系统收集 NCBI 遗传密码表、逐表边界对齐统计、以及“语义迁移但边界角色保留”的可复现检验），并同步更新 paper 与本分析文档。Branch: `paper-bio`.
+  - Result (2026-01-16): `data/gc.prt` 解析得到 27 个 translation tables；逐表输出 stop/start boundary-hit 统计与 stop-set migration + symmetry 表（`scripts/exp_nonstandard_codes.py`；`sections/generated/nonstandard_code_rows.tex`、`sections/generated/nonstandard_stop_migration_rows.tex`）。
+  - Result (2026-01-16): 非标准码 meta-analysis（`scripts/exp_nonstandard_codes_meta_analysis.py`）在 exact 24-encoding null 下给出 $\mu^\ast$ ranks 2/24（Fisher=59.05；$p=0.0833$），并已写入 paper appendix（`sections/generated/nonstandard_codes_meta_analysis.tex`）。
 
 ### Proposed Next Sprint (Scout) — 2026-01-15
 
@@ -476,16 +478,18 @@ BigWig (3 studies):     pause-index vs ΔU: ρ=0.12–0.41; meta d(high ΔU vs l
 
 **目的**：堵住"你们只解释标准遗传码"的反驳。
 
-**状态**：🔄 部分完成
+**状态**：✅ 完成
 
 **当前结果**：
-- μ\* ranks 2/24 across nonstandard codes (meta-analysis)
-- 边界对齐在多数非标准码中保持
+- NCBI `gc.prt` 共 27 个 translation tables，其中 24 个有显式 stop codons（`*`）。
+- 非标准码 meta-analysis（table-level Fisher score; exact 24-encoding null）：$\mu^\ast$ ranks 2/24（Fisher=59.05；encoding-null $p=0.0833$）。
+- 边界对齐在多数非标准码中保持：在全部 27 个 codes 上，$\mu^\ast$ 下 stop-set boundary-hit count $\le 1$（0: 8 个；1: 19 个）；start-set boundary-hit count 恒为 1。
+- “语义迁移但边界角色保留”可复现：相对标准码（code ID 1）的 stop-set 迁移，在最优 base/position 对称变换下出现 4 个 code 的 stop-set 完全同构（Jaccard=1；code IDs: 1, 11, 12, 26），其余 codes 的 stop-set overlap 亦可量化并写入表格。
 
 **待做**：
-- [ ] 系统收集所有 NCBI 遗传密码表
-- [ ] 对每个代码计算边界对齐统计
-- [ ] 测试"语义迁移但边界角色保留"现象
+- [x] 系统收集所有 NCBI 遗传密码表（`data/gc.prt`；`scripts/exp_nonstandard_codes.py`）
+- [x] 对每个代码计算边界对齐统计（stop/start boundary-hit rows；`sections/generated/nonstandard_code_rows.tex`）
+- [x] 测试"语义迁移但边界角色保留"现象（stop-set migration + symmetry；`sections/generated/nonstandard_stop_migration_rows.tex`）
 
 ---
 
