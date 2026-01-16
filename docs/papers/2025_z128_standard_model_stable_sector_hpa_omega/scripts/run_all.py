@@ -1185,6 +1185,79 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Proton property miniset (matching/audit helper)",
+            script="exp_proton_properties_miniset.py",
+            expected_outputs=[
+                "sections/generated/proton_properties_rows.tex",
+                "sections/generated/proton_properties_summary.tex",
+            ],
+        ),
+        Step(
+            name="Proton resolution mapping (mu->r->m_eff; matching/audit helper)",
+            script="exp_proton_resolution_mapping.py",
+            expected_outputs=[
+                "sections/generated/proton_resolution_mapping_rows.tex",
+                "sections/generated/proton_resolution_mapping_summary.tex",
+            ],
+        ),
+        Step(
+            name="Hydrogen atom miniset (matching/audit helper)",
+            script="exp_hydrogen_atom_miniset.py",
+            expected_outputs=[
+                "sections/generated/hydrogen_atom_rows.tex",
+                "sections/generated/hydrogen_atom_summary.tex",
+            ],
+        ),
+        Step(
+            name="Hydrogen binding resolution mapping (E->mu->r->m_eff; audit helper)",
+            script="exp_hydrogen_binding_resolution_mapping.py",
+            expected_outputs=[
+                "sections/generated/hydrogen_binding_resolution_rows.tex",
+                "sections/generated/hydrogen_binding_resolution_summary.tex",
+            ],
+        ),
+        Step(
+            name="Hydrogen spectral-line miniset (matching/audit helper)",
+            script="exp_hydrogen_spectral_lines_miniset.py",
+            expected_outputs=[
+                "sections/generated/hydrogen_spectral_lines_rows.tex",
+                "sections/generated/hydrogen_spectral_lines_summary.tex",
+            ],
+        ),
+        Step(
+            name="Hydrogen 21cm resolution mapping (E->mu->r->m_eff; audit helper)",
+            script="exp_hydrogen_21cm_resolution_mapping.py",
+            expected_outputs=[
+                "sections/generated/hydrogen_21cm_resolution_rows.tex",
+                "sections/generated/hydrogen_21cm_resolution_summary.tex",
+            ],
+        ),
+        Step(
+            name="Hydrogen Lyman-alpha resolution mapping (E->mu->r->m_eff; audit helper)",
+            script="exp_hydrogen_lyman_alpha_resolution_mapping.py",
+            expected_outputs=[
+                "sections/generated/hydrogen_lyman_alpha_resolution_rows.tex",
+                "sections/generated/hydrogen_lyman_alpha_resolution_summary.tex",
+            ],
+        ),
+        Step(
+            name="Hydrogen spectral frequency->omega bridge (phase/delay interface helper)",
+            script="exp_hydrogen_spectral_phase_delay_bridge.py",
+            expected_outputs=[
+                "sections/generated/hydrogen_spectral_delay_bridge_rows.tex",
+                "sections/generated/hydrogen_spectral_delay_bridge_summary.tex",
+            ],
+        ),
+        Step(
+            name="K4 spectral phase->delay audit (spectral registry; interface benchmark)",
+            script="exp_k4_spectral_phase_delay_audit.py",
+            expected_outputs=[
+                "sections/generated/k4_spectral_phase_delay_rows.tex",
+                "sections/generated/k4_spectral_phase_delay_window_rows.tex",
+                "sections/generated/k4_spectral_phase_delay_summary.tex",
+            ],
+        ),
+        Step(
             name="Holonomy single-loop best fits (finite diagnostic)",
             script="exp_holonomy_single_loop_bestfit.py",
             expected_outputs=[
