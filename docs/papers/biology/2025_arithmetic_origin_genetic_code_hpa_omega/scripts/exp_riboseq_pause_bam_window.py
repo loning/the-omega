@@ -459,7 +459,7 @@ def main() -> None:
 
     for s in track_results:
         track_id = str(s.get("track_id", "") or "")
-        track_tex = (r"\\path{" + track_id + r"}") if track_id else ""
+        track_tex = (r"\path{" + track_id + r"}") if track_id else ""
         corr = s.get("correlations", {}).get("pause_index_vs_u_before", {})
         corr_d = s.get("correlations", {}).get("pause_index_vs_diff", {})
         comp = s.get("pairwise_comparisons", {}).get("high_diff_vs_low_diff", {})
