@@ -35,13 +35,15 @@ from typing import Any, Iterable
 import numpy as np
 from scipy import stats
 
-from cache_manager import cache_meta_path, write_json_atomic, write_text_atomic
+from cache_manager import cache_key_digest, cache_meta_path, write_json_atomic, write_text_atomic
 from genetic_code_tools import GENETIC_CODE, find_orfs, fold_codon, normalize_sequence
 from stats_tools import cohen_d
 
 
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
 CODON_DELTA = {c: int(fold_codon(c, MU_STAR).delta) for c in GENETIC_CODE}
+
+DINUC_ORDER = [a + b for a in "ACGU" for b in "ACGU"]
 
 
 def root_dir() -> Path:
@@ -236,6 +238,26 @@ def _gc_fraction(seq_rna: str, start: int, end: int) -> float:
     return float(gc) / float(denom)
 
 
+def _dinuc_freq_vec_16(seq_rna: str, start: int, end: int) -> list[float]:
+    """
+    16-dim dinucleotide frequency vector over A/C/G/U (lexicographic order).
+    """
+    if end <= start:
+        return [float("nan")] * len(DINUC_ORDER)
+    s = seq_rna[int(start) : int(end)]
+    counts = {k: 0 for k in DINUC_ORDER}
+    denom = 0
+    for i in range(len(s) - 1):
+        a = s[i]
+        b = s[i + 1]
+        if a in "ACGU" and b in "ACGU":
+            counts[a + b] += 1
+            denom += 1
+    if denom <= 0:
+        return [float("nan")] * len(DINUC_ORDER)
+    return [float(counts[k]) / float(denom) for k in DINUC_ORDER]
+
+
 def _spearman(x: Iterable[float], y: Iterable[float], *, min_n: int) -> dict[str, float]:
     xs = np.array(list(x), dtype=float)
     ys = np.array(list(y), dtype=float)
@@ -406,6 +428,11 @@ def main() -> None:
             if not (np.isfinite(gc_before) and np.isfinite(gc_after)):
                 continue
 
+            dinuc_before = _dinuc_freq_vec_16(seq_rna, before_t0, before_t1)
+            dinuc_after = _dinuc_freq_vec_16(seq_rna, after_t0, after_t1)
+            if not (all(np.isfinite(x) for x in dinuc_before) and all(np.isfinite(x) for x in dinuc_after)):
+                continue
+
             r_before, cov_before = _mean_reactivity(
                 parts,
                 start0=before_t0,
@@ -435,6 +462,8 @@ def main() -> None:
                     "diff": float(u_after - u_before),
                     "gc_before": float(gc_before),
                     "gc_after": float(gc_after),
+                    "dinuc_before": [float(x) for x in dinuc_before],
+                    "dinuc_after": [float(x) for x in dinuc_after],
                     "react_before": float(r_before),
                     "react_after": float(r_after),
                     "react_diff": float(r_after - r_before),
@@ -484,6 +513,21 @@ def main() -> None:
             [rr["react_diff"] for rr in out_rows],
             [rr["diff"] for rr in out_rows],
             [[rr["gc_before"] for rr in out_rows], [rr["gc_after"] for rr in out_rows]],
+            min_n=int(args.min_n_corr),
+        ),
+        "react_before_vs_u_before_dinuc": _partial_spearman(
+            [rr["react_before"] for rr in out_rows],
+            [rr["u_before"] for rr in out_rows],
+            [[rr["dinuc_before"][j] for rr in out_rows] for j in range(len(DINUC_ORDER))],
+            min_n=int(args.min_n_corr),
+        ),
+        "react_diff_vs_diff_dinuc": _partial_spearman(
+            [rr["react_diff"] for rr in out_rows],
+            [rr["diff"] for rr in out_rows],
+            (
+                [[rr["dinuc_before"][j] for rr in out_rows] for j in range(len(DINUC_ORDER))]
+                + [[rr["dinuc_after"][j] for rr in out_rows] for j in range(len(DINUC_ORDER))]
+            ),
             min_n=int(args.min_n_corr),
         ),
     }
@@ -539,29 +583,35 @@ def main() -> None:
     ]
     pc1 = corr_partial.get("react_before_vs_u_before_gc", {})
     pc2 = corr_partial.get("react_diff_vs_diff_gc", {})
+    pc3 = corr_partial.get("react_before_vs_u_before_dinuc", {})
+    pc4 = corr_partial.get("react_diff_vs_diff_dinuc", {})
     if np.isfinite(float(pc1.get("rho", float("nan")))) or np.isfinite(float(pc2.get("rho", float("nan")))):
         lines_tex.append(
             "\\emph{GC-controlled partial correlations:} "
             f"$\\rho(R_{{\\mathrm{{before}}}},U_{{\\mathrm{{before}}}}\\mid GC_{{\\mathrm{{before}}}})={_fmt(pc1.get('rho'))}$; "
             f"$\\rho(\\Delta R,\\Delta U\\mid GC_{{\\mathrm{{before}}}},GC_{{\\mathrm{{after}}}})={_fmt(pc2.get('rho'))}$."
         )
+    if np.isfinite(float(pc3.get("rho", float("nan")))) or np.isfinite(float(pc4.get("rho", float("nan")))):
+        lines_tex.append(
+            "\\emph{Dinucleotide-controlled partial correlations:} "
+            f"$\\rho(R_{{\\mathrm{{before}}}},U_{{\\mathrm{{before}}}}\\mid \\mathrm{{dinuc}}_{{\\mathrm{{before}}}})={_fmt(pc3.get('rho'))}$; "
+            f"$\\rho(\\Delta R,\\Delta U\\mid \\mathrm{{dinuc}}_{{\\mathrm{{before}}}},\\mathrm{{dinuc}}_{{\\mathrm{{after}}}})={_fmt(pc4.get('rho'))}$."
+        )
 
     write_text_atomic(out_tex, "\n".join(lines_tex) + "\n")
-    write_json_atomic(
-        cache_meta_path(out_tex),
-        {
-            "analysis": "structure_probing_icshape_stop_windows",
-            "study_id": study_id,
-            "k": int(args.k),
-            "min_orf_codons": int(args.min_orf_codons),
-            "min_covered_bases": int(args.min_covered_bases),
-            "min_n_corr": int(args.min_n_corr),
-            "quantile": float(args.quantile),
-            "batch_size": int(args.batch_size),
-            "max_transcripts": int(args.max_transcripts),
-            "icshape_out": str(in_path),
-        },
-    )
+    meta_key = {
+        "analysis": "structure_probing_icshape_stop_windows",
+        "study_id": study_id,
+        "k": int(args.k),
+        "min_orf_codons": int(args.min_orf_codons),
+        "min_covered_bases": int(args.min_covered_bases),
+        "min_n_corr": int(args.min_n_corr),
+        "quantile": float(args.quantile),
+        "batch_size": int(args.batch_size),
+        "max_transcripts": int(args.max_transcripts),
+        "icshape_out": str(in_path),
+    }
+    write_json_atomic(cache_meta_path(out_tex), {**meta_key, "cache_digest": cache_key_digest(meta_key)})
 
     print(f"Wrote: {out_tex}", flush=True)
 
