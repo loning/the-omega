@@ -604,6 +604,7 @@ flowchart TD
 | AQFT：GNS 网（net realization） | state→representation；M_ω(O)=π(A(O))'' | Math/Audit | `app:aqft_states_representations_gns_nets` | [x] |
 | Wightman 桥接 | AQFT↔Wightman 桥（前提边界显式；[Open]：非 theorem-level） | Iface/Audit | `app:wightman_bridge_and_reconstruction` | [~] |
 | 散射接口 | S-matrix 与延迟字典对齐（前提显式；[Open]：非 theorem-level） | Iface/Audit | `app:scattering_haag_ruelle_lsz_interface` | [~] |
+| Hilbert-screen lattice-QFT bridge（有限格点 QFT 骨架） | 在有限载体上固定“场/核/传播子/收缩”的完全有限组合学：carrier 取 tick-time×Hilbert screen（`subsec:lattice_qft_spacetime_dictionary`）；选定有限维 Gaussian kernel $K$ 与 propagator $G=K^{-1}$；Wick 展开系数对应格点 Feynman 图；wormhole-like 仅作 paid pointer-jump（台账+反事实基线），并以“图侧最短路 witness + 算子侧 finite-rank witness”闭环；scope boundary 不宣称连续极限/4D 相互作用构造 | Iface/Audit | `subsec:hilbert_screen_lattice_qft_bridge`, `app:lattice_qft_bridge_hilbert_screen`, `subsec:lattice_qft_spacetime_dictionary`, `def:wormhole_pointer_jump`, `app:wormhole_pointer_jump_audit`, `tab:wormhole_finite_rank_delay_logdet_audit`, `fig:internal_dimension_hilbert_tower_3d` | [x] |
 | 轨道动力学接口（particle orbit） | worldline reduction + Lorentz-force 模板；EOM 与曲率/连接对齐 | Iface/Audit | `app:orbit_dynamics_and_force_scattering_bridge` | [x] |
 | force↔phase/delay 桥 | action 响应扰动→相位扰动→WS 延迟扰动（频率导数闭环） | Iface/Audit | `app:orbit_dynamics_and_force_scattering_bridge` | [x] |
 | force→phase→delay 审计闭环 | 相位解缠+数值微分稳定性 sweep；误差拆分 $O(\Delta\omega^2)+O(\sigma/\Delta\omega)$ | Audit | `app:force_phase_delay_audit`, `tab:force_phase_delay_audit_knobs` | [x] |

@@ -860,6 +860,10 @@ flowchart TB
   P_types("识别字典（stable types ↔ 粒子/场）<br/>类型：字典 / Dictionary<br/>label: tab:sm_labeling_table<br/>stable types ↔ (fermion multiplets, gauge factors)")
   M_sm -.- P_types
 
+  M_lattice_qft_bridge["Hilbert-screen lattice-QFT bridge（有限载体 + Wick 图组合学）<br/>类型：审计 / Audit<br/>label: app:lattice_qft_bridge_hilbert_screen<br/>carrier: tick-time × Hilbert screen; scope boundary explicit"]
+  P_lattice_qft_bridge("Hilbert-screen lattice-QFT bridge（有限格点QFT骨架）<br/>类型：字典 / Dictionary<br/>label: subsec:hilbert_screen_lattice_qft_bridge<br/>Gaussian K, propagator G=K^{-1}, Wick→Feynman; wormhole: paid pointer-jump (ledger+baseline)")
+  M_lattice_qft_bridge -.- P_lattice_qft_bridge
+
   M_alpha_geo["α_em^{-1} 的三层几何阻抗闭合<br/>类型：审计 / Audit<br/>label: subsec:alpha_impedance / eq:alpha_geo / thm:alpha_three_channel<br/>α_em^{-1} = 4π^3 + π^2 + π"]
   P_alpha_geo("α_em^{-1}（CODATA/PDG 对照；mismatch 作为 matching）<br/>类型：审计 / Audit<br/>label: subsec:alpha_impedance<br/>audit: bounded-family closure + log mismatch")
   M_alpha_geo -.- P_alpha_geo
@@ -927,6 +931,9 @@ flowchart TB
   P_g2 --> P_gauge3
   P_g4 --> P_gauge3
   P_holonomy_diag --> P_gauge3
+
+  M_sm --> M_lattice_qft_bridge
+  P_types --> P_lattice_qft_bridge
 
   %% BH/Planck capacity calibration and uplift-mass-flow audits (attach to main chain via CAP)
   M_cap --> M_bh_planck_calib
@@ -2417,6 +2424,7 @@ flowchart TB
 | `P_gauge` | `\label{sec:protocol_connections_holonomy}` | `p_□ ↦ g p_□ g⁻¹ (gauge conjugation on loops)` | `sections/I_21_protocol_connections_holonomy.tex` |
 | `M_sm` | `\label{sec:sm_labeling_closure}` | `thm:labeling_unique — 𝓛_SM:X₆→𝓕_SM⊔{U(1),SU(2),SU(3)} (order-preserving)` | `sections/V_30_sm_field_labeling_closure.tex` |
 | `P_types` | `\label{sec:sm_interface}` | `tab:sm_labeling_table — stable types ↔ (fermion multiplets, gauge factors)` | `sections/I_20_standard_model_interface.tex` |
+| `P_lattice_qft_bridge` | `\label{subsec:hilbert_screen_lattice_qft_bridge}` / `\label{app:lattice_qft_bridge_hilbert_screen}` | `finite lattice-QFT bridge on Hilbert screen: carrier (tick-time × G_n), Gaussian kernel/propagator, Wick→Feynman; scope boundary explicit; pointer-jump vocabulary referenced as paid shortcut (ledger+baseline)` | `sections/I_20_standard_model_interface.tex`; `sections/appendices/6x_lattice_qft_bridge_hilbert_screen.tex` |
 | `M_mass` | `\label{sec:mass_spectrum_closure}` | `eq:r_of_mu_z128 — r(μ)=ln(μ/m_e)/ln φ; μ(r)=m_e·φʳ` | `sections/V_31_mass_spectrum_closure.tex` |
 | `P_mass` | `\label{sec:mass_latency_coordinate}` | `ω_C(μ)=μc²/ħ, τ_C(μ)=ħ/(μc²) (Compton clock)` | `sections/I_25_mass_latency_coordinate.tex` |
 | `M_mass_flow_uplift` | `\label{app:mass_flow_under_uplift}` / `\label{tab:mass_flow_uplift}` | `uplift pooled depths on Ext_m(u): rhat_CAP(u;m) vs rhat_FE(u;m)` | `sections/appendices/51_mass_flow_under_uplift.tex` |
