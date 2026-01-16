@@ -502,6 +502,46 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Hilbert-screen lattice propagator anchor (Gaussian kernel from F_n)",
+            script="exp_lattice_propagator_anchor.py",
+            expected_outputs=[
+                "sections/generated/lattice_propagator_anchor_rows.tex",
+                "sections/generated/lattice_propagator_anchor_summary.tex",
+            ],
+        ),
+        Step(
+            name="Internal-dimension unfolding (2D Hilbert; m=6/10/14)",
+            script="fig_internal_dimension_fractal_unfolding_2d.py",
+            expected_outputs=[
+                "figures/adaptive/lattice_qft_bridge/internal_dimension_fractal_unfolding_2d.png",
+                "figures/adaptive/lattice_qft_bridge/data/internal_dimension_fractal_unfolding_2d.json",
+            ],
+        ),
+        Step(
+            name="Internal-dimension unfolding (3D screen; m=12)",
+            script="fig_internal_dimension_fractal_unfolding_3d.py",
+            expected_outputs=[
+                "figures/adaptive/lattice_qft_bridge/internal_dimension_fractal_unfolding_3d.png",
+                "figures/adaptive/lattice_qft_bridge/data/internal_dimension_fractal_unfolding_3d.json",
+            ],
+        ),
+        Step(
+            name="Internal-dimension field on adaptive-dimension Hilbert-face (gallery)",
+            script="fig_internal_dimension_hilbert_face_gallery.py",
+            expected_outputs=[
+                "figures/adaptive/lattice_qft_bridge/internal_dimension_hilbert_face_gallery.png",
+                "figures/adaptive/lattice_qft_bridge/data/internal_dimension_hilbert_face_gallery.json",
+            ],
+        ),
+        Step(
+            name="3D Hilbert tower (field ocean -> two particles -> zoom high-energy)",
+            script="fig_internal_dimension_hilbert_tower_3d.py",
+            expected_outputs=[
+                "figures/adaptive/lattice_qft_bridge/internal_dimension_hilbert_tower_3d.png",
+                "figures/adaptive/lattice_qft_bridge/data/internal_dimension_hilbert_tower_3d.json",
+            ],
+        ),
+        Step(
             name="Kernel RG weighted operator pole-barrier summary",
             script="exp_kernel_rg_weighted_operator_pole_barrier.py",
             expected_outputs=[

@@ -1,0 +1,143 @@
+\section{Hilbert-screen lattice QFT bridge (audit-facing)}
+\label{app:lattice_qft_bridge_hilbert_screen}
+
+\paragraph{Purpose.}
+\AuditTag This appendix records a minimal, fully finite bridge from the Hilbert-screen protocol objects to the standard perturbative QFT combinatorics (Wick contractions and Feynman diagrams).
+It is a \emph{dictionary and scope contract}: it introduces no new axioms beyond tick and CAP, and it does not modify theorem-level folding statements.
+All claims below are to be read at the interface layer as statements about explicitly defined finite-dimensional objects.
+
+\subsection{Screen locality, site/edge carriers, and gauge redundancy}
+
+\paragraph{Finite lattice carrier.}
+\MathTag Fix a Hilbert order $n$ and let $G_n=(V_n,E_n)$ be the display graph induced by the addressing map (Definition~\ref{def:addressing_map_graph}).
+We treat $V_n$ as lattice sites and $E_n$ as nearest-neighbor edges.
+
+\paragraph{Protocol-side origin of link redundancy.}
+\MathTag At fixed window length $m$, each site carries a stable label $w_x\in X_m$ and its microstate fiber $P(w_x)=\mathrm{Fold}_m^{-1}(w_x)$ (Proposition~\ref{prop:omega_quotient_equals_Xm}).
+Cross-site comparison requires a compensating transport rule represented (after padding to a common slot size) by a finite permutation, and local slot relabelings act by conjugation (Proposition~\ref{prop:gauge_compensation}; (E3) in Appendix~\ref{app:equivalence_semantics}).
+
+\paragraph{Lattice gauge dictionary.}
+\InterfaceTag In a continuum dictionary where the CAP-minimal compact factors are $U(1)\times SU(2)\times SU(3)$ (Proposition~\ref{prop:channel_to_gauge}), we represent compensating transport on each edge $(x,y)\in E_n$ by link variables
+\[
+U_{xy}^{(1)}\in U(1),\qquad U_{xy}^{(2)}\in SU(2),\qquad U_{xy}^{(3)}\in SU(3).
+\]
+Gauge transformations are site-local group elements $g_x^{(i)}$ acting by the standard lattice rule
+$U_{xy}^{(i)}\mapsto g_y^{(i)}\,U_{xy}^{(i)}\,(g_x^{(i)})^{-1}$.
+Gauge-invariant curvature proxies are Wilson loops/plaquette holonomies, consistent with the protocol holonomy diagnostics (Section~\ref{sec:protocol_connections_holonomy}).
+
+\subsection{Fields from the closed \texorpdfstring{$18\oplus 3$}{18+3} interface}
+
+\paragraph{Matter fields (site variables).}
+\InterfaceTag Let $\mathcal{F}_{\mathrm{SM}}$ be the set of $18$ left-handed Weyl multiplets closed by the labeling map (Theorem~\ref{thm:labeling_unique}; Table~\ref{tab:sm_labeling_table}).
+On each site $x\in V_n$ we place Grassmann fields $\psi_f(x)$ with the corresponding $(SU(3),SU(2))_Y$ representation labels.
+
+\paragraph{Scalar uplift field (site variable).}
+\InterfaceTag When the scalar uplift interface is activated, we place a complex Higgs-doublet field $H(x)\in\CC^2$ on sites.
+At the protocol level, a concrete deterministic representative is available at $m=10$ via coarse-grained suffix-bit channels and the canonical bundling
+$H_1=\overline b_0+\iu\,\overline b_3$, $H_2=\overline b_1+\iu\,\overline b_2$
+(Proposition~\ref{prop:scalar_sector_closed}; Appendix~\ref{app:scalar_interface_audits}).
+Its SM quantum numbers are closed by bounded-family CAP selection as $(1,2)_{1/2}$ (Table~\ref{tab:higgs_quantum_numbers_cap_closure}).
+
+\subsection{A finite Gaussian anchor, propagators, and resolvent-trace observables}
+
+\paragraph{Quadratic kernel.}
+\AuditTag Fix a finite set of lattice degrees of freedom (for example the $16$ block-quotient variables used at the anchor in the protocol RG operator audits; Appendix~\ref{app:reproducibility}).
+Let $K$ be a real symmetric positive-definite matrix (``free kernel'') acting on these variables.
+In this paper, a protocol-native choice is to derive $K$ from an explicitly audited operator family (e.g.\ from the $16\times 16$ RG operator $F_n$ by a declared symmetrization/normalization convention recorded in the generating script).
+
+\paragraph{Gaussian measure and propagator.}
+\MathTag The corresponding (finite-dimensional) Gaussian partition function and expectations are
+\[
+Z_0:=\int \exp\!\left(-\tfrac12 \phi^\top K\phi\right)\,\dd\phi,
+\qquad
+\langle \mathcal{O}\rangle_0:=\frac{1}{Z_0}\int \mathcal{O}(\phi)\exp\!\left(-\tfrac12 \phi^\top K\phi\right)\,\dd\phi,
+\]
+with propagator (two-point function) $G:=K^{-1}$.
+The resolvent family $R(z):=(K-zI)^{-1}$ and its traces are likewise finite matrix observables.
+
+\paragraph{Protocol alignment.}
+\AuditTag The operator-resolvent trace audits in the main pipeline already compute a family of trace functionals on finite operators (Appendix~\ref{app:reproducibility}).
+The present bridge treats these as canonical QFT-adjacent observables: $\Tr(G)$ and $\log\det K$ are the simplest one-point spectral summaries of the Gaussian anchor and appear ubiquitously in effective-action/free-energy calculations.
+
+\subsection{Local interactions and Wick expansion}
+
+\paragraph{Local interaction templates.}
+\InterfaceTag On the lattice, gauge-covariant kinetic terms are obtained by replacing differences by link-parallel-transported differences (standard lattice gauge theory).
+At the renormalizable EFT level, the minimal local interactions include:
+(i) a Higgs potential $V(H)=-\mu^2 H^\dagger H+\lambda(H^\dagger H)^2$ (closed on a bounded family by CAP; Table~\ref{tab:higgs_ewsb_potential_closure}),
+and (ii) Yukawa couplings between the closed fermion multiplets and $H$/$\widetilde H$ (feasibility and minimal failure points audited in Appendix~\ref{app:yukawa_beta_protocol_closure}).
+
+\paragraph{Perturbative expansion and diagrammatics (finite).}
+\MathTag Let $S(\phi)=\tfrac12\phi^\top K\phi + g\,V(\phi)$ where $V$ is a polynomial local functional (built from site/edge fields) and $g$ is a formal coupling.
+Then for any polynomial observable $\mathcal{O}$,
+\[
+\langle \mathcal{O}\rangle
+=\frac{\langle \mathcal{O}\,\exp(-gV)\rangle_0}{\langle \exp(-gV)\rangle_0}
+=\sum_{k\ge 0}\frac{(-g)^k}{k!}\,\langle \mathcal{O}\,V^k\rangle_{0,\mathrm{c}},
+\]
+where $\langle\cdot\rangle_{0,\mathrm{c}}$ denotes Gaussian cumulants.
+By Wick's theorem, each Gaussian moment is a finite sum over pairings, with each pairing contributing a product of propagator entries $G_{ij}$.
+Collecting terms by contraction pattern yields the usual representation by Feynman graphs: vertices come from $V$, edges from propagators, and symmetry factors are finite combinatorial weights.
+
+\subsection{Internal-dimension unfolding as a visual carrier (2D/3D screens)}
+\label{subsec:internal_dimension_unfolding_visual}
+
+\paragraph{Narrative.}
+\InterfaceTag In the protocol language, a fixed screen site is not a featureless point: it carries a stable prefix label (the $X_6$ interface, hence the closed $18\oplus 3$ identification at the anchor) and, under resolution uplift, it carries additional suffix-bit microtexture.
+These suffix channels form an ``internal fiber'' that grows with $m$ while the spatial axes remain unchanged; coarse graining makes such internal structure visible as multi-channel fields on the same screen.
+This is the protocol-native version of the standard field-theory fact that fields take values in internal representation spaces (spin/isospin/color), except here the internal degrees are realized as uplift microtexture with a functorial prefix semantics.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/adaptive/lattice_qft_bridge/internal_dimension_fractal_unfolding_2d.png}
+\caption{Internal-dimension unfolding on the balanced 2D Hilbert screens (audit-facing): compare $(m,n)=(6,3)$, $(10,5)$, and $(14,7)$ with a shared $4\times 4$ macro-block quotient (block size $2^{n-2}$). The base scalar $q_0(x)=|u(x)|_1/3$ depends only on the $X_6$ prefix label $u=w[:6]$ (hence exists at all $m$), while the uplift scalar $q_1(x)=|w_{7..m}(x)|_1/(m-6)$ uses suffix-bit channels (internal fiber) that appear only under uplift. A deterministic block is selected (by the deepest-uplift $q_1$ macro mean) and zoomed; the bar glyph reports block-averaged suffix channels, illustrating how ``more internal dimensions'' manifest without adding spatial coordinates. Generated by \texttt{scripts/fig\_internal\_dimension\_fractal\_unfolding\_2d.py}.}
+\label{fig:internal_dimension_fractal_unfolding_2d}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/adaptive/lattice_qft_bridge/internal_dimension_fractal_unfolding_3d.png}
+\caption{A 3D-screen companion (audit-facing): at $(m,n)=(12,4)$ we use a balanced $16^3$ screen with an explicit $3$D Hilbert (nD-Hilbert) addressing to display the same base/uplift scalars by slices and a max-intensity projection. This provides a visualization-only of the same ``internal fiber'' idea under a 3D screen choice (no extra physical axes are assumed). Generated by \texttt{scripts/fig\_internal\_dimension\_fractal\_unfolding\_3d.py}.}
+\label{fig:internal_dimension_fractal_unfolding_3d}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/adaptive/lattice_qft_bridge/internal_dimension_hilbert_face_gallery.png}
+\caption{Adaptive-dimension carrier (audit-facing): visualize the uplift scalar field $q_1(k)=|w_{7..m}(k)|_1/(m-6)$ on the locality-optimal Hilbert-face encoding with $D_{\mathrm{face}}=\lceil m/n\rceil$ (capacity-feasible boundary-face display). The points are colored by $q_1$ and shown through pairwise 2D projections of the face axes; a side panel summarizes $q_0,q_1$ statistics and a $q_1$ histogram. This illustrates that ``more internal dimensions'' can be expressed as more per-site channels under uplift while the display dimension is a separate auditable convention. Generated by \texttt{scripts/fig\_internal\_dimension\_hilbert\_face\_gallery.py}.}
+\label{fig:internal_dimension_hilbert_face_gallery}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/adaptive/lattice_qft_bridge/internal_dimension_hilbert_tower_3d.png}
+\caption{A 3-layer 3D Hilbert tower (audit-facing) at $m=6\to 10\to 14$: one continuous 3D Hilbert spine strings the construction across layers. Layer 1 is the $m=6$ anchor displayed on a $4^3$ 3D Hilbert cube, showing several generation-1 particle species together with an ``empty'' background (all other labels) to emphasize a mixed field state; the spine color uses a protocol-native $m=6$ scalar (normalized fiber degeneracy). Layer 2 selects two particle species and displays their internal $m=10$ uplift structure on separate $16^3$ internal cubes. Layer 3 further zooms the higher-energy species at $m=14$ on a $32^3$ internal cube, linked by a dashed connector at the highlighted hotspot. Left panels provide four aligned 2D Hilbert blocks that match the four cubes on the right (same index sets and the same per-site scalars), giving an occlusion-free 2D carrier for each layer/cube. Generated by \texttt{scripts/fig\_internal\_dimension\_hilbert\_tower\_3d.py}.}
+\label{fig:internal_dimension_hilbert_tower_3d}
+\end{figure}
+
+\paragraph{Scope boundary.}
+\AuditTag This appendix does not claim a continuum limit, Lorentz covariance, or a constructive renormalization of interacting models on $\RR^{1,3}$.
+Its sole purpose is to fix an auditable finite carrier on which the perturbative/QFT graph skeleton is mathematically exact.
+Scheme dependence and renormalization conventions remain matching-layer choices under the explicit boundaries recorded in Appendix~\ref{app:renormalization_dictionary_and_boundaries}.
+
+\subsection{Minimal reproducible anchor calculation}
+\AuditTag A companion script \path{scripts/exp_lattice_propagator_anchor.py} constructs a declared anchor kernel $K$ from the audited protocol RG operator data and writes a short \LaTeX{} summary and a one-row table fragment under \path{sections/generated/}.
+This provides a concrete ``one-point'' and ``two-point'' bridge artifact at the same finite scale where the $18\oplus 3$ labeling and the Hilbert-screen locality audits are performed.
+
+\input{sections/generated/lattice_propagator_anchor_summary.tex}
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.10}
+\begin{tabular}{r r r r r l}
+\toprule
+$n$ & $z$ & $\epsilon$ & $\Tr(K^{-1})$ & $\log\det K$ & det status \\
+\midrule
+\input{sections/generated/lattice_propagator_anchor_rows.tex}%
+\end{tabular}
+\caption{A minimal finite Gaussian anchor for the Hilbert-screen lattice-QFT bridge: we build $K=(I-zF_n)^\top(I-zF_n)+\epsilon I$ from the audited $16\times 16$ protocol RG operator $F_n$ at the anchor and report $\Tr(K^{-1})$ and $\log\det K$. Rows are generated by \texttt{scripts/exp\_lattice\_propagator\_anchor.py}.}
+\label{tab:lattice_propagator_anchor}
+\end{table}
+

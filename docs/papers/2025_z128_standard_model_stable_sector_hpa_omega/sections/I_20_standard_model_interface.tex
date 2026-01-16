@@ -368,4 +368,40 @@ Then, in the resolution coordinate,
 Since $\log\mu=\log\mu_0+r\log\varphi$, one has $\dd/\dd r=(\log\varphi)\,\dd/\dd\log\mu$.
 \end{proof}
 
+\subsection{Hilbert-screen lattice QFT bridge and perturbative diagrammatics (interface)}
+\label{subsec:hilbert_screen_lattice_qft_bridge}
+
+\paragraph{Scope.}
+\InterfaceTag The protocol language of this paper already contains the core primitives needed to host a lattice-style quantum field theory on the Hilbert screen: a finite locality graph, vertex/edge data carrying internal redundancy, and deterministic coarse-graining/RG steps.
+Here we record a minimal bridge to standard perturbative QFT combinatorics (Wick contractions and Feynman diagrams) \emph{without} adding new theorem-level inputs to the folding core.
+The role of this bridge is to identify a concrete class of finite-dimensional Gaussian measures and local interaction functionals on the screen for which diagrammatics is a purely finite, auditable calculation.
+
+\paragraph{Screen as a finite lattice.}
+Fix a Hilbert order $n$ and let $G_n$ be the corresponding display graph (Definition~\ref{def:addressing_map_graph}).
+We treat $V(G_n)$ as the lattice sites and $E(G_n)$ as the nearest-neighbor links.
+Protocol locality (bounded $L^1$ jumps of the Hilbert scan) supplies the locality discipline needed for lattice actions.
+
+\paragraph{Field content from the \texorpdfstring{$18\oplus 3$}{18+3} interface.}
+On sites $x\in V(G_n)$ we place:
+(i) a family of Grassmann fields $\{\psi_f(x)\}_{f\in\mathcal{F}_{\mathrm{SM}}}$ corresponding to the $18$ closed chiral multiplets (Theorem~\ref{thm:labeling_unique}; Table~\ref{tab:sm_labeling_table}),
+and (ii) when the scalar-sector uplift dictionary is activated, a complex Higgs-doublet site field $H(x)\in\CC^2$ (Proposition~\ref{prop:scalar_sector_closed}; Appendix~\ref{app:scalar_interface_audits}).
+On links $(x,y)\in E(G_n)$ we place a triple of gauge-link variables representing the three compensation classes,
+\[
+U_{xy}^{(1)}\in U(1),\qquad U_{xy}^{(2)}\in SU(2),\qquad U_{xy}^{(3)}\in SU(3),
+\]
+to be read as a lattice realization of compensating transport (Proposition~\ref{prop:gauge_compensation}) in a continuum dictionary where the CAP-minimal factors are $U(1)\times SU(2)\times SU(3)$ (Proposition~\ref{prop:channel_to_gauge}).
+
+\paragraph{A minimal Gaussian anchor and the propagator.}
+To connect to perturbative diagrammatics, choose a finite-dimensional quadratic form (a ``free kernel'') on the screen.
+One canonical protocol-native choice is to reuse the explicitly audited block-quotient RG operator at the anchor (the $16\times 16$ matrix $F_n$ in the balanced-chain construction; Appendix~\ref{app:reproducibility}) and build from it a symmetric positive kernel $K$ on the selected site/quotient variables.
+The corresponding Gaussian theory is determined by $K$; its two-point function (propagator) is the inverse kernel $G=K^{-1}$ (or, equivalently, the resolvent family $(K-zI)^{-1}$ used in resolvent-trace audits).
+All of these objects are finite matrices at fixed resolution, hence computable and auditable.
+
+\paragraph{Local interactions and Wick \texorpdfstring{$\to$}{->} Feynman graphs.}
+Given the closed SM quantum numbers and the scalar uplift dictionary, one may add local interaction terms (nearest-neighbor gauge-covariant couplings, Higgs potential, and Yukawa terms) exactly as in lattice gauge theory.
+Expanding expectations in the interaction about the Gaussian measure yields a finite perturbation series whose coefficients are sums over Wick contractions; each contraction is a propagator factor $G(x,y)$, and the resulting combinatorics is encoded by Feynman graphs on the lattice.
+In this sense, the Hilbert-screen protocol supplies a concrete finite carrier that reproduces the diagrammatic skeleton of standard QFT while remaining within the tick\,+\,CAP audit discipline.
+Appendix~\ref{app:lattice_qft_bridge_hilbert_screen} records a formal audit-facing version of this bridge and a minimal reproducible anchor calculation.
+It also records a visual carrier for the ``internal dimension'' viewpoint: at fixed spatial axes on the Hilbert screen, uplift in $m$ exposes additional suffix-bit channels that behave as an internal fiber over each site (Figures~\ref{fig:internal_dimension_fractal_unfolding_2d} and \ref{fig:internal_dimension_fractal_unfolding_3d}).
+
 
