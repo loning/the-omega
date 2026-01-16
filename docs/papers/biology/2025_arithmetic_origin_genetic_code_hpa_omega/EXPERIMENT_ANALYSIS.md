@@ -293,6 +293,7 @@ This section is the **main development plan** for scaling the project on an A100
 - 2026-01-16 — **COMPLETED**: `H3-1` zMFE（composition-conditioned structure）在 stop 后窗口（30/60/120nt）上计算 MFE z-score（dinucleotide-matched shuffle null），检验 `U_after`/`U_resid` 对 zMFE 的相关/ΔR²，并写入 paper（M3 机制桥接 v2）。Branch: `paper-bio`.
   - Result (2026-01-16): 新增 `scripts/exp_uplift_zmfe_deconfound.py`（dinucleotide-preserving shuffle null 下计算 per-window zMFE，并报告 `U`→zMFE 的相关与 $\Delta R^2$）；产物：`sections/generated/uplift_zmfe_deconfound_table.tex`（已写入 paper discussion）。
   - Key result (2026-01-16): 在 30/60/120nt stop-after windows 上，$\\rho(U,\\mathrm{zMFE})$ 为 -0.066 / -0.044 / +0.087；$\\rho(U_{\\mathrm{resid}},\\mathrm{zMFE})$ 为 -0.065 / -0.017 / -0.029；$\Delta R^2_{U\\to \\mathrm{zMFE}}\\approx 0.001$（总体接近 null，且方向不稳定）。
+- 2026-01-16 — **CLAIMED**: `H3-3c` 标准化 raw-read Ribo-seq pipeline（BAM/FASTQ）计算 stop-proximal window pausing（替代 GEO bigWig 稀缺路线），并做 ≥2 independent studies 的复现与 meta-analysis（优先 CPU；如需 GPU 仅用 A40）。Branch: `paper-bio`.
 
 ### Proposed Next Sprint (Scout) — 2026-01-15
 
