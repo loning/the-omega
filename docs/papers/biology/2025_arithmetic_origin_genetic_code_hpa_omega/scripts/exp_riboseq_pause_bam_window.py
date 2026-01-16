@@ -215,14 +215,27 @@ def analyze_one_bam(
     bam = pysam.AlignmentFile(str(bam_path), "rb")
     refs = set(bam.references or [])
 
-    out_rows: list[dict[str, Any]] = []
+    # stop_context_candidates.jsonl contains multiple "group_label" subsets that may
+    # repeat the same transcript/stop coordinates. For pausing correlations we must
+    # operate at the transcript level, so we compute pause metrics once per record_id
+    # and then reuse them for the subset-based comparisons.
+    base_by_rid: dict[str, dict[str, Any]] = {}
+    groups_by_rid: dict[str, set[str]] = {}
+    for r in rows:
+        rid = str(r.get("record_id") or "").strip()
+        if not rid:
+            continue
+        base_by_rid.setdefault(rid, r)
+        groups_by_rid.setdefault(rid, set()).add(str(r.get("group_label") or "").strip())
+
+    out_by_rid: dict[str, dict[str, Any]] = {}
     n_mapped = 0
     n_used = 0
 
     k_nt = 3 * int(k_codons)
     body_w = 3 * int(k_codons)
 
-    for r in rows:
+    for rid0, r in base_by_rid.items():
         rid0 = str(r.get("record_id") or "")
         contig = _resolve_contig(refs, rid0, strip_version=bool(strip_version))
         if contig is None:
@@ -278,12 +291,11 @@ def analyze_one_bam(
         pause_index = float(before / body) if np.isfinite(before) and np.isfinite(body) and body > 0 else float("nan")
 
         n_used += 1
-        out_rows.append(
+        out_by_rid[rid0] = (
             {
                 "record_id": rid0,
                 "bam_contig": contig,
                 "stop_codon": str(r.get("stop_codon") or ""),
-                "group_label": str(r.get("group_label") or ""),
                 "u_before": float(r.get("before_mean_delta")) if r.get("before_mean_delta") is not None else float("nan"),
                 "u_after": float(r.get("after_mean_delta")) if r.get("after_mean_delta") is not None else float("nan"),
                 "diff": float(r.get("diff")) if r.get("diff") is not None else float("nan"),
@@ -299,6 +311,7 @@ def analyze_one_bam(
         bam.close()
     except Exception:
         pass
+    out_rows = list(out_by_rid.values())
 
     corr = {
         "pause_before_vs_u_before": _spearman([rr["pause_before"] for rr in out_rows], [rr["u_before"] for rr in out_rows]),
@@ -308,8 +321,15 @@ def analyze_one_bam(
     }
 
     by_group: dict[str, list[float]] = {}
-    for rr in out_rows:
-        by_group.setdefault(rr["group_label"], []).append(float(rr["pause_index"]))
+    for rid, groups in groups_by_rid.items():
+        rr = out_by_rid.get(rid)
+        if rr is None:
+            continue
+        pi = float(rr.get("pause_index", float("nan")))
+        for g in groups:
+            if not g:
+                continue
+            by_group.setdefault(g, []).append(pi)
 
     comps = {
         "high_after_vs_low_after": _compare(by_group.get("high_after", []), by_group.get("low_after", [])),
@@ -330,6 +350,7 @@ def analyze_one_bam(
             "strip_version": bool(strip_version),
         },
         "n_candidates": int(len(rows)),
+        "n_candidates_unique": int(len(base_by_rid)),
         "n_mapped_bam_refs": int(n_mapped),
         "n_used_pause": int(n_used),
         "correlations": corr,
