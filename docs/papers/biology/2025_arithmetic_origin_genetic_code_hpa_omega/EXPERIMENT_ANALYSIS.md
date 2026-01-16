@@ -290,6 +290,7 @@ This section is the **main development plan** for scaling the project on an A100
 - 2026-01-16 — **COMPLETED**: `F-1` 模块 F（非标准遗传密码表压力测试）补全待做项（系统收集 NCBI 遗传密码表、逐表边界对齐统计、以及“语义迁移但边界角色保留”的可复现检验），并同步更新 paper 与本分析文档。Branch: `paper-bio`.
   - Result (2026-01-16): `data/gc.prt` 解析得到 27 个 translation tables；逐表输出 stop/start boundary-hit 统计与 stop-set migration + symmetry 表（`scripts/exp_nonstandard_codes.py`；`sections/generated/nonstandard_code_rows.tex`、`sections/generated/nonstandard_stop_migration_rows.tex`）。
   - Result (2026-01-16): 非标准码 meta-analysis（`scripts/exp_nonstandard_codes_meta_analysis.py`）在 exact 24-encoding null 下给出 $\mu^\ast$ ranks 2/24（Fisher=59.05；$p=0.0833$），并已写入 paper appendix（`sections/generated/nonstandard_codes_meta_analysis.tex`）。
+- 2026-01-16 — **CLAIMED**: `H3-1` zMFE（composition-conditioned structure）在 stop 后窗口（30/60/120nt）上计算 MFE z-score（dinucleotide-matched shuffle null），检验 `U_after`/`U_resid` 对 zMFE 的相关/ΔR²，并写入 paper（M3 机制桥接 v2）。Branch: `paper-bio`.
 
 ### Proposed Next Sprint (Scout) — 2026-01-15
 
