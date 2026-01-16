@@ -177,7 +177,7 @@ Uplift correlates with physical/chemical observables that influence translation:
 
 | Experiment | Key Finding | Interpretation |
 |------------|-------------|----------------|
-| CR1-cross | μ\* ranks 2-8/24 on tasks | Not consistently best |
+| CR1-cross | μ\* mean rank 21.7/24 (A1=23/24, A3=19/24, A4=23/24; k=10) | Often worse than alternatives |
 | CS3 | Long genes higher after-U | Confound to control |
 | CS5 | Freq-Uplift ρ=-0.23 | Not significant |
 | CS6 | +4 purine vs pyr effect | Context-dependent |
