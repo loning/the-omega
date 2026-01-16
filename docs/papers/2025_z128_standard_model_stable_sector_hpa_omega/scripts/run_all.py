@@ -683,6 +683,70 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Higgs uplift quantum numbers (bounded-family CAP closure)",
+            script="exp_higgs_quantum_numbers_cap_closure.py",
+            expected_outputs=[
+                "sections/generated/higgs_quantum_numbers_closure_rows.tex",
+                "sections/generated/higgs_quantum_numbers_closure_summary.tex",
+            ],
+            depends_on=["scripts/exp_sm_labeling_solver.py"],
+        ),
+        Step(
+            name="Higgs renormalizable Yukawa feasibility (operator-family certificate)",
+            script="exp_higgs_yukawa_feasibility_closure.py",
+            expected_outputs=[
+                "sections/generated/higgs_yukawa_feasibility_rows.tex",
+                "sections/generated/higgs_yukawa_feasibility_summary.tex",
+                "sections/generated/higgs_yukawa_minimal_failure_points.tex",
+            ],
+            depends_on=[
+                "scripts/exp_sm_labeling_solver.py",
+                "scripts/exp_higgs_quantum_numbers_cap_closure.py",
+            ],
+        ),
+        Step(
+            name="Higgs EWSB potential closure (bounded-family CAP)",
+            script="exp_higgs_ewsb_potential_closure.py",
+            expected_outputs=[
+                "sections/generated/higgs_ewsb_potential_rows.tex",
+                "sections/generated/higgs_ewsb_potential_summary.tex",
+            ],
+            depends_on=[
+                "scripts/exp_higgs_z_offset_rigidity.py",
+            ],
+        ),
+        Step(
+            name="Higgs doublet robustness sweep (addressing/block/sparse counterfactuals)",
+            script="exp_higgs_doublet_robustness_sweep.py",
+            expected_outputs=[
+                "sections/generated/higgs_doublet_robustness_rows.tex",
+                "sections/generated/higgs_doublet_robustness_summary.tex",
+                "figures/adaptive/higgs_geometry/higgs_doublet_robustness_sweep.png",
+                "figures/adaptive/higgs_geometry/data/higgs_doublet_robustness_sweep.json",
+            ],
+            depends_on=[
+                "scripts/fig_higgs_doublet_structure_m10.py",
+                "scripts/fig_higgs_doublet_structure_m10_3d.py",
+            ],
+        ),
+        Step(
+            name="Higgs uplift falsifiability gates (interface registry)",
+            script="exp_higgs_falsifiability_gates.py",
+            expected_outputs=[
+                "sections/generated/higgs_falsifiability_gates_rows.tex",
+                "sections/generated/higgs_falsifiability_gates_summary.tex",
+                "figures/adaptive/higgs_geometry/data/higgs_falsifiability_gates.json",
+            ],
+            depends_on=[
+                "scripts/exp_higgs_quantum_numbers_cap_closure.py",
+                "scripts/exp_higgs_yukawa_feasibility_closure.py",
+                "scripts/exp_higgs_ewsb_potential_closure.py",
+                "scripts/exp_higgs_doublet_robustness_sweep.py",
+                "scripts/fig_higgs_doublet_structure_m10.py",
+                "scripts/fig_higgs_doublet_structure_m10_3d.py",
+            ],
+        ),
+        Step(
             name="Resolution-threshold staircase",
             script="exp_resolution_thresholds.py",
             expected_outputs=[

@@ -39,6 +39,20 @@ class FailurePoint:
 def main() -> None:
     fps = [
         FailurePoint(
+            code="HIG1",
+            trigger="Higgs uplift gates not reproducible (pairing/certificates drift)",
+            check="Recompute Higgs uplift certificates (pairing, robustness sweep, CAP closures) and compare against the generated gate registry table",
+            impact="Higgs uplift module is not falsifiable as stated; interface identification cannot be treated as deterministic",
+            fallback="Downgrade to reporting the observed certificate envelope only (no unique representative claim)",
+        ),
+        FailurePoint(
+            code="HIG2",
+            trigger="Addressing/coarse-graining sensitivity too large for claimed representative",
+            check="Run the bounded robustness sweep across addressing/block/sparse variants and verify stability of the selected pairing under the declared equivalence class",
+            impact="Any claim that treats the uplift doublet as a basis-invariant identification is invalid",
+            fallback="Keep the doublet as a protocol-conditional diagnostic (state+layout dependent) with explicit sensitivity table",
+        ),
+        FailurePoint(
             code="H0a",
             trigger="Holographic claim uses hidden knobs / non-invariant tie-breaks",
             check="List reconstruction knobs, tie-breaks, and kernel choices; verify invariance under declared equivalences",
