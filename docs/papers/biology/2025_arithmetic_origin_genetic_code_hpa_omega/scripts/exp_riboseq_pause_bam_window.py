@@ -392,9 +392,11 @@ def main() -> None:
     bam_args = [str(x).strip() for x in (args.bam or []) if str(x).strip()]
     ids = [str(x).strip() for x in (args.track_id or []) if str(x).strip()]
 
-    tracks_json = Path(str(args.tracks_json)) if str(args.tracks_json).strip() else None
-    if tracks_json is not None and tracks_json.exists() and (not bam_args or bool(args.include_tracks_json)):
-        tracks.extend(load_tracks_json(tracks_json))
+    tracks_json_path = Path(str(args.tracks_json)) if str(args.tracks_json).strip() else None
+    tracks_json_used: Path | None = None
+    if tracks_json_path is not None and tracks_json_path.exists() and (not bam_args or bool(args.include_tracks_json)):
+        tracks.extend(load_tracks_json(tracks_json_path))
+        tracks_json_used = tracks_json_path
 
     for i, bam_s in enumerate(bam_args):
         bam_p = Path(bam_s)
@@ -477,8 +479,17 @@ def main() -> None:
     if meta_line:
         lines.append(meta_line)
 
+    meta_out = dict(meta)
+    meta_out.update(
+        {
+            "n_tracks": int(len(track_results)),
+            "track_ids": [str(s.get("track_id", "") or "") for s in track_results],
+            "bams": [str(s.get("bam", "") or "") for s in track_results],
+            "tracks_json": str(tracks_json_used) if tracks_json_used is not None else "",
+        }
+    )
     write_text_atomic(out_tex, "\n".join(lines) + "\n")
-    write_json_atomic(cache_meta_path(out_tex), meta)
+    write_json_atomic(cache_meta_path(out_tex), meta_out)
     print(f"Wrote: {out_tex}")
 
 
