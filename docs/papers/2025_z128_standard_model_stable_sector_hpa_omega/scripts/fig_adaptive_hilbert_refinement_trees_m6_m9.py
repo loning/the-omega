@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Figure: 21 refinement trees (m=6..10), node = (2D Hilbert + 3D Hilbert).
+Figure: 21 refinement trees (m=6..12), node = (2D Hilbert + 3D Hilbert).
 
 Requirements (user)
 -------------------
-- Use a tree structure to connect m=6,7,8,9,10.
+- Use a tree structure to connect m=6,7,8,9,10,11,12.
 - Produce 21 trees (one per base stable type u ∈ X_6).
 - Top (m=6) node annotated with: 6-bit code u and particle label (18⊕3 closure at m=6).
 - Each node contains both a 2D and a 3D Hilbert-only visualization.
@@ -26,7 +26,7 @@ sites corresponding to the stable type w under Fold_m(k).
 Outputs
 -------
 Under figures/adaptive/hilbert_tree/:
-  - hilbert_tree_m6to10_u_<u>.png   for each u ∈ X_6 (sorted by V(u), then u).
+  - hilbert_tree_m6to12_u_<u>.png   for each u ∈ X_6 (sorted by V(u), then u).
 """
 
 from __future__ import annotations
@@ -54,6 +54,10 @@ from hilbert_nd import hilbert_index_to_coords  # noqa: E402
 
 
 Coord2 = Tuple[int, int]
+
+M_MIN = 6
+M_MAX = 12
+OUT_TAG = f"m{M_MIN}to{M_MAX}"
 
 
 def _ceil_div(a: int, b: int) -> int:
@@ -287,18 +291,19 @@ def _build_tree_nodes(u: str) -> Dict[int, List[str]]:
     Nodes at each m are exactly Ext_m(u) = { w ∈ X_m : w[:6]=u } for m>=6.
     """
     out: Dict[int, List[str]] = {6: [u]}
-    for m in (7, 8, 9, 10):
+    for m in range(7, M_MAX + 1):
         out[m] = [w for w in xm.all_xm(m) if w[:6] == u]
     # Deterministic per-level ordering: group by parent prefix.
     out[6] = sorted(out[6])
-    for m in (7, 8, 9, 10):
+    for m in range(7, M_MAX + 1):
         out[m] = _prefix_grouped_order(out[m], parent_len=m - 1)
     return out
 
 
 def _edges(levels: Dict[int, List[str]]) -> List[Tuple[int, str, int, str]]:
     es: List[Tuple[int, str, int, str]] = []
-    for mp, mc in ((6, 7), (7, 8), (8, 9), (9, 10)):
+    for mp in range(M_MIN, M_MAX):
+        mc = mp + 1
         parent_set = set(levels[mp])
         for w in levels[mc]:
             p = w[:mp]
@@ -318,7 +323,7 @@ def _build_tree_catalog_for_u(*, u: str, label: str) -> Dict[str, object]:
     es = _edges(levels)
 
     # Precompute degeneracy maps (cached on disk by exp_foldm_stats).
-    gm_by_m: Dict[int, Dict[str, int]] = {m: foldm.cached_degeneracy_map(m) for m in (6, 7, 8, 9, 10)}
+    gm_by_m: Dict[int, Dict[str, int]] = {m: foldm.cached_degeneracy_map(m) for m in range(M_MIN, M_MAX + 1)}
 
     def node_obj(m: int, w: str) -> Dict[str, object]:
         gm = int(gm_by_m[int(m)][w])
@@ -331,7 +336,7 @@ def _build_tree_catalog_for_u(*, u: str, label: str) -> Dict[str, object]:
         }
 
     nodes: Dict[str, List[Dict[str, object]]] = {}
-    for m in (6, 7, 8, 9, 10):
+    for m in range(M_MIN, M_MAX + 1):
         nodes[str(m)] = [node_obj(m, w) for w in levels[m]]
 
     edges: List[Dict[str, object]] = []
@@ -357,7 +362,7 @@ def _render_tree_for_u(*, u: str, label: str, base_color: str, out_png: Path) ->
     es = _edges(levels)
 
     # Layout constants
-    levels_m = [6, 7, 8, 9, 10]
+    levels_m = list(range(M_MIN, M_MAX + 1))
     max_nodes = max(len(levels[m]) for m in levels_m)
     x0 = 0.06
     x1 = 0.98
@@ -366,16 +371,17 @@ def _render_tree_for_u(*, u: str, label: str, base_color: str, out_png: Path) ->
     dy = (y_top - y_bot) / float(len(levels_m) - 1)
 
     node_w = min(0.20, (x1 - x0) / float(max(1, max_nodes)) * 0.92)
-    # Slightly shorter to fit one extra level.
-    node_h = 0.14
+    # Slightly shorter to fit more levels (m=6..12) with legible spacing.
+    node_h = 0.10
     pad_x = 0.010
     pad_y = 0.008
-    # Split node into (2D | 3D)
+    # Split node into vertical stack: 2D (top) / 3D (bottom).
     gap_mid = 0.006
-    w2 = (node_w - gap_mid) * 0.5
-    w3 = (node_w - gap_mid) * 0.5
+    h2 = (node_h - gap_mid) * 0.5
+    h3 = (node_h - gap_mid) * 0.5
 
-    fig = plt.figure(figsize=(20.0, 10.5))
+    # Keep output readable while avoiding excessive memory use.
+    fig = plt.figure(figsize=(20.0, 14.0))
     ax_bg = fig.add_axes([0.0, 0.0, 1.0, 1.0])
     ax_bg.axis("off")
 
@@ -439,26 +445,26 @@ def _render_tree_for_u(*, u: str, label: str, base_color: str, out_png: Path) ->
                 transform=ax_bg.transAxes,
                 ha="center",
                 va="bottom",
-                fontsize=9.3 if m == 6 else 8.2,
+                fontsize=9.0 if m == 6 else 7.8,
                 color="#263238",
                 zorder=3,
             )
 
-            # 2D (left half)
+            # 2D (top)
             box2 = (
                 left + pad_x,
-                bottom + pad_y,
-                w2 - 2 * pad_x,
-                node_h - 2 * pad_y,
+                bottom + h3 + gap_mid + pad_y,
+                node_w - 2 * pad_x,
+                h2 - 2 * pad_y,
             )
             g2 = _render_node_2d(fig=fig, box=box2, m_bits=m, n_bits=n2, w=w, color=base_color, cache=cache2d)
 
-            # 3D (right half)
+            # 3D (bottom)
             box3 = (
-                left + w2 + gap_mid + pad_x,
+                left + pad_x,
                 bottom + pad_y,
-                w3 - 2 * pad_x,
-                node_h - 2 * pad_y,
+                node_w - 2 * pad_x,
+                h3 - 2 * pad_y,
             )
             g3 = _render_node_3d(fig=fig, box=box3, m_bits=m, n_bits=n3, w=w, color=base_color, cache=cache3d)
 
@@ -482,18 +488,18 @@ def _render_tree_for_u(*, u: str, label: str, base_color: str, out_png: Path) ->
                 transform=ax_bg.transAxes,
                 ha="center",
                 va="top",
-                fontsize=8.0,
+                fontsize=7.6,
                 color="#455A64",
                 zorder=3,
             )
 
     fig.suptitle(
-        f"Hilbert-only refinement tree for base type u ∈ X_6 (m=6..10)  —  2D + 3D per node\n"
+        f"Hilbert-only refinement tree for base type u ∈ X_6 (m=6..12)  —  2D (top) + 3D (bottom) per node\n"
         f"root: u={u}  label={label}",
         fontsize=13.5,
         y=0.995,
     )
-    fig.savefig(out_png, dpi=240, bbox_inches="tight")
+    fig.savefig(out_png, dpi=200, bbox_inches="tight")
     plt.close(fig)
     print(f"Wrote {out_png}")
 
@@ -511,16 +517,16 @@ def main() -> None:
     if len(X6_sorted) != 21 or len(palette) < 21:
         raise AssertionError("Expected 21 base types/colors.")
 
-    catalog_all: Dict[str, object] = {"m_range": [6, 10], "trees": []}
+    catalog_all: Dict[str, object] = {"m_range": [M_MIN, M_MAX], "trees": []}
     for i, u in enumerate(X6_sorted):
         lab = label_map[u]
         col = palette[i]
-        out_png = out_dir / f"hilbert_tree_m6to10_u_{u}.png"
+        out_png = out_dir / f"hilbert_tree_{OUT_TAG}_u_{u}.png"
         _render_tree_for_u(u=u, label=lab, base_color=col, out_png=out_png)
 
         # Also write a deterministic per-tree data file with all "new states" at m>6.
         cat = _build_tree_catalog_for_u(u=u, label=lab)
-        (data_dir / f"hilbert_tree_m6to10_u_{u}.json").write_text(
+        (data_dir / f"hilbert_tree_{OUT_TAG}_u_{u}.json").write_text(
             json.dumps(cat, ensure_ascii=False, indent=2, sort_keys=True),
             encoding="utf-8",
         )
@@ -530,11 +536,11 @@ def main() -> None:
         cast_list.append(cat)
 
     # One combined catalog for convenience.
-    (data_dir / "hilbert_tree_m6to10_catalog.json").write_text(
+    (data_dir / f"hilbert_tree_{OUT_TAG}_catalog.json").write_text(
         json.dumps(catalog_all, ensure_ascii=False, indent=2, sort_keys=True),
         encoding="utf-8",
     )
-    print(f"Wrote {data_dir / 'hilbert_tree_m6to10_catalog.json'}")
+    print(f"Wrote {data_dir / f'hilbert_tree_{OUT_TAG}_catalog.json'}")
 
 
 if __name__ == "__main__":
