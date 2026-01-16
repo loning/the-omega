@@ -293,10 +293,10 @@ This section is the **main development plan** for scaling the project on an A100
 - 2026-01-16 — **COMPLETED**: `H3-1` zMFE（composition-conditioned structure）在 stop 后窗口（30/60/120nt）上计算 MFE z-score（dinucleotide-matched shuffle null），检验 `U_after`/`U_resid` 对 zMFE 的相关/ΔR²，并写入 paper（M3 机制桥接 v2）。Branch: `paper-bio`.
   - Result (2026-01-16): 新增 `scripts/exp_uplift_zmfe_deconfound.py`（dinucleotide-preserving shuffle null 下计算 per-window zMFE，并报告 `U`→zMFE 的相关与 $\Delta R^2$）；产物：`sections/generated/uplift_zmfe_deconfound_table.tex`（已写入 paper discussion）。
   - Key result (2026-01-16): 在 30/60/120nt stop-after windows 上，$\\rho(U,\\mathrm{zMFE})$ 为 -0.066 / -0.044 / +0.087；$\\rho(U_{\\mathrm{resid}},\\mathrm{zMFE})$ 为 -0.065 / -0.017 / -0.029；$\Delta R^2_{U\\to \\mathrm{zMFE}}\\approx 0.001$（总体接近 null，且方向不稳定）。
-- 2026-01-16 — **CLAIMED**: `H3-3c` 标准化 raw-read Ribo-seq pipeline（BAM/FASTQ）计算 stop-proximal window pausing（替代 GEO bigWig 稀缺路线），并做 ≥2 independent studies 的复现与 meta-analysis（优先 CPU；如需 GPU 仅用 A40）。Branch: `paper-bio`.
+- 2026-01-16 — **COMPLETED**: `H3-3c` 标准化 raw-read Ribo-seq pipeline（BAM/FASTQ）计算 stop-proximal window pausing（替代 GEO bigWig 稀缺路线），并做 ≥2 independent studies 的复现与 meta-analysis（优先 CPU；如需 GPU 仅用 A40）。Branch: `paper-bio`.
   - Progress (2026-01-16): 已补齐 raw-read pipeline 脚手架：`scripts/fetch_sra_runinfo.py`（SRA runinfo）、`scripts/fetch_sra_fastq.py`（fasterq-dump）、`scripts/build_refseq_candidate_fasta.py`（候选转录本 FASTA）、`scripts/align_bowtie2_transcriptome.py`（bowtie2→BAM）、`scripts/exp_riboseq_pause_bam_window.py`（BAM pause-index 分析）以及 `config/riboseq_bam_tracks.json`（BAM track 配置）。
   - Result (2026-01-16): 在 GSE148965（HeLa S3，SRR14517742；full 43.3M spots）与 GSE199387（H9，SRR18476760；10M spots pilot）上跑通 raw-read pipeline（FASTQ→bowtie2→BAM→pause-index），并更新可引用片段：`sections/generated/riboseq_pause_bam_window.tex`（含 track-level 结果与 random-effects meta）。
-  - Key result (2026-01-16): 在当前 pause-index 定义（stop 前 30nt / stop 前 300nt 的 30nt body baseline）下，两项研究的 pausing 机制桥接信号均偏弱：GSE148965（full）$\\rho(PI,U_{\\mathrm{before}})=-0.131$（$n=145$, $p=0.117$），$\\rho(PI,\\Delta U)=0.046$（$n=145$, $p=0.582$），$d=0.21$（$p=0.438$）；GSE199387（10M pilot）$\\rho(PI,U_{\\mathrm{before}})=0.077$（$n=88$, $p=0.475$），$\\rho(PI,\\Delta U)=-0.045$（$n=88$, $p=0.680$），$d=0.06$（$p=0.832$）。两 study 随机效应 meta：$d=0.15$ [-0.27, 0.58], $I^2=0.0\\%$（不显著）。结论：目前证据倾向于 null；下一步应在 ≥2 studies 上使用 full-depth reads（避免 downsample）并评估更精细的 P-site/length-aware pausing 定义与稳健性。
+  - Key result (2026-01-16): 在当前 pause-index 定义（stop 前 30nt / stop 前 300nt 的 30nt body baseline）下，两项研究的 pausing 机制桥接信号偏弱且方向不稳；同时 `stop_context_candidates.jsonl` 含多组子集导致同一 transcript 重复出现（716 行但仅 340 unique `record_id`），已按 transcript 去重后重算（见 `sections/generated/riboseq_pause_bam_window.tex`；有效样本较小：n\_corr=65/38；d 分组 n\_high/n\_low=19/20 与 14/10）：GSE148965（full）$\\rho(PI,U_{\\mathrm{before}})=-0.198$（$n=65$, $p=0.115$），$\\rho(PI,\\Delta U)=0.123$（$n=65$, $p=0.330$），$d=0.25$（$p=0.437$）；GSE199387（10M pilot）$\\rho(PI,U_{\\mathrm{before}})=0.136$（$n=38$, $p=0.416$），$\\rho(PI,\\Delta U)=-0.108$（$n=38$, $p=0.519$），$d=-0.06$（$p=0.878$）。两 study 随机效应 meta：$d=0.14$ [-0.36, 0.63], $I^2=0.0\\%$（不显著）。结论：目前证据倾向于 null；下一步应在 ≥2 studies 上使用 full-depth reads（避免 downsample）并评估更精细的 P-site/length-aware pausing 定义与稳健性。
 
 ### Proposed Next Sprint (Scout) — 2026-01-15
 
@@ -657,7 +657,7 @@ The A100 phase is mainly about making these protocols scale (more datasets, stro
 **Completion Notes**:
 - Created `fetch_multispecies_cds.py` for downloading Tier-1 species from NCBI RefSeq
 - Created `exp_cross_species_stop_context.py` for H2-1 cross-domain replication
-- Downloaded 18/19 Tier-1 species (all except rice)
+- Downloaded 18/19 Tier-1 species (all except synechocystis)
 - 2026-01-15 — Corrected cross-species window definition: interpret $k$ in codons (3k nt windows) and use window-mean uplift; regenerated k=3/5/10/20 outputs and updated the paper table.
 - 2026-01-15 — Added UTR-inclusive replication endpoint (H2-1b, eukarya only): $\Delta U=U_{\mathrm{after}}-U_{\mathrm{before}}$ at k=10 gives random-effects $d=-0.04$ [-0.06, -0.01], $I^2=92.4\\%$; see `sections/generated/cross_species_stop_context_mrna_eukarya_k10.tex`.
 - **Meta-analysis results (UAA vs UGA)**:
