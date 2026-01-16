@@ -683,6 +683,19 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Higgs quantum field maps on Hilbert screen (m=10; 2D)",
+            script="fig_higgs_quantum_field_maps_m10.py",
+            expected_outputs=[
+                "figures/adaptive/higgs_geometry/higgs_quantum_field_maps_m10.png",
+                "figures/adaptive/higgs_geometry/higgs_quantum_field_coupling_m10.png",
+                "figures/adaptive/higgs_geometry/data/higgs_quantum_field_maps_m10.json",
+            ],
+            depends_on=[
+                "scripts/exp_sm_labeling_solver.py",
+                "scripts/fig_higgs_doublet_structure_m10.py",
+            ],
+        ),
+        Step(
             name="Higgs uplift quantum numbers (bounded-family CAP closure)",
             script="exp_higgs_quantum_numbers_cap_closure.py",
             expected_outputs=[
