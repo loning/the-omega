@@ -347,6 +347,11 @@ def main() -> None:
         help="Input stop-context candidates JSONL.",
     )
     ap.add_argument("--tracks-json", default=str(_default_tracks_json()), help="Optional JSON listing BAM tracks.")
+    ap.add_argument(
+        "--include-tracks-json",
+        action="store_true",
+        help="When --bam is provided, also include tracks from --tracks-json (default: ignore tracks-json to avoid duplicates).",
+    )
     ap.add_argument("--bam", action="append", default=[], help="BAM path (repeatable).")
     ap.add_argument("--track-id", action="append", default=[], help="Track id label for each --bam (repeatable).")
     ap.add_argument("--min-mapq", type=int, default=20, help="Min MAPQ filter (0 disables).")
@@ -384,12 +389,13 @@ def main() -> None:
             pass
 
     tracks: list[TrackSpec] = []
-    tracks_json = Path(str(args.tracks_json)) if str(args.tracks_json).strip() else None
-    if tracks_json is not None and tracks_json.exists():
-        tracks.extend(load_tracks_json(tracks_json))
-
     bam_args = [str(x).strip() for x in (args.bam or []) if str(x).strip()]
     ids = [str(x).strip() for x in (args.track_id or []) if str(x).strip()]
+
+    tracks_json = Path(str(args.tracks_json)) if str(args.tracks_json).strip() else None
+    if tracks_json is not None and tracks_json.exists() and (not bam_args or bool(args.include_tracks_json)):
+        tracks.extend(load_tracks_json(tracks_json))
+
     for i, bam_s in enumerate(bam_args):
         bam_p = Path(bam_s)
         if not bam_p.is_absolute():
@@ -478,4 +484,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
