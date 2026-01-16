@@ -296,6 +296,8 @@ This section is the **main development plan** for scaling the project on an A100
 - 2026-01-16 — **CLAIMED**: `H3-3c` 标准化 raw-read Ribo-seq pipeline（BAM/FASTQ）计算 stop-proximal window pausing（替代 GEO bigWig 稀缺路线），并做 ≥2 independent studies 的复现与 meta-analysis（优先 CPU；如需 GPU 仅用 A40）。Branch: `paper-bio`.
   - Progress (2026-01-16): 已补齐 raw-read pipeline 脚手架：`scripts/fetch_sra_runinfo.py`（SRA runinfo）、`scripts/fetch_sra_fastq.py`（fasterq-dump）、`scripts/build_refseq_candidate_fasta.py`（候选转录本 FASTA）、`scripts/align_bowtie2_transcriptome.py`（bowtie2→BAM）、`scripts/exp_riboseq_pause_bam_window.py`（BAM pause-index 分析）以及 `config/riboseq_bam_tracks.json`（BAM track 配置）。
   - Next: 先在 GSE148965 做 pilot（SRR14517742，`--max-spots` 小样本）跑通“下载→比对→pause-index→fragment”，再扩展到 ≥2 studies 做 meta-analysis 并写入 paper。
+  - Result (2026-01-16): 在 GSE148965（HeLa S3，SRR14517742；43.3M spots）上跑通 raw-read pipeline（FASTQ→bowtie2→BAM→pause-index），生成可引用片段：`sections/generated/riboseq_pause_bam_window.tex`。
+  - Key result (2026-01-16): 在当前 pause-index 定义（stop 前 30nt / stop 前 300nt 的 30nt body baseline）下，pause-index 与 `U_before`/`ΔU` 的相关较弱：$\\rho(PI,U_{\\mathrm{before}})=-0.131$（$n=145$, $p=0.117$），$\\rho(PI,\\Delta U)=0.046$（$n=145$, $p=0.582$）；分层效应（high $\\Delta U$ vs low）$d=0.21$（$n_1=29,n_2=25$, $p=0.438$）。结论：该研究内暂未观察到稳定的正向 pausing 机制桥接信号；需要继续做 ≥2 independent studies 复现与（必要时）更精细的 P-site/length-aware pausing 定义。
 
 ### Proposed Next Sprint (Scout) — 2026-01-15
 
