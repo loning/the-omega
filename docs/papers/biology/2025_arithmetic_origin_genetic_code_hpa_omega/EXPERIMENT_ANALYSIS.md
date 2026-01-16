@@ -290,7 +290,9 @@ This section is the **main development plan** for scaling the project on an A100
 - 2026-01-16 — **COMPLETED**: `F-1` 模块 F（非标准遗传密码表压力测试）补全待做项（系统收集 NCBI 遗传密码表、逐表边界对齐统计、以及“语义迁移但边界角色保留”的可复现检验），并同步更新 paper 与本分析文档。Branch: `paper-bio`.
   - Result (2026-01-16): `data/gc.prt` 解析得到 27 个 translation tables；逐表输出 stop/start boundary-hit 统计与 stop-set migration + symmetry 表（`scripts/exp_nonstandard_codes.py`；`sections/generated/nonstandard_code_rows.tex`、`sections/generated/nonstandard_stop_migration_rows.tex`）。
   - Result (2026-01-16): 非标准码 meta-analysis（`scripts/exp_nonstandard_codes_meta_analysis.py`）在 exact 24-encoding null 下给出 $\mu^\ast$ ranks 2/24（Fisher=59.05；$p=0.0833$），并已写入 paper appendix（`sections/generated/nonstandard_codes_meta_analysis.tex`）。
-- 2026-01-16 — **CLAIMED**: `H3-1` zMFE（composition-conditioned structure）在 stop 后窗口（30/60/120nt）上计算 MFE z-score（dinucleotide-matched shuffle null），检验 `U_after`/`U_resid` 对 zMFE 的相关/ΔR²，并写入 paper（M3 机制桥接 v2）。Branch: `paper-bio`.
+- 2026-01-16 — **COMPLETED**: `H3-1` zMFE（composition-conditioned structure）在 stop 后窗口（30/60/120nt）上计算 MFE z-score（dinucleotide-matched shuffle null），检验 `U_after`/`U_resid` 对 zMFE 的相关/ΔR²，并写入 paper（M3 机制桥接 v2）。Branch: `paper-bio`.
+  - Result (2026-01-16): 新增 `scripts/exp_uplift_zmfe_deconfound.py`（dinucleotide-preserving shuffle null 下计算 per-window zMFE，并报告 `U`→zMFE 的相关与 $\Delta R^2$）；产物：`sections/generated/uplift_zmfe_deconfound_table.tex`（已写入 paper discussion）。
+  - Key result (2026-01-16): 在 30/60/120nt stop-after windows 上，$\\rho(U,\\mathrm{zMFE})$ 为 -0.066 / -0.044 / +0.087；$\\rho(U_{\\mathrm{resid}},\\mathrm{zMFE})$ 为 -0.065 / -0.017 / -0.029；$\Delta R^2_{U\\to \\mathrm{zMFE}}\\approx 0.001$（总体接近 null，且方向不稳定）。
 
 ### Proposed Next Sprint (Scout) — 2026-01-15
 
@@ -447,9 +449,10 @@ This section is the **main development plan** for scaling the project on an A100
 Raw correlation:        ρ = -0.22 (Uplift-MFE)
 Partial (GC-controlled): ρ ≈ 0
 ΔR² contribution:       0.000
+zMFE (dinuc shuffle):   ρ(U,zMFE) ∈ [-0.066, 0.087], ΔR² ≈ 0.001 (30–120nt)
 ```
 
-**结论**：绿灯 D 未亮。关系完全由 GC 中介。需要 zMFE（成分匹配 shuffle）重新测试。
+**结论**：绿灯 D 未亮。原始 MFE 关系主要由成分中介；在 dinucleotide-matched shuffle 的 zMFE 版本下，相关与增益也接近 null（方向不稳定），因此“Uplift→结构”机制桥接证据不足。
 
 ---
 
