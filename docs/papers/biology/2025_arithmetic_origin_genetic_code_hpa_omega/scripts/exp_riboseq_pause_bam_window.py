@@ -470,7 +470,7 @@ def main() -> None:
     lines: list[str] = [
         "\\paragraph{Ribo-seq pausing from BAM alignments (raw-read pipeline).}",
         "We aligned raw Ribo-seq reads to a RefSeq transcriptome reference and computed a stop-proximal pause index per transcript, defined as the read-midpoint density in the $k$-codon window immediately upstream of the terminal stop divided by a same-length baseline window 300 nt upstream (within CDS when available).",
-        "The table reports per-track results and a random-effects meta-analysis across tracks (not necessarily independent studies).",
+        "The table reports per-track results; $n$ is the number of transcripts with finite pause index used for correlations (parentheses show $n_{high}/n_{low}$ for $d$). The bottom line reports a random-effects meta-analysis across tracks (not necessarily independent studies).",
         "",
         "\\begin{center}\\small",
         "\\begin{tabular}{lrrrrr}\\toprule",
@@ -484,8 +484,14 @@ def main() -> None:
         corr = s.get("correlations", {}).get("pause_index_vs_u_before", {})
         corr_d = s.get("correlations", {}).get("pause_index_vs_diff", {})
         comp = s.get("pairwise_comparisons", {}).get("high_diff_vs_low_diff", {})
+
+        n_corr = corr.get("n") if corr.get("n") is not None else corr_d.get("n")
+        n_disp = str(int(n_corr)) if n_corr is not None else str(int(s.get("n_used_pause", 0)))
+        if comp.get("n1") is not None and comp.get("n2") is not None:
+            n_disp = f"{n_disp} ({int(comp.get('n1'))}/{int(comp.get('n2'))})"
+
         lines.append(
-            f"{track_tex} & {int(s.get('n_used_pause',0))} & "
+            f"{track_tex} & {n_disp} & "
             f"{_fmt(corr.get('rho'))} & {_fmt(corr_d.get('rho'))} & "
             f"{_fmt(comp.get('cohens_d'), nd=2)} & {_p_fmt(comp.get('p'))} \\\\"
         )
