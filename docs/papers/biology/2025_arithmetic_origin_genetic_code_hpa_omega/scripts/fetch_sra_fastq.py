@@ -21,11 +21,12 @@ def root_dir() -> Path:
     return Path(__file__).resolve().parent.parent
 
 
-def run(cmd: list[str]) -> None:
+def run(cmd: list[str], *, check: bool = True) -> int:
     print("[cmd] " + " ".join(cmd), flush=True)
     p = subprocess.run(cmd)
-    if p.returncode != 0:
+    if check and p.returncode != 0:
         raise SystemExit(p.returncode)
+    return int(p.returncode)
 
 
 def _gzip_inplace(path: Path) -> None:
@@ -46,6 +47,12 @@ def main() -> None:
     ap.add_argument("--tmp-dir", default="", help="Temp directory for fasterq-dump (default: <out-dir>/tmp).")
     ap.add_argument("--threads", type=int, default=8, help="Threads for fasterq-dump.")
     ap.add_argument("--max-spots", type=int, default=0, help="Optional max spots (0 disables).")
+    ap.add_argument(
+        "--tool",
+        default="auto",
+        choices=["auto", "fasterq-dump", "fastq-dump"],
+        help="Which sra-tools extractor to use (auto tries fasterq-dump, then falls back to fastq-dump).",
+    )
     ap.add_argument("--gzip", action="store_true", help="gzip output FASTQ in place.")
     ap.add_argument("--force", action="store_true", help="Re-download even if output files exist.")
     args = ap.parse_args()
@@ -55,8 +62,9 @@ def main() -> None:
         raise SystemExit("Provide at least one --srr SRR...")
 
     fasterq = shutil.which("fasterq-dump")
-    if fasterq is None:
-        raise SystemExit("Missing `fasterq-dump` in PATH (install sra-tools >=3).")
+    fastq_dump = shutil.which("fastq-dump")
+    if fasterq is None and fastq_dump is None:
+        raise SystemExit("Missing `fasterq-dump`/`fastq-dump` in PATH (install sra-tools).")
 
     base_out = Path(str(args.out_dir).strip()) if str(args.out_dir).strip() else (root_dir() / "data" / "_cache" / "sra_fastq")
     if not base_out.is_absolute():
@@ -78,22 +86,62 @@ def main() -> None:
             print(f"[skip] exists: {fastq_gz if fastq_gz.exists() else fastq}", flush=True)
             continue
 
-        cmd = [
-            fasterq,
-            srr,
-            "-O",
-            str(out_dir),
-            "--temp",
-            str(tmp_dir),
-            "--threads",
-            str(int(args.threads)),
-        ]
-        if int(args.max_spots) > 0:
-            cmd.extend(["--maxSpotId", str(int(args.max_spots))])
-        run(cmd)
+        preferred = str(args.tool).strip().lower()
+        if preferred not in ("auto", "fasterq-dump", "fastq-dump"):
+            preferred = "auto"
+
+        def try_fasterq() -> bool:
+            if fasterq is None:
+                return False
+            cmd = [
+                fasterq,
+                srr,
+                "-O",
+                str(out_dir),
+                "--temp",
+                str(tmp_dir),
+                "--threads",
+                str(int(args.threads)),
+            ]
+            if int(args.max_spots) > 0:
+                cmd.extend(["--maxSpotId", str(int(args.max_spots))])
+            rc = run(cmd, check=False)
+            if rc == 0:
+                return True
+            print(f"[warn] fasterq-dump failed (rc={rc}); falling back to fastq-dump", flush=True)
+            return False
+
+        def run_fastq_dump() -> None:
+            if fastq_dump is None:
+                raise SystemExit("Missing `fastq-dump` in PATH.")
+            cmd = [
+                fastq_dump,
+                srr,
+                "--outdir",
+                str(out_dir),
+                "--split-3",
+            ]
+            if int(args.max_spots) > 0:
+                cmd.extend(["-X", str(int(args.max_spots))])
+            if args.gzip:
+                cmd.append("--gzip")
+            run(cmd)
+
+        used = False
+        if preferred == "fasterq-dump":
+            used = try_fasterq()
+            if not used:
+                run_fastq_dump()
+        elif preferred == "fastq-dump":
+            run_fastq_dump()
+            used = True
+        else:
+            used = try_fasterq()
+            if not used:
+                run_fastq_dump()
 
         # gzip if requested
-        if args.gzip and fastq.exists():
+        if args.gzip and fastq.exists() and preferred != "fastq-dump":
             _gzip_inplace(fastq)
 
         print(f"[ok] {srr} -> {out_dir}", flush=True)
@@ -101,4 +149,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
