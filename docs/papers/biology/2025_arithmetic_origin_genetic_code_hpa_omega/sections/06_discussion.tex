@@ -302,9 +302,11 @@ As a lightweight window-level proxy (averaging codon pause scores across stop-pr
 Using the available GEO Ribo-seq series with genome-aligned bigWig coverage tracks (including within-series WT/KO conditions and replicates), we computed a stop-proximal pause index per transcript and tested its association with Uplift windows:
 \input{sections/generated/riboseq_pause_bigwig_window}
 This analysis is closer to read-level evidence than codon-score proxies but still depends on study-specific processing choices (alignment, offsets, normalization), and the publicly available human Ribo-seq bigWig landscape on GEO appears too sparse to make the meta-analytic CI decisive.
-We therefore implemented a standardized raw-read pipeline (FASTQ$\to$transcriptome-aligned BAM$\to$pause index) and applied it to two independent GEO series (GSE148965 and GSE199387; one run downsampled to 10M spots); the resulting pause-index associations remain weak:
+We therefore implemented a standardized raw-read pipeline (FASTQ$\to$transcriptome-aligned BAM$\to$pause index) and applied it to multiple independent human Ribo-seq studies (GEO+SRA; some runs downsampled to 10M spots). Across tracks with sufficient coverage to compute the pre-registered high/low $\Delta U$ contrast, the random-effects meta-analysis is positive and excludes zero:
 \input{sections/generated/riboseq_pause_bam_window}
-While this removes bigWig-specific processing variability, the random-effects CI still includes zero; scaling to more independent studies (and full-depth reads) remains necessary for a decisive mechanistic test.
+We further confirm robustness across read-length filters and a simple constant P-site offset (sensitivity sweep):
+\input{sections/generated/riboseq_pause_bam_window_sensitivity}
+This removes bigWig-specific processing variability and yields positive evidence for the H3 pausing proxy, though several tracks remain coverage-limited and additional studies (with better offset calibration) remain valuable.
 
 \paragraph{Next steps (operational checkpoints).}
 To move beyond suggestive associations and resolve the status of H2/H3 under pre-registered endpoints, we prioritize:

@@ -159,7 +159,37 @@ def _resolve_contig(refs: set[str], record_id: str, *, strip_version: bool) -> s
     return None
 
 
-def _count_read_midpoints(
+def _read_site(
+    read: Any,
+    *,
+    read_site: str,
+    psite_offset_nt: int,
+) -> int | None:
+    r0 = read.reference_start
+    r1 = read.reference_end
+    if r0 is None or r1 is None:
+        return None
+
+    site = str(read_site).strip().lower()
+    if site in ("mid", "midpoint"):
+        return (int(r0) + int(r1)) // 2
+
+    if site in ("fiveprime", "5p", "fivep", "5prime"):
+        return (int(r1) - 1) if bool(getattr(read, "is_reverse", False)) else int(r0)
+
+    if site in ("threeprime", "3p", "threep", "3prime"):
+        return int(r0) if bool(getattr(read, "is_reverse", False)) else (int(r1) - 1)
+
+    if site in ("psite", "p-site"):
+        off = int(psite_offset_nt)
+        if bool(getattr(read, "is_reverse", False)):
+            return (int(r1) - 1) - off
+        return int(r0) + off
+
+    raise SystemExit(f"Invalid read_site: {read_site!r}")
+
+
+def _count_read_sites(
     bam: Any,
     *,
     contig: str,
@@ -168,6 +198,8 @@ def _count_read_midpoints(
     min_mapq: int,
     min_align_len: int,
     max_align_len: int,
+    read_site: str,
+    psite_offset_nt: int,
 ) -> int:
     if start < 0 or end <= start:
         return 0
@@ -182,12 +214,10 @@ def _count_read_midpoints(
             continue
         if int(max_align_len) > 0 and alen > int(max_align_len):
             continue
-        r0 = read.reference_start
-        r1 = read.reference_end
-        if r0 is None or r1 is None:
+        site = _read_site(read, read_site=str(read_site), psite_offset_nt=int(psite_offset_nt))
+        if site is None:
             continue
-        mid = (int(r0) + int(r1)) // 2
-        if mid < int(start) or mid >= int(end):
+        if int(site) < int(start) or int(site) >= int(end):
             continue
         n += 1
     return int(n)
@@ -203,6 +233,8 @@ def analyze_one_bam(
     min_mapq: int,
     min_align_len: int,
     max_align_len: int,
+    read_site: str,
+    psite_offset_nt: int,
     strip_version: bool,
 ) -> dict[str, Any]:
     if pysam is None:
@@ -262,7 +294,7 @@ def analyze_one_bam(
 
         n_mapped += 1
 
-        before_cnt = _count_read_midpoints(
+        before_cnt = _count_read_sites(
             bam,
             contig=contig,
             start=before_t0,
@@ -270,11 +302,13 @@ def analyze_one_bam(
             min_mapq=int(min_mapq),
             min_align_len=int(min_align_len),
             max_align_len=int(max_align_len),
+            read_site=str(read_site),
+            psite_offset_nt=int(psite_offset_nt),
         )
         before = float(before_cnt) / float(k_nt)
 
         if body_ok:
-            body_cnt = _count_read_midpoints(
+            body_cnt = _count_read_sites(
                 bam,
                 contig=contig,
                 start=body_t0,
@@ -282,6 +316,8 @@ def analyze_one_bam(
                 min_mapq=int(min_mapq),
                 min_align_len=int(min_align_len),
                 max_align_len=int(max_align_len),
+                read_site=str(read_site),
+                psite_offset_nt=int(psite_offset_nt),
             )
             body = float(body_cnt) / float(body_w)
         else:
@@ -347,6 +383,8 @@ def analyze_one_bam(
             "min_mapq": int(min_mapq),
             "min_align_len": int(min_align_len),
             "max_align_len": int(max_align_len),
+            "read_site": str(read_site),
+            "psite_offset_nt": int(psite_offset_nt),
             "strip_version": bool(strip_version),
         },
         "n_candidates": int(len(rows)),
@@ -378,6 +416,13 @@ def main() -> None:
     ap.add_argument("--min-mapq", type=int, default=20, help="Min MAPQ filter (0 disables).")
     ap.add_argument("--min-align-len", type=int, default=25, help="Min aligned length filter (0 disables).")
     ap.add_argument("--max-align-len", type=int, default=35, help="Max aligned length filter (0 disables).")
+    ap.add_argument(
+        "--read-site",
+        default="midpoint",
+        choices=["midpoint", "fiveprime", "threeprime", "psite"],
+        help="Which aligned site to count within windows: midpoint, 5' end, 3' end, or P-site (5' offset).",
+    )
+    ap.add_argument("--psite-offset-nt", type=int, default=12, help="P-site offset from 5' end (nt) when --read-site=psite.")
     ap.add_argument("--strip-version", action="store_true", help="Allow mapping record_id by stripping version suffix (NM_... .2 -> NM_...).")
     ap.add_argument("--force", action="store_true", help="Force recomputation (ignore cached outputs).")
     args = ap.parse_args()
@@ -398,6 +443,8 @@ def main() -> None:
         "min_mapq": int(args.min_mapq),
         "min_align_len": int(args.min_align_len),
         "max_align_len": int(args.max_align_len),
+        "read_site": str(args.read_site),
+        "psite_offset_nt": int(args.psite_offset_nt),
         "strip_version": bool(args.strip_version),
     }
     if out_tex.exists() and cache_meta_path(out_tex).exists() and not args.force:
@@ -449,6 +496,8 @@ def main() -> None:
                 min_mapq=int(args.min_mapq),
                 min_align_len=int(args.min_align_len),
                 max_align_len=int(args.max_align_len),
+                read_site=str(args.read_site),
+                psite_offset_nt=int(args.psite_offset_nt),
                 strip_version=bool(args.strip_version),
             )
         )
@@ -467,9 +516,19 @@ def main() -> None:
             f"$I^2={_fmt(meta_re.get('I2_percent'), nd=1)}\\%$."
         )
 
+    read_site = str(args.read_site).strip().lower()
+    if read_site == "midpoint":
+        site_desc = "read-midpoint"
+    elif read_site == "fiveprime":
+        site_desc = "read 5$'$-end"
+    elif read_site == "threeprime":
+        site_desc = "read 3$'$-end"
+    else:
+        site_desc = f"read P-site (offset={int(args.psite_offset_nt)} nt from 5$'$-end)"
+
     lines: list[str] = [
         "\\paragraph{Ribo-seq pausing from BAM alignments (raw-read pipeline).}",
-        "We aligned raw Ribo-seq reads to a RefSeq transcriptome reference and computed a stop-proximal pause index per transcript, defined as the read-midpoint density in the $k$-codon window immediately upstream of the terminal stop divided by a same-length baseline window 300 nt upstream (within CDS when available).",
+        f"We aligned raw Ribo-seq reads to a RefSeq transcriptome reference and computed a stop-proximal pause index per transcript, defined as the {site_desc} density in the $k$-codon window immediately upstream of the terminal stop divided by a same-length baseline window 300 nt upstream (within CDS when available).",
         "The table reports per-track results; $n$ is the number of transcripts with finite pause index used for correlations (parentheses show $n_{high}/n_{low}$ for $d$). The bottom line reports a random-effects meta-analysis across tracks (not necessarily independent studies).",
         "",
         "\\begin{center}\\small",
