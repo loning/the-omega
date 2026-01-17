@@ -4,23 +4,23 @@ Movie-like encoding visualization (center-wired, no crossings):
 
 Wiring rules (as requested)
 ---------------------------
-1) The m=6 Hilbert curve fills the whole 8×8 plane and is drawn by connecting *cell centers*.
+1) The m=6 Hilbert curve fills the whole 8x8 plane and is drawn by connecting *cell centers*.
    All turns are 90 degrees (axis-aligned) because consecutive Hilbert points are neighbors.
 2) For refined cells (between the gate words 101001 and 100101, excluding the gate cells),
-   we draw a micro Hilbert curve inside the cell, connecting *subcell centers* (again 90-degree turns).
-3) The scan wiring is a *single continuous curve*: when a cell is refined, the scan detours
-   from the big-cell center into the micro-Hilbert path and returns to the big-cell center,
-   then continues along the coarse Hilbert wiring.
+   we draw a micro Hilbert curve inside the cell, connecting *subcell centers* (also 90-degree turns).
+3) Same-m wiring uses only 90/180-degree segments (no diagonal lines).
+   Cross-m wiring (m=6 <-> m=8/10) uses the shortest diagonal connector to preserve the coarse direction.
+4) The spatial bottom-left and bottom-right coarse cells are fixed to 100001.
 
 Encoding / colors
 -----------------
-- Each m=6 cell is a stable type u = Fold_6(k) in X6 (21 = 18⊕3). We color by a fixed 21-color palette.
+- Each m=6 cell is a stable type u = Fold_6(k) in X6 (21 = 18+3). We color by a fixed 21-color palette.
 - Each refined cell gets a local bitrate m in {8,10} under a fixed per-frame bit budget (conserved).
   We use the per-cell code bits to select an offset; each micro subcell gets a suffix code in
   Hilbert order and is colored as a brightness ladder of the base hue.
 - We label:
   - every big cell by its 6-bit u
-  - every micro subcell by its suffix bits (2 bits for m=8, 4 bits for m=10)
+  - every micro subcell by its full m-bit word (prefix inherits the m=6 stable type)
   - every refined big cell by its local (m, bits) header.
 
 Outputs
@@ -36,24 +36,28 @@ Deterministic; English-only in plots (repo convention).
 from __future__ import annotations
 
 from dataclasses import dataclass
+import math
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
-import numpy as np
+import numpy as np  # type: ignore
 
-import matplotlib
+import matplotlib  # type: ignore
 
 matplotlib.use("Agg")  # type: ignore
-import matplotlib.pyplot as plt  # noqa: E402
-from matplotlib.collections import LineCollection  # noqa: E402
-from matplotlib.patches import FancyArrowPatch, Rectangle  # noqa: E402
+import matplotlib.pyplot as plt  # type: ignore # noqa: E402
+from matplotlib.collections import LineCollection  # type: ignore # noqa: E402
+from matplotlib.patches import FancyArrowPatch, Rectangle  # type: ignore # noqa: E402
 
-from PIL import Image  # noqa: E402
+from PIL import Image  # type: ignore # noqa: E402
 
 from common_paths import figures_dir, generated_dir  # noqa: E402
 from common_progress import ProgressEvery  # noqa: E402
 import exp_fold6_stats as fold6  # noqa: E402
+import exp_foldm_stats as foldm  # noqa: E402
 import exp_hilbert_chirality_index as hil  # noqa: E402
+
+from hilbert_scan_codec import SelfCodecSpec, SelfDescribingHilbertCodec, zeckendorf_word6  # noqa: E402
 
 
 # -------------------------
@@ -114,26 +118,84 @@ def _ensure_dir(p: Path) -> None:
 def _render_x6_palette_legend(X6: List[str], palette_rgb: np.ndarray, out_png: Path) -> None:
     _ensure_dir(out_png.parent)
     n = len(X6)
-    ncols = 7
-    nrows = (n + ncols - 1) // ncols
-    fig, ax = plt.subplots(figsize=(14.0, 1.55 * nrows))
+    row_h = 1.8
+    w_base = 2.2
+    w_m8 = 1.8
+    w_m10 = 1.8
+    gap = 0.45
+    top_pad = 1.6
+    total_w = w_base + w_m8 + w_m10 + 2 * gap
+    total_h = top_pad + n * row_h
+    fig, ax = plt.subplots(figsize=(12.5, 0.40 * total_h))
     ax.axis("off")
-    ax.set_title("m=6 stable types (X6 = 18⊕3): color legend", fontsize=14, pad=10)
+    ax.set_xlim(0, total_w)
+    ax.set_ylim(0, total_h)
+    ax.set_title("m=6 stable types with m=8/m=10 descendants (prefix inheritance)", fontsize=13, pad=10)
+
+    ax.text(0.0, total_h - 0.35, "descendants keep the first 6 bits = u6", fontsize=9, color="#455A64", va="top")
+    ax.text(0.05, total_h - 0.75, "m=6 (u6)", fontsize=9, color="#263238", va="top")
+    ax.text(w_base + gap + 0.05, total_h - 0.75, "m=8 descendants", fontsize=9, color="#263238", va="top")
+    ax.text(w_base + gap + w_m8 + gap + 0.05, total_h - 0.75, "m=10 descendants", fontsize=9, color="#263238", va="top")
 
     gauge_short = {"100001": "U(1)", "101001": "SU(2)", "100101": "SU(3)"}
+
+    def descendants_for(u6: str, m_hi: int, count: int) -> List[str]:
+        avoid = _downlift_marker_for_m(m_hi)
+        outs_hi = foldm.cached_foldm_outputs(m_hi)
+        pool = [w_hi for k, w_hi in enumerate(outs_hi) if (w_hi != avoid and foldm.foldm(k, 6) == u6)]
+        if not pool:
+            raise ValueError(f"No descendants for u6={u6}, m={m_hi}.")
+        offset = int(u6, 2) % len(pool)
+        return [pool[(offset + i) % len(pool)] for i in range(int(count))]
+
     for i, w in enumerate(X6):
-        r = i // ncols
-        c = i % ncols
-        x0 = c * 1.0
-        y0 = (nrows - 1 - r) * 1.0
+        y0 = total_h - top_pad - (i + 1) * row_h
         color = palette_rgb[i]
-        ax.add_patch(Rectangle((x0, y0), 0.98, 0.72, facecolor=color, edgecolor="#263238", lw=0.8))
         tag = "bdry" if (len(w) >= 2 and w[0] == "1" and w[-1] == "1") else "cyc"
         extra = f"  {gauge_short[w]}" if w in gauge_short else ""
-        ax.text(x0 + 0.02, y0 + 0.86, f"{w}  [{tag}]{extra}", fontsize=10, color="#263238", va="top")
 
-    ax.set_xlim(0, ncols * 1.0)
-    ax.set_ylim(0, nrows * 1.0)
+        ax.add_patch(Rectangle((0.0, y0 + 0.05), w_base - 0.1, row_h - 0.1, facecolor=color, edgecolor="#263238", lw=0.8))
+        ax.text(0.06, y0 + row_h - 0.12, f"{w}  [{tag}]{extra}", fontsize=8.5, color="#263238", va="top")
+
+        m8_words = descendants_for(w, 8, 4)
+        m10_words = descendants_for(w, 10, 16)
+
+        cell8 = row_h / 2.0
+        x8 = w_base + gap
+        for idx, w8 in enumerate(m8_words):
+            r = 1 - (idx // 2)
+            c = idx % 2
+            x = x8 + c * cell8
+            y = y0 + r * cell8
+            suffix = w8[6:]
+            code = _bits_to_int([int(b) for b in suffix]) if suffix else 0
+            denom = 3
+            t = 0.25 + 0.75 * (float(code) / float(denom))
+            ax.add_patch(Rectangle((x, y), cell8 - 0.02, cell8 - 0.02, facecolor=np.clip(color * t, 0.0, 1.0), edgecolor="#263238", lw=0.35))
+            ax.text(x + 0.5 * cell8, y + 0.5 * cell8, w8, fontsize=6, color="#FFFFFF", ha="center", va="center")
+
+        cell10 = row_h / 4.0
+        x10 = w_base + gap + w_m8 + gap
+        for idx, w10 in enumerate(m10_words):
+            r = 3 - (idx // 4)
+            c = idx % 4
+            x = x10 + c * cell10
+            y = y0 + r * cell10
+            suffix = w10[6:]
+            code = _bits_to_int([int(b) for b in suffix]) if suffix else 0
+            denom = 15
+            t = 0.25 + 0.75 * (float(code) / float(denom))
+            ax.add_patch(Rectangle((x, y), cell10 - 0.01, cell10 - 0.01, facecolor=np.clip(color * t, 0.0, 1.0), edgecolor="#263238", lw=0.30))
+            ax.text(
+                x + 0.5 * cell10,
+                y + 0.5 * cell10,
+                _format_micro_label(w10),
+                fontsize=4.3,
+                color="#FFFFFF",
+                ha="center",
+                va="center",
+            )
+
     fig.savefig(out_png, dpi=220, bbox_inches="tight")
     plt.close(fig)
 
@@ -148,6 +210,14 @@ def _k_to_xy_map() -> Dict[int, Tuple[int, int]]:
     if len(path) != 64:
         raise AssertionError("Unexpected Hilbert path length for n_bits=3.")
     return {int(k): (int(x), int(y)) for k, (x, y) in enumerate(path)}
+
+
+def _corner_indices() -> Tuple[int, int]:
+    path = hil.hilbert_curve(3)
+    idx = {(int(x), int(y)): int(k) for k, (x, y) in enumerate(path)}
+    if (0, 0) not in idx or (7, 0) not in idx:
+        raise AssertionError("Corner indices not found in Hilbert path.")
+    return int(idx[(0, 0)]), int(idx[(7, 0)])
 
 
 def _center_point_in_cell(cell_x: int, cell_y: int, scale: int) -> Tuple[float, float]:
@@ -185,6 +255,17 @@ def _bit_window(bits: List[int], start: int, length: int) -> List[int]:
     length = int(length)
     n = len(bits)
     return [int(bits[(start + i) % n]) for i in range(length)]
+
+
+def _cell_offset_bits(bits: List[int], frame_idx: int, k: int, n_bits: int) -> Tuple[int, str]:
+    if n_bits <= 0:
+        return 0, ""
+    n = len(bits)
+    if n <= 0:
+        raise ValueError("Empty bitstream.")
+    start = (int(frame_idx) * 131 + int(k) * 19 + int(n_bits) * 7) % int(n)
+    window = _bit_window(bits, start, int(n_bits))
+    return _bits_to_int(window), "".join(str(int(b)) for b in window)
 
 
 def _bits_to_int(bs: List[int]) -> int:
@@ -288,6 +369,271 @@ def _assign_refinements(
     return assign, int(i)
 
 
+def _build_base_field_words6(*, frame_idx: int) -> List[str]:
+    """
+    Deterministic m=6 field on the 8x8 coarse Hilbert scan:
+    - Reserve the 3 boundary words for gate semantics only.
+    - Fill other sites with cyclic words (repeated deterministically).
+    """
+    X6 = fold6.all_x6()
+    bdry = {"100001", "101001", "100101"}
+    cyclic = [w for w in X6 if w not in bdry]
+    if len(cyclic) != 18:
+        raise AssertionError("Expected 18 cyclic m=6 words.")
+    # Deterministic fill with a boundary-safe adjacency constraint:
+    # forbid prev_last=1 and next_first=1 across consecutive *m=6* scan tokens.
+    start = int((frame_idx * 5) % len(cyclic))
+    cyc = cyclic[start:] + cyclic[:start]
+    k_left, k_right = _corner_indices()
+    fixed_pos = {17: "101001", 53: "100101"}
+    fixed_pos[int(k_left)] = "100001"
+    fixed_pos[int(k_right)] = "100001"
+
+    out: List[str] = [""] * 64
+    prev_last: Optional[str] = None
+    j = 0
+    for k in range(64):
+        if k in fixed_pos:
+            w = fixed_pos[k]
+            out[k] = w
+            prev_last = w[-1]
+            continue
+
+        # Greedy pick from cyclic list (repetition allowed) to satisfy boundary constraint.
+        tried = 0
+        while True:
+            w = cyc[j % len(cyc)]
+            j += 1
+            tried += 1
+            if prev_last == "1" and w[0] == "1":
+                if tried > len(cyclic) * 2:
+                    raise AssertionError("Failed to find boundary-safe cyclic word.")
+                continue
+            # Lookahead constraints near fixed gates/end marker:
+            # - if next position is a gate starting with 1, avoid ending with 1 here
+            # - if this is the last scan token (k=63), avoid ending with 1 (since end marker is 100001)
+            next_fixed = fixed_pos.get(k + 1)
+            if next_fixed is not None and next_fixed[0] == "1" and w[-1] == "1":
+                continue
+            out[k] = w
+            prev_last = w[-1]
+            break
+
+    return out
+
+
+def _microblock_words_for_cell(*, u6: str, m_hi: int, need: int, avoid_word: str) -> List[str]:
+    """
+    Choose `need` admissible m_hi-bit words in the Fold_6 fiber of u6:
+      Fold_m(k,m_hi) is used, grouped by Fold_m(k,6)=u6.
+    Avoid emitting `avoid_word` (e.g. downlift marker) as data, since it's a control record.
+    """
+    m_hi = int(m_hi)
+    if m_hi < 6:
+        raise ValueError("m_hi must be >= 6.")
+    # Enumerate dyadic indices for this m_hi.
+    outs_hi = foldm.cached_foldm_outputs(m_hi)  # length 2^m_hi
+    pool: List[str] = []
+    for k, w_hi in enumerate(outs_hi):
+        if w_hi == avoid_word:
+            continue
+        if foldm.foldm(k, 6) == u6:
+            pool.append(w_hi)
+            if len(pool) >= need * 4:
+                # Usually plenty; cap for speed.
+                break
+    if len(pool) < need:
+        # Fallback: do a full scan if truncated early.
+        pool = [w_hi for k, w_hi in enumerate(outs_hi) if (w_hi != avoid_word and foldm.foldm(k, 6) == u6)]
+    if len(pool) < need:
+        raise ValueError(f"Not enough extension words for u6={u6}, m={m_hi}: need {need}, got {len(pool)}.")
+    # Return a pool; the caller will pick a boundary-safe sequence of the required length.
+    return pool
+
+
+def _pick_boundary_safe_sequence(
+    pool: List[str],
+    *,
+    need: int,
+    prev_last: Optional[str],
+    next_first: Optional[str] = None,
+    offset: int = 0,
+) -> Tuple[List[str], Optional[str]]:
+    """
+    Pick `need` words from `pool` (repetition allowed) so that no token boundary produces '11':
+      prev_last=1 and next_first=1 is forbidden.
+    If next_first is provided, also enforce compatibility of the last picked word with that next token.
+    The `offset` rotates the pool to diversify selections deterministically.
+    """
+    if not pool:
+        raise ValueError("Empty pool.")
+    out: List[str] = []
+    used: set[str] = set()
+    prev = prev_last
+    n = len(pool)
+    idx = int(offset) % n
+    all_start_one = all(w[0] == "1" for w in pool)
+    for j in range(int(need)):
+        want_next_first = next_first if (j == int(need) - 1) else None
+        require_last_zero = bool(all_start_one and j < int(need) - 1) or (want_next_first == "1")
+        chosen = None
+        for pass_idx in range(2):
+            for t in range(n):
+                w = pool[(idx + t) % n]
+                if pass_idx == 0 and w in used and n > int(need):
+                    continue
+                if prev == "1" and w[0] == "1":
+                    continue
+                if require_last_zero and w[-1] == "1":
+                    continue
+                chosen = w
+                idx = (idx + t + 1) % n
+                break
+            if chosen is not None:
+                break
+        if chosen is None:
+            raise ValueError("Failed to pick a boundary-safe sequence from pool.")
+        out.append(chosen)
+        used.add(chosen)
+        prev = chosen[-1]
+    return out, prev
+
+
+def _downlift_marker_for_m(m: int) -> str:
+    m = int(m)
+    if m < 6:
+        raise ValueError("m must be >= 6.")
+    if m == 6:
+        return "100101"
+    return "100101" + ("0" * (m - 6))
+
+
+def _build_stream_tokens_for_frame(
+    *,
+    frame_idx: int,
+    words6_scan: List[str],
+    m_by_k: Dict[int, int],
+    offset_by_k: Dict[int, int],
+) -> Tuple[List[str], Dict[int, List[str]]]:
+    """
+    Build a self-describing Zeckendorf token stream for a single frame, consistent with:
+      - start/end marker 100001 (m=6)
+      - uplift marker 101001 (m=6) + payload6 setting initial m=8
+      - refined region between scan indices 17 and 53 (exclusive): emit per-cell microblocks at local m in {8,10}
+        with in-stream m switches encoded by (downlift_marker(current_m) + payload6(new_m)).
+      - final downlift to m=6 using downlift_marker(current_m) + payload6(6)
+      - continue in m=6 and end with 100001
+
+    Returns:
+      - tokens: the full token stream (variable token lengths)
+      - micro_by_k: mapping from coarse scan index k to its microblock words (for refined cells)
+    """
+    if len(words6_scan) != 64:
+        raise ValueError("words6_scan must have length 64.")
+    if (
+        words6_scan[0] != "100001"
+        or words6_scan[17] != "101001"
+        or words6_scan[53] != "100101"
+        or words6_scan[63] != "100001"
+    ):
+        raise ValueError("Gate placement mismatch in words6_scan.")
+
+    tokens: List[str] = []
+    micro_by_k: Dict[int, List[str]] = {}
+    prev_last: Optional[str] = None
+
+    # m=6: from k=0..17 inclusive.
+    for k in range(0, 18):
+        w = words6_scan[k]
+        if prev_last == "1" and w[0] == "1":
+            raise ValueError("Base-field construction violated Zeckendorf boundary constraint.")
+        tokens.append(w)
+        prev_last = w[-1]
+
+    # Uplift payload (6-bit) sets initial m=8 (then local switches can move to m=10).
+    p_up = zeckendorf_word6(8)
+    if prev_last == "1" and p_up[0] == "1":
+        raise ValueError("Payload violated Zeckendorf boundary constraint.")
+    tokens.append(p_up)
+    prev_last = p_up[-1]
+
+    # High-m microblocks for refined cells between 17 and 53 exclusive, with local m switches.
+    cur_m = 8
+    for k in range(18, 53):
+        target_m = int(m_by_k.get(int(k), 8))
+        if target_m not in {8, 10}:
+            raise ValueError("This visualization supports local m in {8,10} only.")
+
+        # Switch m if needed: marker(cur_m) + payload(target_m).
+        if int(cur_m) != int(target_m):
+            marker = _downlift_marker_for_m(cur_m)
+            if prev_last == "1" and marker[0] == "1":
+                raise ValueError("m-switch marker boundary violation.")
+            tokens.append(marker)
+            prev_last = marker[-1]
+
+            payload = zeckendorf_word6(target_m)
+            if prev_last == "1" and payload[0] == "1":
+                raise ValueError("m-switch payload boundary violation.")
+            tokens.append(payload)
+            prev_last = payload[-1]
+            cur_m = int(target_m)
+
+        # Emit a full microblock at cur_m: length f(m)=2^(m-6).
+        microblock_len = int(1 << (int(cur_m) - 6))
+        avoid_word = _downlift_marker_for_m(cur_m)  # never emit control marker as data
+        u6 = words6_scan[k]
+        pool = _microblock_words_for_cell(u6=u6, m_hi=cur_m, need=microblock_len, avoid_word=avoid_word)
+
+        # Lookahead: if next step is a control marker starting with '1', force last data token to end with '0'.
+        need_switch_next = (k < 52 and int(m_by_k.get(int(k + 1), 8)) != int(cur_m))
+        want_next_first = "1" if (k == 52 or need_switch_next) else None
+
+        offset = int(offset_by_k.get(int(k), 0))
+        mb, prev_last = _pick_boundary_safe_sequence(
+            pool,
+            need=microblock_len,
+            prev_last=prev_last,
+            next_first=want_next_first,
+            offset=offset,
+        )
+        micro_by_k[int(k)] = mb
+        tokens.extend(mb)
+
+    # Final downlift to m=6: marker(cur_m) + payload(6).
+    marker_end = _downlift_marker_for_m(cur_m)
+    if prev_last == "1" and marker_end[0] == "1":
+        raise ValueError("Final downlift marker boundary violation.")
+    tokens.append(marker_end)
+    prev_last = marker_end[-1]
+
+    p_dn = zeckendorf_word6(6)
+    if prev_last == "1" and p_dn[0] == "1":
+        raise ValueError("Final downlift payload boundary violation.")
+    tokens.append(p_dn)
+    prev_last = p_dn[-1]
+
+    # Back to m=6: include k=53..63
+    for k in range(53, 64):
+        w = words6_scan[k]
+        if prev_last == "1" and w[0] == "1":
+            raise ValueError("Base-field boundary violation after downlift.")
+        tokens.append(w)
+        prev_last = w[-1]
+
+    # End marker: if the last base token is already start_end, treat it as the end.
+    w_end = "100001"
+    if tokens[-1] != w_end:
+        if prev_last == "1" and w_end[0] == "1":
+            raise ValueError("End marker boundary violation.")
+        tokens.append(w_end)
+
+    # Validate via codec (strong microblock policy is default).
+    codec = SelfDescribingHilbertCodec(SelfCodecSpec())
+    codec.validate_tokens(tokens)
+    return tokens, micro_by_k
+
+
 # -------------------------
 # Rendering
 # -------------------------
@@ -297,7 +643,9 @@ def _assign_refinements(
 class MicroCell:
     xx: int
     yy: int
-    bits: str
+    word: str
+    u6: str
+    suffix: str
     code: int
 
 
@@ -384,13 +732,30 @@ def _choose_micro_path_transform(
         (ex, ey) = tp[-1]
         s_norm = ((sx + 0.5) / float(S), (sy + 0.5) / float(S))
         e_norm = ((ex + 0.5) / float(S), (ey + 0.5) / float(S))
-        ds = (s_norm[0] - entry_target[0]) ** 2 + (s_norm[1] - entry_target[1]) ** 2
-        de = (e_norm[0] - exit_target[0]) ** 2 + (e_norm[1] - exit_target[1]) ** 2
+        ds = math.hypot(s_norm[0] - entry_target[0], s_norm[1] - entry_target[1])
+        de = math.hypot(e_norm[0] - exit_target[0], e_norm[1] - exit_target[1])
         score = float(ds + de)
         if score < best_score:
             best_score = score
             best_path = tp
     return best_path
+
+
+def _format_micro_label(word: str) -> str:
+    w = str(word)
+    if len(w) <= 8:
+        return w
+    if len(w) == 10:
+        return w[:5] + "\n" + w[5:]
+    return w
+
+
+def _kind_to_m(kind: str) -> int:
+    if kind == "macro":
+        return 6
+    if kind == "micro10":
+        return 10
+    return 8
 
 
 def _render_one_frame(
@@ -403,14 +768,38 @@ def _render_one_frame(
     scale: int = 92,
 ) -> Image.Image:
     shift = _frame_shift(frame_idx)
-    words = [_fold6_shifted(k, shift) for k in range(64)]
-    pos = _gate_positions(words)
-    up_pos = int(pos["101001"][0]) if pos["101001"] else 17
-    dn_pos = _choose_downlift_far(words, up_pos=up_pos, dn_positions=pos["100101"]) if pos["100101"] else 53
-    refine_order = _indices_between_exclusive(up_pos, dn_pos, 64)
+    # Build a gate-consistent base field (m=6) and a valid self-describing stream.
+    words = _build_base_field_words6(frame_idx=frame_idx)
+    # Local m policy (dynamic bitrate): mostly m=8 with a few m=10 cells per frame.
+    # Deterministic and in-stream self-describing via control records.
+    m_by_k: Dict[int, int] = {}
+    refined = list(range(18, 53))
+    for j, k in enumerate(refined):
+        m_by_k[int(k)] = 10 if ((j + 3 * int(frame_idx)) % 7 == 0) else 8
+    # Ensure we don't attempt an immediate 8->10 control right after the initial uplift (microblock policy).
+    m_by_k[18] = 8
 
-    bits_frame = _bit_window(bits_global, start=frame_idx * 29, length=int(bit_budget))
-    assigns, bits_used = _assign_refinements(refine_order=refine_order, words=words, bits_frame=bits_frame, max_m10_per_frame=2)
+    offset_by_k: Dict[int, int] = {}
+    offset_bits_by_k: Dict[int, str] = {}
+    for k in refined:
+        m_hi = int(m_by_k.get(int(k), 8))
+        n_suffix = int(m_hi - 6)
+        off, bitstr = _cell_offset_bits(bits_global, frame_idx, int(k), int(n_suffix))
+        offset_by_k[int(k)] = int(off)
+        offset_bits_by_k[int(k)] = str(bitstr)
+
+    tokens, micro_by_k = _build_stream_tokens_for_frame(
+        frame_idx=frame_idx,
+        words6_scan=words,
+        m_by_k=m_by_k,
+        offset_by_k=offset_by_k,
+    )
+    bits_used = int(sum(len(t) for t in tokens))
+    up_pos = 17
+    dn_pos = 53
+    assigns = {k: (len(mb[0]), offset_by_k.get(int(k), 0), offset_bits_by_k.get(int(k), "")) for k, mb in micro_by_k.items()}
+    n_m8 = sum(1 for mb in micro_by_k.values() if len(mb[0]) == 8)
+    n_m10 = sum(1 for mb in micro_by_k.values() if len(mb[0]) == 10)
 
     # Base plane indices in {0..20} and RGB upsample.
     base_idx8 = np.zeros((8, 8), dtype=int)
@@ -435,7 +824,7 @@ def _render_one_frame(
     # Paint microstructure in refined cells and collect micro labels.
     micro_ops = 64
     refined_cells: Dict[int, List[MicroCell]] = {}
-    for k, (m_hi, offset, bitstr) in assigns.items():
+    for k, mb_words in micro_by_k.items():
         u = words[k]
         base_color = palette_rgb[int(word_to_idx[u])]
         x, y = k_to_xy[k]
@@ -444,7 +833,8 @@ def _render_one_frame(
         x1 = int((x + 1) * scale)
         y1 = int((y + 1) * scale)
 
-        n_suffix = int(m_hi - 6)
+        m_hi_local = int(len(mb_words[0])) if mb_words else 8
+        n_suffix = int(m_hi_local - 6)
         n_bits_sub = int(n_suffix // 2)
         S = 1 << n_bits_sub  # m=8 -> 2, m=10 -> 4
         sub_path0 = [(int(xx), int(yy)) for (xx, yy) in hil.hilbert_curve(n_bits_sub)]
@@ -457,17 +847,21 @@ def _render_one_frame(
 
         denom = max(1, (S * S) - 1)
         cells: List[MicroCell] = []
+        if len(mb_words) != len(sub_path):
+            raise AssertionError("Microblock length mismatch to Hilbert subpath.")
         for j, (xx, yy) in enumerate(sub_path):
-            code = (int(offset) + int(j)) % (S * S)
-            bits = _int_to_bits(code, n_suffix)
-            # Discrete brightness ladder -> discrete colors represent codes.
+            w_hi = mb_words[j]
+            u6 = w_hi[:6]
+            suffix = w_hi[6:]
+            code = _bits_to_int([int(b) for b in suffix]) if suffix else 0
+            # Discrete brightness ladder -> discrete colors represent codes (visual only).
             t = 0.25 + 0.75 * (float(code) / float(denom))
             px0 = x0 + xx * sx
             py0 = y0 + yy * sy
             px1 = x0 + (xx + 1) * sx
             py1 = y0 + (yy + 1) * sy
             base_rgb[py0:py1, px0:px1, :] = np.clip(base_color * t, 0.0, 1.0)
-            cells.append(MicroCell(xx=xx, yy=yy, bits=bits, code=code))
+            cells.append(MicroCell(xx=xx, yy=yy, word=w_hi, u6=u6, suffix=suffix, code=code))
         refined_cells[int(k)] = cells
         micro_ops += int(S * S) - 1
 
@@ -484,9 +878,10 @@ def _render_one_frame(
         ax.plot([i * scale, i * scale], [0, H], color="#ECEFF1", lw=0.8, alpha=0.65, zorder=2)
 
     # Draw a single continuous scan curve by expanding refined coarse cells into micro subcells.
-    # This implements: prev big-cell -> (diagonal) micro-entry -> micro Hilbert -> micro-exit -> next big-cell.
+    # Same-m steps are orthogonal; cross-m steps use shortest diagonals.
     expanded_points: List[Tuple[float, float]] = []
-    point_kind: List[str] = []  # "macro" or "micro"
+    point_kind: List[str] = []  # "macro", "micro" (m=8), "micro10"
+    point_cell: List[Tuple[int, int]] = []
     for k, (x, y) in enumerate(path_xy):
         if int(k) in assigns:
             (m_hi, _offset, _bitstr) = assigns[int(k)]
@@ -498,23 +893,59 @@ def _render_one_frame(
             if not micro_order:
                 expanded_points.append(_center_point_in_cell(x, y, scale))
                 point_kind.append("macro")
+                point_cell.append((int(x), int(y)))
             else:
                 for (xx, yy) in micro_order:
                     expanded_points.append(_center_point_in_subcell(x, y, scale, S, int(xx), int(yy)))
                     point_kind.append("micro" if int(m_hi) == 8 else "micro10")
+                    point_cell.append((int(x), int(y)))
         else:
             expanded_points.append(_center_point_in_cell(x, y, scale))
             point_kind.append("macro")
+            point_cell.append((int(x), int(y)))
 
-    # Turn expanded points into segments with per-segment styling.
-    segs: List[List[Tuple[float, float]]] = []
-    widths: List[float] = []
-    alphas: List[float] = []
+    # Insert right-angle turns for same-m diagonal steps to avoid slanted wiring at the same level.
+    wire_points: List[Tuple[float, float]] = []
+    wire_kind: List[str] = []
+    if expanded_points:
+        wire_points.append(expanded_points[0])
+        wire_kind.append(point_kind[0])
     for i in range(len(expanded_points) - 1):
         a = expanded_points[i]
         b = expanded_points[i + 1]
         ka = point_kind[i]
         kb = point_kind[i + 1]
+        ca = point_cell[i]
+        cb = point_cell[i + 1]
+        if _kind_to_m(ka) == _kind_to_m(kb):
+            dx = b[0] - a[0]
+            dy = b[1] - a[1]
+            if abs(dx) > 1e-6 and abs(dy) > 1e-6:
+                dir_x = int(cb[0] - ca[0])
+                dir_y = int(cb[1] - ca[1])
+                if dir_x != 0 and dir_y == 0:
+                    mid = (b[0], a[1])  # follow coarse horizontal direction first
+                elif dir_y != 0 and dir_x == 0:
+                    mid = (a[0], b[1])  # follow coarse vertical direction first
+                else:
+                    mid = (b[0], a[1])
+                if abs(mid[0] - wire_points[-1][0]) > 1e-6 or abs(mid[1] - wire_points[-1][1]) > 1e-6:
+                    wire_points.append(mid)
+                    wire_kind.append(ka)
+        wire_points.append(b)
+        wire_kind.append(kb)
+
+    # Turn wired points into segments with per-segment styling.
+    segs: List[List[Tuple[float, float]]] = []
+    widths: List[float] = []
+    alphas: List[float] = []
+    for i in range(len(wire_points) - 1):
+        a = wire_points[i]
+        b = wire_points[i + 1]
+        ka = wire_kind[i]
+        kb = wire_kind[i + 1]
+        if abs(a[0] - b[0]) < 1e-6 and abs(a[1] - b[1]) < 1e-6:
+            continue
         segs.append([a, b])
         if ka.startswith("micro") and kb.startswith("micro"):
             if ka == "micro10" or kb == "micro10":
@@ -524,7 +955,7 @@ def _render_one_frame(
                 widths.append(1.35)
                 alphas.append(0.85)
         else:
-            # Cross-scale or macro: keep it as the main scan stroke (can be diagonal).
+            # Cross-scale or macro: keep it as the main scan stroke (diagonal allowed).
             widths.append(2.3)
             alphas.append(0.78)
 
@@ -551,21 +982,23 @@ def _render_one_frame(
             zorder=6,
         )
 
-    # Refined cells: per-cell header + optional per-subcell labels (m=10 labels are skipped for readability).
-    for k, (m_hi, offset, bitstr) in assigns.items():
+    # Refined cells: per-cell header + per-subcell full-word labels.
+    for k, mb_words in micro_by_k.items():
         x, y = k_to_xy[k]
-        u = words[k]
         x0 = int(x * scale)
         y0 = int(y * scale)
-        n_suffix = int(m_hi - 6)
+        m_hi_local = int(len(mb_words[0])) if mb_words else 8
+        n_suffix = int(m_hi_local - 6)
         n_bits_sub = int(n_suffix // 2)
         S = 1 << n_bits_sub
 
         # Header for the refined cell (m + code bits).
+        _m, _off, bitstr = assigns.get(int(k), (m_hi_local, 0, ""))
+        head = f"m={m_hi_local}" + (f"  off={bitstr}" if bitstr else "")
         ax.text(
             x0 + 2,
             y0 + 2,
-            f"m={m_hi}  bits={bitstr}",
+            head,
             fontsize=7,
             color="#00E5FF",
             ha="left",
@@ -574,21 +1007,22 @@ def _render_one_frame(
             zorder=10,
         )
 
-        # Label each micro subcell by its suffix bits.
-        if n_suffix == 2:
-            for mc in refined_cells.get(k, []):
-                cx, cy = _center_point_in_subcell(x, y, scale, S, mc.xx, mc.yy)
-                ax.text(
-                    cx,
-                    cy,
-                    mc.bits,
-                    fontsize=7,
-                    color="#FFFFFF",
-                    ha="center",
-                    va="center",
-                    bbox=dict(facecolor=(0, 0, 0, 0.35), edgecolor="none", pad=0.5),
-                    zorder=11,
-                )
+        # Label each micro subcell by its full m-bit word.
+        for mc in refined_cells.get(k, []):
+            cx, cy = _center_point_in_subcell(x, y, scale, S, mc.xx, mc.yy)
+            label = _format_micro_label(mc.word)
+            font_sz = 7 if len(mc.word) <= 8 else 5.4
+            ax.text(
+                cx,
+                cy,
+                label,
+                fontsize=font_sz,
+                color="#FFFFFF",
+                ha="center",
+                va="center",
+                bbox=dict(facecolor=(0, 0, 0, 0.35), edgecolor="none", pad=0.45),
+                zorder=11,
+            )
 
     # Gate markers (not refined).
     def _mark_gate(word: str, pos_idx: int, color: str) -> None:
@@ -613,21 +1047,21 @@ def _render_one_frame(
     axr.axis("off")
     axr.text(0.0, 0.98, f"frame = {frame_idx:04d}", fontsize=12, color="#263238", va="top")
     axr.text(0.0, 0.92, f"shift (tick-origin) = {shift}", fontsize=10, color="#455A64", va="top")
-    axr.text(0.0, 0.88, f"bit budget (conserved) = {int(bit_budget)}", fontsize=10, color="#455A64", va="top")
-    axr.text(0.0, 0.84, f"bits used = {bits_used}  (left={int(bit_budget)-bits_used})", fontsize=10, color="#455A64", va="top")
+    axr.text(0.0, 0.88, f"bit budget (conserved) = n/a (self-describing)", fontsize=10, color="#455A64", va="top")
+    axr.text(0.0, 0.84, f"stream bits = {bits_used}", fontsize=10, color="#455A64", va="top")
     axr.text(0.0, 0.79, f"micro-ops (energy proxy) = {micro_ops}", fontsize=11, color="#263238", va="top")
     axr.text(0.0, 0.74, f"uplift pos = {up_pos}, downlift pos = {dn_pos}", fontsize=10, color="#455A64", va="top")
-    axr.text(0.0, 0.69, f"refined cells = {len(assigns)}", fontsize=10, color="#455A64", va="top")
+    axr.text(0.0, 0.69, f"refined cells = {len(micro_by_k)}  (m=8:{n_m8}, m=10:{n_m10})", fontsize=10, color="#455A64", va="top")
     axr.text(
         0.0,
         0.56,
         "wiring rules:\n"
-        "- single continuous scan curve\n"
-        "- coarse: center-to-center Hilbert\n"
-        "- refined: detour into micro Hilbert\n"
+            "- single continuous scan curve\n"
+            "- same-m: 90/180-degree only\n"
+            "- cross-m: shortest diagonal link\n"
         "encoding:\n"
         "- big cell label = 6-bit u\n"
-        "- micro cell label = suffix bits",
+            "- micro cell label = full m-bit word",
         fontsize=9,
         color="#455A64",
         va="top",
@@ -694,8 +1128,8 @@ def _write_tex_summary(fig_root: Path) -> None:
         + r"A movie-like encoding visualization on the $m=6$ Hilbert screen: "
         + r"the global scan is a center-to-center Hilbert wiring (no crossings), "
         + r"and refined cells (between \texttt{101001} and \texttt{100101}) embed a micro Hilbert wiring on subcell centers, "
-        + r"connected to the big-cell center by a single cross-scale connector. "
-        + r"All big cells are labeled by their $6$-bit stable word $u$, and micro subcells are labeled by their suffix bits.",
+        + r"with same-$m$ wiring axis-aligned and cross-$m$ links drawn as shortest diagonals. "
+        + r"All big cells are labeled by their $6$-bit stable word $u$, and micro subcells are labeled by their full $m$-bit words (prefix inherits $u$).",
         r"\AuditTag Artifacts:",
         r"\begin{itemize}",
         rf"\item \texttt{{{rel_gif.as_posix()}}}",

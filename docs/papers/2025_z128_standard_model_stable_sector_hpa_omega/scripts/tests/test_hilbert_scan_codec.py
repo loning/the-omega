@@ -115,10 +115,30 @@ class TestSelfDescribingHilbertCodec(unittest.TestCase):
             "000000",
             "101001",  # uplift record
             p8,  # payload sets m=8
-            "01001010",  # some m=8 data
+            # m=8 uplift requires completing a 2x2 microblock => 4 data tokens at m=8
+            "01001010",
+            "01001010",
+            "01001010",
+            "01001010",
             down8,  # downlift record (in-stream marker at m=8)
             p10,  # payload sets m=10 (arbitrary switch)
-            "0100101010",  # m=10 data (Zeckendorf-admissible)
+            # m=10 uplift requires completing a 4x4 microblock => 16 data tokens at m=10
+            "0100101010",
+            "0100101010",
+            "0100101010",
+            "0100101010",
+            "0100101010",
+            "0100101010",
+            "0100101010",
+            "0100101010",
+            "0100101010",
+            "0100101010",
+            "0100101010",
+            "0100101010",
+            "0100101010",
+            "0100101010",
+            "0100101010",
+            "0100101010",
             "1001010000",  # downlift marker in m=10 ("100101"+"0000")
             p6,  # payload sets m=6
             "000000",
@@ -135,7 +155,8 @@ class TestSelfDescribingHilbertCodec(unittest.TestCase):
             codec.encode(tokens)
 
     def test_rejects_immediate_down_after_uplift(self) -> None:
-        codec = SelfDescribingHilbertCodec(SelfCodecSpec(min_data_tokens_after_uplift=1))
+        # Default "microblock" policy: m=8 requires 4 data tokens before any further control.
+        codec = SelfDescribingHilbertCodec(SelfCodecSpec(uplift_min_tokens_policy="microblock"))
         p8 = zeckendorf_word6(8)
         p6 = zeckendorf_word6(6)
         # Immediately after payload sets m=8, the next token is a control marker (downlift).
@@ -145,6 +166,27 @@ class TestSelfDescribingHilbertCodec(unittest.TestCase):
             "101001",
             p8,  # sets m=8
             "10010100",  # downlift marker at m=8 (illegal here: must emit ≥1 data token at m=8 first)
+            p6,
+            "000000",
+            "100001",
+        ]
+        with self.assertRaises(ValueError):
+            codec.encode(tokens)
+
+    def test_rejects_down_before_microblock_complete(self) -> None:
+        codec = SelfDescribingHilbertCodec(SelfCodecSpec(uplift_min_tokens_policy="microblock"))
+        p8 = zeckendorf_word6(8)
+        p6 = zeckendorf_word6(6)
+        # Only 3 data tokens at m=8 then a downlift marker (needs 4).
+        tokens = [
+            "100001",
+            "000000",
+            "101001",
+            p8,
+            "01001010",
+            "01001010",
+            "01001010",
+            "10010100",
             p6,
             "000000",
             "100001",

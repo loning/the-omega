@@ -215,15 +215,20 @@ class SelfCodecSpec:
 
     m_base: int = 6
     gates: GateSpec = GateSpec(downlift_prefix="100101")
-    # Hilbert-wiring discipline: after an uplift (m increases), the stream must emit at least
-    # this many *data tokens* at the new m before another control record is allowed.
-    # This prevents a degenerate "uplift then immediately downlift" that would not correspond
-    # to traversing any refined Hilbert micro-wiring.
+    # Hilbert-wiring discipline after an uplift (m increases):
+    # require at least f(m) *data tokens* at the new m before any further control records.
+    #
+    # Policies:
+    # - "fixed": f(m)=min_data_tokens_after_uplift
+    # - "microblock": f(m)=2^(m-6) (complete 2D microblock at resolution uplift from m=6 anchor)
+    uplift_min_tokens_policy: str = "microblock"
     min_data_tokens_after_uplift: int = 1
 
     def __post_init__(self) -> None:
         _require(self.m_base == 6, "This self-describing codec currently fixes m_base=6 (payload is 6-bit Zeckendorf).")
         _require(self.gates.downlift_prefix == "100101", "Downlift prefix must be the 6-bit gate word 100101.")
+        pol = str(self.uplift_min_tokens_policy)
+        _require(pol in {"fixed", "microblock"}, 'uplift_min_tokens_policy must be "fixed" or "microblock".')
         _require(int(self.min_data_tokens_after_uplift) >= 0, "min_data_tokens_after_uplift must be >= 0.")
 
 
@@ -249,6 +254,16 @@ class SelfDescribingHilbertCodec:
         # Intrinsic bound: V(payload6) ∈ [0, 32]. Protocol bound: require m >= 6.
         _require(v >= 6, f"Payload sets m={v}, but m must be >= 6.")
         return int(v)
+
+    def _min_data_tokens_after_uplift(self, new_m: int) -> int:
+        new_m = int(new_m)
+        if self.spec.uplift_min_tokens_policy == "fixed":
+            return int(self.spec.min_data_tokens_after_uplift)
+        # "microblock": complete 2D microblock under uplift from m=6 anchor.
+        # m=6 -> 1 cell; m -> 2^(m-6) subcells in 2D (since each +2 bits quarters area).
+        if new_m <= 6:
+            return 0
+        return int(1 << (new_m - 6))
 
     def validate_tokens(self, tokens: Sequence[str]) -> None:
         """
@@ -284,7 +299,7 @@ class SelfDescribingHilbertCodec:
                 new_m = self._payload_to_m(tok)
                 cur_m = int(new_m)
                 if int(new_m) > int(prev_m):
-                    need_data_after_uplift = int(self.spec.min_data_tokens_after_uplift)
+                    need_data_after_uplift = self._min_data_tokens_after_uplift(int(new_m))
                 expect_payload = False
                 pending_prev_m = None
                 continue
@@ -298,7 +313,8 @@ class SelfDescribingHilbertCodec:
                 is_control = False
                 if cur_m == 6 and tok == self.spec.gates.uplift:
                     is_control = True
-                if tok == self._downlift_marker_for_m(cur_m):
+                # Downlift control markers are only recognized in high mode (cur_m > 6).
+                if cur_m > 6 and tok == self._downlift_marker_for_m(cur_m):
                     is_control = True
                 _require(not is_control, "Control record encountered immediately after uplift; need data tokens to traverse refined wiring.")
                 need_data_after_uplift -= 1
@@ -309,7 +325,8 @@ class SelfDescribingHilbertCodec:
                 pending_prev_m = int(cur_m)
                 continue
 
-            if tok == self._downlift_marker_for_m(cur_m):
+            # Downlift records are only interpreted in high mode.
+            if cur_m > 6 and tok == self._downlift_marker_for_m(cur_m):
                 # Downlift record: next 6-bit payload selects new m (not necessarily 6).
                 expect_payload = True
                 pending_prev_m = int(cur_m)
@@ -348,7 +365,7 @@ class SelfDescribingHilbertCodec:
                 new_m = self._payload_to_m(tok)
                 cur_m = int(new_m)
                 if int(new_m) > int(prev_m):
-                    need_data_after_uplift = int(self.spec.min_data_tokens_after_uplift)
+                    need_data_after_uplift = self._min_data_tokens_after_uplift(int(new_m))
                 expect_payload = False
                 pending_prev_m = None
                 continue
@@ -362,7 +379,7 @@ class SelfDescribingHilbertCodec:
                 is_control = False
                 if cur_m == 6 and tok == self.spec.gates.uplift:
                     is_control = True
-                if tok == self._downlift_marker_for_m(cur_m):
+                if cur_m > 6 and tok == self._downlift_marker_for_m(cur_m):
                     is_control = True
                 _require(not is_control, "Control record encountered immediately after uplift; need data tokens to traverse refined wiring.")
                 need_data_after_uplift -= 1
@@ -372,7 +389,7 @@ class SelfDescribingHilbertCodec:
                 pending_prev_m = int(cur_m)
                 continue
 
-            if tok == self._downlift_marker_for_m(cur_m):
+            if cur_m > 6 and tok == self._downlift_marker_for_m(cur_m):
                 expect_payload = True
                 pending_prev_m = int(cur_m)
                 continue
