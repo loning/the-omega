@@ -275,7 +275,9 @@ This section is the **main development plan** for scaling the project on an A100
 
 ### Task Claims
 
-- 2026-01-17 — **CLAIMED**: `H3-3e` raw-read Ribo-seq pausing robustness + expansion（在 `H3-3d` 标准化 BAM/FASTQ pipeline 基础上补充 ≥2 个独立 study，并做关键参数稳健性：read-length 过滤 / P-site offset / MAPQ；更新 `sections/generated/riboseq_pause_bam_window.tex` 的随机效应 meta，并同步写回 paper 与本分析文档；CPU 优先，如需 GPU 仅用 A40）。Branch: `paper-bio`.
+- 2026-01-17 — **COMPLETED**: `H3-3e` raw-read Ribo-seq pausing robustness + expansion（在 `H3-3d` 标准化 BAM/FASTQ pipeline 基础上补充更多独立 studies，并做关键参数稳健性：read-length 过滤 / P-site offset；更新 `sections/generated/riboseq_pause_bam_window.tex` 的随机效应 meta，并同步写回 paper 与本分析文档；CPU 优先，如需 GPU 仅用 A40）。Branch: `paper-bio`.
+  - Result (2026-01-17): `sections/generated/riboseq_pause_bam_window.tex` 扩展到 8 个 BAM tracks（其中 5 个满足 high/low $\Delta U$ 对比的最小样本要求并进入 meta），随机效应 meta：$d=0.52$ [0.20, 0.83], $I^2=4.0\\%$（CI 排除 0）。
+  - Robustness (2026-01-17): 新增敏感性 sweep：`scripts/exp_riboseq_pause_bam_window_sensitivity.py` + `sections/generated/riboseq_pause_bam_window_sensitivity.tex`。在 read-length 更严过滤（28–32nt）与简化 P-site offset（+12nt）下 meta 仍为正：$d=0.66$ [0.26, 1.06]（3 tracks）与 $d=0.41$ [0.09, 0.72]（5 tracks）。
 
 - 2026-01-14 — **COMPLETED**: 模块 E（Ribo-seq 暂停桥接）窗口级 pause score + 按 `U_after` 分位数分层比较（先做可复现的 window-level proxy；raw Ribo-seq 多数据集复现仍待做）。产物：`exp_riboseq_pause_window_proxy.py` + `sections/generated/riboseq_pause_window_proxy.tex`. Branch: `paper-bio`.
 - 2026-01-14 — **COMPLETED**: 模块 E（Ribo-seq 暂停桥接）多数据集复现（≥3 独立 Ribo-seq bigWig 数据集；人类 hg* bigWig 窗口 pausing 与 Uplift 关联/分层 + 简单 meta-analysis）。目标数据集（GEO）：GSE148965 / GSE199387 / GSE211536。产物：`fetch_geo_riboseq_bigwig.py` + `exp_riboseq_pause_bigwig_window.py` + `sections/generated/riboseq_pause_bigwig_window.tex`. Branch: `paper-bio`.
@@ -469,7 +471,7 @@ zMFE (dinuc shuffle):   ρ(U,zMFE) ∈ [-0.066, 0.087], ΔR² ≈ 0.001 (30–12
 
 **目的**：直接把 Uplift 接到"核糖体是否卡住"。
 
-**状态**：❌ 未通过
+**状态**：✅ 有正向证据（raw-read pausing meta）
 
 **当前结果**：
 ```
@@ -477,7 +479,9 @@ Uplift-Pause (codon):   ρ = -0.12 (ns)
 Within-family:          avg ρ = -0.09
 Window proxy (k=10):    ρ(U_before, pause_before) = -0.36 (p<0.001)
                          high U_after vs low U_after: d=-0.06 (p=0.66), matched d=-0.03 (p=0.80)
-BigWig (3 studies):     pause-index vs ΔU: ρ=0.12–0.41; meta d(high ΔU vs low)=0.30 [-0.06, 0.66], I²=0%
+BigWig (3 studies):     pause-index vs ΔU: ρ=0.12–0.41; meta d(high ΔU vs low)=0.30 [-0.06, 0.66], I²=0% (not decisive)
+Raw BAM (8 tracks):     meta d(high ΔU vs low)=0.52 [0.20, 0.83], I²=4.0% (n=5 tracks used)
+Sensitivity:            28–32nt midpoint: d=0.66 [0.26, 1.06] (n=3); P-site +12nt: d=0.41 [0.09, 0.72] (n=5)
 ```
 
 **待做**：
