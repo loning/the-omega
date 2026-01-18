@@ -62,7 +62,7 @@ This document summarizes all computational experiments conducted to validate the
 2. **Statistical Layer**: Do Uplift signals distinguish biological events?
 3. **Mechanistic Layer**: Does Uplift correlate with physical observables?
 
-**Key Finding (updated 2026-01-18)**: The arithmetic framework is mathematically closed (μ\* + Fold$_6$ invariants). Mechanistic evidence is currently mixed: structure-energy/probing proxies largely weaken under stronger composition controls, while raw-read Ribo-seq pausing shows a reproducible positive association with high-$\Delta U$ stop windows.
+**Key Finding (updated 2026-01-18)**: The arithmetic framework is mathematically closed (μ\* + Fold$_6$ invariants). Mechanistic evidence is currently mixed: structure-energy/probing proxies largely weaken under stronger composition controls, while raw-read Ribo-seq pausing shows a reproducible positive association with high-$\Delta U$ stop windows, including under a dinucleotide-shuffle ``null-of-null'' via residualized $z\Delta U$.
 
 **Living doc note (主开发文档说明)**: Sections above are the consolidated computational validation record; **Next Steps** below is the active development roadmap for systematic validation.
 
@@ -342,7 +342,10 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
-- 2026-01-18 — **CLAIMED**: `ISA-P3` Dinucleotide-preserving null suite (“null-of-null”)（把 dinuc-shuffle 控制接入 Ribo-seq pausing 端点：对每个 terminal-stop 窗口生成 dinucleotide-preserving surrogate，构造 composition-conditioned 的 $z\\Delta U$ / $p$ 并检验 pause-index 与该指标的关联是否仍存在；输出可引用 LaTeX fragment 并写入 paper；CPU 优先，必要时再用 A40）。Branch: `paper-bio`.
+- 2026-01-18 — **COMPLETED**: `ISA-P3` Dinucleotide-preserving null suite (“null-of-null”)（把 dinuc-shuffle 控制接入 Ribo-seq pausing 端点：对每个 terminal-stop 窗口生成 dinucleotide-preserving surrogate，构造 composition-conditioned 的 $z\\Delta U$ / $p$ 并检验 pause-index 与该指标的关联是否仍存在；输出可引用 LaTeX fragment 并写入 paper；CPU 优先，必要时再用 A40）。Branch: `paper-bio`.
+  - Result (2026-01-18): 新增 `scripts/exp_riboseq_pause_bam_window_dinuc_null.py` 生成 `sections/generated/riboseq_pause_bam_window_dinuc_null.tex`，并已写入 discussion：`sections/06_discussion.tex`。
+  - Key result (2026-01-18): 对每条 transcript 的 stop-window（k=10）构造 dinucleotide-preserving shuffle null（n=200 shuffles/window），得到 residualized 的 $z\\Delta U$；在 BAM pause-index 上做分位数分层（quartile，高 vs 低）后，随机效应 meta-analysis 为 $d=0.67$ [$0.33$, $1.02$], $I^2=7.2\\%$（纳入 n=5 tracks）。这表明 pausing 端点的正向关联在强 dinuc 控制下仍可复现。
+  - Repro (2026-01-18): 需要 `pysam`；推荐：`conda run -n omega-ribo python scripts/exp_riboseq_pause_bam_window_dinuc_null.py --force`（默认 n=200 shuffles，quantile=0.25）。
 
 - 2026-01-18 — **COMPLETED**: `ISA-P2` Ribo-seq overlay with ISA features（在 raw-read BAM pausing pipeline 上加入 stop-family ISA 特征（stop 的 sector/$\\Delta_6$ 与 stop+2nt 的 $m=10\\to6$ anchor），并按这些特征对 pause score 做分层/交互检验；输出可引用 LaTeX fragment；CPU 优先，必要时再用 A40）。Branch: `paper-bio`.
   - Result (2026-01-18): 新增 `scripts/exp_riboseq_pause_bam_window_isa.py` 生成 `sections/generated/riboseq_pause_bam_window_isa.tex`，并已写入 discussion：`sections/06_discussion.tex`。
