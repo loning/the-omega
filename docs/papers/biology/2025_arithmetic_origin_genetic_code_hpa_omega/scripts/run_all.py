@@ -99,6 +99,7 @@ def main() -> None:
     run([py, "scripts/exp_codon_opcode_compiler.py", *(["--force"] if args.force else [])], cwd=cwd)
     run([py, "scripts/exp_wobble_opcode_invariance.py", *(["--force"] if args.force else [])], cwd=cwd)
     run([py, "scripts/exp_degeneracy_error_correction.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_hilbert_locality_audit.py", *(["--force"] if args.force else [])], cwd=cwd)
     run([py, "scripts/exp_mutual_information_rank.py", *(["--force"] if args.force else [])], cwd=cwd)
     run([py, "scripts/exp_encoding_symmetry.py", *(["--force"] if args.force else [])], cwd=cwd)
     run([py, "scripts/exp_control_objective_null_brief.py", *(["--force"] if args.force else [])], cwd=cwd)
