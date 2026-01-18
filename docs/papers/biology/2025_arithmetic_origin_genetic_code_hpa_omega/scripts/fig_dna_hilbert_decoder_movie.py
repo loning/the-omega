@@ -124,6 +124,145 @@ def _parse_genbank_origin(text: str) -> tuple[str, str]:
     return name, seq
 
 
+def _revcomp_dna(seq_dna: str) -> str:
+    comp = {"A": "T", "C": "G", "G": "C", "T": "A", "N": "N"}
+    s = normalize_dna(seq_dna)
+    return "".join(comp.get(b, "N") for b in reversed(s))
+
+
+def _parse_gb_location(loc: str) -> tuple[list[tuple[int, int]], bool]:
+    """
+    Parse a minimal GenBank location into (segments, is_complement).
+    Supported:
+      - 123..456
+      - 123
+      - join(123..200,300..400)
+      - complement(123..456)
+      - complement(join(...))
+    Coordinates are returned as 0-based half-open [start,end) slices.
+    """
+    s = "".join(str(loc).split())
+    is_comp = False
+    if s.startswith("complement(") and s.endswith(")"):
+        is_comp = True
+        s = s[len("complement(") : -1]
+    if s.startswith("join(") and s.endswith(")"):
+        inner = s[len("join(") : -1]
+        parts = [p for p in inner.split(",") if p]
+    else:
+        parts = [s]
+
+    segs: list[tuple[int, int]] = []
+    for p in parts:
+        p = p.strip()
+        if not p:
+            continue
+        # Strip uncertain endpoints like <123 or >456
+        p = p.replace("<", "").replace(">", "")
+        if ".." in p:
+            a, b = p.split("..", 1)
+            a_i = int(a)
+            b_i = int(b)
+        else:
+            a_i = int(p)
+            b_i = a_i
+        if a_i <= 0 or b_i <= 0:
+            raise ValueError(f"Bad GenBank location (nonpositive): {loc}")
+        if b_i < a_i:
+            raise ValueError(f"Bad GenBank location (end < start): {loc}")
+        # GenBank positions are 1-based inclusive.
+        start0 = a_i - 1
+        end0 = b_i
+        segs.append((int(start0), int(end0)))
+    if not segs:
+        raise ValueError(f"Empty GenBank location: {loc}")
+    return segs, is_comp
+
+
+def _extract_genbank_cds(text: str) -> list[dict[str, object]]:
+    """
+    Minimal GenBank FEATURES parser: extract CDS entries with:
+      - location (segments + strand)
+      - codon_start (1..3, default 1)
+    """
+    lines = text.splitlines()
+    in_feat = False
+    cds_list: list[dict[str, object]] = []
+    i = 0
+    while i < len(lines):
+        line = lines[i].rstrip("\n")
+        if line.startswith("FEATURES"):
+            in_feat = True
+            i += 1
+            continue
+        if in_feat and line.startswith("ORIGIN"):
+            break
+        if not in_feat:
+            i += 1
+            continue
+
+        if line.startswith("     CDS"):
+            # Location begins after the key; may wrap onto subsequent lines.
+            loc = line[len("     CDS") :].strip()
+            i += 1
+            # Continuation of location: indented and not a qualifier line.
+            while i < len(lines):
+                nxt = lines[i].rstrip("\n")
+                if nxt.startswith("                     ") and ("/" not in nxt.strip()):
+                    loc += nxt.strip()
+                    i += 1
+                    continue
+                break
+
+            codon_start = 1
+            # Qualifiers for this CDS: lines with 21-space indent.
+            while i < len(lines):
+                q = lines[i].rstrip("\n")
+                if q.startswith("     ") and not q.startswith("                     "):
+                    break  # next feature
+                if q.startswith("ORIGIN"):
+                    break
+                qq = q.strip()
+                if qq.startswith("/codon_start="):
+                    try:
+                        codon_start = int(qq.split("=", 1)[1].strip().strip('"'))
+                    except Exception:
+                        codon_start = 1
+                i += 1
+
+            segs, is_comp = _parse_gb_location(loc)
+            cds_list.append(
+                {
+                    "location_raw": loc,
+                    "segments": segs,
+                    "is_complement": bool(is_comp),
+                    "codon_start": int(codon_start),
+                }
+            )
+            continue
+
+        i += 1
+
+    return cds_list
+
+
+def _cds_sequence_from_record(seq_dna: str, cds: dict[str, object]) -> str:
+    segs = cds.get("segments")
+    if not isinstance(segs, list) or not segs:
+        raise ValueError("CDS missing segments")
+    parts: list[str] = []
+    for (a, b) in segs:
+        parts.append(seq_dna[int(a) : int(b)])
+    out = normalize_dna("".join(parts))
+    if bool(cds.get("is_complement", False)):
+        out = _revcomp_dna(out)
+    codon_start = int(cds.get("codon_start", 1))
+    if codon_start not in (1, 2, 3):
+        codon_start = 1
+    out = out[(codon_start - 1) :]
+    return out
+
+
 def _load_sequence(*, fasta_path: Path | None, seq: str | None) -> tuple[str, str]:
     """
     Returns (name, sequence_raw).
@@ -158,6 +297,37 @@ def normalize_rna(seq: str) -> str:
     s = "".join(ch for ch in str(seq).upper() if ch.isalpha())
     s = s.replace("T", "U")
     return s
+
+
+_AA3_TO_1 = {
+    "Ala": "A",
+    "Arg": "R",
+    "Asn": "N",
+    "Asp": "D",
+    "Cys": "C",
+    "Gln": "Q",
+    "Glu": "E",
+    "Gly": "G",
+    "His": "H",
+    "Ile": "I",
+    "Leu": "L",
+    "Lys": "K",
+    "Met": "M",
+    "Phe": "F",
+    "Pro": "P",
+    "Ser": "S",
+    "Thr": "T",
+    "Trp": "W",
+    "Tyr": "Y",
+    "Val": "V",
+    "Stop": "*",
+}
+
+
+def _translate_codon_aa1(b3_dna: str) -> str:
+    codon_rna = str(b3_dna).upper().replace("T", "U")
+    aa3 = GENETIC_CODE.get(codon_rna, "X")
+    return _AA3_TO_1.get(str(aa3), "X")
 
 
 # -------------------------
@@ -839,6 +1009,7 @@ def _render_frame_centerwired(
     show_labels: bool = True,
     show_wiring: bool = True,
     show_micro_labels: bool = False,
+    show_aa_labels: bool = False,
     mu: dict[str, str] | None = None,
     gates: dict[str, list[int]] | None = None,
 ) -> np.ndarray:
@@ -900,6 +1071,7 @@ def _render_frame_centerwired(
         pos += 3
         f = fold_codon(b3.replace("T", "U"), mu)  # codon fold; defines 18+3 control split
         u6 = int(f.n)  # 0..63 microstate index under μ
+        aa1 = _translate_codon_aa1(b3) if bool(show_aa_labels) else ""
         is_ctrl = bool(f.w in BOUNDARY_WORDS)
         # Enforce: control records are not refined (m=6), regardless of schedule.
         m = 6 if is_ctrl else m_sched
@@ -915,6 +1087,7 @@ def _render_frame_centerwired(
         macro_info[int(k)] = {
             "b3": b3,
             "u6": u6,
+            "aa1": aa1,
             "m": m,
             "w": str(f.w),
             "delta": int(f.delta),
@@ -1126,6 +1299,7 @@ def _render_frame_centerwired(
             y0 = int(y * cell_px)
             info = macro_info[int(k)]
             b3 = str(info["b3"])
+            aa1 = str(info.get("aa1", ""))
             u6 = int(info["u6"])
             m = int(info["m"])
             w6 = str(info["w"])
@@ -1134,11 +1308,13 @@ def _render_frame_centerwired(
             tag = "CTRL" if bd else "DATA"
             # Keep labels short and clipped to the cell to avoid overlap.
             if bd:
-                lab = f"{b3}\nCTRL"
+                head = f"{b3} {aa1}".strip()
+                lab = f"{head}\nCTRL"
             elif m > 6:
-                lab = f"{b3} N{u6:02d}\nΔ{dlt:02d} m{m}"
+                head = f"{b3} {aa1} N{u6:02d}".strip()
+                lab = f"{head}\nΔ{dlt:02d} m{m}"
             else:
-                lab = f"{b3}"
+                lab = f"{b3} {aa1}".strip()
             clip_rect = Rectangle((x0, y0), cell_px, cell_px, transform=ax.transData)
             ax.text(
                 x0 + 2,
@@ -1448,6 +1624,17 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--fasta", type=str, default=None, help="Input FASTA path (first record is used).")
     p.add_argument("--seq", type=str, default=None, help="Raw sequence string (DNA/RNA).")
     p.add_argument("--name", type=str, default=None, help="Optional label for figure titles.")
+    p.add_argument(
+        "--cds-only",
+        action="store_true",
+        help="If input is GenBank, extract CDS (coding sequence) and visualize CDS only (strand + codon_start respected).",
+    )
+    p.add_argument(
+        "--cds-index",
+        type=int,
+        default=0,
+        help="If --cds-only and multiple CDS exist, choose this CDS index (0-based).",
+    )
 
     p.add_argument(
         "--scheme",
@@ -1493,6 +1680,11 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="(centerwired) Show self-describing micro labels: w6 + suffix bits inside refined cells (auto-disabled if subcells are too small).",
     )
+    p.add_argument(
+        "--aa-labels",
+        action="store_true",
+        help="(centerwired) Add amino-acid (1-letter) label next to each 3-mer (translation in the current 3-base grouping).",
+    )
     p.add_argument("--no-wiring", action="store_true", help="(centerwired) Disable one-stroke wiring overlay.")
 
     p.add_argument("--out-prefix", type=str, default=str(figures_dir() / "dna_hilbert"), help="Output prefix (no extension).")
@@ -1512,8 +1704,29 @@ def main() -> None:
     n_frames = max(1, int(args.frames))
     draw_path = bool(args.draw_path)
 
-    name, raw = _load_sequence(fasta_path=Path(args.fasta) if args.fasta else None, seq=args.seq)
+    fasta_path = Path(args.fasta) if args.fasta else None
+    name, raw = _load_sequence(fasta_path=fasta_path, seq=args.seq)
     label = str(args.name) if args.name else name
+
+    # Optional: restrict to CDS extracted from GenBank FEATURES.
+    if bool(args.cds_only):
+        if fasta_path is None:
+            raise SystemExit("--cds-only requires --fasta pointing to a GenBank (.gb/.gbk) file.")
+        text = fasta_path.read_text(encoding="utf-8", errors="ignore")
+        if not (fasta_path.suffix.lower() in {".gb", ".gbk"} or text.lstrip().startswith("LOCUS")):
+            raise SystemExit("--cds-only currently supports GenBank input only (.gb/.gbk).")
+        cds_list = _extract_genbank_cds(text)
+        if not cds_list:
+            raise SystemExit("No CDS features found in GenBank record.")
+        idx = int(args.cds_index)
+        if idx < 0 or idx >= len(cds_list):
+            raise SystemExit(f"--cds-index out of range: {idx} (have {len(cds_list)} CDS features).")
+        full_seq = normalize_dna(raw)
+        cds_seq = _cds_sequence_from_record(full_seq, cds_list[idx])
+        if len(cds_seq) < 3:
+            raise SystemExit("Extracted CDS is too short.")
+        raw = cds_seq
+        label = f"{label}  CDS#{idx}"
 
     out_prefix = Path(args.out_prefix)
     _ensure_dir(out_prefix.parent)
@@ -1556,6 +1769,7 @@ def main() -> None:
         seq_dna = normalize_dna(raw)
         # For centerwired, interpret --scale as coarse cell pixel size (bigger gives more readable microcells).
         cell_px = max(40, int(scale) * 10)
+        show_aa = bool(args.aa_labels) or bool(args.cds_only)
         for fi in range(n_frames):
             st = start + fi * stride  # bases
             title = f"{label}  (frame {fi}/{n_frames-1})"
@@ -1568,6 +1782,7 @@ def main() -> None:
                 show_labels=not bool(args.no_labels),
                 show_wiring=not bool(args.no_wiring),
                 show_micro_labels=bool(args.micro_labels),
+                show_aa_labels=bool(show_aa),
                 mu=mu_star,
                 gates=gates,
             )
