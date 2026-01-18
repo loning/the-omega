@@ -501,6 +501,7 @@ def main() -> None:
                 run([*py_pysam, "scripts/exp_riboseq_pause_bam_window_sensitivity.py", *(["--force"] if args.force else [])], cwd=cwd)
                 run([*py_pysam, "scripts/exp_riboseq_pause_bam_window_isa.py", *(["--force"] if args.force else [])], cwd=cwd)
                 run([*py_pysam, "scripts/exp_riboseq_pause_bam_window_dinuc_null.py", *(["--force"] if args.force else [])], cwd=cwd)
+                run([py, "scripts/exp_riboseq_pause_bam_window_gate_words.py", *(["--force"] if args.force else [])], cwd=cwd)
 
     # 5b) Protein-preserving synonymous-codon permutation null for terminal-stop windows (RefSeq).
     if not refseq_quick:
