@@ -392,6 +392,10 @@ def main() -> None:
     ]
     run(merge_cmd, cwd=cwd)
 
+    # 5x) ISA-B2: Stop instruction family stratification (requires RefSeq candidates + full recoding JSONL).
+    if (not refseq_quick) and (not recoding_quick):
+        run([py, "scripts/exp_stop_instruction_family_stratification.py", *(["--force"] if args.force else [])], cwd=cwd)
+
     # 5a) Mechanistic proxy: window-level pause-score proxy (codon-score average) on RefSeq stop-context candidates.
     # This is a lightweight offline check (not read-level Ribo-seq); it requires the merged candidate JSONL.
     if not refseq_quick:
