@@ -743,13 +743,13 @@ Sensitivity:            28–32nt midpoint: d=0.66 [0.26, 1.06] (n=3); P-site +1
 
 1. ✅ 模块 A：24 编码独立验证 → 部分完成
 2. ✅ 模块 B：强 null 攻击 → 部分完成，dicodon 问题已量化
-3. ⏳ 模块 D：RNAfold 桥接 → 需用 zMFE 重测
-4. ✅ 模块 C：鲁棒性扫描 → 完成
-5. ⏳ 模块 E：Ribo-seq 桥接 → 需窗口级分析
-6. ⏳ 模块 F：非标准遗传码压力测试
-7. ⏳ 模块 G：Sec/Pyl 分层扩展
+3. ✅ 模块 C：鲁棒性扫描 → 完成
+4. ✅ 模块 E：Ribo-seq 桥接 → 已有正向证据（下一步：扩充 tracks + 更强 null）
+5. ✅ 模块 F：非标准遗传码压力测试 → 完成
+6. ❌ 模块 D：RNAfold 结构桥接 → 负结果已闭合（当前证据不支持“结构能量”通道）
+7. ⏳ 模块 G：Sec/Pyl 分层扩展 → Sec 完成，Pyl 待扩展
 
-**前 3 个模块能把最大反驳点基本堵死。**
+**当前最大反驳点**：B3 dicodon/codon-pair 吸收（会削弱部分 H2 端点）以及 H3 的机制桥接（除 raw-read Ribo-seq pausing 外，多数 proxy 在强控制后接近 null）。下一步优先把 pausing 端点做成“更多数据集 + 更强 null”的复现结论，并将 ISA/Z128 的 control-flow 特征用于可执行的候选窗口库（对接湿实验）。
 
 ---
 
