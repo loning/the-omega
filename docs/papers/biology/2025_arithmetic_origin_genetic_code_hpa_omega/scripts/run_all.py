@@ -462,6 +462,10 @@ def main() -> None:
     if (not refseq_quick) and (not recoding_quick):
         run([py, "scripts/exp_stop_instruction_family_stratification.py", *(["--force"] if args.force else [])], cwd=cwd)
 
+    # 5x2) ISA-WV1: Decoder-driven reporter-window selection (centerwired control-flow on matched pairs).
+    if not refseq_quick:
+        run([py, "scripts/exp_window_sets_centerwired.py", *(["--force"] if args.force else [])], cwd=cwd)
+
     # 5a) Mechanistic proxy: window-level pause-score proxy (codon-score average) on RefSeq stop-context candidates.
     # This is a lightweight offline check (not read-level Ribo-seq); it requires the merged candidate JSONL.
     if not refseq_quick:
