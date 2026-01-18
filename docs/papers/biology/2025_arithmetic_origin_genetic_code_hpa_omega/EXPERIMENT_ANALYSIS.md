@@ -273,6 +273,73 @@ This section is the **main development plan** for scaling the project on an A100
 
 ---
 
+## Z128 ISA Upgrade Plan (2025-12-30 doc): from “translation table” to “OpCode + microcode”
+
+Goal: reinterpret the existing Fold$_6$ layer as a minimal **executable interface** between codons and a Z128-style finite state machine, then validate the interface via three experiment classes:
+(i) deterministic mathematical closure, (ii) bioinformatics/replication with pre-registered statistics, (iii) physical + wet-lab observables.
+
+**Fixed interface (minimal executable form)**
+- Payload stream: $\mathrm{Gen}(c)$ (standard genetic code output; AA/Stop).
+- Control stream (under $\mu^\ast$): compile $c \mapsto (N, w, V, \\Delta, \\text{sector}, \\text{boundary})$ where:
+  - $N=N_{\\mu^\ast}(c)\\in\\{0,\\dots,63\\}$ is the 6-bit microstate index;
+  - $w=\\mathrm{Fold}_6(N)\\in X_6$; sector is cyclic vs boundary ($18\\oplus 3$ split);
+  - microcode $\\Delta=N-V(w)\\in\\{0,21,34,55\\}$ (4-valued “2-bit” layer at codon scale).
+
+### Math closure experiments (deterministic)
+
+- **ISA-M1: Codon→OpCode compiler + closure audit (unit tests)**
+  - Deliverable: `scripts/exp_codon_opcode_compiler.py` generating:
+    - `data/_cache/codon_opcode_table_mu_star_m6.json` (frozen opcode table)
+    - `sections/generated/codon_opcode_compiler_summary.tex` (auditable closure checklist)
+  - Acceptance: reproduces $|X_6|=21$ with $18\\oplus 3$ split; boundary words set; $\Delta\\in\\{0,21,34,55\\}$; under $\mu^\ast$ verifies AUG/UAA share boundary word 100001 with preimages {14,48} (34-split); verifies “3 stops cannot all be boundary” over all 24 encodings.
+
+- **ISA-M2: Wobble re-interpretation (pure math, falsifiable)**
+  - Deliverable: per-position (1/2/3) single-base mutation perturbation stats on $(w,\\text{sector},\\Delta,V)$ + LaTeX fragment.
+  - Acceptance: if wobble is “more conserved”, position-3 mutations should show higher invariance in $w$/sector than positions 1/2 (under the same mutation graph).
+
+- **ISA-M3: Degeneracy as error-correction potential**
+  - Deliverable: basin metrics at stable-word level ($|\\mathrm{Fold}_6^{-1}(w)|$) and AA effective basins (unique word count + weighted basin); correlate with codon count and mutation robustness; LaTeX fragment.
+  - Acceptance: reports correlations + robust null baselines (random code / random encoding).
+
+- **ISA-M4: Hilbert locality as a testable hypothesis (not just visualization)**
+  - Deliverable: Hilbert(n=3) coordinate map for N∈[0,63]; amino-acid clustering metrics vs random code/null; LaTeX fragment (+ optional figure).
+
+### Bioinformatics experiments (reuse pre-registered windows & stats)
+
+- **ISA-B1: Start context windows as “Boot/Init” execution context**
+  - Extend start-context windows beyond human to cross-domain datasets where possible; include near-cognate start controls (GUG/UUG where applicable).
+
+- **ISA-B2: Stop instruction family (“OpCode + microcode” stratification)**
+  - Upgrade grouping from {UAA,UAG,UGA} to combined control features (sector/boundary, $V$, $\\Delta$) and to local refinement microstates (stop+2nt, m=10 → anchor-projected).
+  - Output: candidate window sets for reporter libraries (high/low uafter etc.) + stratified effect sizes.
+
+- **ISA-B3: Nonstandard code cross-table validation**
+  - Interpret “≤1 stop hits boundary” as “only one privileged gate”; per translation table identify which stop occupies the gate and compare against stop usage/termination efficiency when external data is available.
+
+### Physical + wet-lab observables (bridge/control)
+
+- **ISA-P1: RNAfold/structure energy bridge under strong nulls**
+  - Reuse existing MFE/zMFE pipelines; reframe endpoints as microcode context; require GC/dinuc (and dinuc-shuffle) controls.
+
+- **ISA-P2: Ribo-seq overlay under standardized raw-read pipeline**
+  - Add ISA features (sector/$\\Delta$/stop+2nt anchor-projection) into the BAM pausing pipeline; test whether high-microcode contexts predict pausing/readthrough proxies under strong controls.
+
+- **ISA-P3: Dinucleotide-preserving null suite (“null-of-null”)**
+  - Ensure any claimed signal survives dinuc-shuffle (and report negative results honestly).
+
+- **ISA-W1..W5 (wet)**
+  - W1: stop readthrough reporter library based on high/low uafter candidate windows.
+  - W2: cell-free replication.
+  - W3: Sec insertion component dependence (SECIS ±, factor perturbation).
+  - W4: Pyl insertion minimal loop.
+  - W5: synonymous recoding while protein fixed (control-spectrum shift) to test causal “control-flow” impact on translation dynamics/folding.
+
+Engineering artifacts (Omega-style audit chain)
+- `data/_cache/codon_opcode_table_mu_star_m6.json` (frozen ISA table)
+- `data/_cache/sequence_trace.jsonl` (per-transcript trace: {codon,AA,N,w,V,Δ,sector,B})
+- `data/_cache/window_sets.json` (high/low candidate sets for W1)
+- Every new analysis produces `sections/generated/*.tex` + `.meta.json`, and is wired into `scripts/run_all.py`.
+
 ### Task Claims
 
 - 2026-01-18 — **CLAIMED**: `H2-8` Multi-resolution Fold$_m$ sensitivity for H2 endpoints + integrate Z128 refinement framing（结合 `Ma2025Z128SM` 的 balanced coupling / functorial refinement 观点，把 $m=6$ anchor 与局部 $m=8/m=10$ refinement 的生物学解释写入 paper，并用可复现实验把 H2 端点在 $m\\in\\{6,7,8,9\\}$ 的稳定性/翻转模式总结为可引用的 fragment）。Branch: `paper-bio`.
