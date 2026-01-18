@@ -342,6 +342,8 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
+- 2026-01-18 — **CLAIMED**: `ISA-VIZ1` Reproducible centerwired gate figure + paper wiring（把 `figures/ab019694_centerwired_gates*` 变成可再生的审计图，并在论文中引用解释 “boundary words = control gates (m up/down/reset)”）。Branch: `paper-bio`. Owner: `codex`.
+
 - 2026-01-18 — **COMPLETED**: `ISA-INF1` Wire pysam/BAM pausing analyses into `scripts/run_all.py`（guarded/optional；缺 `pysam`/BAM 时跳过但不失败；可用时生成/更新 `sections/generated/riboseq_pause_bam_window*.tex`）。Branch: `paper-bio`.
   - Result (2026-01-18): `scripts/run_all.py` 新增 `--bam-pausing/--no-bam-pausing` 与 `--pysam-conda-env`，并加入 guard：仅当 `data/refseq_hsapiens_mrna/stop_context_candidates.jsonl` 存在、`config/riboseq_bam_tracks.json` 里至少一个 indexed BAM 可用、且当前 Python 或 `conda run -n <env>` 可导入 `pysam` 时才运行 BAM pausing 系列脚本；否则跳过但不影响其余实验。  
   - Result (2026-01-18): 在通过 guard 时，`run_all` 会依次调用并刷新 fragments：`exp_riboseq_pause_bam_window.py`、`exp_riboseq_pause_bam_window_sensitivity.py`、`exp_riboseq_pause_bam_window_isa.py`、`exp_riboseq_pause_bam_window_dinuc_null.py`。  
