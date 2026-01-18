@@ -39,7 +39,7 @@ from cache_manager import cache_hit, cache_key_digest, cache_meta_path, write_js
 from genetic_code_tools import STOP_CODONS, fold_codon, fold_m, is_boundary_word, zeckendorf_value_word
 
 
-SCRIPT_VERSION = 1
+SCRIPT_VERSION = 3
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
 
 
@@ -136,6 +136,13 @@ def _fmt_frac(n: int, d: int) -> str:
     if d <= 0:
         return "--"
     return f"{(float(n) / float(d)):.4f}"
+
+
+def _tex_escape(s: str) -> str:
+    """
+    Minimal LaTeX escaping for table cells.
+    """
+    return str(s).replace("_", "\\_")
 
 
 def parse_args() -> argparse.Namespace:
@@ -283,7 +290,7 @@ def main() -> None:
     lines.append("\\scriptsize")
     lines.append("\\setlength{\\tabcolsep}{6pt}")
     lines.append("\\renewcommand{\\arraystretch}{1.10}")
-    lines.append("\\begin{tabular}{l l r r r r r}")
+    lines.append("\\begin{tabular}{l l r r r r r r}")
     lines.append("\\toprule")
     lines.append("label & stop & $n$ & boundary & rate & " + " & ".join(f"$n(\\texttt{{{w}}})$" for w in boundary_words) + " \\\\")
     lines.append("\\midrule")
@@ -291,7 +298,7 @@ def main() -> None:
         nb = int(boundary_totals.get((group, stop), 0))
         parts = [str(int(u6_counts[(group, stop)].get(w, 0))) for w in boundary_words]
         lines.append(
-            f"{group} & {stop} & {_fmt_int(int(n))} & {_fmt_int(int(nb))} & {_fmt_frac(int(nb), int(n))} & "
+            f"{_tex_escape(group)} & {stop} & {_fmt_int(int(n))} & {_fmt_int(int(nb))} & {_fmt_frac(int(nb), int(n))} & "
             + " & ".join(parts)
             + " \\\\"
         )
@@ -331,4 +338,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
