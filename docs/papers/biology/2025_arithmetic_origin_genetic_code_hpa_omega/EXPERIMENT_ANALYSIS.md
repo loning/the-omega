@@ -342,7 +342,9 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
-- 2026-01-18 — **CLAIMED**: `ISA-M2` Wobble re-interpretation (pure math, falsifiable)（在 64 codons 的单点突变图上，按位置 1/2/3 统计 control-flow 不变率：保持 $w$、保持 sector、$\\Delta$ 变化分布；输出 LaTeX fragment 并写入 paper appendix；纳入 `scripts/run_all.py`）。Branch: `paper-bio`.
+- 2026-01-18 — **COMPLETED**: `ISA-M2` Wobble re-interpretation (pure math, falsifiable)（在 64 codons 的单点突变图上，按位置 1/2/3 统计 control-flow 不变率：保持 $w$、保持 sector、$\\Delta$ 变化分布；输出 LaTeX fragment 并写入 paper appendix；纳入 `scripts/run_all.py`）。Branch: `paper-bio`.
+  - Result (2026-01-18): 新增 `scripts/exp_wobble_opcode_invariance.py` 生成 `sections/generated/wobble_opcode_invariance.tex`（已写入 appendix：`sections/appendices/04_generated_tables.tex`）。在 $\mu^\ast$ 下（uniform codons）第三位突变更“守恒”：$p(\\mathrm{sector\\ same})=0.8542$、$p(\\Delta\\ \\mathrm{same})=0.8958$、payload 同义保持 $p=0.6667$；但 $p(w\\ \\mathrm{same})=0.0000$（Fold$_6$ stable word 对任意单点突变都敏感）。同时输出 $|\\Delta'-\\Delta|$ 直方图（按位点分组）。
+  - Repro (2026-01-18): 修复 LaTeX unicode `μ` 编译失败（改为 `$\\mu^\\ast$`），并把脚本纳入 `scripts/run_all.py`；已本地重编译 `main.pdf`。
 
 - 2026-01-18 — **CLAIMED**: `ISA-M1` Codon→OpCode compiler + closure audit（把 Fold$_6$/$\\Delta$/$18\\oplus3$ 解释为“OpClass+microcode+gate”；实现确定性编译器与闭包验收：`codon -> {N,w,V,\\Delta,sector,boundary}`，输出冻结 ISA 表 + LaTeX checklist，并纳入 `scripts/run_all.py`；同步写入 paper 并重编译 PDF）。Branch: `paper-bio`.
   - Progress (2026-01-18): 新增 `scripts/exp_codon_opcode_compiler.py`，生成 `sections/generated/codon_opcode_compiler_summary.tex` 并写入 appendix（`sections/appendices/04_generated_tables.tex`）；closure audit 要点：$|X_6|=21=18\\oplus3$、boundary words 三元组、$\\Delta\\in\\{0,21,34,55\\}$、AUG/UAA 同 boundary word 100001 且 34-split（N=14 vs 48），以及 24 encodings 下 “3 stops 不可能全落 boundary”（hist: {0:16,1:8}）。已把脚本纳入 `scripts/run_all.py` 并本地重编译 `main.pdf`。
@@ -495,7 +497,7 @@ Engineering artifacts (Omega-style audit chain)
 
 **当前结果**：
 - B1/B2 通过，B3 失败
-- Dicodon 结构解释 33% 信号（k=10）
+- Dicodon 吸收不小且对 k 有敏感性：mean absorbed 51\%/54\%/33\%/54\% at k=3/5/10/20（见 `sections/generated/dicodon_absorption_k*.tex`）
 - **结论**：绿灯 B 部分亮起，但 dicodon 吸收是主要问题
 
 ---
