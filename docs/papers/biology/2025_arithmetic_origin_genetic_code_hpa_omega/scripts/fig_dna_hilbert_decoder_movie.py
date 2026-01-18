@@ -486,6 +486,36 @@ def _take(seq: str, start: int, n: int) -> str:
     return "".join(seq[(start + i) % L] for i in range(n))
 
 
+def _is_admissible_bits(bits: str) -> bool:
+    # Admissible means no consecutive '1's.
+    s = str(bits)
+    return "11" not in s
+
+
+def _admissible_suffix_patterns(n_bits: int, *, prefix_last: str) -> list[str]:
+    """
+    Return admissible suffix patterns of length n_bits for Xm prefix inheritance.
+    Enforces:
+      - no '11' within the suffix
+      - no '11' across the boundary between prefix_last and suffix[0]
+    """
+    n_bits = int(n_bits)
+    if n_bits <= 0:
+        return [""]
+    pre_last = str(prefix_last)
+    outs: list[str] = []
+    for v in range(1 << n_bits):
+        sfx = format(int(v), f"0{n_bits}b")
+        if not _is_admissible_bits(sfx):
+            continue
+        if pre_last == "1" and sfx[0] == "1":
+            continue
+        outs.append(sfx)
+    # Deterministic order: increasing integer value.
+    outs.sort(key=lambda s: int(s, 2) if s else 0)
+    return outs
+
+
 def _m_events_default() -> str:
     # Matches the original figure's piecewise-constant schedule (by coarse scan index k).
     return "18:8,20:10,23:8,27:6"
@@ -808,6 +838,7 @@ def _render_frame_centerwired(
     title: str,
     show_labels: bool = True,
     show_wiring: bool = True,
+    show_micro_labels: bool = False,
     mu: dict[str, str] | None = None,
     gates: dict[str, list[int]] | None = None,
 ) -> np.ndarray:
@@ -995,6 +1026,8 @@ def _render_frame_centerwired(
                 raise ValueError("Internal error: wiring overlap remained after backtracking.")
 
     # ---- Pass 3: paint microblocks using chosen orders (no effect on wiring geometry) ----
+    micro_labels: list[tuple[float, float, str, int, int, int]] = []
+    # Each entry: (cx, cy, text, sub_x0, sub_y0, sub_size)
     for k, info in refined_cells.items():
         x = int(macro_info[int(k)]["x"])
         y = int(macro_info[int(k)]["y"])
@@ -1009,28 +1042,54 @@ def _render_frame_centerwired(
             continue
         col_tup = macro_info[int(k)]["col"]
         col = np.array([float(col_tup[0]), float(col_tup[1]), float(col_tup[2])], dtype=np.float32)
+        w6 = str(macro_info[int(k)]["w"])
+        # Auto-disable micro labels if subcells are too small to be readable.
+        sub_px = int(cell_px // max(1, S))
+        want_micro_labels = bool(show_micro_labels and sub_px >= 16)
 
         if m_eff == 8:
+            sfx_pool = _admissible_suffix_patterns(2, prefix_last=w6[-1])
             for i, (xx, yy) in enumerate(ord_xy):
                 b1 = str(suffix[i]) if i < len(suffix) else "A"
-                code = int(_BASE_TO_CODE.get(b1, 0))
+                code_raw = int(_BASE_TO_CODE.get(b1, 0)) & 0x03
+                # Map raw 2-bit code into an admissible suffix in X8 (may drop illegal patterns).
+                sfx = sfx_pool[int(code_raw) % len(sfx_pool)]
+                code = int(sfx, 2) if sfx else 0
                 t = 0.25 + 0.75 * (float(code) / 3.0)
                 step_x0 = x0 + int(xx) * (cell_px // S)
                 step_y0 = y0 + int(yy) * (cell_px // S)
                 step_x1 = x0 + (int(xx) + 1) * (cell_px // S)
                 step_y1 = y0 + (int(yy) + 1) * (cell_px // S)
                 base_rgb[step_y0:step_y1, step_x0:step_x1, :] = np.clip(col * float(t), 0.0, 1.0)
+                if want_micro_labels:
+                    word8 = f"{w6}{sfx}"
+                    if not _is_admissible_bits(word8):
+                        raise ValueError("Internal error: constructed m=8 word is not admissible.")
+                    cx = float(step_x0 + step_x1) * 0.5
+                    cy = float(step_y0 + step_y1) * 0.5
+                    micro_labels.append((cx, cy, word8, int(step_x0), int(step_y0), int(sub_px)))
         else:
+            sfx_pool = _admissible_suffix_patterns(4, prefix_last=w6[-1])
             for i, (xx, yy) in enumerate(ord_xy):
                 j = 2 * i
                 b2 = (str(suffix[j]) if j < len(suffix) else "A") + (str(suffix[j + 1]) if (j + 1) < len(suffix) else "A")
-                code = _bases_to_u6_int("A" + b2) & 0x0F
+                code_raw = _bases_to_u6_int("A" + b2) & 0x0F
+                # Map raw 4-bit code into an admissible suffix in X10 (may drop illegal patterns).
+                sfx = sfx_pool[int(code_raw) % len(sfx_pool)]
+                code = int(sfx, 2) if sfx else 0
                 t = 0.25 + 0.75 * (float(code) / 15.0)
                 step_x0 = x0 + int(xx) * (cell_px // S)
                 step_y0 = y0 + int(yy) * (cell_px // S)
                 step_x1 = x0 + (int(xx) + 1) * (cell_px // S)
                 step_y1 = y0 + (int(yy) + 1) * (cell_px // S)
                 base_rgb[step_y0:step_y1, step_x0:step_x1, :] = np.clip(col * float(t), 0.0, 1.0)
+                if want_micro_labels:
+                    word10 = f"{w6}{sfx}"
+                    if not _is_admissible_bits(word10):
+                        raise ValueError("Internal error: constructed m=10 word is not admissible.")
+                    cx = float(step_x0 + step_x1) * 0.5
+                    cy = float(step_y0 + step_y1) * 0.5
+                    micro_labels.append((cx, cy, word10, int(step_x0), int(step_y0), int(sub_px)))
 
     # Render as a figure with wiring overlay.
     fig = plt.figure(figsize=(12.4, 7.6), dpi=160)
@@ -1094,6 +1153,25 @@ def _render_frame_centerwired(
                 clip_on=True,
                 clip_path=clip_rect,
                 zorder=9,
+            )
+
+    # Optional: show self-describing micro labels (w6 + suffix bits) inside refined cells.
+    if micro_labels:
+        for (cx, cy, txt, sx0, sy0, ssz) in micro_labels:
+            # Clip each label to its own subcell.
+            clip_rect = Rectangle((sx0, sy0), ssz, ssz, transform=ax.transData)
+            ax.text(
+                cx,
+                cy,
+                txt,
+                fontsize=5.0 if len(txt) <= 8 else 4.2,
+                color="#FFFFFF",
+                ha="center",
+                va="center",
+                alpha=0.85,
+                clip_on=True,
+                clip_path=clip_rect,
+                zorder=10,
             )
 
     axr = fig.add_axes([0.70, 0.12, 0.27, 0.80])
@@ -1410,6 +1488,11 @@ def parse_args() -> argparse.Namespace:
         help="(centerwired, m-policy=gates) Comma-separated Δ values that trigger m=10 inside refined mode (default: 55).",
     )
     p.add_argument("--no-labels", action="store_true", help="(centerwired) Disable per-cell labels.")
+    p.add_argument(
+        "--micro-labels",
+        action="store_true",
+        help="(centerwired) Show self-describing micro labels: w6 + suffix bits inside refined cells (auto-disabled if subcells are too small).",
+    )
     p.add_argument("--no-wiring", action="store_true", help="(centerwired) Disable one-stroke wiring overlay.")
 
     p.add_argument("--out-prefix", type=str, default=str(figures_dir() / "dna_hilbert"), help="Output prefix (no extension).")
@@ -1484,6 +1567,7 @@ def main() -> None:
                 title=title,
                 show_labels=not bool(args.no_labels),
                 show_wiring=not bool(args.no_wiring),
+                show_micro_labels=bool(args.micro_labels),
                 mu=mu_star,
                 gates=gates,
             )
