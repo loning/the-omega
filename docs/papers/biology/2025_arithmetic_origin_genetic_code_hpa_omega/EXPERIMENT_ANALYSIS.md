@@ -342,7 +342,11 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
-- 2026-01-18 — **CLAIMED**: `ISA-WV1` Decoder-driven candidate selection for reporter windows（在 RefSeq composition-matched stop-context pairs 上计算 centerwired gate/refinement 特征，并选取“成分匹配但 control-flow 特征差异最大”的候选对，输出可直接用于 W1/W2 reporter 设计的候选库与 paper appendix 表）。Branch: `paper-bio`. Owner: `codex`.
+- 2026-01-18 — **COMPLETED**: `ISA-WV1` Decoder-driven candidate selection for reporter windows（在 RefSeq composition-matched stop-context pairs 上计算 centerwired gate/refinement 特征，并选取“成分匹配但 control-flow 特征差异最大”的候选对，输出可直接用于 W1/W2 reporter 设计的候选库与 paper appendix 表）。Branch: `paper-bio`.
+  - Result (2026-01-18): 新增 `scripts/exp_window_sets_centerwired.py`，生成 `sections/generated/window_sets_centerwired.tex`（+meta）与 `data/_cache/window_sets_centerwired.json`（候选对+特征审计；本路径在 repo 中被 `.gitignore` 忽略，但可由脚本确定性复现）。
+  - Result (2026-01-18): 论文已补充：`sections/appendices/04_generated_tables.tex` 新增子节引用 ISA-WV1 表；`sections/appendices/07_biological_validation.tex` 在 W1/W2 设计处注明可用“decoder-driven”重排序的 matched pairs；并已纳入 `scripts/run_all.py`（RefSeq block）。
+  - Key result (2026-01-18): 在 `reporter_coding_v1` 的 matched-after pairs 中（每个 stop 20 对），按 after-window 的 refined-count 差异排序选出每个 stop 10 对（共 30 对；$\Delta_{m=10}$ gate=55）。选中集合的 $\Delta$refined 范围为 [-10,10]（max abs=10），$\Delta m{=}10$ 范围为 [-1,7]（max abs=7），提供了“成分匹配但 control-flow 特征强分离”的最小候选库，用于后续 W1/W2 的因果验证。
+  - Repro (2026-01-18): `python scripts/exp_window_sets_centerwired.py --force`（输入：`data/refseq_hsapiens_mrna/stop_context_candidates.jsonl`）。
 
 - 2026-01-18 — **COMPLETED**: `ISA-VIZ1` Reproducible centerwired gate figure + paper wiring（把 `figures/ab019694_centerwired_gates*` 变成可再生的审计图，并在论文中引用解释 “boundary words = control gates (m up/down/reset)”）。Branch: `paper-bio`.
   - Result (2026-01-18): 新增 `scripts/exp_centerwired_decoder_demo.py`，生成 `sections/generated/centerwired_decoder_demo.tex`（+meta），并已写入 discussion：`sections/06_discussion.tex`；同时纳入 `scripts/run_all.py`。
