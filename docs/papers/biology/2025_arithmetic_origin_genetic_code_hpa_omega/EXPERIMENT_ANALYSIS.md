@@ -62,7 +62,7 @@ This document summarizes all computational experiments conducted to validate the
 2. **Statistical Layer**: Do Uplift signals distinguish biological events?
 3. **Mechanistic Layer**: Does Uplift correlate with physical observables?
 
-**Key Finding (updated 2026-01-18)**: The arithmetic framework is mathematically closed (μ\* + Fold$_6$ invariants). Mechanistic evidence is currently mixed: structure-energy/probing proxies largely weaken under stronger composition controls, while raw-read Ribo-seq pausing shows a reproducible positive association with high-$\Delta U$ stop windows.
+**Key Finding (updated 2026-01-18)**: The arithmetic framework is mathematically closed (μ\* + Fold$_6$ invariants). Mechanistic evidence is currently mixed: structure-energy/probing proxies largely weaken under stronger composition controls, while raw-read Ribo-seq pausing shows a reproducible positive association with high-$\Delta U$ stop windows, including under a dinucleotide-shuffle ``null-of-null'' via residualized $z\Delta U$.
 
 **Living doc note (主开发文档说明)**: Sections above are the consolidated computational validation record; **Next Steps** below is the active development roadmap for systematic validation.
 
@@ -342,7 +342,24 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
-- 2026-01-18 — **CLAIMED**: `ISA-P2` Ribo-seq overlay with ISA features（在 raw-read BAM pausing pipeline 上加入 stop-family ISA 特征（stop 的 sector/$\\Delta_6$ 与 stop+2nt 的 $m=10\\to6$ anchor），并按这些特征对 pause score 做分层/交互检验；输出可引用 LaTeX fragment；纳入 `scripts/run_all.py`；CPU 优先，必要时再用 A40）。Branch: `paper-bio`.
+- 2026-01-18 — **COMPLETED**: `ISA-INF1` Wire pysam/BAM pausing analyses into `scripts/run_all.py`（guarded/optional；缺 `pysam`/BAM 时跳过但不失败；可用时生成/更新 `sections/generated/riboseq_pause_bam_window*.tex`）。Branch: `paper-bio`.
+  - Result (2026-01-18): `scripts/run_all.py` 新增 `--bam-pausing/--no-bam-pausing` 与 `--pysam-conda-env`，并加入 guard：仅当 `data/refseq_hsapiens_mrna/stop_context_candidates.jsonl` 存在、`config/riboseq_bam_tracks.json` 里至少一个 indexed BAM 可用、且当前 Python 或 `conda run -n <env>` 可导入 `pysam` 时才运行 BAM pausing 系列脚本；否则跳过但不影响其余实验。  
+  - Result (2026-01-18): 在通过 guard 时，`run_all` 会依次调用并刷新 fragments：`exp_riboseq_pause_bam_window.py`、`exp_riboseq_pause_bam_window_sensitivity.py`、`exp_riboseq_pause_bam_window_isa.py`、`exp_riboseq_pause_bam_window_dinuc_null.py`。  
+
+- 2026-01-18 — **COMPLETED**: `ISA-P4` “three boundary gates” audit on stop+2nt anchors（在 boundary-anchor 子集内按 $u_6\\in\\{\\texttt{100001},\\texttt{100101},\\texttt{101001}\\}$ 分层，复用 BAM pause-index 端点做 meta-analysis；产出可引用 fragment 并写入 paper）。Branch: `paper-bio`.
+  - Result (2026-01-18): 新增 `scripts/exp_riboseq_pause_bam_window_gate_words.py`，复用 `ISA-P2` 产出的 pause-index cache（无需 `pysam`）重建 stop+2nt 的 $m=10\\to6$ anchor 并按三种 boundary word 分层；产物：`sections/generated/riboseq_pause_bam_window_gate_words.tex`（已写入 discussion：`sections/06_discussion.tex`）。  
+  - Key result (2026-01-18): 在 boundary-anchor 子集中进一步按 `u6` 分层后，各 track 的每个 gate word 样本数很小（典型 $n_{100101}\\sim 6$），因此该 audit 目前主要是“underpowered 的负结果”：以 \texttt{100101} vs 其他 boundary words pooled 为 primary contrast（阈值 $n\\ge5$ / group），n=3 tracks 可纳入随机效应 meta，得到 $d=0.08$ [$-0.54$, $0.70$], $I^2=23.8\\%$。结论：现有数据下尚无证据支持“不同 boundary word 对 pausing 有稳定可分离效应”，但该分层为后续扩大 tracks/提升 coverage 后的可审计检查点。  
+  - Repro (2026-01-18): 先生成 `ISA-P2` cache（需 `pysam`）：`conda run -n omega-ribo python scripts/exp_riboseq_pause_bam_window_isa.py`；再运行：`python scripts/exp_riboseq_pause_bam_window_gate_words.py --force`。  
+
+- 2026-01-18 — **COMPLETED**: `ISA-P3` Dinucleotide-preserving null suite (“null-of-null”)（把 dinuc-shuffle 控制接入 Ribo-seq pausing 端点：对每个 terminal-stop 窗口生成 dinucleotide-preserving surrogate，构造 composition-conditioned 的 $z\\Delta U$ / $p$ 并检验 pause-index 与该指标的关联是否仍存在；输出可引用 LaTeX fragment 并写入 paper；CPU 优先，必要时再用 A40）。Branch: `paper-bio`.
+  - Result (2026-01-18): 新增 `scripts/exp_riboseq_pause_bam_window_dinuc_null.py` 生成 `sections/generated/riboseq_pause_bam_window_dinuc_null.tex`，并已写入 discussion：`sections/06_discussion.tex`。
+  - Key result (2026-01-18): 对每条 transcript 的 stop-window（k=10）构造 dinucleotide-preserving shuffle null（n=200 shuffles/window），得到 residualized 的 $z\\Delta U$；在 BAM pause-index 上做分位数分层（quartile，高 vs 低）后，随机效应 meta-analysis 为 $d=0.67$ [$0.33$, $1.02$], $I^2=7.2\\%$（纳入 n=5 tracks）。这表明 pausing 端点的正向关联在强 dinuc 控制下仍可复现。
+  - Repro (2026-01-18): 需要 `pysam`；推荐：`conda run -n omega-ribo python scripts/exp_riboseq_pause_bam_window_dinuc_null.py --force`（默认 n=200 shuffles，quantile=0.25）。
+
+- 2026-01-18 — **COMPLETED**: `ISA-P2` Ribo-seq overlay with ISA features（在 raw-read BAM pausing pipeline 上加入 stop-family ISA 特征（stop 的 sector/$\\Delta_6$ 与 stop+2nt 的 $m=10\\to6$ anchor），并按这些特征对 pause score 做分层/交互检验；输出可引用 LaTeX fragment；CPU 优先，必要时再用 A40）。Branch: `paper-bio`.
+  - Result (2026-01-18): 新增 `scripts/exp_riboseq_pause_bam_window_isa.py` 生成 `sections/generated/riboseq_pause_bam_window_isa.tex`，并已写入 discussion：`sections/06_discussion.tex`。
+  - Key result (2026-01-18): 在现有 8 个 human raw-read BAM tracks 上，按 stop+2nt 的 $m=10\\to6$ boundary-anchor（$u\\in\\{\\texttt{100001},\\texttt{100101},\\texttt{101001}\\}$）对 pause-index 做分层后，pooled-stops 的随机效应 meta-analysis 接近 null：$d=-0.05$ [$-0.35$, $0.26$], $I^2=18.2\\%$（纳入 n=4 tracks；其余 tracks coverage/样本不足）。Stop-stratified 与 low\\_diff-only 版本多为 underpowered（详见导出的 JSON audit 记录）。
+  - Repro (2026-01-18): 需要 `pysam`；推荐直接运行：`conda run -n omega-ribo python scripts/exp_riboseq_pause_bam_window_isa.py --force`（工作目录为论文目录）。
 
 - 2026-01-18 — **COMPLETED**: `ISA-B2` Stop instruction family (“OpCode + microcode” stratification)（在 RefSeq terminal stop windows 上把分组从 {UAA,UAG,UGA} 升级为 control-feature 组合（boundary/sector, $V$, $\\Delta$）以及 stop+2nt 的 $m=10\\to m=6$ anchor（复用 `H2-8` 的 refinement 计算）；输出分层后的 $U_{\\mathrm{after}}/\\Delta U$ 统计与 effect sizes，并产出 high/low 候选窗口集合（服务 W1 reporter library）；输出 LaTeX fragment 并写入 paper；纳入 `scripts/run_all.py`）。Branch: `paper-bio`.
   - Result (2026-01-18): 新增 `scripts/exp_stop_instruction_family_stratification.py` 生成 `sections/generated/stop_instruction_family_stratification.tex`（已写入 appendix：`sections/appendices/04_generated_tables.tex`）。μ* 下 stop-family 控制特征：UAA 为 boundary 且 $\\Delta_6=34$；UAG 为 cyclic 且 $\\Delta_6=34$；UGA 为 cyclic 且 $\\Delta_6=55$。
@@ -362,14 +379,15 @@ Engineering artifacts (Omega-style audit chain)
   - Result (2026-01-18): 新增 `scripts/exp_wobble_opcode_invariance.py` 生成 `sections/generated/wobble_opcode_invariance.tex`（已写入 appendix：`sections/appendices/04_generated_tables.tex`）。在 $\mu^\ast$ 下（uniform codons）第三位突变更“守恒”：$p(\\mathrm{sector\\ same})=0.8542$、$p(\\Delta\\ \\mathrm{same})=0.8958$、payload 同义保持 $p=0.6667$；但 $p(w\\ \\mathrm{same})=0.0000$（Fold$_6$ stable word 对任意单点突变都敏感）。同时输出 $|\\Delta'-\\Delta|$ 直方图（按位点分组）。
   - Repro (2026-01-18): 修复 LaTeX unicode `μ` 编译失败（改为 `$\\mu^\\ast$`），并把脚本纳入 `scripts/run_all.py`；已本地重编译 `main.pdf`。
 
-- 2026-01-18 — **CLAIMED**: `ISA-M1` Codon→OpCode compiler + closure audit（把 Fold$_6$/$\\Delta$/$18\\oplus3$ 解释为“OpClass+microcode+gate”；实现确定性编译器与闭包验收：`codon -> {N,w,V,\\Delta,sector,boundary}`，输出冻结 ISA 表 + LaTeX checklist，并纳入 `scripts/run_all.py`；同步写入 paper 并重编译 PDF）。Branch: `paper-bio`.
-  - Progress (2026-01-18): 新增 `scripts/exp_codon_opcode_compiler.py`，生成 `sections/generated/codon_opcode_compiler_summary.tex` 并写入 appendix（`sections/appendices/04_generated_tables.tex`）；closure audit 要点：$|X_6|=21=18\\oplus3$、boundary words 三元组、$\\Delta\\in\\{0,21,34,55\\}$、AUG/UAA 同 boundary word 100001 且 34-split（N=14 vs 48），以及 24 encodings 下 “3 stops 不可能全落 boundary”（hist: {0:16,1:8}）。已把脚本纳入 `scripts/run_all.py` 并本地重编译 `main.pdf`。
+- 2026-01-18 — **COMPLETED**: `ISA-M1` Codon→OpCode compiler + closure audit（把 Fold$_6$/$\\Delta$/$18\\oplus3$ 解释为“OpClass+microcode+gate”；实现确定性编译器与闭包验收：`codon -> {N,w,V,\\Delta,sector,boundary}`，输出冻结 ISA 表 + LaTeX checklist，并纳入 `scripts/run_all.py`；同步写入 paper 并重编译 PDF）。Branch: `paper-bio`.
+  - Result (2026-01-18): 新增 `scripts/exp_codon_opcode_compiler.py`，生成 `sections/generated/codon_opcode_compiler_summary.tex`（写入 appendix：`sections/appendices/04_generated_tables.tex`）并冻结 ISA 表 `data/_cache/codon_opcode_table_mu_star_m6.json`。
+  - Key result (2026-01-18): closure audit：$|X_6|=21=18\\oplus3$；$X_6^{\\mathrm{bdry}}=\\{\\texttt{100001},\\texttt{100101},\\texttt{101001}\\}$；$\\Delta\\in\\{0,21,34,55\\}$；AUG/UAA 同 boundary word 100001 且 34-split（N=14 vs 48）；并验证 24 encodings 下 “3 stops 不可能全落 boundary”（hist: {0:16,1:8}）。
+  - Repro (2026-01-18): `python scripts/exp_codon_opcode_compiler.py --force`（工作目录为论文目录），并已纳入 `scripts/run_all.py`。
 
-- 2026-01-18 — **CLAIMED**: `H2-8` Multi-resolution Fold$_m$ sensitivity for H2 endpoints + integrate Z128 refinement framing（结合 `Ma2025Z128SM` 的 balanced coupling / functorial refinement 观点，把 $m=6$ anchor 与局部 $m=8/m=10$ refinement 的生物学解释写入 paper，并用可复现实验把 H2 端点在 $m\\in\\{6,7,8,9\\}$ 的稳定性/翻转模式总结为可引用的 fragment）。Branch: `paper-bio`.
-  - Progress (2026-01-18): 在 paper 中加入 Z128 multi-resolution 解释层（`sections/02_framework.tex` 的 Hilbert/balanced coupling 说明 + `sections/06_discussion.tex` 的 multi-resolution lens 段落），并本地重编译 `main.pdf`。
-  - Progress (2026-01-18): 新增 `scripts/exp_h2_multiresolution_summary.py` 生成 `sections/generated/h2_multiresolution_summary.tex` 并写入 paper discussion；对 eukaryota stop-context meta（UAA vs UGA, k=10）给出紧凑多-$m$ 快照：diff(after) 在 $m=6$ 为 -0.2649、在 $m=7$/$m=8$ 为 +0.2315/+0.8536；且 $m=9$ 在 codon-scale $N\\le 63$ 下 uplift 端点退化（全为 0）。
-  - Progress (2026-01-18): 新增 `scripts/exp_stop_context_refinement_m10.py`：把 stop+2nt（+4/+5）作为 $m=10$ microstate 并投影到 $m=6$ anchor boundary sector（Z128 的 refinement 解释层），生成 `sections/generated/stop_context_refinement_m10.tex`（并写入 paper discussion）。关键结果（Human RefSeq mRNA terminal stops; best ORF; min ORF=20）：UAA/UAG 的 boundary-anchor 比例约 0.245/0.244，且三种 boundary words 均可出现；UGA 仅落在 $u=100101$ 且比例 0.0776。Sec(Uga) recoding sites 的 boundary-anchor 比例 0.0718（64/891），与 terminal UGA 接近。
-  - Progress (2026-01-18): 更新 `scripts/run_all.py`，把上述两个新片段脚本纳入一键复现流程（保证 scripts↔generated↔paper 同步）。
+- 2026-01-18 — **COMPLETED**: `H2-8` Multi-resolution Fold$_m$ sensitivity for H2 endpoints + integrate Z128 refinement framing（结合 `Ma2025Z128SM` 的 balanced coupling / functorial refinement 观点，把 $m=6$ anchor 与局部 $m=8/m=10$ refinement 的生物学解释写入 paper，并用可复现实验把 H2 端点在 $m\\in\\{6,7,8,9\\}$ 的稳定性/翻转模式总结为可引用的 fragment）。Branch: `paper-bio`.
+  - Result (2026-01-18): 新增 `scripts/exp_h2_multiresolution_summary.py` 与 `scripts/exp_stop_context_refinement_m10.py`，并生成 `sections/generated/h2_multiresolution_summary.tex`、`sections/generated/stop_context_refinement_m10.tex`（均已写入 `sections/06_discussion.tex`）。
+  - Key result (2026-01-18): eukaryota stop-context meta（UAA vs UGA, k=10）在不同 $m$ 下出现翻转/放大：diff(after) 在 $m=6$ 为 -0.2649、在 $m=7$/$m=8$ 为 +0.2315/+0.8536；且 $m=9$ 在 codon-scale $N\\le 63$ 下 uplift 端点退化（全为 0）。stop+2nt（$m=10\\to6$）refinement 显示 UGA 的 boundary-anchor 仅落在 $u=\\texttt{100101}$（terminal UGA 比例 0.0776；Sec(UGA) 0.0718）。
+  - Repro (2026-01-18): `python scripts/exp_h2_multiresolution_summary.py --force` 与 `python scripts/exp_stop_context_refinement_m10.py --force`（工作目录为论文目录），并已纳入 `scripts/run_all.py`。
 
 - 2026-01-17 — **COMPLETED**: `H3-3e` raw-read Ribo-seq pausing robustness + expansion（在 `H3-3d` 标准化 BAM/FASTQ pipeline 基础上补充更多独立 studies，并做关键参数稳健性：read-length 过滤 / P-site offset；更新 `sections/generated/riboseq_pause_bam_window.tex` 的随机效应 meta，并同步写回 paper 与本分析文档；CPU 优先，如需 GPU 仅用 A40）。Branch: `paper-bio`.
   - Result (2026-01-17): `sections/generated/riboseq_pause_bam_window.tex` 扩展到 8 个 BAM tracks（其中 5 个满足 high/low $\Delta U$ 对比的最小样本要求并进入 meta），随机效应 meta：$d=0.52$ [0.20, 0.83], $I^2=4.0\\%$（CI 排除 0）。
@@ -405,8 +423,30 @@ Engineering artifacts (Omega-style audit chain)
 
 **Top-3 recommended tasks**
 
+**Prereq / infrastructure (Z128 ISA interface) — update 2026-01-18**
+
+0) **ISA-INF1: Wire pysam/BAM pausing analyses into `scripts/run_all.py` (guarded / optional)**  
+   - task_id: `ISA-INF1`  
+   - why now: 论文与本报告已包含 raw-read BAM pausing 的关键结论（`H3-3c/d`, `ISA-P2`, `ISA-P3`），但当前 `scripts/run_all.py` 不会触发这些脚本；这会破坏“可审计、一键复现”的工程闭环。  
+   - endpoint: 在存在 `config/riboseq_bam_tracks.json` 且至少一个 BAM 可读时，`run_all` 能运行 BAM pausing 系列脚本并刷新对应 fragments；在缺失 `pysam`/BAM 时能自动跳过并输出明确提示（不影响其余实验复现）。  
+   - acceptance:  
+     - `python scripts/run_all.py --no-download --force --pdf` 不因 `pysam`/BAM 缺失而失败（跳过并提示）。  
+     - 在 `pysam` 可用且 BAM 存在时，能生成/更新：`sections/generated/riboseq_pause_bam_window*.tex` 与对应 `.meta.json`。  
+   - compute: CPU；优先本机/Normal；如需隔离环境，推荐 `conda run -n omega-ribo ...`（避免污染最小环境）。  
+   - implementation sketch: 给 `scripts/run_all.py` 增加 `--bam-pausing/--no-bam-pausing` 开关；实现 “检测 pysam + 检测 BAM 存在” 的 guard，并在通过时依次调用：`exp_riboseq_pause_bam_window.py`、`exp_riboseq_pause_bam_window_sensitivity.py`、`exp_riboseq_pause_bam_window_isa.py`、`exp_riboseq_pause_bam_window_dinuc_null.py`。  
+
+1) **ISA-P4: “three boundary gates” audit on stop+2nt anchors (100001/100101/101001)**  
+   - task_id: `ISA-P4`  
+   - why now: Z128 框架强调 $m=6$ Hilbert 屏上的三种 boundary words（$\texttt{100001},\texttt{100101},\texttt{101001}$）可能是“控制门”；在 biology paper 里应把它变成可检验断言，而不是比喻。我们已有 stop+2nt 的 $m=10\\to6$ anchor 与 raw-read pausing 端点，可直接做 first-pass 证伪/支持。  
+   - dataset: 复用现有 `data/refseq_hsapiens_mrna/stop_context_candidates.jsonl` 与现有 BAM tracks（`config/riboseq_bam_tracks.json`），以及 `ISA-P2/P3` 的 cache/audit JSON（若存在）。  
+   - endpoint: 对 boundary-anchor 子集，按 `u6∈{100001,100101,101001}` 分层，比较 pause-index 的分布/效应量，并做 track-level 随机效应 meta-analysis；并报告与 `ΔU` / residualized $z\\Delta U$ 的交互（若可）。  
+   - acceptance: 产出可引用 fragment（`sections/generated/*gate*.tex` + `.meta.json`）并写入 paper（discussion/appendix）；无论结果为正或为 null，都明确写出“支持/反驳的范围与下一步需要的数据量”。  
+   - compute: CPU；增量分析优先复用已有 pause-index 结果（不重复扫 BAM）。  
+   - implementation sketch: 新增一个轻量脚本从 `data/_cache/riboseq_pause_bam_window_isa.json` / `..._dinuc_null.json` 读取 pause-index 与 stop+2nt 序列字段，重算 anchor `u6` 并做分层统计；必要时再回退到直接跑 `ISA-P2/P3` 生成 cache。  
+
 1) **H2-1b: UTR-inclusive cross-species replication (mRNA FASTA, not CDS-only)**  
    - task_id: `H2-1b`  
+   - status: ✅ COMPLETED（2026-01-15；见上方 Task Claims）  
    - why now: 当前跨物种分析使用 `*_cds_from_genomic.fna.gz` 只能测 `U_before`，且异质性很高；要把 H2 变成“可复现 replication claim”，必须用含 UTR 的转录本数据把 `U_after/ΔU` 纳入主端点。  
    - dataset: NCBI RefSeq 物种面板（沿用 `scripts/fetch_multispecies_cds.py` 的 Tier-1 list），下载每个物种参考组装的 `*_rna_from_genomic.fna.gz`（UTR-inclusive）。  
    - endpoint: 预注册 1–2 个主端点（建议 `ΔU=U_after-U_before` at k=10 + 1 个 stop pair），做分域 random-effects meta-analysis + 报告异质性。  
@@ -416,6 +456,7 @@ Engineering artifacts (Omega-style audit chain)
 
 2) **H3-3b: Ribo-seq bigWig pausing replication tightening (more human studies + better track picking)**  
    - task_id: `H3-3b`  
+   - status: ✅ COMPLETED（2026-01-15；见上方 Task Claims；后续扩展仍可作为新任务拆出）  
    - why now: 现有 3-study bigWig meta d(high ΔU vs low)=0.30 [-0.06, 0.66] 仍不够收敛；需要扩大到 ≥6–10 studies 才能把 CI 缩到“能判真伪”的程度，并排查 track 选择/链特异导致的噪声。  
    - dataset: 在现有 GSE148965 / GSE199387 / GSE211536 基础上，优先加入（均为 Homo sapiens 且有 BIGWIG 补充文件）：  
      - `GSE246727`（Union CPM Norm bigWig：27–37 MB；另有 `RAW.tar` 1.6 GB）  
@@ -429,6 +470,7 @@ Engineering artifacts (Omega-style audit chain)
 
 3) **H3-7: Structure probing track cross-check (DMS/SHAPE) with the same stop-window endpoints**  
    - task_id: `H3-7`  
+   - status: ✅ COMPLETED（2026-01-15；见上方 Task Claims；icSHAPE tightening 为 `H3-7b`）  
    - why now: 目前“Uplift–结构”关联在控制 GC/dinuc 后消失；用 in vivo probing track（比 RNAfold proxy 更直接）做一次窗口级复现，可作为 H3 的高价值证据补全或强负结果。  
    - dataset: GEO 结构探针数据（可直接作为轨道/bedGraph 使用）：  
      - `GSE95465` (Homo sapiens) — `GSE95465_DMS-treated-ctrl-100-AC-dif.bedgraph.gz` (~7.8 MB, BEDGRAPH)  

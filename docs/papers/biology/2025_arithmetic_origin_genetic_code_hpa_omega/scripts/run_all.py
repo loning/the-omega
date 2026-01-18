@@ -12,6 +12,7 @@ Standard library only.
 from __future__ import annotations
 
 import argparse
+import json
 import subprocess
 import sys
 import shutil
@@ -29,6 +30,57 @@ def run(cmd: list[str], *, cwd: Path) -> None:
     p = subprocess.run(cmd, cwd=str(cwd))
     if p.returncode != 0:
         raise SystemExit(p.returncode)
+
+
+def _probe_import(cmd_prefix: list[str], module: str, *, cwd: Path) -> bool:
+    p = subprocess.run(
+        [*cmd_prefix, "-c", f"import {module}"],
+        cwd=str(cwd),
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    return p.returncode == 0
+
+
+def _select_python_with_pysam(*, py: str, conda_env: str, cwd: Path) -> list[str] | None:
+    if _probe_import([py], "pysam", cwd=cwd):
+        return [py]
+    conda = shutil.which("conda")
+    if conda:
+        cand = [conda, "run", "-n", conda_env, "python"]
+        if _probe_import(cand, "pysam", cwd=cwd):
+            return cand
+    return None
+
+
+def _existing_bam_tracks(tracks_json: Path, *, cwd: Path) -> list[Path]:
+    if not tracks_json.exists():
+        return []
+    try:
+        obj = json.loads(tracks_json.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+    tracks = obj.get("tracks") if isinstance(obj, dict) else None
+    if not isinstance(tracks, list):
+        return []
+    out: list[Path] = []
+    for t in tracks:
+        if not isinstance(t, dict):
+            continue
+        bam = str(t.get("bam") or "").strip()
+        if not bam:
+            continue
+        p = Path(bam)
+        if not p.is_absolute():
+            p = cwd / p
+        if not p.exists():
+            continue
+        bai1 = p.with_suffix(p.suffix + ".bai")  # foo.bam -> foo.bam.bai
+        bai2 = p.with_suffix(".bai")  # foo.bam -> foo.bai
+        if not bai1.exists() and not bai2.exists():
+            continue
+        out.append(p)
+    return out
 
 
 def parse_args() -> argparse.Namespace:
@@ -70,6 +122,15 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--recoding-max-files", type=int, default=0, help="Optional limit on number of GenBank files for recoding (0=all).")
     p.add_argument("--panel-max-records", type=int, default=0, help="Optional max records per dataset for corpus panel (0 = no limit).")
     p.add_argument("--nonstandard-max-records", type=int, default=0, help="Optional max records per dataset for nonstandard sequence tests (0 = no limit).")
+    p.add_argument(
+        "--bam-pausing",
+        dest="bam_pausing",
+        action="store_true",
+        help="Run read-level Ribo-seq BAM pausing analyses when available (auto-enabled in full runs; skipped in quick runs).",
+    )
+    p.add_argument("--no-bam-pausing", dest="bam_pausing", action="store_false", help="Skip read-level Ribo-seq BAM pausing analyses.")
+    p.set_defaults(bam_pausing=None)
+    p.add_argument("--pysam-conda-env", default="omega-ribo", help="Conda env name for pysam-dependent analyses when current Python lacks pysam.")
     p.add_argument("--force", action="store_true", help="Force recomputation (ignore cached results).")
     p.add_argument("--pdf", action="store_true", help="Build main.pdf with latexmk.")
     return p.parse_args()
@@ -86,6 +147,10 @@ def main() -> None:
     nonstandard_quick = int(args.nonstandard_max_records) > 0
 
     quick_dir = cwd / "data" / "_quick" / "run_all"
+
+    bam_pausing_opt = args.bam_pausing
+    if bam_pausing_opt is None:
+        bam_pausing_opt = not (refseq_quick or recoding_quick or panel_quick or nonstandard_quick)
 
     # 1) Optional downloads
     if args.download:
@@ -417,6 +482,26 @@ def main() -> None:
             ],
             cwd=cwd,
         )
+
+    # 5a2) Mechanistic proxy (read-level): BAM pausing overlays (optional; requires pysam + indexed BAMs).
+    if bam_pausing_opt:
+        tracks_json = cwd / "config" / "riboseq_bam_tracks.json"
+        stop_candidates = cwd / "data" / "refseq_hsapiens_mrna" / "stop_context_candidates.jsonl"
+        bams = _existing_bam_tracks(tracks_json, cwd=cwd)
+        if not stop_candidates.exists():
+            print(f"[run_all] Skipping BAM pausing: missing {stop_candidates.relative_to(cwd)}")
+        elif not bams:
+            print(f"[run_all] Skipping BAM pausing: no indexed BAMs found via {tracks_json.relative_to(cwd)}")
+        else:
+            py_pysam = _select_python_with_pysam(py=py, conda_env=str(args.pysam_conda_env), cwd=cwd)
+            if not py_pysam:
+                print("[run_all] Skipping BAM pausing: cannot import pysam (install pysam or set up conda env).")
+            else:
+                run([*py_pysam, "scripts/exp_riboseq_pause_bam_window.py", *(["--force"] if args.force else [])], cwd=cwd)
+                run([*py_pysam, "scripts/exp_riboseq_pause_bam_window_sensitivity.py", *(["--force"] if args.force else [])], cwd=cwd)
+                run([*py_pysam, "scripts/exp_riboseq_pause_bam_window_isa.py", *(["--force"] if args.force else [])], cwd=cwd)
+                run([*py_pysam, "scripts/exp_riboseq_pause_bam_window_dinuc_null.py", *(["--force"] if args.force else [])], cwd=cwd)
+                run([py, "scripts/exp_riboseq_pause_bam_window_gate_words.py", *(["--force"] if args.force else [])], cwd=cwd)
 
     # 5b) Protein-preserving synonymous-codon permutation null for terminal-stop windows (RefSeq).
     if not refseq_quick:
