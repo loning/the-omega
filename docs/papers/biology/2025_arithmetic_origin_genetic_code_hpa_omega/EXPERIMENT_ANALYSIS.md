@@ -342,7 +342,9 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
-- 2026-01-18 — **CLAIMED**: `ISA-INF1` Wire pysam/BAM pausing analyses into `scripts/run_all.py`（guarded/optional；缺 `pysam`/BAM 时跳过但不失败；可用时生成/更新 `sections/generated/riboseq_pause_bam_window*.tex`）。Branch: `paper-bio`.
+- 2026-01-18 — **COMPLETED**: `ISA-INF1` Wire pysam/BAM pausing analyses into `scripts/run_all.py`（guarded/optional；缺 `pysam`/BAM 时跳过但不失败；可用时生成/更新 `sections/generated/riboseq_pause_bam_window*.tex`）。Branch: `paper-bio`.
+  - Result (2026-01-18): `scripts/run_all.py` 新增 `--bam-pausing/--no-bam-pausing` 与 `--pysam-conda-env`，并加入 guard：仅当 `data/refseq_hsapiens_mrna/stop_context_candidates.jsonl` 存在、`config/riboseq_bam_tracks.json` 里至少一个 indexed BAM 可用、且当前 Python 或 `conda run -n <env>` 可导入 `pysam` 时才运行 BAM pausing 系列脚本；否则跳过但不影响其余实验。  
+  - Result (2026-01-18): 在通过 guard 时，`run_all` 会依次调用并刷新 fragments：`exp_riboseq_pause_bam_window.py`、`exp_riboseq_pause_bam_window_sensitivity.py`、`exp_riboseq_pause_bam_window_isa.py`、`exp_riboseq_pause_bam_window_dinuc_null.py`。  
 
 - 2026-01-18 — **COMPLETED**: `ISA-P3` Dinucleotide-preserving null suite (“null-of-null”)（把 dinuc-shuffle 控制接入 Ribo-seq pausing 端点：对每个 terminal-stop 窗口生成 dinucleotide-preserving surrogate，构造 composition-conditioned 的 $z\\Delta U$ / $p$ 并检验 pause-index 与该指标的关联是否仍存在；输出可引用 LaTeX fragment 并写入 paper；CPU 优先，必要时再用 A40）。Branch: `paper-bio`.
   - Result (2026-01-18): 新增 `scripts/exp_riboseq_pause_bam_window_dinuc_null.py` 生成 `sections/generated/riboseq_pause_bam_window_dinuc_null.tex`，并已写入 discussion：`sections/06_discussion.tex`。
