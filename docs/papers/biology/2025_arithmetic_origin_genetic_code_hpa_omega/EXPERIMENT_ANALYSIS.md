@@ -342,6 +342,8 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
+- 2026-01-18 — **CLAIMED**: `ISA-INF1` Wire pysam/BAM pausing analyses into `scripts/run_all.py`（guarded/optional；缺 `pysam`/BAM 时跳过但不失败；可用时生成/更新 `sections/generated/riboseq_pause_bam_window*.tex`）。Branch: `paper-bio`.
+
 - 2026-01-18 — **COMPLETED**: `ISA-P3` Dinucleotide-preserving null suite (“null-of-null”)（把 dinuc-shuffle 控制接入 Ribo-seq pausing 端点：对每个 terminal-stop 窗口生成 dinucleotide-preserving surrogate，构造 composition-conditioned 的 $z\\Delta U$ / $p$ 并检验 pause-index 与该指标的关联是否仍存在；输出可引用 LaTeX fragment 并写入 paper；CPU 优先，必要时再用 A40）。Branch: `paper-bio`.
   - Result (2026-01-18): 新增 `scripts/exp_riboseq_pause_bam_window_dinuc_null.py` 生成 `sections/generated/riboseq_pause_bam_window_dinuc_null.tex`，并已写入 discussion：`sections/06_discussion.tex`。
   - Key result (2026-01-18): 对每条 transcript 的 stop-window（k=10）构造 dinucleotide-preserving shuffle null（n=200 shuffles/window），得到 residualized 的 $z\\Delta U$；在 BAM pause-index 上做分位数分层（quartile，高 vs 低）后，随机效应 meta-analysis 为 $d=0.67$ [$0.33$, $1.02$], $I^2=7.2\\%$（纳入 n=5 tracks）。这表明 pausing 端点的正向关联在强 dinuc 控制下仍可复现。
