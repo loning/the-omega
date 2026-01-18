@@ -342,6 +342,8 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
+- 2026-01-18 — **CLAIMED**: `ISA-M1` Codon→OpCode compiler + closure audit（把 Fold$_6$/$\\Delta$/$18\\oplus3$ 解释为“OpClass+microcode+gate”；实现确定性编译器与闭包验收：`codon -> {N,w,V,\\Delta,sector,boundary}`，输出冻结 ISA 表 + LaTeX checklist，并纳入 `scripts/run_all.py`；同步写入 paper 并重编译 PDF）。Branch: `paper-bio`.
+
 - 2026-01-18 — **CLAIMED**: `H2-8` Multi-resolution Fold$_m$ sensitivity for H2 endpoints + integrate Z128 refinement framing（结合 `Ma2025Z128SM` 的 balanced coupling / functorial refinement 观点，把 $m=6$ anchor 与局部 $m=8/m=10$ refinement 的生物学解释写入 paper，并用可复现实验把 H2 端点在 $m\\in\\{6,7,8,9\\}$ 的稳定性/翻转模式总结为可引用的 fragment）。Branch: `paper-bio`.
   - Progress (2026-01-18): 在 paper 中加入 Z128 multi-resolution 解释层（`sections/02_framework.tex` 的 Hilbert/balanced coupling 说明 + `sections/06_discussion.tex` 的 multi-resolution lens 段落），并本地重编译 `main.pdf`。
   - Progress (2026-01-18): 新增 `scripts/exp_h2_multiresolution_summary.py` 生成 `sections/generated/h2_multiresolution_summary.tex` 并写入 paper discussion；对 eukaryota stop-context meta（UAA vs UGA, k=10）给出紧凑多-$m$ 快照：diff(after) 在 $m=6$ 为 -0.2649、在 $m=7$/$m=8$ 为 +0.2315/+0.8536；且 $m=9$ 在 codon-scale $N\\le 63$ 下 uplift 端点退化（全为 0）。
