@@ -342,7 +342,11 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
-- 2026-01-18 — **CLAIMED**: `ISA-P2E1` Expand BAM pausing replication by adding an extra track（把已存在但未纳入配置的 human Ribo-seq BAM track 加入 `config/riboseq_bam_tracks.json`，重跑 BAM pausing suite（`ISA-P2/P3/P4` + 相关衍生检查），并同步更新 paper fragments 与 meta-analysis 结论；优先 CPU，本地 `conda run -n omega-ribo`）。Branch: `paper-bio`. Owner: `codex`.
+- 2026-01-18 — **COMPLETED**: `ISA-P2E1` Expand BAM pausing replication by adding an extra track（把已存在但未纳入配置的 human Ribo-seq BAM track 加入 `config/riboseq_bam_tracks.json`，重跑 BAM pausing suite（`ISA-P2/P3/P4` + 相关衍生检查），并同步更新 paper fragments 与 meta-analysis 结论；优先 CPU，本地 `conda run -n omega-ribo`）。Branch: `paper-bio`.
+  - Result (2026-01-18): `config/riboseq_bam_tracks.json` 新增 `ERP150947_ERR12549926_10m`（`data/riboseq_raw/ERP150947/align/ERR12549926.max10m.transcriptome.sorted.bam`）。
+  - Result (2026-01-18): 重跑并刷新 fragments（均已写入 paper）：`sections/generated/riboseq_pause_bam_window*.tex`、`sections/generated/riboseq_pause_bam_window_dinuc_null.tex`、`sections/generated/riboseq_pause_bam_window_gate_words.tex`、`sections/generated/centerwired_gate_features_vs_pausing.tex`（含对应 `.meta.json`）。
+  - Key result (2026-01-18): 新增 track `ERP150947_ERR12549926_10m` 在当前候选 stop-window 集合上有效样本量极低（$n=2$），因此不纳入主要 meta-analysis；总体结论保持不变：dinuc null-of-null 下的 $z\\Delta U$ 与 pause-index 关联仍为正向且可复现（`ISA-P3` meta $d=0.67$ [$0.33$, $1.02$], $I^2=7.2\\%$；n=5 tracks），而 “centerwired refined-after” 特征依旧 underpowered/近 null。
+  - Repro (2026-01-18): `conda run -n omega-ribo python scripts/exp_riboseq_pause_bam_window.py --force` + `..._sensitivity.py` + `..._isa.py` + `..._dinuc_null.py`；派生：`conda run -n omega-ribo python scripts/exp_riboseq_pause_bam_window_gate_words.py --force` 与 `conda run -n omega-ribo python scripts/exp_riboseq_pause_bam_window_centerwired_features.py --force`。
 
 - 2026-01-18 — **COMPLETED**: `ISA-WV1` Decoder-driven candidate selection for reporter windows（在 RefSeq composition-matched stop-context pairs 上计算 centerwired gate/refinement 特征，并选取“成分匹配但 control-flow 特征差异最大”的候选对，输出可直接用于 W1/W2 reporter 设计的候选库与 paper appendix 表）。Branch: `paper-bio`.
   - Result (2026-01-18): 新增 `scripts/exp_window_sets_centerwired.py`，生成 `sections/generated/window_sets_centerwired.tex`（+meta）与 `data/_cache/window_sets_centerwired.json`（候选对+特征审计；本路径在 repo 中被 `.gitignore` 忽略，但可由脚本确定性复现）。
