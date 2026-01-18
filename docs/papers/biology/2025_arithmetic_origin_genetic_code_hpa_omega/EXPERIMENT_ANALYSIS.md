@@ -342,6 +342,8 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
+- 2026-01-18 — **CLAIMED**: `ISA-WV1` Decoder-driven candidate selection for reporter windows（在 RefSeq composition-matched stop-context pairs 上计算 centerwired gate/refinement 特征，并选取“成分匹配但 control-flow 特征差异最大”的候选对，输出可直接用于 W1/W2 reporter 设计的候选库与 paper appendix 表）。Branch: `paper-bio`. Owner: `codex`.
+
 - 2026-01-18 — **COMPLETED**: `ISA-VIZ1` Reproducible centerwired gate figure + paper wiring（把 `figures/ab019694_centerwired_gates*` 变成可再生的审计图，并在论文中引用解释 “boundary words = control gates (m up/down/reset)”）。Branch: `paper-bio`.
   - Result (2026-01-18): 新增 `scripts/exp_centerwired_decoder_demo.py`，生成 `sections/generated/centerwired_decoder_demo.tex`（+meta），并已写入 discussion：`sections/06_discussion.tex`；同时纳入 `scripts/run_all.py`。
   - Result (2026-01-18): 复用已渲染示例图 `figures/ab019694_centerwired_gates_contact_sheet.png` 与 `figures/ab019694_centerwired_gates_legend.png`，用于解释 Z128“Hilbert screen + 局部 $m=8/10$ refinement”的可执行接口（说明性可视化，不作为 H2/H3 端点证据）。
