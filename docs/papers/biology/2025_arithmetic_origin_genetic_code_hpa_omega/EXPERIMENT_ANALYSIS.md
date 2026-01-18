@@ -414,6 +414,27 @@ Engineering artifacts (Omega-style audit chain)
 
 **Top-3 recommended tasks**
 
+**Prereq / infrastructure (Z128 ISA interface) — update 2026-01-18**
+
+0) **ISA-INF1: Wire pysam/BAM pausing analyses into `scripts/run_all.py` (guarded / optional)**  
+   - task_id: `ISA-INF1`  
+   - why now: 论文与本报告已包含 raw-read BAM pausing 的关键结论（`H3-3c/d`, `ISA-P2`, `ISA-P3`），但当前 `scripts/run_all.py` 不会触发这些脚本；这会破坏“可审计、一键复现”的工程闭环。  
+   - endpoint: 在存在 `config/riboseq_bam_tracks.json` 且至少一个 BAM 可读时，`run_all` 能运行 BAM pausing 系列脚本并刷新对应 fragments；在缺失 `pysam`/BAM 时能自动跳过并输出明确提示（不影响其余实验复现）。  
+   - acceptance:  
+     - `python scripts/run_all.py --no-download --force --pdf` 不因 `pysam`/BAM 缺失而失败（跳过并提示）。  
+     - 在 `pysam` 可用且 BAM 存在时，能生成/更新：`sections/generated/riboseq_pause_bam_window*.tex` 与对应 `.meta.json`。  
+   - compute: CPU；优先本机/Normal；如需隔离环境，推荐 `conda run -n omega-ribo ...`（避免污染最小环境）。  
+   - implementation sketch: 给 `scripts/run_all.py` 增加 `--bam-pausing/--no-bam-pausing` 开关；实现 “检测 pysam + 检测 BAM 存在” 的 guard，并在通过时依次调用：`exp_riboseq_pause_bam_window.py`、`exp_riboseq_pause_bam_window_sensitivity.py`、`exp_riboseq_pause_bam_window_isa.py`、`exp_riboseq_pause_bam_window_dinuc_null.py`。  
+
+1) **ISA-P4: “three boundary gates” audit on stop+2nt anchors (100001/100101/101001)**  
+   - task_id: `ISA-P4`  
+   - why now: Z128 框架强调 $m=6$ Hilbert 屏上的三种 boundary words（$\texttt{100001},\texttt{100101},\texttt{101001}$）可能是“控制门”；在 biology paper 里应把它变成可检验断言，而不是比喻。我们已有 stop+2nt 的 $m=10\\to6$ anchor 与 raw-read pausing 端点，可直接做 first-pass 证伪/支持。  
+   - dataset: 复用现有 `data/refseq_hsapiens_mrna/stop_context_candidates.jsonl` 与现有 BAM tracks（`config/riboseq_bam_tracks.json`），以及 `ISA-P2/P3` 的 cache/audit JSON（若存在）。  
+   - endpoint: 对 boundary-anchor 子集，按 `u6∈{100001,100101,101001}` 分层，比较 pause-index 的分布/效应量，并做 track-level 随机效应 meta-analysis；并报告与 `ΔU` / residualized $z\\Delta U$ 的交互（若可）。  
+   - acceptance: 产出可引用 fragment（`sections/generated/*gate*.tex` + `.meta.json`）并写入 paper（discussion/appendix）；无论结果为正或为 null，都明确写出“支持/反驳的范围与下一步需要的数据量”。  
+   - compute: CPU；增量分析优先复用已有 pause-index 结果（不重复扫 BAM）。  
+   - implementation sketch: 新增一个轻量脚本从 `data/_cache/riboseq_pause_bam_window_isa.json` / `..._dinuc_null.json` 读取 pause-index 与 stop+2nt 序列字段，重算 anchor `u6` 并做分层统计；必要时再回退到直接跑 `ISA-P2/P3` 生成 cache。  
+
 1) **H2-1b: UTR-inclusive cross-species replication (mRNA FASTA, not CDS-only)**  
    - task_id: `H2-1b`  
    - why now: 当前跨物种分析使用 `*_cds_from_genomic.fna.gz` 只能测 `U_before`，且异质性很高；要把 H2 变成“可复现 replication claim”，必须用含 UTR 的转录本数据把 `U_after/ΔU` 纳入主端点。  
