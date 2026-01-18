@@ -533,6 +533,8 @@ def main() -> None:
 
     # 6b) Fold_m stop-context meta-analysis across eukaryotic RefSeq corpora (best ORF).
     run([py, "scripts/exp_foldm_stop_context_eukaryota.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_h2_multiresolution_summary.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_stop_context_refinement_m10.py", *(["--force"] if args.force else [])], cwd=cwd)
 
     ns_cmd = [py, "scripts/exp_nonstandard_sequence_tests.py", "--panel", "nonstandard_examples_v1"]
     if int(args.nonstandard_max_records) > 0:
@@ -556,4 +558,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
