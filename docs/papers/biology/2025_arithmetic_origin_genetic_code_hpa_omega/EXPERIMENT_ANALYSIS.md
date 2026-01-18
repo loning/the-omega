@@ -342,6 +342,8 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
+- 2026-01-18 — **CLAIMED**: `ISA-M3` Degeneracy as error-correction potential（基于 Fold$_6$ 的 basin size（$|\\mathrm{Fold}_6^{-1}(w)|$）与 AA-level effective basin（unique word count + weighted basin），并与 codon degeneracy/point-mutation robustness 做相关；同时给出两类 null：24 encodings 与随机遗传码（保持 degeneracy 计数）；输出 LaTeX fragment 并写入 paper appendix；纳入 `scripts/run_all.py`）。Branch: `paper-bio`.
+
 - 2026-01-18 — **COMPLETED**: `ISA-M2` Wobble re-interpretation (pure math, falsifiable)（在 64 codons 的单点突变图上，按位置 1/2/3 统计 control-flow 不变率：保持 $w$、保持 sector、$\\Delta$ 变化分布；输出 LaTeX fragment 并写入 paper appendix；纳入 `scripts/run_all.py`）。Branch: `paper-bio`.
   - Result (2026-01-18): 新增 `scripts/exp_wobble_opcode_invariance.py` 生成 `sections/generated/wobble_opcode_invariance.tex`（已写入 appendix：`sections/appendices/04_generated_tables.tex`）。在 $\mu^\ast$ 下（uniform codons）第三位突变更“守恒”：$p(\\mathrm{sector\\ same})=0.8542$、$p(\\Delta\\ \\mathrm{same})=0.8958$、payload 同义保持 $p=0.6667$；但 $p(w\\ \\mathrm{same})=0.0000$（Fold$_6$ stable word 对任意单点突变都敏感）。同时输出 $|\\Delta'-\\Delta|$ 直方图（按位点分组）。
   - Repro (2026-01-18): 修复 LaTeX unicode `μ` 编译失败（改为 `$\\mu^\\ast$`），并把脚本纳入 `scripts/run_all.py`；已本地重编译 `main.pdf`。
