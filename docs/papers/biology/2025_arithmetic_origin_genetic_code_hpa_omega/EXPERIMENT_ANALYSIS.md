@@ -342,6 +342,8 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
+- 2026-01-18 — **CLAIMED**: `ISA-M4` Hilbert locality as a testable hypothesis（实现 Hilbert(n=3) 坐标映射 $N\\in[0,63]\\to(x,y)$；定义 AA-codon 的 Hilbert 平面聚类指标（如组内平均距离 / 最近邻距离），并与两类 null 对照：24 encodings 与 degeneracy-preserving 随机遗传码；同时输出单点突变边的 Hilbert 跳跃距离分布（按位点 1/2/3）；输出 LaTeX fragment 并写入 paper appendix；纳入 `scripts/run_all.py`）。Branch: `paper-bio`.
+
 - 2026-01-18 — **COMPLETED**: `ISA-M3` Degeneracy as error-correction potential（基于 Fold$_6$ 的 basin size（$|\\mathrm{Fold}_6^{-1}(w)|$）与 AA-level effective basin（unique word count + weighted basin），并与 codon degeneracy/point-mutation robustness 做相关；同时给出两类 null：24 encodings 与随机遗传码（保持 degeneracy 计数）；输出 LaTeX fragment 并写入 paper appendix；纳入 `scripts/run_all.py`）。Branch: `paper-bio`.
   - Result (2026-01-18): 新增 `scripts/exp_degeneracy_error_correction.py` 生成 `sections/generated/degeneracy_error_correction.tex`（已写入 appendix：`sections/appendices/04_generated_tables.tex`）。Fold$_6$ basin-size 直方图（stable words）：$\\{2:8,3:4,4:9\\}$。AA-level（排除 Stop）robustness 与 effective basin 强相关：$\\rho(\\mathrm{robust},\\mathrm{unique\\ }w)=0.941$（degeneracy-preserving 随机码 null：$p<10^{-4}$），$\\rho(\\mathrm{robust},\\mathrm{weighted\\ basin})=0.861$（$p=0.0029$；null $n=20000$，seed=0）。同时给出 24 encodings 的对照区间与 $\\mu^\\ast$ rank。
   - Repro (2026-01-18): 把脚本纳入 `scripts/run_all.py` 并本地重编译 `main.pdf`。
