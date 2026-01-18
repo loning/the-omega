@@ -342,6 +342,8 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
+- 2026-01-18 — **CLAIMED**: `ISA-P2E1` Expand BAM pausing replication by adding an extra track（把已存在但未纳入配置的 human Ribo-seq BAM track 加入 `config/riboseq_bam_tracks.json`，重跑 BAM pausing suite（`ISA-P2/P3/P4` + 相关衍生检查），并同步更新 paper fragments 与 meta-analysis 结论；优先 CPU，本地 `conda run -n omega-ribo`）。Branch: `paper-bio`. Owner: `codex`.
+
 - 2026-01-18 — **COMPLETED**: `ISA-WV1` Decoder-driven candidate selection for reporter windows（在 RefSeq composition-matched stop-context pairs 上计算 centerwired gate/refinement 特征，并选取“成分匹配但 control-flow 特征差异最大”的候选对，输出可直接用于 W1/W2 reporter 设计的候选库与 paper appendix 表）。Branch: `paper-bio`.
   - Result (2026-01-18): 新增 `scripts/exp_window_sets_centerwired.py`，生成 `sections/generated/window_sets_centerwired.tex`（+meta）与 `data/_cache/window_sets_centerwired.json`（候选对+特征审计；本路径在 repo 中被 `.gitignore` 忽略，但可由脚本确定性复现）。
   - Result (2026-01-18): 论文已补充：`sections/appendices/04_generated_tables.tex` 新增子节引用 ISA-WV1 表；`sections/appendices/07_biological_validation.tex` 在 W1/W2 设计处注明可用“decoder-driven”重排序的 matched pairs；并已纳入 `scripts/run_all.py`（RefSeq block）。
