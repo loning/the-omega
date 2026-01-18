@@ -161,6 +161,19 @@ def _fmt_float(x: float | None, *, nd: int = 3) -> str:
     return f"{float(x):.{int(nd)}f}"
 
 
+def _tex_escape(s: str) -> str:
+    """
+    Minimal LaTeX escaping for text fragments (especially inside \\texttt{}).
+    """
+    s = str(s)
+    s = s.replace("\\", "\\textbackslash{}")
+    s = s.replace("{", "\\{").replace("}", "\\}")
+    s = s.replace("&", "\\&").replace("%", "\\%").replace("$", "\\$")
+    s = s.replace("#", "\\#").replace("_", "\\_")
+    s = s.replace("~", "\\textasciitilde{}").replace("^", "\\textasciicircum{}")
+    return s
+
+
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="ISA-WV1: centerwired decoder-driven window-set selection (matched pairs).")
     ap.add_argument(
@@ -342,14 +355,18 @@ def main() -> None:
     write_json_atomic(out_json, out_obj)
 
     # Emit LaTeX fragment.
+    cand_set_tex = _tex_escape(cand_set)
+    out_json_rel = str(out_json.relative_to(root_dir()))
+    out_json_tex = _tex_escape(out_json_rel)
+
     lines: list[str] = []
     lines.append("\\paragraph{ISA-WV1: Decoder-driven candidate selection for reporter windows (centerwired control-flow).}")
     lines.append(
         "From the RefSeq composition-matched stop-context pairs (high vs low $u_{\\mathrm{after}}$, "
-        f"$k={int(k)}$; candidate-set \\texttt{{{cand_set}}}), we compute centerwired gate/refinement features "
+        f"$k={int(k)}$; candidate-set \\texttt{{{cand_set_tex}}}), we compute centerwired gate/refinement features "
         "(refined-after count, $m=10$ hits, and downstream boundary-word hits) and select pairs with the "
         "largest divergence in the inferred control-flow signature. "
-        f"Full sequences and features are exported to \\texttt{{{out_json.relative_to(root_dir())}}}."
+        f"Full sequences and features are exported to \\texttt{{{out_json_tex}}}."
     )
     lines.append("")
     lines.append("\\begin{center}")
@@ -368,8 +385,8 @@ def main() -> None:
         dif = r.get("diffs") or {}
         high = r.get("high") or {}
         low = r.get("low") or {}
-        high_id = f"{high.get('record_id') or ''}:{int(high.get('stop_base') or 0)}"
-        low_id = f"{low.get('record_id') or ''}:{int(low.get('stop_base') or 0)}"
+        high_id = _tex_escape(f"{high.get('record_id') or ''}:{int(high.get('stop_base') or 0)}")
+        low_id = _tex_escape(f"{low.get('record_id') or ''}:{int(low.get('stop_base') or 0)}")
         lines.append(
             f"$\\mathrm{{{r.get('stop_codon')}}}$ & {int(r.get('pair_rank') or 0)} & {float(dif.get('after_mean_delta') or 0.0):.1f} & "
             f"{int(dif.get('refined_after_count') or 0)} & {int(dif.get('m10_after_count') or 0)} & {_fmt_float(float(l1) if l1 is not None else None, nd=3)} & "
