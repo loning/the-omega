@@ -1,0 +1,53 @@
+\paragraph{ISA-M3: Degeneracy as error-correction potential (Fold$_6$ basins).}
+Define basin size $|\mathrm{Fold}_6^{-1}(w)|$ over $N\in\{0,\dots,63\}$ (histogram $\{2:8, 3:4, 4:9\}$, sum=64). For each amino acid payload class (excluding Stop) under $\mu^\ast$, compute: codon degeneracy (\#codons), unique Fold$_6$ words, weighted basin $\sum \lvert\mathrm{Fold}_6^{-1}(w)\rvert$, and point-mutation robustness (fraction of single-nucleotide mutations that preserve the payload AA).
+
+\begin{center}
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.10}
+\begin{tabular}{l r r r r}
+\toprule
+AA & \#codons & unique $w$ & weighted basin & robustness \\
+\midrule
+Ala & 4 & 4 & 16 & 0.333 \\
+Arg & 6 & 6 & 23 & 0.333 \\
+Asn & 2 & 2 & 8 & 0.111 \\
+Asp & 2 & 2 & 7 & 0.111 \\
+Cys & 2 & 2 & 8 & 0.111 \\
+Gln & 2 & 2 & 4 & 0.111 \\
+Glu & 2 & 2 & 7 & 0.111 \\
+Gly & 4 & 4 & 15 & 0.333 \\
+His & 2 & 2 & 4 & 0.111 \\
+Ile & 3 & 3 & 7 & 0.222 \\
+Leu & 6 & 5 & 22 & 0.333 \\
+Lys & 2 & 2 & 8 & 0.111 \\
+Met & 1 & 1 & 2 & 0.000 \\
+Phe & 2 & 2 & 8 & 0.111 \\
+Pro & 4 & 4 & 14 & 0.333 \\
+Ser & 6 & 6 & 16 & 0.259 \\
+Thr & 4 & 4 & 16 & 0.333 \\
+Trp & 1 & 1 & 4 & 0.000 \\
+Tyr & 2 & 2 & 4 & 0.111 \\
+Val & 4 & 4 & 11 & 0.333 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Correlation summary (Spearman $\rho$; AA classes only):
+\begin{center}
+\scriptsize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.10}
+\begin{tabular}{l r r r r r r}
+\toprule
+pair & $\rho(\mu^\ast)$ & rank$_{24}$ & min$_{24}$ & max$_{24}$ & null mean$\pm$sd & $p_{\mathrm{null}}$ \\
+\midrule
+degeneracy vs unique $w$ & 0.999 & 8/24 & 0.988 & 1.000 & 0.980$\pm$0.018 & 0.1587 \\
+degeneracy vs weighted basin & 0.894 & 18/24 & 0.875 & 0.948 & 0.942$\pm$0.010 & 0.9959 \\
+robustness vs unique $w$ & 0.941 & 13/24 & 0.937 & 0.948 & 0.588$\pm$0.151 & $<10^{-4}$ \\
+robustness vs weighted basin & 0.861 & 15/24 & 0.806 & 0.897 & 0.556$\pm$0.158 & 0.0029 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent Null details: encoding-null over 24 two-bit encodings; code-null is 20000 degeneracy-preserving random codes (seed=0), two-sided empirical $p$.
+
