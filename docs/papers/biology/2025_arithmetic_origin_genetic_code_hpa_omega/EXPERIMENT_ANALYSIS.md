@@ -342,6 +342,8 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
+- 2026-01-18 — **CLAIMED**: `ISA-P2` Ribo-seq overlay with ISA features（在 raw-read BAM pausing pipeline 上加入 stop-family ISA 特征（stop 的 sector/$\\Delta_6$ 与 stop+2nt 的 $m=10\\to6$ anchor），并按这些特征对 pause score 做分层/交互检验；输出可引用 LaTeX fragment；纳入 `scripts/run_all.py`；CPU 优先，必要时再用 A40）。Branch: `paper-bio`.
+
 - 2026-01-18 — **COMPLETED**: `ISA-B2` Stop instruction family (“OpCode + microcode” stratification)（在 RefSeq terminal stop windows 上把分组从 {UAA,UAG,UGA} 升级为 control-feature 组合（boundary/sector, $V$, $\\Delta$）以及 stop+2nt 的 $m=10\\to m=6$ anchor（复用 `H2-8` 的 refinement 计算）；输出分层后的 $U_{\\mathrm{after}}/\\Delta U$ 统计与 effect sizes，并产出 high/low 候选窗口集合（服务 W1 reporter library）；输出 LaTeX fragment 并写入 paper；纳入 `scripts/run_all.py`）。Branch: `paper-bio`.
   - Result (2026-01-18): 新增 `scripts/exp_stop_instruction_family_stratification.py` 生成 `sections/generated/stop_instruction_family_stratification.tex`（已写入 appendix：`sections/appendices/04_generated_tables.tex`）。μ* 下 stop-family 控制特征：UAA 为 boundary 且 $\\Delta_6=34$；UAG 为 cyclic 且 $\\Delta_6=34$；UGA 为 cyclic 且 $\\Delta_6=55$。
   - Result (2026-01-18): 在 RefSeq reporter-candidate windows（k=10）上，stop+2nt 的 boundary-anchor（$m=10\\to6$）在 low\_after/low\_diff 组显著更常见（例如 UAA: high\_after 0.075 vs low\_after 0.55；UGA: high\_after 0.0 vs low\_after 0.25），且 UGA 的 boundary-anchor 仅落在 $u=\\texttt{100101}$。Recoding sites 复现：Sec(UGA) boundary rate 0.0718 (64/891)，且同样仅为 $u=\\texttt{100101}$。
