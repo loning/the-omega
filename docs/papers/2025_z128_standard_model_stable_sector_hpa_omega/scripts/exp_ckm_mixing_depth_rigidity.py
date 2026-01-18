@@ -7,7 +7,7 @@ dimensionless protocol amplitudes and search for a low-complexity
 representation in the golden-resolution coordinate.
 
 Candidate family (bounded by B):
-  - |V_us|  := 1/sqrt(m), where 1 <= m <= min(B, V_max) and V_max = max_{w in X6} V(w).
+  - |V_us|  := 1/sqrt(d), where 1 <= d <= min(B, V_max) and V_max = max_{w in X6} V(w).
   - |V_cb|  := phi^{-k23/2}, where 1 <= k23 <= 2B.
   - |V_ub|  := phi^{-k13/2}, where 1 <= k13 <= 2B.
 
@@ -38,7 +38,7 @@ LOG_PHI = math.log(PHI)
 @dataclass(frozen=True)
 class BestTriple:
     B: int
-    m: int
+    d: int
     k23: int
     k13: int
     max_abs_log_err: float
@@ -60,14 +60,14 @@ def abs_log_ratio(pred: float, ref: float) -> float:
 
 
 def triple_objective(
-    m: int,
+    d: int,
     k23: int,
     k13: int,
     vus_ref: float,
     vcb_ref: float,
     vub_ref: float,
 ) -> Tuple[float, float]:
-    vus = 1.0 / math.sqrt(float(m))
+    vus = 1.0 / math.sqrt(float(d))
     vcb = PHI ** (-0.5 * float(k23))
     vub = PHI ** (-0.5 * float(k13))
     e12 = abs_log_ratio(vus, vus_ref)
@@ -83,21 +83,21 @@ def best_triple_at_B(
     vub_ref: float,
     vmax: int,
 ) -> BestTriple:
-    best: Tuple[float, float, int, int, int] | None = None  # (maxe, sume, comp, m, k23, k13)
-    m_max = min(B, vmax)
+    best: Tuple[float, float, int, int, int] | None = None  # (maxe, sume, comp, d, k23, k13)
+    d_max = min(B, vmax)
     k_max = 2 * B
-    for m in range(1, m_max + 1):
+    for d in range(1, d_max + 1):
         for k23 in range(1, k_max + 1):
             for k13 in range(1, k_max + 1):
-                maxe, sume = triple_objective(m, k23, k13, vus_ref, vcb_ref, vub_ref)
-                comp = m + k23 + k13
-                cand = (maxe, sume, comp, m, k23, k13)
+                maxe, sume = triple_objective(d, k23, k13, vus_ref, vcb_ref, vub_ref)
+                comp = d + k23 + k13
+                cand = (maxe, sume, comp, d, k23, k13)
                 if best is None or cand < best:
                     best = cand
     if best is None:
         raise AssertionError("No candidates enumerated.")
-    maxe, sume, _comp, m, k23, k13 = best
-    return BestTriple(B=B, m=m, k23=k23, k13=k13, max_abs_log_err=maxe, sum_abs_log_err=sume)
+    maxe, sume, _comp, d, k23, k13 = best
+    return BestTriple(B=B, d=d, k23=k23, k13=k13, max_abs_log_err=maxe, sum_abs_log_err=sume)
 
 
 def write_rows(
@@ -115,14 +115,14 @@ def write_rows(
     rig_rows: List[str] = []
     for b in best_list:
         rig_rows.append(
-            f"{b.B} & $(m,k_{{23}},k_{{13}})=({b.m},{b.k23},{b.k13})$ & {b.max_abs_log_err:.6f} & {b.sum_abs_log_err:.6f} \\\\"
+            f"{b.B} & $(d,k_{{23}},k_{{13}})=({b.d},{b.k23},{b.k13})$ & {b.max_abs_log_err:.6f} & {b.sum_abs_log_err:.6f} \\\\"
         )
     rig_rows.append("\\bottomrule")
     (out_dir / "ckm_mixing_rigidity_rows.tex").write_text("\n".join(rig_rows), encoding="utf-8")
 
     # Final predicted values at B=20.
     b20 = best_list[-1]
-    vus = 1.0 / math.sqrt(float(b20.m))
+    vus = 1.0 / math.sqrt(float(b20.d))
     vcb = PHI ** (-0.5 * float(b20.k23))
     vub = PHI ** (-0.5 * float(b20.k13))
     # Signed log ratios (diagnostic).
@@ -137,7 +137,7 @@ def write_rows(
 
     rows: List[str] = []
     rows.append(
-        f"$|V_{{us}}|$ & {vus_ref:.6g} & $1/\\sqrt{{{b20.m}}}$ & {vus:.9g} & {r_vus:.3f} & {lr_vus:.6f} \\\\"
+        f"$|V_{{us}}|$ & {vus_ref:.6g} & $1/\\sqrt{{{b20.d}}}$ & {vus:.9g} & {r_vus:.3f} & {lr_vus:.6f} \\\\"
     )
     rows.append(
         f"$|V_{{cb}}|$ & {vcb_ref:.6g} & $\\varphi^{{-{b20.k23}/2}}$ & {vcb:.9g} & {r_vcb:.3f} & {lr_vcb:.6f} \\\\"

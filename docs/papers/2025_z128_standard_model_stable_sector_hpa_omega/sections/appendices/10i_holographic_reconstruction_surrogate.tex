@@ -1,0 +1,121 @@
+\section{Holographic reconstruction as quantum error correction (PT in a controlled subclass)}
+\label{app:holo_reconstruction_surrogate}
+
+\paragraph{Purpose.}
+\AuditTag This appendix provides a theorem-facing formulation of ``bulk reconstruction from a boundary region'' that is compatible
+with the manuscript's finite-resolution algebra/state base and the tensor-product locality subclass.
+The content is deliberately finite-dimensional: reconstruction is phrased as quantum error correction for erasure/noise channels,
+and reported in the master format of Appendix~\ref{app:holo_scope_contract}.
+
+\subsection{Holo4: setup (regions, erasure, and code subspaces)}
+\label{subsec:holo4_setup}
+
+\paragraph{Tensor-product carrier.}
+\MathTag Work in the tensor-product readout subclass of Appendix~\ref{app:protocol_subclass_tensor_net}.
+Fix a screen region $R\subseteq S_n$ and its complement $R^c:=S_n\setminus R$.
+Model the boundary Hilbert space as a tensor product
+\[
+\mathcal{H}_{\partial}\ \cong\ \mathcal{H}_{R}\otimes \mathcal{H}_{R^c}.
+\]
+The associated boundary algebras are $\mathcal{A}_{\partial}(R)\cong\mathcal{B}(\mathcal{H}_R)$ and
+$\mathcal{A}_{\partial}(R^c)\cong\mathcal{B}(\mathcal{H}_{R^c})$ (Appendix~\ref{app:holo_boundary_algebra_from_screens}).
+
+\begin{definition}[Erasure channel on the complement]
+\label{def:holo_erasure_channel}
+\MathTag The \emph{erasure channel} on $R^c$ is the CPTP map
+\[
+\mathcal{E}_{R^c}:\mathcal{B}(\mathcal{H}_{R}\otimes\mathcal{H}_{R^c})\to \mathcal{B}(\mathcal{H}_{R})
+\]
+defined in the Schr\"odinger picture by partial trace:
+$\mathcal{E}_{R^c}(\rho)=\Tr_{R^c}(\rho)$.
+\end{definition}
+
+\begin{definition}[Code subspace and logical algebra]
+\label{def:holo_code_and_logical_algebra}
+\MathTag A \emph{code subspace} is a subspace $\mathcal{H}_{\mathrm{code}}\subseteq \mathcal{H}_{\partial}$.
+The associated \emph{logical algebra} is $\mathcal{B}(\mathcal{H}_{\mathrm{code}})$ acting on $\mathcal{H}_{\mathrm{code}}$.
+We say a bulk reportable observable $\mathcal{O}$ is \emph{represented as a logical operator} if it is realized as an element of
+$\mathcal{B}(\mathcal{H}_{\mathrm{code}})$ under the chosen embedding.
+\end{definition}
+
+\subsection{Holo4: exact reconstruction from a region (PT theorem)}
+\label{subsec:holo4_exact_reconstruction}
+
+\begin{theorem}[Exact erasure-correctability and reconstruction on $R$]
+\label{thm:holo_erasure_qec_equivalences}
+\MathTag Let $\mathcal{H}_{\mathrm{code}}\subseteq \mathcal{H}_R\otimes\mathcal{H}_{R^c}$ be a code subspace.
+The following are equivalent:
+\begin{enumerate}
+\item \textbf{Exact correctability of erasure on $R^c$.}
+There exists a CPTP recovery map $\mathcal{D}_R:\mathcal{B}(\mathcal{H}_R)\to \mathcal{B}(\mathcal{H}_R\otimes\mathcal{H}_{R^c})$
+such that for all code states $\rho$ supported on $\mathcal{H}_{\mathrm{code}}$,
+\[
+(\mathcal{D}_R\circ \mathcal{E}_{R^c})(\rho)=\rho.
+\]
+\item \textbf{Indistinguishability on the erased region.}
+For all code states $\rho,\sigma$ supported on $\mathcal{H}_{\mathrm{code}}$,
+\[
+\Tr_{R}(\rho)=\Tr_{R}(\sigma)\quad\text{as states on }\mathcal{H}_{R^c}.
+\]
+\item \textbf{Reconstruction of all logical operators on $R$.}
+For every logical operator $O\in\mathcal{B}(\mathcal{H}_{\mathrm{code}})$, there exists an operator
+$\widetilde O_R\in\mathcal{B}(\mathcal{H}_R)$ such that on the code subspace,
+\[
+O\ =\ P_{\mathrm{code}}\,(\widetilde O_R\otimes \ind_{R^c})\,P_{\mathrm{code}},
+\]
+where $P_{\mathrm{code}}$ is the orthogonal projector onto $\mathcal{H}_{\mathrm{code}}$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+This is standard finite-dimensional quantum error correction for erasure channels.
+$(1)\Leftrightarrow(2)$ is the characterization of exact correctability of an erased subsystem by decoupling/indistinguishability.
+$(2)\Leftrightarrow(3)$ follows from the commutant characterization of correctable algebras for erasure and the existence of a
+Heisenberg-picture reconstruction supported on the complementary subsystem.
+For the manuscript's purposes, the theorem is used only in the direction ``(2) implies the existence of a reconstruction on $R$''.
+Appendix~\ref{app:quantum_channels_cptp_stinespring} records the CPTP/Stinespring setting used throughout.
+\end{proof}
+
+\subsection{Holo4: approximate reconstruction in the manuscript's error-budget format}
+\label{subsec:holo4_approximate_reconstruction_budget}
+
+\paragraph{Approximate version (interface form).}
+\InterfaceTag The manuscript uses a windowed finite-observable registry and explicit error budgets.
+Accordingly, holographic reconstruction claims are reported in the master format
+of Appendix~\ref{subsec:holo0_allowed_claim_format}:
+for a declared family of bulk reportables $\mathfrak{Obs}_{\le N}$ and a declared region $R$,
+there exists a reconstruction map $\mathcal{R}_R$ on $\mathcal{A}_{\partial}(R)$ such that
+\[
+\forall\,\mathcal{O}\in\mathfrak{Obs}_{\le N},\qquad
+\Bigl|\langle \mathcal{O}\rangle_{\mathrm{bulk}}-\langle \mathcal{R}_R(\mathcal{O})\rangle_{\partial}\Bigr|
+\le \epsilon_N(m,n,K).
+\]
+The role of Theorem~\ref{thm:holo_erasure_qec_equivalences} is to provide a PT-level carrier in controlled subclasses
+where $\epsilon_N$ can be set to $0$ (exact) or bounded by an auditable norm-distance surrogate.
+
+\subsection{Holo4: relation to black-hole record surrogates (audit only)}
+\label{subsec:holo4_relation_to_bh_surrogates}
+
+\paragraph{Audit note.}
+\AuditTag Appendices~\ref{app:bh_page_surrogate} and \ref{app:bh_island_equiv} provide toy recovery surrogates
+on an explicitly declared external record algebra.
+They are intended as auditable artifacts for the narrative ``reconstruction as recovery'';
+they do not serve as premises for the theorem-level reconstruction statements above.
+
+\paragraph{Deterministic audit fragment (carrier and gates).}
+\AuditTag The following generated fragment provides a compact carrier-and-gate checklist for the reconstruction layer:
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.44\textwidth} p{0.22\textwidth} p{0.28\textwidth}}
+\toprule
+item & status & evidence pointer \\
+\midrule
+\input{sections/generated/holo_reconstruction_surrogate_rows.tex}%
+\end{tabular}
+\caption{Deterministic reconstruction-carrier audit rows. Rows are generated by \texttt{scripts/exp\_holo\_reconstruction\_surrogate\_audit.py}.}
+\label{tab:holo_reconstruction_surrogate_audit}
+\end{table}
+\input{sections/generated/holo_reconstruction_surrogate_summary.tex}%

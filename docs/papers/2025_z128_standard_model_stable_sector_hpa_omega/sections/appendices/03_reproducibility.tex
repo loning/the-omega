@@ -13,105 +13,736 @@ The scripts reproduce:
 \begin{itemize}
 \item enumeration of $X_6$ and verification $|X_6|=21$ (Lemma~\ref{lem:xm_fib});
 \item Hamming-weight distribution of $X_6$ and the $18\oplus 3$ cyclic/boundary split (Proposition~\ref{prop:cyc_bdry_6});
+\item a tick-trap protocol-horizon illustration fragment (Appendix~\ref{app:protocol_horizon_tick_trap});
+\item a leakage-kernel demo fragment and a $m=6$ trap/exit audit table that reports exit-channel decompositions into the three $m=6$ boundary channels (Appendix~\ref{app:leakage_kernel});
+\item a low-leakage phase signature fragment (Appendix~\ref{app:protected_low_leakage_phase});
 \item computation of $\mathrm{Fold}_6(N)$ for $N=0,\dots,63$, including surjectivity and the degeneracy histogram (Theorem~\ref{thm:fold6_stats});
 \item generation of a complete Fold$_6$ table (Appendix~\ref{app:fold6_full_table});
-\item computation of the Hilbert chirality index $\chi$ at order $n=3$ and its sign flips under reflection and traversal reversal (Proposition~\ref{prop:chi_flip}).
-\item generation of the closed $21\to$SM labeling table (Table~\ref{tab:sm_labeling_table});
+\item a bounded counterfactual fold-family sensitivity sweep at $m=6$ (Appendix~\ref{app:fold_family_sensitivity}).
+\item computation of the Hilbert chirality index $\chi_H$ at order $n=3$ and its sign flips under reflection and traversal reversal (Proposition~\ref{prop:chi_flip}).
+\item an addressing-basis audit (Hilbert vs.\ a row-major counterfactual) that makes the tick-first locality choice explicit at the minimal anchor (Table~\ref{tab:addressing_selection}).
+\item a bounded sensitivity sweep for gauge-factor selection under alternative complexity labels (Appendix~\ref{app:gauge_complexity_sensitivity}).
+\item a holonomy-driven bounded candidate-family closure certificate for the three-factor gauge identification (Appendix~\ref{app:gauge3_holonomy_candidate_closure}).
+\item a coarse-grained scalar parity check on the $n=3$ Hilbert grid that contrasts the parity-odd chirality index with parity-even block-averaged intrinsic observables (Table~\ref{tab:scalar_coarse_grain}).
+\item \AuditTag generation of uplift microtexture scalar fields at $m=10$ and a Higgs-like scalar-doublet representative displayed on both a balanced $2$D Hilbert screen and a $3$D Hilbert screen, together with machine-checkable JSON certificates (Appendix~\ref{app:scalar_interface_audits}, Section~\ref{subsec:higgs_doublet_uplift_geometry}; Figures~\ref{fig:higgs_doublet_structure_m10_2d} and \ref{fig:higgs_doublet_structure_m10_3d}).
+\item \AuditTag a bounded-family CAP closure of the scalar uplift quantum numbers that selects the Standard Model Higgs assignment $(SU(3),SU(2))_Y=(1,2)_{1/2}$ as the unique minimal candidate admitting the standard renormalizable Yukawa structures (Appendix~\ref{app:scalar_interface_audits}, Table~\ref{tab:higgs_quantum_numbers_cap_closure}).
+\item \AuditTag a renormalizable Yukawa-feasibility certificate (operator-family existence and bounded minimal failure points) for the CAP-closed Higgs assignment and the closed fermion multiplets (Appendix~\ref{app:yukawa_beta_protocol_closure}, Table~\ref{tab:higgs_yukawa_feasibility}).
+\item \AuditTag a bounded-family CAP closure of the electroweak scalar potential form (Mexican hat) together with the induced interface parameter dictionary $(v,\mu^2,\lambda)$ (Appendix~\ref{app:scalar_interface_audits}, Table~\ref{tab:higgs_ewsb_potential_closure}).
+\item \AuditTag a bounded-family robustness sweep for the uplift-derived Higgs-like doublet pairing across addressing conventions, block scales, and sparse-handling counterfactuals (Appendix~\ref{app:scalar_interface_audits}, Table~\ref{tab:higgs_doublet_robustness_sweep}).
+\item \AuditTag a compact falsifiability-gate registry for the Higgs uplift module, pointing to the machine-checkable certificates (2D/3D pairing, robustness envelope, and CAP-closures) and their downgrade cues (Section~\ref{sec:falsifiability}, Table~\ref{tab:higgs_falsifiability_gates}).
+\item reproduction of the closed $21\to$SM labeling table (Table~\ref{tab:sm_labeling_table}), whose underlying labeling map is uniquely fixed by Theorem~\ref{thm:labeling_unique} once the declared ordering keys are chosen (Remark~\ref{rem:labeling_script_status});
 \item generation of the mass-spectrum closure table (Table~\ref{tab:mass_spectrum}).
 \item bounded-coefficient rigidity search for the depth ansatz (Table~\ref{tab:mass_depth_rigidity}).
 \item generation of a PMNS mixing-angle closure and its induced matrix tables (Section~\ref{sec:pmns_neutrino_closure}).
 \item generation of a resolution-threshold staircase table for Fibonacci-structured uplifts (Section~\ref{subsec:p3_resolution_jumps}).
+\item generation of a balanced-chain kernel RG-flow table that summarizes coarse-grained intrinsic scalars along $m=2n$ (Table~\ref{tab:kernel_rg_flow_balanced}).
+\item generation of a protocol RG operator sanity table for the explicit $16\times 16$ block-quotient operator $F_n$ (Table~\ref{tab:kernel_rg_operator_sanity}).
+\item a predict-versus-recompute audit that quantifies a backreaction/refinement gap for the protocol RG operator across $n\to n+1$ (Table~\ref{tab:kernel_rg_operator_backreaction}).
+\item an error-budget decomposition certificate for the protocol RG operator gap (Table~\ref{tab:kernel_rg_operator_error_budget}).
+\item a spectral-gap/mixing diagnostic for the protocol RG operator (Table~\ref{tab:kernel_rg_operator_spectral_gap}).
+\item a minimal 2-point readout library instance via cross-observable correlations on the $16$-block quotient (Table~\ref{tab:kernel_rg_operator_covariance}).
+\item a D4 layout covariance audit that checks block-permutation conjugacy of the protocol RG operator under screen symmetries (Table~\ref{tab:kernel_rg_operator_layout_sensitivity}).
+\item a resolvent-trace audit for one-point and two-point readouts on the protocol RG operator (Table~\ref{tab:kernel_rg_resolvent_trace_audit}).
+\item \AuditTag a minimal Hilbert-screen lattice-QFT Gaussian anchor computed from the audited $16\times 16$ protocol RG operator, reporting $\Tr(K^{-1})$ and $\log\det K$ (Appendix~\ref{app:lattice_qft_bridge_hilbert_screen}, Table~\ref{tab:lattice_propagator_anchor}).
+\item \AuditTag 2D/3D internal-dimension unfolding figures that visualize uplift microtexture as an internal fiber over fixed screen sites (Appendix~\ref{app:lattice_qft_bridge_hilbert_screen}, Figures~\ref{fig:internal_dimension_fractal_unfolding_2d} and \ref{fig:internal_dimension_fractal_unfolding_3d}).
+\item \AuditTag an adaptive-dimension Hilbert-face gallery that visualizes the same internal-fiber field on a capacity-feasible boundary-face encoding (Appendix~\ref{app:lattice_qft_bridge_hilbert_screen}, Figure~\ref{fig:internal_dimension_hilbert_face_gallery}).
+\item \AuditTag a 3-layer 3D Hilbert tower that strings a field-ocean layer to two particle-internal layers and a deeper zoom layer by a single continuous Hilbert spine (Appendix~\ref{app:lattice_qft_bridge_hilbert_screen}, Figure~\ref{fig:internal_dimension_hilbert_tower_3d}).
+\item a weighted protocol RG operator pole-barrier summary driven by the folding potential $\varphi_n(k)=\log g_{2n}(\mathrm{Fold}_{2n}(k))$ (Table~\ref{tab:kernel_rg_weighted_pole_barrier}).
+\item a Doob/Markov normalization audit for the weighted protocol RG operator and its pressure proxy (Tables~\ref{tab:kernel_rg_weighted_doob} and \ref{tab:kernel_rg_weighted_pressure}).
+\item a covariant (S4) transport lift certificate at the anchor, auditing gauge covariance of a block-level covariant transport operator (Table~\ref{tab:kernel_rg_covariant_transport_anchor}).
+\item a covariant protocol RG operator audit at the anchor, constructing a finite-dimensional $F_3^\nabla$ with internal slot state induced by Fold$_8$ fiber degeneracy and reporting its mixing diagnostics (Table~\ref{tab:kernel_rg_operator_covariant_spectral_gap}).
+\item a covariant RG reduction/decomposition audit, certifying that the scalar $F_3$ is the trivial-representation reduction of $F_3^\nabla$ and that the lifted slot-constant subspace is invariant (Table~\ref{tab:kernel_rg_operator_covariant_reduction}).
+\item a covariant RG gauge covariance audit at the anchor, certifying construction-level gauge conjugacy $F_3^{\nabla,g}=G F_3^\nabla G^{-1}$ and invariance of the scalar reduction (Table~\ref{tab:kernel_rg_operator_covariant_gauge_audit}).
+\item an internal closure triplet audit (single artifact): internal orthogonal conjugacy, gauge-invariant trace readout invariance, and the quadratic resolvent-trace identity (Table~\ref{tab:kernel_rg_operator_covariant_internal_closure_triplet}).
+\item an internal singular-value contraction certificate in internal orthonormal coordinates (Table~\ref{tab:kernel_rg_operator_covariant_internal_sigma}).
+\item weighted covariant RG operator audits: pole-barrier summary, Doob normalization, and pressure proxy (Tables~\ref{tab:kernel_rg_weighted_covariant_pole_barrier}--\ref{tab:kernel_rg_weighted_covariant_pressure}).
+\item a finite operator-evaluation audit for uplift refinement multiplicities and $\pi$-boundary subsets (Table~\ref{tab:ext_boundary_operator_check}).
+\item a numeric certificate for the folding entropy decomposition identity (Table~\ref{tab:folding_entropy_decomposition}).
+\item a weighted-pressure and pole-barrier toy sweep used for audit-facing transfer-operator normalization (Tables~\ref{tab:weighted_pressure_sweep} and \ref{tab:pole_barrier_mode_toy}).
+\item generation of a discrete cosmology energy-budget fit fragment and its visualization (Appendix~\ref{app:cosmology_resolution_flow}).
+\item generation of a boundary--Planck capacity calibration fragment and a capacity-calibrated uplift-path table (Appendix~\ref{app:bh_planck_capacity_calibration}).
+\item generation of a budget-triggered $\chi$-horizon occupancy audit table (capacity-only; protocol-native) (Appendix~\ref{app:generated_tables}, Table~\ref{tab:chi_horizon_budget_occupancy}).
+\item \AuditTag optional visualization of the capacity-only horizon-occupancy phase diagram (Figure~\ref{fig:chi_horizon_occupancy_phase} if present), generated by \path{scripts/exp_chi_horizon_occupancy_phase_diagram.py} and written to \path{figures/chi_horizon_occupancy_phase.png}.
+\item \AuditTag optional full-fusion metrics-only scan of the trapping transition proxy $\Delta\tau=\tau_{\mathrm{trap}}-\tau_{\mathrm{free}}$ versus occupancy $f_{\mathrm{hor}}$ (Figure~\ref{fig:full_fusion_trapping_transition} if present), generated by \path{scripts/exp_full_fusion_trapping_transition_scan.py} and written to \path{figures/full_fusion_trapping_transition.png} and \path{sections/generated/full_fusion_trapping_transition_scan_rows.tex}.
+\item \AuditTag optional deterministic changepoint estimate $f^\star_{\mathrm{hor}}$ for the trapping transition scan, generated by \path{scripts/exp_full_fusion_trapping_transition_changepoint.py} and written to \path{sections/generated/full_fusion_trapping_transition_changepoint_summary.tex}.
+\item \AuditTag optional deterministic sensitivity sweep for the trapping-transition changepoint across a small $(I_{\mathrm{obs}},c)$ family, generated by \path{scripts/exp_full_fusion_trapping_transition_sensitivity.py} and written to \path{sections/generated/full_fusion_trapping_transition_sensitivity_rows.tex} and \path{sections/generated/full_fusion_trapping_transition_sensitivity_summary.tex}.
+\item a K4 delay/time-dictionary audit fragment over a small vendored gravitational time-delay channel registry (Appendix~\ref{app:k4_delay_audit}).
+\item a K4 scattering phase to delay audit fragment (benchmark interface) that turns a vendored phase-shift point cloud into a delay proxy (Appendix~\ref{app:k4_scattering_phase_delay_audit}).
+\item a K4 leakage audit fragment against a minimal vendored lifetime mini-set (Appendix~\ref{app:k4_pdg_leakage_audit}).
+\item a K4 exit-weight to $\alpha$ audit fragment (Appendix~\ref{app:k4_alpha_link_audit}).
+\item generation of proxy and direct $\gamma$ audit artifacts (tables, stability sweeps, diagnostics lines, figures, and a finite kernel-family sensitivity sweep for the direct rotation-curve calibration) for Appendix~\ref{app:gamma_crossobs_consistency}.
 \item generation of finite-resolution connection/holonomy audit tables on the $n=3$ Hilbert grid (Section~\ref{sec:protocol_connections_holonomy}).
-\item generation of uncertainty-robustness and counterfactual-baseline audit tables (Appendix~\ref{app:audit_uncertainty} and Appendix~\ref{app:audit_counterfactual}).
+\item generation of uncertainty-robustness audit tables (Appendix~\ref{app:audit_uncertainty}).
+\item generation of counterfactual baseline audit tables (Appendix~\ref{app:audit_counterfactual}).
+\item generation of systematic aggregation/multiplicity baselines for the $\alpha_{\mathrm{em}}^{-1}$ and $J$ normalization dictionaries (Section~\ref{subsec:alpha_impedance} and Section~\ref{subsec:cp_jarlskog}).
+\item generation of the quantitative rigidity-target summary table used in the main text (Table~\ref{tab:quant_summary}).
+\item generation of electroweak kernel-dependent audit tables: a resolution-weighted sweep under a pushforward kernel and a finite kernel-family sweep at the anchor (Appendix~\ref{app:kernel_family_cap_closure}).
 \end{itemize}
 
 \subsection{Main entry points}
 \begin{sloppypar}
 \begin{itemize}
-\item \path{run_all.py}: runs the full deterministic pipeline in a fixed order and checks that the expected generated fragments exist.
-\item \path{exp_x6_enumeration.py}: enumerates $X_6$ and writes \path{sections/generated/x6_*.tex}.
-\item \path{exp_xm_enumeration.py}: enumerates $X_m$ for an $m$-sweep and writes:
+\item \path{scripts/run_all.py}: runs the full deterministic pipeline in a fixed order and checks that the expected generated fragments exist.
+\item \path{scripts/exp_x6_enumeration.py}: enumerates $X_6$ and writes \path{sections/generated/x6_*.tex}.
+\item \path{scripts/exp_xm_enumeration.py}: enumerates $X_m$ for an $m$-sweep and writes:
 \begin{itemize}
 \item \path{sections/generated/xm_sweep_rows.tex}
 \end{itemize}
-\item \path{exp_fold6_stats.py}: computes Fold$_6$ statistics and writes \path{sections/generated/fold6_*.tex}.
-\item \path{exp_foldm_stats.py}: computes Fold$_m$ statistics for an $m$-sweep and writes:
+\item \path{scripts/exp_fold6_stats.py}: computes Fold$_6$ statistics and writes \path{sections/generated/fold6_*.tex}.
+\item \path{scripts/exp_fold_family_sensitivity.py}: generates a bounded counterfactual fold-family sensitivity fragment:
+\begin{itemize}
+\item \path{sections/generated/fold_family_sensitivity_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_foldm_stats.py}: computes Fold$_m$ statistics for an $m$-sweep and writes:
 \begin{itemize}
 \item \path{sections/generated/foldm_sweep_rows.tex}
 \end{itemize}
-\item \path{exp_hilbert_chirality_index.py}: computes $\chi$ on the $n=3$ Hilbert path and writes \path{sections/generated/hilbert_chi_summary.tex}.
-\item \path{exp_hilbert_chi_sweep.py}: sweeps $\chi$ across multiple Hilbert orders and writes:
+\item \path{scripts/exp_fractal_kernel_summary.py}: generates a compact kernel $m$-sweep summary (admissible counts, $\pi$-split, and folding maximal degeneracy) and writes:
+\begin{itemize}
+\item \path{sections/generated/fractal_kernel_sweep_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_kernel_mu_r_bridge_demo.py}: generates an end-to-end staircase demo table (threshold selection $m_{\mathrm{eff}}(\mu)$ and folding-degeneracy summaries at $\mu_{\mathrm{th}}(m)$) and writes:
+\begin{itemize}
+\item \path{sections/generated/kernel_mu_r_bridge_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_kernel_rg_flow_balanced_chain.py}: generates a balanced-chain kernel RG-flow summary table (coarse-grained intrinsic scalars on the Hilbert screen along $m=2n$) and writes:
+\begin{itemize}
+\item \path{sections/generated/kernel_rg_flow_balanced_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_kernel_rg_operator_matrix_audit.py}: builds the explicit $16\times 16$ protocol RG operator $F_n$ and writes:
+\begin{itemize}
+\item \path{sections/generated/kernel_rg_operator_sanity_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_kernel_rg_operator_predict_vs_recompute.py}: compares $F_n$ prediction against recomputation at $n+1$ and writes:
+\begin{itemize}
+\item \path{sections/generated/kernel_rg_operator_backreaction_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_kernel_rg_operator_error_bound_certificate.py}: decomposes the predict-versus-recompute gap into recompute and coarse terms and writes:
+\begin{itemize}
+\item \path{sections/generated/kernel_rg_operator_error_budget_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_kernel_rg_operator_spectral_gap.py}: reports a spectral-gap/mixing diagnostic for $F_n$ and writes:
+\begin{itemize}
+\item \path{sections/generated/kernel_rg_operator_spectral_gap_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_kernel_rg_operator_covariance_audit.py}: reports cross-observable correlations (a minimal 2-point library instance) and writes:
+\begin{itemize}
+\item \path{sections/generated/kernel_rg_operator_covariance_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_kernel_rg_operator_layout_sensitivity.py}: audits D4 layout covariance (block-permutation conjugacy) and writes:
+\begin{itemize}
+\item \path{sections/generated/kernel_rg_operator_layout_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_kernel_rg_resolvent_trace_audit.py}: audits one-point and two-point resolvent-trace identities for $F_n$ and writes:
+\begin{itemize}
+\item \path{sections/generated/kernel_rg_resolvent_trace_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_lattice_propagator_anchor.py}: builds a minimal lattice-QFT Gaussian anchor kernel from $F_n$ and writes:
+\begin{itemize}
+\item \path{sections/generated/lattice_propagator_anchor_rows.tex}
+\item \path{sections/generated/lattice_propagator_anchor_summary.tex}
+\end{itemize}
+\item \path{scripts/fig_internal_dimension_fractal_unfolding_2d.py}: generates a 2D internal-dimension unfolding visualization (uplift microtexture as an internal fiber) and writes:
+\begin{itemize}
+\item \path{figures/adaptive/lattice_qft_bridge/internal_dimension_fractal_unfolding_2d.png}
+\item \path{figures/adaptive/lattice_qft_bridge/data/internal_dimension_fractal_unfolding_2d.json}
+\end{itemize}
+\item \path{scripts/fig_internal_dimension_fractal_unfolding_3d.py}: generates a 3D-screen companion visualization and writes:
+\begin{itemize}
+\item \path{figures/adaptive/lattice_qft_bridge/internal_dimension_fractal_unfolding_3d.png}
+\item \path{figures/adaptive/lattice_qft_bridge/data/internal_dimension_fractal_unfolding_3d.json}
+\end{itemize}
+\item \path{scripts/fig_internal_dimension_hilbert_face_gallery.py}: generates an adaptive-dimension Hilbert-face field gallery (internal fiber on a boundary-face encoding) and writes:
+\begin{itemize}
+\item \path{figures/adaptive/lattice_qft_bridge/internal_dimension_hilbert_face_gallery.png}
+\item \path{figures/adaptive/lattice_qft_bridge/data/internal_dimension_hilbert_face_gallery.json}
+\end{itemize}
+\item \path{scripts/fig_internal_dimension_hilbert_tower_3d.py}: generates a 3-layer 3D Hilbert tower (field ocean $\to$ two particle internals $\to$ deeper zoom) and writes:
+\begin{itemize}
+\item \path{figures/adaptive/lattice_qft_bridge/internal_dimension_hilbert_tower_3d.png}
+\item \path{figures/adaptive/lattice_qft_bridge/data/internal_dimension_hilbert_tower_3d.json}
+\end{itemize}
+\item \path{scripts/exp_kernel_rg_weighted_operator_pole_barrier.py}: builds weighted operators $\widehat F_n(t)$ and writes:
+\begin{itemize}
+\item \path{sections/generated/kernel_rg_weighted_pole_barrier_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_kernel_rg_weighted_doob_normalization.py}: computes Doob-normalized Markov kernels on Perron supports and writes:
+\begin{itemize}
+\item \path{sections/generated/kernel_rg_weighted_doob_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_kernel_rg_weighted_pressure_summary.py}: sweeps $t$ and reports $\log\rho(\widehat F_n(t))$ and writes:
+\begin{itemize}
+\item \path{sections/generated/kernel_rg_weighted_pressure_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_kernel_rg_covariant_transport_anchor.py}: builds an $S_4$-covariant transport lift on the $4\times4$ block quotient at the anchor and writes:
+\begin{itemize}
+\item \path{sections/generated/kernel_rg_covariant_transport_anchor_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_kernel_rg_operator_covariant_spectral_gap.py}: builds the covariant protocol RG operator $F_3^\nabla$ at the anchor and writes:
+\begin{itemize}
+\item \path{sections/generated/kernel_rg_operator_covariant_spectral_gap_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_kernel_rg_operator_covariant_reduction_audit.py}: audits the reduction $S F_3^\nabla E = F_3$ and the slot-constant subspace invariance, and writes:
+\begin{itemize}
+\item \path{sections/generated/kernel_rg_operator_covariant_reduction_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_kernel_rg_operator_covariant_gauge_audit.py}: audits gauge covariance for $F_3^\nabla$ under blockwise relabelings, and writes:
+\begin{itemize}
+\item \path{sections/generated/kernel_rg_operator_covariant_gauge_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_kernel_rg_operator_covariant_internal_closure_triplet_audit.py}: audits the internal closure triplet and writes:
+\begin{itemize}
+\item \path{sections/generated/kernel_rg_operator_covariant_internal_closure_triplet_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_kernel_rg_operator_covariant_internal_singular_value.py}: estimates $\|F_{\mathrm{std}}\|_2$ in internal orthonormal coordinates and writes:
+\begin{itemize}
+\item \path{sections/generated/kernel_rg_operator_covariant_internal_sigma_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_kernel_rg_weighted_covariant_pole_barrier.py}: writes \path{sections/generated/kernel_rg_weighted_covariant_pole_barrier_rows.tex}.
+\item \path{scripts/exp_kernel_rg_weighted_covariant_doob.py}: writes \path{sections/generated/kernel_rg_weighted_covariant_doob_rows.tex}.
+\item \path{scripts/exp_kernel_rg_weighted_covariant_pressure.py}: writes \path{sections/generated/kernel_rg_weighted_covariant_pressure_rows.tex}.
+\item \path{scripts/exp_ext_boundary_operator_check.py}: audits extension multiplicities and $\pi$-boundary subsets under uplift against $2\times2$ operator-evaluation formulas and writes:
+\begin{itemize}
+\item \path{sections/generated/ext_boundary_operator_check_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_folding_entropy_decomposition.py}: generates a numeric certificate of the folding entropy decomposition identity and writes:
+\begin{itemize}
+\item \path{sections/generated/folding_entropy_decomposition_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_weighted_pressure_sweep.py}: generates a weighted-pressure toy sweep for the golden-mean transfer-matrix normalization and writes:
+\begin{itemize}
+\item \path{sections/generated/weighted_pressure_sweep_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_pole_barrier_mode_toy.py}: generates a minimal pole-barrier mode threshold toy table and writes:
+\begin{itemize}
+\item \path{sections/generated/pole_barrier_mode_toy_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_hilbert_chirality_index.py}: computes $\chi_H$ on the $n=3$ Hilbert path and writes \path{sections/generated/hilbert_chi_summary.tex}.
+\item \path{scripts/exp_addressing_selection.py}: compares Hilbert addressing to a row-major counterfactual by protocol-internal locality and computability metrics and writes:
+\begin{itemize}
+\item \path{sections/generated/addressing_selection_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_chi_horizon_budget_occupancy.py}: generates a capacity-only budget-triggered $\chi$-horizon occupancy table and writes:
+\begin{itemize}
+\item \path{sections/generated/chi_horizon_budget_occupancy_rows.tex}
+\item \path{sections/generated/chi_horizon_budget_occupancy_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_gauge_complexity_sensitivity.py}: generates a bounded sensitivity sweep for gauge-factor complexity-label choices and writes:
+\begin{itemize}
+\item \path{sections/generated/gauge_complexity_sensitivity_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_gauge3_holonomy_candidate_closure.py}: generates a holonomy-driven bounded candidate-family closure certificate for the non-abelian gauge factors in Proposition~\ref{prop:channel_to_gauge} and writes:
+\begin{itemize}
+\item \path{sections/generated/gauge3_holonomy_candidate_closure_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_hilbert_chi_sweep.py}: sweeps $\chi_H$ across multiple Hilbert orders and writes:
 \begin{itemize}
 \item \path{sections/generated/hilbert_chi_sweep_rows.tex}
 \end{itemize}
-\item \path{exp_resolution_thresholds.py}: generates a resolution-threshold staircase table fragment and (optionally) a plot:
+\item \path{scripts/exp_scalar_coarse_grain.py}: generates a coarse-grained scalar parity table fragment and writes:
+\begin{itemize}
+\item \path{sections/generated/scalar_coarse_grain_rows.tex}
+\end{itemize}
+\item \path{scripts/fig_higgs_geometry_candidates_m10.py}: generates the $m=10$ uplift microtexture scalar fields on the balanced $2$D Hilbert screen and writes:
+\begin{itemize}
+\item \path{figures/adaptive/higgs_geometry/higgs_uplift_texture_m10.png}
+\item \path{figures/adaptive/higgs_geometry/data/higgs_uplift_texture_m10.json}
+\end{itemize}
+\item \path{scripts/fig_higgs_doublet_structure_m10.py}: generates the balanced $2$D Hilbert-screen Higgs-like doublet visualization and its JSON certificate and writes:
+\begin{itemize}
+\item \path{figures/adaptive/higgs_geometry/higgs_doublet_structure_m10.png}
+\item \path{figures/adaptive/higgs_geometry/data/higgs_doublet_structure_m10.json}
+\end{itemize}
+\item \path{scripts/fig_higgs_doublet_structure_m10_3d.py}: generates the $3$D Hilbert-screen Higgs-like doublet visualization and its JSON certificate and writes:
+\begin{itemize}
+\item \path{figures/adaptive/higgs_geometry/higgs_doublet_structure_m10_3d.png}
+\item \path{figures/adaptive/higgs_geometry/data/higgs_doublet_structure_m10_3d.json}
+\end{itemize}
+\item \path{scripts/fig_higgs_quantum_field_maps_m10.py}: visualizes the Higgs uplift as protocol-level quantum fields on the balanced $2$D Hilbert screen and writes:
+\begin{itemize}
+\item \path{figures/adaptive/higgs_geometry/higgs_quantum_field_maps_m10.png}
+\item \path{figures/adaptive/higgs_geometry/higgs_quantum_field_coupling_m10.png}
+\item \path{figures/adaptive/higgs_geometry/data/higgs_quantum_field_maps_m10.json}
+\end{itemize}
+\item \path{scripts/exp_higgs_quantum_numbers_cap_closure.py}: closes the scalar uplift quantum numbers by a bounded-family CAP rule and writes:
+\begin{itemize}
+\item \path{sections/generated/higgs_quantum_numbers_closure_rows.tex}
+\item \path{sections/generated/higgs_quantum_numbers_closure_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_higgs_yukawa_feasibility_closure.py}: generates a renormalizable Yukawa-feasibility certificate for the CAP-closed Higgs assignment and writes:
+\begin{itemize}
+\item \path{sections/generated/higgs_yukawa_feasibility_rows.tex}
+\item \path{sections/generated/higgs_yukawa_feasibility_summary.tex}
+\item \path{sections/generated/higgs_yukawa_minimal_failure_points.tex}
+\end{itemize}
+\item \path{scripts/exp_higgs_ewsb_potential_closure.py}: closes the electroweak scalar potential form on a bounded family and writes:
+\begin{itemize}
+\item \path{sections/generated/higgs_ewsb_potential_rows.tex}
+\item \path{sections/generated/higgs_ewsb_potential_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_higgs_doublet_robustness_sweep.py}: sweeps addressing and coarse-graining variants for the uplift-derived Higgs-like doublet pairing and writes:
+\begin{itemize}
+\item \path{sections/generated/higgs_doublet_robustness_rows.tex}
+\item \path{sections/generated/higgs_doublet_robustness_summary.tex}
+\item \path{figures/adaptive/higgs_geometry/higgs_doublet_robustness_sweep.png}
+\item \path{figures/adaptive/higgs_geometry/data/higgs_doublet_robustness_sweep.json}
+\end{itemize}
+\item \path{scripts/exp_higgs_falsifiability_gates.py}: generates the Higgs uplift falsifiability-gate registry and writes:
+\begin{itemize}
+\item \path{sections/generated/higgs_falsifiability_gates_rows.tex}
+\item \path{sections/generated/higgs_falsifiability_gates_summary.tex}
+\item \path{figures/adaptive/higgs_geometry/data/higgs_falsifiability_gates.json}
+\end{itemize}
+\item \path{scripts/exp_resolution_thresholds.py}: generates a resolution-threshold staircase table fragment and (optionally) a plot:
 \begin{itemize}
 \item \path{sections/generated/resolution_thresholds_rows.tex}
-\item \path{figures/resolution_thresholds_staircase.pdf} (optional)
+\item \path{figures/resolution_thresholds_staircase.png} (optional)
 \end{itemize}
-\item \path{exp_edge_mismatch_decomposition.py}: generates edge-connection audit fragments:
+\item \path{scripts/exp_cosmology_energy_budget_fit.py}: generates the discrete energy-budget fit fragment and the mandatory figure used in Appendix~\ref{app:cosmology_resolution_flow}:
+\begin{itemize}
+\item \path{sections/generated/cosmology_energy_budget_fit_equation.tex}
+\item \path{sections/generated/cosmology_energy_budget_fit_summary.tex}
+\item \path{sections/generated/cosmology_energy_budget_fit_stability.tex}
+\item \path{figures/cosmology_energy_budget_fit.png}
+\end{itemize}
+\item \path{scripts/exp_gamma_cross_observation.py}: generates the vendored cross-observation $\gamma$ audit artifacts used in Appendix~\ref{app:gamma_crossobs_consistency}:
+\begin{itemize}
+\item \path{sections/generated/gamma_crossobs_proxy_rows.tex}
+\item \path{sections/generated/gamma_crossobs_proxy_diagnostics.tex}
+\item \path{sections/generated/gamma_crossobs_proxy_stability_rows.tex}
+\item \path{figures/gamma_crossobs_proxy.png}
+\item \path{sections/generated/gamma_crossobs_direct_rows.tex}
+\item \path{sections/generated/gamma_crossobs_direct_diagnostics.tex}
+\item \path{sections/generated/gamma_crossobs_direct_stability_rows.tex}
+\item \path{figures/gamma_crossobs_direct.png}
+\end{itemize}
+\item \path{scripts/exp_gamma_kernel_family_sweep.py}: generates a finite kernel-family sensitivity sweep for the direct $\widehat\gamma_{\mathrm{dict}}$ rotation-curve calibration (Appendix~\ref{app:gamma_crossobs_consistency}):
+\begin{itemize}
+\item \path{sections/generated/gamma_crossobs_direct_kernel_family_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_chi_kernel_family_sweep.py}: generates a finite kernel-family sensitivity sweep for summary statistics of the reconstructed $\widehat\chi(r)$ field on the same vendored SPARC subset:
+\begin{itemize}
+\item \path{sections/generated/chi_kernel_family_sweep_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_protocol_state_registry.py}: generates a compact protocol-state registry table that records, for the main quantitative outputs, the declared protocol state components $(m,n,K)$ and the kernel-family closure stance:
+\begin{itemize}
+\item \path{sections/generated/protocol_state_registry.tex}
+\end{itemize}
+\item \path{scripts/protocol_state_selection.py}: performs a theory-first joint CAP closure of the protocol state by minimizing a joint key $J_\mu=\mathrm{MDL}_\mu+\lambda\,\mathrm{Sens}_\mu$ on explicit finite candidate families, and writes:
+\begin{itemize}
+\item \path{sections/generated/protocol_state_selected.json}
+\item \path{sections/generated/protocol_state_selected.tex}
+\end{itemize}
+\item \path{scripts/exp_edge_mismatch_decomposition.py}: generates edge-connection audit fragments:
 \begin{itemize}
 \item \path{sections/generated/edge_mismatch_deg_pair_rows.tex}
 \item \path{sections/generated/edge_mismatch_cost_quantiles_rows.tex}
 \end{itemize}
-\item \path{exp_holonomy_loops.py}: generates a plaquette-holonomy distribution fragment:
+\item \path{scripts/exp_holonomy_loops.py}: generates a plaquette-holonomy distribution fragment:
 \begin{itemize}
 \item \path{sections/generated/holonomy_cycle_type_rows.tex}
 \end{itemize}
-\item \path{exp_sm_labeling_solver.py}: constructs the deterministic labeling map and writes \path{sections/generated/sm_labeling_rows.tex}.
-\item \path{exp_labeling_lift_consistency.py}: audits a functorial label lift under the prefix projection $\pi_{m\to 6}$ and writes:
+\item \path{scripts/exp_holonomy_transport_rule_sensitivity.py}: generates a bounded counterfactual sensitivity envelope for the discrete-connection padding/truncation/tie-break rules and writes:
+\begin{itemize}
+\item \path{sections/generated/holonomy_transport_rule_sensitivity_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_holonomy_balanced_chain_sweep.py}: generates balanced-chain holonomy and Wilson-loop style diagnostic fragments:
+\begin{itemize}
+\item \path{sections/generated/holonomy_balanced_chain_rows.tex}
+\item \path{sections/generated/holonomy_balanced_chain_wilson_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_curvature_bridge_audit.py}: generates curvature-bridge sanity-check fragments (weak-field Laplacian bound scaling and Wilson small-loop residual scaling) and writes:
+\begin{itemize}
+\item \path{sections/generated/curvature_bridge_weak_field_rows.tex}
+\item \path{sections/generated/curvature_bridge_weak_field_summary.tex}
+\item \path{sections/generated/curvature_bridge_wilson_rows.tex}
+\item \path{sections/generated/curvature_bridge_wilson_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_curvature_bridge_end_to_end.py}: generates an end-to-end protocolized reconstruction demo (protocol input $\to \widehat\chi \to \Delta_h\widehat\chi$ error budget) and writes:
+\begin{itemize}
+\item \path{sections/generated/curvature_e2e_rows.tex}
+\item \path{sections/generated/curvature_e2e_summary.tex}
+\item \path{sections/generated/curvature_e2e_gamma_rows.tex}
+\item \path{sections/generated/curvature_e2e_gamma_summary.tex}
+\item \path{sections/generated/curvature_e2e_gamma_stability_rows.tex}
+\item \path{sections/generated/curvature_e2e_gamma_stability_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_sm_labeling_solver.py}: implements the deterministic rank-matching construction of Theorem~\ref{thm:labeling_unique} and writes \path{sections/generated/sm_labeling_rows.tex} (Remark~\ref{rem:labeling_script_status}).
+\item \path{scripts/exp_labeling_lift_consistency.py}: audits a functorial label lift under the prefix projection $\pi_{m\to 6}$ and writes:
 \begin{itemize}
 \item \path{sections/generated/label_lift_rows.tex}
 \end{itemize}
-\item \path{exp_mass_spectrum.py}: generates the mass-spectrum table fragments:
+\item \path{scripts/exp_mass_spectrum.py}: generates the mass-spectrum table fragments:
 \begin{itemize}
 \item \path{sections/generated/mass_spectrum_anchor_rows.tex}
 \item \path{sections/generated/mass_spectrum_quark_rows.tex}
 \item \path{sections/generated/mass_spectrum_neutrino_rows.tex}
+\item \path{sections/generated/mass_spectrum_anchor_summary.tex}
 \item \path{sections/generated/mass_spectrum_rows.tex} (combined)
 \end{itemize}
-\item \path{exp_mass_matching_layer.py}: computes a minimal quantized matching-layer summary for the mass-spectrum closure and writes:
+\item \path{scripts/exp_mass_flow_uplift.py}: generates the uplift mass-flow table fragments used in Appendix~\ref{app:mass_flow_under_uplift}:
+\begin{itemize}
+\item \path{sections/generated/mass_flow_uplift_rows.tex}
+\item \path{sections/generated/mass_flow_uplift_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_bh_planck_capacity_calibration.py}: generates the boundary--Planck capacity calibration fragments used in Appendix~\ref{app:bh_planck_capacity_calibration}:
+\begin{itemize}
+\item \path{sections/generated/bh_planck_capacity_rows.tex}
+\item \path{sections/generated/bh_planck_capacity_summary.tex}
+\item \path{sections/generated/bh_capacity_calibrated_uplift_path_rows.tex}
+\item \path{sections/generated/bh_planck_capacity_known_rows.tex}
+\item \path{sections/generated/bh_planck_capacity_known_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_bh_evaporation_leak_channel.py}: generates the BH4 protocol evaporation/leak-channel summary fragments used in Appendix~\ref{app:bh_evaporation_leak_channel}:
+\begin{itemize}
+\item \path{sections/generated/bh_evaporation_rate_rows.tex}
+\item \path{sections/generated/bh_leak_channel_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_bh_page_surrogate.py}: generates the BH5 Page-surrogate fragments used in Appendix~\ref{app:bh_page_surrogate}:
+\begin{itemize}
+\item \path{sections/generated/bh_page_surrogate_curve_rows.tex}
+\item \path{figures/bh_page_surrogate.png}
+\end{itemize}
+\item \path{scripts/exp_bh_page_surrogate_mixed_stream.py}: generates a mixed single-stream refinement of the BH5 surrogate (Appendix~\ref{app:bh_page_surrogate}) and writes:
+\begin{itemize}
+\item \path{sections/generated/bh_page_surrogate_mixed_curve_rows.tex}
+\item \path{sections/generated/bh_page_surrogate_mixed_summary.tex}
+\item \path{figures/bh_page_surrogate_mixed.png}
+\end{itemize}
+\item \path{scripts/exp_bh_page_surrogate_u_curve.py}: generates a queue-equivalent single-stream $U(t)$ surrogate used in Appendix~\ref{app:bh_page_surrogate} and writes:
+\begin{itemize}
+\item \path{sections/generated/bh_page_surrogate_u_curve_rows.tex}
+\item \path{sections/generated/bh_page_surrogate_u_curve_summary.tex}
+\item \path{figures/bh_page_surrogate_u_curve.png}
+\end{itemize}
+\item \path{scripts/exp_bh_page_surrogate_robustness_audit.py}: generates an RB-D robustness sweep for the BH5 Page surrogate and writes:
+\begin{itemize}
+\item \path{sections/generated/bh_page_surrogate_rb_d_rows.tex}
+\item \path{sections/generated/bh_page_surrogate_rb_d_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_bh_page_surrogate_record_noise_audit.py}: generates an interface-level record-noise audit for recovery and writes:
+\begin{itemize}
+\item \path{sections/generated/bh_page_record_noise_audit_rows.tex}
+\item \path{sections/generated/bh_page_record_noise_audit_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_bh_page_surrogate_record_noise_ecc_audit.py}: generates a finite-family repetition-code wrapper audit for record noise and writes:
+\begin{itemize}
+\item \path{sections/generated/bh_page_record_noise_ecc_audit_rows.tex}
+\item \path{sections/generated/bh_page_record_noise_ecc_audit_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_bh_page_surrogate_record_noise_ecc_cap_select.py}: CAP-selects a minimal redundancy $r^\ast$ over the same finite repetition family for each noise budget $p$ (under a fixed success threshold) and writes:
+\begin{itemize}
+\item \path{sections/generated/bh_page_record_noise_ecc_cap_select_rows.tex}
+\item \path{sections/generated/bh_page_record_noise_ecc_cap_select_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_bh_absorption_mode_sweep.py}: generates a legal-absorption sweep table used in Appendix~\ref{app:bh_page_surrogate} and writes:
+\begin{itemize}
+\item \path{sections/generated/bh_absorption_mode_sweep_rows.tex}
+\item \path{sections/generated/bh_absorption_mode_sweep_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_bh_legal_absorption_registry.py}: generates a no-selection registry of legal-absorption candidates used in Appendix~\ref{app:bh_evaporation_leak_channel} and writes:
+\begin{itemize}
+\item \path{sections/generated/bh_legal_absorption_registry_rows.tex}
+\item \path{sections/generated/bh_legal_absorption_registry_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_bh_capacity_calibrated_queue_params.py}: generates capacity-calibrated queue parameters for a small family of known black holes used in Appendix~\ref{app:bh_evaporation_leak_channel} and writes:
+\begin{itemize}
+\item \path{sections/generated/bh_capacity_calibrated_queue_params_rows.tex}
+\item \path{sections/generated/bh_capacity_calibrated_queue_params_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_bh_island_equivalent_reconstruction.py}: generates the BH6 island-equivalent reconstruction diagnostic used in Appendix~\ref{app:bh_island_equiv}:
+\begin{itemize}
+\item \path{sections/generated/bh_island_equiv_diagnostics.tex}
+\end{itemize}
+\item \path{scripts/exp_bh_island_equiv_sweep.py}: generates the BH6 cross-mode/cross-$m$ sweep used in Appendix~\ref{app:bh_island_equiv} and writes:
+\begin{itemize}
+\item \path{sections/generated/bh_island_equiv_sweep_rows.tex}
+\item \path{sections/generated/bh_island_equiv_sweep_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_black_hole_queue_equivalence.py}: provides a minimal protocol-native toy that illustrates coarse stable-label loss versus full-record reversibility (used as an audit certificate pointer in Appendix~\ref{app:bh_page_surrogate}).
+\item \path{scripts/exp_protocol_horizon_tick_trap_examples.py}: generates a protocol-horizon illustration fragment:
+\begin{itemize}
+\item \path{sections/generated/protocol_horizon_examples_rows.tex}
+\item \path{sections/generated/protocol_horizon_examples_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_wormhole_pointer_jump_audit.py}: generates a protocol-only pointer-jump distance reduction audit fragment used in Appendix~\ref{app:bh_wormholes_pointer} and writes:
+\begin{itemize}
+\item \path{sections/generated/wormhole_pointer_jump_rows.tex}
+\item \path{sections/generated/wormhole_pointer_jump_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_leakage_kernel_demo.py}: generates a minimal leakage-kernel demo fragment:
+\begin{itemize}
+\item \path{sections/generated/leakage_kernel_demo_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_leakage_kernel_m6_trap_exit.py}: generates the $m=6$ trap/exit audit fragments:
+\begin{itemize}
+\item \path{sections/generated/leakage_kernel_m6_trap_exit_rows.tex}
+\item \path{sections/generated/leakage_kernel_m6_trap_exit_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_low_leakage_phase_signatures.py}: generates low-leakage phase audit fragments:
+\begin{itemize}
+\item \path{sections/generated/low_leakage_phase_rows.tex}
+\item \path{sections/generated/low_leakage_phase_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_k4_delay_dictionary_audit.py}: generates K4 delay/time-dictionary audit fragments:
+\begin{itemize}
+\item \path{sections/generated/k4_delay_audit_rows.tex}
+\item \path{sections/generated/k4_delay_audit_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_k4_scattering_phase_delay_audit.py}: generates scattering phase-to-delay proxy audit fragments:
+\begin{itemize}
+\item \path{sections/generated/k4_scattering_phase_delay_rows.tex}
+\item \path{sections/generated/k4_scattering_phase_delay_window_rows.tex}
+\item \path{sections/generated/k4_scattering_phase_delay_coord_rows.tex}
+\item \path{sections/generated/k4_scattering_phase_delay_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_k4_ws_linewidth_audit.py}: generates WS--linewidth calibration audit fragments:
+\begin{itemize}
+\item \path{sections/generated/k4_ws_linewidth_rows.tex}
+\item \path{sections/generated/k4_ws_linewidth_coord_rows.tex}
+\item \path{sections/generated/k4_ws_linewidth_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_k4_pdg_leakage_audit.py}: generates K4 leakage audit fragments against \path{data/k4_matching/pdg_decay_miniset.json}:
+\begin{itemize}
+\item \path{sections/generated/k4_pdg_leakage_rows.tex}
+\item \path{sections/generated/k4_pdg_leakage_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_k4_alpha_link_audit.py}: generates K4-to-$\alpha$ audit fragments:
+\begin{itemize}
+\item \path{sections/generated/k4_alpha_link_rows.tex}
+\item \path{sections/generated/k4_alpha_link_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_higgs_z_offset_rigidity.py}: generates a bounded-denominator rigidity sweep for the Higgs--$Z$ depth offset and writes:
+\begin{itemize}
+\item \path{sections/generated/higgs_z_offset_sweep_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_mass_matching_layer.py}: computes a minimal quantized matching-layer summary for the mass-spectrum closure and writes:
 \begin{itemize}
 \item \path{sections/generated/mass_matching_layer_rows.tex}
+\item \path{sections/generated/mass_matching_layer_summary_rows.tex}
 \end{itemize}
-\item \path{exp_mass_depth_rigidity.py}: runs a bounded-coefficient search (20 iterations) and writes \path{sections/generated/mass_depth_rigidity_rows.tex}.
-\item \path{exp_ckm_mixing_depth_rigidity.py}: runs a bounded-complexity minimax search for CKM magnitudes (20 iterations) and writes \path{sections/generated/ckm_mixing_*.tex}.
-\item \path{exp_ckm_matrix_closure.py}: reconstructs a full CKM matrix from three magnitudes and a Jarlskog anchor (both a PDG-consistent reference reconstruction and the closed prediction) and writes:
+\item \path{scripts/exp_mass_depth_rigidity.py}: runs a bounded-coefficient search (20 iterations) and writes \path{sections/generated/mass_depth_rigidity_rows.tex}.
+\item \path{scripts/exp_mass_depth_leave_one_out.py}: runs a leave-one-out robustness sweep for the mass-depth coefficient search and writes:
+\begin{itemize}
+\item \path{sections/generated/mass_depth_leave_one_out_rows.tex}
+\item \path{sections/generated/mass_depth_leave_one_out_summary_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_ckm_mixing_depth_rigidity.py}: runs a bounded-complexity minimax search for CKM magnitudes (20 iterations) and writes \path{sections/generated/ckm_mixing_*.tex}.
+\item \path{scripts/exp_ckm_matrix_closure.py}: reconstructs a full CKM matrix from three magnitudes and a Jarlskog anchor (both a PDG-consistent reference reconstruction and the closed prediction) and writes:
 \begin{itemize}
 \item \path{sections/generated/ckm_angles_rows.tex}
 \item \path{sections/generated/ckm_matrix_rows.tex}
 \item \path{sections/generated/ckm_unitarity_rows.tex}
 \end{itemize}
-\item \path{exp_pmns_mixing_depth_rigidity.py}: runs a bounded-complexity minimax search for PMNS mixing sines and writes:
+\item \path{scripts/exp_pmns_mixing_depth_rigidity.py}: runs a bounded-complexity minimax search for PMNS mixing sines and writes:
 \begin{itemize}
 \item \path{sections/generated/pmns_mixing_rigidity_rows.tex}
 \item \path{sections/generated/pmns_mixing_rows.tex}
 \end{itemize}
-\item \path{exp_pmns_matrix_closure.py}: reconstructs a PMNS matrix from the bounded-complexity angles and a discrete CP-phase closure and writes:
+\item \path{scripts/exp_pmns_matrix_closure.py}: reconstructs a PMNS matrix from the bounded-complexity angles and a discrete CP-phase closure and writes:
 \begin{itemize}
 \item \path{sections/generated/pmns_delta_sweep_rows.tex}
 \item \path{sections/generated/pmns_angles_rows.tex}
 \item \path{sections/generated/pmns_matrix_rows.tex}
 \item \path{sections/generated/pmns_unitarity_rows.tex}
 \end{itemize}
-\item \path{exp_neutrino_mass_interface.py}: generates a minimal neutrino mass-scale interface table fragment:
+\item \path{scripts/exp_pmns_no_io_stability.py}: runs a NO/IO robustness diagnostic for the PMNS closures and writes:
+\begin{itemize}
+\item \path{sections/generated/pmns_no_io_stability_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_neutrino_mass_interface.py}: generates a minimal neutrino mass-scale interface table fragment:
 \begin{itemize}
 \item \path{sections/generated/neutrino_mass_interface_rows.tex}
 \end{itemize}
-\item \path{exp_audit_closure_metrics.py}: generates bounded-complexity audit metrics (domain sizes, uniqueness gaps, quantiles) and writes:
+\item \path{scripts/exp_neutrino_external_audit.py}: generates the external neutrino audit ledger fragments used in Appendix~\ref{app:neutrino_external_audit_channels}:
+\begin{itemize}
+\item \path{sections/generated/neutrino_external_audit_rows.tex}
+\item \path{sections/generated/neutrino_external_audit_summary.tex}
+\item \path{sections/generated/neutrino_external_audit_internal_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_neutrino_mass_mechanisms.py}: enumerates the bounded candidate registry for neutrino mass-mechanism bridge hypotheses (Appendix~\ref{app:neutrino_mass_mechanism_candidates}) and writes:
+\begin{itemize}
+\item \path{sections/generated/neutrino_mechanism_candidates_rows.tex}
+\item \path{sections/generated/neutrino_mechanism_scoreboard_rows.tex}
+\item \path{sections/generated/neutrino_mechanism_global_rows.tex}
+\item \path{sections/generated/neutrino_mechanism_global_summary.tex}
+\item \path{sections/generated/neutrino_majorana_phase_closure_rows.tex}
+\item \path{sections/generated/neutrino_majorana_phase_closure_summary.tex}
+\item \path{sections/generated/neutrino_splitting_depth_closure_rows.tex}
+\item \path{sections/generated/neutrino_splitting_depth_closure_summary.tex}
+\item \path{sections/generated/neutrino_weinberg_scale_rows.tex}
+\item \path{sections/generated/neutrino_weinberg_scale_summary.tex}
+\item \path{sections/generated/neutrino_seesaw_scale_rows.tex}
+\item \path{sections/generated/neutrino_seesaw_scale_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_inverse_hypercharge_fit.py}: generates the inverse diagnostic fragment:
+\begin{itemize}
+\item \path{sections/generated/inverse_hypercharge_fit_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_inverse_hypercharge_sign_fit.py}: generates the inverse diagnostic fragment:
+\begin{itemize}
+\item \path{sections/generated/inverse_hypercharge_sign_fit_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_inverse_hypercharge_full_fit.py}: generates the inverse diagnostic fragment:
+\begin{itemize}
+\item \path{sections/generated/inverse_hypercharge_full_fit_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_inverse_rep_dim_fit.py}: generates the inverse diagnostic fragment:
+\begin{itemize}
+\item \path{sections/generated/inverse_rep_dim_fit_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_inverse_generation_fit.py}: generates the inverse diagnostic fragment:
+\begin{itemize}
+\item \path{sections/generated/inverse_generation_fit_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_inverse_diag_summary.py}: aggregates a compact main-text summary across inverse diagnostics and writes:
+\begin{itemize}
+\item \path{sections/generated/inverse_diag_summary_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_labeling_order_sensitivity.py}: measures SM-side ordering-key sensitivity of the induced cyclic labeling and writes:
+\begin{itemize}
+\item \path{sections/generated/labeling_order_sensitivity_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_audit_closure_metrics.py}: generates bounded-complexity audit metrics (domain sizes, uniqueness gaps, quantiles) and writes:
 \begin{itemize}
 \item \path{sections/generated/audit_closure_metrics_rows.tex}
 \item \path{sections/generated/audit_closure_quantiles_rows.tex}
 \end{itemize}
-\item \path{exp_audit_uncertainty_robustness.py}: generates minimizer stability rates under sampled target perturbations and writes:
+\item \path{scripts/exp_audit_uncertainty_robustness.py}: generates minimizer stability rates under sampled target perturbations and writes:
 \begin{itemize}
 \item \path{sections/generated/audit_uncertainty_robustness_rows.tex}
 \end{itemize}
-\item \path{exp_audit_counterfactual_baselines.py}: generates counterfactual baseline comparisons and writes:
+\item \path{scripts/exp_audit_counterfactual_baselines.py}: generates counterfactual baseline comparisons and writes:
 \begin{itemize}
 \item \path{sections/generated/audit_counterfactual_rows.tex}
 \end{itemize}
-\item \path{exp_audit_summary.py}: generates the audit summary fragment:
+\item \path{scripts/exp_audit_pi_polynomial_null.py}: generates a broader $\pi$-polynomial null baseline sweep for $\alpha^{-1}$ and writes:
+\begin{itemize}
+\item \path{sections/generated/audit_pi_poly_null_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_audit_global_model_selection_mdl.py}: generates a global MDL/prefix-code model-selection audit across declared candidate families and writes:
+\begin{itemize}
+\item \path{sections/generated/audit_global_mdl_family_rows.tex}
+\item \path{sections/generated/audit_global_mdl_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_alpha_coeff_rigidity.py}: runs the bounded simplex search for the $\alpha^{-1}$ coefficient rigidity statement and writes:
+\begin{itemize}
+\item \path{sections/generated/alpha_coeff_rigidity_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_aggregation_baselines.py}: generates systematic aggregation and multiplicity baseline fragments and writes:
+\begin{itemize}
+\item \path{sections/generated/alpha_aggregation_baselines_rows.tex}
+\item \path{sections/generated/j_multiplicity_baselines_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_ew_rigidity.py}: runs finite searches for the electroweak $Z$-scale rigidity statements and writes:
+\begin{itemize}
+\item \path{sections/generated/ew_alpha_pi2_rigidity_rows.tex}
+\item \path{sections/generated/ew_sin2_rational_rigidity_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_ew_resolution_weighted_match.py}: generates a resolution-weighted electroweak match sweep under a protocol-native pushforward kernel and writes:
+\begin{itemize}
+\item \path{sections/generated/ew_resolution_weighted_match_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_ew_resolution_weighted_match_family.py}: generates a finite kernel-family sweep for the electroweak weight at the anchor and writes:
+\begin{itemize}
+\item \path{sections/generated/ew_resolution_weighted_match_family_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_coupling_unification_audit_in_r.py}: generates a bounded matching-layer audit for one-loop coupling unification in the $r$ coordinate and writes:
+\begin{itemize}
+\item \path{sections/generated/coupling_unification_audit_rows.tex}
+\item \path{sections/generated/coupling_unification_audit_summary.tex}
+\item \path{sections/generated/coupling_unification_threshold_registry_rows.tex}
+\item \path{sections/generated/coupling_unification_threshold_audit_rows.tex}
+\item \path{sections/generated/coupling_unification_threshold_audit_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_force_phase_delay_audit_toy.py}: generates a toy phase$\to$delay numerical-stability audit (Breit--Wigner one-channel model) and writes:
+\begin{itemize}
+\item \path{sections/generated/force_phase_delay_audit_toy_rows.tex}
+\item \path{sections/generated/force_phase_delay_audit_toy_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_coupling_unification_audit_2loop_thresholds.py}: generates a two-loop coupling-unification audit with a bounded threshold-location perturbation band and writes:
+\begin{itemize}
+\item \path{sections/generated/coupling_unification_2loop_threshold_audit_rows.tex}
+\item \path{sections/generated/coupling_unification_2loop_threshold_audit_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_coupling_unification_2loop_yukawa_scalar_perturbation_audit.py}: generates a two-loop coupling-unification audit sensitivity band under a bounded missing-sector perturbation family and writes:
+\begin{itemize}
+\item \path{sections/generated/coupling_unification_2loop_yukawa_scalar_audit_rows.tex}
+\item \path{sections/generated/coupling_unification_2loop_yukawa_scalar_audit_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_coupling_unification_threshold_correlation_modes.py}: generates a structured correlated threshold-mode registry and writes:
+\begin{itemize}
+\item \path{sections/generated/coupling_unification_threshold_corr_modes_rows.tex}
+\item \path{sections/generated/coupling_unification_threshold_corr_modes_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_scattering_inverse_consistency_audit.py}: generates an inverse-consistency audit on vendored scattering phase datasets (phase$\to$delay$\to$phase) and writes:
+\begin{itemize}
+\item \path{sections/generated/scattering_inverse_consistency_rows.tex}
+\item \path{sections/generated/scattering_inverse_consistency_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_scattering_inverse_consistency_coord_audit.py}: generates a coordinate-transform sign gate table for phase-derivative conventions and writes:
+\begin{itemize}
+\item \path{sections/generated/scattering_inverse_coord_rows.tex}
+\item \path{sections/generated/scattering_inverse_coord_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_scattering_delay_linewidth_triangle_audit.py}: generates a triangle audit comparing phase-derived delay to a linewidth proxy on resonance-tagged datasets and writes:
+\begin{itemize}
+\item \path{sections/generated/scattering_delay_linewidth_triangle_rows.tex}
+\item \path{sections/generated/scattering_delay_linewidth_triangle_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_scattering_energy_match_dictionary_audit.py}: audits matching-dictionary coverage for cross-unit use of scattering phase registries and writes:
+\begin{itemize}
+\item \path{sections/generated/scattering_energy_match_dictionary_rows.tex}
+\item \path{sections/generated/scattering_energy_match_dictionary_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_scattering_carrier_cap_select_multi_dataset.py}: CAP-selects a toy scattering carrier from an explicit bounded family using eligible datasets under the matching dictionary (M2 audit) and writes:
+\begin{itemize}
+\item \path{sections/generated/scattering_carrier_cap_select_rows.tex}
+\item \path{sections/generated/scattering_carrier_cap_select_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_scattering_carrier_registry_generate.py}: materializes the selected scattering carrier as a registry artifact and writes:
+\begin{itemize}
+\item \path{sections/generated/scattering_carrier_registry_rows.tex}
+\item \path{sections/generated/scattering_carrier_registry_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_scattering_process_delay_queue_sim.py}: generates a deterministic toy simulation that realizes the delay dictionary as a discrete tick-time queue (two-channel $S(\omega)$ proxy $\to$ Wigner--Smith delay $\to$ backlog saturation diagnostics) and writes:
+\begin{itemize}
+\item \path{sections/generated/scattering_process_delay_queue_rows.tex}
+\item \path{sections/generated/scattering_process_delay_queue_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_scattering_bh_queue_equivalence_audit.py}: generates a side-by-side toy audit comparing a delay-driven scattering queue to a black-hole-like internal queue (shared arrival-period control; saturation/backlog and record compressibility proxies) and writes:
+\begin{itemize}
+\item \path{sections/generated/scattering_bh_queue_equivalence_rows.tex}
+\item \path{sections/generated/scattering_bh_queue_equivalence_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_scattering_bh_page_surrogate_equivalence.py}: generates a side-by-side toy Page-surrogate comparison in the record-algebra language (remaining ambiguity $U(t)$ in bits on record prefixes) and writes:
+\begin{itemize}
+\item \path{sections/generated/scattering_bh_page_surrogate_rows.tex}
+\item \path{sections/generated/scattering_bh_page_surrogate_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_qcd_proxy_polebarrier_mutual_exclusion.py}: generates a proxy$\leftrightarrow$pole-barrier consistency-loop summary row and writes:
+\begin{itemize}
+\item \path{sections/generated/qcd_proxy_polebarrier_failure_rows.tex}
+\item \path{sections/generated/qcd_proxy_polebarrier_failure_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_scheme_reparam_invariance_audit.py}: generates a toy scheme-rescaling invariance demo and writes:
+\begin{itemize}
+\item \path{sections/generated/scheme_invariance_demo_rows.tex}
+\item \path{sections/generated/scheme_invariance_demo_summary.tex}
+\end{itemize}
+\item \path{scripts/exp_jarlskog_pi_rigidity.py}: runs the bounded $(a,n)$ search for the $J=1/(a\pi^n)$ rigidity statement and writes:
+\begin{itemize}
+\item \path{sections/generated/jarlskog_pi_rigidity_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_quant_summary.py}: generates the quantitative summary fragment used in Table~\ref{tab:quant_summary} and writes:
+\begin{itemize}
+\item \path{sections/generated/quant_summary_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_sigma_summary.py}: generates a sigma-normalized mismatch summary fragment (using the explicit audit sigma scales in \path{scripts/common_constants.py}) and writes:
+\begin{itemize}
+\item \path{sections/generated/sigma_summary_rows.tex}
+\end{itemize}
+\item \path{scripts/exp_audit_summary.py}: generates the audit summary fragment:
 \begin{itemize}
 \item \path{sections/generated/audit_summary_rows.tex}
 \end{itemize}
@@ -120,6 +751,7 @@ The scripts reproduce:
 
 \subsection{How to run (examples)}
 \begin{itemize}
+\item \texttt{cd docs/papers/2025\_z128\_standard\_model\_stable\_sector\_hpa\_omega}
 \item \texttt{python3 -m pip install -r requirements.txt}
 \item \texttt{python3 scripts/run\_all.py}
 \item \texttt{python3 scripts/exp\_x6\_enumeration.py}
@@ -130,6 +762,15 @@ The scripts reproduce:
 \item \texttt{python3 scripts/exp\_mass\_depth\_rigidity.py}
 \item \texttt{python3 scripts/exp\_ckm\_mixing\_depth\_rigidity.py}
 \item \texttt{python3 scripts/exp\_audit\_summary.py}
+\item \texttt{latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex}
+\end{itemize}
+
+\subsection{Environment notes (recommended audit record)}
+To make runs auditable across machines, record the interpreter and package versions alongside any generated artifacts:
+\begin{itemize}
+\item \texttt{python3 --version}
+\item \texttt{python3 -m pip --version}
+\item \texttt{python3 -m pip freeze}
 \end{itemize}
 
 \subsection{Generated LaTeX fragments}
@@ -137,6 +778,7 @@ The scripts write small LaTeX fragments into:
 \begin{center}
 \path{docs/papers/2025_z128_standard_model_stable_sector_hpa_omega/sections/generated/}
 \end{center}
+These fragments are generated outputs and should not be edited by hand; re-run the scripts to regenerate them deterministically from the stated constructions and bounded sweeps.
 This repository includes the generated fragments so the paper can compile out of the box, but they can be regenerated at any time.
 
 

@@ -1,0 +1,128 @@
+\section[Forced interface lemmas]{Forced interface lemmas under the \texorpdfstring{tick\,+\,CAP}{tick+CAP} spine}
+\label{app:forced_interface_lemmas}
+
+This appendix records several short interface lemmas in a form suitable for audit.
+It introduces \emph{no new axioms} beyond the two declared primitives of the paper: tick as the executed input stream (Axiom~\ref{ax:readout_sequentiality}) and CAP as the unique closure/selection rule on explicit finite candidate families (Axiom~\ref{ax:cap}).
+The purpose is to make explicit the sense in which several ``interface conventions'' used in the main text are \emph{forced} (or uniquely selected as minimal nontrivial choices) once one commits to the tick\,+\,CAP discipline.
+
+\subsection{Minimal coarse locking: one bit per independent parameter}
+\label{subsec:forced_minimal_coarse_lock}
+
+\begin{lemma}[Minimal nontrivial coarse binning forces one bit per independent parameter]
+\label{lem:minimal_one_bit_per_parameter}
+Let a protocol claim to \emph{coarsely distinguish} $k$ independent parameters in a single observation, in the minimal nontrivial sense that for each parameter there exist at least two disjoint bins whose membership is distinguishable in the readout.
+Then any single-shot readout alphabet that supports such a coarse distinction must have size at least $2^k$.
+In particular, if the single-shot readout alphabet is binary length-$m$ words $\Omega_m=\{0,1\}^m$, then necessarily $m\ge k$.
+\end{lemma}
+\begin{proof}
+For each parameter choose two distinguishable bins and label them by $\{0,1\}$.
+Independence means that all $2^k$ bin-combinations are admissible joint coarse states.
+Therefore the readout alphabet must have at least $2^k$ distinct outcomes.
+If the alphabet is $\Omega_m$, then $|\Omega_m|=2^m\ge 2^k$, so $m\ge k$.
+\end{proof}
+
+\begin{corollary}[Single-window coarse rigid-frame budget]
+\label{cor:forced_rigid_frame_budget}
+In a rigid-frame display dictionary in bulk dimension $d$, a pose is an element of the Euclidean group $SE(d)$ with
+\[
+\dim SE(d)=\frac{d(d+1)}{2}.
+\]
+Under the minimal nontrivial coarse-binning convention of Lemma~\ref{lem:minimal_one_bit_per_parameter}, a single length-$m$ window can support a single-shot coarse rigid-frame display only if
+\[
+m\ge \dim SE(d)=\frac{d(d+1)}{2}.
+\]
+\end{corollary}
+\begin{proof}
+Apply Lemma~\ref{lem:minimal_one_bit_per_parameter} with $k=\dim SE(d)$.
+The dimension formula for $SE(d)$ is standard; see, e.g., \cite{HallLieGroups2015}.
+\end{proof}
+
+\paragraph{Relation to the main text.}
+Section~\ref{subsec:6dof_lock} uses exactly this minimal nontrivial convention at the anchor $m=6$ and then applies CAP to select the maximal admissible bulk dimension, yielding $d=3$ (Proposition~\ref{prop:bulk_dimension_from_anchor}).
+The quantization/metric-entropy scaling used there for finer accuracy is standard \cite{GrayNeuhoff1998Quantization,CoverThomas2006}.
+
+\subsection{Unitarity forces compact internal redundancy groups}
+\label{subsec:forced_unitary_compact}
+
+\begin{proposition}[Probability-preserving internal redundancy is compact (finite-dimensional case)]
+\label{prop:unitary_implies_compact_redundancy}
+Assume a continuum modeling dictionary in which local internal redundancy acts on a finite-dimensional complex Hilbert space by transformations that preserve transition probabilities between rays.
+Then the connected component of the internal redundancy group is (projectively) unitary and is therefore compact (up to finite quotients).
+\end{proposition}
+\begin{proof}
+By Wigner's theorem, any bijection of rays preserving transition probabilities is implemented by a unitary or antiunitary operator on the underlying Hilbert space, uniquely up to phase \cite{Wigner1931,StreaterWightman1989,WeinbergQFT1995}.
+Antiunitary operators form a disconnected component, so any connected internal redundancy group is represented (projectively) by unitary operators.
+Thus the redundancy group embeds as a (closed) subgroup of the compact projective unitary group $PU(N)=U(N)/U(1)$, hence is compact.
+\end{proof}
+
+\paragraph{Relation to the main text.}
+In the interface language of this paper, ``gauge redundancy'' is the freedom to relabel local readout bases without changing observable overlap/probability data.
+Under a standard continuum dictionary that represents this freedom by internal unitary rotations, compactness is therefore not an extra primitive but a consequence of probability preservation in finite-dimensional local descriptions.
+This is the compactness input used in Proposition~\ref{prop:channel_to_gauge}.
+
+\subsection{Three commuting channels force a three-factor redundancy structure}
+\label{subsec:forced_three_factor}
+
+\begin{lemma}[Independent local redundancy across commuting channels factorizes]
+\label{lem:three_channel_factorization}
+Assume protocol mismatch certificates decompose into three commuting channel components and that, in the interface dictionary, each channel admits an independent local basis redundancy.
+Then the minimal local redundancy group factorizes as a direct product of three channelwise redundancies.
+\end{lemma}
+\begin{proof}
+Since channels commute, a mismatch certificate can be compared channel-by-channel.
+If the basis redundancy is independent in each channel, local gauge changes act independently on each component.
+Therefore the channelwise covariance law is a direct-product action, and the minimal redundancy group is the direct product of the three channel groups.
+\end{proof}
+
+\paragraph{Relation to the main text.}
+This is the structural content of Proposition~\ref{prop:three_factor_compensation} in Section~\ref{subsec:gauge_as_compensation}.
+Once a three-factor structure is fixed, CAP-minimal selection within the compact-factor candidate family yields the Standard Model triple up to finite quotients under the declared factor complexity label (Proposition~\ref{prop:channel_to_gauge} and Lemma~\ref{lem:su2_su3_unique_by_dim}); a bounded sensitivity sweep across alternative labels is recorded in Appendix~\ref{app:gauge_complexity_sensitivity}.
+
+\subsection{Why the minimal chiral closure selects a sterile \texorpdfstring{$\nu_R$}{nuR}}
+\label{subsec:forced_nur}
+
+\begin{proposition}[Minimal anomaly-neutral one-multiplet-per-generation closure forces a sterile singlet]
+\label{prop:nur_forced_by_minimal_anomaly}
+Work under the PDG convention $Q=T_3+Y$.
+Consider extending the Standard Model chiral fermion multiplet content by adding \emph{exactly one} additional chiral multiplet per generation, with the requirement that:
+(i) local gauge and mixed gravitational anomalies remain canceled, and
+(ii) the global $SU(2)$ consistency condition is preserved.
+Then the added multiplet must be a gauge singlet with hypercharge $Y=0$.
+Equivalently (up to charge conjugation), the unique minimal closure is a sterile right-handed neutrino $\nu_R$ per generation.
+\end{proposition}
+\begin{proof}
+The Standard Model anomaly-cancellation identities under $Q=T_3+Y$ are standard \cite{BouchiatIliopoulosMeyer1972,PeskinSchroeder1995,PDGRPP2024}.
+If the added multiplet carries nontrivial $SU(3)$ charge, it contributes to $SU(3)^3$ and $SU(3)^2U(1)$ anomaly sums; with only one added multiplet per generation there is no compensator, so anomaly cancellation forces it to be an $SU(3)$ singlet.
+
+If the added multiplet is an $SU(2)$ doublet (or any half-integer isospin representation), the parity of the number of $SU(2)$ doublets changes and can violate the global $SU(2)$ anomaly constraint \cite{Witten1982SU2Anomaly}.
+With only one additional multiplet per generation and no compensator, preserving the global consistency condition forces the added multiplet to be an $SU(2)$ singlet.
+
+Thus the only remaining possible charge is hypercharge.
+The mixed gravitational--hypercharge anomaly is proportional to $\sum Y$ and the cubic $U(1)_Y^3$ anomaly to $\sum Y^3$ over left-handed Weyl fields with multiplicities; the Standard Model sums vanish per generation \cite{BouchiatIliopoulosMeyer1972,PeskinSchroeder1995}.
+Adding a single $SU(3)\times SU(2)$ singlet multiplet contributes $Y$ and $Y^3$.
+To preserve both anomaly cancellations without additional compensating matter, one must have $Y=0$.
+\end{proof}
+
+\paragraph{Relation to the main text.}
+Section~\ref{sec:sm_labeling_closure} uses $\nu_R$ as the minimal anomaly-neutral closure of the $18$ cyclic field-level targets and treats it as an interface choice audited by standard consistency constraints (Proposition~\ref{prop:anomaly_nur}).
+Proposition~\ref{prop:nur_forced_by_minimal_anomaly} records the stronger uniqueness statement within the explicit minimal candidate family ``one extra multiplet per generation''.
+
+\subsection{Scalar absence at the minimal alphabet is forced by the closed \texorpdfstring{$21$}{21}-type contract}
+\label{subsec:forced_scalar_absence}
+
+\begin{proposition}[No additional primitive stable type remains for a Higgs label at \texorpdfstring{$m=6$}{m=6}]
+\label{prop:higgs_not_in_x6_forced}
+At the anchor $(m,n)=(6,3)$, the stable sector splits as $X_6=X_6^{\mathrm{cyc}}\sqcup X_6^{\mathrm{bdry}}$ with $|X_6^{\mathrm{cyc}}|=18$ and $|X_6^{\mathrm{bdry}}|=3$.
+Under the closed interface contract adopted in this paper---cyclic types label the $18$ field-level chiral multiplets and boundary types label the three gauge-factor connection classes---there is no remaining element of $X_6$ that can be assigned as an additional primitive stable-type label for a Higgs-like scalar.
+Accordingly, any scalar sector must enter either as (i) an EFT-level completion field in the continuum dictionary, or (ii) a protocol-emergent observable supported by resolution uplift and coarse graining.
+\end{proposition}
+\begin{proof}
+The split cardinalities are theorem-level facts at $m=6$ (Section~\ref{sec:folding_core}).
+The closed labeling map assigns the $18$ cyclic types to the $18$ chiral multiplets and assigns the $3$ boundary types to the three gauge factors (Theorem~\ref{thm:labeling_unique}).
+Therefore all $21$ stable types are already consumed by the closed chiral/gauge interface at the anchor, leaving no unused stable label in $X_6$.
+\end{proof}
+
+\paragraph{Relation to the main text.}
+This is the audit-level content behind the Higgs-status remarks in Section~\ref{sec:sm_labeling_closure} (Remark~\ref{rem:higgs_not_in_21}) and the scalar-sector closure statements in Section~\ref{subsec:scalar_sectors_interface}.
+
+

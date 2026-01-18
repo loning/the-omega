@@ -44,7 +44,8 @@ def nearest_int(x: float) -> int:
 
 
 def main() -> None:
-    # Representative neutrino mass scales (eV) inferred from oscillation splittings.
+    # Representative neutrino mass scales (eV) inferred from oscillation splittings
+    # (PDG / NuFIT-style central values; see the paper text for citations).
     # These are not used as premises in the mathematical layer; they are interface inputs.
     dm21 = 7.42e-5  # eV^2
     dm31_no = 2.517e-3  # eV^2 (normal ordering)

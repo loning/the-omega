@@ -1,0 +1,55 @@
+\section[The vacuum sector]{The vacuum sector: ontology of protocol-unstable states}
+\label{app:ghost_sector}
+
+This section records diagnostics for the protocol-unstable complement $\Omega_m\setminus X_m$ (the \emph{ghost sector}) across window lengths.
+For the protocol-level vacuum interpretation and the relation of the ghost sector to the folding core, see Section~\ref{subsubsec:geometric_vacuum} and Remark~\ref{rem:ghost_sector_interface}.
+
+\paragraph{A minimal instability witness.}
+As a minimal instability witness on the full alphabet, define the adjacent-ones count
+\[
+N_{11}(w):=\#\{\,i\in\{1,\dots,m-1\}\ :\ w_i=w_{i+1}=1\,\}.
+\]
+Then $X_m=\{w\in\Omega_m:\ N_{11}(w)=0\}$ and the protocol-unstable complement (ghost sector) is $\Omega_m\setminus X_m$.
+
+Table~\ref{tab:ghost_sector_violations} records the ghost-sector size together with the distribution mass in the first few violation bins and the mean violation count restricted to $\Omega_m\setminus X_m$.
+Rows are reproduced by the deterministic script \texttt{scripts/exp\_ghost\_sector\_violation\_stats.py}.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{rrrrrrrrr}
+\toprule
+$m$ & $|X_m|$ & $|\Omega_m\setminus X_m|$ & frac &
+$N_{11}=1$ & $N_{11}=2$ & $N_{11}=3$ & $N_{11}\ge 4$ & mean $N_{11}$ (ghost) \\
+\midrule
+\input{sections/generated/ghost_sector_violation_rows.tex}%
+\end{tabular}
+\caption{Vacuum-sector diagnostics in the adjacent-violation count $N_{11}$ for the protocol-unstable complement $\Omega_m\setminus X_m$. The column ``frac'' is the fraction $|\Omega_m\setminus X_m|/|\Omega_m|$.}
+\label{tab:ghost_sector_violations}
+\end{table}
+
+\paragraph{Distance to admissibility.}
+As an additional diagnostic, we define a minimal repair cost $c(w)$ as the minimum number of bit flips $1\to 0$ required to remove all adjacent-ones violations.
+Equivalently, if a word contains maximal runs of consecutive ones of lengths $L$, then $c(w)=\sum \lfloor L/2\rfloor$.
+Table~\ref{tab:ghost_sector_repair_cost} summarizes the repair-cost distribution for the same $m$-sweep.
+Rows are reproduced by the deterministic script \texttt{scripts/exp\_ghost\_sector\_repair\_cost\_stats.py}.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{rrrrrrrrrr}
+\toprule
+$m$ & $|X_m|$ & $|\Omega_m\setminus X_m|$ & frac &
+$c=1$ & $c=2$ & $c=3$ & $c=4$ & $c\ge 5$ & mean $c$ (ghost) \\
+\midrule
+\input{sections/generated/ghost_sector_repair_cost_rows.tex}%
+\end{tabular}
+\caption{Vacuum-sector diagnostics in the minimal repair cost $c(w)$ to reach admissibility (no consecutive ones) for the protocol-unstable complement $\Omega_m\setminus X_m$. The column ``frac'' is the fraction $|\Omega_m\setminus X_m|/|\Omega_m|$.}
+\label{tab:ghost_sector_repair_cost}
+\end{table}
+
+

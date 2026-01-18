@@ -1,0 +1,59 @@
+\section{Semigroup and exponential kernels (arrow-of-time template)}
+\label{app:arrow_of_time_semigroup_notes}
+
+\AuditTag This section records a standard functional-equation template that connects a one-way additive time law on ticks to exponential weights.
+It is included as a reusable mathematical note; it introduces no additional axioms and is not used as a premise in theorem-level folding proofs.
+
+\subsection{Discrete semigroup weights on ticks}
+\label{subsec:arrow_time_discrete_semigroup}
+
+\begin{proposition}[Memoryless weights on $\NN_0$ are exponential]\label{prop:discrete_memoryless_exponential}
+\MathTag Let $(w_t)_{t\in\NN_0}$ be real weights with $w_0=1$ and
+\[
+w_{t+s}=w_t\,w_s\qquad\text{for all }t,s\in\NN_0.
+\]
+Then $w_t=r^t$ for all $t\in\NN_0$, where $r:=w_1$.
+\end{proposition}
+\begin{proof}
+Taking $s=1$ gives $w_{t+1}=w_t w_1=r\,w_t$ for all $t\in\NN_0$.
+By induction,
+$
+w_t=r^t w_0=r^t.
+$
+\end{proof}
+
+\subsection{Continuous representative and the Cauchy exponential equation}
+\label{subsec:arrow_time_continuous_exponential}
+
+\begin{proposition}[Continuous semigroup weights are exponentials]\label{prop:continuous_semigroup_exponential}
+\MathTag Let $w:[0,\infty)\to(0,\infty)$ be continuous and satisfy
+\[
+w(t+s)=w(t)\,w(s)\qquad\text{for all }t,s\ge 0,\qquad w(0)=1.
+\]
+Then there exists $\lambda\in\RR$ such that $w(t)=\exp(\lambda t)$ for all $t\ge 0$.
+\end{proposition}
+\begin{proof}
+Define $a(t):=\log w(t)$, which is well-defined and continuous because $w(t)>0$.
+Then $a(t+s)=a(t)+a(s)$ for all $t,s\ge 0$ and $a(0)=0$.
+By the standard Cauchy functional equation result under continuity, $a(t)=\lambda t$ for some $\lambda\in\RR$ (see, e.g., \cite{AczelDhombres1989FunctionalEquations}).
+Exponentiating gives $w(t)=\exp(\lambda t)$.
+\end{proof}
+
+\subsection{Calibration constants and matching-layer inputs}
+\label{subsec:arrow_time_calibration_constants}
+
+\InterfaceTag Exponential laws determine a \emph{shape} but not an absolute origin: when one solves a linear update law (discrete or continuous), an initial-condition constant remains.
+For example, the differential equation $x'(t)=\lambda x(t)$ has solutions $x(t)=C\,\exp(\lambda t)$, and the constant $C$ is equivalent to a choice of time origin or amplitude normalization.
+In the audit discipline of this paper, such constants are treated as matching-layer conventions (units, calibration targets, reference scales) rather than as theorem-level outputs.
+\AuditTag The same remark applies to update-time indices in protocol/state space: monotonicity certificates (e.g.\ Appendix~\ref{subsec:wish_motive_generic_dynamics}) determine a direction/order, while absolute origin and conversion to laboratory time are matching-layer conventions.
+
+\subsection{Abel-first weights and the \texorpdfstring{$r\uparrow 1$}{r->1} path}
+\label{subsec:arrow_time_abel_first}
+
+\MathTag The discrete exponential family $r^t$ with $0<r<1$ is the canonical ``Abel-first'' convergence weight: it suppresses late-time contributions while preserving the semigroup law $r^{t+s}=r^t r^s$.
+The standard Abel path is the limit process $r\uparrow 1$ (Conventions).
+In this paper, Abel-first conventions appear as a disciplined way to discuss finite parts and controlled limits; they do not add new premises to the finite folding core.
+
+\AuditTag For the unified operator dictionary that treats Abel-first denominators as resolvent kernels and relates pole barriers to interior resolvent singularities, see Section~\ref{app:operator_mother_space_dictionary} and Appendix~\ref{app:operator_mother_space}.
+
+

@@ -2,7 +2,7 @@
 """
 Balanced-chain sweep for finite holonomy and phase-lift CP signal.
 
-We consider the balanced chain m=2n with (n,m) in {(3,6),(4,8),(5,10),(6,12),(7,14),(8,16)}.
+We consider the balanced chain m=2n with (n,m) in {(1,2),(2,4),(3,6),(4,8),(5,10),(6,12),(7,14),(8,16)}.
 For each pair we:
   - embed indices k in {0..4^n-1} on a 2^n x 2^n grid via Hilbert addressing,
   - label each site by the stable word w = Fold_m(k),
@@ -253,7 +253,9 @@ def compose_mono(p: Perm, a: List[complex], q: Perm, b: List[complex]) -> Tuple[
     return r, c
 
 
-def sweep_one(n_bits: int, m: int) -> Tuple[Counter[str], Dict[str, float], Dict[str, float], int]:
+def sweep_one(
+    n_bits: int, m: int
+) -> Tuple[Counter[str], Dict[str, float], Dict[str, float], Dict[str, float], Dict[str, float], int]:
     N = 1 << n_bits
     denom = 1 << m  # denom = 2^m
 
@@ -296,6 +298,8 @@ def sweep_one(n_bits: int, m: int) -> Tuple[Counter[str], Dict[str, float], Dict
     ct_count: Dict[str, int] = defaultdict(int)
     ct_sum_abs: Dict[str, float] = defaultdict(float)
     ct_sum_signed: Dict[str, float] = defaultdict(float)
+    ct_sum_W: Dict[str, float] = defaultdict(float)
+    ct_sum_A: Dict[str, float] = defaultdict(float)
     failures = 0
     B = basis_B()
 
@@ -346,31 +350,51 @@ def sweep_one(n_bits: int, m: int) -> Tuple[Counter[str], Dict[str, float], Dict
                 failures += 1
                 continue
             J = jarlskog(Q)
+            tr = float((Q[0][0] + Q[1][1] + Q[2][2]).real)
+            W = tr / 3.0
+            A = 1.0 - W
             ct_count[ct] += 1
             ct_sum_abs[ct] += abs(J)
             ct_sum_signed[ct] += J
+            ct_sum_W[ct] += W
+            ct_sum_A[ct] += A
             valid_plaq += 1
     prog_plaq.done(extra=f"valid={valid_plaq} failures={failures}")
 
     mean_abs: Dict[str, float] = {}
     mean_signed: Dict[str, float] = {}
+    mean_W: Dict[str, float] = {}
+    mean_A: Dict[str, float] = {}
     for ct in ["1", "2", "2x2", "3", "4", "other"]:
         nct = ct_count.get(ct, 0)
         if nct <= 0:
             mean_abs[ct] = 0.0
             mean_signed[ct] = 0.0
+            mean_W[ct] = 0.0
+            mean_A[ct] = 0.0
         else:
             mean_abs[ct] = ct_sum_abs.get(ct, 0.0) / float(nct)
             mean_signed[ct] = ct_sum_signed.get(ct, 0.0) / float(nct)
-    return hist, mean_abs, mean_signed, failures
+            mean_W[ct] = ct_sum_W.get(ct, 0.0) / float(nct)
+            mean_A[ct] = ct_sum_A.get(ct, 0.0) / float(nct)
+    return hist, mean_abs, mean_signed, mean_W, mean_A, failures
+
+
+def _tv_distance(p: Dict[str, float], q: Dict[str, float]) -> float:
+    keys = set(p.keys()) | set(q.keys())
+    return 0.5 * sum(abs(p.get(k, 0.0) - q.get(k, 0.0)) for k in keys)
 
 
 def main() -> None:
-    chain = [(3, 6), (4, 8), (5, 10), (6, 12), (7, 14), (8, 16)]
+    chain = [(1, 2), (2, 4), (3, 6), (4, 8), (5, 10), (6, 12), (7, 14), (8, 16)]
 
     rows: List[str] = []
+    rows_wilson: List[str] = []
+    rows_conv: List[str] = []
+
+    prev_dist: Dict[str, float] | None = None
     for n_bits, m in chain:
-        hist, mean_abs, mean_signed, failures = sweep_one(n_bits, m)
+        hist, mean_abs, mean_signed, mean_W, mean_A, failures = sweep_one(n_bits, m)
         Np = (1 << n_bits) - 1
         total_plaq = Np * Np
         # Focus cycle-type counts and CP signal on 3/4 cycles.
@@ -379,19 +403,43 @@ def main() -> None:
         c22 = hist.get("2x2", 0)
         c3 = hist.get("3", 0)
         c4 = hist.get("4", 0)
+        c34 = c3 + c4
         meanJ34 = (float(c3) * mean_abs.get("3", 0.0) + float(c4) * mean_abs.get("4", 0.0)) / float(max(1, c3 + c4))
         meanJ34s = (float(c3) * mean_signed.get("3", 0.0) + float(c4) * mean_signed.get("4", 0.0)) / float(max(1, c3 + c4))
+        meanW34 = (float(c3) * mean_W.get("3", 0.0) + float(c4) * mean_W.get("4", 0.0)) / float(max(1, c3 + c4))
+        meanA34 = (float(c3) * mean_A.get("3", 0.0) + float(c4) * mean_A.get("4", 0.0)) / float(max(1, c3 + c4))
         rows.append(
             f"{n_bits} & {m} & {total_plaq} & {c1} & {c2} & {c22} & {c3} & {c4} & {meanJ34:.6g} & {meanJ34s:+.6g} & {failures} \\\\"
         )
+        rows_wilson.append(
+            f"{n_bits} & {m} & {total_plaq} & {c34} & {meanW34:.6g} & {meanA34:.6g} \\\\"
+        )
+
+        # CL1-facing convergence audit: cycle-type distribution distances across scales.
+        dist = {}
+        for ct in ["1", "2", "2x2", "3", "4", "other"]:
+            dist[ct] = float(hist.get(ct, 0)) / float(max(1, total_plaq))
+        if prev_dist is None:
+            rows_conv.append(f"{n_bits} & {m} & -- & -- \\\\")
+        else:
+            tv = _tv_distance(prev_dist, dist)
+            max_abs = max(abs(prev_dist.get(ct, 0.0) - dist.get(ct, 0.0)) for ct in dist.keys())
+            rows_conv.append(f"{n_bits} & {m} & {tv:.6g} & {max_abs:.6g} \\\\")
+        prev_dist = dist
 
     rows.append("\\bottomrule")
+    rows_wilson.append("\\bottomrule")
+    rows_conv.append("\\bottomrule")
 
     root = Path(__file__).resolve().parent.parent
     out_dir = root / "sections" / "generated"
     out_dir.mkdir(parents=True, exist_ok=True)
     write_lines(out_dir / "holonomy_balanced_chain_rows.tex", rows)
+    write_lines(out_dir / "holonomy_balanced_chain_wilson_rows.tex", rows_wilson)
+    write_lines(out_dir / "holonomy_balanced_chain_convergence_rows.tex", rows_conv)
     print("Wrote sections/generated/holonomy_balanced_chain_rows.tex")
+    print("Wrote sections/generated/holonomy_balanced_chain_wilson_rows.tex")
+    print("Wrote sections/generated/holonomy_balanced_chain_convergence_rows.tex")
 
 
 if __name__ == "__main__":

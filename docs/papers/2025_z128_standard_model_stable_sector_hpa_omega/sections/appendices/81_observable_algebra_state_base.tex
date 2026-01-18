@@ -1,0 +1,135 @@
+\section{Observable algebras and states at finite resolution (unified base package)}
+\label{app:observable_algebra_state_base}
+
+This appendix records a minimal, self-contained algebraic base package for the manuscript:
+how to represent (finite-resolution) observables as elements of a $^\ast$-algebra, and how to represent readout statistics as states (positive normalized linear functionals).
+The purpose is bookkeeping and compatibility:
+it aligns (i) the POVM/density-matrix notation used in the quantum interface (Appendix~\ref{app:quantum_measurement_born}),
+(ii) the CPTP/channel viewpoint used for coarse graining and non-disturbance (Appendix~\ref{app:quantum_channels_cptp_stinespring}),
+and (iii) the AQFT net language (Appendix~\ref{app:aqft_axioms_local_nets}) under a single finite-resolution umbrella.
+No new empirical assumptions are introduced.
+
+\subsection{Two canonical finite-resolution observable algebras}
+
+At a fixed protocol resolution $(m,n)$, the paper works with finite objects:
+stable types $X_m$ and (when spatial statistics are used) a finite addressing structure at order $n$.
+There are two canonical algebra choices, corresponding to two readings of ``observable'':
+\begin{itemize}
+\item a \emph{classical readout} algebra of functions on a finite set (commutative),
+\item a \emph{quantum readout} algebra of operators on a finite-dimensional Hilbert space (noncommutative).
+\end{itemize}
+Both fit into the same $C^\ast$-algebra/state formalism.
+
+\paragraph{(A) Classical finite readout: functions on a finite set.}
+Let $\Omega$ be a finite set of protocol outcomes at a chosen resolution (for example $\Omega=X_m$, or $\Omega$ a finite product $X_m^{S_n}$ if a finite site set $S_n$ is used).
+Define the commutative $^\ast$-algebra
+\[
+\mathcal{A}_{\mathrm{cl}}(\Omega):=\{f:\Omega\to\CC\},
+\]
+with pointwise operations and involution $f^\ast(\omega):=\overline{f(\omega)}$.
+
+\paragraph{(B) Quantum finite readout: matrix algebra.}
+Fix a finite-dimensional Hilbert space $\mathcal{H}$ (dimension $d<\infty$) that represents the declared local readout register at the modeling level.
+Define the noncommutative $C^\ast$-algebra
+\[
+\mathcal{A}_{\mathrm{qm}}(\mathcal{H}):=\mathcal{B}(\mathcal{H})\cong M_d(\CC),
+\]
+with involution given by adjoint.
+This is the setting used in Appendix~\ref{app:quantum_measurement_born} (POVM effects $E_k\in\mathcal{B}(\mathcal{H})$ and density operators $\rho$) and Appendix~\ref{app:quantum_channels_cptp_stinespring} (channels as completely positive maps on $\mathcal{B}(\mathcal{H})$).
+
+\subsection{States as positive normalized linear functionals}
+
+\begin{definition}[State on a $^\ast$-algebra]\label{def:z128_state_functional}
+\MathTag Let $\mathcal{A}$ be a unital $^\ast$-algebra.
+A \emph{state} on $\mathcal{A}$ is a linear functional $\omega:\mathcal{A}\to\CC$ such that:
+\begin{itemize}
+\item \textbf{positivity:} $\omega(A^\ast A)\ge 0$ for all $A\in\mathcal{A}$;
+\item \textbf{normalization:} $\omega(\ind)=1$.
+\end{itemize}
+\end{definition}
+
+\paragraph{Compatibility note.}
+Definition~\ref{def:z128_state_functional} matches the state-functional convention already recorded in Appendix~\ref{app:state_gns_background}, and is the common point of contact between the POVM/Born formulas and the AQFT net language.
+
+\subsubsection{Classical states as probability measures}
+
+\begin{proposition}[States on a finite commutative algebra are probability measures]\label{prop:finite_commutative_state_probability}
+\MathTag Let $\Omega$ be a finite set and $\mathcal{A}_{\mathrm{cl}}(\Omega)=\{f:\Omega\to\CC\}$.
+Then every state $\omega$ on $\mathcal{A}_{\mathrm{cl}}(\Omega)$ has the form
+\[
+\omega(f)=\sum_{\omega\in\Omega} f(\omega)\,p(\omega),
+\]
+for a unique probability mass function $p:\Omega\to[0,1]$ with $\sum_{\omega\in\Omega}p(\omega)=1$.
+\end{proposition}
+\begin{proof}
+Let $\delta_\omega$ denote the indicator function of the singleton $\{\omega\}$.
+Set $p(\omega):=\omega(\delta_\omega)\ge 0$ by positivity.
+Since $\sum_{\omega\in\Omega}\delta_\omega=\ind$, normalization gives $\sum_{\omega}p(\omega)=1$.
+Every $f$ decomposes as $f=\sum_\omega f(\omega)\delta_\omega$, hence $\omega(f)=\sum_\omega f(\omega)\omega(\delta_\omega)=\sum_\omega f(\omega)p(\omega)$.
+Uniqueness is immediate from the values on $\delta_\omega$.
+\end{proof}
+
+\subsubsection{Quantum states as density operators}
+
+\begin{definition}[Density operator]\label{def:z128_density_operator}
+\MathTag A \emph{density operator} on a finite-dimensional Hilbert space $\mathcal{H}$ is an operator $\rho\in\mathcal{B}(\mathcal{H})$ such that $\rho\succeq 0$ and $\Tr(\rho)=1$.
+\end{definition}
+
+\begin{proposition}[Finite-dimensional state representation]\label{prop:finite_dim_state_density_matrix}
+\MathTag Let $\mathcal{H}$ be finite-dimensional and let $\omega$ be a state on $\mathcal{B}(\mathcal{H})$.
+Then there exists a unique density operator $\rho$ such that
+\[
+\omega(A)=\Tr(\rho\,A)\qquad\text{for all }A\in\mathcal{B}(\mathcal{H}).
+\]
+\end{proposition}
+\begin{proof}
+This is standard finite-dimensional $C^\ast$-algebra theory: every positive linear functional on $M_d(\CC)$ is of the form $A\mapsto \Tr(RA)$ for a unique positive $R$, and normalization forces $\Tr(R)=1$.
+Appendix~\ref{app:state_gns_background} records the same identification as part of the state/GNS alignment.
+\end{proof}
+
+\paragraph{Born rule as evaluation of effects.}
+\InterfaceTag Given a POVM $\{E_k\}_k$ and a state $\omega(A)=\Tr(\rho A)$, the Born probability of outcome $k$ is $\omega(E_k)=\Tr(\rho E_k)$, as used throughout Appendix~\ref{app:quantum_measurement_born}.
+
+\subsection{GNS as the universal representation interface}
+
+The GNS construction provides a canonical Hilbert-space realization from a state on an abstract algebra.
+Since this manuscript already records GNS background in Appendix~\ref{app:state_gns_background} and its net version in Appendix~\ref{app:aqft_states_representations_gns_nets}, we only state the bookkeeping consequence needed here.
+
+\begin{remark}[GNS as a representation bridge]\label{rem:gns_bridge_summary}
+\MathTag Given a state $\omega$ on a $C^\ast$-algebra $\mathcal{A}$, the GNS triple $(\pi_\omega,\mathcal{H}_\omega,\Omega_\omega)$ satisfies
+\[
+\omega(A)=\langle \Omega_\omega,\pi_\omega(A)\Omega_\omega\rangle.
+\]
+In finite-dimensional cases, this reduces to the density-matrix picture of Proposition~\ref{prop:finite_dim_state_density_matrix}.
+For AQFT nets, the same mechanism upgrades a state on the quasi-local algebra to a net realization (Appendix~\ref{app:aqft_states_representations_gns_nets}).
+\end{remark}
+
+\subsection{Coarse graining: channels and dual maps on observables}
+
+Coarse graining appears in the manuscript as a deterministic protocol rule on finite data (Definition~\ref{def:protocol_flow_step}) and as a contraction/monotonicity mechanism in the quantum-channel dictionary (Appendix~\ref{app:quantum_channels_cptp_stinespring}).
+The minimal algebraic unification is the Schr\"odinger/Heisenberg duality between states and observables.
+
+\begin{definition}[State pushforward and observable pullback]\label{def:state_pushforward_observable_pullback}
+\MathTag Let $\Phi:\mathcal{A}\to\mathcal{B}$ be a unital completely positive map between unital $C^\ast$-algebras (in finite dimensions: the Heisenberg-picture map of a CPTP channel).
+Define:
+\begin{itemize}
+\item the \emph{observable pullback} as $\Phi^\ast:=\Phi$ (Heisenberg picture), mapping $B\in\mathcal{B}$ to $\Phi(B)\in\mathcal{A}$;
+\item the \emph{state pushforward} by duality:
+for any state $\omega$ on $\mathcal{A}$, define a state $\Phi_\ast\omega$ on $\mathcal{B}$ by
+\[
+(\Phi_\ast\omega)(B):=\omega(\Phi(B)).
+\]
+\end{itemize}
+\end{definition}
+
+\begin{remark}[Why this matches the protocol flow language]\label{rem:channel_matches_protocol_flow}
+\InterfaceTag In the protocol-flow viewpoint, a coarse-graining rule maps fine-resolution data to coarse summaries.
+In the algebraic viewpoint, coarse graining maps fine states to coarse states (Schr\"odinger picture), while observables pull back from coarse to fine (Heisenberg picture).
+Appendix~\ref{app:quantum_channels_cptp_stinespring} records the CPTP formalism and contraction certificates used by the manuscript as the minimal hard structure behind this duality.
+\end{remark}
+
+\subsection{Relation to local nets (AQFT packaging)}
+
+\AuditTag When one organizes observables by regions and requires microcausality, the appropriate package is a local net $\mathcal{O}\mapsto\mathcal{A}(\mathcal{O})$ (Appendix~\ref{app:aqft_axioms_local_nets}).
+The present appendix provides only the finite-resolution algebra/state base; locality and spectrum assumptions remain interface-scoped and are tracked separately in Appendix~\ref{app:microcausality_spectrum_covariance}.
+

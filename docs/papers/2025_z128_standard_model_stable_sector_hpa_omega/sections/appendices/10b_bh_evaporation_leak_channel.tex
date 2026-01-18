@@ -1,0 +1,157 @@
+\section{Evaporation and leakage as a protocol channel (BH4: record + resource ledger)}
+\label{app:bh_evaporation_leak_channel}
+
+\paragraph{Scope and status.}
+\AuditTag This appendix isolates the minimal ingredients needed to talk about black-hole-like
+evaporation in the protocol language: (i) a declared external record, and (ii) a resource ledger.
+It is an interface/audit module and introduces no new theorem-level premise into the folding core.
+For the broader leakage-kernel vocabulary (finite candidate families for survival laws, exit-channel
+decompositions, and delay proxies), see Appendix~\ref{app:leakage_kernel}.
+
+\subsection{External record: stable labels and fiber coordinates}
+\label{subsec:bh4_external_record}
+
+\paragraph{Paper-native micro/macro objects.}
+Fix a window length $m$.
+Microstates are dyadic indices $N\in\{0,\dots,2^m-1\}$.
+The stable label is the folded word
+\[
+W:=\mathrm{Fold}_m(N)\in X_m,
+\]
+where $X_m$ is the no-consecutive-ones admissible language and $\mathrm{Fold}_m$ is the
+Zeckendorf-truncation folding map (Appendix~\ref{app:protocol_primitives} and the fold-family uniqueness contract
+Appendix~\ref{app:fold_family_uniqueness}).
+The preimage fiber is
+\[
+P(w):=\mathrm{Fold}_m^{-1}(w),\qquad g_m(w):=|P(w)|.
+\]
+
+\paragraph{Two record granularities.}
+\InterfaceTag We distinguish two externally recorded granularities:
+\begin{itemize}
+\item \textbf{Coarse record:} only the stable labels $w_t\in X_m$ are recorded.
+\item \textbf{Refined record (single-stream).} the record remains a \emph{single} time-ordered stream of stable labels
+$w_t\in X_m$, but late-time symbols are allowed to encode fiber information (e.g.\ via a finite digit alphabet derived
+from $X_m$) so that the full record becomes information-complete at fixed $m$.
+\end{itemize}
+Recording only $w_t$ is a protocol coarse graining. A refined single-stream record is information-complete at fixed $m$
+once enough late-time symbols have been emitted and the decoding rules are declared by a finite candidate family (CAP).
+
+\subsection{Resource ledger: preventing perpetual emission without a source}
+\label{subsec:bh4_resource_ledger}
+
+\paragraph{Ledger requirement (audit).}
+\AuditTag Any ``evaporation'' claim without external input must include a resource ledger that decreases
+under emission. This prevents a perpetual-emission pathology in the tick-only language.
+The present appendix keeps the ledger abstract: the concrete physical identification (mass/area/temperature)
+belongs to matching dictionaries (Appendix~\ref{app:bh_planck_capacity_calibration} and Appendix~\ref{app:bh_wormholes_pointer}).
+
+\subsection{A compact information-flow table at fixed \texorpdfstring{$m$}{m} (audit)}
+\label{subsec:bh4_information_flow_table}
+
+\paragraph{Interpretation.}
+\AuditTag The table below summarizes, for an $m$-sweep, the stable-label capacity $\log_2|X_m|$ versus the
+microstate capacity $m$ (bits per tick) and the hidden fiber information measured by
+$H(N|W)=\mathbb{E}_{\mu_m}[\log_2 g_m(W)]$ under the microstate-pushforward distribution
+$\mu_m(w)=g_m(w)/2^m$ (cf.\ Appendix~\ref{app:kernel_family_cap_closure}).
+\AuditTag This is the record-algebra form of finite observability:
+the gap $m-\log_2|X_m|$ is the dyadic$\to$admissible capacity gap, and $H(N|W)$ is the corresponding hidden fiber information.
+In the unified rigidity spine, the same content is recorded as (i) a $\log(2/\varphi)$ rate and (ii) an entropy/relative-entropy squeezing constraint
+(Proposition~\ref{prop:rigidity_log2phi_triple_reading} and Proposition~\ref{prop:fiber_entropy_relative_entropy_squeezing}, with base conversion between nats and bits).
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{r r r r r r r}
+\toprule
+$m$ & $|X_m|$ & $g_{\min}$ & $g_{\max}$ & $\log_2|X_m|$ & $H(N|W)$ & $m-\log_2|X_m|$ \\
+\midrule
+\input{sections/generated/bh_evaporation_rate_rows.tex}%
+\end{tabular}
+\caption{BH4 information-flow summary for an $m$-sweep in the paper-native micro/macro objects.
+Here $g_{\min},g_{\max}$ are the min/max folding degeneracies over $X_m$, and
+$H(N|W)$ is the fiber (conditional) entropy in bits under $\mu_m(w)=g_m(w)/2^m$.
+Rows are reproduced by \texttt{scripts/exp\_bh\_evaporation\_leak\_channel.py}.}
+\label{tab:bh4_information_flow}
+\end{table}
+
+\input{sections/generated/bh_leak_channel_summary.tex}%
+
+\subsection{Legal absorption as a candidate interface (mechanism registry; no selection)}
+\label{subsec:bh4_legal_absorption_registry}
+
+\AuditTag The evaporation/leak-channel viewpoint requires an explicit statement of what types of external inputs
+are absorbable in a given protocol class. Rather than choosing a single mechanism, we record a small registry of
+self-consistent candidates. Selection is deferred to rigidity certificates and to explicit failure-point audits
+(Appendix~\ref{app:minimal_failure_point_templates}).
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{l l l l l}
+\toprule
+id & legal set (Iface) & mechanism hook & where in paper & fail point \\
+\midrule
+\input{sections/generated/bh_legal_absorption_registry_rows.tex}%
+\end{tabular}
+\caption{Registry of legal-absorption candidates. Rows are generated by \texttt{scripts/exp\_bh\_legal\_absorption\_registry.py}.}
+\label{tab:bh_legal_absorption_registry}
+\end{table}
+
+\input{sections/generated/bh_legal_absorption_registry_summary.tex}%
+
+\subsection{Absorption-mode audit table (fixed \texorpdfstring{$m=6$}{m=6} anchor)}
+\label{subsec:bh4_absorption_mode_sweep}
+
+\AuditTag The following audit table reports a small absorption-mode sweep for the black-hole-equivalent queue model
+at the anchor $m=6$. It records the minimal information needed to compare self-consistent legal-absorption interfaces
+without choosing among them.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{l r r r r r r r}
+\toprule
+mode & \#allowed & $t$ & $B$ & esc? & esc extra & ticks & ok \\
+\midrule
+\input{sections/generated/bh_absorption_mode_sweep_rows.tex}%
+\end{tabular}
+\caption{Absorption-mode sweep for the black-hole-equivalent queue model at $m=6$. Rows are generated by \texttt{scripts/exp\_bh\_absorption\_mode\_sweep.py}.}
+\label{tab:bh_absorption_mode_sweep_bh4}
+\end{table}
+
+\input{sections/generated/bh_absorption_mode_sweep_summary.tex}%
+
+\subsection{Capacity-calibrated \texorpdfstring{$m^\ast(M)$}{m*(M)} and queue-model parameters (audit)}
+\label{subsec:bh4_capacity_calibrated_queue_params}
+
+\AuditTag Black holes are high-capacity objects, but in the present paper the protocol capacity scales as
+$I_{\mathrm{prot}}(m,n)=m4^n$. Therefore, matching a black-hole boundary capacity can drive $n$ very large
+even when $m$ remains in the bounded candidate family used elsewhere for stable-sector analysis.
+To make this explicit, we report below (i) the CAP-selected matching-layer map $M\mapsto(m^\ast(M),n^\ast(M))$
+from Appendix~\ref{app:bh_planck_capacity_calibration} for a small reference family of known black holes,
+and (ii) the corresponding queue-model parameters evaluated at $m^\ast(M)$ under the BH-like absorption mode
+\texttt{cyclic\_only}.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{l r r r r r r r r}
+\toprule
+object & $M/M_\odot$ & $m^\ast$ & $n^\ast$ & $\Delta$ & $t$ & esc extra & ticks & ok \\
+\midrule
+\input{sections/generated/bh_capacity_calibrated_queue_params_rows.tex}%
+\end{tabular}
+\caption{Capacity-calibrated queue parameters for a small family of known black holes. Rows are generated by \texttt{scripts/exp\_bh\_capacity\_calibrated\_queue\_params.py}.}
+\label{tab:bh_capacity_calibrated_queue_params}
+\end{table}
+
+\input{sections/generated/bh_capacity_calibrated_queue_params_summary.tex}%

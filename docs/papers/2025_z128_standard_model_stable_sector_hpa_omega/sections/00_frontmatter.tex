@@ -1,21 +1,80 @@
 
 \begin{abstract}
-Within the Holographic Phase Arithmetic (HPA) scan--projection readout paradigm, we reformulate the Standard Model (SM) as a problem of \emph{stable readout sectors} under finite resolution.
-At the minimal balanced coupling scale $(m,n)=(6,3)$, the local readout space is the $6$-bit microstate set $\Omega_6:=\{0,1\}^6$ with $|\Omega_6|=64$.
-Introducing three commuting stability channels, denoted $\varphi$--$\pi$--$\e$, and defining stability by their joint readout constraints, we obtain a rigid \emph{resolution folding} $64\to 21$: the $\varphi$-stable type set $X_6$ has cardinality $|X_6|=21$ and admits a canonical $18\oplus 3$ split into cyclic and boundary types induced by the $\pi$-channel.
+Standard physics combines continuous geometric models of spacetime with discrete quantum matter, but the joint origin of geometry, stability, and low-complexity invariants remains conceptually open.
+This paper proposes a strictly constructive viewpoint: geometry is enforced by finite-resolution constraints, while time is the primitive scan engine.
+Concretely, we adopt a tick-first ontology closed under two declared primitives: \emph{time as tick} (the iteration count along a unitary readout stream) and the \emph{Computational Action Principle (CAP)} as the unique deterministic closure/selection rule on explicit finite candidate families.
+For reader navigation, we also use the interface-level terms \emph{Wish} (protocol-stable target data/structures) and \emph{Motive} (an auditable objective functional), explicitly marked as \AuditTag not used in proofs.
+Finite observers access only finite windows, hence finite binary words $w\in\Omega_m=\{0,1\}^m$ (Section~\ref{sec:hpa_readout}).
+At the golden branch, a forbidden-word grammar and a cyclic closure predicate define a stable sector $X_m\subset\Omega_m$ with Fibonacci size $|X_m|=F_{m+2}$ and a rigid cyclic/boundary split (Section~\ref{sec:folding_core}).
 
-We then propose a \emph{scan--chirality locking} principle: the orientation class of Hilbert addressing (a choice among the dihedral layout families $D_4$) fixed at $t=0$ turns parity into a protocol change at the readout level.
-A discrete Hilbert-path chirality index flips sign under both reflection (parity) and traversal reversal (time reversal), providing an auditable finite-resolution sense in which the arrow of time and spatial handedness couple to the same sign datum.
-In the closed constant-geometry sector of the HPA--$\Omega$ program, the same protocol language yields quantitative rigidity targets: the theorem-level value $\alpha_{\mathrm{geo}}^{-1}=4\pi^3+\pi^2+\pi\approx 137.0363037759$ has relative deviation $\sim 2.22\times 10^{-6}$ from CODATA 2022; electroweak volume quantization yields $\alpha^{-1}(\mu_Z)=13\pi^2\approx 128.3048572142$ and $\sin^2\theta_W(\mu_Z)=3/13\approx 0.2307692308$ with explicit PDG deviations at the per-mille level; and CP violation admits the rigid reference $J_{\mathrm{geo}}=1/(11\pi^7)\approx 3.00994\times 10^{-5}$ compared to the PDG CKM Jarlskog value.
-Within this quantitative backbone, scan--chirality locking provides a protocol-geometric account of maximal parity violation in the weak sector, antimatter as the conjugate readout induced by scan reversal, and small CP violation as a residual holonomy/phase-space volume effect.
-Gauge fields are interpreted as compensating connections enforcing cross-site phase consistency under the three defect channels.
+To speak about locality, ``space'' is introduced as a derived \emph{display structure}: an addressing basis folds a finite tick prefix into a locality graph, and distance is the induced graph metric (Section~\ref{sec:tick_calculus} and Section~\ref{sec:hilbert_addressing}).
+In this paper we use a $2$D Hilbert screen for explicit finite diagnostics, while treating any conversion from tick units to physical units (including the measured value of $c$) as a matching-layer dictionary rather than a theorem-level output.
 
-Finally, we provide minimal standard-library Python scripts that reproduce the Fold$_6$ surjectivity, the rigid $(2,3,4)$ degeneracy histogram, and the Hilbert chirality-index transformation law, and we record falsifiable interface predictions.
+At the CAP-selected anchor on the chosen screen, $(m,n)=(6,3)$, one has $|\Omega_6|=64$ and a fully explicit theorem-level folding core $64\to 21$ with a canonical $18\oplus 3$ split (Section~\ref{sec:folding_core}).
+On the physical identification layer, ``particles'' are identified with stable readout types, while gauge fields are interpreted as compensating connection data forced by finite projection fibers under cross-site consistency.
+Mass and energy are treated as time dictionaries: mass scales are expressed in a Fibonacci log-time coordinate and compared to operational delay proxies (Wigner--Smith) and Compton-clock ratios (Section~\ref{sec:mass_latency_coordinate} and Appendix~\ref{app:time_mass_delay}).
+To translate the resolution parameter $m$ into conventional scale language, we use an explicit staircase threshold dictionary $\mu_{\mathrm{th}}(m)$ (Table~\ref{tab:resolution_thresholds}) and treat all such conversions as matching/interface conventions rather than theorem-level outputs.
+
+We close several interfaces by bounded-complexity audits with explicit finite candidate families and deterministic tie-break rules, and we record falsifiable predictions in the protocol language.
+We also record low-complexity rigidity targets for coupling normalization and CP violation, together with explicit log-mismatch factors and reproducible counterfactual baselines generated by deterministic scripts.
 \end{abstract}
 
 \begin{sloppypar}
 \textbf{Keywords}: holographic phase arithmetic; resolution folding; Zeckendorf representation; golden mean shift; Hilbert addressing; dihedral group; chirality; antimatter duality; gauge connections; Weinberg angle; Jarlskog invariant; CP violation.
 \end{sloppypar}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.15}
+\caption{A compact roadmap of the $m=1\ldots 12$ resolution spectrum (interface). Under the rigid-frame coarse-lock budget at the anchor (Section~\ref{subsec:6dof_lock}; Proposition~\ref{prop:bulk_dimension_from_anchor}), the bulk dimension is selected as $d=3$ and the minimal single-window coarse-localization anchor is at $m=6$, which induces an interface partition into a sub-geometric vacuum ($m<6$), a geometric ground state ($m=6$), and hyper-geometric layers ($m>6$). A quantitative $m=1\ldots 12$ spectrum template (counts and threshold scales under the minimal calibration) is recorded later in Table~\ref{tab:resolution_spectrum}.}
+\label{tab:resolution_roadmap_strip}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{c ccccc c ccccccc}
+\toprule
+$m$ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 \\
+\midrule
+regime & \multicolumn{4}{c}{pre-geometric} & sub-geom.\ vacuum & anchor & \multicolumn{6}{c}{hyper-geometric layers} \\
+marker & -- & -- & -- & -- & non-local vacuum & electron/SM & nuclear & QCD & bottom & EW & BSM & deep \\
+\bottomrule
+\end{tabular}
+}%
+\end{table}
+\FloatBarrier
+
+\paragraph{An \texorpdfstring{$m$}{m}--energy dictionary (interface).}
+The window length $m$ is a purely protocol-internal resolution parameter (Conventions): it counts the number of binary readout slots in a single observation window.
+To connect this discrete resolution axis to conventional energy-scale language, we use an explicit calibration rule that assigns a threshold scale $\mu_{\mathrm{th}}(m)$ to each $m$ and treats $\mu$ as approximately constant between thresholds (Table~\ref{tab:resolution_thresholds}).
+Concretely, under the minimal staircase calibration used throughout the paper, the thresholds obey
+\[
+\mu_{\mathrm{th}}(m)=m_e\,\varphi^{\,2\pi(m-6)},
+\]
+so that $\mu_{\mathrm{th}}(6)=m_e$ and each unit increase in $m$ corresponds to a fixed multiplicative jump in $\mu$.
+Accordingly, when we say ``at resolution $m$'' we mean: the observer's effective protocol uses $m$-bit windows as the minimal single-window coarse-lock budget in the corresponding band, and interface objects (stable counts, labeling, and audited closures) are computed with that window length.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{7pt}
+\renewcommand{\arraystretch}{1.15}
+\caption{A compact $m$--energy dictionary (interface): the staircase thresholds $\mu_{\mathrm{th}}(m)$ under the minimal calibration and the corresponding experimental/phenomenological anchor channels used as reader-facing guides. Numerical values and the broader spectrum narrative are summarized in Table~\ref{tab:resolution_spectrum}.}
+\label{tab:m_energy_dictionary_compact}
+\begin{tabular}{c c l}
+\toprule
+$m$ & $\mu_{\mathrm{th}}(m)$ (minimal calibration) & anchor / data channel (interface guide) \\
+\midrule
+5 & $\sim 25\,\mathrm{keV}$ & sub-geometric vacuum onset (non-local; background constraints) \\
+6 & $0.511\,\mathrm{MeV}$ & electron / minimal SM anchor (local coarse-lock) \\
+7 & $\sim 10\,\mathrm{MeV}$ & nuclear binding benchmark (intermediate bridge) \\
+8 & $\sim 0.2\,\mathrm{GeV}$ & QCD onset benchmark (hadronic reference scale) \\
+9 & $\sim 4.4\,\mathrm{GeV}$ & bottom threshold (heavy-flavor onset) \\
+10 & $\sim 91\,\mathrm{GeV}$ & electroweak (Z/H) layer (uplift/coarse graining) \\
+11 & $\sim 1.9\,\mathrm{TeV}$ & BSM frontier (first hyper-compressed layer) \\
+12 & $\sim 38\,\mathrm{TeV}$ & deep structure (candidate refinement band) \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \paragraph{Conventions.}
 Unless otherwise stated, $\log$ denotes the natural logarithm.
@@ -26,11 +85,22 @@ N=\sum_{k\ge 1} c_k F_{k+1}.
 \]
 We write $w=w_1\cdots w_m$ for a finite binary word with letters $w_i\in\{0,1\}$.
 We reserve $m$ for Zeckendorf window length and reserve $n$ for Hilbert order.
+We write $t\in\ZZ$ for the scan iteration count (tick) when an explicit time index is needed.
 The standard Abel path refers to the limit process $r\uparrow 1$ with $r\in(0,1)$.
 
-\paragraph{Layered audit rule.}
-We separate a \emph{mathematical layer} (definitions and provable finite-resolution statements) from a \emph{physical identification layer} (interfaces and falsifiable mapping hypotheses).
-Appendix~\ref{app:isomorphism_dictionary} records a shared interface template that connects stable-sector constructions with predictive active error correction (AEC) formulations at the same protocol layer.
+\paragraph{Dimensional language.}
+Throughout the paper we use conventional terms such as ``space'', ``spacetime'', ``grid'', and ``dimension'' only as shorthand for protocol-level addressing and locality structure induced by the chosen readout basis (e.g.\ Hilbert addressing at fixed order).
+No ontic postulate of a pre-existing continuum manifold or a privileged physical dimension is used as a premise for the theorem-level folding statements.
+References to ``4D spacetime'' and to the $6$-DoF rigid-frame coarse-lock anchor are likewise interface language: time refers to scan iteration count, while the spatial dictionary refers to the chosen locality basis; these identification statements are not used as premises for the folding core.
+
+\paragraph{Data and code availability.}
+All finite constructions, audit tables, and quantitative summaries in this paper are generated by deterministic Python scripts included in the repository under \path{scripts/}.
+Generated \LaTeX{} fragments are written to \path{sections/generated/} and are treated as outputs.
+The scripts are a reference implementation of the paper's explicit finite constructions and bounded-family audits; they are provided to reproduce tables and to avoid manual transcription errors, not to introduce additional modeling freedom.
+A single entry point \path{scripts/run_all.py} regenerates the full set of fragments; see Appendix~\ref{app:reproducibility}.
+
+\paragraph{Reader guide and audit contract.}
+The layered audit rule and recommended reading paths are recorded in Part I (Contract).
 
 \tableofcontents
 \newpage

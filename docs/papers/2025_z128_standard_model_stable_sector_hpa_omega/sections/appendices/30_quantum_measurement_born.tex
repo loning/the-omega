@@ -1,0 +1,102 @@
+\subsection{Quantum readout and Born probabilities (self-contained interface closure)}
+\label{app:quantum_measurement_born}
+
+This appendix records a minimal quantum interface package compatible with the tick\,+\,CAP discipline:
+finite observers have an effective Hilbert space; readout is finite resolution; probabilities are Born probabilities for that readout.
+We then record two complementary closure routes for the Born rule:
+(i) a protocol-counting template aligned with projection-fiber semantics, and
+(ii) a mature uniqueness theorem (Gleason--Busch) that characterizes quantum probabilities from noncontextual additivity.
+
+\paragraph{Pointer: coarse-graining, budgets, and observer-relative horizons.}
+\InterfaceTag The same semantic ingredients---finite readout, coarse-graining, and observer budget---also underlie the protocol-horizon viewpoint (Appendix~\ref{app:protocol_horizon_tick_trap}).
+In particular, the budget-triggered $\chi$-horizon construction in the main text (Section~\ref{subsec:chi_budget_horizon_area_law}) defines an information boundary from a reconstructed overhead proxy field $\chi(x)$ by comparing residual microstate capacity to $I_{\mathrm{obs}}(\mathcal O)$.
+This is a protocol-level coarse-graining statement and does not serve as a premise for the Born-rule rigidity results recorded below.
+
+\subsubsection{Finite-resolution readout as POVMs and instruments}
+\label{subsec:z128_povm_instruments}
+
+\paragraph{POVM readout.}
+Let $\mathcal{H}_{\mathrm{eff}}$ be an effective observer sector and let $\rho$ be a density operator on $\mathcal{H}_{\mathrm{eff}}$.
+Finite-resolution readout is modeled by a POVM $\{E_k\}_k$ with $E_k\succeq 0$ and $\sum_k E_k=I$, giving Born probabilities
+\begin{equation}
+\label{eq:z128_born_povm}
+P_k=\Tr(\rho\,E_k).
+\end{equation}
+
+\paragraph{State-functional form.}
+Equivalently, one may write the same readout statistics as $P_k=\omega(E_k)$ for a state $\omega$ on the underlying observable/effect algebra; in finite-dimensional Hilbert-space models one has $\omega(A)=\Tr(\rho A)$.
+Appendix~\ref{app:state_gns_background} records the corresponding state-functional and GNS-representation background in a purely mathematical form.
+
+\paragraph{Instruments and state update.}
+An associated instrument can be written in Kraus form $\rho\mapsto M_k\rho M_k^\dagger/P_k$ with $E_k=M_k^\dagger M_k$.
+Any POVM can be realized by a dilation (system--ancilla unitary followed by a projective measurement on the ancilla), by Naimark/Stinespring theorems; see, e.g., \cite{Naimark1940,Stinespring1955,Kraus1983,NielsenChuang2000}.
+
+\subsubsection{Interference versus mixture (coherent versus event-record readout)}
+\label{subsec:z128_interference_vs_mixture}
+
+\begin{lemma}[Interference terms in Born probabilities and their removal under decoherence]
+\label{lem:z128_interference_vs_mixture}
+Let $\rho=|\psi\rangle\langle\psi|$ be a pure state on a two-dimensional subspace spanned by orthonormal $|0\rangle,|1\rangle$, with $|\psi\rangle=a|0\rangle+b|1\rangle$.
+For any POVM effect $E$, the Born probability $p=\Tr(\rho\,E)$ expands as
+\[
+p
+=|a|^2\langle 0|E|0\rangle
++|b|^2\langle 1|E|1\rangle
++a\overline{b}\,\langle 0|E|1\rangle
++\overline{a}b\,\langle 1|E|0\rangle,
+\]
+exhibiting interference (cross) terms whenever the off-diagonal matrix elements of $E$ are nonzero in the $\{|0\rangle,|1\rangle\}$ basis.
+If one applies the decohering channel $\mathcal{D}(\rho):=\sum_{i=0}^1 |i\rangle\langle i|\,\rho\,|i\rangle\langle i|$, then the corresponding probability becomes
+\[
+p_{\mathrm{dec}}=\Tr(\mathcal{D}(\rho)\,E)=|a|^2\langle 0|E|0\rangle+|b|^2\langle 1|E|1\rangle,
+\]
+with the interference terms removed.
+Moreover, if $|\psi\rangle$ is first coupled to an orthogonal record as $a|0\rangle|R_0\rangle+b|1\rangle|R_1\rangle$ with $\langle R_0|R_1\rangle=0$ and the record is traced out, then the reduced state equals $\mathcal{D}(\rho)$.
+\end{lemma}
+
+\paragraph{Pointer.}
+Appendix~\ref{app:wave_particle_delayed_choice} records the corresponding experimental interpretations (wave--particle duality, delayed choice, quantum eraser, and Wheeler's ``Great Smoky Dragon'') in a readout-interface language aligned with the present lemma.
+
+\subsubsection{Born weights from projection-induced counting (protocol template)}
+\label{subsec:z128_born_counting_template}
+
+\paragraph{Counting semantics.}
+\InterfaceTag Finite observability already induces equivalence classes: many microdescriptions map to the same coarse outcome.
+If a coarse outcome label $k$ corresponds to a degeneracy class of $n_k$ admissible micro-realizations within a fine-grained protocol ensemble, and if the induced micro-measure is uniform over admissible micro-realizations (a sharp-readout symmetry hypothesis), then coarse probabilities are counting ratios $P_k=n_k/N$.
+
+\begin{theorem}[Born weights as counting under a uniform micro-measure (template)]
+\label{thm:z128_born_counting_template}
+Let $|\psi\rangle=\sum_k c_k|k\rangle$ be a normalized state.
+Assume a fine-grained realization in which each coarse branch $k$ corresponds to $n_k$ admissible micro-realizations in a finite ensemble of size $N_{\mathrm{micro}}$, and assume the induced micro-measure is uniform on admissible micro-realizations.
+If $|c_k|^2\approx n_k/N_{\mathrm{micro}}$ in the fine-graining limit, then the induced coarse outcome probabilities satisfy
+\[
+P_k=\frac{n_k}{N_{\mathrm{micro}}}\approx |c_k|^2,
+\]
+and in the limit one obtains $P_k=|c_k|^2$.
+\end{theorem}
+
+\paragraph{Relation to z128 fibers.}
+\InterfaceTag In the z128 finite folding language, stable readout labels already carry fibers $P(w)=\mathrm{Fold}_m^{-1}(w)$.
+The counting template above is the quantum-probability analogue: a coarse outcome corresponds to a multiplicity class in a fine-grained ensemble, and probabilities arise as normalized multiplicities.
+
+\subsubsection{Born rule as the unique noncontextual probability rule (mature theorem)}
+\label{subsec:z128_gleason_busch}
+
+\begin{theorem}[Gleason--Busch characterization of quantum probabilities]
+\label{thm:z128_gleason_busch}
+Let $\mathcal{H}$ be a complex Hilbert space.
+Suppose a probability assignment $\mu$ maps each orthogonal projector $P$ to $\mu(P)\in[0,1]$ and is finitely additive on orthogonal families: for any pairwise orthogonal projectors $\{P_i\}$ with $\sum_i P_i = I$, one has $\sum_i \mu(P_i)=1$.
+If $\dim\mathcal{H}\ge 3$, then there exists a unique density matrix $\rho$ such that
+\[
+\mu(P)=\Tr(\rho\,P)\qquad\text{for all projectors }P.
+\]
+For $\dim\mathcal{H}=2$, an analogous conclusion holds if one assumes the same additivity on the full set of POVM effects (Busch's extension).
+\end{theorem}
+\begin{proof}[Reference]
+See Gleason's theorem \cite{Gleason1957} and Busch's POVM extension \cite{Busch2003}.
+\end{proof}
+
+\paragraph{Interpretation in the tick+CAP discipline.}
+\InterfaceTag The theorem can be read as a rigidity statement: once one commits to noncontextual additivity for readout probabilities on an effective Hilbert space (a natural semantic stance for finite observers), the Born form is forced.
+In that sense, the Born rule is not an extra dynamical axiom but the unique probability rule compatible with the declared readout semantics.
+

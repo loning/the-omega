@@ -1,0 +1,97 @@
+\section{Abel finite parts and unit-disk analyticity (notes)}
+\label{app:abel_finite_part_notes}
+
+\AuditTag This appendix records a standard Abel-first/finite-part template used as an analytic stability discipline: one replaces infinite-horizon expressions by holomorphic generating functions on the unit disk and defines renormalized values by a canonical constant-term extraction along the Abel path.
+It introduces no new axioms and is not used as a premise in theorem-level folding proofs.
+For the main-text entry point (how this Abel-first discipline is used as an audit-facing analytic stability viewpoint for the $\e$-channel), see Remark~\ref{rem:abel_first_pole_barrier_discipline}.
+\AuditTag For the internal operator-dictionary entry point that packages Abel denominators as resolvent kernels (and aligns the pole-barrier language with finite-rank updates), see Section~\ref{app:operator_mother_space_dictionary} and Appendix~\ref{app:operator_mother_space}.
+\AuditTag For a complementary scan-orbit viewpoint (finite differences, orbit traces, and Abel finite parts along a $\Theta$-orbit), see Appendix~\ref{app:cyclic_calculus_theta_fp}.
+
+\subsection{Abel generating functions and holomorphy on the unit disk}
+\label{subsec:abel_holomorphy}
+
+Let $(a_t)_{t\ge 0}$ be a bounded complex sequence: $|a_t|\le M$.
+Define its Abel generating function
+\[
+\mathcal{A}_a(r):=\sum_{t\ge 0} a_t r^t,\qquad |r|<1.
+\]
+\MathTag This is holomorphic for $|r|<1$ and satisfies the estimate
+\[
+|\mathcal{A}_a(r)|\le \frac{M}{1-|r|}.
+\]
+In particular, for bounded protocol traces, the only universal singular behavior compatible with absolute convergence occurs on the boundary as $r\uparrow 1$.
+
+\subsection{Finite-part extraction along the Abel path}
+\label{subsec:abel_finite_part_def}
+
+If $\mathcal{A}_a(r)$ admits an asymptotic expansion of the form
+\[
+\mathcal{A}_a(r)=\frac{c_{-1}}{1-r}+c_0+c_1(1-r)+\cdots
+\qquad (r\uparrow 1),
+\]
+then the Abel finite part is defined by
+\[
+\FP_{r\uparrow 1}\mathcal{A}_a(r):=c_0.
+\]
+This is the canonical constant-term prescription used whenever an Abel-first finite part is referenced.
+For classical Abelian summation and finite-part asymptotics, see \cite{Hardy1949,EstradaKanwal2002}.
+
+\subsection{Rotation resolvent formula and a canonical pole subtraction}
+\label{subsec:abel_resolvent_rotation}
+
+We record a self-contained template for irrational rotations, which clarifies why the Abel-first viewpoint is naturally stable under protocol-level changes that preserve a bounded Fourier kernel class.
+
+Let $\alpha\in(0,1)\setminus\QQ$ and let $x_t=x_0+t\alpha\pmod 1$.
+Let $f:\RR/\ZZ\to\CC$ have an absolutely summable Fourier series
+\[
+f(x)=\sum_{m\in\ZZ} \widehat f(m)\,\e^{2\pi\iu m x},
+\qquad
+\sum_{m\in\ZZ}\abs{\widehat f(m)}<\infty.
+\]
+Define the Abel orbit sum
+\[
+S_f(r):=\sum_{t\ge 0} r^t f(x_t),\qquad |r|<1.
+\]
+
+\begin{proposition}[Fourier--resolvent representation and universal pole]
+\label{prop:abel_resolvent_universal_pole}
+\MathTag For every $|r|<1$,
+\[
+S_f(r)=\sum_{m\in\ZZ}\widehat f(m)\,\e^{2\pi\iu m x_0}\,\frac{1}{1-r\,\e^{2\pi\iu m\alpha}}.
+\]
+In particular, one has the decomposition
+\[
+S_f(r)=\frac{\widehat f(0)}{1-r}+H_f(r),
+\]
+where $H_f$ is holomorphic on $|r|<1$ and extends continuously to $r\uparrow 1$.
+\end{proposition}
+\begin{proof}
+Absolute summability of $\widehat f(m)$ implies uniform convergence of the Fourier series, allowing termwise summation of the geometric series
+$
+\sum_{t\ge 0}(r\,\e^{2\pi\iu m\alpha})^t=1/(1-r\,\e^{2\pi\iu m\alpha})
+$
+for $|r|<1$.
+The $m=0$ term equals $\widehat f(0)/(1-r)$.
+For $m\neq 0$, irrationality of $\alpha$ implies $\e^{2\pi\iu m\alpha}\neq 1$, hence the denominators do not vanish at $r=1$; uniform convergence then yields holomorphy on $|r|<1$ and continuity at $r\uparrow 1$.
+\end{proof}
+
+\begin{remark}[Resolvent kernels as a readout dictionary]\label{rem:abel_resolvent_kernel_dictionary}
+\InterfaceTag The denominators $(1-r\,\e^{2\pi\iu m\alpha})^{-1}$ are resolvent-mode kernels in the Abel coordinate.
+This makes explicit why changing a bounded Fourier/readout kernel class changes \emph{which} modes are sampled while preserving the same Abel-first stability discipline.
+See Section~\ref{app:operator_mother_space_dictionary} for the internal dictionary viewpoint (observer as kernel choice, and controlled updates as finite-rank perturbations).
+\end{remark}
+
+\begin{corollary}[Finite part exists and is scheme-stable within the admissible class]
+\label{cor:abel_fp_scheme_stable}
+\MathTag Under the hypotheses of Proposition~\ref{prop:abel_resolvent_universal_pole}, the Abel finite part exists and equals $H_f(1)$:
+\[
+\FP_{r\uparrow 1} S_f(r)=H_f(1).
+\]
+Moreover, if one modifies the subtraction by a function $g(r)$ that is holomorphic in a neighborhood of $r=1$, then
+\[
+\lim_{r\uparrow 1}\left(S_f(r)-\frac{\widehat f(0)}{1-r}-g(r)\right)=H_f(1)-g(1),
+\]
+so the only ambiguity is an explicit additive constant determined by the declared counterterm $g(1)$.
+\end{corollary}
+
+

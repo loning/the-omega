@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "scope_notes": [
+    "Vendored registry for K4 delay/time-dictionary audits.",
+    "This file does not introduce theorem-level premises; it only declares which vendored measurements are used and how they are interpreted at the matching layer."
+  ],
+  "channels": [
+    {
+      "id": "solar_system_ppn_gamma",
+      "source_file": "data/gamma_crossobs/solar_system/constraints.json",
+      "json_path": "constraints",
+      "select_where": { "observable": "ppn_gamma" },
+      "mapping_family": [
+        { "id": "ppn_halfsum", "description": "kappa := (1 + gamma_PPN)/2", "kappa_expr": "(1+value)/2", "sigma_expr": "sigma/2" },
+        { "id": "ppn_identity", "description": "kappa := gamma_PPN", "kappa_expr": "value", "sigma_expr": "sigma" }
+      ]
+    },
+    {
+      "id": "solar_system_redshift_alpha",
+      "source_file": "data/gamma_crossobs/solar_system/constraints.json",
+      "json_path": "constraints",
+      "select_where": { "observable": "redshift_alpha" },
+      "mapping_family": [
+        { "id": "redshift_1_plus_alpha", "description": "kappa := 1 + alpha", "kappa_expr": "1+value", "sigma_expr": "sigma" }
+      ]
+    },
+    {
+      "id": "strong_lensing_time_delay_H0",
+      "source_file": "data/gamma_crossobs/strong_lensing/h0_time_delay.json",
+      "json_path": "measurements",
+      "select_where": { "observable": "H0_km_s_Mpc" },
+      "reference_family": [
+        { "id": "Planck18", "H0_ref": 67.4, "sigma_ref": 0.5, "note": "Planck 2018 (flat LCDM) reference used in existing gamma_crossobs audit." },
+        { "id": "SH0ES19", "H0_ref": 74.03, "sigma_ref": 1.42, "note": "SH0ES 2019 reference used as a bounded counterfactual in existing gamma_crossobs audit." }
+      ],
+      "mapping_family": [
+        { "id": "H0_ratio", "description": "kappa := H0 / H0_ref", "kappa_expr": "value/H0_ref", "sigma_expr": "kappa*sqrt((sigma_value/value)**2 + (sigma_ref/H0_ref)**2)" }
+      ]
+    },
+    {
+      "id": "weak_lensing_cmb_lensing_amplitude",
+      "source_file": "data/gamma_crossobs/weak_lensing/cmb_lensing_amplitude.json",
+      "json_path": "measurements",
+      "select_where": { "observable": "A_L" },
+      "mapping_family": [
+        { "id": "sqrt_AL", "description": "kappa := sqrt(A_L) (amplitude proxy)", "kappa_expr": "sqrt(value)", "sigma_expr": "sigma/(2*sqrt(value))" },
+        { "id": "AL_identity", "description": "kappa := A_L (counterfactual)", "kappa_expr": "value", "sigma_expr": "sigma" }
+      ]
+    }
+  ]
+}
+

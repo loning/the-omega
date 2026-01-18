@@ -1,0 +1,64 @@
+\subsection{From finite readout to a local algebra net (T2-1)}
+\label{app:construct_local_net_from_protocol}
+
+\AuditTag This appendix provides the theorem-facing construction target for Level~T2: starting from finite readout objects (protocol/addressing windows) and the unified observable/state base (Appendix~\ref{app:observable_algebra_state_base}), construct a net of local algebras and prove isotony at the construction level.
+Microcausality, covariance, and spectrum are handled in subsequent appendices as conditional theorem layers.
+
+\subsubsection{Region family induced by addressing windows}
+\paragraph{Addressing windows.}
+\InterfaceTag Fix a class of finite readout windows $\mathcal{W}$ induced by the addressing layer (Section~\ref{sec:hilbert_addressing} and the tick calculus).
+Each $W\in\mathcal{W}$ represents a finite protocol that interrogates a bounded spatiotemporal region in the intended interface reading.
+
+\paragraph{Region abstraction.}
+Define an abstract region set $\mathfrak{R}_{\mathrm{prot}}$ by quotienting windows by operational equivalence:
+\[
+\mathfrak{R}_{\mathrm{prot}}:=\mathcal{W}/\sim,
+\]
+where $W_1\sim W_2$ iff they induce the same observable subalgebra up to isomorphism in the sense of Appendix~\ref{app:observable_algebra_state_base}.
+Write $\mathcal{O}=[W]\in\mathfrak{R}_{\mathrm{prot}}$.
+
+\paragraph{Inclusion order.}
+Define $\mathcal{O}_1\subseteq\mathcal{O}_2$ if there exist representatives $W_1\in\mathcal{O}_1$ and $W_2\in\mathcal{O}_2$ such that the readout of $W_1$ is a restriction of the readout of $W_2$ (formally: the observable pullback map for $W_1$ factors through that of $W_2$).
+
+\subsubsection{Local observable algebras from finite readout}
+\paragraph{Finite observable algebra at a window.}
+For each window $W\in\mathcal{W}$, let $\mathfrak{A}(W)$ denote its finite readout observable algebra as in Appendix~\ref{app:observable_algebra_state_base}:
+\begin{itemize}
+\item classical finite readout: $\mathfrak{A}(W)=\ell^\infty(\Omega_W)$,
+\item quantum finite readout: $\mathfrak{A}(W)=\mathbb{M}_{d(W)}(\mathbb{C})$,
+\end{itemize}
+with the understanding that the manuscript chooses the appropriate model per channel.
+
+\paragraph{Local algebra definition.}
+For $\mathcal{O}=[W]\in\mathfrak{R}_{\mathrm{prot}}$, define the local algebra as the inductive limit over refinements within the region:
+\[
+\mathcal{A}_{\mathrm{prot}}(\mathcal{O})
+:=\varinjlim_{W'\preceq W} \mathfrak{A}(W'),
+\]
+where $W'\preceq W$ denotes refinement windows whose readouts are supported inside $W$ in the operational inclusion sense, and the connecting morphisms are the observable pullback maps (Appendix~\ref{app:observable_algebra_state_base}) induced by refinement.
+
+\paragraph{Quasi-local algebra.}
+Define the quasi-local algebra as the inductive limit over regions:
+\[
+\mathcal{A}_{\mathrm{prot}}
+:=\varinjlim_{\mathcal{O}\in\mathfrak{R}_{\mathrm{prot}}}\mathcal{A}_{\mathrm{prot}}(\mathcal{O}).
+\]
+
+\subsubsection{Isotony as a theorem}
+\begin{proposition}[Isotony of the protocol-induced net]
+\label{prop:prot_net_isotony}
+\MathTag If $\mathcal{O}_1\subseteq\mathcal{O}_2$ in $\mathfrak{R}_{\mathrm{prot}}$, then
+\[
+\mathcal{A}_{\mathrm{prot}}(\mathcal{O}_1)\subseteq \mathcal{A}_{\mathrm{prot}}(\mathcal{O}_2)
+\]
+as a unital $^\ast$-subalgebra inclusion under the inductive-limit embeddings.
+\end{proposition}
+\begin{proof}
+By definition of $\mathcal{O}_1\subseteq\mathcal{O}_2$, any refinement window $W_1'\preceq W_1$ can be regarded as a refinement $W_2'\preceq W_2$ via the factorization of observable pullbacks along refinements.
+Thus the directed system defining $\mathcal{A}_{\mathrm{prot}}(\mathcal{O}_1)$ embeds into the directed system defining $\mathcal{A}_{\mathrm{prot}}(\mathcal{O}_2)$, yielding the inclusion on inductive limits.
+\end{proof}
+
+\subsubsection{Interface to AQFT nets}
+\InterfaceTag Appendix~\ref{app:aqft_axioms_local_nets} records the standard AQFT net axioms on Minkowski regions.
+The construction above provides a protocol-native net $\mathcal{O}\mapsto\mathcal{A}_{\mathrm{prot}}(\mathcal{O})$; any identification of $\mathfrak{R}_{\mathrm{prot}}$ with a Minkowski region family $\mathfrak{R}$ is an explicit interface step and must be ledger-scoped.
+

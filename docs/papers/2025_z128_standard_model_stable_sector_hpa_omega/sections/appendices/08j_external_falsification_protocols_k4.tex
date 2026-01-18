@@ -1,0 +1,77 @@
+\section{External falsification protocols for K4 delay/leakage interfaces}
+\label{app:k4_external_falsification_protocols}
+
+\AuditTag This appendix records concrete, externally executable protocols that can falsify the data-facing K4 interfaces without requiring access to the internal compilation log.
+The protocols focus on measurable scattering objects: a scattering matrix $S(E)$, phase shifts $\delta(E)$, Wigner--Smith delay $\tau_{\mathrm{WS}}(E)$, and resonance linewidths $\gamma$.
+All outputs are designed to be ingestible by the vendored registries under \path{data/k4_matching/}.
+
+\subsection{Protocol A: Chaotic microwave cavity (VNA) scattering}
+\label{subsec:k4_falsify_microwave}
+
+\paragraph{Goal.}
+Measure an $M$-port scattering matrix $S(f)$ over a frequency band and compute a delay proxy from the total scattering phase.
+This can falsify the phase--delay interface and its linewidth calibration in Appendix~\ref{app:k4_ws_linewidth_audit}.
+
+\paragraph{Minimal hardware.}
+\begin{itemize}
+\item a flat microwave cavity with an irregular boundary (to avoid degeneracies);
+\item $M\ge 1$ coaxial probes (ports);
+\item a vector network analyzer (VNA) capable of measuring complex $S_{ij}(f)$;
+\item a temperature-stable setup and a repeatable cable calibration.
+\end{itemize}
+
+\paragraph{Measurement.}
+Sweep frequency $f$ on a grid $f_1<\cdots<f_N$ and record the complex $M\times M$ matrix $S(f_k)$ at each point.
+If only one-port data is available, record the complex scalar $S(f)$.
+
+\paragraph{Derived observables (single-port).}
+For $M=1$, write $S(E)=\e^{2\iu\delta(E)}$ and compute $\delta(E)=\tfrac12\arg S(E)$ (phase unwrapping required).
+Then compute a phase-derived delay proxy by
+$$
+\tau_{\mathrm{phase}}(E)\ \approx\ 2\,\frac{\dd\delta}{\dd E}(E),
+$$
+using a finite-difference derivative on the sampled energy/frequency grid (the matching layer records unit conventions explicitly).
+
+\paragraph{Linewidth extraction.}
+Identify an isolated resonance peak in $|S(f)|$ or in the phase derivative.
+Fit a Breit--Wigner form in a local window to obtain the linewidth $\gamma$ in the same abscissa units used for $E$.
+The interface check is that near the resonance center $E_0$ one expects a proxy scaling $\tau_{\mathrm{phase}}(E_0)\approx 4/\gamma$ (Appendix~\ref{app:k4_ws_linewidth_audit}).
+
+\paragraph{How to publish data for audit.}
+Export a small point cloud of $(E,\delta)$ values around the resonance and a resonance record $(E_0,\gamma)$.
+Insert it into \path{data/k4_matching/scattering_phase_registry.json} as a new \texttt{dataset} with:
+\begin{itemize}
+\item \texttt{id}, \texttt{citation} (human-readable, no bare URLs);
+\item \texttt{abscissa}: a record with \texttt{symbol} and \texttt{unit} that declares what the coordinate $E$ means for this dataset;
+\item \texttt{points}: list of $\{E,\delta\}$;
+\item \texttt{resonances}: list of $\{E0,\gamma,gamma\_unit\}$ or (if the linewidth is known only as an interval) $\{E0,\gamma\_low,\gamma\_high,\gamma\_unit\}$, where \texttt{gamma\_unit} matches the dataset \texttt{abscissa.unit}.
+\end{itemize}
+If both \texttt{gamma} and \texttt{gamma\_low/gamma\_high} are provided, the audit scripts treat the interval form as authoritative.
+Then run:
+\begin{itemize}
+\item \path{scripts/exp_k4_scattering_phase_delay_audit.py} (phase$\to$delay proxy);
+\item \path{scripts/exp_k4_ws_linewidth_audit.py} (phase-vs-linewidth proxy mismatch).
+\end{itemize}
+
+\subsection{Protocol B: Optical/microwave ring resonator (linewidth-only falsification)}
+\label{subsec:k4_falsify_resonator}
+
+\paragraph{Goal.}
+Provide a single-resonance calibration point without full phase unwrapping.
+
+\paragraph{Measurement.}
+Measure the transmission spectrum $T(\omega)$ of a ring (or cavity) and fit a Lorentzian to extract a linewidth $\gamma$.
+If group delay can be measured (e.g.\ via network analysis), extract $\tau_{\mathrm{g}}(\omega)$ near resonance.
+
+\paragraph{Falsification statement.}
+If the measured peak delay (or group delay) does not scale as $1/\gamma$ within stated error bars under a fixed convention, then the WS--linewidth calibration proxy used by the matching layer fails for that apparatus.
+This falsifies the applicability of Appendix~\ref{app:k4_ws_linewidth_audit} to that platform, which is an explicit and auditable scope boundary.
+
+\subsection{Protocol C: Gravitational delay channels (strong lensing and solar-system)}
+\label{subsec:k4_falsify_gravdelay}
+
+The repository already vendors representative public subsets under \path{data/gamma_crossobs/}.
+Additional public channels can be added by extending \path{data/k4_matching/delay_channel_registry.json} with a new entry that specifies:
+source file, selection keys, and a bounded mapping family for $\kappa$.
+The external falsification target is the registry-selected $\widehat{\kappa}$ consistency and the associated $\chi^2$ and $|z|_{\max}$.
+

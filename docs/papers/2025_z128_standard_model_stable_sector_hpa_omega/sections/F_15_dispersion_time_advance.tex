@@ -1,0 +1,82 @@
+\section{Discrete-scan dispersion and a time-advance channel (interface)}
+\label{sec:dispersion_time_advance}
+
+\paragraph{Scope.}
+\AuditTag This section records a kinematic signature induced by treating the scan update as a discrete unitary step and defining a difference-norm momentum.
+The derivation is mathematical once the identifications are declared, but the identification of the resulting group-velocity slope with a laboratory observable is \InterfaceTag and must be treated as falsifiable.
+This module is independent of the delay/lapse channel: it concerns propagation timing of high-frequency messengers, whereas the delay channel concerns overhead-induced dwell/lag proxies (Appendix~\ref{app:time_mass_delay}).
+
+\subsection{Energy and momentum from scan phase and unitary difference (declaration)}
+\label{subsec:dispersion_energy_momentum_decl}
+
+\begin{assumption}[Energy from scan phase; momentum from scan difference]
+\label{ass:dispersion_energy_momentum_from_scan}
+\InterfaceTag Interpret the scan unitary as a time step of size $\varepsilon>0$, so scan time is $t=k\varepsilon$ after $k$ iterations.
+On a spectral subspace where the one-step update admits eigenvectors, write
+\[
+\Theta|\psi\rangle=\e^{-\iu E\varepsilon}|\psi\rangle,
+\]
+and interpret $E$ as a quasi-energy on the chosen branch.
+Define a lattice momentum operator by
+\[
+\widehat{P}:=\frac{1}{\varepsilon}\,(\Delta_\Theta^\dagger\Delta_\Theta)^{1/2},
+\qquad
+\Delta_\Theta:=\Theta-I,
+\]
+so that $\widehat{P}$ measures the magnitude of the one-step unitary change.
+\end{assumption}
+
+\subsection{Exact dispersion and group-velocity slope}
+\label{subsec:dispersion_exact_and_group_velocity}
+
+\begin{proposition}[Discrete-scan dispersion (exact)]
+\label{prop:dispersion_exact}
+\MathTag Under Assumption~\ref{ass:dispersion_energy_momentum_from_scan}, any eigenvector $|\psi\rangle$ of $\Theta$ with eigenvalue $\e^{-\iu E\varepsilon}$ is an eigenvector of $\widehat{P}^2$ with eigenvalue $P^2$ satisfying
+\[
+P^2=\frac{4}{\varepsilon^2}\sin^2\!\left(\frac{E\varepsilon}{2}\right),
+\qquad 0\le E\varepsilon\le\pi.
+\]
+Equivalently,
+\[
+E=\frac{2}{\varepsilon}\arcsin\!\left(\frac{\varepsilon P}{2}\right),
+\qquad 0\le \varepsilon P\le 2.
+\]
+\end{proposition}
+\begin{proof}
+On an eigenvector, $\Delta_\Theta|\psi\rangle=(\e^{-\iu E\varepsilon}-1)|\psi\rangle$.
+Hence $\Delta_\Theta^\dagger\Delta_\Theta|\psi\rangle=|\e^{-\iu E\varepsilon}-1|^2|\psi\rangle=4\sin^2(E\varepsilon/2)|\psi\rangle$.
+Scaling by $\varepsilon^{-2}$ yields the stated identity.
+\end{proof}
+
+\begin{remark}[Low-energy expansion]
+\label{rem:dispersion_low_energy_expansion}
+\MathTag In the long-wavelength regime $\varepsilon P\ll 1$ one has $E\approx P$ and
+\[
+E
+=P+\frac{\varepsilon^2}{24}P^3+O(\varepsilon^4P^5),
+\]
+so the first deviation from linearity is a rigid quartic correction in $E^2(P)$.
+\end{remark}
+
+\begin{proposition}[Group-velocity slope and a time-advance signature]
+\label{prop:dispersion_group_velocity}
+\MathTag Differentiating the exact inversion gives
+\[
+\frac{\dd E}{\dd P}=\frac{1}{\sqrt{1-(\varepsilon P/2)^2}},
+\]
+which satisfies $\dd E/\dd P>1$ for every $P\ne 0$ on the principal branch and diverges as $\varepsilon P\uparrow 2$.
+\end{proposition}
+
+\begin{remark}[Causality defense: group velocity vs.\ signal/front velocity]
+\label{rem:dispersion_causality_defense}
+\AuditTag The inequality $\dd E/\dd P>1$ is a statement about an \emph{effective group-velocity slope} inferred from the dispersion law.
+It does not, by itself, imply superluminal information (front) propagation in any microscopic completion.
+In a local-update substrate picture, the fundamental information-velocity bound is set by locality (``one hop per tick''); the divergence of $\dd E/\dd P$ signals a breakdown of a naive continuum readout coordinate near the zone edge $\varepsilon P\approx 2$, not an infinite microscopic signal speed.
+Operationally, the falsifiable content is an \emph{energy-dependent time-advance} of high-frequency messengers relative to low-frequency ones when matched to a laboratory momentum observable under a declared calibration; this matching is \MatchTag.
+\end{remark}
+
+\begin{remark}[Separation from the delay channel]
+\AuditTag The propagation time-advance signature above is conceptually distinct from the delay/lapse channel used elsewhere in this paper (Appendix~\ref{app:time_mass_delay}).
+The delay channel models additional dwell/lag as overhead and is calibrated through scattering-delay proxies; the present module describes an energy-dependent readout slope that can, in principle, appear even in regimes where overhead-induced delay is negligible.
+\end{remark}
+

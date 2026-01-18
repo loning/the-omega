@@ -1,0 +1,153 @@
+\subsection{Branching, selection, and gap-stability as finite mathematics}
+\label{app:branching_selection_rigidity}
+
+\paragraph{Scope.}
+\MathTag This appendix records a minimal finite-mathematics formalization of
+prefix-consistent branching and deterministic selection with explicit tie-breaks.
+It provides a reusable vocabulary for ``branching'' and ``switching'' in terms of
+finite candidate families, objective gaps, and bounded perturbations, without introducing
+any physical identification statement.
+
+\subsubsection{Prefix projections and extension fibers}
+\label{subsec:branching_prefix_fibers}
+
+\begin{definition}[Prefix projection and extension fiber]\label{def:prefix_projection_extension_fiber_general}
+Let $(X_m)_{m\ge 1}$ be a family of finite sets equipped with prefix projections
+\[
+\pi_{m\to m_0}:X_m\to X_{m_0}\qquad (m\ge m_0),
+\]
+such that $\pi_{m_0\to m_0}=\mathrm{id}$ and $\pi_{m\to m_1}\circ \pi_{m_1\to m_0}=\pi_{m\to m_0}$ for $m\ge m_1\ge m_0$.
+For $u\in X_{m_0}$ define the extension (lift) fiber at level $m$ by
+\[
+\mathrm{Ext}_m(u):=\{w\in X_m:\ \pi_{m\to m_0}(w)=u\}.
+\]
+\end{definition}
+
+\begin{definition}[Branching at a prefix]\label{def:branching_at_prefix}
+Fix $m_0$ and $u\in X_{m_0}$.
+We say that $u$ is \emph{branching at level $m>m_0$} if $|\mathrm{Ext}_m(u)|\ge 2$.
+Equivalently, there exist distinct $w,w'\in X_m$ that share the same prefix $\pi_{m\to m_0}(w)=\pi_{m\to m_0}(w')=u$.
+\end{definition}
+
+\begin{remark}[Relation to existing fibers in this manuscript]\label{rem:branching_relation_to_mass_flow_fibers}
+The instances $\pi_{m\to 6}:X_m\to X_6$ and $\mathrm{Ext}_m(u)$ used in Appendix~\ref{app:mass_flow_under_uplift}
+fit Definition~\ref{def:prefix_projection_extension_fiber_general}.
+The present appendix abstracts their finite-fiber logic for reuse.
+\end{remark}
+
+\subsubsection{Deterministic selection on a finite family}
+\label{subsec:branching_finite_selection}
+
+\begin{definition}[Selection problem with deterministic tie-break]\label{def:selection_problem_tiebreak}
+A \emph{selection problem} is a triple $(\mathcal{F},J,\prec)$ where
+\begin{itemize}
+\item $\mathcal{F}$ is a nonempty finite set (candidate family),
+\item $J:\mathcal{F}\to\RR$ is an objective functional,
+\item $\prec$ is a strict total order on $\mathcal{F}$ used as a deterministic tie-break.
+\end{itemize}
+Define the deterministic selector
+\[
+\mathsf{Sel}(\mathcal{F},J,\prec)\in\mathcal{F}
+\]
+to be the unique element $f_\star$ such that $J(f_\star)=\min_{\mathcal{F}}J$ and, among all minimizers,
+$f_\star$ is $\prec$-minimal.
+\end{definition}
+
+\begin{remark}[RB-A as a canonical certificate form]\label{rem:rb_a_selection_problem}
+Definition~\ref{def:selection_problem_tiebreak} is the minimal finite form of the RB-A certificate template
+recorded in Appendix~\ref{app:rigidity_bridge_checklist}.
+\end{remark}
+
+\begin{remark}[Certificates as objectives: generating functions, logdet, delay, and finite parts]\label{rem:certificates_as_objectives}
+\AuditTag In this manuscript, many ``certificates'' are functions of a finite readout output (or of a generating series built from it).
+Accordingly, the objective $J$ in Definition~\ref{def:selection_problem_tiebreak} may itself be a certificate functional, for example:
+\begin{itemize}
+\item $J=\text{mismatch}(\text{readout})$ or $J=\text{cost}+\text{mismatch}$ under CAP closure (Appendix~\ref{app:tick_cap_derivation});
+\item $J$ extracted from determinant/trace packages such as $-\log\det(I-zM)=\sum_{k\ge 1} z^k\,\mathrm{tr}(M^k)/k$ (Section~\ref{subsec:rigidity_det_trace_zeta});
+\item $J$ a delay certificate expressed as a derivative of $\log\det S(\omega)$ on a unitary band (Section~\ref{subsec:rigidity_scattering_delay_logdet});
+\item $J$ a renormalized constant term defined by an Abel-first/finite-part prescription (Appendix~\ref{app:abel_finite_part_notes} and Appendix~\ref{app:cyclic_calculus_theta_fp});
+\item $J$ a primitive-cycle bookkeeping refinement (Euler product coordinates) on a finite-state grammar (Appendix~\ref{app:zeckendorf_shift_prime_cycles}).
+\end{itemize}
+\AuditTag The point is purely organizational: once the candidate family is explicit and finite, and the certificate is an explicit functional,
+certificate extraction is itself a Sel instance, and changes of certificate definitions are Upd instances, subject to the same gap-stability/switching discipline recorded here.
+\end{remark}
+
+\begin{definition}[Objective gap]\label{def:objective_gap}
+Let $(\mathcal{F},J,\prec)$ be a selection problem and let $f_\star=\mathsf{Sel}(\mathcal{F},J,\prec)$.
+Define the \emph{objective gap} by
+\[
+\mathrm{gap}(\mathcal{F},J):=\min\{J(f)-J(f_\star):\ f\in\mathcal{F},\ f\neq f_\star\}\in[0,\infty).
+\]
+We say the instance is \emph{strictly gapped} if $\mathrm{gap}(\mathcal{F},J)>0$.
+\end{definition}
+
+\begin{remark}[Projection readout as a finite-family selector (main-text instance)]
+\label{rem:projection_readout_as_sel}
+Section~\ref{sec:embedding_gap_projection} provides an explicit instance of Definition~\ref{def:selection_problem_tiebreak}.
+Fix a synthesized vector $v\in\CC$ and consider the nearest-point readout $\pi(v)$ defined by minimizing $|v-\mathcal{Z}(n)|$ over $n\in\NN_{>0}$.
+Under the minimal radial choice $\rho(n)=n$, the minimizers lie in an explicitly finite subset determined by $v$ (hence the selection is a finite-family Sel instance), and the objective gap is the separation between the smallest and second-smallest distances.
+This is the precise finite-math carrier for the ``projection readout'' narrative used in the main text.
+\end{remark}
+
+\subsubsection{Gap-stability under bounded perturbations}
+\label{subsec:branching_gap_stability}
+
+\begin{lemma}[Gap-stability on a fixed finite family]\label{lem:gap_stability_fixed_family}
+Let $(\mathcal{F},J,\prec)$ be a selection problem with strictly gapped objective.
+Let $\widetilde J:\mathcal{F}\to\RR$ satisfy the uniform bound
+\[
+\sup_{f\in\mathcal{F}}|\,\widetilde J(f)-J(f)\,|\le \delta.
+\]
+If $2\delta<\mathrm{gap}(\mathcal{F},J)$, then
+\[
+\mathsf{Sel}(\mathcal{F},\widetilde J,\prec)=\mathsf{Sel}(\mathcal{F},J,\prec).
+\]
+\end{lemma}
+
+\begin{proof}
+Let $f_\star=\mathsf{Sel}(\mathcal{F},J,\prec)$ and let $f\neq f_\star$.
+By definition of the gap, $J(f)\ge J(f_\star)+\mathrm{gap}(\mathcal{F},J)$.
+Hence
+\[
+\widetilde J(f)\ge J(f)-\delta\ge J(f_\star)+\mathrm{gap}(\mathcal{F},J)-\delta
+\ge \widetilde J(f_\star)+\mathrm{gap}(\mathcal{F},J)-2\delta>\widetilde J(f_\star).
+\]
+Therefore $f_\star$ is the unique minimizer of $\widetilde J$ on $\mathcal{F}$ and the tie-break is irrelevant.
+\end{proof}
+
+\begin{remark}[RB-D interpretation]\label{rem:rb_d_gap_stability}
+Lemma~\ref{lem:gap_stability_fixed_family} is the minimal RB-D ``gap-stability'' template:
+if a finite-family selection exhibits a quantitative gap, then bounded perturbations cannot change the selected output.
+\end{remark}
+
+\subsubsection{Updates and prefix-consistent switching}
+\label{subsec:branching_updates_prefix_consistency}
+
+\begin{definition}[Update of a selection problem]\label{def:update_operator_selection_problem}
+An \emph{update} is any rule that maps a selection problem $(\mathcal{F},J,\prec)$ to another selection problem
+$(\mathcal{F}',J',\prec')$, written
+\[
+\mathsf{Upd}:(\mathcal{F},J,\prec)\mapsto(\mathcal{F}',J',\prec').
+\]
+When both are defined, we say an update \emph{switches the selected output} if
+\[
+\mathsf{Sel}(\mathcal{F}',J',\prec')\neq \mathsf{Sel}(\mathcal{F},J,\prec).
+\]
+\end{definition}
+
+\begin{proposition}[Prefix-consistent switching constraint]\label{prop:prefix_consistent_switching_constraint}
+Fix $m_0<m$ and a prefix $u\in X_{m_0}$.
+Let $\mathcal{F}=\mathrm{Ext}_m(u)$ be the extension fiber (Definition~\ref{def:prefix_projection_extension_fiber_general}),
+and let $(\mathcal{F},J,\prec)$ be any selection problem on that fiber.
+Then any update that preserves the prefix constraint $\pi_{m\to m_0}(w)=u$ for all admissible candidates
+must satisfy $\mathcal{F}'\subseteq \mathrm{Ext}_m(u)$.
+Consequently, any switch of the selected output under such a prefix-preserving update can only occur \emph{within}
+the fiber over $u$.
+\end{proposition}
+
+\begin{proof}
+If the update preserves the prefix constraint, then by definition every admissible candidate $w\in\mathcal{F}'$
+must satisfy $\pi_{m\to m_0}(w)=u$, hence $w\in \mathrm{Ext}_m(u)$ and thus $\mathcal{F}'\subseteq \mathrm{Ext}_m(u)$.
+The last statement is immediate.
+\end{proof}
+

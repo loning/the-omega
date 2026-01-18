@@ -1,0 +1,187 @@
+\section{Sturmian readouts: factor complexity and entropy-rate bounds}
+\label{app:sturmian_entropy}
+\noindent
+This appendix closes a small proof gap used implicitly in
+Remark~\ref{rem:sturmian_minimal_complexity} of
+Section~\ref{sec:hpa_readout}:
+for the canonical two-interval window partition associated with an
+irrational rotation, the induced binary readout is Sturmian and has
+linear factor complexity $p(n)=n+1$, hence zero entropy rate.
+The argument is elementary and is included here to keep the paper
+self-contained at the theorem level.
+
+\subsection{Mechanical words as canonical interval codings}
+\label{app:sturmian_mechanical}
+Fix an irrational slope $\alpha\in(0,1)\setminus\QQ$ and an intercept
+$\rho\in\RR$.
+Let $R_\alpha:\TT\to\TT$ be the rotation $R_\alpha(x)=x+\alpha\pmod{1}$,
+and write $x_n:=\rho+n\alpha\pmod{1}$.
+Consider the \emph{canonical} half-open window of length $\alpha$,
+\begin{equation}
+  W_\alpha:=[1-\alpha,1)\subset\TT.
+\end{equation}
+Define the binary readout by
+\begin{equation}
+  w_n:=\ind\{x_n\in W_\alpha\}\in\{0,1\}.
+\end{equation}
+
+\begin{proposition}[Window coding as a mechanical word]
+\label{prop:sturmian_mechanical}
+For every $n\in\ZZ$ one has
+\begin{equation}
+  w_n=\big\lfloor (n+1)\alpha+\rho\big\rfloor-\big\lfloor n\alpha+\rho\big\rfloor.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Write $\{t\}:=t-\lfloor t\rfloor$ for the fractional part.
+Then $x_n=\{n\alpha+\rho\}$.
+One has $w_n=1$ iff $x_n\in[1-\alpha,1)$, i.e.\ iff
+$\{n\alpha+\rho\}\ge 1-\alpha$, which is equivalent to
+$\{n\alpha+\rho\}+\alpha\ge 1$.
+This last condition holds iff $\lfloor n\alpha+\rho+\alpha\rfloor
+=\lfloor n\alpha+\rho\rfloor+1$, which is exactly the stated
+difference-of-floors identity.
+\end{proof}
+
+\begin{remark}[Why the window length matters]
+\label{rem:sturmian_window_length}
+The reduction of the factor complexity to $p(n)=n+1$ hinges on the
+canonical choice that the window length equals the rotation slope.
+For a general interval window $W$ of arbitrary length, the coding
+$\ind\{x_n\in W\}$ is still a rotation coding, but it need not be
+Sturmian. The present paper uses only the canonical two-interval
+partition determined by $\alpha$ (equivalently, a length-$\alpha$
+window or its complement).
+\end{remark}
+
+\subsection{Factor complexity \texorpdfstring{$p(n)=n+1$}{p(n)=n+1}}
+\label{app:sturmian_complexity}
+For a bi-infinite binary sequence $w=(w_n)_{n\in\ZZ}$ and $n\ge 1$,
+let $\mathcal{L}_n(w)$ denote the set of length-$n$ factors (contiguous
+subwords)
+\[
+\mathcal{L}_n(w):=\{w_k w_{k+1}\cdots w_{k+n-1}:k\in\ZZ\}\subset\{0,1\}^n,
+\]
+and define the \emph{factor complexity} by $p(n):=|\mathcal{L}_n(w)|$.
+
+\begin{theorem}[Canonical rotation window coding is Sturmian]
+\label{thm:sturmian_complexity}
+Let $\alpha\in(0,1)\setminus\QQ$ and let $w_n=\ind\{\rho+n\alpha\in W_\alpha\}$
+with $W_\alpha=[1-\alpha,1)$ as above.
+Assume $\rho\not\equiv -k\alpha\ (\mathrm{mod}\ 1)$ for all $k\in\ZZ$
+(so the orbit never lands exactly on the window boundary).
+Then $w$ is aperiodic and satisfies
+\begin{equation}
+  p(n)=n+1\qquad\text{for all }n\ge 1.
+\end{equation}
+Equivalently, $w$ is Sturmian in the standard complexity sense.
+\end{theorem}
+\begin{proof}
+\textbf{Step 1: $p(n)\le n+1$ (a partition by $n{+}1$ breakpoints).}
+Fix $n\ge 1$ and define the length-$n$ block map
+\[
+F_n:\TT\to\{0,1\}^n,\qquad
+F_n(x):=\big(\ind\{x\in W_\alpha\},\ind\{x+\alpha\in W_\alpha\},\ldots,
+\ind\{x+(n-1)\alpha\in W_\alpha\}\big).
+\]
+For each $j=0,\ldots,n-1$, the indicator $\ind\{x+j\alpha\in W_\alpha\}$
+can change only when $x+j\alpha$ crosses a boundary point of $W_\alpha$,
+namely $0$ or $1-\alpha$.
+Thus $F_n$ is locally constant on $\TT$ away from the set of breakpoints
+\[
+B_n:=\bigcup_{j=0}^{n-1}\big(\{-j\alpha\}\cup\{1-\alpha-j\alpha\}\big)
+\subset\TT.
+\]
+Because $1-\alpha-j\alpha\equiv -(j+1)\alpha\ (\mathrm{mod}\ 1)$, one has
+\[
+B_n=\{-k\alpha: k=0,1,\ldots,n\},
+\]
+which has exactly $n+1$ distinct points since $\alpha\notin\QQ$.
+These points partition $\TT$ into $n+1$ half-open intervals
+$I_0,\ldots,I_n$ on each of which $F_n$ is constant.
+Therefore the image $F_n(\TT)$ contains at most $n+1$ distinct length-$n$
+words, so $p(n)\le n+1$.
+
+\medskip
+\noindent\textbf{Step 2: $p(n)\ge n+1$ (every interval is realized).}
+Since $\alpha$ is irrational, the rotation $R_\alpha$ is minimal:
+the orbit $\{x_k\}_{k\in\ZZ}$ is dense in $\TT$.
+Because the orbit avoids the finite breakpoint set $B_n$ by assumption,
+it intersects the interior of each interval $I_r$.
+For any $r\in\{0,\ldots,n\}$ choose $k_r$ with $x_{k_r}\in \mathrm{int}(I_r)$.
+Then $F_n(x_{k_r})\in\mathcal{L}_n(w)$ is the length-$n$ factor starting at
+$k_r$.
+Moreover, if $r\neq r'$ then $x_{k_r}$ and $x_{k_{r'}}$ lie in different
+intervals on which $F_n$ is constant.
+At each breakpoint $b_k=-k\alpha\in B_n$, at least one coordinate of $F_n$
+changes across $b_k$ (indeed $b_k$ is a boundary point for the $j=k$ or
+$j=k{-}1$ coordinate, within $0\le j\le n{-}1$), so adjacent intervals yield
+distinct words.
+Hence $F_n(x_{k_r})\neq F_n(x_{k_{r'}})$.
+Thus at least $n+1$ distinct factors occur, so $p(n)\ge n+1$.
+
+\medskip
+\noindent Combining Step 1 and Step 2 gives $p(n)=n+1$.
+
+\medskip
+\noindent\textbf{Step 3: aperiodicity.}
+If $w$ were periodic with period $q\ge 1$, then
+$\ind\{x_k\in W_\alpha\}=\ind\{x_k+q\alpha\in W_\alpha\}$ for all $k\in\ZZ$,
+i.e.\ the sets $W_\alpha$ and $W_\alpha-q\alpha$ have identical membership on
+the dense orbit $\{x_k\}$.
+If $W_\alpha\neq W_\alpha-q\alpha$ as subsets of $\TT$, then their symmetric
+difference contains a nonempty open arc (both are half-open intervals).
+By density, that arc would contain some orbit point $x_k$, contradicting the
+membership equality above.
+Hence $W_\alpha=W_\alpha-q\alpha$.
+For a nontrivial interval $W_\alpha$ this implies $q\alpha\equiv 0\pmod{1}$,
+contradicting $\alpha\notin\QQ$.
+Therefore $w$ is aperiodic.
+\end{proof}
+
+\subsection{Zero entropy rate}
+\label{app:sturmian_entropy_rate}
+The linear factor bound $p(n)=n+1$ immediately implies that Sturmian
+readouts carry information in correlations but have vanishing entropy
+\emph{rate}.
+
+\begin{corollary}[Topological entropy]
+\label{cor:sturmian_top_entropy}
+Let $w$ be as in Theorem~\ref{thm:sturmian_complexity}.
+Then the topological entropy of its factor language is zero:
+\[
+h_{\mathrm{top}}
+:=\lim_{n\to\infty}\frac{1}{n}\log p(n)
+=\lim_{n\to\infty}\frac{1}{n}\log(n+1)
+=0.
+\]
+\end{corollary}
+
+\begin{corollary}[Block Shannon entropy bound]
+\label{cor:sturmian_shannon_entropy}
+Let $(X,\sigma)$ be the shift-orbit closure of $w$, and let $\mu$ be any
+shift-invariant probability measure on $X$.
+Let $P_n(u):=\mu([u])$ denote the $\mu$-probability of the cylinder set
+of a word $u\in\{0,1\}^n$.
+Then the block entropy
+\[
+H_n(\mu):=-\sum_{u\in\{0,1\}^n} P_n(u)\log P_n(u)
+\]
+satisfies
+\[
+H_n(\mu)\le \log p(n)=\log(n+1),
+\qquad\text{hence}\qquad
+\limsup_{n\to\infty}\frac{H_n(\mu)}{n}=0.
+\]
+\end{corollary}
+\begin{proof}
+Only words $u\in\mathcal{L}_n(w)$ can have $P_n(u)>0$, so the sum is
+supported on at most $p(n)$ terms.
+Any probability distribution supported on at most $p(n)$ points has
+Shannon entropy at most $\log p(n)$, with equality only for the uniform
+distribution.
+Using $p(n)=n+1$ from Theorem~\ref{thm:sturmian_complexity} gives the
+claimed bound.
+\end{proof}
+
+

@@ -1,0 +1,228 @@
+% Unified delay closure module (self-contained interface layer).
+% This file consolidates the former time/delay dictionaries and reference formulas
+% into a single interface narrative tying phase/frequency/delay/redshift.
+
+\section{Time and mass as delay: scattering and relativistic lapse dictionaries (interface)}
+\label{app:time_mass_delay}
+
+This section records the matching-layer dictionaries underlying the mass-as-delay discussion in Section~\ref{subsubsec:mass_as_delay_interface}.
+It connects protocol-level cost/overhead coordinates to standard measurable proxies (scattering delay, redshift/lapse) and to standard kinematic relations (special and general relativity), while keeping these statements at the interface layer rather than as theorem-level consequences of the folding core.
+
+\subsection{Unified phase--delay dictionary (phase advance, frequency, and group delay)}
+\label{subsec:unified_phase_delay_dictionary}
+
+\paragraph{Two complementary derivatives.}
+\InterfaceTag Frequency is the canonical ``phase per tick'' quantity in the frequency-first spine:
+Definition~\ref{def:frequency_from_phase} fixes $\omega=\Delta\theta/\Delta t$ in tick units.
+Time delay is the complementary ``phase per frequency'' quantity: in any setting where a complex response has a measurable phase $\delta(\omega)$ as a function of angular frequency $\omega$, the group-delay observable is the phase derivative
+\[
+\tau(\omega):=\frac{\dd \delta}{\dd \omega}.
+\]
+These are inverse-facing dictionaries built from the same primitive object (phase as a readout).
+
+\paragraph{Scattering as a phase-response interface.}
+\InterfaceTag In scattering platforms one measures complex $S$-parameters as functions of frequency.
+When scattering is (nearly) unitary over a stated band, the phase response is the most stable observable and the delay $\tau(\omega)$ provides a direct operational bridge from phase to time.
+The Wigner--Smith construction below is precisely the multi-channel, basis-invariant generalization of this group-delay dictionary.
+
+\subsection{Scattering delay as an operational proxy: Wigner--Smith}
+\label{app:wigner_smith_delay_z128}
+
+In platforms where a scattering description is available, delays are directly measurable from complex $S$-parameters as functions of frequency.
+Let $S(\omega)$ be a unitary scattering matrix (lossless elastic scattering) at angular frequency $\omega$.
+The Wigner--Smith time-delay matrix is defined by \cite{Wigner1955,Smith1960}
+\begin{equation}
+\label{eq:wigner_smith_omega}
+Q(\omega):=-\iu\,S(\omega)^\dagger\frac{\dd S}{\dd \omega},
+\end{equation}
+and a common scalar summary is the total delay
+\begin{equation}
+\label{eq:tau_ws_trace_omega}
+\tau_{\mathrm{WS}}(\omega):=\Tr Q(\omega).
+\end{equation}
+In a one-channel setting $S(\omega)=\e^{\iu\delta(\omega)}$, \eqref{eq:wigner_smith_omega} reduces to the group/phase derivative
+\begin{equation}
+\label{eq:wigner_smith_one_channel}
+\tau_{\mathrm{WS}}(\omega)=\frac{\dd\delta}{\dd\omega}.
+\end{equation}
+
+\paragraph{Trace/logdet identity and basis invariance (unitary case).}
+\InterfaceTag For unitary $S(\omega)$ one has $S^{-1}=S^\dagger$, hence
+\[
+\Tr Q(\omega)=-\iu\,\frac{\dd}{\dd \omega}\log\det S(\omega).
+\]
+Writing $\det S(\omega)=\e^{\iu \Theta(\omega)}$ yields $\tau_{\mathrm{WS}}(\omega)=\dd\Theta/\dd\omega$, so the WS trace is the derivative of a \emph{total scattering phase}.
+Moreover, under any energy-independent channel basis change $S'(\omega)=U\,S(\omega)\,U^\dagger$ with $U$ unitary, one has $Q'(\omega)=U\,Q(\omega)\,U^\dagger$; therefore $\Tr Q$ and the eigenvalues of $Q$ are basis-invariant scalar observables in multi-channel settings.
+
+\paragraph{Non-unitarity, losses, and calibration.}
+\InterfaceTag In realistic settings absorption and imperfect calibration can make $S$ non-unitary; one should then either restrict to frequency bands where unitarity holds to a stated tolerance or adopt an explicit loss model and treat $\tau_{\mathrm{WS}}$ as an effective delay proxy.
+A minimal auditable measurement pipeline is recorded in Remark~\ref{rem:wigner_smith_calibration_losses} and Appendix~\ref{app:wigner_smith_reference}.
+
+\subsection{Phase shifts and cross sections (interface note)}
+\label{subsec:phase_shifts_cross_sections_interface}
+
+\InterfaceTag Phase information is simultaneously an interface for cross sections and for time delays.
+For example, in standard elastic partial-wave conventions one writes $S_\ell(E)=\e^{2\iu\delta_\ell(E)}$; then the same phase shifts $\delta_\ell$ determine both the elastic cross sections (via $\sin^2\delta_\ell$) and the corresponding one-channel delays (via energy/frequency derivatives of the phase).
+The WS one-channel formula \eqref{eq:wigner_smith_one_channel} applies once the phase convention is fixed: if the measured phase is $\arg S_\ell(E)=2\delta_\ell(E)$, then the delay is $\tau_\ell(E)=\dd(\arg S_\ell)/\dd\omega=2\,\dd\delta_\ell/\dd\omega$ (equivalently $\tau_\ell(E)=2\hbar\,\dd\delta_\ell/\dd E$ under $E=\hbar\omega$).
+Thus, phase-shift datasets provide a unified operational channel where ``scattering cross section'' and ``scattering time delay'' are two facets of the same measured phase response.
+
+\subsection{From delay to overhead and lapse (clock-rate dictionary)}
+\label{app:delay_to_lapse_dictionary}
+
+Fix a reference tick duration $\tau_0>0$ that defines one unit of baseline protocol time in physical units (seconds).
+We compress delay into a dimensionless overhead proxy
+\begin{equation}
+\label{eq:kappa_ws_def}
+\kappa_{\mathrm{WS}}(\omega):=\frac{\tau_{\mathrm{WS}}(\omega)}{\tau_0},
+\end{equation}
+and define an associated lapse proxy by
+\begin{equation}
+\label{eq:lapse_ws_def}
+N_{\mathrm{WS}}(\omega):=\frac{\kappa_0}{\kappa_{\mathrm{WS}}(\omega)},
+\end{equation}
+where $\kappa_0$ is a chosen reference overhead (a normalization convention).
+Operationally, larger delay corresponds to larger overhead and hence to a smaller lapse proxy.
+
+This matches the general ``computational lapse'' dictionary used elsewhere in the HPA--$\Omega$ series: a local overhead field $\kappa$ induces a clock-rate factor $N=\kappa_0/\kappa$ so that local proper time satisfies
+\begin{equation}
+\label{eq:dtau_lapse_dictionary}
+\dd\tau_{\mathrm{loc}}(x)=N(x)\,\dd t.
+\end{equation}
+In this paper, we use the dictionary only as a matching layer: it is not used as a premise for any folding or labeling theorem.
+
+\paragraph{Relation to the \texorpdfstring{$\chi$}{chi}-based gravity dictionary (the \texorpdfstring{$\gamma$}{gamma} map).}
+\InterfaceTag Section~\ref{app:overhead_to_gravity_closure} defines $s=\kappa/\kappa_0$, $\chi=\log s$ and a one-parameter lapse family
+$N=\e^{-\gamma\chi}=(\kappa_0/\kappa)^\gamma$.
+Therefore, given a delay-derived overhead proxy $\kappa_{\mathrm{WS}}(\omega)$ one can form
+\[
+\chi_{\mathrm{WS}}(\omega):=\log\!\left(\frac{\kappa_{\mathrm{WS}}(\omega)}{\kappa_0}\right),
+\qquad
+N(\omega)=\e^{-\gamma\chi_{\mathrm{WS}}(\omega)}=N_{\mathrm{WS}}(\omega)^{\gamma},
+\]
+so \eqref{eq:lapse_ws_def} corresponds to the special case $\gamma=1$ (the base overhead ratio).
+This makes clear how scattering-delay lapse ratios can be compared to redshift/time-delay data under the same calibrated $\gamma$ used in the weak-field gravity dictionary.
+
+\subsection{Mass as a time scale: Compton clocks and the depth coordinate}
+\label{app:compton_clock_dictionary}
+
+Independently of any specific dynamics, a mass scale defines a frequency scale by combining the standard relations $E=mc^2$ and $E=\hbar\omega$ \cite{Einstein1905,NielsenChuang2010}.
+Define the Compton angular frequency and time scale
+\begin{equation}
+\label{eq:compton_clock}
+\omega_C(\mu):=\frac{\mu c^2}{\hbar},
+\qquad
+\tau_C(\mu):=\frac{1}{\omega_C(\mu)}=\frac{\hbar}{\mu c^2}.
+\end{equation}
+Because the present paper works primarily with ratios relative to $m_e$, the constants $c$ and $\hbar$ cancel:
+\[
+\frac{\omega_C(\mu)}{\omega_C(m_e)}=\frac{\mu}{m_e},
+\qquad
+\frac{\tau_C(\mu)}{\tau_C(m_e)}=\frac{m_e}{\mu}.
+\]
+Consequently the resolution coordinate used in the mass-spectrum closure (Section~\ref{sec:mass_spectrum_closure}) can be read equally as a log-frequency or log-time coordinate:
+\begin{equation}
+\label{eq:r_as_log_compton}
+r(\mu)=\log_\varphi\!\left(\frac{\mu}{m_e}\right)
+:=\log_\varphi\!\left(\frac{\omega_C(\mu)}{\omega_C(m_e)}\right)
+=-\log_\varphi\!\left(\frac{\tau_C(\mu)}{\tau_C(m_e)}\right).
+\end{equation}
+This gives a strong interface meaning to ``mass as depth'': it is also ``mass as a clock-rate coordinate'' in the standard Compton sense.
+
+\paragraph{Relativistic reference formulas (supplement).}
+General-relativity lapse/redshift and Shapiro-delay formulas, as well as special-relativity time dilation/dispersion reference relations, are recorded in Appendix~\ref{app:time_mass_delay_reference}.
+
+\section{Relativistic delay and lapse reference formulas (supplement)}
+\label{app:time_mass_delay_reference}
+
+This appendix records standard SR/GR reference relations and optional scattering-delay benchmarks used as external matching-layer targets in the interface dictionaries of Section~\ref{app:time_mass_delay}.
+
+\subsection{Wigner--Smith delay: calibration and a one-channel resonance benchmark}
+\label{app:wigner_smith_reference}
+
+\begin{remark}[Calibration and losses]
+\label{rem:wigner_smith_calibration_losses}
+The definition \eqref{eq:wigner_smith_omega} is standard for unitary $S$.
+In realistic settings, absorption and imperfect calibration can make $S$ non-unitary; one should then either restrict to frequency bands where unitarity holds to a stated tolerance or adopt an explicit loss model and treat $\tau_{\mathrm{WS}}$ as an effective delay proxy \cite{Wigner1955,Smith1960}.
+An auditable measurement pipeline can be implemented by phase unwrapping, finite differencing, and explicit stability checks under smoothing and step-size variation.
+\end{remark}
+
+\paragraph{One-channel resonance check (Breit--Wigner).}
+As a minimal analytic benchmark, consider a one-channel exactly unitary resonance model
+\begin{equation}
+\label{eq:breit_wigner_S_omega}
+S(\omega)=\frac{\omega-\omega_0-\iu\Gamma/2}{\omega-\omega_0+\iu\Gamma/2},
+\end{equation}
+whose phase rises by $\pi$ across the resonance.
+Writing $S(\omega)=\e^{\iu\delta(\omega)}$, one obtains the Lorentzian delay profile
+\begin{equation}
+\label{eq:breit_wigner_tau_omega}
+\tau_{\mathrm{WS}}(\omega)=\frac{\dd\delta}{\dd\omega}
+:=\frac{\Gamma}{(\omega-\omega_0)^2+(\Gamma/2)^2},
+\end{equation}
+and, at resonance,
+\begin{equation}
+\label{eq:tau_ws_peak}
+\tau_{\mathrm{WS}}(\omega_0)=\frac{4}{\Gamma}.
+\end{equation}
+Thus the dimensionless overhead proxy \eqref{eq:kappa_ws_def} is proportional to the inverse linewidth, $\kappa_{\mathrm{WS}}(\omega_0)=4/(\Gamma\,\tau_0)$.
+This is the simplest concrete instance of the interface slogan ``stable obstruction $\Rightarrow$ additional delay'' and provides an experimentally extractable handle (linewidth from phase-jump width) \cite{Wigner1955,Smith1960}.
+
+\subsection{General relativity reference: lapse and Shapiro delay (external target)}
+\label{app:gr_lapse_shapiro_target}
+
+In a $3{+}1$ decomposition, the relativistic lapse $N(x)$ relates coordinate time to proper time of static observers by $\dd\tau=N\,\dd t$ \cite{Wald1984}.
+Thus, identifying $N(x)=\kappa_0/\kappa(x)$ is a direct interface map between overhead and GR clock rates.
+
+\begin{proposition}[Static redshift law in lapse form (standard)]\label{prop:static_redshift_lapse}
+In a static spacetime with lapse $N(x)$, the frequency ratio of the same signal measured by two static observers at $x_{\mathrm{emit}}$ and $x_{\mathrm{obs}}$ satisfies
+\[
+\frac{\omega_{\mathrm{obs}}}{\omega_{\mathrm{emit}}}=\frac{N(x_{\mathrm{emit}})}{N(x_{\mathrm{obs}})}.
+\]
+Equivalently, under the interface identification $N=\kappa_0/\kappa$, one has $\omega_{\mathrm{obs}}/\omega_{\mathrm{emit}}=\kappa(x_{\mathrm{obs}})/\kappa(x_{\mathrm{emit}})$.
+\end{proposition}
+\begin{proof}
+This is the standard gravitational redshift law for static observers in a static metric with $g_{tt}=-N^2c^2$; see, e.g., \cite{Wald1984,Will1993}.
+\end{proof}
+
+\paragraph{Schwarzschild lapse.}
+In Schwarzschild coordinates, a static clock at radius $r$ satisfies
+\begin{equation}
+\label{eq:schwarzschild_lapse}
+\dd\tau=\sqrt{1-\frac{2GM}{rc^2}}\,\dd t,
+\end{equation}
+so $N(r)=\sqrt{1-2GM/(rc^2)}$ \cite{Wald1984}.
+Under the interface identification $\kappa(r)/\kappa_0=1/N(r)$, one obtains
+\begin{equation}
+\label{eq:kappa_schwarzschild_series}
+\frac{\kappa(r)}{\kappa_0}=\left(1-\frac{2GM}{rc^2}\right)^{-1/2}
+:=1+\frac{GM}{rc^2}+O\!\left(\frac{G^2M^2}{r^2c^4}\right).
+\end{equation}
+
+\paragraph{Shapiro delay.}
+For light propagation past a gravitating body, the Shapiro time delay for a radar signal is, at leading post-Newtonian order,
+\begin{equation}
+\label{eq:shapiro_delay}
+\Delta t_{\mathrm{Shapiro}}\;\approx\;\frac{2GM}{c^3}\log\!\left(\frac{4r_1 r_2}{b^2}\right),
+\end{equation}
+for endpoints at radii $r_1,r_2$ and impact parameter $b$ \cite{Shapiro1964,Will1993}.
+These standard formulas provide external operational targets for any scan-based identification of additional protocol overhead with effective delay/clock slowing.
+
+\subsection{Special relativity reference: kinematic time dilation and dispersion}
+\label{app:sr_time_dilation_dispersion}
+
+In special relativity, proper time and coordinate time relate by the Lorentz factor
+\begin{equation}
+\label{eq:sr_time_dilation}
+\dd\tau=\frac{\dd t}{\gamma},\qquad
+\gamma=\frac{1}{\sqrt{1-v^2/c^2}},
+\end{equation}
+and a relativistic particle satisfies the dispersion relation
+\begin{equation}
+\label{eq:sr_dispersion}
+E^2=p^2c^2+m^2c^4,
+\end{equation}
+with group velocity $v=\dd E/\dd p=pc^2/E$ \cite{Einstein1905,Rindler2006}.
+In a scan/protocol interpretation, \eqref{eq:sr_time_dilation} is treated as a matching dictionary:
+once a locality basis and a baseline signal speed $c$ are fixed (Remark~\ref{rem:scan_rate_c_dictionary}), any additional protocol overhead that reduces the available local update budget can be encoded as an effective $\gamma$-factor or lapse factor.
+This provides a clean place to connect the discrete cost coordinates used in the present paper (depth, fiber multiplicity, connection/holonomy overhead) to standard relativistic observables \emph{without} importing relativistic axioms into the folding layer.
+

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Reproducible experiment: Hilbert curve chirality index.
+Reproducible experiment: Hilbert curve chirality index (denoted chi_H in the paper).
 
 This script reproduces:
-  - chi(path) for the standard Hilbert d->(x,y) algorithm at order n_bits=3
-  - chi(reversed path) flips sign (traversal reversal)
-  - chi(reflected path) flips sign (parity / reflection)
+  - chi_H(path) for the standard Hilbert d->(x,y) algorithm at order n_bits=3
+  - chi_H(reversed path) flips sign (traversal reversal)
+  - chi_H(reflected path) flips sign (parity / reflection)
 
 It writes a small LaTeX summary fragment into sections/generated/.
 Only the Python standard library is used.
@@ -83,9 +83,9 @@ def write_tex_summary(n_bits: int, chi: int, chi_rev: int, chi_ref: int) -> None
     text = (
         "\\noindent "
         f"For Hilbert order $n={n}$: "
-        f"$\\chi(\\text{{path}})={chi}$, "
-        f"$\\chi(\\text{{reversed path}})={chi_rev}$, and "
-        f"$\\chi(\\text{{reflected path}})={chi_ref}$."
+        f"$\\chi_H(\\text{{path}})={chi}$, "
+        f"$\\chi_H(\\text{{reversed path}})={chi_rev}$, and "
+        f"$\\chi_H(\\text{{reflected path}})={chi_ref}$."
     )
     (out_dir / "hilbert_chi_summary.tex").write_text(text + "\n", encoding="utf-8")
 

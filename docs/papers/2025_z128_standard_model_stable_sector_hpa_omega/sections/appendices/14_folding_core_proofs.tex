@@ -1,0 +1,126 @@
+\section{Folding-core proofs and technical details (supplement)}
+\label{app:folding_core_proofs}
+
+This appendix collects longer proofs and technical details underlying the folding core in Section~\ref{sec:folding_core}.
+It is intended to keep the main narrative short while preserving a fully explicit, auditable mathematical layer.
+
+\paragraph{Scope.}
+All proofs in this appendix refer to the folding map and admissible language as defined in Section~\ref{sec:folding_core} (in particular the Zeckendorf-truncation definition of Fold$_6$).
+The paper does not claim invariance of the reported fiber statistics under arbitrary alternative maps from $\{0,\dots,63\}$ to $X_6$; a bounded counterfactual sensitivity sweep is recorded separately in Appendix~\ref{app:fold_family_sensitivity}.
+
+\subsection{Defect operators and relaxation dynamics (optional interface semantics)}
+\label{app:defect_relaxation}
+
+\begin{definition}[Defect operators on $\ell^2(\Omega_m)$]\label{def:defect_ops}
+Given a nonnegative defect function $D:\Omega_m\to\RR_{\ge 0}$, define the associated defect operator (still denoted $D$) on $\mathcal{H}_m=\ell^2(\Omega_m)$ by pointwise multiplication:
+\[
+(D\psi)(w):=D(w)\,\psi(w),\qquad \psi\in\ell^2(\Omega_m),\ w\in\Omega_m.
+\]
+If $D_1,D_2$ are defect functions, then the corresponding operators commute.
+\end{definition}
+
+\begin{definition}[Defect relaxation on $\ell^2(\Omega_m)$]\label{def:defect_relaxation}
+Fix $m$ and consider the nonnegative $\varphi$-defect operator $D_\varphi$ (Definition~\ref{def:defect_ops}).
+Define the defect-relaxation semigroup by the auxiliary-time evolution
+\begin{equation}
+\label{eq:defect_relaxation_semigroup}
+\frac{\dd}{\dd\tau}\psi(\tau)=-D_\varphi\,\psi(\tau),
+\qquad
+\psi(0)=\psi_0\in\ell^2(\Omega_m),
+\end{equation}
+where $\tau\ge 0$ indexes stabilization steps rather than scan iteration time.
+\end{definition}
+
+\begin{proposition}[Attractor: convergence to the admissible sector]\label{prop:defect_relaxation_to_phi}
+The solution of \eqref{eq:defect_relaxation_semigroup} is given pointwise by
+\[
+\psi(\tau)(w)=\e^{-\tau D_\varphi(w)}\psi_0(w).
+\]
+Consequently $\psi(\tau)\to P_\varphi\psi_0$ in $\ell^2(\Omega_m)$ as $\tau\to\infty$, where $P_\varphi$ is the orthogonal projection onto $\ell^2(X_m)$.
+Moreover the mismatch functional $\mathcal{M}(\tau):=\norm{D_\varphi\psi(\tau)}_2^2$ obeys the explicit decay law
+\[
+\mathcal{M}(\tau)=\e^{-2\tau}\,\mathcal{M}(0).
+\]
+\end{proposition}
+\begin{proof}
+Since $D_\varphi$ is a multiplication operator, \eqref{eq:defect_relaxation_semigroup} decouples on the basis $\{\delta_w\}_{w\in\Omega_m}$ and yields the stated closed form.
+Because $D_\varphi(w)\in\{0,1\}$, one has $\e^{-\tau D_\varphi(w)}\to \ind\{D_\varphi(w)=0\}=\ind\{w\in X_m\}$ as $\tau\to\infty$, which is exactly the action of $P_\varphi$ on basis vectors and therefore gives $\ell^2$ convergence.
+Finally, $D_\varphi\psi(\tau)=\e^{-\tau}D_\varphi\psi_0$, so $\mathcal{M}(\tau)=\e^{-2\tau}\mathcal{M}(0)$.
+\end{proof}
+
+\begin{remark}[Relation to least-discrepancy dynamics (context)]\label{rem:stability_relaxation_context}
+Equation~\eqref{eq:defect_relaxation_semigroup} is the minimal linear relaxation that suppresses defect support and makes the admissible sector an attractor.
+More general least-discrepancy dynamics can be formulated at the protocol layer as gradient flows on bounded parameter families, trading discrepancy certificates against implementation costs; see, e.g., \cite{Ma2025CAP,Ma2025HHU,Ma2025HPT,Ma2025CAPII}.
+In the present paper we use \eqref{eq:defect_relaxation_semigroup} only as a dynamical semantics for the static folding constraint and do not treat it as an additional premise for any theorem-level count.
+\end{remark}
+
+\subsection{Full proofs and auxiliary tables for \texorpdfstring{$\mathrm{Fold}_6$}{Fold6}}
+\label{app:fold6_full_proofs}
+
+\begin{proof}[Full proof of Proposition~\ref{prop:V_bijection}]
+By Zeckendorf's theorem \cite{Zeckendorf1972}, every integer $M\in\NN$ admits a unique expansion
+\[
+M=\sum_{k\ge 1} c_k F_{k+1},\qquad c_k\in\{0,1\},\qquad c_kc_{k+1}=0.
+\]
+For $0\le M\le 20$, this expansion uses no Fibonacci weight beyond $F_7=13$, hence the digit vector $(c_1,\dots,c_6)$ is well-defined and belongs to $X_6$, and satisfies $V(c_1\cdots c_6)=M$.
+This proves that $V$ is surjective onto $\{0,1,\dots,20\}$.
+
+For the range bound, if $w\in X_6$ has no adjacent ones, then the maximal value of $V(w)$ is attained by the alternating pattern $w=010101$, giving
+\[
+V(010101)=2+5+13=20,
+\]
+so indeed $V(X_6)\subset\{0,1,\dots,20\}$.
+Finally, the Zeckendorf expansion is unique, so the digit vector (and therefore the word in $X_6$) realizing a given $M$ is unique, hence $V$ is injective.
+\end{proof}
+
+\begin{proof}[Full proof of Lemma~\ref{lem:fold6_fiber_explicit}]
+Let $N\in\{0,\dots,63\}$ and write its Zeckendorf digits as $N=\sum_{k\ge 1} c_k F_{k+1}$.
+Since $63<F_{11}=89$, one has $c_k=0$ for all $k\ge 10$, so
+\[
+N=\sum_{k=1}^{9} c_k F_{k+1}
+:=\sum_{k=1}^{6} c_k F_{k+1} \;+\; 21\,c_7 \;+\; 34\,c_8 \;+\; 55\,c_9.
+\]
+If $\mathrm{Fold}_6(N)=w$, then $c_k=w_k$ for $k=1,\dots,6$, hence $\sum_{k=1}^{6} c_k F_{k+1}=V(w)=v$ and
+\[
+N=v+21\,c_7+34\,c_8+55\,c_9.
+\]
+The Zeckendorf admissibility constraint is $c_kc_{k+1}=0$.
+Thus if $w_6=1$ then $c_6=1$ forces $c_7=0$; and since $v\ge 13$ in this case, one also has $v+55>63$, so $c_9=0$.
+The remaining admissible choices are $c_8\in\{0,1\}$, giving $N\in\{v,v+34\}$.
+
+If $w_6=0$ then $c_6=0$ imposes no restriction on $c_7$.
+The admissible one-hot tail choices $(c_7,c_8,c_9)\in\{(0,0,0),(1,0,0),(0,1,0),(0,0,1)\}$ produce the four candidates $v$, $v+21$, $v+34$, $v+55$.
+The candidate with $c_9=1$ is valid if and only if $v+55\le 63$, i.e.\ $v\le 8$.
+If $9\le v\le 12$, then $v+55>63$, so only the first three candidates lie in $\{0,\dots,63\}$.
+All listed candidates satisfy Zeckendorf admissibility (no adjacent ones), hence their Zeckendorf digits have the same first six digits, so they map to $w$ under $\mathrm{Fold}_6$.
+\end{proof}
+
+\begin{proof}[Full proof of Theorem~\ref{thm:fold6_stats}]
+Surjectivity follows from Lemma~\ref{lem:fold6_surjective}.
+The explicit fiber description in Lemma~\ref{lem:fold6_fiber_explicit} shows that $|\mathrm{Fold}_6^{-1}(w)|\in\{2,3,4\}$ for every $w\in X_6$.
+Moreover, $|\mathrm{Fold}_6^{-1}(w)|=2$ holds exactly when $w_6=1$.
+The number of admissible length-$6$ words ending with $1$ is $|X_4|=F_6=8$ (fix the last two digits as $01$ and choose any admissible $4$-bit prefix), hence $|V_2|=8$.
+Among the remaining $13$ words with $w_6=0$, Lemma~\ref{lem:fold6_fiber_explicit} gives preimage size $4$ exactly when $V(w)\le 8$, i.e.\ for $v\in\{0,\dots,8\}$, yielding $|V_4|=9$ by Proposition~\ref{prop:V_bijection}.
+The remaining $4$ values $v\in\{9,10,11,12\}$ yield preimage size $3$, hence $|V_3|=4$.
+Finally, for each boundary word $w$ listed in Corollary~\ref{prop:cyc_bdry_6} one has $w_6=1$ and $V(w)\in\{14,17,19\}$, so Lemma~\ref{lem:fold6_fiber_explicit} gives the stated boundary-sector preimages.
+Appendix~\ref{app:generated_tables} records the full table; the script
+\texttt{scripts/exp\_fold6\_stats.py} deterministically reproduces the same finite enumeration and writes the corresponding \LaTeX{} fragments (Appendix~\ref{app:reproducibility}).
+\end{proof}
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{rr}
+\toprule
+Preimage size $|\mathrm{Fold}_6^{-1}(w)|$ & number of types \\
+\midrule
+\input{sections/generated/fold6_degeneracy_rows}
+\end{tabular}
+\caption{Degeneracy histogram for $\mathrm{Fold}_6:\{0,\dots,63\}\twoheadrightarrow X_6$.
+Rows are reproduced by a deterministic enumeration over $N\in\{0,\dots,63\}$ implementing the definition of $\mathrm{Fold}_6$ (\texttt{scripts/exp\_fold6\_stats.py}).}
+\label{tab:fold6_degeneracy}
+\end{table}
+
+

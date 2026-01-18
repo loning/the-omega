@@ -1,0 +1,136 @@
+\section{Finite-order EFT representative construction (bounded candidate family)}
+\label{app:eft_representative_construction}
+
+This appendix records a theorem-facing construction of a finite-order EFT \emph{representative} within a bounded candidate family.
+The intent is not to claim constructive nonperturbative QFT control, but to make the \emph{finite} choice space explicit:
+field content, symmetry constraints, operator dictionary, truncation order, and coefficient discretization.
+This provides a clean anchor for later theoremization steps (Ward/BRST consistency and error bounds).
+
+\subsection{Field content and symmetries (finite input)}
+
+\paragraph{Gauge group.}
+Fix the three-factor compact gauge redundancy already closed at the interface layer:
+\[
+G := U(1)_Y\times SU(2)_L\times SU(3)_c
+\]
+(Proposition~\ref{prop:channel_to_gauge}), with hypercharge convention $Q=T_3+Y$.
+
+\paragraph{Chiral fermion multiplets.}
+Fix the finite fermion content induced by the closed labeling interface at the anchor scale (Section~\ref{sec:sm_labeling_closure}):
+for each generation $g\in\{1,2,3\}$, the six chiral multiplets
+\[
+Q_L^{(g)},\ u_R^{(g)},\ d_R^{(g)},\ L_L^{(g)},\ e_R^{(g)},\ \nu_R^{(g)}.
+\]
+This is a finite set of representation labels under $G$ and serves as the algebraic input for EFT operator construction.
+
+\paragraph{Scalar (Higgs) content as a bounded closure.}
+For a renormalizable EFT embedding, the paper records a bounded candidate family of Higgs-doublet counts
+$N_H\in\{0,1,2,3\}$ and selects the CAP-minimal feasible value $N_H=1$ (Proposition~\ref{prop:minimal_higgs_doublet_count}).
+In this appendix we therefore take one complex Higgs doublet
+\[
+H \sim (1,2)_{1/2}
+\]
+as the scalar field content in the EFT representative.
+
+\paragraph{Symmetry constraints.}
+All EFT terms are required to be:
+\begin{itemize}
+\item local and Lorentz covariant (in the continuum representative sense),
+\item invariant under the gauge redundancy $G$,
+\item Hermitian.
+\end{itemize}
+Global/discrete symmetries (e.g.\ baryon number, lepton number, CP) are treated as optional restrictions and must be declared explicitly when imposed.
+
+\subsection{Operator dictionary and truncation}
+
+\paragraph{Canonical mass dimensions.}
+We use the standard EFT power-counting dimensions in 4D:
+$[A_\mu]=1$, $[H]=1$, $[\psi]=3/2$, $[\partial_\mu]=1$.
+
+\begin{definition}[Truncation order]\label{def:eft_truncation_order}
+\MathTag Fix a maximum operator dimension $D_{\max}\in\NN$ with $D_{\max}\ge 4$.
+An EFT representative at order $D_{\max}$ includes operator terms of canonical dimension $\le D_{\max}$ from a declared finite dictionary.
+\end{definition}
+
+\paragraph{Finite operator dictionary (declared).}
+To keep the candidate set finite and auditable, we do not quantify over all gauge-invariant polynomials.
+Instead we fix an explicit finite dictionary of operator \emph{types}:
+\begin{itemize}
+\item \textbf{dimension $\le 4$ (renormalizable core):}
+gauge kinetic terms, fermion kinetic terms, Higgs kinetic term, Higgs potential $(H^\dagger H)$ and $(H^\dagger H)^2$, and Yukawa terms compatible with the chiral multiplets;
+\item \textbf{dimension $5$ (minimal neutrino-mass representative):}
+the Weinberg operator $(L H)(L H)$ as a representative lepton-number-violating completion term, when included (Appendix~\ref{app:neutrino_weinberg_operator_closure});
+\item \textbf{dimension $>5$ (optional):}
+an additional finite registry $\mathcal{B}_{>5}$, if declared, with each element specified as a gauge-invariant local operator type together with its canonical dimension.
+\end{itemize}
+The registry viewpoint keeps the work modular: enlarging the EFT hypothesis space is an explicit change in a finite list.
+
+\begin{definition}[Declared EFT operator basis]\label{def:eft_operator_basis}
+\MathTag Fix $(G,\mathcal{F},H)$ as above and fix $D_{\max}$.
+Let $\mathcal{B}_{\le D_{\max}}$ be a finite set of Hermitian, gauge-invariant local operator \emph{types} with canonical dimension $\le D_{\max}$, obtained by taking:
+(i) the renormalizable core dictionary (dimension $\le 4$),
+(ii) optionally the Weinberg operator at dimension $5$,
+and (iii) optionally a declared finite extension registry $\mathcal{B}_{>5}$ truncated by $D_{\max}$.
+\end{definition}
+
+\subsection{Coefficient discretization and bounded candidate family}
+
+\begin{definition}[Bounded rational coefficient box]\label{def:eft_coeff_box}
+\MathTag Fix a bound $B\in\NN$ and define the finite coefficient set
+\[
+\mathcal{C}(B):=\left\{\frac{p}{q}:\ p,q\in\ZZ,\ 1\le |p|\le B,\ 1\le q\le B\right\}\cup\{0\}.
+\]
+\end{definition}
+
+\begin{definition}[Finite EFT candidate family]\label{def:eft_candidate_family}
+\MathTag Fix $(G,\mathcal{F},H)$, a truncation order $D_{\max}$, an operator basis $\mathcal{B}_{\le D_{\max}}$ (Definition~\ref{def:eft_operator_basis}), and a coefficient bound $B$.
+Define the EFT candidate family $\Theta_{\mathrm{EFT}}(B,D_{\max})$ as the set of Lagrangian densities of the form
+\[
+\mathcal{L}=\sum_{j\in \mathcal{B}_{\le D_{\max}}} c_j\,\mathcal{O}_j
+\]
+where each $c_j\in\mathcal{C}(B)$ and $\mathcal{O}_j$ ranges over the chosen finite operator types.
+\end{definition}
+
+\begin{lemma}[Finiteness]\label{lem:eft_candidate_family_finite}
+\MathTag For fixed $(B,D_{\max},\mathcal{B}_{\le D_{\max}})$, the family $\Theta_{\mathrm{EFT}}(B,D_{\max})$ is finite.
+\end{lemma}
+\begin{proof}
+The basis $\mathcal{B}_{\le D_{\max}}$ is finite by construction, and each coefficient is chosen from a finite set $\mathcal{C}(B)$.
+Therefore the Cartesian product of coefficient choices is finite.
+\end{proof}
+
+\subsection{CAP selection: a theorem-facing representative choice rule}
+
+\paragraph{Why CAP is needed.}
+Even after fixing the field content, symmetries, truncation order, and coefficient box, the candidate family is typically still large.
+To make any choice auditable and reproducible, the paper uses bounded-complexity closure with deterministic tie-breaks (Axiom~\ref{ax:cap}; Appendix~\ref{app:cap_audit_template}).
+
+\begin{definition}[EFT representative selection functional]\label{def:eft_selection_functional}
+\AuditTag Fix a finite candidate family $\Theta_{\mathrm{EFT}}(B,D_{\max})$.
+An \emph{EFT representative selection functional} is any deterministic map
+\[
+J:\Theta_{\mathrm{EFT}}(B,D_{\max})\to \RR
+\]
+whose value is computable from the declared protocol observables and matching dictionaries, together with a deterministic lexicographic tie-break on $\Theta_{\mathrm{EFT}}(B,D_{\max})$.
+The particular choice of $J$ (targets, weights, and scope) must be ledger-scoped.
+\end{definition}
+
+\begin{proposition}[CAP-minimal EFT representative (finite-order)]\label{prop:cap_minimal_eft_representative}
+\MathTag Fix $(B,D_{\max})$ and a finite basis $\mathcal{B}_{\le D_{\max}}$.
+Given any deterministic selection functional $J$ on $\Theta_{\mathrm{EFT}}(B,D_{\max})$ with a deterministic tie-break,
+there exists a unique CAP-minimal EFT representative
+\[
+\mathcal{L}^{\ast}_{\mathrm{EFT}}(B,D_{\max})\in \arg\min_{\mathcal{L}\in\Theta_{\mathrm{EFT}}(B,D_{\max})} J(\mathcal{L})
+\]
+selected by CAP within the declared finite family.
+\end{proposition}
+\begin{proof}
+By Lemma~\ref{lem:eft_candidate_family_finite}, the candidate family is finite, hence the minimum of $J$ is attained.
+A deterministic tie-break selects a unique minimizer when multiple minimizers have equal cost.
+\end{proof}
+
+\paragraph{Renormalization/scheme boundary.}
+\MatchTag The coefficients in an EFT representative are generally scheme- and scale-dependent in standard QFT.
+This manuscript therefore treats renormalization conventions as matching-layer inputs unless explicitly closed within a finite candidate family; see Appendix~\ref{app:renormalization_dictionary_and_boundaries}.
+The theorem-level content of the present appendix is the finiteness and determinism of the candidate family and selection rule, not constructive renormalization.
+

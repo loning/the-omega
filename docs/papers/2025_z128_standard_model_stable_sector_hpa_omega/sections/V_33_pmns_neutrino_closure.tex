@@ -1,0 +1,229 @@
+This section extends the bounded-complexity closure program to the lepton sector.
+We record a minimal, auditable closure for the PMNS mixing angles and provide a corresponding matrix reconstruction in the PDG standard parameterization.
+Majorana phases do not affect oscillation probabilities and are not constrained by this minimal closure, so we ignore them here \cite{PDGRPP2024}.
+
+\begin{lemma}[Majorana phases cancel in oscillation amplitudes (standard)]\label{lem:majorana_phases_cancel}
+Let $U$ be a lepton mixing matrix and let $D=\mathrm{diag}(\e^{\iu\alpha_1},\e^{\iu\alpha_2},\e^{\iu\alpha_3})$ be a diagonal phase matrix.
+In the standard oscillation-amplitude formula (see, e.g., \cite{PDGRPP2024})
+\[
+A_{\alpha\to\beta}(t)=\sum_{i} U_{\beta i}\,U_{\alpha i}^\ast\,\e^{-\iu E_i t},
+\]
+replacing $U$ by $U':=UD$ leaves $A_{\alpha\to\beta}(t)$ (and therefore the oscillation probabilities) unchanged.
+In particular, if neutrinos are Majorana and one writes $U=U_{\mathrm{Dirac}}D_{\mathrm{Maj}}$ with a diagonal Majorana-phase matrix $D_{\mathrm{Maj}}$, then the oscillation probabilities depend only on $U_{\mathrm{Dirac}}$.
+\end{lemma}
+\begin{proof}
+Write $U'_{\gamma i}=U_{\gamma i}D_{ii}$ for each flavor $\gamma$ and mass index $i$.
+Then
+\[
+U'_{\beta i}\,U_{\alpha i}^{\prime\ast}
+=\bigl(U_{\beta i}D_{ii}\bigr)\bigl(U_{\alpha i}^\ast D_{ii}^\ast\bigr)
+=U_{\beta i}\,U_{\alpha i}^\ast,
+\]
+so term-by-term the amplitude is invariant:
+$A'_{\alpha\to\beta}(t)=\sum_i U'_{\beta i}U_{\alpha i}^{\prime\ast}\e^{-\iu E_i t}=A_{\alpha\to\beta}(t)$.
+\end{proof}
+
+\subsection{PMNS angles as bounded-complexity amplitudes}
+
+We use the same golden resolution coordinate for dimensionless amplitudes as in \eqref{eq:r_mix_def}:
+\[
+r_{\mathrm{mix}}(x):=-\frac{\log x}{\log\varphi}\qquad(x>0).
+\]
+
+\paragraph{Candidate-family status (audit).}
+\AuditTag As in the CKM closure (Section~\ref{subsec:ckm_mixing_depths}), all ``rigidity'' and ``uniqueness'' statements below are conditional: they hold within the explicitly declared finite candidate family and bound, with deterministic tie-break rules (Definition~\ref{def:bounded_complexity_closure}).
+The family is chosen to encode protocol-native motifs (normalization/equipartition and golden depth) while keeping the search space discrete, finite, and reproducible.
+
+\paragraph{Protocol-state convention.}
+\AuditTag The closure in this section is anchored at $(m,n)=(6,3)$ and is understood as conditional on a declared protocol state $(m,n,K)$ (Appendix~\ref{subsec:tick_cap_joint_key_contract}).
+In the minimal PMNS closure recorded here, the kernel component $K$ does not enter the candidate family: the closure is formulated directly on bounded discrete amplitude/phase candidates in the golden resolution coordinate.
+Kernel dependence becomes relevant only when one forms weighted readouts from empirical data streams or from refined high-$m$ fibers; see Appendix~\ref{app:kernel_family_cap_closure} for the corresponding kernel-family discipline.
+
+\paragraph{Forcing rationale (normalization and depth).}
+As in the CKM closure of Section~\ref{subsec:ckm_mixing_depths}, we restrict to a bounded candidate family fixed by two protocol-native mechanisms:
+(i) normalization/equipartition at the amplitude level.
+For Haar-uniform unitary mixing in an effective $d$-dimensional subspace, $\mathbb{E}|U_{ij}|^2=1/d$, so the minimal-description overlap scale is $|U_{ij}|\sim 1/\sqrt{d}$ \cite{Mezzadri2007,CollinsSnady2006}.
+(ii) discrete golden-branch depth costs yield exponentially small weights with base $\varphi$; taking square roots at the amplitude level yields half-depth factors $\varphi^{-k/2}$.
+We treat the resulting PMNS hierarchies as a bounded-complexity closure problem rather than as free continuous inputs \cite{PDGRPP2024,Esteban2020NuFIT}.
+For definiteness, the reference targets used by the accompanying scripts are taken as representative normal-ordering global-fit central values under the PDG convention \cite{PDGRPP2024,Esteban2020NuFIT}.
+
+We define a simple candidate family for the three sines $(s_{12},s_{23},s_{13})$ of the PMNS mixing angles:
+\[
+s_{12}=\sqrt{\frac{p_{12}}{q_{12}}},\qquad
+s_{23}=\sqrt{\frac{p_{23}}{q_{23}}},\qquad
+s_{13}=\varphi^{-k_{13}/2},
+\]
+with a bounded-complexity box
+\[
+\begin{aligned}
+&1\le q_{12},q_{23}\le B,\qquad 1\le p_{12}\le q_{12}-1,\qquad 1\le p_{23}\le q_{23}-1,\\
+&\gcd(p_{ij},q_{ij})=1,\qquad 1\le k_{13}\le 2B,
+\end{aligned}
+\]
+and we select the unique minimizer by lexicographic minimization of the maximum absolute log mismatch and then the sum mismatch (as in Definition~\ref{def:bounded_complexity_closure}).
+
+\begin{remark}[Why the PMNS candidate box uses reduced rationals and $k_{13}\le 2B$]\label{rem:pmns_bounds_rationale}
+The square-root rational forms $s=\sqrt{p/q}$ encode the normalization motif directly at the amplitude level while keeping the candidate family discrete and closed under bounded denominator.
+For the depth exponent, writing $s_{13}=\varphi^{-k_{13}/2}$ makes the half-depth structure explicit in the same $r_{\mathrm{mix}}$ coordinate as in the CKM closure.
+Bounding $k_{13}$ by $2B$ keeps the half-depth exponent budget commensurate with the rational-denominator budget $B$ without introducing higher-denominator freedom.
+\end{remark}
+
+\begin{proposition}[Bounded-complexity rigidity for PMNS mixing sines]\label{prop:pmns_mixing_rigidity}
+Fix representative global-fit reference values for $(s_{12},s_{23},s_{13})$ under PDG conventions \cite{PDGRPP2024,Esteban2020NuFIT}.
+For each $B\in\{2,\dots,20\}$, minimize the minimax log-mismatch objective over the candidate box described above, using the same deterministic tie-break rules as in Definition~\ref{def:bounded_complexity_closure}.
+At $B=20$ the unique minimizer is
+\[
+(p_{12}/q_{12},p_{23}/q_{23},k_{13})=(4/13,6/11,8),
+\]
+and, within the tested range $B=2,\dots,20$, the minimizer stabilizes at $B=13$ and remains constant for all $B$ with $13\le B\le 20$ (Table~\ref{tab:pmns_mixing_rigidity}).
+\end{proposition}
+\begin{proof}
+Finite exhaustive enumeration with deterministic tie-break rules; reproduced by the accompanying script.
+\end{proof}
+
+\begin{remark}[Candidate-domain size]\label{rem:pmns_domain_size}
+Let $R(B)$ be the set of reduced fractions $p/q$ with $1\le q\le B$, $1\le p\le q-1$, and $\gcd(p,q)=1$.
+Then $|R(B)|=\sum_{q=2}^{B}\varphi_E(q)$, where $\varphi_E$ is Euler's totient function \cite{HardyWright2008}.
+The PMNS candidate box has size
+\[
+|\Theta(B)|=|R(B)|^2\cdot (2B),
+\]
+corresponding to independent choices for $(p_{12}/q_{12})$, $(p_{23}/q_{23})$, and $k_{13}\in\{1,\dots,2B\}$.
+At $B=20$, one has $|R(20)|=127$ and therefore $|\Theta(20)|=127^2\cdot 40=645160$.
+\end{remark}
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{rllr}
+\toprule
+$B$ & minimizer & max abs.\ log mismatch & sum abs.\ log mismatch \\
+\midrule
+\input{sections/generated/pmns_mixing_rigidity_rows.tex}%
+\end{tabular}
+\caption{Bounded-complexity minimax search for PMNS mixing sines in the candidate family described in the text. Rows are reproduced by the deterministic script \texttt{scripts/exp\_pmns\_mixing\_depth\_rigidity.py}. Reference targets use representative global-fit central values under PDG conventions \cite{PDGRPP2024,Esteban2020NuFIT}.}
+\label{tab:pmns_mixing_rigidity}
+\end{table}
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lrrrrr}
+\toprule
+parameter & reference & predicted form & predicted value & $r_{\mathrm{mix}}$ & $\log(\mathrm{pred}/\mathrm{ref})$ \\
+\midrule
+\input{sections/generated/pmns_mixing_rows.tex}%
+\end{tabular}
+\caption{PMNS mixing-angle closure in the golden resolution coordinate at $(m,n)=(6,3)$, using the bounded-complexity minimizer at $B=20$. Rows are reproduced by the deterministic script \texttt{scripts/exp\_pmns\_mixing\_depth\_rigidity.py}.}
+\label{tab:pmns_mixing}
+\end{table}
+
+\paragraph{Normal vs.\ inverted ordering (NO/IO) diagnostic.}
+The PMNS closure above uses representative normal-ordering (NO) reference targets.
+To assess sensitivity to the ordering choice, we repeat the same bounded-complexity closure against a representative inverted-ordering (IO) target triple and record the selected minimizers and mismatch metrics.
+This diagnostic is not used as a premise; it is included only as an auditable robustness check.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.15}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llllll}
+\toprule
+ordering & $(\sin^2\theta_{12},\sin^2\theta_{23},\sin^2\theta_{13})_{\mathrm{ref}}$ & minimizer $(p_{12}/q_{12},p_{23}/q_{23},k_{13})$ & max abs.\ log mismatch & $\delta$ minimizer ($Q=12$) & $E_\infty(|U|)$ \\
+\midrule
+\input{sections/generated/pmns_no_io_stability_rows.tex}%
+\end{tabular}
+}%
+\caption{NO/IO robustness diagnostic for the PMNS closures at $(m,n)=(6,3)$: we rerun the bounded-complexity minimizers at $B=20$ (angles) and $Q=12$ (phase) against representative normal- and inverted-ordering reference targets (PDG conventions). Rows are reproduced by the deterministic script \texttt{scripts/exp\_pmns\_no\_io\_stability.py}.}
+\label{tab:pmns_no_io_stability}
+\end{table}
+
+\paragraph{Audit context.}
+Candidate-domain size, best/second-best mismatch context, and distribution quantiles for the PMNS-sine closure (and the bounded-denominator $\delta$ closure below) are recorded in Appendix~\ref{app:generated_tables} (Tables~\ref{tab:audit_closure_metrics}--\ref{tab:audit_closure_quantiles}); uncertainty-robustness stress tests are recorded in Table~\ref{tab:audit_uncertainty_robustness}, and counterfactual baseline comparisons in Table~\ref{tab:audit_counterfactual}.
+
+\subsection{Matrix reconstruction and a discrete CP-phase closure}
+
+To reconstruct a full $3\times 3$ mixing matrix, we use the PDG standard parameterization (three angles plus one Dirac CP phase) \cite{PDGRPP2024}.
+We compare a single reference reconstruction (from representative global-fit central values) to a closed prediction obtained from the bounded-complexity angle minimizer together with a discrete protocol-level closure for the Dirac phase $\delta$ \cite{Esteban2020NuFIT}.
+Because the PMNS \emph{magnitudes} depend on $\cos\delta$ while the CP-odd invariant depends on $\sin\delta$, we use a bounded-denominator rational-angle candidate family
+\[
+\delta=\frac{k\pi}{q},\qquad 1\le q\le Q,
+\qquad 1\le k\le 2q-1,\qquad \gcd(k,q)=1,
+\]
+and we select a unique minimizer by a CP-odd anchor rule:
+first require $\mathrm{sgn}(J_\ell)=\mathrm{sgn}(\chi)$ as the chirality-anchored CP-sign convention (Definition~\ref{def:chi_cp_sign}), then minimize the mismatch $|\log(|J_\ell|/|J_{\ell,\mathrm{ref}}|)|$, and finally break the remaining $\delta\leftrightarrow \pi-\delta$ quadrant ambiguity (since magnitudes depend on $\cos\delta$) by minimizing the maximum absolute log mismatch of the induced PMNS magnitudes $|U_{ij}|$ against the same reference reconstruction.
+Ties are broken by bounded-complexity order $(q,k)$.
+Table~\ref{tab:pmns_delta_sweep} records the resulting bounded-denominator sweep $Q=1,\dots,12$ and the stabilized minimizer.
+\begin{remark}[Status of the CP-sign anchor in the PMNS closure]\label{rem:pmns_cp_sign_status}
+The chirality-anchored sign rule fixes a deterministic convention for selecting a quadrant of $\delta$ within a finite rational candidate family.
+It does not introduce additional continuous freedom, and it is not used to tune the angle magnitudes: the angle minimizer is selected independently by Proposition~\ref{prop:pmns_mixing_rigidity}, while the sign anchor only resolves the remaining $\delta\leftrightarrow \pi-\delta$ ambiguity in a protocol-consistent way (Remark~\ref{rem:cp_sign_convention}).
+\end{remark}
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.15}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{rllrrrr}
+\toprule
+$Q$ & minimizer & $\delta$ [deg] & $\mathrm{sgn}(J_\ell)$ vs.\ $\mathrm{sgn}(\chi)$ & $E_{\infty}(|U|)$ & $J_\ell$ (closed) & $|\log(|J_\ell|/|J_{\ell,\mathrm{ref}}|)|$ \\
+\midrule
+\input{sections/generated/pmns_delta_sweep_rows.tex}%
+\end{tabular}
+}%
+\caption{Bounded-denominator closure for the PMNS Dirac phase $\delta$ using a chirality-anchored CP-sign convention (Definition~\ref{def:chi_cp_sign}) and a deterministic bounded-complexity tie-break. Here $E_{\infty}(|U|):=\max_{i,j}|\log(|U_{ij}|_{\mathrm{closed}}/|U_{ij}|_{\mathrm{ref}})||$ is the max abs.\ log mismatch of the induced PMNS magnitudes against the reference reconstruction. Rows are reproduced by the deterministic script \texttt{scripts/exp\_pmns\_matrix\_closure.py}.}
+\label{tab:pmns_delta_sweep}
+\end{table}
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lrrr}
+\toprule
+parameter & reference value & closed value & mismatch \\
+\midrule
+\input{sections/generated/pmns_angles_rows.tex}%
+\end{tabular}
+\caption{PMNS angle/phase extraction and the induced leptonic Jarlskog invariant $J_\ell$ under the chosen conventions. Rows are reproduced by the deterministic script \texttt{scripts/exp\_pmns\_matrix\_closure.py}.}
+\label{tab:pmns_angles}
+\end{table}
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lrrr}
+\toprule
+element & reference $|U_{ij}|$ & closed $|U_{ij}|$ & $\log(\mathrm{closed}/\mathrm{ref})$ \\
+\midrule
+\input{sections/generated/pmns_matrix_rows.tex}%
+\end{tabular}
+\caption{PMNS magnitude table induced by the bounded-complexity angle closure and the discrete phase choice. Rows are reproduced by the deterministic script \texttt{scripts/exp\_pmns\_matrix\_closure.py}.}
+\label{tab:pmns_matrix}
+\end{table}
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lrr}
+\toprule
+unitarity check & reference value & closed value \\
+\midrule
+\input{sections/generated/pmns_unitarity_rows.tex}%
+\end{tabular}
+\caption{Row/column unitarity diagnostics: $\sum_j |U_{ij}|^2-1$ (rows) and $\sum_i |U_{ij}|^2-1$ (columns) for the reconstructed and closed PMNS matrices.}
+\label{tab:pmns_unitarity}
+\end{table}
+

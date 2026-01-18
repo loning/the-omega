@@ -1,0 +1,60 @@
+\subsection{Algebraic QFT (AQFT): local nets and axioms (structural package)}
+\label{app:aqft_axioms_local_nets}
+
+This appendix records a minimal algebraic-QFT structural package in a form compatible with the tick\,+\,CAP audit discipline.
+The intent is to isolate which statements are purely mathematical (definitions/axioms about nets of algebras and states) and which statements are interface identifications (how these objects are read as relativistic locality, causality, and symmetry).
+
+\subsubsection{Spacetime regions and the net}
+\paragraph{Regions.}
+Let $\mathbb{M}^{1,3}$ denote Minkowski spacetime.
+We consider a collection $\mathfrak{R}$ of bounded open regions (e.g.\ double cones); the precise choice affects technical details but not the audit-level structural intent.
+
+\paragraph{Local net (C$^\ast$-algebra form).}
+\begin{definition}[Local net]
+\label{def:z128_local_net}
+A \emph{local net} is an assignment
+\[
+\mathcal{O}\in\mathfrak{R}\;\longmapsto\;\mathcal{A}(\mathcal{O})
+\]
+of $C^\ast$-algebras to regions, satisfying:
+\begin{itemize}
+\item \textbf{Isotony:} if $\mathcal{O}_1\subseteq \mathcal{O}_2$ then $\mathcal{A}(\mathcal{O}_1)\subseteq \mathcal{A}(\mathcal{O}_2)$.
+\item \textbf{Locality (microcausality):} if $\mathcal{O}_1$ and $\mathcal{O}_2$ are spacelike separated then $[A,B]=0$ for all $A\in\mathcal{A}(\mathcal{O}_1)$ and $B\in\mathcal{A}(\mathcal{O}_2)$.
+\end{itemize}
+\end{definition}
+
+\paragraph{Quasi-local algebra.}
+Define the quasi-local algebra $\mathcal{A}$ as the norm-closure of the union of local algebras:
+\[
+\mathcal{A}:=\overline{\bigcup_{\mathcal{O}\in\mathfrak{R}}\mathcal{A}(\mathcal{O})}^{\|\cdot\|}.
+\]
+
+\subsubsection{Covariance and spectrum conditions (interface-facing axioms)}
+\begin{definition}[Poincar\'e covariance (structural form)]
+\label{def:z128_poincare_covariance_net}
+A local net is \emph{Poincar\'e covariant} if there exists an action $\alpha_g$ of the proper orthochronous Poincar\'e group $\mathcal{P}^\uparrow_+$ by $^\ast$-automorphisms of $\mathcal{A}$ such that
+\[
+\alpha_g\bigl(\mathcal{A}(\mathcal{O})\bigr)=\mathcal{A}(g\mathcal{O})
+\quad\text{for all }g\in\mathcal{P}^\uparrow_+,\ \mathcal{O}\in\mathfrak{R}.
+\]
+\end{definition}
+
+\begin{definition}[Vacuum state and spectrum condition (audit statement)]
+\label{def:z128_vacuum_spectrum_condition}
+A \emph{vacuum state} is a state $\omega_0$ on $\mathcal{A}$ that is invariant under the covariance action $\alpha$.
+Given a GNS representation $(\pi_0,\mathcal{H}_0,\Omega_0)$ of $\omega_0$, covariance is implemented by a unitary representation $U(g)$ such that
+\[
+U(g)\,\pi_0(A)\,U(g)^\dagger=\pi_0(\alpha_g(A)),
+\qquad
+U(g)\Omega_0=\Omega_0.
+\]
+The \emph{spectrum condition} is the requirement that the joint spectrum of the translation subgroup lies in the closed forward light cone.
+\end{definition}
+
+\paragraph{Interface reading.}
+\InterfaceTag Definition~\ref{def:z128_local_net} records locality as an algebraic commutativity constraint for spacelike separated regions; it is the operator-algebraic form of microcausality.
+Definition~\ref{def:z128_poincare_covariance_net} and Definition~\ref{def:z128_vacuum_spectrum_condition} package the standard relativistic symmetry/spectrum assumptions in a way that can be audited and scoped in the ledger.
+
+\subsubsection{Scope and boundary}
+\AuditTag This appendix records only the minimal AQFT structural axioms needed for the hybrid AQFT$\leftrightarrow$Wightman bridge.
+Further properties (additivity, Haag duality, time-slice axiom, nuclearity, modular structure) are powerful but model-dependent; if invoked later, they must be explicitly declared and ledger-scoped.

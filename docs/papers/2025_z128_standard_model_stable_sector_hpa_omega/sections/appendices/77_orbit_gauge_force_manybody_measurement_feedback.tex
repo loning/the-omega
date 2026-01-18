@@ -1,0 +1,73 @@
+\subsection{Orbit--gauge--force for many-body systems with measurement feedback (interface)}
+\label{app:orbit_gauge_force_manybody_measurement_feedback}
+
+This appendix extends the unified orbit--gauge--force packaging (Appendix~\ref{app:unified_orbit_gauge_force}) from single-orbit language to a minimal many-body and measurement-feedback interface.
+The goal is to keep the layer semantics explicit: this is an interface dictionary for how multi-component internal states, coarse-graining, and measurement interventions enter the response/force language.
+
+\subsubsection{Many-body orbit variables and effective response functionals}
+\paragraph{Many-body orbit.}
+\InterfaceTag A many-body protocol orbit is a collection
+\[
+\mathcal{O}^{(N)}=\bigl\{(x_t^{(a)},\psi_t^{(a)})\bigr\}_{a=1}^N
+\]
+together with a declared interaction/constraint structure (pairwise couplings, mean-field, or a coarse-grained density functional).
+At the continuum representative layer one may equivalently describe the state by a density operator $\rho(t)$ on a composite Hilbert space and a reduced set of macroscopic fields (Appendix~\ref{app:composite_systems_tensor_products}; Appendix~\ref{app:quantum_channels_cptp_stinespring}).
+
+\paragraph{Force as response (many-body).}
+\InterfaceTag The response meaning of force generalizes by replacing a single-orbit action by an effective functional, e.g.
+\[
+S_{\mathrm{eff}}[\mathcal{O}^{(N)}]\quad\text{or}\quad \mathcal{F}_{\mathrm{eff}}[\rho,A,\ldots],
+\]
+and defining forces/flows as functional derivatives with respect to the relevant orbit variables or fields under the declared coarse-graining.
+This does not assert a unique microscopic derivation; it fixes the audit-facing dictionary.
+
+\subsubsection{Gauge as compensation under local relabelings (multi-component)}
+\paragraph{Local relabelings and connections.}
+\InterfaceTag In a many-component setting, ``gauge'' is the compensation structure that makes local relabelings of internal degrees of freedom unobservable at the interface level.
+Operationally, the same parallel-transport meaning applies: a connection specifies how internal states are compared along a base path (Appendix~\ref{app:unified_orbit_gauge_force}), now applied componentwise or to collective degrees of freedom.
+
+\subsubsection{Measurement and feedback as channels (interface closure)}
+\paragraph{Measurement instrument as a channel family.}
+\InterfaceTag A measurement with outcomes $y$ is represented by an instrument $\{\mathcal{I}_y\}_y$ acting on $\rho$, with associated POVM effects $E_y$ (Appendix~\ref{app:quantum_measurement_born}; Appendix~\ref{app:quantum_channels_cptp_stinespring}).
+The post-measurement update and the outcome statistics are
+\[
+p(y)=\Tr(E_y\rho),\qquad
+\rho\mapsto \rho_y=\frac{\mathcal{I}_y(\rho)}{p(y)}.
+\]
+
+\paragraph{Feedback as a controlled update.}
+\InterfaceTag A feedback policy is a map $y\mapsto \mathcal{C}_y$ (a bounded, declared family of control channels) that acts after the instrument, yielding
+\[
+\rho\mapsto \rho'_y=\mathcal{C}_y(\rho_y).
+\]
+Composing and averaging defines an effective channel $\mathcal{E}(\rho)=\sum_y \mathcal{C}_y(\mathcal{I}_y(\rho))$.
+In the orbit language, this is the minimal closure of ``observation alters dynamics'': measurement and control enter as explicit channel maps rather than as implicit premises.
+
+\paragraph{Where force enters under feedback.}
+\AuditTag In a coarse-grained effective description, feedback changes the effective functional $\mathcal{F}_{\mathrm{eff}}$ (or the representative action) and therefore changes response forces by modifying the gradient/functional derivative.
+This yields a closed interface loop:
+\[
+\text{instrument/feedback channel} \ \Rightarrow\ \text{effective functional shift}\ \Rightarrow\ \text{response/force shift}\ \Rightarrow\ \text{orbit deviation},
+\]
+while keeping measurement theory and dynamics as separately auditable modules.
+
+\subsubsection{Information gain $\leftrightarrow$ effective free-energy shift (interface bridge)}
+\paragraph{Information gain as a divergence (dictionary).}
+\InterfaceTag For a prior state $\rho$ and a post-measurement state $\rho_y$ conditioned on outcome $y$, a natural information-gain diagnostic is the relative entropy
+\[
+D(\rho_y\Vert \rho):=\Tr\!\bigl(\rho_y(\log\rho_y-\log\rho)\bigr),
+\]
+and its outcome average $\sum_y p(y)D(\rho_y\Vert\rho)$.
+This is an interface-level diagnostic: it depends on the declared instrument and the declared state representation.
+
+\paragraph{Free-energy shift as an effective potential (interface).}
+\InterfaceTag In thermodynamic/effective descriptions, an intervention can be represented as a shift of an effective potential/free-energy functional, $\mathcal{F}_{\mathrm{eff}}\mapsto \mathcal{F}_{\mathrm{eff}}+\Delta\mathcal{F}$, which then shifts response forces by gradients/functional derivatives.
+The bridge claim here is purely structural: it fixes how \emph{if} a bounded identification between information gain and an effective free-energy shift is supplied (as a matching-layer convention), it enters the already-closed response/force semantics.
+
+\paragraph{Minimal failure points.}
+\AuditTag This bridge cannot be promoted beyond interface level unless:
+\begin{itemize}
+\item (MF1) a temperature/entropy dictionary is declared that makes $\mathcal{F}_{\mathrm{eff}}$ and $\Delta\mathcal{F}$ operational for the system class under study;
+\item (MF2) the instrument family is fixed and vendored, so that information-gain diagnostics are reproducible;
+\item (MF3) the coarse-graining map from microscopic $\rho$ updates to the macroscopic orbit variables is explicitly declared and audited.
+\end{itemize}

@@ -12,10 +12,11 @@ We construct:
 
 For the Dirac phase delta we use a bounded-denominator rational-angle candidate family:
   delta = (k*pi)/q, with 1 <= q <= Q and 1 <= k <= 2q-1, reduced by gcd(k,q)=1.
-We select delta by an auditable CP-odd anchor rule against the reference reconstruction:
-  - prefer candidates with sign(J_pred) == sign(J_ref),
-  - prefer candidates with sign(cos delta) == sign(cos delta_ref) (to fix the quadrant; magnitudes depend on cos delta),
+We select delta by an auditable CP-odd anchor rule anchored to the protocol chirality sign datum chi:
+  - require sign(J_pred) == sign(chi),
   - then minimize |log(|J_pred|/|J_ref|)|,
+  - then break the residual delta <-> (pi - delta) quadrant ambiguity (since magnitudes depend on cos delta)
+    by minimizing the max abs log mismatch of the induced PMNS magnitudes |U_ij| against the same reference reconstruction,
   - then minimize (q, k) as a bounded-complexity tie-break.
 
 Outputs (LaTeX fragments):
@@ -35,6 +36,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Tuple
 
+import exp_hilbert_chirality_index as hilb
 import exp_pmns_mixing_depth_rigidity as pmns
 from common_constants import PMNS_DELTA_REF_DEG, PMNS_SIN2_T12_REF, PMNS_SIN2_T13_REF, PMNS_SIN2_T23_REF
 
@@ -138,29 +140,51 @@ def delta_candidates_bounded_denominator(Q: int) -> List[DeltaCand]:
     return out
 
 
+def _matrix_abs_log_mismatch(U_pred: List[List[complex]], U_ref: List[List[complex]]) -> Tuple[float, float]:
+    """
+    Return (E_inf, E1) where E_inf=max_{i,j}|log(|U_pred_ij|/|U_ref_ij|)| and E1 is the sum.
+    """
+    Einf = 0.0
+    E1 = 0.0
+    for i in range(3):
+        for j in range(3):
+            ap = abs(U_pred[i][j])
+            ar = abs(U_ref[i][j])
+            if ap <= 0.0 or ar <= 0.0:
+                return float("inf"), float("inf")
+            e = abs(math.log(ap / ar))
+            Einf = max(Einf, e)
+            E1 += e
+    return Einf, E1
+
+
 def select_delta_discrete(
     s12: float,
     s23: float,
     s13: float,
-    J_ref: float,
-    cos_ref_sign: int,
+    chi_sign: int,
+    J_ref_abs: float,
+    U_ref: List[List[complex]],
     candidates: List[DeltaCand],
 ) -> DeltaCand:
     """
     Select delta from a finite candidate set by a CP-odd anchor rule:
-      - prefer candidates with sign(J_pred) == sign(J_ref),
-      - then prefer candidates with sign(cos delta) matching the reference quadrant,
-      - break ties by minimizing |log(|J_pred|/|J_ref|)|,
+      - require sign(J_pred) == sign(chi),
+      - then minimize |log(|J_pred|/|J_ref|)|,
+      - then minimize the induced PMNS magnitude mismatch against the reference reconstruction,
       - then by bounded-complexity order (q,k).
     """
-    best = None  # (sign_mismatch, cos_mismatch, eJ, q, k)
+    best = None  # (sign_mismatch, eJ, EinfU, E1U, q, k)
     best_cand = candidates[0]
     for c in candidates:
         Jp = J_from_angles(s12, s23, s13, c.delta)
-        sign_mismatch = 0 if _sgn(Jp) == _sgn(J_ref) else 1
-        cos_mismatch = 0 if _sgn(math.cos(c.delta)) == cos_ref_sign else 1
-        eJ = _abs_log_ratio(abs(Jp), abs(J_ref)) if (Jp != 0.0 and J_ref != 0.0) else float("inf")
-        cand = (sign_mismatch, cos_mismatch, eJ, c.q, c.k)
+        sign_mismatch = 0 if _sgn(Jp) == chi_sign else 1
+        eJ = _abs_log_ratio(abs(Jp), J_ref_abs) if (Jp != 0.0 and J_ref_abs != 0.0) else float("inf")
+        # Deterministic comparison key to avoid float-level tie jitter for symmetric candidates (e.g. delta vs 2pi-delta).
+        eJ_key = round(eJ, 12) if math.isfinite(eJ) else eJ
+        Up = pmns_parameterization(s12, s23, s13, c.delta)
+        EinfU, E1U = _matrix_abs_log_mismatch(Up, U_ref)
+        cand = (sign_mismatch, eJ_key, EinfU, E1U, c.q, c.k)
         if best is None or cand < best:
             best = cand
             best_cand = c
@@ -182,7 +206,13 @@ def main() -> None:
         s13=math.sqrt(sin2_t13),
         delta=delta_ref_deg * math.pi / 180.0,
     )
-    cos_ref_sign = _sgn(math.cos(ref.delta))
+    U_ref = pmns_parameterization(ref.s12, ref.s23, ref.s13, ref.delta)
+
+    # Protocol chirality sign datum (Hilbert order n_bits=3 canonical path).
+    chi = hilb.chirality_index(hilb.hilbert_curve(n_bits=3))
+    chi_sign = _sgn(float(chi))
+    if chi_sign == 0:
+        raise AssertionError("Unexpected chi == 0; cannot anchor CP-odd sign.")
 
     # Closed prediction:
     # angles from bounded-complexity minimizer at B=20
@@ -194,6 +224,7 @@ def main() -> None:
     s13_pred = PHI ** (-0.5 * float(best20.k13))
 
     J_ref = J_from_angles(ref.s12, ref.s23, ref.s13, ref.delta)
+    J_ref_abs = abs(J_ref)
     # Bounded-denominator rational-angle closure for delta.
     # The candidate family size grows quadratically with Q; we keep Q small and auditable.
     Q_MAX = 12
@@ -202,17 +233,19 @@ def main() -> None:
         s12=s12_pred,
         s23=s23_pred,
         s13=s13_pred,
-        J_ref=J_ref,
-        cos_ref_sign=cos_ref_sign,
+        chi_sign=chi_sign,
+        J_ref_abs=J_ref_abs,
+        U_ref=U_ref,
         candidates=delta_candidates_QMAX,
     )
 
     pred = Angles(s12=s12_pred, s23=s23_pred, s13=s13_pred, delta=delta_pred_cand.delta)
 
-    U_ref = pmns_parameterization(ref.s12, ref.s23, ref.s13, ref.delta)
     U_pred = pmns_parameterization(pred.s12, pred.s23, pred.s13, pred.delta)
 
     J_pred = J_from_angles(pred.s12, pred.s23, pred.s13, pred.delta)
+    if _sgn(J_pred) != chi_sign:
+        raise AssertionError("Chosen delta does not satisfy the chirality-anchored CP-sign rule.")
 
     row_ref, col_ref = unitarity_deviation(U_ref)
     row_pred, col_pred = unitarity_deviation(U_pred)
@@ -229,20 +262,22 @@ def main() -> None:
             s12=pred.s12,
             s23=pred.s23,
             s13=pred.s13,
-            J_ref=J_ref,
-            cos_ref_sign=cos_ref_sign,
+            chi_sign=chi_sign,
+            J_ref_abs=J_ref_abs,
+            U_ref=U_ref,
             candidates=cands,
         )
         Jd = J_from_angles(pred.s12, pred.s23, pred.s13, best_c.delta)
-        sign_ok = "OK" if _sgn(Jd) == _sgn(J_ref) else "FLIP"
-        cos_ok = "OK" if _sgn(math.cos(best_c.delta)) == cos_ref_sign else "FLIP"
-        eJ = _abs_log_ratio(abs(Jd), abs(J_ref)) if (Jd != 0.0 and J_ref != 0.0) else float("inf")
+        sign_ok = "OK" if _sgn(Jd) == chi_sign else "FLIP"
+        Ud = pmns_parameterization(pred.s12, pred.s23, pred.s13, best_c.delta)
+        EinfU, _E1U = _matrix_abs_log_mismatch(Ud, U_ref)
+        eJ = _abs_log_ratio(abs(Jd), J_ref_abs) if (Jd != 0.0 and J_ref_abs != 0.0) else float("inf")
         deg = best_c.delta * 180.0 / math.pi
         tag_Q = f"{Q}"
         if Q == Q_MAX:
             tag_Q = rf"\textbf{{{tag_Q}}}"
         form = rf"$\delta={best_c.k}\pi/{best_c.q}$"
-        sweep_rows.append(f"{tag_Q} & {form} & {deg:.1f} & {sign_ok} & {cos_ok} & {Jd:+.6g} & {eJ:.3f} \\\\")
+        sweep_rows.append(f"{tag_Q} & {form} & {deg:.1f} & {sign_ok} & {EinfU:.3f} & {Jd:+.6g} & {eJ:.3f} \\\\")
     sweep_rows.append("\\bottomrule")
     (out_dir / "pmns_delta_sweep_rows.tex").write_text("\n".join(sweep_rows), encoding="utf-8")
 

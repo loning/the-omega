@@ -1,0 +1,273 @@
+\section{Kernel view: a protocol renormalization core for cross-scale computation}
+\label{sec:kernel_view}
+
+This section repackages the construction in an operator/renormalization language.
+No new assumptions are introduced.
+The purpose is to make the \emph{iterable} object explicit: a finite-resolution kernel that can be applied across window uplift and coarse graining, and that interfaces cleanly with the $r$-coordinate RG dictionary.
+\AuditTag For the global cross-module vocabulary used for navigation, see Section~\ref{sec:unified_spine}.
+\AuditTag For the determinant/trace/pressure bookkeeping identities used when switching between counting and generating-function languages, see Section~\ref{sec:rigidity_bridge_spine}.
+
+\subsection{Three coupled kernels: language, folding, and protocol flow}
+\label{subsec:three_kernels}
+
+\paragraph{Notation note (structural kernels vs.\ readout kernels).}
+\AuditTag The labels (K1)--(K3) in this section refer to three structural ``kernels'' in the sense of the composable finite-resolution spine (language / folding / protocol flow).
+Separately, when we form weighted scalar readouts from finite objects, we use a \emph{readout kernel} $K$ to denote an explicit weighting rule closed by CAP within a finite kernel family (Appendix~\ref{app:kernel_family_cap_closure}).
+These are distinct notions despite the shared word ``kernel''.
+
+\paragraph{(K1) Language kernel: the admissible shift and its analytic package.}
+The $\varphi$-channel defines the admissible block language
+$X_m\subset\Omega_m=\{0,1\}^m$ by the forbidden substring ``11'' (Definition~\eqref{eq:Xm_def}).
+Equivalently, $X_m$ is the length-$m$ block language of the golden-mean shift (Appendix~\ref{app:sturmian_vs_golden_mean}).
+The resulting finite combinatorics is rigid:
+$|X_m|=F_{m+2}$ (Lemma~\ref{lem:xm_fib}), and the $\pi$-channel induces the cyclic/boundary split with $|X_m^{\mathrm{bdry}}|=F_{m-2}$ (Proposition~\ref{prop:cyc_bdry_size}).
+
+The $\e$-channel packages the same symbolic constraint into an analytic object.
+For the golden-mean shift, the transition matrix
+$A=\bigl(\begin{smallmatrix}1&1\\[2pt]1&0\end{smallmatrix}\bigr)$ yields the Artin--Mazur determinant identity
+$\zeta(z)=1/\det(I-zA)=1/(1-z-z^2)$ (Lemma~\ref{lem:golden_zeta_matrix}),
+and the Abel normalization $z=r/\varphi$ places the principal pole at the unit-circle boundary $r=1$ (Equation~\eqref{eq:abel_normalized_zeta}).
+In this paper, the $\e$-channel is used as an analytic stability template and as a rigidity discipline (Remark~\ref{rem:abel_first_pole_barrier_discipline}), not as an additional finite-word filter at $m=6$ (Remark~\ref{rem:e_channel_distinct}).
+
+\paragraph{(K2) Folding kernel: the dyadic$\to$Zeckendorf bridge and fiber statistics.}
+At each window length $m$, the paper fixes a deterministic folding map
+\[
+\mathrm{Fold}_m:\{0,\dots,2^m-1\}\twoheadrightarrow X_m
+\]
+by taking Zeckendorf digits and truncating to the first $m$ digits (Definition~\eqref{eq:foldm_def}).
+Surjectivity onto $X_m$ is theorem-level (Proposition~\ref{prop:foldm_surjective}).
+The induced fiber statistics
+\[
+g_m(w):=\left|\mathrm{Fold}_m^{-1}(w)\right|,
+\qquad
+r_m:=\max_{w\in X_m} g_m(w)
+\]
+are the canonical finite-resolution measure of dyadic redundancy under the $\varphi$-stable readout coordinate system (Definition~\ref{def:rm_max_degeneracy}).
+They appear downstream as protocol-native inputs for compensation/connection constructions and for uplift diagnostics.
+
+Two points make this bridge principled rather than a discretionary encoding choice.
+First, a bounded counterfactual family at $m=6$ is audited in Appendix~\ref{app:fold_family_sensitivity}.
+Second, once one commits to a \emph{protocol-local} folding \emph{family} across window lengths---value consistency together with no-backreaction refinement under dyadic uplift---the Zeckendorf-truncation family is uniquely forced (Appendix~\ref{app:fold_family_uniqueness}, Theorem~\ref{thm:fold_family_uniqueness}).
+
+\paragraph{(K3) Protocol RG kernel: uplift and coarse graining as a deterministic step.}
+Finite resolution is primary in this framework: both window length $m$ and addressing scale $n$ are protocol parameters.
+The protocol flow step is fixed as a deterministic uplift and coarse-graining update on finite observables (Definition~\ref{def:protocol_flow_step}).
+The functorial refinement structure needed to move between resolutions is the prefix projection
+$\pi_{m\to k}:X_m\to X_k$ (Appendix~\ref{app:functorial_refinement}), together with the corresponding pushforward/pullback of derived observables.
+
+For kernel-view bookkeeping, it is convenient to package this into a single symbol:
+given a chosen coarse-graining map $\mathsf{C}$, define the \emph{protocol renormalization step}
+\[
+\mathcal{R}_{(m,n)\to(m',n')}:=\mathsf{C}\circ \pi_{m'\to m}^{\ast},
+\]
+where $\pi_{m'\to m}^{\ast}$ denotes the protocol-defined refinement transport of the chosen observable family from resolution $(m,n)$ to $(m',n')$ via recomputation at $(m',n')$ and functorial consistency under prefix projection (Definition~\ref{def:protocol_flow_step}).
+This notation does not add content; it only makes explicit that the paper already fixes an \emph{iterable} step operator on finite objects.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[>=Latex, font=\footnotesize, node distance=10mm]
+  \node[draw, rounded corners, align=center] (scan) {tick scan\\\textit{(Section~\ref{sec:hpa_readout})}};
+  \node[draw, rounded corners, align=center, right=of scan] (window) {window projection\\$w\in\Omega_m$};
+  \node[draw, rounded corners, align=center, right=of window] (xm) {$\varphi$--$\pi$--$\e$ constraints\\$X_m\subset\Omega_m$};
+  \node[draw, rounded corners, align=center, right=of xm] (fold) {dyadic$\to$stable map\\$\mathrm{Fold}_m$ and fibers $g_m$};
+
+  \node[draw, rounded corners, align=center, below=of xm] (rg) {protocol RG step\\uplift + coarse graining\\$\mathcal{R}_{(m,n)\to(m',n')}$};
+  \node[draw, rounded corners, align=center, below=of fold] (mur) {$r$-coordinate scale map\\$\mu(r)=\mu_0\varphi^r$\\RG dictionary};
+
+  \draw[->] (scan) -- (window);
+  \draw[->] (window) -- (xm);
+  \draw[->] (xm) -- (fold);
+  \draw[->] (xm) -- (rg);
+  \draw[->] (fold) -- (rg);
+  \draw[->] (mur) -- (rg);
+\end{tikzpicture}
+\caption{Kernel view of the finite-resolution spine.
+The language kernel (admissibility), the folding kernel (dyadic$\to$stable), and the protocol RG kernel (uplift+coarse graining) form a composable object that can be iterated across scales; the $r$-coordinate RG equations serve as a matching dictionary rather than as a theorem-level premise.}
+\label{fig:kernel_view_flow}
+\end{figure}
+
+\subsection{Two scale rates and what they control}
+\label{subsec:kernel_scale_rates}
+
+The kernel view separates two distinct exponential rates that otherwise tend to get conflated:
+
+\paragraph{Capacity of the admissible stable-type language.}
+The block language size $|X_m|=F_{m+2}$ grows with rate $\log\varphi$ (Appendix~\ref{app:sturmian_vs_golden_mean}, Lemma~\ref{lem:golden_mean_language_equals_Xn}).
+This is the origin of the $\log\varphi$ normalization used throughout the $r$-coordinate resolution dictionaries, and it should not be confused with the entropy \emph{rate} of the Sturmian time-series readout, which is zero (Appendix~\ref{app:sturmian_entropy}).
+
+\paragraph{Redundancy exponent of the folding kernel.}
+The folding fibers quantify how much dyadic microstate information is suppressed when one reports only the stable Zeckendorf prefix.
+The maximal degeneracy $r_m$ has an exponential rate
+\[
+\lim_{m\to\infty}\frac{1}{m}\log r_m=\log(2/\varphi)=\log 2-\log\varphi
+\]
+in the theorem-level sense of Proposition~\ref{prop:rm_entropy_gap_rate}.
+In the kernel view, $\log(2/\varphi)$ is the intrinsic redundancy rate of the dyadic$\to$stable bridge at fixed window length, and it is a natural finite-resolution proxy for ``compression overhead'' along the resolution axis.
+\AuditTag For a unified three-way reading of the same constant as (i) degeneracy growth, (ii) conditional entropy rate, and (iii) a pressure gap at zero potential, see Proposition~\ref{prop:rigidity_log2phi_triple_reading}.
+
+\subsection{Cross-scale computation and the RG dictionary}
+\label{subsec:kernel_cross_scale_computation}
+
+The reason to make the kernel explicit is operational: it provides a reusable interface for cross-scale computation.
+At the protocol level, one chooses a family of observables at finite resolution---stable-type counts, degeneracy histograms, coarse-grained scalar summaries, holonomy distributions, and derived effective parameters (Definition~\ref{def:protocol_flow_step}).
+Cross-scale propagation is then the deterministic application of the protocol renormalization step $\mathcal{R}$ across uplifts, with the $\e$-channel providing analytic rigidity templates when generating functions are used (Section~\ref{subsec:e_channel} and Appendix~\ref{app:thermodynamic_formalism_pressure}).
+Appendix~\ref{app:generated_tables} records compact finite checks of this kernel picture: the $m$-sweep summary is in Table~\ref{tab:fractal_kernel_sweep}, the folding entropy decomposition identity is certified numerically in Table~\ref{tab:folding_entropy_decomposition}, an end-to-end staircase demo in $\mu/r$ coordinates (threshold selection plus folding-degeneracy summaries) is in Table~\ref{tab:kernel_mu_r_bridge}, and a balanced-chain coarse-grained flow summary along $m=2n$ is in Table~\ref{tab:kernel_rg_flow_balanced}.
+
+When one embeds the finite kernel into a standard EFT dictionary, running and threshold dependence are treated as a matching-layer translation.
+The Fibonacci resolution map $\mu(r)=\mu_0\varphi^r$ and the chain rule
+$\dd g/\dd r=(\log\varphi)\beta(g)$ (Proposition~\ref{prop:rg_dictionary_r}) convert standard RG flow into the $r$ coordinate (Appendix~\ref{app:running_couplings_resolution_flow}).
+Threshold matching is then interpreted as a discrete uplift along the resolution axis (Appendix~\ref{subsec:threshold_matching}).
+This is the intended division of labor: the theorem-level kernel fixes the discrete objects and their uplift semantics, while RG is used as an auditable translation dictionary for scheme/scale dependence in EFT embeddings.
+
+\subsection{A finite-dimensional operator closure of the protocol RG kernel (mother-space realization)}
+\label{subsec:kernel_operator_closure}
+
+The kernel view is designed to make an \emph{iterable} object explicit.
+This can be made fully concrete in a finite-dimensional operator language that aligns directly with the resolvent/determinant bookkeeping of the operator mother space (Section~\ref{app:operator_mother_space_dictionary} and Appendix~\ref{app:operator_mother_space}).
+The construction below introduces no new empirical inputs: it only packages already fixed protocol choices (Hilbert addressing, block coarse graining, and dyadic uplift) into an explicit linear operator.
+
+\begin{definition}[Balanced-chain microstate index spaces and a fixed $4\times 4$ block quotient]
+\label{def:balanced_chain_block_quotient}
+\InterfaceTag Fix a Hilbert order $n\ge 3$ and set the balanced coupling $m:=2n$.
+Define the microstate index set
+\[
+\Omega_n:=\{0,1,\dots,4^n-1\}=\{0,1,\dots,2^m-1\}.
+\]
+Let $H_n:\Omega_n\to\{0,\dots,2^n-1\}^2$ be the protocol-fixed Hilbert addressing map (Section~\ref{sec:hilbert_addressing}).
+Partition the $2^n\times 2^n$ grid into a fixed axis-aligned $4\times 4$ block grid (block side length $2^{n-2}$), yielding $16$ blocks.
+Let $\mathcal{B}_n\cong\RR^{16}$ denote the corresponding block-constant quotient space.
+
+Define the deterministic projection (block averaging)
+\[
+P_n:\RR^{\Omega_n}\to\RR^{16},
+\qquad
+(P_nf)_b:=\frac{1}{|B_{n,b}|}\sum_{k\in B_{n,b}} f(k),
+\]
+and the deterministic lift (block-constant pullback)
+\[
+P_n^\ast:\RR^{16}\to\RR^{\Omega_n},
+\qquad
+(P_n^\ast v)(k):=v_{b(k)},
+\]
+where $B_{n,b}\subset\Omega_n$ is the $b$-th block and $b(k)\in\{1,\dots,16\}$ is the block index of the site $H_n(k)$.
+\end{definition}
+
+\begin{definition}[Dyadic uplift and Koopman pullback]\label{def:dyadic_uplift_koopman}
+\InterfaceTag Define the Hilbert-recursive dyadic uplift map
+\[
+u_n:\Omega_{n+1}\to\Omega_n,
+\qquad
+u_n(k'):=H_n^{-1}\!\left(\left\lfloor \frac{H_{n+1}(k')}{2}\right\rfloor\right),
+\]
+where $H_n:\Omega_n\to \{0,\dots,2^n-1\}^2$ is the Hilbert addressing map and
+$\lfloor(x,y)/2\rfloor:=(\lfloor x/2\rfloor,\lfloor y/2\rfloor)$,
+and the corresponding Koopman pullback operator
+\[
+U_n:\RR^{\Omega_n}\to\RR^{\Omega_{n+1}},
+\qquad
+(U_nf)(k'):=f(u_n(k')).
+\]
+\end{definition}
+
+\begin{definition}[Protocol RG kernel as an explicit $16\times 16$ operator]\label{def:protocol_rg_operator_Fn}
+\InterfaceTag With $P_n,U_n$ as above, define a protocol-local transport operator $T_{n+1}:\RR^{\Omega_{n+1}}\to\RR^{\Omega_{n+1}}$ as a single lazy nearest-neighbor random-walk step on the $2^{n+1}\times 2^{n+1}$ Hilbert screen graph (reflecting boundary), and define the finite-dimensional protocol RG operator
+\[
+F_n:\RR^{16}\to\RR^{16},
+\qquad
+F_n:=P_{n+1}\circ T_{n+1}\circ U_n\circ P_n^\ast.
+\]
+This operator is protocol-deterministic and genuinely dynamical on the block quotient: it depends only on the fixed Hilbert addressing, the fixed $4\times 4$ block coarse graining, and the protocol-local transport rule, and it is iterable along the balanced chain $m=2n$.
+\end{definition}
+
+\begin{remark}[Covariant transport refinement at the anchor]\label{rem:covariant_transport_refinement}
+\AuditTag The transport operator $T_{n+1}$ above is the scalar instance of a covariant parallel-transport rule.
+At the anchor $(m,n)=(6,3)$, Section~\ref{sec:protocol_connections_holonomy} defines a deterministic $S_4$ edge connection between padded folding fibers, with gauge covariance under local relabelings.
+Appendix~\ref{app:protocol_rg_operator_closure} records a gauge-covariant block-level lift $T^\nabla$ and reproducible certificates.
+In particular, Table~\ref{tab:kernel_rg_covariant_transport_reduction} shows (i) the same covariance in the twisted $3$-dimensional standard representation used in the holonomy-to-$SU(3)$ bridge, and (ii) that the scalar transport is exactly the trivial-representation reduction (slot-average) of the covariant operator.
+\end{remark}
+
+\begin{remark}[Covariant RG refinement with internal slot state]\label{rem:covariant_rg_refinement_internal_state}
+\AuditTag Beyond the scalar transport kernel $T_{n+1}$ used in $F_n$, the protocol admits a covariant refinement with an internal slot state $\psi$ induced by folding fiber degeneracy at the transport scale.
+At the anchor $n=3$, this produces a finite-dimensional covariant operator $F_3^\nabla$ on the $4\times4$ block quotient with internal dimension $r_8$, constructed by a deterministic $S_{r_8}$ edge connection on the $16\times16$ screen (minimum-cost matching rule).
+Its mixing diagnostics, including contraction on the internal mean-zero subspace, are audited in Table~\ref{tab:kernel_rg_operator_covariant_spectral_gap}.
+\AuditTag Moreover, Table~\ref{tab:kernel_rg_operator_covariant_reduction} certifies that the scalar operator $F_3$ is exactly the trivial-representation reduction of $F_3^\nabla$ under slot averaging, and that the lifted slot-constant subspace is invariant.
+\AuditTag Table~\ref{tab:kernel_rg_operator_covariant_gauge_audit} further certifies gauge covariance: under blockwise local relabelings $g_B\in S_{r_8}$, the constructed operator transforms by conjugation and the scalar reduction is invariant.
+\AuditTag Finally, Table~\ref{tab:kernel_rg_operator_covariant_internal_closure_triplet} packages the internal closure triplet (orthogonal conjugacy, gauge-invariant trace readout invariance, and quadratic resolvent-trace identity, with a transparent convergence margin) as a single audit artifact.
+\AuditTag Proposition~\ref{prop:internal_standard_rep_gauge_invariant_readouts} records the underlying gauge-invariant readout principle in internal standard coordinates: under blockwise relabelings, the internal dynamics changes only by orthogonal conjugation, so Euclidean quadratic readouts (norm/trace) are invariant.
+\end{remark}
+
+\begin{definition}[A folding-weighted operator family]\label{def:weighted_protocol_rg_operator}
+\InterfaceTag Let $\mathrm{Fold}_m$ be the deterministic folding map (Definition~\eqref{eq:foldm_def}) and let $g_m(w)=|\mathrm{Fold}_m^{-1}(w)|$ be its degeneracy function (Definition~\ref{def:rm_max_degeneracy}).
+At balanced coupling $m=2n$, define the microstate potential
+\[
+\varphi_n(k):=\log g_{2n}\!\bigl(\mathrm{Fold}_{2n}(k)\bigr),
+\qquad k\in\Omega_n,
+\]
+and the corresponding diagonal multiplication operator $M_{\varphi_n}$ on $\RR^{\Omega_n}$.
+For $t\in\RR$, define the weighted protocol RG operator
+\[
+\widehat F_n(t):=P_{n+1}\circ T_{n+1}\circ U_n\circ \e^{tM_{\varphi_n}}\circ P_n^\ast:\RR^{16}\to\RR^{16}.
+\]
+\end{definition}
+
+\begin{theorem}[One-point and two-point readout for block-averaged observables]\label{thm:block_readout_one_two_point}
+\MathTag Fix $n\ge 3$ and let $q:\Omega_n\to\RR$ be any microstate observable (e.g.\ $q(k)=|w(k)|_1$, $q(k)=V_m(w(k))$, $q(k)=D_\pi(w(k))$, or $q(k)=\log g_m(w(k))$ as in Table~\ref{tab:kernel_rg_flow_balanced}).
+Let $a:=P_n q\in\RR^{16}$ be the $4\times 4$ block-average vector.
+Define the block mean and (population) variance by
+\[
+\mu(a):=\frac{1}{16}\sum_{b=1}^{16} a_b,
+\qquad
+\Var(a):=\frac{1}{16}\sum_{b=1}^{16}(a_b-\mu(a))^2.
+\]
+Then $\mu(a)$ is a one-point linear readout and $\Var(a)$ is a two-point (tensor) readout in the operator-mother-space sense.
+Indeed, identifying $a$ with the diagonal operator $Q_a$ on $\RR^{16}$ given by $Q_a e_b=a_b e_b$, one may take
+\[
+K^{(1)}:=\frac{1}{16}I_{16}
+\quad\Longrightarrow\quad
+\mu(a)=\Tr(K^{(1)}Q_a),
+\]
+and, on $\RR^{16}\otimes\RR^{16}$, one may take the diagonal projector
+\[
+K^{(2)}:=\frac{1}{16}\sum_{b=1}^{16}\ket{e_b\otimes e_b}\bra{e_b\otimes e_b}
+\quad\Longrightarrow\quad
+\frac{1}{16}\sum_{b=1}^{16} a_b^2=\Tr\!\bigl(K^{(2)}(Q_a\otimes Q_a)\bigr).
+\]
+In particular, $\Var(a)=\frac{1}{16}\sum_b a_b^2-\mu(a)^2$.
+\end{theorem}
+
+\begin{theorem}[Resolvent-trace closure for iterated one-point and two-point statistics]\label{thm:resolvent_trace_closure_protocol_rg}
+\MathTag Fix $n\ge 3$ and let $F$ denote either $F_n$ or $\widehat F_n(t)$ acting on $\RR^{16}$.
+Let $\ell:\RR^{16}\to\RR$ be any fixed one-point linear readout (e.g.\ the block mean functional $\ell(a)=\mu(a)$) and let $Q:\RR^{16}\to\RR$ be any quadratic two-point readout that can be represented by a linear functional on $\RR^{16}\otimes\RR^{16}$ (e.g.\ the block second moment $a\mapsto \frac{1}{16}\sum_b a_b^2$).
+Then for $|z|<\rho(F)^{-1}$ one has the Neumann-series identities
+\[
+\sum_{t\ge 0} z^t\,\ell(F^t v)=\ell\!\bigl((I-zF)^{-1}v\bigr),
+\]
+and, writing $F^{\otimes 2}:=F\otimes F$,
+\[
+\sum_{t\ge 0} z^t\,Q(F^t v)=Q\!\bigl((I-zF^{\otimes 2})^{-1}(v\otimes v)\bigr),
+\]
+where the right-hand sides are resolvent-trace readouts in the operator-mother-space sense.
+Full details (including the explicit tensor-kernel reduction used by the variance readout) are recorded in Appendix~\ref{app:protocol_rg_operator_closure}.
+\end{theorem}
+
+\begin{proposition}[RG pole barrier as a spectral radius]\label{prop:rg_pole_barrier_radius}
+\MathTag Let $F$ be any finite-dimensional protocol RG operator (e.g.\ $F_n$ or $\widehat F_n(t)$).
+Define
+\[
+|z|_\star(F):=\rho(F)^{-1}.
+\]
+Then $|z|_\star(F)$ is the natural pole-barrier radius for the corresponding resolvent and determinant objects:
+the resolvent $(I-zF)^{-1}$ is analytic for $|z|<|z|_\star(F)$ and encounters a singular obstruction at $|z|=|z|_\star(F)$.
+Normalizing $z=r/\rho(F)$ places the leading obstruction at $r=1$, directly paralleling the $\e$-channel Abel normalization $z=r/\varphi$ (Equation~\eqref{eq:abel_normalized_zeta}).
+\end{proposition}
+
+\begin{remark}[Pressure reading of the same barrier radius]\label{rem:rg_pole_barrier_pressure_reading}
+\AuditTag In matrix/SFT settings, the pole-barrier radius is equivalently $\exp(-P(0))$ via the pressure identity $P(0)=\log\rho(\cdot)$ (Corollary~\ref{cor:pole_barrier_equals_exp_minus_pressure}).
+This is the bridge that lets the manuscript switch between (i) resolvent/determinant analyticity domains and (ii) pressure/spectral-radius language without introducing extra structure.
+\end{remark}
+
+\paragraph{Companion pointers (context, not required).}
+The companion folding manuscript \cite{Ma2025RF} develops the three-channel framework and its iterability interface at higher resolution (weighted transfer-operator variants and infinite-state extensions).
+The stairway manuscript \cite{Ma2025STI} records a broader renormalization-flow narrative and an Abel-first regularization discipline for regulated-to-continuum passages.
+The trace manuscripts \cite{Ma2025HHU,Ma2025RGS} record Abel pole-barrier and trace-identity templates in settings where spectral modes are packaged as resolvent factors.
+Finally, the modular scanning manuscript \cite{Ma2025RHSP} records the Koopman/resolvent formulation of Abel regularization in the rotation-scan setting and its integration with Hecke dynamics.

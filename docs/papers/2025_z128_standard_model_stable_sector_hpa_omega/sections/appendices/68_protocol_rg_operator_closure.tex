@@ -1,0 +1,291 @@
+\section{Protocol RG operator closure: a finite-dimensional mother-space realization (notes)}
+\label{app:protocol_rg_operator_closure}
+
+\paragraph{Scope and status.}
+\AuditTag This appendix records a finite-dimensional operator closure of the protocol RG kernel described in Section~\ref{sec:kernel_view}.
+It is included to make the iterable object explicit and auditable (finite matrices, determinants, resolvents, and tensor-kernel readouts).
+No statement here is used as a premise in the folding proofs.
+
+\subsection{Microstate index spaces, Hilbert addressing, and a fixed block quotient}
+\label{subsec:rg_operator_micro_blocks}
+
+\paragraph{Balanced chain.}
+\MathTag Fix $n\ge 3$ and set $m:=2n$.
+Define the microstate index set
+\[
+\Omega_n:=\{0,1,\dots,4^n-1\}=\{0,1,\dots,2^m-1\}.
+\]
+
+\paragraph{Hilbert addressing and blocks.}
+\MathTag Let $H_n:\Omega_n\to\{0,\dots,2^n-1\}^2$ be the protocol-fixed Hilbert addressing map (Section~\ref{sec:hilbert_addressing}).
+Partition the $2^n\times 2^n$ grid into a fixed axis-aligned $4\times 4$ block grid with block side length $2^{n-2}$, yielding $16$ equal-size blocks.
+Let $B_{n,1},\dots,B_{n,16}\subset\Omega_n$ denote the induced partition of $\Omega_n$ (each $B_{n,b}$ has size $2^{2(n-2)}$).
+Let $\mathcal{B}_n\cong\RR^{16}$ denote the block-constant quotient space.
+
+\begin{definition}[Block projection and lift]\label{def:block_projection_and_lift}
+\MathTag Define the deterministic block projection (averaging)
+\[
+P_n:\RR^{\Omega_n}\to\RR^{16},
+\qquad
+(P_nf)_b:=\frac{1}{|B_{n,b}|}\sum_{k\in B_{n,b}} f(k),
+\]
+and the deterministic lift (block-constant pullback)
+\[
+P_n^\ast:\RR^{16}\to\RR^{\Omega_n},
+\qquad
+(P_n^\ast v)(k):=v_b\ \ \text{for}\ k\in B_{n,b}.
+\]
+\end{definition}
+
+\subsection{Dyadic uplift and the finite-dimensional RG operator}
+\label{subsec:rg_operator_uplift}
+
+\begin{definition}[Dyadic uplift and Koopman pullback]\label{def:dyadic_uplift_koopman_appendix}
+\MathTag Define the Hilbert-recursive dyadic uplift map
+\[
+u_n:\Omega_{n+1}\to\Omega_n,
+\qquad
+u_n(k'):=H_n^{-1}\!\left(\left\lfloor \frac{H_{n+1}(k')}{2}\right\rfloor\right),
+\]
+where $H_n:\Omega_n\to \{0,\dots,2^n-1\}^2$ is the Hilbert addressing map and
+$\lfloor(x,y)/2\rfloor:=(\lfloor x/2\rfloor,\lfloor y/2\rfloor)$,
+and the corresponding Koopman pullback operator
+\[
+U_n:\RR^{\Omega_n}\to\RR^{\Omega_{n+1}},
+\qquad
+(U_nf)(k'):=f(u_n(k')).
+\]
+\end{definition}
+
+\begin{definition}[Protocol RG operator on the $4\times 4$ block quotient]\label{def:protocol_rg_operator_appendix}
+\MathTag Define a protocol-local transport operator $T_{n+1}$ on $\Omega_{n+1}$ as a single lazy nearest-neighbor random-walk step on the $2^{n+1}\times 2^{n+1}$ Hilbert screen graph (reflecting boundary), and define the protocol RG operator
+\[
+F_n:\mathcal{B}_n\to\mathcal{B}_{n+1},
+\qquad
+F_n:=P_{n+1}\circ T_{n+1}\circ U_n\circ P_n^\ast.
+\]
+\AuditTag For comparison, define the untransported block operator
+\[
+F_n^{(0)}:=P_{n+1}\circ U_n\circ P_n^\ast.
+\]
+\end{definition}
+
+\begin{remark}[Covariant transport lift (anchor $S_4$ connection)]\label{rem:rg_covariant_transport_lift}
+\AuditTag The transport operator $T_{n+1}$ used in the kernel RG closure is the scalar instance of a more structured covariant transport.
+At the anchor $(m,n)=(6,3)$, Section~\ref{sec:protocol_connections_holonomy} defines a deterministic edge connection $p_{a\to b}\in S_4$ (Lemma~\ref{lem:edge_transport_welldefined}) and its local gauge action (Definition~\ref{def:s4_vertex_gauge}).
+Using the permutation representation $\rho:S_4\to O(4)$ on $\RR^4$, one can define a block-level covariant transport operator $T^\nabla$ on the $4\times4$ block quotient by averaging the transported slot vectors across boundary micro-edges.
+Table~\ref{tab:kernel_rg_covariant_transport_anchor} records a gauge-covariance certificate for this covariant lift.
+Moreover, Table~\ref{tab:kernel_rg_covariant_transport_reduction} records two further consistency checks:
+(i) the same gauge covariance in the twisted $3$-dimensional standard representation on the sum-zero subspace (Section~\ref{subsec:holonomy_su3_bridge}),
+and (ii) the fact that the scalar lazy transport on blocks is exactly the trivial-representation reduction of $T^\nabla$ (slot-average projection).
+\end{remark}
+
+\begin{remark}[Covariant protocol RG operator with internal slot state (anchor)]\label{rem:rg_covariant_operator_anchor}
+\AuditTag The scalar protocol RG operator $F_n$ closes the transport component at the level of scalar block observables.
+At the anchor $n=3$, one can refine this transport to a covariant operator with an internal slot state $\psi$ induced by Fold$_8$ fiber degeneracy at the transport scale $n+1=4$.
+Concretely, let $r_8:=\max_{w\in X_8}|\mathrm{Fold}_8^{-1}(w)|$ and pad all fibers deterministically to length $r_8$.
+Using the same minimum-cost matching rule as in Section~\ref{sec:protocol_connections_holonomy}, each nearest-neighbor micro edge on the $16\times16$ screen carries a deterministic permutation in $S_{r_8}$, hence an action in the permutation representation on $\RR^{r_8}$.
+This yields a covariant transport $T_{4}^\nabla$ on micro $\psi$-fields, and therefore a covariant coarse operator $F_3^\nabla$ on the $4\times4$ block quotient with internal dimension $r_8$.
+Table~\ref{tab:kernel_rg_operator_covariant_spectral_gap} records a reproducible mixing diagnostic for $F_3^\nabla$, including contraction on the internal mean-zero subspace (removing the trivial internal representation).
+\AuditTag Table~\ref{tab:kernel_rg_operator_covariant_reduction} records a reduction/decomposition certificate: slot averaging gives an exact intertwining $S F_3^\nabla E = F_3$ (trivial-representation reduction), and the lifted slot-constant subspace is invariant.
+\AuditTag Table~\ref{tab:kernel_rg_operator_covariant_gauge_audit} records a gauge-covariance certificate at the construction level: under blockwise local relabelings $g_B\in S_{r_8}$, the operator transforms by conjugation and the scalar reduction remains invariant.
+\AuditTag Table~\ref{tab:kernel_rg_operator_covariant_internal_closure_triplet} packages the internal closure triplet as a single audit: orthogonal conjugacy in internal standard coordinates, invariance of the trace-based quadratic readout under gauge, and the quadratic resolvent-trace identity (with an explicit convergence margin).
+\end{remark}
+
+\begin{proposition}[Internal standard representation and gauge-invariant quadratic readouts]\label{prop:internal_standard_rep_gauge_invariant_readouts}
+\MathTag Fix the anchor $n=3$ and write $r=r_8$.
+Let $H_r:=\{x\in\RR^r:\ \sum_{i=1}^r x_i=0\}$ and choose an orthonormal basis $B\in\RR^{r\times(r-1)}$ of $H_r$.
+Define the internal-mode operator in standard coordinates by
+\[
+F_{\mathrm{std}} := (I\otimes B^\top)\,F_3^\nabla\,(I\otimes B)\ \in\ \RR^{16(r-1)\times 16(r-1)}.
+\]
+For a blockwise relabeling field $g_B\in S_r$, let $H$ be the induced block-diagonal action on internal coordinates,
+\[
+H := \mathrm{diag}\bigl(H_B\bigr)_{B=1}^{16},
+\qquad
+H_B := B^\top\,P(g_B)\,B\ \in\ O(r-1),
+\]
+where $P(g_B)$ is the permutation matrix of $g_B$ on $\RR^r$.
+Then the internal-mode operator transforms by orthogonal conjugation:
+\[
+F_{\mathrm{std}}^{\,g} = H\,F_{\mathrm{std}}\,H^{-1}=H\,F_{\mathrm{std}}\,H^\top.
+\]
+Consequently, any quadratic readout built from the Euclidean inner product on internal coordinates is gauge invariant; in particular, for any $v$ and any positive semidefinite matrix $W$ one has
+\[
+\|H v\|^2=\|v\|^2,
+\qquad
+\mathrm{Tr}(HWH^\top)=\mathrm{Tr}(W).
+\]
+\end{proposition}
+\begin{proof}
+Because $B$ has orthonormal columns spanning the sum-zero subspace, $B^\top P(g_B) B$ is an orthogonal change of basis on $H_r$, hence $H_B\in O(r-1)$ and $H^{-1}=H^\top$.
+Blockwise relabelings act on $F_3^\nabla$ by conjugation in the full slot space; projecting with $(I\otimes B^\top)$ on the left and $(I\otimes B)$ on the right yields the stated conjugacy for $F_{\mathrm{std}}$.
+The quadratic invariances follow from orthogonality.
+\end{proof}
+
+\begin{remark}[Internal closure triplet certificate]\label{rem:internal_closure_triplet_certificate}
+\AuditTag Table~\ref{tab:kernel_rg_operator_covariant_internal_closure_triplet} packages the internal closure triplet into a single reproducible audit:
+orthogonal conjugacy in internal standard coordinates, invariance of the trace-based quadratic readout under gauge (with the corresponding coordinate transform $v\mapsto Hv$), and the quadratic resolvent-trace identity.
+\end{remark}
+
+\begin{lemma}[Exact coarse intertwining]\label{lem:rg_exact_coarse_intertwining}
+\MathTag For every microstate field $f\in\RR^{\Omega_n}$,
+\[
+P_{n+1}(U_nf)=F_n^{(0)}(P_nf).
+\]
+\end{lemma}
+\begin{proof}
+Both sides are $\RR^{16}$-valued and linear in $f$, so it suffices to compare their $b$-th components.
+Fix a block index $b\in\{1,\dots,16\}$ at resolution $n+1$ and write $B_{n+1,b}\subset\Omega_{n+1}$ for the corresponding block.
+Then
+\[
+\bigl(P_{n+1}(U_nf)\bigr)_b
+=\frac{1}{|B_{n+1,b}|}\sum_{k'\in B_{n+1,b}} f(u_n(k')).
+\]
+By construction, the map $u_n$ is the Hilbert-recursive parent-cell projection on the $2^n\times 2^n$ screen and the $4\times 4$ block partition is axis-aligned.
+Hence for each $b$, the multiset $\{u_n(k'):k'\in B_{n+1,b}\}$ decomposes into a union of full blocks at resolution $n$ with block-dependent multiplicities.
+Therefore the average above depends on $f$ only through its block averages $P_nf$, and the resulting linear combination of these block averages is exactly the matrix action $F_n^{(0)}(P_nf)$.
+\end{proof}
+
+\begin{lemma}[D4 layout covariance (block-permutation conjugacy)]\label{lem:rg_d4_layout_conjugacy}
+\AuditTag Let $g$ be a dihedral symmetry (rotation/reflection) of the $2^n\times 2^n$ Hilbert screen and define a transformed addressing $H_n^{(g)}:=g\circ H_n$.
+Let $F_n^{(g)}$ be the corresponding protocol RG operator on the $4\times 4$ block quotient built from $H_n^{(g)}$, with the block partition taken axis-aligned in the transformed coordinates.
+Then there is a $16\times 16$ permutation matrix $P_g$ (the induced permutation of the $4\times 4$ block grid) such that
+\[
+F_n^{(g)}=P_g\,F_n\,P_g^{-1}.
+\]
+\end{lemma}
+
+\begin{lemma}[Stochasticity and constant preservation]\label{lem:Fn_constant_preserving}
+\MathTag The operator $F_n$ preserves constants: if $v\in\RR^{16}$ is constant across blocks, then $F_nv$ is constant with the same value.
+Equivalently, every row of the matrix representation of $F_n$ sums to $1$.
+\end{lemma}
+\begin{proof}
+If $v_b\equiv c$, then $(P_n^\ast v)(k)\equiv c$ on $\Omega_n$, hence $(U_nP_n^\ast v)(k')\equiv c$ on $\Omega_{n+1}$.
+Since $T_{n+1}$ is a stochastic averaging operator, it preserves constants, so $(T_{n+1}U_nP_n^\ast v)(k')\equiv c$.
+Applying $P_{n+1}$ returns the constant block-average vector with value $c$.
+\end{proof}
+
+\begin{lemma}[Error-budget decomposition for recompute versus operator prediction]\label{lem:rg_error_budget_decomposition}
+\MathTag Let $\tilde q_n\in\RR^{\Omega_n}$ be any microstate field and write $v_n:=P_n\tilde q_n\in\RR^{16}$.
+Define the recomputed next block state $v_{\mathrm{true}}:=P_{n+1}\tilde q_{n+1}$, the operator prediction $v_{\mathrm{pred}}:=F_n v_n$, and the transported uplifted state $v_{\mathrm{trans}}:=P_{n+1}(T_{n+1}U_n\tilde q_n)$.
+Then
+\[
+v_{\mathrm{true}}-v_{\mathrm{pred}}
+\;=\;
+\underbrace{\bigl(v_{\mathrm{true}}-v_{\mathrm{trans}}\bigr)}_{\text{\emph{recompute/refinement}}}
+\;+\;
+\underbrace{\bigl(v_{\mathrm{trans}}-v_{\mathrm{pred}}\bigr)}_{\text{\emph{coarse-graining loss}}}.
+\]
+\end{lemma}
+\begin{proof}
+Add and subtract $v_{\mathrm{trans}}$.
+\end{proof}
+
+\begin{remark}[A 2-point readout library beyond variance]\label{rem:rg_two_point_library}
+\AuditTag The same tensor-lift bookkeeping that packages variance via 2-point kernels also packages cross-observable covariances.
+Given two block observables $v^{(a)},v^{(b)}\in\RR^{16}$, define their (population) covariance on the block quotient by
+\[
+\mathrm{Cov}(v^{(a)},v^{(b)})=\frac{1}{16}\sum_{j=1}^{16}\bigl(v^{(a)}_j-\mu_a\bigr)\bigl(v^{(b)}_j-\mu_b\bigr),
+\qquad
+\mu_a=\frac{1}{16}\sum_{j=1}^{16}v^{(a)}_j.
+\]
+The mixed second moment $\frac{1}{16}\sum_j v^{(a)}_j v^{(b)}_j$ is a 2-point readout on $\RR^{16}\otimes\RR^{16}$, hence its iterates can be generated by tensor resolvents exactly as in Theorem~\ref{thm:resolvent_trace_closure_protocol_rg}.
+Table~\ref{tab:kernel_rg_operator_covariance} records a minimal cross-observable instance for the intrinsic scalars used in the balanced-chain tables.
+\end{remark}
+
+\subsection{Folding weights as a diagonal potential and a weighted operator family}
+\label{subsec:rg_operator_weighted}
+
+\begin{definition}[Folding potential on microstates]\label{def:folding_potential_microstates}
+\MathTag Let $\mathrm{Fold}_m$ be the folding map (Definition~\eqref{eq:foldm_def}) and let $g_m(w)=|\mathrm{Fold}_m^{-1}(w)|$ be its degeneracy function (Definition~\ref{def:rm_max_degeneracy}).
+At balanced coupling $m=2n$, define the microstate potential
+\[
+\varphi_n(k):=\log g_{2n}\!\bigl(\mathrm{Fold}_{2n}(k)\bigr),
+\qquad k\in\Omega_n,
+\]
+and the diagonal multiplication operator $M_{\varphi_n}$ on $\RR^{\Omega_n}$ given by $(M_{\varphi_n}f)(k)=\varphi_n(k)f(k)$.
+\end{definition}
+
+\begin{definition}[Weighted protocol RG operator]\label{def:weighted_protocol_rg_operator_appendix}
+\MathTag For $t\in\RR$, define the weighted operator
+\[
+\widehat F_n(t):=P_{n+1}\circ T_{n+1}\circ U_n\circ \e^{tM_{\varphi_n}}\circ P_n^\ast:\mathcal{B}_n\to\mathcal{B}_{n+1}.
+\]
+\end{definition}
+
+\begin{definition}[Doob normalization on the Perron support]\label{def:rg_doob_normalization}
+\MathTag Fix $(n,t)$ and write $\widehat F_n(t)$ for the weighted operator on the $4\times4$ block quotient.
+Let $\lambda>0$ be its Perron--Frobenius eigenvalue and let $h\ge 0$ be a corresponding right eigenvector, $\widehat F_n(t)h=\lambda h$.
+On the Perron support $S:=\{i:h_i>0\}$, define the Doob (row-stochastic) normalization by
+\[
+\widetilde F_n(t)_{ij}:=\frac{\widehat F_n(t)_{ij}\,h_j}{\lambda\,h_i},
+\qquad i,j\in S.
+\]
+\end{definition}
+
+\begin{lemma}[Row-stochasticity of the Doob transform]\label{lem:rg_doob_row_stochastic}
+\MathTag In the setting of Definition~\ref{def:rg_doob_normalization}, each row of $\widetilde F_n(t)$ sums to $1$.
+\end{lemma}
+\begin{proof}
+For $i\in S$,
+\[
+\sum_{j\in S}\widetilde F_n(t)_{ij}
+=\frac{1}{\lambda h_i}\sum_{j\in S}\widehat F_n(t)_{ij}h_j
+=\frac{(\widehat F_n(t)h)_i}{\lambda h_i}
+=1,
+\]
+since $h_i>0$ on $S$.
+\end{proof}
+
+\begin{remark}[Pressure/free-energy proxy]\label{rem:rg_pressure_proxy}
+\AuditTag In this finite-dimensional setting, $\lambda=\rho(\widehat F_n(t))$ and $P_n(t):=\log\lambda$ provide a pressure/free-energy proxy for the folding potential family.
+This is the finite-dimensional analogue of the spectral-radius/pressure dictionary used elsewhere in the paper (Appendix~\ref{app:thermodynamic_formalism_pressure}) and aligns with the free-energy viewpoint on weighted objectives (Appendix~\ref{app:thermodynamics_from_equivalence}).
+\end{remark}
+
+\subsection{Mother-space objects: determinants, resolvents, and pole barriers}
+\label{subsec:rg_operator_mother_space_objects}
+
+\paragraph{Finite-dimensional determinant and resolvent.}
+\MathTag For any finite-dimensional operator $F$ (e.g.\ $F_n$ or $\widehat F_n(t)$), define
+\[
+D_F(z):=\det(I-zF),
+\qquad
+R_F(z):=(I-zF)^{-1},
+\]
+whenever the inverse exists.
+The pole-barrier radius is $|z|_\star(F)=\rho(F)^{-1}$, consistent with Proposition~\ref{prop:rg_pole_barrier_radius}.
+
+\subsection{One-point and two-point readouts (variance via a tensor lift)}
+\label{subsec:rg_operator_one_two_point_readouts}
+
+\paragraph{One-point readout.}
+\MathTag Let $\ell:\RR^{16}\to\RR$ be the block-mean functional $\ell(a)=\frac{1}{16}\sum_{b=1}^{16}a_b$.
+Then $\ell(F^t v)$ packages iterated one-point coarse statistics for any iterated block state $F^t v$.
+For $|z|<\rho(F)^{-1}$ one has
+\[
+\sum_{t\ge 0} z^t\,\ell(F^t v)=\ell\!\bigl((I-zF)^{-1}v\bigr)
+\]
+by the Neumann-series identity.
+
+\paragraph{Two-point readout and tensor lift.}
+\MathTag The block second moment is
+\[
+M_2(a):=\frac{1}{16}\sum_{b=1}^{16} a_b^2,
+\]
+and the block variance is $\Var(a)=M_2(a)-\ell(a)^2$.
+To keep $M_2$ within the same resolvent framework, move to the tensor mother space $\RR^{16}\otimes\RR^{16}$, with source operator $F^{\otimes 2}:=F\otimes F$.
+Let $w:=v\otimes v$.
+Then $M_2(F^t v)$ is a one-point readout on the tensor space:
+\[
+M_2(F^t v)=\Tr\!\bigl(K^{(2)}(Q_{F^t v}\otimes Q_{F^t v})\bigr),
+\]
+as in Theorem~\ref{thm:block_readout_one_two_point}.
+Equivalently, one may package the iterated second-moment readout by a tensor resolvent:
+\[
+\sum_{t\ge 0} z^t\,M_2(F^t v)=\mathcal{M}_2\!\bigl((I-zF^{\otimes 2})^{-1}w\bigr),
+\qquad |z|<\rho(F)^{-1},
+\]
+where $\mathcal{M}_2$ is the linear functional on $\RR^{16}\otimes\RR^{16}$ that extracts the diagonal $(b,b)$ components and averages them.
+This is the finite-dimensional specialization of the tensor-resolvent viewpoint recorded in Appendix~\ref{subsec:operator_mother_space_tensor_resolvent}.
+

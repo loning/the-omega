@@ -1,0 +1,401 @@
+\section{Geometric dynamics of the HPA system (orbit/\texorpdfstring{$\zeta$}{zeta} packaging)}
+\label{sec:hpa_geometric_dynamics_orbit_zeta}
+
+\paragraph{Purpose.}
+This section refactors a common interpretive paragraph (``geometry + dynamics + arithmetic'') into theorem-facing objects already present in the paper:
+(i) the golden-mean finite-state grammar (the stable sector),
+(ii) periodic orbits and their primitive-cycle refinement,
+and (iii) determinant/trace/\texorpdfstring{$\zeta$}{zeta} packaging with an Abel pole-barrier normalization.
+No additional physical inputs beyond tick and CAP are introduced; physical identifications are marked explicitly.
+
+\subsection{X.1.\ Constitutive constants as boundary conditions (channel roles)}
+\label{subsec:x1_constitutive_boundary_conditions}
+
+\paragraph{$\varphi$ (capacity/growth rate).}
+\MathTag The admissible stable-sector language $X_n$ is the block language of the golden-mean shift and has Fibonacci growth $|X_n|=F_{n+2}$, hence topological entropy $h_{\mathrm{top}}=\log\varphi$ (Lemma~\ref{lem:golden_mean_language_equals_Xn}).
+This is the precise theorem-level meaning of ``$\varphi$ as a rigidity/capacity constant'' inside the folding layer.
+
+\paragraph{$\pi$ (cyclic closure).}
+\MathTag The $\pi$-channel closure predicate is the wrap-around admissibility condition $w_1w_m=0$ on Zeckendorf-admissible words (Section~\ref{subsec:pi_channel}),
+which induces the canonical cyclic/boundary split $X_m=X_m^{\mathrm{cyc}}\sqcup X_m^{\mathrm{bdry}}$ and, at $m=6$, the rigid $18\oplus 3$ partition (Corollary~\ref{prop:cyc_bdry_6}).
+
+\paragraph{$\mathrm{e}$ (Abel normalization and pole barrier).}
+\MathTag The $\e$-channel records an analytic stability template by packaging periodic-orbit counts into an Artin--Mazur zeta function and then applying Abel normalization.
+For the golden-mean grammar, the zeta function is rational and its leading Abel pole barrier is at $r=1$ (Lemma~\ref{lem:golden_zeta_matrix} and \eqref{eq:abel_normalized_zeta}).
+For the general determinant/pressure viewpoint (shift of finite type), see Corollary~\ref{cor:pole_barrier_equals_exp_minus_pressure}.
+
+\paragraph{Complex phases (dictionary reminder).}
+\InterfaceTag Complex phases (unitary rotations) and their separation from semigroup weights are treated as a representation/dictionary choice (Section~\ref{subsec:interpretive_unification_complex_exp}); this does not add an axiom.
+
+\subsection{X.2.\ The orbit/\texorpdfstring{$\zeta$}{zeta} formalism}
+\label{subsec:x2_orbit_zeta_formalism}
+
+\paragraph{Dynamical zeta coordinate (finite-state case).}
+\MathTag For a dynamical system $(X,f)$, the Artin--Mazur zeta function is defined by periodic-point counts as in \eqref{eq:artin_mazur_def}.
+In the golden-mean shift $(X,\sigma)$, one has the explicit transition matrix and zeta function
+\[
+A=\begin{pmatrix}1 & 1\\ 1 & 0\end{pmatrix},
+\qquad
+\zeta(z)=\frac{1}{\det(I-zA)}=\frac{1}{1-z-z^2}
+\]
+(Lemma~\ref{lem:golden_zeta_matrix}).
+
+\subsubsection{X.2.1.\ Matter as rational resonances (limit cycles): what is theorem-level here}
+\label{subsubsec:x21_matter_as_resonances}
+
+\paragraph{Resonances as closed periodic readouts.}
+\MathTag Within the golden-mean shift, a ``closed resonance'' can be formalized purely finitely as a periodic point of $\sigma$ (equivalently, a cyclic word $w\in X_m^{\mathrm{cyc}}$).
+Periodicity counts coincide with the $\pi$-channel cyclic subset: for every $m\ge 1$,
+\[
+\#\mathrm{Fix}(\sigma^m)=\mathrm{tr}(A^m)=|X_m^{\mathrm{cyc}}|
+\]
+(Lemma~\ref{lem:cyc_periodic_points}).
+Consequently, $|X_m^{\mathrm{cyc}}|=L_m$ (Corollary~\ref{cor:cyc_lucas}).
+
+\paragraph{Primitive-cycle refinement (``prime cycles'').}
+\MathTag A canonical refinement separates periodic points into primitive cycles via M\"obius inversion (Definition~\ref{def:zeckendorf_shift_primitive_cycles} and Proposition~\ref{prop:zeckendorf_shift_mobius_inversion}).
+This provides a fully finite substitute for informal ``prime orbit'' language, without importing arithmetic primes (Remark~\ref{rem:zeckendorf_shift_structural_role}).
+
+\paragraph{Physical identification boundary.}
+\InterfaceTag Interpreting periodic readout types (or their primitive-cycle refinements) as ``particle states'' is a physical identification statement.
+In this manuscript, such identifications are handled through the stable-type interface (Section~\ref{sec:sm_interface}) and the mass-as-latency dictionary (Section~\ref{sec:mass_latency_coordinate}), and never serve as premises for the folding core.
+
+\subsubsection{X.2.2.\ The golden trajectory (Sturmian inside the admissible language)}
+\label{subsubsec:x22_golden_trajectory_sturmian}
+
+\paragraph{A theorem-level ``quasi-periodic'' carrier.}
+\MathTag The scan-projection readout on the golden branch produces a Sturmian word (Appendix~\ref{app:sturmian_entropy}).
+Independently, the admissible stable-sector language $X_n$ is the full block language of the golden-mean shift (Lemma~\ref{lem:golden_mean_language_equals_Xn}).
+These are different symbolic objects: the Sturmian factor language is a strict subset of $X_n$ for all $n\ge 3$ (Corollary~\ref{cor:sturmian_language_strict_subset}).
+
+\paragraph{A strict, checkable definition of ``quasi-periodic'' in this paper's finite language.}
+\MathTag In the symbolic dynamics carrier used here, a practical theorem-facing proxy for ``quasi-periodic'' (as opposed to periodic resonance closure) is:
+\emph{aperiodic with linear factor complexity}.
+Concretely, for a bi-infinite binary word $w$, let $p_w(n)$ be its factor complexity.
+If $p_w(n)=n+1$ for all $n\ge 1$, then $w$ is Sturmian and has minimal aperiodic complexity.
+For the canonical rotation window coding used in the readout model, one has exactly
+\[
+p_w(n)=n+1\qquad (n\ge 1)
+\]
+(Theorem~\ref{thm:sturmian_complexity}).
+
+\paragraph{Zero entropy rate (negentropy proxy at theorem level).}
+\MathTag Linear factor complexity implies zero topological entropy rate:
+\[
+h_{\mathrm{top}}=\lim_{n\to\infty}\frac{1}{n}\log p_w(n)=0
+\]
+(Corollary~\ref{cor:sturmian_top_entropy}).
+Moreover, for any shift-invariant measure supported on the orbit closure of such a Sturmian word, the block Shannon entropies satisfy $H_n\le \log(n+1)$ and hence have vanishing per-symbol rate (Corollary~\ref{cor:sturmian_shannon_entropy}).
+These statements provide a theorem-level sense in which Sturmian readouts carry structured correlations but do not ``thermalize'' in an entropy-rate sense.
+
+\paragraph{Frequency stability (unique ergodicity of the underlying rotation).}
+\MathTag For the irrational-rotation scan $\Theta f(x)=f(x+\alpha)$ on $X=\RR/\ZZ$ with Haar measure $\mu$, unique ergodicity implies that for every continuous observable $f$ the orbit averages
+\[
+A_N(f;x_0)=\frac{1}{N}\sum_{k=0}^{N-1}f(x_0+k\alpha)
+\]
+converge to the space average $\int_X f\,\dd\mu$ independently of the starting point $x_0$ (Appendix~\ref{app:cyclic_calculus_theta_fp}).
+In the readout language, this provides a theorem-facing notion of ``stable frequencies'' for any declared continuous probe of the scan orbit; it is the appropriate replacement for informal claims of ergodicity/thermalization in the present setting.
+
+\paragraph{Persistent pattern return (uniform recurrence).}
+\MathTag Beyond frequency stability, the canonical rotation-window coding yields a stronger persistence statement at the symbolic level:
+every factor that occurs reappears with bounded gaps (uniform recurrence).
+Formally, for each factor $u\in\mathcal{L}_m(w)$ the occurrence set $\mathrm{Occ}_w(u)$ is syndetic, hence has a finite gap bound (Theorem~\ref{thm:sturmian_uniform_recurrence} in Appendix~\ref{app:sturmian_uniform_recurrence}).
+This is the theorem-facing replacement for informal claims of ``continued exploration without losing previously realized patterns''.
+
+\paragraph{Quantitative gap bound (in terms of convergent denominators).}
+\MathTag The bounded-gap statement can be made quantitative in an auditable way:
+interval hitting times along the rotation scan admit an explicit bound at convergent lengths.
+Concretely, for any interval of length $\ell$, choosing a convergent denominator $q_k\ge 32/\ell$ guarantees a hit within the first $q_k$ steps, uniformly in the intercept (Theorem~\ref{thm:rotation_interval_hitting_convergent} in Appendix~\ref{app:rotation_hitting_time_discrepancy}).
+Applied to the open cylinder arcs underlying a factor's occurrence set in the canonical coding, this yields an explicit (though factor-dependent) numerical gap bound expressed by the continued-fraction denominators.
+
+\paragraph{Two-scale bound purely in \texorpdfstring{$(m,q_k,q_{k+1})$}{(m,qk,qk+1)}.}
+\MathTag A stronger Sturmian-specific bound avoids factor-dependent arc lengths:
+if $q_k\le m<q_{k+1}$ then every length-$m$ factor has return gaps bounded by $q_k+q_{k+1}$ (Theorem~\ref{thm:sturmian_return_time_qk_bound} in Appendix~\ref{app:sturmian_return_times_qk}).
+In the bounded-type class ($a_i\le A$), this implies the explicit linear bound $\tau\le (A+2)m$, and on the golden branch ($A=1$) the uniform constant is $\tau\le 3m$ (Corollary~\ref{cor:sturmian_return_bounded_type_linear}).
+
+\paragraph{Robustness scope.}
+\MathTag The distinguished role of the golden branch among irrational slopes is recorded as an auditable finite-depth minimality statement (Proposition~\ref{prop:golden_least_discrepancy} and Remark~\ref{rem:golden_branch_principled}).
+Any additional KAM-type statements about invariant tori require extra dynamical assumptions beyond tick+CAP and must be recorded explicitly as \AuditTag or \textsf{[Open]} if invoked.
+
+\paragraph{Interface caution (biological language).}
+\InterfaceTag Any identification of ``life/negentropy'' with Sturmian (or Sturmian-like) symbolic structure is an interface-level hypothesis.
+The closed theorem-level content provided here is the pair of checkable properties (linear factor complexity; zero entropy rate), which may be used as auditable proxies if a biological interface is pursued elsewhere.
+
+\subsection{X.3.\ ``Tunneling'' via spectral duality: finite substitute statements}
+\label{subsec:x3_tunneling_spectral_duality_finite}
+
+\paragraph{Duality 1: determinant/trace/\texorpdfstring{$\zeta$}{zeta} vs.\ Euler product over primitive cycles.}
+\MathTag The zeta function admits an Euler product coordinate over primitive cycles and equals the determinant package:
+\[
+\zeta_Z(z)=\prod_{n\ge 1}(1-z^n)^{-\pi_n}=\frac{1}{\det(I-zA)}
+\]
+(Proposition~\ref{prop:zeckendorf_shift_zeta_det}).
+This is a precise finite analogue of ``spectral duality'' as a change of coordinates on the same periodic-orbit data.
+
+\paragraph{Duality 2: updates and switching as the correct branching carrier.}
+\MathTag The paper's theorem-facing carrier for ``history switching'' is finite-family selection under updates (Section~\ref{sec:unified_spine} and Appendix~\ref{app:branching_selection_rigidity}).
+This is the appropriate closed-layer mechanism for any branch/tunnel narrative inside the present layer discipline.
+
+\paragraph{Audit boundary.}
+\AuditTag Statements that identify tunneling/wormholes with symmetries of the \emph{Riemann zeta function} (functional equation, critical zeros) are not theorem-level consequences of tick+CAP as used in this manuscript.
+If such claims are used as interpretive language, they must be recorded explicitly as \AuditTag and must not be used as premises for any closed-layer statement.
+
+\subsection{X.3A.\ Wormhole rigidity and unified constraints (interface + audit)}
+\label{subsec:x3a_wormhole_rigidity_unified_constraints}
+
+\paragraph{Scope.}
+\InterfaceTag This subsection fixes the manuscript-wide meaning of ``wormhole-like channel'' and records a minimal set of rigidity constraints that remain invariant across the three carriers used in this paper:
+(i) switching as finite-family selection under updates (theorem-facing),
+(ii) paid pointer-jump shortcuts with explicit ledgers and counterfactual baselines (audited interface),
+and (iii) resolvent/determinant bookkeeping with Abel pole-barrier gates (audit-facing dictionary).
+No statement below is used as a premise in theorem-level folding proofs.
+
+\paragraph{Definition (protocol-level wormhole-like channel).}
+\InterfaceTag In this manuscript, a wormhole-like channel is \emph{not} a traversable Lorentzian wormhole in vacuum GR.
+It is a controlled shortcut channel in readout geometry: an added nonlocal pointer edge in Hilbert-index space
+(Definition~\ref{def:wormhole_pointer_jump}).
+
+\paragraph{Rigidity gates (closure contract).}
+\InterfaceTag Any dynamical use of wormhole-like shortcuts in this manuscript is admissible only under the hard interface gates of the full-fusion closure
+(Section~\ref{sec:qg_interface_full_fusion}):
+\begin{enumerate}
+\item \textbf{Energy ledger closure (no free shortcut energy):}
+\[
+E_{\mathrm{tot}}(t)=E_{\mathrm{part}}(t)+E_{\mathrm{field}}(t)+E_{\mathrm{emit}}(t)+E_{\mathrm{wh}}(t).
+\]
+\item \textbf{Complementarity certificate:}
+\[
+V^2+D^2\le 1.
+\]
+\item \textbf{Counterfactual identifiability baseline:} wormhole-off runs with $\varepsilon_{\mathrm{ptr}}=0$ must be reported side-by-side.
+\item \textbf{Local interface factorization gate (LF1) for determinant/logdet upgrades:}
+any upgrade of a shortcut/update narrative to global determinant/logdet/delay bookkeeping must provide an explicit baseline/counterfactual split together with a small-dimensional update factor
+(Woodbury for same-dimension finite-rank updates; Schur complement factor for dimension-changing updates), otherwise the claim must be downgraded by (LF1)
+(Appendix~\ref{app:minimal_failure_point_templates}; evidence map Table~\ref{tab:failurepoint_evidence_map}; see also Appendix~\ref{app:operator_mother_space}, Remark~\ref{rem:local_interface_factorization_contract}).
+\end{enumerate}
+These gates are the minimal rigidity constraints that keep ``wormhole'' language auditable in finite windows.
+
+\paragraph{Unification across carriers (what is rigid, what is optional).}
+\AuditTag Theorem-facing switching statements in this manuscript are carried by finite-family selection under updates (Section~\ref{sec:unified_spine} and Appendix~\ref{app:branching_selection_rigidity}).
+The wormhole-like pointer shortcut is an \emph{additional} protocol-level carrier that may be composed with dynamics only through the interface gates above.
+Accordingly, the rigid content of ``wormholes'' in this paper is the conjunction:
+\emph{(paid shortcut ledger)} + \emph{(counterfactual identifiability)} + \emph{(no violation of complementarity)}.
+Any further interpretation (geometric throats, spectral coincidences, arithmetic zeros) is dictionary-only and must not reverse the dependency direction stated in the Purpose paragraph of this section.
+
+\paragraph{Operator dictionary and pole-barrier gate (audit-facing).}
+\AuditTag The operator-mother-space layer provides a compact bookkeeping dictionary:
+a pointer jump may be encoded abstractly as a finite-rank perturbation $F\mapsto F+\Delta$
+(Remark~\ref{rem:wormhole_pointer_jump_operator_encoding} and Remark~\ref{rem:pointer_jump_finite_rank_dictionary} in Appendix~\ref{app:operator_mother_space}).
+In the same Abel-first viewpoint, analyticity is guarded by pole-barrier gates:
+an interior pole $|r_0|<1$ is a canonical obstruction to unit-disk holomorphy
+(Remark~\ref{rem:interior_pole_obstruction_operator} and Appendix~\ref{app:trace_pole_barrier_template}).
+
+\paragraph{Optional bridge (audit-only): HTF-lite and the minimal fallback.}
+\AuditTag The HTF-lite trace bridge is recorded as an explicit self-contained assumption pack
+(Assumption~\ref{ass:htf_lite_operator_pack}, Appendix~\ref{app:operator_mother_space}) and is \emph{not} used in any theorem-level proof.
+Its failure modes and the minimal core that remains are fixed in the bridge-failure map
+(Table~\ref{tab:bridge_assumptions_failure_modes}, row (B5))
+and the minimal failure-point registry (Appendix~\ref{app:minimal_failure_point_templates}, (IC13)).
+If the bridge is underspecified, unstable under the declared renormalization, or fails the detectability/noncancellation gate,
+then any ``Riemann-zero mode'' language must be dropped without affecting the manuscript:
+wormhole-like channels remain defined internally as paid pointer-jump shortcuts with explicit ledgers and counterfactual baselines
+(Definition~\ref{def:wormhole_pointer_jump} and Section~\ref{sec:qg_interface_full_fusion}),
+and pole-barrier gates remain usable only within declared Abel generating-function settings.
+
+\begin{proposition}[Four-way unification as a contract form (audit-only)]
+\label{prop:four_way_unification_contract_form}
+\AuditTag In this manuscript, ``black-hole-like'' and ``wormhole-like'' language is permitted to unify
+\emph{micro/macro}, \emph{quantum/classical}, \emph{discrete/continuous}, and \emph{space/time} only in the following precise sense:
+the unification is a \emph{rigidity contract form} (what may be claimed and how it must be audited), not a theorem-level ontological identification.
+Concretely, under the declared protocol state and matching dictionaries:
+\begin{enumerate}
+\item \textbf{Micro $\leftrightarrow$ macro (ledger form).}
+Micro stabilization is read through delay/linewidth proxies (Section~\ref{sec:mass_latency_coordinate} and Appendix~\ref{app:time_mass_delay}),
+while macro trapping/leakage is read through the full-fusion ledgers and counterfactual deltas (Section~\ref{sec:qg_interface_full_fusion}).
+The unified statement is that both must be reported in finite windows as audited return/delay summaries with explicit baselines;
+no identity of mechanisms is assumed.
+\item \textbf{Quantum $\leftrightarrow$ classical (phase-to-delay dictionary).}
+Quantum-facing phase response (unitary $S$-parameters) and classical-facing time-delay/lapse proxies are connected only by explicit interface dictionaries
+(Appendix~\ref{app:time_mass_delay}), with failure-point downgrades when unitarity windows or reconstruction conditions are not discharged
+(Appendix~\ref{app:minimal_failure_point_templates}, S1--S3 and related carriers).
+\item \textbf{Discrete $\leftrightarrow$ continuous (windowed comparability).}
+Discrete protocol objects (stable types, finite-family selection, pointer edges) may be compared to continuum representatives only under a declared bounded matching envelope
+(Appendix~\ref{app:qg9_m1_windowed_comparability} and the matching-layer contracts referenced there);
+no continuum-limit existence/uniqueness is used as a premise.
+\item \textbf{Space $\leftrightarrow$ time (overhead/delay as the bridge variable).}
+``Space'' enters through an addressing/screen dictionary, while ``time'' enters as tick index; their joint narrative is mediated by overhead/delay/lapse dictionaries
+(Section~\ref{sec:tick_calculus} and Appendix~s~\ref{app:time_mass_delay} and \ref{app:overhead_to_gravity_closure}),
+so any space--time reading is a statement about audited overhead fields rather than a theorem-level spacetime identity.
+\end{enumerate}
+Moreover, any use of wormhole-like shortcuts is admissible only as the protocol pointer-jump object of Definition~\ref{def:wormhole_pointer_jump} and only under the full-fusion hard gates
+(energy ledger closure, complementarity, counterfactual wormhole-off baseline, and the local interface factorization gate (LF1) for any det/logdet/delay promotion;
+Section~\ref{sec:qg_interface_full_fusion}; Appendix~\ref{app:minimal_failure_point_templates}).
+\end{proposition}
+
+\begin{remark}[Failure modes and minimal fallback (where the contract can break)]
+\label{rem:four_way_unification_contract_fallback}
+\AuditTag If the required windowed comparability or matching dictionaries are underspecified/unstable, the unified narrative must be downgraded to within-protocol statements only.
+In particular:
+(i) if the HTF-lite bridge is invoked and fails its detectability/noncancellation gate, revert to paid pointer-jump shortcuts with explicit ledgers and counterfactual baselines
+(Table~\ref{tab:bridge_assumptions_failure_modes}, (B5); Appendix~\ref{app:minimal_failure_point_templates}, (IC13));
+(ii) if scattering/delay proxies are used outside a controlled band, revert to delay-as-proxy with explicit loss/uncertainty bookkeeping (S1);
+(iii) no theorem-level folding statement depends on any of these interpretive bridges.
+\end{remark}
+
+\begin{remark}[What else is unified by the BH/WH contract (audit checklist)]
+\label{rem:bh_wh_additional_unifications_checklist}
+\AuditTag Beyond the four-way thesis in Proposition~\ref{prop:four_way_unification_contract_form}, the same BH/WH contract form also unifies the manuscript's \emph{allowed claim format} across modules:
+\begin{itemize}
+\item \textbf{Narrative boundary (what ``wormhole'' and ``black hole'' mean here).}
+Wormhole-like means the pointer-jump object of Definition~\ref{def:wormhole_pointer_jump} (not traversable GR wormholes), and black-hole-like means budget-triggered trapping/leakage surrogates (not an ontological event-horizon claim).
+\item \textbf{Identifiability discipline.}
+Any asserted shortcut effect must be isolated by the wormhole-off counterfactual baseline $\varepsilon_{\mathrm{ptr}}=0$ (Section~\ref{sec:qg_interface_full_fusion}).
+\item \textbf{Ledger discipline (no free channels).}
+All gains are reported only under explicit ledgers and the energy-closure gate
+$E_{\mathrm{tot}}=E_{\mathrm{part}}+E_{\mathrm{field}}+E_{\mathrm{emit}}+E_{\mathrm{wh}}$ (Section~\ref{sec:qg_interface_full_fusion}).
+\item \textbf{Observable-chain discipline (phase--delay--linewidth).}
+Quantum-facing phase response and time-delay/linewidth proxies are treated as a single audited interface chain (Appendix~\ref{app:time_mass_delay} and Appendix~\ref{app:scattering_delay_linewidth_triangle_audit}).
+\item \textbf{Operator bookkeeping unification.}
+Pointer jumps are encoded as finite-rank updates $F\mapsto F+\Delta$ in the operator mother space (Appendix~\ref{app:operator_mother_space}), aligning shortcuts with resolvent/determinant packages.
+\item \textbf{Analyticity gate unification (pole barrier).}
+Pole-barrier / unit-disk holomorphy gates provide a common stability obstruction template across representations (Appendix~\ref{app:trace_pole_barrier_template} and Remark~\ref{rem:interior_pole_obstruction_operator}).
+\item \textbf{Failure-point normalization.}
+When any bridge assumption or window condition fails, the manuscript reverts to the minimal protocol-internal core (B5/IC13 for HTF-lite; S1--S3 for scattering), without impacting theorem-level folding claims.
+\end{itemize}
+\end{remark}
+
+\begin{remark}[Black-hole/wormhole--scattering topological equivalence ladder (BH/WH--scattering topological equivalence ladder; audit)]
+\label{rem:bh_wh_scattering_topological_equivalence_ladder}
+\AuditTag We now record, in the strict protocol sense used in this manuscript, a compact ``topological equivalence'' ladder that
+starts from the interface dictionary \emph{BH-like particle $\simeq$ saturated high-energy excitation} and connects black-hole/wormhole language to scattering and decay proxies.
+The equivalences below are \emph{structural} (graph/partition/record algebras and their audited proxies), not theorem-level derivations of GR or 4D QFT scattering.
+For the certificate-style registry view of the same ladder (including explicit gates/failure points and reproducible table artifacts), see
+Appendix~\ref{app:equivalence_ladder_certificates}, Table~\ref{tab:equivalence_ladder_registry}.
+\begin{enumerate}
+\item \textbf{BH-like particle $\simeq$ saturation regime (interface).}
+At fixed screen size $4^n$, increasing the single-window budget $m$ can drive the horizon/cloud selection into the saturation boundary
+$|{\mathcal R}_\star|_{\min}>4^n$, where geometry-facing diagnostics lose discriminative power and trapping/leakage behavior becomes horizon-like
+(Section~\ref{subsec:bh_high_m_particles} and Paragraph~R2 of Section~\ref{subsec:full_fusion_rigidity_takeaways}).
+This is the paper's disciplined meaning of ``black hole as a saturated high-energy particle'' in the protocol language.
+\item \textbf{Saturation $\simeq$ a coarse partition of the screen graph (topological carrier).}
+Fix the Hilbert-addressed screen graph $G_n$ (nearest-neighbor scan adjacency) and let ${\mathcal R}_\star\subset V(G_n)$ be the budget-selected cloud region.
+The strong-field surrogate is the induced partition
+\[
+V(G_n)= {\mathcal R}_\star \sqcup (V(G_n)\setminus {\mathcal R}_\star),
+\]
+with trapping observables (occupancy $f_{\mathrm{hor}}$, delay proxies $\tau_{\mathrm{trap}}$) reported on the ${\mathcal R}_\star$ side in the full-fusion contract
+(Section~\ref{sec:qg_interface_full_fusion}).
+In the saturated regime, ${\mathcal R}_\star=V(G_n)$ is the limiting ``all-trap'' case.
+\item \textbf{Partition $\simeq$ a queue/record algebra toy (audit equivalence).}
+Appendix~\ref{app:scattering_bh_toy_equivalence_audits} realizes the same unsaturated vs.\ saturated distinction in explicit finite toys:
+a delay-driven scattering queue (service cost $\tau_{\mathrm{WS}}$) versus a BH-like internal queue that emits a stable-label record $w_t\in X_6$.
+The side-by-side saturation/backlog equivalence audit is Table~\ref{tab:scattering_bh_queue_equivalence_toy}.
+\item \textbf{Leakage/evaporation $\simeq$ decay exit from tick traps (rate vocabulary).}
+Appendix~\ref{app:leakage_kernel} unifies decay and evaporation as exit from tick traps via a finite-family survival-kernel vocabulary,
+with a leakage-rate proxy $\Gamma$ and lifetime proxy $\tau=1/\Gamma$ (Definition~\ref{def:survival_kernel_family}).
+The ``evaporation/leak channel'' bookkeeping adds the mandatory resource ledger to prevent perpetual emission without a source
+(Appendix~\ref{app:bh_evaporation_leak_channel}).
+In the determinant-packaging carrier, the same vocabulary can be audited by interpreting a width proxy $\Gamma$ (extracted from delay peaks)
+as an exit-rate proxy and forming the exponential survival kernel $P(t)=\exp(-\Gamma t)$ on declared times. For a deterministic toy table,
+see Appendix~\ref{app:equivalence_ladder_certificates}, Table~\ref{tab:linewidth_survival_kernel_audit}.
+For the finite-family discipline version (explicit candidate family and CAP tie-break aligned with Appendix~\ref{app:leakage_kernel}), see
+Appendix~\ref{app:equivalence_ladder_certificates}, Table~\ref{tab:survival_finite_family_audit}.
+\item \textbf{Scattering linewidth $\simeq$ inverse delay (interface benchmark).}
+On a declared unitary band, scattering delay is the logdet derivative of $S(\omega)$ (Lemma~\ref{lem:wigner_smith_trace_logdet}),
+and the Breit--Wigner benchmark supplies $\tau_{\mathrm{WS}}(\omega_0)=4/\Gamma$ (Appendix~\ref{app:time_mass_delay}).
+Thus the same symbol $\Gamma$ can be used consistently as an audit-facing \emph{return/exit-rate proxy} across the decay and scattering dictionaries,
+while macro emission is recorded by the explicit ledger $E_{\mathrm{emit}}(t)$ in full fusion.
+In the determinant-packaging carrier, an analogous proxy can be formed by extracting the full width at half maximum (FWHM) of peaks in the resolvent-trace delay proxy
+and comparing it to $\Gamma_\tau=4/\tau_{\max}$ (Breit--Wigner consistency). For a deterministic toy audit of this alignment (base vs added-edge),
+see Appendix~\ref{app:equivalence_ladder_certificates}, Table~\ref{tab:det_delay_linewidth_audit}.
+\item \textbf{Wormhole-like shortcut $\simeq$ added edge / finite-rank update (dictionary).}
+A wormhole-like channel is the pointer-jump edge of Definition~\ref{def:wormhole_pointer_jump};
+topologically it is an added shortcut edge in the index graph, and in operator language it is encoded as a finite-rank update $F\mapsto F+\Delta$
+(Appendix~\ref{app:operator_mother_space}; see also Lemmas~\ref{lem:rank_one_det_sherman_morrison}--\ref{lem:finite_rank_det_woodbury} for explicit det/resolvent update formulas).
+Any dynamical use must satisfy the full-fusion hard gates (ledger closure, complementarity, counterfactual baseline) and, for any det/logdet/phase-delay promotion, the local interface factorization gate (LF1)
+(Section~\ref{sec:qg_interface_full_fusion}; Appendix~\ref{app:minimal_failure_point_templates}).
+For a deterministic finite toy audit reporting logdet- and delay-proxy increments under a rank-one update (wormhole-off/on), see
+Appendix~\ref{app:equivalence_ladder_certificates}, Table~\ref{tab:wormhole_finite_rank_delay_logdet_audit}.
+For a complementary graph-topology toy in which \emph{adding one shortcut edge} changes the determinant package $D(z)=\det(I-zA)$ by a rank-2 Woodbury factor, see
+Appendix~\ref{app:equivalence_ladder_certificates}, Table~\ref{tab:added_edge_det_update_audit}.
+\emph{Gate-check (LF1):} the step ``added edge $\Rightarrow$ determinant/logdet delta'' is admissible only if a baseline/counterfactual split and a small update factor (Woodbury/Schur) are exhibited (Appendix~\ref{app:equivalence_ladder_certificates}, LF1/C15).
+If not, the step must revert to the purely protocol/topology statement (a paid pointer-jump edge plus its wormhole-off comparison), without determinant/delay claims.
+
+Finally, a frequency-domain packaging proxy can be formed by taking the determinant phase $\phi(\omega)=\arg D(r\e^{\iu\omega})$ at fixed $r<1$ and reading its derivative as a delay proxy.
+\emph{Gate-check (LF1):} this ``phase/delay delta under an update'' reading is allowed only after the local factorization split is provided; otherwise one may record only within-system phase summaries (no shortcut-induced $\Delta\tau$ promotion).
+For a deterministic audit table of $\Delta\phi$ and $\Delta\tau$ under the same added-edge update, see
+Appendix~\ref{app:equivalence_ladder_certificates}, Table~\ref{tab:det_phase_delay_proxy_audit}.
+Moreover, the delay proxy admits a closed resolvent-trace identity
+$\tau(\omega)=\Im\bigl(-\iu z\,\Tr(A(I-zA)^{-1})\bigr)$ for $z=r\e^{\iu\omega}$, which can be used as an audit gate against finite-difference phase derivatives.
+For the explicit fd-vs-tr comparison (base and added-edge, plus $\Delta\tau$), see
+Appendix~\ref{app:equivalence_ladder_certificates}, Table~\ref{tab:det_phase_delay_trace_identity_audit}.
+The corresponding operator-mother-space identity for $\frac{\dd}{\dd z}\log\det(I-zF)$ is recorded in Appendix~\ref{app:operator_mother_space}
+(Lemma~\ref{lem:logdet_derivative_resolvent_trace} and Remark~\ref{rem:det_phase_derivative_audit_reading}).
+Finally, one may build an explicit (toy) scattering dictionary object by defining a strict unitary matrix
+$S(\omega)=\exp(\iu\,\phi(\omega))I_2$ from the same determinant phase. Then the Wigner--Smith operator satisfies
+$Q(\omega)=-\iu S(\omega)^\dagger \frac{\dd S(\omega)}{\dd\omega}=(\dd\phi/\dd\omega)\,I_2$, hence $\tfrac12\Tr Q=\dd\phi/\dd\omega$.
+For an audit table verifying $\tfrac12\Tr Q \approx \tau_{\mathrm{tr}}$ on the declared grid (with the same gate away from determinant zeros), see
+Appendix~\ref{app:equivalence_ladder_certificates}, Table~\ref{tab:det_to_smatrix_ws_delay_audit}.
+Finally, in graph-zeta determinant packages based on the Hashimoto operator, an edge update changes the oriented-edge space dimension but the determinant ratio still reduces to a $2\times2$ Schur complement factor;
+see Appendix~\ref{app:equivalence_ladder_certificates}, Table~\ref{tab:hashimoto_added_edge_schur_audit} and the unified local-interface contract remark
+(Appendix~\ref{app:operator_mother_space}, Remark~\ref{rem:local_interface_factorization_contract}).
+When this local-interface factorization (Woodbury/Schur) is not provided as part of a shortcut/update claim, the manuscript enforces a downgrade by the minimal failure point (LF1)
+(Appendix~\ref{app:minimal_failure_point_templates}; evidence map Table~\ref{tab:failurepoint_evidence_map}).
+\end{enumerate}
+\end{remark}
+
+\subsection{X.3B.\ Black-hole-like metabolism (audit-facing cosmological hypothesis)}
+\label{subsec:x3b_black_hole_metabolism_audit_hypothesis}
+
+\paragraph{Local closure reading inside the full-fusion contract.}
+\AuditTag The full-fusion suite contains an operational strong-field surrogate:
+budget-triggered trapping (horizon-like occupancy $f_{\mathrm{hor}}$), delayed extraction, and leakage/emission ledgers
+(Section~\ref{sec:qg_interface_full_fusion}, especially Sections~\ref{subsec:full_fusion_maintext} and \ref{subsec:bh_high_m_particles}).
+Within this declared contract, a conservative ``metabolism'' reading is:
+high-occupancy trapped regions act as temporary storage for budgeted readout capacity, while the emission ledger $E_{\mathrm{emit}}(t)$ records a controlled return channel back to propagating degrees of freedom.
+Wormhole-like shortcuts, if enabled, remain paid by $E_{\mathrm{wh}}(t)$ and isolatable by the wormhole-off baseline.
+
+\paragraph{A minimal auditable proxy (finite-window).}
+\AuditTag For any declared run window length $T$, define the cumulative return ledger and its counterfactual delta by
+\[
+\mathcal{E}_{\mathrm{emit}}(T):=\sum_{t=0}^{T-1}E_{\mathrm{emit}}(t),
+\qquad
+\Delta\mathcal{E}_{\mathrm{emit}}(T):=\mathcal{E}_{\mathrm{emit}}^{\mathrm{wh}}(T)-\mathcal{E}_{\mathrm{emit}}^{\mathrm{nowh}}(T),
+\]
+where the superscripts refer to the paired wormhole-on / wormhole-off contracts (Section~\ref{sec:qg_interface_full_fusion}).
+These quantities are read directly from the generated provenance tables and do not require any additional physical inputs.
+
+\paragraph{Cosmological hypothesis (audit-only; not a solution claim).}
+\AuditTag Appendix~\ref{app:cosmology_resolution_flow} records a self-contained cosmology interface in which resolution growth supplies an inflation-like capacity-growth stage and an occupancy-count energy accounting hypothesis
+(Assumption~\ref{ass:occupancy_energy_z128}).
+The metabolism hypothesis is the following optional audit overlay:
+on sufficiently coarse windows, a persistent net return rate of trapped budget back to propagating channels (as proxied by $\mathcal{E}_{\mathrm{emit}}(T)$ and its baselines)
+may enter the cosmology interface as an effective source/pressure term that biases the resolution-flow bookkeeping toward continued capacity growth.
+This is a falsifiable hypothesis only after declaring (i) the coarse-graining window, (ii) the proxy mapping from return-rate summaries to the cosmology-side budget terms,
+and (iii) stability under bounded counterfactuals; it is not used as a premise anywhere in the theorem-level chain.
+
+\paragraph{Failure-point and fallback.}
+\AuditTag If the required mapping and identifiability conditions are not discharged (e.g.\ finite-window summaries cannot distinguish return-flow from readout bias or background fluctuation),
+the manuscript reverts to the local interface closure only:
+black-hole-like trapping remains an operational horizon surrogate (high-$m$ saturation), and wormhole-like channels remain paid pointer-jump shortcuts under the full-fusion hard gates,
+with LF1 governing any attempted det/logdet/delay promotion (Section~\ref{sec:qg_interface_full_fusion}; Appendix~\ref{app:minimal_failure_point_templates}; Appendix~\ref{app:bh_wormholes_pointer}).
+
+\subsection{X.4.\ Euler phase transition and mass generation (scope and proper placement)}
+\label{subsec:x4_euler_phase_transition_scope}
+
+\InterfaceTag In this paper, mass/energy are treated as time dictionaries (Section~\ref{sec:mass_latency_coordinate}) and compared to operational delay proxies (Appendix~\ref{app:time_mass_delay}).
+Algebraic compatibility between delay and determinant packaging is provided by the rigidity bridge spine (Section~\ref{subsec:rigidity_scattering_delay_logdet} and Remark~\ref{rem:rigidity_ws_logdet_bridge}).
+
+\AuditTag Using Euler's identity $\e^{\iu\pi}+1=0$ as a literal ``phase transition'' or as a theorem-level mass-generation mechanism is not part of the closed folding chain in this manuscript.
+If invoked, it must remain interpretive (\AuditTag) and cannot serve as a premise for any theorem-level statement.
+
+\subsection{X.5.\ Conclusion (what is unified at theorem level)}
+\label{subsec:x5_geodynamic_conclusion}
+
+\MathTag Within tick+CAP, the stable-sector grammar (golden-mean shift), the cyclic closure predicate ($\pi$-channel), and the Abel-normalized zeta/determinant packaging ($\e$-channel) form a single finite, auditable orbit-counting framework.
+\MathTag The same continued-fraction data that controls mismatch accumulation via discrepancy certificates (Appendix~\ref{app:discrepancy_ostrowski}) also controls persistence/return scales of the Sturmian readout itself:
+uniform recurrence (Appendix~\ref{app:sturmian_uniform_recurrence}), a quantitative two-scale return bound $\tau\le q_k+q_{k+1}$ for length-$m$ factors when $q_k\le m<q_{k+1}$ (Appendix~\ref{app:sturmian_return_times_qk}), and a convergent-scale hitting-time bound derived from discrepancy (Appendix~\ref{app:rotation_hitting_time_discrepancy}).
+Thus, in the scan-coding layer, ``mismatch control'' and ``persistent pattern return'' are two audited certificate coordinates governed by the same convergent denominators $(q_k)$.
+In particular, within the bounded-type class ($a_i\le A$) the return gaps admit an explicit linear bound $\tau\le (A+2)m$; on the golden branch ($A=1$) the constant is $\tau\le 3m$ (Corollary~\ref{cor:sturmian_return_bounded_type_linear}).
+Physical readings (particles, mass, tunneling narratives) may be layered on top only through explicit \InterfaceTag/\AuditTag dictionaries and must never reverse the theorem-level dependency direction.
+

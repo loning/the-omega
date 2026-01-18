@@ -1,0 +1,250 @@
+\subsection{Protocol-to-continuum error control: from discrete readout to stable fields}
+\label{app:protocol_to_continuum_error_control}
+
+This appendix closes a single audit gap flagged in \texttt{theory\_closure\_tracker.md}: an explicit error-control bridge from protocol-level discrete reconstructions to continuum representative fields.
+It is an interface-level module: it does not alter any theorem-level finite folding statement.
+
+\paragraph{Scope.}
+\InterfaceTag The objects whose uncertainty we track are the reconstructed overhead proxy field $\widehat\chi(x)$ (Section~\ref{app:chi_reconstruction_protocol}) and its downstream weak-field representatives $\widehat\Phi(x)$ and $\widehat\rho_{\mathrm{eff}}(x)$ (Section~\ref{app:overhead_to_gravity_closure}).
+We separate: (i) statistical error from finite sampling / thresholded readout, (ii) discretization error from mapping and finite differences, and (iii) interface/model error from optional matching dictionaries (weak-field regime, choice of smoothing/regularization).
+\AuditTag All expectation/probability statements in this appendix are conditional on a declared protocol state $(m,n,K)$ and on an explicit sampling rule for the data stream (Appendix~\ref{subsec:tick_cap_joint_key_contract}): the kernel component $K$ fixes the weighting rule under which $\mathbb{E}(\cdot)$ is taken, while $n$ and $m$ fix the discretization scale and windowed observables.
+
+\subsubsection{Error objects and a minimal decomposition}
+\label{subsec:prot_to_cont_error_objects}
+
+\paragraph{Discrete estimator and continuum representative.}
+\textsf{\footnotesize[Prot]} The reconstruction pipeline outputs a grid field $\widehat\chi_h$ at some addressing resolution (Hilbert order $n$) and word resolution $m$ (Section~\ref{app:chi_reconstruction_protocol}).
+To compare with a continuum representative $\chi$ (e.g.\ the smooth field entering the action representative in Section~\ref{app:cap_continuum_action_closure}), we treat $\widehat\chi_h$ as a piecewise-constant or interpolated field on a grid with spacing $h$.
+
+\paragraph{Decomposition.}
+\InterfaceTag For any grid point $x$ at spacing $h$, we decompose
+\[
+\widehat\chi_h(x)-\chi(x)
+=\underbrace{\bigl(\widehat\chi_h(x)-\mathbb{E}\widehat\chi_h(x)\bigr)}_{\text{statistical}}
+\;+\;\underbrace{\bigl(\mathbb{E}\widehat\chi_h(x)-\chi_h(x)\bigr)}_{\text{protocol bias}}
+\;+\;\underbrace{\bigl(\chi_h(x)-\chi(x)\bigr)}_{\text{discretization/model}},
+\]
+where $\chi_h$ denotes the grid restriction (or projection) of the continuum representative.
+The first term is controlled by concentration inequalities; the last term is controlled by standard finite-difference truncation bounds; the middle term captures thresholding and modeling choices and must be addressed by explicit counterfactual sweeps (Section~\ref{app:chi_reconstruction_protocol}, Audit note therein).
+
+\subsubsection{Concentration of window-level folding statistics}
+\label{subsec:prot_to_cont_concentration}
+
+We state a concentration bound for the empirical folding statistic used in the $\chi$ reconstruction.
+
+\begin{assumption}[Bounded folding statistic and effective sample size]\label{ass:gm_bounded_effective_n}
+Fix a window length $m$ and a reconstruction rule that produces samples $Z_1,\dots,Z_K$ of a folding-derived statistic (e.g.\ $Z_j=g_m(N_j)$ or any bounded proxy used in Section~\ref{app:chi_reconstruction_protocol}).
+Assume $Z_j\in[a,b]$ almost surely for known bounds $a<b$.
+Assume further that the sampling scheme admits an \emph{effective sample size} $K_{\mathrm{eff}}\le K$ such that a Hoeffding-type tail bound holds with $K_{\mathrm{eff}}$ (this is exact under independence; for dependent samples one may enforce it by non-overlapping subsampling or block methods, or justify it under a mixing assumption; see \cite{Hoeffding1963,BoucheronLugosiMassart2013}).
+\end{assumption}
+
+\begin{theorem}[High-probability bound for the empirical folding statistic]\label{thm:gm_concentration}
+Under Assumption~\ref{ass:gm_bounded_effective_n}, let
+\[
+\overline Z:=\frac{1}{K}\sum_{j=1}^{K} Z_j.
+\]
+Then for any $\epsilon>0$,
+\[
+\mathbb{P}\Bigl(\bigl|\overline Z-\mathbb{E}\overline Z\bigr|\ge \epsilon\Bigr)
+\;\le\;2\exp\!\left(-\frac{2K_{\mathrm{eff}}\epsilon^2}{(b-a)^2}\right).
+\]
+Equivalently, for any confidence level $\delta\in(0,1)$, with probability at least $1-\delta$,
+\[
+\bigl|\overline Z-\mathbb{E}\overline Z\bigr|
+\;\le\;
+(b-a)\sqrt{\frac{\log(2/\delta)}{2K_{\mathrm{eff}}}}.
+\]
+\end{theorem}
+
+\begin{remark}[Specialization to the $m=6$ anchor]\label{rem:gm_anchor_bounds}
+At the $(m,n)=(6,3)$ anchor, the exact folding degeneracy values satisfy $g_6\in\{2,3,4\}$ (Definition~\ref{def:x6_invariants}), so one may take $(a,b)=(2,4)$ when $Z_j=g_6(N_j)$.
+At larger $m$, one can either compute (or upper bound) the range of the chosen statistic from the audited Fold$_m$ tables/scripts, or replace $g_m$ by a bounded defect-rate proxy (Section~\ref{app:chi_reconstruction_protocol}).
+\end{remark}
+
+\subsubsection{Propagation through the log-ratio: bounds for \texorpdfstring{$\widehat\chi$}{chi-hat}}
+\label{subsec:prot_to_cont_log_ratio}
+
+\begin{lemma}[Log-ratio perturbation bound]\label{lem:log_ratio_perturbation}
+Let $u,v,\widehat u,\widehat v>0$. Then
+\[
+\left|\log\frac{\widehat u}{\widehat v}-\log\frac{u}{v}\right|
+\;\le\;
+\frac{|\widehat u-u|}{\min\{u,\widehat u\}}
+\;+\;
+\frac{|\widehat v-v|}{\min\{v,\widehat v\}}.
+\]
+\end{lemma}
+\begin{proof}
+By the mean value theorem, $|\log\widehat u-\log u|\le |\widehat u-u|/\min\{u,\widehat u\}$ and similarly for $v$.
+Subtract $\log(\widehat u/\widehat v)-\log(u/v)=(\log\widehat u-\log u)-(\log\widehat v-\log v)$ and apply the triangle inequality.
+\end{proof}
+
+\begin{corollary}[A usable error bar for $\widehat\chi$]\label{cor:chi_error_bar}
+In the reconstruction protocol of Section~\ref{app:chi_reconstruction_protocol}, write
+\[
+\widehat\chi=\log\frac{\widehat{\overline Z}}{\widehat{\overline Z}_0},
+\qquad
+\chi^\star=\log\frac{\overline Z^\star}{\overline Z_0^\star},
+\]
+where $\widehat{\overline Z}$ is the empirical statistic (e.g.\ $\bar g_m$) computed on a local sample set and $\widehat{\overline Z}_0$ is the baseline statistic (global mean/median), while $\overline Z^\star,\overline Z_0^\star$ denote the corresponding population quantities under a declared data-generating model.
+Assume $\overline Z^\star,\overline Z_0^\star$ are bounded away from $0$ and that high-probability bounds
+$|\widehat{\overline Z}-\overline Z^\star|\le \epsilon$ and $|\widehat{\overline Z}_0-\overline Z_0^\star|\le \epsilon_0$ hold.
+Then Lemma~\ref{lem:log_ratio_perturbation} yields the deterministic bound
+\[
+|\widehat\chi-\chi^\star|
+\;\le\;
+\frac{\epsilon}{\min\{\overline Z^\star,\widehat{\overline Z}\}}
+\;+\;
+\frac{\epsilon_0}{\min\{\overline Z_0^\star,\widehat{\overline Z}_0\}}.
+\]
+In particular, one may take $\epsilon$ (and $\epsilon_0$) from Theorem~\ref{thm:gm_concentration} for the chosen statistic and declared $K_{\mathrm{eff}}$.
+\end{corollary}
+
+\subsubsection{Finite differences: truncation error and noise amplification}
+\label{subsec:prot_to_cont_finite_differences}
+
+The weak-field template $\rho_{\mathrm{eff}}\propto -\Delta\chi$ depends on spatial derivatives; these operations can amplify protocol noise.
+We record standard, explicit bounds that make this amplification auditable.
+
+\paragraph{Discrete Laplacian.}
+Let $d$ be the spatial dimension (typically $d=2$ for a screen or $d=3$ for a volume) and let $h>0$ be the grid spacing.
+Define the standard $2d{+}1$ point Laplacian
+\[
+(\Delta_h f)(x)
+:=\sum_{k=1}^{d}\frac{f(x+h e_k)-2f(x)+f(x-h e_k)}{h^2}.
+\]
+
+\begin{theorem}[Second-order truncation error of the central-difference Laplacian]\label{thm:laplacian_truncation}
+Assume $f\in C^4$ on a neighborhood of a grid point $x$.
+Then there exists a constant $C_f(x)$ depending on fourth derivatives of $f$ near $x$ such that
+\[
+|(\Delta_h f)(x)-(\Delta f)(x)|
+\le
+C_f(x)\,h^2.
+\]
+In particular, one may take
+\[
+C_f(x)
+\;:=\;
+\frac{1}{12}\sum_{k=1}^{d}\sup_{|\xi-x|_\infty\le h}\bigl|\partial_k^4 f(\xi)\bigr|,
+\]
+so that $|(\Delta_h f)(x)-(\Delta f)(x)|\le C_f(x)\,h^2$ holds pointwise.
+See, e.g., standard finite-difference truncation analyses \cite{LeVeque2007FDM}.
+\end{theorem}
+
+\begin{corollary}[Noise amplification under $\Delta_h$]\label{cor:laplacian_noise_amplification}
+Let $\widehat f=f+\eta$ be a noisy grid field with $|\eta(x)|\le \epsilon$ for all grid points in the stencil of $x$.
+Then
+\[
+|(\Delta_h\widehat f)(x)-(\Delta_h f)(x)|
+\le
+\frac{4d}{h^2}\,\epsilon.
+\]
+\end{corollary}
+\begin{proof}
+Expand $\Delta_h\eta$ and bound each term by $\epsilon$:
+for each $k$, $|\eta(x{+}h e_k)-2\eta(x)+\eta(x{-}h e_k)|\le 4\epsilon$.
+Sum over $k$ and divide by $h^2$.
+\end{proof}
+
+\paragraph{First derivatives (for the \texorpdfstring{$\gamma$}{gamma} fit).}
+When fitting $\gamma$ via rotation curves in Section~\ref{app:overhead_to_gravity_closure}, one needs $\chi'(r)$.
+The following bound makes explicit the noise--resolution tradeoff.
+
+\begin{proposition}[Central-difference derivative error (bias--variance tradeoff)]\label{prop:derivative_error_tradeoff}
+Let $f\in C^3$ in a neighborhood of $r$ and define the central difference estimator
+\[
+(D_h f)(r):=\frac{f(r+h)-f(r-h)}{2h}.
+\]
+Assume the observed field is $\widehat f=f+\eta$ with $|\eta(r\pm h)|\le \epsilon$.
+Then
+\[
+|(D_h\widehat f)(r)-f'(r)|
+\le
+\frac{h^2}{6}\sup_{|\xi-r|\le h}|f^{(3)}(\xi)|
+\;+\;\frac{\epsilon}{h}.
+\]
+See, e.g., \cite{LeVeque2007FDM}.
+\end{proposition}
+
+\subsubsection{Propagation to \texorpdfstring{$\rho_{\mathrm{eff}}$}{rho\_eff}, \texorpdfstring{$\Phi$}{Phi}, and the \texorpdfstring{$\gamma$}{gamma} fit}
+\label{subsec:prot_to_cont_propagation_to_gravity}
+
+\paragraph{Discrete \texorpdfstring{$\rho_{\mathrm{eff}}$}{rho\_eff} from reconstructed \texorpdfstring{$\chi$}{chi}.}
+\InterfaceTag In practice, given a reconstructed grid field $\widehat\chi_h$, one forms a discrete estimate
+\[
+\widehat\rho_{\mathrm{eff}}(x)
+:= -\frac{\widehat\gamma c^2}{4\pi G}\,(\Delta_h\widehat\chi_h)(x),
+\]
+which is the direct discrete analogue of \eqref{eq:z128_rho_eff_from_chi}.
+
+\begin{corollary}[Error budget for $\widehat\rho_{\mathrm{eff}}$]\label{cor:rho_eff_error_budget}
+Let $\widehat\chi_h=\chi_h+\eta$ with $|\eta|\le \epsilon_\chi$ on the Laplacian stencil, and let $\widehat\gamma=\gamma+\delta\gamma$.
+Then at any grid point $x$,
+\[
+\bigl|\widehat\rho_{\mathrm{eff}}(x)-\rho_{\mathrm{eff}}(x)\bigr|
+\;\le\;
+\frac{c^2}{4\pi G}\Bigl(
+|\gamma|\cdot |(\Delta_h\chi_h)(x)-(\Delta\chi)(x)|
+\;+\;|\gamma|\cdot |(\Delta_h\eta)(x)|
+\;+\;|\delta\gamma|\cdot |(\Delta_h\widehat\chi_h)(x)|
+\Bigr),
+\]
+where $\rho_{\mathrm{eff}}:=-(\gamma c^2/(4\pi G))\Delta\chi$ is the continuum representative.
+Using Theorem~\ref{thm:laplacian_truncation} and Corollary~\ref{cor:laplacian_noise_amplification}, the first two terms are controlled as
+$|(\Delta_h\chi_h)-(\Delta\chi)|\lesssim h^2$ and $|(\Delta_h\eta)|\le (4d/h^2)\epsilon_\chi$.
+\end{corollary}
+
+\paragraph{\texorpdfstring{$\Phi$}{Phi} from \texorpdfstring{$\chi$}{chi}.}
+Under the weak-field dictionary $\Phi=-\gamma c^2(\chi-\chi_0)$ (equation \eqref{eq:z128_phi_from_chi}),
+constant shifts $\chi\mapsto\chi+\mathrm{const}$ do not affect forces.
+At the field level, the error propagation is immediate:
+for $\widehat\Phi=-\widehat\gamma c^2(\widehat\chi-\widehat\chi_0)$,
+\[
+|\widehat\Phi-\Phi|
+\le
+c^2\Bigl(|\delta\gamma|\cdot|\widehat\chi-\widehat\chi_0|
+\;+\;|\gamma|\cdot|\widehat\chi-\chi|
+\Bigr).
+\]
+
+\paragraph{The \texorpdfstring{$\gamma$}{gamma} fit: WLS variance and propagation.}
+Section~\ref{app:overhead_to_gravity_closure} uses the one-parameter weighted least-squares estimator
+\[
+\widehat\gamma=\frac{\sum_i w_i x_i y_i}{\sum_i w_i x_i^2},
+\qquad
+w_i:=\sigma_{y,i}^{-2},
+\qquad
+y_i:=v_i^2,
+\qquad
+x_i:=-c^2 r_i \chi'(r_i).
+\]
+
+\begin{proposition}[WLS variance in the ideal design-known model]\label{prop:wls_gamma_variance}
+Assume the model $y_i=\gamma x_i+\varepsilon_i$ with $\mathbb{E}\varepsilon_i=0$ and $\Var(\varepsilon_i)=\sigma_{y,i}^2$, and assume the design values $x_i$ are treated as deterministic (known).
+Then $\widehat\gamma$ is unbiased and
+\[
+\Var(\widehat\gamma)=\frac{1}{\sum_i w_i x_i^2}.
+\]
+Moreover, under standard regularity conditions ensuring asymptotic normality of the weighted least-squares estimator (e.g.\ Lindeberg-type conditions for the weighted sum), a $(1-\delta)$ confidence interval can be reported as
+$
+\widehat\gamma \pm z_{1-\delta/2}\sqrt{\Var(\widehat\gamma)}
+$
+with the standard normal quantile $z_{1-\delta/2}$; see, e.g., classical asymptotic theory \cite{vanDerVaart1998}.
+As a distribution-free conservative alternative under finite variance only, Chebyshev's inequality gives
+$
+\mathbb{P}\bigl(|\widehat\gamma-\gamma|\ge t\bigr)\le \Var(\widehat\gamma)/t^2,
+$
+hence with confidence at least $1-\delta$ one may report
+$
+|\widehat\gamma-\gamma|\le \sqrt{\Var(\widehat\gamma)/\delta}.
+$
+\end{proposition}
+
+\begin{remark}[When $x_i$ is estimated from $\widehat\chi$]\label{rem:wls_errors_in_variables}
+In the present application, $x_i$ depends on a numerical derivative of $\chi$ and is therefore itself noisy.
+If one uses a central difference for $\chi'(r_i)$, Proposition~\ref{prop:derivative_error_tradeoff} shows an explicit bias--noise tradeoff of order $O(h^2)+O(\epsilon_\chi/h)$.
+At audit level, this is handled by: (i) declaring the derivative/smoothing rule, (ii) sweeping the step/regularization scale, and (iii) reporting the stability of $\widehat\gamma$ under these counterfactual baselines (Section~\ref{app:chi_reconstruction_protocol}).
+A fully corrected errors-in-variables treatment is possible but is beyond the minimal self-contained scope here; see, e.g., standard measurement-error models \cite{Fuller1987,Carroll2006}.
+\end{remark}
+

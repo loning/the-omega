@@ -1,0 +1,127 @@
+\section{Leakage kernels: decay and evaporation as exit from tick traps (extended interface module)}
+\label{app:leakage_kernel}
+
+\paragraph{Scope and status.}
+\AuditTag This appendix defines a finite-family ``leakage kernel'' vocabulary that unifies decay and evaporation as exits from tick traps.
+It is an interface/audit module: it introduces no new theorem-level premise into the folding core.
+Its role is to provide reproducible, CAP-auditable diagnostics (delay proxies, lifetimes, exit-channel decompositions) used by the relative-horizon language (Appendix~\ref{app:protocol_horizon_tick_trap}) and by the low-leakage phase module (Appendix~\ref{app:protected_low_leakage_phase}).
+
+\subsection{Survival kernels and leakage rates}
+\label{subsec:leakage_survival_kernels}
+
+\paragraph{Finite-family modeling discipline.}
+\AuditTag A leakage kernel is specified by choosing a finite candidate family of survival laws and a deterministic tie-break, then selecting the CAP-minimal element relative to declared mismatch costs.
+This ensures that any numerical rows shown in generated tables are reproducible and do not hide untracked degrees of freedom.
+
+\begin{definition}[Survival kernel (finite-family)]
+\label{def:survival_kernel_family}
+Fix a finite index set $\mathcal F$ and a family of survival functions $\{P_f(t)\}_{f\in\mathcal F}$ with $P_f(0)=1$ and $P_f(t)\in[0,1]$.
+The associated leakage rate proxy is defined by
+\[
+\Gamma_f := \inf\{\gamma>0:\ P_f(t)\le \e^{-\gamma t}\ \text{for all }t\ge 0\},
+\]
+and a lifetime proxy by $\tau_f := 1/\Gamma_f$ when $\Gamma_f>0$.
+\end{definition}
+
+\begin{remark}[Exponential law as a reference]
+\label{rem:exponential_reference}
+If $P(t)=\e^{-\Gamma t}$, then $\Gamma$ is the standard decay width and $\tau=1/\Gamma$ is the mean lifetime.
+This appendix does not assume an exponential law universally; it only uses a finite candidate family.
+\end{remark}
+
+\subsection{A minimal finite-family demo (reproducible audit)}
+\label{subsec:leakage_kernel_demo}
+
+\AuditTag The deterministic generator \path{scripts/exp\_leakage\_kernel\_demo.py} provides a compact, finite-family illustration of the survival-kernel vocabulary (candidate family, CAP selection, and reported proxies).
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{l r r l}
+\toprule
+family id & $\Gamma$ (proxy) & $\tau$ (proxy) & note \\
+\midrule
+\input{sections/generated/leakage_kernel_demo_rows.tex}%
+\\
+\bottomrule
+\end{tabular}
+\caption{A minimal leakage-kernel demo table reproduced by \texttt{scripts/exp\_leakage\_kernel\_demo.py}.}
+\label{tab:leakage_kernel_demo}
+\end{table}
+
+\subsection{Delay as the trap readout}
+\label{subsec:leakage_delay_readout}
+
+\paragraph{Delay proxy.}
+\InterfaceTag As recorded in Section~\ref{sec:mass_latency_coordinate}, an operational proxy for protocol overhead is Wigner--Smith time delay.
+We treat a large delay proxy as an indicator of a deep trap (large stabilizing overhead), and a small leakage rate as an indicator of a well-protected trap.
+The delay proxy is complementary to the lifetime proxy: both are reported as audit outputs.
+\AuditTag When delay is extracted from a scattering readout, the algebraic bridge to the manuscript's determinant/trace vocabulary is the logdet identity:
+on a declared unitary band, $\Tr Q(\omega)=-\iu\,\dd(\log\det S(\omega))/\dd\omega$ (Lemma~\ref{lem:wigner_smith_trace_logdet}).
+Accordingly, the minimal failure point is the same as for scattering-delay audits: approximate unitarity on the declared band (S1; Appendix~\ref{app:minimal_failure_point_templates}).
+
+\paragraph{Determinant-packaging carrier (optional audit bridge).}
+\AuditTag Independently of scattering, one may extract a delay/linewidth proxy directly from a determinant package $D(z)$ by the resolvent-trace identity
+$\tau(\omega)=\Im\frac{\dd}{\dd\omega}\log D(r\e^{\iu\omega})=\Im\bigl(-\iu z\,\Tr(A(I-zA)^{-1})\bigr)$ (Appendix~\ref{app:equivalence_ladder_certificates},
+Tables~\ref{tab:det_phase_delay_trace_identity_audit} and \ref{tab:det_to_smatrix_ws_delay_audit}).
+In this carrier, a linewidth proxy $\Gamma$ can be audited from delay peaks (FWHM) and compared to the Breit--Wigner proxy $\Gamma_\tau=4/\tau_{\max}$
+(Appendix~\ref{app:equivalence_ladder_certificates}, Table~\ref{tab:det_delay_linewidth_audit}),
+and then converted into a survival-kernel proxy $P(t)=\exp(-\Gamma t)$ and a finite-family CAP selection entry
+(Tables~\ref{tab:linewidth_survival_kernel_audit} and \ref{tab:survival_finite_family_audit}).
+\AuditTag Gate: phase-difference readouts must be declared away from determinant zeros (ill-conditioned phase), and linewidth extraction requires the existence of a resolvable peak and half-maximum crossings on the declared grid.
+\AuditTag Fallback: if these gates fail, revert to the finite-family vocabulary at the level of Definition~\ref{def:survival_kernel_family}
+and the minimal demo generator (Table~\ref{tab:leakage_kernel_demo}) without invoking frequency-domain packaging.
+
+\subsection{Exit-channel decompositions}
+\label{subsec:exit_channel_decomposition}
+
+\begin{definition}[Exit channels (protocol)]
+\label{def:exit_channels_protocol}
+Fix a coarse-graining that exposes a finite set of externally distinguishable exit channels $\mathcal C$.
+An exit-channel decomposition for a target $X$ is a probability vector
+\[
+\mathbf p(X)=(p_c(X))_{c\in\mathcal C},\qquad p_c(X)\ge 0,\ \sum_{c\in\mathcal C}p_c(X)=1,
+\]
+representing the relative weights of leakage into each channel under the chosen coarse-graining.
+\end{definition}
+
+\paragraph{Interpretation.}
+\AuditTag In this vocabulary, ``radiation'' is not a primitive label; it is leakage into some externally propagating subset of channels.
+Which subset is interpreted as ``radiative'' depends on additional matching assumptions (e.g.\ symmetry breaking, propagation conditions), and is therefore not fixed by protocol structure alone.
+
+\subsection{The \texorpdfstring{$m=6$}{m=6} specialization: \texorpdfstring{$18$}{18} trap states and \texorpdfstring{$3$}{3} exit channels}
+\label{subsec:m6_trap_exit}
+
+\paragraph{Trap/exit split at \texorpdfstring{$m=6$}{m=6}.}
+\AuditTag At window length $m=6$ the stable-type decomposition has $18$ cyclic types and $3$ boundary types.
+In the present appendix we treat the $18$ cyclic types as \emph{trap states} (discrete trap categories) and the $3$ boundary types as a distinguished \emph{exit-channel family}.
+This is an audit choice: it does not identify a unique microscopic mechanism; it identifies a clean, finite protocol-level channelization.
+
+\paragraph{Exit channels as gauge-sector channels (not ``photons'').}
+\AuditTag In the SM labeling closure, the three boundary types at $m=6$ are uniquely and monotonically assigned to $U(1)\prec SU(2)\prec SU(3)$ (Remark~\ref{rem:boundary_value_order}).
+Therefore, in this specialization, the $3$ exit channels should be read as a \emph{gauge-sector channel family} rather than as a literal identification with a single radiative species.
+Interpreting a particular channel as ``electromagnetic radiation'' requires additional matching assumptions beyond the protocol structure.
+
+\paragraph{Reproducible audit rows.}
+\AuditTag The following table rows (generated by a deterministic script) report, for each of the $18$ trap categories, a declared delay proxy level and an exit-channel weight vector into the three boundary channels.
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{l l r r r}
+\toprule
+trap type $w$ & label & delay level & $p_{U(1)}$ & $(p_{SU(2)},p_{SU(3)})$ \\
+\midrule
+\input{sections/generated/leakage_kernel_m6_trap_exit_rows.tex}%
+\\
+\bottomrule
+\end{tabular}
+\caption{Audit rows for the $m=6$ trap/exit specialization: $18$ cyclic trap categories and $3$ boundary exit channels (assigned to $U(1),SU(2),SU(3)$ by the SM labeling closure). Rows are reproduced by \texttt{scripts/exp\_leakage\_kernel\_m6\_trap\_exit.py}.}
+\label{tab:leakage_kernel_m6_trap_exit}
+\end{table}
+
+\input{sections/generated/leakage_kernel_m6_trap_exit_summary.tex}%
+

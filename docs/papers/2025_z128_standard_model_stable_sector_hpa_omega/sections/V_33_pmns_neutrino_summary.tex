@@ -1,0 +1,78 @@
+\section{Lepton mixing and a neutrino-scale interface}
+\label{sec:pmns_neutrino_closure}
+
+This section extends the bounded-complexity closure program to the lepton sector.
+We record a minimal, auditable closure for the PMNS mixing angles and provide a corresponding matrix reconstruction in the PDG standard parameterization.
+Majorana phases do not affect oscillation probabilities and are not constrained by this minimal closure, so we ignore them here \cite{PDGRPP2024}.
+
+\paragraph{Audit pointer (bounded-family closure).}
+\AuditTag The reported PMNS closures are CAP selections within explicitly declared finite candidate families with deterministic tie-break rules; see Appendix~\ref{app:cap_audit_template} and Appendix~\ref{app:tick_cap_derivation} for the audit contract, and Appendix~\ref{app:closure_audit_details} and Appendix~\ref{app:generated_tables} for the enumerations, gaps, and robustness tables.
+
+\subsection{PMNS angles as bounded-complexity amplitudes}
+\label{subsec:pmns_mixing_depths}
+
+The bounded-complexity candidate family, the stabilized minimizers, and the associated rigidity/robustness tables are recorded in Appendix~\ref{app:closure_audit_details}.
+
+\subsection{Matrix reconstruction and a discrete CP-phase closure}
+\label{subsec:pmns_matrix_closure}
+
+The bounded-denominator Dirac-phase selection and the induced PMNS matrix/ unitarity diagnostics are recorded in Appendix~\ref{app:closure_audit_details}.
+
+\subsection{A minimal neutrino mass-scale interface}
+\label{subsec:neutrino_mass_interface}
+
+At the anchor resolution $(m,n)=(6,3)$, the mass-spectrum closure of Section~\ref{sec:mass_spectrum_closure} anchors scheme-stable charged-lepton scales and treats neutrino absolute masses as an interface input.
+To express neutrino scales in the same resolution language, we record a deterministic nearest-integer depth assignment for representative minimal-mass normal/inverted orderings inferred from oscillation splittings.
+We use representative central values for $(\Delta m_{21}^2,|\Delta m_{31}^2|)$ from standard global fits \cite{PDGRPP2024,Esteban2020NuFIT}.
+\begin{remark}[Status of the neutrino-scale assignment]\label{rem:neutrino_scale_status}
+The nearest-integer depth assignment in Table~\ref{tab:neutrino_mass_interface} is an interface-level bookkeeping device: it expresses commonly quoted oscillation-inferred mass scales in the same additive depth coordinate used elsewhere, without claiming a unique absolute-mass prediction at $(m,n)=(6,3)$.
+Any stronger neutrino-mass prediction requires additional physical identification input (e.g.\ a concrete mass-generation mechanism and threshold/matching conventions) beyond the minimal closure reported in this paper.
+\end{remark}
+
+\paragraph{External audit channels (Match/Audit pointer).}
+\MatchTag For explicit audit-facing definitions of the external observables
+$\Sigma m_\nu$, $m_\beta$, and $m_{\beta\beta}$ (0$\nu\beta\beta$),
+together with a generated external-input ledger and fail conditions (Match/Audit only),
+see Appendix~\ref{app:neutrino_external_audit_channels} and Table~\ref{tab:neutrino_external_audit_ledger}.
+
+\paragraph{Mechanism candidate registry (audit pointer).}
+\AuditTag A bounded registry of neutrino mass-mechanism bridge hypotheses (C1--C4), together with deterministic selection keys and an external-channel pass/fail scoreboard, is recorded in Appendix~\ref{app:neutrino_mass_mechanism_candidates} (Tables~\ref{tab:neutrino_mechanism_candidates} and \ref{tab:neutrino_mechanism_scoreboard}).
+
+\paragraph{Majorana phase closure (audit pointer).}
+\AuditTag A bounded candidate-family rule that selects the two Majorana phases under the $m_{\beta\beta}$ feasibility filter (0$\nu\beta\beta$) is recorded in Appendix~\ref{app:neutrino_majorana_phase_closure} (Table~\ref{tab:neutrino_majorana_phase_closure}).
+
+\paragraph{Splitting offsets (audit attempt pointer).}
+\AuditTag A bounded rational-offset attempt that compresses oscillation splittings into low-denominator resolution offsets $\Delta r=k/q$ (with a protocol-only minimizer vs a match-minimizer) is recorded in Appendix~\ref{app:neutrino_splitting_depth_closure} (Table~\ref{tab:neutrino_splitting_depth_closure}).
+
+\paragraph{Weinberg operator and seesaw scale pointers (audit).}
+\AuditTag Standard EFT bridges are recorded as auditable interfaces: the dimension-5 Weinberg-operator scale estimate is in Appendix~\ref{app:neutrino_weinberg_operator_closure} (Table~\ref{tab:neutrino_weinberg_scale}), and a Type-I seesaw scale estimate (cap vs match modes) is in Appendix~\ref{app:neutrino_typeI_seesaw_closure} (Table~\ref{tab:neutrino_seesaw_scale}).
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{llrrrrr}
+\toprule
+ordering & eigenstate & reference $\mu$ [GeV] & $r(\mu)$ & nearest $\widehat r$ & $\Delta r$ & $\mu/\mu_{\mathrm{pred}}$ \\
+\midrule
+\input{sections/generated/neutrino_mass_interface_rows.tex}%
+\end{tabular}
+\caption{A minimal neutrino mass-scale interface in the resolution coordinate. For each reference mass $\mu$ we compute $r(\mu)=\log(\mu/m_e)/\log\varphi$ and select the nearest integer depth $\widehat r$, yielding a depth mismatch $\Delta r=r-\widehat r$ and the implied multiplicative matching factor. Rows are reproduced by the deterministic script \texttt{scripts/exp\_neutrino\_mass\_interface.py}.}
+\label{tab:neutrino_mass_interface}
+\end{table}
+
+\subsection{Hypothesis: neutrino smallness as a protocol-decoupling maintenance cost (interface)}
+\label{subsec:neutrino_interface_hypothesis}
+
+\InterfaceTag The table above treats absolute neutrino masses as a matching-layer input at $(m,n)=(6,3)$ (Remark~\ref{rem:neutrino_scale_status}).
+We record the following interpretive hypothesis only; none of the closure statements in this section depends on it.
+
+\InterfaceTag Appendix~\ref{app:forced_interface_lemmas} records that a sterile singlet $\nu_R$ is forced as the unique minimal anomaly-neutral one-multiplet-per-generation extension (Proposition~\ref{prop:nur_forced_by_minimal_anomaly}).
+In the protocol language, such a neutral singlet can behave as a protocol-external / decoupled (``ghost-like'') mode (Section~\ref{subsec:p1_rh_neutrino}).
+We propose to read the absolute neutrino scale as an \emph{idle maintenance cost} of this decoupling: a nonzero but strongly suppressed overhead required to maintain protocol-consistent chiral/gauge closure without populating additional charged stable types at the anchor.
+
+\InterfaceTag Quantitatively, in the exponential map $\mu(r)=m_e\,\varphi^{r}$ (Section~\ref{sec:mass_latency_coordinate}), such an overhead corresponds to large negative depths and hence exponentially small $\mu$, consistent with the placement of the neutrino rows in Table~\ref{tab:neutrino_mass_interface}.
+
+\paragraph{Falsifiability channel.}
+Evidence for an unsuppressed right-handed neutrino mode that participates in the weak compensation transport within the same protocol class would contradict the protocol-external/decoupled identification used here (Section~\ref{subsec:p1_rh_neutrino}).

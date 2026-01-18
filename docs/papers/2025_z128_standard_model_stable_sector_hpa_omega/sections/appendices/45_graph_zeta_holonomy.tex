@@ -1,0 +1,199 @@
+\section{Graph zeta functions and holonomy-weighted loop generating functions (notes)}
+\label{app:graph_zeta_holonomy}
+
+\AuditTag This appendix records a standard graph-zeta template (Ihara/Hashimoto/Bass) and a minimal holonomy-weighted extension that packages finite gauge loop statistics into a generating-function language.
+It is included as an optional unification layer with the $\e$-channel zeta viewpoint: both are Euler products over primitive cycles.
+No result here is used as a premise for any folding or SM-closure theorem; the finite holonomy statistics in Section~\ref{sec:protocol_connections_holonomy} remain defined and computed directly by finite enumeration.
+
+\subsection{Ihara zeta function of a finite graph}
+\label{subsec:ihara_zeta_definition}
+
+Let $G=(V,E)$ be a finite, connected, undirected graph.
+Write $\mathcal{C}_{\mathrm{prim}}$ for the set of primitive, tailless, backtrackless closed cycles in $G$, taken modulo cyclic rotation.
+If $|C|$ denotes the length of $C\in\mathcal{C}_{\mathrm{prim}}$, the Ihara zeta function is defined by the Euler product
+\begin{equation}
+\label{eq:ihara_zeta_euler_product}
+Z_G(u):=\prod_{C\in\mathcal{C}_{\mathrm{prim}}}\left(1-u^{|C|}\right)^{-1}.
+\end{equation}
+This is the graph analogue of the primitive-orbit Euler product for dynamical zeta functions (Lemma~\ref{lem:artin_mazur_euler_product}).
+
+\begin{theorem}[Bass determinant formula (standard)]
+\label{thm:bass_determinant_formula}
+\MathTag Let $A$ be the adjacency matrix of $G$ and $D$ the diagonal degree matrix.
+Then the Ihara zeta function satisfies the determinant identity
+\[
+Z_G(u)^{-1}=(1-u^2)^{|E|-|V|}\,\det\!\bigl(I-uA+(D-I)u^2\bigr),
+\]
+as an identity of formal power series around $u=0$ (equivalently, as a rational function in $u$) \cite{Bass1992,Terras2010}.
+\end{theorem}
+
+\begin{remark}[Audit bridge: added edge $\leftrightarrow$ finite-rank update $\leftrightarrow$ determinant packaging]
+\AuditTag The graph-zeta determinant identities above provide a standard setting in which ``added edge'' is naturally read as an operator update.
+At the adjacency level, adding a single undirected shortcut edge $(i,j)$ corresponds to a rank-$2$ perturbation $A\mapsto A+\Delta$ with
+$\Delta=e_ie_j^\top+e_je_i^\top$.
+Accordingly, any determinant package built from $A$ (including the Bass polynomial $\det(I-uA+(D-I)u^2)$ or the simpler adjacency package $\det(I-zA)$)
+admits a finite-rank determinant update factor (Woodbury/Sherman--Morrison type identities; cf.\ Appendix~\ref{app:operator_mother_space},
+Lemmas~\ref{lem:rank_one_det_sherman_morrison}--\ref{lem:finite_rank_det_woodbury}).
+For a deterministic toy audit that compares the direct ratio $\det(I-z(A+\Delta))/\det(I-zA)$ to the corresponding $2\times2$ Woodbury factor, see
+Appendix~\ref{app:equivalence_ladder_certificates}, Table~\ref{tab:added_edge_det_update_audit}.
+\AuditTag At the non-backtracking level, the Hashimoto operator lives on the oriented-edge space and changes dimension under an edge update.
+Nevertheless, the determinant update ratio admits a small Schur complement factor under the block split (old oriented edges | new oriented edges);
+see Appendix~\ref{app:equivalence_ladder_certificates}, Table~\ref{tab:hashimoto_added_edge_schur_audit}.
+\end{remark}
+
+\subsection{Non-backtracking (Hashimoto) operator and determinant form}
+\label{subsec:hashimoto_operator_det_form}
+
+Write $\overrightarrow{E}$ for the set of oriented edges: each undirected edge $\{a,b\}\in E$ contributes two orientations $a\to b$ and $b\to a$.
+For $e\in\overrightarrow{E}$, write $\mathrm{orig}(e)$ and $\mathrm{term}(e)$ for its origin and terminus, and write $e^{-1}$ for the reversed orientation.
+
+\begin{definition}[Non-backtracking (Hashimoto) matrix]\label{def:hashimoto_matrix}
+\MathTag The (untwisted) non-backtracking matrix $B$ is the $|\overrightarrow{E}|\times|\overrightarrow{E}|$ matrix indexed by oriented edges, defined by
+\[
+B_{e,f}:=
+\begin{cases}
+1, & \mathrm{term}(e)=\mathrm{orig}(f)\ \text{and}\ f\neq e^{-1},\\
+0, & \text{otherwise}.
+\end{cases}
+\]
+\end{definition}
+
+\begin{theorem}[Ihara zeta as a Hashimoto determinant (standard)]\label{thm:ihara_as_hashimoto_det}
+\MathTag Assume $G$ has no degree-$1$ vertices.
+Then
+\[
+Z_G(u)^{-1}=\det(I-uB),
+\]
+as a formal power series identity around $u=0$ \cite{Hashimoto1989,Terras2010}.
+\end{theorem}
+
+\subsection{Holonomy-weighted loop products (twisted graph zeta template)}
+\label{subsec:twisted_graph_zeta_holonomy}
+
+The holonomy diagnostic in Section~\ref{sec:protocol_connections_holonomy} equips the nearest-neighbor grid graph at fixed Hilbert order $n$ with a group-valued edge transport:
+for each oriented edge $a\to b$ one has a permutation $p_{a\to b}\in S_r$ (at the anchor, $r=4$), and loop holonomy is the ordered product along the loop.
+Local slot relabelings act by conjugation (Definition~\ref{def:s4_vertex_gauge}), so conjugacy invariants (cycle type) are gauge invariant (Proposition~\ref{prop:cycle_type_gauge_invariant}).
+
+\begin{definition}[Holonomy-weighted prime-cycle zeta (formal)]
+\label{def:holonomy_weighted_graph_zeta}
+\MathTag Let $G=(V,E)$ be a finite connected graph and let $\Gamma$ be a group.
+Fix a group-valued edge label (connection) $g_{a\to b}\in\Gamma$ for each oriented edge, with $g_{b\to a}=g_{a\to b}^{-1}$.
+For a closed cycle $C=(v_0\to v_1\to\cdots\to v_{|C|}=v_0)$, define its holonomy
+\[
+\mathrm{Hol}(C):=g_{v_0\to v_1}\,g_{v_1\to v_2}\cdots g_{v_{|C|-1}\to v_{|C|}}\in\Gamma.
+\]
+Given a finite-dimensional representation $\rho:\Gamma\to GL(d,\CC)$, define the holonomy-weighted prime-cycle zeta function by
+\begin{equation}
+\label{eq:holonomy_weighted_graph_zeta}
+Z_{G,\rho}(u):=\prod_{C\in\mathcal{C}_{\mathrm{prim}}}\det\!\bigl(I-u^{|C|}\rho(\mathrm{Hol}(C))\bigr)^{-1},
+\end{equation}
+as a formal power series around $u=0$.
+\end{definition}
+
+\begin{definition}[Twisted non-backtracking operator]\label{def:twisted_hashimoto_operator}
+\MathTag In the setting of Definition~\ref{def:holonomy_weighted_graph_zeta}, fix $\rho:\Gamma\to GL(d,\CC)$.
+Define the twisted non-backtracking operator $B_\rho$ on $\CC^d$-valued functions on $\overrightarrow{E}$ by the block matrix indexed by oriented edges:
+\[
+(B_\rho)_{e,f}:=
+\begin{cases}
+\rho(g_f), & \mathrm{term}(e)=\mathrm{orig}(f)\ \text{and}\ f\neq e^{-1},\\
+0, & \text{otherwise},
+\end{cases}
+\]
+where $g_f$ is the edge label on the oriented edge $f$.
+\end{definition}
+
+\begin{theorem}[Twisted Ihara determinant formulas (standard)]\label{thm:twisted_ihara_determinant}
+\MathTag Assume $G$ has no degree-$1$ vertices.
+Then the holonomy-weighted zeta function satisfies
+\[
+Z_{G,\rho}(u)^{-1}=\det(I-uB_\rho).
+\]
+Moreover, writing $A_\rho$ for the $d|V|\times d|V|$ block matrix with blocks
+\[
+(A_\rho)_{a,b}:=
+\sum_{\substack{f\in\overrightarrow{E}:\\ \mathrm{orig}(f)=a,\ \mathrm{term}(f)=b}} \rho(g_f),
+\]
+and writing $Q_\rho$ for the block-diagonal matrix with $(Q_\rho)_{a,a}=(\deg(a)-1)I_d$, one has the twisted Bass identity
+\[
+Z_{G,\rho}(u)^{-1}=(1-u^2)^{d(|E|-|V|)}\det\!\bigl(I-uA_\rho+u^2 Q_\rho\bigr),
+\]
+as a formal identity near $u=0$ \cite{Hashimoto1989,Bass1992,Terras2010}.
+\end{theorem}
+\begin{proof}
+\noindent\textbf{Step 1: $\det(I-uB_\rho)$ gives an Euler product over primitive cycles.}
+By Lemma~\ref{lem:twisted_zeta_log_expansion} applied to $M=B_\rho$, one has the formal identity
+\[
+-\log\det(I-uB_\rho)=\sum_{n\ge 1}\frac{u^n}{n}\,\mathrm{tr}(B_\rho^n).
+\]
+By the definition of $B_\rho$, the trace $\mathrm{tr}(B_\rho^n)$ is a sum over closed non-backtracking length-$n$ edge loops
+$e_1\to e_2\to\cdots\to e_n\to e_1$ (with $e_{i+1}\neq e_i^{-1}$ and $e_1\neq e_n^{-1}$), and each loop contributes
+\[
+\mathrm{tr}\!\bigl(\rho(g_{e_1}g_{e_2}\cdots g_{e_n})\bigr),
+\]
+up to a cyclic shift (which does not change trace).
+Grouping these contributions by primitive cycles $C\in\mathcal{C}_{\mathrm{prim}}$ and their $k$-fold repetitions gives
+\[
+\mathrm{tr}(B_\rho^n)=\sum_{\substack{C\in\mathcal{C}_{\mathrm{prim}}:\\ |C|\mid n}}
+|C|\,\mathrm{tr}\!\left(\rho(\mathrm{Hol}(C))^{n/|C|}\right),
+\]
+so
+\[
+-\log\det(I-uB_\rho)
+=\sum_{C\in\mathcal{C}_{\mathrm{prim}}}\ \sum_{k\ge 1}\frac{u^{k|C|}}{k}\,
+\mathrm{tr}\!\left(\rho(\mathrm{Hol}(C))^{k}\right).
+\]
+Applying Lemma~\ref{lem:twisted_zeta_log_expansion} termwise to the factors
+$\det(I-u^{|C|}\rho(\mathrm{Hol}(C)))$ shows that the right-hand side is exactly
+$\log Z_{G,\rho}(u)$.
+Exponentiating yields $Z_{G,\rho}(u)^{-1}=\det(I-uB_\rho)$.
+\par
+\noindent\textbf{Step 2: the twisted Bass identity.}
+The second determinant formula is standard and follows by reducing $\det(I-uB_\rho)$ to a determinant on vertex blocks via the Hashimoto/Bass elimination; see \cite{Hashimoto1989,Bass1992,Terras2010}.
+\end{proof}
+
+\begin{lemma}[Log expansion as a loop trace generating series]
+\label{lem:twisted_zeta_log_expansion}
+\MathTag For any square matrix $M$ one has the formal identity
+\[
+-\log\det(I-zM)=\sum_{k\ge 1}\frac{z^k}{k}\,\mathrm{tr}(M^k).
+\]
+Consequently, the holonomy-weighted zeta function satisfies
+\[
+\log Z_{G,\rho}(u)=\sum_{C\in\mathcal{C}_{\mathrm{prim}}}\ \sum_{k\ge 1}\frac{u^{k|C|}}{k}\,\mathrm{tr}\!\left(\rho(\mathrm{Hol}(C))^k\right).
+\]
+\end{lemma}
+\begin{proof}
+The matrix identity is the formal Taylor expansion of $\log(I-zM)$ together with $\mathrm{tr}\log=\log\det$:
+\[
+\log(I-zM)=-\sum_{k\ge 1}\frac{z^k}{k}M^k,
+\qquad
+\log\det(I-zM)=\mathrm{tr}\log(I-zM).
+\]
+Applying this to each factor in \eqref{eq:holonomy_weighted_graph_zeta} and summing over primitive cycles gives the stated expansion.
+\end{proof}
+
+\begin{proposition}[Cycle-type statistics determine class-function loop sums]\label{prop:cycle_type_stats_determine_class_sums}
+\MathTag Fix the anchor holonomy setting of Section~\ref{sec:protocol_connections_holonomy}, so that plaquette holonomies take values in $S_4$ and are summarized by cycle type (Table~\ref{tab:holonomy_cycle_types}).
+Let $F:S_4\to\RR$ be any class function (i.e.\ $F(\tau\sigma\tau^{-1})=F(\sigma)$).
+Then, for any fixed loop family $\mathcal{L}$ whose holonomies are summarized by cycle type (e.g.\ unit-square plaquettes),
+the aggregate sum $\sum_{L\in\mathcal{L}} F(p_L)$ is determined uniquely by the cycle-type histogram of $\{p_L\}_{L\in\mathcal{L}}$.
+In particular, for any representation $\rho$ of $S_4$, the trace observable $\sigma\mapsto \mathrm{tr}(\rho(\sigma))$ is a class function, hence its loop sums (and therefore the corresponding coefficients in Lemma~\ref{lem:twisted_zeta_log_expansion} for fixed loop length) are determined by the reported cycle-type counts.
+\end{proposition}
+\begin{proof}
+Cycle type is the conjugacy-class invariant in $S_4$.
+Since $F$ is constant on conjugacy classes, the sum over $\mathcal{L}$ depends only on how many holonomies fall into each cycle type.
+The trace of a representation is a class function (a character), so the stated specialization follows.
+\end{proof}
+
+\AuditTag The untwisted Ihara zeta $Z_G$ corresponds to the trivial representation and trivial edge labels.
+The twisted definition above is used here only as a bookkeeping language: it repackages loop statistics already computed in finite form into a generating-function framework that parallels the $\e$-channel zeta viewpoint.
+
+\begin{remark}[Anchor specialization: $\Gamma=S_4$ and a $3$-dimensional twist]\label{rem:anchor_twisted_zeta_s4}
+\AuditTag At the anchor $(m,n)=(6,3)$, the holonomy diagnostic yields $S_4$-valued loop products (Section~\ref{sec:protocol_connections_holonomy}).
+Choosing $\rho$ to be the sign-twisted standard representation $\widetilde\rho:S_4\to SO(3)\subset SU(3)$ (Lemma~\ref{lem:s4_so3_twist}),
+each factor $\det(I-u^{|C|}\rho(\mathrm{Hol}(C)))$ depends only on the $S_4$ conjugacy class (cycle type) of $\mathrm{Hol}(C)$.
+Accordingly, cycle-type histograms determine all class-function loop summaries (Proposition~\ref{prop:cycle_type_stats_determine_class_sums}) and provide a compact audit interface to the twisted zeta language above.
+\end{remark}
+
+

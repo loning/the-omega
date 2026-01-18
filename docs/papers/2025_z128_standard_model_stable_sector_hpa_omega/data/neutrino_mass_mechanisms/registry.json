@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "notes": {
+    "scope": "Neutrino mass-mechanism candidate registry (audit; conditional closures). External bounds are not used as CAP objectives unless explicitly declared; they are used as feasibility filters and as audit channels.",
+    "units": {
+      "masses": "eV",
+      "splittings": "eV^2"
+    }
+  },
+  "splittings_eV2": {
+    "dm21": 7.42e-05,
+    "dm31_no": 0.002517,
+    "dm31_io": 0.002498
+  },
+  "mechanisms": [
+    {
+      "id": "C1",
+      "type": "ghost_repair_cost",
+      "name": "Ghost repair-cost accumulation",
+      "description": "Bridge: convert the ghost-sector mean repair cost c(w) into a suppression exponent K ~ a*m_dec*mean_c_ghost(m_dec).",
+      "parameter_box": {
+        "m_dec": [6, 8, 10, 12, 14, 16],
+        "a": [1, 2],
+        "round": ["nearest", "floor", "ceil"],
+        "ordering": ["NO", "IO"]
+      }
+    },
+    {
+      "id": "C2",
+      "type": "xi_visibility",
+      "name": "Visibility/temperature ratio xi as shared suppression source",
+      "description": "Bridge: treat xi as an internal candidate (xi=phi^{-xi_depth}); DeltaNeff is derived as n_R*xi^4 and used only as an external feasibility/audit filter. Map xi to mass depth via r0≈round(p*log_phi(xi)).",
+      "parameter_box": {
+        "n_R": [1, 3],
+        "p": [1, 2, 3, 4, 5, 6, 8, 10, 12, 14, 16],
+        "xi_depth": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40],
+        "round": ["nearest", "floor", "ceil"],
+        "ordering": ["NO", "IO"]
+      }
+    },
+    {
+      "id": "C3",
+      "type": "uplift_dilution",
+      "name": "Refinement dilution under uplift",
+      "description": "Bridge: dilute a neutral base depth by the lift multiplicity |Ext_m(u)| via r0 = r_base(u) - round(a*log_phi |Ext_m(u)|).",
+      "parameter_box": {
+        "base_word": ["000000", "100100", "001010"],
+        "m_high": [20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60],
+        "a": [1, 2],
+        "round": ["nearest", "floor", "ceil"],
+        "ordering": ["NO", "IO"]
+      }
+    },
+    {
+      "id": "C4",
+      "type": "parity_overhead",
+      "name": "Parity-mismatch overhead (unbalanced coupling proxy)",
+      "description": "Bridge: treat odd-m intermediates m=2n+1 as carrying an overhead count K=a*n that suppresses the absolute scale.",
+      "parameter_box": {
+        "m_odd": [7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51, 53, 55, 57, 59, 61, 63, 65, 67],
+        "a": [1, 2],
+        "ordering": ["NO", "IO"]
+      }
+    }
+  ],
+  "selection": {
+    "cap_key": "lexicographic(minimize complexity, then tie-break by parameter tuple ordering)",
+    "feasible_filter": "external_bounds_from_data/neutrino_external_audit/inputs.json"
+  }
+}
+

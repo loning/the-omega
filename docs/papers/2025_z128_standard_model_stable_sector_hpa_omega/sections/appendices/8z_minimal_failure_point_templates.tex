@@ -1,0 +1,263 @@
+\subsection{Minimal failure-point templates (audit $\rightarrow$ strong-closure normalization)}
+\label{app:minimal_failure_point_templates}
+
+\AuditTag This appendix normalizes the manuscript-wide representation of ``minimal failure points''.
+Whenever a theorem-leaning statement depends on additional conditions (microcausality/spectrum, field reconstruction, scattering, renormalization, quantization), those conditions must be recorded as explicit failure points with:
+\begin{itemize}
+\item a \emph{trigger} (what can concretely fail),
+\item a \emph{check} (what is to be audited/verified in the declared window),
+\item an \emph{impact scope} (what downstream statements become invalid),
+\item a \emph{fallback} (what the manuscript reverts to when the failure occurs).
+\end{itemize}
+
+\subsubsection{Template}
+\begin{definition}[Failure-point record (template)]
+\label{def:failure_point_record_template}
+\MathTag A \emph{failure-point record} is a quadruple
+\[
+(\mathrm{Trigger},\mathrm{Check},\mathrm{Impact},\mathrm{Fallback})
+\]
+attached to a named interface/strong-closure claim, with the semantics listed above.
+\end{definition}
+
+\subsubsection{Canonical failure-point instances used in this manuscript}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.7cm} p{3.4cm} p{3.6cm} p{3.6cm}}
+\toprule
+code & trigger & check & fallback \\
+\midrule
+\input{sections/generated/failure_point_registry_rows.tex}%
+\end{tabular}
+\caption{Canonical minimal failure-point registry used across the strong-closure interfaces. Rows are reproduced by the deterministic script \texttt{scripts/exp\_failure\_point\_checklists.py}.}
+\label{tab:failure_point_registry}
+\end{table}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.8cm} p{4.4cm} p{6.4cm}}
+\toprule
+code & evidence pointer & minimal trigger / fallback cue \\
+\midrule
+\input{sections/generated/failurepoint_evidence_map_rows.tex}%
+\end{tabular}
+\caption{Failure-point evidence map: where the manuscript records the evidence/assumptions for each failure point, and what concrete trigger forces a downgrade. Rows are reproduced by \texttt{scripts/exp\_failurepoint\_evidence\_map.py}.}
+\label{tab:failurepoint_evidence_map}
+\end{table}
+
+\paragraph{Wightman bridge (Appendix~\ref{app:wightman_bridge_and_reconstruction}).}
+\begin{itemize}
+\item \textbf{(W1) Domain control.}
+  Trigger: no common dense invariant domain for the needed unbounded generators.
+  Check: existence of a stable domain $\mathcal{D}$ for the declared smeared fields/operators.
+  Impact: Wightman$\to$net and net$\to$field maps are not well-defined at the stated regularity.
+  Fallback: remain in AQFT net/state bookkeeping only.
+\item \textbf{(W2) Field generation.}
+  Trigger: the net has no pointlike generating fields in the declared class.
+  Check: generating family exists with required energy bounds/regularity.
+  Impact: reconstruction theorems cannot be invoked; correlator statements become external matching inputs.
+  Fallback: treat field-level statements as interface/matching only.
+\item \textbf{(W3) Locality encoding mismatch.}
+  Trigger: graded/braided locality differs from naive commutativity.
+  Check: confirm the correct locality notion for the sector and encode it consistently.
+  Impact: microcausality identifications must be re-ledgered.
+  Fallback: keep locality as a declared interface pack with explicit variant.
+\end{itemize}
+
+\paragraph{Scattering interface (Appendix~\ref{app:scattering_haag_ruelle_lsz_interface}).}
+\begin{itemize}
+\item \textbf{(S1) Approximate unitarity window.}
+  Trigger: $S(\omega)$ not (approximately) unitary on the declared band.
+  Check: calibration/loss model and stability sweeps on the same band.
+  Impact: Wigner--Smith delay becomes a proxy with explicit loss error.
+  Fallback: revert to delay-as-proxy without asymptotic particle claims.
+\item \textbf{(S2) One-particle stability/mass gap.}
+  Trigger: no isolated stable one-particle sector.
+  Check: spectral isolation / threshold dominance audit in the declared window.
+  Impact: Haag--Ruelle/LSZ interpretation fails.
+  Fallback: keep only operational phase/delay dictionary and AQFT bookkeeping.
+\item \textbf{(S3) Asymptotic completeness.}
+  Trigger: asymptotic completeness unknown/false.
+  Check: declare it explicitly as hypothesis or restrict to a gapped subsector.
+  Impact: $S$ cannot be interpreted as complete channel map.
+  Fallback: treat $S$ as effective interface object only.
+\end{itemize}
+
+\paragraph{Holographic equivalence interface (Appendices~\ref{app:holo_scope_contract}--\ref{app:holo_reconstruction_surrogate}).}
+\begin{itemize}
+\item \textbf{(H0a) Hidden knobs / non-invariant verdicts.}
+  Trigger: the holographic dictionary or reconstruction verdict depends on undeclared choices (kernel member, representation, implicit tie-break).
+  Check: list the dictionary components and verify invariance under the declared equivalences.
+  Impact: the statement is not well-defined on equivalence classes.
+  Fallback: downgrade to representation-dependent diagnostic or report only invariant envelopes.
+\item \textbf{(H0b) Comparability class not closed.}
+  Trigger: boundary and bulk quantities are compared without a declared scheme/units/matching envelope.
+  Check: declare bounded matching envelopes / scheme contracts for the compared quantities.
+  Impact: the statement is ill-typed and not auditable as a numeric claim.
+  Fallback: revert to matching-layer envelopes or record as \textsf{[Open]}.
+\item \textbf{(H0c) Identifiability boundary.}
+  Trigger: boundary data reduces to class-function summaries (e.g.\ cycle-type histograms), but a claim requires finer distinction.
+  Check: verify whether retained observables are class functions of the declared boundary variables.
+  Impact: reconstruction/discrimination is not identifiable from the stated observables.
+  Fallback: enlarge observable family (non-class-function readouts) or downgrade to interpretive overlay.
+\item \textbf{(H4a/H4b) Reconstruction carrier/budget failure.}
+  Trigger: region-supported recovery requires the tensor-product locality subclass or an explicit $\epsilon_N$ budget, but neither is discharged.
+  Check: confirm subclass applicability and provide an auditable error budget.
+  Impact: no theorem-facing reconstruction claim is allowed.
+  Fallback: restrict to the controlled subclass or downgrade to surrogate-level recovery only.
+\end{itemize}
+
+\paragraph{Renormalization boundary (Appendix~\ref{app:renormalization_dictionary_and_boundaries}).}
+\begin{itemize}
+\item \textbf{(R1) Scheme dependence.}
+  Trigger: changing scheme shifts numeric parameters.
+  Check: keep a bounded finite scheme family and report sensitivity.
+  Impact: any numeric matching must be reinterpreted as matching-layer shift.
+  Fallback: restrict to scheme-invariant relations or bounded-family envelopes.
+\item \textbf{(R2) Threshold conventions.}
+  Trigger: decoupling/effective content changes running segments.
+  Check: declare finite threshold family and audit variations.
+  Impact: beta-function based claims become family-dependent.
+  Fallback: keep only family-invariant comparisons.
+\item \textbf{(R3) Nonperturbative boundary.}
+  Trigger: claim requires constructive/nonperturbative control (4D existence, mass gap, asymptotic completeness).
+  Check: explicitly mark as open/conditional and provide falsifiability hooks.
+  Impact: strong-closure claims must not be asserted.
+  Fallback: revert to proxy-level/audit-level statements.
+\end{itemize}
+
+\paragraph{Rigidity-bridge failure templates (cross-module constraints).}
+\AuditTag The manuscript also uses several cross-module rigidity constraints as \emph{applicability boundaries} rather than as additional axioms.
+When these constraints are violated, the appropriate response is not to ``tune a knob'' but to enlarge the declared bounded family or to downgrade the claim scope.
+The following failure templates normalize these downgrade moves.
+
+\begin{itemize}
+\item \textbf{(IC1) Dyadic--cosmology consistency pin (Appendix~\ref{app:cosmology_resolution_flow}; Section~\ref{subsec:z128_label}).}
+  Trigger: the discrete cosmology match selects $m_\ast$ that does not coincide with the dyadic-baseline pin $m_b^\ast=2p+1$ at the declared baseline $p=7$.
+  Check: recompute the discrete match under the stated hypothesis class and verify whether the mismatch persists under the reported stability sweeps; confirm the baseline $p$ and the relation family are unchanged.
+  Impact: the ``single low-complexity dyadic baseline supports the same resolution point'' narrative cannot be used.
+  Fallback: explicitly enlarge (i) the dyadic baseline family, or (ii) the low-complexity relation family between $m$ and $p$, or (iii) the cosmology hypothesis class; keep the result as a bounded-family audit only (Corollary~\ref{cor:dyadic_cosmology_consistency_pin}).
+
+\item \textbf{(IC2) Pole-barrier gate as analyticity certificate (Appendices~\ref{app:qcd_confinement_proxy_audit}, \ref{app:qcd_confinement_pade_pole_barrier_audit}).}
+  Trigger: bounded Pad\'e order families produce interior-unit-disk denominator roots inconsistently across small order enlargements, or the gate flips under modest bounded extensions of the coefficient family.
+  Check: stability under bounded order-family enlargement and under bounded loop-family/coefficient-family densification, with the same numerical root-finding tolerance.
+  Impact: the pole-barrier verdict cannot be interpreted as a robust analyticity-discipline certificate even at the audit level.
+  Fallback: treat pole-barrier outputs strictly as diagnostic rows with explicit instability flags (short/sparse-series ambiguity), and avoid any downstream promotion beyond ``audit hook''.
+
+\item \textbf{(IC3) Invariant-verdict legality threshold (Proposition~\ref{prop:rigidity_legality_invariant_verdicts}).}
+  Trigger: the primary objective is invariant under a declared equivalence, but the tie-break key (or an implicit secondary key) is representation-dependent.
+  Check: explicitly list the tie-break keys and test invariance under the declared equivalence transformations.
+  Impact: the reported ``unique minimizer/verdict'' is not well-defined on equivalence classes and violates the semantic contract.
+  Fallback: downgrade the output to a representation-dependent diagnostic, or redefine the tie-break to use invariant keys only; otherwise report only the invariant objective envelope.
+
+\item \textbf{(IC4) Identifiability boundary (cycle-type-only summaries) (Proposition~\ref{prop:cycle_type_identifiability_boundary}).}
+  Trigger: an analysis claims to distinguish two internal realizations (e.g.\ CP-odd structure) while the available summaries reduce to cycle-type histograms or class-function aggregates on a fixed loop family.
+  Check: verify whether the reported observables are class functions of the holonomy and whether the cycle-type histogram is the only retained information.
+  Impact: the claimed distinction is not identifiable from the stated observable content and cannot be treated as falsifiable within that readout.
+  Fallback: enlarge the loop family (more loop types/scales) and/or introduce a non-class-function readout; otherwise state the conclusion only as an interpretive overlay, not as an audit-facing discrimination.
+
+\item \textbf{(IC6) Capacity bits $\leftrightarrow$ counting entropy compatibility (Remark~\ref{rem:rigidity_capacity_bits_entropy}).}
+  Trigger: a module uses capacity bits as an entropy/regularity control parameter while implicitly changing the coarse-graining quotient, window length, or saturation calibration.
+  Check: confirm the declared coarse-graining/quotient and the stated matching factors ($\ln 2$, $k_B$ and any area calibration), and verify that the corresponding squeezing/inequality certificate applies in the stated regime.
+  Impact: any promoted entropy/typicality conclusion derived from capacity numbers is not audit-valid.
+  Fallback: downgrade to matching-only capacity accounting with explicit hypothesis-class enlargement and/or explicit error budgets.
+
+\item \textbf{(IC7) Scheme reparametrization as an origin shift in $r$ (Corollary~\ref{cor:rigidity_scheme_shift_origin_r}).}
+  Trigger: numeric conclusions shift under scheme changes or reference-scale choices while being narrated as invariant predictions.
+  Check: keep a bounded finite scheme family, make the $r$-origin convention explicit, and verify which quantities are invariants vs allowed non-invariants under the scheme contract.
+  Impact: any claim that treats scheme-origin freedom as a hidden knob violates the equivalence-semantics discipline.
+  Fallback: report bounded-family envelopes (sensitivity) and restrict promoted claims to scheme-invariant relations only.
+
+\item \textbf{(IC8) WS delay $\leftrightarrow \log\det$ bridge requires a unitary window (Lemma~\ref{lem:wigner_smith_trace_logdet}; (S1)).}
+  Trigger: the measured/scanned $S(\omega)$ is not approximately unitary and differentiable on the declared band, or phase unwrapping is unstable.
+  Check: perform calibration/loss audits on the same band and verify stability of $\tau_{\mathrm{WS}}$ under bounded estimator-family variations.
+  Impact: any upgrade of delay outputs into determinant/trace analyticity certificates is invalid.
+  Fallback: treat delay as a proxy readout with explicit loss/error envelopes; do not promote it to pole-barrier/analytic-domain statements.
+
+\item \textbf{(IC17) Bandwidth--window stability gate (P11; windowed comparability contract).}
+  Trigger: a claimed frequency-domain readout (phase/delay/linewidth) is sensitive to band/window choices inside the declared bounded families, or the admissible subset is too small due to gate failures (band-edge peaks, damping non-identifiability).
+  Check: declare finite families $\mathcal B,\mathcal W$, report the admissible fraction, and verify a bounded instability ratio $\delta_\theta$ within an explicit $\epsilon_{\mathrm{BW}}$ budget (Section~\ref{subsec:p11_bandwidth_window_stability}).
+  Impact: any promotion of the readout into a protocol claim (and any downstream upgrade into determinant/logdet certificates) is not audit-valid for that platform/channel.
+  Fallback: report only the invariant envelope (or mark the result inconclusive) and keep the statement at proxy-level; upgrade requires more data (stable PSD) or a revised estimator family recorded in the registry.
+
+\item \textbf{(IC9) DPI/second-law certificate requires a declared channel family (Corollary~\ref{cor:rigidity_dpi_irreversibility_certificate}).}
+  Trigger: the effective pipeline is not CPTP/Markov on the declared state space (e.g.\ uncontrolled postselection, non-trace-preserving steps, unmodeled leakage).
+  Check: explicitly state the channel/instrument family and verify CPTP/Markov properties (or record the non-CPTP defect terms).
+  Impact: monotonicity-based ``second law'' and irreversibility certificates cannot be claimed as theorem-level consequences.
+  Fallback: downgrade to interface-only thermodynamic narratives with explicit defect/error bookkeeping.
+
+\item \textbf{(IC10) Global MDL accounting for cross-family enlargement (Appendix~\ref{app:global_model_selection_mdl}).}
+  Trigger: a comparison aggregates results across different hypothesis families while expanding or modifying the family registry without recording it.
+  Check: ensure the family registry $\mathcal{R}$ is explicit and that any kernel scanning or joint $(m,n,K)$ scans are accounted for by explicit finite factors.
+  Impact: global look-elsewhere interpretation inside the registry is not audit-valid.
+  Fallback: restrict to within-family statements or re-run the global bound after updating the registry with the enlargement.
+
+\item \textbf{(IC11) Minimal slot gauge is forced by $r_m$ (Proposition~\ref{prop:max_fiber_deg_forces_perm_gauge}).}
+  Trigger: a construction assumes a uniform slot/gauge dimension smaller than $r_m$ without truncation, or uses representation-dependent keys while claiming gauge invariance.
+  Check: verify $r\ge r_m$ at the stated resolution and that tie-break keys are invariants under the declared local relabelings.
+  Impact: gauge-covariance and downstream holonomy readout claims are not well-defined on equivalence classes.
+  Fallback: enlarge the slot dimension to $r_m$ (or declare truncation as an explicit approximation), and downgrade any invariant claims if representation dependence remains.
+
+\item \textbf{(IC12) Kernel pressure/pole-barrier alignment (Corollary~\ref{cor:rigidity_kernel_pressure_polebarrier_alignment}).}
+  Trigger: the weighted operator family violates the nonnegativity/monotonicity assumptions used in the PF/pressure proxy interpretation (e.g.\ sign-indefinite weights or inconsistent assembly).
+  Check: verify entrywise nonnegativity and monotonicity in the stated $t$ grid, and reproduce the generated weighted-pressure/pole-barrier audit tables.
+  Impact: the ``pressure'' language cannot be used as a rigidity certificate; pole-barrier locations lose their interpretation.
+  Fallback: treat the outputs strictly as audit tables with explicit instability flags and avoid any promotion beyond ``diagnostic hook''.
+
+\item \textbf{(IC13) HTF-lite bridge gate (unit-disk holomorphy $\Rightarrow$ no interior zero-mode poles) (Assumption~\ref{ass:htf_lite_operator_pack}).}
+  Trigger: the claimed trace bridge is underspecified (kernel family, renormalization rule, or detectability gate is not declared), or the spectral-side mode sum cancels interior poles by same-point cancellations under the stated convention.
+  Check: provide an explicit finite kernel family and a stated meromorphic decomposition on $|r|<1$ whose principal parts are preserved by the renormalization; verify that for any asserted off-critical mode the corresponding pole location is detected (nonzero principal part) for at least one kernel.
+  Impact: any ``Riemann-zero mode'' interpretation cannot be used even at the audit level; interior-pole language must be treated only as a generic obstruction template.
+  Fallback: drop the HTF-lite bridge narrative and revert to the protocol-internal carriers: wormhole-like shortcuts are paid pointer jumps with explicit ledgers and counterfactual baselines (Definition~\ref{def:wormhole_pointer_jump} and Section~\ref{sec:qg_interface_full_fusion}); analytic pole-barrier gates remain usable only within declared finite-state/Abel generating-function settings (Appendix~\ref{app:abel_finite_part_notes} and Appendix~\ref{app:trace_pole_barrier_template}).
+\end{itemize}
+
+\paragraph{Continuum-limit bridge (finite holonomy $\rightarrow$ continuum gauge dynamics).}
+\begin{itemize}
+\item \textbf{(CL1) Refinement compatibility.}
+  Trigger: discrete connection/holonomy constructions across a refinement chain are not compatible (no directed/projective family).
+  Check: declare the refinement maps and verify consistency (or bound the defect) on the declared chain.
+  Impact: no theorem-level continuum limit object can be claimed; only per-scale diagnostics remain.
+  Fallback: treat holonomy outputs as finite protocol diagnostics only.
+\item \textbf{(CL2) Scale map ambiguity.}
+  Trigger: no declared mapping from protocol loop scale to continuum length $a$ (or mapping is unstable under bounded counterfactuals).
+  Check: declare a bounded candidate family of scale maps and report sensitivity.
+  Impact: Wilson-loop small-plaquette expansions cannot be used for numeric identification.
+  Fallback: keep only dimensionless loop diagnostics and representative-level statements.
+\item \textbf{(CL3) Regularity for small-loop expansions.}
+  Trigger: the continuum representative lacks the smoothness/energy bounds required by the small-plaquette expansion.
+  Check: verify the regularity/energy-bound bundle in the declared regime (or restrict to a smooth subsector).
+  Impact: curvature/action-density proxy identification fails theorem-level.
+  Fallback: downgrade to proxy-level curvature semantics with explicit error budgets.
+\item \textbf{(CL4) Variational convergence / $\Gamma$-limit gap.}
+  Trigger: no variational convergence result connecting the discrete loop action to the continuum Yang--Mills action.
+  Check: supply a $\Gamma$-convergence (or equivalent) theorem under stated conditions.
+  Impact: continuum Euler--Lagrange equations cannot be claimed as limits of discrete minimizers.
+  Fallback: keep continuum Yang--Mills only as CAP-selected representative, not as a forced theorem-level limit.
+\end{itemize}
+
+\paragraph{Ward/BRST (Appendix~\ref{app:ward_brst_consistency} and EG strong-closure appendices).}
+\begin{itemize}
+\item \textbf{(WBR1) Regularization/scheme breaking.}
+  Trigger: a regulator or renormalization choice violates BRST.
+  Check: restoration by admissible counterterms to the declared order.
+  Impact: ST identities fail unless restored; gauge invariance is not theorem-usable.
+  Fallback: treat BRST as interface assumption; track resulting error terms.
+\item \textbf{(WBR2) Gauge anomaly.}
+  Trigger: anomaly coefficients nonzero (Appendix~\ref{app:anomaly_theorem_filters}).
+  Check: anomaly filters and cohomology obstruction test.
+  Impact: ST cannot be restored by local counterterms.
+  Fallback: modify field registry/scope; otherwise no strong-closure gauge claim.
+\item \textbf{(WBR3) Truncation mismatch.}
+  Trigger: enforcing identities only up to $D_{\max}$ leaves higher-order breaking.
+  Check: encode remainder as explicit truncation budget term.
+  Impact: Ward/BRST holds only up to the stated order.
+  Fallback: enlarge truncation or weaken the claimed identity scope.
+\end{itemize}
+

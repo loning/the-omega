@@ -7,6 +7,7 @@ This script consolidates the core finite-resolution checks and closure checks:
   - Fold_6 surjectivity and degeneracy histogram
   - Hilbert chirality index sign flips (n=3)
   - Hypercharge-square sum and anomaly checks (one generation)
+  - Closed constant rigidity winners (alpha, electroweak, Jarlskog)
   - Depth-rigidity winner at bounded complexity (B=20)
 
 Outputs:
@@ -18,6 +19,7 @@ Only the Python standard library is used.
 from __future__ import annotations
 
 import math
+import re
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import List, Tuple
@@ -27,9 +29,11 @@ import exp_hilbert_chirality_index as hil
 import exp_sm_labeling_solver as sml
 import exp_mass_depth_rigidity as rig
 from common_constants import M_E_GEV, M_Z_GEV, PHI
+from common_constants import ALPHA_INV_CODATA_2022, ALPHAZ_INV_PDG, SIN2_THETAW_PDG, JARLSKOG_PDG_CENTRAL
 
 import exp_holonomy_loops as holo
 import exp_holonomy_phase_lift_cp_invariant as phlift
+from common_paths import generated_dir
 
 
 def _fmt_bool(ok: bool) -> str:
@@ -50,6 +54,16 @@ def _parse_first_float(s: str) -> float | None:
         except ValueError:
             continue
     return None
+
+
+def _abs_log_ratio(x: float, ref: float) -> float:
+    return abs(math.log(x / ref))
+
+
+def _gcd(a: int, b: int) -> int:
+    while b:
+        a, b = b, a % b
+    return abs(a)
 
 
 def _read_first_data_line(path: Path) -> str | None:
@@ -140,8 +154,41 @@ def _find_row_by_prefix(path: Path, prefix: str) -> str | None:
     return None
 
 
+def _find_first_line_containing(path: Path, needle: str) -> str | None:
+    if not path.exists():
+        return None
+    for line in path.read_text(encoding="utf-8").splitlines():
+        s = line.strip()
+        if not s:
+            continue
+        if needle in s:
+            return s
+    return None
+
+
+def _parse_int_after(pattern: str, s: str) -> int | None:
+    m = re.search(pattern, s)
+    if not m:
+        return None
+    try:
+        return int(m.group(1))
+    except Exception:
+        return None
+
+
+def _parse_float_after(pattern: str, s: str) -> float | None:
+    m = re.search(pattern, s)
+    if not m:
+        return None
+    try:
+        return float(m.group(1))
+    except Exception:
+        return None
+
+
 def main() -> None:
     rows: List[str] = []
+    gen = generated_dir()
 
     # X6 enumeration
     X6 = fold.all_x6()
@@ -186,6 +233,99 @@ def main() -> None:
     a1, a2, a3, ag = sml.anomaly_checks_one_generation()
     rows.append(_row(r"$\sum (6Y)^2$ (1 gen)", "120", str(ysq), ysq == 120))
     rows.append(_row(r"anomaly tuple", "(0,0,0,0)", f"({a1},{a2},{a3},{ag})", (a1, a2, a3, ag) == (0, 0, 0, 0)))
+
+    # Closed constant rigidity winners (finite domains, deterministic tie-breaks).
+    # alpha_em^{-1} coefficient simplex: a*pi^3+b*pi^2+c*pi, a,b,c>=0, a+b+c<=10.
+    best_alpha = None  # (e, sum, a, b, c)
+    for a in range(0, 11):
+        for b in range(0, 11 - a):
+            for c in range(0, 11 - a - b):
+                if a == 0 and b == 0 and c == 0:
+                    continue
+                pred = float(a) * (math.pi**3) + float(b) * (math.pi**2) + float(c) * math.pi
+                e = _abs_log_ratio(pred, float(ALPHA_INV_CODATA_2022))
+                cand = (e, a + b + c, a, b, c)
+                if best_alpha is None or cand < best_alpha:
+                    best_alpha = cand
+    if best_alpha is None:
+        raise AssertionError("No candidates enumerated for alpha coefficient simplex.")
+    _e, _s, a, b, c = best_alpha
+    rows.append(_row(r"$\alpha_{\mathrm{em}}^{-1}$ simplex winner", "$(4,1,1)$", f"$({a},{b},{c})$", (a, b, c) == (4, 1, 1)))
+
+    # Electroweak alpha^{-1}(mu_Z) integer pi^2: n*pi^2, 1<=n<=50.
+    best_pi2 = None  # (e, n)
+    for n in range(1, 51):
+        pred = float(n) * (math.pi**2)
+        e = _abs_log_ratio(pred, float(ALPHAZ_INV_PDG))
+        cand = (e, n)
+        if best_pi2 is None or cand < best_pi2:
+            best_pi2 = cand
+    if best_pi2 is None:
+        raise AssertionError("No candidates enumerated for electroweak pi^2 search.")
+    _e, n_star = best_pi2
+    rows.append(_row(r"$\alpha^{-1}(\mu_Z)$ $n\pi^2$ winner", "$13$", str(n_star), n_star == 13))
+
+    # Electroweak sin^2(theta_W) rational: reduced p/q with q<=50.
+    best_rat = None  # (e, q, p)
+    for q in range(1, 51):
+        for p in range(1, q):
+            if _gcd(p, q) != 1:
+                continue
+            pred = float(p) / float(q)
+            e = _abs_log_ratio(pred, float(SIN2_THETAW_PDG))
+            cand = (e, q, p)
+            if best_rat is None or cand < best_rat:
+                best_rat = cand
+    if best_rat is None:
+        raise AssertionError("No candidates enumerated for sin^2 rational search.")
+    _e, q_star, p_star = best_rat
+    rows.append(_row(r"$\sin^2\theta_W(\mu_Z)$ $p/q$ winner", "$3/13$", f"${p_star}/{q_star}$", (p_star, q_star) == (3, 13)))
+
+    # Kernel-dependent electroweak audits (generated fragments).
+    # (a) Resolution-weighted match sweep (pushforward kernel; best joint m).
+    ew_rw = gen / "ew_resolution_weighted_match_rows.tex"
+    line = _find_first_line_containing(ew_rw, "best joint")
+    if line is None:
+        rows.append(_row(r"EW weighted-match best joint $m$", "$8$", "missing", False))
+    else:
+        m_best = _parse_int_after(r"best joint[^m]*m=(\d+)", line)
+        rows.append(_row(r"EW weighted-match best joint $m$", "$8$", str(m_best), m_best == 8))
+
+    # (b) Kernel-family sweep at anchor: expect CAP-selected best (m,t)=(6,0) with W=10.
+    ew_kfam = gen / "ew_resolution_weighted_match_family_rows.tex"
+    line2 = _find_first_line_containing(ew_kfam, "best (min")
+    if line2 is None:
+        rows.append(_row(r"EW kernel-family best $(m,t)$", "$(6,0)$", "missing", False))
+        rows.append(_row(r"EW kernel-family best $W$", "$10$", "missing", False))
+    else:
+        m_star = _parse_int_after(r"\$m=(\d+)\$", line2)
+        # t appears as an integer in the generated summary line (e.g., $t=0$).
+        t_star = _parse_int_after(r"\$t=(\d+)\$", line2)
+        W_star = _parse_float_after(r"\$W=([0-9]+(?:\.[0-9]+)?)\$", line2)
+        rows.append(_row(r"EW kernel-family best $(m,t)$", "$(6,0)$", f"({m_star},{t_star})", (m_star, t_star) == (6, 0)))
+        ok_W = (W_star is not None) and (abs(W_star - 10.0) <= 1e-9)
+        rows.append(_row(r"EW kernel-family best $W$", "$10$", str(W_star), ok_W))
+        if W_star is not None:
+            alpha_from_W = (3.0 + float(W_star)) * (math.pi**2)
+            sin2_from_W = 3.0 / (3.0 + float(W_star))
+            ok_alpha = abs(alpha_from_W - 13.0 * (math.pi**2)) <= 1e-9
+            ok_sin2 = abs(sin2_from_W - (3.0 / 13.0)) <= 1e-12
+            rows.append(_row(r"EW kernel-family best $\alpha^{-1}$", r"$13\pi^2$", f"{alpha_from_W:.10f}", ok_alpha))
+            rows.append(_row(r"EW kernel-family best $\sin^2\theta_W$", r"$3/13$", f"{sin2_from_W:.10f}", ok_sin2))
+
+    # Jarlskog pi-ansatz: J=1/(a*pi^n), a<=50, n<=20.
+    best_J = None  # (e, a+n, a, n)
+    for a in range(1, 51):
+        for n in range(1, 21):
+            pred = 1.0 / (float(a) * (math.pi ** float(n)))
+            e = _abs_log_ratio(pred, float(JARLSKOG_PDG_CENTRAL))
+            cand = (e, a + n, a, n)
+            if best_J is None or cand < best_J:
+                best_J = cand
+    if best_J is None:
+        raise AssertionError("No candidates enumerated for Jarlskog pi-ansatz search.")
+    _e, _comp, a_star, n_star = best_J
+    rows.append(_row(r"$J$ $(a,n)$ winner", "$(11,7)$", f"$({a_star},{n_star})$", (a_star, n_star) == (11, 7)))
 
     # Depth rigidity winner at B=20 (leptonic objective)
     # The script exp_mass_depth_rigidity outputs rows; here we just assert the stabilized winner.

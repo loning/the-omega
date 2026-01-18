@@ -1,0 +1,74 @@
+\subsection{Reference-state limit for window readout and a minimal cut-spectrum template (notes)}
+\label{app:reference_state_and_cuts}
+
+\paragraph{Scope.}
+\AuditTag This appendix records two audit-facing templates that connect the tick-first window-word readout to standard Hilbert-space measurement language:
+(i) a concrete reference-state realization whose sharp-localization limit recovers binary window readout,
+and (ii) a minimal matrix-level fact showing how noncommuting positive cuts can generate a complex spectral component even when the generator is Hermitian.
+Neither item is used as a premise in theorem-level folding proofs.
+
+\subsubsection{Window words as a sharp localization limit of projection readout}
+\label{subsec:reference_state_window_limit}
+
+\InterfaceTag In the minimal scan model (Section~\ref{subsec:weyl_scan}) take $\mathcal{H}:=L^2(X,\mu)$ with $X=\RR/\ZZ$ and $\mu$ the Haar probability measure.
+Fix a measurable window $W\subset X$ and let $\Pi_W$ be the multiplication operator
+\[
+(\Pi_W f)(x):=\mathbf{1}_W(x)\,f(x),
+\qquad
+\Pi_W^2=\Pi_W=\Pi_W^\dagger.
+\]
+For $x_0\in X$ and $\delta\in(0,1)$ define a normalized bump state
+\[
+\omega_{x_0,\delta}(x):=\frac{\mathbf{1}_{[x_0,x_0+\delta)}(x)}{\sqrt{\delta}}\in L^2(X).
+\]
+Then for each scan step $k\ge 0$ the scalar
+\[
+p_k(\delta):=\left\langle \omega_{x_0,\delta},\,\Pi_W\,\Theta^k\,\omega_{x_0,\delta}\right\rangle
+\]
+is a well-defined Hilbert-space observable.
+\AuditTag For any $x_0$ that is a Lebesgue point of $W$ one has the sharp localization limit
+\[
+\lim_{\delta\downarrow 0} p_k(\delta)=\mathbf{1}_W(x_0+k\alpha),
+\]
+so the binary orbit readout $w_k=\mathbf{1}\{z_k\in W\}$ (Section~\ref{subsec:window_projection}) arises as a limit of a standard projection measurement; see, e.g., \cite{SteinShakarchi2005}.
+
+\subsubsection{Commutativity of cuts and spectral reality (minimal matrix template)}
+\label{subsec:cuts_commutativity_spectrum_template}
+
+\paragraph{Motivation.}
+\AuditTag Several interface narratives in this manuscript talk about ``ordered protocols'' (a generator composed with one or more readout cuts).
+Even in finite dimensions, the order and commutativity of cuts matters: commuting positive cuts preserve spectral reality in a simple sense, while noncommuting cuts can produce a genuine imaginary spectral component.
+This is recorded here only as a compact audit template for order-sensitivity; it does not assign physical meaning to the imaginary part without an explicit matching dictionary.
+
+\begin{proposition}[Real spectra under commuting positive cuts]\label{prop:cuts_commuting_real_spectrum}
+\MathTag Let $H$ be a Hermitian matrix and let $P,Q$ be positive semidefinite matrices.
+If $PQ=QP$, then every eigenvalue of $PHQ$ is real.
+\end{proposition}
+
+\begin{proof}
+If $P$ and $Q$ are positive definite, define $S:=P^{1/2}Q^{-1/2}$.
+Since $P$ and $Q$ commute, their functional calculi commute and one computes
+\[
+S^{-1}(PHQ)S=Q^{1/2}P^{1/2}HP^{1/2}Q^{1/2},
+\]
+which is Hermitian, hence has real spectrum.
+For the semidefinite case, set $P_\varepsilon:=P+\varepsilon I$ and $Q_\varepsilon:=Q+\varepsilon I$ for $\varepsilon>0$ and pass to the limit $\varepsilon\downarrow 0$ using continuity of eigenvalues in the matrix entries.
+\end{proof}
+
+\begin{remark}[Noncommuting cuts can generate an imaginary spectral component]\label{rem:cuts_noncommuting_imaginary_component}
+Consider
+\[
+H=\begin{pmatrix}18&2\\2&0\end{pmatrix},\qquad
+P=\begin{pmatrix}1&0\\0&0\end{pmatrix},\qquad
+Q=\frac12\begin{pmatrix}1&-\iu\\\iu&1\end{pmatrix}.
+\]
+Then $H$ is Hermitian and $P,Q$ are orthogonal projections (hence positive semidefinite), but $PQ\ne QP$.
+A direct computation gives
+\[
+PHQ=\begin{pmatrix}9+\iu&1-9\iu\\0&0\end{pmatrix},
+\qquad
+\operatorname{tr}(PHQ)=9+\iu,
+\]
+so $PHQ$ has the non-real eigenvalue $9+\iu$.
+\end{remark}
+
