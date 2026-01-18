@@ -446,6 +446,7 @@ Engineering artifacts (Omega-style audit chain)
 
 1) **H2-1b: UTR-inclusive cross-species replication (mRNA FASTA, not CDS-only)**  
    - task_id: `H2-1b`  
+   - status: ✅ COMPLETED（2026-01-15；见上方 Task Claims）  
    - why now: 当前跨物种分析使用 `*_cds_from_genomic.fna.gz` 只能测 `U_before`，且异质性很高；要把 H2 变成“可复现 replication claim”，必须用含 UTR 的转录本数据把 `U_after/ΔU` 纳入主端点。  
    - dataset: NCBI RefSeq 物种面板（沿用 `scripts/fetch_multispecies_cds.py` 的 Tier-1 list），下载每个物种参考组装的 `*_rna_from_genomic.fna.gz`（UTR-inclusive）。  
    - endpoint: 预注册 1–2 个主端点（建议 `ΔU=U_after-U_before` at k=10 + 1 个 stop pair），做分域 random-effects meta-analysis + 报告异质性。  
@@ -455,6 +456,7 @@ Engineering artifacts (Omega-style audit chain)
 
 2) **H3-3b: Ribo-seq bigWig pausing replication tightening (more human studies + better track picking)**  
    - task_id: `H3-3b`  
+   - status: ✅ COMPLETED（2026-01-15；见上方 Task Claims；后续扩展仍可作为新任务拆出）  
    - why now: 现有 3-study bigWig meta d(high ΔU vs low)=0.30 [-0.06, 0.66] 仍不够收敛；需要扩大到 ≥6–10 studies 才能把 CI 缩到“能判真伪”的程度，并排查 track 选择/链特异导致的噪声。  
    - dataset: 在现有 GSE148965 / GSE199387 / GSE211536 基础上，优先加入（均为 Homo sapiens 且有 BIGWIG 补充文件）：  
      - `GSE246727`（Union CPM Norm bigWig：27–37 MB；另有 `RAW.tar` 1.6 GB）  
@@ -468,6 +470,7 @@ Engineering artifacts (Omega-style audit chain)
 
 3) **H3-7: Structure probing track cross-check (DMS/SHAPE) with the same stop-window endpoints**  
    - task_id: `H3-7`  
+   - status: ✅ COMPLETED（2026-01-15；见上方 Task Claims；icSHAPE tightening 为 `H3-7b`）  
    - why now: 目前“Uplift–结构”关联在控制 GC/dinuc 后消失；用 in vivo probing track（比 RNAfold proxy 更直接）做一次窗口级复现，可作为 H3 的高价值证据补全或强负结果。  
    - dataset: GEO 结构探针数据（可直接作为轨道/bedGraph 使用）：  
      - `GSE95465` (Homo sapiens) — `GSE95465_DMS-treated-ctrl-100-AC-dif.bedgraph.gz` (~7.8 MB, BEDGRAPH)  
