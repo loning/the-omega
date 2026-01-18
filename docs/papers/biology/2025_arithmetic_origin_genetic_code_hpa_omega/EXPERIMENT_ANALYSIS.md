@@ -62,7 +62,7 @@ This document summarizes all computational experiments conducted to validate the
 2. **Statistical Layer**: Do Uplift signals distinguish biological events?
 3. **Mechanistic Layer**: Does Uplift correlate with physical observables?
 
-**Key Finding**: The arithmetic framework is mathematically valid, but the mechanistic bridge to translation dynamics is not supported by current evidence.
+**Key Finding (updated 2026-01-18)**: The arithmetic framework is mathematically closed (μ\* + Fold$_6$ invariants). Mechanistic evidence is currently mixed: structure-energy/probing proxies largely weaken under stronger composition controls, while raw-read Ribo-seq pausing shows a reproducible positive association with high-$\Delta U$ stop windows.
 
 **Living doc note (主开发文档说明)**: Sections above are the consolidated computational validation record; **Next Steps** below is the active development roadmap for systematic validation.
 
@@ -342,7 +342,10 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
-- 2026-01-18 — **CLAIMED**: `ISA-B2` Stop instruction family (“OpCode + microcode” stratification)（在 RefSeq terminal stop windows 上把分组从 {UAA,UAG,UGA} 升级为 control-feature 组合（boundary/sector, $V$, $\\Delta$）以及 stop+2nt 的 $m=10\\to m=6$ anchor（复用 `H2-8` 的 refinement 计算）；输出分层后的 $U_{\\mathrm{after}}/\\Delta U$ 统计与 effect sizes，并产出 high/low 候选窗口集合（服务 W1 reporter library）；输出 LaTeX fragment 并写入 paper；纳入 `scripts/run_all.py`）。Branch: `paper-bio`.
+- 2026-01-18 — **COMPLETED**: `ISA-B2` Stop instruction family (“OpCode + microcode” stratification)（在 RefSeq terminal stop windows 上把分组从 {UAA,UAG,UGA} 升级为 control-feature 组合（boundary/sector, $V$, $\\Delta$）以及 stop+2nt 的 $m=10\\to m=6$ anchor（复用 `H2-8` 的 refinement 计算）；输出分层后的 $U_{\\mathrm{after}}/\\Delta U$ 统计与 effect sizes，并产出 high/low 候选窗口集合（服务 W1 reporter library）；输出 LaTeX fragment 并写入 paper；纳入 `scripts/run_all.py`）。Branch: `paper-bio`.
+  - Result (2026-01-18): 新增 `scripts/exp_stop_instruction_family_stratification.py` 生成 `sections/generated/stop_instruction_family_stratification.tex`（已写入 appendix：`sections/appendices/04_generated_tables.tex`）。μ* 下 stop-family 控制特征：UAA 为 boundary 且 $\\Delta_6=34$；UAG 为 cyclic 且 $\\Delta_6=34$；UGA 为 cyclic 且 $\\Delta_6=55$。
+  - Result (2026-01-18): 在 RefSeq reporter-candidate windows（k=10）上，stop+2nt 的 boundary-anchor（$m=10\\to6$）在 low\_after/low\_diff 组显著更常见（例如 UAA: high\_after 0.075 vs low\_after 0.55；UGA: high\_after 0.0 vs low\_after 0.25），且 UGA 的 boundary-anchor 仅落在 $u=\\texttt{100101}$。Recoding sites 复现：Sec(UGA) boundary rate 0.0718 (64/891)，且同样仅为 $u=\\texttt{100101}$。
+  - Repro (2026-01-18): 把脚本纳入 `scripts/run_all.py` 并本地重编译 `main.pdf`。
 
 - 2026-01-18 — **COMPLETED**: `ISA-M4` Hilbert locality as a testable hypothesis（实现 Hilbert(n=3) 坐标映射 $N\\in[0,63]\\to(x,y)$；定义 AA-codon 的 Hilbert 平面聚类指标（如组内平均距离 / 最近邻距离），并与两类 null 对照：24 encodings 与 degeneracy-preserving 随机遗传码；同时输出单点突变边的 Hilbert 跳跃距离分布（按位点 1/2/3）；输出 LaTeX fragment 并写入 paper appendix；纳入 `scripts/run_all.py`）。Branch: `paper-bio`.
   - Result (2026-01-18): 新增 `scripts/exp_hilbert_locality_audit.py` 生成 `sections/generated/hilbert_locality_audit.tex`（已写入 appendix：`sections/appendices/04_generated_tables.tex`）。AA 聚类在 Hilbert 平面上显著强于 degeneracy-preserving 随机码：组内平均 pairwise $L_1=2.437$（null $5.333\\pm0.279$，$p<10^{-4}$；24 encodings 下 $\\mu^\\ast$ rank 7/24；range [2.345, 2.897]）。同时报告 nearest-neighbor $L_1=1.390$（null $3.689\\pm0.304$，$p<10^{-4}$）。
