@@ -95,6 +95,7 @@ def main() -> None:
 
     # 2) Core encoding scan + codon tables
     run([py, "scripts/exp_genetic_code_decompiler.py", *(["--force"] if args.force else [])], cwd=cwd)
+    run([py, "scripts/exp_codon_opcode_compiler.py", *(["--force"] if args.force else [])], cwd=cwd)
     run([py, "scripts/exp_mutual_information_rank.py", *(["--force"] if args.force else [])], cwd=cwd)
     run([py, "scripts/exp_encoding_symmetry.py", *(["--force"] if args.force else [])], cwd=cwd)
     run([py, "scripts/exp_control_objective_null_brief.py", *(["--force"] if args.force else [])], cwd=cwd)
