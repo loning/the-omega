@@ -346,6 +346,8 @@ Engineering artifacts (Omega-style audit chain)
   - Result (2026-01-18): `scripts/run_all.py` 新增 `--bam-pausing/--no-bam-pausing` 与 `--pysam-conda-env`，并加入 guard：仅当 `data/refseq_hsapiens_mrna/stop_context_candidates.jsonl` 存在、`config/riboseq_bam_tracks.json` 里至少一个 indexed BAM 可用、且当前 Python 或 `conda run -n <env>` 可导入 `pysam` 时才运行 BAM pausing 系列脚本；否则跳过但不影响其余实验。  
   - Result (2026-01-18): 在通过 guard 时，`run_all` 会依次调用并刷新 fragments：`exp_riboseq_pause_bam_window.py`、`exp_riboseq_pause_bam_window_sensitivity.py`、`exp_riboseq_pause_bam_window_isa.py`、`exp_riboseq_pause_bam_window_dinuc_null.py`。  
 
+- 2026-01-18 — **CLAIMED**: `ISA-P4` “three boundary gates” audit on stop+2nt anchors（在 boundary-anchor 子集内按 $u_6\\in\\{\\texttt{100001},\\texttt{100101},\\texttt{101001}\\}$ 分层，复用 BAM pause-index 与 $z\\Delta U$ 端点做 meta-analysis；产出可引用 fragment 并写入 paper）。Branch: `paper-bio`.
+
 - 2026-01-18 — **COMPLETED**: `ISA-P3` Dinucleotide-preserving null suite (“null-of-null”)（把 dinuc-shuffle 控制接入 Ribo-seq pausing 端点：对每个 terminal-stop 窗口生成 dinucleotide-preserving surrogate，构造 composition-conditioned 的 $z\\Delta U$ / $p$ 并检验 pause-index 与该指标的关联是否仍存在；输出可引用 LaTeX fragment 并写入 paper；CPU 优先，必要时再用 A40）。Branch: `paper-bio`.
   - Result (2026-01-18): 新增 `scripts/exp_riboseq_pause_bam_window_dinuc_null.py` 生成 `sections/generated/riboseq_pause_bam_window_dinuc_null.tex`，并已写入 discussion：`sections/06_discussion.tex`。
   - Key result (2026-01-18): 对每条 transcript 的 stop-window（k=10）构造 dinucleotide-preserving shuffle null（n=200 shuffles/window），得到 residualized 的 $z\\Delta U$；在 BAM pause-index 上做分位数分层（quartile，高 vs 低）后，随机效应 meta-analysis 为 $d=0.67$ [$0.33$, $1.02$], $I^2=7.2\\%$（纳入 n=5 tracks）。这表明 pausing 端点的正向关联在强 dinuc 控制下仍可复现。
