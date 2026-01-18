@@ -500,6 +500,68 @@ Engineering artifacts (Omega-style audit chain)
 - H3-3b failure mode: 加数据后 meta 仍不收敛/方向不稳 → 负结果可用于冻结 H3（见 M3 建议），并把 pause-index 作为“强 null”写进 paper。  
 - H3-7 failure mode: probing track 与 stop-window endpoint 对不上（覆盖不足/坐标映射误差）→ 负结果可转化为“数据形态不适配窗口级端点”的边界条件，并给出后续替代（zMFE 或 raw BAM pileup）。
 
+---
+
+### Proposed Next Sprint (Scout) — 2026-01-18 (Auric centerwired decoder → testable endpoints)
+
+**Context / what changed (Auric commit)**
+
+Auric added a self-contained decoder+visualizer `scripts/fig_dna_hilbert_decoder_movie.py` and a rendered example figure set (`figures/ab019694_centerwired_gates*`). This is not “just a visualization”: the script operationalizes the Z128/ISA framing as an executable decoder over real sequences:
+
+- each 3-mer is compiled under $\mu^\ast$ into $(N,w,V,\Delta,\mathrm{boundary})$ via `fold_codon()` (see `scripts/genetic_code_tools.py`);
+- the 3 boundary words $\{\texttt{100001},\texttt{100101},\texttt{101001}\}$ are treated as **control symbols** (uplift/downlift/reset) that drive an $m=6\to 8/10$ refinement schedule (“centerwired” scheme);
+- refined cells embed micro Hilbert strokes, meaning the “microcode” becomes visible and (crucially) **countable** (e.g., gate-hit density, fraction refined, $m=10$ hits by $\Delta$ policy).
+
+This suggests a new mechanistic route for H3: instead of correlating $\Delta U$ with generic proxies (MFE/tAI), we can test whether **decoder-derived control-flow features** predict ribosome pausing under strong composition nulls (B2/B3 style).
+
+**Top-3 recommended tasks (new)**
+
+1) **ISA-VIZ1: Reproducible centerwired gate figure + paper wiring (not optional)**
+   - task_id: `ISA-VIZ1`
+   - why now: the repo already contains `figures/ab019694_centerwired_gates*` but no reproducible “how to regenerate” record and no citation in the manuscript; we should convert this into an auditable figure and use it to explain the “OpCode + microcode + gates” story.
+   - dataset: (a) the existing example used by Auric (currently not tracked as input); plus (b) 1–2 in-repo sequences (e.g., a representative RefSeq transcript region) for a fully reproducible demo.
+   - endpoint: a figure panel (GIF/contact sheet + legend) illustrating gate hits and $m$-uplifts on an 8×8 screen, with a short caption tied to ISA terms (boundary words = gates; refined mode = microcode region).
+   - acceptance:
+     - add a short “Repro command” block (exact CLI) in this document and/or a dedicated note under `scripts/` (so the figure is regenerable);
+     - add a minimal figure reference in the paper (discussion/appendix) explaining what is encoded (no new claims).
+   - compute: CPU (minutes per render); no datasets beyond existing FASTA/sequence strings.
+   - implementation sketch:
+     - standardize commands like:
+       - `python scripts/fig_dna_hilbert_decoder_movie.py --scheme centerwired --mode base --fasta <path> --frames 6 --stride <bases> --start <base> --out-prefix figures/<name>_centerwired_gates`
+     - ensure the input sequence(s) for the paper figure are committed (or clearly documented if external).
+
+2) **ISA-H3C1: Gate/refinement schedule as a quantitative predictor for pausing (under null-of-null)**
+   - task_id: `ISA-H3C1`
+   - why now: we already have a reproducible positive pausing association under dinucleotide-preserving null-of-null (`ISA-P3`). The next “new signal” should be: do ISA control-flow features add anything beyond composition-residualized $z\Delta U$?
+   - dataset: reuse existing stop-window candidates + BAM pausing caches (prefer reading from `data/_cache/*riboseq_pause*json` if present; do not rescan BAM unless necessary).
+   - endpoint:
+     - per-window features derived from the centerwired decoder, e.g.:
+       - gate-hit counts per boundary word,
+       - refined fraction (# cells with $m\in\{8,10\}$),
+       - $m=10$ hit count under the $\Delta$ policy (default $\Delta=55$),
+       - (optional) “refined segment length” statistics;
+     - test association with pause-index (and/or high-vs-low quartile effect sizes), conditioning on GC/dinuc and on residualized $z\Delta U$ (if available).
+   - acceptance:
+     - a single LaTeX fragment `sections/generated/centerwired_gate_features_vs_pausing.tex` (+ `.meta.json`) that reports effect sizes + null controls;
+     - results can be positive or null, but must state which controls were applied and what sample-size thresholds were enforced.
+   - compute: CPU; ideally cache-only.
+   - implementation sketch:
+     - implement a small feature-extractor script reading stop-window sequences and computing the centerwired `m_by_k` via the same gate rules as in `fig_dna_hilbert_decoder_movie.py`;
+     - join features with existing pause-index tables and run the pre-registered contrasts (quartile d + random-effects meta).
+
+3) **ISA-WV1: Decoder-driven candidate selection for reporter windows (stress-test the “control symbols” story)**
+   - task_id: `ISA-WV1`
+   - why now: we already generate candidate window sets for W1-type reporters; the decoder gives a principled way to pick windows that differ in “control-flow” (gate density / refined mode) while matching composition via the existing null machinery.
+   - dataset: reuse existing candidate windows JSONL and (optionally) Sec recoding sets as a positive-control family.
+   - endpoint: a ranked list of candidate windows with matched composition but divergent control-flow features; output a small JSON cache + a table fragment for the appendix.
+   - acceptance:
+     - write `data/_cache/window_sets_centerwired.json` (or similar) with selection criteria and provenance;
+     - a table fragment `sections/generated/window_sets_centerwired.tex` describing the selection (so it is actionable for wet-lab design).
+   - compute: CPU.
+   - implementation sketch:
+     - compute centerwired features for each window;
+     - within composition-matched strata (GC+dinuc or existing residualization), pick extremes for (refined fraction, gate hits, $m=10$ hits).
+
 ## 核心计算实验模块（7 模块系统验证计划）
 
 以下模块按优先级排序，可并行执行。每个模块都有明确的"反驳点"和"堵回去的实验"。
