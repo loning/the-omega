@@ -236,6 +236,7 @@ def analyze_one_bam(
     read_site: str,
     psite_offset_nt: int,
     strip_version: bool,
+    return_rows: bool = False,
 ) -> dict[str, Any]:
     if pysam is None:
         raise SystemExit("Missing dependency: pysam. Install into the active environment.")
@@ -332,6 +333,9 @@ def analyze_one_bam(
                 "record_id": rid0,
                 "bam_contig": contig,
                 "stop_codon": str(r.get("stop_codon") or ""),
+                "plus4_nt": str(r.get("plus4_nt") or ""),
+                "after_nt6": str(r.get("after_nt6") or ""),
+                "group_labels": sorted(g for g in groups_by_rid.get(rid0, set()) if str(g).strip()),
                 "u_before": float(r.get("before_mean_delta")) if r.get("before_mean_delta") is not None else float("nan"),
                 "u_after": float(r.get("after_mean_delta")) if r.get("after_mean_delta") is not None else float("nan"),
                 "diff": float(r.get("diff")) if r.get("diff") is not None else float("nan"),
@@ -393,6 +397,7 @@ def analyze_one_bam(
         "n_used_pause": int(n_used),
         "correlations": corr,
         "pairwise_comparisons": comps,
+        "rows": out_rows if bool(return_rows) else [],
     }
 
 
