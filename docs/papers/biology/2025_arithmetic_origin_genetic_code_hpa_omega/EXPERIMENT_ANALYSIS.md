@@ -342,7 +342,10 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
-- 2026-01-18 — **CLAIMED**: `ISA-P2` Ribo-seq overlay with ISA features（在 raw-read BAM pausing pipeline 上加入 stop-family ISA 特征（stop 的 sector/$\\Delta_6$ 与 stop+2nt 的 $m=10\\to6$ anchor），并按这些特征对 pause score 做分层/交互检验；输出可引用 LaTeX fragment；纳入 `scripts/run_all.py`；CPU 优先，必要时再用 A40）。Branch: `paper-bio`.
+- 2026-01-18 — **COMPLETED**: `ISA-P2` Ribo-seq overlay with ISA features（在 raw-read BAM pausing pipeline 上加入 stop-family ISA 特征（stop 的 sector/$\\Delta_6$ 与 stop+2nt 的 $m=10\\to6$ anchor），并按这些特征对 pause score 做分层/交互检验；输出可引用 LaTeX fragment；CPU 优先，必要时再用 A40）。Branch: `paper-bio`.
+  - Result (2026-01-18): 新增 `scripts/exp_riboseq_pause_bam_window_isa.py` 生成 `sections/generated/riboseq_pause_bam_window_isa.tex`，并已写入 discussion：`sections/06_discussion.tex`。
+  - Key result (2026-01-18): 在现有 8 个 human raw-read BAM tracks 上，按 stop+2nt 的 $m=10\\to6$ boundary-anchor（$u\\in\\{\\texttt{100001},\\texttt{100101},\\texttt{101001}\\}$）对 pause-index 做分层后，pooled-stops 的随机效应 meta-analysis 接近 null：$d=-0.05$ [$-0.35$, $0.26$], $I^2=18.2\\%$（纳入 n=4 tracks；其余 tracks coverage/样本不足）。Stop-stratified 与 low\\_diff-only 版本多为 underpowered（详见导出的 JSON audit 记录）。
+  - Repro (2026-01-18): 需要 `pysam`；推荐直接运行：`conda run -n omega-ribo python scripts/exp_riboseq_pause_bam_window_isa.py --force`（工作目录为论文目录）。
 
 - 2026-01-18 — **COMPLETED**: `ISA-B2` Stop instruction family (“OpCode + microcode” stratification)（在 RefSeq terminal stop windows 上把分组从 {UAA,UAG,UGA} 升级为 control-feature 组合（boundary/sector, $V$, $\\Delta$）以及 stop+2nt 的 $m=10\\to m=6$ anchor（复用 `H2-8` 的 refinement 计算）；输出分层后的 $U_{\\mathrm{after}}/\\Delta U$ 统计与 effect sizes，并产出 high/low 候选窗口集合（服务 W1 reporter library）；输出 LaTeX fragment 并写入 paper；纳入 `scripts/run_all.py`）。Branch: `paper-bio`.
   - Result (2026-01-18): 新增 `scripts/exp_stop_instruction_family_stratification.py` 生成 `sections/generated/stop_instruction_family_stratification.tex`（已写入 appendix：`sections/appendices/04_generated_tables.tex`）。μ* 下 stop-family 控制特征：UAA 为 boundary 且 $\\Delta_6=34$；UAG 为 cyclic 且 $\\Delta_6=34$；UGA 为 cyclic 且 $\\Delta_6=55$。
