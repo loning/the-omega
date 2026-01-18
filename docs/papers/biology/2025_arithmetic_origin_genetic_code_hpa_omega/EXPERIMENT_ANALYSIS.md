@@ -342,6 +342,8 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
+- 2026-01-18 — **CLAIMED**: `ISA-M2` Wobble re-interpretation (pure math, falsifiable)（在 64 codons 的单点突变图上，按位置 1/2/3 统计 control-flow 不变率：保持 $w$、保持 sector、$\\Delta$ 变化分布；输出 LaTeX fragment 并写入 paper appendix；纳入 `scripts/run_all.py`）。Branch: `paper-bio`.
+
 - 2026-01-18 — **CLAIMED**: `ISA-M1` Codon→OpCode compiler + closure audit（把 Fold$_6$/$\\Delta$/$18\\oplus3$ 解释为“OpClass+microcode+gate”；实现确定性编译器与闭包验收：`codon -> {N,w,V,\\Delta,sector,boundary}`，输出冻结 ISA 表 + LaTeX checklist，并纳入 `scripts/run_all.py`；同步写入 paper 并重编译 PDF）。Branch: `paper-bio`.
   - Progress (2026-01-18): 新增 `scripts/exp_codon_opcode_compiler.py`，生成 `sections/generated/codon_opcode_compiler_summary.tex` 并写入 appendix（`sections/appendices/04_generated_tables.tex`）；closure audit 要点：$|X_6|=21=18\\oplus3$、boundary words 三元组、$\\Delta\\in\\{0,21,34,55\\}$、AUG/UAA 同 boundary word 100001 且 34-split（N=14 vs 48），以及 24 encodings 下 “3 stops 不可能全落 boundary”（hist: {0:16,1:8}）。已把脚本纳入 `scripts/run_all.py` 并本地重编译 `main.pdf`。
 
