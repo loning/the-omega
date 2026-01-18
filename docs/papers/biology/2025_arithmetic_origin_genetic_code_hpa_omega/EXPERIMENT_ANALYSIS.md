@@ -342,6 +342,8 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
+- 2026-01-18 — **CLAIMED**: `ISA-P3` Dinucleotide-preserving null suite (“null-of-null”)（把 dinuc-shuffle 控制接入 Ribo-seq pausing 端点：对每个 terminal-stop 窗口生成 dinucleotide-preserving surrogate，构造 composition-conditioned 的 $z\\Delta U$ / $p$ 并检验 pause-index 与该指标的关联是否仍存在；输出可引用 LaTeX fragment 并写入 paper；CPU 优先，必要时再用 A40）。Branch: `paper-bio`.
+
 - 2026-01-18 — **COMPLETED**: `ISA-P2` Ribo-seq overlay with ISA features（在 raw-read BAM pausing pipeline 上加入 stop-family ISA 特征（stop 的 sector/$\\Delta_6$ 与 stop+2nt 的 $m=10\\to6$ anchor），并按这些特征对 pause score 做分层/交互检验；输出可引用 LaTeX fragment；CPU 优先，必要时再用 A40）。Branch: `paper-bio`.
   - Result (2026-01-18): 新增 `scripts/exp_riboseq_pause_bam_window_isa.py` 生成 `sections/generated/riboseq_pause_bam_window_isa.tex`，并已写入 discussion：`sections/06_discussion.tex`。
   - Key result (2026-01-18): 在现有 8 个 human raw-read BAM tracks 上，按 stop+2nt 的 $m=10\\to6$ boundary-anchor（$u\\in\\{\\texttt{100001},\\texttt{100101},\\texttt{101001}\\}$）对 pause-index 做分层后，pooled-stops 的随机效应 meta-analysis 接近 null：$d=-0.05$ [$-0.35$, $0.26$], $I^2=18.2\\%$（纳入 n=4 tracks；其余 tracks coverage/样本不足）。Stop-stratified 与 low\\_diff-only 版本多为 underpowered（详见导出的 JSON audit 记录）。
