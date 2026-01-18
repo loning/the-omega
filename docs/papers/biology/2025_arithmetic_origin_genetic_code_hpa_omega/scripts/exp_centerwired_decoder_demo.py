@@ -35,7 +35,7 @@ sys.path.insert(0, str(SCRIPT_DIR))
 from cache_manager import cache_hit, cache_key_digest, cache_meta_path, write_json_atomic, write_text_atomic
 
 
-SCRIPT_VERSION = 2
+SCRIPT_VERSION = 3
 
 
 def root_dir() -> Path:
@@ -219,7 +219,7 @@ def main() -> None:
     lines.append(r"\begin{figure}[H]")
     lines.append(r"\centering")
     lines.append(rf"\includegraphics[width=0.98\linewidth]{{{rel_contact.as_posix()}}}")
-    lines.append(r"\caption{Centerwired decoder demonstration on \path{AB019694.1} (Sec example).")
+    lines.append(r"\caption{Centerwired decoder demonstration on \texttt{AB019694.1} (Sec example).")
     lines.append(
         r"Each coarse cell consumes a 3-mer prefix ($m=6$), colored by its Fold$_6$ stable type; "
         r"the three boundary words $\{\texttt{100001},\texttt{100101},\texttt{101001}\}$ are treated as control records "

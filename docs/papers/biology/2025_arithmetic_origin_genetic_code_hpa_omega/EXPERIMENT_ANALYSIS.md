@@ -342,7 +342,10 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
-- 2026-01-18 — **CLAIMED**: `ISA-VIZ1` Reproducible centerwired gate figure + paper wiring（把 `figures/ab019694_centerwired_gates*` 变成可再生的审计图，并在论文中引用解释 “boundary words = control gates (m up/down/reset)”）。Branch: `paper-bio`. Owner: `codex`.
+- 2026-01-18 — **COMPLETED**: `ISA-VIZ1` Reproducible centerwired gate figure + paper wiring（把 `figures/ab019694_centerwired_gates*` 变成可再生的审计图，并在论文中引用解释 “boundary words = control gates (m up/down/reset)”）。Branch: `paper-bio`.
+  - Result (2026-01-18): 新增 `scripts/exp_centerwired_decoder_demo.py`，生成 `sections/generated/centerwired_decoder_demo.tex`（+meta），并已写入 discussion：`sections/06_discussion.tex`；同时纳入 `scripts/run_all.py`。
+  - Result (2026-01-18): 复用已渲染示例图 `figures/ab019694_centerwired_gates_contact_sheet.png` 与 `figures/ab019694_centerwired_gates_legend.png`，用于解释 Z128“Hilbert screen + 局部 $m=8/10$ refinement”的可执行接口（说明性可视化，不作为 H2/H3 端点证据）。
+  - Repro (2026-01-18): 可选重新渲染（覆盖 figures 下同名文件）：`python scripts/exp_centerwired_decoder_demo.py --render --force`（输入为 `data/recoding_genbank/genbank/AB019694.1.gb`；stride=240 bases；frames=6；$\Delta_{m=10}$ gate=55）。
 
 - 2026-01-18 — **COMPLETED**: `ISA-INF1` Wire pysam/BAM pausing analyses into `scripts/run_all.py`（guarded/optional；缺 `pysam`/BAM 时跳过但不失败；可用时生成/更新 `sections/generated/riboseq_pause_bam_window*.tex`）。Branch: `paper-bio`.
   - Result (2026-01-18): `scripts/run_all.py` 新增 `--bam-pausing/--no-bam-pausing` 与 `--pysam-conda-env`，并加入 guard：仅当 `data/refseq_hsapiens_mrna/stop_context_candidates.jsonl` 存在、`config/riboseq_bam_tracks.json` 里至少一个 indexed BAM 可用、且当前 Python 或 `conda run -n <env>` 可导入 `pysam` 时才运行 BAM pausing 系列脚本；否则跳过但不影响其余实验。  
