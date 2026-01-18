@@ -29,7 +29,7 @@ from cache_manager import cache_hit, cache_key_digest, cache_meta_path, write_js
 from genetic_code_tools import BASES, GENETIC_CODE, fold_codon
 
 
-SCRIPT_VERSION = 1
+SCRIPT_VERSION = 2
 MU_STAR = {"A": "00", "C": "01", "G": "10", "U": "11"}
 
 
@@ -130,7 +130,7 @@ def main() -> None:
     lines: list[str] = []
     lines.append(
         "ISA-M2 wobble audit: opcode/control invariance under single-nucleotide substitutions "
-        "(uniformly over the 64 codons; μ$^\\ast$)."
+        "(uniformly over the 64 codons; $\\mu^\\ast$)."
     )
     lines.append("")
     lines.append("\\begin{center}")
