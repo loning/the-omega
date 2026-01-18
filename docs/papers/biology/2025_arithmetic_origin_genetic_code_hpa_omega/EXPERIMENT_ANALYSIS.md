@@ -342,6 +342,8 @@ Engineering artifacts (Omega-style audit chain)
 
 ### Task Claims
 
+- 2026-01-18 — **CLAIMED**: `ISA-B2` Stop instruction family (“OpCode + microcode” stratification)（在 RefSeq terminal stop windows 上把分组从 {UAA,UAG,UGA} 升级为 control-feature 组合（boundary/sector, $V$, $\\Delta$）以及 stop+2nt 的 $m=10\\to m=6$ anchor（复用 `H2-8` 的 refinement 计算）；输出分层后的 $U_{\\mathrm{after}}/\\Delta U$ 统计与 effect sizes，并产出 high/low 候选窗口集合（服务 W1 reporter library）；输出 LaTeX fragment 并写入 paper；纳入 `scripts/run_all.py`）。Branch: `paper-bio`.
+
 - 2026-01-18 — **COMPLETED**: `ISA-M4` Hilbert locality as a testable hypothesis（实现 Hilbert(n=3) 坐标映射 $N\\in[0,63]\\to(x,y)$；定义 AA-codon 的 Hilbert 平面聚类指标（如组内平均距离 / 最近邻距离），并与两类 null 对照：24 encodings 与 degeneracy-preserving 随机遗传码；同时输出单点突变边的 Hilbert 跳跃距离分布（按位点 1/2/3）；输出 LaTeX fragment 并写入 paper appendix；纳入 `scripts/run_all.py`）。Branch: `paper-bio`.
   - Result (2026-01-18): 新增 `scripts/exp_hilbert_locality_audit.py` 生成 `sections/generated/hilbert_locality_audit.tex`（已写入 appendix：`sections/appendices/04_generated_tables.tex`）。AA 聚类在 Hilbert 平面上显著强于 degeneracy-preserving 随机码：组内平均 pairwise $L_1=2.437$（null $5.333\\pm0.279$，$p<10^{-4}$；24 encodings 下 $\\mu^\\ast$ rank 7/24；range [2.345, 2.897]）。同时报告 nearest-neighbor $L_1=1.390$（null $3.689\\pm0.304$，$p<10^{-4}$）。
   - Result (2026-01-18): 单点突变在 Hilbert 平面的跳跃距离具有强位置依赖：pos3 的 $\\mathbb{E}d_1=1.333$ 且 $p(d_1\\le1)=0.6667$（hist $\\{1:128,2:64\\}$），而 pos1/pos2 的 $p(d_1\\le1)=0$（pos2 hist $\\{2:96,4:96\\}$；pos1 hist $\\{2:4,4:80,6:20,8:80,10:8\\}$）。
