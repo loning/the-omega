@@ -18,6 +18,16 @@ M_E_GEV: float = 5.1099895e-4
 M_MU_GEV: float = 1.0565838e-1
 M_TAU_GEV: float = 1.77686
 
+# Quark reference masses (GeV). These are scheme-dependent PDG-style inputs used
+# for deterministic, auditable threshold/scale diagnostics (e.g. simple 1-loop running
+# approximations). Keep as explicit literals (no network dependency).
+M_U_GEV: float = 2.16e-3
+M_D_GEV: float = 4.67e-3
+M_S_GEV: float = 9.30e-2
+M_C_GEV: float = 1.27
+M_B_GEV: float = 4.18
+M_T_GEV: float = 172.76
+
 # PDG/CODATA numeric targets used elsewhere in the paper (dimensionless).
 ALPHA_INV_CODATA_2022: float = 137.035999084
 ALPHAZ_INV_PDG: float = 127.955
