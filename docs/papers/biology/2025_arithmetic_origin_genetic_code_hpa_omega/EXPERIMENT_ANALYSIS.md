@@ -340,7 +340,69 @@ Engineering artifacts (Omega-style audit chain)
 - `data/_cache/window_sets.json` (high/low candidate sets for W1)
 - Every new analysis produces `sections/generated/*.tex` + `.meta.json`, and is wired into `scripts/run_all.py`.
 
+---
+
+## Ω-Fold W5 (closed-loop): make codon microcode causal in Omega folding
+
+**Why this (and why now)**: in W5 (“synonymous recoding while protein fixed”), simply reverse-translating AA→codons and “checking” Fold$_6$ is not causal — it is just re-encoding. To make the merged story falsifiable, the 64→21 output must enter an **Omega artefact** or **runtime scheduler** so that different synonymous codons induce different deterministic trajectories.
+
+### Alignment point (shared narrative): compression + hidden load
+
+- 64→21: Fold$_6$ compresses 64 codons → 21 stable types $X_6$; the “window-outside” hidden load is uplift $\Delta=N-V(\mathrm{Fold}_6(N))\in\{0,21,34,55\}$.
+- Omega: wormholes approximate expensive actions as SHIFT + sparse patch; the “compression residue” is measured by impedance and controlled by allowlists/priors compiled into artefacts (Hard Mode).
+
+This lets us tell one consistent, auditable story: **uplift is a discrete hidden-load signal that can gate compute lapse / wormholes**.
+
+### Minimal causal interface (compiler → netlist artefact → runtime)
+
+Treat each codon as an instruction with:
+- payload: $\mathrm{Gen}(c)$ (AA/Stop)
+- control/microcode (under $\mu^\*$): $(Z(i),U(i),B(i))$ where:
+  - $Z(i)=V_{\mu^\*}(c_i)$
+  - $U(i)=\Delta_{\mu^\*}(c_i)\in\{0,21,34,55\}$
+  - $B(i)=\mathbf{1}\{w_{\mu^\*}(c_i)\in X^{\mathrm{bdry}}_6\}$
+
+**Hard Mode rule**: compile the per-position schedule into a netlist sidecar (auditable JSON artefact), e.g.:
+```json
+{"mu":"A00 C01 G10 U11","Z":[...],"U":[...],"B":[...],"lapse_mult":[...],"wormhole_allow":[...]}
+```
+Omega runtime consumes only `lapse_mult` and `wormhole_allow`; the rest is kept for audit/replay.
+
+### Closed-loop falsification experiment (5 groups + 2 mandatory controls)
+
+Hold AA fixed; vary synonymous codons; run deterministic Omega folding with schedule coupling ON/OFF.
+
+**Core 5 groups**
+1) Nature (native CDS)  
+2) Random-synonymous  
+3) 64-optimized (minimize an auditable cost on $U(i)$ + transition smoothness)  
+4) Schedule-shuffle (block-shuffle $U/B/Z$ along positions; preserve multiset + local autocorr null)  
+5) No-scheduler (schedule present but Omega ignores it; proves “no causal hook → no effect”)  
+
+**Mandatory extra controls**
+- Random-synonymous-matchedGC3 (composition control; avoid “uplift is just GC”)  
+- $g(U)$ ablations (constant / monotone / reverse / only-U55) to localize what signal matters  
+
+### Metrics (Omega-style: artefact + trace + readout)
+
+- **Trajectory/audit**: `op_trace_digest`, `path_order_hash`, stepwise $\Delta V_{\mathrm{total}}/\Delta V_{FS}$, rollback counts, wormhole trigger rate (overall + position-conditioned).
+- **Structure readout** (offline): RMSD/TM/GDT from deterministic decoder; reference can be native (when available) or the decoded Wish MAP (proxy for smoke/ablation).
+- **Position-level linkage**: correlate $U/B/Z$ with per-position runtime proxies (mean lapse $K$, wormhole use rate, mean $\Delta V$) using block-shuffle null + BH-FDR.
+
+### Minimal “co-translation semantics” (optional but high-value)
+
+To make “pausing = compute lapse” physically interpretable, add a prefix-visible runtime mode:
+- at translation step $i$: only prefix length $i$ is active; run $N_i$ steps where $N_i$ is a deterministic function of $U(i)$; then extend the chain.
+This turns synonymous-codon differences into an explicit **process** rather than a post-hoc feature.
+
+### Engineering linkage (where it lives)
+
+- Implementation is tracked as **Ω-103 (codon-causal-hook)** in `/mnt/rna01/zwlexa/project/ramanujan-z-omega` (compiler artefact + runtime hooks + Exp58/59/60/61 plan).
+- Paper-side outcome for this doc: a “W5 computational causal hook” subsection + a small table of 5-group results + ablations, with full artefact paths.
+
 ### Task Claims
+
+- 2026-01-21 — **CLAIMED**: `ISA-W5Ω1` Codon microcode → Omega folding causal hook (compile schedule artefact + 5-group controls + No-scheduler/Schedule-shuffle falsification); deliverable is an auditable artefact+trace bundle and a paper-ready summary table (A40 only if a baseline decoder needs GPU; otherwise CPU). Branch: `paper-bio`.
 
 - 2026-01-18 — **COMPLETED**: `ISA-P2E1` Expand BAM pausing replication by adding an extra track（把已存在但未纳入配置的 human Ribo-seq BAM track 加入 `config/riboseq_bam_tracks.json`，重跑 BAM pausing suite（`ISA-P2/P3/P4` + 相关衍生检查），并同步更新 paper fragments 与 meta-analysis 结论；优先 CPU，本地 `conda run -n omega-ribo`）。Branch: `paper-bio`.
   - Result (2026-01-18): `config/riboseq_bam_tracks.json` 新增 `ERP150947_ERR12549926_10m`（`data/riboseq_raw/ERP150947/align/ERR12549926.max10m.transcriptome.sorted.bam`）。
