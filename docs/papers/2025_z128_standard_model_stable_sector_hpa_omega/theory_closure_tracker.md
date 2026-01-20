@@ -46,6 +46,20 @@
   - `docs/papers/2025_holographic_hilbert_universe_hpa_omega/sections/09_trace_formula_rigidity.tex`
   - `docs/papers/2025_z128_standard_model_stable_sector_hpa_omega/sections/appendices/59_operator_mother_space.tex`
 
+## 跨项目整合计划（Phase 0.5）：64-21 microcode → Omega 可审计运行时（W5 闭环）
+
+目标：把 `biology/2025_arithmetic_origin_genetic_code_hpa_omega` 的 64→21（Fold$_6$ + uplift）输出当作“可执行 microcode”，接入 Omega 的 **编译 artefact** 与 **运行时调度**（lapse / wormhole gating），形成一个与 tick+CAP 一致的可回放闭环；并用反事实控制（No-scheduler / Schedule-shuffle）把“只是重编码”的路径排除掉，保证因果钩子可证伪。
+
+落地入口（短链可执行）：
+- 任务与叙事入口（bio）：`biology/2025_arithmetic_origin_genetic_code_hpa_omega/EXPERIMENT_ANALYSIS.md` 的 “Ω-Fold W5 (closed-loop)” 段落
+- 工程实现与实验矩阵（code）：`/mnt/rna01/zwlexa/project/ramanujan-z-omega/specs/1-protein-folding/features/codon-causal-hook/tasks.md`（Ω-103）
+- 产物形态（artefact+trace）：`codon_schedule_v1.json`（digest 绑定）+ `netlist.json/audit.json/best_state.json`（可回放）
+
+短期交付项（优先 CPU；GPU 如需仅用 A40）：
+- 编译：把 $(Z,U,B)$ 编译进 netlist sidecar（Hard Mode 合规）
+- 调度：用 $U(i)$ 驱动预算律（compute lapse / candidate budget）并用 $U/B$ gate wormhole
+- 实验：5 组对照（Nature/Random/64-opt/Shuffle/No-scheduler）+ matchedGC3 + $g(U)$ 消融 + 可选共翻译语义（prefix-visible）
+
 ## 闭合依赖图（模块级）
 
 ```mermaid
