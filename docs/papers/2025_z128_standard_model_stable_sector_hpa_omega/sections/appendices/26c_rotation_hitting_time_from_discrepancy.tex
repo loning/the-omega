@@ -1,0 +1,68 @@
+\section{Quantitative return bounds from discrepancy (rotation hitting times)}
+\label{app:rotation_hitting_time_discrepancy}
+\noindent
+This appendix gives an explicit, auditable upper bound on hitting/return times to an interval for the irrational-rotation scan.
+The proof uses only the star-discrepancy certificate at convergent lengths (Lemma~\ref{lem:convergent_length_discrepancy}).
+It provides a quantitative complement to the qualitative syndetic-return statement used in Appendix~\ref{app:sturmian_uniform_recurrence}.
+
+\subsection{Hitting an interval within a convergent length}
+\label{subsec:hitting_time_convergent_length}
+
+\begin{definition}[Rotation orbit and interval counts]\label{def:rotation_orbit_interval_counts}
+\MathTag Fix $\alpha\in(0,1)\setminus\QQ$ and $x_0\in[0,1)$.
+Write $x_n:=\{x_0+n\alpha\}$ and $P_N(\alpha):=\{x_0,\ldots,x_{N-1}\}$.
+For an interval $I=[a,b)\subset[0,1)$ define the count
+\[
+C_N(I):=\#\{0\le n\le N-1:\ x_n\in I\}.
+\]
+\end{definition}
+
+\begin{lemma}[Discrepancy controls interval counts]\label{lem:discrepancy_controls_interval_counts}
+\MathTag For any $N\ge 1$ and any half-open interval $I=[a,b)$, one has
+\[
+\left|\frac{C_N(I)}{N}-|I|\right|\le 2\,D_N^\ast(P_N(\alpha)),
+\]
+where $|I|:=b-a$ and $D_N^\ast$ is the star discrepancy (Definition~\ref{app:discrepancy_def}).
+\end{lemma}
+
+\begin{proof}
+Write $C_N([0,t))$ for the prefix counts.
+Then $C_N([a,b))=C_N([0,b))-C_N([0,a))$ and similarly $|[a,b)|=b-a$.
+Apply the star-discrepancy bound separately to $[0,b)$ and $[0,a)$ and use the triangle inequality.
+\end{proof}
+
+\begin{theorem}[Quantitative interval hitting at convergent lengths]\label{thm:rotation_interval_hitting_convergent}
+\MathTag Let $\alpha=[0;a_1,a_2,\ldots]$ be irrational with convergent denominators $q_k$.
+Fix any interval $I\subset[0,1)$ of length $|I|=\ell>0$.
+Let $k\ge 0$ satisfy $q_k\ge 32/\ell$ and set $N:=q_k$.
+Then for every intercept $x_0$ one has $C_N(I)\ge 1$.
+Equivalently, the orbit hits $I$ within the first $N$ steps:
+there exists $0\le n\le N-1$ with $x_n\in I$.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:convergent_length_discrepancy}, at $N=q_k$ one has
+$D_N^\ast(P_N(\alpha))\le 8/N$.
+Apply Lemma~\ref{lem:discrepancy_controls_interval_counts}:
+\[
+\frac{C_N(I)}{N}\ge \ell-2D_N^\ast(P_N(\alpha))
+\ge \ell-\frac{16}{N}.
+\]
+If $N\ge 32/\ell$, then $16/N\le \ell/2$, hence
+\[
+\frac{C_N(I)}{N}\ge \ell-\frac{16}{N}\ge \frac{\ell}{2}>0.
+\]
+Therefore $C_N(I)\ge 1$ since it is an integer.
+\end{proof}
+
+\begin{corollary}[A quantitative syndetic return bound for intervals]\label{cor:rotation_interval_syndetic_gap}
+\MathTag Under the assumptions of Theorem~\ref{thm:rotation_interval_hitting_convergent}, the return-time set
+$N(x_0,I)=\{n\in\ZZ:\ x_0+n\alpha\in I\}$ is syndetic with gap bound $N=q_k$.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:rotation_interval_hitting_convergent} to every shifted intercept $x_t:=\{x_0+t\alpha\}$.
+For each $t\in\ZZ$, within the next $N$ steps the orbit from $x_t$ hits $I$, i.e.\ there exists $0\le j\le N-1$ such that $x_{t+j}\in I$.
+Equivalently, every integer interval $[t,t+N-1]$ contains a return time, which is precisely syndeticity with gap bound $N$ (Definition~\ref{def:syndetic_subset}).
+\end{proof}
+

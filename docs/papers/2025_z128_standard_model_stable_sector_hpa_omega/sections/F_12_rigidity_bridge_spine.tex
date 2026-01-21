@@ -1,0 +1,289 @@
+\section{A rigidity bridge spine: entropy gaps, determinant traces, and auditable invariance}
+\label{sec:rigidity_bridge_spine}
+
+\paragraph{Purpose.}
+\AuditTag This section collects several rigid identities and audit-facing bridge statements that are already present (often dispersed) across the manuscript.
+The goal is purely organizational: to provide a short reusable spine that makes explicit how the paper's three languages
+(i) counting/entropy on finite quotients,
+(ii) determinant/trace generating functions (zeta and resolvents),
+and (iii) bounded finite-family CAP selection and scheme/matching contracts,
+interlock without introducing any new axiom beyond tick and CAP.
+\AuditTag For the global unifying vocabulary that treats these bridges as instances of finite-family selection/updates and auditable obstruction certificates, see Section~\ref{sec:unified_spine}.
+
+\subsection{One constant, three readings: \texorpdfstring{$\log(2/\varphi)$}{log(2/phi)}}
+\label{subsec:rigidity_log2phi_triple_reading}
+
+\begin{proposition}[The constant $\log(2/\varphi)$ as a rigidity bridge]\label{prop:rigidity_log2phi_triple_reading}
+\MathTag Let $\varphi=(1+\sqrt{5})/2$.
+The same constant $\log(2/\varphi)$ admits the following three equivalent readings within this manuscript:
+\begin{enumerate}
+\item \textbf{Degeneracy growth (capacity gap).}
+The mean degeneracy $d_m=2^m/F_{m+2}$ satisfies
+\[
+\lim_{m\to\infty}\frac{1}{m}\log d_m=\log(2/\varphi)
+\]
+(Lemma~\ref{lem:entropy_gap_hidden_exponent_cosmo}).
+\item \textbf{Conditional entropy rate (finite observability).}
+For $N$ uniform on $K_m=\{0,\dots,2^m-1\}$ and $W=\mathrm{Fold}_m(N)$, one has
+\[
+\lim_{m\to\infty}\frac{1}{m}H(N\mid W)=\log(2/\varphi)
+\]
+(Proposition~\ref{prop:folding_relative_entropy_decomposition}).
+\item \textbf{Pressure gap (zero potential).}
+For the full two-shift $\Sigma_2$ and the golden-mean shift $\Sigma_{\mathrm{GM}}$, the zero-potential pressures satisfy
+\[
+P_{\Sigma_2}(0)-P_{\Sigma_{\mathrm{GM}}}(0)=\log 2-\log\varphi=\log(2/\varphi)
+\]
+(Lemma~\ref{lem:full_shift_entropy_gap}).
+\end{enumerate}
+\end{proposition}
+
+\begin{remark}[Why this matters for the narrative]\label{rem:rigidity_log2phi_why}
+\AuditTag The paper uses the constant $\log(2/\varphi)$ in several places under different names
+(\emph{entropy gap}, \emph{hidden exponent}, \emph{capacity gap}, or as an Abel/pole-barrier-aligned growth rate).
+Proposition~\ref{prop:rigidity_log2phi_triple_reading} records that these are not independent numerical coincidences:
+they are the same rigidity constant seen through three equivalent object choices.
+\end{remark}
+
+\subsection{One bounded-type constant, two certificate families: mismatch and persistence}
+\label{subsec:rigidity_bounded_type_joint_minimax}
+
+\begin{remark}[Joint minimax at the golden branch (audit-facing bridge)]\label{rem:rigidity_joint_minimax_golden_branch}
+\AuditTag In the tick-first scan layer, the continued-fraction data of the slope $\alpha=[0;a_1,a_2,\ldots]$ controls \emph{two} distinct audited certificate families:
+\begin{itemize}
+\item \textbf{Mismatch control (discrepancy).}
+The bounded-type discrepancy certificate in Appendix~\ref{app:discrepancy_ostrowski} yields an explicit upper bound whose constant scales linearly in the bound $A:=\sup_k a_k$ (Corollary~\ref{cor:bounded_type_discrepancy}).
+\item \textbf{Persistence control (return gaps).}
+For the canonical Sturmian (rotation-window) coding, return gaps admit a two-scale bound $\tau\le q_k+q_{k+1}$ (Theorem~\ref{thm:sturmian_return_time_qk_bound}) and, in bounded type $a_k\le A$, the explicit linear bound $\tau\le (A+2)m$ for length-$m$ factors (Corollary~\ref{cor:sturmian_return_bounded_type_linear}).
+\end{itemize}
+\AuditTag Therefore, within the audited bounded-type class, the golden branch $a_k\equiv 1$ (i.e.\ $A=1$) is the joint minimax choice for both mismatch and persistence certificate constants.
+This is an organizational bridge and is not used as a premise in theorem-level folding proofs.
+\end{remark}
+
+\begin{proposition}[Fiber-entropy and relative-entropy squeezing]\label{prop:fiber_entropy_relative_entropy_squeezing}
+\MathTag Fix $m\ge 1$ and let $K_m=\{0,\dots,2^m-1\}$.
+Let $N$ be uniform on $K_m$ and let $W:=\mathrm{Fold}_m(N)\in X_m$.
+Write $P(w):=\mathrm{Fold}_m^{-1}(w)$ for fibers, define the mean degeneracy $d_m:=|K_m|/|X_m|=2^m/|X_m|$, and the maximal degeneracy $r_m:=\max_{w\in X_m}|P(w)|$.
+Let $\mu_m$ denote the induced distribution $\mu_m(w)=|P(w)|/2^m$ on $X_m$ and let $u_m$ be uniform on $X_m$.
+Then:
+\begin{enumerate}
+\item \textbf{Entropy squeezing:}
+\[
+\log d_m \;\le\; H(N\mid W) \;\le\; \log r_m.
+\]
+\item \textbf{Relative-entropy squeezing:}
+\[
+0\;\le\; D(\mu_m\Vert u_m)\;\le\;\log(r_m/d_m).
+\]
+\item \textbf{Rate consequence:} using $\log d_m=m\log(2/\varphi)+O(1)$ (Lemma~\ref{lem:entropy_gap_hidden_exponent_cosmo}) and $\log r_m=m\log(2/\varphi)+O(1)$ (Corollary~\ref{cor:rm_growth_rate}), one has
+\[
+D(\mu_m\Vert u_m)=O(1),
+\qquad
+\lim_{m\to\infty}\frac{1}{m}D(\mu_m\Vert u_m)=0.
+\]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+By Proposition~\ref{prop:folding_relative_entropy_decomposition} one has $H(N\mid W)=\log d_m + D(\mu_m\Vert u_m)$, hence $H(N\mid W)\ge \log d_m$ and $D(\mu_m\Vert u_m)\ge 0$.
+Also,
+\[
+D(\mu_m\Vert u_m)=\mathbb{E}_{\mu_m}\!\left[\log\!\left(\frac{|P(W)|}{d_m}\right)\right]
+\le \log\!\left(\frac{r_m}{d_m}\right),
+\]
+since $|P(W)|\le r_m$ almost surely.
+Finally, $H(N\mid W)=\mathbb{E}_{\mu_m}[\log|P(W)|]\le \log r_m$ because $\log|P(W)|\le \log r_m$ pointwise.
+The rate consequence follows because $\log(r_m/d_m)=\log r_m-\log d_m=O(1)$ by the cited rigidity rates.
+\end{proof}
+
+\subsection{Determinants, traces, and zeta: a rigid bookkeeping identity}
+\label{subsec:rigidity_det_trace_zeta}
+
+\begin{lemma}[Log-determinant as a trace generating series]\label{lem:rigidity_logdet_trace_series}
+\MathTag For any square matrix $M$, one has the formal identity
+\[
+-\log\det(I-zM)=\sum_{k\ge 1}\frac{z^k}{k}\,\mathrm{tr}(M^k),
+\]
+as a power series around $z=0$.
+In the trace-class operator setting, the same identity holds on the disk of convergence (Remark~\ref{rem:logdet_trace_expansion}).
+\end{lemma}
+\begin{proof}
+Expand $\log(I-zM)=-\sum_{k\ge 1} z^k M^k/k$ formally and use $\log\det=\mathrm{tr}\log$.
+\end{proof}
+
+\begin{remark}[Refinement operators as determinant/trace objects]\label{rem:rigidity_refinement_to_det_trace}
+\AuditTag The refinement operators $T_L:=A^L$ (Definition~\ref{def:refinement_operators_TL}) are powers of the golden-mean transition matrix $A$.
+Lemma~\ref{lem:rigidity_logdet_trace_series} implies that the traces $\mathrm{tr}(A^k)$ are rigidly packaged by $\det(I-zA)$.
+This is the shared algebraic core behind (i) extension-count operator evaluations, (ii) periodic-orbit/zeta expansions, and (iii) pole-barrier normalizations.
+For a graph-theoretic realization of the same determinant/prime-cycle packaging, see Appendix~\ref{app:graph_zeta_holonomy}.
+\AuditTag For a fully finite-state refinement of this packaging that separates periodic-point counts into primitive-cycle counts via M\"obius inversion (a concrete ``prime cycle'' template for the golden-branch grammar), see Appendix~\ref{app:zeckendorf_shift_prime_cycles}.
+\end{remark}
+
+\begin{remark}[Certificate calculus index: one bookkeeping family, multiple coordinates]\label{rem:certificate_calculus_index}
+\AuditTag The determinant/trace vocabulary in this subsection is one coordinate system on a broader certificate family used across the manuscript.
+For navigation, the following objects are different ``coordinates'' on the same bookkeeping family:
+\begin{itemize}
+\item \textbf{trace $\leftrightarrow$ logdet:} $-\log\det(I-zM)=\sum_{k\ge 1} z^k\,\mathrm{tr}(M^k)/k$ (Lemma~\ref{lem:rigidity_logdet_trace_series});
+\item \textbf{logdet $\leftrightarrow$ delay:} on a declared unitary band, $\Tr Q(\omega)=-\iu\,\dd(\log\det S)/\dd\omega$ (Lemma~\ref{lem:wigner_smith_trace_logdet});
+\item \textbf{logdet/\texorpdfstring{$\zeta$}{zeta} $\leftrightarrow$ primitive cycles:} periodic-point counts admit an Euler-product coordinate over primitive cycles, with M\"obius inversion as the basis change (Appendix~\ref{app:zeckendorf_shift_prime_cycles});
+\item \textbf{pole barrier/Abel-first/finite part:} analyticity discipline and constant-term extraction provide a canonical regularization coordinate for divergent series or infinite-horizon expressions (Appendix~\ref{app:abel_finite_part_notes} and Appendix~\ref{app:cyclic_calculus_theta_fp}).
+\end{itemize}
+\AuditTag This index is organizational: it does not add premises beyond tick and CAP.
+For the global Sel/Upd/gap gate that controls how candidate families and certificate definitions may be updated without hidden knobs, see Section~\ref{sec:unified_spine} and Appendix~\ref{app:branching_selection_rigidity}.
+\AuditTag For a compact cross-module table that lists the common readout functors, their certificate objects, and their failure-point channels under the same Sel/Upd/gap gate, see Table~\ref{tab:protocol_readout_certificate_gate}.
+\end{remark}
+
+\begin{corollary}[Pole barrier as an exponential of pressure (matrix/SFT form)]\label{cor:pole_barrier_equals_exp_minus_pressure}
+\MathTag Let $(X,\sigma)$ be a mixing shift of finite type with adjacency matrix $A$.
+Then the dominant singularity (pole barrier) of the associated determinant/zeta package occurs at
+\[
+|z|_\star=\rho(A)^{-1}=\exp(-P(0)),
+\]
+where $P(0)=\log\rho(A)$ is the zero-potential pressure (Theorem~\ref{thm:pressure_spectral_radius_standard}).
+Equivalently, the Abel normalization $z=r/\rho(A)$ places the leading pole barrier at $r=1$.
+\end{corollary}
+\begin{proof}
+For a one-step SFT, $P(0)=\log\rho(A)$ (Theorem~\ref{thm:pressure_spectral_radius_standard}).
+The determinant/zeta rational form is controlled by $\det(I-zA)$, whose smallest-modulus singularity lies at $|z|=\rho(A)^{-1}$.
+\end{proof}
+
+\subsection{Scattering delay as a \texorpdfstring{$\log\det$}{logdet} derivative (unitary rigidity)}
+\label{subsec:rigidity_scattering_delay_logdet}
+
+\begin{lemma}[Wigner--Smith trace as a frequency derivative of \texorpdfstring{$\log\det S$}{logdet S}]\label{lem:wigner_smith_trace_logdet}
+\MathTag Let $S(\omega)$ be a differentiable family of \emph{unitary} matrices on a frequency band.
+Define the Wigner--Smith matrix
+\[
+Q(\omega):=-\iu\,S(\omega)^\dagger\frac{\dd S}{\dd \omega}.
+\]
+Then
+\[
+\Tr Q(\omega)=-\iu\,\frac{\dd}{\dd\omega}\log\det S(\omega).
+\]
+\end{lemma}
+\begin{proof}
+For an invertible differentiable matrix $S(\omega)$ one has the standard identity
+\[
+\frac{\dd}{\dd\omega}\log\det S(\omega)=\Tr\!\left(S(\omega)^{-1}\frac{\dd S}{\dd\omega}\right).
+\]
+Under unitarity, $S^{-1}=S^\dagger$, hence
+\[
+-\iu\,\frac{\dd}{\dd\omega}\log\det S(\omega)
+=-\iu\,\Tr\!\left(S^\dagger\frac{\dd S}{\dd\omega}\right)
+=\Tr\!\left(-\iu\,S^\dagger\frac{\dd S}{\dd\omega}\right)
+=\Tr Q(\omega).
+\]
+\end{proof}
+
+\begin{remark}[Why this is a rigidity bridge]\label{rem:rigidity_ws_logdet_bridge}
+\AuditTag Lemma~\ref{lem:wigner_smith_trace_logdet} makes the phase/delay interface in Appendix~\ref{app:time_mass_delay} algebraically compatible with the determinant/trace bookkeeping used throughout the $\e$-channel and the operator mother-space vocabulary:
+delay is a derivative of a \emph{log-determinant}.
+This is the minimal reason that ``delay audits'' can be discussed in the same certificate language as pole-barrier and logdet/trace expansions, without importing any additional dynamical axiom beyond the declared unitarity window.
+\end{remark}
+
+\subsection{Resolution-origin shifts: scheme reparametrization as a coordinate convention}
+\label{subsec:rigidity_scheme_shift_as_origin_shift}
+
+\begin{corollary}[Scheme rescaling and origin shifts in the \texorpdfstring{$r$}{r} coordinate]\label{cor:rigidity_scheme_shift_origin_r}
+\AuditTag The equivalence semantics of Section~\ref{app:equivalence_semantics} treats tick-origin shifts $t\sim t+t_0$ as coordinate conventions (E1).
+Likewise, in the Fibonacci scale map $\mu(r)=\mu_0\varphi^r$, changing the reference scale $\mu_0$ is an additive shift of $r$.
+In the RG dictionary, a scheme rescaling $\Lambda'\!=c\,\Lambda$ is precisely the same additive shift in the $\Lambda$-relative coordinate $r_\Lambda(\mu)=\log_\varphi(\mu/\Lambda)$ (Lemma~\ref{lem:lambda_rescaling_shift_r}).
+Therefore, within the declared scheme contract, scheme rescalings are to be treated as \emph{origin choices} in the $r$ coordinate rather than as hidden continuous knobs.
+\end{corollary}
+
+\subsection{Coarse graining and irreversibility: data processing as a second-law certificate}
+\label{subsec:rigidity_dpi_second_law}
+
+\begin{corollary}[Data processing as an auditable irreversibility certificate]\label{cor:rigidity_dpi_irreversibility_certificate}
+\AuditTag Whenever a protocol step is modeled as a channel (classical Markov kernel or quantum CPTP map), relative-entropy monotonicity provides a canonical irreversibility certificate:
+\[
+D(\Phi(\rho)\Vert \Phi(\sigma))\le D(\rho\Vert \sigma)
+\]
+for CPTP $\Phi$ (Theorem~\ref{thm:z128_quantum_dpi_channel}).
+Appendix~\ref{app:thermodynamics_from_equivalence} uses this as the theorem-level backbone behind the interface reading of a ``second law'' under declared coarse-graining/channel families.
+\end{corollary}
+
+\subsection{Capacity bits and counting entropy: a compatibility constraint}
+\label{subsec:rigidity_capacity_entropy_compatibility}
+
+\begin{remark}[Capacity bits are log-count entropy in the protocol language]\label{rem:rigidity_capacity_bits_entropy}
+\AuditTag The protocol screen capacity and the $\chi$-cloud capacity are defined as \emph{bit counts} (Appendix~\ref{app:bh_planck_capacity_calibration} and Definition~\ref{def:chi_cloud_capacity_bits}).
+In the counting-entropy dictionary of Appendix~\ref{app:thermodynamics_from_equivalence}, the same content is simply $S=\log|\Gamma|$ (up to the $k_B$ and $\ln 2$ matching factors).
+This means that any place the manuscript uses capacity bits as a control parameter is also (implicitly) using an entropy proxy, and must respect the finite-observability squeezing constraints such as Proposition~\ref{prop:fiber_entropy_relative_entropy_squeezing} when those capacities are formed from folding/coarse-graining quotients.
+\end{remark}
+
+\subsection{Kernel pressure and thermodynamic pressure: the same \texorpdfstring{$\log\rho$}{log rho} object}
+\label{subsec:rigidity_kernel_pressure_alignment}
+
+\begin{corollary}[Kernel weighted pressure proxy aligns with the pole-barrier/pressure certificate]\label{cor:rigidity_kernel_pressure_polebarrier_alignment}
+\AuditTag In the kernel view (Section~\ref{sec:kernel_view}) the finite-dimensional weighted operator family $\widehat F_n(t)$ yields a pressure proxy
+$P_n(t)=\log\rho(\widehat F_n(t))$ (Prediction P8; Section~\ref{subsec:p8_weighted_pressure_monotonicity}).
+By the same spectral-radius identity as in Corollary~\ref{cor:pole_barrier_equals_exp_minus_pressure}, the corresponding determinant/resolvent package has dominant barrier at
+\[
+|r|_\star=\rho(\widehat F_n(t))^{-1}=\exp(-P_n(t)).
+\]
+Thus the kernel-view ``weighted pressure'' and the thermodynamic-formalism pressure share the same rigidity meaning: they are both $\log$ spectral radii, and their pole barriers are the corresponding exponentials.
+\end{corollary}
+
+\subsection{Audit legality: CAP on equivalence classes and scheme contracts}
+\label{subsec:rigidity_legality_cap_scheme}
+
+\begin{proposition}[Legality threshold for invariant verdicts (audit contract)]\label{prop:rigidity_legality_invariant_verdicts}
+\AuditTag Consider an audit module that declares a finite candidate family $\Theta$ and reports a discrete verdict produced by CAP-style selection
+(lexicographic minimization of an objective and a deterministic tie-break key).
+If the module intends the verdict to be \emph{invariant} under a declared equivalence (e.g.\ a scheme reparametrization or a matching-envelope change),
+then both the objective and the tie-break key must be invariant under that equivalence.
+Otherwise the verdict violates the equivalence semantics contract even when the objective alone is invariant.
+\end{proposition}
+\begin{proof}
+This is the direct application of Proposition~\ref{prop:cap_on_equiv_classes} together with the minimal failure-point remark (Remark~\ref{rem:cap_equiv_audit_failure}).
+For scheme reparametrizations, the invariants/non-invariants contract is recorded explicitly in Appendix~\ref{app:scheme_invariance_audit_contract}.
+\end{proof}
+
+\subsection{Holonomy statistics: cycle-type rigidity for class-function readouts}
+\label{subsec:rigidity_cycle_type_statistics}
+
+\begin{proposition}[Cycle-type statistics rigidly determine class-function loop readouts]\label{prop:rigidity_cycle_type_class_functions}
+\MathTag In the anchor holonomy setting (Section~\ref{sec:protocol_connections_holonomy}), loop holonomies are defined up to conjugation (gauge relabeling),
+so any readout that depends on holonomy only through a class function is determined by the cycle-type histogram.
+\end{proposition}
+\begin{proof}
+This is precisely Proposition~\ref{prop:cycle_type_stats_determine_class_sums}.
+\end{proof}
+
+\begin{remark}[Why this strengthens CP/mixing narratives]\label{rem:rigidity_cycle_type_strengthens_cp}
+\AuditTag When a CP- or mixing-facing diagnostic is expressed as a class-function loop statistic (e.g.\ a character/trace readout of a representation of the holonomy group),
+its aggregate behavior is not a free numerical target but is rigidly constrained by the reported cycle-type statistics.
+This is the mechanism by which holonomy tables can support distributional, not only point-estimate, falsifiability hooks.
+\end{remark}
+
+\begin{proposition}[Cycle-type identifiability boundary for class-function observables]\label{prop:cycle_type_identifiability_boundary}
+\AuditTag Fix a finite loop family $\mathcal{L}$ in the anchor holonomy setting so that each loop $L\in\mathcal{L}$ yields a holonomy $p_L\in S_4$, and summarize the multiset $\{p_L\}_{L\in\mathcal{L}}$ by its cycle-type histogram.
+Then the following are equivalent:
+\begin{enumerate}
+\item the cycle-type histograms agree for two protocol realizations (same loop family, possibly different internal constructions);
+\item for every class function $F:S_4\to\RR$, the aggregate sums $\sum_{L\in\mathcal{L}}F(p_L)$ agree;
+\item for every representation $\rho$ of $S_4$, all trace-based loop summaries $\sum_{L\in\mathcal{L}}\mathrm{tr}(\rho(p_L))$ agree.
+\end{enumerate}
+Consequently, within any diagnostic pipeline that reports only cycle-type histograms (or, equivalently, only class-function summaries), two realizations with the same histogram are indistinguishable by those observables; distinguishing them requires enlarging the loop family or introducing a non-class-function readout.
+\end{proposition}
+\begin{proof}
+$(1)\Rightarrow(2)$ is Proposition~\ref{prop:cycle_type_stats_determine_class_sums}.
+$(2)\Rightarrow(3)$ holds because traces of representations are class functions.
+For $(2)\Rightarrow(1)$, if the histograms differ then there exists a cycle type $C$ whose count differs; the indicator function $F=\mathbf{1}_{C}$ is a class function and yields different sums, contradicting (2).
+\end{proof}
+
+\subsection{A cosmology calibration pin: \texorpdfstring{$m_\ast\approx 15$}{m*=15} and the dyadic baseline}
+\label{subsec:rigidity_cosmology_pin}
+
+\begin{corollary}[A dyadic--cosmology consistency pin (audit)]\label{cor:dyadic_cosmology_consistency_pin}
+\AuditTag Appendix~\ref{app:cosmology_resolution_flow} selects an effective window length $m_\ast$ by discrete matching under the stated interface hypothesis.
+Independently, fixing a dyadic baseline phase denominator at the anchor (Section~\ref{subsec:z128_label}) selects $p=7$ (a $\ZZ_{128}$ register).
+In this manuscript we record the low-complexity internal relation
+\[
+m_b^\ast:=2p+1,
+\]
+so at $p=7$ one has $m_b^\ast=15$.
+The equality $m_\ast=m_b^\ast$ is therefore an auditable cross-module consistency check between (i) a cosmology-side discrete match and (ii) the chosen dyadic baseline.
+Failure of this equality indicates that at least one of the following must be made explicit at the audit layer: a different dyadic baseline choice, a different low-complexity relation between $m$ and $p$, or an enlarged matching hypothesis class.
+\end{corollary}
+

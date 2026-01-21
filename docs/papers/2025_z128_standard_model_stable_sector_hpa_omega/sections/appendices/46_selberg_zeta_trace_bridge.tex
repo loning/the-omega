@@ -1,0 +1,93 @@
+\section{Selberg zeta and trace formula as a prime-cycle rigidity bridge (notes)}
+\label{app:selberg_zeta_trace_bridge}
+
+\AuditTag This appendix records a standard ``mother space'' bridge that parallels several zeta/prime-skeleton motifs used elsewhere in this paper:
+primitive closed geodesics play the role of prime cycles, Selberg zeta provides an Euler product over these cycles, and the Selberg trace formula relates that geometric prime-cycle data to spectral data of the Laplacian.
+The statements are classical and are included as an audit-facing unification layer; they are not used as premises in theorem-level folding proofs.
+For the modular/continued-fraction entry point already used in this manuscript, see Appendix~\ref{app:modular_flow_gauss_map}.
+For the pole-barrier rigidity motif, see Appendix~\ref{app:trace_pole_barrier_template}.
+For the arithmetic prime-skeleton template, see Appendix~\ref{app:hecke_prime_skeleton}.
+
+\subsection{Closed geodesics and primitive conjugacy classes}
+\label{subsec:closed_geodesics_conjugacy}
+
+Let $\Gamma\subset \mathrm{PSL}_2(\RR)$ be a discrete, torsion-free, cocompact Fuchsian group and let
+\[
+X:=\Gamma\backslash\mathbb{H}
+\]
+be the resulting compact hyperbolic surface.
+Write $\mathcal{C}_{\mathrm{prim}}(X)$ for the set of primitive closed geodesics in $X$ (primitive up to iteration and cyclic reparametrization).
+
+\begin{theorem}[Primitive closed geodesics and hyperbolic conjugacy classes (standard)]
+\label{thm:closed_geodesics_conjugacy_standard}
+\MathTag Primitive closed geodesics on $X$ are in natural bijection with primitive hyperbolic conjugacy classes in $\Gamma$.
+Moreover, for each primitive class $[\gamma]$ the corresponding primitive closed geodesic has length
+\[
+\ell(\gamma)=\log N(\gamma),
+\]
+where $N(\gamma)>1$ is the norm (expansion factor) of the hyperbolic element $\gamma$.
+\end{theorem}
+\begin{remark}
+Standard; see, e.g., \cite{Buser1992,Iwaniec2002}.
+For noncompact finite-area surfaces such as the modular surface $\mathrm{PSL}_2(\ZZ)\backslash\mathbb{H}$, the correspondence persists, but the trace formula includes additional parabolic/continuous-spectrum terms; see \cite{Hejhal1983,Iwaniec2002}.
+\end{remark}
+
+\subsection{Selberg zeta as an Euler product over prime cycles}
+\label{subsec:selberg_zeta_euler_product}
+
+\begin{definition}[Selberg zeta function (compact case)]
+\label{def:selberg_zeta_compact}
+\MathTag For $\RePart(s)$ sufficiently large, define the Selberg zeta function of $X$ by the Euler product
+\begin{equation}
+\label{eq:selberg_zeta_def}
+Z_X(s):=\prod_{p\in\mathcal{C}_{\mathrm{prim}}(X)}\ \prod_{k=0}^{\infty}\left(1-\e^{-(s+k)\ell(p)}\right),
+\end{equation}
+where $\ell(p)$ is the length of the primitive closed geodesic $p$.
+\end{definition}
+
+\begin{theorem}[Analytic continuation and spectral zeros (standard)]
+\label{thm:selberg_zeta_zeros_standard}
+\MathTag The function $Z_X(s)$ admits a meromorphic continuation to $\CC$ (in fact entire in the compact case), and its nontrivial zeros encode the Laplace spectrum of $X$:
+if $\{\lambda_j\}_{j\ge 0}$ are eigenvalues of the Laplacian $\Delta_X$ with $\lambda_j=1/4+r_j^2$ ($r_j\in\RR\cup \iu(0,1/2]$), then zeros occur at
+\[
+s=\frac12\pm \iu r_j.
+\]
+In addition, $Z_X(s)$ has the standard ``trivial'' zeros at negative integers with explicitly known multiplicities.
+\end{theorem}
+\begin{remark}
+See \cite{Hejhal1983,Buser1992,Iwaniec2002} for precise statements (including the noncompact case and the role of resonances).
+The key structural point for this paper is the \emph{prime-cycle Euler product}: \eqref{eq:selberg_zeta_def} parallels the primitive periodic-orbit Euler product in Lemma~\ref{lem:artin_mazur_euler_product} and the graph prime-cycle product \eqref{eq:ihara_zeta_euler_product}.
+\end{remark}
+
+\subsection{Selberg trace formula (minimal template)}
+\label{subsec:selberg_trace_formula_minimal}
+
+Let $\Delta_X$ be the (positive) Laplacian on $X$.
+Write its eigenvalues as $\lambda_j=1/4+r_j^2$ with $r_j\ge 0$ (counted with multiplicity).
+
+\begin{theorem}[Selberg trace formula (compact, torsion-free template)]
+\label{thm:selberg_trace_formula_template}
+\MathTag Let $h:\RR\to\CC$ be an even function that extends to an analytic function in a strip $|\ImPart(r)|<1/2+\delta$ and decays sufficiently fast.
+Let $g$ be its Fourier transform
+\[
+g(t):=\frac{1}{2\pi}\int_{\RR} h(r)\,\e^{-\iu r t}\,\dd r.
+\]
+Then the trace identity holds:
+\[
+\sum_{j\ge 0} h(r_j)
+=\frac{\mathrm{Area}(X)}{4\pi}\int_{\RR} h(r)\,r\tanh(\pi r)\,\dd r
+\;+\;\sum_{p\in\mathcal{C}_{\mathrm{prim}}(X)}\ \sum_{k\ge 1}\frac{\ell(p)}{2\sinh(k\ell(p)/2)}\,g(k\ell(p)).
+\]
+\end{theorem}
+\begin{remark}
+This is a standard compact-surface template; see \cite{Hejhal1983,Buser1992,Iwaniec2002}.
+For noncompact finite-area surfaces (including the modular surface), additional terms appear (parabolic and continuous-spectrum contributions).
+For the purposes of this manuscript, the role of the trace formula is structural: it is a canonical rigidity bridge converting a prime-cycle Euler product into a spectral constraint (and vice versa), matching the ``prime skeleton'' philosophy of Appendix~\ref{app:hecke_prime_skeleton} without identifying the objects.
+\end{remark}
+
+\AuditTag Relation to the continued-fraction module.
+Appendix~\ref{app:modular_flow_gauss_map} records the Series cross-section model in which the geodesic flow on the modular surface admits a Gauss-map return dynamics and a continued-fraction symbolic coding.
+The Selberg zeta/trace layer is another standard organizing principle on the same mother space: it packages primitive closed geodesics and their lengths into an Euler product and relates them to spectral data.
+In the present paper, these external structures remain explanatory and audit-facing; the theorem-level folding core remains finite and combinatorial.
+
+

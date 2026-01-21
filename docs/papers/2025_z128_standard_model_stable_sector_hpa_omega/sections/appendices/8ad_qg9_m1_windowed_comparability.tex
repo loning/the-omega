@@ -1,0 +1,120 @@
+\subsection{QG9-M1: windowed comparability and an auditable error budget (protocol vs.\ finite-order EFT)}
+\label{app:qg9_m1_windowed_comparability}
+
+\paragraph{Scope.}
+\AuditTag This appendix instantiates the generic theoremized error budget of Appendix~\ref{app:eft_error_bounds} in the specific
+``QG interface'' context used by this manuscript:
+protocol-side observables produced by the deterministic pipelines in Section~\ref{sec:qg_interface_full_fusion}
+are compared to the declared finite-order EFT representative under explicitly scoped matching conventions.
+This is a \emph{windowed} statement: it does not claim a theorem-level UV completion.
+
+\subsubsection{Declared UV window and protocol state}
+\label{subsec:qg9_m1_window_state}
+
+\begin{definition}[UV window in the resolution coordinate]\label{def:qg9_uv_window}
+\InterfaceTag Fix a resolution coordinate $r$ and a reference map $\mu(r)=\mu_0\varphi^{\,r}$ (Appendix~\ref{app:running_couplings_resolution_flow}).
+A \emph{UV window} is a bounded interval
+$
+W=[r_{\min},r_{\max}]
+$
+equivalently a bounded scale interval
+$
+[\mu_{\min},\mu_{\max}]=[\mu(r_{\min}),\mu(r_{\max})].
+$
+All comparability statements in this appendix are conditional on working within this declared window.
+\end{definition}
+
+\begin{definition}[Declared protocol state]\label{def:qg9_protocol_state}
+\InterfaceTag Fix a protocol state $(m,n,K)$ as in Appendix~\ref{subsec:tick_cap_joint_key_contract}.
+All protocol-side estimators in the registry below are evaluated at this fixed $(m,n,K)$, and any counterfactual sweeps
+(kernel-family sweeps, smoothing sweeps, scheme sweeps) are restricted to explicit finite families declared by the manuscript.
+\end{definition}
+
+\subsubsection{A concrete finite observable registry for the QG-interface suite}
+\label{subsec:qg9_m1_registry}
+
+\paragraph{Default contract instance (generated; reproducibility-first).}
+\AuditTag To avoid underspecification, we record a compact reference instance of the QG9-M1 contract (a UV window expression and an anchor protocol state)
+as a reproducibility aid. It is generated deterministically from the protocol-state selection artifacts by
+\texttt{scripts/exp\_qg9\_windowed\_comparability\_pack.py}:
+\input{sections/generated/qg9_windowed_comparability_default_instance}
+
+\paragraph{Registry instance (generated; audit index).}
+\AuditTag We record a compact concrete choice of $\mathfrak{Obs}_{\le N}$ (Definition~\ref{def:obs_registry_finite}) tailored to the QG-interface suite
+and to the weak-field/time-dictionary carriers emphasized in Section~\ref{sec:falsifiability}.
+The registry is generated deterministically by \texttt{scripts/exp\_qg9\_windowed\_comparability\_registry.py}:
+\texttt{scripts/exp\_qg9\_windowed\_comparability\_pack.py}:
+\input{sections/generated/qg9_windowed_comparability_registry}
+
+\subsubsection{Windowed comparability contract and the error budget \texorpdfstring{$\epsilon_N$}{epsilonN}}
+\label{subsec:qg9_m1_contract}
+
+\paragraph{Contract form.}
+\MathTag Fix $N\ge 1$ and confidence level $\delta\in(0,1)$.
+Within a declared UV window $W$ (Definition~\ref{def:qg9_uv_window}) and at a fixed protocol state $(m,n,K)$
+(Definition~\ref{def:qg9_protocol_state}), the QG9-M1 target is a registry-wide bound of the form
+$$
+\forall\,\mathcal{O}\in\mathfrak{Obs}_{\le N},\qquad
+\left|\langle\mathcal{O}\rangle_{\mathrm{prot}}-\langle\mathcal{O}\rangle_{\mathrm{EFT}\le N}\right|
+\le \epsilon_N(m,n;\delta),
+$$
+where the right-hand side is an \emph{auditable} quantity assembled from explicit components (Appendix~\ref{app:eft_error_bounds}).
+
+\begin{remark}[Where $K$ enters]\label{rem:qg9_kernel_in_epsilon}
+\AuditTag The generic bound in Appendix~\ref{app:eft_error_bounds} is written as $\epsilon_N(m,n;\delta)$ for brevity.
+In QG-interface applications, $K$ enters through the registry specification (Definition~\ref{def:obs_registry_finite}):
+it fixes the protocol-side estimator and can be included in bias/sensitivity terms.
+When emphasizing this conditioning, one may write $\epsilon_N(m,n,K;\delta)$ without changing the logic of the decomposition.
+\end{remark}
+
+\paragraph{Explicit components and provenance.}
+\AuditTag For the QG-interface observables listed in the registry, the five-term decomposition of Appendix~\ref{app:eft_error_bounds}
+is intended to be instantiated as follows:
+\begin{itemize}
+\item \textbf{Protocol statistical and discretization components ($E_{\mathrm{stat}}$, $E_{\mathrm{disc}}$).}
+  Use the protocol-to-continuum error control module (Appendix~\ref{app:protocol_to_continuum_error_control})
+  for $\widehat\chi$-based channels and their derivative descendants, and the weak-field curvature-from-$\chi$ module
+  (Appendix~\ref{app:weak_field_curvature_from_chi}) for the $\widehat G_{00}$ proxy chain.
+\item \textbf{Matching/scheme envelope ($E_{\mathrm{match}}$).}
+  Restrict all scheme/threshold conventions to an explicit finite family and budget its width as an envelope
+  (Appendix~\ref{app:matching_envelope_theoremization}) under the scheme-invariance contract (Appendix~\ref{app:scheme_invariance_audit_contract}).
+\item \textbf{Truncation remainder ($E_{\mathrm{trunc}}$).}
+  When an EFT-side prediction is invoked, the truncation scope and remainder model must be declared explicitly;
+  if an EG-style remainder envelope is assumed, it can be integrated via Appendix~\ref{app:strong_eft_remainder_bounds}.
+\item \textbf{Protocol bias and counterfactual sensitivity ($E_{\mathrm{bias}}$).}
+  Bias terms must be tracked as explicit finite-family counterfactuals (kernel-family, smoothing, estimator choices),
+  and reported as envelopes rather than treated as implicit knobs (cf.\ Appendix~\ref{app:global_model_selection_mdl} for
+  look-elsewhere accounting across families).
+\end{itemize}
+
+\paragraph{Budget mapping table (generated; audit index).}
+\AuditTag The following table records, for each registry item, where each budget component is sourced from
+(hard bounds, envelopes, or explicit counterfactual sweeps). It is generated deterministically by
+\texttt{scripts/exp\_qg9\_windowed\_comparability\_pack.py}:
+\input{sections/generated/qg9_windowed_comparability_budget}
+
+\paragraph{Evidence pointer table (generated; audit index).}
+\AuditTag The following table binds each registry item to concrete reproducible artifacts in \texttt{sections/generated/}
+and the generator scripts that produce them. It is generated deterministically by
+\texttt{scripts/exp\_qg9\_windowed\_comparability\_pack.py}:
+\input{sections/generated/qg9_windowed_comparability_evidence}
+
+\paragraph{Minimal acceptance checklist (generated; audit gate).}
+\AuditTag The following checklist summarizes the minimal gates required to treat QG9-M1 as an auditable deliverable:
+it makes underspecification and hidden family enlargements explicit failure modes.
+It is generated deterministically by \texttt{scripts/exp\_qg9\_windowed\_comparability\_pack.py}:
+\input{sections/generated/qg9_windowed_comparability_acceptance_checklist}
+
+\paragraph{Numerical instantiation (generated; actual computation).}
+\AuditTag Finally, we record a concrete numerical instantiation of the QG9-M1 budget for the default reference instance:
+the values and error envelopes are computed deterministically from the paper's carriers and generated artifacts (not hand-entered).
+This fragment is generated by \texttt{scripts/exp\_qg9\_windowed\_comparability\_pack.py}:
+\input{sections/generated/qg9_windowed_comparability_numeric_summary}
+\input{sections/generated/qg9_windowed_comparability_numeric}
+
+\paragraph{Minimal failure points (window discipline).}
+\AuditTag This windowed comparability contract fails only if the registry/window is underspecified or if uncontrolled expansions of families are introduced.
+The corresponding normalized failure-point templates are:
+missing finite registry (E1), missing estimator semantics (E2), missing truncation scope (E3), and missing scheme scope (E4)
+as recorded in Appendix~\ref{app:eft_error_bounds}, together with the cross-cutting failure-point registry in Appendix~\ref{app:minimal_failure_point_templates}.
+

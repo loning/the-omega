@@ -1,0 +1,36 @@
+\section{K4 spectral phase to delay audit (interface benchmark)}
+\label{app:k4_spectral_phase_delay_audit}
+
+\AuditTag This appendix records a minimal interface audit that turns a small phase sample $\phi(\omega)$ for a spectral response into a Wigner--Smith-type delay proxy.
+It is designed to share the same stability-audit discipline as the scattering phase$\to$delay modules (Appendix~\ref{app:force_phase_delay_audit} and Appendix~\ref{app:k4_scattering_phase_delay_audit}).
+It does not claim that atomic lines are scattering phase shifts; it only records what can be audited once a complex response phase $\phi(\omega)=\arg S(\omega)$ is supplied by a declared platform.
+
+\subsection{Generated artifact}
+\AuditTag Units: with $\omega$ in rad/s and $\phi$ in radians, the proxy $\tau=\dd\phi/\dd\omega$ has units of seconds.
+\AuditTag Sign convention note: in signal-processing language the (positive) group delay of a transfer function is often defined as $\tau_g:=-\dd\phi/\dd\omega$. The present audit reports $\tau=\dd\phi/\dd\omega$ directly; therefore negative $\tau$ corresponds to positive group delay under the $\tau_g$ convention.
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{r l l l r r >{$}r<{$} >{$}r<{$} >{$}r<{$} >{$}r<{$}}
+\toprule
+\# & dataset & $x$ & unit & $n$ & $n_{\mathrm{eff}}$ & \widehat{\tau}_{\mathrm{med}} & \widehat{\tau}_{\min} & \widehat{\tau}_{\max} & f_{-} \\
+\midrule
+\input{sections/generated/k4_spectral_phase_delay_rows.tex}%
+\end{tabular}
+\caption{Spectral phase to delay-proxy audit rows. Each dataset provides phase points $(\omega,\phi)$; we compute a signed proxy series $\tau_i:=\mathrm{d}\phi/\mathrm{d}\omega$ on interior points and report median/min/max and the negative fraction $f_{-}$.}
+\end{table}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{r l l l r r >{$}r<{$} >{$}r<{$} >{$}r<{$} >{$}r<{$}}
+\toprule
+\# & dataset & $x$ & unit & $k$ & $n_{\mathrm{eff}}$ & \widehat{\tau}_{\mathrm{med}} & \widehat{\tau}_{\min} & \widehat{\tau}_{\max} & f_{-} \\
+\midrule
+\input{sections/generated/k4_spectral_phase_delay_window_rows.tex}%
+\end{tabular}
+\caption{Window-family sensitivity report. For each dataset we recompute $\tau_i:=\mathrm{d}\phi/\mathrm{d}\omega$ using local linear fits over a symmetric window of radius $k$ samples (bounded family $k=1,2,3$).}
+\end{table}
+
+\input{sections/generated/k4_spectral_phase_delay_summary.tex}
+

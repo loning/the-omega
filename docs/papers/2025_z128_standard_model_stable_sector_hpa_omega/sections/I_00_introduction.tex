@@ -2,6 +2,23 @@
 \section{Introduction: from tick-only readout to stable sectors}
 \label{sec:introduction}
 
+Standard physics struggles to reconcile two successful but conceptually different primitives: continuous geometric modeling of spacetime and discrete quantization of matter and information.
+This paper proposes a unification strategy that is strictly constructive at finite resolution: geometry is treated as an enforced constraint induced by auditable protocol structure, while time is treated as the driving engine---the tick index of a unitary scan.
+In this dictionary, ``mass'' is not a primitive label but a protocol cost: a latency/overhead required to stabilize and resolve recurrent patterns under the declared readout constraints.
+
+\begin{center}
+\fbox{\begin{minipage}{0.95\linewidth}
+\small
+\textbf{Unified interface dictionary (reader map).}
+\begin{itemize}
+\item \textbf{Constraint $\Rightarrow$ Geometry:} finite-resolution enforcement and stable-sector folding (Section~\ref{sec:folding_core}).
+\item \textbf{Engine $\Rightarrow$ Time:} sequential readout (tick) as the only primitive input (Axiom~\ref{ax:readout_sequentiality}).
+\item \textbf{Overhead $\Rightarrow$ Mass:} mass/energy as time dictionaries (Section~\ref{sec:mass_latency_coordinate} and Appendix~\ref{app:time_mass_delay}).
+\item \textbf{Budget $\Rightarrow$ Horizon:} capacity-triggered protocol horizons and trapping (Appendix~\ref{app:protocol_horizon_tick_trap} and Section~\ref{subsec:bh_high_m_particles}).
+\end{itemize}
+\end{minipage}}
+\end{center}
+
 The Standard Model (SM) organizes known non-gravitational interactions into the gauge structure
 \[
 SU(3)\times SU(2)\times U(1),
@@ -13,13 +30,22 @@ This paper adopts the HPA--$\Omega$ viewpoint: observability is not the presence
 In this view, a ``particle'' is first a \emph{stable readout type}, and ``forces'' arise from the constraints required to keep readout consistent across space.
 
 The present paper is written to be closed under its declared input set (Table~\ref{tab:audit_facing_contract} and Appendix~\ref{app:inference_ledger}): the only primitives are the tick (Axiom~\ref{ax:readout_sequentiality}) and CAP (Axiom~\ref{ax:cap}).
-All other ingredients (addressing basis, anchor choice, orientation-bit convention, phase-register dictionary, and quantitative normalization targets) are outputs of explicit finite definitions and CAP-closures with deterministic tie-breaks and reproducible scripts.
+All other ingredients (addressing basis, anchor choice, orientation-bit convention, phase-register dictionary, declared readout-kernel families, and quantitative normalization targets) are outputs of explicit finite definitions and CAP-closures with deterministic tie-breaks and reproducible scripts.
 Companion manuscripts in the same \texttt{docs/papers} repository provide extended context and alternative presentations \cite{Ma2025HPA,Ma2025CAP,Ma2025CAPII,Ma2025HHU,Ma2025HPT,Ma2025PCG,Ma2025RF,Ma2025HPOT,Ma2025FoP}, but they are not required to follow the present paper's definitions, proofs, and audits.
+
+\paragraph{Four-way unification as a rigidity contract (audit-only thesis).}
+\AuditTag In this manuscript, ``black-hole-like'' trapping and ``wormhole-like'' shortcuts are not asserted as spacetime ontologies.
+Rather, they provide a single cross-scale \emph{contract form} for how one is allowed to narrate micro/macro, quantum/classical, discrete/continuous, and space/time relations within finite observability:
+trapping is reported only through declared delay/overhead proxies, shortcuts are paid and auditable only under explicit ledgers and counterfactual baselines,
+and any continuum reading enters only through a stated matching dictionary and failure-point downgrades.
+The full statement (with dependencies, failure modes, and minimal fallbacks) is recorded as an audit-only proposition in
+Section~\ref{subsec:x3a_wormhole_rigidity_unified_constraints}.
 
 \paragraph{Audit note.}
 \AuditTag \textbf{Status:} \AuditTag.
 \textbf{Depends on:} the reader-facing audit contract (Table~\ref{tab:audit_facing_contract}) and the bounded-closure template (Appendix~\ref{app:cap_audit_template}).
 \textbf{If:} any quantitative interface component is reported, it is either a finite theorem-level statement or a CAP-closure over an explicitly declared finite family with deterministic tie-breaks; external PDG/CODATA values enter only as matching-layer reference conventions.
+\AuditTag In the theory-first stance adopted for joint protocol-state choices, the one-shot selected protocol states are recorded as generated artifacts (\path{sections/generated/protocol_state_selected.tex} and \path{sections/generated/protocol_state_selected.json}) and are included in Appendix~\ref{app:generated_tables}.
 
 For reader navigation, Table~\ref{tab:resolution_spectrum} provides the global map of the resolution axis under the minimal calibration.
 In the tick-first spine used here, the only primitive physical input is \emph{time as tick} (scan iteration count), and the only primitive selection law is CAP.
@@ -27,6 +53,18 @@ Accordingly, all physical-language notions (space, distance, velocity, gauge con
 Section~\ref{sec:tick_calculus} records the corresponding dictionary and fixes the time-first dependency order used throughout.
 Appendix~\ref{app:tick_cap_derivation} records the complete tick\,+\,CAP derivation spine (explicit candidate families, objectives, and deterministic tie-breaks for each closed interface component).
 Appendix~\ref{app:forced_interface_lemmas} records short ``forced-by-rigidity'' interface lemmas (minimal coarse locking, compactness of probability-preserving redundancy, channelwise factorization, and minimal anomaly-neutral closures) that are repeatedly used as audit-level justifications in the main text.
+
+\paragraph{Holographic equivalence (scoped, non-AdS/CFT).}
+\InterfaceTag In this paper, ``holographic'' is used in an operational, finite-resolution sense:
+the addressing/screen layer induces a boundary algebra family $R\mapsto \mathcal{A}_{\partial}(R)$, and certain bulk-facing
+reportables are constrained or reconstructible from boundary data within a declared window, hypothesis class, and explicit error budget.
+We do \emph{not} assume an AdS/CFT duality.
+The precise scope, allowed claim format, PT carriers (local-net construction and the tensor-product locality subclass),
+and mandatory failure-point downgrades are recorded in Appendix~\ref{app:holo_scope_contract}.
+The concrete boundary object is defined in Appendix~\ref{app:holo_boundary_algebra_from_screens}, the bulk reportables registry in
+Appendix~\ref{app:holo_bulk_observables_registry}, the finite-dimensional capacity/entropy bound (protocol ``area law'') in
+Appendix~\ref{app:holo_capacity_bound}, and the reconstruction-as-QEC theorem carrier (PT in a controlled subclass) in
+Appendix~\ref{app:holo_reconstruction_surrogate}.
 
 \begin{table}[t]
 \centering
@@ -47,8 +85,8 @@ $m$ & $|X_m|$ & $\mu_{\mathrm{th}}(m)$ & physical correspondence (interface) & m
 6 & 21 & $0.511\,\mathrm{MeV}$ & electron / minimal SM anchor & coarse-lock anchor: minimal localized rigid-frame display \\
 \midrule
 \multicolumn{5}{c}{\textit{Phase III: Hyper-geometric (mass \& thresholds)}} \\
-7 & 34 & $\sim 10\,\mathrm{MeV}$ & nuclear binding scale & binding bridge between $m=6$ matter and hadronic confinement \\
-8 & 55 & $\sim 0.2\,\mathrm{GeV}$ & QCD onset & confinement-scale template at the protocol interface \\
+7 & 34 & $\sim 10\,\mathrm{MeV}$ & nuclear binding scale (benchmark) & interface/matching: intermediate binding bridge between $m=6$ matter and the $m=8$ hadronic-scale layer \\
+8 & 55 & $\sim 0.2\,\mathrm{GeV}$ & QCD onset (benchmark) & matching-layer hadronic reference scale $\mu_{\mathrm{QCD}}\sim 0.2\,\mathrm{GeV}$ (conservative; see, e.g., \cite{PDGRPP2024}); does not close confinement/mass gap \\
 9 & 89 & $\sim 4.4\,\mathrm{GeV}$ & bottom threshold & heavy-flavor onset in the staircase \\
 10 & 144 & $\sim 91\,\mathrm{GeV}$ & electroweak (Z/H) layer & uplift/coarse graining: protocol-level mass generation \\
 11 & 233 & $\sim 1.9\,\mathrm{TeV}$ & BSM frontier & first hyper-compressed layer; constrained topological capacity \\
@@ -78,8 +116,9 @@ This paper makes this identification auditable by a closed depth coordinate and 
 
 \begin{remark}[Static ontology vs.\ sequential readout (interface)]\label{rem:static_ontology}
 Although the paper is written in the scan-first language of Axiom~\ref{ax:readout_sequentiality}, one may also adopt a complementary interface dictionary: the scan order together with the chosen addressing dictionary can be regarded as a fixed (already-defined) structure, while ``time'' is the ordered traversal experienced by a coupled observer.
-In this reading, dynamical episodes are a playback effect of sequential readout on a static protocol substrate (a block-universe style viewpoint), not the construction of that substrate.
-We record this only as an interface dictionary viewpoint; none of the theorem-level finite folding statements depends on it as a premise.
+In purely mathematical terms, one may view this as fixing an observable algebra together with a state functional $\omega$ (Appendix~\ref{app:state_gns_background}), and regarding tick time as the integer index used to access readout probabilities and integer-iterate correlators of the form $\omega(\mathcal{U}^t(A))$.
+In this reading, one does not postulate a time-indexed family of states; ``time'' is the ordered traversal (tick index) of a fixed protocol substrate, while the observable statistics are evaluations of $\omega$ on readout effects and scan iterates.
+We record this only as an interface dictionary / notation-alignment viewpoint; none of the theorem-level finite folding statements depends on it as a premise.
 \end{remark}
 
 \begin{remark}[A historical analogy: Wheeler's one-electron universe]\label{rem:wheeler_one_electron}
@@ -245,6 +284,7 @@ At $m=6$ the folding core yields $64\to 21$ and the canonical split $21=18\oplus
 \InterfaceTag We represent internal phases by a finite dyadic register $\ZZ_{2^p}$ (Appendix~\ref{app:protocol_primitives}).
 At the anchor window $m=6$, the baseline choice is $p=m+1=7$, i.e.\ $\ZZ_{128}$.
 The remaining bounded phase-lift freedom (denominators and low-complexity phase maps) is audited by deterministic sweeps (Appendix~\ref{app:generated_tables} and Appendix~\ref{app:closure_audit_details}).
+\AuditTag This dyadic baseline is also used as a cross-module consistency pin for the cosmology-side discrete match: the internal low-complexity relation $m_b^\ast=2p+1$ yields $m_b^\ast=15$ at $p=7$, matching the discrete best-fit point $m_\ast\approx 15$ under the stated cosmology hypothesis (Corollary~\ref{cor:dyadic_cosmology_consistency_pin}; Appendix~\ref{app:cosmology_resolution_flow}).
 
 \subsection{Main interface closures}
 \label{subsec:intro_contrib}

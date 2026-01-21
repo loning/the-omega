@@ -1,0 +1,128 @@
+\section[Continuum Yang--Mills/EFT]{Continuum Yang--Mills/EFT representative from finite holonomy (closure)}
+\label{app:continuum_yang_mills_from_holonomy}
+
+This appendix closes the remaining gap between the \emph{fully finite} connection/holonomy diagnostics (Section~\ref{sec:protocol_connections_holonomy} and Appendix~\ref{app:holonomy_sweeps_extended}) and the \emph{continuum representative} gauge dynamics recorded in the CAP action closure (Section~\ref{app:cap_continuum_action_closure}) and its Euler--Lagrange equations (Section~\ref{app:variational_field_equations}).
+In the tick\,+\,CAP discipline, ``continuum emergence'' means selecting a canonical continuum \emph{representative} on an explicit finite candidate family, consistent with the protocol invariants and with the declared equivalence semantics (Section~\ref{app:equivalence_semantics}); it does not introduce a new ontic postulate or assume a nonperturbative continuum limit.
+
+\begin{center}
+\fbox{\begin{minipage}{0.96\linewidth}
+\small
+\textbf{Audit note (status).}
+All computations of transports, plaquette holonomies, and derived loop statistics remain strictly finite and do not assume a continuum limit.
+The only ``continuum'' ingredient here is the same one already used in the CAP action closure: within a declared finite family of local covariant invariants and a bounded coefficient box, CAP selects a minimal representative action.
+This appendix makes explicit how the gauge-sector term $\Tr(F_{\mu\nu}F^{\mu\nu})$ is the unique CAP-minimal local representative consistent with the finite holonomy semantics and how the Wilson-loop style protocol diagnostics act as coarse curvature/action proxies.
+\end{minipage}}
+\end{center}
+
+\paragraph{Theorem-level upgrade contract.}
+\AuditTag A theorem-level continuum derivation requires an explicit refinement family and a variational convergence bridge (CL1--CL4 in Appendix~\ref{app:minimal_failure_point_templates}).
+The refinement-family contract for the discrete connection/holonomy observables is recorded in Appendix~\ref{app:discrete_connection_family_and_refinement}.
+Absent those conditions, all continuum identifications in this appendix remain representative/matching statements.
+
+\subsection{Finite holonomy as curvature proxy (protocol \texorpdfstring{$\Rightarrow$}{->} interface)}
+\label{subsec:op3_holonomy_curvature_proxy}
+
+\paragraph{Finite connection and gauge redundancy.}
+At fixed resolution $(m,n)$, the protocol constructs a deterministic edge transport between padded fibers, yielding an $S_r$-valued connection on the addressing graph (Section~\ref{sec:protocol_connections_holonomy}; at the minimal anchor $(m,n)=(6,3)$ one has $r=4$).
+Local relabelings of fiber slots act by conjugation on loop products, so loop holonomy is physical only through conjugacy invariants such as cycle type (Proposition~\ref{prop:cycle_type_gauge_invariant}).
+This is the finite core of ``gauge redundancy'': a compensating transport rule is required by finite fibers, but it is defined only up to local basis relabeling (Proposition~\ref{prop:gauge_compensation}).
+
+\paragraph{Curvature semantics.}
+Section~\ref{subsec:curvature_as_loops} records the semantic bridge:
+in any continuum dictionary with a connection one-form $A$, holonomy around an infinitesimal loop is controlled by the curvature $F=\dd A + A\wedge A$.
+Accordingly, the protocol loop invariants are read as coarse-grained curvature proxies at the readout scale, without claiming that a microscopic connection field exists as a primitive object.
+
+\subsection{Phase-lifted Wilson-loop diagnostics and a local action-density proxy}
+\label{subsec:op3_wilson_loop_proxy}
+
+\paragraph{Phase lift and effective unitaries.}
+The holonomy pipeline of Section~\ref{sec:protocol_connections_holonomy} upgrades the finite $S_r$ transport to a phase-lifted monomial unitary transport in $U(r)$ using a dyadic phase register (Definition~\eqref{eq:holonomy_phase_def} and equation \eqref{eq:phase_lift_edge_transport}), and then projects the resulting loop holonomy to an effective $3\times 3$ unitary matrix by the sum-zero projection and deterministic Gram--Schmidt normalization (Remark~\ref{rem:gram_schmidt_failures}).
+Appendix~\ref{app:holonomy_sweeps_extended} records extended sweeps of these finite diagnostics across a balanced refinement chain $(n,m)=(1,2),(2,4),\dots,(8,16)$ and across loop scales.
+
+\paragraph{Wilson-loop style scalar.}
+Given an effective $3\times 3$ unitary loop holonomy $Q$, define
+\begin{equation}
+\label{eq:wilson_loop_style_W}
+W\;:=\;\frac{1}{3}\,\RePart\Tr(Q),
+\qquad
+A\;:=\;1-W.
+\end{equation}
+This is the same finite diagnostic recorded in Table~\ref{tab:holonomy_wilson_loop} (loop-scale sweep at $n=3$).
+Table~\ref{tab:holonomy_balanced_chain_wilson} below records the same diagnostic on unit plaquettes across the balanced refinement chain; we restrict to the nontrivial 3/4-cycle subset to avoid domination by identity holonomies.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{rrrrrr}
+\toprule
+$n$ & $m$ & plaquettes & 3/4 plaquettes & mean $W$ & mean $1-W$ \\
+\midrule
+\input{sections/generated/holonomy_balanced_chain_wilson_rows.tex}%
+\end{tabular}
+\caption{Balanced-chain Wilson-loop style diagnostics on unit plaquettes across $(n,m)=(1,2),(2,4),\dots,(8,16)$. At each scale we build the deterministic finite connection and the phase-lifted effective holonomy as in Section~\ref{sec:protocol_connections_holonomy} and Appendix~\ref{app:holonomy_sweeps_extended}, then compute $W$ and $1-W$ from \eqref{eq:wilson_loop_style_W} on the nontrivial 3/4-cycle plaquette subset. Rows are generated by the deterministic script \texttt{scripts/exp\_holonomy\_balanced\_chain\_sweep.py}.}
+\label{tab:holonomy_balanced_chain_wilson}
+\end{table}
+
+\paragraph{From loop holonomy to a local kinetic density (theorem-level weak-loop expansion).}
+In lattice gauge theory, Wilson-loop observables encode curvature through their small-loop expansion.
+We record the standard statement in a form usable as a theorem-level bridge for this paper.
+
+\begin{theorem}[Small-plaquette expansion (standard)]
+\label{thm:wilson_small_plaquette_expansion}
+\MathTag Let $A=A_\mu(x)\,\dd x^\mu$ be a $C^2$ Lie-algebra-valued connection one-form on a neighborhood of a point $x$,
+with curvature $F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu+[A_\mu,A_\nu]$.
+Let $U_\square\in SU(N)$ denote the path-ordered holonomy around the boundary of an axis-aligned square plaquette of side length $a$ in the $\mu\nu$ plane, based at $x$.
+Then, as $a\downarrow 0$,
+\begin{equation}
+\label{eq:wilson_small_loop_expansion}
+U_\square
+=\exp\!\Bigl(\iu\,a^{2}F_{\mu\nu}(x) + O(a^{3})\Bigr),
+\end{equation}
+and consequently
+\begin{equation}
+\label{eq:wilson_action_density_expansion}
+1-\frac{1}{N}\RePart\Tr(U_\square)
+=\frac{a^{4}}{2N}\Tr\!\bigl(F_{\mu\nu}(x)F^{\mu\nu}(x)\bigr)+O(a^{6}).
+\end{equation}
+The $O(\cdot)$ remainders depend on local bounds on $A$ and its first two derivatives near $x$.
+\end{theorem}
+
+\begin{proof}[Proof sketch (reference)]
+This is the standard plaquette expansion obtained by Taylor-expanding the path-ordered exponential for each edge transport and combining the four factors using the Baker--Campbell--Hausdorff formula; see, e.g., \cite{Wilson1974,Rothe2012}.
+\end{proof}
+
+\begin{remark}[Protocol use and scaling convention]
+\label{rem:wilson_proxy_protocol_use}
+\InterfaceTag In this paper, $W=\frac13\RePart\Tr(Q)$ and $A=1-W$ (equation~\eqref{eq:wilson_loop_style_W}) are finite protocol diagnostics computed on explicit loop families.
+Theorem~\ref{thm:wilson_small_plaquette_expansion} supplies the theorem-level continuum bridge:
+in any regime where a smooth continuum representative exists and the loop family is interpreted as sampling plaquettes of effective side length $a$, the observable $A=1-W$ is (up to scale) a local proxy for $\Tr(F_{\mu\nu}F^{\mu\nu})$ at that resolution.
+The choice of mapping from protocol parameters (loop index scale on the addressing graph) to a continuum length $a$ is part of the interface/matching dictionary and must be declared when numerical identification is attempted.
+\end{remark}
+
+\subsection{CAP-minimal gauge-sector representative and Yang--Mills dynamics}
+\label{subsec:op3_cap_yang_mills_representative}
+
+\paragraph{Closure problem.}
+The protocol provides (i) a notion of locality via the addressing graph, (ii) a finite gauge redundancy (local relabelings) and loop invariants, and (iii) a bounded-complexity closure discipline (Axiom~\ref{ax:cap}).
+The continuum representative problem is therefore: within a finite family of local covariant invariants (Section~\ref{subsec:cap_action_candidate_family}), select a minimal gauge-sector action that is consistent with the holonomy/curvature semantics and introduces no hidden continuous degrees of freedom.
+
+\paragraph{Representative uniqueness (gauge sector).}
+Once one adopts the local redundancy$\Rightarrow$connection dictionary (Proposition~\ref{prop:local_sun_connection}) and restricts to local bulk terms built from at most two derivatives, the gauge-sector kinetic term is fixed:
+the unique local quadratic gauge-invariant term at this derivative order is proportional to $\Tr(F_{\mu\nu}F^{\mu\nu})$.
+This is exactly the gauge-sector entry in the CAP candidate family and the resulting CAP-minimal representative action skeleton (Proposition~\ref{prop:cap_minimal_action_skeleton}).
+Varying the representative then yields the Yang--Mills equations (Proposition~\ref{prop:ym_equation}).
+
+\paragraph{Relation to the protocol EFT embedding.}
+The ``protocol EFT'' recorded in Section~\ref{subsec:protocol_eft} (and collected in Appendix~\ref{app:protocol_eft_embedding}) is therefore not an extra physical input: it is the same continuum representative written in standard field-theory notation, after the stable-sector selection and labeling have fixed the light degrees of freedom and their gauge assignments (Section~\ref{sec:sm_labeling_closure}).
+In this sense, the finite holonomy diagnostics supply an auditable protocol-level curvature proxy, while CAP closes a minimal local continuum representative whose gauge sector is the Yang--Mills action.
+
+\subsection{What is not claimed (scope)}
+\label{subsec:op3_not_claimed_scope}
+
+The closure in this appendix is a \emph{representative} closure: it identifies the minimal local continuum gauge dynamics compatible with the protocol invariants and the stated CAP discipline.
+It does not address nonperturbative questions such as confinement or a Yang--Mills mass gap \cite{JaffeWitten2000YangMillsMassGap,Greensite2011Confinement}, which are outside the present paper's theorem-level folding core and are not required for the finite audited closures reported here.
+Within this paper, confinement-sensitive quantities (e.g.\ quark ``masses'') are therefore treated strictly at the matching layer (Appendix~\ref{app:quark_mass_scheme_notes}), and standard scheme/threshold running is used only as a translation dictionary in the $r$ coordinate (Appendix~\ref{app:running_couplings_resolution_flow}).
+\AuditTag For an audit-only confinement proxy built from the finite Wilson-loop diagnostics (area/perimeter proxy on loop size), see Appendix~\ref{app:qcd_confinement_proxy_audit}.
+

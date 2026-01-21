@@ -1,6 +1,7 @@
 
 \section{Falsifiability: predictions in the protocol language}
 \label{sec:falsifiability}
+\label{sec:falsifiability_predictions}
 
 The folding counts and tables are mathematical-layer facts.
 The statements below are physical-layer predictions: they can be tested by observational constraints, laboratory bounds, and reproducible protocol-level audits.
@@ -11,6 +12,19 @@ Accordingly, the most direct experimental handles are \emph{time dictionaries}: 
 For a time-first reading, begin with P6 (scattering delay as a lapse proxy).
 Predictions P1/P2/P4/P5 are protocol-level structural or rigidity statements that do not require a numerical staircase calibration.
 Prediction P3 is special: its \emph{threshold locations} depend on the bounded-complexity calibration of $r_{\mathrm{step}}$ and the chosen reference anchors, and should therefore be read as a conditional prediction within that calibrated hypothesis class.
+
+\paragraph{Protocol-state convention (what the predictions are conditional on).}
+\AuditTag The falsifiability statements below are formulated in the protocol language and are therefore conditional on a declared protocol state $(m,n,K)$ (Appendix~\ref{subsec:tick_cap_joint_key_contract}).
+The $m$ and $n$ components determine which finite objects are available to the protocol (words, stable types, and spatial diagnostics), while the kernel component $K$ determines how finite outcomes are weighted when forming scalar readouts.
+\AuditTag Predictions P1/P2/P4/P5 are intended to be largely kernel-robust within the minimal kernel families of Appendix~\ref{app:kernel_family_cap_closure} because they are structural (cardinality, split constraints, and symmetry-defect logic).
+Predictions that depend on weighted scalars reconstructed from data (e.g.\ $\chi$-based channels and some RG-operator readouts) should be evaluated together with explicit kernel-family stability sweeps.
+
+\paragraph{QG9-M1 (windowed comparability) as the theorem-facing target.}
+\AuditTag Beyond interface-level gates, the theorem-facing formulation of ``quantum-gravity-facing'' comparability in this manuscript is
+the windowed inequality with an explicit auditable error budget (QG9-M1):
+within a declared UV window and a fixed protocol state, a finite observable registry is compared against the declared finite-order EFT representative
+with an explicit $\epsilon_N$ decomposition.
+See Appendix~\ref{app:qg9_m1_windowed_comparability} and Appendix~\ref{app:eft_error_bounds}.
 
 \subsection{Independent protocol predictions (no staircase calibration required)}
 \label{subsec:independent_protocol_predictions}
@@ -57,6 +71,148 @@ CMB polarization (parity-odd $TB/EB$ correlators), cosmic-birefringence estimato
 \paragraph{Fail condition.}
 If improved multi-frequency data and systematics-controlled analyses exclude any domain-like sign-flip pattern in parity-odd estimators while the protocol-chirality mapping remains fixed, the chirality-domain defect scenario is disfavored.
 
+\subsubsection{P7: protocol RG operator closure invariants (internal falsifiability)}
+\label{subsec:p7_rg_operator_audits}
+
+The kernel view admits an explicit finite-dimensional protocol RG operator closure on the $4\times4$ block quotient (Section~\ref{subsec:kernel_operator_closure} and Appendix~\ref{app:protocol_rg_operator_closure}).
+This yields internal, protocol-level falsifiability statements: they are not empirical constraints but deterministic consequences of the fixed protocol primitives (Hilbert addressing, axis-aligned $4\times4$ block partition, folding map family, and the balanced chain $m=2n$).
+
+\paragraph{Test strategy.}
+Recompute the generated tables in Appendix~\ref{app:generated_tables} for the protocol RG operator: the matrix sanity summary (Table~\ref{tab:kernel_rg_operator_sanity}), predict-versus-recompute gap (Table~\ref{tab:kernel_rg_operator_backreaction}), the error-budget decomposition (Table~\ref{tab:kernel_rg_operator_error_budget}), the one/two-point resolvent-trace audit (Table~\ref{tab:kernel_rg_resolvent_trace_audit}), and the D4 layout covariance audit (Table~\ref{tab:kernel_rg_operator_layout_sensitivity}).
+
+\paragraph{Fail condition.}
+Any reproducible protocol implementation that matches the stated primitives but fails to reproduce these tables (up to numerical tolerance) falsifies the specific operator-closure claims (definitions and lemmas) used to integrate the kernel view into the mother-space readout language.
+
+\subsubsection{P8: weighted pressure proxy monotonicity (operator-level)}
+\label{subsec:p8_weighted_pressure_monotonicity}
+
+For the folding potential $\varphi_n(k)=\log g_{2n}(\mathrm{Fold}_{2n}(k))\ge 0$, the weighted operator family $\widehat F_n(t)$ is entrywise nondecreasing in $t$.
+Therefore its Perron--Frobenius eigenvalue $\lambda_n(t)=\rho(\widehat F_n(t))$ is monotone nondecreasing in $t$, and so is the finite-dimensional pressure proxy $P_n(t)=\log\lambda_n(t)$ (Table~\ref{tab:kernel_rg_weighted_pressure}).
+
+\paragraph{Fail condition.}
+If a protocol-consistent recomputation produces a decreasing $\lambda_n(t)$ as $t$ increases over the same $t$ grid, the weighted-operator construction is inconsistent with the nonnegative folding potential assumption or with the stated operator assembly.
+
+\subsubsection{P9: full-fusion interface gates and wormhole counterfactual deltas (auditable)}
+\label{subsec:p9_full_fusion_interface_gates}
+
+The full-fusion suite (Section~\ref{sec:qg_interface_full_fusion}) provides a deterministic, protocol-language channel that composes
+overhead-derived forces, delay proxies, a budget-triggered horizon proxy, leakage/evaporation bookkeeping, wormhole-like pointer shortcuts with an explicit cost ledger, and a measurement readout.
+This yields falsifiable \emph{interface gates}: not claims about the folding core, but mandatory consistency constraints for this specific interface implementation.
+
+\paragraph{Test strategy.}
+Regenerate the deterministic artifacts in Section~\ref{sec:qg_interface_full_fusion} and verify the following gates:
+\begin{enumerate}
+\item \textbf{Energy ledger closure.}
+The reported totals must satisfy
+\[
+E_{\mathrm{tot}}(t)=E_{\mathrm{part}}(t)+E_{\mathrm{field}}(t)+E_{\mathrm{emit}}(t)+E_{\mathrm{wh}}(t),
+\]
+so wormhole-like shortcut channels are not free energy sources.
+\item \textbf{Complementarity certificate.}
+The measurement proxies must satisfy
+\[
+V^2+D^2\le 1
+\]
+(reported for free vs trapped branches).
+\item \textbf{Counterfactual isolation.}
+Wormhole effects must be isolatable by the wormhole-off baseline ($\varepsilon_{\mathrm{ptr}}=0$),
+reported side-by-side with on/off deltas in \texttt{sections/generated/full\_fusion\_compare\_rows.tex}.
+\end{enumerate}
+
+\paragraph{Data channel.}
+This is a protocol-level falsifiability channel: it can be evaluated by reproducing the deterministic artifacts
+\texttt{sections/generated/full\_fusion\_*.tex} and the associated figures (Section~\ref{sec:validation_entry_points}).
+
+\paragraph{Identifiability boundary (observation class).}
+\AuditTag The default wormhole-on/off comparison artifact \texttt{full\_fusion\_compare\_rows.tex} reports a single final-snapshot delta.
+This observation class is intended to be robust for accumulated or steady-state differences (e.g.\ $\Delta E_{\mathrm{emit}}$ and late-time $\Delta\tau_{\mathrm{trap}}$),
+but it can miss gated or intermittent effects such as endpoint-gated $\tau_{\mathrm{wh}}$ contributions or rare pointer-jump events.
+\AuditTag When probing such gated channels, the falsifiable carrier should be upgraded to an explicit window statistic or conditional statistic (e.g.\ maxima over time windows or conditional means on the gated subset), rather than a single final snapshot.
+
+\paragraph{Fail condition.}
+Any reproducible implementation that claims the same interface contract but violates ledger closure, violates $V^2+D^2\le 1$, or fails to provide a coherent wormhole on/off counterfactual baseline and delta reporting,
+falsifies the specific full-fusion interface closure recorded here.
+
+\subsubsection{P10: horizon-occupancy saturation and a trapping transition boundary (capacity-only prediction)}
+\label{subsec:p10_horizon_saturation_trapping}
+The manuscript uses a capacity-only, budget-triggered horizon rule of the form
+\[
+I_{\chi}=m|\mathcal{R}_\star|\ \ge\ c\,I_{\mathrm{obs}},
+\]
+which implies a minimal required cloud size
+\[
+|\mathcal{R}_\star|_{\min}=\left\lceil \frac{c\,I_{\mathrm{obs}}}{m}\right\rceil
+\qquad\text{capped by}\qquad
+|\mathcal{R}_\star|\le 4^n
+\]
+(Appendix~\ref{app:protocol_horizon_tick_trap}; Definition~\ref{def:regional_protocol_capacity}).
+This yields a deterministic occupancy fraction
+\[
+f_{\mathrm{hor}}:=\frac{|\mathcal{R}_\star|}{4^n}\in(0,1],
+\]
+audited in the generated capacity-only table (Table~\ref{tab:chi_horizon_budget_occupancy}).
+
+\paragraph{Prediction (interface, capacity-only).}
+At fixed screen size $4^n$ and increasing required capacity (larger $I_{\mathrm{obs}}$ or margin $c$, or smaller $m$), the occupancy fraction exhibits a saturation boundary where $|\mathcal{R}_\star|_{\min}>4^n$ and therefore $f_{\mathrm{hor}}=1$.
+In the full-fusion interface suite (Section~\ref{sec:qg_interface_full_fusion}), this saturation regime is predicted to coincide with loss of geometric discriminability (cloud becomes the full screen) and with a trapping/leakage transition in delay proxies and horizon-gated observables.
+
+\paragraph{Data channel.}
+Recompute the capacity-only occupancy table (Table~\ref{tab:chi_horizon_budget_occupancy}) and the QG/full-fusion runs (Section~\ref{sec:qg_interface_full_fusion}), and test whether large increases in $f_{\mathrm{hor}}$ (especially saturation to $1$) coincide with a qualitative change in trapped-branch delay/leakage statistics.
+An optional phase diagram visualization is provided by \texttt{scripts/exp\_chi\_horizon\_occupancy\_phase\_diagram.py} (Figure~\ref{fig:chi_horizon_occupancy_phase} if present).
+
+\paragraph{Quantitative upgrade (recommended).}
+\AuditTag To turn ``transition'' into a quantitative rejectable hypothesis, we also provide an optional deterministic scan that measures the delay-gap proxy
+$\Delta\tau:=\tau_{\mathrm{trap}}-\tau_{\mathrm{free}}$ as a function of $f_{\mathrm{hor}}$ under the same full-fusion interface contract.
+The scan rows are generated by \texttt{scripts/exp\_full\_fusion\_trapping\_transition\_scan.py} and written to
+\texttt{sections/generated/full\_fusion\_trapping\_transition\_scan\_rows.tex}.
+We additionally provide a deterministic changepoint estimate $f_{\mathrm{hor}}^\star$ from a two-segment least-squares fit on the scan points:
+\input{sections/generated/full_fusion_trapping_transition_changepoint_summary.tex}%
+If the scan figure is present, it is included below.
+
+\IfFileExists{figures/full_fusion_trapping_transition.png}{
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{figures/full_fusion_trapping_transition.png}
+\caption{Full-fusion trapping transition proxy: the delay gap $\Delta\tau=\tau_{\mathrm{trap}}-\tau_{\mathrm{free}}$ versus horizon occupancy $f_{\mathrm{hor}}$ under a deterministic metrics-only scan. Generated by \texttt{scripts/exp\_full\_fusion\_trapping\_transition\_scan.py}.}
+\label{fig:full_fusion_trapping_transition}
+\end{figure}
+}{}
+
+\IfFileExists{figures/chi_horizon_occupancy_phase.png}{
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/chi_horizon_occupancy_phase.png}
+\caption{Capacity-only horizon occupancy phase diagram: $f_{\mathrm{hor}}=|\mathcal{R}_\star|/4^n$ under the budget trigger $m|\mathcal{R}_\star|\ge cI_{\mathrm{obs}}$ with capping at $|\mathcal{R}_\star|\le 4^n$. The figure is generated deterministically by \texttt{scripts/exp\_chi\_horizon\_occupancy\_phase\_diagram.py}.}
+\label{fig:chi_horizon_occupancy_phase}
+\end{figure}
+}{}
+
+\paragraph{Fail condition.}
+If the protocol audits exhibit saturation ($f_{\mathrm{hor}}\to 1$) while trapped-branch observables remain unchanged (no transition, no loss of discriminability) under the same declared horizon rule and run contract, the trapping-as-horizon interpretation used in this manuscript is falsified (the capacity-only occupancy remains true, but the physical dictionary must be revised).
+
+\paragraph{Sensitivity and a numeric rejection envelope (audit-facing).}
+\AuditTag The transition proxy is an observation class: to rule out ``one-off'' artifacts of a particular budget choice, we provide a deterministic sensitivity sweep over a small $(I_{\mathrm{obs}},c)$ family and recompute $f_{\mathrm{hor}}^\star$ and the two fitted slopes (left/right) in each case:
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{r r r r r r r r r r}
+\toprule
+$n$ & $I_{\mathrm{obs}}$ & $c$ & $f_{\mathrm{sat}}$ (at $m=4$) & $f_{\min}$ & $f_{\max}$ & degenerate? & $f^\star_{\mathrm{hor}}$ & $b_2-b_1$ & $R^2$ \\
+\midrule
+\input{sections/generated/full_fusion_trapping_transition_sensitivity_rows.tex}%
+\end{tabular}
+\caption{Deterministic changepoint sensitivity sweep for the trapping transition proxy $\Delta\tau$ versus $f_{\mathrm{hor}}$. Rows are generated by \texttt{scripts/exp\_full\_fusion\_trapping\_transition\_sensitivity.py}.}
+\label{tab:full_fusion_trapping_transition_sensitivity}
+\end{table}
+\input{sections/generated/full_fusion_trapping_transition_sensitivity_summary.tex}%
+
+\paragraph{Numeric rejection envelope (recommended).}
+\AuditTag A conservative rejectable envelope for the trapping-as-horizon interface reading is:
+first restrict to \emph{nondegenerate} cases (those with a nontrivial occupancy span $f_{\max}-f_{\min}$ in the scan grid).
+If, across that nondegenerate family, the fitted slope gain $b_2-b_1$ fails to be positive or the fit ceases to be informative (very low $R^2$), then the ``transition'' claim should be downgraded to a purely capacity-only occupancy statement without trapping interpretation.
+
 \subsection{Calibration-dependent staircase prediction (requires a calibrated \texorpdfstring{$r_{\mathrm{step}}$}{r\_step})}
 \label{subsec:calibration_dependent_predictions}
 
@@ -100,11 +256,13 @@ In this calibration, the threshold for $m=10$ lies near the electroweak scale ($
 The resulting spectrum template is summarized in Table~\ref{tab:resolution_spectrum}.
 
 \paragraph{Odd steps as bridges between even stability islands (interface).}
-The even steps $m=6,8,10$ are already singled out by the combination of the $m=6$ coarse-lock anchor and the bounded-complexity staircase calibration: they align the minimal matter anchor (electron), a conservative hadronic-scale reference (QCD onset), and the electroweak layer, respectively.
+The even steps $m=6,8,10$ are already singled out by the combination of the $m=6$ coarse-lock anchor and the bounded-complexity staircase calibration: they align the minimal matter anchor (electron), a conservative hadronic-scale \MatchTag benchmark $\mu_{\mathrm{QCD}}\sim 0.2\,\mathrm{GeV}$, and the electroweak layer, respectively.
 Once this scaffold is fixed, the odd steps are no longer optional: the same staircase necessarily places intermediate thresholds at $m=7,9,11$ (Table~\ref{tab:resolution_spectrum}).
 This yields three concrete, falsifiable targets for where additional stable-mode structure should concentrate if it arises through resolution uplifts:
 \begin{itemize}
-\item \textbf{Prediction 1 (nuclear binding scale):} $m=7$ corresponds to $\mu_{\mathrm{th}}(7)\sim 10\,\mathrm{MeV}$, near the characteristic nuclear binding scale (few--$10$ MeV), suggesting an intermediate ``binding'' information density that can glue $m=6$ matter-like objects into nuclei without yet requiring the full hadronic confinement structure of $m=8$.
+\item \textbf{Prediction 1 (nuclear binding scale):} $m=7$ corresponds to $\mu_{\mathrm{th}}(7)\sim 10\,\mathrm{MeV}$, near the characteristic nuclear binding scale (few--$10$ MeV), suggesting an intermediate ``binding'' information density that can glue $m=6$ matter-like objects into nuclei.
+As a minimal stable-sector example on the hadronic side, Appendix~\ref{app:proton_hydrogen_nucleus_interface} records a disciplined interface construction of the hydrogen nucleus (proton) as a color-singlet composite carrier, without promoting confinement/mass-gap claims.
+Here $m=8$ is treated only as a conservative hadronic-scale matching benchmark (Table~\ref{tab:resolution_spectrum} and Table~\ref{tab:resolution_calibration_multianchor}); no nonperturbative confinement or mass-gap mechanism is claimed by this staircase alone \cite{JaffeWitten2000YangMillsMassGap,Greensite2011Confinement}.
 \item \textbf{Prediction 2 (bottom onset):} $m=9$ corresponds to $\mu_{\mathrm{th}}(9)\sim 4.4\,\mathrm{GeV}$, close to the bottom threshold ($m_b\approx 4.18\,\mathrm{GeV}$), marking the staircase onset point for heavy-flavor physics under the fixed calibration \cite{PDGRPP2024}.
 \item \textbf{Prediction 3 (BSM frontier target):} $m=11$ corresponds to $\mu_{\mathrm{th}}(11)\sim 1.9\,\mathrm{TeV}$ and provides a protocol-level BSM target at the LHC/FCC frontier: any additional stable modes entering as an effective uplift to $m=11$ should be constrained by the finite topological capacity $|X_{11}|=233$ and by the inherited cyclic/boundary split constraints from the $\pi$ channel.
 \end{itemize}
@@ -140,6 +298,13 @@ $m$ & $r_{\mathrm{th}}(m)$ & $\mu_{\mathrm{th}}(m)$ [GeV] & $|X_m|$ & $|X_m^{\ma
 \label{tab:resolution_thresholds}
 \end{table}
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.98\textwidth]{figures/m1_to_m16_full_visualization.png}
+\caption{Complete resolution spectrum visualization for $m=1$ to $m=16$: stable type counts $|X_m|$ (top-left, logarithmic scale), energy threshold staircase $\mu_{\mathrm{th}}(m)$ (top-right), coupling relationships showing that $n$ is not necessarily $m/2$ but depends on the addressing dimension $d$ (bottom-left: $m=2n$ for 2D, $m=3n$ for 3D, $m=dn$ in general), and a comprehensive data table (bottom). The balanced coupling $m=2n$ used in this paper is a diagnostic convention for the 2D Hilbert screen (Remark~\ref{rem:balanced_coupling_convention}); other addressing dimensions yield different relationships (Remark~\ref{rem:balanced_coupling_dimension}). Generated by \texttt{scripts/fig\_m1\_to\_m16\_full\_visualization.py}.}
+\label{fig:m1_to_m16_full_visualization}
+\end{figure}
+
 \paragraph{A bounded-complexity calibration comparison.}
 To make the choice $r_{\mathrm{step}}=2\pi$ explicit as a low-complexity calibration, we compare the small candidate family $r_{\mathrm{step}}=k\pi$ for $1\le k\le 10$ against the single electroweak anchor scale $m_Z$ (PDG), using the template threshold at $m=10$.
 Table~\ref{tab:resolution_calibration_sweep} reports the induced $\mu_{\mathrm{th}}(10)$ and the log mismatch $\log(\mu_{\mathrm{th}}(10)/m_Z)$ for each candidate.
@@ -160,7 +325,7 @@ candidate $r_{\mathrm{step}}$ & $r_{\mathrm{step}}$ & $\mu_{\mathrm{th}}(10)$ [G
 \end{table}
 
 \paragraph{A two-anchor minimax calibration (diagnostic).}
-As an additional diagnostic (still on the physical identification layer), we can calibrate $r_{\mathrm{step}}$ against two reference anchors simultaneously: the $Z$ pole mass at $m=10$ and an order-of-magnitude nonperturbative QCD reference scale $\mu_{\mathrm{QCD}}=0.2\,\mathrm{GeV}$ at $m=8$ (a conservative hadronic-scale anchor; see, e.g., \cite{PDGRPP2024}).
+As an additional diagnostic (still on the physical identification layer), we can calibrate $r_{\mathrm{step}}$ against two reference anchors simultaneously: the $Z$ pole mass at $m=10$ and an order-of-magnitude hadronic matching benchmark $\mu_{\mathrm{QCD}}=0.2\,\mathrm{GeV}$ at $m=8$ (a conservative scale used only for calibration context; see, e.g., \cite{PDGRPP2024,Greensite2011Confinement}).
 We evaluate the same bounded family $r_{\mathrm{step}}=k\pi$ with a deterministic minimax objective across the anchors.
 Table~\ref{tab:resolution_calibration_multianchor} reports the resulting mismatches and selects the unique minimizer by lexicographic tie-break rules.
 
@@ -238,6 +403,12 @@ Beyond qualitative protocol narratives, the bounded-complexity closures used for
 Tables~\ref{tab:ckm_mixing}--\ref{tab:ckm_matrix_closure} record the CKM magnitude closure, the induced PDG-parameter reconstruction, and unitarity diagnostics, while Tables~\ref{tab:pmns_mixing}--\ref{tab:pmns_matrix} record the analogous PMNS closure together with the bounded-denominator Dirac phase selection (Table~\ref{tab:pmns_delta_sweep}).
 These are falsifiable as measurement precision improves: the candidate families are finite, the minimizers are unique at the stated bounds, and the mismatches are reported in the same log-norm used across the paper.
 
+\paragraph{Identifiability boundary (cycle-type-only summaries).}
+\AuditTag Several holonomy-facing diagnostics in this manuscript are built from class-function loop summaries (characters/traces of representations of the underlying finite holonomy group).
+In that regime, the cycle-type histogram is not merely a convenient visualization: it is information-theoretically complete for those observables.
+Proposition~\ref{prop:cycle_type_identifiability_boundary} formalizes the boundary: if two realizations induce the same cycle-type histogram on the same loop family, then no class-function summary (including trace/character summaries) can distinguish them.
+Accordingly, any attempt to extract additional structure (e.g.\ CP-odd phases) from data that effectively reduces to cycle-type-only information must either enlarge the loop family or introduce a non-class-function readout; otherwise the claimed distinction lies outside the information content of the stated observables.
+
 \paragraph{Quantified robustness.}
 Appendix~\ref{app:audit_uncertainty} reports minimizer stability rates under explicit perturbation models for the reference targets (Table~\ref{tab:audit_uncertainty_robustness}).
 This provides an audit-level quantification of how sensitive each discrete prediction is to plausible shifts in the quoted reference values (PDG/global-fit or conservative stress-test scales), and it sharpens the distinction between a rigid discrete selection and a fragile post-hoc match.
@@ -262,21 +433,161 @@ Platforms with measurable near-unitary scattering matrices (microwave/optical ca
 \paragraph{Fail condition.}
 If delay-derived lapse ratios fail to correlate with independently measured clock-rate/redshift proxies under the same platform identification (beyond stated experimental/systematic uncertainty), the overhead--lapse matching dictionary is disfavored.
 
+\subsubsection{P11: bandwidth--window stability as a macroscopic comparability contract (interface/audit)}
+\label{subsec:p11_bandwidth_window_stability}
 
-\subsubsection{P7: \texorpdfstring{$\gamma$}{gamma} cross-observation consistency (interface/audit)}
-\label{subsec:p7_gamma_crossobs}
+\paragraph{Statement.}
+\AuditTag Any promotion of frequency-domain readouts (phase, delay, linewidth) to protocol claims is conditional on \emph{windowed comparability}:
+within a declared protocol state and a declared platform identification, the inferred scalar readout must be stable under bounded changes of
+(i) the frequency band $B$ and (ii) the time window $W$ used to construct the estimator.
+This is a macroscopic, data-facing prediction: it does not require black-hole interior access.
 
-Appendix~\ref{app:gamma_crossobs_consistency} records a deterministic, auditable multi-channel estimate of the single parameter $\gamma$
-that appears in the overhead-to-lapse and overhead-to-gravity dictionaries.
-The intended falsifiability target is not that every channel yields the same point estimate at present precision, but that
-the same $\gamma$ is not systematically forced into incompatible values by independent operational proxies once the data protocol and
-counterfactual baselines are declared.
+\paragraph{Observable.}
+Let $\widehat\theta(B,W)$ be a scalar readout extracted from data using a declared procedure on band $B$ and window $W$.
+Concrete examples include:
+(i) a delay summary $\widehat\tau_{\mathrm{WS}}(B,W)$ from a near-unitary $S(\omega)$ (Section~\ref{subsec:p6_wigner_smith_delay}),
+(ii) a linewidth proxy $\widehat\Gamma(B,W)$ from a resonance peak, or
+(iii) any logdet/phase-derived proxy routed through the determinant carrier (Appendix~\ref{app:operator_mother_space} and Appendix~\ref{app:time_mass_delay}).
+
+\paragraph{Stability gate (finite families).}
+\AuditTag Declare finite families $\mathcal B$ (bands) and $\mathcal W$ (windows) and compute the stability envelope
+\[
+\Delta_\theta := \operatorname{median}_{B\in\mathcal B,\,W\in\mathcal W}\Bigl|\widehat\theta(B,W)-\operatorname{median}_{B',W'}\widehat\theta(B',W')\Bigr|.
+\]
+The prediction is that, \emph{conditional on the stated gates}, $\Delta_\theta$ is small relative to the stated uncertainty budget and does not require ad hoc choices of $(B,W)$.
+In particular, the conclusion should not flip from ``pass'' to ``fail'' merely by moving within the declared bounded families.
+
+\paragraph{Quantitative rejection envelope (recommended).}
+\AuditTag To turn ``stability'' into a rejectable macroscopic hypothesis, report a dimensionless instability ratio
+\[
+\delta_\theta:=\frac{\Delta_\theta}{\max\{|\tilde\theta|,\theta_{\min}\}},
+\qquad
+\tilde\theta:=\operatorname{median}_{B\in\mathcal B,\,W\in\mathcal W}\widehat\theta(B,W),
+\]
+with an explicit floor $\theta_{\min}>0$ appropriate to the platform units (to avoid dividing by a vanishing median).
+The rejection envelope should be stated as a single auditable bound
+\[
+\delta_\theta \le \epsilon_{\mathrm{BW}},
+\]
+where $\epsilon_{\mathrm{BW}}$ is decomposed into declared contributions (measurement/systematics, estimator discretization, and window/band effects),
+in the same spirit as the QG9-M1 error-budget discipline (Appendix~\ref{app:qg9_m1_windowed_comparability} and Appendix~\ref{app:eft_error_bounds}).
+If $\epsilon_{\mathrm{BW}}$ is not declared, the statement remains interpretive rather than falsifiable.
+
+\paragraph{Coverage gate (admissible fraction).}
+\AuditTag Let $\mathcal A\subseteq\mathcal B\times\mathcal W$ be the admissible subset that passes the declared gates.
+To avoid post-hoc selection, the comparability contract requires that $|\mathcal A|$ be a nontrivial fraction of $|\mathcal B||\mathcal W|$ under the stated family choices.
+If the admissible fraction is too small (e.g.\ dominated by edge/bound failures), the correct outcome is not ``pass by cherry-picking'' but ``inconclusive under the declared families'': enlarge data, change the platform identification, or revise the estimator family with an explicit registry update.
+
+\paragraph{Minimal failure points (why a window is ``not comparable'').}
+\AuditTag If a window/band choice violates a declared gate, it is not admissible for the comparability test and must be reported as such rather than used to tune conclusions.
+Canonical gate failures include:
+\begin{enumerate}
+\item \textbf{Band-edge peak / peak localization failure.} A resonance peak sits at the band boundary (edge artifact), so a linewidth/FWHM statistic is ill-posed (``PEAKEDGE'').
+\item \textbf{Time-domain damping non-identifiable.} The inferred damping time constant is pinned to a declared upper bound or fails a declared envelope-quality gate (``TAUBOUND/TAUFAIL/ENVFAIL'').
+\item \textbf{Non-unitary / non-smooth scattering band.} $S(\omega)$ is not near-unitary or is not stably differentiable/unwrap-able in the declared band (S1 boundary), so WS delay must be downgraded to a proxy.
+\end{enumerate}
 
 \paragraph{Data channel.}
-Independent constraints from rotation-curve fits, lensing/delay proxies, and redshift/clock-rate proxies, together with explicit uncertainty and stability sweeps, provide the channel.
-The paper includes a small vendored audit subset and a deterministic script that generates Table~\ref{tab:gamma_crossobs_estimates}, Table~\ref{tab:gamma_crossobs_stability}, and Figure~\ref{fig:gamma_crossobs_consistency}.
+Any macroscopic platform with measurable transfer/scattering response is admissible:
+microwave/optical cavities (S-parameters), mechanical resonators (Q/linewidth), and other systems with reproducible resonance structure.
+As a real-data audit instance, the manuscript includes a windowed gate table for GWOSC strain ringdown segments generated by
+\texttt{scripts/exp\_gwosc\_ringdown\_linewidth\_audit.py} (artifacts \texttt{gwosc\_ringdown\_linewidth\_*.tex}).
 
 \paragraph{Fail condition.}
-If, under declared protocol baselines and stated uncertainties, the per-channel $\widehat\gamma$ estimates are mutually inconsistent beyond tolerance (e.g.\ a large $\chi^2$ with negligible $p$-value and unstable conclusions under counterfactual baseline sweeps),
-then the single-parameter cross-channel closure claimed by the overhead dictionary is disfavored as stated.
+If, after excluding non-admissible windows via the declared gates, the remaining admissible family still yields large instability $\Delta_\theta$ without a corresponding declared uncertainty budget,
+or if stable conclusions require untracked changes of $(B,W)$ outside the declared bounded families,
+then the ``frequency readout $\rightarrow$ protocol claim'' comparability contract is falsified as stated for that platform/channel.
 
+\subsubsection{P12: Higgs uplift module falsifiability gates (interface/audit)}
+\label{subsec:p12_higgs_uplift_gates}
+
+The scalar uplift narrative used in the main text includes a concrete $m=10$ audit locus where uplift microtexture yields a parity-even scalar-doublet representative on Hilbert screens (Section~\ref{subsec:scalar_sectors_interface}; Appendix~\ref{app:scalar_interface_audits}).
+Because this is an interface-layer construction, its falsifiability is expressed as \emph{protocol-level gates}:
+deterministic, machine-checkable certificates that must be reproduced by any implementation that claims the same protocol primitives and bounded candidate-family closures.
+\input{sections/generated/higgs_falsifiability_gates_summary.tex}%
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{1.1cm} p{3.8cm} p{3.6cm} p{3.6cm}}
+\toprule
+gate & expected certificate & evidence pointer & fail cue / downgrade \\
+\midrule
+\input{sections/generated/higgs_falsifiability_gates_rows.tex}%
+\end{tabular}
+\caption{Higgs uplift falsifiability gates (interface/audit). These are protocol-internal checks: reproducing the cited JSON/table/figure certificates under the declared primitives is the required falsifiability test for the Higgs uplift module as stated; if a gate fails, the correct action is to downgrade the claim scope to the surviving audit-level envelope. Rows are generated by \texttt{scripts/exp\_higgs\_falsifiability\_gates.py}.}
+\label{tab:higgs_falsifiability_gates}
+\end{table}
+
+
+\subsubsection{P7: \texorpdfstring{$\gamma_{\mathrm{dict}}$}{gamma\_dict} cross-observation consistency (interface/audit)}
+\label{subsec:p7_gamma_crossobs}
+
+Appendix~\ref{app:gamma_crossobs_consistency} records a deterministic, auditable \emph{direct} calibration of the single dictionary coefficient
+$\gamma_{\mathrm{dict}}$ that appears in the overhead-to-lapse and overhead-to-gravity dictionaries (Section~\ref{app:overhead_to_gravity_closure}),
+using the declared $\widehat\chi(r)$ reconstruction and the one-parameter fit $v^2=\gamma_{\mathrm{dict}}(-c^2 r\chi'(r))$ on a small vendored subset of rotation-curve mass-model files.
+The falsifiability target is that, within the declared protocol class and declared counterfactual baselines, the resulting $\widehat\gamma_{\mathrm{dict}}$ is not arbitrarily tunable:
+it should be stable under bounded reconstruction/regularization sweeps and should not be forced into mutually incompatible values across comparable datasets.
+
+\paragraph{Data channel.}
+Rotation-curve datasets together with an explicit $\chi$-reconstruction protocol and declared derivative regularization provide the direct calibration channel.
+The paper includes a small vendored audit subset and a deterministic script that generates
+Table~\ref{tab:gamma_direct_estimates}, Table~\ref{tab:gamma_direct_stability}, and Figure~\ref{fig:gamma_crossobs_direct}.
+\AuditTag Additional proxy weak-field amplitude stress-tests (not a direct estimate of $\gamma_{\mathrm{dict}}$) are recorded separately in Appendix~\ref{app:gamma_crossobs_consistency}.
+
+\paragraph{Fail condition.}
+If, under declared protocol baselines and stated uncertainties, the per-dataset $\widehat\gamma_{\mathrm{dict}}$ estimates are mutually inconsistent beyond tolerance
+(e.g.\ a large $\chi^2$ with negligible $p$-value in Table~\ref{tab:gamma_direct_estimates} and unstable conclusions under the bounded counterfactual sweeps in Table~\ref{tab:gamma_direct_stability}),
+then the one-parameter $\gamma_{\mathrm{dict}}$ closure in the stated rotation-curve calibration channel is disfavored as stated.
+
+
+\subsubsection{P8: budget-triggered \texorpdfstring{$\chi$}{chi}-horizon localization and occupancy scaling (interface)}
+\label{subsec:p8_chi_horizon_budget}
+
+Section~\ref{subsec:chi_budget_horizon_area_law} defines a budget-triggered $\chi$-horizon $\partial\mathcal R_\star$ from a reconstructed overhead proxy field $\chi(x)$ by comparing cloud capacity bits to a finite observer budget $I_{\mathrm{obs}}(\mathcal O)$.
+This yields two falsifiable interface claims.
+
+\paragraph{(i) Occupancy scaling is not arbitrary.}
+At fixed resolution $(m,n)$ and declared margin constant $c>1$, the capacity-only constraint
+$I_{\chi}=m|\mathcal R_\star|\ge c\,I_{\mathrm{obs}}$ implies a minimal occupancy requirement
+$|\mathcal R_\star|\ge \lceil c\,I_{\mathrm{obs}}/m\rceil$ and hence an implied occupancy fraction $|\mathcal R_\star|/4^n$.
+Table~\ref{tab:chi_horizon_budget_occupancy} provides an auditable, deterministic reference for this constraint in a small $(m,n)$ family.
+
+\paragraph{(ii) Localization: delay-dominated response should concentrate in the high-overhead cloud.}
+Conditional on the overhead--lapse and delay dictionaries (Section~\ref{app:overhead_to_gravity_closure} and Appendix~\ref{app:time_mass_delay}),
+objects that are black-hole-like relative to $\mathcal O$ (Appendix~\ref{app:protocol_horizon_tick_trap}) are predicted to be delay-dominated and to exhibit elevated overhead.
+Accordingly, in any concrete platform where both a $\chi(x)$ reconstruction and an independent time-delay proxy are available, delay-dominated response should localize preferentially within $\mathcal R_\star$ (up to declared pullbacks and smoothing rules).
+
+\paragraph{Data channel.}
+Time-delay or scattering-delay proxies together with a declared $\chi$ reconstruction (and its counterfactual sweeps) provide the primary channel.
+Gravitational lensing and redshift/clock-rate proxies provide complementary channels through the same overhead dictionary.
+
+\paragraph{Fail condition.}
+If, under declared reconstruction/regularization baselines and stated uncertainties, delay-dominated regions do not correlate with elevated $\chi$ (beyond what is expected under a null shuffle/pullback control),
+or if the inferred occupancy required by the budget-trigger criterion is systematically incompatible with the observed localization across comparable datasets without changing the declared protocol class,
+then the budget-triggered $\chi$-horizon localization claim is disfavored as stated.
+
+\subsubsection{P9: black-hole information recovery must appear as record-level correlations (protocol Page surrogate)}
+\label{subsec:p9_bh_page_surrogate}
+
+Black-hole information recovery is not a statement about the marginal spectrum of radiation alone, but about correlations in the externally accessible record.
+In the protocol discipline of this paper, any recovery claim must be formulated on a declared record algebra $\mathcal{A}_{\mathrm{out}}$ (Appendix~\ref{app:bh_scope_contract}) and must supply a protocol-computable surrogate for the ``Page behavior'' of information recovery (Appendix~\ref{app:bh_page_surrogate}).
+At fixed $m$, the folding fibers $P(w)=\mathrm{Fold}_m^{-1}(w)$ quantify hidden micro-information under coarse stable-label readout; the BH4 information-flow table (Appendix~\ref{app:bh_evaporation_leak_channel}, Table~\ref{tab:bh4_information_flow}) makes this explicit.
+
+\paragraph{Test strategy (within the protocol language).}
+Choose a concrete platform and declare:
+(i) the external record stream (stable labels, exit-channel symbols, or an explicit measurement record),
+(ii) the resource ledger used to interpret long-time emission as evaporation (BH4),
+and (iii) the recovery surrogate $S_{\mathrm{sur}}(R_{0:t})$ (BH5).
+The falsifiability content is that the record must exhibit nontrivial higher-order correlations consistent with recovery: the surrogate should display a Page-like transition (growth to a maximum followed by a decrease toward the long-time recovery target) within the stated hypothesis class and error budget.
+
+\paragraph{Data channel.}
+Any setting that provides long record streams together with independent delay/overhead proxies is admissible:
+gravitational time-delay channels (Appendix~\ref{app:time_mass_delay}), K4 leakage/linewidth audits (Appendices~\ref{app:k4_pdg_leakage_audit} and \ref{app:k4_ws_linewidth_audit}), and protocol-horizon diagnostics (Appendix~\ref{app:protocol_horizon_tick_trap}).
+
+\paragraph{Fail condition.}
+If, under declared baselines and stated uncertainties, the external record remains compatible with a memoryless coarse process that never develops recovery-level correlations (i.e.\ the surrogate fails to exhibit a Page-like transition without expanding the declared hypothesis class),
+then the unitarity/recovery closure is disfavored as stated.
+Conversely, if recovery-level correlations are claimed but require hidden knobs (undeclared kernels, untracked candidate-family expansion, or non-reproducible selection), the claim fails the audit contract.

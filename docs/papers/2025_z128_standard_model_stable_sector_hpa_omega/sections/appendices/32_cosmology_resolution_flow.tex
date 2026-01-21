@@ -1,8 +1,10 @@
-\subsection{Cosmology as resolution flow (self-contained interface extension)}
+\subsection[Cosmology as resolution flow]{Cosmology as resolution flow (self-contained interface extension)}
 \label{app:cosmology_resolution_flow}
 
 This appendix records a minimal cosmology interface in the same protocol language used throughout this paper.
 The central idea is that changing resolution parameters $(m,n)$ is a physical operation (a protocol flow step), and the growth laws of the stable sector $|X_m|=F_{m+2}$ and of the mean degeneracy $2^m/|X_m|$ provide a quantitative capacity-growth backbone.
+\AuditTag In the joint protocol-state convention, cosmological interface readouts are conditional on $(m,n,K)$ (Appendix~\ref{subsec:tick_cap_joint_key_contract}): $m,n$ control capacity and uplift staging, while $K$ specifies how stable labels are weighted when forming scalar summaries (Appendix~\ref{app:kernel_family_cap_closure}).
+When this appendix uses the pushforward distribution $\mu_m(w)=|P(w)|/2^m$, it is adopting the microstate-pushforward kernel as a concrete audit-facing baseline.
 
 \subsubsection{Initialization: the big bang as resolution bootstrapping}
 \label{subsec:cosmo_init}
@@ -41,31 +43,164 @@ d_m:=\frac{|\Omega_m|}{|X_m|}=\frac{2^m}{F_{m+2}}.
 \]
 Since $F_{m+2}\asymp \varphi^m$ and $\varphi<2$, one has $f_{\mathrm{stab}}(m)\to 0$ and $f_{\mathrm{hid}}(m)\to 1$ as $m\to\infty$; equivalently $d_m\asymp (2/\varphi)^m$ grows exponentially.
 
+\begin{lemma}[Monotonicity of the stable fraction]\label{lem:f_stab_monotone}
+\MathTag For all $m\ge 1$, $f_{\mathrm{stab}}(m)$ is strictly decreasing in $m$, and $d_m=1/f_{\mathrm{stab}}(m)$ is strictly increasing in $m$.
+\end{lemma}
+\begin{proof}
+Recall $f_{\mathrm{stab}}(m)=F_{m+2}/2^m$ with Fibonacci numbers satisfying $F_{k+1}=F_k+F_{k-1}$ and $F_k>0$.
+For $m\ge 1$ one has $F_{m+1}<F_{m+2}$ since $F_{m+2}=F_{m+1}+F_m$ with $F_m>0$.
+Hence
+\[
+F_{m+3}=F_{m+2}+F_{m+1}<2F_{m+2},
+\]
+and therefore
+\[
+f_{\mathrm{stab}}(m+1)=\frac{F_{m+3}}{2^{m+1}}<\frac{2F_{m+2}}{2^{m+1}}=\frac{F_{m+2}}{2^m}=f_{\mathrm{stab}}(m).
+\]
+Thus $f_{\mathrm{stab}}(m)$ is strictly decreasing, and $d_m=1/f_{\mathrm{stab}}(m)$ is strictly increasing.
+\end{proof}
+
+\paragraph{Degeneracy as fiber size and pushforward occupancy.}
+\MathTag At fixed $m$, the equivalence semantics of Section~\ref{app:equivalence_semantics} identifies stable labels with projection fibers.
+Let $P(w):=\mathrm{Fold}_m^{-1}(w)$ be the microstate fiber of a stable type $w\in X_m$.
+Then the mean degeneracy $d_m$ is exactly the mean fiber size, and the mean fiber-count entropy is controlled by $d_m$ (Lemma~\ref{lem:mean_degeneracy_fiber_entropy_bounds}).
+Under the maximal-ignorance counting measure on $\Omega_m$, the induced (pushforward) distribution on stable labels is therefore
+\[
+\mu_m(w):=\frac{|P(w)|}{|\Omega_m|}=\frac{|P(w)|}{2^m},
+\]
+so stable labels are weighted in proportion to degeneracy.
+
+\begin{lemma}[Entropy gap and hidden exponent]\label{lem:entropy_gap_hidden_exponent_cosmo}
+\MathTag Let $\varphi=(1+\sqrt{5})/2$ and define $f_{\mathrm{stab}}(m)=F_{m+2}/2^m$ and $d_m=2^m/F_{m+2}$ as above.
+Then
+\[
+\lim_{m\to\infty}\frac{1}{m}\log f_{\mathrm{stab}}(m)=\log\varphi-\log 2,
+\qquad
+\lim_{m\to\infty}\frac{1}{m}\log d_m=\log(2/\varphi).
+\]
+Moreover, writing $\psi:=(1-\sqrt{5})/2=-\varphi^{-1}$, one has the exact Binet identity
+\[
+F_{m+2}=\frac{\varphi^{m+2}-\psi^{m+2}}{\sqrt{5}}
+=\frac{\varphi^{m+2}}{\sqrt{5}}\Bigl(1-(-\varphi^{-2})^{m+2}\Bigr),
+\]
+and therefore
+\[
+\log f_{\mathrm{stab}}(m)
+=m\log(\varphi/2)+\log(\varphi^2/\sqrt{5})+\eta_m,
+\qquad
+|\eta_m|\le 2\,\varphi^{-2m-4},
+\]
+so the convergence to $\log(\varphi/2)$ is exponentially fast in $m$.
+\end{lemma}
+\begin{proof}
+By Binet's formula (see, e.g., \cite{HardyWright2008}),
+$
+F_{m+2}=(\varphi^{m+2}-\psi^{m+2})/\sqrt{5}
+$
+with $\psi=-\varphi^{-1}$, giving the stated exact identity.
+Dividing by $2^m$ yields $f_{\mathrm{stab}}(m)$ and taking reciprocals yields $d_m$, hence
+\[
+\frac{1}{m}\log f_{\mathrm{stab}}(m)=\log(\varphi/2)+\frac{1}{m}\log(\varphi^2/\sqrt{5})+\frac{1}{m}\log\!\left(1-(-\varphi^{-2})^{m+2}\right),
+\]
+so the limit is $\log(\varphi/2)=\log\varphi-\log 2$.
+The statement for $d_m$ follows because $\log d_m=-\log f_{\mathrm{stab}}(m)$.
+For the error bound, set $x_m:=-(-\varphi^{-2})^{m+2}$.
+Then $|x_m|=\varphi^{-2m-4}<1/2$ for all $m\ge 1$, and the elementary bound $|\log(1+x)|\le 2|x|$ for $|x|\le 1/2$ gives
+$
+|\eta_m|=|\log(1+x_m)|\le 2|x_m|=2\varphi^{-2m-4}.
+$
+\end{proof}
+
+\begin{remark}[Pressure reading of the same constant]\label{rem:entropy_gap_pressure_reading}
+\AuditTag The constant $\log(2/\varphi)$ above is the same quantity that appears as a pressure gap at zero potential:
+$P_{\Sigma_2}(0)-P_{\Sigma_{\mathrm{GM}}}(0)=\log(2/\varphi)$ (Lemma~\ref{lem:full_shift_entropy_gap}).
+For a unified three-way reading (degeneracy growth, conditional entropy rate, and pressure gap), see Proposition~\ref{prop:rigidity_log2phi_triple_reading}.
+\end{remark}
+
+\begin{proposition}[Closed-form matching estimate for $m_\ast$]\label{prop:cosmo_mstar_closed_form}
+\MathTag Fix a target $\Omega_{\mathrm{vis},0}\in(0,1)$ and define the continuous approximation
+\[
+\widehat m(\Omega_{\mathrm{vis},0})
+:=\frac{\log(\Omega_{\mathrm{vis},0})-\log(\varphi^2/\sqrt{5})}{\log(\varphi/2)}
+=\frac{\log(\Omega_{\mathrm{vis},0}\sqrt{5}/\varphi^2)}{\log(\varphi/2)}.
+\]
+If an integer $m$ satisfies the relative-fit condition
+\[
+\left|\log\!\left(\frac{f_{\mathrm{stab}}(m)}{\Omega_{\mathrm{vis},0}}\right)\right|\le \varepsilon
+\]
+for some $\varepsilon\ge 0$ (e.g.\ a declared log-uncertainty budget), then
+\[
+\left|m-\widehat m(\Omega_{\mathrm{vis},0})\right|
+\le \frac{\varepsilon+2\,\varphi^{-2m-4}}{|\log(\varphi/2)|}.
+\]
+\end{proposition}
+\begin{proof}
+From Lemma~\ref{lem:entropy_gap_hidden_exponent_cosmo},
+\[
+\log f_{\mathrm{stab}}(m)=m\log(\varphi/2)+\log(\varphi^2/\sqrt{5})+\eta_m,\qquad |\eta_m|\le 2\varphi^{-2m-4}.
+\]
+Subtract $\log\Omega_{\mathrm{vis},0}$ from both sides and divide by $\log(\varphi/2)\neq 0$, to obtain
+\[
+m-\widehat m(\Omega_{\mathrm{vis},0})
+\;=\;\frac{\log(f_{\mathrm{stab}}(m)/\Omega_{\mathrm{vis},0})-\eta_m}{\log(\varphi/2)}.
+\]
+Taking absolute values and using the assumed relative-fit bound and $|\eta_m|\le 2\varphi^{-2m-4}$ gives the claim.
+\end{proof}
+
 \subsubsection{A discrete energy-budget fit (interface hypothesis)}
 \label{subsec:cosmo_energy_budget_fit}
 
 \begin{assumption}[Readout-occupancy energy accounting (interface)]
 \label{ass:occupancy_energy_z128}
 Fix an effective window length $m$.
-Assume that, on sufficiently coarse scales, the fractional contribution of a sector to the cosmic energy budget is proportional to long-time occupancy of the corresponding readout microstate subset.
-Under a maximal-ignorance approximation at fixed resolution, this occupancy is approximated by counting measure on $\Omega_m$, so that
+We assume a \emph{holographic equipartition} principle: the energy cost to maintain a readout state is uniform per microstate (1 bit of capacity $\leftrightarrow$ characteristic energy unit).
+Consequently, the fractional contribution of a sector to the cosmic energy budget is proportional to the count of accessible microstates in that sector.
+Under the maximum-entropy (maximal-ignorance) approximation on $\Omega_m$ (Appendix~\ref{subsec:entropy_as_counting}), this yields
 \[
-\Omega_{\mathrm{vis},0}\approx f_{\mathrm{stab}}(m),
+\Omega_{\mathrm{vis},0} = \frac{|X_m|}{|\Omega_m|} = f_{\mathrm{stab}}(m),
 \qquad
-\Omega_{\mathrm{dark},0}\approx f_{\mathrm{hid}}(m)=1-f_{\mathrm{stab}}(m).
+\Omega_{\mathrm{dark},0} = \frac{|\Omega_m|-|X_m|}{|\Omega_m|} = f_{\mathrm{hid}}(m).
 \]
 \end{assumption}
 
+\begin{remark}[Derivation from Landauer's principle]
+This assumption is formally equivalent to applying Landauer's principle \cite{Landauer1961} globally: if erasing/resetting each microstate bit costs $k_B T \ln 2$, and the readout hardware cycles through all $|\Omega_m|$ states ergodically, then the time-averaged energy budget allocated to the stable sector is strictly the fraction of states it occupies.
+This removes the need for ad-hoc ``dark fluids''; the ``dark sector'' is simply the energetic cost of the vast hidden state space required to support the sparse stable computational surface.
+\end{remark}
+
 \InterfaceTag Given a target present-day visible fraction $\Omega_{\mathrm{vis},0}$ (e.g.\ baryon fraction as a minimal proxy), Assumption~\ref{ass:occupancy_energy_z128} selects an effective integer window length $m_\ast$ by discrete matching.
-Because $f_{\mathrm{stab}}(m)$ is strictly decreasing in $m$, this selection is unique once a target is fixed.
-In the companion cosmology analysis in this program, the Planck-2018 baryon fraction $\Omega_{\mathrm{b},0}\approx 0.0493$ is matched near
+\MatchTag Concretely, we select $m_\ast$ as the unique minimizer (with a deterministic tie-break) of the absolute log-mismatch $|\log(f_{\mathrm{stab}}(m)/\Omega_{\mathrm{vis},0})|$ over a declared finite scan window; the generator \texttt{scripts/exp\_cosmology\_energy\_budget\_fit.py} implements this rule.
+Lemma~\ref{lem:f_stab_monotone} implies $f_{\mathrm{stab}}(m)$ is strictly decreasing, so the induced Voronoi cells in this one-dimensional matching problem are contiguous and the stability diagnostic is well defined.
+\begin{lemma}[Voronoi boundaries for absolute log-mismatch]\label{lem:log_voronoi_geometric_mean}
+\MathTag Fix two positive values $a>b>0$ and consider the distance on $(0,\infty)$ given by $d(x,y)=|\log(x/y)|$.
+Then the set of targets $x>0$ that are at least as close to $a$ as to $b$ is the interval
+\[
+\{x>0:\ d(x,a)\le d(x,b)\}=[\sqrt{ab},\infty).
+\]
+Equivalently, the bisector between $a$ and $b$ under $d$ is the geometric mean $\sqrt{ab}$.
+\end{lemma}
+\begin{proof}
+Since $a>b>0$, for $x>0$ one has
+\[
+|\log(x/a)|\le |\log(x/b)|
+\quad\Longleftrightarrow\quad
+|\log x-\log a|\le |\log x-\log b|.
+\]
+On the real line, the set of points closer to $\log a$ than to $\log b$ is the half-line $\log x\ge (\log a+\log b)/2$.
+Exponentiating yields $x\ge \exp\bigl((\log a+\log b)/2\bigr)=\sqrt{ab}$.
+\end{proof}
+\MatchTag Using the Planck-2018 baryon fraction $\Omega_{\mathrm{b},0}\approx 0.0493$ as a compact target \cite{Planck2018Parameters}, the discrete match is
 \[
 \input{sections/generated/cosmology_energy_budget_fit_equation.tex}%
 \]
-suggesting $m_\ast\approx 15$ as a minimal discrete fit point.
+\MatchTag \input{sections/generated/cosmology_energy_budget_fit_summary.tex}
+\AuditTag \input{sections/generated/cosmology_energy_budget_fit_stability.tex}
+\InterfaceTag This suggests $m_\ast\approx 15$ as a minimal discrete fit point under the stated interface hypothesis.
+\AuditTag For the Z128 baseline phase denominator $p=m+1=7$ (Section~\ref{subsec:z128_label}), a deterministic internal choice $m_b^\ast:=2p+1=15$ coincides with the discrete best-fit point for the Planck baryon proxy; one may therefore treat $\Omega_{\mathrm{b},0}$ as a mismatch-audit target for this choice when forming a DM/DE split diagnostic (Appendix~\ref{app:lambda_pressure_closure}).
+\AuditTag Section~\ref{sec:rigidity_bridge_spine} records this as a cross-module consistency pin between the cosmology-side discrete match and the chosen dyadic baseline (Corollary~\ref{cor:dyadic_cosmology_consistency_pin}).
 Figure~\ref{fig:cosmology_energy_budget_fit} provides a direct visualization of the discrete matching curve.
 
-\begin{figure}[t]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.85\linewidth]{figures/cosmology_energy_budget_fit.png}
 \caption{Discrete matching curve for $f_{\mathrm{stab}}(m)=F_{m+2}/2^m$ against the target $\Omega_{\mathrm{vis},0}$ used in the text. The figure is generated by \texttt{scripts/exp\_cosmology\_energy\_budget\_fit.py}.}
@@ -74,5 +209,26 @@ Figure~\ref{fig:cosmology_energy_budget_fit} provides a direct visualization of 
 
 \paragraph{Status and falsifiability.}
 \AuditTag The assumption is explicitly flagged as an interface hypothesis.
-Its falsifiability route is to compare the implied hidden/stable ratio $d_{m_\ast}-1$ with the observed dark-to-baryon ratio, and to test whether the reconstructed overhead proxy fields (Section~\ref{app:chi_reconstruction_protocol}) show the predicted address-aware invariances and correlations.
+Its falsifiability route is to compare the implied hidden/stable ratio $f_{\mathrm{hid}}(m_\ast)/f_{\mathrm{stab}}(m_\ast)=d_{m_\ast}-1$ with an observationally declared reference ratio.
 
+\paragraph{Micro/macro bridge pointer (ledger form).}
+\AuditTag The cosmology interface in this appendix is compatible with the manuscript's micro-scale latency/trapping dictionaries because both are phrased in the same resolution coordinate $r(\mu)$ and in the same finite-window audit discipline.
+For the unified micro-to-macro narrative that treats trapping/return as a contract form (delay proxies, explicit ledgers, counterfactual baselines) and uses window uplift as the internal bridge carrier,
+see Section~\ref{subsec:micro_bh_wh_particle_unification} and Section~\ref{subsec:x3b_black_hole_metabolism_audit_hypothesis}.
+\MatchTag Concretely,
+\[
+\frac{f_{\mathrm{hid}}(m_\ast)}{f_{\mathrm{stab}}(m_\ast)}
+=\frac{1-f_{\mathrm{stab}}(m_\ast)}{f_{\mathrm{stab}}(m_\ast)}
+  =\frac{1}{f_{\mathrm{stab}}(m_\ast)}-1
+  =d_{m_\ast}-1,
+\]
+so a log-mismatch against a chosen reference ratio $R_{\mathrm{ref}}$ is
+$\log\!\bigl((d_{m_\ast}-1)/R_{\mathrm{ref}}\bigr)$; this is reported in the generated summary fragment for transparency.
+\MatchTag Under the literal reading of Assumption~\ref{ass:occupancy_energy_z128} with $\Omega_{\mathrm{dark},0}=1-\Omega_{\mathrm{vis},0}$, the reference ratio is $(1-\Omega_{\mathrm{vis},0})/\Omega_{\mathrm{vis},0}$ (fixed once $\Omega_{\mathrm{vis},0}$ is chosen).
+\MatchTag If instead one interprets ``dark'' as ``dark matter only'' while treating dark energy separately, one may compare to $\Omega_{\mathrm{DM}}/\Omega_{\mathrm{b}}$ (Planck-2018 baseline; \cite{Planck2018Parameters}), as reported in the generated summary for transparency.
+Independently, one can test whether reconstructed overhead proxy fields (Section~\ref{app:chi_reconstruction_protocol}) show the predicted address-aware invariances and correlations under declared counterfactual baselines.
+
+\paragraph{Dark-energy split and \texorpdfstring{$\Lambda$}{Lambda} normalization (matching layer).}
+\MatchTag When one wishes to treat dark energy separately (rather than absorbing it into a single ``hidden'' fraction), the present appendix is not the appropriate module to fix $\Omega_{\Lambda,0}$ or $\Lambda$ numerically.
+Instead, Appendix~\ref{app:lambda_pressure_closure} records a compact, auditable $\e$-channel pressure closure for a late-time vacuum normalization, using an explicit finite candidate family and Planck-2018 matching targets.
+\InterfaceTag The two interface components can be combined only after one declares, at the matching layer, which bookkeeping convention is intended (``dark'' as total hidden vs.\ ``dark'' as DM-only with an explicit DE split), to avoid mixing semantic conventions across modules.

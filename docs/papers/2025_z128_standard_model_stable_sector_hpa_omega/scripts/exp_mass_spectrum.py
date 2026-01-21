@@ -247,6 +247,29 @@ def main() -> None:
     nu_lines = [row_line(r) for r in nu]
     nu_lines_with_rules = nu_lines + ["\\bottomrule"]
 
+    # Compact quantitative summary for the anchor set (audit-friendly; used in the main text).
+    abs_dr = [abs(float(r.delta_r)) for r in anchors if r.delta_r is not None]
+    abs_dr_sorted = sorted(abs_dr)
+
+    def median(xs: List[float]) -> float:
+        if not xs:
+            return float("nan")
+        n = len(xs)
+        mid = n // 2
+        if n % 2 == 1:
+            return float(xs[mid])
+        return 0.5 * (float(xs[mid - 1]) + float(xs[mid]))
+
+    med_abs = median(abs_dr_sorted)
+    mean_abs = float(sum(abs_dr) / float(len(abs_dr))) if abs_dr else float("nan")
+    typical_factor = float(PHI**med_abs) if math.isfinite(med_abs) else float("nan")
+    summary_line = (
+        "Across the anchor set $\\{e,\\mu,\\tau,W,Z,H\\}$, "
+        f"$\\mathrm{{median}}(|\\Delta r|)={fmt_fixed(med_abs, 3)}$ and "
+        f"$\\mathrm{{mean}}(|\\Delta r|)={fmt_fixed(mean_abs, 3)}$, "
+        f"corresponding to a typical matching-layer factor $\\varphi^{{|\\Delta r|}}\\approx {fmt_fixed(typical_factor, 3)}$."
+    )
+
     root = Path(__file__).resolve().parent.parent
     out_dir = root / "sections" / "generated"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -254,6 +277,7 @@ def main() -> None:
     (out_dir / "mass_spectrum_anchor_rows.tex").write_text("\n".join(anchor_lines), encoding="utf-8")
     (out_dir / "mass_spectrum_quark_rows.tex").write_text("\n".join(quark_lines), encoding="utf-8")
     (out_dir / "mass_spectrum_neutrino_rows.tex").write_text("\n".join(nu_lines_with_rules), encoding="utf-8")
+    (out_dir / "mass_spectrum_anchor_summary.tex").write_text(summary_line, encoding="utf-8")
     # Backward-compatible combined rows (no headings/rules).
     (out_dir / "mass_spectrum_rows.tex").write_text("\n".join(anchor_lines + quark_lines + nu_lines), encoding="utf-8")
     print("Wrote sections/generated/mass_spectrum_anchor_rows.tex, mass_spectrum_quark_rows.tex, mass_spectrum_neutrino_rows.tex")

@@ -28,6 +28,8 @@ where $\gamma$ is a dimensionless coupling constant.
 \InterfaceTag Larger overhead means fewer effective local logical updates per unit tick budget, hence a slower local clock.
 Equation~\eqref{eq:z128_lapse_from_chi} is the minimal monotone dictionary that turns an overhead proxy into a clock-rate factor.
 The exponent $\gamma$ is a single-parameter calibration to be constrained empirically (Section~\ref{subsec:z128_gamma_fit}).
+\AuditTag The input $\chi(x)$ is itself a protocol output reconstructed from finite readout statistics and therefore depends on the declared protocol state $(m,n,K)$ (Appendix~\ref{subsec:tick_cap_joint_key_contract}, Section~\ref{app:chi_reconstruction_protocol}, and Appendix~\ref{app:kernel_family_cap_closure}).
+Any empirical use of $\gamma$ should therefore report stability under declared counterfactual choices of $(m,n,K)$ and the reconstruction rules.
 
 \subsection{Effective metric dictionary and weak-field potential}
 \label{subsec:z128_metric_dictionary}
@@ -64,6 +66,11 @@ where $\chi_0$ is an arbitrary reference (constant shifts of $\chi$ do not chang
 \end{equation}
 so the overhead proxy $\chi$ defines an effective source through its Laplacian.
 
+\paragraph{High-overhead regions and observer-relative horizons (interface).}
+\InterfaceTag The reconstructed field $\chi(x)$ also provides an operational way to localize ``high-overhead'' regions: level sets $\{\chi\ge \vartheta\}$ define coarse cloud regions on the same grid used in the reconstruction.
+When $\vartheta$ is chosen by a budget-trigger rule (Section~\ref{subsec:chi_budget_horizon_area_law}), the induced boundary $\partial\mathcal R_\star$ is an observer-relative information horizon, aligned with the protocol-horizon criterion of Appendix~\ref{app:protocol_horizon_tick_trap}.
+In such regimes one expects delay-dominated response (large dwell/lag proxies) to correlate with elevated overhead, so the same $\chi$ field ties weak-field dictionaries and relative black-hole diagnostics to a single protocol object.
+
 \paragraph{\texorpdfstring{$1/r$}{1/r} exterior.}
 \InterfaceTag Outside compact sources, $\Delta\Phi=0$ and the spherically symmetric exterior solution is $\Phi(r)=-GM/r$.
 In the present dictionary, this corresponds to $\chi(r)$ behaving (up to constants) as a harmonic potential in the exterior region.
@@ -93,7 +100,7 @@ In the small-error regime, $\sigma_{y,i}\approx 2v_i\sigma_i$, and the one-param
 
 \paragraph{Uncertainty propagation (audit).}
 \AuditTag If one treats the $x_i$ as known (design-known model) and assumes $\Var(y_i)=\sigma_{y,i}^2$, then Appendix~\ref{app:protocol_to_continuum_error_control} records the standard WLS variance formula
-$\Var(\widehat\gamma)=1/\sum_i (x_i^2/\sigma_{y,i}^2)$ (Proposition~\ref{prop:wls_gamma_variance}), yielding an immediate confidence interval under an approximate normality heuristic.
+$\Var(\widehat\gamma)=1/\sum_i (x_i^2/\sigma_{y,i}^2)$ (Proposition~\ref{prop:wls_gamma_variance}), together with standard asymptotic-normal and conservative distribution-free reporting options.
 In the present application, however, $x_i$ depends on a numerical derivative of $\chi$; Appendix~\ref{app:protocol_to_continuum_error_control} makes explicit the corresponding bias--noise tradeoff for $\chi'$ estimation (Proposition~\ref{prop:derivative_error_tradeoff}).
 Audit-facing practice is therefore to declare the derivative/smoothing rule and to report the stability of $\widehat\gamma$ under counterfactual step/regularization choices (Section~\ref{app:chi_reconstruction_protocol}).
 

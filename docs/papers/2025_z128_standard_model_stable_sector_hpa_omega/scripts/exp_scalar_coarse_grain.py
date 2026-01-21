@@ -3,7 +3,7 @@
 Reproducible experiment: coarse-grained protocol scalars on the n=3 Hilbert grid.
 
 This script demonstrates a minimal parity contrast at finite resolution:
-  - the Hilbert chirality index chi flips sign under a spatial reflection;
+  - the Hilbert chirality index chi_H flips sign under a spatial reflection;
   - block-averaged (coarse-grained) scalar observables built from intrinsic stable-type
     functionals are parity-even: their coarse statistics are invariant under reflection
     up to pullback on the grid.
@@ -110,7 +110,7 @@ def main() -> None:
     ]
 
     rows: list[str] = []
-    rows.append(r"$\chi$ (chirality index) & $" + str(chi) + r"$ & $" + str(chi_ref) + r"$ \\")
+    rows.append(r"$\chi_H$ (chirality index) & $" + str(chi) + r"$ & $" + str(chi_ref) + r"$ \\")
 
     for label, q in qs:
         grid: dict[Point, float] = {}

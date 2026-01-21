@@ -13,6 +13,50 @@ Within this paper, ``physics'' means the executed protocol outputs of a run.
 The only primitive \emph{input} to that execution is the tick stream, and the only primitive \emph{rule} for closing otherwise underdetermined interface components is CAP.
 Accordingly, every nontrivial interface component below is recorded in one of two forms: a theorem-level finite construction, or a CAP-closure over an explicitly declared bounded candidate family with deterministic tie-break rules.
 
+\paragraph{Unified selection form (finite mathematics).}
+\AuditTag Every CAP-closure step in this appendix can be read as an instance of deterministic selection on a finite family:
+a selection problem is a triple $(\mathcal{F},J,\prec)$ consisting of an explicit finite candidate family, an explicit objective functional, and a deterministic tie-break order.
+The resulting output is the selector $\mathsf{Sel}(\mathcal{F},J,\prec)$ (Appendix~\ref{app:branching_selection_rigidity}).
+When a quantitative gap is recorded in an audit table, it is interpreted via the gap-stability template (Lemma~\ref{lem:gap_stability_fixed_family}) and the RB-D certificate form (Appendix~\ref{app:rigidity_bridge_checklist}).
+
+\paragraph{Protocol-state convention.}
+\InterfaceTag When a reported interface quantity depends on resolution and on readout weighting, we treat these choices as part of the protocol state and close them by CAP.
+Concretely, the protocol state at a target scale is represented by a triple $(m,n,K)$:
+$m$ is the window length, $n$ is the addressing order on the chosen display basis when spatial diagnostics are invoked, and $K$ is a declared readout kernel (equivalently: a declared weighting rule / probability assignment on the finite objects at that resolution).
+\AuditTag The paper never treats $K$ as an implicit background measure: kernel choice is closed within an explicit finite family, by an explicit objective and deterministic tie-break, and its influence is audited by bounded counterfactual sweeps when relevant.
+
+\subsection{Joint CAP closure of the protocol state: a single key \texorpdfstring{$J_\mu$}{J_mu} (theory-first)}
+\label{subsec:tick_cap_joint_key_contract}
+
+\paragraph{[CAP] One-shot closure contract for \texorpdfstring{$(m,n,K)$}{(m,n,K)}.}
+\AuditTag In the most explicit ``theory-first'' stance, we do not select $(m,n)$ by one rule and $K$ by a separate ad hoc rule.
+Instead, for each target scale $\mu$ at which a quantitative interface readout is reported, we declare a finite candidate family
+\[
+\mathcal{F}_\mu \subset \mathcal{M}\times \mathcal{N}\times \mathcal{K}
+\]
+and close the protocol state in one shot by minimizing a single joint key
+\[
+(m^\ast(\mu),n^\ast(\mu),K^\ast(\mu)):=\arg\min_{(m,n,K)\in\mathcal{F}_\mu} J_\mu(m,n,K),
+\]
+with a deterministic tie-break.
+
+\paragraph{[CAP] Theory-first objective and tie-break.}
+We take the joint key in the additive audit form
+\[
+J_\mu(m,n,K):=\mathrm{MDL}_\mu(m,n,K)\;+\;\lambda\,\mathrm{Sens}_\mu(m,n,K),
+\]
+where:
+(i) $\mathrm{MDL}_\mu$ is a prefix-code/description-length proxy for the protocol-state hypothesis (resolution/addressing/kernel complexity and declared family sizes), and
+(ii) $\mathrm{Sens}_\mu$ is a bounded sensitivity/robustness score computed from explicit counterfactual sweeps (e.g.\ kernel-family envelopes, bounded rule perturbations) within the same finite audit budget.
+The constant $\lambda$ is treated as a fixed convention in the declared protocol contract (Section~\ref{sec:paper_contract}) rather than as a tunable continuous hyperparameter.
+The tie-break is deterministic and complexity-first:
+smaller $J_\mu$ $\to$ smaller kernel complexity $\to$ smaller $n$ $\to$ smaller $m$,
+and only then (if needed) secondary mismatch metrics are used as audit annotations rather than as premises.
+
+\paragraph{[CAP+MDL] No hidden scans.}
+Any time $K$ is allowed to vary in a finite kernel family or a bounded counterfactual family is scanned to compute $\mathrm{Sens}_\mu$, the corresponding search-space enlargement is recorded explicitly as part of $\mathrm{MDL}_\mu$.
+This is the protocol-level analogue of the registry-level MDL closure recorded in Appendix~\ref{app:global_model_selection_mdl}.
+
 \subsection{Reading guide and dependency convention}
 \label{subsec:tick_cap_derivation_reading_guide}
 
@@ -82,6 +126,65 @@ CAP selects the bijective coupling (Remark~\ref{rem:balanced_coupling_convention
 Within the balanced chain $m=2n$, CAP selects the smallest $n$ for which the deterministic finite connection yields nontrivial plaquette holonomies (3/4 cycles) and a nonzero phase-lift signal.
 The balanced-chain sweep in Table~\ref{tab:holonomy_balanced_chain_sweep} shows that $n=1,2$ yield only trivial (identity) holonomy, while $n=3$ is the first scale with nontrivial 3/4-cycle content.
 Therefore the anchor on the chosen screen is $(n,m)=(3,6)$.
+
+\subsection{CAP selection of readout kernels (kernel families)}
+\label{subsec:tick_cap_kernels}
+
+\paragraph{[CAP] Why kernels must be closed.}
+\AuditTag Many interface outputs in this paper are not raw counts but weighted readouts (means, variances, effective weights, and bounded-complexity normalizations).
+Such quantities depend on how finite microstates are sampled and how stable types are weighted.
+To avoid hidden knobs, any such weighting rule is treated as an explicit readout kernel $K$ (or, equivalently, an induced probability distribution on the finite objects at the chosen resolution) and is closed by CAP within an explicit finite kernel family.
+
+\paragraph{[CAP] Candidate family (template).}
+At a fixed resolution $m$, we declare a bounded kernel family $\mathcal{K}_m$.
+The minimal family used for audit purposes consists of a small finite set of fully discrete candidates, e.g.\
+\begin{itemize}
+\item a type-uniform kernel on the stable sector (uniform weights on $X_m$);
+\item a microstate-pushforward kernel induced by uniform sampling on $\Omega_m$ pushed through $\mathrm{Fold}_m$;
+\item a small bounded ``tempered'' family of degeneracy-weighted kernels $\mu^{(t)}(w)\propto g_m(w)^t$ with $t$ in a fixed finite rational grid.
+\end{itemize}
+
+\paragraph{[CAP] Objective and tie-break (template).}
+For each application, the objective is the declared mismatch/cost/stability Motive on the corresponding kernel-dependent readout (with external PDG/CODATA values used only for mismatch reporting), with a deterministic tie-break that prefers lower kernel complexity (e.g.\ smaller denominators in $t$ and smaller family descriptors) before preferring smaller $(n,m)$ when both are still free.
+
+\subsection{Unified CAP selection of the protocol state \texorpdfstring{$(m,n,K)$}{(m,n,K)}}
+\label{subsec:tick_cap_joint_protocol_state}
+
+\paragraph{[CAP] Joint state as the default closure object.}
+\InterfaceTag Many interface outputs in this paper depend simultaneously on (i) the resolution/display choices $(m,n)$ and (ii) a readout kernel choice $K$ used to form weighted scalar readouts.
+Accordingly, the intended CAP object at a target scale is the \emph{protocol state} triple $(m,n,K)$.
+
+\paragraph{[CAP] Candidate family (template).}
+\AuditTag Fix an explicit finite family $\mathcal{F}_\mu\subset \mathcal{M}\times\mathcal{N}\times\mathcal{K}$.
+Here $(m,n)\in\mathcal{M}\times\mathcal{N}$ are selected from a bounded resolution family (balanced chain, staircase bands, capacity-first constrained sets), and $K\in\mathcal{K}$ is selected from an explicit finite kernel family (Section~\ref{subsec:tick_cap_kernels} and Appendix~\ref{app:kernel_family_cap_closure}).
+
+\paragraph{[CAP] Joint key (lexicographic form).}
+\AuditTag Given a Wish at scale $\mu$, define an auditable joint Motive on $\mathcal{F}_\mu$ and close the protocol state by lexicographic minimization of a key of the form
+\[
+J_\mu(m,n,K)
+:=
+\Bigl(
+\mathrm{Mismatch}_\mu(m,n,K),\ 
+\mathrm{Cost}_\mu(m,n,K),\ 
+\mathrm{Complexity}(K),\ 
+n,\ 
+m
+\Bigr),
+\]
+where $\mathrm{Mismatch}_\mu$ is the application-specific audit-norm mismatch functional, $\mathrm{Cost}_\mu$ is a bounded implementation-cost proxy (when used), and $\mathrm{Complexity}(K)$ is a deterministic kernel-description complexity key (e.g.\ family tag and rational-denominator size in the tempered family).
+The final coordinates $(n,m)$ serve as deterministic tie-breaks.
+
+\paragraph{How the existing selection rules arise as special cases.}
+\AuditTag The paper already records several CAP selections for $(m,n)$ and for specific interface closures.
+These are recovered from the joint key above by restricting the candidate family and/or by hard feasibility gates:
+\begin{itemize}
+\item \textbf{Holonomy anchor on the balanced chain.}
+Restrict $\mathcal{F}_\mu$ to the balanced family $m=2n$ on the chosen $2$D screen and impose the feasibility gate ``nontrivial plaquette holonomy'' (Table~\ref{tab:holonomy_balanced_chain_sweep}); minimizing $n$ within the feasible set yields the anchor $(n,m)=(3,6)$ (Section~\ref{subsec:tick_cap_anchor}).
+\item \textbf{Resolution-first staircase.}
+If one treats $m_{\mathrm{eff}}(\mu)$ as a declared band constraint (Corollary~\ref{cor:resolution_selection}), then $(m,n)$ is fixed within that band up to deterministic tie-break, and CAP closes only the remaining interface components (including kernels) within the corresponding bounded families.
+\item \textbf{Capacity-first uplift.}
+If one sets $\mathrm{Mismatch}_\mu\equiv 0$ and uses only the feasibility gate $I_{\mathrm{prot}}(m,n)\ge I_{\mathrm{tar}}$ with the complexity key $(n,m)$, the joint selection reduces to the capacity-first uplift rule of Appendix~\ref{app:resolution_uplift_fusion_horizon_unification}.
+\end{itemize}
 
 \subsection{The folding core and stable types at the anchor}
 \label{subsec:tick_cap_folding_core}

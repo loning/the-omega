@@ -1,0 +1,121 @@
+\section{Holographic equivalence closure contract (scope, PT carriers, and failure points)}
+\label{app:holo_scope_contract}
+
+\paragraph{Purpose.}
+\AuditTag This appendix records a reader-facing contract for using the phrase \emph{holographic equivalence}
+inside the tick\,+\,CAP discipline of this manuscript.
+It is a \emph{scope and gatekeeping} module: it introduces no new theorem-level premises into the folding core.
+
+\paragraph{What is and is not meant by ``holographic equivalence'' here.}
+\AuditTag The manuscript does \emph{not} claim an unconditional AdS/CFT duality, nor does it assume any specific
+asymptotic boundary (AdS) or large-$N$ limit.
+Instead, ``holographic'' is used in the operational sense already implicit in the paper:
+finite readout on a declared screen/window family generates a finite (boundary) observable algebra,
+and certain bulk-facing reportables are constrained or reconstructible from that algebra within a declared
+window, hypothesis class, and error budget.
+
+\subsection{Holo0: declared objects and the minimal dictionary}
+\label{subsec:holo0_declared_objects}
+
+\paragraph{Boundary object.}
+\InterfaceTag The boundary object is a region-indexed algebra family
+\[
+R\ \longmapsto\ \mathcal{A}_{\partial}(R),
+\]
+constructed from the protocol's addressing/screen layer.
+Concretely, we take $\mathcal{A}_{\partial}(R)$ to be the protocol-induced local algebra
+restricted to screen regions (Appendix~\ref{app:holo_boundary_algebra_from_screens}).
+
+\paragraph{Bulk reportables.}
+\InterfaceTag The bulk side is \emph{not} an ontic continuum.
+It is a declared registry of reportable quantities $\mathfrak{Obs}_{\mathrm{bulk}}$
+that the manuscript already closes (or treats as interface representatives),
+such as $\chi$-based weak-field proxies, determinant/pressure certificates, and selected EFT-representative data
+(Appendix~\ref{app:holo_bulk_observables_registry}).
+
+\paragraph{Holographic dictionary.}
+\AuditTag A holographic dictionary in this paper is a triple
+\[
+\mathfrak{D}_{\mathrm{holo}}:=
+\bigl(\mathcal{A}_{\partial}(\cdot),\ \mathfrak{Obs}_{\mathrm{bulk}},\ \mathcal{R}\bigr),
+\]
+where $\mathcal{R}$ is a \emph{reconstruction claim} that maps (some) bulk reportables to boundary observables,
+either exactly (PT) or up to an explicit error budget (CP).
+
+\subsection{Holo0: the only allowed theorem-like claim format}
+\label{subsec:holo0_allowed_claim_format}
+
+\paragraph{Windowed comparability (the master format).}
+\AuditTag Any statement of the form ``bulk quantity $X$ is encoded on the boundary'' is only permitted
+in the following windowed form.
+Fix a declared protocol state $(m,n,K)$ (Appendix~\ref{subsec:tick_cap_joint_protocol_state}),
+fix a finite observable registry $\mathfrak{Obs}_{\le N}$ (Appendix~\ref{app:observable_algebra_state_base}),
+and fix a reconstruction map $\mathcal{R}$ (Heisenberg picture) acting on the boundary algebra.
+Then an admissible claim is:
+\[
+\forall\,\mathcal{O}\in\mathfrak{Obs}_{\le N},\qquad
+\Bigl|\langle \mathcal{O}\rangle_{\mathrm{bulk}}-\langle \mathcal{R}(\mathcal{O})\rangle_{\partial}\Bigr|
+\le \epsilon_N(m,n,K),
+\]
+where $\epsilon_N$ must be an \emph{auditable} budget term (finite-family envelope and/or error propagation bound),
+not a verbal ``higher order'' remainder (cf.\ Appendix~\ref{app:matching_envelope_theoremization} and
+Appendix~\ref{app:protocol_to_continuum_error_control}).
+
+\subsection{Holo0: CP\texorpdfstring{$\to$}{->}PT gate (which parts can be proved)}
+\label{subsec:holo0_cp_to_pt_gate}
+
+\paragraph{PT carriers already present in this manuscript.}
+\AuditTag The manuscript already provides two PT-level carriers that we will reuse:
+\begin{itemize}
+\item \textbf{Local-net construction (isotony).} Appendix~\ref{app:construct_local_net_from_protocol}
+constructs $\mathcal{O}\mapsto\mathcal{A}_{\mathrm{prot}}(\mathcal{O})$ and proves isotony
+(Proposition~\ref{prop:prot_net_isotony}).
+\item \textbf{Tensor-product locality subclass (microcausality by construction).}
+Appendix~\ref{app:protocol_subclass_tensor_net} fixes an explicit subclass in which
+microcausality becomes PT-level (Corollary~\ref{cor:microcausality_tensor_subclass}).
+\end{itemize}
+All theorem-level holographic statements in Appendices~\ref{app:holo_boundary_algebra_from_screens}--\ref{app:holo_reconstruction_surrogate}
+are confined to these carriers.
+
+\paragraph{Upgrade boundary registry (toy evidence is not a premise).}
+\AuditTag To prevent narrative artifacts from being silently promoted to theorem-level premises, the manuscript uses the following
+upgrade-boundary registry for holography-related evidence classes:
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.22\textwidth} p{0.22\textwidth} p{0.22\textwidth} p{0.12\textwidth} p{0.16\textwidth}}
+\toprule
+evidence class & allowed use & forbidden upgrade & gates & pointer \\
+\midrule
+\input{sections/generated/holo_upgrade_boundary_rows.tex}%
+\end{tabular}
+\caption{Upgrade boundary registry for holography-related evidence classes. Rows are generated by \texttt{scripts/exp\_holo\_upgrade\_boundary\_table.py}.}
+\label{tab:holo_upgrade_boundary_registry}
+\end{table}
+\input{sections/generated/holo_upgrade_boundary_summary.tex}%
+
+\subsection{Holo0: minimal failure points (mandatory downgrade rules)}
+\label{subsec:holo0_failure_points}
+
+\paragraph{Failure point H0a (hidden knobs / non-invariant verdicts).}
+\AuditTag If a purported holographic verdict depends on an undeclared choice
+(e.g.\ a representation, coordinate convention, unreported tie-break, or an implicit kernel family member),
+then it violates the invariance/legality threshold (Proposition~\ref{prop:rigidity_legality_invariant_verdicts})
+and must be downgraded to a representation-dependent diagnostic.
+
+\paragraph{Failure point H0b (comparability class not closed).}
+\AuditTag If the boundary quantity and the bulk reportable are not defined within a shared comparability class
+and declared units/schemes, then the statement is not well-typed.
+In that case, the manuscript must revert to a matching-layer envelope statement
+(Appendix~\ref{app:scheme_invariance_audit_contract} and Appendix~\ref{app:matching_envelope_theoremization})
+or record the item as \textbf{[Open]} in Appendix~\ref{app:inference_ledger}.
+
+\paragraph{Failure point H0c (identifiability boundary).}
+\AuditTag If boundary readouts are restricted to class-function summaries (e.g.\ cycle-type histograms),
+then reconstruction is limited by the identifiability boundary
+(Proposition~\ref{prop:cycle_type_identifiability_boundary}).
+Any statement that requires distinguishing two realizations with identical class-function summaries
+must be downgraded or must enlarge the observable family.
+

@@ -1,0 +1,199 @@
+\section{Thermodynamic formalism and pressure for the golden-mean shift (notes)}
+\label{app:thermodynamic_formalism_pressure}
+
+\AuditTag This appendix records a standard thermodynamic-formalism viewpoint on the $\e$-channel: transfer operators, pressure, and the analytic encoding of stability by zeta functions.
+It is included as an optional mathematical backbone for the Abel/pole-barrier language and for the free-energy interpretation of CAP.
+No statement here is used as a premise in the folding proofs; all theorem-level folding statements remain finite and combinatorial.
+
+\subsection{Ruelle transfer operator for a shift of finite type}
+\label{subsec:ruelle_transfer_operator_sft}
+
+Let $(X,\sigma)$ be the golden-mean shift (Lemma~\ref{lem:golden_zeta_matrix}): $X\subset\{0,1\}^{\ZZ}$ consists of bi-infinite $0$--$1$ sequences with forbidden word $11$.
+For a potential $\phi:X\to\RR$ and a test function $g:X\to\RR$, the (Ruelle) transfer operator is
+\begin{equation}
+\label{eq:ruelle_transfer_operator}
+(\mathcal{L}_\phi g)(x):=\sum_{\sigma y=x} \e^{\phi(y)}\,g(y),
+\end{equation}
+where the sum ranges over the finitely many one-step preimages of $x$ under $\sigma$ \cite{Ruelle1978,ParryPollicott1990,LindMarcus1995}.
+
+\begin{theorem}[Pressure as log spectral radius (standard)]
+\label{thm:pressure_spectral_radius_standard}
+\MathTag For a mixing shift of finite type $(X,\sigma)$ and a H\"older potential $\phi$, the topological pressure $P(\phi)$ satisfies
+\[
+P(\phi)=\log \lambda_\phi,
+\]
+where $\lambda_\phi$ is the spectral radius of $\mathcal{L}_\phi$ acting on a standard Banach space of H\"older functions.
+Moreover, the variational principle holds:
+\[
+P(\phi)=\sup_{\mu\in\mathcal{M}_\sigma(X)}\Bigl(h_\mu(\sigma)+\int \phi\,\dd\mu\Bigr),
+\]
+where $\mathcal{M}_\sigma(X)$ is the set of $\sigma$-invariant Borel probability measures and $h_\mu(\sigma)$ is the measure-theoretic entropy \cite{Ruelle1978,ParryPollicott1990,LindMarcus1995}.
+\end{theorem}
+
+\begin{lemma}[Golden-mean normalization: $P(0)=\log\varphi$]
+\label{lem:pressure_zero_potential_gm}
+\MathTag For the golden-mean shift $(X,\sigma)$, the pressure of the zero potential satisfies $P(0)=\log\varphi$.
+\end{lemma}
+\begin{proof}
+For a one-step shift of finite type, the transfer operator for the zero potential reduces to the adjacency action of the transition matrix $A$ (Lemma~\ref{lem:golden_zeta_matrix}).
+The spectral radius of $A=\bigl(\begin{smallmatrix}1&1\\1&0\end{smallmatrix}\bigr)$ is $\varphi$, hence by Theorem~\ref{thm:pressure_spectral_radius_standard} one has $P(0)=\log\varphi$.
+\end{proof}
+
+\begin{lemma}[Full shift and the entropy gap $\log(2/\varphi)$]\label{lem:full_shift_entropy_gap}
+\MathTag Let $\Sigma_2:=\{0,1\}^{\ZZ}$ be the full two-shift with the left shift $\sigma$.
+Then $P_{\Sigma_2}(0)=h_{\mathrm{top}}(\Sigma_2)=\log 2$.
+For the golden-mean shift $\Sigma_{\mathrm{GM}}$ one has $P_{\Sigma_{\mathrm{GM}}}(0)=h_{\mathrm{top}}(\Sigma_{\mathrm{GM}})=\log\varphi$ (Lemma~\ref{lem:pressure_zero_potential_gm}).
+Therefore the entropy (capacity) gap between the full dyadic language and the golden-mean admissible language is
+\[
+\log 2-\log\varphi=\log(2/\varphi),
+\]
+which is exactly the exponential growth rate of the mean degeneracy $d_m=2^m/F_{m+2}$ (Lemma~\ref{lem:entropy_gap_hidden_exponent_cosmo}).
+\end{lemma}
+\begin{proof}
+For the full shift on two symbols, the number of admissible length-$n$ words is $2^n$, hence $h_{\mathrm{top}}=\lim_{n\to\infty}(1/n)\log 2^n=\log 2$; see, e.g., \cite{LindMarcus1995}.
+The remaining statements are the cited lemmas and the identity $\log 2-\log\varphi=\log(2/\varphi)$.
+\end{proof}
+
+\begin{remark}[Unified bridge statement]\label{rem:full_shift_entropy_gap_bridge}
+\AuditTag The same constant $\log(2/\varphi)$ also appears as a conditional-entropy rate for finite observability and as a degeneracy growth rate for folding fibers.
+For a single reusable statement that unifies these readings, see Proposition~\ref{prop:rigidity_log2phi_triple_reading}.
+\end{remark}
+
+\subsection{Zeta functions, pole barriers, and primitive Euler products}
+\label{subsec:zeta_pressure_pole_barrier}
+
+For a dynamical system $(X,f)$, the Artin--Mazur zeta function is defined by periodic-point counts (Section~\ref{subsec:e_channel}):
+\[
+\zeta_f(z):=\exp\!\left(\sum_{n\ge 1}\frac{\#\mathrm{Fix}(f^n)}{n}\,z^n\right).
+\]
+For shifts of finite type, $\zeta(z)$ is rational and is controlled by the transition matrix (Lemma~\ref{lem:golden_zeta_matrix}).
+In particular, the dominant singularity occurs at $|z|=\rho(A)^{-1}$, so normalizing $z=r/\rho(A)$ places the leading pole barrier at $r=1$.
+This is the minimal algebraic content behind the ``Abel path'' and ``pole barrier'' language used in the $\e$-channel.
+
+\subsection{A weighted $2\times 2$ transfer-matrix toy (audit)}
+\label{subsec:weighted_transfer_matrix_toy}
+
+\AuditTag As a fully computable illustration of how a simple weight family deforms the pole barrier while preserving the golden-mean combinatorial skeleton,
+consider the weighted matrix
+\[
+B_\beta=\begin{pmatrix}1&\e^{-\beta}\\ 1&0\end{pmatrix}\qquad(\beta\ge 0).
+\]
+Its spectral radius is
+\[
+\lambda(\beta)=\frac{1+\sqrt{1+4\e^{-\beta}}}{2},
+\qquad
+P(\beta):=\log\lambda(\beta),
+\]
+and the dominant singularity of the corresponding rational zeta toy lies at $|z|=\lambda(\beta)^{-1}$.
+Table~\ref{tab:weighted_pressure_sweep} records a small deterministic sweep.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{rrrrrr}
+\toprule
+$\beta$ & $\e^{-\beta}$ & $\lambda(\beta)$ & $P(\beta)$ & $|z|_\star=\lambda(\beta)^{-1}$ & $\log 2 - P(\beta)$ \\
+\midrule
+\input{sections/generated/weighted_pressure_sweep_rows.tex}%
+\end{tabular}
+\caption{Weighted pressure toy for the golden-mean shift via a $2\times 2$ weighted transfer matrix. The last column records the capacity gap to the full two-shift at the same logarithmic base. Rows are generated by \texttt{scripts/exp\_weighted\_pressure\_sweep.py}.}
+\label{tab:weighted_pressure_sweep}
+\end{table}
+
+\subsection{Pole-barrier mode threshold toy (audit)}
+\label{subsec:pole_barrier_mode_toy}
+
+\AuditTag For an explanatory alignment with ``interior pole'' language used in companion trace-formula discussions, Table~\ref{tab:pole_barrier_mode_toy} records a minimal normalized threshold family
+\(
+r_\star=\e^{-\delta}\in(0,1]
+\)
+parametrized by $\delta\ge 0$.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{rr}
+\toprule
+$\delta$ & $r_\star=\e^{-\delta}$ \\
+\midrule
+\input{sections/generated/pole_barrier_mode_toy_rows.tex}%
+\end{tabular}
+\caption{Pole-barrier mode threshold toy. Rows are generated by \texttt{scripts/exp\_pole\_barrier\_mode\_toy.py}.}
+\label{tab:pole_barrier_mode_toy}
+\end{table}
+
+\begin{lemma}[Primitive periodic-orbit Euler product (standard)]
+\label{lem:artin_mazur_euler_product}
+\MathTag Let $(X,f)$ be a dynamical system such that the Artin--Mazur zeta function is well-defined as a formal power series.
+Let $\mathcal{P}$ denote the set of primitive periodic orbits of $f$ (primitive cycles modulo cyclic rotation), and write $|p|$ for the prime period of $p\in\mathcal{P}$.
+Then one has the formal Euler product
+\[
+\zeta_f(z)=\prod_{p\in\mathcal{P}}\left(1-z^{|p|}\right)^{-1}.
+\]
+\end{lemma}
+\begin{proof}
+For each $n\ge 1$, let $a_n$ denote the number of primitive periodic orbits of prime period $n$.
+Every periodic point of period $n$ belongs to a unique primitive orbit of prime period $d\mid n$, and each such primitive orbit contributes exactly $d$ points to $\mathrm{Fix}(f^n)$.
+Thus $\#\mathrm{Fix}(f^n)=\sum_{d\mid n} d\,a_d$.
+Substituting into the defining exponential series and using the identity
+\[
+-\log(1-u)=\sum_{k\ge 1}\frac{u^k}{k}
+\]
+gives
+\[
+\log \zeta_f(z)=\sum_{n\ge 1}\frac{1}{n}\left(\sum_{d\mid n} d\,a_d\right)z^n
+=\sum_{d\ge 1}a_d\sum_{k\ge 1}\frac{z^{kd}}{k}
+=-\sum_{d\ge 1}a_d\log(1-z^d),
+\]
+which exponentiates to the stated product.
+\end{proof}
+
+\subsection{CAP and finite-family variational closure}
+\label{subsec:cap_pressure_variational}
+
+\InterfaceTag The thermodynamic-formalism variational principle in Theorem~\ref{thm:pressure_spectral_radius_standard} is a supremum over an infinite set of invariant measures.
+In contrast, the CAP discipline used in this paper is explicitly \emph{finite-family}: one declares a finite candidate set and a deterministic tie-break, then selects a unique minimizer (Appendix~\ref{app:cap_audit_template}).
+Appendix~\ref{app:thermodynamics_from_equivalence} records the corresponding free-energy closure (Proposition~\ref{prop:cap_free_energy_closure}), which is the audit-facing finite analogue of a variational principle.
+
+\subsection{Pressure as a finite CAP objective (bridge statement)}
+\label{subsec:pressure_cap_bridge}
+
+\paragraph{Why a bridge is needed.}
+\AuditTag Pressure $P(\phi)$ is defined as a variational supremum over an infinite object set (invariant measures) and is equivalently the log spectral radius of an infinite-dimensional transfer operator.
+CAP, by design, never optimizes over infinite families.
+The bridge used in this paper is therefore \emph{finite-family}: we only compare finitely many declared pressure candidates and select one deterministically.
+
+\begin{definition}[Finite pressure candidate family]\label{def:z128_finite_pressure_family}
+\AuditTag Fix a mixing shift of finite type $(X,\sigma)$.
+Let $\Phi=\{\phi_\theta:\theta\in\Theta\}$ be a finite family of H\"older potentials on $X$.
+For each $\theta$, let $P(\phi_\theta)=\log\lambda_{\phi_\theta}$ be the pressure (Theorem~\ref{thm:pressure_spectral_radius_standard}).
+\end{definition}
+
+\begin{proposition}[Pressure-to-CAP bridge (finite-family free-energy form)]
+\label{prop:z128_pressure_cap_bridge}
+\AuditTag Let $\Phi=\{\phi_\theta\}_{\theta\in\Theta}$ be a finite pressure candidate family (Definition~\ref{def:z128_finite_pressure_family}).
+Define the finite-family objective
+\[
+J_{\mathrm{press}}(\theta):=-P(\phi_\theta)+\kappa_c\,\mathrm{Comp}(\theta),
+\]
+equipped with a deterministic tie-break key as in Appendix~\ref{app:cap_audit_template}.
+Then CAP selects a unique minimizer $\theta_\ast\in\Theta$ and therefore a unique pressure representative $P(\phi_{\theta_\ast})$ within the declared finite family.
+\end{proposition}
+
+\paragraph{Interface reading (free energy).}
+\InterfaceTag The sign convention in Proposition~\ref{prop:z128_pressure_cap_bridge} reflects the usual relation between pressure and free energy: $P$ is a log growth rate (partition function rate), while $-P$ is the corresponding dimensionless free-energy rate.
+When one additionally fixes an inverse-temperature scale $\beta$ (Appendix~\ref{app:thermodynamics_from_equivalence}, $\beta_{\mathrm{CAP}}$ discussion), one may compare families of the form $\phi_\theta=-\beta E_\theta$ as the standard Gibbs deformation; the present paper keeps this as a matching/interface dictionary choice rather than a theorem-level identification.
+
+\begin{remark}[Scope boundary: no automatic continuum/limit identification]
+\label{rem:z128_pressure_cap_limit_boundary}
+\AuditTag Theorem~\ref{thm:pressure_spectral_radius_standard} is an infinite-object theorem about a fixed $(X,\sigma)$ and a fixed potential $\phi$.
+Proposition~\ref{prop:z128_pressure_cap_bridge} is a finite-family selection statement.
+Upgrading the bridge to a limiting statement (e.g.\ ``as the candidate family grows, CAP recovers the full variational supremum'') requires explicit additional inputs: a declared exhaustion of candidate families, regularity/compactness, and an auditable error control on $P(\phi_\theta)$ across the exhaustion.
+This paper does not assume such inputs unless they are explicitly stated by the module that uses them.
+\end{remark}
+
+

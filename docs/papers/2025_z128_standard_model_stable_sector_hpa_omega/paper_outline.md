@@ -25,7 +25,7 @@ $$
 - **不得把接口/匹配层语句“升级”为数学层前提**：任何物理语义必须明确标注并保持单向依赖（可注释 closed 链，但不可反向支撑它）。
 - **复用优先（避免重复造轮子）**：凡 `docs/papers/` 中已有的 Definition/Theorem/Proposition/模板化 lemma，一律先对齐其写法与符号，再在 z128 中落地；若 z128 需要特殊化，仅允许在不改变语义的前提下做命名/记号层面的改写，并在符号表中提供对照。
 - **审计不变**：`sections/appendices/23_audit_overview.tex` 的契约与 `sections/appendices/11_inference_ledger.tex` 的状态台账必须继续成立；任何新叙事段落应能回指到台账条目。【论文位置：`sections/appendices/23_audit_overview.tex`（\label{app:audit_overview}，\label{fig:inference_map}），`sections/appendices/11_inference_ledger.tex`（\label{app:inference_ledger}，\label{subsec:ledger_open_problems}）】
-- **生成物不手改**：`sections/generated/*.tex` 为脚本输出；脚本为真源；重构只允许改“引用/组织”，不允许改生成文件内容。【论文位置：`sections/generated/*.tex`（已接入编译链路；表格总入口：`sections/appendices/02_generated_tables.tex`（\label{app:generated_tables}）；复现入口：`sections/appendices/03_reproducibility.tex`（\label{app:reproducibility}））】
+- **生成物不手改**：`sections/generated/` 目录下的 `.tex` 为脚本输出；脚本为真源；重构只允许改“引用/组织”，不允许改生成文件内容。【论文位置：`sections/generated/`（已接入编译链路；表格总入口：`sections/appendices/02_generated_tables.tex`（\label{app:generated_tables}）；复现入口：`sections/appendices/03_reproducibility.tex`（\label{app:reproducibility}））】
 - **标签不破坏**：尽量不改 `\label{...}`；若必须移动段落，优先保持 label 名称并检查交叉引用。
 - **依赖关系不反转**：主文重排可以改变“阅读顺序”，但不得改变 `fig:inference_map` 的依赖箭头语义（solid/dashed/dotted 的含义不变）。【论文位置：`sections/appendices/23_audit_overview.tex`（\label{fig:inference_map}）】
 
@@ -121,7 +121,7 @@ flowchart TD
 | 主链跳跃（实线） | 目标闭合输出 | 证书形态（RB） | 最小输入核（第一性 + 标准事实） | 必读参考（先对齐再写） |
 |---|---|---|---|---|
 | Tick $\to$ CAP | 可审计的确定性闭合算子 | RB-A | tick + 有界复杂度 + tie-break | `2025_protocol_stable_period_data_computational_teleology/sections/05_selection_principle.tex`【外部参考（源文）】；【论文位置：`sections/I_00_introduction.tex`（\label{ax:readout_sequentiality}，\label{ax:cap}），`sections/appendices/19_tick_cap_derivation.tex`（\label{app:tick_cap_derivation}），`sections/appendices/13_cap_audit_template.tex`（\label{app:cap_audit_template}）】 |
-| Tick $\to$ Abel 核/指数半群 | “记忆无关权重 $\Rightarrow$ 指数核”与模态语言的统一 | RB-C | tick 的单向半群 + Abel-first 纪律 | `2025_holographic_hilbert_universe_hpa_omega/sections/appendices/03_abel_finite_part_notes.tex`；`2025_riemann_ground_state_hpa_omega/sections/05_trace_formula_rigidity.tex`【外部参考（源文）】；【论文位置：`sections/appendices/36_arrow_of_time_semigroup_notes.tex`（\label{app:arrow_of_time_semigroup_notes}），`sections/appendices/40_abel_finite_part_resolvent_notes.tex`（\label{app:abel_finite_part_notes}），`sections/appendices/41_trace_formula_pole_barrier_template.tex`（\label{app:trace_pole_barrier_template}）】 |
+| Tick $\to$ Abel 核/指数半群 | “记忆无关权重 $\Rightarrow$ 指数核”与模态语言的统一 | RB-C | tick 的单向半群 + Abel-first 纪律 | `2025_holographic_hilbert_universe_hpa_omega/sections/appendices/03_abel_finite_part_notes.tex`；`2025_riemann_ground_state_hpa_omega/sections/05_trace_formula_rigidity.tex`【外部参考（源文）】；【论文位置：`sections/F_00_arrow_of_time_semigroup.tex`（\label{app:arrow_of_time_semigroup_notes}），`sections/appendices/40_abel_finite_part_resolvent_notes.tex`（\label{app:abel_finite_part_notes}），`sections/appendices/41_trace_formula_pole_barrier_template.tex`（\label{app:trace_pole_barrier_template}）】 |
 | CAP $\to$ golden branch | bounded-type/最难逼近扫描的选择刚性 | RB-A/RB-D | discrepancy 证书 + 有限复杂度代理 | `2025_motive_at_infinity_holographic_scanning_principle/sections/07_selection_principle.tex`【外部参考（源文）】；【论文位置：`sections/C_10_hpa_readout_dynamics.tex`（\label{sec:hpa_readout}，\label{prop:golden_least_discrepancy}，\label{subsubsec:discrepancy_certificates}），`sections/appendices/28_discrepancy_ostrowski_bounds.tex`（\label{app:discrepancy_ostrowski}）】 |
 | golden branch $\to$ $\varphi$-grammar | admissible set $X_m$ 与 Fold$_m$ 的总论化 | RB-C | Fibonacci/Zeckendorf 标准事实 | `2025_resolution_folding_phi_pi_e_hpa_omega/sections/06_resolution_folding_map.tex`【外部参考（源文）】；【论文位置：`sections/C_11_resolution_folding_64_to_21.tex`（\label{subsec:phi_channel}，\label{lem:xm_fib}，\label{subsec:foldm_uplift}）】 |
 | $\varphi$-grammar $\to$ $\pi$-closure | cyclic closure 与 $18\oplus 3$ 的刚性分解 | RB-C | wrap-around 约束 + adjacency/trace 标准事实 | `2025_resolution_folding_phi_pi_e_hpa_omega/sections/04_pi_constraint_discrete_monodromy.tex`【外部参考（源文）】；【论文位置：`sections/C_11_resolution_folding_64_to_21.tex`（\label{subsec:pi_channel}，\label{prop:cyc_bdry_size}，\label{prop:cyc_bdry_6}）】 |
@@ -129,7 +129,7 @@ flowchart TD
 | $\pi$-closure $\to$ anchor | 最小非平凡闭合/最小可审计锚点 | RB-A/RB-C | 有限候选族 + 最小性/唯一性证书 | `2025_physical_constants_geometry_hpa_omega/sections/05_alpha_anchor.tex`（“anchored worked example + gap”写法模板）【外部参考（源文）】；【论文位置：`sections/C_11_resolution_folding_64_to_21.tex`（\label{sec:folding_core}，\label{rem:balanced_coupling_convention}），`sections/I_10_hilbert_addressing_chirality.tex`（\label{sec:hilbert_addressing}，\label{tab:addressing_selection}）】 |
 | anchor $\to$ gauge/holonomy | 连接/holonomy 作为补偿数据（forced-by-mismatch） | RB-C/RB-D | 局部一致性/运输补偿的最小结构 | `2025_physical_constants_geometry_hpa_omega/sections/appendices/05_holonomy.tex`【外部参考（源文）】；【论文位置：`sections/I_21_protocol_connections_holonomy.tex`（\label{sec:protocol_connections_holonomy}），`sections/appendices/15_holonomy_sweeps_extended.tex`（\label{app:holonomy_sweeps_extended}）】 |
 | gauge $\to$ SM labeling/mass | 有限候选族上的标号闭合与刚性深度/延迟字典 | RB-A/RB-D | 有限搜索 + gap-stability + 残差传播界 | `2025_physical_constants_geometry_hpa_omega/sections/06_running_couplings.tex`；`2025_physical_constants_geometry_hpa_omega/sections/07_masses_mixing.tex`【外部参考（源文）】；【论文位置：`sections/V_30_sm_field_labeling_closure.tex`（\label{sec:sm_labeling_closure}），`sections/I_25_mass_latency_coordinate.tex`（\label{sec:mass_latency_coordinate}），`sections/V_31_mass_spectrum_closure.tex`（\label{sec:mass_spectrum_closure}），`sections/appendices/17_closure_audit_details.tex`（\label{app:closure_audit_details}）】 |
-| mismatch/overhead $\to$ gravity/dynamics | 以可审计开销场导出 lapse/potential 模板 | RB-B/RB-D | compilation overhead 定义 + 误差预算 + Poisson/Dirichlet 标准事实 | `2025_holographic_hilbert_universe_hpa_omega/sections/07_computational_lapse_gravity.tex`；`2025_holographic_hilbert_universe_hpa_omega/sections/08_minimal_discrepancy_dynamics.tex`【外部参考（源文）】；【论文位置：`sections/appendices/28_overhead_to_gravity_closure.tex`（\label{app:overhead_to_gravity_closure}），`sections/appendices/29_chi_reconstruction_protocol.tex`（\label{app:chi_reconstruction_protocol}），`sections/appendices/33_protocol_to_continuum_error_control.tex`（\label{app:protocol_to_continuum_error_control}），`sections/appendices/25_cap_continuum_action_closure.tex`（\label{app:cap_continuum_action_closure}）】 |
+| mismatch/overhead $\to$ gravity/dynamics | 以可审计开销场导出 lapse/potential 模板 | RB-B/RB-D | compilation overhead 定义 + 误差预算 + Poisson/Dirichlet 标准事实 | `2025_holographic_hilbert_universe_hpa_omega/sections/07_computational_lapse_gravity.tex`；`2025_holographic_hilbert_universe_hpa_omega/sections/08_minimal_discrepancy_dynamics.tex`【外部参考（源文）】；【论文位置：`sections/F_40_overhead_to_gravity_closure.tex`（\label{app:overhead_to_gravity_closure}），`sections/F_41_chi_reconstruction_protocol.tex`（\label{app:chi_reconstruction_protocol}），`sections/appendices/33_protocol_to_continuum_error_control.tex`（\label{app:protocol_to_continuum_error_control}），`sections/F_20_cap_continuum_action_closure.tex`（\label{app:cap_continuum_action_closure}）】 |
 
 #### 1.3.3 直觉如何“数学化/物理化”：最小输入核 + 四标签写法模板（工作指令）
 
@@ -219,7 +219,7 @@ flowchart TD
 - **Abel 轨道计算 / finite part / resolvent-视角（加强 $\mathrm{e}$ 通道与解析稳定）**
   - 参考：`docs/papers/2025_holographic_hilbert_universe_hpa_omega/sections/appendices/03_abel_finite_part_notes.tex`【外部参考（源文）】
   - 参考：`docs/papers/2025_riemann_ground_state_hpa_omega/sections/appendices/03_orbit_calculus_abel_fp.tex`【外部参考（源文）】
-  - 价值：提供统一的 Abel-first/finite-part 纪律与“单位圆盘解析性/极点障碍”语言，可与 z128 的 zeta/Abel 稳定模板对齐并增强其严密性。【论文位置：`sections/appendices/40_abel_finite_part_resolvent_notes.tex`（\label{app:abel_finite_part_notes}），`sections/appendices/36_arrow_of_time_semigroup_notes.tex`（\label{app:arrow_of_time_semigroup_notes}）】
+  - 价值：提供统一的 Abel-first/finite-part 纪律与“单位圆盘解析性/极点障碍”语言，可与 z128 的 zeta/Abel 稳定模板对齐并增强其严密性。【论文位置：`sections/appendices/40_abel_finite_part_resolvent_notes.tex`（\label{app:abel_finite_part_notes}），`sections/F_00_arrow_of_time_semigroup.tex`（\label{app:arrow_of_time_semigroup_notes}）】
 - **HTF / trace-formula rigidity 框架（更硬的“极点障碍→谱约束”模板）**
   - 参考：`docs/papers/2025_riemann_ground_state_hpa_omega/sections/05_trace_formula_rigidity.tex`【外部参考（源文）】
   - 参考：`docs/papers/2025_holographic_hilbert_universe_hpa_omega/sections/09_trace_formula_rigidity.tex`【外部参考（源文）】
@@ -260,7 +260,7 @@ flowchart TD
     - `docs/papers/2025_ramanujan_holographic_scanning_principle_hpa_omega/sections/02_layers_axioms.tex`
     - `docs/papers/2025_stairway_to_infinity_holographic_renormalization_flow/sections/02_layers_axioms.tex`
     - `docs/papers/2025_ramanujan_holographic_scanning_principle_hpa_omega/sections/appendices/01_audit_dependency_chain.tex`
-- **A.1 Wish（Iface）**【论文位置：`sections/appendices/00_wish_motive_definitions.tex`（\label{def:wish_protocol_stable_data}），`sections/appendices/24_equivalence_semantics.tex`（\label{app:equivalence_semantics}）】
+- **A.1 Wish（Iface）**【论文位置：`sections/appendices/00_wish_motive_definitions.tex`（\label{def:wish_protocol_stable_data}），`sections/F_10_equivalence_semantics.tex`（\label{app:equivalence_semantics}）】
   - 定义：Wish 作为“协议稳定的周期数据对象”（结构而非单一数值）。
   - 强制包含：协议等价不变性 + 有限资源稳定性（证书/误差预算存在）。
   - **开工前必读（定义与边界）**：【外部参考（源文；用于定义边界对齐）】
@@ -319,7 +319,7 @@ flowchart TD
   - **开工前必读（$\pi$-约束与 cyclic/boundary 的统一表述）**：【外部参考（源文；用于写法对齐）】
     - `docs/papers/2025_resolution_folding_phi_pi_e_hpa_omega/sections/06_resolution_folding_map.tex`【外部参考（源文）】
     - `docs/papers/2025_resolution_folding_phi_pi_e_hpa_omega/sections/04_pi_constraint_discrete_monodromy.tex`【外部参考（源文）】
-- **C.3 $\mathrm{e}$ 通道：Abel--zeta 解析稳定、指数半群、与时间箭头（Math→Iface）**【论文位置：`sections/C_11_resolution_folding_64_to_21.tex`（\label{subsec:e_channel}），`sections/appendices/12_protocol_primitives.tex`（\label{app:protocol_primitives}），`sections/appendices/36_arrow_of_time_semigroup_notes.tex`（\label{app:arrow_of_time_semigroup_notes}），`sections/appendices/40_abel_finite_part_resolvent_notes.tex`（\label{app:abel_finite_part_notes}），`sections/appendices/41_trace_formula_pole_barrier_template.tex`（\label{app:trace_pole_barrier_template}）】
+- **C.3 $\mathrm{e}$ 通道：Abel--zeta 解析稳定、指数半群、与时间箭头（Math→Iface）**【论文位置：`sections/C_11_resolution_folding_64_to_21.tex`（\label{subsec:e_channel}），`sections/appendices/12_protocol_primitives.tex`（\label{app:protocol_primitives}），`sections/F_00_arrow_of_time_semigroup.tex`（\label{app:arrow_of_time_semigroup_notes}），`sections/appendices/40_abel_finite_part_resolvent_notes.tex`（\label{app:abel_finite_part_notes}），`sections/appendices/41_trace_formula_pole_barrier_template.tex`（\label{app:trace_pole_barrier_template}）】
   - 输出：把“解析稳定/极限/单向性语言”与后续动力学闭合对齐，并把“时间箭头”的数学骨架落到可审计模板上。
   - **闭合点（Math；最小输入核：tick 的单向半群 + 正则化纪律）**：
     - **记忆无关（memoryless）权重 $\Rightarrow$ 指数核**：若权重满足 $w_{t+s}=w_t w_s$ 与 $w_0=1$，则离散 tick 上必有 $w_t=r^t$；在连续外延与温和正则性条件下必有 $w(t)=\exp(-\lambda t)$。这解释了 Abel 权重 $r^t=\exp(t\log r)$ 的“唯一自然性”。
@@ -340,6 +340,9 @@ flowchart TD
   - 输出：$(m,n)=(6,3)$ 作为最小可审计锚点的必然性。
   - **接口提示（Iface；不进入 theorem-level 前提）**：anchor 的 “screen/addressing” 可用一张具体图表来呈现（例如将方向空间 $S^2$ 通过球极平面投影编码为复坐标 $z$ 的黎曼球 chart），供 D.1 的空间显示字典引用。
 
+- **C.5 Kernel view：跨尺度可迭代核与协议 RG 算子闭合（Math/Iface/Audit）**【论文位置：`sections/C_12_kernel_view.tex`（\label{sec:kernel_view}，\label{subsec:kernel_operator_closure}），算子闭合细节：`sections/appendices/68_protocol_rg_operator_closure.tex`（\label{app:protocol_rg_operator_closure}），生成表：`sections/appendices/02_generated_tables.tex`（\label{tab:kernel_rg_flow_balanced}，\label{tab:kernel_rg_operator_sanity}，\label{tab:kernel_rg_operator_backreaction}，\label{tab:kernel_rg_operator_error_budget}，\label{tab:kernel_rg_operator_spectral_gap}，\label{tab:kernel_rg_operator_covariance}，\label{tab:kernel_rg_operator_layout_sensitivity}，\label{tab:kernel_rg_resolvent_trace_audit}，\label{tab:kernel_rg_weighted_pole_barrier}，\label{tab:kernel_rg_weighted_doob}，\label{tab:kernel_rg_weighted_pressure}，\label{tab:kernel_rg_covariant_transport_anchor}，\label{tab:kernel_rg_covariant_transport_reduction}，\label{tab:kernel_rg_operator_covariant_spectral_gap}，\label{tab:kernel_rg_operator_covariant_reduction}，\label{tab:kernel_rg_operator_covariant_gauge_audit}，\label{tab:kernel_rg_operator_covariant_internal_closure_triplet}，\label{tab:kernel_rg_operator_covariant_internal_sigma}，\label{tab:kernel_rg_weighted_covariant_pole_barrier}，\label{tab:kernel_rg_weighted_covariant_doob}，\label{tab:kernel_rg_weighted_covariant_pressure}）】
+  - 内容：把 uplift+coarse-graining 在 balanced chain 上明确化为 $16\\times16$ 的协议 RG 算子 $F_n$ 与加权族 $\widehat F_n(t)$；并用二点核/张量母空间的 resolvent-trace 口径把 $\mu$ 与 Var 统一写成同一类母空间读出对象。
+
 ### Part D — Structure: locality, gauge, chirality, antimatter (forced by consistency)
 
 - **D.1 空间作为显示结构（Iface）**【论文位置：`sections/I_10_hilbert_addressing_chirality.tex`（\label{sec:hilbert_addressing}，\label{subsubsec:space_from_ticks_dictionary}），`sections/I_09_planar_screen_chart.tex`（\label{subsec:planar_screen_chart}），距离/速度字典：`sections/I_05_tick_calculus.tex`（\label{sec:tick_calculus}）】
@@ -354,7 +357,7 @@ flowchart TD
   - **开工前必读（holonomy 模板与“需要刚性才可预测”的提醒）**：【外部参考（源文）】
     - `docs/papers/2025_physical_constants_geometry_hpa_omega/sections/appendices/05_holonomy.tex`【外部参考（源文）】
 - **D.3 手性/反物质/CPT 的协议几何（Prot→Iface）**【论文位置：`sections/I_30_chirality_antimatter_cpt.tex`（\label{sec:chirality_antimatter}）】
-  - 内容：orientation class bit、$\chi$ 符号律、conjugation-as-reversal 与 antimatter dual。
+  - 内容：orientation class bit、$\chi_H$ 符号律、conjugation-as-reversal 与 antimatter dual。
 
 ### Part E — Matter: Standard Model interface closures at the anchor
 
@@ -373,7 +376,7 @@ flowchart TD
 
 ### Part F — Dynamics: continuum representatives, free energy, RG, cosmology
 
-- **F.0 时间箭头（闭合版）：指数半群、遗忘常数、与单调性证书（Math+Iface）**【论文位置：`sections/appendices/36_arrow_of_time_semigroup_notes.tex`（\label{app:arrow_of_time_semigroup_notes}），`sections/appendices/40_abel_finite_part_resolvent_notes.tex`（\label{app:abel_finite_part_notes}），`sections/appendices/41_trace_formula_pole_barrier_template.tex`（\label{app:trace_pole_barrier_template}），Lyapunov 模板：`sections/appendices/00_wish_motive_definitions.tex`（\label{prop:wish_motive_generic_lyapunov}），热力学接口：`sections/appendices/27_thermodynamics_from_equivalence.tex`（\label{app:thermodynamics_from_equivalence}）】
+- **F.0 时间箭头（闭合版）：指数半群、遗忘常数、与单调性证书（Math+Iface）**【论文位置：`sections/F_00_arrow_of_time_semigroup.tex`（\label{app:arrow_of_time_semigroup_notes}），`sections/appendices/40_abel_finite_part_resolvent_notes.tex`（\label{app:abel_finite_part_notes}），`sections/appendices/41_trace_formula_pole_barrier_template.tex`（\label{app:trace_pole_barrier_template}），Lyapunov 模板：`sections/appendices/00_wish_motive_definitions.tex`（\label{prop:wish_motive_generic_lyapunov}），热力学接口：`sections/appendices/27_thermodynamics_from_equivalence.tex`（\label{app:thermodynamics_from_equivalence}）】
   - 目标：把“时间只向前”从叙事口号压缩为最小可审计结构，并与 $\mathrm{e}$ 通道与热力学闭合对齐。
   - **闭合骨架（Math；不引入新公理）**：
     - **半群与指数核**：tick 的组合律是加法半群；任何满足 $w_{t+s}=w_t w_s$ 的“记忆无关”权重在离散 tick 上必为 $r^t$，其连续外延为 $\exp(-\lambda t)$（与 C.3 对齐）。
@@ -391,13 +394,13 @@ flowchart TD
     - `docs/papers/2025_holographic_phase_thermodynamics_hpa_omega/sections/03_asm.tex`【外部参考（源文）】
     - `docs/papers/2025_riemann_ground_state_hpa_omega/sections/05_trace_formula_rigidity.tex`【外部参考（源文）】
 
-- **F.1 等价语义与频率优先字典（Iface）**【论文位置：`sections/appendices/24_equivalence_semantics.tex`（\label{app:equivalence_semantics}，\label{subsec:frequency_first_spine}），Morita/Fourier：`sections/appendices/37_morita_fourier_exchange.tex`（\label{app:morita_fourier_exchange}）】
+- **F.1 等价语义与频率优先字典（Iface）**【论文位置：`sections/F_10_equivalence_semantics.tex`（\label{app:equivalence_semantics}，\label{subsec:frequency_first_spine}），Morita/Fourier：`sections/appendices/37_morita_fourier_exchange.tex`（\label{app:morita_fourier_exchange}）】
   - 内容：物理对象=等价类；可观测=不变泛函；频率作为派生首量。
   - **\AuditTag 叙事补充（not used in proofs）**：
-    - **复指数把“时间箭头”与“量子相位”放在同一语法里**：把频率读作“每 tick 的相位增量”，则 $e^{\iu\omega t}$ 表达幺正旋转（相位），而 $e^{\lambda t}$ 表达半群权重（单向/耗散）；二者同属于指数半群/指数模态语言。该统一句只用于把 F.0（箭头）与 F.5（量子测量接口）连接成同一阅读体验，不进入 theorem-level 前提。
+    - **复指数把"时间箭头"与"量子相位"放在同一语法里**：把频率读作"每 tick 的相位增量"，则 $e^{\mathrm{i}\omega t}$ 表达幺正旋转（相位），而 $e^{\lambda t}$ 表达半群权重（单向/耗散）；二者同属于指数半群/指数模态语言。该统一句只用于把 F.0（箭头）与 F.5（量子测量接口）连接成同一阅读体验，不进入 theorem-level 前提。
   - **开工前必读（等价/对偶与 scan-readout 交换模板）**：【外部参考（源文）】
     - `docs/papers/2025_stairway_to_infinity_holographic_renormalization_flow/sections/08_S_duality_morita_equivalence.tex`【外部参考（源文）】
-- **F.2 CAP 闭合作用量与场方程（CAP→Math）**【论文位置：`sections/appendices/25_cap_continuum_action_closure.tex`（\label{app:cap_continuum_action_closure}），`sections/appendices/26_variational_field_equations.tex`（\label{app:variational_field_equations}），误差控制：`sections/appendices/33_protocol_to_continuum_error_control.tex`（\label{app:protocol_to_continuum_error_control}）】
+- **F.2 CAP 闭合作用量与场方程（CAP→Math）**【论文位置：`sections/F_20_cap_continuum_action_closure.tex`（\label{app:cap_continuum_action_closure}），`sections/F_21_variational_field_equations.tex`（\label{app:variational_field_equations}），误差控制：`sections/appendices/33_protocol_to_continuum_error_control.tex`（\label{app:protocol_to_continuum_error_control}）】
   - 内容：最小作用量骨架与变分 EOM（Einstein/YM/chi）。
   - **开工前必读（正则化与极限路径可审计化）**：【外部参考（源文）】
     - `docs/papers/2025_computational_action_principle_ii_dynamics_hpa_omega/sections/appendices/03_regularization_notes.tex`【外部参考（源文）】
@@ -407,8 +410,9 @@ flowchart TD
     - **以 $\mathrm{e}$ 为底的熵（nat）与指数分布的“自然性”**：当以自然对数计量信息时，最大熵（在给定均值/能量约束下）导出指数族（Boltzmann 权重 $e^{-\beta E}$）是标准结论；在本论文中它只用于解释“为何 F.0 的指数半群语言与 F.3 的自由能/熵语言天然兼容”，不作为闭合链前提。
   - **开工前必读（ASM/phase friction；热力学结构对齐）**：【外部参考（源文）】
     - `docs/papers/2025_holographic_phase_thermodynamics_hpa_omega/sections/03_asm.tex`【外部参考（源文）】
-- **F.4 overhead→gravity 与 $\chi$ 重建（Iface+Prot）**【论文位置：`sections/appendices/28_overhead_to_gravity_closure.tex`（\label{app:overhead_to_gravity_closure}），`sections/appendices/29_chi_reconstruction_protocol.tex`（\label{app:chi_reconstruction_protocol}），延迟统一：`sections/appendices/34_unified_delay_closure.tex`（\label{app:time_mass_delay}）】
+- **F.4 overhead→gravity 与 $\chi$ 重建（Iface+Prot）**【论文位置：`sections/F_40_overhead_to_gravity_closure.tex`（\label{app:overhead_to_gravity_closure}），`sections/F_41_chi_reconstruction_protocol.tex`（\label{app:chi_reconstruction_protocol}），延迟统一：`sections/appendices/34_unified_delay_closure.tex`（\label{app:time_mass_delay}）】
   - 内容：$\chi\to N\to g_{00}\to\Phi$ 与误差控制；为跨观测 $\gamma$ 一致性准备统一接口。
+  - 内容补充：预算触发的 $\chi$-视界（$\chi_\star,\ \partial\mathcal R_\star$）与 $\chi$-云域容量→面积代表 $A_\chi$ 的接口闭合（\InterfaceTag/\MatchTag；主文 `F_41` 内新增小节 \label{subsec:chi_budget_horizon_area_law}），并与 Appendix `protocol horizon`（\label{app:protocol_horizon_tick_trap}）与 BH 容量校准（\label{app:bh_planck_capacity_calibration}）形成闭环指针。
   - **开工前必读（lapse/overhead/Poisson closure 与 time-delay 观测代理）**：【外部参考（源文）】
     - `docs/papers/2025_holographic_hilbert_universe_hpa_omega/sections/07_computational_lapse_gravity.tex`【外部参考（源文）】
     - `docs/papers/2025_holographic_hilbert_universe_hpa_omega/sections/08_minimal_discrepancy_dynamics.tex`【外部参考（源文）】
@@ -450,7 +454,7 @@ flowchart TD
 - **H.4 解释层统一图景：复指数、幺正球面与“扫描轨迹”（\AuditTag；not used in proofs）**【论文位置：`sections/V_45_interpretive_unification.tex`（\label{subsec:interpretive_unification_complex_exp}），屏幕/叶序回指：`sections/I_09_planar_screen_chart.tex`（\label{subsec:planar_screen_chart}）+`sections/I_04_golden_angle_phyllotaxis_overlay.tex`（\label{subsec:phyllotaxis_overlay}）】
    - 目的：收束“$\mathrm{e}$ 通道”的解释性直觉，把 F.0（箭头）、F.1（频率/相位）、F.5（量子态与测量接口）串成一个不进入证明链的统一语言。
    - 解释性命题（必须标注 not used in proofs）：
-     - **复指数分解**：把演化写成 $\exp((\lambda+\iu\omega)t)$：实部对应尺度/权重的单向半群语言（箭头/耗散），虚部对应相位旋转语言（干涉/幺正）。
+     - **复指数分解**：把演化写成 $\exp((\lambda+\mathrm{i}\omega)t)$：实部对应尺度/权重的单向半群语言（箭头/耗散），虚部对应相位旋转语言（干涉/幺正）。
      - **平面全息屏幕与叶序点列**：将 anchor 的 screen/addressing 视作一张平面 chart，将 golden branch 诱导的角增量视作扫描步长，则 tick-indexed 事件在屏幕上形成叶序点列；该图像只用于连接 Part B/D/F 的阅读体验，不进入证明链。
      - **数值对照必须分层**：黄金角的角度数值与 $1/\alpha_{\mathrm{em}}$ 的数值接近属于匹配/解释层现象；精细结构常数的闭合与误差口径属于 Part C.4/E.3/G.1，不与角度单位混用。
      - **幺正球面**：在复 Hilbert 空间中，幺正演化保持范数，态可读作单位球面上的轨道；本论文只把它当作对 F.5 的表述方式，而不把“宇宙本体=Hilbert 球”当作新公理。
@@ -462,7 +466,7 @@ flowchart TD
 
 本节列出：在不改变两原语与审计边界的前提下，哪些内容可以从“叙事描述/接口直觉”提升为数学层定义/命题，并给出落点与依赖。
 
-- **Wish 的数学化（定义闭合）**【论文位置：`sections/appendices/00_wish_motive_definitions.tex`（\label{def:wish_protocol_stable_data}），等价语义底座：`sections/appendices/24_equivalence_semantics.tex`（\label{app:equivalence_semantics}，\label{subsec:equivalence_relations_minimal}）】
+- **Wish 的数学化（定义闭合）**【论文位置：`sections/appendices/00_wish_motive_definitions.tex`（\label{def:wish_protocol_stable_data}），等价语义底座：`sections/F_10_equivalence_semantics.tex`（\label{app:equivalence_semantics}，\label{subsec:equivalence_relations_minimal}）】
   - **目标**：把 Wish 写成“协议稳定的周期数据对象”的严格定义（对象是数据结构而非单一数值）。
   - **落点**：主文 Part A（A.1）给出定义与最小例子；附录保留完整审计语义（复用 `equivalence_semantics` 的等价关系作为 Wish 的不变性条件）。
   - **状态**：定义本身为 [Math]；Wish 的物理解释仍为 [Iface]。
@@ -494,7 +498,7 @@ flowchart TD
   - **开工前必读**：【外部参考（源文）】
     - `docs/papers/2025_holographic_hilbert_universe_hpa_omega/sections/appendices/03_abel_finite_part_notes.tex`【外部参考（源文）】
     - `docs/papers/2025_riemann_ground_state_hpa_omega/sections/appendices/03_orbit_calculus_abel_fp.tex`【外部参考（源文）】
-- **指数半群模板（记忆无关权重；时间箭头的最小数学核）**【论文位置：`sections/appendices/36_arrow_of_time_semigroup_notes.tex`（\label{app:arrow_of_time_semigroup_notes}），`sections/appendices/40_abel_finite_part_resolvent_notes.tex`（\label{app:abel_finite_part_notes}）】
+- **指数半群模板（记忆无关权重；时间箭头的最小数学核）**【论文位置：`sections/F_00_arrow_of_time_semigroup.tex`（\label{app:arrow_of_time_semigroup_notes}），`sections/appendices/40_abel_finite_part_resolvent_notes.tex`（\label{app:abel_finite_part_notes}）】
   - **目标**：把“$f'=f$（或 $f_{t+1}=a f_t$）的自指性”改写为可审计的半群陈述：在 tick 的组合律上，记忆无关权重满足 $w_{t+s}=w_t w_s$，从而迫使 $w_t=r^t$；在连续外延与温和正则性条件下，迫使 $w(t)=\exp(-\lambda t)$。该模板用于统一 Abel 核、指数模态、与“遗忘常数/初值”的审计位置。
   - **落点**：主文 C.3（$\mathrm{e}$ 通道）与 F.0（时间箭头）；不进入 folding theorem-level 依赖链。
   - **状态**：台账为 [Math]（functional equation/差分方程的标准结论）；主文用 \MathTag 给出数学骨架，并用 \MatchTag/\AuditTag 明确标注初值/校准常数的地位（不作为前提）。
@@ -521,7 +525,7 @@ flowchart TD
     - `docs/papers/2025_ramanujan_holographic_scanning_principle_hpa_omega/sections/06_hecke_dynamics_prime_skeleton.tex`【外部参考（源文）】
     - `docs/papers/2025_stairway_to_infinity_holographic_renormalization_flow/sections/06_hecke_dynamics_prime_skeleton.tex`【外部参考（源文）】
 - **Morita 等价与 Fourier exchange（等价语义的硬底座）**【论文位置：`sections/appendices/37_morita_fourier_exchange.tex`（\label{app:morita_fourier_exchange}）】
-  - **目标**：把“$\SL_2(\mathbb{Z})$ 作用、Morita 等价分类、scan/readout 交换”的硬结构作为 `equivalence_semantics` 的可复用数学底座，避免在多篇论文中重复给出同一命题。
+  - **目标**：把"$\mathrm{SL}_2(\mathbb{Z})$ 作用、Morita 等价分类、scan/readout 交换"的硬结构作为 `equivalence_semantics` 的可复用数学底座，避免在多篇论文中重复给出同一命题。
   - **落点**：主文 F.1 作为背景定理/命题引用；详细证明可外置到附录。
   - **状态**：[Math]（定理/命题模板）。
   - **开工前必读**：`docs/papers/2025_stairway_to_infinity_holographic_renormalization_flow/sections/08_S_duality_morita_equivalence.tex`【外部参考（源文）】
@@ -603,143 +607,5 @@ flowchart TD
 | quantum interfaces / Born（F.5） | `2025_computational_action_principle_ii_dynamics_hpa_omega/sections/08_quantum_interfaces.tex` | POVM/instrument 写法；哪些是接口假设，哪些是表象选择；带宽/误差界的声明方式 |
 | running/masses/mixing 的对齐（E.2/E.3/F.6） | `2025_physical_constants_geometry_hpa_omega/sections/06_running_couplings.tex`；`2025_physical_constants_geometry_hpa_omega/sections/07_masses_mixing.tex` | $r(\mu)$ 约定一致；matching vs closure 的边界；低复杂度刚性搜索模板复用 |
 | Hecke prime skeleton（F.6；2.1） | `2025_ramanujan_holographic_scanning_principle_hpa_omega/sections/06_hecke_dynamics_prime_skeleton.tex` | 素数一致性约束族的形式；残差传播界；可审计检查流程 |
-| Morita / Fourier exchange（F.1；2.1） | `2025_stairway_to_infinity_holographic_renormalization_flow/sections/08_S_duality_morita_equivalence.tex` | $\SL_2(\mathbb{Z})$ 作用与等价分类；scan/readout 交换的写法 |
+| Morita / Fourier exchange（F.1；2.1） | `2025_stairway_to_infinity_holographic_renormalization_flow/sections/08_S_duality_morita_equivalence.tex` | $\mathrm{SL}_2(\mathbb{Z})$ 作用与等价分类；scan/readout 交换的写法 |
 | regularization 纪律（A.0/F.*；2.1） | `2025_computational_action_principle_ii_dynamics_hpa_omega/sections/appendices/03_regularization_notes.tex` | 极限顺序与正则化路径的统一声明；审计表述 |
-
-
-
----
-
-## 4. 重构实施计划（可勾选清单；文件树与迁移映射）
-
-本节给出一份可执行的实施清单：将本大纲（Part A–H）落到 `main.tex` 与 `sections/` 文件树上，并提供“旧文件 → 新归属”的迁移映射以确保不丢信息。
-
-### 4.1 目标文件树（建议采用“wrapper part files”策略）
-
-原则：尽量不改动已有承载定理/证明/审计表的文件内容，先通过“包装文件（wrapper）重组输入顺序”，在完成结构落地后再按需要拆分/重排内部小节；这样可最大化保留 `\label{...}` 稳定性。
-
-- **建议新增（主文 wrapper；每个文件负责一个 Part，并用 `\part{...}` 开头）**
-  - `sections/PA_contract.tex`（Part A）
-  - `sections/PB_tick_first.tex`（Part B）
-  - `sections/PC_periodic_core.tex`（Part C）
-  - `sections/PD_structure.tex`（Part D）
-  - `sections/PE_matter.tex`（Part E）
-  - `sections/PF_dynamics.tex`（Part F）
-  - `sections/PG_validation.tex`（Part G）
-  - `sections/PH_recursive_closure.tex`（Part H）
-
-- **建议新增（附录/补充模块；按需进入主文或附录）**
-  - `sections/appendices/00_wish_motive_definitions.tex`：Wish/Motive/teleological dynamics 的严格定义与模板性定理（以复用为主）。【论文位置：\label{app:wish_motive_definitions}】
-  - （可选）`sections/appendices/36_arrow_of_time_semigroup_notes.tex`：若 F.0 的材料过长，可把细节证明/变体模板外置到该附录并在主文引用。【论文位置：\label{app:arrow_of_time_semigroup_notes}；同类补充已落地：`sections/appendices/37_morita_fourier_exchange.tex`（\label{app:morita_fourier_exchange}），`sections/appendices/38_modular_flow_gauss_map_notes.tex`（\label{app:modular_flow_gauss_map}），`sections/appendices/39_hecke_prime_skeleton.tex`（\label{app:hecke_prime_skeleton}），`sections/appendices/40_abel_finite_part_resolvent_notes.tex`（\label{app:abel_finite_part_notes}），`sections/appendices/41_trace_formula_pole_barrier_template.tex`（\label{app:trace_pole_barrier_template}），`sections/appendices/43_rigidity_bridge_checklist.tex`（\label{app:rigidity_bridge_checklist}）】
-
-- **需要改动的“根入口”**
-  - `main.tex`：将 `\input{sections/P01_origin}`…`P04_validation` 替换为 `PA_...` 到 `PH_...` 的八个输入。
-  - `sections/00_frontmatter.tex`：将 reader guide/contract 迁移到 Part A，并据新结构重写阅读路径；abstract/keywords 可保留在前置位置。
-  - `sections/90_appendix.tex`：可先保持现有输入顺序，待主文结构稳定后再按新 Part 重新分组（不影响逻辑闭合，但影响阅读体验）。
-
-### 4.2 迁移映射（主文层：现有 `sections/*.tex` → 新 Part）
-
-下表以“文件”为单位给出迁移去向。默认动作是“保留文件内容与 label，通过 wrapper 重组引用顺序”；只有当一个文件跨越多个新 Part 时，才在后续工作中拆分。
-
-| 勾选 | 旧文件（当前） | 当前入口 | 新归属（终稿） | 动作（建议） |
-|---|---|---|---|---|
-| [x] | `sections/00_frontmatter.tex` | `main.tex` | Part A（A.0 为主）+ 前置摘要 | 抽象/关键词保留前置；把 reader guide/层纪律契约迁移到 Part A；其余按需拆分 |
-| [x] | `sections/I_00_introduction.tex`（\label{sec:introduction}） | P01 | Part A（A.*） | 作为 A.0/A.3 的引入段或“读者动机”；保持核心定义边界不变 |
-| [x] | `sections/I_05_tick_calculus.tex`（\label{sec:tick_calculus}） | P01 | Part B（B.1） | 作为 tick-first 主入口；保持 `sec:tick_calculus` 等关键 label |
-| [x] | `sections/C_10_hpa_readout_dynamics.tex`（\label{sec:hpa_readout}） | P02 | Part B（B.1/B.2） | 与 tick/window/readout 紧耦合，放入 Part B；必要时在文件内加小节标题以贴合新叙事 |
-| [x] | `sections/C_11_resolution_folding_64_to_21.tex`（\label{sec:folding_core}） | P02 | Part C（C.1/C.2） | 作为 folding core 主体；保持 `sec:folding_core` 等关键 label |
-| [x] | `sections/I_10_hilbert_addressing_chirality.tex`（\label{sec:hilbert_addressing}） | P02 | Part D（D.1 为主；部分材料可能归 D.3） | 先整体放入 Part D；若内容同时覆盖“空间字典”与“手性约定”，后续再拆分 |
-| [x] | `sections/I_12_vacuum_ghost_sector.tex`（\label{app:ghost_sector}） | Appendix | Part C（补充）或 Part D（接口补充） | 现为附录输入；主文只保留指针与关键结论，细节留附录 |
-| [x] | `sections/I_20_standard_model_interface.tex`（\label{sec:sm_interface}） | P03 | Part E（E.1/E.3 的接口入口） | 作为“SM interface closures”前置接口字典；保持引用到 appendices 的补充指针 |
-| [x] | `sections/I_21_protocol_connections_holonomy.tex`（\label{sec:protocol_connections_holonomy}） | P03 | Part D（D.2） | 连接/holonomy 属于“规范作为补偿”的协议骨架；主文可在 Part D 引入、Part E 复用 |
-| [x] | `sections/V_30_sm_field_labeling_closure.tex`（\label{sec:sm_labeling_closure}） | P03 | Part E（E.1） | 保留 theorem/prop label；wrapper 调整其出现位置 |
-| [x] | `sections/I_25_mass_latency_coordinate.tex`（\label{sec:mass_latency_coordinate}） | P03 | Part E（E.2）+ Part F（F.4 接口回指） | 先放 Part E；F.4 以引用方式调用（避免重复定义） |
-| [x] | `sections/I_30_chirality_antimatter_cpt.tex`（\label{sec:chirality_antimatter}） | P03 | Part D（D.3） | 保持现有结构；必要时把“接口字典”显式标注 \InterfaceTag |
-| [x] | `sections/V_32_couplings_cp_summary.tex`（\label{sec:couplings_cp}） | P04 | Part E（E.3）或 Part G（G.1 的前置） | 若是“闭合输出+摘要”，建议并入 Part E；验证/误差预算部分在 Part G 汇总 |
-| [x] | `sections/V_32_couplings_cp_violation.tex`（\label{subsec:alpha_impedance}，\label{subsec:cp_jarlskog}，\label{subsec:ckm_matrix_closure}） | Appendix（经 `sections/appendices/17_closure_audit_details.tex`（\label{app:closure_audit_details}）输入） | Part E（E.3） | 作为细节版本：已收录于附录审计细节；主文按需只引用摘要（`V_32_couplings_cp_summary.tex`） |
-| [x] | `sections/V_33_pmns_neutrino_summary.tex`（\label{sec:pmns_neutrino_closure}） | P04 | Part E（E.3） | 与 mixing closures 同组；验证口径在 Part G 汇总 |
-| [x] | `sections/V_33_pmns_neutrino_closure.tex`（\label{prop:pmns_mixing_rigidity}） | Appendix（经 `sections/appendices/17_closure_audit_details.tex`（\label{app:closure_audit_details}）输入） | Part E（E.3） | 作为细节版本：已收录于附录审计细节；主文按需只引用摘要（`V_33_pmns_neutrino_summary.tex`） |
-| [x] | `sections/V_31_mass_spectrum_closure.tex`（\label{sec:mass_spectrum_closure}） | P04 | Part E（E.2/E.3）+ Part G（审计口径回指） | 主要闭合在 Part E；“rigidity 仅在候选族内成立”用 \AuditTag 明确 |
-| [x] | `sections/V_40_falsifiability_predictions.tex`（\label{sec:falsifiability}） | P04 | Part G（G.1） | 原样迁入 Part G 作为收束 |
-| [x] | `sections/V_41_limitations_related_work.tex`（\label{sec:limitations_related_work}） | P04 | Part G（G.2） | 原样迁入 Part G；Open 项与台账一致 |
-| [x] | `sections/V_43_final_synthesis.tex`（\label{sec:final_synthesis}） | P04 | Part H（或作为 G→H 的桥段） | 先放 Part H；不改变其“接口闭合”定位 |
-| [x] | `sections/V_42_conclusion.tex`（\label{sec:conclusion}） | P04 | Part G（结尾）或 Part H（结尾） | 依终稿叙事决定；保持“未闭合项”显式列出 |
-
-### 4.3 迁移映射（附录层：现有 `sections/appendices/*.tex` → 新 Part 的支撑模块）
-
-附录不要求“迁移走”，但必须在终稿结构中有明确回指点（哪一 Part 依赖/引用它、属于台账哪一类状态）。
-
-| 勾选 | 附录文件（现有） | 新主文回指点（终稿） | 备注（台账定位/用途） |
-|---|---|---|---|
-| [x] | `appendices/00_wish_motive_definitions.tex`（\label{app:wish_motive_definitions}） | A.0；H.* | Wish/Motive/teleological dynamics 的模板化定义与最小数学陈述（显式 not used in proofs 边界） |
-| [x] | `appendices/23_audit_overview.tex`（\label{app:audit_overview}） | A.0；第 1 节 | 审计契约与推理图源；主文应引用 `fig:inference_map` 与 `tab:audit_facing_contract` |
-| [x] | `appendices/11_inference_ledger.tex`（\label{app:inference_ledger}） | A.0；第 1 节；G.2/G.3 | 台账五状态的权威来源；Open 项必须一致 |
-| [x] | `appendices/19_tick_cap_derivation.tex`（\label{app:tick_cap_derivation}） | A.2；B.1/B.2 | tick+CAP spine（候选族/目标函数/tie-break）；支撑 \AuditTag 声明 |
-| [x] | `appendices/13_cap_audit_template.tex`（\label{app:cap_audit_template}） | A.0；A.2；G.1 | CAP 审计模板；所有 bounded-family 闭合应回指 |
-| [x] | `appendices/12_protocol_primitives.tex`（\label{app:protocol_primitives}） | A.0；B.1 | 协议原语的集中声明；避免在多处重复定义 |
-| [x] | `appendices/14_folding_core_proofs.tex`（\label{app:folding_core_proofs}） | C.1/C.2 | folding core 的证明细节与表格事实支撑 |
-| [x] | `appendices/28_discrepancy_ostrowski_bounds.tex`（\label{app:discrepancy_ostrowski}） | B.2；C.* | 黄金分支/差异界的硬证书（RB-D） |
-| [x] | `appendices/26_sturmian_entropy.tex`（\label{app:sturmian_entropy}） | C.*；F.3 | 熵/复杂度相关的数学底座（与热力学接口对齐） |
-| [x] | `appendices/27_sturmian_vs_golden_mean_shift.tex`（\label{app:sturmian_vs_golden_mean}） | B.2；C.* | golden vs sturmian 对比；用于刚性/鲁棒性解释 |
-| [x] | `appendices/24_equivalence_semantics.tex`（\label{app:equivalence_semantics}） | F.1 | 等价语义底座；频率优先字典与对象=等价类 |
-| [x] | `appendices/25_cap_continuum_action_closure.tex`（\label{app:cap_continuum_action_closure}） | F.2 | CAP→作用量代表的闭合；正则化路径须审计化 |
-| [x] | `appendices/26_variational_field_equations.tex`（\label{app:variational_field_equations}） | F.2 | 场方程与连续代表；主文只给最小主线，细节留附录 |
-| [x] | `appendices/27_thermodynamics_from_equivalence.tex`（\label{app:thermodynamics_from_equivalence}） | F.3 | 热力学闭合细节；与 ASM/相对熵单调性对齐 |
-| [x] | `appendices/28_overhead_to_gravity_closure.tex`（\label{app:overhead_to_gravity_closure}） | F.4 | overhead→lapse/potential；误差传播与可证伪代理 |
-| [x] | `appendices/29_chi_reconstruction_protocol.tex`（\label{app:chi_reconstruction_protocol}） | F.4 | $\chi(x)$ 重建协议；与引力/延迟接口同组 |
-| [x] | `appendices/34_unified_delay_closure.tex`（\label{app:time_mass_delay}） | F.4 | 宏观红移与微观散射延迟的统一接口（delay family） |
-| [x] | `appendices/30_quantum_measurement_born.tex`（\label{app:quantum_measurement_born}） | F.5 | POVM/instrument 与 Born 接口闭合路线 |
-| [x] | `appendices/31_running_couplings_resolution_flow.tex`（\label{app:running_couplings_resolution_flow}） | F.6 | running/RG in $r$ 坐标；匹配输入边界要清晰 |
-| [x] | `appendices/32_cosmology_resolution_flow.tex`（\label{app:cosmology_resolution_flow}） | F.6 | cosmology as resolution flow；假设必须标注接口定位 |
-| [x] | `appendices/35_gamma_cross_observation_consistency.tex`（\label{app:gamma_crossobs_consistency}） | G.3（Open） | 跨观测一致性闭合/开放项；与脚本与数据一致 |
-| [x] | `appendices/18_mass_rigidity_details.tex`（\label{app:mass_rigidity_details}） | E.2/E.3；G.* | mass-depth 细节审计与敏感性 |
-| [x] | `appendices/17_closure_audit_details.tex`（\label{app:closure_audit_details}） | E.*；G.* | 各类闭合细节与审计表支撑 |
-| [x] | `appendices/15_holonomy_sweeps_extended.tex`（\label{app:holonomy_sweeps_extended}） | D.2 | holonomy sweeps 与扩展诊断 |
-| [x] | `appendices/21_protocol_eft_embedding.tex`（\label{app:protocol_eft_embedding}） | D.2/E.* | EFT embedding；主文可保留简短指针 |
-| [x] | `appendices/24_fold_family_sensitivity.tex`（\label{app:fold_family_sensitivity}） | G.2 | folding 家族敏感性与 look-elsewhere |
-| [x] | `appendices/25_gauge_complexity_sensitivity.tex`（\label{app:gauge_complexity_sensitivity}） | G.2 | gauge 候选族/复杂度敏感性 |
-| [x] | `appendices/02_generated_tables.tex`（\label{app:generated_tables}） | G.1；A.0 | 所有数值表的审计输出；禁止手改 |
-| [x] | `appendices/03_reproducibility.tex`（\label{app:reproducibility}） | A.0；G.1 | 一键复现入口与脚本说明 |
-| [x] | `appendices/01_symbols.tex`（\label{app:symbols}） | A.0 | 记号表；新文件引入符号需同步更新 |
-| [x] | `appendices/06_isomorphism_dictionary.tex`（\label{app:isomorphism_dictionary}） | F.1（可选） | AEC/同构字典模板；是否进入主文取决于叙事需要 |
-| [x] | `appendices/05_functorial_refinement.tex`（\label{app:functorial_refinement}） | F.1（可选） | functorial 视角补充；不应成为主链前提 |
-| [x] | `appendices/07_inverse_quantum_numbers.tex`（\label{app:inverse_quantum_numbers}） | E.*（可选） | 逆量子数辞典；作为补充模块 |
-| [x] | `appendices/10_black_holes_wormholes.tex`（\label{app:bh_wormholes_pointer}） | F/H（可选） | 主题拓展；主文中如保留应明确其层定位 |
-| [x] | `appendices/04_next_steps.tex`（\label{app:next_steps}） | G.3 | 下一步闭合清单；与台账 Open 对齐 |
-
-### 4.4 工作清单（按阶段；每项可直接勾选）
-
-- **Phase 0：对齐与门禁**
-  - [x] 锁定两原语与四标签边界（第 0 节），并检查大纲中是否有反向依赖语句
-  - [x] 按第 3 节索引完成 “开工前必读” 的对齐阅读（只对齐定义/记号/模板，不引入额外公理）
-  - [x] 列出将被引用的外部模板文件清单（用于后续移植时核对一致性）
-
-- **Phase 1：文件骨架落地（先 wrapper，后拆分）**
-  - [x] 创建 `sections/PA_contract.tex`…`sections/PH_recursive_closure.tex` 八个 wrapper 文件
-  - [x] 在每个 wrapper 中仅做两件事：`\part{...}` + `\input{...}`（先不改被输入文件内容）
-  - [x] 依照 4.2 的映射，把现有主文文件逐一挂接到对应 wrapper
-  - [x] 新增 `sections/appendices/00_wish_motive_definitions.tex`（只放可复用定义/模板；避免引入新前提）
-
-- **Phase 2：改入口并跑通编译**
-  - [x] 更新 `main.tex`：用 `PA_...` 到 `PH_...` 替换现有 `P01..P04`
-  - [x] 更新 `sections/00_frontmatter.tex`：abstract/keywords 前置保留；把 reader guide 改写为 Part A–H 的阅读路径
-  - [x] 保持 `sections/90_appendix.tex` 先不动（或只做最小回指调整），确保全文可编译
-
-- **Phase 3：精细迁移与拆分（在结构稳定后进行）**
-  - [x] 若 `I_10_hilbert_addressing_chirality.tex` 同时承担 D.1 与 D.3，按新 Part 拆分成两个文件并保持原 label 兼容（已由 `I_30_chirality_antimatter_cpt.tex` 承担 D.3 主体，无需额外拆分）
-  - [x] 将 Wish/Motive 的叙事段统一改为 \AuditTag（not used in proofs），并在 Part A 与 F.0 位置落地
-  - [x] 对所有 bounded-family 闭合段落，补齐 \AuditTag 指针（候选族/目标函数/tie-break 的来源）
-  - [x] 在 Part G 统一收束可证伪命题与 Open 列表，并与 `appendices/11_inference_ledger.tex` 对齐
-
-- **Phase 4：附录分组与“读者体验优化”**
-  - [x] 将 `sections/90_appendix.tex` 按新 Part 分组（contract/spine/core/protocol/dynamics/audit/repro），保持每个附录文件本体不变
-  - [x] 更新符号表 `appendices/01_symbols.tex`：新增符号与外部模板对齐
-  - [x] 最终检查：目录结构、交叉引用、推理图回指、复现入口均可一键定位
-
-### 4.5 完整性门禁（不丢信息的检查单）
-
-- [x] `main.tex` 的输入树覆盖了旧结构中被 `P01..P04` 与 `90_appendix` 引入的所有文件（无遗漏）
-- [x] 4.2/4.3 两个映射表的每一行都已勾选完成或明确标注为“可选模块”
-- [x] 所有关键 `\label{...}` 仍可被交叉引用（尽量不改 label 名）
-- [x] `sections/generated/*.tex` 未被改动；脚本仍能生成同名输出并被正确引用
-- [x] 台账 `appendices/11_inference_ledger.tex` 的五状态与主文叙事不冲突：主文解释不反向支撑 closed-theory

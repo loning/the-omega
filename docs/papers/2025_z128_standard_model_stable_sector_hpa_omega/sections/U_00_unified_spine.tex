@@ -1,0 +1,219 @@
+\section*{Unified spine (time, selection, updates, and resolution)}
+\addcontentsline{toc}{section}{Unified spine (time, selection, updates, and resolution)}
+\label{sec:unified_spine}
+
+\paragraph{Purpose.}
+\AuditTag This reader-facing section compresses a recurring set of structural themes into a single vocabulary:
+(i) time as tick and as executed update order,
+(ii) deterministic CAP closure as finite-family selection with explicit tie-breaks,
+(iii) updates and branching as changes of admissible candidates/objectives under fixed constraints,
+and (iv) resolution flow (uplift/RG/forced zoom) as an update trajectory of protocol states.
+None of this section is used as a premise in theorem-level folding proofs; it is an organizational index.
+
+\subsection*{Three time notions and their layer placement}
+\AuditTag We distinguish three time notions throughout:
+\begin{itemize}
+\item \textbf{tick time} $t_{\mathrm{tick}}$: the scan iteration index (Definition~\ref{def:tick});
+\item \textbf{update time} $t_{\mathrm{upd}}$: the executed order of protocol updates (e.g.\ CAP closures or objective updates), indexed discretely and used to state monotonicity certificates (Section~\ref{subsec:wish_motive_generic_dynamics});
+\item \textbf{physical time} $t_{\mathrm{phys}}$: any mapping from tick/update indices to SI units (seconds) or laboratory clock readings, which is always a matching-layer calibration (Remark~\ref{rem:tick_velocity_to_c} and Section~\ref{subsec:arrow_time_calibration_constants}).
+\end{itemize}
+\AuditTag The first two are intrinsic to the protocol language; the third is a dictionary layer.
+
+\subsection*{Finite-family selection as the universal closure form}
+\AuditTag The CAP rule is implemented throughout as deterministic selection on explicit finite candidate families.
+Abstractly, a selection problem is a triple $(\mathcal{F},J,\prec)$ consisting of a finite candidate family $\mathcal{F}$,
+an explicit objective functional $J:\mathcal{F}\to\RR$, and a deterministic tie-break order $\prec$.
+The corresponding deterministic selector $\mathsf{Sel}(\mathcal{F},J,\prec)$ is formalized in Appendix~\ref{app:branching_selection_rigidity}
+and instantiated in audit form across the tick\,+\,CAP derivation spine (Appendix~\ref{app:tick_cap_derivation}).
+
+\paragraph{Gaps and robustness.}
+\AuditTag When a quantitative objective gap is present, bounded perturbations cannot change the selected minimizer
+(gap-stability; Appendix~\ref{app:branching_selection_rigidity} and the RB-D template in Appendix~\ref{app:rigidity_bridge_checklist}).
+This is the paper's normalized way to state that a closure is robust rather than an accidental alignment.
+
+\subsection*{Updates, branching, and prefix-consistency}
+\AuditTag What is informally called ``branching'' is expressed in finite mathematics by prefix projections and extension fibers:
+distinct continuations may share an audited prefix while differing in admissible extensions.
+This is formalized by extension fibers $\mathrm{Ext}_m(u)$ under prefix projections $\pi_{m\to m_0}$ (Appendix~\ref{app:branching_selection_rigidity}).
+\AuditTag Updates are modeled as maps $(\mathcal{F},J,\prec)\mapsto(\mathcal{F}',J',\prec')$; a ``switch'' occurs when the selected minimizer changes.
+If a prefix constraint is preserved, any switch is confined to the corresponding extension fiber (Proposition~\ref{prop:prefix_consistent_switching_constraint}).
+
+\subsection*{Where the HPA-integrated modules sit in the Sel/Upd/gap vocabulary (reader map)}
+\label{subsec:sel_upd_gap_hpa_map}
+\AuditTag Several companion-HPA modules are integrated into the main text in a way that preserves the same audit discipline.
+Their placement in the unified Sel/Upd/gap vocabulary is as follows:
+\begin{itemize}
+\item \textbf{Embedding and projection readout (Sel + gap).}
+The projection readout in Section~\ref{sec:embedding_gap_projection} is a concrete instance of deterministic finite-family selection:
+for a fixed synthesized $v\in\CC$, the nearest-point rule $\pi(v)$ is a selector on an explicitly finite candidate subset (proved finite in that section), and the objective gap is the separation between the best and second-best distances.
+The cohomology-based ``gap field'' viewpoint provides an additional \AuditTag failure mode not reducible to a scalar objective gap (a nontrivial $H^1$ class obstructs global gauging-away of residuals).
+\item \textbf{Cut-and-project bridge (prefix/fiber carrier).}
+Section~\ref{sec:cut_and_project_bridge} is the geometric carrier behind the prefix/fiber language:
+window words induce staircase prefixes and therefore a canonical prefix projection hierarchy; model sets $\Lambda(W)$ provide a point-set realization of the same branching structure.
+\item \textbf{Time-advance dispersion channel (dictionary update).}
+Section~\ref{sec:dispersion_time_advance} records a kinematic signature once a specific energy/momentum readout is declared (Assumption~\ref{ass:dispersion_energy_momentum_from_scan}).
+Interpreting this signature as a laboratory observable is a \MatchTag dictionary update and must be recorded as such, separate from overhead-induced delay channels.
+\item \textbf{Octonionic internal lift and adelic prime-orbit modules (candidate-family updates).}
+Sections~\ref{sec:octonion_g2_internal_phase} and \ref{sec:adelic_prime_orbit_module} are recorded as \AuditTag/\InterfaceTag candidate modules:
+invoking them in any closure requires declaring an explicit finite family (of lifts/orbits/representatives) and a deterministic tie-break, so that the invocation itself is an instance of Sel/Upd under the IC-13 gate.
+\end{itemize}
+
+\subsection*{Protocol objects, readout functors, and certificate families (deep unification)}
+\label{subsec:protocol_sampling_certificate_unification}
+
+\paragraph{Purpose (one sentence).}
+\AuditTag Many parts of this manuscript are easiest to read as statements about the \emph{same} protocol object viewed through different readout functors and audited by different certificate families.
+This subsection records the common object model and how it reuses the Sel/Upd/gap vocabulary already fixed above.
+
+\begin{definition}[Protocol object (audit-facing packaging)]\label{def:protocol_object_packaging}
+\AuditTag A protocol object is the tuple
+\[
+\mathsf{Prot}:=(X,\Theta;\ \mathcal{K};\ \mathcal{R}),
+\]
+where $(X,\Theta)$ is the scan system (state space and update operator),
+$\mathcal{K}$ is an explicitly declared finite family of \emph{cuts/kernels/weights} (window projectors $\Pi_W$, soft kernels $\pi_\sigma$, scattering carriers, etc.),
+and $\mathcal{R}$ is a declared \emph{readout functor} that maps $(X,\Theta,K)$ to a finite observable or to a finite certificate object.
+\end{definition}
+
+\begin{definition}[Readout--certificate composition (minimal functorial form)]\label{def:readout_certificate_composition}
+\AuditTag Fix a protocol object and a kernel/cut choice $K\in\mathcal{K}$.
+Write the readout output as
+\[
+O_K:=\mathcal{R}(X,\Theta,K),
+\]
+and let $\mathcal{C}$ denote a declared certificate functional (or certificate generator) acting on readout outputs.
+The induced certificate is the composition
+\[
+\mathrm{Cert}_{\mathcal{C}}(K):=(\mathcal{C}\circ\mathcal{R})(X,\Theta,K)=\mathcal{C}(O_K).
+\]
+When $\mathcal{C}$ is scalar-valued, it can be used directly as an objective $J$ in a Sel instance (Appendix~\ref{app:branching_selection_rigidity}).
+\end{definition}
+
+\begin{remark}[Sel/Upd/gap reuse: certificates are objectives on finite families]\label{rem:certificates_as_sel_objectives_unified_spine}
+\AuditTag Under Definition~\ref{def:protocol_object_packaging}, a ``certificate'' is not a separate ontology: it is typically a functional of the readout output (or a generating series built from it) and can be treated as an objective $J$ in a selection problem (Definition~\ref{def:selection_problem_tiebreak}).
+Therefore, \emph{certificate extraction and parameter choice} are instances of the same Sel/Upd/gap discipline:
+Sel chooses $K\in\mathcal{K}$ (or a finite surrogate output) by a declared objective and tie-break,
+Upd changes $(\mathcal{K},\mathcal{R})$ along a resolution/update trajectory,
+and gap-stability controls whether the selected certificate is robust under bounded perturbations (Appendix~\ref{app:branching_selection_rigidity}).
+\end{remark}
+
+\begin{remark}[Obstructions as non-commuting update diagrams (audit template)]\label{rem:obstruction_as_noncommuting_diagram}
+\AuditTag In the audit language used here, many ``failure points'' can be summarized as a \emph{diagram not commuting} under an update:
+one route updates the protocol (change $K$ or refine the readout), while another route takes a certificate first and then updates in the certificate coordinate.
+When the two routes disagree beyond a declared tolerance, the disagreement is recorded as an obstruction channel.
+Concrete instances recorded in this manuscript include:
+(i) gap cohomology classes that obstruct global cancellation of projection residuals (Section~\ref{sec:embedding_gap_projection}),
+(ii) regularization-coordinate dependence in Abel-first/finite-part prescriptions (Appendix~\ref{app:abel_finite_part_notes} and Appendix~\ref{app:cyclic_calculus_theta_fp}),
+and (iii) order sensitivity under noncommuting cuts (Appendix~\ref{app:reference_state_and_cuts}).
+\end{remark}
+
+\begin{definition}[Obstruction functional (minimal audit form)]\label{def:obstruction_functional}
+\AuditTag Fix a protocol object $\mathsf{Prot}=(X,\Theta;\mathcal{K};\mathcal{R})$ (Definition~\ref{def:protocol_object_packaging})
+and a certificate functional (or generator) $\mathcal{C}$ as in Definition~\ref{def:readout_certificate_composition}.
+Let $\mathsf{Upd}$ be an update that changes the protocol-side choice (kernel/cut/readout parameters) from $K$ to $K':=\mathsf{Upd}(K)$.
+\AuditTag If the manuscript declares a corresponding induced update rule $\mathsf{Upd}_{\mathcal{C}}$ on the certificate coordinate,
+define the \emph{obstruction} by the (signed) mismatch between the two routes:
+\[
+\mathrm{Obs}(\mathsf{Upd};\mathcal{C};K)
+:=
+\mathrm{Cert}_{\mathcal{C}}(K')\;-\;\mathsf{Upd}_{\mathcal{C}}(\mathrm{Cert}_{\mathcal{C}}(K)).
+\]
+\AuditTag If no induced rule $\mathsf{Upd}_{\mathcal{C}}$ is declared (or if it is not invariant under the declared equivalences),
+then the obstruction is \emph{undefined} and the certificate cannot be transported across that update without adding an explicit matching dictionary.
+\end{definition}
+
+\begin{remark}[Three instantiated obstructions already present in this manuscript]\label{rem:obstruction_functional_instances}
+\AuditTag Definition~\ref{def:obstruction_functional} is only a packaging device; its content is provided by concrete instantiations already recorded elsewhere:
+\begin{itemize}
+\item \textbf{(HPA gap field) cohomology obstruction.}
+In Section~\ref{sec:embedding_gap_projection}, the residual gap field on an interaction complex admits gauge-like updates by adding coboundaries.
+Here $\mathsf{Upd}$ is the gauge update, $\mathsf{Upd}_{\mathcal{C}}$ is the coboundary action, and the obstruction is the cohomology class:
+vanishing obstruction corresponds to $[\delta]=0$; a nontrivial class $[\delta]\in H^1$ is an auditable structured failure mode.
+\item \textbf{(Abel/finite-part) regularization-coordinate obstruction.}
+In Appendix~\ref{app:abel_finite_part_notes} and Appendix~\ref{app:cyclic_calculus_theta_fp}, $\mathsf{Upd}$ changes the Abel/regularization coordinate (e.g.\ the approach parameter to the pole barrier),
+and $\mathsf{Upd}_{\mathcal{C}}$ is the declared finite-part/constant-term extraction rule.
+The obstruction is the residual dependence of the extracted constant term across admissible coordinates, which must be recorded as a matching/audit boundary if nonzero.
+\item \textbf{(Cut order) noncommutativity obstruction.}
+In Appendix~\ref{app:reference_state_and_cuts}, swapping the order of positive cuts is an update $\mathsf{Upd}$; if one attempts to transport a spectral certificate across this update,
+the mismatch can manifest as a complex spectral component (Remark~\ref{rem:cuts_noncommuting_imaginary_component}).
+In this manuscript, this is treated as an order-sensitivity audit template and is not promoted to a physical identification without an explicit matching dictionary.
+\end{itemize}
+\end{remark}
+
+\paragraph{Reader map: one protocol object, many audited outputs.}
+\AuditTag In this manuscript the following modules can be read as different readout functors/certificates on the same packaged protocol object:
+\begin{itemize}
+\item \textbf{Symbolic word readout.} $K=\Pi_W$ and $\mathcal{R}$ is the window-word map $w_n=\mathbf{1}\{z_n\in W\}$ (Section~\ref{subsec:window_projection}).
+\item \textbf{Projection readout + quantum gap.} $K$ is a nearest-point/soft projection kernel $\pi,\pi_\sigma$ on an explicitly finite candidate set and the certificate is the residual $\delta$ (Section~\ref{sec:embedding_gap_projection}); a structured failure mode is recorded by a nontrivial $H^1$ class (same section).
+\item \textbf{Cyclic calculus and Abel finite parts.} $\mathcal{R}$ is a finite-difference/trace package on scan orbits, and the certificate is a renormalized constant-term (Abel-first/finite-part) value (Appendix~\ref{app:abel_finite_part_notes} and Appendix~\ref{app:cyclic_calculus_theta_fp}).
+\item \textbf{Det/trace/\texorpdfstring{$\zeta$}{zeta} bookkeeping and primitive-cycle refinement.} $\mathcal{R}$ packages periodic counts by $-\log\det(I-zM)=\sum z^k\mathrm{tr}(M^k)/k$ (Section~\ref{subsec:rigidity_det_trace_zeta}); primitive-cycle Euler products are recorded as a finite-state refinement (Appendix~\ref{app:zeckendorf_shift_prime_cycles}).
+\item \textbf{Geometric-dynamics packaging (orbit/\texorpdfstring{$\zeta$}{zeta} spine).} Section~\ref{sec:hpa_geometric_dynamics_orbit_zeta} records a theorem-facing orbit/\,$\zeta$ packaging of the golden-mean grammar, its cyclic closure, and its Abel pole-barrier normalization, together with (i) a strict Sturmian-vs-admissible language separation (Appendix~\ref{app:sturmian_vs_golden_mean}), (ii) a theorem-level Sturmian complexity/entropy-rate bound $p(n)=n+1\Rightarrow h_{\mathrm{top}}=0$ (Appendix~\ref{app:sturmian_entropy}), (iii) a scan-orbit frequency stability statement via unique ergodicity of irrational rotations (Appendix~\ref{app:cyclic_calculus_theta_fp}), (iv) a uniform-recurrence (bounded-gap) return property for factors in the canonical coding (Appendix~\ref{app:sturmian_uniform_recurrence}), (v) a quantitative convergent-denominator hitting-time bound derived from discrepancy certificates (Appendix~\ref{app:rotation_hitting_time_discrepancy}), and (vi) a two-scale Sturmian factor return bound in terms of adjacent convergent denominators (Appendix~\ref{app:sturmian_return_times_qk}).
+\item \textbf{Delay certificates as logdet derivatives.} On a declared unitary band, the WS trace is a frequency derivative of $\log\det S$ (Section~\ref{subsec:rigidity_scattering_delay_logdet}); this is a certificate of the same determinant/trace family with a different coordinate (derivative in $\omega$).
+\item \textbf{Reference-state limit and cut order sensitivity.} Window words can be realized as a projection-measurement limit in $L^2(\RR/\ZZ)$, and commuting/noncommuting positive cuts provide a minimal order-sensitivity spectrum template (Appendix~\ref{app:reference_state_and_cuts}).
+\end{itemize}
+
+\paragraph{Unified table (object \texorpdfstring{$\to$}{->} readout \texorpdfstring{$\to$}{->} certificate \texorpdfstring{$\to$}{->} Sel/Upd/gap gate).}
+\AuditTag Table~\ref{tab:protocol_readout_certificate_gate} makes the above reuse explicit in the minimal form used in this manuscript:
+each row is an instance of ``explicit finite family + readout + certificate'' governed by Sel/Upd/gap (Appendix~\ref{app:branching_selection_rigidity}), with a named failure-point/obstruction channel.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.21\textwidth} p{0.23\textwidth} p{0.22\textwidth} p{0.26\textwidth}}
+\toprule
+protocol/readout functor $\mathcal{R}$ & certificate object (typical $J$) & Sel/Upd/gap gate & failure point / obstruction channel \\
+\midrule
+window word $w_n=\mathbf{1}\{z_n\in W\}$ &
+finite words / empirical counts &
+Sel: choose $W$ or kernel family; Upd: refine $m$ &
+coarse-graining irreversibility / DPI (Section~\ref{subsec:rigidity_dpi_second_law}) \\
+
+projection kernel $\pi,\pi_\sigma$ on $\mathcal{Z}$ &
+gap residual $\delta$; gap field &
+Sel: nearest-point on a finite candidate set; gap-stability if strictly gapped &
+structured residual: $H^1\neq 0$ (Section~\ref{sec:embedding_gap_projection}) \\
+
+Abel-first / finite-part / cyclic calculus &
+renormalized constant term (FP) &
+Upd: change readout horizon / regularization coordinate under explicit contract &
+regularization dependence boundary (Appendix~\ref{app:abel_finite_part_notes}; Appendix~\ref{app:cyclic_calculus_theta_fp}) \\
+
+det/trace/\texorpdfstring{$\zeta$}{zeta} package &
+$-\log\det$ / pole barrier / pressure &
+Sel/Upd: choose carrier/operator family under explicit finite registry &
+analyticity boundary at pole barrier (Corollary~\ref{cor:pole_barrier_equals_exp_minus_pressure}) \\
+
+primitive-cycle refinement &
+Euler product over primitive cycles; $\pi_n$ &
+Upd: change coordinate/basis for the same package &
+finite-state limitation boundary (Appendix~\ref{app:zeckendorf_shift_prime_cycles}) \\
+
+delay as logdet derivative &
+WS trace / delay proxy &
+Match: map to lab observables; keep separate from time-advance &
+unitary-band scope and matching boundary (Section~\ref{subsec:rigidity_scattering_delay_logdet}) \\
+
+reference-state limit / cut order sensitivity &
+projection-limit justification; order-sensitivity template &
+Audit: order sensitivity must be declared (no hidden ordering knobs) &
+noncommuting cuts can generate complex spectrum (Appendix~\ref{app:reference_state_and_cuts}) \\
+\bottomrule
+\end{tabular}
+\caption{Deep unification reuse: the same protocol object viewed through different readout functors yields different certificate coordinates, all governed by the Sel/Upd/gap gate.}
+\label{tab:protocol_readout_certificate_gate}
+\end{table}
+
+\subsection*{Resolution flow as protocol-state updates}
+\AuditTag Many interface outputs depend on a protocol state $(m,n,K)$ (window length, addressing order, readout kernel),
+which is closed by CAP within explicit finite families (Section~\ref{sec:paper_contract} and Appendix~\ref{app:tick_cap_derivation}).
+In this paper, three recurring narratives are treated as instances of the same update viewpoint:
+\begin{itemize}
+\item \textbf{uplift}: changing the window length $m$ and selecting fiber representatives under refinement (Appendix~\ref{app:mass_flow_under_uplift});
+\item \textbf{RG}: describing running in the resolution coordinate $r(\mu)$ with explicit scheme/threshold boundaries (Appendix~\ref{app:running_couplings_resolution_flow});
+\item \textbf{forced zoom}: engineered threshold crossing that changes the effective admissible protocol budget (Section~\ref{subsec:active_renormalization_synthesis}).
+\end{itemize}
+\AuditTag The mathematical-layer carrier for these statements is always finite (candidate families, prefix fibers, and deterministic keys);
+any calibration to laboratory units remains at the matching layer.
+

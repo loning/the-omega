@@ -11,6 +11,11 @@ Abstractly, one may encode noncommutativity by operators $(U,V)$ satisfying
 UV=\e^{2\pi\iu\alpha}\,VU,
 \end{equation}
 with an irrational slope $\alpha$.
+\begin{remark}[Fourier exchange and Morita equivalence (audit)]\label{rem:weyl_morita_fourier_exchange}
+\AuditTag The Weyl-pair scan model admits a canonical ``scan--readout exchange'' under Fourier transform: translation (scan shift) becomes phase multiplication, while phase multiplication becomes an index shift.
+Moreover, for irrational slopes the associated rotation algebras admit a natural $\mathrm{SL}_2(\ZZ)$-action on $\alpha$ under which Morita equivalence provides a precise mechanism for treating distinct slope parameters as ``the same geometry'' once the equivalence class is declared.
+We record these standard structures as an audit-facing symmetry/equivalence template in Appendix~\ref{app:morita_fourier_exchange}; they are not used as premises in the theorem-level folding results.
+\end{remark}
 At the level of a circle rotation model, let $x_0\in\RR/\ZZ$ and define the orbit
 \begin{equation}\label{eq:kronecker_orbit}
 x_n:=x_0+n\alpha \pmod{1},\qquad
@@ -43,6 +48,18 @@ Finite observers access only finite windows, hence finite words $w_1\cdots w_m\i
 In operational quantum language, such coarse readout corresponds to a POVM-like description, where the ``particle spectrum'' is readout-induced discreteness rather than an \emph{a priori} field continuum; see, e.g., \cite{NielsenChuang2010} for standard measurement and POVM formalism.
 In particular, what is experimentally accessible is not the underlying continuous orbit, but the empirical statistics of finite window words.
 The finite readout alphabet $\Omega_m$ and its stability-filtered subsets therefore serve as the primary objects for any auditable finite-resolution model.
+
+\begin{remark}[Window words as a projection-measurement limit (audit)]\label{rem:window_words_projection_limit_pointer}
+\AuditTag The binary readout $w_n=\mathbf{1}\{z_n\in W\}$ can be realized as a sharp-localization limit of a standard projection measurement on $L^2(\RR/\ZZ)$: a normalized bump state $\omega_{x_0,\delta}$ and the projector $\Pi_W$ yield scalars $\langle \omega_{x_0,\delta},\Pi_W\Theta^n\omega_{x_0,\delta}\rangle$ that converge to $\mathbf{1}_W(x_0+n\alpha)$ at Lebesgue points as $\delta\downarrow 0$.
+This is recorded as an audit-facing template in Appendix~\ref{app:reference_state_and_cuts}; it is not used as a premise in folding proofs.
+\end{remark}
+
+\begin{remark}[Wave--particle duality and delayed choice as readout-interface effects]\label{rem:wave_particle_delayed_choice_pointer}
+Wave--particle duality is an interface statement: coherent readout retains phase relations and therefore exhibits interference, while event-record (which-way) readout yields a decohered mixture and therefore obeys classical additivity.
+The minimal algebraic content is the presence/absence of cross terms in Born probabilities, recorded in Lemma~\ref{lem:z128_interference_vs_mixture}.
+Delayed-choice and quantum-eraser scenarios sharpen the same point: a late choice of readout (measurement basis / recordability) selects which statistics become observable, without requiring any ``change of the past''.
+Appendix~\ref{app:wave_particle_delayed_choice} records a compact audit-facing account aligned with the Q input package (Appendix~\ref{app:quantum_measurement_born} and Appendix~\ref{app:internal_fiber_g2_optional}).
+\end{remark}
 
 \begin{remark}[Irrational rotations and Sturmian minimal complexity]\label{rem:sturmian_minimal_complexity}
 For the canonical two-interval partition induced by an irrational rotation
@@ -88,16 +105,21 @@ For a general irrational slope $\alpha$, interval codings of the rotation \eqref
 The choice $\alpha=\varphi^{-1}=[0;1,1,1,\dots]$ is distinguished by its extremal Diophantine property: among irrationals it is ``most poorly approximable'' by rationals (all continued-fraction digits are minimal), yielding a canonical and maximally rigid substitution structure (the Fibonacci word) and therefore a canonical digit grammar that closes to Zeckendorf/Fibonacci weights \cite{HardyWright2008,Lothaire2002}.
 This is the mathematical sense in which the golden branch is the minimal nontrivial symbolic/arithmetic bridge: it is the unique slope whose Ostrowski system reduces to the Fibonacci/Zeckendorf system used throughout the folding layer.
 \end{remark}
+\begin{remark}[Gauss-map renormalization viewpoint (audit)]\label{rem:gauss_map_fixed_point}
+\AuditTag Continued-fraction digits can be generated dynamically by iterating the Gauss map $G(\xi)=\{1/\xi\}$ on $(0,1)$.
+In that mother-space viewpoint, the golden branch $\alpha=\varphi^{-1}=[0;1,1,1,\dots]$ is the unique fixed point of $G$ and therefore the canonical renormalization-stable choice within the bounded-type class.
+Appendix~\ref{app:modular_flow_gauss_map} records the standard modular-geodesic origin, the Gauss invariant measure, and the Gauss--Kuzmin convergence template used for audit-facing justification; none of these facts is used as a premise in the folding proofs.
+\end{remark}
 
 \paragraph{Tick-only reading: the base \texorpdfstring{$\varphi$}{phi} as the intrinsic clock-ratio.}
 In a tick-first ontology, the scan index $n$ is the only primitive time variable.
 Choosing a slope $\alpha$ therefore fixes, at finite depth, how the tick stream distributes symbols under window projection and how mismatch accumulates along time.
-Proposition~\ref{prop:golden_least_discrepancy} makes this selection auditable: at every finite depth, the golden branch is the unique minimizer of a finite-depth continued-fraction complexity proxy and therefore the unique choice that closes the symbolic/arithmetic bridge to a canonical digit grammar.
-This is why the Fibonacci growth rate $\log\varphi$ becomes the intrinsic normalization constant for scale and time dictionaries downstream: it is the topological entropy (capacity) of the Zeckendorf-admissible stable-type language $X_m$ on the golden branch (cf.\ Remark~\ref{rem:phi_base_entropy} and Remark~\ref{rem:sturmian_vs_golden_mean}).
+Proposition~\ref{prop:golden_least_discrepancy} makes this selection auditable: at every finite depth, the golden branch is the unique minimizer of a finite-depth continued-fraction digit-sum proxy and therefore the unique choice that closes the symbolic/arithmetic bridge to a canonical digit grammar.
+This is why the Fibonacci growth rate $\log\varphi$ becomes the intrinsic normalization constant for scale and time dictionaries downstream: it is the topological entropy (capacity) of the Zeckendorf-admissible stable-type language $X_m$ on the golden branch (cf.\ Remark~\ref{rem:phi_base_entropy} and Remark~\ref{rem:sturmian_vs_golden_mean}; see also Appendix~\ref{app:sturmian_vs_golden_mean} for the precise relation between the two symbolic objects).
 This should not be confused with the entropy \emph{rate} of the Sturmian time-series readout, which vanishes (Appendix~\ref{app:sturmian_entropy}).
 Accordingly, the resolution coordinate $r(\mu)=\log(\mu/m_e)/\log\varphi$ used later is simultaneously a log-frequency and (up to sign) a log-time coordinate (Appendix~\ref{app:time_mass_delay}), providing a unified tick-derived scale language.
 
-\begin{proposition}[Finite-depth least-discrepancy rigidity of the golden branch]\label{prop:golden_least_discrepancy}
+\begin{proposition}[Finite-depth continued-fraction minimality of the golden branch]\label{prop:golden_least_discrepancy}
 Let $\alpha=[0;a_1,a_2,\dots]\in(0,1)\setminus\QQ$ and fix a depth $m\ge 0$.
 Define the finite-depth continued-fraction proxy
 \[
@@ -110,7 +132,8 @@ In particular, $\alpha=\varphi^{-1}=[0;1,1,1,\dots]$ uniquely minimizes $C_m(\al
 Since $a_i\in\NN$ for all $i$, one has $a_i\ge 1$, hence $C_m(\alpha)\ge m+1$.
 Equality holds if and only if each term satisfies $a_{k+1}=1$ for $k=0,\dots,m$, i.e.\ $a_1=\cdots=a_{m+1}=1$.
 \end{proof}
-The CAP reading is that, among irrational scan slopes, the golden branch is rigidly selected as the unique minimizer of a finite-depth complexity/discrepancy proxy, and it is the unique choice that closes the Ostrowski numeration to Zeckendorf/Fibonacci ticks used throughout the folding layer.
+The CAP reading is that, among irrational scan slopes, the golden branch is rigidly selected as the unique minimizer of a finite-depth continued-fraction complexity proxy, and it is the unique choice that closes the Ostrowski numeration to Zeckendorf/Fibonacci ticks used throughout the folding layer.
+\AuditTag This proposition is a \emph{finite-depth} digit/grammar minimality statement. Quantitative mismatch control is recorded separately as discrepancy certificates (Subsubsection~\ref{subsubsec:discrepancy_certificates} and Appendix~\ref{app:discrepancy_ostrowski}).
 
 \subsubsection{Accumulated mismatch and discrepancy certificates (interface)}
 \label{subsubsec:discrepancy_certificates}
@@ -132,7 +155,7 @@ and the accumulated mismatch by
 E_N := N\,D_N^\ast.
 \end{equation}
 In this language, sustainable readout corresponds to keeping $E_N$ controlled over long horizons, while phase locking corresponds to linear growth in $E_N$ for rational (or effectively rational) slopes.
-For bounded-type irrational slopes (notably the golden branch), $E_N$ admits explicit logarithmic upper bounds tied to continued-fraction data \cite{Cassels1957,KuipersNiederreiter1974}; in the HPA--$\Omega$ program this provides a quantitative mismatch dynamic that complements the symbolic/grammar viewpoint and supports least-discrepancy selection principles \cite{Ma2025HPT,Ma2025CAP}.
+For bounded-type irrational slopes (notably the golden branch), $E_N$ admits explicit logarithmic upper bounds tied to continued-fraction data \cite{Cassels1957,KuipersNiederreiter1974}; in the HPA--$\Omega$ program this provides a quantitative mismatch dynamic that complements the symbolic/grammar viewpoint and supports minimax discrepancy-certificate selection principles \cite{Ma2025HPT,Ma2025CAP}.
 \begin{remark}[An explicit bounded-type certificate (self-contained)]
 \label{rem:bounded_type_certificate}
 Appendix~\ref{app:discrepancy_ostrowski} records a self-contained derivation of a
@@ -145,6 +168,17 @@ E_N\le 8A\bigl(4+\log_\varphi N\bigr),
 \]
 and the golden branch $a_k\equiv 1$ is the minimax choice within this audited
 certificate family (Remark~\ref{rem:golden_minimax_discrepancy}).
+\par
+\AuditTag The same continued-fraction denominators $q_k$ also control \emph{persistence} certificates for the Sturmian coding itself:
+uniform recurrence (bounded gaps of factors) and a two-scale return-time bound $\tau\le q_k+q_{k+1}$ for length-$m$ factors when $q_k\le m<q_{k+1}$; see Appendices~\ref{app:sturmian_uniform_recurrence} and \ref{app:sturmian_return_times_qk}.
+\par
+\AuditTag \textbf{Rigidity bridge (why the golden branch is jointly optimal).}
+The golden branch $a_k\equiv 1$ is simultaneously minimax for two distinct audited certificate families driven by the same continued-fraction data:
+\begin{itemize}
+\item \textbf{mismatch (discrepancy) constants:} within bounded type $a_k\le A$, the explicit discrepancy bound scales linearly in $A$ (Corollary~\ref{cor:bounded_type_discrepancy}), so the smallest admissible $A$ gives the sharpest worst-case constant;
+\item \textbf{persistence (return-gap) constants:} within the same bounded-type class, return gaps admit the linear bound $\tau\le (A+2)m$ (Corollary~\ref{cor:sturmian_return_bounded_type_linear}), again minimized at the smallest admissible $A$.
+\end{itemize}
+Since the golden branch is characterized by the minimal possible bound $A=1$, it is the joint minimax choice for both mismatch control and persistent-pattern return within this audited class.
 \end{remark}
 
 \begin{remark}[What changes if $\alpha$ is varied]\label{rem:alpha_variation}
@@ -152,5 +186,8 @@ If one replaces $\alpha=\varphi^{-1}$ by another irrational, the theorem-level S
 Accordingly, the specific Fibonacci counts and $\varphi$-based depth coordinates used in later sections are tied to the golden branch choice; a generalized program would replace Fibonacci weights by the corresponding Ostrowski weights and would induce a different admissibility grammar.
 In the present paper we therefore fix $\alpha=\varphi^{-1}$ as the CAP-minimal choice within this audited class (Proposition~\ref{prop:golden_least_discrepancy}), and we audit robustness primarily under window-length uplift $m\mapsto m'$ and balanced refinement $m=2n$ (Appendix~\ref{app:generated_tables}), rather than under arbitrary irrational-slope substitution.
 \end{remark}
+
+\paragraph{Minimal input summary (audit).}
+\AuditTag The only input used to obtain explicit finite-$N$ mismatch certificates is continued-fraction data of the chosen scan slope $\alpha$ (bounded partial quotients for the cleanest uniform bound); no additional physical postulates enter the derivation beyond the tick-first scan semantics.
 
 

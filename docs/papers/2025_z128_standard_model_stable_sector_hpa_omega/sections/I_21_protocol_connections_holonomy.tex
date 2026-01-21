@@ -49,11 +49,18 @@ for each component $s_i$ with reference $s_i^{\mathrm{ref}}>0$ we set $e_i:=|\lo
 E_\infty:=\max_i e_i,\qquad E_1:=\sum_i e_i.
 \]
 Candidates are selected by lexicographic minimization of $(E_\infty,E_1)$, followed by an explicitly stated deterministic complexity tie-break (e.g.\ phase-denominator exponent $p$, discrete phase map family, loop indices, and global $S_3\times S_3$ relabelings), so that reported best fits are unique within the declared finite search domains.
+\AuditTag When a reported verdict is intended to be invariant under a declared equivalence (e.g.\ gauge relabeling, PDG convention scope, or a scheme contract in a downstream matching dictionary), the tie-break key must itself be invariant; this is the legality threshold recorded in Proposition~\ref{prop:rigidity_legality_invariant_verdicts}.
 
 \begin{remark}[Diagnostic status and non-circular use of mixing targets]\label{rem:holonomy_diagnostic_status}
 The holonomy constructions in this section are \emph{diagnostics}: they do not supply premises for the CKM/PMNS closures in Sections~\ref{subsec:ckm_mixing_depths} and \ref{sec:pmns_neutrino_closure}.
 Whenever PDG/global-fit targets appear here, they enter only as external comparison values used to score a finite family of protocol outputs under the audit norm.
 In particular, we do not tune the connection rule, the phase-map family, or the phase denominator by importing Standard Model targets into the folding core; we instead report bounded sweeps over these explicit finite protocol parameters and record uniqueness/gap information within each declared search domain.
+\end{remark}
+
+\begin{remark}[Identifiability boundary of cycle-type-only summaries]\label{rem:holonomy_identifiability_boundary}
+\AuditTag The loop holonomy is defined only up to conjugation (local relabeling), so any readout that depends on holonomy only through class functions (e.g.\ trace/character summaries) is rigidly controlled by cycle-type statistics.
+If two realizations induce the same cycle-type histogram on a fixed loop family, then no class-function aggregate can distinguish them; distinguishing requires either enlarging the loop family or introducing a non-class-function readout (Proposition~\ref{prop:cycle_type_identifiability_boundary}).
+This boundary is used explicitly as an applicability/failure-point hook in the falsifiability narrative for discrete mixing diagnostics (Section~\ref{subsec:p5_quantified_predictions}).
 \end{remark}
 
 \subsection{Fibers under projection: stable types with finite degeneracy}
@@ -66,6 +73,38 @@ P(w):=\mathrm{Fold}_6^{-1}(w)\subset\{0,\dots,63\},
 \]
 From the protocol viewpoint, $P(w)$ is a finite \emph{fiber} of microstates that project to the same stable readout label.
 Comparing stable labels across space requires a convention for how these fibers are identified, which is the discrete origin of a compensating connection.
+
+\begin{proposition}[Maximal fiber degeneracy forces a permutation gauge]\label{prop:max_fiber_deg_forces_perm_gauge}
+\MathTag Fix a window length $m\ge 1$ and let $K_m:=\{0,\dots,2^m-1\}$.
+For $w\in X_m$, write $P_m(w):=\mathrm{Fold}_m^{-1}(w)\subset K_m$ and define the maximal fiber degeneracy
+\[
+r_m:=\max_{w\in X_m}|P_m(w)|.
+\]
+Any construction that assigns to every stable label $w\in X_m$ a \emph{uniform} ordered slot list of length $r$ that contains all elements of $P_m(w)$ (allowing deterministic padding but forbidding truncation) must satisfy $r\ge r_m$.
+For any such $r$, comparing two length-$r$ slot lists across an oriented edge is canonically an element of the permutation group $S_r$, and local relabelings of slots act by conjugation.
+Therefore, the minimal nontrivial uniform slot gauge associated with the folding fibers at resolution $m$ is $S_{r_m}$.
+In particular, at the anchor $m=6$ one has $r_6=4$ by Theorem~\ref{thm:fold6_stats}, hence the minimal uniform slot gauge is $S_4$.
+\end{proposition}
+\begin{proof}
+If $r<r_m$, then there exists a label $w$ with $|P_m(w)|=r_m$ that cannot be placed into $r$ slots without truncation.
+Thus any truncation-free uniform slot model must have $r\ge r_m$.
+Given a fixed slot set $\{0,1,\dots,r-1\}$ at each vertex, any deterministic identification of ordered slot positions between two endpoints is a bijection of this set, hence a permutation in $S_r$.
+Relabeling slots at a vertex by $g_x\in S_r$ conjugates loop products, so conjugacy invariants are gauge invariant.
+The minimality claim follows by taking $r=r_m$.
+\end{proof}
+
+\begin{corollary}[Resolution growth of the minimal slot count]\label{cor:rm_growth_rate}
+\MathTag Let $r_m=\max_{w\in X_m}|\mathrm{Fold}_m^{-1}(w)|$ be the maximal fiber degeneracy at window length $m$.
+Then
+\[
+\log r_m = m\log(2/\varphi)+O(1),
+\qquad
+\lim_{m\to\infty}\frac{1}{m}\log r_m=\log(2/\varphi).
+\]
+\end{corollary}
+\begin{proof}
+This is Proposition~\ref{prop:rm_entropy_gap_rate} in Section~\ref{subsec:foldm_uplift}.
+\end{proof}
 
 \subsection{A deterministic discrete connection on grid edges}
 \label{subsec:deterministic_edge_connection}
@@ -85,6 +124,7 @@ This produces a discrete, non-abelian edge connection on edges, designed to be a
 At $(m,n)=(6,3)$ the Fold$_6$ preimage sizes satisfy $|P(w)|\in\{2,3,4\}$ (Theorem~\ref{thm:fold6_stats}), so rank-$4$ padding is the unique smallest uniform slot count that accommodates every fiber without truncation.
 Repeating the last element is a deterministic minimal padding that does not introduce any new microstate index beyond the true fiber.
 For the cost, Hamming distance on $\{0,1\}^6$ is the canonical bit-flip metric induced by the readout alphabet itself; it measures the minimal number of elementary bit changes between microstates and is independent of any external geometric scale.
+\AuditTag A bounded counterfactual sensitivity audit of the resulting gauge-invariant holonomy cycle statistics under alternative padding/truncation and tie-break conventions is recorded in Appendix~\ref{app:holonomy_sweeps_extended} (Table~\ref{tab:holonomy_transport_rule_sensitivity}).
 \end{remark}
 
 \begin{definition}[Hamming distance on microstates]\label{def:hamming_microstates}
@@ -125,6 +165,7 @@ Under the local relabeling action of Definition~\ref{def:s4_vertex_gauge}, the h
 This is the standard lattice-gauge transformation law: edge transports change by left/right multiplication at endpoints, so the ordered product around a closed loop changes by conjugation by the vertex relabeling at the basepoint \cite{Wilson1974,Rothe2012}.
 Conjugation preserves cycle type in $S_4$, so the cycle-type summary in Table~\ref{tab:holonomy_cycle_types} is gauge invariant under local fiber relabelings.
 \end{proof}
+\AuditTag In addition, any loop readout that depends on holonomy only through a class function (e.g.\ a character/trace observable of a representation) is rigidly determined by the cycle-type histogram; see Proposition~\ref{prop:rigidity_cycle_type_class_functions}.
 
 \begin{table}[t]
 \centering

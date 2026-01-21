@@ -30,10 +30,40 @@ Each item below is a \emph{semantic quotient}: it does not add new dynamical ass
 \paragraph{(E1) Tick-origin shift.}
 \InterfaceTag Since protocol observables depend on tick differences, $t\sim t+t_0$ is a coordinate convention (Section~\ref{subsec:tick_time_arrow}).
 
+\paragraph{(E1b) Resolution-origin shift (scale coordinate).}
+\InterfaceTag In the Fibonacci scale map $\mu(r)=\mu_0\varphi^{\,r}$ used throughout the matching dictionaries, changing the reference scale $\mu_0$ is an additive shift of the coordinate $r$.
+Likewise, a scheme rescaling of a transmutation scale $\Lambda'\!=c\Lambda$ induces the same additive shift in the $\Lambda$-relative coordinate $r_\Lambda(\mu)=\log_\varphi(\mu/\Lambda)$ (Lemma~\ref{lem:lambda_rescaling_shift_r}).
+This is treated as a coordinate convention under the scheme contract (Appendix~\ref{app:scheme_invariance_audit_contract}) and is recorded as a reusable bridge statement in Corollary~\ref{cor:rigidity_scheme_shift_origin_r}.
+
 \paragraph{(E2) Projection-fiber equivalence (finite observability).}
 \MathTag At fixed $m$, microstates $k,k'\in\{0,\dots,2^m-1\}$ are observationally equivalent if they project to the same stable type:
 $k\sim_m k'$ iff $\mathrm{Fold}_m(k)=\mathrm{Fold}_m(k')$.
 This is the formal core of finite observability and is the origin of degeneracy/fiber data.
+%
+\begin{proposition}[Observable quotient at fixed window length]\label{prop:omega_quotient_equals_Xm}
+\MathTag Fix $m\ge 1$ and let $K_m:=\{0,\dots,2^m-1\}$.
+Define $k\sim_m k'$ by $\mathrm{Fold}_m(k)=\mathrm{Fold}_m(k')$.
+Then $\sim_m$ is an equivalence relation and the induced map
+\[
+\overline{\mathrm{Fold}}_m:\ K_m/\!\sim_m\ \longrightarrow\ X_m,\qquad [k]\mapsto \mathrm{Fold}_m(k),
+\]
+is a bijection.
+Equivalently, the stable-type set $X_m$ is the observable quotient of the microstate index set at resolution $m$.
+In particular, $\mathrm{Fold}_m$ factors canonically as
+\[
+K_m\ \twoheadrightarrow\ K_m/\!\sim_m\ \xrightarrow[\cong]{\ \overline{\mathrm{Fold}}_m\ }\ X_m.
+\]
+\end{proposition}
+\begin{proof}
+Reflexivity, symmetry, and transitivity of $\sim_m$ are immediate from the definition.
+The map $\overline{\mathrm{Fold}}_m$ is well-defined because $\mathrm{Fold}_m$ is constant on equivalence classes by construction.
+It is surjective because $\mathrm{Fold}_m$ is surjective onto $X_m$ (Proposition~\ref{prop:foldm_surjective}).
+It is injective because if $\overline{\mathrm{Fold}}_m([k])=\overline{\mathrm{Fold}}_m([k'])$, then $\mathrm{Fold}_m(k)=\mathrm{Fold}_m(k')$ and hence $k\sim_m k'$, i.e.\ $[k]=[k']$.
+\end{proof}
+\begin{remark}[Fibers and residual uncertainty]\label{rem:fold_fibers_residual_uncertainty}
+\InterfaceTag Under this quotient, each stable label $w\in X_m$ represents a fiber $P(w):=\mathrm{Fold}_m^{-1}(w)\subset K_m$ of observationally indistinguishable microstates.
+Finite preimage degeneracy is a direct consequence of Zeckendorf truncation at finite window length and the cutoff $k<2^m$; see Section~\ref{subsec:foldm_uplift} for the explicit tail interpretation and degeneracy structure.
+\end{remark}
 
 \paragraph{(E3) Local fiber-slot relabelings (finite gauge redundancy).}
 \MathTag In the padded-fiber connection model (Section~\ref{sec:protocol_connections_holonomy}), relabeling local fiber slots at a vertex is $g_x\in S_r$ and acts by conjugation on loop products (Definition~\ref{def:s4_vertex_gauge}).
@@ -42,11 +72,123 @@ Therefore, loop holonomy is physical only through conjugacy invariants (e.g.\ cy
 \paragraph{(E4) Coarse graining (stochastic/Markov morphisms).}
 \InterfaceTag Any finite observer induces a coarse-graining preorder: one readout description is less informative if it is obtained from another by a stochastic map (a Markov morphism).
 This is the semantic input behind monotonicity requirements used when selecting canonical statistical quadratic forms (cf.\ C{\v{e}}ncov uniqueness in the CAP action closure; Section~\ref{app:cap_continuum_action_closure}).
+%
+\subsection{Resolution refinement as a projective semantics (uplift in \texorpdfstring{$m$}{m})}
+\label{subsec:resolution_projective_semantics}
+\paragraph{Deterministic refinement/forgetting by prefix projections.}
+\MathTag For $m\ge k\ge 1$, define the prefix projection
+\[
+\pi_{m\to k}:X_m\to X_k,\qquad
+\pi_{m\to k}(w_1\cdots w_m):=w_1\cdots w_k.
+\]
+This map is well-defined because $X_m$ is a forbidden-word language: a prefix of an admissible word is admissible.
+It is surjective because any $u\in X_k$ extends to $u0\cdots 0\in X_m$.
+Moreover, the family is functorial: for $m\ge \ell\ge k$ one has $\pi_{m\to k}=\pi_{\ell\to k}\circ \pi_{m\to \ell}$.
+Appendix~\ref{app:functorial_refinement} records this structure explicitly (at $k=6$) together with deterministic refinement multiplicities used in the SM-label uplift audits.
+
+\paragraph{Projective physical objects (resolution-consistent families).}
+\InterfaceTag A finite observer may change resolution (window length) from $m$ to $m'$.
+To treat ``the same object'' across such refinements without adding a new axiom, we use a projective semantics:
+a resolution-consistent object is a family of stable labels $(w_m)_{m\ge m_0}$ such that
+\[
+\pi_{m\to k}(w_m)=w_k\qquad\text{for all }m\ge k\ge m_0.
+\]
+Equivalently, objects live in the inverse limit $\varprojlim_{m} X_m$ under the prefix projections.
+This is the canonical finite-resolution backbone behind the informal phrase ``uplift in $m$'' used elsewhere in the paper.
+
+\paragraph{Relation to stochastic coarse graining (E4).}
+\InterfaceTag The prefix maps above are the deterministic prototype of coarse graining: they forget the last $(m-k)$ bits.
+Markov morphisms in (E4) are the stochastic generalization: they allow further loss of information beyond deterministic forgetting.
+Monotonicity requirements (e.g.\ for entropy-like functionals or quadratic forms) are to be read as monotonicity with respect to this preorder, with deterministic forgetting as a special case.
+
+\subsection{Geometric capacity as a CAP-closed boundary principle}
+\label{subsec:cap_geometric_capacity_boundary_principle}
+
+\paragraph{The finite geometric capacity statement (no gravity input).}
+\MathTag Fix integers $n\ge 1$ and $D_{\mathrm{face}}\ge 1$ and consider a $D_{\mathrm{face}}$-dimensional dyadic boundary face of side length $2^n$.
+The number of distinct boundary sites is
+\[
+N_{\max}(n,D_{\mathrm{face}})=(2^n)^{D_{\mathrm{face}}}=2^{D_{\mathrm{face}}n},
+\]
+so any injective encoding of microstates into sites obeys the cardinality bound
+\[
+2^m\le N_{\max}(n,D_{\mathrm{face}})\qquad\Longleftrightarrow\qquad m\le D_{\mathrm{face}}n.
+\]
+Equivalently, for given $(m,n)$ the minimal face dimension that can carry $2^m$ distinct microstates without additional conventions is
+\[
+D_{\mathrm{face}}^{\min}(m,n)=\left\lceil \frac{m}{n}\right\rceil.
+\]
+\AuditTag This is a finite counting statement; it is the minimal failure point for any claim of ``lossless display'' at fixed $(m,n)$.
+If $D_{\mathrm{face}}n<m$, then any display must either be non-injective (many-to-one), or introduce additional structure (e.g.\ multi-occupancy/time-multiplexing, error-correcting codes, or an explicitly declared coarse-graining preorder).
+
+\paragraph{Protocol entropy bounds as a finite ``area-law surrogate'' (PT).}
+\InterfaceTag The same content can be expressed at the level of entropy bounds from finite boundary dimension.
+Appendix~\ref{app:holo_capacity_bound} records the protocol version used in this manuscript:
+under the per-site register convention $d_{\mathrm{site}}(m)=2^m$ and a tensor-product locality subclass, a region $R$ on a boundary screen carries
+$\mathcal{H}_R\cong (\CC^{2^m})^{\otimes |R|}$ and hence
+\[
+S_{\partial}(R)\ \le\ \log_2\dim(\mathcal{H}_R)\ =\ m|R|\ =\ I_{\mathrm{prot}}(m,n;R)
+\]
+(Corollary~\ref{cor:holo_protocol_capacity_bound}).
+This is the admissible ``area-law'' content internal to the protocol layer: it is an entropy upper bound forced by finite boundary dimension, not a gravitational field-equation claim.
+
+\paragraph{Boundary-face displays and CAP selection (auditable visualization dictionary).}
+\InterfaceTag For arbitrary $(m,n)$, Appendix~\ref{app:generated_tables} records two deterministic boundary-face display conventions:
+the VFS boundary-face embedding (Figure~\ref{fig:universal_screen_vfs_holo_face_gallery}) and the locality-optimal Hilbert-face embedding (Figure~\ref{fig:universal_screen_holo_hilbert_face_gallery}).
+The candidate family is explicit and finite, and Table~\ref{tab:cap_visualization_selection} reports a CAP selection audit under two priority orders.
+In particular, under locality-first priorities, Hilbert-face is selected because its scan is unit-step adjacent (max $L^1$ jump $=1$) on the boundary face.
+This is a CAP-closed choice of a \emph{display dictionary}: it does not alter theorem-level folding statements, but it makes multi-$(m,n)$ readouts reproducible and locality-auditable.
+
+\paragraph{Bridge to black-hole area entropy (external input, matching-scoped).}
+\MatchTag In this manuscript, black-hole language is handled via declared equivalence semantics and explicit matching dictionaries.
+The object-level unification ``black holes as high-energy particles'' is treated as a semantic identification within the same protocol vocabulary (Appendix~\ref{app:bh_wormholes_pointer}).
+The area law itself,
+\[
+S_{\mathrm{BH}}=\frac{k_BA}{4\ell_P^2},
+\]
+is treated as a standard external input at the matching layer (Appendix~\ref{app:bh_wormholes_pointer}).
+\AuditTag The connection to the finite protocol capacity statements above is therefore:
+\emph{boundary channel counting} supplies a finite-dimensional entropy bound, while black-hole thermodynamics supplies a target saturation scaling and coefficient under explicit assumptions.
+Any numerical identification of $I_{\mathrm{prot}}(m,n;R)$ with an $A$-dependent capacity must specify (i) the information functional being matched (bits vs.\ $k_B$ units), (ii) the region-to-area map (discrete area representative), and (iii) the calibration scope and error budget (Appendix~\ref{app:bh_planck_capacity_calibration}).
+\MatchTag For a cosmological ``maximum information'' target treated in the same area-law dictionary, Appendix~\ref{app:bh_planck_capacity_calibration} records an explicit two-convention horizon family (Hubble vs.\ de Sitter proxy) and the corresponding CAP-minimized resolution assignments; see Table~\ref{tab:universe_planck_capacity_targets}.
+
+\paragraph{Minimal falsifiability checks (audit form).}
+\AuditTag The bridge above yields two immediate audit checks without introducing new dynamics:
+\begin{itemize}
+\item \textbf{Capacity feasibility.} For any proposed lossless boundary encoding at fixed $(m,n)$, verify $m\le D_{\mathrm{face}}n$ for the declared boundary face dimension; otherwise the claim must explicitly invoke additional structure beyond an injective site map.
+\item \textbf{Locality optimality within a bounded family.} If a candidate family is declared and locality-first CAP selects Hilbert-face, then any claimed improvement must exhibit a scheme in the same family with strictly smaller jump statistics (or else expand the candidate family with an explicit description-complexity accounting).
+\end{itemize}
 
 \paragraph{(E5) Action equivalence (boundary terms and field redefinitions).}
 \InterfaceTag When we speak of ``an action'' at the continuum closure level, the physical content is the induced equations of motion.
 Accordingly, actions related by adding a boundary term, or by invertible local field redefinitions, are treated as physically equivalent.
 CAP selection is applied to equivalence classes (by choosing canonical representatives under a stated tie-break) rather than to raw coordinate expressions.
+%
+\begin{proposition}[CAP is well-defined on equivalence classes (audit form)]\label{prop:cap_on_equiv_classes}
+\AuditTag Let $\sim$ be an equivalence relation on a finite candidate family $\mathcal{C}$.
+Assume the objective $J:\mathcal{C}\to\RR$ is invariant under $\sim$ (i.e.\ $c\sim c'\Rightarrow J(c)=J(c')$) and that the deterministic tie-break key $\kappa:\mathcal{C}\to\mathcal{K}$ (with a fixed total order on $\mathcal{K}$) is also invariant under $\sim$.
+Then CAP selection on $\mathcal{C}$ induces a unique selected equivalence class $[c_\ast]_\sim\in \mathcal{C}/\!\sim$ and a canonical representative $c_\ast$ within that class.
+Equivalently, the CAP output is representation-independent in the sense of the declared equivalence semantics.
+\end{proposition}
+\begin{proof}
+Since $\mathcal{C}$ is finite, CAP selects the lexicographically minimal pair $(J(c),\kappa(c))$.
+By invariance, both $J$ and $\kappa$ are constant on each equivalence class, so the induced map
+\[
+\mathcal{C}/\!\sim\ \longrightarrow\ \RR\times\mathcal{K},\qquad [c]\mapsto (J(c),\kappa(c)),
+\]
+is well-defined.
+Minimizing on $\mathcal{C}$ is therefore equivalent to minimizing on the finite quotient set $\mathcal{C}/\!\sim$, yielding a unique class $[c_\ast]_\sim$ and hence a canonical representative $c_\ast$.
+\end{proof}
+\begin{remark}[Audit checklist: minimal failure point]\label{rem:cap_equiv_audit_failure}
+\AuditTag If the tie-break key $\kappa$ depends on a coordinate expression rather than on an invariant of the equivalence class, then the CAP output can violate the equivalence semantics even when $J$ is invariant.
+Accordingly, audit form requires that both the candidate family and the tie-break specification be stated at the invariant level (Appendix~\ref{app:cap_audit_template}).
+\end{remark}
+
+\paragraph{(E6) Morita equivalence as a declared scan-level quotient (optional).}
+\AuditTag In the Weyl-pair scan language, the slope parameter $\alpha$ controls the commutation phase (Equation~\eqref{eq:weyl_pair}).
+If one declares an additional equivalence relation that identifies scan algebras up to Morita equivalence (an $\mathrm{SL}_2(\ZZ)$ action on $\alpha$), then distinct microscopic scan parametrizations can be treated as the same geometry at the semantic level.
+We record this as an optional extension of the equivalence semantics; it is not used as a premise in the folding or continuum-closure proofs.
+See Appendix~\ref{app:morita_fourier_exchange} for the precise statement and standard references.
 
 \subsection{Frequency as a primary derived quantity (frequency-first spine)}
 \label{subsec:frequency_first_spine}
@@ -82,7 +224,7 @@ In the present paper we treat these as equivalent interface dictionaries once a 
 Table~\ref{tab:concept_index} records an audit-facing concept map.
 Each physical-language quantity is assigned (i) an invariant mathematical object, and (ii) the section(s) where it is defined/closed within the tick\,+\,CAP discipline.
 
-\begin{longtable}{p{0.18\textwidth} p{0.30\textwidth} p{0.22\textwidth} p{0.22\textwidth}}
+\begin{longtable}{p{0.16\textwidth} p{0.28\textwidth} p{0.20\textwidth} p{0.20\textwidth}}
 \caption{Concept index (frequency-first): physical quantities as invariants or CAP-closed outputs.}
 \label{tab:concept_index}\\
 \toprule
@@ -171,6 +313,98 @@ S_{\mathrm{fib}}(w):=\log |P(w)|,
 \]
 optionally scaled by $k_B$ in physical units.
 More generally, any coarse-graining map induces macrostates as equivalence classes; entropy is the logarithm of the macrostate multiplicity, or of an effective channel capacity in boundary settings (Appendix~\ref{app:bh_wormholes_pointer}).
+
+\begin{lemma}[Mean degeneracy and fiber-entropy control]\label{lem:mean_degeneracy_fiber_entropy_bounds}
+\MathTag Fix $m\ge 1$ and let $K_m:=\{0,\dots,2^m-1\}$.
+Let $\mathrm{Fold}_m:K_m\to X_m$ be the folding map and define fibers $P(w):=\mathrm{Fold}_m^{-1}(w)$ for $w\in X_m$.
+Then:
+\begin{enumerate}
+\item The fibers partition $K_m$, hence
+\[
+\sum_{w\in X_m}|P(w)|=|K_m|=2^m.
+\]
+In particular the mean degeneracy satisfies
+\[
+d_m:=\frac{|K_m|}{|X_m|}=\frac{1}{|X_m|}\sum_{w\in X_m}|P(w)|.
+\]
+\item The uniform mean fiber-count entropy is controlled by $d_m$:
+\[
+\frac{1}{|X_m|}\sum_{w\in X_m}\log|P(w)|\ \le\ \log d_m.
+\]
+\item Writing the stable fraction as $f_{\mathrm{stab}}(m):=|X_m|/2^m$, one has $d_m=1/f_{\mathrm{stab}}(m)$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Since $\mathrm{Fold}_m$ is a map onto $X_m$, the sets $\{P(w)\}_{w\in X_m}$ form a disjoint partition of $K_m$, so summing their sizes gives $|K_m|=2^m$.
+The mean-degeneracy identity is then immediate by dividing by $|X_m|$.
+For the entropy bound, apply Jensen's inequality to the concave function $\log$ on the positive numbers $\{|P(w)|\}_{w\in X_m}$:
+\[
+\frac{1}{|X_m|}\sum_{w\in X_m}\log|P(w)|\le \log\!\left(\frac{1}{|X_m|}\sum_{w\in X_m}|P(w)|\right)=\log d_m.
+\]
+Finally $d_m=2^m/|X_m|=1/f_{\mathrm{stab}}(m)$ by definition.
+\end{proof}
+
+\begin{proposition}[Folding as conditional entropy: fiber entropy and relative entropy]\label{prop:folding_relative_entropy_decomposition}
+\MathTag Fix $m\ge 1$ and let $N$ be uniformly distributed on $K_m=\{0,\dots,2^m-1\}$.
+Let $W:=\mathrm{Fold}_m(N)\in X_m$ and write
+\[
+\mu_m(w):=\mathbb{P}(W=w)=\frac{|P(w)|}{2^m},\qquad w\in X_m,
+\]
+for the induced distribution on stable labels.
+Let $u_m$ denote the uniform distribution on $X_m$.
+Using natural logarithms (entropy in nats), one has:
+\begin{enumerate}
+\item \textbf{Fiber entropy identity:}
+\[
+H(N\mid W)=\mathbb{E}_{\mu_m}\!\left[\log |P(W)|\right].
+\]
+\item \textbf{Relative-entropy decomposition:}
+\[
+H(N\mid W)=\log d_m + D(\mu_m\Vert u_m),
+\qquad
+d_m=\frac{2^m}{|X_m|},
+\]
+where $D(\mu\Vert\nu)=\sum_w \mu(w)\log\!\bigl(\mu(w)/\nu(w)\bigr)$ is the Kullback--Leibler divergence.
+\item \textbf{Entropy-rate consequence:}
+\[
+\lim_{m\to\infty}\frac{1}{m}H(N\mid W)=\log(2/\varphi).
+\]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\textbf{(1)} Since $W$ is a deterministic function of $N$, conditioning on $W=w$ restricts $N$ to the fiber $P(w)$.
+Because $N$ is uniform on $K_m$ and all elements in $P(w)$ are equally likely given $W=w$, one has $H(N\mid W=w)=\log|P(w)|$.
+Taking expectation over $w\sim \mu_m$ yields the identity.
+\par
+\textbf{(2)} Because $W$ is a function of $N$, one has $H(N,W)=H(N)$.
+Therefore $H(N\mid W)=H(N)-H(W)=\log|K_m|-H(\mu_m)=m\log 2-H(\mu_m)$.
+On the other hand,
+\[
+D(\mu_m\Vert u_m)
+=\sum_{w\in X_m}\mu_m(w)\log\!\left(\frac{\mu_m(w)}{1/|X_m|}\right)
+=-H(\mu_m)+\log|X_m|.
+\]
+Since $\log d_m=\log(2^m/|X_m|)=m\log 2-\log|X_m|$, adding gives
+$\log d_m+D(\mu_m\Vert u_m)=m\log 2-H(\mu_m)=H(N\mid W)$.
+\par
+\textbf{(3)} From Proposition~\ref{prop:rm_entropy_gap_rate} one has $\log r_m=m\log(2/\varphi)+O(1)$ for the maximal degeneracy $r_m=\max_w|P(w)|$.
+From Lemma~\ref{lem:entropy_gap_hidden_exponent_cosmo} one has $\log d_m=m\log(2/\varphi)+O(1)$.
+Moreover,
+\[
+D(\mu_m\Vert u_m)=\mathbb{E}_{\mu_m}\!\left[\log\!\left(\frac{\mu_m(W)}{u_m(W)}\right)\right]
+=\mathbb{E}_{\mu_m}\!\left[\log\!\left(\frac{|P(W)|}{d_m}\right)\right]
+\le \log\!\left(\frac{r_m}{d_m}\right)=O(1),
+\]
+so $(1/m)D(\mu_m\Vert u_m)\to 0$.
+Dividing the identity in (2) by $m$ therefore yields
+$
+\lim_{m\to\infty} (1/m)H(N\mid W)=\lim_{m\to\infty}(1/m)\log d_m=\log(2/\varphi).
+$
+\end{proof}
+
+\AuditTag A numerical certificate of the identity $H(N\mid W)=\log d_m + D(\mu_m\Vert u_m)$
+for $m\in\{6,\dots,16\}$ is recorded in Table~\ref{tab:folding_entropy_decomposition} (Appendix~\ref{app:generated_tables}),
+generated by \texttt{scripts/exp\_folding\_entropy\_decomposition.py}.
 
 \paragraph{Second-law semantics.}
 \InterfaceTag A key reason ``irreversibility'' can be discussed without adding a new axiom is that the map from microscopic histories to observable records is many-to-one (Section~\ref{subsec:tick_time_arrow}):

@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import ast
 import hashlib
+import time
 import subprocess
 import sys
 from subprocess import CalledProcessError
@@ -37,13 +38,19 @@ class Step:
     name: str
     script: str
     expected_outputs: Sequence[str]
+    depends_on: Sequence[str] = ()
+    always_run: bool = False
 
 
-RUN_ALL_CACHE_VERSION = 1
+RUN_ALL_CACHE_VERSION = 3
+RUN_ALL_FILEHASH_CACHE_VERSION = 1
 
 
 def _run_all_cache_file() -> Path:
     return cache_path("run_all_steps.pkl")
+
+def _run_all_filehash_cache_file() -> Path:
+    return cache_path("run_all_filehash.pkl")
 
 
 def _load_run_all_cache() -> dict[str, str]:
@@ -84,6 +91,55 @@ def _save_run_all_cache(cache: dict[str, str]) -> None:
         pass
 
 
+def _load_run_all_filehash_cache() -> dict[str, tuple[int, int, str]]:
+    """
+    Mapping: absolute_path -> (mtime_ns, size_bytes, sha256_hex).
+
+    This cache avoids re-reading unchanged dependency files when computing
+    content fingerprints for steps. It is safe because we key by (mtime_ns, size).
+    """
+    p = _run_all_filehash_cache_file()
+    if cache_disabled() or (not p.is_file()):
+        return {}
+    try:
+        obj = load_pickle(p)
+        if not isinstance(obj, dict):
+            return {}
+        if int(obj.get("version", -1)) != RUN_ALL_FILEHASH_CACHE_VERSION:
+            return {}
+        files = obj.get("files", {})
+        if not isinstance(files, dict):
+            return {}
+        out: dict[str, tuple[int, int, str]] = {}
+        for k, v in files.items():
+            if not isinstance(k, str):
+                continue
+            if (
+                isinstance(v, tuple)
+                and len(v) == 3
+                and isinstance(v[0], int)
+                and isinstance(v[1], int)
+                and isinstance(v[2], str)
+            ):
+                out[k] = (int(v[0]), int(v[1]), str(v[2]))
+        return out
+    except Exception:
+        return {}
+
+
+def _save_run_all_filehash_cache(file_cache: dict[str, tuple[int, int, str]]) -> None:
+    if cache_disabled():
+        return
+    try:
+        save_pickle_atomic(
+            _run_all_filehash_cache_file(),
+            {"version": RUN_ALL_FILEHASH_CACHE_VERSION, "files": dict(file_cache)},
+        )
+    except Exception:
+        # Best-effort; never fail the pipeline because of caching.
+        pass
+
+
 def _local_module_map() -> dict[str, Path]:
     # Editing this orchestrator should not force a full recompute of fragments.
     return {p.stem: p for p in scripts_dir().glob("*.py") if p.name != "run_all.py"}
@@ -98,8 +154,9 @@ def _direct_local_imports(py_path: Path, module_map: dict[str, Path]) -> set[Pat
         src = py_path.read_text(encoding="utf-8")
         tree = ast.parse(src, filename=str(py_path))
     except Exception:
-        # Conservative fallback: assume it depends on all local modules.
-        return set(module_map.values())
+        # Conservative fallback: assume it depends on all local modules *except itself*.
+        # This avoids self-dependency cycles in the dependency-closure recursion.
+        return {p for p in module_map.values() if p != py_path}
 
     mods: set[str] = set()
     for node in ast.walk(tree):
@@ -113,14 +170,20 @@ def _direct_local_imports(py_path: Path, module_map: dict[str, Path]) -> set[Pat
     return {module_map[m] for m in mods if m in module_map}
 
 
-def _script_deps_closure(root: Path, module_map: dict[str, Path], memo: dict[Path, set[Path]]) -> set[Path]:
+def _script_deps_closure(
+    root: Path, module_map: dict[str, Path], memo: dict[Path, set[Path]]
+) -> set[Path]:
     """
     Compute the transitive closure of local Python dependencies for a script.
     """
     if root in memo:
         return memo[root]
+    # Provisional memo entry to break cycles (including self-dependency via fallback).
+    memo[root] = {root}
     deps: set[Path] = {root}
     for dep in _direct_local_imports(root, module_map):
+        if dep == root:
+            continue
         deps |= _script_deps_closure(dep, module_map, memo)
     memo[root] = deps
     return deps
@@ -128,10 +191,32 @@ def _script_deps_closure(root: Path, module_map: dict[str, Path], memo: dict[Pat
 
 def _run_script(script_path: Path, step_name: str) -> None:
     cmd = [sys.executable, str(script_path)]
+    t0 = time.perf_counter()
     proc = subprocess.Popen(cmd, cwd=str(paper_root()))
     rc = heartbeat_wait(proc, label=step_name, interval_s=60.0, poll_s=1.0)
+    elapsed_s = float(time.perf_counter() - t0)
     if rc != 0:
         raise CalledProcessError(rc, cmd)
+    print(f"[run_all] DONE {step_name} elapsed={_format_duration(elapsed_s)}", flush=True)
+    if elapsed_s >= 60.0:
+        print(
+            "[run_all] HINT: For long-running scripts, emit a per-minute heartbeat inside the script "
+            "using common_progress.ProgressEvery(...).maybe(...).",
+            flush=True,
+        )
+
+
+def _format_duration(seconds: float) -> str:
+    s = max(0.0, float(seconds))
+    if s < 60.0:
+        return f"{s:.2f}s"
+    m = int(s // 60.0)
+    rem = s - 60.0 * float(m)
+    if m < 60:
+        return f"{m:d}m{rem:05.2f}s"
+    h = int(m // 60)
+    mm = int(m % 60)
+    return f"{h:d}h{mm:02d}m{rem:05.2f}s"
 
 
 def _check_outputs(rel_paths: Iterable[str]) -> None:
@@ -141,7 +226,9 @@ def _check_outputs(rel_paths: Iterable[str]) -> None:
         if not nonempty_file(p):
             missing.append(rel)
     if missing:
-        msg = "Missing/empty generated outputs:\n" + "\n".join(f"  - {m}" for m in missing)
+        msg = "Missing/empty generated outputs:\n" + "\n".join(
+            f"  - {m}" for m in missing
+        )
         raise RuntimeError(msg)
 
 
@@ -157,6 +244,41 @@ def _deps_fingerprint(deps: Iterable[Path]) -> str:
     """
     Stable fingerprint for a set of local dependency files (content-based).
     """
+    return _deps_fingerprint_cached(deps, file_cache=None, file_cache_dirty=None)
+
+
+def _file_sha256_cached(
+    p: Path,
+    *,
+    file_cache: dict[str, tuple[int, int, str]] | None,
+    file_cache_dirty: list[bool] | None,
+) -> str:
+    """
+    Return sha256(content) for p, using a per-file cache keyed by (mtime_ns, size).
+    """
+    if file_cache is None:
+        return hashlib.sha256(p.read_bytes()).hexdigest()
+
+    key = str(p.resolve())
+    st = p.stat()
+    cur = (int(getattr(st, "st_mtime_ns", int(st.st_mtime * 1e9))), int(st.st_size))
+    prev = file_cache.get(key)
+    if prev is not None and prev[0] == cur[0] and prev[1] == cur[1]:
+        return prev[2]
+
+    h = hashlib.sha256(p.read_bytes()).hexdigest()
+    file_cache[key] = (cur[0], cur[1], h)
+    if file_cache_dirty is not None:
+        file_cache_dirty[0] = True
+    return h
+
+
+def _deps_fingerprint_cached(
+    deps: Iterable[Path],
+    *,
+    file_cache: dict[str, tuple[int, int, str]] | None,
+    file_cache_dirty: list[bool] | None,
+) -> str:
     h = hashlib.sha256()
     root = scripts_dir()
     for p in sorted(set(deps), key=lambda x: str(x)):
@@ -166,9 +288,17 @@ def _deps_fingerprint(deps: Iterable[Path]) -> str:
             rel = str(p.resolve())
         h.update(rel.encode("utf-8"))
         h.update(b"\0")
-        h.update(p.read_bytes())
+        h.update(_file_sha256_cached(p, file_cache=file_cache, file_cache_dirty=file_cache_dirty).encode("utf-8"))
         h.update(b"\0")
     return h.hexdigest()
+
+
+def _extra_input_paths(rel_paths: Sequence[str]) -> List[Path]:
+    out: List[Path] = []
+    for rel in rel_paths:
+        p = paper_root() / rel
+        out.append(p)
+    return out
 
 
 def _max_mtime(paths: Iterable[Path]) -> float:
@@ -235,6 +365,51 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Fold6 21-type Hilbert panels (figure)",
+            script="fig_fold6_21_types_hilbert_panels.py",
+            expected_outputs=[
+                "figures/fold6_21_types_hilbert_panels.png",
+            ],
+        ),
+        Step(
+            name="18+3 particles Hilbert visualization (figure)",
+            script="fig_18_3_particles_hilbert_visualization.py",
+            expected_outputs=[
+                "figures/18_3_particles_hilbert_visualization.png",
+            ],
+            depends_on=["scripts/exp_sm_labeling_solver.py"],
+        ),
+        Step(
+            name="m=1 to m=16 full resolution spectrum (figure)",
+            script="fig_m1_to_m16_full_visualization.py",
+            expected_outputs=[
+                "figures/m1_to_m16_full_visualization.png",
+            ],
+        ),
+        Step(
+            name="Particle energy level analysis (figure)",
+            script="fig_particle_energy_level_analysis.py",
+            expected_outputs=[
+                "figures/particle_energy_level_analysis.png",
+                "sections/generated/particle_energy_level_summary.tex",
+            ],
+            depends_on=["scripts/exp_sm_labeling_solver.py", "scripts/exp_mass_spectrum.py"],
+        ),
+        Step(
+            name="Fold6 21-type bit-cube 3D shapes (figure)",
+            script="fig_fold6_21_types_bitcube_3d.py",
+            expected_outputs=[
+                "figures/fold6_21_types_bitcube_3d.png",
+            ],
+        ),
+        Step(
+            name="Three-channel alluvial (figure)",
+            script="fig_three_channel_alluvial.py",
+            expected_outputs=[
+                "figures/three_channel_alluvial.png",
+            ],
+        ),
+        Step(
             name="Fold-family sensitivity (counterfactual audit)",
             script="exp_fold_family_sensitivity.py",
             expected_outputs=[
@@ -246,6 +421,223 @@ def build_steps() -> List[Step]:
             script="exp_foldm_stats.py",
             expected_outputs=[
                 "sections/generated/foldm_sweep_rows.tex",
+            ],
+        ),
+        Step(
+            name="Joint protocol-state selection (theory-first)",
+            script="protocol_state_selection.py",
+            expected_outputs=[
+                "sections/generated/protocol_state_selected.json",
+                "sections/generated/protocol_state_selected.tex",
+            ],
+        ),
+        Step(
+            name="Kernel summary (m-sweep)",
+            script="exp_fractal_kernel_summary.py",
+            expected_outputs=[
+                "sections/generated/fractal_kernel_sweep_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel mu/r bridge (demo)",
+            script="exp_kernel_mu_r_bridge_demo.py",
+            expected_outputs=[
+                "sections/generated/kernel_mu_r_bridge_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG flow (balanced chain)",
+            script="exp_kernel_rg_flow_balanced_chain.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_flow_balanced_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG operator sanity (16x16 matrix audit)",
+            script="exp_kernel_rg_operator_matrix_audit.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_sanity_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG operator predict-vs-recompute (backreaction audit)",
+            script="exp_kernel_rg_operator_predict_vs_recompute.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_backreaction_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG operator error-budget decomposition (certificate)",
+            script="exp_kernel_rg_operator_error_bound_certificate.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_error_budget_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG operator spectral-gap diagnostic",
+            script="exp_kernel_rg_operator_spectral_gap.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_spectral_gap_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG operator 2-point library (covariance audit)",
+            script="exp_kernel_rg_operator_covariance_audit.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_covariance_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG operator D4 layout sensitivity (conjugacy audit)",
+            script="exp_kernel_rg_operator_layout_sensitivity.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_layout_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG resolvent-trace audit (one-point / two-point)",
+            script="exp_kernel_rg_resolvent_trace_audit.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_resolvent_trace_rows.tex",
+            ],
+        ),
+        Step(
+            name="Hilbert-screen lattice propagator anchor (Gaussian kernel from F_n)",
+            script="exp_lattice_propagator_anchor.py",
+            expected_outputs=[
+                "sections/generated/lattice_propagator_anchor_rows.tex",
+                "sections/generated/lattice_propagator_anchor_summary.tex",
+            ],
+        ),
+        Step(
+            name="Internal-dimension unfolding (2D Hilbert; m=6/10/14)",
+            script="fig_internal_dimension_fractal_unfolding_2d.py",
+            expected_outputs=[
+                "figures/adaptive/lattice_qft_bridge/internal_dimension_fractal_unfolding_2d.png",
+                "figures/adaptive/lattice_qft_bridge/data/internal_dimension_fractal_unfolding_2d.json",
+            ],
+        ),
+        Step(
+            name="Internal-dimension unfolding (3D screen; m=12)",
+            script="fig_internal_dimension_fractal_unfolding_3d.py",
+            expected_outputs=[
+                "figures/adaptive/lattice_qft_bridge/internal_dimension_fractal_unfolding_3d.png",
+                "figures/adaptive/lattice_qft_bridge/data/internal_dimension_fractal_unfolding_3d.json",
+            ],
+        ),
+        Step(
+            name="Internal-dimension field on adaptive-dimension Hilbert-face (gallery)",
+            script="fig_internal_dimension_hilbert_face_gallery.py",
+            expected_outputs=[
+                "figures/adaptive/lattice_qft_bridge/internal_dimension_hilbert_face_gallery.png",
+                "figures/adaptive/lattice_qft_bridge/data/internal_dimension_hilbert_face_gallery.json",
+            ],
+        ),
+        Step(
+            name="3D Hilbert tower (field ocean -> two particles -> zoom high-energy)",
+            script="fig_internal_dimension_hilbert_tower_3d.py",
+            expected_outputs=[
+                "figures/adaptive/lattice_qft_bridge/internal_dimension_hilbert_tower_3d.png",
+                "figures/adaptive/lattice_qft_bridge/data/internal_dimension_hilbert_tower_3d.json",
+            ],
+        ),
+        Step(
+            name="Kernel RG weighted operator pole-barrier summary",
+            script="exp_kernel_rg_weighted_operator_pole_barrier.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_weighted_pole_barrier_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG weighted operator Doob normalization (Markov audit)",
+            script="exp_kernel_rg_weighted_doob_normalization.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_weighted_doob_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG weighted operator pressure proxy (log spectral radius)",
+            script="exp_kernel_rg_weighted_pressure_summary.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_weighted_pressure_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG covariant transport lift (S4 anchor certificate)",
+            script="exp_kernel_rg_covariant_transport_anchor.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_covariant_transport_anchor_rows.tex",
+                "sections/generated/kernel_rg_covariant_transport_reduction_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG covariant operator spectral gap (anchor)",
+            script="exp_kernel_rg_operator_covariant_spectral_gap.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_covariant_spectral_gap_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG covariant operator reduction / decomposition (anchor)",
+            script="exp_kernel_rg_operator_covariant_reduction_audit.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_covariant_reduction_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG covariant operator gauge covariance (anchor)",
+            script="exp_kernel_rg_operator_covariant_gauge_audit.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_covariant_gauge_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG covariant internal closure triplet (anchor)",
+            script="exp_kernel_rg_operator_covariant_internal_closure_triplet_audit.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_covariant_internal_closure_triplet_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG covariant internal singular-value contraction (n=3,4)",
+            script="exp_kernel_rg_operator_covariant_internal_singular_value.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_operator_covariant_internal_sigma_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG weighted covariant operator pole-barrier (n=3,4)",
+            script="exp_kernel_rg_weighted_covariant_pole_barrier.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_weighted_covariant_pole_barrier_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG weighted covariant operator Doob normalization (n=3,4)",
+            script="exp_kernel_rg_weighted_covariant_doob.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_weighted_covariant_doob_rows.tex",
+            ],
+        ),
+        Step(
+            name="Kernel RG weighted covariant operator pressure proxy (n=3,4)",
+            script="exp_kernel_rg_weighted_covariant_pressure.py",
+            expected_outputs=[
+                "sections/generated/kernel_rg_weighted_covariant_pressure_rows.tex",
+            ],
+        ),
+        Step(
+            name="Ext boundary operator check (uplift refinement audit)",
+            script="exp_ext_boundary_operator_check.py",
+            expected_outputs=[
+                "sections/generated/ext_boundary_operator_check_rows.tex",
+            ],
+        ),
+        Step(
+            name="Folding entropy decomposition (numeric certificate)",
+            script="exp_folding_entropy_decomposition.py",
+            expected_outputs=[
+                "sections/generated/folding_entropy_decomposition_rows.tex",
             ],
         ),
         Step(
@@ -284,6 +676,13 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Gauge3 holonomy candidate closure (audit)",
+            script="exp_gauge3_holonomy_candidate_closure.py",
+            expected_outputs=[
+                "sections/generated/gauge3_holonomy_candidate_closure_rows.tex",
+            ],
+        ),
+        Step(
             name="Hilbert chirality sweep",
             script="exp_hilbert_chi_sweep.py",
             expected_outputs=[
@@ -298,6 +697,109 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Higgs uplift microtexture (m=10; 2D Hilbert) and geometry exports",
+            script="fig_higgs_geometry_candidates_m10.py",
+            expected_outputs=[
+                "figures/adaptive/higgs_geometry/higgs_geometry_candidates_m10.png",
+                "figures/adaptive/higgs_geometry/higgs_uplift_texture_m10.png",
+                "figures/adaptive/higgs_geometry/data/higgs_geometry_m10_ranked.json",
+                "figures/adaptive/higgs_geometry/data/higgs_uplift_texture_m10.json",
+            ],
+        ),
+        Step(
+            name="Higgs-like scalar doublet from uplift microtexture (m=10; 2D Hilbert)",
+            script="fig_higgs_doublet_structure_m10.py",
+            expected_outputs=[
+                "figures/adaptive/higgs_geometry/higgs_doublet_structure_m10.png",
+                "figures/adaptive/higgs_geometry/data/higgs_doublet_structure_m10.json",
+            ],
+        ),
+        Step(
+            name="Higgs-like scalar doublet from uplift microtexture (m=10; 3D Hilbert)",
+            script="fig_higgs_doublet_structure_m10_3d.py",
+            expected_outputs=[
+                "figures/adaptive/higgs_geometry/higgs_doublet_structure_m10_3d.png",
+                "figures/adaptive/higgs_geometry/data/higgs_doublet_structure_m10_3d.json",
+            ],
+        ),
+        Step(
+            name="Higgs quantum field maps on Hilbert screen (m=10; 2D)",
+            script="fig_higgs_quantum_field_maps_m10.py",
+            expected_outputs=[
+                "figures/adaptive/higgs_geometry/higgs_quantum_field_maps_m10.png",
+                "figures/adaptive/higgs_geometry/higgs_quantum_field_coupling_m10.png",
+                "figures/adaptive/higgs_geometry/data/higgs_quantum_field_maps_m10.json",
+            ],
+            depends_on=[
+                "scripts/exp_sm_labeling_solver.py",
+                "scripts/fig_higgs_doublet_structure_m10.py",
+            ],
+        ),
+        Step(
+            name="Higgs uplift quantum numbers (bounded-family CAP closure)",
+            script="exp_higgs_quantum_numbers_cap_closure.py",
+            expected_outputs=[
+                "sections/generated/higgs_quantum_numbers_closure_rows.tex",
+                "sections/generated/higgs_quantum_numbers_closure_summary.tex",
+            ],
+            depends_on=["scripts/exp_sm_labeling_solver.py"],
+        ),
+        Step(
+            name="Higgs renormalizable Yukawa feasibility (operator-family certificate)",
+            script="exp_higgs_yukawa_feasibility_closure.py",
+            expected_outputs=[
+                "sections/generated/higgs_yukawa_feasibility_rows.tex",
+                "sections/generated/higgs_yukawa_feasibility_summary.tex",
+                "sections/generated/higgs_yukawa_minimal_failure_points.tex",
+            ],
+            depends_on=[
+                "scripts/exp_sm_labeling_solver.py",
+                "scripts/exp_higgs_quantum_numbers_cap_closure.py",
+            ],
+        ),
+        Step(
+            name="Higgs EWSB potential closure (bounded-family CAP)",
+            script="exp_higgs_ewsb_potential_closure.py",
+            expected_outputs=[
+                "sections/generated/higgs_ewsb_potential_rows.tex",
+                "sections/generated/higgs_ewsb_potential_summary.tex",
+            ],
+            depends_on=[
+                "scripts/exp_higgs_z_offset_rigidity.py",
+            ],
+        ),
+        Step(
+            name="Higgs doublet robustness sweep (addressing/block/sparse counterfactuals)",
+            script="exp_higgs_doublet_robustness_sweep.py",
+            expected_outputs=[
+                "sections/generated/higgs_doublet_robustness_rows.tex",
+                "sections/generated/higgs_doublet_robustness_summary.tex",
+                "figures/adaptive/higgs_geometry/higgs_doublet_robustness_sweep.png",
+                "figures/adaptive/higgs_geometry/data/higgs_doublet_robustness_sweep.json",
+            ],
+            depends_on=[
+                "scripts/fig_higgs_doublet_structure_m10.py",
+                "scripts/fig_higgs_doublet_structure_m10_3d.py",
+            ],
+        ),
+        Step(
+            name="Higgs uplift falsifiability gates (interface registry)",
+            script="exp_higgs_falsifiability_gates.py",
+            expected_outputs=[
+                "sections/generated/higgs_falsifiability_gates_rows.tex",
+                "sections/generated/higgs_falsifiability_gates_summary.tex",
+                "figures/adaptive/higgs_geometry/data/higgs_falsifiability_gates.json",
+            ],
+            depends_on=[
+                "scripts/exp_higgs_quantum_numbers_cap_closure.py",
+                "scripts/exp_higgs_yukawa_feasibility_closure.py",
+                "scripts/exp_higgs_ewsb_potential_closure.py",
+                "scripts/exp_higgs_doublet_robustness_sweep.py",
+                "scripts/fig_higgs_doublet_structure_m10.py",
+                "scripts/fig_higgs_doublet_structure_m10_3d.py",
+            ],
+        ),
+        Step(
             name="Resolution-threshold staircase",
             script="exp_resolution_thresholds.py",
             expected_outputs=[
@@ -309,7 +811,155 @@ def build_steps() -> List[Step]:
             script="exp_cosmology_energy_budget_fit.py",
             expected_outputs=[
                 "sections/generated/cosmology_energy_budget_fit_equation.tex",
+                "sections/generated/cosmology_energy_budget_fit_summary.tex",
+                "sections/generated/cosmology_energy_budget_fit_stability.tex",
                 "figures/cosmology_energy_budget_fit.png",
+            ],
+        ),
+        Step(
+            name="Lambda pressure closure (e-channel; audit)",
+            script="exp_lambda_pressure_closure.py",
+            expected_outputs=[
+                "sections/generated/lambda_pressure_closure_equations.tex",
+                "sections/generated/lambda_pressure_closure_summary.tex",
+            ],
+        ),
+        Step(
+            name="Weighted pressure sweep toy (e-channel; audit)",
+            script="exp_weighted_pressure_sweep.py",
+            expected_outputs=[
+                "sections/generated/weighted_pressure_sweep_rows.tex",
+            ],
+        ),
+        Step(
+            name="Pole-barrier mode toy (audit)",
+            script="exp_pole_barrier_mode_toy.py",
+            expected_outputs=[
+                "sections/generated/pole_barrier_mode_toy_rows.tex",
+            ],
+        ),
+        Step(
+            name="HTF-lite bridge audit (finite kernels; audit-only evidence)",
+            script="exp_htf_lite_bridge_audit.py",
+            expected_outputs=[
+                "sections/generated/htf_lite_kernel_holomorphy_rows.tex",
+                "sections/generated/htf_lite_zero_mode_pole_rows.tex",
+                "sections/generated/htf_lite_bridge_audit_summary.tex",
+            ],
+        ),
+        Step(
+            name="HTF-lite resolvent identity audit (finite Fourier kernels; audit-only evidence)",
+            script="exp_htf_lite_resolvent_identity_audit.py",
+            expected_outputs=[
+                "sections/generated/htf_lite_resolvent_identity_rows.tex",
+                "sections/generated/htf_lite_resolvent_pole_rows.tex",
+                "sections/generated/htf_lite_resolvent_identity_summary.tex",
+            ],
+        ),
+        Step(
+            name="HTF-lite detectability audit (finite Fourier kernels; audit-only evidence)",
+            script="exp_htf_lite_detectability_audit.py",
+            expected_outputs=[
+                "sections/generated/htf_lite_detectability_rows.tex",
+                "sections/generated/htf_lite_detectability_summary.tex",
+            ],
+        ),
+        Step(
+            name="HTF-lite finite-window detectability audit (nontrivial error; audit-only evidence)",
+            script="exp_htf_lite_detectability_finite_window_audit.py",
+            expected_outputs=[
+                "sections/generated/htf_lite_detectability_finite_window_rows.tex",
+                "sections/generated/htf_lite_detectability_finite_window_summary.tex",
+            ],
+        ),
+        Step(
+            name="Equivalence-ladder certificate registry (audit)",
+            script="exp_equivalence_ladder_registry.py",
+            expected_outputs=[
+                "sections/generated/equivalence_ladder_registry_rows.tex",
+                "sections/generated/equivalence_ladder_registry_summary.tex",
+            ],
+        ),
+        Step(
+            name="Wormhole finite-rank update: delay/logdet audit (toy)",
+            script="exp_wormhole_finite_rank_delay_logdet_audit.py",
+            expected_outputs=[
+                "sections/generated/wormhole_finite_rank_delay_logdet_rows.tex",
+                "sections/generated/wormhole_finite_rank_delay_logdet_summary.tex",
+            ],
+        ),
+        Step(
+            name="Added-edge to det packaging audit (toy)",
+            script="exp_added_edge_det_update_audit.py",
+            expected_outputs=[
+                "sections/generated/added_edge_det_update_rows.tex",
+                "sections/generated/added_edge_det_update_summary.tex",
+            ],
+        ),
+        Step(
+            name="Det-to-phase delay proxy (scattering proxy; toy)",
+            script="exp_det_phase_delay_scattering_proxy_audit.py",
+            expected_outputs=[
+                "sections/generated/det_phase_delay_proxy_rows.tex",
+                "sections/generated/det_phase_delay_proxy_summary.tex",
+                "sections/generated/det_phase_delay_trace_identity_rows.tex",
+                "sections/generated/det_phase_delay_trace_identity_summary.tex",
+            ],
+        ),
+        Step(
+            name="Det-to-unitary S-matrix WS delay audit (toy)",
+            script="exp_det_to_unitary_smatrix_ws_delay_audit.py",
+            expected_outputs=[
+                "sections/generated/det_to_smatrix_ws_delay_rows.tex",
+                "sections/generated/det_to_smatrix_ws_delay_summary.tex",
+            ],
+        ),
+        Step(
+            name="Det-delay resonance linewidth audit (toy)",
+            script="exp_det_delay_resonance_linewidth_audit.py",
+            expected_outputs=[
+                "sections/generated/det_delay_linewidth_rows.tex",
+                "sections/generated/det_delay_linewidth_summary.tex",
+            ],
+        ),
+        Step(
+            name="Linewidth to survival-kernel audit (toy)",
+            script="exp_linewidth_to_survival_kernel_audit.py",
+            expected_outputs=[
+                "sections/generated/linewidth_survival_kernel_rows.tex",
+                "sections/generated/linewidth_survival_kernel_summary.tex",
+            ],
+        ),
+        Step(
+            name="Survival-kernel finite-family CAP audit (toy)",
+            script="exp_linewidth_survival_finite_family_audit.py",
+            expected_outputs=[
+                "sections/generated/survival_finite_family_rows.tex",
+                "sections/generated/survival_finite_family_summary.tex",
+            ],
+        ),
+        Step(
+            name="Ihara/Hashimoto/Bass det packaging + added-edge update audit (toy)",
+            script="exp_ihara_hashimoto_added_edge_audit.py",
+            expected_outputs=[
+                "sections/generated/ihara_hashimoto_added_edge_rows.tex",
+                "sections/generated/ihara_hashimoto_added_edge_summary.tex",
+            ],
+        ),
+        Step(
+            name="Hashimoto added-edge ratio via Schur complement (toy)",
+            script="exp_hashimoto_added_edge_schur_ratio_audit.py",
+            expected_outputs=[
+                "sections/generated/hashimoto_added_edge_schur_rows.tex",
+                "sections/generated/hashimoto_added_edge_schur_summary.tex",
+            ],
+        ),
+        Step(
+            name="GWOSC ringdown linewidth audit (real data; optional)",
+            script="exp_gwosc_ringdown_linewidth_audit.py",
+            expected_outputs=[
+                "sections/generated/gwosc_ringdown_linewidth_rows.tex",
+                "sections/generated/gwosc_ringdown_linewidth_summary.tex",
             ],
         ),
         Step(
@@ -317,6 +967,69 @@ def build_steps() -> List[Step]:
             script="fig_hilbert_knot_triptych.py",
             expected_outputs=[
                 "figures/hilbert_knot_triptych.png",
+            ],
+        ),
+        Step(
+            name="Hilbert path n=3 (figure)",
+            script="fig_hilbert_path_n3.py",
+            expected_outputs=[
+                "figures/hilbert_path_n3.png",
+            ],
+        ),
+        Step(
+            name="Hilbert->Fold6 overview (figure)",
+            script="fig_hilbert_fold6_overview.py",
+            expected_outputs=[
+                "figures/hilbert_fold6_overview.png",
+            ],
+        ),
+        Step(
+            name="3D screen (m=3n) Foldm trace gallery (figure)",
+            script="fig_3d_screen_foldm_trace_gallery.py",
+            expected_outputs=[
+                "figures/screen3d_foldm_trace_gallery.png",
+            ],
+        ),
+        Step(
+            name="Fractal screen (Sierpiński) trace gallery (figure)",
+            script="fig_fractal_screen_sierpinski_trace_gallery.py",
+            expected_outputs=[
+                "figures/fractal_screen_sierpinski_trace_gallery.png",
+            ],
+        ),
+        Step(
+            name="Universal VFS holographic boundary-face gallery (figure)",
+            script="fig_universal_screen_vfs_holo_face_gallery.py",
+            expected_outputs=[
+                "figures/universal_screen_vfs_holo_face_gallery.png",
+            ],
+        ),
+        Step(
+            name="Universal holographic Hilbert-face gallery (locality-optimal) (figure)",
+            script="fig_universal_screen_holo_hilbert_face_gallery.py",
+            expected_outputs=[
+                "figures/universal_screen_holo_hilbert_face_gallery.png",
+            ],
+        ),
+        Step(
+            name="CAP selection audit: visualization schemes (boundary-face)",
+            script="exp_cap_visualization_selection.py",
+            expected_outputs=[
+                "sections/generated/cap_visualization_selection_rows.tex",
+            ],
+        ),
+        Step(
+            name="Adaptive multi-(m,n) trace suite (VFS vs Hilbert) (figures)",
+            script="fig_adaptive_multi_mn_trace_suite.py",
+            expected_outputs=[
+                "figures/adaptive/adaptive_vfs_trace_p01.png",
+                "figures/adaptive/adaptive_vfs_trace_p02.png",
+                "figures/adaptive/adaptive_vfs_trace_p03.png",
+                "figures/adaptive/adaptive_vfs_trace_p04.png",
+                "figures/adaptive/adaptive_hilbert_trace_p01.png",
+                "figures/adaptive/adaptive_hilbert_trace_p02.png",
+                "figures/adaptive/adaptive_hilbert_trace_p03.png",
+                "figures/adaptive/adaptive_hilbert_trace_p04.png",
             ],
         ),
         Step(
@@ -346,6 +1059,13 @@ def build_steps() -> List[Step]:
             script="exp_holonomy_loops.py",
             expected_outputs=[
                 "sections/generated/holonomy_cycle_type_rows.tex",
+            ],
+        ),
+        Step(
+            name="Holonomy transport-rule sensitivity (audit)",
+            script="exp_holonomy_transport_rule_sensitivity.py",
+            expected_outputs=[
+                "sections/generated/holonomy_transport_rule_sensitivity_rows.tex",
             ],
         ),
         Step(
@@ -381,6 +1101,37 @@ def build_steps() -> List[Step]:
             script="exp_holonomy_balanced_chain_sweep.py",
             expected_outputs=[
                 "sections/generated/holonomy_balanced_chain_rows.tex",
+                "sections/generated/holonomy_balanced_chain_wilson_rows.tex",
+                "sections/generated/holonomy_balanced_chain_convergence_rows.tex",
+            ],
+        ),
+        Step(
+            name="Scale-map family on the balanced chain (normalized, CL2 audit)",
+            script="exp_scale_map_balanced_chain.py",
+            expected_outputs=[
+                "sections/generated/scale_map_balanced_chain_rows.tex",
+            ],
+        ),
+        Step(
+            name="Curvature-bridge sanity checks (weak-field Laplacian + Wilson scaling)",
+            script="exp_curvature_bridge_audit.py",
+            expected_outputs=[
+                "sections/generated/curvature_bridge_weak_field_rows.tex",
+                "sections/generated/curvature_bridge_weak_field_summary.tex",
+                "sections/generated/curvature_bridge_wilson_rows.tex",
+                "sections/generated/curvature_bridge_wilson_summary.tex",
+            ],
+        ),
+        Step(
+            name="Curvature bridge end-to-end (protocolized input -> chi -> curvature proxy)",
+            script="exp_curvature_bridge_end_to_end.py",
+            expected_outputs=[
+                "sections/generated/curvature_e2e_rows.tex",
+                "sections/generated/curvature_e2e_summary.tex",
+                "sections/generated/curvature_e2e_gamma_rows.tex",
+                "sections/generated/curvature_e2e_gamma_summary.tex",
+                "sections/generated/curvature_e2e_gamma_stability_rows.tex",
+                "sections/generated/curvature_e2e_gamma_stability_summary.tex",
             ],
         ),
         Step(
@@ -412,6 +1163,98 @@ def build_steps() -> List[Step]:
             script="exp_holonomy_wilson_loop_sweep.py",
             expected_outputs=[
                 "sections/generated/holonomy_wilson_loop_rows.tex",
+            ],
+        ),
+        Step(
+            name="QCD confinement proxy (Wilson-loop area/perimeter; audit)",
+            script="exp_qcd_confinement_proxy_audit.py",
+            expected_outputs=[
+                "sections/generated/qcd_confinement_proxy_rows.tex",
+                "sections/generated/qcd_confinement_proxy_summary.tex",
+                "sections/generated/qcd_confinement_proxy_robustness_rows.tex",
+                "sections/generated/qcd_confinement_proxy_sigma_rows.tex",
+                "sections/generated/qcd_confinement_proxy_sigma_summary.tex",
+            ],
+        ),
+        Step(
+            name="QCD confinement proxy Padé pole-barrier audit (analytic continuation; audit)",
+            script="exp_qcd_confinement_pade_pole_barrier_audit.py",
+            expected_outputs=[
+                "sections/generated/qcd_confinement_pade_pole_rows.tex",
+                "sections/generated/qcd_confinement_pade_pole_summary.tex",
+            ],
+        ),
+        Step(
+            name="Proton property miniset (matching/audit helper)",
+            script="exp_proton_properties_miniset.py",
+            expected_outputs=[
+                "sections/generated/proton_properties_rows.tex",
+                "sections/generated/proton_properties_summary.tex",
+            ],
+        ),
+        Step(
+            name="Proton resolution mapping (mu->r->m_eff; matching/audit helper)",
+            script="exp_proton_resolution_mapping.py",
+            expected_outputs=[
+                "sections/generated/proton_resolution_mapping_rows.tex",
+                "sections/generated/proton_resolution_mapping_summary.tex",
+            ],
+        ),
+        Step(
+            name="Hydrogen atom miniset (matching/audit helper)",
+            script="exp_hydrogen_atom_miniset.py",
+            expected_outputs=[
+                "sections/generated/hydrogen_atom_rows.tex",
+                "sections/generated/hydrogen_atom_summary.tex",
+            ],
+        ),
+        Step(
+            name="Hydrogen binding resolution mapping (E->mu->r->m_eff; audit helper)",
+            script="exp_hydrogen_binding_resolution_mapping.py",
+            expected_outputs=[
+                "sections/generated/hydrogen_binding_resolution_rows.tex",
+                "sections/generated/hydrogen_binding_resolution_summary.tex",
+            ],
+        ),
+        Step(
+            name="Hydrogen spectral-line miniset (matching/audit helper)",
+            script="exp_hydrogen_spectral_lines_miniset.py",
+            expected_outputs=[
+                "sections/generated/hydrogen_spectral_lines_rows.tex",
+                "sections/generated/hydrogen_spectral_lines_summary.tex",
+            ],
+        ),
+        Step(
+            name="Hydrogen 21cm resolution mapping (E->mu->r->m_eff; audit helper)",
+            script="exp_hydrogen_21cm_resolution_mapping.py",
+            expected_outputs=[
+                "sections/generated/hydrogen_21cm_resolution_rows.tex",
+                "sections/generated/hydrogen_21cm_resolution_summary.tex",
+            ],
+        ),
+        Step(
+            name="Hydrogen Lyman-alpha resolution mapping (E->mu->r->m_eff; audit helper)",
+            script="exp_hydrogen_lyman_alpha_resolution_mapping.py",
+            expected_outputs=[
+                "sections/generated/hydrogen_lyman_alpha_resolution_rows.tex",
+                "sections/generated/hydrogen_lyman_alpha_resolution_summary.tex",
+            ],
+        ),
+        Step(
+            name="Hydrogen spectral frequency->omega bridge (phase/delay interface helper)",
+            script="exp_hydrogen_spectral_phase_delay_bridge.py",
+            expected_outputs=[
+                "sections/generated/hydrogen_spectral_delay_bridge_rows.tex",
+                "sections/generated/hydrogen_spectral_delay_bridge_summary.tex",
+            ],
+        ),
+        Step(
+            name="K4 spectral phase->delay audit (spectral registry; interface benchmark)",
+            script="exp_k4_spectral_phase_delay_audit.py",
+            expected_outputs=[
+                "sections/generated/k4_spectral_phase_delay_rows.tex",
+                "sections/generated/k4_spectral_phase_delay_window_rows.tex",
+                "sections/generated/k4_spectral_phase_delay_summary.tex",
             ],
         ),
         Step(
@@ -482,6 +1325,208 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Leakage kernel demo (audit illustration)",
+            script="exp_leakage_kernel_demo.py",
+            expected_outputs=[
+                "sections/generated/leakage_kernel_demo_rows.tex",
+            ],
+        ),
+        Step(
+            name="Leakage kernel m=6 trap/exit audit table",
+            script="exp_leakage_kernel_m6_trap_exit.py",
+            expected_outputs=[
+                "sections/generated/leakage_kernel_m6_trap_exit_rows.tex",
+                "sections/generated/leakage_kernel_m6_trap_exit_summary.tex",
+            ],
+        ),
+        Step(
+            name="Protocol horizon illustration (tick-trap)",
+            script="exp_protocol_horizon_tick_trap_examples.py",
+            expected_outputs=[
+                "sections/generated/protocol_horizon_examples_rows.tex",
+                "sections/generated/protocol_horizon_examples_summary.tex",
+            ],
+        ),
+        Step(
+            name="Wormhole-like pointer jump audit (protocol-only)",
+            script="exp_wormhole_pointer_jump_audit.py",
+            expected_outputs=[
+                "sections/generated/wormhole_pointer_jump_rows.tex",
+                "sections/generated/wormhole_pointer_jump_summary.tex",
+            ],
+        ),
+        Step(
+            name="Budget-triggered chi-horizon occupancy (capacity-only table)",
+            script="exp_chi_horizon_budget_occupancy.py",
+            expected_outputs=[
+                "sections/generated/chi_horizon_budget_occupancy_rows.tex",
+                "sections/generated/chi_horizon_budget_occupancy_summary.tex",
+            ],
+        ),
+        Step(
+            name="QG full pack (interface suite + full-fusion + sweeps + QG9-M1)",
+            script="exp_qg_full_pack.py",
+            expected_outputs=[
+                "sections/generated/qg_interface_suite_rows.tex",
+                "sections/generated/qg_interface_suite_summary.tex",
+                "sections/generated/full_fusion_nowh_rows.tex",
+                "sections/generated/full_fusion_compare_rows.tex",
+                "sections/generated/full_fusion_rows.tex",
+                "sections/generated/full_fusion_summary.tex",
+                "sections/generated/full_fusion_wormhole_sweep_rows.tex",
+                "sections/generated/full_fusion_wormhole_sweep_summary.tex",
+                "sections/generated/full_fusion_wormhole_pareto_rows.tex",
+                "sections/generated/full_fusion_wormhole_pareto_summary.tex",
+                "sections/generated/full_fusion_wormhole_pareto_delay_rows.tex",
+                "sections/generated/full_fusion_wormhole_pareto_delaywh_rows.tex",
+                "sections/generated/full_fusion_wormhole_pareto_emit_rows.tex",
+                "sections/generated/full_fusion_wormhole_pareto_jump_rows.tex",
+                "sections/generated/full_fusion_wormhole_pareto_multi_summary.tex",
+                "sections/generated/full_fusion_wormhole_adaptive_rows.tex",
+                "sections/generated/full_fusion_wormhole_adaptive_summary.tex",
+                "sections/generated/full_fusion_opt_delay_rows.tex",
+                "sections/generated/full_fusion_opt_delay_nowh_rows.tex",
+                "sections/generated/full_fusion_opt_delay_compare_rows.tex",
+                "sections/generated/full_fusion_opt_delay_summary.tex",
+                "sections/generated/full_fusion_opt_emit_rows.tex",
+                "sections/generated/full_fusion_opt_emit_nowh_rows.tex",
+                "sections/generated/full_fusion_opt_emit_compare_rows.tex",
+                "sections/generated/full_fusion_opt_emit_summary.tex",
+                "sections/generated/qg9_windowed_comparability_default_instance.tex",
+                "sections/generated/qg9_windowed_comparability_registry.tex",
+                "sections/generated/qg9_windowed_comparability_budget.tex",
+                "sections/generated/qg9_windowed_comparability_evidence.tex",
+                "sections/generated/qg9_windowed_comparability_acceptance_checklist.tex",
+                "sections/generated/qg9_windowed_comparability_numeric_summary.tex",
+                "sections/generated/qg9_windowed_comparability_numeric.tex",
+            ],
+        ),
+        Step(
+            name="P10: trapping transition scan (metrics-only; Δtau vs occupancy)",
+            script="exp_full_fusion_trapping_transition_scan.py",
+            expected_outputs=[
+                "sections/generated/full_fusion_trapping_transition_scan_rows.tex",
+                "sections/generated/full_fusion_trapping_transition_scan_summary.tex",
+            ],
+        ),
+        Step(
+            name="P10: trapping transition changepoint estimate (two-segment fit)",
+            script="exp_full_fusion_trapping_transition_changepoint.py",
+            expected_outputs=[
+                "sections/generated/full_fusion_trapping_transition_changepoint_summary.tex",
+            ],
+            depends_on=[
+                "sections/generated/full_fusion_trapping_transition_scan_rows.tex",
+            ],
+        ),
+        Step(
+            name="P10: trapping transition sensitivity sweep (I_obs,c family)",
+            script="exp_full_fusion_trapping_transition_sensitivity.py",
+            expected_outputs=[
+                "sections/generated/full_fusion_trapping_transition_sensitivity_rows.tex",
+                "sections/generated/full_fusion_trapping_transition_sensitivity_summary.tex",
+            ],
+        ),
+        Step(
+            name="Orbit force propagation and relaxation (toy dynamics)",
+            script="exp_orbit_force_relaxation_dynamics.py",
+            expected_outputs=[
+                "sections/generated/orbit_force_relax_rows.tex",
+                "sections/generated/orbit_force_relax_summary.tex",
+            ],
+        ),
+        Step(
+            name="Fusion: orbit/force propagation + scattering delay + BH-like trapping (toy)",
+            script="exp_orbit_force_relaxation_scattering_bh_fusion.py",
+            expected_outputs=[
+                "sections/generated/orbit_force_relax_bh_rows.tex",
+                "sections/generated/orbit_force_relax_bh_summary.tex",
+            ],
+        ),
+        Step(
+            name="Resolution uplift CAP choice under constraints (capacity-driven staging)",
+            script="exp_resolution_uplift_cap_choice.py",
+            expected_outputs=[
+                "sections/generated/resolution_uplift_cap_choice_rows.tex",
+                "sections/generated/resolution_uplift_cap_choice_summary.tex",
+            ],
+        ),
+        Step(
+            name="K4 delay dictionary audit (gravitational time-delay channels)",
+            script="exp_k4_delay_dictionary_audit.py",
+            expected_outputs=[
+                "sections/generated/k4_delay_audit_rows.tex",
+                "sections/generated/k4_delay_audit_summary.tex",
+            ],
+        ),
+        Step(
+            name="K4 scattering phase -> delay audit (benchmark interface)",
+            script="exp_k4_scattering_phase_delay_audit.py",
+            expected_outputs=[
+                "sections/generated/k4_scattering_phase_delay_rows.tex",
+                "sections/generated/k4_scattering_phase_delay_window_rows.tex",
+                "sections/generated/k4_scattering_phase_delay_coord_rows.tex",
+                "sections/generated/k4_scattering_phase_delay_summary.tex",
+            ],
+        ),
+        Step(
+            name="K4 WS-linewidth calibration audit (interface)",
+            script="exp_k4_ws_linewidth_audit.py",
+            expected_outputs=[
+                "sections/generated/k4_ws_linewidth_rows.tex",
+                "sections/generated/k4_ws_linewidth_coord_rows.tex",
+                "sections/generated/k4_ws_linewidth_summary.tex",
+            ],
+        ),
+        Step(
+            name="Toy scattering process simulation (delay->queue; interface)",
+            script="exp_scattering_process_delay_queue_sim.py",
+            expected_outputs=[
+                "sections/generated/scattering_process_delay_queue_rows.tex",
+                "sections/generated/scattering_process_delay_queue_summary.tex",
+            ],
+        ),
+        Step(
+            name="Scattering vs BH queue equivalence (toy; audit)",
+            script="exp_scattering_bh_queue_equivalence_audit.py",
+            expected_outputs=[
+                "sections/generated/scattering_bh_queue_equivalence_rows.tex",
+                "sections/generated/scattering_bh_queue_equivalence_summary.tex",
+            ],
+        ),
+        Step(
+            name="Scattering vs BH Page-surrogate equivalence (toy; audit)",
+            script="exp_scattering_bh_page_surrogate_equivalence.py",
+            expected_outputs=[
+                "sections/generated/scattering_bh_page_surrogate_rows.tex",
+                "sections/generated/scattering_bh_page_surrogate_summary.tex",
+            ],
+        ),
+        Step(
+            name="K4 leakage audit vs PDG mini-set",
+            script="exp_k4_pdg_leakage_audit.py",
+            expected_outputs=[
+                "sections/generated/k4_pdg_leakage_rows.tex",
+                "sections/generated/k4_pdg_leakage_summary.tex",
+            ],
+        ),
+        Step(
+            name="K4 alpha link audit (m=6 exit weights)",
+            script="exp_k4_alpha_link_audit.py",
+            expected_outputs=[
+                "sections/generated/k4_alpha_link_rows.tex",
+                "sections/generated/k4_alpha_link_summary.tex",
+            ],
+        ),
+        Step(
+            name="Low-leakage phase signatures (audit illustration)",
+            script="exp_low_leakage_phase_signatures.py",
+            expected_outputs=[
+                "sections/generated/low_leakage_phase_rows.tex",
+                "sections/generated/low_leakage_phase_summary.tex",
+            ],
+        ),
+        Step(
             name="Label lift consistency",
             script="exp_labeling_lift_consistency.py",
             expected_outputs=[
@@ -508,6 +1553,165 @@ def build_steps() -> List[Step]:
             script="exp_labeling_lift_highm_invariants.py",
             expected_outputs=[
                 "sections/generated/label_lift_highm_invariants_rows.tex",
+            ],
+        ),
+        Step(
+            name="Mass flow under uplift (CAP vs free-energy)",
+            script="exp_mass_flow_uplift.py",
+            expected_outputs=[
+                "sections/generated/mass_flow_uplift_rows.tex",
+                "sections/generated/mass_flow_uplift_summary.tex",
+            ],
+        ),
+        Step(
+            name="BH/Planck capacity calibration (boundary vs protocol capacity)",
+            script="exp_bh_planck_capacity_calibration.py",
+            expected_outputs=[
+                "sections/generated/bh_planck_capacity_rows.tex",
+                "sections/generated/bh_planck_capacity_summary.tex",
+                "sections/generated/bh_capacity_calibrated_uplift_path_rows.tex",
+                "sections/generated/bh_planck_capacity_known_rows.tex",
+                "sections/generated/bh_planck_capacity_known_summary.tex",
+            ],
+        ),
+        Step(
+            name="Universe horizon capacity calibration (Hubble vs de Sitter targets)",
+            script="exp_universe_planck_capacity_calibration.py",
+            expected_outputs=[
+                "sections/generated/universe_planck_capacity_rows.tex",
+                "sections/generated/universe_planck_capacity_summary.tex",
+            ],
+        ),
+        Step(
+            name="BH4 evaporation/leak channel summary (Fold_m information flow)",
+            script="exp_bh_evaporation_leak_channel.py",
+            expected_outputs=[
+                "sections/generated/bh_evaporation_rate_rows.tex",
+                "sections/generated/bh_leak_channel_summary.tex",
+            ],
+        ),
+        Step(
+            name="BH5 Page surrogate (protocol recovery curve)",
+            script="exp_bh_page_surrogate.py",
+            expected_outputs=[
+                "sections/generated/bh_page_surrogate_curve_rows.tex",
+                "figures/bh_page_surrogate.png",
+            ],
+        ),
+        Step(
+            name="BH5 Page surrogate (mixed single-stream refinement)",
+            script="exp_bh_page_surrogate_mixed_stream.py",
+            expected_outputs=[
+                "sections/generated/bh_page_surrogate_mixed_curve_rows.tex",
+                "sections/generated/bh_page_surrogate_mixed_summary.tex",
+                "figures/bh_page_surrogate_mixed.png",
+            ],
+        ),
+        Step(
+            name="BH5 Page surrogate U(t) (queue-equivalent single-stream)",
+            script="exp_bh_page_surrogate_u_curve.py",
+            expected_outputs=[
+                "sections/generated/bh_page_surrogate_u_curve_rows.tex",
+                "sections/generated/bh_page_surrogate_u_curve_summary.tex",
+                "figures/bh_page_surrogate_u_curve.png",
+            ],
+        ),
+        Step(
+            name="BH5 Page surrogate RB-D robustness audit (m, mode, seed)",
+            script="exp_bh_page_surrogate_robustness_audit.py",
+            expected_outputs=[
+                "sections/generated/bh_page_surrogate_rb_d_rows.tex",
+                "sections/generated/bh_page_surrogate_rb_d_summary.tex",
+            ],
+        ),
+        Step(
+            name="BH5 Page surrogate record-noise audit (interface robustness)",
+            script="exp_bh_page_surrogate_record_noise_audit.py",
+            expected_outputs=[
+                "sections/generated/bh_page_record_noise_audit_rows.tex",
+                "sections/generated/bh_page_record_noise_audit_summary.tex",
+            ],
+        ),
+        Step(
+            name="BH5 Page surrogate record-noise ECC audit (repetition family)",
+            script="exp_bh_page_surrogate_record_noise_ecc_audit.py",
+            expected_outputs=[
+                "sections/generated/bh_page_record_noise_ecc_audit_rows.tex",
+                "sections/generated/bh_page_record_noise_ecc_audit_summary.tex",
+            ],
+        ),
+        Step(
+            name="BH5 Page surrogate record-noise ECC CAP selection (minimal r*; finite family)",
+            script="exp_bh_page_surrogate_record_noise_ecc_cap_select.py",
+            expected_outputs=[
+                "sections/generated/bh_page_record_noise_ecc_cap_select_rows.tex",
+                "sections/generated/bh_page_record_noise_ecc_cap_select_summary.tex",
+            ],
+        ),
+        Step(
+            name="BH absorption-mode sweep (audit; legal absorption subalphabet)",
+            script="exp_bh_absorption_mode_sweep.py",
+            expected_outputs=[
+                "sections/generated/bh_absorption_mode_sweep_rows.tex",
+                "sections/generated/bh_absorption_mode_sweep_summary.tex",
+            ],
+        ),
+        Step(
+            name="BH legal absorption registry (candidates; no selection)",
+            script="exp_bh_legal_absorption_registry.py",
+            expected_outputs=[
+                "sections/generated/bh_legal_absorption_registry_rows.tex",
+                "sections/generated/bh_legal_absorption_registry_summary.tex",
+            ],
+        ),
+        Step(
+            name="BH capacity-calibrated queue parameters (known BHs; audit)",
+            script="exp_bh_capacity_calibrated_queue_params.py",
+            expected_outputs=[
+                "sections/generated/bh_capacity_calibrated_queue_params_rows.tex",
+                "sections/generated/bh_capacity_calibrated_queue_params_summary.tex",
+            ],
+        ),
+        Step(
+            name="BH6 island-equivalent reconstruction (finite toy diagnostic)",
+            script="exp_bh_island_equivalent_reconstruction.py",
+            expected_outputs=[
+                "sections/generated/bh_island_equiv_diagnostics.tex",
+            ],
+        ),
+        Step(
+            name="BH6 island-equivalent sweep (m, mode; audit)",
+            script="exp_bh_island_equiv_sweep.py",
+            expected_outputs=[
+                "sections/generated/bh_island_equiv_sweep_rows.tex",
+                "sections/generated/bh_island_equiv_sweep_summary.tex",
+            ],
+        ),
+        Step(
+            name="Neutrino external audit ledger (Match/Audit only)",
+            script="exp_neutrino_external_audit.py",
+            expected_outputs=[
+                "sections/generated/neutrino_external_audit_rows.tex",
+                "sections/generated/neutrino_external_audit_summary.tex",
+                "sections/generated/neutrino_external_audit_internal_rows.tex",
+            ],
+        ),
+        Step(
+            name="Neutrino mass mechanisms (candidate registry; audit)",
+            script="exp_neutrino_mass_mechanisms.py",
+            expected_outputs=[
+                "sections/generated/neutrino_mechanism_candidates_rows.tex",
+                "sections/generated/neutrino_mechanism_scoreboard_rows.tex",
+                "sections/generated/neutrino_mechanism_global_rows.tex",
+                "sections/generated/neutrino_mechanism_global_summary.tex",
+                "sections/generated/neutrino_majorana_phase_closure_rows.tex",
+                "sections/generated/neutrino_majorana_phase_closure_summary.tex",
+                "sections/generated/neutrino_splitting_depth_closure_rows.tex",
+                "sections/generated/neutrino_splitting_depth_closure_summary.tex",
+                "sections/generated/neutrino_weinberg_scale_rows.tex",
+                "sections/generated/neutrino_weinberg_scale_summary.tex",
+                "sections/generated/neutrino_seesaw_scale_rows.tex",
+                "sections/generated/neutrino_seesaw_scale_summary.tex",
             ],
         ),
         Step(
@@ -587,6 +1791,7 @@ def build_steps() -> List[Step]:
                 "sections/generated/mass_spectrum_anchor_rows.tex",
                 "sections/generated/mass_spectrum_quark_rows.tex",
                 "sections/generated/mass_spectrum_neutrino_rows.tex",
+                "sections/generated/mass_spectrum_anchor_summary.tex",
             ],
         ),
         Step(
@@ -705,6 +1910,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Audit global model selection (MDL, cross-family)",
+            script="exp_audit_global_model_selection_mdl.py",
+            expected_outputs=[
+                "sections/generated/audit_global_mdl_family_rows.tex",
+                "sections/generated/audit_global_mdl_summary.tex",
+            ],
+        ),
+        Step(
             name="Rigidity alpha coefficient simplex",
             script="exp_alpha_coeff_rigidity.py",
             expected_outputs=[
@@ -725,6 +1938,127 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "sections/generated/ew_alpha_pi2_rigidity_rows.tex",
                 "sections/generated/ew_sin2_rational_rigidity_rows.tex",
+            ],
+        ),
+        Step(
+            name="Electroweak resolution-weighted match (kernel pushforward sweep; audit)",
+            script="exp_ew_resolution_weighted_match.py",
+            expected_outputs=[
+                "sections/generated/ew_resolution_weighted_match_rows.tex",
+            ],
+        ),
+        Step(
+            name="Electroweak kernel-family sweep at anchor (audit)",
+            script="exp_ew_resolution_weighted_match_family.py",
+            expected_outputs=[
+                "sections/generated/ew_resolution_weighted_match_family_rows.tex",
+            ],
+        ),
+        Step(
+            name="Coupling unification audit in r (bounded family; match/audit)",
+            script="exp_coupling_unification_audit_in_r.py",
+            expected_outputs=[
+                "sections/generated/coupling_unification_audit_rows.tex",
+                "sections/generated/coupling_unification_audit_summary.tex",
+                "sections/generated/coupling_unification_threshold_registry_rows.tex",
+                "sections/generated/coupling_unification_threshold_audit_rows.tex",
+                "sections/generated/coupling_unification_threshold_audit_summary.tex",
+            ],
+        ),
+        Step(
+            name="Force->phase->delay toy audit (numerical stability; audit)",
+            script="exp_force_phase_delay_audit_toy.py",
+            expected_outputs=[
+                "sections/generated/force_phase_delay_audit_toy_rows.tex",
+                "sections/generated/force_phase_delay_audit_toy_summary.tex",
+            ],
+        ),
+        Step(
+            name="Coupling unification audit (two-loop + threshold uncertainty; audit)",
+            script="exp_coupling_unification_audit_2loop_thresholds.py",
+            expected_outputs=[
+                "sections/generated/coupling_unification_2loop_threshold_audit_rows.tex",
+                "sections/generated/coupling_unification_2loop_threshold_audit_summary.tex",
+            ],
+        ),
+        Step(
+            name="Coupling unification audit (two-loop missing-sector perturbations; audit)",
+            script="exp_coupling_unification_2loop_yukawa_scalar_perturbation_audit.py",
+            expected_outputs=[
+                "sections/generated/coupling_unification_2loop_yukawa_scalar_audit_rows.tex",
+                "sections/generated/coupling_unification_2loop_yukawa_scalar_audit_summary.tex",
+            ],
+        ),
+        Step(
+            name="Coupling unification threshold correlation modes (audit)",
+            script="exp_coupling_unification_threshold_correlation_modes.py",
+            expected_outputs=[
+                "sections/generated/coupling_unification_threshold_corr_modes_rows.tex",
+                "sections/generated/coupling_unification_threshold_corr_modes_summary.tex",
+            ],
+        ),
+        Step(
+            name="Scattering inverse consistency audit (phase->delay->phase; audit)",
+            script="exp_scattering_inverse_consistency_audit.py",
+            expected_outputs=[
+                "sections/generated/scattering_inverse_consistency_rows.tex",
+                "sections/generated/scattering_inverse_consistency_summary.tex",
+            ],
+        ),
+        Step(
+            name="Scattering inverse consistency coord-gate (audit)",
+            script="exp_scattering_inverse_consistency_coord_audit.py",
+            expected_outputs=[
+                "sections/generated/scattering_inverse_coord_rows.tex",
+                "sections/generated/scattering_inverse_coord_summary.tex",
+            ],
+        ),
+        Step(
+            name="Scattering delay-linewidth triangle audit (audit)",
+            script="exp_scattering_delay_linewidth_triangle_audit.py",
+            expected_outputs=[
+                "sections/generated/scattering_delay_linewidth_triangle_rows.tex",
+                "sections/generated/scattering_delay_linewidth_triangle_summary.tex",
+            ],
+        ),
+        Step(
+            name="Scattering energy-match dictionary coverage (audit)",
+            script="exp_scattering_energy_match_dictionary_audit.py",
+            expected_outputs=[
+                "sections/generated/scattering_energy_match_dictionary_rows.tex",
+                "sections/generated/scattering_energy_match_dictionary_summary.tex",
+            ],
+        ),
+        Step(
+            name="Scattering carrier CAP-select (multi-dataset; M2 audit)",
+            script="exp_scattering_carrier_cap_select_multi_dataset.py",
+            expected_outputs=[
+                "sections/generated/scattering_carrier_cap_select_rows.tex",
+                "sections/generated/scattering_carrier_cap_select_summary.tex",
+            ],
+        ),
+        Step(
+            name="Scattering carrier registry materialization (audit)",
+            script="exp_scattering_carrier_registry_generate.py",
+            expected_outputs=[
+                "sections/generated/scattering_carrier_registry_rows.tex",
+                "sections/generated/scattering_carrier_registry_summary.tex",
+            ],
+        ),
+        Step(
+            name="QCD proxy<->pole-barrier consistency loop (audit)",
+            script="exp_qcd_proxy_polebarrier_mutual_exclusion.py",
+            expected_outputs=[
+                "sections/generated/qcd_proxy_polebarrier_failure_rows.tex",
+                "sections/generated/qcd_proxy_polebarrier_failure_summary.tex",
+            ],
+        ),
+        Step(
+            name="Scheme reparam invariance demo (audit)",
+            script="exp_scheme_reparam_invariance_audit.py",
+            expected_outputs=[
+                "sections/generated/scheme_invariance_demo_rows.tex",
+                "sections/generated/scheme_invariance_demo_summary.tex",
             ],
         ),
         Step(
@@ -752,9 +2086,35 @@ def build_steps() -> List[Step]:
             name="Gamma cross-observation consistency (audit)",
             script="exp_gamma_cross_observation.py",
             expected_outputs=[
-                "sections/generated/gamma_crossobs_rows.tex",
-                "sections/generated/gamma_crossobs_stability_rows.tex",
-                "figures/gamma_crossobs_consistency.png",
+                "sections/generated/gamma_crossobs_proxy_rows.tex",
+                "sections/generated/gamma_crossobs_proxy_diagnostics.tex",
+                "sections/generated/gamma_crossobs_proxy_stability_rows.tex",
+                "figures/gamma_crossobs_proxy.png",
+                "sections/generated/gamma_crossobs_direct_rows.tex",
+                "sections/generated/gamma_crossobs_direct_diagnostics.tex",
+                "sections/generated/gamma_crossobs_direct_stability_rows.tex",
+                "figures/gamma_crossobs_direct.png",
+            ],
+        ),
+        Step(
+            name="Gamma kernel-family sweep (direct; audit)",
+            script="exp_gamma_kernel_family_sweep.py",
+            expected_outputs=[
+                "sections/generated/gamma_crossobs_direct_kernel_family_rows.tex",
+            ],
+        ),
+        Step(
+            name="Chi kernel-family sweep (audit)",
+            script="exp_chi_kernel_family_sweep.py",
+            expected_outputs=[
+                "sections/generated/chi_kernel_family_sweep_rows.tex",
+            ],
+        ),
+        Step(
+            name="Protocol-state registry (audit index)",
+            script="exp_protocol_state_registry.py",
+            expected_outputs=[
+                "sections/generated/protocol_state_registry.tex",
             ],
         ),
         Step(
@@ -764,37 +2124,111 @@ def build_steps() -> List[Step]:
                 "sections/generated/audit_summary_rows.tex",
             ],
         ),
+        Step(
+            name="Yukawa/beta-function closure (OP5)",
+            script="exp_yukawa_beta_closure.py",
+            expected_outputs=[
+                "sections/generated/yukawa_eigenvalue_rows.tex",
+                "sections/generated/beta_representation_rows.tex",
+                "sections/generated/beta_summary.tex",
+                "sections/generated/yukawa_beta_closure_summary_rows.tex",
+            ],
+        ),
+        Step(
+            name="Failure-point registry (strong-closure templates)",
+            script="exp_failure_point_checklists.py",
+            expected_outputs=[
+                "sections/generated/failure_point_registry_rows.tex",
+            ],
+        ),
+        Step(
+            name="EG power-counting registry (strong-closure templates)",
+            script="exp_eg_power_counting_registry.py",
+            expected_outputs=[
+                "sections/generated/eg_power_counting_registry_rows.tex",
+            ],
+        ),
+        Step(
+            name="EG counterterm basis registry (strong-closure PT infrastructure)",
+            script="exp_eg_counterterm_basis.py",
+            expected_outputs=[
+                "sections/generated/eg_counterterm_basis_rows.tex",
+            ],
+        ),
+        Step(
+            name="Protocol-net axiom checklist (PT/CP evidence pointers)",
+            script="exp_protocol_net_axiom_checks.py",
+            expected_outputs=[
+                "sections/generated/protocol_net_axiom_checks_rows.tex",
+            ],
+        ),
+        Step(
+            name="Failure-point evidence map (PT/CP pointers)",
+            script="exp_failurepoint_evidence_map.py",
+            expected_outputs=[
+                "sections/generated/failurepoint_evidence_map_rows.tex",
+            ],
+        ),
+        Step(
+            name="Holographic capacity bound audit (Holo3)",
+            script="exp_holo_capacity_bound_audit.py",
+            expected_outputs=[
+                "sections/generated/holo_capacity_bound_rows.tex",
+                "sections/generated/holo_capacity_bound_summary.tex",
+            ],
+        ),
+        Step(
+            name="Holographic reconstruction surrogate audit (Holo4)",
+            script="exp_holo_reconstruction_surrogate_audit.py",
+            expected_outputs=[
+                "sections/generated/holo_reconstruction_surrogate_rows.tex",
+                "sections/generated/holo_reconstruction_surrogate_summary.tex",
+            ],
+        ),
+        Step(
+            name="Holographic boundary-algebra sample (Holo1)",
+            script="exp_holo_boundary_algebra_sample.py",
+            expected_outputs=[
+                "sections/generated/holo_boundary_algebra_sample_rows.tex",
+                "sections/generated/holo_boundary_algebra_sample_summary.tex",
+            ],
+        ),
+        Step(
+            name="Holographic bulk-registry sample (Holo2)",
+            script="exp_holo_bulk_registry_sample.py",
+            expected_outputs=[
+                "sections/generated/holo_bulk_registry_sample_rows.tex",
+                "sections/generated/holo_bulk_registry_sample_summary.tex",
+            ],
+        ),
+        Step(
+            name="Holographic upgrade boundary table (Holo6)",
+            script="exp_holo_upgrade_boundary_table.py",
+            expected_outputs=[
+                "sections/generated/holo_upgrade_boundary_rows.tex",
+                "sections/generated/holo_upgrade_boundary_summary.tex",
+            ],
+        ),
+        Step(
+            name="Artifact hash registry (script/deps -> outputs)",
+            script="exp_artifact_hash_registry.py",
+            expected_outputs=[
+                "sections/generated/artifact_hash_registry.json",
+                "sections/generated/artifact_hash_registry_summary.tex",
+            ],
+        ),
     ]
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Run all reproducible generators for this paper.")
-    parser.add_argument(
-        "--force",
-        action="store_true",
-        help="Force recomputation (ignore cached/up-to-date outputs) and run all steps.",
-    )
-    parser.add_argument(
-        "--skip-up-to-date",
-        dest="skip_up_to_date",
-        action="store_true",
-        help=(
-            "Skip steps whose expected outputs exist, are non-empty, and are newer than the step's "
-            "local Python dependencies. Useful for iterative LaTeX work."
-        ),
-    )
-    parser.add_argument(
-        "--no-skip-up-to-date",
-        dest="skip_up_to_date",
-        action="store_false",
-        help="Disable skipping and run all steps (unless --stop-after stops early).",
+    parser = argparse.ArgumentParser(
+        description="Run all reproducible generators for this paper."
     )
     parser.add_argument(
         "--stop-after",
         default="",
         help="Optional step name prefix to stop after (for debugging).",
     )
-    parser.set_defaults(skip_up_to_date=True)
     args = parser.parse_args(list(argv) if argv is not None else None)
 
     gen = generated_dir()
@@ -802,24 +2236,52 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     steps = build_steps()
     all_expected: List[str] = []
-    use_skip = bool(args.skip_up_to_date) and (not bool(args.force)) and (not cache_disabled())
+    # Always use the content-hash cache path when available; full recomputation flags are intentionally removed.
+    use_skip = not cache_disabled()
     module_map: dict[str, Path] = _local_module_map() if use_skip else {}
     deps_memo: dict[Path, set[Path]] = {}
     cache: dict[str, str] = _load_run_all_cache() if use_skip else {}
     cache_dirty = False
+    ran_registry_step = False
+    any_step_ran = False
+    file_cache = _load_run_all_filehash_cache() if use_skip else {}
+    file_cache_dirty = [False]
 
     for step in steps:
+        step_t0 = time.perf_counter()
         script_path = scripts_dir() / step.script
         if not script_path.is_file():
             raise FileNotFoundError(f"Missing script: {script_path}")
+        if step.script == "exp_artifact_hash_registry.py":
+            ran_registry_step = True
         if use_skip:
             deps = _script_deps_closure(script_path, module_map, deps_memo)
-            fp = _deps_fingerprint(deps)
+            extra_inputs = _extra_input_paths(step.depends_on)
+            fp = _deps_fingerprint_cached(
+                set(deps) | set(extra_inputs),
+                file_cache=file_cache,
+                file_cache_dirty=file_cache_dirty,
+            )
             have = _have_outputs(step.expected_outputs)
             cached_fp = cache.get(step.script)
-            if have and cached_fp == fp:
-                print(f"[run_all] SKIP (up-to-date) {step.name}")
+            effective_always_run = bool(step.always_run) or (
+                step.script == "exp_artifact_hash_registry.py" and any_step_ran
+            )
+            if effective_always_run:
+                print(f"[run_all] {step.name} -> {step.script}", flush=True)
+                _run_script(script_path, step_name=step.name)
                 _check_outputs(step.expected_outputs)
+                cache[step.script] = fp
+                cache_dirty = True
+                any_step_ran = True
+            elif have and cached_fp == fp:
+                print(f"[run_all] SKIP (up-to-date) {step.name}", flush=True)
+                _check_outputs(step.expected_outputs)
+                elapsed_s = float(time.perf_counter() - step_t0)
+                print(
+                    f"[run_all] DONE {step.name} elapsed={_format_duration(elapsed_s)} (skipped)",
+                    flush=True,
+                )
             elif have and cached_fp is None:
                 # First run (or cache cleared):
                 # If outputs are older than the script/dependency mtimes, they may be stale
@@ -828,24 +2290,35 @@ def main(argv: Sequence[str] | None = None) -> int:
                 # committed generated fragments).
                 deps_mtime = _max_mtime(deps)
                 if _outputs_up_to_date(step.expected_outputs, deps_mtime):
-                    print(f"[run_all] SKIP (cached) {step.name}")
+                    print(f"[run_all] SKIP (cached) {step.name}", flush=True)
                     _check_outputs(step.expected_outputs)
+                    elapsed_s = float(time.perf_counter() - step_t0)
+                    print(
+                        f"[run_all] DONE {step.name} elapsed={_format_duration(elapsed_s)} (skipped)",
+                        flush=True,
+                    )
                 else:
-                    print(f"[run_all] {step.name} -> {step.script} (cache missing; outputs stale)")
+                    print(
+                        f"[run_all] {step.name} -> {step.script} (cache missing; outputs stale)",
+                        flush=True,
+                    )
                     _run_script(script_path, step_name=step.name)
                     _check_outputs(step.expected_outputs)
+                    any_step_ran = True
                 cache[step.script] = fp
                 cache_dirty = True
             else:
-                print(f"[run_all] {step.name} -> {step.script}")
+                print(f"[run_all] {step.name} -> {step.script}", flush=True)
                 _run_script(script_path, step_name=step.name)
                 _check_outputs(step.expected_outputs)
                 cache[step.script] = fp
                 cache_dirty = True
+                any_step_ran = True
         else:
-            print(f"[run_all] {step.name} -> {step.script}")
+            print(f"[run_all] {step.name} -> {step.script}", flush=True)
             _run_script(script_path, step_name=step.name)
             _check_outputs(step.expected_outputs)
+            any_step_ran = True
         all_expected.extend(list(step.expected_outputs))
         if args.stop_after and step.name.lower().startswith(args.stop_after.lower()):
             break
@@ -855,17 +2328,19 @@ def main(argv: Sequence[str] | None = None) -> int:
         raise RuntimeError("Missing generated directory.")
 
     # Minimal sanity: ensure the audit summary exists if we ran it.
-    if (paper_root() / "sections/generated/audit_summary_rows.tex") in [paper_root() / p for p in all_expected]:
+    if (paper_root() / "sections/generated/audit_summary_rows.tex") in [
+        paper_root() / p for p in all_expected
+    ]:
         _check_outputs(["sections/generated/audit_summary_rows.tex"])
 
     if cache_dirty:
         _save_run_all_cache(cache)
+    if use_skip and file_cache_dirty[0]:
+        _save_run_all_filehash_cache(file_cache)
 
-    print("[run_all] OK")
+    print("[run_all] OK", flush=True)
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
-

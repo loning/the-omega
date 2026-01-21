@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "scope_notes": [
+    "Matching-layer dictionary for mapping registry energy variables (dataset abscissa) to the toy frequency variable omega used by scattering toy carriers.",
+    "This file is intentionally conservative: if a dataset mapping is missing or marked as incomplete, it must NOT be used for cross-dataset CAP selection.",
+    "Default policy (M1): only the proxy_E benchmark is eligible for CAP anchoring; MeV datasets remain audit-only within-dataset.",
+    "To enable M2, provide explicit mapping entries with a declared model and parameters; the audit script will report coverage and exclusions."
+  ],
+  "mappings": {
+    "breit_wigner_single_resonance_demo": {
+      "status": "complete",
+      "abscissa_unit": "proxy_E",
+      "mapping_model": "identity",
+      "params": {},
+      "note": "Synthetic benchmark: omega = E, gamma_omega = gamma_E."
+    },
+    "hepdata_pipi_delta00_mukhin_et_al_v1_table1": {
+      "status": "complete",
+      "abscissa_unit": "MeV",
+      "mapping_model": "center_scale_by_gamma",
+      "params": { "omega_center": 1.35, "resonance_index": 0, "gamma_field": "gamma" },
+      "note": "Match convention (M2): omega := omega_center + (E - E0)/gamma, gamma_omega := 1. Uses registry-provided (E0,gamma) only."
+    },
+    "said_pin_p33_wi08_wcm_1100to1350_step5": {
+      "status": "complete",
+      "abscissa_unit": "MeV",
+      "mapping_model": "center_scale_by_gamma",
+      "params": { "omega_center": 1.35, "resonance_index": 0, "gamma_field": "gamma_mid" },
+      "note": "Match convention (M2): omega := omega_center + (E - E0)/gamma_mid, gamma_omega := 1, where gamma_mid := (gamma_low+gamma_high)/2 if the registry provides a band."
+    },
+    "nn_online_np_1S0_pwa93_0to50MeV_step5": {
+      "status": "incomplete",
+      "abscissa_unit": "MeV",
+      "mapping_model": "unknown",
+      "params": {},
+      "note": "T_lab requires a kinematic map to CM energy; keep audit-only unless completed."
+    },
+    "nn_online_np_3S1_pwa93_0to50MeV_step5": {
+      "status": "incomplete",
+      "abscissa_unit": "MeV",
+      "mapping_model": "unknown",
+      "params": {},
+      "note": "T_lab requires a kinematic map to CM energy; keep audit-only unless completed."
+    }
+  }
+}
+

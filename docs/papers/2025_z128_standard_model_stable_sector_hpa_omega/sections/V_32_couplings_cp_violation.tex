@@ -183,6 +183,13 @@ $\sum_{j=0}^3 a_j\pi^j$ with $a_j\in[-10,10]$ (a domain of size $194{,}481$).
 Within this broader class, the unique best candidate is still $4\pi^3+\pi^2+\pi$ with absolute log mismatch $e\approx 2.22\times 10^{-6}$ (Table~\ref{tab:audit_pi_poly_null}).
 \end{remark}
 
+\begin{remark}[K4 exit weights and an audit-only link to $\alpha$ (optional)]
+\label{rem:k4_alpha_link_audit}
+\AuditTag Appendix~\ref{app:leakage_kernel} records an $m=6$ trap/exit audit table that assigns exit-weight vectors into the three boundary channels (read as $U(1),SU(2),SU(3)$ at the SM labeling anchor).
+To test whether these exit weights admit any nontrivial low-complexity aggregate mapping that aligns with the $\alpha$ normalization targets used here, Appendix~\ref{app:k4_alpha_link_audit} reports a bounded-family audit over simple aggregation/mapping forms.
+This audit does not alter the theorem-level impedance closure above; it is a data-facing consistency probe only.
+\end{remark}
+
 \subsection{Electroweak normalization and the Weinberg angle}
 \label{subsec:weinberg_angle}
 
@@ -192,17 +199,19 @@ At the $Z$ scale, we record a closed-theory electroweak matching normalization:
 \end{equation}
 and the gauge-sector normalizations can be written as
 \begin{equation}\label{eq:ew_inverse_alphas}
-\alpha_w^{-1}(\mu_Z)=3\pi^2,\qquad \alpha_Y^{-1}(\mu_Z)=10\pi^2,\qquad \alpha^{-1}(\mu_Z)=13\pi^2,
+\alpha_w^{-1}(\mu_Z)=3\pi^2,\qquad \alpha_Y^{-1}(\mu_Z)=W_Y(K_\ast)\,\pi^2,\qquad \alpha^{-1}(\mu_Z)=(3+W_Y(K_\ast))\,\pi^2,
 \end{equation}
 under a canonical volume assignment consistent with the Standard Model relation between gauge couplings and the electromagnetic coupling \cite{Glashow1961,Weinberg1967,Salam1968,PeskinSchroeder1995,PDGRPP2024}.
-\begin{definition}[Electroweak inverse couplings as weighted volumes (CAP closure form)]\label{def:ew_volumes}
-At the matching scale $\mu=\mu_Z$, define the inverse couplings by weighted canonical volumes
+\begin{definition}[Electroweak inverse couplings as weighted volumes (kernel-dependent CAP closure form)]\label{def:ew_volumes}
+At the matching scale $\mu=\mu_Z$, define the inverse couplings by weighted canonical volumes, with an explicit kernel-dependent $U(1)_Y$ weight:
 \[
 \alpha_w^{-1}(\mu_Z)=\dim(\mathfrak{su}(2))\,\mathrm{Vol}(SO(3)),\qquad
-\alpha_Y^{-1}(\mu_Z)=\Bigl(\sum_{f\in\mathrm{SM}}Y_f^2\Bigr)\mathrm{Vol}(SO(3)),
+\alpha_Y^{-1}(\mu_Z)=W_Y(K)\,\mathrm{Vol}(SO(3)),
 \]
 with hypercharge normalized by $Q=T_3+Y$.
-The normalization is treated as a CAP-closed interface dictionary: the weights are discrete invariants already fixed by the closed labeling at the anchor (Lemma~\ref{lem:gauge_dim_order} and Lemma~\ref{lem:hypercharge_sum_10}), and the remaining numerical comparison to $Z$-scale $\overline{\mathrm{MS}}$ conventions is recorded as a matching-layer mismatch (Table~\ref{tab:ew_alpha_pi2_rigidity} and Table~\ref{tab:ew_sin2_rational_rigidity}).
+\AuditTag Here $K$ denotes a declared readout kernel (weighting rule) on the finite protocol objects at the anchor resolution.
+The corresponding effective hypercharge-square weight $W_Y(K)$ is a kernel-dependent readout induced by the closed labeling interface (Section~\ref{sec:sm_labeling_closure}) together with the declared kernel family (Appendix~\ref{app:kernel_family_cap_closure}).
+\AuditTag The kernel is not a hidden knob: at $\mu_Z$ it is closed by CAP within an explicit finite kernel family, with deterministic tie-break rules, and its effect on $W_Y$ and on the resulting mismatches is audited in Appendix~\ref{app:kernel_family_cap_closure}.
 \end{definition}
 
 \begin{remark}[Why the weight $\sum Y^2$ is canonical at the interface]\label{rem:why_sum_y2}
@@ -211,12 +220,15 @@ Thus the appearance of $\sum Y^2$ as a discrete weight in Definition~\ref{def:ew
 \end{remark}
 
 \begin{theorem}[Electroweak normalization and the Weinberg angle]\label{thm:weinberg_angle}
-Under Definition~\ref{def:ew_volumes}, one has \eqref{eq:ew_inverse_alphas} and, consequently, \eqref{eq:weinberg_3_13}.
+Under Definition~\ref{def:ew_volumes}, let $K_\ast$ denote the CAP-selected kernel at $\mu_Z$ within the declared finite kernel family (Appendix~\ref{app:kernel_family_cap_closure}).
+Then one has \eqref{eq:ew_inverse_alphas} and, under the audited value $W_Y(K_\ast)=10$, consequently \eqref{eq:weinberg_3_13}.
 \end{theorem}
 \begin{proof}
-One has $\dim(\mathfrak{su}(2))=3$ (Lemma~\ref{lem:gauge_dim_order}) and $\sum_{f\in\mathrm{SM}}Y_f^2=10$ for three generations (Lemma~\ref{lem:hypercharge_sum_10}).
+One has $\dim(\mathfrak{su}(2))=3$ (Lemma~\ref{lem:gauge_dim_order}).
+At the anchor, the closed labeling fixes the discrete hypercharge assignments under $Q=T_3+Y$, so the standard three-generation sum is $\sum_{f\in\mathrm{SM}}Y_f^2=10$ (Lemma~\ref{lem:hypercharge_sum_10}).
+In the kernel-dependent form of Definition~\ref{def:ew_volumes}, this corresponds to the CAP-selected minimal kernel at $\mu_Z$, yielding $W_Y(K_\ast)=10$ as audited in Appendix~\ref{app:kernel_family_cap_closure}.
 With the canonical quotient metric, $\mathrm{Vol}(SO(3))=\pi^2$ \cite{Nakahara2003}.
-Thus $\alpha_w^{-1}(\mu_Z)=3\pi^2$ and $\alpha_Y^{-1}(\mu_Z)=10\pi^2$, giving $\alpha^{-1}(\mu_Z)=\alpha_w^{-1}+\alpha_Y^{-1}=13\pi^2$.
+Thus $\alpha_w^{-1}(\mu_Z)=3\pi^2$ and $\alpha_Y^{-1}(\mu_Z)=W_Y(K_\ast)\pi^2$, giving $\alpha^{-1}(\mu_Z)=(3+W_Y(K_\ast))\pi^2$ and, under $W_Y(K_\ast)=10$, $\alpha^{-1}(\mu_Z)=13\pi^2$.
 Finally, using the standard electroweak identity $\sin^2\theta_W=\alpha/\alpha_w=\alpha_w^{-1}/\alpha^{-1}$ \cite{PeskinSchroeder1995,PDGRPP2024} yields $\sin^2\theta_W(\mu_Z)=3/13$.
 \end{proof}
 \begin{remark}
@@ -243,17 +255,23 @@ and
 \frac{3}{13}-0.23122\approx -4.51\times 10^{-4}\qquad (-1.95\times 10^{-3}\ \text{relative}).
 \end{equation}
 
+\begin{remark}[Kernel-family audit at the anchor]\label{rem:ew_kernel_family_audit}
+\AuditTag The weighted-volume electroweak normalization depends on the effective $U(1)_Y$ weight $W_Y(K)$.
+Appendix~\ref{app:kernel_family_cap_closure} records an explicit finite kernel family and audits how $W_Y$ and the resulting mismatch factors change across that family.
+\AuditTag This audit makes explicit that improving match is not achieved by ``raising $m$'' alone under a fixed kernel: at fixed kernel choice, the induced weights can converge to a limit; the relevant freedom is the kernel family, which must be explicitly closed and audited to avoid hidden knobs.
+\end{remark}
+
 \begin{remark}[Unification-scale benchmarks vs.\ $Z$-scale conventions]\label{rem:gutsin2_benchmark}
 The electroweak mixing angle is scale dependent.
-In minimal $SU(5)$-type grand-unified models, one has the familiar tree-level unification-scale relation $\sin^2\theta_W=3/8$ \cite{GeorgiGlashow1974SU5,Langacker1981GUT}.
-Running and threshold corrections then relate unification-scale parameters to $Z$-scale $\overline{\mathrm{MS}}$ conventions \cite{PDGRPP2024,PeskinSchroeder1995}.
-Accordingly, our $Z$-scale targets in \eqref{eq:ew_closed_values} are recorded as matching-layer normalizations at $\mu_Z$, not as unification-scale relations.
+\MatchTag In minimal $SU(5)$-type grand-unified models with canonical hypercharge normalization, one has the familiar \emph{tree-level unification-scale} relation $\sin^2\theta_W(\mu_{\mathrm{GUT}})=3/8$ \cite{GeorgiGlashow1974SU5,Langacker1981GUT}.
+\MatchTag Comparing this benchmark to $Z$-scale $\overline{\mathrm{MS}}$ values requires specifying a renormalization prescription and performing RG running and threshold matching across particle thresholds \cite{PeskinSchroeder1995,PDGRPP2024}.
+\AuditTag The present paper does not assume gauge unification or derive a unification scale; the $3/8$ relation is therefore used only as a contextual benchmark (not used in proofs), while the $Z$-scale quantities in \eqref{eq:ew_closed_values} are treated as matching-layer normalizations at $\mu_Z$.
 \end{remark}
 
 \paragraph{Bounded-complexity rigidity.}
 Within the finite search domain $1\le n\le 50$ in the ansatz $\alpha^{-1}(\mu_Z)=n\pi^2$, the coefficient $n=13$ is the unique minimizer of the audit mismatch $e(n):=|\log((n\pi^2)/\alpha^{-1}_{\mathrm{PDG}}(\mu_Z))|$ (Table~\ref{tab:ew_alpha_pi2_rigidity}).
 Within the rational search domain $1\le q\le 50$ for reduced rationals $p/q$, the fraction $3/13$ is the unique minimizer of $e(p/q):=|\log((p/q)/\sin^2\theta_{W,\mathrm{PDG}}(\mu_Z))|$ under the deterministic tie-break $(q,p)$ (Table~\ref{tab:ew_sin2_rational_rigidity}).
-Combining the two fixes yields $\alpha_w^{-1}=3\pi^2$ and $\alpha_Y^{-1}=10\pi^2$ by \eqref{eq:ew_inverse_alphas}.
+Combining the two fixes yields $\alpha_w^{-1}=3\pi^2$ and $\alpha_Y^{-1}=W_Y(K_\ast)\pi^2$ by \eqref{eq:ew_inverse_alphas}; under the CAP-selected kernel at $\mu_Z$ one has $W_Y(K_\ast)=10$ and therefore $\alpha_Y^{-1}=10\pi^2$.
 \begin{proposition}[Integer and rational rigidity at the electroweak scale]\label{prop:ew_rigidity}
 Let $\alpha^{-1}_{\mathrm{PDG}}(\mu_Z)\approx 127.955$ and $\sin^2\theta_{W,\mathrm{PDG}}(\mu_Z)\approx 0.23122$ be the PDG reference values \cite{PDGRPP2024}.
 Within the finite domains $1\le n\le 50$ in the ansatz $\alpha^{-1}(\mu_Z)=n\pi^2$ and $1\le q\le 50$ in reduced rationals $p/q$ for $\sin^2\theta_W(\mu_Z)$, the unique choices are
@@ -321,6 +339,63 @@ Under the canonical quotient metrics, $\mathrm{Vol}(\mathcal{M}_{\mathrm{CP}})=\
 By Lemma~\ref{lem:group_volumes}, $\mathrm{Vol}(SO(3))=\pi^2$ and $\mathrm{Vol}(\mathbb{R}P^1)=\pi$.
 Therefore $\mathrm{Vol}(\mathcal{M}_{\mathrm{CP}})=(\pi^2)^3\cdot \pi=\pi^7$.
 \end{proof}
+
+\paragraph{The geometrization of the \texorpdfstring{$1/11$}{1/11} factor.}
+The normalization \eqref{eq:j_geo} contains a discrete factor $d_{\mathrm{CP}}=11$.
+This is not introduced as a numerical fit: it is the protocol-facing multiplicity forced once one commits to the three-factor gauge closure and to a CP-odd, rephasing-invariant residue.
+On the interface side, the three-factor compensation structure is closed as $U(1)\times SU(2)\times SU(3)$ by CAP-minimality under compactness and channelwise factorization (Proposition~\ref{prop:channel_to_gauge}).
+On the CP-odd side, the Jarlskog invariant is insensitive to abelian rephasings, and the projective $\ZZ_2$ identification is already encoded in the $\mathbb{R}P^1$ factor in $\mathcal{M}_{\mathrm{CP}}$ (Definition~\ref{def:cp_phase_space}).
+Accordingly, the remaining minimal discrete multiplicity that can weight a genuinely CP-odd, non-abelian residue is the total non-abelian generator count:
+\[
+d_{\mathrm{CP}}=\dim(\mathfrak{su}(3))+\dim(\mathfrak{su}(2))=8+3.
+\]
+Equivalently, $d_{\mathrm{CP}}$ is the sum of the eight color generators and the three weak generators (Table~\ref{tab:dcp_generator_count}).
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lll}
+\toprule
+sector & Lie algebra & canonical generator count \\
+\midrule
+weak (non-abelian)  & $\mathfrak{su}(2)$ & $T_1,T_2,T_3$ \quad $(3)$ \\
+color (non-abelian) & $\mathfrak{su}(3)$ & $\lambda_1,\dots,\lambda_8$ \quad $(8)$ \\
+\bottomrule
+\end{tabular}
+\caption{The discrete multiplicity behind $d_{\mathrm{CP}}=11$ in \eqref{eq:j_geo}: the CP-odd normalization weights the non-abelian generator counts of the two non-abelian gauge factors closed at the interface (Proposition~\ref{prop:channel_to_gauge}).}
+\label{tab:dcp_generator_count}
+\end{table}
+
+\begin{proposition}[Forced non-abelian multiplicity in the CP-odd normalization]\label{prop:dcp_forced_11}
+Assume the following interface bundle:
+\begin{itemize}
+\item \textbf{(A1) Three-factor gauge closure.} The compensation redundancy closes to $U(1)\times SU(2)\times SU(3)$ under the paper's compactness/factorization contract (Proposition~\ref{prop:channel_to_gauge}).
+\item \textbf{(A2) CP-odd residue is rephasing-invariant.} The CP-odd invariant is defined to be insensitive to abelian rephasings, so $U(1)$ phases are treated as normalization rather than as a CP-odd multiplicity factor.
+\item \textbf{(A3) Ray/projective identifications are already accounted for in the phase space.} The $\ZZ_2$ ray identification is represented explicitly by the $\mathbb{R}P^1$ factor in $\mathcal{M}_{\mathrm{CP}}$ (Definition~\ref{def:cp_phase_space}).
+\end{itemize}
+Then the minimal protocol-facing discrete multiplicity that weights a genuinely non-abelian CP-odd residue is
+\[
+d_{\mathrm{CP}}=\dim(\mathfrak{su}(3))+\dim(\mathfrak{su}(2))=8+3=11.
+\]
+\end{proposition}
+\begin{proof}
+Under (A1), the only non-abelian gauge factors are $SU(2)$ and $SU(3)$.
+Under (A2), abelian $U(1)$ phases do not contribute to a CP-odd rephasing-invariant residue and therefore are not counted as an independent multiplicity factor.
+Under (A3), the discrete projective/ray identification is already encoded geometrically in the phase-space normalization, so adding an extra $\ZZ_2$ multiplicity would double-count a quotient already taken.
+Thus the remaining minimal discrete multiplicity is the sum of the non-abelian generator counts, i.e.\ the Lie-algebra dimensions $3$ and $8$.
+\end{proof}
+
+\begin{remark}[Failure modes and what would have to change]\label{rem:dcp_failure_modes}
+If one changes any of the bundle assumptions in Proposition~\ref{prop:dcp_forced_11}, the multiplicity dictionary can change.
+For example:
+\begin{itemize}
+\item If one counts $U(1)$ as CP-odd multiplicity, one must specify a distinct abelian CP-odd residue that is not already absorbed into the projective normalization; otherwise the count double-counts rephasing freedom.
+\item If one changes the gauge closure (e.g.\ extra non-abelian factors or different compactness assumptions), then $d_{\mathrm{CP}}$ changes accordingly by replacing $(8,3)$ by the new non-abelian generator counts.
+\end{itemize}
+The point of the present paper is that, under the fixed interface contract that closes the SM gauge factors and fixes the CP-odd invariant as rephasing-invariant, the integer $11$ is forced rather than selected post hoc.
+\end{remark}
 \begin{equation}\label{eq:j_geo}
 d_{\mathrm{CP}}:=\dim(\mathfrak{su}(3))+\dim(\mathfrak{su}(2))=8+3=11,
 \qquad

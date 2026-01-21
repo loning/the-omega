@@ -15,6 +15,15 @@ item & status & where defined & audit / falsifiability channel \\
 tick-only primitive & Axiom~\ref{ax:readout_sequentiality} & Section~\ref{subsec:axiom0_linearity}; Section~\ref{sec:tick_calculus} & Fold$_6$ checks; Appendix~\ref{app:reproducibility} \\
 CAP closure rule & Axiom~\ref{ax:cap}, Definition~\ref{def:bounded_complexity_closure} & Section~\ref{subsec:bounded_complexity_audit}; Appendix~\ref{app:cap_audit_template} & audit tables; Appendix~\ref{app:generated_tables} \\
 dyadic phase registers $\ZZ_{2^p}$ & CAP-audited bounded closure (phase-lift dictionary) & Section~\ref{subsec:z128_label} and Section~\ref{subsec:holonomy_phase_lift_cp}; Appendix~\ref{app:protocol_primitives} & denom/map-family audits; Section~\ref{sec:protocol_connections_holonomy} \\
+embedding and projection readout ($\mathcal{Z}$, gap $\delta$) & interface module (explicitly scoped; not used in proofs) & Section~\ref{sec:embedding_gap_projection} & failure-point templates (gap cohomology, protocol declaration); Appendix~\ref{app:minimal_failure_point_templates} \\
+cut-and-project bridge $\Lambda(W)$ & mathematical bridge (not used in folding proofs) & Section~\ref{sec:cut_and_project_bridge} & discrepancy certificates; Section~\ref{subsubsec:discrepancy_certificates} and Appendix~\ref{app:discrepancy_ostrowski} \\
+time-advance dispersion channel & interface signature (group-velocity slope; scoped) & Section~\ref{sec:dispersion_time_advance} & falsifiable propagation timing channel (matching-layer calibration required) \\
+octonionic internal lift ($\OO$, $G_2$) & optional interface candidate (audited; not used in closures) & Section~\ref{sec:octonion_g2_internal_phase} & registry/MDL accounting if invoked; Appendix~\ref{app:global_model_selection_mdl} \\
+adelic prime-orbit module & audit/interface background (not used in closures) & Section~\ref{sec:adelic_prime_orbit_module} & failure-point discipline (background-only vs.\ explicit finite surrogate) \\
+cyclic calculus on scan orbits & audit-facing finite calculus template (not used in proofs) & Appendix~\ref{app:cyclic_calculus_theta_fp} & Abel finite-part + resolvent dictionaries; Appendix~\ref{app:abel_finite_part_notes} \\
+window readout as projection limit; cut-spectrum order sensitivity & audit-facing template (not used in proofs) & Appendix~\ref{app:reference_state_and_cuts} & clarifies window-word/POVM relation; order-sensitivity template \\
+Zeckendorf shift primitive cycles & mathematical refinement (not used in folding proofs) & Appendix~\ref{app:zeckendorf_shift_prime_cycles} & primitive-cycle bookkeeping; det/trace/zeta packaging \\
+Jordan/triality candidate; $\alpha_{\mathrm{geo}}$ impedance candidate & audit-only candidate modules (not used in closures) & Appendix~\ref{app:jordan_triality_candidate}; Appendix~\ref{app:alpha_geo_impedance_candidate} & registry/MDL gate if invoked; Appendix~\ref{app:global_model_selection_mdl} \\
 addressing basis (screen) & CAP-audited counterfactual closure & Section~\ref{sec:hilbert_addressing}; Section~\ref{subsec:tick_to_space} & Table~\ref{tab:addressing_selection}; Appendix~\ref{app:reproducibility} \\
 rigid-frame display anchor & interface dictionary (derived localization criterion) & Section~\ref{subsec:6dof_lock}; Section~\ref{sec:tick_calculus} & resolution staircase; Section~\ref{sec:falsifiability} \\
 Hilbert orientation class & CAP tie-break (one-bit canonical representative) & Section~\ref{subsec:scl}; Definition~\ref{def:scl} & $\chi$ sign flips; Proposition~\ref{prop:chi_flip}; Prediction P2 \\
@@ -25,6 +34,25 @@ geometric normalization dictionaries & CAP-closed dictionaries (bounded families
 \caption{Audit-facing interface contract: tick and CAP as the primitive inputs; all other interface components are CAP-closed within explicit finite candidate families and audited by the listed channels.}
 \label{tab:audit_facing_contract}
 \end{table}
+
+\paragraph{Implicit constraint registry (reader-facing pointers).}
+\AuditTag Several cross-module rigidity constraints are used repeatedly in the manuscript and are easy to miss if one reads only within a single module.
+For fast navigation, the \AuditTag Sel/Upd/gap unified vocabulary is recorded in Section~\ref{sec:unified_spine}, and the determinant/trace/pole-barrier/delay certificate spine is recorded in Section~\ref{sec:rigidity_bridge_spine}; both are summarized as an audit registry in the closure tracker \texttt{theory\_closure\_tracker.md}.
+The most frequently used constraints are:
+\begin{itemize}
+\item \AuditTag \textbf{Dyadic--cosmology consistency pin:} the dyadic baseline $p=7$ and the cosmology-side discrete match are tied by the low-complexity relation $m_b^\ast=2p+1$ (Corollary~\ref{cor:dyadic_cosmology_consistency_pin}).
+\item \AuditTag \textbf{Pole-barrier certificate family:} pole-barrier gates (including the QCD proxy$\leftrightarrow$Pad\'e gate) are instances of the same analyticity-discipline template, with a pressure/spectral-radius form when transfer-operator packages exist (Corollary~\ref{cor:pole_barrier_equals_exp_minus_pressure}).
+\item \AuditTag \textbf{Legality threshold for invariant verdicts:} if an output is intended to be invariant under a declared equivalence, the tie-break key must be invariant as well (Proposition~\ref{prop:rigidity_legality_invariant_verdicts}).
+\item \AuditTag \textbf{Identifiability boundary (cycle-type-only):} cycle-type histograms are complete for class-function summaries; additional distinctions require enlarging loop families or changing readouts (Proposition~\ref{prop:cycle_type_identifiability_boundary}).
+\item \AuditTag \textbf{Capacity bits as entropy proxies:} capacity bits are log-count entropy in the protocol language (up to matching factors), so capacity-facing modules implicitly carry entropy/typicality semantics and must respect finite-observability squeezing bounds when they derive from quotients (Remark~\ref{rem:rigidity_capacity_bits_entropy}).
+\item \AuditTag \textbf{WS delay as a logdet derivative (unitary window):} on a declared unitary band, the WS trace is $-\iu\,\dd(\log\det S)/\dd\omega$, aligning delay audits with determinant/trace bookkeeping (Lemma~\ref{lem:wigner_smith_trace_logdet}).
+\item \AuditTag \textbf{Scheme as origin shift in $r$:} scheme rescalings are to be treated as coordinate-origin choices in the $r$ coordinate under the declared scheme contract, not as hidden continuous knobs (Corollary~\ref{cor:rigidity_scheme_shift_origin_r}).
+\item \AuditTag \textbf{DPI irreversibility certificate:} data processing provides a canonical monotonicity/irreversibility certificate whenever a step is modeled as a declared coarse-graining channel (Corollary~\ref{cor:rigidity_dpi_irreversibility_certificate}).
+\item \AuditTag \textbf{Kernel pressure/pole-barrier alignment:} kernel-view weighted pressure proxies are $\log$ spectral radii and share the same pole-barrier interpretation $|r|_\star=\exp(-P)$ (Corollary~\ref{cor:rigidity_kernel_pressure_polebarrier_alignment}).
+\item \AuditTag \textbf{Global MDL registry accounting:} cross-family look-elsewhere control is closed only inside an explicit finite family registry with a prefix-code prior; enlarging the registry is an explicit audit choice (Appendix~\ref{app:global_model_selection_mdl}).
+\item \AuditTag \textbf{Projection residual (gap) bookkeeping:} embedding-based projection readouts induce residuals; when organized as a gap field on an interaction complex, a nontrivial $H^1$ class is a structured failure mode (Section~\ref{sec:embedding_gap_projection}).
+\item \AuditTag \textbf{Time-advance vs.\ delay separation:} energy-dependent time advance from a dispersion slope is distinct from overhead-induced delay/lapse proxies; mixing the two requires an explicit matching dictionary (Section~\ref{sec:dispersion_time_advance} and Appendix~\ref{app:time_mass_delay}).
+\end{itemize}
 
 \begin{figure}[t]
 \centering

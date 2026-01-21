@@ -8,6 +8,7 @@ finite diagnostics elsewhere in the paper).
 
 Outputs:
   - figures/hilbert_knot_triptych.png
+  - figures/hilbert_knot_triptych.pdf (optional vector export)
 """
 
 from __future__ import annotations
@@ -191,8 +192,13 @@ def main() -> None:
     _set_equal_3d(ax)
 
     fig.tight_layout(w_pad=1.2)
-    fig.savefig(out_dir / "hilbert_knot_triptych.png", dpi=220)
+    out_png = out_dir / "hilbert_knot_triptych.png"
+    fig.savefig(out_png, dpi=220)
+    # Optional PDF for vector inclusion.
+    out_pdf = out_dir / "hilbert_knot_triptych.pdf"
+    fig.savefig(out_pdf)
     plt.close(fig)
+    print(f"Wrote {out_png}")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,155 @@
+\section{Sturmian readouts: quantitative return times via continued fractions}
+\label{app:sturmian_return_times_qk}
+\noindent
+This appendix records a quantitative strengthening of uniform recurrence for Sturmian (rotation-window) codings:
+for factors of a given length, return gaps can be bounded in terms of the convergent denominators $q_k$ of the slope.
+Unlike the qualitative uniform-recurrence statement (Appendix~\ref{app:sturmian_uniform_recurrence}), this section provides a full proof within the present paper's finite rotation-window setup.
+
+\subsection{Setup and notation}
+\label{subsec:sturmian_return_setup}
+
+\MathTag Fix an irrational slope $\alpha=[0;a_1,a_2,\ldots]\in(0,1)\setminus\QQ$ with convergents $p_k/q_k$ as in Appendix~\ref{app:continued_fractions}.
+Let $w$ be the canonical rotation-window coding (Appendix~\ref{app:sturmian_entropy}) with window $W_\alpha=[1-\alpha,1)$.
+
+\begin{definition}[Return time / return word]\label{def:sturmian_return_time_word}
+\MathTag Let $u\in\mathcal{L}_m(w)$ be a length-$m$ factor and let $k\in\ZZ$ be an occurrence index, i.e.\ $w_k\cdots w_{k+m-1}=u$.
+Define the \emph{return time} at $k$ by
+\[
+\tau_u(k):=\min\{t\ge 1:\ w_{k+t}\cdots w_{k+t+m-1}=u\}.
+\]
+The intervening block $r:=w_k w_{k+1}\cdots w_{k+t-1}$ is called a \emph{return word} to $u$.
+\end{definition}
+
+\subsection{A $q_k$--$q_{k+1}$ return bound}
+\label{subsec:sturmian_return_bound_qk}
+
+\subsubsection{From factors to partition intervals}
+\label{subsubsec:sturmian_factor_interval_dictionary}
+
+\begin{definition}[Breakpoint partition for length-$m$ blocks]\label{def:breakpoint_partition_Bm}
+\MathTag For $m\ge 1$, define the breakpoint set
+\[
+B_m:=\{-j\alpha\ (\mathrm{mod}\ 1):\ j=0,1,\ldots,m\}\subset\TT.
+\]
+Let $\mathcal{P}_m$ be the resulting partition of $\TT$ into $m+1$ half-open arcs with endpoints in $B_m$.
+\end{definition}
+
+\begin{lemma}[Each length-$m$ factor corresponds to a unique partition arc]\label{lem:factor_to_unique_arc}
+\MathTag Assume the boundary-avoidance convention of Theorem~\ref{thm:sturmian_complexity} (Appendix~\ref{app:sturmian_entropy}): the scan orbit avoids $B_m$.
+Let $F_m:\TT\to\{0,1\}^m$ be the length-$m$ block map from Theorem~\ref{thm:sturmian_complexity}.
+Then:
+\begin{enumerate}
+\item $F_m$ is constant on each arc of $\mathcal{P}_m$;
+\item $|\mathcal{L}_m(w)|=m+1$ and each factor $u\in\mathcal{L}_m(w)$ occurs on exactly one arc $I_u\in\mathcal{P}_m$:
+\[
+I_u=\{x\in\TT:\ F_m(x)=u\}.
+\]
+\item For every $k\in\ZZ$, one has $w_k\cdots w_{k+m-1}=u$ if and only if $x_k\in I_u$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(1) is exactly the breakpoint analysis in Step~1 of Theorem~\ref{thm:sturmian_complexity}: $F_m$ can change only when one of $x,x+\alpha,\ldots,x+(m-1)\alpha$ crosses a window boundary, which occurs precisely at the finite set $B_m$.
+
+(2) By Theorem~\ref{thm:sturmian_complexity} one has $|\mathcal{L}_m(w)|=p(m)=m+1$.
+The partition $\mathcal{P}_m$ has exactly $m+1$ arcs.
+By (1), each arc supports at most one block value.
+Since the orbit is dense and avoids $B_m$, it intersects the interior of each arc, hence realizes each arc's block value in $\mathcal{L}_m(w)$.
+Therefore each arc corresponds to exactly one factor and $I_u$ is the unique arc with block value $u$.
+
+(3) is immediate from the definition: $w_k\cdots w_{k+m-1}=F_m(x_k)$, so equality to $u$ holds iff $x_k\in F_m^{-1}(u)=I_u$.
+\end{proof}
+
+\subsubsection{A quantitative return bound from continued fractions}
+\label{subsubsec:sturmian_return_bound_proof}
+
+% NOTE: We avoid relying on delicate lower bounds for $\|q_k\alpha\|$.
+% The main theorem below uses a three-gap/rotation-density input in a precise form.
+
+\begin{lemma}[Key geometry: the partition arcs have length at least $\|q_k\alpha\|$]\label{lem:partition_arc_lower_bound_qk}
+\MathTag Fix $m\ge 1$ and choose $k\ge 0$ such that $q_k\le m<q_{k+1}$.
+Then every arc in the breakpoint partition $\mathcal{P}_m$ (Definition~\ref{def:breakpoint_partition_Bm}) has length at least $\|q_k\alpha\|$.
+\end{lemma}
+
+\begin{proof}
+The arcs of $\mathcal{P}_m$ are exactly the gaps between consecutive points of $B_m=\{-j\alpha:\ 0\le j\le m\}$ on the circle.
+Suppose for contradiction that there exist $0\le i<j\le m$ such that the circular distance between $-i\alpha$ and $-j\alpha$ is strictly smaller than $\|q_k\alpha\|$.
+Then $\|(j-i)\alpha\|<\|q_k\alpha\|$ with $1\le j-i\le m<q_{k+1}$.
+But by the best-approximation property of convergents, among integers $1\le n<q_{k+1}$ the quantity $\|n\alpha\|$ is minimized at $n=q_k$.
+Therefore $\|(j-i)\alpha\|\ge \|q_k\alpha\|$, a contradiction.
+\end{proof}
+
+\begin{theorem}[Three-gap theorem (density corollary at a convergent scale)]\label{thm:three_gap_density_corollary}
+\MathTag Let $\alpha\in(0,1)\setminus\QQ$ with convergent denominators $q_k$.
+Define $\delta_k:=\|q_k\alpha\|$.
+Then the finite orbit segment
+\[
+\{x_0,\ x_0+\alpha,\ \ldots,\ x_0+(q_{k+1}+q_k-1)\alpha\}\subset\TT
+\]
+is $\delta_k$-dense in $\TT$ for every $x_0\in\TT$:
+every half-open arc of length $\ge \delta_k$ contains at least one point from the segment.
+\end{theorem}
+
+\begin{proof}
+This is a standard consequence of the three-distance (three-gap) theorem for irrational rotations; see, e.g.,
+\cite[Ch.\ 2, Theorem on three distances]{KuipersNiederreiter1974}.
+At the specific length $N=q_{k+1}+q_k$, the theorem implies that the maximum gap between consecutive points of the sorted set $\{x_0+n\alpha\}_{n=0}^{N-1}$ is exactly $\delta_k=\|q_k\alpha\|$.
+Therefore every arc of length at least $\delta_k$ must contain a point of the set, proving $\delta_k$-density.
+\end{proof}
+
+\begin{theorem}[Two-scale return-time bound for Sturmian factors]\label{thm:sturmian_return_time_qk_bound}
+\MathTag Let $m\ge 1$ and choose $k\ge 0$ such that
+\[
+q_k\le m<q_{k+1}.
+\]
+Then every factor $u\in\mathcal{L}_m(w)$ is uniformly recurrent with a quantitative gap bound
+\[
+\tau_u(k')\le q_k+q_{k+1}\qquad\text{for every occurrence index }k'\in\mathrm{Occ}_w(u).
+\]
+Equivalently, the occurrence set $\mathrm{Occ}_w(u)$ is syndetic with gap bound $q_k+q_{k+1}$.
+\end{theorem}
+
+\begin{proof}
+Fix $u\in\mathcal{L}_m(w)$.
+By Lemma~\ref{lem:factor_to_unique_arc}, there exists a unique partition arc $I_u\in\mathcal{P}_m$ such that $k'\in\mathrm{Occ}_w(u)$ iff $x_{k'}\in I_u$.
+Therefore the return time $\tau_u(k')$ at an occurrence index $k'$ is the first return time of the rotation orbit $\{x_n\}$ from the point $x_{k'}$ back into the same arc $I_u$.
+
+By Lemma~\ref{lem:partition_arc_lower_bound_qk}, one has $|I_u|\ge \|q_k\alpha\|=:\delta_k$.
+Apply the $\delta_k$-density statement of Theorem~\ref{thm:three_gap_density_corollary} to the orbit segment of length $q_{k+1}+q_k$ starting at $x_{k'}$:
+since $I_u$ has length at least $\delta_k$, it is hit within at most $q_{k+1}+q_k$ steps.
+Therefore $\tau_u(k')\le q_{k+1}+q_k$ for every occurrence index $k'$, as claimed.
+\end{proof}
+
+\begin{corollary}[Bounded-type linear return bound]\label{cor:sturmian_return_bounded_type_linear}
+\MathTag Assume $\alpha=[0;a_1,a_2,\ldots]$ has bounded partial quotients: $a_i\le A$ for all $i$.
+Then for every $m\ge 1$ and every factor $u\in\mathcal{L}_m(w)$, all return gaps satisfy
+\[
+\tau_u(k')\le (A+2)\,m
+\qquad\text{for every occurrence index }k'\in\mathrm{Occ}_w(u).
+\]
+In particular, on the golden branch ($A=1$) one has the explicit uniform bound $\tau_u(k')\le 3m$.
+\end{corollary}
+
+\begin{proof}
+Fix $m\ge 1$ and choose $k$ such that $q_k\le m<q_{k+1}$.
+By Theorem~\ref{thm:sturmian_return_time_qk_bound},
+\[
+\tau_u(k')\le q_k+q_{k+1}.
+\]
+Using the continued-fraction recurrence $q_{k+1}=a_{k+1}q_k+q_{k-1}$ and $q_{k-1}\le q_k$, one has
+\[
+q_{k+1}\le (A+1)q_k,
+\qquad\text{hence}\qquad
+q_k+q_{k+1}\le (A+2)q_k\le (A+2)m.
+\]
+For the golden branch one has $A=1$, giving $\tau_u(k')\le 3m$.
+\end{proof}
+
+\begin{remark}[Connection to the classical ``two return words'' theorem]\label{rem:sturmian_two_return_words_connection}
+\AuditTag A stronger and more structured statement is known:
+for Sturmian words, each factor admits exactly two return words, and their lengths are controlled by adjacent convergent denominators of the slope.
+The present appendix proves only the uniform upper bound used by this manuscript.
+For the classical return-word classification statements, see, e.g.,
+\cite[Chs.\ 2--3]{Lothaire2002} and \cite[Ch.\ 6]{AlloucheShallit2003}.
+\end{remark}
+

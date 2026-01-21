@@ -1,0 +1,57 @@
+\section{K4 scattering phase to delay audit (interface benchmark)}
+\label{app:k4_scattering_phase_delay_audit}
+
+\AuditTag This appendix records a minimal interface audit that turns a small phase-shift point cloud into a Wigner--Smith-type delay proxy.
+The goal is to keep the data-facing matching layer explicit: phase data $\delta(E)$ is a directly measurable quantity in scattering experiments, while $\tau_{\mathrm{WS}}$ is a delay readout proxy that can be compared to other delay channels.
+
+\subsection{Scope}
+\AuditTag The present artifact is a benchmark interface: the vendored dataset in \path{data/k4_matching/scattering_phase_registry.json} is a deterministic single-resonance phase model (non-empirical).
+Replacing it by measured phase-shift points activates the same pipeline without changing the audit logic.
+
+\AuditTag Important: the abscissa labeled $E$ in the registry is dataset-dependent. For NN-OnLine phase-shift tables, $E$ corresponds to the laboratory kinetic energy $T_{\mathrm{lab}}$ (MeV). Therefore the reported proxy series is $\widehat{\tau}_i:=2\,\mathrm{d}\delta/\mathrm{d}T_{\mathrm{lab}}$; its sign and magnitude are interpretable as a coordinate-specific delay proxy, but should not be confused with a fully physical Wigner--Smith time delay with respect to a uniquely defined center-of-mass energy coordinate.
+
+\AuditTag Coordinate-change sign rule: for a monotone reparameterization $y=y(x)$ with $\mathrm{d}y/\mathrm{d}x>0$, we have
+$$
+\frac{\mathrm{d}\delta}{\mathrm{d}y}=\frac{\mathrm{d}\delta/\mathrm{d}x}{\mathrm{d}y/\mathrm{d}x},
+$$
+so the sign of $\mathrm{d}\delta/\mathrm{d}y$ matches the sign of $\mathrm{d}\delta/\mathrm{d}x$. The Jacobian ranges reported in the coordinate-transform table make this condition explicit for the transform hypotheses used here.
+
+\subsection{Generated artifact}
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{r l l l r r r r r r}
+\toprule
+\# & dataset & $x$ & unit & $n$ & $n_{\mathrm{eff}}$ & $\widehat{\tau}_{\mathrm{med}}$ & $\widehat{\tau}_{\min}$ & $\widehat{\tau}_{\max}$ & $f_{-}$ \\
+\midrule
+\input{sections/generated/k4_scattering_phase_delay_rows.tex}%
+\end{tabular}
+\caption{Phase-shift to delay-proxy audit rows. Each dataset provides phase points $(x,\delta)$ with a dataset-dependent abscissa $x$; we compute a signed proxy series $\tau_i:=2\,\mathrm{d}\delta/\mathrm{d}x$ on interior points and report median/min/max and the negative fraction $f_{-}$.}
+\end{table}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{r l l l r r r r r r}
+\toprule
+\# & dataset & $x$ & unit & $k$ & $n_{\mathrm{eff}}$ & $\widehat{\tau}_{\mathrm{med}}$ & $\widehat{\tau}_{\min}$ & $\widehat{\tau}_{\max}$ & $f_{-}$ \\
+\midrule
+\input{sections/generated/k4_scattering_phase_delay_window_rows.tex}%
+\end{tabular}
+\caption{Window-family sensitivity report. For each dataset we recompute $\tau_i:=2\,\mathrm{d}\delta/\mathrm{d}x$ using local linear fits over a symmetric window of radius $k$ samples (bounded family $k=1,2,3$). This makes discretization sensitivity explicit while preserving signed output.}
+\end{table}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{r l l l l r r r r r r r r}
+\toprule
+\# & dataset & transform & $y$ & unit & $k$ & $n_{\mathrm{eff}}$ & $\min(\mathrm{d}y/\mathrm{d}x)$ & $\max(\mathrm{d}y/\mathrm{d}x)$ & $\widehat{\tau}_{\mathrm{med}}$ & $\widehat{\tau}_{\min}$ & $\widehat{\tau}_{\max}$ & $f_{-}$ \\
+\midrule
+\input{sections/generated/k4_scattering_phase_delay_coord_rows.tex}%
+\end{tabular}
+\caption{Optional coordinate-transform report: for NN-OnLine np tables with $x=T_{\mathrm{lab}}$ we additionally compute $\tau_i:=2\,\mathrm{d}\delta/\mathrm{d}y$ where $y$ is a transparent hypothesis for a center-of-mass kinetic-energy coordinate $E_{\mathrm{cm,kin}}$ (NR/REL). We report the bounded window family $k=1,2,3$ using local linear fits and include the Jacobian range over the effective center points. This report is non-selective: it is shown to make coordinate dependence explicit, not to enforce a physical choice.}
+\end{table}
+
+\input{sections/generated/k4_scattering_phase_delay_summary.tex}
+

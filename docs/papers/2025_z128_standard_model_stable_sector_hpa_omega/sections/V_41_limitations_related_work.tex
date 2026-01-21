@@ -8,7 +8,24 @@ By contrast, the physical identifications (gauge sectors, chirality, antimatter,
 The finite combinatorics alone is not a Lagrangian; the Standard Model interface is fixed here by explicit closure rules that are stated at the protocol layer and are audited by finite searches.
 Concretely, the paper provides a rigid finite substrate ($X_6$ with intrinsic invariants) on which any identification must act, closed auditable interface maps at the level of discrete assignments (e.g.\ the labeling closure in Section~\ref{sec:sm_labeling_closure}), and falsifiable protocol-level predictions that go beyond post-hoc parameter matching (Section~\ref{sec:falsifiability}).
 Within the declared protocol class, the remaining selection freedom is closed by deterministic bounded-complexity rules (Definition~\ref{def:bounded_complexity_closure}) and by explicit refinement maps (Appendix~\ref{app:functorial_refinement}); uniqueness/stability is recorded via rigidity certificates and stabilization tables throughout.
+In particular, the protocol state at a target scale is treated as $(m,n,K)$: resolution $m$, addressing order $n$ when a locality screen is invoked, and a declared readout kernel $K$ closed within an explicit finite kernel family (Appendix~\ref{subsec:tick_cap_joint_key_contract} and Appendix~\ref{app:kernel_family_cap_closure}).
 Appendix~\ref{app:inference_ledger} records the resulting ``no-new-input'' dependency ledger in a compact audit form, separating theorem-level consequences, finite protocol constructions, conditional interface implications, and bounded-complexity closures.
+
+\paragraph{Holographic equivalence: what is PT here, and what remains CP/interface.}
+\AuditTag The manuscript uses ``holographic'' only in a scoped, finite-resolution sense: a screen/addressing layer induces a boundary algebra family,
+and certain bulk-facing reportables are constrained or reconstructible from boundary data within declared windows and error budgets.
+The governing scope contract, allowed claim format, PT carriers, and downgrade rules are recorded in Appendix~\ref{app:holo_scope_contract}.
+The following components are PT in controlled subclasses already defined in the paper:
+(i) the boundary-algebra object as a restriction of the protocol-induced local net (Appendix~\ref{app:holo_boundary_algebra_from_screens},
+ultimately relying on isotony in Appendix~\ref{app:construct_local_net_from_protocol}),
+(ii) the finite-dimensional entropy/capacity upper bound (Appendix~\ref{app:holo_capacity_bound}),
+and (iii) reconstruction formulated as quantum error correction for erasure in the tensor-product locality subclass
+(Appendix~\ref{app:holo_reconstruction_surrogate} and Appendix~\ref{app:protocol_subclass_tensor_net}).
+By contrast, any statement that requires additional geometric inputs (e.g.\ minimal-surface prescriptions), unrestricted reconstruction beyond the controlled subclass,
+or a scattering-level ``S-matrix holography'' claim is treated as CP/interface-only and must carry explicit failure points and fallbacks
+(Appendix~\ref{app:holo_scope_contract}, Appendix~\ref{app:scheme_invariance_audit_contract}, Appendix~\ref{app:renormalization_dictionary_and_boundaries}).
+\AuditTag In particular, toy/record-audit artifacts are \emph{never} used as premises for theorem-level holographic claims; the explicit upgrade-boundary registry
+is Table~\ref{tab:holo_upgrade_boundary_registry} in Appendix~\ref{app:holo_scope_contract}.
 
 \subsection{On the CAP-selected anchor \texorpdfstring{$(m,n)=(6,3)$}{(m,n)=(6,3)}}
 For the chosen $2$D Hilbert readout screen, the balanced coupling condition $m=2n$ is used to match two independent finite cardinalities:
@@ -23,6 +40,7 @@ Concretely, the balanced-chain sweep in Table~\ref{tab:holonomy_balanced_chain_s
 This provides a low-complexity interface constraint whose compatibility with uplift and coarse-graining behavior is audited and falsifiable.
 We partially control parameter sensitivity by recording $m$-sweeps and balanced refinement chains (Appendix~\ref{app:generated_tables} and Section~\ref{sec:protocol_connections_holonomy}), which show that several structural counts (Fibonacci admissible sizes, cyclic/boundary split) persist across $m$.
 To close the energy$\leftrightarrow$m interface at the protocol layer, we fix a deterministic staircase selection rule $m_{\mathrm{eff}}(\mu)$ in Corollary~\ref{cor:resolution_selection}, together with an auditable calibration of the step size $r_{\mathrm{step}}$ (Section~\ref{subsec:p3_resolution_jumps}).
+As a complementary capacity-first organization of uplift, Appendix~\ref{app:resolution_uplift_fusion_horizon_unification} records a finite-family CAP selection rule for $(m,n)$ under explicit constraints, together with a protocol-level staging vocabulary and horizon hooks.
 At the purely mathematical level, the persistence statements are theorem-level: $|X_m|=F_{m+2}$ and $|X_m^{\mathrm{bdry}}|=F_{m-2}$ for all $m$ (Lemma~\ref{lem:xm_fib} and Proposition~\ref{prop:cyc_bdry_size}), and the truncation map $\mathrm{Fold}_m$ is surjective onto $X_m$ for all $m\ge 1$ (Proposition~\ref{prop:foldm_surjective}).
 
 \subsection{Rigidity targets, look-elsewhere context, and counterfactual baselines}
@@ -44,7 +62,14 @@ p_{\le \epsilon}:=\frac{N_{\le \epsilon}}{|\Theta|}
 \]
 in Table~\ref{tab:audit_closure_metrics} gives the probability that a uniformly random candidate achieves minimax log-mismatch $E_\infty\le \epsilon$.
 When the minimizer is unique, the probability that a uniformly random candidate matches \emph{as well or better} than the selected minimizer is $1/|\Theta|$.
-Multiple-comparison adjustments across several simultaneously reported closures can be bounded conservatively (e.g.\ Bonferroni), but we emphasize that our audit tables are intended to provide transparent within-family look-elsewhere context, not a comprehensive search over unrestricted expression grammars.
+If the paper reports $K$ closures from (possibly different) discrete families $\Theta_1,\dots,\Theta_K$ and one adopts the same uniform-within-family reading, then a conservative global look-elsewhere upper bound is given by the union bound:
+\[
+\mathbb{P}\Bigl(\exists\,i:\ E_{\infty}^{(i)}\le \epsilon_i\Bigr)
+\;\le\;
+\sum_{i=1}^{K} p^{(i)}_{\le \epsilon_i},
+\]
+and in the unique-minimizer case one may take $p^{(i)}_{\le \epsilon_i}=1/|\Theta_i|$ for the event ``a random candidate matches as well or better than the selected minimizer''.
+This is a Bonferroni-style conservative correction; we emphasize that our audit tables are intended to provide transparent within-family look-elsewhere context, not a comprehensive search over unrestricted expression grammars.
 
 \subsection{Rigidity constraints and why key interface choices are forced}
 \label{subsec:rigidity_constraints_forced}
@@ -93,6 +118,7 @@ knob / input & meaning & status in this paper & where audited \\
 \midrule
 $m$ (window length) & readout resolution / admissible alphabet & anchor $m=6$; $m$-sweeps and refinement chains recorded & Appendix~\ref{app:generated_tables} (Tables~\ref{tab:xm_sweep}--\ref{tab:foldm_sweep}) \\
 $n$ (Hilbert order) & addressing resolution & anchor $n=3$ for the chosen $2$D screen (via $m=2n$); chirality sweep recorded & Table~\ref{tab:hilbert_chi_sweep} \\
+\emph{kernel} $K$ & readout weighting rule for scalar summaries & CAP-closed within explicit finite kernel families; audited by sweeps & Appendix~\ref{app:kernel_family_cap_closure} \\
 $B$ (closure budget) & finite search radius for bounded-complexity closures & reported as a sweep; stabilization is recorded when it occurs & e.g.\ Tables~\ref{tab:alpha_coeff_rigidity}, \ref{tab:ew_alpha_pi2_rigidity}, \ref{tab:ckm_mixing_rigidity}, \ref{tab:pmns_mixing_rigidity}, \ref{tab:mass_depth_rigidity} \\
 $Q$ (phase-denominator cap) & bounded rational-angle candidate family for $\delta$ & reported as a sweep $Q=1,\dots,12$ & Table~\ref{tab:pmns_delta_sweep} \\
 $\mathrm{denom}=2^p$ & dyadic phase register for holonomy diagnostics & CAP-audited bounded family (phase-lift dictionary) & Section~\ref{sec:protocol_connections_holonomy} and associated scripts \\
@@ -125,56 +151,81 @@ The corresponding scalar-sector closure in protocol language (parity-even scalar
 \subsection{Scheme dependence and renormalization-group flow}
 Several reported quantities are scheme and scale dependent (e.g.\ $\alpha(\mu)$ and $\sin^2\theta_W(\mu)$), and the paper therefore treats deviations as matching-layer effects rather than as direct ``within-error'' claims (Section~\ref{sec:couplings_cp} and Section~\ref{sec:mass_spectrum_closure}).
 At present, the paper does not derive Standard Model $\beta$-functions from the finite combinatorics.
-Instead, standard one-loop running is used only as an interpretive dictionary: an additive mismatch in $\alpha^{-1}$ corresponds to a logarithmic scale shift (Remark~\ref{rem:qed_running_scale_shift}).
+Instead, standard perturbative running is used only as a matching dictionary: an additive mismatch in $\alpha^{-1}$ corresponds to a logarithmic scale shift (Remark~\ref{rem:qed_running_scale_shift}), and Appendix~\ref{app:running_couplings_resolution_flow} records the $r$-coordinate RG chain rule together with a compact SM-$\beta$ reference pointer to standard sources.
 The intrinsic protocol flow law used in this paper is fixed explicitly as a discrete uplift/coarse-graining flow together with the RG dictionary in the Fibonacci resolution coordinate (Definition~\ref{def:protocol_flow_step} and Proposition~\ref{prop:rg_dictionary_r}).
 
-\subsection{Open problems (audit-tagged)}
+\subsection{Ledger-tagged items beyond the theorem-level core (audit-tagged)}
 \label{subsec:open_problems_audit_tagged}
-The following items are \emph{not} closed by the present paper's theorem-level folding core and are recorded as explicit open problems.
-Each item identifies where the gap enters, what additional input would be required to close it, and what would count as a satisfactory closure.
-Appendix~\ref{app:inference_ledger} mirrors these as \textbf{[Open]} items.
+The following items are \emph{not} theorem-level consequences of the folding core and are recorded in an audit-facing form.
+Some remain explicitly open (tagged \textbf{[Open]} in Appendix~\ref{app:inference_ledger}), while others are closed as interface representatives within declared CAP candidate families.
+For a common technical question---how the finite holonomy/transport diagnostics connect to a continuum gauge-field representative---Appendix~\ref{app:continuum_yang_mills_from_holonomy} records the corresponding representative closure.
 
-\paragraph{(OP1) Gauge-group uniqueness beyond the stated candidate family.}
-The paper closes a \emph{conditional} gauge-factor identification by CAP within an explicit compact three-factor family
-(Proposition~\ref{prop:channel_to_gauge}).
-What remains open is deriving the \emph{candidate family itself} (compactness, factorization into three commuting redundancies, and the complexity label)
-from a deeper microscopic scan/readout architecture, and proving uniqueness without relying on a hand-declared bounded family.
-Within the stated family, the particular choice of common low-complexity labels is less fragile than it may appear: Appendix~\ref{app:gauge_complexity_sensitivity} shows the minimizer persists under several alternative labels in a bounded sweep, and Proposition~\ref{prop:gauge_label_robustness} gives a short classification-based reason for this robustness for the most natural labels.
-Closing this would require either:
-(i) a theorem-level derivation that any admissible local redundancy group must lie in the stated family under the tick-only primitives, or
-(ii) a universality theorem showing that alternative admissible redundancy realizations coarse-grain to the same effective gauge triple.
+\paragraph{(OP1) Gauge-group candidate family / three-factor dictionary from protocol holonomy diagnostics (interface closure).}
+The gauge-factor identification is recorded as a CAP closure (Proposition~\ref{prop:channel_to_gauge}).
+The candidate-family component is supplied by a protocol-internal holonomy-diagnostic interface rule (Appendix~\ref{app:gauge3_holonomy_candidate_closure}), which constrains a bounded compact candidate family using the finite holonomy and phase-lift audit outputs of Section~\ref{sec:protocol_connections_holonomy} and then applies deterministic CAP-style minimization inside that bounded domain.
+Within this interface rule, OP1 is discharged and the remaining gauge-factor choice reduces to the CAP-minimal selection in Proposition~\ref{prop:channel_to_gauge}.
+For readers who prefer alternative underwritings, the paper also records two optional corroboration routes: a physics-consensus matching route (Appendix~\ref{app:physics_consensus_inputs}) and a microscopic internal-fiber route (Appendix~\ref{app:internal_fiber_g2_optional} together with Appendix~\ref{app:quantum_measurement_born}); no equivalence between these routes is asserted.
 
-\paragraph{(OP2) Uniqueness/inevitability of the folding map family.}
+\paragraph{(OP2) Uniqueness/inevitability of the folding map family (closed under protocol locality).}
 The truncation map $\mathrm{Fold}_m$ used here is an explicit, deterministic bridge from dyadic indices to Zeckendorf-admissible digits
 (Definition~\eqref{eq:foldm_def} and Remark~\ref{rem:fold_dyadic_zeckendorf}).
-Appendix~\ref{app:fold_family_sensitivity} shows that alternative deterministic dyadic$\to X_m$ bridges exist and can change fiber statistics.
-Within the bounded counterfactual family audited there, the additional natural fixed-point constraint $F(V(w))=w$ for all $w\in X_6$ selects the Zeckendorf-truncation map uniquely (Proposition~\ref{prop:value_consistency_selects_foldz}); this is a partial closure inside the audited family.
-More generally, within the natural shifted Zeckendorf-window family $\mathrm{Fold}_m^{(s)}$ (Definition~\ref{def:foldm_shifted}), the same value-consistency condition forbids all nonzero shifts and selects the unshifted digit window (Proposition~\ref{prop:value_consistency_forbids_shift}).
-What remains open is a principled selection theorem:
-either derive $\mathrm{Fold}_m$ as uniquely forced by tick\,+\,CAP under a stated notion of protocol locality/implementability,
-or prove an $(\varepsilon,\delta)$-universality statement that makes low-resolution predictions insensitive to the choice of bridge.
+Appendix~\ref{app:fold_family_sensitivity} shows that alternative deterministic dyadic$\to X_m$ maps exist at fixed window length and can change fiber statistics.
+Appendix~\ref{app:fold_family_uniqueness} closes the remaining selection gap by recording a minimal protocol-local/implementable contract (value consistency together with no-backreaction refinement under dyadic uplift) and proving that this contract uniquely forces the Zeckendorf-truncation family $\mathrm{Fold}_m$ (Theorem~\ref{thm:fold_family_uniqueness}).
+This is not an invariance claim under arbitrary nonlocal repairs of the dyadic$\to X_m$ bridge; rather, it shows that within the stated locality/implementability class the folding-map family introduces no residual choice.
 
-\paragraph{(OP3) Continuum Yang--Mills/EFT emergence from the finite connection.}
-The paper constructs a fully finite non-abelian transport/holonomy diagnostic at $(m,n)=(6,3)$
-(Section~\ref{sec:protocol_connections_holonomy}),
-but it does not derive the continuum Yang--Mills action or renormalizable EFT dynamics from this finite skeleton.
-Closing this would require a controlled continuum limit/renormalization argument:
-showing that a family of finite protocols (increasing $m$ with suitable coarse graining) converges to a local gauge field theory with the correct degrees of freedom,
-and that the observed couplings/mixing data arise as stable low-energy parameters.
+\paragraph{(OP3) Continuum Yang--Mills/EFT representative from the finite connection (closed as an interface representative).}
+Appendix~\ref{app:continuum_yang_mills_from_holonomy} records the closure chain that links the finite non-abelian transport/holonomy diagnostics (Section~\ref{sec:protocol_connections_holonomy} and Appendix~\ref{app:holonomy_sweeps_extended}) to a CAP-minimal local continuum representative.
+At the representative level, the gauge-sector kinetic term is fixed as $\Tr(F_{\mu\nu}F^{\mu\nu})$ within the stated candidate family (Section~\ref{app:cap_continuum_action_closure}), yielding the Yang--Mills equations upon variation (Section~\ref{app:variational_field_equations}).
+This representative closure does not address nonperturbative confinement or a Yang--Mills mass gap \cite{JaffeWitten2000YangMillsMassGap,Greensite2011Confinement}; scheme/threshold running is treated separately as a matching-layer dictionary (Appendix~\ref{app:running_couplings_resolution_flow}).
+\AuditTag For an audit-only consistency probe that packages the same finite Wilson-loop diagnostics into (i) an area/perimeter proxy family and (ii) an Abel-first pole-barrier gate, see Appendix~\ref{app:qcd_confinement_proxy_audit} and the mutual-exclusion gate table (Table~\ref{tab:qcd_proxy_polebarrier_failure}).
 
-\paragraph{(OP4) Global model-selection / look-elsewhere control across families.}
+\paragraph{(OP4) Global model-selection / look-elsewhere control across families (closed within a declared registry).}
 Within each stated bounded candidate family, the paper records full audit context (domain sizes, gaps, counterfactual baselines)
 (Appendix~\ref{app:generated_tables} and Tables~\ref{tab:audit_closure_metrics}--\ref{tab:audit_counterfactual}).
-What remains open is a theory-level prior/description-length principle that compares \emph{different} candidate families fairly
-(e.g.\ different invariant sets, different expression grammars, different complexity labels), and quantifies the overall look-elsewhere effect.
-Closing this would require an explicit global prior (or MDL-style penalty) and a combined evidence calculation across closures.
+Appendix~\ref{app:global_model_selection_mdl} closes the remaining cross-family gap in an explicit audit form based on MDL / prefix-code principles \cite{Rissanen1978MDL,HansenYu2001MDL}:
+it declares a finite registry of candidate families (mainline families used by the paper plus the already-audited counterfactual/null baselines),
+assigns a prefix-code/MDL prior to families (no continuous hyperparameters), and computes the corresponding mixture bound on within-registry look-elsewhere probabilities (Table~\ref{tab:audit_global_mdl_family_registry}).
+Expanding the registry beyond the declared set remains an explicit choice of a larger hypothesis space.
 
-\paragraph{(OP5) Scalar/Yukawa sector and RG-running closure.}
+\paragraph{(OP5) Scalar/Yukawa sector and RG-running closure (closed within stated interface assumptions).}
 At the anchor, the stable-type contract closes a minimal chiral labeling and does not allocate a primitive stable label to the Higgs
 (Remark~\ref{rem:higgs_not_in_21}); scalar behavior is treated as uplift/coarse-graining dependent (Appendix~\ref{app:scalar_interface_audits}).
-The paper also does not derive SM $\beta$-functions from the finite combinatorics (above).
-Closing the full Standard Model would require a protocol-level mechanism that generates scalar/Yukawa structures and reproduces RG flow,
-including scheme/threshold conventions as explicit matching-layer outputs rather than inputs.
+Yukawa physical observables and SM $\beta$-function coefficients are now closed within interface assumptions (Appendix~\ref{app:yukawa_beta_protocol_closure}):
+Yukawa eigenvalue ratios follow the depth template $y_f/y_e = \varphi^{\hat r(f)}$;
+mixing matrices (CKM/PMNS) are fixed by holonomy mechanisms already closed in Section~\ref{sec:couplings_cp} and Section~\ref{sec:pmns_neutrino_closure};
+one-loop $\beta$-coefficients $(41/6, -19/6, -7)$ derive from representation counting on the closed $X_6$ labeling together with the CAP-minimal renormalizable scalar uplift (Proposition~\ref{prop:minimal_higgs_doublet_count}).
+The electroweak VEV $v$ (equivalently $y_e$) is fixed as an interface dictionary quantity once one commits to the $Z$-scale reference mass and the closed electroweak normalization (Proposition~\ref{prop:vev_from_mz_closed_ew}); right-handed rotations remain unobservable redundancies, not protocol outputs (Appendix~\ref{app:running_couplings_resolution_flow}).
+
+\paragraph{Baryon asymmetry and out-of-equilibrium dynamics (not covered).}
+The present paper does not address baryogenesis mechanisms or fit the observed baryon asymmetry.
+In standard cosmology, any successful baryogenesis scenario requires the Sakharov conditions (baryon-number violation, $C/CP$ violation, and departure from equilibrium) \cite{Sakharov1967ViolationCAndBaryogenesis}.
+Electroweak sphaleron transitions provide a canonical Standard-Model source of $B+L$ violation at high temperature \cite{KuzminRubakovShaposhnikov1985AnomalousBNonconservation}.
+We record baryogenesis as an explicit beyond-scope target for future protocol-level closure: a tick-only mechanism would have to generate a non-equilibrium arrow and a CP-odd source in a way that is compatible with the finite holonomy diagnostics used here.
+
+\paragraph{Strong $CP$ and EDM constraints (not covered).}
+The paper does not model the QCD $\theta$ term, the strong-$CP$ problem, or electric-dipole-moment (EDM) constraints.
+In the standard field-theoretic framework, the Peccei--Quinn mechanism and the associated axion provide a widely studied route to dynamical relaxation of the effective $\bar\theta$ parameter \cite{PecceiQuinn1977CPConservationPseudoparticles,PecceiQuinn1977ConstraintsCPConservation,Weinberg1978NewLightBoson,Wilczek1978StrongPTInstantons}.
+Precision EDM bounds (e.g.\,electron and neutron) provide stringent complementary constraints on new CP-violating sources \cite{ACME2018ElectronEDM,AbelEtAl2020NeutronEDM,GranerChenLindahlHeckel2016HgEDM}.
+Any future attempt to extend the present protocol closure toward strong-$CP$ would need an explicit protocol variable corresponding to $\bar\theta$ (or an equivalent selection mechanism) and an auditable map to hadronic/atomic EDM observables.
+
+\paragraph{Black-hole information and Page-curve physics (not covered).}
+Appendix~\ref{app:bh_wormholes_pointer} records boundary-entropy and throat templates as external rigidity targets, but the present paper does not treat evaporation dynamics or information recovery.
+The Page-curve expectation for unitary evaporation and modern island/QES computations are reviewed in standard sources \cite{Page1993AverageEntropySubsystem,Page1993InformationInRadiation,AlmheiriHartmanMaldacenaShaghoulianTajdini2021EntropyHawkingRadiation,Penington2020EntanglementWedgeReconstruction,AlmheiriHartmanMaldacenaShaghoulianTajdini2020ReplicaWormholes}.
+Within the current manuscript, no claim is made about Page-time behavior, replica-wormhole saddles, or microscopic unitarity restoration.
+
+\paragraph{BH/WH vocabulary in this paper: protocol-level pointers, not strong-field GR entities.}
+\AuditTag The manuscript does use BH/WH-adjacent vocabulary in a strictly scoped interface sense (Section~\ref{sec:qg_interface_full_fusion}):
+``black-hole-like'' refers to budget-triggered protocol horizons and trap/leakage bookkeeping on finite readout screens (Appendix~\ref{app:protocol_horizon_tick_trap} and Appendix~\ref{app:leakage_kernel}),
+while ``wormhole-like'' refers to a pointer-jump shortcut channel implemented as a finite nonlocal mixing with an explicit cost ledger $E_{\mathrm{wh}}$ and a wormhole on/off counterfactual baseline.
+These are \emph{auditable interface models} (with hard gates such as energy-ledger closure and complementarity certificates), and they are not presented as traversable GR wormholes, replica saddles, or a derivation of Page-time recovery.
+\AuditTag Two practical identifiability boundaries follow from the declared finite setting: (i) the budget-triggered horizon saturates when $|{\mathcal R}_\star|_{\min}=\lceil cI_{\mathrm{obs}}/m\rceil>4^n$, at which point horizon geometry diagnostics lose discriminative power at fixed $(m,n)$; and (ii) pointer-jump effects are near-endpoint$\cap$trap gated and can be sparse in bounded sweeps at fixed timestep, so a zero jump-rate table can reflect the observation class rather than the absence of the channel.
+\AuditTag For a detailed milestone plan toward stronger closures (and explicit downgrade rules), see \path{theory\_closure\_tracker.md} and the dependency ledger Appendix~\ref{app:inference_ledger}.
+
+\paragraph{Cosmological tensions ($H_0$ and $S_8$) (not covered).}
+The paper uses Planck-2018 parameters only as compact matching-layer reference targets in the $\gamma$ cross-observation audit (Appendix~\ref{app:gamma_crossobs_consistency}),
+which is distinct from addressing the broader data-model tensions between early- and late-Universe inferences.
+For orientation, see Planck-2018 cosmological parameters \cite{Planck2018Parameters,Planck2018Parameters2020AandA} and representative late-time measurements and reviews \cite{Riess2019SH0ES,RiessEtAl2022SH0ESApJL,AsgariEtAl2021KiDS1000CosmicShear,DESY3Cosmo2022PRD,VerdeTreuRiess2019TensionsReview}.
+A protocol-level treatment of these tensions would require an explicit systematics model and a declared global hypothesis space, neither of which is attempted here.
 
 \subsection{Falsifiability beyond parameter matching}
 While parts of the quantitative interface are expressed as parameter targets, the paper also records nontrivial protocol-level predictions that are not reducible to retrodictive matching:
@@ -230,6 +281,6 @@ On the Standard Model side, the interface claims are constrained by standard con
 For modern high-precision discussions of scheme conventions and the extraction of Standard Model parameters in a fixed $\overline{\mathrm{MS}}$ prescription, see, e.g., \cite{MartinRobertson2019TadpoleFreeMSbar}.
 For CP-violation constraints beyond mixing observables, electric-dipole-moment bounds provide an important complementary diagnostic; see, e.g., \cite{Fukuyama2013EDM}.
 For modern treatments of flavor invariants in extended Standard Model settings, see, e.g., \cite{deLimaNishi2024FlavorInvariantsVLQ}.
-For electroweak mixing, it is also useful to keep in view the standard grand-unification benchmark $\sin^2\theta_W=3/8$ at a unification scale in minimal $SU(5)$-type models \cite{GeorgiGlashow1974SU5,Langacker1981GUT}.
+For electroweak mixing, it is also useful to keep in view the standard grand-unification benchmark $\sin^2\theta_W=3/8$ at a unification scale in minimal $SU(5)$-type models \cite{GeorgiGlashow1974SU5,Langacker1981GUT}; see also Remark~\ref{rem:gutsin2_benchmark} for the scale/matching-layer boundary in this paper.
 Our electroweak targets are stated at the $Z$ scale and are interpreted as matching-layer normalizations rather than unification-scale relations.
 

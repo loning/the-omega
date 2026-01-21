@@ -1,0 +1,72 @@
+\section{Discrete connection families across refinement (theorem-facing contract)}
+\label{app:discrete_connection_family_and_refinement}
+
+This appendix upgrades the single-scale holonomy diagnostics of Section~\ref{sec:protocol_connections_holonomy} into a theorem-facing \emph{family} statement across a directed refinement set.
+The purpose is purely logical: theorem-level continuum limits require a directed/projective family (or an explicit failure-point record when such compatibility is not available).
+
+\begin{center}
+\fbox{\begin{minipage}{0.96\linewidth}
+\small
+\textbf{Status (audit discipline).}
+The paper's computed holonomies are strictly finite and per-scale.
+Theorem-level continuum claims require an additional compatibility bundle across refinements (CL1 in Appendix~\ref{app:minimal_failure_point_templates}).
+This appendix records the precise compatibility notion that must be discharged (or explicitly failed) before any ``forced continuum limit'' statement is used.
+\end{minipage}}
+\end{center}
+
+\subsection{Index set and fixed-rank gauge carrier}
+\paragraph{Balanced refinement chain as a directed set.}
+\MathTag Let $\mathcal{I}_{\mathrm{bal}}:=\{(m,n): m=2n,\ n\in\{1,\dots,N\}\}$ be the balanced chain used in Appendix~\ref{app:holonomy_sweeps_extended}.
+More generally one may work in any directed index set $\mathcal{I}\subseteq\NN^2$ as in Appendix~\ref{app:protocol_flow_directed_system}.
+
+\paragraph{Why we keep a fixed finite gauge group across scales.}
+\MathTag At window length $m$, the maximal fiber degeneracy $r_m$ grows with $m$ (Corollary~\ref{cor:rm_growth_rate}).
+To keep the holonomy carrier comparable across scales, the holonomy diagnostics in this manuscript use a \emph{fixed-rank} slot model: at each scale we represent each fiber by a deterministic rank-$4$ list (truncation/selection plus padding), and define edge transport as a permutation in $S_4$ (Section~\ref{subsec:deterministic_edge_connection} and Appendix~\ref{app:holonomy_sweeps_extended}).
+
+\begin{definition}[Fixed-rank discrete connection at scale $(m,n)$]
+\label{def:fixed_rank_discrete_connection_family}
+\MathTag Fix a scale $(m,n)$ for which a Hilbert-addressed grid and stable labels are defined.
+Define a rank-$4$ representative list $\widetilde P_{m}(w)$ for each stable label $w\in X_m$ by a declared deterministic selection/padding rule.
+For each oriented neighbor edge $a\to b$ on the grid at order $n$, define the edge transport $p^{(m,n)}_{a\to b}\in S_4$ as the minimum-cost bijection between $\widetilde P_m(w_a)$ and $\widetilde P_m(w_b)$ under the declared objective (baseline: Hamming distance on $m$-bit microstates), with deterministic tie-breaks.
+The collection of edge transports is the \emph{fixed-rank discrete connection} at scale $(m,n)$.
+\end{definition}
+
+\AuditTag The deterministic bounded counterfactual families for the selection/padding rule and tie-breaks are audited in Appendix~\ref{app:holonomy_sweeps_extended} (Table~\ref{tab:holonomy_transport_rule_sensitivity}).
+
+\subsection{Compatibility across refinement (CL1 contract)}
+\paragraph{Observable-level compatibility is the minimal required notion.}
+\AuditTag In general, there is no canonical edge-to-edge refinement map between Hilbert grids of different orders unless one declares a coarse-graining operator family (Appendix~\ref{app:protocol_flow_directed_system}).
+Therefore we record compatibility at the level of \emph{loop observables} (cycle-type distributions, Wilson-like scalars) rather than requiring strict edgewise consistency.
+
+\begin{definition}[Holonomy observable at scale $(m,n)$]
+\label{def:holonomy_observable_at_scale}
+\MathTag At scale $(m,n)$, let $p^{(m,n)}_\square$ denote the plaquette holonomy obtained by composing edge transports around a unit plaquette (Section~\ref{subsec:plaquette_holonomy}).
+Define the cycle-type distribution $\mathsf{P}_{m,n}$ as the empirical distribution of the conjugacy class (cycle type) of $p^{(m,n)}_\square$ over the unit-plaquette family.
+\end{definition}
+
+\begin{assumption}[Refinement compatibility bundle for holonomy observables (CL1)]
+\label{ass:holonomy_refinement_compatibility_bundle}
+\AuditTag Fix a directed refinement chain $(m_k,n_k)$ with $k\to\infty$ (e.g.\ the balanced chain).
+Assume there exists a metric $d$ on the finite simplex of cycle-type distributions (e.g.\ total variation distance) such that $\mathsf{P}_{m_k,n_k}$ is Cauchy (or convergent) as $k\to\infty$.
+When a bounded counterfactual family of connection conventions is audited, this assumption is required to hold uniformly within the declared family up to an explicit envelope.
+\end{assumption}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{rrrr}
+\toprule
+$n$ & $m$ & $\mathrm{TV}(\mathsf{P}_{n-1},\mathsf{P}_n)$ & $\max|\Delta|$ \\
+\midrule
+\input{sections/generated/holonomy_balanced_chain_convergence_rows.tex}%
+\end{tabular}
+\caption{Balanced-chain convergence audit for the cycle-type distribution $\mathsf{P}_{m,n}$ (Definition~\ref{def:holonomy_observable_at_scale}). We report total variation distance (TV) and the maximum absolute coordinate difference $\max|\Delta|$ between consecutive scales along the chain. Rows are generated by the deterministic script \texttt{scripts/exp\_holonomy\_balanced\_chain\_sweep.py}.}
+\label{tab:holonomy_balanced_chain_convergence_audit}
+\end{table}
+
+\paragraph{Audit hook.}
+\AuditTag The balanced-chain tables in Appendix~\ref{app:holonomy_sweeps_extended} provide a finite-window audit of the convergence tendency for $\mathsf{P}_{m,n}$ and for derived Wilson-like diagnostics (Table~\ref{tab:holonomy_balanced_chain_wilson} in Appendix~\ref{app:continuum_yang_mills_from_holonomy}).
+However, absent a theorem-level proof or an explicitly declared convergence envelope, any continuum identification must be treated as representative/matching only.
+
