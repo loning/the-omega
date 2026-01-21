@@ -1,0 +1,47 @@
+
+\section{数值实验：纹理、密度平台、幂律谱与分形维数}
+
+\subsection{实现与数据产物（可复现材料）}
+
+我们实现了可运行的无损 HPA-CA 原型（含 uplift 记录与可逆回放）。实现与最小复现入口见附录~\ref{app:reproducibility}，核心脚本位于本论文目录的 \texttt{scripts/hpa\_ca\_lossless.py}，其输出包括：
+\begin{itemize}
+  \item 可见层时空图（$T\times L$ 的 $0/1$ 占据矩阵渲染）；
+  \item uplift 日志图（$T\times (L/6)$ 的离散 uplift 码）；
+  \item 密度曲线与密度功率谱；
+  \item 盒计数曲线与估计分形维数；
+  \item 原始数组数据（用于再分析）。
+\end{itemize}
+
+\subsection{实验设置}
+
+实验使用周期边界的一维环形链。典型设置如下：
+\begin{itemize}
+  \item 空间长度：$L=300$（$L$ 为 $6$ 的倍数）
+  \item 时间步数：$T=200$
+  \item 初态：
+  \begin{itemize}
+    \item 随机 Bernoulli$(p)$（扫描 $p\in\{0.1,\dots,0.9\}$，多随机种子）
+    \item 单激发（仅一位为 $1$）用于可视化“波传播/纹理生成”
+  \end{itemize}
+\end{itemize}
+
+度量指标包括：
+\begin{itemize}
+  \item 密度：$\rho_t=\frac{1}{L}\sum_{i=1}^L s_t(i)$；
+  \item uplift 比例：$\mathrm{frac}(u=\delta)$（$\delta\in U$）；
+  \item 密度时间序列功率谱幂律拟合斜率 $\alpha$（log-log 线性拟合）；
+  \item 时空占据图的盒计数分形维数 $D$（简单 box-counting 估计）。
+\end{itemize}
+
+\subsection{主要观测（随机初态参数扫描）}
+
+对 $p\in[0.1,0.9]$ 的多 seed 扫描，我们观测到如下稳定统计特征（以代表性运行或多 seed 平均为主）：
+\begin{itemize}
+  \item 平均密度 $\bar\rho$ 在不同 $p$ 下都快速收敛到约 $0.19\sim0.20$ 的窄区间；
+  \item uplift 分布在不同 $p$ 下相对稳定：$u=0$ 占主导，$u=55$ 极少；
+  \item 盒计数分形维数 $D$ 在不同 $p$ 下高度稳定，约 $1.81\sim1.82$；
+  \item 功率谱幂律拟合斜率 $\alpha$ 随 $p$ 有系统变化，在 $p=0.5$ 附近出现近 $1/f$ 型的中间斜率区间。
+\end{itemize}
+
+这些现象支持一个保守但可检验的判断：仅由 $64\to 21$ 折叠核与两相分块构成的 HPA-CA，已经足以产生跨初态的长程纹理与近临界统计特征，而这种“通用性”并不依赖额外插入的规则，而来自 $\Fold_6$ 的刚性纤维结构与 uplift 的离散高位字母表。
+

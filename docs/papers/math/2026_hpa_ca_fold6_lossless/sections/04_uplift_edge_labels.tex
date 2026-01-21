@@ -1,0 +1,31 @@
+
+\section{uplift：把“丢失部分”变成时间边标签}
+
+\subsection{uplift 的定义与取值集合}
+
+\begin{definition}[uplift（信息亏损）]
+对 $N\in\{0,\dots,63\}$，定义 uplift 为
+$$
+\Delta(N):=N - V(\Fold_6(N)).
+$$
+\end{definition}
+
+由上一节的结构解释可知，$\Delta(N)$ 只可能取四个离散值：
+$$
+U:=\{0,F_8,F_9,F_{10}\}=\{0,21,34,55\},
+$$
+并受输出词 $w=\Fold_6(N)$ 的最高位与 $V(w)$ 的大小约束而在不同 $w$ 上呈现允许/禁止的模式。换言之，$\Fold_6$ 的“多对一”不是任意压缩，而是把窗口以上的 Zeckendorf 高位信息压入一个极小的离散字母表 $U$。
+
+\subsection{纤维图（fiber graph）：单一图结构表示全部数据}
+
+\begin{definition}[二部带标号纤维图 $G_6$]
+定义二部带标号图 $G_6$ 如下：
+\begin{itemize}
+  \item 左侧顶点集：微观索引 $N\in\{0,\dots,63\}$；
+  \item 右侧顶点集：稳定态 $w\in X_6$；
+  \item 每个 $N$ 向唯一 $w=\Fold_6(N)$ 连一条边，并以边标签记录 uplift $\Delta(N)\in U$。
+\end{itemize}
+\end{definition}
+
+该图满足：每个左顶点出度为 $1$；每个右顶点入度为 $2,3$ 或 $4$；逆向“向上搜索”（从 $w$ 找可能的 $N$）的局部分支数至多为 $4$。这一图结构给出本文所强调的单一数据结构版本：\textbf{空间层顶点仅是 $21$ 个稳定类型，而时间层（信息恢复）全部由边标签承担}。
+

@@ -1,0 +1,30 @@
+
+\section{HPA-CA 两相分块一步更新伪代码（无损版）}
+
+令 \texttt{state} 为长度 $L$ 的比特数组，\texttt{offset = 0} 或 \texttt{3} 交替。
+
+\subsection{前向一步（记录 uplift）}
+
+\begin{verbatim}
+for each block B_j (size=6, starting at offset):
+    bits_in = state[B_j]
+    N = int(bits_in, 2)
+    w_out = Fold6(N)                 # admissible 6-bit word in X_6
+    uplift = N - V(w_out)            # in {0,21,34,55}
+    state_next[B_j] = w_out
+    uplift_log[j] = uplift
+offset toggles: 0 <-> 3
+\end{verbatim}
+
+\subsection{逆向一步（给定 uplift 恢复微态）}
+
+\begin{verbatim}
+for each block B_j (size=6, starting at offset used in forward step):
+    w_out = state_out[B_j]
+    N_in = V(w_out) + uplift_log[j]
+    bits_in = bin(N_in).zfill(6)
+    state_in[B_j] = bits_in
+\end{verbatim}
+
+由于 $V$ 在 $X_6$ 上为双射，且 uplift 属于固定有限字母表，上述逆向一步在块级是确定的，从而在全局并行意义下给出显式逆演化。
+

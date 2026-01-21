@@ -1,0 +1,70 @@
+
+\section{$\Fold_6$ 折叠核：Zeckendorf 归一化与窗口截断}
+
+\subsection{Zeckendorf 数位与窗口截断}
+
+设 Fibonacci 数列满足 $F_1=F_2=1$ 且 $F_{n+2}=F_{n+1}+F_n$。Zeckendorf 定理给出每个非负整数 $N$ 的唯一表示\cite{zeckendorf1972representation}：
+$$
+N=\sum_{k\ge 1} c_k\,F_{k+1},\qquad c_k\in\{0,1\},\qquad c_kc_{k+1}=0.
+$$
+记 $\Zeck(N)=(c_1,c_2,\dots)$ 为 Zeckendorf 数位序列。
+
+\begin{definition}[$m=6$ 的截断与折叠]
+定义截断算子
+$$
+\proj_6(\Zeck(N)) := (c_1,\dots,c_6)\in\{0,1\}^6.
+$$
+定义折叠映射（以整数输入表述）
+$$
+\Fold_6:\{0,\dots,63\}\twoheadrightarrow X_6,\qquad
+\Fold_6(N):=\proj_6(\Zeck(N)),
+$$
+必要时用 $0$ 补齐短展开，并以固定的“最高权在左”的顺序将输出视为长度为 $6$ 的二进制词。
+\end{definition}
+
+\subsection{稳定态的窗口值标记 $V$}
+
+\begin{definition}[窗口 Zeckendorf 值标记]
+对 $w=w_1\cdots w_6\in X_6$ 定义其窗口值
+$$
+V(w):=\sum_{k=1}^{6} w_k\,F_{8-k}
+=13w_1+8w_2+5w_3+3w_4+2w_5+w_6.
+$$
+\end{definition}
+
+由于 $w$ 不含相邻 $1$，上述表达正是 $[0,20]$ 上的 Zeckendorf 唯一表示的窗口形式，因此 $V:X_6\to\{0,1,\dots,20\}$ 为双射。这一点对后续无损 uplift 机制至关重要：稳定态 $X_6$ 不是任意选取的 $21$ 个图案，而是携带自然的值结构。
+
+\subsection{原像分类与刚性退化直方图}
+
+由于 $64>21$，$\Fold_6$ 必然多对一。关键之处在于：其原像结构不仅可枚举，而且强约束到只出现三种纤维大小。
+
+\begin{theorem}[$\Fold_6$ 的有限原像分类]
+对任意 $w\in X_6$，原像大小满足
+$$
+\bigl|\Fold_6^{-1}(w)\bigr|\in\{2,3,4\}.
+$$
+并且令
+$$
+V_k:=\{w\in X_6:\bigl|\Fold_6^{-1}(w)\bigr|=k\},
+$$
+则
+$$
+(|V_2|,|V_3|,|V_4|)=(8,4,9).
+$$
+此外，三个位于边界扇区 $X_6^{\mathrm{bdry}}$ 的稳定态原像对为
+$$
+\Fold_6^{-1}(100001)=\{14,48\},\qquad
+\Fold_6^{-1}(100101)=\{17,51\},\qquad
+\Fold_6^{-1}(101001)=\{19,53\},
+$$
+均为显式可枚举。
+\end{theorem}
+
+\begin{remark}[证明思路（结构性解释）]
+对 $N\le 63$，Zeckendorf 表示的最高权只可能到 $F_{10}=55$（因为 $F_{11}=89>63$）。窗口以上的权重只有 $F_8=21,F_9=34,F_{10}=55$ 三处，并受“非相邻”约束限制为至多一个 $1$。因此每个 $w$ 的原像候选形如
+$$
+N=V(w)+\delta,\qquad \delta\in\{0,21,34,55\},
+$$
+再结合 $N\le 63$ 与与窗口边界相邻约束的裁剪，可得每个纤维大小只能为 $2/3/4$，并可逐类计数得到固定直方图 $(8,4,9)$。本文附录给出可直接用于实现的等价判据与完整表格生成方式。
+\end{remark}
+

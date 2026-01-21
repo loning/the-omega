@@ -1,0 +1,45 @@
+
+\section{HPA-CA：仅用 $64\to 21$ 折叠核驱动的分块元胞自动机}
+
+\subsection{空间、时间与分块更新（两相分区）}
+
+取长度为 $L$ 的一维环形比特链（周期边界），并要求 $L$ 为 $6$ 的倍数。系统在每个离散时刻 $t$ 的可见状态为
+$$
+s_t\in\{0,1\}^L.
+$$
+
+采用两相分块（Margolus 式两相分区）\cite{toffoli1987cam}，令
+$$
+o_t=\begin{cases}
+0,& t\ \text{为偶数},\\
+3,& t\ \text{为奇数},
+\end{cases}
+$$
+并按 offset 将 $\{0,\dots,L-1\}$ 分成互不交叠的 $6$-块
+$$
+B_{t,j}=\{o_t+6j,\ o_t+6j+1,\dots,o_t+6j+5\}\pmod L.
+$$
+每一步对所有块并行更新。
+
+\subsection{局部核：$\Foldbin_6$ 与 uplift 记录}
+
+对每个块 $B_{t,j}$，读取 $6$ 比特词 $w^{\mathrm{in}}_{t,j}\in\Omega_6$，计算
+$$
+N_{t,j}=\intbin_6(w^{\mathrm{in}}_{t,j})\in\{0,\dots,63\},
+$$
+并定义输出稳定态与 uplift：
+$$
+w^{\mathrm{out}}_{t,j}=\Foldbin_6(w^{\mathrm{in}}_{t,j}):=\Fold_6(N_{t,j})\in X_6,
+\qquad
+u_{t,j}:=\Delta(N_{t,j})\in U.
+$$
+然后将 $w^{\mathrm{out}}_{t,j}$ 写回块位置，得到 $s_{t+1}$。于是一步演化可写成
+$$
+s_t\ \longmapsto\ (s_{t+1},u_t),
+$$
+其中 $u_t=(u_{t,j})_j$ 是本步产生的 uplift 边标签序列（时间边信息）。
+
+\subsection{稳定性性质}
+
+对任意 $t$，相对于当步分块 $B_{t,j}$，输出块词必属于 $X_6$，即每个更新后块内部都满足“无相邻 $1$”的稳定约束。这是因为 $\Fold_6$ 的值域就是 $X_6$。由于相邻两步的 offset 相差 $3$，比特被不同分块交织覆盖，局部冲突会在时空图中传播并形成宏观纹理。
+
