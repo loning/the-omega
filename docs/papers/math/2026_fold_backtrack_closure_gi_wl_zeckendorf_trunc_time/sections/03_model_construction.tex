@@ -1,0 +1,60 @@
+
+\section{模型构造：折叠、时间纤维与闭包图}
+
+\subsection{微观态、稳定态与折叠映射}
+
+令微观态集合 $X_m=\{0,1\}^{m}$。将二进制串 $x\in X_m$ 解释为整数
+\[
+N(x)=\sum_{i=0}^{m-1} x_i 2^{i}.
+\]
+令 $\mathbf{c}(N)\in\{0,1\}^{\NN}$ 为 $N$ 的 Zeckendorf 系数序列（满足无相邻 $1$），使得
+\[
+N=\sum_{k\ge 1} c_k(N)\,F_k.
+\]
+
+\begin{definition}[截断折叠]
+定义折叠映射
+\[
+f_m:X_m\to Y_m,\qquad f_m(x)=(c_1(N(x)),\dots,c_m(N(x))).
+\]
+即：把整数的 Zeckendorf 表示取前 $m$ 位作为可见稳定态。
+\end{definition}
+
+\subsection{“时间纤维”作为 Zeckendorf 尾部}
+
+截断丢失的信息是 Zeckendorf 表示的尾部：
+\[
+\tau_m(x)=(c_{m+1}(N(x)),c_{m+2}(N(x)),\dots).
+\]
+因此一个微观态在信息论上分解为
+\[
+\mathbf{c}(N(x))=\bigl(f_m(x),\tau_m(x)\bigr),
+\]
+其中 $f_m(x)$ 为“空间/稳定前缀”，$\tau_m(x)$ 为“时间/纤维尾部”。由于 $\tau_m(x)$ 同样满足无相邻 $1$，空间与时间共享同一禁则语法。
+
+\subsection{闭包图：把折叠与邻接装进同一个 \GI{} 容器}
+
+仅有 $f_m$ 仍不足以讨论 \WL{}/\GI{}，我们还需规定微观态之间的“局部相互作用”，用一个微观图 $G_m^{\mu}$ 表示。
+
+\begin{definition}[微观邻接族]
+本文实验考虑三类典型邻接（都在顶点集 $X_m$ 上）：
+\begin{enumerate}
+  \item \textbf{Hypercube：} $x\sim x' \iff$ 恰好一位不同；
+  \item \textbf{Bit-split lattice：}把 $m$ 位分成 $d$ 组，得到 $d$ 维网格 $\prod_{j=1}^d [0,2^{s_j}-1]$，按轴向相邻连边（开边界或环面）；
+  \item \textbf{Hilbert-lattice：}用 Hilbert 曲线给出从索引到 $2^a\times 2^b$ 或 $2^a\times 2^b\times 2^c$ 格点的置换嵌入，再按格点相邻连边。
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[闭包图 $\Clo_m$]
+令顶点集为不交并
+\[
+V(\Clo_m)=X_m\ \sqcup\ Y_m.
+\]
+边集由两部分组成：
+\begin{itemize}
+  \item \textbf{微观边：} $E^{\mu}$ 来自 $G_m^{\mu}$；
+  \item \textbf{折叠边：} $E^{f}=\{(x,f_m(x)):\ x\in X_m\}$。
+\end{itemize}
+同时给 $Y_m$ 中每个点赋予唯一初始颜色（标签），而 $X_m$ 的点共享同一初始颜色。随后在 $\Clo_m$ 上运行 $1$-\WL{} 得到稳定分割。
+\end{definition}
+
