@@ -1,0 +1,105 @@
+\section{规范体系：Zeckendorf 截断折叠、有限尾部与时空 trellis}
+
+本节在定义 \ref{def:spacetime_object} 的抽象接口下，给出本文的规范实例：以 Zeckendorf 截断折叠为“宏观观测”，以被截断的 Zeckendorf 尾部为“时间/纤维自由度”，并把空间关系与时间关系装入同一个可计算 trellis/闭包对象。
+
+\subsection{微观态、宏观态与截断折叠}
+
+固定 $m\in\NN$。令微观态集合
+$$
+\Xm:=\{0,1\}^m,
+$$
+并按约定把 $x\in\Xm$ 解释为整数
+$$
+N(x)=\sum_{i=0}^{m-1} x_i 2^i\in\{0,1,\dots,2^m-1\}.
+$$
+令宏观稳定态集合为黄金均值语言
+$$
+\Ym=\Bigl\{y\in\{0,1\}^m:\ y_i y_{i+1}=0,\ 1\le i<m\Bigr\}.
+$$
+
+\begin{definition}[Zeckendorf 截断折叠]\label{def:fold_zeckendorf}
+定义折叠映射
+$$
+\Fold:\Xm\to \Ym,\qquad
+\Fold(x)=\bigl(c_1(N(x)),\dots,c_m(N(x))\bigr),
+$$
+即把 $N(x)$ 的 Zeckendorf 数码取前 $m$ 位作为可见宏观观测。
+\end{definition}
+
+\subsection{有限尾部：把“时间纤维”做成可计算对象}
+
+为了把“尾部时间”变成可计算的有限对象，我们利用如下事实：当 $N(x)<2^m$ 时，其 Zeckendorf 数码在某个有限位置之后恒为 $0$。
+
+\begin{definition}[覆盖指数]\label{def:K_of_m}
+定义
+$$
+K(m):=\min\{k\ge 1:\ F_k>2^m-1\}.
+$$
+\end{definition}
+
+\begin{lemma}[有限支撑]\label{lem:finite_tail_support}
+对任意 $x\in\Xm$ 与任意 $k>K(m)$，有 $c_k(N(x))=0$。因此 $N(x)$ 的 Zeckendorf 数码在指标 $K(m)$ 之后恒为 $0$。
+\end{lemma}
+
+\begin{proof}
+由定义 \ref{def:K_of_m}，有 $F_{K(m)}>2^m-1\ge N(x)$。若存在 $k\ge K(m)$ 使 $c_k(N(x))=1$，则 $N(x)\ge F_k\ge F_{K(m)}>N(x)$，矛盾。
+\end{proof}
+
+令尾部长度
+$$
+L(m):=\max\{0,\,K(m)-m\}.
+$$
+并定义尾部状态集合为长度为 $L(m)$ 的黄金均值语言
+$$
+T_m:=\Bigl\{t=t_{m+1}\cdots t_{K(m)}\in\{0,1\}^{L(m)}:\ t_i t_{i+1}=0\Bigr\}.
+$$
+
+\begin{definition}[尾部投影与时间深度]\label{def:tail_projection}
+定义尾部投影（时间纤维坐标）
+$$
+\tau_m:\Xm\to T_m,\qquad
+\tau_m(x)=\bigl(c_{m+1}(N(x)),\dots,c_{K(m)}(N(x))\bigr).
+$$
+并定义时间深度
+$$
+\mathsf{depth}(x):=\min\{t\ge 0:\ \sigma^t(\tau_m(x))=0\},
+$$
+其中 $\sigma$ 是下文的尾部移位算子，$0$ 表示全零尾部。
+\end{definition}
+
+\subsection{规范时间关系：尾部移位算子}
+
+\begin{definition}[尾部移位（规范时间算子）]\label{def:tail_shift}
+定义 $\Tail:T_m\to T_m$ 为左移并在末位补零：
+$$
+\Tail(t_{m+1}\cdots t_{K(m)}) := t_{m+2}\cdots t_{K(m)}0.
+$$
+并令规范时间关系为其函数图
+$$
+\TimeRel:=\{(t,\Tail(t)):\ t\in T_m\}\subseteq T_m\times T_m.
+$$
+\end{definition}
+
+\begin{remark}
+该时间结构本质上是对尾部数码的“向高位推进”：每一步丢弃最靠近观测窗口的一个尾部位。这样，$\mathsf{depth}(x)$ 恰好等于尾部中最后一个 $1$ 距离窗口的步数（若尾部全零则为 $0$）。
+\end{remark}
+
+\subsection{Zeckendorf--spacetime trellis：把折叠、空间与时间装入同一对象}
+
+给定微观空间关系 $R_{\mathrm{space}}\subseteq\Xm\times\Xm$（例如 hypercube 或 Hilbert-lattice 的邻接），我们把其与折叠、尾部时间一起编码为一个三层结构。
+
+\begin{definition}[Zeckendorf--spacetime trellis]\label{def:zeckendorf_trellis}
+定义顶点集为三层不交并
+$$
+V_m := \Xm\ \sqcup\ \Ym\ \sqcup\ T_m.
+$$
+定义关系如下：
+\begin{itemize}
+  \item 空间关系：$R_{\mathrm{space}}\subseteq \Xm\times\Xm$；
+  \item 折叠关系：$R_{\mathrm{fold}}:=\{(x,\Fold(x)):\ x\in\Xm\}\subseteq \Xm\times\Ym$；
+  \item 尾部指针：$R_{\mathrm{tail}}:=\{(x,\tau_m(x)):\ x\in\Xm\}\subseteq \Xm\times T_m$；
+  \item 时间关系：$\TimeRel\subseteq T_m\times T_m$（定义 \ref{def:tail_shift}）。
+\end{itemize}
+把上述多关系编码为定义 \ref{def:encoding_graph} 的 $\Clo(\mathsf S)$ 后，即得到可直接输入 \WL{} 的统一对象。
+\end{definition}
+
