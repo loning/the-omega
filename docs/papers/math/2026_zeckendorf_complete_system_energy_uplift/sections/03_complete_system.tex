@@ -7,7 +7,96 @@
 $$
 (x,y,t)\in \Xm\times \Ym\times T_m,
 $$
-其中 \(x\) 是微观读出（或其整数索引 \(N(x)\)），\(y=\Fold(x)\) 是宏观观测，\(t=\tautime_m(N(x))\) 是 uplift 尾部。
+其中 \(x\) 是微观读出（或其整数索引 \(N(x)\)），\(y=\Fold(x)\) 是空间状态（一个长度为 \(m\) 的比特串，且满足无相邻 \(11\) 约束），\(t=\tautime_m(N(x))\) 是时间纤维的尾部头状态（一个长度为 \(L(m)\) 的比特串，亦满足无相邻 \(11\) 约束）。本篇对“信息守恒/产生/湮灭”的所有叙述均落实为这些比特串寄存器与其可逆的数学更新规则（而非某种特定的实现细节）。
+
+\begin{definition}[比特寄存器：空间状态、时间纤维与 trace]\label{def:bit_registers_space_time_log}
+固定窗口长度 \(m\) 与尾部长度 \(L=L(m)\)。我们把观察者的“可审计扩展态”实现为三组比特寄存器：
+\begin{itemize}
+  \item \textbf{空间状态寄存器} \(Y\in\{0,1\}^m\)：存放 \(y\in\Ym\)（稳定空间状态）。
+  \item \textbf{时间纤维头寄存器} \(T\in\{0,1\}^L\)：存放当前尾部头 \(t\in T_m\)。
+  \item \textbf{路径 trace 寄存器} \(\mathsf{tr}\in\{0,1\}^\ast\)：一个可增长的比特串（时间胶带），记录展开过程中的分支选择。注意 \(\mathsf{tr}\) 不是 uplift 坐标 \(t\) 本身，而是保证展开/折叠互为逆操作的路径标签。
+\end{itemize}
+记 \(|\mathsf{tr}|\) 为 trace 比特数。定义追加与弹出为
+$$
+\mathsf{push}(\mathsf{tr},b):=\mathsf{tr}\,\Vert\, b,\qquad
+\mathsf{pop}(\mathsf{tr}\,\Vert\, b):=(\mathsf{tr},b),
+$$
+其中 \(b\in\{0,1\}\) 且 \(\Vert\) 表示串连接。
+\end{definition}
+
+\subsection{图论/群论化语义：由可逆比特边生成的 groupoid}\label{subsec:graph_groupoid_semantics}
+本篇的系统可以直接视为一个\textbf{带标签的有向图}，并且展开/折叠是该图上的互逆边；因此与其说“群论化”，更精确是：由这些互逆边生成一个\textbf{groupoid}（或等价地，一个由部分双射生成的 inverse semigroup）。
+
+\begin{definition}[观察者泡泡生成图（比特级状态图）]\label{def:observer_bubble_graph}
+固定空间状态 \(y\in\Ym\) 与尾部长度 \(L=L(m)\)。定义顶点集合为
+$$
+\mathcal V(y):=\bigl\{(t,\mathsf{tr}):\ t\in T_m,\ \mathsf{tr}\in\{0,1\}^\ast,\ \exists\,N<2^m\ \text{s.t.}\ \mathrm{Enc}_m(N)=(y,t)\bigr\},
+$$
+其中 \(\mathrm{Enc}_m\) 如定义 \ref{def:enc_rec_inverse_pair}。对每个顶点 \((t,\mathsf{tr})\) 与标签 \(b\in\{0,1\}\)，若按定义 \ref{def:up_down_interface} 的展开原子步可得到 \((t',\mathsf{tr}')\) 且通过合法性检查，则在图中加入一条\textbf{展开边}
+$$
+(t,\mathsf{tr})\xrightarrow{\,b\,}(t',\mathsf{tr}').
+$$
+并约定其\textbf{折叠边}为反向边 \((t',\mathsf{tr}')\xrightarrow{\,b\,}(t,\mathsf{tr})\)，其可执行性由 trace 的 pop 校验保证（见定义 \ref{def:up_down_interface}）。
+\end{definition}
+
+\begin{remark}[互逆性与“时间纤维—空间状态互逆”]
+展开/折叠互逆在图论上就是“边可逆”：每条展开边都带有唯一反向边，并且正反向复合为恒等（回到同一顶点）。而“时间纤维与空间状态互逆”在本文中不指 \(y\leftrightarrow t\) 彼此单独可逆，而指更强的事实：微观 \(N\) 与可行对 \((y,t)\in\mathcal A_m\) 互为可重构（命题 \ref{prop:space_time_inverse_via_rec}），从而“空间状态与时间纤维”是一对可逆拼合的比特分解。
+\end{remark}
+
+\begin{definition}[由边生成的 groupoid（路径可逆）]\label{def:groupoid_of_paths}
+把定义 \ref{def:observer_bubble_graph} 的边视作生成元，允许对可复合边做串接（路径复合），并把每条边的反向边视作其逆。由此得到的“所有可逆路径”构成一个小范畴，其中每个态射都有逆，这就是该泡泡图的 groupoid。由能量胶带诱导的并行上限 \(\Energy(\mathsf{E})\) 则对应对每一层候选集合施加截断，从而取该 groupoid 的一个可审计的子图/子 groupoid。
+\end{definition}
+
+\begin{definition}[遗忘 trace 的投影与合流]\label{def:forget_log_projection}
+定义“遗忘 trace”的投影
+$$
+\pi:\mathcal V(y)\to T_m,\qquad \pi(t,\mathsf{tr})=t.
+$$
+它把比特级泡泡图的节点投影到“仅保留尾部头”的状态空间。把展开边 \((t,\mathsf{tr})\xrightarrow{b}(t',\mathsf{tr}')\) 投影后得到 \(t\xrightarrow{b} t'\)。
+\end{definition}
+
+\begin{proposition}[为何必须进行湮灭匹配：\(\pi\) 不可逆且产生合流]\label{prop:log_needed_for_reversibility}
+在一般情形下（只要存在某一层深度 \(|\mathsf{tr}|\ge 1\) 的可行节点），投影 \(\pi\) 不是单射，因此其诱导的“仅尾部头图”不是可逆动力学：存在不同的比特级节点
+$$
+(t',\mathsf{tr}0)\neq (t',\mathsf{tr}1)
+$$
+投影到同一尾部头 \(t'\)，并且折叠推进 \(t=\Tail(t')\) 会把多个不同的 \(t'\) 合流到同一个 \(t\)。因此：
+\begin{itemize}
+  \item \textbf{若丢弃 trace \(\mathsf{tr}\)}，仅凭 \(t\mapsto \Tail(t)\) 无法恢复上一层“选择了哪个分支标签 \(b\)”；
+  \item \textbf{要使折叠成为展开的逆}，必须在折叠原子步中对 trace 执行 pop 并与该步的分支标签 \(b\) 做一致性核对，从而把“本步选择”与“trace 末位”配对湮灭（定义 \ref{def:up_down_interface}）。
+\end{itemize}
+换言之，“trace 与空间候选路径相互湮灭”在图论上等价于：给定投影后出现的合流点，为恢复可逆性必须引入可审计的路径标签并在反向步骤中逐步匹配删除。
+\end{proposition}
+
+\begin{definition}[能量截断作为子图（子 groupoid）选择算子]\label{def:energy_as_subgroupoid_selector}
+把 beam width 约束视为对泡泡图的一个可审计选择算子：在每个深度 \(d\) 上，观察者从该层全部可行节点中确定性选择一个大小不超过 \(\Energy(\mathsf{E})\) 的子集 \(\mathcal V_d^{(\Energy(\mathsf{E}))}(y)\subseteq \mathcal V(y)\)（例如按某个公开的排序评分）。令
+$$
+\mathcal V^{(\Energy(\mathsf{E}))}(y):=\bigcup_{d\ge 0}\mathcal V_d^{(\Energy(\mathsf{E}))}(y),
+$$
+并取诱导子图 \(\mathcal G^{(\Energy(\mathsf{E}))}(y)\) 为：顶点集为 \(\mathcal V^{(\Energy(\mathsf{E}))}(y)\)，边集为两端点都在该集合内的展开/折叠边。则 \(\mathcal G^{(\Energy(\mathsf{E}))}(y)\) 仍然是一个“可逆边生成”的图，因此其路径仍生成一个子 groupoid；commit 的数学含义就是把 \(\mathcal G(y)\) 通过该选择算子投影为 \(\mathcal G^{(\Energy(\mathsf{E}))}(y)\)。
+\end{definition}
+
+\begin{definition}[主动回滚（折叠）与“能量回收”]\label{def:active_rollback_energy_reclaim}
+在本篇语义中，“释放能量”不指凭空删除比特或改变本体约束；它指观察者对\textbf{活跃泡泡}做一次主动的\textbf{折叠回滚（uncompute）}，从而减少需要并行维护的候选数量。
+
+具体地，给定某个固定空间状态 \(y\) 下的活跃分支集合
+$$
+\mathcal B\subseteq \mathcal V(y),
+$$
+观察者可以选择一个子集 \(\mathcal B_{\mathrm{drop}}\subseteq \mathcal B\)，并对每个 \((t',\mathsf{tr}')\in\mathcal B_{\mathrm{drop}}\) 重复执行折叠原子步（定义 \ref{def:up_down_interface}）若干次，使其沿着折叠逆边回到更浅的节点（甚至回到零态 \((0,\epsilon)\)）。在可审计实现中，这等价于对 \((t',\mathsf{tr}')\) 重复执行
+$$
+\mathsf{pop}(\mathsf{tr}')=(\mathsf{tr},b),\quad t=\Tail(t'),
+$$
+从而逐步湮灭 trace 末位并回退尾部头。
+
+回滚后的新活跃集合 \(\mathcal B_{\mathrm{new}}:=\mathcal B\setminus \mathcal B_{\mathrm{drop}}\) 满足 \(|\mathcal B_{\mathrm{new}}|<|\mathcal B|\)，因此在能量约束 \(|\mathcal B|\le \Energy(\mathsf{E})\) 的意义下，“可用能量（可用并行槽位）”得到回收。
+\end{definition}
+
+\begin{proposition}[能量回收必须伴随时间纤维与空间候选的共同湮灭]\label{prop:energy_reclaim_requires_annihilation}
+在本篇的可逆/比特守恒口径下，观察者若想减少需要维护的\textbf{trace} 信息（例如缩短某些分支的 \(\mathsf{tr}\) 或把它们归零），则\textbf{唯一的可审计方式}是对相应分支执行折叠回滚，使其沿 groupoid 的逆边撤销先前的展开写入（同时相应地回退尾部头 \(t\)）。
+
+等价地：不能在保持 \((y,t)\) 可达性的同时随意“删去”\(\mathsf{tr}\) 比特；trace 的逐步湮灭必须与对应的可逆回退步骤同步进行（定义 \ref{def:up_down_interface}），并且该分支对应的空间候选路径也因此被撤销。这正是图论中“合流导致投影不可逆”（命题 \ref{prop:log_needed_for_reversibility}）的操作学对应。
+\end{proposition}
 
 \subsection{\texorpdfstring{$m=6$}{m=6} 核的系统化表述：\texorpdfstring{$64\to 21$}{64->21} 为空间，uplift 为时间}
 本论文的“完备系统”在基例 \(m=6\) 上可以写成一个完全显式的约束对象。设宏观观测（空间）为
@@ -18,14 +107,26 @@ $$
 $$
 u=(c_7,c_8,c_9)\in\{0,1\}^3,\qquad c_7c_8=0,\ c_8c_9=0
 $$
-作为 uplift（时间数据）。
+作为 uplift（时间纤维）。
 
 在该核中，“空间与时间相互约束”的最小形式是：存在一个微观整数 \(N\in\{0,\dots,63\}\) 使得
 $$
 N=V(y)+c_7\cdot 21+c_8\cdot 34+c_9\cdot 55,\qquad N\le 63,
 $$
 并满足边界约束 \(y_6c_7=0\)（见定理 \ref{thm:fold6_preimage_structure_here}）。
-因此，对固定的空间观测 \(y\)，uplift 的可行集合不是全体 \(\{0,1\}^3\)，而是一个由 \((y_6,V(y))\) 决定的纤维 \(U(y)\subseteq\{0,1\}^3\)，其大小恰为 \(2/3/4\) 三种之一。
+因此，对固定的空间状态 \(y\)，uplift 的可行集合不是全体 \(\{0,1\}^3\)，而是一个由 \((y_6,V(y))\) 决定的纤维 \(U(y)\subseteq\{0,1\}^3\)，其大小恰为 \(2/3/4\) 三种之一。
+
+\begin{definition}[基例的潜在能量：由纤维大小给出]\label{def:m6_potential_energy}
+在 \(m=6\) 基例中，定义空间状态 \(y\in X_6\) 的纤维大小
+$$
+s_6(y):=\bigl|\mathrm{Fold}_6^{-1}(y)\bigr|=\bigl|U(y)\bigr|\in\{2,3,4\},
+$$
+并定义其潜在能量
+$$
+\Energy_{\mathrm{pot}}(y):=\log_2 s_6(y)\in\{1,\log_2 3,2\}\quad(\text{bits}),
+$$
+与定义 \ref{def:potential_energy_from_fiber_size} 一致。
+\end{definition}
 
 \begin{remark}[显式 uplift 规则与时间推进]
 我们把“时间推进”固定为尾部移位 \(\Tail\)（注 \ref{rem:m6_tail_shift}），即
@@ -35,21 +136,31 @@ $$
 这使得展开过程对应 \(\Tail^{-1}\) 的分支扩展；但分支并非自由二叉树，而必须始终落在每个时刻的可行纤维 \(U(y)\) 内，并满足相邻 1 约束与截断约束 \(N\le 63\)。
 \end{remark}
 
-\begin{proposition}[能量 \(\Energy\) 作用于 \(m=6\) uplift 分支的定量形式]\label{prop:energy_on_m6_uplift}
-固定 \(m=6\) 与某个空间观测 \(y\in X_6\)。令 \(U(y)\subseteq\{0,1\}^3\) 为与 \(y\) 兼容的 uplift 纤维（由定理 \ref{thm:fold6_preimage_structure_here} 给出的显式分类，\(|U(y)|\in\{2,3,4\}\)）。
-考虑观察者的展开过程，其每一步都以 \(\Tail^{-1}\) 生成候选并在能量约束下保留至多 \(\Energy\) 个并行分支。则对任意深度 \(k\)，并行分支数 \(B_k\) 满足上界
+\begin{proposition}[能量 \(\Energy(\mathsf{E})\) 作用于 \(m=6\) uplift 分支的定量形式]\label{prop:energy_on_m6_uplift}
+固定 \(m=6\) 与某个空间状态 \(y\in X_6\)。令 \(U(y)\subseteq\{0,1\}^3\) 为与 \(y\) 兼容的 uplift 时间纤维（由定理 \ref{thm:fold6_preimage_structure_here} 给出的显式分类，\(|U(y)|\in\{2,3,4\}\)）。
+考虑观察者的展开过程，其每一步都以 \(\Tail^{-1}\) 生成候选并在能量约束下保留至多 \(\Energy(\mathsf{E})\) 个并行分支。则对任意深度 \(k\)，并行分支数 \(B_k\) 满足上界
 $$
-B_k \le \min\{\Energy,\,|U(y)|\}.
+B_k \le \min\{\Energy(\mathsf{E}),\,|U(y)|\}.
 $$
 更一般地，若在深度推进中允许空间观测随阶段变化为 \(y_k\in X_6\)，则有
 $$
-B_k \le \min\{\Energy,\,\min_{0\le j\le k}|U(y_j)|\},
+B_k \le \min\{\Energy(\mathsf{E}),\,\min_{0\le j\le k}|U(y_j)|\},
 $$
-即能量 \(\Energy\) 与各阶段空间纤维大小共同决定可并行维持的分支数上界。
+即能量 \(\Energy(\mathsf{E})\) 与各阶段空间纤维大小共同决定可并行维持的分支数上界。
 \end{proposition}
 
+\begin{remark}[“uplift 越多能量越多”的精确定义域]\label{rem:uplift_more_energy_clarification}
+在本文的最小模型里，beam width 由能量胶带诱导为 \(\Energy(\mathsf{E})\)（定义 \ref{def:energy_beam}），因此展开导致分支增多会\textbf{占用}并行槽位；折叠回滚会\textbf{回收}槽位（定义 \ref{def:active_rollback_energy_reclaim}）。
+
+与此不同，“uplift 的数量”在固定空间状态 \(y\) 下由纤维大小 \(s_6(y)=|U(y)|\) 刻画；它对应一种\textbf{状态属性}：该观测下最多存在多少条互不相同的微观解释/尾部选择。定义 \ref{def:m6_potential_energy} 用 \(\Energy_{\mathrm{pot}}(y)=\log_2 s_6(y)\) 把它量化为比特量。于是
+$$
+B_k\le \min\{\Energy(\mathsf{E}),\ 2^{\Energy_{\mathrm{pot}}(y)}\},
+$$
+表明：\(\Energy_{\mathrm{pot}}\) 给出“可分支的潜在上限”，\(\Energy(\mathsf{E})\) 给出“观察者可实现的并行上限”。当 \(\Energy(\mathsf{E})<2^{\Energy_{\mathrm{pot}}(y)}\) 时，潜在分支不能被完全展开，观察者必须更早 commit；这可被视为“预测不准/探索无效”导致的资源占用。
+\end{remark}
+
 \begin{corollary}[最大分支压力发生在 \texorpdfstring{$y=0^6$}{y=0^6}]\label{cor:max_branch_pressure_y0}
-在 \(m=6\) 核中，空间观测 \(y=0^6\) 的 uplift 纤维具有最大基例退化度（\(|U(0^6)|=4\)）。因此，当 \(\Energy\ge 4\) 时，展开分支在第一层即可达到 4 路可行 uplift；而当 \(\Energy<4\) 时，观察者必须在第一层就发生 commit（剪枝），并把差额转化为显式的 uplift 选择记录（时间胶带增长）。
+在 \(m=6\) 核中，空间状态 \(y=0^6\) 的 uplift 时间纤维具有最大基例退化度（\(|U(0^6)|=4\)）。因此，当 \(\Energy(\mathsf{E})\ge 4\)（等价地 \(|\mathsf{E}|\ge 2\)）时，展开分支在第一层即可达到 4 路可行 uplift；而当 \(\Energy(\mathsf{E})<4\) 时，观察者必须在第一层就发生 commit（剪枝），并把差额转化为显式的 uplift 选择记录（trace 增长）。
 \end{corollary}
 
 \subsection{空间与时间的互补：零总账（记账公理）}
@@ -63,11 +174,11 @@ $$
 \end{assumption}
 
 \begin{remark}
-在 Zeckendorf uplift 实例中，\(\Ineg(t)\) 可以用尾部胶带的编码长度（比特数）实现；\(\Ipos(y)\) 则可理解为宏观稳定语言提供的结构化信息。本文实验侧重于 \(\Ineg\) 的可计算代理量（见下一节）。
+在 Zeckendorf uplift 实例中，\(\Ineg(t)\) 可以用时间纤维（尾部胶带）的编码长度（比特数）实现；\(\Ipos(y)\) 则对应空间状态（宏观稳定语言）所携带的结构化信息。本文实验侧重于 \(\Ineg\) 的可计算代理量（见下一节）。
 \end{remark}
 
 \subsection{绝对比特守恒：从虚无到生成，再到抵消归零}
-本节把“信息守恒就是比特守恒”的直觉落实为一个可逆（或可逆可扩展）的操作接口：从一个规范的“虚无态”出发，观察者通过展开过程把空间/时间数据从约束中挤出；并且存在一个折叠过程作为其逆（uncompute），使得空间与时间数据可被抵消并回到虚无态，从而实现绝对意义下的比特守恒。
+本节把“信息守恒就是比特守恒”的直觉落实为一个\textbf{比特级}、\textbf{可逆}的操作接口：从一个规范的“虚无态”（全部寄存器为零）出发，展开过程在寄存器 \(Y,T,\mathsf{tr},\mathsf{E}\) 上执行确定的可逆更新并采掘能量；折叠过程执行其逆更新，把空间状态与时间纤维（连同 trace）逐步湮灭并回到虚无态，同时回收能量。全文的“生成/挤出/湮灭/抵消”均指这些寄存器上的比特被写入或擦除。
 
 \begin{definition}[虚无态（零态）]\label{def:void_state}
 固定 \(m\)。定义虚无态为宏观全零稳定观测与尾部全零 uplift 的配对
@@ -77,39 +188,151 @@ $$
 在基例 \(m=6\) 中，\(y_{\varnothing}=000000\in X_6\)，且 \(t_{\varnothing}=(0,0,0)\)。
 \end{definition}
 
-\begin{definition}[展开过程与折叠过程（可逆接口）]\label{def:up_down_interface}
-令 \(\mathcal U\) 表示观察者的展开算子（包括传播、分支与在能量 \(\Energy\) 约束下的承诺），其输出是一个满足本体约束的扩展态候选与一段显式 uplift 选择记录（时间胶带）。令 \(\mathcal D\) 表示对应的折叠过程：在保留该 uplift 记录的前提下，\(\mathcal D\) 逐步撤销展开承诺，把“已生成的空间/时间数据”可逆地抵消回零态。
+\subsection{创世过程：像读程序一样的可逆规格（操作-数据镜像互逆）}\label{subsec:genesis_process_spec}
+本小节把“从虚无挤出泡泡”的叙事写成一份可执行的可逆规格：每一步展开/折叠都是严格互逆的部分双射，并且每一步都伴随可精确记账的信息守恒。
 
-在 Zeckendorf uplift 的最小模型中，展开原子步可以取为 \(\Tail^{-1}\) 的一次分支选择（并写入一比特的选择记录，受相邻 1 与边界约束限制）；折叠原子步取为 \(\Tail\)（确定性丢弃靠近窗口的一位尾部），并同时消耗（验证并删除）一比特选择记录。若该记录完整，则折叠过程可把任意可达状态带回虚无态。
+\begin{definition}[观察者的完整状态与三条守恒账本]\label{def:full_state_and_ledgers}
+我们把观察者在任一时刻的“可审计状态”写成四元组
+$$
+\Sigma:=(y,t,\mathsf{tr},\mathsf{E}),
+$$
+其中 \(y\in\Ym\) 为空间状态，\(t\in T_m\) 为时间纤维头，\(\mathsf{tr}\in\{0,1\}^\ast\) 为路径 trace，\(\mathsf{E}\in\{0,1\}^\ast\) 为能量胶带。
+定义三条可审计账本：
+\begin{itemize}
+  \item \textbf{空间简并账本}：\(s_m(y)=|\Fold^{-1}(y)|\)（定义 \ref{def:fiber_size_function}）与其比特量 \(\Energy_{\mathrm{pot}}(y)=\log_2 s_m(y)\)（定义 \ref{def:potential_energy_from_fiber_size}）；
+  \item \textbf{路径账本}：\(|\mathsf{tr}|\)；
+  \item \textbf{能量账本}：\(|\mathsf{E}|\) 及其诱导并行上限 \(\Energy(\mathsf{E})=2^{|\mathsf{E}|}\)（定义 \ref{def:energy_beam}）。
+\end{itemize}
+\end{definition}
+
+\begin{assumption}[创世种子（量子涨落借贷）]\label{ass:genesis_seed}
+虚无态 \((y_{\varnothing},t_{\varnothing})\) 之外，允许观察者在初始时刻携带一段极短的能量胶带 \(\mathsf{E}_0\)（例如 \(|\mathsf{E}_0|=1\)），作为“从无到有的第一步”所需的可逆选择资源。该资源可以在折叠回滚至虚无态时被逐步偿还（湮灭回到 \(\mathsf{E}=\epsilon\)）。
+\end{assumption}
+
+\begin{definition}[展开一步：消费 1 能量并采掘纤维编码]\label{def:unfold_one_step_spec}
+固定空间状态 \(y\)（或把 \(y\) 视作上层约束输入）。令当前状态为 \(\Sigma=(y,t,\mathsf{tr},\mathsf{E})\)，并要求 \(|\mathsf{E}|\ge 1\)。展开一步由以下三段同步组成：
+\begin{itemize}
+  \item \textbf{消费（选择分支标签）}：令 \(\mathsf{pop}(\mathsf{E})=(\mathsf{E}_-,b)\)，其中 \(b\in\{0,1\}\) 是本步分支标签；
+  \item \textbf{推进（更新时间纤维）}：选择 \(t'\in \Tail^{-1}(t)\) 且满足本体一致性（例如基例 \(m=6\) 时要求 \(t'\in U(y)\)）；
+  \item \textbf{采掘（写入可审计能量）}：由推进后的 \((y,t')\) 通过重构映射 \(\mathrm{Rec}_m\)（定义 \ref{def:enc_rec_inverse_pair}）恢复唯一的微观解释 \(N:=\mathrm{Rec}_m(y,t')\)。在纤维 \(\Fold^{-1}(y)\) 上固定编码 \(\mathrm{Code}_y\)（定义 \ref{def:fiber_code_and_split}），并取码字 \(c:=\mathrm{Code}_y(N)\in\{0,1\}^{k(y)}\)。把该码字作为本步采掘的能量片段追加到能量胶带：
+  $$
+  \mathsf{E}':=\mathsf{E}_-\,\Vert\,c.
+  $$
+  同时把本步标签写入 trace：\(\mathsf{tr}':=\mathsf{tr}\,\Vert\, b\)。
+\end{itemize}
+输出状态为 \(\Sigma'=(y,t',\mathsf{tr}',\mathsf{E}')\)。
+\end{definition}
+
+\begin{definition}[折叠一步：逆向湮灭（严格反演）]\label{def:fold_one_step_spec}
+给定 \(\Sigma'=(y,t',\mathsf{tr}',\mathsf{E}')\) 且 \(|\mathsf{tr}'|\ge 1\)。折叠一步执行定义 \ref{def:unfold_one_step_spec} 的逐项反演：
+\begin{itemize}
+  \item \textbf{弹出标签}：\(\mathsf{pop}(\mathsf{tr}')=(\mathsf{tr},b)\)；
+  \item \textbf{回退时间纤维}：令 \(t:=\Tail(t')\)；
+  \item \textbf{逆采掘（湮灭能量）}：从 \(\mathsf{E}'\) 的末端弹出长度为 \(k(y)\) 的后缀 \(c\in\{0,1\}^{k(y)}\)，并令 \(\mathsf{E}_-\) 为剩余前缀。由 \(\mathrm{Code}_y^{-1}\)（在其像上）恢复出对应的 \(N\in \Fold^{-1}(y)\)。随后把“消费”逆转为把 \(b\) 还回能量胶带：
+  $$
+  \mathsf{E}:=\mathsf{E}_-\,\Vert\, b.
+  $$
+  此时由 \(N\) 的定义与 \(\mathrm{Enc}_m/\mathrm{Rec}_m\) 的互逆性可知 \(\mathrm{Enc}_m(N)=(y,t')\)，因此折叠与展开严格互逆。
+\end{itemize}
+输出状态为 \(\Sigma=(y,t,\mathsf{tr},\mathsf{E})\)。
+\end{definition}
+
+\begin{proposition}[完美镜像互逆与守恒]\label{prop:perfect_inverse_and_conservation}
+在定义 \ref{def:unfold_one_step_spec}--\ref{def:fold_one_step_spec} 的可行域上，折叠一步与展开一步互为严格反演：
+$$
+\mathcal D\circ \mathcal U = \mathrm{id},\qquad \mathcal U\circ \mathcal D = \mathrm{id}.
+$$
+并且每一步都满足精确可审计的守恒：\(\mathsf{tr}\) 与 \(\mathsf{E}\) 的比特不会凭空产生或消失，只会在“消费/采掘/逆采掘/偿还”之间重新分配；空间侧的简并度 \(s_m(y)\) 仅通过 \(\mathrm{Code}_y\) 被转写为能量胶带上的可用选择资源。
+\end{proposition}
+
+\begin{proof}
+由 \(\mathsf{push}/\mathsf{pop}\) 互为逆，且 \(\mathrm{Code}_y\) 与其逆 \(\mathrm{Code}_y^{-1}\)（在其像上）互为逆，再结合 \(\Tail\) 与 \(\Tail^{-1}\) 的定义，逐项复合即可验证两侧复合为恒等。守恒性来自：所有被采掘写入 \(\mathsf{E}\) 的码字 \(c\) 都在逆向中被唯一弹出并还原为同一个微观解释 \(N\)，所有被消费的 \(b\) 都在逆向中被偿还回 \(\mathsf{E}\)；因此操作与数据在该规格下构成完美镜像互逆。
+\end{proof}
+
+\begin{proposition}[创世一步的账本增量（可逐行审计）]\label{prop:ledger_deltas_one_step}
+在定义 \ref{def:unfold_one_step_spec} 的展开一步中，若 \(y\) 固定，则账本变化满足
+$$
+|\mathsf{tr}'|=|\mathsf{tr}|+1,\qquad
+|\mathsf{E}'|=|\mathsf{E}|-1+k(y),
+$$
+其中 \(k(y)=\lceil\log_2 s_m(y)\rceil\) 来自定义 \ref{def:fiber_code_and_split}。在定义 \ref{def:fold_one_step_spec} 的折叠一步中，上述增量逐项取负并恢复到原状态。
+\end{proposition}
+
+\begin{remark}[“像运行日志一样读创世过程”】【模板】]\label{rem:genesis_runlog_template}
+固定观测 \(y\) 与初始种子 \(\mathsf{E}_0\)。一次长度为 \(n\) 的展开运行给出状态序列
+$$
+\Sigma_0\to \Sigma_1\to \cdots\to \Sigma_n,\qquad
+\Sigma_i=(y,t_i,\mathsf{tr}_i,\mathsf{E}_i),
+$$
+其中 \(\Sigma_0=(y_{\varnothing},t_{\varnothing},\epsilon,\mathsf{E}_0)\)。对每一步 \(i\to i+1\)，审计者只需检查以下四项即可验证“操作与数据完美镜像互逆”：
+\begin{itemize}
+  \item \textbf{trace 单步}：\(\mathsf{tr}_{i+1}=\mathsf{tr}_i\,\Vert\, b_i\) 且在折叠中可由 \(\mathsf{pop}\) 唯一恢复；
+  \item \textbf{时间纤维单步}：\(t_{i+1}\in \Tail^{-1}(t_i)\) 且折叠回退满足 \(t_i=\Tail(t_{i+1})\)；
+  \item \textbf{能量单步}：\(\mathsf{E}_{i+1}=\mathsf{E}_{i,-}\,\Vert\, c_i\)，其中 \(\mathsf{E}_{i,-}\) 由 \(\mathsf{pop}(\mathsf{E}_i)\) 去掉 1 个末位得到，且 \(c_i=\mathrm{Code}_y(\mathrm{Rec}_m(y,t_{i+1}))\)；
+  \item \textbf{账本增量}：满足命题 \ref{prop:ledger_deltas_one_step} 的两条长度公式。
+\end{itemize}
+因此，“创世”不再是隐喻，而是一条可逐步回滚的运行轨迹：任何一步若不可审计地违反上述四项，就无法在折叠中被精确逆转。
+\end{remark}
+
+\begin{example}[\texorpdfstring{$m=6$}{m=6}、固定观测 \texorpdfstring{$y=0^6$}{y=0^6} 的一段运行日志]\label{ex:runlog_m6_y0}
+在基例 \(m=6\)、固定观测 \(y=0^6\) 下，纤维大小为 \(|\mathrm{Fold}_6^{-1}(y)|=4\)，因此 \(k(y)=\lceil\log_2 4\rceil=2\)。为便于展示，我们在该例中选取一个具体的可审计编码：把 \(\mathrm{Fold}_6^{-1}(y)=\{0,21,34,55\}\) 按 \(N\) 递增排列，并令
+$$
+\mathrm{Code}_y(0)=00,\quad \mathrm{Code}_y(21)=01,\quad \mathrm{Code}_y(34)=10,\quad \mathrm{Code}_y(55)=11.
+$$
+取创世种子 \(\mathsf{E}_0=1\)、\(\mathsf{tr}_0=\epsilon\)、\(t_0=000\)。下表给出按定义 \ref{def:unfold_one_step_spec} 的三步展开，其中每步都满足 \(|\mathsf{E}_{i+1}|=|\mathsf{E}_i|-1+k(y)=|\mathsf{E}_i|+1\) 与 \(|\mathsf{tr}_{i+1}|=|\mathsf{tr}_i|+1\)：
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{5pt}
+\input{sections/generated/tab_runlog_m6_y0.tex}
+\end{center}
+
+对同一段运行的三步折叠回滚（逐步验证“弹出 trace 标签、回退时间纤维、湮灭码字并偿还 \(b_i\)”的镜像互逆）可记录为下表：
+\begin{center}
+\small
+\setlength{\tabcolsep}{5pt}
+\input{sections/generated/tab_runlog_m6_y0_fold.tex}
+\end{center}
+
+该例的关键点是：每一步的“采掘能量片段” \(c_i\) 由 \((y,t_{i+1})\xrightarrow{\mathrm{Rec}_m}N_{i+1}\xrightarrow{\mathrm{Code}_y}c_i\) 唯一确定，因此折叠时可以从 \(\mathsf{E}_{i+1}\) 的末端唯一弹出 \(c_i\) 并恢复同一个 \(N_{i+1}\)，从而保证展开/折叠逐步互逆。
+\end{example}
+
+\begin{definition}[展开/折叠算子（可逆接口）]\label{def:up_down_interface}
+定义展开算子 \(\mathcal U\) 与折叠算子 \(\mathcal D\) 为
+$$
+\mathcal U:\Sigma\mapsto \Sigma'\quad\text{按定义 \ref{def:unfold_one_step_spec}},\qquad
+\mathcal D:\Sigma'\mapsto \Sigma\quad\text{按定义 \ref{def:fold_one_step_spec}}.
+$$
+命题 \ref{prop:perfect_inverse_and_conservation} 与 \ref{prop:ledger_deltas_one_step} 给出其互逆性与逐步账本守恒。
 \end{definition}
 
 \begin{assumption}[比特守恒（可逆性公理）]\label{ass:bit_conservation}
-存在一种对 uplift 选择记录的可审计编码，使得对任意从虚无态出发的展开运行 \(\mathcal U\)，其产生的输出 \((y,t)\) 与记录 \(\mathsf{log}\) 满足：
+存在一种对 uplift 选择记录的可审计编码，使得对任意从虚无态出发的展开运行 \(\mathcal U\)，其产生的输出 \((y,t)\) 与 trace 记录 \(\mathsf{tr}\) 满足：
 $$
-\mathcal D\bigl((y,t),\mathsf{log}\bigr)=(y_{\varnothing},t_{\varnothing}),
+\mathcal D\bigl((y,t),\mathsf{tr}\bigr)=(y_{\varnothing},t_{\varnothing}),
 $$
-且该过程不丢失比特：从信息账本角度看，“空间侧新增的可区分比特”与“时间侧（uplift 胶带/记录）新增的比特”总账抵消。
+且该过程不丢失比特：展开/折叠互为逆操作，trace 与能量胶带中的每一比特都只能通过对应的逆步骤被湮灭或恢复，因而“能量守恒/信息守恒”在本文中是同一条可审计约束。
 \end{assumption}
 
 \begin{remark}[与能量的关系]
-能量 \(\Energy\) 不改变本体的比特守恒；它只限制观察者在展开过程中能够并行维持的候选数量，从而迫使更早 commit。commit 使得部分“未决不确定性”被转化为显式 uplift 记录（时间胶带增长），因此在比特守恒口径下，能量越小，主观单线越强、胶带记录越早增长。
+能量在本文中不再作为外部给定的上限，而是由能量胶带 \(\mathsf{E}\) 内生决定的 \(\Energy(\mathsf{E})\)（定义 \ref{def:energy_beam}）。展开会消耗能量并（在 \(s_m(y)>2\) 的情形下）采掘额外能量；折叠作为其逆操作回收能量并湮灭相应的时间纤维与空间候选，因此能量守恒等价于可逆性本身。
 \end{remark}
 
 \subsection{观察者：展开产生时空}
-观察者的输入不是“时间参数”，而是一个观测约束（例如固定 \(y=0^m\)）与一个有限资源参数 \(\Energy\)。观察者在本体约束下通过展开过程生成一张搜索图：
+观察者的输入不是“时间参数”，而是一个观测约束（例如固定 \(y=0^m\)）与一个初始能量胶带 \(\mathsf{E}_0\)（创世种子，假设 \ref{ass:genesis_seed}）。观察者在本体约束下通过展开过程生成一张搜索图：
 \begin{itemize}
   \item 节点：某个候选 uplift 状态（尾部词）或其诱导的微观前像；
   \item 边：一次 \(\Tail^{-1}\) 分支扩展（展开一步）；
-  \item 资源：\(\Energy\) 限制并行分支数，迫使 commit。
+  \item 资源：\(\Energy(\mathsf{E})\) 限制并行分支数，迫使 commit。
 \end{itemize}
-因此，“多世界”对应分支集合，“主观体验”对应在 \(\Energy\) 约束下的一条承诺路径。
+因此，“多世界”对应分支集合，“主观体验”对应在 \(\Energy(\mathsf{E})\) 约束下的一条承诺路径。
 
 \subsection{信息守恒下的相互约束：空间纤维、时间推进与能量截断}
 
-本节把“观察者的信息守恒是如何相互约束的”写成可审计的约束链：\textbf{空间观测约束时间纤维，时间推进约束跨时刻一致性，能量约束把多分支压成主观单线，但不破坏本体守恒。}
+本节把“观察者的信息守恒是如何相互约束的”写成可审计的约束链：\textbf{空间状态约束时间纤维，时间推进约束跨时刻一致性，能量约束把多分支压成主观单线，但不破坏本体守恒。}
 
 \begin{definition}[时间纤维与分支集合]\label{def:fiber_T_of_y}
-固定 \(m\) 与一个宏观观测 \(y\in\Ym\)。定义其 uplift 时间纤维（可兼容尾部集合）
+固定 \(m\) 与一个空间状态 \(y\in\Ym\)。定义其 uplift 时间纤维（可兼容尾部集合）
 $$
 T(y):=\Bigl\{\,t\in T_m:\ \exists\,N\in\{0,\dots,2^m-1\}\ \text{s.t.}\ \Fold(N)=y,\ \tautime_m(N)=t\,\Bigr\}.
 $$
@@ -125,6 +348,6 @@ $$
 \end{proposition}
 
 \begin{remark}[能量与主观单线不破坏守恒]\label{rem:energy_commit_ledger}
-观察者在展开过程中维护分支集合 \(\mathcal B_k\subseteq T(y)\)。能量约束 \(|\mathcal B_k|\le \Energy\) 迫使当分支增长超过 \(\Energy\) 时进行剪枝/承诺（commit）。该过程不会改变本体的守恒约束：它只是在本体允许的时间纤维中选择一个可追踪子集，从而把“多世界并行”压缩成“主观单线”。在零总账记账（假设 \ref{ass:zero_ledger}）下，commit 可被理解为把“未决的不确定性”转化为显式的 uplift 胶带选择，从而把守恒的差额从空间侧转移到时间侧。
+观察者在展开过程中维护分支集合 \(\mathcal B_k\subseteq T(y)\)。能量约束 \(|\mathcal B_k|\le \Energy(\mathsf{E})\) 迫使当分支增长超过 \(\Energy(\mathsf{E})\) 时进行剪枝/承诺（commit）。该过程不会改变本体的守恒约束：它只是在本体允许的时间纤维中选择一个可追踪子集，从而把“多世界并行”压缩成“主观单线”。
 \end{remark}
 

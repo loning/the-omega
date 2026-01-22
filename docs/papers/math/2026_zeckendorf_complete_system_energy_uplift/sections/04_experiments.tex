@@ -2,12 +2,29 @@
 
 本节所有图表由脚本生成并写入 `sections/generated/`，正文仅通过 \verb|\input| 引用。
 
+\subsection{\texorpdfstring{$m=6$}{m=6}：\texorpdfstring{$64\to 21$}{64->21} 的纤维大小与潜在能量分布}
+\begin{figure}[H]
+\centering
+\input{sections/generated/fig_m6_fiber_potential_energy_hist.tex}
+\caption{\(m=6\) 的纤维大小分布：对每个空间状态 \(y\in X_6\)，其纤维大小 \(s_6(y)=|\mathrm{Fold}_6^{-1}(y)|\in\{2,3,4\}\)。我们定义潜在能量 \(\Energy_{\mathrm{pot}}(y)=\log_2 s_6(y)\)（定义 \ref{def:potential_energy_from_fiber_size}），该直方图展示 \(s_6\) 的三值谱及其计数（推论 \ref{cor:m6_potential_energy_spectrum}）。}
+\label{fig:m6_fiber_potential_energy_hist}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\input{sections/generated/tab_m6_fiber_potential_energy.tex}
+\caption{\(m=6\) 下每个空间状态 \(y\) 的 Zeckendorf 值 \(V(y)\)、纤维大小 \(s_6(y)\) 与潜在能量 \(\Energy_{\mathrm{pot}}(y)\)（由脚本枚举 \(N\in\{0,\dots,63\}\) 生成）。}
+\label{tab:m6_fiber_potential_energy}
+\end{table}
+
 \subsection{固定观测 \texorpdfstring{$y_t=0^m$}{y=0^m}：分支增长与能量截断}
 
 \begin{figure}[H]
 \centering
 \input{sections/generated/fig_zeckendorf_energy_beam_uplift_curve.tex}
-\caption{Zeckendorf uplift：固定宏观观测 \(y_t=0^m\)，从尾部 \(t=0\) 出发进行展开过程（\(\Tail^{-1}\) 分支扩展）。能量 \(\Energy\) 作为 beam width 截断并行分支数，图中展示 \(B_d\) 随展开深度 \(d\) 的变化。}
+\caption{Zeckendorf uplift：固定空间状态 \(y_t=0^m\)，从尾部头 \(t=0\)、空 trace \(\mathsf{tr}=\epsilon\) 与某个初始能量胶带 \(\mathsf{E}\) 出发进行展开。每一层展开消耗 1 单位能量并选择一个 uplift 分支，同时把该选择写入 trace（定义 \ref{def:up_down_interface}）；折叠则以逆操作湮灭时间纤维与空间候选并回收能量。图中展示分支数 \(B_d\) 随展开深度 \(d\) 的变化。}
 \label{fig:zeckendorf_energy_beam_uplift_curve}
 \end{figure}
 
@@ -16,7 +33,17 @@
 \small
 \setlength{\tabcolsep}{6pt}
 \input{sections/generated/tab_zeckendorf_energy_beam_uplift.tex}
-\caption{不同 \(m\) 的尾部长度 \(L(m)=K(m)-m\) 与能量 \(\Energy\) 下的终端分支数摘要（由脚本生成）。}
+\caption{不同 \(m\) 的尾部长度 \(L(m)=K(m)-m\) 与 beam width \(\Energy(\mathsf{E})\) 下的终端分支数摘要（由脚本生成）。}
 \label{tab:zeckendorf_energy_beam_uplift}
 \end{table}
+
+\subsection{\texorpdfstring{$m=6$}{m=6}：泡泡生成图、连通性与 pop/shift 的湮灭匹配}
+为把“泡泡从无到有、再受能量限制”的机制完全可审计化，我们在基例 \(m=6\)、固定空间状态 \(y=0^6\) 下画出以节点 \((t,\mathsf{tr})\) 组织的生成图：节点深度等于 trace 长度 \(|\mathsf{tr}|\)。展开边表示一次“消耗 1 能量并选择 uplift 分支”的推进，同时把分支标签写入 trace（实线箭头）；折叠边表示其逆操作：弹出 trace 末位并回退时间纤维头，从而湮灭对应的候选并回收能量（虚线箭头），见图 \ref{fig:observer_bubble_graph_m6}。
+
+\begin{figure}[H]
+\centering
+\input{sections/generated/fig_observer_bubble_graph_m6.tex}
+\caption{观察者泡泡生成图（\(m=6\), \(y=0^6\)）。节点为 \((t,\mathsf{tr})\)；实线为展开（消耗 1 能量并把标签写入 trace），虚线为折叠（弹出 trace 并回退 \(t\)，从而湮灭对应候选并回收能量）。左图展示无能量约束时的全部可行节点；右图展示能量不足时按可审计规则保留的子图。该图的“合流点”展示了为何若丢弃 trace 就无法保持互逆：不同路径在遗忘 trace 后会投影到同一 \(t\)，必须用 trace 的末位作为可审计的路径标签，才能把折叠定义成展开的逆操作。}
+\label{fig:observer_bubble_graph_m6}
+\end{figure}
 

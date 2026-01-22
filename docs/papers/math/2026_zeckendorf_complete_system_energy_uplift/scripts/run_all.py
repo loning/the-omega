@@ -29,12 +29,38 @@ def _nonempty(p: Path) -> bool:
 def build_steps() -> List[Step]:
     return [
         Step(
+            name="runlog_m6_y0",
+            script="gen_runlog_m6_y0.py",
+            args=[],
+            expected_generated=[
+                "tab_runlog_m6_y0.tex",
+                "tab_runlog_m6_y0_fold.tex",
+            ],
+        ),
+        Step(
+            name="m6_fiber_potential_energy",
+            script="exp_m6_fiber_potential_energy.py",
+            args=[],
+            expected_generated=[
+                "tab_m6_fiber_potential_energy.tex",
+                "fig_m6_fiber_potential_energy_hist.tex",
+            ],
+        ),
+        Step(
             name="zeckendorf_energy_beam_uplift",
             script="exp_zeckendorf_energy_beam_uplift.py",
             args=[],
             expected_generated=[
                 "tab_zeckendorf_energy_beam_uplift.tex",
                 "fig_zeckendorf_energy_beam_uplift_curve.tex",
+            ],
+        ),
+        Step(
+            name="observer_bubble_graph_m6",
+            script="fig_observer_bubble_graph_m6.py",
+            args=[],
+            expected_generated=[
+                "fig_observer_bubble_graph_m6.tex",
             ],
         ),
     ]

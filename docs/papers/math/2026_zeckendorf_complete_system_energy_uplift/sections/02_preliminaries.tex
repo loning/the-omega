@@ -1,6 +1,6 @@
 \section{预备知识：Zeckendorf 截断折叠与尾部 uplift 规则}
 
-本节给出本文所用的规范对象。它与 \cite{Zeckendorf1972,AlloucheShallit2003,Lothaire2002} 的标准 Zeckendorf 表示兼容，并采用 \path{docs/papers/2025_resolution_folding_phi_pi_e_hpa_omega} 中的窗口折叠约定。
+本节给出本文所用的规范对象。它与 \cite{Zeckendorf1972,AlloucheShallit2003,Lothaire2002} 的标准 Zeckendorf 表示兼容，并采用 \path{docs/papers/math/2026_dyadic_zeckendorf_window_folding_kernel} 中对 dyadic 上界 \(2^m-1\) 的窗口折叠核定义与纤维计数口径（同时与 \path{docs/papers/2025_resolution_folding_phi_pi_e_hpa_omega} 的窗口约定一致）。
 
 \subsection{Fibonacci 与 Zeckendorf 数码}
 令 Fibonacci 数列满足 \(F_1=F_2=1\)、\(F_{n+2}=F_{n+1}+F_n\)。Zeckendorf 定理断言：每个 \(N\in\NN\) 存在唯一的二进制数码序列 \(\mathrm Z(N)=(c_1,c_2,\dots)\) 使得
@@ -81,6 +81,51 @@ $$
 由 Zeckendorf 唯一性，\(\mathrm{Fold}_6(N)=w\) 等价于 \(N\) 的数码满足 \((c_1,\dots,c_6)=w\)。当 \(N\le 63\) 时，高于窗口的可用权重只有 \(F_8,F_9,F_{10}\)，对应 \((c_7,c_8,c_9)\) 三位尾部；并必须满足相邻约束与边界约束 \(w_6c_7=0\)。剩余只需讨论在 \(N\le 63\) 截断下哪些偏移可行：若 \(w_6=1\) 则 \(c_7=0\)，且 \(V(w)\ge 13\) 迫使 \(V(w)+55>63\)，因此仅余偏移 \(0,34\)。若 \(w_6=0\)，则偏移 \(0,21,34\) 总可行；偏移 \(55\) 需要 \(V(w)\le 8\)。逐项代入即得。
 \end{proof}
 
+\begin{remark}[与 dyadic 窗口折叠核的“三值纤维定理”对齐]\label{rem:align_dyadic_three_valued_fiber}
+\path{docs/papers/math/2026_dyadic_zeckendorf_window_folding_kernel} 给出了在 dyadic 上界 \(B_m=2^m-1\) 下的通用结论：对任意窗口长度 \(m\)，纤维大小函数 \(s_m(w)=|\Fold^{-1}(w)|\) 只取三种值，并且在值坐标 \(V\) 上呈现“两阈值三段阶梯结构”。在本文的基例 \(m=6\) 上，这两个阈值可以显式算出并与定理 \ref{thm:fold6_preimage_structure_here} 完全一致：
+\begin{itemize}
+  \item \textbf{末位阈值} \(b_F=F_{m+1}=F_7=13\)，对应 \(w_6=1\iff V(w)\ge 13\)。因此 \(w_6=1\) 一侧必落在“纤维最小值”段，给出 \(|\mathrm{Fold}_6^{-1}(w)|=2\)。
+  \item \textbf{跳变阈值} \(b_Q=V\bigl(\mathrm{Fold}_6(2^6-1)\bigr)+1\)。由于 \(\mathrm{Fold}_6(63)=000010\) 且 \(V(000010)=8\)，故 \(b_Q=9\)。这正对应定理 \ref{thm:fold6_preimage_structure_here} 中的条件 \(V(w)\le 8\) 与 \(V(w)>8\) 的分界：在 \(w_6=0\) 一侧，纤维从 \(4\) 跳变为 \(3\)。
+\end{itemize}
+因此，\(m=6\) 的“\(2/3/4\) 三值纤维直方图”并非偶然，而是 dyadic 窗口折叠核一般结构定理的一个完全可审计特例；这也是后续把“时间纤维长度为 3 位”与“泡泡分支很快饱和”为同一机制的原因。
+\end{remark}
+
+\subsection{纤维大小与“潜在能量”}
+\begin{definition}[纤维大小函数]\label{def:fiber_size_function}
+对固定窗口长度 \(m\)，对每个宏观空间状态 \(y\in\Ym\) 定义其纤维大小（前像简并度）
+$$
+s_m(y):=\bigl|\Fold^{-1}(y)\bigr|,\qquad \Fold^{-1}(y):=\{N\in\{0,\dots,2^m-1\}:\ \Fold(N)=y\}.
+$$
+\end{definition}
+
+\begin{definition}[潜在能量（简并度的比特量）]\label{def:potential_energy_from_fiber_size}
+定义与空间状态 \(y\) 相关的“潜在能量”（或“可提取逆信息量”）为
+$$
+\Energy_{\mathrm{pot}}(y):=\log_2 s_m(y)\qquad (\text{单位：bits}).
+$$
+它只依赖于折叠核 \(\Fold\) 与 dyadic 截断 \(2^m-1\)，刻画“同一宏观观测 \(y\) 兼容多少个微观前像/多少种 uplift 选择”。注意：\(\Energy_{\mathrm{pot}}\) 与由能量胶带诱导的 beam width \(\Energy(\mathsf{E})\)（定义 \ref{def:energy_beam}）属于不同层次；前者是 \textbf{空间状态的结构属性}，后者是 \textbf{观察者并行维护的资源上限}。
+\end{definition}
+
+\begin{definition}[纤维编码与可逆分解]\label{def:fiber_code_and_split}
+对每个 \(y\in\Ym\)，令 \(s=s_m(y)\)。定义所需编码位数
+$$
+k(y):=\left\lceil \log_2 s\right\rceil\in\NN.
+$$
+并\textbf{固定}一个注入编码（任选其一即可，但需固定为协议的一部分）
+$$
+\mathrm{Code}_y:\Fold^{-1}(y)\hookrightarrow \{0,1\}^{k(y)}.
+$$
+\(\mathrm{Code}_y\) 的像是一个大小为 \(s\) 的码字集合；其逆映射 \(\mathrm{Code}_y^{-1}\) 仅在该像上定义。该编码用于把“空间侧简并度”转写为能量胶带上可审计的比特资源（见 \S\ref{subsec:genesis_process_spec}）。
+\end{definition}
+
+\begin{corollary}[\texorpdfstring{$m=6$}{m=6} 的三值潜在能量谱]\label{cor:m6_potential_energy_spectrum}
+在 \(m=6\) 基例中，定理 \ref{thm:fold6_preimage_structure_here} 给出 \(s_6(y)\in\{2,3,4\}\)，因此
+$$
+\Energy_{\mathrm{pot}}(y)\in\{1,\ \log_2 3,\ 2\}\quad(\text{bits}),
+$$
+并且对应的空间状态数量分别为 \(8/4/9\)。
+\end{corollary}
+
 \begin{remark}[循环闭合的 \texorpdfstring{$18\oplus 3$}{18+3} 类型分裂（本文语境）]\label{rem:18_plus_3_in_this_paper}
 在一些相关工作中，会把 \(X_6\) 的 21 个稳定词再细分为 \(18\oplus 3\) 两类；其含义并非本节定理 \ref{thm:fold6_preimage_structure_here} 的“前像大小 \(2/3/4\)”分类，而是一个\textbf{纯宏观（空间层）}的\textbf{循环闭合}判别：把 \(w=w_1\cdots w_6\in X_6\) 看作黄金均值约束图上的一段路径，若再额外要求“环绕一步” \(w_6\to w_1\) 也必须合法，则需要排除 \(w_6w_1=11\)。据此定义
 $$
@@ -130,6 +175,36 @@ $$
 $$
 \end{definition}
 
+\begin{definition}[编码/重构：空间状态与时间纤维的互逆拼合]\label{def:enc_rec_inverse_pair}
+固定窗口长度 \(m\)，令 \(K=K(m)\)、\(L=L(m)\)。定义编码映射
+$$
+\mathrm{Enc}_m:\{0,\dots,2^m-1\}\to \Ym\times T_m,\qquad
+\mathrm{Enc}_m(N):=\bigl(\Fold(N),\ \tautime_m(N)\bigr).
+$$
+并定义（部分）重构映射 \(\mathrm{Rec}_m\) 为满足
+$$
+\mathrm{Rec}_m(y,t)=N
+$$
+当且仅当 \(N\in\{0,\dots,2^m-1\}\) 的 Zeckendorf 数码满足
+\[
+(c_1(N),\dots,c_m(N))=y,\qquad (c_{m+1}(N),\dots,c_K(N))=t.
+\]
+等价地，\(\mathrm{Rec}_m(y,t)\) 是把“窗口内比特串 \(y\)”与“窗口外尾部比特串 \(t\)”拼合为同一条 Zeckendorf 合法数码并求其 Fibonacci 权重和所得的微观整数（若不存在则未定义）。
+\end{definition}
+
+\begin{proposition}[空间状态与时间纤维的互逆性（图论/比特口径）]\label{prop:space_time_inverse_via_rec}
+设
+$$
+\mathcal A_m:=\mathrm{Im}(\mathrm{Enc}_m)\subseteq \Ym\times T_m
+$$
+为可行对集合（即满足 dyadic 上界与禁邻/边界相容约束的 \((y,t)\) 对）。则
+\begin{itemize}
+  \item \(\mathrm{Enc}_m:\{0,\dots,2^m-1\}\to \mathcal A_m\) 是双射；
+  \item \(\mathrm{Rec}_m:\mathcal A_m\to \{0,\dots,2^m-1\}\) 为其逆映射；
+  \item 因而“时间纤维与空间状态互逆”在本文中精确指：\textbf{微观整数 \(N\) 与可行对 \((y,t)\) 之间互相可重构}；单独给出 \(y\) 或 \(t\) 一般不能重构 \(N\)，但二者拼合即可。
+\end{itemize}
+\end{proposition}
+
 \begin{definition}[规范时间算子]\label{def:tail_shift}
 定义尾部移位 \(\Tail:T_m\to T_m\) 为
 $$
@@ -143,11 +218,23 @@ $$
 \end{remark}
 
 \subsection{观察者能量：beam width}
-\begin{definition}[能量 \(\Energy\)（并行分支上限）]\label{def:energy_beam}
-观察者在展开过程中维护一组候选 uplift 分支集合 \(\mathcal B\)。能量 \(\Energy\in\NN\) 被定义为并行分支上限：
+\begin{definition}[能量胶带诱导的 beam width]\label{def:energy_beam}
+本篇把“能量”内生化为一个\textbf{可增长的逆信息寄存器}，并由其诱导观察者的并行上限。
+
+令 \(\mathsf{E}\in\{0,1\}^\ast\) 为能量胶带（能量寄存器），其长度 \(|\mathsf{E}|\) 表示当前可用的“可逆选择比特数”。观察者在展开过程中维护候选 uplift 分支集合 \(\mathcal B\)。我们定义由能量胶带诱导的 beam width 为
 $$
-|\mathcal B|\le \Energy.
+\Energy(\mathsf{E}):=2^{|\mathsf{E}|},
 $$
-当自然分支数超过 \(\Energy\) 时，观察者必须基于某个可审计评分规则进行剪枝/承诺（commit），从而产生主观单线体验。
+并要求资源约束
+$$
+|\mathcal B|\le \Energy(\mathsf{E}).
+$$
+当自然分支数超过 \(\Energy(\mathsf{E})\) 时，观察者必须基于某个可审计评分规则进行剪枝/承诺（commit），从而产生主观单线体验。
 \end{definition}
+
+\begin{remark}[能量来自 uplift 的“采掘”]\label{rem:energy_mined_from_uplift}
+对固定空间观测 \(y\)，纤维大小 \(s_m(y)=|\Fold^{-1}(y)|\)（定义 \ref{def:fiber_size_function}）刻画“有多少个 uplift/微观解释与该观测兼容”。因此 \(y\) 的潜在能量 \(\Energy_{\mathrm{pot}}(y)=\log_2 s_m(y)\)（定义 \ref{def:potential_energy_from_fiber_size}）可以被理解为：\textbf{折叠时最多能够从该简并度中抽取多少可逆选择比特，写入能量胶带 \(\mathsf{E}\)}；而展开时需要\textbf{消耗}这些比特去选择 uplift 分支。
+
+在 \(m=6\) 的 \(64\to 21\) 核中 \(s_6(y)\in\{2,3,4\}\)。因此：\(s=3,4\) 的空间状态确实携带更高的可采掘逆信息量；例如 \(s=4\) 对应 \(\Energy_{\mathrm{pot}}=2\) bits，可把 \(|\mathsf{E}|\) 增加至多 2，从而把 \(\Energy(\mathsf{E})\) 的并行上限最多放大 4 倍。
+\end{remark}
 
