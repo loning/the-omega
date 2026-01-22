@@ -1,0 +1,41 @@
+
+\section{边界态动力学与有限换能器（transducer）}
+
+\subsection{边界窗口态}
+
+定义
+$$
+\sigma_m^{(L)}=\big(c_{m-L+1}(B_m),\dots,c_m(B_m)\big),\qquad B_m=2^m-1.
+$$
+本文关注 $m$ 方向的推进动力学：$\sigma_m^{(L)}\to\sigma_{m+1}^{(L)}$。
+
+\subsection{固定阶确定 transducer 的 trade-off 与 Pareto 前沿}
+
+对 $L\in[10,30]$ 扫描“最小 order 使得上下文 $(\sigma_{m-\mathrm{order}+1}^{(L)},\dots,\sigma_m^{(L)})$ 唯一确定 $\sigma_{m+1}^{(L)}$”（在样本区间 $m\in[100,2000]$ 上）。该扫描产生显著的 trade-off 曲线与 Pareto 点；例如在样本区间内，$L=27$ 时 order$=1$ 已足以确定。
+
+\begin{table}[H]
+\centering
+\input{sections/generated/transducers_order_table}
+\caption{固定窗口 $L=10..30$ 的最小确定阶数扫描表（由脚本自动生成）。}
+\end{table}
+
+\begin{table}[H]
+\centering
+\input{sections/generated/transducers_pareto_table}
+\caption{Pareto 点（由脚本自动生成）。}
+\end{table}
+
+\subsection{\texorpdfstring{$L=20$}{L=20} 的确定 transducer：order\texorpdfstring{$=8$}{=8} 完全消歧}
+
+在 $L=20$ 上，order$=5$ 仅剩 $1$ 个歧义上下文；随着 order 增加，歧义消失，并在 order$=8$ 首次达到 $0$。据此可以导出完整映射表（context $\mapsto$ next state），从而得到一个确定换能器。
+
+\subsection{可变长确定 transducer：最大深度 \texorpdfstring{$8$}{8}，且深度尾部极短}
+
+进一步构造可变长换能器：对每一步选取\textbf{最短}可确定上下文；只在歧义处加深历史。以 $L=20$ 为例，最大深度 $8$。在样本区间内可统计“使用深度”的分布：绝大多数转移在深度 $1$ 即可确定，极少数转移需要深度 $5$ 或 $8$。该结构可视为“时间维度搜索深度有限”的离散化实现。
+
+\begin{table}[H]
+\centering
+\input{sections/generated/transducers_depth_fraction_table}
+\caption{可变长换能器在不同深度下的使用频率（由脚本自动生成）。}
+\end{table}
+

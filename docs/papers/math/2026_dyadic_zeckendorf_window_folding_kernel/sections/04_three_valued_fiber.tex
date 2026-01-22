@@ -1,0 +1,72 @@
+
+\section{三值纤维定理：两阈值三段阶梯结构}
+
+\subsection{阈值 \texorpdfstring{$b_F=F_{m+1}$}{b\_F=F\_{m+1}}：末位由值坐标决定}
+
+\begin{lemma}[末位阈值]
+对任意 $w\in X_m$，
+$$
+w_m=1\quad\Longleftrightarrow\quad V_m(w)\ge F_{m+1}.
+$$
+因此 $V$ 轴自然分为两段：
+$$
+V\in[0,F_{m+1}-1]\iff w_m=0,\qquad
+V\in[F_{m+1},F_{m+2}-1]\iff w_m=1.
+$$
+记该阈值为 $b_F=F_{m+1}$。
+\end{lemma}
+
+\subsection{tail 最小间隙与“每侧最多一次跳变”}
+
+沿用第 3 节中两类 tail 和集合 $\mathcal{T}_0,\mathcal{T}_1$。
+
+\begin{lemma}[tail 最小差]
+对任意不同的 $t,t'\in\mathcal{T}_0$，有 $\abs{t-t'}\ge F_{m+1}$，并且存在 $t,t'$ 使得 $\abs{t-t'}=F_{m+1}$。\\
+对任意不同的 $t,t'\in\mathcal{T}_1$，有 $\abs{t-t'}\ge F_{m+2}$，并且存在 $t,t'$ 使得 $\abs{t-t'}=F_{m+2}$。
+\end{lemma}
+
+\begin{proof}[证明要点]
+取两 tail 数码最高差异位 $k$，用“受限无相邻选择的最大可达和”给出下界；并用单项尾 $F_{m+3}$ 与 $F_{m+2}$（或 $F_{m+4}$ 与 $F_{m+3}$）构造可达差值。
+\end{proof}
+
+将纤维计数视为值坐标 $V$ 的函数，记
+$$
+S_m(V)=s_m\big(V_m^{-1}(V)\big)
+=\#\Big\{t\in\mathcal{T}_{w_m(V)}:\ t\le B_m-V\Big\}.
+$$
+
+\begin{corollary}[每侧最多一次跳变]
+在固定侧上，$S_m(V)$ 随 $V$ 单调不增，且当 $V$ 在该侧区间内移动时最多跨过一个 tail 值，因此每侧 $S_m$ 至多发生一次从 $q$ 到 $q-1$ 的跳变。
+\end{corollary}
+
+\subsection{第二阈值 \texorpdfstring{$b_Q$}{b\_Q}：由边界前缀精确定位唯一跳变}
+
+定义边界前缀
+$$
+p_m=\Fold_m(B_m),\qquad V_m^{\max}=V_m(p_m),\qquad b_Q=V_m^{\max}+1,\qquad B_m=2^m-1.
+$$
+由于 $B_m$ 本身有 Zeckendorf 展开 $B_m=V_m^{\max}+T^{\max}$，且 $T^{\max}\in\mathcal{T}_{(p_m)_m}$，当 $V\le V_m^{\max}$ 时该 tail 可行，而当 $V\ge V_m^{\max}+1$ 时不可行。结合“每侧最多一次跳变”，该处即为唯一跳变位置。
+
+\subsection{主定理：三值纤维与两阈值三段分解}
+
+\begin{theorem}[三值纤维定理]
+存在整数 $a_m,b_m$，使得对所有 $w\in X_m$，
+$$
+s_m(w)\in\{a_m,\ b_m,\ b_m-1\}.
+$$
+并且在 $V$ 坐标上，$S_m(V)$ 是两阈值三段阶梯函数，阈值仅为
+$$
+b_F=F_{m+1},\qquad b_Q=V_m(\Fold_m(2^m-1))+1.
+$$
+具体分段由 $b_Q$ 落在 $b_F$ 的哪一侧决定：跳变发生在包含 $p_m$ 的那一侧。
+\end{theorem}
+
+\subsection{刚性推论：分裂侧等价于边界数码最后一位}
+
+\begin{corollary}[分裂侧判别的完全等价]
+$$
+\Ind[b_Q>b_F]=(p_m)_m=c_m(2^m-1).
+$$
+因此分裂发生在哪一侧由 $\Fold_m(2^m-1)$ 的最后一位完全决定。
+\end{corollary}
+

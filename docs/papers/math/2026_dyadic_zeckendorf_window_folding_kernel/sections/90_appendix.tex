@@ -1,0 +1,88 @@
+
+\section{附录}
+
+\subsection{数据与可复现文件索引}
+
+本节列出本文计算过程中导出的关键表格/图像文件的\textbf{建议}归档位置。本文采用内容寻址的可复现结构：
+$$
+\texttt{artifacts/<experiment>/RUN\_ID/}
+$$
+其中 \texttt{run\_id} 由参数与脚本内容哈希共同决定，并在同目录的 \texttt{manifest.json} 中记录运行环境与输出哈希。
+
+\subsubsection{transducer 映射表}
+
+\begin{itemize}
+\item $L=20$，order$=8$ 的确定 transducer：\path{artifacts/transducers/RUN_ID/transducer_L20_order8_mapping.csv}
+\item $L=20$，order$=5$ 的歧义上下文：\path{artifacts/transducers/RUN_ID/transducer_L20_order5_ambiguous.csv}
+\item $L=20$，max depth $8$ 的可变长 transducer：\path{artifacts/transducers/RUN_ID/variable_length_transducer_L20_K8.csv}
+\end{itemize}
+
+\subsubsection{trade-off 与 Pareto 表}
+
+\begin{itemize}
+\item 扫描 $L=10..30$ 的最小确定 order：\path{artifacts/transducers/RUN_ID/deterministic_order_table_L10_30.csv}
+\item Pareto 点（contexts vs order）：\path{artifacts/transducers/RUN_ID/deterministic_pareto_table.csv}
+\end{itemize}
+
+\subsubsection{可变长深度分布}
+
+\begin{itemize}
+\item $L=20$，max depth $8$ 的深度占比：\path{artifacts/transducers/RUN_ID/variable_length_depth_fraction.csv}
+\item 深度占比图（英文）：\path{artifacts/transducers/RUN_ID/variable_length_depth_fraction.png}
+\end{itemize}
+
+\subsection{计算算法（伪代码）}
+
+\subsubsection{计算 \texorpdfstring{$\Fold_m(B_m)$}{Fold\_m(B\_m)} 与阈值 \texorpdfstring{$b_Q$}{b\_Q}}
+
+\begin{Verbatim}
+Input: m
+Output: p_m = Fold_m(B_m), b_Q = V_m(p_m) + 1
+
+B_m <- 2^m - 1
+Use greedy Zeckendorf algorithm to compute digits c_k(B_m) (no adjacent 1s)
+Take first m digits: p_m = (c_1,...,c_m)
+Compute V_m(p_m) = sum_{k=1..m} c_k F_{k+1}
+Return b_Q = V_m(p_m) + 1
+\end{Verbatim}
+
+\subsubsection{digit-DP 计算 \texorpdfstring{$C_1(m)$}{C\_1(m)}}
+
+\begin{Verbatim}
+Input: Zeckendorf digits c_k(B_m) of the upper bound B_m
+Output: C_1(m) = #{ N <= B_m : c_m(N) = 1 }
+
+Core DP state: (pos, prev, tight)
+Enumerate digits with the no-adjacent-1 constraint
+Force the digit at position m to be 1
+\end{Verbatim}
+
+\subsubsection{构造固定阶 transducer（\texorpdfstring{$L$}{L}，order = \texorpdfstring{$k$}{k}）}
+
+\begin{Verbatim}
+Input: sequence sigma_m^(L) on a sample range
+Output: mapping table: context -> next state
+
+For each m:
+  context = (sigma_{m-k+1},...,sigma_m)
+  next = sigma_{m+1}
+If the same context appears with multiple next values, then k is not deterministic.
+\end{Verbatim}
+
+\subsubsection{构造可变长 transducer（最大深度 \texorpdfstring{$K$}{K}）}
+
+\begin{Verbatim}
+Input: sigma_m^(L), maximum depth K
+Output: a set of variable-length context rules with unique successors
+
+S <- all contexts of length 1
+while exists (len,ctx) in S with multiple successors and len < K:
+  replace it by all refined contexts of length len+1
+Verify every rule has a unique successor
+For each step, choose the shortest determinizing context and record the depth distribution
+\end{Verbatim}
+
+\subsection{英文图注规范}
+
+本文所有图（如状态转移准确率、深度分布、Pareto 图）均采用英文坐标与图例，以符合常见期刊的图注规范。
+
