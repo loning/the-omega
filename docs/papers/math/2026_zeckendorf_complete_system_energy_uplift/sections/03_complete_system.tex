@@ -65,7 +65,7 @@ $$
   \item \textbf{若丢弃 trace \(\mathsf{tr}\)}，仅凭 \(t\mapsto \Tail(t)\) 无法恢复上一层“选择了哪个分支标签 \(b\)”；
   \item \textbf{要使折叠成为展开的逆}，必须在折叠原子步中对 trace 执行 pop 并与该步的分支标签 \(b\) 做一致性核对，从而把“本步选择”与“trace 末位”配对湮灭（定义 \ref{def:up_down_interface}）。
 \end{itemize}
-换言之，“trace 与空间候选路径相互湮灭”在图论上等价于：给定投影后出现的合流点，为恢复可逆性必须引入可审计的路径标签并在反向步骤中逐步匹配删除。
+换言之，“trace 与候选路径（对应微观解释）相互湮灭”在图论上等价于：给定投影后出现的合流点，为恢复可逆性必须引入可审计的路径标签并在反向步骤中逐步匹配删除。
 \end{proposition}
 
 \begin{definition}[能量截断作为子图（子 groupoid）选择算子]\label{def:energy_as_subgroupoid_selector}
@@ -92,10 +92,10 @@ $$
 回滚后的新活跃集合 \(\mathcal B_{\mathrm{new}}:=\mathcal B\setminus \mathcal B_{\mathrm{drop}}\) 满足 \(|\mathcal B_{\mathrm{new}}|<|\mathcal B|\)，因此在能量约束 \(|\mathcal B|\le \Energy(\mathsf{E})\) 的意义下，“可用能量（可用并行槽位）”得到回收。
 \end{definition}
 
-\begin{proposition}[能量回收必须伴随时间纤维与空间候选的共同湮灭]\label{prop:energy_reclaim_requires_annihilation}
+\begin{proposition}[能量回收必须伴随时间纤维与微观解释候选的共同湮灭]\label{prop:energy_reclaim_requires_annihilation}
 在本篇的可逆/比特守恒口径下，观察者若想减少需要维护的\textbf{trace} 信息（例如缩短某些分支的 \(\mathsf{tr}\) 或把它们归零），则\textbf{唯一的可审计方式}是对相应分支执行折叠回滚，使其沿 groupoid 的逆边撤销先前的展开写入（同时相应地回退尾部头 \(t\)）。
 
-等价地：不能在保持 \((y,t)\) 可达性的同时随意“删去”\(\mathsf{tr}\) 比特；trace 的逐步湮灭必须与对应的可逆回退步骤同步进行（定义 \ref{def:up_down_interface}），并且该分支对应的空间候选路径也因此被撤销。这正是图论中“合流导致投影不可逆”（命题 \ref{prop:log_needed_for_reversibility}）的操作学对应。
+等价地：不能在保持 \((y,t)\) 可达性的同时随意“删去”\(\mathsf{tr}\) 比特；trace 的逐步湮灭必须与对应的可逆回退步骤同步进行（定义 \ref{def:up_down_interface}），并且该分支对应的候选路径（对应微观解释）也因此被撤销。这正是图论中“合流导致投影不可逆”（命题 \ref{prop:log_needed_for_reversibility}）的操作学对应。
 \end{proposition}
 
 \subsection{\texorpdfstring{$m=6$}{m=6} 核的系统化表述：\texorpdfstring{$64\to 21$}{64->21} 为空间，uplift 为时间}
@@ -213,7 +213,11 @@ $$
 固定空间状态 \(y\)（或把 \(y\) 视作上层约束输入）。令当前状态为 \(\Sigma=(y,t,\mathsf{tr},\mathsf{E})\)，并要求 \(|\mathsf{E}|\ge 1\)。展开一步由以下三段同步组成：
 \begin{itemize}
   \item \textbf{消费（选择分支标签）}：令 \(\mathsf{pop}(\mathsf{E})=(\mathsf{E}_-,b)\)，其中 \(b\in\{0,1\}\) 是本步分支标签；
-  \item \textbf{推进（更新时间纤维）}：选择 \(t'\in \Tail^{-1}(t)\) 且满足本体一致性（例如基例 \(m=6\) 时要求 \(t'\in U(y)\)）；
+  \item \textbf{推进（用 \(b\) 选择 \(\Tail^{-1}\) 的候选）}：令
+  $$
+  \mathcal C(y,t):=\Bigl\{\,t'\in T_m:\ \Tail(t')=t\ \text{且}\ (y,t')\in \mathcal A_m\,\Bigr\},
+  $$
+  其中 \(\mathcal A_m=\mathrm{Im}(\mathrm{Enc}_m)\) 由命题 \ref{prop:space_time_inverse_via_rec} 给出。固定一个公开的全序 \(\prec\)（例如按字典序/数值序）以排序 \(\mathcal C(y,t)\)。若 \(\mathcal C(y,t)\) 至少含有 \(b\)-号元素，则令 \(t'\) 为 \(\mathcal C(y,t)\) 中按 \(\prec\) 排序后的第 \(b\) 个候选；否则该标签 \(b\) 在此步不可用（展开一步在该输入处未定义）；
   \item \textbf{采掘（写入可审计能量）}：由推进后的 \((y,t')\) 通过重构映射 \(\mathrm{Rec}_m\)（定义 \ref{def:enc_rec_inverse_pair}）恢复唯一的微观解释 \(N:=\mathrm{Rec}_m(y,t')\)。在纤维 \(\Fold^{-1}(y)\) 上固定编码 \(\mathrm{Code}_y\)（定义 \ref{def:fiber_code_and_split}），并取码字 \(c:=\mathrm{Code}_y(N)\in\{0,1\}^{k(y)}\)。把该码字作为本步采掘的能量片段追加到能量胶带：
   $$
   \mathsf{E}':=\mathsf{E}_-\,\Vert\,c.
@@ -232,7 +236,7 @@ $$
   $$
   \mathsf{E}:=\mathsf{E}_-\,\Vert\, b.
   $$
-  此时由 \(N\) 的定义与 \(\mathrm{Enc}_m/\mathrm{Rec}_m\) 的互逆性可知 \(\mathrm{Enc}_m(N)=(y,t')\)，因此折叠与展开严格互逆。
+  此时由 \(N\) 的定义与 \(\mathrm{Enc}_m/\mathrm{Rec}_m\) 的互逆性可知 \(\mathrm{Enc}_m(N)=(y,t')\)。并且按展开一步中对 \(\mathcal C(y,t)\) 的排序约定，\(t'\) 与 \(b\) 之间存在可审计的一致性：\(t'\) 必须等于 \(\mathcal C(y,t)\) 按 \(\prec\) 排序后的第 \(b\) 个候选；否则该折叠输入不属于可行域（不会来自任何一次合法展开）。
 \end{itemize}
 输出状态为 \(\Sigma=(y,t,\mathsf{tr},\mathsf{E})\)。
 \end{definition}
@@ -315,7 +319,7 @@ $$
 \end{assumption}
 
 \begin{remark}[与能量的关系]
-能量在本文中不再作为外部给定的上限，而是由能量胶带 \(\mathsf{E}\) 内生决定的 \(\Energy(\mathsf{E})\)（定义 \ref{def:energy_beam}）。展开会消耗能量并（在 \(s_m(y)>2\) 的情形下）采掘额外能量；折叠作为其逆操作回收能量并湮灭相应的时间纤维与空间候选，因此能量守恒等价于可逆性本身。
+能量在本文中不再作为外部给定的上限，而是由能量胶带 \(\mathsf{E}\) 内生决定的 \(\Energy(\mathsf{E})\)（定义 \ref{def:energy_beam}）。展开会消耗能量并（在 \(s_m(y)>2\) 的情形下）采掘额外能量；折叠作为其逆操作回收能量并湮灭相应的时间纤维与微观解释候选，因此能量守恒等价于可逆性本身。
 \end{remark}
 
 \subsection{观察者：展开产生时空}
