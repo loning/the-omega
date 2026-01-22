@@ -1,0 +1,59 @@
+
+\section{完全显式的宏观加权动力学：从 trellis 到 $Q_n$}
+
+\subsection{诱导宏观转移：子集选择与乘法权重}
+
+在 slack 分解坐标 $x\leftrightarrow (z,\ell)$ 下，时间推进 $\Tail$ 有简单的逐段描述：每个段长度同时减 $1$；减到 $0$ 的段消失，仍大于 $0$ 的段首整体右移 $1$。
+
+设 $z\in\Zn$ 的段首位置为 $i_1<\cdots<i_k$，并写 $s(z)=(s_1,\ldots,s_k)$。选择一个子集
+$$
+J\subseteq \{1,\ldots,k\}
+$$
+表示“下一时刻仍存在”的段（等价于 $\ell_j\ge 2$ 或 $t_j\ge 1$ 的那些段）。则下一时刻的宏观段首集合为
+$$
+\{i_j+1:\ j\in J\},
+$$
+并记对应宏观态为 $z_J\in\Zn$。
+
+对于固定 $z$ 与子集 $J$，产生该 $J$ 的微观原像数量为：
+\begin{itemize}
+  \item 若 $j\in J$，则 $\ell_j\in\{2,3,\ldots,s_j\}$，共有 $s_j-1$ 种；
+  \item 若 $j\notin J$，则 $\ell_j=1$，固定 $1$ 种。
+\end{itemize}
+因此计数为 $\prod_{j\in J}(s_j-1)$（若某些 $s_j=1$，则对应指标不可能进入 $J$）。
+
+\subsection{宏观加权图 $Q_n$}
+
+\begin{definition}[宏观加权转移图 $Q_n$]\label{def:Qn}
+顶点集为 $\Zn$。对每个 $z\in\Zn$，对每个子集 $J\subseteq\{1,\ldots,k\}$（其中 $k$ 为 $z$ 的段首数，且隐含要求对所有 $j\in J$ 有 $s_j>1$），添加有向边
+$$
+z\to z_J
+$$
+并赋权
+$$
+w(z\to z_J)=\prod_{j\in J}(s_j-1).
+$$
+\end{definition}
+
+\begin{theorem}[子集—权重闭式公式与守恒]\label{thm:Qn_closed_form}
+\begin{enumerate}
+  \item $Q_n$ 恰是 trellis 上微观动力学 $\Tail$ 在投影 $\Head$ 下的加权商：边权 $w(z\to z')$ 等于实现该宏观一步转移的微观态数。
+  \item 对每个 $z\in\Zn$，有出权守恒：
+  $$
+  \sum_{z'\in\Zn} w(z\to z')=\abs{\Head^{-1}(z)}=\prod_{j=1}^k s_j.
+  $$
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+第一点由上一小节对 $\Tail$ 在 slack 坐标中的描述直接给出：$H(\Tail(x))$ 仅取决于哪些段满足 $\ell_j\ge 2$，即子集 $J$，而满足该条件的微观原像数量恰为乘法公式。
+
+第二点对所有子集求和：
+$$
+\sum_{J}\prod_{j\in J}(s_j-1)=\prod_{j=1}^k(1+s_j-1)=\prod_{j=1}^k s_j,
+$$
+并结合定理 \ref{thm:slack_decomposition} 即得。
+\end{proof}
+
+定理 \ref{thm:Qn_closed_form} 给出一个离散闭合：宏观动力学无需枚举 $2^n$ 个微观态即可显式构造，只依赖 $\Zn$ 与 slack 向量。
+
