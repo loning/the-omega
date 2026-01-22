@@ -1,0 +1,69 @@
+
+\section{Slack-product 格：可逆编码与纤维结构}
+
+本节给出核心结构结论：每个微观态可以被唯一编码为（宏观稳定态 + slack 时间坐标）；并且固定宏观态时，其全部微观原像构成一个 product-of-chains 的分配格。
+
+\subsection{宏观态的 slack 向量}
+
+取任意 $z\in\Zn$。令其 $1$ 的位置（从左到右）为
+$$
+1\le i_1<i_2<\cdots<i_k\le n.
+$$
+由于 $z$ 不含子串 $11$，有 $i_{j+1}\ge i_j+2$。
+
+\begin{definition}[slack 向量]\label{def:slack_vector}
+定义 $s(z)=(s_1,\ldots,s_k)$，其中
+$$
+s_j=
+\begin{cases}
+i_{j+1}-i_j-1, & j<k,\\
+n-i_k+1, & j=k.
+\end{cases}
+$$
+\end{definition}
+
+直观上，第 $j$ 个 $1$ 作为某段连续 $1$ 的段首，它向右最多能延伸的“余量”（保持与下一个段首至少隔一个 $0$）正是 $s_j$。
+
+\subsection{纤维是链之积：Slack 分解定理}
+
+给定 $z\in\Zn$ 与向量 $\ell=(\ell_1,\ldots,\ell_k)$ 满足 $1\le \ell_j\le s_j$，定义展开映射 $E(z,\ell)\in\Xn$：在每个段首 $i_j$ 起，放置一段长度 $\ell_j$ 的连续 $1$：
+$$
+E(z,\ell)_{i_j+r}=1\quad (0\le r\le \ell_j-1),\qquad \text{其余位为 }0.
+$$
+
+\begin{theorem}[Slack 分解/可逆编码]\label{thm:slack_decomposition}
+对任意 $z\in\Zn$，映射
+$$
+E_z:\ \prod_{j=1}^k\{1,2,\ldots,s_j\}\longrightarrow \Head^{-1}(z),\qquad
+E_z(\ell)=E(z,\ell),
+$$
+是双射。特别地，
+$$
+\abs{\Head^{-1}(z)}=\prod_{j=1}^k s_j.
+$$
+\end{theorem}
+
+\begin{proof}
+先证良定义：由 $s_j=i_{j+1}-i_j-1$，若 $\ell_j\le s_j$，则第 $j$ 段最右端不超过 $i_{j+1}-2$，从而 $i_{j+1}-1$ 处必为 $0$，因此 $i_{j+1}$ 确为下一段段首；最后一段由 $s_k=n-i_k+1$ 保证不越界。故 $E(z,\ell)$ 的段首集合恰为 $\{i_1,\ldots,i_k\}$，即 $\Head(E(z,\ell))=z$。
+
+单射性：若 $\ell\neq \ell'$，则存在 $j$ 使得第 $j$ 段长度不同，导致 $E(z,\ell)$ 与 $E(z,\ell')$ 在某一位取值不同。
+
+满射性：任取 $x\in \Head^{-1}(z)$。由于 $\Head(x)=z$，$x$ 的每段连续 $1$ 的段首必为 $i_j$。令 $\ell_j$ 为该段长度，则必有 $1\le \ell_j\le s_j$（否则会吞掉下一段段首或越界）。因此 $x=E(z,\ell)$。
+\end{proof}
+
+\subsection{时间坐标与 product-of-chains 分配格}
+
+令
+$$
+t_j=\ell_j-1\in\{0,1,\ldots,s_j-1\}.
+$$
+则每个微观态可逆表示为
+$$
+x\ \longleftrightarrow\ (z,t),\qquad z=\Head(x),\qquad t\in \prod_{j=1}^k\{0,\ldots,s_j-1\}.
+$$
+对固定 $z$，集合
+$$
+\mathcal{T}(z):=\prod_{j=1}^k\{0,\ldots,s_j-1\}
+$$
+在分量序 $\le$ 下是一个 product-of-chains，从而是分配格。我们称该结构为纤维上的 slack-product 格。
+

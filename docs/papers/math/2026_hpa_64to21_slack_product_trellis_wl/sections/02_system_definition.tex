@@ -1,0 +1,91 @@
+
+\section{离散系统定义：折叠算子、时间算子与 trellis 图}
+
+\subsection{微观态与宏观稳定态}
+
+固定 $n\in\NN$。定义微观态集合与宏观稳定态集合分别为
+$$
+\Xn:=\{0,1\}^n,\qquad
+\Zn:=\{z\in\{0,1\}^n:\ z\text{ 不含子串 }11\}.
+$$
+
+\begin{proposition}[计数]\label{prop:Zn_fib}
+对任意 $n\in\NN$，有 $\abs{\Zn}=F_{n+2}$，其中 $(F_k)_{k\ge 0}$ 为斐波那契数列，满足 $F_0=0,F_1=1$ 且 $F_{k+2}=F_{k+1}+F_k$。
+\end{proposition}
+
+\begin{proof}
+对首位 $z_1$ 分类：若 $z_1=0$，则余下 $n-1$ 位为任意 $Z_{n-1}$；若 $z_1=1$，则 $z_2=0$，余下 $n-2$ 位为任意 $Z_{n-2}$。因此 $\abs{\Zn}=\abs{Z_{n-1}}+\abs{Z_{n-2}}$，配合初值 $\abs{Z_1}=2,\abs{Z_2}=3$，得到 $\abs{\Zn}=F_{n+2}$。
+\end{proof}
+
+当 $n=6$ 时，$\abs{\Xn}=2^6=64$，$\abs{\Zn}=F_8=21$，对应本文的“$64\to 21$”。
+
+\subsection{折叠（段首）算子与时间（段尾）算子}
+
+\begin{definition}[段首/折叠算子]\label{def:Head}
+对任意 $x=x_1\cdots x_n\in\Xn$，定义 $\Head(x)\in\{0,1\}^n$ 为
+$$
+\Head(x)_i=
+\begin{cases}
+x_1, & i=1,\\
+x_i(1-x_{i-1}), & 2\le i\le n.
+\end{cases}
+$$
+\end{definition}
+直观上，$\Head(x)$ 在每段连续 $1$ 中只保留段首的那个 $1$。
+
+\begin{definition}[段尾/时间推进算子]\label{def:Tail}
+对任意 $x\in\Xn$，定义
+$$
+\Tail(x):=x-\Head(x),
+$$
+其中减法按位进行（因为逐位有 $\Head(x)\le x$）。等价的局部形式为
+$$
+\Tail(x)_1=0,\qquad \Tail(x)_i=x_i x_{i-1}\quad (2\le i\le n).
+$$
+\end{definition}
+直观上，$\Tail(x)$ 把每段连续 $1$ 的段首剥离，剩余部分进入下一时刻。
+
+\begin{lemma}[稳定性]\label{lem:Head_in_Zn}
+对任意 $x\in\Xn$，有 $\Head(x)\in\Zn$。
+\end{lemma}
+
+\begin{proof}
+若存在 $i$ 使得 $\Head(x)_i=\Head(x)_{i+1}=1$，则由定义得 $x_i=1$ 且 $x_{i-1}=0$，同时 $x_{i+1}=1$ 且 $x_i=0$，矛盾。故 $\Head(x)$ 不含相邻 $1$。
+\end{proof}
+
+\subsection{递归分解与时间深度}
+
+定义迭代
+$$
+x^{(0)}=x,\qquad x^{(t+1)}=\Tail(x^{(t)}),\qquad m^{(t)}=\Head(x^{(t)}).
+$$
+由引理 \ref{lem:Head_in_Zn}，对所有 $t$ 有 $m^{(t)}\in\Zn$，且 $x^{(t)}$ 逐步“右移消散”。
+
+\begin{definition}[时间深度]\label{def:tau}
+定义
+$$
+\tau(x):=\min\{t\ge 0:\ x^{(t)}=0\}.
+$$
+\end{definition}
+
+\begin{remark}
+可直接验证 $\tau(x)$ 等于 $x$ 中最长连续 $1$ 段的长度：每步剥离一层段首后，段长同步减一。
+\end{remark}
+
+\subsection{Trellis 图 $G_n$}
+
+\begin{definition}[HPA trellis 图]\label{def:trellis}
+定义有向、边带类型的 trellis 图 $G_n$ 如下。其顶点集为
+$$
+V_n:=\Xn\ \sqcup\ \Zn.
+$$
+对每个微观点 $x\in\Xn$，添加两类有向边：
+\begin{itemize}
+  \item 折叠边（fold）：$x\to \Head(x)$（指向宏观点）；
+  \item 时间边（time）：$x\to \Tail(x)$（指向微观点）。
+\end{itemize}
+宏观点 $z\in\Zn$ 作为“稳定观测”端点，不再向外发边。
+\end{definition}
+
+该图把“向下计算（折叠得到稳定态）”与“沿时间边递归剥离”统一编码到同一离散对象中。
+
