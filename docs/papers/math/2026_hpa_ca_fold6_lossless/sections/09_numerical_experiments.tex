@@ -38,20 +38,42 @@ $$
   \item 时空占据图的盒计数分形维数 $D$（简单 box-counting 估计）。
 \end{itemize}
 
-\subsection{主要观测（随机初态参数扫描）}
+\subsection{观测量定义与估计方法（可审计）}
 
-对 $p\in[0.1,0.9]$ 的多 seed 扫描，我们观测到如下稳定统计特征（以代表性运行或多 seed 平均为主）：
-\begin{itemize}
-  \item 平均密度 $\bar\rho$ 在不同 $p$ 下都快速收敛到约 $0.19\sim0.20$ 的窄区间；
-  \item uplift 分布在不同 $p$ 下相对稳定：$u=0$ 占主导，$u=55$ 极少；
-  \item 盒计数分形维数 $D$ 在不同 $p$ 下高度稳定，约 $1.81\sim1.82$；
-  \item 功率谱幂律拟合斜率 $\alpha$ 随 $p$ 有系统变化，在 $p=0.5$ 附近出现近 $1/f$ 型的中间斜率区间。
-\end{itemize}
+本节中关于 $\alpha$ 与 $D$ 的讨论严格视为\textbf{数值观测}，并配套可复现的估计器与误差指标（以便审计与复核），而不将其表述为已证定理。
 
-这些现象支持一个保守但可检验的判断：仅由 $64\to 21$ 折叠核与两相分块构成的 HPA-CA，已经足以产生跨初态的长程纹理与近临界统计特征，而这种“通用性”并不依赖额外插入的规则，而来自 $\Fold_6$ 的刚性纤维结构与 uplift 的离散高位字母表。
+\paragraph{功率谱幂律斜率（$\alpha$）。}
+对密度序列 $\rho_t$ 去均值，取离散 Fourier 变换得到 periodogram 形式的功率谱估计 $\mathrm{PSD}(f)$。在某个频带 $f\in[f_{\min},f_{\max}]$ 内做 log-log 线性回归：
+$$
+\log \mathrm{PSD}(f)\approx -\alpha\log f + c,
+$$
+并将回归斜率的标准误作为 $\alpha$ 的不确定性指标（该误差反映拟合残差，而不等同于严格的统计置信界）。
 
-\paragraph{可复现结果片段（自动生成）。}
-下表给出一个典型运行的关键元数据与统计量（由脚本自动生成）：
+\paragraph{盒计数维数（$D$）。}
+把可见层时空图视为二值图像 $I(t,i)=s_t(i)$。对盒尺度 $\varepsilon$（取若干 $2^k$）计算占用盒数 $N(\varepsilon)$，在 log-log 坐标做线性回归：
+$$
+\log N(\varepsilon)\approx D\log(1/\varepsilon)+c,
+$$
+并同样记录回归斜率的标准误与 $R^2$。必要时可引入 burn-in（丢弃早期时间步）以隔离初始化影响。
+
+\paragraph{误差条（跨 seed）。}
+对固定 $p$ 的多随机种子样本，采用样本均值与正态近似的 $95\%$ 置信区间（$1.96\cdot \mathrm{SE}$）作为误差条；其目的在于提供可比较的粗粒度稳定性指标，而非宣称严格分布结论。
+
+\subsection{边界情形与一致性检查}
+
+作为最低门槛的一致性审计，我们对若干边界/极端初态进行：\textbf{(i) uplift 回放的逐步可逆性检查}，以及 \textbf{(ii) 尾段周期性检测}（若末段严格满足周期 $p$，记录 $p$；否则记为 $0$）。结果片段由脚本自动生成如下：
+
+\input{sections/generated/hpa_ca_boundary_cases_rows}
+
+\subsection{随机初态参数扫描（带误差条）}
+
+对随机 Bernoulli$(p)$ 初态做 $p\times \text{seed}$ 扫描，并汇总 $\bar\rho,\bar\alpha,\bar D$ 的样本均值与 $95\%$ 置信区间（由脚本自动生成）：
+
+\input{sections/generated/hpa_ca_scan_fractal_psd_summary}
+
+\subsection{代表性运行（自动生成片段）}
+
+我们用一个代表性运行展示产物的组织方式与主要统计量。下表由脚本自动生成，包含运行参数、密度与盒计数维数等元数据：
 
 \input{sections/generated/hpa_ca_example_run_summary}
 

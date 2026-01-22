@@ -57,6 +57,18 @@ def build_steps() -> List[Step]:
             expected_generated=["hpa_ca_example_run_summary.tex"],
         ),
         Step(
+            name="exp_boundary_cases",
+            script="exp_hpa_ca_boundary_cases.py",
+            args=["--L", "300", "--T", "200", "--seed", "1", "--p", "0.5", "--tail", "80", "--max_period", "40"],
+            expected_generated=["hpa_ca_boundary_cases_rows.tex"],
+        ),
+        Step(
+            name="exp_scan_fractal_psd",
+            script="exp_hpa_ca_scan_fractal_psd.py",
+            args=["--L", "300", "--T", "200", "--ps", "0.1,0.3,0.5,0.7,0.9", "--seeds", "1,2,3,4,5", "--burn_in", "0"],
+            expected_generated=["hpa_ca_scan_fractal_psd_summary.tex"],
+        ),
+        Step(
             name="exp_preimage_counts",
             script="exp_hpa_ca_preimage_counts.py",
             args=["--L", "300", "--T", "200", "--p", "0.5", "--t", "200", "--k", "1", "--seeds", "1,2,3,4,5"],

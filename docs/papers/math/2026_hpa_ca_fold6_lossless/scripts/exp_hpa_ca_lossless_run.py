@@ -81,11 +81,18 @@ def main() -> None:
         save_spacetime_png(res.states, str(run.run_dir / "spacetime.png"))
         save_uplift_png(res.uplift, str(run.run_dir / "uplift.png"))
         save_density_png(res.density, str(run.run_dir / "density.png"))
-        save_psd_png(res.density, str(run.run_dir / "psd.png"))
+        alpha, alpha_se, n_fit, r2 = save_psd_png(res.density, str(run.run_dir / "psd.png"))
         D = save_boxcount_png(res.states, str(run.run_dir / "boxcount.png"))
 
         manifest = build_base_manifest(run.experiment, run.run_id, params=params, script_path=script_path)
-        manifest["metrics"] = {"final_density": float(res.density[-1]), "boxcount_D": float(D)}
+        manifest["metrics"] = {
+            "final_density": float(res.density[-1]),
+            "psd_alpha": float(alpha),
+            "psd_alpha_se": float(alpha_se),
+            "psd_alpha_nfit": int(n_fit),
+            "psd_alpha_r2": float(r2),
+            "boxcount_D": float(D),
+        }
         manifest = add_output_hashes(manifest, run.run_dir, rel_paths=required)
         write_manifest(run.run_dir, manifest)
 
@@ -96,6 +103,8 @@ def main() -> None:
 
     mj = _json.loads(man)
     final_density = mj.get("metrics", {}).get("final_density", "")
+    psd_alpha = mj.get("metrics", {}).get("psd_alpha", "")
+    psd_alpha_se = mj.get("metrics", {}).get("psd_alpha_se", "")
     boxD = mj.get("metrics", {}).get("boxcount_D", "")
     art_path = f"artifacts/{run.experiment}/{run.run_id}/".replace("_", r"\_")
 
@@ -112,6 +121,8 @@ def main() -> None:
             [r"p", str(args.p)],
             [r"seed", str(args.seed)],
             [r"final\_density", str(final_density)],
+            [r"psd\_alpha", str(psd_alpha)],
+            [r"psd\_alpha\_se", str(psd_alpha_se)],
             [r"boxcount\_D", str(boxD)],
             [r"artifacts", Command("texttt", art_path)],
         ],

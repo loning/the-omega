@@ -159,6 +159,18 @@ def evolve(L: int, T: int, seed: int, p: float) -> RunResult:
     rng = np.random.default_rng(seed)
     state = (rng.random(L) < p).astype(np.uint8)
 
+    return evolve_from_state(state, T=T)
+
+
+def evolve_from_state(initial_state: np.ndarray, T: int) -> RunResult:
+    """Evolve starting from an explicit initial state (length-L bit array)."""
+    state = np.asarray(initial_state, dtype=np.uint8).copy()
+    if state.ndim != 1:
+        raise ValueError("initial_state must be a 1D array")
+    L = int(state.shape[0])
+    if L % 6 != 0:
+        raise ValueError("L must be a multiple of 6 for this prototype")
+
     nb = L // 6
 
     states = np.zeros((T + 1, L), dtype=np.uint8)
@@ -188,6 +200,35 @@ def evolve(L: int, T: int, seed: int, p: float) -> RunResult:
     return RunResult(states=states, uplift=uplift_codes, density=density)
 
 
+def detect_tail_period(states: np.ndarray, tail: int = 120, max_period: int = 60) -> int:
+    """Detect a strict period p>0 in the last `tail` states; return 0 if none.
+
+    This is a lightweight consistency check used for boundary/extreme initial states.
+    """
+    arr = np.asarray(states, dtype=np.uint8)
+    if arr.ndim != 2:
+        raise ValueError("states must be a 2D array (T+1, L)")
+    T1 = int(arr.shape[0])
+    if T1 < 3:
+        return 0
+    tail = int(tail)
+    if tail <= 2:
+        return 0
+    tail = min(tail, T1 - 1)
+    tail_states = arr[-tail:, :]
+
+    pmax = min(int(max_period), tail - 1)
+    for p in range(1, pmax + 1):
+        ok = True
+        for i in range(0, tail - p):
+            if not np.array_equal(tail_states[i], tail_states[i + p]):
+                ok = False
+                break
+        if ok:
+            return int(p)
+    return 0
+
+
 def invert_step(state_out: np.ndarray, uplift_codes_step: np.ndarray, offset: int) -> np.ndarray:
     """Invert one global CA step, given the *output* state and uplift codes recorded during the step."""
     L = len(state_out)
@@ -208,6 +249,139 @@ def invert_step(state_out: np.ndarray, uplift_codes_step: np.ndarray, offset: in
 
 
 # ---------- Diagnostics ----------
+
+def _linear_fit_with_se(x: np.ndarray, y: np.ndarray) -> Tuple[float, float, float, float, float]:
+    """Fit y = a*x + b and return (a, b, se_a, se_b, r2)."""
+    xx = np.asarray(x, dtype=np.float64)
+    yy = np.asarray(y, dtype=np.float64)
+    if xx.ndim != 1 or yy.ndim != 1 or xx.shape[0] != yy.shape[0]:
+        raise ValueError("x and y must be 1D arrays of same length")
+    n = int(xx.shape[0])
+    if n < 3:
+        raise ValueError("Need at least 3 points for SE estimation")
+
+    X = np.vstack([xx, np.ones_like(xx)]).T
+    a, b = np.linalg.lstsq(X, yy, rcond=None)[0]
+    yhat = a * xx + b
+    resid = yy - yhat
+
+    sse = float(np.sum(resid**2))
+    sst = float(np.sum((yy - float(np.mean(yy))) ** 2))
+    r2 = 1.0 - (sse / sst) if sst > 0 else 0.0
+
+    dof = n - 2
+    sigma2 = sse / dof
+    XtX_inv = np.linalg.inv(X.T @ X)
+    se_a = float(np.sqrt(sigma2 * XtX_inv[0, 0]))
+    se_b = float(np.sqrt(sigma2 * XtX_inv[1, 1]))
+    return float(a), float(b), se_a, se_b, float(r2)
+
+
+def estimate_psd_slope(
+    density: np.ndarray,
+    f_min: float = 0.0,
+    f_max: float = 0.0,
+    detrend: bool = True,
+) -> Tuple[float, float, int, float]:
+    """Estimate PSD power-law slope alpha in psd ~ f^{-alpha}.
+
+    Returns (alpha, alpha_se, n_fit, r2) using a log-log linear fit.
+    If f_min/f_max are 0, defaults are used based on sample length.
+    """
+    x = np.asarray(density, dtype=np.float64)
+    if x.ndim != 1:
+        raise ValueError("density must be 1D")
+    if detrend:
+        x = x - float(np.mean(x))
+    n = int(x.shape[0])
+    if n < 8:
+        return float("nan"), float("nan"), 0, float("nan")
+
+    fft = np.fft.rfft(x)
+    psd = (np.abs(fft) ** 2) / float(n)
+    freqs = np.fft.rfftfreq(n, d=1.0)
+
+    # Default fit band: avoid the very lowest bin and the Nyquist tail.
+    if f_min <= 0.0:
+        f_min_use = max(1.0 / float(n), 2.0 / float(n))
+    else:
+        f_min_use = float(f_min)
+    if f_max <= 0.0:
+        f_max_use = 0.25
+    else:
+        f_max_use = float(f_max)
+
+    mask = (freqs > 0) & (freqs >= f_min_use) & (freqs <= f_max_use) & (psd > 0)
+    f_fit = freqs[mask]
+    p_fit = psd[mask]
+    if f_fit.shape[0] < 4:
+        return float("nan"), float("nan"), int(f_fit.shape[0]), float("nan")
+
+    lx = np.log10(f_fit)
+    ly = np.log10(p_fit)
+    slope, _intercept, se_slope, _se_int, r2 = _linear_fit_with_se(lx, ly)
+    alpha = -float(slope)
+    alpha_se = float(se_slope)
+    return alpha, alpha_se, int(f_fit.shape[0]), float(r2)
+
+
+def box_counting_counts(binary_img: np.ndarray, box_sizes: List[int]) -> Tuple[np.ndarray, np.ndarray]:
+    """Compute (eps, N(eps)) for box-counting on a 2D binary image (1=filled)."""
+    img0 = np.asarray(binary_img, dtype=np.uint8)
+    if img0.ndim != 2:
+        raise ValueError("binary_img must be a 2D array")
+    H, W = img0.shape
+    Ns: List[int] = []
+    eps: List[int] = []
+    for s in box_sizes:
+        if s <= 0:
+            continue
+        H2 = (H + s - 1) // s * s
+        W2 = (W + s - 1) // s * s
+        img = np.zeros((H2, W2), dtype=np.uint8)
+        img[:H, :W] = img0
+        img_boxes = img.reshape(H2 // s, s, W2 // s, s)
+        occ = (img_boxes.max(axis=(1, 3)) > 0)
+        Ns.append(int(occ.sum()))
+        eps.append(int(s))
+    return np.array(eps, dtype=np.float64), np.array(Ns, dtype=np.float64)
+
+
+def estimate_boxcount_dimension(
+    binary_img: np.ndarray,
+    box_sizes: List[int],
+    fit_min_size: int = 0,
+    fit_max_size: int = 0,
+) -> Tuple[float, float, int, float, np.ndarray, np.ndarray]:
+    """Estimate box-counting dimension D using a log-log linear fit.
+
+    Fits log N(eps) vs log(1/eps) over eps in [fit_min_size, fit_max_size] if provided.
+    Returns (D, D_se, n_fit, r2, eps_all, N_all).
+    """
+    eps_all, Ns_all = box_counting_counts(binary_img, box_sizes)
+    if eps_all.shape[0] < 4:
+        return float("nan"), float("nan"), int(eps_all.shape[0]), float("nan"), eps_all, Ns_all
+
+    if fit_min_size > 0:
+        mn = float(fit_min_size)
+    else:
+        mn = float(np.min(eps_all))
+    if fit_max_size > 0:
+        mx = float(fit_max_size)
+    else:
+        mx = float(np.max(eps_all))
+
+    mask = (eps_all >= mn) & (eps_all <= mx) & (Ns_all > 0)
+    eps = eps_all[mask]
+    Ns = Ns_all[mask]
+    if eps.shape[0] < 4:
+        return float("nan"), float("nan"), int(eps.shape[0]), float("nan"), eps_all, Ns_all
+
+    x = np.log(1.0 / eps)
+    y = np.log(Ns + 1e-12)
+    D, _b, se_D, _se_b, r2 = _linear_fit_with_se(x, y)
+    return float(D), float(se_D), int(eps.shape[0]), float(r2), eps_all, Ns_all
+
 
 def save_spacetime_png(states: np.ndarray, path: str) -> None:
     plt.figure(figsize=(12, 6))
@@ -245,66 +419,67 @@ def save_density_png(density: np.ndarray, path: str) -> None:
     plt.close()
 
 
-def save_psd_png(density: np.ndarray, path: str) -> None:
-    x = density - density.mean()
+def save_psd_png(
+    density: np.ndarray,
+    path: str,
+    f_min: float = 0.0,
+    f_max: float = 0.0,
+    detrend: bool = True,
+) -> Tuple[float, float, int, float]:
+    x = np.asarray(density, dtype=np.float64)
+    if detrend:
+        x = x - float(np.mean(x))
     fft = np.fft.rfft(x)
-    psd = (np.abs(fft) ** 2)
+    psd = (np.abs(fft) ** 2) / float(len(x))
     freqs = np.fft.rfftfreq(len(x), d=1.0)
 
     mask = freqs > 0
+    alpha, alpha_se, n_fit, r2 = estimate_psd_slope(density, f_min=f_min, f_max=f_max, detrend=detrend)
 
     plt.figure(figsize=(10, 3))
     plt.loglog(freqs[mask], psd[mask])
     plt.xlabel("frequency")
     plt.ylabel("power")
-    plt.title("Power spectral density of density(t)")
+    if np.isfinite(alpha):
+        plt.title(f"PSD of density(t): alpha≈{alpha:.3f}±{alpha_se:.3f} (n={n_fit}, R2={r2:.3f})")
+    else:
+        plt.title("Power spectral density of density(t)")
     plt.tight_layout()
     plt.savefig(path, dpi=200)
     plt.close()
+    return float(alpha), float(alpha_se), int(n_fit), float(r2)
 
 
-def box_counting_dimension(binary_img: np.ndarray, box_sizes: List[int]) -> Tuple[np.ndarray, np.ndarray, float]:
-    """Simple box-counting on a 2D binary image (1=filled)."""
-    H, W = binary_img.shape
-    Ns = []
-    eps = []
-    for s in box_sizes:
-        if s <= 0:
-            continue
-        H2 = (H + s - 1) // s * s
-        W2 = (W + s - 1) // s * s
-        img = np.zeros((H2, W2), dtype=np.uint8)
-        img[:H, :W] = binary_img
-        img_boxes = img.reshape(H2 // s, s, W2 // s, s)
-        occ = (img_boxes.max(axis=(1, 3)) > 0)
-        Ns.append(int(occ.sum()))
-        eps.append(s)
-
-    eps = np.array(eps, dtype=np.float64)
-    Ns = np.array(Ns, dtype=np.float64)
-
-    x = np.log(1.0 / eps)
-    y = np.log(Ns + 1e-12)
-    A = np.vstack([x, np.ones_like(x)]).T
-    slope, _ = np.linalg.lstsq(A, y, rcond=None)[0]
-    return eps, Ns, float(slope)
-
-
-def save_boxcount_png(states: np.ndarray, path: str) -> float:
-    img = states.astype(np.uint8)
+def save_boxcount_png(
+    states: np.ndarray,
+    path: str,
+    burn_in: int = 0,
+    fit_min_size: int = 0,
+    fit_max_size: int = 0,
+) -> float:
+    st = np.asarray(states, dtype=np.uint8)
+    if st.ndim != 2:
+        raise ValueError("states must be a 2D array (T+1, L)")
+    burn = max(0, int(burn_in))
+    img = st[burn:, :].astype(np.uint8)
     max_pow = int(np.log2(min(img.shape)))
-    sizes = [2 ** k for k in range(1, max_pow - 1)]
-    eps, Ns, D = box_counting_dimension(img, sizes)
+    sizes = [2**k for k in range(1, max_pow - 1)]
+    D, D_se, n_fit, r2, eps_all, Ns_all = estimate_boxcount_dimension(
+        img, sizes, fit_min_size=int(fit_min_size), fit_max_size=int(fit_max_size)
+    )
 
     plt.figure(figsize=(6, 4))
-    plt.loglog(1.0 / eps, Ns, marker="o")
+    plt.loglog(1.0 / eps_all, Ns_all, marker="o")
     plt.xlabel("1/box size")
     plt.ylabel("occupied boxes")
-    plt.title(f"Box counting (estimated D≈{D:.3f})")
+    if np.isfinite(D):
+        plt.title(f"Box counting: D≈{D:.3f}±{D_se:.3f} (n={n_fit}, R2={r2:.3f}, burn_in={burn})")
+    else:
+        plt.title("Box counting")
     plt.tight_layout()
     plt.savefig(path, dpi=200)
     plt.close()
-    return D
+    return float(D)
 
 
 # ---------- CLI ----------
@@ -347,11 +522,13 @@ def main() -> None:
     save_spacetime_png(res.states, os.path.join(args.outdir, "spacetime.png"))
     save_uplift_png(res.uplift, os.path.join(args.outdir, "uplift.png"))
     save_density_png(res.density, os.path.join(args.outdir, "density.png"))
-    save_psd_png(res.density, os.path.join(args.outdir, "psd.png"))
+    alpha, alpha_se, n_fit, r2 = save_psd_png(res.density, os.path.join(args.outdir, "psd.png"))
     D = save_boxcount_png(res.states, os.path.join(args.outdir, "boxcount.png"))
 
     print(f"Wrote results to: {args.outdir}")
     print(f"Final density: {res.density[-1]:.4f}")
+    if np.isfinite(alpha):
+        print(f"PSD alpha (rough): {alpha:.3f} ± {alpha_se:.3f} (n={n_fit}, R2={r2:.3f})")
     print(f"Box-counting D (rough): {D:.3f}")
 
 
