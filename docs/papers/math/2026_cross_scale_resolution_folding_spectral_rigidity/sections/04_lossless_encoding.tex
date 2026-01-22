@@ -1,0 +1,51 @@
+\section{任务 A：把 ``$64\to 21+$ 控制指令'' 做成严格无损编码定理}\label{sec:lossless}
+
+\subsection{uplift 集合与四级“向上搜索”}
+定义 uplift
+\[
+  \Delta(N):=N - V(\Fold_6(N)).
+\]
+
+\begin{lemma}[uplift 四值]\label{lem:uplift-four}
+对 $N\in\{0,\dots,63\}$，
+\[
+  \Delta(N)\in\{0,21,34,55\}=\{0,F_8,F_9,F_{10}\}.
+\]
+\end{lemma}
+\begin{proof}
+由于 $N\le 63$，Zeckendorf 展开在窗口外最多只能出现 $F_8,F_9,F_{10}$ 三个权重，且相邻 $1$ 被禁止，因此 uplift 只能取上述四值。该结论可由脚本完全枚举审计。
+\end{proof}
+
+定义离散控制指令（uplift 深度）
+\[
+  u(N):=
+  \begin{cases}
+    0,&\Delta(N)=0,\\
+    1,&\Delta(N)=21,\\
+    2,&\Delta(N)=34,\\
+    3,&\Delta(N)=55.
+  \end{cases}
+\]
+因此 $u\in\{0,1,2,3\}$ 对应“向上搜索最多 $4$ 层（含 $0$）”的离散深度。
+
+\subsection{无损编码：$(w,\Delta)$ 的双射性}
+定义
+\[
+  \Enc_6:\{0,\dots,63\}\to X_6\times \{0,21,34,55\},\qquad
+  \Enc_6(N):=\bigl(\Fold_6(N),\Delta(N)\bigr).
+\]
+令 $S_6:=\Enc_6(\{0,\dots,63\})$。
+
+\begin{theorem}[无损编码定理（$m=6$）]\label{thm:lossless}
+映射 $\Enc_6$ 在其像 $S_6$ 上为双射，且显式逆映射为
+\[
+  \Dec_6(w,\delta)=V(w)+\delta,\qquad (w,\delta)\in S_6.
+\]
+\end{theorem}
+\begin{proof}
+对任意 $N$ 有 $N=V(\Fold_6(N))+\Delta(N)$，故 $\Dec_6\circ \Enc_6=\mathrm{id}$。反向：若 $(w,\delta)\in S_6$，则存在 $N$ 满足 $\Fold_6(N)=w,\Delta(N)=\delta$，从而 $N=V(w)+\delta$ 唯一。故 $\Enc_6$ 在 $S_6$ 上双射。
+\end{proof}
+
+\subsection{复杂度与可审计性}
+因为 $m=6$ 固定，$\Enc_6,\Dec_6$ 均为常数时间；一般 $m$ 下，Zeckendorf 贪心与窗口截断为 $O(m)$。本文所有 $m=6$ 结论均可由枚举脚本完全审计。
+
