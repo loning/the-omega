@@ -1,0 +1,153 @@
+\section{预备知识：Zeckendorf 截断折叠与尾部 uplift 规则}
+
+本节给出本文所用的规范对象。它与 \cite{Zeckendorf1972,AlloucheShallit2003,Lothaire2002} 的标准 Zeckendorf 表示兼容，并采用 \path{docs/papers/2025_resolution_folding_phi_pi_e_hpa_omega} 中的窗口折叠约定。
+
+\subsection{Fibonacci 与 Zeckendorf 数码}
+令 Fibonacci 数列满足 \(F_1=F_2=1\)、\(F_{n+2}=F_{n+1}+F_n\)。Zeckendorf 定理断言：每个 \(N\in\NN\) 存在唯一的二进制数码序列 \(\mathrm Z(N)=(c_1,c_2,\dots)\) 使得
+$$
+N=\sum_{k\ge 1} c_k F_{k+1},\qquad c_k\in\{0,1\},\qquad c_kc_{k+1}=0.
+$$
+
+\subsection{宏观稳定态：黄金均值语言}
+固定窗口长度 \(m\in\NN\)。定义黄金均值语言
+$$
+\Ym:=\{y\in\{0,1\}^m:\ y_i y_{i+1}=0,\ 1\le i<m\},
+$$
+其大小为 \(|\Ym|=F_{m+2}\)。
+
+\subsection{折叠核：窗口投影 \texorpdfstring{$\Fold$}{Fold}}
+\begin{definition}[Zeckendorf 截断折叠]\label{def:fold}
+定义折叠映射
+$$
+\Fold:\{0,1\}^m\to \Ym,\qquad \Fold(x):=(c_1(N(x)),\dots,c_m(N(x))),
+$$
+其中 \(N(x)=\sum_{i=0}^{m-1} x_i 2^i\) 是把二进制读出解释为整数的索引映射，\((c_k(N))\) 是 \(N\) 的 Zeckendorf 数码。
+\end{definition}
+
+\subsection{\texorpdfstring{$m=6$}{m=6}：\texorpdfstring{$64\to 21$}{64->21} 折叠核与显式 uplift}
+\label{subsec:m6_kernel_uplift}
+
+本小节把本文所用的“空间压缩核 + 时间 uplift”在基例 \(m=6\) 上写成完全显式的对象。微观读出空间为
+$$
+\Omega_6:=\{0,1\}^6,\qquad |\Omega_6|=64,
+$$
+等价地也可用整数索引集 \(\{0,1,\dots,63\}\) 表示。宏观稳定态为黄金均值语言 \(X_6=\Ym\)（无相邻 1），其大小为 \(|X_6|=F_8=21\)。
+
+\begin{definition}[窗口折叠 \(\mathrm{Fold}_6\)]\label{def:fold6}
+定义
+$$
+\mathrm{Fold}_6:\{0,1,\dots,63\}\to X_6,\qquad \mathrm{Fold}_6(N):=(c_1(N),\dots,c_6(N)).
+$$
+\end{definition}
+
+\begin{definition}[基例尾部 uplift：三位尾部]\label{def:m6_tail_uplift}
+对 \(m=6\)，由定义 \ref{def:K_of_m} 可得 \(K(6)=9\)，因此尾部长度 \(L(6)=3\)。尾部 uplift 变量可取为三位
+$$
+u(N):=(c_7(N),c_8(N),c_9(N))\in\{0,1\}^3,\qquad c_7c_8=0,\ c_8c_9=0,
+$$
+其对应 Fibonacci 权重为
+$$
+F_8=21,\quad F_9=34,\quad F_{10}=55.
+$$
+\end{definition}
+
+\begin{definition}[Zeckendorf 值]\label{def:Vw_m6}
+对 \(w=(w_1,\dots,w_6)\in X_6\)，定义其窗口 Zeckendorf 值
+$$
+V(w):=\sum_{k=1}^{6} w_k F_{k+1}
+= w_1\cdot 1+w_2\cdot 2+w_3\cdot 3+w_4\cdot 5+w_5\cdot 8+w_6\cdot 13.
+$$
+\end{definition}
+
+\begin{theorem}[基例 uplift 的前像结构：\(\mathrm{Fold}_6\) 的显式分类]\label{thm:fold6_preimage_structure_here}
+对任意 \(w\in X_6\)，所有满足 \(\mathrm{Fold}_6(N)=w\) 的 \(N\in\{0,\dots,63\}\) 必可写为
+$$
+N=V(w)+c_7\cdot 21+c_8\cdot 34+c_9\cdot 55,
+$$
+其中 \((c_7,c_8,c_9)\in\{0,1\}^3\) 满足约束 \(c_7c_8=0\)、\(c_8c_9=0\)、以及边界约束 \(w_6c_7=0\)，并且 \(N\le 63\)。
+因此，\(|\mathrm{Fold}_6^{-1}(w)|\in\{2,3,4\}\)，并且有如下显式分类：
+\[
+\mathrm{Fold}_6^{-1}(w)=
+\begin{cases}
+\{V(w),\,V(w)+34\}, & w_6=1,\\[4pt]
+\{V(w),\,V(w)+21,\,V(w)+34,\,V(w)+55\}, & w_6=0\ \text{且}\ V(w)\le 8,\\[4pt]
+\{V(w),\,V(w)+21,\,V(w)+34\}, & w_6=0\ \text{且}\ V(w)> 8.
+\end{cases}
+\]
+在计数上，恰有 8 个输出的前像大小为 2、4 个输出的前像大小为 3、9 个输出的前像大小为 4。
+\end{theorem}
+
+\begin{proof}
+由 Zeckendorf 唯一性，\(\mathrm{Fold}_6(N)=w\) 等价于 \(N\) 的数码满足 \((c_1,\dots,c_6)=w\)。当 \(N\le 63\) 时，高于窗口的可用权重只有 \(F_8,F_9,F_{10}\)，对应 \((c_7,c_8,c_9)\) 三位尾部；并必须满足相邻约束与边界约束 \(w_6c_7=0\)。剩余只需讨论在 \(N\le 63\) 截断下哪些偏移可行：若 \(w_6=1\) 则 \(c_7=0\)，且 \(V(w)\ge 13\) 迫使 \(V(w)+55>63\)，因此仅余偏移 \(0,34\)。若 \(w_6=0\)，则偏移 \(0,21,34\) 总可行；偏移 \(55\) 需要 \(V(w)\le 8\)。逐项代入即得。
+\end{proof}
+
+\begin{remark}[循环闭合的 \texorpdfstring{$18\oplus 3$}{18+3} 类型分裂（本文语境）]\label{rem:18_plus_3_in_this_paper}
+在一些相关工作中，会把 \(X_6\) 的 21 个稳定词再细分为 \(18\oplus 3\) 两类；其含义并非本节定理 \ref{thm:fold6_preimage_structure_here} 的“前像大小 \(2/3/4\)”分类，而是一个\textbf{纯宏观（空间层）}的\textbf{循环闭合}判别：把 \(w=w_1\cdots w_6\in X_6\) 看作黄金均值约束图上的一段路径，若再额外要求“环绕一步” \(w_6\to w_1\) 也必须合法，则需要排除 \(w_6w_1=11\)。据此定义
+$$
+X_6^{\mathrm{cyc}}:=\{w\in X_6:\ w_6w_1\neq 11\},\qquad
+X_6^{\mathrm{bdry}}:=X_6\setminus X_6^{\mathrm{cyc}}=\{w\in X_6:\ w_1=w_6=1\}.
+$$
+直接枚举可得
+$$
+X_6^{\mathrm{bdry}}=\{\texttt{100001},\ \texttt{100101},\ \texttt{101001}\},\qquad |X_6^{\mathrm{bdry}}|=3,\qquad |X_6^{\mathrm{cyc}}|=18.
+$$
+
+在本文“完备系统”的语境下，这个 \(18\oplus 3\) 分裂可以理解为：
+\begin{itemize}
+  \item 它是对\textbf{空间类型 \(w\)} 的一个\textbf{闭合性标记}，刻画“一个长度-6 窗口是否可作为周期轨道的局部片段”（是否允许把窗口两端首尾相接）。它不引入新的动力学，仅提供一个可选的宏观一致性谓词。
+  \item 它与“uplift 纤维大小 \(|U(w)|\)”是\textbf{正交的}：\(|U(w)|\) 在本模型中由 \(w_6\) 与 \(V(w)\) 通过定理 \ref{thm:fold6_preimage_structure_here} 决定，而 \(18\oplus 3\) 由 \((w_1,w_6)\) 的环绕可容许性决定。二者都可被看作本体静态约束 \(\Clo\) 上的可审计结构，但约束来源不同。
+  \item 三个边界类型满足 \(w_6=1\)，因此其 uplift 可行集合自动落入 \(\{(c_7,c_8,c_9):c_7=0,\ c_8c_9=0\}\) 的子集，并且 \(|U(w)|=2\)。因此若把某个空间观测固定为边界类型，则在能量受限的展开过程中，其\textbf{分支压力天然较低}；相对地，最大分支压力来自 \(w=0^6\) 等 \(|U(w)|=4\) 的情形（见推论 \ref{cor:max_branch_pressure_y0}）。
+\end{itemize}
+\end{remark}
+
+\begin{remark}[时间算子在基例的显式形式]\label{rem:m6_tail_shift}
+对 \(m=6\) 的 uplift 三位尾部，我们把规范时间算子 \(\Tail\) 取为
+$$
+\Tail(c_7,c_8,c_9)=(c_8,c_9,0),
+$$
+即丢弃最靠近窗口的尾部位并向高位推进。这与定义 \ref{def:tail_shift} 的一般形式一致，并使得展开过程对应 \(\Tail^{-1}\) 的二叉分支（再叠加相邻 1 约束与边界约束）。
+\end{remark}
+
+\subsection{明确 uplift：有限尾部与时间移位}
+由于我们只考虑 \(N(x)\in\{0,\dots,2^m-1\}\)，其 Zeckendorf 数码在某个有限位置之后恒为 0。
+
+\begin{definition}[截断覆盖指数]\label{def:K_of_m}
+定义 \(K(m)\) 为满足
+$$
+F_{K(m)+1}\le 2^m-1 < F_{K(m)+2}
+$$
+的唯一整数。
+\end{definition}
+
+\begin{definition}[尾部时间纤维]\label{def:time_fiber}
+令尾部长度 \(L(m):=\max\{0,K(m)-m\}\)，并定义尾部状态集合
+$$
+T_m:=\Bigl\{t\in\{0,1\}^{L(m)}:\ t_it_{i+1}=0\Bigr\}.
+$$
+对微观整数 \(N\in\{0,\dots,2^m-1\}\)，定义尾部投影（uplift 坐标）
+$$
+\tautime_m(N):=(c_{m+1}(N),\dots,c_{K(m)}(N))\in T_m.
+$$
+\end{definition}
+
+\begin{definition}[规范时间算子]\label{def:tail_shift}
+定义尾部移位 \(\Tail:T_m\to T_m\) 为
+$$
+\Tail(t_{m+1}\cdots t_{K(m)}) := t_{m+2}\cdots t_{K(m)}0.
+$$
+并令时间关系为 \(\TimeRel:=\{(t,\Tail(t)):\ t\in T_m\}\subseteq T_m\times T_m\)。
+\end{definition}
+
+\begin{remark}[展开过程与分支]
+展开过程对应 \(\Tail^{-1}\)：对给定 \(t\)，满足 \(\Tail(t')=t\) 的 \(t'\) 一般不唯一（分支）。本文将该分支增长视为“时间作为逆信息”的直接可计算实现。
+\end{remark}
+
+\subsection{观察者能量：beam width}
+\begin{definition}[能量 \(\Energy\)（并行分支上限）]\label{def:energy_beam}
+观察者在展开过程中维护一组候选 uplift 分支集合 \(\mathcal B\)。能量 \(\Energy\in\NN\) 被定义为并行分支上限：
+$$
+|\mathcal B|\le \Energy.
+$$
+当自然分支数超过 \(\Energy\) 时，观察者必须基于某个可审计评分规则进行剪枝/承诺（commit），从而产生主观单线体验。
+\end{definition}
+

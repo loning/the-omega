@@ -1,0 +1,130 @@
+\section{信息守恒完备系统：本体约束与观察者展开过程}
+
+\subsection{本体：静态约束系统 \texorpdfstring{$\Clo$}{C}}
+本文把本体固定为静态约束系统 \(\Clo\)。它由变量与约束组成，用于刻画“空间压缩核 + 时间 uplift 规则”的一致性，而不要求先验给定一条演化历史。
+
+在 Zeckendorf 折叠核实例中，本体的最小变量可以取为
+$$
+(x,y,t)\in \Xm\times \Ym\times T_m,
+$$
+其中 \(x\) 是微观读出（或其整数索引 \(N(x)\)），\(y=\Fold(x)\) 是宏观观测，\(t=\tautime_m(N(x))\) 是 uplift 尾部。
+
+\subsection{\texorpdfstring{$m=6$}{m=6} 核的系统化表述：\texorpdfstring{$64\to 21$}{64->21} 为空间，uplift 为时间}
+本论文的“完备系统”在基例 \(m=6\) 上可以写成一个完全显式的约束对象。设宏观观测（空间）为
+$$
+y\in X_6\subset\{0,1\}^6,\qquad |X_6|=21,
+$$
+并以定义 \ref{def:m6_tail_uplift} 的三位尾部
+$$
+u=(c_7,c_8,c_9)\in\{0,1\}^3,\qquad c_7c_8=0,\ c_8c_9=0
+$$
+作为 uplift（时间数据）。
+
+在该核中，“空间与时间相互约束”的最小形式是：存在一个微观整数 \(N\in\{0,\dots,63\}\) 使得
+$$
+N=V(y)+c_7\cdot 21+c_8\cdot 34+c_9\cdot 55,\qquad N\le 63,
+$$
+并满足边界约束 \(y_6c_7=0\)（见定理 \ref{thm:fold6_preimage_structure_here}）。
+因此，对固定的空间观测 \(y\)，uplift 的可行集合不是全体 \(\{0,1\}^3\)，而是一个由 \((y_6,V(y))\) 决定的纤维 \(U(y)\subseteq\{0,1\}^3\)，其大小恰为 \(2/3/4\) 三种之一。
+
+\begin{remark}[显式 uplift 规则与时间推进]
+我们把“时间推进”固定为尾部移位 \(\Tail\)（注 \ref{rem:m6_tail_shift}），即
+$$
+\Tail(c_7,c_8,c_9)=(c_8,c_9,0).
+$$
+这使得展开过程对应 \(\Tail^{-1}\) 的分支扩展；但分支并非自由二叉树，而必须始终落在每个时刻的可行纤维 \(U(y)\) 内，并满足相邻 1 约束与截断约束 \(N\le 63\)。
+\end{remark}
+
+\begin{proposition}[能量 \(\Energy\) 作用于 \(m=6\) uplift 分支的定量形式]\label{prop:energy_on_m6_uplift}
+固定 \(m=6\) 与某个空间观测 \(y\in X_6\)。令 \(U(y)\subseteq\{0,1\}^3\) 为与 \(y\) 兼容的 uplift 纤维（由定理 \ref{thm:fold6_preimage_structure_here} 给出的显式分类，\(|U(y)|\in\{2,3,4\}\)）。
+考虑观察者的展开过程，其每一步都以 \(\Tail^{-1}\) 生成候选并在能量约束下保留至多 \(\Energy\) 个并行分支。则对任意深度 \(k\)，并行分支数 \(B_k\) 满足上界
+$$
+B_k \le \min\{\Energy,\,|U(y)|\}.
+$$
+更一般地，若在深度推进中允许空间观测随阶段变化为 \(y_k\in X_6\)，则有
+$$
+B_k \le \min\{\Energy,\,\min_{0\le j\le k}|U(y_j)|\},
+$$
+即能量 \(\Energy\) 与各阶段空间纤维大小共同决定可并行维持的分支数上界。
+\end{proposition}
+
+\begin{corollary}[最大分支压力发生在 \texorpdfstring{$y=0^6$}{y=0^6}]\label{cor:max_branch_pressure_y0}
+在 \(m=6\) 核中，空间观测 \(y=0^6\) 的 uplift 纤维具有最大基例退化度（\(|U(0^6)|=4\)）。因此，当 \(\Energy\ge 4\) 时，展开分支在第一层即可达到 4 路可行 uplift；而当 \(\Energy<4\) 时，观察者必须在第一层就发生 commit（剪枝），并把差额转化为显式的 uplift 选择记录（时间胶带增长）。
+\end{corollary}
+
+\subsection{空间与时间的互补：零总账（记账公理）}
+本文使用一个“有符号信息账本”作为守恒表述的最小外壳：空间侧携带正信息，时间侧携带负信息（逆信息胶带）。我们不把该记账等同于 Shannon 熵的取负，而只把它作为可审计的结构化约定。
+
+\begin{assumption}[零总账守恒（记账公理）]\label{ass:zero_ledger}
+存在两个可审计的标量记账函数 \(\Ipos(\cdot)\) 与 \(\Ineg(\cdot)\)，使得对所有满足本体约束的扩展态 \((y,t)\) 都有
+$$
+\Ipos(y)+\Ineg(t)=0.
+$$
+\end{assumption}
+
+\begin{remark}
+在 Zeckendorf uplift 实例中，\(\Ineg(t)\) 可以用尾部胶带的编码长度（比特数）实现；\(\Ipos(y)\) 则可理解为宏观稳定语言提供的结构化信息。本文实验侧重于 \(\Ineg\) 的可计算代理量（见下一节）。
+\end{remark}
+
+\subsection{绝对比特守恒：从虚无到生成，再到抵消归零}
+本节把“信息守恒就是比特守恒”的直觉落实为一个可逆（或可逆可扩展）的操作接口：从一个规范的“虚无态”出发，观察者通过展开过程把空间/时间数据从约束中挤出；并且存在一个折叠过程作为其逆（uncompute），使得空间与时间数据可被抵消并回到虚无态，从而实现绝对意义下的比特守恒。
+
+\begin{definition}[虚无态（零态）]\label{def:void_state}
+固定 \(m\)。定义虚无态为宏观全零稳定观测与尾部全零 uplift 的配对
+$$
+(y_{\varnothing},t_{\varnothing}) := (0^m,0)\in \Ym\times T_m.
+$$
+在基例 \(m=6\) 中，\(y_{\varnothing}=000000\in X_6\)，且 \(t_{\varnothing}=(0,0,0)\)。
+\end{definition}
+
+\begin{definition}[展开过程与折叠过程（可逆接口）]\label{def:up_down_interface}
+令 \(\mathcal U\) 表示观察者的展开算子（包括传播、分支与在能量 \(\Energy\) 约束下的承诺），其输出是一个满足本体约束的扩展态候选与一段显式 uplift 选择记录（时间胶带）。令 \(\mathcal D\) 表示对应的折叠过程：在保留该 uplift 记录的前提下，\(\mathcal D\) 逐步撤销展开承诺，把“已生成的空间/时间数据”可逆地抵消回零态。
+
+在 Zeckendorf uplift 的最小模型中，展开原子步可以取为 \(\Tail^{-1}\) 的一次分支选择（并写入一比特的选择记录，受相邻 1 与边界约束限制）；折叠原子步取为 \(\Tail\)（确定性丢弃靠近窗口的一位尾部），并同时消耗（验证并删除）一比特选择记录。若该记录完整，则折叠过程可把任意可达状态带回虚无态。
+\end{definition}
+
+\begin{assumption}[比特守恒（可逆性公理）]\label{ass:bit_conservation}
+存在一种对 uplift 选择记录的可审计编码，使得对任意从虚无态出发的展开运行 \(\mathcal U\)，其产生的输出 \((y,t)\) 与记录 \(\mathsf{log}\) 满足：
+$$
+\mathcal D\bigl((y,t),\mathsf{log}\bigr)=(y_{\varnothing},t_{\varnothing}),
+$$
+且该过程不丢失比特：从信息账本角度看，“空间侧新增的可区分比特”与“时间侧（uplift 胶带/记录）新增的比特”总账抵消。
+\end{assumption}
+
+\begin{remark}[与能量的关系]
+能量 \(\Energy\) 不改变本体的比特守恒；它只限制观察者在展开过程中能够并行维持的候选数量，从而迫使更早 commit。commit 使得部分“未决不确定性”被转化为显式 uplift 记录（时间胶带增长），因此在比特守恒口径下，能量越小，主观单线越强、胶带记录越早增长。
+\end{remark}
+
+\subsection{观察者：展开产生时空}
+观察者的输入不是“时间参数”，而是一个观测约束（例如固定 \(y=0^m\)）与一个有限资源参数 \(\Energy\)。观察者在本体约束下通过展开过程生成一张搜索图：
+\begin{itemize}
+  \item 节点：某个候选 uplift 状态（尾部词）或其诱导的微观前像；
+  \item 边：一次 \(\Tail^{-1}\) 分支扩展（展开一步）；
+  \item 资源：\(\Energy\) 限制并行分支数，迫使 commit。
+\end{itemize}
+因此，“多世界”对应分支集合，“主观体验”对应在 \(\Energy\) 约束下的一条承诺路径。
+
+\subsection{信息守恒下的相互约束：空间纤维、时间推进与能量截断}
+
+本节把“观察者的信息守恒是如何相互约束的”写成可审计的约束链：\textbf{空间观测约束时间纤维，时间推进约束跨时刻一致性，能量约束把多分支压成主观单线，但不破坏本体守恒。}
+
+\begin{definition}[时间纤维与分支集合]\label{def:fiber_T_of_y}
+固定 \(m\) 与一个宏观观测 \(y\in\Ym\)。定义其 uplift 时间纤维（可兼容尾部集合）
+$$
+T(y):=\Bigl\{\,t\in T_m:\ \exists\,N\in\{0,\dots,2^m-1\}\ \text{s.t.}\ \Fold(N)=y,\ \tautime_m(N)=t\,\Bigr\}.
+$$
+对任意时间窗 \(t=0,\dots,W\)，若观测固定为 \(y_0=\cdots=y_W=y\)，则一个一致 uplift 轨迹是满足
+$$
+t_{k+1}=\Tail(t_k)\qquad(0\le k<W)
+$$
+的序列 \((t_0,\dots,t_W)\) 且每个 \(t_k\in T(y)\)。
+\end{definition}
+
+\begin{proposition}[空间与时间的相互制约]\label{prop:space_time_mutual_constraints}
+在 Zeckendorf 截断折叠实例中，\((y,t)\) 不是独立数据：给定 \(y\) 会把时间尾部限制在纤维 \(T(y)\) 内；给定 \(t\) 也会把宏观观测限制在相应的兼容集合内。更进一步，当 \((y,t)\) 来自某个微观整数 \(N<2^m\) 时，\(y\) 与 \(t\) 共同构成对同一组 Zeckendorf 数码的窗口内/窗口外分解，因此它们共同约束（并在本体允许范围内确定）微观前像集合。
+\end{proposition}
+
+\begin{remark}[能量与主观单线不破坏守恒]\label{rem:energy_commit_ledger}
+观察者在展开过程中维护分支集合 \(\mathcal B_k\subseteq T(y)\)。能量约束 \(|\mathcal B_k|\le \Energy\) 迫使当分支增长超过 \(\Energy\) 时进行剪枝/承诺（commit）。该过程不会改变本体的守恒约束：它只是在本体允许的时间纤维中选择一个可追踪子集，从而把“多世界并行”压缩成“主观单线”。在零总账记账（假设 \ref{ass:zero_ledger}）下，commit 可被理解为把“未决的不确定性”转化为显式的 uplift 胶带选择，从而把守恒的差额从空间侧转移到时间侧。
+\end{remark}
+
