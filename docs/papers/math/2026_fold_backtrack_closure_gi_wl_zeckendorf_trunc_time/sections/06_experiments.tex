@@ -1,0 +1,104 @@
+
+\section{实验：维数相变、三维快速塌缩与少数共振 m 的残余时间位}
+
+本节汇总我们对闭包图进行 $1$-\WL{} 的系统扫描结果（$m=3$ 至 $18$），并列出可复核的关键异常点、指标与归档文件名。数据与图像文件以“随文实验包/脚本产物”的方式提供（见附录 \ref{app:repro}）。
+
+\subsection{设定与指标}
+
+\begin{itemize}
+  \item \textbf{输入：}固定 $m$，构造 $f_m$，构造闭包图 $\Clo_m$；
+  \item \textbf{微观邻接：}选择 hypercube / bit-split / Hilbert-lattice（开边界或环面）；
+  \item \textbf{\WL{} 指标：}
+  \begin{itemize}
+    \item 稳定步数 $t_{\mathrm{stable}}$；
+    \item 微观端是否完全分解：若全部微观点成为单点颜色类，则定义塌缩时间 $t_{\mathrm{resolve}}$ 为首次达到该状态的步数；
+    \item 未分解微观点数 $u$ 与最大未分解类大小 $s_{\max}$。
+  \end{itemize}
+\end{itemize}
+
+\subsection{结果一：Hypercube 在少数 m 上出现 Z2 残余时间位}
+
+我们对 $m=3$ 至 $18$ 的 hypercube 微观邻接进行穷举。总体结论如下：
+\begin{itemize}
+  \item 大多数 $m$ 上，$1$-\WL{} 在 $5$--$8$ 步内完全分解所有微观点；
+  \item 但在 $m\in\{6,8,9\}$（以及小规模退化的 $m=3$）上，出现不可消除的残余不确定性：每个未分解类大小为 $2$，对应一个 $\ZZ_2$ 时间位（参见定义 4 与引理 \ref{lem:z2-sufficient}）。
+\end{itemize}
+
+\paragraph{关键异常点（来自扫描表）。}
+\begin{itemize}
+  \item $m=6$：未分解微观点数 $u=32$，残余平移 $\delta=34$（二进制为 $2^1+2^5$）；
+  \item $m=8$：$u=128$，残余平移 $\delta=144$（二进制为 $2^4+2^7$）；
+  \item $m=9$：$u=256$，同样 $\delta=144$。
+\end{itemize}
+这些未分解点构成一个“等位子超立方体”：
+\[
+S=\{x\in X_m:\ x_a=x_b\},
+\]
+在 $m=6$ 时对应 $(a,b)=(1,5)$，在 $m=8,9$ 时对应 $(a,b)=(4,7)$，而残余配对为
+$x\leftrightarrow x\oplus(2^a+2^b)$。
+
+\paragraph{归档文件（建议随文提供）。}
+\begin{itemize}
+  \item 残余规模随 $m$ 的曲线：\path{artifacts/export/hypercube_residual_ambiguity_m3_to_m18.png}；
+  \item 详细扫描表：\path{artifacts/export/hypercube_residual_scan_m3_to_m18.csv}；
+  \item $m=6$ 的配对列表：\path{artifacts/export/m6_hypercube_ambiguous_pairs.txt}；
+  \item $m=9$ 的配对列表：\path{artifacts/export/m9_hypercube_ambiguous_pairs.txt}。
+\end{itemize}
+
+\input{sections/generated/fig_hypercube_residual_ambiguity}
+\begin{sloppypar}
+\noindent
+对应的异常点摘要表（仅列出最终仍未分解的 $m$）：
+\end{sloppypar}
+\begin{center}
+\input{sections/generated/tab_hypercube_residual_unresolved_only}
+\end{center}
+
+\subsection{结果二：三维是“最快塌缩临界”}
+
+对 bit-split lattice 做“维数扫描”：固定 $m$，将其分拆为 $d$ 维格（每维长度为 $2^{s_j}$，且 $\sum_j s_j=m$），比较 $t_{\mathrm{resolve}}$ 与残余规模，观察到显著的维数效应：
+\begin{itemize}
+  \item 一维链（$d=1$）塌缩最慢，随 $m$ 增长急剧恶化：例如 $m=6$ 时 $t_{\mathrm{resolve}}=15$，$m=9$ 时 $t_{\mathrm{resolve}}=140$，而 $m=12,15$ 在迭代上限 $200$ 内仍未完全分解；
+  \item 二维格可分解但对“薄形状”敏感；
+  \item 三维及以上“适度维数”的格，$t_{\mathrm{resolve}}$ 往往呈近似常数，几乎不随 $m$ 增长。
+\end{itemize}
+
+该现象与 P{\'o}lya 随机游走阈值（$d=1,2$ 复返，$d\ge 3$ 瞬态）在机制上具有高度相似性：\WL{} 细化可视为“颜色信息扩散--回流”的离散过程；复返维数会导致局部回流增强，从而延缓远处差异的积累，而瞬态维数更利于全局区分 \cite{novakpolya}。
+
+\paragraph{归档文件（建议随文提供）。}
+\begin{itemize}
+  \item 维数--塌缩时间：\path{artifacts/export/resolve_time_vs_dimension_m6_m9_m12_m15.png}；
+  \item 维数--未分解规模：\path{artifacts/export/unresolved_vs_dimension_m6_m9_m12_m15.png}；
+  \item 维数扫描原始表：\path{artifacts/export/dim_scan_m6_m9_m12_m15.csv}。
+\end{itemize}
+
+\input{sections/generated/fig_resolve_time_vs_dimension}
+\input{sections/generated/fig_unresolved_vs_dimension}
+\begin{center}
+\input{sections/generated/tab_dim_scan_m6_m9}
+\end{center}
+
+\subsection{结果三：m=6 的默认闭合版本与几何选择}
+
+对 $m=6$：
+\begin{itemize}
+  \item Hilbert $2$D（$8\times 8$）闭包图在 $6$ 步内分解；
+  \item Hilbert $3$D（$4\times 4\times 4$）在 $5$ 步内分解；
+  \item bit-split $3$D（$4\times 4\times 4$）在 $4$ 步内分解；
+  \item hypercube 在 $m=6$ 落入共振残余 $\ZZ_2$ 相：未分解 $u=32$ 个微观点。
+\end{itemize}
+这说明：把超立方体作为微观邻接时可能触发对称共振；而以 $3$D Hilbert-lattice 作为 $m=6$ 的默认闭合微观几何，可兼顾局部性与快速塌缩，并避免该共振。
+
+\paragraph{归档文件（建议随文提供）。}
+\begin{itemize}
+  \item Hilbert $2$D 排布：\path{artifacts/export/m6_2d_hilbert_grid.png}；
+  \item Hilbert $3$D 分层：\path{artifacts/export/m6_3d_hilbert_layers.png}；
+  \item $m=6$ 不同模型对比表：\path{artifacts/export/m6_wl1_hilbert_vs_bitsplit_vs_hypercube.csv}。
+\end{itemize}
+
+\input{sections/generated/fig_m6_hilbert_2d_grid}
+\input{sections/generated/fig_m6_hilbert_3d_layers}
+\begin{center}
+\input{sections/generated/tab_m6_models_compare}
+\end{center}
+

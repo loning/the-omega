@@ -1,0 +1,22 @@
+
+\section{闭包图构造与 1-WL 过程（伪代码）}
+\label{app:pseudo}
+
+\subsection{闭包图}
+
+输入：$m$，微观邻接生成器 $\texttt{MicroEdges}(m)$，折叠 $f_m$。
+\begin{enumerate}
+  \item 令顶点集 $V=X_m\sqcup Y_m$；
+  \item 加入微观边 $E^{\mu}=\texttt{MicroEdges}(m)$；
+  \item 对每个 $x\in X_m$ 加入折叠边 $(x,f_m(x))$；
+  \item 初始颜色：对每个 $y\in Y_m$ 赋唯一颜色 $\kappa(y)$；对所有 $x\in X_m$ 赋同一颜色 $\kappa_0$。
+\end{enumerate}
+
+\subsection{1-WL}
+
+迭代 $t=0,1,2,\dots$，更新规则为
+\[
+\kappa_{t+1}(v)=\mathrm{Hash}\Bigl(\kappa_t(v),\ \multiset{\kappa_t(u):u\in N(v)}\Bigr),
+\]
+直至 $\kappa_{t+1}$ 与 $\kappa_t$ 等价（稳定）。稳定后统计微观端颜色类大小分布，得到 $t_{\mathrm{stable}}$、$t_{\mathrm{resolve}}$、$u$ 与 $s_{\max}$。
+
