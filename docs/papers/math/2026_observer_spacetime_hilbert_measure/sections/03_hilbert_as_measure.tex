@@ -1,0 +1,42 @@
+\section{Hilbert 尺子：固定几何与自适应维度切换}
+
+本节把 Hilbert 曲线从“嵌入/画图”提升为观察者的尺子 \(\mathcal G\)：它不改变本体约束 \(\Clo\)，只改变观察者组织局部性与扫描顺序的方式，从而改变观察者成本 \(\kappaobs\)（并在预备知识的定理下等价地改变负信息时间 \(\tautime\) 的分配方式）与搜索图结构。
+
+\subsection{Hilbert 映射族与局部性}
+
+对维度 \(d\) 与尺度参数 \(p\)，Hilbert 映射可视为一个双射
+\[
+H_{d,p}:\{0,1,\dots,2^{dp}-1\}\to \{0,1,\dots,2^p-1\}^d.
+\]
+它把同一批离散自由度赋予 \(d\) 维坐标，从而诱导“轴邻接”与“块递归”的局部性结构。
+
+\begin{definition}[Hilbert 尺子（测度结构）]
+给定 Hilbert 映射 \(H_{d,p}\)，定义观察者尺子 \(\mathcal G_{d,p}\) 包含两部分：
+\begin{itemize}
+  \item \textbf{局部邻接：} 在坐标空间 \(\{0,\dots,2^p-1\}^d\) 上用轴邻接定义邻居关系，并拉回到索引集合上；
+  \item \textbf{多尺度块：} 利用 Hilbert 的递归结构把全集分解为 \(2^d\) 个子块并递归，从而给出 coarse-to-fine 的块层级。
+\end{itemize}
+\end{definition}
+
+\subsection{固定几何：比较 1D/2D/3D 的传播形态}
+
+固定 \(d\)（例如 \(d=1,2,3\)）相当于固定一类局部性/邻接与块结构。对于同一 \(\Clo\) 与同一投影 \(\proj\)，不同 \(d\) 会改变 lifting 约束传播与冲突暴露的时机，从而改变 \(\kappaobs\) 的统计分布。
+
+\subsection{自适应切换：把“换维度”做成算法策略}
+
+自适应观察者在搜索过程中允许切换 \((d,p)\)，以改变局部性组织与消元序。一个最小策略是：
+\begin{itemize}
+  \item 在某个 \(d\) 下进行若干轮传播/细化；
+  \item 若传播停滞（例如稳定但仍未解析微观不确定性）则切换到另一 \(d\)；
+  \item 以当前中间状态作为新阶段的初值继续传播。
+\end{itemize}
+该策略不引入额外本体假设，变化仅来自观察者尺子的选择。
+
+\begin{definition}[自适应维度切换观察者（最小策略）]
+固定一组候选尺子集合 \(\{\mathcal G_{d,p}\}_{(d,p)\in \mathcal S}\) 与一个停滞判据 \(\Phi\)（例如“当前阶段达到稳定但仍未解析”）。自适应观察者以分阶段方式运行：
+\[
+(\proj,\mathcal A,\mathcal G_{d_1,p_1})\ \rightsquigarrow\ (\proj,\mathcal A,\mathcal G_{d_2,p_2})\ \rightsquigarrow\ \cdots
+\]
+每次切换仅改变 \(\mathcal G\)，并将上一阶段的中间状态作为下一阶段的初值。
+\end{definition}
+

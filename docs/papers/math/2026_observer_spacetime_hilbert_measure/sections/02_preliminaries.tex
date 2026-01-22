@@ -1,0 +1,105 @@
+\section{预备知识：约束系统、观察者与 lifting}
+
+本节只做最小输入的形式化，以便后续可复现实验与证明链条闭合。
+
+\subsection{静态约束系统}
+
+\begin{definition}[约束系统]
+一个静态约束系统记为 \(\Clo\)。它由一组离散变量集合与一组局部约束（因子）组成；全局可行赋值集合记为
+\[
+\mathrm{Sol}(\Clo)\subseteq \Omega^{V}.
+\]
+\end{definition}
+
+在本文关心的实例中，\(\Clo\) 可以被实现为“闭包图/因子图”上的一致性条件：例如同时包含（i）微观邻接边诱导的结构约束，（ii）折叠边（微观到宏观）诱导的信息组织约束。
+
+\subsection{观察者三元组}
+
+\begin{definition}[观察者]
+观察者是一个三元组
+\[
+O=(\proj,\mathcal A,\mathcal G),
+\]
+其中 \(\proj\) 是投影/可见化映射，\(\mathcal A\) 是 lifting/一致性搜索算法，\(\mathcal G\) 是观察者的“尺子”（用于定义局部性组织、扫描顺序与多尺度块结构）。
+\end{definition}
+
+\begin{remark}[最小输入原则下的角色分离]
+\(\Clo\) 是本体输入；\(O\) 是观察者输入。本文允许改变 \(O\)（例如切换 Hilbert 维度/尺度），但不以改变 \(\Clo\) 来解释“时间变慢/时空复杂化”等现象。
+\end{remark}
+
+\subsection{lifting 集合与观察者时间}
+
+设本体变量赋值为 \(x\in\mathrm{Sol}(\Clo)\)，观察者只见
+\[
+y=\proj(x).
+\]
+
+\begin{definition}[lifting 集合]
+对给定可见态 \(y\)，定义
+\[
+\Lift_{\proj}(y):=\{\,x\in \mathrm{Sol}(\Clo): \proj(x)=y\,\}.
+\]
+\end{definition}
+
+当 \(\Lift_{\proj}(y)\) 为空时，\(y\) 在该观察者下不可发生；当其很大时，逆向重建一般需要搜索。
+
+\begin{definition}[观察者时间（成本形式）]
+固定一种 lifting 搜索算法 \(\mathcal A\)。定义观察者时间（或更准确地说：一步逆向重建成本）为
+\[
+\kappaobs_{\mathcal A}(y):=\text{算法 }\mathcal A\text{ 为找到某个 }x\in\Lift_{\proj}(y)\text{ 所访问的候选节点数/迭代步数等可审计成本}.
+\]
+\end{definition}
+
+\subsection{有符号信息账本与负信息时间}
+
+本文把“系统从无到有但总体信息守恒”的直觉落实到扩展态上：可见层呈现耗散/趋稳，但被投影掉的信息必须以 uplift/历史胶带的形式被保存，从而维持可逆性。为此我们引入一个最小的“有符号信息账本”记号：状态侧记为正信息，历史胶带侧记为负信息（以缺口的记账符号出现）。
+
+\begin{definition}[uplift 胶带与负信息时间]
+设扩展态为 \(x=(s,u)\)，其中 \(s\) 为可见层状态，\(u\) 为 uplift/历史胶带（隐藏边标签或日志序列）。给定一个前缀无歧义的编码 \(\mathrm{code}\)（例如把字母表符号编码为定长比特串），定义负信息时间为
+\[
+\tautime(u):=\mathrm{len}(\mathrm{code}(u))\quad(\text{以比特计}).
+\]
+并定义负信息记账为
+\[
+\Ineg(u):=-\tautime(u).
+\]
+相应地，可见层的正信息 \(\Ipos(s)\) 仅作为记号，表示“当前可见态所携带的结构信息”。
+\end{definition}
+
+\begin{remark}
+这里的“负信息”不是断言信息论意义的熵可以为负；它是一个账本符号：\(\tautime\) 衡量为维持可逆性而必须携带的历史胶带规模，而 \(\Ineg=-\tautime\) 只是把它写成“欠账”形式，便于与“正信息（状态）”并列。
+\end{remark}
+
+\subsection{\texorpdfstring{\(\kappa\sim\tautime\)}{kappa ~ tau}：成本与负信息时间的同阶等价}
+
+\begin{assumption}[有限字母表与单位记录代价]
+uplift 胶带 \(u\) 的字母表大小有界，且编码 \(\mathrm{code}\) 使得每个符号的编码长度为常数（定长编码或等价的 \(O(1)\) 比特/符号）。
+\end{assumption}
+
+\begin{assumption}[有限观察者的读写耦合]
+对固定算法 \(\mathcal A\)，存在常数 \(a,b>0\) 使得：每扩展一个搜索节点（或执行一次原子推断更新），最多写入 \(a\) 个 uplift 符号；并且写入一个 uplift 符号至少需要 \(b\) 次常数级原子计算（或等价的最小可审计成本单位）。
+\end{assumption}
+
+\begin{theorem}[观察者时间与负信息时间同阶等价]
+在上述假设下，对任意输入 \(y\) 与由 \(\mathcal A\) 产生的某条候选提升过程（含其写带 \(u\)），存在常数 \(c_1,c_2>0\) 使得
+\[
+c_1\,\tautime(u)\le \kappaobs_{\mathcal A}(y)\le c_2\,\tautime(u).
+\]
+因此 \(\kappaobs_{\mathcal A}(y)=\Theta(\tautime(u))\)；在复杂度意义下，“时间（成本）”与“时间（负信息胶带）”等价。
+\end{theorem}
+
+\begin{proof}
+由“每步最多写入 \(a\) 个符号”与“每符号 \(O(1)\) 比特”，可得 \(\tautime(u)\le C\cdot \kappaobs\)（某常数 \(C\)）。反向不等式由“写入一个符号至少需要 \(b\) 次原子计算”推出：若 \(\tautime(u)\) 增长，则必然至少触发线性数量的原子计算步，从而 \(\kappaobs\le C'\cdot \tautime(u)\)。合并即得结论。
+\end{proof}
+
+\begin{proposition}[可兼容提升的单调性（最小性质）]
+若观察者投影 \(\proj_2\) 比 \(\proj_1\) 更粗（即存在映射 \(g\) 使 \(\proj_2=g\circ \proj_1\)），则对任意可见态 \(y_1\)，有
+\[
+\Lift_{\proj_1}(y_1)\subseteq \Lift_{\proj_2}(g(y_1)).
+\]
+\end{proposition}
+
+\begin{remark}
+该命题说明：遗忘更多信息只会使可兼容提升集合变大（或不变），从而一般会使搜索更困难；但困难程度的定量刻画依赖 \(\Clo\) 与 \(\mathcal A\) 的结构。
+\end{remark}
+
