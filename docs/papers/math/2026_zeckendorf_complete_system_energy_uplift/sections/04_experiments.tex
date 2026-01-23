@@ -6,7 +6,7 @@
 \begin{figure}[H]
 \centering
 \input{sections/generated/fig_m6_fiber_potential_energy_hist.tex}
-\caption{\(m=6\) 的纤维大小分布：对每个空间状态 \(y\in X_6\)，其纤维大小 \(s_6(y)=|\mathrm{Fold}_6^{-1}(y)|\in\{2,3,4\}\)。我们定义潜在能量 \(\Energy_{\mathrm{pot}}(y)=\log_2 s_6(y)\)（定义 \ref{def:potential_energy_from_fiber_size}），该直方图展示 \(s_6\) 的三值谱及其计数（推论 \ref{cor:m6_potential_energy_spectrum}）。}
+\caption{\(m=6\) 的纤维大小分布：对每个约束切片 \(y_{\mathrm{con}}\in X_6\)，其纤维大小 \(s_6(y_{\mathrm{con}})=|\mathrm{Fold}_6^{-1}(y_{\mathrm{con}})|\in\{2,3,4\}\)。我们定义潜在能量 \(\Energy_{\mathrm{pot}}(y_{\mathrm{con}})=\log_2 s_6(y_{\mathrm{con}})\)（定义 \ref{def:potential_energy_from_fiber_size}），该直方图展示 \(s_6\) 的三值谱及其计数（推论 \ref{cor:m6_potential_energy_spectrum}）。}
 \label{fig:m6_fiber_potential_energy_hist}
 \end{figure}
 
@@ -15,12 +15,12 @@
 \small
 \setlength{\tabcolsep}{6pt}
 \input{sections/generated/tab_m6_fiber_potential_energy.tex}
-\caption{\(m=6\) 下每个空间状态 \(y\) 的 Zeckendorf 值 \(V(y)\)、纤维大小 \(s_6(y)\) 与潜在能量 \(\Energy_{\mathrm{pot}}(y)\)（由脚本枚举 \(N\in\{0,\dots,63\}\) 生成）。}
+\caption{\(m=6\) 下每个约束切片 \(y_{\mathrm{con}}\) 的 Zeckendorf 值 \(V(y_{\mathrm{con}})\)、纤维大小 \(s_6(y_{\mathrm{con}})\) 与潜在能量 \(\Energy_{\mathrm{pot}}(y_{\mathrm{con}})\)（由脚本枚举 \(N\in\{0,\dots,63\}\) 生成）。}
 \label{tab:m6_fiber_potential_energy}
 \end{table}
 
-\subsection{固定观测 \texorpdfstring{$y_t=0^m$}{y=0^m}：分支增长与资源上限截断}
-在该实验中，我们固定空间观测为 \(y=0^m\)，因此所有候选 uplift 尾部都必须对应同一纤维 \(\Fold^{-1}(0^m)\)。令 \(B_d\) 为第 \(d\) 层（展开深度为 \(d\)）的并行分支数（经过能量截断后的可追踪候选数）。则理论上必有
+\subsection{固定观测 \texorpdfstring{$y_{\mathrm{con},t}=0^m$}{y_con=0^m}：分支增长与资源上限截断}
+在该实验中，我们固定本体一致性切片为 \(y_{\mathrm{con}}=0^m\)，因此所有候选 uplift 尾部都必须对应同一纤维 \(\Fold^{-1}(0^m)\)。令 \(B_d\) 为第 \(d\) 层（展开深度为 \(d\)）的并行分支数（经过资源上限截断后的可追踪候选数）。则理论上必有
 $$
 B_d \le \min\{W,\ s_m(0^m)\}\le \min\{W,\ b_m\}\le \min\{W,\ |T_m|\},
 $$
@@ -29,7 +29,7 @@ $$
 \begin{figure}[H]
 \centering
 \input{sections/generated/fig_zeckendorf_energy_beam_uplift_curve.tex}
-\caption{Zeckendorf uplift：固定空间状态 \(y_t=0^m\)，从尾部头 \(t=0\)、空 trace \(\mathsf{tr}=\epsilon\) 与某个初始资源上限 \(W_0\) 出发进行展开。每一层展开选择一个 uplift 分支并把该选择写入 trace（定义 \ref{def:up_down_interface}）；commit 则在资源上限 \(W\) 下对候选集合做确定性截断。图中展示分支数 \(B_d\) 随展开深度 \(d\) 的变化。}
+\caption{Zeckendorf uplift：固定本体一致性切片 \(y_{\mathrm{con}}=0^m\)，从尾部头 \(t=0\)、空 trace \(\mathsf{tr}=\epsilon\) 与某个初始资源上限 \(W_0\) 出发进行展开。每一层展开选择一个 uplift 分支并把该选择写入 trace（定义 \ref{def:up_down_interface}）；commit 则在资源上限 \(W\) 下对候选集合做确定性截断。图中展示分支数 \(B_d\) 随展开深度 \(d\) 的变化。}
 \label{fig:zeckendorf_energy_beam_uplift_curve}
 \end{figure}
 
@@ -43,12 +43,12 @@ $$
 \end{table}
 
 \subsection{\texorpdfstring{$m=6$}{m=6}：泡泡生成图、连通性与 pop/shift 的湮灭匹配}
-为把“泡泡从无到有、再受资源上限截断”的机制完全可审计化，我们在基例 \(m=6\)、固定空间状态 \(y=0^6\) 下画出以节点 \((t,\mathsf{tr})\) 组织的生成图：节点深度等于 trace 长度 \(|\mathsf{tr}|\)。展开边表示一次“选择 uplift 分支并写入 trace”的推进（实线箭头）；折叠边表示其逆操作：弹出 trace 末位并回退时间纤维头，从而湮灭对应的候选（虚线箭头），见图 \ref{fig:observer_bubble_graph_m6}。在资源上限 \(W\) 下，观察者对该图的可追踪子集进行确定性截断（commit）。
+为把“泡泡从无到有、再受资源上限截断”的机制完全可审计化，我们在基例 \(m=6\)、固定本体一致性切片 \(y_{\mathrm{con}}=0^6\) 下画出以节点 \((t,\mathsf{tr})\) 组织的生成图：节点深度等于 trace 长度 \(|\mathsf{tr}|\)。展开边表示一次“选择 uplift 分支并写入 trace”的推进（实线箭头）；折叠边表示其逆操作：弹出 trace 末位并回退时间纤维头，从而湮灭对应的候选（虚线箭头），见图 \ref{fig:observer_bubble_graph_m6}。在资源上限 \(W\) 下，观察者对该图的可追踪子集进行确定性截断（commit）。
 
 \begin{figure}[H]
 \centering
 \input{sections/generated/fig_observer_bubble_graph_m6.tex}
-\caption{观察者泡泡生成图（\(m=6\), \(y=0^6\)）。节点为 \((t,\mathsf{tr})\)；实线为展开（写入分支标签到 trace），虚线为折叠（弹出 trace 并回退 \(t\)，从而湮灭对应候选）。左图展示无资源截断时的全部可行节点；右图展示资源上限 \(W\) 下按可审计规则保留的子图。该图的“合流点”展示了为何若丢弃 trace 就无法保持互逆：不同路径在遗忘 trace 后会投影到同一 \(t\)，必须用 trace 的末位作为可审计的路径标签，才能把折叠定义成展开的逆操作。}
+\caption{观察者泡泡生成图（\(m=6\), 固定 \(y_{\mathrm{con}}=0^6\)）。节点为 \((t,\mathsf{tr})\)；实线为展开（写入分支标签到 trace），虚线为折叠（弹出 trace 并回退 \(t\)，从而湮灭对应候选）。左图展示无资源截断时的全部可行节点；右图展示资源上限 \(W\) 下按可审计规则保留的子图。该图的“合流点”展示了为何若丢弃 trace 就无法保持互逆：不同路径在遗忘 trace 后会投影到同一 \(t\)，必须用 trace 的末位作为可审计的路径标签，才能把折叠定义成展开的逆操作。}
 \label{fig:observer_bubble_graph_m6}
 \end{figure}
 
@@ -57,7 +57,7 @@ $$
 \small
 \setlength{\tabcolsep}{8pt}
 \input{sections/generated/tab_m6_confluence_example.tex}
-\caption{自动检出的合流证据（\(m=6\), \(y=0^6\)）：（i）存在一个深度 \(d\) 与一个尾部头 \(t\)，使得（ii）两条不同 trace \(\mathsf{tr}_0\neq \mathsf{tr}_1\) 的节点 \((t,\mathsf{tr}_0)\)、\((t,\mathsf{tr}_1)\) 同时可达；因此（iii）遗忘 trace 的投影 \(\pi(t,\mathsf{tr})=t\) 不是单射，从而仅凭 \(t\) 不可能形成可逆动力学。该证据与命题 \ref{prop:log_needed_for_reversibility} 对齐：要把折叠定义为展开的逆，必须在折叠步中对 trace 末位执行 pop 匹配。}
+\caption{自动检出的合流证据（\(m=6\), 固定 \(y_{\mathrm{con}}=0^6\)）：（i）存在一个深度 \(d\) 与一个尾部头 \(t\)，使得（ii）两条不同 trace \(\mathsf{tr}_0\neq \mathsf{tr}_1\) 的节点 \((t,\mathsf{tr}_0)\)、\((t,\mathsf{tr}_1)\) 同时可达；因此（iii）遗忘 trace 的投影 \(\pi(t,\mathsf{tr})=t\) 不是单射，从而仅凭 \(t\) 不可能形成可逆动力学。该证据与命题 \ref{prop:log_needed_for_reversibility} 对齐：要把折叠定义为展开的逆，必须在折叠步中对 trace 末位执行 pop 匹配。}
 \label{tab:m6_confluence_example}
 \end{table}
 
@@ -68,7 +68,7 @@ $$
 $$
 的程序 \(p\)（Quine）。
 
-\paragraph{实验对象与输出} 本实验脚本会逐轮打印：\((y,t)\) 的本体可行性审计（含见证 \(N\)）、协议步的账本增量（\(\Delta|\mathsf{tr}|\)、\(\Delta\log_2 W\)）与镜像互逆审计（每步均验证互为反演），并记录观察者的候选搜索轨迹。脚本同时生成结构化日志与图表（导出到 `artifacts/export/`），正文仅通过 \verb|\input| 引用生成的 LaTeX 片段。
+\paragraph{实验对象与输出} 本实验脚本会逐轮打印：\((y_{\mathrm{con}},t)\) 的本体可行性审计（含见证 \(N\)）、协议步的账本增量（\(\Delta|\mathsf{tr}|\)、\(\Delta\log_2 W\)）与镜像互逆审计（每步均验证互为反演），并记录观察者的候选搜索轨迹。脚本同时生成结构化日志与图表（导出到 `artifacts/export/`），正文仅通过 \verb|\input| 引用生成的 LaTeX 片段。
 
 \begin{table}[H]
 \centering
@@ -105,7 +105,7 @@ $$
 \begin{figure}[H]
 \centering
 \input{sections/generated/fig_quine_emergence_ledger_deltas.tex}
-\caption{协议步的账本增量：对 U 步应满足 \(\Delta|\mathsf{tr}|=+1,\Delta\log_2 W=-1+k(y)\)，对 D 步应满足 \(\Delta|\mathsf{tr}|=-1,\Delta\log_2 W=+1-k(y)\)。}
+\caption{协议步的账本增量：对 U 步应满足 \(\Delta|\mathsf{tr}|=+1,\Delta\log_2 W=-1+k(y_{\mathrm{con}})\)，对 D 步应满足 \(\Delta|\mathsf{tr}|=-1,\Delta\log_2 W=+1-k(y_{\mathrm{con}})\)。}
 \label{fig:quine_emergence_ledger_deltas}
 \end{figure}
 

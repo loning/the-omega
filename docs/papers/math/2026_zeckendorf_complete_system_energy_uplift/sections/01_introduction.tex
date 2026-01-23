@@ -5,11 +5,14 @@
 \subsection{层级审计纪律：本体/协议/解释三层分离}
 为避免在“本体约束—观察过程—解释叙事”之间循环论证，并与 \S\ref{subsec:layer_audit_rule} 的写作纪律对齐，本文把相关概念严格分层：
 \begin{itemize}
-  \item \textbf{Layer 0（本体）}：仅包含静态约束系统 \(\Clo\) 与允许扩展态集合（例如由 \(\mathrm{Enc}_m/\mathrm{Rec}_m\) 决定的可行对 \((y,t)\in\mathcal A_m\)），不预设概率、主观体验或连续时间。
-  \item \textbf{Layer 1（协议）}：观察者以互逆原子步 \(\mathcal U/\mathcal D\) 在扩展态 \((y,t,\mathsf{tr},W)\) 上推进/回滚，并在资源上限 \(W\) 下对候选集合执行确定性截断（commit）。本篇的“守恒/抵消/湮灭”均指这一层的可逆更新与账本审计。
+  \item \textbf{Layer 0（本体）}：仅包含静态约束系统 \(\Clo\) 与允许扩展态集合（例如由 \(\mathrm{Enc}_m/\mathrm{Rec}_m\) 决定的可行对 \((y_{\mathrm{con}},t)\in\mathcal A_m\)），不预设概率、主观体验或连续时间。
+  \item \textbf{Layer 1（协议）}：观察者以互逆原子步 \(\mathcal U/\mathcal D\) 在扩展态 \((y_{\mathrm{con}},t,\mathsf{tr},W)\) 上推进/回滚，并在资源上限 \(W\) 下对候选集合执行确定性截断（commit）。本篇的“守恒/抵消/湮灭”均指这一层的可逆更新与账本审计。
   \item \textbf{Layer 2（解释）}：把宏观稳定类型 \(y\) 解释为空间，把 uplift 尾部与其推进关系解释为时间，把资源上限 \(W\) 解释为能量/带宽，把 commit 后的持续追踪解释为主观单线。
 \end{itemize}
 该分层确保：时间、概率、离散标签等不作为本体输入出现，而是由协议层的可审计过程产生并在解释层获得语义。
+
+\paragraph{固定本体为 \texorpdfstring{$m=6$}{m=6}：21 个稳态块作为观察者存储基元}
+虽然 Layer 0/1 的定义允许一般的窗口长度 \(m\)，但从“实现性/可计算性”的角度出发，我们强调：\textbf{不需要把 \(m\) 当作可变规模参数}。在本文关于观察者（OTM）实现的收敛版本中，我们固定 \(m=6\)，于是黄金均值语言 \(Y_6\) 恰有 \(|Y_6|=21\) 个宏观稳态。我们把这些稳态视为一套有限的“空间块”字母表，并用它们的\textbf{线性组合}来实现观察者的全部可写寄存器（tape/head/history/I/O 等），从而在不引入任何新的本体基元的前提下获得图灵机级别的存储与计算能力（见 \S\ref{subsec:observer_tm_realizability_m6}）。
 
 \subsection{空间压缩核：\texorpdfstring{$2^m\to F_{m+2}$}{2^m->F_{m+2}}}
 在 Zeckendorf 规范中，长度为 \(m\) 的黄金均值语言
