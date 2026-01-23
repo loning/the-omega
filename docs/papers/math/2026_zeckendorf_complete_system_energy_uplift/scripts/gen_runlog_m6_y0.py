@@ -8,12 +8,15 @@ This script produces:
 
 The table is a deterministic, auditable trace of n unfold steps under a fixed policy:
 - Macro observation is fixed to y=0^6 (macro word w=0).
-- Energy tape pop consumes the last bit b_i.
+- We implement branch-choice generation via an internal bitstring E and pop its last bit b_i.
 - Next tail-head t_{i+1} is chosen from admissible candidates in Tail^{-1}(t_i):
     - filter by no-adjacent-ones on tail bits
     - filter by micro bound N<2^m and Fold_m(N)=y
     - if there are >=2 candidates, pick index b_i in sorted order; else pick the only one
-- Reconstruct micro N_{i+1} from (y, t_{i+1}), then code c_i=Code_y(N_{i+1}) is appended to energy tape.
+- Reconstruct micro N_{i+1} from (y, t_{i+1}), then code c_i=Code_y(N_{i+1}) is appended to E.
+
+Paper-facing convention:
+- We report the resource exponent r_i := log2(W_i), identified with |E_i|, rather than printing E itself.
 
 Note:
 This is a reproducible illustration for the paper; it is not the only possible policy.
@@ -66,7 +69,7 @@ class Row:
     N_ip1: int
     c_i: str
     tr_ip1: str
-    E_ip1: str
+    log2W_ip1: int
 
 
 @dataclass(frozen=True)
@@ -78,7 +81,7 @@ class FoldRow:
     N_ip1: int
     c_i: str
     tr_i: str
-    E_i: str
+    log2W_i: int
 
 
 def _pop_suffix(bits: str, k: int) -> Tuple[str, str]:
@@ -217,7 +220,7 @@ def main() -> None:
                 N_ip1=int(Np),
                 c_i=str(c),
                 tr_ip1=_latex_eps(str(tr)),
-                E_ip1=_latex_eps(str(E)),
+                log2W_ip1=int(len(E)),
             )
         )
         t = tp
@@ -226,7 +229,7 @@ def main() -> None:
     out_tab_path = run.run_dir / out_tab
     write_tabular_fragment(
         out_tab_path,
-        column_spec="r l r l r l l l",
+        column_spec="r l r l r l l r",
         header=[
             r"\textbf{$i$}",
             r"\textbf{$t_i$}",
@@ -235,9 +238,9 @@ def main() -> None:
             r"\textbf{$N_{i+1}$}",
             r"\textbf{$c_i$}",
             r"\textbf{$\mathsf{tr}_{i+1}$}",
-            r"\textbf{$\mathsf{E}_{i+1}$}",
+            r"\textbf{$\log_2 W_{i+1}$}",
         ],
-        rows=[[r.i, r.t_i, r.b_i, r.t_ip1, r.N_ip1, r.c_i, r.tr_ip1, r.E_ip1] for r in rows],
+        rows=[[r.i, r.t_i, r.b_i, r.t_ip1, r.N_ip1, r.c_i, r.tr_ip1, r.log2W_ip1] for r in rows],
         booktabs=True,
     )
 
@@ -281,7 +284,7 @@ def main() -> None:
                 N_ip1=int(N_ip1),
                 c_i=str(c),
                 tr_i=_latex_eps(str(tr_prev)),
-                E_i=_latex_eps(str(E_prev)),
+                log2W_i=int(len(E_prev)),
             )
         )
         t_cur, tr_cur, E_cur = t_prev, tr_prev, E_prev
@@ -291,7 +294,7 @@ def main() -> None:
     out_tab_fold_path = run.run_dir / out_tab_fold
     write_tabular_fragment(
         out_tab_fold_path,
-        column_spec="r l r l r l l l",
+        column_spec="r l r l r l l r",
         header=[
             r"\textbf{$i$}",
             r"\textbf{$t_{i+1}$}",
@@ -300,9 +303,9 @@ def main() -> None:
             r"\textbf{$N_{i+1}$}",
             r"\textbf{$c_i$}",
             r"\textbf{$\mathsf{tr}_i$}",
-            r"\textbf{$\mathsf{E}_i$}",
+            r"\textbf{$\log_2 W_i$}",
         ],
-        rows=[[r.i, r.t_ip1, r.b_i, r.t_i, r.N_ip1, r.c_i, r.tr_i, r.E_i] for r in fold_rows],
+        rows=[[r.i, r.t_ip1, r.b_i, r.t_i, r.N_ip1, r.c_i, r.tr_i, r.log2W_i] for r in fold_rows],
         booktabs=True,
     )
 

@@ -535,9 +535,11 @@ def _round_print_header(i: int) -> None:
 
 def _audit_print_constraints(m: int, y_w: int, st: OntologyState, N: int) -> None:
     L = int(tail_length(m))
+    log2W = int(len(st.E))
+    W = 1 << int(log2W)
     print(
         f"[exp_quine_emergence_vm] Clo: m={m} y_w={y_w} L={L} "
-        f"t={st.t} tr={st.tr!r} E={st.E!r} N={N}",
+        f"t={st.t} tr={st.tr!r} log2W={log2W} W={W} N={N}",
         flush=True,
     )
 
@@ -547,8 +549,8 @@ def _audit_print_conservation(row: ExperimentLogRow) -> None:
     print(
         f"[exp_quine_emergence_vm] ledger({row.op}): b_obs={row.b_observed} b_proto={row.b_protocol} "
         f"forced={row.forced_choice} k(y)={row.k} {tag}={row.c_payload!r} "
-        f"Δ|tr|={row.delta_tr} Δ|E|={row.delta_E} "
-        f"(tr {row.tr_len_before}->{row.tr_len_after}, E {row.E_len_before}->{row.E_len_after})",
+        f"Δ|tr|={row.delta_tr} Δlog2W={row.delta_E} "
+        f"(tr {row.tr_len_before}->{row.tr_len_after}, log2W {row.E_len_before}->{row.E_len_after})",
         flush=True,
     )
 
@@ -726,8 +728,8 @@ def analyze(rows: Sequence[ExperimentLogRow]) -> None:
         print("[exp_quine_emergence_vm] analysis: no rounds executed", flush=True)
         return
     # Verify ledger deltas match the paper's one-step formulas:
-    # - U step: Δ|tr|=+1, Δ|E|=-1+k(y)
-    # - D step: Δ|tr|=-1, Δ|E|=+1-k(y)
+    # - U step: Δ|tr|=+1, Δlog2W=-1+k(y)
+    # - D step: Δ|tr|=-1, Δlog2W=+1-k(y)
     bad = 0
     for r in rows:
         if r.op == "U":
@@ -809,7 +811,7 @@ def _make_figures(rows: Sequence[ExperimentLogRow], out_dir: Path) -> List[str]:
     ax = fig1.add_subplot(111)
     ax.plot(rounds, t_after, label="t (tail head)", linewidth=1.5)
     ax.plot(rounds, tr_len_after, label="|tr| (trace bits)", linewidth=1.5)
-    ax.plot(rounds, E_len_after, label="|E| (energy bits)", linewidth=1.5)
+    ax.plot(rounds, E_len_after, label="log2 W", linewidth=1.5)
     if quine_round is not None:
         ax.axvline(quine_round, linestyle="--", linewidth=1.0, label="quine round")
     ax.set_xlabel("round")
@@ -844,7 +846,7 @@ def _make_figures(rows: Sequence[ExperimentLogRow], out_dir: Path) -> List[str]:
     dtr = [r.delta_tr for r in rows]
     dE = [r.delta_E for r in rows]
     ax3.step(rounds, dtr, where="post", label="Δ|tr|", linewidth=1.5)
-    ax3.step(rounds, dE, where="post", label="Δ|E|", linewidth=1.5)
+    ax3.step(rounds, dE, where="post", label="Δlog2 W", linewidth=1.5)
     if quine_round is not None:
         ax3.axvline(quine_round, linestyle="--", linewidth=1.0, label="quine round")
     ax3.set_xlabel("round")
@@ -945,7 +947,7 @@ def _write_generated_fragments(
             r"\textbf{步}",
             r"\textbf{$t$}",
             r"\textbf{$|\mathsf{tr}|$}",
-            r"\textbf{$|\mathsf{E}|$}",
+            r"\textbf{$\log_2 W$}",
             r"\textbf{$b_{\mathrm{obs}}$}",
             r"\textbf{$b_{\mathrm{proto}}$}",
             r"\textbf{$n$}",

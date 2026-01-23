@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Energy-limited unfolding (upward) process on Zeckendorf uplift (time fiber).
+"""Resource-cap-limited unfolding (upward) process on Zeckendorf uplift (time fiber).
 
 This experiment instantiates the "complete conservative system" viewpoint:
 - Space = macro stable observation y in golden-mean language Y_m (size F_{m+2})
 - Time = explicit uplift tail bits (Zeckendorf digits beyond window)
 - Observer unfolding process = inverse tail step (branching)
-- Energy E = beam width (max concurrent branches)
+- Resource cap W = beam width cap (max concurrent branches)
 
 We fix the macro observation to y = 0^m (maximal folding degeneracy) and start from
 the "void" tail t=0 at depth 0. We then run an unfolding process that inverts the
-tail shift (Tail^{-1}) for a finite number of steps and keeps at most E branches.
+tail shift (Tail^{-1}) for a finite number of steps and keeps at most W branches.
 
 Outputs
 -------
@@ -56,7 +56,7 @@ class BeamStep:
 
 def _beam_upward_search(
     m: int,
-    E: int,
+    W: int,
     depth_max: int,
     macro_w: int,
     domain: FoldDomain,
@@ -101,10 +101,10 @@ def _beam_upward_search(
                 seen.add(tp)
                 nxt.append(tp)
 
-        # Apply energy cap by score.
-        if E > 0 and len(nxt) > E:
+        # Apply resource cap by score.
+        if W > 0 and len(nxt) > W:
             nxt.sort(key=score)
-            nxt = nxt[:E]
+            nxt = nxt[:W]
             steps[-1] = BeamStep(
                 depth=steps[-1].depth,
                 n_candidates=steps[-1].n_candidates,
@@ -125,17 +125,19 @@ def _ensure_dirs() -> None:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--ms", type=str, default="6,9,12,15", help="comma-separated m values")
-    ap.add_argument("--Es", type=str, default="1,2,4,8,16,32,64", help="comma-separated energy values (beam width)")
+    ap.add_argument("--Es", type=str, default="", help="(deprecated) comma-separated energy values; use --Ws")
+    ap.add_argument("--Ws", type=str, default="1,2,4,8,16,32,64", help="comma-separated resource caps W (beam width cap)")
     ap.add_argument("--depth_max", type=int, default=-1, help="max unfolding depth (default: tail length L(m))")
     ap.add_argument("--force", action="store_true")
     args = ap.parse_args()
 
     ms = [int(x.strip()) for x in str(args.ms).split(",") if x.strip()]
-    Es = [int(x.strip()) for x in str(args.Es).split(",") if x.strip()]
-    if not ms or not Es:
-        raise SystemExit("Empty ms/Es")
+    Ws_arg = str(args.Ws).strip() if str(args.Ws).strip() else str(args.Es).strip()
+    Ws = [int(x.strip()) for x in Ws_arg.split(",") if x.strip()]
+    if not ms or not Ws:
+        raise SystemExit("Empty ms/Ws")
 
-    params: Dict[str, object] = {"ms": ms, "Es": Es, "depth_max": int(args.depth_max)}
+    params: Dict[str, object] = {"ms": ms, "Ws": Ws, "depth_max": int(args.depth_max)}
 
     out_csv = "zeckendorf_energy_beam_uplift.csv"
     out_png = "zeckendorf_energy_beam_uplift_curve.png"
@@ -164,7 +166,7 @@ def main() -> None:
 
     rows: List[Dict[str, object]] = []
 
-    # Curves: for each (m,E) store candidate count vs depth.
+    # Curves: for each (m,W) store candidate count vs depth.
     curves: Dict[Tuple[int, int], List[int]] = {}
 
     for m in ms:
@@ -174,10 +176,10 @@ def main() -> None:
         depth_max = Lm if int(args.depth_max) < 0 else int(args.depth_max)
         depth_max = min(depth_max, Lm)
 
-        for E in Es:
-            steps = _beam_upward_search(m=m, E=int(E), depth_max=depth_max, macro_w=macro_w, domain=dom)
+        for W in Ws:
+            steps = _beam_upward_search(m=m, W=int(W), depth_max=depth_max, macro_w=macro_w, domain=dom)
             counts = [st.n_candidates for st in steps]
-            curves[(m, int(E))] = counts
+            curves[(m, int(W))] = counts
 
             final = steps[-1]
             rows.append(
@@ -185,7 +187,7 @@ def main() -> None:
                     "m": m,
                     "L_tail": int(dom.L),
                     "depth_max": int(depth_max),
-                    "E": int(E),
+                    "W": int(W),
                     "B0": int(steps[0].n_candidates),
                     "B_final": int(final.n_candidates),
                     "truncated": int(any(st.truncated for st in steps)),
@@ -200,23 +202,23 @@ def main() -> None:
     with out_csv_path.open("w", encoding="utf-8", newline="") as f:
         w = csv.DictWriter(
             f,
-            fieldnames=["m", "L_tail", "depth_max", "E", "B0", "B_final", "truncated", "min_N_final", "max_N_final"],
+            fieldnames=["m", "L_tail", "depth_max", "W", "B0", "B_final", "truncated", "min_N_final", "max_N_final"],
         )
         w.writeheader()
         for r in rows:
             w.writerow(r)
 
-    # Plot: for each m, show curves for selected E values.
+    # Plot: for each m, show curves for selected W values.
     out_png_path = run.run_dir / out_png
     plt.figure(figsize=(7.6, 4.4))
     for m in ms:
-        for E in Es:
-            ys = curves[(m, int(E))]
+        for W in Ws:
+            ys = curves[(m, int(W))]
             xs = list(range(len(ys)))
-            plt.plot(xs, ys, linewidth=1.2, label=f"m={m},E={E}")
+            plt.plot(xs, ys, linewidth=1.2, label=f"m={m},W={W}")
     plt.xlabel("unfold depth  d")
-    plt.ylabel("branch count  B_d (after energy cap)")
-    plt.title("Zeckendorf uplift: energy-limited unfolding from y=0^m")
+    plt.ylabel("branch count  B_d (after resource cap)")
+    plt.title("Zeckendorf uplift: resource-cap-limited unfolding from y=0^m")
     plt.grid(True, alpha=0.3)
     plt.legend(fontsize=8, ncol=2)
     plt.tight_layout()
@@ -233,19 +235,19 @@ def main() -> None:
         ],
     )
 
-    # Summary table (one row per m, select E=max to show unconstrained cap)
-    # We also report the theoretical maximum |T_m| = F_{L+2} implicitly via B_final when E is large enough.
+    # Summary table (one row per m, select W=max to show unconstrained cap)
+    # We also report the theoretical maximum |T_m| = F_{L+2} implicitly via B_final when W is large enough.
     tab_rows: List[List[str]] = []
     for m in ms:
         Lm = int(tail_length(m))
-        # Use the largest E.
-        Emax = max(Es)
-        rec = next(r for r in rows if int(r["m"]) == m and int(r["E"]) == int(Emax))
+        # Use the largest W.
+        Wmax = max(Ws)
+        rec = next(r for r in rows if int(r["m"]) == m and int(r["W"]) == int(Wmax))
         tab_rows.append(
             [
                 str(m),
                 str(Lm),
-                str(Emax),
+                str(Wmax),
                 str(rec["B_final"]),
                 str(rec["truncated"]),
             ]
@@ -258,7 +260,7 @@ def main() -> None:
         header=[
             r"$m$",
             r"\textbf{tail length $L(m)$}",
-            r"\textbf{energy $E$}",
+            r"\textbf{resource cap $W$}",
             r"\textbf{$B_{d_{\max}}$}",
             r"\textbf{truncated}",
         ],

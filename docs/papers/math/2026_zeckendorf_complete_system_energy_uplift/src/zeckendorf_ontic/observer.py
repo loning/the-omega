@@ -21,7 +21,7 @@ from typing import Dict, Iterable, Mapping, Optional, Set, Tuple
 
 from .protocol import ProtocolState, ZeckendorfProtocol
 
-__all__ = ["ObserverMachine", "ObserverBranchSet", "Transition", "ObserverObservation"]
+__all__ = ["Observer", "Transition", "ObserverObservation"]
 
 
 Symbol = str
@@ -55,6 +55,194 @@ class ObserverObservation:
     macro_word: int
     tail_word: int
     tape_view: str
+
+
+class Observer:
+    """A single observer that maintains a parallel branch set.
+
+    Public intent:
+      - External callers interact with ONE observer object.
+      - The observer internally maintains a set of parallel branches (machines).
+      - COMMIT is an operation on the internal branch set.
+
+    The first branch is treated as the "primary" branch for convenience accessors.
+    """
+
+    def __init__(
+        self,
+        protocol: ZeckendorfProtocol,
+        *,
+        transition_table: Mapping[Tuple[State, Symbol], Transition],
+        start_state: State,
+        halt_states: Set[State],
+        macro_word: int,
+        tail_word_start: int = 0,
+        resource_limit: int = 1,
+        trace_seed_bits: Optional[Iterable[int]] = None,
+        tape_input_bits: Optional[Iterable[int]] = None,
+        blank_symbol: Symbol = "_",
+        couple_protocol_each_step: bool = False,
+        _branches: Optional[Iterable["ObserverMachine"]] = None,
+    ) -> None:
+        self._protocol = protocol
+        self._transition_table: Dict[Tuple[State, Symbol], Transition] = dict(transition_table)
+        self._halt_states: Set[State] = set(halt_states)
+        self._blank_symbol: Symbol = str(blank_symbol)
+        self._couple_protocol_each_step: bool = bool(couple_protocol_each_step)
+
+        if _branches is not None:
+            self._branches: list["ObserverMachine"] = list(_branches)
+        else:
+            self._branches = [
+                ObserverMachine(
+                    protocol,
+                    transition_table=self._transition_table,
+                    start_state=str(start_state),
+                    halt_states=set(self._halt_states),
+                    macro_word=int(macro_word),
+                    tail_word_start=int(tail_word_start),
+                    resource_limit=int(resource_limit),
+                    trace_seed_bits=trace_seed_bits,
+                    tape_input_bits=tape_input_bits,
+                    blank_symbol=str(self._blank_symbol),
+                    couple_protocol_each_step=bool(self._couple_protocol_each_step),
+                )
+            ]
+
+    @staticmethod
+    def merge(observers: Iterable["Observer"]) -> "Observer":
+        """Merge branch sets from multiple observers into one observer."""
+
+        observers_list = list(observers)
+        if not observers_list:
+            raise ValueError("observers must be non-empty")
+        first = observers_list[0]
+        all_branches: list["ObserverMachine"] = []
+        for obs in observers_list:
+            all_branches.extend(obs._branches)
+        return Observer(
+            first._protocol,
+            transition_table=first._transition_table,
+            start_state=first._branches[0].control_state if first._branches else "START",
+            halt_states=set(first._halt_states),
+            macro_word=int(first.macro_word),
+            tail_word_start=int(first.tail_word),
+            resource_limit=int(first.resource_limit),
+            blank_symbol=str(first._blank_symbol),
+            couple_protocol_each_step=bool(first._couple_protocol_each_step),
+            _branches=all_branches,
+        )
+
+    # -------------------------
+    # Branch-set public API
+    # -------------------------
+    def branch_count(self) -> int:
+        return int(len(self._branches))
+
+    def obs(self, left: int = -16, right: int = 16) -> list[ObserverObservation]:
+        return [b.observe(left=left, right=right) for b in self._branches]
+
+    def tail_words(self) -> list[int]:
+        return [int(b.tail_word) for b in self._branches]
+
+    def macro_words(self) -> list[int]:
+        return [int(b.macro_word) for b in self._branches]
+
+    def commit(self) -> None:
+        """Deterministic COMMIT: drop infeasible branches, then truncate by cap."""
+
+        if not self._branches:
+            return
+        proto = self._branches[0]._protocol
+        cap = min(proto.beam_width_cap(b._protocol_state) for b in self._branches)
+        feasible = [b for b in self._branches if proto.is_ok_clo(b._protocol_state)]
+        feasible.sort(key=lambda b: proto.score_key(b._protocol_state))
+        self._branches = feasible[: min(int(cap), len(feasible))]
+
+    def protocol_expand_one_step(self) -> int:
+        """Expand the branch set by one protocol unfold step.
+
+        For each current branch, try all available binary branch choices (0/1) for
+        the protocol unfold step, cloning the branch when the step is defined.
+        This grows the observer's parallel branch set (the "bubble frontier").
+
+        Returns the new branch count (before any commit).
+        """
+
+        if not self._branches:
+            return 0
+        proto = self._branches[0]._protocol
+        expanded: list["ObserverMachine"] = []
+        for b in self._branches:
+            # Try both binary branch choices; invalid choices return None.
+            for choice in (0, 1):
+                next_state = proto.unfold_step(b._protocol_state, branch_choice_bit=int(choice))
+                if next_state is None:
+                    continue
+                expanded.append(b._clone_with_protocol_state(next_state))
+        self._branches = expanded
+        return int(len(self._branches))
+
+    def protocol_expand_one_step_and_commit(self) -> int:
+        """Expand by one protocol step and then apply deterministic commit."""
+
+        self.protocol_expand_one_step()
+        self.commit()
+        return int(len(self._branches))
+
+    # -------------------------
+    # Primary-branch convenience API
+    # -------------------------
+    def _primary(self) -> "ObserverMachine":
+        if not self._branches:
+            raise RuntimeError("no branches available")
+        return self._branches[0]
+
+    @property
+    def control_state(self) -> State:
+        return self._primary().control_state
+
+    @property
+    def head_position(self) -> int:
+        return self._primary().head_position
+
+    @property
+    def macro_word(self) -> int:
+        return self._primary().macro_word
+
+    @property
+    def tail_word(self) -> int:
+        return self._primary().tail_word
+
+    @property
+    def trace_tape_length(self) -> int:
+        return self._primary().trace_tape_length
+
+    @property
+    def resource_limit(self) -> int:
+        return self._primary().resource_limit
+
+    def is_halted(self) -> bool:
+        return self._primary().is_halted()
+
+    def view_tape(self, left: int = -16, right: int = 16) -> str:
+        return self._primary().view_tape(left=left, right=right)
+
+    def step(self) -> bool:
+        """Step all branches once. Returns True iff at least one branch stepped."""
+
+        any_executed = False
+        for b in self._branches:
+            any_executed = bool(b.step()) or any_executed
+        return bool(any_executed)
+
+    def undo_step(self) -> bool:
+        """Undo one step on all branches. Returns True iff at least one branch undone."""
+
+        any_undone = False
+        for b in self._branches:
+            any_undone = bool(b.undo_step()) or any_undone
+        return bool(any_undone)
 
 
 class ObserverBranchSet:
@@ -327,6 +515,33 @@ class ObserverMachine:
     # -------------------------
     # Internal helpers
     # -------------------------
+    def _clone_with_protocol_state(self, protocol_state: ProtocolState) -> "ObserverMachine":
+        """Internal: clone this machine with a replaced protocol state.
+
+        This is used to materialize parallel branches under different protocol
+        unfold choices. The clone does not share mutable tape state.
+        """
+
+        clone = ObserverMachine(
+            self._protocol,
+            transition_table=self._transition_table,
+            start_state=str(self._control_state),
+            halt_states=set(self._halt_states),
+            macro_word=int(self.macro_word),
+            tail_word_start=int(self.tail_word),
+            resource_limit=int(self.resource_limit),
+            trace_seed_bits=None,
+            tape_input_bits=None,
+            blank_symbol=str(self._blank_symbol),
+            couple_protocol_each_step=bool(self._couple_protocol_each_step),
+        )
+        clone._control_state = str(self._control_state)
+        clone._head_position = int(self._head_position)
+        clone._tape = dict(self._tape)
+        clone._history = list(self._history)
+        clone._protocol_state = protocol_state
+        return clone
+
     def _write_symbol_at_head(self, symbol: Symbol) -> None:
         write_symbol = str(symbol)
         if write_symbol == self._blank_symbol:

@@ -6,7 +6,7 @@
 为防止解释性叙事在不经声明的情况下被当作推导前提，本文采用与内部论文 \cite{Internal2025StairwayToInfinity} 一致的\textbf{分层审计纪律}：明确分离三层语言并规定单向依赖。
 \begin{itemize}
   \item \textbf{Layer 0（本体/ontic）}：只允许出现静态约束系统 \(\Clo\) 与可行态集合（例如 \(\mathcal A_m=\mathrm{Im}(\mathrm{Enc}_m)\subseteq \Ym\times T_m\)）。不引入外部时间参数与外部概率公设。
-  \item \textbf{Layer 1（协议/protocol）}：允许选择有限资源下的扫描/读出/编码协议，并在扩展态 \(\Sigma=(y,t,\mathsf{tr},\mathsf{E})\) 上用可逆原子步 \(\mathcal U/\mathcal D\) 进行推进与回滚；操作时间、统计量与可审计账本均在此层定义。
+  \item \textbf{Layer 1（协议/protocol）}：允许选择有限资源下的扫描/读出/编码协议，并在扩展态 \(\Sigma=(y,t,\mathsf{tr},W)\) 上用可逆原子步 \(\mathcal U/\mathcal D\) 进行推进与回滚；操作时间、统计量与可审计账本均在此层定义。
   \item \textbf{Layer 2（解释/interpretation）}：把 Layer 1 的结构映射为语义叙事（空间/时间/能量/主观体验等）。该层仅作注释，不得作为 Layer 0/1 的推理前提。
 \end{itemize}
 本文所有定理/命题的证明链只在 Layer 0/1 内闭合；Layer 2 的表述若出现，均应可回译为 Layer 1 的可审计接口。
@@ -24,9 +24,9 @@
 \(\Fold,\,\Ym\) & L0 & 空间压缩核与稳定语言（定义 \ref{def:fold}）\\
 \(\mathrm{Enc}_m,\mathrm{Rec}_m,\mathcal A_m\) & L0 & 可行对与互逆拼合（定义 \ref{def:enc_rec_inverse_pair}，命题 \ref{prop:space_time_inverse_via_rec}）\\
 \(\Tail\) & L0/L1 & 作为关系/算子给出时间推进接口（定义 \ref{def:tail_shift}）\\
-\(\Sigma=(y,t,\mathsf{tr},\mathsf{E})\) & L1 & 可审计扩展态寄存器（定义 \ref{def:full_state_and_ledgers}）\\
+\(\Sigma=(y,t,\mathsf{tr},W)\) & L1 & 可审计扩展态寄存器（定义 \ref{def:full_state_and_ledgers}）\\
 \(\mathcal U,\mathcal D\) & L1 & 互逆原子步（定义 \ref{def:up_down_interface}）\\
-\(|\mathsf{tr}|,|\mathsf{E}|,\Energy(\mathsf{E})\) & L1 & 路径/资源账本与并行上限（定义 \ref{def:energy_beam}）\\
+\(|\mathsf{tr}|,W\) & L1 & 路径/资源账本与并行上限（定义 \ref{def:energy_beam}）\\
 \(\Ipos,\Ineg\) & L1 & 审计账本语义（假设 \ref{ass:zero_ledger}，命题 \ref{prop:auditable_zero_ledger_proxy}）\\
 “空间/时间/能量/主观单线”等叙事 & L2 & 对 Layer 1 结构的语义解释（不得进入证明链）\\
 \bottomrule
@@ -177,7 +177,7 @@ $$
 $$
 \Energy_{\mathrm{pot}}(y):=\log_2 s_m(y)\qquad (\text{单位：bits}).
 $$
-它只依赖于折叠核 \(\Fold\) 与 dyadic 截断 \(2^m-1\)，刻画“同一宏观观测 \(y\) 兼容多少个微观前像/多少种 uplift 选择”。注意：\(\Energy_{\mathrm{pot}}\) 与由能量胶带诱导的 beam width \(\Energy(\mathsf{E})\)（定义 \ref{def:energy_beam}）属于不同层次；前者是 \textbf{空间状态的结构属性}，后者是 \textbf{观察者并行维护的资源上限}。
+它只依赖于折叠核 \(\Fold\) 与 dyadic 截断 \(2^m-1\)，刻画“同一宏观观测 \(y\) 兼容多少个微观前像/多少种 uplift 选择”。注意：\(\Energy_{\mathrm{pot}}\) 与 beam width 上限 \(W\)（定义 \ref{def:energy_beam}）属于不同层次；前者是 \textbf{空间状态的结构属性}，后者是 \textbf{观察者并行维护的资源上限}。
 \end{definition}
 
 \begin{definition}[纤维编码与可逆分解]\label{def:fiber_code_and_split}
@@ -189,7 +189,7 @@ $$
 $$
 \mathrm{Code}_y:\Fold^{-1}(y)\hookrightarrow \{0,1\}^{k(y)}.
 $$
-\(\mathrm{Code}_y\) 的像是一个大小为 \(s\) 的码字集合；其逆映射 \(\mathrm{Code}_y^{-1}\) 仅在该像上定义。该编码用于把“空间侧简并度”转写为能量胶带上可审计的比特资源（见 \S\ref{subsec:genesis_process_spec}）。
+\(\mathrm{Code}_y\) 的像是一个大小为 \(s\) 的码字集合；其逆映射 \(\mathrm{Code}_y^{-1}\) 仅在该像上定义。该编码可用于把“空间侧简并度”转写为可审计的资源变化（例如 \(\log_2 W\) 的单步更新；见 \S\ref{subsec:genesis_process_spec}）。
 \end{definition}
 
 \begin{corollary}[\texorpdfstring{$m=6$}{m=6} 的三值潜在能量谱]\label{cor:m6_potential_energy_spectrum}

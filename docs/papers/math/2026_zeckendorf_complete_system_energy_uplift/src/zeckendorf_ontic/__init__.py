@@ -6,7 +6,7 @@ This package is intentionally self-contained and does NOT depend on the paper's
 
 from .ontic_system import EncPair, OnticZeckendorfSystem
 from .protocol import ProtocolState, ZeckendorfProtocol
-from .observer import ObserverBranchSet, ObserverMachine, ObserverObservation, Transition
+from .observer import Observer, ObserverObservation, Transition
 from .view import OnticZeckendorfView
 
 __all__ = [
@@ -15,8 +15,7 @@ __all__ = [
     "ProtocolState",
     "ZeckendorfProtocol",
     "Transition",
-    "ObserverMachine",
-    "ObserverBranchSet",
+    "Observer",
     "ObserverObservation",
     "OnticZeckendorfView",
 ]
