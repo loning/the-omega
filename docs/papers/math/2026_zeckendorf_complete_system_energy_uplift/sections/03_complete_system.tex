@@ -9,6 +9,27 @@ $$
 $$
 其中 \(x\) 是微观读出（或其整数索引 \(N(x)\)），\(y=\Fold(x)\) 是空间状态（一个长度为 \(m\) 的比特串，且满足无相邻 \(11\) 约束），\(t=\tautime_m(N(x))\) 是时间纤维的尾部头状态（一个长度为 \(L(m)\) 的比特串，亦满足无相邻 \(11\) 约束）。本篇对“信息守恒/产生/湮灭”的所有叙述均落实为这些比特串寄存器与其可逆的数学更新规则（而非某种特定的实现细节）。
 
+\begin{definition}[静态约束系统 \texorpdfstring{$\Clo$}{C} 的最小约束清单]\label{def:C_minimal_constraints}
+为使推理链闭合且可审计，我们把 \(\Clo\) 明确拆成 Layer 0/1 两层的约束清单（Layer 2 不进入证明链，见 \S\ref{subsec:layer_audit_rule}）。
+\begin{itemize}
+  \item \textbf{Layer 0（本体约束）}：
+  \begin{itemize}
+    \item \textbf{Zeckendorf 合法性}：存在唯一合法数码 \((c_k)_{k\ge 1}\) 使 \(N=\sum_{k\ge 1}c_kF_{k+1}\) 且 \(c_kc_{k+1}=0\)（Zeckendorf 唯一性见 \cite{Zeckendorf1972,AlloucheShallit2003,Lothaire2002}）。
+    \item \textbf{折叠一致性}：\(y=\Fold(N)=(c_1,\dots,c_m)\in \Ym\)（定义 \ref{def:fold}）。
+    \item \textbf{dyadic 截断}：\(N\in\{0,\dots,2^m-1\}\)（固定分辨率 \(m\) 的取样域）。
+    \item \textbf{uplift 尾部}：\(t=\tautime_m(N)=(c_{m+1},\dots,c_{K(m)})\in T_m\)（定义 \ref{def:time_fiber}）并满足边界相容（由 Zeckendorf 禁邻约束自动导出）。
+    \item \textbf{时间推进接口}：\(\Tail:T_m\to T_m\) 为尾部移位（定义 \ref{def:tail_shift}）。
+  \end{itemize}
+  \item \textbf{Layer 1（协议约束）}：
+  \begin{itemize}
+    \item \textbf{可审计扩展态}：\(\Sigma=(y,t,\mathsf{tr},\mathsf{E})\)（定义 \ref{def:full_state_and_ledgers}），其中 \(\mathsf{tr}\) 是路径标签，\(\mathsf{E}\) 是资源寄存器。
+    \item \textbf{互逆原子步}：展开/折叠算子 \(\mathcal U/\mathcal D\) 由 \(\mathsf{push}/\mathsf{pop}\)、\(\Tail/\Tail^{-1}\) 与纤维编码 \(\mathrm{Code}_y\) 组成（定义 \ref{def:unfold_one_step_spec}--\ref{def:fold_one_step_spec}）。
+    \item \textbf{资源上限与截断}：beam width 由 \(\Energy(\mathsf{E})=2^{|\mathsf{E}|}\) 给出（定义 \ref{def:energy_beam}），并允许一个公开的确定性评分/排序规则实施 commit（定义 \ref{def:energy_as_subgroupoid_selector}）。
+  \end{itemize}
+\end{itemize}
+该约束清单的目的是把“系统是什么”完全钉死为可复核的对象：任何后续命题若使用了额外条件，必须显式加入该清单并标注层级。
+\end{definition}
+
 \begin{definition}[比特寄存器：空间状态、时间纤维与 trace]\label{def:bit_registers_space_time_log}
 固定窗口长度 \(m\) 与尾部长度 \(L=L(m)\)。我们把观察者的“可审计扩展态”实现为三组比特寄存器：
 \begin{itemize}
@@ -25,7 +46,7 @@ $$
 \end{definition}
 
 \subsection{图论/群论化语义：由可逆比特边生成的 groupoid}\label{subsec:graph_groupoid_semantics}
-本篇的系统可以直接视为一个\textbf{带标签的有向图}，并且展开/折叠是该图上的互逆边；因此与其说“群论化”，更精确是：由这些互逆边生成一个\textbf{groupoid}（或等价地，一个由部分双射生成的 inverse semigroup）。
+本篇的系统可以直接视为一个\textbf{带标签的有向图}，并且展开/折叠是该图上的互逆边；因此与其说“群论化”，更精确是：由这些互逆边生成一个\textbf{groupoid}（或等价地，一个由部分双射生成的 inverse semigroup）。这类“部分对称性 = inverse semigroup / groupoid”的形式化是成熟框架，可参见 \cite{Lawson1998,Paterson1999}。
 
 \begin{definition}[观察者泡泡生成图（比特级状态图）]\label{def:observer_bubble_graph}
 固定空间状态 \(y\in\Ym\) 与尾部长度 \(L=L(m)\)。定义顶点集合为
@@ -167,15 +188,55 @@ $$
 本文使用一个“有符号信息账本”作为守恒表述的最小外壳：空间侧携带正信息，时间侧携带负信息（逆信息胶带）。我们不把该记账等同于 Shannon 熵的取负，而只把它作为可审计的结构化约定。
 
 \begin{assumption}[零总账守恒（记账公理）]\label{ass:zero_ledger}
-存在两个可审计的标量记账函数 \(\Ipos(\cdot)\) 与 \(\Ineg(\cdot)\)，使得对所有满足本体约束的扩展态 \((y,t)\) 都有
+存在两个可审计的标量记账函数 \(\Ipos(\cdot)\) 与 \(\Ineg(\cdot)\)。它们不是本体层的“熵”，而是协议层的\textbf{账本语义}：用来表述“空间压缩的多对一”所需的逆信息必须以可审计的方式出现在扩展态中。
+该假设被严格归入 Layer 1：它可用于审计 \(\mathcal U/\mathcal D\) 的逐步资源平衡，但不得作为 Layer 0（本体约束 \(\Clo\)）推导的前提。
+
+更精确地，令一次合法展开原子步把
 $$
-\Ipos(y)+\Ineg(t)=0.
+(y,t,\mathsf{tr},\mathsf{E})\xrightarrow{\ \mathcal U\ }(y,t',\mathsf{tr}',\mathsf{E}')
+$$
+从而写入 1 位 trace 并更新能量胶带（见定义 \ref{def:up_down_interface} 与命题 \ref{prop:ledger_deltas_one_step}）。我们要求账本满足如下\textbf{单步平衡式}：
+$$
+\Ipos(y)+\Bigl(\Ineg(t',\mathsf{tr}',\mathsf{E}')-\Ineg(t,\mathsf{tr},\mathsf{E})\Bigr)=0.
 $$
 \end{assumption}
 
 \begin{remark}
-在 Zeckendorf uplift 实例中，\(\Ineg(t)\) 可以用时间纤维（尾部胶带）的编码长度（比特数）实现；\(\Ipos(y)\) 则对应空间状态（宏观稳定语言）所携带的结构化信息。本文实验侧重于 \(\Ineg\) 的可计算代理量（见下一节）。
+在 Zeckendorf uplift 实例中，\(\Ipos\) 的自然结构量是空间简并度的比特量 \(\Energy_{\mathrm{pot}}(y)=\log_2 s_m(y)\)（定义 \ref{def:potential_energy_from_fiber_size}）。但在“逐步可逆审计”的口径下，每一步实际被写入/弹出的比特数由纤维编码位数
+$$
+k(y)=\left\lceil \log_2 s_m(y)\right\rceil
+$$
+决定（定义 \ref{def:fiber_code_and_split}），因此一个直接可计算且可逐行核验的代理选择是
+$$
+\Ipos(y):=k(y),\qquad
+\Ineg(t,\mathsf{tr},\mathsf{E}):=-\bigl(|\mathsf{tr}|+|\mathsf{E}|\bigr).
+$$
+此时单步平衡式等价于
+$$
+k(y)=\bigl(|\mathsf{tr}'|-|\mathsf{tr}|\bigr)+\bigl(|\mathsf{E}'|-|\mathsf{E}|\bigr),
+$$
+它由命题 \ref{prop:ledger_deltas_one_step} 立即推出。该表述把“空间/时间抵消”严格降格为\textbf{可审计账本}：抵消不是删除信息，而是把空间侧简并度转写为 trace 与能量胶带上的比特变化；并且仅凭 \(t\) 不能保持可逆性，负账必须显式依赖 \((t,\mathsf{tr},\mathsf{E})\)（见命题 \ref{prop:log_needed_for_reversibility}）。
 \end{remark}
+
+\begin{proposition}[零总账的可审计单步形式（代理版）]\label{prop:auditable_zero_ledger_proxy}
+固定一套纤维编码 \(\{\mathrm{Code}_y\}_{y\in\Ym}\)（定义 \ref{def:fiber_code_and_split}），并定义账本代理
+$$
+\Ipos(y):=k(y),\qquad \Ineg(t,\mathsf{tr},\mathsf{E}):=-\bigl(|\mathsf{tr}|+|\mathsf{E}|\bigr).
+$$
+则对任意合法展开一步 \((y,t,\mathsf{tr},\mathsf{E})\xrightarrow{\ \mathcal U\ }(y,t',\mathsf{tr}',\mathsf{E}')\)（定义 \ref{def:unfold_one_step_spec}），有
+$$
+\Ipos(y)+\Bigl(\Ineg(t',\mathsf{tr}',\mathsf{E}')-\Ineg(t,\mathsf{tr},\mathsf{E})\Bigr)=0.
+$$
+对任意合法折叠一步 \((y,t',\mathsf{tr}',\mathsf{E}')\xrightarrow{\ \mathcal D\ }(y,t,\mathsf{tr},\mathsf{E})\)（定义 \ref{def:fold_one_step_spec}），同样成立（等价地取负号）。
+\end{proposition}
+
+\begin{proof}
+由命题 \ref{prop:ledger_deltas_one_step}，展开一步满足 \(|\mathsf{tr}'|-|\mathsf{tr}|=1\) 与 \(|\mathsf{E}'|-|\mathsf{E}|=-1+k(y)\)，相加得到
+$$
+\bigl(|\mathsf{tr}'|-|\mathsf{tr}|\bigr)+\bigl(|\mathsf{E}'|-|\mathsf{E}|\bigr)=k(y).
+$$
+代入 \(\Ineg=-\bigl(|\mathsf{tr}|+|\mathsf{E}|\bigr)\) 即得。折叠一步是展开一步的逆操作，等价结论同理成立。
+\end{proof}
 
 \subsection{绝对比特守恒：从虚无到生成，再到抵消归零}
 本节把“信息守恒就是比特守恒”的直觉落实为一个\textbf{比特级}、\textbf{可逆}的操作接口：从一个规范的“虚无态”（全部寄存器为零）出发，展开过程在寄存器 \(Y,T,\mathsf{tr},\mathsf{E}\) 上执行确定的可逆更新并采掘能量；折叠过程执行其逆更新，把空间状态与时间纤维（连同 trace）逐步湮灭并回到虚无态，同时回收能量。全文的“生成/挤出/湮灭/抵消”均指这些寄存器上的比特被写入或擦除。
@@ -205,9 +266,13 @@ $$
 \end{itemize}
 \end{definition}
 
-\begin{assumption}[创世种子（量子涨落借贷）]\label{ass:genesis_seed}
-虚无态 \((y_{\varnothing},t_{\varnothing})\) 之外，允许观察者在初始时刻携带一段极短的能量胶带 \(\mathsf{E}_0\)（例如 \(|\mathsf{E}_0|=1\)），作为“从无到有的第一步”所需的可逆选择资源。该资源可以在折叠回滚至虚无态时被逐步偿还（湮灭回到 \(\mathsf{E}=\epsilon\)）。
-\end{assumption}
+\begin{definition}[初始资源寄存器]\label{def:initial_resource_tape}
+在协议层（Layer 1）中，我们把初始能量胶带 \(\mathsf{E}_0\in\{0,1\}^\ast\) 视为\textbf{输入条件}：它给出展开过程在第一个原子步中可用的选择资源。最小非平凡情形是 \(|\mathsf{E}_0|=1\)。
+\end{definition}
+
+\begin{remark}[必要性与“无中生有”】【协议层口径】]
+展开一步的定义要求 \(|\mathsf{E}|\ge 1\)（定义 \ref{def:unfold_one_step_spec}），因此若从 \(\mathsf{E}=\epsilon\) 出发则无法执行任何展开。把 \(\mathsf{E}_0\) 作为输入并不引入新的本体假设：它只是把“观察者有多少可逆选择资源”显式外置为协议初值。该资源在折叠回滚时被逐步偿还（命题 \ref{prop:perfect_inverse_and_conservation}）。
+\end{remark}
 
 \begin{definition}[展开一步：消费 1 能量并采掘纤维编码]\label{def:unfold_one_step_spec}
 固定空间状态 \(y\)（或把 \(y\) 视作上层约束输入）。令当前状态为 \(\Sigma=(y,t,\mathsf{tr},\mathsf{E})\)，并要求 \(|\mathsf{E}|\ge 1\)。展开一步由以下三段同步组成：
@@ -310,20 +375,16 @@ $$
 命题 \ref{prop:perfect_inverse_and_conservation} 与 \ref{prop:ledger_deltas_one_step} 给出其互逆性与逐步账本守恒。
 \end{definition}
 
-\begin{assumption}[比特守恒（可逆性公理）]\label{ass:bit_conservation}
-存在一种对 uplift 选择记录的可审计编码，使得对任意从虚无态出发的展开运行 \(\mathcal U\)，其产生的输出 \((y,t)\) 与 trace 记录 \(\mathsf{tr}\) 满足：
-$$
-\mathcal D\bigl((y,t),\mathsf{tr}\bigr)=(y_{\varnothing},t_{\varnothing}),
-$$
-且该过程不丢失比特：展开/折叠互为逆操作，trace 与能量胶带中的每一比特都只能通过对应的逆步骤被湮灭或恢复，因而“能量守恒/信息守恒”在本文中是同一条可审计约束。
-\end{assumption}
+\begin{corollary}[比特守恒（由互逆性推出）]\label{cor:bit_conservation_from_inverse}
+在定义 \ref{def:unfold_one_step_spec}--\ref{def:fold_one_step_spec} 的可行域上，展开/折叠互为严格反演（命题 \ref{prop:perfect_inverse_and_conservation}）。因此对任意合法展开序列 \(\Sigma_0\to\cdots\to\Sigma_n\)，若记录了对应的 trace 与能量胶带的完整内容，则折叠回滚可逐步恢复到 \(\Sigma_0\)，且不存在“不可审计删除比特”的操作：所谓“湮灭”仅指按逆更新规则撤销先前写入。该口径与可逆计算/反计算的经典框架一致，可参见 \cite{Bennett1973,Landauer1961}。
+\end{corollary}
 
 \begin{remark}[与能量的关系]
 能量在本文中不再作为外部给定的上限，而是由能量胶带 \(\mathsf{E}\) 内生决定的 \(\Energy(\mathsf{E})\)（定义 \ref{def:energy_beam}）。展开会消耗能量并（在 \(s_m(y)>2\) 的情形下）采掘额外能量；折叠作为其逆操作回收能量并湮灭相应的时间纤维与微观解释候选，因此能量守恒等价于可逆性本身。
 \end{remark}
 
 \subsection{观察者：展开产生时空}
-观察者的输入不是“时间参数”，而是一个观测约束（例如固定 \(y=0^m\)）与一个初始能量胶带 \(\mathsf{E}_0\)（创世种子，假设 \ref{ass:genesis_seed}）。观察者在本体约束下通过展开过程生成一张搜索图：
+观察者的输入不是“时间参数”，而是一个观测约束（例如固定 \(y=0^m\)）与一个初始能量胶带 \(\mathsf{E}_0\)（定义 \ref{def:initial_resource_tape}）。观察者在本体约束下通过展开过程生成一张搜索图：
 \begin{itemize}
   \item 节点：某个候选 uplift 状态（尾部词）或其诱导的微观前像；
   \item 边：一次 \(\Tail^{-1}\) 分支扩展（展开一步）；

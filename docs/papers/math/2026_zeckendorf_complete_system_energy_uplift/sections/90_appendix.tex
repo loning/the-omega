@@ -8,3 +8,28 @@ python3 scripts/run_all.py --force
 \end{verbatim}
 生成的 LaTeX 片段位于 `sections/generated/`，稳定导出图/表位于 `artifacts/export/`。
 
+\subsection{依赖链审计表（封闭层：Layer 0/1）}\label{app:dependency_chain}
+为方便审稿复核，列出本文封闭推理链（只允许使用 Layer 0/1 语言；Layer 2 解释不作为前提，见 \S\ref{subsec:layer_audit_rule}）：
+\begin{enumerate}
+  \item \textbf{Zeckendorf 唯一性} \cite{Zeckendorf1972,AlloucheShallit2003,Lothaire2002}
+  \(\Rightarrow\) 定义 \(\Fold\) 与编码/重构对 \(\mathrm{Enc}_m/\mathrm{Rec}_m\)（定义 \ref{def:fold}、\ref{def:enc_rec_inverse_pair}），并得到互逆性命题 \ref{prop:space_time_inverse_via_rec}。
+  \item \textbf{黄金均值移位（SFT）刚性} \cite{LindMarcus1995,Koshy2001}
+  \(\Rightarrow\) 空间合法语言计数 \(|\Ym|=F_{m+2}\) 与熵 \(h_{\mathrm{top}}=\log\varphi\)（命题 \ref{prop:golden_mean_language_count_entropy}）。
+  \item \textbf{Binet 界（成熟结果）} \cite{Koshy2001}
+  \(\Rightarrow\) 截断覆盖指数 \(K(m)\) 与尾部长度 \(L(m)\) 的线性夹逼（引理 \ref{lem:Km_linear_rigidity}、推论 \ref{cor:tail_length_linear_rate}）。
+  \item \textbf{尾部状态空间计数}（SFT 计数的直接推论）
+  \(\Rightarrow\) \(|T_m|=F_{L(m)+2}\) 与指数率 \((2/\varphi)^m\)（命题 \ref{prop:tail_state_count_rate}）。
+  \item \textbf{Dyadic 三值纤维结构（内部定理）} \cite{Internal2026DyadicZeckendorfWindowFoldingKernel}
+  \(\Rightarrow\) \(s_m\) 的三值刚性与两阈值阶梯结构（定理 \ref{thm:three_valued_fiber_general}），从而能量谱 \(\Energy_{\mathrm{pot}}=\log_2 s_m\) 被强制为三值。
+  \item \textbf{协议层互逆接口}（定义 \ref{def:unfold_one_step_spec}--\ref{def:fold_one_step_spec}）
+  \(\Rightarrow\) 完美镜像互逆与逐步守恒（命题 \ref{prop:perfect_inverse_and_conservation}、\ref{prop:ledger_deltas_one_step}、推论 \ref{cor:bit_conservation_from_inverse}）。
+\end{enumerate}
+
+\subsection{关于 \texorpdfstring{$K(m)$}{K(m)} 与尾部长度界的证明定位}\label{app:Km_binet_notes}
+本文对 \(K(m)\)、\(L(m)\)、\(|T_m|\) 的量化界只依赖 Fibonacci/Binet 的标准不等式与取整夹逼（引理 \ref{lem:Km_linear_rigidity} 与命题 \ref{prop:tail_state_count_rate}）。这些结论在经典文献中可直接引用（如 \cite{Koshy2001}），因此正文采用“结论+引用”的写法以控制附录比例；如需逐行推导，可按以下三步复核：
+\begin{itemize}
+  \item 用 Binet 公式给出 \(F_n\asymp \varphi^n/\sqrt5\) 的上下界；
+  \item 把 \(F_{K(m)+1}\le 2^m-1< F_{K(m)+2}\) 取对数并整理得到 \(K(m)=m\log_\varphi 2+O(1)\)；
+  \item 由 \(L(m)=K(m)-m\) 与 SFT 计数 \(|T_m|=F_{L(m)+2}\) 得到 \(|T_m|=\Theta((2/\varphi)^m)\)。
+\end{itemize}
+

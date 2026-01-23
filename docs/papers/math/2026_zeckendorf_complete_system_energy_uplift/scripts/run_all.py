@@ -63,6 +63,14 @@ def build_steps() -> List[Step]:
                 "fig_observer_bubble_graph_m6.tex",
             ],
         ),
+        Step(
+            name="m6_confluence_trace_needed",
+            script="exp_m6_confluence_trace_needed.py",
+            args=[],
+            expected_generated=[
+                "tab_m6_confluence_example.tex",
+            ],
+        ),
     ]
 
 
