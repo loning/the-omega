@@ -59,13 +59,62 @@ $$
 从而，存在一个仅由本文协议层允许的可逆接口构成的“计算子系统”，可逐步模拟任意有效计算的可逆化版本。
 
 \paragraph{Step 4：与 \(\mathcal U/\mathcal D\) 的关系}
-上述通用计算子系统可以完全工作在“附加寄存器”上：即固定 \(y,t\) 不变，仅在 \(\mathsf{tr}\)（作为 tape）及必要的资源寄存器上执行可逆门序列。因此它不会改变 Layer 0 的约束对象，也不干扰正文中关于 \(\mathcal U/\mathcal D\) 的互逆性与守恒审计；它只是说明：一旦协议层允许对已存在的可增长比特寄存器实施可逆可编程更新，则\textbf{通用计算能力}可在协议内部出现。
+上述通用计算子系统可以完全工作在“附加寄存器”上：即固定 \(y,t\) 不变，仅在 \(\mathsf{tr}\)（作为 tape）及必要的资源寄存器上执行可逆门序列。因而“解释器/通用机”并未被移入 Layer 0 成为新的本体假设：它仍是协议层内的一个可逆路径族（或子系统），其所有中间状态都必须落在本体约束 \(\Clo\) 所允许的扩展态可行域中。换言之，\(\Clo\) 决定“世界的合法对象与合法接口”，而解释器只是其中一种可实现的、可审计的实现方式；这也保证它不会干扰正文中关于 \(\mathcal U/\mathcal D\) 的互逆性与守恒审计。
+
+\subsection{不可逆图灵机一步的 Bennett 可逆化嵌入（协议层译本）}\label{app:bennett_embedding_otm}
+本小节把正文定义 \ref{def:observer_tm_bennett_embedding} 的“可逆化嵌入”写成可直接实现的回滚规格：标准（不可逆）图灵机的一步更新，可以在协议层通过引入一个历史带 \(\mathsf{hist}\) 被提升为严格可逆的一步更新；外观不可逆性来自遗忘该历史带。
+
+\paragraph{输入数据}
+给定一台标准单带图灵机的转移表
+$$
+\delta_{\mathrm{TM}}:\;Q\times\Gamma\rightharpoonup Q\times\Gamma\times\{-1,0,+1\},
+$$
+以及配置三元组 \((q,\mathsf{tp},\mathsf{hp})\)（正文定义 \ref{def:observer_tm_signature_config}），其中 \(\mathsf{tp}:\ZZ\to\Gamma\) 且除有限多个位置外均为 \(\sqcup\)。
+
+\paragraph{历史记录格式}
+为使一步可逆，我们仅需记录“被覆盖的旧符号 + 旧控制态 + 位移”。定义每一步的历史记录为
+$$
+r:=(q,\ a,\ \Delta)\in Q\times\Gamma\times\{-1,0,+1\}.
+$$
+并把历史带 \(\mathsf{hist}\) 视为一个栈：\(\mathsf{push}(\mathsf{hist},r)\) 追加记录，\(\mathsf{pop}(\mathsf{hist})=(\mathsf{hist}_-,r)\) 弹出末条记录。
+
+\paragraph{可逆前向一步（写历史）}
+给定 \((q,\mathsf{tp},\mathsf{hp},\mathsf{hist})\) 且 \(q\notin H\)。令 \(a:=\mathsf{tp}[\mathsf{hp}]\)。若
+$$
+\delta_{\mathrm{TM}}(q,a)=(q',a',\Delta),
+$$
+则定义可逆前向一步
+$$
+(q,\mathsf{tp},\mathsf{hp},\mathsf{hist})\mapsto(q',\mathsf{tp}',\mathsf{hp}',\mathsf{hist}'),
+$$
+其中
+$$
+\mathsf{tp}' := \mathsf{tp}\text{ 且仅把 }\mathsf{tp}[\mathsf{hp}]\text{ 改写为 }a',\qquad
+\mathsf{hp}':=\mathsf{hp}+\Delta,\qquad
+\mathsf{hist}':=\mathsf{push}(\mathsf{hist},(q,a,\Delta)).
+$$
+
+\paragraph{可逆回滚一步（读历史）}
+给定 \((q',\mathsf{tp}',\mathsf{hp}',\mathsf{hist}')\) 且 \(\mathsf{hist}'\neq\epsilon\)。令
+$$
+\mathsf{pop}(\mathsf{hist}')=(\mathsf{hist},(q,a,\Delta)).
+$$
+并令 \(\mathsf{hp}:=\mathsf{hp}'-\Delta\)。定义回滚一步为：
+\begin{itemize}
+  \item 恢复旧符号：把 \(\mathsf{tp}'[\mathsf{hp}]\) 改写为 \(a\)，得到 \(\mathsf{tp}\)；
+  \item 恢复旧控制态：令控制态回到 \(q\)；
+  \item 恢复旧历史：令历史带回到 \(\mathsf{hist}\)。
+\end{itemize}
+为了审计一致性，可在回滚时检查：\(\delta_{\mathrm{TM}}(q,a)\) 的确等于 \((q',a',\Delta)\)，且回滚前的 \(\mathsf{tp}'[\mathsf{hp}]=a'\)。
+
+\paragraph{互逆性（一步级）}
+在 \(\delta_{\mathrm{TM}}\) 的定义域上，上述“前向一步”与“回滚一步”互为严格反演：回滚会精确恢复被覆盖的符号 \(a\)、旧控制态 \(q\)、以及旧头位置 \(\mathsf{hp}\)。因此，该构造把外观不可逆的一步更新提升为协议层的可逆更新；当把 \(\mathsf{hist}\) 视为被遗忘的账本并投影丢弃时，外观不可逆性随之出现。这正是 Bennett 可逆化思想的最小实现形式（参见 \cite{Bennett1973}）。
 
 \subsection{Kleene 第二递归定理与 Quine 的协议译本}\label{app:recursion_theorem_and_quine}
 本小节把“自发涌现的自指固定点”写成可审计的计算论语句，并翻译回本文协议符号。
 
 \paragraph{可接受编号与通用运行器}
-由 \S\ref{app:reversible_universal_computation}，协议层内可实现一个通用解释器（运行器）。形式上，我们把\textbf{程序}取为二进制串 \(p\in\{0,1\}^\ast\)，把\textbf{输入}取为二进制串 \(x\in\{0,1\}^\ast\)，并令
+由 \S\ref{app:reversible_universal_computation}，协议层在本体约束 \(\Clo\) 允许的可逆接口之内可实现一个通用解释器（运行器）。形式上，我们把\textbf{程序}取为二进制串 \(p\in\{0,1\}^\ast\)，把\textbf{输入}取为二进制串 \(x\in\{0,1\}^\ast\)，并令
 $$
 U(p,x)
 $$

@@ -63,16 +63,188 @@ $$
 \end{definition}
 
 \begin{proposition}[协议层的可逆通用计算子系统（存在性）]\label{prop:reversible_universal_subsystem}
-存在一个仅由定义 \ref{def:programmable_trace_tape} 的可逆 tape 原语与本篇既有的 \(\mathcal U/\mathcal D\) 组合而成的协议子系统，使得其可模拟任意（偏）可计算过程的可逆化版本（Bennett 可逆模拟意义下）。因此，在该协议层扩展之上，可以定义一个通用的“运行器/解释器”
+在本体约束 \(\Clo\) 给定的可行域内（即所有涉及 \(y,t\) 的约束仍由 Layer 0 锁定不变），存在一个仅由定义 \ref{def:programmable_trace_tape} 的可逆 tape 原语与本篇既有的 \(\mathcal U/\mathcal D\) 组合而成的协议子系统，使得其可模拟任意（偏）可计算过程的可逆化版本（Bennett 可逆模拟意义下）。因此，在该协议层扩展之上，可以定义一个通用的“运行器/解释器”
 $$
 \mathsf{Run}:\{0,1\}^\ast \to \{0,1\}^\ast
 $$
-把输入 tape 上的一段自描述程序（编码）映射到输出（编码）。
+把输入 tape 上的一段自描述程序（编码）映射到输出（编码）。强调：这里的“解释器”不是额外加入的本体输入，而是协议层在 \(\Clo\) 所允许的扩展态与可逆更新之内\textbf{构造出的一个对象/子系统}。
 \end{proposition}
 
 \begin{remark}[为何这足以导出第二递归定理/Quine]\label{rem:why_universality_implies_quine}
-一旦协议层内生出通用执行语义（命题 \ref{prop:reversible_universal_subsystem}），则在标准“可接受编号/通用函数”框架下，Kleene 第二递归定理给出自指固定点的必然存在；Quine 则是其一个直接特例。本文把该结论以\textbf{协议译本}形式写入附录，并显式翻译到 \(\widehat\Sigma\) 的 tape 语义（见附录 \S\ref{app:reversible_universal_computation}--\S\ref{app:recursion_theorem_and_quine}）。
+一旦协议层在 \(\Clo\) 允许的可逆更新之内内生出通用执行语义（命题 \ref{prop:reversible_universal_subsystem}），则在标准“可接受编号/通用函数”框架下，Kleene 第二递归定理给出自指固定点的必然存在；Quine 则是其一个直接特例。本文把该结论以\textbf{协议译本}形式写入附录，并显式翻译到 \(\widehat\Sigma\) 的 tape 语义（见附录 \S\ref{app:reversible_universal_computation}--\S\ref{app:recursion_theorem_and_quine}）。从图论/groupoid 视角看，这等价于：在由 \(\Clo\) 允许的可逆边生成的 groupoid 中，存在一类可逆路径族可实现“通用执行”，从而固定点路径（自指）随之出现。
 \end{remark}
+
+\subsubsection{图灵系统涌现：与图灵机的严格等价}\label{subsubsec:turing_emergence_equivalence}
+本小节把“图灵系统涌现”从解释性叙事降格为\textbf{严格等价关系}：在本体约束 \(\Clo\) 不变的前提下，只要协议层的可编程 tape 接口满足图灵机的标准结构条件，则协议层可计算的偏函数类与图灵可计算偏函数类完全一致。
+
+\begin{definition}[协议机（tape-局部规则抽象机）]\label{def:protocol_machine}
+固定一个空间观测与其允许的扩展态可行域（由 \(\Clo\) 给出）。定义协议机 \(\mathsf{M}\) 的配置为
+$$
+C=(q,\mathsf{tr},\mathsf{hp})\in Q\times \{0,1\}^\ast\times\NN,
+$$
+其中 \(Q\) 是有限控制态集合，\(\mathsf{tr}\) 为 tape 内容（空白补零约定），\(\mathsf{hp}\) 为头位置。给定一个固定的局部窗口半径 \(r\in\NN\)，令
+$$
+w_r(C)\in\{0,1\}^{2r+1}
+$$
+表示头附近窗口 \(\mathsf{tr}[\mathsf{hp}-r:\mathsf{hp}+r]\) 的比特串（越界处按空白 \(0\) 处理）。协议机的一步转移由有限规则集给出，并等价地可写成一个部分函数
+$$
+\delta:\; Q\times\{0,1\}^{2r+1}\rightharpoonup Q\times\{0,1\}^{2r+1}\times\{-1,0,+1\},
+$$
+其含义是：读取窗口 \(w_r(C)\)，用一个（可逆或不可逆的）局部更新把该窗口改写为新窗口，并把头移动 \(\Delta\in\{-1,0,+1\}\)。当 \(\delta\) 未定义时视为停止或非法（由 \(\Clo\) 的可行域守卫实现）。若指定停机态集合 \(H\subseteq Q\)，则定义计算为：把输入串写入 tape 的某个约定区段并置初始配置 \(C_0\)，迭代 \(\delta\) 直至停机，最后按约定从 tape 读出输出串。
+\end{definition}
+
+\begin{theorem}[协议机与图灵机的函数类等价]\label{thm:protocol_machine_equiv_tm}
+设 \(\mathsf{M}\) 为定义 \ref{def:protocol_machine} 的协议机，并假设其 tape 是无界可增长的（即对任意 \(n\) 存在可达配置使 \(|\mathsf{tr}|\ge n\)）。则下列陈述等价：
+\begin{enumerate}
+  \item \textbf{（图灵机模拟）} \(\mathsf{M}\) 可模拟单带图灵机（存在可计算编码使得停机/输出一致），因此存在一个通用协议程序实现通用图灵机。
+  \item \textbf{（偏函数类）} \(\mathsf{M}\) 所能计算的偏函数类恰为图灵可计算偏函数类（亦即偏递归函数类）。
+  \item \textbf{（存在通用解释器）} 存在某个固定程序编码 \(p_U\)（写入 tape 的约定区段）使得对任意程序编码 \(p\) 与输入 \(x\)，\(\mathsf{M}\) 在输入 \(p_U\#p\#x\) 上的行为等同于“运行 \(p\) 于 \(x\)”。
+\end{enumerate}
+该等价是标准计算论事实：定义 \ref{def:protocol_machine} 的“有限控制 + 无界 tape + 局部读写与头移动”的结构与经典图灵机模型互可逐步模拟，因此两者的可计算偏函数类一致。可参见 \cite{Sipser2012,Rogers1967}。
+\end{theorem}
+
+\begin{corollary}[可逆约束下的图灵完备性]\label{cor:reversible_tm_emergence}
+若进一步要求协议层原子步为可逆（部分双射）并允许使用额外日志/工作带进行 Bennett 可逆化，则图灵完备性不变：在多项式开销意义下，\(\mathsf{M}\) 可模拟任意图灵计算的可逆化版本（见 \cite{Bennett1973,Toffoli1980}）。因此，“可逆性”改变的是资源开销模型，而不改变可计算偏函数类。
+\end{corollary}
+
+\subsubsection{观察者图灵机：外观不可逆语义与协议层可逆实现}\label{subsubsec:observer_tm_spec}
+本节给出一个可直接据此实现的“观察者图灵机”（Observer Turing Machine, OTM）规格。其核心是把三层口径分离为两个可编程接口：
+\begin{itemize}
+  \item \textbf{本体守卫（Layer 0）}：\(\Clo\) 只提供合法性谓词与可行域，不提供历史；
+  \item \textbf{协议接口（Layer 1）}：在扩展态上提供可审计、可逆的原子步（包括但不限于本文的 \(\mathcal U/\mathcal D\) 与 trace-tape 原语）；
+  \item \textbf{观察者语义（外观层）}：通过 \(\mathrm{Obs}/\mathrm{Commit}\) 对扩展态做投影与截断，从而必然表现为不可逆。
+\end{itemize}
+
+\begin{definition}[\(\Clo\) 可行域守卫]\label{def:ok_Clo_guard}
+记
+$$
+\mathcal A_m := \mathrm{Im}(\mathrm{Enc}_m)\subseteq \Ym\times T_m
+$$
+为可行对集合（命题 \ref{prop:space_time_inverse_via_rec}）。定义本体守卫谓词
+$$
+\mathrm{OK}_{\Clo}(y,t):=\mathbf 1_{(y,t)\in\mathcal A_m}.
+$$
+任何协议步/计算步若试图进入 \(\mathrm{OK}_{\Clo}(y,t)=0\) 的配置，则该步在该输入处视为未定义（或在分支语义下该分支被丢弃）。
+\end{definition}
+
+\begin{definition}[观察者图灵机（OTM）的签名与配置]\label{def:observer_tm_signature_config}
+观察者图灵机 \(\mathsf{OTM}\) 由如下数据给出：
+\begin{itemize}
+  \item \textbf{有限控制}：有限状态集 \(Q\)，初态 \(q_0\in Q\)，停机态集合 \(H\subseteq Q\)；
+  \item \textbf{带字母表}：\(\Gamma\)（至少包含 \(\{0,1,\sqcup\}\)）；
+  \item \textbf{标准（外观）转移表}：部分函数
+  $$
+  \delta_{\mathrm{TM}}:\;Q\times\Gamma\rightharpoonup Q\times\Gamma\times\{-1,0,+1\}.
+  $$
+  \item \textbf{本体输入与资源输入}：固定的空间观测 \(y\in\Ym\) 与初始资源胶带 \(\mathsf{E}_0\in\{0,1\}^\ast\)（定义 \ref{def:initial_resource_tape}）。
+\end{itemize}
+其（协议层）配置取为
+$$
+C=(q,\;y,\;t,\;\mathsf{tr},\;\mathsf{E},\;\mathsf{tp},\;\mathsf{hp},\;\mathsf{hist},\;\mathsf{IO}),
+$$
+其中
+\begin{itemize}
+  \item \(q\in Q\) 为控制态；
+  \item \(t\in T_m\) 为尾部头；
+  \item \(\mathsf{tr}\in\{0,1\}^\ast\) 为协议层路径日志（定义 \ref{def:full_state_and_ledgers}）；
+  \item \(\mathsf{E}\in\{0,1\}^\ast\) 为能量胶带；
+  \item \(\mathsf{tp}:\ZZ\to\Gamma\) 为 TM tape 内容（双向无限 tape 约定，且除有限多个位置外均为空白符号 \(\sqcup\)），\(\mathsf{hp}\in\ZZ\) 为头位置；
+  \item \(\mathsf{hist}\in\mathcal H^\ast\) 为可选历史带（用于 Bennett 可逆化嵌入；若不启用，则可取 \(\mathsf{hist}=\epsilon\)）；
+  \item \(\mathsf{IO}\) 为输入/输出缓冲（见定义 \ref{def:observer_tm_io_protocol}）。
+\end{itemize}
+并要求始终满足 \(\mathrm{OK}_{\Clo}(y,t)=1\)。
+\end{definition}
+
+\begin{definition}[OTM 的外观不可逆一步（标准 TM 语义）]\label{def:observer_tm_step_irreversible}
+给定配置 \(C\) 且 \(q\notin H\)。令 \(a:=\mathsf{tp}[\mathsf{hp}]\in\Gamma\) 为头下符号。若
+$$
+\delta_{\mathrm{TM}}(q,a)=(q',a',\Delta),
+$$
+则定义外观一步
+$$
+(q,\mathsf{tp},\mathsf{hp})\;\mapsto\;(q',\mathsf{tp}',\mathsf{hp}+\Delta),
+$$
+其中 \(\mathsf{tp}'\) 与 \(\mathsf{tp}\) 唯一不同处为 \(\mathsf{tp}'[\mathsf{hp}]=a'\)。
+该步允许覆盖写入，因此作为 \((q,\mathsf{tp},\mathsf{hp})\) 上的更新一般是不可逆的。
+\end{definition}
+
+\begin{definition}[Bennett 可逆化嵌入（协议层实现映射）]\label{def:observer_tm_bennett_embedding}
+为把定义 \ref{def:observer_tm_step_irreversible} 的外观一步嵌入到协议层的可逆更新接口，我们引入一个历史带 \(\mathsf{hist}\) 记录每一步被覆盖的信息与必要上下文。
+
+形式上，固定一个可逆编码/解码约定，使得对任意外观一步 \(\delta_{\mathrm{TM}}(q,a)=(q',a',\Delta)\)，协议层都可执行一个可逆原子序列
+$$
+\mathsf{Step}^{\mathrm{rev}}_{\mathrm{TM}}:\ (q,\mathsf{tp},\mathsf{hp},\mathsf{hist})\mapsto(q',\mathsf{tp}',\mathsf{hp}+\Delta,\mathsf{hist}'),
+$$
+满足：
+\begin{itemize}
+  \item \(\mathsf{tp}'\) 与外观语义一致（同定义 \ref{def:observer_tm_step_irreversible}）；
+  \item \(\mathsf{hist}'=\mathsf{hist}\Vert \mathrm{Rec}_{\mathrm{TM}}(q,a,a',\Delta,\mathsf{hp})\) 追加一段记录，使得存在可逆回滚
+  $$
+  \mathsf{Undo}^{\mathrm{rev}}_{\mathrm{TM}}:\ (q',\mathsf{tp}',\mathsf{hp}+\Delta,\mathsf{hist}')\mapsto(q,\mathsf{tp},\mathsf{hp},\mathsf{hist})
+  $$
+  且两者互为严格反演。
+\end{itemize}
+因此，\textbf{外观不可逆性}并非协议层的不可逆：它来自“遗忘/丢弃历史带 \(\mathsf{hist}\)”这一投影。
+\end{definition}
+
+\begin{definition}[最小 OTM 指令集与寄存器布局（可直接实现）]\label{def:observer_tm_isa}
+OTM 的“指令集”可以取为如下最小集合（每条指令都对应一个可编程的、可实现的状态更新规则）：
+\begin{itemize}
+  \item \textbf{寄存器/带}：
+  \begin{itemize}
+    \item \(Y\)（只读）：空间观测 \(y\in\Ym\)；
+    \item \(T\)：尾部头 \(t\in T_m\)；
+    \item \(\mathsf{TR}\)：协议层路径日志 \(\mathsf{tr}\in\{0,1\}^\ast\)；
+    \item \(\mathsf{E}\)：能量胶带 \(\mathsf{E}\in\{0,1\}^\ast\)（其长度诱导 beam width \(\Energy(\mathsf{E})\)）；
+    \item \(\mathsf{TP}\)：TM tape \(\mathsf{tp}:\ZZ\to\Gamma\)（默认空白 \(\sqcup\)）；
+    \item \(\mathsf{HP}\)：头位置 \(\mathsf{hp}\in\ZZ\)；
+    \item \(\mathsf{HIST}\)：历史带 \(\mathsf{hist}\)（可选，用于可逆化实现）；
+    \item \(\mathsf{IO}\)：输入/输出缓冲（定义 \ref{def:observer_tm_io_protocol}）。
+  \end{itemize}
+  \item \textbf{指令（外观 TM 步）}：\(\mathrm{TMSTEP}\)。其语义就是定义 \ref{def:observer_tm_step_irreversible} 的一步：读取 \(a=\mathsf{TP}[\mathsf{HP}]\)，按 \(\delta_{\mathrm{TM}}\) 覆盖写入并移动头。
+  \item \textbf{指令（可逆实现）}：\(\mathrm{TMSTEP}^{\mathrm{rev}}\)。其语义由定义 \ref{def:observer_tm_bennett_embedding} 给出：在产生相同的外观更新的同时，把可逆回滚所需信息写入 \(\mathsf{HIST}\)。
+  \item \textbf{指令（本体守卫）}：\(\mathrm{CHECK}_{\Clo}\)。若 \(\mathrm{OK}_{\Clo}(Y,T)=1\) 则空操作；否则该指令在该输入处未定义（或在分支语义下该分支被丢弃）。
+  \item \textbf{指令（协议原子步）}：\(\mathrm{U\_STEP}\) 与 \(\mathrm{D\_STEP}\)。其语义分别为对 \((Y,T,\mathsf{TR},\mathsf{E})\) 施加本文的 \(\mathcal U\) 与 \(\mathcal D\)（定义 \ref{def:up_down_interface}），并保持 \((q,\mathsf{TP},\mathsf{HP},\mathsf{HIST},\mathsf{IO})\) 不变。
+  \item \textbf{指令（截断）}：\(\mathrm{COMMIT}\)。该指令作用于一组并行分支配置 \(\mathcal B\)：输出 \(\mathrm{Commit}(\mathcal B)\)（定义 \ref{def:observer_tm_obs_commit}），使得 \(|\mathrm{Commit}(\mathcal B)|\le \Energy(\mathsf{E})\) 且评分规则公开确定。
+  \item \textbf{停机}：当 \(q\in H\) 时停止，并按定义 \ref{def:observer_tm_io_protocol} 的读出约定输出。
+\end{itemize}
+以上给出了一个“能直接写解释器”的最小接口：实现者只需实现 tape 抽象（\(\ZZ\to\Gamma\) 的稀疏表示即可）、\(\delta_{\mathrm{TM}}\) 表、\(\mathcal U/\mathcal D\) 例程，以及 \(\mathrm{Commit}\) 的确定性截断，即可得到一个完整的 OTM 运行器。
+\end{definition}
+
+\begin{definition}[与 \(\mathcal U/\mathcal D\) 的耦合模式（可选）]\label{def:observer_tm_coupling_modes}
+OTM 可以在保持 Layer 0 不变的前提下，以两种方式使用本文已有的 \(\mathcal U/\mathcal D\)（定义 \ref{def:up_down_interface}）：
+\begin{itemize}
+  \item \textbf{Decoupled 模式}：OTM 的外观计算仅作用在 \((q,\mathsf{tp},\mathsf{hp})\) 与（可选）\(\mathsf{hist}\) 上；\((y,t,\mathsf{tr},\mathsf{E})\) 仅作为资源/守卫输入存在（例如 \(\Energy(\mathsf{E})\) 给出并行上限、\(\mathrm{OK}_{\Clo}\) 给出可行域判定），不参与每一步更新。
+  \item \textbf{Coupled 模式}：在外观 TM 指令序列之间（例如每 \(k\) 步一次，或按指令显式触发），OTM 调用一次协议原子步 \(\mathcal U\) 或 \(\mathcal D\) 更新 \((t,\mathsf{E})\) 并写入/弹出与之配对的日志比特；若更新后违反 \(\mathrm{OK}_{\Clo}(y,t)=1\)，则该耦合步未定义（在分支语义下该分支被丢弃）。
+\end{itemize}
+两种模式都不改变可计算偏函数类；差异仅在“本体约束如何作为运行时守卫与资源模型进入计算过程”。
+\end{definition}
+
+\begin{definition}[观察者投影与 commit（外观不可逆算子）]\label{def:observer_tm_obs_commit}
+令 \(\mathcal B\) 表示一组并行候选配置（分支集合）。定义两个外观算子：
+\begin{itemize}
+  \item \textbf{观察投影}（遗忘账本）\(\mathrm{Obs}\)：把扩展配置投影到“观察者可见”的粗粒化态，例如
+  $$
+  \mathrm{Obs}(C):=(q,\;y,\;t,\;\mathrm{View}(\mathsf{tp},\mathsf{hp})),
+  $$
+  其中 \(\mathrm{View}\) 是约定的读出窗口（例如读出 \(\mathsf{hp}\) 邻域有限窗口或某个输出区段）。该投影一般多对一，因此不可逆。
+  \item \textbf{确定性截断}（commit）\(\mathrm{Commit}\)：给定分支集合 \(\mathcal B\)，按能量上限 \(\Energy(\mathsf{E})=2^{|\mathsf{E}|}\) 与公开确定性评分规则（可复用定义 \ref{def:energy_as_subgroupoid_selector} 的 \(\mathrm{Score}_y\)）选择一个子集
+  $$
+  \mathrm{Commit}(\mathcal B)\subseteq \mathcal B,\qquad |\mathrm{Commit}(\mathcal B)|\le \Energy(\mathsf{E}).
+  $$
+  由于丢弃了其余分支，\(\mathrm{Commit}\) 作为外观算子必然不可逆。
+\end{itemize}
+因此，“观察者层不可逆”可以被严格定位为：对本可逆的扩展态/分支集合做了投影与截断，而非在本体层加入了不可逆动力学。
+\end{definition}
+
+\begin{definition}[I/O 协议（可直接实现）]\label{def:observer_tm_io_protocol}
+为消除实现歧义，我们固定一份最小 I/O 协议：
+\begin{itemize}
+  \item \textbf{输入写入}：给定输入串 \(x\in\{0,1\}^\ast\)，把它写入 tape 的一个约定区段（例如从位置 \(0\) 起连续写入），并以一个分隔符 \(\sqcup\) 结束；头位置 \(\mathsf{hp}\) 初始化为 \(0\)，控制态初始化为 \(q_0\)。
+  \item \textbf{输出读出}：停机时，从 tape 的另一个约定区段（例如从位置 \(0\) 读至首个 \(\sqcup\)）读出输出串；或等价地，把输出区段视为 \(\mathrm{View}\) 的读出窗口。
+\end{itemize}
+更复杂的自定界编码/多缓冲约定可在不改变上述定义的前提下作为实现细节加入。
+\end{definition}
 
 \subsection{图论/群论化语义：由可逆比特边生成的 groupoid}\label{subsec:graph_groupoid_semantics}
 本篇的系统可以直接视为一个\textbf{带标签的有向图}，并且展开/折叠是该图上的互逆边；因此与其说“群论化”，更精确是：由这些互逆边生成一个\textbf{groupoid}（或等价地，一个由部分双射生成的 inverse semigroup）。这类“部分对称性 = inverse semigroup / groupoid”的形式化是成熟框架，可参见 \cite{Lawson1998,Paterson1999}。

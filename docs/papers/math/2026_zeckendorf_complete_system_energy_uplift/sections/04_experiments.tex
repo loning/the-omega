@@ -61,3 +61,51 @@ $$
 \label{tab:m6_confluence_example}
 \end{table}
 
+\subsection{Quine 涌现实验：在镜像守恒协议下的有限信息搜索}\label{subsec:quine_emergence_experiment}
+本小节给出一个可审计的“从零态涌现 Quine”的端到端模拟：我们固定本体层约束（Layer 0）与协议层互逆接口（Layer 1），并让观察者在\textbf{有限可见信息}（每轮只读取自身数据中的 1 比特）下，通过确定性搜索在一个通用运行语义 \(\mathsf{Run}\) 上找到满足
+$$
+\mathsf{Run}(p)=p
+$$
+的程序 \(p\)（Quine）。
+
+\paragraph{实验对象与输出} 本实验脚本会逐轮打印：\((y,t)\) 的本体可行性审计（含见证 \(N\)）、协议步的账本增量（\(\Delta|\mathsf{tr}|\)、\(\Delta|\mathsf{E}|\)）与镜像互逆审计（每步均验证互为反演），并记录观察者的候选搜索轨迹。脚本同时生成结构化日志与图表（导出到 `artifacts/export/`），正文仅通过 \verb|\input| 引用生成的 LaTeX 片段。
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\input{sections/generated/tab_quine_emergence_summary.tex}
+\caption{Quine 涌现实验的参数与结果摘要（脚本输出）。}
+\label{tab:quine_emergence_summary}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\input{sections/generated/tab_quine_emergence_excerpt.tex}
+\caption{Quine 涌现实验的轮次摘录：展示协议步（U/D）、账本演化与搜索候选的更新过程。}
+\label{tab:quine_emergence_excerpt}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\input{sections/generated/fig_quine_emergence_state_timeseries.tex}
+\caption{本体状态与账本随轮次变化：尾部头 \(t\)、路径日志长度 \(|\mathsf{tr}|\)、能量胶带长度 \(|\mathsf{E}|\)。虚线标出 Quine 被命中的轮次。}
+\label{fig:quine_emergence_state_timeseries}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\input{sections/generated/fig_quine_emergence_search_trace.tex}
+\caption{观察者的有限信息搜索轨迹：每轮测试的候选参数与 VM 运行是否成功，并标出 Quine 命中轮次。}
+\label{fig:quine_emergence_search_trace}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\input{sections/generated/fig_quine_emergence_ledger_deltas.tex}
+\caption{协议步的账本增量：对 U 步应满足 \(\Delta|\mathsf{tr}|=+1,\Delta|\mathsf{E}|=-1+k(y)\)，对 D 步应满足 \(\Delta|\mathsf{tr}|=-1,\Delta|\mathsf{E}|=+1-k(y)\)。}
+\label{fig:quine_emergence_ledger_deltas}
+\end{figure}
+

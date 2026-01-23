@@ -79,6 +79,18 @@ def build_steps() -> List[Step]:
                 "tab_m6_trace_fixedpoint_demo.tex",
             ],
         ),
+        Step(
+            name="quine_emergence_vm",
+            script="exp_quine_emergence_vm.py",
+            args=[],
+            expected_generated=[
+                "fig_quine_emergence_state_timeseries.tex",
+                "fig_quine_emergence_search_trace.tex",
+                "fig_quine_emergence_ledger_deltas.tex",
+                "tab_quine_emergence_summary.tex",
+                "tab_quine_emergence_excerpt.tex",
+            ],
+        ),
     ]
 
 
