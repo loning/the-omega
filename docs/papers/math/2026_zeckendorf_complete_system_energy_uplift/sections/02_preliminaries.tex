@@ -321,6 +321,16 @@ $$
 \end{itemize}
 \end{proposition}
 
+\begin{remark}[折叠把区分信息显式挤出到 tail]\label{rem:fold_pushes_info_to_tail}
+在本文的 Zeckendorf 截断折叠实例中，空间投影（窗口内宏观词，\texttt{macro\_word}）\(y=\Fold(N)\) 只保留 Zeckendorf 数码的窗口内段 \((c_1,\dots,c_m)\)，因此作为从微观域 \(\{0,\dots,2^m-1\}\) 到宏观语言 \(\Ym\) 的映射，它一般是多对一的：不同的微观整数 \(N\) 可以产生相同的窗口内宏观词 \(y\)。
+\par
+关键点在于：这部分“被折叠所抹去的区分信息”并未被丢弃，而是被\textbf{显式转写}为窗口外尾部词（\texttt{tail\_word}）
+$$
+t=\tautime_m(N)=(c_{m+1},\dots,c_{K(m)})\in T_m.
+$$
+换言之，编码映射 \(\mathrm{Enc}_m(N)=(y,t)\) 不是“随意附加一个时间参数”，而是把\textbf{同一条} Zeckendorf 合法数码严格分解为“窗口内（可见空间侧）+窗口外（时间纤维侧 tail）”两段；该分解在可行域 \(\mathcal A_m\) 上可由 \(\mathrm{Rec}_m\) 严格逆转（命题 \ref{prop:space_time_inverse_via_rec}）。
+\end{remark}
+
 \begin{definition}[规范时间算子]\label{def:tail_shift}
 定义尾部移位 \(\Tail:T_m\to T_m\) 为
 $$
@@ -330,39 +340,39 @@ $$
 \end{definition}
 
 \begin{remark}[展开过程与分支]
-展开过程对应 \(\Tail^{-1}\)：对给定 \(t\)，满足 \(\Tail(t')=t\) 的 \(t'\) 一般不唯一（分支）。本文将该分支增长视为“时间作为逆信息”的直接可计算实现。
+展开过程对应 \(\Tail^{-1}\)：对给定尾部词（时间纤维头，\texttt{tail\_word}）\(t\)，满足 \(\Tail(t')=t\) 的候选尾部词 \(t'\) 一般不唯一（分支）。本文将该分支增长视为“时间作为逆信息”的直接可计算实现。
+\par
+为避免方向混淆，我们强调：\(\Tail\) 被约定为“时间推进接口”，它是一个\textbf{丢信息}的映射（移位并补零），因此在一般情形下是\textbf{多对一}的：许多不同的上一刻尾部头 \(t'\) 会在一次推进后\textbf{合流}到同一个当前 \(t\)。这意味着：若只保留 \(t\) 而不保留额外路径标签，则无法唯一恢复“上一刻是哪一个 \(t'\)”。
+\par
+因此，观察者在协议层对“时间纤维的访问/展开”指的并不是沿 \(\Tail\) 正向推进，而是对 \(\Tail^{-1}\) 的\textbf{逆向枚举}：从当前尾部词 \(t\) 出发，枚举所有候选尾部词 \(t'\) 满足 \(\Tail(t')=t\)，并在本体守卫（静态一致性约束）\(\mathrm{OK}_{\Clo}(y,t')=\mathbf 1_{(y,t')\in\mathcal A_m}\) 下筛选出可行分支。随深度增加，候选树的增长正是“被 \(\Tail\) 正向推进所抹去的信息量”的一个可审计展开；而把多分支压缩为单线（commit）与保持逐步可逆（通过路径日志 \(\mathsf{tr}\) 的匹配湮灭）则属于 Layer 1 的协议机制，不属于 Layer 0 的本体约束。
 \end{remark}
 
-\subsection{观察者能量：beam width}
-\begin{definition}[能量胶带诱导的 beam width]\label{def:energy_beam}
-本篇把“能量”内生化为一个\textbf{可增长的逆信息寄存器}，并由其诱导观察者的并行上限。
+\subsection{观察者资源上限：beam width}
+\begin{definition}[资源上限形式的 beam width]\label{def:energy_beam}
+本篇把“能量”理解为 Layer 1 的\textbf{资源上限}：它不是本体层量，而是约束观察者在任一深度可同时维护多少条候选分支的一个可审计上界。
 
-令 \(\mathsf{E}\in\{0,1\}^\ast\) 为能量胶带（能量寄存器），其长度 \(|\mathsf{E}|\) 表示当前可用的“可逆选择比特数”。观察者在展开过程中维护候选 uplift 分支集合 \(\mathcal B\)。我们定义由能量胶带诱导的 beam width 为
+令 \(W\in\NN\) 表示观察者当前可用的并行资源上限（beam width 上限）。观察者在展开过程中维护候选 uplift 分支集合 \(\mathcal B\)。我们要求资源约束
 $$
-\Energy(\mathsf{E}):=2^{|\mathsf{E}|},
+|\mathcal B|\le W.
 $$
-并要求资源约束
-$$
-|\mathcal B|\le \Energy(\mathsf{E}).
-$$
-当自然分支数超过 \(\Energy(\mathsf{E})\) 时，观察者必须基于某个可审计评分规则进行剪枝/承诺（commit），从而产生主观单线体验。
+当自然分支数超过该上限 \(W\) 时，观察者必须基于某个可审计的确定性评分规则进行剪枝/承诺（commit），从而产生主观单线体验。
 \end{definition}
 
-\begin{remark}[能量寄存器的严格语义（资源而非物理能量）]\label{rem:energy_mined_from_uplift}
-本文的“能量胶带” \(\mathsf{E}\) 是 Layer 1 的\textbf{资源寄存器}：它计量“当前可用的可逆选择比特数”，从而诱导并行上限 \(\Energy(\mathsf{E})=2^{|\mathsf{E}|}\)。它不是 Layer 0 的本体量，也不被解释为热力学意义上的能量。
+\begin{remark}[资源上限的严格语义（资源而非物理能量）]\label{rem:energy_mined_from_uplift}
+本文的“资源上限” \(W\) 属于 Layer 1：它度量“观察者此刻最多能并行维护多少条可审计候选分支”，从而约束 commit 的截断规模（定义 \ref{def:energy_beam}）。它不是 Layer 0 的本体量，也不被解释为热力学意义上的能量。
 
-对固定空间观测 \(y\)，纤维大小 \(s_m(y)=|\Fold^{-1}(y)|\) 刻画“该观测兼容多少个微观解释”。协议层把这部分简并度通过纤维编码 \(\mathrm{Code}_y\)（定义 \ref{def:fiber_code_and_split}）转写为 \(\mathsf{E}\) 上的可审计比特资源；这与可逆计算中的“把隐藏信息显式搬到工作带/日志带上”是同一类操作学思想，可参见 \cite{Bennett1973,Landauer1961}。
+对固定空间观测（窗口内宏观词，\texttt{macro\_word}）\(y\)，纤维大小 \(s_m(y)=|\Fold^{-1}(y)|\) 刻画“该观测兼容多少个微观解释”。协议层可以把这部分简并度通过一个固定的纤维编码（定义 \ref{def:fiber_code_and_split}）转写为可审计的资源变化，从而得到对 \(W\) 的确定性更新规则；这与可逆计算中“把隐藏信息显式搬到工作带/日志带上”的操作学思想同类，可参见 \cite{Bennett1973,Landauer1961}。
 \end{remark}
 
-\begin{proposition}[单步资源增量的闭式上界]\label{prop:one_step_resource_bound}
-在展开一步（定义 \ref{def:unfold_one_step_spec}）中，能量胶带长度变化满足
+\begin{proposition}[单步资源上限的确定性更新因子]\label{prop:one_step_resource_bound}
+在展开一步中，设 \(W\) 为展开前的并行资源上限，\(W'\) 为展开后的并行资源上限。令
 $$
-|\mathsf{E}'|-|\mathsf{E}|=-1+k(y),
+k(y):=\left\lceil\log_2 s_m(y)\right\rceil.
 $$
-其中 \(k(y)=\lceil\log_2 s_m(y)\rceil\)。因此对任意 \(y\in\Ym\) 有
+则在本文采用的“资源上限”口径下，一个自然且可审计的更新规则是
 $$
-|\mathsf{E}'|-|\mathsf{E}|\le -1+\left\lceil\log_2 b_m\right\rceil\le -1+\left\lceil\log_2 |T_m|\right\rceil,
+W' = W\cdot 2^{k(y)-1}.
 $$
-其中 \(b_m=\max_{y\in\Ym}s_m(y)\)（定理 \ref{thm:three_valued_fiber_general}）且 \(|T_m|=F_{L(m)+2}\)（命题 \ref{prop:tail_state_count_rate}）。特别地，\(|\mathsf{E}|\) 的单步增量被分辨率 \(m\) 刚性限制为 \(O(m)\)。
+该因子由空间简并度 \(s_m(y)\) 刚性决定：当 \(s_m(y)\) 更大时，协议层允许把更多“可逆区分信息”转写为可并行维护的候选槽位；而 \(2^{-1}\) 的因子对应“展开一步需要消耗一次分支选择”。在本篇的基例 \(m=6\) 中，\(s_6(y)\in\{2,3,4\}\)，因此 \(k(y)\in\{1,2\}\)，从而更新因子 \(2^{k(y)-1}\in\{1,2\}\) 是完全离散且可逐步核验的。
 \end{proposition}
 
