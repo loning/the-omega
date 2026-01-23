@@ -45,6 +45,35 @@ $$
 其中 \(b\in\{0,1\}\) 且 \(\Vert\) 表示串连接。
 \end{definition}
 
+\subsection{协议层扩展：trace 作为可编程 tape（自指固定点的涌现接口）}\label{subsec:trace_as_programmable_tape}
+本篇前述推理链把 \(\mathsf{tr}\) 作为“保证 \(\mathcal U/\mathcal D\) 互逆”的最小路径日志，只用到了 \(\mathsf{push}/\mathsf{pop}\)（定义 \ref{def:bit_registers_space_time_log}）。为讨论“Quine/第二递归定理如何在该框架中\textbf{自发涌现}”，我们在协议层（Layer 1）引入一个\textbf{不改变 Layer 0 本体约束}的最小扩展：允许观察者把其已存在的可增长比特寄存器 \(\mathsf{tr}\) 视作一条\textbf{可编程 tape}，并在其上执行有限集合的\textbf{可逆局部更新}。
+
+\begin{definition}[可编程 trace-tape 接口（协议层）]\label{def:programmable_trace_tape}
+在不改变本体约束 \(\Clo\) 的前提下，我们把协议层的扩展态细化为
+$$
+\widehat\Sigma:=(y,t,\mathsf{tr},\mathsf{E},\mathsf{hp}),
+$$
+其中 \(\mathsf{hp}\in\NN\) 是 tape 的读写头位置。约定 \(\mathsf{tr}\) 在 \(\mathsf{hp}\) 右侧的空白位恒为 \(0\)（标准 tape 约定），并允许以下\textbf{可逆原语}（均为部分双射）：
+\begin{itemize}
+  \item \textbf{移动头}：\(\mathsf{hp}\mapsto \mathsf{hp}\pm 1\)（在边界处视为未定义或采用双向无限 tape 约定）。
+  \item \textbf{可逆写入}：对当前位置比特做异或更新 \(\mathsf{tr}[\mathsf{hp}]\mapsto \mathsf{tr}[\mathsf{hp}]\oplus b\)（\(b\in\{0,1\}\)），或对有限邻域执行 Toffoli/CNOT 等经典可逆门。
+  \item \textbf{日志兼容}：当只把 head 固定在“末端”并且只允许 \(\mathsf{push}/\mathsf{pop}\) 时，回到定义 \ref{def:bit_registers_space_time_log} 的路径日志语义；因此本节之前关于 trace 的互逆性结论不受影响。
+\end{itemize}
+这些原语都属于 Layer 1 的“协议接口”：它们仅改变观察者对寄存器的可逆可编程操作方式，不引入新的本体约束、也不改变 \(\Fold/\Tail/\mathrm{Enc}_m/\mathrm{Rec}_m\) 的定义。
+\end{definition}
+
+\begin{proposition}[协议层的可逆通用计算子系统（存在性）]\label{prop:reversible_universal_subsystem}
+存在一个仅由定义 \ref{def:programmable_trace_tape} 的可逆 tape 原语与本篇既有的 \(\mathcal U/\mathcal D\) 组合而成的协议子系统，使得其可模拟任意（偏）可计算过程的可逆化版本（Bennett 可逆模拟意义下）。因此，在该协议层扩展之上，可以定义一个通用的“运行器/解释器”
+$$
+\mathsf{Run}:\{0,1\}^\ast \to \{0,1\}^\ast
+$$
+把输入 tape 上的一段自描述程序（编码）映射到输出（编码）。
+\end{proposition}
+
+\begin{remark}[为何这足以导出第二递归定理/Quine]\label{rem:why_universality_implies_quine}
+一旦协议层内生出通用执行语义（命题 \ref{prop:reversible_universal_subsystem}），则在标准“可接受编号/通用函数”框架下，Kleene 第二递归定理给出自指固定点的必然存在；Quine 则是其一个直接特例。本文把该结论以\textbf{协议译本}形式写入附录，并显式翻译到 \(\widehat\Sigma\) 的 tape 语义（见附录 \S\ref{app:reversible_universal_computation}--\S\ref{app:recursion_theorem_and_quine}）。
+\end{remark}
+
 \subsection{图论/群论化语义：由可逆比特边生成的 groupoid}\label{subsec:graph_groupoid_semantics}
 本篇的系统可以直接视为一个\textbf{带标签的有向图}，并且展开/折叠是该图上的互逆边；因此与其说“群论化”，更精确是：由这些互逆边生成一个\textbf{groupoid}（或等价地，一个由部分双射生成的 inverse semigroup）。这类“部分对称性 = inverse semigroup / groupoid”的形式化是成熟框架，可参见 \cite{Lawson1998,Paterson1999}。
 
@@ -90,12 +119,32 @@ $$
 \end{proposition}
 
 \begin{definition}[能量截断作为子图（子 groupoid）选择算子]\label{def:energy_as_subgroupoid_selector}
-把 beam width 约束视为对泡泡图的一个可审计选择算子：在每个深度 \(d\) 上，观察者从该层全部可行节点中确定性选择一个大小不超过 \(\Energy(\mathsf{E})\) 的子集 \(\mathcal V_d^{(\Energy(\mathsf{E}))}(y)\subseteq \mathcal V(y)\)（例如按某个公开的排序评分）。令
+把 beam width 约束视为对泡泡图的一个可审计选择算子。为消除任何“不确定性/自由选择”，我们固定一个\textbf{公开的确定性评分函数}并用它实施截断（commit）：
+\begin{itemize}
+  \item 对任意节点 \((t,\mathsf{tr})\in\mathcal V(y)\)，定义其评分为一个可比较的元组
+  $$
+  \mathrm{Score}_y(t,\mathsf{tr})
+  :=
+  \Bigl(\mathrm{Rec}_m(y,t),\ |\mathsf{tr}|,\ \mathsf{tr},\ t\Bigr),
+  $$
+  其中 \(\mathrm{Rec}_m\) 见定义 \ref{def:enc_rec_inverse_pair}（在不可重构处视为未定义，从而不属于可行节点）。
+  \item 固定字典序作为元组的全序比较规则。
+  \item 在每个深度 \(d\) 上，令 \(\mathcal V_d(y)\) 为该深度的全部可行节点集合。定义截断后的活跃集合为
+  $$
+  \mathcal V_d^{(\Energy(\mathsf{E}))}(y):=\text{按 }\mathrm{Score}_y\text{ 排序后取前 }\min\{\Energy(\mathsf{E}),|\mathcal V_d(y)|\}\text{ 个节点}.
+  $$
+\end{itemize}
+该规则是完全确定性的：给定 \((y,\mathsf{E})\) 与 \(\mathcal V_d(y)\)，输出 \(\mathcal V_d^{(\Energy(\mathsf{E}))}(y)\) 唯一。
+令
 $$
 \mathcal V^{(\Energy(\mathsf{E}))}(y):=\bigcup_{d\ge 0}\mathcal V_d^{(\Energy(\mathsf{E}))}(y),
 $$
 并取诱导子图 \(\mathcal G^{(\Energy(\mathsf{E}))}(y)\) 为：顶点集为 \(\mathcal V^{(\Energy(\mathsf{E}))}(y)\)，边集为两端点都在该集合内的展开/折叠边。则 \(\mathcal G^{(\Energy(\mathsf{E}))}(y)\) 仍然是一个“可逆边生成”的图，因此其路径仍生成一个子 groupoid；commit 的数学含义就是把 \(\mathcal G(y)\) 通过该选择算子投影为 \(\mathcal G^{(\Energy(\mathsf{E}))}(y)\)。
 \end{definition}
+
+\begin{remark}[确定性候选维护算法（消除不确定性）]\label{rem:deterministic_beam_algorithm}
+综合定义 \ref{def:up_down_interface} 与定义 \ref{def:energy_as_subgroupoid_selector}，观察者的候选维护可表述为一个确定性算法：从初始集合 \(\mathcal B_0=\{(t_0,\epsilon)\}\) 出发，每一步先用 \(\Tail^{-1}\) 生成所有可行后继并更新 trace（展开），再按 \(\mathrm{Score}_y\) 排序并截断到 \(\Energy(\mathsf{E})\) 个候选（commit）。因此本文所有“分支/主观单线”结论都不依赖随机过程：所谓“不确定性”仅来自“遗忘 trace 的投影不可逆”（命题 \ref{prop:log_needed_for_reversibility}），而不是算法内部含随机选择。
+\end{remark}
 
 \begin{definition}[主动回滚（折叠）与“能量回收”]\label{def:active_rollback_energy_reclaim}
 在本篇语义中，“释放能量”不指凭空删除比特或改变本体约束；它指观察者对\textbf{活跃泡泡}做一次主动的\textbf{折叠回滚（uncompute）}，从而减少需要并行维护的候选数量。

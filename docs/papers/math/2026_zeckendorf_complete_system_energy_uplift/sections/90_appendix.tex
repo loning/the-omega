@@ -33,3 +33,80 @@ python3 scripts/run_all.py --force
   \item 由 \(L(m)=K(m)-m\) 与 SFT 计数 \(|T_m|=F_{L(m)+2}\) 得到 \(|T_m|=\Theta((2/\varphi)^m)\)。
 \end{itemize}
 
+\subsection{协议层的可逆通用计算嵌入（证明骨架）}\label{app:reversible_universal_computation}
+本附录小节给出命题 \ref{prop:reversible_universal_subsystem} 的证明骨架：我们不在 Layer 0 增加任何“自指/反射/quote”公理，而是在 Layer 1 的\textbf{可审计可逆协议接口}中，展示一个可逆通用计算子系统如何由 tape 原语自然实现。
+
+\paragraph{Step 1：选取一个标准的可逆通用模型}
+经典结果表明：存在可逆图灵机/可逆寄存器机作为通用计算模型，并且任意（不可逆）计算都可通过记录历史的方式被可逆化（Bennett 可逆模拟框架，见 \cite{Bennett1973}）。另外，有限集合的可逆逻辑门（例如 Toffoli 门）在可逆计算意义下是通用的（参见 \cite{Toffoli1980}）。
+
+\paragraph{Step 2：把 trace-tape 接口具体化为“二栈 tape”}
+为把“头移动/局部可逆门”落实为可审计的字符串操作，可以采用标准二栈表示：把 tape 表示为一对比特串 \((L,R)\in\{0,1\}^\ast\times\{0,1\}^\ast\)，其中 \(R\) 的首位视为当前头下的比特（空则视为 \(0\)），而 \(L\) 存放头左侧的内容（反向或正向约定均可，只要固定）。
+头移动可由 \(\mathsf{push}/\mathsf{pop}\) 组合实现，例如“向右移动一步”可由
+$$
+(L,\ b\Vert R')\mapsto (L\Vert b,\ R')
+$$
+给出；向左移动是其逆。
+由于本文协议层已把 \(\mathsf{push}/\mathsf{pop}\) 作为可审计原语（定义 \ref{def:bit_registers_space_time_log}），因此该表示把“读写头移动”还原为完全可审计的可逆字符串更新。
+
+\paragraph{Step 3：用可逆局部门实现通用步骤}
+在二栈表示下，对头下比特的异或更新、对有限邻域比特执行 Toffoli/CNOT 等，都可写成对 \((L,R)\) 的局部可逆更新（不覆盖信息，只做可逆门作用）。因此可以把“可逆通用模型”的一步转写为：
+\begin{itemize}
+  \item 读取有限个 tape 位（由 \((L,R)\) 的前缀给出）；
+  \item 对有限寄存器/局部邻域应用一个固定的可逆门序列；
+  \item 通过若干次头移动（即 \(\mathsf{push}/\mathsf{pop}\) 组合）改变读写位置；
+  \item （可选）把历史写入一段指定的日志区，从而得到 Bennett 意义下的可逆化。
+\end{itemize}
+从而，存在一个仅由本文协议层允许的可逆接口构成的“计算子系统”，可逐步模拟任意有效计算的可逆化版本。
+
+\paragraph{Step 4：与 \(\mathcal U/\mathcal D\) 的关系}
+上述通用计算子系统可以完全工作在“附加寄存器”上：即固定 \(y,t\) 不变，仅在 \(\mathsf{tr}\)（作为 tape）及必要的资源寄存器上执行可逆门序列。因此它不会改变 Layer 0 的约束对象，也不干扰正文中关于 \(\mathcal U/\mathcal D\) 的互逆性与守恒审计；它只是说明：一旦协议层允许对已存在的可增长比特寄存器实施可逆可编程更新，则\textbf{通用计算能力}可在协议内部出现。
+
+\subsection{Kleene 第二递归定理与 Quine 的协议译本}\label{app:recursion_theorem_and_quine}
+本小节把“自发涌现的自指固定点”写成可审计的计算论语句，并翻译回本文协议符号。
+
+\paragraph{可接受编号与通用运行器}
+由 \S\ref{app:reversible_universal_computation}，协议层内可实现一个通用解释器（运行器）。形式上，我们把\textbf{程序}取为二进制串 \(p\in\{0,1\}^\ast\)，把\textbf{输入}取为二进制串 \(x\in\{0,1\}^\ast\)，并令
+$$
+U(p,x)
+$$
+表示“在协议层内运行程序 \(p\) 于输入 \(x\) 所产生的输出”（允许部分性：可能不终止）。把 \(U(p,\cdot)\) 记为 \(\varphi_p(\cdot)\)。
+该表述对应正文命题 \ref{prop:reversible_universal_subsystem} 中的 \(\mathsf{Run}\)：当输入为空时，\(\mathsf{Run}(p):=U(p,\epsilon)\)。
+
+\paragraph{第二递归定理（Kleene）}
+Kleene 第二递归定理断言：对任意可计算的“程序变换” \(f:\{0,1\}^\ast\to\{0,1\}^\ast\)（在可接受编号意义下），存在某个程序 \(p^\ast\) 使得
+$$
+\varphi_{p^\ast}=\varphi_{f(p^\ast)}.
+$$
+也即：程序 \(p^\ast\) 的行为与“把自身编码喂给 \(f\) 所得到的新程序”的行为完全相同。（本小节只使用该定理的精确形式；引用与可接受编号细节见文献。）
+\cite{Rogers1967}
+
+\paragraph{Quine 作为特例}
+取 \(f\) 为如下的可计算变换：对每个程序 \(p\)，令 \(f(p)\) 生成一个新程序，其行为是“忽略输入并输出 \(p\)”。
+则由第二递归定理存在 \(p^\ast\) 满足
+$$
+\varphi_{p^\ast}=\varphi_{f(p^\ast)}.
+$$
+右侧程序按定义输出 \(p^\ast\)，因此 \(\varphi_{p^\ast}\) 也输出 \(p^\ast\)。这就是 Quine（自复制/输出自身描述）的严格形式：它不是额外假设，而是通用执行语义下的固定点必然性。
+
+\paragraph{翻译回本文的 \(\widehat\Sigma\) 协议语义}
+把程序 \(p\) 放入正文定义 \ref{def:programmable_trace_tape} 的 tape 寄存器（例如作为 \(\mathsf{tr}\) 的某段编码），并从一组约定的零态/空输入态出发运行协议层解释器，得到输出比特串 \(\mathsf{out}\)。记该过程的输出算子为 \(\mathsf{Run}\)。则 Quine 条件在本文记号下可写成
+$$
+\mathsf{Run}(p^\ast)=p^\ast.
+$$
+更一般地，对任意可计算变换 \(F\)（在协议层内可实现的“程序变换器”），第二递归定理给出存在 \(p^\ast\) 使得
+$$
+\mathsf{Run}(p^\ast)=\mathsf{Run}(F(p^\ast)).
+$$
+因此，“自指固定点”不需要写入 Layer 0：一旦协议层内部出现通用可计算执行语义，固定点（以及 Quine）就作为必然推论涌现。
+
+\paragraph{一个最小可复现的 toy 固定点见证}
+为把“固定点方程”在本文协议口径下做成可复现的最小见证，我们固定基例 \(m=6\)、观测 \(y=0^6\)，并定义一个 toy 运行器：把 \(\mathsf{tr}\in\{0,1\}^3\) 解释为三步 uplift 分支选择，按 \(\Tail^{-1}\) 的 shift-register 更新尾部头 \(t=(c_7,c_8,c_9)\) 并施加与正文一致的合法性检查；令 \(\mathrm{Encode}\) 直接输出终态尾部头的三位比特串 \(c_7c_8c_9\)。此时我们暴力枚举并筛出满足
+$$
+\mathsf{tr}=\mathrm{Encode}(\mathrm{Run}(\mathsf{tr}))
+$$
+的解，得到的固定点列表由脚本生成如下表：
+\begin{center}
+\small
+\setlength{\tabcolsep}{8pt}
+\input{sections/generated/tab_m6_trace_fixedpoint_demo.tex}
+\end{center}

@@ -71,6 +71,14 @@ def build_steps() -> List[Step]:
                 "tab_m6_confluence_example.tex",
             ],
         ),
+        Step(
+            name="m6_trace_fixedpoint_demo",
+            script="exp_m6_trace_fixedpoint_demo.py",
+            args=[],
+            expected_generated=[
+                "tab_m6_trace_fixedpoint_demo.tex",
+            ],
+        ),
     ]
 
 
