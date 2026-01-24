@@ -1,0 +1,39 @@
+\section{空间之关系化与地址实现：局部依赖图、Hilbert 索引与邻域局域性}
+
+\subsection{空间公理化：局部依赖图}
+
+\begin{definition}[局部依赖图]
+空间由局部依赖图 $(V,\mathrm{Nbr})$ 给出。节点 $v\in V$ 表示基本单元（体素或其抽象等价类），邻域算子 $\mathrm{Nbr}(v)\subset V$ 给出允许依赖的有限集合。系统状态更新满足
+$$
+\mathrm{State}_{t+1}(v)=\mathsf T\bigl(\mathrm{State}_t(v),\mathrm{State}_t(\mathrm{Nbr}(v))\bigr),
+$$
+从而“空间结构”由依赖关系定义而非先验坐标。
+\end{definition}
+
+在该框架下定义两类距离：拓扑距离
+$$
+d_{\mathrm{top}}(u,v)=\text{图最短路长度},
+$$
+信息距离
+$$
+d_{\mathrm{inf}}(u,v)=\text{约束传播从 }u\text{ 推导 }v\text{ 所需最少步数}.
+$$
+后者与时间成本 $T(\mathcal G)$ 的局部贡献直接关联。
+
+\subsection{全局比特带与区间地址}
+
+为实现“本体一维存储—三维局部访问”的结构，引入全局比特带
+$$
+B\in\{0,1\}^{\NN},
+$$
+并对层级节点集合 $V_\ell$ 定义区间地址映射
+$$
+\mathrm{Addr}_\ell:V_\ell\to\{I\subset\NN\},
+$$
+使得节点 $v$ 的局部本体读出由 $B[I(v)]$ 给出，再经 $\Fold_{m(v)}$ 与残差更新得到 $(x_v,r_v)$。该构造允许将空间邻域访问转化为比特带的局部切片访问。
+
+\subsection{空间填充曲线与局域性增强}
+
+空间填充曲线为高维网格到一维序列的双射（或近似双射）提供通用机制。Hilbert 曲线以其局域性性质（locality property）在索引与遍历任务中常被采用。\cite{wikipedia_hilbert_curve}
+
+本文将 Hilbert 索引视为一种实现选择：其目标是使得在比特带上相近的地址区间更大概率对应于空间中相邻或近邻节点，从而减少跨越式通信并支持局部依赖图的高效调度。该选择不改变第 6--9 节的抽象定义，但影响第 11 节动态分辨率与第 15 节实验中对局部性成本的观测。

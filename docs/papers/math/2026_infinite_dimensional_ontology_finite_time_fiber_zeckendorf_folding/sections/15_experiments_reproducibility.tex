@@ -1,0 +1,65 @@
+\section{实验与复现协议：不变量计算、局部化检验与双边界评测}
+
+\subsection{组合定理的枚举核对}
+
+对 $m\le m_{\max}$ 枚举 $X_m$ 与 $C_m$，核对
+$$
+\abs{X_m}=F_{m+2},\qquad \abs{C_m}=L_m,\qquad \abs{B_m}=F_{m-2},
+$$
+并对 $m\le m_{\max}/2$ 核对接口亏损定理
+$$
+\abs{X_{2m}}=\abs{X_m}^2-F_m^2.
+$$
+其中 $m_{\max}$ 可选为 $20$--$24$ 以保持枚举可行。
+
+\subsection{第一层时间纤维谱的计算}
+
+固定 $\Fold_m$（第 5 节数值--Zeckendorf 定义），遍历 $\Omega_m$ 中全部 $2^m$ 个窗口微态，统计
+$$
+\abs{\mathcal F_m(x)}=\abs{\{b\in\Omega_m:\Fold_m(b)=x\}},
+$$
+并计算
+$$
+p_m(x)=\frac{\abs{\mathcal F_m(x)}}{2^m},\qquad H(X_m),\qquad H(\Omega_m\mid X_m).
+$$
+评测指标包括纤维大小分布的极值、方差与集中性，以及随 $m$ 的标度。
+
+\subsection{第二层残差纤维的候选实现与最小化实验}
+
+在未给出一般性最小充分统计量证明前，提出可复现的候选残差实现族：
+\begin{enumerate}
+  \item 有限进位/溢出状态（记录有限阶溢出与边界携带）；
+  \item 有限状态转导器内部状态（将规范化过程编译为最小 DFA/Mealy 机并取其状态集合）。
+\end{enumerate}
+对每一实现族，比较其在固定 $\mathcal O_m,\mathcal D$ 下的预测误差与状态规模，以经验方式逼近最小 $R_m(x)$。
+
+\subsection{holonomy 谱的计算与接口局部化检验}
+
+为计算 holonomy，需显式给定：
+\begin{itemize}
+  \item 允许边集 $\mathcal E_m$（由选定局部规则/重写系统导出）；
+  \item 平行移动 $\mathcal P_{x\to x'}$（由残差更新规则诱导）。
+\end{itemize}
+在此基础上：
+\begin{enumerate}
+  \item 枚举短回路族 $\Gamma_\ell$（$\ell$ 为回路长度上界）；
+  \item 计算每个回路的 $\mathrm{Hol}(\gamma)$ 并提取统计量（不动点比例、循环分解长度、谱半径等）；
+  \item 构造含接口回路族 $\Gamma_\ell^{\mathrm{int}}$ 与不含接口回路族 $\Gamma_\ell^{\mathrm{bulk}}$，比较两者的 holonomy 复杂度分布，以检验第 9 节假设 9.2。
+\end{enumerate}
+
+\subsection{动态分辨率实验：AMR/octree 与时间成本标度}
+
+实现 octree/AMR 调度（第 11 节），并在固定目标 $\mathcal G$ 下测量
+$$
+\mathbb E[T(\mathcal G)\mid m],\qquad \mathrm{Var}(T(\mathcal G)\mid m),
+$$
+以及 $T(\mathcal G)$ 与局部指标 $E(v)$、边界态密度、holonomy 复杂度代理量之间的相关性。
+
+\subsection{双边界合成的剪枝加速评测}
+
+给定终端约束类 $\mathcal F_T$（或终端权重 $\Phi$），比较两种求解方式：
+\begin{enumerate}
+  \item 仅前向搜索（或仅前向传播）；
+  \item 前向--后向合成（第 13 节 smoothing）。
+\end{enumerate}
+评测指标包括：收敛步数、有效候选状态数、剪枝率、以及在相同计算预算下的终端满足率。前向--后向算法的数值稳定化可参照 Rabiner 综述的缩放/对数域实现。\cite{rabiner_hmm_tutorial}

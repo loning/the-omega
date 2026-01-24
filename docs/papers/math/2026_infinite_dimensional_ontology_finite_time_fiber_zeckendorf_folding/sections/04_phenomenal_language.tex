@@ -1,0 +1,92 @@
+\section{现象层：有限语言、循环子语言与最小核结构}
+
+\subsection{本体窗口与线性稳定语言}
+
+在有限窗离散化中，引入本体窗口空间
+$$
+\Omega_m=\{0,1\}^m,\qquad \abs{\Omega_m}=2^m.
+$$
+定义线性稳定语言
+$$
+X_m=\left\{w\in\{0,1\}^m:\forall i\in\{1,\dots,m-1\},\ (w_i,w_{i+1})\neq(1,1)\right\}.
+$$
+该集合亦可视为黄金均值移位的长度 $m$ 允许词集合。\cite{scholarpedia_symbolic_dynamics}
+
+\subsection{线性稳定语言计数定理}
+
+\begin{theorem}
+$$
+\abs{X_m}=F_{m+2}.
+$$
+\end{theorem}
+
+\begin{proof}
+设 $a_m=\abs{X_m}$。按首位 $w_1$ 分类：
+\begin{itemize}
+  \item 若 $w_1=0$，则余下 $m-1$ 位可为任意 $X_{m-1}$ 中元素，计数为 $a_{m-1}$。
+  \item 若 $w_1=1$，则必须有 $w_2=0$，余下 $m-2$ 位可为任意 $X_{m-2}$ 中元素，计数为 $a_{m-2}$。
+\end{itemize}
+因此递推
+$$
+a_m=a_{m-1}+a_{m-2},
+$$
+并由初值 $a_1=2$、$a_2=3$ 得 $a_m=F_{m+2}$。证毕。
+\end{proof}
+
+\subsection{循环子语言与 Lucas 计数}
+
+定义循环稳定语言
+$$
+C_m=\left\{w\in\{0,1\}^m:\forall i\in\{1,\dots,m\},\ (w_i,w_{i+1})\neq(1,1)\right\},
+\qquad w_{m+1}=w_1.
+$$
+
+\begin{theorem}
+$$
+\abs{C_m}=L_m.
+$$
+\end{theorem}
+
+\begin{proof}
+设 $c_m=\abs{C_m}$。按 $w_1$ 分类：
+\begin{itemize}
+  \item 若 $w_1=0$，则其余 $m-1$ 位仅需满足线性无相邻约束，计数为 $\abs{X_{m-1}}=F_{m+1}$。
+  \item 若 $w_1=1$，则 $w_2=0$ 且 $w_m=0$，中间 $m-3$ 位满足线性无相邻约束，计数为 $\abs{X_{m-3}}=F_{m-1}$。
+\end{itemize}
+故
+$$
+c_m=F_{m+1}+F_{m-1}=L_m.
+$$
+证毕。
+\end{proof}
+
+圆环上无相邻 $1$ 的二进制配置与 Lucas 数列一致的事实在组合计数资料中作为典型例题出现。\cite{cameron_notes_on_counting}
+
+\subsection{边界态集合与分解}
+
+定义边界态集合
+$$
+B_m=X_m\setminus C_m.
+$$
+由恒等式 $L_m=F_{m+1}+F_{m-1}$ 与 $\abs{X_m}=F_{m+2}$ 得
+$$
+\abs{B_m}=\abs{X_m}-\abs{C_m}=F_{m+2}-L_m=F_{m-2}.
+$$
+并且
+$$
+X_m=C_m\sqcup B_m.
+$$
+该分解在后续接口一致性与耦合项分析中用于刻画“首尾粘合的缺陷来源”。
+
+\subsection{最小核实例（m=6）}
+
+当 $m=6$ 时
+$$
+\abs{\Omega_6}=2^6=64,\qquad \abs{X_6}=F_8=21,
+$$
+并由上述定理得
+$$
+\abs{C_6}=L_6=18,\qquad \abs{B_6}=F_4=3,
+\qquad X_6=C_6\sqcup B_6,\qquad 21=18\oplus 3.
+$$
+该最小核用于后续章节的枚举验证与结构可视化基准。

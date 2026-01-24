@@ -1,0 +1,379 @@
+\section{预备知识：Zeckendorf 截断折叠与尾部 uplift 规则}
+
+本节给出本文所用的规范对象。它与 \cite{Zeckendorf1972,AlloucheShallit2003,Lothaire2002} 的标准 Zeckendorf 表示兼容，并采用内部论文 \cite{Internal2026DyadicZeckendorfWindowFoldingKernel} 中对 dyadic 上界 \(2^m-1\) 的窗口折叠核定义与纤维计数口径（同时与内部论文 \cite{Internal2025ResolutionFoldingPhiPiE} 的窗口约定一致）。
+
+\subsection{分层审计纪律（Layer 0/1/2）}\label{subsec:layer_audit_rule}
+为防止解释性叙事在不经声明的情况下被当作推导前提，本文采用与内部论文 \cite{Internal2025StairwayToInfinity} 一致的\textbf{分层审计纪律}：明确分离三层语言并规定单向依赖。
+\begin{itemize}
+  \item \textbf{Layer 0（本体/ontic）}：只允许出现静态约束系统 \(\Clo\) 与可行态集合（例如 \(\mathcal A_m=\mathrm{Im}(\mathrm{Enc}_m)\subseteq \Ym\times T_m\)）。不引入外部时间参数与外部概率公设。
+  \item \textbf{Layer 1（协议/protocol）}：允许选择有限资源下的扫描/读出/编码协议，并在扩展态 \(\Sigma=(y_{\mathrm{con}},t,\mathsf{tr},W)\) 上用可逆原子步 \(\mathcal U/\mathcal D\) 进行推进与回滚；操作时间、统计量与可审计账本均在此层定义。其中 \(y_{\mathrm{con}}\) 是本体一致性约束切片，而观察者实际读出的“可见空间态”可为另一个标签 \(y_{\mathrm{obs}}\)（见定义 \ref{def:observer_obs_as_relabeling}）。
+  \item \textbf{Layer 2（解释/interpretation）}：把 Layer 1 的结构映射为语义叙事（空间/时间/能量/主观体验等）。该层仅作注释，不得作为 Layer 0/1 的推理前提。
+\end{itemize}
+本文所有定理/命题的证明链只在 Layer 0/1 内闭合；Layer 2 的表述若出现，均应可回译为 Layer 1 的可审计接口。
+
+\subsection{符号与分层对照表}\label{subsec:layer_symbol_table}
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{l l l}
+\toprule
+\textbf{对象} & \textbf{所在层} & \textbf{角色（可审计含义）}\\
+\midrule
+\(\Clo\) & L0 & 静态约束系统（本体）\\
+\(\Fold,\,\Ym\) & L0 & 空间压缩核与稳定语言（定义 \ref{def:fold}）\\
+\(\mathrm{Enc}_m,\mathrm{Rec}_m,\mathcal A_m\) & L0 & 可行对与互逆拼合（定义 \ref{def:enc_rec_inverse_pair}，命题 \ref{prop:space_time_inverse_via_rec}）\\
+\(\Tail\) & L0/L1 & 作为关系/算子给出时间推进接口（定义 \ref{def:tail_shift}）\\
+\(\Sigma=(y_{\mathrm{con}},t,\mathsf{tr},W)\) & L1 & 可审计扩展态寄存器（定义 \ref{def:full_state_and_ledgers}）\\
+\(\mathcal U,\mathcal D\) & L1 & 互逆原子步（定义 \ref{def:up_down_interface}）\\
+\(|\mathsf{tr}|,W\) & L1 & 路径/资源账本与并行上限（定义 \ref{def:energy_beam}）\\
+\(y_{\mathrm{obs}},\Phi_s,\mathrm{Obs}\) & L1/L2 & “换怎么看”的可逆重标记与可见空间态读出（定义 \ref{def:observer_obs_as_relabeling}）\\
+\(\Ipos,\Ineg\) & L1 & 审计账本语义（假设 \ref{ass:zero_ledger}，命题 \ref{prop:auditable_zero_ledger_proxy}）\\
+“空间/时间/能量/主观单线”等叙事 & L2 & 对 Layer 1 结构的语义解释（不得进入证明链）\\
+\bottomrule
+\end{tabular}
+\caption{分层审计纪律下的符号对照。}\label{tab:layer_symbol_table}
+\end{table}
+
+\subsection{Fibonacci 与 Zeckendorf 数码}
+令 Fibonacci 数列满足 \(F_1=F_2=1\)、\(F_{n+2}=F_{n+1}+F_n\)。Zeckendorf 定理断言：每个 \(N\in\NN\) 存在唯一的二进制数码序列 \(\mathrm Z(N)=(c_1,c_2,\dots)\) 使得
+$$
+N=\sum_{k\ge 1} c_k F_{k+1},\qquad c_k\in\{0,1\},\qquad c_kc_{k+1}=0.
+$$
+
+\subsection{宏观稳定态：黄金均值语言}
+固定窗口长度 \(m\in\NN\)。定义黄金均值语言
+$$
+\Ym:=\{y\in\{0,1\}^m:\ y_i y_{i+1}=0,\ 1\le i<m\},
+$$
+其大小为 \(|\Ym|=F_{m+2}\)。
+
+\begin{proposition}[黄金均值语言的计数与刚性]\label{prop:golden_mean_language_count_entropy}
+令 \(A=\begin{pmatrix}1&1\\ 1&0\end{pmatrix}\) 为“无相邻 \(11\)”约束的邻接矩阵（状态表示为“前一位是 0/1”）。则长度为 \(m\) 的合法词数满足
+$$
+|\Ym|=\mathbf{1}^\top A^{m}\mathbf{e}_0 = F_{m+2}.
+$$
+因此其拓扑熵为
+$$
+h_{\mathrm{top}}=\lim_{m\to\infty}\frac{1}{m}\log |\Ym|=\log\varphi.
+$$
+\end{proposition}
+
+\begin{remark}[引用与使用范围]
+上述结论是黄金均值移位（a shift of finite type）的标准事实：计数由邻接矩阵幂给出，熵等于 Perron--Frobenius 特征值的对数（此处为 \(\varphi\)）。可参见 \cite{LindMarcus1995,Koshy2001}。本文只把它作为\textbf{空间层合法语言的刚性输入}：空间“类型数”是 \(F_{m+2}\)，而不是任意可调的自由参数。
+\end{remark}
+
+\subsection{折叠核：窗口投影 \texorpdfstring{$\Fold$}{Fold}}
+\begin{definition}[Zeckendorf 截断折叠]\label{def:fold}
+定义折叠映射
+$$
+\Fold:\{0,\dots,2^m-1\}\to \Ym,\qquad \Fold(N):=(c_1(N),\dots,c_m(N)),
+$$
+其中 \((c_k(N))\) 是 \(N\) 的 Zeckendorf 数码。等价地，也可把输入写成二进制词 \(x\in\{0,1\}^m\)，并令其索引为 \(N(x)=\sum_{i=0}^{m-1} x_i2^i\)，则有 \(\Fold(x):=\Fold(N(x))\)。
+\end{definition}
+
+\begin{definition}[窗口 Zeckendorf 值坐标]\label{def:Vm_general}
+对任意 \(y=(y_1,\dots,y_m)\in\Ym\)，定义其窗口 Zeckendorf 值为
+$$
+V_m(y):=\sum_{k=1}^{m} y_k F_{k+1}\in\NN.
+$$
+该坐标在 \(\Ym\) 上是单射（由 Zeckendorf 合法性与权重严格递增可知），因此可把 \(\Ym\) 的结构按 \(V_m\) 排序来讨论。
+\end{definition}
+
+\subsection{\texorpdfstring{$m=6$}{m=6}：\texorpdfstring{$64\to 21$}{64->21} 折叠核与显式 uplift}
+\label{subsec:m6_kernel_uplift}
+
+本小节把本文所用的“空间压缩核 + 时间 uplift”在基例 \(m=6\) 上写成完全显式的对象。微观读出空间为
+$$
+\Omega_6:=\{0,1\}^6,\qquad |\Omega_6|=64,
+$$
+等价地也可用整数索引集 \(\{0,1,\dots,63\}\) 表示。宏观稳定态为黄金均值语言 \(X_6=\Ym\)（无相邻 1），其大小为 \(|X_6|=F_8=21\)。
+
+\begin{definition}[窗口折叠 \(\mathrm{Fold}_6\)]\label{def:fold6}
+定义
+$$
+\mathrm{Fold}_6:\{0,1,\dots,63\}\to X_6,\qquad \mathrm{Fold}_6(N):=(c_1(N),\dots,c_6(N)).
+$$
+\end{definition}
+
+\begin{definition}[基例尾部 uplift：三位尾部]\label{def:m6_tail_uplift}
+对 \(m=6\)，由定义 \ref{def:K_of_m} 可得 \(K(6)=9\)，因此尾部长度 \(L(6)=3\)。尾部 uplift 变量可取为三位
+$$
+u(N):=(c_7(N),c_8(N),c_9(N))\in\{0,1\}^3,\qquad c_7c_8=0,\ c_8c_9=0,
+$$
+其对应 Fibonacci 权重为
+$$
+F_8=21,\quad F_9=34,\quad F_{10}=55.
+$$
+\end{definition}
+
+\begin{definition}[Zeckendorf 值]\label{def:Vw_m6}
+对 \(w=(w_1,\dots,w_6)\in X_6\)，定义其窗口 Zeckendorf 值
+$$
+V(w):=\sum_{k=1}^{6} w_k F_{k+1}
+= w_1\cdot 1+w_2\cdot 2+w_3\cdot 3+w_4\cdot 5+w_5\cdot 8+w_6\cdot 13.
+$$
+\end{definition}
+
+\begin{theorem}[基例 uplift 的前像结构：\(\mathrm{Fold}_6\) 的显式分类]\label{thm:fold6_preimage_structure_here}
+对任意 \(w\in X_6\)，所有满足 \(\mathrm{Fold}_6(N)=w\) 的 \(N\in\{0,\dots,63\}\) 必可写为
+$$
+N=V(w)+c_7\cdot 21+c_8\cdot 34+c_9\cdot 55,
+$$
+其中 \((c_7,c_8,c_9)\in\{0,1\}^3\) 满足约束 \(c_7c_8=0\)、\(c_8c_9=0\)、以及边界约束 \(w_6c_7=0\)，并且 \(N\le 63\)。
+因此，\(|\mathrm{Fold}_6^{-1}(w)|\in\{2,3,4\}\)，并且有如下显式分类：
+\[
+\mathrm{Fold}_6^{-1}(w)=
+\begin{cases}
+\{V(w),\,V(w)+34\}, & w_6=1,\\[4pt]
+\{V(w),\,V(w)+21,\,V(w)+34,\,V(w)+55\}, & w_6=0\ \text{且}\ V(w)\le 8,\\[4pt]
+\{V(w),\,V(w)+21,\,V(w)+34\}, & w_6=0\ \text{且}\ V(w)> 8.
+\end{cases}
+\]
+在计数上，恰有 8 个输出的前像大小为 2、4 个输出的前像大小为 3、9 个输出的前像大小为 4。
+\end{theorem}
+
+\begin{proof}
+由 Zeckendorf 唯一性，\(\mathrm{Fold}_6(N)=w\) 等价于 \(N\) 的数码满足 \((c_1,\dots,c_6)=w\)。当 \(N\le 63\) 时，高于窗口的可用权重只有 \(F_8,F_9,F_{10}\)，对应 \((c_7,c_8,c_9)\) 三位尾部；并必须满足相邻约束与边界约束 \(w_6c_7=0\)。剩余只需讨论在 \(N\le 63\) 截断下哪些偏移可行：若 \(w_6=1\) 则 \(c_7=0\)，且 \(V(w)\ge 13\) 迫使 \(V(w)+55>63\)，因此仅余偏移 \(0,34\)。若 \(w_6=0\)，则偏移 \(0,21,34\) 总可行；偏移 \(55\) 需要 \(V(w)\le 8\)。逐项代入即得。
+\end{proof}
+
+\begin{remark}[与 dyadic 窗口折叠核的“三值纤维定理”对齐]\label{rem:align_dyadic_three_valued_fiber}
+内部论文 \cite{Internal2026DyadicZeckendorfWindowFoldingKernel} 给出了在 dyadic 上界 \(B_m=2^m-1\) 下的通用结论：对任意窗口长度 \(m\)，纤维大小函数 \(s_m(w)=|\Fold^{-1}(w)|\) 只取三种值，并且在值坐标 \(V\) 上呈现“两阈值三段阶梯结构”。在本文的基例 \(m=6\) 上，这两个阈值可以显式算出并与定理 \ref{thm:fold6_preimage_structure_here} 完全一致：
+\begin{itemize}
+  \item \textbf{末位阈值} \(b_F=F_{m+1}=F_7=13\)，对应 \(w_6=1\iff V(w)\ge 13\)。因此 \(w_6=1\) 一侧必落在“纤维最小值”段，给出 \(|\mathrm{Fold}_6^{-1}(w)|=2\)。
+  \item \textbf{跳变阈值} \(b_Q=V\bigl(\mathrm{Fold}_6(2^6-1)\bigr)+1\)。由于 \(\mathrm{Fold}_6(63)=000010\) 且 \(V(000010)=8\)，故 \(b_Q=9\)。这正对应定理 \ref{thm:fold6_preimage_structure_here} 中的条件 \(V(w)\le 8\) 与 \(V(w)>8\) 的分界：在 \(w_6=0\) 一侧，纤维从 \(4\) 跳变为 \(3\)。
+\end{itemize}
+因此，\(m=6\) 的“\(2/3/4\) 三值纤维直方图”并非偶然，而是 dyadic 窗口折叠核一般结构定理的一个完全可审计特例；这也是后续把“时间纤维长度为 3 位”与“泡泡分支很快饱和”为同一机制的原因。
+\end{remark}
+
+\subsection{纤维大小与“潜在能量”}
+\begin{definition}[纤维大小函数]\label{def:fiber_size_function}
+对固定窗口长度 \(m\)，对每个宏观空间状态 \(y\in\Ym\) 定义其纤维大小（前像简并度）
+$$
+s_m(y):=\bigl|\Fold^{-1}(y)\bigr|,\qquad \Fold^{-1}(y):=\{N\in\{0,\dots,2^m-1\}:\ \Fold(N)=y\}.
+$$
+\end{definition}
+
+\begin{theorem}[Dyadic 截断下的三值纤维与两阈值阶梯结构]\label{thm:three_valued_fiber_general}
+在 dyadic 上界 \(B_m=2^m-1\) 下，纤维大小函数 \(s_m\) 具有三值刚性：令
+$$
+a_m:=\min_{y\in\Ym}s_m(y),\qquad b_m:=\max_{y\in\Ym}s_m(y),
+$$
+则对所有 \(y\in\Ym\) 必有
+$$
+s_m(y)\in\{a_m,\ b_m,\ b_m-1\}.
+$$
+更进一步，把 \(s_m\) 视为值坐标 \(V\) 上的函数 \(S_m(V):=s_m(y)\)（其中 \(y\in\Ym\) 满足 \(V_m(y)=V\)），则 \(S_m\) 是单调不增的两阈值三段阶梯函数；阈值仅为
+$$
+b_F=F_{m+1},\qquad b_Q=V_m\bigl(\Fold(2^m-1)\bigr)+1.
+$$
+\end{theorem}
+
+\begin{remark}[引用与本篇使用方式]
+定理 \ref{thm:three_valued_fiber_general} 是内部论文 \cite{Internal2026DyadicZeckendorfWindowFoldingKernel} 的结构定理（本文直接引用而不在此重复证明）。本篇只用它来支持两个“审稿人关心”的结论：\textbf{(i) 纤维谱极其刚性（只三值）}，因此能量谱 \(\Energy_{\mathrm{pot}}(y)=\log_2 s_m(y)\) 也被强制为三值；\textbf{(ii) 跳变位置由边界态 \(\Fold(2^m-1)\) 唯一锁定}，并非经验拟合。
+\end{remark}
+
+\begin{definition}[潜在能量（简并度的比特量）]\label{def:potential_energy_from_fiber_size}
+定义与空间状态 \(y\) 相关的“潜在能量”（或“可提取逆信息量”）为
+$$
+\Energy_{\mathrm{pot}}(y):=\log_2 s_m(y)\qquad (\text{单位：bits}).
+$$
+它只依赖于折叠核 \(\Fold\) 与 dyadic 截断 \(2^m-1\)，刻画“同一宏观观测 \(y\) 兼容多少个微观前像/多少种 uplift 选择”。注意：\(\Energy_{\mathrm{pot}}\) 与 beam width 上限 \(W\)（定义 \ref{def:energy_beam}）属于不同层次；前者是 \textbf{空间状态的结构属性}，后者是 \textbf{观察者并行维护的资源上限}。
+\end{definition}
+
+\begin{definition}[纤维编码与可逆分解]\label{def:fiber_code_and_split}
+对每个 \(y\in\Ym\)，令 \(s=s_m(y)\)。定义所需编码位数
+$$
+k(y):=\left\lceil \log_2 s\right\rceil\in\NN.
+$$
+并\textbf{固定}一个注入编码（任选其一即可，但需固定为协议的一部分）
+$$
+\mathrm{Code}_y:\Fold^{-1}(y)\hookrightarrow \{0,1\}^{k(y)}.
+$$
+\(\mathrm{Code}_y\) 的像是一个大小为 \(s\) 的码字集合；其逆映射 \(\mathrm{Code}_y^{-1}\) 仅在该像上定义。该编码可用于把“空间侧简并度”转写为可审计的资源变化（例如 \(\log_2 W\) 的单步更新；见 \S\ref{subsec:genesis_process_spec}）。
+\end{definition}
+
+\begin{corollary}[\texorpdfstring{$m=6$}{m=6} 的三值潜在能量谱]\label{cor:m6_potential_energy_spectrum}
+在 \(m=6\) 基例中，定理 \ref{thm:fold6_preimage_structure_here} 给出 \(s_6(y)\in\{2,3,4\}\)，因此
+$$
+\Energy_{\mathrm{pot}}(y)\in\{1,\ \log_2 3,\ 2\}\quad(\text{bits}),
+$$
+并且对应的空间状态数量分别为 \(8/4/9\)。
+\end{corollary}
+
+\begin{remark}[循环闭合的 \texorpdfstring{$18\oplus 3$}{18+3} 类型分裂（本文语境）]\label{rem:18_plus_3_in_this_paper}
+在一些相关工作中，会把 \(X_6\) 的 21 个稳定词再细分为 \(18\oplus 3\) 两类；其含义并非本节定理 \ref{thm:fold6_preimage_structure_here} 的“前像大小 \(2/3/4\)”分类，而是一个\textbf{纯宏观（空间层）}的\textbf{循环闭合}判别：把 \(w=w_1\cdots w_6\in X_6\) 看作黄金均值约束图上的一段路径，若再额外要求“环绕一步” \(w_6\to w_1\) 也必须合法，则需要排除 \(w_6w_1=11\)。据此定义
+$$
+X_6^{\mathrm{cyc}}:=\{w\in X_6:\ w_6w_1\neq 11\},\qquad
+X_6^{\mathrm{bdry}}:=X_6\setminus X_6^{\mathrm{cyc}}=\{w\in X_6:\ w_1=w_6=1\}.
+$$
+直接枚举可得
+$$
+X_6^{\mathrm{bdry}}=\{\texttt{100001},\ \texttt{100101},\ \texttt{101001}\},\qquad |X_6^{\mathrm{bdry}}|=3,\qquad |X_6^{\mathrm{cyc}}|=18.
+$$
+
+在本文“完备系统”的语境下，这个 \(18\oplus 3\) 分裂可以理解为：
+\begin{itemize}
+  \item 它是对\textbf{空间类型 \(w\)} 的一个\textbf{闭合性标记}，刻画“一个长度-6 窗口是否可作为周期轨道的局部片段”（是否允许把窗口两端首尾相接）。它不引入新的动力学，仅提供一个可选的宏观一致性谓词。
+  \item 它与“uplift 纤维大小 \(|U(w)|\)”是\textbf{正交的}：\(|U(w)|\) 在本模型中由 \(w_6\) 与 \(V(w)\) 通过定理 \ref{thm:fold6_preimage_structure_here} 决定，而 \(18\oplus 3\) 由 \((w_1,w_6)\) 的环绕可容许性决定。二者都可被看作本体静态约束 \(\Clo\) 上的可审计结构，但约束来源不同。
+  \item 三个边界类型满足 \(w_6=1\)，因此其 uplift 可行集合自动落入 \(\{(c_7,c_8,c_9):c_7=0,\ c_8c_9=0\}\) 的子集，并且 \(|U(w)|=2\)。因此若把某个空间观测固定为边界类型，则在能量受限的展开过程中，其\textbf{分支压力天然较低}；相对地，最大分支压力来自 \(w=0^6\) 等 \(|U(w)|=4\) 的情形（见推论 \ref{cor:max_branch_pressure_y0}）。
+\end{itemize}
+\end{remark}
+
+\begin{remark}[时间算子在基例的显式形式]\label{rem:m6_tail_shift}
+对 \(m=6\) 的 uplift 三位尾部，我们把规范时间算子 \(\Tail\) 取为
+$$
+\Tail(c_7,c_8,c_9)=(c_8,c_9,0),
+$$
+即丢弃最靠近窗口的尾部位并向高位推进。这与定义 \ref{def:tail_shift} 的一般形式一致，并使得展开过程对应 \(\Tail^{-1}\) 的二叉分支（再叠加相邻 1 约束与边界约束）。
+\end{remark}
+
+\subsection{明确 uplift：有限尾部与时间移位}
+由于我们只考虑 \(N(x)\in\{0,\dots,2^m-1\}\)，其 Zeckendorf 数码在某个有限位置之后恒为 0。
+
+\begin{definition}[截断覆盖指数]\label{def:K_of_m}
+定义 \(K(m)\) 为满足
+$$
+F_{K(m)+1}\le 2^m-1 < F_{K(m)+2}
+$$
+的唯一整数。
+\end{definition}
+
+\begin{lemma}[Binet 界与 \texorpdfstring{$K(m)$}{K(m)} 的线性刚性]\label{lem:Km_linear_rigidity}
+令 \(\varphi=\frac{1+\sqrt5}{2}\)。对所有 \(n\ge 2\)，Fibonacci 数满足标准 Binet 型界
+$$
+\frac{\varphi^{n-2}}{\sqrt5}\le F_n \le \frac{\varphi^{n-1}}{\sqrt5}.
+$$
+因此 \(K(m)\) 随 \(m\) 线性增长，并满足显式夹逼
+$$
+m\log_{\varphi}2+\log_{\varphi}\sqrt5-3
+\;\le\;
+K(m)
+\;\le\;
+m\log_{\varphi}2+\log_{\varphi}\sqrt5.
+$$
+\end{lemma}
+
+\begin{remark}[引用]
+引理 \ref{lem:Km_linear_rigidity} 的 Binet 界与取整夹逼是 Fibonacci 数列的成熟结果，可参见 \cite{Koshy2001}。本文把它作为 uplift 尾部长度随分辨率 \(m\) 的\textbf{几何刚性定量界}：tail 长度不是自由拟合参数，而是由 dyadic 上界 \(2^m-1\) 与 Fibonacci 指数律强制确定到 \(O(1)\) 精度。
+\end{remark}
+
+\begin{definition}[尾部时间纤维]\label{def:time_fiber}
+令尾部长度 \(L(m):=\max\{0,K(m)-m\}\)，并定义尾部状态集合
+$$
+T_m:=\Bigl\{t\in\{0,1\}^{L(m)}:\ t_it_{i+1}=0\Bigr\}.
+$$
+对微观整数 \(N\in\{0,\dots,2^m-1\}\)，定义尾部投影（uplift 坐标）
+$$
+\tautime_m(N):=(c_{m+1}(N),\dots,c_{K(m)}(N))\in T_m.
+$$
+\end{definition}
+
+\begin{corollary}[尾部长度的线性率]\label{cor:tail_length_linear_rate}
+对充分大的 \(m\)，尾部长度满足
+$$
+L(m)=K(m)-m = m\bigl(\log_{\varphi}2-1\bigr)+O(1),
+$$
+其中 \(\log_{\varphi}2-1\approx 0.4404\) 为固定常数。
+\end{corollary}
+
+\begin{proposition}[尾部状态空间的精确计数与指数率]\label{prop:tail_state_count_rate}
+对任意 \(m\)，尾部长度 \(L=L(m)\) 的状态空间满足
+$$
+|T_m| = F_{L+2}.
+$$
+并且结合引理 \ref{lem:Km_linear_rigidity}，存在常数 \(c_1,c_2>0\) 使得
+$$
+c_1\left(\frac{2}{\varphi}\right)^m \le |T_m| \le c_2\left(\frac{2}{\varphi}\right)^m.
+$$
+\end{proposition}
+
+\begin{proof}[证明要点]
+第一式是命题 \ref{prop:golden_mean_language_count_entropy} 的特例：长度为 \(L\) 的“无相邻 1”词数为 \(F_{L+2}\)。第二式由 \(|T_m|=F_{L+2}\)、Binet 界以及 \(L(m)=K(m)-m= m(\log_{\varphi}2-1)+O(1)\) 直接推出。
+\end{proof}
+
+\begin{definition}[编码/重构：空间状态与时间纤维的互逆拼合]\label{def:enc_rec_inverse_pair}
+固定窗口长度 \(m\)，令 \(K=K(m)\)、\(L=L(m)\)。定义编码映射
+$$
+\mathrm{Enc}_m:\{0,\dots,2^m-1\}\to \Ym\times T_m,\qquad
+\mathrm{Enc}_m(N):=\bigl(\Fold(N),\ \tautime_m(N)\bigr).
+$$
+并定义（部分）重构映射 \(\mathrm{Rec}_m\) 为满足
+$$
+\mathrm{Rec}_m(y,t)=N
+$$
+当且仅当 \(N\in\{0,\dots,2^m-1\}\) 的 Zeckendorf 数码满足
+\[
+(c_1(N),\dots,c_m(N))=y,\qquad (c_{m+1}(N),\dots,c_K(N))=t.
+\]
+等价地，\(\mathrm{Rec}_m(y,t)\) 是把“窗口内比特串 \(y\)”与“窗口外尾部比特串 \(t\)”拼合为同一条 Zeckendorf 合法数码并求其 Fibonacci 权重和所得的微观整数（若不存在则未定义）。
+\end{definition}
+
+\begin{proposition}[空间状态与时间纤维的互逆性（图论/比特口径）]\label{prop:space_time_inverse_via_rec}
+设
+$$
+\mathcal A_m:=\mathrm{Im}(\mathrm{Enc}_m)\subseteq \Ym\times T_m
+$$
+为可行对集合（即满足 dyadic 上界与禁邻/边界相容约束的 \((y,t)\) 对）。则
+\begin{itemize}
+  \item \(\mathrm{Enc}_m:\{0,\dots,2^m-1\}\to \mathcal A_m\) 是双射；
+  \item \(\mathrm{Rec}_m:\mathcal A_m\to \{0,\dots,2^m-1\}\) 为其逆映射；
+  \item 因而“时间纤维与空间状态互逆”在本文中精确指：\textbf{微观整数 \(N\) 与可行对 \((y,t)\) 之间互相可重构}；单独给出 \(y\) 或 \(t\) 一般不能重构 \(N\)，但二者拼合即可。
+\end{itemize}
+\end{proposition}
+
+\begin{remark}[折叠把区分信息显式挤出到 tail]\label{rem:fold_pushes_info_to_tail}
+在本文的 Zeckendorf 截断折叠实例中，空间投影（窗口内宏观词，\texttt{macro\_word}）\(y=\Fold(N)\) 只保留 Zeckendorf 数码的窗口内段 \((c_1,\dots,c_m)\)，因此作为从微观域 \(\{0,\dots,2^m-1\}\) 到宏观语言 \(\Ym\) 的映射，它一般是多对一的：不同的微观整数 \(N\) 可以产生相同的窗口内宏观词 \(y\)。
+\par
+关键点在于：这部分“被折叠所抹去的区分信息”并未被丢弃，而是被\textbf{显式转写}为窗口外尾部词（\texttt{tail\_word}）
+$$
+t=\tautime_m(N)=(c_{m+1},\dots,c_{K(m)})\in T_m.
+$$
+换言之，编码映射 \(\mathrm{Enc}_m(N)=(y,t)\) 不是“随意附加一个时间参数”，而是把\textbf{同一条} Zeckendorf 合法数码严格分解为“窗口内（可见空间侧）+窗口外（时间纤维侧 tail）”两段；该分解在可行域 \(\mathcal A_m\) 上可由 \(\mathrm{Rec}_m\) 严格逆转（命题 \ref{prop:space_time_inverse_via_rec}）。
+\end{remark}
+
+\begin{definition}[规范时间算子]\label{def:tail_shift}
+定义尾部移位 \(\Tail:T_m\to T_m\) 为
+$$
+\Tail(t_{m+1}\cdots t_{K(m)}) := t_{m+2}\cdots t_{K(m)}0.
+$$
+并令时间关系为 \(\TimeRel:=\{(t,\Tail(t)):\ t\in T_m\}\subseteq T_m\times T_m\)。
+\end{definition}
+
+\begin{remark}[展开过程与分支]
+展开过程对应 \(\Tail^{-1}\)：对给定尾部词（时间纤维头，\texttt{tail\_word}）\(t\)，满足 \(\Tail(t')=t\) 的候选尾部词 \(t'\) 一般不唯一（分支）。本文将该分支增长视为“时间作为逆信息”的直接可计算实现。
+\par
+为避免方向混淆，我们强调：\(\Tail\) 被约定为“时间推进接口”，它是一个\textbf{丢信息}的映射（移位并补零），因此在一般情形下是\textbf{多对一}的：许多不同的上一刻尾部头 \(t'\) 会在一次推进后\textbf{合流}到同一个当前 \(t\)。这意味着：若只保留 \(t\) 而不保留额外路径标签，则无法唯一恢复“上一刻是哪一个 \(t'\)”。
+\par
+因此，观察者在协议层对“时间纤维的访问/展开”指的并不是沿 \(\Tail\) 正向推进，而是对 \(\Tail^{-1}\) 的\textbf{逆向枚举}：从当前尾部词 \(t\) 出发，枚举所有候选尾部词 \(t'\) 满足 \(\Tail(t')=t\)，并在本体守卫（静态一致性约束）\(\mathrm{OK}_{\Clo}(y,t')=\mathbf 1_{(y,t')\in\mathcal A_m}\) 下筛选出可行分支。随深度增加，候选树的增长正是“被 \(\Tail\) 正向推进所抹去的信息量”的一个可审计展开；而把多分支压缩为单线（commit）与保持逐步可逆（通过路径日志 \(\mathsf{tr}\) 的匹配湮灭）则属于 Layer 1 的协议机制，不属于 Layer 0 的本体约束。
+\end{remark}
+
+\subsection{观察者资源上限：beam width}
+\begin{definition}[资源上限形式的 beam width]\label{def:energy_beam}
+本篇把“能量”理解为 Layer 1 的\textbf{资源上限}：它不是本体层量，而是约束观察者在任一深度可同时维护多少条候选分支的一个可审计上界。
+
+令 \(W\in\NN\) 表示观察者当前可用的并行资源上限（beam width 上限）。观察者在展开过程中维护候选 uplift 分支集合 \(\mathcal B\)。我们要求资源约束
+$$
+|\mathcal B|\le W.
+$$
+当自然分支数超过该上限 \(W\) 时，观察者必须基于某个可审计的确定性评分规则进行剪枝/承诺（commit），从而产生主观单线体验。
+\end{definition}
+
+\begin{remark}[资源上限的严格语义（资源而非物理能量）]\label{rem:energy_mined_from_uplift}
+本文的“资源上限” \(W\) 属于 Layer 1：它度量“观察者此刻最多能并行维护多少条可审计候选分支”，从而约束 commit 的截断规模（定义 \ref{def:energy_beam}）。它不是 Layer 0 的本体量，也不被解释为热力学意义上的能量。
+
+对固定空间观测（窗口内宏观词，\texttt{macro\_word}）\(y\)，纤维大小 \(s_m(y)=|\Fold^{-1}(y)|\) 刻画“该观测兼容多少个微观解释”。协议层可以把这部分简并度通过一个固定的纤维编码（定义 \ref{def:fiber_code_and_split}）转写为可审计的资源变化，从而得到对 \(W\) 的确定性更新规则；这与可逆计算中“把隐藏信息显式搬到工作带/日志带上”的操作学思想同类，可参见 \cite{Bennett1973,Landauer1961}。
+\end{remark}
+
+\begin{proposition}[单步资源上限的确定性更新因子]\label{prop:one_step_resource_bound}
+在展开一步中，设 \(W\) 为展开前的并行资源上限，\(W'\) 为展开后的并行资源上限。令
+$$
+k(y):=\left\lceil\log_2 s_m(y)\right\rceil.
+$$
+则在本文采用的“资源上限”口径下，一个自然且可审计的更新规则是
+$$
+W' = W\cdot 2^{k(y)-1}.
+$$
+该因子由空间简并度 \(s_m(y)\) 刚性决定：当 \(s_m(y)\) 更大时，协议层允许把更多“可逆区分信息”转写为可并行维护的候选槽位；而 \(2^{-1}\) 的因子对应“展开一步需要消耗一次分支选择”。在本篇的基例 \(m=6\) 中，\(s_6(y)\in\{2,3,4\}\)，因此 \(k(y)\in\{1,2\}\)，从而更新因子 \(2^{k(y)-1}\in\{1,2\}\) 是完全离散且可逐步核验的。
+\end{proposition}
+
