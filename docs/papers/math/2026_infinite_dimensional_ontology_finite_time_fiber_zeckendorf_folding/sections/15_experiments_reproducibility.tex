@@ -91,7 +91,7 @@ $$
 \input{sections/generated/emergence_metrics}
 \end{center}
 
-此外，为识别“传播/缺陷密度/团簇规模”的涌现区域，可对关键参数 $(\\texttt{threshold},\\texttt{defect\\_rate})$ 做网格扫描并生成相图。运行命令：
+此外，为识别“传播/缺陷密度/团簇规模”的涌现区域，可对关键参数 $(\texttt{threshold},\texttt{defect\_rate})$ 做网格扫描并生成相图。运行命令：
 $$
 \texttt{python3 scripts/exp\_emergence\_scan.py --m 10}.
 $$
@@ -103,12 +103,12 @@ $$
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_phase_radius.png}
-  \caption{参数扫描下的传播前沿强度代理量（平均 $\\mathrm{radius\\_max}$）。}
+  \caption{参数扫描下的传播前沿强度代理量（平均 $\mathrm{radius_{max}}$）。}
 \end{figure}
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_phase_interface.png}
-  \caption{参数扫描下的缺陷密度代理量（平均 $\\mathrm{interface\\_frac\\_max}$）。}
+  \caption{参数扫描下的缺陷密度代理量（平均 $\mathrm{interface\_frac_{max}}$）。}
 \end{figure}
 
 \paragraph{对象/运动统计（缺陷团簇作为对象候选）}
@@ -173,6 +173,43 @@ $$
   \centering
   \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_space_holonomy_compare.png}
   \caption{三种连接的 holonomy 非平凡率与缺陷触达率的对照。精确 1-形式在 plaquette 上给出近零 holonomy，而方向依赖连接给出显著非平凡率，并与缺陷触达呈正相关。}
+\end{figure}
+
+\paragraph{方向驱动与运动相：缺陷团簇的净位移统计}
+为推动系统从“驻留型对象（$p=1$）”向“可迁移对象”过渡，本文引入一个最小的非平衡驱动：对残差场 $r$ 在 $x$ 方向做有偏输运（advection），并考察缺陷团簇对象的净位移与漂移速度分布。运行命令：
+$$
+\texttt{python3 scripts/exp\_emergence\_transport.py --m 10 --steps 200}.
+$$
+对应摘要片段如下：
+\begin{center}
+\input{sections/generated/emergence_transport_summary}
+\end{center}
+并给出漂移速度分布示例图：
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_transport_drift_hist.png}
+  \caption{方向驱动下对象漂移速度分布（按寿命归一化）。}
+\end{figure}
+
+\paragraph{运动相参数扫描}
+对驱动强度 \texttt{advect\_p} 与耦合强度 \texttt{coupling} 进行网格扫描，可得到“移动对象比例”与“移动对象平均漂移幅度”的相图。运行命令：
+$$
+\texttt{python3 scripts/exp\_emergence\_transport\_scan.py --m 10}.
+$$
+最佳区域摘要如下：
+\begin{center}
+\input{sections/generated/emergence_transport_scan}
+\end{center}
+并给出两张相图示例：
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_transport_phase_moving.png}
+  \caption{运动相相图：移动对象比例（moving\_frac）。}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_transport_phase_drift.png}
+  \caption{运动相相图：移动对象平均漂移幅度（mean $|$drift$|$）。}
 \end{figure}
 
 \subsection{双边界合成的剪枝加速评测}

@@ -35,6 +35,7 @@ def main() -> None:
     ap.add_argument("--scan", action="store_true", help="Run emergence parameter scan and export phase plots.")
     ap.add_argument("--extended", action="store_true", help="Run object + space-holonomy emergence experiments.")
     ap.add_argument("--extended2", action="store_true", help="Run periodicity + induced-connection holonomy experiments.")
+    ap.add_argument("--extended3", action="store_true", help="Run driven transport experiment + transport phase scan.")
     ap.add_argument("--seed", type=int, default=0, help="Random seed.")
     args = ap.parse_args()
 
@@ -179,6 +180,42 @@ def main() -> None:
                 "--r-diffusion",
                 str(args.dyn_r_diffusion),
                 "--seed",
+                str(args.seed),
+            ],
+        )
+
+    if args.extended3:
+        _run(
+            "exp_emergence_transport.py",
+            [
+                *force_args,
+                "--m",
+                str(args.dyn_m),
+                "--steps",
+                str(max(args.dyn_steps, 200)),
+                "--threshold",
+                str(args.dyn_threshold),
+                "--beta",
+                str(args.dyn_beta),
+                "--coupling",
+                str(args.dyn_coupling),
+                "--noise",
+                str(args.dyn_noise),
+                "--defect-rate",
+                str(args.dyn_defect_rate),
+                "--r-diffusion",
+                str(args.dyn_r_diffusion),
+                "--seed",
+                str(args.seed),
+            ],
+        )
+        _run(
+            "exp_emergence_transport_scan.py",
+            [
+                *force_args,
+                "--m",
+                str(args.dyn_m),
+                "--seed0",
                 str(args.seed),
             ],
         )

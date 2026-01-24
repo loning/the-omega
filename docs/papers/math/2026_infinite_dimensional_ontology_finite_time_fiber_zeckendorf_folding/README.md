@@ -50,6 +50,12 @@ python3 scripts/run_all.py --extended
 python3 scripts/run_all.py --extended2
 ```
 
+如需额外生成“方向驱动输运（运动相）+ 参数扫描相图”，运行：
+
+```bash
+python3 scripts/run_all.py --extended3
+```
+
 生成物位置：
 
 - `sections/generated/`：正文可直接 `\\input{}` 的表格/数值片段（禁止手工改动）
