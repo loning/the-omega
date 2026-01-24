@@ -52,7 +52,7 @@ def _wl1_on_model(m: int, adj: List[List[int]]) -> Tuple[int, int | None, int, i
     clo = build_closure_graph(m=m, micro_adj=adj)
     init_colors = [0] * clo.n_total
     for v in clo.macro_range:
-        init_colors[v] = 1
+        init_colors[v] = 1 + (v - clo.n_micro)
     stats = wl1_refine(
         n_nodes=clo.n_total,
         neighbors=clo.neighbors,

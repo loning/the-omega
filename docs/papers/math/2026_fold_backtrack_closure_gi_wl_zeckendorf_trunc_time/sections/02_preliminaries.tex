@@ -19,3 +19,17 @@ Y_m=\bigl\{y\in\{0,1\}^{m}: y_i y_{i+1}=0,\ i=1,\dots,m-1\bigr\},
   \item \textbf{Babai（2015/2016）：}\GI{} 在准多项式时间可解，算法核心构件之一是相干配置与 \WL{} 系列程序 \cite{babai2016gi}。
 \end{itemize}
 
+\subsection{\texorpdfstring{$1$-\WL{}}{1-WL} 的局部性：半径 \texorpdfstring{$t$}{t} 邻域不变量}
+
+\begin{definition}[带初始颜色的根邻域]
+给定带初始颜色 $\kappa_0$ 的图 $G$ 与顶点 $v$，记 $B_t(G,v)$ 为以 $v$ 为根、半径为 $t$ 的诱导子图（包含所有距离 $\le t$ 的顶点与其间边），并保留 $\kappa_0$ 作为顶点颜色。两个根邻域 $(B_t(G,v),v)$ 与 $(B_t(G,w),w)$ 称为同构，若存在保持根与顶点颜色的图同构。
+\end{definition}
+
+\begin{lemma}[\texorpdfstring{$1$-\WL{}}{1-WL} 的半径 \texorpdfstring{$t$}{t} 决定性]\label{lem:wl-locality}
+设在带初始颜色 $\kappa_0$ 的图 $G$ 上运行 $1$-\WL{}，记第 $t$ 次迭代后的颜色为 $\kappa_t$。若两个顶点 $v,w$ 满足根邻域同构 $(B_t(G,v),v)\cong(B_t(G,w),w)$，则有 $\kappa_t(v)=\kappa_t(w)$。因此：若 $\kappa_t(v)\ne \kappa_t(w)$，则必存在某个半径 $\le t$ 的局部结构差异可在根邻域中被检测到。
+\end{lemma}
+
+\begin{proof}
+对 $t$ 归纳。$t=0$ 时结论即为初始颜色保持。假设结论对 $t-1$ 成立。若 $(B_t(G,v),v)\cong(B_t(G,w),w)$，则该同构限制到半径 $t-1$ 的球仍为同构，并在根的邻居之间给出一个保持初始颜色的对应。由归纳假设可知：在第 $t-1$ 轮时，$v$ 的每个邻居与 $w$ 的对应邻居具有相同颜色，因此两者的“邻居颜色多重集”一致，同时根自身在第 $t-1$ 轮的颜色也一致；按 $1$-\WL{} 更新规则，得到 $\kappa_t(v)=\kappa_t(w)$。
+\end{proof}
+

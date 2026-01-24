@@ -34,9 +34,12 @@ def _compute_pairs(m: int) -> List[tuple[int, int]]:
     adj = hypercube_neighbors(n=n, m=m)
     clo = build_closure_graph(m=m, micro_adj=adj)
 
+    # initial colors:
+    # - micro vertices share one color (0)
+    # - each macro vertex gets a unique color (1 + macro_idx)
     init_colors = [0] * clo.n_total
     for v in clo.macro_range:
-        init_colors[v] = 1
+        init_colors[v] = 1 + (v - clo.n_micro)
 
     stats = wl1_refine(
         n_nodes=clo.n_total,
