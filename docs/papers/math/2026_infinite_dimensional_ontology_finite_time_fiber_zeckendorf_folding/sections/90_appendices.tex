@@ -1,0 +1,46 @@
+\section{附录}
+
+\subsection{\texorpdfstring{附录 A：$\abs{X_m}=F_{m+2}$ 的证明}{附录 A：|Xm|=F(m+2) 的证明}}
+
+见正文第 4 节的首位分类递推证明。为便于复核，重述递推：
+设 $a_m=\abs{X_m}$，则 $a_m=a_{m-1}+a_{m-2}$，并由 $a_1=2,a_2=3$ 得 $a_m=F_{m+2}$。
+
+\subsection{\texorpdfstring{附录 B：$\abs{C_m}=L_m$ 与 $\abs{B_m}=F_{m-2}$ 的证明}{附录 B：|Cm|=Lm 与 |Bm|=F(m-2) 的证明}}
+
+见正文第 4 节。关键等式为 $c_m=F_{m+1}+F_{m-1}=L_m$，以及
+$$
+\abs{B_m}=\abs{X_m}-\abs{C_m}=F_{m+2}-L_m=F_{m-2}.
+$$
+
+\subsection{\texorpdfstring{附录 C：接口亏损定理的证明}{附录 C：接口亏损定理的证明}}
+
+见正文第 7 节。核心是：拼接 $u\Vert v$ 的新增约束仅发生在接口位 $(u_m,v_1)\neq(1,1)$，非法配对数为 $\abs{E_m^{\mathrm{end}}}\abs{H_m^{\mathrm{head}}}=F_m^2$，从而
+$$
+\abs{X_{2m}}=\abs{X_m}^2-F_m^2.
+$$
+
+\subsection{附录 D：Fold-with-residual 的正确性与复杂度（接口说明）}
+
+正文第 14 节给出了 Fold-with-residual 与 Update 的实现接口。若将规范化过程编译为有限状态转导器，则：
+\begin{itemize}
+  \item 正确性可归约为：转导器输出稳定词满足禁邻约束，且与数值解释的 Zeckendorf 规范形一致。
+  \item 复杂度可按一次扫描（线性于窗口长度）与有限状态更新实现，常数取决于状态数规模。
+\end{itemize}
+将残差选择为“转导器内部状态”或“有限溢出状态”的最小化问题，见第 16 节开放问题。
+
+\subsection{\texorpdfstring{附录 E：AMR/octree 伪代码与数据结构（提示）}{附录 E：AMR/octree 伪代码与数据结构（提示）}}
+
+正文第 11 节给出误差驱动细分/合并规则。实现时需维护：父子指针、局部分辨率 $m(v)$、局部误差 $E(v)$ 与邻域关系 $\mathrm{Nbr}$。核心循环为：$\text{计算误差}\to\text{细分/合并}\to\text{更新局部状态与邻域缓存}$。
+
+\subsection{附录 F：forward--backward 数值稳定化要点}
+
+对第 13 节的前后向递推，推荐使用缩放或对数域的 $\mathrm{logsumexp}$ 技术以避免下溢。标准实现与缩放因子累积方案参见 Rabiner。\cite{rabiner_hmm_tutorial}
+
+\subsection{复现清单（本稿）}
+
+本稿不包含脚本与数据生成；若后续补充枚举/仿真，将提供：
+\begin{itemize}
+  \item 输入参数表（$m_{\max}$、回路长度上界 $\ell$、误差阈值 $\tau_{\uparrow},\tau_{\downarrow}$ 等）；
+  \item 脚本入口与产物目录；
+  \item 产物哈希与最小可复现清单。
+\end{itemize}

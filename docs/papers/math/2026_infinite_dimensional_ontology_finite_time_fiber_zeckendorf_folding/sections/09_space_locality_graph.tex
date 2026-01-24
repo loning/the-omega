@@ -1,0 +1,26 @@
+\section{空间：局部依赖图与关系化距离}
+
+\subsection{局部依赖图公理}
+
+\begin{definition}[局部依赖图]
+空间由局部依赖图 $(V,\mathrm{Nbr})$ 给出。节点 $v\in V$ 表示基本单元（体素或其抽象等价类），邻域算子 $\mathrm{Nbr}(v)\subset V$ 给出允许依赖的有限集合。系统状态更新满足
+$$
+\mathrm{State}_{t+1}(v)=\mathsf T\bigl(\mathrm{State}_t(v),\mathrm{State}_t(\mathrm{Nbr}(v))\bigr),
+$$
+从而“空间结构”由依赖关系定义而非先验坐标。
+\end{definition}
+
+\subsection{两种距离：拓扑距离与信息距离}
+
+在上述框架下定义两类距离：拓扑距离
+$$
+d_{\mathrm{top}}(u,v)=\text{图最短路长度},
+$$
+信息距离
+$$
+d_{\mathrm{inf}}(u,v)=\text{约束传播从 }u\text{ 推导 }v\text{ 所需最少步数}.
+$$
+
+\subsection{与时间成本的耦合：传播步数作为时间贡献}
+
+信息距离直接给出约束传播最少步数的下界，因此可作为时间成本 $T(\mathcal G)$ 的局部贡献代理量：若目标 $\mathcal G$ 的满足需要从一组源点集合向外传播一致性约束，则任何可行轨道的收敛时间均受相应 $d_{\mathrm{inf}}$ 的下界控制。该耦合在第 \ref{tab:audit-deps} 的审计链中被用作“空间—时间成本”接口，并在第 15 节实验中通过统计相关性进行检验。

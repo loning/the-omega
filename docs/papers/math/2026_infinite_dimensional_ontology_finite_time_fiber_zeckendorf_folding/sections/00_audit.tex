@@ -1,0 +1,61 @@
+\setcounter{section}{-1}
+\section{逻辑审计与层分离}
+
+\subsection{三层规则：定义边、定理边、解释边}
+
+本文刻意将论证分为三层，并在正文中保持显式分离：
+\begin{enumerate}
+  \item \textbf{数学层（可证明）}：以定义、引理、定理形式出现；其结论仅依赖于此前明确给出的数学输入。
+  \item \textbf{建模层（定义/公理）}：引入观测投影、残差充分性、动力学类等外加结构；其地位在文中显式标注为“假设/公理/建模约定”。
+  \item \textbf{解释层（结构同型参照）}：仅主张结构对应（isomorphism at the level of formalism），不作为数学层推理前提。
+\end{enumerate}
+
+\subsection{依赖图总览（模块到模块的单调链）}
+
+全文依赖关系按如下单调链组织（箭头表示“后者依赖前者”的意义）：
+
+\begin{figure}[H]
+\centering
+\begin{verbatim}
+Combinatorial_language
+  -> Folding_kernel
+  -> Interface_loss
+  -> Residual_time_cost
+  -> Space_locality
+  -> Multiscale_tower
+  -> Discrete_connection_holonomy
+  -> Double_boundary_synthesis
+\end{verbatim}
+\caption{模块依赖的审计链（结构图）。}
+\end{figure}
+
+为便于审稿与复核，表 \ref{tab:audit-deps} 给出每个模块的输入/输出与在本文中对应的章节位置。
+
+\begin{table}[H]
+\centering
+\begin{tabular}{p{0.22\linewidth} p{0.33\linewidth} p{0.33\linewidth}}
+\toprule
+\textbf{模块} & \textbf{主要输入} & \textbf{主要输出（可复核对象）}\\
+\midrule
+组合语言 & Fibonacci/Lucas；禁词语言 $X_m$ & $\abs{X_m},\abs{C_m},\abs{B_m}$（定理）\\
+折叠核 & $\Fold_m:\Omega_m\twoheadrightarrow X_m$ & 原像纤维谱 $\abs{\mathcal F_m(x)}$；熵指标\\
+接口亏损 & 拼接新增约束；端点事件集 & $\abs{X_{2m}}=\abs{X_m}^2-F_m^2$（定理）\\
+时间成本 & 残差态 $z=(x,r)$；目标 $\mathcal G$ & $T(\mathcal G)$（定义）；信息分解（指标）\\
+空间/局部性 & 依赖图 $(V,\mathrm{Nbr})$ & $d_{\mathrm{top}},d_{\mathrm{inf}}$（定义）\\
+多尺度塔 & 尺度投影与相容性 & 动态分辨率 $m(\cdot)$ 与可检验标度命题\\
+离散连接 & 允许边集与平行移动 & holonomy 与曲率集中假设（可检验）\\
+双边界合成 & 终端约束 $\mathcal F_T$；前后向权重 & $P_t(z)\propto O_t(z)C_t(z)$（结构同型）\\
+\bottomrule
+\end{tabular}
+\caption{审计表：模块依赖与输出对象。}
+\label{tab:audit-deps}
+\end{table}
+
+\subsection{本文贡献列表（对应摘要中的主张）}
+
+\begin{itemize}
+  \item \textbf{组合不变量地基}：建立稳定语言与循环/边界分解的可证明计数不变量。
+  \item \textbf{折叠与两层时间纤维}：以 $\Fold_m$ 与原像纤维组织观测压缩，并以残差充分性公理刻画未来相关自由度。
+  \item \textbf{接口亏损不变量}：给出接口耦合项的纯组合表达，并将其作为后续局部化与时间成本的硬支点。
+  \item \textbf{时间/空间/多尺度/双边界的统一接口}：给出时间成本、关系空间、多尺度相容与双边界合成的统一表述，并明确哪些结论属于解释层结构对应。
+\end{itemize}
