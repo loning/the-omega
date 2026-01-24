@@ -56,6 +56,12 @@ python3 scripts/run_all.py --extended2
 python3 scripts/run_all.py --extended3
 ```
 
+如需额外生成“行走/准行走对象检测 + 二缺陷相互作用（散射型）”，运行：
+
+```bash
+python3 scripts/run_all.py --extended4
+```
+
 生成物位置：
 
 - `sections/generated/`：正文可直接 `\\input{}` 的表格/数值片段（禁止手工改动）

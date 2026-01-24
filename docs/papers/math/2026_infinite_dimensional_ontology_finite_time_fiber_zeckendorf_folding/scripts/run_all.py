@@ -36,10 +36,12 @@ def main() -> None:
     ap.add_argument("--extended", action="store_true", help="Run object + space-holonomy emergence experiments.")
     ap.add_argument("--extended2", action="store_true", help="Run periodicity + induced-connection holonomy experiments.")
     ap.add_argument("--extended3", action="store_true", help="Run driven transport experiment + transport phase scan.")
+    ap.add_argument("--extended4", action="store_true", help="Run walking/quasi-walker detection + two-defect interaction experiment.")
     ap.add_argument("--seed", type=int, default=0, help="Random seed.")
     args = ap.parse_args()
 
     force_args = ["--force"] if args.force else []
+    drive_gamma = "6.0"
 
     _run("exp_counts_check.py", [*force_args, "--m-max", str(args.m_max)])
     _run("exp_fiber_spectrum.py", [*force_args, "--m", str(args.fiber_m)])
@@ -205,6 +207,8 @@ def main() -> None:
                 str(args.dyn_defect_rate),
                 "--r-diffusion",
                 str(args.dyn_r_diffusion),
+                "--drive-gamma",
+                drive_gamma,
                 "--seed",
                 str(args.seed),
             ],
@@ -215,6 +219,66 @@ def main() -> None:
                 *force_args,
                 "--m",
                 str(args.dyn_m),
+                "--drive-gamma",
+                drive_gamma,
+                "--seed0",
+                str(args.seed),
+            ],
+        )
+
+    if args.extended4:
+        _run(
+            "exp_emergence_transport_walkers.py",
+            [
+                *force_args,
+                "--m",
+                str(args.dyn_m),
+                "--steps",
+                str(max(args.dyn_steps, 260)),
+                "--threshold",
+                str(args.dyn_threshold),
+                "--beta",
+                str(args.dyn_beta),
+                "--coupling",
+                str(max(args.dyn_coupling, 2.0)),
+                "--noise",
+                str(args.dyn_noise),
+                "--defect-rate",
+                str(args.dyn_defect_rate),
+                "--r-diffusion",
+                str(args.dyn_r_diffusion),
+                "--advect-p",
+                "0.0",
+                "--drive-gamma",
+                drive_gamma,
+                "--seed",
+                str(args.seed),
+            ],
+        )
+        _run(
+            "exp_emergence_transport_scattering.py",
+            [
+                *force_args,
+                "--m",
+                str(args.dyn_m),
+                "--steps",
+                str(max(args.dyn_steps, 260)),
+                "--threshold",
+                str(args.dyn_threshold),
+                "--beta",
+                str(args.dyn_beta),
+                "--coupling",
+                str(max(args.dyn_coupling, 2.0)),
+                "--noise",
+                str(args.dyn_noise),
+                "--defect-rate",
+                str(args.dyn_defect_rate),
+                "--r-diffusion",
+                str(args.dyn_r_diffusion),
+                "--advect-p",
+                "0.0",
+                "--drive-gamma",
+                drive_gamma,
                 "--seed0",
                 str(args.seed),
             ],
