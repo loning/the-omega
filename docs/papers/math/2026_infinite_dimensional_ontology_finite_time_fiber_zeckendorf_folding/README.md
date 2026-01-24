@@ -23,7 +23,38 @@
 
 ## 一键复现
 
-本阶段仅含理论正文，无脚本与生成物。
+本阶段已补齐可复现实验脚本。运行方式：
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python3 scripts/run_all.py
+```
+
+如需额外生成“涌现相图（参数扫描）”，运行：
+
+```bash
+python3 scripts/run_all.py --scan
+```
+
+如需额外生成“对象/运动统计 + 空间holonomy”两组涌现实验，运行：
+
+```bash
+python3 scripts/run_all.py --extended
+```
+
+如需额外生成“对象周期/准周期 + 诱导连接holonomy 对照”，运行：
+
+```bash
+python3 scripts/run_all.py --extended2
+```
+
+生成物位置：
+
+- `sections/generated/`：正文可直接 `\\input{}` 的表格/数值片段（禁止手工改动）
+- `artifacts/<experiment>/<run_id>/`：内容寻址产物（PNG/JSON/manifest）
+- `artifacts/export/`：稳定文件名导出（供 LaTeX 图引用）
 
 ## 关键产物位置
 

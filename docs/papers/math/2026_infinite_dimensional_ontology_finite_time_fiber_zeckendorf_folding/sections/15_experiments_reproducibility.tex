@@ -12,6 +12,15 @@ $$
 $$
 其中 $m_{\max}$ 可选为 $20$--$24$ 以保持枚举可行。
 
+为保证可复现性，本文所有写入正文的枚举结果均由脚本生成并以 \texttt{\\input} 方式引入：
+$$
+\texttt{python3 scripts/exp\_counts\_check.py --m-max 24}.
+$$
+对应生成片段如下：
+\begin{center}
+\input{sections/generated/counts_check}
+\end{center}
+
 \subsection{第一层时间纤维谱的计算}
 
 固定 $\Fold_m$（第 5 节数值--Zeckendorf 定义），遍历 $\Omega_m$ 中全部 $2^m$ 个窗口微态，统计
@@ -23,6 +32,15 @@ $$
 p_m(x)=\frac{\abs{\mathcal F_m(x)}}{2^m},\qquad H(X_m),\qquad H(\Omega_m\mid X_m).
 $$
 评测指标包括纤维大小分布的极值、方差与集中性，以及随 $m$ 的标度。
+
+本文给出一组基准参数下的可复现输出：
+$$
+\texttt{python3 scripts/exp\_fiber\_spectrum.py --m 16}.
+$$
+其熵与极值摘要由脚本写入：
+\begin{center}
+\input{sections/generated/fiber_entropy_summary}
+\end{center}
 
 \subsection{第二层残差纤维的候选实现与最小化实验}
 
@@ -47,6 +65,15 @@ $$
   \item 构造含接口回路族 $\Gamma_\ell^{\mathrm{int}}$ 与不含接口回路族 $\Gamma_\ell^{\mathrm{bulk}}$，比较两者的 holonomy 复杂度分布，以检验第 9 节假设 9.2。
 \end{enumerate}
 
+为给出最小可运行实例，本文实现了一个玩具离散连接：以 $X_m$ 上的合法单比特翻转为允许边集 $\mathcal E_m$，以有限残差载体 $R\\cong\\mathbb Z_q$ 为纤维，并将平行移动实现为 $\mathbb Z_q$ 上的仿射映射。该构造刻意使 holonomy 的非平凡性集中在访问边界态集合 $B_m$ 的回路族上，从而对照检验第 12 节假设 12.1 的统计趋势。运行命令：
+$$
+\texttt{python3 scripts/exp\_holonomy\_spectrum.py --m 12 --ell 6 --q 7}.
+$$
+对照表格片段如下：
+\begin{center}
+\input{sections/generated/holonomy_interface_vs_bulk}
+\end{center}
+
 \subsection{动态分辨率实验：AMR/octree 与时间成本标度}
 
 实现 octree/AMR 调度（第 11 节），并在固定目标 $\mathcal G$ 下测量
@@ -54,6 +81,99 @@ $$
 \mathbb E[T(\mathcal G)\mid m],\qquad \mathrm{Var}(T(\mathcal G)\mid m),
 $$
 以及 $T(\mathcal G)$ 与局部指标 $E(v)$、边界态密度、holonomy 复杂度代理量之间的相关性。
+
+作为“局部依赖图 + 有限残差 + 可观测宏态”的最小动力学演示，本文在三维格点依赖图上实现了一个局域更新族，并比较基线轨道与局部扰动轨道的传播前沿、相关函数与残差活动强度。运行命令：
+$$
+\texttt{python3 scripts/exp\_emergence\_local\_dynamics.py --m 10 --steps 60 --threshold 0.50 --defect-rate 0.006}.
+$$
+对应摘要片段如下：
+\begin{center}
+\input{sections/generated/emergence_metrics}
+\end{center}
+
+此外，为识别“传播/缺陷密度/团簇规模”的涌现区域，可对关键参数 $(\\texttt{threshold},\\texttt{defect\\_rate})$ 做网格扫描并生成相图。运行命令：
+$$
+\texttt{python3 scripts/exp\_emergence\_scan.py --m 10}.
+$$
+最佳区域摘要（按半径/缺陷密度/团簇规模的加权评分）如下：
+\begin{center}
+\input{sections/generated/emergence_phase_scan}
+\end{center}
+并给出两张相图示例（稳定文件名导出，便于论文引用）：
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_phase_radius.png}
+  \caption{参数扫描下的传播前沿强度代理量（平均 $\\mathrm{radius\\_max}$）。}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_phase_interface.png}
+  \caption{参数扫描下的缺陷密度代理量（平均 $\\mathrm{interface\\_frac\\_max}$）。}
+\end{figure}
+
+\paragraph{对象/运动统计（缺陷团簇作为对象候选）}
+在固定参数点上，可将边界态集合 $B_m$ 的 6-邻域连通分量视为“激活支撑”的对象候选，并以团簇质心的时间序列定义其运动。本文给出一个可复现的追踪协议与统计量（对象数、寿命、速度分布）：
+$$
+\texttt{python3 scripts/exp\_emergence\_objects.py --m 10 --steps 100}.
+$$
+其摘要片段如下：
+\begin{center}
+\input{sections/generated/emergence_objects_summary}
+\end{center}
+并给出对象数随时间变化示例图：
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_object_count.png}
+  \caption{对象候选（缺陷团簇）数量随时间变化。}
+\end{figure}
+
+\paragraph{对象周期性/准周期性：固定点比例与周期检出}
+在相同追踪协议下，可对对象质心轨迹进行周期检测：寻找最小周期 $p$ 使得轨迹在容差内重复至少若干轮，从而把“固定点/周期轨”从解释层接口推进到可计算统计量。运行命令：
+$$
+\texttt{python3 scripts/exp\_emergence\_objects\_periodicity.py --m 10 --steps 180}.
+$$
+对应摘要片段如下：
+\begin{center}
+\input{sections/generated/emergence_objects_periodicity_summary}
+\end{center}
+并给出周期对象比例随时间的示例曲线：
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_object_periodic_fraction.png}
+  \caption{可检出周期对象比例随时间的演化（当前参数下以 $p=1$ 的近似固定点为主）。}
+\end{figure}
+
+\paragraph{空间 plaquette 的 holonomy 统计（曲率在缺陷附近的时序证据）}
+为把“holonomy/曲率集中”从抽象宏态转移图推进到空间演化过程，本文在三维格点上为每条空间边赋予 $\mathbb Z_q$ 值连接 $A_e(t)$，并对每个基本小方格（plaquette）回路计算离散 holonomy。运行命令：
+$$
+\texttt{python3 scripts/exp\_emergence\_space\_holonomy.py --m 10 --steps 80}.
+$$
+对应摘要片段如下：
+\begin{center}
+\input{sections/generated/emergence_space_holonomy_summary}
+\end{center}
+并给出时序示例图：
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_space_holonomy_rate.png}
+  \caption{空间 plaquette holonomy 非平凡率与缺陷触达率的时序对照。}
+\end{figure}
+
+\paragraph{诱导连接对照：精确 1-形式与方向依赖连接}
+为区分“由标量势诱导的无旋连接”（精确 1-形式）与“方向依赖的局域连接”，本文提供了一个对照实验：在同一动力学轨道上，分别以 (i) 接口门控连接、(ii) 由单一比特场差分诱导的精确 1-形式、(iii) 按边方向选择不同比特的方向依赖连接，计算 plaquette holonomy 的非平凡率及其与缺陷触达率的相关性。运行命令：
+$$
+\texttt{python3 scripts/exp\_emergence\_space\_holonomy\_induced.py --m 10 --steps 80}.
+$$
+对应摘要片段如下：
+\begin{center}
+\input{sections/generated/emergence_space_holonomy_induced_summary}
+\end{center}
+并给出时序对照图：
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_space_holonomy_compare.png}
+  \caption{三种连接的 holonomy 非平凡率与缺陷触达率的对照。精确 1-形式在 plaquette 上给出近零 holonomy，而方向依赖连接给出显著非平凡率，并与缺陷触达呈正相关。}
+\end{figure}
 
 \subsection{双边界合成的剪枝加速评测}
 
