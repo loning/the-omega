@@ -25,7 +25,8 @@
 组合计数核对 & \path{python3 scripts/exp_counts_check.py --m-max 24} & \path{sections/generated/counts_check.tex}\\
 第一层纤维谱/熵 & \path{python3 scripts/exp_fiber_spectrum.py --m 16} & \path{sections/generated/fiber_entropy_summary.tex}\\
 holonomy 光谱对照 & \path{python3 scripts/exp_holonomy_spectrum.py --m 12 --ell 6 --q 7 --seed 0} & \path{sections/generated/holonomy_interface_vs_bulk.tex}\\
-涌现指标摘要 & \path{python3 scripts/exp_emergence_local_dynamics.py ... --seed 0} & \path{sections/generated/emergence_metrics.tex}\\
+空间 plaquette holonomy 统计 & \path{python3 scripts/exp_emergence_space_holonomy.py --m 10 --steps 80 --seed 0} & \path{sections/generated/emergence_space_holonomy_summary.tex}\\
+诱导连接对照（精确 1-形式） & \path{python3 scripts/exp_emergence_space_holonomy_induced.py --m 10 --steps 80 --seed 0} & \path{sections/generated/emergence_space_holonomy_induced_summary.tex}\\
 \bottomrule
 \end{tabular}
 \caption{复现索引：条目—脚本—生成片段对应关系（摘要）。}
@@ -125,69 +126,7 @@ $$
 
 \paragraph{随机性与误差预算。}
 \AuditTag 本小节涉及随机仿真（随机种子驱动的局部更新、噪声与缺陷注入）。默认给出 \texttt{seed=0} 的基准复现输出；如需误差条，推荐在相同参数下用一组种子 $\{s_1,\dots,s_R\}$ 重复运行并报告均值与 $95\%$ 置信区间（或标准误）。对“相关性/回归”的显著性报告应预先声明阈值，并与样本量（步数、格点数、重复次数）一起给出。
-
-作为“局部依赖图 + 有限残差 + 可观测宏态”的最小动力学演示，本文在三维格点依赖图上实现了一个局域更新族，并比较基线轨道与局部扰动轨道的传播前沿、相关函数与残差活动强度。运行命令：
-\begin{center}
-\path{python3 scripts/exp_emergence_local_dynamics.py --m 10 --steps 60 --threshold 0.50 --defect-rate 0.006}
-\end{center}
-对应摘要片段如下：
-\begin{center}
-\input{sections/generated/emergence_metrics}
-\end{center}
-
-此外，为识别“传播/缺陷密度/团簇规模”的涌现区域，可对关键参数 $(\texttt{threshold},\texttt{defect\_rate})$ 做网格扫描并生成相图。运行命令：
-\begin{center}
-\path{python3 scripts/exp_emergence_scan.py --m 10}
-\end{center}
-最佳区域摘要（按半径/缺陷密度/团簇规模的加权评分）如下：
-\begin{center}
-\input{sections/generated/emergence_phase_scan}
-\end{center}
-并给出两张相图示例（稳定文件名导出，便于论文引用）：
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_phase_radius.png}
-  \caption{参数扫描下的传播前沿强度代理量（平均 $\mathrm{radius_{max}}$）。}
-\end{figure}
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_phase_interface.png}
-  \caption{参数扫描下的缺陷密度代理量（平均 $\mathrm{interface\_frac_{max}}$）。}
-\end{figure}
-
-\paragraph{对象/运动统计（缺陷团簇作为对象候选）}
-在固定参数点上，可将边界态集合 $B_m$ 的 6-邻域连通分量视为“激活支撑”的对象候选，并以团簇质心的时间序列定义其运动。本文给出一个可复现的追踪协议与统计量（对象数、寿命、速度分布）：
-\begin{center}
-\path{python3 scripts/exp_emergence_objects.py --m 10 --steps 100}
-\end{center}
-其摘要片段如下：
-\begin{center}
-\input{sections/generated/emergence_objects_summary}
-\end{center}
-并给出对象数随时间变化示例图：
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_object_count.png}
-  \caption{对象候选（缺陷团簇）数量随时间变化。}
-\end{figure}
-
-\paragraph{对象周期性/准周期性：固定点比例与周期检出}
-在相同追踪协议下，可对对象质心轨迹进行周期检测：寻找最小周期 $p$ 使得轨迹在容差内重复至少若干轮，从而把“固定点/周期轨”从解释层接口推进到可计算统计量。运行命令：
-\begin{center}
-\path{python3 scripts/exp_emergence_objects_periodicity.py --m 10 --steps 180}
-\end{center}
-对应摘要片段如下：
-\begin{center}
-\input{sections/generated/emergence_objects_periodicity_summary}
-\end{center}
-并给出周期对象比例随时间的示例曲线：
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_object_periodic_fraction.png}
-  \caption{可检出周期对象比例随时间的演化（当前参数下以 $p=1$ 的近似固定点为主）。}
-\end{figure}
-
-\paragraph{空间 plaquette 的 holonomy 统计（曲率在缺陷附近的时序证据）}
+\subsection{空间 plaquette 的 holonomy 统计（曲率在缺陷附近的时序证据）}
 为把“holonomy/曲率集中”从抽象宏态转移图推进到空间演化过程，本文在三维格点上为每条空间边赋予 $\mathbb Z_q$ 值连接 $A_e(t)$，并对每个基本小方格（plaquette）回路计算离散 holonomy。运行命令：
 \begin{center}
 \path{python3 scripts/exp_emergence_space_holonomy.py --m 10 --steps 80}
@@ -199,11 +138,11 @@ $$
 并给出时序示例图：
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_space_holonomy_rate.png}
+  \includegraphics[width=0.95\linewidth]{sections/generated/assets/emergence_space_holonomy_rate.png}
   \caption{空间 plaquette holonomy 非平凡率与缺陷触达率的时序对照。}
 \end{figure}
 
-\paragraph{诱导连接对照：精确 1-形式与方向依赖连接}
+\subsection{诱导连接对照：精确 1-形式与方向依赖连接}
 为区分“由标量势诱导的无旋连接”（精确 1-形式）与“方向依赖的局域连接”，本文提供了一个对照实验：在同一动力学轨道上，分别以 (i) 接口门控连接、(ii) 由单一比特场差分诱导的精确 1-形式、(iii) 按边方向选择不同比特的方向依赖连接，计算 plaquette holonomy 的非平凡率及其与缺陷触达率的相关性。运行命令：
 \begin{center}
 \path{python3 scripts/exp_emergence_space_holonomy_induced.py --m 10 --steps 80}
@@ -215,82 +154,8 @@ $$
 并给出时序对照图：
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_space_holonomy_compare.png}
+  \includegraphics[width=0.95\linewidth]{sections/generated/assets/emergence_space_holonomy_compare.png}
   \caption{三种连接的 holonomy 非平凡率与缺陷触达率的对照。精确 1-形式在 plaquette 上给出近零 holonomy，而方向依赖连接给出显著非平凡率，并与缺陷触达呈正相关。}
-\end{figure}
-
-\paragraph{方向驱动与运动相：缺陷团簇的净位移统计}
-为推动系统从“驻留型对象（$p=1$）”向“可迁移对象”过渡，本文引入一个最小的非平衡驱动族：其一是对残差场 $r$ 在 $x$ 方向做有偏输运（advection），其二是在宏态更新偏置中加入残差 $x$-梯度驱动项（\texttt{drive\_gamma}），从而在缺陷附近形成可持续的定向载流倾向。运行命令：
-\begin{center}
-\path{python3 scripts/exp_emergence_transport.py --m 10 --steps 240 --advect-p 0.0 --coupling 2.0 --drive-gamma 6.0}
-\end{center}
-对应摘要片段如下：
-\begin{center}
-\input{sections/generated/emergence_transport_summary}
-\end{center}
-并给出漂移速度分布示例图：
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_transport_drift_hist.png}
-  \caption{方向驱动（advection + 残差梯度驱动）下对象漂移速度分布（按寿命归一化）。}
-\end{figure}
-
-\paragraph{运动相参数扫描}
-对驱动强度 \texttt{advect\_p}、耦合强度 \texttt{coupling} 以及梯度驱动强度 \texttt{drive\_gamma}（固定）进行网格扫描，可得到“移动对象比例”与“移动对象平均漂移幅度”的相图。运行命令：
-\begin{center}
-\path{python3 scripts/exp_emergence_transport_scan.py --m 10 --drive-gamma 6.0}
-\end{center}
-最佳区域摘要如下：
-\begin{center}
-\input{sections/generated/emergence_transport_scan}
-\end{center}
-并给出两张相图示例：
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_transport_phase_moving.png}
-  \caption{运动相相图：移动对象比例（moving\_frac）。}
-\end{figure}
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_transport_phase_drift.png}
-  \caption{运动相相图：移动对象平均漂移幅度（mean $|$drift$|$）。}
-\end{figure}
-
-\paragraph{行走/准行走对象：形状稳定性--漂移联合判据}
-为进一步逼近“粒子运动”的可检验结构，本文在同一输运动力学上引入一个更严格的对象运动判据：对每条对象轨迹同时考察 (i) 每步平均漂移幅度 $|v|$，(ii) 连续两帧缺陷团簇形状的 Jaccard 相似度（在质心坐标系下的相对体素集合）。在此基础上，
-\begin{itemize}
-  \item \emph{行走周期轨}：存在最小周期 $p\ge 2$，使得形状在周期内重复且每周期净位移非零；
-  \item \emph{准行走对象}：形状稳定性（Jaccard 中位数）超过阈值且 $|v|$ 超过阈值。
-\end{itemize}
-运行命令：
-\begin{center}
-\path{python3 scripts/exp_emergence_transport_walkers.py --m 10 --drive-gamma 6.0}
-\end{center}
-对应摘要片段如下：
-\begin{center}
-\input{sections/generated/emergence_transport_walkers_summary}
-\end{center}
-并给出稳定性--漂移散点图（阈值虚线）：
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_transport_walkers_stability_scatter.png}
-  \caption{对象轨迹的形状稳定性（Jaccard）与漂移幅度的联合分布；右上象限为“准行走对象”。}
-\end{figure}
-
-\paragraph{二缺陷相互作用（散射型）统计}
-在相同动力学参数下，将两个局域缺陷团簇沿 $x$ 方向分离放置并演化，记录“两个最大缺陷团簇”之间的距离时序，并统计最近距离分布与“近接触”事件率。运行命令：
-\begin{center}
-\path{python3 scripts/exp_emergence_transport_scattering.py --m 10 --drive-gamma 6.0}
-\end{center}
-对应摘要片段如下：
-\begin{center}
-\input{sections/generated/emergence_transport_scattering_summary}
-\end{center}
-并给出一个距离时序示例：
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.95\linewidth]{artifacts/export/emergence_transport_scattering_distance.png}
-  \caption{二缺陷相互作用：两个最大缺陷团簇的距离随时间变化示例；虚线为近接触阈值。}
 \end{figure}
 
 \subsection{双边界合成的剪枝加速评测}

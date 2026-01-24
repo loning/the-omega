@@ -23,7 +23,7 @@ Outputs:
   - artifacts/emergence_space_holonomy_induced/<run_id>/summary.json
   - artifacts/emergence_space_holonomy_induced/<run_id>/holonomy_compare.png
   - sections/generated/emergence_space_holonomy_induced_summary.tex
-  - stable exports under artifacts/export/
+  - stable exports under sections/generated/assets/
 """
 
 from __future__ import annotations

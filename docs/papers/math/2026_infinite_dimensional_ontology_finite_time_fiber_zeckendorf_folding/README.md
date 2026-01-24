@@ -29,12 +29,6 @@
 python3 scripts/run_all.py
 ```
 
-如需额外生成“涌现相图（参数扫描）”，运行：
-
-```bash
-python3 scripts/run_all.py --scan
-```
-
 一键复现本文所有实验，直接运行：
 
 ```bash
@@ -45,7 +39,7 @@ python3 scripts/run_all.py
 
 - `sections/generated/`：正文可直接 `\\input{}` 的表格/数值片段（禁止手工改动）
 - `artifacts/<experiment>/<run_id>/`：内容寻址产物（PNG/JSON/manifest）
-- `artifacts/export/`：稳定文件名导出（供 LaTeX 图引用）
+- `sections/generated/assets/`：稳定文件名导出（供 LaTeX 图引用）
 
 ## 关键产物位置
 

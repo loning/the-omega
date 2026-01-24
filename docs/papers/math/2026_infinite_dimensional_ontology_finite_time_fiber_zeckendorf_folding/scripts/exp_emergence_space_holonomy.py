@@ -17,7 +17,7 @@ Outputs:
   - artifacts/emergence_space_holonomy/<run_id>/summary.json
   - artifacts/emergence_space_holonomy/<run_id>/holonomy_rate.png
   - sections/generated/emergence_space_holonomy_summary.tex
-  - stable export under artifacts/export/
+  - stable export under sections/generated/assets/
 """
 
 from __future__ import annotations
