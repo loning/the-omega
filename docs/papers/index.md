@@ -142,6 +142,14 @@ English version: [`index_en.md`](./index_en.md)
   - **定位**：**专题篇（生物/遗传密码反编译）**：将密码子视为 6 位微观态并以 Fold\_6 做 64→21 折叠压缩；在控制集合 \{AUG,UAA,UAG,UGA\} 的边界命中最大化目标下对 24 种二比特编码穷举反编译，得到唯一最优编码与 14/48 起止边界对称，并给出转录本级 Z‑谱与可复现实验工具链
   - **主要依赖**：RF + BioCT
 
+#### 数学（2026 草稿）
+
+- **`math/2026_quantum_axioms_from_fiber_counting/`**：由折叠纤维计数推出 Born 权重的等价表述与最小量子读出接口包（POVM/去相干）
+  - **PDF**：[`main.pdf`](./math/2026_quantum_axioms_from_fiber_counting/main.pdf)
+  - **TeX**：[`main.tex`](./math/2026_quantum_axioms_from_fiber_counting/main.tex)
+  - **定位**：以 $\Fold_m$ 的原像纤维计数定义粗概率 $p_m$，并在有效 Hilbert 表述中将 Born 权重视为对 $p_m$ 的等价写法（路线 A）
+  - **主要依赖**：`math/2026_infinite_dimensional_ontology_finite_time_fiber_zeckendorf_folding/`
+
 说明：若目录内存在 `main.pdf` 则可直接打开；若尚未生成，可按下文编译生成。
 
 ### 关系图（依赖/承接）
