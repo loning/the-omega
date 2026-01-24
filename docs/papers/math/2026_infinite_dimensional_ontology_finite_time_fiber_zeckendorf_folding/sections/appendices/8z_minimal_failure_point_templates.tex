@@ -1,0 +1,25 @@
+\subsection{最小失败点模板（Trigger/Check/Impact/Fallback）}
+\label{app:minimal_failure_point_templates}
+
+\AuditTag 本附录给出统一的“最小失败点”记录模板，用于把每条关键主张的\emph{可证伪点}与\emph{失效边界}写成可审计对象。推理台账（附录 \ref{app:inference_ledger}）中的条目可引用本模板进行实例化。
+
+\subsubsection{标准模板}
+
+\begin{itemize}
+  \item \textbf{Trigger（触发条件）}：什么情况下此条主张会进入“需要检查”的状态？（例如参数超出范围、观测输出不合法、统计检验不过阈值）
+  \item \textbf{Check（检查规则）}：给出可执行/可复核的判定规则（算法、阈值、误差界、概率口径、必要的输入数据）
+  \item \textbf{Impact（影响范围）}：若检查失败，哪些后续结论/模块必须降级、停止使用或改为 \textsf{[Open]}？
+  \item \textbf{Fallback（替代路径）}：在失败时可采用的最小替代方案（弱化结论、限制适用域、或引入新的显式假设/实验口径）
+\end{itemize}
+
+\subsubsection{示例：Axiom 6.1（残差充分性）的最小失败点}
+
+\AuditTag 以下示例用于说明书写形式；其内容在正文中仍以“公理/建模输入”地位出现，不作为数学层定理的前提。
+
+\begin{itemize}
+  \item \textbf{Trigger}：在相同观测窗口 $m$ 下，不同动力学候选导致未来可预测量的方差无法被有限残差族控制。
+  \item \textbf{Check}：固定一组可观测函数族 $\mathcal O_m$ 与动力学类 $\mathcal D$；在样本量 $N$ 上估计未来目标量的条件方差，检验其是否可由有限残差类别分割到阈值 $\delta$ 内（置信度 $p$）。
+  \item \textbf{Impact}：若失败，则第 8 节时间成本分解与第 13 节双边界合成的“有限闭包”应降级为 \textsf{[Open]}；相关实验主张只能作为经验现象陈述。
+  \item \textbf{Fallback}：扩大残差空间（允许更高阶的历史摘要），或把结论限制在特定动力学子类/特定观测核下，并在台账中显式记录新的输入。
+\end{itemize}
+

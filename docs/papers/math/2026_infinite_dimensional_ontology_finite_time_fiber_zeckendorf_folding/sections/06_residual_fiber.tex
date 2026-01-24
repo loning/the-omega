@@ -4,11 +4,15 @@
 
 第一层时间纤维 $\mathcal F_m(x)$ 刻画了“同一观测态 $x$”对应的全部窗口微态集合。然而，对于给定的动力学类与可观测代数，并非 $\mathcal F_m(x)$ 内的全部差异都会影响未来可观测量。由此引入第二层时间纤维：将 $\mathcal F_m(x)$ 进一步按“未来可观测行为等价”进行商化。
 
-设定：
-\begin{itemize}
-  \item $\mathcal O_m$ 为分辨率 $m$ 下的可观测代数（例如由局部窗口读出与有限阶组合构成）；
-  \item $\mathcal D$ 为允许动力学类（例如满足局部性与因果偏序的更新规则族；其具体形式留待后续章节）。
-\end{itemize}
+\InterfaceTag 为把“未来可观测行为等价”写成可审计对象，我们把两类外加输入显式化：可观测代数 $\mathcal O_m$ 与允许动力学类 $\mathcal D$。
+
+\begin{definition}[可观测代数与允许动力学类]\label{def:observable_algebra_and_dynamics_class}
+\InterfaceTag 固定分辨率 $m$。设 $\mathcal O_m$ 为一族可观测量（随机变量或可测函数）的集合；典型地，可取为由有限窗口读出与有限阶组合生成的函数族，使得对任意 $O\in\mathcal O_m$，其取值空间为有限集合或可数集合（以便统计复核）。
+
+\InterfaceTag 设 $\mathcal D$ 为允许动力学类：其元素 $D\in\mathcal D$ 规定了在给定初始本体态（或其在 $\mathcal F_m(x)$ 内的微观代表）下，未来演化与输出的条件分布。记 $\mathbb P_D(\,\cdot\,\mid\cdot)$ 为由 $D$ 诱导的条件概率记号。
+
+\AuditTag $\mathcal O_m$ 与 $\mathcal D$ 是建模/接口层输入：它们的选择影响“哪些隐藏自由度被认为与未来相关”，但不改变第 4 节的组合计数定理本身。
+\end{definition}
 
 对固定 $x\in X_m$，在原像纤维 $\mathcal F_m(x)$ 上定义等价关系：若对任意 $O\in \mathcal O_m$ 与任意允许动力学 $D\in\mathcal D$，二者诱导的未来可观测条件分布相同，则视为等价。形式上，可写为
 $$
@@ -56,6 +60,7 @@ $$
 \end{proposition}
 
 \begin{proof}
+\MathTag 依赖：定义 \ref{def:experiment-words} 与定义 \ref{def:mn-equivalence}；以及复合封闭性假设 $\mathcal U_m$ 生成半群 $\langle\mathcal U_m\rangle$。
 对任意实验词 $w$，将其左侧预先复合 $u$ 得到新词 $w\circ u$，仍属于由 $\mathcal U_m$ 与 $\mathcal Q_m$ 生成的实验词集合。由 $b\sim_{\mathcal W} b'$ 得 $\mathrm{Out}_{w\circ u}(b)=\mathrm{Out}_{w\circ u}(b')$，即 $\mathrm{Out}_{w}(u(b))=\mathrm{Out}_{w}(u(b'))$。证毕。
 \end{proof}
 
@@ -69,7 +74,9 @@ $$
 
 “在三维空间内，仅需有限时间纤维即可确定分辨率 $m$ 下的三维态”可表述为如下公理。
 
-\begin{axiom}[有限残差充分性]
+\begin{axiom}[有限残差充分性]\label{ax:finite_residual_sufficiency}
+\InterfaceTag
+\AuditTag 台账编号：\texttt{L-res-01}。
 对每个 $m$，存在有限集合族 $\{R_m(x)\}_{x\in X_m}$，使得对任意基点 $p\in M$，定义
 $$
 x_m(p)=\pi_m(\psi(p))\in X_m,\qquad r_m(p)\in R_m(x_m(p)),
@@ -103,7 +110,7 @@ $$
 
 为把“残差更新/路径依赖”完全纳入群论语言，可对残差纤维施加一个额外的结构假设：让每条纤维不仅是有限集合，而且携带一个可用于计算的群结构。
 
-\begin{assumption}[有限群残差载体（可选）]\label{assump:residual-group}
+\begin{assumption}[有限群残差载体（可选）]\label{ass:finite_group_residual_carrier}
 存在一个固定有限群 $(R,\cdot,e)$（例如 $R\cong \ZZ_q$），使得对每个 $x\in X_m$ 的残差纤维 $R_m(x)$ 选定一个双射
 $$
 \phi_x:R_m(x)\xrightarrow{\ \sim\ }R.
@@ -125,7 +132,7 @@ $$
 
 \subsection{有限性来源与可实现性：有限记忆结构的参照}
 
-公理 6.1 的可实现性与两类标准事实相协调：
+公理 \ref{ax:finite_residual_sufficiency} 的可实现性与两类标准事实相协调：
 
 \begin{enumerate}
   \item \textbf{SFT 的有限记忆性。} 禁止词为有限集合的子移位可由有限有向图生成，其局部约束具有有限记忆表示。黄金均值移位即为典型例子。\cite{scholarpedia_symbolic_dynamics}

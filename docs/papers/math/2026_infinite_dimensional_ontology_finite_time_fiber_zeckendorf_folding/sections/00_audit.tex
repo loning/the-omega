@@ -1,18 +1,28 @@
 \setcounter{section}{-1}
 \section{逻辑审计与层分离}
 
-\subsection{三层规则：定义边、定理边、解释边}
+\subsection{正文层标签与分层规则}
 
-本文刻意将论证分为三层，并在正文中保持显式分离：
-\begin{enumerate}
-  \item \textbf{数学层（可证明）}：以定义、引理、定理形式出现；其结论仅依赖于此前明确给出的数学输入。
-  \item \textbf{建模层（定义/公理）}：引入观测投影、残差充分性、动力学类等外加结构；其地位在文中显式标注为“假设/公理/建模约定”。
-  \item \textbf{解释层（结构同型参照）}：仅主张结构对应（isomorphism at the level of formalism），不作为数学层推理前提。
-\end{enumerate}
+\paragraph{四类内联层标签（正文）。}
+本文在正文中使用四类内联层标签，以保证论证的可审计性与不可逆依赖纪律：
+\begin{itemize}
+  \item \MathTag\ \textbf{数学层（可证明）}：以定义、引理、定理等形式出现；其结论仅依赖于此前明确给出的数学输入与明确列出的假设/公理，不得以解释/对齐/审计叙述为前提。
+  \item \InterfaceTag\ \textbf{接口/建模层（字典与外加结构）}：引入观测投影、残差承载、动力学类等外加结构与操作性字典；其地位在文中显式标注为“假设/公理/建模约定”，并给出可检验/可反驳的口径。
+  \item \MatchTag\ \textbf{外部对齐层（比较口径）}：单位、对照目标、基准数据或比较口径等约定；这些约定用于报告与对齐，不得作为数学层证明前提。
+  \item \AuditTag\ \textbf{审计层（复现、失败点、闭包选择）}：候选族/目标函数/tie-break 的闭包选择、复现参数、误差预算、最小失败点等审计性陈述；同样不得反向进入数学层证明链。
+\end{itemize}
+
+\paragraph{不可逆依赖纪律（No reverse dependence）。}
+\AuditTag 任何 \MathTag 的证明与推导只允许依赖 \MathTag 的陈述以及在同一证明链中明确引入的假设/公理；
+\InterfaceTag/\MatchTag/\AuditTag 的叙述只能作为解释、对齐或审计信息，\emph{不得}作为数学层推理前提。
+模块级依赖图见附录 \ref{app:audit_overview}（图 \ref{fig:audit_dependency_map}），条目级依赖见推理台账附录 \ref{app:inference_ledger}。
+
+\paragraph{台账状态（附录专用）。}
+\AuditTag 推理台账（附录 \ref{app:inference_ledger}）使用五类状态标签 \textsf{[Math]}, \textsf{[Prot]}, \textsf{[Iface]}, \textsf{[CAP]}, \textsf{[Open]} 记录依赖与闭包状态；这些状态标签仅用于附录的依赖追踪，并非正文层标签。
 
 \subsection{依赖图总览（模块到模块的单调链）}
 
-全文依赖关系按如下单调链组织（箭头表示“后者依赖前者”的意义）：
+全文依赖关系按如下单调链组织（箭头表示“后者依赖前者”的意义）。其图形化版本与图例见附录 \ref{app:audit_overview}：
 
 \begin{figure}[H]
 \centering
@@ -58,4 +68,13 @@ Combinatorial_language
   \item \textbf{折叠与两层时间纤维}：以 $\Fold_m$ 与原像纤维组织观测压缩，并以残差充分性公理刻画未来相关自由度。
   \item \textbf{接口亏损不变量}：给出接口耦合项的纯组合表达，并将其作为后续局部化与时间成本的硬支点。
   \item \textbf{时间/空间/多尺度/双边界的统一接口}：给出时间成本、关系空间、多尺度相容与双边界合成的统一表述，并明确哪些结论属于解释层结构对应。
+\end{itemize}
+
+\subsection{审计附录导航（本稿）}
+
+\AuditTag 为便于复核与复现，本稿提供如下审计附录：
+\begin{itemize}
+  \item 附录 \ref{app:audit_overview}：审计总览（依赖图、图例、跨模块约束注册表）。
+  \item 附录 \ref{app:inference_ledger}：推理台账（条目编号、依赖清单、复核定位）。
+  \item 附录 \ref{app:minimal_failure_point_templates}：最小失败点模板（Trigger/Check/Impact/Fallback）。
 \end{itemize}

@@ -4,7 +4,8 @@
 
 在有限窗模型中，折叠算子用于将任意窗口微态 $b\in\Omega_m$ 规范化为稳定词 $x\in X_m$。本文采用“数值解释 + Zeckendorf 规范形”给出构造性定义。
 
-对 $b=(b_1,\dots,b_m)\in \Omega_m$，定义其数值
+\begin{definition}[折叠算子]\label{def:Fold}
+\MathTag 对 $b=(b_1,\dots,b_m)\in \Omega_m$，定义其数值
 $$
 N(b)=\sum_{i=1}^{m} b_i F_{i+1}.
 $$
@@ -12,11 +13,14 @@ $$
 $$
 N(b)=\sum_{k\ge 2} z_k F_k,\qquad z_k\in\{0,1\},\qquad z_k z_{k+1}=0.
 $$
-定义
+定义折叠算子
 $$
-\Fold_m(b)=(z_2,z_3,\dots,z_{m+1})\in X_m.
+\Fold_m:\Omega_m\to X_m,\qquad \Fold_m(b)=(z_2,z_3,\dots,z_{m+1}).
 $$
-由于取 $b=x\in X_m$ 时 $b$ 已满足无相邻约束且对应 Zeckendorf 规范形，故 $\Fold_m$ 为满射。Zeckendorf 规范形的存在唯一性参照文献。\cite{kkmw_zeckendorf_summands}
+\end{definition}
+\AuditTag 上述定义把 Zeckendorf 规范形的存在唯一性作为数学基础输入使用；其精确形式为：对任意正整数 $n$，存在唯一的无相邻 Fibonacci 系数表示。参见文献。\cite{kkmw_zeckendorf_summands}
+
+由于取 $b=x\in X_m$ 时 $b$ 已满足无相邻约束且对应 Zeckendorf 规范形，故 $\Fold_m$ 为满射。
 
 \begin{remark}
 上述定义避免了直接给出局部重写系统的繁琐性；在算法实现上，规范化可由有限状态转导器完成（第 6.4 节讨论其与残差有限性的关联）。\cite{shallit_robbins_ardila_berstel}
@@ -65,6 +69,7 @@ $K_m\le G_m$ 为子群。
 \end{proposition}
 
 \begin{proof}
+\MathTag 依赖：定义 \ref{def:observable-kernel}；以及 $G_m=\mathrm{Sym}(\widetilde{\Omega}_m)$ 的群结构（定义 \ref{def:extended-micro-group}）。
 恒等变换满足 $\widetilde{\Fold}_m\circ \mathrm{id}=\widetilde{\Fold}_m$，故 $\mathrm{id}\in K_m$。若 $g,h\in K_m$，则
 $$
 \widetilde{\Fold}_m\circ (g\circ h)=(\widetilde{\Fold}_m\circ g)\circ h=\widetilde{\Fold}_m\circ h=\widetilde{\Fold}_m,

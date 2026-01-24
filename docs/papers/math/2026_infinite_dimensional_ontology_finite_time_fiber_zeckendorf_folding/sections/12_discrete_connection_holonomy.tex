@@ -2,11 +2,15 @@
 
 \subsection{允许转移图与离散平行移动}
 
-令 $(X_m,\mathcal E_m)$ 为允许宏态转移的有向图，其中 $\mathcal E_m\subset X_m\times X_m$ 由局部规则与接口一致性给定。对每条有向边 $(x\to x')\in\mathcal E_m$ 赋予纤维映射
+\begin{definition}[离散连接（平行移动规则）]\label{def:discrete_connection}
+\MathTag 令 $(X_m,\mathcal E_m)$ 为允许宏态转移的有向图，其中 $\mathcal E_m\subset X_m\times X_m$ 由局部规则与接口一致性给定。对每条有向边 $(x\to x')\in\mathcal E_m$ 赋予纤维映射
 $$
 \mathcal P_{x\to x'}:R_m(x)\to R_m(x'),
 $$
-并将其称为离散平行移动。给定基路径
+并将集合 $\mathcal P^{(m)}:=\{\mathcal P_{x\to x'}\}_{(x\to x')\in\mathcal E_m}$ 称为分辨率 $m$ 下的离散连接（或离散平行移动规则）。
+\end{definition}
+
+给定基路径
 $$
 \gamma=(x_0\to x_1\to\cdots\to x_k)
 $$
@@ -18,7 +22,7 @@ $$
 当残差纤维携带群结构或可嵌入主丛结构时，上述结构可与离散主丛连接理论对齐。Leok--Marsden--Weinstein 给出了离散主丛连接的系统构造，并以离散 Atiyah 序列分裂刻画离散连接及其曲率。\cite{leok_marsden_weinstein_discrete_connections}
 
 \begin{remark}[可逆平行移动与置换表示]\label{rem:bijective-parallel-transport}
-若每条边的平行移动 $\mathcal P_{x\to x'}$ 为双射，则闭合回路的 $\mathrm{Hol}(\gamma)$ 自动是 $R_m(x_0)$ 上的置换，从而可在 $\mathrm{Sym}(R_m(x_0))$ 中讨论其循环分解、不动点比例等群论不变量。若进一步采用假设 \ref{assump:residual-group} 的群化选择并固定同构 $\phi_x:R_m(x)\xrightarrow{\sim}R$，则可把平行移动写成群载体 $R$ 上的表示
+若每条边的平行移动 $\mathcal P_{x\to x'}$ 为双射，则闭合回路的 $\mathrm{Hol}(\gamma)$ 自动是 $R_m(x_0)$ 上的置换，从而可在 $\mathrm{Sym}(R_m(x_0))$ 中讨论其循环分解、不动点比例等群论不变量。若进一步采用假设 \ref{ass:finite_group_residual_carrier} 的群化选择并固定同构 $\phi_x:R_m(x)\xrightarrow{\sim}R$，则可把平行移动写成群载体 $R$ 上的表示
 $$
 \overline{\mathcal P}_{x\to x'}:=\phi_{x'}\circ \mathcal P_{x\to x'}\circ \phi_x^{-1}\in \mathrm{Sym}(R),
 $$
@@ -63,8 +67,14 @@ $$
 \mathcal K=\mathbb E_{\gamma\sim \Gamma}[\kappa(\gamma)].
 $$
 
-\begin{assumption}[结构性下界（经验假设）]
-若存在闭路族 $\Gamma_0\subseteq\Gamma$ 使得对任意满足 $\mathcal G$ 的演化轨道均必须实现对 $\Gamma_0$ 的一致性闭合，则 $T(\mathcal G)$ 存在随 $\mathcal K_0=\mathbb E_{\gamma\sim\Gamma_0}[\kappa(\gamma)]$ 单调增长的下界函数。
+\begin{assumption}[结构性下界（经验假设）]\label{ass:structural_lower_bound}
+\InterfaceTag 存在闭路族 $\Gamma_0\subseteq\Gamma$ 与常数 $c_1>0,c_0\ge 0$，使得对任意满足一致性目标 $\mathcal G$ 的演化轨道，其收敛时间成本满足
+$$
+T(\mathcal G)\ge c_1\,\mathcal K_0-c_0,
+\qquad
+\mathcal K_0=\mathbb E_{\gamma\sim\Gamma_0}[\kappa(\gamma)].
+$$
+\AuditTag 其中 $\kappa(\gamma)$ 的定义、$\Gamma_0$ 的抽样口径、以及对 $\mathcal K_0$ 的估计误差与置信规则由第 15 节实验协议给定；该假设不作为数学层证明前提，而作为可检验的“曲率强度—时间成本”接口输入。
 \end{assumption}
 
 该假设要求在具体系统中给出 $\kappa$ 与 $\mathcal G$ 的构造性对应；在第 15 节的实验部分可通过短回路枚举与经验回归验证其统计趋势。
@@ -73,8 +83,10 @@ $$
 
 由第 7 节接口亏损定理，接口耦合由端点事件集合 $E_m^{\mathrm{end}}$、$H_m^{\mathrm{head}}$ 的乘积 $F_m^2$ 决定。将其提升到离散连接语义，可提出局部化假设：
 
-\begin{assumption}[接口曲率集中]
-在由两段窗口粘合生成的复合系统中，holonomy 非平凡性主要集中于包含接口约束传播的闭路族；不含接口的局部闭路族的 holonomy 更接近恒等映射（或属于较小的子群/子半群）。
+\begin{assumption}[接口曲率集中]\label{ass:curvature_concentration}
+\InterfaceTag 在由两段窗口粘合生成的复合系统中，holonomy 非平凡性主要集中于包含接口约束传播的闭路族；不含接口的局部闭路族的 holonomy 更接近恒等映射（或属于较小的子群/子半群）。
+
+\AuditTag 该假设对应可复核检验：分别枚举（或抽样）“含接口”的短回路族与“不含接口”的短回路族，比较其 holonomy 恒等率、不动点比例与复杂度分布，并给出误差预算与显著性阈值（第 15 节）。
 \end{assumption}
 
 该假设直接对应可检验实验：分别枚举含接口与不含接口的短回路族，比较 holonomy 恒等率与复杂度分布。

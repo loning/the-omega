@@ -2,7 +2,7 @@
 
 \subsection{局部依赖图公理}
 
-\begin{definition}[局部依赖图]
+\begin{definition}[局部依赖图]\label{def:local_dependency_graph}
 空间由局部依赖图 $(V,\mathrm{Nbr})$ 给出。节点 $v\in V$ 表示基本单元（体素或其抽象等价类），邻域算子 $\mathrm{Nbr}(v)\subset V$ 给出允许依赖的有限集合。系统状态更新满足
 $$
 \mathrm{State}_{t+1}(v)=\mathsf T\bigl(\mathrm{State}_t(v),\mathrm{State}_t(\mathrm{Nbr}(v))\bigr),
@@ -55,7 +55,8 @@ $$
 
 为把“任意时间与空间运算”变为可计算的代数对象，取一个可逆的全局一步更新算子 $\tau\in\mathrm{Sym}(E_m^V)$ 作为离散时间生成元（参见定义 \ref{def:time-subgroup} 的思想：由单步更新生成循环时间群），并与空间子群 $S_{m,V}$ 生成时空运算群。
 
-\begin{assumption}[空间齐性与正规化规则]\label{assump:space-homogeneity}
+\begin{assumption}[空间齐性与正规化规则]\label{ass:space_homogeneity}
+\InterfaceTag \textbf{建模约定：} 本假设用于把“时空运算群”的代数化简写成可计算正规形，并服务于后续算法实现；它不作为第 4--7 节组合定理的前提。
 假设全局更新算子 $\tau$ 规范化空间子群 $S_{m,V}$：对任意 $\sigma\in S_{m,V}$，
 $$
 \tau\,\sigma\,\tau^{-1}\in S_{m,V}.
@@ -72,7 +73,7 @@ $$
 \end{assumption}
 
 \begin{proposition}[时空运算的正规形]\label{prop:ts-normal-form}
-在假设 \ref{assump:space-homogeneity} 下，设
+在假设 \ref{ass:space_homogeneity} 下，设
 $$
 G_{m,V}^{\mathrm{ts}}=\langle \tau,\, S_{m,V}\rangle \le \mathrm{Sym}(E_m^V).
 $$
@@ -88,11 +89,12 @@ $$
 \end{proposition}
 
 \begin{proof}
+\MathTag 依赖：假设 \ref{ass:space_homogeneity}；以及群的生成与重写规则的标准归纳化简。
 由 $G_{m,V}^{\mathrm{ts}}=\langle \tau, S_{m,V}\rangle$ 的定义，任意 $g\in G_{m,V}^{\mathrm{ts}}$ 可写为关于生成元集合 $\{\tau\}\cup S_{m,V}$ 的有限长度交错乘积（词）：
 $$
 g = a_1 a_2 \cdots a_L,\qquad a_i\in \{\tau,\tau^{-1}\}\cup S_{m,V}.
 $$
-在假设 \ref{assump:space-homogeneity} 下，$\alpha_\tau(s)=\tau s\tau^{-1}\in S_{m,V}$，从而对任意 $s\in S_{m,V}$ 有重写规则
+在假设 \ref{ass:space_homogeneity} 下，$\alpha_\tau(s)=\tau s\tau^{-1}\in S_{m,V}$，从而对任意 $s\in S_{m,V}$ 有重写规则
 $$
 \tau s = \alpha_\tau(s)\tau,\qquad
 s\tau^{-1}=\tau^{-1}\alpha_\tau(s).
