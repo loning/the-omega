@@ -38,28 +38,10 @@ python3 scripts/run_all.py
 python3 scripts/run_all.py --scan
 ```
 
-如需额外生成“对象/运动统计 + 空间holonomy”两组涌现实验，运行：
+一键复现本文所有实验，直接运行：
 
 ```bash
-python3 scripts/run_all.py --extended
-```
-
-如需额外生成“对象周期/准周期 + 诱导连接holonomy 对照”，运行：
-
-```bash
-python3 scripts/run_all.py --extended2
-```
-
-如需额外生成“方向驱动输运（运动相）+ 参数扫描相图”，运行：
-
-```bash
-python3 scripts/run_all.py --extended3
-```
-
-如需额外生成“行走/准行走对象检测 + 二缺陷相互作用（散射型）”，运行：
-
-```bash
-python3 scripts/run_all.py --extended4
+python3 scripts/run_all.py
 ```
 
 生成物位置：

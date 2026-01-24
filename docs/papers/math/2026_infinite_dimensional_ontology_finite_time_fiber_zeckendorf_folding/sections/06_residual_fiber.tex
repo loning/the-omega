@@ -23,6 +23,48 @@ R_m(x)=\mathcal F_m(x)/{\approx}.
 $$
 该定义将“与未来相关的隐藏自由度”从第一层纤维中抽取出来，并为“有限时间纤维”提供可检验对象。
 
+\subsection{操作半群视角：Myhill--Nerode 型等价（可选强化）}
+
+上面的 $\approx$ 以“对任意允许动力学与任意可观测量未来分布一致”定义，概念上清晰但较抽象。为把该结构进一步群化/代数化，可将“实验流程”组织为对微观态施加的一类可复合操作序列，并把 $\approx$ 表述为这些操作序列在观测上的不可区分性。
+
+\begin{definition}[观测算子与实验词]\label{def:experiment-words}
+取一个（有限或可数）观测算子族 $\mathcal Q_m$，其元素为从微观态到输出的映射
+$$
+q:\mathcal F_m(x)\to Y_q,
+$$
+其中 $Y_q$ 为有限集合（例如有限阶局部窗口读出及其组合）。取一个（有限或可数）演化算子族 $\mathcal U_m$，其元素为从纤维到纤维的映射
+$$
+u:\mathcal F_m(x)\to \mathcal F_m(x),
+$$
+表示在固定观测输出 $x$ 的条件下对“隐藏自由度”的一步更新。\par
+
+定义实验词集合 $\mathcal W$ 为由字母表 $\mathcal U_m\cup \mathcal Q_m$ 生成的有限词集合，并将其解释为按词序依次作用得到的输出（若词含多个观测算子，则输出为相应的有限元组）。
+\end{definition}
+
+\begin{definition}[Myhill--Nerode 型不可区分]\label{def:mn-equivalence}
+对 $b,b'\in\mathcal F_m(x)$，定义
+$$
+b\sim_{\mathcal W} b'
+\quad\Longleftrightarrow\quad
+\forall w\in\mathcal W,\ \mathrm{Out}_w(b)=\mathrm{Out}_w(b'),
+$$
+其中 $\mathrm{Out}_w(\cdot)$ 为实验词 $w$ 诱导的输出。
+\end{definition}
+
+\begin{proposition}[右不变性与商结构]\label{prop:mn-right-congruence}
+若 $\mathcal U_m$ 对复合封闭（从而生成一个半群 $\langle\mathcal U_m\rangle$），则 $\sim_{\mathcal W}$ 是关于演化的右不变关系：对任意 $b\sim_{\mathcal W} b'$ 与任意 $u\in\langle\mathcal U_m\rangle$，有 $u(b)\sim_{\mathcal W} u(b')$。因此商集 $\mathcal F_m(x)/{\sim_{\mathcal W}}$ 自然承载由 $\langle\mathcal U_m\rangle$ 诱导的作用。
+\end{proposition}
+
+\begin{proof}
+对任意实验词 $w$，将其左侧预先复合 $u$ 得到新词 $w\circ u$，仍属于由 $\mathcal U_m$ 与 $\mathcal Q_m$ 生成的实验词集合。由 $b\sim_{\mathcal W} b'$ 得 $\mathrm{Out}_{w\circ u}(b)=\mathrm{Out}_{w\circ u}(b')$，即 $\mathrm{Out}_{w}(u(b))=\mathrm{Out}_{w}(u(b'))$。证毕。
+\end{proof}
+
+\begin{remark}[与本节 $\approx$ 的关系]
+当把“未来可观测条件分布一致”具体化为一族有限实验词的输出一致性（例如把随机性通过外加随机种子提升为确定性演化，或把输出改为条件分布的有限表），则可取 $\approx$ 为某个 $\sim_{\mathcal W}$ 的实例。此时 $R_m(x)$ 即为一类 Myhill--Nerode 型最小状态空间：它把“所有未来实验可区分的信息”压缩为等价类标签。\par
+
+若进一步要求演化算子皆为双射，则 $\langle\mathcal U_m\rangle$ 升级为群，上一命题中的“半群作用”随之升级为群作用，从而与第 5 节的可逆群化层直接衔接。
+\end{remark}
+
 \subsection{有限残差充分性公理}
 
 “在三维空间内，仅需有限时间纤维即可确定分辨率 $m$ 下的三维态”可表述为如下公理。
@@ -56,6 +98,22 @@ $$
 s_m:M\to E_m,\qquad s_m(p)=(x_m(p),r_m(p)),
 $$
 确定。此处的“态”指在给定 $\mathcal O_m$ 与 $\mathcal D$ 之下可用于预测的有限数据，而非本体态本身。纤维丛的投影与局部平凡化语言参照标准定义。\cite{cohen_fiber_bundles}
+
+\subsection{残差纤维的群化选择：有限群载体与可逆平行移动}
+
+为把“残差更新/路径依赖”完全纳入群论语言，可对残差纤维施加一个额外的结构假设：让每条纤维不仅是有限集合，而且携带一个可用于计算的群结构。
+
+\begin{assumption}[有限群残差载体（可选）]\label{assump:residual-group}
+存在一个固定有限群 $R$（例如 $R\cong \ZZ_q$），使得对每个 $x\in X_m$ 的残差纤维 $R_m(x)$ 选定一个双射
+$$
+\phi_x:R_m(x)\xrightarrow{\ \sim\ }R.
+$$
+从而可把 $R_m(x)$ 视为 $R$ 的一个重标记拷贝，并将其上的运算与置换结构一并继承。
+\end{assumption}
+
+\begin{remark}[与第 15 节玩具连接的对应]
+在第 15 节 holonomy 最小实例中，取 $R\cong \ZZ_q$ 且将平行移动实现为 $\ZZ_q$ 上的仿射映射；这些映射在 $q$ 与参数互素时为双射，从而自然落在 $\mathrm{Sym}(R)$ 或更小的自同构/仿射群中。该设定正是上面“残差群化选择”的一个可复现实现。
+\end{remark}
 
 \subsection{有限性来源与可实现性：有限记忆结构的参照}
 

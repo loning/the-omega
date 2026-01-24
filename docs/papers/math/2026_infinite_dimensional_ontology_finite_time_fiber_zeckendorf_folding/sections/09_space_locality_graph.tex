@@ -10,6 +10,26 @@ $$
 从而“空间结构”由依赖关系定义而非先验坐标。
 \end{definition}
 
+\subsection{空间子群：依赖图自同构与配置的可逆重标记}
+
+本节把“空间运算”群化为对节点集合的可逆重标记（置换）。这些变换本身不改变局部规则 $\mathsf T$ 的形式，但会重标记“哪里是哪里”，从而提供空间对称与空间运算的最小可逆实现。
+
+\begin{definition}[依赖图自同构群与空间作用]\label{def:space-automorphism-group}
+定义局部依赖图的自同构群
+$$
+\mathrm{Aut}(V,\mathrm{Nbr})=\left\{\sigma\in \mathrm{Sym}(V):\forall v\in V,\ \sigma(\mathrm{Nbr}(v))=\mathrm{Nbr}(\sigma(v))\right\}.
+$$
+对任意配置 $s:V\to E_m$（或 $s:V\to \widetilde{\Omega}_m$），定义 $\sigma$ 对配置的作用为
+$$
+(\sigma\cdot s)(v)=s\bigl(\sigma^{-1}(v)\bigr).
+$$
+由此得到一个空间子群 $S_{m,V}\le \mathrm{Sym}(E_m^V)$（或 $S_{m,V}\le \mathrm{Sym}(\widetilde{\Omega}_m^V)$）。
+\end{definition}
+
+\begin{remark}[局部生成元：相邻换位]
+在实际计算中可不必使用全体 $\mathrm{Aut}(V,\mathrm{Nbr})$。常见做法是选取一组局部置换生成元（例如图边上的相邻换位），生成一个更小但可计算的空间运算群。该选择与第 15 节把对象运动定义为“支撑集合在邻接结构上的迁移”相匹配。
+\end{remark}
+
 \subsection{两种距离：拓扑距离与信息距离}
 
 在上述框架下定义两类距离：拓扑距离
@@ -20,6 +40,42 @@ $$
 $$
 d_{\mathrm{inf}}(u,v)=\text{约束传播从 }u\text{ 推导 }v\text{ 所需最少步数}.
 $$
+
+\subsection{时间—空间复合与正规形（半直积型）}
+
+为把“任意时间与空间运算”变为可计算的代数对象，取一个可逆的全局一步更新算子 $\tau$ 作为离散时间生成元（参见定义 \ref{def:time-subgroup} 的思想），并与空间子群 $S_{m,V}$ 生成时空运算群。
+
+\begin{assumption}[空间齐性与正规化规则]\label{assump:space-homogeneity}
+假设全局更新算子 $\tau$ 与空间重标记相容：对任意 $\sigma\in S_{m,V}$，存在唯一的 $\alpha(\sigma)\in S_{m,V}$ 使得
+$$
+\tau\,\sigma\,\tau^{-1}=\alpha(\sigma).
+$$
+等价地，$\tau$ 规范化 $S_{m,V}$，从而诱导同态 $\alpha:\langle\tau\rangle\to \mathrm{Aut}(S_{m,V})$。在常见的“同一局部规则在各点平移不变”设定下，上式可取 $\alpha(\sigma)=\sigma$（即交换）。
+\end{assumption}
+
+\begin{proposition}[时空运算的正规形]\label{prop:ts-normal-form}
+在假设 \ref{assump:space-homogeneity} 下，设
+$$
+G_{m,V}^{\mathrm{ts}}=\langle \tau,\, S_{m,V}\rangle \le \mathrm{Sym}(E_m^V).
+$$
+则任意 $g\in G_{m,V}^{\mathrm{ts}}$ 都可写为
+$$
+g=\tau^k s,\qquad k\in\ZZ,\ s\in S_{m,V},
+$$
+并且该表示在给定 $\alpha$ 的化简规则下是可算法化的：通过反复使用 $\tau s=\alpha(s)\tau$ 可将任意交错词移动为“时间块在左、空间块在右”的形式。
+\end{proposition}
+
+\begin{remark}[生成元、关系与可计算化简]\label{rem:generators-relations}
+为得到“任意时间与空间运算”的具体运算系统，可固定一组空间生成元 $\Sigma\subset S_{m,V}$（例如若干条边上的相邻换位）并令
+$$
+S_{m,V}=\langle \Sigma\rangle.
+$$
+则 $G_{m,V}^{\mathrm{ts}}$ 由生成元集合 $\{\tau\}\cup\Sigma$ 给出；其关键化简规则可写为
+$$
+\tau\,\sigma=\alpha(\sigma)\,\tau,\qquad \sigma\in \Sigma,
+$$
+以及 $\Sigma$ 内部的群关系（例如换位的阶为 $2$、以及图上相邻换位满足的 braid 关系等）。在此表示下，任意交错运算串都可通过局部替换规则化简至命题 \ref{prop:ts-normal-form} 的正规形。
+\end{remark}
 
 \subsection{与时间成本的耦合：传播步数作为时间贡献}
 
