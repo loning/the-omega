@@ -1,0 +1,82 @@
+\section{折叠算子与第一层时间纤维：原像纤维的组合与信息量}
+
+\subsection{\texorpdfstring{折叠算子 $\Fold_m$ 的定义}{折叠算子 Fold m 的定义}}
+
+在有限窗模型中，折叠算子用于将任意窗口微态 $b\in\Omega_m$ 规范化为稳定词 $x\in X_m$。本文采用“数值解释 + Zeckendorf 规范形”给出构造性定义。
+
+对 $b=(b_1,\dots,b_m)\in \Omega_m$，定义其数值
+$$
+N(b)=\sum_{i=1}^{m} b_i F_{i+1}.
+$$
+由 Zeckendorf 定理，存在唯一的无相邻系数序列 $(z_k)_{k\ge 2}$ 使
+$$
+N(b)=\sum_{k\ge 2} z_k F_k,\qquad z_k\in\{0,1\},\qquad z_k z_{k+1}=0.
+$$
+定义
+$$
+\Fold_m(b)=(z_2,z_3,\dots,z_{m+1})\in X_m.
+$$
+由于取 $b=x\in X_m$ 时 $b$ 已满足无相邻约束且对应 Zeckendorf 规范形，故 $\Fold_m$ 为满射。Zeckendorf 规范形的存在唯一性参照文献。\cite{kkmw_zeckendorf_summands}
+
+\begin{remark}
+上述定义避免了直接给出局部重写系统的繁琐性；在算法实现上，规范化可由有限状态转导器完成（第 6.4 节讨论其与残差有限性的关联）。\cite{shallit_robbins_ardila_berstel}
+\end{remark}
+
+\subsection{第一层时间纤维：原像纤维与分割}
+
+对任意 $x\in X_m$，定义第一层时间纤维
+$$
+\mathcal F_m(x)=\Fold_m^{-1}(x)\subseteq \Omega_m.
+$$
+则
+$$
+\Omega_m=\bigsqcup_{x\in X_m}\mathcal F_m(x),
+\qquad
+\sum_{x\in X_m}\abs{\mathcal F_m(x)}=\abs{\Omega_m}=2^m.
+$$
+因此 $\Fold_m$ 在集合论意义下诱导了本体窗口上的等价关系：$b\sim b'$ 当且仅当 $\Fold_m(b)=\Fold_m(b')$。第一层时间纤维即该等价类。
+
+\subsection{纤维大小谱、推前分布与纤维熵}
+
+定义纤维大小谱
+$$
+\abs{\mathcal F_m(x)},\qquad x\in X_m,
+$$
+以及“隐藏自由度”
+$$
+d_m(x)=\log_2\abs{\mathcal F_m(x)}.
+$$
+
+在 $\Omega_m$ 上取均匀测度并推前至 $X_m$，得到分布
+$$
+p_m(x)=\frac{\abs{\mathcal F_m(x)}}{2^m}.
+$$
+定义输出熵
+$$
+H(X_m)=-\sum_{x\in X_m} p_m(x)\log_2 p_m(x),
+$$
+并定义条件熵
+$$
+H(\Omega_m\mid X_m)=m-H(X_m).
+$$
+条件熵可解释为：在给定观测输出 $x$ 后仍需额外指定位信息以恢复均匀先验下的窗口微态。
+
+\subsection{平均纤维规模与渐近界}
+
+由分割恒等式得平均纤维规模
+$$
+\mathbb E_{x\sim \mathrm{Unif}(X_m)}\bigl[\abs{\mathcal F_m(x)}\bigr]
+=\frac{2^m}{\abs{X_m}}
+=\frac{2^m}{F_{m+2}}.
+$$
+利用 Fibonacci 渐近 $F_m\sim \varphi^{m}/\sqrt 5$ 可得
+$$
+\frac{2^m}{F_{m+2}}
+\asymp
+\frac{\sqrt 5}{\varphi^2}\left(\frac{2}{\varphi}\right)^m,
+$$
+其中
+$$
+\varphi=\frac{1+\sqrt 5}{2}.
+$$
+该估计表明：在固定折叠规则下，第一层时间纤维的平均规模随 $m$ 指数增长，因而观测压缩的“信息缺失量”在一般情况下随分辨率提高而增加。Fibonacci 渐近与相关数论统计性质参照 Zeckendorf 分解研究。\cite{kkmw_zeckendorf_summands}

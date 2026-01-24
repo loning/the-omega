@@ -1,0 +1,57 @@
+\section{离散连接与时间纤维曲率：holonomy 的组合实现与局部化}
+
+\subsection{Ehresmann 连接的离散化与路径提升}
+
+连续情形下，Ehresmann 连接在纤维丛 $\pi:E\to M$ 上由水平子丛 $H\subset TE$ 给出分解 $TE=H\oplus V$，其中 $V=\ker(\dd\pi)$ 为竖直子丛，并诱导基空间曲线的水平提升。\cite{wikipedia_ehresmann_connection}
+
+本文在离散丛 $\pi_m^{E}:E_m\to X_m$ 上采用离散化定义：令 $(X_m,\mathcal E_m)$ 为允许宏态转移的有向图，其中 $\mathcal E_m\subset X_m\times X_m$ 由局部规则与接口一致性给定。对每条有向边 $(x\to x')\in\mathcal E_m$ 赋予纤维映射
+$$
+\mathcal P_{x\to x'}:R_m(x)\to R_m(x'),
+$$
+并将其称为离散平行移动。给定基路径
+$$
+\gamma=(x_0\to x_1\to\cdots\to x_k)
+$$
+与初始纤维点 $r_0\in R_m(x_0)$，定义提升路径
+$$
+r_{i+1}=\mathcal P_{x_i\to x_{i+1}}(r_i).
+$$
+
+当残差纤维携带群结构或可嵌入主丛结构时，上述结构可与离散主丛连接理论对齐。Leok--Marsden--Weinstein 给出了离散主丛连接的系统构造，并以离散 Atiyah 序列分裂刻画离散连接及其曲率。\cite{leok_marsden_weinstein_discrete_connections}
+
+\subsection{holonomy 定义与时间纤维曲率}
+
+连续情形中，holonomy 表示沿闭合回路平行运输得到的纤维自同构，并反映连接曲率导致的“回路输运不平凡性”。\cite{wikipedia_holonomy}
+
+离散情形下，对闭合基回路
+$$
+\gamma=(x_0\to x_1\to\cdots\to x_{k-1}\to x_k=x_0)
+$$
+定义 holonomy 为复合映射
+$$
+\mathrm{Hol}(\gamma)=\mathcal P_{x_{k-1}\to x_k}\circ\cdots\circ \mathcal P_{x_0\to x_1}:R_m(x_0)\to R_m(x_0).
+$$
+若存在 $\gamma$ 使 $\mathrm{Hol}(\gamma)\neq\mathrm{id}$，则提升对路径顺序敏感，产生不可消去的历史依赖。本文将该非平凡性称为时间纤维曲率的离散判据。
+
+\subsection{holonomy 非平凡性与时间成本的关系（命题体系）}
+
+在固定一致性目标 $\mathcal G$ 下，考虑由局部约束传播诱导的闭路族 $\Gamma$。定义 holonomy 复杂度函数 $\kappa(\gamma)$（例如以 $\mathrm{Hol}(\gamma)$ 的循环分解长度、不动点比例或谱半径定义），并定义局部曲率强度
+$$
+\mathcal K=\mathbb E_{\gamma\sim \Gamma}[\kappa(\gamma)].
+$$
+
+\begin{proposition}[结构性下界：形式陈述]
+若存在闭路族 $\Gamma_0\subseteq\Gamma$ 使得对任意满足 $\mathcal G$ 的演化轨道均必须实现对 $\Gamma_0$ 的一致性闭合，则 $T(\mathcal G)$ 存在随 $\mathcal K_0=\mathbb E_{\gamma\sim\Gamma_0}[\kappa(\gamma)]$ 单调增长的下界函数。
+\end{proposition}
+
+该命题要求在具体系统中给出 $\kappa$ 与 $\mathcal G$ 的构造性对应；在第 15 节的实验部分可通过短回路枚举与经验回归验证其统计趋势。
+
+\subsection{接口缺陷的局部化假设}
+
+由第 7 节接口亏损定理，接口耦合由端点事件集合 $E_m^{\mathrm{end}}$、$H_m^{\mathrm{head}}$ 的乘积 $F_m^2$ 决定。将其提升到离散连接语义，可提出局部化假设：
+
+\begin{assumption}[接口曲率集中]
+在由两段窗口粘合生成的复合系统中，holonomy 非平凡性主要集中于包含接口约束传播的闭路族；不含接口的局部闭路族的 holonomy 更接近恒等映射（或属于较小的子群/子半群）。
+\end{assumption}
+
+该假设直接对应可检验实验：分别枚举含接口与不含接口的短回路族，比较 holonomy 恒等率与复杂度分布。

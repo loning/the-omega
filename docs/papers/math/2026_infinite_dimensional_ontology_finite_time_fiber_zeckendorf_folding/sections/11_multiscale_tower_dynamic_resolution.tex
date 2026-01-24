@@ -1,0 +1,66 @@
+\section{多尺度时间纤维塔与动态分辨率：octree/AMR 的结构嵌入}
+
+\subsection{尺度投影与残差投影}
+
+对 $m<m'$ 定义尺度投影（粗粒化）
+$$
+\pi_{m'\to m}:X_{m'}\to X_m,
+$$
+并定义残差投影
+$$
+\rho_{m'\to m}:R_{m'}(x')\to R_m(\pi_{m'\to m}(x')).
+$$
+要求投影系统满足交换关系
+$$
+\pi_{m''\to m}=\pi_{m'\to m}\circ\pi_{m''\to m'},\qquad
+\rho_{m''\to m}=\rho_{m'\to m}\circ\rho_{m''\to m'}.
+$$
+该结构定义多尺度时间纤维塔 $\{E_m\to X_m\}_{m\ge 1}$，并为“分辨率提升/降低”提供范畴化语义。
+
+\subsection{连接相容性}
+
+若在各尺度上均给出离散连接 $\mathcal P^{(m)}$，则自然要求连接与尺度投影相容：对任一 $(x\to x')\in\mathcal E_{m'}$
+$$
+\rho_{m'\to m}\circ \mathcal P^{(m')}_{x\to x'}
+=\mathcal P^{(m)}_{\pi_{m'\to m}(x)\to \pi_{m'\to m}(x')}\circ \rho_{m'\to m}.
+$$
+该条件可视为“尺度变化不应引入非物理的额外 holonomy”，并在离散连接理论中对应于离散水平提升与组合律的相容性约束。
+
+\subsection{三维层次实现：octree}
+
+在三维实现中，采用 octree 作为层次划分数据结构：每一内部节点具有八个子节点，对应将空间立方体递归划分为八个子立方体。\cite{wikipedia_octree}
+
+设每节点 $v\in V$ 具有局部分辨率 $m(v)$，并以 $m(v)$ 控制局部观测字母表 $X_{m(v)}$ 与残差纤维 $R_{m(v)}$ 的复杂度。节点状态为
+$$
+\mathrm{State}(v)=(x_v,r_v,m(v)).
+$$
+
+\subsection{误差驱动细分：AMR 规则}
+
+定义综合误差指标
+$$
+E(v)=E_{\mathrm{view}}(v)+E_{\mathrm{constraint}}(v)+E_{\mathrm{res}}(v),
+$$
+其中 $E_{\mathrm{constraint}}$ 可取接口缺陷密度或 holonomy 复杂度的局部代理量，$E_{\mathrm{res}}$ 可取残差更新的局部收敛速度代理量。设阈值 $\tau_{\uparrow}>\tau_{\downarrow}$，则细分/合并规则为
+$$
+E(v)>\tau_{\uparrow}\Rightarrow \text{细分 }v,\ \ m(v)\leftarrow m(v)+\Delta m,
+$$
+$$
+E(v)<\tau_{\downarrow}\Rightarrow \text{合并子节点},\ \ m(v)\leftarrow m(v)-\Delta m.
+$$
+
+该结构与 Berger--Colella 提出的自适应网格细分（AMR）思想一致：在局部误差较大区域提高分辨率以降低整体 CPU 与内存开销。\cite{columbia_amr_shock}
+
+\subsection{分辨率—时间成本耦合（可检验命题）}
+
+在给定一致性目标 $\mathcal G$ 下，定义局部时间成本贡献 $T_v(\mathcal G)$ 为在节点 $v$ 的局部子系统上达到指定误差阈值所需迭代步数。提出可检验命题：
+
+\begin{proposition}
+存在函数族 $f_m$ 使得在统计意义下
+$$
+\mathbb E[T_v(\mathcal G)\mid m(v)=m]\approx f_m\bigl(\mathbb E[E(v)]\bigr),
+$$
+并且在固定误差水平下 $f_m$ 随 $m$ 单调增长。
+\end{proposition}
+
+该命题将“分辨率提升导致迭代更深”精确化为时间成本的标度关系，供第 15 节实验验证。
