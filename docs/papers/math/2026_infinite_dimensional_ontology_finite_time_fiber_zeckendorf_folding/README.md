@@ -26,9 +26,6 @@
 本阶段已补齐可复现实验脚本。运行方式：
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
 python3 scripts/run_all.py
 ```
 
