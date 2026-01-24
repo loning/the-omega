@@ -18,7 +18,11 @@ $$
 当残差纤维携带群结构或可嵌入主丛结构时，上述结构可与离散主丛连接理论对齐。Leok--Marsden--Weinstein 给出了离散主丛连接的系统构造，并以离散 Atiyah 序列分裂刻画离散连接及其曲率。\cite{leok_marsden_weinstein_discrete_connections}
 
 \begin{remark}[可逆平行移动与置换表示]\label{rem:bijective-parallel-transport}
-若每条边的平行移动 $\mathcal P_{x\to x'}$ 为双射（例如在假设 \ref{assump:residual-group} 的群化选择下令其取值于 $R$ 的置换/自同构/仿射群），则闭合回路的 $\mathrm{Hol}(\gamma)$ 自动是 $R_m(x_0)$ 上的置换，从而可在 $\mathrm{Sym}(R_m(x_0))$ 中讨论其循环分解、不动点比例等群论不变量。
+若每条边的平行移动 $\mathcal P_{x\to x'}$ 为双射，则闭合回路的 $\mathrm{Hol}(\gamma)$ 自动是 $R_m(x_0)$ 上的置换，从而可在 $\mathrm{Sym}(R_m(x_0))$ 中讨论其循环分解、不动点比例等群论不变量。若进一步采用假设 \ref{assump:residual-group} 的群化选择并固定同构 $\phi_x:R_m(x)\xrightarrow{\sim}R$，则可把平行移动写成群载体 $R$ 上的表示
+$$
+\overline{\mathcal P}_{x\to x'}:=\phi_{x'}\circ \mathcal P_{x\to x'}\circ \phi_x^{-1}\in \mathrm{Sym}(R),
+$$
+并在需要时进一步限制其落在 $\mathrm{Aut}(R)$ 或仿射群 $\mathrm{Aff}(R)$ 中（后者要求选定一个与群结构相容的仿射坐标系，例如 $R\cong \ZZ_q$）。
 \end{remark}
 
 \subsection{holonomy 定义与时间纤维曲率}
@@ -33,15 +37,23 @@ $$
 $$
 \mathrm{Hol}(\gamma)=\mathcal P_{x_{k-1}\to x_k}\circ\cdots\circ \mathcal P_{x_0\to x_1}:R_m(x_0)\to R_m(x_0).
 $$
+该定义满足路径拼接律：若 $\gamma_1,\gamma_2$ 为同一基点 $x_0$ 的闭合回路，且 $\gamma_1\cdot\gamma_2$ 表示先走 $\gamma_1$ 再走 $\gamma_2$ 的拼接回路，则
+$$
+\mathrm{Hol}(\gamma_1\cdot\gamma_2)=\mathrm{Hol}(\gamma_2)\circ \mathrm{Hol}(\gamma_1).
+$$
+若每条边的平行移动为双射，则对逆向回路 $\gamma^{-1}$ 有
+$$
+\mathrm{Hol}(\gamma^{-1})=\mathrm{Hol}(\gamma)^{-1}.
+$$
 若存在 $\gamma$ 使 $\mathrm{Hol}(\gamma)\neq\mathrm{id}$，则提升对路径顺序敏感，产生不可消去的历史依赖。本文将该非平凡性称为时间纤维曲率的离散判据。
 
 \begin{remark}[holonomy 的群化]\label{rem:holonomy-group}
-当 $R_m(x_0)$ 为有限集合时，$\mathrm{Hol}(\gamma)$ 是 $R_m(x_0)$ 上的一个置换；因而所有基于 $x_0$ 的 holonomy 变换自然落在置换群 $\mathrm{Sym}(R_m(x_0))$ 中。令 $\Gamma(x_0)$ 表示以 $x_0$ 为基点的全部闭合回路集合，则可定义 holonomy 群为
+当 $R_m(x_0)$ 为有限集合且每条边的平行移动均为双射时，$\mathrm{Hol}(\gamma)$ 是 $R_m(x_0)$ 上的一个置换；因而所有基于 $x_0$ 的 holonomy 变换自然落在置换群 $\mathrm{Sym}(R_m(x_0))$ 中。令 $\Gamma(x_0)$ 表示以 $x_0$ 为基点的全部闭合回路集合，则可定义 holonomy 群为
 $$
 \mathrm{Hol}_m(x_0)=\left\langle \mathrm{Hol}(\gamma):\gamma\in\Gamma(x_0)\right\rangle
 \le \mathrm{Sym}(R_m(x_0)).
 $$
-在该意义下，“曲率非平凡”不仅意味着存在单个非恒等元素，还意味着由回路复合生成了一族可观测的历史依赖对称。
+在该意义下，“曲率非平凡”不仅意味着存在单个非恒等元素，还意味着由回路复合生成了一族可观测的历史依赖对称。若平行移动不保证可逆，则更自然的对象是由 $\{\mathrm{Hol}(\gamma)\}$ 在 $\mathrm{End}(R_m(x_0))$ 中生成的子幺半群（monoid），而非群。
 \end{remark}
 
 \subsection{曲率强度指标与时间成本下界（命题体系）}
@@ -51,11 +63,11 @@ $$
 \mathcal K=\mathbb E_{\gamma\sim \Gamma}[\kappa(\gamma)].
 $$
 
-\begin{proposition}[结构性下界：形式陈述]
+\begin{assumption}[结构性下界（经验假设）]
 若存在闭路族 $\Gamma_0\subseteq\Gamma$ 使得对任意满足 $\mathcal G$ 的演化轨道均必须实现对 $\Gamma_0$ 的一致性闭合，则 $T(\mathcal G)$ 存在随 $\mathcal K_0=\mathbb E_{\gamma\sim\Gamma_0}[\kappa(\gamma)]$ 单调增长的下界函数。
-\end{proposition}
+\end{assumption}
 
-该命题要求在具体系统中给出 $\kappa$ 与 $\mathcal G$ 的构造性对应；在第 15 节的实验部分可通过短回路枚举与经验回归验证其统计趋势。
+该假设要求在具体系统中给出 $\kappa$ 与 $\mathcal G$ 的构造性对应；在第 15 节的实验部分可通过短回路枚举与经验回归验证其统计趋势。
 
 \subsection{接口曲率集中假设（与接口亏损相呼应）}
 
