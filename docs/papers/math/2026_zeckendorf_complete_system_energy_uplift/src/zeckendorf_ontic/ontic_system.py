@@ -162,6 +162,60 @@ class OnticZeckendorfSystem:
 
         return int(self._window_length)
 
+    # ====================
+    # Public helpers for the (macro) language Y_m
+    # ====================
+    def is_macro_word_in_language(self, macro_word: int) -> bool:
+        """Return True iff macro_word is in Y_m (no adjacent ones, in range)."""
+
+        macro = int(macro_word)
+        if macro < 0 or macro >= (1 << self._window_length):
+            return False
+        return _no_adjacent_ones_mask_ok(macro)
+
+    def y_language_words_lex(self) -> List[int]:
+        """Enumerate Y_m in a deterministic lexicographic order.
+
+        Default convention: lexicographic order of the fixed-length bitstring
+        representation with the most-significant bit first.
+        """
+
+        m = int(self._window_length)
+        words = [w for w in range(1 << m) if self.is_macro_word_in_language(w)]
+
+        def bitstring_msb_first(x: int) -> str:
+            return format(int(x), "0{}b".format(m))
+
+        words.sort(key=bitstring_msb_first)
+        return [int(w) for w in words]
+
+    def unrank_y6(self, index: int) -> int:
+        """Unrank_{Y_6}(index) under the default lex order (requires window_length==6)."""
+
+        if int(self._window_length) != 6:
+            raise ValueError("unrank_y6 is only defined when window_length==6")
+        i = int(index)
+        words = self.y_language_words_lex()
+        if i < 0 or i >= len(words):
+            raise IndexError("index out of range for Y_6")
+        return int(words[i])
+
+    def y6_default_blocks(self) -> Tuple[int, int, int, int]:
+        """Return default (beta0, beta1, beta_blank, beta_hash) blocks in Y_6.
+
+        These are used by the observer-layer realizability encoding in the paper.
+        """
+
+        if int(self._window_length) != 6:
+            raise ValueError("y6_default_blocks is only defined when window_length==6")
+        # Pick the first few lex-ordered Y6 words; they are distinct by construction.
+        y = self.y_language_words_lex()
+        beta0 = int(y[0])
+        beta1 = int(y[1])
+        beta_blank = int(y[2])
+        beta_hash = int(y[3])
+        return beta0, beta1, beta_blank, beta_hash
+
     def tail_length(self) -> int:
         """Tail length L(m) = max(0, K(m)-m)."""
 

@@ -6,8 +6,11 @@ Goal: provide reversible atomic steps (unfold/fold) that satisfy:
   - Perfect inverse: D(U(sigma)) = sigma and U(D(sigma')) = sigma'
   - Auditable ledger deltas:
       trace_tape_length(next) = trace_tape_length(current) + 1
-      resource_limit(next) = resource_limit(current) * 2^(code_bit_length(macro_word)-1)
-      where code_bit_length(macro_word) = ceil(log2 fiber_size(macro_word)).
+      resource_limit(next) = resource_limit(current)
+
+Rationale: in the "endogenous W" interpretation, W gain is an observer-level effect tied to the
+realized discovery/maintenance of multiple compatible candidates (bubble growth + commit).
+Therefore protocol unfold/fold keep W unchanged; commit decides how W is updated/propagated.
 
 This module intentionally avoids exposing unnecessary internal structures.
 """
@@ -239,7 +242,7 @@ class ZeckendorfProtocol:
 
         - Use branch_choice_bit to select a feasible predecessor tail_word candidate.
         - Append that branch_choice_bit to trace_tape.
-        - Update resource_limit by the deterministic factor 2^(code_bit_length(macro_word)-1).
+        - Update resource_limit only if a real branch is taken (see module docstring).
         """
 
         candidates = self._sys.candidates(s.macro_word, s.tail_word)
@@ -253,11 +256,7 @@ class ZeckendorfProtocol:
         if micro_integer is None:
             return None
 
-        code_bit_length = self._code.code_bit_length(s.macro_word)
-        factor = 1 << max(0, int(code_bit_length) - 1)
-        resource_limit_next = int(s.resource_limit) * int(factor)
-        if resource_limit_next < 1:
-            return None
+        resource_limit_next = int(s.resource_limit)
 
         trace_next = s._trace_tape.push(int(choice))
         return ProtocolState(
@@ -275,13 +274,7 @@ class ZeckendorfProtocol:
         trace_prefix, branch_bit = s._trace_tape.pop()
         prev_tail_word = self._sys.tail_shift(s.tail_word)
 
-        code_bit_length = self._code.code_bit_length(s.macro_word)
-        factor = 1 << max(0, int(code_bit_length) - 1)
-        if int(s.resource_limit) % int(factor) != 0:
-            return None
-        resource_limit_prev = int(s.resource_limit) // int(factor)
-        if resource_limit_prev < 1:
-            return None
+        resource_limit_prev = int(s.resource_limit)
 
         # Candidate consistency: tail_word_current must be the branch_bit-th candidate from (macro_word, tail_word_previous).
         candidates = self._sys.candidates(s.macro_word, int(prev_tail_word))

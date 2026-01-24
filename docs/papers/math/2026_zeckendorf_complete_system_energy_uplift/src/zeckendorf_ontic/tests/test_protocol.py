@@ -59,14 +59,20 @@ class TestProtocolLedgerConservation(unittest.TestCase):
         self.assertIsNotNone(s1)
         # trace grows by 1
         self.assertEqual(s1.trace_tape_length, trace_length0 + 1)
-        # resource_limit multiplies by 2^(code_bit_length-1)
-        code_bit_length = protocol.code_bit_length(macro_word)
-        factor = 1 << (int(code_bit_length) - 1)
-        self.assertEqual(s1.resource_limit, resource_limit0 * factor)
+        # resource_limit unchanged in the reversible protocol step
+        self.assertEqual(s1.resource_limit, resource_limit0)
 
         s2 = protocol.fold_step(s1)
         self.assertIsNotNone(s2)
         self.assertEqual(s2, s0)
+
+        s1b = protocol.unfold_step(s0, branch_choice_bit=1)
+        self.assertIsNotNone(s1b)
+        self.assertEqual(s1b.trace_tape_length, trace_length0 + 1)
+        self.assertEqual(s1b.resource_limit, resource_limit0)
+        s2b = protocol.fold_step(s1b)
+        self.assertIsNotNone(s2b)
+        self.assertEqual(s2b, s0)
 
     def test_reach_all_feasible_tails_m6_y0(self) -> None:
         from zeckendorf_ontic.protocol import ZeckendorfProtocol
