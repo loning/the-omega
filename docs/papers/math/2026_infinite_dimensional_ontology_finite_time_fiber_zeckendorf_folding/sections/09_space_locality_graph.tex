@@ -32,6 +32,36 @@ $$
 \end{itemize}
 \AuditTag 在本文的默认设定中，上述闭包选择的输出为三维显示：它是满足回路诊断需求的最小可行维数族中，使观察者时间代理量进入“近似常数”区间的最小维数。该结论由本文内置的维数扫描协议给出（第 15 节，生成物 \texttt{cap\_display\_dim\_scan\_*}）。\par
 
+\begin{definition}[显示闭包键（定量口径：稳健聚合）]\label{def:cap_disp_key}
+\AuditTag
+为把“显示维数/显示字典”的选择与本文已有的时间概念对齐，我们将闭包键 $K_{\mathrm{disp}}$ 明确化。固定一个有限的分辨率集合 $\mathcal M\subset\NN$（例如本文扫描用的 $\{6,9,12,15\}$），并对每个候选显示 $u=(d,\mathsf{Disp}_d)\in\mathcal F_{\mathrm{disp}}$ 定义
+$$
+K_{\mathrm{disp}}(u)=\Bigl(K_1(u),K_2(u),K_3(u)\Bigr)\in\RR^3,
+$$
+其中按字典序比较（lex order）：
+\begin{itemize}
+  \item \textbf{可行性坐标 $K_1$（门槛）：}
+  $K_1(u)=0$ 当且仅当该显示支持本文所需的基本回路族/plaquette，从而可执行 holonomy 诊断；否则 $K_1(u)=1$。
+  \item \textbf{时间坐标 $K_2$（主目标，稳健聚合）：}
+  $K_2(u)$ 取为一个“基准解析目标”的时间成本（定义 \ref{def:time_cost} 的口径），并在实现中用确定性 WL1 代理量计算。令 $\mathcal G_{\mathrm{WL}}(m,d)$ 表示“在闭包图 $\mathrm{Clo}_{m,d}$ 上，微观点被 WL1 颜色细化完全解析为单点颜色类”的目标；对每个 $m$ 令
+  $$
+  T_u(\mathcal G_{\mathrm{WL}}(m,d)):=\min\{t\in\NN:\mathcal G_{\mathrm{WL}}(m,d)\text{ 在第 }t\text{ 步成立}\}.
+  $$
+  在该 WL1 协议中，这一定义与 $t_{\mathrm{resolve}}(m,d)$ 的脚本输出是同一对象（即“解析所需最小迭代步数”）。为了避免单点分辨率的偶然劣化主导闭包结果，本文默认用稳健聚合替代 $\sup$：给定分位数参数 $p\in(0,1)$（默认 $p=0.95$），定义
+  $$
+  K_2(u):=\mathrm{Q}_{p}\bigl(\{t_{\mathrm{resolve}}(m,d):m\in\mathcal M\}\bigr),
+  $$
+  其中若某 $m$ 在预设上限内未解析，则将对应项视作 $+\infty$（从而自动惩罚不可解析显示）。
+  \item \textbf{稳定性坐标 $K_3$（次级目标，稳健聚合）：}
+  同理定义
+  $$
+  K_3(u):=\mathrm{Q}_{p}\bigl(\{t_{\mathrm{stable}}(m,d):m\in\mathcal M\}\bigr),
+  $$
+  作为“收敛/稳定”代价的补充代理量；必要时也可附加均值项作为审计参考（脚本输出中同时给出）。
+\end{itemize}
+当 $K_{\mathrm{disp}}$ 并列时，以“更低维数、更低描述复杂度”的全序 tie-break（定义 \ref{def:cap_closure} 的 $\prec$）选取唯一默认输出。
+\end{definition}
+
 \paragraph{闭包图与 WL1：把“显示维数”转化为观察者时间代理量。}
 \AuditTag
 为得到一个确定、可复核且不引入连续自由参数的目标函数，我们定义如下闭包图协议。固定窗口长度 $m$，记微观窗口集 $\Omega_m=\{0,1\}^m$，宏观稳定语言 $X_m\subset\{0,1\}^m$，以及折叠 $\Fold_m:\Omega_m\twoheadrightarrow X_m$。给定一个显示 $\mathsf{Disp}_d$，它诱导微观邻接图 $G^{(d)}_m$（例如 bit-split 的 $d$ 维格邻接）。定义闭包图
@@ -56,6 +86,20 @@ $$
 \begin{proof}
 \MathTag
 对 $t$ 作归纳。$t=0$ 时结论由初始颜色定义成立。若 $t$ 时成立，则第 $t+1$ 步颜色由 $(\kappa_t(v),\{\kappa_t(u):u\in N(v)\})$ 的同构不变量决定，而邻域同构把相邻点的半径 $t$ 根邻域一一对应，从而保持该多重集；故 $\kappa_{t+1}$ 亦由半径 $t+1$ 根邻域同构类型唯一决定。证毕。
+\end{proof}
+
+\begin{lemma}[WL1 指标对图同构不变]\label{lem:wl_iso_invariant}
+\MathTag
+设 $\varphi:G\to G'$ 是有限图同构，并且初始颜色在 $\varphi$ 下保持（即对任意顶点 $v$ 有 $\kappa_0(v)=\kappa'_0(\varphi(v))$）。则对所有 $t\ge 0$，
+$$
+\kappa_t(v)=\kappa'_t(\varphi(v)).
+$$
+特别地，$t_{\mathrm{stable}}$ 与 $t_{\mathrm{resolve}}$（以“微观点集合”为解析对象时）在同构下不变。
+\end{lemma}
+
+\begin{proof}
+\MathTag
+对 $t$ 归纳。$t=0$ 由假设成立。若对 $t$ 成立，则 $\varphi$ 把 $N(v)$ 双射到 $N'(\varphi(v))$，从而邻域颜色多重集在 $\varphi$ 下保持；而 WL1 的更新签名由 $(\kappa_t(v),\mathrm{MultiSet}\{\kappa_t(u):u\in N(v)\})$ 决定，故 $\kappa_{t+1}$ 亦在同构下保持。稳定步数与解析步数仅由颜色序列与“是否稳定/是否把指定集合解析为单点颜色类”的判据决定，因此同构不变。
 \end{proof}
 
 \paragraph{为何 $d=3$ 成为 CAP 输出（机制与数据口径）。}
@@ -90,6 +134,18 @@ $$
 
 \begin{remark}[局部生成元：相邻换位]
 在实际计算中可不必使用全体 $\mathrm{Aut}(V,\mathrm{Nbr})$。常见做法是选取一组局部置换生成元（例如图边上的相邻换位），生成一个更小但可计算的空间运算群。该选择与第 15 节把对象运动定义为“支撑集合在邻接结构上的迁移”相匹配。
+\end{remark}
+
+\begin{remark}[CAP 的群论/群胚化口径：商空间上的规范代表]\label{rem:cap_groupoid}
+\AuditTag
+在许多实现中，“显示字典”存在平凡的重标记/同构自由度：不同的地址实现可能诱导同构的邻接结构与等价的诊断能力。为避免 CAP 结果依赖于记号选择，可引入一组对称变换（例如 $\mathrm{Aut}(V,\mathrm{Nbr})$ 的作用，或更一般的“显示同构”）在候选族 $\mathcal F_{\mathrm{disp}}$ 上的作用，并把候选按轨道（等价类）分组。\par
+
+在该口径下，可把 CAP 理解为两步闭包：
+\begin{itemize}
+  \item \textbf{先取商：}在轨道集合 $\mathcal F_{\mathrm{disp}}/\!\sim$ 上比较闭包键 $K_{\mathrm{disp}}$（定义 \ref{def:cap_disp_key}）；为保证可审计性，$K_{\mathrm{disp}}$ 应取同构不变量或在轨道上取聚合（例如最小/均值）。由引理 \ref{lem:wl_iso_invariant}，基于闭包图的 WL1 时间指标是图同构不变量，因此适合作为该键的核心坐标。
+  \item \textbf{再选规范代表：}在最优轨道内，用决定性 tie-break $\prec$ 选取一个规范代表元（canonical representative）作为默认显示字典输出。
+\end{itemize}
+当把“不同显示之间的同构”组织为可复合的同构族时，更自然的整体对象是作用群胚（action groupoid）：对象为候选显示，态射为显示同构；CAP 则对应于在该群胚的等价类上做闭包并选取一条规范截面。
 \end{remark}
 
 \subsection{两种距离：拓扑距离与信息距离}
