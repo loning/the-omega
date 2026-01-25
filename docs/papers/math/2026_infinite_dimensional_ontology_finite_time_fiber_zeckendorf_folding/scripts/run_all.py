@@ -76,10 +76,14 @@ def main() -> None:
 
     # Fixed reproduction configuration (paper defaults)
     seed = 0
-    m_max = 24
+    m_max = 16
     fiber_m = 16
     loop_m = 12
     loop_l = 6
+    scale_m_from = 12
+    scale_m_to = 6
+    scale_seeds = "0,1,2,3,4,5,6,7"
+    blockcmp_seeds = "0,1,2,3,4,5,6,7"
 
     dyn_m = 10
     dyn_steps = 80
@@ -150,6 +154,52 @@ def main() -> None:
     lines.append(r"\end{tabular}")
     lines.append(r"\end{center}")
     fiber_compare.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+    # Hilbert recursive scale truncation (m_from -> m_to), comparing 2D/3D/2D∧3D constraint families.
+    want_scale = [generated_dir() / f"hilbert_scale_truncation_m{scale_m_from}_to_m{scale_m_to}_compare.tex"]
+    if force or (not _have_all(want_scale)):
+        _run(
+            "exp_hilbert_scale_truncation.py",
+            [
+                "--m-from",
+                str(scale_m_from),
+                "--m-to",
+                str(scale_m_to),
+                "--seeds",
+                str(scale_seeds),
+                *([] if not force else ["--force"]),
+            ],
+        )
+    else:
+        print("[run_all] cached: exp_hilbert_scale_truncation.py", flush=True)
+
+    # Hilbert partition locality sanity check (value-free): compare 1D/2D/3D partitions for adjacency retention.
+    want_partloc = [generated_dir() / f"hilbert_partition_locality_m{scale_m_from}_to_m{scale_m_to}.tex"]
+    if force or (not _have_all(want_partloc)):
+        _run(
+            "exp_hilbert_partition_locality.py",
+            ["--m-from", str(scale_m_from), "--m-to", str(scale_m_to), *([] if not force else ["--force"])],
+        )
+    else:
+        print("[run_all] cached: exp_hilbert_partition_locality.py", flush=True)
+
+    # Hilbert block-level compression compare (data-driven): compare several Agg rules under 2D vs 3D layouts.
+    want_blockcmp = [generated_dir() / f"hilbert_block_compress_compare_m{scale_m_from}_to_m{scale_m_to}.tex"]
+    if force or (not _have_all(want_blockcmp)):
+        _run(
+            "exp_hilbert_block_compress_compare.py",
+            [
+                "--m-from",
+                str(scale_m_from),
+                "--m-to",
+                str(scale_m_to),
+                "--seeds",
+                blockcmp_seeds,
+                *([] if not force else ["--force"]),
+            ],
+        )
+    else:
+        print("[run_all] cached: exp_hilbert_block_compress_compare.py", flush=True)
 
     want_holo = [generated_dir() / "holonomy_interface_vs_bulk.tex"]
     if force or (not _have_all(want_holo)):

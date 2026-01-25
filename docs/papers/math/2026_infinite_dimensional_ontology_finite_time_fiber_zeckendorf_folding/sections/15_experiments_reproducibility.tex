@@ -22,8 +22,11 @@
 \toprule
 \textbf{条目} & \textbf{脚本命令（入口）} & \textbf{生成片段（正文纳入）}\\
 \midrule
-组合计数核对 & \path{python3 scripts/exp_counts_check.py --m-max 24} & \path{sections/generated/counts_check.tex}\\
+组合计数核对 & \path{python3 scripts/exp_counts_check.py --m-max 16} & \path{sections/generated/counts_check.tex}\\
 第一层纤维谱/熵（截断族对照） & \path{python3 scripts/exp_fiber_spectrum.py --m 16 --truncation <name>} & \path{sections/generated/fiber_entropy_summary_compare.tex}\\
+Hilbert 尺度压缩（2D/3D/2D$\wedge$3D，对照，多 seed） & \path{python3 scripts/exp_hilbert_scale_truncation.py --m-from 12 --m-to 6 --seeds 0,...,7} & \path{sections/generated/hilbert_scale_truncation_m12_to_m6_compare.tex}\\
+Hilbert 分块局域性（值无关的 sanity check） & \path{python3 scripts/exp_hilbert_partition_locality.py --m-from 12 --m-to 6} & \path{sections/generated/hilbert_partition_locality_m12_to_m6.tex}\\
+Hilbert 块压缩算法对照（多 seed） & \path{python3 scripts/exp_hilbert_block_compress_compare.py --m-from 12 --m-to 6 --seeds 0,...,7} & \path{sections/generated/hilbert_block_compress_compare_m12_to_m6.tex}\\
 holonomy 光谱对照 & \path{python3 scripts/exp_holonomy_spectrum.py --m 12 --ell 6 --q 7 --seed 0} & \path{sections/generated/holonomy_interface_vs_bulk.tex}\\
 空间 plaquette holonomy 统计 & \path{python3 scripts/exp_emergence_space_holonomy.py --m 10 --steps 80 --seed 0} & \path{sections/generated/emergence_space_holonomy_summary.tex}\\
 诱导连接对照（精确 1-形式） & \path{python3 scripts/exp_emergence_space_holonomy_induced.py --m 10 --steps 80 --seed 0} & \path{sections/generated/emergence_space_holonomy_induced_summary.tex}\\
@@ -48,7 +51,7 @@ $$
 
 为保证可复现性，本文所有写入正文的枚举结果均由脚本生成并以 \texttt{\\input} 方式引入：
 \begin{center}
-\path{python3 scripts/exp_counts_check.py --m-max 24}
+\path{python3 scripts/exp_counts_check.py --m-max 16}
 \end{center}
 对应生成片段如下：
 \begin{center}
@@ -81,6 +84,28 @@ $$
 \input{sections/generated/fiber_entropy_summary_compare}
 \paragraph{误差预算与失败点检查。}
 \AuditTag 本实验为确定性遍历（枚举 $\Omega_m$ 的全部 $2^m$ 个微态），统计误差为 $0$。失败点来自折叠实现不一致或计数错误；脚本生成的熵与分布摘要可与组合计数核对（例如总质量归一性）进行一致性检查。
+
+\subsection{Hilbert 递归尺度压缩：从 $m'=12$ 到 $m=6$ 的时间纤维对照}
+为把第 10--11 节讨论的“Hilbert 自相似驱动的尺度压缩”落实为可复现实例，本小节固定尺度压缩 $m'=12\to m=6$，并在“空间输出必须遵循 Zeckendorf 稳定语言 $X_6$”的约束下，对三类压缩规则做确定性对照：
+\begin{enumerate}
+  \item 仅施加二维 Hilbert 约束（2D）；
+  \item 仅施加三维 Hilbert 约束（3D）；
+  \item 二维与三维约束同时生效但不混合（2D$\wedge$3D），空间代表由 CAP 最小代价选择，冲突证据进入时间残差。
+\end{enumerate}
+脚本枚举 $\Omega_{12}$ 的全部 $2^{12}$ 个微态，并对每一族输出 $(H(X_6),H(\Omega_{12}\mid X_6),H(U),H(U\mid X_6))$ 与条件支持规模的摘要。统一入口运行：
+\begin{center}
+\path{python3 scripts/run_all.py}
+\end{center}
+对照片段如下：
+\input{sections/generated/hilbert_scale_truncation_m12_to_m6_compare}
+
+\paragraph{分块局域性 sanity check（值无关）。}
+\AuditTag 为把“2D 有左右/上下，3D 另有前后”的局域性差异与尺度压缩的分块语义区分开，我们额外提供一个\emph{值无关}的 sanity check：只看分块是否保留 2D 四邻域/3D 六邻域的同块比例（不引入任何块内数值压缩算法）。对应输出如下：
+\input{sections/generated/hilbert_partition_locality_m12_to_m6}
+
+\paragraph{块内压缩算法对照（值相关）。}
+\AuditTag 真正决定“压缩了什么、哪些信息进入时间纤维”的，是每个 coarse 块内的聚合算子（例如多数、阈值、平滑等）。为避免单条数据带的偶然性，本对照用多个种子生成确定性伪随机数据带 $B(t)$，并报告重构误差与 coarse 平滑度的均值与标准差。对应输出如下：
+\input{sections/generated/hilbert_block_compress_compare_m12_to_m6}
 
 \subsection{第二层残差纤维的候选实现与最小化实验}
 

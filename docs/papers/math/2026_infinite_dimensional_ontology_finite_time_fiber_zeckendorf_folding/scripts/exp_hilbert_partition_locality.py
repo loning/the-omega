@@ -1,0 +1,258 @@
+#!/usr/bin/env python3
+"""
+Evaluate locality quality of different m_from -> m_to partitions under 2D/3D Hilbert displays.
+
+Key point:
+  - We are NOT compressing values here; we evaluate how a partition of the 2^m_from microstates
+    into 2^m_to blocks preserves adjacency locality in 2D (4-neighborhood) and 3D (6-neighborhood).
+
+Candidate partitions (all balanced when m_to < m_from):
+  - "1d_interval": t -> t >> (m_from-m_to)
+  - "2d_block": use 2D Hilbert coords (side=2^(m_from/2)), block by dropping low bits in (x,y)
+  - "3d_block": use 3D Hilbert coords (side=2^(m_from/3)), block by dropping low bits in (x,y,z)
+
+Outputs:
+  - artifacts/hilbert_partition_locality/<run_id>/summary.json
+  - sections/generated/hilbert_partition_locality_m{m_from}_to_m{m_to}.tex
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Callable, Dict, List, Tuple
+
+from hilbertcurve.hilbertcurve import HilbertCurve
+
+from common_artifacts import add_output_hashes, build_base_manifest, prepare_run, write_manifest
+from common_paths import generated_dir
+from common_progress import Progress
+from common_pylatex import NoEscape, booktabs_tabular, write_tex_fragment
+
+
+@dataclass(frozen=True)
+class Metrics:
+    intra2d: float
+    intra3d: float
+    blocks: int
+    block_size_min: int
+    block_size_max: int
+
+
+def _neighbors_2d_all(side: int) -> List[Tuple[Tuple[int, int], Tuple[int, int]]]:
+    edges: List[Tuple[Tuple[int, int], Tuple[int, int]]] = []
+    for y in range(side):
+        for x in range(side):
+            if x + 1 < side:
+                edges.append(((x, y), (x + 1, y)))
+            if y + 1 < side:
+                edges.append(((x, y), (x, y + 1)))
+    return edges
+
+
+def _neighbors_3d_all(side: int) -> List[Tuple[Tuple[int, int, int], Tuple[int, int, int]]]:
+    edges: List[Tuple[Tuple[int, int, int], Tuple[int, int, int]]] = []
+    for z in range(side):
+        for y in range(side):
+            for x in range(side):
+                if x + 1 < side:
+                    edges.append(((x, y, z), (x + 1, y, z)))
+                if y + 1 < side:
+                    edges.append(((x, y, z), (x, y + 1, z)))
+                if z + 1 < side:
+                    edges.append(((x, y, z), (x, y, z + 1)))
+    return edges
+
+
+def _eval_partition(
+    m_from: int,
+    m_to: int,
+    label_of_t: Callable[[int], int],
+    hc2: HilbertCurve,
+    hc3: HilbertCurve,
+    side2: int,
+    side3: int,
+) -> Metrics:
+    n_micro = 1 << int(m_from)
+    # Count block sizes.
+    sizes = [0 for _ in range(1 << int(m_to))]
+    for t in range(n_micro):
+        k = int(label_of_t(int(t)))
+        sizes[k] += 1
+    bmin = min(sizes) if sizes else 0
+    bmax = max(sizes) if sizes else 0
+
+    # Evaluate intra-block adjacency rates under 2D/3D displays.
+    edges2 = _neighbors_2d_all(side2)
+    same2 = 0
+    for (a, b) in edges2:
+        ta = int(hc2.distance_from_point([int(a[0]), int(a[1])]))
+        tb = int(hc2.distance_from_point([int(b[0]), int(b[1])]))
+        if int(label_of_t(ta)) == int(label_of_t(tb)):
+            same2 += 1
+    intra2 = float(same2) / float(len(edges2)) if edges2 else 0.0
+
+    edges3 = _neighbors_3d_all(side3)
+    same3 = 0
+    for (a, b) in edges3:
+        ta = int(hc3.distance_from_point([int(a[0]), int(a[1]), int(a[2])]))
+        tb = int(hc3.distance_from_point([int(b[0]), int(b[1]), int(b[2])]))
+        if int(label_of_t(ta)) == int(label_of_t(tb)):
+            same3 += 1
+    intra3 = float(same3) / float(len(edges3)) if edges3 else 0.0
+
+    return Metrics(intra2d=float(intra2), intra3d=float(intra3), blocks=int(1 << int(m_to)), block_size_min=int(bmin), block_size_max=int(bmax))
+
+
+def write_tex(m_from: int, m_to: int, rows: List[Tuple[str, Metrics]], out_path: Path) -> None:
+    tab = booktabs_tabular(
+        col_spec="l r r r r r",
+        header=[
+            NoEscape("partition"),
+            NoEscape(r"$\mathrm{intra}_{2D}$"),
+            NoEscape(r"$\mathrm{intra}_{3D}$"),
+            NoEscape("blocks"),
+            NoEscape("min|block|"),
+            NoEscape("max|block|"),
+        ],
+        rows=[
+            [
+                NoEscape(rf"\texttt{{{name.replace('_', r'\_')}}}"),
+                f"{m.intra2d:.4f}",
+                f"{m.intra3d:.4f}",
+                str(m.blocks),
+                str(m.block_size_min),
+                str(m.block_size_max),
+            ]
+            for name, m in rows
+        ],
+    )
+    header = "\n".join(
+        [
+            rf"\paragraph{{Hilbert 分块局域性对照（自动生成，$m'={m_from}$ 到 $m={m_to}$）}}",
+            r"\AuditTag 本片段由 \texttt{scripts/exp\_hilbert\_partition\_locality.py} 生成。",
+            r"\AuditTag $\mathrm{intra}_{2D}$ 表示在 2D 四邻域下，相邻点落在同一 coarse 块的比例；$\mathrm{intra}_{3D}$ 类似（3D 六邻域）。",
+            "",
+        ]
+    )
+    write_tex_fragment(out_path, header + tab.dumps() + "\n", comment="Auto-generated by scripts/exp_hilbert_partition_locality.py")
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--m-from", type=int, default=12)
+    ap.add_argument("--m-to", type=int, default=6)
+    ap.add_argument("--force", action="store_true")
+    args = ap.parse_args()
+
+    m_from = int(args.m_from)
+    m_to = int(args.m_to)
+    if m_to >= m_from:
+        raise ValueError("require m_to < m_from")
+
+    # Require divisibility for coordinate grids.
+    if (m_from % 2) != 0 or (m_to % 2) != 0:
+        raise ValueError("2D display requires m_from and m_to divisible by 2")
+    if (m_from % 3) != 0 or (m_to % 3) != 0:
+        raise ValueError("3D display requires m_from and m_to divisible by 3")
+
+    script_path = Path(__file__).resolve()
+    params = {"m_from": m_from, "m_to": m_to}
+    run = prepare_run(
+        experiment="hilbert_partition_locality",
+        params=params,
+        script_path=script_path,
+        required_files=["summary.json", "table.tex"],
+        force=bool(args.force),
+    )
+    out_json = run.run_dir / "summary.json"
+    out_run_tex = run.run_dir / "table.tex"
+    out_tex = generated_dir() / f"hilbert_partition_locality_m{m_from}_to_m{m_to}.tex"
+
+    if run.cached:
+        print(f"[hilbert_partition_locality] cached: {run.run_dir}", flush=True)
+        out_tex.write_text(out_run_tex.read_text(encoding="utf-8"), encoding="utf-8")
+        return
+
+    prog = Progress(every_seconds=15.0)
+    prog.maybe("building hilbert displays")
+
+    hc2 = HilbertCurve(p=m_from // 2, n=2)
+    hc3 = HilbertCurve(p=m_from // 3, n=3)
+    side2 = 1 << (m_from // 2)
+    side3 = 1 << (m_from // 3)
+
+    # Candidate partitions.
+    shift_bits = m_from - m_to
+    n_micro = 1 << int(m_from)
+
+    def label_1d(t: int) -> int:
+        return int(t) >> int(shift_bits)
+
+    # A deliberately misaligned 1D interval (sanity check): shifting the tape index breaks the
+    # Hilbert recursion boundary alignment, so locality should drop.
+    def label_1d_shift1(t: int) -> int:
+        tt = (int(t) + 1) & (int(n_micro) - 1)
+        return int(tt) >> int(shift_bits)
+
+    # 2D block: drop low bits of (x,y) at fine resolution; label by axis-aligned coarse block id
+    # (NOT by the coarse-level Hilbert distance, which would coincide with the 1D interval via Hilbert recursion).
+    shift2 = (m_from // 2) - (m_to // 2)
+    side2_c = 1 << (m_to // 2)
+
+    def label_2d(t: int) -> int:
+        x, y = [int(v) for v in hc2.point_from_distance(int(t))]
+        xc, yc = x >> shift2, y >> shift2
+        return int(int(yc) * int(side2_c) + int(xc))
+
+    # 3D block: drop low bits of (x,y,z).
+    shift3 = (m_from // 3) - (m_to // 3)
+    side3_c = 1 << (m_to // 3)
+
+    def label_3d(t: int) -> int:
+        x, y, z = [int(v) for v in hc3.point_from_distance(int(t))]
+        xc, yc, zc = x >> shift3, y >> shift3, z >> shift3
+        return int(int(zc) * int(side3_c) * int(side3_c) + int(yc) * int(side3_c) + int(xc))
+
+    candidates: List[Tuple[str, Callable[[int], int]]] = [
+        ("1d_interval", label_1d),
+        ("1d_interval_shifted_1", label_1d_shift1),
+        ("2d_block", label_2d),
+        ("3d_block", label_3d),
+    ]
+
+    rows: List[Tuple[str, Metrics]] = []
+    summary: Dict[str, Dict[str, float]] = {}
+    for name, fn in candidates:
+        prog.maybe(f"evaluating {name}")
+        m = _eval_partition(m_from=m_from, m_to=m_to, label_of_t=fn, hc2=hc2, hc3=hc3, side2=side2, side3=side3)
+        rows.append((name, m))
+        summary[name] = {
+            "intra2d": float(m.intra2d),
+            "intra3d": float(m.intra3d),
+            "blocks": float(m.blocks),
+            "block_size_min": float(m.block_size_min),
+            "block_size_max": float(m.block_size_max),
+        }
+
+    # Sort by equal-weight score.
+    rows.sort(key=lambda kv: (-(kv[1].intra2d + kv[1].intra3d), kv[0]))
+
+    write_tex(m_from=m_from, m_to=m_to, rows=rows, out_path=out_run_tex)
+    out_tex.write_text(out_run_tex.read_text(encoding="utf-8"), encoding="utf-8")
+
+    payload = {"params": params, "summary": summary, "ranked": [name for name, _ in rows]}
+    out_json.write_text(json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+
+    manifest = build_base_manifest("hilbert_partition_locality", run.run_id, params=params, script_path=script_path)
+    manifest = add_output_hashes(manifest, run.run_dir, ["summary.json", "table.tex"])
+    write_manifest(run.run_dir, manifest)
+
+    prog.done(f"wrote {out_json} and {out_tex}")
+
+
+if __name__ == "__main__":
+    main()
+
