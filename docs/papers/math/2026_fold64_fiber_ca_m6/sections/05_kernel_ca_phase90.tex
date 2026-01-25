@@ -1,0 +1,25 @@
+\section{将 $\oplus$ 编译为局域重写元胞自动机（半径 $2$，相位 $90$）}
+
+\subsection{内核 CA：长度 $12$ 的“加法计算带”}
+
+我们构造一个一维 CA，其有效格点为 $i=1,\dots,12$，每个 cell 保存有限状态（digit 与少量控制符）。
+局域邻域半径取 $r=2$，从而可在一拍内实现需要访问 $(i-2,i-1,i,i+1,i+2)$ 的规则。
+
+为避免同步更新时的窗口冲突，引入静态颜色轨道（例如 $i\bmod 4$ 与 $i\bmod 3$ 的组合），并采用固定相位程序调度不同规则族。
+理论上，\cite{AhlbachEtAl2013ZeckendorfArithmetic} 所给出的有限自动机/逻辑网络实现结论支撑了这种“有限相位局域网络”的可编译性。
+
+\subsection{相位程序与穷举验证}
+
+我们实现了一个相位周期 $P=90$ 的程序：包含两段归一化（Norm）、一段比较与条件减 $64$（Reduce$_{64}$）、一段负数修复（NegFix）以及收尾归一化。
+该 CA 的每相位规则并非人工穷举，而是通过从所有 $64^2$ 输入对的可达轨迹中提取所有出现过的邻域到下一状态映射自动生成，
+从而保证在闭合域上无缺表邻域。
+
+实现与产物约定如下（文件将由对应脚本生成或提供）：
+\begin{itemize}
+  \item 规则表：\verb|artifacts/fold64_ca_rules_phase90.json|
+  \item 解释器（含全 $64^2$ 验证）：\verb|scripts/fold64_ca.py|
+  \item 生成器（从轨迹提取相位规则表）：\verb|scripts/generate_fold64_ca_rules.py|
+\end{itemize}
+
+解释器的核心断言是：对所有 $a,b\in\{0,\dots,63\}$，CA 运行 $90$ 步后的输出值等于 $(a+b)\bmod 64$。
+

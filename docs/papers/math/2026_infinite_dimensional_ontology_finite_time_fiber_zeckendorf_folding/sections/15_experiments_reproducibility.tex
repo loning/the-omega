@@ -1,5 +1,39 @@
 \section{实验与复现协议：不变量计算、局部化检验与双边界评测}
 
+\subsection{通用复现约定与误差预算（读者合同）}
+
+\AuditTag 本节把“可复现”提升为审计对象：每个写入正文的数值/表格片段必须由脚本生成并可一键再现；每个含随机性的实验必须给出随机性来源、重复次数与误差预算口径。
+
+\paragraph{环境与入口。}
+一键复现入口为 \texttt{python3 scripts/run\_all.py}（固定默认参数；见脚本内的配置块）。所有供正文引用的片段写入 \texttt{sections/generated/}，并以 \texttt{\textbackslash input} 的方式纳入本文。
+
+\paragraph{确定性实验 vs.\ 随机性实验。}
+\begin{itemize}
+  \item \textbf{确定性实验（枚举/精确计算）}：例如对 $X_m$ 的枚举计数与纤维谱统计；其“统计误差”为 $0$，误差来源主要是实现错误。对此类实验，我们通过恒等式交叉核对与脚本内断言来做失败点检查。
+  \item \textbf{随机性实验（仿真/抽样统计）}：例如局域动力学与涌现实验；其误差来自有限步长与随机种子。默认展示 \texttt{seed=0} 的基准输出；若需要误差条，则以多种随机种子重复运行得到均值与置信区间（推荐 $R\ge 8$ 个种子），并报告标准误 $\mathrm{SE}=\hat\sigma/\sqrt{R}$ 或 $95\%$ 置信区间。
+\end{itemize}
+
+\paragraph{主张—脚本—生成物索引（摘要）。}
+\AuditTag 为审稿与复核方便，表 \ref{tab:repro_index} 给出本节核心条目的脚本入口与正文引入片段的对应关系；更细粒度的编号与依赖见推理台账（附录 \ref{app:inference_ledger}）。
+
+\begin{table}[H]
+\centering
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.30\linewidth} >{\raggedright\arraybackslash}p{0.34\linewidth} >{\raggedright\arraybackslash}p{0.28\linewidth}}
+\toprule
+\textbf{条目} & \textbf{脚本命令（入口）} & \textbf{生成片段（正文纳入）}\\
+\midrule
+组合计数核对 & \path{python3 scripts/exp_counts_check.py --m-max 24} & \path{sections/generated/counts_check.tex}\\
+第一层纤维谱/熵 & \path{python3 scripts/exp_fiber_spectrum.py --m 16} & \path{sections/generated/fiber_entropy_summary.tex}\\
+holonomy 光谱对照 & \path{python3 scripts/exp_holonomy_spectrum.py --m 12 --ell 6 --q 7 --seed 0} & \path{sections/generated/holonomy_interface_vs_bulk.tex}\\
+空间 plaquette holonomy 统计 & \path{python3 scripts/exp_emergence_space_holonomy.py --m 10 --steps 80 --seed 0} & \path{sections/generated/emergence_space_holonomy_summary.tex}\\
+诱导连接对照（精确 1-形式） & \path{python3 scripts/exp_emergence_space_holonomy_induced.py --m 10 --steps 80 --seed 0} & \path{sections/generated/emergence_space_holonomy_induced_summary.tex}\\
+显示维数扫描（CAP：WL1 闭包图） & \path{python3 scripts/exp_cap_display_dim_scan.py --ms 6,9,12,15 --d-max 4} & \path{sections/generated/cap_display_dim_scan_summary.tex}\\
+\bottomrule
+\end{tabular}
+\caption{复现索引：条目—脚本—生成片段对应关系（摘要）。}
+\label{tab:repro_index}
+\end{table}
+
 \subsection{组合定理的枚举核对}
 
 对 $m\le m_{\max}$ 枚举 $X_m$ 与 $C_m$，核对
@@ -12,6 +46,17 @@ $$
 $$
 其中 $m_{\max}$ 可选为 $20$--$24$ 以保持枚举可行。
 
+为保证可复现性，本文所有写入正文的枚举结果均由脚本生成并以 \texttt{\\input} 方式引入：
+\begin{center}
+\path{python3 scripts/exp_counts_check.py --m-max 24}
+\end{center}
+对应生成片段如下：
+\begin{center}
+\input{sections/generated/counts_check}
+\end{center}
+\paragraph{误差预算与失败点检查。}
+\AuditTag 本实验为确定性枚举，统计误差为 $0$。失败点来自实现错误或参数越界；脚本通过多条恒等式（包括接口亏损恒等式）交叉核对并在不一致时直接报错退出。
+
 \subsection{第一层时间纤维谱的计算}
 
 固定 $\Fold_m$（第 5 节数值--Zeckendorf 定义），遍历 $\Omega_m$ 中全部 $2^m$ 个窗口微态，统计
@@ -23,6 +68,17 @@ $$
 p_m(x)=\frac{\abs{\mathcal F_m(x)}}{2^m},\qquad H(X_m),\qquad H(\Omega_m\mid X_m).
 $$
 评测指标包括纤维大小分布的极值、方差与集中性，以及随 $m$ 的标度。
+
+本文给出一组基准参数下的可复现输出：
+\begin{center}
+\path{python3 scripts/exp_fiber_spectrum.py --m 16}
+\end{center}
+其熵与极值摘要由脚本写入：
+\begin{center}
+\input{sections/generated/fiber_entropy_summary}
+\end{center}
+\paragraph{误差预算与失败点检查。}
+\AuditTag 本实验为确定性遍历（枚举 $\Omega_m$ 的全部 $2^m$ 个微态），统计误差为 $0$。失败点来自折叠实现不一致或计数错误；脚本生成的熵与分布摘要可与组合计数核对（例如总质量归一性）进行一致性检查。
 
 \subsection{第二层残差纤维的候选实现与最小化实验}
 
@@ -44,8 +100,22 @@ $$
 \begin{enumerate}
   \item 枚举短回路族 $\Gamma_\ell$（$\ell$ 为回路长度上界）；
   \item 计算每个回路的 $\mathrm{Hol}(\gamma)$ 并提取统计量（不动点比例、循环分解长度、谱半径等）；
-  \item 构造含接口回路族 $\Gamma_\ell^{\mathrm{int}}$ 与不含接口回路族 $\Gamma_\ell^{\mathrm{bulk}}$，比较两者的 holonomy 复杂度分布，以检验第 9 节假设 9.2。
+  \item 构造含接口回路族 $\Gamma_\ell^{\mathrm{int}}$ 与不含接口回路族 $\Gamma_\ell^{\mathrm{bulk}}$，比较两者的 holonomy 复杂度分布，以检验假设 \ref{ass:curvature_concentration}（接口曲率集中）。
 \end{enumerate}
+\paragraph{误差预算与显著性口径。}
+\AuditTag 若对 $\Gamma_\ell$ 做\emph{完全枚举}，则接口/体区两类回路族的统计量差异为确定值，采样误差为 $0$；此时误差预算主要来自实现错误与数值舍入（可通过重复计算与一致性断言控制）。若仅对回路族做抽样，则以 bootstrap 或置换检验给出差异的 $95\%$ 置信区间，并在预先声明的阈值（例如 $p<0.01$）下报告显著性。
+
+\paragraph{群论对照：从单个回路到 holonomy 群}
+当 $R_m(x_0)$ 为有限集合且沿边平行移动为双射时，$\mathrm{Hol}(\gamma)$ 是 $R_m(x_0)$ 上的置换，从而自然属于 $\mathrm{Sym}(R_m(x_0))$；由不同回路生成的全部 holonomy 变换生成一个子群 $\mathrm{Hol}_m(x_0)$（见注 \ref{rem:holonomy-group}）。因此，本节所提取的统计量可理解为对该群元素复杂度的采样测量：不动点比例与循环分解长度对应置换的轨道结构，谱半径可由将置换嵌入到某个线性表示后定义。接口局部化检验在群论上对应比较两类回路族生成的子群（或其典型元素）的复杂度分布差异。
+
+为给出最小可运行实例，本文实现了一个玩具离散连接：以 $X_m$ 上的合法单比特翻转为允许边集 $\mathcal E_m$，以有限残差载体 $R\\cong\\mathbb Z_q$ 为纤维，并将平行移动实现为 $\mathbb Z_q$ 上的仿射映射。该构造刻意使 holonomy 的非平凡性集中在访问边界态集合 $B_m$ 的回路族上，从而对照检验假设 \ref{ass:structural_lower_bound}（结构性下界）与假设 \ref{ass:curvature_concentration}（接口曲率集中）的统计趋势。运行命令：
+\begin{center}
+\path{python3 scripts/exp_holonomy_spectrum.py --m 12 --ell 6 --q 7}
+\end{center}
+对照表格片段如下：
+\begin{center}
+\input{sections/generated/holonomy_interface_vs_bulk}
+\end{center}
 
 \subsection{动态分辨率实验：AMR/octree 与时间成本标度}
 
@@ -55,6 +125,40 @@ $$
 $$
 以及 $T(\mathcal G)$ 与局部指标 $E(v)$、边界态密度、holonomy 复杂度代理量之间的相关性。
 
+\paragraph{随机性与误差预算。}
+\AuditTag 本小节涉及随机仿真（随机种子驱动的局部更新、噪声与缺陷注入）。默认给出 \texttt{seed=0} 的基准复现输出；如需误差条，推荐在相同参数下用一组种子 $\{s_1,\dots,s_R\}$ 重复运行并报告均值与 $95\%$ 置信区间（或标准误）。对“相关性/回归”的显著性报告应预先声明阈值，并与样本量（步数、格点数、重复次数）一起给出。
+\subsection{空间 plaquette 的 holonomy 统计（曲率在缺陷附近的时序证据）}
+为把“holonomy/曲率集中”从抽象宏态转移图推进到空间演化过程，本文在三维格点上为每条空间边赋予 $\mathbb Z_q$ 值连接 $A_e(t)$，并对每个基本小方格（plaquette）回路计算离散 holonomy。运行命令：
+\begin{center}
+\path{python3 scripts/exp_emergence_space_holonomy.py --m 10 --steps 80}
+\end{center}
+对应摘要片段如下：
+\begin{center}
+\input{sections/generated/emergence_space_holonomy_summary}
+\end{center}
+并给出时序示例图：
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\linewidth]{sections/generated/assets/emergence_space_holonomy_rate.png}
+  \caption{空间 plaquette holonomy 非平凡率与缺陷触达率的时序对照。}
+\end{figure}
+
+\subsection{诱导连接对照：精确 1-形式与方向依赖连接}
+为区分“由标量势诱导的无旋连接”（精确 1-形式）与“方向依赖的局域连接”，本文提供了一个对照实验：在同一动力学轨道上，分别以 (i) 接口门控连接、(ii) 由单一比特场差分诱导的精确 1-形式、(iii) 按边方向选择不同比特的方向依赖连接，计算 plaquette holonomy 的非平凡率及其与缺陷触达率的相关性。运行命令：
+\begin{center}
+\path{python3 scripts/exp_emergence_space_holonomy_induced.py --m 10 --steps 80}
+\end{center}
+对应摘要片段如下：
+\begin{center}
+\input{sections/generated/emergence_space_holonomy_induced_summary}
+\end{center}
+并给出时序对照图：
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\linewidth]{sections/generated/assets/emergence_space_holonomy_compare.png}
+  \caption{三种连接的 holonomy 非平凡率与缺陷触达率的对照。精确 1-形式在 plaquette 上给出近零 holonomy，而方向依赖连接给出显著非平凡率，并与缺陷触达呈正相关。}
+\end{figure}
+
 \subsection{双边界合成的剪枝加速评测}
 
 给定终端约束类 $\mathcal F_T$（或终端权重 $\Phi$），比较两种求解方式：
@@ -63,3 +167,29 @@ $$
   \item 前向--后向合成（第 13 节 smoothing）。
 \end{enumerate}
 评测指标包括：收敛步数、有效候选状态数、剪枝率、以及在相同计算预算下的终端满足率。前向--后向算法的数值稳定化可参照 Rabiner 综述的缩放/对数域实现。\cite{rabiner_hmm_tutorial}
+
+\subsection{显示维数扫描：三维作为 CAP 输出的可复核证据}
+
+为使“默认三维显示”不依赖外部引用与叙事直觉，而是成为可复核的 \textsf{[CAP]} 输出，本节给出一个完全确定性的观察者时间代理量：在闭包图上运行 $1\text{-}\mathrm{WL}$ 颜色细化（第 9 节），并以解析步数 $t_{\mathrm{resolve}}$ 作为显示维数选择的主要代价。\AuditTag 该扫描不引入连续自由参数：候选族为有限的维数集合与 bit-split 显示，目标函数为脚本计算得到的 $(t_{\mathrm{resolve}},t_{\mathrm{stable}},u,s_{\max})$，并以“更低维数优先”为 tie-break。
+
+运行命令：
+\begin{center}
+  \path{python3 scripts/exp_cap_display_dim_scan.py --ms 6,9,12,15 --d-max 4}
+\end{center}
+
+自动生成摘要与表格片段如下：
+\input{sections/generated/cap_display_dim_scan_summary}
+
+\begin{center}
+  \scriptsize
+  \input{sections/generated/cap_display_dim_scan_table}
+\end{center}
+
+\begin{center}
+  \scriptsize
+  \input{sections/generated/cap_display_dim_key_table}
+\end{center}
+
+并给出对应的图形化扫描结果（稳定文件名导出）：
+\input{sections/generated/fig_cap_display_resolve_vs_dim}
+\input{sections/generated/fig_cap_display_unresolved_vs_dim}

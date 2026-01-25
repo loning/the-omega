@@ -1,0 +1,53 @@
+\section{预备：折叠、纤维与推前测度}
+
+\subsection{有限窗模型与稳定语言}
+
+固定分辨率参数 $m\in\NN$。令
+$$
+\Omega_m:=\{0,1\}^m
+$$
+为长度为 $m$ 的窗口微态集合。令 $X_m\subset\{0,1\}^m$ 为满足 \textbf{Zeckendorf 稳定约束}（禁止子词 $11$）的合法词集合：
+$$
+X_m:=\{x\in\{0,1\}^m:\text{对所有 }i,\; x_i x_{i+1}=0\}.
+$$
+
+\subsection{折叠算子与原像纤维}
+
+\begin{definition}[折叠算子与原像纤维]
+\label{def:fold_and_fiber}
+给定一个满射映射（折叠算子）
+$$
+\Fold_m:\Omega_m\twoheadrightarrow X_m.
+$$
+对每个 $x\in X_m$，定义其原像纤维
+$$
+\mathcal F_m(x):=\Fold_m^{-1}(x)\subseteq \Omega_m.
+$$
+\end{definition}
+
+\begin{remark}
+在本论文的可复现实验脚本中，我们采用“数值解释 + Zeckendorf 规范形”的构造性定义（见附录与脚本），使得 $\Fold_m$ 的输出必属于 $X_m$。
+本文并不依赖该构造的唯一性细节；只依赖 $\Fold_m$ 为满射，从而 $\{\mathcal F_m(x)\}_{x\in X_m}$ 构成 $\Omega_m$ 的一族互不相交分割。
+\end{remark}
+
+\begin{proposition}[分割恒等式]
+\label{prop:partition_identity}
+有
+$$
+\Omega_m=\bigsqcup_{x\in X_m}\mathcal F_m(x),
+\qquad
+\sum_{x\in X_m}\abs{\mathcal F_m(x)}=\abs{\Omega_m}=2^m.
+$$
+\end{proposition}
+
+\subsection{测度与推前}
+
+\begin{definition}[推前测度]
+\label{def:pushforward_measure}
+令 $\mu$ 为定义在有限集 $\Omega_m$ 上的概率测度。定义其经 $\Fold_m$ 推前到 $X_m$ 的测度 $\nu_m=\Fold_{m\#}\mu$ 为：
+对每个 $x\in X_m$，
+$$
+\nu_m(\{x\}) := \mu(\Fold_m^{-1}(x)) = \mu(\mathcal F_m(x)).
+$$
+\end{definition}
+

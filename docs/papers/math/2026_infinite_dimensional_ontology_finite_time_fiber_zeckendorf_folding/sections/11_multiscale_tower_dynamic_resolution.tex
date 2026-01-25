@@ -49,18 +49,33 @@ $$
 E(v)<\tau_{\downarrow}\Rightarrow \text{合并子节点},\ \ m(v)\leftarrow m(v)-\Delta m.
 $$
 
+\begin{algorithm}[AMR 细分/合并规则（协议版本）]\label{alg:amr_rule}
+\InterfaceTag 该算法用于把“误差驱动的动态分辨率”写成可复现的协议对象；其作为实现接口存在，不作为数学层证明前提。
+\begin{enumerate}
+  \item 计算每个节点 $v$ 的误差指标 $E(v)$。
+  \item 若 $E(v)>\tau_{\uparrow}$，则细分 $v$ 并令 $m(v)\leftarrow m(v)+\Delta m$。
+  \item 若 $E(v)<\tau_{\downarrow}$，则合并 $v$ 的子节点并令 $m(v)\leftarrow m(v)-\Delta m$。
+  \item 更新邻域关系与局部缓存，重复直至达到全局停止准则（例如误差阈值或最大迭代步）。
+\end{enumerate}
+\end{algorithm}
+
 该结构与 Berger--Colella 提出的自适应网格细分（AMR）思想一致：在局部误差较大区域提高分辨率以降低整体 CPU 与内存开销。\cite{columbia_amr_shock}
 
-\subsection{分辨率—时间成本耦合（可检验命题）}
+\subsection{分辨率—时间成本耦合（可检验假设）}
 
-在给定一致性目标 $\mathcal G$ 下，定义局部时间成本贡献 $T_v(\mathcal G)$ 为在节点 $v$ 的局部子系统上达到指定误差阈值所需迭代步数。提出可检验命题：
+在给定一致性目标 $\mathcal G$ 下，定义局部时间成本贡献 $T_v(\mathcal G)$ 为在节点 $v$ 的局部子系统上达到指定误差阈值所需迭代步数。提出可检验假设：
 
-\begin{proposition}
-存在函数族 $f_m$ 使得在统计意义下
+\begin{assumption}[分辨率—时间成本标度（经验假设）]\label{ass:resolution_time_scaling}
+\InterfaceTag 存在函数族 $f_m:[0,\infty)\to[0,\infty)$ 以及常数 $N_0\in\NN$、$\delta>0$、$p\in(0,1]$，使得对任意分辨率 $m$，当在条件 $m(v)=m$ 下抽取 $N\ge N_0$ 个样本节点 $v_1,\dots,v_N$ 时，有概率至少为 $p$ 满足
 $$
-\mathbb E[T_v(\mathcal G)\mid m(v)=m]\approx f_m\bigl(\mathbb E[E(v)]\bigr),
+\left\lvert
+\frac{1}{N}\sum_{i=1}^N T_{v_i}(\mathcal G)\;-\;
+f_m\!\left(\frac{1}{N}\sum_{i=1}^N E(v_i)\right)
+\right\rvert\le \delta.
 $$
-并且在固定误差水平下 $f_m$ 随 $m$ 单调增长。
-\end{proposition}
+并且对任意固定误差水平 $e\ge 0$，$f_m(e)$ 随 $m$ 单调不减。
 
-该命题将“分辨率提升导致迭代更深”精确化为时间成本的标度关系，供第 15 节实验验证。
+\AuditTag 上式的抽样方式、随机性来源与置信口径由第 15 节实验协议给定；该假设不作为数学层证明前提，而作为可检验的代价标度输入。
+\end{assumption}
+
+该假设将“分辨率提升导致迭代更深”精确化为时间成本的标度关系，供第 15 节实验验证。

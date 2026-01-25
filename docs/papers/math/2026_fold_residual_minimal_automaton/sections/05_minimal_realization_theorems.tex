@@ -1,0 +1,230 @@
+% 5 Main theorems (skeleton)
+\section{主结果：最小实现与残差规模}\label{sec:theorems}
+
+\subsection{残差规模的层级谱}
+由定义 \ref{def:residual_states}，对每个深度 $k$ 都可得到残差态集合 $U_{m,k}$。
+我们将其规模谱
+\[
+k\mapsto |U_{m,k}|
+\]
+视为 $f=\Fold_m$ 在“右作用”意义下的结构复杂度刻画。
+
+\begin{proposition}[边界值（占位）]\label{prop:boundary_values}
+有 $|U_{m,0}|=1$，且 $|U_{m,m}|=|f(\Sigma^m)|=|X_m|$。
+\end{proposition}
+
+\subsection{闭式主定理：残差规模谱的 Fibonacci 结构}
+\begin{theorem}[残差规模谱的闭式]\label{thm:residual_closed_form}
+对本文所定义的折叠 $\Fold_m:\Omega_m\to X_m$，其深度 $k$ 的右等价残差态数满足：
+\[
+|U_{m,k}|=
+\begin{cases}
+F_{k+3}-1, & 0\le k<m,\\
+F_{m+2}, & k=m.
+\end{cases}
+\]
+\end{theorem}
+
+\begin{proof}
+对任意 $0\le k\le m$，对前缀 $u=(u_1,\dots,u_k)\in\{0,1\}^k$ 定义其 Fibonacci 加权前缀和
+\[
+N_k(u):=\sum_{i=1}^{k} u_i F_{i+1}.
+\]
+
+\paragraph{步骤 1：当 $k<m$ 时，右等价类由 $N_k(u)$ 完全刻画。}
+设 $k<m$ 且 $u,v\in\{0,1\}^k$。
+
+若 $N_k(u)=N_k(v)$，则对任意后缀 $s\in\{0,1\}^{m-k}$，有
+\[
+N(us)=N_k(u)+\sum_{j=1}^{m-k} s_j F_{k+1+j}
+=N_k(v)+\sum_{j=1}^{m-k} s_j F_{k+1+j}=N(vs),
+\]
+从而 Zeckendorf 规范形唯一性给出 $\Fold_m(us)=\Fold_m(vs)$，即 $u\sim_k v$。
+
+反之，若 $N_k(u)\ne N_k(v)$，取区分后缀 $s=0^{m-k}$（全零）。则
+\[
+N(u0^{m-k})=N_k(u),\qquad N(v0^{m-k})=N_k(v).
+\]
+注意到对 $k<m$，前缀和满足
+\[
+0\le N_k(u)\le \sum_{i=1}^{k} F_{i+1}=F_{k+3}-2<F_{m+2},
+\]
+因此 $N_k(u)$ 与 $N_k(v)$ 的 Zeckendorf 规范形不涉及权重 $F_{m+2}$（即其 $z_{m+2}=0$），从而
+折叠输出 $\Fold_m(\cdot)=(z_2,\dots,z_{m+1})$ 在该数值范围上与 Zeckendorf 表示一一对应。
+于是 $N_k(u)\ne N_k(v)$ 推出 $\Fold_m(u0^{m-k})\ne \Fold_m(v0^{m-k})$，即 $u\not\sim_k v$。
+
+综上，当 $k<m$ 时，$\sim_k$ 的等价类与 $N_k(u)$ 的取值集合一一对应，从而
+\[
+|U_{m,k}|=\bigl|\{N_k(u):u\in\{0,1\}^k\}\bigr|.
+\]
+
+\paragraph{步骤 2：计算 $\{N_k(u)\}$ 的大小。}
+令权重序列 $a_i:=F_{i+1}$（$1\le i\le k$）。注意到
+\[
+a_1=1,\qquad a_{i+1}=a_i+a_{i-1}\le 1+\sum_{j=1}^{i} a_j\quad(i\ge 2).
+\]
+\begin{lemma}[区间覆盖的子集和]\label{lem:subset_sum_interval}
+设 $a_1,\dots,a_k$ 为正整数，且满足 $a_1=1$ 与对所有 $i\ge 1$ 有 $a_{i+1}\le 1+\sum_{j=1}^{i} a_j$。
+记 $S_k=\sum_{j=1}^{k} a_j$。则
+\[
+\Bigl\{\sum_{i=1}^k u_i a_i:\ u_i\in\{0,1\}\Bigr\}=\{0,1,\dots,S_k\}.
+\]
+\end{lemma}
+\begin{proof}
+对 $k$ 归纳。$k=1$ 时显然成立。设对 $k=i$ 成立，即前 $i$ 项可表示全部 $[0,S_i]$。
+加入 $a_{i+1}\le S_i+1$ 后，任意 $t\in[0,S_i+a_{i+1}]$：
+若 $t\le S_i$，由归纳假设可表示；若 $t>S_i$，则 $t-a_{i+1}\in[0,S_i]$，
+由归纳假设表示 $t-a_{i+1}$，再加上 $a_{i+1}$ 即得 $t$。证毕。
+\end{proof}
+
+将引理 \ref{lem:subset_sum_interval} 应用于 $a_i=F_{i+1}$，得到集合
+\[
+\Bigl\{\sum_{i=1}^k u_i a_i:\ u_i\in\{0,1\}\Bigr\}
+\]
+恰好等于整数区间 $\{0,1,\dots,\sum_{i=1}^k a_i\}$。因此
+\[
+|U_{m,k}|=\sum_{i=1}^{k} F_{i+1}+1.
+\]
+利用恒等式 $\sum_{j=2}^{k+1} F_j=F_{k+3}-2$，得
+\[
+|U_{m,k}|=F_{k+3}-1,\qquad 0\le k<m.
+\]
+
+\paragraph{步骤 3：$k=m$ 的情形。}
+当 $k=m$ 时，后缀集合为空，右等价 $\sim_m$ 退化为“输出相等”。因此
+\[
+|U_{m,m}|=|\Fold_m(\{0,1\}^m)|=|X_m|=F_{m+2},
+\]
+其中最后一步由定理 \ref{thm:Xm_count}。
+\end{proof}
+
+\begin{corollary}[与 $m$ 的无关性（前缀稳定）]\label{cor:prefix_stability}
+对任意 $m'>m$ 与任意 $0\le k<m$，有
+\[
+|U_{m,k}|=|U_{m',k}|=F_{k+3}-1.
+\]
+换言之，只要后缀长度仍为正（$k<m$），深度 $k$ 的右等价类数仅依赖于 $k$，与总长度 $m$ 无关。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:residual_closed_form} 对任意 $k<m$ 给出的闭式不含 $m$，即得结论。
+\end{proof}
+
+\begin{corollary}[显式最小状态表示]\label{cor:explicit_state}
+对每个 $k<m$，映射 $u\mapsto N_k(u)$ 在 $\sim_k$ 等价类上良定义且给出双射
+\[
+U_{m,k}\ \cong\ \{0,1,\dots,F_{k+3}-2\}.
+\]
+并且在该同构下，扩展一位的转移满足
+\[
+N_{k+1}(ua)=N_k(u)+aF_{k+2},\qquad a\in\{0,1\}.
+\]
+\end{corollary}
+
+\subsection{一般化：权重序列与截断折叠的残差谱模板}
+上一小节对 Fibonacci 权重与 Zeckendorf 规范化给出了一个完全闭式的残差谱。为了强调可迁移性，
+本小节抽象出使证明成立的两条结构性条件，并给出一般版本：\emph{右等价类由“前缀加权和”刻画，
+其数量等于前缀可达子集和的数量}。
+
+\begin{definition}[一般权重与加权和]
+令 $w_1,w_2,\dots$ 为正整数权重。对长度 $m$ 的比特串 $b\in\{0,1\}^m$ 定义
+\[
+N^{(w)}(b):=\sum_{i=1}^{m} b_i w_i.
+\]
+对前缀 $u\in\{0,1\}^k$ 定义
+\[
+N^{(w)}_k(u):=\sum_{i=1}^{k} u_i w_i.
+\]
+\end{definition}
+
+\begin{definition}[截断折叠的一般形式]
+令 $\mathrm{Enc}_m$ 为一个把整数编码为有限集合 $Y_m$ 的函数。给定权重 $w$，定义折叠
+\[
+\Fold^{(w)}_m:\{0,1\}^m\to Y_m,\qquad \Fold^{(w)}_m(b):=\mathrm{Enc}_m\!\left(N^{(w)}(b)\right).
+\]
+并定义相应的深度 $k$ 右等价 $\sim^{(w)}_{m,k}$：对 $u,v\in\{0,1\}^k$，
+\[
+u\sim^{(w)}_{m,k} v\iff \forall s\in\{0,1\}^{m-k},\ \Fold^{(w)}_m(us)=\Fold^{(w)}_m(vs).
+\]
+记 $U^{(w)}_{m,k}:=\{0,1\}^k/\!\sim^{(w)}_{m,k}$。
+\end{definition}
+
+\begin{assumption}[前缀区分的注入窗口]\label{assump:injective_window}
+存在阈值 $W_m\in\NN$，使得 $\mathrm{Enc}_m$ 在区间 $\{0,1,\dots,W_m-1\}$ 上为单射。
+\end{assumption}
+
+\begin{assumption}[前缀和严格低于阈值]\label{assump:prefix_below}
+对某个 $k<m$，所有前缀都满足
+\[
+\max_{u\in\{0,1\}^k} N^{(w)}_k(u) < W_m.
+\]
+\end{assumption}
+
+\begin{theorem}[一般残差谱：由前缀和刻画]\label{thm:general_prefix_sum_classes}
+在假设 \ref{assump:injective_window} 与 \ref{assump:prefix_below} 下，对该深度 $k<m$，
+有双射
+\[
+U^{(w)}_{m,k}\ \cong\ \bigl\{N^{(w)}_k(u):u\in\{0,1\}^k\bigr\},
+\]
+从而
+\[
+\bigl|U^{(w)}_{m,k}\bigr|=\left|\bigl\{N^{(w)}_k(u):u\in\{0,1\}^k\bigr\}\right|.
+\]
+\end{theorem}
+\begin{proof}
+对 $u,v\in\{0,1\}^k$。
+若 $N^{(w)}_k(u)=N^{(w)}_k(v)$，则对任意后缀 $s$ 有 $N^{(w)}(us)=N^{(w)}(vs)$，从而
+$\Fold^{(w)}_m(us)=\Fold^{(w)}_m(vs)$，即 $u\sim^{(w)}_{m,k}v$。
+反之若 $N^{(w)}_k(u)\ne N^{(w)}_k(v)$，取后缀 $s=0^{m-k}$。则
+\[
+\Fold^{(w)}_m(u0^{m-k})=\mathrm{Enc}_m(N^{(w)}_k(u)),\quad
+\Fold^{(w)}_m(v0^{m-k})=\mathrm{Enc}_m(N^{(w)}_k(v)).
+\]
+由假设 \ref{assump:prefix_below} 得两者都落在单射窗口内，结合假设 \ref{assump:injective_window}，
+得到两输出不同，从而 $u\not\sim^{(w)}_{m,k}v$。因此等价类由前缀和完全刻画，计数式随之成立。
+\end{proof}
+
+\begin{corollary}[区间覆盖条件下的闭式计数]\label{cor:general_interval_count}
+若进一步对权重 $w_1,\dots,w_k$ 满足引理 \ref{lem:subset_sum_interval} 的区间覆盖条件（即子集和恰为 $[0,S_k]$），
+则
+\[
+\bigl|U^{(w)}_{m,k}\bigr|=\sum_{i=1}^{k} w_i+1.
+\]
+\end{corollary}
+
+\begin{remark}
+本稿的 Fibonacci--Zeckendorf 情形可视为上述模板的一个特例：$w_i=F_{i+1}$，且 $\mathrm{Enc}_m$ 为
+Zeckendorf 规范形的“截断输出”，其在 $[0,F_{m+2})$ 上保持单射，因此得到定理 \ref{thm:residual_closed_form}。
+\end{remark}
+
+\subsection{上界、下界与可计算性}
+\begin{theorem}[可计算性：自底向上最小化（占位）]\label{thm:bottom_up}
+给定映射 $f:\{0,1\}^m\to Y$ 的完全表（枚举所有输入与输出），可以以自底向上的方式在时间
+$O(2^m)$（忽略多重集/哈希常数）计算全部 $|U_{m,k}|$ 并构造每个等价类的代表元。
+\end{theorem}
+
+\begin{proof}[证明要点]
+把 $\{0,1\}^m$ 视为深度 $m$ 的完全二叉树叶子集合。对叶子（深度 $m$），以输出值 $f(b)$ 作为标签，
+于是 $u\sim_m v$ 当且仅当两叶标签相同。
+
+对任意深度 $k<m$ 的前缀 $u\in\Sigma^k$，其两个子前缀为 $u0,u1$。注意到对任意后缀 $s$，
+$f(u0s)$ 与 $f(u1s)$ 分别由两个子树决定。因此 $u\sim_k v$ 当且仅当
+$(u0\sim_{k+1} v0)$ 且 $(u1\sim_{k+1} v1)$ 同时成立。换言之，深度 $k$ 的等价类由子等价类的有序对
+$( [u0]_{\sim_{k+1}}, [u1]_{\sim_{k+1}} )$ 唯一刻画。
+
+因此可自底向上：先合并叶子标签得到 $U_{m,m}$，再逐层以有序对签名合并得到 $U_{m,k}$。
+该过程访问每个前缀节点一次，总节点数为 $\sum_{k=0}^{m}2^k=O(2^m)$，从而得到时间复杂度。
+\end{proof}
+
+\begin{theorem}[规模界（占位）]\label{thm:size_bounds}
+对任意 $k$，有
+\[
+|X_m|\le |U_{m,k}|\le 2^k,
+\]
+并且 $|U_{m,k}|$ 随 $k$ 单调不减。进一步可根据 $\Fold_m$ 的纤维结构给出若干可计算下界。
+\end{theorem}
+
+\subsection{与纤维谱的关系（占位）}
+残差规模谱与纤维谱 $\{|F_m(x)|\}$ 的关系是本文希望进一步定量化的方向之一：
+粗略地说，纤维越大意味着“丢失的信息越多”，而残差态越多意味着“对未来输入的区分需求越高”。
+二者之间的桥接可通过信息论量与可逆化目标来建立（留作后续精化）。
+

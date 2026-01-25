@@ -1,0 +1,53 @@
+\section{仅由“展开/折叠”构造闭合群运算}
+
+\subsection{两个原语}
+
+给定两微态 $A,B\in\M_6$。把它们写成同长度 digit 带 $A=(a_k)_{k=1}^{12}$、$B=(b_k)_{k=1}^{12}$。
+
+\paragraph{展开（Unfold）}
+逐位相加得到中间 digit 带 $s=(s_k)$，使得
+$$
+s_k=a_k+b_k,\qquad s_k\in\{0,1,2\}.
+$$
+
+\paragraph{折叠（Fold$_{64}$）}
+对 $s$ 施加局域重写，先归一化为 Zeckendorf 正规形表示的 $a+b$，再在必要时减去一次 $64$，并继续局域修复到正规形。
+归一化阶段仅使用 Fibonacci 恒等式，因此保持 $\val$ 不变；局域校正规则族可参照 \cite{Fenwick2003ZeckendorfArithmetic}。
+
+\begin{definition}[闭合运算]
+定义二元运算
+$$
+A\oplus B:=\Fold_{64}\bigl(\Unfold(A,B)\bigr).
+$$
+\end{definition}
+
+\subsection{值守恒与模回卷}
+
+折叠的“归一化”阶段保持 $\val$ 不变；
+当 $\val(s)\ge 64$ 时执行一次模回卷（减去 $64$）并继续归一化回正规形。
+在 $m=6$ 情形下，$64$ 的 Zeckendorf 表示为
+$$
+64=F_{10}+F_6+F_2.
+$$
+因此回卷阶段可实现为对 digit 带执行一次对应的减法，再通过有限局域“借位展开/抵消”规则修复回正规形。
+
+\subsection{正确性与群同构}
+
+\begin{theorem}[闭合与群同构]
+对任意 $a,b\in\{0,\dots,63\}$，令 $A,B\in\M_6$ 分别为其 Zeckendorf 正规形，则
+$$
+\val(A\oplus B)=(a+b)\bmod 64.
+$$
+因此 $(\M_6,\oplus)\cong(\ZZ_{64},+)$ 为阶 $64$ 的循环群。
+\end{theorem}
+
+\begin{proof}
+展开后 digit 带 $s$ 所表示的数值满足 $\val(s)=a+b$。
+归一化阶段的每条局域重写均由 Fibonacci 恒等式导出，保持 $\val$ 不变，并最终到达 Zeckendorf 正规形；
+正规形的唯一性保证输出唯一 \cite{WikipediaZeckendorf}。
+
+若 $a+b<64$，折叠输出即为 $a+b$ 的正规形。
+若 $a+b\ge 64$，回卷阶段执行一次减去 $64$ 并继续归一化，输出为 $(a+b-64)$ 的正规形。
+因此输出值为 $(a+b)\bmod 64$。
+\end{proof}
+

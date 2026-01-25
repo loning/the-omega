@@ -1,0 +1,46 @@
+% 3 Fold definition and implementation model
+\section{Fold 与实现接口}\label{sec:fold}
+
+\subsection{窗口空间与折叠输出}
+固定 $m\in\NN$。定义窗口微态空间
+\[
+\Omega_m=\{0,1\}^m.
+\]
+折叠映射 $\Fold_m:\Omega_m\to X_m$ 的具体定义在本文中采用“数值解释 + Zeckendorf 规范形 + 截断”：
+对 $b=(b_1,\dots,b_m)\in\Omega_m$，取
+\[
+N(b)=\sum_{i=1}^{m} b_i F_{i+1}.
+\]
+令 $z=(z_2,z_3,\dots)$ 为 $N(b)$ 的 Zeckendorf 规范系数（不含相邻 $1$）。定义
+\[
+\Fold_m(b)=(z_2,z_3,\dots,z_{m+1})\in X_m,
+\]
+并忽略可能出现的更高位 $z_{m+2},z_{m+3},\dots$。
+关于 Fibonacci/Zeckendorf 表示的自动机化与算术操作（包括规范化与加法的有限状态实现），可参见相关综述与算法工作。\cite{Frougny1991FibonacciAutomata,AhlbachEtAl2013ZeckendorfArithmetic,AlloucheShallit2003AutomaticSequences}
+
+\subsection{第一层纤维与基线信息量}
+对 $x\in X_m$，定义原像纤维
+\[
+F_m(x)=\Fold_m^{-1}(x)\subset\Omega_m.
+\]
+纤维大小谱 $\{|F_m(x)|:x\in X_m\}$ 与推前分布
+\[
+p_m(x)=\frac{|F_m(x)|}{2^m}
+\]
+给出折叠压缩的基线统计量。
+
+\begin{proposition}[平均纤维规模]\label{prop:avg_fiber}
+若对 $X_m$ 取均匀分布，则平均纤维规模满足
+\[
+\mathbb E_{x\sim \mathrm{Unif}(X_m)}\bigl[|F_m(x)|\bigr]=\frac{2^m}{|X_m|}=\frac{2^m}{F_{m+2}}.
+\]
+\end{proposition}
+
+\subsection{Fold-with-residual 接口（占位）}
+本文的核心问题并非仅研究 $\Fold_m$，而是研究与之配套的残差标签 $u$。
+我们将把残差定义为右等价类，并在后续给出最小性定理：
+\[
+\Fold\text{-with-residual}_m:\Omega_m\to X_m\times U_m,\qquad b\mapsto(\Fold_m(b),u_m(b)).
+\]
+其中 $U_m$ 的构造与最小性由第 \ref{sec:mn} 节给出。
+

@@ -4,6 +4,7 @@
 
 **工作注意**
 - python命令: python3
+- generated 的 .tex 文件使用pylatex生成
 - 工作语言默认使用中文
 - 没有时间约束
 - 不要降低质量, 不需要简化

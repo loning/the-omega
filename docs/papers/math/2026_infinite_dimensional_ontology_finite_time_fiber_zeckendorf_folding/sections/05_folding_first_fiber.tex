@@ -4,7 +4,8 @@
 
 在有限窗模型中，折叠算子用于将任意窗口微态 $b\in\Omega_m$ 规范化为稳定词 $x\in X_m$。本文采用“数值解释 + Zeckendorf 规范形”给出构造性定义。
 
-对 $b=(b_1,\dots,b_m)\in \Omega_m$，定义其数值
+\begin{definition}[折叠算子]\label{def:Fold}
+\MathTag 对 $b=(b_1,\dots,b_m)\in \Omega_m$，定义其数值
 $$
 N(b)=\sum_{i=1}^{m} b_i F_{i+1}.
 $$
@@ -12,14 +13,135 @@ $$
 $$
 N(b)=\sum_{k\ge 2} z_k F_k,\qquad z_k\in\{0,1\},\qquad z_k z_{k+1}=0.
 $$
-定义
+定义折叠算子
 $$
-\Fold_m(b)=(z_2,z_3,\dots,z_{m+1})\in X_m.
+\Fold_m:\Omega_m\to X_m,\qquad \Fold_m(b)=(z_2,z_3,\dots,z_{m+1}).
 $$
-由于取 $b=x\in X_m$ 时 $b$ 已满足无相邻约束且对应 Zeckendorf 规范形，故 $\Fold_m$ 为满射。Zeckendorf 规范形的存在唯一性参照文献。\cite{kkmw_zeckendorf_summands}
+\end{definition}
+\AuditTag 上述定义把 Zeckendorf 规范形的存在唯一性作为数学基础输入使用；其精确形式为：对任意正整数 $n$，存在唯一的无相邻 Fibonacci 系数表示。参见文献。\cite{kkmw_zeckendorf_summands}
+
+由于取 $b=x\in X_m$ 时 $b$ 已满足无相邻约束且对应 Zeckendorf 规范形，故 $\Fold_m$ 为满射。
 
 \begin{remark}
 上述定义避免了直接给出局部重写系统的繁琐性；在算法实现上，规范化可由有限状态转导器完成（第 6.4 节讨论其与残差有限性的关联）。\cite{shallit_robbins_ardila_berstel}
+\end{remark}
+
+\subsection{群化表述：可逆微观变换、观测核与抵消}
+
+本节给出一个与信息守恒相容的最小群化层：将“系统的可逆演化”视为对微观状态集的置换，并将折叠映射视为观测层投影。抵消与复杂运算在此框架中被理解为群内元素的乘法与逆元。
+
+\begin{definition}[扩展微观状态与可逆变换群]\label{def:extended-micro-group}
+为容纳“信息守恒（可逆）”与“观测折叠（多对一）”并存，引入扩展微观状态集 $\widetilde{\Omega}_m$，以及一个遗忘映射
+$$
+\pi_m^{\Omega}:\widetilde{\Omega}_m\twoheadrightarrow \Omega_m.
+$$
+将折叠算子延拓为
+$$
+\widetilde{\Fold}_m=\Fold_m\circ \pi_m^{\Omega}:\widetilde{\Omega}_m\twoheadrightarrow X_m.
+$$
+定义分辨率 $m$ 下的可逆微观变换群为置换群
+$$
+G_m=\mathrm{Sym}(\widetilde{\Omega}_m),
+$$
+其群运算为复合。
+\end{definition}
+
+\begin{remark}[一个与实验一致的具体选择]
+在第 15 节的最小动力学演示中，微观态可取为宏态与残差的直积
+$$
+\widetilde{\Omega}_m=X_m\times \ZZ_q,
+\qquad
+\pi_m^{\Omega}(x,r)=x,
+$$
+并将 $\widetilde{\Fold}_m$ 取为对第一分量的投影（或进一步与窗口折叠 $\Fold_m$ 复合）。该选择仅用于说明“可逆微观 + 非单射观测”的结构如何在离散系统中落地；本文数学层不依赖该具体实现。
+\end{remark}
+
+\begin{definition}[观测核（不可见子群）]\label{def:observable-kernel}
+定义观测核（或不可见子群）
+$$
+K_m=\left\{g\in G_m:\widetilde{\Fold}_m\circ g=\widetilde{\Fold}_m\right\}.
+$$
+亦即 $K_m$ 中的变换在观测层完全不可区分。
+\end{definition}
+
+\begin{proposition}\label{prop:Km-subgroup}
+$K_m\le G_m$ 为子群。
+\end{proposition}
+
+\begin{proof}
+\MathTag 依赖：定义 \ref{def:observable-kernel}；以及 $G_m=\mathrm{Sym}(\widetilde{\Omega}_m)$ 的群结构（定义 \ref{def:extended-micro-group}）。
+恒等变换满足 $\widetilde{\Fold}_m\circ \mathrm{id}=\widetilde{\Fold}_m$，故 $\mathrm{id}\in K_m$。若 $g,h\in K_m$，则
+$$
+\widetilde{\Fold}_m\circ (g\circ h)=(\widetilde{\Fold}_m\circ g)\circ h=\widetilde{\Fold}_m\circ h=\widetilde{\Fold}_m,
+$$
+故 $g\circ h\in K_m$。若 $g\in K_m$，则由 $\widetilde{\Fold}_m\circ g=\widetilde{\Fold}_m$ 得
+$$
+\widetilde{\Fold}_m=\widetilde{\Fold}_m\circ \mathrm{id}=\widetilde{\Fold}_m\circ (g\circ g^{-1})=(\widetilde{\Fold}_m\circ g)\circ g^{-1}=\widetilde{\Fold}_m\circ g^{-1},
+$$
+故 $g^{-1}\in K_m$。证毕。
+\end{proof}
+
+\begin{proposition}[不可见对称轨道落在纤维内]\label{prop:kernel-orbits-in-fiber}
+对任意 $\omega\in\widetilde{\Omega}_m$，其 $K_m$ 轨道
+$$
+\mathrm{Orb}_{K_m}(\omega)=\{g\omega:g\in K_m\}
+$$
+包含于观测纤维 $\widetilde{\Fold}_m^{-1}\bigl(\widetilde{\Fold}_m(\omega)\bigr)$。因此，纤维大小对不可见轨道规模给出下界：
+$$
+\abs{\widetilde{\Fold}_m^{-1}\bigl(\widetilde{\Fold}_m(\omega)\bigr)}\ge \abs{\mathrm{Orb}_{K_m}(\omega)}.
+$$
+\end{proposition}
+
+\begin{proof}
+取任意 $g\in K_m$。由定义 \ref{def:observable-kernel}，$\widetilde{\Fold}_m\circ g=\widetilde{\Fold}_m$，故
+$$
+\widetilde{\Fold}_m(g\omega)=\widetilde{\Fold}_m(\omega),
+$$
+从而 $g\omega\in \widetilde{\Fold}_m^{-1}\bigl(\widetilde{\Fold}_m(\omega)\bigr)$。这对任意 $g\in K_m$ 成立，因此整个轨道 $\mathrm{Orb}_{K_m}(\omega)$ 包含于该纤维。由包含关系立即得到基数不等式。证毕。
+\end{proof}
+
+\begin{definition}[离散时间子群]\label{def:time-subgroup}
+取一个微观一步更新算子 $\tau\in G_m$（其可逆性即信息守恒的数学化表达），定义离散时间子群
+$$
+T_m=\langle \tau\rangle.
+$$
+该群为循环群。并且若 $\widetilde{\Omega}_m$ 为有限集，则 $\tau\in \mathrm{Sym}(\widetilde{\Omega}_m)$ 必为有限阶，故 $T_m\cong \ZZ/n\ZZ$（其中 $n=\mathrm{ord}(\tau)$）。
+\end{definition}
+
+\begin{definition}[观测层抵消]\label{def:observable-cancellation}
+给定 $t\in T_m$ 与任意 $s\in G_m$，若
+$$
+ts\in K_m,
+$$
+则称 $s$ 在观测层抵消了 $t$（或称 $ts$ 为观测不可见组合）。等价地，对任意 $\omega\in\widetilde{\Omega}_m$ 有
+$$
+\widetilde{\Fold}_m(ts\,\omega)=\widetilde{\Fold}_m(\omega).
+$$
+\end{definition}
+
+\begin{remark}[把折叠补成双射：纤维索引作为“被折叠的信息”】【]\label{rem:fold-bijection-lift}
+折叠 $\Fold_m:\Omega_m\twoheadrightarrow X_m$ 的非可逆性来自“忽略了纤维内的区分”。在纯集合论层面，可以总是把这部分信息显式补回，从而得到一个完全可逆的提升表示。\par
+
+对每个 $x\in X_m$，任取一个双射（索引）
+$$
+\iota_x:\mathcal F_m(x)\xrightarrow{\ \sim\ }\{1,2,\dots,\abs{\mathcal F_m(x)}\}.
+$$
+定义扩展空间
+$$
+\widehat{E}_m=\bigsqcup_{x\in X_m}\bigl(\{x\}\times \{1,2,\dots,\abs{\mathcal F_m(x)}\}\bigr),
+$$
+并定义映射
+$$
+\Phi_m:\Omega_m\to \widehat{E}_m,\qquad
+\Phi_m(b)=\bigl(\Fold_m(b),\,\iota_{\Fold_m(b)}(b)\bigr).
+$$
+则 $\Phi_m$ 为双射，而投影到第一分量即给回折叠：
+$$
+\mathrm{pr}_1\circ \Phi_m=\Fold_m.
+$$
+因此，“信息守恒（可逆）”可以理解为：真正的可逆动力学作用在 $\widehat{E}_m$（或更一般的 $\widetilde{\Omega}_m$）上，而观测只读取第一分量 $x$ 并丢弃纤维坐标 $r$。\par
+
+该构造是纯集合论的，未保证 $\iota_x$ 的计算可行性；若进一步要求可实现性，则需把纤维坐标约束为一个可计算、有限记忆的残差结构，这正是第 6 节“有限残差充分性”所要推进的方向。
 \end{remark}
 
 \subsection{第一层时间纤维：原像纤维与分割}

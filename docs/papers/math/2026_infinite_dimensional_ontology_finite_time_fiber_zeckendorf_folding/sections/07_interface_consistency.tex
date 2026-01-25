@@ -15,19 +15,23 @@ $$
 E_m^{\mathrm{end}}=\{w\in X_m:w_m=1\},\qquad H_m^{\mathrm{head}}=\{w\in X_m:w_1=1\}.
 $$
 
-\begin{lemma}
+\begin{lemma}\label{lem:boundary_trigger_counts}
+\MathTag
 $$
 \abs{E_m^{\mathrm{end}}}=\abs{H_m^{\mathrm{head}}}=F_m.
 $$
 \end{lemma}
 
 \begin{proof}
+\MathTag 依赖：定理 \ref{thm:Xm_count}；以及 $X_{m-2}$ 的定义（定义 \ref{def:stable_language} 的特例）。
 以 $E_m^{\mathrm{end}}$ 为例。条件 $w_m=1$ 蕴含 $w_{m-1}=0$。去除末两位后得到长度 $m-2$ 的任意线性合法词，故存在双射 $E_m^{\mathrm{end}}\cong X_{m-2}$。由第 4 节结论 $\abs{X_{m-2}}=F_m$ 得 $\abs{E_m^{\mathrm{end}}}=F_m$。对 $H_m^{\mathrm{head}}$ 同理。证毕。
 \end{proof}
 
 \subsection{接口亏损定理与“纠缠项”表述}
 
-\begin{theorem}[接口亏损定理]
+\begin{theorem}[接口亏损定理]\label{thm:interface_loss}
+\MathTag
+\AuditTag 台账编号：\texttt{L-iface-01}。
 拼接后仍满足线性禁止约束的合法拼接数为
 $$
 \abs{X_m}^2-\abs{E_m^{\mathrm{end}}}\abs{H_m^{\mathrm{head}}}
@@ -44,6 +48,7 @@ $$
 \end{theorem}
 
 \begin{proof}
+\MathTag 依赖：定理 \ref{thm:Xm_count}；引理 \ref{lem:boundary_trigger_counts}；以及拼接新增约束仅发生在接口位的组合事实（本节第 1 小节）。
 独立选择 $(u,v)\in X_m\times X_m$ 的总数为 $\abs{X_m}^2$。接口非法当且仅当 $u\in E_m^{\mathrm{end}}$ 且 $v\in H_m^{\mathrm{head}}$，非法配对数为 $\abs{E_m^{\mathrm{end}}}\abs{H_m^{\mathrm{head}}}=F_m^2$。因此合法拼接数为 $\abs{X_m}^2-F_m^2$。另一方面，长度 $2m$ 的线性合法词集合按定义即 $X_{2m}$，其基数为 $\abs{X_{2m}}=F_{2m+2}$。两者同为对“长度 $2m$ 且无相邻 $1$”的计数，故相等。证毕。
 \end{proof}
 
@@ -53,6 +58,19 @@ $$
 $$
 其中 $21=\abs{X_6}$、$377=\abs{X_{12}}$。差值为 $F_6^2=8^2=64$，并非一般恒等于 $2^m$，而源于 $F_6=8=2^3$ 的特例。
 \end{corollary}
+
+\begin{proof}
+\MathTag 依赖：推论陈述；定理 \ref{thm:interface_loss}；定理 \ref{thm:Xm_count}。
+由定理 \ref{thm:interface_loss} 在 $m=6$ 的特例，
+$$
+\abs{X_{12}}=\abs{X_6}^2-F_6^2.
+$$
+又由第 4 节 $\abs{X_m}=F_{m+2}$，得 $\abs{X_6}=F_8=21$、$\abs{X_{12}}=F_{14}=377$，并且 $F_6=8$。代入即得
+$$
+377=21^2-8^2=21^2-64.
+$$
+移项得到结论。证毕。
+\end{proof}
 
 \begin{remark}[条件耦合的等价刻画]
 接口约束可重写为条件耦合规则：若 $u_m=1$，则必须强制 $v_1=0$。该形式与“独立乘积 $\to$ 带条件的相关乘积”同构，可视为接口处的最小相关性项（本文称为接口耦合项）。在后续章节中，该相关性将与残差平行移动的路径依赖（holonomy）联系，从而成为“时间纤维曲率集中”的候选来源。

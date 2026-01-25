@@ -6,21 +6,26 @@
 $$
 \Omega_m=\{0,1\}^m,\qquad \abs{\Omega_m}=2^m.
 $$
-定义线性稳定语言
+\begin{definition}[线性稳定语言]\label{def:stable_language}
+\MathTag 定义线性稳定语言
 $$
 X_m=\left\{w\in\{0,1\}^m:\forall i\in\{1,\dots,m-1\},\ (w_i,w_{i+1})\neq(1,1)\right\}.
 $$
+\end{definition}
 该集合亦可视为黄金均值移位的长度 $m$ 允许词集合。\cite{scholarpedia_symbolic_dynamics}
 
 \subsection{线性稳定语言计数定理}
 
-\begin{theorem}
+\begin{theorem}\label{thm:Xm_count}
+\MathTag
+\AuditTag 台账编号：\texttt{L-lang-01}。
 $$
 \abs{X_m}=F_{m+2}.
 $$
 \end{theorem}
 
 \begin{proof}
+\MathTag 依赖：第 2 节 Fibonacci 数列 $(F_n)$ 的定义；定义 \ref{def:stable_language}。
 设 $a_m=\abs{X_m}$。按首位 $w_1$ 分类：
 \begin{itemize}
   \item 若 $w_1=0$，则余下 $m-1$ 位可为任意 $X_{m-1}$ 中元素，计数为 $a_{m-1}$。
@@ -41,14 +46,17 @@ C_m=\left\{w\in\{0,1\}^m:\forall i\in\{1,\dots,m\},\ (w_i,w_{i+1})\neq(1,1)\righ
 \qquad w_{m+1}=w_1.
 $$
 
-\begin{theorem}
+\begin{proposition}[循环稳定语言计数]\label{prop:Cm_Lm}
+\MathTag
+\AuditTag 台账编号：\texttt{L-lang-02}。
 $$
 \abs{C_m}=L_m.
 $$
-\end{theorem}
+\end{proposition}
 
 \begin{proof}
-设 $c_m=\abs{C_m}$。按 $w_1$ 分类：
+\MathTag 依赖：定理 \ref{thm:Xm_count}；第 2 节 Lucas 数列 $(L_n)$ 的定义。
+当 $m=1$ 时，$C_1=\{0\}$，故 $\abs{C_1}=1=L_1$；当 $m=2$ 时，循环约束等价于线性无相邻约束，$C_2=X_2$，故 $\abs{C_2}=3=L_2$。以下设 $m\ge 3$。令 $c_m=\abs{C_m}$。按 $w_1$ 分类：
 \begin{itemize}
   \item 若 $w_1=0$，则其余 $m-1$ 位仅需满足线性无相邻约束，计数为 $\abs{X_{m-1}}=F_{m+1}$。
   \item 若 $w_1=1$，则 $w_2=0$ 且 $w_m=0$，中间 $m-3$ 位满足线性无相邻约束，计数为 $\abs{X_{m-3}}=F_{m-1}$。
@@ -68,7 +76,7 @@ $$
 $$
 B_m=X_m\setminus C_m.
 $$
-由恒等式 $L_m=F_{m+1}+F_{m-1}$ 与 $\abs{X_m}=F_{m+2}$ 得
+当 $m\ge 2$ 时，由恒等式 $L_m=F_{m+1}+F_{m-1}$ 与 $\abs{X_m}=F_{m+2}$ 得
 $$
 \abs{B_m}=\abs{X_m}-\abs{C_m}=F_{m+2}-L_m=F_{m-2}.
 $$
@@ -76,6 +84,7 @@ $$
 $$
 X_m=C_m\sqcup B_m.
 $$
+当 $m=1$ 时，$\abs{B_1}=\abs{X_1}-\abs{C_1}=2-1=1$，与上述递推一致性不矛盾，但不再用 $F_{m-2}$ 书写以避免负指标。
 该分解在后续接口一致性与耦合项分析中用于刻画“首尾粘合的缺陷来源”。
 
 \subsection{最小核实例（m=6）}
