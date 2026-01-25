@@ -2,10 +2,10 @@
 
 \subsection{基空间与本体丛}
 
-\begin{assumption}[基空间与本体丛]\label{ass:hilbert_bundle}
+\begin{assumption}[基空间与本体丛（不预设维数）]\label{ass:hilbert_bundle}
 \InterfaceTag
 \AuditTag 台账编号：\texttt{L-obs-01}。
-设 $M$ 为三维基空间，可取为光滑三维流形或其离散化网格（后续章节将以局部依赖图形式表达局部性，本文前 6 节不使用具体坐标系）。假设存在 Hilbert 丛
+设 $M$ 为基空间：它可以是光滑流形、离散网格，或更一般的“站点集合”及其局部依赖关系（第 9 节将以局部依赖图形式表达局部性，本文前 6 节不使用具体坐标系或嵌入维数）。假设存在 Hilbert 丛
 $$
 \Pi:\mathcal H\to M,
 $$
@@ -15,6 +15,24 @@ $$
 \begin{remark}[桥接假设（接口层）]
 \InterfaceTag 以上 Hilbert 丛设定用于为“无限维本体态”提供一个统一的数学承载体。
 \AuditTag 本文不把该结构直接等同于任何特定物理理论的态空间公设；它的作用是：在给定观测投影与动力学类之后，为后续“有限分辨率可观测—隐藏残差—时间纤维”的结构构造提供一个可引用的本体层对象。
+\end{remark}
+
+\subsection{显示字典与三维选择（CAP 闭包）}
+
+\begin{definition}[CAP 闭包选择]\label{def:cap_closure}
+\AuditTag
+在本文的审计口径中，\textsf{[CAP]} 指“在显式有限候选族上做决定性闭包选择”：给定一个有限候选族 $\mathcal F$，以及一个\emph{可比较}的闭包键（key）$K:\mathcal F\to \RR^k$ 与一个决定性的 tie-break 全序 $\prec$。其中 $K$ 的比较规则固定为字典序（lexicographic order），从而对任意 $u,v\in\mathcal F$ 可判定 $K(u)\le_{\mathrm{lex}} K(v)$。此时输出定义为
+$$
+\mathsf{Sel}(\mathcal F,K,\prec)\in\arg\min_{u\in\mathcal F} K(u)\ \ (\text{按 } \le_{\mathrm{lex}} \text{ 比较}),
+$$
+并在最小元不唯一时用 $\prec$ 选取唯一代表元。这里 $\prec$ 通常以“更低描述复杂度优先”为准则，并在需要时把维数、参数规模等离散量作为后续 tie-break 坐标纳入键向量中。
+\end{definition}
+
+\begin{remark}[三维作为显示输出而非先验前提]\label{rem:3d_as_cap_output}
+\InterfaceTag
+本文后续章节需要在某些诊断（例如局部传播、回路/holonomy 与空间 plaquette 统计）中引入一个“空间显示字典”：把抽象站点与其邻接关系实现为某个有限度数的显示图（可理解为离散网格或其索引/地址实现）。\par
+
+\AuditTag 我们不把“空间是三维”作为定理层前提；相反，把“显示维数/显示字典”的选择视为一个 \textsf{[CAP]} 闭包输出：在一个显式有限候选族（例如 $d\in\{1,2,3,4\}$ 的若干离散显示及其地址实现）上，以（i）能支持回路诊断的可行性门槛、以及（ii）在基准一致性目标下的观察者时间成本/传播成本代理量为目标函数，并以“更低维数、更低描述复杂度”为 tie-break，从而确定一个默认显示。本文采用的默认显示为三维（在第 9--15 节的实现与实验中具体化）。
 \end{remark}
 
 \begin{definition}[本体态]

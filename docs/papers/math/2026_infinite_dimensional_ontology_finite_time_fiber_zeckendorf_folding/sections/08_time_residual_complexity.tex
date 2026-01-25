@@ -1,5 +1,40 @@
 \section{时间作为残差迭代复杂度：信息分解与过程可逆化}
 
+\subsection{两类时间：演化时间与纤维时间}
+
+\begin{definition}[演化时间与纤维时间]\label{def:two_times}
+\InterfaceTag
+本文将“时间”分为两类，分别服务于不同层次的结构：
+\begin{itemize}
+  \item \textbf{演化时间（external / iteration time）}：指更新序号 $t\in\NN$（或其有限/双向扩展），用于标记动力学迭代步与算法运行步；本文的 $(x_t,r_t)$、时间成本 $T(\mathcal G)$ 都以该 $t$ 为索引。
+  \item \textbf{纤维时间（fiber / residual time）}：指残差坐标 $r\in R_m(x)$ 所承载的内部历史自由度（“同一可观测输出下仍需区分的提升信息”）。其核心现象是路径依赖：在第 12 节中由 holonomy 的非平凡性刻画为“回路输运不平凡 $\Rightarrow$ 历史不可消去”。
+\end{itemize}
+\end{definition}
+
+\begin{remark}[演化时间与“经历的纤维时间序列”】【]\label{rem:evolution_as_fiber_experience}
+\InterfaceTag
+当观察者协议在每一步演化时间 $t$ 都实际携带（或可确定）一个具体残差坐标 $r_t$ 时，演化时间可理解为观察者经历的纤维时间的序列索引：观察者的内部历史以
+$$
+r_0,r_1,r_2,\dots
+$$
+的形式随 $t$ 演化。相反，若观察者仅能维持一个关于残差的后验分布（例如仅知 $x_t$ 或仅知 $(x_t,\text{某种统计摘要})$），则其“经历”的对象更准确地说是纤维不确定性/后验的更新序列，而非单一确定的纤维轨道。
+\end{remark}
+
+\begin{remark}[群化口径：哪些对象应群化，哪些保持为半群/群胚]\label{rem:groupification_scope}
+\InterfaceTag
+为把“时间/历史/路径依赖”纳入统一的代数语言，本文采用如下群化口径（与第 5、6、9、12 节的群化对象一致）：
+\begin{itemize}
+  \item \textbf{演化时间：半群作用优先，必要时升级为群作用。}
+  若演化由一步更新算子 $\tau$ 生成，则自然得到 $\NN$ 在状态空间上的作用 $t\mapsto \tau^t$；只有在明确假设更新可逆（信息守恒）时，才把其升级为 $\ZZ$ 作用（允许 $\tau^{-1}$）。
+  \item \textbf{纤维时间：残差的群化是可选输入。}
+  残差坐标 $r\in R_m(x)$ 的“可逆组合”并非定理层必然；当需要把内部历史自由度组织为可计算的不变量与输运（尤其是 holonomy）时，可采用第 6 节的有限群残差载体作为可选结构输入，从而把输运映射限制到 $\mathrm{Sym}(R)$、$\mathrm{Aut}(R)$ 或其仿射子群中讨论。
+  \item \textbf{路径/holonomy：天然对象是群胚。}
+  由于不同基点 $x$ 的纤维一般不同，沿边平行移动给出的是“从 $R_m(x)$ 到 $R_m(x')$ 的同构/映射”的可复合体系；因此更自然的整体对象是路径群胚（而非单个群）。在固定基点并选定纤维同构后，才可退化为 holonomy 群（第 12 节）。
+  \item \textbf{后验更新：一般不群化。}
+  若观察者只维护关于 $(x_t,r_t)$ 的分布或权重，则演化由核/算子驱动（例如第 13 节的前向--后向权重递推），其组合律一般形成半群而非群；强行群化等价于额外假设“可逆推断/无信息损失”，不作为本文默认口径。
+\end{itemize}
+\end{remark}
+
 \subsection{残差更新动力学与目标一致性}
 
 第 6 节给出第二层时间纤维 $R_m(x)$ 与离散丛 $E_m=\bigsqcup_{x\in X_m}(\{x\}\times R_m(x))$。在给定局部规则族与可观测代数 $\mathcal O_m$ 下，设系统演化由局部更新构成
