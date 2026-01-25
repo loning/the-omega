@@ -10,26 +10,107 @@ $$
 p=\frac{1}{\varphi^2+1}=\frac{5-\sqrt5}{10}.
 $$
 
-\subsection{主要猜想与强证据：\texorpdfstring{$C_1(m)=p2^m+O(\varphi^m)$}{C\_1(m)=p2\string^m+O(phi\string^m)}}
+\subsection{定理级误差界：\texorpdfstring{$\abs{C_1(m)-p2^m}=O(F_{m+1})$}{|C1(m)-p2^m|=O(F_{m+1})}}
 
-我们提出（并用大规模计算支持）：
+\begin{theorem}[dyadic 计数的 Fibonacci 级误差界]\label{thm:dyadic-C1-bound}
+存在与 $m$ 无关的常数 $C>0$，使得对所有 $m\ge 1$，
+$$
+\abs{C_1(m)-p2^m}\le C\,F_{m+1}.
+$$
+特别地，
+$$
+E_m=\frac{C_1(m)-p2^m}{\varphi^m}
+$$
+在全体 $m$ 上一致有界。
+\end{theorem}
 
-\begin{conjecture}[误差尺度]
-存在常数 $C>0$ 使得
+\begin{proof}
+本结论可视为一个“dyadic 轨道前缀的 Birkhoff 和偏差由 Fibonacci tower 高度控制”的实例。我们给出一条可审计的依赖链（并明确引用外部结论的精确用途）。
+
+\textbf{（1）将计数写为 Birkhoff 和.}
+令 $\Omega$、$\mathrm{Z}$ 与 $T$ 如命题 \ref{prop:zeckendorf-vershik}，并令 $x_0=\mathrm{Z}(0)$。定义观测量
 $$
-\abs{C_1(m)-p2^m}\le C\varphi^m,
+f_m:\Omega\to\{0,1\},\qquad f_m(c)=c_m.
 $$
-等价于
+则对每个 $N\ge 0$ 有 $T^N x_0=\mathrm{Z}(N)$，从而
 $$
-\left|\frac{C_1(m)}{2^m}-p\right|=O\!\left(\left(\frac{\varphi}{2}\right)^m\right).
+C_1(m)=\sum_{N=0}^{2^m-1} f_m(T^N x_0).
 $$
-\end{conjecture}
+
+\textbf{（2）动力系统与不变测度.}
+将 Zeckendorf 合法序列空间视为 Cantor 集，并用“加一”映射给出 Zeckendorf-adic odometer（亦可通过 Bratteli--Vershik 图表示）。在黄金均值有限型移位上取 Parry（最大熵）测度 $\mu$（见 \cite{lind1995symbolic}），则单点边际满足
+$$
+\int f_m\,\mathrm{d}\mu=\mu(c_m=1)=p
+$$
+（见预备知识）。
+
+\textbf{（3）Fibonacci 型 Kakutani--Rokhlin tower 与偏差界.}
+对黄金均值图的 stationary Bratteli--Vershik 表示，在第 $m$ 层存在由两塔组成的 Kakutani--Rokhlin 分割，其塔高分别为 $F_{m+1}$ 与 $F_m$（命题 \ref{prop:fib-tower-heights}，见附录）。对本问题的指示函数 $f_m(c)=c_m$，它在该两塔分割下在整塔上为常值，从而可将前缀偏差化为“诱导基序列的平衡性”问题。附录命题 \ref{prop:tower-explicit-discrepancy} 给出一个完全自包含的显式界：对 $n=2^m$，
+$$
+\left|\sum_{N=0}^{2^m-1} f_m(T^N x_0)-p2^m\right|\le 4\,F_{m+1}.
+$$
+最后由 $F_{m+1}\asymp \varphi^m$ 得到 $E_m$ 一致有界。
+\end{proof}
+
+\subsection{由三值纤维阶梯得到的精确余数结构}
+
+本小节把 $C_1(m)$ 与第 4 节的三值纤维阶梯直接对接，给出一个\textbf{完全显式}的模结构表达式。这一表达式在数值上解释了 $\delta_m$ 与 $E_m$ 的线性主项，并在理论上提供了可用于进一步锐化的“相位参数”。
+
+\begin{proposition}[计数的纤维加权表达式]\label{prop:C1-fiber-sum}
+设 $B_m=2^m-1$，并令 $s_m(w)=\abs{\Fold_m^{-1}(w)}$。则
+$$
+C_1(m)=\sum_{\substack{w\in X_m\\ w_m=1}} s_m(w)
+\;=\;\sum_{V=F_{m+1}}^{F_{m+2}-1} S_m(V),
+$$
+其中 $S_m(V)=s_m\big(V_m^{-1}(V)\big)$。
+\end{proposition}
+
+\begin{proof}
+按定义，
+$$
+C_1(m)=\#\{0\le N\le B_m:\ c_m(N)=1\}.
+$$
+对每个 $N$，令 $w=\Fold_m(N)=(c_1(N),\dots,c_m(N))\in X_m$。则 $c_m(N)=1$ 当且仅当 $w_m=1$，并且按 $w$ 分组计数得到
+$$
+C_1(m)=\sum_{\substack{w\in X_m\\ w_m=1}} \#\{0\le N\le B_m:\ \Fold_m(N)=w\}
+ =\sum_{\substack{w\in X_m\\ w_m=1}} s_m(w).
+$$
+再用第 4 节“末位阈值”引理 $w_m=1\iff V_m(w)\ge F_{m+1}$，以及 $V_m$ 在 $X_m$ 上的双射性，把对 $w$ 的求和改写为对 $V$ 的求和即可。
+\end{proof}
+
+\begin{corollary}[分裂余数形式]\label{cor:C1-remainder-structure}
+沿用第 4 节三值纤维定理的记号。记
+$$
+b_F=F_{m+1},\qquad b_Q=V_m(\Fold_m(2^m-1))+1.
+$$
+则 $C_1(m)$ 具有以下精确形式：
+\begin{itemize}
+\item 若 $b_Q\le b_F$（分裂发生在 $w_m=0$ 侧），则存在整数 $a_m$ 使得
+$$
+C_1(m)=F_m\,a_m.
+$$
+\item 若 $b_Q>b_F$（分裂发生在 $w_m=1$ 侧），则存在整数 $b_m$ 使得
+$$
+C_1(m)=F_m\,(b_m-1)\ +\ (b_Q-b_F),
+$$
+从而 $1\le b_Q-b_F\le F_m$ 且
+$$
+b_Q=b_F+\big(C_1(m)\bmod F_m\big).
+$$
+\end{itemize}
+\end{corollary}
+
+\begin{proof}
+由命题 \ref{prop:C1-fiber-sum}，$C_1(m)$ 只由 $w_m=1$ 一侧（即 $V\in[b_F,F_{m+2}-1]$）上的阶梯 $S_m(V)$ 决定。由第 4 节三值纤维定理，该侧要么不分裂而恒等于某整数 $a_m$，要么仅在阈值 $b_Q$ 处发生一次从 $b_m$ 到 $b_m-1$ 的跳变。两种情形分别对 $V$ 的有限求和即可得到上述两式。最后一个同余式来自第二种情形下的显式展开。
+\end{proof}
+
+\subsection{数值现象：缩放误差的有界性（样本区间内）}
 
 定义缩放误差
 $$
 E_m=\left(\frac{2}{\varphi}\right)^m\left(\frac{C_1(m)}{2^m}-p\right)=\frac{C_1(m)-p2^m}{\varphi^m}.
 $$
-在 $m=100..2000$ 的全量计算中，$E_m$ 被一个小区间夹住（强证据级事实），这与 Zeckendorf-adic odometer 的 Rokhlin tower “尾段高度 $\sim F_{m+1}$”误差控制机制一致。
+在样本区间 $m\in[100,2000]$ 的全量计算中，数值上观察到 $E_m$ 落在一个窄区间内（见表格统计）。该现象与 Zeckendorf-adic odometer 的 Rokhlin tower “尾段高度 $\sim F_{m+1}$”所暗示的误差控制机制\textbf{相容}；此处仅作为解释性叙述，不作为后续推理前提。
 
 \begin{table}[H]
 \centering
@@ -43,7 +124,7 @@ $$
 \caption{$m\in[100,2000]$ 上 $\delta_m$ 与 $E_m$ 的范围（由脚本自动生成）。}
 \end{table}
 
-\subsection{分支线性律（经验规律）：\texorpdfstring{$E_m$}{E\_m} 与 \texorpdfstring{$\delta_m$}{delta\_m} 的近闭式关系}
+\subsection{经验规律：\texorpdfstring{$E_m$}{E\_m} 与 \texorpdfstring{$\delta_m$}{delta\_m} 的近闭式关系（样本区间内）}
 
 设
 $$

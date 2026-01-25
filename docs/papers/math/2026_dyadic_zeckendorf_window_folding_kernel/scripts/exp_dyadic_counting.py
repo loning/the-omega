@@ -59,8 +59,12 @@ def main() -> None:
 
     if not run.cached:
         # Decimal arithmetic to avoid float overflow/underflow at m ~ 2000.
-        # Precision is chosen for stable bounded E_m-like quantities.
-        getcontext().prec = 80
+        # IMPORTANT: E_m is a small (often bounded) quantity obtained by subtracting
+        # two ~2^m-scale numbers and then scaling by phi^{-m}. We therefore need
+        # enough working precision to resolve (C1 - p*2^m) without catastrophic
+        # cancellation. A safe rule is to set precision well above the digit
+        # length of 2^m (~0.301*m decimal digits).
+        getcontext().prec = max(200, int(0.40 * args.m_max) + 200)
 
         fib = fibs_up_to_index(2 * args.m_max + 10)
         sqrt5 = Decimal(5).sqrt()

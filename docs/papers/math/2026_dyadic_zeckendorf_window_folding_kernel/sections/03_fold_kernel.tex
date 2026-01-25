@@ -1,4 +1,3 @@
-
 \section{折叠核 \texorpdfstring{$\Fold_m$}{Fold\_m} 及其 tail 分解}
 
 \subsection{定义}
@@ -16,9 +15,13 @@ N=V_m(w).
 $$
 则由唯一性可得 $\Fold_m(N)=w$，因此 $\Fold_m$ 满射。
 
-\subsection{tail 计数表达式}
+\subsection{tail 计数表达式（一般上界 \texorpdfstring{$B$}{B}）}
 
-设 $B_m=2^m-1$。对任意 $w\in X_m$，考虑所有满足 $\Fold_m(N)=w$ 的 $N\le B_m$。写
+先对一般上界 $B\in\NN$ 定义截断折叠映射
+$$
+\Fold_{m,B}:[0,B]\to X_m,\qquad \Fold_{m,B}(N)=(c_1(N),\dots,c_m(N)).
+$$
+并记 $s_{m,B}(w)=\abs{\Fold_{m,B}^{-1}(w)}$。对任意 $w\in X_m$，考虑所有满足 $\Fold_{m,B}(N)=w$ 的 $0\le N\le B$。写
 $$
 N=V_m(w)+T,\qquad
 T=\sum_{k\ge m+1} c_k(N)\,F_{k+1}.
@@ -29,8 +32,32 @@ w_m\,c_{m+1}(N)=0,
 $$
 且 tail 数码本身无相邻 $11$。因此
 $$
-s_m(w)=\abs{\Fold_m^{-1}(w)}
-=\#\Big\{T\in\mathcal{T}_{w_m}:\ T\le B_m-V_m(w)\Big\},
+s_{m,B}(w)=\abs{\Fold_{m,B}^{-1}(w)}
+:=\#\Big\{T\in\mathcal{T}_{w_m}:\ T\le B-V_m(w)\Big\},
 $$
-其中 $\mathcal{T}_0$ 表示允许 $c_{m+1}\in\{0,1\}$ 的 tail 和集合，$\mathcal{T}_1$ 表示强制 $c_{m+1}=0$ 的 tail 和集合。该式是本文所有纤维结构的出发点：\textbf{纤维大小就是“反向枚举 tail”满足不等式约束的计数。}
+其中 tail 和集合 $\mathcal{T}_0,\mathcal{T}_1$ 定义如下。
+
+\begin{definition}[tail 和集合]\label{def:tail-sets}
+对给定 $m\ge 1$，定义两类 admissible tail 数码集合
+$$
+\mathcal{D}_0=\Big\{(d_{m+1},d_{m+2},\dots)\in\{0,1\}^{\NN}:\ d_kd_{k+1}=0\ \forall k\ge m+1\Big\},
+$$
+$$
+\mathcal{D}_1=\Big\{(d_{m+1},d_{m+2},\dots)\in\{0,1\}^{\NN}:\ d_{m+1}=0,\ d_kd_{k+1}=0\ \forall k\ge m+1\Big\}.
+$$
+对应的 tail 和集合定义为
+$$
+\mathcal{T}_\varepsilon=\Big\{\sum_{k\ge m+1} d_kF_{k+1}:\ (d_{m+1},d_{m+2},\dots)\in\mathcal{D}_\varepsilon\Big\},\qquad \varepsilon\in\{0,1\}.
+$$
+\end{definition}
+
+该式是本文所有纤维结构的出发点：\textbf{纤维大小就是“反向枚举 tail”满足不等式约束的计数。}
+
+\medskip
+\noindent
+本文的主对象取 dyadic 上界 $B_m=2^m-1$，并将
+$$
+\Fold_m:=\Fold_{m,B_m},\qquad s_m:=s_{m,B_m}
+$$
+作为简记。
 

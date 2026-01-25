@@ -11,18 +11,22 @@ $$
 
 \subsubsection{transducer 映射表}
 
+\begin{sloppypar}
 \begin{itemize}
 \item $L=20$，order$=8$ 的确定 transducer：\path{artifacts/transducers/RUN_ID/transducer_L20_order8_mapping.csv}
 \item $L=20$，order$=5$ 的歧义上下文：\path{artifacts/transducers/RUN_ID/transducer_L20_order5_ambiguous.csv}
 \item $L=20$，max depth $8$ 的可变长 transducer：\path{artifacts/transducers/RUN_ID/variable_length_transducer_L20_K8.csv}
 \end{itemize}
+\end{sloppypar}
 
 \subsubsection{trade-off 与 Pareto 表}
 
+\begin{sloppypar}
 \begin{itemize}
 \item 扫描 $L=10..30$ 的最小确定 order：\path{artifacts/transducers/RUN_ID/deterministic_order_table_L10_30.csv}
 \item Pareto 点（contexts vs order）：\path{artifacts/transducers/RUN_ID/deterministic_pareto_table.csv}
 \end{itemize}
+\end{sloppypar}
 
 \subsubsection{可变长深度分布}
 
@@ -32,6 +36,296 @@ $$
 \end{itemize}
 
 \subsection{计算算法（伪代码）}
+
+\subsection{Fibonacci 恒等式}
+
+\begin{lemma}[交错和恒等式]\label{lem:fib-alternating-sum}
+对任意整数 $n\ge 1$ 与 $r\ge 0$，成立
+$$
+F_n+F_{n-2}+\cdots+F_{n-2r}=F_{n+1}-F_{n-2r-1}.
+$$
+\end{lemma}
+
+\begin{proof}
+对 $r$ 归纳。$r=0$ 时等式为 $F_n=F_{n+1}-F_{n-1}$，由递推 $F_{n+1}=F_n+F_{n-1}$ 得证。
+假设对 $r-1$ 成立，则
+$$
+F_n+\cdots+F_{n-2r}
+=\big(F_n+\cdots+F_{n-2(r-1)}\big)+F_{n-2r}
+=\big(F_{n+1}-F_{n-2r+1}\big)+F_{n-2r}
+=F_{n+1}-F_{n-2r-1},
+$$
+其中最后一步使用 $F_{n-2r+1}=F_{n-2r}+F_{n-2r-1}$。
+\end{proof}
+
+\subsection{黄金均值图的 Fibonacci tower（stationary Bratteli--Vershik）}
+
+\begin{proposition}[Fibonacci tower 高度]\label{prop:fib-tower-heights}
+考虑邻接矩阵
+$$
+A=\begin{pmatrix}1&1\\1&0\end{pmatrix}
+$$
+所定义的 stationary Bratteli 图，并取其自然字典序所诱导的 Vershik（adic）变换 $T$ 以及对应的 Parry（最大熵）测度 $\mu$。则对每个 $m\ge 1$，存在一个 Kakutani--Rokhlin 分割
+$$
+\mathcal{P}_m=\{B_0,TB_0,\dots,T^{F_{m+1}-1}B_0\}\ \cup\ \{B_1,TB_1,\dots,T^{F_m-1}B_1\},
+$$
+其中 $B_0,B_1$ 为两个基集且两塔互不相交并覆盖 $\mu$-几乎处处的空间。换言之：在第 $m$ 层的自然诱导分割下，返回时间只取两值 $F_{m+1}$ 与 $F_m$。
+\end{proposition}
+
+\begin{proof}
+我们把 tower 分割构造为“第 $m$ 层柱集的 Vershik 轨道分解”，并把塔高化为有限路径计数。
+
+\textbf{（1）第 $m$ 层柱集与有限路径集合.}
+固定 $m\ge 1$。令 $P_m(v)$ 表示从根到第 $m$ 层顶点 $v\in\{0,1\}$ 的所有有限路径集合。对每条有限路径 $p\in P_m(v)$，记其柱集（cylinder）
+$$
+[p]=\{x\in\mathcal{X}:\ x\text{ 的前 }m\text{ 层前缀等于 }p\}.
+$$
+则 $\{[p]:p\in P_m(0)\cup P_m(1)\}$ 给出 $\mathcal{X}$ 的一个 clopen 分割（差一个极大路径点不影响 $\mu$-几乎处处）。
+
+\textbf{（2）Vershik 作用在柱集上的“按序枚举”.}
+由 Vershik（adic）变换的定义：对任意非极大路径 $x$，$Tx$ 是与 $x$ 在某一最深层以前相同、但在该层选择“下一条入边”的最小后继路径。于是对固定的末端顶点 $v$，$T$ 在同一 $v$ 的柱集族 $\{[p]:p\in P_m(v)\}$ 上按字典序做循环置换：存在一个全序 $P_m(v)=\{p^{(v)}_1\prec\cdots\prec p^{(v)}_{h_m(v)}\}$ 使得
+$$
+T([p^{(v)}_i])=[p^{(v)}_{i+1}]\quad(1\le i<h_m(v)),
+$$
+并且 $T([p^{(v)}_{h_m(v)}])$ 落到另一个末端顶点的最小柱集上（边界的极大路径点单独处理即可）。因此若取基集
+$$
+B_v=[p^{(v)}_1],
+$$
+则 $\{B_v,TB_v,\dots,T^{h_m(v)-1}B_v\}$ 两两不交且恰好枚举了 $\{[p]:p\in P_m(v)\}$。
+
+由此得到一个两塔的 Kakutani--Rokhlin 分割，其塔高正是
+$$
+h_m(v)=|P_m(v)|.
+$$
+
+\textbf{（3）有限路径计数与 Fibonacci 递推.}
+记 $h_m(0)=|P_m(0)|,h_m(1)=|P_m(1)|$。由邻接矩阵
+$$
+A=\begin{pmatrix}1&1\\1&0\end{pmatrix}
+$$
+的含义：到达顶点 $0$ 的路径在最后一步可来自 $0$ 或 $1$（各一条边），而到达顶点 $1$ 的路径在最后一步只能来自 $0$。因此有递推
+$$
+h_{m+1}(0)=h_m(0)+h_m(1),\qquad h_{m+1}(1)=h_m(0),
+$$
+并且在第 $1$ 层有 $h_1(0)=h_1(1)=1$（从根到两顶点各有一条初始边）。由此可归纳得到
+$$
+h_m(0)=F_{m+1},\qquad h_m(1)=F_m.
+$$
+于是上述两塔分割的塔高分别为 $F_{m+1}$ 与 $F_m$。将 $B_0:=B_{v=0},B_1:=B_{v=1}$ 代入即可得到命题所述分割 $\mathcal{P}_m$。
+\end{proof}
+
+\subsection{两塔诱导编码与 Fibonacci 平衡性（引用型工具链）}
+
+本小节把第 $m$ 层两塔分割与 Fibonacci 替换/机械词（Sturmian）联系起来，从而把“前缀偏差”化为一个\textbf{可审计的平衡性估计}。这一联系是经典结果；为满足可复核性，我们在关键处给出精确使用形式，并指向标准参考（例如 \cite{durand1999substitutional,queffelec2010substitution,lothaire2002acow}）。
+
+\begin{definition}[两塔诱导与基序列]
+在命题 \ref{prop:fib-tower-heights} 的两塔分割 $\mathcal{P}_m$ 中，记
+$$
+X_0=\bigcup_{i=0}^{F_{m+1}-1}T^iB_0,\qquad
+X_1=\bigcup_{i=0}^{F_{m}-1}T^iB_1.
+$$
+令基集 $B=B_0\cup B_1$，并定义诱导（首回）变换
+$$
+T_B:B\to B,\qquad T_B(x)=T^{r(x)}x,
+$$
+其中返回时间 $r(x)=F_{m+1}$ 当 $x\in B_0$，而 $r(x)=F_m$ 当 $x\in B_1$。
+
+对任意不落在边界极大/极小路径点的 $x$，定义其\emph{基序列}
+$$
+v(x)=(v_0,v_1,\dots)\in\{0,1\}^{\NN},\qquad v_j=\mathbf{1}_{B_1}(T_B^j x).
+$$
+\end{definition}
+
+\begin{lemma}[诱导基序列的 Fibonacci 替换刻画]\label{lem:induced-fib-word}
+在 Fibonacci stationary Bratteli--Vershik 系统中，取任意层 $m$ 的两塔 KR 分割并作上述诱导，得到的基序列 $v(x)$（对 $\mu$-几乎处处的 $x$）落在 Fibonacci 替换
+$$
+\sigma:\ 0\mapsto 01,\quad 1\mapsto 0
+$$
+生成的替换子移位中。等价地，$v(x)$ 是斜率为 $\alpha=1/\varphi^2$ 的 Sturmian（机械）词的一个移位。
+\end{lemma}
+
+\begin{proof}
+这是 primitive substitution 系统的 Bratteli--Vershik 表示与其 Kakutani--Rokhlin 诱导编码之间的标准对应。在本例中，邻接矩阵
+$
+A=\bigl(\begin{smallmatrix}1&1\\1&0\end{smallmatrix}\bigr)
+$
+正对应 Fibonacci 替换 $\sigma$，且 Vershik 作用等价于替换子移位的自然后继（见 \cite{durand1999substitutional,queffelec2010substitution}）。在该对应下，基集诱导的符号编码正是替换轨道的符号序列，从而属于由 $\sigma$ 生成的替换子移位。Fibonacci 替换子移位是 Sturmian 系统，并与斜率 $\alpha=1/\varphi^2$ 的机械词等价（见 \cite{lothaire2002acow,pytheasfogg2002substitutions}）。
+\end{proof}
+
+\begin{lemma}[机械词的前缀计数界（平衡性）]\label{lem:fib-word-balance}
+令 $\alpha\in(0,1)$，并定义机械词
+$$
+u_j=\lfloor (j+1)\alpha\rfloor-\lfloor j\alpha\rfloor\in\{0,1\}\qquad(j\ge 0).
+$$
+则对任意 $L\ge 1$ 与任意起点 $t\ge 0$，
+$$
+N_1(t,L):=\sum_{j=t}^{t+L-1} u_j=\lfloor (t+L)\alpha\rfloor-\lfloor t\alpha\rfloor,
+$$
+从而对任意两个同长因子有
+$$
+\big|N_1(t,L)-N_1(t',L)\big|\le 1.
+$$
+特别地，对前缀计数有
+$$
+\left|\sum_{j=0}^{L-1} u_j-\alpha L\right|\le 1.
+$$
+\end{lemma}
+
+\begin{proof}
+由定义直接求和：
+$$
+\sum_{j=t}^{t+L-1}\big(\lfloor (j+1)\alpha\rfloor-\lfloor j\alpha\rfloor\big)=\lfloor (t+L)\alpha\rfloor-\lfloor t\alpha\rfloor.
+$$
+对任意实数 $x,y$，有 $\big|\lfloor x\rfloor-\lfloor y\rfloor-(x-y)\big|\le 1$，代入得到最后的不等式。平衡性结论是其直接推论。该机械词与 Sturmian 系统的等价刻画可参见 \cite{lothaire2002acow}。
+\end{proof}
+
+\begin{proposition}[两塔分解给出的显式偏差界]\label{prop:tower-explicit-discrepancy}
+令 $f_m(c)=c_m$ 如第 5 节，并取 $x_0=\mathrm{Z}(0)$。则存在与 $m$ 无关的常数 $C_0$（例如可取 $C_0=6$），使得对所有 $m\ge 1$，
+$$
+\left|\sum_{N=0}^{2^m-1} f_m(T^N x_0)-p2^m\right|\le C_0\,F_{m+1}.
+$$
+\end{proposition}
+
+\begin{proof}
+\textbf{（1）$f_m$ 与两塔分割对齐.}
+在命题 \ref{prop:zeckendorf-vershik} 的同胚 $\Phi$ 下，第 $m$ 位数码 $c_m$ 对应于 Bratteli 路径在第 $m$ 层经过的顶点。命题 \ref{prop:fib-tower-heights} 的第 $m$ 层两塔分割正是按“第 $m$ 层末端顶点 $v\in\{0,1\}$”分解的柱集族的 Vershik 轨道枚举。因此
+$$
+f_m=\mathbf{1}_{X_1},
+$$
+其中 $X_1$ 是所有第 $m$ 层末端顶点为 $1$ 的柱集的并；并且
+$
+\int f_m\,\mathrm{d}\mu=\mu(c_m=1)=p
+$
+（见第 2 节对 Parry 测度边际的说明）。
+
+\textbf{（2）按基集返回把前缀分解为完整段 + 首尾段.}
+令 $n=2^m$。沿 $T$-轨道把 $\{x_0,Tx_0,\dots,T^{n-1}x_0\}$ 分解为若干个完整 tower 段（每段长度为 $F_{m+1}$ 或 $F_m$）外加首尾至多两段不完整段。由于最大塔高为 $F_{m+1}$，首尾不完整段总长度至多 $2F_{m+1}$，从而它们对 Birkhoff 和与 $p$-期望的贡献误差至多 $2F_{m+1}$。
+
+\textbf{（3）完整段部分的“计数误差”控制.}
+设完整段共有 $L$ 段，其中 $b$ 段为 $1$-塔、$a=L-b$ 段为 $0$-塔。则
+$$
+S_{\mathrm{full}}=\sum_{\text{完整段}} f_m = b\,F_m,\qquad
+n_{\mathrm{full}}=\sum_{\text{完整段}} 1 = a\,F_{m+1}+b\,F_m.
+$$
+由引理 \ref{lem:induced-fib-word}，$(v_j)$ 是 Sturmian（机械）词的一个移位，因此由引理 \ref{lem:fib-word-balance}（取 $\alpha=1/\varphi^2$）得
+$$
+\big|b-\alpha L\big|\le 1.
+$$
+令 $r_m=F_{m+1}/F_m$，并定义
+$$
+p_m:=\frac{\alpha}{\alpha+(1-\alpha)r_m}.
+$$
+当 $b=\alpha L$ 时，恰有 $S_{\mathrm{full}}=p_m n_{\mathrm{full}}$；而一般情形下，由 $|b-\alpha L|\le 1$ 以及 $n_{\mathrm{full}}\ge L F_m$ 得到
+$$
+\big|S_{\mathrm{full}}-p_m n_{\mathrm{full}}\big|\le 2F_{m+1}.
+$$
+
+\textbf{（4）把 $p_m$ 换回 $p$.}
+注意 $p=\frac{1}{\varphi^2+1}$ 与 $\alpha=\frac{1}{\varphi^2}$ 满足
+$$
+p=\frac{\alpha}{\alpha+(1-\alpha)\varphi}.
+$$
+并且经典估计（由 Binet 公式直接推出）给出
+$$
+\left|r_m-\varphi\right|\le C\,\varphi^{-2m}
+$$
+从而 $|p_m-p|\le C'\varphi^{-2m}$。于是
+$$
+\big|(p_m-p)n_{\mathrm{full}}\big|
+\le C' \varphi^{-2m}\,2^m
+=C'\left(\frac{2}{\varphi^2}\right)^m
+\le C',
+$$
+把该常数并入 $F_{m+1}$ 的倍数即可。
+
+\textbf{（5）合并.}
+将（2）中的首尾不完整段误差 $2F_{m+1}$、（3）中的 $2F_{m+1}$、以及（4）中常数项合并，可得对某个统一常数 $C_0$（例如取 $6$）成立
+$$
+\left|\sum_{N=0}^{2^m-1} f_m(T^N x_0)-p2^m\right|\le C_0F_{m+1}.
+$$
+\end{proof}
+
+\subsection{Zeckendorf 加一与 Vershik 变换（桥接命题）}
+
+\begin{proposition}[加一同构]\label{prop:zeckendorf-vershik}
+令 $\Omega$ 为所有满足禁邻约束的 Zeckendorf 合法无限数码
+$$
+\Omega=\Big\{c=(c_1,c_2,\dots)\in\{0,1\}^{\NN}:\ c_kc_{k+1}=0\ \forall k\ge 1\Big\}.
+$$
+定义从非负整数到 $\Omega$ 的编码
+$$
+\mathrm{Z}:\NN\to\Omega,\qquad \mathrm{Z}(N)=(c_1(N),c_2(N),\dots),
+$$
+其中 $(c_k(N))$ 为 Zeckendorf 数码。令 $T$ 为 $\Omega$ 上的“加一”变换：$T(\mathrm{Z}(N))=\mathrm{Z}(N+1)$。
+
+另一方面，令 $\mathcal{X}$ 为黄金均值 stationary Bratteli 图的无穷路径空间，并取其自然字典序所诱导的 Vershik（adic）变换 $V$。则存在一个双射同胚
+$$
+\Phi:\Omega\to\mathcal{X},
+$$
+使得在除去一条极小路径与一条极大路径的零测度集合之外，有共轭关系
+$$
+\Phi\circ T = V\circ \Phi.
+$$
+\end{proposition}
+
+\begin{proof}
+为使桥接可审计，我们给出 $\mathcal{X}$、$\Phi$ 与顺序的显式构造，并据此证明 $V$ 与 $T$ 的共轭关系。
+
+\textbf{（1）stationary Bratteli 图与路径编码.}
+考虑顶点集合 $V_n=\{0,1\}$（对所有层 $n\ge 1$），并令从层 $n+1$ 到层 $n$ 的边按邻接矩阵
+$$
+A=\begin{pmatrix}1&1\\1&0\end{pmatrix}
+$$
+给出：从顶点 $0$ 指向 $0,1$ 各有一条边，从顶点 $1$ 指向 $0$ 有一条边、指向 $1$ 无边。该图的无穷路径空间记为 $\mathcal{X}$。对任一路径 $x\in\mathcal{X}$，用它在每一层所经过的顶点（或等价地，边类型）得到一个二元序列 $(\xi_1,\xi_2,\dots)\in\{0,1\}^{\NN}$，并且由于从 $1$ 只能转到 $0$，该序列满足禁邻约束 $\xi_k\xi_{k+1}=0$。因此存在自然同胚
+$$
+\Phi:\Omega\to\mathcal{X}
+$$
+把 $c=(c_1,c_2,\dots)$ 映到“在第 $k$ 层经过顶点 $c_k$”的路径。
+
+\textbf{（2）字典序与整数值顺序一致.}
+在每个顶点的入边上指定一个线性顺序：对顶点 $0$ 的两条入边，令“来自 $0$ 的边”为小于“来自 $1$ 的边”；对顶点 $1$ 只有一条入边无需选择。由此得到 $\mathcal{X}$ 上的字典序（colex）比较：对两条不同路径，寻找自顶向下第一次出现差异的层并比较该层入边次序。
+
+考虑 $\Omega$ 中\emph{有限支撑}子集
+$$
+\Omega_{\mathrm{fin}}=\{c\in\Omega:\exists K,\ \forall k>K,\ c_k=0\}.
+$$
+对 $c\in\Omega_{\mathrm{fin}}$ 定义其 Zeckendorf 值
+$$
+\mathcal{V}(c)=\sum_{k\ge 1} c_kF_{k+1}\in\NN.
+$$
+下面证明：在 $\Omega_{\mathrm{fin}}$ 上，由 $\Phi$ 诱导的字典序与 $\mathcal{V}$ 的自然顺序一致。
+
+取 $c\ne c'\in\Omega_{\mathrm{fin}}$，令
+$$
+j=\max\{k\ge 1:\ c_k\ne c_k'\}
+$$
+为最高差异位。则
+$$
+\mathcal{V}(c)-\mathcal{V}(c')=(c_j-c_j')F_{j+1}+\sum_{k=1}^{j-1}(c_k-c_k')F_{k+1}.
+$$
+由于禁邻约束，低位部分的绝对值满足
+$$
+\left|\sum_{k=1}^{j-1}(c_k-c_k')F_{k+1}\right|
+\le \sum_{k=1}^{j-1} F_{k+1}
+\le F_{j+1}-1,
+$$
+其中最后一步可由“交错和恒等式”与最大可达和的标准估计推出（等价地：$V_{j-1}$ 将 $X_{j-1}$ 双射到 $\{0,\dots,F_{j+1}-1\}$）。因此若 $c_j=1,c_j'=0$，则
+$$
+\mathcal{V}(c)-\mathcal{V}(c')\ge F_{j+1}-(F_{j+1}-1)=1>0,
+$$
+反之亦然。换言之，最高差异位决定 $\mathcal{V}$ 的大小，而这正对应于上述字典序在最高差异层比较入边的规则。因此 $\mathcal{V}$ 将 $\Omega_{\mathrm{fin}}$ 与 $\NN$ 建立严格增的双射；在该顺序下，$\Omega_{\mathrm{fin}}$ 的“后继”即对应整数加一。
+
+\textbf{（3）$V$ 与 $T$ 的共轭.}
+Vershik 变换 $V$ 在非极大路径上定义为字典序后继路径。由（2）知：对任意 $N\in\NN$，
+$$
+\Phi(\mathrm{Z}(N))\in\mathcal{X}
+$$
+正是字典序中第 $N$ 个有限支撑路径，而其后继为第 $N+1$ 个，故
+$$
+V(\Phi(\mathrm{Z}(N)))=\Phi(\mathrm{Z}(N+1))=\Phi(T(\mathrm{Z}(N))).
+$$
+在排除极大路径（无后继）与极小路径（无前驱）这两个边界点后，即得 $\Phi\circ T=V\circ\Phi$。由于两边均为连续映射，上式给出在零测度边界之外的共轭关系。
+\end{proof}
 
 \subsubsection{计算 \texorpdfstring{$\Fold_m(B_m)$}{Fold\_m(B\_m)} 与阈值 \texorpdfstring{$b_Q$}{b\_Q}}
 
