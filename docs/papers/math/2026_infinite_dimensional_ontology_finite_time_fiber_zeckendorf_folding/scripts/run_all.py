@@ -84,6 +84,9 @@ def main() -> None:
     dyn_defect_rate = 0.006
     dyn_r_diffusion = 0.25
 
+    cap_ms = "6,9,12,15"
+    cap_d_max = 4
+
     want_counts = [generated_dir() / "counts_check.tex"]
     if force or (not _have_all(want_counts)):
         _run("exp_counts_check.py", ["--m-max", str(m_max), *([] if not force else ["--force"])])
@@ -168,6 +171,22 @@ def main() -> None:
         )
     else:
         print("[run_all] cached: exp_emergence_space_holonomy_induced.py", flush=True)
+
+    want_cap_dim = [
+        generated_dir() / "cap_display_dim_scan_table.tex",
+        generated_dir() / "cap_display_dim_scan_summary.tex",
+        generated_dir() / "fig_cap_display_resolve_vs_dim.tex",
+        generated_dir() / "fig_cap_display_unresolved_vs_dim.tex",
+        generated_assets_dir() / "cap_display_resolve_vs_dim.png",
+        generated_assets_dir() / "cap_display_unresolved_vs_dim.png",
+    ]
+    if force or (not _have_all(want_cap_dim)):
+        _run(
+            "exp_cap_display_dim_scan.py",
+            ["--ms", str(cap_ms), "--d-max", str(cap_d_max), "--max-iter", "200", *([] if not force else ["--force"])],
+        )
+    else:
+        print("[run_all] cached: exp_cap_display_dim_scan.py", flush=True)
 
     _sync_legacy_exports(force=False)
 

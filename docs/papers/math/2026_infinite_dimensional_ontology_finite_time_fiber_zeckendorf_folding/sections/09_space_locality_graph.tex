@@ -18,7 +18,7 @@ $$
 
 \paragraph{CAP 选择规则（摘要）。}
 \AuditTag
-我们把“显示维数/显示字典”的确定视为 CAP 闭包（定义 \ref{def:cap_closure}）的一个实例：在显式有限候选族 $\mathcal F_{\mathrm{disp}}$ 上，选择一个默认显示作为接口输入。\par
+我们把“显示维数/显示字典”的确定视为 CAP 闭包（定义 \ref{def:cap_closure}）的一个实例：在显式有限候选族 $\mathcal F_{\mathrm{disp}}$ 上，选择一个默认显示作为接口输入。关键点是：为了让该闭包选择具有可审计的目标函数，我们将“显示维数”转化为一个确定性可计算的观察者时间代理量（由闭包图上的 WL1 细化迭代给出；定义见下文）。\par
 
 候选族可以取为有限清单，例如
 $$
@@ -30,7 +30,37 @@ $$
   \item \textbf{目标函数（传播/收敛代价）：}在一个基准一致性目标 $\mathcal G_{\mathrm{base}}$ 与固定更新规则族下，以观察者演化时间成本 $T(\mathcal G_{\mathrm{base}})$（定义 \ref{def:time_cost}）或其可计算代理量（例如解析/塌缩步数、信息距离分布的统计量）作为主要代价，并可加入“跨越式通信/跳跃”的惩罚项；
   \item \textbf{tie-break：}在代价并列时，优先较小 $d$ 与较低描述复杂度（更短的显示字典描述与更简单的地址实现）。
 \end{itemize}
-\AuditTag 在本文的默认设定中，上述闭包选择的输出为三维显示：它是满足回路诊断需求的最小可行维数族中的一个稳定选择，并在第 15 节的空间演化与 plaquette holonomy 实验中被具体化为三维格点显示。
+\AuditTag 在本文的默认设定中，上述闭包选择的输出为三维显示：它是满足回路诊断需求的最小可行维数族中，使观察者时间代理量进入“近似常数”区间的最小维数。该结论由本文内置的维数扫描协议给出（第 15 节，生成物 \texttt{cap\_display\_dim\_scan\_*}）。\par
+
+\paragraph{闭包图与 WL1：把“显示维数”转化为观察者时间代理量。}
+\AuditTag
+为得到一个确定、可复核且不引入连续自由参数的目标函数，我们定义如下闭包图协议。固定窗口长度 $m$，记微观窗口集 $\Omega_m=\{0,1\}^m$，宏观稳定语言 $X_m\subset\{0,1\}^m$，以及折叠 $\Fold_m:\Omega_m\twoheadrightarrow X_m$。给定一个显示 $\mathsf{Disp}_d$，它诱导微观邻接图 $G^{(d)}_m$（例如 bit-split 的 $d$ 维格邻接）。定义闭包图
+$$
+\mathrm{Clo}_{m,d}:=(\Omega_m\sqcup X_m,\ E^{\mu}_{m,d}\ \cup\ E^{\Fold}_m),
+$$
+其中 $E^{\mu}_{m,d}$ 为 $\Omega_m$ 上的微观邻接边，$E^{\Fold}_m=\{(b,\Fold_m(b)):\ b\in\Omega_m\}$ 为折叠边（视作无向边）。在该图上运行确定性 $1\text{-}\mathrm{WL}$（颜色细化）：初始时令所有微观点同色，而令每个宏观点 $x\in X_m$ 具有唯一颜色标签；随后按
+$$
+\kappa_{t+1}(v)=\mathrm{Hash}\Bigl(\kappa_t(v),\ \mathrm{MultiSet}\{\kappa_t(u):u\in N(v)\}\Bigr)
+$$
+迭代直至稳定。由此得到两个时间代理量：
+\begin{itemize}
+  \item \textbf{稳定步数 $t_{\mathrm{stable}}$：}颜色分割首次不再变化的迭代步数；
+  \item \textbf{解析步数 $t_{\mathrm{resolve}}$：}首次使全部微观点在颜色上两两不同（即微观端完全分解为单点颜色类）的迭代步数；若在预设上限内未发生，则记为未解析。
+\end{itemize}
+
+\begin{lemma}[WL1 的局部性（半径下界）]\label{lem:wl_locality}
+\MathTag
+对任意带初始颜色的有限图，顶点 $v$ 在第 $t$ 步的 $1\text{-}\mathrm{WL}$ 颜色 $\kappa_t(v)$ 仅依赖于以 $v$ 为根、半径 $t$ 的带颜色根邻域同构类型。因而若两点 $v,w$ 的半径 $t$ 根邻域同构，则对所有 $s\le t$ 有 $\kappa_s(v)=\kappa_s(w)$，从而在第 $t$ 步之前无法区分。
+\end{lemma}
+
+\begin{proof}
+\MathTag
+对 $t$ 作归纳。$t=0$ 时结论由初始颜色定义成立。若 $t$ 时成立，则第 $t+1$ 步颜色由 $(\kappa_t(v),\{\kappa_t(u):u\in N(v)\})$ 的同构不变量决定，而邻域同构把相邻点的半径 $t$ 根邻域一一对应，从而保持该多重集；故 $\kappa_{t+1}$ 亦由半径 $t+1$ 根邻域同构类型唯一决定。证毕。
+\end{proof}
+
+\paragraph{为何 $d=3$ 成为 CAP 输出（机制与数据口径）。}
+\AuditTag
+由引理 \ref{lem:wl_locality}，若某显示几何使大量微观点具有长半径的邻域同构（“薄几何/低维显示”更易出现此现象），则 $t_{\mathrm{resolve}}$ 必然被推迟，从而在 CAP 的时间目标下劣化。本文在固定折叠 $\Fold_m$ 与 bit-split 显示族下，对 $m\in\{6,9,12,15\}$ 的 $d$ 维显示进行确定性扫描，并将 $(t_{\mathrm{stable}},t_{\mathrm{resolve}},u,s_{\max})$ 作为审计输出（第 15 节）。结果显示：$d=1$ 的 $t_{\mathrm{resolve}}$ 随 $m$ 急剧增长且在给定上限内可能无法解析；$d=2$ 虽可解析但更敏感；而 $d\ge 3$ 进入近似常数区。结合“需要回路诊断”的可行性门槛与最小维数 tie-break，CAP 的默认输出为三维显示。
 
 \subsection{空间子群：依赖图自同构与配置的可逆重标记}
 

@@ -27,6 +27,7 @@
 holonomy 光谱对照 & \path{python3 scripts/exp_holonomy_spectrum.py --m 12 --ell 6 --q 7 --seed 0} & \path{sections/generated/holonomy_interface_vs_bulk.tex}\\
 空间 plaquette holonomy 统计 & \path{python3 scripts/exp_emergence_space_holonomy.py --m 10 --steps 80 --seed 0} & \path{sections/generated/emergence_space_holonomy_summary.tex}\\
 诱导连接对照（精确 1-形式） & \path{python3 scripts/exp_emergence_space_holonomy_induced.py --m 10 --steps 80 --seed 0} & \path{sections/generated/emergence_space_holonomy_induced_summary.tex}\\
+显示维数扫描（CAP：WL1 闭包图） & \path{python3 scripts/exp_cap_display_dim_scan.py --ms 6,9,12,15 --d-max 4} & \path{sections/generated/cap_display_dim_scan_summary.tex}\\
 \bottomrule
 \end{tabular}
 \caption{复现索引：条目—脚本—生成片段对应关系（摘要）。}
@@ -166,3 +167,24 @@ $$
   \item 前向--后向合成（第 13 节 smoothing）。
 \end{enumerate}
 评测指标包括：收敛步数、有效候选状态数、剪枝率、以及在相同计算预算下的终端满足率。前向--后向算法的数值稳定化可参照 Rabiner 综述的缩放/对数域实现。\cite{rabiner_hmm_tutorial}
+
+\subsection{显示维数扫描：三维作为 CAP 输出的可复核证据}
+
+为使“默认三维显示”不依赖外部引用与叙事直觉，而是成为可复核的 \textsf{[CAP]} 输出，本节给出一个完全确定性的观察者时间代理量：在闭包图上运行 $1\text{-}\mathrm{WL}$ 颜色细化（第 9 节），并以解析步数 $t_{\mathrm{resolve}}$ 作为显示维数选择的主要代价。\AuditTag 该扫描不引入连续自由参数：候选族为有限的维数集合与 bit-split 显示，目标函数为脚本计算得到的 $(t_{\mathrm{resolve}},t_{\mathrm{stable}},u,s_{\max})$，并以“更低维数优先”为 tie-break。
+
+运行命令：
+\begin{center}
+  \path{python3 scripts/exp_cap_display_dim_scan.py --ms 6,9,12,15 --d-max 4}
+\end{center}
+
+自动生成摘要与表格片段如下：
+\input{sections/generated/cap_display_dim_scan_summary}
+
+\begin{center}
+  \scriptsize
+  \input{sections/generated/cap_display_dim_scan_table}
+\end{center}
+
+并给出对应的图形化扫描结果（稳定文件名导出）：
+\input{sections/generated/fig_cap_display_resolve_vs_dim}
+\input{sections/generated/fig_cap_display_unresolved_vs_dim}
