@@ -1,11 +1,56 @@
 \section{折叠算子与第一层时间纤维：原像纤维的组合与信息量}
 
+\subsection{统一截断接口：空间投影与时间残差（Fold-with-residual）}
+
+本节将“截断/折叠”提升为一个可审计的协议对象：任一截断都应显式分解为
+（i）输出有限空间态的投影，以及（ii）携带被截断信息的时间残差输出。
+这一接口与第 14 节的实现视角一致，并为后续“多种截断族并行对照”提供统一语言。
+
+\begin{definition}[截断协议与时间残差]\label{def:truncation_schema}
+\AuditTag
+固定分辨率 $m$。设 $S_m$ 为微观域（被压缩的“全信息对象”），并设 $X_m$ 为空间/显示态的有限集合（本文默认取第 4 节的稳定语言）。
+称一对映射
+$$
+\mathrm{Space}_m:S_m\to X_m,
+\qquad
+\mathrm{Time}_m:S_m\to \bigsqcup_{x\in X_m} U_m(x)
+$$
+为一个\emph{截断协议}，其中 $U_m(x)$ 为“时间残差”的纤维（依赖于输出的空间态 $x$）。
+对任意 $s\in S_m$，令 $x=\mathrm{Space}_m(s)$，并将 $\mathrm{Time}_m(s)\in U_m(x)$ 记为 $u_m(s)$。
+\par
+在审计口径下，我们允许进一步要求提升映射
+$$
+\Phi_m:S_m\to \bigsqcup_{x\in X_m}(\{x\}\times U_m(x)),\qquad \Phi_m(s)=(\mathrm{Space}_m(s),u_m(s)),
+$$
+为双射或“近似双射”（可逆或近似可逆）。该要求用于把“被截断的信息”以显式残差形式补回，从而把信息守恒与观测多对一并置在同一接口内。
+\end{definition}
+
 \subsection{\texorpdfstring{折叠算子 $\Fold_m$ 的定义}{折叠算子 Fold m 的定义}}
 
 在有限窗模型中，折叠算子用于将任意窗口微态 $b\in\Omega_m$ 规范化为稳定词 $x\in X_m$。本文采用“数值解释 + Zeckendorf 规范形”给出构造性定义。
 
-\begin{definition}[折叠算子]\label{def:Fold}
-\MathTag 对 $b=(b_1,\dots,b_m)\in \Omega_m$，定义其数值
+\begin{lemma}[窗口 Zeckendorf 的最高位界]\label{lem:zeckendorf_one_overflow_bit}
+\MathTag
+对任意 $m\ge 1$ 与任意 $b\in\Omega_m=\{0,1\}^m$，令
+$$
+N(b)=\sum_{i=1}^{m} b_i F_{i+1}.
+$$
+则 $0\le N(b)\le F_{m+3}-1$。因此其 Zeckendorf 规范形系数 $(z_k)_{k\ge 2}$ 至多在 $k=m+2$ 处出现非零项：对所有 $k\ge m+3$，必有 $z_k=0$。
+\end{lemma}
+
+\begin{proof}
+\MathTag
+由 $b_i\in\{0,1\}$ 得
+$$
+N(b)\le \sum_{i=1}^{m} F_{i+1}=\sum_{k=2}^{m+1}F_k=F_{m+3}-1,
+$$
+其中最后一步为标准 Fibonacci 求和恒等式。若 $k\ge m+3$ 且 $z_k=1$，则 $N(b)\ge F_k\ge F_{m+3}$，与上界矛盾。证毕。
+\end{proof}
+
+\begin{definition}[窗口折叠与最小时间残差]\label{def:Fold}
+\MathTag
+\AuditTag 该定义是定义 \ref{def:truncation_schema} 的一个实例化（族 A：窗口化 Zeckendorf）。
+对 $b=(b_1,\dots,b_m)\in \Omega_m$，定义其数值
 $$
 N(b)=\sum_{i=1}^{m} b_i F_{i+1}.
 $$
@@ -13,17 +58,24 @@ $$
 $$
 N(b)=\sum_{k\ge 2} z_k F_k,\qquad z_k\in\{0,1\},\qquad z_k z_{k+1}=0.
 $$
-定义折叠算子
+由引理 \ref{lem:zeckendorf_one_overflow_bit}，该规范形在高位至多出现一位“溢出”系数 $z_{m+2}$。
+我们据此将截断分解为“空间投影 + 时间残差”：
 $$
-\Fold_m:\Omega_m\to X_m,\qquad \Fold_m(b)=(z_2,z_3,\dots,z_{m+1}).
+\mathrm{Space}_m(b):=(z_2,z_3,\dots,z_{m+1})\in X_m,
+\qquad
+u_m(b):=z_{m+2}\in\{0,1\}.
+$$
+\MathTag 并定义本文默认的折叠算子为观测空间投影
+$$
+\Fold_m:=\mathrm{Space}_m:\Omega_m\twoheadrightarrow X_m.
 $$
 \end{definition}
 \AuditTag 上述定义把 Zeckendorf 规范形的存在唯一性作为数学基础输入使用；其精确形式为：对任意正整数 $n$，存在唯一的无相邻 Fibonacci 系数表示。参见文献。\cite{kkmw_zeckendorf_summands}
 
-由于取 $b=x\in X_m$ 时 $b$ 已满足无相邻约束且对应 Zeckendorf 规范形，故 $\Fold_m$ 为满射。
+由于对任意 $x\in X_m$，其值坐标严格落在 $\{0,\dots,F_{m+2}-1\}$（第 4 节计数定理的标准推论），故其 Zeckendorf 规范形在 $F_{m+2}$ 及更高位的系数均为 $0$，从而取 $b=x$ 时有 $u_m(b)=0$ 且 $\Fold_m(b)=x$。因此 $\Fold_m$ 为满射。
 
 \begin{remark}
-上述定义避免了直接给出局部重写系统的繁琐性；在算法实现上，规范化可由有限状态转导器完成（第 6.4 节讨论其与残差有限性的关联）。\cite{shallit_robbins_ardila_berstel}
+上述定义避免了直接给出局部重写系统的繁琐性；在算法实现上，规范化可由有限状态转导器完成。此时 $u_m$ 可被解释为最小的“溢出/进位”残差分量，而更丰富的时间残差可由转导器内部状态或纤维索引提供（第 6 节与第 14 节给出统一接口）。\cite{shallit_robbins_ardila_berstel}
 \end{remark}
 
 \subsection{群化表述：可逆微观变换、观测核与抵消}

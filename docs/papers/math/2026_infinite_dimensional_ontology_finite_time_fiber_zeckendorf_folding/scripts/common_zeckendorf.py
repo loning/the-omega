@@ -143,16 +143,32 @@ def fib_value_from_window_bits(b: int, m: int) -> int:
 
 def fold_window_bits_to_macro_word(b: int, m: int) -> int:
     """
-    Paper's Fold_m: interpret b as Fibonacci-weighted digits, convert to Zeckendorf canonical digits,
-    then truncate to first m digits (low-to-high).
+    Backward-compatible helper: return only the space projection word in X_m.
+
+    Note:
+      The paper's current definition separates space vs time:
+        - space: (z2..z_{m+1})  (length m)
+        - time residual: z_{m+2} (single overflow bit)
+      Use fold_window_bits_space_and_overflow() if you need the overflow bit.
+    """
+    x, _u = fold_window_bits_space_and_overflow(b, m=m)
+    return x
+
+
+def fold_window_bits_space_and_overflow(b: int, m: int) -> Tuple[int, int]:
+    """
+    Return (x, u) where:
+      - x is the space word in X_m (packed int, low-to-high)
+      - u is the single overflow bit z_{m+2} in {0,1}
     """
     N = fib_value_from_window_bits(b, m=m)
-    digits = zeckendorf_digits_low_to_high(N, max_k=m)
-    w = 0
-    for i, bit in enumerate(digits):
-        if bit:
-            w |= 1 << i
-    return w
+    digits = zeckendorf_digits_low_to_high(N, max_k=m + 1)
+    x = 0
+    for i in range(m):
+        if digits[i]:
+            x |= 1 << i
+    u = int(digits[m]) if len(digits) >= (m + 1) else 0
+    return int(x), int(u)
 
 
 @dataclass(frozen=True)

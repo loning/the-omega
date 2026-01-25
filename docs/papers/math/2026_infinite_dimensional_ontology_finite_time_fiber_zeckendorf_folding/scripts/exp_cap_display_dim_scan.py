@@ -7,15 +7,15 @@ Goal:
   Provide an auditable, deterministic proxy for "observer evolution time" as a
   function of display dimension d, using:
     - micro adjacency: bit-split lattice in d dimensions
-    - fold edges: the paper's Fold_m
+    - fold edges: the truncation's space projection (default: paper's Fold_m)
     - observer algorithm: deterministic 1-WL (color refinement) on the closure graph
 
 Outputs (LaTeX-consumed):
-  - sections/generated/cap_display_dim_scan_table.tex
-  - sections/generated/cap_display_dim_scan_summary.tex
-  - sections/generated/fig_cap_display_resolve_vs_dim.tex
-  - sections/generated/assets/cap_display_resolve_vs_dim.png
-  - sections/generated/assets/cap_display_unresolved_vs_dim.png
+  - sections/generated/cap_display_dim_scan_table_<trunc>.tex
+  - sections/generated/cap_display_dim_scan_summary_<trunc>.tex
+  - sections/generated/fig_cap_display_resolve_vs_dim_<trunc>.tex
+  - sections/generated/assets/cap_display_resolve_vs_dim_<trunc>.png
+  - sections/generated/assets/cap_display_unresolved_vs_dim_<trunc>.png
 """
 
 from __future__ import annotations
@@ -35,6 +35,7 @@ from common_paths import export_dir, generated_assets_dir, generated_dir
 from common_pylatex import NoEscape, booktabs_tabular, figure_includegraphics, write_tex_fragment
 from micro_models import bitsplit_neighbors, degree_stats
 from wl1 import micro_partition_stats, wl1_refine
+from truncations import available_truncations
 
 
 @dataclass(frozen=True)
@@ -70,10 +71,10 @@ def _quantile(values: List[float], p: float) -> float:
     return (1.0 - w) * xs[i] + w * xs[j]
 
 
-def _run_once(m: int, d: int, torus: bool, max_iter: int) -> Row:
+def _run_once(m: int, d: int, torus: bool, max_iter: int, truncation: str) -> Row:
     adj = bitsplit_neighbors(m=m, d=d, torus=torus)
     avg_deg, _min_deg, _max_deg = degree_stats(adj)
-    clo = build_closure_graph(m=m, micro_adj=adj)
+    clo = build_closure_graph(m=m, micro_adj=adj, truncation=truncation)
 
     init = [0] * clo.n_total
     # Macro nodes uniquely colored.
@@ -131,6 +132,7 @@ def main() -> None:
     ap.add_argument("--torus", action="store_true")
     ap.add_argument("--max-iter", type=int, default=200)
     ap.add_argument("--q", type=float, default=0.95, help="Quantile level for CAP key aggregation over m.")
+    ap.add_argument("--truncation", type=str, default="zeck_window", choices=list(available_truncations()))
     ap.add_argument("--force", action="store_true")
     args = ap.parse_args()
 
@@ -139,18 +141,21 @@ def main() -> None:
     torus = bool(args.torus)
     max_iter = int(args.max_iter)
     q = float(args.q)
+    truncation = str(args.truncation)
+    trunc_tex = truncation.replace("_", r"\_")
 
-    out_tab = "cap_display_dim_scan_table.tex"
-    out_sum = "cap_display_dim_scan_summary.tex"
-    out_csv = "cap_display_dim_scan.csv"
-    out_png_resolve = "cap_display_resolve_vs_dim.png"
-    out_png_unresolved = "cap_display_unresolved_vs_dim.png"
-    out_fig_resolve = "fig_cap_display_resolve_vs_dim.tex"
-    out_fig_unresolved = "fig_cap_display_unresolved_vs_dim.tex"
-    out_key_tab = "cap_display_dim_key_table.tex"
+    suf = truncation
+    out_tab = f"cap_display_dim_scan_table_{suf}.tex"
+    out_sum = f"cap_display_dim_scan_summary_{suf}.tex"
+    out_csv = f"cap_display_dim_scan_{suf}.csv"
+    out_png_resolve = f"cap_display_resolve_vs_dim_{suf}.png"
+    out_png_unresolved = f"cap_display_unresolved_vs_dim_{suf}.png"
+    out_fig_resolve = f"fig_cap_display_resolve_vs_dim_{suf}.tex"
+    out_fig_unresolved = f"fig_cap_display_unresolved_vs_dim_{suf}.tex"
+    out_key_tab = f"cap_display_dim_key_table_{suf}.tex"
 
     script_path = Path(__file__).resolve()
-    params = {"ms": ms, "d_max": d_max, "torus": torus, "max_iter": max_iter}
+    params = {"ms": ms, "d_max": d_max, "torus": torus, "max_iter": max_iter, "truncation": truncation}
 
     run = prepare_run(
         experiment="cap_display_dim_scan",
@@ -175,12 +180,12 @@ def main() -> None:
 
     rows: List[Row] = []
     for m in ms:
-        print(f"[exp_cap_display_dim_scan] m={m}", flush=True)
+        print(f"[exp_cap_display_dim_scan] truncation={truncation} m={m}", flush=True)
         for d in range(1, d_max + 1):
             if m % d != 0:
                 # keep shapes balanced/power-of-two in each dimension
                 continue
-            r = _run_once(m=m, d=d, torus=torus, max_iter=max_iter)
+            r = _run_once(m=m, d=d, torus=torus, max_iter=max_iter, truncation=truncation)
             rows.append(r)
 
     # CSV export
@@ -221,8 +226,8 @@ def main() -> None:
     out_fig_resolve_path = run.run_dir / out_fig_resolve
     fig_resolve = figure_includegraphics(
         rel_graphics_path=f"sections/generated/assets/{out_png_resolve}",
-        caption_tex=r"显示维数扫描：基于闭包图的 WL1 解析时间（resolve\_t）随显示维数 $d$ 的变化。缺失点表示在给定迭代上限内未完全解析。",
-        label="fig:cap_display_resolve_vs_dim",
+        caption_tex=rf"显示维数扫描（\texttt{{{trunc_tex}}}）：基于闭包图的 WL1 解析时间（resolve\_t）随显示维数 $d$ 的变化。缺失点表示在给定迭代上限内未完全解析。",
+        label=f"fig:cap_display_resolve_vs_dim_{truncation}",
         width_tex=r"0.90\linewidth",
         position="H",
     )
@@ -231,8 +236,8 @@ def main() -> None:
     out_fig_unres_path = run.run_dir / out_fig_unresolved
     fig_unres = figure_includegraphics(
         rel_graphics_path=f"sections/generated/assets/{out_png_unresolved}",
-        caption_tex=r"显示维数扫描：稳定后仍未分解的微观点总数（unresolved\_micro\_final）随显示维数 $d$ 的变化。",
-        label="fig:cap_display_unresolved_vs_dim",
+        caption_tex=rf"显示维数扫描（\texttt{{{trunc_tex}}}）：稳定后仍未分解的微观点总数（unresolved\_micro\_final）随显示维数 $d$ 的变化。",
+        label=f"fig:cap_display_unresolved_vs_dim_{truncation}",
         width_tex=r"0.90\linewidth",
         position="H",
     )
@@ -269,7 +274,9 @@ def main() -> None:
     sum_lines: List[str] = []
     sum_lines.append(r"\paragraph{显示维数扫描摘要（自动生成）}")
     sum_lines.append(
-        r"\AuditTag 本片段由 \texttt{scripts/exp\_cap\_display\_dim\_scan.py} 生成。闭包图由微观显示邻接与折叠边组成，观察者算法为确定性 $1\text{-}\mathrm{WL}$ 颜色细化；指标 stable\_t 与 resolve\_t 的定义见正文。"
+        r"\AuditTag 本片段由 \texttt{scripts/exp\_cap\_display\_dim\_scan.py} 生成。截断族为 "
+        + rf"\texttt{{{trunc_tex}}}"
+        + r"。闭包图由微观显示邻接与折叠边（空间投影）组成，观察者算法为确定性 $1\text{-}\mathrm{WL}$ 颜色细化；指标 stable\_t 与 resolve\_t 的定义见正文。"
     )
     # Best d per m (prefer resolved; then smaller resolve_t; then smaller d).
     best: Dict[int, Row] = {}

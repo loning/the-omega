@@ -48,8 +48,9 @@ $$
 \begin{definition}[时间成本]\label{def:time_cost}
 给定目标 $\mathcal G$，定义
 $$
-T(\mathcal G)=\min\{t\in\NN:\mathcal G(x_{0:t},r_{0:t})\ \text{成立}\}.
+T(\mathcal G)=\inf\{t\in\NN:\mathcal G(x_{0:t},r_{0:t})\ \text{成立}\}\in\NN\cup\{+\infty\},
 $$
+\MathTag 其中对空集取 $\inf\varnothing:=+\infty$（即目标不可达时，时间成本记为无穷大）。
 \end{definition}
 
 该定义将“时间”表述为过程可逆化所需的最小迭代复杂度，并使得不同分辨率 $m$、不同接口耦合强度与不同控制策略下的时间标度可被直接比较。
@@ -64,13 +65,31 @@ $$
 $$
 H(\Omega_m\mid X_m)=m-H(X_m).
 $$
-条件熵刻画了在仅观测到 $x$ 的情况下仍需补足的平均信息量。将该“缺失信息量”与残差纤维 $R_m(x)$ 关联，可提出最小残差原则的熵形式：若 $r$ 为充分统计量，则期望上应满足
+条件熵刻画了在仅观测到 $x$ 的情况下仍需补足的平均信息量。要把该“缺失信息量”与“时间信息”对齐，必须区分两类残差对象：
+\begin{itemize}
+  \item \textbf{审计口径的原始时间残差 $u$：}由截断协议给出（定义 \ref{def:truncation_schema}），其作用是把被截断的信息以显式坐标形式补回；
+  \item \textbf{预测口径的有效时间残差 $r$：}由未来可观测充分性公理给出（公理 \ref{ax:finite_residual_sufficiency}），其作用是仅保留对未来可观测量仍相关的那部分隐藏自由度。
+\end{itemize}
+
+\paragraph{（A）审计口径：时间残差作为可逆提升坐标。}
+若对给定截断族存在一个可审计的提升
 $$
-H(\Omega_m\mid X_m,R_m)=0,
+\Phi_m:\Omega_m\to \bigsqcup_{x\in X_m}(\{x\}\times U_m(x)),\qquad \Phi_m(b)=(x,u),
+$$
+并且 $\Phi_m$ 为双射（或在忽略零测集/离散异常点意义下近似双射），则 $(x,u)$ 在信息论意义上“补回了被截断的信息”，因此应满足
+$$
+H(\Omega_m\mid X_m,U_m)=0,
 \qquad
-H(\Omega_m\mid X_m)=I(\Omega_m;R_m\mid X_m)+H(R_m\mid X_m),
+H(\Omega_m\mid X_m)=H(U_m\mid X_m),
 $$
-其中右侧表示“缺失信息”被残差携带的信息量与残差自身的条件熵之和。该分解为“信息守恒的过程化表述”提供可计算量，并将时间成本与残差规模联系起来。
+其中 $U_m$ 表示由 $u$ 诱导的随机变量（以 $\Omega_m$ 上的先验分布推前）。这一口径对应第 5 节“Fold-with-residual”的可逆化目标：时间信息就是被截断部分的显式坐标。
+
+\paragraph{（B）预测口径：充分统计量不等于可恢复微态。}
+公理 \ref{ax:finite_residual_sufficiency} 中的 $r\in R_m(x)$ 是关于未来可观测量族 $\mathcal O_m$ 的充分统计量：它保证对任意 $D\in\mathcal D$ 与 $O\in\mathcal O_m$，
+$$
+\mathbb P_D(O\mid \psi)=\mathbb P_D(O\mid x_m,r_m),
+$$
+但一般\emph{不能}推出 $H(\Omega_m\mid X_m,R_m)=0$（除非额外假设“可观测代数分离微态”等强条件）。该区分保证本文的“时间=历史依赖”叙述只在给定 $\mathcal O_m,\mathcal D$ 与连接/holonomy 的可检验口径下成立，而不把“可预测”误写成“可反演微态”。
 
 \subsection{观测积分与连续性输出}
 

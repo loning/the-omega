@@ -64,11 +64,13 @@ $$
 
 \paragraph{闭包图与 WL1：把“显示维数”转化为观察者时间代理量。}
 \AuditTag
-为得到一个确定、可复核且不引入连续自由参数的目标函数，我们定义如下闭包图协议。固定窗口长度 $m$，记微观窗口集 $\Omega_m=\{0,1\}^m$，宏观稳定语言 $X_m\subset\{0,1\}^m$，以及折叠 $\Fold_m:\Omega_m\twoheadrightarrow X_m$。给定一个显示 $\mathsf{Disp}_d$，它诱导微观邻接图 $G^{(d)}_m$（例如 bit-split 的 $d$ 维格邻接）。定义闭包图
+为得到一个确定、可复核且不引入连续自由参数的目标函数，我们定义如下闭包图协议。该协议只使用“空间投影 $\mathrm{Space}_m$”所定义的折叠边，而不把任何审计/解释性叙述反向注入数学层。\par
+
+\AuditTag 固定窗口长度 $m$。在本文默认截断族中，微观域取为 $\Omega_m=\{0,1\}^m$，空间态集合取为稳定语言 $X_m\subset\{0,1\}^m$，并以第 5 节定义的空间投影 $\Fold_m=\mathrm{Space}_m:\Omega_m\twoheadrightarrow X_m$ 给出折叠边（定义 \ref{def:truncation_schema}、定义 \ref{def:Fold}）。给定一个显示 $\mathsf{Disp}_d$，它诱导微观邻接图 $G^{(d)}_m$（例如 bit-split 的 $d$ 维格邻接）。定义闭包图
 $$
-\mathrm{Clo}_{m,d}:=(\Omega_m\sqcup X_m,\ E^{\mu}_{m,d}\ \cup\ E^{\Fold}_m),
+\mathrm{Clo}_{m,d}:=(\Omega_m\sqcup X_m,\ E^{\mu}_{m,d}\ \cup\ E^{\mathrm{Space}}_m),
 $$
-其中 $E^{\mu}_{m,d}$ 为 $\Omega_m$ 上的微观邻接边，$E^{\Fold}_m=\{(b,\Fold_m(b)):\ b\in\Omega_m\}$ 为折叠边（视作无向边）。在该图上运行确定性 $1\text{-}\mathrm{WL}$（颜色细化）：初始时令所有微观点同色，而令每个宏观点 $x\in X_m$ 具有唯一颜色标签；随后按
+其中 $E^{\mu}_{m,d}$ 为 $\Omega_m$ 上的微观邻接边，$E^{\mathrm{Space}}_m=\{(b,\Fold_m(b)):\ b\in\Omega_m\}$ 为折叠边（视作无向边）。在该图上运行确定性 $1\text{-}\mathrm{WL}$（颜色细化）：初始时令所有微观点同色，而令每个宏观点 $x\in X_m$ 具有唯一颜色标签；随后按
 $$
 \kappa_{t+1}(v)=\mathrm{Hash}\Bigl(\kappa_t(v),\ \mathrm{MultiSet}\{\kappa_t(u):u\in N(v)\}\Bigr)
 $$
@@ -77,6 +79,15 @@ $$
   \item \textbf{稳定步数 $t_{\mathrm{stable}}$：}颜色分割首次不再变化的迭代步数；
   \item \textbf{解析步数 $t_{\mathrm{resolve}}$：}首次使全部微观点在颜色上两两不同（即微观端完全分解为单点颜色类）的迭代步数；若在预设上限内未发生，则记为未解析。
 \end{itemize}
+
+\begin{remark}[对多种截断族的泛化]\label{rem:closure_graph_general_truncation}
+\AuditTag
+上述闭包图构造可直接推广到任意截断协议（定义 \ref{def:truncation_schema}）：将微观域 $\Omega_m$ 替换为一般微观域 $S_m$，将折叠边定义为
+$$
+E^{\mathrm{Space}}_m=\{(s,\mathrm{Space}_m(s)):\ s\in S_m\},
+$$
+并以候选显示字典在 $S_m$ 上诱导邻接图。本文为保证默认结果可复现，正文与第 15 节的基准扫描采用 $\Omega_m$ 与窗口 Zeckendorf 截断；其他截断族在实现层按同一协议注入（第 14--15 节）。
+\end{remark}
 
 \begin{lemma}[WL1 的局部性（半径下界）]\label{lem:wl_locality}
 \MathTag

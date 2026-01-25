@@ -16,12 +16,14 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import List, Sequence
 
-from common_zeckendorf import FoldDomain, build_fold_domain, fold_window_bits_to_macro_word
+from common_zeckendorf import FoldDomain, build_fold_domain
+from truncations import Truncation, get_truncation
 
 
 @dataclass(frozen=True)
 class ClosureGraph:
     m: int
+    truncation: str
     n_micro: int
     n_macro: int
     n_total: int
@@ -31,8 +33,9 @@ class ClosureGraph:
     fold_domain: FoldDomain
 
 
-def build_closure_graph(m: int, micro_adj: Sequence[Sequence[int]]) -> ClosureGraph:
-    n_micro = 1 << int(m)
+def build_closure_graph(m: int, micro_adj: Sequence[Sequence[int]], truncation: str = "zeck_window") -> ClosureGraph:
+    tr: Truncation = get_truncation(truncation)
+    n_micro = int(tr.micro_size(int(m)))
     if len(micro_adj) != n_micro:
         raise ValueError("micro_adj length mismatch")
 
@@ -49,7 +52,7 @@ def build_closure_graph(m: int, micro_adj: Sequence[Sequence[int]]) -> ClosureGr
 
     # fold edges (undirected)
     for b in range(n_micro):
-        x = fold_window_bits_to_macro_word(b, m=m)
+        x = tr.space_word(b, m=int(m))
         mi = dom.macro_index[x]
         macro_node = n_micro + mi
         neighbors[b].append(macro_node)
@@ -57,6 +60,7 @@ def build_closure_graph(m: int, micro_adj: Sequence[Sequence[int]]) -> ClosureGr
 
     return ClosureGraph(
         m=int(m),
+        truncation=str(truncation),
         n_micro=int(n_micro),
         n_macro=int(n_macro),
         n_total=int(n_total),

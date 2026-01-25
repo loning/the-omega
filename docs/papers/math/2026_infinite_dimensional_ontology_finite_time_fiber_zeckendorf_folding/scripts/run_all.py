@@ -14,6 +14,7 @@ Paper asset policy:
 from __future__ import annotations
 
 import argparse
+import json
 import shutil
 import subprocess
 import sys
@@ -49,6 +50,8 @@ def _sync_legacy_exports(force: bool) -> None:
     needed = {
         "emergence_space_holonomy_rate.png",
         "emergence_space_holonomy_compare.png",
+        "emergence_space_holonomy_rate_dynamic_m.png",
+        "emergence_space_holonomy_induced_dynamic_m_compare.png",
     }
     for src in old.glob("*.png"):
         if src.name not in needed:
@@ -64,6 +67,9 @@ def main() -> None:
     args = ap.parse_args()
 
     force = bool(args.force)
+
+    # Truncation families to run for truncation-dependent experiments.
+    truncations = ["zeck_window", "dirac_dyadic"]
 
     # Ensure LaTeX-referenced assets live under sections/generated/assets/.
     _sync_legacy_exports(force=force)
@@ -93,11 +99,57 @@ def main() -> None:
     else:
         print("[run_all] cached: exp_counts_check.py", flush=True)
 
-    want_fiber = [generated_dir() / "fiber_entropy_summary.tex"]
+    # Fiber spectrum depends on truncation: run for all truncations, then write a compare fragment.
+    fiber_tex = [generated_dir() / f"fiber_entropy_summary_{t}.tex" for t in truncations]
+    fiber_json = [generated_dir() / f"fiber_entropy_summary_{t}.json" for t in truncations]
+    want_fiber = fiber_tex + fiber_json
     if force or (not _have_all(want_fiber)):
-        _run("exp_fiber_spectrum.py", ["--m", str(fiber_m), *([] if not force else ["--force"])])
+        for t in truncations:
+            _run(
+                "exp_fiber_spectrum.py",
+                ["--m", str(fiber_m), "--truncation", t, *([] if not force else ["--force"])],
+            )
     else:
-        print("[run_all] cached: exp_fiber_spectrum.py", flush=True)
+        print("[run_all] cached: exp_fiber_spectrum.py (all truncations)", flush=True)
+
+    # Build a compact comparison table for fiber entropy/residual stats.
+    fiber_compare = generated_dir() / "fiber_entropy_summary_compare.tex"
+    def _tt(s: str) -> str:
+        # Minimal LaTeX escaping for \texttt{...}
+        return str(s).replace("\\", r"\textbackslash{}").replace("_", r"\_")
+
+    rows = []
+    m0 = None
+    for t in truncations:
+        p = generated_dir() / f"fiber_entropy_summary_{t}.json"
+        data = json.loads(p.read_text(encoding="utf-8"))
+        stats = data.get("stats", {})
+        m0 = int(data.get("params", {}).get("m", fiber_m))
+        rows.append(
+            (
+                t,
+                float(stats.get("H_X", 0.0)),
+                float(stats.get("H_cond", 0.0)),
+                float(stats.get("H_U", 0.0)),
+                float(stats.get("H_U_given_X", 0.0)),
+                float(stats.get("u_support_mean_px", 0.0)),
+            )
+        )
+    lines = []
+    lines.append(r"\paragraph{第一层纤维谱：截断族对照（自动生成）}")
+    lines.append(r"\AuditTag 本片段由 \texttt{scripts/run\_all.py} 汇总生成。$U_m$ 表示截断协议输出的时间残差标签。")
+    lines.append(r"\begin{center}")
+    lines.append(r"\small")
+    lines.append(r"\begin{tabular}{l r r r r r}")
+    lines.append(r"\toprule")
+    lines.append(r"truncation & $H(X_m)$ & $H(\Omega_m\mid X_m)$ & $H(U_m)$ & $H(U_m\mid X_m)$ & $\mathbb{E}[\#\mathrm{supp}(U_m\mid x)]$\\")
+    lines.append(r"\midrule")
+    for t, hx, hcond, hu, hugx, usupp in rows:
+        lines.append(rf"\texttt{{{_tt(t)}}} & {hx:.6f} & {hcond:.6f} & {hu:.6f} & {hugx:.6f} & {usupp:.4f}\\")
+    lines.append(r"\bottomrule")
+    lines.append(r"\end{tabular}")
+    lines.append(r"\end{center}")
+    fiber_compare.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
     want_holo = [generated_dir() / "holonomy_interface_vs_bulk.tex"]
     if force or (not _have_all(want_holo)):
@@ -140,6 +192,49 @@ def main() -> None:
     else:
         print("[run_all] cached: exp_emergence_space_holonomy.py", flush=True)
 
+    # Dynamic resolution (per-site m) variant for the same experiment.
+    want_space_dyn = [
+        generated_dir() / "emergence_space_holonomy_dynamic_m_summary.tex",
+        generated_assets_dir() / "emergence_space_holonomy_rate_dynamic_m.png",
+        generated_assets_dir() / "emergence_space_holonomy_error_terms_dynamic_m.png",
+    ]
+    if force or (not _have_all(want_space_dyn)):
+        _run(
+            "exp_emergence_space_holonomy.py",
+            [
+                "--dynamic-m",
+                "--m-min",
+                "6",
+                "--m-max",
+                "14",
+                "--delta-m",
+                "2",
+                "--m-update-every",
+                "4",
+                "--m",
+                str(dyn_m),
+                "--steps",
+                str(dyn_steps),
+                "--threshold",
+                str(dyn_threshold),
+                "--beta",
+                str(dyn_beta),
+                "--coupling",
+                str(dyn_coupling),
+                "--noise",
+                str(dyn_noise),
+                "--defect-rate",
+                str(dyn_defect_rate),
+                "--r-diffusion",
+                str(dyn_r_diffusion),
+                "--seed",
+                str(seed),
+                *([] if not force else ["--force"]),
+            ],
+        )
+    else:
+        print("[run_all] cached: exp_emergence_space_holonomy.py (dynamic m)", flush=True)
+
     want_space_induced = [
         generated_dir() / "emergence_space_holonomy_induced_summary.tex",
         generated_assets_dir() / "emergence_space_holonomy_compare.png",
@@ -172,21 +267,97 @@ def main() -> None:
     else:
         print("[run_all] cached: exp_emergence_space_holonomy_induced.py", flush=True)
 
-    want_cap_dim = [
-        generated_dir() / "cap_display_dim_scan_table.tex",
-        generated_dir() / "cap_display_dim_scan_summary.tex",
-        generated_dir() / "fig_cap_display_resolve_vs_dim.tex",
-        generated_dir() / "fig_cap_display_unresolved_vs_dim.tex",
-        generated_assets_dir() / "cap_display_resolve_vs_dim.png",
-        generated_assets_dir() / "cap_display_unresolved_vs_dim.png",
+    # Dynamic resolution (per-site m) variant for induced-connection comparison.
+    want_space_induced_dyn = [
+        generated_dir() / "emergence_space_holonomy_induced_dynamic_m_summary.tex",
+        generated_assets_dir() / "emergence_space_holonomy_induced_dynamic_m_compare.png",
+        generated_assets_dir() / "emergence_space_holonomy_induced_error_terms_dynamic_m.png",
     ]
-    if force or (not _have_all(want_cap_dim)):
+    if force or (not _have_all(want_space_induced_dyn)):
         _run(
-            "exp_cap_display_dim_scan.py",
-            ["--ms", str(cap_ms), "--d-max", str(cap_d_max), "--max-iter", "200", *([] if not force else ["--force"])],
+            "exp_emergence_space_holonomy_induced.py",
+            [
+                "--dynamic-m",
+                "--m-min",
+                "6",
+                "--m-max",
+                "14",
+                "--delta-m",
+                "2",
+                "--m-update-every",
+                "4",
+                "--m",
+                str(dyn_m),
+                "--steps",
+                str(dyn_steps),
+                "--threshold",
+                str(dyn_threshold),
+                "--beta",
+                str(dyn_beta),
+                "--coupling",
+                str(dyn_coupling),
+                "--noise",
+                str(dyn_noise),
+                "--defect-rate",
+                str(dyn_defect_rate),
+                "--r-diffusion",
+                str(dyn_r_diffusion),
+                "--seed",
+                str(seed),
+                *([] if not force else ["--force"]),
+            ],
         )
     else:
-        print("[run_all] cached: exp_cap_display_dim_scan.py", flush=True)
+        print("[run_all] cached: exp_emergence_space_holonomy_induced.py (dynamic m)", flush=True)
+
+    # CAP display scan depends on truncation: run for all truncations, then write a compare fragment.
+    cap_want = []
+    for t in truncations:
+        cap_want.extend(
+            [
+                generated_dir() / f"cap_display_dim_scan_table_{t}.tex",
+                generated_dir() / f"cap_display_dim_scan_summary_{t}.tex",
+                generated_dir() / f"fig_cap_display_resolve_vs_dim_{t}.tex",
+                generated_dir() / f"fig_cap_display_unresolved_vs_dim_{t}.tex",
+                generated_dir() / f"cap_display_dim_key_table_{t}.tex",
+                generated_assets_dir() / f"cap_display_resolve_vs_dim_{t}.png",
+                generated_assets_dir() / f"cap_display_unresolved_vs_dim_{t}.png",
+            ]
+        )
+    cap_compare = generated_dir() / "cap_display_dim_scan_compare.tex"
+    want_cap_dim = cap_want + [cap_compare]
+    if force or (not _have_all(cap_want)):
+        for t in truncations:
+            _run(
+                "exp_cap_display_dim_scan.py",
+                [
+                    "--ms",
+                    str(cap_ms),
+                    "--d-max",
+                    str(cap_d_max),
+                    "--max-iter",
+                    "200",
+                    "--truncation",
+                    t,
+                    *([] if not force else ["--force"]),
+                ],
+            )
+    else:
+        print("[run_all] cached: exp_cap_display_dim_scan.py (all truncations)", flush=True)
+
+    # Compare fragment (inputs per-truncation outputs).
+    cap_lines = []
+    cap_lines.append(r"\paragraph{显示维数扫描：截断族对照（自动生成）}")
+    cap_lines.append(r"\AuditTag 本片段由 \texttt{scripts/run\_all.py} 汇总生成。每个截断族对应一组闭包图与 WL1 指标。")
+    for t in truncations:
+        cap_lines.append(rf"\subparagraph{{截断族 \texttt{{{_tt(t)}}}}}")
+        cap_lines.append(rf"\input{{sections/generated/cap_display_dim_scan_summary_{t}}}")
+        cap_lines.append(r"\begin{center}\scriptsize")
+        cap_lines.append(rf"\input{{sections/generated/cap_display_dim_key_table_{t}}}")
+        cap_lines.append(r"\end{center}")
+        cap_lines.append(rf"\input{{sections/generated/fig_cap_display_resolve_vs_dim_{t}}}")
+        cap_lines.append(rf"\input{{sections/generated/fig_cap_display_unresolved_vs_dim_{t}}}")
+    cap_compare.write_text("\n".join(cap_lines) + "\n", encoding="utf-8")
 
     _sync_legacy_exports(force=False)
 

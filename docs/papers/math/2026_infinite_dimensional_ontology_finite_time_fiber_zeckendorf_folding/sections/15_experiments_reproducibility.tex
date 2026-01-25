@@ -23,11 +23,11 @@
 \textbf{条目} & \textbf{脚本命令（入口）} & \textbf{生成片段（正文纳入）}\\
 \midrule
 组合计数核对 & \path{python3 scripts/exp_counts_check.py --m-max 24} & \path{sections/generated/counts_check.tex}\\
-第一层纤维谱/熵 & \path{python3 scripts/exp_fiber_spectrum.py --m 16} & \path{sections/generated/fiber_entropy_summary.tex}\\
+第一层纤维谱/熵（截断族对照） & \path{python3 scripts/exp_fiber_spectrum.py --m 16 --truncation <name>} & \path{sections/generated/fiber_entropy_summary_compare.tex}\\
 holonomy 光谱对照 & \path{python3 scripts/exp_holonomy_spectrum.py --m 12 --ell 6 --q 7 --seed 0} & \path{sections/generated/holonomy_interface_vs_bulk.tex}\\
 空间 plaquette holonomy 统计 & \path{python3 scripts/exp_emergence_space_holonomy.py --m 10 --steps 80 --seed 0} & \path{sections/generated/emergence_space_holonomy_summary.tex}\\
 诱导连接对照（精确 1-形式） & \path{python3 scripts/exp_emergence_space_holonomy_induced.py --m 10 --steps 80 --seed 0} & \path{sections/generated/emergence_space_holonomy_induced_summary.tex}\\
-显示维数扫描（CAP：WL1 闭包图） & \path{python3 scripts/exp_cap_display_dim_scan.py --ms 6,9,12,15 --d-max 4} & \path{sections/generated/cap_display_dim_scan_summary.tex}\\
+显示维数扫描（CAP：WL1 闭包图，截断族对照） & \path{python3 scripts/exp_cap_display_dim_scan.py --ms 6,9,12,15 --d-max 4 --truncation <name>} & \path{sections/generated/cap_display_dim_scan_compare.tex}\\
 \bottomrule
 \end{tabular}
 \caption{复现索引：条目—脚本—生成片段对应关系（摘要）。}
@@ -59,24 +59,26 @@ $$
 
 \subsection{第一层时间纤维谱的计算}
 
-固定 $\Fold_m$（第 5 节数值--Zeckendorf 定义），遍历 $\Omega_m$ 中全部 $2^m$ 个窗口微态，统计
+固定一个截断族（第 5 节的“空间投影 + 时间残差”接口），遍历微观域 $S_m$ 中全部 $2^m$ 个对象，统计空间投影诱导的第一层时间纤维谱
 $$
-\abs{\mathcal F_m(x)}=\abs{\{b\in\Omega_m:\Fold_m(b)=x\}},
+\abs{\mathcal F_m(x)}=\abs{\{s\in S_m:\mathrm{Space}_m(s)=x\}},
 $$
 并计算
 $$
 p_m(x)=\frac{\abs{\mathcal F_m(x)}}{2^m},\qquad H(X_m),\qquad H(\Omega_m\mid X_m).
 $$
+同时对截断协议输出的时间残差标签 $U_m$ 给出熵与条件熵摘要：
+$$
+H(U_m),\qquad H(U_m\mid X_m).
+$$
 评测指标包括纤维大小分布的极值、方差与集中性，以及随 $m$ 的标度。
 
-本文给出一组基准参数下的可复现输出：
+本文对默认截断族集合给出可复现对照输出（统一入口）：
 \begin{center}
-\path{python3 scripts/exp_fiber_spectrum.py --m 16}
+\path{python3 scripts/run_all.py}
 \end{center}
-其熵与极值摘要由脚本写入：
-\begin{center}
-\input{sections/generated/fiber_entropy_summary}
-\end{center}
+其对照摘要由脚本写入：
+\input{sections/generated/fiber_entropy_summary_compare}
 \paragraph{误差预算与失败点检查。}
 \AuditTag 本实验为确定性遍历（枚举 $\Omega_m$ 的全部 $2^m$ 个微态），统计误差为 $0$。失败点来自折叠实现不一致或计数错误；脚本生成的熵与分布摘要可与组合计数核对（例如总质量归一性）进行一致性检查。
 
@@ -143,6 +145,26 @@ $$
   \caption{空间 plaquette holonomy 非平凡率与缺陷触达率的时序对照。}
 \end{figure}
 
+\paragraph{动态分辨率版本（多尺度截断的时序接口）。}
+\AuditTag 为把第 11 节的动态分辨率/AMR 口径落到可复现实例，我们提供一个“每节点分辨率 $m(v,t)$ 自适应调度”的版本：空间信息仍为当前分辨率下的 $x_v\in X_{m(v)}$，而时间信息以残差/缺陷触达与分辨率变化共同体现。统一入口运行：
+\begin{center}
+\path{python3 scripts/run_all.py}
+\end{center}
+其摘要片段如下：
+\input{sections/generated/emergence_space_holonomy_dynamic_m_summary}
+并给出对应时序图：
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\linewidth]{sections/generated/assets/emergence_space_holonomy_rate_dynamic_m.png}
+  \caption{动态分辨率版本：空间 plaquette holonomy 统计与分辨率调度的对照。}
+\end{figure}
+此外，为审计“分辨率调度由何种误差项驱动”，脚本同时输出误差拆分的时序曲线：
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\linewidth]{sections/generated/assets/emergence_space_holonomy_error_terms_dynamic_m.png}
+  \caption{动态分辨率版本：误差拆分 $E_{\mathrm{view}},E_{\mathrm{constraint}},E_{\mathrm{res}}$ 及其组合随时间的演化。}
+\end{figure}
+
 \subsection{诱导连接对照：精确 1-形式与方向依赖连接}
 为区分“由标量势诱导的无旋连接”（精确 1-形式）与“方向依赖的局域连接”，本文提供了一个对照实验：在同一动力学轨道上，分别以 (i) 接口门控连接、(ii) 由单一比特场差分诱导的精确 1-形式、(iii) 按边方向选择不同比特的方向依赖连接，计算 plaquette holonomy 的非平凡率及其与缺陷触达率的相关性。运行命令：
 \begin{center}
@@ -159,6 +181,25 @@ $$
   \caption{三种连接的 holonomy 非平凡率与缺陷触达率的对照。精确 1-形式在 plaquette 上给出近零 holonomy，而方向依赖连接给出显著非平凡率，并与缺陷触达呈正相关。}
 \end{figure}
 
+\paragraph{动态分辨率版本（多尺度截断下的连接对照）。}
+\AuditTag 与上一小节一致，我们提供“每节点分辨率 $m(v,t)$ 自适应调度”的对照版本，以检验在多尺度截断下三类连接统计的稳定性。统一入口运行：
+\begin{center}
+\path{python3 scripts/run_all.py}
+\end{center}
+其摘要片段如下：
+\input{sections/generated/emergence_space_holonomy_induced_dynamic_m_summary}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\linewidth]{sections/generated/assets/emergence_space_holonomy_induced_dynamic_m_compare.png}
+  \caption{动态分辨率版本：三种连接的 holonomy 非平凡率与缺陷触达率对照。}
+\end{figure}
+并给出同一轨道上的误差拆分时序曲线（对应相同的调度口径）：
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\linewidth]{sections/generated/assets/emergence_space_holonomy_induced_error_terms_dynamic_m.png}
+  \caption{动态分辨率版本：诱导连接对照实验的误差拆分 $E_{\mathrm{view}},E_{\mathrm{constraint}},E_{\mathrm{res}}$ 时序。}
+\end{figure}
+
 \subsection{双边界合成的剪枝加速评测}
 
 给定终端约束类 $\mathcal F_T$（或终端权重 $\Phi$），比较两种求解方式：
@@ -172,24 +213,9 @@ $$
 
 为使“默认三维显示”不依赖外部引用与叙事直觉，而是成为可复核的 \textsf{[CAP]} 输出，本节给出一个完全确定性的观察者时间代理量：在闭包图上运行 $1\text{-}\mathrm{WL}$ 颜色细化（第 9 节），并以解析步数 $t_{\mathrm{resolve}}$ 作为显示维数选择的主要代价。\AuditTag 该扫描不引入连续自由参数：候选族为有限的维数集合与 bit-split 显示，目标函数为脚本计算得到的 $(t_{\mathrm{resolve}},t_{\mathrm{stable}},u,s_{\max})$，并以“更低维数优先”为 tie-break。
 
-运行命令：
+为保证“对多种截断族”的可审计一致性，本文对默认截断族集合生成对照扫描，并以统一片段纳入正文（统一入口）：
 \begin{center}
-  \path{python3 scripts/exp_cap_display_dim_scan.py --ms 6,9,12,15 --d-max 4}
+  \path{python3 scripts/run_all.py}
 \end{center}
-
-自动生成摘要与表格片段如下：
-\input{sections/generated/cap_display_dim_scan_summary}
-
-\begin{center}
-  \scriptsize
-  \input{sections/generated/cap_display_dim_scan_table}
-\end{center}
-
-\begin{center}
-  \scriptsize
-  \input{sections/generated/cap_display_dim_key_table}
-\end{center}
-
-并给出对应的图形化扫描结果（稳定文件名导出）：
-\input{sections/generated/fig_cap_display_resolve_vs_dim}
-\input{sections/generated/fig_cap_display_unresolved_vs_dim}
+对照片段如下：
+\input{sections/generated/cap_display_dim_scan_compare}
