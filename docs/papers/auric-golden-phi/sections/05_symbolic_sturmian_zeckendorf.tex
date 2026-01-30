@@ -1,0 +1,88 @@
+\section{符号读出、Sturmian 不变量与 Zeckendorf 稳定化}\label{sec:symbolic}
+
+\subsection{一维环因子与二值符号化（H5.1，D5.1）}
+
+为将内部扫描投影到可检验的离散输出，采用可替换假设：
+\begin{itemize}
+  \item \textbf{（H5.1）}存在可测因子映射 $\phi:E_{\perp}/\Gamma\to \TT^{1}=\RR/\ZZ$，使得 $\theta_t:=\phi(u_t)$ 近似满足圆周旋转
+  \[
+  \theta_{t+1}=\theta_t+\alpha\ (\mathrm{mod}\ 1),
+  \]
+  其中 $\alpha\in(0,1)$ 为旋转数。取二分割 $\mathcal{P}=\{I_0,I_1\}$（可测、互不交、并覆盖 $\TT^1$），定义二值读出
+  \[
+  \omega_t:=\ind_{I_1}(\theta_t)\in\{0,1\}.
+  \]
+\end{itemize}
+长度 $m$ 的窗口词定义为
+\[
+\omega^{(m)}_t:=(\omega_t,\omega_{t+1},\dots,\omega_{t+m-1})\in\{0,1\}^{m}.
+\]
+
+\subsection{Sturmian 复杂度与 Fibonacci 分支（T5.2）}
+
+\begin{itemize}
+  \item \textbf{（T5.2）}在无理旋转且分割边界轨道为零测条件下，$(\omega_t)$ 为 Sturmian 序列，因子复杂度满足
+  \[
+  p(n)=\#\{\text{长度为 }n\text{ 的不同子词}\}=n+1,\qquad \forall n\ge 1.
+  \]
+  \item 在黄金分支取值下，$(\omega_t)$ 为 Fibonacci 型 Sturmian 词，其回返结构在典型统计上呈 Fibonacci 尺度分层（附录 \ref{app:sturmian-test}）。
+\end{itemize}
+上述不变量提供对照检验：周期序列与一般随机序列均不满足 $p(n)=n+1$ 的全尺度线性规律。
+
+\subsection{Zeckendorf 合法语言（D5.3）}
+
+定义长度 $m$ 的 Zeckendorf 合法语言
+\[
+X_m:=\{x\in\{0,1\}^{m}:\text{不含子串 }11\}.
+\]
+该语言亦可视为 golden-mean shift 的有限窗口截断。
+
+\begin{proposition}[计数]\label{prop:zeckendorf-count}
+（T5.3）有
+\[
+|X_m|=F_{m+2},
+\]
+其中 $F_k$ 为 Fibonacci 数列。
+\end{proposition}
+证明见附录 \ref{app:zeckendorf-fold}。
+
+\subsection{稳定化核 \texorpdfstring{$\Fold_m$}{Fold\_m}（D5.4，T5.4）}
+
+为将原始窗口词 $\omega^{(m)}_t$ 规范化到 $X_m$，定义满射
+\[
+\Fold_m:\{0,1\}^{m}\twoheadrightarrow X_m,
+\]
+满足：
+\begin{enumerate}
+  \item $\Fold_m(x)=x$ 对所有 $x\in X_m$（不动点性质）；
+  \item $\Fold_m$ 由局域重写系统实现并在有限步终止；
+  \item 终止态唯一（规范形唯一）。
+\end{enumerate}
+在一类标准构造中，核心重写规则可选为“进位消相邻”型局域变换（例如以 $011\mapsto 100$ 为原型并配合边界截断），其终止性与唯一性由势函数下降与 Zeckendorf 唯一表示保证（附录 \ref{app:zeckendorf-fold}）。
+
+令稳定输出
+\[
+x_t:=\Fold_m(\omega^{(m)}_t)\in X_m.
+\]
+本文将 $(x_t)$ 称为“稳定化读出序列”。
+
+\subsection{时间纤维与闭包固定点语义（D5.5，T5.5）}
+
+对任意稳定态 $x\in X_m$，定义时间纤维（预像）
+\[
+\mathcal{F}_m(x):=\Fold_m^{-1}(x)\subseteq\{0,1\}^{m}.
+\]
+定义闭包算子 $\Phi$ 作用于 $\mathcal{P}(\{0,1\}^{m})$：
+\[
+\Phi(S):=\Fold_m^{-1}\big(\Fold_m(S)\big).
+\]
+
+\begin{theorem}[闭包与固定点刻画]\label{thm:closure-fixed-points}
+（T5.5）$\Phi$ 为闭包算子（扩张、单调、幂等），且
+\[
+\Phi(S)=S\quad \Longleftrightarrow\quad
+S=\bigcup_{x\in A}\mathcal{F}_m(x)\ \text{对某个}\ A\subseteq X_m.
+\]
+\end{theorem}
+证明见附录 \ref{app:closure-proof}。该结论将“可见稳定态集合”与“不可区分实现族”的关系对象化为固定点结构。
+

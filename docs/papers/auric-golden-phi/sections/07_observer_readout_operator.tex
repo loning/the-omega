@@ -1,0 +1,30 @@
+\section{观察者作为参数化读出算子与自适应更新}
+
+\subsection{读出算子族（D7.1）}
+
+将观测者建模为参数 $\theta\in\Theta$ 的读出算子族
+\[
+\mathcal{R}_{\theta}:\ (\sigma,u_t)\mapsto Y_t,
+\]
+其中 $\theta$ 可包含：窗口核 $K_{\varepsilon}$、物理空间核 $\phi_{\delta}$、分割 $\mathcal{P}$、窗口长度 $m$、以及采样机制等。稳定化输出 $x_t$ 视为 $Y_t$ 的一类规范化坐标。
+
+\subsection{自适应更新与闭环（H7.2）}
+
+为刻画观测协议随数据反馈更新，采用可替换假设：
+\[
+\theta_{t+1}=\mathcal{U}(\theta_t,Y_t),
+\]
+其中 $\mathcal{U}$ 可由最小化预测误差、最小化不一致度或约束投影等规则定义。若目标函数满足标准收敛条件，则参数序列可收敛至稳定点或吸引子（相应技术条件与常见形式见附录 \ref{app:adaptive}）。
+
+\subsection{扫描非局域核与相关上界（D7.3，T7.3）}
+
+若读出在协议时间上具有非局域响应，可写为
+\[
+Y_t=\sum_{\tau\in\ZZ} G_{\theta_t}(\tau)\,\mathcal{S}(\sigma,u_{t+\tau}),
+\]
+其中 $G_{\theta_t}$ 为响应核。定义“前向权重”
+\[
+\Gamma_+(t):=\sum_{\tau>0}\abs{G_{\theta_t}(\tau)}.
+\]
+则任何两时刻条件相关的“后设定影响前统计”的强度，至多在范数意义上受 $\Gamma_+(t)$ 控制，并随核的局域化而衰减。该结论为一般线性系统不等式模板，其可检验性在于：改变装置响应函数应系统性调制相关强度（第 \ref{sec:falsifiable} 节）。
+
