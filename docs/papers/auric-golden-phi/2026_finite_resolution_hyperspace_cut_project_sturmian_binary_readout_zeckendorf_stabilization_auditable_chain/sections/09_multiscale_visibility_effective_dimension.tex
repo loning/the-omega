@@ -1,0 +1,57 @@
+\section{多尺度一致性、可见性投影与有效维数（扩展层）}
+
+本章分为闭层可定义结构与解释层命题两部分，二者严格区分。
+
+\subsection{多尺度稳定化与逆系统（模型类假设）}
+
+\begin{assumption}[尺度相容图]\label{assump:scale-compatibility}
+存在尺度映射
+\[
+\pi_{m_2\to m_1}:X_{m_2}^{\mathrm Z}\to X_{m_1}^{\mathrm Z},\quad m_2>m_1,
+\]
+与相应的读出粗化算子，使得对原始窗口读出 $\omega^{(m_2)}$ 有交换关系
+\[
+\pi_{m_2\to m_1}\bigl(\mathrm{Fold}_{m_2}(\omega^{(m_2)})\bigr)=\mathrm{Fold}_{m_1}(\omega^{(m_1)}),
+\]
+其中 $\omega^{(m_1)}$ 为 $\omega^{(m_2)}$ 的适当截断/粗化。
+
+在此假设下，$\{X_m^{\mathrm Z},\pi_{m_2\to m_1}\}$ 形成逆系统，从而可定义逆极限对象作为“尺度不变的稳定态载体”。
+\end{assumption}
+
+\subsection{有效维数（定理层定义 + 解释层讨论）}
+
+\begin{definition}[符号可见空间的熵维数]\label{def:entropy-dimension}
+对长度尺度 $m$，全二值空间大小为 $2^m$，稳定态空间大小为 $\card{X_m^{\mathrm Z}}=F_{m+2}$。定义熵维数
+\[
+d_{\mathrm{ent}}:=\lim_{m\to\infty}\frac{\log \card{X_m^{\mathrm Z}}}{\log 2^m}
+=\lim_{m\to\infty}\frac{\log F_{m+2}}{m\log 2}
+=\frac{\log\varph}{\log 2}.
+\]
+该极限存在，且由 Fibonacci 渐近 $F_{m}\sim \varph^m/\sqrt{5}$ 得到。
+\end{definition}
+
+\begin{remark}[解释层命题：非整数资源维的候选解释]
+若将“可区分状态数随分辨率增长的指数”视为协议意义下的“有效维”，则 $d_{\mathrm{ent}}$ 提供一个非整数维度指标；其取值由黄金比控制。这一命题仅说明协议层的可见性压缩可呈现分形标度，不构成关于几何流形维数的定理结论。
+\end{remark}
+
+\subsection{可见性投影与黄金比存在态（解释层命题）}
+
+为避免形而上表述，以下以算子固定点语言给出可检验的形式化框架。
+
+\begin{definition}[可见性投影]\label{def:visibility-projection}
+在有限窗口长度 $m$ 上，定义可见子空间为
+\[
+\mathcal{H}^{(m)}_{\mathrm{vis}}:=\ell^2(X_m^{\mathrm Z}),\qquad
+\mathcal{H}^{(m)}_{\mathrm{raw}}:=\ell^2(\{0,1\}^m),
+\]
+并由稳定化核诱导线性映射（推前算子）
+\[
+(\mathcal{P}_m f)(x):=\sum_{\omega\in \mathcal{F}_m(x)} f(\omega).
+\]
+将“可见性”定义为经过 $\mathcal{P}_m$ 后仍可在稳定态空间分辨的分量。
+\end{definition}
+
+\begin{remark}[解释层命题：黄金比存在态作为 Perron--Frobenius 固定点]
+将 $X_m^{\mathrm Z}$ 看作由禁词 $11$ 定义的有限状态图（黄金均值移位），其转移邻接矩阵的主特征值趋于 $\varph$，对应主特征向量给出符号频率的稳定锥。若将“存在/不可见”二元范畴视为该转移图的两类基元（例如以 $1/0$ 作为最小区分单元），则主特征向量分量比收敛到黄金比，从而给出一种“固定点权重比”意义下的黄金比存在态。该命题为解释层语言：其数学部分是 Perron--Frobenius 定理与黄金均值移位的主特征结构；“存在”语义不进入闭层推理。
+\end{remark}
+

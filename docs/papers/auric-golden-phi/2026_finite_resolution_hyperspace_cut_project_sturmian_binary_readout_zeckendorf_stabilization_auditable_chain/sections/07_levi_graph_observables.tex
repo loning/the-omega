@@ -1,0 +1,73 @@
+\section{节点—纤维入射图与可观测量函数子}
+
+\subsection{Levi 入射图与闭包动力学}
+
+\begin{definition}[节点—纤维 Levi 图]\label{def:levi-graph}
+构造二分图
+\[
+\mathcal{G}_m=(V_N\sqcup V_F, E),
+\]
+其中节点侧顶点 $V_N:=X_m^{\mathrm Z}$，纤维侧顶点
+\[
+V_F:=\{\mathcal{F}_m(x):x\in X_m^{\mathrm Z}\}.
+\]
+边集合定义为
+\[
+(x,\mathcal{F}_m(y))\in E\quad \Longleftrightarrow\quad x=y.
+\]
+若进一步考虑动力学诱导的可达关系，可将边扩展为“在一步（或有限步）底层演化下，纤维之间存在非零转移”的关系，形成加权入射结构（见 \S\ref{sec:induced-observables}）。
+\end{definition}
+
+\begin{definition}[纤维优先闭包算子]\label{def:fiber-closure}
+给定节点子集 $S\subset X_m^{\mathrm Z}$，定义
+\[
+\mathrm{Fib}(S):=\{\mathcal{F}_m(x):x\in S\},\qquad
+\mathrm{Node}(\mathcal{A}):=\{x:\mathcal{F}_m(x)\in\mathcal{A}\}.
+\]
+定义闭包迭代
+\[
+S^{(0)}:=S,\quad S^{(k+1)}:=\mathrm{Node}\bigl(\mathrm{Reach}(\mathrm{Fib}(S^{(k)}))\bigr),
+\]
+其中 $\mathrm{Reach}$ 为由动力学转移规则给定的纤维可达闭包算子（模型定义，依赖具体转移核）。
+\end{definition}
+
+\begin{theorem}[有限闭包正确性]\label{thm:finite-closure}
+若 $\mathrm{Reach}$ 在有限顶点集合上定义且单调，则上述迭代在有限步终止，并产生包含初始集合的最小不动点闭包。
+\end{theorem}
+
+\begin{remark}
+证明要点见附录 \ref{app:levi-closure-proof}。有限性与单调性保证 Kleene 迭代收敛。
+\end{remark}
+
+\subsection{由纤维统计诱导的可观测量（模型定义）}\label{sec:induced-observables}
+
+以下量作为“可观测量函数子”的候选定义，属于模型层定义而非定理。
+
+\begin{definition}[稳定态转移核（模型）]\label{def:markov-kernel}
+由底层动力学与读出过程诱导稳定态马尔可夫近似（或经验核）
+\[
+P(y\mid x):=\mathbb{P}(x_{t+1}=y\mid x_t=x),
+\qquad x,y\in X_m^{\mathrm Z}.
+\]
+定义后继集合
+\[
+\mathrm{Succ}(x):=\{y:\ P(y\mid x)>0\}.
+\]
+\end{definition}
+
+\begin{definition}[类质量与类延迟（模型）]\label{def:class-mass-delay}
+给定常数 $\kappa>0$，定义类质量函数子（可选其一）：
+\[
+M_H(x):=\kappa\, H(P(\cdot\mid x)),\qquad
+M_D(x):=\kappa\,\log\card{\mathrm{Succ}(x)},
+\]
+其中 $H(\cdot)$ 表示离散 Shannon 熵。定义首次到达时间与类延迟：
+\[
+\tau(x\to y):=\mathbb{E}\Bigl[\inf\{n\ge 1:\ x_{t+n}=y\}\,\Big|\,x_t=x\Bigr].
+\]
+\end{definition}
+
+\begin{remark}
+上述定义将“可观测量”锚定在稳定态转移结构与纤维统计上，适用于以有限输出状态刻画的协议模型；其与物理质量/散射延迟之间的对应属于解释层命题，需要额外接口假设（例如如何从读出核与硬件实现成本校准到实验量）。
+\end{remark}
+
