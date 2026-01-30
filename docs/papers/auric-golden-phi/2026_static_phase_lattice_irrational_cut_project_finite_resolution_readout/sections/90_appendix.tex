@@ -1,0 +1,112 @@
+\section{附录}
+
+\subsection{附录 A：记号与审计分层摘要}
+
+\begin{itemize}
+  \item $\Lambda=\ZZ^6$：六维整数格点相位骨架。
+  \item $\RR^6=E_{\parallel}\oplus E_{\perp}$：可观测三维子空间与余维子空间分解。
+  \item $\pi_{\parallel},\pi_{\perp}$：对应投影。
+  \item $W\subset E_{\perp}$：紧致接受窗。
+  \item $u\in E_{\perp}$：余维相位偏移（可控参数）。
+  \item $\Sigma(u)=\{\pi_{\parallel}(n): n\in\Lambda,\ \pi_{\perp}(n)+u\in W\}$：三维模型集。
+  \item $t\in\ZZ_{\ge 0}$：协议时间（扫描迭代计数）。
+  \item $\Omega_m=\{0,1\}^m$：长度 $m$ 的二元微态空间。
+  \item $X_m=\{w\in\{0,1\}^m:\text{不含 }11\}$：禁字语法稳定类型集。
+  \item $\Fold_m:\Omega_m\twoheadrightarrow X_m$：微态到稳定类型的折叠映射。
+  \item $\theta$：读出协议参数（投影、窗、核宽、校准等）。
+\end{itemize}
+
+审计分层：
+\begin{itemize}
+  \item 数学层只依赖上述对象与明确规则；
+  \item 识别层提出“类型—物理对象”对应与可证伪命题，不得反作为数学层前提。
+\end{itemize}
+
+\subsection{附录 B：切投影模型集的非周期性条件与基本性质}
+
+\subsubsection{B.1 非周期性条件}
+
+若存在 $p\in E_{\parallel}\setminus\{0\}$ 使得 $\Sigma(u)+p=\Sigma(u)$，则 $\Sigma(u)$ 具有周期。充分条件之一是 $E_{\parallel}\cap\Lambda\neq\{0\}$。因此，要求
+\[
+E_{\parallel}\cap\Lambda=\{0\}
+\]
+可排除由格点方向诱导的平移周期。更强的条件是 $\pi_{\perp}(\Lambda)$ 在 $E_{\perp}$ 中稠密，使得接受窗的余维相位扫描可生成丰富的准周期变形。
+
+\subsubsection{B.2 相位平移与几何滑移}
+
+对 $u,u'\in E_{\perp}$，$\Sigma(u)$ 与 $\Sigma(u')$ 的差异由满足
+\[
+\pi_{\perp}(n)+u\in W\ \ \text{而}\ \ \pi_{\perp}(n)+u'\notin W
+\]
+的边界穿越点集决定。若 $u'-u$ 足够小，则变化集中在窗边界附近，呈现可控的“滑移缺陷”。这为将“能动性”表述为相位平移提供了几何基础：改变 $u$ 不改变 $\Lambda$，但改变被窗选入的点集，从而改变三维可观测结构。
+
+\subsection{附录 C：黄金支系、机械字与规范编码接口}
+
+\subsubsection{C.1 一维原型：机械字与最小复杂度}
+
+考虑圆周旋转 $x_{t+1}=x_t+\alpha\ \mathrm{mod}\ 1$ 与区间窗 $I=[0,\beta)$。定义二元序列
+\[
+s_t=\ind_I(x_t).
+\]
+当 $\alpha\notin\QQ$ 时，$(s_t)$ 为 Sturmian 序列，具有最小因子复杂度 $p(n)=n+1$。这为“有限字母读出下的非周期最简结构”提供规范原型。
+
+\subsubsection{C.2 Ostrowski/Zeckendorf 表示作为扫描时间的规范坐标}
+
+对给定无理 $\alpha$ 的连分数展开，可构造 Ostrowski 表示，使每个整数 $t$ 具有一组受局域规则约束的数字展开；在特定支系下该表示退化为 Fibonacci 权重的二元展开（Zeckendorf 表示），并带有“禁止相邻 $1$”的局域语法。此语法与本文稳定类型集 $X_m$ 的禁字形式一致，从而提供“扫描时间—局域稳定类型”的规范对接。
+
+\subsection{附录 D：稳定类型集的 Fibonacci 计数与一个可计算折叠原型}
+
+\subsubsection{D.1 计数}
+
+设 $a_m:=|X_m|$。对长度为 $m$ 的禁相邻 $1$ 二元串，末位为 $0$ 的串数等于 $a_{m-1}$，末位为 $1$ 的串其前一位必为 $0$，因此对应长度 $m-2$ 的任意合法串，数量为 $a_{m-2}$。故
+\[
+a_m=a_{m-1}+a_{m-2},\qquad a_1=2,\ a_2=3,
+\]
+从而 $a_m=F_{m+2}$。
+
+\subsubsection{D.2 折叠原型（规范化重写）}
+
+给定任意 $s\in\Omega_m$，若存在子串“11”，可用局域重写规则将其改写为合法串（例如将“011”替换为“100”并向高位进位的规范化过程）。在采用 Fibonacci 权重的规范表示时，这一过程与 Zeckendorf 唯一性一致：任何整数可唯一写成不含相邻权重的和。由此可构造 $\Fold_m$ 的可计算实现，使其满足：
+\begin{itemize}
+  \item 输出必在 $X_m$；
+  \item 对所有 $w\in X_m$ 存在至少一个 $s$ 使 $\Fold_m(s)=w$；
+  \item 原像基数给出退化结构，可作为实验重编码的指纹。
+\end{itemize}
+
+\subsection{附录 E：自适应观测者的一个变分更新模板}
+
+\subsubsection{E.1 失配泛函}
+
+给定观测序列 $y_{0:t}$，设内部模型给出预测分布 $Q_{\theta,u}(\cdot\mid y_{0:t-1})$。可定义失配为
+\[
+\mathcal{J}(\theta,u;y_{0:t})
+=
+\sum_{\tau=1}^{t} \Big[-\log Q_{\theta,u}(y_{\tau}\mid y_{0:\tau-1})\Big]
+\;+\lambda\,\mathcal{C}(\theta,u),
+\]
+其中 $\mathcal{C}$ 为资源/稳定性惩罚项，$\lambda\ge0$。
+
+\subsubsection{E.2 近似梯度更新}
+
+若参数空间可微，则可取
+\[
+(\theta_{t+1},u_{t+1})
+=
+(\theta_t,u_t) - \eta \nabla_{(\theta,u)} \mathcal{J}(\theta,u;y_{0:t}),
+\]
+其中 $\eta>0$ 为步长。该更新保证在常见正则条件下使 $\mathcal{J}$ 单调下降或在邻域内下降，从而提供“协议化动因”：参数变化的理由是降低可计算失配而非外加目的论。
+
+\subsubsection{E.3 自指的可检验后果}
+
+闭环更新引入可检验结构：当外界扰动增加或资源约束收紧时，系统可能跨过临界阈值而从稳定扇区保持区进入缺陷累积区。该阈值可通过稳定类型占比、缺陷率、或预测对数损失的相变样行为检测。
+
+\subsection{附录 F：面向数据的重编码流程建议（可执行模板）}
+
+\begin{enumerate}
+  \item \textbf{几何—序列化：}从观测记录构造局域窗口序列（长度 $m$ 的二元或多元符号串）。
+  \item \textbf{折叠重编码：}对每个窗口应用 $\Fold_m$，得到稳定类型序列。
+  \item \textbf{退化直方图：}统计每个稳定类型的原像基数近似（或通过可计算折叠规则直接获得理论原像分布），比较实验数据与理论指纹。
+  \item \textbf{相位滑移检验：}在可控改变读出设置（改变 $u$ 或核宽 $\varepsilon$）时，比较稳定类型的迁移矩阵是否满足由折叠规则给出的可达约束。
+  \item \textbf{闭环稳定性检验：}若系统允许反馈控制，记录 $\mathcal{J}$ 与稳定类型占比随时间的演化，定位收敛域与相变边界。
+\end{enumerate}
+
