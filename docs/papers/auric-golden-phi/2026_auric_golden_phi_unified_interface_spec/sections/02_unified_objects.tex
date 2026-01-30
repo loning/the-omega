@@ -1,0 +1,71 @@
+\section{统一对象：从读出到纤维再到时间}
+
+\subsection{底系统与观测（对象层）}
+
+\begin{definition}[底系统]\label{def:base-system}
+底系统为测度保持动力系统 $(X,\mathcal{B},\mu,T)$，其中 $T:X\to X$ 可测且 $\mu$-保持。
+在紧群情形可取 $X=G$、$T=T_a$ 为平移，$\mu$ 为 Haar 测度。
+\end{definition}
+
+\begin{definition}[有限窗口读出]\label{def:finite-readout}
+给定有限字母表 $\mathcal{A}$（在本目录里通常为 $\{0,1\}$），给定读出核（或观测）函数
+\[
+\rho:X\to\mathcal{A},
+\]
+定义长度 $m$ 的滑动窗口词
+\[
+\omega_t^{(m)}=(\rho(T^t x),\rho(T^{t+1}x),\dots,\rho(T^{t+m-1}x))\in\mathcal{A}^m.
+\]
+\end{definition}
+
+\subsection{稳定化核与稳定语言}
+
+\begin{definition}[稳定语言（黄金均值原型）]\label{def:Xm}
+典型稳定语言为黄金均值合法集合
+\[
+X_m=\{w\in\{0,1\}^m:\ w\ \text{不含子词 }11\}.
+\]
+其计数满足 $\card{X_m}=F_{m+2}$。
+\end{definition}
+
+\begin{definition}[稳定化核]\label{def:fold}
+稳定化核为可计算满射
+\[
+\Fold_m:\{0,1\}^m\twoheadrightarrow X_m,
+\]
+并满足规范形性质（幂等与固定点刻画在“词级”意义下成立）。
+在整数标签模型中也常用 $\Fold_m:Y_m\to X_m$（$Y_m=\{0,\dots,2^m-1\}$）。
+\end{definition}
+
+\subsection{预像纤维与“不可见自由度”}
+
+\begin{definition}[纤维]\label{def:fiber}
+对 $x\in X_m$，定义纤维（预像）
+\[
+\mathcal{F}_m(x)=\Fold_m^{-1}(x).
+\]
+纤维是“不可见自由度”的最小对象化：在固定分辨率 $m$ 下，所有落入同一规范形的微态集合。
+\end{definition}
+
+\subsection{信息论时间（定理层模板）}
+
+\begin{definition}[柱集与后验测度]\label{def:cyl}
+把稳定化后的可见过程记为 $x_t=\Fold_m(\omega_t^{(m)})\in X_m$。
+给定历史 $x_0^t=(x_0,\dots,x_t)$，定义柱集
+\[
+C_t(x_0^t)=\{x\in X:\ x_k(x)=x_k\ \text{对}\ k=0,1,\dots,t\}.
+\]
+定义后验信息量（信息论“时间刻度”候选）
+\[
+H_t=-\log\mu(C_t(x_0^t)).
+\]
+\end{definition}
+
+\begin{theorem}[SMB/KS 时间箭头模板（调用口径）]\label{thm:smb-template}
+若底系统遍历且观测来自生成分割（或满足等价条件），则对几乎处处轨道
+\[
+\lim_{t\to\infty}\frac{1}{t}H_t=h_\mu(T),
+\]
+其中 $h_\mu(T)$ 为 KS 熵。该结论把“时间箭头”协议化为柱集后验测度的指数收缩率。
+\end{theorem}
+
