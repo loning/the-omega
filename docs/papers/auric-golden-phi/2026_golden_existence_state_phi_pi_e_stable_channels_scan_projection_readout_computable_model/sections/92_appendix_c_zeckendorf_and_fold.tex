@@ -1,0 +1,27 @@
+\section{附录 C：Zeckendorf 表示与折叠映射}
+
+\subsection{Zeckendorf 唯一性}
+
+每个 $N\in\ZZ_{\ge 0}$ 存在唯一二元序列 $(c_k)_{k\ge 1}$ 满足 $c_kc_{k+1}=0$ 且
+\[
+N=\sum_{k\ge 1}c_kF_{k+1}.
+\]
+唯一性可由贪心算法与归纳证明：每步选择不超过 $N$ 的最大斐波那契权重，并禁止选择相邻权重。
+
+\subsection{窗口折叠与低端双射}
+
+定义 $\mathrm{Fold}_m(N)=(c_1,\dots,c_m)$。若 $0\le N\le F_{m+2}-1$，则 Zeckendorf 表示不会使用 $F_{m+3}$ 及以上权重，因此 $\mathrm{Fold}_m$ 记录了完整表示，给出双射
+\[
+\mathrm{Fold}_m:\{0,\dots,F_{m+2}-1\}\ \xrightarrow{\ \sim\ }\ X_m.
+\]
+
+\subsection{\texorpdfstring{$m=6$}{m=6} 的边界双前像结构（可穷举复核）}
+
+对 $m=6$，边界词为 $100001,100101,101001$。其 Zeckendorf 值分别为
+\begin{align*}
+V(100001)&=F_2+F_7=1+13=14,\\
+V(100101)&=F_2+F_5+F_7=1+5+13=19,\\
+V(101001)&=F_2+F_4+F_7=1+3+13=17.
+\end{align*}
+由于 $F_8=21$ 与 $F_9=34$ 的相邻禁止结构，向上添加 $34$ 保持前六位不变，从而每个边界词恰有两前像，差为 $F_9=34$。该结论可通过对 $N\in\{0,\dots,63\}$ 逐一计算 Zeckendorf digits 并截断验证。
+
