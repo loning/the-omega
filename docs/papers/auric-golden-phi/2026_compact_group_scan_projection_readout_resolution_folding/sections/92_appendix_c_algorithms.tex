@@ -1,0 +1,30 @@
+\section{附录C　算法化描述（伪代码）}
+
+\subsection{C.1 Zeckendorf 贪心规范化（用于构造 \texorpdfstring{$\Fold$}{Fold}）}
+
+\textbf{输入：}非负整数 $N$。\\
+\textbf{输出：}Zeckendorf 数位 $(c_k)\in\{0,1\}$，满足 $N=\sum_{k\ge1}c_kF_{k+1}$ 且 $c_kc_{k+1}=0$。
+
+\begin{enumerate}
+  \item 若 $N=0$，返回全 $0$。
+  \item 生成 Fibonacci 权重 $F_{k+1}$ 直至 $F_{K+1}\le N<F_{K+2}$。
+  \item 初始化 $c_k=0$。
+  \item 对 $k=K,K-1,\dots,1$：
+  \begin{itemize}
+    \item 若 $F_{k+1}\le N$，置 $c_k=1$ 并更新 $N\leftarrow N-F_{k+1}$；同时跳过下一位以强制相邻 $0$。
+  \end{itemize}
+  \item 输出 $(c_k)$。
+\end{enumerate}
+
+\subsection{C.2 \texorpdfstring{$\Fold_m$}{Fold\_m} 的构造}
+
+将输入串/索引解释为 Fibonacci 权重表示，执行 C.1 规范化得到 Zeckendorf 数位序列，截取前 $m$ 位作为 $\Fold_m$ 输出词。该输出天然满足无相邻 $1$ 约束。
+
+\subsection{C.3 差异度证书计算（1D）}
+
+对点集 $\{x_0,\dots,x_{N-1}\}$ 排序得 $y_1\le\cdots\le y_N$。则
+\[
+D_N^*=\max\Big\{\max_{1\le i\le N}\left(\frac{i}{N}-y_i\right),\ \max_{1\le i\le N}\left(y_i-\frac{i-1}{N}\right)\Big\}.
+\]
+对任意 $f$（有界变差），由 $\big|N^{-1}\sum f(x_n)-\int f\big|\le\Var(f)D_N^*$ 给出确定性证书。
+

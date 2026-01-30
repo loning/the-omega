@@ -1,0 +1,36 @@
+\section{概念可定义性与三值存在逻辑}
+
+\subsection{地址化概念与可定义性}
+
+设 $\mathcal{A}$ 为观察者的“概念地址空间”，可取为可数集合或可计算结构（如字符串、自然数或指针）。设 $\mathcal{O}$ 为可观测对象的集合（例如投影算子、效果算子、谓词或可计算函数）。定义\textbf{概念存储}为部分映射
+\[
+\Gamma:\mathcal{A}\rightharpoonup \mathcal{O}.
+\]
+对地址 $a\in\mathcal{A}$，若 $\Gamma(a)$ 未定义，则称概念处于\textbf{空值态}，记为 $\bot$；若 $\Gamma(a)$ 已定义，则概念在语义层“存在”。
+
+由此得到三值逻辑：对每一地址 $a$，定义其读出前的存在值域为
+\[
+\mathrm{Val}(a)\in\{\bot,0,1\}.
+\]
+其中 $\bot$ 表示不可判定（概念未被定义或不可访问），而 $0/1$ 表示在某一读出协议下对系统态的二值判定结果。该区分避免将“未定义”等同于“假”，从而将概念存在与性质真假严格区分。
+
+\subsection{概念合成与 Hilbert 化}
+
+设 $\mathcal{C}$ 为基本概念集合。概念合成可先在代数层实现：例如以 $\CC$ 上自由向量空间 $\mathrm{span}(\mathcal{C})$ 线性化概念组合，并在赋予内积后完备化得到 Hilbert 空间 $\mathcal{H}$。更一般地，可取一个 $C^*$-代数 $\mathfrak{A}$ 作为可观测代数，并由状态 $\omega$ 通过 GNS 构造得到表示 $(\pi_\omega,\mathcal{H}_\omega,\Omega_\omega)$。此时概念可对应于 $\mathfrak{A}$ 中的投影或效果算子，概念合成对应于代数运算或张量积扩展。
+
+该结构为“概念叠加”提供了严格语义：概念组合并非仅为集合并置，而是在 $\mathcal{H}$ 或 $\mathfrak{A}$ 内形成新的可观测对象，具有可计算的谱与测量统计。
+
+\subsection{读出作为从 \texorpdfstring{$\bot$}{bottom} 到二值的仪器化映射}
+
+给定概念地址 $a$，若 $\Gamma(a)$ 对应于一个二值效果算子 $E_a$（$0\le E_a\le I$），则一次读出产生经典结果 $y\in\{0,1\}$，其概率由
+\[
+\mathbb{P}(y=1)=\omega(E_a),\qquad \mathbb{P}(y=0)=1-\omega(E_a)
+\]
+给出；同时伴随态更新由一组 Kraus 算子或 Lüders 型规则描述。关键在于：在读出协议确定之前，$\bot$ 并不携带概率语义；概率仅在 $E_a$ 被选定并作用于系统态后出现。
+
+因此，“既存在又不存在”的表述可被严格拆解为两层：
+\begin{enumerate}
+  \item \textbf{概念层：}$a$ 是否可定义（$\Gamma(a)$ 是否存在）。
+  \item \textbf{事件层：}在给定 $E_a$ 与系统态 $\omega$ 下，读出结果 $y$ 的不确定性（概率混合或量子叠加）。
+\end{enumerate}
+
