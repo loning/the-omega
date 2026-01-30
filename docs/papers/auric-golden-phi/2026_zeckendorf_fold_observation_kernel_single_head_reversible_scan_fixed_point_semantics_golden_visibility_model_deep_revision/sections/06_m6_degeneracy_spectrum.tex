@@ -1,0 +1,62 @@
+\section{最小可穷举核 \texorpdfstring{$m=6$}{m=6}：退化谱定理与线性—循环分裂}
+
+本节给出本文的核心可解析结果之一：$\mathrm{Fold}_6$ 的纤维退化谱定理及其结构解释。
+
+\subsection{窗口值函数}
+
+取 $m=6$，窗口对应数字 $(z_2,\dots,z_7)$。对 $w=(z_7,z_6,z_5,z_4,z_3,z_2)\in X_6$，定义窗口值
+\[
+V(w)=\sum_{k=2}^{7} z_k F_k
+=13 z_7 + 8 z_6 + 5 z_5 + 3 z_4 + 2 z_3 + z_2.
+\]
+可验证 $V$ 在 $X_6$ 上为双射到 $\{0,1,\dots,20\}$。
+
+\subsection{退化谱定理（解析证明）}
+
+对 $n\in Y_6=\{0,\dots,63\}$，Zeckendorf 数字最多涉及权重 $55$（因为 $89>63$）。因此尾部仅可能出现在 $(z_8,z_9,z_{10})$，对应权重 $(21,34,55)$。
+
+\begin{theorem}[$\mathrm{Fold}_6$ 退化谱]\label{thm:deg-spectrum-6}
+对任意 $w\in X_6$，纤维大小满足
+\[
+\card{\mathcal{F}_6(w)}=
+\begin{cases}
+4, & z_7(w)=0\ \text{且}\ V(w)\le 8,\\[2pt]
+3, & z_7(w)=0\ \text{且}\ V(w)\ge 9,\\[2pt]
+2, & z_7(w)=1.
+\end{cases}
+\]
+因此退化谱为 $4\times 9,3\times 4,2\times 8$，并满足总和为 $64$。
+\end{theorem}
+
+\begin{proof}
+固定 $w\in X_6$。任意 $n\in Y_6$ 可写为
+\[
+n=55 z_{10}+34 z_9+21 z_8 + V(w),
+\]
+并满足相邻约束 $z_{10}z_9=0,\ z_9z_8=0,\ z_8z_7=0$，且 $n\le 63$。
+
+若 $z_7=1$，则 $z_8=0$；且 $z_{10}=1$ 会导致 $n\ge 68$ 不可行；故仅 $z_9\in\{0,1\}$ 可选，得退化度 $2$。
+
+若 $z_7=0$，则允许选择隐藏贡献 $0,21,34,55$，其中 $55$ 可行当且仅当 $V(w)\le 8$。故退化度为 $4$ 或 $3$。证毕。
+\end{proof}
+
+\subsection{线性—循环一致性分裂}
+
+定义循环一致性集合
+\[
+X_6^{\mathrm{cyc}}=\{w\in X_6:\ \neg(z_7(w)=1\ \wedge\ z_2(w)=1)\}.
+\]
+则
+\[
+\card{X_6^{\mathrm{cyc}}}=18,\qquad \card{X_6\setminus X_6^{\mathrm{cyc}}}=3,
+\]
+边界伪像集合为
+\[
+B=\{100001,\ 100101,\ 101001\}.
+\]
+更一般地，设 $a_m=\card{X_m}$，$c_m=\card{X_m^{\mathrm{cyc}}}$，可证明
+\[
+a_m-c_m=F_{m-2},
+\]
+因此 $m=6$ 时边界伪像数为 $F_4=3$（证明见附录 \ref{app:linear-cyclic}）。
+

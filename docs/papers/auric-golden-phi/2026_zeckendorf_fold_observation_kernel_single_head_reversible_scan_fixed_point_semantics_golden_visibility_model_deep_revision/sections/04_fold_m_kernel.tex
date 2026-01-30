@@ -1,0 +1,50 @@
+\section{Zeckendorf 窗口读出 \texorpdfstring{$\mathrm{Fold}_m$}{Fold\_m}：稳定态计数与固定点结构}
+
+\subsection{定义：窗口读出映射 \texorpdfstring{$\mathrm{Fold}_m$}{Fold\_m}}
+
+对 $n\in Y_m$，取其 Zeckendorf 数字 $(z_k(n))_{k\ge 2}$。定义窗口读出
+\[
+\mathrm{Fold}_m(n)=(z_{m+1}(n),z_m(n),\dots,z_2(n))\in\{0,1\}^m.
+\]
+由全局约束 $z_k(n)\,z_{k+1}(n)=0$，立得 $\mathrm{Fold}_m(n)\in X_m$，从而
+\[
+\mathrm{Fold}_m:Y_m\to X_m.
+\]
+将尾部数字
+\[
+\mathrm{Tail}_m(n)=(z_{m+2}(n),z_{m+3}(n),\dots)
+\]
+视为观测层不可见信息。
+
+\subsection{定理：稳定态计数}
+
+\begin{theorem}\label{thm:Xm-count}
+\[
+\card{X_m}=F_{m+2}.
+\]
+\end{theorem}
+
+\begin{proof}
+令 $a_m=\card{X_m}$。按最高位分解：若 $w_m=0$，余下为任意 $X_{m-1}$ 词；若 $w_m=1$，则 $w_{m-1}=0$，余下为任意 $X_{m-2}$ 词。故 $a_m=a_{m-1}+a_{m-2}$，初值 $a_0=1,a_1=2$，从而 $a_m=F_{m+2}$。证毕。
+\end{proof}
+
+\subsection{幂等性与固定点刻画}
+
+为将“稳定可见态”精确对应为固定点，定义一个词级折叠算子 $\mathrm{Fold}_m^\sharp:\{0,1\}^m\to X_m$，其作用为把任意长度 $m$ 的二进制词规约为无相邻 $1$ 的规范形（该规约与 Zeckendorf 规范化在窗口内一致）。在本文的 $Y_m\to X_m$ 语义中，$\mathrm{Fold}_m$ 已保证落在 $X_m$，因此固定点刻画主要对 $\mathrm{Fold}_m^\sharp$ 给出；两者共同表达“规范形的自洽性”。
+
+\begin{theorem}\label{thm:fold-sharp-fix}
+$\mathrm{Fold}_m^\sharp$ 幂等且 $\mathrm{Fix}(\mathrm{Fold}_m^\sharp)=X_m$，即
+\[
+\mathrm{Fold}_m^\sharp(\mathrm{Fold}_m^\sharp(w))=\mathrm{Fold}_m^\sharp(w),\qquad
+\mathrm{Fold}_m^\sharp(w)=w\iff w\in X_m.
+\]
+\end{theorem}
+
+\begin{proof}[证明要点]
+$\mathrm{Fold}_m^\sharp(w)\in X_m$ 为规范形，二次规约不变；若规约后不变则原词必已无相邻 $1$。证毕。
+\end{proof}
+
+\begin{remark}
+本文后续关于纤维、退化度与实验均以 $Y_m\to X_m$ 的 $\mathrm{Fold}_m$ 为观测映射；固定点语义的“稳定集合”由词级投影 $\mathrm{Fold}_m^\sharp$ 给出，从而避免“$Y_m\to X_m$ 映射无法自我复合”的类型不匹配。
+\end{remark}
+

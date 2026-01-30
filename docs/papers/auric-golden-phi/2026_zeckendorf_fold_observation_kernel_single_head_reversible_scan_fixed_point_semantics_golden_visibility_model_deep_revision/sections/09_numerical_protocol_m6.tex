@@ -1,0 +1,48 @@
+\section{数值实验：全枚举与单头扫描验证（\texorpdfstring{$m=6$}{m=6}）}
+
+\subsection{全枚举}
+
+对 $Y_6$ 全枚举计算 $\mathrm{Fold}_6$ 与纤维大小，验证定理 \ref{thm:deg-spectrum-6} 的退化谱，并验证 $21=18\oplus 3$ 的分裂与边界集合 $B$。
+
+\subsection{单头扫描仿真协议}
+
+参数：$L=1024$、$\delta=1$、步数 $N=2\times 10^5$。随机初始化 $i_0,h_0,C_0$。选择轮函数对照组：
+\[
+f_0(c)=0,
+\]
+\[
+f_{\mathrm{fold}}(c)=\mathrm{enc}(\mathrm{Fold}_6(c)),
+\]
+\[
+f_{\mathrm{mix}}(c)=\mathrm{rotl}(\mathrm{enc}(\mathrm{Fold}_6(c)),1)\oplus \mathrm{rotl}(\mathrm{enc}(\mathrm{Fold}_6(c)),3).
+\]
+其中 $\mathrm{enc}:X_6\to Y_6$ 表示某个固定的编码（例如将 $w\in X_6\subset\{0,1\}^6$ 视为 6-bit 整数），$\mathrm{rotl}$ 为 6-bit 循环左移。
+
+\subsection{指标}
+
+经验分布 $\widehat{p}$ 与预测 $q$ 的误差
+\[
+\norm{e}_{\infty}=\max_{w\in X_6}\abs{\widehat{p}(w)-q(w)},\qquad
+\norm{e}_{1}=\sum_{w\in X_6}\abs{\widehat{p}(w)-q(w)}.
+\]
+边界频率 $\widehat{p}(B)$。头边缘分布总变差 $\norm{\pi-u}_{\TV}$。可见转移边支持集 $\card{E}$ 与强连通分量分解。
+
+\subsection{结果（示例数值）}
+
+边界频率（理论值 $0.09375$）：
+\[
+\widehat{p}_{f_0}(B)=0.0956095,\quad
+\widehat{p}_{f_{\mathrm{fold}}}(B)=0.0940695,\quad
+\widehat{p}_{f_{\mathrm{mix}}}(B)=0.0948495.
+\]
+退化度律误差：
+\[
+\norm{e}_{\infty}=\{0.0127552,\ 0.0010553,\ 0.0051397\},\qquad
+\norm{e}_{1}=\{0.141826,\ 0.0086042,\ 0.0285456\}.
+\]
+头边缘分布总变差：
+\[
+\norm{\pi-u}_{\TV}=\{0.107003,\ 0.0086925,\ 0.0223378\}.
+\]
+可见图谱：对 $f_{\mathrm{fold}},f_{\mathrm{mix}}$ 观察到 $\card{E}=441$ 且单一强连通分量；对 $f_0$ 得 $\card{E}=369$，边界态出现出度缺陷但仍在同一强连通分量内。
+
