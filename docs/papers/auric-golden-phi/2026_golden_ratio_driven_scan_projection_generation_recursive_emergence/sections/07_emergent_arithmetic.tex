@@ -14,11 +14,15 @@
 记 $e_k\in\mathcal{D}$ 为第 $k$ 个标准基（$e_k$ 在第 $k$ 位为 $1$，其余为 $0$）。
 
 \begin{definition}[Fibonacci 关系生成的同余]\label{def:fib-congruence}
-记 $\equiv$ 为 $\mathcal{D}$ 上最小的交换幺半群同余，使得对所有 $k\ge 1$ 都有关系
+记 $\equiv$ 为 $\mathcal{D}$ 上最小的交换幺半群同余，使得
+\begin{enumerate}
+  \item \textbf{（基准同余）}$e_2\equiv 2e_1$（把“同一权重的重复”折叠为下一尺度的单次出现）；
+  \item \textbf{（递推同余）}对所有 $k\ge 1$ 都有
 \[
 e_{k+2}\ \equiv\ e_{k+1}+e_k.
 \]
-等价地，$\equiv$ 由 Fibonacci 递推在“尺度计数”层面生成，并对加法封闭。
+\end{enumerate}
+等价地，$\equiv$ 由“基准折叠 + Fibonacci 递推”在“尺度计数”层面生成，并对加法封闭。
 \end{definition}
 
 \begin{definition}[值同态（不变量）]\label{def:val-on-D}
@@ -37,9 +41,13 @@ e_{k+2}\ \equiv\ e_{k+1}+e_k.
 \end{proposition}
 
 \textbf{证明：}
-只需验证生成关系 $e_{k+2}\equiv e_{k+1}+e_k$ 保持值：
+只需验证生成关系保持值。对递推同余 $e_{k+2}\equiv e_{k+1}+e_k$，
 \[
 \mathrm{Val}(e_{k+2})=F_{k+3}=F_{k+2}+F_{k+1}=\mathrm{Val}(e_{k+1}+e_k),
+\]
+对基准同余 $e_2\equiv 2e_1$，
+\[
+\mathrm{Val}(e_2)=F_3=2=2F_2=\mathrm{Val}(2e_1).
 \]
 其余由同余对加法封闭、以及 $\mathrm{Val}$ 的加法同态性推出。
 
@@ -50,10 +58,26 @@ e_{k+2}\ \equiv\ e_{k+1}+e_k.
 \textbf{证明：}
 \begin{itemize}
   \item \textbf{满射性：}对任意 $N\in\NN$，取其 Zeckendorf 数字 $Z(N)=(c_1,c_2,\dots)\in X_\infty$（\cite{Zeckendorf1972}），则 $\mathrm{Val}(Z(N))=N$，故 $\overline{\mathrm{Val}}$ 满射。
-  \item \textbf{规范代表的存在与唯一性：}对任意 $a\in\mathcal{D}$，令 $N=\mathrm{Val}(a)$。Zeckendorf 唯一性给出唯一 $c=Z(N)\in X_\infty$ 使 $\mathrm{Val}(c)=N$。由命题 \ref{prop:val-invariant}，若能证明 $a\equiv c$，则 $c$ 即为同余类的唯一规范代表。
-  \item \textbf{同余类由值刻画（从不变量回到同余）：}由于关系 $e_{k+2}\equiv e_{k+1}+e_k$ 正是 Fibonacci 递推在生成元层的呈示，$\mathcal{D}/\!\equiv$ 是“以 $e_k$ 为生成元并满足 Fibonacci 递推”的最小交换幺半群。映射 $[e_k]\mapsto F_{k+1}$ 给出到 $\NN$ 的幺半群同态。另一方面，$Z(N)$ 作为该呈示下的规范形（无相邻 $1$、且系数在 $\{0,1\}$）对每个 $N$ 唯一，因而 $\overline{\mathrm{Val}}$ 的核为平凡，从而得到同构。
+  \item \textbf{同构性（用呈示把一切类压到单生成元）：}
+  在商幺半群 $\mathcal{D}/\!\equiv$ 中，令 $\varepsilon:=[e_1]$。由基准同余有 $[e_2]=2\varepsilon$。再由递推同余归纳得对所有 $k\ge 1$，
+  \[
+  [e_{k+2}]=[e_{k+1}]+[e_k],
+  \qquad
+  \Rightarrow\qquad
+  [e_k]=F_{k+1}\,\varepsilon.
+  \]
+  因此对任意 $a=\sum_{k\ge 1} a_k e_k\in\mathcal{D}$，
+  \[
+  [a]=\sum_{k\ge 1} a_k [e_k]=\left(\sum_{k\ge 1} a_k F_{k+1}\right)\varepsilon
+  =\mathrm{Val}(a)\,\varepsilon.
+  \]
+  这说明每个同余类都由其值 $\mathrm{Val}(a)$ 完全刻画，且 $\overline{\mathrm{Val}}([a])=\mathrm{Val}(a)$ 正是把 $n\varepsilon$ 送到 $n$ 的单调同构。于是 $\overline{\mathrm{Val}}$ 为交换幺半群同构。
+  \item \textbf{规范代表：}对任意 $a\in\mathcal{D}$，令 $N=\mathrm{Val}(a)$，取 $c=Z(N)\in X_\infty$。上一步给出
+  \(
+  [a]=N\varepsilon=[c],
+  \)
+  即 $a\equiv c$。唯一性由 Zeckendorf 唯一性推出：若 $c,c'\in X_\infty$ 且 $c\equiv c'$，则 $\mathrm{Val}(c)=\mathrm{Val}(c')$，从而 $c=c'$。
 \end{itemize}
-严格地说，“$Z(N)$ 是呈示下的规范形”可用标准的重写系统论证，亦可直接由 Zeckendorf 定理的存在唯一性保证：若 $a$ 与 $b$ 值相同，则它们在 $\overline{\mathrm{Val}}$ 下像相同，且同一像对应的 Zeckendorf 代表唯一，迫使它们在商中相等。故 $\overline{\mathrm{Val}}$ 为同构，且规范代表唯一。
 
 \begin{remark}[折叠作为商映射的可计算截面]\label{rem:fold-as-section}
 上一定理给出的结论可概括为：
@@ -70,15 +94,24 @@ X_\infty \hookrightarrow \mathcal{D}
 为了把“折叠为何是涌现而非注入”说得更具体，我们把 Fibonacci 关系实现为一族\textbf{可逆局部变换}（群胚生成元），并把 Zeckendorf 合法序列理解为其轨道横截面。
 
 \begin{definition}[Fibonacci 局部变换（可逆重写）]\label{def:fib-moves}
-对 $k\ge 1$，定义部分变换 $E_k$ 作用于 $a\in\mathcal{D}$：
-\[
-E_k(a)=a+e_k+e_{k+1}-e_{k+2}\quad\text{当 }a_{k+2}\ge 1,
-\]
-其逆变换 $E_k^{-1}$ 在 $a_k,a_{k+1}\ge 1$ 时定义为
-\[
-E_k^{-1}(a)=a-e_k-e_{k+1}+e_{k+2}.
-\]
-令 $\mathcal{G}$ 为由 $\{E_k,E_k^{-1}\}_{k\ge1}$ 生成的群胚（对象为 $\mathcal{D}$，态射为这些部分双射的复合）。
+定义以下作用于 $\mathcal{D}$ 的部分可逆变换（在各自可行域上）：
+\begin{itemize}
+  \item \textbf{基准变换：}
+  \[
+  E_0(a)=a+2e_1-e_2\quad\text{当 }a_{2}\ge 1,
+  \qquad
+  E_0^{-1}(a)=a-2e_1+e_2\quad\text{当 }a_{1}\ge 2.
+  \]
+  \item \textbf{递推变换（$k\ge 1$）：}
+  \[
+  E_k(a)=a+e_k+e_{k+1}-e_{k+2}\quad\text{当 }a_{k+2}\ge 1,
+  \]
+  其逆变换 $E_k^{-1}$ 在 $a_k,a_{k+1}\ge 1$ 时定义为
+  \[
+  E_k^{-1}(a)=a-e_k-e_{k+1}+e_{k+2}.
+  \]
+\end{itemize}
+令 $\mathcal{G}$ 为由 $\{E_k,E_k^{-1}\}_{k\ge 0}$ 生成的群胚（对象为 $\mathcal{D}$，态射为这些部分双射的复合）。
 \end{definition}
 
 \begin{proposition}[轨道不变量]\label{prop:orbits-preserve-val}
@@ -92,6 +125,7 @@ E_k^{-1}(a)=a-e_k-e_{k+1}+e_{k+2}.
 =F_{k+1}+F_{k+2}-F_{k+3}=0,
 \]
 逆变换同理。复合保持不变量。
+对基准生成元 $E_0$ 亦有 $\mathrm{Val}(E_0(a))-\mathrm{Val}(a)=2F_2-F_3=0$，故结论成立。
 
 \begin{theorem}[轨道横截面与折叠的群论解释]\label{thm:zeckendorf-transversal}
 对任意 $a\in\mathcal{D}$，其 $\mathcal{G}$-轨道与其值纤维一致：
@@ -106,7 +140,7 @@ E_k^{-1}(a)=a-e_k-e_{k+1}+e_{k+2}.
 \end{theorem}
 
 \textbf{证明：}
-由命题 \ref{prop:orbits-preserve-val} 得 $\mathcal{G}\cdot a$ 包含于值纤维。反向包含可由定义 \ref{def:fib-congruence} 与定义 \ref{def:fib-moves} 的等价性理解：$E_k$ 正是生成同余 $e_{k+2}\equiv e_{k+1}+e_k$ 的可逆实现，因此“同值”在 $\mathcal{D}$ 中意味着可通过这些局部变换互达。最后，值纤维中落在 $X_\infty$ 的元素按 Zeckendorf 唯一性至多一个，而 $Z(\mathrm{Val}(a))$ 显然属于该纤维，故交点唯一且为所述。
+由命题 \ref{prop:orbits-preserve-val} 得 $\mathcal{G}\cdot a$ 包含于值纤维。反向包含由定理 \ref{thm:monoid-quotient-is-N} 给出：若 $\mathrm{Val}(b)=\mathrm{Val}(a)$，则 $[b]=[a]$，即 $b\equiv a$。而 $\equiv$ 正是由基准同余 $e_2\equiv 2e_1$ 与递推同余 $e_{k+2}\equiv e_{k+1}+e_k$ 在配置空间上的闭包；相应的局部可逆重写由 $E_0$ 与 $E_k$（$k\ge 1$）实现，故存在群胚态射把 $a$ 送到 $b$。最后，值纤维中落在 $X_\infty$ 的元素按 Zeckendorf 唯一性至多一个，而 $Z(\mathrm{Val}(a))$ 显然属于该纤维，故交点唯一且为所述。
 
 \subsection{Zeckendorf 值与稳定地址的数值化}
 
