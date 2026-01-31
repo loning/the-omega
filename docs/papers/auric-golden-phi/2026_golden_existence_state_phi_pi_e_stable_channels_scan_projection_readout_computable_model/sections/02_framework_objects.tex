@@ -32,3 +32,65 @@ X_m:=\{w\in\{0,1\}^m:\ w\ \text{不含子串}\ 11\}.
 \]
 将 $X_m$ 视为稳定类型空间：只有满足局部禁止律的词被视为“可稳定重复”的读出类型。
 
+\subsection{索引互补：Beatty 互补定理与黄金分支}\label{subsec:beatty-complement}
+
+本小节给出一个“索引侧”的算术刻画：在区间窗二元读出下，命中时刻与未命中时刻可由一对互补 Beatty 序列描述。该结论将“读出互补”从符号语言侧（长度 $m$ 的稳定词空间 $X_m$）补全到自然数索引侧（时间坐标的互补划分）。
+
+\begin{definition}[标准机械词与命中时刻集合]\label{def:standard-mechanical-word}
+取 $0<\alpha<1$ 且 $\alpha\notin\QQ$，令
+\[
+x_t=x_0+t\alpha\ (\mathrm{mod}\ 1)\in\RR/\ZZ,\qquad t\in\ZZ_{\ge 0}.
+\]
+取标准半开区间窗 $W_\alpha=[1-\alpha,1)$（端点约定影响仅导致有限平移或互补），并定义读出
+\[
+b_t=\ind_{W_\alpha}(x_t)\in\{0,1\}.
+\]
+定义命中/未命中索引集合（以正整数索引表示）：
+\[
+A:=\{t+1\in\NN:\ b_t=1\},\qquad B:=\{t+1\in\NN:\ b_t=0\}.
+\]
+\end{definition}
+
+\begin{proposition}[命中/未命中索引为互补 Beatty 序列]\label{prop:beatty-complement-indices}
+在定义 \ref{def:standard-mechanical-word} 的设定下，令
+\[
+r:=\frac{1}{\alpha}>1,\qquad s:=\frac{1}{1-\alpha}>1,
+\]
+则存在 $\gamma\in[0,1)$ 与 $\gamma'\in[0,1)$ 使得
+\[
+A=\big\{\big\lfloor (n+\gamma)r\big\rfloor:\ n\in\NN\big\},\qquad
+B=\big\{\big\lfloor (n+\gamma')s\big\rfloor:\ n\in\NN\big\}.
+\]
+并且由于 $1/r+1/s=\alpha+(1-\alpha)=1$，由 Beatty 互补定理可知 $A$ 与 $B$ 不交且并为 $\NN$。
+
+特别地，当取黄金分支 $\alpha=\varphi^{-1}$ 时，有 $r=\varphi$、$s=\varphi^{2}$，从而命中/未命中索引由 $(\varphi,\varphi^2)$ 的互补 Beatty 对给出。\cite{Beatty1926}
+\end{proposition}
+
+\begin{proof}
+对任意 $k\in\NN$，记累计命中数
+\[
+N_1(k):=\sum_{t=0}^{k-1} b_t.
+\]
+由区间旋转的标准取整表示（对应于窗 $[1-\alpha,1)$ 的半开约定），存在 $\rho\in[0,1)$ 使得
+\[
+N_1(k)=\big\lfloor k\alpha+\rho\big\rfloor-\big\lfloor\rho\big\rfloor.
+\]
+于是 $k\in A$ 等价于 $b_{k-1}=1$，亦即 $N_1(k)-N_1(k-1)=1$，从而等价于
+\[
+\big\lfloor k\alpha+\rho\big\rfloor-\big\lfloor (k-1)\alpha+\rho\big\rfloor=1.
+\]
+令 $n:=\lfloor k\alpha+\rho\rfloor$，由上式与 $0<\alpha<1$ 可推出
+\[
+n-1< (k-1)\alpha+\rho < n \le k\alpha+\rho < n+1,
+\]
+整理得
+\[
+\frac{n-\rho}{\alpha}\le k < \frac{n+1-\rho}{\alpha}.
+\]
+记 $r=1/\alpha$ 且令 $\gamma:=1-\rho\ (\mathrm{mod}\ 1)$，则区间长度为 $r$ 的上述夹逼给出 $k=\lfloor (n+\gamma)r\rfloor$。从而
+\[
+A=\{\lfloor (n+\gamma)r\rfloor:\ n\in\NN\}.
+\]
+对 $B$ 同理（或由互补性直接得到），并由 Beatty 互补定理完成结论。
+\end{proof}
+
