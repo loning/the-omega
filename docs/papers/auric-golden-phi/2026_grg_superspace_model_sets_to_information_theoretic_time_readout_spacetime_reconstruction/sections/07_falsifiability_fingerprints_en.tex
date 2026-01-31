@@ -1,0 +1,99 @@
+\section{Falsifiability and fingerprints}\label{sec:falsifiability}
+
+The review is conceptual, but not meant to be unfalsifiable. The superspace/readout framework suggests concrete statistical signatures that can be tested in numerical experiments and, in some cases, in laboratory analogues (e.g.\ optical interference patterns or engineered quasi-periodic media). We list a minimal set of fingerprints that are both natural and robust under moderate protocol variations.
+
+\subsection{Quasiperiodic diffraction and spectral fingerprints}\label{sec:falsifiability:diffraction}
+
+Regular model sets have pure-point diffraction under broad conditions, with Bragg peaks located on a Fourier module determined by the underlying lattice and the star map \cite{Hof1995,BaakeGrimm2013}. In the present context, this suggests:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item the \emph{geometric primitive} (CPS) constrains the locations of spectral lines;
+  \item the \emph{window} and its boundary regularity control peak intensities and continuous components.
+\end{itemize}
+Protocol-level falsification: given a proposed CPS and window family, simulate $\Lambda(W)$ on increasing finite patches and compute empirical diffraction; check convergence to the predicted module and intensity envelope.
+
+\begin{proposition}[P1: quasiperiodic spectral lines as a model-set signature]\label{prop:P1}
+If a visible 3D point set arises (to the accuracy of the protocol) from a regular cut-and-project model set, then its diffraction/structure factor is expected to be dominated by discrete Bragg peaks supported on a Fourier module determined by the superspace lattice and the star map. Variations of internal phase $u$ should produce structured phase shifts rather than uncorrelated drifts.
+\end{proposition}
+
+\subsection{Resolution-dependent visibility curves}\label{sec:falsifiability:visibility}
+
+Finite-resolution readout replaces sharp acceptance by kernels. This suggests a generic family of \emph{visibility curves}: as resolution increases (kernel narrows), interference-like contrast measures should change in predictable ways because more boundary structure becomes resolvable. One can operationalize this without committing to a specific physical interferometer:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item choose a resolution parameter $\epsilon$ controlling window fuzzification;
+  \item define a contrast statistic $V(\epsilon)$ based on the variance of readout intensities or on autocorrelation of symbolic sequences;
+  \item test whether $V(\epsilon)$ follows the scaling predicted by the window boundary geometry (e.g.\ via Minkowski content heuristics) and by the induced symbolic complexity.
+\end{itemize}
+While the precise scaling depends on the protocol, the key falsifiable content is \emph{monotone and scale-structured} dependence on $\epsilon$ with quasi-periodic modulation tied to the superspace module.
+
+\begin{proposition}[P2: golden-branch slopes as minimal-resonance protocols]\label{prop:P2}
+Under fixed resource constraints (finite scan depth and finite resolution), slopes/orientations that minimize resonance locking are expected to maximize equidistribution-quality indicators (e.g.\ discrepancy and gap statistics) among comparable complexity classes. This provides a statistical way to discriminate ``golden-branch'' protocols from other irrational slopes.
+\end{proposition}
+
+\subsection{Folding/degeneracy counts as discrete invariants}\label{sec:falsifiability:folding}
+
+Stabilization maps $\Fold_m$ induce a finite partition of raw readout words into stable types (Section~\ref{sec:stabilization}). Two robust invariants are:
+\begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=2pt]
+  \item the \emph{type count} $|X_m|$ (often Fibonacci for golden-mean constraints);
+  \item the \emph{degeneracy spectrum} $\{|\mathcal{F}_m(x)|: x\in X_m\}$.
+\end{enumerate}
+Protocol-level falsification: compute empirical frequencies of stabilized types and compare to the predicted maximum-entropy (or invariant-measure-induced) distribution; compare degeneracy counts across resolutions $m$ and check for renormalization relations (e.g.\ Fibonacci scaling under substitution).
+
+\begin{proposition}[P3: degeneracy histograms as reproducible combinatorial invariants]\label{prop:P3}
+Fix a stabilization rule $\Fold_m$ and a word length $m$. The multiset of fiber sizes $\{|\mathcal{F}_m(x)|:x\in X_m\}$ (the ``degeneracy histogram'') is a discrete, reproducible combinatorial invariant of the protocol. Platforms that share the same stabilization grammar and decoding rule should exhibit the same histogram when their raw records are recoded into stabilized types.
+\end{proposition}
+
+\subsection{Delayed-choice phenomena as protocol refactorization}\label{sec:falsifiability:delayed-choice}
+
+In many ``delayed-choice'' experimental narratives, changing the measurement setting after a signal has propagated appears to retroactively change the ``past'' behavior. In the readout-based framework, a conservative protocol-level explanation is available: the underlying object-level structure is static (or at least fixed during the run), while the measurement change modifies the \emph{readout operator} and hence the equivalence-class decomposition of the same underlying microstates.
+
+\begin{proposition}[P4: equivalence-class reallocation test]\label{prop:P4}
+Assume a delayed change of measurement corresponds to changing readout parameters (window/kernel/projection) and hence changing the induced stabilization map on recorded data. Then the observed statistical changes should be explainable by a computable reallocation of weights between stabilized types, subject to conservation constraints determined by the stabilization grammar (e.g.\ total weight conservation and reachability constraints on type-to-type transfers).
+\end{proposition}
+
+\subsection{Closed-loop adaptive observers and stability transitions}\label{sec:falsifiability:adaptive}
+
+A distinctive feature of protocol-based reconstruction is that the observer may be modeled as an adaptive system: parameters $\Theta$ are updated based on accumulated readout data. This makes it possible to formulate falsifiable convergence/phase-transition claims for the protocol itself, independent of any ontological randomness.
+
+\begin{proposition}[P5: observable convergence domains in adaptive protocols]\label{prop:P5}
+Suppose the observer updates its protocol parameters by approximately descending a mismatch functional (a loss defined on readout statistics). Then one expects the existence of empirically detectable convergence domains and transition boundaries: beyond a threshold of disturbance or resource constraints, the protocol exits a stable-type regime and enters a defect-accumulation regime, with measurable growth of mismatch and collapse of stabilized-type persistence.
+\end{proposition}
+
+\subsection{Minimal reproducible numerical protocol}\label{sec:falsifiability:protocol}
+
+To make the above fingerprints auditable, a minimal reproducible workflow is:
+\begin{enumerate}[label=\textbf{P\arabic*.},leftmargin=*,itemsep=2pt]
+  \item Specify CPS data $(E,H,\Gamma)$ and window family $W_\epsilon$ (including parameterization and boundary regularity assumptions).
+  \item Fix scan dynamics on internal space (e.g.\ $h_t=h_0+t\alpha$) and a readout map $R_\Theta$ (binary or multi-symbol).
+  \item Generate (i) finite patches of $\Lambda(W_\epsilon)$, and (ii) symbolic sequences of length $T$ for multiple phases $h_0$.
+  \item Compute: diffraction estimates, visibility statistics $V(\epsilon)$, symbolic complexity/entropy estimates, and stabilization counts for $\Fold_m$.
+  \item Compare to predicted invariants (Fourier module, scaling laws, Fibonacci counts, entropy rates) with error bars from finite-size effects.
+\end{enumerate}
+
+This protocol is intentionally agnostic about the physical interpretation; it is designed to test whether the \emph{geometric+protocol} chain yields stable, reproducible signatures.
+
+\subsection{Practical data strategy: finite-size effects and phase averaging}\label{sec:falsifiability:practice}
+
+Empirical tests of quasi-periodic and entropy-rate claims are sensitive to finite-size effects. A practical strategy is therefore to treat \emph{phase averaging} and \emph{scaling checks} as mandatory rather than optional:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Phase sampling}: repeat simulations (or experiments) for multiple internal phases $u$ and quantify phase-to-phase variance. For uniquely ergodic regimes, this variance should decay with sample size and reveal structured phase shifts rather than random drift.
+  \item \textbf{Window/resolution scaling}: vary window width $\epsilon$ and word length $m$ in controlled grids; distinguish monotone trends from quasi-periodic modulation by fitting across scales rather than at a single scale.
+  \item \textbf{Null-model controls}: compare against randomized phase shuffles or against rational approximants $\alpha_k=p_k/q_k$ to separate periodic-locking artifacts from genuinely quasi-periodic signatures.
+  \item \textbf{Error budgeting}: report uncertainties from finite patch size, finite scan length $T$, and finite discretization of windows/kernels; where possible, use bootstrap estimates on symbolic blocks to quantify entropy-rate estimator error.
+\end{itemize}
+
+These steps are essential if the results are to be persuasive to GRG reviewers: the core claims live at the level of invariant statistics, and invariants only become visible through careful control of finite-sample distortions.
+
+\subsection{A reproducibility checklist}\label{sec:falsifiability:repro}
+
+Because the claims in this review are primarily about invariant statistics and protocol-defined quantities, a minimal reproducibility checklist is particularly straightforward:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item Record the full protocol specification $\Theta$ (window family, resolution kernel, scan rule, stabilization rule $\Fold_m$, and all truncation conventions).
+  \item Fix random seeds whenever probabilistic readout is used (e.g.\ kernel-induced Bernoulli sampling) and report them.
+  \item Report the phase-sampling scheme (how $u$ or $h_0$ are chosen) and the number of phases used.
+  \item Provide the finite-size schedule (patch sizes, scan length $T$, and the range of $(m,\epsilon)$ tested) and show convergence trends rather than single-scale snapshots.
+  \item Archive raw outputs and post-processed statistics (diffraction estimates, entropy estimates, degeneracy histograms) in a form that allows independent recomputation.
+\end{itemize}
+Meeting these conditions is often sufficient to make disagreements about interpretation secondary: independent groups can at least verify whether the same geometry+protocol chain reproduces the same fingerprints.
+
+In particular, for review-style contributions such as the present one, reproducibility is best served by making the protocol explicit enough that a reader can implement it independently from scratch, without relying on undocumented conventions. This is also the most direct route to meaningful falsifiability: if the protocol cannot be reproduced, neither can the claimed invariants.
+

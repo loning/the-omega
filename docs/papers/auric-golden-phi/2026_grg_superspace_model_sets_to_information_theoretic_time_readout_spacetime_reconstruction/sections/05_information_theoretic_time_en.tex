@@ -1,0 +1,101 @@
+\section{Information-theoretic time from refinement}\label{sec:info-time}
+
+The protocol layer provides a discrete scan index $t\in\NN$, but that index should not be conflated with physical time. In geometry-first reconstruction programs, it is natural to seek a notion of time that arises from \emph{information acquisition}: as an observer conditions on longer observation prefixes, the set of internal states compatible with the observations shrinks. This refinement process can be quantified by entropy rates and, under ergodic hypotheses, yields an intrinsic ``arrow''.
+
+\subsection{Cylinder sets and posterior refinement}\label{sec:info-time:cylinders}
+
+Let $(H,\mathcal{B},\mu)$ be a probability space supporting the scan dynamics (e.g.\ a torus rotation factor), and let $R_\Theta:H\to\mathcal{A}$ be a measurable readout (Definition~\ref{def:readout}). For a length-$t$ observation prefix $a_{0:t-1}=(a_0,\dots,a_{t-1})$, define the corresponding cylinder set in $H$:
+\[
+C(a_{0:t-1}) := \{h\in H:\ R_\Theta(h_k)=a_k\ \text{for }k=0,\dots,t-1\},
+\]
+where $h_k$ denotes the internal state at scan step $k$.
+The posterior probability of this cylinder is $\mu(C(a_{0:t-1}))$, and refinement corresponds to decreasing $\mu(C(a_{0:t-1}))$ as $t$ grows for typical sequences.
+
+\subsection{Entropy rate and the SMB theorem}\label{sec:info-time:smb}
+
+Assume the scan dynamics is measure-preserving and ergodic, and the readout corresponds to a finite measurable partition $\mathcal{P}$ of $H$ (induced by $R_\Theta$). Let $\mathcal{P}^{(t)} := \bigvee_{k=0}^{t-1} T^{-k}\mathcal{P}$ be the join partition. The Shannon--McMillan--Breiman theorem states that for $\mu$-almost every $h\in H$,
+\[
+-\frac{1}{t}\log \mu\bigl(\mathcal{P}^{(t)}(h)\bigr)\ \longrightarrow\ h_\mu(T,\mathcal{P}),
+\]
+where $h_\mu(T,\mathcal{P})$ is the entropy rate of the partition, and the supremum over generating partitions yields the Kolmogorov--Sinai entropy $h_\mu(T)$ \cite{Walters1982,Petersen1983}.
+
+In the present context, $\mathcal{P}^{(t)}(h)$ is precisely the cylinder set determined by the first $t$ readout symbols produced from $h$. Thus the SMB theorem identifies an almost-sure exponential contraction rate of posterior cylinders.
+
+\subsection{Generating partitions and KS entropy}\label{sec:info-time:ks}
+
+The above statements depend on the choice of partition $\mathcal{P}$. The Kolmogorov--Sinai entropy is defined as
+\[
+h_\mu(T):=\sup_{\mathcal{P}} h_\mu(T,\mathcal{P}),
+\]
+where the supremum ranges over finite measurable partitions. If $\mathcal{P}$ is \emph{generating}, then $h_\mu(T)=h_\mu(T,\mathcal{P})$ \cite{Walters1982,Petersen1983}. In readout language, ``generating'' means that the symbolic stream separates almost all internal states up to null sets when observed for infinite time; for finite-resolution protocols this is a strong assumption, and in practice one often works with \emph{approximately generating} partitions.
+
+An equivalent and often more operational viewpoint uses conditional entropies of the symbol process $(A_t)$:
+\[
+h_\mu(T,\mathcal{P})=\lim_{t\to\infty} H(A_t\,|\,A_0,\dots,A_{t-1}),
+\]
+whenever the limit exists. This emphasizes that entropy-rate time can be estimated from data streams without reconstructing the underlying internal dynamics.
+
+\subsection{Protocol definition of time}\label{sec:info-time:definition}
+
+Motivated by this contraction behavior, we define an intrinsic protocol-time parameter as a monotone function of posterior refinement. One minimal choice is:
+
+\begin{definition}[Entropy-rate time (protocol time)]\label{def:entropy-time}
+Assume the SMB limit exists and is positive for the chosen protocol. Define the \emph{entropy-rate time} associated to an observation prefix of length $t$ by
+\[
+\tau(t) := -\log \mu(C(a_{0:t-1})).
+\]
+Under SMB hypotheses, $\tau(t)$ grows asymptotically linearly with slope $h_\mu(T,\mathcal{P})$ for $\mu$-typical internal states.
+\end{definition}
+
+\begin{proposition}[Exponential law for posterior contraction]\label{prop:exp-law}
+Under the assumptions of the SMB theorem for a generating partition, for $\mu$-almost every internal state,
+\[
+\lim_{t\to\infty}\frac{1}{t}\,\tau(t)=h_\mu(T).
+\]
+Equivalently, typical posterior cylinder measures satisfy $\mu(C(a_{0:t-1}))\approx e^{-t h_\mu(T)}$ up to subexponential corrections.
+\cite{Walters1982,Petersen1983}
+\end{proposition}
+
+This definition has two conceptual advantages for geometry-first reconstruction:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item It does not presuppose a continuous time parameter at the object layer; it is built from the \emph{conditioning structure} induced by readout.
+  \item It is quantitatively auditable: the slope is an entropy rate, and deviations from linear growth are measurable finite-sample effects.
+\end{itemize}
+
+\begin{corollary}[Protocol-level time arrow]\label{cor:time-arrow}
+In the setting of Proposition~\ref{prop:exp-law}, ``time increases'' is equivalent (within the protocol) to exponential shrinkage of posterior compatibility sets. The entropy rate controls the arrow quantitatively.
+\end{corollary}
+
+\subsubsection{Calibration and units}
+
+Definition~\ref{def:entropy-time} produces a dimensionless quantity (a negative log-probability). To compare with physical time scales one needs an additional calibration map, for example by fixing a unit of refinement depth per unit macroscopic time, or by relating $\tau$ to a measurable rate (e.g.\ a characteristic decay time of conditional uncertainty in an experimental setup). This calibration is intentionally external to the object layer: it is part of the protocol-to-physics interface and can be constrained (but not derived) by empirical input.
+
+\subsubsection{Estimating entropy rates from finite data}
+
+In practice, the entropy rate $h_\mu(T,\mathcal{P})$ (and hence the slope of $\tau(t)$) must be estimated from a finite symbolic record. Several estimators are standard in information theory and symbolic dynamics:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Block-entropy estimators}: estimate $H(A_0^{n-1})$ for increasing block lengths $n$ and extrapolate $H(A_0^{n-1})/n$; this is conceptually closest to the KS/SMB definitions but suffers from combinatorial explosion for large alphabets.
+  \item \textbf{Conditional-entropy estimators}: estimate $H(A_n\,|\,A_0^{n-1})$ for moderate $n$ and look for stabilization; this aligns with the interpretation of entropy rate as a refinement speed.
+  \item \textbf{Universal compression / Lempel--Ziv-type estimators}: infer entropy rates from compression lengths; these can be robust for long sequences but require careful control of nonstationarity and finite-size bias.
+\end{itemize}
+For GRG-facing applications, the key methodological point is that entropy-rate claims should be accompanied by an explicit estimator choice, a finite-size error assessment, and a phase-averaging strategy (Section~\ref{sec:falsifiability:practice}). A concise introduction to these estimation ideas can be found in standard information theory references \cite{CoverThomas2006}.
+
+\begin{remark}[Time fibers and ``future'' as unresolved uncertainty]\label{rem:future}
+At fixed resolution (word length $m$), stabilization induces time fibers $\mathcal{F}_m(x)=\Fold_m^{-1}(x)$ (Section~\ref{sec:stabilization:fibers}). Conditioning on longer observation prefixes corresponds to refining the observer's posterior \emph{within} these fibers. In this sense, what remains ``in the future'' of a protocol is the scale of residual uncertainty in the conditional distribution on the fiber (e.g.\ conditional entropy), rather than an additional ontological object. This viewpoint is useful when interfacing with relativistic language: it cleanly separates epistemic refinement from causal structure.
+\end{remark}
+
+\subsection{Ergodic reconstruction from a single trajectory}\label{sec:info-time:holography}
+
+Beyond entropy rates, ergodic theory supplies another important ingredient for ``auditable'' reconstruction: time averages along a typical orbit recover invariant statistics. Concretely, if $(H,\mu,T)$ is measure-preserving and ergodic, then Birkhoff's ergodic theorem implies that for any $f\in L^1(\mu)$,
+\[
+\frac{1}{T}\sum_{t=0}^{T-1} f(T^t h)\ \longrightarrow\ \int_H f\,\mathrm{d}\mu
+\quad\text{for }\mu\text{-almost every }h.
+\]
+\cite{Walters1982,Petersen1983}
+
+Applied to protocol-defined observables (e.g.\ $f(h)=M(x^{(m)}(h))$ or to information densities), this means that a sufficiently long single readout sequence can approximate the global invariant law. This is sometimes described as a ``pointwise holography'' principle: global statistical structure is recoverable from typical local data streams. In this review we only use the rigorous content (ergodic reconstruction) and treat the holography terminology as an interpretive metaphor.
+
+\subsection{What is (and is not) claimed}\label{sec:info-time:limits}
+
+Entropy-rate time is a protocol-level notion. It is \emph{not} automatically the same as proper time in a Lorentzian manifold or as time in a Hamiltonian quantum theory. What it provides is a disciplined way to talk about an arrow induced by information acquisition under finite-resolution readout. Any physical identification (e.g.\ mapping $\tau$ to a macroscopic time coordinate) must be made via an explicit interface and is therefore contingent on additional assumptions. This viewpoint will guide the causality discussion in the next section.
+

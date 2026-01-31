@@ -1,0 +1,76 @@
+\section{Causality interface and lightcone-boundary readout}\label{sec:causality}
+
+Geometry of spacetime is inseparable from causality: in classical general relativity, Lorentzian geometry encodes causal structure via null cones and their induced partial order. In reconstruction programs, the question becomes: \emph{what minimal structures produced by readout protocols can serve as a causality interface}, and under what assumptions can these structures be compared to (or embedded into) standard Lorentzian causal frameworks \cite{HawkingEllis1973,MinguzziSanchez2008}?
+
+\subsection{Protocol causality as an information constraint}\label{sec:causality:protocol}
+
+At the protocol layer we have:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item a refinement-induced arrow (Section~\ref{sec:info-time});
+  \item a family of posterior sets (cylinders) representing the observer's current epistemic state;
+  \item a readout mechanism determining which distinctions are operationally accessible.
+\end{itemize}
+
+These ingredients allow one to define a \emph{protocol causality} relation between events defined at the symbolic level (e.g.\ stabilized types, addresses, or observables extracted from fibers).
+
+\begin{definition}[Protocol causal precedence (interface definition)]\label{def:protocol-causality}
+Let $\mathcal{E}$ be a set of protocol events (e.g.\ cylinder sets, stabilized types, or derived observables). We say $e \prec_{\mathrm{prot}} f$ if, for every admissible protocol update consistent with the readout mechanism, establishing $f$ with nonzero confidence requires conditioning on information that refines (or is downstream of) the information required to establish $e$. Equivalently, $f$ is not decidable without passing through a refinement stage that already decides $e$.
+\end{definition}
+
+This definition is intentionally abstract: it separates (i) the mathematical content (a refinement/decision partial order) from (ii) any physical identification with causal precedence in spacetime.
+
+\subsection{Lightcone-boundary readout viewpoint}\label{sec:causality:lightcone}
+
+One concrete way the corpus motivates a causality interface is by analogy with boundary data problems: in Lorentzian geometry, information about fields propagates along null characteristics, and causal reconstruction is often phrased in terms of what can be inferred from data on (or near) null boundaries. Translating this into protocol language suggests:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item A \emph{visibility constraint}: only events whose defining data lie within a protocol-accessible boundary layer are decidable.
+  \item A \emph{finite-resolution horizon}: beyond a certain refinement depth, distinctions become inaccessible, inducing effective horizons (protocol-level, not geometric horizons).
+\end{itemize}
+
+In superspace readout models, the internal/physical split provides a natural ``boundary'' in the sense of accessible vs.\ inaccessible degrees of freedom: physical projections are visible; internal phases are only visible through readout. Lightcone language then becomes a controlled metaphor for a constraint on which refinements can influence which observables.
+
+More concretely, one may regard readout as a two-stage map
+\[
+\mathcal{R}_{\Theta}:\ \mathcal{S}\ \longrightarrow\ \mathcal{B}_{\Theta}\ \longrightarrow\ \mathcal{D},
+\]
+where $\mathcal{S}$ denotes the object-layer state/configuration space, $\mathcal{B}_{\Theta}$ a protocol-dependent boundary (or accessibility-filtered) data stream, and $\mathcal{D}$ the space of discrete records (symbols, stabilized types, or derived observables).
+The first arrow represents a causal accessibility constraint (only certain data---idealized as lying on or near a null boundary---can enter the record), while the second arrow represents finite-resolution encoding and stabilization. In this interface, a ``propagation speed'' constant is not interpreted as an ontological claim (``everything is light''), but as a calibration that relates protocol refinement depth to the geometry of the accessible set and constrains the shape of admissible information channels.
+
+\subsection{Interference-like structures as protocol effects}\label{sec:causality:interference}
+
+Cut-and-project mappings can produce interference-like textures when a finite-width readout kernel aggregates multiple microscopic classes into a single macroscopic output. At low resolution (wide kernels), many microstates remain indistinguishable and the output tends to exhibit smooth, stripe-like, or moir\'e-like quasi-periodic modulations. At high resolution (narrow kernels), those equivalence classes split and the output becomes more event-like and discrete. This provides a protocol-level distinction between ``wave-like'' and ``particle-like'' appearances without attributing stochasticity to the object layer: the contrast is induced by the degeneracy structure of stabilization (fibers) together with the kernel width.
+
+\subsection{Noncommutativity and complementarity at the protocol layer}\label{sec:causality:complementarity}
+
+Several readout-based constructions formalize a complementarity tradeoff by modeling scanning and readout localization as generated by noncommuting operators. A prototypical assumption is that a shift operator $U$ (scan advance) and a phase/localization operator $V$ satisfy a Weyl-type relation
+\[
+UV=e^{2\pi i \alpha}VU.
+\]
+ \cite{Weyl1931,vonNeumann1932}
+At the protocol layer, this can be translated into a statement that one cannot simultaneously optimize ``scan localization'' and ``readout localization'' without incurring irreducible mismatch. Operationally, such mismatch can be expressed as a lower bound on statistical distinguishability or on sample complexity for joint estimation tasks. Importantly, this complementarity is a protocol effect: it constrains what the observer can extract under a single protocol and does not require adding stochasticity at the object layer.
+
+\subsection{Delayed choice as a change of factorization}\label{sec:causality:delayed-choice}
+
+The readout viewpoint also suggests a clean way to discuss delayed-choice-type scenarios. Suppose a run produces a raw record (or a boundary data stream) and only later the experimenter changes a setting that, in protocol terms, corresponds to changing $\Theta$ (window/kernel/projection parameters) and hence changing the stabilization/canonicalization map applied to the record. Then the ``same'' underlying run can be reinterpreted as belonging to different stabilized types because the equivalence relation induced by $\Fold_m$ has changed.
+
+In this framing, no retrocausal influence on the object layer is required: what changes is the \emph{protocol decomposition} of a fixed underlying structure into equivalence classes. This is precisely the mechanism behind Proposition~\ref{prop:P4}. For GRG readers, the value of this reframing is that it turns a potentially interpretive debate into a concrete, testable statement about computable re-factorization of records under controlled parameter changes.
+
+\subsection{Compatibility with Lorentzian causal structure (what would be needed)}\label{sec:causality:compatibility}
+
+To compare $\prec_{\mathrm{prot}}$ with Lorentzian causality, one needs an additional interface mapping protocol events into spacetime-localized events. A conservative set of requirements would include:
+\begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=2pt]
+  \item a map $\Phi:\mathcal{E}\to \mathcal{P}(M)$ into subsets of a manifold $M$ (or into an event algebra on $M$);
+  \item a chosen Lorentzian metric (or at least a conformal class) on $M$ defining $J^\pm$;
+  \item an assumption relating protocol refinement depth to geometric localization (``deeper refinement implies smaller spacetime support'').
+\end{enumerate}
+
+Only after such choices can one meaningfully ask whether
+\[
+e\prec_{\mathrm{prot}} f \quad\Rightarrow\quad \Phi(e)\subseteq J^-(\Phi(f)),
+\]
+or conversely whether geometric causality constraints enforce bounds on achievable protocol refinement. In the context of this review, we emphasize that establishing these implications is a \emph{research program}, not a completed claim.
+
+\subsection{Takeaway}\label{sec:causality:takeaway}
+
+The readout-based framework naturally yields a partial order of \emph{decidability under refinement}. This is a plausible candidate for a causality interface because it encodes what information can influence what, given finite resolution and constrained access to internal degrees of freedom. The challenge is to develop rigorous interfaces to Lorentzian geometry and to quantum causal structures; we list concrete open questions in Section~\ref{sec:discussion}.
+

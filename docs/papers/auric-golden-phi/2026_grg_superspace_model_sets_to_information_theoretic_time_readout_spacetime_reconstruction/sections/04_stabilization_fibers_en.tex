@@ -1,0 +1,142 @@
+\section{Stabilization, canonical forms, and fibers}\label{sec:stabilization}
+
+Finite-resolution readout produces symbolic data, but not all symbolic representations are equally stable under small protocol perturbations (e.g.\ window shifts, boundary fuzzification, or finite sampling depth). A recurring motif in the underlying corpus is the introduction of a \emph{stabilization} or \emph{canonicalization} map that compresses raw readout words into a smaller, structurally constrained language. This compression induces preimage fibers that naturally represent ``unresolved degrees of freedom'' at a given resolution.
+
+\subsection{Golden-mean language as a stability constraint}\label{sec:stabilization:golden-mean}
+
+Among the simplest and most robust constraints on binary words is the \emph{no-adjacent-ones} rule, which defines the golden-mean subshift. Let $\mathcal{A}=\{0,1\}$ and let $\mathcal{A}^m$ be the set of binary words of length $m$.
+
+\begin{definition}[Golden-mean legal language]\label{def:Xm}
+Let $X_m\subset \{0,1\}^m$ be the set of words with no occurrence of the substring $11$. Equivalently,
+\[
+X_m := \{w\in\{0,1\}^m:\ \text{for all }i,\ (w_i,w_{i+1})\neq (1,1)\}.
+\]
+\end{definition}
+
+It is classical that $|X_m| = F_{m+2}$, where $F_k$ are Fibonacci numbers \cite{Lothaire2002}. This counting identity is one reason why ``golden'' language constraints align naturally with Sturmian/Fibonacci renormalization structures.
+
+\subsection{Zeckendorf normal forms and stability}\label{sec:stabilization:zeckendorf}
+
+The golden-mean constraint has a canonical arithmetic incarnation: \emph{Zeckendorf normal form}. It provides a principled way to interpret ``no adjacent ones'' as a uniqueness/stability condition rather than an ad hoc rule.
+
+\begin{definition}[Zeckendorf representation]\label{def:zeckendorf}
+Let $(F_k)_{k\ge 1}$ be the Fibonacci sequence with $F_1=1$, $F_2=2$, and $F_{k+2}=F_{k+1}+F_k$. A \emph{Zeckendorf representation} of a nonnegative integer $N$ is an expansion
+\[
+N=\sum_{k\ge 1}\varepsilon_k F_k,\qquad \varepsilon_k\in\{0,1\},
+\]
+with the constraint $\varepsilon_k\varepsilon_{k+1}=0$ for all $k$ (no adjacent ones).
+\end{definition}
+
+\begin{proposition}[Zeckendorf theorem]\label{prop:zeckendorf}
+Every integer $N\ge 0$ has a unique Zeckendorf representation (Definition~\ref{def:zeckendorf}).
+\cite{Lothaire2002}
+\end{proposition}
+
+In readout-based reconstruction, Zeckendorf-type constraints play two roles:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Canonicalization}: they provide a canonical normal form against which raw words can be stabilized.
+  \item \textbf{Robustness}: small protocol perturbations tend to redistribute mass \emph{within} fibers (preimages of a stable type) rather than change the stable type itself, producing reproducible statistics.
+\end{itemize}
+
+\subsection{Canonicalization maps and Fold-type stabilization}\label{sec:stabilization:fold}
+
+In general, we model stabilization as a map from raw readout words into a constrained language:
+
+\begin{definition}[Stabilization map]\label{def:fold}
+Fix a word length $m$ and a target language $X_m\subset \mathcal{A}^m$. A \emph{stabilization map} is a surjection
+\[
+\Fold_m : \mathcal{A}^m \twoheadrightarrow X_m.
+\]
+For $x\in X_m$, the \emph{fiber} over $x$ is the preimage
+\[
+\mathcal{F}_m(x) := \Fold_m^{-1}(x) \subset \mathcal{A}^m.
+\]
+\end{definition}
+
+The specific construction of $\Fold_m$ varies across contexts (e.g.\ Zeckendorf normalization, constrained decoding, or greedy rewriting), but the key structural point is that $\Fold_m$ is \emph{computable} and induces a finite partition of raw words into stable equivalence classes. The induced fiber cardinalities provide a ``degeneracy spectrum'' at resolution $m$.
+
+\subsubsection{One canonical construction: Zeckendorf normalization at fixed depth}
+
+One concrete way to build $\Fold_m$ on binary words is:
+\begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=2pt]
+  \item interpret a raw word $w\in\{0,1\}^m$ as a truncated Fibonacci-base expansion (a finite ``numeral'');
+  \item map it to the underlying integer $N(w)$ (using the Fibonacci weights);
+  \item take the unique Zeckendorf representation of $N(w)$ (Proposition~\ref{prop:zeckendorf});
+  \item output the length-$m$ prefix of that representation (or an agreed fixed-depth truncation rule).
+\end{enumerate}
+This defines a deterministic, computable stabilization map whose image lies in the golden-mean language by construction. The price paid is that $\Fold_m$ depends on a truncation convention; in applications, such conventions are part of the protocol specification.
+
+\subsubsection{Compression at small depths}
+
+Even at modest depths, the compression induced by golden-mean stabilization is substantial. For example, at $m=6$ one has $2^6=64$ raw micro-words but only $|X_6|=F_8=21$ stabilized types. This gap is not an artifact of a particular algorithm: it is forced by the combinatorics of the target language and reflects a genuine many-to-one quotient induced by finite-resolution stability constraints.
+
+\begin{proposition}[Compression count]\label{prop:fold-count}
+For $\mathcal{A}=\{0,1\}$ and target language $X_m$ as in Definition~\ref{def:Xm}, any surjective $\Fold_m : \{0,1\}^m \twoheadrightarrow X_m$ satisfies
+\[
+|\{0,1\}^m| = 2^m,\qquad |X_m| = F_{m+2},
+\]
+so the stabilization necessarily collapses $2^m$ raw micro-words into $F_{m+2}$ stable types.
+\end{proposition}
+
+\subsection{Fibers as unresolved degrees of freedom}\label{sec:stabilization:fibers}
+
+The fiber viewpoint is central for later defining time and causality interfaces. Intuitively, a fiber $\mathcal{F}_m(x)$ consists of all microscopic readout words that are \emph{indistinguishable} at the stabilized level. If the stabilized type $x$ is what the protocol records (or can reliably reproduce), then the fiber records what the protocol \emph{cannot} resolve at that depth.
+
+Following the terminology used in the source corpus, we will also call $\mathcal{F}_m(x)$ a \emph{time fiber}: it is the preimage structure induced by the stabilization kernel at fixed resolution, and it is the basic object whose refinement under increasing observation depth will define information-theoretic time.
+
+In more geometric terms, one can interpret $\Fold_m$ as a coarse-graining operator on a sigma-algebra generated by finite-depth observations: the stabilized symbol $x$ determines a cylinder set, and the fiber describes the multiplicity of microscopic histories consistent with that stabilized cylinder.
+
+\subsection{A reusable proposition template: readout to stabilization to fibers}\label{sec:stabilization:template}
+
+For later use, we state a generic template that can be instantiated in the superspace readout setting.
+
+\begin{proposition}[Protocol-induced fiber partition (template)]\label{prop:fiber-template}
+Let $R_\Theta$ be a finite-resolution readout map (Definition~\ref{def:readout}) producing length-$m$ words in $\mathcal{A}^m$, and let $\Fold_m$ be a stabilization map (Definition~\ref{def:fold}). Then the composite
+\[
+\mathcal{A}^m \xleftarrow{\ R_\Theta\ } H \xrightarrow{\ \Fold_m\circ R_\Theta\ } X_m
+\]
+induces a partition of internal states into \emph{stabilized fibers}
+\[
+\widetilde{\mathcal{F}}_m(x) := \{h\in H:\ (\Fold_m\circ R_\Theta)(h)=x\}.
+\]
+If the scan process on $H$ is ergodic, then fiber frequencies and entropy rates are almost-sure invariants of the protocol up to null sets.
+\end{proposition}
+
+\subsection{From fibers to observables: statistics and derived quantities}\label{sec:stabilization:observables}
+
+To connect stabilization/fibers to spacetime language, one needs a notion of \emph{observable} defined from readout data. A conservative geometry-first position is to define observables as functionals of fiber statistics and of the induced symbolic dynamics, rather than to assign intrinsic labels to stabilized types.
+
+\subsubsection{A ``no intrinsic labels'' constraint}
+
+One may impose a structural constraint that stabilized types $x\in X_m$ carry no directly observable intrinsic labels. Under such a constraint, all observables must be derived from how types are connected by the protocol dynamics (transition statistics, hitting times, and information rates). This mirrors a common theme in background-independent approaches: relational information is primary.
+
+\subsubsection{Transition kernels and successor sets}
+
+Let $x_t^{(m)}$ denote the stabilized type observed at scan step $t$ (e.g.\ the image under $\Fold_m$ of the current length-$m$ raw readout word). Define the empirical (or invariant) transition kernel
+\[
+P(y\mid x) := \mathbb{P}\bigl(x_{t+1}^{(m)}=y\mid x_t^{(m)}=x\bigr),
+\]
+and the successor set
+\[
+\mathrm{Succ}(x):=\{y\in X_m:\ P(y\mid x)>0\}.
+\]
+These objects are protocol-defined and can be estimated from stabilized sequences. They provide an adjacency structure that can be viewed as a directed graph on the stabilized types.
+
+\subsubsection{Incidence graphs (Levi-type views) and ``fiber-first'' discovery}
+
+Beyond the directed transition graph on $X_m$, one can also represent the relation between stabilized types and their fibers as an incidence structure. Consider a bipartite graph with one part given by stabilized types $X_m$ and the other part given by a chosen family of fiber summaries (e.g.\ fibers themselves, or statistics derived from them). An edge encodes incidence (``this type is associated to this fiber summary''). Such incidence graphs are often called Levi graphs in combinatorics \cite{Diestel2017}.
+
+This viewpoint supports a ``fiber-first'' discovery narrative: rather than assuming that node labels carry physical meaning, one treats fiber statistics as primary and grows the set of recognized types by closure under incidence/adjacency operators. While this is not needed for the core definitions in this review, it provides a disciplined graph-theoretic language for discussing how an observer may build up an effective state space from relational data alone.
+
+\subsubsection{Example observables from fiber statistics}
+
+Without committing to physical interpretation, the following derived quantities are natural and testable:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Local entropy / branching}: $H(P(\cdot\mid x))$ or $\log|\mathrm{Succ}(x)|$, measuring how many future stabilized types remain compatible with being at $x$.
+  \item \textbf{Return and hitting times}: for $x,y\in X_m$, define the (conditional) expected hitting time
+  \[
+  \tau(x\to y):=\mathbb{E}\!\left[\inf\{n\ge 1:\ x_{t+n}^{(m)}=y\}\,\middle|\,x_t^{(m)}=x\right].
+  \]
+\end{itemize}
+In the source corpus motivating this review, such quantities are used as building blocks for ``mass-like'' or ``delay-like'' indicators, precisely because they are fully defined in terms of observable statistics and do not require attaching ontological meaning to nodes.
+

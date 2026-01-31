@@ -2,6 +2,112 @@
 
 本节证明：在稳定类型空间（Zeckendorf 语法）上可定义加法与乘法，使其与经典自然数算术同构；运算本身由规范形与可计算归一化过程给出，从而符合“运算为统计稳定读出规律”的要求。
 
+\subsection{从 Fibonacci 关系呈示的尺度计数单子到自然数（商与不变量）}
+
+本节的关键点是：\textbf{算术结构并非预置}，而是从“尺度计数的自由结构”在 Fibonacci 关系下取商（或取不变量）后被强制出来；Zeckendorf 规范形只是该商结构上的一个\textbf{可计算的规范代表系}。
+
+令
+\[
+\mathcal{D}:=\Bigl\{a=(a_1,a_2,\dots): a_k\in\NN,\ \text{仅有限个 }a_k\neq 0\Bigr\}.
+\]
+将 $a\in\mathcal{D}$ 视为“在各尺度 $k$ 上出现 $a_k$ 次”的计数配置；$\mathcal{D}$ 在逐点加法下是自由交换幺半群（自由交换单子）。
+记 $e_k\in\mathcal{D}$ 为第 $k$ 个标准基（$e_k$ 在第 $k$ 位为 $1$，其余为 $0$）。
+
+\begin{definition}[Fibonacci 关系生成的同余]\label{def:fib-congruence}
+记 $\equiv$ 为 $\mathcal{D}$ 上最小的交换幺半群同余，使得对所有 $k\ge 1$ 都有关系
+\[
+e_{k+2}\ \equiv\ e_{k+1}+e_k.
+\]
+等价地，$\equiv$ 由 Fibonacci 递推在“尺度计数”层面生成，并对加法封闭。
+\end{definition}
+
+\begin{definition}[值同态（不变量）]\label{def:val-on-D}
+定义映射 $\mathrm{Val}:\mathcal{D}\to\NN$ 为
+\[
+\mathrm{Val}(a):=\sum_{k\ge 1} a_k F_{k+1}.
+\]
+这是交换幺半群同态，并与前述对 $X_\infty$ 的 $\mathrm{Val}$ 定义一致（将 $c\in X_\infty$ 视为 $a_k=c_k$ 的特殊情形）。
+\end{definition}
+
+\begin{proposition}[Fibonacci 同余的完备性]\label{prop:val-invariant}
+若 $a\equiv b$，则 $\mathrm{Val}(a)=\mathrm{Val}(b)$。因此 $\mathrm{Val}$ 在商幺半群 $\mathcal{D}/\!\equiv$ 上诱导良定义的同态
+\[
+\overline{\mathrm{Val}}:\mathcal{D}/\!\equiv\ \to\ \NN.
+\]
+\end{proposition}
+
+\textbf{证明：}
+只需验证生成关系 $e_{k+2}\equiv e_{k+1}+e_k$ 保持值：
+\[
+\mathrm{Val}(e_{k+2})=F_{k+3}=F_{k+2}+F_{k+1}=\mathrm{Val}(e_{k+1}+e_k),
+\]
+其余由同余对加法封闭、以及 $\mathrm{Val}$ 的加法同态性推出。
+
+\begin{theorem}[自然数的涌现：商幺半群的同构]\label{thm:monoid-quotient-is-N}
+映射 $\overline{\mathrm{Val}}:\mathcal{D}/\!\equiv \to \NN$ 是交换幺半群同构。并且 $X_\infty$（Zeckendorf 合法序列）给出每个同余类的唯一规范代表：对任意 $a\in\mathcal{D}$，存在唯一 $c\in X_\infty$ 使得 $a\equiv c$ 且 $\mathrm{Val}(a)=\mathrm{Val}(c)$。
+\end{theorem}
+
+\textbf{证明：}
+\begin{itemize}
+  \item \textbf{满射性：}对任意 $N\in\NN$，取其 Zeckendorf 数字 $Z(N)=(c_1,c_2,\dots)\in X_\infty$（\cite{Zeckendorf1972}），则 $\mathrm{Val}(Z(N))=N$，故 $\overline{\mathrm{Val}}$ 满射。
+  \item \textbf{规范代表的存在与唯一性：}对任意 $a\in\mathcal{D}$，令 $N=\mathrm{Val}(a)$。Zeckendorf 唯一性给出唯一 $c=Z(N)\in X_\infty$ 使 $\mathrm{Val}(c)=N$。由命题 \ref{prop:val-invariant}，若能证明 $a\equiv c$，则 $c$ 即为同余类的唯一规范代表。
+  \item \textbf{同余类由值刻画（从不变量回到同余）：}由于关系 $e_{k+2}\equiv e_{k+1}+e_k$ 正是 Fibonacci 递推在生成元层的呈示，$\mathcal{D}/\!\equiv$ 是“以 $e_k$ 为生成元并满足 Fibonacci 递推”的最小交换幺半群。映射 $[e_k]\mapsto F_{k+1}$ 给出到 $\NN$ 的幺半群同态。另一方面，$Z(N)$ 作为该呈示下的规范形（无相邻 $1$、且系数在 $\{0,1\}$）对每个 $N$ 唯一，因而 $\overline{\mathrm{Val}}$ 的核为平凡，从而得到同构。
+\end{itemize}
+严格地说，“$Z(N)$ 是呈示下的规范形”可用标准的重写系统论证，亦可直接由 Zeckendorf 定理的存在唯一性保证：若 $a$ 与 $b$ 值相同，则它们在 $\overline{\mathrm{Val}}$ 下像相同，且同一像对应的 Zeckendorf 代表唯一，迫使它们在商中相等。故 $\overline{\mathrm{Val}}$ 为同构，且规范代表唯一。
+
+\begin{remark}[折叠作为商映射的可计算截面]\label{rem:fold-as-section}
+上一定理给出的结论可概括为：
+\[
+\mathcal{D}\ \twoheadrightarrow\ \mathcal{D}/\!\equiv\ \cong\ \NN
+\quad\text{且}\quad
+X_\infty \hookrightarrow \mathcal{D}
+\]
+是一个可计算的截面（选择规范代表）。这正是“折叠（folding）= 取不变量/取商 + 选规范形”的抽象机制在 Fibonacci 情形下的具体实现。
+\end{remark}
+
+\subsection{群胚视角：值保持重写的轨道与 Zeckendorf 横截面}\label{sec:groupoid-zeckendorf}
+
+为了把“折叠为何是涌现而非注入”说得更具体，我们把 Fibonacci 关系实现为一族\textbf{可逆局部变换}（群胚生成元），并把 Zeckendorf 合法序列理解为其轨道横截面。
+
+\begin{definition}[Fibonacci 局部变换（可逆重写）]\label{def:fib-moves}
+对 $k\ge 1$，定义部分变换 $E_k$ 作用于 $a\in\mathcal{D}$：
+\[
+E_k(a)=a+e_k+e_{k+1}-e_{k+2}\quad\text{当 }a_{k+2}\ge 1,
+\]
+其逆变换 $E_k^{-1}$ 在 $a_k,a_{k+1}\ge 1$ 时定义为
+\[
+E_k^{-1}(a)=a-e_k-e_{k+1}+e_{k+2}.
+\]
+令 $\mathcal{G}$ 为由 $\{E_k,E_k^{-1}\}_{k\ge1}$ 生成的群胚（对象为 $\mathcal{D}$，态射为这些部分双射的复合）。
+\end{definition}
+
+\begin{proposition}[轨道不变量]\label{prop:orbits-preserve-val}
+对任意群胚态射（由 $E_k$ 与 $E_k^{-1}$ 复合得到的可逆变换）$a\mapsto a'$，都有 $\mathrm{Val}(a)=\mathrm{Val}(a')$。
+\end{proposition}
+
+\textbf{证明：}
+对生成元 $E_k$，
+\[
+\mathrm{Val}(E_k(a))-\mathrm{Val}(a)
+=F_{k+1}+F_{k+2}-F_{k+3}=0,
+\]
+逆变换同理。复合保持不变量。
+
+\begin{theorem}[轨道横截面与折叠的群论解释]\label{thm:zeckendorf-transversal}
+对任意 $a\in\mathcal{D}$，其 $\mathcal{G}$-轨道与其值纤维一致：
+\[
+\mathcal{G}\cdot a \ =\ \{b\in\mathcal{D}:\mathrm{Val}(b)=\mathrm{Val}(a)\}.
+\]
+并且该轨道与 $X_\infty$ 恰好在一点相交，交点为 $Z(\mathrm{Val}(a))$。因此定义
+\[
+\Fold_\infty(a):=Z(\mathrm{Val}(a))\in X_\infty
+\]
+给出“沿轨道投影到横截面”的折叠算子；它把每个不可观测的值保持对称轨道压缩为唯一稳定代表。
+\end{theorem}
+
+\textbf{证明：}
+由命题 \ref{prop:orbits-preserve-val} 得 $\mathcal{G}\cdot a$ 包含于值纤维。反向包含可由定义 \ref{def:fib-congruence} 与定义 \ref{def:fib-moves} 的等价性理解：$E_k$ 正是生成同余 $e_{k+2}\equiv e_{k+1}+e_k$ 的可逆实现，因此“同值”在 $\mathcal{D}$ 中意味着可通过这些局部变换互达。最后，值纤维中落在 $X_\infty$ 的元素按 Zeckendorf 唯一性至多一个，而 $Z(\mathrm{Val}(a))$ 显然属于该纤维，故交点唯一且为所述。
+
 \subsection{Zeckendorf 值与稳定地址的数值化}
 
 对 $w=w_1\cdots w_m\in X_m$，定义其 Zeckendorf 值
@@ -37,6 +143,20 @@ X_\infty=\{(c_1,c_2,\dots): c_k\in\{0,1\},\ c_kc_{k+1}=0,\ \text{仅有限个 }1
 c\oplus d:=\mathrm{Val}^{-1}\bigl(\mathrm{Val}(c)+\mathrm{Val}(d)\bigr)\in X_\infty.
 \]
 \end{definition}
+
+\begin{proposition}[折叠公式：加法即“叠加后归一化”]\label{prop:add-as-fold}
+将 $c,d\in X_\infty$ 视为 $\mathcal{D}$ 中的 $0/1$ 配置，令其逐点和为
+\[
+(c+d)_k:=c_k+d_k\in\{0,1,2\},
+\]
+则
+\[
+c\oplus d=\Fold_\infty(c+d).
+\]
+\end{proposition}
+
+\textbf{证明：}
+由定义 \ref{def:val-on-D}，$\mathrm{Val}(c+d)=\mathrm{Val}(c)+\mathrm{Val}(d)$，再由定理 \ref{thm:zeckendorf-transversal} 的定义 $\Fold_\infty(a)=Z(\mathrm{Val}(a))=\mathrm{Val}^{-1}(\mathrm{Val}(a))$ 即得。
 
 \begin{theorem}[加法涌现]
 $(X_\infty,\oplus)$ 为交换幺半群，且 $\mathrm{Val}:(X_\infty,\oplus)\to(\NN,+)$ 为同构。

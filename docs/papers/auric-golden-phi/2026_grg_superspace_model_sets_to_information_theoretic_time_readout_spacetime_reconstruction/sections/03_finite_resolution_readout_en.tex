@@ -1,0 +1,132 @@
+\section{Finite-resolution readout as an operator/protocol}\label{sec:readout}
+
+Model sets provide a geometric mechanism for generating a (possibly infinite) aperiodic pattern in physical space. To speak about \emph{observation}, however, we must specify how a finite agent extracts information from the underlying geometric object. In this review, ``readout'' is not a metaphor: it is a well-defined map (or family of maps) that produces symbolic data from continuous degrees of freedom, parameterized by resolution.
+
+\subsection{Observer parameters}\label{sec:readout:params}
+
+At the protocol layer we package the observer's choices into a parameter tuple
+\[
+\Theta := (\text{orientation},\ \text{internal phase},\ \text{window},\ \text{resolution kernel},\ \text{scan rule}).
+\]
+Different papers in the underlying corpus emphasize different subsets of $\Theta$, but the common structure is that $\Theta$ determines:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item which degrees of freedom are treated as ``internal'' and hence unobserved except through projection;
+  \item which subset of internal space counts as ``accepted'' (the window);
+  \item how sharply the window boundary is resolved (finite resolution);
+  \item how the internal phase is sampled over time (scan).
+\end{itemize}
+
+\subsection{Readout maps and coarse-graining}\label{sec:readout:maps}
+
+Let $(E,H,\Gamma)$ be a CPS. A minimal abstract formalization of readout is:
+
+\begin{definition}[Finite-resolution readout]\label{def:readout}
+Fix a measurable map $R_\Theta : H \to \mathcal{A}$ into a finite alphabet $\mathcal{A}$, depending on protocol parameters $\Theta$. Given a scan sequence $(h_t)_{t\in \NN}\subset H$ (typically $h_t = h_0 + t\alpha$ for some $\alpha\in H$), the \emph{readout process} is the symbolic sequence
+\[
+a_t := R_\Theta(h_t)\in \mathcal{A}.
+\]
+\end{definition}
+
+This level of abstraction makes it clear what is \emph{not} assumed: we do not assume a physical time variable at the object layer. The index $t$ is a protocol counter (a discrete scan step). ``Time'' will be defined later as an emergent notion from the refinement behavior of posteriors conditioned on prefixes $(a_0,\dots,a_{t-1})$.
+
+\subsection{Internal phase dynamics on compact Abelian groups}\label{sec:readout:internal-phase}
+
+In cut-and-project settings, the internal phase is naturally modeled on a compact Abelian group obtained by quotienting the internal space by the projected lattice. Concretely, for a CPS with internal space $H$ and projected lattice $\pi_H(\Gamma)\subset H$, one can form the compact group
+\[
+\TT_\perp := H / \pi_H(\Gamma),
+\]
+and model internal-phase evolution by a translation:
+\[
+u_{t+1}=u_t+\beta,\qquad \beta\in \TT_\perp.
+\]
+This is a canonical object-layer dynamics: it is measure-preserving and its ergodic properties depend on arithmetic properties of $\beta$.
+
+For protocol purposes, it is often useful to extract a low-dimensional factor from $\TT_\perp$. A (continuous) group homomorphism or measurable factor map $\phi:\TT_\perp\to\TT^1$ yields a one-dimensional factor $\theta_t=\phi(u_t)$ satisfying a circle rotation
+\[
+\theta_{t+1}=\theta_t+\alpha\ (\mathrm{mod}\ 1),
+\qquad \alpha:=\phi(\beta)\in\TT^1.
+\]
+This factorization is the mathematical underpinning for why Sturmian/Fibonacci symbolic layers repeatedly appear in finite-resolution readout models.
+
+\subsection{A canonical example: rotations and Sturmian codings}\label{sec:readout:sturmian}
+
+The most elementary and influential example is the coding of an irrational rotation on the circle by a two-interval partition \cite{Queffelec2010}.
+Let $\TT := \RR/\ZZ$ and let $T_\alpha(x)=x+\alpha \ (\mathrm{mod}\ 1)$ with $\alpha \notin \QQ$. Fix an interval $I\subset \TT$ and define
+\[
+R(x) :=
+\begin{cases}
+1,& x\in I,\\
+0,& x\notin I.
+\end{cases}
+\]
+Then the sequence $a_t = R(T_\alpha^t(x_0))$ is a \emph{mechanical word}; for irrational $\alpha$ it is Sturmian, with minimal subword complexity $p(n)=n+1$. In the corpus synthesized here, this construction appears as a ``one-dimensional factor'' of higher-dimensional readout: finite-resolution access to internal degrees of freedom can collapse to an effective circle rotation, whose binary coding provides a disciplined symbolic layer.
+
+\begin{proposition}[Minimal complexity of Sturmian codings]\label{prop:sturmian-complexity}
+Let $\alpha\notin\QQ$ and let $R$ be a two-interval coding of the rotation $T_\alpha$ that avoids degenerate endpoint cases. Then the resulting bi-infinite (or one-sided) word is Sturmian and has factor complexity
+\[
+p(n)=n+1\qquad\text{for all }n\ge 1.
+\]
+\cite{Queffelec2010,Lothaire2002}
+\end{proposition}
+
+\subsection{Ring factors and rational approximation hierarchies}\label{sec:readout:ring-factor}
+
+In higher-dimensional superspace models, internal dynamics and readout do not generally reduce to a single circle. However, it is common (and often physically motivated by finite resources) that a dominant contribution to the readout statistics is controlled by a low-dimensional factor, frequently a one-dimensional torus factor (a ``ring factor'') supporting a rotation by a slope parameter $\alpha$.
+
+\begin{proposition}[Periodic vs.\ dense scans on a circle]\label{prop:circle-periodic-dense}
+Let $T_\alpha:\TT\to\TT$ be the rotation $x\mapsto x+\alpha \ (\mathrm{mod}\ 1)$.
+\begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=2pt]
+  \item If $\alpha\in\QQ$, every orbit of $T_\alpha$ is periodic.
+  \item If $\alpha\notin\QQ$, every orbit of $T_\alpha$ is dense and $(\TT,T_\alpha)$ is uniquely ergodic.
+\end{enumerate}
+\cite{Walters1982}
+\end{proposition}
+
+Finite observation time and finite arithmetic precision force irrational slopes to be accessed through rational approximants. The continued fraction expansion of $\alpha$ produces a canonical approximation sequence $p_k/q_k\to\alpha$, and many ``renormalization'' features of symbolic codings (including Sturmian/Fibonacci self-similarity) can be read off from these approximants \cite{Queffelec2010}.
+
+\begin{assumption}[Finite-resource approximation principle]\label{assump:finite-resource}
+Under finite computation and finite memory, the protocol cannot realize an irrational rotation parameter $\alpha$ with infinite precision. The effectively realizable parameters form an approximation hierarchy given by convergents $\alpha_k=p_k/q_k$ from the continued fraction expansion of $\alpha$, so that over finite time windows the scan can be approximated by a periodic orbit of period $q_k$.
+\end{assumption}
+
+For ``golden-branch'' protocols, one often focuses on slopes whose continued fraction coefficients are all $1$ (up to fractional linear transformations), yielding Fibonacci-type Sturmian sequences. This choice is singled out by extremal Diophantine properties and leads to particularly simple renormalization structures \cite{KuipersNiederreiter1974,Queffelec2010}.
+
+This is the protocol-level counterpart of the geometric rational/irrational dichotomy discussed in Section~\ref{sec:superspace:rational-irrational}: rational approximants correspond to periodic scans and typically yield periodic-looking finite readouts, while the irrational limit yields dense scans with stable long-run frequencies.
+
+\subsection{Discrepancy and gap statistics as finite-resource diagnostics}\label{sec:readout:discrepancy}
+
+Because observers only see finite prefixes, it is useful to have quantitative diagnostics for how ``uniform'' a scan looks at finite depth. Two classical diagnostics for circle rotations are:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Discrepancy} of the orbit segment $\{x_0, x_0+\alpha,\dots,x_0+(T-1)\alpha\}$, measuring deviations from uniform distribution of the empirical measure;
+  \item \textbf{Gap statistics} of the ordered orbit points, including the three-gap theorem structure.
+\end{itemize}
+These diagnostics are controlled by the continued-fraction coefficients of $\alpha$ and thereby provide a principled meaning to ``minimal resonance'' slopes such as the golden ratio: among irrationals, those with small partial quotients have particularly regular finite-prefix behavior \cite{KuipersNiederreiter1974}.
+
+In readout-based reconstruction, such diagnostics can be applied either directly to an internal ring factor (when available) or indirectly to the resulting symbolic sequence (via block frequencies and complexity). They also provide a natural bridge to falsifiability claims of the form ``golden-branch protocols optimize equidistribution indicators under fixed resources'' (cf.\ Proposition~\ref{prop:P2}).
+
+\subsection{Fibonacci/Sturmian specializations and Ostrowski numeration}\label{sec:readout:fibonacci}
+
+Among Sturmian sequences, Fibonacci-type codings play a distinguished role. The Fibonacci word is the fixed point of the substitution
+\[
+0\mapsto 01,\qquad 1\mapsto 0,
+\]
+and it can be realized as a mechanical word for a rotation slope related to $\varphi$ (the golden ratio). In substitution language, the corresponding substitution matrix has Perron--Frobenius eigenvalue $\varphi$, producing canonical self-similarity and renormalization relations \cite{Queffelec2010}.
+
+More generally, codings of rotations are closely tied to Ostrowski numeration systems, which provide canonical expansions of integers adapted to the continued fraction of $\alpha$. Zeckendorf representation is the Fibonacci/Ostrowski instance associated to the continued fraction with all partial quotients equal to $1$. This is one reason why stabilization maps built from Zeckendorf normal forms interact naturally with golden-branch scan protocols: the arithmetic of the scan slope and the grammar of the stabilized language are aligned.
+
+\subsection{Resolution and non-ideal windows}\label{sec:readout:resolution}
+
+The window $W$ in a CPS is often treated as a sharp set. Finite resolution suggests replacing sharp acceptance by a kernel or fuzzification, e.g.\ by a measurable function $\kappa_\epsilon : H\to[0,1]$ that depends on a scale parameter $\epsilon>0$ and approximates the indicator $\mathds{1}_W$. This gives rise to probabilistic readout maps (Bernoulli sampling conditioned on $\kappa_\epsilon(h)$) or to multi-symbol alphabets representing confidence levels. The key point for our later use is that \emph{resolution induces equivalence classes}: distinct internal states may be observationally indistinguishable at scale $\epsilon$, leading naturally to fiber structures.
+
+\subsection{From spatial patterns to temporal data streams}\label{sec:readout:spacetime-readout}
+
+The preceding discussion focused on readout as a map from internal phase to symbols. In many applications, the readout is instead mediated by a \emph{visible spatial pattern} generated by the cut-and-project scheme. A useful conceptual intermediate is therefore the ``scan--projection readout'' picture:
+\begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=2pt]
+  \item At each protocol step $t$, the internal phase $u_t$ determines a model set $\Lambda(W,u_t)\subset E$ (Remark~\ref{rem:internal-phase}).
+  \item The observer applies a finite-resolution sampling functional to $\Lambda(W,u_t)$, for example: local patch frequencies in a bounded field of view, a coarse-grained density estimate, or a binary event detector triggered by membership of a probe point in the pattern.
+  \item The sampled output is encoded as a symbol (or as a stabilized type) and appended to the record.
+\end{enumerate}
+
+This viewpoint makes explicit why a ``time series'' can arise from a static or quasistatic geometric object layer: the protocol chooses to scan internal phases (or equivalently to scan a slice position), and this scanning induces a dynamical system on the hull of patterns. Importantly, different choices of sampling functional can lead to very different symbolic processes even when the underlying model set family is the same. This is another reason for the strict layer separation in Section~\ref{sec:intro:positioning}.
+
+In a GR/QG-facing interpretation, one may view the sequence of observed patterns as a toy model for how an observer with limited access reconstructs an effective spacetime history from partial information. The review does not claim that such histories satisfy relativistic dynamics; rather, it emphasizes that the mathematical infrastructure (ergodic theorems, symbolic codings, stabilization maps, and entropy rates) is available for these scan-induced histories and provides quantitative invariants that can be used to formulate testable reconstruction statements.
+
