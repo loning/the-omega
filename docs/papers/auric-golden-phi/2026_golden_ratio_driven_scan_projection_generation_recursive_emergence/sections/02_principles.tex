@@ -48,3 +48,41 @@ R(\alpha)=\limsup_{n\to\infty}\frac{1}{q_n^2\abs{\alpha-p_n/q_n}},
 
 定理 \ref{thm:golden-antiresonance} 给出一个完全定量的“反共振”选择：在 Hurwitz 意义下，$\alpha=\varphi^{-1}$ 达到最小可能的最坏情形逼近常数（即 $R(\varphi^{-1})=\sqrt5$）。因此当分辨率或返归时间由分母 $q$ 控制时，黄金分支在最坏情形下提供统一的低阶共振抑制上界（参见 \cite{Cassels1957,KuipersNiederreiter1974}）。
 
+\subsection{从反共振到有限样本稳定性：一个可审计的优化问题}
+
+上面的 Hurwitz 极值性质本身是数论陈述。为了把它转译为扫描—投影读出中“可审计的稳定性证书”，我们在最基本的一维扫描模型上给出一个与正文第 4 节一致的量化指标，并明确本文所解决的优化问题。
+
+\begin{definition}[共振诱导不稳定性（Kronecker 扫描的可审计证书）]\label{def:instability-envelope}
+对无理 $\alpha\in\RR\setminus\QQ$ 与初相位 $x_0\in[0,1)$，考虑 Kronecker 序列
+\[
+x_t=\{x_0+t\alpha\}\in[0,1),\qquad t=0,1,\dots
+\]
+其星差异度记为
+\[
+D_N^*(\alpha;x_0):=\sup_{0\le a\le 1}\left|\frac1N\sum_{t=0}^{N-1}\ind_{[0,a)}(x_t)-a\right|.
+\]
+我们将 $D_N^*(\alpha;x_0)$ 视为样本量 $N$ 下、在\textbf{全部区间窗二元读出}意义下的“共振诱导不稳定性”证书：它同时给出最坏窗集频率误差，并可由排序在有限样本上直接计算（见命题 \ref{prop:discrepancy-certificate}）。
+\end{definition}
+
+\begin{proposition}[反共振$\Rightarrow$差异度上界$\Rightarrow$窗频率误差界]\label{prop:antiresonance-to-stability}
+在定义 \ref{def:instability-envelope} 的 Kronecker 扫描模型中，对任意区间窗 $W=[0,a)$ 的指示读出 $s_t=\ind_W(x_t)$，其频率误差满足
+\[
+\left|\frac1N\sum_{t=0}^{N-1}s_t-a\right|\le D_N^*(\alpha;x_0).
+\]
+并且当 $\alpha$ badly approximable（等价于连分数部分商有界，亦等价于 $R(\alpha)<\infty$；见注 \ref{rem:lagrange-constant}）时，$D_N^*(\alpha;x_0)$ 具有显式上界，从而给出可审计的有限样本稳定性证书（见附录 H）。
+\end{proposition}
+
+\begin{corollary}[黄金分支的显式有限样本证书]\label{cor:golden-finite-sample-certificate}
+取 $\alpha=\varphi^{-1}$。则对任意初相位 $x_0$ 与任意 $N\ge 2$，
+\[
+D_N^*(\varphi^{-1};x_0)\ \le\ \frac{3+\left\lceil \frac{\log(\sqrt5\,N)}{\log \varphi}\right\rceil}{N}
+\]
+（推论 \ref{cor:kronecker-discrepancy-golden}）。因此在区间窗二元读出意义下，黄金分支给出一个统一、显式的“共振诱导不稳定性”衰减证书，阶为 $O((\log N)/N)$。
+\end{corollary}
+
+\begin{remark}[本文所解决与未解决的“最优性”问题]\label{rem:what-is-optimized}
+本文在二元读出约束下采用的“黄金分支”选择，严格对应于如下可审计目标的极值：在 Hurwitz 意义下最小化最坏有理逼近常数 $R(\alpha)$（定理 \ref{thm:golden-antiresonance}），并在旋转二分割读出模型中落在 Sturmian 最小复杂度类上（定理 \ref{thm:sturmian-min-complexity-rotation}）。
+
+需要强调的是：$R(\alpha)$ 的极小化并不自动推出对\textbf{所有}“不稳定性”概念（例如更一般观测、折叠后的类型分布、或与 Parry 测度的距离）也达到唯一最小。本文在这类更强主张上采取保守口径：仅将能够由差异度/遍历工具链严格推出的部分写为定理（如命题 \ref{prop:antiresonance-to-stability} 与推论 \ref{cor:golden-finite-sample-certificate}），其余作为需要额外结构与证明的开放问题（参见第 \ref{sec:experiments} 节与结论）。
+\end{remark}
+

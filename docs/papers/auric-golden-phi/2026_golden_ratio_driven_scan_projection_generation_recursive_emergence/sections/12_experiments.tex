@@ -1,0 +1,53 @@
+\section{可复现实验：经验直方图与 Parry(PF) 基准的定量对照}\label{sec:experiments}
+
+本节给出一条\textbf{可复现}的定量验证路径，用以对照：由扫描—投影读出得到的窗口微态，经折叠 $\Fold_m$ 后的稳定类型直方图 $\hat{\pi}_m$，与黄金均值 SFT 的 Parry 最大熵测度在长度 $m$ 上诱导的柱分布 $\pi_m$（第 \ref{sec:quant-fit} 节与命题 \ref{prop:parry-measure-golden}）。
+
+\subsection{实验模型、数据流与偏差指标}
+
+\textbf{模型（旋转扫描）}：取 $X=\TT^1$，$T(x)=x+\alpha\ (\mathrm{mod}\ 1)$，以区间窗 $W=[0,\beta)$ 生成二元读出 $s_t(x)=\ind_W(T^t x)$（第 3 节的标准 Sturmian 例）。给定长度 $m$，形成窗口微态
+\[
+\omega_m(x;t)=s_t(x)\cdots s_{t+m-1}(x)\in\Omega_m,
+\]
+再折叠得到稳定类型符号
+\[
+w_t=\Fold_m(\omega_m(x;t))\in X_m,
+\]
+从而定义经验直方图 $\hat{\pi}_m$（定义同第 \ref{sec:quant-fit} 节）。
+
+\textbf{基准分布（Parry/PF）}：对黄金均值约束的两状态邻接矩阵 $A$，其 Parry 最大熵测度为两状态马尔可夫链，长度 $m$ 的柱分布满足
+\[
+\pi_m(u)=\pi(u_1)\prod_{j=1}^{m-1}P_{u_j u_{j+1}},\qquad u\in X_m,
+\]
+其中 $(\pi,P)$ 的显式形式见命题 \ref{prop:parry-measure-golden}。
+
+\textbf{偏差指标}：使用第 \ref{sec:quant-fit} 节定义的
+\(
+D_{\mathrm{TV}}(\hat{\pi}_m,\pi_m)
+\)
+与
+\(
+D_{\mathrm{KL}}(\hat{\pi}_m\|\pi_m)
+\)
+作为“拟合优度”的无量纲量。
+
+\subsection{有限样本证书（可审计）}
+
+对旋转扫描模型，一维星差异度 $D_N^*$ 给出区间窗频率误差的上界证书（命题 \ref{prop:discrepancy-certificate}）。对黄金分支 $\alpha=\varphi^{-1}$，附录 H 给出显式的 $O((\log N)/N)$ 上界（推论 \ref{cor:kronecker-discrepancy-golden}），从而为“共振诱导不稳定性”的有限样本衰减提供统一证书（推论 \ref{cor:golden-finite-sample-certificate}）。
+
+\subsection{复现性声明（一键再生成）}
+
+本节全部数值结果由脚本生成。复现方式：
+\begin{itemize}
+  \item 在论文目录下安装依赖：\verb|python3 -m pip install -r requirements.txt|；
+  \item 运行一键流水线：\verb|python3 scripts/run_all.py|；
+  \item 生成物：\verb|artifacts/export/*|（CSV/PNG 导出）与 \verb|sections/generated/*.tex|（可直接 \verb|\input| 的图表片段）。
+\end{itemize}
+
+\subsection{结果：折叠直方图与 Parry 基准的系统对照}
+
+下表给出在旋转扫描模型中，折叠后稳定类型直方图与 Parry(PF) 柱分布的偏差；图中展示偏差随分辨率 $m$ 的变化趋势（对 $(\beta,x_0)$ 取平均）。
+
+\input{sections/generated/tab_rotation_fold_vs_parry_summary}
+\input{sections/generated/fig_rotation_tv_vs_m}
+\input{sections/generated/fig_rotation_kl_vs_m}
+
