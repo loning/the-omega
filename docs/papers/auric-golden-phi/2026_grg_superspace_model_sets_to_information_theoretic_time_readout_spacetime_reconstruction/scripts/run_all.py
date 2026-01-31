@@ -58,7 +58,9 @@ def build_steps() -> List[Step]:
                 "sections/generated/demo_6d_diffraction_slice.png",
                 "sections/generated/demo_6d_visibility_curve.png",
                 "sections/generated/demo_6d_entropy_rate_proxy.png",
+                "sections/generated/demo_6d_box_window_envelope_scatter.png",
                 "artifacts/demo_6d_fingerprints.json",
+                "artifacts/demo_6d_box_window_fourier.json",
             ],
         ),
     ]

@@ -111,6 +111,43 @@ C_A(a_{0:t+m-2})\subseteq C_X(x_{0:t-1})\quad\Rightarrow\quad
 Under SMB hypotheses for $(A_t)$ this implies that $\tau_X(t)$ cannot grow faster than linearly with slope $h_\mu(T,\mathcal{P})$, and in particular the stabilized entropy rate satisfies $h(X)\le h(A)$.
 \end{corollary}
 
+\subsubsection{Protocol-equivalence classes: finite-memory recodings}\label{sec:info-time:equivalence}
+
+Factor monotonicity (Proposition~\ref{prop:entropy-factor-monotone}) captures what happens under irreversible coarse-graining. For protocol comparisons, it is also useful to identify when two protocols are \emph{equivalent up to finite memory}, meaning that they can simulate each other's symbolic record with bounded lookahead.
+
+\begin{definition}[Finite-memory (sliding-block) protocol equivalence]\label{def:finite-memory-equivalence}
+Let $(A_t)$ and $(B_t)$ be stationary processes over finite alphabets. We say that $B$ is a \emph{finite-memory recoding} of $A$ if there exists an integer $r\ge 0$ and a measurable map $\psi:\mathcal{A}^{r+1}\to\mathcal{B}$ such that $B_t=\psi(A_t,\dots,A_{t+r})$ for all $t$ (a one-sided sliding block code). Two protocols are \emph{finite-memory equivalent} if each process is a finite-memory recoding of the other (possibly with different radii).
+\end{definition}
+
+\begin{proposition}[Cylinder alignment under finite-memory equivalence]\label{prop:tau-finite-memory}
+Assume $B$ is a finite-memory recoding of $A$ with radius $r$ in the sense of Definition~\ref{def:finite-memory-equivalence}. Then for every realized length-$t$ prefix $b_{0:t-1}$ there exists a length-$(t+r)$ prefix $a_{0:t+r-1}$ consistent with the same underlying realization such that the corresponding cylinder sets satisfy
+\[
+C_A(a_{0:t+r-1})\subseteq C_B(b_{0:t-1}),
+\]
+and hence
+\[
+\tau_B(t)\le \tau_A(t+r).
+\]
+If, moreover, $A$ is a finite-memory recoding of $B$ with radius $s$, then one also has $\tau_A(t)\le \tau_B(t+s)$, so that the two refinement functionals control each other up to an $O(1)$ shift in scan depth.
+\end{proposition}
+
+\begin{corollary}[Invariance of entropy-class and growth-class under finite memory]\label{cor:tau-class-invariance}
+In the setting of Proposition~\ref{prop:tau-finite-memory}:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item If $(A_t)$ satisfies SMB with positive entropy rate (equivalently $\lim_{t\to\infty}\tau_A(t)/t=h(A)>0$ for typical realizations), then $(B_t)$ also satisfies SMB and has the same entropy rate $h(B)=h(A)$. In particular, the linear slope of $\tau(t)$ is invariant under finite-memory recodings.
+  \item If $h(A)=0$, then $\tau_B(t)/t\to 0$ whenever $\tau_A(t)/t\to 0$, and more generally the \emph{growth class} of sublinear refinement (e.g.\ logarithmic vs.\ power-law) is stable under finite-memory equivalence, up to the constant-depth alignment in Proposition~\ref{prop:tau-finite-memory}.
+\end{itemize}
+\end{corollary}
+
+\begin{remark}[Where protocol constants enter]\label{rem:tau-constants}
+Two sources of additive/scale constants should be distinguished:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Recoding alignment}: finite-memory equivalence introduces an $O(1)$ offset in the prefix length ($r,s$), hence an $O(1)$ ambiguity in $\tau(t)$ even before taking limits.
+  \item \textbf{Units of information}: changing the logarithm base rescales $\tau$ multiplicatively; finite-data estimators of $\mu(C)$ (e.g.\ plug-in prefix frequencies) introduce additional finite-size bias that is again controlled at the level of $O(1)$ corrections for fixed estimator choices.
+\end{itemize}
+The point of introducing finite-memory equivalence is that it defines a robust protocol class in which such constants do not alter the entropy class (positive vs.\ zero) and do not affect the asymptotic growth regime used to report ``time'' at the protocol layer.
+\end{remark}
+
 \begin{remark}[What structure $\tau$ does (and does not) induce]\label{rem:tau-structure}
 The functional $\tau(t)=-\log\mu(C(a_{0:t-1}))$ is not a metric on $H$; it is a protocol-defined refinement depth attached to an observation prefix. However, the nested cylinders induce a canonical information order on prefixes: $a_{0:t-1}$ refines $b_{0:s-1}$ iff $t\ge s$ and $a_{0:s-1}=b_{0:s-1}$, equivalently $C(a_{0:t-1})\subseteq C(b_{0:s-1})$. This order is a partial order on protocol information states (up to $\mu$-null distinctions).
 \end{remark}
@@ -131,11 +168,19 @@ Let $(A_t)$ be the symbolic process induced by a uniquely ergodic system and a f
 In particular, for Sturmian codings $p(t)=t+1$, so $\tau(t)$ is at most logarithmic for an infinite subsequence of prefixes. Numerically (Appendix~\ref{sec:appendix:toy}), typical prefixes exhibit step-like growth consistent with $\tau(t)=O(\log t)$.
 \end{proposition}
 
+\begin{definition}[Complexity-calibrated protocol time in the zero-KS regime]\label{def:complexity-time}
+In a protocol for which $h_\mu(T)=0$ (hence $\tau(t)=o(t)$ for typical realizations), we use the factor complexity $p(t)$ to set the \emph{canonical} sublinear reference scale
+\[
+g(t):=\log p(t).
+\]
+We call $g(t)$ the \emph{complexity-calibrated protocol time scale}. In this regime one reports refinement in the units of $g(t)$ (e.g.\ compares $\tau(t)$ to $g(t)$ along a chosen scaling window), rather than using the scan index $t$ as a proxy for elapsed time.
+\end{definition}
+
 \begin{remark}[A sublinear ``clock'' in zero-entropy regimes]\label{rem:sublinear-clock}
 In deterministic zero-KS regimes (e.g.\ Sturmian codings of rotations), the operational content of $\tau(t)$ is not ``elapsed time'' but \emph{how many internal states remain compatible} with the observed record at depth $t$. A protocol can therefore adopt a \emph{sublinear clock} by selecting a scaling map $g(t)$ such that $\tau(t)$ is comparable to $g(t)$ in the regime of interest. Two auditable choices are:
 \begin{itemize}[leftmargin=*,itemsep=2pt]
   \item \textbf{Refinement-depth clock}: use $\tau(t)$ itself as a dimensionless time coordinate.
-  \item \textbf{Complexity-calibrated clock}: use $\log p(t)$ as a coarse upper bound for $\tau(t)$ (Proposition~\ref{prop:log-bound}). For Sturmian codings, $p(t)=t+1$ yields a logarithmic scale $\log(t+1)$ that captures the correct subexponential order.
+  \item \textbf{Complexity-calibrated clock (canonical in this review)}: use $\log p(t)$ (Definition~\ref{def:complexity-time}) as a coarse upper bound and reference scale for $\tau(t)$ (Proposition~\ref{prop:log-bound}). For Sturmian codings, $p(t)=t+1$ yields a logarithmic scale $\log(t+1)$ that captures the correct subexponential order.
 \end{itemize}
 The intended interpretation is purely protocol-level: $g(t)$ specifies the unit in which refinement depth is reported. Any identification with a physical clock requires an additional calibration map (Section~\ref{sec:info-time:definition}).
 \end{remark}

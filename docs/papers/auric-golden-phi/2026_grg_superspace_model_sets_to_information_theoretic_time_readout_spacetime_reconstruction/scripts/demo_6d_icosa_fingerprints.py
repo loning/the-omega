@@ -45,6 +45,11 @@ class Demo6DParams:
     entropy_block_max: int
     tau_prefix_max: int
     probabilistic_readout: bool
+    # Optional: closed-form Fourier-envelope check for a box window in H=R^3.
+    box_L: Tuple[float, float, float]
+    box_eps: float
+    module_K: int
+    module_max_points: int
 
 
 def icosa_matrices() -> Tuple[np.ndarray, np.ndarray]:
@@ -82,6 +87,47 @@ def smooth_ball_weight(u: np.ndarray, R: float, eps: float) -> np.ndarray:
         return (r <= R).astype(float)
     x = (R - r) / eps
     return 1.0 / (1.0 + np.exp(-x))
+
+
+def smooth_box_weight(u: np.ndarray, L: Tuple[float, float, float], eps: float) -> np.ndarray:
+    """Smooth indicator for an axis-aligned box centered at 0 with side lengths L."""
+    if len(u) == 0:
+        return np.zeros((0,), dtype=float)
+    Lx, Ly, Lz = (float(L[0]), float(L[1]), float(L[2]))
+    hx, hy, hz = (0.5 * Lx, 0.5 * Ly, 0.5 * Lz)
+    x = u[:, 0]
+    y = u[:, 1]
+    z = u[:, 2]
+    if eps <= 0:
+        return ((np.abs(x) <= hx) & (np.abs(y) <= hy) & (np.abs(z) <= hz)).astype(float)
+    # Product of two sigmoids per axis: inside ~1, outside decays.
+    def _axis_weight(coord: np.ndarray, half: float) -> np.ndarray:
+        a = (-half - coord) / eps
+        b = (half - coord) / eps
+        # sigmoid(half - coord) * sigmoid(half + coord)
+        s1 = 1.0 / (1.0 + np.exp(-b))
+        s2 = 1.0 / (1.0 + np.exp(-a))
+        return s1 * s2
+
+    return _axis_weight(x, hx) * _axis_weight(y, hy) * _axis_weight(z, hz)
+
+
+def _sinc(x: np.ndarray) -> np.ndarray:
+    """sinc(x) = sin(pi x)/(pi x), with sinc(0)=1."""
+    out = np.ones_like(x, dtype=float)
+    m = np.abs(x) > 1e-15
+    out[m] = np.sin(np.pi * x[m]) / (np.pi * x[m])
+    return out
+
+
+def box_window_fourier_hat(xi: np.ndarray, L: Tuple[float, float, float]) -> np.ndarray:
+    """Closed-form Fourier transform of box indicator under exp(-2pi i <xi,y>) convention."""
+    Lx, Ly, Lz = (float(L[0]), float(L[1]), float(L[2]))
+    xi = np.asarray(xi, dtype=float)
+    sx = Lx * _sinc(Lx * xi[..., 0])
+    sy = Ly * _sinc(Ly * xi[..., 1])
+    sz = Lz * _sinc(Lz * xi[..., 2])
+    return sx * sy * sz
 
 
 def lattice_points_box(L: int) -> np.ndarray:
@@ -254,6 +300,26 @@ def transition_counts(types: Sequence[Tuple[int, ...]]) -> Dict[str, int]:
     return edges
 
 
+def module_candidates(K: int) -> np.ndarray:
+    """Enumerate Z^6 dual candidates in [-K,K]^6 excluding 0."""
+    K = int(K)
+    rng = np.arange(-K, K + 1, dtype=int)
+    grid = np.stack(np.meshgrid(rng, rng, rng, rng, rng, rng, indexing="ij"), axis=-1).reshape(-1, 6)
+    nonzero = np.any(grid != 0, axis=1)
+    return grid[nonzero]
+
+
+def empirical_structure_factor(points: np.ndarray, k_phys: np.ndarray) -> np.ndarray:
+    """Compute S(k)=|mean exp(-2pi i <k, x>)|^2 for k in rows of k_phys."""
+    if len(points) == 0 or len(k_phys) == 0:
+        return np.zeros((len(k_phys),), dtype=float)
+    X = np.asarray(points, dtype=float)
+    K = np.asarray(k_phys, dtype=float)
+    phases = np.exp(-2j * np.pi * (X @ K.T))  # (N,M)
+    amp = np.mean(phases, axis=0)  # (M,)
+    return (np.abs(amp) ** 2).real
+
+
 def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
     out_dir.mkdir(parents=True, exist_ok=True)
     fig_out_dir.mkdir(parents=True, exist_ok=True)
@@ -274,6 +340,10 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
         entropy_block_max=10,
         tau_prefix_max=64,
         probabilistic_readout=True,
+        box_L=(2.2, 2.2, 2.2),
+        box_eps=0.03,
+        module_K=1,
+        module_max_points=20000,
     )
     rng = np.random.default_rng(params.seed)
     pp = ProgressPrinter("demo_6d")
@@ -408,6 +478,59 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
     }
     json_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
+    # Additional output: closed-form Fourier-envelope check for a box window.
+    # This is meant to concretize Sec 7.1.1 by providing an explicit w-hat.
+    box_phase = rng.uniform(-0.5, 0.5, size=3)
+    xB, uB = generate_model_set_points(pts6, A_T, Astar_T, R=params.R, phase_shift=box_phase)
+    wB = smooth_box_weight(uB, L=params.box_L, eps=float(params.box_eps))
+    # Subsample points to keep module evaluation lightweight.
+    if len(xB) > params.module_max_points:
+        idx = rng.choice(len(xB), size=int(params.module_max_points), replace=False)
+        xB_sub = xB[idx]
+    else:
+        xB_sub = xB
+    cand = module_candidates(params.module_K)
+    k_phys = cand @ A_T
+    k_int = cand @ Astar_T
+    S_emp = empirical_structure_factor(xB_sub, k_phys)
+    w_hat = box_window_fourier_hat(k_int, L=params.box_L)
+    env = (np.abs(w_hat) ** 2).astype(float)
+    # Report a simple scale-free comparison by normalizing both by their maxima.
+    S_emp_n = (S_emp / max(float(np.max(S_emp)), 1e-12)).astype(float)
+    env_n = (env / max(float(np.max(env)), 1e-12)).astype(float)
+
+    box_json_path = out_dir / "demo_6d_box_window_fourier.json"
+    box_payload = {
+        "params": {
+            "seed": int(params.seed),
+            "L": int(params.L),
+            "phase_shift": box_phase.tolist(),
+            "box_L": list(params.box_L),
+            "box_eps": float(params.box_eps),
+            "module_K": int(params.module_K),
+            "module_candidates": int(len(cand)),
+            "module_max_points": int(params.module_max_points),
+            "fourier_convention": "w_hat(xi)=int w(y) exp(-2pi i <xi,y>) dy",
+        },
+        "sample": {
+            "points_total": int(len(xB)),
+            "points_used": int(len(xB_sub)),
+        },
+        "module": {
+            "n": cand.astype(int).tolist(),
+            "k_phys": k_phys.astype(float).tolist(),
+            "k_int": k_int.astype(float).tolist(),
+            "S_empirical": S_emp_n.tolist(),
+            "envelope_predicted": env_n.tolist(),
+        },
+        "notes": [
+            "This is a lightweight consistency check: module points are taken from Z^6 candidates and mapped using the same (A_T, Astar_T) matrices as the point embedding.",
+            "S_empirical is computed from a subsampled accepted point cloud; envelope_predicted is |w_hat(k_int)|^2 for a box window (closed form).",
+            "Both arrays are normalized by their maxima to remove overall scaling.",
+        ],
+    }
+    box_json_path.write_text(json.dumps(box_payload, indent=2), encoding="utf-8")
+
     # Figure 1: diffraction slice (log-scaled).
     import matplotlib.pyplot as plt
 
@@ -447,11 +570,25 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
     fig3.savefig(fig3_path, dpi=160)
     plt.close(fig3)
 
+    # Figure 4: box-window Fourier envelope vs empirical module intensities.
+    fig4, ax4 = plt.subplots(figsize=(5.6, 4.2))
+    ax4.scatter(env_n, S_emp_n, s=10, alpha=0.6)
+    ax4.set_xlabel("predicted envelope |w_hat(k*)|^2 (normalized)")
+    ax4.set_ylabel("empirical S(k) (normalized)")
+    ax4.set_title("6D demo (box window): envelope vs empirical module intensities")
+    ax4.grid(True, alpha=0.3)
+    fig4.tight_layout()
+    fig4_path = fig_out_dir / "demo_6d_box_window_envelope_scatter.png"
+    fig4.savefig(fig4_path, dpi=160)
+    plt.close(fig4)
+
     return {
         "demo_6d_fingerprints.json": str(json_path),
         "demo_6d_diffraction_slice.png": str(fig_path),
         "demo_6d_visibility_curve.png": str(fig2_path),
         "demo_6d_entropy_rate_proxy.png": str(fig3_path),
+        "demo_6d_box_window_fourier.json": str(box_json_path),
+        "demo_6d_box_window_envelope_scatter.png": str(fig4_path),
     }
 
 

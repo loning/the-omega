@@ -19,6 +19,41 @@ I(k)\ \propto\ \bigl|\widehat{w}(k^\star)\bigr|^2,
 \]
 where $w:H\to\RR$ is the window weight (sharp: $w=\mathds{1}_W$; fuzzy/finite resolution: $w=\kappa_\epsilon$), $k^\star$ denotes the internal-space counterpart of $k$ under the star map on the dual module, and $\widehat{w}$ is the Fourier transform on $H$.
 
+\begin{remark}[A concrete Fourier convention]\label{rem:fourier-convention}
+To avoid convention ambiguity when discussing ``Fourier coefficients of the window'', one may fix the convention
+\[
+\widehat{w}(\xi):=\int_H w(y)\,e^{-2\pi i \langle \xi,y\rangle}\,\mathrm{d}y,\qquad \xi\in H^\ast,
+\]
+with $\mathrm{d}y$ the Lebesgue/Haar measure on $H$. With this choice, closed-form window transforms (e.g.\ boxes) can be written explicitly and compared directly to intensity envelopes.
+\end{remark}
+
+\begin{proposition}[Pure-point diffraction and an intensity formula (review statement)]\label{prop:diffraction-intensity}
+For a regular model set arising from a cut-and-project scheme (with $\partial W$ of Haar measure zero) and for bounded Riemann-integrable window weights $w$ (including $w=\mathds{1}_W$ and smooth kernels $\kappa_\epsilon$), the diffraction measure is pure point and supported on a Fourier module determined by the dual lattice and the star map. For $k$ in this module, the corresponding Bragg intensity is proportional to $|\widehat w(k^\star)|^2$ (up to a CPS-dependent density/normalization factor).
+\cite{Hof1995,BaakeGrimm2013}
+\end{proposition}
+
+\paragraph{Closed-form example: a box window.}
+If $H=\RR^n$ and one chooses a (polytope) window weight given by an axis-aligned box
+\[
+w(y)=\mathds{1}_{\prod_{j=1}^n[-L_j/2,L_j/2]}(y),
+\]
+then under the convention of Remark~\ref{rem:fourier-convention} one has the explicit product formula
+\[
+\widehat w(\xi)=\prod_{j=1}^n \left(L_j\,\mathrm{sinc}(L_j \xi_j)\right),
+\qquad
+\mathrm{sinc}(z):=\frac{\sin(\pi z)}{\pi z},
+\]
+with the standard continuous extension $\mathrm{sinc}(0)=1$. This is a simple instance of the broader LCA-group/Poisson-summation framework for model-set diffraction and is particularly convenient for protocol auditability: it provides a closed-form intensity envelope against which finite-patch diffraction estimates can be compared.
+
+\paragraph{Estimating window Fourier coefficients from finite readout.}
+Given a finite patch $\{x_i\}_{i=1}^N\subset E$ from a proposed model set and a set of candidate module wave vectors $k$, one can estimate a structure factor
+\[
+\widehat\rho_N(k):=\frac{1}{N}\sum_{i=1}^N e^{-2\pi i\langle k,x_i\rangle},
+\qquad
+S_N(k):=|\widehat\rho_N(k)|^2.
+\]
+Phase averaging over internal shifts $u$ (or over scan phases in the protocol) reduces fluctuations and isolates the module-supported peaks. In a geometry-first test where the Fourier module and the star map are specified by the CPS, one then regresses the phase-averaged peak intensities against the predicted window envelope $|\widehat w(k^\star)|^2$ (or fits window parameters $L_j$ in the box case). The key falsifiable content is not the exact normalization constant, but the \emph{relative} intensity profile across module points as a function of $k^\star$ and the controlled dependence on the resolution parameter $\epsilon$ through the choice $w=\kappa_\epsilon$.
+
 This identity explains two protocol-facing facts:
 \begin{itemize}[leftmargin=*,itemsep=2pt]
   \item \textbf{Window geometry controls intensities}: changing $W$ (or using a weight $w$) changes $\widehat w$ and hence the intensity envelope without moving the Fourier module itself.
