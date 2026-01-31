@@ -28,6 +28,56 @@ X_m^{\mathrm Z}:=\Big\{w\in\{0,1\}^{m}:\ \text{不含子串 }11\Big\}.
 \]
 其作用是将不满足稳定语法的微态按某种规范化规则映射到最接近的稳定类型。为确保可审计，本文在附录中给出一类基于 Ostrowski/Zeckendorf 表示的规范折叠方案，使 $\Fold_m$ 可计算且具有明确的退化结构（不同微态可折叠到同一稳定类型）。退化结构可被理解为“读出分辨率不足导致的等价类”。
 
+\subsection{多尺度一致性（逆系统/逆极限）：分辨率无关的统一对象}
+
+本节严格化“本体与分辨率 $m$ 无关；不同 $m$ 的结果一致仅精度不同”的含义：$m$ 不改变本体层对象（本体在 $\Sigma$ 上），而仅改变协议层读出/折叠的粗粒化程度；跨 $m$ 的“同一性”应理解为\textbf{相容性/因子化}，而非不同 $m$ 的输出空间完全相同。
+
+\begin{definition}[尺度投影（截断）]\label{def:static-pi}
+对任意 $m_2\ge m_1$，定义截断映射
+\[
+\pi_{m_2\to m_1}:X_{m_2}^{\mathrm Z}\to X_{m_1}^{\mathrm Z},\qquad
+\pi_{m_2\to m_1}(x_1,\dots,x_{m_2})=(x_1,\dots,x_{m_1}).
+\]
+\end{definition}
+
+\begin{lemma}[良定性与一致性]\label{lem:static-pi-basic}
+映射 $\pi_{m_2\to m_1}$ 良定义、满射，并满足
+\[
+\pi_{m_3\to m_1}=\pi_{m_2\to m_1}\circ \pi_{m_3\to m_2}\qquad (m_3\ge m_2\ge m_1).
+\]
+\end{lemma}
+
+\begin{proof}
+禁字约束为局部约束，截断保持合法性，故良定义；任意 $X_{m_1}^{\mathrm Z}$ 元素可通过尾部补零扩展为 $X_{m_2}^{\mathrm Z}$ 元素，故满射；一致性由截断定义直接得到。
+\end{proof}
+
+\begin{definition}[无穷 Zeckendorf 子移位]\label{def:static-XinfZ}
+定义分辨率无关对象
+\[
+X_\infty^{\mathrm Z}:=\{(x_i)_{i\ge 1}\in\{0,1\}^{\mathbb{N}}:\ x_ix_{i+1}=0\ \text{对所有}\ i\ge 1\},
+\]
+并定义自然投影 $\pi_m^\infty:X_\infty^{\mathrm Z}\to X_m^{\mathrm Z}$ 为 $\pi_m^\infty((x_i)_{i\ge 1})=(x_1,\dots,x_m)$。
+\end{definition}
+
+\begin{theorem}[逆极限同构（尺度一致性）]\label{thm:static-inverse-limit}
+存在自然同构
+\[
+X_\infty^{\mathrm Z}\ \cong\ \varprojlim X_m^{\mathrm Z},
+\]
+并满足交换关系 $\pi_{m_2\to m_1}\circ \pi_{m_2}^\infty=\pi_{m_1}^\infty$（$m_2\ge m_1$）。
+\end{theorem}
+
+\begin{proof}
+无穷合法序列的前缀族给出一致族；一致族由前缀兼容性唯一拼接为无穷序列；两构造互逆且自然。
+\end{proof}
+
+\begin{assumption}[读出因子化（尺度相容）]\label{assump:static-readout-factorization}
+当比较不同 $m$ 的折叠输出时，要求折叠映射在截断下相容：对原始窗口读出 $\omega^{(m)}$，取 $m_2\ge m_1$ 时的截断 $\omega^{(m_1)}$，并要求
+\[
+\pi_{m_2\to m_1}\bigl(\Fold_{m_2}(\omega^{(m_2)})\bigr)=\Fold_{m_1}(\omega^{(m_1)}).
+\]
+\end{assumption}
+
 \subsection{稳定类型、预像纤维与协议层表征}
 
 在给定分辨率与约束通道下，稳定类型 $x\in X_m^{\mathrm Z}$ 是可见输出；其预像纤维

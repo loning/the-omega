@@ -4,18 +4,66 @@
 
 \subsection{多尺度稳定化与逆系统（模型类假设）}
 
-\begin{assumption}[尺度相容图]\label{assump:scale-compatibility}
-存在尺度映射
-\[
-\pi_{m_2\to m_1}:X_{m_2}^{\mathrm Z}\to X_{m_1}^{\mathrm Z},\quad m_2>m_1,
-\]
-与相应的读出粗化算子，使得对原始窗口读出 $\omega^{(m_2)}$ 有交换关系
-\[
-\pi_{m_2\to m_1}\bigl(\mathrm{Fold}_{m_2}(\omega^{(m_2)})\bigr)=\mathrm{Fold}_{m_1}(\omega^{(m_1)}),
-\]
-其中 $\omega^{(m_1)}$ 为 $\omega^{(m_2)}$ 的适当截断/粗化。
+为将“本体与分辨率 $m$ 无关；不同 $m$ 的结果一致仅差精细程度”严格化，需要给出跨尺度的自然映射，并将各尺度稳定类型组织为逆系统。
 
-在此假设下，$\{X_m^{\mathrm Z},\pi_{m_2\to m_1}\}$ 形成逆系统，从而可定义逆极限对象作为“尺度不变的稳定态载体”。
+\begin{definition}[位号标记的 Zeckendorf 稳定类型]\label{def:XmZ-indexed-multiscale}
+为避免“高位/低位在左或右”的书写约定差异，本文在多尺度语义下将长度 $m$ 的稳定类型写为带位号的向量
+\[
+X_m^{\mathrm Z,\#}:=\Bigl\{(x_k)_{2\le k\le m+1}\in\{0,1\}^{\{2,3,\dots,m+1\}}:\ x_kx_{k+1}=0\ \text{对所有}\ 2\le k\le m\Bigr\}.
+\]
+若需与 $X_m^{\mathrm Z}\subset\{0,1\}^m$ 的表示一致，可取同构 $(x_k)_{2\le k\le m+1}\mapsto (x_{m+1},x_m,\dots,x_2)$。
+\end{definition}
+
+\begin{definition}[尺度投影（restriction）]\label{def:pi-m2-m1-multiscale}
+对任意 $m_2\ge m_1$，定义 restriction 投影
+\[
+\pi_{m_2\to m_1}:X_{m_2}^{\mathrm Z,\#}\to X_{m_1}^{\mathrm Z,\#},\qquad
+\bigl(\pi_{m_2\to m_1}(x)\bigr)_k:=x_k\ \ (2\le k\le m_1+1).
+\]
+\end{definition}
+
+\begin{lemma}[投影良定、满射与一致性]\label{lem:multiscale-pi-basic}
+映射 $\pi_{m_2\to m_1}$ 良定义且为满射，并满足
+\[
+\pi_{m_3\to m_1}=\pi_{m_2\to m_1}\circ \pi_{m_3\to m_2}\qquad (m_3\ge m_2\ge m_1).
+\]
+\end{lemma}
+
+\begin{proof}
+restriction 保持局部禁词约束，故良定义；任意 $X_{m_1}^{\mathrm Z,\#}$ 元素可通过尾部补零扩展到 $X_{m_2}^{\mathrm Z,\#}$，故满射；一致性由逐坐标定义直接得到。
+\end{proof}
+
+由 $\{X_m^{\mathrm Z,\#},\pi_{m_2\to m_1}\}$ 构成逆系统，因而可定义逆极限对象。
+
+\begin{definition}[无穷 Zeckendorf 子移位]\label{def:XinfZ-multiscale}
+定义分辨率无关对象
+\[
+X_\infty^{\mathrm Z}:=\Bigl\{(x_k)_{k\ge 2}\in\{0,1\}^{\{2,3,\dots\}}:\ x_kx_{k+1}=0\ \text{对所有}\ k\ge 2\Bigr\},
+\]
+并定义自然 restriction 投影 $\pi_m^\infty:X_\infty^{\mathrm Z}\to X_m^{\mathrm Z,\#}$ 为 $(\pi_m^\infty(x))_k:=x_k$（$2\le k\le m+1$）。
+\end{definition}
+
+\begin{theorem}[逆极限同构（尺度一致性）]\label{thm:multiscale-inverse-limit}
+存在自然同构
+\[
+X_\infty^{\mathrm Z}\ \cong\ \varprojlim X_m^{\mathrm Z,\#},
+\]
+并满足交换关系
+\[
+\pi_{m_2\to m_1}\circ \pi_{m_2}^\infty=\pi_{m_1}^\infty\qquad(m_2\ge m_1).
+\]
+\end{theorem}
+
+\begin{proof}
+无穷序列的 restriction 前缀族给出一致族；一致族由逐位号拼接为无穷序列；两构造互逆且自然。
+\end{proof}
+
+\begin{assumption}[尺度相容图（读出因子化）]\label{assump:scale-compatibility}
+对原始窗口读出 $\omega^{(m)}$，取 $m_2\ge m_1$ 时的 restriction（或等价截断）$\omega^{(m_1)}$，并要求稳定化核满足交换关系
+\[
+\pi_{m_2\to m_1}\bigl(\mathrm{Fold}_{m_2}(\omega^{(m_2)})\bigr)=\mathrm{Fold}_{m_1}(\omega^{(m_1)}).
+\]
+该条件将“高分辨率投影到低分辨率后一致”严格化；它并不宣称不同 $m$ 的原始输出空间相同，而是给出跨尺度相容性口径。
 \end{assumption}
 
 \subsection{有效维数（定理层定义 + 解释层讨论）}

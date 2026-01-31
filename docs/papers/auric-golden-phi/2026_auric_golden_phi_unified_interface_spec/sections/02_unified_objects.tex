@@ -28,6 +28,67 @@ X_m^{\mathrm Z}=\{w\in\{0,1\}^m:\ w\ \text{不含子词 }11\}.
 其计数满足 $\card{X_m^{\mathrm Z}}=F_{m+2}$。
 \end{definition}
 
+\subsection{多尺度一致性：逆系统与逆极限（分辨率无关对象）}
+
+为严格表达“本体与读出分辨率 $m$ 无关；不同 $m$ 的结果仅在精细程度上不同”，需要把各尺度的稳定类型空间组织为同一对象的有限限制（restriction）。
+
+\begin{definition}[位号标记的稳定类型空间]\label{def:XmZ-indexed}
+为避免不同文稿对“高位在左/右”的约定差异，本文在涉及跨尺度比较时将长度 $m$ 的 Zeckendorf 稳定类型写为带位号的向量
+\[
+X_m^{\mathrm Z,\#}:=\Bigl\{(x_k)_{2\le k\le m+1}\in\{0,1\}^{\{2,3,\dots,m+1\}}:\ x_kx_{k+1}=0\ \text{对所有}\ 2\le k\le m\Bigr\}.
+\]
+若需与“长度 $m$ 的词”一致，可取同构 $X_m^{\mathrm Z,\#}\cong X_m^{\mathrm Z}$，例如映射 $(x_k)_{2\le k\le m+1}\mapsto (x_{m+1},x_m,\dots,x_2)\in\{0,1\}^m$。
+\end{definition}
+
+\begin{definition}[尺度投影（restriction）]\label{def:pi-m2-m1}
+对任意 $m_2\ge m_1$，定义尺度投影
+\[
+\pi_{m_2\to m_1}:X_{m_2}^{\mathrm Z,\#}\to X_{m_1}^{\mathrm Z,\#},\qquad
+\bigl(\pi_{m_2\to m_1}(x)\bigr)_k:=x_k\ \ (2\le k\le m_1+1).
+\]
+\end{definition}
+
+\begin{lemma}[良定性、满射性与一致性]\label{lem:pi-well-defined-surj}
+映射 $\pi_{m_2\to m_1}$ 良定义且为满射，并满足函子一致性
+\[
+\pi_{m_3\to m_1}=\pi_{m_2\to m_1}\circ \pi_{m_3\to m_2}\qquad (m_3\ge m_2\ge m_1).
+\]
+\end{lemma}
+
+\begin{proof}
+禁词约束 $x_kx_{k+1}=0$ 为局部约束，restriction 保持约束，故良定义；任取 $x\in X_{m_1}^{\mathrm Z,\#}$，令其扩展 $\\tilde x\in X_{m_2}^{\mathrm Z,\#}$ 为 $\\tilde x_k=x_k$（$2\le k\le m_1+1$）且 $\\tilde x_k=0$（$m_1+2\le k\le m_2+1$），则 $\pi_{m_2\to m_1}(\\tilde x)=x$，故满射；一致性由逐坐标定义直接得到。
+\end{proof}
+
+由 $\{X_m^{\mathrm Z,\#},\pi_{m_2\to m_1}\}$ 构成一逆系统，可定义其逆极限。
+
+\begin{definition}[无穷 Zeckendorf 子移位]\label{def:XinfZ}
+定义分辨率无关的无穷稳定类型对象
+\[
+X_\infty^{\mathrm Z}:=\Bigl\{(x_k)_{k\ge 2}\in\{0,1\}^{\{2,3,\dots\}}:\ x_kx_{k+1}=0\ \text{对所有}\ k\ge 2\Bigr\}.
+\]
+并定义自然投影 $\pi_m^\infty:X_\infty^{\mathrm Z}\to X_m^{\mathrm Z,\#}$ 为 restriction：
+\[
+(\pi_m^\infty(x))_k:=x_k\ \ (2\le k\le m+1).
+\]
+\end{definition}
+
+\begin{theorem}[逆极限同构（尺度一致性）]\label{thm:inverse-limit-Xinf}
+存在自然同构
+\[
+X_\infty^{\mathrm Z}\ \cong\ \varprojlim X_m^{\mathrm Z,\#},
+\]
+并且对任意 $m_2\ge m_1$ 有交换关系
+\[
+\pi_{m_2\to m_1}\circ \pi_{m_2}^\infty=\pi_{m_1}^\infty.
+\]
+\end{theorem}
+
+\begin{proof}
+对任意 $x\in X_\infty^{\mathrm Z}$，其 restriction 族 $(\pi_m^\infty(x))_{m\ge 1}$ 满足一致性条件，故给出逆极限元素。反向，若给定一致族 $(x^{(m)})_{m\ge 1}$，由一致性可定义无穷序列 $x_k:=x^{(m)}_k$（取任意 $m\ge k-1$），定义与一致性保证良定，并保留禁词约束。两构造互逆且自然。
+\end{proof}
+
+该定理把“不同 $m$ 的结果一致”严格化为：所有有限分辨率稳定类型空间 $X_m^{\mathrm Z}$（或 $X_m^{\mathrm Z,\#}$）都是同一分辨率无关对象 $X_\infty^{\mathrm Z}$ 的有限 restriction；$m$ 仅控制“可见前缀/有限位号范围”，而不改变对象本身。
+
 \begin{definition}[稳定化核]\label{def:fold}
 稳定化核为可计算满射
 \[
@@ -78,6 +139,14 @@ $$
 $$
 定义时空像为 $\mathsf{ST}(O,m)=\mathrm{Im}(\mathcal{R}_{O,m})$ 及其诱导结构（转移核、可达图、柱集条件结构）。
 \end{definition}
+
+\begin{assumption}[尺度相容（读出因子化）]\label{assump:readout-factorization}
+对任意 $m_2\ge m_1$，存在自然的粗粒化（restriction）使得
+\[
+\pi_{m_2\to m_1}\circ \mathcal{R}_{O,m_2}=\mathcal{R}_{O,m_1}\qquad (\mu\text{-a.e. 或逐点，按具体协议定义}).
+\]
+该条件的含义是：高分辨率输出在投影到低分辨率后与低分辨率输出一致；从而“结果一致”应理解为跨尺度相容性，而非不同 $m$ 的原始输出空间完全相同。
+\end{assumption}
 
 \subsection{固定带宽递归观测（\texorpdfstring{$m=6$}{m=6} 模板）}
 
