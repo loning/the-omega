@@ -73,6 +73,44 @@ This definition has two conceptual advantages for geometry-first reconstruction:
 In the setting of Proposition~\ref{prop:exp-law}, ``time increases'' is equivalent (within the protocol) to exponential shrinkage of posterior compatibility sets. The entropy rate controls the arrow quantitatively.
 \end{corollary}
 
+\subsection{Coarse-graining, factors, and monotonicity}\label{sec:info-time:factors}
+
+Since all quantities above depend on a protocol-defined partition (or on a protocol-defined symbolic factor), it is essential to record how they behave under coarse-graining. The core principle is the standard entropy monotonicity under factor maps.
+
+\begin{proposition}[Entropy monotonicity under factors]\label{prop:entropy-factor-monotone}
+Let $(X,\mu,T)$ be a measure-preserving system and let $\pi:(X,\mu,T)\to (Y,\nu,S)$ be a measurable factor map, i.e.\ $\nu=\mu\circ\pi^{-1}$ and $\pi\circ T=S\circ\pi$. Then
+\[
+h_\nu(S)\le h_\mu(T).
+\]
+More generally, for any finite partition $\mathcal{Q}$ of $Y$ one has
+\[
+h_\nu(S,\mathcal{Q}) = h_\mu(T,\pi^{-1}\mathcal{Q}) \le h_\mu(T),
+\]
+and if $\mathcal{P}$ is a finite partition of $X$ that refines $\pi^{-1}\mathcal{Q}$ then $h_\mu(T,\pi^{-1}\mathcal{Q})\le h_\mu(T,\mathcal{P})$.
+\cite{Walters1982,Petersen1983}
+\end{proposition}
+
+\begin{proposition}[Monotonicity of refinement depth under factor cylinders]\label{prop:tau-factor-monotone}
+Let $(A_t)$ be a stationary process induced by a finite partition $\mathcal{P}$ of $(X,\mu,T)$, and let $(B_t)$ be a factor process obtained from $(A_t)$ by a measurable factor map. For a realized length-$t$ prefix $b_{0:t-1}$ of the factor, let $C_B(b_{0:t-1})$ denote the corresponding cylinder set in $X$ (compatibility set of internal states producing that factor prefix). Then
+\[
+C_A(a_{0:t-1})\subseteq C_B(b_{0:t-1})\qquad\Rightarrow\qquad
+\mu(C_B(b_{0:t-1}))\ge \mu(C_A(a_{0:t-1})),
+\]
+and hence the associated refinement functional satisfies
+\[
+\tau_B(t):=-\log\mu(C_B(b_{0:t-1}))\ \le\ \tau_A(t):=-\log\mu(C_A(a_{0:t-1})).
+\]
+\end{proposition}
+
+\begin{corollary}[Sliding-block stabilization: an $O(m)$ alignment bound]\label{cor:tau-blockcode}
+Let $\Pi_m$ be the sliding-block stabilization factor from Definition~\ref{def:Pi_m} and let $X_t=(\Pi_m(A))_t$ be the stabilized process at depth $m$. Then the length-$t$ stabilized prefix $x_{0:t-1}$ is determined by the length-$(t+m-1)$ raw prefix $a_{0:t+m-2}$, and the corresponding cylinders satisfy
+\[
+C_A(a_{0:t+m-2})\subseteq C_X(x_{0:t-1})\quad\Rightarrow\quad
+\tau_X(t)\le \tau_A(t+m-1).
+\]
+Under SMB hypotheses for $(A_t)$ this implies that $\tau_X(t)$ cannot grow faster than linearly with slope $h_\mu(T,\mathcal{P})$, and in particular the stabilized entropy rate satisfies $h(X)\le h(A)$.
+\end{corollary}
+
 \begin{remark}[What structure $\tau$ does (and does not) induce]\label{rem:tau-structure}
 The functional $\tau(t)=-\log\mu(C(a_{0:t-1}))$ is not a metric on $H$; it is a protocol-defined refinement depth attached to an observation prefix. However, the nested cylinders induce a canonical information order on prefixes: $a_{0:t-1}$ refines $b_{0:s-1}$ iff $t\ge s$ and $a_{0:s-1}=b_{0:s-1}$, equivalently $C(a_{0:t-1})\subseteq C(b_{0:s-1})$. This order is a partial order on protocol information states (up to $\mu$-null distinctions).
 \end{remark}
@@ -92,6 +130,25 @@ Let $(A_t)$ be the symbolic process induced by a uniquely ergodic system and a f
 \]
 In particular, for Sturmian codings $p(t)=t+1$, so $\tau(t)$ is at most logarithmic for an infinite subsequence of prefixes. Numerically (Appendix~\ref{sec:appendix:toy}), typical prefixes exhibit step-like growth consistent with $\tau(t)=O(\log t)$.
 \end{proposition}
+
+\begin{remark}[A sublinear ``clock'' in zero-entropy regimes]\label{rem:sublinear-clock}
+In deterministic zero-KS regimes (e.g.\ Sturmian codings of rotations), the operational content of $\tau(t)$ is not ``elapsed time'' but \emph{how many internal states remain compatible} with the observed record at depth $t$. A protocol can therefore adopt a \emph{sublinear clock} by selecting a scaling map $g(t)$ such that $\tau(t)$ is comparable to $g(t)$ in the regime of interest. Two auditable choices are:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Refinement-depth clock}: use $\tau(t)$ itself as a dimensionless time coordinate.
+  \item \textbf{Complexity-calibrated clock}: use $\log p(t)$ as a coarse upper bound for $\tau(t)$ (Proposition~\ref{prop:log-bound}). For Sturmian codings, $p(t)=t+1$ yields a logarithmic scale $\log(t+1)$ that captures the correct subexponential order.
+\end{itemize}
+The intended interpretation is purely protocol-level: $g(t)$ specifies the unit in which refinement depth is reported. Any identification with a physical clock requires an additional calibration map (Section~\ref{sec:info-time:definition}).
+\end{remark}
+
+\begin{remark}[Avoiding over-dependence on the chosen coding]\label{rem:coding-dependence-zero}
+In zero-entropy settings, numerical values of $\tau(t)$ can depend on the chosen partition/coding, because different codings induce different cylinder geometries. The robust content is instead:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Entropy class}: $h_\mu(T)=0$ (subexponential refinement) is invariant under finite-alphabet recodings and measurable factors.
+  \item \textbf{Growth class of complexity}: for minimal rotations, any nondegenerate finite partition yields at most linear factor complexity, and Sturmian codings achieve the minimal $p(t)=t+1$; thus $\log p(t)\sim \log t$ is stable as a \emph{scaling class} even when constant factors vary.
+  \item \textbf{Finite-memory recoding bounds}: if two codings are related by a sliding block code of fixed window size, their cylinder refinements are mutually controlled up to an $O(1)$ alignment in $t$ (cf.\ Corollary~\ref{cor:tau-blockcode}); consequently the choice of a logarithmic (or more generally sublinear) scaling regime is not an artifact of a single encoding.
+\end{itemize}
+This is the sense in which the ``sublinear clock'' proposal avoids being a free choice: it is constrained by protocol-equivalence classes (finite-memory recodings) rather than by a single preferred code.
+\end{remark}
 
 \begin{figure}[t]
   \centering

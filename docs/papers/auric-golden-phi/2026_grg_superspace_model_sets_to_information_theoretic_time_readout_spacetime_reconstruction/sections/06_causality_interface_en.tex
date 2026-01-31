@@ -70,6 +70,30 @@ e\prec_{\mathrm{prot}} f \quad\Rightarrow\quad \Phi(e)\subseteq J^-(\Phi(f)),
 \]
 or conversely whether geometric causality constraints enforce bounds on achievable protocol refinement. In the context of this review, we emphasize that establishing these implications is a \emph{research program}, not a completed claim.
 
+\subsubsection{A minimal testable hypothesis package}\label{sec:causality:min-hyp}
+
+To turn the above compatibility question into a falsifiable statement, one can isolate a small set of explicit hypotheses that are checkable (numerically or experimentally) at the protocol level.
+
+\begin{assumption}[Boundary support map and monotone localization]\label{assump:phi-boundary}
+Let $(M,g)$ be a time-oriented Lorentzian manifold and let $\Sigma\subset M$ be a fixed null hypersurface segment (``lightcone boundary''). Assume:
+\begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=2pt]
+  \item \textbf{Boundary embedding}: the raw record (or boundary data stream) admits an embedding into $\Sigma$ as a measurable field $d:\Sigma\to\mathcal{V}$ for some value space $\mathcal{V}$, together with a protocol rule that associates to each protocol event $e\in\mathcal{E}$ a measurable support set $\Phi(e)\subseteq \Sigma$ on which $e$ depends.
+  \item \textbf{Monotone refinement localization}: if $e$ is decided at refinement depth $t$ (e.g.\ by a length-$t$ prefix or a depth-$t$ stabilized condition), then $\Phi(e)$ is contained in a boundary region whose ``diameter'' decreases monotonically with $t$ (a protocol-level finite-resolution localization assumption).
+  \item \textbf{Stability}: $\Phi(e)$ is stable under admissible protocol perturbations (window uncertainty, kernel width perturbations) in the sense that the symmetric difference $\Phi(e)\triangle \Phi_\delta(e)$ has small measure for small perturbations $\delta$.
+\end{enumerate}
+\end{assumption}
+
+\begin{definition}[Alexandrov-consistent boundary precedence]\label{def:alex-consistent}
+Given Assumption~\ref{assump:phi-boundary}, say that the protocol precedence $\prec_{\mathrm{prot}}$ is \emph{Alexandrov-consistent} with $(M,g)$ (relative to $\Sigma$) if for all $e,f\in\mathcal{E}$,
+\[
+e\prec_{\mathrm{prot}} f \quad\Rightarrow\quad \Phi(e)\subseteq J^-_g(\Phi(f)).
+\]
+\end{definition}
+
+\begin{remark}[A concrete toy check]\label{rem:toy-check}
+In numerical ``boundary sampling'' tests, one may take $\Sigma$ to be a null plane in Minkowski space and define $\Phi(e)$ as the minimal boundary patch needed to compute $e$ from the sampled record (e.g.\ a block of symbols or a block of stabilized types). The monotone-localization hypothesis then becomes a measurable statement about how the boundary patch size scales with refinement depth, and Alexandrov-consistency reduces to a check that earlier-decidable events never require boundary data outside the causal past of later-decidable events (up to a tolerance set by the stability assumption).
+\end{remark}
+
 \subsubsection{A concrete route: boundary embedding and Alexandrov consistency}\label{sec:causality:alexandrov}
 One plausible route to a theorem is to restrict to protocols that admit an explicit ``boundary data'' embedding. In such a setting one would (i) model the raw record as data supported on (or near) a null boundary segment (lightcone cut), (ii) define protocol events as decidable properties of boundary data blocks, and (iii) choose $\Phi$ so that refinement depth corresponds to shrinking boundary localization. The target statement is then that protocol precedence is compatible with Alexandrov intervals: if $f$ is not decidable without passing through the refinement that decides $e$, then $\Phi(e)$ must lie in the causal past of $\Phi(f)$.
 

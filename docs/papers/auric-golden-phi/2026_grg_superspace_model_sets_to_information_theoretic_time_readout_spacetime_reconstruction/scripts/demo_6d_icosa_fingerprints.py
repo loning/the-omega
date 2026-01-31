@@ -17,13 +17,15 @@ from __future__ import annotations
 
 import json
 import math
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Sequence, Tuple
 
 import numpy as np
 
 from common_progress import ProgressPrinter
+from fold_zeckendorf import exact_degeneracy_histogram, fold_m
 
 
 @dataclass(frozen=True)
@@ -35,6 +37,14 @@ class Demo6DParams:
     seed: int
     grid_n: int
     grid_dx: float
+    scan_T: int
+    scan_beta: Tuple[float, float, float]
+    scan_h0: Tuple[float, float, float]
+    scan_R: float
+    scan_fold_m: int
+    entropy_block_max: int
+    tau_prefix_max: int
+    probabilistic_readout: bool
 
 
 def icosa_matrices() -> Tuple[np.ndarray, np.ndarray]:
@@ -144,6 +154,106 @@ def contrast_statistic_from_image(img: np.ndarray) -> float:
     return float(s / max(m, 1e-12))
 
 
+def _wrap_pm_half(x: np.ndarray) -> np.ndarray:
+    """Wrap coordinates to [-0.5, 0.5) componentwise."""
+    return (x + 0.5) % 1.0 - 0.5
+
+
+def internal_scan(h0: np.ndarray, beta: np.ndarray, T: int) -> np.ndarray:
+    """Return (T,3) scan points on a 3-torus, represented in [-0.5,0.5)^3."""
+    t = np.arange(T, dtype=float)[:, None]
+    h = h0[None, :] + t * beta[None, :]
+    return _wrap_pm_half(h)
+
+
+def kappa_ball(h: np.ndarray, R: float, eps: float) -> np.ndarray:
+    """Window kernel kappa_eps(h) in [0,1] for internal ball window."""
+    r = np.linalg.norm(h, axis=1)
+    if eps <= 0:
+        return (r <= R).astype(float)
+    x = (R - r) / eps
+    return 1.0 / (1.0 + np.exp(-x))
+
+
+def bernoulli_readout(rng: np.random.Generator, p: np.ndarray) -> List[int]:
+    """Sample bits with P(bit=1)=p (independent given the scan)."""
+    u = rng.random(size=len(p))
+    return (u < p).astype(int).tolist()
+
+
+def deterministic_threshold_readout(p: np.ndarray, thresh: float = 0.5) -> List[int]:
+    """Deterministic readout bit = 1[p >= thresh]."""
+    return (p >= thresh).astype(int).tolist()
+
+
+def stabilized_type_sequence(bits: Sequence[int], m: int) -> List[Tuple[int, ...]]:
+    """Sliding-window stabilization: x_t = Fold_m(bits[t:t+m])."""
+    if len(bits) < m:
+        return []
+    out: List[Tuple[int, ...]] = []
+    for i in range(len(bits) - m + 1):
+        out.append(fold_m(bits[i : i + m]))
+    return out
+
+
+def block_entropy_rate_proxy(seq: Sequence[int], max_block_len: int) -> Dict[str, float]:
+    """Return H(block_n)/n for n=1..max_block_len (natural log units)."""
+    n_total = len(seq)
+    out: Dict[str, float] = {}
+    if n_total <= 0:
+        return out
+    for n in range(1, max_block_len + 1):
+        if n_total < n:
+            out[str(n)] = 0.0
+            continue
+        total = n_total - n + 1
+        counts: Dict[Tuple[int, ...], int] = {}
+        for i in range(total):
+            w = tuple(seq[i : i + n])
+            counts[w] = counts.get(w, 0) + 1
+        H = 0.0
+        for c in counts.values():
+            p = c / total
+            H -= p * math.log(p)
+        out[str(n)] = float(H / n)
+    return out
+
+
+def empirical_tau_prefix(seq: Sequence[int], tau_prefix_max: int) -> List[float]:
+    """Estimate tau(t)=-log P(prefix_t) by counting prefix occurrences in seq."""
+    T = len(seq)
+    out: List[float] = []
+    if T <= 0:
+        return out
+    prefix: List[int] = []
+    for t in range(1, min(tau_prefix_max, T) + 1):
+        prefix = list(seq[:t])
+        total = T - t + 1
+        if total <= 0:
+            out.append(float("inf"))
+            continue
+        c = 0
+        for i in range(total):
+            if list(seq[i : i + t]) == prefix:
+                c += 1
+        p = max(c / total, 1.0 / (total + 1.0))
+        out.append(float(-math.log(p)))
+    return out
+
+
+def transition_counts(types: Sequence[Tuple[int, ...]]) -> Dict[str, int]:
+    """Return edge counts for successive stabilized types, keyed by 'u->v'."""
+    edges: Dict[str, int] = {}
+    if len(types) <= 1:
+        return edges
+    for a, b in zip(types, types[1:]):
+        ka = "".join(str(x) for x in a)
+        kb = "".join(str(x) for x in b)
+        k = f"{ka}->{kb}"
+        edges[k] = edges.get(k, 0) + 1
+    return edges
+
+
 def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
     out_dir.mkdir(parents=True, exist_ok=True)
     fig_out_dir.mkdir(parents=True, exist_ok=True)
@@ -156,6 +266,14 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
         seed=seed,
         grid_n=512,
         grid_dx=0.35,
+        scan_T=50000,
+        scan_beta=(0.38196601125, 0.2360679775, 0.14589803375),
+        scan_h0=(0.123456789, -0.234567891, 0.345678912),
+        scan_R=0.35,
+        scan_fold_m=12,
+        entropy_block_max=10,
+        tau_prefix_max=64,
+        probabilistic_readout=True,
     )
     rng = np.random.default_rng(params.seed)
     pp = ProgressPrinter("demo_6d")
@@ -188,6 +306,58 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
         V_mean.append(float(np.mean(V_phase)))
         V_std.append(float(np.std(V_phase)))
 
+    # Symbolic: Fold + fibers + transition graph (computed at each eps).
+    beta = np.array(params.scan_beta, dtype=float)
+    h0 = np.array(params.scan_h0, dtype=float)
+    h_scan = internal_scan(h0=h0, beta=beta, T=params.scan_T)
+
+    deg = exact_degeneracy_histogram(params.scan_fold_m)
+    deg_hist = {str(k): int(v) for k, v in sorted(deg.histogram().items())}
+
+    symbolic_by_eps: Dict[str, object] = {}
+    Hrate_by_eps: List[float] = []
+    for eps in params.eps_grid:
+        kappa = kappa_ball(h_scan, R=float(params.scan_R), eps=float(eps))
+        if params.probabilistic_readout:
+            bits = bernoulli_readout(rng, kappa)
+        else:
+            bits = deterministic_threshold_readout(kappa, thresh=0.5)
+
+        types = stabilized_type_sequence(bits, m=params.scan_fold_m)
+        total_types = max(len(types), 1)
+        type_counts = Counter(types)
+        p_types = {("".join(str(b) for b in k)): (v / total_types) for k, v in type_counts.items()}
+
+        H_type = 0.0
+        for p in p_types.values():
+            if p > 0:
+                H_type -= p * math.log(p)
+
+        edges = transition_counts(types)
+        hr = block_entropy_rate_proxy(bits, max_block_len=params.entropy_block_max)
+        h_proxy = float(hr.get(str(params.entropy_block_max), 0.0))
+        Hrate_by_eps.append(h_proxy)
+        tau_est = empirical_tau_prefix(bits, tau_prefix_max=params.tau_prefix_max)
+
+        symbolic_by_eps[str(eps)] = {
+            "raw_bits": {
+                "T": int(len(bits)),
+                "mean": float(np.mean(bits)) if bits else 0.0,
+                "block_entropy_rate_proxy": hr,
+                "tau_prefix_plugin": tau_est,
+            },
+            "stabilized": {
+                "fold_m": int(params.scan_fold_m),
+                "type_probabilities": {k: float(v) for k, v in p_types.items()},
+                "entropy_H_type": float(H_type),
+                "support_size": int(len(p_types)),
+                "transition_edges": edges,
+                "samples": int(total_types),
+            },
+            "summary": {"h_proxy": float(h_proxy)},
+        }
+        pp.tick(f"symbolic eps={eps:.3f} h_proxy={h_proxy:.4f} support={len(p_types)}")
+
     # Save JSON.
     json_path = out_dir / "demo_6d_fingerprints.json"
     payload = {
@@ -201,6 +371,14 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
             "grid_dx": params.grid_dx,
             "phase0": phase0.tolist(),
             "peak_index": [peak_iy, peak_ix],
+            "scan_T": params.scan_T,
+            "scan_beta": list(params.scan_beta),
+            "scan_h0": list(params.scan_h0),
+            "scan_R": float(params.scan_R),
+            "scan_fold_m": params.scan_fold_m,
+            "entropy_block_max": params.entropy_block_max,
+            "tau_prefix_max": params.tau_prefix_max,
+            "probabilistic_readout": bool(params.probabilistic_readout),
         },
         "counts": {
             "points_in_patch": int(len(x0)),
@@ -212,9 +390,20 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
             "std": V_std,
             "definition": "V(eps)=std(binned_density)/mean(binned_density) on a 2D slice of projected density",
         },
+        "symbolic": {
+            "params": {
+                "readout": "A_t ~ Bernoulli(kappa_eps(h_t)) if probabilistic_readout else A_t = 1[kappa_eps(h_t)>=0.5]",
+                "window_kernel": "kappa_eps(h)=1/(1+exp(-(R-||h||)/eps)) with sharp limit eps->0",
+                "torus_representation": "internal phases represented in [-0.5,0.5)^3 with componentwise wrap",
+                "scan_R": float(params.scan_R),
+            },
+            "degeneracy_histogram_exact": deg_hist,
+            "by_eps": symbolic_by_eps,
+        },
         "notes": [
             "This uses a spherical window in internal space (boundary measure zero).",
             "Diffraction is a 2D slice from FFT of a binned projected density.",
+            "Symbolic demo uses an internal scan on a 3-torus and a ball window kernel, then applies Zeckendorf Fold_m.",
         ],
     }
     json_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
@@ -245,10 +434,24 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
     fig2.savefig(fig2_path, dpi=160)
     plt.close(fig2)
 
+    # Figure 3: entropy-rate proxy vs resolution (from symbolic scan).
+    fig3, ax3 = plt.subplots(figsize=(5.5, 3.8))
+    ax3.plot(params.eps_grid, Hrate_by_eps, marker="o", ms=4, lw=1.0)
+    ax3.set_xscale("log")
+    ax3.set_xlabel("resolution scale epsilon")
+    ax3.set_ylabel("entropy-rate proxy h_hat(eps)")
+    ax3.set_title("6D icosahedral demo: entropy-rate proxy vs resolution")
+    ax3.grid(True, which="both", alpha=0.3)
+    fig3.tight_layout()
+    fig3_path = fig_out_dir / "demo_6d_entropy_rate_proxy.png"
+    fig3.savefig(fig3_path, dpi=160)
+    plt.close(fig3)
+
     return {
         "demo_6d_fingerprints.json": str(json_path),
         "demo_6d_diffraction_slice.png": str(fig_path),
         "demo_6d_visibility_curve.png": str(fig2_path),
+        "demo_6d_entropy_rate_proxy.png": str(fig3_path),
     }
 
 

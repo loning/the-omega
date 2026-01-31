@@ -57,6 +57,7 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "sections/generated/demo_6d_diffraction_slice.png",
                 "sections/generated/demo_6d_visibility_curve.png",
+                "sections/generated/demo_6d_entropy_rate_proxy.png",
                 "artifacts/demo_6d_fingerprints.json",
             ],
         ),

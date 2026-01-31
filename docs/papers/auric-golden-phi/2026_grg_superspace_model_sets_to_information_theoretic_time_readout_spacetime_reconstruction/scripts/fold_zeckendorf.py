@@ -39,14 +39,15 @@ def zeckendorf_bits(N: int, m: int) -> List[int]:
     w = fibonacci_weights(m)
     bits = [0] * m
     remaining = N
-    # Greedy from largest weight down.
-    for i in range(m - 1, -1, -1):
+    # Greedy from largest weight down, skipping adjacent positions.
+    i = m - 1
+    while i >= 0 and remaining > 0:
         if w[i] <= remaining:
             bits[i] = 1
             remaining -= w[i]
-            # Enforce no-adjacent-ones property.
-            if i - 1 >= 0:
-                bits[i - 1] = 0
+            i -= 2  # skip adjacent position to enforce no '11'
+        else:
+            i -= 1
     return bits
 
 

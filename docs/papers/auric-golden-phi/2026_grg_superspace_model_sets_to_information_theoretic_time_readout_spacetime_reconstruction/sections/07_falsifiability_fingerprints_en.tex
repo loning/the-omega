@@ -11,6 +11,22 @@ Regular model sets have pure-point diffraction under broad conditions, with Brag
 \end{itemize}
 Protocol-level falsification: given a proposed CPS and window family, simulate $\Lambda(W)$ on increasing finite patches and compute empirical diffraction; check convergence to the predicted module and intensity envelope.
 
+\subsubsection{A standard intensity formula and the role of resolution}\label{sec:falsifiability:diffraction-formula}
+
+For regular (and more generally weighted) model sets, there is a precise link between window geometry in internal space and observed Bragg peak intensities. A convenient summary (see e.g.\ \cite{Hof1995,BaakeGrimm2013}) is that, for wave vectors $k$ in the Fourier module determined by the CPS, the Bragg peak intensity takes the form
+\[
+I(k)\ \propto\ \bigl|\widehat{w}(k^\star)\bigr|^2,
+\]
+where $w:H\to\RR$ is the window weight (sharp: $w=\mathds{1}_W$; fuzzy/finite resolution: $w=\kappa_\epsilon$), $k^\star$ denotes the internal-space counterpart of $k$ under the star map on the dual module, and $\widehat{w}$ is the Fourier transform on $H$.
+
+This identity explains two protocol-facing facts:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Window geometry controls intensities}: changing $W$ (or using a weight $w$) changes $\widehat w$ and hence the intensity envelope without moving the Fourier module itself.
+  \item \textbf{Resolution acts as spectral smoothing}: replacing a sharp indicator by a smoothed kernel $\kappa_\epsilon$ suppresses high-frequency features of $\widehat w$. In practice, increasing $\epsilon$ corresponds to stronger attenuation of fine-scale internal-space boundary structure, and therefore to weaker contrast in the high-$|k^\star|$ regime.
+\end{itemize}
+
+The numerical FFT-based fingerprints in Demos B--C are finite-patch, finite-grid approximations of this principle. In those scripts, the visibility curve $V(\epsilon)$ is a compressed contrast statistic derived from the binned intensity/density (variance over mean). While $V(\epsilon)$ is not itself a Bragg intensity, it is sensitive to the same mechanism: as $\epsilon$ increases, the effective weight $w=\kappa_\epsilon$ becomes smoother, which reduces the prominence of sharp interference features and typically lowers contrast at fixed discretization, up to quasi-periodic modulation tied to the Fourier module and to phase averaging.
+
 \begin{proposition}[P1: quasiperiodic spectral lines as a model-set signature]\label{prop:P1}
 If a visible 3D point set arises (to the accuracy of the protocol) from a regular cut-and-project model set, then its diffraction/structure factor is expected to be dominated by discrete Bragg peaks supported on a Fourier module determined by the superspace lattice and the star map. Variations of internal phase $u$ should produce structured phase shifts rather than uncorrelated drifts.
 \end{proposition}
@@ -81,7 +97,7 @@ The outputs are written under \texttt{artifacts/} together with a parameter file
 \begin{itemize}[leftmargin=*,itemsep=2pt]
   \item \textbf{Demo A (1D, zero KS entropy)}: an irrational rotation with a two-interval readout (Sturmian regime). We compute exact cylinder measures and visualize the sublinear growth of $\tau(t)$ (Figures~\ref{fig:demo1d-tau}--\ref{fig:demo1d-entropy}), clarifying how the protocol refinement functional behaves at $h_\mu(T)=0$.
   \item \textbf{Demo B (2D $\rightarrow$ 1D Fibonacci model set)}: a cut-and-project construction from $\ZZ^2$ with a compact window. We show a finite-patch structure factor and a resolution-dependent visibility curve $V(\epsilon)$ with phase averaging, as well as an exact (combinatorial) degeneracy histogram for a simple Zeckendorf-based $\Fold_m$.
-  \item \textbf{Demo C (6D $\rightarrow$ 3D icosahedral approximation)}: a $\ZZ^6$ cut-and-project construction with a golden-ratio-based icosahedral splitting and a compact internal-space window (spherical, boundary measure zero). We show a diffraction slice and a phase-averaged visibility curve $V(\epsilon)$ under window fuzzification.
+  \item \textbf{Demo C (6D $\rightarrow$ 3D icosahedral approximation)}: a $\ZZ^6$ cut-and-project construction with a golden-ratio-based icosahedral splitting and a compact internal-space window (spherical, boundary measure zero). We show a diffraction slice and a phase-averaged visibility curve $V(\epsilon)$ under window fuzzification, and we additionally run an internal-phase scan with a probabilistic window kernel to produce a symbolic record whose entropy-rate proxy varies with $\epsilon$ (Figure~\ref{fig:demo6d-entropy-rate}). The same record is stabilized by a Zeckendorf $\Fold_m$ to produce reproducible fiber/transition statistics stored in \texttt{artifacts/demo\_6d\_fingerprints.json}.
 \end{itemize}
 
 \begin{figure}[t]
@@ -117,6 +133,13 @@ The outputs are written under \texttt{artifacts/} together with a parameter file
   \includegraphics[width=0.75\linewidth]{sections/generated/demo_6d_visibility_curve.png}
   \caption{Demo C: phase-averaged visibility curve $V(\epsilon)$ for the 6D icosahedral approximation under a fuzzified internal-space window (error bars: standard deviation over phases). Here $V(\epsilon)$ is the coefficient of variation of the binned projected density image used in the FFT slice.}
   \label{fig:demo6d-visibility}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.75\linewidth]{sections/generated/demo_6d_entropy_rate_proxy.png}
+  \caption{Demo C (symbolic scan): an entropy-rate proxy $\widehat h(\epsilon)$ estimated from block entropies of the binary record generated by an internal-phase scan with a probabilistic window kernel $\kappa_\epsilon$. As $\epsilon$ varies, the kernel changes the effective randomness and yields a reproducible $\epsilon$-dependence of information acquisition speed (cf.\ Remark~\ref{rem:noise-positive-entropy} and Definition~\ref{def:entropy-time}).}
+  \label{fig:demo6d-entropy-rate}
 \end{figure}
 
 \subsection{Practical data strategy: finite-size effects and phase averaging}\label{sec:falsifiability:practice}

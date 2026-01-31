@@ -13,16 +13,16 @@ X_m := \{w\in\{0,1\}^m:\ \text{for all }i,\ (w_i,w_{i+1})\neq (1,1)\}.
 \]
 \end{definition}
 
-It is classical that $|X_m| = F_{m+2}$, where $F_k$ are Fibonacci numbers \cite{Lothaire2002}. This counting identity is one reason why ``golden'' language constraints align naturally with Sturmian/Fibonacci renormalization structures.
+It is classical that $|X_m| = F_{m+2}$, where $(F_k)$ are the standard Fibonacci numbers ($F_1=F_2=1$) \cite{Lothaire2002}. This counting identity is one reason why ``golden'' language constraints align naturally with Sturmian/Fibonacci renormalization structures.
 
 \subsection{Zeckendorf normal forms and stability}\label{sec:stabilization:zeckendorf}
 
 The golden-mean constraint has a canonical arithmetic incarnation: \emph{Zeckendorf normal form}. It provides a principled way to interpret ``no adjacent ones'' as a uniqueness/stability condition rather than an ad hoc rule.
 
 \begin{definition}[Zeckendorf representation]\label{def:zeckendorf}
-Let $(F_k)_{k\ge 1}$ be the Fibonacci sequence with $F_1=1$, $F_2=2$, and $F_{k+2}=F_{k+1}+F_k$. A \emph{Zeckendorf representation} of a nonnegative integer $N$ is an expansion
+Let $(F_k)_{k\ge 1}$ be the standard Fibonacci sequence with $F_1=F_2=1$ and $F_{k+2}=F_{k+1}+F_k$. A \emph{Zeckendorf representation} of a nonnegative integer $N$ is an expansion
 \[
-N=\sum_{k\ge 1}\varepsilon_k F_k,\qquad \varepsilon_k\in\{0,1\},
+N=\sum_{k\ge 1}\varepsilon_k F_{k+1},\qquad \varepsilon_k\in\{0,1\},
 \]
 with the constraint $\varepsilon_k\varepsilon_{k+1}=0$ for all $k$ (no adjacent ones).
 \end{definition}
@@ -117,6 +117,34 @@ induces a partition of internal states into \emph{stabilized fibers}
 \]
 If the scan process on $H$ is ergodic, then fiber frequencies and entropy rates are almost-sure invariants of the protocol up to null sets.
 \end{proposition}
+
+\subsection{Sequence-level stabilization as a sliding block factor}\label{sec:stabilization:factor}
+
+Definition~\ref{def:fold} is stated on finite words, but for entropy and dynamics one needs a sequence-level map that commutes with the shift.
+
+\begin{definition}[Sliding-block stabilization factor]\label{def:Pi_m}
+Fix $m\ge 1$ and a stabilization rule $\Fold_m:\mathcal{A}^m\twoheadrightarrow X_m$. Define a map $\Pi_m:\mathcal{A}^{\NN}\to X_m^{\NN}$ on one-sided sequences by
+\[
+(\Pi_m(a))_t := \Fold_m(a_t a_{t+1}\cdots a_{t+m-1})\in X_m,\qquad t\in\NN,
+\]
+where $a_t a_{t+1}\cdots a_{t+m-1}\in\mathcal{A}^m$ denotes the length-$m$ block starting at time $t$.
+\end{definition}
+
+\begin{proposition}[Shift-commuting factor property]\label{prop:Pi_m_factor}
+Let $\sigma$ be the left shift on $\mathcal{A}^{\NN}$ and on $X_m^{\NN}$. Then $\Pi_m$ is a (measurable) sliding block code and satisfies
+\[
+\Pi_m\circ\sigma=\sigma\circ \Pi_m.
+\]
+In particular, if $(A_t)_{t\ge 0}$ is a stationary process on $\mathcal{A}$, then the stabilized process $X_t:=(\Pi_m(A))_t=\Fold_m(A_t^{t+m-1})$ is stationary on the finite alphabet $X_m$.
+\end{proposition}
+
+\begin{definition}[Fold transition graph]\label{def:fold-graph}
+The \emph{fold transition graph} at depth $m$ is the directed graph $G_m=(X_m,E_m)$ with vertex set $X_m$ and an edge $x\to y$ if there exists a raw word $w\in\mathcal{A}^{m+1}$ such that
+\[
+\Fold_m(w_0w_1\cdots w_{m-1})=x,\qquad \Fold_m(w_1w_2\cdots w_m)=y.
+\]
+Equivalently, $x\to y$ iff there exists a sequence $a\in\mathcal{A}^{\NN}$ with $(\Pi_m(a))_0=x$ and $(\Pi_m(a))_1=y$.
+\end{definition}
 
 \subsection{From fibers to observables: statistics and derived quantities}\label{sec:stabilization:observables}
 

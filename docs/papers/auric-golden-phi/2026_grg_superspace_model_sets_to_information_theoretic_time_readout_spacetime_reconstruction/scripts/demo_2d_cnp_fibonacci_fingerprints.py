@@ -271,14 +271,42 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
     plt.close(fig2)
 
     # Plot degeneracy histogram.
-    fig3, ax3 = plt.subplots(figsize=(6.5, 3.6))
     ks = np.array([int(k) for k in deg_hist.keys()], dtype=int)
     vs = np.array([deg_hist[str(k)] for k in ks], dtype=int)
-    ax3.bar(ks, vs, width=0.8, alpha=0.85)
-    ax3.set_xlabel("fiber size |F_m(x)|")
-    ax3.set_ylabel("count of stabilized types")
-    ax3.set_title(f"Exact degeneracy histogram (m={params.fold_m})")
-    ax3.grid(True, axis="y", alpha=0.3)
+    # Long-tail distributions can be visually dominated by rare large fibers.
+    # Use a split view: left panel shows the bulk, right panel summarizes the tail.
+    split_x = 64
+    bulk = ks <= split_x
+    tail = ks > split_x
+    fig3, (axL, axR) = plt.subplots(1, 2, figsize=(8.6, 3.6), gridspec_kw={"width_ratios": [3, 2]})
+    axL.bar(ks[bulk], vs[bulk], width=0.8, alpha=0.85)
+    axL.set_xlim(0, split_x + 1)
+    axL.set_xlabel("fiber size |F_m(x)| (bulk)")
+    axL.set_ylabel("count of stabilized types")
+    axL.grid(True, axis="y", alpha=0.3)
+
+    if np.any(tail):
+        axR.axis("off")
+        # Summarize the tail as a small table, which is more readable when the
+        # tail is extremely sparse (often a single outlier at modest m).
+        tail_pairs = sorted([(int(k), int(v)) for k, v in zip(ks[tail], vs[tail])], reverse=True)
+        top_k = tail_pairs[:8]
+        lines = ["Tail summary (|F_m(x)| > 64):", ""]
+        for size, count in top_k:
+            lines.append(f"- size={size}: count={count}")
+        if len(tail_pairs) > len(top_k):
+            lines.append(f"... ({len(tail_pairs) - len(top_k)} more)")
+        # If there is a unique maximum fiber, also report one representative type.
+        max_size = max(int(k) for k in ks)
+        max_types = [k for k, v in deg.fiber_sizes.items() if v == max_size]
+        if len(max_types) == 1:
+            w = "".join(str(b) for b in max_types[0])
+            lines += ["", f"max type (example): {w}"]
+        axR.text(0.0, 1.0, "\n".join(lines), va="top", ha="left", fontsize=9, family="monospace")
+    else:
+        axR.axis("off")
+
+    fig3.suptitle(f"Exact degeneracy histogram (m={params.fold_m})", y=1.02)
     fig3.tight_layout()
     fig3_path = fig_out_dir / "demo_2d_degeneracy_hist.png"
     fig3.savefig(fig3_path, dpi=160)
