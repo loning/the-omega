@@ -114,6 +114,24 @@ def pointset_to_binned_sequence(x: np.ndarray, dx: float) -> List[int]:
     return occ.tolist()
 
 
+def contrast_statistic_from_bins(x: np.ndarray, weights: np.ndarray, dx: float) -> float:
+    """A simple visibility/contrast statistic: coefficient of variation of binned intensity."""
+    if len(x) == 0:
+        return 0.0
+    xmin = float(np.min(x))
+    xmax = float(np.max(x))
+    nb = int(math.ceil((xmax - xmin) / dx)) + 1
+    if nb <= 1:
+        return 0.0
+    bins = np.zeros(nb, dtype=float)
+    idx = np.floor((x - xmin) / dx).astype(int)
+    idx = np.clip(idx, 0, nb - 1)
+    np.add.at(bins, idx, weights)
+    m = float(np.mean(bins))
+    s = float(np.std(bins))
+    return float(s / max(m, 1e-12))
+
+
 def stabilized_type_sequence(bits: List[int], m: int) -> List[Tuple[int, ...]]:
     if len(bits) < m:
         return []
@@ -175,9 +193,8 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
             a = params.window_center - 0.5 * params.window_len + phase
             b = params.window_center + 0.5 * params.window_len + phase
             w = smooth_window_weight(u, a=a, b=b, eps=eps)
-            # Visibility as normalized amplitude at a representative peak.
-            amp = np.sum(w * np.exp(-2j * np.pi * k_ref * x))
-            V = float(np.abs(amp) / max(float(np.sum(w)), 1e-12))
+            # Visibility/contrast as variance-based statistic (see paper Sec 07).
+            V = contrast_statistic_from_bins(x, weights=w, dx=params.bin_dx)
             V_phase.append(V)
             pp.tick(f"eps={eps:.4f} phase={p_i+1}/{params.phases} V={V:.3f}")
         V_mean.append(float(np.mean(V_phase)))
@@ -209,11 +226,13 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
             "fold_m": params.fold_m,
             "phase0": phase0,
             "k_ref": k_ref,
+            "visibility_bin_dx": params.bin_dx,
         },
         "visibility": {
             "eps": params.eps_grid,
             "mean": V_mean,
             "std": V_std,
+            "definition": "V(eps)=std(binned_intensity)/mean(binned_intensity), binned along x with bin width bin_dx",
         },
         "fold": {
             "degeneracy_histogram_exact": deg_hist,

@@ -11,6 +11,13 @@ C(a_{0:t-1}) := \{h\in H:\ R_\Theta(h_k)=a_k\ \text{for }k=0,\dots,t-1\},
 where $h_k$ denotes the internal state at scan step $k$.
 The posterior probability of this cylinder is $\mu(C(a_{0:t-1}))$, and refinement corresponds to decreasing $\mu(C(a_{0:t-1}))$ as $t$ grows for typical sequences.
 
+\subsubsection{Filtrations and posterior measures}
+Let $A_t:=R_\Theta(T^t h)$ be the symbol process on $(H,\mu,T)$ and define the information filtration
+\[
+\mathcal{F}_t:=\sigma(A_0,\dots,A_{t-1}).
+\]
+For a realized prefix $a_{0:t-1}$, the posterior is the conditional measure $\mu(\cdot\,|\,\mathcal{F}_t)(a_{0:t-1})$, supported on the cylinder $C(a_{0:t-1})$. Thus the quantity $\mu(C(a_{0:t-1}))$ is the protocol-auditable posterior mass of the compatibility set at refinement depth $t$.
+
 \subsection{Entropy rate and the SMB theorem}\label{sec:info-time:smb}
 
 Assume the scan dynamics is measure-preserving and ergodic, and the readout corresponds to a finite measurable partition $\mathcal{P}$ of $H$ (induced by $R_\Theta$). Let $\mathcal{P}^{(t)} := \bigvee_{k=0}^{t-1} T^{-k}\mathcal{P}$ be the join partition. The Shannon--McMillan--Breiman theorem states that for $\mu$-almost every $h\in H$,
@@ -65,6 +72,10 @@ This definition has two conceptual advantages for geometry-first reconstruction:
 \begin{corollary}[Protocol-level time arrow]\label{cor:time-arrow}
 In the setting of Proposition~\ref{prop:exp-law}, ``time increases'' is equivalent (within the protocol) to exponential shrinkage of posterior compatibility sets. The entropy rate controls the arrow quantitatively.
 \end{corollary}
+
+\begin{remark}[What structure $\tau$ does (and does not) induce]\label{rem:tau-structure}
+The functional $\tau(t)=-\log\mu(C(a_{0:t-1}))$ is not a metric on $H$; it is a protocol-defined refinement depth attached to an observation prefix. However, the nested cylinders induce a canonical information order on prefixes: $a_{0:t-1}$ refines $b_{0:s-1}$ iff $t\ge s$ and $a_{0:s-1}=b_{0:s-1}$, equivalently $C(a_{0:t-1})\subseteq C(b_{0:s-1})$. This order is a partial order on protocol information states (up to $\mu$-null distinctions).
+\end{remark}
 
 \subsubsection{Zero-KS regimes: subexponential refinement}\label{sec:info-time:zero-ks}
 

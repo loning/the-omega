@@ -50,6 +50,16 @@ def build_steps() -> List[Step]:
                 "artifacts/demo_2d_fingerprints.json",
             ],
         ),
+        Step(
+            name="demo_6d_icosa_fingerprints",
+            script="demo_6d_icosa_fingerprints.py",
+            args=["--out", "artifacts", "--fig-out", "sections/generated", "--seed", "0"],
+            expected_outputs=[
+                "sections/generated/demo_6d_diffraction_slice.png",
+                "sections/generated/demo_6d_visibility_curve.png",
+                "artifacts/demo_6d_fingerprints.json",
+            ],
+        ),
     ]
 
 

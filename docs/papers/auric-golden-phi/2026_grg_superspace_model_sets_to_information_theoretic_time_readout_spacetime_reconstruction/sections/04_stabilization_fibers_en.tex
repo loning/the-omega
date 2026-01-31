@@ -66,6 +66,14 @@ One concrete way to build $\Fold_m$ on binary words is:
 \end{enumerate}
 This defines a deterministic, computable stabilization map whose image lies in the golden-mean language by construction. The price paid is that $\Fold_m$ depends on a truncation convention; in applications, such conventions are part of the protocol specification.
 
+\begin{proposition}[Surjectivity of Zeckendorf normalization]\label{prop:fold-surjective}
+For the Zeckendorf-based construction above, $\Fold_m:\{0,1\}^m\twoheadrightarrow X_m$ is surjective. In fact, for every $x\in X_m$ one has $\Fold_m(x)=x$ (viewing $x$ as a truncated Fibonacci-base numeral already in Zeckendorf normal form).
+\end{proposition}
+
+\begin{remark}[Stability under small protocol perturbations is model-dependent]\label{rem:fold-stability}
+Statements of the form ``small protocol perturbations primarily redistribute mass within fibers'' require an explicit perturbation model at the raw-word level (e.g.\ bit-flip noise, or window shifts that affect only boundary events). For deterministic normalization rules such as Zeckendorf $\Fold_m$, stability holds away from carry/borrow boundaries but can fail near them via cascading rewrites. A rigorous stability claim therefore takes the form of a bound on $\mathbb{P}(\Fold_m(W)\neq \Fold_m(\widetilde W))$ under a specified noise model for raw words $W$ and $\widetilde W$.
+\end{remark}
+
 \subsubsection{Compression at small depths}
 
 Even at modest depths, the compression induced by golden-mean stabilization is substantial. For example, at $m=6$ one has $2^6=64$ raw micro-words but only $|X_6|=F_8=21$ stabilized types. This gap is not an artifact of a particular algorithm: it is forced by the combinatorics of the target language and reflects a genuine many-to-one quotient induced by finite-resolution stability constraints.
@@ -77,6 +85,14 @@ For $\mathcal{A}=\{0,1\}$ and target language $X_m$ as in Definition~\ref{def:Xm
 \]
 so the stabilization necessarily collapses $2^m$ raw micro-words into $F_{m+2}$ stable types.
 \end{proposition}
+
+\begin{remark}[A coarse asymptotic for average fiber sizes]\label{rem:fiber-asymptotic}
+For any surjective $\Fold_m:\{0,1\}^m\twoheadrightarrow X_m$, one has $\sum_{x\in X_m}|\mathcal{F}_m(x)|=2^m$. Since $|X_m|=F_{m+2}\sim \varphi^{m}/\sqrt5$, the uniform average fiber size grows as
+\[
+\frac{1}{|X_m|}\sum_{x\in X_m}|\mathcal{F}_m(x)|=\frac{2^m}{F_{m+2}} \asymp \left(\frac{2}{\varphi}\right)^m.
+\]
+Whether the full fiber-size distribution admits a limit law as $m\to\infty$ depends on the detailed choice of $\Fold_m$ and is left as an open protocol-level question; nevertheless, for each fixed $m$ the multiset $\{|\mathcal{F}_m(x)|:x\in X_m\}$ is a reproducible combinatorial invariant of the protocol (cf.\ Proposition~\ref{prop:P3}).
+\end{remark}
 
 \subsection{Fibers as unresolved degrees of freedom}\label{sec:stabilization:fibers}
 
