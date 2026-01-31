@@ -24,10 +24,33 @@ Q_{j}(1)=P_j,\quad Q_{j}(0)=I-P_j,
 \end{itemize}
 故 $a_m=a_{m-1}+a_{m-2}$，且 $a_1=2,a_2=3$，从而 $a_m=F_{m+2}$。
 
-\subsection{附录 C：折叠映射 \texorpdfstring{$\Fold_m$}{Fold\_m} 的可计算性与满射性}
+\subsection{附录 C：折叠算子 \texorpdfstring{$\Fold_m$}{Fold\_m} 的可计算性与基本性质}
 
-Zeckendorf 规范形可由贪心算法计算：反复减去不超过当前余量的最大 Fibonacci 权重，并跳过相邻权重以确保无相邻 $1$。算法终止且输出唯一规范形 $Z(N)$。截断 $\pi_m$ 直接取前 $m$ 位。
-满射性可由构造证明：对任意 $w\in X_m$，令 $N_w=V_m(w)$，则 $Z(N_w)$ 以前 $m$ 位即为 $w$，故 $\Fold_m(N_w)=w$。
+Zeckendorf 规范形可由贪心算法计算：对给定 $N\in\NN$，反复减去不超过当前余量的最大 Fibonacci 权重，并跳过相邻权重以强制无相邻 $1$。算法终止且输出唯一规范形 $Z(N)=(c_1,c_2,\dots)$（\cite{Zeckendorf1972}）。
+
+对任意 $\omega=\omega_1\cdots\omega_m\in\Omega_m$，按定义 \ref{def:fold-word} 先计算 Fibonacci 加权值
+\[
+N(\omega)=\sum_{k=1}^m \omega_k F_{k+1},
+\]
+再取 $Z(N(\omega))$ 的前 $m$ 位得到 $\Fold_m(\omega)=\pi_m(Z(N(\omega)))\in X_m$，因此 $\Fold_m$ 显然可计算。
+
+命题 \ref{prop:fold-basic} 的三个性质可直接由 Zeckendorf 唯一性推出：
+\begin{itemize}
+  \item \textbf{规范性：} $\pi_m(Z(\cdot))$ 输出的前 $m$ 位满足无相邻 $1$，故落在 $X_m$；
+  \item \textbf{幂等性：}若 $\omega\in X_m$，则其加权值 $N(\omega)$ 已是合法 Zeckendorf 表示，唯一性迫使 $Z(N(\omega))$ 的前 $m$ 位等于 $\omega$；
+  \item \textbf{满射性：}对任意 $x\in X_m$，取 $\omega=x$ 即有 $\Fold_m(\omega)=x$。
+\end{itemize}
+
+\begin{lemma}[Zeckendorf 范围上的双射]\label{lem:zeckendorf-range-bijection}
+对任意 $m\ge 1$，若 $0\le N\le F_{m+2}-1$，则 $Z(N)$ 的非零位索引不超过 $m$，从而
+\[
+\pi_m(Z(N))=Z(N)\ \text{（作为长度 }m\text{ 的补零截断）}.
+\]
+因此映射 $N\mapsto \pi_m(Z(N))$ 在 $\{0,1,\dots,F_{m+2}-1\}$ 上给出到 $X_m$ 的双射，其逆映射为 $w\mapsto V_m(w)$。
+\end{lemma}
+
+\textbf{证明：}
+若 $Z(N)$ 在第 $m+1$ 位有 $1$，则 $N\ge F_{m+2}$（因为该位权重即为 $F_{m+2}$ 且其余项非负），与 $N\le F_{m+2}-1$ 矛盾。故 $c_{m+1}=c_{m+2}=\cdots=0$，从而截断不丢信息并给出双射结论。
 
 \subsection{附录 D：折叠多重度的渐近与“分辨率不足”}
 
@@ -41,18 +64,16 @@ d_m\sim C\left(\frac{2}{\varphi}\right)^m,\quad C=\frac{\sqrt5}{\varphi^2}.
 \]
 因此对固定窗口长度 $m$，观测将大量微态压缩为同一稳定类型；当 $m$ 增大时，稳定类型虽增多，但微态增长更快，从而“可区分细节”在有限分辨率下持续被折叠。这给出“规律不可读出可归因于分辨率不足”的数学版本：不可读出对应不同微态在折叠后不可区分，而稳定规律对应 $X_m$ 上的递归计数与不变分布仍可复核。
 
-\subsection{附录 E：加法归一化的局部重写范式（示意）}
+\subsection{附录 E：归一化运算的算法化实现（值层运算 + Zeckendorf 规范形）}
 
-在 Fibonacci 权重基底下，规范性由“无相邻 $1$”与数字集 $\{0,1\}$ 约束给出。任何非规范数字串可通过有限局部变换归一化。例如对连续三位出现 $011$ 的片段，可利用
-\[
-F_{n}=F_{n-1}+F_{n-2}
-\]
-将 $011$（在 $(F_n,F_{n-1},F_{n-2})$ 权重位置）替换为 $100$，保持数值不变并减少违例。对数字 $2$ 的出现可先以进位/拆分规则将其消解为邻近权重上的 $0/1$ 组合，再迭代应用 $011\Rightarrow 100$ 消除相邻 $1$。
-此类重写系统在有限支撑上终止，并由 Zeckendorf 唯一性保证规范形唯一，从而实现第 7 节的归一化算子。
+第 7 节中运算以 $\mathrm{Val}^{-1}$ 定义并由 Zeckendorf 唯一性保证良定义。其可计算实现可取最短闭环：
+\begin{itemize}
+  \item \textbf{加法：}给定 $c,d\in X_\infty$，先计算整数 $N=\mathrm{Val}(c)+\mathrm{Val}(d)$，再以附录 C 的 Zeckendorf 贪心算法求 $Z(N)$，输出 $c\oplus d=Z(N)$。
+  \item \textbf{乘法：}同理取 $N=\mathrm{Val}(c)\mathrm{Val}(d)$，再取 Zeckendorf 规范形。
+\end{itemize}
+该实现不依赖任何模拟或外加结构，且终止性与唯一性均由 Zeckendorf 定理给出（\cite{Zeckendorf1972}）。
 
 \subsection{附录 F：高维切投影与稳定语法的接口}
 
 切投影集 $\Sigma$ 的局部结构可通过对内空间窗集 $W$ 的指示函数进行滑动窗口编码获得；若进一步对局部编码施加黄金均值约束并进行 $\Fold_m$ 折叠，则可将高维几何数据在固定分辨率下压缩为稳定语法类型直方图。其递归尺度由 $\varphi$ 控制，适合作为跨分辨率比较的无量纲不变量。
-
-\subsection{附录 Z：复述依据（未公开手稿链接，仅作溯源接口）}
 

@@ -1,12 +1,42 @@
 \section{统计稳定性：从数据到概念的判别准则}
 
+\begin{assumption}[频率语句的最小前提]\label{assump:freq-min}
+本节在需要“极限频率/不变状态”时使用如下标准前提：存在概率空间 $(X,\mathcal{B},\mu)$ 与保测变换 $T$，并以可测窗集 $W\in\mathcal{B}$ 生成读出 $s_t(x)=\ind_W(T^t x)$。若需初值无关的结论，则进一步假设唯一遍历并施加边界零测条件 $\mu(\partial W)=0$（见注 \ref{rem:unique-ergodic-indicator}）。
+\end{assumption}
+
 \subsection{不变测度与频率}
 
 设 $(X,\mathcal{B},\mu)$ 为概率空间，且 $T$ 保测（$\mu(T^{-1}A)=\mu(A)$）。对任意事件 $A\in\mathcal{B}$，定义轨道频率
 \[
 \mathrm{freq}_N(A;x)=\frac1N\sum_{t=0}^{N-1}\ind_A(T^t x).
 \]
-当 $T$ 满足遍历性/唯一遍历性条件时，$\mathrm{freq}_N(A;x)$ 对几乎处处 $x$ 收敛至 $\mu(A)$。
+当 $T$ 遍历时，Birkhoff 遍历定理保证对任意 $f\in L^1(\mu)$ 有
+\[
+\lim_{N\to\infty}\frac1N\sum_{t=0}^{N-1} f(T^t x)=\int f\,\dd\mu
+\quad\text{对 }\mu\text{-几乎处处 }x,
+\]
+将 $f=\ind_A$ 即得 $\mathrm{freq}_N(A;x)\to\mu(A)$（参见 \cite{WaltersErgodicTheory}）。在唯一遍历情形（例如某些紧系统上的无理旋转及其符号因子），更可得到与初值无关的收敛结论（同上）。
+
+\begin{remark}[唯一遍历下的指示函数]\label{rem:unique-ergodic-indicator}
+唯一遍历常给出对连续函数的均匀收敛；若 $f=\ind_W$ 这类不连续可测函数要获得与初值无关的结论，通常需对边界 $\partial W$ 施加 $\mu(\partial W)=0$ 等标准条件。本文在需要“与初值无关”的频率结论时，默认采用此类可检验的边界零测条件（参见 \cite{WaltersErgodicTheory}）。
+\end{remark}
+
+\begin{proposition}[无需概率的有限样本误差证书：差异度不等式]\label{prop:discrepancy-certificate}
+设 $x_0,\dots,x_{N-1}\in[0,1)$，记经验平均 $A_N(f):=\frac1N\sum_{t=0}^{N-1}f(x_t)$。定义星差异度
+\[
+D_N^*:=\sup_{0\le a\le 1}\left|\frac1N\sum_{t=0}^{N-1}\ind_{[0,a)}(x_t)-a\right|.
+\]
+则对任意有界变差函数 $f:[0,1)\to\RR$ 有一维 Koksma--Hlawka 型不等式
+\[
+\left|A_N(f)-\int_0^1 f(u)\,\dd u\right|\ \le\ \mathrm{Var}(f)\,D_N^*,
+\]
+特别地对区间指示函数 $f=\ind_{[0,a)}$ 有 $\mathrm{Var}(f)=1$，从而误差被 $D_N^*$ 直接控制（参见 \cite{KuipersNiederreiter1974}）。
+此外在一维情形，$D_N^*$ 可作为可审计证书由排序计算：令 $y_1\le\cdots\le y_N$ 为 $\{x_t\}$ 的升序排列，则
+\[
+D_N^*=\max\Big\{\max_{1\le i\le N}\left(\frac{i}{N}-y_i\right),\ \max_{1\le i\le N}\left(y_i-\frac{i-1}{N}\right)\Big\}.
+\]
+若 $x_t=\{x_0+t\alpha\}$ 为 Kronecker 序列且 $\alpha$ badly approximable（等价于 $R(\alpha)<\infty$），则存在常数 $C(\alpha)$ 使 $D_N^*\le C(\alpha)/N$，从而得到 $O(1/N)$ 的确定性误差上界（参见 \cite{KuipersNiederreiter1974,Cassels1957}）。
+\end{proposition}
 
 \subsection{稳定概念的定义}
 
@@ -22,7 +52,31 @@
 
 该定义将“不可忽略规律”精确化：规律对应极限频率（或状态期望）存在并由不变状态决定。
 
+\begin{proposition}[遍历性给出的稳定性闭合]\label{prop:ergodic-implies-stable}
+若 $T$ 在 $(X,\mathcal{B},\mu)$ 上遍历，则对任意 $m$ 与任意 $A\in\mathcal{F}_m$，都有
+\[
+\lim_{N\to\infty}\mathrm{freq}_N(A;x)=\mu(A)\quad\text{对 }\mu\text{-几乎处处 }x.
+\]
+因此在遍历前提下，$\mathcal{F}_m$ 的全部事件均是分辨率 $m$ 下的稳定概念，且 $p(A)$ 被强制为 $\mu(A)$（\cite{WaltersErgodicTheory}）。
+\end{proposition}
+
 \subsection{稳定性与有限分辨率}
 
 有限 $m$ 下微态空间 $\Omega_m$ 过大时，单纯以原始微态为概念会导致不可控的稀疏性与不稳定。为建立可递归的概念层级，需要一个将 $\Omega_m$ 折叠到更小稳定类型空间的机制（第 \ref{sec:folding} 节）。该机制的数学要求是：折叠后类型空间随 $m$ 增长呈现自相似递归，并与黄金比例一致。
+
+\subsection{定量拟合：稳定类型分布的偏差指标}\label{sec:quant-fit}
+给定一段观测序列 $\omega_m(x;t)\in\Omega_m$，折叠后得到稳定类型序列（见第 \ref{sec:folding} 节）
+\[
+w_t:=\Fold_m(\omega_m(x;t))\in X_m.
+\]
+令 $\hat{\pi}_m$ 为经验分布（直方图）
+\[
+\hat{\pi}_m(u):=\frac{1}{N}\sum_{t=0}^{N-1}\ind_{\{w_t=u\}},\qquad u\in X_m.
+\]
+另一方面，黄金均值约束 $X_\infty$ 的标准最大熵平稳分布由 Perron--Frobenius 本征结构给出（第 8 节，参见 \cite{LindMarcus1995}），其在长度 $m$ 上诱导的柱分布记为 $\pi_m$。于是可用例如下两个无量纲偏差作为“拟合优度”：
+\[
+D_{\mathrm{TV}}(\hat{\pi}_m,\pi_m):=\frac12\sum_{u\in X_m}\abs{\hat{\pi}_m(u)-\pi_m(u)},\qquad
+D_{\mathrm{KL}}(\hat{\pi}_m\|\pi_m):=\sum_{u\in X_m}\hat{\pi}_m(u)\log\frac{\hat{\pi}_m(u)}{\pi_m(u)}.
+\]
+这一定量化步骤不依赖任何模拟；其意义仅在于：若系统在分辨率 $m$ 的稳定层确由黄金语法支配，则 $\hat{\pi}_m$ 应在遍历假设下趋近 $\pi_m$，且偏差可被直接审计。若进一步以 Parry 最大熵测度作为基准马尔可夫链，则低阶边缘分布的收敛还具有显式指数速率（推论 \ref{cor:golden-markov-mixing}）。
 

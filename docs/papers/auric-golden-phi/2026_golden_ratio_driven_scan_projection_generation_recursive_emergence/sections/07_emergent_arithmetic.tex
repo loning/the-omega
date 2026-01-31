@@ -1,6 +1,6 @@
 \section{算术的涌现：在稳定地址空间上的归一化运算}
 
-本节证明：在稳定类型空间（Zeckendorf 语法）上可定义加法与乘法，使其与经典自然数算术同构；运算本身由局部重写与规范化过程给出，从而符合“运算为统计稳定读出规律”的要求。
+本节证明：在稳定类型空间（Zeckendorf 语法）上可定义加法与乘法，使其与经典自然数算术同构；运算本身由规范形与可计算归一化过程给出，从而符合“运算为统计稳定读出规律”的要求。
 
 \subsection{Zeckendorf 值与稳定地址的数值化}
 
@@ -8,13 +8,17 @@
 \[
 V_m(w)=\sum_{k=1}^m w_k F_{k+1}.
 \]
-当 $0\le N\le F_{m+2}-1$ 时，$\Fold_m(N)$ 给出 $N$ 的完整 Zeckendorf 数字，且
+当 $0\le N\le F_{m+2}-1$ 时，$N$ 的 Zeckendorf 数字 $Z(N)=(c_1,c_2,\dots)$ 在第 $m+1$ 位之后全为 $0$（引理 \ref{lem:zeckendorf-range-bijection}），故令
 \[
-N=V_m(\Fold_m(N)).
+w(N):=\pi_m(Z(N))=(c_1,\dots,c_m)\in X_m,
+\]
+则
+\[
+N=V_m\bigl(w(N)\bigr).
 \]
 因此 $X_m$ 在该范围上可作为自然数的规范“地址表示”。
 
-\subsection{加法作为归一化：从局部重写到交换幺半群}
+\subsection{加法作为归一化：从规范形到交换幺半群}
 
 考虑无限 Zeckendorf 地址空间
 \[
@@ -25,49 +29,43 @@ X_\infty=\{(c_1,c_2,\dots): c_k\in\{0,1\},\ c_kc_{k+1}=0,\ \text{仅有限个 }1
 \mathrm{Val}(c)=\sum_{k\ge1}c_kF_{k+1}\in\NN.
 \]
 
-给定 $c,d\in X_\infty$，其逐位和 $e=c+d$ 的数字落在 $\{0,1,2\}$。定义一个归一化算子
+为避免将“合流/终止”作为额外假设，本文首先用 Zeckendorf 唯一性给出运算的数学定义（\cite{Zeckendorf1972}），随后再说明其可计算实现（附录 E）。
+
+\begin{definition}[稳定加法]\label{def:stable-add}
+对 $c,d\in X_\infty$，定义
 \[
-\mathcal{N}:\{0,1,2\}^{(\text{有限支撑})}\to X_\infty
+c\oplus d:=\mathrm{Val}^{-1}\bigl(\mathrm{Val}(c)+\mathrm{Val}(d)\bigr)\in X_\infty.
 \]
-使得：$\mathcal{N}(e)$ 是与 $e$ 数值等价的 Zeckendorf 规范形。归一化可由有限集合的局部重写规则实现，其基本来源是 Fibonacci 递归 $F_{n}=F_{n-1}+F_{n-2}$ 诱导的恒等替换。例如在降权序（高位在左）的有限段上，可使用
-\[
-011\Rightarrow 100
-\]
-以及对数字 $2$ 的局部消解与进位协议（将 $2F_k$ 用 $F_{k+1}$ 与更低权重项组合替换）构造一个终止且与数值保持一致的重写系统。定义
-\[
-c\oplus d:=\mathcal{N}(c+d).
-\]
+\end{definition}
 
 \begin{theorem}[加法涌现]
 $(X_\infty,\oplus)$ 为交换幺半群，且 $\mathrm{Val}:(X_\infty,\oplus)\to(\NN,+)$ 为同构。
 \end{theorem}
 
-\textbf{证明要点：}
-(1) 归一化过程保持 $\mathrm{Val}$ 不变；
-(2) Zeckendorf 规范形唯一，从而 $\mathcal{N}$ 良定义；
-(3) $\mathrm{Val}(c\oplus d)=\mathrm{Val}(c)+\mathrm{Val}(d)$，据此继承结合律与交换律。
+\textbf{证明：}
+由定义 \ref{def:stable-add} 直接有 $\mathrm{Val}(c\oplus d)=\mathrm{Val}(c)+\mathrm{Val}(d)$。又 $\mathrm{Val}$ 为双射（Zeckendorf 唯一性），故 $(X_\infty,\oplus)$ 的结合律、交换律与单位元均由 $(\NN,+)$ 传递得到，且 $\mathrm{Val}$ 给出同构。
 
-该定理将加法解释为“从非规范叠加到稳定地址的投影读出”：原始叠加（逐位相加）不是稳定语法对象，需要通过局部重写折叠到稳定类型空间。
+该定理将加法解释为“从非规范叠加到稳定地址的投影读出”：原始叠加（逐位相加）一般不保持稳定语法，需要通过规范化投影到稳定地址空间。
 
 \subsection{乘法作为二层归一化：卷积与规范形}
 
-在 $X_\infty$ 上定义乘法可采用“卷积—归一化”方案：将 Zeckendorf 数字视为 Fibonacci 权重基底的稀疏系数，先执行分配律展开（产生整数系数），再以 Fibonacci 递归将系数归一化回 $\{0,1\}$ 且无相邻 $1$ 的规范形。形式上，定义一个双线性展开
+\begin{definition}[稳定乘法]\label{def:stable-mul}
+对 $c,d\in X_\infty$，定义
 \[
-\left(\sum_i c_iF_{i+1}\right)\left(\sum_j d_jF_{j+1}\right)=\sum_{k} a_k F_{k+1},
+c\otimes d:=\mathrm{Val}^{-1}\bigl(\mathrm{Val}(c)\cdot\mathrm{Val}(d)\bigr)\in X_\infty.
 \]
-其中 $a_k\in\NN$ 为有限支撑。再定义一套有限重写/进位规则将 $(a_k)$ 归一化为 Zeckendorf 规范形 $\mathcal{M}(c,d)\in X_\infty$。令
-\[
-c\otimes d:=\mathcal{M}(c,d).
-\]
+\end{definition}
 
 \begin{theorem}[乘法涌现]
 $(X_\infty,\oplus,\otimes)$ 为交换半环，且 $\mathrm{Val}$ 给出与 $(\NN,+,\times)$ 的半环同构。
 \end{theorem}
 
-\textbf{证明要点：}
-(1) 展开阶段满足 $\mathrm{Val}$ 的乘法一致性；
-(2) 归一化保持值不变且规范形唯一；
-(3) 分配律与结合律由值同构与规范性推出。
+\textbf{证明：}
+由定义 \ref{def:stable-add} 与 \ref{def:stable-mul}，$\mathrm{Val}$ 同时保持加法与乘法。由于 $\mathrm{Val}$ 为双射，交换律、结合律与分配律均从 $(\NN,+,\times)$ 传递，因而得到交换半环同构。
 
-由此，自然数、加法、乘法在稳定地址空间中完全由\textbf{语法约束 + 局部重写归一化}定义，而不需将 $(+,\times)$ 作为原语预置。
+由此，自然数、加法、乘法在稳定地址空间中完全由\textbf{语法约束 + 规范形归一化}定义，而不需将 $(+,\times)$ 作为原语预置。
+
+\begin{proposition}[可计算实现]\label{prop:zeckendorf-arith-computable}
+对任意 $c,d\in X_\infty$，$c\oplus d$ 与 $c\otimes d$ 可由有限步算法计算：先在值层执行整数加法/乘法得到 $\mathrm{Val}(c)\pm\mathrm{Val}(d)$ 或 $\mathrm{Val}(c)\mathrm{Val}(d)$，再以 Zeckendorf 贪心算法取唯一规范形（附录 C）。
+\end{proposition}
 

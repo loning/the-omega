@@ -2,11 +2,19 @@
 
 \subsection{地址的复合生成}
 
-设在层级 $L$ 已得到一族概念 $\mathcal{C}^{(L)}\subseteq \mathcal{F}_{m_L}$。对任意有限选择 $C_1,\dots,C_r\in \mathcal{C}^{(L)}$，其读出向量
+设在层级 $L$ 已得到一族概念 $\mathcal{C}^{(L)}=\{C^{(L)}_1,\dots,C^{(L)}_{r_L}\}$，其中每个 $C^{(L)}_i\in\mathcal{B}$ 可测。定义派生的二元向量过程
 \[
-\mathbf{b}(x)=(\ind_{C_1}(x),\dots,\ind_{C_r}(x))\in\{0,1\}^r
+\mathbf{b}^{(L)}_t(x):=\bigl(\ind_{C^{(L)}_1}(T^t x),\dots,\ind_{C^{(L)}_{r_L}}(T^t x)\bigr)\in\{0,1\}^{r_L}.
 \]
-可作为下一层级概念的地址元件。通过对 $\mathbf{b}(x)$ 的窗口化、拼接与归一化，可定义新的地址集合 $A^{(L+1)}$。这实现了：\textbf{新概念地址来自旧概念读出数据}。
+对任意长度 $\ell$ 与任意地址
+\[
+a=\bigl(a_0,\dots,a_{\ell-1}\bigr)\in\bigl(\{0,1\}^{r_L}\bigr)^\ell,
+\]
+定义其对应的派生柱事件
+\[
+C^{(L+1)}_{a,t}:=\{x\in X:\mathbf{b}^{(L)}_t(x)=a_0,\dots,\mathbf{b}^{(L)}_{t+\ell-1}(x)=a_{\ell-1}\}\in\mathcal{B}.
+\]
+令 $\mathcal{C}^{(L+1)}$ 为选定的一族此类柱事件（例如取一组有限地址集合 $A^{(L+1)}$ 对应的 $C^{(L+1)}_{a,0}$）。由此得到一个闭合递归：\textbf{新概念是旧概念读出序列的柱事件}，从而地址仅来自可观测数据而非外加原语。
 
 \subsection{Null 到投影的递归语义}
 

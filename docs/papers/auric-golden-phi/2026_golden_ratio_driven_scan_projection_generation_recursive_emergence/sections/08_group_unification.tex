@@ -28,3 +28,33 @@ A=\begin{pmatrix}
   \item 对有限分辨率观测，许多微态差异在该状态下被平均，表现为“不可读出的细节”，而稳定规律仍由主特征结构决定。
 \end{itemize}
 
+\begin{proposition}[Parry 最大熵测度的显式形式]\label{prop:parry-measure-golden}
+令状态集合为 $\{0,1\}$，允许转移为 $0\to0,0\to1,1\to0$（禁止 $1\to1$），其邻接矩阵为上式 $A$。取 Perron--Frobenius 右特征向量 $r=(\varphi,1)^{\mathsf T}$ 与左特征向量 $\ell=(1,\varphi-1)$（归一化不影响下式）。则 Parry 最大熵马尔可夫测度的转移概率可写为
+\[
+P_{ij}=\frac{A_{ij}r_j}{\varphi r_i},
+\]
+从而
+\[
+P_{00}=\varphi^{-1},\quad P_{01}=\varphi^{-2},\quad P_{10}=1.
+\]
+其平稳分布为
+\[
+\pi(0)=\frac{\varphi^2}{\varphi^2+1}=\frac{\varphi+1}{\varphi+2},\qquad
+\pi(1)=\frac{1}{\varphi^2+1}=\frac{1}{\varphi+2}.
+\]
+\end{proposition}
+
+\begin{corollary}[显式混合速率（两状态黄金链）]\label{cor:golden-markov-mixing}
+令 $P$ 为命题 \ref{prop:parry-measure-golden} 的转移矩阵，$\pi$ 为其平稳分布。则 $P$ 的特征值为 $1$ 与 $-\varphi^{-2}$，从而对任意初始分布 $\nu$ 都有
+\[
+\|\nu P^n-\pi\|_{\mathrm{TV}}\le \varphi^{-2n},\qquad n\ge 0.
+\]
+因此在最大熵基准下，稳定类型的低阶统计以明确的指数率收敛，并由 $\varphi$ 统一控制。
+\end{corollary}
+
+由此可把该测度在长度 $m$ 的稳定词空间 $X_m$ 上具体写为：对 $u=u_1\cdots u_m\in X_m$，
+\[
+\pi_m(u)=\pi(u_1)\prod_{j=1}^{m-1} P_{u_j u_{j+1}}.
+\]
+命题 \ref{prop:parry-measure-golden} 因而为第 \ref{sec:quant-fit} 节的“拟合准则”提供封闭基准；其推导与一般有限型子移位完全一致，见 \cite{LindMarcus1995}。
+
