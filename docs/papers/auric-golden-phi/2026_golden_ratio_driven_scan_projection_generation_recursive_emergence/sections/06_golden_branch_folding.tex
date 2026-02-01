@@ -39,6 +39,42 @@ N=\sum_{k\ge1}c_k F_{k+1},\qquad c_k\in\{0,1\},\quad c_kc_{k+1}=0.
 
 当比较不同窗口长度 $m$ 的输出时，“一致”必须被精确定义为跨尺度相容性：高分辨率输出经由自然的截断（restriction）投影到低分辨率后，应复现低分辨率输出所包含的内容。下面给出对象层的标准构造（完整证明见附录 G）。
 
+\subsubsection{折叠与因子化的核心定理（汇总陈述）}\label{subsec:fold-theorem-suite}
+为回应“折叠是否提供了一个自洽且可审计的新接口”的审稿口径，本小节把由折叠专门引起的关键结构压缩为一个汇总定理：它给出折叠的精确定义、归约顺序无关（终止/合流）、幂等/满射、多尺度 restriction 逆系统相容、序列级 sofic 因子与最小右分辨覆盖，以及差异度证书到折叠直方图 TV 偏差的定量链条。
+
+\begin{theorem}[有限窗口折叠：合流、逆系统相容、sofic 因子与定量证书]\label{thm:fold-suite}
+设 $\Omega_m=\{0,1\}^m$，$X_m=\{w\in\{0,1\}^m:\text{不含子词 }11\}$，并令 $\Fold_m:\Omega_m\to X_m$ 如定义 \ref{def:fold-word}。则：
+\begin{enumerate}
+  \item \textbf{（归约顺序无关的规范化）}折叠可由值保持的局部重写系统实现，且该系统强终止并合流；因此 $\Fold_m$ 的实现与归约顺序无关。
+  \item \textbf{（幂等与满射）}\(\Fold_m(\omega)\in X_m\)；并且 \(\Fold_m|_{X_m}=\mathrm{id}\)、\(\Fold_m:\Omega_m\twoheadrightarrow X_m\)。
+  \item \textbf{（restriction 逆系统与逆极限）}对任意 $m_2\ge m_1$，截断 $\pi_{m_2\to m_1}:X_{m_2}\to X_{m_1}$ 构成 restriction 逆系统，且存在自然同构 \(X_\infty\cong\varprojlim X_m\)（定理 \ref{thm:inverse-limit-golden}）。
+  \item \textbf{（跨分辨率相容的交换图）}朴素微态截断一般不与折叠交换；但定义 \ref{subsec:fold-omega-restriction} 的折叠感知 restriction \(\widetilde r_{m+1\to m}(\omega)=\pi_{m+1\to m}(\Fold_{m+1}(\omega))\) 使得交换图成立（命题 \ref{prop:fold-omega-commute}）。
+  \item \textbf{（序列级因子与显式 sofic 图像）}由 \(\Fold_m\) 沿滑动窗口诱导的 \(\Phi_m\) 是滑动块码，记忆为 $0$、预期性为 $m-1$（命题 \ref{prop:Phi_m-radius}）；其像空间 \(Y_m\subset X_m^{\ZZ}\) 是 sofic 子移位，并可由显式标记图 \(G_m\) 给出（定理 \ref{thm:Phi_m-sofic-graph}）。
+  \item \textbf{（最小右分辨覆盖）}对 \(Y_m\)，右分辨表示可由子集确定化得到（命题 \ref{prop:Phi_m-right-resolving}）；进一步按 follower 集最小化得到右 Fischer cover，且其右分辨/最小性满足命题 \ref{prop:fischer-minimal} 的结论。
+  \item \textbf{（定量证书：差异度 \(\Rightarrow\) 折叠直方图 TV 偏差）}在旋转扫描（Sturmian）模型下，对任意 $N\ge 1$，
+  \[
+  D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\ \le\ (m+1)\,D_N^*(\alpha;x_0),
+  \]
+  且到 Parry 基线的误差分解满足推论 \ref{cor:tv-decomposition-parry}。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) 由命题 \ref{prop:fold-rewrite-newman}（强终止 + 合流）与推论 \ref{cor:foldm-order-indep}。
+
+(2) 由命题 \ref{prop:fold-basic}。
+
+(3) restriction 一致性由引理 \ref{lem:pi-functorial-golden}；逆极限同构由定理 \ref{thm:inverse-limit-golden}（完整证明见附录 G 的定理 \ref{app:multiscale-inverse-limit}）。
+
+(4) 由小节 \ref{subsec:fold-omega-restriction} 的定义与命题 \ref{prop:fold-omega-commute}。
+
+(5) 半径由命题 \ref{prop:Phi_m-radius}；sofic 图像与显式标记图由定理 \ref{thm:Phi_m-sofic-graph}。
+
+(6) 由命题 \ref{prop:Phi_m-right-resolving} 与命题 \ref{prop:fischer-minimal}。
+
+(7) 由第 \ref{sec:experiments} 节的定理 \ref{thm:tv-certificate-hist}（其证明给出显式系数 $m+1$），并由推论 \ref{cor:tv-decomposition-parry} 得到到 Parry 基线的误差分解。
+\end{proof}
+
 \begin{definition}[尺度投影（restriction）]\label{def:pi-m2-m1-golden}
 对任意 $m_2\ge m_1$，定义截断投影
 \[
