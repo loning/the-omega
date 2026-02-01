@@ -99,9 +99,61 @@ Finite-resolution readout replaces sharp acceptance by kernels. This suggests a 
 \end{itemize}
 While the precise scaling depends on the protocol, the key falsifiable content is \emph{monotone and scale-structured} dependence on $\epsilon$ with quasi-periodic modulation tied to the superspace module.
 
-\begin{proposition}[P2: golden-branch slopes as minimal-resonance protocols]\label{prop:P2}
-Under fixed resource constraints (finite scan depth and finite resolution), slopes/orientations that minimize resonance locking are expected to maximize equidistribution-quality indicators (e.g.\ discrepancy and gap statistics) among comparable complexity classes. This provides a statistical way to discriminate ``golden-branch'' protocols from other irrational slopes.
+\begin{proposition}[P2: golden-branch slopes and Diophantine minimal-resonance]\label{prop:P2}
+Consider a one-dimensional torus scan $x_t=x_0+t\alpha\ (\mathrm{mod}\ 1)$ with slope $\alpha\in(0,1)\setminus\QQ$.
+Write $\|y\|:=\min_{p\in\ZZ}|y-p|$ for distance to the nearest integer, and define the \emph{asymptotic resonance constant}
+\[
+c(\alpha):=\liminf_{q\to\infty} q\,\|q\alpha\|.
+\]
+Then one has the sharp universal bound
+\[
+c(\alpha)\ \le\ \frac{1}{\sqrt5}\qquad\text{for every irrational }\alpha,
+\]
+and the constant $1/\sqrt5$ is optimal in the sense that it is attained (as a liminf along an explicit subsequence) by the golden ratio slope $\alpha=\varphi-1$, where $\varphi=(1+\sqrt5)/2$.
+Moreover, if $c(\alpha)=1/\sqrt5$, then $\alpha$ lies in the modular (fractional-linear) equivalence class of $\varphi-1$ (Markov/Lagrange spectrum rigidity).
 \end{proposition}
+
+\begin{proof}
+The inequality $c(\alpha)\le 1/\sqrt5$ is a direct reformulation of Hurwitz's theorem: for every irrational $\alpha$ there exist infinitely many rationals $p/q$ with
+\[
+\left|\alpha-\frac{p}{q}\right|<\frac{1}{\sqrt5\,q^2}.
+\]
+For such $p/q$ one has $\|q\alpha\|=|q\alpha-p|=q\left|\alpha-\tfrac{p}{q}\right|<\tfrac{1}{\sqrt5\,q}$, hence $q\|q\alpha\|<1/\sqrt5$ along infinitely many $q$, which implies $c(\alpha)\le 1/\sqrt5$.
+\cite{Cassels1957DiophantineApproximation,Khinchin1964ContinuedFractions}
+
+For sharpness, take $\alpha=\varphi-1$ whose continued fraction is $[0;1,1,1,\dots]$.
+Let $p_n/q_n$ be its convergents; then $(q_n)$ are Fibonacci numbers up to an index shift.
+Let $\alpha_{n+1}:=[1;1,1,\dots]=\varphi$ denote the (constant) tail of the continued fraction after the $n$-th digit.
+The standard continued-fraction recombination identity gives
+\[
+\alpha=\frac{p_n\alpha_{n+1}+p_{n-1}}{q_n\alpha_{n+1}+q_{n-1}}.
+\]
+Using the determinant relation $p_n q_{n-1}-p_{n-1}q_n = (-1)^{n-1}$, one computes
+\[
+\left|\alpha-\frac{p_n}{q_n}\right|
+=\frac{1}{q_n\,(q_n\alpha_{n+1}+q_{n-1})},
+\qquad\text{hence}\qquad
+q_n\|q_n\alpha\|
+=q_n^2\left|\alpha-\tfrac{p_n}{q_n}\right|
+=\frac{1}{\alpha_{n+1}+q_{n-1}/q_n}.
+\]
+Since $\alpha_{n+1}=\varphi$ and $q_{n-1}/q_n\to \varphi^{-1}$ for Fibonacci denominators, we obtain
+\[
+\lim_{n\to\infty} q_n\|q_n\alpha\|
+=\frac{1}{\varphi+\varphi^{-1}}
+=\frac{1}{\sqrt5},
+\]
+and therefore $c(\varphi-1)=1/\sqrt5$.
+\cite{Khinchin1964ContinuedFractions}
+
+Finally, the rigidity statement that equality $c(\alpha)=1/\sqrt5$ characterizes the modular equivalence class of $\varphi-1$ is a classical theorem in the theory of the Markov/Lagrange spectra.\cite{CusickFlahive1989MarkovLagrangeSpectra}
+\end{proof}
+
+\begin{remark}[Finite resources and protocol-facing interpretation]
+For a finite scan depth $Q$, a conservative ``locking'' proxy is $\min_{1\le q\le Q}\|q\alpha\|$: small values correspond to near-periodic recurrences at scale $q$.
+Proposition~\ref{prop:P2} shows that the golden-ratio slope (and its modular equivalents) maximizes the asymptotic obstruction to such resonances in the sharp Hurwitz sense.
+Connecting this to finite-$Q$ discrepancy and gap-statistic optimality requires specifying the exact observable (e.g.\ discrepancy of $\{t\alpha\}$, or three-gap counts for the induced cylinder partition); the proof above isolates the minimal-input, fully rigorous core of the ``minimal resonance'' claim.
+\end{remark}
 
 \subsection{Folding/degeneracy counts as discrete invariants}\label{sec:falsifiability:folding}
 
