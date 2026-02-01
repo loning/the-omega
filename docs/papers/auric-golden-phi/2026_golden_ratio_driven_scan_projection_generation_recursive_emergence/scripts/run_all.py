@@ -52,6 +52,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_primitive_spectrum",
+            script="exp_sync_kernel_primitive_spectrum.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_primitive_spectrum.json",
+            ],
+        ),
+        Step(
             name="generated_tex_fragments",
             script="exp_generated_tex.py",
             args=[],
