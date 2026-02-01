@@ -1,0 +1,230 @@
+\subsubsection{多维势的向量化扩展}\label{app:vector-potential}
+若引入向量势
+\[
+\boldsymbol{\varphi}(e)=\bigl(\varphi_1(e),\dots,\varphi_d(e)\bigr),
+\qquad
+B(\boldsymbol{\theta})_{ij}=\sum_{e:i\to j}\exp\!\bigl(\langle\boldsymbol{\theta},\boldsymbol{\varphi}(e)\rangle\bigr),
+\]
+则压力
+\[
+P(\boldsymbol{\theta})=\log\rho\bigl(B(\boldsymbol{\theta})\bigr)
+\]
+与大偏差率函数
+\[
+I(\alpha)=\sup_{\boldsymbol{\theta}\in\RR^d}\bigl(\langle\boldsymbol{\theta},\alpha\rangle-(P(\boldsymbol{\theta})-P(0))\bigr)
+\]
+均保持"有限矩阵 + 行列式"的可审计口径；二维/三维实例见后续小节。
+
+\subsubsection{负携带势的显式闭式（可审计实例）}
+取
+\[
+Q_-:=\{0\overline{1}2,\,1\overline{1}2,\,01\overline{1},\,11\overline{1}\},
+\qquad
+\phi(s\to t):=\mathbf{1}_{\{t\in Q_-\}}.
+\]
+令 $u=e^\theta$。此时 $B_\theta$ 等价于把落入 $Q_-$ 的列整体乘上 $u$，并有显式因式分解
+\[
+\det(I-zB_\theta)
+\;=\;
+\bigl(u z^3-u z^2+u z+1\bigr)\bigl(3u z^3+u z^2-u z-2z^2-2z+1\bigr).
+\]
+主极点 $z_\star(\theta)=\lambda(\theta)^{-1}$ 由第二因子给出；代入 $z=1/\lambda$ 得三次方程
+\[
+\lambda^3-(u+2)\lambda^2+(u-2)\lambda+3u=0,\qquad u=e^\theta,
+\]
+从而压力 $P(\theta)=\log\lambda(\theta)$ 完全由该三次方程的最大实根确定。
+
+由隐式微分或脚本数值（\texttt{--phi neg\_state}）可得
+\[
+P'(0)=\frac{1}{8}\ \ (\approx 0.1250000006),\qquad
+P''(0)=\frac{25}{128}\ \ (\approx 0.1953128548).
+\]
+因此典型频率 $\alpha_\star=P'(0)=1/8$，局部二次近似为
+\[
+I(\alpha)\approx \frac{(\alpha-\frac18)^2}{2P''(0)}=\frac{64}{25}\Bigl(\alpha-\frac18\Bigr)^2,
+\]
+并且端点代价满足
+\[
+I(0)=\log\frac{3}{1+\sqrt3},\qquad I(1)=\log 3.
+\]
+加权 primitive 轨道谱 $p_n(\theta)$ 仍由 Möbius 反演给出，并满足
+\[
+p_n(\theta)\asymp \frac{e^{nP(\theta)}}{n},
+\qquad
+M_{B,\theta}(N):=\sum_{n\le N}\frac{p_n(\theta)}{e^{nP(\theta)}}=\log N+\mathsf{M}_{B,\theta}+o(1),
+\]
+其中常数项 $\mathsf{M}_{B,\theta}$ 可由 Abel 有限部（$z\to 1/\lambda(\theta)$）读出。
+
+\subsubsection{二维加权素数谱（输出位 + 负携带）}
+定义二维势
+\[
+\varphi_e(e)=e,\qquad \varphi_-(s\to t)=\mathbf{1}_{\{t\in Q_-\}},
+\]
+并令
+\[
+u:=e^{\theta_e},\qquad v:=e^{\theta_-}.
+\]
+加权邻接矩阵条目为
+\[
+B(u,v)_{ij}=\sum_{e:i\to j}u^{\varphi_e(e)}v^{\varphi_-(e)}.
+\]
+对应行列式可化为 6 次多项式
+\[
+\begin{aligned}
+\Delta(z;u,v)=&\,1-(u+1)z-u(v^2+2v+2)z^2\\
+&+uv(uv+2u+v+2)z^3+uv^2(-u^2+3u-1)z^4\\
+&+\bigl(u^4v^2-2u^3v^2-u^3v-2u^2v^2-u^2v+uv^2\bigr)z^5\\
+&+u^2v^2(u^2+u+1)z^6,
+\end{aligned}
+\]
+因此
+\[
+\zeta(z;u,v)=\frac{1}{\Delta(z;u,v)}.
+\]
+记 $z_\star(u,v)$ 为最小正根，$\lambda(u,v)=1/z_\star(u,v)$，压力
+\[
+P(\theta_e,\theta_-)=\log\lambda(e^{\theta_e},e^{\theta_-}).
+\]
+在 $(\theta_e,\theta_-)=(0,0)$ 处有
+\[
+\partial_{\theta_e}P(0,0)=\frac12\ \ (\approx 0.5000000000),\qquad
+\partial_{\theta_-}P(0,0)=\frac18\ \ (\approx 0.1250000006),
+\]
+\[
+\partial^2_{\theta_e\theta_e}P(0,0)=\frac{11}{102}\ \ (\approx 0.1078436229),\quad
+\partial^2_{\theta_-\theta_-}P(0,0)=\frac{25}{128}\ \ (\approx 0.1953128548),\quad
+\partial^2_{\theta_e\theta_-}P(0,0)\approx 0.
+\]
+因此局部二次近似为
+\[
+P(\theta_e,\theta_-)=\log 3+\frac12\theta_e+\frac18\theta_-+\frac{11}{204}\theta_e^2+\frac{25}{256}\theta_-^2+O(|\theta|^3).
+\]
+二维大偏差率函数
+\[
+I(\alpha_e,\alpha_-)=\sup_{\theta_e,\theta_-}\bigl(\theta_e\alpha_e+\theta_-\alpha_- - (P(\theta_e,\theta_-)-P(0,0))\bigr)
+\]
+在典型点附近满足
+\[
+I(\alpha_e,\alpha_-)\approx \frac{51}{11}\Bigl(\alpha_e-\frac12\Bigr)^2+\frac{64}{25}\Bigl(\alpha_- -\frac18\Bigr)^2.
+\]
+加权 primitive 轨道数
+\[
+p_n(\theta_e,\theta_-)\asymp \frac{e^{nP(\theta_e,\theta_-)}}{n}
+\]
+并由 Möbius 反演从 $a_n(\theta_e,\theta_-)=\mathrm{Tr}(B(u,v)^n)$ 提取。数值复现见脚本 \texttt{scripts/exp\_sync\_kernel\_weighted\_pressure\_2d.py}。
+
+\subsubsection{三维加权素数谱（输出位 + 负携带 + 碰撞）}
+定义三维势
+\[
+\varphi_e(e)=e,\qquad
+\varphi_-(s\to t)=\mathbf{1}_{\{t\in Q_-\}},\qquad
+\varphi_2(d)=\mathbf{1}_{\{d=2\}},
+\]
+并令
+\[
+u:=e^{\theta_e},\qquad v:=e^{\theta_-},\qquad w:=e^{\theta_2}.
+\]
+按状态顺序 $Q$，三维加权邻接矩阵为
+\[
+B(u,v,w)=
+\begin{pmatrix}
+1 & 1 & w & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 1 & 1 & w & 0 & 0 & 0 & 0\\
+u & uw & 0 & 0 & 0 & 0 & 0 & 0 & 0 & v\\
+0 & 0 & 0 & 0 & 1 & 1 & uvw & 0 & 0 & 0\\
+u & u & uw & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & u & u & uw & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 1 & w & 0 & 0 & 0 & v & 0\\
+0 & 0 & 0 & u & uw & 0 & 0 & 0 & uv & 0\\
+0 & 1 & 1 & 0 & 0 & 0 & 0 & vw & 0 & 0\\
+0 & u & u & 0 & 0 & 0 & 0 & uvw & 0 & 0
+\end{pmatrix}.
+\]
+对应行列式仍为 6 次多项式
+\[
+\Delta(z;u,v,w)=1+c_1z+c_2z^2+c_3z^3+c_4z^4+c_5z^5+c_6z^6,
+\]
+其中
+\[
+c_1=-(uw+1),\qquad
+c_2=-u(v^2w+vw+v+2),\qquad
+c_3=uv(uw+1)(vw+w+1),
+\]
+\[
+c_4=-u\bigl(u^2v^2w^3-3uv^2w+uv(w^2+w-2)+u(w^2-w)+v^2w\bigr),
+\]
+\[
+c_5=uvw\bigl(u^3 v w^3-2u^2 v w-u^2 w^3-u v(w+1)-u+v\bigr),
+\]
+\[
+c_6=u^2 v^2 w(2w-1)(u^2w+u+1).
+\]
+因此三观测量的加权 $\zeta$-函数具有有理闭式
+\[
+\zeta(z;u,v,w)=\frac{1}{\Delta(z;u,v,w)}.
+\]
+记 $\lambda(u,v,w)=1/z_\star(u,v,w)$，压力
+\[
+P(\theta_e,\theta_-,\theta_2)=\log\lambda(e^{\theta_e},e^{\theta_-},e^{\theta_2}).
+\]
+在 $\theta=0$ 处有
+\[
+\nabla P(0)=\left(\frac12,\frac18,\frac13\right)
+\ \ (\approx (0.5000000000,\ 0.1250000006,\ 0.3333333335)),
+\]
+并且 Hessian 满足
+\[
+\nabla^2P(0)=
+\begin{pmatrix}
+\frac{11}{102} & 0 & \frac{181}{1632}\\
+0 & \frac{25}{128} & \frac{5}{128}\\
+\frac{181}{1632} & \frac{5}{128} & \frac{2}{9}
+\end{pmatrix},
+\]
+即 $\partial^2_{\theta_e\theta_-}P(0)=0$，而 $\partial^2_{\theta_e\theta_2}P(0),\partial^2_{\theta_-\theta_2}P(0)>0$。因此
+\[
+P(\theta)=\log 3+\frac12\theta_e+\frac18\theta_-+\frac13\theta_2
++\frac{11}{204}\theta_e^2+\frac{25}{256}\theta_-^2+\frac19\theta_2^2
++\frac{181}{1632}\theta_e\theta_2+\frac{5}{128}\theta_-\theta_2+O(|\theta|^3).
+\]
+三维大偏差率函数
+\[
+I(\alpha)=\sup_{\theta\in\mathbb{R}^3}\bigl(\theta\cdot\alpha-(P(\theta)-P(0))\bigr)
+\]
+在典型点 $\alpha_\star=(\frac12,\frac18,\frac13)$ 附近满足
+\[
+I(\alpha)\approx \tfrac12(\alpha-\alpha_\star)^\top\bigl(\nabla^2P(0)\bigr)^{-1}(\alpha-\alpha_\star),
+\]
+其中
+\[
+\bigl(\nabla^2P(0)\bigr)^{-1}\approx
+\begin{pmatrix}
+19.8119 & 2.04960 & -10.2480\\
+2.04960 & 5.51860 & -1.99298\\
+-10.2480 & -1.99298 & 9.96491
+\end{pmatrix}.
+\]
+由此得到一个自然的 arity-charge
+\[
+\chi:=\varphi_e-\varphi_2\in\{-1,0,1\},
+\]
+其典型密度与方差密度为
+\[
+\mathbb{E}[\chi]=\frac12-\frac13=\frac16,\qquad
+\mathrm{Var}_\infty(\chi)=\frac{11}{102}+\frac{2}{9}-2\cdot\frac{181}{1632}=\frac{265}{2448}\ (\approx 0.1082516340).
+\]
+三维加权 primitive 轨道数
+\[
+p_n(\theta_e,\theta_-,\theta_2)=\sum_{\substack{\tau\ \mathrm{primitive}\|\tau|=n}}
+\exp\!\bigl(\theta_e S_\tau\varphi_e+\theta_-S_\tau\varphi_-+\theta_2S_\tau\varphi_2\bigr)
+\]
+仍满足 $p_n(\theta)\asymp e^{nP(\theta)}/n$，并可由
+$a_n(\theta)=\mathrm{Tr}(B(u,v,w)^n)$ 经 Möbius 反演提取。数值复现见脚本 \texttt{scripts/exp\_sync\_kernel\_weighted\_pressure\_3d.py}。
+在未加权情形 $(u,v,w)=(1,1,1)$ 下，有
+\[
+(a_1,\dots,a_{10})=(2,14,20,94,222,770,2116,6694,19442,59494),
+\]
+\[
+(p_1,\dots,p_{10})=(2,6,6,20,44,123,302,825,2158,5926),
+\]
+并呈现典型 prime-orbit 主项 $p_n\sim 3^n/n$。

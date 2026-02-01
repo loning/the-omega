@@ -1,0 +1,229 @@
+\subsubsection{加权核的压力与大偏差（可审计接口）}
+令 $\phi$ 为同步图边上的可观测量（例如输出位 $e$ 的指示函数，或"到达含 $\overline{1}$ 状态"的指示函数）。定义加权矩阵
+\[
+(B_\theta)_{ij}:=\sum_{e:i\to j}\exp\bigl(\theta\,\phi(e)\bigr),
+\]
+其中求和遍历所有从 $i$ 到 $j$ 的边。记
+\[
+\lambda(\theta):=\rho(B_\theta),\qquad P(\theta):=\log\lambda(\theta).
+\]
+则 $P(\theta)$ 为有限型情形的压力函数，且 $P(0)=\log 3$。令
+\[
+I(\alpha):=\sup_{\theta\in\RR}\bigl(\theta\alpha-(P(\theta)-P(0))\bigr),
+\]
+则 $I(\alpha)$ 给出 $\phi$ 的长程平均的大偏差率函数（标准热力学形式口径，见 \cite{Ruelle1978Thermodynamic,ParryPollicott1990Zeta}）。
+
+加权 $\zeta$ 仍由
+\[
+\zeta_{B,\theta}(z)=\frac{1}{\det(I-zB_\theta)}
+\]
+给出，并可定义加权 primitive 轨道谱
+\[
+a_n(\theta):=\mathrm{Tr}(B_\theta^n),\qquad
+p_n(\theta)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(d\theta),
+\]
+以及相应的加权 Mertens 常数族（对 $z\to 1/\lambda(\theta)$ 取 Abel 有限部）。
+可审计数值由脚本 \texttt{scripts/exp\_sync\_kernel\_weighted\_pressure.py} 输出。
+
+\subsubsection{加权 primitive--periodic 的 Witt 分解}\label{app:witt-weighted}
+以下取输出位势 $\varphi(e)=e$，令
+\[
+u=e^\theta,\qquad B(u)=B_0+uB_1,\qquad \Delta(z,u):=\det(I-zB(u)).
+\]
+其中 $B_0$（resp.\ $B_1$）只计数输出位 $e=0$（resp.\ $e=1$）的边。
+则
+\[
+\zeta(z,u)=\exp\!\left(\sum_{n\ge 1}\frac{\mathrm{Tr}(B(u)^n)}{n}z^n\right)=\Delta(z,u)^{-1}.
+\]
+令
+\[
+a_n(u):=\mathrm{Tr}(B(u)^n),\qquad
+P(z,u):=\sum_{n\ge 1}p_n(u)z^n,
+\]
+其中
+\(
+p_n(u)=\sum_{\tau\ \mathrm{primitive},\,|\tau|=n}u^{S_\tau\varphi}
+\)
+为 primitive 轨道的加权谱多项式。Euler 乘积给出
+\[
+\zeta(z,u)=\prod_{\tau\ \mathrm{primitive}}\bigl(1-z^{|\tau|}u^{S_\tau\varphi}\bigr)^{-1}.
+\]
+取对数并展开幂重复得到 Witt 分解
+\[
+\log\zeta(z,u)=\sum_{m\ge 1}\frac{1}{m}P(z^m,u^m).
+\]
+由 Möbius 反演得到
+\[
+P(z,u)=\sum_{m\ge 1}\frac{\mu(m)}{m}\log\zeta(z^m,u^m),
+\]
+对系数比较即有
+\[
+p_n(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d)
+\quad\Longleftrightarrow\quad
+p_n(\theta)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(d\theta).
+\]
+
+\subsubsection{同步核的自对偶对称}\label{app:kernel-self-dual}
+对同步核存在状态对合 $\iota$，其作用为
+\[
+\iota:\quad
+000\leftrightarrow 101,\quad
+001\leftrightarrow 100,\quad
+002\leftrightarrow 010,\quad
+0\overline{1}2\leftrightarrow 11\overline{1},\quad
+1\overline{1}2\leftrightarrow 01\overline{1}.
+\]
+令 $\Pi$ 为该置换的矩阵，则
+\[
+\Pi^{-1}B_0\Pi=B_1,\qquad \Pi^{-1}B_1\Pi=B_0,
+\]
+从而
+\[
+\Pi^{-1}B(u)\Pi=uB(1/u).
+\]
+于是
+\[
+\Delta(z,u)=\det(I-zB(u))=\det(I-uzB(1/u))=\Delta(uz,1/u).
+\]
+设 $z_\star(u)$ 为最小正根、$\lambda(u)=1/z_\star(u)$，则
+\[
+\lambda(u)=u\,\lambda(1/u),
+\qquad
+P(\theta)=\theta+P(-\theta).
+\]
+对按输出 1 次数分层的 primitive 轨道数 $p_{n,k}$，有
+\[
+p_{n,k}=p_{n,n-k}\quad(n\ge 2),
+\]
+等价地 $u^{-1}p_n(u)$ 为次数 $n-2$ 的回文多项式。
+
+\subsubsection{压力函数的解析性与显式导数}\label{app:pressure-analytic}
+对 $u=e^\theta>0$，矩阵 $B(u)$ 仍为 primitive，故 Perron 根 $\lambda(u)$ 在 $u>0$ 上为单根并随 $u$ 实解析。记 $\lambda=\lambda(u)$，其满足六次方程
+\[
+\begin{aligned}
+F(\lambda,u)
+={}&\lambda^6-(1+u)\lambda^5-5u\lambda^4+3u(1+u)\lambda^3\\
+&\ -u(u^2-3u+1)\lambda^2+u(u^3-3u^2-3u+1)\lambda+u^2(u^2+u+1)=0.
+\end{aligned}
+\]
+由隐式微分
+\[
+\lambda_u=-\frac{F_u}{F_\lambda},\qquad
+P'(\theta)=\frac{u\lambda_u}{\lambda},
+\]
+再微分一次得
+\[
+\lambda_{uu}=-\frac{F_{uu}+2F_{u\lambda}\lambda_u+F_{\lambda\lambda}\lambda_u^2}{F_\lambda},
+\qquad
+P''(\theta)=\frac{u\lambda_u}{\lambda}+u^2\left(\frac{\lambda_{uu}}{\lambda}-\Bigl(\frac{\lambda_u}{\lambda}\Bigr)^2\right).
+\]
+由对称性 $P(\theta)-\theta/2$ 为偶函数，$P^{(3)}(0)=0$，且
+\[
+P(\theta)=\log 3+\frac12\theta+\frac{11}{204}\theta^2+\frac{1559}{1414944}\theta^4+O(\theta^6),
+\]
+从而 $P^{(4)}(0)=\frac{1559}{58956}$。此外
+\[
+P(\theta)\to 0\quad(\theta\to-\infty),\qquad
+P(\theta)\sim \theta\quad(\theta\to+\infty),
+\]
+对应极端权重下的冻结极限。
+
+\subsubsection{大偏差率函数的参数化闭式}\label{app:rate-param}
+令
+\[
+\alpha(\theta):=P'(\theta)\in(0,1),
+\]
+则大偏差率函数满足
+\[
+I(\alpha(\theta))=\theta\alpha(\theta)-\bigl(P(\theta)-P(0)\bigr),\qquad P(0)=\log 3.
+\]
+由自对偶对称得
+\[
+I(\alpha)=I(1-\alpha),
+\]
+且在 $\alpha_\star=\frac12$ 附近
+\[
+I(\alpha)=\frac{(\alpha-\frac12)^2}{2P''(0)}+O\!\left((\alpha-\tfrac12)^3\right)
+=\frac{51}{11}\Bigl(\alpha-\frac12\Bigr)^2+O(\cdot).
+\]
+端点值为
+\[
+I(0)=I(1)=\log 3.
+\]
+若记 $p_{n,k}=[u^k]p_n(u)$，则典型规模为
+\[
+p_{n,k}\approx \frac{1}{n}\exp\!\Bigl(n(\log 3-I(k/n))\Bigr).
+\]
+
+\subsubsection{加权 Mertens 常数与 Abel 有限部}\label{app:mertens-weighted}
+令 $\lambda(u)$ 为 Perron 根，$\rho(u)$ 为其余特征值最大模，则
+\[
+a_n(u)=\mathrm{Tr}(B(u)^n)=\lambda(u)^n+O(\rho(u)^n),
+\]
+由 Witt 反演得
+\[
+p_n(u)=\frac{\lambda(u)^n}{n}+O\!\left(\frac{\rho(u)^n}{n}\right).
+\]
+因此
+\[
+\Pi_\theta(N):=\sum_{n\le N}p_n(\theta)\sim \frac{\lambda(\theta)}{\lambda(\theta)-1}\cdot\frac{\lambda(\theta)^N}{N}.
+\]
+记
+\[
+\mathcal{M}_\theta(N):=\sum_{n\le N}\frac{p_n(u)}{\lambda(u)^n},
+\]
+则
+\[
+\mathcal{M}_\theta(N)=\log N+M(\theta)+o(1),
+\qquad
+M(\theta)=\gamma+\sum_{n\ge 1}\left(\frac{p_n(u)}{\lambda(u)^n}-\frac{1}{n}\right),
+\]
+其中 $\gamma$ 为 Euler 常数。设
+\[
+P_\theta(r):=\sum_{n\ge 1}\frac{p_n(u)}{\lambda(u)^n}r^n,\quad 0<r<1,
+\]
+则 Abel 有限部给出
+\[
+\log\mathfrak{M}(\theta):=\mathrm{fp}_{r=1}\bigl(P_\theta(r)+\log(1-r)\bigr)
+=\sum_{n\ge 1}\left(\frac{p_n(u)}{\lambda(u)^n}-\frac{1}{n}\right),
+\]
+从而
+\[
+M(\theta)=\gamma+\log\mathfrak{M}(\theta).
+\]
+在 $\theta=0$ 处有
+\[
+M(0)\approx 0.2738887860704445,\qquad
+\log\mathfrak{M}(0)\approx -0.3033268788310883.
+\]
+
+\subsubsection{仅用 \texorpdfstring{$\Delta$}{Delta} 的闭式计算}\label{app:delta-only}
+令 $z_\star(u)=\lambda(u)^{-1}$ 为 $\Delta(z,u)$ 的最小正根，定义
+\[
+C(u):=\lim_{z\to z_\star}(1-z/z_\star)\zeta(z,u)=\frac{1}{-z_\star\,\partial_z\Delta(z_\star,u)}.
+\]
+由 Witt 反演与 $\zeta=1/\Delta$ 可得
+\[
+\log\mathfrak{M}(\theta)
+=\log C(u)+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta(z_\star^m,u^m)
+=\log C(u)-\sum_{m\ge 2}\frac{\mu(m)}{m}\log\Delta(z_\star^m,u^m),
+\]
+其中级数以指数速度收敛。
+
+\subsubsection{前 10 个 primitive 加权谱多项式}\label{app:weighted-primitive-table}
+前 10 项 $p_n(u)=\sum_{\tau\ \mathrm{primitive},\,|\tau|=n}u^{S_\tau\varphi}$ 为
+\[
+\begin{aligned}
+p_1(u)&=1+u,\qquad
+p_2(u)=6u,\qquad
+p_3(u)=3u+3u^2,\\
+p_4(u)&=2u+16u^2+2u^3,\qquad
+p_5(u)=3u+19u^2+19u^3+3u^4,\\
+p_6(u)&=3u+26u^2+65u^3+26u^4+3u^5,\\
+p_7(u)&=9u+66u^2+276u^3+276u^4+66u^5+9u^6,\\
+p_8(u)&=30u+207u^2+861u^3+1925u^4+861u^5+207u^6+30u^7,\\
+p_9(u)&=103u+840u^2+4062u^3+9194u^4+9194u^5+4062u^6+840u^7+103u^8,\\
+p_{10}(u)&=340u+3330u^2+18437u^3+51822u^4+74757u^5+51822u^6+18437u^7+3330u^8+340u^9.
+\end{aligned}
+\]
+当 $n\ge 2$ 时无 $u^0$ 与 $u^n$ 项，且系数满足 $p_{n,k}=p_{n,n-k}$。
