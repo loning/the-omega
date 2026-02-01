@@ -2,6 +2,17 @@
 
 The review is conceptual, but not meant to be unfalsifiable. The superspace/readout framework suggests concrete statistical signatures that can be tested in numerical experiments and, in some cases, in laboratory analogues (e.g.\ optical interference patterns or engineered quasi-periodic media). We list a minimal set of fingerprints that are both natural and robust under moderate protocol variations.
 
+\subsection{Candidate laboratory platforms (where the pipeline can be tested)}\label{sec:falsifiability:platforms}
+
+While our primary demonstrations are numerical, the same ``geometry $\to$ readout $\to$ stabilization $\to$ time'' pipeline matches the data products available in several laboratory platforms:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Photonic quasicrystals / aperiodic photonic lattices}: far-field diffraction and structure-factor measurements directly probe module-supported peak locations and window-envelope effects (Section~\ref{sec:falsifiability:diffraction}). Resolution parameters $\epsilon$ map to finite numerical aperture, bandwidth, detector point spread, or deliberate kernel smoothing in reconstruction pipelines.\cite{Lahini2009}
+  \item \textbf{Cold atoms in quasiperiodic optical lattices (Aubry--Andr{\'e}/Harper; Fibonacci modulations)}: time series of density/occupation and momentum-space images provide both spectral fingerprints and long symbolic records after thresholding or multi-level binning. Here $\epsilon$ can be operationalized as controlled disorder strength, imaging resolution, or deliberate coarse-graining of the measurement record.\cite{Roati2008}
+  \item \textbf{Driven spin chains / superconducting-qubit arrays with quasiperiodic modulation}: continuous or repeated projective readout produces long, protocol-defined records with realistic temporally correlated noise, making the correlated-noise skew-product formulation (Section~\ref{sec:readout:probabilistic-template}) directly testable. Stabilization/folding then becomes a transparent post-processing layer whose robustness can be quantified by mismatch and finite-sample error bars.\cite{SpethmannStanoLoss2025SpinQubitHMM}
+\end{itemize}
+
+In all cases, the conservative falsifiable content is protocol-level: one specifies the measurement channel $\Theta$ (including resolution, filtering, and stabilization), reports finite-size uncertainty budgets, and tests whether the predicted invariants (peak locations/envelopes, visibility curves, stabilized degeneracy statistics, and entropy/time growth classes) are reproducible across phases and robust under admissible protocol perturbations.
+
 \subsection{Quasiperiodic diffraction and spectral fingerprints}\label{sec:falsifiability:diffraction}
 
 Regular model sets have pure-point diffraction under broad conditions, with Bragg peaks located on a Fourier module determined by the underlying lattice and the star map \cite{Hof1995,BaakeGrimm2013}. In the present context, this suggests:
@@ -27,9 +38,9 @@ To avoid convention ambiguity when discussing ``Fourier coefficients of the wind
 with $\mathrm{d}y$ the Lebesgue/Haar measure on $H$. With this choice, closed-form window transforms (e.g.\ boxes) can be written explicitly and compared directly to intensity envelopes.
 \end{remark}
 
-\begin{proposition}[Pure-point diffraction and an intensity formula (review statement)]\label{prop:diffraction-intensity}
+\begin{proposition}[Pure-point diffraction and an intensity formula]\label{prop:diffraction-intensity}
 For a regular model set arising from a cut-and-project scheme (with $\partial W$ of Haar measure zero) and for bounded Riemann-integrable window weights $w$ (including $w=\mathds{1}_W$ and smooth kernels $\kappa_\epsilon$), the diffraction measure is pure point and supported on a Fourier module determined by the dual lattice and the star map. For $k$ in this module, the corresponding Bragg intensity is proportional to $|\widehat w(k^\star)|^2$ (up to a CPS-dependent density/normalization factor).
-\cite{Hof1995,BaakeGrimm2013}
+\cite{Hof1995,BaakeGrimm2013,RichardStrungaru2017}
 \end{proposition}
 
 \paragraph{Closed-form example: a box window.}
@@ -53,6 +64,18 @@ Given a finite patch $\{x_i\}_{i=1}^N\subset E$ from a proposed model set and a 
 S_N(k):=|\widehat\rho_N(k)|^2.
 \]
 Phase averaging over internal shifts $u$ (or over scan phases in the protocol) reduces fluctuations and isolates the module-supported peaks. In a geometry-first test where the Fourier module and the star map are specified by the CPS, one then regresses the phase-averaged peak intensities against the predicted window envelope $|\widehat w(k^\star)|^2$ (or fits window parameters $L_j$ in the box case). The key falsifiable content is not the exact normalization constant, but the \emph{relative} intensity profile across module points as a function of $k^\star$ and the controlled dependence on the resolution parameter $\epsilon$ through the choice $w=\kappa_\epsilon$.
+
+\begin{remark}[From readout to $\widehat w$: a minimal estimation workflow]\label{rem:estimate-window-fourier}
+To connect data directly to the window Fourier coefficients in Proposition~\ref{prop:diffraction-intensity}, the minimal auditable workflow is:
+\begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=2pt]
+  \item specify the CPS (hence the Fourier module and the star map $k\mapsto k^\star$);
+  \item select a finite set of candidate module vectors $\{k\}$ (e.g.\ by dual-lattice enumeration with a cutoff);
+  \item estimate $S_N(k)$ from the observed point patch (and phase-average over internal shifts/phases);
+  \item remove the unknown global normalization by working with ratios or by normalizing by $\max_k S_N(k)$ on the chosen set;
+  \item fit the window parameters by matching $S_N(k)$ to $|\widehat w(k^\star)|^2$ (closed form for boxes; numerical quadrature/FFT for more general polytopes).
+\end{enumerate}
+The demo scripts implement this workflow explicitly for a box window (closed-form $\widehat w$) and compare the normalized envelope to normalized empirical intensities.\cite{RichardStrungaru2017}
+\end{remark}
 
 This identity explains two protocol-facing facts:
 \begin{itemize}[leftmargin=*,itemsep=2pt]
@@ -135,6 +158,14 @@ The outputs are written under \texttt{artifacts/} together with a parameter file
   \item \textbf{Demo C (6D $\rightarrow$ 3D icosahedral approximation)}: a $\ZZ^6$ cut-and-project construction with a golden-ratio-based icosahedral splitting and a compact internal-space window (spherical, boundary measure zero). We show a diffraction slice and a phase-averaged visibility curve $V(\epsilon)$ under window fuzzification, and we additionally run an internal-phase scan with a probabilistic window kernel to produce a symbolic record whose entropy-rate proxy varies with $\epsilon$ (Figure~\ref{fig:demo6d-entropy-rate}). The same record is stabilized by a Zeckendorf $\Fold_m$ to produce reproducible fiber/transition statistics stored in \texttt{artifacts/demo\_6d\_fingerprints.json}.
 \end{itemize}
 
+\begin{remark}[Numerical tests of the listed fingerprints]\label{rem:fingerprint-tests}
+In addition to producing plots, the repository includes a small set of scalar pass/fail checks that operationalize parts of Propositions~\ref{prop:P1}--\ref{prop:P3} on the generated data. Running
+\[
+\texttt{python3 scripts/run\_all.py}
+\]
+also produces \texttt{artifacts/fingerprint\_tests.json}, which records (i) a zero-entropy sanity check for Demo~A via block-entropy growth, (ii) exact Fold degeneracy invariants $\sum_x|\mathcal{F}_m(x)|=|\mathcal{A}|^m$ and $|X_m|=F_{m+2}$ (Proposition~\ref{prop:fiber-partition}) for the chosen $m$, and (iii) a quantitative goodness-of-fit statistic comparing an empirical structure factor against the closed-form box-window envelope $|\widehat w(k^\star)|^2$ in Demo~C (Proposition~\ref{prop:diffraction-intensity}).
+\end{remark}
+
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.95\linewidth]{sections/generated/demo_2d_diffraction.png}
@@ -188,6 +219,52 @@ Empirical tests of quasi-periodic and entropy-rate claims are sensitive to finit
 \end{itemize}
 
 These steps are essential if the results are to be persuasive to GRG reviewers: the core claims live at the level of invariant statistics, and invariants only become visible through careful control of finite-sample distortions.
+
+\begin{remark}[Quantifying protocol-variation error bars]\label{rem:protocol-variation-errorbars}
+When comparing two nearby protocols (e.g.\ window width $\epsilon$ vs.\ $\epsilon'$, or two partitions/codings, or a noisy vs.\ noiseless readout), one can estimate the empirical one-step mismatch rate $\widehat\varepsilon$ by running the protocols on matched phases/trajectories and measuring the Hamming disagreement rate. Proposition~\ref{prop:entropy-continuity-mismatch} then yields an explicit per-symbol bound on the induced entropy-rate variation, while Proposition~\ref{prop:block-tv-by-mismatch} provides a finite-$t$ block-law control useful for error budgets of block-entropy estimators.
+\end{remark}
+
+\subsubsection{Finite-sample error bars and sample complexity (detectability thresholds)}\label{sec:falsifiability:sample-complexity}
+
+The fingerprints in Propositions~\ref{prop:P1}--\ref{prop:P3} are asymptotic/invariant statements. To make them falsifiable in finite data, one needs explicit error bars and a minimal sample-length criterion.
+
+\begin{proposition}[Mismatch-rate confidence bounds from a finite record]\label{prop:mismatch-hoeffding}
+Let $(A_t,B_t)$ be a coupled pair of symbol streams on a finite alphabet, and let
+\[
+\widehat\varepsilon_N:=\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}\{A_t\neq B_t\}
+\]
+be the empirical mismatch rate from a length-$N$ record. If $(\mathbf{1}\{A_t\neq B_t\})$ are independent Bernoulli trials with mean $\varepsilon$, then for every $\delta\in(0,1)$,
+\[
+\mathbb{P}\bigl(|\widehat\varepsilon_N-\varepsilon|\ge u\bigr)\ \le\ 2e^{-2Nu^2},
+\qquad
+u=\sqrt{\frac{\log(2/\delta)}{2N}}.
+\]
+Equivalently, with probability at least $1-\delta$ one has $|\widehat\varepsilon_N-\varepsilon|\le \sqrt{\tfrac{\log(2/\delta)}{2N}}$.
+\cite{Hoeffding1963}
+\end{proposition}
+
+\begin{remark}[Correlated noise: effective sample size]
+If the mismatch indicators are correlated (e.g.\ because the auxiliary noise source has correlation time), the same bound does not apply verbatim; in practice one replaces $N$ by an \emph{effective} sample size $N_{\mathrm{eff}}$ determined by the correlation length (block bootstrap provides an auditable estimate). This is the same phenomenon as in Remark~\ref{rem:correlated-diagnostics}: correlations inflate uncertainty bands and increase required record lengths.
+\end{remark}
+
+\begin{proposition}[A deterministic slope-separation scale for two-interval rotation codings]\label{prop:slope-separation-hamming}
+Consider two circle rotations with slopes $\alpha,\alpha'\in(0,1)$ and a two-interval coding $R$ with boundary point $b\in\TT$ (the Sturmian/mechanical setting of Section~\ref{sec:readout:sturmian}). Let $a^{(\alpha)}_{0:N-1}$ and $a^{(\alpha')}_{0:N-1}$ be the resulting length-$N$ coded prefixes from the same initial phase. Then the Hamming mismatch count satisfies the deterministic bound
+\[
+\#\{0\le t<N:\ a^{(\alpha)}_t\neq a^{(\alpha')}_t\}\ \le\ 2N|\alpha-\alpha'|+2,
+\]
+hence the mismatch rate is $O(|\alpha-\alpha'|)$ at fixed $N$.
+\end{proposition}
+
+\begin{remark}[Rule-of-thumb for minimal data length to distinguish nearby slopes]
+To statistically separate a ``golden-branch'' slope $\alpha$ from a nearby slope $\alpha'$ using a mismatch-based test, one needs a record long enough that the induced mismatch signal exceeds both (i) finite-sample uncertainty and (ii) observation noise.
+A conservative, protocol-facing rule-of-thumb is:
+\[
+N \gtrsim \max\Bigl\{\frac{1}{|\alpha-\alpha'|},\ \frac{\log(1/\delta)}{(\Delta\varepsilon)^2}\Bigr\},
+\qquad \Delta\varepsilon\asymp c\,|\alpha-\alpha'|,
+\]
+where $\Delta\varepsilon$ is the expected mismatch-rate gap under the chosen coupling and $\delta$ is the target false-alarm probability. The first term enforces that the two rotations drift by an $O(1)$ phase over the record (otherwise the codings can coincide on a long prefix), while the second term is the usual $1/(\text{signal})^2$ sampling cost of estimating a Bernoulli rate.
+In practice, a sharper and more falsifiable strategy is to compare $\alpha$ against its continued-fraction convergents $p_k/q_k$ as null models (finite-prefix periodic lock-in) and to report the deviation metrics (periodicity error at $q_k$, three-gap statistics, and Hamming mismatch) with bootstrap confidence bands (Demo~C archives these quantities in \texttt{artifacts/demo\_6d\_fingerprints.json}).
+\end{remark}
 
 \subsection{A reproducibility checklist}\label{sec:falsifiability:repro}
 

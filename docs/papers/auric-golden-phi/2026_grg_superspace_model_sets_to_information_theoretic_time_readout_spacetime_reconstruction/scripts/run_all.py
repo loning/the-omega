@@ -58,9 +58,35 @@ def build_steps() -> List[Step]:
                 "sections/generated/demo_6d_diffraction_slice.png",
                 "sections/generated/demo_6d_visibility_curve.png",
                 "sections/generated/demo_6d_entropy_rate_proxy.png",
+                "sections/generated/demo_6d_tau_markov.png",
                 "sections/generated/demo_6d_box_window_envelope_scatter.png",
+                "sections/generated/demo_6d_1d_factor_gap_stats.png",
+                "sections/generated/demo_6d_window_geometry_diffraction.png",
                 "artifacts/demo_6d_fingerprints.json",
                 "artifacts/demo_6d_box_window_fourier.json",
+            ],
+        ),
+        Step(
+            name="exp_demo_6d_numeric_summary_tex",
+            script="exp_demo_6d_numeric_summary_tex.py",
+            args=[
+                "--in-json",
+                "artifacts/demo_6d_fingerprints.json",
+                "--out-tex",
+                "sections/generated/demo_6d_numeric_summary.tex",
+                "--eps-ref",
+                "0.05",
+            ],
+            expected_outputs=[
+                "sections/generated/demo_6d_numeric_summary.tex",
+            ],
+        ),
+        Step(
+            name="test_fingerprints",
+            script="test_fingerprints.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/fingerprint_tests.json",
             ],
         ),
     ]

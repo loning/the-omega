@@ -48,6 +48,22 @@ For protocol purposes, it is often useful to extract a low-dimensional factor fr
 \]
 This factorization is the mathematical underpinning for why Sturmian/Fibonacci symbolic layers repeatedly appear in finite-resolution readout models.
 
+\begin{remark}[Selecting or learning $\phi$ from data, and finite-precision stability]\label{rem:learn-phi}
+The factor map $\phi$ is part of the protocol specification, but in applications it may be \emph{selected} (or approximated) from data by optimizing a protocol-facing objective. Two conservative principles are:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Equidistribution quality}: choose $\phi$ so that the induced one-dimensional phase $\theta_t$ has good finite-prefix uniformity (small discrepancy, stable three-gap statistics, low resonance locking), as quantified in Section~\ref{sec:readout:discrepancy}. This makes $\phi$ a ``maximally equidistributing'' projection under fixed resources.
+  \item \textbf{Information yield}: choose $\phi$ (and the associated partition/window on $\TT^1$) to maximize an information acquisition proxy (e.g.\ an entropy-rate estimate of the induced symbolic layer, or the stability of a chosen Fold grammar) under an explicit noise model.
+\end{itemize}
+Both routes are compatible with the geometry-first stance: they do not claim that $\phi$ is unique, only that there is a principled way to pick a factor within an acceptable protocol class.
+
+Finite precision enters in two ways:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Parameter quantization}: in computations, one effectively searches over a finite candidate family of factor maps (e.g.\ integer-coefficient projections on a torus representation). Stability then means that small perturbations of the estimated parameters do not change the selected candidate, which holds away from near-ties in the objective.
+  \item \textbf{Near-resonance sensitivity}: objectives based on equidistribution are inherently sensitive near rational resonances (continued-fraction convergents). Consequently, a stable learning rule should report a tolerance band and should include null-model comparisons against nearby rational approximants (as in the 1D factor diagnostics archived in Demo~C).
+\end{itemize}
+In short: $\phi$ can be chosen by an explicit optimization criterion (equidistribution or information yield), and stability under finite precision is achieved by restricting to a discrete candidate class and by reporting uncertainty/tie regions, rather than by claiming uniqueness of $\phi$.
+\end{remark}
+
 \subsection{A canonical example: rotations and Sturmian codings}\label{sec:readout:sturmian}
 
 The most elementary and influential example is the coding of an irrational rotation on the circle by a two-interval partition \cite{Queffelec2010}.
@@ -68,6 +84,12 @@ p(n)=n+1\qquad\text{for all }n\ge 1.
 \]
 \cite{Queffelec2010,Lothaire2002}
 \end{proposition}
+
+\begin{remark}[Beyond Sturmian: higher-dimensional internal dynamics yields richer codings]\label{rem:beyond-sturmian}
+The Sturmian mechanism above is specific: it is the coding of a \emph{circle} rotation by a \emph{two-interval} partition, and it achieves the minimal complexity $p(n)=n+1$ among aperiodic binary words. In the superspace readout setting, however, the natural internal phase space $\TT_\perp=H/\pi_H(\Gamma)$ is typically a higher-dimensional compact Abelian group. Even when the scan is still a one-parameter translation $u_{t+1}=u_t+\beta$, codings of translations on $\TT_\perp$ by multi-set partitions (or by window-function thresholds) generally produce symbolic processes that are \emph{not} Sturmian and can have substantially larger factor complexity (e.g.\ polynomial growth of degree $>1$ for generic polytope partitions in higher dimension), while still having zero KS entropy at the object-layer scan.
+
+Consequently, any claim of robustness or ``universality'' should not be phrased in terms of Sturmian special properties (balancedness, Fibonacci substitution, etc.) unless the protocol explicitly restricts to a one-dimensional torus factor and a two-interval-type coding. The role of Sturmian examples in this review is methodological: they provide an auditable low-complexity testbed for refinement-time definitions. The general entropy-rate and refinement formalism (Sections~\ref{sec:info-time:smb}--\ref{sec:info-time:stability-bounds}) does not depend on Sturmian theory and applies equally to higher-dimensional codings and to positive-entropy regimes induced by probabilistic windows (Remark~\ref{rem:noise-positive-entropy}).
+\end{remark}
 
 \subsection{Ring factors and rational approximation hierarchies}\label{sec:readout:ring-factor}
 
@@ -117,6 +139,35 @@ and it can be realized as a mechanical word for a rotation slope related to $\va
 
 More generally, codings of rotations are closely tied to Ostrowski numeration systems, which provide canonical expansions of integers adapted to the continued fraction of $\alpha$. Zeckendorf representation is the Fibonacci/Ostrowski instance associated to the continued fraction with all partial quotients equal to $1$. This is one reason why stabilization maps built from Zeckendorf normal forms interact naturally with golden-branch scan protocols: the arithmetic of the scan slope and the grammar of the stabilized language are aligned.
 
+\subsubsection{A Sturmian toolbox: special factors, return words, and decidability}\label{sec:readout:sturmian-toolbox}
+
+Several classical structural results in Sturmian theory provide additional context for why ``Fold-type stabilization'' and Ostrowski/Zeckendorf arithmetic are natural companions of a one-dimensional torus factor.
+
+\begin{proposition}[Return-word characterization of Sturmian words]\label{prop:sturmian-return-words}
+An infinite word is Sturmian if and only if it is uniformly recurrent and every finite factor has exactly two return words.
+\cite{Vuillon2001ReturnWordsSturmian}
+\end{proposition}
+
+\begin{remark}[Bispecial/Christoffel structure as an algorithmic scaffold]\label{rem:christoffel-bispecial}
+Sturmian languages have exactly one left-special and one right-special factor of each length; the resulting bispecial structure organizes the language in a rigid way. Finite Christoffel words provide a canonical family of finite words that encode rational approximants of the slope and are tightly linked to bispecial (``central'') factors and to the standard Sturmian directive sequence.\cite{Lothaire2002,BerstelLauveReutenauerSaliola2008Christoffel} This rigidity is one reason why normalization/stabilization rules based on Fibonacci/Ostrowski numeration can be made both computable and structurally transparent.
+\end{remark}
+
+\begin{remark}[Abelian returns: a robustness variant]\label{rem:abelian-returns}
+Return words are sensitive to exact symbol matches. A robustness-motivated variant replaces equality by abelian equivalence (same Parikh vector) and considers \emph{abelian return words}. In this sense, Sturmian words can be characterized by a bounded number of abelian returns per factor (two or three), providing an alternative ``low-complexity'' signature that is stable under certain coarse perturbations.\cite{PuzyninaZamboni2012AbelianReturns}
+\end{remark}
+
+\begin{remark}[Abelian returns as a continued-fraction fingerprint]\label{rem:abelian-returns-cf}
+For Sturmian words, one can go further and enumerate abelian returns to prefixes in terms of the continued-fraction coefficients of the slope (and the intercept), yielding explicit combinatorial invariants tied to Diophantine data.\cite{MasakovaPelantova2013AbelianReturnsPrefixes} This provides a concrete candidate family of ``fold fingerprints'': invariants of the stabilized language that track (a coarse form of) the underlying slope arithmetic.
+\end{remark}
+
+\begin{remark}[Ostrowski numeration and automatic decision procedures]\label{rem:ostrowski-automaticity}
+Ostrowski numeration encodes positions using the continued-fraction convergents of the rotation slope. For quadratic irrationals (including the golden ratio instance underlying Zeckendorf representations), arithmetic in the Ostrowski system admits finite-automaton descriptions (e.g.\ addition is recognizable by automata), which supports explicit decision procedures for many index-based questions about codings and substitutions.\cite{AlloucheShallit2003AutomaticSequences,HieronymiTerry2018OstrowskiAdditionAutomata} In protocol terms: once $\alpha$ (or its quadratic specialization) is fixed, a substantial part of the symbolic bookkeeping becomes an automata/rewriting problem, aligning naturally with computable Fold-type canonicalization.
+\end{remark}
+
+\begin{remark}[Decidability and $\omega$-automaticity for Sturmian words]\label{rem:sturmian-decidability}
+Recent work shows that first-order expansions of Presburger arithmetic by a single Sturmian word are uniformly $\omega$-automatic, yielding decidability results and enabling machine-checked proofs of nontrivial Sturmian properties.\cite{HieronymiMaOeiSchaefferSchulzShallit2024DecidabilitySturmian} For the present review, the methodological relevance is that it provides a rigorous toolchain for formalizing (and potentially machine-verifying) stabilization constraints phrased in Ostrowski numeration terms, rather than leaving ``canonicalization'' at an informal level.
+\end{remark}
+
 \subsection{Resolution and non-ideal windows}\label{sec:readout:resolution}
 
 The window $W$ in a CPS is often treated as a sharp set. Finite resolution suggests replacing sharp acceptance by a kernel or fuzzification, e.g.\ by a measurable function $\kappa_\epsilon : H\to[0,1]$ that depends on a scale parameter $\epsilon>0$ and approximates the indicator $\mathds{1}_W$. This gives rise to probabilistic readout maps (Bernoulli sampling conditioned on $\kappa_\epsilon(h)$) or to multi-symbol alphabets representing confidence levels. The key point for our later use is that \emph{resolution induces equivalence classes}: distinct internal states may be observationally indistinguishable at scale $\epsilon$, leading naturally to fiber structures.
@@ -127,6 +178,51 @@ Even when the object-layer scan is deterministic and has zero KS entropy (e.g.\ 
 \mathbb{P}(A_t=1\mid h_t)=\kappa_\epsilon(h_t),
 \]
 then for any fixed $\epsilon>0$ that makes $\kappa_\epsilon$ nontrivial on a set of positive measure, the resulting $(A_t)$ typically has $h>0$ (it contains an i.i.d.-like randomness source conditioned on the scan). In this regime, the refinement functional $\tau(t)=-\log\mu(C(a_{0:t-1}))$ recovers linear growth with slope $h$ for typical records. As $\epsilon\to 0$ one expects a crossover to the deterministic ($h=0$) subexponential regime discussed in Section~\ref{sec:info-time:zero-ks}.
+\end{remark}
+
+\begin{proposition}[A quantitative entropy-rate lower bound for probabilistic readout]\label{prop:prob-window-positive-entropy}
+In the setting of Assumption~\ref{assump:prob-window}, let $h(A)$ denote the entropy rate of the induced binary process $(A_t)$. Let
+\[
+H_b(p):=-p\log p-(1-p)\log(1-p),\qquad p\in[0,1],
+\]
+with the usual convention $0\log 0:=0$. Then
+\[
+h(A)\ \ge\ \int_H H_b(\kappa_\epsilon(h))\,\mathrm{d}\mu(h).
+\]
+In particular, if there exists $\eta\in(0,\tfrac12)$ such that
+\[
+\mu\bigl(\{h:\ \kappa_\epsilon(h)\in[\eta,1-\eta]\}\bigr)>0,
+\]
+then $h(A)\ge \mu(\cdot)\,H_b(\eta)>0$.
+\end{proposition}
+
+\begin{proof}
+Let $\mathcal{H}$ be the $\sigma$-algebra generated by the internal scan $(h_t)_{t\in\NN}$. Conditioned on $\mathcal{H}$, the random variables $(A_t)$ are independent and satisfy $\mathbb{P}(A_t=1\mid \mathcal{H})=\kappa_\epsilon(h_t)$. Therefore,
+\[
+H(A_0^{t-1}\mid \mathcal{H})=\sum_{k=0}^{t-1} H(A_k\mid \mathcal{H})
+=\sum_{k=0}^{t-1} \mathbb{E}\bigl[H_b(\kappa_\epsilon(h_k))\bigr].
+\]
+By stationarity of $(h_t)$ under $\mu$, $\mathbb{E}[H_b(\kappa_\epsilon(h_k))]=\int_H H_b(\kappa_\epsilon(h))\,\mathrm{d}\mu(h)$ for all $k$. Since conditioning reduces entropy,
+\[
+H(A_0^{t-1})\ge H(A_0^{t-1}\mid \mathcal{H})=t\int_H H_b(\kappa_\epsilon(h))\,\mathrm{d}\mu(h).
+\]
+Divide by $t$ and take $t\to\infty$ to obtain the bound on $h(A)$.
+\end{proof}
+
+\begin{remark}[Small-$\epsilon$ scaling: boundary-layer injection of entropy]\label{rem:entropy-scaling-eps}
+For kernels of boundary-layer type $\kappa_\epsilon(h)\approx \sigma(d(h)/\epsilon)$, where $d(h)$ is a signed distance-to-window function and $\sigma$ is a smooth sigmoid with $\sigma(\pm\infty)\in\{0,1\}$, the integral lower bound in Proposition~\ref{prop:prob-window-positive-entropy} is supported near the window boundary $\partial W$ and typically scales linearly in $\epsilon$ under mild regularity assumptions (smooth boundary and absolutely continuous $\mu$). A convenient formal route is the coarea formula, which yields an asymptotic of the form
+\[
+\int_H H_b(\kappa_\epsilon(h))\,\mathrm{d}\mu(h)\ =\ C_\sigma\,\epsilon\cdot \mathrm{Area}(\partial W)\ +\ o(\epsilon),
+\]
+with a constant $C_\sigma>0$ depending only on the chosen sigmoid $\sigma$ and on the local Jacobian factor of $d$ on $\partial W$. This quantifies the heuristic ``crossover'' statement: as $\epsilon\to 0$ the injected entropy vanishes at a controlled rate governed by boundary geometry.
+\end{remark}
+
+\begin{remark}[Robustness to correlated noise]\label{rem:entropy-robust-correlated}
+The proof of Proposition~\ref{prop:prob-window-positive-entropy} uses the i.i.d.\ nature of $(U_t)$ only to obtain an explicit conditional-entropy expression. More generally, if the auxiliary noise source is a stationary process $(U_t)$ with sufficient unpredictability in the sense that
+\[
+\inf_h H\bigl(\mathds{1}\{U_0\le \kappa_\epsilon(h)\}\,\big|\,U_{-\infty}^{-1}\bigr)\ \ge\ c_\epsilon>0
+\]
+for a set of $h$ of positive $\mu$-measure, then the same conditioning argument gives $h(A)\ge c_\epsilon>0$. This makes clear which part of the construction is ``structural'': positive entropy is injected whenever the readout channel retains nontrivial conditional randomness after conditioning on its own past, and the amount injected can be lower-bounded by such a conditional-entropy rate.
 \end{remark}
 
 \subsubsection{A rigorous template: probabilistic readout as a skew-product}\label{sec:readout:probabilistic-template}
@@ -142,12 +238,53 @@ A_t := \mathds{1}\{U_t \le \kappa_\epsilon(h_t)\}\in\{0,1\}.
 \]
 \end{assumption}
 
+\begin{assumption}[Correlated-noise readout model (mixing/no-memory not assumed)]\label{assump:prob-window-correlated}
+Replace the i.i.d.\ noise in Assumption~\ref{assump:prob-window} by a stationary noise source. Let $(\Omega,\mathcal{F},\mathbb{P},S)$ be a probability-preserving system and let $U:\Omega\to[0,1]$ be measurable. Define the stationary noise process by
+\[
+U_t(\omega):=U(S^t\omega).
+\]
+Assume $(H,\mu,T)$ and $(\Omega,\mathbb{P},S)$ are independent. Define the readout by
+\[
+h_t := T^t h_0,\qquad
+A_t := \mathds{1}\{U_t \le \kappa_\epsilon(h_t)\}.
+\]
+This includes simple moving-average-type correlations (finite-memory transforms of an underlying i.i.d.\ source) as well as Markov or mixing noise models.
+\end{assumption}
+
+\begin{remark}[A concrete correlated model: AR(1) Gaussian-copula noise]\label{rem:ar1-copula}
+A useful way to add temporal correlation while keeping uniform marginals is a Gaussian copula construction. Let $(Z_t)$ be an AR(1) process
+\[
+Z_t=\rho Z_{t-1}+\sqrt{1-\rho^2}\,\xi_t,\qquad \xi_t\sim N(0,1)\ \text{i.i.d.},\quad |\rho|<1,
+\]
+and define $U_t:=\Phi(Z_t)$ where $\Phi$ is the standard normal CDF. Then each $U_t$ is uniform on $[0,1]$, but $(U_t)$ has temporal dependence inherited from $(Z_t)$. For $|\rho|<1$, the AR(1) is mixing, so the correlated-noise skew-product framework applies without i.i.d.\ assumptions.
+\end{remark}
+
+\begin{assumption}[Nontriviality and sharp-limit regularity of $\kappa_\epsilon$]\label{assump:kappa-regularity}
+Assume the family $\{\kappa_\epsilon\}_{\epsilon>0}$ satisfies:
+\begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=2pt]
+  \item \textbf{Measurable channel}: each $\kappa_\epsilon:H\to[0,1]$ is measurable.
+  \item \textbf{Nontriviality on a positive-measure set}: there exists $\epsilon_0>0$ and $\eta\in(0,\tfrac12)$ such that for all $\epsilon\in(0,\epsilon_0]$,
+  \[
+  \mu\bigl(\{h:\ \kappa_\epsilon(h)\in[\eta,1-\eta]\}\bigr)>0.
+  \]
+  \item \textbf{Sharp-window limit}: there exists a measurable set $W\subset H$ such that $\kappa_\epsilon(h)\to \mathds{1}_W(h)$ for $\mu$-almost every $h$ as $\epsilon\to 0$.
+\end{enumerate}
+\end{assumption}
+
 \begin{proposition}[Stationarity/ergodicity of the probabilistic readout]\label{prop:prob-window-ergodic}
 In the setting of Assumption~\ref{assump:prob-window}, consider the skew-product transformation
 \[
 S:(h,(u_0,u_1,\dots))\mapsto (Th,(u_1,u_2,\dots)).
 \]
 Then $S$ preserves $\mu\times\mathbb{P}$ and the process $(A_t)$ is stationary. If $(H,\mu,T)$ is ergodic, then $(H\times\Omega,\mu\times\mathbb{P},S)$ is ergodic, hence $(A_t)$ is a stationary ergodic process.
+\end{proposition}
+
+\begin{proposition}[Stationarity/ergodicity under correlated noise]\label{prop:prob-window-correlated-ergodic}
+In the setting of Assumption~\ref{assump:prob-window-correlated}, consider the product transformation
+\[
+\widetilde S:(h,\omega)\mapsto (Th,S\omega)
+\]
+on $(H\times\Omega,\mu\times\mathbb{P})$. Then $(A_t)$ is stationary. If both $(H,\mu,T)$ and $(\Omega,\mathbb{P},S)$ are ergodic, then $(H\times\Omega,\mu\times\mathbb{P},\widetilde S)$ is ergodic, hence $(A_t)$ is a stationary ergodic process.
 \end{proposition}
 
 \begin{corollary}[SMB applicability]\label{cor:smb-prob-window}
@@ -158,6 +295,90 @@ Under the assumptions of Proposition~\ref{prop:prob-window-ergodic}, the Shannon
 and the refinement functional $\tau(t)=-\log\mu(C(A_0^{t-1}))$ exhibits linear growth with slope equal to the entropy rate of the induced symbolic process.
 \end{corollary}
 
+\begin{corollary}[SMB applicability without i.i.d.\ noise]\label{cor:smb-prob-window-correlated}
+Under the assumptions of Proposition~\ref{prop:prob-window-correlated-ergodic}, the observed process $(A_t)$ is stationary and ergodic, hence the Shannon--McMillan--Breiman theorem applies to $(A_t)$:
+\[
+-\frac{1}{t}\log \mathbb{P}\bigl(A_0^{t-1}\bigr)\to h(A)
+\quad\text{for }\mu\times\mathbb{P}\text{-almost every realization.}
+\]
+\cite{Walters1982,Petersen1983}
+\end{corollary}
+
+\begin{remark}[What changes under correlated noise]\label{rem:correlated-noise-what-changes}
+Corollary~\ref{cor:smb-prob-window-correlated} shows that the \emph{existence} of an entropy-rate time law does not require i.i.d.\ noise; stationarity and ergodicity suffice. What typically changes is the relationship between the entropy rate $h(A)$ and the ``instantaneous'' Bernoulli entropies $H_b(\kappa_\epsilon(h_t))$:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item with i.i.d.\ $U_t$ (Assumption~\ref{assump:prob-window}), the output is conditionally independent given the scan, so conditional-entropy calculations are explicit and the mean injected entropy $\int_H H_b(\kappa_\epsilon)\,\mathrm{d}\mu$ is a natural reference scale (cf.\ Proposition~\ref{prop:prob-window-positive-entropy});
+  \item with correlated $U_t$ (Assumption~\ref{assump:prob-window-correlated}), the output is no longer conditionally independent across $t$, so $h(A)$ can be strictly smaller than $\int_H H_b(\kappa_\epsilon)\,\mathrm{d}\mu$ because predictability in $(U_t)$ reduces the entropy rate of $(A_t)$. Nevertheless, positive entropy persists whenever the noise retains nontrivial conditional randomness given its own past (Remark~\ref{rem:entropy-robust-correlated}), and conservative upper bounds remain available (e.g.\ Proposition~\ref{prop:h-vanishes-eps} for zero-entropy bases).
+\end{itemize}
+For protocol-facing claims, the correct discipline is therefore: use SMB to justify the existence of a time/entropy rate in the correlated-noise regime, but treat i.i.d.-based ``mean $H_b$'' curves as reference bounds rather than identities unless conditional independence is justified.
+\end{remark}
+
+\begin{proposition}[A general upper bound under correlated auxiliary noise]\label{prop:h-upper-bound-correlated}
+In the correlated-noise setting of Assumption~\ref{assump:prob-window-correlated}, assume $(H,\mu,T)$ and $(\Omega,\mathbb{P},S)$ are independent and $U_t$ has uniform marginals on $[0,1]$. Then the entropy rate of the observed process satisfies
+\[
+h(A)\ \le\ h_\mu(T)\ +\ \int_H H_b(\kappa_\epsilon(h))\,\mathrm{d}\mu(h).
+\]
+In particular, if the base scan has zero KS entropy $h_\mu(T)=0$ (e.g.\ a torus translation), then
+\[
+0\ \le\ h(A)\ \le\ \int_H H_b(\kappa_\epsilon(h))\,\mathrm{d}\mu(h).
+\]
+\end{proposition}
+
+\begin{proof}
+Let $h_0^{t-1}:=(h_0,\dots,h_{t-1})$ and $A_0^{t-1}:=(A_0,\dots,A_{t-1})$.
+Since $(A_t)$ is a measurable function of $(h_t,U_t)$, one has the joint-entropy bound
+\[
+H(A_0^{t-1})\le H(h_0^{t-1}) + H(A_0^{t-1}\mid h_0^{t-1}).
+\]
+By the chain rule and conditioning monotonicity,
+\[
+H(A_0^{t-1}\mid h_0^{t-1})
+=\sum_{k=0}^{t-1} H(A_k\mid A_0^{k-1},h_0^{t-1})
+\le \sum_{k=0}^{t-1} H(A_k\mid h_k).
+\]
+By independence of the scan and the noise source and by the uniform marginal of $U_k$, conditional on $h_k$ the symbol is Bernoulli with parameter $\kappa_\epsilon(h_k)$, hence
+\[
+H(A_k\mid h_k)=\mathbb{E}\bigl[H_b(\kappa_\epsilon(h_k))\bigr]=\int_H H_b(\kappa_\epsilon(h))\,\mathrm{d}\mu(h)
+\]
+for all $k$ by stationarity of the scan.
+Dividing by $t$ and taking $t\to\infty$ yields
+\[
+h(A)\le h_\mu(T) + \int_H H_b(\kappa_\epsilon(h))\,\mathrm{d}\mu(h),
+\]
+since $\lim_{t\to\infty}\tfrac{1}{t}H(h_0^{t-1})=h_\mu(T)$.\cite{Walters1982,CoverThomas2006}
+\end{proof}
+
+\begin{remark}[When does the upper bound approach equality?]\label{rem:upper-bound-equality}
+The bound in Proposition~\ref{prop:h-upper-bound-correlated} becomes tight when the readout symbols are close to conditionally independent given the scan, i.e.\ when
+$H(A_k\mid A_0^{k-1},h_0^{t-1})\approx H(A_k\mid h_k)$.
+This holds exactly under Assumption~\ref{assump:prob-window} (i.i.d.\ $U_t$), and can hold approximately when the noise correlation time is much shorter than the time scales at which $\kappa_\epsilon(h_t)$ varies along the scan. When correlations are strong (e.g.\ AR(1) with $|\rho|$ close to $1$), $h(A)$ can be substantially smaller than $\int H_b(\kappa_\epsilon)\,\mathrm{d}\mu$, and the gap is itself a diagnostic of temporal predictability in the measurement channel.
+\end{remark}
+
+\subsubsection{A controlled $\epsilon\to 0$ bound when the base has zero entropy}\label{sec:readout:epsilon-vanishing}
+
+\begin{proposition}[Upper bound and vanishing-entropy limit for deterministic base scans]\label{prop:h-vanishes-eps}
+Assume Assumptions~\ref{assump:prob-window} and \ref{assump:kappa-regularity}. Then the entropy rate of the observed process satisfies
+\[
+h(A)\ \le\ h_\mu(T)\ +\ \int_H H_b(\kappa_\epsilon(h))\,\mathrm{d}\mu(h).
+\]
+In particular, if the base scan has zero KS entropy $h_\mu(T)=0$ (e.g.\ a torus translation), then
+\[
+0\ \le\ h(A)\ \le\ \int_H H_b(\kappa_\epsilon(h))\,\mathrm{d}\mu(h)\ \xrightarrow[\epsilon\to 0]{}\ 0.
+\]
+\end{proposition}
+
+\begin{remark}[Why the upper bound is natural]\label{rem:upper-bound-intuition}
+The term $\int H_b(\kappa_\epsilon)\,\mathrm{d}\mu$ is the per-step conditional entropy injected by the readout channel (randomness from $(U_t)$), while $h_\mu(T)$ is the intrinsic information production of the base dynamics. The inequality in Proposition~\ref{prop:h-vanishes-eps} is a standard ``entropy of an extension'' bound for skew products: the entropy rate of the observed process cannot exceed ``base entropy + average fiber (channel) entropy''.\cite{Walters1982,Petersen1983}
+\end{remark}
+
+\begin{remark}[A quantitative $O(\epsilon)$ regime under boundary-layer kernels]\label{rem:h-O-eps}
+If, in addition to Assumption~\ref{assump:kappa-regularity}, $\kappa_\epsilon$ is a boundary-layer kernel around $W$ (e.g.\ $\kappa_\epsilon(h)=\sigma(d(h)/\epsilon)$ with $d$ a signed distance-to-$\partial W$ and $\sigma$ a smooth sigmoid), then $\int_H H_b(\kappa_\epsilon)\,\mathrm{d}\mu = O(\epsilon)$ under mild regularity (smooth $\partial W$ and absolutely continuous $\mu$). Combined with Proposition~\ref{prop:h-vanishes-eps} for $h_\mu(T)=0$, this yields a controlled bound
+\[
+h(A)\ \le\ C\,\epsilon + o(\epsilon),
+\]
+with $C$ determined by the chosen sigmoid profile and the boundary geometry (cf.\ Remark~\ref{rem:entropy-scaling-eps}).
+\end{remark}
+
 \begin{remark}[Two interpretations of randomness]\label{rem:randomness-interpretation}
 The probabilistic template can be read in two distinct ways, which affect interpretation but not the formal SMB conclusion:
 \begin{itemize}[leftmargin=*,itemsep=2pt]
@@ -165,6 +386,38 @@ The probabilistic template can be read in two distinct ways, which affect interp
   \item \textbf{Effective unresolved degrees of freedom}: $(U_t)$ is a proxy for microscopic variables not included in $H$ (e.g.\ unresolved boundary jitter or sub-grid phase degrees). Then randomness is epistemic: the protocol treats unresolved structure as an effective stochastic source.
 \end{itemize}
 In both cases, $\epsilon$ controls how strongly the channel injects randomness: as $\epsilon\to 0$ one expects a crossover to the deterministic (zero-KS) regime when $\kappa_\epsilon$ approaches a sharp indicator.
+\end{remark}
+
+\begin{remark}[Connection to HMM/state-space modeling and inference limits]\label{rem:hmm-connection}
+From the standpoint of statistical signal processing, the pair $(h_t,A_t)$ in Assumption~\ref{assump:prob-window} is a (possibly non-Markov) state-space model: $h_t$ is a latent state (often a torus translation) and $A_t$ is a noisy emission through a parametric channel $\kappa_\epsilon$. When the latent scan is replaced (for modeling or inference) by a finite-state approximation, one obtains a hidden Markov model (HMM) in the classical sense.\cite{Rabiner1989HMMTutorial,CappeMoulinesRyden2005HMM}
+
+This viewpoint is useful because it highlights practical limitations:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Correlated noise and model mismatch}: if the auxiliary noise source is temporally correlated (or if $\kappa_\epsilon$ is misspecified), treating observations as conditionally i.i.d.\ can bias entropy-rate and $\tau$ estimators. The robust content is then not a point estimate of $h(\epsilon)$ but an uncertainty budget (cf.\ Proposition~\ref{prop:entropy-continuity-mismatch}).
+  \item \textbf{Identifiability and finite data}: even for standard HMMs, parameter identifiability and reliable inference require mixing/regularity conditions and sufficient data length. In protocol terms, this constrains what one can infer about $\epsilon$ (or about window geometry) from a finite record without additional calibration.
+\end{itemize}
+Accordingly, in applications the probabilistic-window model is best treated as an explicit \emph{measurement channel} whose noise assumptions (independence vs.\ correlation) should be tested and reported alongside entropy-rate claims.
+\end{remark}
+
+\begin{remark}[Practical diagnostics for correlated-noise effects]\label{rem:correlated-diagnostics}
+When the auxiliary noise is temporally correlated (e.g.\ Remark~\ref{rem:ar1-copula}), SMB still applies under the stationarity/ergodicity hypotheses above, but finite-data inference can be biased if one uses i.i.d.-based estimators. The following diagnostics are inexpensive and protocol-auditable:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Lag diagnostics on the observed bits}: estimate autocorrelations $\mathrm{corr}(A_t,A_{t+k})$ and/or lagged mutual information. Significant nonzero values at small lags indicate departures from the conditionally i.i.d.\ picture.
+  \item \textbf{Estimator cross-checks}: compare several entropy-rate proxies on the same record (block-entropy curves, sequential Markov/CTW-type log-loss, compression-based estimators). Large discrepancies are a warning sign for correlation or nonstationarity.
+  \item \textbf{Surrogates}: apply a full shuffle (destroys correlations) or a block bootstrap (preserves short-range dependence) and re-estimate $h$; strong sensitivity indicates correlation-driven bias.
+  \item \textbf{Coupled-protocol mismatch}: when two protocol variants can be coupled on the same scan and shared randomness, estimate mismatch rates $\varepsilon$ (Definition~\ref{def:mismatch-rate}) and propagate them to uncertainty bands (Section~\ref{sec:info-time:stability-bounds}).
+\end{itemize}
+In the reproducible 6D demo (Section~\ref{sec:worked-example}), we include an explicit AR(1)-copula variant and archive lag-1 autocorrelation and mismatch diagnostics alongside $h(\epsilon)$ and $\widehat\tau(t)$ proxies in \texttt{artifacts/demo\_6d\_fingerprints.json}.
+\end{remark}
+
+\begin{remark}[Temporal correlation can fake entropy jumps]\label{rem:correlation-can-fake-jumps}
+If the measurement channel has temporal correlation (even as mild as a short moving average), then treating the record as conditionally i.i.d.\ can bias entropy-rate estimates and can create apparent ``phase transitions'' as $\epsilon$ varies. In skew-product terms, this is the difference between Assumption~\ref{assump:prob-window} (i.i.d.\ noise) and Assumption~\ref{assump:prob-window-correlated} (a general stationary noise system).
+
+The key structural point is that SMB only requires stationarity and ergodicity of the observed process, so it still applies under correlated but ergodic noise (Corollary~\ref{cor:smb-prob-window-correlated}). What changes is \emph{inference}: explicit conditional-independence formulas (used for simple bounds and for some estimators) must be replaced by methods that account for correlation length and model mismatch, and uncertainty budgets should be reported (cf.\ Proposition~\ref{prop:entropy-continuity-mismatch}).
+\end{remark}
+
+\begin{remark}[HMM fragility under correlated noise: an external case study]\label{rem:hmm-fragility}
+A concrete illustration of correlation sensitivity is provided by recent HMM-based readout analysis in spin-qubit experiments: when the noise is correlated, HMMs calibrated under white-noise assumptions can become unreliable and tolerate only very short correlation times.\cite{SpethmannStanoLoss2025SpinQubitHMM} While the physical context differs, the methodological lesson aligns with the protocol viewpoint here: correlated-noise structure must be modeled explicitly (Assumption~\ref{assump:prob-window-correlated}) if one wants trustworthy inference from finite records.
 \end{remark}
 
 \subsection{From spatial patterns to temporal data streams}\label{sec:readout:spacetime-readout}

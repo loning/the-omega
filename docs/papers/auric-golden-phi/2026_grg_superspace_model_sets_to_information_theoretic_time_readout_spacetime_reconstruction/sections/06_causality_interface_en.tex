@@ -70,6 +70,264 @@ e\prec_{\mathrm{prot}} f \quad\Rightarrow\quad \Phi(e)\subseteq J^-(\Phi(f)),
 \]
 or conversely whether geometric causality constraints enforce bounds on achievable protocol refinement. In the context of this review, we emphasize that establishing these implications is a \emph{research program}, not a completed claim.
 
+\subsubsection{Minimal assumptions for an order-preserving map (and why order-embeddings are hard)}\label{sec:causality:minimal-assumptions}
+
+To avoid suggestive language, it is useful to separate two distinct targets:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Order-preserving representation} (weak): construct a map $\Phi$ such that
+  \[
+  e\prec_{\mathrm{prot}} f\ \Longrightarrow\ \Phi(e)\in J^-_g(\Phi(f)).
+  \]
+  \item \textbf{Order-embedding (faithful embedding)} (strong): require in addition the converse implication, so that protocol precedence is \emph{reflected} by spacetime causality:
+  \[
+  e\prec_{\mathrm{prot}} f\ \Longleftrightarrow\ \Phi(e)\in J^-_g(\Phi(f)).
+  \]
+\end{itemize}
+
+\begin{assumption}[A minimal interface package for order preservation]\label{assump:min-interface-order}
+Let $(\mathcal{E},\prec_{\mathrm{prot}})$ be a protocol precedence relation.
+Assume:
+\begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=2pt]
+  \item \textbf{Poset reduction:} $\prec_{\mathrm{prot}}$ is acyclic up to protocol-identifications, and we work on the quotient poset $\mathcal{E}/{\sim}$ where $e\sim f$ iff $e\prec_{\mathrm{prot}} f$ and $f\prec_{\mathrm{prot}} e$.
+  \item \textbf{Event localization:} there exists a map $\Phi:\mathcal{E}\to M$ (or $\Phi:\mathcal{E}\to\mathcal{P}(M)$) into a time-oriented Lorentzian manifold $(M,g)$, interpreting each protocol event as a spacetime-localized event (or a small support region).
+  \item \textbf{Finite-speed channel constraint (implemented by priority time):} there exists a protocol refinement functional $\tau(t)$ (Section~\ref{sec:info-time}) and a priority-time assignment $e\mapsto \tau_e$ (Definition~\ref{def:priority-time}) such that the finite-speed influence hypothesis of Assumption~\ref{assump:calibration-speed} holds for $(\Phi,\tau_e)$.
+\end{enumerate}
+\end{assumption}
+
+\begin{corollary}[Minimal package yields an order-preserving map]\label{cor:min-interface-order-preserving}
+Under Assumption~\ref{assump:min-interface-order}, protocol precedence admits an order-preserving representation in the Lorentzian causal order:
+\[
+e\prec_{\mathrm{prot}} f\ \Longrightarrow\ \Phi(e)\in J^-_g(\Phi(f)).
+\]
+\end{corollary}
+
+\begin{proof}
+By Assumption~\ref{assump:min-interface-order}(iii), the sufficient-condition package of Assumption~\ref{assump:calibration-speed} applies to the priority times $\tau_e$. Therefore Proposition~\ref{prop:priority-implies-causal} yields $\Phi(e)\in J^-_g(\Phi(f))$ whenever $e\prec_{\mathrm{prot}} f$.
+\end{proof}
+
+\begin{remark}[Obstructions to faithful order-embeddings]\label{rem:order-embedding-obstacles}
+Even when order preservation holds, upgrading it to an order-embedding is typically obstructed by protocol effects:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Nonlocal decidability:} if an event $e$ is defined by a global statistic (long-range constraint, global frequency estimate, etc.), its decidability need not correspond to any localized spacetime support. Such events can violate any finite-speed representation unless the event family is restricted to local/boundary-block events.
+  \item \textbf{Non-injectivity (coarse localization):} many distinct protocol events can map to the same spacetime point/region (finite resolution, stabilization, gauge). Then $\Phi$ cannot be injective on $\mathcal{E}/{\sim}$, so ``faithfulness'' must be weakened (e.g.\ to an embedding of a further quotient).
+  \item \textbf{One-way accessibility:} $\Phi(e)\in J^-_g(\Phi(f))$ does not imply that the protocol can decide $e$ strictly earlier than $f$ at finite depth; limitations of the readout channel, stabilization, and noise can prevent the converse implication.
+  \item \textbf{Noise/tolerance band:} empirical precedence relations are robust only for event pairs separated by a margin larger than the protocol uncertainty budget (Section~\ref{sec:causality:stat-testable}). This naturally yields a \emph{partial} robust order, not a total or fully reflective order.
+\end{itemize}
+For these reasons, the conservative goal is an order-preserving representation (a causality \emph{interface}), together with a stated acceptable protocol class and quantitative robustness bounds, rather than a claim of a faithful identification of $\prec_{\mathrm{prot}}$ with $J^-_g$.
+\end{remark}
+
+\subsubsection{A rigorous sufficient condition: priority time + finite-speed influence}\label{sec:causality:priority-speed}
+
+The abstract definition of protocol precedence (Definition~\ref{def:protocol-causality}) becomes comparable to Lorentzian causality once one specifies (i) how protocol events are localized in a spacetime, and (ii) a finite-speed constraint that converts ``priority'' into a lightcone bound.
+
+\begin{definition}[Priority time for protocol events]\label{def:priority-time}
+Let $\tau(t)$ be the protocol refinement functional from Definition~\ref{def:entropy-time}. For a protocol event $e\in\mathcal{E}$, define its \emph{decidability depth} (in refinement units) by
+\[
+\tau_e := \inf\{\tau(t):\ e\ \text{is decidable from the depth-$t$ protocol information state}\},
+\]
+with the convention $\tau_e=+\infty$ if $e$ is never decidable under the protocol.
+\end{definition}
+
+\subsubsection{Protocol equivalence and invariance of priority order}\label{sec:causality:priority-invariance}
+
+Definition~\ref{def:priority-time} is protocol-dependent because $\tau(t)$ is protocol-dependent. The relevant ``observer-independence'' claim in this review is therefore not absolute equality of $\tau_e$ across all possible codings, but invariance \emph{within an acceptable protocol class} (finite-memory recodings, pullbacks along factors, and small window/partition perturbations).
+
+\begin{definition}[Protocol-time equivalence up to $O(1)$]\label{def:tau-O1-equivalence}
+Let $\tau$ and $\tau'$ be two protocol refinement functionals computed from two protocols on the same underlying system (possibly via different codings/windows). We say that they are \emph{$O(1)$-equivalent} if there exists a constant $\Delta<\infty$ such that for all $t$,
+\[
+|\tau'(t)-\tau(t)|\le \Delta.
+\]
+This is the natural notion of equivalence when the intended ``time law'' is asymptotic (linear at $h>0$, logarithmic at $h=0$) and when finite-memory alignment and change-of-measure effects introduce additive constants (cf.\ Corollary~\ref{cor:tau-affine-class} and Proposition~\ref{prop:tau-change-of-measure}).
+\end{definition}
+
+\begin{proposition}[Priority times are stable under $O(1)$-equivalent protocol times]\label{prop:priority-O1-stability}
+Assume two protocols produce refinement functionals $\tau$ and $\tau'$ that are $O(1)$-equivalent with constant $\Delta$ in the sense of Definition~\ref{def:tau-O1-equivalence}. Let $\tau_e$ and $\tau'_e$ be the corresponding priority times (Definition~\ref{def:priority-time}) for the same event $e$ interpreted under the two protocols. Then
+\[
+|\tau'_e-\tau_e|\le \Delta.
+\]
+Consequently, if two events satisfy a strict separation condition
+\[
+\tau_e + 2\Delta < \tau_f,
+\]
+then their priority order is invariant across the two protocols:
+\[
+\tau_e<\tau_f\quad \Longrightarrow\quad \tau'_e<\tau'_f.
+\]
+\end{proposition}
+
+\begin{proof}
+By assumption, for every $t$ one has $\tau(t)-\Delta\le \tau'(t)\le \tau(t)+\Delta$.
+Taking infima over the decidability set in Definition~\ref{def:priority-time} yields $\tau_e-\Delta\le \tau'_e\le \tau_e+\Delta$, hence $|\tau'_e-\tau_e|\le \Delta$.
+If $\tau_e+2\Delta<\tau_f$, then $\tau'_e\le \tau_e+\Delta<\tau_f-\Delta\le \tau'_f$, so $\tau'_e<\tau'_f$.
+\end{proof}
+
+\begin{remark}[Where such $O(1)$-equivalence comes from]
+Two conservative sources of $O(1)$-equivalence are already established in Section~\ref{sec:info-time}:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Finite-memory recodings:} within a finite-memory equivalence class of protocols, cylinders align up to a bounded-depth shift, yielding an $O(1)$ alignment ambiguity in $\tau$ once a growth law is fixed (Proposition~\ref{prop:tau-finite-memory} and Corollary~\ref{cor:tau-affine-class}).
+  \item \textbf{Change of reference measure:} switching from $\mu$ to an absolutely continuous $\nu$ with bounded density changes $\tau(t)$ by a uniform additive constant (Proposition~\ref{prop:tau-change-of-measure}).
+\end{itemize}
+In addition, if protocols are restricted to those factoring through the maximal equicontinuous factor (Section~\ref{sec:info-time:mef}), then their ``rigid'' information content is compared on a canonical base; residual dependence on window/partition choice can be quantified via mismatch rates and propagated to time/entropy error bars (Section~\ref{sec:info-time:sensitivity} and \ref{sec:info-time:stability-bounds}).
+\end{remark}
+
+\begin{definition}[A robust protocol priority relation]\label{def:robust-priority}
+Fix a tolerance parameter $\Delta\ge 0$ (an upper bound on protocol-time mismatch). Define the \emph{$\Delta$-robust priority relation} on events by
+\[
+e\ \prec_{\Delta}\ f
+\quad:\Longleftrightarrow\quad
+\tau_e + 2\Delta < \tau_f,
+\]
+where $\tau_e,\tau_f$ are the priority times from Definition~\ref{def:priority-time}.
+\end{definition}
+
+\begin{proposition}[Invariance of robust priority across acceptable protocols]\label{prop:robust-priority-invariant}
+Let two protocols have refinement functionals $\tau,\tau'$ that are $O(1)$-equivalent with constant $\Delta$ (Definition~\ref{def:tau-O1-equivalence}), and let $\tau_e,\tau'_e$ be the corresponding priority times. Then for all events $e,f$,
+\[
+e\prec_{\Delta} f
+\quad\Longrightarrow\quad
+\tau'_e<\tau'_f.
+\]
+In particular, the strict order induced by $\prec_\Delta$ is protocol-invariant across the two protocols: every $\Delta$-separated event pair has the same priority order in both.
+\end{proposition}
+
+\begin{proof}
+If $e\prec_\Delta f$, then $\tau_e+2\Delta<\tau_f$. By Proposition~\ref{prop:priority-O1-stability} one has $\tau'_e\le \tau_e+\Delta$ and $\tau'_f\ge \tau_f-\Delta$, hence $\tau'_e<\tau'_f$.
+\end{proof}
+
+\begin{remark}[Estimating $\Delta$ from mismatch-rate bounds]
+In applications, $\Delta$ can be obtained either from structural protocol constants (finite-memory radii, change-of-measure constants) or from the quantitative mismatch framework in Section~\ref{sec:info-time:stability-bounds}.
+For example, if two protocols produce symbol processes with one-step mismatch rate $\varepsilon$ (Definition~\ref{def:mismatch-rate}), then their $t$-block laws are within $t\varepsilon$ in total variation (Proposition~\ref{prop:block-tv-by-mismatch}); this yields explicit finite-$t$ error bars for $-\log$ block probabilities (Corollary~\ref{cor:tau-stability-finite-t}) whenever the relevant cylinder probabilities are not too small. Such bounds can be used to choose a conservative $\Delta$ in a target $t$-range and to certify robust priority comparisons within that operational regime.
+\end{remark}
+
+\subsubsection{A testable notion of precedence: statistical decidability under finite depth}\label{sec:causality:stat-testable}
+
+Definition~\ref{def:protocol-causality} is intentionally abstract. For numerical or experimental work, one needs an explicit operationalization of ``decidable at depth $t$'' that can be audited from data and comes with an error tolerance.
+
+\begin{definition}[Statistical decidability at depth $t$]\label{def:stat-decidable}
+Fix a protocol and a family of events $\mathcal{E}$. Let $D_t$ denote the protocol's available data at depth $t$ (e.g.\ a length-$t$ symbol prefix, a stabilized prefix, or a boundary prefix).
+For a confidence parameter $\alpha\in(0,1)$, we say that an event $e\in\mathcal{E}$ is \emph{$(t,\alpha)$-decidable} if there exists a decision rule (estimator/classifier)
+\[
+\delta_{e,t}:D_t\to\{0,1\}
+\]
+such that, under the protocol's joint law of $(D_t,e)$,
+\[
+\mathbb{P}\bigl(\delta_{e,t}(D_t)=\mathbf{1}_{\{e\}}\bigr)\ \ge\ 1-\alpha.
+\]
+Define the corresponding \emph{statistical priority time} by
+\[
+\tau^{(\alpha)}_e\ :=\ \inf\{\tau(t):\ e\ \text{is $(t,\alpha)$-decidable}\},
+\]
+with $\tau^{(\alpha)}_e=+\infty$ if no such $t$ exists.
+\end{definition}
+
+\begin{remark}[Relationship to the toy boundary notion]
+In the $1\!+\!1$ boundary toy model later in this section, $D_t$ can be taken as a boundary prefix $d|_{[0,v_t]}$ and statistical decidability reduces to the empirical depth $\widehat v_e(\alpha)$ (Definition~\ref{def:empirical-ve}). Definition~\ref{def:stat-decidable} records the same idea without committing to a specific boundary embedding.
+\end{remark}
+
+\begin{proposition}[Robust priority implies stable statistical precedence]\label{prop:robust-precedence-testable}
+Fix $\alpha\in(0,1)$ and suppose two protocols are compared within an acceptable class such that their (statistical) priority times are $O(1)$-equivalent with constant $\Delta$ on the event family of interest:
+\[
+\bigl|\tau^{(\alpha)}_e-\tau^{\prime(\alpha)}_e\bigr|\le \Delta\qquad\text{for all }e\in\mathcal{E}.
+\]
+Then for any pair of events $e,f\in\mathcal{E}$ satisfying the robust separation condition
+\[
+\tau^{(\alpha)}_e+2\Delta<\tau^{(\alpha)}_f,
+\]
+the precedence statement ``$e$ is decidable strictly earlier than $f$ at confidence $1-\alpha$'' is invariant across the two protocols:
+\[
+\tau^{(\alpha)}_e<\tau^{(\alpha)}_f\quad\Longrightarrow\quad \tau^{\prime(\alpha)}_e<\tau^{\prime(\alpha)}_f.
+\]
+\end{proposition}
+
+\begin{remark}[Practical reading]
+Proposition~\ref{prop:robust-precedence-testable} is the concrete version of ``time ordering equivalence classes'': one does not assert that \emph{all} event pairs have a protocol-independent order, only that event pairs with a margin larger than the protocol uncertainty $2\Delta$ have a stable order. The uncertainty budget $\Delta$ is itself auditable via finite-memory constants and mismatch-rate bounds (Section~\ref{sec:info-time:stability-bounds}).
+\end{remark}
+
+\begin{definition}[Empirical robust protocol precedence]\label{def:empirical-prec}
+Fix $\alpha\in(0,1)$ and a tolerance parameter $\Delta\ge 0$.
+Define the \emph{empirical robust precedence relation} by
+\[
+e\ \prec_{\alpha,\Delta}\ f
+\quad:\Longleftrightarrow\quad
+\tau^{(\alpha)}_e + 2\Delta < \tau^{(\alpha)}_f,
+\]
+where $\tau^{(\alpha)}_e$ is the statistical priority time from Definition~\ref{def:stat-decidable}.
+\end{definition}
+
+\begin{remark}[What $\prec_{\alpha,\Delta}$ does (and does not) claim]\label{rem:prec-alpha-delta}
+The relation $\prec_{\alpha,\Delta}$ is intentionally conservative:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item It only declares precedence when there is a \emph{margin} larger than the uncertainty budget $2\Delta$.
+  \item It does not require an ontological claim about spacetime causality; it is a protocol-level partial order of ``earlier decidability with controlled error''.
+  \item It depends on the event family $\mathcal{E}$ and on the chosen decision rules (or learning pipeline); auditability requires that these choices be recorded.
+\end{itemize}
+\end{remark}
+
+\begin{proposition}[Protocol invariance of $\prec_{\alpha,\Delta}$ within an acceptable class]\label{prop:prec-alpha-delta-invariant}
+Assume two protocols (or two window/partition choices) yield statistical priority times $\tau^{(\alpha)}_e$ and $\tau^{\prime(\alpha)}_e$ satisfying
+\[
+\bigl|\tau^{(\alpha)}_e-\tau^{\prime(\alpha)}_e\bigr|\le \Delta
+\qquad\text{for all }e\in\mathcal{E}.
+\]
+Then for all $e,f\in\mathcal{E}$,
+\[
+e\prec_{\alpha,\Delta} f\quad\Longrightarrow\quad \tau^{\prime(\alpha)}_e<\tau^{\prime(\alpha)}_f,
+\]
+so any precedence statement certified by $\prec_{\alpha,\Delta}$ is stable across the two protocols.
+\end{proposition}
+
+\begin{proof}
+If $e\prec_{\alpha,\Delta} f$, then $\tau^{(\alpha)}_e+2\Delta<\tau^{(\alpha)}_f$. The assumed $O(1)$ bound implies
+$\tau^{\prime(\alpha)}_e\le \tau^{(\alpha)}_e+\Delta$ and $\tau^{\prime(\alpha)}_f\ge \tau^{(\alpha)}_f-\Delta$, hence $\tau^{\prime(\alpha)}_e<\tau^{\prime(\alpha)}_f$.
+\end{proof}
+
+\begin{proposition}[Protocol precedence induces a priority order]\label{prop:prot-implies-priority}
+If $e\prec_{\mathrm{prot}} f$ in the sense of Definition~\ref{def:protocol-causality} and $\tau_f<\infty$, then $\tau_e\le \tau_f$.
+\end{proposition}
+
+\begin{proof}
+By Definition~\ref{def:protocol-causality}, deciding $f$ requires passing through a refinement stage that already decides $e$. Hence $e$ is decidable no later than $f$ in refinement depth, which is exactly $\tau_e\le \tau_f$ by Definition~\ref{def:priority-time}.
+\end{proof}
+
+\begin{assumption}[Temporal calibration and finite-speed influence]\label{assump:calibration-speed}
+Assume there exists a manifold $M$ equipped with a time coordinate $t:M\to\RR$ and:
+\begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=2pt]
+  \item \textbf{Event localization}: a map $\Phi:\mathcal{E}\to M$ sending each protocol event to a spacetime point (or a small neighborhood whose diameter is negligible at the working resolution).
+  \item \textbf{Temporal calibration}: a continuous time coordinate $t:M\to\RR$ and a strictly increasing calibration map $\kappa:\RR_{\ge 0}\to\RR$ such that
+  \[
+  t(\Phi(e))=\kappa(\tau_e)\qquad\text{for all }e\in\mathcal{E}\text{ with }\tau_e<\infty.
+  \]
+  \item \textbf{Cone-defining split model}: there exists a one-parameter family of Riemannian metrics $h_t$ on the level sets $\Sigma_s:=\{t=s\}$, and a constant $c>0$, such that the Lorentzian metric used for causal comparison is
+  \[
+  g_c=-\mathrm{d}t^2+\frac{1}{c^2}h_t.
+  \]
+  \item \textbf{Finite-speed influence}: whenever $e\prec_{\mathrm{prot}} f$ and both $\tau_e,\tau_f<\infty$, there exists a piecewise $C^1$ curve $\gamma:[t(\Phi(e)),t(\Phi(f))]\to M$ of the form $\gamma(s)=(s,x(s))$ with $\gamma(t(\Phi(e)))=\Phi(e)$, $\gamma(t(\Phi(f)))=\Phi(f)$, and
+  \[
+  \lVert \dot x(s)\rVert_{h_s}\le c\quad\text{for almost every }s.
+  \]
+\end{enumerate}
+\end{assumption}
+
+\begin{proposition}[Protocol priority implies Lorentzian causal precedence]\label{prop:priority-implies-causal}
+In the setting of Assumption~\ref{assump:calibration-speed}, if $e\prec_{\mathrm{prot}} f$ and $\tau_e,\tau_f<\infty$, then
+\[
+\Phi(e)\in J^-_{g_c}(\Phi(f)).
+\]
+Equivalently, protocol precedence is order-embeddable into the Lorentzian causal order via $\Phi$ (up to protocol-identified events that map to the same spacetime point).
+\end{proposition}
+
+\begin{proof}
+Let $\gamma(s)=(s,x(s))$ be the curve provided by Assumption~\ref{assump:calibration-speed}(iv). Its tangent vector is $\dot\gamma=(1,\dot x(s))$. Using the split form of $g_c$ (Assumption~\ref{assump:calibration-speed}(iii)), one has for almost every $s$,
+\[
+g_c(\dot\gamma,\dot\gamma) = -1 + \frac{1}{c^2}\lVert \dot x(s)\rVert_{h_s}^2 \le 0.
+\]
+Since $\dot t=1>0$, the curve $\gamma$ is future-directed causal for $g_c$, hence $\Phi(e)\in J^-_{g_c}(\Phi(f))$.
+\end{proof}
+
+\begin{remark}[Lightcone structure induced by the protocol speed bound]\label{rem:lightcone-induced}
+Assumption~\ref{assump:calibration-speed}(iv) is precisely a lightcone constraint. In the split model $g_c=-\mathrm{d}t^2+\frac{1}{c^2}h_t$, the null boundary at time $t$ is characterized by $\lVert \dot x\rVert_{h_t}=c$, and the causal cone by $\lVert \dot x\rVert_{h_t}\le c$. Thus, a protocol that enforces a uniform speed bound canonically induces a cone field (hence a conformal causal structure) once a temporal calibration $t=\kappa(\tau)$ is fixed.
+\end{remark}
+
 \subsubsection{A minimal testable hypothesis package}\label{sec:causality:min-hyp}
 
 To turn the above compatibility question into a falsifiable statement, one can isolate a small set of explicit hypotheses that are checkable (numerically or experimentally) at the protocol level.
@@ -135,6 +393,41 @@ so in particular $\Phi(e)\subseteq J^-_g(\Phi(f))$. This proves Alexandrov-consi
 
 \begin{remark}[A minimal numerical check]
 In discretized boundary sampling, one can approximate $v_e$ by the smallest boundary prefix length for which a classifier/estimator can decide $e$ above a confidence threshold, and then test whether violations of $v_e\le v_f$ correlate with violations of Alexandrov-consistency in the presence of noise and finite resolution. This turns the interface question into an auditable finite-data statement.
+\end{remark}
+
+\begin{definition}[Empirical boundary-decidability depth]\label{def:empirical-ve}
+Fix a family of protocol events $\mathcal{E}$ and a procedure that, given a finite boundary prefix $d|_{[0,v]}$, outputs an estimate $\widehat e_v\in\{0,1\}$ of whether the event $e$ holds (e.g.\ a hand-coded decision rule or a trained classifier). For a target confidence level $1-\alpha$, define the empirical decidability depth as
+\[
+\widehat v_e(\alpha):=\inf\Bigl\{v:\ \mathbb{P}(\widehat e_v = e)\ge 1-\alpha\Bigr\},
+\]
+with the probability taken over repeated runs/phases/noise realizations under the protocol.
+\end{definition}
+
+\begin{proposition}[Boundary-testable Alexandrov consistency with tolerance]\label{prop:toy-minkowski-robust}
+In the $1\!+\!1$ boundary toy setting of \S\ref{sec:causality:toy-minkowski}, assume events are prefix events and use the empirical depth $\widehat v_e(\alpha)$ from Definition~\ref{def:empirical-ve}. Fix a tolerance $\Delta_v\ge 0$ (measurement/estimation uncertainty in boundary depth) and define empirical robust precedence on prefix events by
+\[
+e\prec^{\Sigma}_{\alpha,\Delta_v} f
+\quad:\Longleftrightarrow\quad
+\widehat v_e(\alpha) + 2\Delta_v < \widehat v_f(\alpha).
+\]
+Then every certified precedence statement implies Alexandrov-consistent boundary inclusion at the level of the canonical supports (Definition~\ref{def:prefix-event}):
+\[
+e\prec^{\Sigma}_{\alpha,\Delta_v} f
+\quad\Longrightarrow\quad
+\Phi(e)\subseteq \Phi(f)\subseteq J^-_g(\Phi(f)).
+\]
+\end{proposition}
+
+\begin{proof}
+If $\widehat v_e(\alpha) + 2\Delta_v < \widehat v_f(\alpha)$, then in particular $\widehat v_e(\alpha)<\widehat v_f(\alpha)$. For prefix events, the canonical supports are initial segments $\Phi(e)=[0,v_e]$ and $\Phi(f)=[0,v_f]$ with $v_e\le v_f$ whenever $e$ is decidable earlier than $f$ under monotone reveal. Hence $\Phi(e)\subseteq\Phi(f)$, and Alexandrov-consistency along a null boundary gives $\Phi(f)\subseteq J^-_g(\Phi(f))$ as in Proposition~\ref{prop:toy-minkowski}.
+\end{proof}
+
+\begin{remark}[Link to $\prec_{\alpha,\Delta}$]
+Proposition~\ref{prop:toy-minkowski-robust} is the boundary-embedded instantiation of the abstract empirical precedence relation $\prec_{\alpha,\Delta}$ (Definition~\ref{def:empirical-prec}): the role of $\tau^{(\alpha)}_e$ is played by the empirical boundary depth $\widehat v_e(\alpha)$, and the tolerance parameter records the uncertainty budget in estimating those depths.
+\end{remark}
+
+\begin{remark}[What the 1+1 toy theorem does (and does not) cover]\label{rem:toy-scope}
+Proposition~\ref{prop:toy-minkowski} applies to \emph{prefix events} under a monotone reveal of boundary data along a null segment. In empirical settings, one replaces the ideal minimal $v_e$ by $\widehat v_e(\alpha)$ (Definition~\ref{def:empirical-ve}), and Alexandrov-consistency becomes a falsifiable inequality up to a tolerance set by finite resolution and noise. The toy theorem does not claim that an arbitrary protocol precedence relation agrees with Lorentzian causality; rather, it isolates a minimal hypothesis package under which agreement is automatic.
 \end{remark}
 
 \subsubsection{A concrete route: boundary embedding and Alexandrov consistency}\label{sec:causality:alexandrov}

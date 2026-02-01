@@ -55,6 +55,334 @@ For $x\in X_m$, the \emph{fiber} over $x$ is the preimage
 
 The specific construction of $\Fold_m$ varies across contexts (e.g.\ Zeckendorf normalization, constrained decoding, or greedy rewriting), but the key structural point is that $\Fold_m$ is \emph{computable} and induces a finite partition of raw words into stable equivalence classes. The induced fiber cardinalities provide a ``degeneracy spectrum'' at resolution $m$.
 
+\begin{remark}[Two normalization regimes: finite-memory vs.\ global rewrites]\label{rem:fold-two-regimes}
+Many ``canonicalization'' narratives in the literature can be realized either as:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{finite-memory (sliding-block) stabilization}: a local rule $\Fold_m$ on length-$m$ blocks, inducing a shift-commuting sliding block factor $\Pi_m$ on sequences (Definition~\ref{def:Pi_m}); or
+  \item \textbf{global normalization}: a transducer/rewriting system that may require unbounded lookahead (e.g.\ normalization by carries/borrows, or repeated rewrite until convergence).
+\end{itemize}
+For auditability and for the fiber/entropy interfaces developed here, we primarily restrict to the finite-memory regime. When a global normalization is intended, it should be stated explicitly as additional structure (e.g.\ a finite-state transducer or a specified rewrite system) because it need not define a sliding block code on sequences.
+\end{remark}
+
+\subsubsection{What kind of map is a ``Fold''? Sliding-block codes, finite-state normalizers, and language projections}\label{sec:stabilization:fold-realizations}
+
+At the level of length-$m$ words, Definition~\ref{def:fold} only asserts a surjection $\Fold_m:\mathcal{A}^m\twoheadrightarrow X_m$. For dynamics and entropy, one must specify how these depth-$m$ operations extend to \emph{sequence-level} stabilization. This is also the right level at which to state invariance and robustness properties.
+
+\begin{definition}[Sequence-level stabilization as a factor map]\label{def:fold-factor-map}
+Let $\mathcal{A},\mathcal{B}$ be finite alphabets and let $\sigma$ denote the left shift on one-sided sequences.
+A \emph{stabilization factor} is a measurable map
+\[
+\Pi:\mathcal{A}^{\NN}\to \mathcal{B}^{\NN}
+\]
+that commutes with the shift, $\Pi\circ\sigma=\sigma\circ\Pi$.
+Its image $Y:=\Pi(\mathcal{A}^{\NN})$ is a shift space (a subshift) and $\Pi:\mathcal{A}^{\NN}\to Y$ is a factor morphism onto $Y$ in the standard symbolic-dynamical sense.
+\end{definition}
+
+\begin{remark}[Why this definition is conservative]
+Definition~\ref{def:fold-factor-map} deliberately separates \emph{what} the protocol asserts (a shift-commuting coarse-graining) from \emph{how} it is implemented. The fiber formalism in this section only requires that $\Pi$ is shift-commuting and computable/auditable from a finite protocol description; locality (sliding-block) is a sufficient, not necessary, condition.
+\end{remark}
+
+\begin{definition}[Three realizations of Fold-type stabilization]\label{def:fold-realizations}
+We will use ``Fold-type stabilization'' as an umbrella for any stabilization factor $\Pi$ that is specified by a finite protocol object of one of the following kinds:
+\begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=2pt]
+  \item \textbf{Sliding-block code (finite memory/anticipation).} $\Pi$ is induced by a local rule of fixed radius; the prototypical instance is $\Pi_m$ in Definition~\ref{def:Pi_m}.
+  \item \textbf{Finite-state normalization (transducer-induced).} $\Pi$ is realized by a deterministic finite-state transducer which reads a raw sequence and outputs a stabilized sequence, possibly with bounded delay. In this case $\Pi$ is a sofic factor after a standard state-augmentation/higher-block recoding.\cite{AlloucheShallit2003AutomaticSequences}
+  \item \textbf{Language projection to a canonical form (rewriting/normal form).} A rewrite system or constrained decoder is specified together with a deterministic \emph{normal-form} selection rule $\mathrm{nf}$ (e.g.\ greedy/shortlex). The fold is $\Pi(a):=\mathrm{nf}(a)$ applied along the scan stream. This case must be accompanied by a protocol statement of termination/confluence (or an explicit priority scheme) to ensure $\mathrm{nf}$ is well-defined.
+\end{enumerate}
+\end{definition}
+
+\begin{remark}[Zeckendorf as finite-state normalization]
+The Zeckendorf-based stabilization in \S\ref{sec:stabilization:zeckendorf} can be viewed as a canonical-form map driven by carry-like rewrite rules (eliminating forbidden $11$ patterns) and, equivalently, as a finite-state normalization on suitable encodings. The key point for this review is not the particular implementation, but that a finite protocol object exists, making the induced stabilized process and its fiber statistics auditable.
+\end{remark}
+
+\subsubsection{Finite-state transducers and when ``global'' normalization becomes a sliding-block factor}\label{sec:stabilization:fold-transducers}
+
+\begin{definition}[Deterministic finite-state transducer]\label{def:det-transducer}
+A \emph{deterministic finite-state transducer} (Mealy machine) from input alphabet $\mathcal{A}$ to output alphabet $\mathcal{B}$ is a tuple
+\[
+\mathsf{T}=(S,s_0,\delta,\omega),
+\]
+where $S$ is a finite state set, $s_0\in S$ an initial state, $\delta:S\times\mathcal{A}\to S$ a transition function, and $\omega:S\times\mathcal{A}\to \mathcal{B}^\ast$ an output function (possibly producing a finite word at each input step).
+Given an input sequence $a\in\mathcal{A}^{\NN}$, the machine produces a state path $s_{t+1}=\delta(s_t,a_t)$ and outputs $\omega(s_t,a_t)$ at time $t$; concatenating these outputs yields an output sequence in $\mathcal{B}^{\NN}$ provided the total output length grows linearly with input length and the output is synchronized.
+\cite{AlloucheShallit2003AutomaticSequences}
+\end{definition}
+
+\begin{definition}[Synchronous and bounded-delay transducers]\label{def:transducer-delay}
+A transducer $\mathsf{T}$ is \emph{synchronous} if $\omega(s,a)\in\mathcal{B}$ (exactly one output symbol per input symbol) for all $(s,a)$.
+More generally, it has \emph{bounded delay} $L$ if there exists $L\ge 0$ such that the output symbol at time $t$ is determined by $(s_t,a_t,a_{t+1},\dots,a_{t+L})$ (equivalently, by a finite augmentation of the state that stores at most $L$ future input symbols).
+\end{definition}
+
+\begin{proposition}[Bounded-delay transducer factors are sliding-block factors after state augmentation]\label{prop:transducer-to-slidingblock}
+Let $\Pi:\mathcal{A}^{\NN}\to\mathcal{B}^{\NN}$ be the map induced by a deterministic finite-state transducer with bounded delay $L$ (Definition~\ref{def:transducer-delay}). Then there exists a finite alphabet $\widehat{\mathcal{A}}$ and a topological conjugacy (a bijective sliding-block code) $\Gamma:\mathcal{A}^{\NN}\to \widehat{\mathcal{A}}^{\NN}$ such that
+\[
+\Pi=\widehat{\Pi}\circ \Gamma
+\]
+for some sliding-block code $\widehat{\Pi}:\widehat{\mathcal{A}}^{\NN}\to\mathcal{B}^{\NN}$ of finite radius.
+In particular, $\Pi$ is a stabilization factor in the sense of Definition~\ref{def:fold-factor-map}, and its image is sofic.
+\end{proposition}
+
+\begin{proof}
+Let $\mathsf{T}=(S,s_0,\delta,\omega)$ be the transducer, and assume bounded delay $L$ in the sense that the output symbol at time $t$ is a deterministic function of the finite tuple $(s_t,a_t,\dots,a_{t+L})$.
+Define an augmented alphabet
+\[
+\widehat{\mathcal{A}}:=S\times \mathcal{A}^{L+1},
+\]
+and define $\Gamma:\mathcal{A}^{\NN}\to\widehat{\mathcal{A}}^{\NN}$ by
+\[
+\Gamma(a)_t := \bigl(s_t(a),\,a_t,a_{t+1},\dots,a_{t+L}\bigr),
+\]
+where $s_t(a)$ is the (deterministic) state reached after reading the prefix $a_0^{t-1}$ (with initial state $s_0$).
+Then $\Gamma$ is a sliding-block code (finite memory $t\mapsto s_t$ is itself determined by a finite-state recursion) and is injective because $a_t$ is explicitly stored in $\Gamma(a)_t$.
+
+Now define $\widehat{\Pi}:\widehat{\mathcal{A}}^{\NN}\to\mathcal{B}^{\NN}$ by a $1$-block rule:
+\[
+\bigl(\widehat{\Pi}(\hat a)\bigr)_t := f\bigl(\hat a_t\bigr),
+\]
+where $f:S\times\mathcal{A}^{L+1}\to\mathcal{B}$ is the bounded-delay output function induced by $\mathsf{T}$.
+By construction, $\Pi=\widehat{\Pi}\circ\Gamma$. Since $\widehat{\Pi}$ is a $1$-block code, it is a sliding-block code of finite radius.
+The image of a shift of finite type under a sliding-block code is sofic, hence $\Pi(\mathcal{A}^{\NN})$ is sofic.
+\end{proof}
+
+\begin{remark}[What this buys you]
+Proposition~\ref{prop:transducer-to-slidingblock} is the precise sense in which a ``global normalization'' can still be treated within the finite-memory framework: if the protocol normalization is realizable by a finite-state device with bounded delay, then (after a standard state-augmentation) one is back in the sliding-block world, and all the fiber/entropy constructions in this section apply verbatim.
+\end{remark}
+
+\subsubsection{Zeckendorf normalization as a terminating rewrite system (and hence a canonical form)}\label{sec:stabilization:zeckendorf-rewrite}
+
+For Fibonacci/Zeckendorf normalization, a convenient formalization is via local value-preserving rewrites that eliminate forbidden adjacent ones.
+
+\begin{definition}[Zeckendorf carry rewrite]\label{def:zeckendorf-rewrite}
+Work with finite binary words $w\in\{0,1\}^m$ interpreted as truncated Fibonacci-base numerals (as in \S\ref{sec:stabilization:zeckendorf}). Consider the local rewrite rule on length-$3$ factors
+\[
+011\ \longrightarrow\ 100,
+\]
+applied to a word after prepending a single leading $0$ (to allow the rewrite at the most significant boundary).
+We call any finite sequence of such rewrites a \emph{carry normalization pass}.
+\end{definition}
+
+\begin{proposition}[Termination and normal forms]\label{prop:zeckendorf-termination}
+Starting from any finite word, repeated application of the rewrite in Definition~\ref{def:zeckendorf-rewrite} terminates after finitely many steps and yields a word with no adjacent ones. Moreover, the obtained normal form represents the same integer (with Fibonacci weights) as the original word.
+\end{proposition}
+
+\begin{proof}
+Write a word $w\in\{0,1\}^m$ in least-significant-first form as $w=(w_0,\dots,w_{m-1})$ and define its Fibonacci value by
+\[
+\mathrm{val}_F(w):=\sum_{k=0}^{m-1} w_k\,F_{k+2},
+\]
+so that digit $w_k$ carries weight $F_{k+2}$.
+Consider a rewrite acting on indices $(k,k+1,k+2)$ (after adding one leading $0$ if needed):
+if $(w_{k+2},w_{k+1},w_k)=(0,1,1)$, replace it by $(1,0,0)$.
+By the Fibonacci recursion $F_{k+4}=F_{k+3}+F_{k+2}$, this rewrite is value-preserving:
+\[
+0\cdot F_{k+4}+1\cdot F_{k+3}+1\cdot F_{k+2}
+\;=\;
+F_{k+3}+F_{k+2}
+\;=\;
+F_{k+4}
+\;=\;
+1\cdot F_{k+4}+0\cdot F_{k+3}+0\cdot F_{k+2}.
+\]
+Each rewrite strictly decreases the number of $1$'s in the word (from two $1$'s in $011$ to one $1$ in $100$), hence any sequence of rewrites must terminate after at most the initial number of $1$'s steps.
+
+It remains to see that a terminal word has no adjacent ones.
+Assume a (leading-zero-extended) word contains an adjacent pair $11$. Let $k$ be the \emph{largest} index such that $w_{k+1}=w_k=1$ (the most significant adjacent pair). By maximality, one must have $w_{k+2}=0$ (otherwise $w_{k+2}=1$ would create an even more significant adjacent pair), hence the factor $(w_{k+2},w_{k+1},w_k)$ equals $011$ and a rewrite is possible. Therefore, if no rewrite applies, there can be no adjacent pair $11$.
+
+Finally, since rewrites preserve $\mathrm{val}_F$, the terminal word is a no-adjacent-ones representation of the same integer; by Zeckendorf uniqueness (Proposition~\ref{prop:zeckendorf}) it is the Zeckendorf normal form under the chosen boundary/truncation convention.
+\end{proof}
+
+\begin{remark}[Uniqueness and protocol specification]
+The uniqueness of Zeckendorf representation (Proposition~\ref{prop:zeckendorf}) implies that any terminating, value-preserving normalization procedure that outputs a no-adjacent-ones word must agree with the Zeckendorf normal form. In practice, the protocol must still specify the depth-$m$ truncation convention (cf.\ \S\ref{sec:stabilization:zeckendorf}): different truncations correspond to different $\theta\in\Theta_{\Fold}$ and hence different (but quantitatively comparable) fold rules.
+\end{remark}
+
+\begin{remark}[Finite-state implementability]
+While the rewrite viewpoint highlights canonical-form structure, it is also known that normalization in many numeration systems (including Fibonacci/Ostrowski settings) can be implemented by finite-state transducers on suitable encodings.\cite{AlloucheShallit2003AutomaticSequences}
+When this bounded-delay property holds, Proposition~\ref{prop:transducer-to-slidingblock} justifies treating Zeckendorf-type canonicalization as a sliding-block factor after state augmentation, making fiber statistics and stabilized entropy rates fully auditable in the same way as the purely local $\Pi_m$ construction.
+\end{remark}
+
+\subsubsection{Invariance: what is preserved by stabilization, and under what hypotheses}\label{sec:stabilization:fold-invariance}
+
+\begin{proposition}[Transport of cylinder probabilities and block frequencies]\label{prop:fold-cylinder-transport}
+Let $\Pi:\mathcal{A}^{\NN}\to \mathcal{B}^{\NN}$ be a stabilization factor in the sense of Definition~\ref{def:fold-factor-map}. If $\mu$ is a shift-invariant probability measure on $\mathcal{A}^{\NN}$ and $\nu:=\Pi_\ast\mu$ is the pushforward measure on $\mathcal{B}^{\NN}$, then $\nu$ is shift-invariant and for every word $b_{0:t-1}\in\mathcal{B}^t$ one has
+\[
+\nu\bigl([b_{0:t-1}]\bigr)=\mu\bigl(\Pi^{-1}([b_{0:t-1}])\bigr),
+\]
+where $[b_{0:t-1}]$ denotes the length-$t$ cylinder set in $\mathcal{B}^{\NN}$.
+If moreover $\mu$ is ergodic, then for $\mu$-almost every raw realization $A$ the empirical block frequencies of the stabilized realization $X:=\Pi(A)$ converge to $\nu([b_{0:t-1}])$ for every fixed block $b_{0:t-1}$.
+\end{proposition}
+
+\begin{remark}[Frequency ``preservation'' is generally a pushforward statement]
+Proposition~\ref{prop:fold-cylinder-transport} is the precise sense in which stabilization preserves frequencies: it transports them through a factor map. In general, stabilization does \emph{not} preserve raw symbol frequencies (or balance) unless additional structure is assumed on $\Pi$ (e.g.\ a relabeling or a uniform morphism).
+\end{remark}
+
+\begin{definition}[Balance]\label{def:fold-balance}
+A one-sided sequence $x\in\{0,1\}^{\NN}$ is \emph{$C$-balanced} if for every $n\ge 1$ and every pair of length-$n$ factors $u,v$ of $x$,
+\[
+\bigl||u|_1-|v|_1\bigr|\le C,
+\]
+where $|u|_1$ is the number of symbols $1$ in $u$.
+A subshift $Z\subset\{0,1\}^{\NN}$ is \emph{$C$-balanced} if every $x\in Z$ is $C$-balanced.
+\end{definition}
+
+\begin{proposition}[Balance is invariant under relabeling]\label{prop:fold-balance-relabel}
+Let $\psi:\{0,1\}\to\{0,1\}$ be a bijection (a letter relabeling) and extend it coordinatewise to $\Psi:\{0,1\}^{\NN}\to\{0,1\}^{\NN}$. Then $\Psi$ is a $1$-block code, and a sequence (or subshift) is $C$-balanced if and only if its relabeling under $\Psi$ is $C$-balanced.
+\end{proposition}
+
+\begin{remark}[Balance is not invariant under general folds]\label{rem:fold-balance-not-invariant}
+Outside the relabeling (or similarly constrained) setting, balance is \emph{not} a generic invariant of stabilization: a general sliding-block code can merge or split symbols in a way that changes the balance constant or destroys balance entirely. Consequently, when ``balance'' is claimed as a stabilized invariant (as it is for Sturmian codings), this should be stated as a property of the \emph{specific} factor (e.g.\ a known Sturmian factor) rather than of Fold-type stabilization in general.
+\end{remark}
+
+\subsubsection{A tractable invariant subclass: uniform morphisms (constant-length substitutions)}\label{sec:stabilization:fold-uniform}
+
+One common protocol situation is that stabilization applies a \emph{uniform} (constant-length) substitution/morphism as a canonicalization step, or that a more general fold becomes uniform after a finite recoding. In this case both frequency transport and balance distortion admit explicit, checkable bounds.\cite{Lothaire2002}
+
+\begin{definition}[Uniform morphism and induced sequence map]\label{def:uniform-morphism}
+Let $\phi:\mathcal{A}^\ast\to\mathcal{B}^\ast$ be a monoid morphism (a substitution) and assume it is \emph{$\ell$-uniform}, i.e.\ $|\phi(a)|=\ell$ for all letters $a\in\mathcal{A}$.
+Then $\phi$ extends canonically to a map on one-sided sequences $\phi:\mathcal{A}^{\NN}\to\mathcal{B}^{\NN}$ by concatenation.
+\end{definition}
+
+\begin{proposition}[Symbol-frequency transport under $\ell$-uniform morphisms]\label{prop:uniform-frequency}
+Let $\mathcal{A},\mathcal{B}$ be finite alphabets and let $\phi:\mathcal{A}^{\NN}\to\mathcal{B}^{\NN}$ be induced by an $\ell$-uniform morphism (Definition~\ref{def:uniform-morphism}). Suppose $x\in\mathcal{A}^{\NN}$ has letter frequencies $p_a$ (i.e.\ the empirical frequency of each $a\in\mathcal{A}$ exists). Then $\phi(x)$ has letter frequencies $q_b$ given by
+\[
+q_b=\frac{1}{\ell}\sum_{a\in\mathcal{A}} p_a\,|\phi(a)|_b,
+\]
+where $|\phi(a)|_b$ denotes the number of occurrences of letter $b$ in the word $\phi(a)$.
+Equivalently, if $M$ is the substitution incidence matrix $M_{b,a}:=|\phi(a)|_b$, then $q=\frac{1}{\ell}Mp$.
+\end{proposition}
+
+\begin{proposition}[Balance distortion under uniform morphisms]\label{prop:uniform-balance}
+Let $\mathcal{A}=\{0,1\}$ and let $x\in\mathcal{A}^{\NN}$ be $C$-balanced (Definition~\ref{def:fold-balance}).
+Let $\phi:\mathcal{A}^{\NN}\to\mathcal{B}^{\NN}$ be induced by an $\ell$-uniform morphism.
+Then $\phi(x)$ is $C'$-balanced with
+\[
+C'\ \le\ \ell\,C\ +\ 2\ell.
+\]
+\end{proposition}
+
+\begin{proof}
+Fix two length-$n$ factors $U,V$ of $\phi(x)$.
+Each factor of $\phi(x)$ can intersect at most two \emph{partial} substituted blocks (one at the left boundary and one at the right boundary); the remaining interior is a concatenation of whole images $\phi(a)$ of consecutive letters from $x$. Therefore one can write
+\[
+U = u_{\mathrm{L}}\ \phi(u)\ u_{\mathrm{R}},\qquad
+V = v_{\mathrm{L}}\ \phi(v)\ v_{\mathrm{R}},
+\]
+where $u,v$ are (possibly empty) factors of $x$, and the boundary fragments satisfy $|u_{\mathrm{L}}|,|u_{\mathrm{R}}|,|v_{\mathrm{L}}|,|v_{\mathrm{R}}|\le \ell$.
+Consequently, the discrepancy in the number of $1$'s satisfies
+\[
+\bigl||U|_1-|V|_1\bigr|
+\le
+\bigl||\phi(u)|_1-|\phi(v)|_1\bigr| \ +\ 2\ell,
+\]
+since boundary fragments contribute at most $\ell$ ones each in worst case.
+Now $|\phi(u)|_1$ depends only on the number of $1$'s and $0$'s in $u$:
+writing $u$ as a word over $\{0,1\}$,
+\[
+|\phi(u)|_1 = |u|_0\,|\phi(0)|_1 + |u|_1\,|\phi(1)|_1.
+\]
+Hence
+\[
+\bigl||\phi(u)|_1-|\phi(v)|_1\bigr|
+\le
+|\,|u|_1-|v|_1\,|\cdot \bigl||\phi(1)|_1-|\phi(0)|_1\bigr|
+\le
+\ell\,|\,|u|_1-|v|_1\,|,
+\]
+because $||\phi(1)|_1-|\phi(0)|_1|\le \ell$.
+Finally, since $x$ is $C$-balanced, any two equal-length factors $u,v$ satisfy $|\,|u|_1-|v|_1\,|\le C$; if $|u|\neq |v|$, one can trim/pad by at most one letter (absorbed into the $2\ell$ boundary term) without increasing the bound beyond $2\ell$.
+Combining these bounds yields $\bigl||U|_1-|V|_1\bigr|\le \ell C + 2\ell$.
+\end{proof}
+
+\subsubsection{Stability: small parameter changes and distributional robustness}\label{sec:stabilization:fold-stability-theta}
+
+\begin{proposition}[Block-law stability under small fold-parameter perturbations]\label{prop:fold-blocklaw-stability}
+Fix $m\ge 1$ and let $(\Fold_{m,\theta})_{\theta\in\Theta_{\Fold}}$ be a parametric family as in Definition~\ref{def:fold-parametric}. Let $A\in\mathcal{A}^{\NN}$ be a stationary raw process and define stabilized processes
+\[
+X^{(\theta)}:=\Pi_{m,\theta}(A),\qquad X^{(\theta')}:=\Pi_{m,\theta'}(A),
+\]
+where $\Pi_{m,\theta}$ is the sliding-block factor induced by $\Fold_{m,\theta}$ (Definition~\ref{def:Pi_m} with $\Fold_m$ replaced by $\Fold_{m,\theta}$).
+Define the one-step stabilized mismatch rate
+\[
+\varepsilon_{\theta,\theta'}:=\mathbb{P}\bigl(\Fold_{m,\theta}(A_0^{m-1})\neq \Fold_{m,\theta'}(A_0^{m-1})\bigr)=\mathbb{P}\bigl(A_0^{m-1}\in D_m(\theta,\theta')\bigr).
+\]
+Then for every $t\ge 1$ the total variation distance between the stabilized $t$-block laws satisfies
+\[
+\bigl\|\mathcal{L}(X^{(\theta)}_{0:t-1})-\mathcal{L}(X^{(\theta')}_{0:t-1})\bigr\|_{\mathrm{TV}}\ \le\ t\,\varepsilon_{\theta,\theta'}.
+\]
+\end{proposition}
+
+\begin{proof}
+Couple $X^{(\theta)}$ and $X^{(\theta')}$ by using the same raw realization $A$. Then
+\[
+\mathbb{P}\bigl(X^{(\theta)}_{0:t-1}\neq X^{(\theta')}_{0:t-1}\bigr)
+\le \sum_{s=0}^{t-1}\mathbb{P}\bigl(\Fold_{m,\theta}(A_s^{s+m-1})\neq \Fold_{m,\theta'}(A_s^{s+m-1})\bigr)
+=t\,\varepsilon_{\theta,\theta'},
+\]
+where stationarity makes the summands equal. The total-variation bound follows from the standard coupling inequality.
+\end{proof}
+
+\begin{remark}[Entropy/time error bars from $\varepsilon_{\theta,\theta'}$]
+Once $\varepsilon_{\theta,\theta'}$ is controlled (analytically via a bound on $D_m(\theta,\theta')$ or empirically), it can be propagated to entropy-rate and information-time error bars using the mismatch-rate bounds in Section~\ref{sec:info-time:stability-bounds} (Proposition~\ref{prop:entropy-continuity-mismatch} and Corollary~\ref{cor:tau-stability-finite-t}). This is the protocol-facing route from ``small parameter change'' to quantitatively controlled uncertainty on stabilized observables.
+\end{remark}
+
+\begin{definition}[Parametric stabilization family and disagreement set]\label{def:fold-parametric}
+Let $\Theta_{\Fold}$ be a parameter space (e.g.\ truncation convention, grammar choice, rewrite priority). A \emph{parametric stabilization family} at depth $m$ is a family of maps
+\[
+\Fold_{m,\theta}:\mathcal{A}^m\twoheadrightarrow X_m,\qquad \theta\in\Theta_{\Fold}.
+\]
+For two parameter values $\theta,\theta'$, define the local disagreement set
+\[
+D_m(\theta,\theta'):=\{w\in\mathcal{A}^m:\ \Fold_{m,\theta}(w)\neq \Fold_{m,\theta'}(w)\}.
+\]
+\end{definition}
+
+\begin{proposition}[Continuity of the induced sliding-block factor]\label{prop:Pi-continuous}
+Fix $m\ge 1$ and a stabilization rule $\Fold_m:\mathcal{A}^m\to X_m$. Then the induced map $\Pi_m:\mathcal{A}^{\NN}\to X_m^{\NN}$ (Definition~\ref{def:Pi_m}) is continuous in the product topology and commutes with the shift (Proposition~\ref{prop:Pi_m_factor}). In particular, $\Pi_m$ is a (continuous) factor map onto its image $Y_m$ (Corollary~\ref{cor:Pi_m_onto_Ym}).
+\end{proposition}
+
+\begin{proposition}[Lipschitz-type parameter stability via local disagreement]\label{prop:fold-param-lipschitz}
+Let $\theta,\theta'\in\Theta_{\Fold}$ and let $W\in\mathcal{A}^m$ be a random raw word with law $\mathcal{L}(W)$. Then
+\[
+\mathbb{P}\bigl(\Fold_{m,\theta}(W)\neq \Fold_{m,\theta'}(W)\bigr)=\mathbb{P}\bigl(W\in D_m(\theta,\theta')\bigr).
+\]
+Consequently, if one has a bound of the form $\mathbb{P}(W\in D_m(\theta,\theta'))\le L\,d_{\Fold}(\theta,\theta')$ for a chosen metric $d_{\Fold}$ on $\Theta_{\Fold}$, then the induced stabilized-type mismatch probability is Lipschitz in the parameter distance. This provides a protocol-facing stability coefficient for how fibers and type statistics change under parameter perturbations.
+\end{proposition}
+
+\begin{remark}[From parameter mismatch to entropy/time error bars]\label{rem:fold-param-to-time}
+The probability $\varepsilon_{\theta,\theta'}:=\mathbb{P}(\Fold_{m,\theta}(W)\neq \Fold_{m,\theta'}(W))$ is the natural coupling mismatch rate induced by a parameter change at fixed depth $m$. Once estimated (empirically or by a model-based bound on $D_m(\theta,\theta')$), it can be propagated to entropy/time error bars using the general mismatch-rate bounds in Section~\ref{sec:info-time:stability-bounds} (Proposition~\ref{prop:entropy-continuity-mismatch} and Corollary~\ref{cor:tau-stability-finite-t}).
+\end{remark}
+
+\begin{definition}[Fold-induced equivalence relation]\label{def:fold-equivalence}
+Define an equivalence relation $\sim_m$ on $\mathcal{A}^m$ by
+\[
+w\sim_m w' \quad:\Longleftrightarrow\quad \Fold_m(w)=\Fold_m(w').
+\]
+Equivalently, the fibers $\mathcal{F}_m(x)$ are precisely the equivalence classes of $\sim_m$ indexed by $x\in X_m$.
+\end{definition}
+
+\begin{proposition}[Fibers form a canonical partition]\label{prop:fiber-partition}
+The relation $\sim_m$ in Definition~\ref{def:fold-equivalence} is an equivalence relation, and the family $\{\mathcal{F}_m(x)\}_{x\in X_m}$ is a partition of $\mathcal{A}^m$. In particular,
+\[
+\bigsqcup_{x\in X_m}\mathcal{F}_m(x)=\mathcal{A}^m,
+\qquad
+\sum_{x\in X_m}|\mathcal{F}_m(x)|=|\mathcal{A}^m|=|\mathcal{A}|^m.
+\]
+\end{proposition}
+
+\begin{definition}[Degeneracy multiset (fold invariant)]\label{def:degeneracy-multiset}
+The \emph{degeneracy multiset} (or \emph{degeneracy spectrum}) of a depth-$m$ stabilization rule $\Fold_m$ is
+\[
+\mathcal{D}_m(\Fold):=\Bigl\{|\mathcal{F}_m(x)|:\ x\in X_m\Bigr\}
+\]
+viewed as a multiset (i.e.\ counting multiplicities, not ordering).
+\end{definition}
+
+\begin{proposition}[Degeneracy multiset is invariant under relabeling]\label{prop:degeneracy-relabel}
+Let $\Fold_m:\mathcal{A}^m\twoheadrightarrow X_m$ and $\Fold'_m:\mathcal{A}^m\twoheadrightarrow X'_m$ be two stabilization maps. If there exists a bijection $\psi:X_m\to X'_m$ such that $\Fold'_m=\psi\circ \Fold_m$, then for every $x\in X_m$,
+\[
+|\mathcal{F}'_m(\psi(x))|=|\mathcal{F}_m(x)|,
+\]
+and hence $\mathcal{D}_m(\Fold)=\mathcal{D}_m(\Fold')$ as multisets.
+\end{proposition}
+
 \subsubsection{Formal properties: retractions and idempotence}
 
 \begin{definition}[Retraction (normal-form) property]\label{def:fold-retraction}
@@ -95,6 +423,25 @@ For the Zeckendorf-based construction, $\Fold_m$ is a retraction (Definition~\re
 \begin{remark}[Stability under small protocol perturbations is model-dependent]\label{rem:fold-stability}
 Statements of the form ``small protocol perturbations primarily redistribute mass within fibers'' require an explicit perturbation model at the raw-word level (e.g.\ bit-flip noise, or window shifts that affect only boundary events). For deterministic normalization rules such as Zeckendorf $\Fold_m$, stability holds away from carry/borrow boundaries but can fail near them via cascading rewrites. A rigorous stability claim therefore takes the form of a bound on $\mathbb{P}(\Fold_m(W)\neq \Fold_m(\widetilde W))$ under a specified noise model for raw words $W$ and $\widetilde W$.
 \end{remark}
+
+\begin{definition}[Protocol perturbation kernel and type-instability]\label{def:fold-perturbation}
+Fix a stabilization rule $\Fold_m:\mathcal{A}^m\to X_m$.
+A \emph{protocol perturbation model} at depth $m$ is a Markov kernel $Q_\delta(\cdot\,|\,w)$ on $\mathcal{A}^m$ indexed by a perturbation scale $\delta$ (noise level, window shift size, etc.). Given a distribution $\mathcal{L}(W)$ on raw words, define the perturbed word $\widetilde W\sim Q_\delta(\cdot\,|\,W)$ and the corresponding \emph{type-instability probability}
+\[
+s_m(\delta):=\mathbb{P}\bigl(\Fold_m(W)\neq \Fold_m(\widetilde W)\bigr).
+\]
+\end{definition}
+
+\begin{proposition}[Instability is bounded by raw mismatch]\label{prop:fold-instability-mismatch}
+In the setting of Definition~\ref{def:fold-perturbation}, for any coupling of $(W,\widetilde W)$ one has
+\[
+s_m(\delta)\le \mathbb{P}(W\neq \widetilde W).
+\]
+Moreover, if one equips $\mathcal{A}^m$ with the Hamming distance $d_H$ (number of differing coordinates), then
+\[
+\mathbb{P}(W\neq \widetilde W)\le \mathbb{E}\bigl[d_H(W,\widetilde W)\bigr].
+\]
+\end{proposition}
 
 \begin{proposition}[A universal (coarse) noise stability bound]\label{prop:fold-noise-bound}
 Let $W\in\mathcal{A}^m$ be any random raw word and let $\widetilde W$ be obtained from $W$ by independent symbol corruption at rate $p$ (e.g.\ for $\mathcal{A}=\{0,1\}$, independent bit flips at rate $p$). Then for any deterministic stabilization map $\Fold_m$,
@@ -170,6 +517,53 @@ Fix $m\ge 1$ and a stabilization rule $\Fold_m:\mathcal{A}^m\twoheadrightarrow X
 where $a_t a_{t+1}\cdots a_{t+m-1}\in\mathcal{A}^m$ denotes the length-$m$ block starting at time $t$.
 \end{definition}
 
+\begin{definition}[Stabilized image subshift]\label{def:Ym}
+The \emph{stabilized image} (at depth $m$) is the subset
+\[
+Y_m := \Pi_m(\mathcal{A}^{\NN}) \subseteq X_m^{\NN}.
+\]
+It is the set of all stabilized sequences that can actually occur under the chosen sliding-block rule; in general $Y_m$ may be a proper subset of the full shift $X_m^{\NN}$ because of overlap constraints between consecutive length-$m$ blocks.
+\end{definition}
+
+\subsubsection{A precise morphism statement: $Y_m$ as a sofic shift}\label{sec:stabilization:sofic}
+
+The definition of $\Pi_m$ is local in the raw symbols, but its image $Y_m$ can have nontrivial global constraints. The clean symbolic-dynamical way to make these constraints explicit is to present $Y_m$ by a finite labeled graph (a sofic shift presentation).
+
+\begin{definition}[Labeled $(m\!-\!1)$-state presentation of stabilization]\label{def:labeled-presentation}
+Fix $m\ge 2$ and $\Fold_m:\mathcal{A}^m\twoheadrightarrow X_m$.
+Define a directed graph $\mathcal{G}_m=(V_m,E_m)$ with
+\[
+V_m:=\mathcal{A}^{m-1},
+\]
+and one directed edge for each raw length-$m$ word $w=w_0w_1\cdots w_{m-1}\in\mathcal{A}^m$:
+\[
+e(w):\ (w_0\cdots w_{m-2})\longrightarrow (w_1\cdots w_{m-1}).
+\]
+Equip each edge with the label
+\[
+\lambda(e(w)):=\Fold_m(w)\in X_m.
+\]
+\end{definition}
+
+\begin{proposition}[The stabilized image is a sofic shift]\label{prop:Ym-sofic}
+Let $m\ge 2$ and let $\mathcal{G}_m$ be the labeled graph from Definition~\ref{def:labeled-presentation}. Then $Y_m\subseteq X_m^{\NN}$ is exactly the set of label sequences read along infinite directed paths in $\mathcal{G}_m$. In particular, $Y_m$ is a sofic shift (a shift space presented by a finite labeled graph), and $\Pi_m:\mathcal{A}^{\NN}\to Y_m$ is a factor morphism onto this sofic image.
+\end{proposition}
+
+\begin{proof}
+Given a raw sequence $a\in\mathcal{A}^{\NN}$, define the state path $v_t:=a_ta_{t+1}\cdots a_{t+m-2}\in V_m$ for $t\ge 0$. Consecutive states satisfy $v_t\to v_{t+1}$ via the edge $e(a_t\cdots a_{t+m-1})\in E_m$. The label on that edge is
+\[
+\lambda\bigl(e(a_t\cdots a_{t+m-1})\bigr)=\Fold_m(a_t\cdots a_{t+m-1})=(\Pi_m(a))_t,
+\]
+so the stabilized output $\Pi_m(a)$ is the label sequence along the corresponding path.
+
+Conversely, any infinite path in $\mathcal{G}_m$ specifies a consistent sequence of overlapping raw blocks, hence determines (by concatenation of the last symbols) a raw sequence $a\in\mathcal{A}^{\NN}$ whose associated edge labels reproduce the given label sequence. Therefore the set of all attainable stabilized sequences is exactly the set of all label sequences read along paths in $\mathcal{G}_m$, i.e.\ $Y_m$.
+\end{proof}
+
+\begin{remark}[What the fold transition graph captures (and what it may miss)]\label{rem:fold-graph-vs-sofic}
+Definition~\ref{def:fold-graph} records which \emph{adjacent} stabilized symbols can occur: $x\to y$ if there exists at least one raw overlap witnessing the transition.
+This yields a necessary one-step constraint on $Y_m$ (every $y\in Y_m$ must follow allowed edges), but in general it need not be sufficient: a sequence can satisfy all pairwise allowed transitions while still failing to lift to a globally consistent raw path. Proposition~\ref{prop:Ym-sofic} provides the exact constraint set via the labeled presentation $\mathcal{G}_m$.
+\end{remark}
+
 \begin{proposition}[Shift-commuting factor property]\label{prop:Pi_m_factor}
 Let $\sigma$ be the left shift on $\mathcal{A}^{\NN}$ and on $X_m^{\NN}$. Then $\Pi_m$ is a (measurable) sliding block code and satisfies
 \[
@@ -177,6 +571,116 @@ Let $\sigma$ be the left shift on $\mathcal{A}^{\NN}$ and on $X_m^{\NN}$. Then $
 \]
 In particular, if $(A_t)_{t\ge 0}$ is a stationary process on $\mathcal{A}$, then the stabilized process $X_t:=(\Pi_m(A))_t=\Fold_m(A_t^{t+m-1})$ is stationary on the finite alphabet $X_m$.
 \end{proposition}
+
+\begin{corollary}[Exact stabilization morphism onto the image]\label{cor:Pi_m_onto_Ym}
+With $Y_m$ as in Definition~\ref{def:Ym}, the map $\Pi_m:\mathcal{A}^{\NN}\to Y_m$ is a surjective, shift-commuting sliding block code. In particular, $\Pi_m$ is a factor morphism \emph{onto its image} in the standard symbolic-dynamical sense.
+\end{corollary}
+
+\subsubsection{Record-length-dependent multiplicity under stabilization}\label{sec:stabilization:record-length}
+Reviewers often ask how ``fiber cardinalities'' depend on the \emph{record length} $t$. The correct object is not the single-block fiber $|\mathcal{F}_m(x)|$ (which is defined at fixed word length $m$), but the number of raw prefixes compatible with a given stabilized prefix under the sequence-level factor $\Pi_m$.
+
+\begin{definition}[Prefix-level preimage multiplicity]\label{def:prefix-preimage}
+Let $A\in\mathcal{A}^{\NN}$ be a raw sequence and $X=\Pi_m(A)\in X_m^{\NN}$ its stabilized image. For a stabilized prefix $x_{0:t-1}\in X_m^t$, define the set of compatible raw prefixes
+\[
+\mathcal{P}_{m,t}(x_{0:t-1})
+:=\Bigl\{a_{0:t+m-2}\in\mathcal{A}^{t+m-1}:\ \Pi_m(a)_{0:t-1}=x_{0:t-1}\Bigr\},
+\]
+and its cardinality
+\[
+M_{m}(t;x_{0:t-1}) := \bigl|\mathcal{P}_{m,t}(x_{0:t-1})\bigr|.
+\]
+\end{definition}
+
+\begin{definition}[Label-constrained path count matrices]\label{def:label-matrices}
+Assume $m\ge 2$ and use the vertex set $V_m=\mathcal{A}^{m-1}$ from Definition~\ref{def:labeled-presentation}. For each stabilized symbol $x\in X_m$, define a $|V_m|\times |V_m|$ matrix $A_x$ by
+\[
+(A_x)_{uv} :=
+\begin{cases}
+1,& \text{if there exists }w\in\mathcal{A}^m \text{ with }u=w_0\cdots w_{m-2},\ v=w_1\cdots w_{m-1},\ \Fold_m(w)=x,\\
+0,& \text{otherwise.}
+\end{cases}
+\]
+\end{definition}
+
+\begin{definition}[Raw overlap (de Bruijn) adjacency matrix]\label{def:debruijn-matrix}
+Assume $m\ge 2$ and $V_m=\mathcal{A}^{m-1}$. Define the $|V_m|\times |V_m|$ matrix $B$ by
+\[
+B_{uv}:=
+\begin{cases}
+1,& \text{if there exists }w\in\mathcal{A}^m \text{ with }u=w_0\cdots w_{m-2},\ v=w_1\cdots w_{m-1},\\
+0,& \text{otherwise.}
+\end{cases}
+\]
+Equivalently, $B$ is the adjacency matrix of the full $(m\!-\!1)$-order de Bruijn overlap graph on $\mathcal{A}$.
+\end{definition}
+
+\begin{proposition}[Edge determinism and partition by stabilized labels]\label{prop:label-partition}
+Assume $m\ge 2$. For every ordered pair $(u,v)\in V_m\times V_m$ with $B_{uv}=1$, there exists a \emph{unique} word $w\in\mathcal{A}^m$ such that $u=w_0\cdots w_{m-2}$ and $v=w_1\cdots w_{m-1}$. Consequently, there exists a unique stabilized label $x=\Fold_m(w)\in X_m$ such that $(A_x)_{uv}=1$, and one has the exact edge-partition identity
+\[
+\sum_{x\in X_m} A_x = B,
+\qquad
+\text{and}\qquad
+(A_x)_{uv}(A_{x'})_{uv}=0\ \text{ for }x\neq x'.
+\]
+\end{proposition}
+
+\begin{proposition}[Exact lift count as a labeled path count]\label{prop:preimage-as-pathcount}
+Assume $m\ge 2$. For any stabilized prefix $x_{0:t-1}\in X_m^t$, the preimage multiplicity in Definition~\ref{def:prefix-preimage} equals the number of length-$t$ directed paths in the labeled presentation $\mathcal{G}_m$ whose label sequence is exactly $x_{0:t-1}$. Equivalently, with $A_{x}$ as in Definition~\ref{def:label-matrices},
+\[
+M_m(t;x_{0:t-1})=\mathbf{1}^\top A_{x_0}A_{x_1}\cdots A_{x_{t-1}}\mathbf{1},
+\]
+where $\mathbf{1}$ is the all-ones vector in $\RR^{|V_m|}$.
+\end{proposition}
+
+\begin{proof}
+Each raw prefix $a_{0:t+m-2}\in\mathcal{A}^{t+m-1}$ determines a unique vertex path $(v_0,\dots,v_t)$ in $V_m$ by $v_i=a_i\cdots a_{i+m-2}$ and a corresponding edge sequence of length $t$ given by the overlapping blocks $a_i\cdots a_{i+m-1}$. The stabilized prefix constraint $\Pi_m(a)_{0:t-1}=x_{0:t-1}$ is exactly the requirement that the edge labels equal $x_0,\dots,x_{t-1}$, i.e.\ that the vertex path uses only edges labeled by the prescribed symbols in order.
+
+In matrix form, $(A_{x_i})_{v_i v_{i+1}}=1$ records the existence of at least one raw block realizing the overlap $v_i\to v_{i+1}$ with label $x_i$. Summing over all possible start/end states produces the total number of consistent vertex paths, which equals the number of consistent raw prefixes. This yields the stated equality.
+\end{proof}
+
+\begin{remark}[Computability and why this matters for ``time fibers'']\label{rem:pathcount-computable}
+Proposition~\ref{prop:preimage-as-pathcount} turns a protocol-defined multiplicity into a concrete finite computation: for each word $x_{0:t-1}$ one can compute $M_m(t;x_{0:t-1})$ by multiplying the sparse $0$--$1$ matrices $A_{x_i}$. This gives an auditable route from the stabilization grammar to growth rates and to conditional multiplicities, and it makes precise how ``unresolved degrees of freedom'' accumulate across time under a fixed stabilization depth $m$ (cf.\ Proposition~\ref{prop:preimage-growth}).
+\end{remark}
+
+\begin{proposition}[A universal exponential upper bound for lift counts]\label{prop:liftcount-upper-bound}
+Assume $m\ge 2$. For every stabilized prefix $x_{0:t-1}\in X_m^t$ one has
+\[
+M_m(t;x_{0:t-1})\le \mathbf{1}^\top B^t \mathbf{1}\le |V_m|\,\rho(B)^t,
+\]
+where $B$ is the raw overlap matrix from Definition~\ref{def:debruijn-matrix} and $\rho(B)$ denotes its spectral radius.
+In particular, for the full overlap graph on $\mathcal{A}$ one has $\rho(B)=|\mathcal{A}|$, hence
+\[
+M_m(t;x_{0:t-1})\le |V_m|\,|\mathcal{A}|^t=|\mathcal{A}|^{t+m-1}.
+\]
+\end{proposition}
+
+\begin{proof}
+Since each $A_x$ is a $0$--$1$ submatrix of $B$ and the entries are nonnegative, one has entrywise
+\[
+A_{x_0}A_{x_1}\cdots A_{x_{t-1}} \ \le\ B^t,
+\]
+hence $\mathbf{1}^\top A_{x_0}\cdots A_{x_{t-1}}\mathbf{1}\le \mathbf{1}^\top B^t\mathbf{1}$. The spectral-radius bound follows from the operator norm inequality $\mathbf{1}^\top B^t\mathbf{1}\le \|\mathbf{1}\|_2^2\,\|B^t\|_2 \le |V_m|\,\rho(B)^t$ for nonnegative matrices.
+For the de Bruijn overlap graph, each vertex has out-degree $|\mathcal{A}|$ and $B$ is $|\mathcal{A}|$-regular, hence $\rho(B)=|\mathcal{A}|$.
+\end{proof}
+
+\begin{proposition}[Conditional entropy rate and typical preimage growth]\label{prop:preimage-growth}
+Let $(A_t)_{t\ge 0}$ be a stationary ergodic process on a finite alphabet $\mathcal{A}$, and let $X=\Pi_m(A)$ be its stabilized factor process (a sliding-block factor). Then the conditional entropy rate
+\[
+h(A\mid X):=\lim_{t\to\infty}\frac{1}{t}H(A_0^{t-1}\mid X_0^{t-1})
+\]
+exists. Moreover, one has the identity $h(A\mid X)=h(A)-h(X)$ whenever $X$ is a factor of $A$ in the sense of stationary processes.
+
+In addition, the conditional asymptotic equipartition principle implies that for every $\delta>0$, for sufficiently large $t$, with probability at least $1-\delta$ over the joint realization,
+\[
+2^{-t(h(A\mid X)+\delta)}\ \le\ \mathbb{P}\bigl(A_0^{t-1}\mid X_0^{t-1}\bigr)\ \le\ 2^{-t(h(A\mid X)-\delta)}.
+\]
+Equivalently, conditional typical sets of raw prefixes given a stabilized prefix have effective cardinality exponential in $t$ with exponent $h(A\mid X)$ (up to $o(t)$ corrections).
+\cite{CoverThomas2006}
+\end{proposition}
+
+\begin{remark}[Interpretation at the protocol layer]
+Proposition~\ref{prop:preimage-growth} makes precise how ``unresolved degrees of freedom'' accumulate with record length: the exponential growth rate of compatible raw micro-histories for a given stabilized history is governed by the \emph{conditional} entropy rate $h(A\mid X)$, i.e.\ by the entropy-rate drop across the stabilization factor. In particular, stabilization can reduce the observer's effective entropy rate (cf.\ Corollary~\ref{cor:tau-blockcode}), and the amount reduced is exactly the rate at which multiplicity in the preimage grows. This is the clean sense in which fiber multiplicity ``scales with record length'' under a fixed-depth stabilization rule.\cite{CoverThomas2006}
+\end{remark}
 
 \begin{definition}[Fold transition graph]\label{def:fold-graph}
 The \emph{fold transition graph} at depth $m$ is the directed graph $G_m=(X_m,E_m)$ with vertex set $X_m$ and an edge $x\to y$ if there exists a raw word $w\in\mathcal{A}^{m+1}$ such that

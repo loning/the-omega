@@ -54,6 +54,21 @@ Assume the SMB limit exists and is positive for the chosen protocol. Define the 
 Under SMB hypotheses, $\tau(t)$ grows asymptotically linearly with slope $h_\mu(T,\mathcal{P})$ for $\mu$-typical internal states.
 \end{definition}
 
+\begin{proposition}[Monotonicity of $\tau(t)$ under refinement]\label{prop:tau-monotone}
+For any realized record prefix, the cylinders are nested
+\[
+C(a_{0:t})\subseteq C(a_{0:t-1}) \qquad (t\ge 1),
+\]
+and hence $\mu(C(a_{0:t}))\le \mu(C(a_{0:t-1}))$. Consequently, the refinement functional is monotone:
+\[
+\tau(t+1)\ge \tau(t)\qquad\text{for all }t\ge 1.
+\]
+\end{proposition}
+
+\begin{remark}[Step-like growth and ``oscillations'' at zero entropy]\label{rem:tau-step-like}
+The monotonicity in Proposition~\ref{prop:tau-monotone} does not imply smooth (or approximately linear) growth. In deterministic zero-KS regimes (e.g.\ Sturmian codings of an irrational rotation), cylinders can take only a small number of geometric shapes at each length (intervals with a small set of possible lengths). As a result, $\tau(t)$ typically exhibits a step-like profile with plateaus and occasional jumps; the relevant asymptotic statement is not a linear law but the sublinear regime $\tau(t)=o(t)$ (Section~\ref{sec:info-time:zero-ks}), together with an appropriate sublinear scale (e.g.\ $\log p(t)$).
+\end{remark}
+
 \begin{proposition}[Exponential law for posterior contraction]\label{prop:exp-law}
 Under the assumptions of the SMB theorem for a generating partition, for $\mu$-almost every internal state,
 \[
@@ -131,6 +146,19 @@ and hence
 If, moreover, $A$ is a finite-memory recoding of $B$ with radius $s$, then one also has $\tau_A(t)\le \tau_B(t+s)$, so that the two refinement functionals control each other up to an $O(1)$ shift in scan depth.
 \end{proposition}
 
+\begin{corollary}[Protocol invariance up to additive/multiplicative constants]\label{cor:tau-affine-class}
+In the setting of Proposition~\ref{prop:tau-finite-memory}, assume $A$ and $B$ are finite-memory equivalent with radii $(r,s)$. Then:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Additive ambiguity (finite alignment)}: for all $t$ one has
+  \[
+  \tau_B(t)\le \tau_A(t+r),\qquad \tau_A(t)\le \tau_B(t+s),
+  \]
+  so the two protocol times agree up to a bounded-depth alignment in $t$ (hence up to an $O(1)$ offset once an asymptotic growth law is fixed).
+  \item \textbf{Multiplicative ambiguity (information units)}: changing the logarithm base rescales $\tau$ by a fixed constant factor. In particular, reporting in bits vs.\ nats multiplies $\tau$ by $\log 2$.
+\end{itemize}
+Consequently, within a finite-memory equivalence class, the asymptotic \emph{time law} (linear slope when $h>0$, or sublinear growth class when $h=0$) is invariant; only the conventional units and finite-alignment constants change.
+\end{corollary}
+
 \begin{corollary}[Invariance of entropy-class and growth-class under finite memory]\label{cor:tau-class-invariance}
 In the setting of Proposition~\ref{prop:tau-finite-memory}:
 \begin{itemize}[leftmargin=*,itemsep=2pt]
@@ -148,6 +176,120 @@ Two sources of additive/scale constants should be distinguished:
 The point of introducing finite-memory equivalence is that it defines a robust protocol class in which such constants do not alter the entropy class (positive vs.\ zero) and do not affect the asymptotic growth regime used to report ``time'' at the protocol layer.
 \end{remark}
 
+\subsubsection{Sensitivity to window/partition choice and to factor maps}\label{sec:info-time:sensitivity}
+
+The refinement functional $\tau(t)=-\log\mu(C(a_{0:t-1}))$ depends on the protocol through the induced partition/coding. In practice, one wants both (i) an \emph{operational} metric for how far two window/partition choices are, and (ii) a statement of what aspects of $\tau$ are invariant under changes that are ``acceptable'' (finite-memory recodings, small boundary shifts, or passage to a canonical factor).
+
+\begin{definition}[Partition mismatch rate]\label{def:partition-mismatch}
+Let $R_\Theta,R_{\Theta'}:H\to\mathcal{A}$ be two deterministic readouts on the same probability space $(H,\mu)$ with the same finite alphabet $\mathcal{A}$. Define the one-step partition mismatch rate
+\[
+\varepsilon(\Theta,\Theta'):=\mu\bigl(\{h\in H:\ R_\Theta(h)\neq R_{\Theta'}(h)\}\bigr).
+\]
+\end{definition}
+
+\begin{proposition}[Window shifts induce small mismatch away from the boundary]\label{prop:window-mismatch-boundary}
+Let $H$ be a compact metric Abelian group with Haar probability measure $\mu$, and consider two binary window readouts
+\[
+R_\Theta(h)=\mathbf{1}_{W}(h),\qquad R_{\Theta'}(h)=\mathbf{1}_{W+\delta}(h),
+\]
+where $W\subset H$ is measurable and $W+\delta$ is its translate by $\delta\in H$. Then the mismatch rate from Definition~\ref{def:partition-mismatch} satisfies
+\[
+\varepsilon(\Theta,\Theta')=\mu\bigl(W\,\triangle\,(W+\delta)\bigr),
+\]
+where $\triangle$ is symmetric difference. In particular, if $W$ is \emph{regular} (boundary of $\mu$-measure $0$), then $\varepsilon(\Theta,\Theta')\to 0$ as $\delta\to 0$.
+\end{proposition}
+
+\begin{remark}[Quantitative boundary-layer bounds]
+If $H$ is a torus and $W$ has sufficiently regular boundary (e.g.\ piecewise $C^1$), then $\mu(W\,\triangle\,(W+\delta))$ is $O(\|\delta\|)$ as $\|\delta\|\to 0$, with a constant controlled by an appropriate surface-area notion of $\partial W$. This is the standard ``boundary-layer'' mechanism by which small window perturbations produce small symbol mismatch.\cite{KuipersNiederreiter1974,BaakeGrimm2013}
+\end{remark}
+
+\begin{proposition}[Exact invariance under lifting through a factor]\label{prop:tau-factor-lift-invariance}
+Let $\varphi:(H,\mu,T)\to (H',\mu',T')$ be a measurable factor map, i.e.\ $\mu'=\varphi_\ast\mu$ and $\varphi\circ T=T'\circ\varphi$. Let $R':H'\to\mathcal{A}$ be a readout and define the lifted readout $R:=R'\circ\varphi$ on $H$. Then for every realized prefix $a_{0:t-1}$,
+\[
+\mu\bigl(C_R(a_{0:t-1})\bigr)=\mu'\bigl(C_{R'}(a_{0:t-1})\bigr),
+\]
+and hence the associated refinement functionals agree exactly:
+\[
+\tau_R(t)=\tau_{R'}(t)\qquad \text{for all }t.
+\]
+\end{proposition}
+
+\begin{remark}[Interpretation: $\varphi$ changes the object layer, not the protocol time]
+Proposition~\ref{prop:tau-factor-lift-invariance} formalizes an important point: if two observers differ only by whether they describe internal states in $H$ or in a factor $H'$ (related by $\varphi$), and they use consistent readouts (one is the pullback of the other), then $\tau(t)$ is exactly the same number. In contrast, if the observer changes the readout in a way that is not a pullback along a factor (e.g.\ by moving the window boundary), then the change is quantitative and is captured by the mismatch-rate bounds below.
+\end{remark}
+
+\subsubsection{Maximal equicontinuous factor and a canonical protocol equivalence class}\label{sec:info-time:mef}
+
+In the deterministic zero-entropy regimes emphasized by superspace model-set examples, a large class of internal dynamical systems admits a distinguished topological factor that captures the ``most rigid'' (purely rotational) component of the dynamics.
+
+\begin{definition}[Maximal equicontinuous factor (MEF)]\label{def:mef}
+Let $(X,T)$ be a compact metric dynamical system (topological dynamics). A factor $\pi_{\mathrm{eq}}:(X,T)\to (X_{\mathrm{eq}},S)$ is called the \emph{maximal equicontinuous factor} if $(X_{\mathrm{eq}},S)$ is equicontinuous and every continuous factor map from $(X,T)$ to an equicontinuous system factors uniquely through $\pi_{\mathrm{eq}}$.
+\cite{Auslander1988,Ellis1969}
+\end{definition}
+
+\begin{proposition}[Universality of the MEF for equicontinuous information]\label{prop:mef-universal}
+Let $(X,T)$ be minimal and uniquely ergodic and let $\pi_{\mathrm{eq}}$ be its MEF. If a protocol readout depends only on an equicontinuous coordinate of the system (i.e.\ it factors through some equicontinuous factor), then it necessarily factors through $\pi_{\mathrm{eq}}$.
+Consequently, any two such protocols are comparable on the same canonical base $(X_{\mathrm{eq}},S)$, and their refinement functionals $\tau(t)$ differ only through their choice of partition/window on $X_{\mathrm{eq}}$ (hence are quantitatively controlled by boundary mismatch as in Proposition~\ref{prop:window-mismatch-boundary}).
+\end{proposition}
+
+\begin{remark}[Model sets: torus parametrization as the MEF]
+For regular model sets and many substitution/Meyer-type hulls with pure point spectrum, the MEF is a compact Abelian group rotation (often described as the torus parametrization in the cut-and-project literature).\cite{BaakeGrimm2013,Moody2000}
+In such cases, restricting attention to readouts that are measurable with respect to the MEF (plus a controlled noise channel) defines a natural \emph{acceptable protocol class}: within it, the protocol-time ordering is stable up to the finite-memory and mismatch-rate equivalences already recorded in this section.
+\end{remark}
+
+\subsubsection{Quantifying protocol dependence: mismatch-rate bounds}\label{sec:info-time:stability-bounds}
+
+The previous invariance statements describe what is stable \emph{qualitatively} (monotonicity under factors; invariance within finite-memory equivalence classes). For practical protocols, one often wants a \emph{quantitative} dependence on window/partition choice, factor maps, and noise level.
+
+\begin{definition}[Coupling mismatch rate]\label{def:mismatch-rate}
+Let $(A_t)$ and $(B_t)$ be stationary processes on a common finite alphabet $\mathcal{A}$, defined on a common probability space (a coupling). Define the one-step mismatch rate by
+\[
+\varepsilon:=\mathbb{P}(A_0\neq B_0).
+\]
+\end{definition}
+
+\begin{proposition}[Block-law variation controlled by mismatch]\label{prop:block-tv-by-mismatch}
+In the setting of Definition~\ref{def:mismatch-rate}, for every $t\ge 1$ and every length-$t$ word $a_{0:t-1}\in\mathcal{A}^t$,
+\[
+\bigl|\mathbb{P}(A_{0:t-1}=a_{0:t-1})-\mathbb{P}(B_{0:t-1}=a_{0:t-1})\bigr|
+\le \mathbb{P}(A_{0:t-1}\neq B_{0:t-1})
+\le t\,\varepsilon.
+\]
+Equivalently, the total variation distance between the $t$-block laws is bounded by $\lVert \mathcal{L}(A_{0:t-1})-\mathcal{L}(B_{0:t-1})\rVert_{\mathrm{TV}}\le t\varepsilon$.
+\end{proposition}
+
+\begin{corollary}[Finite-$t$ stability of $\tau$ under mismatch]\label{cor:tau-stability-finite-t}
+Fix $t\ge 1$ and a word $a_{0:t-1}\in\mathcal{A}^t$ with block probabilities
+\[
+p_t:=\mathbb{P}(A_{0:t-1}=a_{0:t-1}),\qquad q_t:=\mathbb{P}(B_{0:t-1}=a_{0:t-1}).
+\]
+If $\min(p_t,q_t)>0$, then
+\[
+\bigl|-\log p_t + \log q_t\bigr|\ \le\ \log\!\left(1+\frac{t\varepsilon}{\min(p_t,q_t)}\right),
+\]
+and in particular if $\min(p_t,q_t)\gg t\varepsilon$ the difference is $O(t\varepsilon/\min(p_t,q_t))$.
+\end{corollary}
+
+\begin{proposition}[Entropy continuity bound from mismatch]\label{prop:entropy-continuity-mismatch}
+In the setting of Definition~\ref{def:mismatch-rate}, let $K:=|\mathcal{A}|$ and define the binary entropy function (using the same logarithm base as elsewhere)
+\[
+H_2(\varepsilon):=-\varepsilon\log\varepsilon-(1-\varepsilon)\log(1-\varepsilon).
+\]
+Then for every $t\ge 1$,
+\[
+\bigl|H(A_{0:t-1})-H(B_{0:t-1})\bigr|\ \le\ t\Bigl(H_2(\varepsilon)+\varepsilon\log(K-1)\Bigr).
+\]
+Consequently, whenever the entropy rates exist,
+\[
+\bigl|h(A)-h(B)\bigr|\ \le\ H_2(\varepsilon)+\varepsilon\log(K-1).
+\]
+\cite{CoverThomas2006}
+\end{proposition}
+
+\begin{remark}[How this quantifies window/partition and noise dependence]\label{rem:mismatch-interpretation}
+Definition~\ref{def:mismatch-rate} is intentionally protocol-facing: $\varepsilon$ can be estimated by running two protocols on matched phases (or matched underlying trajectories) and measuring the empirical Hamming mismatch rate. Changes of window/partition parameters and additive readout noise (e.g.\ symbol corruption at rate $\varepsilon$) both contribute to mismatch; Propositions~\ref{prop:block-tv-by-mismatch} and \ref{prop:entropy-continuity-mismatch} then turn that operationally measurable $\varepsilon$ into explicit error bars for block entropies, entropy rates, and (when block probabilities are not too small) for the refinement functional $\tau$ via Corollary~\ref{cor:tau-stability-finite-t}.
+\end{remark}
+
 \begin{remark}[What structure $\tau$ does (and does not) induce]\label{rem:tau-structure}
 The functional $\tau(t)=-\log\mu(C(a_{0:t-1}))$ is not a metric on $H$; it is a protocol-defined refinement depth attached to an observation prefix. However, the nested cylinders induce a canonical information order on prefixes: $a_{0:t-1}$ refines $b_{0:s-1}$ iff $t\ge s$ and $a_{0:s-1}=b_{0:s-1}$, equivalently $C(a_{0:t-1})\subseteq C(b_{0:s-1})$. This order is a partial order on protocol information states (up to $\mu$-null distinctions).
 \end{remark}
@@ -160,6 +302,31 @@ Definition~\ref{def:entropy-time} explicitly assumes a \emph{positive} entropy r
 When $h_\mu(T)=0$, the SMB limit still implies $\lim_{t\to\infty}\tau(t)/t=0$ for $\mu$-typical trajectories, so cylinders shrink \emph{subexponentially}. The same refinement functional $\tau(t)=-\log\mu(C(a_{0:t-1}))$ remains well-defined and monotone, but it no longer provides an approximately affine reparameterization of the scan index. In practice, one should treat $\tau$ as a \emph{refinement depth} and calibrate it against an external physical clock only after choosing the relevant scaling regime (e.g.\ logarithmic).
 \end{remark}
 
+\begin{remark}[Dependence on the reference/initial measure]\label{rem:tau-measure-dependence}
+Definition~\ref{def:entropy-time} uses an invariant reference measure $\mu$ on the internal state space to quantify posterior contraction. Two distinct (and easily conflated) ``measure dependences'' should be separated:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Choice of invariant measure}: if the object-layer system admits multiple invariant measures (non-unique ergodicity), then the typical refinement behavior can depend on which invariant $\mu$ is selected. In the uniquely ergodic settings emphasized in this review (e.g.\ irrational rotations and regular model-set hulls), this ambiguity is absent.
+  \item \textbf{Initial distribution vs.\ invariant reference}: even in uniquely ergodic systems, one may start from an initial distribution $\nu$ different from $\mu$. If $\nu$ is absolutely continuous with respect to $\mu$ with bounded density, then switching between $\mu$ and $\nu$ changes $\tau(t)$ by at most an $O(1)$ additive constant (Proposition~\ref{prop:tau-change-of-measure}) and does not affect the entropy class ($h>0$ vs.\ $h=0$) nor the growth class.
+\end{itemize}
+\end{remark}
+
+\begin{proposition}[Change-of-measure bound for $\tau(t)$]\label{prop:tau-change-of-measure}
+Let $\nu$ be another probability measure on the internal space such that $\nu\ll \mu$ and the Radon--Nikodym derivative is essentially bounded away from $0$ and $\infty$:
+\[
+0<c\ \le\ \frac{\mathrm{d}\nu}{\mathrm{d}\mu}\ \le\ C<\infty
+\quad\text{$\mu$-a.e.}
+\]
+Define the alternative refinement functional $\tau_\nu(t):=-\log \nu(C(a_{0:t-1}))$. Then for every $t$ and every realized prefix,
+\[
+\log c\ +\ \log \mu(C(a_{0:t-1}))\ \le\ \log \nu(C(a_{0:t-1}))\ \le\ \log C\ +\ \log \mu(C(a_{0:t-1})),
+\]
+and hence
+\[
+|\tau_\nu(t)-\tau(t)|\ \le\ \max\{-\log c,\ \log C\}.
+\]
+In particular, $\tau_\nu(t)/t$ and $\tau(t)/t$ have the same limit whenever either limit exists.
+\end{proposition}
+
 \begin{proposition}[A soft logarithmic bound from low complexity]\label{prop:log-bound}
 Let $(A_t)$ be the symbolic process induced by a uniquely ergodic system and a finite partition, and let $p(t)$ be the number of distinct length-$t$ words with nonzero probability. Then for every $t$ there exists a length-$t$ cylinder $C$ with
 \[
@@ -168,6 +335,24 @@ Let $(A_t)$ be the symbolic process induced by a uniquely ergodic system and a f
 In particular, for Sturmian codings $p(t)=t+1$, so $\tau(t)$ is at most logarithmic for an infinite subsequence of prefixes. Numerically (Appendix~\ref{sec:appendix:toy}), typical prefixes exhibit step-like growth consistent with $\tau(t)=O(\log t)$.
 \end{proposition}
 
+\begin{proposition}[Sturmian cylinders have $\Theta(1/t)$ size (hence $\tau(t)=\log t+O(1)$)]\label{prop:sturmian-cylinder-theta}
+Consider an irrational circle rotation $T_\alpha:x\mapsto x+\alpha\ (\mathrm{mod}\ 1)$ equipped with the Lebesgue invariant measure, and a nondegenerate two-interval coding $R$ that yields a Sturmian process (Section~\ref{sec:readout:sturmian}). Let $C(a_{0:t-1})$ be the length-$t$ cylinder in the circle for an observed prefix.
+Then there exist constants $c_-,c_+>0$ (depending on $\alpha$ and on the partition boundary, but not on $t$) such that for every $t\ge 1$ and every admissible prefix,
+\[
+\frac{c_-}{t+1}\ \le\ \mu\bigl(C(a_{0:t-1})\bigr)\ \le\ \frac{c_+}{t+1}.
+\]
+Equivalently,
+\[
+\log(t+1)-\log c_+\ \le\ \tau(t)\ \le\ \log(t+1)-\log c_-,
+\]
+so $\tau(t)=\log(t)+O(1)$ and its step-like fluctuations are bounded at $O(1)$ amplitude around the logarithmic scale.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+For a two-interval coding of a rotation, every length-$t$ cylinder is an interval in $\TT$ whose endpoints belong to the finite set of orbit cuts $\{-k\alpha\}_{k=0}^{t}$ translated by the partition boundary. Thus the set of all length-$t$ cylinders is exactly the collection of gaps between the ordered points $\{x_0, x_0-\alpha,\dots,x_0-t\alpha\}$ (up to a boundary translation). The three-gap theorem implies that these gaps take at most three values and are all comparable to $1/(t+1)$, uniformly in $t$ (with constants depending on $\alpha$ and on boundary nondegeneracy).\cite{KuipersNiederreiter1974}
+Taking $\mu$ as Lebesgue measure identifies cylinder measures with these gap lengths, yielding the stated two-sided bound.
+\end{proof}
+
 \begin{definition}[Complexity-calibrated protocol time in the zero-KS regime]\label{def:complexity-time}
 In a protocol for which $h_\mu(T)=0$ (hence $\tau(t)=o(t)$ for typical realizations), we use the factor complexity $p(t)$ to set the \emph{canonical} sublinear reference scale
 \[
@@ -175,6 +360,29 @@ g(t):=\log p(t).
 \]
 We call $g(t)$ the \emph{complexity-calibrated protocol time scale}. In this regime one reports refinement in the units of $g(t)$ (e.g.\ compares $\tau(t)$ to $g(t)$ along a chosen scaling window), rather than using the scan index $t$ as a proxy for elapsed time.
 \end{definition}
+
+\begin{definition}[A normalized zero-KS time coordinate]\label{def:zero-ks-normalized-time}
+In the zero-KS regime, define the \emph{normalized refinement time} (dimensionless) by
+\[
+\widehat{\tau}(t):=\frac{\tau(t)}{\log p(t)}\qquad (t\ge 2),
+\]
+whenever $\log p(t)>0$.
+For Sturmian codings, $p(t)=t+1$ and Proposition~\ref{prop:sturmian-cylinder-theta} implies $\widehat{\tau}(t)=1+O(1/\log t)$.
+An equivalent ``effective time index'' is obtained by exponentiation,
+\[
+t_{\mathrm{eff}}(t):=\exp(\tau(t))=\frac{1}{\mu(C(a_{0:t-1}))},
+\]
+which is directly interpretable as the inverse posterior mass of the compatibility set (a multiplicity scale).
+\end{definition}
+
+\begin{remark}[Alternative sublinear scales: algorithmic complexity and pointwise dimension]\label{rem:zero-ks-alternatives}
+Definition~\ref{def:complexity-time} uses word (factor) complexity because it is purely symbolic and therefore protocol-auditable from data without introducing extra geometric structure. Two alternative ``sublinear clocks'' are often discussed in the ergodic/information literature:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Algorithmic (Kolmogorov/Brudno) complexity}: one may use the Kolmogorov complexity $K(a_{0:t-1})$ of the observed prefix as a refinement scale. In positive-entropy ergodic regimes, Brudno-type theorems relate $\lim_{t\to\infty}K(a_{0:t-1})/t$ to the KS entropy; in the zero-KS regime this ratio vanishes, and one can compare $\tau(t)$ against the sublinear growth of $K(a_{0:t-1})$ as an alternative protocol-defined ``information time''.
+  \item \textbf{Pointwise dimension (requires a metric interface)}: if one equips the internal state space $H$ with a metric and relates cylinders $C(a_{0:t-1})$ to metric balls (via a regularity assumption on the partition geometry), then $\tau(t)=-\log\mu(C)$ can be compared to a local dimension scale $\log(1/r)$ where $r$ is an effective cylinder diameter. This route is powerful but is not purely symbolic: it requires an explicit protocol-to-geometry interface that controls how symbolic refinement translates into geometric localization.
+\end{itemize}
+In this review we keep $\log p(t)$ as the canonical reference scale because it makes the minimal number of additional assumptions while still capturing the correct subexponential order in standard zero-KS examples (e.g.\ Sturmian codings).
+\end{remark}
 
 \begin{remark}[A sublinear ``clock'' in zero-entropy regimes]\label{rem:sublinear-clock}
 In deterministic zero-KS regimes (e.g.\ Sturmian codings of rotations), the operational content of $\tau(t)$ is not ``elapsed time'' but \emph{how many internal states remain compatible} with the observed record at depth $t$. A protocol can therefore adopt a \emph{sublinear clock} by selecting a scaling map $g(t)$ such that $\tau(t)$ is comparable to $g(t)$ in the regime of interest. Two auditable choices are:

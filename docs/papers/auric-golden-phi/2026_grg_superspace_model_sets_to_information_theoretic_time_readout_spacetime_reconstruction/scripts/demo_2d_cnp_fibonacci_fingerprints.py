@@ -100,6 +100,26 @@ def pick_reference_peak(k: np.ndarray, S: np.ndarray) -> float:
     return float(k[len(k) // 2])
 
 
+def peakiness_metric(k: np.ndarray, S: np.ndarray) -> Dict[str, float]:
+    """A simple 'line-dominated' metric for finite-patch diffraction.
+
+    We report the fraction of total power contained in the largest few bins
+    (excluding a small neighborhood of k=0).
+    """
+    k = np.asarray(k, dtype=float)
+    S = np.asarray(S, dtype=float)
+    mask = np.abs(k) > 1e-3
+    S2 = S[mask]
+    if len(S2) == 0:
+        return {"topK_frac": 0.0, "K": 0.0, "total": 0.0}
+    total = float(np.sum(S2))
+    if total <= 0:
+        return {"topK_frac": 0.0, "K": 0.0, "total": float(total)}
+    K = int(max(5, round(0.01 * len(S2))))
+    top = np.sort(S2)[-K:]
+    return {"topK_frac": float(np.sum(top) / total), "K": float(K), "total": float(total)}
+
+
 def pointset_to_binned_sequence(x: np.ndarray, dx: float) -> List[int]:
     """Bin points into a 0/1 occupancy sequence along the x-axis."""
     if len(x) == 0:
@@ -227,6 +247,12 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
             "phase0": phase0,
             "k_ref": k_ref,
             "visibility_bin_dx": params.bin_dx,
+        },
+        "diffraction": {
+            "k": k.astype(float).tolist(),
+            "S": S0.astype(float).tolist(),
+            "peakiness": peakiness_metric(k, S0),
+            "definition": "S(k)=|sum exp(-2pi i k x)|^2/(sum 1)^2 on one sharp-window phase; peakiness excludes |k|<=1e-3",
         },
         "visibility": {
             "eps": params.eps_grid,
