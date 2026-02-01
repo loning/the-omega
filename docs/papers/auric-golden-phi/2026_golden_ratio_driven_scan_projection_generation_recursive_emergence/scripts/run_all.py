@@ -122,6 +122,7 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/sync_kernel_real_input_40_arity_3d.json",
                 "sections/generated/tab_real_input_40_arity_dirichlet_mertens_333.tex",
+                "sections/generated/tab_real_input_40_arity_dirichlet_mertens_555.tex",
             ],
         ),
         Step(
