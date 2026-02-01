@@ -108,6 +108,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_real_input_40_arity_2d",
+            script="exp_sync_kernel_real_input_40_arity_2d.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_real_input_40_arity_2d.json",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_logM_theta",
             script="exp_sync_kernel_real_input_40_logM_theta.py",
             args=[

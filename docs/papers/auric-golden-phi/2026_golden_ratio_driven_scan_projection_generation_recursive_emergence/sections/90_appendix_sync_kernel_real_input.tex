@@ -507,6 +507,106 @@ I_\chi(\alpha)\approx \frac{(\alpha-\mathbb{E}[\chi])^2}{2\,\mathrm{Var}_\infty(
 \]
 数值复现见脚本 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity.py}。
 
+\subsubsection{真实输入下的二维 arity--负携带素数谱}
+定义
+\[
+\chi:=e-\mathbf{1}_{\{d=2\}}\in\{-1,0,1\},
+\qquad
+\nu:=\mathbf{1}_{\{t\in Q_-\}}\in\{0,1\},
+\]
+并对 primitive 周期轨道 $\gamma$ 令
+\[
+\chi(\gamma):=\sum_{k=1}^{|\gamma|}\chi_k,\qquad
+N_-(\gamma):=\sum_{k=1}^{|\gamma|}\nu_k.
+\]
+二维 arity 生成多项式定义为
+\[
+P_n(q,r):=\sum_{\substack{\gamma\ \mathrm{primitive}\|\gamma|=n}} q^{\chi(\gamma)}r^{N_-(\gamma)}.
+\]
+对每条边赋权 $q^\chi r^\nu$ 得到加权矩阵 $M(q,r)$，记
+\[
+a_n(q,r):=\operatorname{tr}(M(q,r)^n),\qquad
+\zeta(z;q,r)=\exp\!\left(\sum_{n\ge 1}\frac{a_n(q,r)}{n}z^n\right)
+=\frac{1}{\det(I-zM(q,r))},
+\]
+则 Möbius 反演给出
+\[
+P_n(q,r)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(q^d,r^d).
+\]
+当 $r=1$ 时退化到一维 $P_n(q)$。本例中前 $8$ 项为
+\[
+\begin{aligned}
+P_1(q,r)&=1,\\
+P_2(q,r)&=2qr+4q+r^{2},\\
+P_3(q,r)&=4q,\\
+P_4(q,r)&=q^{2}r^{2}+3q^{2}+2qr^{3}+4q+r^{2},\\
+P_5(q,r)&=12q^{2}+5qr+4q+r^{2},\\
+P_6(q,r)&=2q^{3}r^{3}+8q^{3}+4q^{2}r^{4}+18q^{2}+2qr^{5}+2qr^{3}+6qr^{2}+6qr+4q+r^{4},\\
+P_7(q,r)&=36q^{3}+10q^{2}r^{2}+12q^{2}r+28q^{2}+7qr^{3}+12qr^{2}+6qr+4q+r^{4},\\
+P_8(q,r)&=3q^{4}r^{4}+18q^{4}+8q^{3}r^{5}+84q^{3}+5q^{2}r^{6}+4q^{2}r^{4}+12q^{2}r^{3}\\
+&\quad+30q^{2}r^{2}+36q^{2}r+34q^{2}+2qr^{7}+4qr^{5}+6qr^{4}+6qr^{3}+12qr^{2}+6qr+4q+r^{6}.
+\end{aligned}
+\]
+对模 $(m_1,m_2)$ 的二维 Dirichlet 分层，记
+\[
+p_{n,(r_1,r_2)}^{(m_1,m_2)}
+=\#\{\gamma:\ |\gamma|=n,\ \chi(\gamma)\equiv r_1\ (\mathrm{mod}\ m_1),\ N_-(\gamma)\equiv r_2\ (\mathrm{mod}\ m_2)\},
+\]
+则离散傅里叶反演给出
+\[
+p_{n,(r_1,r_2)}^{(m_1,m_2)}
+=\frac{1}{m_1m_2}\sum_{j_1=0}^{m_1-1}\sum_{j_2=0}^{m_2-1}
+\omega_{m_1}^{-j_1r_1}\omega_{m_2}^{-j_2r_2}\,P_n(\omega_{m_1}^{j_1},\omega_{m_2}^{j_2}).
+\]
+对非平凡扭曲 $(q,r)\neq(1,1)$，定义收敛常数
+\[
+C(q,r):=\sum_{n\ge 1}\frac{P_n(q,r)}{\lambda^n}.
+\]
+在 $(m_1,m_2)=(2,2)$ 下，二维 Mertens 和满足
+\[
+\sum_{n\le N}\frac{p_{n,(r_1,r_2)}^{(2,2)}}{\lambda^n}
+=\frac{1}{4}\log N+C_{r_1,r_2}+o(1),
+\]
+其中
+\[
+C_{r_1,r_2}=\frac{\mathsf{M}_{\varphi^2}}{4}
++\frac{1}{4}\sum_{(q,r)\in\{(-1,1),(1,-1),(-1,-1)\}} q^{-r_1}r^{-r_2}C(q,r).
+\]
+数值上
+\[
+C(-1,1)\approx -0.443931576503,\quad
+C(1,-1)\approx 1.884530309378,\quad
+C(-1,-1)\approx 0.340728207436,
+\]
+\[
+\begin{aligned}
+C_{0,0}&\approx 0.526057485828,\quad
+C_{0,1}\approx -0.586571772579,\\
+C_{1,0}&\approx 0.577659170361,\quad
+C_{1,1}\approx -0.194241880610,
+\end{aligned}
+\]
+并满足 $\sum_{r_1,r_2}C_{r_1,r_2}=\mathsf{M}_{\varphi^2}$。
+扭曲谱半径为
+\[
+\rho(-1,1)\approx 1.8536691513,\quad
+\rho(1,-1)\approx 2.3913364573,\quad
+\rho(-1,-1)\approx 1.9589242362,
+\]
+对应比值
+\[
+\frac{\rho(-1,1)}{\lambda}\approx 0.7080386119,\quad
+\frac{\rho(1,-1)}{\lambda}\approx 0.9134092481,\quad
+\frac{\rho(-1,-1)}{\lambda}\approx 0.7482424769,
+\]
+从而
+\[
+p_{n,(r_1,r_2)}^{(2,2)}=\frac{p_n}{4}+O\!\left(\frac{\rho_{2,2}^n}{n}\right),
+\qquad
+\rho_{2,2}:=\rho(1,-1).
+\]
+数值复现见脚本 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_2d.py}。
+
 \subsubsection{真实输入下的三维隐含属性统计}
 在 40 状态核上引入三维观测
 \[
