@@ -40,3 +40,131 @@ Q_{j}(1)=P_j,\quad Q_{j}(0)=I-P_j,
 \begin{remark}[折叠直方图作为态的限制]
 对任意态 $\rho$，$x\mapsto \Tr(\rho\,\widetilde P_x)$ 给出 $\mathcal{B}_m$ 上的一个概率向量；在本文的实验设置中，它正是折叠后稳定类型直方图的理论对象，而经验直方图则由样本频率估计得到（见第 \ref{sec:experiments} 节）。
 \end{remark}
+
+\begin{proposition}[折叠诱导的条件期望（纤维平均算子）]\label{prop:fold-conditional-expectation}
+对每个 $m$，定义纤维多重度
+\[
+d_m(x):=\bigl|\Fold_m^{-1}(x)\bigr|\qquad(x\in X_m),
+\]
+并定义线性映射 $E_m:\mathcal{A}_m\to \mathcal{B}_m$ 在极小投影基上为
+\[
+E_m(P_a):=\frac{1}{d_m(\Fold_m(a))}\,\widetilde P_{\Fold_m(a)}\qquad(a\in\Omega_m),
+\]
+再线性延拓到 $\mathcal{A}_m$。则：
+\begin{enumerate}
+  \item $E_m$ 是一个正的、保持单位元的幂等映射（即条件期望的有限维交换代数版本）；
+  \item $E_m$ 在 $\mathcal{B}_m$ 上为恒等：对任意 $B\in\mathcal{B}_m$，$E_m(B)=B$；
+  \item $E_m$ 是 $\mathcal{B}_m$-双模映射：对任意 $B_1,B_2\in\mathcal{B}_m$ 与 $A\in\mathcal{A}_m$，
+  \[
+  E_m(B_1AB_2)=B_1\,E_m(A)\,B_2.
+  \]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+由于 $\mathcal{A}_m$ 与 $\mathcal{B}_m$ 都是由互斥极小投影张成的有限维交换 C*-代数，验证只需在基 $\{P_a\}$ 与 $\{\widetilde P_x\}$ 上进行。
+
+\textbf{(2)} 对任意 $x\in X_m$，
+\[
+E_m(\widetilde P_x)=E_m\!\left(\sum_{\Fold_m(a)=x}P_a\right)
+=\sum_{\Fold_m(a)=x}\frac{1}{d_m(x)}\,\widetilde P_x
+=\widetilde P_x,
+\]
+故对 $\mathcal{B}_m$ 上的任意线性组合 $B$ 亦有 $E_m(B)=B$。
+
+\textbf{(1)} 由 (2) 与 $E_m(\mathcal{A}_m)\subset\mathcal{B}_m$ 立得幂等性：$E_m(E_m(A))=E_m(A)$。又因为
+\[
+E_m(I)=E_m\!\left(\sum_{a\in\Omega_m}P_a\right)
+=\sum_{x\in X_m}\sum_{\Fold_m(a)=x}\frac{1}{d_m(x)}\widetilde P_x
+=\sum_{x\in X_m}\widetilde P_x
+=I,
+\]
+故 $E_m$ 保单位元。正性可由坐标描述看出：在同构 $\mathcal{A}_m\cong\CC^{|\Omega_m|}$ 下，正元等价于各坐标非负；而 $E_m$ 的作用是对每条纤维做算术平均后复制到该纤维对应的块上，故保持非负性。
+
+\textbf{(3)} 对 $B_1=\widetilde P_{x_1}$、$B_2=\widetilde P_{x_2}$ 与基元 $A=P_a$，有
+\[
+\widetilde P_{x_1}P_a\widetilde P_{x_2}
+=
+\begin{cases}
+P_a,& \Fold_m(a)=x_1=x_2,\\
+0,& \text{否则}.
+\end{cases}
+\]
+若 $\Fold_m(a)=x_1=x_2=x$，则
+\[
+E_m(\widetilde P_xP_a\widetilde P_x)=E_m(P_a)=\frac{1}{d_m(x)}\widetilde P_x
+=\widetilde P_x\,E_m(P_a)\,\widetilde P_x.
+\]
+若不满足 $\Fold_m(a)=x_1=x_2$，则两边同为 $0$。线性扩张到一般 $A\in\mathcal{A}_m$ 与一般 $B_1,B_2\in\mathcal{B}_m$ 即得。
+\end{proof}
+
+\begin{remark}[折叠专属的可审计“信息丢失接口”]
+\label{rem:fold-expectation-interface}
+命题 \ref{prop:fold-conditional-expectation} 给出的 $E_m$ 是一个完全显式的“纤维平均”算子：它把微态层可观测量 $A\in\mathcal{A}_m$ 压缩为对折叠纤维常值的部分 $E_m(A)\in\mathcal{B}_m$。其系数仅依赖于折叠多重度 $d_m(x)$（见附录 \ref{app:fold-multiplicity}），因此可作为折叠诱导的一个结构性不变量接口：不同折叠/不同归一化规则会改变纤维结构，从而改变 $E_m$ 的块平均方式。
+\end{remark}
+
+\begin{proposition}[折叠的推前与提升：概率单纯形上的 Markov 核对偶]\label{prop:fold-pushforward-lift}
+在交换情形下，可将 $\mathcal{A}_m$ 与 $\mathcal{B}_m$ 分别识别为有限集上的复值函数代数：
+\[
+\mathcal{A}_m\cong \CC^{\Omega_m},\qquad
+\mathcal{B}_m\cong \CC^{X_m}.
+\]
+在该识别下，任意态 $\rho$ 在 $\mathcal{A}_m$ 上对应一个概率向量
+\(
+\mu_\rho(a):=\Tr(\rho P_a)
+\)
+（$a\in\Omega_m$），在 $\mathcal{B}_m$ 上对应
+\(
+\pi_\rho(x):=\Tr(\rho \widetilde P_x)
+\)
+（$x\in X_m$）。则：
+\begin{enumerate}
+  \item \textbf{（推前）}折叠的推前分布满足显式公式
+  \[
+  \pi_\rho(x)=\sum_{\substack{a\in\Omega_m\\ \Fold_m(a)=x}}\mu_\rho(a),
+  \qquad x\in X_m,
+  \]
+  即 $\pi_\rho=(\Fold_m)_*\mu_\rho$。
+  \item \textbf{（均匀提升）}定义从 $X_m$ 到 $\Omega_m$ 的 Markov 核（在每条纤维上均匀分配）：
+  \[
+  Q_m:\ \Delta(X_m)\to\Delta(\Omega_m),\qquad
+  (Q_m\pi)(a):=\frac{\pi(\Fold_m(a))}{d_m(\Fold_m(a))},
+  \]
+  其中 $\Delta(\cdot)$ 表示概率单纯形。则 $(\Fold_m)_*\circ Q_m=\mathrm{id}_{\Delta(X_m)}$。
+  \item \textbf{（对偶性）}令 $P_m=(\Fold_m)_*:\Delta(\Omega_m)\to\Delta(X_m)$，则对任意可观测量 $f\in \CC^{\Omega_m}$ 与分布 $\mu\in\Delta(\Omega_m)$，
+  \[
+  \langle E_m f,\mu\rangle\ =\ \langle f,(Q_m\circ P_m)\mu\rangle,
+  \]
+  其中 $\langle f,\mu\rangle:=\sum_{a\in\Omega_m} f(a)\mu(a)$ 是期望配对。换言之，$E_m$ 在观测量层面与 “先推前到 $X_m$ 再在纤维上均匀提升回 $\Omega_m$” 的 Markov 核 $Q_m\circ P_m$ 互为伴随。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(1)} 由定义 \(\widetilde P_x=\sum_{\Fold_m(a)=x}P_a\) 得
+\(
+\pi_\rho(x)=\Tr(\rho\widetilde P_x)=\sum_{\Fold_m(a)=x}\Tr(\rho P_a)=\sum_{\Fold_m(a)=x}\mu_\rho(a)
+\)。
+
+\textbf{(2)} 对任意 $x\in X_m$，
+\[
+((\Fold_m)_*(Q_m\pi))(x)=\sum_{\Fold_m(a)=x}\frac{\pi(x)}{d_m(x)}=\pi(x).
+\]
+
+\textbf{(3)} 在函数代数识别 $\mathcal{A}_m\cong \CC^{\Omega_m}$ 下，$E_m$ 正是“对纤维做算术平均再复制回纤维”的算子：
+\[
+(E_m f)(a)=\frac{1}{d_m(\Fold_m(a))}\sum_{\Fold_m(b)=\Fold_m(a)} f(b).
+\]
+因此
+\[
+\langle E_m f,\mu\rangle
+=\sum_{a\in\Omega_m}\mu(a)\frac{1}{d_m(\Fold_m(a))}\sum_{\Fold_m(b)=\Fold_m(a)} f(b)
+=\sum_{x\in X_m}\frac{\sum_{\Fold_m(a)=x}\mu(a)}{d_m(x)}\sum_{\Fold_m(b)=x}f(b).
+\]
+而 $(P_m\mu)(x)=\sum_{\Fold_m(a)=x}\mu(a)$，并且 $(Q_m(P_m\mu))(b)=(P_m\mu)(\Fold_m(b))/d_m(\Fold_m(b))$，代入得
+\[
+\langle f,(Q_m\circ P_m)\mu\rangle
+=\sum_{b\in\Omega_m} f(b)\frac{(P_m\mu)(\Fold_m(b))}{d_m(\Fold_m(b))}
+=\sum_{x\in X_m}\frac{(P_m\mu)(x)}{d_m(x)}\sum_{\Fold_m(b)=x}f(b),
+\]
+与上式一致。
+\end{proof}
