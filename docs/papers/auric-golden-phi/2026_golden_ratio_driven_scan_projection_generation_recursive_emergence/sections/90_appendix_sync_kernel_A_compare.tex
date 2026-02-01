@@ -59,6 +59,15 @@ A=\{-1,0,1\}\quad\text{或}\quad A=\{0,1,2\}
 
 这些并行核一旦被编译为确定性在线转导器，其同步图同样给出 $\zeta$ 与 primitive 谱，从而与表 \ref{tab:sync-kernel-A-compare} 的“机制核”完全共享同一比较接口；本文把它作为后续可直接对接的外部基准，而不在当前版本中展开完整同步图编译。
 
+\paragraph{三核在文献中的精确锚点：零式与 locality}
+为避免“同一核在不同讲义/实现中口径漂移”，本文对三类并行核的引用统一锚定在同一份讲义 \cite{FrougnyHellerPelantovaSvobodovaParallelAlgorithmsSlides}（以及其在 AAMP VIII 的摘要表述 \cite{SvobodovaAAMPVIIIParallelAddition}）：
+\begin{itemize}
+  \item \textbf{强零式 + $9$-local（黄金比例基）}：以 $-\beta^4+7-\beta^{-4}=0$ 为注入零式，在 $A=\{-5,\dots,5\}$ 上得到加法为 $9$-local；
+  \item \textbf{弱零式 + $13$-local（黄金比例基）}：以 $-\beta^2+3-\beta^{-2}=0$ 为注入零式，在 $A=\{-3,\dots,3\}$ 上得到加法为 $13$-local；
+  \item \textbf{最小字母表 + $21$-local（Algorithm G）}：在 $A=\{-1,0,1\}$ 上给出两相消元算法 $G=A\circ B$，并明确加法为 $21$-local；其两相消元均使用弱零式 $-\beta^2+3-\beta^{-2}=0$。
+\end{itemize}
+上述三点正是本附录后续把“不同字母表/不同折叠核”压缩成同一类同步图指纹对象的共同输入。
+
 \paragraph{把三类并行核编译到可 BFS 的在线机（单流）}
 为把“核的局部规则”落实到可计算对象，我们按 stencil 的同余类解耦，把核限制到单一同余流（$\pm 4$ stencil 对应模 $4$ 的 4 条流，$\pm 2$ stencil 对应模 $2$ 的 2 条流）。在单流上，核成为一个确定性在线机：每一步读取一个输入符号 $v_n$（逐位和/中间字母表符号），更新有限状态并输出固定延迟后的输出符号。由此可直接用 BFS 枚举全部可达状态，得到单流同步图 $\Gamma^{\mathrm{flow}}_K$。
 
@@ -98,7 +107,24 @@ M_{\mathrm{glob}}(u)=\bigotimes_{r=0}^{m-1} M_{\mathrm{flow}}(u),
 \input{sections/generated/tab_parallel_addition_kernels_fingerprint}
 
 \paragraph{分层“素数影子”：\texorpdfstring{$B_{K,n}(u)$}{B\_{K,n}(u)} 的显式多项式（单流）}
-为了把“primitive 闭环”按 carry 强度分层，我们进一步在单流同步图上计算 $B_{K,n}(u)$ 的显式多项式（见上文两变量 $\zeta_K(z,u)$ 与 Witt/Möbius 反演公式）。表 \ref{tab:parallel-addition-kernels-weighted-primitive} 给出 $K_9/K_{13}/K_{21}$ 的单流 $B_{K,n}(u)$（默认截断到 $n\le 4/4/6$）。
+为了把“primitive 闭环”按 carry 强度分层，我们进一步在单流同步图上计算 $B_{K,n}(u)$ 的显式多项式（见上文两变量 $\zeta_K(z,u)$ 与 Witt/Möbius 反演公式）。表 \ref{tab:parallel-addition-kernels-weighted-primitive} 给出 $K_9/K_{13}/K_{21}$ 的单流 $B_{K,n}(u)$（默认截断到 $n\le 6/4/6$）。
+\par
+其中对强核 $K_9$，单流上每步 $\kappa\in\{0,1\}$，并且恰有 $7$ 个输入符号给出 $\kappa=0$、$14$ 个输入符号给出 $\kappa=1$，从而
+\[
+B_{9,n}(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\bigl(7+14u^d\bigr)^{n/d}.
+\]
+作为端点一致性检查（见 \cite{FrougnyHellerPelantovaSvobodovaParallelAlgorithmsSlides} 对 $9/13/21$-local 的字母表大小），对弱核 $K_{13}$ 有
+\(
+B_{13,n}(0)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,3^{n/d}
+\)
+与
+\(
+B_{13,n}(1)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,13^{n/d}
+\)，
+而对最小字母表核 $K_{21}$ 有
+\(
+B_{21,n}(1)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,5^{n/d}.
+\)
 \input{sections/generated/tab_parallel_addition_kernels_weighted_primitive}
 
 \paragraph{两变量 \texorpdfstring{$\zeta_K(z,u)$}{zeta(z,u)} 的截断级数系数（单流）}

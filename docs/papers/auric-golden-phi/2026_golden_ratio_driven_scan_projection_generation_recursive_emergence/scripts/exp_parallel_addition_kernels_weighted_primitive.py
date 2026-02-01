@@ -78,6 +78,50 @@ def _poly_trim(p: List[int]) -> List[int]:
     return p[: i + 1]
 
 
+def _poly_mul(a: List[int], b: List[int]) -> List[int]:
+    if a == [0] or b == [0]:
+        return [0]
+    out = [0] * (len(a) + len(b) - 1)
+    for i, ai in enumerate(a):
+        if ai == 0:
+            continue
+        for j, bj in enumerate(b):
+            if bj == 0:
+                continue
+            out[i + j] += ai * bj
+    return _poly_trim(out)
+
+
+def _poly_pow(p: List[int], n: int) -> List[int]:
+    if n < 0:
+        raise ValueError("n must be >= 0")
+    if n == 0:
+        return [1]
+    if n == 1:
+        return p[:]
+    out = [1]
+    base = p[:]
+    e = n
+    while e:
+        if e & 1:
+            out = _poly_mul(out, base)
+        e >>= 1
+        if e:
+            base = _poly_mul(base, base)
+    return _poly_trim(out)
+
+
+def _trace_polys_closed_form_k9(n_max: int) -> Dict[int, List[int]]:
+    """
+    For the 9-local (strong) single-flow compiled machine, kappa(e)∈{0,1} and
+    each step has exactly 7 symbols with kappa=0 and 14 symbols with kappa=1.
+    Therefore:
+      a_n(u) = Tr(M(u)^n) = (7 + 14u)^n.
+    """
+    a1 = [7, 14]
+    return {n: _poly_pow(a1, n) for n in range(1, n_max + 1)}
+
+
 def _poly_sub_u_pow(p: List[int], d: int) -> List[int]:
     # p(u^d): coeff[k] goes to degree k*d.
     if d == 1:
@@ -263,7 +307,7 @@ def _make_table(rows: List[Dict[str, str]]) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Compute weighted primitive polynomials B_{K,n}(u) for 9/13/21-local kernels")
-    parser.add_argument("--nmax-9", type=int, default=4)
+    parser.add_argument("--nmax-9", type=int, default=6)
     parser.add_argument("--nmax-13", type=int, default=4)
     parser.add_argument("--nmax-21", type=int, default=6)
     parser.add_argument("--max-iters", type=int, default=50, help="Max iterations to converge to word fixed point")
@@ -289,7 +333,11 @@ def main() -> None:
     for sp, nmax in plan:
         name_tex = r"$K_{9}$" if "9-local" in sp.name else (r"$K_{13}$" if "13-local" in sp.name else r"$K_{21}$")
         prog.tick(f"{sp.name} begin")
-        a_polys = _trace_polys_by_word_enumeration(sp, nmax, max_iters=args.max_iters, prog=prog, label=sp.name)
+        if "9-local" in sp.name:
+            a_polys = _trace_polys_closed_form_k9(nmax)
+            prog.tick(f"{sp.name} traces (closed form) done nmax={nmax}")
+        else:
+            a_polys = _trace_polys_by_word_enumeration(sp, nmax, max_iters=args.max_iters, prog=prog, label=sp.name)
         B_polys = _primitive_from_traces_polys(a_polys, nmax)
 
         payload["kernels"].append(

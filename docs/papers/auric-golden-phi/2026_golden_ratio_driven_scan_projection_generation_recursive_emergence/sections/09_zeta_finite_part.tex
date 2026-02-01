@@ -353,6 +353,23 @@ N_-(\gamma):=\Phi_-(\gamma)\in\ZZ,
 \qquad
 N_2(\gamma):=\Phi_2(\gamma)\in\ZZ.
 $$
+在“真实输入 40 状态核”的同步边标记 $(s,d)\mapsto(e,t)$ 口径下，可取每步观测量
+$$
+\chi:=e-\mathbf{1}_{\{d=2\}}\in\{-1,0,1\},
+\qquad
+\nu:=\mathbf{1}_{\{t\in Q_-\}}\in\{0,1\},
+\qquad
+\xi:=\mathbf{1}_{\{d=2\}}\in\{0,1\},
+$$
+从而
+$$
+\Phi_e(\gamma)=\sum_{k=1}^{|\gamma|} e_k,
+\qquad
+\Phi_-(\gamma)=\sum_{k=1}^{|\gamma|} \nu_k,
+\qquad
+\Phi_2(\gamma)=\sum_{k=1}^{|\gamma|} \xi_k,
+$$
+并因此 $\chi(\gamma)=\sum_{k=1}^{|\gamma|}\chi_k$、$N_-(\gamma)=\sum_{k=1}^{|\gamma|}\nu_k$、$N_2(\gamma)=\sum_{k=1}^{|\gamma|}\xi_k$。
 其中 $\chi(\gamma)$ 是真正的 arity-charge（把“二元碰撞如何被吐出/隐藏”的净电荷编码成可加不变量），$N_-(\gamma)$ 记录进入负携带区的事件计数，$N_2(\gamma)$ 记录二元碰撞触发计数。主增长率取真实输入核的 Perron--Frobenius 主特征值
 $$
 \lambda=\rho(M)=\varphi^2\approx 2.61803398875.
@@ -452,10 +469,76 @@ $$
 $$
 其中最坏扭曲来自 $\chi(\gamma)\bmod 3$ 不扭曲、但同时扭曲 $N_-(\gamma)\bmod 2$ 与 $N_2(\gamma)\bmod 2$ 的角色。
 
+\paragraph{\texorpdfstring{$((3,3,3))$}{(3,3,3)}：三维 Dirichlet--Mertens 常数张量}
+进一步把三条观测量同时提升到模 $3$ 的 Dirichlet 分层：
+$$
+(a,b,c)=\bigl(\chi(\gamma)\bmod 3,\ N_-(\gamma)\bmod 3,\ N_2(\gamma)\bmod 3\bigr)\in(\ZZ/3)^3.
+$$
+令 $p_{n,a,b,c}$ 表示长度为 $n$ 的 primitive 轨道中落在该 residue 的轨道数（按轨道计），并定义
+$$
+S_{a,b,c}(N):=\sum_{n\le N}\frac{p_{n,a,b,c}}{\lambda^n}.
+$$
+则存在常数张量 $C^{(3,3,3)}_{a,b,c}$ 使得
+$$
+S_{a,b,c}(N)=\frac{1}{27}\log N + C^{(3,3,3)}_{a,b,c}+o(1),
+\qquad
+\sum_{a,b,c\in\{0,1,2\}} C^{(3,3,3)}_{a,b,c}=\mathsf{M}.
+$$
+按 $a=\chi(\gamma)\bmod 3$ 分三张 $3\times 3$ 切片（行 $b=N_-(\gamma)\bmod 3$，列 $c=N_2(\gamma)\bmod 3$），数值为：
+$$
+a=0:\quad
+\begin{pmatrix}
+\ \ 0.507054 & -0.101678 & -0.090542\\
+-0.114942 & -0.046405 & -0.088384\\
+-0.115061 & \ \ 0.119144 & -0.089270
+\end{pmatrix}
+$$
+$$
+a=1:\quad
+\begin{pmatrix}
+\ \ 0.977060 & -0.058214 & -0.081102\\
+\ \ 0.177780 & \ \ 0.004233 & -0.086508\\
+-0.113496 & -0.029317 & -0.089929
+\end{pmatrix}
+$$
+$$
+a=2:\quad
+\begin{pmatrix}
+\ \ 0.263947 & -0.101604 & -0.085119\\
+-0.116041 & -0.014442 & -0.085415\\
+-0.092451 & -0.030055 & -0.096340
+\end{pmatrix}.
+$$
+
+\paragraph{指数级误差：最坏扭曲谱半径比}
+令 $\omega_3:=e^{2\pi i/3}$。对每个非平凡角色 $(j_1,j_2,j_3)\in(\ZZ/3)^3\setminus\{(0,0,0)\}$，定义三变量扭曲矩阵为
+$$
+M(\omega_3^{j_1},\omega_3^{j_2},\omega_3^{j_3})
+$$
+（即沿边对三条可加观测量分别施加角色权重），并令
+$$
+\rho_{3,3,3}
+:=
+\max_{(j_1,j_2,j_3)\neq(0,0,0)}
+\rho\bigl(M(\omega_3^{j_1},\omega_3^{j_2},\omega_3^{j_3})\bigr).
+$$
+数值上
+$$
+\rho_{3,3,3}\approx 2.452276675,
+\qquad
+\frac{\rho_{3,3,3}}{\lambda}\approx 0.93668634.
+$$
+因此同余类趋于等分布的误差为指数级：
+$$
+p_{n,a,b,c}=\frac{p_n}{27}+O\!\left(\frac{\rho_{3,3,3}^n}{n}\right),
+\qquad
+p_n\sim\frac{\lambda^n}{n}.
+$$
+
 \paragraph{为何称为“真正的 arity 维度素数谱”}
 上述输出同时给出三层可审计结构：
 \begin{itemize}
   \item primitive 轨道作为“素数类对象”，满足 $p_n\sim \lambda^n/n$；
   \item $\chi(\gamma)$ 作为真正的 arity-charge，把二元碰撞的吐出/隐藏机制编码成可加电荷；
-  \item Dirichlet--Mertens 张量 $C_{a,b,c}$ 给出同余类的常数漂移（Abel/Hadamard 有限部），而 $\rho/\lambda$ 给出同余类趋于等分布的指数误差。
+  \item Dirichlet--Mertens 常数张量（例如 \(((2,2,2))\)、\(((3,2,2))\)、\(((3,3,3))\)）给出同余类的常数漂移（Abel/Hadamard 有限部），而 $\rho/\lambda$ 给出同余类趋于等分布的指数误差。
 \end{itemize}
