@@ -116,6 +116,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_real_input_40_arity_3d",
+            script="exp_sync_kernel_real_input_40_arity_3d.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_real_input_40_arity_3d.json",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_logM_theta",
             script="exp_sync_kernel_real_input_40_logM_theta.py",
             args=[
@@ -152,6 +160,24 @@ def build_steps() -> List[Step]:
                 "sections/generated/tab_parallel_addition_kernels_bfs.tex",
                 "sections/generated/tab_parallel_addition_kernels_fingerprint.tex",
                 "sections/generated/tab_parallel_addition_kernels_fingerprint_main.tex",
+            ],
+        ),
+        Step(
+            name="parallel_addition_kernels_weighted_primitive",
+            script="exp_parallel_addition_kernels_weighted_primitive.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/parallel_addition_kernels_weighted_primitive.json",
+                "sections/generated/tab_parallel_addition_kernels_weighted_primitive.tex",
+            ],
+        ),
+        Step(
+            name="parallel_addition_kernels_zeta_series",
+            script="exp_parallel_addition_kernels_zeta_series.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/parallel_addition_kernels_zeta_series.json",
+                "sections/generated/tab_parallel_addition_kernels_zeta_series.tex",
             ],
         ),
         Step(

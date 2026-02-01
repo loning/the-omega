@@ -2,15 +2,13 @@
 # -*- coding: utf-8 -*-
 """Compute a phase diagram for log(Mfrak(theta)) on the real-input 40-state kernel.
 
-This implements the Abel finite-part interface with a numerically stable Möbius–Abel double series:
-
-  log Mfrak(theta) = log C(theta)
-    - sum_{m>=2} (1/m) * P_theta(lambda(theta)^(-m))
+This implements the Abel finite-part interface using the closed Möbius tail:
 
   P_theta(z) = sum_{k>=1} mu(k)/k * log zeta_theta(z^k)
 
-  => log Mfrak(theta) = log C(theta)
-    - sum_{m>=2} (1/m) * sum_{k>=1} mu(k)/k * log zeta_theta(lambda(theta)^(-m k))
+  log Mfrak(theta) = log C(theta) + sum_{k>=2} mu(k)/k * log zeta_theta(z_star(theta)^k)
+
+where z_star(theta)=1/lambda(theta), and C(theta) is the residue constant at the simple pole.
 
 Outputs (default):
 - artifacts/export/sync_kernel_real_input_40_logM_theta.json
@@ -94,7 +92,6 @@ def logM_theta(
     theta_e: float,
     theta_neg: float,
     theta_2: float,
-    m_max: int,
     k_max: int,
     states: List[Tuple[str, int, int]],
     kernel_map: Dict[Tuple[str, int], Tuple[str, int]],
@@ -114,25 +111,16 @@ def logM_theta(
 
     logC = logC_from_eigvals(eigs, lam_idx=lam_idx)
 
-    # Cache log zeta at z = lam^{-E}, where E = m*k.
-    logz_cache: Dict[int, float] = {}
-    mu_cache = [mobius(k) for k in range(k_max + 1)]
-
+    z_star = 1.0 / lam
     s = 0.0
-    for m in range(2, m_max + 1):
-        inner = 0.0
-        for k in range(1, k_max + 1):
-            mu = mu_cache[k]
-            if mu == 0:
-                continue
-            E = m * k
-            if E not in logz_cache:
-                z = lam ** (-float(E))
-                logz_cache[E] = log_zeta_from_matrix(M1, z)
-            inner += (float(mu) / float(k)) * logz_cache[E]
-        s -= inner / float(m)
+    for k in range(2, k_max + 1):
+        mu = mobius(k)
+        if mu == 0:
+            continue
+        log_zeta = log_zeta_from_matrix(M1, z_star**k)
+        s += (float(mu) / float(k)) * log_zeta
 
-    prog.tick(f"logM {tag} m_max={m_max} k_max={k_max}")
+    prog.tick(f"logM {tag} k_max={k_max}")
     return lam, (logC + s)
 
 
@@ -164,8 +152,7 @@ def main() -> None:
     parser.add_argument("--theta-2-max", type=float, default=1.0)
     parser.add_argument("--theta-2-steps", type=int, default=41)
     parser.add_argument("--theta-neg", type=float, default=0.0)
-    parser.add_argument("--m-max", type=int, default=40, help="Max m for Möbius–Abel series")
-    parser.add_argument("--k-max", type=int, default=25, help="Max k for Möbius inversion (inner sum)")
+    parser.add_argument("--k-max", type=int, default=200, help="Max k for Möbius tail series")
     parser.add_argument("--no-output", action="store_true", help="Skip writing outputs")
     parser.add_argument(
         "--output",
@@ -203,7 +190,6 @@ def main() -> None:
                 theta_e=the,
                 theta_neg=grid.theta_neg,
                 theta_2=th2,
-                m_max=args.m_max,
                 k_max=args.k_max,
                 states=states,
                 kernel_map=kernel_map,
@@ -246,7 +232,6 @@ def main() -> None:
         "theta_2_values": ys,
         "lambda_grid": lam_grid.tolist(),
         "logM_grid": logM_grid.tolist(),
-        "m_max": args.m_max,
         "k_max": args.k_max,
         # Euler–Mascheroni constant (avoid version-dependent stdlib availability).
         "gamma": 0.5772156649015329,

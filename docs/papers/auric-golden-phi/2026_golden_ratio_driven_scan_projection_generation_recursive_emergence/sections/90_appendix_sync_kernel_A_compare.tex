@@ -97,6 +97,19 @@ M_{\mathrm{glob}}(u)=\bigotimes_{r=0}^{m-1} M_{\mathrm{flow}}(u),
 表 \ref{tab:parallel-addition-kernels-fingerprint} 把单流 BFS 结果通过上述“直积/张量积”装配为全局块级在线机，并给出 carry-free 骨架的闭式 $\det(I-zA_0)$ 与 primitive 轨道谱对照（仅需 $\Tr(A_0^n)$，用 Möbius/Witt 反演即可）。
 \input{sections/generated/tab_parallel_addition_kernels_fingerprint}
 
+\paragraph{分层“素数影子”：\texorpdfstring{$B_{K,n}(u)$}{B\_{K,n}(u)} 的显式多项式（单流）}
+为了把“primitive 闭环”按 carry 强度分层，我们进一步在单流同步图上计算 $B_{K,n}(u)$ 的显式多项式（见上文两变量 $\zeta_K(z,u)$ 与 Witt/Möbius 反演公式）。表 \ref{tab:parallel-addition-kernels-weighted-primitive} 给出 $K_9/K_{13}/K_{21}$ 的单流 $B_{K,n}(u)$（默认截断到 $n\le 4/4/6$）。
+\input{sections/generated/tab_parallel_addition_kernels_weighted_primitive}
+
+\paragraph{两变量 \texorpdfstring{$\zeta_K(z,u)$}{zeta(z,u)} 的截断级数系数（单流）}
+为了把 $\zeta_K(z,u)$ 作为可直接“表格化”的实验指纹，我们计算其在 $z=0$ 附近的截断展开：
+\[
+\zeta_K(z,u)=\sum_{m=0}^{N}c_m(u)z^m+O(z^{N+1}),
+\qquad c_m(u)\in\ZZ[u],
+\]
+其中 $c_m(u)$ 由 $a_n(u)=\Tr(M(u)^n)$ 通过指数生成函数递推得到（等价于 Bowen--Lanford 的行列式公式）。表 \ref{tab:parallel-addition-kernels-zeta-series} 给出三核单流在 $N=4$ 的系数多项式（可复现）。
+\input{sections/generated/tab_parallel_addition_kernels_zeta_series}
+
 \paragraph{做“素数影子”对比的最省力接口}
 对任意核（无权或带权），最省力的计算接口是“先算周期迹，再用反演提 primitive”。具体地：
 \[
@@ -137,6 +150,18 @@ B_n(u)=\sum_{|\gamma|=n}u^{\kappa(\gamma)}
 同理，表 \ref{tab:parallel-addition-kernels-bfs} 可由
 \[
 \texttt{python3 scripts/exp\_parallel\_addition\_kernels\_bfs.py}
+\]
+一键再生成。
+
+而表 \ref{tab:parallel-addition-kernels-weighted-primitive} 可由
+\[
+\texttt{python3 scripts/exp\_parallel\_addition\_kernels\_weighted\_primitive.py}
+\]
+一键再生成。
+
+表 \ref{tab:parallel-addition-kernels-zeta-series} 可由
+\[
+\texttt{python3 scripts/exp\_parallel\_addition\_kernels\_zeta\_series.py}
 \]
 一键再生成。
 
