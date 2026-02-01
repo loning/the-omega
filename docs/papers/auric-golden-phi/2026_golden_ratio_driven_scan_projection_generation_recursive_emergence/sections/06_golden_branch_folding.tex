@@ -70,6 +70,56 @@ X_\infty\ \cong\ \varprojlim X_m,
 并且 $X_m$ 可视为 $X_\infty$ 的有限截断因子：不同 $m$ 的差异仅在“可见前缀长度”上，而非在统一对象本身上。
 \end{theorem}
 
+\subsubsection{关于微态截断与折叠的相容性：正确的交换图}\label{subsec:fold-omega-restriction}
+上述逆系统结构发生在稳定语法集合 $\{X_m\}$ 上，其 restriction 映射是定义 \ref{def:pi-m2-m1-golden} 的截断 $\pi_{m_2\to m_1}:X_{m_2}\to X_{m_1}$。一个自然但需要澄清的问题是：能否在微态空间 $\Omega_m=\{0,1\}^m$ 上直接用“去掉末位”的截断与折叠 $\Fold_m$ 形成交换图？
+
+\paragraph{朴素截断一般不与折叠交换}
+令
+\[
+r_{m+1\to m}:\Omega_{m+1}\to\Omega_m,\qquad
+r_{m+1\to m}(\omega_1\cdots\omega_m\omega_{m+1}):=\omega_1\cdots\omega_m
+\]
+为微态上的普通截断。一般地，
+\[
+\Fold_m\circ r_{m+1\to m}\ \neq\ \pi_{m+1\to m}\circ \Fold_{m+1}.
+\]
+例如取 $m=1$、$\omega=11$，则 $r_{2\to 1}(11)=1$，从而 $(\Fold_1\circ r_{2\to 1})(11)=\Fold_1(1)=1$；另一方面 $N(11)=F_2+F_3=3$ 的 Zeckendorf 规范形为 $3=F_4$，故 $\Fold_2(11)=00$，从而 $(\pi_{2\to 1}\circ \Fold_2)(11)=0$。
+
+\paragraph{折叠感知的 restriction（在 $\Omega$ 上实现交换）}
+为在微态层面得到严格交换的形式化，我们定义一个与折叠相容的 restriction：
+\[
+\widetilde r_{m+1\to m}:\Omega_{m+1}\to \Omega_m,\qquad
+\widetilde r_{m+1\to m}(\omega):=\pi_{m+1\to m}\bigl(\Fold_{m+1}(\omega)\bigr).
+\]
+注意 $\widetilde r_{m+1\to m}(\omega)\in X_m\subset\Omega_m$，因此该定义确实给出一条 $\Omega_{m+1}\to\Omega_m$ 的映射（它不是“原始截断”，而是“先折叠后截断”的可审计 coarse-graining）。
+
+\begin{proposition}[跨分辨率相容的交换图]\label{prop:fold-omega-commute}
+对任意 $m\ge 1$，下图交换：
+\[
+\begin{CD}
+\Omega_{m+1} @>{\Fold_{m+1}}>> X_{m+1}\\
+@V{\widetilde r_{m+1\to m}}VV @VV{\pi_{m+1\to m}}V\\
+\Omega_m @>{\Fold_m}>> X_m.
+\end{CD}
+\]
+即对任意 $\omega\in\Omega_{m+1}$ 有
+\[
+\Fold_m\bigl(\widetilde r_{m+1\to m}(\omega)\bigr)
+\ =\
+\pi_{m+1\to m}\bigl(\Fold_{m+1}(\omega)\bigr).
+\]
+\end{proposition}
+
+\begin{proof}
+由定义，$\widetilde r_{m+1\to m}(\omega)=\pi_{m+1\to m}(\Fold_{m+1}(\omega))\in X_m$。而命题 \ref{prop:fold-basic} 的幂等性给出：对任意 $x\in X_m$，$\Fold_m(x)=x$。因此
+\[
+\Fold_m\bigl(\widetilde r_{m+1\to m}(\omega)\bigr)
+=\Fold_m\!\left(\pi_{m+1\to m}(\Fold_{m+1}(\omega))\right)
+=\pi_{m+1\to m}(\Fold_{m+1}(\omega)).
+\]
+证毕。
+\end{proof}
+
 \subsection{分辨率折叠映射（folding）}
 
 折叠的目标是：把任意窗口微态 $\omega=\omega_1\cdots \omega_m\in\Omega_m$ 规范化为一个合法词 $x\in X_m$。
@@ -252,6 +302,16 @@ Y_m:=\Phi_m\bigl(\{0,1\}^{\ZZ}\bigr)\ \subset\ X_m^{\ZZ}.
 \]
 \end{definition}
 
+\begin{remark}[不要将 $Y_m$ 与“黄金分割移位”混淆]\label{rem:Ym-not-golden-mean}
+需要强调：$X_m$ 是“禁止相邻 $11$”语法在长度 $m$ 上的合法词集合（字母表为 $X_m$），而 $Y_m$ 是字母表 $X_m$ 上的一个子移位；因此 $Y_m$ 并不是字母表 $\{0,1\}$ 上的黄金分割 SFT（禁词 $11$ 的 golden mean shift）。
+
+更具体地：
+\begin{itemize}
+  \item 当 $m=1$ 时，$X_1=\{0,1\}$ 且 $\Fold_1$ 为恒等，因此 $\Phi_1$ 是 $\{0,1\}^{\ZZ}$ 上的恒等映射，从而 $Y_1=\{0,1\}^{\ZZ}$（全移位），这与黄金分割移位不同。
+  \item 当 $m\ge 2$ 时，字母表大小为 $|X_m|=F_{m+2}>2$，故 $Y_m$ 的自然字母表不是 $\{0,1\}$；其结构需在 $X_m^{\ZZ}$ 上讨论，并由 sofic 图像理论刻画（见命题 \ref{prop:Y_m-sofic} 与定理 \ref{thm:Phi_m-sofic-graph}）。
+\end{itemize}
+\end{remark}
+
 \begin{proposition}[对子移位的因子性质（序列级折叠的最小口径）]\label{prop:Phi_m-factor-on-subshift}
 设 $S\subset\{0,1\}^{\ZZ}$ 为任意子移位（紧致、移位不变闭集）。则：
 \begin{enumerate}
@@ -373,6 +433,48 @@ S \xrightarrow{\ a\ } \delta_m(S,a).
 \begin{remark}[右 Fischer cover（最小右解析表示）]\label{rem:fischer-cover}
 进一步将 $H_m^{\mathrm{det}}$ 做\textbf{状态最小化}（合并具有相同 follower 集的状态），即可得到 $Y_m$ 的右 Fischer cover：一个右解析且 follower-separated 的标记图表示，其同构类由 $Y_m$ 唯一确定（\cite{LindMarcus1995,Kitchens1998SymbolicDynamics}）。下文关于熵与 Parry 测度的计算在任何这样的右解析表示上均可执行；采用 Fischer cover 的优势在于它给出\textbf{最小}的可计算状态空间。
 \end{remark}
+
+\begin{definition}[follower 集与右 Fischer cover 的显式商图]\label{def:fischer-quotient}
+在右解析标记图 $H_m^{\mathrm{det}}=(\mathcal{S}_m,\mathcal{E}_m,\lambda_m)$ 上，对任意状态 $S\in\mathcal{S}_m$ 定义其 follower 集为
+\[
+\mathsf{F}(S):=\Bigl\{a_0a_1a_2\cdots\in X_m^{\mathbb{N}}:\ \exists\ \text{从 }S\text{ 出发的右无限路径 }e_0e_1e_2\cdots\ \text{s.t.}\ \lambda_m(e_k)=a_k\Bigr\}.
+\]
+定义等价关系 $S\sim S'$ 当且仅当 $\mathsf{F}(S)=\mathsf{F}(S')$。令 $\mathcal{S}_m^{\mathrm{Fis}}:=\mathcal{S}_m/\!\sim$ 为等价类集合。
+
+定义商标记图
+\[
+H_m^{\mathrm{Fis}}=(\mathcal{S}_m^{\mathrm{Fis}},\mathcal{E}_m^{\mathrm{Fis}},\lambda_m^{\mathrm{Fis}})
+\]
+如下：若 $H_m^{\mathrm{det}}$ 中有边 $S\xrightarrow{\,a\,}T$，则在 $H_m^{\mathrm{Fis}}$ 中加入边
+\[
+[S]\xrightarrow{\,a\,}[T],
+\]
+其中 $[S]$ 表示 $S$ 的等价类。并取 $\lambda_m^{\mathrm{Fis}}$ 为该边的标记 $a$。
+\end{definition}
+
+\begin{proposition}[Fischer cover 的右分辨与最小性]\label{prop:fischer-minimal}
+商图 $H_m^{\mathrm{Fis}}$ 满足：
+\begin{enumerate}
+  \item \textbf{（右分辨）}$H_m^{\mathrm{Fis}}$ 是右解析（right-resolving）的；
+  \item \textbf{（follower-separated）}不同状态具有不同 follower 集；
+  \item \textbf{（同一像空间）}$H_m^{\mathrm{Fis}}$ 呈现的标记移位等于 $Y_m$；
+  \item \textbf{（最小性）}在所有呈现 $Y_m$ 的右解析标记图中，$H_m^{\mathrm{Fis}}$ 的状态数最小；更具体地，对任意右解析呈现 $G$（其标记移位为 $Y_m$），存在一个满射的标记图态射 $G\twoheadrightarrow H_m^{\mathrm{Fis}}$。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(1)} 由命题 \ref{prop:Phi_m-right-resolving} 知 $H_m^{\mathrm{det}}$ 右解析：同一状态 $S$ 的不同出边标记不同。商映射只会合并状态而不会改变“从同一状态出发、按标记 $a$ 的后继状态唯一”的确定性，因此 $H_m^{\mathrm{Fis}}$ 仍右解析。
+
+\textbf{(2)} 由构造，$H_m^{\mathrm{Fis}}$ 的状态即为 follower 集等价类，因此天然 follower-separated。
+
+\textbf{(3)} 合并 follower 相同的状态不会改变可实现的右无限标记集合，从而不改变双边标记语言；因此商图与原图呈现同一 sofic 移位。结合命题 \ref{prop:Phi_m-right-resolving} 的“$H_m^{\mathrm{det}}$ 呈现 $Y_m$”即得。
+
+\textbf{(4)} 设 $G$ 为任意右解析呈现 $Y_m$ 的标记图。对每个状态 $u\in G$，定义其 follower 集 $\mathsf{F}_G(u)$（定义同上）。因为 $G$ 与 $H_m^{\mathrm{det}}$ 呈现同一标记移位 $Y_m$，每个 $u$ 的 follower 集必等于某个 $S\in\mathcal{S}_m$ 的 follower 集；并且右解析性保证从 $u$ 出发按标记推进得到的 follower 集在商图上有唯一对应的后继，因此映射
+\[
+u\ \longmapsto\ [S]\in\mathcal{S}_m^{\mathrm{Fis}}\quad\text{其中 }\mathsf{F}_G(u)=\mathsf{F}(S)
+\]
+可提升为一个标记图态射 $G\to H_m^{\mathrm{Fis}}$，且对边/标记相容。该态射对可达状态是满射（否则 $H_m^{\mathrm{Fis}}$ 存在一个 follower 类在 $Y_m$ 中出现却不被 $G$ 覆盖，与“呈现同一 $Y_m$”矛盾）。因此 $H_m^{\mathrm{Fis}}$ 在右解析呈现类中最小。更系统的标准证明与等价表述可参见 \cite{LindMarcus1995,Kitchens1998SymbolicDynamics} 关于 Fischer cover 的章节。
+\end{proof}
 
 \subsubsection{邻接关系、拓扑熵与 Parry（最大熵）测度}
 取一个右解析且 follower-separated 的表示（例如上面的 Fischer cover），记为
