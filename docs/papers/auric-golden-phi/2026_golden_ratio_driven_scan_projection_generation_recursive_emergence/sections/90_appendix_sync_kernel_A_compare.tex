@@ -1,0 +1,67 @@
+\subsubsection{A-比较：不同字母表/不同折叠核的统一接口（\texorpdfstring{$(p)$}{p}-local $\Rightarrow$ 在线延迟）}\label{app:sync-kernel-A-compare}
+本附录的目标是把“更换字母表/更换归一化核”统一压成同一类可比对象，并把对比量落到可计算的同步图不变量（$\zeta$、primitive 轨道谱、“有限部常数”等）上。
+
+\paragraph{把核视为 digit-set conversion}
+固定基数 $\beta=\varphi$。给定输出字母表 $A$，记输入字母表为
+\[
+B:=A+A.
+\]
+所谓“折叠核/归一化核”在算法层面就是一个保持值的不变换（digit-set conversion）：
+\[
+K:\ B^{\ZZ}\to A^{\ZZ},
+\qquad
+\sum_{j\in\ZZ}(Ku)_j\beta^j=\sum_{j\in\ZZ}u_j\beta^j,
+\]
+并且要求有限支撑输入映到有限支撑输出（以对应有限表示的加法）。
+
+\paragraph{\texorpdfstring{$(p)$}{p}-local 与在线延迟}
+并行加法的标准形式化是局部函数（滑动块码/$(p)$-local；见 \cite{FrougnyPelantovaSvobodova2013MinimalDigitSets} 的定义 1）。若存在 $r,t\in\NN$ 与局部规则 $\Phi:B^{p}\to A$（其中 $p=r+t+1$）使得
+\[
+(Ku)_j=\Phi(u_{j+t},\dots,u_{j-r}),
+\]
+则称 $K$ 为 $(t,r)$-local，$r$ 为 memory，$t$ 为 anticipation。
+
+把同一局部规则按 MSDF 顺序“串行化”执行时，第 $j$ 位必须等待看到 $u_{j+t}$ 才能决定，因此其\textbf{单趟在线延迟}为
+\[
+\delta(K)=t.
+\]
+（这不是新增假设：它只是把 $(p)$-local 的“向前看”参数翻译到在线口径。）
+
+\paragraph{同步图与可计算指纹}
+一旦把 $K$ 实现为确定性在线有限状态转导器，其同步部分给出有限有向图 $\Gamma_K$，邻接矩阵记为 $B_K$。由本附录前文（尤其是 \S\ref{app:witt-weighted} 与 \S\ref{subsec:zeta-online-kernel} 的相同推导链）可得：
+\[
+\zeta_K(z)=\frac{1}{\det(I-zB_K)},\qquad a_n(K)=\Tr(B_K^n),
+\]
+primitive 轨道数（按轨道计）
+\[
+p_n(K)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(K).
+\]
+因此“不同字母表/不同核”的对比可以落到同一组可审计量：
+\[
+\mathcal{F}(K)=\bigl(|A|,|B|,\delta(K),|Q_K|,\lambda_{\max}(B_K),\zeta_K,\{p_n(K)\}_{n\le N},\log\mathfrak{M}_K,\dots\bigr).
+\]
+
+\paragraph{本文内核的 A-对比（可复现表）}
+本文已经在 $\beta=\varphi$ 上构造并计算了两类“在线归一化核”：
+\begin{itemize}
+  \item \textbf{10 状态同步核}：输入字母表为逐位和 $B=\{0,1,2\}$，输出对应 Zeckendorf 规范形的在线归一化核（本附录 \S\ref{app:witt-weighted} 前的 10 状态构造）。
+  \item \textbf{40 状态真实输入同步核}：把两条合法 Zeckendorf 输入的约束并入状态（本附录 \S\ref{app:real-input-40-abel}），得到 $|\Sigma|=40$ 的 skew-product 核。
+\end{itemize}
+它们的 $\zeta$、$\lambda_{\max}$、primitive 谱与有限部常数对比汇总见表 \ref{tab:sync-kernel-A-compare}（由脚本生成并 \verb|\input|）。
+\input{sections/generated/tab_sync_kernel_A_compare}
+
+\paragraph{与“最小冗余字母表并行核”的关系（外部基准）}
+在同一基数 $\beta=\varphi$ 上，\cite{FrougnyPelantovaSvobodova2013MinimalDigitSets} 的 Corollary~38 证明：并行加法可在
+\[
+A=\{-1,0,1\}\quad\text{或}\quad A=\{0,1,2\}
+\]
+上完成，且两者均为\textbf{最小}字母表（$|A|=3$）。此外，针对 $A=\{-1,0,1\}$ 的一个显式并行算法（Algorithm~G）在讲义中给出，并注明该加法在该字母表上为 \textbf{21-local}（因此在在线口径下粗对应 $\delta\approx 10$；见 \cite{FrougnyHellerPelantovaSvobodovaParallelAlgorithmsSlides}，以及 Leiden 讲稿中的 21/13/9-local 对照 \cite{Frougny2012NumbersAsStreamsLeiden}）。
+
+这些并行核一旦被编译为确定性在线转导器，其同步图同样给出 $\zeta$ 与 primitive 谱，从而与表 \ref{tab:sync-kernel-A-compare} 的“机制核”完全共享同一比较接口；本文把它作为后续可直接对接的外部基准，而不在当前版本中展开完整同步图编译。
+
+\paragraph{复现方式（只需运行一个新脚本）}
+表 \ref{tab:sync-kernel-A-compare} 可由下述单一入口脚本再生成（脚本会自动调用其依赖的已有实验脚本）：
+\[
+\texttt{python3 scripts/exp\_sync\_kernel\_A\_compare.py}.
+\]
+
