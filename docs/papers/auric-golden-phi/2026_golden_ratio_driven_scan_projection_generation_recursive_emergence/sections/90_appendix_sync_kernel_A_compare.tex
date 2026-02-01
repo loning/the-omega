@@ -68,6 +68,29 @@ A=\{-1,0,1\}\quad\text{或}\quad A=\{0,1,2\}
 \end{itemize}
 上述三点正是本附录后续把“不同字母表/不同折叠核”压缩成同一类同步图指纹对象的共同输入。
 
+\paragraph{统一生成模板：零式 \texorpdfstring{$(+;q)$}{(+;q)}-场}
+三类并行核都可视为“向整数场 $q=(q_j)$ 注入零式”的同一模板：给定
+$$
+Z(X)=\sum_{i=-h}^{k} b_i X^i,\qquad Z(\beta)=0,
+$$
+其中 $b_i\in\ZZ$，并令 $q_j$ 取值于某个有限整数集合（由字母表约束/局部选择规则给定）。则一步更新可统一写成
+$$
+z'_j
+=
+z_j-\sum_{i=-h}^{k} b_i\,q_{j-i}.
+$$
+在黄金比例基的两条稀疏零式特例中（见 \cite{FrougnyHellerPelantovaSvobodovaParallelAlgorithmsSlides} 的 Example/Algorithm 段落），它退化为：
+\begin{itemize}
+  \item \textbf{强零式（$9$-local）}：
+  $$
+  z'_j=z_j-7q_j+q_{j-4}+q_{j+4}.
+  $$
+  \item \textbf{弱零式（$13$-local 与 $21$-local 的底层）}：
+  $$
+  z'_j=z_j-3q_j+q_{j-2}+q_{j+2}.
+  $$
+\end{itemize}
+
 \paragraph{把三类并行核编译到可 BFS 的在线机（单流）}
 为把“核的局部规则”落实到可计算对象，我们按 stencil 的同余类解耦，把核限制到单一同余流（$\pm 4$ stencil 对应模 $4$ 的 4 条流，$\pm 2$ stencil 对应模 $2$ 的 2 条流）。在单流上，核成为一个确定性在线机：每一步读取一个输入符号 $v_n$（逐位和/中间字母表符号），更新有限状态并输出固定延迟后的输出符号。由此可直接用 BFS 枚举全部可达状态，得到单流同步图 $\Gamma^{\mathrm{flow}}_K$。
 
