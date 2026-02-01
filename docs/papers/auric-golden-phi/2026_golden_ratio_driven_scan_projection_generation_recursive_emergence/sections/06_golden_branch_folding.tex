@@ -128,6 +128,17 @@ N(\omega):=\sum_{k=1}^{m}\omega_k F_{k+1}\ \in\ \NN.
 \]
 \end{definition}
 
+\begin{proposition}[记忆/预期性（窗口半径）]\label{prop:Phi_m-radius}
+$\Phi_m$ 是一个滑动块码，其\textbf{记忆}为 $0$、\textbf{预期性}为 $m-1$：即对每个时刻 $t$，输出符号 $(\Phi_m(s))_t$ 仅依赖于输入坐标
+\(
+s_t,s_{t+1},\dots,s_{t+m-1}
+\)。
+\end{proposition}
+
+\begin{proof}
+由定义 \ref{def:Phi_m} 直接可见；这也是滑动块码“记忆/预期性（左/右半径）”的标准口径（参见 \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}）。
+\end{proof}
+
 \begin{proposition}[移位等变性（时间相容）]\label{prop:Phi_m-equivariant}
 对任意 $m\ge 1$ 有 $\Phi_m\circ\sigma=\sigma\circ\Phi_m$。
 \end{proposition}
@@ -150,6 +161,25 @@ N(\omega):=\sum_{k=1}^{m}\omega_k F_{k+1}\ \in\ \NN.
 Y_m:=\Phi_m\bigl(\{0,1\}^{\ZZ}\bigr)\ \subset\ X_m^{\ZZ}.
 \]
 \end{definition}
+
+\begin{proposition}[对子移位的因子性质（序列级折叠的最小口径）]\label{prop:Phi_m-factor-on-subshift}
+设 $S\subset\{0,1\}^{\ZZ}$ 为任意子移位（紧致、移位不变闭集）。则：
+\begin{enumerate}
+  \item $\Phi_m|_S:S\to X_m^{\ZZ}$ 连续且与移位交换；
+  \item 其像 $Y_m(S):=\Phi_m(S)$ 是 $X_m^{\ZZ}$ 的一个子移位；
+  \item 映射 $\Phi_m|_S:S\twoheadrightarrow Y_m(S)$ 是一个因子映射。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+由于 $\Phi_m$ 是长度 $m$ 的滑动块码（定义 \ref{def:Phi_m}），它对全移位是连续映射；限制到闭子集 $S$ 仍连续。命题 \ref{prop:Phi_m-equivariant} 已证 $\Phi_m$ 与移位交换，限制后同样成立。
+
+又因为 $S$ 紧致且 $\Phi_m$ 连续，$Y_m(S)=\Phi_m(S)$ 为紧致闭集；并且对任意 $y=\Phi_m(s)\in Y_m(S)$，有
+\[
+\sigma y=\sigma\Phi_m(s)=\Phi_m(\sigma s)\in \Phi_m(S)=Y_m(S),
+\]
+故 $Y_m(S)$ 移位不变，从而是子移位。最后，“因子映射”按定义即为连续、满射且移位等变的映射；这些性质已逐条建立。
+\end{proof}
 
 \begin{proposition}[像空间为 sofic 子移位]\label{prop:Y_m-sofic}
 $Y_m$ 是一个 sofic 子移位。更具体地，它可由一个显式有限标记图给出。
@@ -214,6 +244,121 @@ e_t:=(v_t,s_{t+m-1})\in E_m.
 定理 \ref{thm:Phi_m-sofic-graph} 给出的是\emph{拓扑/组合}层面的有限状态表示：$Y_m$ 的所有允许序列由有限图刻画。但对任意输入过程（例如第 \ref{sec:experiments} 节的旋转扫描产生的 Sturmian 序列），其推前测度 $(\Phi_m)_*\mu$ 在 $Y_m$ 上未必是一阶马尔可夫测度。实践上若需要一个“诱导转移结构”的数值近似，可在图 $G_m$ 上用长样本估计边/状态频率，从而得到一个可审计的有限状态 Markov 近似；该近似与第 \ref{sec:quant-fit} 节的直方图/偏差指标天然对齐。
 \end{remark}
 
+\subsection{从 sofic 图像到可计算的 Markov 覆盖：邻接矩阵/熵/最大熵测度与 \texorpdfstring{$\zeta$}{zeta}}\label{subsec:Phi_m-fischer}
+上一小节把 $Y_m$ 写成一个显式标记图 $G_m$ 的像，从而给出“$\Phi_m$ 的像空间是 sofic”的可核验表示。为了把该表示提升为 ETDS 语境下常用的可计算不变量（邻接矩阵、熵、最大熵测度、以及 \(\zeta\) 的行列式接口），需要引入 sofic shift 的标准 Markov 覆盖（cover）理论。
+
+\subsubsection{右解析（right-resolving）标记图：从 \texorpdfstring{$G_m$}{Gm} 到 Fischer cover 的可计算构造}
+本段把“$Y_m$ 是 sofic”进一步提升为一个\textbf{右解析}（right-resolving）的标记图表示，从而得到一条可直接导出邻接关系、熵与 Parry（最大熵）测度的计算链条。
+
+\begin{definition}[从 \texorpdfstring{$G_m$}{Gm} 的子集构造得到右解析标记图]\label{def:Phi_m-right-resolving}
+记 $G_m=(V_m,E_m,\ell_m)$ 为定义 \ref{def:G_m} 的有限标记图（字母表为 $X_m$）。定义一个确定性右解析标记图
+\[
+H_m^{\mathrm{det}}=(\mathcal{S}_m,\mathcal{E}_m,\lambda_m),
+\]
+其顶点集为若干非空子集 $S\subset V_m$，边按如下\textbf{转移函数}给出：对任意 $S\subset V_m$ 与任意输出符号 $a\in X_m$，令
+\[
+\delta_m(S,a):=\Bigl\{v'\in V_m:\ \exists\, e=(v,b)\in E_m\ \text{s.t.}\ v\in S,\ \ell_m(e)=a,\ \text{且 } e:v\to v'\Bigr\}.
+\]
+若 $\delta_m(S,a)\neq\varnothing$，则在 $H_m^{\mathrm{det}}$ 中加入一条标记为 $a$ 的边
+\[
+S \xrightarrow{\ a\ } \delta_m(S,a).
+\]
+并令 $\mathcal{S}_m$ 为从初始集合 $V_m$ 出发，在上述转移下可达的全部状态集合（从而 $\mathcal{S}_m$ 有限且可算法生成）。
+\end{definition}
+
+\begin{proposition}[右解析性与 sofic 表示]\label{prop:Phi_m-right-resolving}
+由定义 \ref{def:Phi_m-right-resolving} 构造的标记图 $H_m^{\mathrm{det}}$ 满足：
+\begin{enumerate}
+  \item \textbf{（右解析）}对任意顶点 $S\in\mathcal{S}_m$，从 $S$ 出发的两条不同出边具有不同标记；
+  \item \textbf{（同一像空间）}$H_m^{\mathrm{det}}$ 所呈现的标记移位等于 $Y_m$：其双边标记路径的标记序列恰为 $Y_m$。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(1)} 由构造可知：对固定 $S$ 与固定标记 $a$，若 $\delta_m(S,a)\neq\varnothing$ 则对应的出边终点被定义为唯一集合 $\delta_m(S,a)$，故同一 $S$ 不可能有两条出边共享同一标记 $a$。
+
+\textbf{(2)} 从 $G_m$ 到 $H_m^{\mathrm{det}}$ 的子集构造是正则语言/有限自动机理论的标准确定化过程：$H_m^{\mathrm{det}}$ 识别的正是 $G_m$ 的标记语言，因此两者给出相同的标记移位。结合定理 \ref{thm:Phi_m-sofic-graph} 的 $Y_m=\mathcal{L}_m(Z_m)$ 即得结论。关于该构造在符号动力系统中的标准表述，可参见 \cite{LindMarcus1995,Kitchens1998SymbolicDynamics} 中对 sofic shift 的右解析表示与 Fischer cover 的讨论。
+\end{proof}
+
+\begin{remark}[右 Fischer cover（最小右解析表示）]\label{rem:fischer-cover}
+进一步将 $H_m^{\mathrm{det}}$ 做\textbf{状态最小化}（合并具有相同 follower 集的状态），即可得到 $Y_m$ 的右 Fischer cover：一个右解析且 follower-separated 的标记图表示，其同构类由 $Y_m$ 唯一确定（\cite{LindMarcus1995,Kitchens1998SymbolicDynamics}）。下文关于熵与 Parry 测度的计算在任何这样的右解析表示上均可执行；采用 Fischer cover 的优势在于它给出\textbf{最小}的可计算状态空间。
+\end{remark}
+
+\subsubsection{邻接关系、拓扑熵与 Parry（最大熵）测度}
+取一个右解析且 follower-separated 的表示（例如上面的 Fischer cover），记为
+\[
+H_m=(\mathcal{S}_m,\mathcal{E}_m,\lambda_m),
+\]
+其中每条边 $e\in\mathcal{E}_m$ 具有起点 $s(e)\in\mathcal{S}_m$、终点 $t(e)\in\mathcal{S}_m$ 与标记 $\lambda_m(e)\in X_m$。
+
+\begin{definition}[覆盖 SFT 的邻接矩阵（边移位）]\label{def:Phi_m-adjacency}
+令 $X_{A_m}$ 为图 $H_m$ 的\textbf{边移位}（把边当作字母的 SFT）。其邻接矩阵 $A_m$ 为 $0$--$1$ 矩阵，索引集为 $\mathcal{E}_m$，并由
+\[
+(A_m)_{e,e'}:=\mathbf{1}\{\,t(e)=s(e')\,\}
+\]
+给出。这一邻接关系是完全显式的：它只依赖于 $H_m$ 的端点相容性。
+\end{definition}
+
+\begin{proposition}[拓扑熵的可计算公式]\label{prop:Phi_m-entropy}
+设 $H_m$ 不可约（或取其最大熵不可约分量），则
+\[
+h_{\mathrm{top}}(Y_m)=h_{\mathrm{top}}(X_{A_m})=\log\rho(A_m).
+\]
+\end{proposition}
+
+\begin{proof}
+$X_{A_m}$ 通过逐边取标记映射到 $Y_m$（一块码），当 $H_m$ 为 Fischer cover 时该标记映射是有限对一的因子码，因此熵保持：$h_{\mathrm{top}}(Y_m)=h_{\mathrm{top}}(X_{A_m})$。而对边移位（SFT）有经典公式 $h_{\mathrm{top}}(X_{A_m})=\log\rho(A_m)$（\cite{LindMarcus1995,Kitchens1998SymbolicDynamics}）。
+\end{proof}
+
+\begin{proposition}[Parry 最大熵测度（覆盖 \texorpdfstring{$X_{A_m}$}{XAm} 上）]\label{prop:Phi_m-parry}
+令 $\lambda=\rho(A_m)$，取 Perron--Frobenius 左/右特征向量 $l,r>0$ 满足
+\(
+l^{\mathsf T}A_m=\lambda l^{\mathsf T},\ A_m r=\lambda r
+\)
+并规范化为 $l^{\mathsf T}r=1$。定义状态权重
+\[
+\pi(e):=l_e r_e\qquad (e\in\mathcal{E}_m),
+\]
+以及转移概率
+\[
+P_{e\to e'}:=\frac{(A_m)_{e,e'}\,r_{e'}}{\lambda\, r_e}.
+\]
+则由 $(\pi,P)$ 给出的平稳马尔可夫测度是 $X_{A_m}$ 上唯一的最大熵测度（Parry 测度），记为 $\mu_{A_m}^{\mathrm{Parry}}$。
+其对边柱集 $[e_0e_1\cdots e_{n-1}]$ 的概率满足
+\[
+\mu_{A_m}^{\mathrm{Parry}}([e_0\cdots e_{n-1}])=\pi(e_0)\prod_{j=0}^{n-2} P_{e_j\to e_{j+1}}.
+\]
+\end{proposition}
+
+\begin{proposition}[把 Parry 测度推前到 \texorpdfstring{$Y_m$}{Ym}]\label{prop:Phi_m-parry-pushforward}
+令 $\pi_m:X_{A_m}\to Y_m$ 为逐边取标记的因子映射
+\[
+(\pi_m((e_t)_{t\in\ZZ}))_t:=\lambda_m(e_t)\in X_m.
+\]
+则 $\nu_m:=({\pi_m})_*\mu_{A_m}^{\mathrm{Parry}}$ 是 $Y_m$ 的最大熵测度（当 $Y_m$ 不可约时唯一）。对任意输出柱集 $[a_0\cdots a_{n-1}]$（$a_j\in X_m$），有完全显式的求和公式
+\[
+\nu_m([a_0\cdots a_{n-1}])
+=
+\sum_{\substack{e_0,\dots,e_{n-1}\in\mathcal{E}_m\\ \lambda_m(e_j)=a_j}}
+\mu_{A_m}^{\mathrm{Parry}}([e_0\cdots e_{n-1}]),
+\]
+其中 $\mu_{A_m}^{\mathrm{Parry}}([e_0\cdots e_{n-1}])$ 由命题 \ref{prop:Phi_m-parry} 的 PF 数据给出。
+\end{proposition}
+
+\begin{proof}
+Fischer cover 的 Parry 测度推前为 sofic shift 的最大熵测度是标准结论；上述柱集公式仅是“推前测度 = 对纤维求和”的展开。参见 \cite{LindMarcus1995,Kitchens1998SymbolicDynamics} 中关于 sofic shift 最大熵测度与 Fischer cover 的章节。
+\end{proof}
+
+\begin{remark}[可复现的邻接关系与熵计算（脚本）]\label{rem:phi_m_entropy_script}
+上文给出的是“如何从右解析表示得到邻接关系/熵/Parry 测度”的抽象接口。为回应“需要可计算邻接关系与显式熵值”的审计需求，仓库提供脚本 \texttt{scripts/exp\_phi\_m\_sofic\_entropy.py}：它从定义 \ref{def:G_m} 的标记图 $G_m$ 出发，经子集确定化与右语言最小化构造一个右解析表示，并输出其（最大熵本质分量上的）邻接计数矩阵的谱半径，从而得到 $h_{\mathrm{top}}(Y_m)$ 的数值值。表 \ref{tab:phi_m_sofic_entropy} 为该脚本的默认输出摘要（见 \texttt{artifacts/export/phi\_m\_sofic\_entropy.csv} 与 \texttt{sections/generated/tab\_phi\_m\_sofic\_entropy.tex}）。
+\end{remark}
+
+\input{sections/generated/tab_phi_m_sofic_entropy}
+
+\begin{remark}[为什么在本文中用“覆盖的 \texorpdfstring{$\zeta$}{zeta}”作为接口]\label{rem:sofic-zeta-vs-cover}
+需要强调：一般 sofic shift 的\emph{内禀} Artin--Mazur \(\zeta_{Y_m}\) 虽然是有理函数（可由自动机/cover 理论计算），但它\textbf{并不}在有限对一因子下保持不变，因此通常不能简单地由 \(\det(I-zA_m)\) 直接给出。本文把 \(\det(I-zA)\) 与 Fredholm 行列式作为“语法层可计算接口”时，所对应的是覆盖 SFT（即 Fischer cover）的 \(\zeta\)，这也是 Cuntz--Krieger/群胚 C*-代数与 PF/Parry 理论最自然对接的对象。
+\end{remark}
+
 \subsection{推广：一般 Ostrowski 计数下的稳定折叠}\label{subsec:ostrowski-generalized-fold}
 
 本节把“Fibonacci/Zeckendorf 折叠”推广到一般无理数的 Ostrowski 计数系统，以回应“扩展到更广泛计数框架”的审稿要求。黄金分支的特殊性在于：当 $\alpha=\varphi^{-1}=[0;1,1,1,\dots]$ 时，Ostrowski 计数退化为 Fibonacci 权重与 Zeckendorf 语法，因此稳定类型空间成为最简单的二元 SFT（禁止相邻 $11$），并使 PF/$\zeta$ 接口闭式可得。
@@ -259,7 +404,7 @@ X_m^{(\alpha)}:=\Bigl\{(d_1,\dots,d_m):\ 0\le d_n\le a_n,\ \ d_n=a_n\Rightarrow 
 特别地，当 $\alpha=\varphi^{-1}$（即 $a_n\equiv 1$）时，$q_{m+1}=F_{m+2}$，而 $X_m^{(\alpha)}$ 退化为二元集合 $\{0,1\}^m$ 中禁止相邻 $11$ 的黄金均值语法 $X_m$。
 \end{proposition}
 
-\subsubsection{一般折叠算子 \texorpdfstring{$\Fold_m^{(\alpha)}$}{Fold\_m^(alpha)}}
+\subsubsection{一般折叠算子 \texorpdfstring{$\Fold_m^{(\alpha)}$}{Fold\_m(alpha)}}
 
 为了与本文的“折叠 = 取值 + 取规范形”机制保持一致，我们把一般 Ostrowski 折叠定义为：先将“未规范数字”（允许违反相邻最大值约束）赋一个可审计整数值，再取 Ostrowski 规范形并截断。
 

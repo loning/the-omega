@@ -6,7 +6,7 @@
 \[
 \varphi=\frac{1+\sqrt5}{2}
 \]
-满足自指方程 $\varphi=1+\varphi^{-1}$，亦即 $\varphi^{-1}$ 是映射 $x\mapsto (1+x)^{-1}$ 的不动点。这一不动点结构为“第一非平凡概念”的抽象原型：其定义不依赖外部坐标系，而由自身重整化关系闭合确定。本文将此视为“尺度生成”的最简范式：一个常数通过自指递归确定，并在后续层级中支配一切计数递归与编码语法。
+满足自指方程 $\varphi=1+\varphi^{-1}$，亦即 $\varphi^{-1}$ 是映射 $x\mapsto (1+x)^{-1}$ 的不动点。本文在本节只取其\textbf{严格可用的数学含义}：该不动点关系提供一个最简的自相似尺度常数示例，并在后续的斐波那契递推、增长率与编码语法中反复出现。关于“概念/意义”的解释性叙述不作为任何定理的前提（见引言小节 \ref{subsec:reading-guide}）。
 
 \subsection{反共振最优性原则}
 
@@ -34,6 +34,14 @@ R(\alpha)=\limsup_{n\to\infty}\frac{1}{q_n^2\abs{\alpha-p_n/q_n}},
 其中 $p_n/q_n$ 为 $\alpha$ 的连分数收敛分数（参见 \cite{Cassels1957,KuipersNiederreiter1974}）。
 \end{remark}
 
+\begin{definition}[Markov 常数（最坏逼近下界）]\label{def:markov-constant}
+对 $\alpha\in\RR\setminus\QQ$，定义
+\[
+c(\alpha):=\inf_{(p,q)\in\ZZ\times\NN} q^2\left|\alpha-\frac{p}{q}\right|\in[0,\infty).
+\]
+若 $c(\alpha)>0$（等价于 $\alpha$ badly approximable），则 $R(\alpha)=1/c(\alpha)$。
+\end{definition}
+
 \begin{theorem}[黄金比例的极值反共振]\label{thm:golden-antiresonance}
 设 $\alpha=\varphi^{-1}$. 则对任意 $p/q\in\QQ$ 有
 \[
@@ -45,6 +53,41 @@ R(\alpha)=\limsup_{n\to\infty}\frac{1}{q_n^2\abs{\alpha-p_n/q_n}},
 \]
 因此 $R(\varphi^{-1})=\sqrt5$ 并在该意义下达到最小可能的“最坏共振上界”。
 \end{theorem}
+
+\begin{proof}
+第一部分是“黄金比例（及其等价数）为最坏逼近数”的标准结论：对
+\(\alpha=\varphi^{-1}=[0;1,1,1,\dots]\)，对任意有理数 \(p/q\) 都有
+\[
+\left|\alpha-\frac{p}{q}\right|\ge \frac{1}{\sqrt5\,q^2}.
+\]
+其证明可由连分数的最佳逼近性质与 Markov/Lagrange 谱底 \(\sqrt5\) 的刻画给出；此处我们按最小输入原则直接引用该精确形式（见 \cite{Cassels1957}）。
+
+第二部分即 Hurwitz 定理：对任意无理数 \(\beta\)，存在无穷多个 \(p/q\) 满足
+\(\left|\beta-\frac{p}{q}\right|<1/(\sqrt5\,q^2)\)，且常数 \(1/\sqrt5\) 不能整体改大（见 \cite{Cassels1957} 或 \cite{KuipersNiederreiter1974}）。由定义 \ref{def:resonance-strength} 得 \(R(\varphi^{-1})=\sqrt5\)，并且对任意 \(\beta\) 有 \(R(\beta)\ge \sqrt5\)。
+\end{proof}
+
+\begin{definition}[模群等价（唯一性口径）]\label{def:modular-equivalence}
+称两无理数 $\alpha,\beta\in\RR\setminus\QQ$ \emph{等价}，若存在整数矩阵
+\(
+\begin{pmatrix}a&b\\c&d\end{pmatrix}\in \mathrm{SL}(2,\ZZ)
+\)
+使得
+\[
+\beta=\frac{a\alpha+b}{c\alpha+d}.
+\]
+这是连分数理论中的标准等价关系（保持 Lagrange/Markov 不变量；见 \cite{Cassels1957}）。
+\end{definition}
+
+\begin{theorem}[Hurwitz 极值的唯一性（Markov/Lagrange 谱底）]\label{thm:hurwitz-uniqueness}
+设 $\beta\in\RR\setminus\QQ$ 且 $R(\beta)=\sqrt5$（等价于 $c(\beta)=1/\sqrt5$，见定义 \ref{def:markov-constant}）。则 $\beta$ 与 $\varphi^{-1}$ 在定义 \ref{def:modular-equivalence} 的意义下等价。
+特别地，若进一步规定 $\beta\in(0,1)$ 且 $\beta$ 的连分数首项为 $[0;\cdot]$，则该等价类中唯一的代表为 $\beta=\varphi^{-1}$。
+\end{theorem}
+
+\begin{proof}
+这是 Markov 定理（Lagrange 谱的最小点）的一种标准表述：Lagrange 谱的最小值为 \(\sqrt5\)，且达到该最小值当且仅当 \(\beta\) 与 \(\varphi\)（从而与 \(\varphi^{-1}\)）在 \(\mathrm{SL}(2,\ZZ)\) 的分式线性变换下等价。可参见 \cite{Cassels1957} 中关于 Markov/Lagrange 谱与等价变换保持性的系统论述。
+
+最后一条“在 \((0,1)\) 的规范化唯一代表”来自连分数表示的唯一性：等价变换对应于连分数的有限前缀变换；在固定 \((0,1)\) 且首项为 \(0\) 的规范下，周期连分数 \([0;1,1,1,\dots]=\varphi^{-1}\) 给出唯一代表。
+\end{proof}
 
 定理 \ref{thm:golden-antiresonance} 给出一个完全定量的“反共振”选择：在 Hurwitz 意义下，$\alpha=\varphi^{-1}$ 达到最小可能的最坏情形逼近常数（即 $R(\varphi^{-1})=\sqrt5$）。因此当分辨率或返归时间由分母 $q$ 控制时，黄金分支在最坏情形下提供统一的低阶共振抑制上界（参见 \cite{Cassels1957,KuipersNiederreiter1974}）。
 
@@ -91,4 +134,3 @@ D_N^*(\varphi^{-1};x_0)\ \le\ \frac{3+\left\lceil \frac{\log(\sqrt5\,N)}{\log \v
 
 在黄金分支 $\alpha=\varphi^{-1}$ 的标准窗约定下，这一互补对可取为 $(\varphi,\varphi^2)$（因为 $1/\varphi+1/\varphi^2=1$），从而“门控比例” $\varphi^{-1}:\varphi^{-2}$ 与“互补索引划分”在同一算术骨架下对齐。\cite{Beatty1926}
 \end{remark}
-

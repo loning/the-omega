@@ -1,6 +1,10 @@
-\section{可复现实验：经验直方图与 Parry(PF) 基准的定量对照}\label{sec:experiments}
+\section{可复现实验：折叠直方图的收敛与 Parry(PF) 基准的定量对照}\label{sec:experiments}
 
-本节给出一条\textbf{可复现}的定量验证路径，用以对照：由扫描—投影读出得到的窗口微态，经折叠 $\Fold_m$ 后的稳定类型直方图 $\hat{\pi}_m$，与黄金均值 SFT 的 Parry 最大熵测度在长度 $m$ 上诱导的柱分布 $\pi_m$（第 \ref{sec:quant-fit} 节与命题 \ref{prop:parry-measure-golden}）。
+本节给出一条\textbf{可复现}的定量验证路径。需要强调两点口径：
+\begin{itemize}
+  \item \textbf{可证的收敛对象：}对给定动力学与读出，折叠后稳定类型直方图 $\hat{\pi}_{m,N}$ 的极限分布应是 $\pi_m^{\mathrm{fold}}=(\Fold_m)_*\mu_m$（定理 \ref{thm:tv-certificate-hist}），其中 $\mu_m$ 是长度-$m$ 微态在真实过程下的极限分布。
+  \item \textbf{Parry(PF) 仅作基线：}本文使用黄金均值 SFT 的 Parry 最大熵柱分布 $\pi_m$ 作为“最大熵基准”。一般动力学（例如旋转产生的 Sturmian）下并\emph{不}主张 $\pi_m^{\mathrm{fold}}=\pi_m$；相反，二者差异由可审计的误差分解式控制（推论 \ref{cor:tv-decomposition-parry}）。
+\end{itemize}
 
 \subsection{实验模型、数据流与偏差指标}
 
@@ -20,6 +24,29 @@ w_t=\Fold_m(\omega_m(x;t))\in X_m,
   \item \textbf{强共振压力测试}：$\alpha=[0;B,1,1,1,\dots]$，覆盖 $B=10,30,100$（首个部分商大，刻意增强低阶有理近似效应）。
 \end{itemize}
 在样本量与分辨率上使用多点网格 $(N,m)$，并在多个 $(\beta,x_0)$ 复现实例上取平均并报告标准差，用以量化对窗参数/相位的敏感性。
+
+\begin{remark}[数据与方案的脚本精确口径]\label{rem:exp-script-spec}
+为避免“只给概述”的不可审计问题，本节实验设置完全由脚本 \verb|scripts/exp_rotation_fold_vs_parry.py| 固化。其默认网格为：
+\[
+m\in\{6,8,10,12,14,16,18\},\qquad
+N\in\{10^4,3\times 10^4,10^5,3\times 10^5\},
+\]
+\[
+\beta\in\{0.2,0.3,0.5,0.6180339887\},\qquad
+x_0\in\{0.123,0.271,0.731\}.
+\]
+每个配置会输出偏差指标（TV/KL）、稳定类型数 \texttt{unique\_types}，以及差异度上界 \texttt{DN\_star\_upper\_bound}（黄金分支使用附录 H 的显式上界）。
+\end{remark}
+
+\begin{remark}[原始数据文件与字段说明]\label{rem:exp-data-files}
+\begin{sloppypar}
+原始逐配置数据写入 \texttt{artifacts/export/rotation\_fold\_vs\_parry.csv}。CSV 字段（见表头）包括
+\[
+\texttt{alpha\_name,\allowbreak alpha,\allowbreak beta,\allowbreak x0,\allowbreak m,\allowbreak N,\allowbreak tv,\allowbreak kl,\allowbreak unique\_types,\allowbreak DN\_star\_upper\_bound,\allowbreak elapsed\_s}
+\]
+等。本文正文仅展示其中两个代表性切片：固定 $N$ 观察随 $m$ 的趋势、以及固定 $m$ 观察随 $N$ 的趋势；完整表可由该 CSV 再生成任意切片。
+\end{sloppypar}
+\end{remark}
 
 \textbf{基准分布（Parry/PF）}：对黄金均值约束的两状态邻接矩阵 $A$，其 Parry 最大熵测度为两状态马尔可夫链，长度 $m$ 的柱分布满足
 \[
@@ -94,6 +121,61 @@ D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)
 (m+1)\,D_N^*(\alpha;x_0)\ +\ D_{\mathrm{TV}}(\pi_m^{\mathrm{fold}},\pi_m).
 \]
 \end{corollary}
+
+\begin{proposition}[低复杂度过程下与 Parry 基线的必然偏离]\label{prop:parry-baseline-gap-sturmian}
+在旋转二分割产生的 Sturmian 过程中，对任意固定 $m$，长度-$m$ 微态的支撑大小为 $m+1$（命题 \ref{prop:sturmian-interval-partition}）。因此折叠后极限分布 $\pi_m^{\mathrm{fold}}$ 的支撑大小满足
+\(
+|\mathrm{supp}(\pi_m^{\mathrm{fold}})|\le m+1
+\)。
+而 Parry 基线 $\pi_m$ 在 $X_m$ 上支持全部合法词（数量 $|X_m|=F_{m+2}$）。于是对任意 $m\ge 2$，
+\[
+D_{\mathrm{TV}}(\pi_m^{\mathrm{fold}},\pi_m)\ \ge\ 1-\pi_m\bigl(\mathrm{supp}(\pi_m^{\mathrm{fold}})\bigr)
+\ \ge\ 1-(m+1)\,\pi_m(0^m),
+\]
+其中 $0^m$ 为全零稳定词。由命题 \ref{prop:parry-measure-golden} 的显式转移概率，
+\(
+\pi_m(0^m)=\pi(0)\,P_{00}^{m-1}=\pi(0)\,\varphi^{-(m-1)}
+\),
+从而得到显式下界
+\[
+D_{\mathrm{TV}}(\pi_m^{\mathrm{fold}},\pi_m)\ \ge\ 1-(m+1)\,\pi(0)\,\varphi^{-(m-1)}.
+\]
+特别地，当 $m\to\infty$ 时该下界趋于 $1$。这解释了实验中随 $m$ 增大 $D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)$ 快速逼近 $1$ 的现象：它反映的是“Sturmian 低复杂度 $\Rightarrow$ 支撑稀疏”与“Parry 最大熵 $\Rightarrow$ 支撑弥散”的结构性不匹配，而非有限样本不足。
+\end{proposition}
+
+\begin{proof}
+对任意两分布 $P,Q$，有 $D_{\mathrm{TV}}(P,Q)\ge 1-Q(\mathrm{supp}(P))$（取集合 $A=\mathrm{supp}(P)$ 即得）。由 Sturmian 支撑大小至多 $m+1$，再用 $\pi_m(S)\le |S|\cdot \max_{u\in X_m}\pi_m(u)\le |S|\cdot \pi_m(0^m)$ 得第二个不等式。最后一条由 Parry 链显式形式直接计算 \(\pi_m(0^m)\)。
+\end{proof}
+
+\subsection{伯努利源/马尔可夫源：收敛保证的标准形式（引用）}
+
+\begin{remark}[伯努利源的极限与有限样本界的引用口径]\label{rem:bernoulli-source-guarantee}
+若输入为伯努利独立源（或更一般的有限状态不可约非周期马尔可夫链），则窗口过程可视为有限状态马尔可夫链的函数；对这类过程，经验直方图对其极限分布的收敛可由遍历定理给出，而有限样本偏差的指数型概率上界可由马尔可夫链的浓缩不等式给出（例如 \cite{Paulin2015MarkovConcentration}）。若采样为独立样本（无重叠窗口或独立符号），则经验分布的 $L^1$/TV 偏差具有标准的指数尾界（例如 \cite{WeissmanEtAl2003L1Empirical}）。
+\end{remark}
+
+\subsection{基线模拟：\texorpdfstring{$\varphi^{-1}$}{phi} 旋转 vs. IID 源（含 95\% TV 证书）}\label{subsec:exp-iid-baselines}
+上一小节对旋转扫描给出了可审计的差异度证书，但该模型并不满足“强混合”意义下的独立性假设，因此更适合作为结构性示例（以及用于检验差异度证书的量纲/趋势）。若研究目标是“在合理的度量假设下，折叠直方图确实可以接近 Parry 基线”，则需要在满足独立性/混合的基线过程中进行模拟，并报告有限样本置信包络。
+
+为此，本文额外提供一组 IID 块采样实验（脚本 \texttt{scripts/exp\_iid\_sources\_fold\_vs\_parry.py}；导出 \texttt{artifacts/export/iid\_sources\_fold\_vs\_parry.csv}），其中每个样本是一段独立的长度-$m$ 比特块，折叠后得到一个独立的稳定类型样本。该设置下可直接使用 \cite{WeissmanEtAl2003L1Empirical} 的 $L^1$/TV 指数尾界生成 95\% TV 证书，并通过三角不等式把“采样误差”与“模型差异项（gap）”分离：
+\[
+D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)\ \le\ D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{true}})\ +\ D_{\mathrm{TV}}(\pi_m^{\mathrm{true}},\pi_m).
+\]
+其中 $\pi_m^{\mathrm{true}}$ 为基线过程（例如 Parry 源或伯努利源）经折叠后的真实 $m$-块分布。Parry 源下第二项为 $0$（因为输出本身满足黄金均值约束，折叠为恒等），因此可以得到“随 $N$ 增大 TV 逼近 0”的直接数值验证；伯努利源下第二项一般非零，从而数值结果会稳定在该 gap 附近，这与推论 \ref{cor:tv-decomposition-parry} 的结构性误差分解保持一致。
+
+\input{sections/generated/tab_iid_sources_fold_vs_parry_ci}
+\input{sections/generated/fig_iid_tv_vs_n}
+
+\begin{remark}[IID 情形下 \texorpdfstring{$D_{\mathrm{KL}}(\hat p\|p)$}{KL} 的非渐近证书（方法类型/大偏差）]\label{rem:kl-nonasymp-certificate}
+除总变差外，IID 离散分布还存在一个对 \(\mathrm{KL}(\hat p\|p)\) 的完全显式非渐近尾界：若从字母表大小为 \(K\) 的真实分布 \(p\) 独立采样 \(N\) 次并形成经验分布 \(\hat p\)，则有标准的“方法类型/相对熵大偏差”估计
+\[
+\mathbb{P}\!\left(D_{\mathrm{KL}}(\hat p\|p)\ge \varepsilon\right)\ \le\ (N+1)^K\,e^{-N\varepsilon},
+\]
+从而以置信度 \(1-\delta\) 得到
+\[
+D_{\mathrm{KL}}(\hat p\|p)\ \le\ \frac{K\log(N+1)+\log(1/\delta)}{N}.
+\]
+该界比 Berry--Esseen 型“二阶近似/中心极限定量修正”更粗，但优点是\textbf{无参数、非渐近、直接可审计}：只依赖 IID 与有限字母表两个假设。本文在 IID Parry 基线下（此时 \(p=\pi_m\)）据此生成了表 \ref{tab:iid_sources_fold_vs_parry_ci} 中的 \(95\%\) KL 证书列；伯努利基线下则对 \(p=\pi_m^{\mathrm{true}}\)（经折叠后的真实块分布）同样可给出对 \(D_{\mathrm{KL}}(\hat p\|p)\) 的证书。
+\end{remark}
 
 \begin{remark}[关于 \texorpdfstring{$D_{\mathrm{KL}}$}{KL} 的证书]
 总变差证书是对任意有限分割都成立的“无模型”界，因此在本文设置下最稳健。相对熵 $D_{\mathrm{KL}}(\hat{\pi}_{m,N}\|\pi_m)$ 额外依赖基线 $\pi_m$ 在支撑上的下界：若希望得到显式上界，通常需要对 $\min_{u\in X_m}\pi_m(u)$ 作下界估计（该量随 $m$ 指数衰减，因而得到的纯上界往往较松）。因此本文把 $D_{\mathrm{KL}}$ 主要作为经验判别量，并用 $D_{\mathrm{TV}}$ 与差异度证书给出可审计的收敛控制。

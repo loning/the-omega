@@ -91,6 +91,57 @@ We will use ``Fold-type stabilization'' as an umbrella for any stabilization fac
 \end{enumerate}
 \end{definition}
 
+\subsubsection{A general constructive template: prioritized rewrite normalizers}\label{sec:stabilization:fold-rewrite-template}
+
+The reviewer-facing issue is that ``canonicalization'' must be more than a narrative: it must be a finite protocol object that can be executed to reproduce the same stabilized output.
+One conservative way to do this, without committing to Sturmian/Ostrowski special structure, is to specify Fold by a finite set of local rewrite rules together with a deterministic priority/scan strategy.
+
+\begin{definition}[Prioritized rewrite normalizer at fixed depth]\label{def:prioritized-rewrite-normalizer}
+Fix an alphabet \(\mathcal{A}\), a word length \(m\), and a target language \(X_m\subseteq \mathcal{A}^m\).
+A \emph{prioritized rewrite normalizer} at depth \(m\) consists of:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item a finite set of local rewrite rules \(\mathcal{R}\), each of the form
+  \[
+  (u\to v,\ \ell),\qquad u,v\in\mathcal{A}^\ell,\ \ 1\le \ell\le m,
+  \]
+  to be applied to any occurrence of \(u\) as a contiguous factor inside a word \(w\in\mathcal{A}^m\) by replacing that occurrence with \(v\) (length-preserving at the local level);
+  \item a total priority order \(\prec\) on \(\mathcal{R}\) (ties broken deterministically);
+  \item a deterministic site-selection rule (we use ``leftmost'' throughout: apply at the smallest index \(i\) at which some rule matches).
+\end{itemize}
+The induced one-step rewrite operator \(N:\mathcal{A}^m\to\mathcal{A}^m\) is:
+given \(w\), find the smallest index \(i\) such that some \((u\to v,\ell)\in\mathcal{R}\) matches \(w_{i:i+\ell-1}=u\); among all matches at that \(i\), pick the highest-priority rule and rewrite that factor to obtain \(N(w)\).
+If no rule matches anywhere, set \(N(w):=w\).
+\end{definition}
+
+\begin{definition}[Normal form and Fold induced by a rewrite protocol]\label{def:rewrite-normal-form}
+Assume a rewrite normalizer as in Definition~\ref{def:prioritized-rewrite-normalizer}.
+If for every \(w\in\mathcal{A}^m\) the iterates \(w, N(w), N^2(w),\dots\) eventually stabilize, define the \emph{normal form} as
+\[
+\mathrm{nf}_m(w):=\lim_{k\to\infty} N^k(w)\in\mathcal{A}^m.
+\]
+If moreover \(\mathrm{nf}_m(w)\in X_m\) for all \(w\) and \(\mathrm{nf}_m(x)=x\) for all \(x\in X_m\), then \(\Fold_m:=\mathrm{nf}_m\) is a stabilization map in the sense of Definition~\ref{def:fold} and is a retraction onto \(X_m\) (Definition~\ref{def:fold-retraction}).
+\end{definition}
+
+\begin{proposition}[Termination via a protocol potential function]\label{prop:rewrite-termination}
+In the setting of Definition~\ref{def:prioritized-rewrite-normalizer}, suppose there exists a function \(\Phi:\mathcal{A}^m\to \NN\) such that for every \(w\) with \(N(w)\neq w\) one has \(\Phi(N(w))<\Phi(w)\).
+Then the rewrite iteration halts after at most \(\Phi(w)\) steps for each input \(w\), and \(\mathrm{nf}_m(w)\) in Definition~\ref{def:rewrite-normal-form} is well-defined.
+\end{proposition}
+
+\begin{proof}
+Each nontrivial rewrite strictly decreases the nonnegative integer \(\Phi\), so there can be at most \(\Phi(w)\) such steps.
+\end{proof}
+
+\begin{remark}[Why priorities remove ambiguity]\label{rem:priorities-remove-ambiguity}
+Classical rewrite systems often require separate confluence arguments to ensure uniqueness of the resulting normal form.
+For protocol purposes we take a more conservative route: we require the protocol to specify a deterministic priority and site-selection rule.
+Then the map \(w\mapsto \mathrm{nf}_m(w)\) is single-valued by construction; Proposition~\ref{prop:rewrite-termination} provides a checkable termination criterion.
+\end{remark}
+
+\begin{remark}[Relation to Zeckendorf carries and to transducer realizations]\label{rem:rewrite-template-relation}
+The Zeckendorf carry rule \(011\to 100\) in Definition~\ref{def:zeckendorf-rewrite} is an instance of this template: the local rewrite is length-preserving, and termination is proved by a simple potential (the number of \(1\)s) in Proposition~\ref{prop:zeckendorf-termination}.
+When such a prioritized rewrite can be implemented with bounded delay by a finite-state device, Proposition~\ref{prop:transducer-to-slidingblock} justifies treating the resulting sequence-level normalization as a sliding-block factor after state augmentation.
+\end{remark}
+
 \begin{remark}[Zeckendorf as finite-state normalization]
 The Zeckendorf-based stabilization in \S\ref{sec:stabilization:zeckendorf} can be viewed as a canonical-form map driven by carry-like rewrite rules (eliminating forbidden $11$ patterns) and, equivalently, as a finite-state normalization on suitable encodings. The key point for this review is not the particular implementation, but that a finite protocol object exists, making the induced stabilized process and its fiber statistics auditable.
 \end{remark}

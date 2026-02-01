@@ -36,6 +36,22 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="iid_sources_fold_vs_parry",
+            script="exp_iid_sources_fold_vs_parry.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/iid_sources_fold_vs_parry.csv",
+            ],
+        ),
+        Step(
+            name="phi_m_sofic_entropy",
+            script="exp_phi_m_sofic_entropy.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/phi_m_sofic_entropy.csv",
+            ],
+        ),
+        Step(
             name="generated_tex_fragments",
             script="exp_generated_tex.py",
             args=[],
@@ -44,11 +60,15 @@ def build_steps() -> List[Step]:
                 "artifacts/export/rotation_kl_vs_m.png",
                 "artifacts/export/rotation_tv_vs_n.png",
                 "artifacts/export/rotation_kl_vs_n.png",
+                "artifacts/export/iid_tv_vs_n.png",
                 "sections/generated/fig_rotation_tv_vs_m.tex",
                 "sections/generated/fig_rotation_kl_vs_m.tex",
                 "sections/generated/fig_rotation_tv_vs_n.tex",
                 "sections/generated/fig_rotation_kl_vs_n.tex",
+                "sections/generated/fig_iid_tv_vs_n.tex",
                 "sections/generated/tab_rotation_fold_vs_parry_summary.tex",
+                "sections/generated/tab_iid_sources_fold_vs_parry_ci.tex",
+                "sections/generated/tab_phi_m_sofic_entropy.tex",
             ],
         ),
     ]

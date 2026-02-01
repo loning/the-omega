@@ -217,6 +217,35 @@ For kernels of boundary-layer type $\kappa_\epsilon(h)\approx \sigma(d(h)/\epsil
 with a constant $C_\sigma>0$ depending only on the chosen sigmoid $\sigma$ and on the local Jacobian factor of $d$ on $\partial W$. This quantifies the heuristic ``crossover'' statement: as $\epsilon\to 0$ the injected entropy vanishes at a controlled rate governed by boundary geometry.
 \end{remark}
 
+\begin{proposition}[Boundary-layer scaling of injected entropy]\label{prop:boundary-layer-scaling}
+Let $H=\TT^d$ with Haar measure $\lambda$, and let $W\subset H$ have $C^1$ boundary.
+Let $\rho\in L^\infty(H)$ be a density and set $\mu:=\rho\,\lambda$.
+Let $d:H\to\RR$ be a signed distance function to $\partial W$ defined in a tubular neighborhood, and let $\sigma:\RR\to[0,1]$ be Lipschitz with $\sigma(u)\to \mathds{1}_{\{u\ge 0\}}$ as $|u|\to\infty$.
+Define the boundary-layer kernel $\kappa_\epsilon(h):=\sigma(d(h)/\epsilon)$.
+Then
+\[
+\int_H H_b(\kappa_\epsilon(h))\,\mathrm{d}\mu(h)
+\ =\
+\epsilon\,C_\sigma\int_{\partial W}\rho(s)\,\mathrm{d}\mathcal{H}^{d-1}(s)
+\ +\ o(\epsilon),
+\qquad
+C_\sigma:=\int_{\RR} H_b(\sigma(u))\,\mathrm{d}u \in (0,\infty),
+\]
+where $\mathcal{H}^{d-1}$ denotes $(d-1)$-dimensional Hausdorff measure on $\partial W$.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+Since $H_b(\sigma(u))$ is supported where $\sigma(u)\in(0,1)$, the integral localizes to an $O(\epsilon)$-thick tubular neighborhood of $\partial W$.
+Using a tube parametrization $h=s+r n(s)$ with $s\in\partial W$ and $r$ the signed normal coordinate, one has $\mathrm{d}\mu \approx \rho(s)\,\mathrm{d}\mathcal{H}^{d-1}(s)\,\mathrm{d}r$ up to $o(1)$ Jacobian corrections as $r\to 0$.
+With the change of variables $u=r/\epsilon$, dominated convergence yields the stated first-order term with constant $C_\sigma$.
+\end{proof}
+
+\begin{remark}[A simple counterexample: $\epsilon\to 0$ does not imply $h\to 0$ without a sharp-limit hypothesis]\label{rem:counterexample-eps}
+The vanishing statement in Proposition~\ref{prop:h-vanishes-eps} and the $O(\epsilon)$ scaling in Proposition~\ref{prop:boundary-layer-scaling} rely on a \emph{sharp-limit} kernel family: $\kappa_\epsilon\to \mathds{1}_W$ in an appropriate sense as $\epsilon\to 0$.
+If instead the protocol keeps an $\epsilon$-independent amount of symbol corruption on a set of fixed positive measure, then $h(A^{(\epsilon)})$ need not vanish.
+For example, if $\kappa_\epsilon\equiv 1/2$ on a subset of $H$ of $\mu$-measure $\delta>0$ for all sufficiently small $\epsilon$, then Proposition~\ref{prop:prob-window-positive-entropy} gives the uniform lower bound $h(A^{(\epsilon)})\ge \delta\log 2$.
+\end{remark}
+
 \begin{remark}[Robustness to correlated noise]\label{rem:entropy-robust-correlated}
 The proof of Proposition~\ref{prop:prob-window-positive-entropy} uses the i.i.d.\ nature of $(U_t)$ only to obtain an explicit conditional-entropy expression. More generally, if the auxiliary noise source is a stationary process $(U_t)$ with sufficient unpredictability in the sense that
 \[
@@ -378,6 +407,51 @@ h(A)\ \le\ C\,\epsilon + o(\epsilon),
 \]
 with $C$ determined by the chosen sigmoid profile and the boundary geometry (cf.\ Remark~\ref{rem:entropy-scaling-eps}).
 \end{remark}
+
+\subsubsection{Continuity of $h(\epsilon)$ under fuzzy-window perturbations}\label{sec:readout:kernel-continuity}
+
+In the deterministic zero-KS regime (e.g.\ rotations), the only source of positive entropy in the observed process is the measurement channel.
+It is therefore natural (and reviewer-facing) to record how the entropy rate varies when the fuzzy window parameter \(\epsilon\) changes.
+
+\begin{definition}[Kernel $L^1$ mismatch]\label{def:kappa-l1-mismatch}
+For two kernels \(\kappa_\epsilon,\kappa_{\epsilon'}:H\to[0,1]\) on the same probability space \((H,\mu)\), define the $L^1(\mu)$ mismatch
+\[
+\delta(\epsilon,\epsilon')\ :=\ \int_H \bigl|\kappa_\epsilon(h)-\kappa_{\epsilon'}(h)\bigr|\,\mathrm{d}\mu(h).
+\]
+\end{definition}
+
+\begin{proposition}[Coupled-window mismatch and entropy-rate continuity]\label{prop:h-continuity-kappa}
+Assume the i.i.d.\ probabilistic readout model (Assumption~\ref{assump:prob-window}) on the same base \((H,\mu,T)\) with two kernels \(\kappa_\epsilon\) and \(\kappa_{\epsilon'}\).
+Let \(A^{(\epsilon)}\) and \(A^{(\epsilon')}\) denote the corresponding binary output processes.
+Couple them by using the \emph{same} scan \((h_t)\) and the \emph{same} i.i.d.\ uniforms \((U_t)\):
+\[
+A^{(\epsilon)}_t:=\mathds{1}\{U_t\le \kappa_\epsilon(h_t)\},\qquad
+A^{(\epsilon')}_t:=\mathds{1}\{U_t\le \kappa_{\epsilon'}(h_t)\}.
+\]
+Then the one-step mismatch rate satisfies
+\[
+\mathbb{P}\bigl(A^{(\epsilon)}_0\neq A^{(\epsilon')}_0\bigr)\ =\ \delta(\epsilon,\epsilon')
+\]
+with \(\delta\) as in Definition~\ref{def:kappa-l1-mismatch}.
+Consequently, the entropy rates satisfy the continuity bound
+\[
+\bigl|h(A^{(\epsilon)})-h(A^{(\epsilon')})\bigr|
+\ \le\
+H_2\!\bigl(\delta(\epsilon,\epsilon')\bigr),
+\]
+where \(H_2\) is the binary entropy function (cf.\ Proposition~\ref{prop:entropy-continuity-mismatch}).
+In particular, if \(\delta(\epsilon,\epsilon')\to 0\) along a parameter change, then \(h(A^{(\epsilon)})\to h(A^{(\epsilon')})\).
+\end{proposition}
+
+\begin{proof}
+By construction,
+\[
+\mathbb{P}\bigl(A^{(\epsilon)}_0\neq A^{(\epsilon')}_0\mid h_0\bigr)=\bigl|\kappa_\epsilon(h_0)-\kappa_{\epsilon'}(h_0)\bigr|
+\]
+because \(U_0\sim\mathrm{Unif}[0,1]\) and the two threshold events disagree exactly when \(U_0\) falls between the two thresholds.
+Taking expectation over \(h_0\sim\mu\) yields \(\mathbb{P}(A^{(\epsilon)}_0\neq A^{(\epsilon')}_0)=\int|\kappa_\epsilon-\kappa_{\epsilon'}|\,\mathrm{d}\mu=\delta(\epsilon,\epsilon')\).
+The entropy-rate bound then follows from Proposition~\ref{prop:entropy-continuity-mismatch} with alphabet size \(K=2\), for which the \(\varepsilon\log(K-1)\) term vanishes.
+\end{proof}
 
 \begin{remark}[Two interpretations of randomness]\label{rem:randomness-interpretation}
 The probabilistic template can be read in two distinct ways, which affect interpretation but not the formal SMB conclusion:

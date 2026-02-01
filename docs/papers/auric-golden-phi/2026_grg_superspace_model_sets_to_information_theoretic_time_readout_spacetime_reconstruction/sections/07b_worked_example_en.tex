@@ -10,6 +10,21 @@ including a diffraction-based spectral check. All figures and artifacts are gene
 \]
 The implementation is \texttt{scripts/demo\_6d\_icosa\_fingerprints.py}, and full audit details are recorded in Appendix~\ref{sec:appendix:6d}.
 
+\subsection{End-to-end reproducibility (what to run, what you get)}
+The goal of this demo is not to optimize realism, but to remove ambiguity about what ``end-to-end'' means in this review: a single protocol specification produces (i) geometric outputs (diffraction/visibility), (ii) a symbolic record with an entropy-rate time law, and (iii) stabilized fibers and transition statistics.
+Concretely, \texttt{python3 scripts/run\_all.py} writes:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item a run parameter snapshot: \texttt{artifacts/params.json},
+  \item a run log: \texttt{artifacts/run.log},
+  \item primary demo artifacts: \texttt{artifacts/demo\_6d\_fingerprints.json} and \texttt{artifacts/demo\_6d\_box\_window\_fourier.json},
+  \item an exact Fold transition graph for the chosen depth: \texttt{artifacts/demo\_6d\_fold\_graph\_m12.json},
+  \item a visualization of the Fold transition graph: \texttt{sections/generated/demo\_6d\_fold\_graph\_m12\_heatmap.png},
+  \item a numeric summary snippet included below: \texttt{sections/generated/demo\_6d\_numeric\_summary.tex},
+  \item ring-factor diagnostics (complexity and fuzzy-readout entropy): \texttt{sections/generated/demo\_6d\_ring\_factor\_complexity.png} and \texttt{sections/generated/demo\_6d\_ring\_entropy\_rate\_proxy.png},
+  \item and a small set of scalar fingerprint checks: \texttt{artifacts/fingerprint\_tests.json}.
+\end{itemize}
+The remainder of this section explains how each of these outputs corresponds to a specific link in the chain ``geometry $\to$ readout $\to$ stabilization $\to$ time''.
+
 \subsection{Object layer: a 6D lattice with an icosahedral (3+3) splitting}
 We take $G=\RR^6$ with lattice $\Gamma=\ZZ^6$ and choose a decomposition $G=E\oplus H$ with $E\cong\RR^3$ (physical) and $H\cong\RR^3$ (internal). Concretely, the demo uses two explicit projection matrices
 \[
@@ -72,6 +87,11 @@ For each $\epsilon$ in a fixed grid, the demo computes a long record of length $
 \end{itemize}
 The resulting $\epsilon\mapsto \widehat h(\epsilon)$ curve is saved as \texttt{sections/generated/demo\_6d\_entropy\_rate\_proxy.png} (Figure~\ref{fig:demo6d-entropy-rate}).
 
+\subsection{Ring-factor cross-check (1D): Sturmian complexity and kernel-induced entropy}\label{sec:worked-example:ring}
+To isolate the distinction between \emph{zero KS entropy of the base dynamics} and \emph{positive protocol entropy induced by a probabilistic readout}, the demo includes a one-dimensional ring factor toy: an irrational rotation $x_t=x_0+t\alpha\ (\mathrm{mod}\ 1)$ with a two-interval partition $[0,I)$.
+At $\epsilon=0$ (sharp partition) the symbolic output is Sturmian, hence has linear block complexity $p(n)=n+1$ for irrational $\alpha$; the empirical $p(n)$ curve is saved as \texttt{sections/generated/demo\_6d\_ring\_factor\_complexity.png}.
+For $\epsilon>0$ the demo replaces the sharp indicator by a smooth two-interval kernel and samples $A_t\sim\mathrm{Bernoulli}(\kappa_\epsilon(x_t))$, yielding a strictly positive entropy-rate proxy $\widehat h(\epsilon)$; the resulting curve and a theoretical mean-$H_b$ comparator are saved as \texttt{sections/generated/demo\_6d\_ring\_entropy\_rate\_proxy.png}.
+
 \subsection{Numerical summary: entropy rate, mismatch $\varepsilon$, and rational-approximant deviation}
 To make the full chain ``geometry $\to$ readout $\to$ stabilization $\to$ $\tau(t)$'' audit-friendly at a glance, we generate a small numeric summary table from the JSON artifact:
 \[
@@ -79,14 +99,26 @@ To make the full chain ``geometry $\to$ readout $\to$ stabilization $\to$ $\tau(
 \]
 \input{sections/generated/demo_6d_numeric_summary.tex}
 
+\subsection{A compact protocol specification (parameters in the reference run)}\label{sec:worked-example:protocol-spec}
+To make the toy example self-contained, we summarize the protocol parameters used in the reference run (all values are also stored in \texttt{artifacts/demo\_6d\_fingerprints.json}):
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Superspace object}: $\Gamma=\ZZ^6$, cutoff $\Gamma_L=\ZZ^6\cap[-4,4]^6$, and an icosahedral $(3+3)$ split implemented by fixed matrices $A_T,A_T^\star$ (Appendix~\ref{sec:appendix:6d}).
+  \item \textbf{Windows}: spherical internal window radius $R=2.35$ for the main patch; a box window with $(L_1,L_2,L_3)=(2.2,2.2,2.2)$ and boundary layer $\epsilon_{\rm box}=0.03$ for the closed-form Fourier-envelope check.
+  \item \textbf{Internal scan and readout}: $h_t=h_0+t\beta\ (\mathrm{mod}\ 1)\in\TT^3$ with $\beta=(0.38196601125,0.2360679775,0.14589803375)$ and $h_0=(0.123456789,-0.234567891,0.345678912)$; probabilistic window kernel $A_t\sim{\rm Bernoulli}(\kappa_\epsilon(h_t))$ with $R_{\rm scan}=0.35$ and $\epsilon\in\{0.01,0.02,0.05,0.1,0.2\}$, record length $T=50000$.
+  \item \textbf{Stabilization}: Zeckendorf $\Fold_m$ with $m=12$, with exact transition graph archived as \texttt{artifacts/demo\_6d\_fold\_graph\_m12.json} and a heatmap visualization \texttt{sections/generated/demo\_6d\_fold\_graph\_m12\_heatmap.png}.
+  \item \textbf{Ring-factor diagnostics}: $\alpha=0.38196601125$, $x_0=0.123456789$, two-interval length $I=0.3819660112501052$; discrepancy and three-gap statistics, plus block complexity $p(n)$ and fuzzy-readout entropy curves (Section~\ref{sec:worked-example:ring}).
+\end{itemize}
+
 \subsection{Fold stabilization and fiber statistics}
 At a fixed stabilization depth $m$, the demo applies a Zeckendorf-based stabilization map $\Fold_m:\{0,1\}^m\twoheadrightarrow X_m$ (Section~\ref{sec:stabilization:zeckendorf}) as a sliding-window factor (Definition~\ref{def:Pi_m}), producing a stabilized type sequence. The following reproducible invariants are reported:
 \begin{itemize}[leftmargin=*,itemsep=2pt]
   \item the exact degeneracy histogram $\{|\mathcal{F}_m(x)|:x\in X_m\}$ computed combinatorially;
   \item empirical stabilized type frequencies and $H(\text{type})$;
-  \item empirical transition edge counts for successive stabilized types (a finite approximation to the fold transition graph).
+  \item empirical transition edge counts for successive stabilized types, and an exact Fold transition graph for the chosen $m$ computed combinatorially.
 \end{itemize}
 These statistics address the ``stable fibers'' part of the geometry-to-data pipeline and are archived (together with parameters and seeds) in \texttt{artifacts/demo\_6d\_fingerprints.json}.
+The exact fold transition graph is saved separately as \texttt{artifacts/demo\_6d\_fold\_graph\_m12.json}.
+For quick visual audit, the corresponding adjacency heatmap (log edge counts) is saved as \texttt{sections/generated/demo\_6d\_fold\_graph\_m12\_heatmap.png}.
 
 \subsection{Reproducibility pointer}
 The demo writes the following primary figures:
@@ -97,6 +129,8 @@ The demo writes the following primary figures:
   \item $\tau(t)$ proxy (sequential Markov): \texttt{sections/generated/demo\_6d\_tau\_markov.png},
   \item box-window envelope check: \texttt{sections/generated/demo\_6d\_box\_window\_envelope\_scatter.png}.
   \item 1D factor diagnostics (rational approximants, three-gap statistics): \texttt{sections/generated/demo\_6d\_1d\_factor\_gap\_stats.png}.
+  \item 1D ring-factor complexity: \texttt{sections/generated/demo\_6d\_ring\_factor\_complexity.png}.
+  \item 1D ring-factor fuzzy-readout entropy curve: \texttt{sections/generated/demo\_6d\_ring\_entropy\_rate\_proxy.png}.
   \item diffraction vs.\ acceptance geometry (ball vs.\ box; two $\epsilon$): \texttt{sections/generated/demo\_6d\_window\_geometry\_diffraction.png}.
 \end{itemize}
 All parameters and outputs needed for independent audit are archived under \texttt{artifacts/}. Appendix~\ref{sec:appendix:6d} lists the exact kernel choices and parameter values used in the reference run.

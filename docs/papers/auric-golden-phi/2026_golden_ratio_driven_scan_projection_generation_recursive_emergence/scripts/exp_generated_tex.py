@@ -30,6 +30,24 @@ class Row:
     DN_star_upper_bound: float | None
 
 
+@dataclass(frozen=True)
+class IidRow:
+    model: str
+    p1: float | None
+    seed: int
+    m: int
+    N: int
+    tv_to_parry: float
+    kl_to_parry: float
+    kl_to_true: float
+    tv_gap_true_to_parry: float
+    kl_eps_95: float
+    kl_bound_95: float
+    tv_eps_95: float
+    tv_bound_95: float
+    unique_types: int
+
+
 def read_rows(csv_path: Path) -> List[Row]:
     out: List[Row] = []
     with csv_path.open("r", encoding="utf-8") as f:
@@ -51,6 +69,33 @@ def read_rows(csv_path: Path) -> List[Row]:
                     DN_star_upper_bound=float(r["DN_star_upper_bound"])
                     if r.get("DN_star_upper_bound", "").strip()
                     else None,
+                )
+            )
+    return out
+
+
+def read_iid_rows(csv_path: Path) -> List[IidRow]:
+    out: List[IidRow] = []
+    with csv_path.open("r", encoding="utf-8") as f:
+        rd = csv.DictReader(f)
+        for r in rd:
+            p1s = r.get("p1", "").strip()
+            out.append(
+                IidRow(
+                    model=r["model"],
+                    p1=float(p1s) if p1s else None,
+                    seed=int(r["seed"]),
+                    m=int(r["m"]),
+                    N=int(r["N"]),
+                    tv_to_parry=float(r["tv_to_parry"]),
+                    kl_to_parry=float(r["kl_to_parry"]),
+                    kl_to_true=float(r.get("kl_to_true", "0") or 0.0),
+                    tv_gap_true_to_parry=float(r["tv_gap_true_to_parry"]),
+                    kl_eps_95=float(r.get("kl_eps_95", "0") or 0.0),
+                    kl_bound_95=float(r.get("kl_bound_95", "0") or 0.0),
+                    tv_eps_95=float(r["tv_eps_95"]),
+                    tv_bound_95=float(r["tv_bound_95"]),
+                    unique_types=int(r["unique_types"]),
                 )
             )
     return out
@@ -161,6 +206,44 @@ def write_table_summary(rows: List[Row], out_name: str, N_pick: int) -> None:
     (generated_dir() / f"{out_name}.tex").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def write_table_iid_ci(rows: List[IidRow], out_name: str, m_pick: int, N_pick: int) -> None:
+    models = sorted({r.model for r in rows})
+    lines: List[str] = []
+    lines.append("\\begin{table}[H]")
+    lines.append("\\centering")
+    lines.append("\\scriptsize")
+    lines.append("\\setlength{\\tabcolsep}{4pt}")
+    lines.append(
+        "\\caption{IID 块采样基线：折叠后稳定类型直方图到 Parry(PF) 基线的偏差，以及 95\\% TV 证书（对 seed 取平均）。}"
+    )
+    lines.append("\\label{tab:iid_sources_fold_vs_parry_ci}")
+    lines.append("\\begin{tabular}{lrrrrrr}")
+    lines.append("\\toprule")
+    lines.append(
+        "model & $D_\\mathrm{TV}$ & gap & $\\varepsilon^{\\mathrm{TV}}_{0.95}$ & bound$^{\\mathrm{TV}}_{0.95}$ & $D_\\mathrm{KL}(\\hat p\\|p_{\\mathrm{true}})$ & $\\varepsilon^{\\mathrm{KL}}_{0.95}$\\\\"
+    )
+    lines.append("\\midrule")
+
+    for model in models:
+        rs = [r for r in rows if r.model == model and r.m == m_pick and r.N == N_pick]
+        if not rs:
+            continue
+        tv_mu = mean([r.tv_to_parry for r in rs])
+        gap_mu = mean([r.tv_gap_true_to_parry for r in rs])
+        eps_mu = mean([r.tv_eps_95 for r in rs])
+        bnd_mu = mean([r.tv_bound_95 for r in rs])
+        kl_true_mu = mean([r.kl_to_true for r in rs])
+        kl_eps_mu = mean([r.kl_eps_95 for r in rs])
+        lines.append(
+            f"{latex_escape_text(model)} & {tv_mu:.3g} & {gap_mu:.3g} & {eps_mu:.3g} & {bnd_mu:.3g} & {kl_true_mu:.3g} & {kl_eps_mu:.3g}\\\\"
+        )
+
+    lines.append("\\bottomrule")
+    lines.append("\\end{tabular}")
+    lines.append("\\end{table}")
+    (generated_dir() / f"{out_name}.tex").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def plot_tv_vs_m(rows: List[Row], N_pick: int, out_png: Path) -> None:
     gs = group_stats(rows)
     ms = sorted({r.m for r in rows})
@@ -261,6 +344,63 @@ def plot_kl_vs_n(rows: List[Row], m_pick: int, out_png: Path) -> None:
     plt.close()
 
 
+def plot_iid_tv_vs_n(rows: List[IidRow], m_pick: int, out_png: Path) -> None:
+    Ns = sorted({r.N for r in rows if r.m == m_pick})
+    models = sorted({r.model for r in rows})
+
+    plt.figure(figsize=(7.2, 4.2))
+    for model in models:
+        xs = [N for N in Ns if any(r.model == model and r.N == N and r.m == m_pick for r in rows)]
+        ys: List[float] = []
+        yb: List[float] = []
+        for N in xs:
+            rs = [r for r in rows if r.model == model and r.N == N and r.m == m_pick]
+            ys.append(mean([r.tv_to_parry for r in rs]))
+            yb.append(mean([r.tv_bound_95 for r in rs]))
+        plt.plot(xs, ys, marker="o", linewidth=1.6, label=f"{model} TV")
+        plt.plot(xs, yb, linestyle="--", linewidth=1.2, alpha=0.8, label=f"{model} bound95")
+
+    plt.xscale("log")
+    plt.yscale("log")
+    plt.xlabel("N (log)")
+    plt.ylabel("TV to Parry baseline (log)")
+    plt.title(f"IID blocks: TV to Parry vs N (m={m_pick})")
+    plt.grid(True, which="both", alpha=0.25)
+    plt.legend()
+    out_png.parent.mkdir(parents=True, exist_ok=True)
+    plt.tight_layout()
+    plt.savefig(out_png, dpi=200)
+    plt.close()
+
+
+def write_table_phi_m_entropy(csv_path: Path, out_name: str) -> None:
+    with csv_path.open("r", encoding="utf-8") as f:
+        rd = csv.DictReader(f)
+        rows = list(rd)
+    if not rows:
+        raise SystemExit("[exp_generated_tex] empty phi_m_sofic_entropy input")
+
+    lines: List[str] = []
+    lines.append("\\begin{table}[H]")
+    lines.append("\\centering")
+    lines.append("\\scriptsize")
+    lines.append("\\setlength{\\tabcolsep}{4pt}")
+    lines.append("\\caption{Sofic 图像 $Y_m$ 的右解析最小化表示规模与拓扑熵（脚本生成）。}")
+    lines.append("\\label{tab:phi_m_sofic_entropy}")
+    lines.append("\\begin{tabular}{rrrrrr}")
+    lines.append("\\toprule")
+    lines.append("$m$ & det states & min states & ess states & det edges & $h_{\\mathrm{top}}$\\\\")
+    lines.append("\\midrule")
+    for r in rows:
+        lines.append(
+            f"{r['m']} & {r['det_states']} & {r['min_states']} & {r['ess_states']} & {r['det_edges']} & {float(r['h_top']):.6g}\\\\"
+        )
+    lines.append("\\bottomrule")
+    lines.append("\\end{tabular}")
+    lines.append("\\end{table}")
+    (generated_dir() / f"{out_name}.tex").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def main() -> None:
     csv_in = export_dir() / "rotation_fold_vs_parry.csv"
     rows = read_rows(csv_in)
@@ -308,6 +448,29 @@ def main() -> None:
     )
 
     write_table_summary(rows, out_name="tab_rotation_fold_vs_parry_summary", N_pick=N_pick)
+
+    # IID baselines (Bernoulli / Parry blocks) with confidence envelopes.
+    iid_csv = export_dir() / "iid_sources_fold_vs_parry.csv"
+    iid_rows = read_iid_rows(iid_csv)
+    if not iid_rows:
+        raise SystemExit("[exp_generated_tex] empty iid input")
+
+    ms_iid = sorted({r.m for r in iid_rows})
+    m_pick_iid = 10 if 10 in ms_iid else ms_iid[len(ms_iid) // 2]
+    png_iid = export_dir() / "iid_tv_vs_n.png"
+    plot_iid_tv_vs_n(iid_rows, m_pick=m_pick_iid, out_png=png_iid)
+    write_fig_tex(
+        fig_name="fig_iid_tv_vs_n",
+        png_rel="artifacts/export/iid_tv_vs_n.png",
+        caption=f"IID 块采样基线下，固定分辨率 $m={m_pick_iid}$ 时，折叠后稳定类型直方图到 Parry(PF) 基线的 TV 偏差随样本量 $N$ 的变化，并叠加 95\\% TV 证书上界（对 seed 取平均；双对数坐标）。",
+        label="fig:iid_tv_vs_n",
+    )
+    write_table_iid_ci(iid_rows, out_name="tab_iid_sources_fold_vs_parry_ci", m_pick=m_pick_iid, N_pick=30_000)
+
+    write_table_phi_m_entropy(
+        csv_path=export_dir() / "phi_m_sofic_entropy.csv",
+        out_name="tab_phi_m_sofic_entropy",
+    )
 
     print("[exp_generated_tex] OK", flush=True)
 

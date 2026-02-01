@@ -52,6 +52,11 @@ class Demo6DParams:
     box_eps: float
     module_K: int
     module_max_points: int
+    # 1D ring-factor toy (explicit two-interval readout and complexity).
+    ring_alpha: float
+    ring_x0: float
+    ring_I_len: float
+    ring_complexity_max_n: int
 
 
 def icosa_matrices() -> Tuple[np.ndarray, np.ndarray]:
@@ -112,6 +117,42 @@ def smooth_box_weight(u: np.ndarray, L: Tuple[float, float, float], eps: float) 
         return s1 * s2
 
     return _axis_weight(x, hx) * _axis_weight(y, hy) * _axis_weight(z, hz)
+
+
+def sigmoid(x: np.ndarray) -> np.ndarray:
+    x = np.asarray(x, dtype=float)
+    return 1.0 / (1.0 + np.exp(-x))
+
+
+def kappa_two_interval(points: np.ndarray, I_len: float, eps: float) -> np.ndarray:
+    """Smooth/probabilistic readout kernel for the interval [0, I_len) on the circle.
+
+    - eps=0: sharp deterministic indicator 1[x<I_len]
+    - eps>0: sigmoid((I_len - x)/eps) as a smooth step at the cut point I_len
+    """
+    x = np.asarray(points, dtype=float).ravel()
+    I_len = float(I_len)
+    eps = float(eps)
+    if eps <= 0:
+        return (x < I_len).astype(float)
+    return sigmoid((I_len - x) / eps)
+
+
+def block_complexity(seq: Sequence[int], max_n: int) -> Dict[str, int]:
+    """Return p(n)=#distinct length-n blocks for n=1..max_n."""
+    out: Dict[str, int] = {}
+    T = len(seq)
+    if T <= 0:
+        return out
+    for n in range(1, int(max_n) + 1):
+        if T < n:
+            out[str(n)] = 0
+            continue
+        seen = set()
+        for i in range(T - n + 1):
+            seen.add(tuple(seq[i : i + n]))
+        out[str(n)] = int(len(seen))
+    return out
 
 
 def _sinc(x: np.ndarray) -> np.ndarray:
@@ -590,6 +631,10 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
         box_eps=0.03,
         module_K=1,
         module_max_points=20000,
+        ring_alpha=0.38196601125,  # 1/phi^2
+        ring_x0=0.123456789,
+        ring_I_len=float(1.0 - (1.0 / ((1.0 + 5.0**0.5) / 2.0))),  # 1-1/phi = 1/phi^2
+        ring_complexity_max_n=40,
     )
     rng = np.random.default_rng(params.seed)
     pp = ProgressPrinter("demo_6d")
@@ -731,9 +776,9 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
 
     # Save JSON.
     json_path = out_dir / "demo_6d_fingerprints.json"
-    # 1D factor diagnostics (from scan_beta / scan_h0 first coordinate).
-    alpha = float(params.scan_beta[0] % 1.0)
-    x0_1d = float(params.scan_h0[0] % 1.0)
+    # 1D ring factor: explicit two-interval readout (Sturmian at eps=0).
+    alpha = float(params.ring_alpha % 1.0)
+    x0_1d = float(params.ring_x0 % 1.0)
     N_gap = 800
     pts_alpha = orbit_points_1d(alpha=alpha, x0=x0_1d, N=N_gap)
     gaps_alpha = three_gap_stats(pts_alpha)
@@ -743,7 +788,7 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
     for p, q in conv_pick:
         pts = orbit_points_1d(alpha=float(p / q), x0=x0_1d, N=N_gap)
         gap_by_conv[f"{p}/{q}"] = three_gap_stats(pts)
-    I_len = float(1.0 - (1.0 / ((1.0 + 5.0**0.5) / 2.0)))  # 1/phi^2
+    I_len = float(params.ring_I_len)
     Ns = np.array([50, 100, 200, 400, 800, 1200, 1600, 2000], dtype=int)
     bias_alpha: List[float] = []
     disc_alpha: List[float] = []
@@ -788,6 +833,36 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
         )
     one_d_factor["rational_approx_deviation"] = approx_dev
 
+    # Two-interval readout: block complexity p(n)=#distinct blocks.
+    bits_ring_det = sturmian_bits(alpha=alpha, x0=x0_1d, I_len=I_len, N=N_sym)
+    p_of_n = block_complexity(bits_ring_det, max_n=int(params.ring_complexity_max_n))
+    one_d_factor["two_interval_readout"] = {
+        "definition": "deterministic bits b_t = 1[(x0+t*alpha) mod 1 < I_len]",
+        "N_for_complexity": int(N_sym),
+        "complexity_p_of_n": p_of_n,
+        "sturmian_theory": "for irrational alpha and nondegenerate two-interval partition, p(n)=n+1",
+    }
+
+    # Ring-factor probabilistic window: h_hat(eps) and mean H_b(kappa_eps).
+    U_ring = rng.random(size=int(params.scan_T))
+    pts_ring = orbit_points_1d(alpha=alpha, x0=x0_1d, N=int(params.scan_T))
+    ring_h_proxy: List[float] = []
+    ring_h_theory: List[float] = []
+    for eps in params.eps_grid:
+        kap = kappa_two_interval(pts_ring, I_len=I_len, eps=float(eps))
+        ring_h_theory.append(float(np.mean(H_b(kap))))
+        bits = (U_ring < kap).astype(int).tolist()
+        hr = block_entropy_rate_proxy(bits, max_block_len=int(params.entropy_block_max))
+        ring_h_proxy.append(float(hr.get(str(params.entropy_block_max), 0.0)))
+    one_d_factor["two_interval_probabilistic"] = {
+        "definition": "A_t ~ Bernoulli(kappa_eps(x_t)), kappa_eps(x)=sigmoid((I_len-x)/eps)",
+        "eps_grid": params.eps_grid,
+        "h_proxy_block": ring_h_proxy,
+        "h_theory_mean_Hb": ring_h_theory,
+        "block_len": int(params.entropy_block_max),
+        "note": "This isolates the readout-induced positive entropy on a deterministic rotation base.",
+    }
+
     payload = {
         "params": {
             "L": params.L,
@@ -807,6 +882,10 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
             "entropy_block_max": params.entropy_block_max,
             "tau_prefix_max": params.tau_prefix_max,
             "probabilistic_readout": bool(params.probabilistic_readout),
+            "ring_alpha": float(params.ring_alpha),
+            "ring_x0": float(params.ring_x0),
+            "ring_I_len": float(params.ring_I_len),
+            "ring_complexity_max_n": int(params.ring_complexity_max_n),
         },
         "counts": {
             "points_in_patch": int(len(x0)),
@@ -838,6 +917,39 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
         ],
     }
     json_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+    # Exact fold transition graph at the chosen depth m (computed combinatorially).
+    m = int(params.scan_fold_m)
+    edges_exact: Dict[str, int] = {}
+    nodes = ["".join(str(b) for b in k) for k in sorted(deg.fiber_sizes.keys())]
+    for x in range(2 ** (m + 1)):
+        raw = [(x >> i) & 1 for i in range(m + 1)]
+        u = fold_m(raw[:m])
+        v = fold_m(raw[1:])
+        su = "".join(str(b) for b in u)
+        sv = "".join(str(b) for b in v)
+        k = f"{su}->{sv}"
+        edges_exact[k] = edges_exact.get(k, 0) + 1
+    fold_graph_payload = {
+        "m": m,
+        "nodes": nodes,
+        "edges_counts_exact": edges_exact,
+        "definition": "edge u->v exists if there is a raw word w in {0,1}^{m+1} with Fold_m(w[0:m])=u and Fold_m(w[1:m+1])=v; counts record how many raw overlaps realize the edge.",
+    }
+    fold_graph_path = out_dir / f"demo_6d_fold_graph_m{m}.json"
+    fold_graph_path.write_text(json.dumps(fold_graph_payload, indent=2), encoding="utf-8")
+
+    # Also write a simple visualization: adjacency heatmap on stabilized types.
+    node_index = {s: i for i, s in enumerate(nodes)}
+    A = np.zeros((len(nodes), len(nodes)), dtype=float)
+    for k, c in edges_exact.items():
+        su, sv = k.split("->", 1)
+        iu = node_index.get(su)
+        iv = node_index.get(sv)
+        if iu is None or iv is None:
+            continue
+        A[iu, iv] += float(c)
+    fold_graph_fig_path = fig_out_dir / f"demo_6d_fold_graph_m{m}_heatmap.png"
 
     # Additional output: closed-form Fourier-envelope check for a box window.
     # This is meant to concretize Sec 7.1.1 by providing an explicit w-hat.
@@ -943,6 +1055,18 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
     fig_tau.savefig(fig_tau_path, dpi=160)
     plt.close(fig_tau)
 
+    # Figure 0b: Fold transition graph heatmap (log10 edge counts).
+    fig_fg, ax_fg = plt.subplots(figsize=(6.0, 5.2))
+    ax_fg.imshow(np.log10(A + 1.0), cmap="viridis", origin="lower", interpolation="nearest")
+    ax_fg.set_title(f"6D demo: Fold transition graph heatmap (m={m})")
+    ax_fg.set_xlabel("next stabilized type index")
+    ax_fg.set_ylabel("current stabilized type index")
+    ax_fg.set_xticks([])
+    ax_fg.set_yticks([])
+    fig_fg.tight_layout()
+    fig_fg.savefig(fold_graph_fig_path, dpi=160)
+    plt.close(fig_fg)
+
     fig, ax = plt.subplots(figsize=(6.5, 5.4))
     ax.imshow(np.log10(I0 + 1e-6), cmap="magma", origin="lower")
     ax.set_title("6D icosahedral demo: diffraction slice (log10 intensity)")
@@ -1012,6 +1136,37 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
     fig5.savefig(fig5_path, dpi=160)
     plt.close(fig5)
 
+    # Figure 7: ring-factor block complexity p(n).
+    ns = np.arange(1, int(params.ring_complexity_max_n) + 1, dtype=int)
+    pn = np.array([int(p_of_n.get(str(int(n)), 0)) for n in ns], dtype=float)
+    fig7, ax7 = plt.subplots(figsize=(5.6, 3.8))
+    ax7.plot(ns, pn, marker="o", ms=3, lw=1.0, label="empirical p(n)")
+    ax7.plot(ns, ns + 1, lw=1.0, ls="--", label="Sturmian: n+1")
+    ax7.set_xlabel("block length n")
+    ax7.set_ylabel("distinct blocks p(n)")
+    ax7.set_title("6D demo: ring factor two-interval readout complexity")
+    ax7.grid(True, alpha=0.3)
+    ax7.legend(fontsize=8)
+    fig7.tight_layout()
+    fig7_path = fig_out_dir / "demo_6d_ring_factor_complexity.png"
+    fig7.savefig(fig7_path, dpi=160)
+    plt.close(fig7)
+
+    # Figure 8: ring-factor entropy-rate proxy under fuzzy interval readout.
+    fig8, ax8 = plt.subplots(figsize=(5.6, 3.8))
+    ax8.plot(params.eps_grid, ring_h_proxy, marker="o", ms=4, lw=1.0, label="block-entropy proxy")
+    ax8.plot(params.eps_grid, ring_h_theory, marker="s", ms=4, lw=1.0, label="theory: mean H_b(kappa_eps)")
+    ax8.set_xscale("log")
+    ax8.set_xlabel("resolution scale epsilon")
+    ax8.set_ylabel("entropy-rate proxy h_hat(eps)")
+    ax8.set_title("6D demo: ring factor h(eps) under fuzzy two-interval readout")
+    ax8.grid(True, which="both", alpha=0.3)
+    ax8.legend(fontsize=8)
+    fig8.tight_layout()
+    fig8_path = fig_out_dir / "demo_6d_ring_entropy_rate_proxy.png"
+    fig8.savefig(fig8_path, dpi=160)
+    plt.close(fig8)
+
     # Figure 6: diffraction slice vs window geometry/resolution.
     eps_pair = [float(params.eps_grid[0]), float(params.eps_grid[-2]) if len(params.eps_grid) >= 2 else float(params.eps_grid[-1])]
     fig6, axes = plt.subplots(2, 2, figsize=(8.4, 7.0))
@@ -1051,6 +1206,8 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
 
     return {
         "demo_6d_fingerprints.json": str(json_path),
+        f"demo_6d_fold_graph_m{m}.json": str(fold_graph_path),
+        f"demo_6d_fold_graph_m{m}_heatmap.png": str(fold_graph_fig_path),
         "demo_6d_diffraction_slice.png": str(fig_path),
         "demo_6d_visibility_curve.png": str(fig2_path),
         "demo_6d_entropy_rate_proxy.png": str(fig3_path),
@@ -1059,6 +1216,8 @@ def run_demo(out_dir: Path, fig_out_dir: Path, seed: int = 0) -> Dict[str, str]:
         "demo_6d_box_window_envelope_scatter.png": str(fig4_path),
         "demo_6d_1d_factor_gap_stats.png": str(fig5_path),
         "demo_6d_window_geometry_diffraction.png": str(fig6_path),
+        "demo_6d_ring_factor_complexity.png": str(fig7_path),
+        "demo_6d_ring_entropy_rate_proxy.png": str(fig8_path),
     }
 
 
