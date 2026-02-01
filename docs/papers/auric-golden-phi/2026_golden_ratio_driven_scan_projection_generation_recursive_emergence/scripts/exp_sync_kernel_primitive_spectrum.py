@@ -303,6 +303,13 @@ def log_mertens_constant(max_m: int, tol: float, prog: Progress) -> Tuple[float,
     return logM, used
 
 
+def residue_C_B() -> Tuple[Fraction, float]:
+    z0 = Fraction(1, 3)
+    g = (z0 - 1) * (z0 + 1) * (z0**3 - z0**2 + z0 + 1)
+    C_frac = -Fraction(1, 1) / g
+    return C_frac, float(C_frac)
+
+
 def write_json(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
@@ -345,8 +352,14 @@ def main() -> None:
     eig_cubic = [1.0 / r for r in roots_z]
     rho = max(abs(x) for x in eig_cubic)
 
+    C_frac, C = residue_C_B()
     logM, m_used = log_mertens_constant(args.logm_max, args.logm_tol, prog)
     M = math.exp(logM)
+    pi_vals = []
+    s = 0
+    for v in pvals:
+        s += v
+        pi_vals.append(s)
 
     payload = {
         "states": STATES,
@@ -356,8 +369,12 @@ def main() -> None:
             "linear": ["(z-1)", "(z+1)", "(3z-1)"],
             "cubic": [int(c) for c in cubic_coeffs],
         },
+        "C_B": C,
+        "C_B_fraction": f"{C_frac.numerator}/{C_frac.denominator}",
         "traces_a_n": traces,
         "primitive_p_n": pvals,
+        "prime_counting_Pi_B": pi_vals,
+        "prime_counting_Pi_B_N": pi_vals[-1] if pi_vals else 0,
         "pf_eigenvalue": 3.0,
         "rho_second_eigen_mod": rho,
         "log_M_B": logM,
@@ -373,6 +390,9 @@ def main() -> None:
 
     print("[sync-kernel] traces:", traces, flush=True)
     print("[sync-kernel] primitive:", pvals, flush=True)
+    print(f"[sync-kernel] C_B = {C_frac} (~{C:.12g})", flush=True)
+    if pi_vals:
+        print(f"[sync-kernel] Pi_B({len(pi_vals)}) = {pi_vals[-1]}", flush=True)
     print(f"[sync-kernel] det coeffs: {coeffs_int}", flush=True)
     print(f"[sync-kernel] rho ~ {rho:.12g}", flush=True)
     print(f"[sync-kernel] log M_B ~ {logM:.16g}", flush=True)

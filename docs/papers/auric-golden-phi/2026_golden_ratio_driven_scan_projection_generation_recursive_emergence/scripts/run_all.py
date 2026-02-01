@@ -60,6 +60,46 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_weighted_pressure",
+            script="exp_sync_kernel_weighted_pressure.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_weighted_pressure.json",
+            ],
+        ),
+        Step(
+            name="sync_kernel_weighted_pressure_2d",
+            script="exp_sync_kernel_weighted_pressure_2d.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_weighted_pressure_2d.json",
+            ],
+        ),
+        Step(
+            name="sync_kernel_weighted_pressure_3d",
+            script="exp_sync_kernel_weighted_pressure_3d.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_weighted_pressure_3d.json",
+            ],
+        ),
+        Step(
+            name="sync_kernel_real_input_40",
+            script="exp_sync_kernel_real_input_40.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_real_input_40.json",
+            ],
+        ),
+        Step(
+            name="sync_kernel_real_input_40_arity",
+            script="exp_sync_kernel_real_input_40_arity.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_real_input_40_arity.json",
+            ],
+        ),
+        Step(
             name="generated_tex_fragments",
             script="exp_generated_tex.py",
             args=[],

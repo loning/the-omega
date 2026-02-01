@@ -30,6 +30,42 @@ A=\begin{pmatrix}1&1\\1&0\end{pmatrix}
 来自矩阵恒等式 $\log\det(I-zA)=-\sum_{n\ge 1}\mathrm{Tr}(A^n)z^n/n$（当 $|z|$ 足够小时成立，并由解析延拓得到有理函数等式）。这给出一条完全可核验的“计数 $\Rightarrow$ 行列式”推导链。
 \end{remark}
 
+\subsection{在线归一化同步核的 \texorpdfstring{$\zeta_B$}{zeta\_B} 与 primitive 轨道谱}\label{subsec:zeta-online-kernel}
+第 \ref{subsec:online-delay} 小节的单趟在线延迟转导器，其同步部分给出一个 10 状态 SFT（见附录 B），记邻接矩阵为 $B$。按 SFT 的标准公式，
+\[
+\zeta_B(z)=\frac{1}{\det(I-zB)},\qquad
+a_n:=\#\mathrm{Fix}(\sigma^n)=\mathrm{Tr}(B^n).
+\]
+固定状态顺序与附录 B 一致，并令
+\[
+B_{ij}:=\#\{d\in\{0,1,2\}:\ q_i\xrightarrow{d}q_j\},
+\]
+则由同步转移表逐边计数即可得到该 $B$；其显式矩阵与计算细节见附录 B。
+对该同步核可得显式因式分解（附录 B 给出矩阵与计算）
+\[
+\det(I-zB)=(z-1)(z+1)(3z-1)\bigl(z^3-z^2+z+1\bigr),
+\]
+因此主极点位于 $z_\star=1/3$，对应 Perron--Frobenius 主特征值 $\lambda=3$，并且
+\[
+\zeta_B(z)=\frac{C_B}{1-3z}+O(1),\qquad C_B=\frac{243}{272}
+\]
+（$C_B$ 为该极点留数，见附录 B）。令 $p_n$ 为长度 $n$ 的 primitive 轨道数（按轨道计），则
+\[
+a_n=\sum_{d\mid n} d\,p_d,
+\qquad
+p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}.
+\]
+由 $B$ 的原始性（例如 $B^5$ 全正），得到
+\[
+a_n=3^n+O(\rho^n),\qquad
+p_n=\frac{3^n}{n}+O\!\left(\frac{\rho^n}{n}\right)\quad(\rho<3).
+\]
+对应的“素数计数曲线”定义为 $\Pi_B(N):=\sum_{n\le N}p_n$，其离散主项为
+\[
+\Pi_B(N)\sim \frac{3}{2}\cdot \frac{3^N}{N},
+\]
+并可写成 $X=3^N$ 的 $X/\log X$ 形态（详见附录 B）。可复现实验脚本见 \texttt{scripts/exp\_sync\_kernel\_primitive\_spectrum.py}。
+
 \subsection{从语法到算子：转移算子、C*-代数与 \texorpdfstring{$\zeta$}{zeta}（精确口径）}\label{subsec:operator-zeta-interface}
 
 本小节把“语法—谱—$\zeta$”的联系写成可评估的算子论陈述，并明确本文真正使用的对象是什么。核心点是：在黄金均值 SFT 上，Perron--Frobenius（有限矩阵）与 Ruelle 转移算子（无穷维算子）在柱函数空间上一致；相应的 C*-代数框架（如 Cuntz--Krieger 代数/群胚 C*-代数）提供了把柱投影、最大熵态（Parry 测度）与谱/$\zeta$ 统一表述的标准工具。
@@ -139,3 +175,7 @@ L_{\mathrm{Abel}}(f,s;x)=\sum_{k=-K}^{\infty} a_k\,(s-s_0)^k,
 \)
 在 $\Re(s)>0$ 绝对收敛并定义解析函数；当 $\Re(s)>1$ 时，$r\uparrow 1$ 的极限（若存在）与通常的 Dirichlet 级数 $L(f,s;x)$ 一致。若进一步已知 $L_{\mathrm{Abel}}(f,s;x)$ 在某点 $s_0$ 可作 Laurent 展开，则有限部 $\mathrm{fp}_{s=s_0}$ 作为常数项是标准且不依赖展开方式的对象（见 \cite{Apostol1976}）。
 \end{proposition}
+
+\begin{remark}[同步核的 Abel 有限部读出]\label{rem:abel-sync-kernel}
+对在线归一化同步核，可取 primitive 生成函数 $P_B(z)=\sum_{n\ge 1}p_n z^n$。由 $p_n\sim 3^n/n$，在 $z\to 1/3$ 出现对数发散；按本节 Abel 口径缩放 $r=3z$，即可定义有限部常数 $\mathfrak{M}_B$。其显式数值与可审计计算见附录 B（与定义 \ref{def:abel-finite-part} 同口径）。
+\end{remark}

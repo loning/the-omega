@@ -79,7 +79,7 @@ e_{k+2}\ \equiv\ e_{k+1}+e_k.
   即 $a\equiv c$。唯一性由 Zeckendorf 唯一性推出：若 $c,c'\in X_\infty$ 且 $c\equiv c'$，则 $\mathrm{Val}(c)=\mathrm{Val}(c')$，从而 $c=c'$。
 \end{itemize}
 
-\begin{remark}[折叠作为商映射的可计算截面]\label{rem:fold-as-section}
+\begin{corollary}[折叠作为商映射的可计算截面]\label{cor:fold-as-section}
 上一定理给出的结论可概括为：
 \[
 \mathcal{D}\ \twoheadrightarrow\ \mathcal{D}/\!\equiv\ \cong\ \NN
@@ -87,7 +87,10 @@ e_{k+2}\ \equiv\ e_{k+1}+e_k.
 X_\infty \hookrightarrow \mathcal{D}
 \]
 是一个可计算的截面（选择规范代表）。这正是“折叠（folding）= 取不变量/取商 + 选规范形”的抽象机制在 Fibonacci 情形下的具体实现。
-\end{remark}
+\end{corollary}
+
+\textbf{证明：}
+由定理 \ref{thm:monoid-quotient-is-N} 的同构性与唯一规范代表结论直接推出。
 
 \subsection{群胚视角：值保持重写的轨道与 Zeckendorf 横截面}\label{sec:groupoid-zeckendorf}
 
@@ -184,7 +187,7 @@ c\oplus d:=\mathrm{Val}^{-1}\bigl(\mathrm{Val}(c)+\mathrm{Val}(d)\bigr)\in X_\in
 本文把该同构写成定理的目的仅是：固定记号并强调“无需把 \(+\) 作为原语输入”。本节真正承担的数学内容是另外两类、与“扫描—投影读出”接口对齐的结论：
 \begin{itemize}
   \item \textbf{（轨道/折叠的内容）}由群胚重写生成的轨道与值纤维一致，并存在唯一横截面（定理 \ref{thm:zeckendorf-transversal}）。这给出“折叠 = 沿值保持对称轨道投影到唯一稳定代表”的严格形式。
-  \item \textbf{（纯数字层的内容）}运算可等价表述为“逐位叠加/卷积 $\Rightarrow$ 归一化折叠”（命题 \ref{prop:add-as-fold}），从而把抽象的 \(\mathrm{Val}^{-1}\) 定义转成一个可实现、可审计的归一化规则；其复杂度界见附录 E$'$。
+  \item \textbf{（纯数字层的内容）}运算可等价表述为“逐位叠加/卷积 $\Rightarrow$ 归一化折叠”（推论 \ref{cor:add-as-fold}），从而把抽象的 \(\mathrm{Val}^{-1}\) 定义转成一个可实现、可审计的归一化规则；其复杂度界见附录 E$'$。
 \end{itemize}
 \end{remark}
 
@@ -204,7 +207,7 @@ m:=\max\{k:\ c_k=1\text{ 或 }d_k=1\}
 在“扫描—读出”的语义里，运算规则若能由一个 on-line 换能器实现，意味着读出可以沿时间单向流式推进并维持有限记忆状态，这与第 6 节的滑动块算子视角一致。另一方面，黄金比例基上的加法虽可 on-line 实现，但一般不可并行化（即不存在把输入划分为并行块并在常数轮数内完成的加法电路口径），这一现象在本文语境中可解释为：\textbf{稳定读出虽是有限记忆的，但仍携带跨尺度的进位/归一化依赖}（参见 \cite{Frougny1999OnlineAddition} 的精确结论与讨论）。
 \end{remark}
 
-\begin{proposition}[折叠公式：加法即“叠加后归一化”]\label{prop:add-as-fold}
+\begin{corollary}[折叠公式：加法即“叠加后归一化”]\label{cor:add-as-fold}
 将 $c,d\in X_\infty$ 视为 $\mathcal{D}$ 中的 $0/1$ 配置，令其逐点和为
 \[
 (c+d)_k:=c_k+d_k\in\{0,1,2\},
@@ -213,7 +216,7 @@ m:=\max\{k:\ c_k=1\text{ 或 }d_k=1\}
 \[
 c\oplus d=\Fold_\infty(c+d).
 \]
-\end{proposition}
+\end{corollary}
 
 \textbf{证明：}
 由定义 \ref{def:val-on-D}，$\mathrm{Val}(c+d)=\mathrm{Val}(c)+\mathrm{Val}(d)$，再由定理 \ref{thm:zeckendorf-transversal} 的定义 $\Fold_\infty(a)=Z(\mathrm{Val}(a))=\mathrm{Val}^{-1}(\mathrm{Val}(a))$ 即得。
@@ -244,6 +247,180 @@ $(X_\infty,\oplus,\otimes)$ 为交换半环，且 $\mathrm{Val}$ 给出与 $(\NN
 由定义 \ref{def:stable-add} 与 \ref{def:stable-mul}，$\mathrm{Val}$ 同时保持加法与乘法。由于 $\mathrm{Val}$ 为双射，交换律、结合律与分配律均从 $(\NN,+,\times)$ 传递，因而得到交换半环同构。
 
 由此，自然数、加法、乘法在稳定地址空间中完全由\textbf{语法约束 + 规范形归一化}定义，而不需将 $(+,\times)$ 作为原语预置。
+
+\subsubsection{乘法由加法迭代内生}\label{subsec:mul-as-iterated-add}
+\begin{theorem}[乘法可由加法与迭代内生]\label{thm:mul-by-iterated-add}
+在 $X_\infty$ 上定义
+\[
+c\odot d:=\underbrace{c\oplus c\oplus\cdots\oplus c}_{\mathrm{Val}(d)\text{ 次}},
+\qquad
+\mathrm{Val}(d)=0\text{ 时取 }0_X,
+\]
+则对任意 $c,d\in X_\infty$，$c\odot d=c\otimes d$。
+\end{theorem}
+
+\textbf{证明：}
+由定理 \ref{thm:add-definitional}，$\mathrm{Val}$ 保持 $\oplus$ 且双射，故
+\[
+\mathrm{Val}(c\odot d)=\mathrm{Val}(c)\mathrm{Val}(d)=\mathrm{Val}(c\otimes d),
+\]
+从而 $c\odot d=c\otimes d$。证毕。
+
+\begin{corollary}[“合并”的第一种严格版本]\label{cor:mul-no-new-primitive}
+$\otimes$ 由 $\oplus$ 与可迭代计数唯一确定，无需作为新的原语引入。
+\end{corollary}
+
+\subsubsection{后继与折叠：把 \texorpdfstring{$\oplus$}{oplus} 也消隐}\label{subsec:succ-and-fold}
+\begin{definition}[后继与折叠]\label{def:successor-fold}
+记 $0_X:=(0,0,\dots)\in X_\infty$，$e_1\in\mathcal{D}$ 为第 1 个标准基。定义
+\[
+S:X_\infty\to X_\infty,\qquad S(c):=\Fold_\infty(c+e_1).
+\]
+\end{definition}
+
+\begin{theorem}[后继结构同构]\label{thm:successor-structure}
+$\mathrm{Val}$ 给出结构同构
+\[
+\mathrm{Val}(0_X)=0,\qquad \mathrm{Val}(S(c))=\mathrm{Val}(c)+1,
+\]
+并且 $\mathrm{Val}$ 为双射。
+\end{theorem}
+
+\textbf{证明：}
+$\mathrm{Val}(0_X)=0$。又
+\[
+\mathrm{Val}(S(c))=\mathrm{Val}(c+e_1)=\mathrm{Val}(c)+\mathrm{Val}(e_1)=\mathrm{Val}(c)+1,
+\]
+且 $\mathrm{Val}(e_1)=F_2=1$；双射性由 Zeckendorf 唯一性。证毕。
+
+\begin{corollary}[加法由后继迭代给出]\label{cor:add-from-successor}
+令
+\[
+c\oplus_S d:=S^{\circ\mathrm{Val}(d)}(c),
+\]
+则 $c\oplus_S d=c\oplus d$，且 $c\oplus d=\Fold_\infty(c+d)$。
+\end{corollary}
+
+\textbf{证明：}
+由定理 \ref{thm:successor-structure}，$\mathrm{Val}(c\oplus_S d)=\mathrm{Val}(c)+\mathrm{Val}(d)$，由双射性得 $c\oplus_S d=c\oplus d$；折叠公式由推论 \ref{cor:add-as-fold}。证毕。
+
+\begin{theorem}[乘法由后继迭代内生]\label{thm:mul-from-successor}
+定义
+\[
+c\otimes_S d:=\underbrace{c\oplus_S c\oplus_S\cdots\oplus_S c}_{\mathrm{Val}(d)\text{ 次}},
+\qquad \mathrm{Val}(d)=0\text{ 时取 }0_X,
+\]
+则 $c\otimes_S d=c\otimes d$。
+\end{theorem}
+
+\textbf{证明：}
+由推论 \ref{cor:add-from-successor}，$\oplus_S=\oplus$，故
+\[
+\mathrm{Val}(c\otimes_S d)=\mathrm{Val}(c)\mathrm{Val}(d)=\mathrm{Val}(c\otimes d),
+\]
+由双射性得结论。证毕。
+
+\begin{corollary}[极简原语集]\label{cor:primitive-minimal-successor}
+稳定地址层的算术由后继 $S$ 与折叠 $\Fold_\infty$ 生成：$\oplus$ 为 $S$ 的一层迭代读出，$\otimes$ 为该迭代的二层叠加读出。
+\end{corollary}
+
+\subsubsection{单一原语 \texorpdfstring{$\circ$}{o} 的两层读出}\label{subsec:arith-composition}
+本小节给出一个与“扫描迭代 $\Rightarrow$ 稳定编码 $\Rightarrow$ 归一化读出”链条对齐的定理化版本：把加法与乘法从原语层彻底移除，只保留\textbf{复合}这一最底层原语，并在稳定地址层通过折叠回到规范形。
+取任意非空集合 $A$ 与自映射 $g:A\to A$。记
+\[
+S_0:=\langle g\rangle=\{g^{\circ n}:n\in\NN\}\subseteq \mathrm{End}(A),\qquad
+S_1:=\{I_n:n\in\NN\}\subseteq \mathrm{End}(\mathrm{End}(A)),
+\]
+其中 $I_n(f):=f^{\circ n}$。两层对象的唯一运算均为复合 $\circ$。
+
+\begin{theorem}[单一原语 \texorpdfstring{$\circ$}{o} 的两层读出同时生成 $(+,\times)$]\label{thm:composition-two-layer}
+定义嵌入 $\iota_0:\NN\to S_0$ 为
+\[
+\iota_0(n):=g^{\circ n},\qquad g^{\circ 0}:=\mathrm{id}_A.
+\]
+并令 $\iota_1:\NN\to S_1$ 为 $\iota_1(n):=I_n$。则对任意 $m,n\in\NN$，成立
+\[
+\iota_0(m+n)=\iota_0(m)\circ \iota_0(n),
+\qquad
+\iota_1(mn)=\iota_1(m)\circ \iota_1(n).
+\]
+\end{theorem}
+
+\textbf{证明：}
+由迭代定义与复合结合律，
+\[
+g^{\circ(m+n)}=g^{\circ m}\circ g^{\circ n},
+\]
+故 $\iota_0(m+n)=\iota_0(m)\circ \iota_0(n)$。另一方面，对任意 $f\in\mathrm{End}(A)$，
+\[
+(\iota_1(m)\circ \iota_1(n))(f)=I_m(I_n(f))=I_m(f^{\circ n})=(f^{\circ n})^{\circ m}
+=f^{\circ (nm)}=I_{mn}(f).
+\]
+由于对一切 $f$ 相等，故 $\iota_1(m)\circ \iota_1(n)=\iota_1(mn)$。证毕。
+
+\begin{theorem}[稳定地址半环的“去原语化”实现]\label{thm:arith-composition}
+沿用定义 \ref{def:stable-add} 与 \ref{def:stable-mul}，并记 $\mathrm{Val}:X_\infty\to\NN$ 为值映射。对任意定理 \ref{thm:composition-two-layer} 中的 $(A,g)$，定义两条“过程语义”映射
+\[
+\Phi_0:X_\infty\to \mathrm{End}(A),\quad \Phi_0(c):=g^{\circ\mathrm{Val}(c)},
+\]
+\[
+\Phi_1:X_\infty\to \mathrm{End}(\mathrm{End}(A)),\quad \Phi_1(c):=I_{\mathrm{Val}(c)}.
+\]
+则对任意 $c,d\in X_\infty$，
+\[
+\Phi_0(c\oplus d)=\Phi_0(c)\circ\Phi_0(d),\qquad
+\Phi_1(c\otimes d)=\Phi_1(c)\circ\Phi_1(d).
+\]
+也即：在稳定地址层的 $\oplus,\otimes$ 同时被同一原语 $\circ$ 在两层对象上实现。
+\end{theorem}
+
+\textbf{证明：}
+由 $\oplus$ 定义与定理 \ref{thm:composition-two-layer} 的第一条，
+\[
+\Phi_0(c\oplus d)=g^{\circ\mathrm{Val}(c\oplus d)}
+=g^{\circ(\mathrm{Val}(c)+\mathrm{Val}(d))}
+ =g^{\circ\mathrm{Val}(c)}\circ g^{\circ\mathrm{Val}(d)}
+=\Phi_0(c)\circ\Phi_0(d).
+\]
+同理由 $\otimes$ 定义与定理 \ref{thm:composition-two-layer} 的第二条，
+\[
+\Phi_1(c\otimes d)=I_{\mathrm{Val}(c\otimes d)}
+=I_{\mathrm{Val}(c)\mathrm{Val}(d)}
+=I_{\mathrm{Val}(c)}\circ I_{\mathrm{Val}(d)}
+=\Phi_1(c)\circ\Phi_1(d).
+\]
+证毕。
+
+\begin{corollary}[仅复合的读出落回稳定地址]\label{cor:composition-pullback}
+记 $Z:=\mathrm{Val}^{-1}$，并定义
+\[
+\rho_0:S_0\to X_\infty,\quad \rho_0(g^{\circ n}):=Z(n),\qquad
+\rho_1:S_1\to X_\infty,\quad \rho_1(I_n):=Z(n).
+\]
+则对任意 $c=Z(m),d=Z(n)\in X_\infty$，
+\[
+c\oplus d=\rho_0\bigl(\rho_0^{-1}(c)\circ \rho_0^{-1}(d)\bigr),
+\qquad
+c\otimes d=\rho_1\bigl(\rho_1^{-1}(c)\circ \rho_1^{-1}(d)\bigr).
+\]
+\end{corollary}
+
+\textbf{证明：}
+由定理 \ref{thm:composition-two-layer} 得 $\rho_0(g^{\circ m}\circ g^{\circ n})=Z(m+n)$ 与 $\rho_1(I_m\circ I_n)=Z(mn)$，再与 $\oplus,\otimes$ 的定义对齐即可。证毕。
+
+\begin{corollary}[“合并掉 $(+,\times)$”的严格表述]\label{cor:primitive-free-arith}
+在配置层，算术原语可压缩为以下最小生成集：
+\begin{itemize}
+  \item 计数配置的逐点叠加（自由交换幺半群结构）；
+  \item Fibonacci 关系诱导的局部可逆重写（群胚生成元）；
+  \item 选取规范形截面 $\Fold_\infty$（或等价的 $\mathrm{Val}$ 与 Zeckendorf 规范形 $Z$）。
+\end{itemize}
+在过程层，等价地可用复合运算 $\circ$ 与折叠 $\Fold_\infty$ 来表达：$\oplus$ 与 $\otimes$ 分别是复合在一层与二层对象上的读出，并经折叠归一化后落回 $X_\infty$。
+等价地，运算层只需 $\circ$，可见层只需编码 $Z$（或 $\mathrm{Val}/\Fold_\infty$）。
+\end{corollary}
+
+\textbf{证明：}
+配置层的三类原语由定理 \ref{thm:monoid-quotient-is-N}、定理 \ref{thm:zeckendorf-transversal} 与推论 \ref{cor:fold-as-section} 直接给出；过程层的两层复合读出由定理 \ref{thm:composition-two-layer} 与 \ref{thm:arith-composition} 给出。加法的折叠接口由推论 \ref{cor:add-as-fold} 保证，因而结论成立。
 
 \begin{proposition}[可计算实现]\label{prop:zeckendorf-arith-computable}
 对任意 $c,d\in X_\infty$，$c\oplus d$ 与 $c\otimes d$ 可由有限步算法计算：先在值层执行整数加法/乘法得到 $\mathrm{Val}(c)\pm\mathrm{Val}(d)$ 或 $\mathrm{Val}(c)\mathrm{Val}(d)$，再以 Zeckendorf 贪心算法取唯一规范形（附录 C）。
@@ -294,7 +471,102 @@ m:=\max\{k:\ c_k=1\text{ 或 }d_k=1\}.
   \item \textbf{稳定乘法：}分辨率口径为“值层乘法成本 + $O(m)$”；比特口径为 $O(M(m)+m^2)$，其中 $M(m)$ 为 $\\Theta(m)$ 比特整数乘法成本（学校乘法为 $O(m^2)$）。
 \end{itemize}
 
-\begin{remark}[直接在 Zeckendorf 数字上归一化]
-除“值层运算 + 贪心规范化”外，也可在 Zeckendorf 数字上给出纯局部重写的 carry/normalize 算法，从而避免显式构造大整数值层。该方向可给出更强的实现层贡献（例如线性时间归一化与平均复杂度分析），但需要额外的合流/终止与复杂度证明，本文在最小输入原则下暂将其作为可选扩展。
+\subsubsection{纯局部归一化（可选扩展）}\label{subsec:local-normalize}
+本方向用 Zeckendorf 数字上的局部 carry/normalize 直接实现 $\Fold_\infty$，避免显式值层运算。以逐位叠加得到的串 $s\in\{0,1,2\}^m$ 为输入，给出一个三趟局部规则体系（每步保持 $\mathrm{Val}$；规则可由 Fibonacci 递推验证，见 \cite{AhlbachUsatineFrougnyPippenger2013}）：
+\begin{itemize}
+  \item \textbf{第 1 趟（宽度 4，左到右）}：对 $x\in\{0,1,2\}$，
+  \[
+  020x\Rightarrow 100x^{+},\quad
+  030x\Rightarrow 110x^{+},\quad
+  021x\Rightarrow 110x,\quad
+  012x\Rightarrow 101x,
+  \]
+  其中 $x^{+}:=x+1$。末端清理可取
+  \[
+  030\Rightarrow 111,\quad 020\Rightarrow 101,\quad 0120\Rightarrow 1010,\quad
+  03\Rightarrow 11,\quad 02\Rightarrow 10,\quad 012\Rightarrow 101.
+  \]
+  \item \textbf{第 2--3 趟（宽度 3）}：用规则
+  \[
+  011\Rightarrow 100
+  \]
+  先右到左、再左到右各扫一遍，消去相邻 $11$。
+\end{itemize}
+
+\begin{theorem}[三趟局部归一化与 $\Fold_\infty$ 一致]\label{thm:local-normalize-fold}
+令 $T:=T_3\circ T_2\circ T_1$ 为上述三趟归一化。则对任意 $s\in\{0,1,2\}^m$，
+\[
+T(s)=\Fold_\infty(s)\in X_m.
+\]
+\end{theorem}
+
+\textbf{证明：}
+每条规则保持 $\mathrm{Val}$（等价地：在群胚生成元轨道内移动），且第 2--3 趟保证输出无相邻 $11$，从而落在 $X_m$。由定理 \ref{thm:zeckendorf-transversal} 的横截面唯一性交点，终止形必为 $\Fold_\infty(s)$。证毕。
+
+\begin{corollary}[有限状态实现与线性时间]\label{cor:local-normalize-fst}
+上述三趟均可由有限状态转导器以常数延迟实现，故分辨率口径下归一化为 $O(m)$。例如第 1 趟可取状态集 $Q_1=\{0,1,2,3\}^3$（至多 $4^3$ 个状态），第 2--3 趟可取 $Q_2=\{0,1\}^2$（至多 $2^2$ 个状态）。\cite{AhlbachUsatineFrougnyPippenger2013,Frougny1999OnlineAddition}
+\end{corollary}
+
+\subsubsection{单趟在线延迟 \texorpdfstring{$3$}{3}：统一转导器}\label{subsec:online-delay}
+三趟局部规则可视为转导器串联的产品自动机。更强的结果是存在\textbf{单趟在线}转导器（延迟 3）直接实现同一归一化；其同步部分可用“余量守恒”给出（\cite{Frougny1999OnlineAddition}）。
+
+令 $\varphi=(1+\sqrt5)/2$，定义余量
+\[
+R(s):=s_1\varphi^{-1}+s_2\varphi^{-2}+s_3\varphi^{-3}\in[0,1),
+\]
+并令输入 $d\in\{0,1,2\}$、输出 $e\in\{0,1\}$。同步边 $(s\to t)$ 满足守恒式
+\[
+R(s)+d\varphi^{-4}=e\varphi^{-1}+t_1\varphi^{-2}+t_2\varphi^{-3}+t_3\varphi^{-4},
+\]
+等价地
+\[
+R(t)=\varphi R(s)+d\varphi^{-3}-e,\qquad R(t)\in[0,1).
+\]
+该同步部分的状态集可取为
+\[
+Q=\{000,001,002,010,100,101,0\overline{1}2,1\overline{1}2,01\overline{1},11\overline{1}\},
+\]
+并且出边（标记 $d/e$）可写为：
+\[
+\begin{aligned}
+000&\xrightarrow{d/0}00d,\qquad 100\xrightarrow{d/1}00d\quad(d=0,1,2),\\
+001&\xrightarrow{0/0}010,\ \xrightarrow{1/0}100,\ \xrightarrow{2/0}101,\\
+002&\xrightarrow{0/0}11\overline{1},\ \xrightarrow{1/1}000,\ \xrightarrow{2/1}001,\\
+010&\xrightarrow{0/0}100,\ \xrightarrow{1/0}101,\ \xrightarrow{2/1}0\overline{1}2,\\
+101&\xrightarrow{0/1}010,\ \xrightarrow{1/1}100,\ \xrightarrow{2/1}101,\\
+0\overline{1}2&\xrightarrow{0/0}01\overline{1},\ \xrightarrow{1/0}010,\ \xrightarrow{2/0}100,\\
+1\overline{1}2&\xrightarrow{0/1}01\overline{1},\ \xrightarrow{1/1}010,\ \xrightarrow{2/1}100,\\
+01\overline{1}&\xrightarrow{0/0}001,\ \xrightarrow{1/0}002,\ \xrightarrow{2/0}1\overline{1}2,\\
+11\overline{1}&\xrightarrow{0/1}001,\ \xrightarrow{1/1}002,\ \xrightarrow{2/1}1\overline{1}2.
+\end{aligned}
+\]
+末端函数可取
+\[
+\omega(s_1s_2s_3):=Z(s_1F_4+s_2F_3+s_3F_2),
+\]
+以吞吐延迟窗口的残余并落回 Zeckendorf 规范形（\cite{Frougny1999OnlineAddition}）。
+
+\begin{theorem}[单趟在线延迟 3 的 $\Fold_\infty$ 实现]\label{thm:online-delay-fold}
+以上在线转导器（含末端函数）对任意 $s\in\{0,1,2\}^m$ 输出 $\Fold_\infty(s)$；其同步图即附录 B 的 10 状态同步核。
+\end{theorem}
+
+\textbf{证明：}
+守恒式保证值不变量，末端函数输出落在 $X_m$；由定理 \ref{thm:zeckendorf-transversal} 的横截面唯一性得 $\Fold_\infty(s)$。同步图与附录 B 的状态/转移一致。证毕。
+
+\begin{remark}[操作数不一致与隐含属性]
+原子生成元 $E_k,E_k^{-1}$ 具有尺度参数 $k$ 与守卫条件，体现为“隐含类型”。令 $\nu(a):=\sum_k a_k$ 表示块数，则
+\[
+\nu(E_k(a))=\nu(a)+1,\qquad \nu(E_k^{-1}(a))=\nu(a)-1,
+\]
+即局部裂解/合并天然呈现 $1\leftrightarrow 2$ 的操作数不一致性。
+\end{remark}
+
+\begin{remark}[primitive 轨道与“素数影子”]\label{rem:primitive-shadow}
+上述在线转导器的同步图是有限有向图，其 primitive 周期轨道给出“不可约循环模式”。设其邻接矩阵为 $B$，则周期点计数 $a_n=\mathrm{Tr}(B^n)$，primitive 轨道数 $p_n$ 由
+\[
+a_n=\sum_{d\mid n} d\,p_d,\qquad
+p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}
+\]
+给出，并与第 9 节的 $\zeta$--欧拉乘积结构一致（参见 \cite{LindMarcus1995} 与附录 B 中的 $\zeta_B$、显式分解与数值谱）。
 \end{remark}
 
