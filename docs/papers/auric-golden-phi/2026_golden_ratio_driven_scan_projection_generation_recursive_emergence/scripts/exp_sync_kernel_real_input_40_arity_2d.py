@@ -154,22 +154,34 @@ def poly_to_latex(poly: Poly2D) -> str:
     return out
 
 
-def parse_m_values(text: str) -> List[int]:
+def parse_pair_values(text: str) -> List[Tuple[int, int]]:
     raw = [chunk.strip() for chunk in text.split(",")] if text else []
-    ms: List[int] = []
+    pairs: List[Tuple[int, int]] = []
     for chunk in raw:
         if not chunk:
             continue
+        if "x" not in chunk:
+            raise SystemExit(f"[arity-2d] invalid pair (use axb): {chunk}")
+        left, right = [part.strip() for part in chunk.split("x", 1)]
         try:
-            val = int(chunk)
+            m1 = int(left)
+            m2 = int(right)
         except ValueError as exc:
-            raise SystemExit(f"[arity-2d] invalid m value: {chunk}") from exc
-        if val < 2:
-            raise SystemExit(f"[arity-2d] m must be >= 2, got {val}")
-        ms.append(val)
-    if not ms:
-        ms = [2, 3, 5]
-    return sorted(set(ms))
+            raise SystemExit(f"[arity-2d] invalid pair value: {chunk}") from exc
+        if m1 < 2 or m2 < 2:
+            raise SystemExit(f"[arity-2d] pair entries must be >=2, got {chunk}")
+        pairs.append((m1, m2))
+    if not pairs:
+        pairs = [(2, 2), (3, 2), (5, 2), (3, 3), (5, 5)]
+    # keep order but remove duplicates
+    seen = set()
+    out: List[Tuple[int, int]] = []
+    for p in pairs:
+        if p in seen:
+            continue
+        seen.add(p)
+        out.append(p)
+    return out
 
 
 def build_weighted_matrix_poly(
@@ -345,10 +357,10 @@ def main() -> None:
     parser.add_argument("--max-n", type=int, default=8, help="Max n for P_n(q,r)")
     parser.add_argument("--mertens-n", type=int, default=200, help="Max n for constants")
     parser.add_argument(
-        "--m-values",
+        "--pair-values",
         type=str,
-        default="2,3,5",
-        help="Comma-separated m values for (m,2) constants",
+        default="2x2,3x2,5x2,3x3,5x5",
+        help="Comma-separated m1xm2 pairs for Dirichlet–Mertens constants",
     )
     parser.add_argument("--no-output", action="store_true", help="Skip writing JSON output")
     parser.add_argument(
@@ -380,23 +392,25 @@ def main() -> None:
         logM += (pn.real / (lam**n)) - 1.0 / n
     mathsf_M = logM + gamma
 
-    m_values = parse_m_values(args.m_values)
-    twist_constants_m2: Dict[str, Dict[str, Dict[str, float]]] = {}
-    class_constants_m2: Dict[str, Dict[str, float]] = {}
-    rho_vals_m2: Dict[str, Dict[str, float]] = {}
-    rho_max_m2: Dict[str, float] = {}
+    pair_values = parse_pair_values(args.pair_values)
+    pair_keys = [f"{m1}x{m2}" for m1, m2 in pair_values]
+    pair_twist_C: Dict[str, Dict[str, Dict[str, float]]] = {}
+    pair_class_C: Dict[str, Dict[str, float]] = {}
+    pair_rho: Dict[str, Dict[str, float]] = {}
+    pair_rho_max: Dict[str, float] = {}
 
-    for m in m_values:
-        omega = np.exp(2j * math.pi / m)
+    for m1, m2 in pair_values:
+        omega1 = np.exp(2j * math.pi / m1)
+        omega2 = np.exp(2j * math.pi / m2)
         twist_constants: Dict[str, Dict[str, float]] = {}
         rho_vals: Dict[str, float] = {}
-        for j1 in range(m):
-            q = omega**j1
-            for j2 in (0, 1):
+        for j1 in range(m1):
+            q = omega1**j1
+            for j2 in range(m2):
                 if j1 == 0 and j2 == 0:
                     continue
-                r = -1.0 + 0.0j if j2 == 1 else 1.0 + 0.0j
-                label = f"m={m} j1={j1} j2={j2}"
+                r = omega2**j2
+                label = f"m1={m1} m2={m2} j1={j1} j2={j2}"
                 traces = traces_for_qr(q, r, mertens_n, prog, states, kernel_map, label)
                 pvals = pvals_from_traces(traces)
                 C = sum(p / (lam**(i + 1)) for i, p in enumerate(pvals))
@@ -406,29 +420,31 @@ def main() -> None:
                 rho_vals[key] = rho
 
         class_constants: Dict[str, float] = {}
-        for r1 in range(m):
-            for r2 in (0, 1):
-                acc = mathsf_M / (2.0 * m)
-                for j1 in range(m):
-                    for j2 in (0, 1):
+        denom = float(m1 * m2)
+        for r1 in range(m1):
+            for r2 in range(m2):
+                acc = mathsf_M / denom
+                for j1 in range(m1):
+                    for j2 in range(m2):
                         if j1 == 0 and j2 == 0:
                             continue
                         key = f"{j1},{j2}"
-                        q = omega**j1
-                        r = -1.0 + 0.0j if j2 == 1 else 1.0 + 0.0j
+                        q = omega1**j1
+                        r = omega2**j2
                         phase = (q ** (-r1)) * (r ** (-r2))
-                        acc += (phase * complex(twist_constants[key]["re"], twist_constants[key]["im"])) / (2.0 * m)
+                        acc += (phase * complex(twist_constants[key]["re"], twist_constants[key]["im"])) / denom
                 class_constants[f"{r1},{r2}"] = float(acc.real)
 
-        twist_constants_m2[str(m)] = twist_constants
-        class_constants_m2[str(m)] = class_constants
-        rho_vals_m2[str(m)] = rho_vals
-        rho_max_m2[str(m)] = max(rho_vals.values()) if rho_vals else 0.0
+        key_pair = f"{m1}x{m2}"
+        pair_twist_C[key_pair] = twist_constants
+        pair_class_C[key_pair] = class_constants
+        pair_rho[key_pair] = rho_vals
+        pair_rho_max[key_pair] = max(rho_vals.values()) if rho_vals else 0.0
 
     # Backward-compatible (2,2) shortcut
-    twist_constants_22 = twist_constants_m2.get("2", {})
-    class_constants_22 = class_constants_m2.get("2", {})
-    rho_vals_22 = rho_vals_m2.get("2", {})
+    twist_constants_22 = pair_twist_C.get("2x2", {})
+    class_constants_22 = pair_class_C.get("2x2", {})
+    rho_vals_22 = pair_rho.get("2x2", {})
 
     payload: Dict[str, object] = {
         "chi_def": "chi = e - 1_{d=2}",
@@ -440,12 +456,12 @@ def main() -> None:
             {f"{eq},{er}": coeff for (eq, er), coeff in P[n].items()} for n in range(1, args.max_n + 1)
         ],
         "mathsf_M": mathsf_M,
-        "m2_values": m_values,
-        "m2_twist_C": twist_constants_m2,
-        "m2_class_C": class_constants_m2,
-        "m2_rho": rho_vals_m2,
-        "m2_rho_max": rho_max_m2,
-        "m2_rho_max_ratio": {k: v / lam for k, v in rho_max_m2.items()},
+        "pair_values": pair_keys,
+        "pair_twist_C": pair_twist_C,
+        "pair_class_C": pair_class_C,
+        "pair_rho": pair_rho,
+        "pair_rho_max": pair_rho_max,
+        "pair_rho_max_ratio": {k: v / lam for k, v in pair_rho_max.items()},
         "twist_C_22": twist_constants_22,
         "class_C_22": class_constants_22,
         "rho_22": rho_vals_22,

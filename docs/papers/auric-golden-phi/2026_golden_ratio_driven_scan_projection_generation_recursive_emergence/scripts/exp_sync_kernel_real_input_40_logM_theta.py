@@ -2,8 +2,15 @@
 # -*- coding: utf-8 -*-
 """Compute a phase diagram for log(Mfrak(theta)) on the real-input 40-state kernel.
 
-This uses the Möbius–log zeta sampling formula:
-  log Mfrak(theta) = log C(theta) + sum_{m>=2} mu(m)/m * log zeta_{m theta}(z_star(theta)^m)
+This implements the Abel finite-part interface with a numerically stable Möbius–Abel double series:
+
+  log Mfrak(theta) = log C(theta)
+    - sum_{m>=2} (1/m) * P_theta(lambda(theta)^(-m))
+
+  P_theta(z) = sum_{k>=1} mu(k)/k * log zeta_theta(z^k)
+
+  => log Mfrak(theta) = log C(theta)
+    - sum_{m>=2} (1/m) * sum_{k>=1} mu(k)/k * log zeta_theta(lambda(theta)^(-m k))
 
 Outputs (default):
 - artifacts/export/sync_kernel_real_input_40_logM_theta.json
@@ -58,20 +65,29 @@ def log_zeta_from_matrix(M: np.ndarray, z: float) -> float:
     sign, logabs = np.linalg.slogdet(np.eye(n) - z * M)
     if sign == 0:
         raise ValueError("singular det in log_zeta_from_matrix")
-    # For z < z_star the determinant should be positive; still, be robust to sign flips.
     return -float(logabs)
 
 
-def estimate_logC(M: np.ndarray, lam: float, eps: float) -> float:
-    """Estimate log C(theta) from C ~ (1 - lam z) zeta(z) as z -> z_star^-."""
-    z_star = 1.0 / lam
-    z = z_star * (1.0 - eps)
-    log_zeta = log_zeta_from_matrix(M, z)
-    C = (1.0 - lam * z) * math.exp(log_zeta)
-    C = abs(C)
-    if C <= 0.0 or not math.isfinite(C):
-        raise ValueError("invalid C estimate")
-    return math.log(C)
+def logC_from_eigvals(eigs: np.ndarray, lam_idx: int) -> float:
+    """Compute log C(theta) from eigenvalues of M_theta.
+
+    For a simple PF eigenvalue lambda, we have
+      det(I - z M) = Π_j (1 - z λ_j),
+    so at z_star = 1/lambda,
+      C = lim_{z->z_star} (1 - lambda z) ζ(z)
+        = 1 / Π_{j≠PF} (1 - λ_j / lambda).
+    """
+    lam = eigs[lam_idx]
+    prod = 1.0 + 0.0j
+    for j, ev in enumerate(eigs):
+        if j == lam_idx:
+            continue
+        prod *= (1.0 - ev / lam)
+    C = 1.0 / prod
+    C_re = float(np.real(C))
+    if not math.isfinite(C_re) or C_re <= 0.0:
+        raise ValueError("invalid C(theta) from eigvals")
+    return math.log(C_re)
 
 
 def logM_theta(
@@ -79,7 +95,7 @@ def logM_theta(
     theta_neg: float,
     theta_2: float,
     m_max: int,
-    c_eps: float,
+    k_max: int,
     states: List[Tuple[str, int, int]],
     kernel_map: Dict[Tuple[str, int], Tuple[str, int]],
     prog: Progress,
@@ -87,22 +103,36 @@ def logM_theta(
 ) -> Tuple[float, float]:
     """Return (lambda(theta), log Mfrak(theta))."""
     M1 = build_weighted_matrix(theta_e, theta_neg, theta_2, states, kernel_map)
-    lam = spectral_radius(M1)
+    eigs = np.linalg.eigvals(M1)
+    lam_idx = int(np.argmax(np.abs(eigs)))
+    lam = float(np.real(eigs[lam_idx]))
+    if lam <= 0.0 or not math.isfinite(lam):
+        # fallback to spectral radius helper (should not happen for positive matrices)
+        lam = spectral_radius(M1)
     if lam <= 0.0 or not math.isfinite(lam):
         raise ValueError("invalid spectral radius")
 
-    z_star = 1.0 / lam
-    logC = estimate_logC(M1, lam=lam, eps=c_eps)
+    logC = logC_from_eigvals(eigs, lam_idx=lam_idx)
+
+    # Cache log zeta at z = lam^{-E}, where E = m*k.
+    logz_cache: Dict[int, float] = {}
+    mu_cache = [mobius(k) for k in range(k_max + 1)]
 
     s = 0.0
     for m in range(2, m_max + 1):
-        mu = mobius(m)
-        if mu == 0:
-            continue
-        Mm = build_weighted_matrix(m * theta_e, m * theta_neg, m * theta_2, states, kernel_map)
-        log_zeta = log_zeta_from_matrix(Mm, z_star**m)
-        s += (float(mu) / float(m)) * log_zeta
-    prog.tick(f"logM {tag} m_max={m_max}")
+        inner = 0.0
+        for k in range(1, k_max + 1):
+            mu = mu_cache[k]
+            if mu == 0:
+                continue
+            E = m * k
+            if E not in logz_cache:
+                z = lam ** (-float(E))
+                logz_cache[E] = log_zeta_from_matrix(M1, z)
+            inner += (float(mu) / float(k)) * logz_cache[E]
+        s -= inner / float(m)
+
+    prog.tick(f"logM {tag} m_max={m_max} k_max={k_max}")
     return lam, (logC + s)
 
 
@@ -134,8 +164,8 @@ def main() -> None:
     parser.add_argument("--theta-2-max", type=float, default=1.0)
     parser.add_argument("--theta-2-steps", type=int, default=41)
     parser.add_argument("--theta-neg", type=float, default=0.0)
-    parser.add_argument("--m-max", type=int, default=50, help="Max m for Möbius–zeta series")
-    parser.add_argument("--c-eps", type=float, default=1e-8, help="Relative offset for C(theta) estimation")
+    parser.add_argument("--m-max", type=int, default=40, help="Max m for Möbius–Abel series")
+    parser.add_argument("--k-max", type=int, default=25, help="Max k for Möbius inversion (inner sum)")
     parser.add_argument("--no-output", action="store_true", help="Skip writing outputs")
     parser.add_argument(
         "--output",
@@ -174,7 +204,7 @@ def main() -> None:
                 theta_neg=grid.theta_neg,
                 theta_2=th2,
                 m_max=args.m_max,
-                c_eps=args.c_eps,
+                k_max=args.k_max,
                 states=states,
                 kernel_map=kernel_map,
                 prog=prog,
@@ -183,24 +213,32 @@ def main() -> None:
             lam_grid[j, i] = lam
             logM_grid[j, i] = logm
 
-    # Plot heatmap.
-    out_png = export_dir() / "sync_kernel_real_input_40_logM_theta.png"
-    plt.figure(figsize=(7.0, 5.4))
-    im = plt.imshow(
-        logM_grid,
-        origin="lower",
-        aspect="auto",
-        extent=[xs[0], xs[-1], ys[0], ys[-1]],
-        cmap="viridis",
+    # Always print a representative value for quick sanity checks.
+    print(
+        f"[real-input-40-logM-theta] sample theta_e={xs[0]:.6g} theta_2={ys[0]:.6g} "
+        f"lambda={lam_grid[0,0]:.12g} logM={logM_grid[0,0]:.12g}",
+        flush=True,
     )
-    plt.colorbar(im, label="log Mfrak(theta)")
-    plt.xlabel("theta_e (output-bit weight)")
-    plt.ylabel("theta_2 (collision weight)")
-    plt.title("Real-input-40: log Mfrak(theta_e, theta_2), theta_neg fixed")
-    plt.tight_layout()
-    out_png.parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(out_png, dpi=200)
-    plt.close()
+
+    # Plot heatmap (skip degenerate 1x1 to avoid warnings).
+    out_png = export_dir() / "sync_kernel_real_input_40_logM_theta.png"
+    if len(xs) > 1 and len(ys) > 1:
+        plt.figure(figsize=(7.0, 5.4))
+        im = plt.imshow(
+            logM_grid,
+            origin="lower",
+            aspect="auto",
+            extent=[xs[0], xs[-1], ys[0], ys[-1]],
+            cmap="viridis",
+        )
+        plt.colorbar(im, label="log Mfrak(theta)")
+        plt.xlabel("theta_e (output-bit weight)")
+        plt.ylabel("theta_2 (collision weight)")
+        plt.title("Real-input-40: log Mfrak(theta_e, theta_2), theta_neg fixed")
+        plt.tight_layout()
+        out_png.parent.mkdir(parents=True, exist_ok=True)
+        plt.savefig(out_png, dpi=200)
+        plt.close()
 
     payload: Dict[str, object] = {
         "theta_neg": grid.theta_neg,
@@ -209,7 +247,7 @@ def main() -> None:
         "lambda_grid": lam_grid.tolist(),
         "logM_grid": logM_grid.tolist(),
         "m_max": args.m_max,
-        "c_eps": args.c_eps,
+        "k_max": args.k_max,
         # Euler–Mascheroni constant (avoid version-dependent stdlib availability).
         "gamma": 0.5772156649015329,
     }

@@ -89,6 +89,14 @@ h=\log\lambda=2\log\varphi,
 \[
 a_n=\varphi^{2n}+(-\varphi)^n+2+3(-1)^n+\varphi^{-2n}+\varphi^{-n},
 \]
+并可用 Lucas 数写成更紧凑的闭式。令 Lucas 数列 $L_n$ 为
+\[
+L_n:=\varphi^n+(-\varphi^{-1})^n,
+\]
+则有恒等式
+\[
+a_n=L_{2n}+(-1)^nL_n+2+3(-1)^n.
+\]
 \[
 (a_1,\dots,a_{10})=(1,15,13,59,111,345,813,2259,5701,15255),
 \]
@@ -211,6 +219,29 @@ P(z):=\sum_{n\ge 1}p_n z^n,
 =\log C+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta_M(\lambda^{-m}).
 \]
 
+\paragraph{与 primitive 分解对齐的双重 Möbius--Abel 级数}
+由分解恒等式
+\[
+\log\zeta_M(z)=\sum_{m\ge 1}\frac{P(z^m)}{m}
+\]
+并将 $z=r/\lambda$ 代入、把 $m=1$ 项单独提出，可得
+\[
+P(r/\lambda)=-\log(1-r)+\log\mathfrak{M}+o(1)\qquad(r\uparrow 1),
+\]
+以及常数分解
+\[
+\log\mathfrak{M}=\log C-\sum_{m\ge 2}\frac{P(\lambda^{-m})}{m}.
+\]
+另一方面，Möbius 反演给出 primitive 生成函数的闭式
+\[
+P(z)=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_M(z^k).
+\]
+将其代回即得到完全由 $\zeta_M$ 构成、且收敛极快的双和表示：
+\[
+\log\mathfrak{M}
+=\log C-\sum_{m\ge 2}\frac{1}{m}\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_M(\lambda^{-mk}).
+\]
+
 \subsubsection{Dirichlet 变量口径（与 Abel 单位圆盘完全等价）}\label{app:real-input-40-dirichlet}
 为对接主文第 9 节的"轨道 Dirichlet 级数/Abel 有限部"语言（定义 \ref{def:abel-finite-part}），
 可把 primitive 生成函数 $P$ 改写为 $s$-变量的轨道 Dirichlet 级数。定义
@@ -271,10 +302,18 @@ P_\theta(z)=-\log(1-\lambda(\theta)z)+\log\mathfrak{M}(\theta)+o(1),
 \[
 \log\mathfrak{M}(\theta)=\mathrm{fp}_{r=1}\Bigl(\sum_{n\ge 1}\frac{p_n(\theta)}{\lambda(\theta)^n}r^n+\log(1-r)\Bigr).
 \]
-进一步由 Möbius--log 反演得到"接口式"快速计算公式：
+进一步由 primitive 分解（欧拉乘积/幂展开口径）与 Möbius 反演得到一组可直接数值评估的接口式：
 \[
 \log\mathfrak{M}(\theta)
-=\log C(\theta)+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta_{m\theta}\bigl(z_\star(\theta)^m\bigr),
+:=\log C(\theta)-\sum_{m\ge 2}\frac{P_\theta(\lambda(\theta)^{-m})}{m},
+\]
+\[
+P_\theta(z)=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_\theta(z^k),
+\]
+从而得到双重 Möbius--Abel 级数；由于 $m\ge 2$，故 $\lambda(\theta)^{-mk}$ 以指数速度趋零，从而该双和在数值上高度稳定。
+\[
+\log\mathfrak{M}(\theta)
+=\log C(\theta)-\sum_{m\ge 2}\frac{1}{m}\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_\theta\bigl(\lambda(\theta)^{-mk}\bigr).
 \]
 其中 $C(\theta)$ 为主极点留数常数
 \[
@@ -294,6 +333,10 @@ C(\theta)=\frac{1}{-z_\star(\theta)\,\partial_z\det(I-zM_\theta)\big|_{z=z_\star
 则对 $\chi$ 的线性加权 $\exp(\theta_\chi\chi)$ 等价于参数替换
 \[
 (\theta_e,\theta_2)\mapsto(\theta_e+\theta_\chi,\ \theta_2-\theta_\chi),
+\]
+等价地，在三参数压力 $P(\theta_e,\theta_-,\theta_2)=\log\rho(M_\theta)$ 上这是一维切线
+\[
+P_\chi(t):=P(t,0,-t).
 \]
 因此 $\chi$ 的均值/协方差与 $\log\mathfrak{M}(\theta)$ 沿该方向的切片均可直接从同一族加权核 $M_\theta$ 读出，而无需引入新的状态扩张。
 
@@ -508,6 +551,7 @@ I_\chi(\alpha)\approx \frac{(\alpha-\mathbb{E}[\chi])^2}{2\,\mathrm{Var}_\infty(
 数值复现见脚本 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity.py}。
 
 \subsubsection{真实输入下的二维 arity--负携带素数谱}
+\paragraph{定义（二维素数谱）}
 定义
 \[
 \chi:=e-\mathbf{1}_{\{d=2\}}\in\{-1,0,1\},
@@ -547,6 +591,7 @@ P_8(q,r)&=3q^{4}r^{4}+18q^{4}+8q^{3}r^{5}+84q^{3}+5q^{2}r^{6}+4q^{2}r^{4}+12q^{2
 &\quad+30q^{2}r^{2}+36q^{2}r+34q^{2}+2qr^{7}+4qr^{5}+6qr^{4}+6qr^{3}+12qr^{2}+6qr+4q+r^{6}.
 \end{aligned}
 \]
+\paragraph{定义（二维 Dirichlet 分层与扭曲常数）}
 对模 $(m_1,m_2)$ 的二维 Dirichlet 分层，记
 \[
 p_{n,(r_1,r_2)}^{(m_1,m_2)}
@@ -562,6 +607,30 @@ p_{n,(r_1,r_2)}^{(m_1,m_2)}
 \[
 C(q,r):=\sum_{n\ge 1}\frac{P_n(q,r)}{\lambda^n}.
 \]
+\paragraph{定理（扭曲谱半径下降与指数等分布）}
+记
+\[
+\rho_{m_1,m_2}:=\max_{(j_1,j_2)\neq(0,0)}\rho\!\left(M(\omega_{m_1}^{j_1},\omega_{m_2}^{j_2})\right),
+\qquad \omega_m=e^{2\pi i/m},
+\]
+则对任意同余类 $(r_1,r_2)$ 有
+\[
+p_{n,(r_1,r_2)}^{(m_1,m_2)}=\frac{p_n}{m_1m_2}+O\!\left(\frac{\rho_{m_1,m_2}^n}{n}\right).
+\]
+
+\paragraph{推论（二维 Dirichlet--Mertens 常数矩阵）}
+定义
+\[
+C_{r_1,r_2}^{(m_1,m_2)}:=\frac{\mathsf{M}_{\varphi^2}}{m_1m_2}
++\frac{1}{m_1m_2}\sum_{(j_1,j_2)\neq(0,0)}\omega_{m_1}^{-j_1r_1}\omega_{m_2}^{-j_2r_2}
+C(\omega_{m_1}^{j_1},\omega_{m_2}^{j_2}),
+\]
+则
+\[
+\sum_{n\le N}\frac{p_{n,(r_1,r_2)}^{(m_1,m_2)}}{\lambda^n}
+=\frac{1}{m_1m_2}\log N+C_{r_1,r_2}^{(m_1,m_2)}+o(1).
+\]
+
 在 $(m_1,m_2)=(2,2)$ 下，二维 Mertens 和满足
 \[
 \sum_{n\le N}\frac{p_{n,(r_1,r_2)}^{(2,2)}}{\lambda^n}
@@ -643,6 +712,45 @@ a=4 & -0.131144875763 & -0.242795851906
 \[
 \rho_{5,2}\approx 2.4432116352,\qquad \rho_{5,2}/\lambda\approx 0.9332238029.
 \]
+对 $(m_1,m_2)=(3,3)$，常数矩阵（行 $a=0,1,2$；列 $b=0,1,2$）为
+\[
+\begin{pmatrix}
+0.322351977611 & -0.238934956686 & -0.097021321799\\
+0.784640554881 & \ \ 0.072387926702 & -0.232757471525\\
+0.125923908201 & -0.215883196136 & -0.197804418250
+\end{pmatrix},
+\qquad
+\sum C_{a,b}^{(3,3)}=\mathsf{M}_{\varphi^2}.
+\]
+其最慢收敛比为
+\[
+\rho_{3,3}\approx 2.3478995261,\qquad \rho_{3,3}/\lambda\approx 0.8968178168.
+\]
+对 $(m_1,m_2)=(5,5)$，常数矩阵（行 $a=0,\dots,4$；列 $b=0,\dots,4$）为
+\[
+\begin{pmatrix}
+0.336083664867 & -0.093127463384 & \ \ 0.071507317205 & -0.105617900430 & -0.099130314316\\
+0.826855979410 & \ \ 0.236239947618 & -0.058192687211 & -0.048458080599 & -0.111230341208\\
+0.241484992068 & -0.053319465790 & -0.009791151672 & -0.091786866736 & -0.092965810618\\
+0.079148434765 & -0.071906946589 & -0.067229921515 & -0.083864371276 & -0.107855283921\\
+-0.002486195932 & -0.082829193614 & -0.081403742763 & -0.098862193946 & -0.108359401414
+\end{pmatrix},
+\qquad
+\sum C_{a,b}^{(5,5)}=\mathsf{M}_{\varphi^2}.
+\]
+其最慢收敛比为
+\[
+\rho_{5,5}\approx 2.4432116352,\qquad \rho_{5,5}/\lambda\approx 0.9332238029.
+\]
+\paragraph{算法协议（可审计计算）}
+给定 $(m_1,m_2)$ 与截断阶 $N$，可按以下步骤复现上述常数矩阵：
+\begin{itemize}
+  \item 构造真实输入核状态集 $\Sigma=Q\times\{0,1\}^2$ 与确定性转移；
+  \item 对给定 $(q,r)$ 构造加权矩阵 $M(q,r)$（边权为 $q^\chi r^\nu$），并计算 $a_n(q,r)=\mathrm{tr}(M(q,r)^n)$；
+  \item 用 Möbius 反演从 $\{a_n(q,r)\}$ 提取 $P_n(q,r)$ 与扭曲常数 $C(q,r)$；
+  \item 通过二维离散傅里叶反演得到 $C_{r_1,r_2}^{(m_1,m_2)}$，并计算最坏扭曲谱半径 $\rho_{m_1,m_2}$；
+  \item 输出 $P_n(q,r)$、$C(q,r)$、$C_{r_1,r_2}^{(m_1,m_2)}$ 与 $\rho_{m_1,m_2}$。
+\end{itemize}
 数值复现见脚本 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_2d.py}。
 
 \subsubsection{真实输入下的三维隐含属性统计}

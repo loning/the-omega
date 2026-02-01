@@ -450,9 +450,9 @@ def _make_table(rows: List[Dict[str, Any]]) -> str:
                     r["B_tex"],
                     str(r["states"]),
                     r["kappa_mean"],
-                    r["det0"],
-                    r["p12"],
-                    r["lambda_u01"],
+                    f"${r['det0']}$",
+                    f"${r['p12']}$",
+                    f"${r['lambda_u01']}$",
                 ]
             )
             + r" \\"
@@ -491,10 +491,10 @@ def _make_fingerprint_table(rows: List[Dict[str, Any]], *, label: str) -> str:
                     str(r["states_glob"]),
                     str(r["delay_digits"]),
                     r["kappa_mean_pair"],
-                    r["det_pair"],
-                    r["p8_pair"],
-                    r["lambda0_pair"],
-                    r["lambda1_pair"],
+                    f"${r['det_pair']}$",
+                    f"${r['p8_pair']}$",
+                    f"${r['lambda0_pair']}$",
+                    f"${r['lambda1_pair']}$",
                 ]
             )
             + r" \\"
