@@ -205,6 +205,19 @@ P_{\mathrm{Abel}}(r)=-\log(1-r)+\log\mathfrak{M}+o(1)\qquad(r\uparrow 1).
 =\mathrm{fp}_{r=1}\Bigl(P_{\mathrm{Abel}}(r)+\log(1-r)\Bigr).
 \]
 
+也即：把
+\[
+\widetilde{P}(r):=\sum_{n\ge 1}\frac{p_n}{\lambda^n}r^n\qquad(r\in(0,1))
+\]
+视为对临界点 $r=1$ 的 Abel 正则化，则按定义 \ref{def:abel-finite-part} 的“剥离主奇性后取 Laurent 常数项”口径，
+\[
+\boxed{
+\log\mathfrak{M}
+\;=\;
+\mathrm{fp}_{r=1}\bigl(\widetilde{P}(r)+\log(1-r)\bigr).
+}
+\]
+
 \paragraph{完全闭式（仅用 $\zeta_M$ 的主留数 + Möbius 尾）}
 由 SFT 的 prime 轨道分解（欧拉乘积/幂展开）可写
 \[
@@ -224,6 +237,22 @@ C:=\lim_{z\to z_\star}(1-\lambda z)\,\zeta_M(z).
 =\log C+\sum_{k\ge 2}\frac{\mu(k)}{k}\log\zeta_M(z_\star^k),
 \]
 右端只需把显式有理函数 $\zeta_M$ 采样在 $z_\star^k$（指数趋零）处即可数值计算。该核上 $C$ 的闭式、数值与复现脚本均见附录 \ref{app:real-input-40-finite-part}。
+
+\paragraph{把 \texorpdfstring{$\log\mathfrak{M}$}{logM} 完全对齐到显式 \texorpdfstring{$\zeta_M$}{zeta\_M}（闭式常数 + 数值）}
+对 40 状态真实输入核，附录 \ref{app:real-input-40-abel} 给出
+\[
+\det(I-zM)=(1-z)^2(1+z)^3(1-3z+z^2)(1+z-z^2),
+\]
+因此主极点为 $z_\star=\varphi^{-2}$（对应 $\lambda=\varphi^2$）。并且主极点留数常数具有代数闭式
+\[
+C=\lim_{z\to z_\star}(1-\lambda z)\,\zeta_M(z)=\frac{47+21\sqrt5}{100}\approx 0.9395742753.
+\]
+将该 $C$ 代入上文的 Möbius--Abel 闭式即可得到 Abel/Hadamard 有限部常数与其导出的 Mertens 常数（数值见附录 \ref{app:real-input-40-finite-part}）：
+\[
+\log\mathfrak{M}\approx -0.254312661901716,\qquad
+\mathfrak{M}\approx 0.7754493106833835,\qquad
+\mathsf{M}=\gamma+\log\mathfrak{M}\approx 0.3229030029998169.
+\]
 
 \paragraph{可计算流程（与“离散化—正则化—有限部”同构）}
 给定一个有限图移位的邻接矩阵 $M$（或加权矩阵族 $M_\theta$），并固定截断阶 $K\ge 2$，可按下述步骤计算有限部常数：
@@ -291,16 +320,62 @@ P_\theta(z)=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_\theta(z^k),
 \qquad
 C(\theta):=\lim_{z\to z_\star(\theta)}(1-\lambda(\theta)z)\,\zeta_\theta(z).
 \]
+等价地（与附录 \ref{app:real-input-40-logm-theta} 同口径），亦可写成一行 Möbius--Abel 形式
+\[
+\log\mathfrak{M}(\theta)=\log C(\theta)-\sum_{m\ge 2}\frac{P_\theta(\lambda(\theta)^{-m})}{m}.
+\]
 据此定义加权 Mertens 常数
 \(
 \mathsf{M}(\theta):=\gamma+\log\mathfrak{M}(\theta)
 \)，从而把“离散化—正则化—有限部”落实为一条可扫参数的相图接口；数值相图入口脚本见
 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_logM\_theta.py}。
 
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.15}
+\caption{$\log\mathfrak{M}(\theta)$ 相图的样本点（真实输入 40 状态核；固定 $\theta_-=0$；Möbius 尾截断 $k_{\max}=250$）。}
+\label{tab:real-input-40-logM-theta-sample}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+$\theta_e$ & $\theta_2$ & $\lambda(\theta)$ & $\log\mathfrak{M}(\theta)$ & $\mathsf{M}(\theta)=\gamma+\log\mathfrak{M}(\theta)$ \\
+\midrule
+$-1.0$ & $-1.0$ & $1.793239048961$ & $-0.495016484263$ & $0.082199180638$ \\
+$\ \ 0.0$ & $-1.0$ & $2.490012563421$ & $-0.184629246340$ & $0.392586418561$ \\
+$\ \ 1.0$ & $-1.0$ & $3.646591323038$ & $\ \ 0.072379237963$ & $0.649594902864$ \\
+$-1.0$ & $\ \ 0.0$ & $1.863254840922$ & $-0.515448376051$ & $0.061767288851$ \\
+$\ \ 0.0$ & $\ \ 0.0$ & $2.618033988750$ & $-0.254312661902$ & $0.322903003000$ \\
+$\ \ 1.0$ & $\ \ 0.0$ & $3.864122715327$ & $-0.040498237636$ & $0.536717427266$ \\
+$-1.0$ & $\ \ 1.0$ & $2.040720410275$ & $-0.542620915409$ & $0.034594749493$ \\
+$\ \ 0.0$ & $\ \ 1.0$ & $2.948418905502$ & $-0.375618148304$ & $0.201597516597$ \\
+$\ \ 1.0$ & $\ \ 1.0$ & $4.451463505733$ & $-0.259640526249$ & $0.317575138652$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{三维隐含属性的典型密度与协方差密度（\texorpdfstring{$\theta=0$}{theta=0}）}
+在三势 $\theta=(\theta_e,\theta_-,\theta_2)$ 下，$P(\theta)=\log\rho(M_\theta)$ 的梯度与 Hessian 给出三条观测量的典型密度与协方差密度（详见附录 \ref{app:real-input-40-logm-theta} 的复现段落）：
+\[
+\nabla P(0)=\left(\frac{23-7\sqrt5}{20},\frac{5-\sqrt5}{20},\frac{3-\sqrt5}{10}\right)\approx(0.367376,\ 0.138197,\ 0.076393),
+\]
+\[
+\nabla^2P(0)\approx
+\begin{pmatrix}
+0.048741 & 0.032574 & 0.015964\\
+0.032574 & 0.275035 & 0.115735\\
+0.015964 & 0.115735 & 0.067331
+\end{pmatrix}.
+\]
+
 \paragraph{arity-charge 的同一接口并入}
 定义 arity-charge
 \[
 \chi:=\varphi_e-\varphi_2\in\{-1,0,1\}.
+\]
+更一般地，若把 $\chi$ 作为一条额外势并入加权，则它只引入线性重参数化（无需扩展状态空间）：
+\[
+P(\theta_e,\theta_-,\theta_2,\theta_\chi)=P(\theta_e+\theta_\chi,\theta_-,\theta_2-\theta_\chi).
 \]
 在三参数压力 $P(\theta_e,\theta_-,\theta_2)=\log\rho(M_\theta)$ 下，对 $\chi$ 的线性加权对应一维切线
 \[
@@ -332,6 +407,37 @@ P_\chi(t):=P(\theta(t))=\log\rho(M_{\theta(t)}),
 \[
 \mathbb{E}[\chi]=P_\chi'(0),\qquad \mathrm{Var}_\infty(\chi)=P_\chi''(0),
 \]
+并且在真实输入核上（附录 \ref{app:real-input-40-logm-theta}）有闭式与数值
+\[
+\mathbb{E}[\chi]=\frac{17-5\sqrt5}{20}\approx 0.2909830056,
+\qquad
+\mathrm{Var}_\infty(\chi)\approx 0.0841438530.
+\]
+若记三维 Hessian（协方差密度）为 $H=\nabla^2P(0)$，则
+\[
+\mathrm{Var}_\infty(\chi)=H_{ee}+H_{22}-2H_{e2},
+\qquad
+\mathrm{Cov}_\infty(\chi,\varphi_-)=H_{e-}-H_{-2}\approx -0.0831619.
+\]
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.15}
+\caption{$\chi$-切片相图的样本点：$t\mapsto(\lambda_\chi(t),\log\mathfrak{M}_\chi(t),\mathsf{M}_\chi(t))$（真实输入 40 状态核，$\theta(t)=(t,0,-t)$；Möbius 尾截断 $k_{\max}=250$）。}
+\label{tab:real-input-40-logM-chi-sample}
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$t$ & $\lambda_\chi(t)$ & $\log\mathfrak{M}_\chi(t)$ & $\mathsf{M}_\chi(t)=\gamma+\log\mathfrak{M}_\chi(t)$ \\
+\midrule
+$-1.0$ & $2.040720410275$ & $-0.542620915409$ & $0.034594749493$ \\
+$-0.5$ & $2.287538746528$ & $-0.410414288994$ & $0.166801375907$ \\
+$\ \ 0.0$ & $2.618033988750$ & $-0.254312661902$ & $0.322903003000$ \\
+$\ \ 0.5$ & $3.059600073602$ & $-0.087974328977$ & $0.489241335925$ \\
+$\ \ 1.0$ & $3.646591323038$ & $\ \ 0.072379237963$ & $0.649594902864$ \\
+\bottomrule
+\end{tabular}
+\end{table}
 从而把“操作数不一致”的典型密度/涨落与同一切片上的 Abel 有限部常数曲线 $\log\mathfrak{M}_\chi(t)$ 放在同一相图坐标下比较。该曲线的数值生成入口脚本见
 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_logM\_chi.py}。
 \end{remark}
