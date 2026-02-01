@@ -238,8 +238,35 @@ def mertens_constant(
 
 
 def residue_constant(sqrt5: Decimal) -> Decimal:
-    # Derived from det(I - zM) factorization.
-    return (Decimal(7) + Decimal(3) * sqrt5) / Decimal(100)
+    # C := lim_{z -> z_star} (1 - lambda z) zeta_M(z)
+    # For det(I - zM) = (1-z)^2 (1+z)^3 (1-3z+z^2) (1+z-z^2),
+    # where lambda = (3+sqrt5)/2, z_star = 1/lambda.
+    return (Decimal(47) + Decimal(21) * sqrt5) / Decimal(100)
+
+
+def det_real_input_40(z: Decimal) -> Decimal:
+    one = Decimal(1)
+    return (one - z) ** 2 * (one + z) ** 3 * (one - Decimal(3) * z + z * z) * (one + z - z * z)
+
+
+def zeta_real_input_40(z: Decimal) -> Decimal:
+    return Decimal(1) / det_real_input_40(z)
+
+
+def log_mathfrak_M_from_zeta(
+    z_star: Decimal,
+    C: Decimal,
+    m_max: int,
+) -> Decimal:
+    # log M = log C + sum_{m>=2} mu(m)/m * log zeta(z_star^m)
+    s = Decimal(0)
+    for m in range(2, m_max + 1):
+        mu = mobius(m)
+        if mu == 0:
+            continue
+        zm = z_star**m
+        s += (Decimal(mu) / Decimal(m)) * zeta_real_input_40(zm).ln()
+    return C.ln() + s
 
 
 def write_json(path: Path, payload: dict) -> None:
@@ -251,6 +278,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Real-input 40-state sync-kernel spectrum")
     parser.add_argument("--max-n", type=int, default=10, help="Max n for a_n/p_n outputs")
     parser.add_argument("--mertens-n", type=int, default=200, help="Max n for Mertens sum")
+    parser.add_argument("--zeta-m-max", type=int, default=50, help="Max m for zeta-based log M series")
     parser.add_argument("--diff-step", type=float, default=1e-4, help="Step for derivatives")
     parser.add_argument("--precision", type=int, default=80, help="Decimal precision")
     parser.add_argument("--no-output", action="store_true", help="Skip writing JSON output")
@@ -288,6 +316,8 @@ def main() -> None:
     sum_diff, mertens = mertens_constant(traces["p_n"][: args.mertens_n], lam_dec, gamma_dec)
     mathfrak_M = sum_diff.exp()
     C = residue_constant(sqrt5)
+    z_star = (Decimal(1) / lam_dec)
+    log_mathfrak_M_zeta = log_mathfrak_M_from_zeta(z_star=z_star, C=C, m_max=args.zeta_m_max)
 
     h = args.diff_step
     P0 = pressure(0.0, 0.0, 0.0, states, kernel_map)
@@ -338,16 +368,18 @@ def main() -> None:
     hess_inv = np.linalg.inv(hess)
 
     payload: Dict[str, object] = {
-        "det_factorization": "-(z-1)^2(z+1)^3(z^2-3z+1)(z^2-z-1)",
+        "det_factorization": "(1-z)^2(1+z)^3(1-3z+z^2)(1+z-z^2)",
         "lambda_pf": lambda_pf,
         "lambda_phi2": lambda_phi2,
         "entropy_log": entropy_log,
         "a_n": a_n,
         "p_n": p_n,
         "log_mathfrak_M": float(sum_diff),
+        "log_mathfrak_M_from_zeta": float(log_mathfrak_M_zeta),
+        "zeta_m_max": args.zeta_m_max,
         "mathfrak_M": float(mathfrak_M),
         "zeta_residue_C": float(C),
-        "zeta_residue_C_exact": "(7+3*sqrt5)/100",
+        "zeta_residue_C_exact": "(47+21*sqrt5)/100",
         "mertens_constant": float(mertens),
         "mertens_n": args.mertens_n,
         "pressure_P0": P0,
@@ -397,7 +429,7 @@ def main() -> None:
         flush=True,
     )
     print(
-        f"[sync-kernel-real-input-40] C={float(C):.12g} Mertens={float(mertens):.12g}",
+        f"[sync-kernel-real-input-40] C={float(C):.12g} logM(zeta)={float(log_mathfrak_M_zeta):.12g} Mertens={float(mertens):.12g}",
         flush=True,
     )
     print("[sync-kernel-real-input-40] done", flush=True)

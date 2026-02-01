@@ -365,10 +365,12 @@ def main() -> None:
     logM = 0.0
     for n, pn in enumerate(p_one, start=1):
         logM += (pn.real / (lam**n)) - 1.0 / n
+    mathsf_M = logM + gamma
 
     class_constants: Dict[str, Dict[str, List[float]]] = {}
     class_mertens: Dict[str, Dict[str, List[float]]] = {}
     class_rho: Dict[str, List[float]] = {}
+    twist_constants: Dict[str, Dict[str, Dict[str, float]]] = {}
     for m in m_values:
         zeta = cmath.exp(2j * math.pi / m)
         Sj: List[complex] = []
@@ -394,6 +396,9 @@ def main() -> None:
         class_constants[str(m)] = {str(r): logM_r[r] for r in range(m)}
         class_mertens[str(m)] = {str(r): mertens_r[r] for r in range(m)}
         class_rho[str(m)] = rhos
+        twist_constants[str(m)] = {
+            str(j + 1): {"re": float(Sj[j].real), "im": float(Sj[j].imag)} for j in range(m - 1)
+        }
 
     class_counts_all = {str(m): class_counts(P, args.max_n, m) for m in m_values}
 
@@ -414,8 +419,11 @@ def main() -> None:
         "arity_class_counts_m5": class_counts_all.get("5", class_counts(P, args.max_n, 5)),
         "arity_class_logM": class_constants,
         "arity_class_mertens": class_mertens,
+        "arity_class_C": class_mertens,
         "arity_class_rho": class_rho,
         "log_mathfrak_M": logM,
+        "mathsf_M": mathsf_M,
+        "arity_twist_C": twist_constants,
     }
 
     if not args.no_output:

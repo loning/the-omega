@@ -92,11 +92,38 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_real_input_40_zeta_u",
+            script="exp_sync_kernel_real_input_40_zeta_u.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_real_input_40_zeta_u.json",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_arity",
             script="exp_sync_kernel_real_input_40_arity.py",
             args=[],
             expected_outputs=[
                 "artifacts/export/sync_kernel_real_input_40_arity.json",
+            ],
+        ),
+        Step(
+            name="sync_kernel_real_input_40_logM_theta",
+            script="exp_sync_kernel_real_input_40_logM_theta.py",
+            args=[
+                "--theta-e-steps",
+                "25",
+                "--theta-2-steps",
+                "25",
+                "--m-max",
+                "30",
+                "--c-eps",
+                "1e-7",
+            ],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_real_input_40_logM_theta.json",
+                "artifacts/export/sync_kernel_real_input_40_logM_theta.png",
+                "sections/generated/fig_real_input_40_logM_theta.tex",
             ],
         ),
         Step(
