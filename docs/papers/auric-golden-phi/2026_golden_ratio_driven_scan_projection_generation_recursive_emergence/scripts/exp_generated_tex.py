@@ -84,6 +84,18 @@ def group_stats(rows: List[Row]) -> Dict[Tuple[str, int, int], Tuple[float, floa
     return out
 
 
+def group_dn_star_upper(rows: List[Row]) -> Dict[Tuple[str, int, int], float]:
+    """Key: (alpha_name, m, N) -> a representative D_N^* upper bound."""
+    out: Dict[Tuple[str, int, int], float] = {}
+    for r in rows:
+        if r.DN_star_upper_bound is None:
+            continue
+        k = (r.alpha_name, r.m, r.N)
+        if k not in out:
+            out[k] = r.DN_star_upper_bound
+    return out
+
+
 def latex_escape_text(s: str) -> str:
     """Escape minimal LaTeX special chars for plain text fields."""
     return s.replace("_", "\\_")
@@ -195,6 +207,7 @@ def plot_kl_vs_m(rows: List[Row], N_pick: int, out_png: Path) -> None:
 
 def plot_tv_vs_n(rows: List[Row], m_pick: int, out_png: Path) -> None:
     gs = group_stats(rows)
+    gb = group_dn_star_upper(rows)
     Ns = sorted({r.N for r in rows})
     alpha_names = sorted({r.alpha_name for r in rows})
 
@@ -204,6 +217,13 @@ def plot_tv_vs_n(rows: List[Row], m_pick: int, out_png: Path) -> None:
         ys = [gs[(a, m_pick, N)][0] for N in xs]
         yerr = [gs[(a, m_pick, N)][1] for N in xs]
         plt.errorbar(xs, ys, yerr=yerr, marker="o", capsize=3, linewidth=1.5, label=a)
+
+        # Theory envelope (finite-sample term): (m+1) * D_N^* upper bound.
+        bx = [N for N in xs if (a, m_pick, N) in gb]
+        if bx:
+            by = [(m_pick + 1) * gb[(a, m_pick, N)] for N in bx]
+            # Avoid legend explosion: don't add these envelopes to the legend.
+            plt.plot(bx, by, linestyle="--", linewidth=1.0, alpha=0.6, label="_nolegend_")
     plt.xscale("log")
     plt.yscale("log")
     plt.xlabel("N (log)")
@@ -277,7 +297,7 @@ def main() -> None:
     write_fig_tex(
         fig_name="fig_rotation_tv_vs_n",
         png_rel="artifacts/export/rotation_tv_vs_n.png",
-        caption=f"旋转扫描模型下，固定分辨率 $m={m_pick}$ 时，折叠后稳定类型直方图与 Parry(PF) 基准柱分布的总变差距离随样本量 $N$ 的收敛（对 $\\beta,x_0$ 取平均；误差线为样本标准差；双对数坐标）。",
+        caption=f"旋转扫描模型下，固定分辨率 $m={m_pick}$ 时，折叠后稳定类型直方图与 Parry(PF) 基准柱分布的总变差距离随样本量 $N$ 的收敛（对 $\\beta,x_0$ 取平均；误差线为样本标准差；虚线为 $(m+1)D_N^*$ 的差异度上界络线；双对数坐标）。",
         label="fig:rotation_tv_vs_n",
     )
     write_fig_tex(
