@@ -136,7 +136,7 @@ def _make_table(sync10: Dict[str, Any], real40: Dict[str, Any]) -> str:
     lines.append(r"\setlength{\tabcolsep}{6pt}")
     lines.append(r"\renewcommand{\arraystretch}{1.15}")
     lines.append(
-        r"\caption{A-比较：核的同步图不变量对照（由脚本 \texttt{scripts/exp\_sync\_kernel\_A\_compare.py} 生成）。}"
+        r"\caption{核对比：同步核的不变量对照（由脚本 \texttt{scripts/exp\_sync\_kernel\_A\_compare.py} 生成）。}"
     )
     lines.append(r"\label{tab:sync-kernel-A-compare}")
     lines.append(r"\begin{tabular}{@{}lccccccc@{}}")

@@ -144,6 +144,17 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="parallel_addition_kernels_bfs",
+            script="exp_parallel_addition_kernels_bfs.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/parallel_addition_kernels_bfs.json",
+                "sections/generated/tab_parallel_addition_kernels_bfs.tex",
+                "sections/generated/tab_parallel_addition_kernels_fingerprint.tex",
+                "sections/generated/tab_parallel_addition_kernels_fingerprint_main.tex",
+            ],
+        ),
+        Step(
             name="generated_tex_fragments",
             script="exp_generated_tex.py",
             args=[],

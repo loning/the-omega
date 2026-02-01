@@ -1,4 +1,4 @@
-\subsubsection{A-比较：不同字母表/不同折叠核的统一接口（\texorpdfstring{$(p)$}{p}-local $\Rightarrow$ 在线延迟）}\label{app:sync-kernel-A-compare}
+\subsubsection{核对比：不同字母表/不同折叠核的统一接口（\texorpdfstring{$(p)$}{p}-local $\Rightarrow$ 在线延迟）}\label{app:sync-kernel-A-compare}
 本附录的目标是把“更换字母表/更换归一化核”统一压成同一类可比对象，并把对比量落到可计算的同步图不变量（$\zeta$、primitive 轨道谱、“有限部常数”等）上。
 
 \paragraph{把核视为 digit-set conversion}
@@ -41,7 +41,7 @@ p_n(K)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(K).
 \mathcal{F}(K)=\bigl(|A|,|B|,\delta(K),|Q_K|,\lambda_{\max}(B_K),\zeta_K,\{p_n(K)\}_{n\le N},\log\mathfrak{M}_K,\dots\bigr).
 \]
 
-\paragraph{本文内核的 A-对比（可复现表）}
+\paragraph{本文内核的核对比（可复现表）}
 本文已经在 $\beta=\varphi$ 上构造并计算了两类“在线归一化核”：
 \begin{itemize}
   \item \textbf{10 状态同步核}：输入字母表为逐位和 $B=\{0,1,2\}$，输出对应 Zeckendorf 规范形的在线归一化核（本附录 \S\ref{app:witt-weighted} 前的 10 状态构造）。
@@ -59,9 +59,71 @@ A=\{-1,0,1\}\quad\text{或}\quad A=\{0,1,2\}
 
 这些并行核一旦被编译为确定性在线转导器，其同步图同样给出 $\zeta$ 与 primitive 谱，从而与表 \ref{tab:sync-kernel-A-compare} 的“机制核”完全共享同一比较接口；本文把它作为后续可直接对接的外部基准，而不在当前版本中展开完整同步图编译。
 
+\paragraph{把三类并行核编译到可 BFS 的在线机（单流）}
+为把“核的局部规则”落实到可计算对象，我们按 stencil 的同余类解耦，把核限制到单一同余流（$\pm 4$ stencil 对应模 $4$ 的 4 条流，$\pm 2$ stencil 对应模 $2$ 的 2 条流）。在单流上，核成为一个确定性在线机：每一步读取一个输入符号 $v_n$（逐位和/中间字母表符号），更新有限状态并输出固定延迟后的输出符号。由此可直接用 BFS 枚举全部可达状态，得到单流同步图 $\Gamma^{\mathrm{flow}}_K$。
+
+在比较层面，\textbf{无权计数}会退化：确定性完备读入使得每状态出边数固定为 $|B|$，从而 $\zeta$ 只反映 $|B|$。因此我们引入边势
+\[
+\kappa(e):=\#\{\text{本步新决定的非零 }q\text{ 事件}\},
+\]
+并以 $u^{\kappa(e)}$ 加权得到带权邻接矩阵族 $M_K(u)$，其谱半径 $\lambda_K(u)=\rho(M_K(u))$ 形成“carry 活跃度”的可比曲线。进一步取 $u=0$ 得到 carry-free 骨架（仅保留 $\kappa=0$ 的边），其 $\zeta$ 与 primitive 谱给出一个极硬的结构指纹。
+
+表 \ref{tab:parallel-addition-kernels-bfs} 给出三类典型核（$9/13/21$-local）的单流编译结果（BFS 可达状态数、$\kappa$ 的均值、carry-free 的 $\det(I-zA_0)$ 与 primitive 谱、以及 $\lambda(u)$ 在 $u=0,1$ 的取值）。该表由脚本 \texttt{scripts/exp\_parallel\_addition\_kernels\_bfs.py} 自动生成。
+\input{sections/generated/tab_parallel_addition_kernels_bfs}
+
+\paragraph{全局块级在线机的组装：直积状态与张量积矩阵}
+在“块时间” $n$ 下，把所有同余流同步喂入。对 $\pm 4$ stencil（强核）有 $m=4$ 条流；对 $\pm 2$ stencil（弱核）有 $m=2$ 条流。全局状态是流状态的直积
+\[
+S_n^{\mathrm{glob}}=\bigl(S_n^{(0)},\dots,S_n^{(m-1)}\bigr),
+\]
+因此全局可达状态数满足 $|Q_{\mathrm{glob}}|=|Q_{\mathrm{flow}}|^m$。
+
+对带权矩阵族 $M(u)$（边权为 $u^{\kappa(e)}$），由于全局一步等价于 $m$ 个独立流的一步并行，且 $\kappa$ 在流之间可加，故矩阵满足张量积结构
+\[
+M_{\mathrm{glob}}(u)=\bigotimes_{r=0}^{m-1} M_{\mathrm{flow}}(u),
+\qquad
+\lambda_{\mathrm{glob}}(u)=\rho(M_{\mathrm{glob}}(u))=\lambda_{\mathrm{flow}}(u)^m.
+\]
+同理，均匀输入下的活动度均值满足 $\mathbb{E}[\kappa_{\mathrm{glob}}]=m\,\mathbb{E}[\kappa_{\mathrm{flow}}]$。
+
+此外，流级延迟 $\delta_{\mathrm{flow}}$（按块时间计）对应的数字级在线延迟为
+\[
+\delta_{\mathrm{digits}}=m\,\delta_{\mathrm{flow}},
+\]
+这与 $p$-local 的 $(t,r)$ 参数在原文中的标注一致（例如 $9/13/21$-local 分别对应 $t=4,6,10$）。\cite{FrougnyHellerPelantovaSvobodovaParallelAlgorithmsSlides,Frougny2012NumbersAsStreamsLeiden}
+并且与 AAMP VIII 的算法总结表述一致。 \cite{SvobodovaAAMPVIIIParallelAddition}
+
+\paragraph{核指纹总表（单流 $\Rightarrow$ 全局）}
+表 \ref{tab:parallel-addition-kernels-fingerprint} 把单流 BFS 结果通过上述“直积/张量积”装配为全局块级在线机，并给出 carry-free 骨架的闭式 $\det(I-zA_0)$ 与 primitive 轨道谱对照（仅需 $\Tr(A_0^n)$，用 Möbius/Witt 反演即可）。
+\input{sections/generated/tab_parallel_addition_kernels_fingerprint}
+
+\paragraph{做“素数影子”对比的最省力接口}
+对任意核（无权或带权），最省力的计算接口是“先算周期迹，再用反演提 primitive”。具体地：
+\[
+a_n=\Tr(M^n),\qquad
+p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}.
+\]
+对带权情形（边权记作 $u^{\kappa}$，得到矩阵 $M(u)$），primitive 的加权谱满足（Witt 分解）
+\[
+p_n(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d),
+\qquad a_n(u)=\Tr(M(u)^n),
+\]
+与本附录 \S\ref{app:witt-weighted} 的推导一致。
+而在全局块级直积装配下，若各流同构，则
+\[
+a_n^{\mathrm{glob}}(u)=a_n^{\mathrm{flow}}(u)^m,
+\]
+从而只需单流的 $a_n(u)$ 即可得到全局的 primitive 谱（再做一次 Möbius 反演即可）。
+
 \paragraph{复现方式（只需运行一个新脚本）}
 表 \ref{tab:sync-kernel-A-compare} 可由下述单一入口脚本再生成（脚本会自动调用其依赖的已有实验脚本）：
 \[
 \texttt{python3 scripts/exp\_sync\_kernel\_A\_compare.py}.
 \]
+
+同理，表 \ref{tab:parallel-addition-kernels-bfs} 可由
+\[
+\texttt{python3 scripts/exp\_parallel\_addition\_kernels\_bfs.py}
+\]
+一键再生成。
 

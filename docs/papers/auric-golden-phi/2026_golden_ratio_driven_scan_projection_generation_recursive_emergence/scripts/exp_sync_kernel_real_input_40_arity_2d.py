@@ -154,6 +154,24 @@ def poly_to_latex(poly: Poly2D) -> str:
     return out
 
 
+def parse_m_values(text: str) -> List[int]:
+    raw = [chunk.strip() for chunk in text.split(",")] if text else []
+    ms: List[int] = []
+    for chunk in raw:
+        if not chunk:
+            continue
+        try:
+            val = int(chunk)
+        except ValueError as exc:
+            raise SystemExit(f"[arity-2d] invalid m value: {chunk}") from exc
+        if val < 2:
+            raise SystemExit(f"[arity-2d] m must be >= 2, got {val}")
+        ms.append(val)
+    if not ms:
+        ms = [2, 3, 5]
+    return sorted(set(ms))
+
+
 def build_weighted_matrix_poly(
     states: List[Tuple[str, int, int]],
     kernel_map: Dict[Tuple[str, int], Tuple[str, int]],
@@ -326,6 +344,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="2D arity/negative-carry primitive spectrum")
     parser.add_argument("--max-n", type=int, default=8, help="Max n for P_n(q,r)")
     parser.add_argument("--mertens-n", type=int, default=200, help="Max n for constants")
+    parser.add_argument(
+        "--m-values",
+        type=str,
+        default="2,3,5",
+        help="Comma-separated m values for (m,2) constants",
+    )
     parser.add_argument("--no-output", action="store_true", help="Skip writing JSON output")
     parser.add_argument(
         "--output",
@@ -356,30 +380,55 @@ def main() -> None:
         logM += (pn.real / (lam**n)) - 1.0 / n
     mathsf_M = logM + gamma
 
-    # Twisted constants for (2,2)
-    twist_keys = [(-1.0 + 0.0j, 1.0 + 0.0j), (1.0 + 0.0j, -1.0 + 0.0j), (-1.0 + 0.0j, -1.0 + 0.0j)]
-    twist_constants: Dict[str, Dict[str, float]] = {}
-    rho_vals: Dict[str, float] = {}
-    for q, r in twist_keys:
-        label = f"q={q.real:+.0f} r={r.real:+.0f}"
-        traces = traces_for_qr(q, r, mertens_n, prog, states, kernel_map, label)
-        pvals = pvals_from_traces(traces)
-        C = sum(p / (lam**(i + 1)) for i, p in enumerate(pvals))
-        key = f"{int(q.real):+d},{int(r.real):+d}"
-        twist_constants[key] = {"re": float(C.real), "im": float(C.imag)}
-        rho = spectral_radius(build_weighted_matrix_numeric(q, r, states, kernel_map))
-        rho_vals[key] = rho
+    m_values = parse_m_values(args.m_values)
+    twist_constants_m2: Dict[str, Dict[str, Dict[str, float]]] = {}
+    class_constants_m2: Dict[str, Dict[str, float]] = {}
+    rho_vals_m2: Dict[str, Dict[str, float]] = {}
+    rho_max_m2: Dict[str, float] = {}
 
-    # Class constants for (2,2)
-    class_constants: Dict[str, float] = {}
-    for r1 in (0, 1):
-        for r2 in (0, 1):
-            acc = mathsf_M / 4.0
-            for q, r in twist_keys:
-                key = f"{int(q.real):+d},{int(r.real):+d}"
-                phase = (q ** (-r1)) * (r ** (-r2))
-                acc += (phase * complex(twist_constants[key]["re"], twist_constants[key]["im"])) / 4.0
-            class_constants[f"{r1},{r2}"] = float(acc.real)
+    for m in m_values:
+        omega = np.exp(2j * math.pi / m)
+        twist_constants: Dict[str, Dict[str, float]] = {}
+        rho_vals: Dict[str, float] = {}
+        for j1 in range(m):
+            q = omega**j1
+            for j2 in (0, 1):
+                if j1 == 0 and j2 == 0:
+                    continue
+                r = -1.0 + 0.0j if j2 == 1 else 1.0 + 0.0j
+                label = f"m={m} j1={j1} j2={j2}"
+                traces = traces_for_qr(q, r, mertens_n, prog, states, kernel_map, label)
+                pvals = pvals_from_traces(traces)
+                C = sum(p / (lam**(i + 1)) for i, p in enumerate(pvals))
+                key = f"{j1},{j2}"
+                twist_constants[key] = {"re": float(C.real), "im": float(C.imag)}
+                rho = spectral_radius(build_weighted_matrix_numeric(q, r, states, kernel_map))
+                rho_vals[key] = rho
+
+        class_constants: Dict[str, float] = {}
+        for r1 in range(m):
+            for r2 in (0, 1):
+                acc = mathsf_M / (2.0 * m)
+                for j1 in range(m):
+                    for j2 in (0, 1):
+                        if j1 == 0 and j2 == 0:
+                            continue
+                        key = f"{j1},{j2}"
+                        q = omega**j1
+                        r = -1.0 + 0.0j if j2 == 1 else 1.0 + 0.0j
+                        phase = (q ** (-r1)) * (r ** (-r2))
+                        acc += (phase * complex(twist_constants[key]["re"], twist_constants[key]["im"])) / (2.0 * m)
+                class_constants[f"{r1},{r2}"] = float(acc.real)
+
+        twist_constants_m2[str(m)] = twist_constants
+        class_constants_m2[str(m)] = class_constants
+        rho_vals_m2[str(m)] = rho_vals
+        rho_max_m2[str(m)] = max(rho_vals.values()) if rho_vals else 0.0
+
+    # Backward-compatible (2,2) shortcut
+    twist_constants_22 = twist_constants_m2.get("2", {})
+    class_constants_22 = class_constants_m2.get("2", {})
+    rho_vals_22 = rho_vals_m2.get("2", {})
 
     payload: Dict[str, object] = {
         "chi_def": "chi = e - 1_{d=2}",
@@ -391,10 +440,16 @@ def main() -> None:
             {f"{eq},{er}": coeff for (eq, er), coeff in P[n].items()} for n in range(1, args.max_n + 1)
         ],
         "mathsf_M": mathsf_M,
-        "twist_C_22": twist_constants,
-        "class_C_22": class_constants,
-        "rho_22": rho_vals,
-        "rho_22_ratio": {k: v / lam for k, v in rho_vals.items()},
+        "m2_values": m_values,
+        "m2_twist_C": twist_constants_m2,
+        "m2_class_C": class_constants_m2,
+        "m2_rho": rho_vals_m2,
+        "m2_rho_max": rho_max_m2,
+        "m2_rho_max_ratio": {k: v / lam for k, v in rho_max_m2.items()},
+        "twist_C_22": twist_constants_22,
+        "class_C_22": class_constants_22,
+        "rho_22": rho_vals_22,
+        "rho_22_ratio": {k: v / lam for k, v in rho_vals_22.items()},
     }
 
     if not args.no_output:
