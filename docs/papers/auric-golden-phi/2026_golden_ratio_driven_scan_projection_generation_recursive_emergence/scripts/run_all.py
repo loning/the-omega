@@ -152,6 +152,17 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_graph_viz",
+            script="exp_sync_kernel_graph_viz.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_10_state_graph.png",
+                "artifacts/export/sync_kernel_real_input_40_matrix.png",
+                "sections/generated/fig_sync_kernel_10_state_graph.tex",
+                "sections/generated/fig_sync_kernel_real_input_40_matrix.tex",
+            ],
+        ),
+        Step(
             name="parallel_addition_kernels_bfs",
             script="exp_parallel_addition_kernels_bfs.py",
             args=[],
