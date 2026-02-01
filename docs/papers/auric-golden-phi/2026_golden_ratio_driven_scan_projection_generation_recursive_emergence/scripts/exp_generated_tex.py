@@ -5,6 +5,8 @@
 from __future__ import annotations
 
 import csv
+import json
+import math
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Tuple
@@ -401,6 +403,114 @@ def write_table_phi_m_entropy(csv_path: Path, out_name: str) -> None:
     (generated_dir() / f"{out_name}.tex").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def load_arity_payload() -> dict:
+    path = export_dir() / "sync_kernel_real_input_40_arity.json"
+    if not path.is_file():
+        raise SystemExit(f"[exp_generated_tex] missing arity payload: {path}")
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def arity_counts(payload: dict) -> Dict[str, List[List[int]]]:
+    counts = payload.get("arity_class_counts", {})
+    if counts:
+        return counts
+    legacy: Dict[str, List[List[int]]] = {}
+    for m in (2, 3, 5):
+        key = f"arity_class_counts_m{m}"
+        if key in payload:
+            legacy[str(m)] = payload[key]
+    return legacy
+
+
+def arity_m_values(payload: dict, counts: Dict[str, List[List[int]]]) -> List[int]:
+    m_vals = payload.get("m_values", [])
+    if isinstance(m_vals, list) and m_vals:
+        return [int(v) for v in m_vals]
+    return sorted(int(k) for k in counts.keys())
+
+
+def plot_arity_class_density(payload: dict, out_png: Path) -> None:
+    counts_all = arity_counts(payload)
+    if not counts_all:
+        raise SystemExit("[exp_generated_tex] missing arity class counts")
+    p_n = payload.get("p_n", [])
+    if not p_n:
+        raise SystemExit("[exp_generated_tex] missing p_n in arity payload")
+    max_n = min(int(payload.get("max_n", len(p_n))), len(p_n))
+    m_values = arity_m_values(payload, counts_all)
+    if not m_values:
+        raise SystemExit("[exp_generated_tex] empty m_values for arity plots")
+
+    ncols = 3
+    nrows = math.ceil(len(m_values) / ncols)
+    fig, axes = plt.subplots(nrows, ncols, figsize=(4.4 * ncols, 3.2 * nrows), sharey=True)
+    axes_list = list(axes.flat) if hasattr(axes, "flat") else [axes]
+    ns = list(range(1, max_n + 1))
+
+    for idx, m in enumerate(m_values):
+        ax = axes_list[idx]
+        counts = counts_all[str(m)]
+        for r in range(m):
+            ys = []
+            for i in range(max_n):
+                denom = float(p_n[i]) if p_n[i] else 1.0
+                ys.append(float(counts[i][r]) / denom)
+            ax.plot(ns, ys, marker="o", linewidth=1.1, markersize=3, label=f"r={r}")
+        ax.set_title(f"m={m}")
+        ax.set_xlabel("n")
+        if idx % ncols == 0:
+            ax.set_ylabel("class density")
+        ax.set_ylim(0.0, 1.0)
+        ax.grid(True, alpha=0.25)
+        legend_cols = 2 if m <= 7 else 3
+        ax.legend(fontsize=7, ncol=legend_cols, frameon=False)
+
+    for j in range(len(m_values), len(axes_list)):
+        axes_list[j].axis("off")
+
+    fig.suptitle("Arity-class densities N_{n,r}/p_n", y=1.02)
+    out_png.parent.mkdir(parents=True, exist_ok=True)
+    fig.tight_layout()
+    fig.savefig(out_png, dpi=200)
+    plt.close(fig)
+
+
+def plot_arity_class_logM(payload: dict, out_png: Path) -> None:
+    logM = payload.get("arity_class_logM", {})
+    if not logM:
+        raise SystemExit("[exp_generated_tex] missing arity_class_logM in payload")
+    m_values = sorted(int(k) for k in logM.keys())
+    if not m_values:
+        raise SystemExit("[exp_generated_tex] empty m_values for logM plot")
+
+    ncols = 3
+    nrows = math.ceil(len(m_values) / ncols)
+    fig, axes = plt.subplots(nrows, ncols, figsize=(4.4 * ncols, 3.1 * nrows), sharey=False)
+    axes_list = list(axes.flat) if hasattr(axes, "flat") else [axes]
+
+    for idx, m in enumerate(m_values):
+        ax = axes_list[idx]
+        vals = [float(logM[str(m)][str(r)]) for r in range(m)]
+        rs = list(range(m))
+        ax.plot(rs, vals, marker="o", linewidth=1.2, markersize=3)
+        ax.axhline(0.0, color="gray", linewidth=0.8, alpha=0.6)
+        ax.set_title(f"m={m}")
+        ax.set_xlabel("r")
+        if idx % ncols == 0:
+            ax.set_ylabel("log M_r")
+        ax.grid(True, alpha=0.25)
+        ax.set_xticks(rs)
+
+    for j in range(len(m_values), len(axes_list)):
+        axes_list[j].axis("off")
+
+    fig.suptitle("Arity-class Abel constants (log M_r)", y=1.02)
+    out_png.parent.mkdir(parents=True, exist_ok=True)
+    fig.tight_layout()
+    fig.savefig(out_png, dpi=200)
+    plt.close(fig)
+
+
 def main() -> None:
     csv_in = export_dir() / "rotation_fold_vs_parry.csv"
     rows = read_rows(csv_in)
@@ -470,6 +580,27 @@ def main() -> None:
     write_table_phi_m_entropy(
         csv_path=export_dir() / "phi_m_sofic_entropy.csv",
         out_name="tab_phi_m_sofic_entropy",
+    )
+
+    arity_payload = load_arity_payload()
+    png_density = export_dir() / "arity_class_density_by_m.png"
+    png_logm = export_dir() / "arity_class_logM_by_m.png"
+    plot_arity_class_density(arity_payload, out_png=png_density)
+    plot_arity_class_logM(arity_payload, out_png=png_logm)
+
+    m_values = arity_m_values(arity_payload, arity_counts(arity_payload))
+    m_tag = ",".join(str(m) for m in m_values)
+    write_fig_tex(
+        fig_name="fig_arity_class_density",
+        png_rel="artifacts/export/arity_class_density_by_m.png",
+        caption=f"真实输入 40 状态核下，arity 类密度 $N_{{n,r}}^{{(m)}}/p_n$ 随 $n$ 的变化（$m\\in\\{{{m_tag}\\}}$）。",
+        label="fig:arity_class_density",
+    )
+    write_fig_tex(
+        fig_name="fig_arity_class_logM",
+        png_rel="artifacts/export/arity_class_logM_by_m.png",
+        caption=f"真实输入 40 状态核下，arity 类 Abel 常数 $\\log\\mathfrak{{M}}_r^{{(m)}}$ 的分布（$m\\in\\{{{m_tag}\\}}$）。",
+        label="fig:arity_class_logM",
     )
 
     print("[exp_generated_tex] OK", flush=True)

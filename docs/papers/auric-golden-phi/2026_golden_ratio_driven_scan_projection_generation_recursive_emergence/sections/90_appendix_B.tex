@@ -1,0 +1,907 @@
+\subsection{附录 B：稳定类型集合 \texorpdfstring{$X_m$}{X\_m} 的计数与在线归一化同步核的 \texorpdfstring{$\zeta$}{zeta} 与 primitive 轨道谱（"素数影子"）}
+
+记 $a_m=|X_m|$。按末位分类：
+\begin{itemize}
+  \item 若末位为 $0$，则前 $m-1$ 位任意稳定词，共 $a_{m-1}$ 个；
+  \item 若末位为 $1$，则倒数第二位必为 $0$，前 $m-2$ 位任意稳定词，共 $a_{m-2}$ 个。
+\end{itemize}
+故 $a_m=a_{m-1}+a_{m-2}$，且 $a_1=2,a_2=3$，从而 $a_m=F_{m+2}$。
+
+\subsubsection{从在线延迟核到一个 10 状态 SFT（同步核）}
+在 Zeckendorf 加法的"纯数字串实现"口径中，先在字母表 $\{0,1,2\}$ 上做逐位叠加，再用有限状态换能器完成规范化。参考文献中给出黄金比例/Zeckendorf 计数下的在线有限自动机实现（例如 \cite{Frougny1999OnlineAddition}）。
+抽取该在线换能器的\textbf{同步部分}（忽略起始 transient 与末端输出函数），得到一个有限状态图 $\Gamma$。其状态集合可取为（$\overline{1}$ 表示 $-1$）
+\[
+Q=\{000,001,002,010,100,101,0\overline{1}2,1\overline{1}2,01\overline{1},11\overline{1}\},
+\]
+并且对每个状态与每个输入 $d\in\{0,1,2\}$ 都有唯一下一状态，因此同步核是一个\textbf{出度恒为 3}的有向图（从而给出一个边移位/拓扑 Markov 链，也即一个 SFT）。
+
+\begin{remark}[与第 9.1 节的接口对齐]
+第 9.1 节把黄金均值约束（禁止相邻 $11$）的移位空间视为 SFT，并用邻接矩阵把 $\zeta$ 写成行列式。这里做的是同一件事：只是把"语法 SFT"换成"机制 SFT（同步核）"。
+\end{remark}
+
+\subsubsection{邻接矩阵 \(B\) 与同步核移位 \((X_B,\sigma)\)}
+固定状态顺序
+\[
+(000,001,002,010,100,101,0\overline{1}2,1\overline{1}2,01\overline{1},11\overline{1}),
+\]
+令 $B_{ij}$ 为从状态 $i$ 到状态 $j$ 的输入边数（每条边对应一个输入符号 $d\in\{0,1,2\}$）。则同步核的邻接矩阵为
+\[
+B=
+\begin{pmatrix}
+1&1&1&0&0&0&0&0&0&0\\
+0&0&0&1&1&1&0&0&0&0\\
+1&1&0&0&0&0&0&0&0&1\\
+0&0&0&0&1&1&1&0&0&0\\
+1&1&1&0&0&0&0&0&0&0\\
+0&0&0&1&1&1&0&0&0&0\\
+0&0&0&1&1&0&0&0&1&0\\
+0&0&0&1&1&0&0&0&1&0\\
+0&1&1&0&0&0&0&1&0&0\\
+0&1&1&0&0&0&0&1&0&0
+\end{pmatrix}.
+\]
+记由该邻接矩阵定义的边移位为 $(X_B,\sigma)$。
+
+\subsubsection{\texorpdfstring{$\zeta_B(z)$}{zeta\_B(z)} 的闭式与因式分解（可审计口径）}
+第 9.1 节对一般动力系统定义动力学 $\zeta$：
+\[
+\zeta_S(z):=\exp\!\left(\sum_{n\ge 1}\frac{\#\mathrm{Fix}(S^n)}{n}z^n\right),
+\]
+并给出对 SFT 的标准恒等式
+\[
+\zeta_\sigma(z)=\frac{1}{\det(I-zA)},\qquad
+\#\mathrm{Fix}(\sigma^n)=\mathrm{Tr}(A^n),
+\]
+其推导是"周期点 $\leftrightarrow$ 闭路径计数 + 矩阵恒等式"；在 9.2.1 的 Fredholm 行列式口径中也被再次写成可核验链条。
+
+因此对同步核 $(X_B,\sigma)$ 有
+\[
+a_n:=\#\mathrm{Fix}(\sigma^n)=\mathrm{Tr}(B^n),\qquad
+\zeta_B(z)=\frac{1}{\det(I-zB)}.
+\]
+
+对上面显式 $B$，可直接计算得到行列式分解
+\[
+\det(I-zB)=(z-1)(z+1)(3z-1)\bigl(z^3-z^2+z+1\bigr),
+\]
+从而
+\[
+\zeta_B(z)=\frac{1}{(z-1)(z+1)(3z-1)(z^3-z^2+z+1)}.
+\]
+因此在 $z_\star=1/3$ 附近可写成
+\[
+\zeta_B(z)=\frac{C_B}{1-3z}+O(1),
+\qquad
+C_B=\frac{243}{272}.
+\]
+由此主极点位于 $z_\star=1/3$，对应 Perron--Frobenius 主特征值 $\lambda=3$。
+
+\subsubsection{primitive 轨道谱 \texorpdfstring{$p_n$}{p\_n}（"素数类对象"）与 Möbius 反演}
+令 $a_n=\mathrm{Tr}(B^n)$。定义 $p_n$ 为长度恰为 $n$ 的 \textbf{primitive 周期轨道数}（按轨道计）。周期轨道分解为 primitive 轨道的幂重复给出标准关系：
+\[
+a_n=\sum_{d\mid n} d\,p_d,
+\qquad
+p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d},
+\]
+其中 $\mu$ 为 Möbius 函数。该关系可视作 $\zeta$ 的欧拉乘积结构在"周期/primitive"分解上的等价表达（与第 9.1 节的周期点计数接口一致）。
+
+\subsubsection{显式数值与渐近：\texorpdfstring{$p_n\sim 3^n/n$}{p\_n ~ 3^n/n}}
+对该 $B$，前 10 项周期点计数（迹）为
+\[
+(a_1,\dots,a_{10})=(2,14,20,94,222,770,2116,6694,19442,59494),
+\]
+primitive 轨道数为
+\[
+(p_1,\dots,p_{10})=(2,6,6,20,44,123,302,825,2158,5926).
+\]
+因此 $\Pi_B(10)=\sum_{n\le 10}p_n=9412$。
+
+此外，由于该图是原始的（例如 $B^5$ 全正），Perron--Frobenius 给出
+\[
+a_n=\mathrm{Tr}(B^n)=3^n+O(\rho^n)
+\quad(\rho<3),
+\]
+并由 Möbius 反演立刻得到
+\[
+p_n=\frac{3^n}{n}+O\!\left(\frac{\rho^n}{n}\right).
+\]
+在本例中次大特征值模可取 $\rho\approx 1.839286755$（来自三次因子 $z^3-z^2+z+1$ 的根所对应的特征值）。
+
+\subsubsection{"素数计数曲线" \texorpdfstring{$\Pi_B(N)$}{Pi\_B(N)}}
+若定义（按"长度"计的）轨道素数计数函数
+\[
+\Pi_B(N):=\sum_{n\le N}p_n,
+\]
+则由 $p_n\sim 3^n/n$ 的指数主导性可得更贴合离散情形的主项：
+\[
+\Pi_B(N)\sim \frac{3}{2}\cdot \frac{3^N}{N}.
+\]
+（直观上：最后一项 $3^N/N$ 主导，而前面项构成比值约 $1/3$ 的几何尾和，因子趋于 $1/(1-1/3)=3/2$。）
+
+若希望写成"$x/\log x$"的形状，可令 $X:=3^N$，则
+\[
+\Pi_B(\lfloor \log_3 X\rfloor)\sim \frac{3}{2}\log 3\cdot \frac{X}{\log X},
+\]
+于是"prime-like counting curve"的尺度与经典素数计数具有同型外观（差异只在常数）。
+
+\subsubsection{与第 9.3 节 Abel 有限部接口对齐：一个可审计常数输出}
+第 9.3 节把 Abel 正则化 + Hadamard 有限部作为"离散化—正则化—有限部"的稳定接口并形式化为定义 9.5。对同步核的 primitive 轨道谱，也可以给出完全同口径的"边界有限部读出"，从而把它并入"有限部接口"。
+
+定义 primitive 生成函数
+\[
+P_B(z):=\sum_{n\ge 1}p_n z^n.
+\]
+由欧拉乘积有
+\[
+\log\zeta_B(z)=\sum_{m\ge 1}\frac{1}{m}P_B(z^m),
+\]
+因此 $P_B(z)=\log\zeta_B(z)-H_B(z)$，其中 $H_B$ 在 $z=1/3$ 解析。
+由于 $p_n\sim 3^n/n$，它在 $z\to 1/3$ 时出现对数发散。把变量缩放到单位圆盘的 Abel 口径
+\[
+r:=3z\in(0,1),\qquad
+\widetilde P_B(r):=P_B(r/3)=\sum_{n\ge 1}p_n\left(\frac{r}{3}\right)^n,
+\]
+则 $r\uparrow 1$ 时
+\[
+\widetilde P_B(r)= -\log(1-r)+\log\mathfrak{M}_B+o(1).
+\]
+据此定义一个"轨道 Mertens 常数"（有限部输出）
+\[
+\log\mathfrak{M}_B
+:=\mathrm{fp}_{r=1}\bigl(\widetilde P_B(r)+\log(1-r)\bigr),
+\]
+这正是第 9.3 节所强调的"Abel 正则化后取 Laurent 常数项/有限部"思想在 $\zeta$-型对象上的直接应用。
+
+对本例的 10 状态同步核，计算得到
+\[
+\log \mathfrak{M}_B\approx -0.3033268788310883,
+\qquad
+\mathfrak{M}_B\approx 0.7383577034164908.
+\]
+
+\begin{remark}[与第 9 节的接口说明]
+\begin{itemize}
+  \item 第 9.1 节给出"语法 SFT"的 $\zeta$；这里给出"机制 SFT（在线归一化核）"的 $\zeta_B$。两者共享同一条可审计推导链：闭路径计数 $\Rightarrow \mathrm{Tr}(A^n) \Rightarrow \det(I-zA)$。
+  \item 第 9.3 节给出 Abel/有限部作为解析层读出；这里展示它如何把 primitive 谱压缩成一个可比较的标量 $\mathfrak{M}_B$。
+  \item 若关心 "sofic 还是 SFT"的口径一致性：正文已强调对一般 sofic shift 使用覆盖 SFT（Fischer cover）来获得 $\det(I-zA)$ 的 $\zeta$ 接口；本构造直接在同步核（状态图）上得到一个 SFT，因此属于"覆盖口径"的最干净情形。
+\end{itemize}
+\end{remark}
+
+\begin{remark}[加权 primitive 谱的可审计扩展]
+进一步可在同步核的边上引入与 carry、负携带或状态含 $\overline{1}$ 等相关的权重，构造加权矩阵 $B_\theta$ 与 $\zeta_{B,\theta}$，并在 $r\uparrow 1$ 时抽取加权有限部常数族。这样"隐含属性"由状态名转为一组可审计的解析不变量（均值、方差、偏差常数），仍完全落在第 9 节的接口体系内。
+\end{remark}
+
+\subsubsection{加权核的压力与大偏差（可审计接口）}
+令 $\phi$ 为同步图边上的可观测量（例如输出位 $e$ 的指示函数，或"到达含 $\overline{1}$ 状态"的指示函数）。定义加权矩阵
+\[
+(B_\theta)_{ij}:=\sum_{e:i\to j}\exp\bigl(\theta\,\phi(e)\bigr),
+\]
+其中求和遍历所有从 $i$ 到 $j$ 的边。记
+\[
+\lambda(\theta):=\rho(B_\theta),\qquad P(\theta):=\log\lambda(\theta).
+\]
+则 $P(\theta)$ 为有限型情形的压力函数，且 $P(0)=\log 3$。令
+\[
+I(\alpha):=\sup_{\theta\in\RR}\bigl(\theta\alpha-(P(\theta)-P(0))\bigr),
+\]
+则 $I(\alpha)$ 给出 $\phi$ 的长程平均的大偏差率函数（标准热力学形式口径，见 \cite{Ruelle1978Thermodynamic,ParryPollicott1990Zeta}）。
+
+加权 $\zeta$ 仍由
+\[
+\zeta_{B,\theta}(z)=\frac{1}{\det(I-zB_\theta)}
+\]
+给出，并可定义加权 primitive 轨道谱
+\[
+a_n(\theta):=\mathrm{Tr}(B_\theta^n),\qquad
+p_n(\theta)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(d\theta),
+\]
+以及相应的加权 Mertens 常数族（对 $z\to 1/\lambda(\theta)$ 取 Abel 有限部）。
+可审计数值由脚本 \texttt{scripts/exp\_sync\_kernel\_weighted\_pressure.py} 输出。
+
+\subsubsection{加权 primitive--periodic 的 Witt 分解}\label{app:witt-weighted}
+以下取输出位势 $\varphi(e)=e$，令
+\[
+u=e^\theta,\qquad B(u)=B_0+uB_1,\qquad \Delta(z,u):=\det(I-zB(u)).
+\]
+其中 $B_0$（resp.\ $B_1$）只计数输出位 $e=0$（resp.\ $e=1$）的边。
+则
+\[
+\zeta(z,u)=\exp\!\left(\sum_{n\ge 1}\frac{\mathrm{Tr}(B(u)^n)}{n}z^n\right)=\Delta(z,u)^{-1}.
+\]
+令
+\[
+a_n(u):=\mathrm{Tr}(B(u)^n),\qquad
+P(z,u):=\sum_{n\ge 1}p_n(u)z^n,
+\]
+其中
+\(
+p_n(u)=\sum_{\tau\ \mathrm{primitive},\,|\tau|=n}u^{S_\tau\varphi}
+\)
+为 primitive 轨道的加权谱多项式。Euler 乘积给出
+\[
+\zeta(z,u)=\prod_{\tau\ \mathrm{primitive}}\bigl(1-z^{|\tau|}u^{S_\tau\varphi}\bigr)^{-1}.
+\]
+取对数并展开幂重复得到 Witt 分解
+\[
+\log\zeta(z,u)=\sum_{m\ge 1}\frac{1}{m}P(z^m,u^m).
+\]
+由 Möbius 反演得到
+\[
+P(z,u)=\sum_{m\ge 1}\frac{\mu(m)}{m}\log\zeta(z^m,u^m),
+\]
+对系数比较即有
+\[
+p_n(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d)
+\quad\Longleftrightarrow\quad
+p_n(\theta)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(d\theta).
+\]
+
+\subsubsection{同步核的自对偶对称}\label{app:kernel-self-dual}
+对同步核存在状态对合 $\iota$，其作用为
+\[
+\iota:\quad
+000\leftrightarrow 101,\quad
+001\leftrightarrow 100,\quad
+002\leftrightarrow 010,\quad
+0\overline{1}2\leftrightarrow 11\overline{1},\quad
+1\overline{1}2\leftrightarrow 01\overline{1}.
+\]
+令 $\Pi$ 为该置换的矩阵，则
+\[
+\Pi^{-1}B_0\Pi=B_1,\qquad \Pi^{-1}B_1\Pi=B_0,
+\]
+从而
+\[
+\Pi^{-1}B(u)\Pi=uB(1/u).
+\]
+于是
+\[
+\Delta(z,u)=\det(I-zB(u))=\det(I-uzB(1/u))=\Delta(uz,1/u).
+\]
+设 $z_\star(u)$ 为最小正根、$\lambda(u)=1/z_\star(u)$，则
+\[
+\lambda(u)=u\,\lambda(1/u),
+\qquad
+P(\theta)=\theta+P(-\theta).
+\]
+对按输出 1 次数分层的 primitive 轨道数 $p_{n,k}$，有
+\[
+p_{n,k}=p_{n,n-k}\quad(n\ge 2),
+\]
+等价地 $u^{-1}p_n(u)$ 为次数 $n-2$ 的回文多项式。
+
+\subsubsection{压力函数的解析性与显式导数}\label{app:pressure-analytic}
+对 $u=e^\theta>0$，矩阵 $B(u)$ 仍为 primitive，故 Perron 根 $\lambda(u)$ 在 $u>0$ 上为单根并随 $u$ 实解析。记 $\lambda=\lambda(u)$，其满足六次方程
+\[
+\begin{aligned}
+F(\lambda,u)
+={}&\lambda^6-(1+u)\lambda^5-5u\lambda^4+3u(1+u)\lambda^3\\
+&\ -u(u^2-3u+1)\lambda^2+u(u^3-3u^2-3u+1)\lambda+u^2(u^2+u+1)=0.
+\end{aligned}
+\]
+由隐式微分
+\[
+\lambda_u=-\frac{F_u}{F_\lambda},\qquad
+P'(\theta)=\frac{u\lambda_u}{\lambda},
+\]
+再微分一次得
+\[
+\lambda_{uu}=-\frac{F_{uu}+2F_{u\lambda}\lambda_u+F_{\lambda\lambda}\lambda_u^2}{F_\lambda},
+\qquad
+P''(\theta)=\frac{u\lambda_u}{\lambda}+u^2\left(\frac{\lambda_{uu}}{\lambda}-\Bigl(\frac{\lambda_u}{\lambda}\Bigr)^2\right).
+\]
+由对称性 $P(\theta)-\theta/2$ 为偶函数，$P^{(3)}(0)=0$，且
+\[
+P(\theta)=\log 3+\frac12\theta+\frac{11}{204}\theta^2+\frac{1559}{1414944}\theta^4+O(\theta^6),
+\]
+从而 $P^{(4)}(0)=\frac{1559}{58956}$。此外
+\[
+P(\theta)\to 0\quad(\theta\to-\infty),\qquad
+P(\theta)\sim \theta\quad(\theta\to+\infty),
+\]
+对应极端权重下的冻结极限。
+
+\subsubsection{大偏差率函数的参数化闭式}\label{app:rate-param}
+令
+\[
+\alpha(\theta):=P'(\theta)\in(0,1),
+\]
+则大偏差率函数满足
+\[
+I(\alpha(\theta))=\theta\alpha(\theta)-\bigl(P(\theta)-P(0)\bigr),\qquad P(0)=\log 3.
+\]
+由自对偶对称得
+\[
+I(\alpha)=I(1-\alpha),
+\]
+且在 $\alpha_\star=\frac12$ 附近
+\[
+I(\alpha)=\frac{(\alpha-\frac12)^2}{2P''(0)}+O\!\left((\alpha-\tfrac12)^3\right)
+=\frac{51}{11}\Bigl(\alpha-\frac12\Bigr)^2+O(\cdot).
+\]
+端点值为
+\[
+I(0)=I(1)=\log 3.
+\]
+若记 $p_{n,k}=[u^k]p_n(u)$，则典型规模为
+\[
+p_{n,k}\approx \frac{1}{n}\exp\!\Bigl(n(\log 3-I(k/n))\Bigr).
+\]
+
+\subsubsection{加权 Mertens 常数与 Abel 有限部}\label{app:mertens-weighted}
+令 $\lambda(u)$ 为 Perron 根，$\rho(u)$ 为其余特征值最大模，则
+\[
+a_n(u)=\mathrm{Tr}(B(u)^n)=\lambda(u)^n+O(\rho(u)^n),
+\]
+由 Witt 反演得
+\[
+p_n(u)=\frac{\lambda(u)^n}{n}+O\!\left(\frac{\rho(u)^n}{n}\right).
+\]
+因此
+\[
+\Pi_\theta(N):=\sum_{n\le N}p_n(\theta)\sim \frac{\lambda(\theta)}{\lambda(\theta)-1}\cdot\frac{\lambda(\theta)^N}{N}.
+\]
+记
+\[
+\mathcal{M}_\theta(N):=\sum_{n\le N}\frac{p_n(u)}{\lambda(u)^n},
+\]
+则
+\[
+\mathcal{M}_\theta(N)=\log N+M(\theta)+o(1),
+\qquad
+M(\theta)=\gamma+\sum_{n\ge 1}\left(\frac{p_n(u)}{\lambda(u)^n}-\frac{1}{n}\right),
+\]
+其中 $\gamma$ 为 Euler 常数。设
+\[
+P_\theta(r):=\sum_{n\ge 1}\frac{p_n(u)}{\lambda(u)^n}r^n,\quad 0<r<1,
+\]
+则 Abel 有限部给出
+\[
+\log\mathfrak{M}(\theta):=\mathrm{fp}_{r=1}\bigl(P_\theta(r)+\log(1-r)\bigr)
+=\sum_{n\ge 1}\left(\frac{p_n(u)}{\lambda(u)^n}-\frac{1}{n}\right),
+\]
+从而
+\[
+M(\theta)=\gamma+\log\mathfrak{M}(\theta).
+\]
+在 $\theta=0$ 处有
+\[
+M(0)\approx 0.2738887860704445,\qquad
+\log\mathfrak{M}(0)\approx -0.3033268788310883.
+\]
+
+\subsubsection{仅用 \texorpdfstring{$\Delta$}{Delta} 的闭式计算}\label{app:delta-only}
+令 $z_\star(u)=\lambda(u)^{-1}$ 为 $\Delta(z,u)$ 的最小正根，定义
+\[
+C(u):=\lim_{z\to z_\star}(1-z/z_\star)\zeta(z,u)=\frac{1}{-z_\star\,\partial_z\Delta(z_\star,u)}.
+\]
+由 Witt 反演与 $\zeta=1/\Delta$ 可得
+\[
+\log\mathfrak{M}(\theta)
+=\log C(u)+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta(z_\star^m,u^m)
+=\log C(u)-\sum_{m\ge 2}\frac{\mu(m)}{m}\log\Delta(z_\star^m,u^m),
+\]
+其中级数以指数速度收敛。
+
+\subsubsection{前 10 个 primitive 加权谱多项式}\label{app:weighted-primitive-table}
+前 10 项 $p_n(u)=\sum_{\tau\ \mathrm{primitive},\,|\tau|=n}u^{S_\tau\varphi}$ 为
+\[
+\begin{aligned}
+p_1(u)&=1+u,\qquad
+p_2(u)=6u,\qquad
+p_3(u)=3u+3u^2,\\
+p_4(u)&=2u+16u^2+2u^3,\qquad
+p_5(u)=3u+19u^2+19u^3+3u^4,\\
+p_6(u)&=3u+26u^2+65u^3+26u^4+3u^5,\\
+p_7(u)&=9u+66u^2+276u^3+276u^4+66u^5+9u^6,\\
+p_8(u)&=30u+207u^2+861u^3+1925u^4+861u^5+207u^6+30u^7,\\
+p_9(u)&=103u+840u^2+4062u^3+9194u^4+9194u^5+4062u^6+840u^7+103u^8,\\
+p_{10}(u)&=340u+3330u^2+18437u^3+51822u^4+74757u^5+51822u^6+18437u^7+3330u^8+340u^9.
+\end{aligned}
+\]
+当 $n\ge 2$ 时无 $u^0$ 与 $u^n$ 项，且系数满足 $p_{n,k}=p_{n,n-k}$。
+
+\subsubsection{多维势的向量化扩展}\label{app:vector-potential}
+若引入向量势
+\[
+\boldsymbol{\varphi}(e)=\bigl(\varphi_1(e),\dots,\varphi_d(e)\bigr),
+\qquad
+B(\boldsymbol{\theta})_{ij}=\sum_{e:i\to j}\exp\!\bigl(\langle\boldsymbol{\theta},\boldsymbol{\varphi}(e)\rangle\bigr),
+\]
+则压力
+\[
+P(\boldsymbol{\theta})=\log\rho\bigl(B(\boldsymbol{\theta})\bigr)
+\]
+与大偏差率函数
+\[
+I(\alpha)=\sup_{\boldsymbol{\theta}\in\RR^d}\bigl(\langle\boldsymbol{\theta},\alpha\rangle-(P(\boldsymbol{\theta})-P(0))\bigr)
+\]
+均保持"有限矩阵 + 行列式"的可审计口径；二维/三维实例见后续小节。
+
+\subsubsection{负携带势的显式闭式（可审计实例）}
+取
+\[
+Q_-:=\{0\overline{1}2,\,1\overline{1}2,\,01\overline{1},\,11\overline{1}\},
+\qquad
+\phi(s\to t):=\mathbf{1}_{\{t\in Q_-\}}.
+\]
+令 $u=e^\theta$。此时 $B_\theta$ 等价于把落入 $Q_-$ 的列整体乘上 $u$，并有显式因式分解
+\[
+\det(I-zB_\theta)
+\;=\;
+\bigl(u z^3-u z^2+u z+1\bigr)\bigl(3u z^3+u z^2-u z-2z^2-2z+1\bigr).
+\]
+主极点 $z_\star(\theta)=\lambda(\theta)^{-1}$ 由第二因子给出；代入 $z=1/\lambda$ 得三次方程
+\[
+\lambda^3-(u+2)\lambda^2+(u-2)\lambda+3u=0,\qquad u=e^\theta,
+\]
+从而压力 $P(\theta)=\log\lambda(\theta)$ 完全由该三次方程的最大实根确定。
+
+由隐式微分或脚本数值（\texttt{--phi neg\_state}）可得
+\[
+P'(0)=\frac{1}{8}\ \ (\approx 0.1250000006),\qquad
+P''(0)=\frac{25}{128}\ \ (\approx 0.1953128548).
+\]
+因此典型频率 $\alpha_\star=P'(0)=1/8$，局部二次近似为
+\[
+I(\alpha)\approx \frac{(\alpha-\frac18)^2}{2P''(0)}=\frac{64}{25}\Bigl(\alpha-\frac18\Bigr)^2,
+\]
+并且端点代价满足
+\[
+I(0)=\log\frac{3}{1+\sqrt3},\qquad I(1)=\log 3.
+\]
+加权 primitive 轨道谱 $p_n(\theta)$ 仍由 Möbius 反演给出，并满足
+\[
+p_n(\theta)\asymp \frac{e^{nP(\theta)}}{n},
+\qquad
+M_{B,\theta}(N):=\sum_{n\le N}\frac{p_n(\theta)}{e^{nP(\theta)}}=\log N+\mathsf{M}_{B,\theta}+o(1),
+\]
+其中常数项 $\mathsf{M}_{B,\theta}$ 可由 Abel 有限部（$z\to 1/\lambda(\theta)$）读出。
+
+\subsubsection{二维加权素数谱（输出位 + 负携带）}
+定义二维势
+\[
+\varphi_e(e)=e,\qquad \varphi_-(s\to t)=\mathbf{1}_{\{t\in Q_-\}},
+\]
+并令
+\[
+u:=e^{\theta_e},\qquad v:=e^{\theta_-}.
+\]
+加权邻接矩阵条目为
+\[
+B(u,v)_{ij}=\sum_{e:i\to j}u^{\varphi_e(e)}v^{\varphi_-(e)}.
+\]
+对应行列式可化为 6 次多项式
+\[
+\begin{aligned}
+\Delta(z;u,v)=&\,1-(u+1)z-u(v^2+2v+2)z^2\\
+&+uv(uv+2u+v+2)z^3+uv^2(-u^2+3u-1)z^4\\
+&+\bigl(u^4v^2-2u^3v^2-u^3v-2u^2v^2-u^2v+uv^2\bigr)z^5\\
+&+u^2v^2(u^2+u+1)z^6,
+\end{aligned}
+\]
+因此
+\[
+\zeta(z;u,v)=\frac{1}{\Delta(z;u,v)}.
+\]
+记 $z_\star(u,v)$ 为最小正根，$\lambda(u,v)=1/z_\star(u,v)$，压力
+\[
+P(\theta_e,\theta_-)=\log\lambda(e^{\theta_e},e^{\theta_-}).
+\]
+在 $(\theta_e,\theta_-)=(0,0)$ 处有
+\[
+\partial_{\theta_e}P(0,0)=\frac12\ \ (\approx 0.5000000000),\qquad
+\partial_{\theta_-}P(0,0)=\frac18\ \ (\approx 0.1250000006),
+\]
+\[
+\partial^2_{\theta_e\theta_e}P(0,0)=\frac{11}{102}\ \ (\approx 0.1078436229),\quad
+\partial^2_{\theta_-\theta_-}P(0,0)=\frac{25}{128}\ \ (\approx 0.1953128548),\quad
+\partial^2_{\theta_e\theta_-}P(0,0)\approx 0.
+\]
+因此局部二次近似为
+\[
+P(\theta_e,\theta_-)=\log 3+\frac12\theta_e+\frac18\theta_-+\frac{11}{204}\theta_e^2+\frac{25}{256}\theta_-^2+O(|\theta|^3).
+\]
+二维大偏差率函数
+\[
+I(\alpha_e,\alpha_-)=\sup_{\theta_e,\theta_-}\bigl(\theta_e\alpha_e+\theta_-\alpha_- - (P(\theta_e,\theta_-)-P(0,0))\bigr)
+\]
+在典型点附近满足
+\[
+I(\alpha_e,\alpha_-)\approx \frac{51}{11}\Bigl(\alpha_e-\frac12\Bigr)^2+\frac{64}{25}\Bigl(\alpha_- -\frac18\Bigr)^2.
+\]
+加权 primitive 轨道数
+\[
+p_n(\theta_e,\theta_-)\asymp \frac{e^{nP(\theta_e,\theta_-)}}{n}
+\]
+并由 Möbius 反演从 $a_n(\theta_e,\theta_-)=\mathrm{Tr}(B(u,v)^n)$ 提取。数值复现见脚本 \texttt{scripts/exp\_sync\_kernel\_weighted\_pressure\_2d.py}。
+
+\subsubsection{三维加权素数谱（输出位 + 负携带 + 碰撞）}
+定义三维势
+\[
+\varphi_e(e)=e,\qquad
+\varphi_-(s\to t)=\mathbf{1}_{\{t\in Q_-\}},\qquad
+\varphi_2(d)=\mathbf{1}_{\{d=2\}},
+\]
+并令
+\[
+u:=e^{\theta_e},\qquad v:=e^{\theta_-},\qquad w:=e^{\theta_2}.
+\]
+按状态顺序 $Q$，三维加权邻接矩阵为
+\[
+B(u,v,w)=
+\begin{pmatrix}
+1 & 1 & w & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 1 & 1 & w & 0 & 0 & 0 & 0\\
+u & uw & 0 & 0 & 0 & 0 & 0 & 0 & 0 & v\\
+0 & 0 & 0 & 0 & 1 & 1 & uvw & 0 & 0 & 0\\
+u & u & uw & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & u & u & uw & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 1 & w & 0 & 0 & 0 & v & 0\\
+0 & 0 & 0 & u & uw & 0 & 0 & 0 & uv & 0\\
+0 & 1 & 1 & 0 & 0 & 0 & 0 & vw & 0 & 0\\
+0 & u & u & 0 & 0 & 0 & 0 & uvw & 0 & 0
+\end{pmatrix}.
+\]
+对应行列式仍为 6 次多项式
+\[
+\Delta(z;u,v,w)=1+c_1z+c_2z^2+c_3z^3+c_4z^4+c_5z^5+c_6z^6,
+\]
+其中
+\[
+c_1=-(uw+1),\qquad
+c_2=-u(v^2w+vw+v+2),\qquad
+c_3=uv(uw+1)(vw+w+1),
+\]
+\[
+c_4=-u\bigl(u^2v^2w^3-3uv^2w+uv(w^2+w-2)+u(w^2-w)+v^2w\bigr),
+\]
+\[
+c_5=uvw\bigl(u^3 v w^3-2u^2 v w-u^2 w^3-u v(w+1)-u+v\bigr),
+\]
+\[
+c_6=u^2 v^2 w(2w-1)(u^2w+u+1).
+\]
+因此三观测量的加权 $\zeta$-函数具有有理闭式
+\[
+\zeta(z;u,v,w)=\frac{1}{\Delta(z;u,v,w)}.
+\]
+记 $\lambda(u,v,w)=1/z_\star(u,v,w)$，压力
+\[
+P(\theta_e,\theta_-,\theta_2)=\log\lambda(e^{\theta_e},e^{\theta_-},e^{\theta_2}).
+\]
+在 $\theta=0$ 处有
+\[
+\nabla P(0)=\left(\frac12,\frac18,\frac13\right)
+\ \ (\approx (0.5000000000,\ 0.1250000006,\ 0.3333333335)),
+\]
+并且 Hessian 满足
+\[
+\nabla^2P(0)=
+\begin{pmatrix}
+\frac{11}{102} & 0 & \frac{181}{1632}\\
+0 & \frac{25}{128} & \frac{5}{128}\\
+\frac{181}{1632} & \frac{5}{128} & \frac{2}{9}
+\end{pmatrix},
+\]
+即 $\partial^2_{\theta_e\theta_-}P(0)=0$，而 $\partial^2_{\theta_e\theta_2}P(0),\partial^2_{\theta_-\theta_2}P(0)>0$。因此
+\[
+P(\theta)=\log 3+\frac12\theta_e+\frac18\theta_-+\frac13\theta_2
++\frac{11}{204}\theta_e^2+\frac{25}{256}\theta_-^2+\frac19\theta_2^2
++\frac{181}{1632}\theta_e\theta_2+\frac{5}{128}\theta_-\theta_2+O(|\theta|^3).
+\]
+三维大偏差率函数
+\[
+I(\alpha)=\sup_{\theta\in\mathbb{R}^3}\bigl(\theta\cdot\alpha-(P(\theta)-P(0))\bigr)
+\]
+在典型点 $\alpha_\star=(\frac12,\frac18,\frac13)$ 附近满足
+\[
+I(\alpha)\approx \tfrac12(\alpha-\alpha_\star)^\top\bigl(\nabla^2P(0)\bigr)^{-1}(\alpha-\alpha_\star),
+\]
+其中
+\[
+\bigl(\nabla^2P(0)\bigr)^{-1}\approx
+\begin{pmatrix}
+19.8119 & 2.04960 & -10.2480\\
+2.04960 & 5.51860 & -1.99298\\
+-10.2480 & -1.99298 & 9.96491
+\end{pmatrix}.
+\]
+由此得到一个自然的 arity-charge
+\[
+\chi:=\varphi_e-\varphi_2\in\{-1,0,1\},
+\]
+其典型密度与方差密度为
+\[
+\mathbb{E}[\chi]=\frac12-\frac13=\frac16,\qquad
+\mathrm{Var}_\infty(\chi)=\frac{11}{102}+\frac{2}{9}-2\cdot\frac{181}{1632}=\frac{265}{2448}\ (\approx 0.1082516340).
+\]
+三维加权 primitive 轨道数
+\[
+p_n(\theta_e,\theta_-,\theta_2)=\sum_{\substack{\tau\ \mathrm{primitive}\|\tau|=n}}
+\exp\!\bigl(\theta_e S_\tau\varphi_e+\theta_-S_\tau\varphi_-+\theta_2S_\tau\varphi_2\bigr)
+\]
+仍满足 $p_n(\theta)\asymp e^{nP(\theta)}/n$，并可由
+$a_n(\theta)=\mathrm{Tr}(B(u,v,w)^n)$ 经 Möbius 反演提取。数值复现见脚本 \texttt{scripts/exp\_sync\_kernel\_weighted\_pressure\_3d.py}。
+在未加权情形 $(u,v,w)=(1,1,1)$ 下，有
+\[
+(a_1,\dots,a_{10})=(2,14,20,94,222,770,2116,6694,19442,59494),
+\]
+\[
+(p_1,\dots,p_{10})=(2,6,6,20,44,123,302,825,2158,5926),
+\]
+并呈现典型 prime-orbit 主项 $p_n\sim 3^n/n$。
+
+\subsubsection{真实算术输入约束下的同步核（40 状态）}
+在线延迟核的输入字母表虽为 $\{0,1,2\}$，但真实算术输入来自两条合法 Zeckendorf 轨道
+$x,y\in X$ 的逐位和 $d_k=x_k+y_k$，其中 $x_kx_{k+1}=0,\ y_ky_{k+1}=0$。
+因此把同步核状态 $s\in Q$ 与输入记忆 $(p_x,p_y)\in\{0,1\}^2$ 合并，得到
+\[
+\Sigma:=Q\times\{0,1\}^2,\qquad |\Sigma|=40.
+\]
+从 $(s,p_x,p_y)$ 出发，允许选择 $(x,y)\in\{0,1\}^2$ 且满足 $p_xx=0,\ p_yy=0$，
+令 $d=x+y$，并由同步核确定性转移更新 $s$，下一个记忆为 $(x,y)$。
+由此得到 40 状态 SFT，其邻接矩阵记为 $M$。
+
+对该 SFT 定义周期点计数
+\[
+a_n:=|{\rm Fix}(\sigma^n)|=\operatorname{tr}(M^n),
+\]
+其动力学 $\zeta$-函数满足
+\[
+\zeta_M(z)=\exp\!\left(\sum_{n\ge 1}\frac{a_n}{n}z^n\right)=\frac{1}{\det(I-zM)}.
+\]
+对该 40 状态核可显式因式分解
+\[
+\det(I-zM)=-(z-1)^2(z+1)^3(z^2-3z+1)(z^2-z-1),
+\]
+从而非零特征值（含重数）为
+\[
+\{\varphi^2,-\varphi,1^{(2)},(-1)^{(3)},\varphi^{-2},\varphi^{-1}\},
+\]
+其余 $31$ 个特征值为 $0$。
+primitive 轨道数 $p_n$ 与 $a_n$ 的关系为
+\[
+a_n=\sum_{d\mid n} d\,p_d,\qquad
+p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}.
+\]
+
+该系统的 Perron--Frobenius 主特征值为
+\[
+\lambda=\varphi^2=\left(\frac{1+\sqrt5}{2}\right)^2=\frac{3+\sqrt5}{2}\approx 2.6180339887,
+\qquad
+h=\log\lambda=2\log\varphi,
+\]
+对应于"两条黄金均值链并行输入"的熵标度。对该 $M$，周期点计数与 primitive 轨道数为
+\[
+a_n=\varphi^{2n}+(-\varphi)^n+2+3(-1)^n+\varphi^{-2n}+\varphi^{-n},
+\]
+\[
+(a_1,\dots,a_{10})=(1,15,13,59,111,345,813,2259,5701,15255),
+\]
+\[
+(p_1,\dots,p_{10})=(1,7,4,11,22,53,116,275,632,1513),
+\]
+并满足
+\[
+p_n=\frac{\lambda^n}{n}+O\!\left(\frac{\varphi^n}{n}\right)
+=\frac{\varphi^{2n}}{n}+O\!\left(\frac{\varphi^n}{n}\right),
+\]
+其中次大特征值模为 $\varphi$。
+
+定义轨道 Mertens 和
+\[
+\mathcal{M}(N):=\sum_{n\le N}\frac{p_n}{\lambda^n}
+=\log N+\mathsf{M}_{\varphi^2}+o(1),
+\]
+其中常数项可写为
+\[
+\mathsf{M}_{\varphi^2}
+=\gamma+\sum_{n\ge 1}\left(\frac{p_n}{\lambda^n}-\frac{1}{n}\right),
+\]
+$\gamma$ 为 Euler--Mascheroni 常数。数值上
+\[
+\sum_{n\ge 1}\left(\frac{p_n}{\lambda^n}-\frac{1}{n}\right)\approx -0.254312661901716,
+\qquad
+\mathsf{M}_{\varphi^2}\approx 0.322903002999817.
+\]
+另外记 $P(z)=\sum_{n\ge 1}p_n z^n$，则在 $z\to z_\star=\lambda^{-1}$ 时
+\[
+P(z)=-\log(1-\lambda z)+\log\mathfrak{M}+o(1),
+\]
+其中
+\[
+\log\mathfrak{M}\approx -0.254312661901716,\qquad
+\mathfrak{M}\approx 0.7754493106833835.
+\]
+由因式分解可得
+\[
+\zeta_M(z)=\frac{C}{1-\lambda z}+O(1),\qquad
+C=\frac{7+3\sqrt5}{100}\ (\approx 0.1370820393).
+\]
+
+\subsubsection{真实输入下的 arity-charge 素数谱}
+定义 arity-charge
+\[
+\chi(s,d):=e-\mathbf{1}_{\{d=2\}}\in\{-1,0,1\},
+\]
+并对真实输入核的每条边赋权 $q^{\chi}$，得到加权矩阵 $M(q)$。
+令
+\[
+c_n(q):=\operatorname{tr}(M(q)^n),
+\qquad
+\zeta(z,q)=\exp\!\left(\sum_{n\ge 1}\frac{c_n(q)}{n}z^n\right)
+=\frac{1}{\det(I-zM(q))}.
+\]
+定义 primitive 轨道的 arity 生成多项式
+\[
+P_n(q):=\sum_{\substack{\gamma\ \mathrm{primitive}\|\gamma|=n}} q^{\chi(\gamma)},
+\qquad
+\chi(\gamma):=\sum_{e\in\gamma}\chi(e),
+\]
+则加权 Möbius 反演给出
+\[
+c_n(q)=\sum_{d\mid n} d\,P_d\!\left(q^{n/d}\right),
+\qquad
+P_n(q)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,c_{n/d}\!\left(q^{d}\right).
+\]
+本例中 $P_n(q)\in\ZZ[q]$，其前 12 项为
+\[
+\begin{aligned}
+P_1(q)&=1,\\
+P_2(q)&=6q+1,\\
+P_3(q)&=4q,\\
+P_4(q)&=4q^2+6q+1,\\
+P_5(q)&=12q^2+9q+1,\\
+P_6(q)&=10q^3+22q^2+20q+1,\\
+P_7(q)&=36q^3+50q^2+29q+1,\\
+P_8(q)&=21q^4+92q^3+121q^2+40q+1,\\
+P_9(q)&=108q^4+232q^3+236q^2+54q+2,\\
+P_{10}(q)&=54q^5+334q^4+634q^3+410q^2+79q+2,\\
+P_{11}(q)&=324q^5+1000q^4+1444q^3+698q^2+113q+3,\\
+P_{12}(q)&=125q^6+1220q^5+2946q^4+3002q^3+1181q^2+158q+3.
+\end{aligned}
+\]
+代入 $q=1$ 即回到未分层的 primitive 轨道数 $p_n=P_n(1)$。数值复现见脚本
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity.py}。
+
+对模 $m$ 的 arity 类，定义
+\[
+N_{n,r}^{(m)}:=\sum_{k\equiv r\ (\mathrm{mod}\ m)}[q^k]P_n(q),
+\qquad r=0,1,\dots,m-1,
+\]
+等价地可由离散傅里叶变换写成
+\[
+N_{n,r}^{(m)}=\frac{1}{m}\sum_{j=0}^{m-1}\zeta_m^{-jr}P_n(\zeta_m^j),
+\qquad \zeta_m=e^{2\pi i/m}.
+\]
+由于 $\rho(M(\zeta_m^j))<\lambda$（数值上
+$\rho(M(-1))\approx 1.8536691513$，
+$\rho(M(e^{2\pi i/3}))\approx 2.1262298605$，
+$\rho(M(e^{2\pi i/5}))\approx 2.4432116352$），
+故 $P_n(\zeta_m^j)/\lambda^n$ 的级数绝对收敛。
+进一步记
+\[
+\rho_m:=\max_{1\le j\le m-1}\rho(M(\zeta_m^j))<\lambda,
+\]
+则对固定 $m$ 有"算术级数"型估计
+\[
+N_{n,r}^{(m)}=\frac{1}{m}p_n+O\!\left(\frac{\rho_m^n}{n}\right),
+\qquad p_n=P_n(1),
+\]
+即 arity-charge 在模 $m$ 下指数级趋于等分布。
+由此定义 arity 类的 Abel 常数
+\[
+\log\mathfrak{M}_r^{(m)}
+=\frac{1}{m}\log\mathfrak{M}
++\frac{1}{m}\sum_{j=1}^{m-1}\zeta_m^{-jr}\sum_{n\ge 1}\frac{P_n(\zeta_m^j)}{\lambda^n},
+\]
+并对应 Mertens 常数
+\[
+\mathsf{M}_r^{(m)}=\log\mathfrak{M}_r^{(m)}+\frac{\gamma}{m}.
+\]
+数值上（$r=0,\dots,m-1$）：
+\[
+\log\mathfrak{M}^{(2)}\approx(-0.349122119202,\ 0.094809457301),
+\quad
+\mathsf{M}^{(2)}\approx(-0.060514286752,\ 0.383417289751),
+\]
+\[
+\log\mathfrak{M}^{(3)}\approx(-0.206009522508,\ 0.431865788424,\ -0.480168927818),
+\]
+\[
+\mathsf{M}^{(3)}\approx(-0.013604300874,\ 0.624271010058,\ -0.287763706184),
+\]
+\[
+\log\mathfrak{M}^{(5)}\approx(-0.005727824492,\ 0.729771684150,\ -0.121821440818,\ -0.367151223782,\ -0.489383856960),
+\]
+\[
+\mathsf{M}^{(5)}\approx(0.109715308488,\ 0.845214817130,\ -0.006378307837,\ -0.251708090802,\ -0.373940723979).
+\]
+作为 arity 类的原始谱计数，前 $10$ 项的 $N_{n,r}^{(m)}$ 为
+\[
+N_{n,0}^{(2)}=(1,1,0,5,13,23,51,143,346,746),\quad
+N_{n,1}^{(2)}=(0,6,4,6,9,30,65,132,286,767),
+\]
+\[
+N_{n,0}^{(3)}=(1,1,0,1,1,11,37,93,234,636),\quad
+N_{n,1}^{(3)}=(0,6,4,6,9,20,29,61,162,413),
+\]
+\[
+N_{n,2}^{(3)}=(0,0,0,4,12,22,50,121,236,464),
+\]
+\[
+N_{n,0}^{(5)}=(1,1,0,1,1,1,1,1,2,56),\quad
+N_{n,1}^{(5)}=(0,6,4,6,9,20,29,40,54,79),
+\]
+\[
+N_{n,2}^{(5)}=(0,0,0,4,12,22,50,121,236,410),\quad
+N_{n,3}^{(5)}=(0,0,0,0,0,10,36,92,232,634),
+\]
+\[
+N_{n,4}^{(5)}=(0,0,0,0,0,0,0,21,108,334).
+\]
+将模数扩展到 $m\in\{2,3,5,7,11\}$ 时，arity 类密度 $N_{n,r}^{(m)}/p_n$ 随 $n$ 的变化见图 \ref{fig:arity_class_density}，
+对应的 Abel 常数分布见图 \ref{fig:arity_class_logM}（数值由脚本生成）。
+\input{sections/generated/fig_arity_class_density}
+\input{sections/generated/fig_arity_class_logM}
+将 $q=e^\theta$ 视为一维权重，记
+\[
+P_\chi(\theta):=\log\rho(M(e^\theta)),
+\]
+则 $P_\chi'(0)=\mathbb{E}[\chi]$ 与 $P_\chi''(0)=\mathrm{Var}_\infty(\chi)$。
+由 $\chi=\varphi_e-\varphi_2$ 与三维 Hessian 可得
+\[
+\mathbb{E}[\chi]=\frac{17-5\sqrt5}{20}\ (\approx 0.2909830056),
+\qquad
+\mathrm{Var}_\infty(\chi)=H_{ee}+H_{22}-2H_{e2}\ (\approx 0.0841438530),
+\]
+从而局部大偏差率函数满足
+\[
+I_\chi(\alpha)\approx \frac{(\alpha-\mathbb{E}[\chi])^2}{2\,\mathrm{Var}_\infty(\chi)}
+\approx 5.9422047148\cdot(\alpha-0.2909830056)^2.
+\]
+数值复现见脚本 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity.py}。
+
+\subsubsection{真实输入下的三维隐含属性统计}
+在 40 状态核上引入三维观测
+\[
+\varphi_e=e,\qquad
+\varphi_-=\mathbf{1}_{\{t\in Q_-\}},\qquad
+\varphi_2=\mathbf{1}_{\{d=2\}},
+\]
+并定义加权矩阵
+\[
+(M_\theta)_{ij}=\sum_{i\to j}\exp(\theta_e\varphi_e+\theta_-\varphi_-+\theta_2\varphi_2),
+\qquad
+P(\theta)=\log\rho(M_\theta).
+\]
+在 $\theta=0$ 处，梯度（典型密度）为
+\[
+\partial_{\theta_e}P(0)=\frac{23-7\sqrt5}{20}\ (\approx 0.3673762079),\quad
+\partial_{\theta_-}P(0)=\frac{5-\sqrt5}{20}\ (\approx 0.1381966011),\quad
+\partial_{\theta_2}P(0)=\frac{3-\sqrt5}{10}\ (\approx 0.0763932023),
+\]
+Hessian（协方差密度）数值为
+\[
+\nabla^2P(0)\approx
+\begin{pmatrix}
+0.048741 & 0.032574 & 0.015964\\
+0.032574 & 0.275035 & 0.115735\\
+0.015964 & 0.115735 & 0.067331
+\end{pmatrix},
+\qquad
+\bigl(\nabla^2P(0)\bigr)^{-1}\approx
+\begin{pmatrix}
+22.4165 & -1.5120 & -2.7160\\
+-1.5120 & 13.2430 & -22.4049\\
+-2.7160 & -22.4049 & 54.0075
+\end{pmatrix}.
+\]
+因此局部大偏差率函数满足
+\[
+I(\alpha)\approx \tfrac12(\alpha-\alpha_\star)^\top\bigl(\nabla^2P(0)\bigr)^{-1}(\alpha-\alpha_\star),
+\qquad
+\alpha_\star=\left(\frac{23-7\sqrt5}{20},\frac{5-\sqrt5}{20},\frac{3-\sqrt5}{10}\right).
+\]
+数值复现见脚本 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40.py}。

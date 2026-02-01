@@ -9,10 +9,14 @@ Outputs:
 from __future__ import annotations
 
 import argparse
+import cmath
 import json
+import math
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Tuple
+
+import numpy as np
 
 from common_paths import export_dir
 from common_phi_fold import Progress
@@ -86,6 +90,48 @@ def build_real_input_states() -> List[Tuple[str, int, int]]:
             for py in (0, 1):
                 states.append((s, px, py))
     return states
+
+
+def build_weighted_matrix_numeric(
+    q: complex,
+    states: List[Tuple[str, int, int]],
+    kernel_map: Dict[Tuple[str, int], Tuple[str, int]],
+) -> np.ndarray:
+    idx = {state: i for i, state in enumerate(states)}
+    n = len(states)
+    M = np.zeros((n, n), dtype=complex)
+    for s, px, py in states:
+        for x in (0, 1):
+            if px == 1 and x == 1:
+                continue
+            for y in (0, 1):
+                if py == 1 and y == 1:
+                    continue
+                d = x + y
+                dst_state, e = kernel_map[(s, d)]
+                chi = e - (1 if d == 2 else 0)
+                i = idx[(s, px, py)]
+                j = idx[(dst_state, x, y)]
+                M[i, j] += q**chi
+    return M
+
+
+def parse_m_values(text: str) -> List[int]:
+    raw = [chunk.strip() for chunk in text.split(",")] if text else []
+    ms: List[int] = []
+    for chunk in raw:
+        if not chunk:
+            continue
+        try:
+            val = int(chunk)
+        except ValueError as exc:
+            raise SystemExit(f"[arity] invalid m value: {chunk}") from exc
+        if val < 2:
+            raise SystemExit(f"[arity] m must be >= 2, got {val}")
+        ms.append(val)
+    if not ms:
+        ms = [2, 3, 5, 7, 11]
+    return sorted(set(ms))
 
 
 def poly_add(a: Dict[int, int], b: Dict[int, int]) -> Dict[int, int]:
@@ -229,6 +275,47 @@ def compute_c_and_P(
     return c, P
 
 
+def traces_for_q(
+    q: complex,
+    max_n: int,
+    prog: Progress,
+    states: List[Tuple[str, int, int]],
+    kernel_map: Dict[Tuple[str, int], Tuple[str, int]],
+    label: str,
+) -> List[complex]:
+    M = build_weighted_matrix_numeric(q, states, kernel_map)
+    A = M.copy()
+    traces: List[complex] = []
+    for n in range(1, max_n + 1):
+        if n > 1:
+            A = A @ M
+        traces.append(np.trace(A))
+        prog.tick(f"{label} trace n={n}/{max_n}")
+    return traces
+
+
+def pvals_from_traces(traces: List[complex]) -> List[complex]:
+    max_n = len(traces)
+    pvals: List[complex] = []
+    for n in range(1, max_n + 1):
+        s = 0.0 + 0.0j
+        for d in range(1, n + 1):
+            if n % d == 0:
+                s += mobius(d) * traces[n // d - 1]
+        pvals.append(s / float(n))
+    return pvals
+
+
+def class_counts(P: List[Dict[int, int]], max_n: int, m: int) -> List[List[int]]:
+    counts: List[List[int]] = []
+    for n in range(1, max_n + 1):
+        arr = [0] * m
+        for exp, coeff in P[n].items():
+            arr[exp % m] += coeff
+        counts.append(arr)
+    return counts
+
+
 def write_json(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
@@ -236,7 +323,14 @@ def write_json(path: Path, payload: dict) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Arity-charge primitive spectrum for real-input kernel")
-    parser.add_argument("--max-n", type=int, default=10, help="Max n for c_n and P_n")
+    parser.add_argument("--max-n", type=int, default=12, help="Max n for c_n and P_n")
+    parser.add_argument("--mertens-n", type=int, default=200, help="Max n for class constants")
+    parser.add_argument(
+        "--m-values",
+        type=str,
+        default="2,3,5,7,11",
+        help="Comma-separated m values for class decomposition",
+    )
     parser.add_argument("--no-output", action="store_true", help="Skip writing JSON output")
     parser.add_argument(
         "--output",
@@ -259,15 +353,69 @@ def main() -> None:
     # p_n = P_n(1)
     p_vals = [sum(P[n].values()) for n in range(1, args.max_n + 1)]
 
+    # Class constants via roots of unity
+    phi = (1.0 + 5.0**0.5) / 2.0
+    lam = phi * phi
+    gamma = 0.5772156649015329
+    mertens_n = args.mertens_n
+    m_values = parse_m_values(args.m_values)
+
+    traces_one = traces_for_q(1.0 + 0.0j, mertens_n, prog, states, kernel_map, "q=1")
+    p_one = pvals_from_traces(traces_one)
+    logM = 0.0
+    for n, pn in enumerate(p_one, start=1):
+        logM += (pn.real / (lam**n)) - 1.0 / n
+
+    class_constants: Dict[str, Dict[str, List[float]]] = {}
+    class_mertens: Dict[str, Dict[str, List[float]]] = {}
+    class_rho: Dict[str, List[float]] = {}
+    for m in m_values:
+        zeta = cmath.exp(2j * math.pi / m)
+        Sj: List[complex] = []
+        rhos: List[float] = []
+        for j in range(1, m):
+            q = zeta**j
+            traces_q = traces_for_q(q, mertens_n, prog, states, kernel_map, f"m={m} j={j}")
+            p_q = pvals_from_traces(traces_q)
+            S = 0.0 + 0.0j
+            for n, pn in enumerate(p_q, start=1):
+                S += pn / (lam**n)
+            Sj.append(S)
+            rhos.append(float(np.max(np.abs(np.linalg.eigvals(build_weighted_matrix_numeric(q, states, kernel_map))))))
+
+        logM_r: List[float] = []
+        mertens_r: List[float] = []
+        for r in range(m):
+            acc = logM / m
+            for j in range(1, m):
+                acc += (zeta ** (-j * r)) * Sj[j - 1] / m
+            logM_r.append(acc.real)
+            mertens_r.append(acc.real + gamma / m)
+        class_constants[str(m)] = {str(r): logM_r[r] for r in range(m)}
+        class_mertens[str(m)] = {str(r): mertens_r[r] for r in range(m)}
+        class_rho[str(m)] = rhos
+
+    class_counts_all = {str(m): class_counts(P, args.max_n, m) for m in m_values}
+
     payload: Dict[str, object] = {
         "chi_def": "chi = e - 1_{d=2}",
         "max_n": args.max_n,
+        "mertens_n": mertens_n,
+        "m_values": m_values,
         "c_n_polys": c_polys,
         "P_n_polys": P_polys,
         "P_n_coeffs": [
             {str(exp): coeff for exp, coeff in P[n].items()} for n in range(1, args.max_n + 1)
         ],
         "p_n": p_vals,
+        "arity_class_counts": class_counts_all,
+        "arity_class_counts_m2": class_counts_all.get("2", class_counts(P, args.max_n, 2)),
+        "arity_class_counts_m3": class_counts_all.get("3", class_counts(P, args.max_n, 3)),
+        "arity_class_counts_m5": class_counts_all.get("5", class_counts(P, args.max_n, 5)),
+        "arity_class_logM": class_constants,
+        "arity_class_mertens": class_mertens,
+        "arity_class_rho": class_rho,
+        "log_mathfrak_M": logM,
     }
 
     if not args.no_output:
