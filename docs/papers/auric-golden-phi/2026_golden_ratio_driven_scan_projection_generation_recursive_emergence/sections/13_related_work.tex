@@ -76,7 +76,16 @@ a\mapsto a^n b,\qquad b\mapsto a
 \subsection{自动机与可判定性路线：Ostrowski-automatic 与“加法器”传统}
 当 $\alpha$ 为二次无理时，Ostrowski 数制下的加法可以被有限自动机识别，进而导出若干扩展 Presburger 算术的可判定性（例如 \cite{HieronymiTerry2018OstrowskiAddition}）。更进一步，\cite{BaranwalaSchaefferShallit2021OstrowskiAutomatic} 系统化了 Ostrowski-automatic 序列并实现了相应加法器与决策流程，用于自动化证明词组合性质。
 
-本文与该路线的技术对比点在于：两者都使用 Ostrowski/Zeckendorf 的同一数制骨架，但目标函数不同——前者关注\textbf{可判定性与自动证明}，本文关注\textbf{分辨率压缩、因子化与统计比较基线}。
+本文与该路线的技术对比点在于：两者都使用 Ostrowski/Zeckendorf 的同一数制骨架，但目标函数不同。
+\begin{itemize}
+  \item \textbf{自动机/可判定性路线：}关心“加法关系是否可由有限状态换能器识别/实现、以及由此导出的可判定性与自动证明流程”（典型结论是：在二次 $\alpha$ 的 Ostrowski 数制下，加法可由有限自动机识别；参见 \cite{HieronymiTerry2018OstrowskiAddition,BaranwalaSchaefferShallit2021OstrowskiAutomatic} 及其中的实现与应用）。
+  \item \textbf{本文路线：}把归一化视为一个\textbf{可计算的 coarse-graining（折叠）}并嵌入符号动力系统框架：窗口层 $\Fold_m$ 与序列层滑动块因子 $\Phi_m$ 给出一个 sofic 像空间 $Y_m$，进而可以在其右 Fischer cover 上计算邻接矩阵、熵、Parry 测度与 $\zeta$；更进一步，本稿第 \ref{sec:zeta-finite-part} 节将 primitive 轨道谱、Abel/Hadamard 有限部与 orbit--Mertens 常数等“硬不变量”作为对比指纹输出。
+\end{itemize}
+
+\subsubsection{与三遍 Ostrowski 归一化（算法口径）的对应关系}
+Ostrowski/Zeckendorf 加法在算法实现上常见一条“逐位叠加 $\Rightarrow$ 归一化”的路线：先在冗余字母表上逐位相加得到非规范数字串，再通过有限次扫描（例如三遍归一化）把它规约为唯一合法表示（参见 \cite{HieronymiTerry2018OstrowskiAddition,Frougny1992NumbersAutomata} 的相关章节与实现口径）。
+
+本文在 $\alpha=\varphi^{-1}$ 的 Zeckendorf 情形中给出与之对齐但更“审计友好”的分层表述：一方面用 $\mathrm{Val}$ 与 Zeckendorf 唯一性定义折叠（从值纤维选取横截面）；另一方面给出值保持的局部重写系统并证明终止/合流（从而归约顺序无关）。在实现侧，这与“多遍扫描归一化”的目标完全一致；而本文额外强调的是：一旦把归一化核编译为在线有限状态机/同步图，其图不变量（例如 $\zeta$、primitive 谱与有限部常数）可作为跨字母表/跨核的可比较量。
 
 \subsection{并行加法与局部核：最小冗余字母表与 \texorpdfstring{$(p)$}{p}-local 接口}
 本文附录 \ref{app:sync-kernel-A-compare} 把“归一化核”统一视为从 $B=A{+}A$ 到 $A$ 的 digit-set conversion，并用 $(p)$-local（滑动窗口）刻画并行性，再把其 anticipation 参数翻译为 MSDF 在线延迟。这一接口与并行加法文献中的标准形式完全一致：参见 \cite{FrougnyPelantovaSvobodova2013MinimalDigitSets}（定义 1），以及其在黄金比例基数 $\beta=\varphi$ 上关于最小字母表 $|A|=3$ 的结论（Corollary 38）。
@@ -84,6 +93,11 @@ a\mapsto a^n b,\qquad b\mapsto a
 从构造角度，\cite{FrougnyHellerPelantovaSvobodovaParallelAlgorithmsSlides} 给出在 $A=\{-1,0,1\}$ 上的显式并行加法（Algorithm~G），并与更大冗余字母表下的 locality 缩短现象一起在讲稿中直观展示（例如 $21/13/9$-local；见 \cite{Frougny2012NumbersAsStreamsLeiden}）。更一般地，Extending Window Method 为“给定基数与字母表自动构造并行加法核”提供了系统化工具链（见 \cite{LegerskySvobodova2018EWM}）。
 
 本文当前版本把这些结果作为外部基准：一旦将其局部核编译为确定性在线转导器，其同步图即可与本文的同步核不变量（$\zeta$、primitive 谱、有限部常数）无缝对接，从而把“字母表/核的改变”落实为可计算指纹。
+
+\subsubsection{“零式 + \texorpdfstring{$q$}{q}-场”模板的结构优势：把核变成可比较的谱指纹}
+并行/在线归一化文献中常以“向数制基 $\beta$ 的零式 $Z(\beta)=0$ 注入一个整数场（本文记为 $q$-场）”来组织局部更新规则：它把“进位/抵消的局部选择”编码为可加的场变量，并把字母表与 locality 约束转译为对 $q$ 的取值与依赖范围的限制（参见 \cite{FrougnyHellerPelantovaSvobodovaParallelAlgorithmsSlides,LegerskySvobodova2018EWM} 的典型构造）。
+
+本文对该模板的使用并不在于引入新的代数结构，而在于提供一个\textbf{统一的可审计编译口径}：把不同字母表/不同零式/不同 locality 的核一致编译为在线有限状态机的同步图，并在其上计算 $\zeta=1/\det(I-zA)$、primitive 轨道谱、Abel/Hadamard 有限部与 Dirichlet--Mertens 常数张量等不变量。这样，“核的改变”不仅体现为 locality 或 $|A|$ 的口头参数，而可被压缩为一组可复现的谱指纹与误差指数（例如最坏扭曲谱半径比 $\rho/\lambda$），从而形成一个可对照、可审计的比较框架。
 
 \subsection{多维 Zeckendorf 与规范数系：与本文高维切投影接口的边界}
 多维或更一般的“Zeckendorf 型表示”已有多条发展路径：一类来自编码/信息论与高阶 Fibonacci 码，例如 \cite{PooksombatUdomkavanichKositwattanarerk2020MultidimFibonacciCoding} 讨论了多维 Fibonacci 编码并给出 Zeckendorf 定理的高阶推广；另一类来自代数数域上的规范数系（canonical number systems, CNS），其目标是在代数整数环上得到有限字母表的有限表示与算法（例如 \cite{KataiSzabo1975CNS}，以及 \cite{Frougny1992NumbersAutomata} 关于线性数制与有限自动机的系统论述）。
