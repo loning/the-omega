@@ -112,6 +112,34 @@ p_n=\frac{\lambda^n}{n}+O\!\left(\frac{\varphi^n}{n}\right)
 \]
 其中次大特征值模为 $\varphi$。
 
+\paragraph{primitive 轨道计数曲线与 \texorpdfstring{$x/\log x$}{x/log x} 的常数因子}
+令
+\[
+\Pi(N):=\sum_{n\le N}p_n
+\]
+为按长度累计的 primitive 轨道数（按轨道计）。由 $p_n\sim \lambda^n/n$ 的“末项主导 + 几何尾”可得
+\[
+\Pi(N)\sim \frac{\lambda}{\lambda-1}\cdot \frac{\lambda^N}{N}.
+\]
+在本核上 $\lambda=\varphi^2$ 且 $\lambda-1=\varphi$，故
+\[
+\Pi(N)\sim \varphi\cdot\frac{\varphi^{2N}}{N}=\frac{\varphi^{2N+1}}{N}.
+\]
+若定义“轨道范数” $N(\tau):=\lambda^{|\tau|}$ 并令
+\[
+\pi(x):=\#\{\tau\ \mathrm{primitive}:\ N(\tau)\le x\},
+\]
+则 $\pi(\lambda^N)=\Pi(N)$，从而
+\[
+\pi(x)\sim \frac{\lambda\log\lambda}{\lambda-1}\cdot \frac{x}{\log x}.
+\]
+对 $\lambda=\varphi^2$，该常数因子化简为
+\[
+\frac{\lambda\log\lambda}{\lambda-1}
+=\frac{\varphi^2\log(\varphi^2)}{\varphi}
+=2\varphi\log\varphi.
+\]
+
 定义轨道 Mertens 和
 \[
 \mathcal{M}(N):=\sum_{n\le N}\frac{p_n}{\lambda^n}
@@ -149,6 +177,41 @@ C=\lim_{z\to z_\star}(1-\lambda z)\,\zeta_M(z)=\frac{47+21\sqrt5}{100}\ (\approx
 \qquad z_\star=\lambda^{-1}.
 \]
 右端把有理函数 $\zeta_M$ 代入代数数 $z_\star^{\,m}$，由于 $z_\star<1$，该级数以指数速度收敛。
+
+\paragraph{显式 Möbius--$\zeta$ 级数与对数乘积（仅用 \texorpdfstring{$\det(I-zM)$}{det} 的因式分解）}
+由
+\[
+\zeta_M(z)=\frac{1}{\Delta(z)},\qquad
+\Delta(z)=\det(I-zM)=(1-z)^2(1+z)^3(1-3z+z^2)(1+z-z^2),
+\]
+以及 $z_\star=\lambda^{-1}\in(0,1)$，可将上式等价写成只含 $\Delta$ 的形式
+\[
+\log\mathfrak{M}
+\;=\;
+\log C-\sum_{m\ge 2}\frac{\mu(m)}{m}\log \Delta(z_\star^{\,m}).
+\]
+进一步把 $\Delta$ 的因子逐项展开，可得一个完全“正实数对数”的闭式：
+\[
+\log\mathfrak{M}
+=\log C
+-\sum_{m\ge 2}\frac{\mu(m)}{m}\Bigl[
+2\log(1-z_\star^{\,m})
+3\log(1+z_\star^{\,m})
+\log(1-3z_\star^{\,m}+z_\star^{\,2m})
+\log(1+z_\star^{\,m}-z_\star^{\,2m})
+\Bigr].
+\]
+该式在数值上极稳定：因为 $z_\star^{\,m}$ 指数趋零，且每项只需对正数取对数。
+等价地，可写成 Euler--Möbius 乘积（将“有限部常数”完全压缩为一个可比标量）：
+\[
+\mathfrak{M}
+=C\prod_{m\ge 2}\zeta_M(z_\star^{\,m})^{\mu(m)/m}
+=C\prod_{m\ge 2}\Delta(z_\star^{\,m})^{-\mu(m)/m}.
+\]
+此外，由 $\sqrt5=2\varphi-1$，留数常数亦可写成
+\[
+C=\frac{47+21\sqrt5}{100}=\frac{13+21\varphi}{50}.
+\]
 
 \subsubsection{Abel 归一化：把主极点锁到 $r\uparrow 1$ 的接口坐标}\label{app:real-input-40-abel}
 主文第 9 节把"离散化—正则化—有限部"作为稳定接口：对 SFT/sofic，离散化把动力学压到有限矩阵；
@@ -303,6 +366,24 @@ P_\theta(z)=-\log(1-\lambda(\theta)z)+\log\mathfrak{M}(\theta)+o(1),
 并由 Abel 有限部定义
 \[
 \log\mathfrak{M}(\theta)=\mathrm{fp}_{r=1}\Bigl(\sum_{n\ge 1}\frac{p_n(\theta)}{\lambda(\theta)^n}r^n+\log(1-r)\Bigr).
+\]
+在 $z_\star(\theta)$ 为简单极点时，上式亦可写为一条“主留数 + Möbius 尾”的单级数（与 \S\ref{app:real-input-40-finite-part} 同口径）：
+\[
+\log\mathfrak{M}(\theta)
+=\log C(\theta)+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta_\theta\bigl(z_\star(\theta)^{\,m}\bigr)
+=\log C(\theta)+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta_\theta\bigl(\lambda(\theta)^{-m}\bigr).
+\]
+同理，若定义加权 primitive 轨道的累计计数
+\[
+\Pi_\theta(N):=\sum_{n\le N}p_n(\theta),
+\]
+则由 $p_n(\theta)\sim \lambda(\theta)^n/n$ 得到离散“素数定理形状”的常数修正：
+\[
+\Pi_\theta(N)\sim \frac{\lambda(\theta)}{\lambda(\theta)-1}\cdot\frac{\lambda(\theta)^N}{N}.
+\]
+若以轨道范数 $N(\tau)=\lambda(\theta)^{|\tau|}$ 定义 $\pi_\theta(x):=\#\{\tau\ \mathrm{primitive}:N(\tau)\le x\}$，则
+\[
+\pi_\theta(x)\sim \frac{\lambda(\theta)\log\lambda(\theta)}{\lambda(\theta)-1}\cdot\frac{x}{\log x}.
 \]
 进一步由 primitive 分解（欧拉乘积/幂展开口径）与 Möbius 反演得到一组可直接数值评估的接口式：
 \[
