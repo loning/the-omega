@@ -17,6 +17,7 @@ from typing import Dict, Iterable, List, Tuple
 import numpy as np
 
 from common_paths import export_dir
+from common_ostrowski_fold import metallic_alpha
 from common_phi_fold import PHI, Progress, fold_m, is_golden_legal
 
 
@@ -95,11 +96,53 @@ def kl_divergence_int(p: Dict[int, float], q: Dict[int, float], eps: float = 1e-
     return s
 
 
-def golden_discrepancy_upper_bound(N: int) -> float:
+def _golden_discrepancy_upper_bound_explicit(N: int) -> float:
     """Appendix-H explicit bound for alpha=phi^{-1}, valid for N>=2."""
     if N < 2:
         return 1.0
     return (3.0 + math.ceil(math.log((5.0 ** 0.5) * N) / math.log(PHI))) / float(N)
+
+
+def discrepancy_upper_bound_from_partial_quotients(N: int, a: List[int]) -> float:
+    """Upper bound via partial quotients: D_N^* <= (1 + sum_{j=1}^{n+1} a_j)/N.
+
+    Uses denominators q_n from continued fractions; valid uniformly in x0.
+    """
+    if N < 1:
+        return 1.0
+    if any(x < 1 for x in a):
+        raise ValueError("partial quotients must be >= 1")
+
+    # Build q_n until q_n <= N < q_{n+1}.
+    # q_{-1}=0, q_0=1, q_{k+1}=a_{k+1} q_k + q_{k-1}.
+    q_minus_1 = 0
+    q_0 = 1
+    qs = [q_0]
+    q_prev, q_curr = q_minus_1, q_0
+    # We will extend with 1's if needed (tail-ones family).
+    # This is enough for the experiment families we use.
+    a_extended: List[int] = list(a)
+
+    # Ensure we have enough digits to push q above N.
+    while True:
+        k = len(qs) - 1  # current index is q_k
+        if q_curr > N:
+            break
+        # Need a_{k+1}
+        if k + 1 > len(a_extended):
+            a_extended.append(1)
+        ak1 = a_extended[k]  # a_{k+1} with 1-based indexing
+        q_next = ak1 * q_curr + q_prev
+        qs.append(q_next)
+        q_prev, q_curr = q_curr, q_next
+
+    # Find n s.t. q_n <= N < q_{n+1}. Since qs[-1] = q_{K} > N, take n=K-1.
+    n = len(qs) - 2
+    # Need sum_{j=1}^{n+1} a_j. Ensure a_extended is long enough.
+    while len(a_extended) < n + 1:
+        a_extended.append(1)
+    sum_a = sum(a_extended[: n + 1])
+    return (1.0 + float(sum_a)) / float(N)
 
 
 def rotation_bits(alpha: float, x0: float, beta: float, n: int) -> np.ndarray:
@@ -113,6 +156,7 @@ def rotation_bits(alpha: float, x0: float, beta: float, n: int) -> np.ndarray:
 class Config:
     alpha_name: str
     alpha: float
+    partial_quotients_prefix: List[int]
     beta: float
     x0: float
 
@@ -138,14 +182,45 @@ def main() -> None:
     out_csv.parent.mkdir(parents=True, exist_ok=True)
 
     # Systematic but bounded grid (keeps runtime reasonable).
-    ms = [6, 9, 12, 15, 18]
-    Ns = [50_000, 200_000]
-    configs = [
-        Config(alpha_name="golden", alpha=1.0 / PHI, beta=0.5, x0=0.123),
-        Config(alpha_name="golden", alpha=1.0 / PHI, beta=0.3, x0=0.731),
-        Config(alpha_name="silver_like", alpha=5.0 ** 0.5 - 2.0, beta=0.5, x0=0.123),
-        Config(alpha_name="silver_like", alpha=5.0 ** 0.5 - 2.0, beta=0.3, x0=0.731),
-    ]
+    # NOTE: build_fold_map scales like 2^m, so keep max m moderate.
+    ms = [6, 8, 10, 12, 14, 16, 18]
+    Ns = [10_000, 30_000, 100_000, 300_000]
+
+    # Deterministic (beta,x0) replicates for error bars.
+    betas = [0.2, 0.3, 0.5, 0.6180339887]
+    x0s = [0.123, 0.271, 0.731]
+
+    # Alpha families:
+    # - bounded partial quotients (metallic means): [0;A,A,A,...]
+    # - large partial quotient then ones: [0;B,1,1,1,...] to stress resonance.
+    alpha_families: List[Tuple[str, float, List[int]]] = []
+
+    for A in [1, 2, 3, 5]:
+        name = "golden" if A == 1 else f"metal_{A}"
+        alpha_families.append((name, metallic_alpha(A), [A]))
+
+    # Large-partial-quotient prefix, then a tail of ones (approximated by float alpha).
+    # We record the prefix so we can compute discrepancy upper bounds consistently.
+    for B in [10, 30, 100]:
+        # alpha ~ [0; B, 1, 1, 1, ...]
+        # We implement this by solving the tail ones exactly: tail = 1/phi.
+        tail = 1.0 / PHI
+        alpha = 1.0 / (float(B) + tail)
+        alpha_families.append((f"large_pq_{B}_then_ones", alpha, [B, 1]))
+
+    configs: List[Config] = []
+    for (alpha_name, alpha, pq_prefix) in alpha_families:
+        for beta in betas:
+            for x0 in x0s:
+                configs.append(
+                    Config(
+                        alpha_name=alpha_name,
+                        alpha=alpha,
+                        partial_quotients_prefix=list(pq_prefix),
+                        beta=float(beta),
+                        x0=float(x0),
+                    )
+                )
 
     # Precompute fold maps and Parry baselines per m.
     fold_maps: Dict[int, List[int]] = {}
@@ -165,6 +240,7 @@ def main() -> None:
                 "model",
                 "alpha_name",
                 "alpha",
+                "partial_quotients_prefix",
                 "beta",
                 "x0",
                 "m",
@@ -172,7 +248,7 @@ def main() -> None:
                 "tv",
                 "kl",
                 "unique_types",
-                "golden_DN_star_upper_bound",
+                "DN_star_upper_bound",
                 "elapsed_s",
             ],
         )
@@ -213,6 +289,7 @@ def main() -> None:
                             "model": "rotation_scan",
                             "alpha_name": cfg.alpha_name,
                             "alpha": f"{cfg.alpha:.16g}",
+                            "partial_quotients_prefix": ",".join(str(x) for x in cfg.partial_quotients_prefix),
                             "beta": f"{cfg.beta:.16g}",
                             "x0": f"{cfg.x0:.16g}",
                             "m": m,
@@ -220,9 +297,9 @@ def main() -> None:
                             "tv": f"{tv:.12g}",
                             "kl": f"{kl:.12g}",
                             "unique_types": len(counts),
-                            "golden_DN_star_upper_bound": f"{golden_discrepancy_upper_bound(N):.12g}"
+                            "DN_star_upper_bound": f"{min(_golden_discrepancy_upper_bound_explicit(N), discrepancy_upper_bound_from_partial_quotients(N, cfg.partial_quotients_prefix)):.12g}"
                             if cfg.alpha_name == "golden"
-                            else "",
+                            else f"{discrepancy_upper_bound_from_partial_quotients(N, cfg.partial_quotients_prefix):.12g}",
                             "elapsed_s": f"{elapsed:.6g}",
                         }
                     )

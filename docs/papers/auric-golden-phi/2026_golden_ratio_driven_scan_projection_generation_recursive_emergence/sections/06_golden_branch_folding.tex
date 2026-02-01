@@ -114,3 +114,190 @@ N(\omega):=\sum_{k=1}^{m}\omega_k F_{k+1}\ \in\ \NN.
 \]
 刻画。由于 $F_{m+2}\asymp \varphi^m$，平均折叠多重度具有指数增长率 $(2/\varphi)^m$。因此，即便稳定类型数量随 $m$ 指数增长，微态数量增长更快，导致折叠必然多对一：不同微态在有限分辨率下不可区分而被归入同一稳定类型。该结论为“分辨率不足导致规律不可读出”的严格表述：不可读出并非缺乏规律，而是稳定投影将大量微差异压缩到同一类中，从而在微观层面丢失可区分信息。
 
+\subsection{序列层滑动块因子：由 \texorpdfstring{$\Fold_m$}{Fold\_m} 诱导的 \texorpdfstring{$\Phi_m$}{Phi\_m}}
+
+本节回答一个结构性问题：$\Fold_m$ 本身是\emph{窗口层}映射 $\Omega_m\to X_m$，并不直接对应双边子移位之间的因子映射；然而若将其施加于双边序列的滑动窗口，则得到一个与时间平移相容（移位等变）的序列层算子，从而可在符号动力系统框架内讨论其像空间的转移结构。
+
+记 $\sigma$ 为左移位：对 $s\in\{0,1\}^{\ZZ}$，定义 $(\sigma s)_t:=s_{t+1}$。将有限集合 $X_m$ 视为字母表，记 $X_m^{\ZZ}$ 的左移位同样记为 $\sigma$。
+
+\begin{definition}[序列层折叠（滑动块码）]\label{def:Phi_m}
+对任意分辨率 $m\ge 1$，定义映射
+\[
+\Phi_m:\{0,1\}^{\ZZ}\to X_m^{\ZZ},\qquad
+(\Phi_m(s))_t:=\Fold_m\bigl(s_t s_{t+1}\cdots s_{t+m-1}\bigr).
+\]
+\end{definition}
+
+\begin{proposition}[移位等变性（时间相容）]\label{prop:Phi_m-equivariant}
+对任意 $m\ge 1$ 有 $\Phi_m\circ\sigma=\sigma\circ\Phi_m$。
+\end{proposition}
+
+\begin{proof}
+由定义 \ref{def:Phi_m}，对任意 $t\in\ZZ$，
+\[
+(\Phi_m(\sigma s))_t
+=\Fold_m\bigl((\sigma s)_t\cdots(\sigma s)_{t+m-1}\bigr)
+=\Fold_m\bigl(s_{t+1}\cdots s_{t+m}\bigr)
+=(\Phi_m(s))_{t+1}
+=(\sigma\Phi_m(s))_t.
+\]
+证毕。
+\end{proof}
+
+\begin{definition}[像空间]\label{def:Y_m}
+定义 $\Phi_m$ 的像
+\[
+Y_m:=\Phi_m\bigl(\{0,1\}^{\ZZ}\bigr)\ \subset\ X_m^{\ZZ}.
+\]
+\end{definition}
+
+\begin{proposition}[像空间为 sofic 子移位]\label{prop:Y_m-sofic}
+$Y_m$ 是一个 sofic 子移位。更具体地，它可由一个显式有限标记图给出。
+\end{proposition}
+
+\begin{proof}
+像空间是经典符号动力系统事实：任意滑动块码作用于有限字母表全移位，其像是 sofic 子移位（参见 \cite{LindMarcus1995} 中关于滑动块码与 sofic 系统的标准章节）。为方便审计，我们在下一个命题中给出一个可计算的有限图构造，从而将该标准事实转为本文所需的“可复现转移结构描述”。证毕。
+\end{proof}
+
+\subsection{诱导过程与转移结构：显式有限标记图}\label{subsec:Phi_m-graph}
+
+下面给出 $Y_m$ 的一个完全显式的 sofic 图表示，它也提供了“把 $\Fold_m$ 沿长轨迹连续重叠窗口施加后，输出过程的状态/转移结构是什么”的回答。
+
+\begin{definition}[长度 \texorpdfstring{$m-1$}{m-1} 后缀状态图]\label{def:G_m}
+令顶点集为
+\[
+V_m:=\{0,1\}^{m-1}.
+\]
+对任意顶点 $v=v_1\cdots v_{m-1}\in V_m$ 与任意 $b\in\{0,1\}$，定义一条有向边
+\[
+e=(v,b):\ v\to v':=v_2\cdots v_{m-1}b,
+\]
+并用 $\ell_m(e)\in X_m$ 标记该边：
+\[
+\ell_m(e):=\Fold_m(v_1\cdots v_{m-1}b)\in X_m.
+\]
+由此得到一个有限标记图 $G_m=(V_m,E_m,\ell_m)$，其中 $|V_m|=2^{m-1}$，$|E_m|=2^{m}$。
+\end{definition}
+
+\begin{theorem}[显式 sofic 表示与可计算诱导结构]\label{thm:Phi_m-sofic-graph}
+令 $Z_m\subset E_m^{\ZZ}$ 为图 $G_m$ 的双边边移位（即双边路径空间），并令
+\[
+(\mathcal{L}_m(e))_t:=\ell_m(e_t)\in X_m
+\]
+为逐边取标记得到的序列。则
+\[
+Y_m=\mathcal{L}_m(Z_m),
+\]
+从而 $Y_m$ 是一个由 $G_m$ 给出的 sofic 子移位；并且 $G_m$ 给出一个可审计的“有限状态诱导结构”：状态为长度 $m-1$ 的输入后缀，转移为追加一比特，输出为对应窗口经 $\Fold_m$ 的稳定类型。
+\end{theorem}
+
+\begin{proof}
+\textbf{（包含 $\subset$）} 给定任意输入序列 $s\in\{0,1\}^{\ZZ}$，定义
+\[
+v_t:=s_t s_{t+1}\cdots s_{t+m-2}\in V_m,\qquad
+e_t:=(v_t,s_{t+m-1})\in E_m.
+\]
+则 $e=(e_t)_{t\in\ZZ}$ 是 $G_m$ 上的一条双边路径（因为 $v_{t+1}$ 恰为 $v_t$ 去首加尾的更新）。并且由标记定义，
+\[
+(\mathcal{L}_m(e))_t=\ell_m(e_t)=\Fold_m(s_t\cdots s_{t+m-1})=(\Phi_m(s))_t.
+\]
+因此 $\Phi_m(s)\in \mathcal{L}_m(Z_m)$，即 $Y_m\subset \mathcal{L}_m(Z_m)$。
+
+\textbf{（包含 $\supset$）} 反之，取任意双边路径 $e=(e_t)\in Z_m$。每条边 $e_t$ 具有形式 $(v_t,b_t)$，且路径条件保证 $v_{t+1}$ 等于 $v_t$ 去首加尾的更新。由此可一致地构造一个二元序列 $s\in\{0,1\}^{\ZZ}$：令 $s_{t+m-1}:=b_t$，并用 $v_t$ 提供窗口的其余 $m-1$ 位（路径相容性保证该定义不矛盾）。于是对该 $s$ 有
+\[
+(\Phi_m(s))_t=\Fold_m(s_t\cdots s_{t+m-1})=\Fold_m(v_t b_t)=\ell_m(e_t)=(\mathcal{L}_m(e))_t.
+\]
+因此 $\mathcal{L}_m(e)\in Y_m$，从而 $\mathcal{L}_m(Z_m)\subset Y_m$。两边相等，证毕。
+\end{proof}
+
+\begin{remark}[关于 Markov 性与可计算近似]\label{rem:Phi_m-not-markov}
+定理 \ref{thm:Phi_m-sofic-graph} 给出的是\emph{拓扑/组合}层面的有限状态表示：$Y_m$ 的所有允许序列由有限图刻画。但对任意输入过程（例如第 \ref{sec:experiments} 节的旋转扫描产生的 Sturmian 序列），其推前测度 $(\Phi_m)_*\mu$ 在 $Y_m$ 上未必是一阶马尔可夫测度。实践上若需要一个“诱导转移结构”的数值近似，可在图 $G_m$ 上用长样本估计边/状态频率，从而得到一个可审计的有限状态 Markov 近似；该近似与第 \ref{sec:quant-fit} 节的直方图/偏差指标天然对齐。
+\end{remark}
+
+\subsection{推广：一般 Ostrowski 计数下的稳定折叠}\label{subsec:ostrowski-generalized-fold}
+
+本节把“Fibonacci/Zeckendorf 折叠”推广到一般无理数的 Ostrowski 计数系统，以回应“扩展到更广泛计数框架”的审稿要求。黄金分支的特殊性在于：当 $\alpha=\varphi^{-1}=[0;1,1,1,\dots]$ 时，Ostrowski 计数退化为 Fibonacci 权重与 Zeckendorf 语法，因此稳定类型空间成为最简单的二元 SFT（禁止相邻 $11$），并使 PF/$\zeta$ 接口闭式可得。
+
+\subsubsection{一般 Ostrowski 权重与合法数字}
+
+设 $\alpha\in(0,1)\setminus\QQ$ 的连分数展开为
+\[
+\alpha=[0;a_1,a_2,\dots],\qquad a_k\in\NN.
+\]
+令其收敛分母 $(q_n)_{n\ge 0}$ 由递推定义
+\[
+q_{-1}=0,\ q_0=1,\qquad q_{n+1}=a_{n+1}q_n+q_{n-1}\quad(n\ge 0).
+\]
+
+\begin{theorem}[Ostrowski 表示（标准）]\label{thm:ostrowski-representation}
+对任意 $N\in\NN$，存在唯一数字序列 $(d_n)_{n\ge 1}$ 满足：
+\begin{enumerate}
+  \item $0\le d_n\le a_n$；
+  \item 若 $d_n=a_n$，则 $d_{n-1}=0$（对 $n\ge 2$）；
+  \item 仅有限个 $d_n\neq 0$；
+  \item 数值分解为
+  \[
+  N=\sum_{n\ge 1} d_n q_{n-1}.
+  \]
+\end{enumerate}
+称该唯一序列为 $N$ 的 Ostrowski 数字，记为 $Z_\alpha(N)=(d_1,d_2,\dots)$（参见 \cite{Ostrowski1922} 及后续综述中的标准陈述）。
+\end{theorem}
+
+\begin{definition}[一般稳定类型空间]\label{def:Xm-alpha}
+对任意 $m\ge 1$，定义长度-$m$ 的 Ostrowski 合法集合
+\[
+X_m^{(\alpha)}:=\Bigl\{(d_1,\dots,d_m):\ 0\le d_n\le a_n,\ \ d_n=a_n\Rightarrow d_{n-1}=0\ (n\ge 2)\Bigr\}.
+\]
+并定义截断 $\pi_m^{(\alpha)}(d_1,d_2,\dots)=(d_1,\dots,d_m)$。
+\end{definition}
+
+\begin{proposition}[计数与递推（分母即计数）]\label{prop:Xm-alpha-cardinality}
+对任意 $m\ge 1$，有
+\[
+\bigl|X_m^{(\alpha)}\bigr|=q_{m+1}.
+\]
+特别地，当 $\alpha=\varphi^{-1}$（即 $a_n\equiv 1$）时，$q_{m+1}=F_{m+2}$，而 $X_m^{(\alpha)}$ 退化为二元集合 $\{0,1\}^m$ 中禁止相邻 $11$ 的黄金均值语法 $X_m$。
+\end{proposition}
+
+\subsubsection{一般折叠算子 \texorpdfstring{$\Fold_m^{(\alpha)}$}{Fold\_m^(alpha)}}
+
+为了与本文的“折叠 = 取值 + 取规范形”机制保持一致，我们把一般 Ostrowski 折叠定义为：先将“未规范数字”（允许违反相邻最大值约束）赋一个可审计整数值，再取 Ostrowski 规范形并截断。
+
+\begin{definition}[Ostrowski 加权值与折叠]\label{def:fold-alpha}
+令
+\[
+\Omega_m^{(\alpha)}:=\prod_{n=1}^{m}\{0,1,\dots,a_n\}
+\]
+为长度-$m$ 的“原始数字空间”。对 $\omega=(\omega_1,\dots,\omega_m)\in\Omega_m^{(\alpha)}$ 定义其 Ostrowski 加权值
+\[
+N_\alpha(\omega):=\sum_{n=1}^{m}\omega_n q_{n-1}\in\NN.
+\]
+定义一般折叠
+\[
+\Fold_m^{(\alpha)}:\Omega_m^{(\alpha)}\to X_m^{(\alpha)},\qquad
+\Fold_m^{(\alpha)}(\omega):=\pi_m^{(\alpha)}\!\bigl(Z_\alpha(N_\alpha(\omega))\bigr).
+\]
+\end{definition}
+
+\begin{proposition}[一般折叠的基本性质]\label{prop:fold-alpha-basic}
+$\Fold_m^{(\alpha)}$ 良定义且满足：
+\begin{enumerate}
+  \item \textbf{（规范性）} $\Fold_m^{(\alpha)}(\omega)\in X_m^{(\alpha)}$；
+  \item \textbf{（幂等性）} 若 $\omega\in X_m^{(\alpha)}$，则 $\Fold_m^{(\alpha)}(\omega)=\omega$；
+  \item \textbf{（满射性）} $\Fold_m^{(\alpha)}:\Omega_m^{(\alpha)}\twoheadrightarrow X_m^{(\alpha)}$ 为满射；
+  \item \textbf{（多尺度相容）} 对 $m_2\ge m_1$，有
+  \[
+  \pi_{m_2\to m_1}^{(\alpha)}\circ \Fold_{m_2}^{(\alpha)}=\Fold_{m_1}^{(\alpha)}\circ \pi_{m_2\to m_1}^{(\alpha)},
+  \]
+  其中 $\pi_{m_2\to m_1}^{(\alpha)}$ 为截断到前 $m_1$ 位的投影。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+第 1 条由 Ostrowski 表示的合法性立得。第 2 条：若 $\omega$ 已合法，则 $\omega$ 即为某个整数的规范 Ostrowski 数字的前 $m$ 位，唯一性迫使规范化后截断不变。第 3 条：对任意 $x\in X_m^{(\alpha)}$，取 $\omega=x$ 即有 $\Fold_m^{(\alpha)}(\omega)=x$。第 4 条由截断与“先取值再取规范形”的函子性得到：对任意 $\omega$，两边都等于 $\pi_{m_1}^{(\alpha)}(Z_\alpha(N_\alpha(\omega)))$。
+\end{proof}
+
+\begin{remark}[与本文二元读出的关系]
+本文的主线实验固定二元读出与黄金语法（便于得到闭式 PF/Parry/$\zeta$ 基线）。上述一般化表明：若允许更一般的计数/地址字母表（或更一般的观测通道），则“折叠 = 取值 + Ostrowski 规范形”的机制可原则化推广；黄金分支只是其中最简、最可闭式分析的特例。
+\end{remark}
+

@@ -42,8 +42,12 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/rotation_tv_vs_m.png",
                 "artifacts/export/rotation_kl_vs_m.png",
+                "artifacts/export/rotation_tv_vs_n.png",
+                "artifacts/export/rotation_kl_vs_n.png",
                 "sections/generated/fig_rotation_tv_vs_m.tex",
                 "sections/generated/fig_rotation_kl_vs_m.tex",
+                "sections/generated/fig_rotation_tv_vs_n.tex",
+                "sections/generated/fig_rotation_kl_vs_n.tex",
                 "sections/generated/tab_rotation_fold_vs_parry_summary.tex",
             ],
         ),

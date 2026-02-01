@@ -223,3 +223,52 @@ $(X_\infty,\oplus,\otimes)$ 为交换半环，且 $\mathrm{Val}$ 给出与 $(\NN
 对任意 $c,d\in X_\infty$，$c\oplus d$ 与 $c\otimes d$ 可由有限步算法计算：先在值层执行整数加法/乘法得到 $\mathrm{Val}(c)\pm\mathrm{Val}(d)$ 或 $\mathrm{Val}(c)\mathrm{Val}(d)$，再以 Zeckendorf 贪心算法取唯一规范形（附录 C）。
 \end{proposition}
 
+\subsection{显式算法与复杂度界（审稿级）}\label{subsec:zeckendorf-algorithms-complexity}
+
+本小节把“可计算、可终止”的表述提升为\textbf{显式算法}与\textbf{复杂度界}。为保持依赖最小，算法采用最短闭环：\textbf{值层运算}（整数加法/乘法）+\textbf{Zeckendorf 规范化}（贪心）。
+
+\subsubsection{Zeckendorf 规范化：从整数到合法数字}
+
+给定 $N\in\NN$，目标是计算其唯一 Zeckendorf 数字 $Z(N)=(c_1,c_2,\dots)$（仅有限个 $1$ 且无相邻 $1$）使得 $N=\sum_{k\ge 1}c_kF_{k+1}$。
+
+\begin{itemize}
+  \item \textbf{输入：}整数 $N$。
+  \item \textbf{输出：}Zeckendorf 合法数字序列 $Z(N)$。
+\end{itemize}
+
+\textbf{算法（贪心 + 跳邻位）：}
+\begin{enumerate}
+  \item 预生成 Fibonacci 权重 $F_{2},F_{3},\dots,F_{M+1}$，其中 $M$ 足够大使得 $F_{M+1}\le N<F_{M+2}$；
+  \item 从 $k=M$ 递减到 $1$：若 $F_{k+1}\le N$，则置 $c_k:=1$、令 $N\leftarrow N-F_{k+1}$，并跳过相邻位（将 $k\leftarrow k-1$ 再继续递减）；否则置 $c_k:=0$；
+  \item 输出 $c=(c_1,c_2,\dots,c_M)$（其后全为 $0$）。
+\end{enumerate}
+
+该算法的正确性与唯一性由 Zeckendorf 定理给出（\cite{Zeckendorf1972}；本稿中见附录 C）。
+
+\subsubsection{稳定加法与稳定乘法：两步实现}
+
+对输入 $c,d\in X_\infty$（仅有限个 $1$），令其有效分辨率为
+\[
+m:=\max\{k:\ c_k=1\text{ 或 }d_k=1\}.
+\]
+则
+\begin{itemize}
+  \item \textbf{稳定加法} $c\oplus d$：计算 $N=\mathrm{Val}(c)+\mathrm{Val}(d)$，再输出 $Z(N)$；
+  \item \textbf{稳定乘法} $c\otimes d$：计算 $N=\mathrm{Val}(c)\mathrm{Val}(d)$，再输出 $Z(N)$。
+\end{itemize}
+这正是附录 E 的“值层运算 + 规范形”的最短闭环实现。
+
+\subsubsection{复杂度（按分辨率 \texorpdfstring{$m$}{m} 与按比特两种口径）}
+
+为了避免模型争议，本文在附录 E$'$ 中同时给出两种等价口径的复杂度界：分辨率口径（把 $m$ 视为输入长度）与比特口径（把整数按二进制长度计成本）。结论可概括如下（详证见附录 E$'$ 中的命题 \ref{prop:fold-complexity} 与 \ref{prop:stable-arith-complexity}）：
+
+\begin{itemize}
+  \item \textbf{折叠/规范化：}对长度 $m$ 的输入，Zeckendorf 规范化在分辨率口径为 $O(m)$ 步；在比特口径为 $O(m^2)$ 比特运算。
+  \item \textbf{稳定加法：}分辨率口径 $O(m)$；比特口径 $O(m^2)$。
+  \item \textbf{稳定乘法：}分辨率口径为“值层乘法成本 + $O(m)$”；比特口径为 $O(M(m)+m^2)$，其中 $M(m)$ 为 $\\Theta(m)$ 比特整数乘法成本（学校乘法为 $O(m^2)$）。
+\end{itemize}
+
+\begin{remark}[直接在 Zeckendorf 数字上归一化]
+除“值层运算 + 贪心规范化”外，也可在 Zeckendorf 数字上给出纯局部重写的 carry/normalize 算法，从而避免显式构造大整数值层。该方向可给出更强的实现层贡献（例如线性时间归一化与平均复杂度分析），但需要额外的合流/终止与复杂度证明，本文在最小输入原则下暂将其作为可选扩展。
+\end{remark}
+

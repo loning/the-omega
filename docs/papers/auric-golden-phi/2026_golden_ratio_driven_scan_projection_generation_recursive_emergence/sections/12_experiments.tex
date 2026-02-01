@@ -34,6 +34,64 @@ D_{\mathrm{KL}}(\hat{\pi}_m\|\pi_m)
 
 对旋转扫描模型，一维星差异度 $D_N^*$ 给出区间窗频率误差的上界证书（命题 \ref{prop:discrepancy-certificate}）。对黄金分支 $\alpha=\varphi^{-1}$，附录 H 给出显式的 $O((\log N)/N)$ 上界（推论 \ref{cor:kronecker-discrepancy-golden}），从而为“共振诱导不稳定性”的有限样本衰减提供统一证书（推论 \ref{cor:golden-finite-sample-certificate}）。
 
+上述证书不仅控制单个窗集的频率误差，也可直接转译为\textbf{窗口微态分布}与\textbf{折叠后稳定类型直方图}的总变差误差界。该转译是纯组合/测度论步骤：Sturmian 的长度-$m$ 微态对应圆周上的一个有限区间分割；而总变差距离正是对该有限分割的 $L^1$ 误差。
+
+\begin{proposition}[Sturmian 微态的区间分割表示（标准事实）]\label{prop:sturmian-interval-partition}
+在第 3 节的旋转二分割模型中（$T(x)=x+\alpha$，$W=[0,\beta)$，端点不落在轨道上），对任意固定 $m\ge 1$，存在一个由 $m+1$ 个半开区间组成的分割
+\[
+[0,1)=\bigsqcup_{j=1}^{m+1} I_j
+\]
+以及一个长度-$m$ 微态集合 $\mathcal{W}_m\subset\Omega_m$（满足 $|\mathcal{W}_m|=m+1$，等价于 Sturmian 因子复杂度 $p(m)=m+1$），使得对任意 $t$，
+\[
+\omega_m(x;t)=u_j\ \Longleftrightarrow\ x_t\in I_j,
+\qquad (u_j\in\mathcal{W}_m).
+\]
+\end{proposition}
+
+\begin{theorem}[从差异度到直方图：\texorpdfstring{$D_{\mathrm{TV}}$}{TV} 的可审计有限样本界]\label{thm:tv-certificate-hist}
+在命题 \ref{prop:sturmian-interval-partition} 的条件下，令 $x_t=\{x_0+t\alpha\}$，令 $\hat{\mu}_{m,N}$ 为长度-$m$ 微态的经验分布（对 $t=0,\dots,N-1$ 的窗口计数并归一化），令 $\mu_m$ 为其极限分布（由 Lebesgue 测度诱导）。则对任意 $N\ge 1$，
+\[
+D_{\mathrm{TV}}(\hat{\mu}_{m,N},\mu_m)\ \le\ (m+1)\,D_N^*(\alpha;x_0).
+\]
+并且对折叠后的稳定类型直方图（经验分布）$\hat{\pi}_{m,N}:=(\Fold_m)_*\hat{\mu}_{m,N}$ 与其极限分布 $\pi_m^{\mathrm{fold}}:=(\Fold_m)_*\mu_m$，有
+\[
+D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\ \le\ (m+1)\,D_N^*(\alpha;x_0).
+\]
+\end{theorem}
+
+\begin{proof}
+由命题 \ref{prop:sturmian-interval-partition}，$\hat{\mu}_{m,N}$ 与 $\mu_m$ 都可视为对分割 $\{I_j\}_{j=1}^{m+1}$ 的概率向量。对每个半开区间 $I_j=[a_j,b_j)$，由星差异度定义（定义 \ref{def:instability-envelope}）与“任意区间可写为两段前缀区间之差”的标准技巧可得
+\[
+\left|\frac{1}{N}\sum_{t=0}^{N-1}\ind_{I_j}(x_t)-|I_j|\right|
+\le
+\left|\frac{1}{N}\sum_{t=0}^{N-1}\ind_{[0,b_j)}(x_t)-b_j\right|
+\,+\,
+\left|\frac{1}{N}\sum_{t=0}^{N-1}\ind_{[0,a_j)}(x_t)-a_j\right|
+\le 2D_N^*(\alpha;x_0).
+\]
+因此
+\[
+\|\hat{\mu}_{m,N}-\mu_m\|_1=\sum_{j=1}^{m+1}|\hat{\mu}_{m,N}(u_j)-\mu_m(u_j)|\le 2(m+1)D_N^*(\alpha;x_0),
+\]
+从而 $D_{\mathrm{TV}}=\frac12\|\cdot\|_1$ 给出第一条结论。
+
+第二条由总变差对推前（粗化）单调性得到：对任意可测映射 $F$，有
+$D_{\mathrm{TV}}(F_*\nu,F_*\nu')\le D_{\mathrm{TV}}(\nu,\nu')$。取 $F=\Fold_m$ 即得。
+\end{proof}
+
+\begin{corollary}[到 Parry 基线的误差分解（可审计）]\label{cor:tv-decomposition-parry}
+在定理 \ref{thm:tv-certificate-hist} 的条件下，令 $\pi_m$ 为正文采用的 Parry(PF) 基线柱分布，则
+\[
+D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)
+\ \le\
+(m+1)\,D_N^*(\alpha;x_0)\ +\ D_{\mathrm{TV}}(\pi_m^{\mathrm{fold}},\pi_m).
+\]
+\end{corollary}
+
+\begin{remark}[关于 \texorpdfstring{$D_{\mathrm{KL}}$}{KL} 的证书]
+总变差证书是对任意有限分割都成立的“无模型”界，因此在本文设置下最稳健。相对熵 $D_{\mathrm{KL}}(\hat{\pi}_{m,N}\|\pi_m)$ 额外依赖基线 $\pi_m$ 在支撑上的下界：若希望得到显式上界，通常需要对 $\min_{u\in X_m}\pi_m(u)$ 作下界估计（该量随 $m$ 指数衰减，因而得到的纯上界往往较松）。因此本文把 $D_{\mathrm{KL}}$ 主要作为经验判别量，并用 $D_{\mathrm{TV}}$ 与差异度证书给出可审计的收敛控制。
+\end{remark}
+
 \subsection{复现性声明（一键再生成）}
 
 本节全部数值结果由脚本生成。复现方式：
@@ -45,9 +103,11 @@ D_{\mathrm{KL}}(\hat{\pi}_m\|\pi_m)
 
 \subsection{结果：折叠直方图与 Parry 基准的系统对照}
 
-下表给出在旋转扫描模型中，折叠后稳定类型直方图与 Parry(PF) 柱分布的偏差；图中展示偏差随分辨率 $m$ 的变化趋势（对 $(\beta,x_0)$ 取平均）。
+下表给出在旋转扫描模型中，折叠后稳定类型直方图与 Parry(PF) 柱分布的偏差；图中展示偏差随分辨率 $m$ 的变化趋势，以及在固定 $m$ 下随样本量 $N$ 的收敛趋势（对 $(\beta,x_0)$ 取平均；误差线为样本标准差，用以量化对相位/窗参数的敏感性）。
 
 \input{sections/generated/tab_rotation_fold_vs_parry_summary}
 \input{sections/generated/fig_rotation_tv_vs_m}
 \input{sections/generated/fig_rotation_kl_vs_m}
+\input{sections/generated/fig_rotation_tv_vs_n}
+\input{sections/generated/fig_rotation_kl_vs_n}
 
