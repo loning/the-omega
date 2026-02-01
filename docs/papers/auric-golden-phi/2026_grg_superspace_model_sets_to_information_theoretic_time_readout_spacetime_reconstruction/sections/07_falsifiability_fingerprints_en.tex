@@ -259,6 +259,23 @@ also produces \texttt{artifacts/fingerprint\_tests.json}, which records (i) a ze
   \end{tabular}
 \end{table}
 
+\begin{remark}[Protocol-equivalence invariance: what is robust, what is not]\label{rem:fingerprint-protocol-invariance}
+The listed fingerprints mix object-layer constraints (geometry/spectrum) with protocol-layer choices (readout, stabilization, factor selection).
+To avoid over-claiming, it is useful to fix an \emph{acceptable protocol class} and state invariance only within that class.
+A conservative choice is:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{MEF-adapted readouts}: protocols whose deterministic component factors through the maximal equicontinuous factor (Definition~\ref{def:mef-adapted-protocol}), so that different choices of ring-factor $\phi$ are compared on the same canonical base (Remark~\ref{rem:phi-same-mef}).
+  \item \textbf{Finite-memory recodings}: protocols related by sliding-block (finite-memory) equivalence of their symbol streams (Definition~\ref{def:finite-memory-equivalence}), so that growth laws of $\tau(t)$ are stable up to $O(1)$ alignment (Corollary~\ref{cor:tau-affine-class}).
+  \item \textbf{Small window/partition perturbations}: protocols whose one-step mismatch is small (Definition~\ref{def:mismatch-rate}), so that induced changes in block laws and entropy rates are quantitatively controlled (Propositions~\ref{prop:block-tv-by-mismatch} and \ref{prop:entropy-continuity-mismatch}).
+\end{itemize}
+Within such a class, the strongest invariances are those determined by the object layer or by discrete stabilization grammar:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item \textbf{Geometric/spectral constraints} (e.g.\ Fourier module locations, envelope classes) are fixed by the superspace CPS and window family.
+  \item \textbf{Fold/fiber degeneracy invariants} at fixed $m$ are discrete combinatorial properties of the stabilization rule (Proposition~\ref{prop:P3}) and persist across equivalent recodings that do not change the stabilization grammar.
+\end{itemize}
+By contrast, protocol curves such as $\epsilon\mapsto \widehat h(\epsilon)$, numerical discrepancy values, and specific gap statistics are \emph{not} claimed to be strictly invariant under changing $\phi$ or window/partition choice; their intended falsifiable content is stability \emph{as a class} (e.g.\ growth class, monotone trends, and quantitative error bars under mismatch), rather than equality of point estimates across all protocols.
+\end{remark}
+
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.95\linewidth]{sections/generated/demo_2d_diffraction.png}

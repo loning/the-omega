@@ -345,6 +345,39 @@ For regular model sets and many substitution/Meyer-type hulls with pure point sp
 In such cases, restricting attention to readouts that are measurable with respect to the MEF (plus a controlled noise channel) defines a natural \emph{acceptable protocol class}: within it, the protocol-time ordering is stable up to the finite-memory and mismatch-rate equivalences already recorded in this section.
 \end{remark}
 
+\begin{definition}[MEF-adapted protocols]\label{def:mef-adapted-protocol}
+Let $(X,T)$ be a compact metric system with invariant measure $\mu$ and let $\pi_{\mathrm{eq}}:(X,T)\to (X_{\mathrm{eq}},S)$ be its maximal equicontinuous factor (Definition~\ref{def:mef}) with invariant measure $\mu_{\mathrm{eq}}:=(\pi_{\mathrm{eq}})_\ast\mu$.
+A readout protocol $\Theta$ is \emph{MEF-adapted} if its deterministic part factors through the MEF:
+there exists a measurable $R_{\mathrm{eq}}:X_{\mathrm{eq}}\to\mathcal{A}$ such that
+\[
+R_\Theta = R_{\mathrm{eq}}\circ \pi_{\mathrm{eq}}
+\qquad (\mu\text{-a.e.}).
+\]
+Equivalently, the induced partition $\mathcal{P}_\Theta$ on $X$ is the pullback of a partition $\mathcal{P}_{\mathrm{eq}}$ on $X_{\mathrm{eq}}$.
+\end{definition}
+
+\begin{definition}[Protocol refinement preorder and mutual refinability]\label{def:protocol-refinement-preorder}
+Restrict to MEF-adapted deterministic protocols on the same underlying system $(X,\mu,T)$ and write $\mathcal{P}_{\mathrm{eq}}(\Theta)$ for the corresponding finite partition on $(X_{\mathrm{eq}},\mu_{\mathrm{eq}},S)$.
+Define a refinement preorder on such protocols by
+\[
+\Theta_1\ \preceq_{\mathrm{ref}}\ \Theta_2
+\quad:\Longleftrightarrow\quad
+\sigma\!\left(\bigvee_{t\ge 0} S^{-t}\mathcal{P}_{\mathrm{eq}}(\Theta_1)\right)
+\ \subseteq\
+\sigma\!\left(\bigvee_{t\ge 0} S^{-t}\mathcal{P}_{\mathrm{eq}}(\Theta_2)\right)
+\qquad (\mathrm{mod}\ \mu_{\mathrm{eq}}),
+\]
+i.e.\ every event decidable from the infinite forward symbolic name of $\Theta_1$ is also decidable from that of $\Theta_2$ (up to null sets).
+We say that $\Theta_1$ and $\Theta_2$ are \emph{mutually refinable} if both $\Theta_1\preceq_{\mathrm{ref}}\Theta_2$ and $\Theta_2\preceq_{\mathrm{ref}}\Theta_1$ hold, i.e.\ the two protocols generate the same observable $\sigma$-algebra on the MEF.
+\end{definition}
+
+\begin{remark}[How ``different $\phi$'' can be protocol-equivalent]\label{rem:phi-same-mef}
+In the examples emphasized in this review, a ``ring factor'' $\phi$ is a continuous factor map from the MEF (a compact Abelian rotation) to a circle rotation.
+Different choices of $\phi$ can therefore lead to protocols that are distinct at the level of coordinates (different derived 1D angles) while remaining MEF-adapted in the sense of Definition~\ref{def:mef-adapted-protocol}.
+If two such choices induce the same quotient factor of $X_{\mathrm{eq}}$ (equivalently, they differ by a measurable isomorphism on the factor), then their induced symbolic descriptions are mutually refinable (Definition~\ref{def:protocol-refinement-preorder}).
+Even when two ring factors are not isomorphic, their join partition on $X_{\mathrm{eq}}$ provides a canonical common refinement: one can always compare protocols inside the same MEF by pulling back both readouts and considering the joint readout $(R_{\mathrm{eq}}^{(1)},R_{\mathrm{eq}}^{(2)})$ as a combined protocol.
+\end{remark}
+
 \subsubsection{Quantifying protocol dependence: mismatch-rate bounds}\label{sec:info-time:stability-bounds}
 
 The previous invariance statements describe what is stable \emph{qualitatively} (monotonicity under factors; invariance within finite-memory equivalence classes). For practical protocols, one often wants a \emph{quantitative} dependence on window/partition choice, factor maps, and noise level.
