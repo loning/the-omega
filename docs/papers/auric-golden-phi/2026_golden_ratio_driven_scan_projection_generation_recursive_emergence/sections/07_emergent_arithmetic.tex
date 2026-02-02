@@ -334,6 +334,10 @@ p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\Tr(A^{n/d}).
 \end{enumerate}
 \end{theorem}
 
+\begin{remark}[可审计证明位置]
+定理 \ref{thm:carry-free-zeta-trichotomy} 的证明只依赖 Algorithm S/W/G（含 A/B 判定条件）的显式触发规则；为避免在正文重复展开，证明链已在附录 \ref{app:sync-kernel-A-compare} 的命题 \ref{prop:carry-free-skeleton-three} 给出。
+\end{remark}
+
 \begin{corollary}[全局（多流）装配与 carry-free \texorpdfstring{$\zeta$}{zeta} 因子化]\label{cor:global-assembly-zeta}
 设单流 carry-free 骨架矩阵为 $A_0^{\mathrm{flow}}$，同余流条数为 $m$（强核 $m=4$，弱核 $m=2$）。则全局块级 carry-free 骨架为张量积
 \[
@@ -356,6 +360,15 @@ K_{21}:\ \det(I-zA_0^{\mathrm{glob}})=(1+z)^2(1-3z+z^2).
 \subsubsection{核指纹表与最省力计算接口}
 表 \ref{tab:parallel-addition-kernels-fingerprint-main} 汇总了三核在“单流 $\Rightarrow$ 全局块级”装配下的指纹（状态数、延迟、$\kappa$ 均值、carry-free 的 $\det(I-zA_0)$ 与 primitive 谱、以及端点 $\lambda(0),\lambda(1)$）。
 \input{sections/generated/tab_parallel_addition_kernels_fingerprint_main}
+
+\subsubsection{端点谱表（\texorpdfstring{$u=0,1$}{u=0,1}）的 primitive 基准}\label{subsec:kernel-endpoint-primitive}
+为了得到“零误差、可跨实现核对”的最硬基准，我们把三核的可比指纹进一步收敛到两端点：
+\begin{itemize}
+  \item $u=0$：carry-free 骨架（仅保留 $\kappa=0$ 边），其 $p_n$ 由 $A_0=M_K(0)$ 的闭式迹/反演得到；
+  \item $u=1$：忽略 carry 强度（无权），在本文的单流编译口径下满足 $\Tr(M_K(1)^n)=|B|^n$，因此 $p_n$ 为 full shift 的闭式 Möbius 反演。
+\end{itemize}
+表 \ref{tab:parallel-addition-kernels-endpoint-primitive} 给出三核在两端点的单流与全局块级 $p_n$（$n\le 20$），作为后续比较中间 $u\in(0,1)$ 分层谱的基准底座。
+\input{sections/generated/tab_parallel_addition_kernels_endpoint_primitive}
 
 做“素数影子”对比时，最省力的计算接口是：先计算周期迹 $a_n(u)=\Tr(M(u)^n)$，再用 Witt/Möbius 反演提取 primitive 加权谱
 \[
@@ -397,6 +410,43 @@ M_K^{\mathrm{glob}}(u)=(M_K^{\mathrm{flow}}(u))^{\otimes m},\qquad
 a_n^{\mathrm{glob}}(u)=a_n^{\mathrm{flow}}(u)^m,
 \]
 故只需单流的 $a_n(u)$ 即可装配全局的 $B_n^{\mathrm{glob}}(u)$（再做一次 Möbius 反演即可）。
+
+\subsubsection{压力曲线 \texorpdfstring{$\lambda_K(u)$}{lambda(u)}、端点与 carry 密度}\label{subsec:kernel-pressure-curve}
+对每个核的单流带权邻接矩阵族 $M_K(u)$，定义压力曲线（谱半径曲线）
+\[
+\lambda_K(u):=\rho(M_K(u)),\qquad P_K(u):=\log\lambda_K(u)\qquad(u\in[0,1]).
+\]
+它刻画“允许 carry 的程度（$u$）”对指数增长率的响应，可作为第二层谱指纹；其数值曲线与 carry-free 素数谱相图见附录 \ref{app:sync-kernel-A-compare} 的图 \ref{fig:parallel-addition-kernels-lambda-u} 与图 \ref{fig:parallel-addition-kernels-bn0}（脚本可复现）。
+
+\begin{proposition}[端点、单调性与多流提升]\label{prop:kernel-pressure-endpoints}
+设 $\kappa(e)\in\ZZ_{\ge 0}$，并令 $A_0:=M_K(0)$ 为 carry-free 骨架邻接矩阵。
+则：
+\begin{enumerate}
+  \item \textbf{端点 $u=0$}：$\lambda_K(0)=\rho(A_0)$；
+  \item \textbf{端点 $u=1$}：若在线机对每个输入符号都存在一条出边（确定性完备读入），则 $\lambda_K(1)=|B|$；
+  \item \textbf{单调性/连续性}：$u\mapsto \lambda_K(u)$ 在 $[0,1]$ 上非减且连续；
+  \item \textbf{多流提升}：若全局块级由 $m$ 条同构同余流张量装配，则
+  \(
+  \lambda^{\mathrm{glob}}_K(u)=\lambda^{\mathrm{flow}}_K(u)^m
+  \)
+  且
+  \(
+  P^{\mathrm{glob}}_K(u)=m\,P^{\mathrm{flow}}_K(u)
+  \)。
+\end{enumerate}
+\end{proposition}
+
+\begin{remark}[carry 密度与压力导数（热力学形式）]
+把 $\kappa$ 视为边势并令 $\theta=\log u$，则 $P_K(u)=\log\rho(M_K(e^\theta))$ 是有限图移位的压力函数。
+在不可约情形，$P_K$ 在 $(0,1)$ 上可微，并满足
+\[
+u\frac{\mathrm{d}}{\mathrm{d}u}\log\lambda_K(u)
+=\frac{\mathrm{d}}{\mathrm{d}\theta}P_K(e^\theta)
+=\mathbb{E}_{\mu_u}[\kappa],
+\]
+其中 $\mu_u$ 为势 $\theta\kappa$ 的平衡态（finite-type 情形的 Ruelle/Parry--Pollicott 口径；参见 \cite{Ruelle1978Thermodynamic,ParryPollicott1990Zeta}）。
+这给出一个与“均匀输入驱动”\textbf{不同}但可比较的 carry 密度读出：前者来自外加输入分布，后者来自压力最优化（指纹层更稳定）。
+\end{remark}
 
 更完整的脚本复现、状态机构图与数值输出见附录 \ref{app:sync-kernel-A-compare} 与生成表格。
 

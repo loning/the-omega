@@ -229,7 +229,7 @@ P_{\mathrm{Abel}}(r)=-\log(1-r)+\log\mathfrak{M}+o(1)\qquad(r\uparrow 1).
 }
 \]
 
-\paragraph{完全闭式（仅用 $\zeta_M$ 的主留数 + Möbius 尾）}
+\begin{proposition}[Abel 有限部的 Möbius--\texorpdfstring{$\zeta$}{zeta} 闭式（仅用主留数 + Möbius 尾）]\label{prop:abel-finite-part-mobius-zeta}
 由 SFT 的 prime 轨道分解（欧拉乘积/幂展开）可写
 \[
 P(z)=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_M(z^k).
@@ -248,6 +248,96 @@ C:=\lim_{z\to z_\star}(1-\lambda z)\,\zeta_M(z).
 =\log C+\sum_{k\ge 2}\frac{\mu(k)}{k}\log\zeta_M(z_\star^k),
 \]
 右端只需把显式有理函数 $\zeta_M$ 采样在 $z_\star^k$（指数趋零）处即可数值计算。该核上 $C$ 的闭式、数值与复现脚本均见附录 \ref{app:real-input-40-finite-part}。
+
+在“简单极点”情形，$C$ 亦可由行列式导数或谱分解写成闭式。令 $D(z):=\det(I-zM)$，则
+\[
+C=-\frac{1}{z_\star\,D'(z_\star)},
+\qquad
+C=\prod_{\lambda_j\ne\lambda}\left(1-\frac{\lambda_j}{\lambda}\right)^{-1}.
+\]
+\end{proposition}
+
+\begin{proof}
+式 $P(z)=\sum_{k\ge 1}\mu(k)\log\zeta_M(z^k)/k$ 来自 prime 轨道分解（等价于欧拉乘积）与 $\zeta$ 的行列式口径。
+当 $z\to z_\star$ 时，仅 $k=1$ 项遇到极点；对 $k\ge 2$，因 $|z_\star^k|<|z_\star|$，$\log\zeta_M(z^k)$ 在 $z=z_\star$ 解析且可直接取值。
+再用简单极点展开 $\zeta_M(z)=C/(1-\lambda z)+O(1)$ 得 $\log\zeta_M(z)=-\log(1-\lambda z)+\log C+O(1)$，
+从而 $P(z)$ 的奇性部分正是 $-\log(1-\lambda z)$，剥离后常数项即为 $\log\mathfrak{M}$。
+\end{proof}
+
+\subsubsection{\texorpdfstring{$\log\mathfrak{M}(\theta)$}{logM(theta)} 的解析性与可微分指纹}\label{subsec:logM-analyticity}
+本小节把“只用 $\zeta$”的 Abel 有限部接口推进到可微分层：给出 $\theta\mapsto\log\mathfrak{M}(\theta)$ 的实解析性，以及可用于数值实现的导数表达。
+
+\begin{proposition}[\texorpdfstring{$\log\mathfrak{M}(\theta)$}{logM(theta)} 的实解析性（局部）]\label{prop:logM-analytic}
+设 $M_\theta$ 为有限维非负矩阵族，且对每条边的权重为 $\exp\langle\theta,\Phi(e)\rangle$ 的有限和，因此 $\theta\mapsto M_\theta$ 为实解析矩阵函数。
+假设在 $\theta=0$ 处 $M_0$ 原始（Perron--Frobenius 主特征值 $\lambda(0)$ 为简单特征值），并令 $\lambda(\theta)=\rho(M_\theta)$、$z_\star(\theta)=\lambda(\theta)^{-1}$。
+则存在 $\theta=0$ 的某邻域 $\mathcal{U}$，使得 $\theta\mapsto\log\mathfrak{M}(\theta)$ 在 $\mathcal{U}$ 上为实解析函数。
+\end{proposition}
+
+\begin{proof}
+由矩阵条目对 $\theta$ 的实解析性与原始性，Kato 解析扰动理论给出：$\lambda(\theta)$ 与相应左右本征向量可在 $\theta=0$ 的邻域内实解析选取，故 $z_\star(\theta)$ 亦实解析。
+对任意固定 $k\ge 2$，点 $z_\star(\theta)^k$ 落在收敛圆盘内，并且 $\log\zeta_\theta(z)=-\log\det(I-zM_\theta)$ 在该圆盘上对 $(\theta,z)$ 联合解析。
+同时因 $|z_\star(\theta)|<1$ 且 $z_\star(\theta)^k$ 随 $k$ 指数趋零，Möbius 尾
+\(
+\sum_{k\ge 2}\mu(k)\log\zeta_\theta(z_\star(\theta)^k)/k
+\)
+在 $\mathcal{U}$ 上一致收敛，从而可逐项求导并保持解析性；再加上 $\log C(\theta)$（由简单极点留数定义）在 $\mathcal{U}$ 上实解析，即得结论。
+\end{proof}
+
+\begin{proposition}[导数的 resolvent 表达（实现接口）]\label{prop:logM-derivative-resolvent}
+对 $\theta\in\mathcal{U}$，记 $R_\theta(z):=(I-zM_\theta)^{-1}$。
+则对任意参数方向 $v$（把 $\partial_v$ 视为方向导数），有
+\[
+\partial_v\log\zeta_\theta(z)=\mathrm{Tr}\!\left(R_\theta(z)\,z\,\partial_v M_\theta\right),
+\qquad
+\partial_z\log\zeta_\theta(z)=\mathrm{Tr}\!\left(R_\theta(z)\,M_\theta\right).
+\]
+因此在 $\theta\in\mathcal{U}$ 上，
+\[
+\partial_v\log\mathfrak{M}(\theta)
+=
+\partial_v\log C(\theta)
+\;+\;
+\sum_{k\ge 2}\frac{\mu(k)}{k}\left[
+\mathrm{Tr}\!\left(R_\theta(z_k)\,z_k\,\partial_v M_\theta\right)
+\;+\;
+\mathrm{Tr}\!\left(R_\theta(z_k)\,M_\theta\right)\,\partial_v z_k
+\right],
+\]
+其中 $z_k:=z_\star(\theta)^k$ 且 $\partial_v z_k = k z_\star(\theta)^k\,\partial_v\log z_\star(\theta)=-k z_k\,\partial_v P(\theta)$（$P(\theta)=\log\lambda(\theta)$）。
+\end{proposition}
+
+\begin{proof}
+由 $\log\zeta_\theta(z)=-\log\det(I-zM_\theta)$，对 $v$ 与 $z$ 分别求导并用矩阵恒等式
+\(\partial\log\det A=\mathrm{Tr}(A^{-1}\partial A)\)
+即可得前两式；再对命题 \ref{prop:abel-finite-part-mobius-zeta} 的闭式逐项求导并用链式法则得到后式。
+\end{proof}
+
+\subsubsection{arity-charge 的大偏差率函数（\texorpdfstring{$\chi$}{chi} 切片）}\label{subsec:chi-ldp}
+沿 $\chi$-切片 $\theta(t)=(t,0,-t)$，压力函数 $P_\chi(t)=\log\rho(M_{\theta(t)})$ 给出 $\chi$ 的指数型倾斜族；相应的大偏差率函数可由 Legendre 对偶直接读出。
+
+\begin{theorem}[Gärtner--Ellis 率函数：\texorpdfstring{$\chi$}{chi} 的 LDP]\label{thm:chi-gartner-ellis}
+设 $M_{\theta(t)}$ 在 $t$ 的某邻域内原始且 $P_\chi(t)=\log\rho(M_{\theta(t)})$ 可微（在本文的有限维正矩阵口径下在局部自动成立）。
+令
+\[
+I_\chi(\alpha):=\sup_{t\in\RR}\bigl(t\alpha-P_\chi(t)\bigr).
+\]
+则对长度为 $n$ 的轨道上平均电荷 $\bar\chi_n:=\chi(\gamma)/n$（在对应的 Gibbs/倾斜平衡态下），其偏离事件满足大偏差原理，且好率函数为 $I_\chi$。
+此外，典型值 $\bar\alpha=\mathbb{E}[\chi]=P_\chi'(0)$ 处有二次近似
+\[
+I_\chi(\bar\alpha+\delta)=\frac{\delta^2}{2P_\chi''(0)}+o(\delta^2),
+\]
+其中 $P_\chi''(0)=\mathrm{Var}_\infty(\chi)$ 为协方差密度。
+\end{theorem}
+
+\begin{remark}[与 Abel 有限部常数曲线的同一切片对比]
+$P_\chi(t)$ 控制 leading 指数尺度（典型密度、涨落与大偏差），而 $\log\mathfrak{M}_\chi(t)$ 控制 prime-orbit Mertens 主项中的常数级漂移：
+\[
+\sum_{n\le N}\frac{p_{n,\chi}(t)}{\lambda_\chi(t)^n}=\log N+\gamma+\log\mathfrak{M}_\chi(t)+o(1),
+\qquad
+\lambda_\chi(t)=e^{P_\chi(t)}.
+\]
+因此在同一切片上同时记录 $t\mapsto(P_\chi(t),\log\mathfrak{M}_\chi(t))$，可把“指数尺度的代价”（由 $P_\chi$ 给出）与“常数级漂移的再分配”（由 $\log\mathfrak{M}_\chi$ 给出）作为两种互补指纹并列比较。
+\end{remark}
 
 \paragraph{把 \texorpdfstring{$\log\mathfrak{M}$}{logM} 完全对齐到显式 \texorpdfstring{$\zeta_M$}{zeta\_M}（闭式常数 + 数值）}
 对 40 状态真实输入核，附录 \ref{app:real-input-40-abel} 给出
@@ -379,6 +469,11 @@ $\ \ 1.0$ & $\ \ 1.0$ & $4.451463505733$ & $-0.259640526249$ & $0.317575138652$ 
 \end{pmatrix}.
 \]
 
+\paragraph{\texorpdfstring{$\log\mathfrak{M}(\theta)$}{logM(theta)} 的二阶展开（常数级指纹）}
+在同一加权族下，$\log\mathfrak{M}(\theta)$ 捕获 prime-orbit Mertens 主项中的常数级漂移（相对于 $\log N$ 的平移），可作为独立于压力主尺度 $P(\theta)$ 的细粒度指纹。
+表 \ref{tab:real-input-40-logM-theta-taylor} 给出 $\log\mathfrak{M}(\theta)$ 在 $\theta=0$ 的梯度与 Hessian 的可复现数值（二阶差分；Möbius 尾截断固定），便于与 $\nabla P(0),\nabla^2P(0)$ 并列对比。
+\input{sections/generated/tab_real_input_40_logM_theta_taylor}
+
 \paragraph{arity-charge 的同一接口并入}
 定义 arity-charge
 \[
@@ -397,7 +492,7 @@ P_\chi(t):=P(t,0,-t).
 P_\chi'(0),P_\chi''(0)
 \)
 读出，并可与同一族 $\log\mathfrak{M}(\theta)$ 在该方向的切片一起作为“素数影子”的分叉维度；具体数值与可复现计算见附录 \ref{app:real-input-40-logm-theta} 与
-\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity.py}。
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_logM\_chi.py}。
 
 \paragraph{\texorpdfstring{$\chi$}{chi} 的一维切片相图（可计算流程）}
 固定
@@ -449,6 +544,8 @@ $\ \ 1.0$ & $3.646591323038$ & $\ \ 0.072379237963$ & $0.649594902864$ \\
 \bottomrule
 \end{tabular}
 \end{table}
+% figure generated by scripts/exp_sync_kernel_real_input_40_logM_chi.py
+\input{sections/generated/fig_real_input_40_logM_chi}
 从而把“操作数不一致”的典型密度/涨落与同一切片上的 Abel 有限部常数曲线 $\log\mathfrak{M}_\chi(t)$ 放在同一相图坐标下比较。该曲线的数值生成入口脚本见
 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_logM\_chi.py}。
 \end{remark}
@@ -581,6 +678,34 @@ p_{n,a,b,c}=\frac{p_n}{27}+O\!\left(\frac{\rho_{3,3,3}^n}{n}\right),
 p_n\sim\frac{\lambda^n}{n}.
 $$
 
+\paragraph{\texorpdfstring{$((3,3,5))$}{(3,3,5)}：打破“置换等价”的最小代价分层}
+由于 $\chi(\gamma)=N_e(\gamma)-N_2(\gamma)$，若第三维仍取 $N_e(\gamma)\bmod 3$，则与 $\chi(\gamma)\bmod 3$ 在角色扭曲层面存在退化的置换等价。为以最小代价引入真正新信息，我们保持前两维为模 $3$，并把第三维提升到模 $5$：
+$$
+(a,b,c)=\bigl(\chi(\gamma)\bmod 3,\ N_-(\gamma)\bmod 3,\ N_e(\gamma)\bmod 5\bigr)\in(\ZZ/3)\times(\ZZ/3)\times(\ZZ/5).
+$$
+相应地，若 $p_{n,a,b,c}$ 为同余类的 primitive 轨道数（按轨道计），并令
+$$
+S_{a,b,c}(N):=\sum_{n\le N}\frac{p_{n,a,b,c}}{\lambda^n},
+$$
+则存在常数张量 $C^{(3,3,5)}_{a,b,c}$ 使得
+$$
+S_{a,b,c}(N)=\frac{1}{45}\log N + C^{(3,3,5)}_{a,b,c}+o(1),
+\qquad
+\sum_{a=0}^2\sum_{b=0}^2\sum_{c=0}^4 C^{(3,3,5)}_{a,b,c}=\mathsf{M}.
+$$
+常数张量（按 $c=N_e(\gamma)\bmod 5$ 给出 5 张 $3\times 3$ 切片）、以及最坏扭曲谱半径比 $\rho_{3,3,5}/\lambda$，由脚本
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py}
+直接生成并输出为可 \verb|\input| 的 \LaTeX\ 片段：
+\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_335}
+
+\paragraph{\texorpdfstring{$((3,3,5))$}{(3,3,5)}：把第三维换成 \texorpdfstring{$N_2\bmod 5$}{N2 mod 5}}
+同样地，也可以把第三维改为二元碰撞触发计数 $N_2(\gamma)\bmod 5$，从而考察
+$$
+(a,b,c)=\bigl(\chi(\gamma)\bmod 3,\ N_-(\gamma)\bmod 3,\ N_2(\gamma)\bmod 5\bigr)\in(\ZZ/3)\times(\ZZ/3)\times(\ZZ/5),
+$$
+其 Mertens 主项系数同为 $1/45$。该版本的常数张量（按 $c=N_2(\gamma)\bmod 5$ 给出 5 张 $3\times 3$ 切片）、最坏扭曲谱半径比 $\rho_{3,3,5}/\lambda$，以及二维边际一致性校验，亦由同一脚本以 \texttt{--third-axis N2} 生成：
+\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2}
+
 \paragraph{\texorpdfstring{$((5,5,5))$}{(5,5,5)}：更高模数的三维 Dirichlet--Mertens 常数张量（全表）}
 为进一步提高同余分层的分辨率，可把三条观测量同时提升到模 $5$：
 $$
@@ -596,5 +721,5 @@ $$
 \begin{itemize}
   \item primitive 轨道作为“素数类对象”，满足 $p_n\sim \lambda^n/n$；
   \item $\chi(\gamma)$ 作为真正的 arity-charge，把二元碰撞的吐出/隐藏机制编码成可加电荷；
-  \item Dirichlet--Mertens 常数张量（例如 \(((2,2,2))\)、\(((3,2,2))\)、\(((3,3,3))\)）给出同余类的常数漂移（Abel/Hadamard 有限部），而 $\rho/\lambda$ 给出同余类趋于等分布的指数误差。
+  \item Dirichlet--Mertens 常数张量（例如 \(((2,2,2))\)、\(((3,2,2))\)、\(((3,3,3))\)、\(((3,3,5))\)）给出同余类的常数漂移（Abel/Hadamard 有限部），而 $\rho/\lambda$ 给出同余类趋于等分布的指数误差。
 \end{itemize}

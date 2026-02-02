@@ -177,7 +177,24 @@ def build_steps() -> List[Step]:
                 "sections/generated/tab_real_input_40_arity_dirichlet_mertens_222.tex",
                 "sections/generated/tab_real_input_40_arity_dirichlet_mertens_322.tex",
                 "sections/generated/tab_real_input_40_arity_dirichlet_mertens_333.tex",
+                "sections/generated/tab_real_input_40_arity_dirichlet_mertens_335.tex",
                 "sections/generated/tab_real_input_40_arity_dirichlet_mertens_555.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_real_input_40_arity_3d_335_N2",
+            script="exp_sync_kernel_real_input_40_arity_3d.py",
+            args=[
+                "--third-axis",
+                "N2",
+                "--triple-values",
+                "3x3x5",
+                "--output",
+                "artifacts/export/sync_kernel_real_input_40_arity_3d_N2_335.json",
+            ],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_real_input_40_arity_3d_N2_335.json",
+                "sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2.tex",
             ],
         ),
         Step(
@@ -195,6 +212,35 @@ def build_steps() -> List[Step]:
                 "artifacts/export/sync_kernel_real_input_40_logM_theta.json",
                 "artifacts/export/sync_kernel_real_input_40_logM_theta.png",
                 "sections/generated/fig_real_input_40_logM_theta.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_real_input_40_logM_chi",
+            script="exp_sync_kernel_real_input_40_logM_chi.py",
+            args=[
+                "--t-steps",
+                "161",
+                "--k-max",
+                "250",
+            ],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_real_input_40_logM_chi.json",
+                "artifacts/export/sync_kernel_real_input_40_logM_chi.png",
+                "sections/generated/fig_real_input_40_logM_chi.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_real_input_40_logM_theta_taylor",
+            script="exp_sync_kernel_real_input_40_logM_theta_taylor.py",
+            args=[
+                "--h",
+                "0.0002",
+                "--k-max",
+                "200",
+            ],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_real_input_40_logM_theta_taylor.json",
+                "sections/generated/tab_real_input_40_logM_theta_taylor.tex",
             ],
         ),
         Step(
@@ -231,6 +277,14 @@ def build_steps() -> List[Step]:
                 "sections/generated/tab_parallel_addition_kernels_bfs.tex",
                 "sections/generated/tab_parallel_addition_kernels_fingerprint.tex",
                 "sections/generated/tab_parallel_addition_kernels_fingerprint_main.tex",
+            ],
+        ),
+        Step(
+            name="parallel_addition_kernels_endpoints_primitive",
+            script="exp_parallel_addition_kernels_endpoints_primitive.py",
+            args=["--nmax", "20"],
+            expected_outputs=[
+                "sections/generated/tab_parallel_addition_kernels_endpoint_primitive.tex",
             ],
         ),
         Step(
