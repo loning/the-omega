@@ -305,6 +305,54 @@ B_n(u)=\sum_{|\gamma|=n}u^{\kappa(\gamma)}
 \)。
 这些对象把“核的差异”压缩为同一组可比不变量：$\lambda(u)=\rho(M_K(u))$、$\zeta_K(z,u)$、以及 $\{B_n(u)\}_{n\le N}$（见 \cite{Ruelle1976ZetaExpanding,ParryPollicott1990Zeta,BrinStuck2002}）。
 
+\subsubsection{A 分支：核指纹实验协议（端点闭式 \texorpdfstring{$+$}{+} 中间 \texorpdfstring{$u\in(0,1)$}{u in (0,1)} 近似；一页版）}\label{app:kernel-fingerprint-protocol}
+本附录把 $9/13/21$-local 三核统一压到同一对象组
+\[
+\bigl(M_K(u),\ \zeta_K(z,u),\ \lambda_K(u),\ B_{K,n}(u)\bigr),
+\]
+并给出“端点闭式基准 + 中间 $u$ 可扩展近似”的统一可复现实验协议。
+
+\begin{algorithm}[A 分支核指纹实验协议（不爆内存）]\label{alg:kernel-fingerprint-protocol}
+给定核 $K\in\{K_9,K_{13},K_{21}\}$，以及默认参数
+\[
+U:=\{0,0.25,0.5,0.75,1\},\quad N_{\mathrm{end}}:=20,\quad \mathcal{N}_{\mathrm{mid}}:=\{3,5,7\},\quad S:=200.
+\]
+执行：
+\begin{enumerate}
+  \item \textbf{单流编译（BFS）}：按同余流解耦（$K_9$ 取 $m=4$，$K_{13},K_{21}$ 取 $m=2$），对单流构造同步图 $\Gamma^{\mathrm{flow}}_K$，并在边上定义活动度势 $\kappa(e)$。得到单流带权邻接矩阵族 $M_K(u)$ 以及基本结构量（$\delta$、$|Q|$、$\mathbb{E}[\kappa]$）。
+  \item \textbf{端点闭式（零误差）}：
+  \begin{enumerate}
+    \item $u=0$：取 carry-free 骨架 $A_0:=M_K(0)$，计算 $\zeta_K(z,0)=\det(I-zA_0)^{-1}$，并由 Möbius 反演得到 primitive 轨道数 $p_n(0)$（$n\le N_{\mathrm{end}}$）。
+    \item $u=1$：取无权基线 $M_K(1)$，其 $\zeta_K(z,1)$ 与 $p_n(1)$ 退化为 full shift 的闭式（仅依赖输入字母表大小）。
+  \end{enumerate}
+  \item \textbf{多流提升（避免直积大图）}：用张量积闭式
+  \[
+  M_{\mathrm{glob}}(u)=M_{\mathrm{flow}}(u)^{\otimes m},\qquad
+  \Tr(M_{\mathrm{glob}}(u)^n)=\Tr(M_{\mathrm{flow}}(u)^n)^m,\qquad
+  \lambda_{\mathrm{glob}}(u)=\lambda_{\mathrm{flow}}(u)^m,
+  \]
+  并由一次 Möbius 反演得到全局 primitive 端点谱。
+  \item \textbf{中间 $u$（矩阵自由近似）}：对每个 $u\in U\cap(0,1)$：
+  \begin{enumerate}
+    \item 计算压力样本 $\lambda_K(u)=\rho(M_K(u))$（幂法，仅需稀疏乘向量）。
+    \item 对每个 $n\in\mathcal{N}_{\mathrm{mid}}$，用 Hutchinson 估计近似 $a_n(u)=\Tr(M_K(u)^n)$，并以 Möbius 反演得到 $\widehat B_{K,n}(u)$。为降低 Möbius 组合中的相消方差，默认使用 common random numbers（在所有 $u$ 与幂次间复用同一组 Rademacher 探针）。
+  \end{enumerate}
+  \item \textbf{输出（论文可直接 \texorpdfstring{$\backslash$}{\textbackslash}input）}：写出三类表格片段：
+  \[
+  \texttt{tab\_parallel\_addition\_kernels\_fingerprint\_main.tex},\quad
+  \texttt{tab\_parallel\_addition\_kernels\_endpoint\_primitive.tex},\quad
+  \texttt{tab\_parallel\_addition\_kernels\_fingerprint\_u\_samples.tex},
+  \]
+  并将全部数值与采样参数写入 \texttt{artifacts/export/*.json} 以供审计复算。
+\end{enumerate}
+\end{algorithm}
+
+\paragraph{协议一页总表（结构量 + 端点指纹）}
+\input{sections/generated/tab_parallel_addition_kernels_fingerprint_main}
+
+\paragraph{端点谱表（闭式零误差，\texorpdfstring{$n\le 20$}{n<=20}）}
+\input{sections/generated/tab_parallel_addition_kernels_endpoint_primitive}
+
 \subsubsection{中间权重 \texorpdfstring{$u\in(0,1)$}{u in (0,1)} 的可控近似：随机迹估计 \texorpdfstring{$+$}{+} Möbius 反演（协议）}\label{app:kernel-fingerprint-hutchinson}
 上一小节给出了端点 $u\in\{0,1\}$ 的闭式“零误差”谱表与指纹；但在 $u\in(0,1)$ 时，$M_K(u)^n$ 的非零结构会迅速变得致密，因而“显式形成 $M^n$ 再取迹/系数”的精确计算不可扩展。为把核指纹推进到连续谱对比（压力曲线 $\lambda_K(u)$ 与分层 prime spectrum $\{B_{K,n}(u)\}$），本文采用一个只依赖\textbf{稀疏矩阵乘向量}的可控近似协议。
 
