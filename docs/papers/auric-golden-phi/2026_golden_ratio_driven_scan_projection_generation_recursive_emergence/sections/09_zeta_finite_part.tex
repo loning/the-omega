@@ -462,11 +462,14 @@ $$
 \Phi_e(\gamma),\qquad \Phi_-(\gamma),\qquad \Phi_2(\gamma),
 $$
 它们分别对应附录 \ref{app:real-input-40-logm-theta} 中的三条边势 $\varphi_e,\varphi_-,\varphi_2$ 的轨道和。
-定义轨道层的 arity-charge 与两类事件计数
+在本文选择的三维 Dirichlet 分层中，我们以 $\chi$ 作为 arity-charge，并以 $N_-$ 与 $N_e$ 作为两条事件计数轴（其中 $N_e$ 是输出位计数；$N_2$ 仅作为构造 $\chi$ 的辅助量保留在定义中）。
+定义轨道层的 arity-charge 与事件计数
 $$
 \chi(\gamma):=\Phi_e(\gamma)-\Phi_2(\gamma)\in\ZZ,
 \qquad
 N_-(\gamma):=\Phi_-(\gamma)\in\ZZ,
+\qquad
+N_e(\gamma):=\Phi_e(\gamma)\in\ZZ,
 \qquad
 N_2(\gamma):=\Phi_2(\gamma)\in\ZZ.
 $$
@@ -476,7 +479,9 @@ $$
 \qquad
 \nu:=\mathbf{1}_{\{t\in Q_-\}}\in\{0,1\},
 \qquad
-\xi:=\mathbf{1}_{\{d=2\}}\in\{0,1\},
+e\in\{0,1\},
+\qquad
+\xi:=\mathbf{1}_{\{d=2\}}\in\{0,1\}.
 $$
 从而
 $$
@@ -486,8 +491,8 @@ $$
 \qquad
 \Phi_2(\gamma)=\sum_{k=1}^{|\gamma|} \xi_k,
 $$
-并因此 $\chi(\gamma)=\sum_{k=1}^{|\gamma|}\chi_k$、$N_-(\gamma)=\sum_{k=1}^{|\gamma|}\nu_k$、$N_2(\gamma)=\sum_{k=1}^{|\gamma|}\xi_k$。
-其中 $\chi(\gamma)$ 是真正的 arity-charge（把“二元碰撞如何被吐出/隐藏”的净电荷编码成可加不变量），$N_-(\gamma)$ 记录进入负携带区的事件计数，$N_2(\gamma)$ 记录二元碰撞触发计数。主增长率取真实输入核的 Perron--Frobenius 主特征值
+并因此 $\chi(\gamma)=\sum_{k=1}^{|\gamma|}\chi_k$、$N_-(\gamma)=\sum_{k=1}^{|\gamma|}\nu_k$、$N_e(\gamma)=\sum_{k=1}^{|\gamma|}e_k$、$N_2(\gamma)=\sum_{k=1}^{|\gamma|}\xi_k$。
+其中 $\chi(\gamma)$ 是真正的 arity-charge（把“二元碰撞如何被吐出/隐藏”的净电荷编码成可加不变量），$N_-(\gamma)$ 记录进入负携带区的事件计数，而 $N_e(\gamma)$ 记录输出位计数。主增长率取真实输入核的 Perron--Frobenius 主特征值
 $$
 \lambda=\rho(M)=\varphi^2\approx 2.61803398875.
 $$
@@ -495,7 +500,7 @@ $$
 \paragraph{\texorpdfstring{$((2,2,2))$}{(2,2,2)}：arity--Mertens 常数张量}
 记 residue 向量
 $$
-(r_1,r_2,r_3)=\bigl(\chi(\gamma)\bmod 2,\ N_-(\gamma)\bmod 2,\ N_2(\gamma)\bmod 2\bigr)\in(\ZZ/2)^3.
+(r_1,r_2,r_3)=\bigl(\chi(\gamma)\bmod 2,\ N_-(\gamma)\bmod 2,\ N_e(\gamma)\bmod 2\bigr)\in(\ZZ/2)^3.
 $$
 令 $p_{n,r_1r_2r_3}$ 表示长度为 $n$ 的 primitive 轨道中落在该 residue 的轨道数（按轨道计）。定义 Mertens 部分和
 $$
@@ -511,40 +516,15 @@ $$
 $$
 \mathsf{M}\approx 0.322903002999.
 $$
-对应的 $2\times 2\times 2$ 常数张量（按 $\chi(\gamma)\bmod 2$ 分两张 $2\times 2$ 切片；行对应 $N_-(\gamma)\bmod 2$，列对应 $N_2(\gamma)\bmod 2$）为：
-$$
-\chi(\gamma)\bmod 2=0:\quad
-\begin{pmatrix}
-0.537764518482 & -0.083660027163\\
--0.345745227275 & -0.240811119459
-\end{pmatrix}
-$$
-$$
-\chi(\gamma)\bmod 2=1:\quad
-\begin{pmatrix}
-0.887714851820 & -0.260094574998\\
--0.026170064140 & -0.146095354270
-\end{pmatrix}.
-$$
-
-\paragraph{Dirichlet 型误差指数（等分布收敛速率）}
-令 $\rho_{2,2,2}$ 为所有非平凡扭曲角色（对三条同余分量引入 $\{\pm 1\}$ 角色）下的最大谱半径。则最坏收敛速率由比值 $\rho_{2,2,2}/\lambda$ 给出：
-$$
-\frac{\rho_{2,2,2}}{\lambda}\approx 0.927372804879,
-\qquad
-\rho_{2,2,2}\approx 2.427893523415.
-$$
-并且同余类计数满足
-$$
-p_{n,r_1r_2r_3}=\frac{p_n}{8}+O\!\left(\frac{\rho_{2,2,2}^n}{n}\right),
-\qquad
-p_n\sim\frac{\lambda^n}{n}.
-$$
+对应的常数张量数值与最坏误差指数（$\rho/\lambda$）由脚本
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py}
+自动生成并输出为可 \verb|\input| 的 \LaTeX\ 片段：
+\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_222}
 
 \paragraph{\texorpdfstring{$((3,2,2))$}{(3,2,2)}：把 arity 维度提升为真正 Dirichlet 分层}
 把第一维升级为
 $$
-(a,b,c)=\bigl(\chi(\gamma)\bmod 3,\ N_-(\gamma)\bmod 2,\ N_2(\gamma)\bmod 2\bigr)\in(\ZZ/3)\times(\ZZ/2)\times(\ZZ/2),
+(a,b,c)=\bigl(\chi(\gamma)\bmod 3,\ N_-(\gamma)\bmod 2,\ N_e(\gamma)\bmod 2\bigr)\in(\ZZ/3)\times(\ZZ/2)\times(\ZZ/2),
 $$
 并令 $p_{n,a,b,c}$ 为相应同余类的 primitive 轨道计数，定义
 $$
@@ -556,40 +536,15 @@ S_{a,b,c}(N)=\frac{1}{12}\log N + C_{a,b,c}+o(1),
 \qquad
 \sum_{a\in\{0,1,2\}}\sum_{b,c\in\{0,1\}}C_{a,b,c}=\mathsf{M}.
 $$
-常数张量 $C_{a,b,c}$（按 $a=0,1,2$ 给三张 $2\times 2$ 切片；行对应 $b$，列对应 $c$）为：
-$$
-\chi(\gamma)\bmod 3=0:\quad
-\begin{pmatrix}
-0.391118940498 & -0.021847740745\\
--0.224228494837 & -0.165125387935
-\end{pmatrix}
-$$
-$$
-\chi(\gamma)\bmod 3=1:\quad
-\begin{pmatrix}
-0.861471422552 & -0.167152624145\\
-0.079106678811 & -0.072918331974
-\end{pmatrix}
-$$
-$$
-\chi(\gamma)\bmod 3=2:\quad
-\begin{pmatrix}
-0.172889007252 & -0.154754237271\\
--0.226793475389 & -0.148862753819
-\end{pmatrix}.
-$$
-其最坏误差指数由非平凡扭曲的最大谱半径给出，并满足
-$$
-\frac{\rho_{3,2,2}}{\lambda}\approx 0.927372804879,
-\qquad
-\rho_{3,2,2}=\rho_{2,2,2}\approx 2.427893523415,
-$$
-其中最坏扭曲来自 $\chi(\gamma)\bmod 3$ 不扭曲、但同时扭曲 $N_-(\gamma)\bmod 2$ 与 $N_2(\gamma)\bmod 2$ 的角色。
+对应的常数张量数值与最坏误差指数（$\rho/\lambda$）同样由脚本
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py}
+自动生成并输出为可 \verb|\input| 的 \LaTeX\ 片段：
+\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_322}
 
 \paragraph{\texorpdfstring{$((3,3,3))$}{(3,3,3)}：三维 Dirichlet--Mertens 常数张量}
 进一步把三条观测量同时提升到模 $3$ 的 Dirichlet 分层：
 $$
-(a,b,c)=\bigl(\chi(\gamma)\bmod 3,\ N_-(\gamma)\bmod 3,\ N_2(\gamma)\bmod 3\bigr)\in(\ZZ/3)^3.
+(a,b,c)=\bigl(\chi(\gamma)\bmod 3,\ N_-(\gamma)\bmod 3,\ N_e(\gamma)\bmod 3\bigr)\in(\ZZ/3)^3.
 $$
 令 $p_{n,a,b,c}$ 表示长度为 $n$ 的 primitive 轨道中落在该 residue 的轨道数（按轨道计），并定义
 $$
@@ -629,7 +584,7 @@ $$
 \paragraph{\texorpdfstring{$((5,5,5))$}{(5,5,5)}：更高模数的三维 Dirichlet--Mertens 常数张量（全表）}
 为进一步提高同余分层的分辨率，可把三条观测量同时提升到模 $5$：
 $$
-(a,b,c)=\bigl(\chi(\gamma)\bmod 5,\ N_-(\gamma)\bmod 5,\ N_2(\gamma)\bmod 5\bigr)\in(\ZZ/5)^3.
+(a,b,c)=\bigl(\chi(\gamma)\bmod 5,\ N_-(\gamma)\bmod 5,\ N_e(\gamma)\bmod 5\bigr)\in(\ZZ/5)^3.
 $$
 对应的 $5\times 5\times 5$ 常数张量（共 $125$ 个数）、以及最坏扭曲谱半径比 $\rho_{5,5,5}/\lambda$ 与达到最坏的角色索引，均由脚本
 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py}

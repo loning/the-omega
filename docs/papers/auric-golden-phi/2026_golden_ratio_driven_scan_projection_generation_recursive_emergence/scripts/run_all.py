@@ -4,11 +4,14 @@
 
 from __future__ import annotations
 
+import argparse
+import hashlib
+import json
 import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Sequence
+from typing import Dict, List, Sequence, Tuple
 
 from common_paths import paper_root, scripts_dir
 
@@ -23,6 +26,56 @@ class Step:
 
 def _nonempty(p: Path) -> bool:
     return p.is_file() and p.stat().st_size > 0
+
+
+def _sha256_file(p: Path) -> str:
+    h = hashlib.sha256()
+    with p.open("rb") as f:
+        while True:
+            b = f.read(1 << 20)
+            if not b:
+                break
+            h.update(b)
+    return h.hexdigest()
+
+
+def _cache_path() -> Path:
+    return paper_root() / "artifacts" / "export" / "run_all_cache.json"
+
+
+def _load_cache() -> Dict[str, object]:
+    p = _cache_path()
+    if not p.is_file():
+        return {"version": 1, "steps": {}}
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        # If cache is corrupted, ignore it (deterministic pipeline still works).
+        return {"version": 1, "steps": {}}
+
+
+def _write_cache(cache: Dict[str, object]) -> None:
+    p = _cache_path()
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(cache, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def _step_signature(script_path: Path, args: Sequence[str]) -> Dict[str, object]:
+    return {
+        "script": script_path.name,
+        "script_sha256": _sha256_file(script_path),
+        "args": list(args),
+        "python": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
+    }
+
+
+def _outputs_ok(step: Step) -> Tuple[bool, List[str]]:
+    missing: List[str] = []
+    for rel in step.expected_outputs:
+        p = paper_root() / rel
+        if not _nonempty(p):
+            missing.append(rel)
+    return (len(missing) == 0), missing
 
 
 def build_steps() -> List[Step]:
@@ -121,6 +174,8 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/sync_kernel_real_input_40_arity_3d.json",
+                "sections/generated/tab_real_input_40_arity_dirichlet_mertens_222.tex",
+                "sections/generated/tab_real_input_40_arity_dirichlet_mertens_322.tex",
                 "sections/generated/tab_real_input_40_arity_dirichlet_mertens_333.tex",
                 "sections/generated/tab_real_input_40_arity_dirichlet_mertens_555.tex",
             ],
@@ -133,10 +188,8 @@ def build_steps() -> List[Step]:
                 "25",
                 "--theta-2-steps",
                 "25",
-                "--m-max",
-                "30",
-                "--c-eps",
-                "1e-7",
+                "--k-max",
+                "200",
             ],
             expected_outputs=[
                 "artifacts/export/sync_kernel_real_input_40_logM_theta.json",
@@ -167,12 +220,28 @@ def build_steps() -> List[Step]:
         Step(
             name="parallel_addition_kernels_bfs",
             script="exp_parallel_addition_kernels_bfs.py",
-            args=[],
+            args=[
+                "--primitive-n",
+                "20",
+                "--u-grid",
+                "0,0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1",
+            ],
             expected_outputs=[
                 "artifacts/export/parallel_addition_kernels_bfs.json",
                 "sections/generated/tab_parallel_addition_kernels_bfs.tex",
                 "sections/generated/tab_parallel_addition_kernels_fingerprint.tex",
                 "sections/generated/tab_parallel_addition_kernels_fingerprint_main.tex",
+            ],
+        ),
+        Step(
+            name="parallel_addition_kernels_fingerprint_figs",
+            script="exp_parallel_addition_kernels_fingerprint_figs.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/parallel_addition_kernels_Bn0.png",
+                "artifacts/export/parallel_addition_kernels_lambda_u.png",
+                "sections/generated/fig_parallel_addition_kernels_Bn0.tex",
+                "sections/generated/fig_parallel_addition_kernels_lambda_u.tex",
             ],
         ),
         Step(
@@ -221,15 +290,45 @@ def build_steps() -> List[Step]:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description="Run reproducible experiment pipeline (with step cache).")
+    parser.add_argument("--force", action="store_true", help="Force rerun all steps (ignore cache).")
+    parser.add_argument("--no-cache", action="store_true", help="Disable cache (always run).")
+    args = parser.parse_args()
+
     steps = build_steps()
     if not steps:
         print("[run_all] No steps configured yet.", flush=True)
         return
 
+    cache = _load_cache()
+    steps_cache: Dict[str, object] = dict(cache.get("steps", {}))  # type: ignore[assignment]
+
     for st in steps:
         script_path = scripts_dir() / st.script
         if not script_path.is_file():
             raise SystemExit(f"Missing script: {script_path}")
+
+        sig = _step_signature(script_path, st.args)
+        ok, missing = _outputs_ok(st)
+        cached = steps_cache.get(st.name)
+        if ok and (not args.force) and (not args.no_cache) and cached == sig:
+            print(f"[run_all] SKIP {st.name} (cache hit)", flush=True)
+            continue
+
+        # Cache warm-up: if outputs already exist but cache has no entry,
+        # we adopt the current signature without rerunning (auditable, avoids slow cold-start).
+        if ok and (not args.force) and (not args.no_cache) and cached is None:
+            steps_cache[st.name] = sig
+            cache["steps"] = steps_cache
+            _write_cache(cache)
+            print(f"[run_all] SKIP {st.name} (cache warm-up: outputs already present)", flush=True)
+            continue
+
+        if ok and (not args.force) and (not args.no_cache) and cached != sig:
+            # Outputs exist but signature changed; rerun for auditability.
+            print(f"[run_all] RERUN {st.name} (signature changed)", flush=True)
+        elif not ok:
+            print(f"[run_all] RERUN {st.name} (missing outputs: {', '.join(missing)})", flush=True)
 
         cmd = [sys.executable, str(script_path), *list(st.args)]
         print(f"[run_all] RUN {st.name}: {' '.join(cmd)}", flush=True)
@@ -240,6 +339,11 @@ def main() -> None:
             if not _nonempty(p):
                 raise SystemExit(f"[run_all] expected output missing/empty: {p}")
         print(f"[run_all] OK {st.name}", flush=True)
+
+        # Update cache after a successful step.
+        steps_cache[st.name] = sig
+        cache["steps"] = steps_cache
+        _write_cache(cache)
 
     print("[run_all] ALL DONE", flush=True)
 
