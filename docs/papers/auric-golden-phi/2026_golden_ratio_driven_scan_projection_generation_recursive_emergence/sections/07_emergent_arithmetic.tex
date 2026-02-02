@@ -370,6 +370,37 @@ K_{21}:\ \det(I-zA_0^{\mathrm{glob}})=(1+z)^2(1-3z+z^2).
 表 \ref{tab:parallel-addition-kernels-endpoint-primitive} 给出三核在两端点的单流与全局块级 $p_n$（$n\le 20$），作为后续比较中间 $u\in(0,1)$ 分层谱的基准底座。
 \input{sections/generated/tab_parallel_addition_kernels_endpoint_primitive}
 
+\begin{corollary}[\texorpdfstring{$u=1$}{u=1} 的无权退化：仅看输入规模的 full shift 基线]\label{cor:par-add-u1-degeneracy}
+在确定性完备读入的单流同步图上，$u=1$ 时带权邻接矩阵 $M_K(1)$ 退化为“仅计数边”的邻接矩阵。若每个状态对每个输入符号恰有一条出边，则每行和恒为 $|B_K|$，从而
+\[
+\Tr(M_K(1)^n)=|B_K|^n,\qquad
+\zeta_K(z,1)=\exp\!\left(\sum_{n\ge 1}\frac{|B_K|^n}{n}z^n\right)=\frac{1}{1-|B_K|z}.
+\]
+因此 primitive 轨道数（按轨道计）为 full shift 的闭式 Möbius 反演：
+\[
+p_n(1)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,|B_K|^{n/d}.
+\]
+对本文三核的单流输入字母表大小为
+\(
+|B_9|=21,\ |B_{13}|=13,\ |B_{21}|=5
+\)
+（见表 \ref{tab:parallel-addition-kernels-endpoint-primitive}），这解释了为什么核对比必须引入 $u$：否则 $\zeta$ 层面会退化为“只看输入规模”。
+\end{corollary}
+
+\begin{corollary}[多流全局端点的闭式提升（避免直积大图）]\label{cor:par-add-global-lift-endpoints}
+设单流带权邻接矩阵为 $M_{\mathrm{flow}}(u)$，同余流条数为 $m$（强核 $m=4$，弱核 $m=2$）。全局块级核满足张量积结构
+\[
+M_{\mathrm{glob}}(u)=M_{\mathrm{flow}}(u)^{\otimes m},
+\qquad
+\Tr(M_{\mathrm{glob}}(u)^n)=\left(\Tr(M_{\mathrm{flow}}(u)^n)\right)^m.
+\]
+因此全局 primitive 分层谱满足
+\[
+B^{\mathrm{glob}}_{n}(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\left(\Tr\!\left(M_{\mathrm{flow}}(u^d)^{n/d}\right)\right)^m,
+\]
+从而端点 $u\in\{0,1\}$ 的全局谱可由单流闭式直接提升得到（表 \ref{tab:parallel-addition-kernels-endpoint-primitive}）。
+\end{corollary}
+
 做“素数影子”对比时，最省力的计算接口是：先计算周期迹 $a_n(u)=\Tr(M(u)^n)$，再用 Witt/Möbius 反演提取 primitive 加权谱
 \[
 p_n(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d),

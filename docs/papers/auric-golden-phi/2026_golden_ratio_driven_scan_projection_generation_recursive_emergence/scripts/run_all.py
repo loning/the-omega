@@ -326,6 +326,26 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="parallel_addition_kernels_trace_hutchinson",
+            script="exp_parallel_addition_kernels_trace_hutchinson.py",
+            args=[
+                "--u-grid",
+                "0.25,0.5,0.75",
+                "--n-list",
+                "3,5,7",
+                "--nmax",
+                "7",
+                "--samples",
+                "200",
+                "--seed",
+                "12345",
+            ],
+            expected_outputs=[
+                "artifacts/export/parallel_addition_kernels_trace_hutchinson.json",
+                "sections/generated/tab_parallel_addition_kernels_fingerprint_u_samples.tex",
+            ],
+        ),
+        Step(
             name="generated_tex_fragments",
             script="exp_generated_tex.py",
             args=[],

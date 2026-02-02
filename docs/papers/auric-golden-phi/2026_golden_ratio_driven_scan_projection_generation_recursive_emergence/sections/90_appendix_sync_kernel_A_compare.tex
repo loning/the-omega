@@ -305,6 +305,72 @@ B_n(u)=\sum_{|\gamma|=n}u^{\kappa(\gamma)}
 \)。
 这些对象把“核的差异”压缩为同一组可比不变量：$\lambda(u)=\rho(M_K(u))$、$\zeta_K(z,u)$、以及 $\{B_n(u)\}_{n\le N}$（见 \cite{Ruelle1976ZetaExpanding,ParryPollicott1990Zeta,BrinStuck2002}）。
 
+\subsubsection{中间权重 \texorpdfstring{$u\in(0,1)$}{u in (0,1)} 的可控近似：随机迹估计 \texorpdfstring{$+$}{+} Möbius 反演（协议）}\label{app:kernel-fingerprint-hutchinson}
+上一小节给出了端点 $u\in\{0,1\}$ 的闭式“零误差”谱表与指纹；但在 $u\in(0,1)$ 时，$M_K(u)^n$ 的非零结构会迅速变得致密，因而“显式形成 $M^n$ 再取迹/系数”的精确计算不可扩展。为把核指纹推进到连续谱对比（压力曲线 $\lambda_K(u)$ 与分层 prime spectrum $\{B_{K,n}(u)\}$），本文采用一个只依赖\textbf{稀疏矩阵乘向量}的可控近似协议。
+
+\begin{definition}[Hutchinson 随机迹估计]\label{def:hutchinson-trace}
+令 $A\in\RR^{N\times N}$ 为任意矩阵。取随机向量 $\mathbf r\in\{\pm 1\}^N$，其坐标独立同分布且 $\mathbb{P}(r_i=1)=\mathbb{P}(r_i=-1)=1/2$。定义单样本估计量
+\[
+T(\mathbf r;A):=\mathbf r^{\mathsf T}A\mathbf r.
+\]
+对 $S$ 个独立样本 $\mathbf r_1,\dots,\mathbf r_S$，定义 Hutchinson 迹估计
+\[
+\widehat{\mathrm{Tr}}_S(A):=\frac{1}{S}\sum_{s=1}^{S}\mathbf r_s^{\mathsf T}A\mathbf r_s.
+\]
+\end{definition}
+
+\begin{proposition}[无偏性与矩阵自由实现]\label{prop:hutchinson-unbiased-mfree}
+对任意 $A\in\RR^{N\times N}$，若 $\mathbf r$ 为定义 \ref{def:hutchinson-trace} 的 Rademacher 向量，则
+\[
+\mathbb{E}\bigl[\mathbf r^{\mathsf T}A\mathbf r\bigr]=\mathrm{Tr}(A),
+\qquad
+\mathbb{E}\bigl[\widehat{\mathrm{Tr}}_S(A)\bigr]=\mathrm{Tr}(A).
+\]
+并且当 $A=M_K(u)^n$ 时，$\mathbf r^{\mathsf T}A\mathbf r$ 可通过 $n$ 次稀疏乘向量递推计算：
+\[
+\mathbf v_0=\mathbf r,\qquad \mathbf v_{t+1}=M_K(u)\mathbf v_t,\qquad
+\mathbf r^{\mathsf T}M_K(u)^n\mathbf r=\mathbf r^{\mathsf T}\mathbf v_n.
+\]
+\end{proposition}
+
+\begin{proof}
+由于 $\mathbb{E}[r_ir_j]=\delta_{ij}$，有
+\(
+\mathbb{E}[\mathbf r^{\mathsf T}A\mathbf r]=\sum_{i,j}A_{ij}\mathbb{E}[r_ir_j]=\sum_i A_{ii}=\mathrm{Tr}(A)
+\)。
+矩阵自由实现只需展开定义即可。
+\end{proof}
+
+\begin{remark}[误差口径与样本数选择]\label{rem:hutchinson-error}
+对一般矩阵 $A$，Hutchinson 估计的集中界可用标准 Monte Carlo 方式处理；在 $A$ 为\textbf{对称半正定}的常见情形，可使用更强的相对误差样本复杂度界（见 \cite{Hutchinson1989ASE,AvronToledo2011Trace}）。在本文的核指纹设定中，我们采用两层可审计策略：
+\begin{itemize}
+  \item \textbf{固定预算 + 标准误差：}给定样本数 $S$，同时输出 $\widehat{\mathrm{Tr}}_S(M(u)^n)$ 的样本标准误差 $\mathrm{se}=s/\sqrt{S}$（$s$ 为样本标准差），把误差控制写成 $O(S^{-1/2})$ 的可见量；
+  \item \textbf{pilot 自适应：}先用小 $S_0$ 估计方差与尺度，再按目标相对误差阈值放大到所需 $S$（该步骤只改变采样次数，不改变任何数学定义）。
+\end{itemize}
+由于本节的目的是给出一个“可落地、可复现”的协议口径，正文表格默认采用前一种固定预算输出，并把样本数 $S$ 写入表注以便审计。
+\end{remark}
+
+\begin{proposition}[由单流避免全局直积大图：\texorpdfstring{$m$}{m}-流提升]\label{prop:hutchinson-global-lift}
+若全局块级核由 $m$ 条同构同余流张量装配，则
+\[
+M_{\mathrm{glob}}(u)=M_{\mathrm{flow}}(u)^{\otimes m},
+\qquad
+\mathrm{Tr}\!\left(M_{\mathrm{glob}}(u)^n\right)=\left(\mathrm{Tr}\!\left(M_{\mathrm{flow}}(u)^n\right)\right)^m.
+\]
+因此对任意 $n$，只需估计单流的 $\mathrm{Tr}(M_{\mathrm{flow}}(u)^n)$ 即可得到全局迹，并进一步由 Möbius 反演得到全局 primitive 分层谱：
+\[
+B^{\mathrm{glob}}_{n}(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\left(\mathrm{Tr}\!\left(M_{\mathrm{flow}}(u^d)^{n/d}\right)\right)^m.
+\]
+\end{proposition}
+
+\paragraph{可复现实验输出：统一对比表模板}
+脚本 \texttt{scripts/exp\_parallel\_addition\_kernels\_trace\_hutchinson.py} 对 $K_9/K_{13}/K_{21}$ 的单流同步图实现上述协议：在若干采样点 $u\in(0,1)$ 上输出 $\lambda_K(u)$ 与 $\widehat B_{K,n}(u)$ 的对比表（并记录样本数与随机种子），并写出可直接 \verb|\input| 的 \LaTeX\ 表格片段：
+\[
+\texttt{sections/generated/tab\_parallel\_addition\_kernels\_fingerprint\_u\_samples.tex}.
+\]
+该表作为端点谱表（表 \ref{tab:parallel-addition-kernels-endpoint-primitive}）与精确低阶多项式指纹（表 \ref{tab:parallel-addition-kernels-weighted-primitive}）之间的“中间 $u$”桥接层。
+\input{sections/generated/tab_parallel_addition_kernels_fingerprint_u_samples}
+
 \paragraph{复现方式（只需运行一个新脚本）}
 表 \ref{tab:sync-kernel-A-compare} 可由下述单一入口脚本再生成（脚本会自动调用其依赖的已有实验脚本）：
 \[
