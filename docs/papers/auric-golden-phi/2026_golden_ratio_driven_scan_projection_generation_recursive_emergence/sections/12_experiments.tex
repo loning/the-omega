@@ -215,11 +215,13 @@ D_{\mathrm{KL}}(\hat p\|p)\ \le\ \frac{K\log(N+1)+\log(1/\delta)}{N}.
 \input{sections/generated/fig_rotation_kl_vs_n}
 
 \subsection{谱指纹实验协议：并行加法三核的统一对比（不爆内存）}\label{sec:exp-kernel-fingerprint}
-本小节给出一条可复现的“核对比”实验协议：把黄金比例基 $\beta=\varphi$ 上的三类并行加法核（$9/13/21$-local；Algorithm S/W/G 与 A/B 触发条件，见 \cite{FrougnyHellerPelantovaSvobodovaParallelAlgorithmsSlides}）统一压到同一组对象
+本小节给出一条可复现的“核对比”实验协议：把黄金比例基 $\beta=\varphi$ 上的三类并行加法核（$9/13/21$-local；AAMP VIII 总结为 Algorithm I/II/III，细节规则为 Algorithm S/W/G 与 A/B 触发条件，见 \cite{SvobodovaAAMPVIIIParallelAddition,FrougnyHellerPelantovaSvobodovaParallelAlgorithmsSlides}）统一压到同一组对象
 \[
 \bigl(M_K(u),\ \zeta_K(z,u),\ \lambda_K(u),\ B_{K,n}(u)\bigr),
 \]
 从而可系统比较不同核在“carry 活跃度”与“primitive（素数类）闭环结构”上的差异（定义/端点三分见第 \ref{sec:A-kernel-compare-main} 小节与附录 \ref{app:sync-kernel-A-compare}）。
+\par
+作为外部基线：黄金比例基下的加法可由 on-line 有限自动机实现（但在非冗余表示口径下并不满足并行/滑动块可计算性），见 \cite{Frougny1999OnlineAddition}。
 
 \subsubsection{统一输入接口：从在线同步图到带权矩阵族}
 对每个核 $K$，我们先把其局部并行规则编译为\textbf{单流}在线同步图 $\Gamma_K$（同余流解耦：强核 $m=4$ 条流，弱核 $m=2$ 条流；见附录 \ref{app:sync-kernel-A-compare}），并在每条同步边 $e:i\to j$ 上定义“原子活动度”
@@ -267,6 +269,10 @@ B_{K,n}(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\Tr\!\left(M_K(u^d)^{\,n/d}\right).
 \]
 证明链见附录 \ref{app:sync-kernel-A-compare} 的命题 \ref{prop:carry-free-skeleton-three}。
 端点 $u=1$ 在确定性完备读入的编译口径下退化为“只看输入规模”的 full shift 基线：$\zeta_K(z,1)=1/(1-|B_K|z)$（推论 \ref{cor:par-add-u1-degeneracy}）。
+
+\subsubsection{端点 primitive（素数类）谱表：\texorpdfstring{$n\le 20$}{n<=20} 的零误差基准}
+端点 $u\in\{0,1\}$ 的 primitive 轨道数（按轨道计）可由闭式 Möbius 反演从 $\Tr(M_K(u)^n)$ 提取，因此可得到零误差、可跨实现核对的“端点谱表”到底座阶数 $n\le 20$。
+本稿将该谱表作为后续中间 $u\in(0,1)$ 近似指纹的基准底座，其单流与全局块级版本见表 \ref{tab:parallel-addition-kernels-endpoint-primitive}（由脚本 \texttt{scripts/exp\_parallel\_addition\_kernels\_endpoints\_primitive.py} 再生成）。
 
 \subsubsection{中间权重 $u\in(0,1)$：矩阵自由的随机迹估计 \texorpdfstring{$+$}{+} Möbius 反演}
 当 $u\in(0,1)$ 时，$M_K(u)^n$ 很快变得致密，显式形成 $M^n$ 会导致不可承受的时间/内存代价。为保证可扩展性，我们只做\textbf{稀疏矩阵-向量乘}，用随机迹估计近似
