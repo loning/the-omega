@@ -214,3 +214,106 @@ D_{\mathrm{KL}}(\hat p\|p)\ \le\ \frac{K\log(N+1)+\log(1/\delta)}{N}.
 \input{sections/generated/fig_rotation_tv_vs_n}
 \input{sections/generated/fig_rotation_kl_vs_n}
 
+\subsection{谱指纹实验协议：并行加法三核的统一对比（不爆内存）}\label{sec:exp-kernel-fingerprint}
+本小节给出一条可复现的“核对比”实验协议：把黄金比例基 $\beta=\varphi$ 上的三类并行加法核（$9/13/21$-local；Algorithm S/W/G 与 A/B 触发条件，见 \cite{FrougnyHellerPelantovaSvobodovaParallelAlgorithmsSlides}）统一压到同一组对象
+\[
+\bigl(M_K(u),\ \zeta_K(z,u),\ \lambda_K(u),\ B_{K,n}(u)\bigr),
+\]
+从而可系统比较不同核在“carry 活跃度”与“primitive（素数类）闭环结构”上的差异（定义/端点三分见第 \ref{sec:A-kernel-compare-main} 小节与附录 \ref{app:sync-kernel-A-compare}）。
+
+\subsubsection{统一输入接口：从在线同步图到带权矩阵族}
+对每个核 $K$，我们先把其局部并行规则编译为\textbf{单流}在线同步图 $\Gamma_K$（同余流解耦：强核 $m=4$ 条流，弱核 $m=2$ 条流；见附录 \ref{app:sync-kernel-A-compare}），并在每条同步边 $e:i\to j$ 上定义“原子活动度”
+\[
+\kappa(e)\in\ZZ_{\ge 0},
+\]
+为该步新触发的非零 $q$ 事件数（例如 $21$-local 取 $\kappa=\mathbf{1}(q^A\neq 0)+\mathbf{1}(q^B\neq 0)$）。
+据此定义带权邻接矩阵族
+\[
+(M_K(u))_{ij}=\sum_{e:i\to j}u^{\kappa(e)}.
+\]
+端点解释为：
+\[
+u=0:\ \text{仅保留 $\kappa=0$ 边（carry-free 骨架）},\qquad
+u=1:\ \text{忽略 carry 强度（无权基线）}.
+\]
+
+\subsubsection{两变量 $\zeta$、压力曲线与 primitive 分层谱}
+对有限图（SFT）上的带权邻接矩阵，定义两变量 $\zeta$ 指纹（\cite{BrinStuck2002}，亦见第 \ref{sec:zeta-finite-part} 节）
+\[
+\zeta_K(z,u)
+=\exp\!\left(\sum_{n\ge 1}\frac{\Tr(M_K(u)^n)}{n}z^n\right)
+=\frac{1}{\det(I-zM_K(u))}.
+\]
+定义压力（谱半径）曲线
+\[
+\lambda_K(u)=\rho(M_K(u)),\qquad P_K(u)=\log\lambda_K(u),
+\]
+并定义 primitive 分层谱多项式（“素数影子”）
+\[
+B_{K,n}(u)=\sum_{\substack{\gamma\ \mathrm{primitive}\\|\gamma|=n}}u^{\kappa(\gamma)},
+\qquad \kappa(\gamma)=\sum_{e\in\gamma}\kappa(e).
+\]
+由 Witt/Möbius 反演（附录 \ref{app:sync-kernel-A-compare}）有完全显式的提取公式：
+\[
+B_{K,n}(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\Tr\!\left(M_K(u^d)^{\,n/d}\right).
+\]
+
+\subsubsection{端点基准（零误差）：carry-free 三分与无权退化}
+端点 $u=0$ 给出三核 carry-free 骨架的硬分化点：分别共轭于 $7$-全移位、$3$-全移位与黄金均值移位（禁相邻 $11$），对应
+\[
+\zeta_9(z,0)=\frac{1}{1-7z},\qquad
+\zeta_{13}(z,0)=\frac{1}{1-3z},\qquad
+\zeta_{21}(z,0)=\frac{1}{1-z-z^2},
+\]
+证明链见附录 \ref{app:sync-kernel-A-compare} 的命题 \ref{prop:carry-free-skeleton-three}。
+端点 $u=1$ 在确定性完备读入的编译口径下退化为“只看输入规模”的 full shift 基线：$\zeta_K(z,1)=1/(1-|B_K|z)$（推论 \ref{cor:par-add-u1-degeneracy}）。
+
+\subsubsection{中间权重 $u\in(0,1)$：矩阵自由的随机迹估计 \texorpdfstring{$+$}{+} Möbius 反演}
+当 $u\in(0,1)$ 时，$M_K(u)^n$ 很快变得致密，显式形成 $M^n$ 会导致不可承受的时间/内存代价。为保证可扩展性，我们只做\textbf{稀疏矩阵-向量乘}，用随机迹估计近似
+\(
+t_n(u):=\Tr(M_K(u)^n)
+\)
+并再做 Möbius 反演得到 $\widehat B_{K,n}(u)$。
+
+\paragraph{Hutchinson 迹估计（无偏）}
+取 Rademacher 随机向量 $\mathbf r\in\{\pm1\}^N$（坐标独立同分布），则
+\[
+\mathbb{E}\bigl[\mathbf r^{\mathsf T}A\mathbf r\bigr]=\Tr(A),
+\qquad
+\widehat{\Tr}_S(A):=\frac{1}{S}\sum_{s=1}^{S}\mathbf r_s^{\mathsf T}A\mathbf r_s
+\]
+为无偏估计（\cite{Hutchinson1989ASE}；概率型样本复杂度分析见 \cite{AvronToledo2011Trace}）。
+在本文中取 $A=M_K(u)^n$，并通过递推
+\[
+\mathbf v_0=\mathbf r,\qquad \mathbf v_{k+1}=M_K(u)\mathbf v_k
+\]
+计算 $\mathbf r^{\mathsf T}M_K(u)^n\mathbf r=\mathbf r^{\mathsf T}\mathbf v_n$，从而全流程只需 $n$ 次稀疏 matvec。
+
+\paragraph{primitive 分层谱的近似}
+对每个 $u$ 与每个 $n$，以 $\widehat t_n(u)\approx \Tr(M_K(u)^n)$ 代入 Möbius 反演：
+\[
+\widehat B_{K,n}(u):=\frac{1}{n}\sum_{d\mid n}\mu(d)\ \widehat t_{n/d}(u^d).
+\]
+实践中为降低“相消噪声”，我们对同一组随机探针 $\{\mathbf r_s\}$ 同时复用全部 $u^d$ 与全部所需幂次，并先在\textbf{样本层面}完成 Möbius 组合再求均值（common random numbers + correlated combining），以提升稳定性。
+
+\paragraph{多流提升（避免直积大图）}
+全局块级核由 $m\in\{4,2\}$ 条同构同余流张量装配，满足
+\(
+\Tr(M_{\mathrm{glob}}(u)^n)=\Tr(M_{\mathrm{flow}}(u)^n)^m
+\)
+与
+\(
+B_n^{\mathrm{glob}}(u)=\frac1n\sum_{d\mid n}\mu(d)\Tr(M_{\mathrm{flow}}(u^d)^{n/d})^m
+\)
+（推论 \ref{cor:par-add-global-lift-endpoints}），因此所有昂贵计算均可在单流上完成。
+
+\subsubsection{复现方式与输出（表格模板）}
+该协议的可复现实现由脚本固化：
+\begin{itemize}
+  \item 单流 BFS 编译 + 端点基准 + 压力曲线采样：\texttt{scripts/exp\_parallel\_addition\_kernels\_bfs.py}；
+  \item 端点 primitive 谱表（闭式零误差）：\texttt{scripts/exp\_parallel\_addition\_kernels\_endpoints\_primitive.py}；
+  \item 中间 $u$ 的随机迹估计 + Möbius 反演（不爆内存）：\texttt{scripts/exp\_parallel\_addition\_kernels\_trace\_hutchinson.py}。
+\end{itemize}
+表 \ref{tab:parallel-addition-kernels-fingerprint-u-samples} 给出一个最小可用的对比表模板：每行一个核，列包含端点 $\zeta_K(z,0)$、压力曲线 $\lambda_K(u)$ 的采样值、以及若干 $n$ 与 $u$ 下的 $\widehat B_{K,n}(u)$。
+\input{sections/generated/tab_parallel_addition_kernels_fingerprint_u_samples}
+
