@@ -740,6 +740,50 @@ $$
 换言之，第三维的 $\ZZ/5$ 信息不可能被前两维的 $\ZZ/3$ 信息“线性还原”，从而 $c$ 维度引入了真正的新自由度。
 \end{proof}
 
+\begin{proposition}[collision-cocycle 主导的慢模阻塞（\texorpdfstring{$((3,3,5))$}{(3,3,5)}；第三轴 \texorpdfstring{$N_2\bmod 5$}{N2 mod 5}）]\label{prop:arity-335-collision-dominant}
+在 \(((3,3,5))\) 的三维扭曲设定下（第三轴取 $c=N_2(\gamma)\bmod 5$，扭曲角色索引 $j=(j_1,j_2,j_3)\in(\ZZ/3)^2\times(\ZZ/5)$，并令
+\(
+\rho(j):=\rho\bigl(M_{j_1,j_2,j_3}\bigr)
+\)
+为对应扭曲矩阵的谱半径），记最坏扭曲谱半径为
+$$
+\rho_{3,3,5}:=\max_{j\neq (0,0,0)}\rho(j).
+$$
+则该最大值由\textbf{纯碰撞扭曲}实现：存在 $j_3\in\{1,4\}$ 使得
+$$
+\rho_{3,3,5}=\rho(0,0,j_3),
+$$
+并且慢模阻塞完全来自 $\ZZ/5$-值的碰撞 cocycle
+\(
+\xi=\mathbf{1}_{\{d=2\}}
+\)
+（而非来自 $\chi(\gamma)\bmod 3$ 或 $N_-(\gamma)\bmod 3$ 的扭曲）。
+\end{proposition}
+
+\begin{proof}
+按定义，$\rho_{3,3,5}$ 是对全部非平凡角色索引的谱半径最大值。由本节给出的可复现输出片段
+\verb|\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2}|
+中“达到最坏谱半径的非平凡角色索引”为 $(0,0,1),(0,0,4)$，故最大值确由 $(j_1,j_2)=(0,0)$ 的纯第三轴扭曲达到，即
+\(
+\rho_{3,3,5}=\rho(0,0,1)=\rho(0,0,4)
+\)。
+由于 $j_1=j_2=0$，该扭曲对 $\chi(\gamma)\bmod 3$ 与 $N_-(\gamma)\bmod 3$ 不施加任何角色权重，唯一的扭曲来自第三轴（即 $\xi=\mathbf{1}_{\{d=2\}}$ 的 $\ZZ/5$ 角色），从而慢模阻塞由碰撞 cocycle 单独主导。
+\end{proof}
+
+\begin{corollary}[等分布的主相关长度尺度由纯碰撞扭曲给出]\label{cor:arity-335-collision-mixing-scale}
+设 \(\rho_{3,3,5}\) 与 \(\lambda=\rho(M)\) 如上。则 \(((3,3,5))\) 同余类计数的最坏扭曲误差以指数率
+\(
+(\rho_{3,3,5}/\lambda)^n
+\)
+衰减；因此可把“主相关长度尺度”定义为
+$$
+\tau_{\mathrm{mix}}:=\frac{1}{-\log(\rho_{3,3,5}/\lambda)},
+\qquad
+t_{1/2}:=\frac{\log 2}{-\log(\rho_{3,3,5}/\lambda)}.
+$$
+并且按命题 \ref{prop:arity-335-collision-dominant}，该最坏衰减模式由纯碰撞扭曲 $(0,0,1)$ 或 $(0,0,4)$ 产生。
+\end{corollary}
+
 \paragraph{结果（五张 \texorpdfstring{$3\times 3$}{3x3} 切片 \texorpdfstring{$+$}{+} 最坏误差指数 \texorpdfstring{$+$}{+} 两条审计）}
 下述 \LaTeX\ 片段直接给出 $c=0,1,2,3,4$ 的 5 张切片、最坏谱半径比 $\rho_{3,3,5}/\lambda$ 与达到最坏的角色索引，并输出两条审计误差（总和校验与边际一致性）：
 \paragraph{计算闭环（可审计）：三维扭曲 $\Rightarrow$ 扭曲常数 $\Rightarrow$ 傅里叶反演}
@@ -777,6 +821,39 @@ $$
 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py}
 直接生成（\texttt{--third-axis N2}）并输出为可 \verb|\input| 的 \LaTeX\ 片段：
 \input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2}
+
+\paragraph{二级推论（由上述五切片与最坏谱半径比直接推出）}
+为了把“表格输出”进一步压缩为可直接引用的结构性结论，我们额外输出一份仅由上述五切片与最坏谱半径比计算得到的二级摘要（同一脚本生成）：
+\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2_summary}
+
+\begin{corollary}[碰撞同余类的常数级偏置（\texorpdfstring{$S_c$}{Sc} 分解）]\label{cor:arity-335-collision-residue-drift}
+令
+\[
+S_c:=\sum_{a=0}^{2}\sum_{b=0}^{2}C^{(3,3,5)}_{a,b,c},
+\qquad c\in\ZZ/5.
+\]
+则在真实输入 40 状态核的 \(((3,3,5))\) 分层（第三轴取 $c=N_2(\gamma)\bmod 5$）下，可复现输出显示：$S_0$ 显著为正，而 $S_2,S_3,S_4$ 为负，并且 $\sum_{c=0}^4 S_c=\mathsf{M}$。因此在 Abel/Hadamard 有限部（常数级漂移）口径下，primitive 轨道对碰撞同余类 $c$ 的偏置主要体现为“$c=0$ 的强正漂移 + 其余同余类的系统性负漂移”。
+\end{corollary}
+
+\begin{corollary}[三维耦合对 \texorpdfstring{$(a,b)$}{(a,b)} 的依赖在 $c$ 轴上强局部化]\label{cor:arity-335-localized-ab-coupling}
+把每张 $c$-切片看作 $3\times 3$ 矩阵（行 $b$，列 $a$），并令 $\mathrm{sd}(c)$ 为该矩阵在 $9$ 个条目上的标准差（按条目平均）。则可复现输出显示：$\mathrm{sd}(c)$ 随 $c$ 增大呈数量级下降，且在 $c=3,4$ 时切片几乎为常数矩阵（对 $(a,b)$ 的依赖几乎消失）。因此在常数级漂移分辨率下，\(((3,3,5))\) 的非平凡三维耦合主要集中在少数碰撞同余类（特别是 $c=0$ 与 $c=1$）上，而高同余类呈近因子化行为。
+\end{corollary}
+
+\begin{proposition}[\texorpdfstring{$\ZZ/5$}{Z/5} 轴的傅里叶压缩指纹（精确恒等分解）]\label{prop:arity-335-fourier-fingerprint}
+对每个固定的 $(a,b)$，令 $f_{a,b}(c):=C^{(3,3,5)}_{a,b,c}$（$c\in\ZZ/5$），并记 $\omega_5=e^{2\pi i/5}$。定义离散傅里叶系数
+\[
+\widehat f_{a,b}(j):=\frac15\sum_{c=0}^{4} f_{a,b}(c)\,\omega_5^{-jc},
+\qquad j\in\{0,1,2,3,4\}.
+\]
+则对所有 $c$ 有恒等分解
+\[
+f_{a,b}(c)
+=\widehat f_{a,b}(0)
+2\Re\bigl(\widehat f_{a,b}(1)\,\omega_5^{c}\bigr)
+2\Re\bigl(\widehat f_{a,b}(2)\,\omega_5^{2c}\bigr),
+\]
+从而五张切片在 $c$ 轴上的全部信息可被等价地压缩为三张矩阵：均值矩阵 $\widehat f(0)$ 与两张复矩阵 $\widehat f(1),\widehat f(2)$。该分解与其数值（含 $\|\widehat f(1)\|_\infty,\|\widehat f(2)\|_\infty$）由同一脚本输出并可审计复核。
+\end{proposition}
 
 \begin{remark}[对照：第三维取 \texorpdfstring{$N_e\bmod 5$}{Ne mod 5} 的版本]\label{rem:arity-335-ne-mod5}
 若把第三维改为输出计数 $N_e(\gamma)\bmod 5$，则得到另一个同型的 $((3,3,5))$ 常数张量（主项系数同为 $1/45$），其输出片段为
