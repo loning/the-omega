@@ -301,7 +301,16 @@ def build_steps() -> List[Step]:
         Step(
             name="parallel_addition_kernels_weighted_primitive",
             script="exp_parallel_addition_kernels_weighted_primitive.py",
-            args=[],
+            args=[
+                "--nmax-9",
+                "6",
+                "--nmax-13",
+                "4",
+                "--nmax-21",
+                "6",
+                "--method-21",
+                "enum",
+            ],
             expected_outputs=[
                 "artifacts/export/parallel_addition_kernels_weighted_primitive.json",
                 "sections/generated/tab_parallel_addition_kernels_weighted_primitive.tex",

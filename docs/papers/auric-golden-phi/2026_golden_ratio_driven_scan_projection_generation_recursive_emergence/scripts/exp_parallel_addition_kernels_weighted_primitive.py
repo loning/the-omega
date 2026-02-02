@@ -3,14 +3,14 @@
 """
 Compute weighted primitive-orbit fingerprints B_{K,n}(u) for 9/13/21-local kernels.
 
-Key idea (single-flow):
-For each periodic input word w of length n, the deterministic online machine induces
-at least one fixed point of the word-map f_w on states. Empirically for our compiled
-machines, this fixed point is unique; we verify it by converging from two seeds.
+Key idea (single-flow, exact):
+We work directly on the finite single-flow state graph Gamma_K compiled by BFS.
+Each labeled transition contributes a monomial weight u^{kappa(e)}. This yields a
+weighted adjacency matrix M(u) with entries in Z[u].
 
-We then compute the per-period activity kappa_sum on that unique periodic orbit and
-accumulate:
-  a_n(u) = Tr(M(u)^n) = sum_{w in B^n} u^{kappa_sum(w)}  in Z[u].
+We compute the trace polynomials
+  a_n(u) := Tr(M(u)^n) in Z[u]
+exactly by sparse polynomial matrix powering (no enumeration over |B|^n input words).
 
 Finally, we apply Witt/Möbius inversion:
   B_n(u) = (1/n) * sum_{d|n} mu(d) * a_{n/d}(u^d).
@@ -175,6 +175,116 @@ def _poly_to_latex(p: List[int], var: str = "u") -> str:
     return "+".join(terms)
 
 
+# -----------------------------
+# Exact trace polynomials from BFS-compiled graph
+# -----------------------------
+
+
+SparseMat = List[Dict[int, int]]  # row -> {col: count} with integer counts
+
+
+def _mat_zero(n: int) -> SparseMat:
+    return [dict() for _ in range(n)]
+
+
+def _mat_add_inplace(dst: SparseMat, src: SparseMat) -> None:
+    for i in range(len(dst)):
+        if not src[i]:
+            continue
+        di = dst[i]
+        for j, v in src[i].items():
+            di[j] = di.get(j, 0) + v
+
+
+def _mat_mul(A: SparseMat, B: SparseMat) -> SparseMat:
+    n = len(A)
+    out: SparseMat = _mat_zero(n)
+    for i in range(n):
+        if not A[i]:
+            continue
+        oi = out[i]
+        for j, aij in A[i].items():
+            Bj = B[j]
+            if not Bj:
+                continue
+            for k, bjk in Bj.items():
+                oi[k] = oi.get(k, 0) + aij * bjk
+    return out
+
+
+def _trace_from_sparse(M: SparseMat) -> int:
+    s = 0
+    for i, row in enumerate(M):
+        if row:
+            s += row.get(i, 0)
+    return s
+
+
+def _build_base_mats(spec: bfs.KernelSpec, *, prog: bfs.Progress) -> Tuple[List[SparseMat], int, int]:
+    idx, edges = bfs._bfs_states(spec, prog)
+    n_states = len(idx)
+    b = len(spec.alphabet)
+    kmax = 0
+    # First pass: kappa range
+    for _i, _j, _a, kA, kB in edges:
+        k = int(kA) + int(kB)
+        if k > kmax:
+            kmax = k
+    mats: List[SparseMat] = [_mat_zero(n_states) for _ in range(kmax + 1)]
+    for i, j, _a, kA, kB in edges:
+        k = int(kA) + int(kB)
+        mats[k][i][j] = mats[k][i].get(j, 0) + 1
+    return mats, n_states, b
+
+
+def _trace_polys_from_graph(
+    spec: bfs.KernelSpec,
+    n_max: int,
+    *,
+    prog: bfs.Progress,
+    label: str,
+) -> Dict[int, List[int]]:
+    base_mats, n_states, b = _build_base_mats(spec, prog=prog)
+    kmax = len(base_mats) - 1
+
+    # power_mats[d] is the coefficient matrix of u^d in M(u)^n.
+    power_mats: List[SparseMat] = [m for m in base_mats]
+    out: Dict[int, List[int]] = {}
+
+    for n in range(1, n_max + 1):
+        deg_max = n * kmax
+        coeffs = [0] * (deg_max + 1)
+        for d, Md in enumerate(power_mats):
+            coeffs[d] = _trace_from_sparse(Md)
+        coeffs = _poly_trim(coeffs)
+        out[n] = coeffs
+
+        # Sanity: at u=1, trace should be |B|^n for these compiled machines.
+        if int(round(_poly_eval(coeffs, 1.0))) != b**n:
+            raise RuntimeError(f"trace sanity failed for {label} n={n}: a_n(1) != |B|^n")
+
+        prog.tick(f"{label} traces done n={n} deg={len(coeffs)-1} states={n_states}")
+
+        if n == n_max:
+            break
+
+        # Multiply by base: M(u)^{n+1} = M(u)^n * M(u)
+        new_mats: List[SparseMat] = [_mat_zero(n_states) for _ in range((n + 1) * kmax + 1)]
+        for d, Pd in enumerate(power_mats):
+            if not any(Pd):
+                continue
+            for k, Bk in enumerate(base_mats):
+                if not any(Bk):
+                    continue
+                prod = _mat_mul(Pd, Bk)
+                _mat_add_inplace(new_mats[d + k], prod)
+                # Ensure long runs remain auditable (at least one line / 20s).
+                prog.tick(f"{label} mul n={n}->{n+1} deg={d}+{k}")
+        power_mats = new_mats
+
+    return out
+
+
 def _decode_word(code: int, base: int, n: int, alphabet: Sequence[int]) -> List[int]:
     w = [alphabet[0]] * n
     x = code
@@ -214,7 +324,6 @@ def _find_fixed_point(
                 raise RuntimeError("word-map has at least two fixed points (seeds converge to different fixed points)")
             return sa
         sa, sb = sa1, sb1
-    # If not converged, we refuse to silently proceed (would break correctness).
     raise RuntimeError("failed to converge to fixed point within max_iters")
 
 
@@ -226,7 +335,8 @@ def _trace_polys_by_word_enumeration(
     prog: bfs.Progress,
     label: str,
 ) -> Dict[int, List[int]]:
-    # Precompute two seeds: init and a distant reachable state.
+    # This path is only used for K13 by default: its single-flow graph is large,
+    # while word enumeration up to n<=4 is still affordable.
     idx, _edges = bfs._bfs_states(spec, prog)
     states = list(idx.keys())
     seed_a = spec.init_state
@@ -237,12 +347,12 @@ def _trace_polys_by_word_enumeration(
     out: Dict[int, List[int]] = {}
 
     for n in range(1, n_max + 1):
-        deg_max = n * 3  # safe upper bound; we will trim anyway
+        deg_max = n * 3  # safe upper bound; will trim
         poly = [0] * (deg_max + 1)
         total = b**n
         t0 = time.time()
         for code in range(total):
-            if code % max(1, total // 25) == 0 and (time.time() - t0) > 20:
+            if code % max(1, total // 50) == 0 and (time.time() - t0) > 20:
                 prog.tick(f"{label} enumerate n={n} {code}/{total}")
                 t0 = time.time()
             word = _decode_word(code, b, n, alphabet)
@@ -255,10 +365,9 @@ def _trace_polys_by_word_enumeration(
                 deg_max = ksum
             poly[ksum] += 1
         out[n] = _poly_trim(poly)
-        # sanity check at u=1: trace should be |B|^n
         if int(round(_poly_eval(out[n], 1.0))) != total:
             raise RuntimeError(f"trace sanity failed for {label} n={n}: a_n(1) != |B|^n")
-        prog.tick(f"{label} traces done n={n} deg={len(out[n])-1}")
+        prog.tick(f"{label} traces (enum) done n={n} deg={len(out[n])-1}")
     return out
 
 
@@ -291,13 +400,13 @@ def _make_table(rows: List[Dict[str, str]]) -> str:
         r"\caption{两变量 $\zeta_K(z,u)$ 的 primitive 分层谱指纹：单流同步图上 $B_{K,n}(u)$ 的显式多项式（由脚本 \texttt{scripts/exp\_parallel\_addition\_kernels\_weighted\_primitive.py} 生成）。}"
     )
     lines.append(r"\label{tab:parallel-addition-kernels-weighted-primitive}")
-    lines.append(r"\begin{tabular}{@{}lccccc@{}}")
+    lines.append(r"\begin{tabular}{@{}lccp{0.62\textwidth}cc@{}}")
     lines.append(r"\toprule")
-    lines.append(r"核 & $n$ & $B_{K,n}(u)$ & $B_{K,n}(0)$ & $B_{K,n}(1)$ & $\deg_u$ \\")
+    lines.append(r"核 & $n$ & $\deg_u$ & $B_{K,n}(u)$ & $B_{K,n}(0)$ & $B_{K,n}(1)$ \\")
     lines.append(r"\midrule")
     for r in rows:
         lines.append(
-            " & ".join([r["kernel"], r["n"], r["poly"], r["b0"], r["b1"], r["deg"]]) + r" \\"
+            " & ".join([r["kernel"], r["n"], r["deg"], r["poly"], r["b0"], r["b1"]]) + r" \\"
         )
     lines.append(r"\bottomrule")
     lines.append(r"\end{tabular}")
@@ -310,7 +419,14 @@ def main() -> None:
     parser.add_argument("--nmax-9", type=int, default=6)
     parser.add_argument("--nmax-13", type=int, default=4)
     parser.add_argument("--nmax-21", type=int, default=6)
-    parser.add_argument("--max-iters", type=int, default=50, help="Max iterations to converge to word fixed point")
+    parser.add_argument("--max-iters", type=int, default=60, help="Max iterations to converge to word fixed point (K13)")
+    parser.add_argument(
+        "--method-21",
+        type=str,
+        default="enum",
+        choices=["enum", "graph"],
+        help="How to compute traces for K21 (enum is exact but grows as 5^n; graph is exact but can be heavy for large n)",
+    )
     parser.add_argument("--no-output", action="store_true")
     args = parser.parse_args()
 
@@ -336,8 +452,17 @@ def main() -> None:
         if "9-local" in sp.name:
             a_polys = _trace_polys_closed_form_k9(nmax)
             prog.tick(f"{sp.name} traces (closed form) done nmax={nmax}")
+        elif "13-local" in sp.name:
+            a_polys = _trace_polys_by_word_enumeration(
+                sp, nmax, max_iters=args.max_iters, prog=prog, label=sp.name
+            )
         else:
-            a_polys = _trace_polys_by_word_enumeration(sp, nmax, max_iters=args.max_iters, prog=prog, label=sp.name)
+            if args.method_21 == "graph":
+                a_polys = _trace_polys_from_graph(sp, nmax, prog=prog, label=sp.name)
+            else:
+                a_polys = _trace_polys_by_word_enumeration(
+                    sp, nmax, max_iters=args.max_iters, prog=prog, label=sp.name
+                )
         B_polys = _primitive_from_traces_polys(a_polys, nmax)
 
         payload["kernels"].append(
