@@ -570,6 +570,132 @@ B_n(u)=\frac{\lambda_1(u)^n}{n}+O\!\left(\frac{|\lambda_2(u)|^n}{n}\right)\qquad
 
 更完整的脚本复现、状态机构图与数值输出见附录 \ref{app:sync-kernel-A-compare} 与生成表格。
 
+\paragraph{Chebotarev/Artin-\texorpdfstring{$L$}{L} 类比：把“同余类素数分布”内生到核}
+本段把 primitive 轨道的“素数影子”从\emph{总量}升级为\emph{按同余类分层的分布律}。关键点是：对核的同步图在边上附加一个有限阿贝尔群标签（cocycle），即可定义一族扭曲行列式（扭曲 $\zeta/L$），并得到一个完全可审计的“Chebotarev 型”误差公式；其误差指数由\emph{非平凡扭曲的谱半径}显式控制。
+
+\begin{definition}[有限群标签与扭曲矩阵族]\label{def:kernel-group-twist}
+取有限阿贝尔群 $G$（典型取 $G=\ZZ/m$ 或其直积），并给单流同步图 $\Gamma_K$ 的每条边 $e$ 赋一个群标签 $g(e)\in G$。
+对任意角色（群字符）$\chi\in\widehat G$ 与温度参数 $u\in(0,1]$，定义扭曲矩阵
+\[
+M_{K,\chi}(u)_{ij}:=\sum_{e:i\to j}u^{\kappa(e)}\,\chi(g(e))\in\CC.
+\]
+对应的扭曲 $\zeta/L$-函数定义为
+\[
+L_{K,\chi}(z,u):=\frac{1}{\det(I-zM_{K,\chi}(u))}.
+\]
+当 $\chi=\mathbf{1}$ 为平凡角色时，$M_{K,\mathbf{1}}(u)=M_K(u)$，从而 $L_{K,\mathbf{1}}(z,u)=\zeta_K(z,u)$。
+\end{definition}
+
+\begin{definition}[同余类分层的 primitive 谱]\label{def:kernel-chebotarev-spectrum}
+对 $c\in G$，定义按“Frobenius 标签”分层的 primitive 轨道谱
+\[
+B_{n,c}(u):=\sum_{\substack{\gamma\in\mathcal{P}\\|\gamma|=n\\g(\gamma)=c}}u^{\kappa(\gamma)}.
+\]
+对角色 $\chi\in\widehat G$，定义扭曲 primitive 谱
+\[
+B_n(\chi;u):=\sum_{\substack{\gamma\in\mathcal{P}\\|\gamma|=n}}\chi(g(\gamma))\,u^{\kappa(\gamma)}.
+\]
+\end{definition}
+
+\begin{proposition}[角色傅里叶反演（Chebotarev 分层的精确恒等式）]\label{prop:kernel-chebotarev-fourier}
+在定义 \ref{def:kernel-chebotarev-spectrum} 的记号下，对任意 $c\in G$ 有精确恒等式
+\[
+B_{n,c}(u)=\frac{1}{|G|}\sum_{\chi\in\widehat G}\overline{\chi(c)}\,B_n(\chi;u).
+\]
+\end{proposition}
+
+\begin{proof}
+对每条 primitive 轨道 $\gamma$，用有限阿贝尔群的角色正交关系
+\(
+\frac{1}{|G|}\sum_{\chi\in\widehat G}\overline{\chi(c)}\,\chi(g(\gamma))=\mathbf{1}_{\{g(\gamma)=c\}}
+\)
+逐项展开即可。
+\end{proof}
+
+\begin{theorem}[核的 Chebotarev 型主项与指数误差（完全可计算）]\label{thm:kernel-chebotarev-exp}
+设 $u\in(0,1]$ 且 $M_K(u)$ 原始，记 $\lambda_1(u)=\rho(M_K(u))$，并令
+\[
+\eta(u):=\max_{\chi\in\widehat G,\ \chi\ne\mathbf{1}}\rho\bigl(M_{K,\chi}(u)\bigr),
+\qquad
+\Lambda(u):=\max\{|\lambda_2(u)|,\eta(u)\}.
+\]
+则对每个 $c\in G$，有
+\[
+B_{n,c}(u)=\frac{1}{|G|}\cdot\frac{\lambda_1(u)^n}{n}+O\!\left(\frac{\Lambda(u)^n}{n}\right)\qquad(n\to\infty).
+\]
+其中误差指数 $\Lambda(u)/\lambda_1(u)$ 只依赖于核在该群标签下的最坏非平凡扭曲谱半径。
+\end{theorem}
+
+\begin{proof}
+由命题 \ref{prop:kernel-chebotarev-fourier}，
+\(
+B_{n,c}(u)=|G|^{-1}\sum_{\chi}\overline{\chi(c)}B_n(\chi;u).
+\)
+当 $\chi=\mathbf{1}$ 时，$B_n(\mathbf{1};u)=B_n(u)$，由定理 \ref{thm:kernel-weighted-prime-orbit} 得到主项与误差 $O(|\lambda_2(u)|^n/n)$。
+当 $\chi\ne\mathbf{1}$ 时，$B_n(\chi;u)$ 由同一 Möbius 反演公式
+\(
+B_n(\chi;u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\Tr(M_{K,\chi^d}(u^d)^{\,n/d})
+\)
+给出，且对任意有限矩阵 $A$ 有粗界 $|\Tr(A^m)|\le (\dim A)\,\rho(A)^m$；因此
+\(
+B_n(\chi;u)=O(\eta(u)^n/n)
+\)
+一致成立。合并两类误差即得结论。
+\end{proof}
+
+\begin{definition}[核版 RH/GRH（谱隙的平方根界）]\label{def:kernel-rh}
+在固定温度 $u$ 下，定义核的“RH 型谱隙条件”
+\[
+\textsf{RH}_K(u):\quad \max_{i\ge 2}|\lambda_i(u)|\le \lambda_1(u)^{1/2},
+\]
+以及在给定有限群标签 $G$ 下的“GRH 型扭曲谱隙条件”
+\[
+\textsf{GRH}_{K,G}(u):\quad \eta(u)\le \lambda_1(u)^{1/2}.
+\]
+\end{definition}
+
+\begin{corollary}[平方根级误差：核版 RH/GRH 的“素数定理形状”]\label{cor:kernel-rh-sqrt-error}
+若 $\textsf{RH}_K(u)$ 成立，则
+\[
+B_n(u)=\frac{\lambda_1(u)^n}{n}+O\!\left(\frac{\lambda_1(u)^{n/2}}{n}\right).
+\]
+若进一步 $\textsf{GRH}_{K,G}(u)$ 成立，则对每个 $c\in G$，
+\[
+B_{n,c}(u)=\frac{1}{|G|}\cdot\frac{\lambda_1(u)^n}{n}+O\!\left(\frac{\lambda_1(u)^{n/2}}{n}\right).
+\]
+\end{corollary}
+
+\begin{proof}
+把定义 \ref{def:kernel-rh} 代入定理 \ref{thm:kernel-weighted-prime-orbit} 与定理 \ref{thm:kernel-chebotarev-exp} 即得。
+\end{proof}
+
+\begin{proposition}[Artin 分解的有限维版本（正规覆盖的行列式因子化）]\label{prop:kernel-artin-factorization}
+在定义 \ref{def:kernel-group-twist} 的框架下，令 $M_{K,G}(u)$ 为作用在 $\CC^{V\times G}$ 上的“群扩张邻接算子”：
+它把 $(i,g)$ 送到所有形如 $(j,\,g+g(e))$ 的后继，并赋权 $u^{\kappa(e)}$（其中 $e:i\to j$）。
+则有行列式恒等式
+\[
+\det(I-zM_{K,G}(u))=\prod_{\chi\in\widehat G}\det(I-zM_{K,\chi}(u)).
+\]
+等价地，
+\(
+\zeta_{K,G}(z,u)=\prod_{\chi\in\widehat G}L_{K,\chi}(z,u)
+\)
+（$\zeta_{K,G}:=1/\det(I-zM_{K,G}(u))$）。
+\end{proposition}
+
+\begin{proof}
+按群坐标对 $\CC^{V\times G}$ 做离散傅里叶变换，把正则表示分解为一维不可约表示之直和；在该分解下，$M_{K,G}(u)$ 块对角化为各 $M_{K,\chi}(u)$ 的直和。取行列式得结论。
+\end{proof}
+
+\begin{remark}[零温“第一激发态”的可计算读出：最小平均回路]\label{rem:kernel-min-cycle-mean}
+给定边权 $w(e):=\kappa(e)$，定义周期平均 carry 密度
+\(
+\bar\kappa(\gamma)=\kappa(\gamma)/|\gamma|.
+\)
+则 $\min_{\gamma}\bar\kappa(\gamma)$ 等于有向图的最小平均回路值，可用 Karp 算法在多项式时间内求出（\cite{Karp1978MinCycleMean}）。
+对本文 $9/13/21$-local 三核，该最小值为 $0$（存在 carry-free 周期）；而把 carry-free 本质分量收缩后，仍可用同一算法给出“必须产生 carry 的周期族”中最小的正平均密度，作为零温下的第一激发态指纹。
+\end{remark}
+
 \begin{corollary}[折叠公式：加法即“叠加后归一化”]\label{cor:add-as-fold}
 将 $c,d\in X_\infty$ 视为 $\mathcal{D}$ 中的 $0/1$ 配置，令其逐点和为
 \[

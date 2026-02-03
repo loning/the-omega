@@ -407,6 +407,11 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
                 s += C(a, b, c)
         S_c.append(s)
 
+    # Slice means over (a,b): \bar C_c = (1/9) sum_{a,b} C_{a,b,c}.
+    mean_c: List[float] = []
+    for c in range(5):
+        mean_c.append(S_c[c] / 9.0)
+
     # Within-slice standard deviation across (a,b) for each c.
     sd_c: List[float] = []
     for c in range(5):
@@ -414,6 +419,23 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
         mu = sum(vals) / 9.0
         var = sum((x - mu) ** 2 for x in vals) / 9.0
         sd_c.append(var**0.5)
+
+    # Frobenius deviation from rank-0 (all-ones) slice:
+    #   Delta_c = || C_{..c} - mean_c * 11^T ||_F
+    # and max absolute entry deviation.
+    delta_c: List[float] = []
+    max_dev_c: List[float] = []
+    for c in range(5):
+        mu = mean_c[c]
+        sq = 0.0
+        md = 0.0
+        for a in range(3):
+            for b in range(3):
+                d = C(a, b, c) - mu
+                sq += d * d
+                md = max(md, abs(d))
+        delta_c.append(sq**0.5)
+        max_dev_c.append(md)
 
     # Discrete Fourier coefficients along c for each (a,b).
     # For f(c) on Z/5: f(c) = sum_{j=0}^4 \hat f(j) * omega^{jc}, with
@@ -437,6 +459,14 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     max_abs_A1 = float(np.max(np.abs(A1)))
     max_abs_A2 = float(np.max(np.abs(A2)))
     ratio_A2_A1 = (max_abs_A2 / max_abs_A1) if max_abs_A1 > 0 else 0.0
+
+    # DFT of aggregated drift S_c on Z/5: \hat S(j) = (1/5) sum_c S_c omega^{-jc}.
+    Shat = []
+    for j in range(5):
+        acc = 0.0 + 0.0j
+        for c in range(5):
+            acc += S_c[c] * (omega ** (-j * c))
+        Shat.append(acc / 5.0)
 
     # Mixing-length proxies from rho_ratio.
     tau_mix = (1.0 / (-math.log(rho_ratio))) if (0.0 < rho_ratio < 1.0) else float("inf")
@@ -488,6 +518,31 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     lines.append("$$")
     vec_sd = ",".join([fmt_sd(x) for x in sd_c])
     lines.append(f"\\bigl(\\mathrm{{sd}}(c=0),\\dots,\\mathrm{{sd}}(c=4)\\bigr)\\approx\\bigl({vec_sd}\\bigr).")
+    lines.append("$$")
+
+    lines.append("\\paragraph{（iii$'$）近因子化诊断：切片到 rank-0 的偏离}")
+    lines.append("定义切片均值 $\\overline C_c:=\\frac19\\sum_{a,b}C_{a,b,c}$，并以 Frobenius 范数度量偏离")
+    lines.append("$$")
+    lines.append("\\Delta_c:=\\left\\|\\bigl(C_{a,b,c}\\bigr)_{a,b}-\\overline C_c\\,\\mathbf{1}\\mathbf{1}^\\top\\right\\|_F,\\qquad")
+    lines.append("\\max\\mathrm{dev}(c):=\\max_{a,b}\\left|C_{a,b,c}-\\overline C_c\\right|.")
+    lines.append("$$")
+    lines.append("数值上")
+    lines.append("$$")
+    vec_d = ",".join([fmt_sd(x) for x in delta_c])
+    lines.append(f"(\\Delta_0,\\Delta_1,\\Delta_2,\\Delta_3,\\Delta_4)\\approx({vec_d}).")
+    lines.append("$$")
+    lines.append("并且")
+    lines.append("$$")
+    vec_md = ",".join([f"{x:.6g}" for x in max_dev_c])
+    lines.append(f"(\\max\\mathrm{{dev}}(0),\\dots,\\max\\mathrm{{dev}}(4))\\approx({vec_md}).")
+    lines.append("$$")
+
+    lines.append("\\paragraph{（v）$S_c$ 的 $\\ZZ/5$-傅里叶结构（聚合漂移）}")
+    lines.append("令 $\\widehat S(j):=\\frac15\\sum_{c=0}^{4}S_c\\,\\omega_5^{-jc}$。则")
+    lines.append("$$")
+    lines.append(
+        f"\\widehat S(0)\\approx {Shat[0].real:.12f},\\qquad |\\widehat S(1)|=|\\widehat S(4)|\\approx {abs(Shat[1]):.12f},\\qquad |\\widehat S(2)|=|\\widehat S(3)|\\approx {abs(Shat[2]):.12f}."
+    )
     lines.append("$$")
 
     lines.append("\\paragraph{（iv）$\\mathbb{{Z}}/5$ 轴的傅里叶压缩指纹（均值 + 两个复模）}")

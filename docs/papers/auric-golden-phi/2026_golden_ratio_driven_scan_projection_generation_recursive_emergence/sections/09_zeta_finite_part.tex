@@ -839,6 +839,20 @@ S_c:=\sum_{a=0}^{2}\sum_{b=0}^{2}C^{(3,3,5)}_{a,b,c},
 把每张 $c$-切片看作 $3\times 3$ 矩阵（行 $b$，列 $a$），并令 $\mathrm{sd}(c)$ 为该矩阵在 $9$ 个条目上的标准差（按条目平均）。则可复现输出显示：$\mathrm{sd}(c)$ 随 $c$ 增大呈数量级下降，且在 $c=3,4$ 时切片几乎为常数矩阵（对 $(a,b)$ 的依赖几乎消失）。因此在常数级漂移分辨率下，\(((3,3,5))\) 的非平凡三维耦合主要集中在少数碰撞同余类（特别是 $c=0$ 与 $c=1$）上，而高同余类呈近因子化行为。
 \end{corollary}
 
+\begin{corollary}[碰撞稀少但主导慢模与常数各向异性（near-resonant cocycle 诊断）]\label{cor:arity-335-rare-collision-dominant}
+在真实输入 40 状态核的三势压力 $P(\theta_e,\theta_-,\theta_2)=\log\rho(M_\theta)$ 下，碰撞触发 $\varphi_2=\mathbf{1}_{\{d=2\}}$ 的典型密度为
+\[
+\partial_{\theta_2}P(0)=\frac{3-\sqrt5}{10}\approx 0.076393,
+\]
+即在最大熵基准附近碰撞事件是稀少的（见上文关于 $\nabla P(0)$ 的闭式）。
+但对 \(((3,3,5))\) 的 Dirichlet--Mertens 分层（第三轴为 $c=N_2(\gamma)\bmod 5$），可复现输出同时显示：
+\begin{itemize}
+  \item \textbf{慢模主导：}最坏扭曲谱半径由纯碰撞扭曲达到（命题 \ref{prop:arity-335-collision-dominant}），其衰减尺度由推论 \ref{cor:arity-335-collision-mixing-scale} 给出；
+  \item \textbf{常数各向异性：}聚合漂移向量 $S_c=\sum_{a,b}C^{(3,3,5)}_{a,b,c}$ 在 $c$ 轴上呈强非均匀分配（推论 \ref{cor:arity-335-collision-residue-drift} 与二级摘要输出）。
+\end{itemize}
+因此尽管碰撞事件的典型密度很低，它仍能同时决定最坏等分布误差的指数尺度与常数级漂移的主要方向；这正是“近共边界/近旋转因子”的经验信号：稀少事件携带相干相位，使得其 \(\ZZ/5\)-cocycle 在统计与素数影子两端同时成为瓶颈。
+\end{corollary}
+
 \begin{proposition}[\texorpdfstring{$\ZZ/5$}{Z/5} 轴的傅里叶压缩指纹（精确恒等分解）]\label{prop:arity-335-fourier-fingerprint}
 对每个固定的 $(a,b)$，令 $f_{a,b}(c):=C^{(3,3,5)}_{a,b,c}$（$c\in\ZZ/5$），并记 $\omega_5=e^{2\pi i/5}$。定义离散傅里叶系数
 \[
@@ -849,8 +863,8 @@ S_c:=\sum_{a=0}^{2}\sum_{b=0}^{2}C^{(3,3,5)}_{a,b,c},
 \[
 f_{a,b}(c)
 =\widehat f_{a,b}(0)
-2\Re\bigl(\widehat f_{a,b}(1)\,\omega_5^{c}\bigr)
-2\Re\bigl(\widehat f_{a,b}(2)\,\omega_5^{2c}\bigr),
++2\Re\bigl(\widehat f_{a,b}(1)\,\omega_5^{c}\bigr)
++2\Re\bigl(\widehat f_{a,b}(2)\,\omega_5^{2c}\bigr),
 \]
 从而五张切片在 $c$ 轴上的全部信息可被等价地压缩为三张矩阵：均值矩阵 $\widehat f(0)$ 与两张复矩阵 $\widehat f(1),\widehat f(2)$。该分解与其数值（含 $\|\widehat f(1)\|_\infty,\|\widehat f(2)\|_\infty$）由同一脚本输出并可审计复核。
 \end{proposition}
