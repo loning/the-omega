@@ -210,6 +210,30 @@ Z=E\circ M\circ T.
 序投影 $P_{\le}$ 指把本体态映射到有序约束的读出证书（如符号、比较结果或区间约束），其目标是把“$0\le r<b$”一类的全局序关系编码为可观测输出。与 $P_Z$ 不同，$P_{\le}$ 一般不是环同态，也不保证局部可并行化；其读出通常需要跨窗口聚合，因此是不可并行增长的主要来源。
 \end{definition}
 
+\begin{definition}[温度化序投影 $\mathrm{PROJ}_u$（软序门）]\label{def:pom-proj-temp}
+令 $\Gamma$ 为某个用于序/约束读出的有限图核（例如比较、区间约束或 residue 分层核），并设每条边 $e$ 具有一个非负可加代价势
+\[
+E(e)\in\ZZ_{\ge 0},
+\qquad
+E(\gamma)=\sum_{e\in\gamma}E(e).
+\]
+对 $u\in(0,1]$，定义带权邻接矩阵
+\[
+M_E(u)_{ij}:=\sum_{e:i\to j}u^{E(e)}.
+\]
+令 $\mu_u$ 为该带权 SFT 的平衡态/Parry 测度（等价地由 $M_E(u)$ 的 Perron--Frobenius 特征向量给出的一步马尔可夫测度）。对任一证书读出函数 $R$（例如比较符号、商余区间标签、或同余类标签），定义\textbf{温度化序投影}为其在 $\mu_u$ 下的推前分布：
+\[
+\mathrm{PROJ}_u(R):=R_\ast\mu_u.
+\]
+当 $u$ 接近 $1$ 时，$\mathrm{PROJ}_u$ 体现“软约束/平均读出”；当 $u$ 减小（$\beta=-\log u$ 增大）时，读出逐步向低代价（更满足约束/更接近最优）的路径集合集中。
+\end{definition}
+
+\begin{remark}[硬序投影作为零温极限]\label{rem:pom-order-as-zero-temp}
+在局部常势（边势）设定下，零温极限 $u\to 0$（等价 $\beta\to+\infty$）把平衡态 $\mu_u$ 推向\emph{基态集合}：支持在使平均代价 $\bar E=\lim_{n\to\infty}E(\gamma_n)/|\gamma_n|$ 最小的周期/子移位分量上（参见 \cite{ChazottesGambaudoUgalde2011ZeroTempLocConst} 的一般结论）。因此在机制层面，序投影 $P_{\le}$ 可被理解为“软序门 $\mathrm{PROJ}_u$ 在零温下的硬化极限”：从加权平均转为选择/可行性筛选（典型为 $\arg\min$ 结构），这也是 $P_{\le}$ 不可约地引入不可并行读出深度的根源。
+
+在有限图上，零温基态可由最小平均回路权精确表征：令 $\phi_\theta=\langle\theta,\Phi\rangle$ 或一般取 $\phi=E$，则最小平均代价等于图上的 min-mean-cycle 值，并可用 Karp 算法多项式时间求出（\cite{Karp1978MinCycleMean}）。这把“硬序投影”的核心瓶颈转化为一个可审计的组合证书接口。
+\end{remark}
+
 \begin{remark}[范畴边界与不可并行增长]\label{rem:pom-factor-boundary}
 任意滑动块因子码均具有常数在线延迟，因此所有随规模增长的读出深度必然来自非因子码投影（典型即 $P_{\le}$）或把混合留在演化深度 $D_U$ 中。这一“范畴边界”把增长项从算法技巧提升为结构性约束。
 \end{remark}
@@ -1455,6 +1479,7 @@ n\ \gtrsim\ \frac{\log(1/\varepsilon)}{\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)
   \item \texttt{PROJ\_NORM}：执行 $P_Z$；
   \item \texttt{PROJ\_PRIM}：执行 $P_{\mathrm{prim}}$（trace $\Rightarrow$ primitive）；
   \item \texttt{PROJ\_ORDER}：执行 $P_{\le}$；
+  \item \texttt{PROJ\_TEMP($u$)}：执行温度化序投影 $\mathrm{PROJ}_u$（定义 \ref{def:pom-proj-temp}；$u\to 0$ 为零温硬化极限）；
   \item \texttt{PROJ\_CHI}：执行 $P_\chi$（同余/角色分层投影）；
   \item \texttt{TWIST($\chi$)}：对角色/同余类做扭曲读出；
   \item \texttt{CLEAN}：排空有限余量并回写稳定地址。
