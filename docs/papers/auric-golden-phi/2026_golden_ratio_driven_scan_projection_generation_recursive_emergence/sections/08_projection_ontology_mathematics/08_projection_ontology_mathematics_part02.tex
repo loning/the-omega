@@ -250,6 +250,101 @@ g(u)=\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)\ \ge\ \tfrac12\log\lambda_1(u),
 因此在平方根界成立时，序/角色读出的本体时间尺度被主尺度 $\lambda_1(u)$ 的对数统一控制。
 \end{corollary}
 
+\subsection{高阶碰撞核与空间损失谱}\label{subsec:pom-higher-collision-spectrum}
+本小节把规范投影 $P_Z$ 在有限分辨率下的“纤维残差”从一个平均压缩率提升为一族可审计的谱指纹。记折叠纤维多重度
+$$
+d_m(x):=\bigl|\Fold_m^{-1}(x)\bigr|,\qquad x\in X_m,
+$$
+并定义 $k$ 阶碰撞矩（$k$-tuple 同像计数）
+$$
+S_k(m):=\sum_{x\in X_m} d_m(x)^k
+=\Bigl|\{(\omega^{(1)},\dots,\omega^{(k)})\in\Omega_m^k:\ \Fold_m(\omega^{(1)})=\cdots=\Fold_m(\omega^{(k)})\}\Bigr|.
+$$
+当 $k=2$ 时，$S_2(m)$ 即二体碰撞计数，控制了 Fold 输出分布的 Rényi-2 指纹；更一般的 $k$ 给出一整条矩谱。
+
+\subsubsection{一般 \texorpdfstring{$k$}{k} 的 moment-kernel \texorpdfstring{$A_k$}{Ak}：存在性与 PF 主谱}\label{subsec:pom-ak-existence}
+\begin{theorem}[一般 $k$ 的碰撞核与 Perron 主谱]\label{thm:pom-collision-kernel-ak}
+对每个固定整数 $k\ge 2$，存在一个有限状态的非负整数矩阵 $A_k$（可视为某个 SFT 的邻接矩阵）以及非负整数向量 $u_k,v_k$，使得对所有充分大的 $m$ 有
+\[
+S_k(m)=u_k^{\mathsf T}\,A_k^{\,m}\,v_k.
+\]
+从而极限
+\[
+\lim_{m\to\infty}\frac{1}{m}\log S_k(m)=\log r_k
+\]
+存在，其中 $r_k:=\rho(A_k)>0$ 为 Perron--Frobenius 主特征值（谱半径）。
+\end{theorem}
+\begin{proof}[证明思路（可构造，审计链闭合）]
+关键输入事实是：$\Fold_\infty$ 可由固定延迟的确定性有限状态在线转导器实现（定理 \ref{thm:online-delay-fold}），因此有限分辨率的 $\Fold_m$ 亦可视为“有限状态同步图 + 末端函数”的组合读出。
+
+令该转导器的状态集为 $Q$，一步转移由“读入一位 $\Rightarrow$ 输出一位 + 状态更新”的确定性规则给出。构造其 $k$ 重同步积自动机：状态为 $Q^k$，一步同时读入 $(d^{(1)},\dots,d^{(k)})\in\{0,1\}^k$，并得到 $k$ 个输出位 $(e^{(1)},\dots,e^{(k)})\in\{0,1\}^k$ 及下一状态。再施加\textbf{相等约束} $e^{(1)}=\cdots=e^{(k)}$（并把末端函数的有限输出也一并纳入该相等约束：可通过把“末端窗口”并入状态来实现）。这样得到一个有限有向图，其边的重数等于满足相等约束的输入 $k$-tuple 数。
+
+于是长度为 $m$ 的可接受路径条数正是“$k$ 个输入词被转导到同一个输出词”的计数，也即 $S_k(m)$。取该图的邻接矩阵为 $A_k$，并用起止向量编码初态集合与末端函数的有限修正，即得到 $S_k(m)=u_k^{\mathsf T}A_k^{m}v_k$（对小 $m$ 的边界项可吸收进“充分大”的阈值）。
+
+最后，对 $A_k$ 的本质强连通分量应用 Perron--Frobenius 定理：主谱半径 $r_k$ 控制路径数的指数增长率，从而得到所述极限。
+\end{proof}
+
+\begin{remark}[与 $k=2,3,4$ 的一致性检查（已生成指纹）]\label{rem:pom-ak-consistency}
+当 $k=2,3,4$ 时，本文已有最小有限状态“碰撞核”实现（分别记为 $A_2,A_3,A_4$），从而 $r_k$ 可由有限矩阵的谱半径精确给出，并已汇总为 Rényi 指纹表
+\[
+\texttt{sections/generated/tab\_fold\_collision\_renyi\_spectrum.tex}.
+\]
+此外，$k=4,\dots,8$ 的 $S_k(m)$ 已给出经枚举核验的整系数递推（可审计证据表
+\(
+\texttt{sections/generated/tab\_fold\_collision\_moment\_recursions.tex}
+\)
+；入口脚本见 \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py}）。
+\end{remark}
+
+\subsubsection{由 \texorpdfstring{$r_k$}{rk} 导出的空间损失谱：Rényi 族与多重分形上包络}\label{subsec:pom-multifractal-from-rk}
+定义 Fold 输出分布（对 $\Omega_m$ 上均匀输入的推前）为
+\[
+\pi_m(x):=\frac{d_m(x)}{2^m},\qquad x\in X_m,
+\]
+并记“空间损失密度”（每步保留的微态对数密度）
+\[
+s_m(x):=\frac{1}{m}\log d_m(x).
+\]
+对整数 $q\ge 2$，
+\[
+\sum_{x\in X_m}\pi_m(x)^q
+=\frac{1}{2^{qm}}\sum_x d_m(x)^q
+=\frac{S_q(m)}{2^{qm}}.
+\]
+由定理 \ref{thm:pom-collision-kernel-ak} 及 $S_q(m)=\Theta(r_q^m)$，可定义压力（离散 $q$-谱）
+\[
+P(q):=\log r_q-q\log 2,
+\]
+并得到 Rényi 投影熵率族
+\[
+h_q:=\frac{1}{q-1}\Bigl(q\log 2-\log r_q\Bigr)= -\frac{P(q)}{q-1}.
+\]
+表 \ref{tab:fold_collision_renyi_spectrum} 给出了 $q=2,3,4$ 的精确值（有限状态核）与若干更高阶的枚举指纹。
+
+\begin{proposition}[矩谱给出的多重分形上包络（Legendre--Fenchel 口径）]\label{prop:pom-fold-multifractal-envelope}
+设 $P$ 仅在整数 $q\ge 2$ 上给定。令 $\widetilde P:\RR_{\ge 2}\to\RR\cup\{+\infty\}$ 为集合点 $\{(q,P(q)):\ q\in\ZZ_{\ge 2}\}$ 的\emph{下闭包凸延拓}（即最小的下半连续凸函数，使得 $\widetilde P(q)\le P(q)$ 对所有整数 $q\ge2$ 成立）。
+定义
+\[
+f^\star(s):=\inf_{q\ge 2}\bigl(qs-\widetilde P(q)\bigr)-\log 2,
+\]
+并定义“近似层集增长率”
+\[
+f(s):=\lim_{\varepsilon\to 0}\limsup_{m\to\infty}\frac{1}{m}\log\Bigl|\{x\in X_m:\ |s_m(x)-s|<\varepsilon\}\Bigr|.
+\]
+则对所有 $s$ 有上界 $f(s)\le f^\star(s)$。因此只要能计算 $\{r_q\}_{q\ge 2}$，就能得到一条可审计的“空间损失谱上包络” $f^\star(s)$。
+\end{proposition}
+\begin{proof}[证明要点]
+对任意 $q\ge 2$ 与任意集合 $A\subseteq X_m$，由 Markov 不等式与
+\(
+\sum_x \pi_m(x)^q=S_q(m)/2^{qm}
+\)
+可把层集基数用 $S_q(m)$ 控制；再用 $S_q(m)=\Theta(r_q^m)$ 得到指数上界。对 $q$ 取最优并以凸延拓吸收“只在整数处已知”的限制，即得结论。细节与第 \ref{subsec:chi-ldp} 小节的 Legendre 估价在结构上同型（只是此处的参数轴是 $q$ 而非连续倾斜参数 $t$）。
+\end{proof}
+
+\input{sections/generated/tab_fold_collision_renyi_spectrum}
+
+\input{sections/generated/tab_fold_collision_moment_recursions}
+
 \subsection{空间—时间对偶与资源函数}\label{subsec:pom-resources}
 \begin{definition}[嵌入—演化—投影正规形]\label{def:pom-normal-form}
 对分辨率 $n$ 的运算 $f_n$，定义其正规形为
