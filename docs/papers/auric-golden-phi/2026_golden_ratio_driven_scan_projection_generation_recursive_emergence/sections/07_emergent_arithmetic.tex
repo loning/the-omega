@@ -574,16 +574,16 @@ B_n(u)=\frac{\lambda_1(u)^n}{n}+O\!\left(\frac{|\lambda_2(u)|^n}{n}\right)\qquad
 本段把 primitive 轨道的“素数影子”从\emph{总量}升级为\emph{按同余类分层的分布律}。关键点是：对核的同步图在边上附加一个有限阿贝尔群标签（cocycle），即可定义一族扭曲行列式（扭曲 $\zeta/L$），并得到一个完全可审计的“Chebotarev 型”误差公式；其误差指数由\emph{非平凡扭曲的谱半径}显式控制。
 
 \begin{definition}[有限群标签与扭曲矩阵族]\label{def:kernel-group-twist}
-取有限阿贝尔群 $G$（典型取 $G=\ZZ/m$ 或其直积），并给单流同步图 $\Gamma_K$ 的每条边 $e$ 赋一个群标签 $g(e)\in G$。
-对任意角色（群字符）$\chi\in\widehat G$ 与温度参数 $u\in(0,1]$，定义扭曲矩阵
+取有限群 $G$（实践中常取阿贝尔群 $G=\ZZ/m$ 或其直积，但本定义允许非阿贝尔情形），并给单流同步图 $\Gamma_K$ 的每条边 $e$ 赋一个群标签 $g(e)\in G$。
+对任意有限维复表示 $\rho:G\to\mathrm{GL}(d_\rho,\CC)$ 与温度参数 $u\in(0,1]$，定义矩阵值扭曲算子
 \[
-M_{K,\chi}(u)_{ij}:=\sum_{e:i\to j}u^{\kappa(e)}\,\chi(g(e))\in\CC.
+M_{K,\rho}(u)_{ij}:=\sum_{e:i\to j}u^{\kappa(e)}\,\rho(g(e))\in\mathrm{Mat}_{d_\rho}(\CC),
 \]
-对应的扭曲 $\zeta/L$-函数定义为
+并把它视为作用在 $\CC^{V}\otimes\CC^{d_\rho}$ 上的块矩阵。定义扭曲 $\zeta/L$-函数为
 \[
-L_{K,\chi}(z,u):=\frac{1}{\det(I-zM_{K,\chi}(u))}.
+L_{K,\rho}(z,u):=\det(I-zM_{K,\rho}(u))^{-1}.
 \]
-当 $\chi=\mathbf{1}$ 为平凡角色时，$M_{K,\mathbf{1}}(u)=M_K(u)$，从而 $L_{K,\mathbf{1}}(z,u)=\zeta_K(z,u)$。
+当 $\rho=\mathbf{1}$ 为平凡表示时，$M_{K,\mathbf{1}}(u)=M_K(u)$，从而 $L_{K,\mathbf{1}}(z,u)=\zeta_K(z,u)$。
 \end{definition}
 
 \begin{definition}[同余类分层的 primitive 谱]\label{def:kernel-chebotarev-spectrum}
@@ -591,7 +591,7 @@ L_{K,\chi}(z,u):=\frac{1}{\det(I-zM_{K,\chi}(u))}.
 \[
 B_{n,c}(u):=\sum_{\substack{\gamma\in\mathcal{P}\\|\gamma|=n\\g(\gamma)=c}}u^{\kappa(\gamma)}.
 \]
-对角色 $\chi\in\widehat G$，定义扭曲 primitive 谱
+当 $G$ 为阿贝尔群时，其不可约表示为角色 $\chi\in\widehat G$；此时定义扭曲 primitive 谱
 \[
 B_n(\chi;u):=\sum_{\substack{\gamma\in\mathcal{P}\\|\gamma|=n}}\chi(g(\gamma))\,u^{\kappa(\gamma)}.
 \]
@@ -670,22 +670,35 @@ B_{n,c}(u)=\frac{1}{|G|}\cdot\frac{\lambda_1(u)^n}{n}+O\!\left(\frac{\lambda_1(u
 \end{proof}
 
 \begin{proposition}[Artin 分解的有限维版本（正规覆盖的行列式因子化）]\label{prop:kernel-artin-factorization}
-在定义 \ref{def:kernel-group-twist} 的框架下，令 $M_{K,G}(u)$ 为作用在 $\CC^{V\times G}$ 上的“群扩张邻接算子”：
-它把 $(i,g)$ 送到所有形如 $(j,\,g+g(e))$ 的后继，并赋权 $u^{\kappa(e)}$（其中 $e:i\to j$）。
-则有行列式恒等式
+在定义 \ref{def:kernel-group-twist} 的框架下，令 $M_{K,G}(u)$ 为作用在 $\CC^{V}\otimes\CC[G]$ 上的“群扩张邻接算子”：
+对基向量 $e_{i}\otimes\delta_g$，令
 \[
-\det(I-zM_{K,G}(u))=\prod_{\chi\in\widehat G}\det(I-zM_{K,\chi}(u)).
+M_{K,G}(u):(e_i\otimes\delta_g)\mapsto \sum_{e:i\to j}u^{\kappa(e)}\,(e_j\otimes \delta_{g\cdot g(e)}).
 \]
-等价地，
-\(
-\zeta_{K,G}(z,u)=\prod_{\chi\in\widehat G}L_{K,\chi}(z,u)
-\)
-（$\zeta_{K,G}:=1/\det(I-zM_{K,G}(u))$）。
+则对任意 $z$ 有行列式恒等式
+\[
+\det(I-zM_{K,G}(u))=\prod_{\rho\in\widehat G}\det(I-zM_{K,\rho}(u))^{\dim\rho},
+\]
+其中 $\widehat G$ 为 $G$ 的不可约复表示类集合。等价地，覆盖 $\zeta$ 满足
+\[
+\zeta_{K,G}(z,u)=\prod_{\rho\in\widehat G}L_{K,\rho}(z,u)^{\dim\rho},
+\qquad
+\zeta_{K,G}:=\det(I-zM_{K,G}(u))^{-1}.
+\]
 \end{proposition}
 
 \begin{proof}
-按群坐标对 $\CC^{V\times G}$ 做离散傅里叶变换，把正则表示分解为一维不可约表示之直和；在该分解下，$M_{K,G}(u)$ 块对角化为各 $M_{K,\chi}(u)$ 的直和。取行列式得结论。
+正则表示分解给出同构
+\(
+\CC[G]\cong\bigoplus_{\rho\in\widehat G}\rho^{\oplus \dim\rho}.
+\)
+该同构把 $M_{K,G}(u)$ 约化为在各个不可约分量上的直和；而在 $\rho$-分量上的约化恰为定义 \ref{def:kernel-group-twist} 的 $M_{K,\rho}(u)$。取行列式得到因子化并出现幂次 $\dim\rho$。
 \end{proof}
+
+\begin{remark}[对照：Ihara-\texorpdfstring{$\zeta$}{zeta} 的“图版 RH”与 Ramanujan]\label{rem:kernel-graph-rh}
+在无回溯边移位/非回溯行走的设置中，Ihara-\(\zeta\) 及其 Bass 行列式公式把“素回路谱”与谱半径/特征值界绑定；对 $q$-正则图，Sunada 的观察可表述为：Ramanujan 条件等价于 Ihara-\(\zeta\) 满足一个 Riemann 假设型的零点/极点约束（见 \cite{TerrasZetaGraphs,StarkTerras1996GraphCoverings}）。
+本文的核版 RH/GRH（定义 \ref{def:kernel-rh}）与该图论对照的共同点在于：都把 prime-orbit 误差的“平方根界”转译为一个可检验的谱隙条件。
+\end{remark}
 
 \begin{remark}[零温“第一激发态”的可计算读出：最小平均回路]\label{rem:kernel-min-cycle-mean}
 给定边权 $w(e):=\kappa(e)$，定义周期平均 carry 密度
