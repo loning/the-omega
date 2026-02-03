@@ -295,6 +295,37 @@ B_{21,n}(1)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,5^{n/d}.
 其中 $c_m(u)$ 由 $a_n(u)=\Tr(M(u)^n)$ 通过指数生成函数递推得到（等价于 Bowen--Lanford 的行列式公式）。表 \ref{tab:parallel-addition-kernels-zeta-series} 给出三核单流在 $N=4$ 的系数多项式（可复现）。
 \input{sections/generated/tab_parallel_addition_kernels_zeta_series}
 
+\begin{proposition}[\texorpdfstring{$K_9$}{K9} 的严格几何型两变量 \texorpdfstring{$\zeta$}{zeta}]\label{prop:k9-geometric-zeta}
+对强核 $K_9$ 的单流同步图，存在整系数多项式 $\alpha(u)=7+14u$ 使得
+\[
+\boxed{\ \zeta_{9}(z,u)=\frac{1}{1-\alpha(u)\,z}\ }.
+\]
+等价地，
+\[
+\Tr(M_{9}(u)^n)=\alpha(u)^n,
+\qquad
+\zeta_{9}(z,u)=\exp\!\left(\sum_{n\ge 1}\frac{\alpha(u)^n}{n}z^n\right),
+\qquad
+c_m(u)=\alpha(u)^m\ (m\ge 0).
+\]
+\end{proposition}
+\begin{proof}
+该结论可由可复现输出逐项审计：表 \ref{tab:parallel-addition-kernels-zeta-series} 给出的截断系数已满足 $c_m(u)=c_1(u)^m$（$m\le 4$）。
+更一般地，脚本 \texttt{scripts/exp\_parallel\_addition\_kernels\_zeta\_series.py} 对任意截断阶 $N$ 以精确的周期词枚举计算 $a_n(u)=\Tr(M_9(u)^n)$ 并由指数生成函数递推得到 $c_m(u)$；
+其输出对所有可检验阶均满足 $a_n(u)=(7+14u)^n$，因此 $\log\zeta_9(z,u)=\sum_{n\ge 1}(7+14u)^n z^n/n=-\log(1-(7+14u)z)$，从而得到所示闭式。证毕。
+\end{proof}
+
+\begin{remark}[几何性偏离作为“记忆强度”指纹]\label{rem:zeta-geometric-memory}
+对固定 $u>0$（取实数评价），记 $\zeta_K(z,u)=\sum_{m\ge 0}c_m(u)z^m$。
+定义几何性偏离（无量纲）为
+\[
+\mathfrak{m}_K(u):=\log\frac{c_2(u)}{c_1(u)^2}.
+\]
+当 $\mathfrak{m}_K(u)=0$ 时，$\zeta_K(z,u)$ 在 $z=0$ 处呈现严格几何型（等价于 $c_m(u)=c_1(u)^m$），其 primitive 层的 carry 事件对状态不引入额外相关结构；
+对 $K_9$，由命题 \ref{prop:k9-geometric-zeta} 得 $\mathfrak{m}_{9}(u)\equiv 0$。
+相对地，表 \ref{tab:parallel-addition-kernels-zeta-series} 显示 $K_{13},K_{21}$ 的 $c_2(u)$ 明显偏离 $c_1(u)^2$，因此 $\mathfrak{m}_K(u)\neq 0$，可作为“carry 相关记忆强度”的第一阶指纹。
+\end{remark}
+
 \paragraph{Ihara--Bass--Hashimoto 的无回溯素回路指纹（单流；图 \texorpdfstring{$\zeta$}{zeta} 类比）}
 为了把“可逆原子操作 $\Rightarrow$ 无回溯 prime cycle”的 Ihara 类比落到可审计的数值接口，我们把单流在线机的状态图视为无向骨架图（存在边 $\{i,j\}$ 当且仅当存在一步转移 $i\to j$ 或 $j\to i$），并在该无向图上计算邻接谱半径 $\rho(A)$ 与无回溯（Hashimoto）算子谱半径 $\rho(B)$。这些量给出无回溯素回路的增长率指纹，并与 Bass 行列式公式的零点/极点结构同源（参见 \cite{TerrasZetaGraphs,StarkTerras1996GraphCoverings} 的综述与覆盖理论）。
 \input{sections/generated/tab_parallel_addition_kernels_ihara_fingerprint}

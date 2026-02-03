@@ -56,6 +56,120 @@ d_m(x):=\left|\Fold_m^{-1}(x)\right|,
 \qquad
 D_m:=\max_{x\in X_m} d_m(x).
 \]
+\subsubsection{信息账本：可见熵 + 纤维体积 $-$ 残差信息}\label{subsec:pom-information-ledger}
+固定分辨率 $m$，令 $\Omega_m=\{0,1\}^m$，$X_m$ 为禁词 $(11)$ 的稳定语言块，并设 $\Fold_m:\Omega_m\to X_m$ 为折叠投影。
+记概率单纯形为 $\Delta(\Omega_m),\Delta(X_m)$。
+定义推前（读出）算子
+\[
+P_m:=(\Fold_m)_*:\Delta(\Omega_m)\to\Delta(X_m),
+\qquad
+(P_m\mu)(x)=\sum_{\Fold_m(a)=x}\mu(a),
+\]
+以及纤维均匀提升（最大对称提升）核
+\[
+Q_m:\Delta(X_m)\to\Delta(\Omega_m),
+\qquad
+(Q_m\pi)(a)=\frac{\pi(\Fold_m(a))}{d_m(\Fold_m(a))}.
+\]
+则 $P_m\circ Q_m=\mathrm{id}_{\Delta(X_m)}$（见附录 \ref{app:op-algebra} 的命题 \ref{prop:fold-pushforward-lift}）。
+
+\begin{theorem}[相对熵缺陷恒等式：信息账本闭式]\label{thm:pom-kl-ledger}
+取任意 $\mu\in\Delta(\Omega_m)$，记其稳定推前为 $\pi:=P_m\mu\in\Delta(X_m)$，并令
+\[
+\mu^{e}:=Q_m\pi\in\Delta(\Omega_m)
+\]
+为 $\pi$ 的纤维均匀提升（即在每条纤维上条件均匀）。
+定义 Shannon 熵与 KL 散度（取自然对数）
+\[
+H(\nu):=-\sum_{s}\nu(s)\log\nu(s),
+\qquad
+D_{\mathrm{KL}}(\mu\|\nu):=\sum_{s}\mu(s)\log\frac{\mu(s)}{\nu(s)}.
+\]
+则有严格恒等式
+\[
+\boxed{\;
+H(\mu)=H(\pi)+\mathbb{E}_{\pi}\!\bigl[\log d_m(X)\bigr]\;-\;D_{\mathrm{KL}}(\mu\|\mu^{e}).
+\;}
+\]
+\end{theorem}
+\begin{proof}
+由 KL 定义展开得
+\(
+D_{\mathrm{KL}}(\mu\|\mu^{e})=-H(\mu)-\sum_{a\in\Omega_m}\mu(a)\log\mu^{e}(a)
+\)。
+而
+\(
+\log\mu^{e}(a)=\log\pi(x)-\log d_m(x)
+\)
+其中 $x=\Fold_m(a)$。
+因此
+\[
+\sum_{a}\mu(a)\log\pi(\Fold_m(a))
+=\sum_{x\in X_m}\left(\sum_{\Fold_m(a)=x}\mu(a)\right)\log\pi(x)
+=\sum_{x}\pi(x)\log\pi(x)
+=-H(\pi),
+\]
+并且
+\[
+\sum_{a}\mu(a)\log d_m(\Fold_m(a))
+=\sum_{x\in X_m}\left(\sum_{\Fold_m(a)=x}\mu(a)\right)\log d_m(x)
+=\sum_{x}\pi(x)\log d_m(x)
+=\mathbb{E}_{\pi}[\log d_m(X)].
+\]
+代回整理即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[“不丢信息”的严格含义：最大熵提升与残差的唯一承载]\label{cor:pom-kl-ledger-bound}
+对任意 $\mu\in\Delta(\Omega_m)$ 与 $\pi=P_m\mu$，有上界
+\[
+H(\mu)\le H(\pi)+\mathbb{E}_{\pi}[\log d_m(X)],
+\]
+且等号当且仅当 $\mu=\mu^{e}$（即 $\mu$ 在每条折叠纤维上条件均匀）。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-kl-ledger} 与 $D_{\mathrm{KL}}\ge 0$ 得上界；且 $D_{\mathrm{KL}}(\mu\|\mu^e)=0$ 当且仅当 $\mu=\mu^e$。证毕。
+\end{proof}
+
+\begin{theorem}[纤维反射子：幂等 Markov 投影与固定点刻画]\label{thm:pom-fiber-reflector}
+定义 Markov 算子
+\[
+K_m:=Q_m\circ P_m:\Delta(\Omega_m)\to\Delta(\Omega_m).
+\]
+则：
+\begin{enumerate}
+  \item $K_m$ 幂等：$K_m^2=K_m$；
+  \item 对任意 $\mu$，若 $\pi=P_m\mu$，则 $K_m\mu=\mu^e$ 为 $\pi$ 的纤维均匀提升；
+  \item 固定点满足：$K_m\mu=\mu$ 当且仅当 $\mu$ 在每条纤维上条件均匀（等价地 $\mu=\mu^e$）。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由 $P_m\circ Q_m=\mathrm{id}$ 得
+\(
+K_m^2=Q_mP_mQ_mP_m=Q_m(P_mQ_m)P_m=Q_mP_m=K_m
+\)。
+对任意 $\mu$，令 $\pi=P_m\mu$，则 $K_m\mu=Q_m\pi=\mu^e$ 是定义。
+最后，$K_m$ 的像空间恰为 $\{Q_m\pi:\pi\in\Delta(X_m)\}$；因此 $K_m\mu=\mu$ 当且仅当 $\mu$ 属于该像空间，即在每条纤维上条件均匀。证毕。
+\end{proof}
+
+\begin{theorem}[规范的粗粒化动力学：先提升—再演化—再读出]\label{thm:pom-coarse-grained-kernel}
+设 $K:\Delta(\Omega_m)\to\Delta(\Omega_m)$ 为任意 Markov 核（窗口层动力学）。
+定义稳定层的粗粒化核
+\[
+\overline K:=P_m\circ K\circ Q_m:\Delta(X_m)\to\Delta(X_m).
+\]
+则对任意初始稳定分布 $\pi_0\in\Delta(X_m)$，令 $\mu_0:=Q_m\pi_0$，有
+\[
+\pi_1=\overline K\,\pi_0=P_m(K\mu_0).
+\]
+并且 $\overline K$ 是满足该“先提升—再演化—再读出”语义的唯一稳定层 Markov 核。
+\end{theorem}
+\begin{proof}
+第一式为定义展开。若 $\widetilde K$ 亦满足对所有 $\pi_0$ 有
+\(
+\widetilde K\pi_0=P_m(K(Q_m\pi_0))
+\)，
+则逐点相等推出 $\widetilde K=\overline K$。证毕。
+\end{proof}
 \begin{theorem}[最大纤维闭式]\label{thm:pom-max-fiber}
 取 Fibonacci 延拓到 $F_0=0,F_1=1$。对 $m\ge 2$，有精确闭式
 \[
