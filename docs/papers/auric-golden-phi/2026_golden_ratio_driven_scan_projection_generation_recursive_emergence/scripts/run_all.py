@@ -185,6 +185,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_B_dirichlet_constants",
+            script="exp_sync_kernel_B_dirichlet_constants.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_sync_kernel_B_dirichlet_constants.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_weighted_pressure",
             script="exp_sync_kernel_weighted_pressure.py",
             args=[],
