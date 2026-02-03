@@ -214,6 +214,15 @@ D_{\mathrm{KL}}(\hat p\|p)\ \le\ \frac{K\log(N+1)+\log(1/\delta)}{N}.
 \input{sections/generated/fig_rotation_tv_vs_n}
 \input{sections/generated/fig_rotation_kl_vs_n}
 
+\subsection{素数性与有限窗口：互信息的零证据}\label{subsec:prime-shadow-window-mi}
+为量化固定有限窗口对“素数性”的信息量，我们做一个直接可复现实验：对 $n=2,\dots,N$，取 $n$ 的 Zeckendorf 表示的\textbf{最低 $m$ 位窗口} $W_m$（即最小权重端的局部观察），计算素数指示函数 $\mathbf{1}_{\mathrm{prime}}(n)$ 与 $W_m$ 的互信息
+\(
+I(\mathbf{1}_{\mathrm{prime}};W_m)
+\)。
+结果见表 \ref{tab:prime_shadow_window_mi}：当 $m=6$（$|X_m|=21$）时互信息仅约 $8\times 10^{-3}$ bit；随着 $m$ 增大互信息上升，但这对应窗口逐渐接近全局表示。该实验提供了“固定有限核无法等价恢复整数素数集合”的可审计数值证据，并与正文关于 prime-like/primitive 轨道的层级区分一致。脚本 \texttt{scripts/exp\_prime\_shadow\_window\_mi.py} 导出 \texttt{artifacts/export/prime\_shadow\_window\_mi.json} 并生成表格片段。
+
+\input{sections/generated/tab_prime_shadow_window_mi}
+
 \subsection{谱指纹实验协议：并行加法三核的统一对比（不爆内存）}\label{sec:exp-kernel-fingerprint}
 本小节给出一条可复现的“核对比”实验协议：把黄金比例基 $\beta=\varphi$ 上的三类并行加法核（$9/13/21$-local；AAMP VIII 总结为 Algorithm I/II/III，细节规则为 Algorithm S/W/G 与 A/B 触发条件，见 \cite{SvobodovaAAMPVIIIParallelAddition,FrougnyHellerPelantovaSvobodovaParallelAlgorithmsSlides}）统一压到同一组对象
 \[

@@ -97,6 +97,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="prime_shadow_window_mi",
+            script="exp_prime_shadow_window_mi.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/prime_shadow_window_mi.json",
+                "sections/generated/tab_prime_shadow_window_mi.tex",
+            ],
+        ),
+        Step(
             name="phi_m_sofic_entropy",
             script="exp_phi_m_sofic_entropy.py",
             args=[],
