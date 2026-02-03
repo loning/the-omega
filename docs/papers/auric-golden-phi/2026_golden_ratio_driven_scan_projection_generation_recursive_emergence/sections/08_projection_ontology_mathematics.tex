@@ -23,6 +23,10 @@
 \subsubsection{条件期望与纤维平均}\label{subsec:pom-conditional-expectation}
 折叠诱导的子代数 $\mathcal{B}_m$ 与条件期望 $E_m:\mathcal{A}_m\to\mathcal{B}_m$（命题 \ref{prop:fold-conditional-expectation}）给出“沿折叠纤维做平均”的算子化接口，从而把 $P_Z$ 在可观测层面的信息丢失机制精确化。
 
+\begin{remark}[规范投影的双态]\label{rem:pom-pz-dual}
+规范投影 $P_Z$ 同时具有两种相容实现：其一是在态/地址层面由 $\Fold_m$ 或 $\Fold_\infty$ 给出的横截面选择；其二是在可观测量层面由条件期望 $E_m$ 给出的纤维平均。二者分别刻画“唯一代表的选取”与“信息遗忘的量化”，共同组成 $P_Z$ 的双态结构。
+\end{remark}
+
 \subsection{三条先验纤维}\label{subsec:pom-fibers}
 \begin{definition}[尺度纤维 $\mathcal{S}_\varphi$]\label{def:pom-scale-fiber}
 取无理数 $\alpha\in(0,1)$ 的连分数 $\alpha=[0;a_1,a_2,\dots]$，Ostrowski 表示给出
@@ -209,6 +213,10 @@ n\ \ge\ \frac{\log(C/\varepsilon)}{\log\!\bigl(\lambda_1(u)/|\lambda_2(u)|\bigr)
 即可保证相对误差不超过 $\varepsilon$。若进一步满足核版 RH/GRH 条件（定义 \ref{def:kernel-rh}），则可用 $\lambda_1(u)^{1/2}$ 替代 $|\lambda_2(u)|$，从而得到平方根级衰减尺度（推论 \ref{cor:kernel-rh-sqrt-error}）。
 \end{corollary}
 
+\begin{remark}[自对偶与完成化偶性]\label{rem:pom-duality-even}
+若同步核满足附录 \ref{app:kernel-self-dual} 的自对偶关系，则完成化后的 $\zeta$ 函数在 $\theta$ 变量上呈严格偶性。于是其对 $\theta$ 的奇阶导数在 $\theta=0$ 处消失，这对代价势的涨落统计施加对称性约束；相应的可调性仅能通过破坏该自对偶结构实现。
+\end{remark}
+
 \subsection{素数影子到素数寄存器的桥接}\label{subsec:pom-prime-bridge}
 \paragraph{有限轴束的扭曲与分解}
 对有限群标签 $G$ 的扭曲矩阵族 $M_{K,\rho}(u)$ 与扭曲 $\zeta/L$-函数，命题 \ref{prop:kernel-artin-factorization} 给出 Artin 型因子化。该分解表明：有限轴束本质上是以 $\widehat G$ 为谱坐标系的“可审计纤维化”。
@@ -226,6 +234,14 @@ n\ \ge\ \frac{\log(C/\varepsilon)}{\log\!\bigl(\lambda_1(u)/|\lambda_2(u)|\bigr)
 
 \begin{remark}[从有限扭曲到无限寄存器]
 有限群扭曲提供“有限模轴束”的可审计谱分解；而新增轴的不可约性意味着该分解在模数增大时严格增加自由度。因而 $\widehat{\ZZ}$ 的极限口径与素数寄存器纤维 $\mathcal{P}$ 在结构上是兼容的：前者是“模轴束的完备化”，后者是“乘法坐标的线性化轴束”。
+\end{remark}
+
+\begin{remark}[素数长度作为并行结构探针]\label{rem:pom-prime-length-probe}
+在张量装配的全局核上，迹序列满足 $a_n^{\mathrm{glob}}(u)=a_n^{\mathrm{flow}}(u)^m$，primitive 谱由 Witt/Möbius 反演给出（推论 \ref{cor:par-add-global-lift-endpoints}）。当 $n=\ell$ 为素数时，
+\[
+p_\ell^{\mathrm{glob}}(u)=\frac{1}{\ell}\Bigl(a_\ell^{\mathrm{flow}}(u)^m-a_1^{\mathrm{flow}}(u^\ell)^m\Bigr),
+\]
+从而素数长度的 primitive 项直接隔离了“不可约循环”与“幂重复循环”的差异。该差异对并行张量化极其敏感，可作为隐藏并行度与结构分解的无偏探针。
 \end{remark}
 
 \subsection{投影词正规形与读出层级塔}\label{subsec:pom-normal-form}
@@ -252,6 +268,23 @@ t(c_1,\dots,c_k)=Z\!\left(P\bigl(\mathrm{Val}(c_1),\dots,\mathrm{Val}(c_k)\bigr)
 定理 \ref{thm:pom-one-fold-normal-form} 表明，在半环闭包内“规范投影只需末端一次”。进一步可沿定理 \ref{thm:composition-two-layer} 的思路构造读出层级塔：第 $0$ 层以合成 $\circ$ 的一次迭代读出对应加法，第 $1$ 层以“加法迭代”对应乘法；按同样方式递归定义第 $k$ 层的“运算”为第 $k{-}1$ 层的迭代读出。该层级塔在过程层不引入新原语，而将复杂度转移为读出层级的提升。
 \end{remark}
 
+\subsection{序投影作为结构分界}\label{subsec:pom-order-bottleneck}
+\begin{corollary}[序投影的不可约读出性]\label{cor:pom-order-bottleneck}
+在分辨率 $m$ 固定且不引入新增纤维坐标的条件下，若某读出量 $g:\Omega_m\to\mathbb{R}$ 不属于折叠不变量子代数 $\mathcal{B}_m$，则仅靠规范投影 $P_Z$ 不能判定 $g$；要获得该读出，必须提高分辨率或引入序投影 $P_{\le}$（或等价的全局聚合机制）。该结论是命题 \ref{prop:pom-fiber-invariance} 的直接结构性推论。
+\end{corollary}
+
+\begin{corollary}[序投影的混合时间尺度]\label{cor:pom-order-mixing}
+设分类读出由有限群标记扩展给出，并令 $\lambda_1(u)$ 为主谱半径、$\Lambda(u)$ 为最坏非平凡扭曲谱半径（定理 \ref{thm:kernel-chebotarev-exp}）。则分类计数的误差以指数率 $(\Lambda(u)/\lambda_1(u))^n$ 衰减，从而达到精度 $\varepsilon$ 的迭代深度满足
+\[
+n\ \gtrsim\ \frac{\log(1/\varepsilon)}{\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)}.
+\]
+因此序投影的时间代价可由扭曲谱隙显式量化。
+\end{corollary}
+
+\begin{remark}[有限核的素数影子与算术素数的分界]
+在有限核框架中，Euler 乘积与 Möbius 反演给出的 prime-like 对象为 primitive 轨道谱（命题 \ref{prop:time-space-commuting-diagram}）。这类素性与整数素数不同（见注 \ref{rem:prime-shadow-vs-primes}），其差异提示了“序投影/新增纤维”作为结构分界的必然性：若要在本体层表达算术素数，需要引入额外的轴束或新的投影机制。
+\end{remark}
+
 \subsection{序投影的空间化}\label{subsec:pom-order-spatialization}
 \begin{theorem}[序投影的空间化定律]\label{thm:pom-order-spatialization}
 设 $B\ge 1$，取两两互素的模 $p_1,\dots,p_m$，令 $P=\prod_{i=1}^m p_i$。若 $P>2B$，则任意 $x\in[-B,B]$ 由其在模 $p_i$ 下的剩余类唯一确定。因而比较、符号与区间约束等序投影可以先在各模轴上点wise 计算，再通过 CRT 重建完成（参见 \cite{Apostol1976}）。
@@ -268,6 +301,18 @@ t(c_1,\dots,c_k)=Z\!\left(P\bigl(\mathrm{Val}(c_1),\dots,\mathrm{Val}(c_k)\bigr)
 \begin{conjecture}[延迟与 carry-free 复杂度的互补]\label{conj:pom-entropy-delay}
 对固定基数与同一值不变量模板（零式 $+$ $q$-场），若在线归一化核的延迟 $\delta_Z$ 被压低，则其 carry-free 骨架的分支复杂度（例如 $\rho(A_0)$ 或对应 $\zeta$ 的谱指纹）必须上升；反之，若要求 carry-free 骨架更紧（低熵），则必须付出更长的延迟。该趋势与 $9/13/21$-local 三核的 carry-free $\zeta$ 三分分类一致（定理 \ref{thm:carry-free-zeta-trichotomy}）。
 \end{conjecture}
+
+\subsection{闭环总结：三条核心结论}\label{subsec:pom-summary}
+以下三条结论构成本文在 POM 语境下的核心收束：
+\begin{enumerate}
+  \item \textbf{投影熵率由 $\varphi$ 锁定：}规范投影的空间代价由折叠指标 $I_m$ 控制，且单位分辨率熵率为
+  \[
+  h_Z=\log\!\left(\frac{2}{\varphi}\right)
+  \]
+  （命题 \ref{prop:pom-projection-entropy}）。
+  \item \textbf{半环闭包的一次投影正规形：}任何由 $\oplus,\otimes$ 生成的项均可写为值层多项式后经一次 $P_Z$ 回到稳定地址（定理 \ref{thm:pom-one-fold-normal-form}）。
+  \item \textbf{增长分界在序投影：}一旦读出量不再是折叠纤维不变量，必须引入 $P_{\le}$ 或增加纤维/分辨率（推论 \ref{cor:pom-order-bottleneck}）；其时间瓶颈可通过模轴束空间化转移（定理 \ref{thm:pom-order-spatialization}）。
+\end{enumerate}
 
 \subsection{ISA 与微码：投影词的抽象层实现}\label{subsec:pom-isa}
 \paragraph{可见寄存器（外表）}
