@@ -836,7 +836,17 @@ S_c:=\sum_{a=0}^{2}\sum_{b=0}^{2}C^{(3,3,5)}_{a,b,c},
 \end{corollary}
 
 \begin{corollary}[三维耦合对 \texorpdfstring{$(a,b)$}{(a,b)} 的依赖在 $c$ 轴上强局部化]\label{cor:arity-335-localized-ab-coupling}
-把每张 $c$-切片看作 $3\times 3$ 矩阵（行 $b$，列 $a$），并令 $\mathrm{sd}(c)$ 为该矩阵在 $9$ 个条目上的标准差（按条目平均）。则可复现输出显示：$\mathrm{sd}(c)$ 随 $c$ 增大呈数量级下降，且在 $c=3,4$ 时切片几乎为常数矩阵（对 $(a,b)$ 的依赖几乎消失）。因此在常数级漂移分辨率下，\(((3,3,5))\) 的非平凡三维耦合主要集中在少数碰撞同余类（特别是 $c=0$ 与 $c=1$）上，而高同余类呈近因子化行为。
+把每张 $c$-切片看作 $3\times 3$ 矩阵（行 $b$，列 $a$），并令 $\mathrm{sd}(c)$ 为该矩阵在 $9$ 个条目上的标准差（按条目平均）。则可复现输出显示：$\mathrm{sd}(c)$ 随 $c$ 增大呈数量级下降，且在 $c\ge 2$ 时切片已接近常数矩阵（对 $(a,b)$ 的依赖显著减弱），在 $c=3,4$ 时更是几乎完全消失。故在常数级漂移分辨率下，\(((3,3,5))\) 的非平凡三维耦合主要集中在少数碰撞同余类（特别是 $c=0$ 与 $c=1$）上，而尾部同余类呈近因子化行为。
+\end{corollary}
+
+\begin{corollary}[三相分层：$c=0$ 的结构尖峰、$c=1$ 的过渡与 $c\ge 2$ 的近因子化尾部]\label{cor:arity-335-phase-stratification}
+以二级摘要输出中的 $\max\mathrm{dev}(c)$ 与 $\Delta_c$ 为诊断量，则 \(((3,3,5))\) 常数张量沿碰撞同余类轴 $c\in\ZZ/5$ 呈现明显的三相分层：
+\begin{itemize}
+  \item \textbf{尖峰相（$c=0$）}：切片内在 $(a,b)$ 上高度非均匀；
+  \item \textbf{过渡相（$c=1$）}：切片非均匀度显著下降但仍可见结构；
+  \item \textbf{尾部相（$c\ge 2$）}：切片接近 rank-$0$ 常数矩阵（近因子化）。
+\end{itemize}
+这比命题 \ref{prop:arity-335-n2-nondegenerate} 的“非置换等价”更强：不仅第三轴引入了新自由度，而且该自由度的结构性主要局部化在小同余类上。
 \end{corollary}
 
 \begin{corollary}[碰撞稀少但主导慢模与常数各向异性（near-resonant cocycle 诊断）]\label{cor:arity-335-rare-collision-dominant}
@@ -868,6 +878,22 @@ f_{a,b}(c)
 \]
 从而五张切片在 $c$ 轴上的全部信息可被等价地压缩为三张矩阵：均值矩阵 $\widehat f(0)$ 与两张复矩阵 $\widehat f(1),\widehat f(2)$。该分解与其数值（含 $\|\widehat f(1)\|_\infty,\|\widehat f(2)\|_\infty$）由同一脚本输出并可审计复核。
 \end{proposition}
+
+\begin{proposition}[低秩可压缩：\texorpdfstring{$((3,3,5))$}{(3,3,5)} 张量的三模近似指纹]\label{prop:arity-335-low-rank}
+把常数张量 $C^{(3,3,5)}_{a,b,c}$ 视为实矩阵 $T\in\RR^{5\times 9}$（行指标为 $c\in\{0,1,2,3,4\}$，列指标为扁平化后的 $(a,b)\in(\ZZ/3)^2$）。令其奇异值为 $s_1\ge \cdots\ge s_5$。二级摘要输出显示：仅用前三个奇异模态即可捕获几乎全部 Frobenius 能量（$\sum_{i\le 3}s_i^2/\sum_{i\le 5}s_i^2$ 逼近 $1$），因此整个 $45$ 项张量在常数级分辨率下可被极低维近似稳定表征（可作为新的“核指纹”不变量）。
+\end{proposition}
+
+\begin{remark}[near-coboundary 二次律：对更高模数的可检验预测]\label{rem:arity-335-near-coboundary-scaling}
+由二级摘要输出的缺口 $1-\rho_{3,3,5}/\lambda$ 可估计一个“近共边界强度”常数 $\kappa$，并给出
+\[
+\rho_{3,3,p}/\lambda\approx 1-\kappa(2\pi/p)^2
+\]
+的可检验预测（例如 $p\in\{7,11,13\}$）。该二次律是“简单 PF 本征值的解析微扰”在小角扭曲下的标准形状；若后续计算显示 $p=5$ 明显偏离该曲线，则可把它视为真正的特异共振模数。
+\end{remark}
+
+\begin{remark}[碰撞 cocycle 的共边界缺陷证书：best \texorpdfstring{$\ZZ/5$}{Z/5} 着色]\label{rem:arity-335-best-5-coloring}
+把 40 状态图的每条边赋 cocycle $\xi=\mathbf{1}_{\{d=2\}}\in\ZZ/5$。若存在 $h:V\to\ZZ/5$ 使得 $h(v)-h(u)\equiv \xi(u\to v)\pmod 5$ 在全部边上成立，则第三轴扭曲可由共轭消去，因而不会降低谱半径（$\rho/\lambda=1$）。二级摘要输出给出一个可复现的“best found” 着色缺陷 $\varepsilon$（不一致边比例），作为“near-coboundary” 的组合学证书；其值与谱缺口 $1-\rho_{3,3,5}/\lambda$ 应在机制上相关。
+\end{remark}
 
 \begin{remark}[对照：第三维取 \texorpdfstring{$N_e\bmod 5$}{Ne mod 5} 的版本]\label{rem:arity-335-ne-mod5}
 若把第三维改为输出计数 $N_e(\gamma)\bmod 5$，则得到另一个同型的 $((3,3,5))$ 常数张量（主项系数同为 $1/45$），其输出片段为

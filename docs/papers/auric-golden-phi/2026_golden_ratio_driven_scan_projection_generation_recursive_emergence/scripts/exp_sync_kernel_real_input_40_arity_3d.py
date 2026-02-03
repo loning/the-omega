@@ -378,6 +378,8 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     rho_map: Dict[str, float],
     lam: float,
     out_path: Path,
+    states: List[Tuple[str, int, int]],
+    kernel_map: Dict[Tuple[str, int], Tuple[str, int]],
 ) -> None:
     """Write derived consequences for the (3,3,5) tensor with third axis N2 mod 5.
 
@@ -471,6 +473,96 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     # Mixing-length proxies from rho_ratio.
     tau_mix = (1.0 / (-math.log(rho_ratio))) if (0.0 < rho_ratio < 1.0) else float("inf")
     t_half = (math.log(2.0) / (-math.log(rho_ratio))) if (0.0 < rho_ratio < 1.0) else float("inf")
+
+    # Low-rank compressibility diagnostic: SVD of the (5 x 9) matrix with rows indexed by c,
+    # and columns indexed by flattened (a,b).
+    T = np.zeros((5, 9), dtype=float)
+    for c in range(5):
+        k = 0
+        for b in range(3):
+            for a in range(3):
+                T[c, k] = C(a, b, c)
+                k += 1
+    _U, svals, _Vt = np.linalg.svd(T, full_matrices=False)
+    s_energy = (svals**2).astype(float)
+    s_energy_sum = float(np.sum(s_energy))
+    s_cum = (np.cumsum(s_energy) / s_energy_sum) if s_energy_sum > 0 else np.zeros_like(s_energy)
+
+    # Near-coboundary quadratic law (heuristic prediction) for modulus p.
+    kappa_est = float("nan")
+    pred_p: Dict[int, float] = {}
+    if 0.0 < rho_ratio < 1.0:
+        kappa_est = (1.0 - rho_ratio) / ((2.0 * math.pi / 5.0) ** 2)
+        for p in (7, 11, 13):
+            pred = 1.0 - kappa_est * ((2.0 * math.pi / float(p)) ** 2)
+            pred_p[p] = float(pred)
+
+    # "Best 5-coloring" (near-coboundary certificate): find h:V->Z/5 that maximizes satisfied edges
+    # for constraints h(v)-h(u) == xi(u->v) mod 5, where xi = 1_{d=2}.
+    idx_state = {st: i for i, st in enumerate(states)}
+    nV = len(states)
+    out_edges: List[List[Tuple[int, int]]] = [[] for _ in range(nV)]  # (to, w)
+    in_edges: List[List[Tuple[int, int]]] = [[] for _ in range(nV)]  # (from, w)
+    edges_flat: List[Tuple[int, int, int]] = []
+    for s, px, py in states:
+        for x in (0, 1):
+            if px == 1 and x == 1:
+                continue
+            for y in (0, 1):
+                if py == 1 and y == 1:
+                    continue
+                d = x + y
+                dst_state, _e = kernel_map[(s, d)]
+                w = 1 if d == 2 else 0
+                u_idx = idx_state[(s, px, py)]
+                v_idx = idx_state[(dst_state, x, y)]
+                out_edges[u_idx].append((v_idx, w))
+                in_edges[v_idx].append((u_idx, w))
+                edges_flat.append((u_idx, v_idx, w))
+    mE = len(edges_flat)
+
+    def _score(h: List[int]) -> int:
+        sat = 0
+        for uu, vv, ww in edges_flat:
+            if (h[vv] - h[uu]) % 5 == ww:
+                sat += 1
+        return sat
+
+    def _improve(h: List[int], *, max_iter: int = 200) -> List[int]:
+        for _ in range(max_iter):
+            changed = 0
+            for v in range(nV):
+                best_l = h[v]
+                best_sat_local = -1
+                for l in range(5):
+                    sat_local = 0
+                    for to, w in out_edges[v]:
+                        if (h[to] - l) % 5 == w:
+                            sat_local += 1
+                    for fr, w in in_edges[v]:
+                        if (l - h[fr]) % 5 == w:
+                            sat_local += 1
+                    if sat_local > best_sat_local:
+                        best_sat_local = sat_local
+                        best_l = l
+                if best_l != h[v]:
+                    h[v] = best_l
+                    changed += 1
+            if changed == 0:
+                break
+        return h
+
+    rng = np.random.default_rng(20260203)
+    best_sat = -1
+    best_h: List[int] = [0 for _ in range(nV)]
+    for _ in range(200):
+        h0 = [int(x) for x in rng.integers(0, 5, size=nV)]
+        h1 = _improve(h0)
+        sat = _score(h1)
+        if sat > best_sat:
+            best_sat = sat
+            best_h = h1[:]
+    eps_best = float("nan") if mE == 0 else float(1.0 - (best_sat / float(mE)))
 
     def fmt(x: float) -> str:
         return f"{x:.12f}"
@@ -576,6 +668,50 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     )
     lines.append("$$")
     lines.append("其中 $A^{(1)}$ 与 $A^{(2)}$ 的具体条目可由同一脚本在 JSON 输出中复核。")
+
+    lines.append("\\paragraph{（vi）整体低秩可压缩：把张量视为 $5\\times 9$ 矩阵的奇异值能量}")
+    lines.append("把张量 $C^{(3,3,5)}_{a,b,c}$ 视为 $c\\in\\{0,1,2,3,4\\}$ 对应的 $5$ 行、以及扁平化索引 $(a,b)\\in(\\ZZ/3)^2$ 对应的 $9$ 列的实矩阵 $T\\in\\RR^{5\\times 9}$。令其奇异值为 $s_1\\ge\\cdots\\ge s_5$。则（Frobenius 能量）累计占比为")
+    lines.append("$$")
+    if s_energy_sum > 0:
+        lines.append(
+            f"\\frac{{s_1^2}}{{\\sum s_i^2}}\\approx {s_cum[0]:.6f},\\qquad "
+            f"\\frac{{s_1^2+s_2^2}}{{\\sum s_i^2}}\\approx {s_cum[1]:.6f},\\qquad "
+            f"\\frac{{s_1^2+s_2^2+s_3^2}}{{\\sum s_i^2}}\\approx {s_cum[2]:.6f}."
+        )
+    else:
+        lines.append("\\text{(no data)}")
+    lines.append("$$")
+
+    lines.append("\\paragraph{（vii）near-coboundary 小角二次律（可检验预测）}")
+    lines.append("用 $p=5$ 的观测缺口 $1-\\rho_{3,3,5}/\\lambda$ 估计")
+    lines.append("$$")
+    if 0.0 < rho_ratio < 1.0:
+        lines.append(
+            f"\\kappa:=\\frac{{1-\\rho_{{3,3,5}}/\\lambda}}{{(2\\pi/5)^2}}\\approx {kappa_est:.6f},"
+        )
+    else:
+        lines.append("\\kappa\\ \\text{undefined},")
+    lines.append("$$")
+    lines.append("并给出预测（待计算 $((3,3,p))$ 数据验证）：")
+    lines.append("$$")
+    if pred_p:
+        parts = []
+        for p in (7, 11, 13):
+            if p in pred_p:
+                parts.append(f"\\rho_{{3,3,{p}}}/\\lambda\\approx {pred_p[p]:.6f}")
+        lines.append(",\\qquad ".join(parts) + ".")
+    else:
+        lines.append("\\text{(no prediction)}")
+    lines.append("$$")
+
+    lines.append("\\paragraph{（viii）碰撞 cocycle 的 near-coboundary 证书：best $\\ZZ/5$-着色缺陷}")
+    lines.append("把 40 状态图的每条边赋 cocycle $\\xi=\\mathbf{1}_{\\{d=2\\}}\\in\\ZZ/5$，并用局部改进的启发式在 $\\ZZ/5$ 上寻找 $h:V\\to\\ZZ/5$ 使得约束 $h(v)-h(u)\\equiv \\xi(u\\to v)\\ (\\mathrm{mod}\\ 5)$ 尽量多地满足。以边不一致比例定义缺陷")
+    lines.append("$$")
+    if mE > 0 and best_sat >= 0:
+        lines.append(f"\\varepsilon:=1-\\frac{{\\#\\text{{(satisfied edges)}}}}{{|E|}}\\ \\lesssim\\ {eps_best:.6f}\\quad(\\text{{best found; }}|E|={mE}).")
+    else:
+        lines.append("\\varepsilon\\ \\text{undefined}.")
+    lines.append("$$")
 
     out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -809,6 +945,8 @@ def main() -> None:
                     rho_map=triple_rho[key],
                     lam=lam,
                     out_path=out_summary,
+                    states=states,
+                    kernel_map=kernel_map,
                 )
                 print(f"[sync-kernel-real-input-arity-3d] wrote {out_summary}", flush=True)
 
