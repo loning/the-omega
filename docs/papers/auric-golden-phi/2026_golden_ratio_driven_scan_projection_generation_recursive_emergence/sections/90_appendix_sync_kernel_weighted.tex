@@ -97,6 +97,68 @@ p_{n,k}=p_{n,n-k}\quad(n\ge 2),
 \]
 等价地 $u^{-1}p_n(u)$ 为次数 $n-2$ 的回文多项式。
 
+\begin{proposition}[周期迹多项式的回文对称]\label{prop:trace-palindrome}
+记
+\[
+a_n(u):=\Tr(B(u)^n)=\sum_{k=0}^{n}a_{n,k}u^k.
+\]
+则对所有 $n\ge 1$ 有
+\[
+a_n(u)=u^n a_n(1/u)
+\quad\Longleftrightarrow\quad
+a_{n,k}=a_{n,n-k}.
+\]
+\end{proposition}
+
+\begin{proof}
+由自对偶 $\Pi^{-1}B(u)\Pi=uB(1/u)$ 与迹不变性，
+\[
+a_n(u)=\Tr(B(u)^n)=\Tr\!\bigl((uB(1/u))^n\bigr)=u^n\Tr(B(1/u)^n)=u^n a_n(1/u),
+\]
+比较系数即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[$\Delta(z,u)$ 的系数回文结构]\label{cor:delta-coeff-palindrome}
+写
+\[
+\Delta(z,u)=\det(I-zB(u))=\sum_{j=0}^{10}c_j(u)\,z^j.
+\]
+则对每个 $j$ 都有
+\[
+c_j(u)=u^j c_j(1/u),
+\]
+即 $c_j(u)$ 为次数 $j$ 的回文多项式（完成化后等价为 $u^{j/2}$ 乘以偶函数）。
+\end{corollary}
+
+\begin{corollary}[有限长度的精确镜像对称]\label{cor:primitive-finite-sym}
+令 $\pi_{n,k}:=p_{n,k}/\sum_j p_{n,j}$ 为长度 $n$ 的 primitive 轨道在 $k$-分层上的归一化分布，则
+\[
+\sum_k k\,\pi_{n,k}=\frac{n}{2},\qquad
+\sum_k\left(k-\frac{n}{2}\right)^{2m+1}\pi_{n,k}=0\quad(m\ge 0).
+\]
+因此对每个有限 $n$，分布关于 $n/2$ 精确对称，所有奇阶中心矩严格为零。
+\end{corollary}
+
+此外由 $p_{n,k}=p_{n,n-k}$ 直接得到
+\[
+p_n(u)=u^n p_n(1/u).
+\]
+
+\subsubsection{完成化行列式与严格偶性}\label{app:kernel-completion}
+令 $u=e^\theta$，定义完成化行列式
+\[
+\widetilde{\Delta}(z,\theta):=\Delta(e^{-\theta/2}z,e^\theta),
+\qquad
+\widetilde{\zeta}(z,\theta):=\widetilde{\Delta}(z,\theta)^{-1}.
+\]
+由 $\Delta(z,u)=\Delta(uz,1/u)$ 得
+\[
+\widetilde{\Delta}(z,-\theta)=\widetilde{\Delta}(z,\theta),
+\qquad
+\widetilde{\zeta}(z,-\theta)=\widetilde{\zeta}(z,\theta),
+\]
+即完成化后在参数 $\theta$ 上呈严格偶性。
+
 \subsubsection{压力函数的解析性与显式导数}\label{app:pressure-analytic}
 对 $u=e^\theta>0$，矩阵 $B(u)$ 仍为 primitive，故 Perron 根 $\lambda(u)$ 在 $u>0$ 上为单根并随 $u$ 实解析。记 $\lambda=\lambda(u)$，其满足六次方程
 \[
@@ -117,7 +179,11 @@ P'(\theta)=\frac{u\lambda_u}{\lambda},
 \qquad
 P''(\theta)=\frac{u\lambda_u}{\lambda}+u^2\left(\frac{\lambda_{uu}}{\lambda}-\Bigl(\frac{\lambda_u}{\lambda}\Bigr)^2\right).
 \]
-由对称性 $P(\theta)-\theta/2$ 为偶函数，$P^{(3)}(0)=0$，且
+由对称性 $P(\theta)-\theta/2$ 为偶函数，故
+\[
+P^{(2k+1)}(0)=0\quad(k\ge 1),
+\]
+特别地 $P^{(3)}(0)=0$，且
 \[
 P(\theta)=\log 3+\frac12\theta+\frac{11}{204}\theta^2+\frac{1559}{1414944}\theta^4+O(\theta^6),
 \]
@@ -146,6 +212,16 @@ I(\alpha)=I(1-\alpha),
 I(\alpha)=\frac{(\alpha-\frac12)^2}{2P''(0)}+O\!\left((\alpha-\tfrac12)^3\right)
 =\frac{51}{11}\Bigl(\alpha-\frac12\Bigr)^2+O(\cdot).
 \]
+由 $p_{n,k}\approx \frac{1}{n}\exp(n(\log 3-I(k/n)))$ 得到局部二次近似：若
+\(
+k=\frac{n}{2}+x\sqrt{n}
+\)
+（$x$ 有界），则
+\[
+p_{n,k}\approx \frac{3^n}{n}\exp\!\left(-\frac{x^2}{2P''(0)}\right)
+=\frac{3^n}{n}\exp\!\left(-\frac{51}{11}x^2\right),
+\]
+即呈现方差尺度 $nP''(0)=\frac{11}{102}n$ 的高斯型指数近似。
 端点值为
 \[
 I(0)=I(1)=\log 3.
@@ -178,6 +254,18 @@ p_n(u)=\frac{\lambda(u)^n}{n}+O\!\left(\frac{\rho(u)^n}{n}\right).
 \qquad
 M(\theta)=\gamma+\sum_{n\ge 1}\left(\frac{p_n(u)}{\lambda(u)^n}-\frac{1}{n}\right),
 \]
+
+\begin{proposition}[Mertens 常数的偶性]\label{prop:mertens-even}
+由 $p_n(u)=u^n p_n(1/u)$ 与 $\lambda(u)=u\lambda(1/u)$ 得
+\[
+\frac{p_n(u)}{\lambda(u)^n}=\frac{p_n(1/u)}{\lambda(1/u)^n},
+\]
+从而
+\[
+M(\theta)=M(-\theta),\qquad
+\log\mathfrak{M}(\theta)=\log\mathfrak{M}(-\theta).
+\]
+\end{proposition}
 其中 $\gamma$ 为 Euler 常数。设
 \[
 P_\theta(r):=\sum_{n\ge 1}\frac{p_n(u)}{\lambda(u)^n}r^n,\quad 0<r<1,

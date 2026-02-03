@@ -94,6 +94,14 @@ R(s)+d\varphi^{-4}=e\varphi^{-1}+t_1\varphi^{-2}+t_2\varphi^{-3}+t_3\varphi^{-4}
 \[
 R(t)=\varphi R(s)+d\varphi^{-3}-e,\qquad R(t)\in[0,1).
 \]
+\begin{remark}[延迟-$3$ 归一化的扩张--取整表示]
+由 $R(t)\in[0,1)$ 可写成
+\[
+e=\Bigl\lfloor \varphi R(s)+d\varphi^{-3}\Bigr\rfloor,\qquad
+R(t)=\Bigl\{\varphi R(s)+d\varphi^{-3}\Bigr\},
+\]
+其中 $\{\cdot\}$ 为小数部分。由于同步核只允许 $e\in\{0,1\}$（附录 B 的转移表中无 $e=2$ 边），上述在线核等价于在 $[0,1)$ 上由扩张映射 $r\mapsto \varphi r+d\varphi^{-3}$ 生成、并以取整 cocycle 回投影的动力系统。该表示把“在线延迟”直接编码为乘法扩张与分支选择的串行结构。
+\end{remark}
 该同步部分的状态集可取为
 \[
 Q=\{000,001,002,010,100,101,0\overline{1}2,1\overline{1}2,01\overline{1},11\overline{1}\},
@@ -196,13 +204,58 @@ p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}
 取指数即得 $\mathcal{E}(p)=\exp(\sum_{m\ge 1}\frac{\mathrm{Tr}(T^m)}{m}z^m)=\mathcal{Z}(T)$。证毕。
 \end{proof}
 
+\begin{remark}[同步核的自对偶与二变量函数方程]
+取输出位势 $\varphi(e)=e$，令 $B(u)=B_0+uB_1$、$\Delta(z,u)=\det(I-zB(u))$ 与 $\zeta(z,u)=\Delta(z,u)^{-1}$。附录 \ref{app:kernel-self-dual} 给出置换矩阵 $\Pi$ 使得 $\Pi^{-1}B(u)\Pi=uB(1/u)$，因此
+\[
+\Delta(z,u)=\Delta(uz,1/u),\qquad
+\zeta(z,u)=\zeta(uz,1/u).
+\]
+这可视作端态侧对偶函子 $D_{\mathbf{End}}:B(u)\mapsto uB(1/u)$ 与 Euler 侧对偶函子 $D_{\mathbf{Euler}}:F(z,u)\mapsto F(uz,1/u)$ 之间的严格交换，从而把“时间长度 $z$”与“事件权重 $u$”在同一 $\zeta$-接口下对齐为可核验的对偶变换。
+\end{remark}
+
+\begin{remark}[完成化与 \texorpdfstring{$\ZZ/2$}{Z2} 作用]
+把 $D_{\mathbf{End}}$ 与 $D_{\mathbf{Euler}}$ 视为对参数 $u$ 的对偶作用，则 $D^2=\mathrm{Id}$ 给出一条 $\ZZ/2$-对称。若 $F(z,u)$ 满足 $F(z,u)=F(uz,1/u)$，定义完成化
+\[
+\widetilde{F}(z,\theta):=F(e^{-\theta/2}z,e^\theta),\qquad u=e^\theta,
+\]
+则 $\widetilde{F}(z,-\theta)=\widetilde{F}(z,\theta)$ 为严格偶性。对应严格交换图
+\[
+\begin{CD}
+\mathbf{End}^{\simeq} @>D_{\mathbf{End}}>> \mathbf{End}^{\simeq}\\
+@V\mathcal{Z}VV @VV\mathcal{Z}V\\
+\mathbf{Euler} @>D_{\mathbf{Euler}}>> \mathbf{Euler}
+\end{CD}
+\]
+写作完成化算子
+\[
+\mathcal{C}(F)(z,\theta):=F(e^{-\theta/2}z,e^\theta),
+\]
+则 $\mathcal{C}\circ D_{\mathbf{Euler}}=\mathcal{C}$，并且
+\[
+\widetilde{\mathcal{Z}}:=\mathcal{C}\circ\mathcal{Z}
+\]
+满足 $\widetilde{\mathcal{Z}}=\widetilde{\mathcal{Z}}\circ D_{\mathbf{End}}$。因此对同步核的 $\Delta$ 与 $\zeta$，完成化后在 $\theta$ 上呈严格偶性（见附录 \ref{app:kernel-completion}）。
+\end{remark}
+
 \begin{remark}[为何 delay-$3$ 在线机是“prime-like 原子的产生机”]
 定理 \ref{thm:online-delay-fold} 给出一个具体对象：delay-$3$ 在线归一化同步核的邻接矩阵 $B$（附录 B）。将 $T=B$ 代入命题 \ref{prop:time-space-commuting-diagram}，则“时间侧”的 $\mathrm{Tr}(B^n)$ 与“空间侧”的 primitive 轨道数 $p_n$（prime-like 原子）严格由同一 $\zeta_B(z)=1/\det(I-zB)$ 统一。
 因此“不可并行依赖”（延迟窗口中的余量守恒/携带）并非噪声，而是把迭代动力学编码为一个有限核，使得其 primitive 闭环成为可审计的 prime-like 原子。
 \end{remark}
 
 \begin{remark}[乘法相关性的可检验落点：张量装配与 Witt/Möbius]
-当把单流核按 $m$ 条同构同余流做全局块级张量装配时，有 $T_{\mathrm{glob}}=T_{\mathrm{flow}}^{\otimes m}$，从而 $\mathrm{Tr}(T_{\mathrm{glob}}^n)=\mathrm{Tr}(T_{\mathrm{flow}}^n)^m$。
-把该“时间侧的乘法/幂次结构”代入 Möbius/Witt 抽取，就得到全局 primitive（prime-like）谱的闭式组合律（见推论 \ref{cor:par-add-global-lift-endpoints} 与附录 \ref{app:witt-weighted} 的同型公式），这给出“加法中不可并行部分在乘法（迭代/装配）读出下被重复放大”的一个完全可核验接口。
+当把单流核按 $m$ 条同构同余流做全局块级张量装配时，有 $T_{\mathrm{glob}}=T_{\mathrm{flow}}^{\otimes m}$，从而
+\[
+a_n^{\mathrm{glob}}(u):=\mathrm{Tr}(T_{\mathrm{glob}}(u)^n)=\bigl(a_n^{\mathrm{flow}}(u)\bigr)^m.
+\]
+在附录 \ref{app:witt-weighted} 的 $u$-加权口径下，primitive 谱多项式满足
+\[
+p_n^{\mathrm{glob}}(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}^{\mathrm{glob}}(u^d)
+=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\bigl(a_{n/d}^{\mathrm{flow}}(u^d)\bigr)^m.
+\]
+特别地，若 $n=\ell$ 为素数，则
+\[
+p_\ell^{\mathrm{glob}}(u)=\frac{1}{\ell}\left(\bigl(a_\ell^{\mathrm{flow}}(u)\bigr)^m-\bigl(a_1^{\mathrm{flow}}(u^\ell)\bigr)^m\right).
+\]
+该等式把“时间侧的幂次/乘法”精确翻译为“空间侧 primitive 谱的非平凡 Witt 多项式律”（见推论 \ref{cor:par-add-global-lift-endpoints} 的同型口径），从而给出“不可并行活动”的一个可审计 prime-like 读出接口。
 \end{remark}
 

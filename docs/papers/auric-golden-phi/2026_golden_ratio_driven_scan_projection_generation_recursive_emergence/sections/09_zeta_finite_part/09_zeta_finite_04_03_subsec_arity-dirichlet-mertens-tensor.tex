@@ -256,6 +256,24 @@ S_c:=\sum_{a=0}^{2}\sum_{b=0}^{2}C^{(3,3,5)}_{a,b,c},
 则在真实输入 40 状态核的 \(((3,3,5))\) 分层（第三轴取 $c=N_2(\gamma)\bmod 5$）下，可复现输出显示：$S_0$ 显著为正，而 $S_2,S_3,S_4$ 为负，并且 $\sum_{c=0}^4 S_c=\mathsf{M}$。因此在 Abel/Hadamard 有限部（常数级漂移）口径下，primitive 轨道对碰撞同余类 $c$ 的偏置主要体现为“$c=0$ 的强正漂移 + 其余同余类的系统性负漂移”。
 \end{corollary}
 
+\begin{corollary}[符号相变阈值与正漂移稀疏性]\label{cor:arity-335-sign-sparsity}
+对 \(((3,3,5))\) 的五张切片逐项检查可复现输出显示：
+\[
+C^{(3,3,5)}_{a,b,c}>0\ \Longrightarrow\ c\in\{0,1\},
+\]
+并且当 $c=2,3,4$ 时全部 $9$ 个格点严格为负。由此正漂移仅出现在 $c=0,1$ 两片中。进一步统计得到
+\[
+\#\{C>0\}=9,\qquad \#\{C<0\}=36,
+\]
+以及
+\[
+\sum_{C>0}C\approx 2.303140,\qquad
+\sum_{C<0}C\approx -1.980237,\qquad
+\sum_{a,b,c}C^{(3,3,5)}_{a,b,c}=\mathsf{M}.
+\]
+因此总常数 $\mathsf{M}$ 是“大正漂移”与“大负漂移”的强抵消残差，而非单侧累积。
+\end{corollary}
+
 \begin{corollary}[三维耦合对 \texorpdfstring{$(a,b)$}{(a,b)} 的依赖在 $c$ 轴上强局部化]\label{cor:arity-335-localized-ab-coupling}
 把每张 $c$-切片看作 $3\times 3$ 矩阵（行 $b$，列 $a$），并令 $\mathrm{sd}(c)$ 为该矩阵在 $9$ 个条目上的标准差（按条目平均）。则可复现输出显示：$\mathrm{sd}(c)$ 随 $c$ 增大呈数量级下降，且在 $c\ge 2$ 时切片已接近常数矩阵（对 $(a,b)$ 的依赖显著减弱），在 $c=3,4$ 时更是几乎完全消失。故在常数级漂移分辨率下，\(((3,3,5))\) 的非平凡三维耦合主要集中在少数碰撞同余类（特别是 $c=0$ 与 $c=1$）上，而尾部同余类呈近因子化行为。
 \end{corollary}
@@ -301,7 +319,13 @@ f_{a,b}(c)
 \end{proposition}
 
 \begin{proposition}[低秩可压缩：\texorpdfstring{$((3,3,5))$}{(3,3,5)} 张量的三模近似指纹]\label{prop:arity-335-low-rank}
-把常数张量 $C^{(3,3,5)}_{a,b,c}$ 视为实矩阵 $T\in\RR^{5\times 9}$（行指标为 $c\in\{0,1,2,3,4\}$，列指标为扁平化后的 $(a,b)\in(\ZZ/3)^2$）。令其奇异值为 $s_1\ge \cdots\ge s_5$。二级摘要输出显示：仅用前三个奇异模态即可捕获几乎全部 Frobenius 能量（$\sum_{i\le 3}s_i^2/\sum_{i\le 5}s_i^2$ 逼近 $1$），因此整个 $45$ 项张量在常数级分辨率下可被极低维近似稳定表征（可作为新的“核指纹”不变量）。
+把常数张量 $C^{(3,3,5)}_{a,b,c}$ 视为实矩阵 $T\in\RR^{5\times 9}$（行指标为 $c\in\{0,1,2,3,4\}$，列指标为扁平化后的 $(a,b)\in(\ZZ/3)^2$）。令其奇异值为 $s_1\ge \cdots\ge s_5$。二级摘要输出显示
+\[
+\frac{s_1^2}{\sum s_i^2}\approx 0.935619,\qquad
+\frac{s_1^2+s_2^2}{\sum s_i^2}\approx 0.986715,\qquad
+\frac{s_1^2+s_2^2+s_3^2}{\sum s_i^2}\approx 0.999866,
+\]
+因此仅用前三个奇异模态即可捕获几乎全部 Frobenius 能量，整个 $45$ 项张量在常数级分辨率下可被极低维近似稳定表征（可作为新的“核指纹”不变量）。
 \end{proposition}
 
 \begin{remark}[near-coboundary 二次律：对更高模数的可检验预测]\label{rem:arity-335-near-coboundary-scaling}
@@ -331,6 +355,15 @@ $$
 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py}
 直接生成并输出为可 \verb|\input| 的 \LaTeX\ 片段：
 \input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_555}
+
+\begin{corollary}[纯碰撞慢模的普适性与混合变慢]\label{cor:arity-555-collision-universal}
+在 $((5,5,5))$ 的可复现输出中，最坏扭曲角色仍为 $(0,0,1),(0,0,4)$，且
+\[
+\rho_{5,5,5}/\lambda\approx 0.962814> \rho_{3,3,5}/\lambda\approx 0.950621.
+\]
+与 $((3,3,3))$ 的最坏角色 $(1,2,2),(2,1,1)$ 及 $\rho_{3,3,3}/\lambda\approx 0.936686$ 对照可见：
+提升第三维模数后，最慢模态稳定地退化为\textbf{纯碰撞扭曲}，同时 $\rho/\lambda$ 更接近 $1$，表明混合变慢、相关长度增加。
+\end{corollary}
 
 \paragraph{为何称为“真正的 arity 维度素数谱”}
 上述输出同时给出三层可审计结构：
