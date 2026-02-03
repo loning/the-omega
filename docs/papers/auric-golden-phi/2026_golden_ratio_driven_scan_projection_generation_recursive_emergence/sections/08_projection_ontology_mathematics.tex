@@ -62,6 +62,31 @@ a_n^{\mathrm{glob}}(u)=a_n^{\mathrm{flow}}(u)^m
 规范投影 $P_Z$ 同时具有两种相容实现：其一是在态/地址层面由 $\Fold_m$ 或 $\Fold_\infty$ 给出的横截面选择；其二是在可观测量层面由条件期望 $E_m$ 给出的纤维平均。二者分别刻画“唯一代表的选取”与“信息遗忘的量化”，共同组成 $P_Z$ 的双态结构。
 \end{remark}
 
+\begin{proposition}[规范投影的本体刻画：纤维平均的唯一性]\label{prop:pom-pz-unique-expectation}
+把 $\mathcal{A}_m\simeq \mathbb{C}^{\Omega_m}$ 视为窗口微态上的函数代数，$\mathcal{B}_m\simeq \mathbb{C}^{X_m}$ 视为折叠不变量子代数（命题 \ref{prop:fold-invariant-subalgebra}），并记折叠纤维为
+$$
+\Fold_m^{-1}(x)\subset\Omega_m,\qquad x\in X_m.
+$$
+设 $P:\mathcal{A}_m\to\mathcal{B}_m$ 为线性算子，满足：
+\begin{enumerate}
+  \item \textbf{幂等与保持稳定：}$P^2=P$，且对一切 $b\in\mathcal{B}_m$ 有 $P(b)=b$；
+  \item \textbf{正性与单位元：}$P(\mathbf 1)=\mathbf 1$，并且 $f\ge 0\Rightarrow P(f)\ge 0$；
+  \item \textbf{纤维对称（coarse-graining 只依赖折叠纤维）：}对任意 $x\in X_m$、任意纤维内置换 $\sigma:\Fold_m^{-1}(x)\to\Fold_m^{-1}(x)$，以及任意 $f\in\mathcal{A}_m$，有
+  $$
+  P(f)=P(f\circ\sigma).
+  $$
+\end{enumerate}
+则 $P=E_m$，其中 $E_m$ 为沿折叠纤维的\emph{均匀}平均条件期望（命题 \ref{prop:fold-conditional-expectation}）。
+\end{proposition}
+\begin{proof}
+对任意 $x\in X_m$，把 $P(f)$ 识别为 $X_m$ 上函数，则 $P(f)(x)$ 只依赖于 $f$ 在纤维 $\Fold_m^{-1}(x)$ 上的取值，并且由纤维置换不变性可知：若只改变 $f$ 在该纤维上的排列，则 $P(f)(x)$ 不变。
+因此 $P(f)(x)$ 仅能依赖于 $f$ 在该纤维上的\emph{对称统计量}。由正性与 $P(\mathbf 1)=\mathbf 1$，并结合幂等与 $P|\_{\mathcal{B}_m}=\mathrm{id}$（即对纤维常值函数不改变），可推出对每条纤维，唯一与上述结构相容的线性对称泛函是“算术平均”。从而对任意 $f\in\mathcal{A}_m$，
+$$
+P(f)(x)=\frac{1}{d_m(x)}\sum_{a\in\Fold_m^{-1}(x)} f(a)=E_m(f)(x),
+$$
+即 $P=E_m$。证毕。
+\end{proof}
+
 \begin{proposition}[条件期望塔]\label{prop:pom-expectation-tower}
 对任意 $m_2\ge m_1$，由柱事件延拓给出代数包含
 \(
@@ -226,6 +251,41 @@ W_\chi(I)=(k_Z(I),k_\chi(I))
 此时 $k_\chi$ 仅统计角色/同余投影的调用次数，作为 $k_{\le}$ 的具体化版本。
 \end{remark}
 
+\begin{definition}[纤维选择与核选择]\label{def:pom-fiber-kernel-choice}
+对任意指令/微码 $I$，记其在实现过程中被激活的先验纤维族为
+$$
+\mathcal{F}(I)\subseteq \{\mathcal{S}_\varphi,\mathcal{T},\mathcal{P},\widehat{\ZZ}\},
+$$
+分别对应尺度纤维、相位纤维、素数寄存器纤维与 profinite 同余轴（定义 \ref{def:pom-scale-fiber}、\ref{def:pom-phase-fiber}、\ref{def:pom-prime-fiber}、\ref{def:pom-profinite}）。
+并且记其规范读出所采用的归一化核为 $K_Z(I)$（即实现 $P_Z$ 的具体核），序/角色读出所采用的核为 $K_{\le}(I)$ 或 $K_{\chi}(I)$（实现 $P_{\le}$ 或 $P_\chi$ 的具体核）。
+\end{definition}
+
+\begin{definition}[指令签名：投影词 $\times$ 核指纹 $\times$ 纤维选择]\label{def:pom-instruction-signature}
+令 $\mathfrak{F}(K)$ 为核的谱指纹（定义 \ref{def:kernel-spectral-fingerprint}）。对任意指令/微码 $I$，定义其（审计）指令签名为
+$$
+\Sigma(I):=\Bigl(W(I),\ \mathfrak{F}\bigl(K_Z(I)\bigr),\ \mathfrak{F}\bigl(K_{\le}(I)\bigr),\ \mathcal{F}(I)\Bigr),
+$$
+其中 $W(I)$ 为投影词（定义 \ref{def:pom-projection-word}），$\mathcal{F}(I)$ 为纤维选择（定义 \ref{def:pom-fiber-kernel-choice}）。当序读出由 $P_\chi$ 实现时，可将 $\mathfrak{F}(K_{\le}(I))$ 替换为 $\mathfrak{F}(K_{\chi}(I))$。
+\end{definition}
+
+\begin{remark}[为什么 $W$ 不够：核几何进入指纹]\label{rem:pom-signature-why}
+投影词 $W(I)$ 只记录“调用了几次投影门”，并不记录“投影门的几何是什么”。而核指纹 $\mathfrak{F}(K)$（例如 $\zeta_K$、primitive 分层谱 $\{B_{K,n}(u)\}$、有限部常数与扭曲谱隙）决定了同一投影门在机制层的差异（附录 \ref{app:sync-kernel-A-compare}）。因此更强的统一分类对象应为 $\Sigma(I)$ 而非仅为 $W(I)$。
+\end{remark}
+
+\begin{proposition}[签名一致 $\Rightarrow$ 指纹一致与成本模型同型]\label{prop:pom-signature-audit}
+设两条指令/微码 $I,J$ 满足 $\Sigma(I)=\Sigma(J)$。则：
+\begin{enumerate}
+  \item \textbf{投影审计不变量一致：}两者在同一核指纹口径下给出相同的 $\zeta$、primitive 原子谱（含其加权分层）、压力曲线端点与扭曲谱隙等可审计指纹（由 $\mathfrak{F}(K_Z),\mathfrak{F}(K_{\le})$ 完全决定）。
+  \item \textbf{成本模型同型：}在定义 \ref{def:pom-cost} 的口径下，两者具有相同的投影词系数 $(k_Z,k_{\le})$，并且其常数项（如 $\delta_Z$）与混合尺度（如 $\tau_{\mathrm{mix}}$）由核指纹相同而一致，因此成本模型的结构分解一致：
+  $$
+  T_I(n)=k_Z\,\delta_Z+k_{\le}\,T_{\le}(n)+D_U(n),
+  \qquad
+  T_J(n)=k_Z\,\delta_Z+k_{\le}\,T_{\le}(n)+D_U'(n),
+  $$
+  其中差异仅可能出现在“线性化深度/演化深度”项 $D_U$ 上，而该项正由纤维选择 $\mathcal{F}$ 与具体演化编排决定（定义 \ref{def:pom-space-time}）。
+\end{enumerate}
+\end{proposition}
+
 \begin{definition}[成本模型]\label{def:pom-cost}
 令 $\delta_Z$ 为一次规范投影的基准读出深度（例如在线归一化的固定延迟，见定理 \ref{thm:online-delay-fold}），令 $T_{\le}(n)$ 为一次序投影的聚合深度，令 $D_U(n)$ 为在本体演化中完成线性化所需的深度。则定义
 \[
@@ -271,6 +331,24 @@ T(n):=\min\{t:\ \Pi_n(U^t(\iota_n(x)))\ \text{对所有输入稳定}\}.
 空间—时间对偶律指：增大 $S(n)$ 可将混合线性化并降低 $T(n)$，反之限制 $S(n)$ 将迫使信息沿局部传播累积。
 \end{definition}
 
+\begin{definition}[原子空间代价（prime-like 原子预算）]\label{def:pom-atom-space-cost}
+固定核/演化算子 $T$（或其带权版本 $T(u)$），令 $p_n$ 为 primitive 轨道数（或 primitive 分层谱在 $u=1$ 的取值；见定义 \ref{def:pom-proj-prim}）。定义长度 $n$ 的原子空间代价为
+$$
+S_{\mathrm{atom}}(n):=\log p_n.
+$$
+当 $p_n$ 带权（例如 $p_n(u)$ 或 $B_{K,n}(u)$）时，取 $u=1$ 可视为“无权原子预算”，取 $u=0$ 给出 carry-free 原子预算（推论 \ref{cor:Bn0-equals-primitive-skeleton}）。
+\end{definition}
+
+\begin{remark}[时间$\leftrightarrow$原子空间的可审计互译]\label{rem:pom-atom-audit}
+由命题 \ref{prop:time-space-commuting-diagram} 的交换图与 Möbius/Witt 反演（见注 \ref{rem:pom-trace-to-prime}），$p_n$ 与时间迹 $a_n=\Tr(T^n)$ 可互相确定：
+$$
+p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d},
+\qquad
+a_n=\sum_{d\mid n} d\,p_d.
+$$
+因此 $S_{\mathrm{atom}}(n)$ 是把“时间侧不可约循环”压成空间侧 prime-like 原子谱的可审计指纹；尤其在素数长度 $\ell$ 上，primitive 项隔离“不可约循环”与“幂重复循环”的差异（参见注 \ref{rem:pom-prime-length-probe} 的素数长度探针公式），可用于检验张量装配的隐藏耦合与并行独立性。
+\end{remark}
+
 \begin{corollary}[折叠诱导的空间下界]\label{cor:pom-space-lower-bound}
 在分辨率 $m$ 上，若要求折叠纤维的微态可区分（即 $P_Z$ 不丢失该层信息），则隐纤维规模至少满足
 \[
@@ -306,6 +384,19 @@ a=bq+r,\quad 0\le r<b,
 
 \begin{remark}[生成机制与“数学体系”的含义]\label{rem:pom-math-world}
 “生成整个数学体系”在此不指形式系统的完备性，而指对象与运算的生成机制统一：对象作为本体态在投影族下的稳定读出，运算作为投影词的组合闭包。不同数学分支仅对应于所选纤维与投影闭包的差异，而非本体的差异。
+\end{remark}
+
+\begin{definition}[分辨率可判定与分辨率完备性]\label{def:pom-resolution-completeness}
+令 $\mathcal{F}_m$ 为由长度 $m$ 的柱事件生成的 $\sigma$-代数（等价于“只依赖有限窗口”的可观测闭包），并记 $\mathcal{F}_\infty:=\sigma\!\bigl(\bigcup_{m\ge 1}\mathcal{F}_m\bigr)$。
+\begin{itemize}
+  \item 称性质/命题 $\mathsf{P}$ \textbf{$m$-可判定}，若其指示函数属于 $\mathcal{F}_m$（即仅依赖有限窗口）。
+  \item 称 $\mathsf{P}$ \textbf{分辨率可判定}，若存在某个 $m$ 使其 $m$-可判定（即 $\mathbf{1}_{\mathsf P}\in\mathcal{F}_\infty$）。
+  \item 称一个概念体系在给定读出族下\textbf{分辨率完备}，若其全部基本可观测命题均为分辨率可判定。
+\end{itemize}
+\end{definition}
+
+\begin{remark}[分辨率边界与序投影]\label{rem:pom-resolution-boundary}
+条件期望塔（命题 \ref{prop:pom-expectation-tower}）表明：$P_Z$ 的可观测闭包自然落在 $\mathcal{F}_\infty$ 中；因此所有“稳定读出”的命题都属于分辨率可判定层级。相对地，序投影 $P_{\le}$ 典型对应跨窗口聚合与全局序约束（定义 \ref{def:pom-proj-order}），其判定一般不在任何固定 $\mathcal{F}_m$ 内闭合，从而在结构上形成分辨率边界：若不引入额外纤维轴束（例如模轴空间化，定理 \ref{thm:pom-order-spatialization}），则必须付出随规模增长的读出深度。
 \end{remark}
 
 \subsection{折叠指标与投影熵率}\label{subsec:pom-projection-entropy}
@@ -468,6 +559,264 @@ D_2=2,\quad D_3=2,\quad D_4=3,\quad D_5=4.
 \frac{\varphi^{3/2}}{2}\approx 1.029\ldots
 \]
 因此最坏纤维相对平均纤维的偏离虽为指数，但基数极小，表明折叠投影在“最坏空间损失”意义下仍保持温和的尺度膨胀。
+\end{remark}
+
+\subsubsection{二阶碰撞矩与 \texorpdfstring{$\mathrm{R\acute{e}nyi}$}{Renyi}--2 投影熵率}\label{subsec:pom-s2}
+最大纤维多重度刻画“最坏空间缺陷”，但在统计意义上更稳健的指标来自碰撞矩（\(\ell^2\) 质量）。它给出一个可与在线延迟 \(\delta_{\min}=3\) 并列的、纯由折叠门 \(P_Z\) 决定的指数尺度常数。
+
+\begin{lemma}[碰撞等价于模 \texorpdfstring{$F_{m+2}$}{F\_{m+2}} 同余]\label{lem:pom-fold-congruence}
+设 \(\omega,\omega'\in\Omega_m=\{0,1\}^m\)，并定义窗口值
+$$
+N(\omega):=\sum_{k=1}^m \omega_k F_{k+1}.
+$$
+则有等价关系
+$$
+\Fold_m(\omega)=\Fold_m(\omega')
+\quad\Longleftrightarrow\quad
+N(\omega)\equiv N(\omega')\pmod{F_{m+2}}.
+$$
+\end{lemma}
+\begin{proof}
+记 \(x=\Fold_m(\omega)\in X_m\)、\(x'=\Fold_m(\omega')\in X_m\)。由引理 \ref{lem:pom-one-bit}（单隐藏位分解）存在唯一 \(b(\omega),b(\omega')\in\{0,1\}\) 使
+$$
+N(\omega)=V_m(x)+b(\omega)F_{m+2},\qquad
+N(\omega')=V_m(x')+b(\omega')F_{m+2}.
+$$
+若 \(x=x'\)，则两式相减得 \(N(\omega)-N(\omega')=(b(\omega)-b(\omega'))F_{m+2}\)，从而同余成立。
+反之，若 \(N(\omega)\equiv N(\omega')\ (\mathrm{mod}\ F_{m+2})\)，则两者在模 \(F_{m+2}\) 下的余数相同。又由于 \(V_m(\Fold_m(\cdot))\) 正是 Zeckendorf 规范形在前 \(m\) 位对应的值（定义 \ref{def:pom-window-value}），该余数唯一确定折叠后的稳定类型 \(x\in X_m\)，因此 \(x=x'\)，即 \(\Fold_m(\omega)=\Fold_m(\omega')\)。证毕。
+\end{proof}
+
+\begin{definition}[折叠碰撞矩]\label{def:pom-s2}
+定义二阶碰撞和
+$$
+S_2(m):=\sum_{x\in X_m} d_m(x)^2,
+\qquad d_m(x):=\bigl|\Fold_m^{-1}(x)\bigr|.
+$$
+等价地，从 \(\Omega_m\) 上均匀独立抽取两条窗口 \(\omega,\omega'\)，则
+$$
+\mathbb{P}\bigl[\Fold_m(\omega)=\Fold_m(\omega')\bigr]=\frac{S_2(m)}{4^m}.
+$$
+\end{definition}
+
+\begin{proposition}[碰撞核的三态表示与三阶递推]\label{prop:pom-s2-recurrence}
+令碰撞关系
+$$
+R_m:=\{(\omega,\omega')\in\Omega_m\times\Omega_m:\Fold_m(\omega)=\Fold_m(\omega')\}.
+$$
+则存在一个三态的非负整数矩阵（可视为“碰撞核”的邻接矩阵）
+$$
+A_2:=
+\begin{pmatrix}
+0&0&1\\
+0&1&1\\
+2&1&1
+\end{pmatrix},
+$$
+使得对一切 \(m\ge 2\),
+$$
+S_2(m)=|R_m|
+=2\,\mathbf{1}^{\mathsf T}A_2^{\,m-2}\mathbf{1},
+\qquad \mathbf{1}:=(1,1,1)^{\mathsf T}.
+$$
+从而 \(S_2(m)\) 满足精确递推（\(m\ge 5\)）
+$$
+S_2(m)=2S_2(m-1)+2S_2(m-2)-2S_2(m-3),
+$$
+并具有初值 \(S_2(2)=6,S_2(3)=14,S_2(4)=36\)。
+\end{proposition}
+\begin{proof}
+由引理 \ref{lem:pom-fold-congruence}，有
+$$
+|R_m|
+=\#\{(\omega,\omega'):\ N(\omega)\equiv N(\omega')\ (\mathrm{mod}\ F_{m+2})\}
+=\sum_{r\in\ZZ/F_{m+2}\ZZ} c_m(r)^2,
+$$
+其中 \(c_m(r):=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\ (\mathrm{mod}\ F_{m+2})\}\)。
+因此 \(S_2(m)\) 完全由“模 \(F_{m+2}\) 的值同余计数”决定，可视为一个离散有限状态计数问题的平方和（碰撞核的 \(\ell^2\) 质量）。
+
+接着给出一个\textbf{可审计构造}：三态非负 realization 可取上式所示的 \(A_2\)。该矩阵并非任意猜测——它可以从小 \(m\) 的枚举数据出发自动恢复：先由 \(S_2(2),\dots,S_2(7)\) 解出最小三阶递推系数，再在小整数矩阵类中搜索满足
+\(
+S_2(m)=2\,\mathbf{1}^{\mathsf T}A^{m-2}\mathbf{1}
+\)
+的非负 \(3\times 3\) realization，得到的规范解即为此 \(A_2\)（可复现脚本 \texttt{scripts/exp\_fold\_collision\_kernel\_a2\_search.py}）。
+为核对其正确性，直接计算得
+$$
+2\,\mathbf{1}^{\mathsf T}A_2^{\,0}\mathbf{1}=6,\qquad
+2\,\mathbf{1}^{\mathsf T}A_2^{\,1}\mathbf{1}=14,\qquad
+2\,\mathbf{1}^{\mathsf T}A_2^{\,2}\mathbf{1}=36,
+$$
+与 \(S_2(2),S_2(3),S_2(4)\) 一致。另一方面，\(A_2\) 的特征多项式为
+$$
+\det(\lambda I-A_2)=\lambda^3-2\lambda^2-2\lambda+2,
+$$
+因此对任意向量序列 \(u_m:=\mathbf{1}^{\mathsf T}A_2^{m}\mathbf{1}\)（\(m\ge 0\)）满足由 Cayley--Hamilton 定理诱导的三阶线性递推。乘以常数 \(2\) 并作指标平移即可得到 \(S_2(m)\) 的递推式与初值。
+
+最后，\(\mathbf{1}\) 与 \(A_2\) 的取法给出一个完全显式、可审计的三态“碰撞核”实现；其数值、递推与 \(A_2\) realization 的一致性可由脚本 \texttt{scripts/exp\_fold\_collision\_s2.py} 与 \texttt{scripts/exp\_fold\_collision\_kernel\_a2\_search.py} 逐项核验。证毕。
+\end{proof}
+
+\begin{lemma}[三阶递推的最小性]\label{lem:pom-s2-minimal-order}
+序列 \(\{S_2(m)\}_{m\ge 2}\) 不满足任何二阶常系数线性递推。因而命题 \ref{prop:pom-s2-recurrence} 的三阶递推在“线性递推阶数”意义下是最小的。
+\end{lemma}
+\begin{proof}
+反设存在常数 \(\alpha,\beta\) 使对所有 \(m\) 有 \(S_2(m)=\alpha S_2(m-1)+\beta S_2(m-2)\)。
+由初值 \(S_2(2)=6,S_2(3)=14,S_2(4)=36,S_2(5)=88\) 解线性方程组
+$$
+36=\alpha\cdot 14+\beta\cdot 6,\qquad
+88=\alpha\cdot 36+\beta\cdot 14
+$$
+得 \(\alpha=6/5,\ \beta=16/5\)。于是
+$$
+S_2(6)=\alpha S_2(5)+\beta S_2(4)=\frac65\cdot 88+\frac{16}{5}\cdot 36=\frac{1104}{5}=220.8,
+$$
+与 \(S_2(6)=220\)（命题 \ref{prop:pom-s2-recurrence} 或脚本 \texttt{scripts/exp\_fold\_collision\_s2.py}）矛盾。故不存在二阶递推。证毕。
+\end{proof}
+
+\begin{remark}[最小 realization 维数与非负核]\label{rem:pom-s2-minimal-realization}
+由引理 \ref{lem:pom-s2-minimal-order}，\(\{S_2(m)\}\) 的最小线性递推阶数为 \(3\)，因此任何线性状态空间表示 \(S_2(m)=u^{\mathsf T}B^{m}v\) 的最小维数至少为 \(3\)。命题 \ref{prop:pom-s2-recurrence} 给出的三态矩阵 \(A_2\) 因而在维数意义下是最小的；并且它是一个\emph{非负整数} realization（可视为一张三态有限图的邻接矩阵），从而将 \(S_2\) 的指数尺度完全纳入 Perron--Frobenius/\(\zeta\) 的统一接口。
+\end{remark}
+
+\begin{remark}[Hankel 最小实现与 \texorpdfstring{$A_2$}{A2} 的非负相似标准形]\label{rem:pom-s2-hankel}
+将序列重标为 \(a_n:=S_2(n+2)/2\)（\(n\ge 0\)）。由递推阶数为 \(3\) 可知 Hankel 矩阵族的秩为 \(3\)，因此存在一个三维的\textbf{最小线性实现}（加权自动机/线性表示的标准口径）：取
+$$
+H_0=(a_{i+j})_{0\le i,j\le 2},\qquad H_1=(a_{i+j+1})_{0\le i,j\le 2},
+$$
+则在 \(H_0\) 可逆时可定义“移位实现矩阵”
+$$
+A:=H_0^{-1}H_1,
+$$
+从而 \(a_n=u^{\mathsf T}A^{n}v\)（某些 \(u,v\)）给出最小 realization。该 Hankel 标准形 \(A\) 一般包含符号（例如出现负系数），但它与非负整数核 \(A_2\) 相似：存在行列式为 \(\pm 1\) 的整矩阵 \(P\) 使
+$$
+P^{-1}AP=A_2.
+$$
+上述 Hankel 构造与 unimodular 相似变换可由脚本 \texttt{scripts/exp\_fold\_collision\_hankel\_realization.py} 一键复现，从而把“最小 realization（可证明）”与“非负核（可解释为有限图）”严格对齐。
+\end{remark}
+
+\begin{theorem}[Hankel 秩定理（加权自动机的线性 Myhill--Nerode 口径）]\label{thm:hankel-rank-minimal}
+设 \(k\) 为域（例如 \(\mathbb{Q}\) 或 \(\mathbb{R}\)）。给定一个序列 \(a=(a_n)_{n\ge 0}\subset k\)，其 Hankel 矩阵定义为
+$$
+H(a):=(a_{i+j})_{i,j\ge 0}.
+$$
+称 \((u,A,v)\) 为 \(a\) 的一个线性表示（linear representation），若 \(u,v\in k^d\)、\(A\in k^{d\times d}\)，且对一切 \(n\ge 0\) 有
+$$
+a_n=u^{\mathsf T}A^n v.
+$$
+则有
+$$
+\mathrm{rank}\bigl(H(a)\bigr)=\min\{d:\exists\ (u,A,v)\text{ 给出维数为 }d\text{ 的线性表示}\}.
+$$
+等价地，\(\mathrm{rank}(H(a))\) 等于生成该序列的最小加权自动机（有理级数）的状态数（见 \cite{BerstelReutenauer1988RationalSeries}）。
+\end{theorem}
+
+\begin{lemma}[Hankel 窗口行列式非零：秩至少为 \texorpdfstring{$3$}{3}]\label{lem:pom-s2-hankel-det}
+令 \(a_n:=S_2(n+2)/2\)。取 \(3\times 3\) Hankel 窗口
+$$
+H_0:=
+\begin{pmatrix}
+a_0 & a_1 & a_2\\
+a_1 & a_2 & a_3\\
+a_2 & a_3 & a_4
+\end{pmatrix}.
+$$
+则
+$$
+(a_0,a_1,a_2,a_3,a_4)=\Bigl(3,7,18,44,110\Bigr),
+\qquad
+\det(H_0)=-2\neq 0.
+$$
+因此 Hankel 秩至少为 \(3\)，从而任何线性 realization 的最小维数至少为 \(3\)。
+\end{lemma}
+\begin{proof}
+由 \(S_2(2)=6,S_2(3)=14,S_2(4)=36,S_2(5)=88,S_2(6)=220\)（命题 \ref{prop:pom-s2-recurrence}），即得
+\(
+a_n=S_2(n+2)/2
+\)
+的前五项为 \((3,7,18,44,110)\)。直接代入计算 \(\det(H_0)\) 得 \(-2\)。证毕。
+\end{proof}
+
+\begin{theorem}[Hankel 秩恰为 \texorpdfstring{$3$}{3}，且三态为最小碰撞核]\label{thm:pom-s2-rank-exact}
+令 \(a_n:=S_2(n+2)/2\) 并以 \(H=(a_{i+j})_{i,j\ge 0}\) 表示其 Hankel 矩阵。则：
+\begin{enumerate}
+  \item \(\mathrm{rank}(H)=3\)。
+  \item \(a_n\) 的最小线性表示（等价于最小加权自动机）的状态维数为 \(3\)（由定理 \ref{thm:hankel-rank-minimal}）。
+  \item 命题 \ref{prop:pom-s2-recurrence} 给出的三态非负整数核 \(A_2\) 在维数意义下是最小的碰撞核 realization。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\textbf{(1)} 由引理 \ref{lem:pom-s2-hankel-det}，存在一个 \(3\times 3\) Hankel 主子式 \(\det(H_0)\neq 0\)，故 \(\mathrm{rank}(H)\ge 3\)。
+另一方面，命题 \ref{prop:pom-s2-recurrence} 给出三维线性 realization
+$$
+a_n=\mathbf{1}^{\mathsf T}A_2^{\,n}\mathbf{1},
+$$
+因此 Hankel 矩阵的行/列空间包含于 \(\mathbb{R}^3\) 的一个 3 维线性表示所张成的子空间，从而 \(\mathrm{rank}(H)\le 3\)。合并得 \(\mathrm{rank}(H)=3\)。
+
+\textbf{(2)} 由定理 \ref{thm:hankel-rank-minimal}，\(\mathrm{rank}(H)\) 等于最小线性表示维数；结合 (1) 的 \(\mathrm{rank}(H)=3\)，得最小维数为 \(3\)。
+
+\textbf{(3)} 由 (2) 得任何实现的维数至少为 3，而 \(A_2\) 给出 3 维实现，故其在维数意义下最小。证毕。
+\end{proof}
+
+\begin{corollary}[碰撞指数与 \texorpdfstring{$h_2$}{h2}]\label{cor:pom-s2-asymptotic}
+令 \(r_2\) 为多项式
+$$
+x^3-2x^2-2x+2=0
+$$
+的最大实根（\(r_2\approx 2.481194304092\)）。则
+$$
+S_2(m)=\Theta(r_2^m),
+\qquad
+\mathbb{P}\bigl[\Fold_m(\omega)=\Fold_m(\omega')\bigr]
+=\Theta\!\left(\left(\frac{r_2}{4}\right)^m\right).
+$$
+进一步，令 \(\pi_m(x):=d_m(x)/2^m\) 为均匀微态经折叠后的输出分布，则其 \(\mathrm{R\acute{e}nyi}\)--2 投影熵率存在且为
+$$
+h_2:=\lim_{m\to\infty}\frac{1}{m}\Bigl(-\log\sum_{x\in X_m}\pi_m(x)^2\Bigr)
+=\log\!\left(\frac{4}{r_2}\right)\approx 0.477554342632.
+$$
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:pom-s2-recurrence}，\(S_2(m)\) 的生成函数具有分母 \(1-2z-2z^2+2z^3\)，其收敛半径由该分母的最小模零点决定，等价于递推特征多项式的最大实根 \(r_2\)。因此 \(S_2(m)=\Theta(r_2^m)\)。又
+$$
+\sum_{x\in X_m}\pi_m(x)^2=\sum_x \frac{d_m(x)^2}{4^m}=\frac{S_2(m)}{4^m},
+$$
+代入渐近即可得 \(h_2=\log(4/r_2)\)。证毕。
+\end{proof}
+
+\begin{definition}[碰撞核 SFT 与碰撞 \texorpdfstring{$\zeta$}{zeta}]\label{def:pom-collision-zeta}
+令 \(A_2\) 为命题 \ref{prop:pom-s2-recurrence} 中的三态非负整数矩阵，并记其边移位为 \((X_{A_2},\sigma)\)。定义碰撞 \(\zeta\)-函数
+$$
+\zeta_{A_2}(z):=\exp\!\left(\sum_{n\ge 1}\frac{\mathrm{Tr}(A_2^n)}{n}z^n\right)
+=\frac{1}{\det(I-zA_2)}.
+$$
+并定义 primitive 轨道数 \(p_n(A_2)\)（按轨道计）为满足
+$$
+\mathrm{Tr}(A_2^n)=\sum_{d\mid n} d\,p_d(A_2),
+\qquad
+p_n(A_2)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\mathrm{Tr}(A_2^{n/d}).
+$$
+\end{definition}
+
+\input{sections/generated/tab_collision_kernel_A2_primitive}
+\input{sections/generated/tab_collision_kernel_A2_finite_part}
+
+\begin{proposition}[碰撞核的行列式与主极点]\label{prop:pom-collision-det}
+有闭式
+$$
+\det(I-zA_2)=1-2z-2z^2+2z^3.
+$$
+因此 \(\zeta_{A_2}(z)\) 的主极点位于 \(z_\star=1/r_2\)，其中 \(r_2\) 为 \(x^3-2x^2-2x+2=0\) 的最大实根（推论 \ref{cor:pom-s2-asymptotic}），并且碰撞核的拓扑熵为
+$$
+h_{\mathrm{top}}(X_{A_2},\sigma)=\log r_2.
+$$
+\end{proposition}
+\begin{proof}
+对 \(A_2\) 直接计算行列式得 \(\det(I-zA_2)=1-2z-2z^2+2z^3\)。主极点对应 \(\det(I-zA_2)\) 的最小模零点，即 \(z_\star=1/\rho(A_2)=1/r_2\)。而 SFT 的拓扑熵等于 \(\log\rho(A_2)\)，故得 \(\log r_2\)。证毕。
+\end{proof}
+
+\begin{remark}[与时间—空间交换图的同型位置：二阶矩 \texorpdfstring{$\leftrightarrow$}{<->} 纤维积核]\label{rem:pom-collision-diagram}
+第 \ref{subsec:pom-time-space-diagram} 小节把“时间迹 \(\mathrm{Tr}(T^n)\)”与“primitive 原子谱”用 \(\zeta\) 行列式统一（命题 \ref{prop:time-space-commuting-diagram}）。碰撞核 \(A_2\) 给出一个同型接口：它不是对原核的逐步时间迹，而是对 Fold 的“二阶矩/碰撞统计”所诱导的纤维积核。其 Perron 根 \(r_2\) 与 \(\zeta_{A_2}\) 的主极点控制 Rényi-2 投影熵率 \(h_2=\log(4/r_2)\)（推论 \ref{cor:pom-s2-asymptotic}），从而把“窗口层的纤维缺陷泛函”提升为一个可审计的谱指纹对象，与第 9 节的 \(\zeta\)/primitive/有限部常数接口处于同一范式。
+\end{remark}
+
+\begin{remark}[与 \texorpdfstring{$\zeta$}{zeta}/谱指纹接口同型]\label{rem:pom-s2-zeta}
+命题 \ref{prop:pom-s2-recurrence} 的本质是：碰撞关系 \(R_m\) 由一个有限状态纤维积核生成，其计数的主尺度由 Perron 根 \(r_2\) 控制。该角色与第 \ref{sec:zeta-finite-part} 节中“带权核 \(\Rightarrow\) 谱半径/极点 \(\Rightarrow\) 指数尺度”的接口同型：\(r_2\) 给出一个新的、纯由折叠门诱导的可审计指数常数，从而把窗口尺度的纤维结构 \((d_m,E_m)\) 与轨道尺度的 \(\zeta/\lambda\) 接口对齐到同一“谱尺度”范式中。
 \end{remark}
 
 \subsubsection{在线延迟的不可约下界}\label{subsec:pom-delay-lb}
@@ -705,6 +1054,64 @@ a=qb+r,\qquad r=\Pi_b(a).
 \end{proof}
 
 \subsection{逆极限自然性与纤维不变量判别}\label{subsec:pom-new-results}
+\subsubsection{跨分辨率一致性的 Gauge 原理：fold-aware restriction}\label{subsubsec:pom-gauge}
+有限窗口微态空间 $\Omega_m=\{0,1\}^m$ 与稳定类型空间 $X_m$ 的角色并不对称：$X_m$ 在截断映射 $\pi_{m+1\to m}$ 下形成逆系统，而 $\Omega_m$ 在朴素截断下并不携带与折叠兼容的逆系统结构。该差异正是“跨分辨率一致性必须先规范化”的结构来源。
+
+\begin{definition}[朴素截断与折叠感知限制]\label{def:pom-fold-aware-restriction}
+设 $\tau_{m+1\to m}:\Omega_{m+1}\to\Omega_m$ 为朴素截断（丢弃最末一位；等价地取长度 $m$ 前缀）。定义折叠感知限制（fold-aware restriction）
+$$
+r^{\mathrm{e}}_{m+1\to m}:\Omega_{m+1}\to X_m,
+\qquad
+r^{\mathrm{e}}_{m+1\to m}:=\pi_{m+1\to m}\circ\Fold_{m+1}.
+$$
+\end{definition}
+
+\begin{proposition}[朴素截断与折叠一般不交换]\label{prop:pom-truncation-not-commute}
+一般地，图表
+$$
+\Omega_{m+1}\xrightarrow{\ \tau_{m+1\to m}\ }\Omega_m\xrightarrow{\ \Fold_m\ }X_m
+$$
+与
+$$
+\Omega_{m+1}\xrightarrow{\ \Fold_{m+1}\ }X_{m+1}\xrightarrow{\ \pi_{m+1\to m}\ }X_m
+$$
+并不一致，即通常存在 $\omega\in\Omega_{m+1}$ 使得
+$$
+\Fold_m(\tau_{m+1\to m}(\omega))\neq \pi_{m+1\to m}(\Fold_{m+1}(\omega)).
+$$
+\end{proposition}
+\begin{proof}
+折叠的局部重写（例如 $011\mapsto 100$）会产生跨位传播：被丢弃的末位可能决定某次局部重写是否触发，从而改变长度 $m$ 前缀在规范化后的形态。因此“先截断再折叠”与“先折叠再截断”在一般情形下不一致。证毕。
+\end{proof}
+
+\begin{proposition}[稳定逆系统的自然性：先折叠再限制]\label{prop:pom-gauge-natural}
+对任意 $m\ge 1$，折叠感知限制满足
+$$
+r^{\mathrm{e}}_{m+1\to m}
+=
+\pi_{m+1\to m}\circ \Fold_{m+1},
+$$
+从而在稳定层形成严格可交换的跨分辨率图表
+$$
+\Omega_{m+1}\xrightarrow{\ \Fold_{m+1}\ }X_{m+1}\xrightarrow{\ \pi_{m+1\to m}\ }X_m
+\qquad\text{与}\qquad
+\Omega_{m+1}\xrightarrow{\ r^{\mathrm{e}}_{m+1\to m}\ }X_m
+$$
+一致；并且对任意 $m_2\ge m_1$ 有兼容性
+$$
+\text{令 }r^{\mathrm{e}}_{m_2\to m_1}:=\pi_{m_2\to m_1}\circ\Fold_{m_2},
+\ \text{则对任意 }m_3\ge m_2\ge m_1\text{ 有 }r^{\mathrm{e}}_{m_3\to m_1}=\pi_{m_2\to m_1}\circ r^{\mathrm{e}}_{m_3\to m_2},
+$$
+因而“同一对象的跨分辨率坐标”只能在 $X_\infty\simeq\varprojlim X_m$ 的逆系统口径下被谈论。
+\end{proposition}
+\begin{proof}
+第一式为定义 \ref{def:pom-fold-aware-restriction} 的直接展开。兼容性由稳定层的逆系统映射满足的泛性质给出（定理 \ref{thm:pom-inverse-limit}），而折叠后的坐标才是逆系统对象。证毕。
+\end{proof}
+
+\begin{remark}[结构判据：伪不变量来自坐标不一致]\label{rem:pom-gauge-criterion}
+若某一 ISA/微码/核在跨分辨率上使用朴素截断（$\tau$）来比较对象，而非经 $P_Z$（或等价地经 $r^{\mathrm{e}}$）落到稳定逆系统，则其“规律/不变量”可能只是坐标不一致产生的幻影：同一高分辨率微态在低分辨率下被错误归类，从而制造伪素数影子与伪收敛现象。因而跨分辨率可审计性必须以 fold-aware restriction 作为 Gauge 条件。
+\end{remark}
+
 \begin{theorem}[逆极限自然性]\label{thm:pom-inverse-limit}
 设对每个分辨率 $m$ 定义稳定层运算 $f_m:X_m\to X_m$，并满足对一切 $m_2\ge m_1$ 的截断投影
 \[
@@ -1055,6 +1462,13 @@ n\ \gtrsim\ \frac{\log(1/\varepsilon)}{\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)
 
 \paragraph{机制审计接口}
 规范投影 $P_Z$ 的实现核可用 $\zeta$、$\log\mathfrak{M}$、Dirichlet--Mertens 常数张量与 $\rho/\lambda$ 作为审计指纹（见第 \ref{sec:zeta-finite-part} 节）。原子投影 $P_{\mathrm{prim}}$ 与扭曲读出 \texttt{TWIST} 把 prime-like 轨道谱与 Chebotarev 型偏差转化为可计算指纹。序投影 $P_{\le,b}$ 与角色投影 $P_\chi$ 亦可按相同流程编译为有限同步核并抽取同类指纹，从而实现跨核对比。
+
+\paragraph{指令签名与审计等价}
+在该抽象层中，一条指令/微码 $I$ 的可审计分类对象不是单独的投影词 $W(I)$，而是其指令签名
+$$
+\Sigma(I)=\bigl(W(I),\ \mathfrak{F}(K_Z(I)),\ \mathfrak{F}(K_{\le}(I)),\ \mathcal{F}(I)\bigr)
+$$
+（定义 \ref{def:pom-instruction-signature}）。其中 $K_Z(I),K_{\le}(I)$ 是投影门的具体核选择，$\mathcal{F}(I)$ 是纤维选择。命题 \ref{prop:pom-signature-audit} 给出签名一致的直接后果：若 $\Sigma(I)=\Sigma(J)$，则两者的 $\zeta$/primitive/有限部常数/扭曲谱隙等指纹一致，且成本模型的投影门部分同型；差异只能体现在由纤维选择与演化编排承担的 $D_U$ 项上。
 
 \paragraph{统一微码模板}
 \begin{itemize}

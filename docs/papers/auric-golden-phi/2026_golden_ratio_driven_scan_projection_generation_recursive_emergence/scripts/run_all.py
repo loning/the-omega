@@ -106,6 +106,24 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_kernel_A2_primitive",
+            script="exp_collision_kernel_A2_primitive.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A2_primitive.json",
+                "sections/generated/tab_collision_kernel_A2_primitive.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A2_finite_part",
+            script="exp_collision_kernel_A2_finite_part.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A2_finite_part.json",
+                "sections/generated/tab_collision_kernel_A2_finite_part.tex",
+            ],
+        ),
+        Step(
             name="phi_m_sofic_entropy",
             script="exp_phi_m_sofic_entropy.py",
             args=[],

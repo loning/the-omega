@@ -42,6 +42,16 @@ PREREQS: List[Prereq] = [
         script="exp_sync_kernel_real_input_40.py",
         out_rel="artifacts/export/sync_kernel_real_input_40.json",
     ),
+    Prereq(
+        name="collision_kernel_A2_primitive",
+        script="exp_collision_kernel_A2_primitive.py",
+        out_rel="artifacts/export/collision_kernel_A2_primitive.json",
+    ),
+    Prereq(
+        name="collision_kernel_A2_finite_part",
+        script="exp_collision_kernel_A2_finite_part.py",
+        out_rel="artifacts/export/collision_kernel_A2_finite_part.json",
+    ),
 ]
 
 
@@ -75,7 +85,7 @@ def _tex_escape(s: str) -> str:
     return s.replace("_", r"\_")
 
 
-def _make_table(sync10: Dict[str, Any], real40: Dict[str, Any]) -> str:
+def _make_table(sync10: Dict[str, Any], real40: Dict[str, Any], coll_prim: Dict[str, Any], coll_fp: Dict[str, Any]) -> str:
     # 10-state sync kernel (unconstrained input)
     B0 = float(sync10.get("pf_eigenvalue", 3.0))
     h0 = float(sync10.get("pf_eigenvalue", 3.0))
@@ -93,6 +103,12 @@ def _make_table(sync10: Dict[str, Any], real40: Dict[str, Any]) -> str:
     det1 = str(real40["det_factorization"])
     p1 = real40.get("p_n", [])
     a1 = real40.get("a_n", [])
+
+    # Collision kernel A2 (3-state SFT)
+    r2 = float(coll_fp["r2"])
+    det2 = "1-2z-2z^2+2z^3"
+    # JSON is 1-indexed lists with a_n[0]=0, p_n[0]=0
+    p2 = coll_prim.get("p_n", [0])
 
     def first_terms(xs: List[Any], n: int = 10) -> str:
         vals = [str(int(v)) for v in xs[:n]]
@@ -125,6 +141,19 @@ def _make_table(sync10: Dict[str, Any], real40: Dict[str, Any]) -> str:
             "logM": _fmt_float(logM1, 16),
             "C": _fmt_float(C1, 12),
         },
+        {
+            "name": r"$A_2$（折叠碰撞核）",
+            "A": r"---",
+            "B": r"---",
+            "states": "3",
+            "lambda": _fmt_float(r2, 12),
+            "h": r"$\log r_2$",
+            "det": f"${det2}$",
+            "a10": "---",
+            "p10": f"${first_terms(p2[1:], 10)}$",
+            "logM": _fmt_float(float(coll_fp["log_mathfrak_M"]), 16),
+            "C": _fmt_float(float(coll_fp["C"]), 12),
+        },
     ]
 
     # Note: keep it as a fragment (input-able).
@@ -136,13 +165,13 @@ def _make_table(sync10: Dict[str, Any], real40: Dict[str, Any]) -> str:
     lines.append(r"\setlength{\tabcolsep}{6pt}")
     lines.append(r"\renewcommand{\arraystretch}{1.15}")
     lines.append(
-        r"\caption{核对比：同步核的不变量对照（由脚本 \texttt{scripts/exp\_sync\_kernel\_A\_compare.py} 生成）。}"
+        r"\caption{核对比：同步核与折叠碰撞核的不变量对照（由脚本 \texttt{scripts/exp\_sync\_kernel\_A\_compare.py} 生成）。}"
     )
     lines.append(r"\label{tab:sync-kernel-A-compare}")
     lines.append(r"\begin{tabular}{@{}lccccccc@{}}")
     lines.append(r"\toprule")
     lines.append(
-        r"核 & $A$ & $B=A{+}A$ & $|Q|$ & $\lambda_{\max}$ & $\det(I-zB_K)$ & $(p_n)_{n\le 10}$ & $\log\mathfrak{M}$ \\"
+        r"核 & $A$ & $B=A{+}A$ & $|Q|$ & $\lambda_{\max}$ & $\det(I-zM_K)$ & $(p_n)_{n\le 10}$ & $\log\mathfrak{M}$ \\"
     )
     lines.append(r"\midrule")
     for r in rows:
@@ -196,11 +225,15 @@ def main() -> None:
 
     sync10_path = export_dir() / "sync_kernel_primitive_spectrum.json"
     real40_path = export_dir() / "sync_kernel_real_input_40.json"
+    coll_prim_path = export_dir() / "collision_kernel_A2_primitive.json"
+    coll_fp_path = export_dir() / "collision_kernel_A2_finite_part.json"
     sync10 = _read_json(sync10_path)
     real40 = _read_json(real40_path)
+    coll_prim = _read_json(coll_prim_path)
+    coll_fp = _read_json(coll_fp_path)
     prog.tick("loaded prerequisite JSON")
 
-    tex = _make_table(sync10, real40)
+    tex = _make_table(sync10, real40, coll_prim, coll_fp)
     out_tex = Path(args.output_tex) if args.output_tex else (generated_dir() / "tab_sync_kernel_A_compare.tex")
     _write_text(out_tex, tex)
     print(f"[A-compare] wrote {out_tex}", flush=True)

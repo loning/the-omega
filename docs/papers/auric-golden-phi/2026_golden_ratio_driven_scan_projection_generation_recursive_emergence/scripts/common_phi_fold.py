@@ -58,7 +58,15 @@ def zeckendorf_digits(N: int, m: int) -> List[int]:
 
 
 def fold_m(micro: Sequence[int]) -> List[int]:
-    """Fold a length-m microstate (0/1) to a golden-mean legal word (no '11')."""
+    """Fold a length-m microstate (0/1) to a golden-mean legal word (no '11').
+
+    IMPORTANT:
+    - In the paper, a length-m micro word can carry *one* hidden overflow bit b in
+      the next Fibonacci weight F_{m+2}. The canonical statement is:
+        N(micro) = V_m(Fold_m(micro)) + b * F_{m+2},  b in {0,1}.
+    - Therefore, to compute Fold_m correctly, we compute the Zeckendorf canonical
+      digits up to length (m+1) and then drop the overflow digit.
+    """
     m = len(micro)
     if m == 0:
         return []
@@ -67,7 +75,10 @@ def fold_m(micro: Sequence[int]) -> List[int]:
     for k, b in enumerate(micro, start=1):
         if b:
             N += fib[k]  # F_{k+1}
-    return zeckendorf_digits(N, m)
+    # Compute one extra digit to allow the overflow bit at weight F_{m+2},
+    # then drop it to obtain the length-m stable type.
+    digits = zeckendorf_digits(N, m + 1)
+    return digits[:m]
 
 
 def is_golden_legal(word: Sequence[int]) -> bool:
