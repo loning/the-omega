@@ -310,6 +310,14 @@ $$
 该量与核版 RH/Ramanujan 指标 \(R_K(u)=\lambda_\star(u)/\sqrt{\lambda_1(u)}\) 互补：前者是骨架几何的“先验不变量”，后者是带权 Hashimoto 算子的“谱隙质量”指标；两者共同决定无回溯 prime cycle 口径下的可达误差尺度。
 \end{remark}
 
+\begin{remark}[回溯惩罚 \texorpdfstring{$\pi_{\mathrm{bt}}$}{pi_bt}：ordinary walk 到 non-backtracking 的增长率损失]\label{rem:ihara-pi-bt}
+除近正则缺陷外，还可定义无量纲的回溯惩罚
+$$
+\pi_{\mathrm{bt}}:=1-\frac{\rho(B)}{\rho(A)}\in[0,1).
+$$
+它直接量化“禁止回溯”带来的指数增长率损失比例。表 \ref{tab:parallel-addition-kernels-ihara-fingerprint} 的输出显示：在三核中 \(21\)-local 的 \(\pi_{\mathrm{bt}}\) 显著更大，表明其原子操作骨架中“可逆撤销/短回溯”结构占比更高，因此以 Ihara primes（无回溯）对素数影子做正规化的必要性也更强。
+\end{remark}
+
 \paragraph{Ihara primes：无回溯原子环的规范化素数}
 在“原子操作图”（边为原子操作、反向边为其逆）上，把 prime-like 对象定义为\textbf{无回溯、无尾（tailless）的 primitive 环}：即闭环 $p=e_1\cdots e_\ell$ 满足 $e_{i+1}\neq e_i^{-1}$ 且 $e_1\neq e_\ell^{-1}$，并且不为更短环的幂；此外按循环平移视为同一环。其 Euler 乘积为
 \[
@@ -357,6 +365,25 @@ L_{K,\rho}(u,t)=\det(I-tB_\rho(u))^{-1}
 \Delta_K:=\min_{p:\bar\kappa(p)>0}\bar\kappa(p).
 \]
 在无回溯边图（Hashimoto 图）上该问题等价于\textbf{最小平均回路}，可由 Karp 算法在多项式时间内求出（见 \cite{Karp1978MinCycleMean}）。$\Delta_K$ 给出“基态/第一激发态能隙”的可比不变量，并控制 $u\to 0$ 时第一个非平凡修正的主尺度。
+
+\begin{proposition}[密度能隙的退化机制与隧穿作用量]\label{prop:ihara-gap-degeneracy}
+若 carry-free 骨架含有任意长的无回溯闭环（即存在 \(\kappa(p)=0\) 的 prime 环族且 \(\ell(p)\to\infty\)），并且存在某个正能量无回溯闭环 \(q\)（\(\kappa(q)>0\)）能与任意长的零能量闭环通过局部改写拼接成无回溯闭环（保持 tailless 条件），则正能量闭环的平均密度 \(\bar\kappa=\kappa/\ell\) 可做到任意小，从而以“最小正密度”定义的 \(\Delta_K\) 要么为 \(0\)，要么仅有下确界而无最小值。
+\end{proposition}
+
+\begin{definition}[隧穿作用量 \texorpdfstring{$A_K$}{A_K}（替代的零温第一激发态指纹）]\label{def:ihara-tunneling-action}
+定义
+$$
+A_K:=\min\{\kappa(p):\ p\ \text{为无回溯 prime 环且}\ \kappa(p)>0\}\in\ZZ_{>0},
+$$
+即“最少 carry 事件数的正能量 Ihara prime”。该量不受“拉长零能量段”稀释，因此比 \(\Delta_K\) 更稳定，并可作为零温下的第一激发态结构指纹。
+\end{definition}
+
+\begin{remark}[可复现计算：三核的 \texorpdfstring{$A_K$}{A_K}]\label{rem:ihara-AK-table}
+表 \ref{tab:parallel-addition-kernels-tunneling-action} 给出三核单流的隧穿作用量 \(A_K\)（均为 \(1\)），由脚本
+\texttt{scripts/exp\_parallel\_addition\_kernels\_tunneling\_action.py}
+基于 \texttt{artifacts/export/parallel\_addition\_kernels\_bfs.json} 自动生成并输出为可 \verb|\input| 的表格片段：
+\input{sections/generated/tab_parallel_addition_kernels_tunneling_action}
+\end{remark}
 
 \paragraph{大规模素数谱推进：Hutch++ 的 PSD 化轨道}
 当需要把 primitive 分层谱 $B_{K,n}(u)$ 推进到更大 $n$ 时，瓶颈在于 $a_n(u)=\Tr(M_K(u)^n)$ 的高次迹估计。对非对称 $M_K(u)$，可采用 PSD 化的轨道（例如估计 $\Tr((M_K(u)^n)^{\mathsf T}M_K(u)^n)$ 以控制谱半径与能量尺度，或在对称情形直接估计 $\Tr(M_K(u)^n)$），从而使用 Hutch++ 将样本复杂度从 $O(\varepsilon^{-2})$ 改进为 $O(\varepsilon^{-1})$（仅需 matvec；见 \cite{MeyerMuscoMuscoWoodruff2021Hutchpp}）。该路径与后文随机迹估计管线一致，可作为“可算闭环”的规模推进接口。

@@ -209,6 +209,42 @@ def _twist_constant_via_mobius_logzeta(
     return acc
 
 
+def _twist_constant_decompose_k1_tail(
+    *,
+    q: complex,
+    r: complex,
+    u: complex,
+    z: float,
+    k_max: int,
+    prog: Progress,
+    states: List[Tuple[str, int, int]],
+    kernel_map: Dict[Tuple[str, int], Tuple[str, int]],
+    label: str,
+    third_axis: str,
+) -> Tuple[complex, complex, complex]:
+    """Return (C_total, C_k1, C_tail) where
+
+    C_total := sum_{k>=1} mu(k)/k * log zeta(z^k)
+    C_k1    := log zeta(z)  (the k=1 term)
+    C_tail  := sum_{k>=2} mu(k)/k * log zeta(z^k)
+    """
+    M = build_weighted_matrix_numeric(q, r, u, states, kernel_map, third_axis=third_axis)
+    eigs = np.linalg.eigvals(M)
+
+    logz1 = _log_zeta_from_eigs(eigs, z)
+    acc = 0.0 + 0.0j
+    for k in range(2, k_max + 1):
+        mu = mobius(k)
+        if mu == 0:
+            continue
+        zk = z**k
+        logz = _log_zeta_from_eigs(eigs, zk)
+        acc += (float(mu) / float(k)) * logz
+        if k % 50 == 0:
+            prog.tick(f"{label} tail k={k}/{k_max}")
+    return logz1 + acc, logz1, acc
+
+
 def spectral_radius(B: np.ndarray) -> float:
     vals = np.linalg.eigvals(B)
     return float(np.max(np.abs(vals)))
@@ -492,6 +528,8 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     # Mixing-length proxies from rho_ratio.
     tau_mix = (1.0 / (-math.log(rho_ratio))) if (0.0 < rho_ratio < 1.0) else float("inf")
     t_half = (math.log(2.0) / (-math.log(rho_ratio))) if (0.0 < rho_ratio < 1.0) else float("inf")
+    susceptibility = (1.0 / (1.0 - rho_ratio)) if (0.0 < rho_ratio < 1.0) else float("inf")
+    log_susceptibility = math.log(susceptibility) if (susceptibility > 0 and math.isfinite(susceptibility)) else float("nan")
 
     # Low-rank compressibility diagnostic: SVD of the (5 x 9) matrix with rows indexed by c,
     # and columns indexed by flattened (a,b). We report both the raw tensor and the
@@ -719,6 +757,12 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     lines.append(
         f"\\tau_{{\\mathrm{{mix}}}}:=\\frac{{1}}{{-\\log(\\rho_{{3,3,5}}/\\lambda)}}\\approx {fmt(tau_mix)},\\qquad "
         f"t_{{1/2}}:=\\frac{{\\log 2}}{{-\\log(\\rho_{{3,3,5}}/\\lambda)}}\\approx {fmt(t_half)}."
+    )
+    lines.append("$$")
+    lines.append("并定义偏置易感度（Abel 累积的自然尺度）")
+    lines.append("$$")
+    lines.append(
+        f"\\chi:=\\frac{{1}}{{1-\\rho_{{3,3,5}}/\\lambda}}\\approx {fmt(susceptibility)},\\qquad \\log\\chi\\approx {fmt(log_susceptibility)}."
     )
     lines.append("$$")
 

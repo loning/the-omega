@@ -319,6 +319,55 @@ $$
 为了把“表格输出”进一步压缩为可直接引用的结构性结论，我们额外输出一份仅由上述五切片与最坏谱半径比计算得到的二级摘要（同一脚本生成）：
 \input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2_summary}
 
+\begin{theorem}[有限维 Artin--Dirichlet 显式公式：常数张量作为扭曲行列式常数项的有限和]\label{thm:arity-dirichlet-explicit-constant}
+在 \(((m_1,m_2,m_3))\) 的三维 Dirichlet 分层中（本节以 \(((3,3,5))\) 为代表），对每个非平凡角色索引 \(j\neq 0\) 记扭曲 \(\zeta\)-行列式
+\[
+L_j(z):=\det(I-zM_j)^{-1},
+\qquad
+z_\star:=\lambda^{-1}.
+\]
+定义对应的扭曲常数（Witt/Möbius--\(\log\zeta\) 常数项）
+\[
+\mathcal{C}(j):=\sum_{k\ge 1}\frac{\mu(k)}{k}\,\log L_{kj}\!\left(z_\star^{\,k}\right),
+\]
+其中 \(kj\) 按模 \((m_1,m_2,m_3)\) 取值（即 \(\chi^{k}\) 的闭包）。则对每个同余类 \(r\in G\)（例如 \(r=(a,b,c)\in(\ZZ/3)^2\times(\ZZ/5)\)）有
+\[
+C_r
+\;=\;
+\frac{\mathsf{M}}{|G|}
+\;+\;
+\frac{1}{|G|}\sum_{j\neq 0}\overline{\chi_j(r)}\,\mathcal{C}(j),
+\]
+其中 \(\chi_j\) 为对应角色、\(\mathsf{M}\) 为总 Mertens 常数（\(\sum_r C_r=\mathsf{M}\)），并且 \(\mathcal{C}(j)\) 的截断
+\(
+\mathcal{C}_K(j):=\sum_{1\le k\le K}\mu(k)\log L_{kj}(z_\star^k)/k
+\)
+以指数速度收敛：若 \(\rho_j:=\rho(M_j)\) 且 \(\rho_j/\lambda<1\)，则对任意 \(K\ge 1\) 有显式尾界
+\[
+\left|\mathcal{C}(j)-\mathcal{C}_K(j)\right|
+\;\le\;
+\sum_{k>K}\frac{1}{k}\cdot
+\frac{d\,(\rho_j/\lambda)^k}{1-(\rho_j/\lambda)^k},
+\]
+其中 \(d\) 为扭曲矩阵维度（本节为 \(d=40\)），从而右端为 \(O((\rho_j/\lambda)^{K+1})\)。
+\end{theorem}
+\begin{proof}
+对每个 \(j\) 的扭曲行列式 \(L_j\) 在 \(|z|<1/\rho_j\) 内解析且非零，并满足
+\(
+\log L_j(z)=\sum_{n\ge 1}\Tr(M_j^n)\,z^n/n
+\)。
+将该恒等式代入 Witt/Möbius 反演（附录 \ref{app:witt-weighted} 的同型公式），在 \(z=z_\star\) 处得到 \(\mathcal{C}(j)=\sum_{k\ge 1}\mu(k)\log L_{kj}(z_\star^k)/k\)。
+再由有限阿贝尔群的角色正交关系对 \(r\) 作傅里叶反演（命题 \ref{prop:kernel-chebotarev-fourier} 的同型步骤），并用 \(\sum_r C_r=\mathsf{M}\) 固定平凡项，即得常数张量的显式公式。
+
+尾界来自粗估计
+\(
+|\log\det(I-zM_j)^{-1}|
+\le \sum_{i=1}^d \sum_{m\ge 1}|z\lambda_i|^m/m
+\le d\sum_{m\ge 1}(|z|\rho_j)^m/m
+\)
+并对 \(z=z_\star^k=\lambda^{-k}\) 求和即可。证毕。
+\end{proof}
+
 \begin{corollary}[碰撞同余类的常数级偏置（\texorpdfstring{$S_c$}{Sc} 分解）]\label{cor:arity-335-collision-residue-drift}
 令
 \[

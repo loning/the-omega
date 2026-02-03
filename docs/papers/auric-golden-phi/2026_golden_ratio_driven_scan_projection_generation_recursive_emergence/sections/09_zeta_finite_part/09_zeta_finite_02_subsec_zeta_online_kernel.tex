@@ -55,3 +55,73 @@ I(\alpha)=\frac{(\alpha-\frac12)^2}{2P''(0)}+O\!\left((\alpha-\tfrac12)^3\right)
 =\frac{51}{11}\Bigl(\alpha-\frac12\Bigr)^2+O(\cdot),
 \]
 其中 $I$ 为输出位计数的 LDP 率函数（见附录 \ref{app:pressure-analytic} 与 \ref{app:rate-param}）。有限 $n$ 的镜像对称与其导出的 Mertens 偶性见推论 \ref{cor:primitive-finite-sym} 与命题 \ref{prop:mertens-even}；周期迹多项式与 $\Delta$ 系数的逐项回文约束见命题 \ref{prop:trace-palindrome} 与推论 \ref{cor:delta-coeff-palindrome}。
+
+\paragraph{\texorpdfstring{$s$}{s}-平面完成化函数方程的谱互反判据}\label{par:s-plane-functional-eq-criterion}
+上一段的“函数方程”发生在参数侧（$u\leftrightarrow 1/u$ 或 $\theta\leftrightarrow-\theta$）。
+若希望把对称进一步提升为 Dirichlet 坐标 $z=\lambda^{-s}$ 下的
+\(
+s\leftrightarrow 1-s
+\)
+型对称，则需要一个独立于参数自对偶的谱互反结构。
+
+\begin{proposition}[谱互反闭包 $\Rightarrow$ 完成化后 \texorpdfstring{$s\leftrightarrow 1-s$}{s<->1-s}]\label{prop:reciprocal-spectrum-functional-equation}
+设 $M$ 为有限维矩阵，$\lambda:=\rho(M)>0$ 为其 Perron 根。令
+\[
+\Delta_M(z):=\det(I-zM),\qquad
+Z_M(s):=\Delta_M(\lambda^{-s})^{-1}.
+\]
+记 $r:=\deg_z\Delta_M(z)$（等价于 $M$ 的非零特征值按代数重数计的个数）。
+若 $M$ 的非零谱满足\textbf{互反闭包}
+\[
+\mu\in\mathrm{spec}(M)\setminus\{0\}
+\ \Longrightarrow\
+\frac{\lambda}{\mu}\in\mathrm{spec}(M)\setminus\{0\}
+\qquad(\text{重数相同}),
+\]
+则存在常数 $C\neq 0$ 使得完成化函数
+\[
+\Xi_M(s):=\lambda^{-rs/2}\,Z_M(s)
+\]
+满足函数方程
+\[
+\Xi_M(s)=C\,\Xi_M(1-s).
+\]
+\end{proposition}
+\begin{proof}
+按非零特征值分解
+\(
+\Delta_M(z)=\prod_{\mu\neq 0}(1-\mu z)
+\)。
+在 $s\mapsto 1-s$ 下，
+\[
+\Delta_M(\lambda^{-(1-s)})
+=\prod_{\mu\neq 0}\bigl(1-\mu\,\lambda^{s-1}\bigr)
+=\prod_{\mu\neq 0}\bigl(1-(\mu/\lambda)\,\lambda^s\bigr).
+\]
+用互反闭包把指标重标为 $\mu\mapsto \lambda/\mu$，并将出现的 $\lambda^{\pm rs/2}$ 幂吸收到完成化因子中，即得
+\(
+\lambda^{-rs/2}\Delta_M(\lambda^{-s})
+=C^{-1}\lambda^{-r(1-s)/2}\Delta_M(\lambda^{-(1-s)})
+\)；
+取倒数即得结论。证毕。
+\end{proof}
+
+\begin{remark}[等价的 \texorpdfstring{$\Delta_M$}{Delta}-互反多项式判据]\label{rem:delta-reciprocal-polynomial}
+命题 \ref{prop:reciprocal-spectrum-functional-equation} 的谱条件等价于 $z$-根集合在
+\(
+z\mapsto (\lambda z)^{-1}
+\)
+下按重数不变，亦等价于存在 $C'\neq 0$ 使得
+\[
+\lambda^{r}z^{r}\Delta_M\!\left(\frac{1}{\lambda z}\right)=C'\Delta_M(z).
+\]
+因此当 $\Delta_M$ 的系数可精确计算（例如整系数矩阵）时，上式提供一个逐项可审计的判别式。
+\end{remark}
+
+\begin{remark}[本节两类核的检验结论（可复现）]\label{rem:reciprocal-check-outcome}
+上述 $s$-平面对称并非自动成立：它要求非零谱在 $\mu\mapsto\lambda/\mu$ 下封闭。
+对 10 状态同步核 $B$，由 \(\det(I-zB)\) 的因子 \((z+1)\) 知 \(\mu=-1\in\mathrm{spec}(B)\)，但 \(\lambda/\mu=-3\notin\mathrm{spec}(B)\)，故互反闭包失败。
+对 40 状态真实输入核 $M$，定理 \ref{thm:pom-rh-sharp} 给出 \(\lambda^{-1}\in\mathrm{spec}(M)\setminus\{0\}\)，但 \(\lambda/(\lambda^{-1})=\lambda^2\notin\mathrm{spec}(M)\setminus\{0\}\)，故亦失败。
+相应的谱互反闭包/系数互反判别由脚本 \texttt{scripts/exp\_reciprocal\_spectrum\_functional\_equation\_check.py} 自动输出到
+\texttt{artifacts/export/reciprocal\_spectrum\_functional\_equation\_check.json}。
+\end{remark}
