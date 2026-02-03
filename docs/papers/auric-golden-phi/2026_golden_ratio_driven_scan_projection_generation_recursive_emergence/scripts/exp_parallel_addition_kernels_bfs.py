@@ -608,6 +608,9 @@ def main() -> None:
                 "block_size": spec.block_size,
                 "alphabet_B": spec.alphabet,
                 "states_reachable": n_states,
+                # Deterministic single-flow transition edges (compact, for reproducible downstream diagnostics).
+                # Format: [src, dst, kappa_A, kappa_B]. Total activity is kappa = kappa_A + kappa_B.
+                "edges": [[int(i), int(j), int(kA), int(kB)] for (i, j, _a, kA, kB) in edges],
                 "kappa_dist_uniform_inputs": kdist,
                 "kappa_mean_uniform_inputs": kmean,
                 "kappa_phase_probs_uniform_inputs": {"A": pA, "B": pB},

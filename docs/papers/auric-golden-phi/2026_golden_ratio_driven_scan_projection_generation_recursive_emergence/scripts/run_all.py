@@ -346,6 +346,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="parallel_addition_kernels_ihara",
+            script="exp_parallel_addition_kernels_ihara.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/parallel_addition_kernels_ihara.json",
+                "sections/generated/tab_parallel_addition_kernels_ihara_fingerprint.tex",
+            ],
+        ),
+        Step(
             name="generated_tex_fragments",
             script="exp_generated_tex.py",
             args=[],
