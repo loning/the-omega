@@ -168,3 +168,60 @@ E_m(\widetilde P_xP_a\widetilde P_x)=E_m(P_a)=\frac{1}{d_m(x)}\widetilde P_x
 \]
 与上式一致。
 \end{proof}
+
+\subsubsection{谱半径的可审计证书：Lyapunov 不等式与半正定可行性}\label{app:op-algebra-lyapunov}
+在正文的核版 RH/GRH 判据中，“平方根界”与“最坏扭曲谱半径界”都以谱半径不等式表述。
+本段给出一个在有限维上完全严格、且可作为\textbf{可审计证书}输出的等价刻画：把谱半径上界转写为一个 Lyapunov 型矩阵不等式的可行性。
+
+\begin{proposition}[谱半径界 \texorpdfstring{$\Leftrightarrow$}{<->} Lyapunov 不等式]\label{prop:lyapunov-spectral-radius-certificate}
+令 $A\in\CC^{n\times n}$，$r>0$。则以下条件等价：
+\begin{enumerate}
+  \item $\rho(A)<r$；
+  \item 存在 Hermitian 正定矩阵 $H\succ 0$ 使得
+  \[
+  \boxed{\;
+  A^\ast H A\ \prec\ r^2 H.
+  \;}
+  \]
+\end{enumerate}
+特别地，对任意带参数扭曲矩阵族 $M_{K,\rho}(u)$，若取 $r=\lambda_1(u)^{1/2}$，则“核版 (G)RH 的平方根界”
+\(
+\rho(M_{K,\rho}(u))<\lambda_1(u)^{1/2}
+\)
+等价于存在证书矩阵 $H_{\rho,u}\succ 0$ 使
+\[
+M_{K,\rho}(u)^\ast H_{\rho,u} M_{K,\rho}(u)\ \prec\ \lambda_1(u)\,H_{\rho,u}.
+\]
+\end{proposition}
+\begin{proof}
+\textbf{(1)$\Rightarrow$(2)} 令 $B:=A/r$，则 $\rho(B)<1$。取
+\[
+H:=\sum_{k\ge 0}(B^\ast)^k B^k.
+\]
+由于 $\rho(B^\ast B)<1$，上式收敛并给出 $H\succ 0$。并且直接计算得
+\[
+B^\ast H B
+=\sum_{k\ge 0}(B^\ast)^{k+1}B^{k+1}
+=H-I\ \prec\ H,
+\]
+从而 $A^\ast H A=r^2 B^\ast H B\prec r^2 H$。
+
+\textbf{(2)$\Rightarrow$(1)} 若 $A^\ast H A\prec r^2 H$，对任意特征对 $Av=\lambda v$（$v\neq 0$），有
+\[
+v^\ast A^\ast H A v=|\lambda|^2 v^\ast H v\ <\ r^2 v^\ast H v,
+\]
+因此 $|\lambda|<r$，从而 $\rho(A)<r$。证毕。
+\end{proof}
+
+\begin{remark}[半正定规划口径：把谱界变成可计算的证书]\label{rem:lyapunov-sdp}
+命题 \ref{prop:lyapunov-spectral-radius-certificate} 把谱半径不等式转化为线性矩阵不等式（LMI）：
+\(
+A^\ast H A\preceq r^2 H
+\)
+在变量 $H$ 上是凸可行性问题。因而在有限维可计算口径下，可将“核版 (G)RH”组织为一组可审计的证书输出：
+对每个非平凡扭曲分量（角色/表示）给出一份 $H_{\rho,u}\succ 0$，并同时输出残差矩阵
+\(
+r^2H_{\rho,u}-A^\ast H_{\rho,u}A
+\)
+以供复核。
+\end{remark}

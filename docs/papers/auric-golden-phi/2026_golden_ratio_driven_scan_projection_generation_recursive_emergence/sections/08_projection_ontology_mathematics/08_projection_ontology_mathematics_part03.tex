@@ -130,6 +130,62 @@ H(\mu)\le H(\pi)+\mathbb{E}_{\pi}[\log d_m(X)],
 由定理 \ref{thm:pom-kl-ledger} 与 $D_{\mathrm{KL}}\ge 0$ 得上界；且 $D_{\mathrm{KL}}(\mu\|\mu^e)=0$ 当且仅当 $\mu=\mu^e$。证毕。
 \end{proof}
 
+\begin{lemma}[纤维 KL 分解：残差为纤维内非均匀的平均]\label{lem:pom-fiberwise-kl}
+取任意 $\mu\in\Delta(\Omega_m)$，令 $\pi=P_m\mu$。对每个 $x\in X_m$ 定义纤维条件分布
+\[
+\mu_x(a):=
+\begin{cases}
+\mu(a)/\pi(x),& a\in \Fold_m^{-1}(x),\ \pi(x)>0,\\
+0,& a\in \Fold_m^{-1}(x),\ \pi(x)=0,
+\end{cases}
+\]
+并令 $u_x$ 为该纤维上的均匀分布 $u_x(a)=1/d_m(x)$（$a\in\Fold_m^{-1}(x)$）。
+则对纤维均匀提升 $\mu^e=Q_m\pi$，有链式恒等式
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\mu\|\mu^e)=\sum_{x\in X_m}\pi(x)\,D_{\mathrm{KL}}(\mu_x\|u_x).
+\;}
+\]
+\end{lemma}
+\begin{proof}
+当 $\pi(x)=0$ 时，$\mu$ 在纤维 $\Fold_m^{-1}(x)$ 上亦为零测，因此该纤维对两端均无贡献。
+对任意满足 $\pi(x)>0$ 的纤维，若 $a\in\Fold_m^{-1}(x)$，则
+\(
+\mu(a)=\pi(x)\mu_x(a)
+\)
+且
+\(
+\mu^e(a)=\pi(x)u_x(a)
+\)。
+代入 KL 定义并按纤维分组得
+\[
+D_{\mathrm{KL}}(\mu\|\mu^e)
+=\sum_{x}\sum_{a\in\Fold_m^{-1}(x)}\pi(x)\mu_x(a)\log\frac{\mu_x(a)}{u_x(a)}
+=\sum_x \pi(x)\,D_{\mathrm{KL}}(\mu_x\|u_x).
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[熵增恒等式：最大熵提升的增量等于残差 KL]\label{cor:pom-ent-increase-equals-kl}
+沿用上述记号，则有严格恒等式
+\[
+\boxed{\;
+H(\mu^e)-H(\mu)=D_{\mathrm{KL}}(\mu\|\mu^e).
+\;}
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-kl-ledger} 得
+\(
+H(\mu)=H(\pi)+\mathbb{E}_{\pi}[\log d_m(X)]-D_{\mathrm{KL}}(\mu\|\mu^e)
+\)。
+另一方面，直接对 $\mu^e$ 代入（或等价地用“纤维条件均匀”）可得
+\(
+H(\mu^e)=H(\pi)+\mathbb{E}_{\pi}[\log d_m(X)]
+\)。
+两式相减即得结论。证毕。
+\end{proof}
+
 \begin{theorem}[纤维反射子：幂等 Markov 投影与固定点刻画]\label{thm:pom-fiber-reflector}
 定义 Markov 算子
 \[
@@ -149,6 +205,58 @@ K_m^2=Q_mP_mQ_mP_m=Q_m(P_mQ_m)P_m=Q_mP_m=K_m
 \)。
 对任意 $\mu$，令 $\pi=P_m\mu$，则 $K_m\mu=Q_m\pi=\mu^e$ 是定义。
 最后，$K_m$ 的像空间恰为 $\{Q_m\pi:\pi\in\Delta(X_m)\}$；因此 $K_m\mu=\mu$ 当且仅当 $\mu$ 属于该像空间，即在每条纤维上条件均匀。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$K_m$}{Km} 的核矩阵：对称、双随机与纤维平均]\label{prop:pom-Km-bistochastic}
+把 $K_m$ 视为 $\Omega_m$ 上的 Markov 核，其转移核为
+\[
+K_m(a,b):=
+\begin{cases}
+\dfrac{1}{d_m(\Fold_m(a))},& \Fold_m(b)=\Fold_m(a),\\[6pt]
+0,& \text{否则}.
+\end{cases}
+\]
+则：
+\begin{enumerate}
+  \item \textbf{（幂等）} $K_m^2=K_m$；
+  \item \textbf{（对称）} $K_m(a,b)=K_m(b,a)$；
+  \item \textbf{（双随机）} 对任意 $a$ 有 $\sum_b K_m(a,b)=1$，且对任意 $b$ 有 $\sum_a K_m(a,b)=1$；
+  \item \textbf{（函数版 = 纤维平均）} 对任意函数 $f:\Omega_m\to\RR$，
+  \[
+  (K_m f)(a):=\sum_{b\in\Omega_m}K_m(a,b)f(b)
+  =\frac{1}{d_m(\Fold_m(a))}\sum_{\Fold_m(b)=\Fold_m(a)} f(b),
+  \]
+  即 $K_m$ 在观测量层面就是“按折叠纤维做算术平均”的条件期望接口。
+\end{enumerate}
+特别地，$\Omega_m$ 上的均匀分布 $u_{\Omega_m}(a)\equiv 2^{-m}$ 为不变分布（由双随机性立得）。
+\end{proposition}
+\begin{proof}
+对固定 $x\in X_m$，将 $\Omega_m$ 分解为纤维并注意：限制在纤维 $\Fold_m^{-1}(x)$ 上，$K_m$ 的矩阵块是常数矩阵 $J/d_m(x)$（其中 $J$ 为全 $1$ 矩阵），其余块为 $0$。
+因此 $(J/d)^2=J/d$ 给出幂等性；常数矩阵显然对称；行和为 $1$，而列和也为 $1$（每一列在该纤维内有 $d$ 个相同项 $1/d$）。
+函数版公式就是矩阵乘法定义的展开。证毕。
+\end{proof}
+
+\begin{corollary}[最大熵提升的 I-投影表述]\label{cor:pom-Iproj-maxent}
+记 $u_{\Omega_m}$ 为 $\Omega_m$ 上的均匀分布。对任意固定 $\pi\in\Delta(X_m)$，约束集
+\[
+\mathcal{C}_\pi:=\{\nu\in\Delta(\Omega_m):P_m\nu=\pi\}
+\]
+为凸集，且其唯一最大熵元 $\mu^e=Q_m\pi$ 同时满足
+\[
+\boxed{\;
+\mu^e=\arg\min_{\nu\in\mathcal{C}_\pi}D_{\mathrm{KL}}(\nu\|u_{\Omega_m})
+\;=\;
+\arg\max_{\nu\in\mathcal{C}_\pi}H(\nu).
+\;}
+\]
+\end{corollary}
+\begin{proof}
+因为 $u_{\Omega_m}(a)\equiv 2^{-m}$，对任意 $\nu$ 有
+\(
+D_{\mathrm{KL}}(\nu\|u_{\Omega_m})=\sum_a \nu(a)\log\nu(a)+m\log 2=\log(2^m)-H(\nu)
+\)，
+故在同一约束集 $\mathcal{C}_\pi$ 上，“最小 KL 到均匀”与“最大熵”等价。
+而最大熵解的唯一性由定理 \ref{thm:pom-maxent-lift}（或按纤维逐块严格凹性）给出。证毕。
 \end{proof}
 
 \begin{theorem}[规范的粗粒化动力学：先提升—再演化—再读出]\label{thm:pom-coarse-grained-kernel}
@@ -981,6 +1089,22 @@ N(\omega_1)-N(\omega_0)\in\{0,F_{m+2}\},
 与 $F_{m+1}\neq F_{m+2}$ 矛盾。故两者标记不同，右解析性随之成立。证毕。
 \end{proof}
 
+\begin{theorem}[一步可判别与左解析性]\label{thm:pom-left-resolving}
+对任意 $m\ge 2$ 与任意 $v\in V_m=\{0,1\}^{m-1}$，有
+\[
+\Fold_m(0v)\neq \Fold_m(1v).
+\]
+因此对任意固定的长度 $m-1$ \emph{后缀}，在其左侧补 $0/1$ 的读出结果可一步判别；换言之，$\Fold_m$ 对“首位未知”的二选一也是严格可判别的。
+\end{theorem}
+\begin{proof}
+记 $\omega_0=0v$、$\omega_1=1v$。则 $N(\omega_1)-N(\omega_0)=F_2=1$。
+若 $\Fold_m(\omega_0)=\Fold_m(\omega_1)$，由引理 \ref{lem:pom-one-bit} 得
+\[
+N(\omega_1)-N(\omega_0)\in\{0,F_{m+2}\},
+\]
+而当 $m\ge 2$ 时 $F_{m+2}\ge 3$，与 $N(\omega_1)-N(\omega_0)=1$ 矛盾。故两者读出不同。证毕。
+\end{proof}
+
 \begin{theorem}[熵饱和：折叠不改变信息率]\label{thm:pom-entropy-saturation}
 对任意 $m\ge 2$，像空间 $Y_m=\Phi_m(\{0,1\}^{\ZZ})$ 满足
 \[
@@ -1000,7 +1124,19 @@ h_{\mathrm{top}}(Y_m)=\log 2.
 \[
 |\Phi_m^{-1}(y)|\le |V_m|=2^{m-1}.
 \]
-这种有限歧义可由纤维多重度 $d_m(x)$ 与条件期望 $E_m$ 的块平均结构刻画（命题 \ref{prop:fold-conditional-expectation}），并与 Abel/Hadamard 有限部常数形成互补的“常数级指纹”（定义 \ref{def:abel-finite-part} 及相关附录接口）。因此折叠的“丢失”属于有限分辨率残差，而非熵率损失。
+更强地，该“有限缺陷”可被提升为一个显式的缺陷寄存器：令
+\[
+D_m:=V_m=\{0,1\}^{m-1}.
+\]
+定义映射
+\[
+\Psi_m:\{0,1\}^{\ZZ}\to Y_m\times D_m,\qquad
+\Psi_m(s):=\bigl(\Phi_m(s),\,s_0s_1\cdots s_{m-2}\bigr).
+\]
+则 $\Psi_m$ 为单射：给定 $y=\Phi_m(s)$ 与缺陷寄存器 $\delta:=s_0\cdots s_{m-2}$，可用定理 \ref{thm:pom-right-resolving} 逐步恢复所有 $t\ge 0$ 的后继比特（由窗口末位的二选一可判别），并用定理 \ref{thm:pom-left-resolving} 逐步恢复所有 $t<0$ 的前驱比特（由窗口首位的二选一可判别），从而恢复整条输入序列 $s$。
+因此每条 $y\in Y_m$ 的前像数至多为 $|D_m|=2^{m-1}$，并且“折叠丢失”可被理解为一个有限的初态/横截面寄存器，而非熵率损失。
+
+这种有限缺陷可由纤维多重度 $d_m(x)$ 与条件期望 $E_m$ 的块平均结构刻画（命题 \ref{prop:fold-conditional-expectation}），并与 Abel/Hadamard 有限部常数形成互补的“常数级指纹”（定义 \ref{def:abel-finite-part} 及相关附录接口）。因此折叠的“丢失”属于有限分辨率残差，而非熵率损失。
 \end{remark}
 
 \begin{remark}[纤维平均与有限部常数的同一接口]\label{rem:pom-em-logm}

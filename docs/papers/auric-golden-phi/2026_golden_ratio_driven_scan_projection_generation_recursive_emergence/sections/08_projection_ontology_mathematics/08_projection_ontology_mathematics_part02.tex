@@ -78,6 +78,20 @@ M_E(u)_{ij}:=\sum_{e:i\to j}u^{E(e)}.
 在真实输入 40 状态核中，\(((3,3,5))\) 的最坏扭曲谱半径由纯碰撞 cocycle 达到（命题 \ref{prop:arity-335-collision-dominant}），说明序投影的最慢瓶颈并非“值轴”而是碰撞/相消轴。因而若以空间换时间，优先引入可分离的碰撞轴束比单纯扩展值通道更有效。
 \end{remark}
 
+\begin{remark}[“加轴不一定加速”：更细分的同余读出可能更慢]\label{rem:pom-more-axis-slower}
+在三维同余分层中，已给出两组可审计的最坏扭曲比值：
+\[
+\rho_{3,3,3}/\lambda\approx 0.9366863402,
+\qquad
+\rho_{5,5,5}/\lambda\approx 0.9628140340
+\]
+（附录 \ref{app:real-input-40-arity-3d} 的数值输出；见脚本 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py}）。
+注意到 \(\rho_{5,5,5}/\lambda\) 更接近 \(1\)，因此其扭曲谱隙 \(-\log(\rho/\lambda)\) 更小、对应的混合尺度更大。
+
+这给出一个结构性结论：当最坏扭曲由\emph{纯碰撞 cocycle} 主导时，增加同余轴的模数（更细的 residue/角色读出）会引入更多非平凡角色，但\textbf{最慢模并不会因此被“值轴细分”所消除}；相反，它可能进一步逼近共振从而使混合变慢。
+因此“空间换时间”在该相区的有效手段不是单纯增加角色维数，而是改变核几何以解耦/削弱碰撞轴（例如引入可分离的碰撞轴束或改变投影门编排）。
+\end{remark}
+
 \subsection{投影词语法与成本模型}\label{subsec:pom-words}
 \begin{definition}[投影词与半群]\label{def:pom-projection-word}
 令投影字母表 $\{Z,\le\}$ 分别代表一次 $P_Z$ 与一次 $P_{\le}$ 读出。对任意指令/微码 $I$，定义投影词
@@ -179,7 +193,7 @@ T_I(n)\ \approx\ k_Z(I)\,\delta_Z\ +\ k_\chi(I)\,\tau_{\mathrm{mix}}\ +\ D_U(n).
   \[
   \{\ P_Z,\ P_{\le},\ P_\chi,\ P_{\mathrm{prim}},\ E_m,\ \mathrm{PROJ}_u,\ \mathrm{LIFT}_G,\ \mathrm{TWIST}(\chi),\ U\ \}
   \]
-  其中 $E_m$ 为条件期望接口（定义 \ref{def:pom-proj-norm}），$\mathrm{PROJ}_u$ 为软序门（定义 \ref{def:pom-proj-temp}），$\mathrm{LIFT}_G$ 为群扩张/标记提升门（见第 \ref{sec:zeta-finite-part} 节的群扩张接口），其余为本文三类投影门（定义 \ref{def:pom-projections}）。
+  其中 $E_m$ 为条件期望接口（定义 \ref{def:pom-proj-norm}），$\mathrm{PROJ}_u$ 为软序门（定义 \ref{def:pom-proj-temp}），$\mathrm{LIFT}_G$ 为群扩张/标记提升门（见第 \ref{sec:zeta-finite-part} 节的群扩张接口），其余为本文的投影门族（定义 \ref{def:pom-proj-norm}--\ref{def:pom-proj-chi}）。
   \item \textbf{$2$-态射：}由“可审计结构事实”给出的重写证书（等式/同构），包括但不限于：
   \begin{enumerate}
     \item 幂等与塔式关系：$P_Z\circ P_Z=P_Z$，以及 $E_{m_1}\circ E_{m_2}=E_{m_1}$（命题 \ref{prop:pom-expectation-tower}）；

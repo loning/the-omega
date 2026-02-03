@@ -258,6 +258,9 @@ m:=\left\lfloor \frac{t\,p\log\lambda}{2\pi}\right\rceil
 在经典 \(\zeta\) 理论中，“向 RH 推进”的一条可累积路线是改进 Dirichlet 多项式的大值控制，从而改进零密度界 \(N(\sigma,T)\) 并反馈到素数误差项的阈值。
 例如 Guth--Maynard 给出新的大值估计并推出改进的零密度上界与短区间素数计数阈值（\(N(\sigma,T)\le T^{30(1-\sigma)/13+o(1)}\) 及相关推论，见 \cite{GuthMaynard2024LargeValues}）。
 
+从“对齐口径”的角度，零密度技术的作用并不在于直接推出“全体零点都在临界线”，而在于把偏离临界线的零点集合压稀，从而把显式公式中的振荡误差项控制到更强的可积/可平均形式。
+这对应于本文有限维原型中“最坏扭曲谱半径比 $\Lambda/\lambda_1$ 决定误差指数”的结构：当无法一步获得平方根界（核版 GRH），仍可通过控制“坏扭曲”的出现频率/规模来改进误差可控范围。
+
 从本文的“有限维 \(\zeta\)”视角看，上述链条可被理解为一种连续谱版的“谱—极点—误差三角形”：零点（或极点）分布的稀疏性对应于显式公式中振荡项的可控叠加，而误差项的可达指数则由可用的大值界/矩母函数控制。有限维模型提供的优势在于：该三角形可被完全审计地压缩到有限谱数据（命题 \ref{prop:finite-rh-triangle-dict} 及推论 \ref{cor:finite-rh-explicit-formula}），从而为“把误差指数写成可检验谱不变量”提供了一个可计算原型。
 
 \paragraph{真实 \texorpdfstring{$\zeta$}{zeta} 的可量化边界（用于对齐与路线设计）}
@@ -291,7 +294,7 @@ u=\exp(-\beta)\,\omega_p^k
 \Lambda_p(\beta):=\max_{k\neq 0}\rho\bigl(M(\exp(-\beta)\omega_p^k)\bigr),
 \]
 并令 \(\beta_\ast(p)\) 为满足 \(\Lambda_p(\beta)\le \lambda_1(\beta)^{1/2}\) 的最小 \(\beta\)（若存在）。
-表 \ref{tab:real_input_40_kernel_newman_threshold} 给出若干 \(p\) 的数值扫描结果：若在扫描区间内未观测到满足平方根界的 \(\beta\)，则给出下界 \(\beta_\ast(p)>\beta_{\max}\)，并同时列出扫描网格上 \(\Lambda_p/\sqrt{\lambda_1}\) 的最小值及其发生位置（脚本 `scripts/exp_real_input_40_kernel_newman_threshold.py` 一键生成）：
+表 \ref{tab:real_input_40_kernel_newman_threshold} 给出若干 \(p\) 的数值扫描结果：若在扫描区间内未观测到满足平方根界的 \(\beta\)，则给出下界 \(\beta_\ast(p)>\beta_{\max}\)，并同时列出扫描网格上 \(\Lambda_p/\sqrt{\lambda_1}\) 的最小值及其发生位置（脚本 \texttt{scripts/exp\_real\_input\_40\_kernel\_newman\_threshold.py} 一键生成）：
 \input{sections/generated/tab_real_input_40_kernel_newman_threshold}
 \end{remark}
 
@@ -299,6 +302,12 @@ u=\exp(-\beta)\,\omega_p^k
 命题 \ref{prop:finite-rh-triangle-dict} 表明：有限维 toy-RH 的“临界线位置”只取决于归一化谱的模长约束（\( |\mu|\le \sqrt\lambda \)）。
 若要在有限模型中模拟更接近经典 \(\zeta\) 的“零点密度/统计形态”，则必须让临界模长（\(|\mu|=\sqrt\lambda\)）上的特征值携带大量不同的角度，从而把单一晶格振荡推广为多频振荡叠加（推论 \ref{cor:finite-rh-explicit-formula} 的结构推广）。
 在本文的可编译口径下，这一目标可通过增加 lift/角色轴束（例如 profinite 同余轴或更高维 abelian 扭曲族）来实现，并可用“单位圆谱角分布的熵/多样性”作为可复现的实验指纹。
+\end{remark}
+
+\begin{remark}[平方根界的可审计证书：Lyapunov/内积构造]\label{rem:finite-rh-lyapunov}
+核版 (G)RH 的平方根界是一个谱半径不等式。除直接对角化/求特征值外，还可用“构造内积”的方式给出可审计证书：
+对任意矩阵 $A$ 与阈值 $r$，$\rho(A)<r$ 等价于存在正定矩阵 $H\succ 0$ 使 $A^\ast H A\prec r^2 H$（命题 \ref{prop:lyapunov-spectral-radius-certificate}）。
+因此在扭曲分量 $A=M_{K,\rho}(u)$ 上，若能显式给出证书矩阵 $H_{\rho,u}$，就可把平方根界写成一条可复核的不等式，而不依赖数值特征值排序的稳健性。
 \end{remark}
 
 \paragraph{primitive 轨道计数曲线与 \texorpdfstring{$x/\log x$}{x/log x} 的常数因子}
@@ -417,6 +426,67 @@ C=\lim_{z\to z_\star}(1-\lambda z)\,\zeta_M(z)=\frac{47+21\sqrt5}{100}\ (\approx
 其中 $-z_\star$ 来自 $(1-z)^2$ 与 $(1+z)^3$ 的线性合并项，而 $+3z_\star^2$ 是 $(1+z)^3$ 在修正恒等式中的二次修正项。
 因此“剥离平凡因子”不仅产生线性项，还会带来一个可显式计算的二次项；这不会改变主极点位置，但会在 Abel 有限部常数的压缩表达中产生可观测的常数级修正。
 \end{remark}
+
+\begin{proposition}[约化 Mertens 常数：去平凡因子后的唯一贡献]\label{prop:real-input-40-reduced-mertens}
+设
+\[
+\Delta(z)=\det(I-zM)=\Delta_{\mathrm{triv}}(z)\,\Delta_{\mathrm{nt}}(z),
+\qquad
+\Delta_{\mathrm{triv}}(z)=(1-z)^a(1+z)^b,
+\]
+其中 $a,b\in\ZZ_{\ge 0}$。假设主极点 $z_\star\in(0,1)$ 来自非平凡块，即 $\Delta_{\mathrm{nt}}(z_\star)=0$ 且为简单零点，而 $\Delta_{\mathrm{triv}}(z_\star)\neq 0$。
+令
+\[
+\log\mathfrak{M}_{\mathrm{nt}}
+:=\log C_{\mathrm{nt}}-\sum_{m\ge 2}\frac{\mu(m)}{m}\log \Delta_{\mathrm{nt}}(z_\star^{\,m}),
+\qquad
+C_{\mathrm{nt}}:=\frac{1}{-z_\star\,\Delta_{\mathrm{nt}}'(z_\star)}.
+\]
+则 Abel 有限部常数满足严格分解
+\[
+\boxed{\;
+\log\mathfrak{M}
+\;=\;
+\log\mathfrak{M}_{\mathrm{nt}}
+\;+\;
+(a-b)\,z_\star
+\;+\;
+b\,z_\star^2.
+\;}
+\]
+特别地，除去一个完全显式的“平凡修正项”\((a-b)z_\star+bz_\star^2\) 后，常数项的真正机制信息只依赖于非平凡谱块 $\Delta_{\mathrm{nt}}$。
+\end{proposition}
+\begin{proof}
+由 $\Delta=\Delta_{\mathrm{triv}}\Delta_{\mathrm{nt}}$ 且 $\Delta_{\mathrm{nt}}(z_\star)=0$ 为简单零点，可得
+\(
+\Delta'(z_\star)=\Delta_{\mathrm{triv}}(z_\star)\Delta_{\mathrm{nt}}'(z_\star)
+\)，
+从而主留数常数满足
+\(
+C=\frac{1}{-z_\star\Delta'(z_\star)}=C_{\mathrm{nt}}/\Delta_{\mathrm{triv}}(z_\star)
+\)。
+将
+\[
+\log\mathfrak{M}=\log C-\sum_{m\ge 2}\frac{\mu(m)}{m}\log\Delta(z_\star^{\,m})
+\]
+代入并分解出 $\Delta_{\mathrm{triv}}$ 与 $\Delta_{\mathrm{nt}}$，得到
+\[
+\log\mathfrak{M}
+=\log\mathfrak{M}_{\mathrm{nt}}
+-\log\Delta_{\mathrm{triv}}(z_\star)
+-\sum_{m\ge 2}\frac{\mu(m)}{m}\log\Delta_{\mathrm{triv}}(z_\star^{\,m}).
+\]
+对 $\Delta_{\mathrm{triv}}(z)=(1-z)^a(1+z)^b$，用引理 \ref{lem:mobius-collapse} 的两条恒等式并注意到
+\(
+\sum_{m\ge 2}=\sum_{m\ge 1}-\text{(}m=1\text{项)}
+\)，
+可直接化简得到
+\[
+-\log\Delta_{\mathrm{triv}}(z)-\sum_{m\ge 2}\frac{\mu(m)}{m}\log\Delta_{\mathrm{triv}}(z^{m})
+=(a-b)z+bz^2.
+\]
+取 $z=z_\star$ 即得结论。证毕。
+\end{proof}
 
 此外，由 $\sqrt5=2\varphi-1$，留数常数亦可写成
 \[

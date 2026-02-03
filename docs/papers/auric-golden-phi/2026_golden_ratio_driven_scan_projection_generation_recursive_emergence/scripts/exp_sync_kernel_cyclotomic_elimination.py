@@ -211,7 +211,7 @@ def write_polys_tex(path: Path, polys: Dict[int, sp.Poly]) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Cyclotomic elimination for sync-kernel weighted zeta.")
-    parser.add_argument("--m-list", type=str, default="3,4,5,6,7", help="Comma-separated m values.")
+    parser.add_argument("--m-list", type=str, default="3,4,5,6,7,8,9,10,11,12", help="Comma-separated m values.")
     parser.add_argument("--prec", type=int, default=80, help="Working precision for nroots.")
     parser.add_argument(
         "--json-out",

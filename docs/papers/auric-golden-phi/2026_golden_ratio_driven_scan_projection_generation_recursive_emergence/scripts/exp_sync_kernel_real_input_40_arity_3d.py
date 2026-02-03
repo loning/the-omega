@@ -938,6 +938,18 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     else:
         lines.append("\\kappa\\ \\text{undefined},")
     lines.append("$$")
+    if 0.0 < rho_ratio < 1.0:
+        theta5 = (2.0 * math.pi) / 5.0
+        sigma2_hat_lin = 2.0 * (1.0 - rho_ratio) / (theta5 * theta5)
+        sigma2_hat_log = (-2.0 * math.log(rho_ratio)) / (theta5 * theta5)
+        lines.append("等价地（把 $p=5$ 的有限角扭曲视为小角近似的反推），可定义两种“反推方差密度”估计：")
+        lines.append("$$")
+        lines.append(
+            f"\\widehat\\sigma_\\xi^2\\,\\text{{(lin)}}:=\\frac{{2(1-\\rho_{{3,3,5}}/\\lambda)}}{{(2\\pi/5)^2}}\\approx {sigma2_hat_lin:.12f},\\qquad "
+            f"\\widehat\\sigma_\\xi^2\\,\\text{{(log)}}:=-\\frac{{2\\log(\\rho_{{3,3,5}}/\\lambda)}}{{(2\\pi/5)^2}}\\approx {sigma2_hat_log:.12f}."
+        )
+        lines.append("$$")
+        lines.append("其中 log 版本来自二次律的指数形式 $\\rho(it)/\\lambda\\approx\\exp(-\\sigma_\\xi^2 t^2/2)$。")
     lines.append("并给出预测（待计算 $((3,3,p))$ 数据验证）：")
     lines.append("$$")
     if pred_p:
@@ -971,6 +983,12 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     lines.append("$$")
     lines.append(f"\\mathcal{{E}}_1\\approx {E1:.6f}.")
     lines.append("$$")
+    if 0.0 < E1 < 1.0:
+        R_harm = E1 / (1.0 - E1)
+        lines.append("并可等价给出谐波强度比指纹")
+        lines.append("$$")
+        lines.append(f"R_\\mathrm{{harm}}:=\\frac{{\\|A^{{(1)}}\\|_F^2}}{{\\|A^{{(2)}}\\|_F^2}}=\\frac{{\\mathcal{{E}}_1}}{{1-\\mathcal{{E}}_1}}\\approx {R_harm:.6f}.")
+        lines.append("$$")
 
     lines.append("\\paragraph{（viii）碰撞 cocycle 的 near-coboundary 证书：best $\\ZZ/5$-着色缺陷}")
     lines.append("把 40 状态图的每条边赋 cocycle $\\xi=\\mathbf{1}_{\\{d=2\\}}\\in\\ZZ/5$，并用局部改进的启发式在 $\\ZZ/5$ 上寻找 $h:V\\to\\ZZ/5$ 使得约束 $h(v)-h(u)\\equiv \\xi(u\\to v)\\ (\\mathrm{mod}\\ 5)$ 尽量多地满足。以边不一致比例定义缺陷")
