@@ -489,6 +489,85 @@ u\frac{\mathrm{d}}{\mathrm{d}u}\log\lambda_K(u)
 这给出一个与“均匀输入驱动”\textbf{不同}但可比较的 carry 密度读出：前者来自外加输入分布，后者来自压力最优化（指纹层更稳定）。
 \end{remark}
 
+\subsubsection{核的热力学形式：零温基态、CLT/LDP 与加权 prime-orbit 定理}\label{subsec:kernel-thermo}
+本小节把“carry 强度 $\kappa$”提升为一维势能（可观测量），并把核的单流同步图视为一个一维有限范围相互作用的动力系统。该提升的意义在于：除“能否实现加法/乘法”外，还可严格推出一组新的、可计算的结构结论——零温选择（ground state）、压力曲线响应、carry 统计的中心极限定理与大偏差、以及带权 primitive（“素数类对象”）的计数律与误差控制。
+
+\paragraph{势能与温度参数化}
+对每条边 $e$ 取势能 $\kappa(e)\in\ZZ_{\ge 0}$（原子 carry 强度），并令
+\[
+u=e^{-\beta}\in(0,1],\qquad \beta\ge 0.
+\]
+则带权矩阵 $M_K(u)$ 等价于局部常势 $\phi_\beta:=-\beta\kappa$ 的有限维转移算子；$P_K(u)=\log\rho(M_K(u))$ 即相应压力（自由能密度）。
+
+\begin{proposition}[平衡态的显式 PF 公式（有限图/局部常势）]\label{prop:kernel-equilibrium-pf}
+设 $u\in(0,1]$ 且 $M_K(u)$ 不可约。令 $\lambda=\lambda_K(u)$，取 Perron--Frobenius 的左右特征向量 $r,\ell>0$ 满足
+\(
+M_K(u)\,r=\lambda r,\ \ell^{\mathsf T}M_K(u)=\lambda \ell^{\mathsf T}
+\)
+并归一化 $\ell^{\mathsf T}r=1$。则存在一个在边移位上的一阶 Markov 平衡态 $\mu_u$，其转移概率可写成
+\[
+\mathbb{P}_{\mu_u}(i\to j)=\frac{M_K(u)_{ij}\,r_j}{\lambda r_i}.
+\]
+并且在该平衡态下，
+\(
+\partial_\theta \log\lambda_K(e^\theta)=\mathbb{E}_{\mu_{e^\theta}}[\kappa]
+\)
+成立（与上一个 remark 同口径）。
+\end{proposition}
+
+\paragraph{零温极限（ground state）}
+当 $\beta\to\infty$（即 $u\to 0$）时，势能 $-\beta\kappa$ 强制系统选择最小平均 carry 的轨道集合。对有限字母表上的局部常势，一维 Gibbs 态在零温下收敛到一个由有限并 SFT 支撑的极限测度，并可由递归算法给出其遍历分解权重（\cite{ChazottesGambaudoUgalde2011ZeroTempLocConst}）。
+
+\begin{theorem}[零温选择落在 carry-free 子移位]\label{thm:kernel-zero-temp}
+对单流核的边移位空间，取局部常势 $\phi_\beta:=-\beta\kappa$ 并令 $\mu_\beta$ 为其 Gibbs 平衡态。则当 $\beta\to+\infty$ 时，$\mu_\beta$ 在弱-$\ast$ 拓扑下收敛到一个极限测度 $\mu_0$；并且 $\mu_0$ 支撑在 carry-free 子图（$\kappa=0$ 的边）生成的有限并 SFT 上。若 carry-free 子图只有一个本质强连通分量，则 $\mu_0$ 为该分量的 Parry（最大熵）测度。
+\end{theorem}
+
+\begin{corollary}[最小字母表核的零温基态为 Zeckendorf 语法]\label{cor:kernel-21-ground-state}
+对 $21$-local 最小字母表核，carry-free 骨架与黄金均值 shift 共轭（定理 \ref{thm:carry-free-zeta-trichotomy}），因此零温极限 $\mu_0$ 等于黄金均值 shift 的 Parry 最大熵测度。特别地，“输出 $1$”的极限密度为
+\[
+\mu_0(1)=\frac{1}{\varphi+2}\approx 0.276393,
+\]
+与命题 \ref{prop:parry-measure-golden} 的显式公式一致。
+\end{corollary}
+
+\paragraph{carry 统计：CLT 与大偏差（固定温度）}
+在 $u\in(0,1)$ 固定时，$\mu_u$ 是有限状态 Markov 平衡态；对边可观测量 $\kappa$ 的部分和
+\(
+S_n:=\sum_{t=1}^{n}\kappa(e_t)
+\)
+可直接应用有限状态 Markov 链的标准极限定理。其均值与方差亦可由压力导数给出（参见 \cite{Ruelle1978Thermodynamic} 的转移算子口径）。
+
+\begin{proposition}[carry 的 CLT/LDP 指纹]\label{prop:kernel-clt-ldp}
+设 $u\in(0,1)$ 且 $M_K(u)$ 原始。令 $\theta=\log u$，并记
+\(
+P(\theta):=\log\rho(M_K(e^\theta))
+\)。
+则：
+\begin{enumerate}
+  \item \textbf{（LLN/均值）} $\lim_{n\to\infty}\frac{1}{n}S_n=P'(\theta)$，几乎处处且在 $L^1$ 成立；
+  \item \textbf{（CLT）} 若 $\kappa$ 非共边界，则
+  \(
+  \frac{S_n-nP'(\theta)}{\sqrt{n}}
+  \)
+  在 $\mu_u$ 下收敛到均值 $0$、方差 $P''(\theta)$ 的正态分布；
+  \item \textbf{（LDP）} 经验均值 $S_n/n$ 满足大偏差原理，其速率函数为 Legendre 变换
+  \[
+  I(\alpha)=\sup_{t\in\RR}\bigl(t\alpha-(P(\theta+t)-P(\theta))\bigr).
+  \]
+\end{enumerate}
+\end{proposition}
+
+\paragraph{加权 prime-orbit 定理（“素数影子”的热力学主项）}
+对 $B_n(u)=\sum_{|\gamma|=n,\ \gamma\ \mathrm{primitive}}u^{\kappa(\gamma)}$，由迹公式 $a_n(u)=\Tr(M_K(u)^n)$ 与 Möbius 反演可把主项与误差直接追踪到谱隙。
+
+\begin{theorem}[加权 primitive 轨道计数与指数误差]\label{thm:kernel-weighted-prime-orbit}
+设 $u\in(0,1]$ 且 $M_K(u)$ 原始，令 $\lambda_1(u)=\lambda_K(u)$，并令 $\lambda_2(u)$ 为其余特征值的最大模。则
+\[
+B_n(u)=\frac{\lambda_1(u)^n}{n}+O\!\left(\frac{|\lambda_2(u)|^n}{n}\right)\qquad(n\to\infty).
+\]
+因此 \(\lambda_K(u)\) 与谱隙比 \( |\lambda_2(u)|/\lambda_1(u)\) 构成核的“素数热力学指纹”。
+\end{theorem}
+
 更完整的脚本复现、状态机构图与数值输出见附录 \ref{app:sync-kernel-A-compare} 与生成表格。
 
 \begin{corollary}[折叠公式：加法即“叠加后归一化”]\label{cor:add-as-fold}
