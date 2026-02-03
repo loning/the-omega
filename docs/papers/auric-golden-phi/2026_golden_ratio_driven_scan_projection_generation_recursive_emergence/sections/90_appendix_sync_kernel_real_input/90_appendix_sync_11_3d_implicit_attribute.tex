@@ -40,3 +40,51 @@ I(\alpha)\approx \tfrac12(\alpha-\alpha_\star)^\top\bigl(\nabla^2P(0)\bigr)^{-1}
 \alpha_\star=\left(\frac{23-7\sqrt5}{20},\frac{5-\sqrt5}{20},\frac{3-\sqrt5}{10}\right).
 \]
 数值复现见脚本 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40.py}。
+
+\begin{proposition}[碰撞势的三次压力方程]\label{prop:real-input-40-collision-pressure}
+令 $X$ 为黄金均值移位，取其邻接矩阵
+\(
+F=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix}
+\)，则 $X\times X$ 的邻接矩阵为 $A:=F\otimes F$（按状态 $00,01,10,11$ 排列）。
+对碰撞势 $\varphi_2=\mathbf{1}_{\{11\}}$，令 $u=e^\theta$ 并定义权矩阵
+\[
+W(u):=D(u)A,\qquad D(u):=\mathrm{diag}(1,1,1,u).
+\]
+则特征多项式分解为
+\[
+\det(\lambda I-W(u))=(\lambda+1)\Bigl(\lambda^3-2\lambda^2-(u+1)\lambda+u\Bigr),
+\]
+从而 Perron 根 $\rho(u)$ 为三次方程
+\[
+\rho^3-2\rho^2-(u+1)\rho+u=0
+\]
+的最大实根，并有
+\[
+P_2(\theta)=\log\rho(e^\theta).
+\]
+\end{proposition}
+
+\begin{corollary}[碰撞势均值与方差的 $\sqrt5$ 闭式]\label{cor:real-input-40-collision-cumulants}
+在 $u=1$（即 $\theta=0$，$\rho(1)=\lambda=\varphi^2$）处，
+\[
+P_2'(0)=\frac{3-\sqrt5}{10},
+\qquad
+P_2''(0)=\frac{6\sqrt5-5}{125}.
+\]
+其中 $P_2''(0)$ 与上式 Hessian 的第三对角元一致。
+\end{corollary}
+
+\begin{remark}[碰撞频率的大偏差参数化]\label{rem:real-input-40-collision-ldp-param}
+由三次方程可消去 $u$，得到参数化表示
+\[
+u=\frac{\rho(\rho^2-2\rho-1)}{\rho-1}\qquad(\rho>1).
+\]
+进一步记 $\alpha(\theta)=P_2'(\theta)$，则可写成
+\[
+\alpha(\rho)=\frac{(\rho^2-2\rho-1)(\rho-1)}{2\rho^3-5\rho^2+4\rho+1},
+\]
+从而碰撞频率的速率函数可参数化为
+\[
+I_2(\alpha(\rho))=\alpha(\rho)\log u(\rho)-\log\rho,\qquad \rho\in(1,\infty).
+\]
+\end{remark}
