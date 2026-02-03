@@ -151,6 +151,24 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_moment_recursions",
+            script="exp_fold_collision_moment_recursions.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_moment_recursions.json",
+                "sections/generated/tab_fold_collision_moment_recursions.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_moment_hankel_rank",
+            script="exp_fold_collision_moment_hankel_rank.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_moment_hankel_rank.json",
+                "sections/generated/tab_fold_collision_moment_hankel_rank.tex",
+            ],
+        ),
+        Step(
             name="phi_m_sofic_entropy",
             script="exp_phi_m_sofic_entropy.py",
             args=[],
