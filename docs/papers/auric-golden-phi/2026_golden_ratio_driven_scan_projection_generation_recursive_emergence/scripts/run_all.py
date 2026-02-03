@@ -124,6 +124,33 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_kernel_A3_primitive",
+            script="exp_collision_kernel_A3_primitive.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A3_primitive.json",
+                "sections/generated/tab_collision_kernel_A3_primitive.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A3_finite_part",
+            script="exp_collision_kernel_A3_finite_part.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A3_finite_part.json",
+                "sections/generated/tab_collision_kernel_A3_finite_part.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_renyi_spectrum",
+            script="exp_fold_collision_renyi_spectrum.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_renyi_spectrum.json",
+                "sections/generated/tab_fold_collision_renyi_spectrum.tex",
+            ],
+        ),
+        Step(
             name="phi_m_sofic_entropy",
             script="exp_phi_m_sofic_entropy.py",
             args=[],
