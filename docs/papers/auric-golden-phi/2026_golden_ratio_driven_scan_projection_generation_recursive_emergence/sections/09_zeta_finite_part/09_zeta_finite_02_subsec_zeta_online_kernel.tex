@@ -56,6 +56,130 @@ I(\alpha)=\frac{(\alpha-\frac12)^2}{2P''(0)}+O\!\left((\alpha-\tfrac12)^3\right)
 \]
 其中 $I$ 为输出位计数的 LDP 率函数（见附录 \ref{app:pressure-analytic} 与 \ref{app:rate-param}）。有限 $n$ 的镜像对称与其导出的 Mertens 偶性见推论 \ref{cor:primitive-finite-sym} 与命题 \ref{prop:mertens-even}；周期迹多项式与 $\Delta$ 系数的逐项回文约束见命题 \ref{prop:trace-palindrome} 与推论 \ref{cor:delta-coeff-palindrome}。
 
+\paragraph{Cyclotomic elimination：模 \texorpdfstring{$m$}{m} 的 residue mixing 误差指数是整系数代数数}
+把加权 primitive 轨道谱写成
+\[
+p_n(u)=\sum_{k}p_{n,k}\,u^k\in\ZZ[u],
+\]
+其中 $k$ 是长度 $n$ 的 primitive 轨道上输出 $1$ 的出现次数。对任意模 $m\ge 3$ 与同余类 $a\in\ZZ/m\ZZ$，定义 residue class 的 primitive 计数
+\[
+p_{n,a}^{(m)}:=\sum_{k\equiv a\ (m)}p_{n,k}.
+\]
+由离散傅里叶反演（evaluation@roots + DFT）有严格恒等式
+\[
+p_{n,a}^{(m)}=\frac{1}{m}\sum_{r=0}^{m-1}\omega_m^{-ar}\,p_n(\omega_m^r),
+\qquad \omega_m:=e^{2\pi i/m}.
+\]
+因此 residue mixing 的误差指数由扭曲 Perron 根
+\[
+\rho_m:=\max_{1\le r\le m-1}|\lambda(\omega_m^r)|<\lambda(1)=3
+\]
+控制（$r=0$ 为平凡频率给出主项）。下面把 $\rho_m$ 变成一个\emph{整系数代数方程}（resultant）问题。
+
+\begin{proposition}[completion \texorpdfstring{$\to$}{->} cyclotomic resultant]\label{prop:sync-cyclotomic-elimination}
+记 $\Delta(z,u)=\det(I-zB(u))$。引入完成化变量
+\[
+u=r^2,\qquad s:=r+r^{-1},\qquad w:=zr,
+\]
+则由自对偶对称 $\Delta(z,u)=\Delta(uz,1/u)$ 可知 $w$ 与 $s$ 为不变量。于是存在
+\[
+\widehat{\Delta}(w,s)\in\ZZ[s][w]
+\]
+使得对所有可逆 $r$ 都有恒等式
+\[
+\widehat{\Delta}(w,r+r^{-1})=\Delta(w/r,r^2).
+\]
+令 $\Phi_m^+(s)$ 为代数数 $s_m:=2\cos(\pi/m)$ 的最小多项式（整系数、首一），并定义
+\[
+R_m(w):=\operatorname{Res}_s\bigl(\widehat{\Delta}(w,s),\Phi_m^+(s)\bigr)\in\ZZ[w].
+\]
+则当 $u=e^{2\pi i/m}$ 时，$\Delta(z,u)=0$ 的解 $z$（等价地 $w=z\sqrt{u}$）必满足 $R_m(w)=0$。并且在单位圆扭曲 $|u|=1$ 下有
+\[
+\rho_m=\frac{1}{\min\{|w|:R_m(w)=0\}}.
+\]
+\end{proposition}
+
+\begin{remark}[可复现输出：\texorpdfstring{$m=3,\dots,7$}{m=3..7} 的 \texorpdfstring{$R_m$}{Rm} 与 \texorpdfstring{$\rho_m$}{rhom}]\label{rem:sync-cyclotomic-elimination-table}
+脚本 \texttt{scripts/exp\_sync\_kernel\_cyclotomic\_elimination.py} 由附录 \ref{app:pressure-analytic} 的 $F(\lambda,u)$ 构造 $\widehat{\Delta}(w,s)$，并对 $m=3,4,5,6,7$ 计算 $R_m(w)$ 与 $\rho_m$；输出见表 \ref{tab:sync_kernel_cyclotomic_elimination_summary} 与多项式块 \texttt{tab\_sync\_kernel\_cyclotomic\_elimination\_polys.tex}（可直接回归测试）。
+\end{remark}
+
+\input{sections/generated/tab_sync_kernel_cyclotomic_elimination_summary}
+\input{sections/generated/tab_sync_kernel_cyclotomic_elimination_polys}
+
+\begin{remark}[压力展开给出 \texorpdfstring{$\rho_m$}{rhom} 的高精度渐近预测]\label{rem:sync-rho-pressure-asymp}
+由附录 \ref{app:pressure-analytic} 的 Taylor 展开
+\[
+P(\theta)=\log 3+\frac12\theta+\frac{11}{204}\theta^2+\frac{1559}{1414944}\theta^4+O(\theta^6),
+\]
+取 $\theta=it$ 并记 $u=e^{it}$，则
+\[
+\log|\lambda(e^{it})|=\Re P(it)=\log 3-\frac{11}{204}t^2+\frac{1559}{1414944}t^4+O(t^6).
+\]
+令 $t=2\pi/m$，得到可直接使用的预测式
+\[
+\rho_m\approx 3\exp\!\Bigl(-\frac{11}{204}\Bigl(\frac{2\pi}{m}\Bigr)^2+\frac{1559}{1414944}\Bigl(\frac{2\pi}{m}\Bigr)^4\Bigr),
+\]
+其与上面的 resultant 精确值在 $m=4$ 起已达到 $10^{-4}$ 量级误差（见表 \ref{tab:sync_kernel_cyclotomic_elimination_summary}）。
+\end{remark}
+
+\paragraph{\texorpdfstring{$s$}{s}-平面零极点字典：谱半径与“右半临界带无极点”}\label{par:s-plane-pole-dictionary}
+本节的 \(\zeta\)-函数在有限矩阵口径下是有理函数，因此其全部奇点由有限谱完全决定。
+为把“谱隙版 RH/GRH”提升到经典的 \((s)\)-平面语言，引入 Dirichlet 坐标
+\[
+z=\lambda^{-s},\qquad \lambda:=\rho(M)>0.
+\]
+\begin{proposition}[谱 \(\Longleftrightarrow\) Dirichlet 极点列]\label{prop:s-plane-spectrum-poles}
+设 \(M\) 为有限维矩阵，\(\lambda:=\rho(M)>0\)。定义
+\[
+Z_M(s):=\frac{1}{\det\!\bigl(I-\lambda^{-s}M\bigr)}.
+\]
+则：
+\begin{enumerate}
+  \item \(Z_M(s)\) 的极点与 \(M\) 的非零特征值 \(\mu\) 一一对应（按代数重数）。更具体，\(\lambda^{-s}\mu=1\) 当且仅当
+  \[
+  s=\frac{\log\mu+2\pi i k}{\log\lambda}\qquad(k\in\ZZ),
+  \]
+  其中 \(\log\mu\) 为复对数的任一分支。
+  \item 极点所在竖线的实部由模长给出：
+  \[
+  \Re(s)=\frac{\log|\mu|}{\log\lambda}.
+  \]
+\end{enumerate}
+因此，核版 RH 条件
+\(
+\max_{i\ge 2}|\mu_i|\le \sqrt{\lambda}
+\)
+等价于：除主极点列（来自 \(\mu=\lambda\)，对应 \(\Re(s)=1\)）外，所有极点皆满足 \(\Re(s)\le \tfrac12\)，亦即 \(\Re(s)>\tfrac12\) 的区域无非平凡极点贡献。
+\end{proposition}
+\begin{proof}
+对 \(\det(I-\lambda^{-s}M)\) 取 Jordan 分解或特征多项式分解即可：其零点满足 \(\lambda^{-s}\mu=1\)；取模得到 \(\lambda^{-\Re(s)}|\mu|=1\)，即 \(\Re(s)=\log|\mu|/\log\lambda\)。证毕。
+\end{proof}
+
+\paragraph{有限维显式公式：素数影子的误差即“临界圆谱贡献”}\label{par:finite-explicit-formula}
+对有限维核，primitive 轨道计数的“主项 + 误差”可完全写成特征值的有限和，从而把平方根振荡直接识别为临界圆 \(|\mu|=\sqrt{\lambda}\) 上的谱贡献。
+\begin{proposition}[有限维显式公式模板]\label{prop:finite-dimensional-explicit-formula}
+设 \(M\) 的特征值（按代数重数）为 \(\mu_1,\dots,\mu_d\)，并记
+\(
+a_n:=\Tr(M^n)=\sum_{j=1}^d \mu_j^n
+\)。
+令 \(p_n\) 为长度 \(n\) 的 primitive 轨道数（按轨道计），则 Möbius 反演给出
+\[
+p_n=\frac{1}{n}\sum_{m\mid n}\mu(m)\,a_{n/m}
+=\frac{1}{n}\sum_{j=1}^d\ \sum_{m\mid n}\mu(m)\,\mu_j^{\,n/m}.
+\]
+特别地，若 \(\lambda:=\rho(M)\) 为简单 Perron 根，则
+\[
+p_n=\frac{\lambda^n}{n}+O\!\left(\frac{\Lambda^n}{n}\right),
+\qquad
+\Lambda:=\max_{j\ge 2}|\mu_j|.
+\]
+若存在某个非平凡特征值满足 \(|\mu|=\sqrt{\lambda}\)，则一般出现不可改进的平方根级振荡项（\(\Omega(\lambda^{n/2}/n)\)）。
+\end{proposition}
+\begin{proof}
+由 \(a_n=\sum_{m\mid n} m\,p_m\) 的标准周期--primitive 关系做 Möbius 反演得到第一式。
+后两式由谱分解 \(a_n=\lambda^n+\sum_{j\ge 2}\mu_j^n\) 代回并估计即可；当某个 \(|\mu|=\sqrt{\lambda}\) 时，对应项规模为 \(\lambda^{n/2}\) 且无法被更小模的项一致抵消，从而给出 \(\Omega\)-振荡。证毕。
+\end{proof}
+
 \paragraph{\texorpdfstring{$s$}{s}-平面完成化函数方程的谱互反判据}\label{par:s-plane-functional-eq-criterion}
 上一段的“函数方程”发生在参数侧（$u\leftrightarrow 1/u$ 或 $\theta\leftrightarrow-\theta$）。
 若希望把对称进一步提升为 Dirichlet 坐标 $z=\lambda^{-s}$ 下的
@@ -116,6 +240,10 @@ z\mapsto (\lambda z)^{-1}
 \lambda^{r}z^{r}\Delta_M\!\left(\frac{1}{\lambda z}\right)=C'\Delta_M(z).
 \]
 因此当 $\Delta_M$ 的系数可精确计算（例如整系数矩阵）时，上式提供一个逐项可审计的判别式。
+\end{remark}
+
+\begin{remark}[有限维与“无限零点”的缺口]\label{rem:finite-vs-infinite-zeros}
+由于 \(Z_M(s)\) 来自有限维行列式，其 \((s)\)-平面的极点/零点结构必为有限族的竖向晶格（每个非零特征值贡献一条周期列）。因此若要在本框架内逼近经典 \(\zeta(s)\) 的“无限多非平凡零点”现象，需要引入一个维度 \(\to\infty\) 的极限机制，使得谱点在极限中形成无限谱并在 Dirichlet 坐标下产生更复杂的零极点分布；这为后续构造“无限塔/无限覆盖/逆极限核”的路线提供了明确的结构目标。
 \end{remark}
 
 \begin{remark}[本节两类核的检验结论（可复现）]\label{rem:reciprocal-check-outcome}

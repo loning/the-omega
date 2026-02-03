@@ -223,3 +223,84 @@ primitive 轨道数 $p_n$ 与 $a_n$ 的关系为
 a_n=\sum_{d\mid n} d\,p_d,\qquad
 p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}.
 \]
+
+\paragraph{符号动力学与算子代数不变量：Bowen--Franks 群与 Cuntz--Krieger \texorpdfstring{$K$}{K}-群}
+除 $\zeta$、primitive 谱与有限部常数外，整数邻接矩阵还携带一组对流等价（flow equivalence）/稳定同构分类极其敏感的整格不变量。
+对任意整数矩阵 $A\in M_N(\ZZ)$ 定义 Bowen--Franks 群
+\[
+\mathrm{BF}(A):=\ZZ^N/(I-A)\ZZ^N.
+\]
+并且对 Cuntz--Krieger 代数 $\mathcal O_A$（由图/邻接矩阵 $A$ 定义）的 $K$-群，有标准同构
+\[
+K_0(\mathcal O_A)\cong \mathrm{coker}(I-A^\mathsf T),\qquad
+K_1(\mathcal O_A)\cong \ker(I-A^\mathsf T).
+\]
+在本工作中，$A$ 可取为 essential 核 $M_{\mathrm{ess}}$，或取全矩阵 $M$；两者对 $\mathrm{BF}$ 与 $K$-群给出相同的非平凡部分（瞬态扩张只贡献单位不变量）。
+
+\begin{proposition}[真实输入核的 Bowen--Franks 群与 Cuntz--Krieger \texorpdfstring{$K$}{K}-理论]\label{prop:real-input-40-bf-ktheory}
+令 $A=M_{\mathrm{ess}}$ 为命题 \ref{prop:real-input-40-essential-20} 的 $20\times 20$ essential 邻接矩阵。则
+\[
+\mathrm{SNF}(I-A)=\mathrm{SNF}(I-A^\mathsf T)=\mathrm{diag}(1,\dots,1,2,0,0),
+\]
+其中 $1$ 出现 $17$ 次。因而
+\[
+\mathrm{BF}(A)\cong \ZZ^2\oplus \ZZ/2\ZZ,
+\qquad
+K_0(\mathcal O_A)\cong \ZZ^2\oplus \ZZ/2\ZZ,
+\qquad
+K_1(\mathcal O_A)\cong \ZZ^2.
+\]
+\end{proposition}
+
+\begin{remark}[可复现输出：Smith normal form 与 \texorpdfstring{$\mathrm{BF}/K$}{BF/K}-群]\label{rem:real-input-40-bf-ktheory-repro}
+表 \ref{tab:real_input_40_bf_ktheory} 给出 $A=M_{\mathrm{ess}}$ 与全矩阵 $M$ 的 $I-A$ 的 Smith 标准形（SNF）。
+复现脚本：\texttt{scripts/exp\_real\_input\_40\_operator\_algebra\_invariants.py}。
+\end{remark}
+\input{sections/generated/tab_real_input_40_bf_ktheory}
+
+\paragraph{最大熵测度下的内部 carry 稳态分布（\texorpdfstring{$\mathbb Q(\sqrt5)$}{Q(sqrt5)} 闭式）}
+由于 $M_{\mathrm{ess}}$ 不可约，Parry 最大熵测度可由 Perron 根 $\lambda=\rho(M_{\mathrm{ess}})$ 的左右特征向量 $(\ell,r)$ 显式给出；
+顶点边缘满足 $\pi_i\propto \ell_i r_i$。
+把顶点标记为 $(s,p_x,p_y)\in Q\times\{0,1\}^2$，记忆态记为 $m=(p_x,p_y)\in\{00,01,10,11\}$。
+
+\begin{proposition}[真实输入核的内部同步态条件分布（闭式）]\label{prop:real-input-40-parry-internal-distribution}
+在 $M_{\mathrm{ess}}$ 的 Parry 最大熵测度下，同步态 $s\in Q$ 的条件分布 $\mathbb{P}(s\mid m)$（给定记忆态 $m$）落在 $\mathbb Q(\sqrt5)$，
+并由表 \ref{tab:real_input_40_parry_internal_distribution} 给出。
+\end{proposition}
+
+\begin{remark}[可复现核验：内部稳态分布]\label{rem:real-input-40-parry-internal-distribution-repro}
+表 \ref{tab:real_input_40_parry_internal_distribution} 同时给出同步态边缘分布 $\mathbb{P}(s)$。
+复现脚本：\texttt{scripts/exp\_real\_input\_40\_operator\_algebra\_invariants.py}。
+\end{remark}
+\input{sections/generated/tab_real_input_40_parry_internal_distribution}
+
+\paragraph{零特征值的幂零指数：延迟与同步复位词的线性代数阴影}
+行列式因子化只给出 $0$ 特征值的代数重数；其 Jordan 块大小（幂零指数）需要通过 $\dim\ker(A^k)$ 链来识别。
+对本核而言，这一“不可对角化性”完全聚焦在 $0$ 上，并与在线同步的延迟/复位结构直接对应。
+
+\begin{proposition}[本质核指数 \texorpdfstring{$3$}{3} 与全核指数 \texorpdfstring{$5$}{5}]\label{prop:real-input-40-nilpotent-index}
+令 $A=M_{\mathrm{ess}}$ 为 $20\times 20$ essential 核矩阵。则
+\[
+\dim\ker(A)=7,\qquad
+\dim\ker(A^2)=10,\qquad
+\dim\ker(A^3)=11,
+\]
+并从 $k=3$ 起稳定，故 $0$ 处最大 Jordan 块大小为 $3$。
+
+另一方面，对全矩阵 $M$（含瞬态扩张）有
+\[
+\dim\ker(M)=16,\ 
+\dim\ker(M^2)=24,\ 
+\dim\ker(M^3)=29,\ 
+\dim\ker(M^4)=30,\ 
+\dim\ker(M^5)=31,
+\]
+并从 $k=5$ 起稳定，故 $0$ 处最大 Jordan 块大小为 $5$。
+这与同步核的在线延迟 $3$（本质核）与同步复位词长度 $5$（命题 \ref{prop:real-input-40-reset-word}）相呼应。
+\end{proposition}
+
+\begin{remark}[可复现输出：核维数链与 Jordan 块计数]\label{rem:real-input-40-nilpotent-index-repro}
+表 \ref{tab:real_input_40_nilpotent_jordan} 汇总了 $(\dim\ker A^k)$ 链，并据此给出 $0$ 处 Jordan 块大小的计数摘要。
+复现脚本：\texttt{scripts/exp\_real\_input\_40\_operator\_algebra\_invariants.py}。
+\end{remark}
+\input{sections/generated/tab_real_input_40_nilpotent_jordan}

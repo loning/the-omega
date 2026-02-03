@@ -217,11 +217,32 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_cyclotomic_elimination",
+            script="exp_sync_kernel_cyclotomic_elimination.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_cyclotomic_elimination.json",
+                "sections/generated/tab_sync_kernel_cyclotomic_elimination_summary.tex",
+                "sections/generated/tab_sync_kernel_cyclotomic_elimination_polys.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40",
             script="exp_sync_kernel_real_input_40.py",
             args=[],
             expected_outputs=[
                 "artifacts/export/sync_kernel_real_input_40.json",
+            ],
+        ),
+        Step(
+            name="real_input_40_operator_algebra_invariants",
+            script="exp_real_input_40_operator_algebra_invariants.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_operator_algebra_invariants.json",
+                "sections/generated/tab_real_input_40_bf_ktheory.tex",
+                "sections/generated/tab_real_input_40_parry_internal_distribution.tex",
+                "sections/generated/tab_real_input_40_nilpotent_jordan.tex",
             ],
         ),
         Step(
@@ -284,6 +305,42 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/sync_kernel_real_input_40_arity_3d_N2_335.json",
                 "sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_dirichlet_mertens_functoriality",
+            script="exp_real_input_40_dirichlet_mertens_functoriality.py",
+            args=["--triple", "3x3x5"],
+            expected_outputs=[
+                "artifacts/export/real_input_40_dirichlet_mertens_functoriality.json",
+                "sections/generated/tab_real_input_40_dirichlet_mertens_functoriality.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_covariance_worst_character",
+            script="exp_real_input_40_covariance_predict_worst_character.py",
+            args=["--triple", "3x3x5", "--third-axis", "N2", "--h", "0.0002"],
+            expected_outputs=[
+                "artifacts/export/real_input_40_covariance_worst_character.json",
+                "sections/generated/tab_real_input_40_covariance_worst_character.tex",
+            ],
+        ),
+        Step(
+            name="arity_335_n2_master_curve",
+            script="exp_arity_335_n2_master_curve.py",
+            args=["--p-list", "11,13", "--k-max", "1", "--diff-h", "0.0002"],
+            expected_outputs=[
+                "artifacts/export/arity_335_n2_master_curve.json",
+                "sections/generated/tab_real_input_40_arity_335_n2_master_curve.tex",
+            ],
+        ),
+        Step(
+            name="arity_335_n2_limit_law",
+            script="exp_arity_335_n2_limit_law_table.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/arity_335_n2_limit_law.json",
+                "sections/generated/tab_real_input_40_arity_335_n2_limit_law.tex",
             ],
         ),
         Step(

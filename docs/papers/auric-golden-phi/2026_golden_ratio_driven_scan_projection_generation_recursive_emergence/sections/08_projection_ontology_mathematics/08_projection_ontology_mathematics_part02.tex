@@ -166,6 +166,76 @@ T_I(n)\ \approx\ k_Z(I)\,\delta_Z\ +\ k_\chi(I)\,\tau_{\mathrm{mix}}\ +\ D_U(n).
 这给出“投影词 $\Rightarrow$ 非并行开销”的直接量化接口。
 \end{remark}
 
+\subsection{带参数的投影词 \texorpdfstring{$2$}{2}-范畴与可审计重写}\label{subsec:pom-2cat-rewrite}
+\paragraph{目标}
+投影词半群 $\mathcal W$（定义 \ref{def:pom-projection-word}）提供了“词法计数”，指令签名 $\Sigma$（定义 \ref{def:pom-instruction-signature}）提供了“可审计不变量”。
+要得到可推演的演算学，还需把“可重写、可判等、可估价”收束为一个统一系统：重写在词法/编译层闭合，判等与估价在谱指纹层完成。
+
+\begin{definition}[带参数的投影词 \texorpdfstring{$2$}{2}-范畴]\label{def:pom-projword-2cat}
+定义一个（弱）$2$-范畴 $\mathbf{PW}$（projection-word）如下：
+\begin{itemize}
+  \item \textbf{对象：}读出层与纤维配置（例如“窗口层/稳定层/角色层”以及激活纤维族 $\mathcal F$；见定义 \ref{def:pom-fiber-kernel-choice}）。
+  \item \textbf{$1$-态射：}由生成元与其参数标注组成的投影词（允许有限复合）：
+  \[
+  \{\ P_Z,\ P_{\le},\ P_\chi,\ P_{\mathrm{prim}},\ E_m,\ \mathrm{PROJ}_u,\ \mathrm{LIFT}_G,\ \mathrm{TWIST}(\chi),\ U\ \}
+  \]
+  其中 $E_m$ 为条件期望接口（定义 \ref{def:pom-proj-norm}），$\mathrm{PROJ}_u$ 为软序门（定义 \ref{def:pom-proj-temp}），$\mathrm{LIFT}_G$ 为群扩张/标记提升门（见第 \ref{sec:zeta-finite-part} 节的群扩张接口），其余为本文三类投影门（定义 \ref{def:pom-projections}）。
+  \item \textbf{$2$-态射：}由“可审计结构事实”给出的重写证书（等式/同构），包括但不限于：
+  \begin{enumerate}
+    \item 幂等与塔式关系：$P_Z\circ P_Z=P_Z$，以及 $E_{m_1}\circ E_{m_2}=E_{m_1}$（命题 \ref{prop:pom-expectation-tower}）；
+    \item 时间—空间交换图：$Z=E\circ M\circ T$（命题 \ref{prop:time-space-commuting-diagram}），把 $\det(I-zT)^{-1}$ 与 primitive/Euler 乘积的两条实现路径严格对齐；
+    \item 群扩张分解：对 abelian 标记扩张，$\mathrm{LIFT}_G$ 的行列式/谱对象可在角色上分解并由 $\mathrm{TWIST}(\chi)$ 的族读出（第 \ref{sec:zeta-finite-part} 节的 DFT/扭曲接口）；
+    \item 硬序门作为零温极限：$P_{\le}$ 可视为 $\mathrm{PROJ}_u$ 在 $u\to 0$ 的硬化极限（注 \ref{rem:pom-order-as-zero-temp}），其“极限退化”提供一类可检验的渐近重写规则。
+  \end{enumerate}
+\end{itemize}
+将这些 $2$-态射视为“可证明等价/可交换的编译变换”，即可在 $\mathbf{PW}$ 中进行带证书的重写。
+\end{definition}
+
+\begin{definition}[签名函子与投影门估价]\label{def:pom-sigma-functor}
+把指令签名 $\Sigma$（定义 \ref{def:pom-instruction-signature}）从“指令集合”提升为 $\mathbf{PW}$ 上的一个（弱）$2$-函子
+\[
+\Sigma:\mathbf{PW}\to \mathbf{Inv},
+\]
+其在 $1$-态射上取值为
+\(
+\Sigma(I)=(W(I),\mathfrak F(K_Z(I)),\mathfrak F(K_{\le}(I)),\mathcal F(I))
+\)
+（或以 $K_\chi$ 取代 $K_{\le}$），并把 $2$-态射（重写证书）送到恒等同构（即“重写不改变签名”）。
+\end{definition}
+
+\begin{proposition}[重写不变性与可估价闭环]\label{prop:pom-rewrite-audit-loop}
+若在 $\mathbf{PW}$ 中存在带证书的重写 $I\Rightarrow J$（即存在 $2$-态射），则：
+\begin{enumerate}
+  \item \textbf{签名不变：}$\Sigma(I)=\Sigma(J)$。
+  \item \textbf{投影门成本可由指纹估价：}对角色/同余门，令
+  \[
+  g(u):=\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr),
+  \qquad
+  \tau_{\mathrm{mix}}(u):=\frac{1}{g(u)},
+  \]
+  其中 $\lambda_1(u)$ 为主谱半径、$\Lambda(u)$ 为最坏非平凡扭曲谱半径（推论 \ref{cor:pom-order-mixing}）。
+  则达到相对误差 $\varepsilon$ 的读出深度满足
+  \[
+  n\ \gtrsim\ \frac{\log(1/\varepsilon)}{g(u)}=\tau_{\mathrm{mix}}(u)\,\log(1/\varepsilon),
+  \]
+  且该尺度由核指纹中的扭曲谱隙完全决定（见注 \ref{rem:pom-chi-mixing}）。
+\end{enumerate}
+\end{proposition}
+
+\begin{corollary}[GRH-型平方根界 \texorpdfstring{$\Rightarrow$}{=>} 混合尺度的通用上界]\label{cor:pom-grh-mix-upper}
+若在某一角色/扭曲族上满足核版 RH/GRH 的平方根界（定义 \ref{def:kernel-rh} 的同型条件），即
+\(
+\Lambda(u)\le \lambda_1(u)^{1/2}
+\)，
+则
+\[
+g(u)=\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)\ \ge\ \tfrac12\log\lambda_1(u),
+\qquad
+\tau_{\mathrm{mix}}(u)\ \le\ \frac{2}{\log\lambda_1(u)}.
+\]
+因此在平方根界成立时，序/角色读出的本体时间尺度被主尺度 $\lambda_1(u)$ 的对数统一控制。
+\end{corollary}
+
 \subsection{空间—时间对偶与资源函数}\label{subsec:pom-resources}
 \begin{definition}[嵌入—演化—投影正规形]\label{def:pom-normal-form}
 对分辨率 $n$ 的运算 $f_n$，定义其正规形为

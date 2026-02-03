@@ -9,6 +9,45 @@ z=\lambda^{-s},\qquad \widehat{\zeta}(s):=\zeta_M(\lambda^{-s})=\frac{1}{\det(I-
 \]
 时出现极点（对每个 $\mu$ 及其对数分支给出一列极点）。
 
+\paragraph{谱—极点—误差三角形：有限维 \texorpdfstring{$\zeta$}{zeta} 的通用字典}
+对任意有限维核（矩阵）$M$，Dirichlet 化后的 $\widehat{\zeta}(s)$ 把“谱模长”逐点翻译为“临界带极点的位置”，并进一步把“非平凡谱半径”翻译为 primitive 计数的误差尺度。
+该字典是有限维模型中最接近经典 \(\zeta\)/\(L\) 语言的部分：它把“零点/极点—显式公式—误差项”的分析数论三角形压缩为一个纯线性代数三角形。
+
+\begin{proposition}[谱 \texorpdfstring{$\leftrightarrow$}{<->} 极点：临界带坐标与 toy-RH 判别]\label{prop:finite-rh-triangle-dict}
+设 $M$ 为有限维矩阵，$\lambda=\rho(M)>1$，并定义
+\[
+\widehat{\zeta}(s)=\zeta_M(\lambda^{-s})=\frac{1}{\det(I-\lambda^{-s}M)}.
+\]
+则对任意非零特征值 $\mu\neq 0$ 与任意 $k\in\ZZ$，$\widehat{\zeta}(s)$ 的极点由
+\[
+\lambda^{-s}\mu=1
+\]
+给出，等价于
+\[
+s=\frac{\log\mu+2\pi i k}{\log\lambda},
+\]
+其中 $\log\mu$ 取任意复对数分支。于是极点实部满足
+\[
+\Re(s)=\frac{\log|\mu|}{\log\lambda}.
+\]
+因此在开带 $0<\Re(s)<1$ 中出现非平凡极点当且仅当存在特征值满足 $1<|\mu|<\lambda$。
+
+进一步，若把“有限维 toy-RH”定义为：开带 $0<\Re(s)<1$ 中的全部非平凡极点都落在 $\Re(s)=\tfrac12$，则该条件等价于
+\[
+(\forall\,\mu\ \text{满足}\ 1<|\mu|<\lambda)\qquad |\mu|=\sqrt{\lambda}.
+\]
+更弱地，若满足 Ramanujan 半径界
+\[
+\max_{\mu\neq\lambda}|\mu|\ \le\ \sqrt{\lambda},
+\]
+则右半开带 $\tfrac12<\Re(s)<1$ 内无极点；若存在 $|\mu|=\sqrt{\lambda}$，则对应极点列恰落在 $\Re(s)=\tfrac12$ 上。
+\end{proposition}
+
+\begin{remark}[本核的达界位置：唯一临界模长 \texorpdfstring{$|\mu|=\sqrt{\lambda}$}{|mu|=sqrt(lambda)}]\label{rem:finite-rh-40-ramanujan}
+在真实输入 40 状态核上，除 Perron 根 $\lambda=\varphi^2$ 外，唯一满足 $|\mu|=\sqrt{\lambda}$ 的特征值为 $-\sqrt{\lambda}=-\varphi$（命题 \ref{prop:real-input-40-essential-20} 与此处命题 \ref{prop:finite-rh-40} 的谱分解一致）。
+因此该核达到 toy-RH 的“单频临界振荡”情形：临界带中的全部非平凡极点由 $-\sqrt{\lambda}$ 单独产生。
+\end{remark}
+
 \begin{proposition}[临界带中的非平凡极点都在 \texorpdfstring{$\Re(s)=\tfrac12$}{Re(s)=1/2}]\label{prop:finite-rh-40}
 设 $\lambda=\rho(M)=\varphi^2$。则在开带 $0<\Re(s)<1$ 中，$\widehat{\zeta}(s)$ 的全部极点均严格落在直线
 \[
@@ -200,6 +239,52 @@ m:=\left\lfloor \frac{t\,p\log\lambda}{2\pi}\right\rceil
 \]
 当 $p$ 足够大时成立，同时 $\Re(s_{p,m})=1/p<\varepsilon$。故 $s_{p,m}\to it$，从而 $\{s_{p,m}\}$ 在虚轴上稠密。由于任意穿过虚轴的邻域都包含这些奇点，故无法跨越解析延拓，\(\Re(s)=0\) 为自然边界。
 \end{proof}
+
+\begin{remark}[自然边界机制的普适化]\label{rem:primedirichlet-natural-boundary-universal}
+定理 \ref{thm:real-input-40-primedirichlet-dense-branch} 的证明只用到了两点结构事实：
+\begin{enumerate}
+  \item $\widehat{\zeta}(s)=\zeta_M(\lambda^{-s})$ 在 $s=1$ 的极点来自 Perron 根 $\lambda$，从而 $\log\widehat{\zeta}(s)$ 在该点具有对数型分支奇性；
+  \item prime-zeta 形式的恒等式
+  \[
+  \mathcal{P}(s)=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\widehat{\zeta}(ks)
+  \]
+  把该分支奇性按比例 $s\mapsto s/k$ 复制到 $s_{p,m}=1/p+2\pi i m/(p\log\lambda)$（奇素数 $p$）处，并由 $k/p$ 的实部比较排除不同 $k$ 的抵消。
+\end{enumerate}
+因此该“稠密分支奇点 \(\Rightarrow\) \(\Re(s)=0\) 自然边界”的现象并不依赖本核的具体因式分解；
+只要 $M$ 为 primitive 非负整数矩阵（保证 Perron 根简单）并以同样方式定义 primitive--Dirichlet 级数，完全同型的稠密奇点机制都会出现。
+\end{remark}
+
+\paragraph{与解析数论零密度技术的对齐（定位性备注）}
+在经典 \(\zeta\) 理论中，“向 RH 推进”的一条可累积路线是改进 Dirichlet 多项式的大值控制，从而改进零密度界 \(N(\sigma,T)\) 并反馈到素数误差项的阈值。
+例如 Guth--Maynard 给出新的大值估计并推出改进的零密度上界与短区间素数计数阈值（\(N(\sigma,T)\le T^{30(1-\sigma)/13+o(1)}\) 及相关推论，见 \cite{GuthMaynard2024LargeValues}）。
+
+从本文的“有限维 \(\zeta\)”视角看，上述链条可被理解为一种连续谱版的“谱—极点—误差三角形”：零点（或极点）分布的稀疏性对应于显式公式中振荡项的可控叠加，而误差项的可达指数则由可用的大值界/矩母函数控制。有限维模型提供的优势在于：该三角形可被完全审计地压缩到有限谱数据（命题 \ref{prop:finite-rh-triangle-dict} 及推论 \ref{cor:finite-rh-explicit-formula}），从而为“把误差指数写成可检验谱不变量”提供了一个可计算原型。
+
+\paragraph{真实 \texorpdfstring{$\zeta$}{zeta} 的可量化边界（用于对齐与路线设计）}
+为了把“向 RH 推进”的外部进展接入本文的谱语言，这里列出若干在 2024--2025 仍可直接调用的硬输入（均为可核验的显式常数/阈值）：
+\begin{itemize}
+  \item \textbf{验证高度（partial RH）：}已严格验证到高度 \(3\cdot 10^{12}\)，即所有满足 \(0<\Im(\rho)\le 3\cdot 10^{12}\) 的非平凡零点都在临界线 \(\Re(\rho)=\tfrac12\) 上（\cite{PlattTrudgian2020RH3e12}）。
+  \item \textbf{de Bruijn--Newman 常数：}Rodgers--Tao 证明 \(\Lambda\ge 0\)（\cite{RodgersTao2018NewmanNonnegative}），而 RH 等价于 \(\Lambda\le 0\)，因此 RH 等价于 \(\Lambda=0\)。同时 Polymath15 给出无条件上界 \(\Lambda\le 0.22\)，并给出依赖进一步数值验证的条件改进（\cite{Polymath2019NewmanUpper}）。
+  \item \textbf{临界线上零点比例：}已有结果表明超过 \(5/12\) 的零点位于临界线（\cite{PrattRoblesZaharescuZeindler2018FiveTwelfths}）。该类“比例推进”可被视为把偏离临界线的零点集合压稀的一条可累积路线。
+  \item \textbf{显式零点计数误差：}Bellotti--Wong 改进了 \(N(T)\) 的显式误差界，并给出具体常数（\cite{BellottiWong2024ImprovedNT}），可直接用于 Turing 方法/数值核验与显式应用。
+  \item \textbf{Turing 方法关键量的改进：}Amberger 给出 \(|S_1(t_2)-S_1(t_1)|\) 的改进界，从而改进 Turing 方法所需的块长度阈值（\cite{Amberger2025S1}）。
+  \item \textbf{\(\Re(s)\approx 1\) 的显式控制：}Cully-Hugill--Leong 与 Leong 分别给出 \(\zeta'(s)/\zeta(s)\) 与 \(1/\zeta(s)\) 在 \(\sigma\) 接近 \(1\) 时的显式上界（\cite{CullyHugillLeong2023Zeta1Line,Leong2024LogDerivRecip}），可作为零自由区与误差项常数的工程输入。
+\end{itemize}
+
+\begin{definition}[核版 Newman 阈值（可检验参数）]\label{def:kernel-newman-threshold}
+给定一个带参数的核族 \(M(u)\)（例如由势函数/温度化门 \(\mathrm{PROJ}_u\) 或角色扭曲生成；见定义 \ref{def:pom-proj-temp} 与 \ref{def:pom-proj-chi}），记主谱半径为 \(\lambda_1(u)\)，最坏非平凡扭曲谱半径为 \(\Lambda(u)\)。
+定义核版 Newman 阈值为
+\[
+\theta_\ast:=\inf\{\theta\in\RR:\ \Lambda(e^\theta)\le \lambda_1(e^\theta)^{1/2}\}.
+\]
+当 \(\theta_\ast\le 0\) 时，原点切片（\(u=1\)）已满足核版 GRH 的平方根界；当 \(\theta_\ast>0\) 时，需“加热/变形”后才进入平方根区间。
+\end{definition}
+
+\begin{remark}[从 toy-RH 到“角度熵”：一个可操作的升级方向]\label{rem:finite-rh-angle-entropy}
+命题 \ref{prop:finite-rh-triangle-dict} 表明：有限维 toy-RH 的“临界线位置”只取决于归一化谱的模长约束（\( |\mu|\le \sqrt\lambda \)）。
+若要在有限模型中模拟更接近经典 \(\zeta\) 的“零点密度/统计形态”，则必须让临界模长（\(|\mu|=\sqrt\lambda\)）上的特征值携带大量不同的角度，从而把单一晶格振荡推广为多频振荡叠加（推论 \ref{cor:finite-rh-explicit-formula} 的结构推广）。
+在本文的可编译口径下，这一目标可通过增加 lift/角色轴束（例如 profinite 同余轴或更高维 abelian 扭曲族）来实现，并可用“单位圆谱角分布的熵/多样性”作为可复现的实验指纹。
+\end{remark}
 
 \paragraph{primitive 轨道计数曲线与 \texorpdfstring{$x/\log x$}{x/log x} 的常数因子}
 令

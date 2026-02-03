@@ -185,6 +185,45 @@ $$
 反之，若 \(N(\omega)\equiv N(\omega')\ (\mathrm{mod}\ F_{m+2})\)，则两者在模 \(F_{m+2}\) 下的余数相同。又由于 \(V_m(\Fold_m(\cdot))\) 正是 Zeckendorf 规范形在前 \(m\) 位对应的值（定义 \ref{def:pom-window-value}），该余数唯一确定折叠后的稳定类型 \(x\in X_m\)，因此 \(x=x'\)，即 \(\Fold_m(\omega)=\Fold_m(\omega')\)。证毕。
 \end{proof}
 
+\begin{proposition}[\texorpdfstring{$q$}{q}-重碰撞的同余矩表达]\label{prop:pom-moment-congruence-q}
+对任意整数 \(q\ge 2\)，定义
+$$
+S_q(m):=\sum_{x\in X_m} d_m(x)^q.
+$$
+并令
+$$
+c_m(r):=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\ (\mathrm{mod}\ F_{m+2})\},\qquad r\in\ZZ/F_{m+2}\ZZ.
+$$
+则有恒等式
+$$
+\boxed{\ 
+S_q(m)=\sum_{r\in\ZZ/F_{m+2}\ZZ} c_m(r)^q.
+\ }
+$$
+\end{proposition}
+\begin{proof}
+记
+$$
+R_m^{(q)}:=\{(\omega^{(1)},\dots,\omega^{(q)})\in\Omega_m^q:\ \Fold_m(\omega^{(1)})=\cdots=\Fold_m(\omega^{(q)})\}.
+$$
+由定义立得 \(|R_m^{(q)}|=\sum_{x\in X_m}d_m(x)^q=S_q(m)\)。
+另一方面，由引理 \ref{lem:pom-fold-congruence}，对任意两条窗口 \(\omega,\omega'\) 有
+\(
+\Fold_m(\omega)=\Fold_m(\omega')\iff N(\omega)\equiv N(\omega')\ (\mathrm{mod}\ F_{m+2})
+\)。
+因此 \((\omega^{(1)},\dots,\omega^{(q)})\in R_m^{(q)}\) 当且仅当
+$$
+N(\omega^{(1)})\equiv \cdots \equiv N(\omega^{(q)})\pmod{F_{m+2}}.
+$$
+按共同余数类 \(r\in\ZZ/F_{m+2}\ZZ\) 分组计数，得到
+$$
+|R_m^{(q)}|
+=\sum_{r\in\ZZ/F_{m+2}\ZZ}\#\{\omega^{(1)}:\ N(\omega^{(1)})\equiv r\}\cdots \#\{\omega^{(q)}:\ N(\omega^{(q)})\equiv r\}
+=\sum_{r}c_m(r)^q.
+$$
+与 \(|R_m^{(q)}|=S_q(m)\) 合并即得结论。证毕。
+\end{proof}
+
 \begin{definition}[折叠碰撞矩]\label{def:pom-s2}
 定义二阶碰撞和
 $$
@@ -506,14 +545,89 @@ $$
 \input{sections/generated/tab_collision_kernel_A3_primitive}
 \input{sections/generated/tab_collision_kernel_A3_finite_part}
 
+\subsubsection{四阶碰撞矩与 \texorpdfstring{$\mathrm{R\acute{e}nyi}$}{Renyi}--4 投影熵率}\label{subsec:pom-s4}
+\begin{definition}[四阶折叠碰撞矩]\label{def:pom-s4}
+定义四阶碰撞和
+$$
+S_4(m):=\sum_{x\in X_m} d_m(x)^4.
+$$
+等价地，从 \(\Omega_m\) 上均匀独立抽取四条窗口 \(\omega_1,\omega_2,\omega_3,\omega_4\)，则
+$$
+\mathbb{P}\bigl[\Fold_m(\omega_1)=\Fold_m(\omega_2)=\Fold_m(\omega_3)=\Fold_m(\omega_4)\bigr]=\frac{S_4(m)}{16^m}.
+$$
+\end{definition}
+
+\begin{proposition}[四阶碰撞核的五态非负整数 realization]\label{prop:pom-s4-recurrence}
+存在一个五态的非负整数矩阵
+$$
+A_4:=
+\begin{pmatrix}
+0&0&0&2&2\\
+1&0&0&0&0\\
+0&1&0&0&0\\
+0&0&1&0&7\\
+0&0&0&1&2
+\end{pmatrix},
+$$
+以及读出向量
+$$
+u_4:=(18,50,228,808,3208)^{\mathsf T},\qquad
+v_4:=(1,0,0,0,0)^{\mathsf T},
+$$
+使得对一切 \(m\ge 2\),
+$$
+S_4(m)=u_4^{\mathsf T}A_4^{\,m-2}v_4.
+$$
+从而 \(S_4(m)\) 满足精确五阶递推：对一切 \(m\ge 13\),
+$$
+S_4(m)=2S_4(m-1)+7S_4(m-2)+2S_4(m-4)-2S_4(m-5).
+$$
+\end{proposition}
+\begin{proof}
+把 \(a_n:=S_4(n+2)\) 视为一列整数序列。由表 \ref{tab:fold_collision_moment_recursions} 可审计地核验 \(a_n\) 满足阶数为 \(5\) 的整数递推（脚本 \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py}）。由 Hankel 标准构造 \(A=H_0^{-1}H_1\) 得到一个整系数 shift realization，再通过 unimodular 相似变换把其压到上述非负整数矩阵 \(A_4\)；同时读出向量随基变换更新，得到所述 \(u_4,v_4\) 与读出公式。整个构造由脚本 \texttt{scripts/exp\_fold\_collision\_hankel\_realization\_q4.py} 输出并可复核。证毕。
+\end{proof}
+
+\begin{corollary}[四阶碰撞指数与 \texorpdfstring{$h_4$}{h4}]\label{cor:pom-s4-asymptotic}
+设 \(r_4:=\rho(A_4)\) 为多项式
+$$
+x^5-2x^4-7x^3-2x+2=0
+$$
+的最大实根（\(r_4\approx 3.846059041178\)）。则
+$$
+S_4(m)=\Theta(r_4^m),
+\qquad
+h_4:=\lim_{m\to\infty}\frac{1}{m}\Bigl(-\log\sum_{x\in X_m}\pi_m(x)^4\Bigr)
+=\log\!\left(\frac{16}{r_4}\right).
+$$
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:pom-s4-recurrence}，生成函数分母为 \(\det(I-zA_4)\)，其最小模零点为 \(z_\star=1/\rho(A_4)\)，从而 \(S_4(m)=\Theta(r_4^m)\)。并且
+$$
+\sum_{x\in X_m}\pi_m(x)^4=\sum_x\frac{d_m(x)^4}{16^m}=\frac{S_4(m)}{16^m},
+$$
+代入渐近即得 \(h_4=\log(16/r_4)\)。证毕。
+\end{proof}
+
+\begin{definition}[四阶碰撞核的 \texorpdfstring{$\zeta$}{zeta} 与有限部常数]\label{def:pom-collision-zeta-a4}
+对五态核 \(A_4\) 定义
+$$
+\zeta_{A_4}(z):=\exp\!\left(\sum_{n\ge 1}\frac{\mathrm{Tr}(A_4^n)}{n}z^n\right)
+:=\frac{1}{\det(I-zA_4)}.
+$$
+相应的 primitive 轨道数 \(p_n(A_4)\)、以及 Abel/Mertens 有限部常数 \(\log\mathfrak{M}(A_4)\) 与 \(\mathsf{M}(A_4)=\gamma+\log\mathfrak{M}(A_4)\) 可按第 \ref{sec:zeta-finite-part} 节的通用接口抽取；其可复现输出见表 \ref{tab:collision_kernel_A4_primitive} 与 \ref{tab:collision_kernel_A4_finite_part}（脚本 \texttt{scripts/exp\_collision\_kernel\_A4\_primitive.py} 与 \texttt{scripts/exp\_collision\_kernel\_A4\_finite\_part.py}）。
+\end{definition}
+
+\input{sections/generated/tab_collision_kernel_A4_primitive}
+\input{sections/generated/tab_collision_kernel_A4_finite_part}
+
 \begin{remark}[\texorpdfstring{$\mathrm{R\acute{e}nyi}$}{Renyi} 指纹谱：从 \texorpdfstring{$q=2,3$}{q=2,3} 到更高阶]\label{rem:pom-renyi-spectrum}
 对任意整数 \(q\ge 2\) 定义
 $$
 S_q(m):=\sum_{x\in X_m} d_m(x)^q,\qquad
 H_q(m):=-\log\sum_{x\in X_m}\pi_m(x)^q=-\log\!\left(\frac{S_q(m)}{2^{qm}}\right).
 $$
-对 \(q=2,3\)，命题 \ref{prop:pom-s2-recurrence} 与 \ref{prop:pom-s3-recurrence} 给出严格三态核与闭式熵率 \(h_q=\log(2^q/r_q)\)。
-对更高阶 \(q\ge 4\)，同样可把 \(\{S_q(m)\}\) 作为“投影熵谱曲线”的数值指纹输出；可复现的枚举谱表见表 \ref{tab:fold_collision_renyi_spectrum}（脚本 \texttt{scripts/exp\_fold\_collision\_renyi\_spectrum.py}）。
+对 \(q=2,3,4\)，命题 \ref{prop:pom-s2-recurrence}、\ref{prop:pom-s3-recurrence} 与 \ref{prop:pom-s4-recurrence} 给出严格有限态碰撞核与闭式熵率 \(h_q=\log(2^q/r_q)\)。
+对更高阶 \(q\ge 5\)，同样可把 \(\{S_q(m)\}\) 作为“投影熵谱曲线”的数值指纹输出；可复现的枚举谱表见表 \ref{tab:fold_collision_renyi_spectrum}（脚本 \texttt{scripts/exp\_fold\_collision\_renyi\_spectrum.py}）。
 \end{remark}
 
 \input{sections/generated/tab_fold_collision_renyi_spectrum}
@@ -546,6 +660,118 @@ $$
 \end{corollary}
 
 \input{sections/generated/tab_fold_collision_moment_hankel_rank}
+
+\subsubsection{任意阶碰撞矩的 moment-kernel 构造与多重分形谱}\label{subsec:pom-moment-general}
+
+\paragraph{从 \texorpdfstring{$q$}{q}-重碰撞到有限态 moment-kernel}
+二阶与三阶的核心新点是：碰撞矩并非仅是一个“可枚举序列”，而是由一个\textbf{有限状态纤维积核}生成，从而完全落入 Perron--Frobenius/\(\zeta\) 的统一接口。
+这一事实对任意 \(q\ge 2\) 都成立：固定 \(q\) 后，“\(q\) 条窗口折叠到同一稳定类型”的约束是一个有限记忆条件，因此可被编译为一个有限图（SFT/sofic）并由整数邻接矩阵计数。
+
+\begin{definition}[\texorpdfstring{$q$}{q}-重碰撞关系与 moment 序列]\label{def:pom-moment-q}
+对整数 \(q\ge 2\)，定义 \(q\)-重碰撞关系
+$$
+R_m^{(q)}:=
+\{(\omega^{(1)},\dots,\omega^{(q)})\in\Omega_m^q:\ \Fold_m(\omega^{(1)})=\cdots=\Fold_m(\omega^{(q)})\},
+$$
+并定义 \(q\)-阶碰撞矩（moment）
+$$
+S_q(m):=|R_m^{(q)}|=\sum_{x\in X_m} d_m(x)^q.
+$$
+\end{definition}
+
+\begin{proposition}[任意阶 moment-kernel 的存在与可执行构造]\label{prop:pom-moment-kernel-exists}
+对每个固定的 \(q\ge 2\)，存在一个有限状态非负整数核（邻接矩阵）\(A_q\) 与整数读出向量 \(u_q,v_q\) 使得
+$$
+S_q(m)=u_q^{\mathsf T}A_q^{\,m-m_0}v_q\qquad(m\ge m_0),
+$$
+从而 \(\{S_q(m)\}_{m\ge m_0}\) 满足某个\textbf{有限阶整系数线性递推}。
+
+并且 \(A_q\) 可按下述“编译路线”显式构造（因此可推演、可重写、可计算）：
+\begin{enumerate}
+  \item 选取实现 \(\Fold_\infty\) 的确定性在线核（延迟 \(\delta_{\min}=3\) 的同步核，附录给出其显式有限状态表示）；
+  \item 取其 \(q\) 份拷贝并做同步直积，把状态扩展为 \(q\)-元组；
+  \item 在每一步只保留那些使 \(q\) 份拷贝产生\textbf{相同输出位}的转移，并投影到可达的本质强连通分量；
+  \item 得到的有限图即为一个 \(q\)-重碰撞的 fiber-product 核，其邻接矩阵就是所求 \(A_q\)，其路径计数即给出 \(S_q(m)\)。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+把 \(\Fold_\infty\) 视为一个确定性有限转导器：输入为窗口字母（或其由两条合法输入轨道诱导的输入字母），输出为稳定地址比特；其内部状态空间有限且具有常数延迟（命题 \ref{prop:pom-delay-min} 的在线核即是一个具体实现）。
+固定 \(q\) 后，约束“\(q\) 份输出逐位相同”是一个局部同步约束：它只需在每一步比较当前输出符号是否一致，因而仍是有限状态可识别的。
+因此可对该转导器做同步直积并施加“输出一致”的筛选，得到一个有限有向图 \(G^{(q)}\)。
+长度 \(m\) 的合法路径条数等于 \(R_m^{(q)}\) 的计数（即 \(S_q(m)\)），从而可写成某个非负整数邻接矩阵的矩阵幂读出形式 \(u_q^{\mathsf T}A_q^{m-m_0}v_q\)。
+线性递推由 Cayley--Hamilton 定理立得，且递推系数为整数（因为 \(A_q\) 为整数矩阵）。证毕。
+\end{proof}
+
+\paragraph{从 \texorpdfstring{$r_q$}{r\_q} 到压力与“纤维多重度谱”：凸共轭上界（严格）}
+已核验的 \(q\)-阶碰撞核满足 \(S_q(m)=\Theta(r_q^m)\)，其中 \(r_q=\rho(A_q)\) 为 Perron 根（推论 \ref{cor:pom-s2-asymptotic}、\ref{cor:pom-s3-asymptotic}、\ref{cor:pom-s4-asymptotic} 及表 \ref{tab:fold_collision_moment_recursions}）。
+因此 moment 指纹不仅给出单点常数 \(h_q=\log(2^q/r_q)\)，还诱导出一条可做 Legendre 变换的“压力曲线”，从而把“空间损失”提升为真正的谱结构。
+
+\begin{definition}[moment 压力与归一化对数矩母函数]\label{def:pom-moment-pressure}
+对 \(q\ge 2\) 定义
+$$
+\tau(q):=\limsup_{m\to\infty}\frac{1}{m}\log S_q(m),
+$$
+并定义归一化压力（即输出分布 \(\pi_m(x)=d_m(x)/2^m\) 的 \(q\)-阶对数矩母函数）
+$$
+P(q):=\limsup_{m\to\infty}\frac{1}{m}\log\sum_{x\in X_m}\pi_m(x)^q
+=\tau(q)-q\log 2.
+$$
+当存在 Perron 根 \(r_q\) 使 \(S_q(m)=\Theta(r_q^m)\) 时，有 \(\tau(q)=\log r_q\)，并且 \(P(q)=\log(r_q/2^q)=-h_q\)。
+\end{definition}
+
+\begin{definition}[纤维多重度的对数谱函数]\label{def:pom-fiber-spectrum}
+令
+$$
+\gamma_m(x):=\frac{1}{m}\log d_m(x)\qquad(x\in X_m).
+$$
+对 \(\gamma\ge 0\) 与 \(\varepsilon>0\)，定义“近似层”计数
+$$
+N_m(\gamma,\varepsilon):=\Bigl|\bigl\{x\in X_m:\ |\gamma_m(x)-\gamma|\le \varepsilon\bigr\}\Bigr|.
+$$
+定义纤维多重度的（上）谱函数
+$$
+f(\gamma):=\lim_{\varepsilon\downarrow 0}\ \limsup_{m\to\infty}\ \frac{1}{m}\log N_m(\gamma,\varepsilon).
+$$
+\end{definition}
+
+\begin{proposition}[Legendre 上界：谱由 moment 压力控制]\label{prop:pom-spectrum-legendre-upper}
+对任意 \(q\ge 2\) 与任意 \(\gamma\ge 0\)，有上界
+$$
+f(\gamma)\ \le\ \inf_{q\ge 2}\bigl(\tau(q)-q\gamma\bigr).
+$$
+特别地，在 \(\tau(q)=\log r_q\) 的情形下，
+$$
+f(\gamma)\ \le\ \inf_{q\ge 2}\bigl(\log r_q-q\gamma\bigr).
+$$
+\end{proposition}
+
+\begin{proof}
+固定 \(q\ge 2\) 与 \(\gamma,\varepsilon\)。对任意满足 \(|\gamma_m(x)-\gamma|\le\varepsilon\) 的 \(x\)，有
+$$
+d_m(x)^q=\exp(qm\gamma_m(x))\ \ge\ \exp\bigl(qm(\gamma-\varepsilon)\bigr).
+$$
+因此
+$$
+S_q(m)=\sum_{x\in X_m} d_m(x)^q
+\ \ge\ N_m(\gamma,\varepsilon)\,\exp\bigl(qm(\gamma-\varepsilon)\bigr),
+$$
+即
+$$
+\frac{1}{m}\log N_m(\gamma,\varepsilon)\ \le\ \frac{1}{m}\log S_q(m)\ -\ q(\gamma-\varepsilon).
+$$
+取 \(m\to\infty\) 的 \(\limsup\) 并再令 \(\varepsilon\downarrow 0\)，得
+$$
+f(\gamma)\le \tau(q)-q\gamma.
+$$
+对所有 \(q\ge 2\) 取下确界即得结论。证毕。
+\end{proof}
+
+\begin{remark}[多重分形形式（作为可检验目标）]\label{rem:pom-spectrum-formalism}
+命题 \ref{prop:pom-spectrum-legendre-upper} 给出严格的上界：moment 压力曲线 \(\tau(q)\) 的凸共轭控制了纤维多重度的（上）谱。
+在标准热力学形式条件下（例如存在与 \(\tau\) 对偶的 Gibbs 结构并具有足够的准乘性），往往可得到相反方向的不等式从而实现等号，即“谱 \(f\) 与压力 \(\tau\) 互为 Legendre 变换”。
+在本文框架中，这一等号可被视为一条可证伪的结构目标：它把“空间损失是一条谱”转化为“\(\{r_q\}\) 族决定谱形”的可计算命题。
+\end{remark}
 
 \subsubsection{在线延迟的不可约下界}\label{subsec:pom-delay-lb}
 \begin{proposition}[单趟在线延迟 $3$ 的最小性]\label{prop:pom-delay-min}

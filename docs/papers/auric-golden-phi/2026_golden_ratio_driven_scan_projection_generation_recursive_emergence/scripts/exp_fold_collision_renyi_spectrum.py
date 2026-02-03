@@ -7,9 +7,10 @@ We enumerate Fold_m fibers for moderate m and compute:
   pi_m(x) = d_m(x)/2^m
   H_q(m) = -log sum_x pi_m(x)^q = -log( S_q(m) / 2^(q m) )
 
-For q=2 and q=3, the paper gives exact 3-state kernels (A2 and A3), hence exact Perron roots:
+For q=2,3,4, the paper gives exact finite-state collision kernels (A2, A3, A4), hence exact Perron roots:
   r2: x^3 - 2x^2 - 2x + 2 = 0
   r3: x^3 - 2x^2 - 4x + 2 = 0
+  r4: x^5 - 2x^4 - 7x^3 - 2x + 2 = 0
 and entropy rates:
   h_q = log(2^q / r_q).
 
@@ -88,6 +89,20 @@ def perron_root_r3() -> float:
     return x
 
 
+def perron_root_r4() -> float:
+    # Largest real root of x^5 - 2x^4 - 7x^3 - 2x + 2 = 0 via Newton.
+    def f(x: float) -> float:
+        return x**5 - 2.0 * x**4 - 7.0 * x**3 - 2.0 * x + 2.0
+
+    def df(x: float) -> float:
+        return 5.0 * x**4 - 8.0 * x**3 - 21.0 * x**2 - 2.0
+
+    x = 3.85
+    for _ in range(80):
+        x = x - f(x) / df(x)
+    return x
+
+
 def aitken_limit(x0: float, x1: float, x2: float) -> float | None:
     """Aitken Δ^2 acceleration for a scalar sequence."""
     d1 = x1 - x0
@@ -106,8 +121,8 @@ def write_table_tex(path: Path, rows: List[Dict[str, object]]) -> None:
     lines.append("\\setlength{\\tabcolsep}{6pt}")
     lines.append(
         "\\caption{A small R\\'enyi projection-entropy fingerprint for the Fold$_m$ output distribution "
-        "$\\pi_m(x)=d_m(x)/2^m$. For $q=2,3$, $r_q$ is exact (from the 3-state collision kernels); "
-        "for $q\\ge4$, $r_q$ is estimated from enumeration by ratio/Aitken acceleration.}"
+        "$\\pi_m(x)=d_m(x)/2^m$. For $q=2,3,4$, $r_q$ is exact (from the finite-state collision kernels); "
+        "for $q\\ge5$, $r_q$ is estimated from enumeration by ratio/Aitken acceleration.}"
     )
     lines.append("\\label{tab:fold_collision_renyi_spectrum}")
     lines.append("\\begin{tabular}{r r r l}")
@@ -164,6 +179,7 @@ def main() -> None:
 
     r2 = perron_root_r2()
     r3 = perron_root_r3()
+    r4 = perron_root_r4()
 
     rows: List[Dict[str, object]] = []
     for q in qs:
@@ -173,6 +189,9 @@ def main() -> None:
         elif q == 3:
             rq = r3
             note = "exact (A3)"
+        elif q == 4:
+            rq = r4
+            note = "exact (A4)"
         else:
             # estimate from last three ratios S(m)/S(m-1)
             ms = sorted(S[q].keys())
@@ -196,6 +215,7 @@ def main() -> None:
         "S_q": {str(q): {str(m): int(S[q][m]) for m in sorted(S[q].keys())} for q in qs},
         "r2_exact": r2,
         "r3_exact": r3,
+        "r4_exact": r4,
         "rows": rows,
     }
     jout = Path(args.json_out)

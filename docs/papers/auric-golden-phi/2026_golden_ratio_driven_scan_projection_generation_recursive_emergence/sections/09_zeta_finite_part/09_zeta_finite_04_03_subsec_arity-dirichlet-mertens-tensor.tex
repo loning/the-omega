@@ -368,6 +368,37 @@ C_r
 并对 \(z=z_\star^k=\lambda^{-k}\) 求和即可。证毕。
 \end{proof}
 
+\begin{theorem}[Dirichlet--Mertens 常数张量对标签细化的投影函子性]\label{thm:dirichlet-mertens-functoriality}
+令 \(G\) 为有限阿贝尔标签群，\(\pi:G\to H\) 为满射（例如坐标投影到某个因子群/商群）。设
+\(\{C^G_g\}_{g\in G}\) 为 \(G\)-分层的 Dirichlet--Mertens 常数张量（Abel/Hadamard 有限部口径，且满足 \(\sum_{g\in G}C^G_g=\mathsf{M}\)），并同样定义 \(H\)-分层常数 \(\{C^H_h\}_{h\in H}\)。
+则常数张量在投影下满足纤维求和律
+\[
+C^H_h=\sum_{g:\ \pi(g)=h}C^G_g.
+\]
+特别地，对三维常数张量 \(C_{a,b,c}\) 作任意边际求和（例如 \(\sum_c C_{a,b,c}\) 或 \(\sum_{b,c}C_{a,b,c}\)），得到的边际常数等于“仅保留相应坐标标签”的二维/一维分层常数；因此标签细化不会改变任何已存在坐标的边际常数，只会在更高维度上引入“纯相互作用残差”。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:arity-dirichlet-explicit-constant}，常数张量可由扭曲常数在有限群上的角色傅里叶反演给出；具体地，
+\(
+C^G_g=\frac{\mathsf{M}}{|G|}+\frac{1}{|G|}\sum_{\chi\neq 1}\overline{\chi(g)}\,\mathcal{C}(\chi)
+\)。
+对给定 \(h\in H\) 求纤维和并交换求和次序，得到
+\[
+\sum_{\pi(g)=h}C^G_g
+=\frac{\mathsf{M}}{|H|}
+\frac{1}{|G|}\sum_{\chi\neq 1}\left(\sum_{\pi(g)=h}\overline{\chi(g)}\right)\mathcal{C}(\chi).
+\]
+注意：当 \(\chi\) 可写为 \(H\) 的角色 \(\psi\) 的拉回 \(\chi=\psi\circ\pi\) 时，内层纤维和等于 \(|\ker\pi|\overline{\psi(h)}\)；而当 \(\chi\) 不来自拉回时，因有限阿贝尔群角色在纤维上的正交性，内层和为 \(0\)。因此上式恰化为 \(H\)-分层的反演式，从而 \(\sum_{\pi(g)=h}C^G_g=C^H_h\)。证毕。
+\end{proof}
+
+\begin{remark}[可复现核验：\(((3,3,5))\) 的边际一致性]\label{rem:dirichlet-mertens-functoriality-check}
+脚本 \texttt{scripts/exp\_real\_input\_40\_dirichlet\_mertens\_functoriality.py} 读取一维 \(\chi\bmod 3\) 常数、二维 \((\chi,\nu)\bmod(3,3)\) 常数与三维 \((\chi,\nu,N_2)\bmod(3,3,5)\) 常数，并核验
+\(\sum_c C_{a,b,c}=C_{a,b}\)、\(\sum_{b,c}C_{a,b,c}=C_a\) 以及 \(\sum_{a,b,c}C_{a,b,c}=\mathsf{M}\)。
+其最大绝对误差见表 \ref{tab:real_input_40_dirichlet_mertens_functoriality}（量级为浮点舍入误差）。
+\end{remark}
+
+\input{sections/generated/tab_real_input_40_dirichlet_mertens_functoriality}
+
 \begin{corollary}[碰撞同余类的常数级偏置（\texorpdfstring{$S_c$}{Sc} 分解）]\label{cor:arity-335-collision-residue-drift}
 令
 \[
@@ -544,6 +575,42 @@ P(t):=\log\rho(M(1,1,e^t))
 给出：\(\sigma_\xi^2=P''(0)\)（与命题 \ref{prop:kernel-clt-ldp} 的有限状态 Markov 压力导数口径一致）。
 \end{proposition}
 
+\begin{proposition}[最坏角色方向的协方差判据：\texorpdfstring{$t^\top\Sigma t$}{t^T Sigma t} 最小化]\label{prop:arity-335-worst-direction-cov}
+把三轴 Dirichlet 分层的三条一步可加量记为向量 cocycle
+\(
+\Xi:=(\chi,\nu,\xi)\in\RR^3
+\)
+（本节 \(((3,3,5))\) 取 \(\xi=\mathbf{1}_{\{d=2\}}\)）。
+对实参倾斜 \(\theta\in\RR^3\) 定义正权矩阵 \(M(e^{\theta_1},e^{\theta_2},e^{\theta_3})\) 并令
+\(
+P(\theta):=\log\rho(M(e^{\theta_1},e^{\theta_2},e^{\theta_3}))
+\)。
+则 Hessian
+\[
+\Sigma:=\nabla^2 P(0)
+\]
+是 \(\Xi\) 在平衡态下的渐近协方差矩阵；并且对单位圆小角扭曲 \(t\in\RR^3\) 有标准二次型展开
+\[
+\log\frac{\rho(M(e^{\mathrm{i}t_1},e^{\mathrm{i}t_2},e^{\mathrm{i}t_3}))}{\lambda}
+=
+-\frac12\,t^\top\Sigma\,t
++O(|t|^3),
+\qquad t\to 0,
+\]
+其中 \(\lambda=\rho(M(1,1,1))\)。
+因此对有限模数 \(((m_1,m_2,m_3))\) 的角色集合（离散角 \(t(j)=(2\pi j_1/m_1,2\pi j_2/m_2,2\pi j_3/m_3)\)），使扭曲谱半径最大的“最坏角色方向”在小角 regime 下趋向于最小化 \(t(j)^\top\Sigma t(j)\) 的方向。
+\end{proposition}
+
+\begin{remark}[可复现核验：\(((3,3,5))\) 的最坏角色由协方差预测]\label{rem:arity-335-worst-direction-cov-check}
+脚本 \texttt{scripts/exp\_real\_input\_40\_covariance\_predict\_worst\_character.py} 用有限差分计算 \(\Sigma=\nabla^2P(0)\)，并在 \(((3,3,5))\) 的离散角色集合上比较
+\(
+j\mapsto t(j)^\top\Sigma t(j)
+\)
+的最小点与实际扫描的最坏角色索引。输出见表 \ref{tab:real_input_40_covariance_worst_character}：预测的最坏索引为 \((0,0,1)\)，与实际最坏索引 \((0,0,\pm1)\) 一致。
+\end{remark}
+
+\input{sections/generated/tab_real_input_40_covariance_worst_character}
+
 \begin{remark}[选择律判别量 \texorpdfstring{$g(p)$}{g(p)}：把“模数是否特殊”变成可证伪结论]\label{rem:arity-335-selection-law-gp}
 定义无量纲判别量
 $$
@@ -559,6 +626,85 @@ $$
 从表中可见：在该扫描范围内 \(g(p)\) 呈现缓慢漂移并向常数量级收敛；等价地，二次律常数 \(\kappa_p:=\bigl(1-\rho_{3,3,p}/\lambda\bigr)/\bigl((2\pi/p)^2\bigr)\) 随 \(p\) 增大单调逼近其极限 \(\kappa_\infty=\sigma_\xi^2/2\)（命题 \ref{prop:arity-335-kappa-variance}）。
 同时最坏角色始终为 \((0,0,1)\) 与 \((0,0,-1)\)（模 \(p\) 意义下），即慢模稳定地由纯碰撞扭曲产生，与“near-coboundary 小角微扰”机制一致。
 \end{remark}
+
+\begin{theorem}[大模数极限律：最坏扭曲亏损的缩放极限]\label{thm:arity-335-limit-law}
+对每个奇素数 \(p\)，定义最坏扭曲亏损的缩放量
+$$
+D(p)
+:=
+\left(1-\frac{\rho_{3,3,p}}{\lambda}\right)\left(\frac{p}{2\pi}\right)^2
+=\kappa_p.
+$$
+则在命题 \ref{prop:arity-335-kappa-variance} 的假设与记号下，
+$$
+\lim_{p\to\infty}D(p)=\kappa_\infty=\frac{\sigma_\xi^2}{2},
+$$
+并且 \(D(p)=\kappa_\infty+O(p^{-1})\)。
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:arity-335-kappa-variance} 的渐近式
+\(
+1-\rho_{3,3,p}/\lambda
+=
+\frac{\sigma_\xi^2}{2}\left(\frac{2\pi}{p}\right)^2+O(p^{-3})
+\)
+两边同乘 \((p/2\pi)^2\) 即得 \(D(p)=\sigma_\xi^2/2+O(p^{-1})\)，从而极限存在并等于 \(\kappa_\infty=\sigma_\xi^2/2\)。证毕。
+\end{proof}
+
+\begin{remark}[可复现对照：\texorpdfstring{$D(p)$}{D(p)} 的收敛与 near-coboundary 上界]\label{rem:arity-335-limit-law-table}
+脚本 \texttt{scripts/exp\_arity\_335\_n2\_limit\_law\_table.py} 读取谱扫描输出（表 \ref{tab:real_input_40_arity_335_n2_selection_law_primes}）并生成 \(D(p)\) 表，同时以方差极限 \(\kappa_\infty=\sigma_\xi^2/2\) 与证书上界 \(\varepsilon/2,\varepsilon_\pi^{(2)}/2\) 作对照。输出见表 \ref{tab:real_input_40_arity_335_n2_limit_law}。
+\end{remark}
+
+\input{sections/generated/tab_real_input_40_arity_335_n2_limit_law}
+
+\begin{corollary}[near-coboundary \texorpdfstring{$\Rightarrow$}{->} 小偏差：带 \texorpdfstring{$4\sin^2(\pi/p)$}{4 sin^2} 的缩放上界]\label{cor:arity-335-eps-trig-bound}
+在注 \ref{rem:arity-335-eps-bound} 的分解 \(\xi=\delta h+r\) 下，有 \(\sigma_\xi^2=\sigma_r^2\le \varepsilon_\pi^{(2)}\)。
+因此对最小非平凡角 \(\theta=2\pi/p\)（即 \(\omega_p=e^{2\pi i/p}\)）有
+$$
+1-\frac{\rho_{3,3,p}}{\lambda}
+=
+\frac{\sigma_\xi^2}{2}\left(\frac{2\pi}{p}\right)^2+O(p^{-3})
+\ \le\
+\frac{\varepsilon_\pi^{(2)}}{2}\left(\frac{2\pi}{p}\right)^2+O(p^{-3}).
+$$
+等价地，用 \(|1-\omega_p|^2=4\sin^2(\pi/p)\) 写成
+$$
+1-\frac{\rho_{3,3,p}}{\lambda}
+\le
+\frac{\varepsilon_\pi^{(2)}}{2}\,|1-\omega_p|^2\ +\ O(p^{-3}),
+$$
+从而在 \(p\to\infty\) 的缩放意义下得到 \(\kappa_\infty\le \varepsilon_\pi^{(2)}/2\)。
+\end{corollary}
+
+\begin{proposition}[小角主曲线与普适塌缩：二次主项 \texorpdfstring{$+$}{+} 四次修正]\label{prop:arity-335-master-curve}
+令 \(\rho(\theta):=\rho(M(1,1,e^{\mathrm{i}\theta}))\) 为纯碰撞扭曲的谱半径函数，并记
+\(
+F(\theta):=1-\rho(\theta)/\lambda
+\)。
+则在 \(\theta\to 0\) 时有
+$$
+\log\frac{\rho(\theta)}{\lambda}
+=
+-\frac{\sigma_\xi^2}{2}\theta^2
+\;+\;
+\frac{P^{(4)}(0)}{24}\theta^4
+\;+\;
+O(\theta^6),
+$$
+其中 \(P(t):=\log\rho(M(1,1,e^{t}))\) 为实参倾斜压力。
+因此存在 \(\theta_0>0\) 使得对 \(0<\theta\le \theta_0\) 有普适塌缩
+$$
+\frac{F(\theta)}{\kappa_\infty\,\theta^2}=1+O(\theta^2),
+\qquad
+\kappa_\infty=\sigma_\xi^2/2.
+$$
+\end{proposition}
+
+\begin{remark}[可复现核验：离散角色点 \texorpdfstring{$\theta=2\pi/p$}{theta=2pi/p} 的主曲线对照]\label{rem:arity-335-master-curve-check}
+脚本 \texttt{scripts/exp\_arity\_335\_n2\_master\_curve.py} 用实参差分估计 \(P''(0),P^{(4)}(0)\)，并在离散角色角 \(\theta=2\pi/p\) 上对照 \(\rho(\theta)/\lambda\) 与四阶修正预测。输出见表 \ref{tab:real_input_40_arity_335_n2_master_curve}。
+\end{remark}
+
+\input{sections/generated/tab_real_input_40_arity_335_n2_master_curve}
 
 \begin{remark}[谐波能量指纹 \texorpdfstring{$\mathcal{E}_1$}{E1}：把“低秩可压缩”变成可解释的结构量]\label{rem:arity-335-harmonic-energy}
 对固定的 \((a,b)\)，函数 \(c\mapsto C^{(3,3,5)}_{a,b,c}\) 在 \(\ZZ/5\) 上具有有限傅里叶展开；
