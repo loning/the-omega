@@ -42,6 +42,47 @@ $$
 \lambda=\rho(M)=\varphi^2\approx 2.61803398875.
 $$
 
+\paragraph{多可观测量热力系统：向量势、rotation polytope 与可计算相图}
+上述三条观测量不仅能做 Dirichlet 分层，也能被统一视为一个\textbf{向量值局部常势}。把 40 状态核的核心图（essential SCC；见命题 \ref{prop:real-input-40-essential-20}）记为 $\Gamma$，并对每条有向边 $e:i\to j$ 赋一个向量值观测量
+$$
+\Phi(e):=(\chi(e),\nu(e),\xi(e))\in\ZZ^3.
+$$
+对任意参数向量 $\mathbf{u}=(u_\chi,u_-,u_2)\in(\CC^\times)^3$，可定义多参权重
+$$
+w_{\mathbf{u}}(e):=\mathbf{u}^{\Phi(e)}:=u_\chi^{\chi(e)}u_-^{\nu(e)}u_2^{\xi(e)},
+$$
+并得到多参带权邻接矩阵族
+$$
+M(\mathbf{u})_{ij}:=\sum_{e:i\to j} w_{\mathbf{u}}(e),
+$$
+其 $\zeta$--行列式与 primitive Euler 乘积仍按 SFT 口径成立（\cite{BrinStuck2002,ParryPollicott1990Zeta}）。本文前述的三维扭曲矩阵 $M_{j_1,j_2,j_3}$ 正是取 $\mathbf{u}$ 为有限群角色（单位圆上的根）时的特例。
+
+更进一步，对边移位系统（SFT）与向量势 $\Phi$，定义 rotation set（旋转集合）
+$$
+\mathrm{Rot}(\Phi)
+:=
+\left\{\int \Phi\,d\mu:\ \mu\ \text{是}\ \Gamma\ \text{上的}\ \sigma\text{-不变概率测度}\right\}\subset\RR^3.
+$$
+当 $\Gamma$ 为传递 SFT 且 $\Phi$ 仅依赖长度 $2$ 的 cylinder（即仅依赖边标签）时，$\mathrm{Rot}(\Phi)$ 为\textbf{凸多面体}，周期点（周期轨道）的 rotation vectors 在其中稠密，且每个内点由遍历测度实现（\cite{Ziemian1995RotationSFT}）。因此，“隐含属性/操作类型配比”的长期平均并不是直觉对象，而是一个\textbf{有限维凸多面体坐标}。
+
+rotation polytope 的支撑函数可通过\textbf{最小平均回路权}精确计算：对任意方向 $\theta\in\RR^3$，设标量化势
+$$
+\phi_\theta(e):=\langle\theta,\Phi(e)\rangle,
+$$
+则有（见 \cite{Karp1978MinCycleMean} 的最小平均回路刻画）
+$$
+h_{\min}(\theta):=\min_{v\in\mathrm{Rot}(\Phi)}\langle\theta,v\rangle
+=\min_{\gamma}\frac{1}{|\gamma|}\sum_{e\in\gamma}\phi_\theta(e),
+$$
+右端对所有周期轨道（回路） $\gamma$ 取最小。由此可把“纯相”定义为被某个方向 $\theta$ 暴露的面；$\theta$-空间中使同一面被选中的区域构成 rotation polytope 的 normal fan，从而得到一个\textbf{有限个相的核相图}。这一视角与局部常势的零温极限（$\beta\to+\infty$）一致：零温选择集中在有限并的周期/子移位分量上（参见 \cite{ChazottesGambaudoUgalde2011ZeroTempLocConst} 的一般理论）。
+
+作为可审计示例，我们在 essential 20 状态核心上取 $\Phi=(\chi,\nu,\xi)$，对若干方向 $\theta$ 做标量化并在图上求最小平均回路权与见证周期轨道，输出其周期均值（rotation vector）：
+\input{sections/generated/tab_real_input_40_rotation_polytope_sample}
+
+\begin{remark}[无回溯素数影子与覆盖的 \texorpdfstring{$L$}{L}-函数分解]\label{rem:rotation-polytope-bartholdi}
+上文的 primitive Euler 乘积基于“周期点/闭路”口径；但在“原子更新近可逆”的核语境里，更自然的素数影子常需\textbf{排除回溯}（做了又撤销）。这对应 Ihara--Bass--Hashimoto/Bartholdi 的无回溯素回路框架：对（有向/带权）图可定义加权 Bartholdi $\zeta$ 与相应的加权 $L$-函数，并给出行列式表达；在图覆盖（有限群标记）下还存在 Artin 型分解：覆盖的 $\zeta$ 可分解为各不可约表示的扭曲 $L$-函数乘积（见 \cite{ChoeKwakParkSato2007Bartholdi,Sato2008WeightedBartholdiCoverings}）。与本节的 Dirichlet 扭曲谱半径比 $\rho/\lambda$ 类似，覆盖/扭曲的谱半径比提供了“同余类偏差”的可计算指数尺度；在 Axiom A/超曲性动力系统中，这一类比进一步对应到 Chebotarev 型分布定理（参见 \cite{PollicottSharp2007Chebotarev}）。
+\end{remark}
+
 \paragraph{\texorpdfstring{$((2,2,2))$}{(2,2,2)}：arity--Mertens 常数张量}
 记 residue 向量
 $$

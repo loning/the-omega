@@ -180,6 +180,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_rotation_polytope",
+            script="exp_real_input_40_rotation_polytope.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_rotation_polytope_sample.json",
+                "sections/generated/tab_real_input_40_rotation_polytope_sample.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_arity",
             script="exp_sync_kernel_real_input_40_arity.py",
             args=[],

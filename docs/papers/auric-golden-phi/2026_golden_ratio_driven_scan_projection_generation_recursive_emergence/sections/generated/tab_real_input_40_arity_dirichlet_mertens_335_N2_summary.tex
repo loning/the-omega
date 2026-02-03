@@ -24,6 +24,11 @@ $$
 $$
 \bigl(\mathrm{sd}(c=0),\dots,\mathrm{sd}(c=4)\bigr)\approx\bigl(0.347585,0.0591959,0.00515942,0.000787443,0.000137309\bigr).
 $$
+\paragraph{（iii$''$）$c$-方向变分能量的局域共振（胞元/行/列贡献）}
+对每个胞元 $(a,b)$ 定义 $c$-方向方差能量 $\mathrm{var}_{a,b}:=\frac15\sum_{c=0}^4\bigl(C_{a,b,c}-\frac15\sum_{c'}C_{a,b,c'}\bigr)^2$，并令总能量 $\mathrm{Var}:=\sum_{a,b}\mathrm{var}_{a,b}$。数值上
+$$
+\frac{\sum_a\mathrm{var}_{a,0}}{\mathrm{Var}}\approx 0.919733,\qquad \frac{\sum_b\mathrm{var}_{1,b}}{\mathrm{Var}}\approx 0.643094,\qquad \frac{\mathrm{var}_{1,0}}{\mathrm{Var}}\approx 0.603364.
+$$
 \paragraph{（iii$'$）近因子化诊断：切片到 rank-0 的偏离}
 定义切片均值 $\overline C_c:=\frac19\sum_{a,b}C_{a,b,c}$，并以 Frobenius 范数度量偏离
 $$
@@ -37,6 +42,15 @@ $$
 并且
 $$
 (\max\mathrm{dev}(0),\dots,\max\mathrm{dev}(4))\approx(0.771562,0.137402,0.00931971,0.00145428,0.000230619).
+$$
+\paragraph{（iii$'''$）三相正常形：每张切片的均值漂移与最大偏差}
+记 $\overline C_c:=\frac19\sum_{a,b}C_{a,b,c}$，以及 $\Delta_c:=\max_{a,b}|C_{a,b,c}-\overline C_c|$。数值上
+$$
+(\overline C_0,\overline C_1,\overline C_2,\overline C_3,\overline C_4)\approx(+0.187259,+0.014465,-0.035674,-0.058700,-0.071472).
+$$
+并且
+$$
+(\Delta_0,\Delta_1,\Delta_2,\Delta_3,\Delta_4)\approx(0.771562,0.137402,0.00931971,0.00145428,0.000230619).
 $$
 \paragraph{（v）$S_c$ 的 $\ZZ/5$-傅里叶结构（聚合漂移）}
 令 $\widehat S(j):=\frac15\sum_{c=0}^{4}S_c\,\omega_5^{-jc}$。则
@@ -61,15 +75,45 @@ $$
 -0.01940426 & -0.04655149 & -0.03956088
 \end{pmatrix}
 $$
+并且两条谐波复矩阵为
+$$
+A^{(1)}=
+\begin{pmatrix}
+\phantom{-}0.11744422-0.00492060\,\mathrm{i} & \phantom{-}0.20080711-0.01433316\,\mathrm{i} & \phantom{-}0.07610702-0.00571750\,\mathrm{i}\\
+-0.00670886-0.01707577\,\mathrm{i} & \phantom{-}0.05197050-0.02558681\,\mathrm{i} & -0.00329612-0.02232189\,\mathrm{i}\\
+\phantom{-}0.00470310-0.04494432\,\mathrm{i} & -0.00390911-0.01870445\,\mathrm{i} & \phantom{-}0.00567004-0.01787410\,\mathrm{i}
+\end{pmatrix}
+$$
+$$
+A^{(2)}=
+\begin{pmatrix}
+\phantom{-}0.12444334+0.00180167\,\mathrm{i} & \phantom{-}0.20013944-0.00136083\,\mathrm{i} & \phantom{-}0.08434856+0.00291771\,\mathrm{i}\\
+-0.00944871-0.00199061\,\mathrm{i} & \phantom{-}0.03586988-0.00946883\,\mathrm{i} & -0.01515591-0.00699053\,\mathrm{i}\\
+-0.03505137-0.02225434\,\mathrm{i} & -0.01287867-0.00659957\,\mathrm{i} & -0.00467959-0.00755933\,\mathrm{i}
+\end{pmatrix}
+$$
 并且（以条目绝对值的最大值度量）
 $$
 \max_{a,b}|A^{(1)}_{a,b}|\approx 0.201317996544,\qquad\max_{a,b}|A^{(2)}_{a,b}|\approx 0.200144063931,\qquad\frac{\max|A^{(2)}|}{\max|A^{(1)}|}\approx 0.994168764674.
 $$
 其中 $A^{(1)}$ 与 $A^{(2)}$ 的具体条目可由同一脚本在 JSON 输出中复核。
-\paragraph{（vi）整体低秩可压缩：把张量视为 $5\times 9$ 矩阵的奇异值能量}
-把张量 $C^{(3,3,5)}_{a,b,c}$ 视为 $c\in\{0,1,2,3,4\}$ 对应的 $5$ 行、以及扁平化索引 $(a,b)\in(\ZZ/3)^2$ 对应的 $9$ 列的实矩阵 $T\in\RR^{5\times 9}$。令其奇异值为 $s_1\ge\cdots\ge s_5$。则（Frobenius 能量）累计占比为
+\paragraph{（vi）整体低秩可压缩：$c$-中心化后的 rank-2 诊断（SVD）}
+把张量 $C^{(3,3,5)}_{a,b,c}$ 展平成 $T\in\RR^{5\times 9}$（行索引 $c$，列索引为扁平化的 $(a,b)$），并做 $c$-方向中心化：对每一列减去其在 $c$ 上的均值。令中心化后的奇异值为 $s_1\ge\cdots\ge s_5$，则（Frobenius 能量）累计占比为
 $$
-\frac{s_1^2}{\sum s_i^2}\approx 0.935619,\qquad \frac{s_1^2+s_2^2}{\sum s_i^2}\approx 0.986715,\qquad \frac{s_1^2+s_2^2+s_3^2}{\sum s_i^2}\approx 0.999866.
+\frac{s_1^2}{\sum s_i^2}\approx 0.954817,\qquad \frac{s_1^2+s_2^2}{\sum s_i^2}\approx 0.998992,\qquad \frac{s_1^2+s_2^2+s_3^2}{\sum s_i^2}\approx 0.999979,\qquad \frac{s_2}{s_1}\approx 0.215095.
+$$
+（对比：未中心化的原始 $T$ 之累计能量占比为）
+$$
+\frac{(s_1^{\mathrm{raw}})^2}{\sum (s_i^{\mathrm{raw}})^2}\approx 0.935619,\qquad \frac{(s_1^{\mathrm{raw}})^2+(s_2^{\mathrm{raw}})^2}{\sum (s_i^{\mathrm{raw}})^2}\approx 0.986715,\qquad \frac{(s_1^{\mathrm{raw}})^2+(s_2^{\mathrm{raw}})^2+(s_3^{\mathrm{raw}})^2}{\sum (s_i^{\mathrm{raw}})^2}\approx 0.999866.
+$$
+\paragraph{（iv$'$）强抵消残差与稳健标量指纹}
+统计全部 $45$ 个条目，记 $M:=\sum_{a,b,c}C_{a,b,c}$，以及正项/负项之和 $\sum_{C>0}C$ 与 $\sum_{C<0}C$。数值上
+$$
+\#\{C>0\}=9,\quad \#\{C<0\}=36,\qquad \sum_{C>0}C\approx 2.303140,\qquad \sum_{C<0}C\approx -1.980237,\qquad M\approx 0.322903003000.
+$$
+并定义抵消指纹
+$$
+\kappa_{\mathrm{cancel}}:=\frac{\sum_{C>0}C}{\sum C}\approx 7.132606.
 $$
 \paragraph{（vii）near-coboundary 小角二次律（可检验预测）}
 用 $p=5$ 的观测缺口 $1-\rho_{3,3,5}/\lambda$ 估计
