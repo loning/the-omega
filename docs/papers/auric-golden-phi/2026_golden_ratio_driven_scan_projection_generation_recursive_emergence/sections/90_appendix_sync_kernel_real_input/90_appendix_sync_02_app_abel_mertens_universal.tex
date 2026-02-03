@@ -1,0 +1,159 @@
+\subsubsection{Abel--Mertens 接口：primitive 谱、主极点与有限部（通用闭式）}\label{app:abel-mertens-universal}
+令 $A$ 为有限有向图（或 SFT）的邻接矩阵，并记
+\[
+a_n:=\Tr(A^n),\qquad
+\zeta_A(z):=\exp\!\left(\sum_{n\ge 1}\frac{a_n}{n}z^n\right)=\frac{1}{\det(I-zA)}.
+\]
+令 $p_n$ 为长度为 $n$ 的 primitive 闭轨道数（按轨道计），并记 primitive 生成函数
+\[
+P(z):=\sum_{n\ge 1}p_n z^n.
+\]
+
+\begin{theorem}[primitive 对数接口与 Abel 有限部常数]\label{thm:abel-mertens-universal}
+有恒等式
+\[
+P(z)=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_A(z^k)
+\qquad(|z|\ \text{充分小}).
+\]
+进一步假设 $\zeta_A(z)$ 在 $z_\star$ 处有唯一主极点且为简单极点，并记
+\[
+\lambda:=\rho(A)=\frac{1}{z_\star},
+\qquad
+C:=\lim_{z\to z_\star}(1-\lambda z)\zeta_A(z).
+\]
+则存在 Abel/Hadamard 有限部常数 $\log\mathfrak{M}$ 使得
+\[
+P(z)=-\log(1-\lambda z)+\log\mathfrak{M}+o(1)\qquad(z\to z_\star),
+\]
+并且常数项满足闭式分解
+\[
+\log\mathfrak{M}
+=\log C+\sum_{k\ge 2}\frac{\mu(k)}{k}\log\zeta_A(z_\star^{\,k}).
+\]
+若写 $\Delta_A(z):=\det(I-zA)$，则当 $z_\star$ 为 $\Delta_A$ 的简单零点时有
+\[
+C=\frac{1}{-z_\star\,\Delta_A'(z_\star)}=-\frac{\lambda}{\Delta_A'(z_\star)}.
+\]
+\end{theorem}
+
+\begin{proof}
+由 $\zeta_A(z)=\prod_{\tau\ \mathrm{primitive}}(1-z^{|\tau|})^{-1}$（闭轨道欧拉乘积）取对数得
+\[
+\log\zeta_A(z)=\sum_{\tau\ \mathrm{primitive}}\sum_{m\ge 1}\frac{z^{m|\tau|}}{m}
+=\sum_{m\ge 1}\frac{P(z^m)}{m}.
+\]
+对上式作 Möbius 反演即得
+\(
+P(z)=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_A(z^k)
+\)。
+
+在 $z\to z_\star$ 时，$\zeta_A(z)=\frac{C}{1-\lambda z}+O(1)$，故
+\[
+\log\zeta_A(z)=-\log(1-\lambda z)+\log C+o(1).
+\]
+将该展开代入 primitive 对数接口，并将 $k=1$ 项单独提出：当 $k\ge 2$ 时 $z^k\to z_\star^k$ 且 $|z_\star^k|<|z_\star|$，
+因此 $\log\zeta_A(z^k)$ 在 $z=z_\star$ 处解析并收敛到 $\log\zeta_A(z_\star^k)$。于是得到
+\[
+P(z)=-\log(1-\lambda z)+\log C+\sum_{k\ge 2}\frac{\mu(k)}{k}\log\zeta_A(z_\star^{\,k})+o(1),
+\]
+从而有限部常数为所示的闭式分解。
+最后，当 $\Delta_A(z)=\det(I-zA)$ 在 $z_\star$ 为简单零点时，
+\(
+\zeta_A(z)=1/\Delta_A(z)
+\)
+线性化即可得
+\(
+C=\lim_{z\to z_\star}(1-\lambda z)/\Delta_A(z)=1/(-z_\star\Delta_A'(z_\star))
+\)。
+\end{proof}
+
+\begin{corollary}[Mertens 常数与 Abel 有限部常数]\label{cor:abel-mertens-constant-universal}
+令
+\[
+\mathcal{M}(N):=\sum_{n\le N}\frac{p_n}{\lambda^n}.
+\]
+则存在常数 $\mathsf{M}$ 使得
+\[
+\mathcal{M}(N)=\log N+\mathsf{M}+o(1),
+\qquad
+\boxed{\ \mathsf{M}=\gamma+\log\mathfrak{M}\ }.
+\]
+\end{corollary}
+
+\begin{proof}
+由主极点谱隙（次大特征值模 $<\lambda$）可得 $p_n=\lambda^n/n+O(\lambda_2^n/n)$，从而
+\(
+b_n:=p_n/\lambda^n-1/n
+\)
+绝对可和。于是
+\[
+\sum_{n\le N}\frac{p_n}{\lambda^n}
+=\sum_{n\le N}\frac{1}{n}+\sum_{n\le N}b_n
+=\log N+\gamma+\sum_{n\ge 1}b_n+o(1).
+\]
+另一方面，
+\[
+P(z)+\log(1-\lambda z)=\sum_{n\ge 1}\left(\frac{p_n}{\lambda^n}-\frac{1}{n}\right)(\lambda z)^n,
+\]
+故在 $z\to z_\star$（即 $\lambda z\to 1$）时，其 Abel 有限部常数正是 $\sum_{n\ge 1}b_n=\log\mathfrak{M}$。
+\end{proof}
+
+\paragraph{可计算配方（只用 $\zeta_A$ 与主留数）}
+给定 $\zeta_A(z)=1/\det(I-zA)$ 的显式表示（或可数值评估的 $\det(I-zA)$），按以下步骤计算 $\log\mathfrak{M}$：
+\begin{itemize}
+  \item 求主极点 $z_\star$（等价于主特征值 $\lambda=1/z_\star$）；
+  \item 计算主留数常数 $C=\lim_{z\to z_\star}(1-\lambda z)\zeta_A(z)$（或用 $C=1/(-z_\star\Delta_A'(z_\star))$）；
+  \item 计算 Möbius 尾项
+  \[
+  S_K:=\sum_{k=2}^{K}\frac{\mu(k)}{k}\log\zeta_A(z_\star^{\,k}),
+  \]
+  并以 $K$ 递增直到 $S_K$ 收敛到目标精度；
+  \item 输出
+  \(
+  \log\mathfrak{M}\approx \log C+S_K
+  \)。
+\end{itemize}
+由于 $|z_\star|<1$ 且 $z_\star^{\,k}$ 指数趋零，$\zeta_A(z_\star^{\,k})\to 1$，故上述级数在数值上快速收敛且易于审计。
+
+该系统的 Perron--Frobenius 主特征值为
+\[
+\lambda=\varphi^2=\left(\frac{1+\sqrt5}{2}\right)^2=\frac{3+\sqrt5}{2}\approx 2.6180339887,
+\qquad
+h=\log\lambda=2\log\varphi,
+\]
+对应于"两条黄金均值链并行输入"的熵标度。对该 $M$，周期点计数与 primitive 轨道数为
+
+\paragraph{证明 A（熵的有限对一因子不变性）}
+从 $\Sigma$ 到 $X\times X$ 的自然投影（读出边标签上的 $(x,y)$）是有限对一因子映射：对固定的 $(x,y)$-轨道，
+同步核内部状态 $s$ 的 lift 仅由初态决定，因此纤维大小至多为 $|Q|=10$。有限对一因子保持拓扑熵，
+从而 $h(\Sigma)=h(X\times X)=2\log\varphi$，并因此 $\rho(M)=e^{h(\Sigma)}=\varphi^2$。
+
+\paragraph{证明 B（谱因子分解）}
+上式亦可直接由特征多项式因式分解读出：由
+\[
+\det(tI-M)=t^{31}(t-1)^2(t+1)^3(t^2-3t+1)(t^2+t-1),
+\]
+其 Perron--Frobenius 主特征值为二次因子 $t^2-3t+1$ 的最大实根，即 $\lambda=(3+\sqrt5)/2=\varphi^2$。
+\[
+a_n=\varphi^{2n}+(-\varphi)^n+2+3(-1)^n+\varphi^{-2n}+\varphi^{-n},
+\]
+并可用 Lucas 数写成更紧凑的闭式。令 Lucas 数列 $L_n$ 为
+\[
+L_n:=\varphi^n+(-\varphi^{-1})^n,
+\]
+则有恒等式
+\[
+a_n=L_{2n}+(-1)^nL_n+2+3(-1)^n.
+\]
+\[
+(a_1,\dots,a_{10})=(1,15,13,59,111,345,813,2259,5701,15255),
+\]
+\[
+(p_1,\dots,p_{10})=(1,7,4,11,22,53,116,275,632,1513),
+\]
+并满足
+\[
+p_n=\frac{\lambda^n}{n}+O\!\left(\frac{\varphi^n}{n}\right)
+=\frac{\varphi^{2n}}{n}+O\!\left(\frac{\varphi^n}{n}\right),
+\]
+其中次大特征值模为 $\varphi$。

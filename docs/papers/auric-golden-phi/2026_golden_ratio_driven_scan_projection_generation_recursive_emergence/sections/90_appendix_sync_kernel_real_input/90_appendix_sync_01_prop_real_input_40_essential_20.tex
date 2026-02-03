@@ -1,0 +1,191 @@
+\subsubsection{真实算术输入约束下的同步核（40 状态）}
+令 $X\subset\{0,1\}^{\ZZ}$ 为 Zeckendorf（黄金均值）移位：禁止相邻子词 $11$。它是 $1$-step SFT，邻接矩阵
+\[
+A=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix},\qquad \rho(A)=\varphi,
+\]
+因此 $h(X\times X)=2\log\varphi$（参见第 \ref{subsec:zeta-online-kernel} 节的"语法 SFT"接口）。
+在线延迟核的输入字母表虽为 $\{0,1,2\}$，但真实算术输入来自两条合法 Zeckendorf 轨道
+$x,y\in X$ 的逐位和 $d_k=x_k+y_k$，其中 $x_kx_{k+1}=0,\ y_ky_{k+1}=0$。
+因此把同步核状态 $s\in Q$ 与输入记忆 $(p_x,p_y)\in\{0,1\}^2$ 合并，得到
+\[
+\Sigma:=Q\times\{0,1\}^2,\qquad |\Sigma|=40.
+\]
+从 $(s,p_x,p_y)$ 出发，允许选择 $(x,y)\in\{0,1\}^2$ 且满足 $p_xx=0,\ p_yy=0$，
+令 $d=x+y$，并由同步核确定性转移更新 $s$，下一个记忆为 $(x,y)$。
+由此得到 40 状态 SFT，其邻接矩阵记为 $M$。
+
+\begin{proposition}[40 状态核的本质核心：唯一 essential SCC]\label{prop:real-input-40-essential-20}
+把 $M$ 视为有向图（顶点为 $\Sigma$，边由允许转移给出）。则该图的强连通分解满足：
+\begin{itemize}
+  \item 存在且仅存在一个 essential 强连通分量（包含双边序列/周期轨道的分量）；
+  \item 该 essential 分量恰含 $20$ 个顶点；其余 $20$ 个顶点均为瞬态（不在任何有向环上），因此不贡献任何周期点计数对象（如 $a_n=\Tr(M^n)$、$\zeta_M$、$\det(I-zM)$ 等）。
+\end{itemize}
+并且该 $20$ 状态核心可按记忆 $m=(x_{k-1},y_{k-1})$ 分组为
+\[
+\begin{array}{ll}
+m=00:& s\in\{000,001,010,100,01\overline{1},11\overline{1}\}\quad(6\ \text{个}),\\
+m=01:& s\in\{000,001,002,100,101\}\quad(5\ \text{个}),\\
+m=10:& s\in\{000,001,002,100,101\}\quad(5\ \text{个}),\\
+m=11:& s\in\{0\overline{1}2,1\overline{1}2,002,101\}\quad(4\ \text{个}),
+\end{array}
+\]
+合计 $6+5+5+4=20$。因此以该 $20$ 状态核心子图诱导的邻接矩阵 $M_{\mathrm{ess}}$ 取代 $M$，不会改变任意周期轨道计数不变量。
+\end{proposition}
+
+\begin{proposition}[把 40 状态压缩为 20 状态而不改变 \texorpdfstring{$\zeta$}{zeta}/周期轨道对象]\label{prop:real-input-40-essential-reduction}
+设 $M$ 为 40 状态邻接矩阵，$M_{\mathrm{ess}}$ 为其唯一 essential 强连通分量诱导的 $20\times 20$ 邻接矩阵（按命题 \ref{prop:real-input-40-essential-20} 的分量选取）。则存在一个置换矩阵 $P$ 与某个 $20\times 20$ 矩阵 $N$ 使得
+\[
+PMP^{-1}=
+\begin{pmatrix}
+M_{\mathrm{ess}} & *\\
+0 & N
+\end{pmatrix},
+\qquad
+N\ \text{幂零（nilpotent）}.
+\]
+因此对任意 $n\ge 1$，
+\[
+\Tr(M^n)=\Tr(M_{\mathrm{ess}}^n),
+\qquad
+\det(I-zM)=\det(I-zM_{\mathrm{ess}}),
+\qquad
+\zeta_M(z)=\zeta_{M_{\mathrm{ess}}}(z),
+\]
+从而所有依赖周期点/primitive 轨道的对象（例如 $a_n=\Tr(M^n)$、primitive 轨道数 $p_n$、Abel/Mertens 常数与其扭曲版本）都可在 $M_{\mathrm{ess}}$ 上无损计算。
+\end{proposition}
+
+\begin{proof}
+令 $G$ 为由 $M$ 定义的有向图。把顶点按“essential 分量在前、其余顶点在后”的顺序重排，即得某个置换矩阵 $P$ 使得 $PMP^{-1}$ 为块上三角矩阵，左上块即为 $M_{\mathrm{ess}}$，右下块记为 $N$；左下块为 $0$ 的原因是：从瞬态顶点不可能回到 essential 分量（否则瞬态顶点也会落入同一强连通分量）。
+
+接着证明 $N$ 幂零。由定义，瞬态顶点不属于任何有向环；特别地，瞬态子图中不存在有向环。因此瞬态子图是一个 DAG，可按拓扑序排序使得其邻接矩阵严格上三角，从而 $N$ 幂零（等价地：存在 $L$ 使得 $N^L=0$）。
+
+由块上三角结构，$M^n$ 同样为块上三角，其迹满足
+\(
+\Tr(M^n)=\Tr(M_{\mathrm{ess}}^n)+\Tr(N^n)
+\)；而 $N$ 幂零给出对所有 $n\ge 1$ 有 $\Tr(N^n)=0$，故 $\Tr(M^n)=\Tr(M_{\mathrm{ess}}^n)$。
+同理，对任意 $z$，有
+\[
+\det(I-zM)=\det(I-zM_{\mathrm{ess}})\det(I-zN).
+\]
+但 $N$ 幂零 $\Rightarrow$ $I-zN$ 为单位上三角矩阵（在某基下）且其全部特征值为 $1$，故 $\det(I-zN)=1$，于是 $\det(I-zM)=\det(I-zM_{\mathrm{ess}})$。
+最后由有限图的 zeta--行列式口径 $\zeta(z)=1/\det(I-zM)$ 得 $\zeta_M=\zeta_{M_{\mathrm{ess}}}$。证毕。
+\end{proof}
+
+\begin{proposition}[确定性分块扩张的输入骨架因子]\label{prop:real-input-40-skeleton-factor}
+对每个 $d\in\{0,1,2\}$，矩阵 $B^{(d)}$ 为置换型矩阵，因而满足 $B^{(d)}\mathbf{1}=\mathbf{1}$（$\mathbf{1}$ 为全 $1$ 向量）。
+令
+\(
+U:=\RR^{4}\otimes \mathrm{span}\{\mathbf{1}\}\subset\RR^{40}
+\),
+则 $U$ 在 $M$ 作用下不变，且 $M|_U$ 等价于把块矩阵表示中每个非零块 $B^{(d)}$ 替换为标量 $1$ 得到的 $4\times 4$ 记忆骨架矩阵
+\[
+A=\begin{pmatrix}
+1&1&1&1\\
+1&0&1&0\\
+1&1&0&0\\
+1&0&0&0
+\end{pmatrix}.
+\]
+从而
+\[
+\det(I-zA)\ \mid\ \det(I-zM),
+\qquad
+\rho(M)=\rho(A),
+\]
+并且 $M$ 的“纵向残差因子”定义为
+\(
+\det_{\mathrm{vert}}(z):=\det(I-zM)/\det(I-zA)
+\)
+（其特征值模严格小于 $\rho(A)$）。
+在本核上
+\[
+\det(I-zA)=(z+1)^2(z^2-3z+1),
+\qquad
+\det_{\mathrm{vert}}(z)=-(z-1)^2(z+1)(z^2-z-1),
+\]
+因此 Perron 根 $\lambda=\rho(M)=\varphi^2$ 完全由输入骨架 $A$ 决定，而核方向只贡献更小模的谱与指数级修正。
+\end{proposition}
+
+\begin{proposition}[同步复位词：\texorpdfstring{$0^5$}{0^5}]\label{prop:real-input-40-reset-word}
+令同步核的确定性转移为 $\delta:Q\times\{0,1,2\}\to Q$。则对任意 $s\in Q$ 都有
+\[
+\delta(s,\underbrace{0,0,0,0,0}_{5\ \text{次}})=000,
+\]
+并且长度 $5$ 为最短同步长度：不存在长度 $<5$ 的词 $w\in\{0,1,2\}^{<5}$ 使得 $\delta(s,w)$ 对所有 $s\in Q$ 取同一值。
+\end{proposition}
+
+\begin{proposition}[最大熵测度下的输入记忆边缘分布（闭式）]\label{prop:real-input-40-input-memory-marginal}
+令输入系统为 $X\times X$，其中 $X$ 为黄金均值 shift，并取其 Parry 最大熵测度的直积作为 $X\times X$ 的最大熵测度。
+记记忆态 $m=(x_{k-1},y_{k-1})\in\{00,01,10,11\}$。则其边缘分布满足闭式
+\[
+\mathbb{P}(00)=\frac{3+\sqrt5}{10},\qquad
+\mathbb{P}(01)=\mathbb{P}(10)=\frac15,\qquad
+\mathbb{P}(11)=\frac{3-\sqrt5}{10}.
+\]
+因此单边 $1$ 密度为
+\[
+\mathbb{P}(x_k=1)=\mathbb{P}(y_k=1)=\frac{5-\sqrt5}{10}=\frac{1}{\varphi^2+1},
+\]
+并且和位 $d_k=x_k+y_k\in\{0,1,2\}$ 的分布为
+\[
+\mathbb{P}(d=0)=\frac{3+\sqrt5}{10},\qquad
+\mathbb{P}(d=1)=\frac25,\qquad
+\mathbb{P}(d=2)=\frac{3-\sqrt5}{10},
+\]
+其中 $\mathbb{P}(d=2)=\mathbb{P}(11)=\frac{3-\sqrt5}{10}$ 恰为碰撞触发密度。
+\end{proposition}
+
+\paragraph{块结构（输入约束 $\times$ 同步核的 skew-product）}
+记同步核的确定性转移为 $\delta:Q\times\{0,1,2\}\to Q$。对每个 $d\in\{0,1,2\}$，定义 $10\times 10$ 的置换型矩阵
+\[
+\bigl(B^{(d)}\bigr)_{s,t}:=\mathbf{1}_{\{\delta(s,d)=t\}},
+\qquad s,t\in Q.
+\]
+把记忆状态 $(p_x,p_y)\in\{0,1\}^2$ 依次按
+\[
+00,\ 01,\ 10,\ 11
+\]
+排列，则 $M$ 可写成 $4\times 4$ 的 $10\times 10$ 块矩阵
+\[
+M=
+\begin{pmatrix}
+B^{(0)} & B^{(1)} & B^{(1)} & B^{(2)}\\
+B^{(0)} & 0   & B^{(1)} & 0\\
+B^{(0)} & B^{(1)} & 0   & 0\\
+B^{(0)} & 0   & 0   & 0
+\end{pmatrix}.
+\]
+该表示把全部真实输入约束压缩到 $4\times 4$ 的记忆骨架，而同步核仅通过 cocycle $B^{(d)}$ 进入。
+
+\input{sections/generated/fig_sync_kernel_real_input_40_matrix}
+
+对该 SFT 定义周期点计数
+\[
+a_n:=|{\rm Fix}(\sigma^n)|=\operatorname{tr}(M^n),
+\]
+其动力学 $\zeta$-函数满足
+\[
+\zeta_M(z)=\exp\!\left(\sum_{n\ge 1}\frac{a_n}{n}z^n\right)=\frac{1}{\det(I-zM)}.
+\]
+对该 40 状态核可显式因式分解
+\[
+\det(I-zM)=(1-z)^2(1+z)^3(1-3z+z^2)(1+z-z^2),
+\]
+从而
+\[
+\zeta_M(z)=\frac{1}{(1-z)^2(1+z)^3(1-3z+z^2)(1+z-z^2)}.
+\]
+从而非零特征值（含重数）为
+\[
+\{\varphi^2,-\varphi,1^{(2)},(-1)^{(3)},\varphi^{-2},\varphi^{-1}\},
+\]
+其余 $31$ 个特征值为 $0$。
+等价地，其特征多项式可写成
+\[
+\det(tI-M)=t^{31}(t-1)^2(t+1)^3(t^2-3t+1)(t^2+t-1).
+\]
+primitive 轨道数 $p_n$ 与 $a_n$ 的关系为
+\[
+a_n=\sum_{d\mid n} d\,p_d,\qquad
+p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}.
+\]

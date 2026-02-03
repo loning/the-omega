@@ -1,0 +1,103 @@
+\subsection{群胚视角：值保持重写的轨道与 Zeckendorf 横截面}\label{sec:groupoid-zeckendorf}
+
+为了把“折叠为何是涌现而非注入”说得更具体，我们把 Fibonacci 关系实现为一族\textbf{可逆局部变换}（群胚生成元），并把 Zeckendorf 合法序列理解为其轨道横截面。
+
+\begin{definition}[Fibonacci 局部变换（可逆重写）]\label{def:fib-moves}
+定义以下作用于 $\mathcal{D}$ 的部分可逆变换（在各自可行域上）：
+\begin{itemize}
+  \item \textbf{基准变换：}
+  \[
+  E_0(a)=a+2e_1-e_2\quad\text{当 }a_{2}\ge 1,
+  \qquad
+  E_0^{-1}(a)=a-2e_1+e_2\quad\text{当 }a_{1}\ge 2.
+  \]
+  \item \textbf{递推变换（$k\ge 1$）：}
+  \[
+  E_k(a)=a+e_k+e_{k+1}-e_{k+2}\quad\text{当 }a_{k+2}\ge 1,
+  \]
+  其逆变换 $E_k^{-1}$ 在 $a_k,a_{k+1}\ge 1$ 时定义为
+  \[
+  E_k^{-1}(a)=a-e_k-e_{k+1}+e_{k+2}.
+  \]
+\end{itemize}
+令 $\mathcal{G}$ 为由 $\{E_k,E_k^{-1}\}_{k\ge 0}$ 生成的群胚（对象为 $\mathcal{D}$，态射为这些部分双射的复合）。
+\end{definition}
+
+\begin{proposition}[轨道不变量]\label{prop:orbits-preserve-val}
+对任意群胚态射（由 $E_k$ 与 $E_k^{-1}$ 复合得到的可逆变换）$a\mapsto a'$，都有 $\mathrm{Val}(a)=\mathrm{Val}(a')$。
+\end{proposition}
+
+\textbf{证明：}
+对生成元 $E_k$，
+\[
+\mathrm{Val}(E_k(a))-\mathrm{Val}(a)
+=F_{k+1}+F_{k+2}-F_{k+3}=0,
+\]
+逆变换同理。复合保持不变量。
+对基准生成元 $E_0$ 亦有 $\mathrm{Val}(E_0(a))-\mathrm{Val}(a)=2F_2-F_3=0$，故结论成立。
+
+\begin{theorem}[轨道横截面与折叠的群论解释]\label{thm:zeckendorf-transversal}
+对任意 $a\in\mathcal{D}$，其 $\mathcal{G}$-轨道与其值纤维一致：
+\[
+\mathcal{G}\cdot a \ =\ \{b\in\mathcal{D}:\mathrm{Val}(b)=\mathrm{Val}(a)\}.
+\]
+并且该轨道与 $X_\infty$ 恰好在一点相交，交点为 $Z(\mathrm{Val}(a))$。因此定义
+\[
+\Fold_\infty(a):=Z(\mathrm{Val}(a))\in X_\infty
+\]
+给出“沿轨道投影到横截面”的折叠算子；它把每个不可观测的值保持对称轨道压缩为唯一稳定代表。
+\end{theorem}
+
+\textbf{证明：}
+由命题 \ref{prop:orbits-preserve-val} 得 $\mathcal{G}\cdot a$ 包含于值纤维。反向包含由定理 \ref{thm:monoid-quotient-is-N} 给出：若 $\mathrm{Val}(b)=\mathrm{Val}(a)$，则 $[b]=[a]$，即 $b\equiv a$。而 $\equiv$ 正是由基准同余 $e_2\equiv 2e_1$ 与递推同余 $e_{k+2}\equiv e_{k+1}+e_k$ 在配置空间上的闭包；相应的局部可逆重写由 $E_0$ 与 $E_k$（$k\ge 1$）实现，故存在群胚态射把 $a$ 送到 $b$。最后，值纤维中落在 $X_\infty$ 的元素按 Zeckendorf 唯一性至多一个，而 $Z(\mathrm{Val}(a))$ 显然属于该纤维，故交点唯一且为所述。
+
+\subsubsection{定向化归一化重写（\texorpdfstring{$\Fold_\infty$}{Fold\_infty} 的编译表述）}\label{subsec:directed-rewrite}
+定理 \ref{thm:zeckendorf-transversal} 已经把折叠解释为“沿值保持轨道投影到唯一稳定代表”。为了获得直接可执行的归一化过程，可将群胚生成元定向为一套\textbf{值保持重写}：
+\begin{itemize}
+  \item \textbf{(R\_adj) 相邻合并：}若 $a_k\ge 1$ 且 $a_{k+1}\ge 1$，则
+  \[
+  a\ \to\ a-e_k-e_{k+1}+e_{k+2}.
+  \]
+  \item \textbf{(R\_1) 底位去重：}若 $a_1\ge 2$，则
+  \[
+  a\ \to\ a-2e_1+e_2.
+  \]
+  \item \textbf{(R\_2) 第二位去重：}若 $a_2\ge 2$，则
+  \[
+  a\ \to\ a-2e_2+e_1+e_3.
+  \]
+  \item \textbf{(R\_k) 一般位去重（$k\ge 3$）：}若 $a_k\ge 2$，则
+  \[
+  a\ \to\ a-2e_k+e_{k-2}+e_{k+1}.
+  \]
+\end{itemize}
+它们分别对应
+\(
+F_{k+1}+F_{k+2}=F_{k+3},
+2F_2=F_3,
+2F_3=F_2+F_4,
+2F_{k+1}=F_{k-1}+F_{k+2}
+\),
+因此均保持 $\mathrm{Val}$ 不变。
+
+\begin{proposition}[终止性与唯一正规形]\label{prop:directed-rewrite-termination}
+上述重写系统对任意 $a\in\mathcal{D}$ 强终止，并且不可约项恰为 $X_\infty$；因此任意归约序列终止于唯一正规形，且该正规形等于 $\Fold_\infty(a)$。
+\end{proposition}
+
+\textbf{证明：}
+设
+\[
+A(a)=\sum_{k\ge 1} a_k,\qquad
+B(a)=\sum_{k\ge 1} k\,a_k,\qquad
+C(a)=a_2,
+\qquad
+\mu(a)=(A(a),B(a),C(a))
+\]
+按字典序比较。则 (R\_adj) 与 (R\_1) 使 $A$ 减少 1；$(R_k,\,k\ge 3)$ 使 $B$ 减少 1；(R\_2) 保持 $A,B$ 不变但使 $C$ 减少 2。故每步重写都严格降低 $\mu$，系统终止。不可约项必满足 $a_k\le 1$ 且无相邻 $11$，即属于 $X_\infty$；反之 $X_\infty$ 中元素显然不可约。又因每步重写保持 $\mathrm{Val}$，终止形与初态同值；由定理 \ref{thm:zeckendorf-transversal} 的横截面唯一性知正规形唯一且为 $\Fold_\infty(a)$。证毕。
+
+\begin{remark}[残差的两种自然落点]\label{rem:residual}
+折叠 $\Fold_\infty$ 是值纤维到横截面的投影；因此“残差”可视为从 $a$ 到 $\Fold_\infty(a)$ 的群胚态射（重写路径/轨道坐标）。在有限分辨率 $m$ 下，则对应附录 D 中的折叠多重度 $d_m$：大量微态压缩到同一稳定类型，丢失的信息即是这些预像的区分标签。
+\end{remark}
+
+数值验证与统计复现见脚本 \texttt{scripts/exp\_fold\_infty\_rewrite.py}，其输出为
+\texttt{artifacts/export/fold\_infty\_rewrite\_stats.json}。

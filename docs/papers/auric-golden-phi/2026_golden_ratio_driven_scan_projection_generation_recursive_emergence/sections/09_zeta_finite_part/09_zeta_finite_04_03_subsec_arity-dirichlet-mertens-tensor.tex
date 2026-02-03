@@ -1,0 +1,341 @@
+\subsubsection{真正 arity 维度的 primitive 素数谱：Dirichlet 分层与 Mertens 常数张量}\label{subsec:arity-dirichlet-mertens-tensor}
+本小节把 40 状态真实输入核（附录 \ref{app:real-input-40-abel}）的 primitive 轨道按三个可加观测量做 Dirichlet 分层，并把每个同余类压缩成一个 Abel/Hadamard 有限部常数项（Mertens 常数漂移）。该输出是“素数影子”的下一层硬量化：既给出同余类的常数张量，也给出等分布收敛的最坏误差指数。
+
+\paragraph{三条分层量（arity-charge + 两类隐藏/触发维度）}
+对一条 primitive 轨道 $\gamma$，记其沿边的三类可加计数为
+$$
+\Phi_e(\gamma),\qquad \Phi_-(\gamma),\qquad \Phi_2(\gamma),
+$$
+它们分别对应附录 \ref{app:real-input-40-logm-theta} 中的三条边势 $\varphi_e,\varphi_-,\varphi_2$ 的轨道和。
+在本文选择的三维 Dirichlet 分层中，我们以 $\chi$ 作为 arity-charge，并以 $N_-$ 与 $N_e$ 作为两条事件计数轴（其中 $N_e$ 是输出位计数；$N_2$ 仅作为构造 $\chi$ 的辅助量保留在定义中）。
+定义轨道层的 arity-charge 与事件计数
+$$
+\chi(\gamma):=\Phi_e(\gamma)-\Phi_2(\gamma)\in\ZZ,
+\qquad
+N_-(\gamma):=\Phi_-(\gamma)\in\ZZ,
+\qquad
+N_e(\gamma):=\Phi_e(\gamma)\in\ZZ,
+\qquad
+N_2(\gamma):=\Phi_2(\gamma)\in\ZZ.
+$$
+在“真实输入 40 状态核”的同步边标记 $(s,d)\mapsto(e,t)$ 口径下，可取每步观测量
+$$
+\chi:=e-\mathbf{1}_{\{d=2\}}\in\{-1,0,1\},
+\qquad
+\nu:=\mathbf{1}_{\{t\in Q_-\}}\in\{0,1\},
+\qquad
+e\in\{0,1\},
+\qquad
+\xi:=\mathbf{1}_{\{d=2\}}\in\{0,1\}.
+$$
+从而
+$$
+\Phi_e(\gamma)=\sum_{k=1}^{|\gamma|} e_k,
+\qquad
+\Phi_-(\gamma)=\sum_{k=1}^{|\gamma|} \nu_k,
+\qquad
+\Phi_2(\gamma)=\sum_{k=1}^{|\gamma|} \xi_k,
+$$
+并因此 $\chi(\gamma)=\sum_{k=1}^{|\gamma|}\chi_k$、$N_-(\gamma)=\sum_{k=1}^{|\gamma|}\nu_k$、$N_e(\gamma)=\sum_{k=1}^{|\gamma|}e_k$、$N_2(\gamma)=\sum_{k=1}^{|\gamma|}\xi_k$。
+其中 $\chi(\gamma)$ 是真正的 arity-charge（把“二元碰撞如何被吐出/隐藏”的净电荷编码成可加不变量），$N_-(\gamma)$ 记录进入负携带区的事件计数，而 $N_e(\gamma)$ 记录输出位计数。主增长率取真实输入核的 Perron--Frobenius 主特征值
+$$
+\lambda=\rho(M)=\varphi^2\approx 2.61803398875.
+$$
+
+\paragraph{\texorpdfstring{$((2,2,2))$}{(2,2,2)}：arity--Mertens 常数张量}
+记 residue 向量
+$$
+(r_1,r_2,r_3)=\bigl(\chi(\gamma)\bmod 2,\ N_-(\gamma)\bmod 2,\ N_e(\gamma)\bmod 2\bigr)\in(\ZZ/2)^3.
+$$
+令 $p_{n,r_1r_2r_3}$ 表示长度为 $n$ 的 primitive 轨道中落在该 residue 的轨道数（按轨道计）。定义 Mertens 部分和
+$$
+S_{r_1r_2r_3}(N):=\sum_{n\le N}\frac{p_{n,r_1r_2r_3}}{\lambda^n}.
+$$
+则存在常数 $C_{r_1r_2r_3}$ 使得
+$$
+S_{r_1r_2r_3}(N)=\frac{1}{8}\log N + C_{r_1r_2r_3}+o(1),
+\qquad
+\sum_{r_1,r_2,r_3\in\{0,1\}}C_{r_1r_2r_3}=\mathsf{M},
+$$
+其中总 Mertens 常数满足
+$$
+\mathsf{M}\approx 0.322903002999.
+$$
+对应的常数张量数值与最坏误差指数（$\rho/\lambda$）由脚本
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py}
+自动生成并输出为可 \verb|\input| 的 \LaTeX\ 片段：
+\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_222}
+
+\paragraph{\texorpdfstring{$((3,2,2))$}{(3,2,2)}：把 arity 维度提升为真正 Dirichlet 分层}
+把第一维升级为
+$$
+(a,b,c)=\bigl(\chi(\gamma)\bmod 3,\ N_-(\gamma)\bmod 2,\ N_e(\gamma)\bmod 2\bigr)\in(\ZZ/3)\times(\ZZ/2)\times(\ZZ/2),
+$$
+并令 $p_{n,a,b,c}$ 为相应同余类的 primitive 轨道计数，定义
+$$
+S_{a,b,c}(N):=\sum_{n\le N}\frac{p_{n,a,b,c}}{\lambda^n}.
+$$
+则同样有
+$$
+S_{a,b,c}(N)=\frac{1}{12}\log N + C_{a,b,c}+o(1),
+\qquad
+\sum_{a\in\{0,1,2\}}\sum_{b,c\in\{0,1\}}C_{a,b,c}=\mathsf{M}.
+$$
+对应的常数张量数值与最坏误差指数（$\rho/\lambda$）同样由脚本
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py}
+自动生成并输出为可 \verb|\input| 的 \LaTeX\ 片段：
+\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_322}
+
+\paragraph{\texorpdfstring{$((3,3,3))$}{(3,3,3)}：三维 Dirichlet--Mertens 常数张量}
+进一步把三条观测量同时提升到模 $3$ 的 Dirichlet 分层：
+$$
+(a,b,c)=\bigl(\chi(\gamma)\bmod 3,\ N_-(\gamma)\bmod 3,\ N_e(\gamma)\bmod 3\bigr)\in(\ZZ/3)^3.
+$$
+令 $p_{n,a,b,c}$ 表示长度为 $n$ 的 primitive 轨道中落在该 residue 的轨道数（按轨道计），并定义
+$$
+S_{a,b,c}(N):=\sum_{n\le N}\frac{p_{n,a,b,c}}{\lambda^n}.
+$$
+则存在常数张量 $C^{(3,3,3)}_{a,b,c}$ 使得
+$$
+S_{a,b,c}(N)=\frac{1}{27}\log N + C^{(3,3,3)}_{a,b,c}+o(1),
+\qquad
+\sum_{a,b,c\in\{0,1,2\}} C^{(3,3,3)}_{a,b,c}=\mathsf{M}.
+$$
+对应的常数张量数值（含一维边际常数、以及最坏扭曲角色索引）由脚本
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py}
+直接生成并输出为可 \verb|\input| 的 \LaTeX\ 片段：
+\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_333}
+
+\paragraph{指数级误差：最坏扭曲谱半径比}
+令 $\omega_3:=e^{2\pi i/3}$。对每个非平凡角色 $(j_1,j_2,j_3)\in(\ZZ/3)^3\setminus\{(0,0,0)\}$，定义三变量扭曲矩阵为
+$$
+M(\omega_3^{j_1},\omega_3^{j_2},\omega_3^{j_3})
+$$
+（即沿边对三条可加观测量分别施加角色权重），并令
+$$
+\rho_{3,3,3}
+:=
+\max_{(j_1,j_2,j_3)\neq(0,0,0)}
+\rho\bigl(M(\omega_3^{j_1},\omega_3^{j_2},\omega_3^{j_3})\bigr).
+$$
+其数值输出亦包含在上述 \verb|\input| 片段中。
+因此同余类趋于等分布的误差为指数级：
+$$
+p_{n,a,b,c}=\frac{p_n}{27}+O\!\left(\frac{\rho_{3,3,3}^n}{n}\right),
+\qquad
+p_n\sim\frac{\lambda^n}{n}.
+$$
+
+\paragraph{\texorpdfstring{$((3,3,5))$}{(3,3,5)}：第三维固定为 \texorpdfstring{$N_2\bmod 5$}{N2 mod 5}（arity--Dirichlet--Mertens 张量）}
+由于 $\chi(\gamma)=N_e(\gamma)-N_2(\gamma)$，仅在模 $3$ 的角色扭曲层面，$\chi(\gamma)\bmod 3$ 与 $N_e(\gamma)\bmod 3$ 之间会出现退化的“置换等价”。为得到一个对碰撞触发机制（$d=2$）真正敏感、且在工程上可审计的三维常数张量，我们固定第三维为二元碰撞触发计数
+\(
+N_2(\gamma)\bmod 5
+\)：
+$$
+(a,b,c)=\bigl(\chi(\gamma)\bmod 3,\ N_-(\gamma)\bmod 3,\ N_2(\gamma)\bmod 5\bigr)\in(\ZZ/3)\times(\ZZ/3)\times(\ZZ/5).
+$$
+相应地，若 $p_{n,a,b,c}$ 为同余类的 primitive 轨道数（按轨道计），并令
+$$
+S_{a,b,c}(N):=\sum_{n\le N}\frac{p_{n,a,b,c}}{\lambda^n},
+$$
+则存在常数张量 $C^{(3,3,5)}_{a,b,c}$ 使得
+$$
+S_{a,b,c}(N)=\frac{1}{45}\log N + C^{(3,3,5)}_{a,b,c}+o(1),
+\qquad
+\sum_{a=0}^2\sum_{b=0}^2\sum_{c=0}^4 C^{(3,3,5)}_{a,b,c}=\mathsf{M}.
+$$
+\begin{proposition}[为何 \texorpdfstring{$N_2\bmod 5$}{N2 mod 5} 必然产生新结构（非置换等价）]\label{prop:arity-335-n2-nondegenerate}
+在本节的三维分层
+$$
+(a,b,c)=\bigl(\chi(\gamma)\bmod 3,\ N_-(\gamma)\bmod 3,\ N_2(\gamma)\bmod 5\bigr),
+$$
+第三维 $c=N_2(\gamma)\bmod 5$ 不能被前两维（特别是 $\chi(\gamma)\bmod 3$）所消去；因此对固定的 $(a,b)\in(\ZZ/3)^2$，primitive 轨道会沿 $c\in\ZZ/5$ 发生不可约分裂（不是重标记置换）。
+\end{proposition}
+
+\begin{proof}
+该核上恒有一步关系 $\chi=e-\xi$，从而轨道层恒等式
+$$
+\chi(\gamma)=N_e(\gamma)-N_2(\gamma),
+$$
+但本分层只保留 $\chi(\gamma)\bmod 3$ 而不保留 $N_e(\gamma)\bmod 5$。因此即使固定 $a=\chi(\gamma)\bmod 3$，也无法由 $a$ 决定 $N_2(\gamma)\bmod 5$（等价地，无法由 $\chi(\gamma)\bmod 3$ 决定 $\chi(\gamma)\bmod 5$）。
+换言之，第三维的 $\ZZ/5$ 信息不可能被前两维的 $\ZZ/3$ 信息“线性还原”，从而 $c$ 维度引入了真正的新自由度。
+\end{proof}
+
+\begin{proposition}[collision-cocycle 主导的慢模阻塞（\texorpdfstring{$((3,3,5))$}{(3,3,5)}；第三轴 \texorpdfstring{$N_2\bmod 5$}{N2 mod 5}）]\label{prop:arity-335-collision-dominant}
+在 \(((3,3,5))\) 的三维扭曲设定下（第三轴取 $c=N_2(\gamma)\bmod 5$，扭曲角色索引 $j=(j_1,j_2,j_3)\in(\ZZ/3)^2\times(\ZZ/5)$，并令
+\(
+\rho(j):=\rho\bigl(M_{j_1,j_2,j_3}\bigr)
+\)
+为对应扭曲矩阵的谱半径），记最坏扭曲谱半径为
+$$
+\rho_{3,3,5}:=\max_{j\neq (0,0,0)}\rho(j).
+$$
+则该最大值由\textbf{纯碰撞扭曲}实现：存在 $j_3\in\{1,4\}$ 使得
+$$
+\rho_{3,3,5}=\rho(0,0,j_3),
+$$
+并且慢模阻塞完全来自 $\ZZ/5$-值的碰撞 cocycle
+\(
+\xi=\mathbf{1}_{\{d=2\}}
+\)
+（而非来自 $\chi(\gamma)\bmod 3$ 或 $N_-(\gamma)\bmod 3$ 的扭曲）。
+\end{proposition}
+
+\begin{proof}
+按定义，$\rho_{3,3,5}$ 是对全部非平凡角色索引的谱半径最大值。由本节给出的可复现输出片段
+\verb|\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2}|
+中“达到最坏谱半径的非平凡角色索引”为 $(0,0,1),(0,0,4)$，故最大值确由 $(j_1,j_2)=(0,0)$ 的纯第三轴扭曲达到，即
+\(
+\rho_{3,3,5}=\rho(0,0,1)=\rho(0,0,4)
+\)。
+由于 $j_1=j_2=0$，该扭曲对 $\chi(\gamma)\bmod 3$ 与 $N_-(\gamma)\bmod 3$ 不施加任何角色权重，唯一的扭曲来自第三轴（即 $\xi=\mathbf{1}_{\{d=2\}}$ 的 $\ZZ/5$ 角色），从而慢模阻塞由碰撞 cocycle 单独主导。
+\end{proof}
+
+\begin{corollary}[等分布的主相关长度尺度由纯碰撞扭曲给出]\label{cor:arity-335-collision-mixing-scale}
+设 \(\rho_{3,3,5}\) 与 \(\lambda=\rho(M)\) 如上。则 \(((3,3,5))\) 同余类计数的最坏扭曲误差以指数率
+\(
+(\rho_{3,3,5}/\lambda)^n
+\)
+衰减；因此可把“主相关长度尺度”定义为
+$$
+\tau_{\mathrm{mix}}:=\frac{1}{-\log(\rho_{3,3,5}/\lambda)},
+\qquad
+t_{1/2}:=\frac{\log 2}{-\log(\rho_{3,3,5}/\lambda)}.
+$$
+并且按命题 \ref{prop:arity-335-collision-dominant}，该最坏衰减模式由纯碰撞扭曲 $(0,0,1)$ 或 $(0,0,4)$ 产生。
+\end{corollary}
+
+\paragraph{结果（五张 \texorpdfstring{$3\times 3$}{3x3} 切片 \texorpdfstring{$+$}{+} 最坏误差指数 \texorpdfstring{$+$}{+} 两条审计）}
+下述 \LaTeX\ 片段直接给出 $c=0,1,2,3,4$ 的 5 张切片、最坏谱半径比 $\rho_{3,3,5}/\lambda$ 与达到最坏的角色索引，并输出两条审计误差（总和校验与边际一致性）：
+\paragraph{计算闭环（可审计）：三维扭曲 $\Rightarrow$ 扭曲常数 $\Rightarrow$ 傅里叶反演}
+令 $\omega_3=e^{2\pi i/3},\ \omega_5=e^{2\pi i/5}$。对每个角色索引 $(j_1,j_2,j_3)\in\{0,1,2\}^2\times\{0,1,2,3,4\}$，在真实输入 40 状态核上构造扭曲矩阵
+$$
+M_{j_1,j_2,j_3}:\quad
+e\mapsto (\omega_3^{j_1})^{\chi(e)}(\omega_3^{j_2})^{\nu(e)}(\omega_5^{j_3})^{\xi(e)},
+$$
+其中 $\xi=\mathbf{1}_{\{d=2\}}$、$\chi=e-\xi$、$\nu=\mathbf{1}_{\{s'\in Q_-\}}$ 均为一步可加量（定义见附录 \ref{app:real-input-40-logm-theta} 与 \ref{app:real-input-40-dirichlet}）。
+按 SFT 的 $\zeta$--行列式口径（\cite{BrinStuck2002}）定义
+$$
+\zeta_{j_1,j_2,j_3}(z)=\frac{1}{\det(I-zM_{j_1,j_2,j_3})},
+\qquad
+\log\zeta_{j_1,j_2,j_3}(z)=\sum_{n\ge 1}\frac{\Tr(M_{j_1,j_2,j_3}^n)}{n}z^n.
+$$
+对非平凡角色 $(j_1,j_2,j_3)\neq(0,0,0)$，在 $z=\lambda^{-1}$ 处用 Möbius--$\log\zeta$ 的收敛恒等式得到扭曲常数（见附录 \ref{app:real-input-40-finite-part} 的同型推导）：
+$$
+C(j_1,j_2,j_3):=\sum_{m\ge 1}\frac{\mu(m)}{m}\log\zeta_{j_1m,\ j_2m,\ j_3m}(\lambda^{-m}),
+$$
+其中 $(j_1m,\ j_2m,\ j_3m)$ 按模 $(3,3,5)$ 取值。最后由三维离散傅里叶反演得到常数张量：
+$$
+C^{(3,3,5)}_{a,b,c}
+=\frac{\mathsf{M}}{45}
+\frac{1}{45}\!\!\!\sum_{\substack{0\le j_1\le 2\\0\le j_2\le 2\\0\le j_3\le 4\\(j_1,j_2,j_3)\ne(0,0,0)}}
+\omega_3^{-j_1 a}\,\omega_3^{-j_2 b}\,\omega_5^{-j_3 c}\ C(j_1,j_2,j_3).
+$$
+该闭环同时输出最坏扭曲谱半径比 $\rho_{3,3,5}/\lambda$（指数误差尺度）与两条校验：
+$$
+\sum_{a,b,c}C^{(3,3,5)}_{a,b,c}=\mathsf{M},
+\qquad
+\sum_{c=0}^{4}C^{(3,3,5)}_{a,b,c}=C^{(3,3)}_{a,b}.
+$$
+
+常数张量（按 $c=N_2(\gamma)\bmod 5$ 给出 5 张 $3\times 3$ 切片）、最坏扭曲谱半径比 $\rho_{3,3,5}/\lambda$、以及上述校验的数值误差，由脚本
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py}
+直接生成（\texttt{--third-axis N2}）并输出为可 \verb|\input| 的 \LaTeX\ 片段：
+\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2}
+
+\paragraph{二级推论（由上述五切片与最坏谱半径比直接推出）}
+为了把“表格输出”进一步压缩为可直接引用的结构性结论，我们额外输出一份仅由上述五切片与最坏谱半径比计算得到的二级摘要（同一脚本生成）：
+\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2_summary}
+
+\begin{corollary}[碰撞同余类的常数级偏置（\texorpdfstring{$S_c$}{Sc} 分解）]\label{cor:arity-335-collision-residue-drift}
+令
+\[
+S_c:=\sum_{a=0}^{2}\sum_{b=0}^{2}C^{(3,3,5)}_{a,b,c},
+\qquad c\in\ZZ/5.
+\]
+则在真实输入 40 状态核的 \(((3,3,5))\) 分层（第三轴取 $c=N_2(\gamma)\bmod 5$）下，可复现输出显示：$S_0$ 显著为正，而 $S_2,S_3,S_4$ 为负，并且 $\sum_{c=0}^4 S_c=\mathsf{M}$。因此在 Abel/Hadamard 有限部（常数级漂移）口径下，primitive 轨道对碰撞同余类 $c$ 的偏置主要体现为“$c=0$ 的强正漂移 + 其余同余类的系统性负漂移”。
+\end{corollary}
+
+\begin{corollary}[三维耦合对 \texorpdfstring{$(a,b)$}{(a,b)} 的依赖在 $c$ 轴上强局部化]\label{cor:arity-335-localized-ab-coupling}
+把每张 $c$-切片看作 $3\times 3$ 矩阵（行 $b$，列 $a$），并令 $\mathrm{sd}(c)$ 为该矩阵在 $9$ 个条目上的标准差（按条目平均）。则可复现输出显示：$\mathrm{sd}(c)$ 随 $c$ 增大呈数量级下降，且在 $c\ge 2$ 时切片已接近常数矩阵（对 $(a,b)$ 的依赖显著减弱），在 $c=3,4$ 时更是几乎完全消失。故在常数级漂移分辨率下，\(((3,3,5))\) 的非平凡三维耦合主要集中在少数碰撞同余类（特别是 $c=0$ 与 $c=1$）上，而尾部同余类呈近因子化行为。
+\end{corollary}
+
+\begin{corollary}[三相分层：$c=0$ 的结构尖峰、$c=1$ 的过渡与 $c\ge 2$ 的近因子化尾部]\label{cor:arity-335-phase-stratification}
+以二级摘要输出中的 $\max\mathrm{dev}(c)$ 与 $\Delta_c$ 为诊断量，则 \(((3,3,5))\) 常数张量沿碰撞同余类轴 $c\in\ZZ/5$ 呈现明显的三相分层：
+\begin{itemize}
+  \item \textbf{尖峰相（$c=0$）}：切片内在 $(a,b)$ 上高度非均匀；
+  \item \textbf{过渡相（$c=1$）}：切片非均匀度显著下降但仍可见结构；
+  \item \textbf{尾部相（$c\ge 2$）}：切片接近 rank-$0$ 常数矩阵（近因子化）。
+\end{itemize}
+这比命题 \ref{prop:arity-335-n2-nondegenerate} 的“非置换等价”更强：不仅第三轴引入了新自由度，而且该自由度的结构性主要局部化在小同余类上。
+\end{corollary}
+
+\begin{corollary}[碰撞稀少但主导慢模与常数各向异性（near-resonant cocycle 诊断）]\label{cor:arity-335-rare-collision-dominant}
+在真实输入 40 状态核的三势压力 $P(\theta_e,\theta_-,\theta_2)=\log\rho(M_\theta)$ 下，碰撞触发 $\varphi_2=\mathbf{1}_{\{d=2\}}$ 的典型密度为
+\[
+\partial_{\theta_2}P(0)=\frac{3-\sqrt5}{10}\approx 0.076393,
+\]
+即在最大熵基准附近碰撞事件是稀少的（见上文关于 $\nabla P(0)$ 的闭式）。
+但对 \(((3,3,5))\) 的 Dirichlet--Mertens 分层（第三轴为 $c=N_2(\gamma)\bmod 5$），可复现输出同时显示：
+\begin{itemize}
+  \item \textbf{慢模主导：}最坏扭曲谱半径由纯碰撞扭曲达到（命题 \ref{prop:arity-335-collision-dominant}），其衰减尺度由推论 \ref{cor:arity-335-collision-mixing-scale} 给出；
+  \item \textbf{常数各向异性：}聚合漂移向量 $S_c=\sum_{a,b}C^{(3,3,5)}_{a,b,c}$ 在 $c$ 轴上呈强非均匀分配（推论 \ref{cor:arity-335-collision-residue-drift} 与二级摘要输出）。
+\end{itemize}
+因此尽管碰撞事件的典型密度很低，它仍能同时决定最坏等分布误差的指数尺度与常数级漂移的主要方向；这正是“近共边界/近旋转因子”的经验信号：稀少事件携带相干相位，使得其 \(\ZZ/5\)-cocycle 在统计与素数影子两端同时成为瓶颈。
+\end{corollary}
+
+\begin{proposition}[\texorpdfstring{$\ZZ/5$}{Z/5} 轴的傅里叶压缩指纹（精确恒等分解）]\label{prop:arity-335-fourier-fingerprint}
+对每个固定的 $(a,b)$，令 $f_{a,b}(c):=C^{(3,3,5)}_{a,b,c}$（$c\in\ZZ/5$），并记 $\omega_5=e^{2\pi i/5}$。定义离散傅里叶系数
+\[
+\widehat f_{a,b}(j):=\frac15\sum_{c=0}^{4} f_{a,b}(c)\,\omega_5^{-jc},
+\qquad j\in\{0,1,2,3,4\}.
+\]
+则对所有 $c$ 有恒等分解
+\[
+f_{a,b}(c)
+=\widehat f_{a,b}(0)
++2\Re\bigl(\widehat f_{a,b}(1)\,\omega_5^{c}\bigr)
++2\Re\bigl(\widehat f_{a,b}(2)\,\omega_5^{2c}\bigr),
+\]
+从而五张切片在 $c$ 轴上的全部信息可被等价地压缩为三张矩阵：均值矩阵 $\widehat f(0)$ 与两张复矩阵 $\widehat f(1),\widehat f(2)$。该分解与其数值（含 $\|\widehat f(1)\|_\infty,\|\widehat f(2)\|_\infty$）由同一脚本输出并可审计复核。
+\end{proposition}
+
+\begin{proposition}[低秩可压缩：\texorpdfstring{$((3,3,5))$}{(3,3,5)} 张量的三模近似指纹]\label{prop:arity-335-low-rank}
+把常数张量 $C^{(3,3,5)}_{a,b,c}$ 视为实矩阵 $T\in\RR^{5\times 9}$（行指标为 $c\in\{0,1,2,3,4\}$，列指标为扁平化后的 $(a,b)\in(\ZZ/3)^2$）。令其奇异值为 $s_1\ge \cdots\ge s_5$。二级摘要输出显示：仅用前三个奇异模态即可捕获几乎全部 Frobenius 能量（$\sum_{i\le 3}s_i^2/\sum_{i\le 5}s_i^2$ 逼近 $1$），因此整个 $45$ 项张量在常数级分辨率下可被极低维近似稳定表征（可作为新的“核指纹”不变量）。
+\end{proposition}
+
+\begin{remark}[near-coboundary 二次律：对更高模数的可检验预测]\label{rem:arity-335-near-coboundary-scaling}
+由二级摘要输出的缺口 $1-\rho_{3,3,5}/\lambda$ 可估计一个“近共边界强度”常数 $\kappa$，并给出
+\[
+\rho_{3,3,p}/\lambda\approx 1-\kappa(2\pi/p)^2
+\]
+的可检验预测（例如 $p\in\{7,11,13\}$）。该二次律是“简单 PF 本征值的解析微扰”在小角扭曲下的标准形状；若后续计算显示 $p=5$ 明显偏离该曲线，则可把它视为真正的特异共振模数。
+\end{remark}
+
+\begin{remark}[碰撞 cocycle 的共边界缺陷证书：best \texorpdfstring{$\ZZ/5$}{Z/5} 着色]\label{rem:arity-335-best-5-coloring}
+把 40 状态图的每条边赋 cocycle $\xi=\mathbf{1}_{\{d=2\}}\in\ZZ/5$。若存在 $h:V\to\ZZ/5$ 使得 $h(v)-h(u)\equiv \xi(u\to v)\pmod 5$ 在全部边上成立，则第三轴扭曲可由共轭消去，因而不会降低谱半径（$\rho/\lambda=1$）。二级摘要输出给出一个可复现的“best found” 着色缺陷 $\varepsilon$（不一致边比例），作为“near-coboundary” 的组合学证书；其值与谱缺口 $1-\rho_{3,3,5}/\lambda$ 应在机制上相关。
+\end{remark}
+
+\begin{remark}[对照：第三维取 \texorpdfstring{$N_e\bmod 5$}{Ne mod 5} 的版本]\label{rem:arity-335-ne-mod5}
+若把第三维改为输出计数 $N_e(\gamma)\bmod 5$，则得到另一个同型的 $((3,3,5))$ 常数张量（主项系数同为 $1/45$），其输出片段为
+\verb|\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_335}|
+（脚本默认第三维为 \texttt{Ne}）。该版本更偏“输出端”的同余分层；而本文主线采用 $N_2\bmod 5$ 以直接锁定碰撞触发机制。
+\end{remark}
+
+\paragraph{\texorpdfstring{$((5,5,5))$}{(5,5,5)}：更高模数的三维 Dirichlet--Mertens 常数张量（全表）}
+为进一步提高同余分层的分辨率，可把三条观测量同时提升到模 $5$：
+$$
+(a,b,c)=\bigl(\chi(\gamma)\bmod 5,\ N_-(\gamma)\bmod 5,\ N_e(\gamma)\bmod 5\bigr)\in(\ZZ/5)^3.
+$$
+对应的 $5\times 5\times 5$ 常数张量（共 $125$ 个数）、以及最坏扭曲谱半径比 $\rho_{5,5,5}/\lambda$ 与达到最坏的角色索引，均由脚本
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py}
+直接生成并输出为可 \verb|\input| 的 \LaTeX\ 片段：
+\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_555}
+
+\paragraph{为何称为“真正的 arity 维度素数谱”}
+上述输出同时给出三层可审计结构：
+\begin{itemize}
+  \item primitive 轨道作为“素数类对象”，满足 $p_n\sim \lambda^n/n$；
+  \item $\chi(\gamma)$ 作为真正的 arity-charge，把二元碰撞的吐出/隐藏机制编码成可加电荷；
+  \item Dirichlet--Mertens 常数张量（例如 \(((2,2,2))\)、\(((3,2,2))\)、\(((3,3,3))\)、\(((3,3,5))\)）给出同余类的常数漂移（Abel/Hadamard 有限部），而 $\rho/\lambda$ 给出同余类趋于等分布的指数误差。
+\end{itemize}

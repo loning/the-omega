@@ -1,0 +1,47 @@
+\subsubsection{\texorpdfstring{$\log\mathfrak{M}(\theta)$}{logM(theta)} 的解析性与可微分指纹}\label{subsec:logM-analyticity}
+本小节把“只用 $\zeta$”的 Abel 有限部接口推进到可微分层：给出 $\theta\mapsto\log\mathfrak{M}(\theta)$ 的实解析性，以及可用于数值实现的导数表达。
+
+\begin{proposition}[\texorpdfstring{$\log\mathfrak{M}(\theta)$}{logM(theta)} 的实解析性（局部）]\label{prop:logM-analytic}
+设 $M_\theta$ 为有限维非负矩阵族，且对每条边的权重为 $\exp\langle\theta,\Phi(e)\rangle$ 的有限和，因此 $\theta\mapsto M_\theta$ 为实解析矩阵函数。
+假设在 $\theta=0$ 处 $M_0$ 原始（Perron--Frobenius 主特征值 $\lambda(0)$ 为简单特征值），并令 $\lambda(\theta)=\rho(M_\theta)$、$z_\star(\theta)=\lambda(\theta)^{-1}$。
+则存在 $\theta=0$ 的某邻域 $\mathcal{U}$，使得 $\theta\mapsto\log\mathfrak{M}(\theta)$ 在 $\mathcal{U}$ 上为实解析函数。
+\end{proposition}
+
+\begin{proof}
+由矩阵条目对 $\theta$ 的实解析性与原始性，Kato 解析扰动理论给出：$\lambda(\theta)$ 与相应左右本征向量可在 $\theta=0$ 的邻域内实解析选取，故 $z_\star(\theta)$ 亦实解析。
+对任意固定 $k\ge 2$，点 $z_\star(\theta)^k$ 落在收敛圆盘内，并且 $\log\zeta_\theta(z)=-\log\det(I-zM_\theta)$ 在该圆盘上对 $(\theta,z)$ 联合解析。
+同时因 $|z_\star(\theta)|<1$ 且 $z_\star(\theta)^k$ 随 $k$ 指数趋零，Möbius 尾
+\(
+\sum_{k\ge 2}\mu(k)\log\zeta_\theta(z_\star(\theta)^k)/k
+\)
+在 $\mathcal{U}$ 上一致收敛，从而可逐项求导并保持解析性；再加上 $\log C(\theta)$（由简单极点留数定义）在 $\mathcal{U}$ 上实解析，即得结论。
+\end{proof}
+
+\begin{proposition}[导数的 resolvent 表达（实现接口）]\label{prop:logM-derivative-resolvent}
+对 $\theta\in\mathcal{U}$，记 $R_\theta(z):=(I-zM_\theta)^{-1}$。
+则对任意参数方向 $v$（把 $\partial_v$ 视为方向导数），有
+\[
+\partial_v\log\zeta_\theta(z)=\mathrm{Tr}\!\left(R_\theta(z)\,z\,\partial_v M_\theta\right),
+\qquad
+\partial_z\log\zeta_\theta(z)=\mathrm{Tr}\!\left(R_\theta(z)\,M_\theta\right).
+\]
+因此在 $\theta\in\mathcal{U}$ 上，
+\[
+\partial_v\log\mathfrak{M}(\theta)
+=
+\partial_v\log C(\theta)
+\;+\;
+\sum_{k\ge 2}\frac{\mu(k)}{k}\left[
+\mathrm{Tr}\!\left(R_\theta(z_k)\,z_k\,\partial_v M_\theta\right)
+\;+\;
+\mathrm{Tr}\!\left(R_\theta(z_k)\,M_\theta\right)\,\partial_v z_k
+\right],
+\]
+其中 $z_k:=z_\star(\theta)^k$ 且 $\partial_v z_k = k z_\star(\theta)^k\,\partial_v\log z_\star(\theta)=-k z_k\,\partial_v P(\theta)$（$P(\theta)=\log\lambda(\theta)$）。
+\end{proposition}
+
+\begin{proof}
+由 $\log\zeta_\theta(z)=-\log\det(I-zM_\theta)$，对 $v$ 与 $z$ 分别求导并用矩阵恒等式
+\(\partial\log\det A=\mathrm{Tr}(A^{-1}\partial A)\)
+即可得前两式；再对命题 \ref{prop:abel-finite-part-mobius-zeta} 的闭式逐项求导并用链式法则得到后式。
+\end{proof}

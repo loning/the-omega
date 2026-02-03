@@ -1,0 +1,87 @@
+\subsection{推广：一般 Ostrowski 计数下的稳定折叠}\label{subsec:ostrowski-generalized-fold}
+
+本节把“Fibonacci/Zeckendorf 折叠”推广到一般无理数的 Ostrowski 计数系统，以回应“扩展到更广泛计数框架”的审稿要求。黄金分支的特殊性在于：当 $\alpha=\varphi^{-1}=[0;1,1,1,\dots]$ 时，Ostrowski 计数退化为 Fibonacci 权重与 Zeckendorf 语法，因此稳定类型空间成为最简单的二元 SFT（禁止相邻 $11$），并使 PF/$\zeta$ 接口闭式可得。
+
+\subsubsection{一般 Ostrowski 权重与合法数字}
+
+设 $\alpha\in(0,1)\setminus\QQ$ 的连分数展开为
+\[
+\alpha=[0;a_1,a_2,\dots],\qquad a_k\in\NN.
+\]
+令其收敛分母 $(q_n)_{n\ge 0}$ 由递推定义
+\[
+q_{-1}=0,\ q_0=1,\qquad q_{n+1}=a_{n+1}q_n+q_{n-1}\quad(n\ge 0).
+\]
+
+\begin{theorem}[Ostrowski 表示（标准）]\label{thm:ostrowski-representation}
+对任意 $N\in\NN$，存在唯一数字序列 $(d_n)_{n\ge 1}$ 满足：
+\begin{enumerate}
+  \item $0\le d_n\le a_n$；
+  \item 若 $d_n=a_n$，则 $d_{n-1}=0$（对 $n\ge 2$）；
+  \item 仅有限个 $d_n\neq 0$；
+  \item 数值分解为
+  \[
+  N=\sum_{n\ge 1} d_n q_{n-1}.
+  \]
+\end{enumerate}
+称该唯一序列为 $N$ 的 Ostrowski 数字，记为 $Z_\alpha(N)=(d_1,d_2,\dots)$（参见 \cite{Ostrowski1922} 及后续综述中的标准陈述）。
+\end{theorem}
+
+\begin{definition}[一般稳定类型空间]\label{def:Xm-alpha}
+对任意 $m\ge 1$，定义长度-$m$ 的 Ostrowski 合法集合
+\[
+X_m^{(\alpha)}:=\Bigl\{(d_1,\dots,d_m):\ 0\le d_n\le a_n,\ \ d_n=a_n\Rightarrow d_{n-1}=0\ (n\ge 2)\Bigr\}.
+\]
+并定义截断 $\pi_m^{(\alpha)}(d_1,d_2,\dots)=(d_1,\dots,d_m)$。
+\end{definition}
+
+\begin{proposition}[计数与递推（分母即计数）]\label{prop:Xm-alpha-cardinality}
+对任意 $m\ge 1$，有
+\[
+\bigl|X_m^{(\alpha)}\bigr|=q_{m+1}.
+\]
+特别地，当 $\alpha=\varphi^{-1}$（即 $a_n\equiv 1$）时，$q_{m+1}=F_{m+2}$，而 $X_m^{(\alpha)}$ 退化为二元集合 $\{0,1\}^m$ 中禁止相邻 $11$ 的黄金均值语法 $X_m$。
+\end{proposition}
+
+\subsubsection{一般折叠算子 \texorpdfstring{$\Fold_m^{(\alpha)}$}{Fold\_m(alpha)}}
+
+为了与本文的“折叠 = 取值 + 取规范形”机制保持一致，我们把一般 Ostrowski 折叠定义为：先将“未规范数字”（允许违反相邻最大值约束）赋一个可审计整数值，再取 Ostrowski 规范形并截断。
+
+\begin{definition}[Ostrowski 加权值与折叠]\label{def:fold-alpha}
+令
+\[
+\Omega_m^{(\alpha)}:=\prod_{n=1}^{m}\{0,1,\dots,a_n\}
+\]
+为长度-$m$ 的“原始数字空间”。对 $\omega=(\omega_1,\dots,\omega_m)\in\Omega_m^{(\alpha)}$ 定义其 Ostrowski 加权值
+\[
+N_\alpha(\omega):=\sum_{n=1}^{m}\omega_n q_{n-1}\in\NN.
+\]
+定义一般折叠
+\[
+\Fold_m^{(\alpha)}:\Omega_m^{(\alpha)}\to X_m^{(\alpha)},\qquad
+\Fold_m^{(\alpha)}(\omega):=\pi_m^{(\alpha)}\!\bigl(Z_\alpha(N_\alpha(\omega))\bigr).
+\]
+\end{definition}
+
+\begin{proposition}[一般折叠的基本性质]\label{prop:fold-alpha-basic}
+$\Fold_m^{(\alpha)}$ 良定义且满足：
+\begin{enumerate}
+  \item \textbf{（规范性）} $\Fold_m^{(\alpha)}(\omega)\in X_m^{(\alpha)}$；
+  \item \textbf{（幂等性）} 若 $\omega\in X_m^{(\alpha)}$，则 $\Fold_m^{(\alpha)}(\omega)=\omega$；
+  \item \textbf{（满射性）} $\Fold_m^{(\alpha)}:\Omega_m^{(\alpha)}\twoheadrightarrow X_m^{(\alpha)}$ 为满射；
+  \item \textbf{（多尺度相容）} 对 $m_2\ge m_1$，有
+  \[
+  \pi_{m_2\to m_1}^{(\alpha)}\circ \Fold_{m_2}^{(\alpha)}=\Fold_{m_1}^{(\alpha)}\circ \pi_{m_2\to m_1}^{(\alpha)},
+  \]
+  其中 $\pi_{m_2\to m_1}^{(\alpha)}$ 为截断到前 $m_1$ 位的投影。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+第 1 条由 Ostrowski 表示的合法性立得。第 2 条：若 $\omega$ 已合法，则 $\omega$ 即为某个整数的规范 Ostrowski 数字的前 $m$ 位，唯一性迫使规范化后截断不变。第 3 条：对任意 $x\in X_m^{(\alpha)}$，取 $\omega=x$ 即有 $\Fold_m^{(\alpha)}(\omega)=x$。第 4 条由截断与“先取值再取规范形”的函子性得到：对任意 $\omega$，两边都等于 $\pi_{m_1}^{(\alpha)}(Z_\alpha(N_\alpha(\omega)))$。
+\end{proof}
+
+\begin{remark}[与本文二元读出的关系]
+本文的主线实验固定二元读出与黄金语法（便于得到闭式 PF/Parry/$\zeta$ 基线）。上述一般化表明：若允许更一般的计数/地址字母表（或更一般的观测通道），则“折叠 = 取值 + Ostrowski 规范形”的机制可原则化推广；黄金分支只是其中最简、最可闭式分析的特例。
+\end{remark}
+

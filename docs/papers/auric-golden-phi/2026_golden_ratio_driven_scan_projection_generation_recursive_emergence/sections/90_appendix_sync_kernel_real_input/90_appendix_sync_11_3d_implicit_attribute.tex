@@ -1,0 +1,42 @@
+\subsubsection{真实输入下的三维隐含属性统计}
+在 40 状态核上引入三维观测
+\[
+\varphi_e=e,\qquad
+\varphi_-=\mathbf{1}_{\{t\in Q_-\}},\qquad
+\varphi_2=\mathbf{1}_{\{d=2\}},
+\]
+并定义加权矩阵
+\[
+(M_\theta)_{ij}=\sum_{i\to j}\exp(\theta_e\varphi_e+\theta_-\varphi_-+\theta_2\varphi_2),
+\qquad
+P(\theta)=\log\rho(M_\theta).
+\]
+在 $\theta=0$ 处，梯度（典型密度）为
+\[
+\partial_{\theta_e}P(0)=\frac{23-7\sqrt5}{20}\ (\approx 0.3673762079),\quad
+\partial_{\theta_-}P(0)=\frac{5-\sqrt5}{20}\ (\approx 0.1381966011),\quad
+\partial_{\theta_2}P(0)=\frac{3-\sqrt5}{10}\ (\approx 0.0763932023),
+\]
+Hessian（协方差密度）数值为
+\[
+\nabla^2P(0)\approx
+\begin{pmatrix}
+0.048741 & 0.032574 & 0.015964\\
+0.032574 & 0.275035 & 0.115735\\
+0.015964 & 0.115735 & 0.067331
+\end{pmatrix},
+\qquad
+\bigl(\nabla^2P(0)\bigr)^{-1}\approx
+\begin{pmatrix}
+22.4165 & -1.5120 & -2.7160\\
+-1.5120 & 13.2430 & -22.4049\\
+-2.7160 & -22.4049 & 54.0075
+\end{pmatrix}.
+\]
+因此局部大偏差率函数满足
+\[
+I(\alpha)\approx \tfrac12(\alpha-\alpha_\star)^\top\bigl(\nabla^2P(0)\bigr)^{-1}(\alpha-\alpha_\star),
+\qquad
+\alpha_\star=\left(\frac{23-7\sqrt5}{20},\frac{5-\sqrt5}{20},\frac{3-\sqrt5}{10}\right).
+\]
+数值复现见脚本 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40.py}。
