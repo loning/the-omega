@@ -299,6 +299,46 @@ B_{21,n}(1)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,5^{n/d}.
 为了把“可逆原子操作 $\Rightarrow$ 无回溯 prime cycle”的 Ihara 类比落到可审计的数值接口，我们把单流在线机的状态图视为无向骨架图（存在边 $\{i,j\}$ 当且仅当存在一步转移 $i\to j$ 或 $j\to i$），并在该无向图上计算邻接谱半径 $\rho(A)$ 与无回溯（Hashimoto）算子谱半径 $\rho(B)$。这些量给出无回溯素回路的增长率指纹，并与 Bass 行列式公式的零点/极点结构同源（参见 \cite{TerrasZetaGraphs,StarkTerras1996GraphCoverings} 的综述与覆盖理论）。
 \input{sections/generated/tab_parallel_addition_kernels_ihara_fingerprint}
 
+\paragraph{Ihara primes：无回溯原子环的规范化素数}
+在“原子操作图”（边为原子操作、反向边为其逆）上，把 prime-like 对象定义为\textbf{无回溯 primitive 环}：即闭环 $p=e_1\cdots e_\ell$ 满足 $e_{i+1}\neq e_i^{-1}$、首尾不回溯，且不为更短环的幂。其 Euler 乘积为
+\[
+Z_K(t)=\prod_{p}\left(1-t^{\ell(p)}\right)^{-1},
+\]
+其中 $p$ 遍历 Ihara primes。该定义剔除了“立即撤销”的伪周期，更贴合可逆原子操作的不可约模式。
+
+\paragraph{带权 Ihara--Bass：carry 能量的谱指纹}
+令 $\kappa(e)$ 为每步 carry 触发能量，取权重 $u^{\kappa(e)}$。在无回溯边空间上定义 Hashimoto 算子 $B(u)$（边 $e\to e'$ 可接且不回溯时赋权 $u^{\kappa(e')}$）。则带权 Ihara \(\zeta\) 为
+\[
+Z_K(u,t):=\prod_{p}\left(1-t^{\ell(p)}u^{\kappa(p)}\right)^{-1}
+=\frac{1}{\det(I-tB(u))},
+\]
+从而“原子能量”进入谱指纹并保持行列式可计算性（Bass 公式的有向版可视为上述定义的直接实现）。
+
+\paragraph{核版 RH/Ramanujan 指标}
+记 $\lambda_1(u)=\rho(B(u))$ 为无回溯主谱半径，$\lambda_\star(u)$ 为最大非平凡特征值模。定义
+\[
+R_K(u):=\frac{\lambda_\star(u)}{\sqrt{\lambda_1(u)}}.
+\]
+当 $R_K(u)\le 1$ 时，prime cycle 的误差达到平方根级（Ihara--RH/Ramanujan 类比；参见 \cite{TerrasZetaGraphs,StarkTerras1996GraphCoverings} 的图版 RH 综述）。该指标为“素数影子质量”的可检验谱界。
+
+\paragraph{核版 Chebotarev：群标签的同余类分布}
+给每条边赋有限群标签 $g(e)\in G$（隐含属性），对 prime 环定义 Frobenius 类 $\mathrm{Fr}(p)=\prod_{e\in p}g(e)$。对每个不可约表示 $\rho$，定义扭曲 Hashimoto 算子 $B_{\rho}(u)$ 与
+\(
+L_{K,\rho}(u,t)=\det(I-tB_\rho(u))^{-1}
+\)。
+由定理 \ref{thm:kernel-chebotarev-exp}（见主文同余类分层）可得同余类等分布的误差由 $\max_{\rho\neq\mathbf 1}\rho(B_\rho(u))$ 控制，从而形成“核版 Chebotarev”的完全可计算接口。
+
+\paragraph{零温能隙：最小平均回路的可计算性}
+把 $\kappa(e)$ 视为能量，定义 prime 环平均能量
+\(
+\bar\kappa(p)=\kappa(p)/\ell(p)
+\)
+并令
+\[
+\Delta_K:=\min_{p:\bar\kappa(p)>0}\bar\kappa(p).
+\]
+在无回溯边图（Hashimoto 图）上该问题等价于\textbf{最小平均回路}，可由 Karp 算法在多项式时间内求出（见 \cite{Karp1978MinCycleMean}）。$\Delta_K$ 给出“基态/第一激发态能隙”的可比不变量。
+
 \paragraph{做“素数影子”对比的最省力接口}
 对任意核（无权或带权），最省力的计算接口是“先算周期迹，再用反演提 primitive”。具体地：
 \[

@@ -40,6 +40,32 @@
 规范投影 $P_Z$ 同时具有两种相容实现：其一是在态/地址层面由 $\Fold_m$ 或 $\Fold_\infty$ 给出的横截面选择；其二是在可观测量层面由条件期望 $E_m$ 给出的纤维平均。二者分别刻画“唯一代表的选取”与“信息遗忘的量化”，共同组成 $P_Z$ 的双态结构。
 \end{remark}
 
+\begin{proposition}[条件期望塔]\label{prop:pom-expectation-tower}
+对任意 $m_2\ge m_1$，由柱事件延拓给出代数包含
+\(
+\mathcal{A}_{m_1}\subseteq \mathcal{A}_{m_2}
+\)
+与
+\(
+\mathcal{B}_{m_1}\subseteq \mathcal{B}_{m_2}
+\)。
+并且条件期望满足
+\[
+E_{m_1}\circ E_{m_2}=E_{m_1}\qquad\text{于}\ \mathcal{A}_{m_2}.
+\]
+\end{proposition}
+\begin{proof}
+折叠在不同分辨率下满足截断相容性（见定理 \ref{thm:pom-inverse-limit}），因此“先细分再粗粒化”与“直接粗粒化”对纤维平均给出同一结果；即 $E_{m_1}$ 与 $E_{m_2}$ 形成条件期望塔。证毕。
+\end{proof}
+
+\begin{remark}[本体可见性判据]\label{rem:pom-visible-criterion}
+对任意 $A\in\mathcal{A}_m$，有
+\[
+A\in\mathcal{B}_m\quad\Longleftrightarrow\quad E_m(A)=A.
+\]
+因此“外表可见/稳定读出”的对象等价于落在稳定子代数 $\mathcal{B}_m$（极限为 $\mathcal{B}_\infty$）中的可观测量。
+\end{remark}
+
 \subsection{三条先验纤维}\label{subsec:pom-fibers}
 \begin{definition}[外表纤维 $\mathcal Z$]\label{def:pom-observable-fiber}
 外表纤维取 Zeckendorf 稳定地址
@@ -127,6 +153,10 @@ E_m:\mathcal{A}_m\to\mathcal{B}_m
 角色投影 $P_\chi$ 指把 primitive 轨道按可加观测量（如 $\chi(\gamma),N_-(\gamma),N_e(\gamma)$）做同余/角色分层，并读出 residue 类标签。其可由扭曲矩阵族 $M(q)$ 与 Dirichlet--Mertens 常数张量实现（见 \ref{subsec:arity-dirichlet-mertens-tensor}），因此是 $P_{\le}$ 在“序/同余/角色读出”方向上的具体化门。
 \end{definition}
 
+\begin{remark}[序瓶颈的碰撞轴主导]\label{rem:pom-collision-axis}
+在真实输入 40 状态核中，\(((3,3,5))\) 的最坏扭曲谱半径由纯碰撞 cocycle 达到（命题 \ref{prop:arity-335-collision-dominant}），说明序投影的最慢瓶颈并非“值轴”而是碰撞/相消轴。因而若以空间换时间，优先引入可分离的碰撞轴束比单纯扩展值通道更有效。
+\end{remark}
+
 \subsection{投影词语法与成本模型}\label{subsec:pom-words}
 \begin{definition}[投影词与半群]\label{def:pom-projection-word}
 令投影字母表 $\{Z,\le\}$ 分别代表一次 $P_Z$ 与一次 $P_{\le}$ 读出。对任意指令/微码 $I$，定义投影词
@@ -184,6 +214,18 @@ T(n):=\min\{t:\ \Pi_n(U^t(\iota_n(x)))\ \text{对所有输入稳定}\}.
 \]
 空间—时间对偶律指：增大 $S(n)$ 可将混合线性化并降低 $T(n)$，反之限制 $S(n)$ 将迫使信息沿局部传播累积。
 \end{definition}
+
+\begin{corollary}[折叠诱导的空间下界]\label{cor:pom-space-lower-bound}
+在分辨率 $m$ 上，若要求折叠纤维的微态可区分（即 $P_Z$ 不丢失该层信息），则隐纤维规模至少满足
+\[
+|\mathcal M_m|\ \ge\ \frac{|\Omega_m|}{|X_m|}=\frac{2^m}{F_{m+2}},
+\]
+等价地
+\[
+S(m)\ \ge\ S_Z(m)=\log\!\left(\frac{2^m}{F_{m+2}}\right).
+\]
+因此空间代价的最硬下界由折叠熵率直接锁定。
+\end{corollary}
 
 \subsection{统一算术：同一演化，不同读出}\label{subsec:pom-unified-arith}
 \paragraph{加法}由“逐位叠加 $\Rightarrow$ 规范投影”给出：
@@ -289,8 +331,66 @@ C_1\,\varphi^{m/2}\ \le\ D_m\ \le\ C_2\,\varphi^{m/2}.
 \(
 011\mapsto 100
 \)
-（Fibonacci 进位）。系统合流意味着每个 $\omega$ 的规范形唯一，因此固定 $x\in X_m$ 时，$\omega\in\Fold_m^{-1}(x)$ 当且仅当 $x$ 能通过若干次逆代换 $100\mapsto 011$ 生成 $\omega$。该逆代换会占用一个长度 $3$ 的局部区间：相邻位点若同时被选择将导致重叠（在某一位产生 $2$），因此可选位点形成一条“不可相邻选择”的链；每一条合法选择对应唯一 $\omega$。于是 $d_m(x)$ 等于一条路径上的独立集计数，满足递推 $a_k=a_{k-1}+a_{k-2}$、$a_0=1,a_1=2$，故为 Fibonacci 数。选取“最宽松”的稳定块可使可选位点链达到极长：当 $m=2k$ 时链长为 $k$，当 $m=2k+1$ 时边界额外自由度使计数翻倍，从而得到所述闭式与渐近。证毕。
+（Fibonacci 进位）。系统合流意味着每个 $\omega$ 的规范形唯一，因此固定 $x\in X_m$ 时，$\omega\in\Fold_m^{-1}(x)$ 当且仅当 $x$ 能通过若干次逆代换 $100\mapsto 011$ 生成 $\omega$。该逆代换占用长度 $3$ 的局部区间；若两次逆代换的起点相距 $1$ 或 $2$，区间重叠会在某一位产生 $2$，因此可选位点必须满足“不可相邻选择”的约束。令 $k=\lfloor m/2\rfloor$，把可选位点看作一条长度 $k$ 的路径图 $P_k$，记其独立集计数为 $I_k$。则
+\[
+I_0=1,\qquad I_1=2,\qquad I_k=I_{k-1}+I_{k-2}\ (k\ge 2),
+\qquad I_k=F_{k+2}.
+\]
+于是对任意 $x\in X_m$ 有 $d_m(x)\le I_k$。当 $m=2k+1$ 为奇数时，由引理 \ref{lem:pom-one-bit} 的溢出比特 $b\in\{0,1\}$ 分裂为两支；固定 $b$ 会冻结最顶端一处候选位点，使可选链长度降为 $k-1$，从而
+\[
+d_m(x)\le 2I_{k-1}=2F_{k+1}.
+\]
+
+下面构造达到上界的族。对 $m=2,3$ 取
+\(
+x^{(2)}=00,\ x^{(3)}=000
+\)；其余情形令 $m=4q+r$（$r\in\{0,1,2,3\}$）并定义
+\[
+x^{(m)}=
+\begin{cases}
+(0001)^{\,q-1}0000,& r=0,\ q\ge 1,\\[2pt]
+(0001)^{\,q-1}00100,& r=1,\ q\ge 1,\\[2pt]
+(0001)^{\,q}00,& r=2,\ q\ge 0,\\[2pt]
+(0001)^{\,q-1}0000100,& r=3,\ q\ge 1.
+\end{cases}
+\]
+该族满足 $x^{(m)}\in X_m$，且其局部零块足以保证：任取不相邻位点集合 $J\subseteq\{1,\dots,k\}$（奇数时为 $\{1,\dots,k-1\}$），按从高位到低位依次执行逆代换，所需的 $100$ 模式在每一步均可实现，从而得到唯一 $\omega\in\Fold_m^{-1}(x^{(m)})$。因此
+\[
+d_{2k}(x^{(2k)})=I_k=F_{k+2},
+\qquad
+d_{2k+1}(x^{(2k+1)})=2I_{k-1}=2F_{k+1}.
+\]
+上界可达即得 $D_m$ 的闭式；渐近式与常数界由 Fibonacci 渐近 $F_n\sim \varphi^n/\sqrt5$ 直接推出。证毕。
 \end{proof}
+
+\begin{corollary}[二步递推与基值]\label{cor:pom-D-rec}
+$D_m$ 满足
+\[
+D_m=D_{m-2}+D_{m-4}\qquad(m\ge 6),
+\]
+并具有基值
+\[
+D_2=2,\quad D_3=2,\quad D_4=3,\quad D_5=4.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-max-fiber} 的闭式，$D_{2k}=F_{k+2}$ 与 $D_{2k+1}=2F_{k+1}$，而 Fibonacci 数满足 $F_{k+2}=F_{k+1}+F_k$。分别代入 $m=2k$ 与 $m=2k+1$ 即得递推；基值由直接枚举或闭式代入给出。证毕。
+\end{proof}
+
+\begin{remark}[最坏投影缺口的比特量化]\label{rem:pom-D-delay}
+把“区分纤维内微态”视为必须携带的额外信息量，则最坏缺口可用
+\[
+\Delta_m^{\max}:=\left\lceil \log_2 D_m\right\rceil
+\]
+衡量。由定理 \ref{thm:pom-max-fiber} 得
+\(
+\Delta_m^{\max}\sim \frac{m}{2}\log_2\varphi
+\)，它给出一种与分辨率 $m$ 线性增长的“不可并行信息缺口”标尺。
+\end{remark}
+
+\begin{remark}[一比特溢出与二步递推的结构来源]\label{rem:pom-overflow-rec}
+由引理 \ref{lem:pom-one-bit}，每条纤维只分裂为 $b=0,1$ 两支；且 $b=1$ 必要求末位满足零相邻约束。结合局部逆代换的“不可相邻选择链”，最大纤维的计数等价于在步长为 $2$ 的链上作独立集计数，从而结构上解释了二步递推 $D_m=D_{m-2}+D_{m-4}$。
+\end{remark}
 
 \begin{corollary}[空间缺陷的夹逼区间]\label{cor:pom-defect-band}
 令平均纤维多重度 $\overline d_m=2^m/F_{m+2}$。则
@@ -613,6 +713,110 @@ n\ \ge\ \frac{\log(C/\varepsilon)}{\log\!\bigl(\lambda_1(u)/|\lambda_2(u)|\bigr)
 这三类量与 $\lambda$ 正交互补，构成“运算机制”的可审计指纹；因此当 $\lambda$ 被输入分支锁定时，核之间的差异必然落在 $\log\mathfrak{M}$ 与 Dirichlet--Mertens 张量等有限部接口上。
 \end{remark}
 
+\subsection{真实输入 40 状态核的 RH-sharp 谱界与 toy RH}\label{subsec:pom-rh-sharp}
+\begin{theorem}[RH-sharp/Ramanujan 谱界]\label{thm:pom-rh-sharp}
+真实输入 40 状态核的行列式分解
+\[
+\det(I-zM)=(1-z)^2(1+z)^3(1-3z+z^2)(1+z-z^2)
+\]
+（见附录 \ref{app:real-input-40-finite-rh}）给出非零谱
+\[
+\mathrm{spec}(M)\setminus\{0\}
+=\{\lambda,\ -\sqrt{\lambda},\ 1^{(2)},\ (-1)^{(3)},\ \lambda^{-1},\ \lambda^{-1/2}\},
+\qquad \lambda=\varphi^2.
+\]
+因此除 $\lambda$ 外的全部非零特征值 $\nu$ 满足
+\[
+|\nu|\le \sqrt{\lambda}=\varphi,
+\]
+且仅有一个非平凡特征值达界：$\nu_2=-\sqrt{\lambda}$。
+\end{theorem}
+
+\begin{corollary}[平方根振荡的最优性]\label{cor:pom-rh-sharp-an}
+设 $a_n=\Tr(M^n)$，则
+\[
+a_n=\lambda^n+(-\sqrt{\lambda})^n+O(1),
+\]
+并且误差项不能改进到 $o(\lambda^{n/2})$。等价地，动力学版的“Chebyshev 平方根误差”在本核上达到临界最优。
+\end{corollary}
+
+\begin{proposition}[Lucas--平方闭式]\label{prop:pom-lucas-square}
+令 Lucas 数
+\(
+L_n:=\varphi^n+(-\varphi^{-1})^n
+\)。
+则
+\[
+a_n=L_n^2+(-1)^n(L_n+1)+2.
+\]
+\end{proposition}
+\begin{proof}
+由附录 \ref{app:real-input-40-abel} 的闭式
+\(
+a_n=L_{2n}+(-1)^nL_n+2+3(-1)^n
+\)
+与恒等式 $L_{2n}=L_n^2-2(-1)^n$ 直接化简得到。
+\end{proof}
+
+\begin{corollary}[primitive 奇偶分裂]\label{cor:pom-prim-odd-even}
+记 $p_n$ 为 primitive 轨道数，则
+\[
+p_n=\frac{\lambda^n}{n}+\frac{\bigl((-1)^n-\mathbf{1}_{2\mid n}\bigr)\lambda^{n/2}}{n}
++O\!\left(\frac{\lambda^{n/3}}{n}\right).
+\]
+其中偶数情形的 $\lambda^{n/2}$ 级项在 Möbius 反演的 $d=1,2$ 两项间精确抵消（见附录 \ref{app:real-input-40-finite-rh}）。
+\end{corollary}
+
+\begin{remark}[偶长轨道的更低阶振荡]
+写 $n=2m$，利用 $a_{m}=\lambda^{m}+(-\sqrt{\lambda})^{m}+O(1)$ 可进一步得到
+\[
+p_{2m}=\frac{\lambda^{2m}}{2m}-\frac{(-\sqrt{\lambda})^{m}}{2m}
++O\!\left(\frac{\lambda^{2m/3}}{m}\right),
+\]
+表明偶长 primitive 的首个显式次项规模为 $\lambda^{n/4}$。
+\end{remark}
+
+\begin{theorem}[Dirichlet 极点晶格与 toy RH]\label{thm:pom-toy-rh}
+取 Dirichlet 变量 $z=\lambda^{-s}$ 与 $r=\lambda z=\lambda^{1-s}$。则 $\widehat{\zeta}(s)=\zeta_M(\lambda^{-s})$ 的全部极点由
+\[
+r\in\{1,\ \pm\lambda,\ \lambda^2,\ \varphi^3,\ -\varphi\}
+\]
+给出，并满足
+\[
+\Re(s)\in\left\{1,\tfrac12,0,-\tfrac12,-1\right\}.
+\]
+其中 $r=-\varphi$ 产生一条临界线晶格
+\(
+s=\tfrac12+\frac{(2k+1)\pi i}{\log\lambda}
+\),
+是开带 $0<\Re(s)<1$ 内的唯一极点列（见附录 \ref{app:real-input-40-finite-rh}）。
+\end{theorem}
+
+\begin{proposition}[输出压力的二、三阶累积量闭式]\label{prop:pom-pressure-cumulants}
+令 $u=e^{\theta}$，$\lambda(u)=\rho(M(u))$，$P(\theta)=\log\lambda(e^\theta)$，并以
+\(
+G(\lambda,u)=0
+\)
+刻画 $\lambda(u)$（见附录 \ref{app:real-input-40-zeta-u}）。则
+\[
+P''(0)=\frac{1791}{200}-\frac{3983}{1000}\sqrt5,
+\qquad
+P'''(0)=\frac{1416369}{5000}-\frac{126691}{1000}\sqrt5,
+\]
+从而 $P''(0)\approx 0.0487412456$、$P'''(0)\approx -0.0158881374$。
+\end{proposition}
+\begin{proof}
+对 $G(\lambda(u),u)=0$ 做隐函数求导，并用 $u=e^\theta$ 的链式法则把 $u$-导数转为 $\theta$-导数；代入 $u=1,\lambda=\varphi^2$ 即得。
+\end{proof}
+
+\begin{corollary}[零温极限常数]\label{cor:pom-pressure-zero-temp}
+由附录 \ref{app:real-input-40-zeta-u} 可得 $\theta\to+\infty$ 时
+\[
+P(\theta)=\frac{\theta}{2}+\log c+o(1),
+\]
+其中 $c=\sqrt{y_{\max}}$，$y_{\max}$ 为方程 $y^4-6y^3+9y^2-y-1=0$ 的最大正根。
+\end{corollary}
+
 \subsection{素数影子到素数寄存器的桥接}\label{subsec:pom-prime-bridge}
 \paragraph{有限轴束的扭曲与分解}
 对有限群标签 $G$ 的扭曲矩阵族 $M_{K,\rho}(u)$ 与扭曲 $\zeta/L$-函数，命题 \ref{prop:kernel-artin-factorization} 给出 Artin 型因子化。该分解表明：有限轴束本质上是以 $\widehat G$ 为谱坐标系的“可审计纤维化”。
@@ -630,6 +834,18 @@ n\ \ge\ \frac{\log(C/\varepsilon)}{\log\!\bigl(\lambda_1(u)/|\lambda_2(u)|\bigr)
 
 \begin{remark}[从有限扭曲到无限寄存器]
 有限群扭曲提供“有限模轴束”的可审计谱分解；而新增轴的不可约性意味着该分解在模数增大时严格增加自由度。因而 $\widehat{\ZZ}$ 的极限口径与素数寄存器纤维 $\mathcal{P}$ 在结构上是兼容的：前者是“模轴束的完备化”，后者是“乘法坐标的线性化轴束”。
+\end{remark}
+
+\begin{remark}[同余轴的逆极限与角色对角化]\label{rem:pom-congruence-invlimit}
+将有限同余轴 $\{\ZZ/m\ZZ\}_{m\ge 1}$ 视作投影系统，则其逆极限给出
+\(
+\widehat{\ZZ}\cong\prod_{p}\ZZ_p
+\)；
+对应的角色基
+\(
+\chi_{k/m}(n)=e^{2\pi i kn/m}
+\)
+是 Pontryagin 对偶上的自然坐标。由此“有限同余轴 + 相位对角化 + 扭曲 $\zeta$”形成一条可审计的构造路径，极限即为“无限素数寄存器纤维”的严格实现。
 \end{remark}
 
 \begin{remark}[素数长度作为并行结构探针]\label{rem:pom-prime-length-probe}
@@ -676,6 +892,14 @@ n\ \gtrsim\ \frac{\log(1/\varepsilon)}{\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)
 \]
 因此序投影的时间代价可由扭曲谱隙显式量化。
 \end{corollary}
+
+\begin{remark}[序投影的谱量刻度]
+该结论表明：$P_{\le}$ 的时间代价不应仅以输入规模刻画，而应以谱量
+\(
+\tau_{\mathrm{mix}}=1/\log(\lambda_1/\Lambda)
+\)
+为基本尺度，并随误差门槛 $\varepsilon$ 作对数放大。它是“序投影门”的本体时间刻度。
+\end{remark}
 
 \begin{remark}[角色投影的混合尺度与数值锚点]\label{rem:pom-chi-mixing}
 对角色投影 $P_\chi$，可定义混合尺度

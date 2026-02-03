@@ -63,6 +63,41 @@ p_n(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d)
 p_n(\theta)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(d\theta).
 \]
 
+\subsubsection{Big-Witt/necklace 桥包与可检验同余}\label{app:witt-bridge-package}
+上式不仅是“可计算公式”，而是 Big-Witt（necklace ring）上的标准坐标变换：$a_n(u)$ 为 ghost 分量，$p_n(u)$ 为 Witt 坐标，而 Euler 乘积是 plethystic exponential。等价地，对任意带参矩阵族 $T(u)$，有严格恒等式
+\[
+\boxed{\ \zeta_T(z,u)=\mathrm{Exp}_W\bigl(\mathrm{Mob}_W(\mathrm{TrSeq}(T))\bigr)\ }
+\]
+其中 $\mathrm{TrSeq}(T)=(a_n(u))_{n\ge 1}$、$\mathrm{Mob}_W(a)=p$ 给出 $p_n(u)=\frac1n\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d)$，而 $\mathrm{Exp}_W$ 由
+\(
+\log\zeta=\sum_{m\ge 1}\frac{1}{m}P(z^m,u^m)
+\)
+定义。该“桥包”直接产出一批可检验算术约束：
+
+\begin{proposition}[necklace 整除律]\label{prop:witt-necklace-div}
+对任意 $n\ge 1$，有
+\[
+n\ \Big|\ \sum_{d\mid n}\mu(d)\,a_{n/d}(u^d)\qquad\text{于}\ \mathbb{Z}[u].
+\]
+\end{proposition}
+\begin{proof}
+由于 $p_n(u)\in\mathbb{Z}[u]$ 是 primitive 轨道的加权计数，多项式恒在整系数环内；由 $n\,p_n(u)=\sum_{d\mid n}\mu(d)a_{n/d}(u^d)$ 得整除结论。证毕。
+\end{proof}
+
+\begin{corollary}[$p$-幂 Dwork 型同余]\label{cor:witt-dwork-congruence}
+取 $n=p^k$（素数 $p$），则
+\[
+a_{p^k}(u)\equiv a_{p^{k-1}}(u^p)\pmod{p^k}\qquad\text{于}\ \mathbb{Z}[u].
+\]
+\end{corollary}
+\begin{proof}
+由 $\mu(1)=1,\mu(p)=-1,\mu(p^2)=0$ 得
+\(
+p^k\,p_{p^k}(u)=a_{p^k}(u)-a_{p^{k-1}}(u^p)
+\)。
+利用命题 \ref{prop:witt-necklace-div} 即得结论。证毕。
+\end{proof}
+
 \subsubsection{同步核的自对偶对称}\label{app:kernel-self-dual}
 对同步核存在状态对合 $\iota$，其作用为
 \[
@@ -116,6 +151,18 @@ a_{n,k}=a_{n,n-k}.
 a_n(u)=\Tr(B(u)^n)=\Tr\!\bigl((uB(1/u))^n\bigr)=u^n\Tr(B(1/u)^n)=u^n a_n(1/u),
 \]
 比较系数即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[奇阶消失律]\label{cor:trace-odd-vanish}
+若 $n$ 为奇数，则
+\[
+a_n(-1)=0,
+\qquad
+(u+1)\mid a_n(u)\ \ \text{于}\ \mathbb{Z}[u].
+\]
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:trace-palindrome}，$a_n(u)=u^n a_n(1/u)$。取 $u=-1$ 得 $a_n(-1)=(-1)^n a_n(-1)$，奇数 $n$ 迫使 $a_n(-1)=0$，从而 $(u+1)\mid a_n(u)$。证毕。
 \end{proof}
 
 \begin{corollary}[$\Delta(z,u)$ 的系数回文结构]\label{cor:delta-coeff-palindrome}
