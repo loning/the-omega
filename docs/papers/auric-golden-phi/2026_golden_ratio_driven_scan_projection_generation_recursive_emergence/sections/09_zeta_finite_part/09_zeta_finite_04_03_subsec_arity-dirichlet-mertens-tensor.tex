@@ -246,6 +246,26 @@ $$
 并且按命题 \ref{prop:arity-335-collision-dominant}，该最坏衰减模式由纯碰撞扭曲 $(0,0,1)$ 或 $(0,0,4)$ 产生。
 \end{corollary}
 
+\begin{remark}[慢模与折叠碰撞核的同源性信号]\label{rem:arity-335-rho-close-to-a2}
+折叠门的二阶碰撞统计给出三态碰撞核 \(A_2\)（命题 \ref{prop:pom-s2-recurrence}），其 Perron 根为
+$$
+r_2=\rho(A_2)\approx 2.481194304092
+$$
+（表 \ref{tab:collision_kernel_A2_finite_part}）。
+另一方面，对真实输入 40 状态核的 \(((3,3,5))\) 分层（第三轴为 \(N_2(\gamma)\bmod 5\)）可复现输出给出
+$$
+\rho_{3,3,5}\approx 2.488758321093
+$$
+（见下述表格片段）。
+两者在数值上极其接近：
+$$
+\rho_{3,3,5}-r_2\approx 7.564\times 10^{-3},
+\qquad
+\frac{\rho_{3,3,5}}{r_2}\approx 1.00305.
+$$
+这提示：\(((3,3,5))\) 的最慢模态并非由输出端或负携带端的细节主导，而更像由“二阶碰撞等价关系的纤维积结构”（折叠碰撞核）在轨道层的投影所控制；换言之，\(N_2(\gamma)\bmod 5\) 的慢变量可能是折叠碰撞机制在有限模轴束上的可审计读出。
+\end{remark}
+
 \begin{remark}[Pisano--20 共振线索]\label{rem:arity-335-pisano}
 二级摘要输出给出
 \(
@@ -360,6 +380,17 @@ C^{(3,3,5)}_{1,0,0}\approx 0.95882121
 这比命题 \ref{prop:arity-335-n2-nondegenerate} 的“非置换等价”更强：不仅第三轴引入了新自由度，而且该自由度的结构性主要局部化在小同余类上。
 \end{corollary}
 
+\begin{remark}[尾部近标量化指纹 \texorpdfstring{$\eta_{\mathrm{tail}}$}{eta_tail}]\label{rem:arity-335-eta-tail}
+把 $c$-切片记为矩阵 \(C_c:=(C^{(3,3,5)}_{a,b,c})_{a,b}\)，并记其均值 \(\overline C_c:=\frac19\sum_{a,b}C^{(3,3,5)}_{a,b,c}\)。
+定义尾部近标量化指纹
+$$
+\eta_{\mathrm{tail}}
+:=\max_{c\in\{2,3,4\}}
+\frac{\|C_c-\overline C_c\,\mathbf{1}\mathbf{1}^{\top}\|_F}{|\overline C_c|}.
+$$
+该量是无量纲且可审计的：它直接度量“尾部切片偏离 rank-$0$ 常数矩阵”的相对强度，并比仅报告 $\mathrm{sd}(c)$ 更稳定（已做尺度归一）。由二级摘要输出可复现得到 \(\eta_{\mathrm{tail}}\approx 0.433880\)。
+\end{remark}
+
 \begin{remark}[尾部近标量化与有理尾律迹象]\label{rem:arity-335-rational-tail}
 令 $\overline C_c:=\frac19\sum_{a,b}C^{(3,3,5)}_{a,b,c}$。由二级摘要输出可得
 \[
@@ -422,8 +453,118 @@ f_{a,b}(c)
 的可检验预测（例如 $p\in\{7,11,13\}$）。该二次律是“简单 PF 本征值的解析微扰”在小角扭曲下的标准形状；若后续计算显示 $p=5$ 明显偏离该曲线，则可把它视为真正的特异共振模数。
 \end{remark}
 
+\begin{proposition}[小角扭曲的二次律：$\kappa$ 的方差密度识别（可证明/可算）]\label{prop:arity-335-kappa-variance}
+取碰撞 cocycle \(\xi=\mathbf{1}_{\{d=2\}}\)（沿边取值 \(0/1\)），并令三轴扭曲中第三轴取 \(N_2(\gamma)\bmod p\)。
+对 \(\theta\in\RR\) 定义纯碰撞扭曲矩阵
+$$
+M_\theta:=M(1,1,e^{\mathrm{i}\theta})\qquad(\text{仅对 }\xi\text{ 施加相位}).
+$$
+记 \(\Lambda(\theta)\) 为 \(M_\theta\) 的主特征值分支（\(\Lambda(0)=\lambda\)）。
+由于本系统为有限维原始非负矩阵的解析扰动，\(\Lambda(\theta)\) 在 \(\theta=0\) 的邻域解析（参见一般的有限维谱扰动理论）。
+则存在常数 \(\mu_\xi\in\RR\) 与 \(\sigma_\xi^2\ge 0\) 使得
+$$
+\log\frac{\Lambda(\theta)}{\lambda}
+=
+\mathrm{i}\mu_\xi\,\theta-\frac{\sigma_\xi^2}{2}\theta^2+O(\theta^3),
+\qquad \theta\to 0,
+$$
+从而
+$$
+\log\frac{|\Lambda(\theta)|}{\lambda}
+=
+-\frac{\sigma_\xi^2}{2}\theta^2+O(\theta^3).
+$$
+特别地，当 \(\theta=2\pi/p\) 时（\(p\) 为奇素数）有
+$$
+1-\frac{\rho_{3,3,p}}{\lambda}
+=
+\frac{\sigma_\xi^2}{2}\left(\frac{2\pi}{p}\right)^2
++
+O\!\left(p^{-3}\right),
+$$
+其中 \(\rho_{3,3,p}\) 为 \( ((3,3,p))\) 的最坏扭曲谱半径（且在可复现输出中由纯碰撞扭曲达到）。
+因此二次律常数的本体为
+$$
+\kappa_\infty:=\lim_{p\to\infty}\frac{1-\rho_{3,3,p}/\lambda}{(2\pi/p)^2}
+=\frac{\sigma_\xi^2}{2}.
+$$
+并且 \(\sigma_\xi^2\) 可由实参倾斜压力
+\(
+P(t):=\log\rho(M(1,1,e^t))
+\)
+给出：\(\sigma_\xi^2=P''(0)\)（与命题 \ref{prop:kernel-clt-ldp} 的有限状态 Markov 压力导数口径一致）。
+\end{proposition}
+
+\begin{remark}[选择律判别量 \texorpdfstring{$g(p)$}{g(p)}：把“模数是否特殊”变成可证伪结论]\label{rem:arity-335-selection-law-gp}
+定义无量纲判别量
+$$
+g(p):=\left(1-\frac{\rho_{3,3,p}}{\lambda}\right)p^2.
+$$
+若“近共边界的一般小角微扰”机制成立，则 \(g(p)\) 应随 \(p\) 近似保持常数（仅作缓慢漂移）；若“\(p=5\) 的特异共振”机制成立，则 \(g(5)\) 将显著偏离其它素数的 \(g(p)\)。
+
+对 \(p\in\{5,7,11,13\}\) 的谱扫描（仅计算谱半径，不依赖常数张量）由脚本
+\texttt{scripts/exp\_arity\_335\_n2\_selection\_law\_primes.py}
+生成并输出为可 \verb|\input| 的表格片段：
+\input{sections/generated/tab_real_input_40_arity_335_n2_selection_law_primes}
+其中同时给出达到最坏谱半径的角色索引 \(j\)（用于检验“最坏扭曲是否仍为纯碰撞扭曲 \((0,0,\pm1)\)”）。
+从表中可见：在该扫描范围内 \(g(p)\) 呈现缓慢漂移并向常数量级收敛；等价地，二次律常数 \(\kappa_p:=\bigl(1-\rho_{3,3,p}/\lambda\bigr)/\bigl((2\pi/p)^2\bigr)\) 随 \(p\) 增大单调逼近其极限 \(\kappa_\infty=\sigma_\xi^2/2\)（命题 \ref{prop:arity-335-kappa-variance}）。
+同时最坏角色始终为 \((0,0,1)\) 与 \((0,0,-1)\)（模 \(p\) 意义下），即慢模稳定地由纯碰撞扭曲产生，与“near-coboundary 小角微扰”机制一致。
+\end{remark}
+
+\begin{remark}[谐波能量指纹 \texorpdfstring{$\mathcal{E}_1$}{E1}：把“低秩可压缩”变成可解释的结构量]\label{rem:arity-335-harmonic-energy}
+对固定的 \((a,b)\)，函数 \(c\mapsto C^{(3,3,5)}_{a,b,c}\) 在 \(\ZZ/5\) 上具有有限傅里叶展开；
+由于实值性，非零谐波对只需 \(j=1,2\) 两个复模即可完整编码（命题 \ref{prop:arity-335-fourier-fingerprint}）。
+因此“沿 \(c\) 轴的主要变化是否集中在第一谐波”可用无量纲指纹
+$$
+\mathcal{E}_1
+:=\frac{\|A^{(1)}\|_F^2}{\|A^{(1)}\|_F^2+\|A^{(2)}\|_F^2}
+$$
+量化，其中 \(A^{(1)},A^{(2)}\) 为二级摘要输出中给出的 \(j=1,2\) 谐波复矩阵。
+\(\mathcal{E}_1\) 越大，表示能量越集中在最低谐波，系统越接近“近旋转/near-coboundary”的低频结构；这与小角二次律（命题 \ref{prop:arity-335-kappa-variance}）和张量低秩可压缩现象（命题 \ref{prop:arity-335-low-rank}）在机制上同源。
+\end{remark}
+
 \begin{remark}[碰撞 cocycle 的共边界缺陷证书：best \texorpdfstring{$\ZZ/5$}{Z/5} 着色]\label{rem:arity-335-best-5-coloring}
 把 40 状态图的每条边赋 cocycle $\xi=\mathbf{1}_{\{d=2\}}\in\ZZ/5$。若存在 $h:V\to\ZZ/5$ 使得 $h(v)-h(u)\equiv \xi(u\to v)\pmod 5$ 在全部边上成立，则第三轴扭曲可由共轭消去，因而不会降低谱半径（$\rho/\lambda=1$）。二级摘要输出给出一个可复现的“best found” 着色缺陷 $\varepsilon$（不一致边比例），作为“near-coboundary” 的组合学证书；其值与谱缺口 $1-\rho_{3,3,5}/\lambda$ 应在机制上相关。
+\end{remark}
+
+\begin{remark}[近共边界缺陷的组合测度与谱测度同阶]\label{rem:arity-335-eps-vs-gap}
+令谱缺口
+$$
+\delta_{\mathrm{spec}}:=1-\frac{\rho_{3,3,5}}{\lambda}.
+$$
+二级摘要输出同时给出 best found 的共边界缺陷证书 \(\varepsilon\lesssim 0.066667\)（\(|E|=90\)）与谱缺口
+\(
+\delta_{\mathrm{spec}}\approx 0.049379
+\)，并满足
+$$
+\delta_{\mathrm{spec}}<\varepsilon.
+$$
+该同阶锁定支持如下机制解释：\(\varepsilon\) 度量“少量缺陷边”对 cocycle 共边界性的破缺，而 \(\delta_{\mathrm{spec}}\) 度量同一破缺在 Perron--Frobenius 主模态上的指数效应；因此 \(((3,3,5))\) 的慢模主要来自少数破缺边诱导的相干相位阻塞，而非来自复杂的多维耦合。
+
+进一步地，一个自然的可证伪猜想是存在仅依赖于图的粗结构常数 \(C>0\)（例如最大出度与最小正权重的比较常数），使得
+$$
+1-\frac{\rho(\omega_5)}{\rho(1)}\ \le\ C\,\varepsilon,
+$$
+其中 \(\rho(\omega_5)\) 表示沿第三轴（碰撞 cocycle）施加非平凡 \(\ZZ/5\) 角色时的最坏谱半径（即 \(\rho_{3,3,5}\)），而 \(\rho(1)=\lambda\)。
+\end{remark}
+
+\begin{remark}[从“最佳着色”得到的可证明上界：\texorpdfstring{$\kappa_\infty\le \varepsilon_\pi^{(2)}/2$}{kappa <= eps/2}]\label{rem:arity-335-eps-bound}
+令 \(\xi=\mathbf{1}_{\{d=2\}}\in\{0,1\}\) 为碰撞 cocycle，并取一个着色 \(h:V\to\ZZ/5\)。
+把边残差定义为
+$$
+r(e):=\xi(e)-\bigl(h(v)-h(u)\bigr)\quad\in\ZZ/5,
+$$
+并取其在 \(\{-2,-1,0,1,2\}\) 的最小整数提升（仍记为 \(r(e)\in\ZZ\)）。
+则有分解 \(\xi=\delta h+r\)，其中共边界项 \(\delta h\) 在轨道和上望远镜消去；因此渐近方差密度满足
+$$
+\sigma_\xi^2=\sigma_r^2\le \mathbb{E}_\pi[r(e)^2]=:\varepsilon_\pi^{(2)},
+$$
+其中 \(\pi\) 为无扭曲系统的 PF 平衡边测度。
+结合命题 \ref{prop:arity-335-kappa-variance} 的 \(\kappa_\infty=\sigma_\xi^2/2\)，得到可证明上界
+$$
+\kappa_\infty\ \le\ \varepsilon_\pi^{(2)}/2.
+$$
+二级摘要输出已同时给出 \(\varepsilon\)（均匀边比例缺陷）与 \(\varepsilon_\pi^{(2)}\)（平衡态二次缺陷），从而把“near-coboundary 证书”升级为对二次律常数的可审计上界。
 \end{remark}
 
 \begin{remark}[对照：第三维取 \texorpdfstring{$N_e\bmod 5$}{Ne mod 5} 的版本]\label{rem:arity-335-ne-mod5}

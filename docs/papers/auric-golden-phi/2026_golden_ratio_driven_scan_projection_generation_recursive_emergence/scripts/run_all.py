@@ -279,6 +279,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="arity_335_N2_selection_law_primes",
+            script="exp_arity_335_n2_selection_law_primes.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/arity_335_n2_selection_law_primes.json",
+                "sections/generated/tab_real_input_40_arity_335_n2_selection_law_primes.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_logM_theta",
             script="exp_sync_kernel_real_input_40_logM_theta.py",
             args=[
@@ -322,6 +331,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/sync_kernel_real_input_40_logM_theta_taylor.json",
                 "sections/generated/tab_real_input_40_logM_theta_taylor.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_finite_part_split",
+            script="exp_real_input_40_finite_part_split.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_finite_part_split.json",
+                "sections/generated/tab_real_input_40_finite_part_split.tex",
             ],
         ),
         Step(

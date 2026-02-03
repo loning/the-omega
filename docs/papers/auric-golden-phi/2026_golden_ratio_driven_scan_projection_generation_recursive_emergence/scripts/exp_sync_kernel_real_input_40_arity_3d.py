@@ -474,6 +474,12 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     max_abs_A1 = float(np.max(np.abs(A1)))
     max_abs_A2 = float(np.max(np.abs(A2)))
     ratio_A2_A1 = (max_abs_A2 / max_abs_A1) if max_abs_A1 > 0 else 0.0
+    # Harmonic energy ratio (new fingerprint):
+    #   E1 := ||A^(1)||_F^2 / (||A^(1)||_F^2 + ||A^(2)||_F^2),
+    # where A^(1), A^(2) are the j=1 and j=2 Fourier matrices on Z/5.
+    eA1 = float(np.sum(np.abs(A1) ** 2))
+    eA2 = float(np.sum(np.abs(A2) ** 2))
+    E1 = (eA1 / (eA1 + eA2)) if (eA1 + eA2) > 0 else float("nan")
 
     # DFT of aggregated drift S_c on Z/5: \hat S(j) = (1/5) sum_c S_c omega^{-jc}.
     Shat = []
@@ -518,6 +524,33 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
         for p in (7, 11, 13):
             pred = 1.0 - kappa_est * ((2.0 * math.pi / float(p)) ** 2)
             pred_p[p] = float(pred)
+
+    # Variance-density identification (spectral/pressure method).
+    # For the collision cocycle xi = 1_{d=2} and real tilt u = exp(t),
+    # define lambda(t)=rho(M(q=r=1,u=exp(t))) and P(t)=log lambda(t).
+    # Then sigma_xi^2 = P''(0), and the small-angle twist gap satisfies
+    #   1 - rho_p/lambda ~ (sigma_xi^2/2) * (2pi/p)^2.
+    def _lambda_of_t(t: float) -> float:
+        u_real = math.exp(t)
+        M_t = build_weighted_matrix_numeric(
+            1.0 + 0.0j,
+            1.0 + 0.0j,
+            u_real + 0.0j,
+            states,
+            kernel_map,
+            third_axis="N2",
+        )
+        return spectral_radius(M_t)
+
+    # Use a stable symmetric second-difference (avoid too small h due to eig rounding).
+    h_var = 1e-3
+    lam0 = _lambda_of_t(0.0)
+    P0 = math.log(lam0)
+    Pp = math.log(_lambda_of_t(h_var))
+    Pm = math.log(_lambda_of_t(-h_var))
+    sigma2_xi = (Pp - 2.0 * P0 + Pm) / (h_var * h_var)
+    kappa_var = 0.5 * sigma2_xi
+    g_infty = (4.0 * (math.pi**2)) * kappa_var
 
     # "Best 5-coloring" (near-coboundary certificate): find h:V->Z/5 that maximizes satisfied edges
     # for constraints h(v)-h(u) == xi(u->v) mod 5, where xi = 1_{d=2}.
@@ -586,6 +619,54 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
             best_h = h1[:]
     eps_best = float("nan") if mE == 0 else float(1.0 - (best_sat / float(mE)))
 
+    # Stationary-weighted defect (rigorous energy-style certificate):
+    # compute the PF equilibrium edge measure for the untwisted adjacency (q=r=u=1),
+    # then evaluate residual r(e) in the integer lift [-2,2] and report:
+    #   eps_pi  := P_pi[e is violated],
+    #   eps2_pi := E_pi[r(e)^2],
+    # which yields the bound kappa <= eps2_pi/2 (for the variance-based kappa).
+    eps_pi = float("nan")
+    eps2_pi = float("nan")
+    kappa_bound = float("nan")
+    if mE > 0:
+        M1 = build_weighted_matrix_numeric(
+            1.0 + 0.0j,
+            1.0 + 0.0j,
+            1.0 + 0.0j,
+            states,
+            kernel_map,
+            third_axis="N2",
+        )
+        A = np.real(M1).astype(float)
+        vals, vecs = np.linalg.eig(A)
+        i0 = int(np.argmax(np.real(vals)))
+        lam_pf = float(np.real(vals[i0]))
+        r_vec = np.real(vecs[:, i0]).astype(float)
+        valsL, vecsL = np.linalg.eig(A.T)
+        j0 = int(np.argmax(np.real(valsL)))
+        l_vec = np.real(vecsL[:, j0]).astype(float)
+        if float(np.sum(r_vec)) < 0:
+            r_vec = -r_vec
+        if float(np.sum(l_vec)) < 0:
+            l_vec = -l_vec
+        lr = float(l_vec @ r_vec)
+        if lr != 0.0:
+            l_vec = l_vec / lr  # normalize so that l^T r = 1
+
+        lift = {0: 0, 1: 1, 2: 2, 3: -2, 4: -1}
+        bad_mass = 0.0
+        r2_mass = 0.0
+        for uu, vv, ww in edges_flat:
+            p_edge = float(l_vec[uu] * r_vec[vv] / lam_pf)
+            diff = (best_h[vv] - best_h[uu] - ww) % 5
+            res = int(lift[int(diff)])
+            if res != 0:
+                bad_mass += p_edge
+            r2_mass += p_edge * float(res * res)
+        eps_pi = float(bad_mass)
+        eps2_pi = float(r2_mass)
+        kappa_bound = 0.5 * eps2_pi
+
     # Cancellation fingerprint: sign imbalance and residual after cancellation.
     all_entries: List[float] = []
     for c in range(5):
@@ -623,6 +704,11 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     lines.append("$$")
     lines.append(f"\\frac{{\\rho_{{3,3,5}}}}{{\\lambda}}\\approx {fmt(rho_ratio)}.")
     lines.append("$$")
+    if 0.0 < rho_ratio < 1.0:
+        lines.append("并定义谱缺口（缺口越小，混合越慢）")
+        lines.append("$$")
+        lines.append(f"\\delta_{{\\mathrm{{spec}}}}:=1-\\frac{{\\rho_{{3,3,5}}}}{{\\lambda}}\\approx {fmt(1.0 - rho_ratio)}.")
+        lines.append("$$")
     if argmax:
         joined = ",\\ ".join([f"({t})" for t in argmax])
         lines.append("$$")
@@ -675,6 +761,20 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     lines.append("$$")
     vec_md = ",".join([f"{x:.6g}" for x in max_dev_c])
     lines.append(f"(\\max\\mathrm{{dev}}(0),\\dots,\\max\\mathrm{{dev}}(4))\\approx({vec_md}).")
+    lines.append("$$")
+    # Tail scalarization index:
+    #   eta_tail := max_{c in {2,3,4}} ||slice_c - mean_c 11^T||_F / |mean_c|.
+    eta_tail = 0.0
+    for c in (2, 3, 4):
+        denom = abs(mean_c[c])
+        if denom > 0:
+            eta_tail = max(eta_tail, float(delta_c[c]) / denom)
+    lines.append("并定义尾部近标量化指纹")
+    lines.append("$$")
+    lines.append(
+        "\\eta_{\\mathrm{tail}}:=\\max_{c\\in\\{2,3,4\\}}\\frac{\\left\\|\\bigl(C_{a,b,c}\\bigr)_{a,b}-\\overline C_c\\,\\mathbf{1}\\mathbf{1}^\\top\\right\\|_F}{|\\overline C_c|}"
+        f"\\approx {eta_tail:.6f}."
+    )
     lines.append("$$")
 
     lines.append("\\paragraph{（iii$'''$）三相正常形：每张切片的均值漂移与最大偏差}")
@@ -806,6 +906,28 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
         lines.append("\\text{(no prediction)}")
     lines.append("$$")
 
+    lines.append("\\paragraph{（vii$'$）方差密度识别：$\\kappa$ 的可证明本体（collision cocycle）}")
+    lines.append("对碰撞 cocycle $\\xi=\\mathbf{1}_{\\{d=2\\}}$，考虑实参倾斜 $u=\\exp(t)$ 的压力 $P(t)=\\log\\rho(M(1,1,\\exp(t)))$。数值差分给出")
+    lines.append("$$")
+    lines.append(
+        f"\\sigma_\\xi^2:=P''(0)\\approx {fmt(sigma2_xi)},\\qquad \\kappa_\\mathrm{{var}}:=\\sigma_\\xi^2/2\\approx {fmt(kappa_var)}."
+    )
+    lines.append("$$")
+    lines.append("从而对应的选择律极限常数（见 $g(p)$ 的定义）为")
+    lines.append("$$")
+    lines.append(f"g_\\infty:=4\\pi^2\\,\\kappa_\\mathrm{{var}}=2\\pi^2\\sigma_\\xi^2\\approx {fmt(g_infty)}.")
+    lines.append("$$")
+
+    lines.append("\\paragraph{（iv$''$）谐波能量指纹：第一谐波占比}")
+    lines.append("令 $A^{(1)},A^{(2)}$ 为 $\\ZZ/5$ 上的 $j=1,2$ 两个谐波复矩阵（见下文输出）。定义能量占比")
+    lines.append("$$")
+    lines.append("\\mathcal{E}_1:=\\frac{\\|A^{(1)}\\|_F^2}{\\|A^{(1)}\\|_F^2+\\|A^{(2)}\\|_F^2}.")
+    lines.append("$$")
+    lines.append("数值上")
+    lines.append("$$")
+    lines.append(f"\\mathcal{{E}}_1\\approx {E1:.6f}.")
+    lines.append("$$")
+
     lines.append("\\paragraph{（viii）碰撞 cocycle 的 near-coboundary 证书：best $\\ZZ/5$-着色缺陷}")
     lines.append("把 40 状态图的每条边赋 cocycle $\\xi=\\mathbf{1}_{\\{d=2\\}}\\in\\ZZ/5$，并用局部改进的启发式在 $\\ZZ/5$ 上寻找 $h:V\\to\\ZZ/5$ 使得约束 $h(v)-h(u)\\equiv \\xi(u\\to v)\\ (\\mathrm{mod}\\ 5)$ 尽量多地满足。以边不一致比例定义缺陷")
     lines.append("$$")
@@ -813,6 +935,18 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
         lines.append(f"\\varepsilon:=1-\\frac{{\\#\\text{{(satisfied edges)}}}}{{|E|}}\\ \\lesssim\\ {eps_best:.6f}\\quad(\\text{{best found; }}|E|={mE}).")
     else:
         lines.append("\\varepsilon\\ \\text{undefined}.")
+    lines.append("$$")
+
+    lines.append("并进一步给出与平衡态一致的加权缺陷（用无扭曲 PF 平衡边测度加权）：")
+    lines.append("$$")
+    if not (math.isnan(eps_pi) or math.isnan(eps2_pi) or math.isnan(kappa_bound)):
+        lines.append(
+            f"\\varepsilon_\\pi:=\\mathbb{{P}}_\\pi[\\text{{violated}}]\\approx {fmt(eps_pi)},\\qquad "
+            f"\\varepsilon_\\pi^{{(2)}}:=\\mathbb{{E}}_\\pi[r(e)^2]\\approx {fmt(eps2_pi)},\\qquad "
+            f"\\kappa_\\mathrm{{var}}\\ \\le\\ \\varepsilon_\\pi^{{(2)}}/2\\approx {fmt(kappa_bound)}."
+        )
+    else:
+        lines.append("\\varepsilon_\\pi,\\ \\varepsilon_\\pi^{(2)}\\ \\text{undefined}.")
     lines.append("$$")
 
     out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
