@@ -1,0 +1,204 @@
+\subsection{谱隙驱动的时间尺度与读出稳定}\label{subsec:pom-spectral-gap}
+\begin{corollary}[谱隙控制的读出时间尺度]\label{cor:pom-spectral-gap-time}
+设 $M_K(u)$ 原始，主特征值为 $\lambda_1(u)$，其余特征值最大模为 $\lambda_2(u)$。由定理 \ref{thm:kernel-weighted-prime-orbit}，
+\[
+B_n(u)=\frac{\lambda_1(u)^n}{n}+O\!\left(\frac{|\lambda_2(u)|^n}{n}\right),
+\]
+从而相对误差满足
+\[
+\left|\frac{nB_n(u)}{\lambda_1(u)^n}-1\right|
+\le C\left(\frac{|\lambda_2(u)|}{\lambda_1(u)}\right)^n.
+\]
+给定目标精度 $\varepsilon\in(0,1)$，满足
+\[
+n\ \ge\ \frac{\log(C/\varepsilon)}{\log\!\bigl(\lambda_1(u)/|\lambda_2(u)|\bigr)}
+\]
+即可保证相对误差不超过 $\varepsilon$。若进一步满足核版 RH/GRH 条件（定义 \ref{def:kernel-rh}），则可用 $\lambda_1(u)^{1/2}$ 替代 $|\lambda_2(u)|$，从而得到平方根级衰减尺度（推论 \ref{cor:kernel-rh-sqrt-error}）。
+\end{corollary}
+
+\begin{remark}[自对偶与完成化偶性]\label{rem:pom-duality-even}
+若同步核满足附录 \ref{app:kernel-self-dual} 的自对偶关系，则完成化后的 $\zeta$ 函数在 $\theta$ 变量上呈严格偶性。于是其对 $\theta$ 的奇阶导数在 $\theta=0$ 处消失，这对代价势的涨落统计施加对称性约束；相应的可调性仅能通过破坏该自对偶结构实现。
+\end{remark}
+
+\subsection{新结论簇 IV：指数尺度饱和与常数级指纹}\label{subsec:pom-lambda-saturation}
+\begin{proposition}[指数尺度的输入饱和]\label{prop:pom-lambda-saturation}
+对确定性、完备读入的同步核，Perron 根 $\lambda$ 主要由输入骨架决定，而核方向仅贡献更小模的谱修正。具体地，40 状态真实输入核满足 $\rho(M)=\rho(A)=\varphi^2$（命题 \ref{prop:real-input-40-skeleton-factor}），10 状态同步核满足 $\lambda=3$（附录 \ref{app:sync-kernel-basic} 的行列式分解）。因此 $\log\lambda$ 更接近“输入分支熵”的饱和尺度，而非机制差异的细粒度指纹。
+\end{proposition}
+
+\begin{remark}[区分机制的三类指纹]\label{rem:pom-mechanism-fingerprint}
+当主尺度 $\lambda$ 饱和时，真正区分运算机制的对象来自常数级与扭曲谱层：
+\begin{itemize}
+  \item \textbf{有限部曲线 $\log\mathfrak{M}(\theta)$：}在同一切片上与 $P(\theta)=\log\rho(M_\theta)$ 并列记录，用以刻画常数级漂移（见 \ref{subsec:chi-ldp} 中的对比注）。
+  \item \textbf{Dirichlet--Mertens 常数张量：}对按同余类分层的 primitive 轨道计数给出常数级偏置（见 \ref{subsec:arity-dirichlet-mertens-tensor} 及相关附录）。
+  \item \textbf{最坏扭曲比 $\rho/\lambda$：}由 Chebotarev 型误差控制序投影混合时间尺度（定理 \ref{thm:kernel-chebotarev-exp} 与推论 \ref{cor:pom-order-mixing}）。
+\end{itemize}
+这三类量与 $\lambda$ 正交互补，构成“运算机制”的可审计指纹；因此当 $\lambda$ 被输入分支锁定时，核之间的差异必然落在 $\log\mathfrak{M}$ 与 Dirichlet--Mertens 张量等有限部接口上。
+\end{remark}
+
+\subsection{真实输入 40 状态核的 RH-sharp 谱界与 toy RH}\label{subsec:pom-rh-sharp}
+\begin{theorem}[RH-sharp/Ramanujan 谱界]\label{thm:pom-rh-sharp}
+真实输入 40 状态核的行列式分解
+\[
+\det(I-zM)=(1-z)^2(1+z)^3(1-3z+z^2)(1+z-z^2)
+\]
+（见附录 \ref{app:real-input-40-finite-rh}）给出非零谱
+\[
+\mathrm{spec}(M)\setminus\{0\}
+=\{\lambda,\ -\sqrt{\lambda},\ 1^{(2)},\ (-1)^{(3)},\ \lambda^{-1},\ \lambda^{-1/2}\},
+\qquad \lambda=\varphi^2.
+\]
+因此除 $\lambda$ 外的全部非零特征值 $\nu$ 满足
+\[
+|\nu|\le \sqrt{\lambda}=\varphi,
+\]
+且仅有一个非平凡特征值达界：$\nu_2=-\sqrt{\lambda}$。
+\end{theorem}
+
+\begin{corollary}[平方根振荡的最优性]\label{cor:pom-rh-sharp-an}
+设 $a_n=\Tr(M^n)$，则
+\[
+a_n=\lambda^n+(-\sqrt{\lambda})^n+O(1),
+\]
+并且误差项不能改进到 $o(\lambda^{n/2})$。等价地，动力学版的“Chebyshev 平方根误差”在本核上达到临界最优。
+\end{corollary}
+
+\begin{proposition}[Lucas--平方闭式]\label{prop:pom-lucas-square}
+令 Lucas 数
+\(
+L_n:=\varphi^n+(-\varphi^{-1})^n
+\)。
+则
+\[
+a_n=L_n^2+(-1)^n(L_n+1)+2.
+\]
+\end{proposition}
+\begin{proof}
+由附录 \ref{app:real-input-40-abel} 的闭式
+\(
+a_n=L_{2n}+(-1)^nL_n+2+3(-1)^n
+\)
+与恒等式 $L_{2n}=L_n^2-2(-1)^n$ 直接化简得到。
+\end{proof}
+
+\begin{corollary}[primitive 奇偶分裂]\label{cor:pom-prim-odd-even}
+记 $p_n$ 为 primitive 轨道数，则
+\[
+p_n=\frac{\lambda^n}{n}+\frac{\bigl((-1)^n-\mathbf{1}_{2\mid n}\bigr)\lambda^{n/2}}{n}
++O\!\left(\frac{\lambda^{n/3}}{n}\right).
+\]
+其中偶数情形的 $\lambda^{n/2}$ 级项在 Möbius 反演的 $d=1,2$ 两项间精确抵消（见附录 \ref{app:real-input-40-finite-rh}）。
+\end{corollary}
+
+\begin{remark}[偶长轨道的更低阶振荡]
+写 $n=2m$，利用 $a_{m}=\lambda^{m}+(-\sqrt{\lambda})^{m}+O(1)$ 可进一步得到
+\[
+p_{2m}=\frac{\lambda^{2m}}{2m}-\frac{(-\sqrt{\lambda})^{m}}{2m}
++O\!\left(\frac{\lambda^{2m/3}}{m}\right),
+\]
+表明偶长 primitive 的首个显式次项规模为 $\lambda^{n/4}$。
+\end{remark}
+
+\begin{theorem}[Dirichlet 极点晶格与 toy RH]\label{thm:pom-toy-rh}
+取 Dirichlet 变量 $z=\lambda^{-s}$ 与 $r=\lambda z=\lambda^{1-s}$。则 $\widehat{\zeta}(s)=\zeta_M(\lambda^{-s})$ 的全部极点由
+\[
+r\in\{1,\ \pm\lambda,\ \lambda^2,\ \varphi^3,\ -\varphi\}
+\]
+给出，并满足
+\[
+\Re(s)\in\left\{1,\tfrac12,0,-\tfrac12,-1\right\}.
+\]
+其中 $r=-\varphi$ 产生一条临界线晶格
+\(
+s=\tfrac12+\frac{(2k+1)\pi i}{\log\lambda}
+\),
+是开带 $0<\Re(s)<1$ 内的唯一极点列（见附录 \ref{app:real-input-40-finite-rh}）。
+\end{theorem}
+
+\begin{proposition}[输出压力的二、三阶累积量闭式]\label{prop:pom-pressure-cumulants}
+令 $u=e^{\theta}$，$\lambda(u)=\rho(M(u))$，$P(\theta)=\log\lambda(e^\theta)$，并以
+\(
+G(\lambda,u)=0
+\)
+刻画 $\lambda(u)$（见附录 \ref{app:real-input-40-zeta-u}）。则
+\[
+P''(0)=\frac{1791}{200}-\frac{3983}{1000}\sqrt5,
+\qquad
+P'''(0)=\frac{1416369}{5000}-\frac{126691}{1000}\sqrt5,
+\]
+从而 $P''(0)\approx 0.0487412456$、$P'''(0)\approx -0.0158881374$。
+\end{proposition}
+\begin{proof}
+对 $G(\lambda(u),u)=0$ 做隐函数求导，并用 $u=e^\theta$ 的链式法则把 $u$-导数转为 $\theta$-导数；代入 $u=1,\lambda=\varphi^2$ 即得。
+\end{proof}
+
+\begin{corollary}[零温极限常数]\label{cor:pom-pressure-zero-temp}
+由附录 \ref{app:real-input-40-zeta-u} 可得 $\theta\to+\infty$ 时
+\[
+P(\theta)=\frac{\theta}{2}+\log c+o(1),
+\]
+其中 $c=\sqrt{y_{\max}}$，$y_{\max}$ 为方程 $y^4-6y^3+9y^2-y-1=0$ 的最大正根。
+\end{corollary}
+
+\subsection{素数影子到素数寄存器的桥接}\label{subsec:pom-prime-bridge}
+\paragraph{有限轴束的扭曲与分解}
+对有限群标签 $G$ 的扭曲矩阵族 $M_{K,\rho}(u)$ 与扭曲 $\zeta/L$-函数，命题 \ref{prop:kernel-artin-factorization} 给出 Artin 型因子化。该分解表明：有限轴束本质上是以 $\widehat G$ 为谱坐标系的“可审计纤维化”。
+
+\paragraph{新增模轴的不可约性}
+命题 \ref{prop:arity-335-n2-nondegenerate} 证明了第三轴 $N_2(\gamma)\bmod 5$ 无法由前两轴消去，因此新增模轴引入不可约的新自由度。这一事实把“增加轴束不是重标记”在核层面固定为可审计结论。
+
+\begin{definition}[素数寄存器纤维的极限口径]\label{def:pom-profinite}
+取模系统 $\{\ZZ/m\ZZ\}_{m\ge 1}$ 的射影极限
+\[
+\widehat{\ZZ}:=\varprojlim_m \ZZ/m\ZZ\ \cong\ \prod_{p\in\mathbb{P}}\ZZ_p,
+\]
+并将其作为“无限素数轴束”的极限对象。该极限把所有有限模轴束统一为同一纤维坐标体系，从而为“素数寄存器”提供结构性定义（参见 \cite{Apostol1976} 中关于 CRT 与 p-进分解的标准事实）。
+\end{definition}
+
+\begin{remark}[从有限扭曲到无限寄存器]
+有限群扭曲提供“有限模轴束”的可审计谱分解；而新增轴的不可约性意味着该分解在模数增大时严格增加自由度。因而 $\widehat{\ZZ}$ 的极限口径与素数寄存器纤维 $\mathcal{P}$ 在结构上是兼容的：前者是“模轴束的完备化”，后者是“乘法坐标的线性化轴束”。
+\end{remark}
+
+\begin{remark}[同余轴的逆极限与角色对角化]\label{rem:pom-congruence-invlimit}
+将有限同余轴 $\{\ZZ/m\ZZ\}_{m\ge 1}$ 视作投影系统，则其逆极限给出
+\(
+\widehat{\ZZ}\cong\prod_{p}\ZZ_p
+\)；
+对应的角色基
+\(
+\chi_{k/m}(n)=e^{2\pi i kn/m}
+\)
+是 Pontryagin 对偶上的自然坐标。由此“有限同余轴 + 相位对角化 + 扭曲 $\zeta$”形成一条可审计的构造路径，极限即为“无限素数寄存器纤维”的严格实现。
+\end{remark}
+
+\begin{remark}[素数长度作为并行结构探针]\label{rem:pom-prime-length-probe}
+在张量装配的全局核上，迹序列满足 $a_n^{\mathrm{glob}}(u)=a_n^{\mathrm{flow}}(u)^m$，primitive 谱由 Witt/Möbius 反演给出（推论 \ref{cor:par-add-global-lift-endpoints}）。当 $n=\ell$ 为素数时，
+\[
+p_\ell^{\mathrm{glob}}(u)=\frac{1}{\ell}\Bigl(a_\ell^{\mathrm{flow}}(u)^m-a_1^{\mathrm{flow}}(u^\ell)^m\Bigr),
+\]
+从而素数长度的 primitive 项直接隔离了“不可约循环”与“幂重复循环”的差异。该差异对并行张量化极其敏感，可作为隐藏并行度与结构分解的无偏探针。
+\end{remark}
+
+\subsection{投影词正规形与读出层级塔}\label{subsec:pom-normal-form}
+\begin{theorem}[半环闭包的一次投影正规形]\label{thm:pom-one-fold-normal-form}
+令 $t$ 为由 $\oplus,\otimes,0_X,1_X$ 生成的任意项，变量取值于 $X_\infty$。则存在多项式
+\(
+P\in\NN[x_1,\dots,x_k]
+\)
+使得对任意 $c_1,\dots,c_k\in X_\infty$，
+\[
+t(c_1,\dots,c_k)=Z\!\left(P\bigl(\mathrm{Val}(c_1),\dots,\mathrm{Val}(c_k)\bigr)\right).
+\]
+因此在半环闭包内，规范投影 $P_Z$ 可在末端统一调用一次，而中间步骤可完全留在过程层。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:add-definitional} 与 \ref{thm:mul-definitional}，$\mathrm{Val}$ 给出 $(X_\infty,\oplus,\otimes)$ 与 $(\NN,+,\times)$ 的半环同构。任意项 $t$ 在 $\NN$ 上对应一个多项式 $P$；于是
+\(
+\mathrm{Val}(t(c_1,\dots,c_k))=P(\mathrm{Val}(c_1),\dots,\mathrm{Val}(c_k))
+\)。
+再由 $Z=\mathrm{Val}^{-1}$ 得结论。证毕。
+\end{proof}
+
+\begin{remark}[纲领：读出层级塔]\label{rem:pom-hyper-iteration}
+定理 \ref{thm:pom-one-fold-normal-form} 表明，在半环闭包内“规范投影只需末端一次”。进一步可沿定理 \ref{thm:composition-two-layer} 的思路构造读出层级塔：第 $0$ 层以合成 $\circ$ 的一次迭代读出对应加法，第 $1$ 层以“加法迭代”对应乘法；按同样方式递归定义第 $k$ 层的“运算”为第 $k{-}1$ 层的迭代读出。该层级塔在过程层不引入新原语，而将复杂度转移为读出层级的提升。
+\end{remark}
+

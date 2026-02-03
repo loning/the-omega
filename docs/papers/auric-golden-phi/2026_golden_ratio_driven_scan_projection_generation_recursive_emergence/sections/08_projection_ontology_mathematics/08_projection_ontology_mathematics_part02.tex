@@ -1,0 +1,257 @@
+\subsection{本体态空间与局部演化}\label{subsec:pom-state-evolution}
+\begin{definition}[分辨率态空间]\label{def:pom-state-space}
+对分辨率 $n$，定义本体态空间
+\[
+\mathcal{H}_n:=\mathcal{X}_n\times \mathcal{M}_n,
+\]
+其中 $\mathcal{X}_n$ 为外表坐标（如 $X_n$ 或 $X_\infty$ 的截断），$\mathcal{M}_n$ 为隐纤维（可包含 $\mathcal{S}_\varphi,\mathcal{T},\mathcal{P}$ 的局部激活块、同步核状态与余量等）。
+\end{definition}
+
+\begin{axiom}[局部性与有限传播]\label{ax:pom-locality}
+存在本体一步演化算子
+\[
+U:\mathcal{H}_n\to\mathcal{H}_n
+\]
+使得每一步仅依赖有限窗口并只更新有限半径的局部块。该公理与第 \ref{sec:A-kernel-compare-main} 节的局部核/在线归一化口径一致。
+\end{axiom}
+
+\subsection{三类投影：规范投影、原子投影与序投影}\label{subsec:pom-projections}
+\begin{definition}[规范投影 $P_Z$]\label{def:pom-proj-norm}
+在窗口层，$P_Z$ 定义为 $\Fold_m:\Omega_m\to X_m$ 的规范化投影（定义 \ref{def:fold-word}），其实现为值保持的局部重写系统并满足终止与合流（定理 \ref{thm:fold-suite}）。在算子代数层，$P_Z$ 由折叠诱导的条件期望
+\[
+E_m:\mathcal{A}_m\to\mathcal{B}_m
+\]
+实现（命题 \ref{prop:fold-conditional-expectation}），因此 $P_Z$ 为幂等投影并与归约顺序无关。
+\end{definition}
+
+\begin{definition}[原子投影 $P_{\mathrm{prim}}$]\label{def:pom-proj-prim}
+给定核/演化算子 $T$，令时间迹序列 $a_n:=\Tr(T^n)$。定义 primitive 轨道谱
+\[
+p_n:=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}.
+\]
+记 $P_{\mathrm{prim}}(a):=(p_n)_{n\ge 1}$，则由 Euler 乘积与 Möbius/Witt 反演，有
+\[
+Z=E\circ P_{\mathrm{prim}}\circ T,
+\qquad
+Z=E\circ M\circ T.
+\]
+因此 $P_{\mathrm{prim}}$ 是把“时间迹”投影为 prime-like 原子层的规范读出门。
+\end{definition}
+
+\begin{definition}[序投影 $P_{\le}$]\label{def:pom-proj-order}
+序投影 $P_{\le}$ 指把本体态映射到有序约束的读出证书（如符号、比较结果或区间约束），其目标是把“$0\le r<b$”一类的全局序关系编码为可观测输出。与 $P_Z$ 不同，$P_{\le}$ 一般不是环同态，也不保证局部可并行化；其读出通常需要跨窗口聚合，因此是不可并行增长的主要来源。
+\end{definition}
+
+\begin{definition}[温度化序投影 $\mathrm{PROJ}_u$（软序门）]\label{def:pom-proj-temp}
+令 $\Gamma$ 为某个用于序/约束读出的有限图核（例如比较、区间约束或 residue 分层核），并设每条边 $e$ 具有一个非负可加代价势
+\[
+E(e)\in\ZZ_{\ge 0},
+\qquad
+E(\gamma)=\sum_{e\in\gamma}E(e).
+\]
+对 $u\in(0,1]$，定义带权邻接矩阵
+\[
+M_E(u)_{ij}:=\sum_{e:i\to j}u^{E(e)}.
+\]
+令 $\mu_u$ 为该带权 SFT 的平衡态/Parry 测度（等价地由 $M_E(u)$ 的 Perron--Frobenius 特征向量给出的一步马尔可夫测度）。对任一证书读出函数 $R$（例如比较符号、商余区间标签、或同余类标签），定义\textbf{温度化序投影}为其在 $\mu_u$ 下的推前分布：
+\[
+\mathrm{PROJ}_u(R):=R_\ast\mu_u.
+\]
+当 $u$ 接近 $1$ 时，$\mathrm{PROJ}_u$ 体现“软约束/平均读出”；当 $u$ 减小（$\beta=-\log u$ 增大）时，读出逐步向低代价（更满足约束/更接近最优）的路径集合集中。
+\end{definition}
+
+\begin{remark}[硬序投影作为零温极限]\label{rem:pom-order-as-zero-temp}
+在局部常势（边势）设定下，零温极限 $u\to 0$（等价 $\beta\to+\infty$）把平衡态 $\mu_u$ 推向\emph{基态集合}：支持在使平均代价 $\bar E=\lim_{n\to\infty}E(\gamma_n)/|\gamma_n|$ 最小的周期/子移位分量上（参见 \cite{ChazottesGambaudoUgalde2011ZeroTempLocConst} 的一般结论）。因此在机制层面，序投影 $P_{\le}$ 可被理解为“软序门 $\mathrm{PROJ}_u$ 在零温下的硬化极限”：从加权平均转为选择/可行性筛选（典型为 $\arg\min$ 结构），这也是 $P_{\le}$ 不可约地引入不可并行读出深度的根源。
+
+在有限图上，零温基态可由最小平均回路权精确表征：令 $\phi_\theta=\langle\theta,\Phi\rangle$ 或一般取 $\phi=E$，则最小平均代价等于图上的 min-mean-cycle 值，并可用 Karp 算法多项式时间求出（\cite{Karp1978MinCycleMean}）。这把“硬序投影”的核心瓶颈转化为一个可审计的组合证书接口。
+\end{remark}
+
+\begin{remark}[范畴边界与不可并行增长]\label{rem:pom-factor-boundary}
+任意滑动块因子码均具有常数在线延迟，因此所有随规模增长的读出深度必然来自非因子码投影（典型即 $P_{\le}$）或把混合留在演化深度 $D_U$ 中。这一“范畴边界”把增长项从算法技巧提升为结构性约束。
+\end{remark}
+
+\begin{definition}[角色/同余投影 $P_\chi$]\label{def:pom-proj-chi}
+角色投影 $P_\chi$ 指把 primitive 轨道按可加观测量（如 $\chi(\gamma),N_-(\gamma),N_e(\gamma)$）做同余/角色分层，并读出 residue 类标签。其可由扭曲矩阵族 $M(q)$ 与 Dirichlet--Mertens 常数张量实现（见 \ref{subsec:arity-dirichlet-mertens-tensor}），因此是 $P_{\le}$ 在“序/同余/角色读出”方向上的具体化门，亦可视为对 $P_{\mathrm{prim}}$ 的角色化增强。
+\end{definition}
+
+\begin{remark}[序瓶颈的碰撞轴主导]\label{rem:pom-collision-axis}
+在真实输入 40 状态核中，\(((3,3,5))\) 的最坏扭曲谱半径由纯碰撞 cocycle 达到（命题 \ref{prop:arity-335-collision-dominant}），说明序投影的最慢瓶颈并非“值轴”而是碰撞/相消轴。因而若以空间换时间，优先引入可分离的碰撞轴束比单纯扩展值通道更有效。
+\end{remark}
+
+\subsection{投影词语法与成本模型}\label{subsec:pom-words}
+\begin{definition}[投影词与半群]\label{def:pom-projection-word}
+令投影字母表 $\{Z,\le\}$ 分别代表一次 $P_Z$ 与一次 $P_{\le}$ 读出。对任意指令/微码 $I$，定义投影词
+\[
+W(I)=(k_Z(I),k_{\le}(I)),
+\]
+其中 $k_Z,k_{\le}$ 为规范/序投影的调用次数。令
+\[
+\mathcal{W}=\langle Z,\le\rangle^*/\sim,\qquad Z^2\sim Z
+\]
+为投影词半群（幂等律来自 $P_Z\circ P_Z=P_Z$）；其他等价关系可按具体实现的因果锥/局部可交换性附加。
+\end{definition}
+
+\begin{remark}[原子投影的扩展投影词]\label{rem:pom-word-prim}
+若把原子投影纳入读出，则可扩展字母表为 $\{Z,\mathrm{prim},\le\}$，并记
+\[
+W^{\mathrm{full}}(I)=(k_Z(I),k_{\mathrm{prim}}(I),k_{\le}(I)).
+\]
+对算术指令默认 $k_{\mathrm{prim}}=0$，原子投影主要服务于 prime-like 谱的读出与机制审计。
+\end{remark}
+
+\begin{remark}[角色投影的投影词记号]\label{rem:pom-word-chi}
+当序读出由 $P_\chi$ 实现时，可改记投影字母表为 $\{Z,\chi\}$，并写
+\(
+W_\chi(I)=(k_Z(I),k_\chi(I))
+\)。
+此时 $k_\chi$ 仅统计角色/同余投影的调用次数，作为 $k_{\le}$ 的具体化版本。
+\end{remark}
+
+\begin{definition}[纤维选择与核选择]\label{def:pom-fiber-kernel-choice}
+对任意指令/微码 $I$，记其在实现过程中被激活的先验纤维族为
+$$
+\mathcal{F}(I)\subseteq \{\mathcal{S}_\varphi,\mathcal{T},\mathcal{P},\widehat{\ZZ}\},
+$$
+分别对应尺度纤维、相位纤维、素数寄存器纤维与 profinite 同余轴（定义 \ref{def:pom-scale-fiber}、\ref{def:pom-phase-fiber}、\ref{def:pom-prime-fiber}、\ref{def:pom-profinite}）。
+并且记其规范读出所采用的归一化核为 $K_Z(I)$（即实现 $P_Z$ 的具体核），序/角色读出所采用的核为 $K_{\le}(I)$ 或 $K_{\chi}(I)$（实现 $P_{\le}$ 或 $P_\chi$ 的具体核）。
+\end{definition}
+
+\begin{definition}[指令签名：投影词 $\times$ 核指纹 $\times$ 纤维选择]\label{def:pom-instruction-signature}
+令 $\mathfrak{F}(K)$ 为核的谱指纹（定义 \ref{def:kernel-spectral-fingerprint}）。对任意指令/微码 $I$，定义其（审计）指令签名为
+$$
+\Sigma(I):=\Bigl(W(I),\ \mathfrak{F}\bigl(K_Z(I)\bigr),\ \mathfrak{F}\bigl(K_{\le}(I)\bigr),\ \mathcal{F}(I)\Bigr),
+$$
+其中 $W(I)$ 为投影词（定义 \ref{def:pom-projection-word}），$\mathcal{F}(I)$ 为纤维选择（定义 \ref{def:pom-fiber-kernel-choice}）。当序读出由 $P_\chi$ 实现时，可将 $\mathfrak{F}(K_{\le}(I))$ 替换为 $\mathfrak{F}(K_{\chi}(I))$。
+\end{definition}
+
+\begin{remark}[为什么 $W$ 不够：核几何进入指纹]\label{rem:pom-signature-why}
+投影词 $W(I)$ 只记录“调用了几次投影门”，并不记录“投影门的几何是什么”。而核指纹 $\mathfrak{F}(K)$（例如 $\zeta_K$、primitive 分层谱 $\{B_{K,n}(u)\}$、有限部常数与扭曲谱隙）决定了同一投影门在机制层的差异（附录 \ref{app:sync-kernel-A-compare}）。因此更强的统一分类对象应为 $\Sigma(I)$ 而非仅为 $W(I)$。
+\end{remark}
+
+\begin{proposition}[签名一致 $\Rightarrow$ 指纹一致与成本模型同型]\label{prop:pom-signature-audit}
+设两条指令/微码 $I,J$ 满足 $\Sigma(I)=\Sigma(J)$。则：
+\begin{enumerate}
+  \item \textbf{投影审计不变量一致：}两者在同一核指纹口径下给出相同的 $\zeta$、primitive 原子谱（含其加权分层）、压力曲线端点与扭曲谱隙等可审计指纹（由 $\mathfrak{F}(K_Z),\mathfrak{F}(K_{\le})$ 完全决定）。
+  \item \textbf{成本模型同型：}在定义 \ref{def:pom-cost} 的口径下，两者具有相同的投影词系数 $(k_Z,k_{\le})$，并且其常数项（如 $\delta_Z$）与混合尺度（如 $\tau_{\mathrm{mix}}$）由核指纹相同而一致，因此成本模型的结构分解一致：
+  $$
+  T_I(n)=k_Z\,\delta_Z+k_{\le}\,T_{\le}(n)+D_U(n),
+  \qquad
+  T_J(n)=k_Z\,\delta_Z+k_{\le}\,T_{\le}(n)+D_U'(n),
+  $$
+  其中差异仅可能出现在“线性化深度/演化深度”项 $D_U$ 上，而该项正由纤维选择 $\mathcal{F}$ 与具体演化编排决定（定义 \ref{def:pom-space-time}）。
+\end{enumerate}
+\end{proposition}
+
+\begin{definition}[成本模型]\label{def:pom-cost}
+令 $\delta_Z$ 为一次规范投影的基准读出深度（例如在线归一化的固定延迟，见定理 \ref{thm:online-delay-fold}），令 $T_{\le}(n)$ 为一次序投影的聚合深度，令 $D_U(n)$ 为在本体演化中完成线性化所需的深度。则定义
+\[
+T_I(n)=k_Z(I)\,\delta_Z+k_{\le}(I)\,T_{\le}(n)+D_U(n).
+\]
+该模型把投影读出与演化深度分离，用于比较不同实现把“混合”置于时间还是空间的策略差异。
+\end{definition}
+
+\begin{remark}[原子投影读出成本]\label{rem:pom-cost-prim}
+若需要读取 primitive 原子层谱，可在成本模型中添加
+\[
+k_{\mathrm{prim}}(I)\,T_{\mathrm{prim}}(n),
+\]
+其中 $T_{\mathrm{prim}}(n)$ 表示轨道层谱的读出或 Möbius 反演深度；对算术指令通常取 $k_{\mathrm{prim}}=0$。
+\end{remark}
+
+\begin{remark}[角色投影门下的时间上界]\label{rem:pom-cost-chi}
+当序读出由 $P_\chi$ 实现时，可用 $\tau_{\mathrm{mix}}$ 作为 $T_{\le}$ 的有效尺度（见注 \ref{rem:pom-chi-mixing}），从而得到
+\[
+T_I(n)\ \approx\ k_Z(I)\,\delta_Z\ +\ k_\chi(I)\,\tau_{\mathrm{mix}}\ +\ D_U(n).
+\]
+这给出“投影词 $\Rightarrow$ 非并行开销”的直接量化接口。
+\end{remark}
+
+\subsection{空间—时间对偶与资源函数}\label{subsec:pom-resources}
+\begin{definition}[嵌入—演化—投影正规形]\label{def:pom-normal-form}
+对分辨率 $n$ 的运算 $f_n$，定义其正规形为
+\[
+f_n=\Pi_n\circ U^{T(n)}\circ \iota_n,
+\]
+其中 $\iota_n$ 为升维嵌入，$U^{T(n)}$ 为本体演化的迭代，$\Pi_n$ 为由 $P_Z,P_{\le}$ 组合的读出投影。
+\end{definition}
+
+\begin{definition}[空间代价与时间代价]\label{def:pom-space-time}
+令 $\mathcal M_n$ 为实现 $f_n$ 时被激活的隐纤维块（素数轴、相位轴、余量状态等），定义
+\[
+S(n):=\log|\mathcal M_n|.
+\]
+定义时间代价为最小稳定步数
+\[
+T(n):=\min\{t:\ \Pi_n(U^t(\iota_n(x)))\ \text{对所有输入稳定}\}.
+\]
+空间—时间对偶律指：增大 $S(n)$ 可将混合线性化并降低 $T(n)$，反之限制 $S(n)$ 将迫使信息沿局部传播累积。
+\end{definition}
+
+\begin{definition}[原子空间代价（prime-like 原子预算）]\label{def:pom-atom-space-cost}
+固定核/演化算子 $T$（或其带权版本 $T(u)$），令 $p_n$ 为 primitive 轨道数（或 primitive 分层谱在 $u=1$ 的取值；见定义 \ref{def:pom-proj-prim}）。定义长度 $n$ 的原子空间代价为
+$$
+S_{\mathrm{atom}}(n):=\log p_n.
+$$
+当 $p_n$ 带权（例如 $p_n(u)$ 或 $B_{K,n}(u)$）时，取 $u=1$ 可视为“无权原子预算”，取 $u=0$ 给出 carry-free 原子预算（推论 \ref{cor:Bn0-equals-primitive-skeleton}）。
+\end{definition}
+
+\begin{remark}[时间$\leftrightarrow$原子空间的可审计互译]\label{rem:pom-atom-audit}
+由命题 \ref{prop:time-space-commuting-diagram} 的交换图与 Möbius/Witt 反演（见注 \ref{rem:pom-trace-to-prime}），$p_n$ 与时间迹 $a_n=\Tr(T^n)$ 可互相确定：
+$$
+p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d},
+\qquad
+a_n=\sum_{d\mid n} d\,p_d.
+$$
+因此 $S_{\mathrm{atom}}(n)$ 是把“时间侧不可约循环”压成空间侧 prime-like 原子谱的可审计指纹；尤其在素数长度 $\ell$ 上，primitive 项隔离“不可约循环”与“幂重复循环”的差异（参见注 \ref{rem:pom-prime-length-probe} 的素数长度探针公式），可用于检验张量装配的隐藏耦合与并行独立性。
+\end{remark}
+
+\begin{corollary}[折叠诱导的空间下界]\label{cor:pom-space-lower-bound}
+在分辨率 $m$ 上，若要求折叠纤维的微态可区分（即 $P_Z$ 不丢失该层信息），则隐纤维规模至少满足
+\[
+|\mathcal M_m|\ \ge\ \frac{|\Omega_m|}{|X_m|}=\frac{2^m}{F_{m+2}},
+\]
+等价地
+\[
+S(m)\ \ge\ S_Z(m)=\log\!\left(\frac{2^m}{F_{m+2}}\right).
+\]
+因此空间代价的最硬下界由折叠熵率直接锁定。
+\end{corollary}
+
+\subsection{统一算术：同一演化，不同读出}\label{subsec:pom-unified-arith}
+\paragraph{加法}由“逐位叠加 $\Rightarrow$ 规范投影”给出：
+\[
+a\oplus b=\Fold_\infty(a+b),
+\]
+其投影词为 $W=(1,0)$（推论 \ref{cor:add-as-fold}）。
+
+\paragraph{乘法}同样可视为“线性化 $\Rightarrow$ 规范投影”，其投影词仍为 $W=(1,0)$；差异体现在 $D_U(n)$ 与所选纤维：相位纤维路线把卷积对角化为点wise 乘，素数纤维路线把乘法线性化为指数坐标的加法（定义 \ref{def:pom-prime-fiber}）。该分解不改变本体原语，仅改变线性化深度与空间开销的分配。
+
+\paragraph{减法}有两条读出路径：
+（i）先以 $P_{\le}$ 判定符号/大小，再执行归一化；其投影词 $W=(1,1)$。
+（ii）在冗余字母表中把符号内化到 $P_Z$ 的更强归一化中，避免显式 $P_{\le}$，从而 $W=(1,0)$ 但 $\delta_Z$ 增大。这一分解把“序信息”转移到规范投影的本体核中。
+若序读出采用角色投影 $P_\chi$，则该步骤可视为对 residue/角色的稳定判定，其时间尺度由 $\tau_{\mathrm{mix}}$ 控制。
+
+\paragraph{除法/商余}满足
+\[
+a=bq+r,\quad 0\le r<b,
+\]
+因此 $P_{\le}$ 是不可约读出步骤。由注 \ref{rem:division-as-selection} 的“解方程 + 规范形选择”口径可得：长除式对应 $k_{\le}$ 的线性增长；倒数/迭代式把多次乘法吸收到 $D_U(n)$ 中并以常数次 $P_{\le}$ 校正。两者的差异是投影词的不同实现，而非本体原语的差异。
+在角色投影口径下，商余可由 $P_\chi$ 的同余分层稳定读出；其不可并行主尺度即为混合时间 $\tau_{\mathrm{mix}}$。
+
+\begin{remark}[生成机制与“数学体系”的含义]\label{rem:pom-math-world}
+“生成整个数学体系”在此不指形式系统的完备性，而指对象与运算的生成机制统一：对象作为本体态在投影族下的稳定读出，运算作为投影词的组合闭包。不同数学分支仅对应于所选纤维与投影闭包的差异，而非本体的差异。
+\end{remark}
+
+\begin{definition}[分辨率可判定与分辨率完备性]\label{def:pom-resolution-completeness}
+令 $\mathcal{F}_m$ 为由长度 $m$ 的柱事件生成的 $\sigma$-代数（等价于“只依赖有限窗口”的可观测闭包），并记 $\mathcal{F}_\infty:=\sigma\!\bigl(\bigcup_{m\ge 1}\mathcal{F}_m\bigr)$。
+\begin{itemize}
+  \item 称性质/命题 $\mathsf{P}$ \textbf{$m$-可判定}，若其指示函数属于 $\mathcal{F}_m$（即仅依赖有限窗口）。
+  \item 称 $\mathsf{P}$ \textbf{分辨率可判定}，若存在某个 $m$ 使其 $m$-可判定（即 $\mathbf{1}_{\mathsf P}\in\mathcal{F}_\infty$）。
+  \item 称一个概念体系在给定读出族下\textbf{分辨率完备}，若其全部基本可观测命题均为分辨率可判定。
+\end{itemize}
+\end{definition}
+
+\begin{remark}[分辨率边界与序投影]\label{rem:pom-resolution-boundary}
+条件期望塔（命题 \ref{prop:pom-expectation-tower}）表明：$P_Z$ 的可观测闭包自然落在 $\mathcal{F}_\infty$ 中；因此所有“稳定读出”的命题都属于分辨率可判定层级。相对地，序投影 $P_{\le}$ 典型对应跨窗口聚合与全局序约束（定义 \ref{def:pom-proj-order}），其判定一般不在任何固定 $\mathcal{F}_m$ 内闭合，从而在结构上形成分辨率边界：若不引入额外纤维轴束（例如模轴空间化，定理 \ref{thm:pom-order-spatialization}），则必须付出随规模增长的读出深度。
+\end{remark}
+
