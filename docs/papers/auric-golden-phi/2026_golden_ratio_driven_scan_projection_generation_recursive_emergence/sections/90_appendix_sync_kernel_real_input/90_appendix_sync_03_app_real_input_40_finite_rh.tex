@@ -275,10 +275,25 @@ m:=\left\lfloor \frac{t\,p\log\lambda}{2\pi}\right\rceil
 给定一个带参数的核族 \(M(u)\)（例如由势函数/温度化门 \(\mathrm{PROJ}_u\) 或角色扭曲生成；见定义 \ref{def:pom-proj-temp} 与 \ref{def:pom-proj-chi}），记主谱半径为 \(\lambda_1(u)\)，最坏非平凡扭曲谱半径为 \(\Lambda(u)\)。
 定义核版 Newman 阈值为
 \[
-\theta_\ast:=\inf\{\theta\in\RR:\ \Lambda(e^\theta)\le \lambda_1(e^\theta)^{1/2}\}.
+\beta_\ast:=\inf\{\beta\in\RR_{\ge 0}:\ \Lambda(e^{-\beta})\le \lambda_1(e^{-\beta})^{1/2}\}.
 \]
-当 \(\theta_\ast\le 0\) 时，原点切片（\(u=1\)）已满足核版 GRH 的平方根界；当 \(\theta_\ast>0\) 时，需“加热/变形”后才进入平方根区间。
+当 \(\beta_\ast=0\) 时，原点切片（\(u=1\)）已满足核版 GRH 的平方根界；当 \(\beta_\ast>0\) 时，需向零温方向变形（\(\beta\) 增大、\(u=e^{-\beta}\) 变小）后才进入平方根区间。
 \end{definition}
+
+\begin{remark}[可复现输出：纯碰撞轴的核版 Newman 阈值（有限模数代理）]\label{rem:kernel-newman-threshold-repro}
+以真实输入 40 状态核的三轴扭曲族为例，固定 \((q,r)=(1,1)\)，并在第三轴取纯碰撞可观测量 \(N_2\)（即 \(\xi=\mathbf{1}_{d=2}\)），对每个奇素数 \(p\) 考察复合扭曲
+\(
+u=\exp(-\beta)\,\omega_p^k
+\)
+（\(k\not\equiv 0\!\!\pmod p\)）。定义
+\[
+\lambda_1(\beta):=\rho(M(\exp(-\beta))),\qquad
+\Lambda_p(\beta):=\max_{k\neq 0}\rho\bigl(M(\exp(-\beta)\omega_p^k)\bigr),
+\]
+并令 \(\beta_\ast(p)\) 为满足 \(\Lambda_p(\beta)\le \lambda_1(\beta)^{1/2}\) 的最小 \(\beta\)（若存在）。
+表 \ref{tab:real_input_40_kernel_newman_threshold} 给出若干 \(p\) 的数值扫描结果：若在扫描区间内未观测到满足平方根界的 \(\beta\)，则给出下界 \(\beta_\ast(p)>\beta_{\max}\)，并同时列出扫描网格上 \(\Lambda_p/\sqrt{\lambda_1}\) 的最小值及其发生位置（脚本 `scripts/exp_real_input_40_kernel_newman_threshold.py` 一键生成）：
+\input{sections/generated/tab_real_input_40_kernel_newman_threshold}
+\end{remark}
 
 \begin{remark}[从 toy-RH 到“角度熵”：一个可操作的升级方向]\label{rem:finite-rh-angle-entropy}
 命题 \ref{prop:finite-rh-triangle-dict} 表明：有限维 toy-RH 的“临界线位置”只取决于归一化谱的模长约束（\( |\mu|\le \sqrt\lambda \)）。

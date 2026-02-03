@@ -533,6 +533,28 @@ f_{a,b}(c)
 的可检验预测（例如 $p\in\{7,11,13\}$）。该二次律是“简单 PF 本征值的解析微扰”在小角扭曲下的标准形状；若后续计算显示 $p=5$ 明显偏离该曲线，则可把它视为真正的特异共振模数。
 \end{remark}
 
+\begin{lemma}[单位圆扭曲的偶性与无三次项]\label{lem:unit-circle-evenness}
+设 $M_\theta$ 为一个实矩阵族，且其条目关于 $e^{\mathrm{i}\theta}$ 实解析，并满足
+\[
+M_{-\theta}=\overline{M_\theta}\qquad(\theta\in\RR).
+\]
+记 $\rho(\theta):=\rho(M_\theta)$ 为谱半径，并设在 $\theta=0$ 附近存在简单的主特征值分支 $\Lambda(\theta)$（$\Lambda(0)>0$）。
+则 \(\rho(\theta)=\rho(-\theta)\) 且 \(\rho\) 在 \(0\) 的邻域为实解析偶函数；因此 \(\log(\rho(\theta)/\rho(0))\) 的 Taylor 展开只含偶次项，特别地
+\[
+\log\frac{\rho(\theta)}{\rho(0)}=-c_2\theta^2+c_4\theta^4+O(\theta^6),
+\qquad \theta\to 0.
+\]
+\end{lemma}
+\begin{proof}
+由 $M_{-\theta}=\overline{M_\theta}$ 得 $M_{-\theta}$ 与 $M_\theta$ 的谱互为共轭，因此谱半径相等：$\rho(-\theta)=\rho(\theta)$。
+又因主特征值分支简单，$\Lambda(\theta)$ 在 $0$ 的邻域解析，且 $\Lambda(-\theta)=\overline{\Lambda(\theta)}$；于是
+\(
+|\Lambda(\theta)|^2=\Lambda(\theta)\Lambda(-\theta)
+\)
+为解析偶函数，且在 $\theta=0$ 处取正值 $\Lambda(0)^2$，故其平方根 $|\Lambda(\theta)|=\rho(\theta)$ 在邻域内亦为实解析偶函数。
+因此其对数的展开只含偶次项，得到结论。证毕。
+\end{proof}
+
 \begin{proposition}[小角扭曲的二次律：$\kappa$ 的方差密度识别（可证明/可算）]\label{prop:arity-335-kappa-variance}
 取碰撞 cocycle \(\xi=\mathbf{1}_{\{d=2\}}\)（沿边取值 \(0/1\)），并令三轴扭曲中第三轴取 \(N_2(\gamma)\bmod p\)。
 对 \(\theta\in\RR\) 定义纯碰撞扭曲矩阵
@@ -552,7 +574,7 @@ $$
 $$
 \log\frac{|\Lambda(\theta)|}{\lambda}
 =
--\frac{\sigma_\xi^2}{2}\theta^2+O(\theta^3).
+-\frac{\sigma_\xi^2}{2}\theta^2+O(\theta^4).
 $$
 特别地，当 \(\theta=2\pi/p\) 时（\(p\) 为奇素数）有
 $$
@@ -560,7 +582,7 @@ $$
 =
 \frac{\sigma_\xi^2}{2}\left(\frac{2\pi}{p}\right)^2
 +
-O\!\left(p^{-3}\right),
+O\!\left(p^{-4}\right),
 $$
 其中 \(\rho_{3,3,p}\) 为 \( ((3,3,p))\) 的最坏扭曲谱半径（且在可复现输出中由纯碰撞扭曲达到）。
 因此二次律常数的本体为
@@ -574,6 +596,31 @@ P(t):=\log\rho(M(1,1,e^t))
 \)
 给出：\(\sigma_\xi^2=P''(0)\)（与命题 \ref{prop:kernel-clt-ldp} 的有限状态 Markov 压力导数口径一致）。
 \end{proposition}
+
+\begin{remark}[偶性强化的二次律与 Richardson 外推估计器]\label{rem:arity-335-richardson-kappa}
+由引理 \ref{lem:unit-circle-evenness}，$\log(\rho(\theta)/\lambda)$ 的展开不含奇次项，因此存在常数 $c_4\in\RR$ 使得
+\[
+1-\frac{\rho(\theta)}{\lambda}
+=\kappa_\infty\,\theta^2+c_4\,\theta^4+O(\theta^6),
+\qquad \theta\to 0.
+\]
+对奇素数 $p$ 令 $\theta_p:=2\pi/p$，并记
+\[
+A(p):=\frac{1-\rho_{3,3,p}/\lambda}{(2\pi/p)^2},
+\]
+则
+\[
+A(p)=\kappa_\infty+\frac{c_4(2\pi)^2}{p^2}+O(p^{-4}).
+\]
+因此可用两个模数 $(p,q)$ 做 Richardson 外推消去 $p^{-2}$ 项，得到改良估计器
+\[
+\widehat\kappa(p,q)
+:=\frac{A(p)\,p^2-A(q)\,q^2}{p^2-q^2}
+=\kappa_\infty+O(p^{-4})+O(q^{-4}).
+\]
+若 $\widehat\kappa(5,7)$ 与 $\widehat\kappa(7,11)$（或 $\widehat\kappa(7,13)$）出现显著不一致，
+则可把 $p=5$ 识别为“特异共振模数”，而非普通的渐近点。
+\end{remark}
 
 \begin{proposition}[最坏角色方向的协方差判据：\texorpdfstring{$t^\top\Sigma t$}{t^T Sigma t} 最小化]\label{prop:arity-335-worst-direction-cov}
 把三轴 Dirichlet 分层的三条一步可加量记为向量 cocycle
@@ -639,17 +686,38 @@ $$
 $$
 \lim_{p\to\infty}D(p)=\kappa_\infty=\frac{\sigma_\xi^2}{2},
 $$
-并且 \(D(p)=\kappa_\infty+O(p^{-1})\)。
+并且 \(D(p)=\kappa_\infty+O(p^{-2})\)。
 \end{theorem}
 \begin{proof}
 由命题 \ref{prop:arity-335-kappa-variance} 的渐近式
 \(
 1-\rho_{3,3,p}/\lambda
 =
-\frac{\sigma_\xi^2}{2}\left(\frac{2\pi}{p}\right)^2+O(p^{-3})
+\frac{\sigma_\xi^2}{2}\left(\frac{2\pi}{p}\right)^2+O(p^{-4})
 \)
-两边同乘 \((p/2\pi)^2\) 即得 \(D(p)=\sigma_\xi^2/2+O(p^{-1})\)，从而极限存在并等于 \(\kappa_\infty=\sigma_\xi^2/2\)。证毕。
+两边同乘 \((p/2\pi)^2\) 即得 \(D(p)=\sigma_\xi^2/2+O(p^{-2})\)，从而极限存在并等于 \(\kappa_\infty=\sigma_\xi^2/2\)。证毕。
 \end{proof}
+
+\begin{corollary}[扩散标度：混合时间 \texorpdfstring{$\tau_{\mathrm{mix}}(p)$}{tau_mix(p)} 为 \texorpdfstring{$O(p^2)$}{O(p^2)}]\label{cor:arity-335-diffusive-mixing}
+设 $\rho_{3,3,p}$ 为 $((3,3,p))$ 体系的最坏扭曲谱半径，$\lambda=\rho(M)$。
+定义对应的主相关长度尺度
+\[
+\tau_{\mathrm{mix}}(p):=\frac{1}{-\log(\rho_{3,3,p}/\lambda)}.
+\]
+则当 $p\to\infty$ 时有扩散型标度渐近
+\[
+\tau_{\mathrm{mix}}(p)=\frac{p^2}{4\pi^2\,\kappa_\infty}+O(1)
+\qquad\left(\kappa_\infty=\frac{\sigma_\xi^2}{2}\right).
+\]
+因此若希望把同余类偏置误差压到相对阈值 $\delta\in(0,1)$（即令 $(\rho_{3,3,p}/\lambda)^n\lesssim \delta$），则所需长度满足
+\[
+n_{\mathrm{mix}}(p,\delta)
+\sim
+\tau_{\mathrm{mix}}(p)\,\log\frac{1}{\delta}
+\sim
+\frac{p^2}{4\pi^2\,\kappa_\infty}\log\frac{1}{\delta}.
+\]
+\end{corollary}
 
 \begin{remark}[可复现对照：\texorpdfstring{$D(p)$}{D(p)} 的收敛与 near-coboundary 上界]\label{rem:arity-335-limit-law-table}
 脚本 \texttt{scripts/exp\_arity\_335\_n2\_limit\_law\_table.py} 读取谱扫描输出（表 \ref{tab:real_input_40_arity_335_n2_selection_law_primes}）并生成 \(D(p)\) 表，同时以方差极限 \(\kappa_\infty=\sigma_\xi^2/2\) 与证书上界 \(\varepsilon/2,\varepsilon_\pi^{(2)}/2\) 作对照。输出见表 \ref{tab:real_input_40_arity_335_n2_limit_law}。
@@ -663,15 +731,15 @@ $$
 $$
 1-\frac{\rho_{3,3,p}}{\lambda}
 =
-\frac{\sigma_\xi^2}{2}\left(\frac{2\pi}{p}\right)^2+O(p^{-3})
+\frac{\sigma_\xi^2}{2}\left(\frac{2\pi}{p}\right)^2+O(p^{-4})
 \ \le\
-\frac{\varepsilon_\pi^{(2)}}{2}\left(\frac{2\pi}{p}\right)^2+O(p^{-3}).
+\frac{\varepsilon_\pi^{(2)}}{2}\left(\frac{2\pi}{p}\right)^2+O(p^{-4}).
 $$
 等价地，用 \(|1-\omega_p|^2=4\sin^2(\pi/p)\) 写成
 $$
 1-\frac{\rho_{3,3,p}}{\lambda}
 \le
-\frac{\varepsilon_\pi^{(2)}}{2}\,|1-\omega_p|^2\ +\ O(p^{-3}),
+\frac{\varepsilon_\pi^{(2)}}{2}\,|1-\omega_p|^2\ +\ O(p^{-4}),
 $$
 从而在 \(p\to\infty\) 的缩放意义下得到 \(\kappa_\infty\le \varepsilon_\pi^{(2)}/2\)。
 \end{corollary}

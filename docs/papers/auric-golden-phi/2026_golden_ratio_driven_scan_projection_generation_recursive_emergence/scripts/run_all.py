@@ -246,6 +246,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_kernel_newman_threshold",
+            script="exp_real_input_40_kernel_newman_threshold.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_kernel_newman_threshold.json",
+                "sections/generated/tab_real_input_40_kernel_newman_threshold.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_zeta_u",
             script="exp_sync_kernel_real_input_40_zeta_u.py",
             args=[],
