@@ -169,6 +169,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_max_fiber_achievers_phase",
+            script="exp_fold_max_fiber_achievers_phase.py",
+            args=["--m-min", "2", "--m-max", "30", "--show-words", "4"],
+            expected_outputs=[
+                "artifacts/export/fold_max_fiber_achievers_phase.json",
+                "sections/generated/tab_fold_max_fiber_achievers_phase.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_moment_recursions",
             script="exp_fold_collision_moment_recursions.py",
             args=[],

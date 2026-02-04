@@ -43,6 +43,23 @@ s=\frac{\log\mu+2\pi i k}{\log\lambda},
 则右半开带 $\tfrac12<\Re(s)<1$ 内无极点；若存在 $|\mu|=\sqrt{\lambda}$，则对应极点列恰落在 $\Re(s)=\tfrac12$ 上。
 \end{proposition}
 
+\begin{corollary}[kernel RH \texorpdfstring{$\Longleftrightarrow$}{<->} 半条带无极点]\label{cor:finite-rh-halfstrip-nopoles}
+沿用命题 \ref{prop:finite-rh-triangle-dict} 的记号。把 kernel RH（Ramanujan 半径界）表述为
+\[
+\max_{\mu\neq \lambda}|\mu|\le \sqrt{\lambda}.
+\]
+则该条件等价于：\(\widehat{\zeta}(s)\) 在开半条带
+\[
+\tfrac12<\Re(s)<1
+\]
+内无极点。并且该条件达到饱和（存在 \(|\mu|=\sqrt{\lambda}\)）当且仅当 \(\widehat{\zeta}(s)\) 在临界线 \(\Re(s)=\tfrac12\) 上出现非平凡极点列。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:finite-rh-triangle-dict} 的极点实部恒等式 \(\Re(s)=\log|\mu|/\log\lambda\) 可知：存在某个 \(\mu\neq 0\) 使其极点落在 \(\tfrac12<\Re(s)<1\) 当且仅当 \(\sqrt{\lambda}<|\mu|<\lambda\)。
+而 \(\lambda\) 为谱半径使得 \(|\mu|\le \lambda\) 对所有特征值成立，因此“半条带无极点”等价于对所有 \(\mu\neq\lambda\) 有 \(|\mu|\le \sqrt{\lambda}\)，即 kernel RH。
+最后一段同理由 \(|\mu|=\sqrt{\lambda}\iff \Re(s)=\tfrac12\) 得到。证毕。
+\end{proof}
+
 \begin{remark}[本核的达界位置：唯一临界模长 \texorpdfstring{$|\mu|=\sqrt{\lambda}$}{|mu|=sqrt(lambda)}]\label{rem:finite-rh-40-ramanujan}
 在真实输入 40 状态核上，除 Perron 根 $\lambda=\varphi^2$ 外，唯一满足 $|\mu|=\sqrt{\lambda}$ 的特征值为 $-\sqrt{\lambda}=-\varphi$（命题 \ref{prop:real-input-40-essential-20} 与此处命题 \ref{prop:finite-rh-40} 的谱分解一致）。
 因此该核达到 toy-RH 的“单频临界振荡”情形：临界带中的全部非平凡极点由 $-\sqrt{\lambda}$ 单独产生。
@@ -253,6 +270,59 @@ p_n=\frac{\lambda^n}{n}+O\!\left(\frac{\lambda^{n/3}}{n}\right)\qquad(n\ \text{�
 \]
 \end{corollary}
 
+\begin{proposition}[平方根项的相位共振公式：临界模谱与 \texorpdfstring{$d=2$}{d=2} 项的干涉]\label{prop:finite-rh-sqrt-resonance-general}
+设 \(M\) 为 primitive 非负整数矩阵，\(\lambda=\rho(M)>1\)。并假设满足 kernel RH 的谱半径界：除 Perron 根外所有特征值 \(\mu\) 均满足 \(|\mu|\le \sqrt{\lambda}\)。
+记临界模谱集合
+\[
+\mathcal{C}:=\{\mu\in\mathrm{spec}(M):\ |\mu|=\sqrt{\lambda}\},
+\qquad
+\omega_\mu:=\mu/\sqrt{\lambda}\ \ (|\omega_\mu|=1),
+\]
+并记严格次临界半径
+\[
+R:=\max\{|\mu|:\ \mu\in\mathrm{spec}(M),\ |\mu|<\sqrt{\lambda}\},
+\qquad
+\Lambda:=\max\{R,\ \lambda^{1/3}\}.
+\]
+令 \(a_n:=\Tr(M^n)\)，并定义 primitive 轨道数
+\[
+p_n:=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}.
+\]
+则当 \(n\to\infty\) 时有渐近展开
+\[
+\boxed{\;
+p_n
+=\frac{\lambda^n}{n}
++\frac{\lambda^{n/2}}{n}\Bigl(\sum_{\mu\in\mathcal{C}}\omega_\mu^{\,n}-\mathbf{1}_{2\mid n}\Bigr)
++O\!\left(\frac{\Lambda^n}{n}\right)\; }.
+\]
+\end{proposition}
+\begin{proof}
+由谱分解（Jordan 项并入严格次级项）可写
+\[
+a_n=\Tr(M^n)=\lambda^n+\sum_{\mu\in\mathcal{C}}\mu^n+O(R^n)
+=\lambda^n+\lambda^{n/2}\sum_{\mu\in\mathcal{C}}\omega_\mu^{\,n}+O(R^n).
+\]
+由 Möbius 反演，
+\[
+np_n=\sum_{d\mid n}\mu(d)\,a_{n/d}
+=a_n-\mathbf{1}_{2\mid n}a_{n/2}+\sum_{\substack{d\mid n\\ d\ge 3}}\mu(d)\,a_{n/d}.
+\]
+其中对 \(d\ge 3\)，主项 \(\lambda^{n/d}\) 至多为 \(\lambda^{n/3}\)，并且余项 \(O(R^{n/d})\) 至多为 \(O(R^{n/3})\)，因此
+\[
+\sum_{\substack{d\mid n\\ d\ge 3}}\mu(d)\,a_{n/d}=O(\Lambda^n).
+\]
+另一方面，
+\[
+a_{n/2}=\lambda^{n/2}+O(\lambda^{n/4})+O(R^{n/2}).
+\]
+代入并整理得到
+\[
+np_n=\lambda^n+\lambda^{n/2}\sum_{\mu\in\mathcal{C}}\omega_\mu^{\,n}-\mathbf{1}_{2\mid n}\lambda^{n/2}+O(\Lambda^n),
+\]
+两边除以 \(n\) 即得命题结论。证毕。
+\end{proof}
+
 \begin{remark}[偶长层的“超强化”主次项]\label{rem:finite-rh-even-strengthen}
 在偶长层，$\lambda^{n/2}$ 项由 $d=1$ 与 $d=2$ 精确抵消。进一步分情形可得更强的主次项：
 \[
@@ -269,7 +339,7 @@ $(-\varphi)^{n/2}=(-1)^{n/2}\lambda^{n/4}$；而 $\mu(4)=0$ 使 $d=4$ 不贡献�
 \end{remark}
 
 \begin{remark}[次级项由“谱信息 $\times$ 因子结构”共同锁定]\label{rem:finite-rh-factor-controls-secondary}
-在本核上，唯一满足 $|\mu|=\sqrt{\lambda}$ 的非平凡特征值为 $-\sqrt{\lambda}$，因此 primitive 侧的“平方根级误差”与“偶长层相消”都由 Möbius 反演的 $d=1,2$ 两项主导（推论 \ref{cor:finite-rh-explicit-formula}）。
+在本核上，唯一满足 $|\mu|=\sqrt{\lambda}$ 的非平凡特征值为 $-\sqrt{\lambda}$，因此 primitive 侧的“平方根级误差”与“偶长层相消”都由临界模谱相位与 Möbius 反演的 $d=1,2$ 两项共同锁定（命题 \ref{prop:finite-rh-sqrt-resonance-general}，以及其特例推论 \ref{cor:finite-rh-explicit-formula}）。
 一旦该层级被抵消，新的主次级项不再只由谱决定，还会显式依赖 $n$ 的因子结构：对 $n$ 的任意奇素因子 $p\mid n$，Möbius 反演中的 $d=p$ 项会贡献一个量级为 $\lambda^{n/p}/n$ 的修正（其符号由 $\mu(p)=-1$ 决定）。
 \par
 更紧凑地，定义
@@ -394,6 +464,40 @@ m:=\left\lfloor \frac{t\,p\log\lambda}{2\pi}\right\rceil
 \le \frac{\pi}{p\log\lambda}<\varepsilon
 \]
 当 $p$ 足够大时成立，同时 $\Re(s_{p,m})=1/p<\varepsilon$。故 $s_{p,m}\to it$，从而 $\{s_{p,m}\}$ 在虚轴上稠密。由于任意穿过虚轴的邻域都包含这些奇点，故无法跨越解析延拓，\(\Re(s)=0\) 为自然边界。
+\end{proof}
+
+\begin{proposition}[分支点继承（prime-zeta 缩放律）]\label{prop:primedirichlet-branch-inherit}
+保持定理 \ref{thm:real-input-40-primedirichlet-dense-branch} 的记号，并假设 \(\Re(s_0)>0\)。
+若 \(\widehat{\zeta}(s)\) 在 \(s=s_0\) 具有极点（或等价地 \(\log\widehat{\zeta}(s)\) 在 \(s=s_0\) 具有对数型分支奇性），则对任意奇素数 \(p\)，函数 \(\mathcal{P}(s)\) 在
+\[
+s=\frac{s_0}{p}
+\]
+处具有对数型分支奇点。
+\end{proposition}
+\begin{proof}
+由 prime-zeta 形式恒等式
+\(
+\mathcal{P}(s)=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\widehat{\zeta}(ks)
+\)
+可知：在点 \(s=s_0/p\) 处，项 \(\frac{\mu(p)}{p}\log\widehat{\zeta}(ps)\) 由于 \(ps=s_0\) 必为对数型分支奇点。
+对任意 \(k\neq p\)，若 \(\log\widehat{\zeta}(ks)\) 在 \(s=s_0/p\) 奇异，则 \(ks\) 必落在 \(\widehat{\zeta}\) 的极点列上，特别满足 \(\Re(ks)=\Re(s_0)\)。
+比较实部得 \(k\Re(s_0)/p=\Re(s_0)\)，从而 \(k=p\)，矛盾。
+因此除 \(k=p\) 一项外，其余各项在 \(s_0/p\) 的某邻域解析；由定理 \ref{thm:real-input-40-primedirichlet-dense-branch} 第 1 点的一致收敛，解析项之和仍解析，故 \(\mathcal{P}(s)\) 在 \(s=s_0/p\) 必为对数型分支奇点。证毕。
+\end{proof}
+
+\begin{corollary}[toy-RH 临界线极点诱导的 \texorpdfstring{$\Re(s)=\frac{1}{2p}$}{Re(s)=1/(2p)} 分支点族]\label{cor:real-input-40-primedirichlet-branch-halfp}
+保持定理 \ref{thm:real-input-40-primedirichlet-dense-branch} 的记号。对每个奇素数 \(p\) 与任意 \(m\in\ZZ\)，点
+\[
+t_{p,m}:=\frac{1}{2p}+\frac{(2m+1)\pi i}{p\log\lambda}
+\]
+是 \(\mathcal{P}(s)\) 在 \(\Re(s)>0\) 的解析延拓的一个对数型分支奇点。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:finite-rh-40}，\(\widehat{\zeta}(s)\) 在
+\(
+s_0=\frac12+\frac{(2m+1)\pi i}{\log\lambda}
+\)
+处有极点，且 \(\Re(s_0)=1/2>0\)。取 \(t_{p,m}=s_0/p\)，由命题 \ref{prop:primedirichlet-branch-inherit} 立得结论。证毕。
 \end{proof}
 
 \begin{remark}[自然边界机制的普适化]\label{rem:primedirichlet-natural-boundary-universal}
