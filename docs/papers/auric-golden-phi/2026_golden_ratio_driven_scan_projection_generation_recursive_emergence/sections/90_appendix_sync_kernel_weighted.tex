@@ -341,13 +341,15 @@ P^{(2k+1)}(0)=0\quad(k\ge 1),
 \[
 P(\theta)=\log 3+\frac12\theta+\frac{11}{204}\theta^2+\frac{1559}{1414944}\theta^4
 -\frac{17123893}{1177686190080}\theta^6-\frac{122803509253}{25412897733672960}\theta^8
-+O(\theta^{10}),
+\;-\frac{518906628614669}{10575831520845339033600}\theta^{10}
++O(\theta^{12}),
 \]
 从而
 \[
 P^{(4)}(0)=\frac{1559}{58956},\qquad
 P^{(6)}(0)=-\frac{17123893}{1635675264},\qquad
-P^{(8)}(0)=-\frac{122803509253}{630280201728}.
+P^{(8)}(0)=-\frac{122803509253}{630280201728},\qquad
+P^{(10)}(0)=-\frac{518906628614669}{2914415652790272}.
 \]
 此外
 \[
@@ -503,3 +505,59 @@ p_{10}(u)&=340u+3330u^2+18437u^3+51822u^4+74757u^5+51822u^6+18437u^7+3330u^8+340
 \end{aligned}
 \]
 当 $n\ge 2$ 时无 $u^0$ 与 $u^n$ 项，且系数满足 $p_{n,k}=p_{n,n-k}$。
+
+\begin{corollary}[primitive 多项式的完成化：\texorpdfstring{$\widehat p_n(s)\in\ZZ[s]$}{hat p in Z[s]} 与 Chebyshev--Adams 运算]\label{cor:primitive-completion-hatp}
+取
+\[
+u=r^2,\qquad s:=r+r^{-1},
+\]
+并对 \(n\ge 1\) 定义 primitive 多项式的完成化
+\[
+\widehat p_n(s):=r^{-n}p_n(r^2).
+\]
+则对所有 \(n\ge 1\) 有 \(\widehat p_n(s)\in\ZZ[s]\)。并且：
+\begin{enumerate}
+  \item 若 \(n\) 为偶数，则 \(\widehat p_n(s)\) 为 \(s\) 的偶多项式；
+  \item 若 \(n\) 为奇数，则 \(\widehat p_n(s)\) 为 \(s\) 的奇多项式。
+\end{enumerate}
+进一步，对任意整数 \(d\ge 1\) 定义
+\[
+C_d(s):=r^d+r^{-d}\in\ZZ[s],
+\qquad
+C_d(s)=2T_d(s/2)
+\]
+（\(T_d\) 为第一类 Chebyshev 多项式）。则完成化坐标下的幂替换满足严格的“倍角律”：
+\[
+r^{-dn}\,p_n(r^{2d})=\widehat p_n\!\bigl(C_d(s)\bigr),
+\]
+即 Witt/Möbius 反演中的 \(u\mapsto u^d\) 在完成化后等价于 \(s\mapsto C_d(s)\) 的 Chebyshev--Adams 运算。
+\end{corollary}
+\begin{proof}
+由系数镜像对称 \(p_{n,k}=p_{n,n-k}\) 可得（见上文）
+\(
+p_n(u)=u^n p_n(1/u)
+\)。
+令 \(u=r^2\) 得
+\(
+p_n(r^2)=r^{2n}p_n(r^{-2})
+\)，
+从而 \(r^{-n}p_n(r^2)\) 在 \(r\mapsto r^{-1}\) 下不变。由不变量子环恒等式
+\(
+\ZZ[r,r^{-1}]^{\,r\mapsto r^{-1}}=\ZZ[r+r^{-1}]=\ZZ[s]
+\)
+即得 \(\widehat p_n(s)\in\ZZ[s]\)。
+\par
+奇偶性来自指数奇偶：\(p_n(r^2)\) 只含 \(r^{2k}\)，乘上 \(r^{-n}\) 后幂指数与 \(n\) 同奇偶；而 \(\ZZ[s]\) 中 \(s\mapsto -s\) 的奇偶分解与 \(r\mapsto -r\) 的幂奇偶一致，故得到 \(\widehat p_n\) 的奇偶性结论。
+\par
+最后令 \(s=r+r^{-1}\)，则
+\(
+C_d(s)=r^d+r^{-d}
+\)
+满足递推 \(C_{d+1}=sC_d-C_{d-1}\)，因而 \(C_d\in\ZZ[s]\)，并与 Chebyshev 多项式关系 \(C_d(s)=2T_d(s/2)\) 等价。代入 \(u=r^2\) 及 \(u^d=r^{2d}\) 得
+\[
+r^{-dn}p_n(r^{2d})=\widehat p_n(r^d+r^{-d})=\widehat p_n(C_d(s)),
+\]
+即所述倍角律。证毕。
+\end{proof}
+
+\input{sections/generated/tab_sync_kernel_weighted_primitive_completed}

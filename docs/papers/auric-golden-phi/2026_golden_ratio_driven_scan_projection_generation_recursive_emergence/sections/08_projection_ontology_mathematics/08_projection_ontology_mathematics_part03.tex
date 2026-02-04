@@ -1089,6 +1089,12 @@ $$
 =\frac{\log\!\left(2/\sqrt{\varphi}\right)}{\log\varphi}
 \]
 （其中 \(D_q\) 见命题 \ref{prop:pom-renyi-dimension-spectrum}）。
+\par
+并且对任意整数 \(q\ge 2\) 有显式误差界
+\[
+\boxed{\;
+0\ \le\ \log\!\left(\frac{2}{\sqrt{\varphi}}\right)-\frac{h_q}{q}\ \le\ \frac{\log\varphi}{q}\; }.
+\]
 \end{proposition}
 \begin{proof}
 对任意 \(m,q\ge 2\)，由
@@ -1117,7 +1123,58 @@ D_m^{1/m}\ \le\ S_q(m)^{1/(mq)}\ \le\ D_m^{1/m}\,|X_m|^{1/(mq)}.
 \sqrt{\varphi}\ \le\ r_q^{1/q}\ \le\ \sqrt{\varphi}\,\varphi^{1/q}.
 \]
 令 \(q\to\infty\) 即得 \(\lim_{q\to\infty}r_q^{1/q}=\sqrt{\varphi}\)。
-最后由 \(h_q=q\log 2-\log r_q\) 与命题 \ref{prop:pom-renyi-dimension-spectrum} 的闭式，直接得到各端点极限。证毕。
+最后由 \(h_q=q\log 2-\log r_q\) 与命题 \ref{prop:pom-renyi-dimension-spectrum} 的闭式，直接得到各端点极限。
+\par
+由 \(\sqrt{\varphi}\le r_q^{1/q}\le \sqrt{\varphi}\,\varphi^{1/q}\) 得
+\[
+\frac{1}{2}\log\varphi\ \le\ \frac{1}{q}\log r_q\ \le\ \frac{1}{2}\log\varphi+\frac{1}{q}\log\varphi.
+\]
+代入 \(\frac{h_q}{q}=\log 2-\frac{1}{q}\log r_q\)，即得
+\[
+0\ \le\ \log\!\left(\frac{2}{\sqrt{\varphi}}\right)-\frac{h_q}{q}\ \le\ \frac{\log\varphi}{q}.
+\]
+证毕。
+\end{proof}
+
+\begin{proposition}[压力的凸性与指纹的凹性]\label{prop:pom-pressure-convexity}
+对任意 \(m\ge 2\)，函数 \(q\mapsto \log S_q(m)\) 在 \(q\ge 0\) 上为凸函数。
+因此在 \(S_q(m)=\Theta(r_q^m)\)（例如由命题 \ref{prop:pom-moment-kernel-exists} 的 Perron 主尺度保证）时，压力
+\[
+P(q):=\log r_q
+\]
+在整数点上满足离散凸性：对任意整数 \(q_0<q_1<q_2\) 有
+\[
+\boxed{\;
+P(q_1)\ \le\ \frac{q_2-q_1}{q_2-q_0}\,P(q_0)\ +\ \frac{q_1-q_0}{q_2-q_0}\,P(q_2)\; }.
+\]
+等价地，未归一化 Rényi 指纹 \(h_q=q\log 2-P(q)\) 在整数点上为凹的：
+\[
+\boxed{\;
+h_{q_1}\ \ge\ \frac{q_2-q_1}{q_2-q_0}\,h_{q_0}\ +\ \frac{q_1-q_0}{q_2-q_0}\,h_{q_2}\; }.
+\]
+\end{proposition}
+\begin{proof}
+固定 \(m\)。取任意 \(q_0,q_2\ge 0\) 与 \(\theta\in(0,1)\)，令 \(q_1=\theta q_0+(1-\theta)q_2\)。
+由 Hölder 不等式（或 log-sum-exp 的凸性）得
+\[
+S_{q_1}(m)=\sum_{x\in X_m}d_m(x)^{q_1}
+\le
+\left(\sum_{x\in X_m}d_m(x)^{q_0}\right)^{\theta}
+\left(\sum_{x\in X_m}d_m(x)^{q_2}\right)^{1-\theta}
+=S_{q_0}(m)^{\theta}S_{q_2}(m)^{1-\theta}.
+\]
+取对数即得 \(q\mapsto \log S_q(m)\) 的凸性。
+\par
+令 \(q_0<q_1<q_2\) 为整数并取
+\(
+\theta=\frac{q_2-q_1}{q_2-q_0}
+\)
+使得 \(q_1=\theta q_0+(1-\theta)q_2\)。
+对上式取 \(\frac{1}{m}\log\) 并令 \(m\to\infty\)，得到
+\[
+\log r_{q_1}\le \theta\log r_{q_0}+(1-\theta)\log r_{q_2},
+\]
+即 \(P\) 的离散凸性。最后 \(h_q=q\log 2-P(q)\) 为线性函数减去凸函数，从而在整数点上为凹。证毕。
 \end{proof}
 
 \begin{remark}[更高阶碰撞矩的精确递推与阶数规律（可审计）]\label{rem:pom-moment-rec}

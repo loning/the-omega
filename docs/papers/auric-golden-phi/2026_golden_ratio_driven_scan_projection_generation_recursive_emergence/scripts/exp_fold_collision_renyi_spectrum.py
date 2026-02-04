@@ -17,7 +17,8 @@ and entropy rates:
 For q=5..8, we output a numerical "fingerprint" by estimating the exponential growth base
 from ratios S_q(m)/S_q(m-1), with Aitken Δ^2 acceleration on the last three ratios.
 
-For q=9..16, we use exact Perron roots recovered from verified integer recurrences.
+For q=5..16, we use exact Perron roots recovered from verified integer recurrences
+(small-order recurrences for q=5..8; higher-order for q>=9).
 
 Outputs (default):
   - artifacts/export/fold_collision_renyi_spectrum.json
@@ -40,6 +41,11 @@ from common_phi_fold import Progress, fold_m, word_to_str
 
 
 PRECOMPUTED_RQ = {
+    # q=5..8: exact Perron roots from verified recurrences
+    5: 4.800521005045,
+    6: 5.999420196605,
+    7: 7.505689291928,
+    8: 9.398674561950,
     9: 11.778421934989,
     10: 14.771098354824,
     11: 18.535847481911,
@@ -136,8 +142,7 @@ def write_table_tex(path: Path, rows: List[Dict[str, object]]) -> None:
     lines.append(
         "\\caption{A small R\\'enyi projection-entropy fingerprint for the Fold$_m$ output distribution "
         "$\\pi_m(x)=d_m(x)/2^m$. For $q=2,3,4$, $r_q$ is exact (from the finite-state collision kernels); "
-        "for $q=5,6,7,8$, $r_q$ is estimated from enumeration by ratio/Aitken acceleration; "
-        "for $q\\ge 9$, $r_q$ is exact from verified integer recurrences.}"
+        "for $q\\ge 5$, $r_q$ is exact from verified integer recurrences.}"
     )
     lines.append("\\label{tab:fold_collision_renyi_spectrum}")
     lines.append("\\begin{tabular}{r r r l}")
