@@ -25,6 +25,78 @@
 \]
 并可由周期点计数与 Fredholm 行列式口径一致地给出（参见 \cite{LindMarcus1995,Ruelle1976ZetaExpanding,Ruelle1978Thermodynamic,ParryPollicott1990Zeta}）。
 
+\subsubsection{带“复杂度势”的二变量 \texorpdfstring{$\zeta$}{zeta} 指纹：Euler 乘积与迹序列的严格对齐}\label{subsec:zeta-two-variable-kappa}
+
+本节给出一个对本文“prime-like（Euler 乘积/显式公式）侧”与“谱/迹（trace）侧”都兼容、并可直接用于数值审计的统一对象：\textbf{带势的两变量 \(\zeta_K(z,u)\)}。其中 \(z\) 计时间步数（迹的幂次），\(u\) 计一类局部可加的“复杂度/串行代价势” \(\kappa\)（例如不可并行的 delay/carry 事件数），从而把“时间代价”以乘法权重的形式嵌入 Euler 乘积的 primitive 因子。
+
+\begin{definition}[带势的两变量 \texorpdfstring{$\zeta_K(z,u)$}{zetaK(z,u)}]\label{def:zetaK-zu}
+给定一个有限有向图（或有限状态同步系统）\(\Gamma_K\)，并对每条边 \(e\) 赋一个非负整数势
+\[
+\kappa(e)\in\ZZ_{\ge 0}.
+\]
+定义带权邻接矩阵族 \(M_K(u)\in \Mat_{|V|\times |V|}(\ZZ[u])\) 为
+\[
+\bigl(M_K(u)\bigr)_{ij}:=\sum_{e:i\to j} u^{\kappa(e)}.
+\]
+定义两变量 \(\zeta\) 为形式幂级数（或在 \(|z|\) 充分小时的解析函数）
+\begin{equation}\label{eq:zetaK-trace-exp}
+\zeta_K(z,u)
+:=\exp\!\Bigl(\sum_{n\ge 1}\frac{a_n(u)}{n}z^n\Bigr),
+\qquad
+a_n(u):=\Tr\bigl(M_K(u)^n\bigr),
+\end{equation}
+从而在有限维情形严格有
+\begin{equation}\label{eq:zetaK-det}
+\zeta_K(z,u)=\frac{1}{\det(I-zM_K(u))}.
+\end{equation}
+\end{definition}
+
+\begin{remark}[Euler 乘积与 primitive 分层谱]\label{rem:zetaK-euler-product}
+记 \(\mathcal{P}_K\) 为 \(\Gamma_K\) 的 primitive 有向闭轨道集合；对 \(\gamma\in\mathcal{P}_K\) 记其长度为 \(|\gamma|\)，并定义轨道势为边势的轨道和
+\[
+\kappa(\gamma):=\sum_{e\in\gamma}\kappa(e).
+\]
+则由标准的“周期点/闭路”展开（参见 \cite{ParryPollicott1990Zeta,LindMarcus1995}）得到严格的形式乘积恒等式
+\begin{equation}\label{eq:zetaK-euler}
+\zeta_K(z,u)=\prod_{\gamma\in\mathcal{P}_K}\bigl(1-z^{|\gamma|}u^{\kappa(\gamma)}\bigr)^{-1}.
+\end{equation}
+引入 primitive 分层谱多项式
+\begin{equation}\label{eq:zetaK-Bn}
+B_n(u):=\sum_{\gamma\in\mathcal{P}_K,\ |\gamma|=n} u^{\kappa(\gamma)}\in\ZZ[u],
+\end{equation}
+则 \(\{B_n(u)\}_{n\ge 1}\) 与迹序列 \(\{a_n(u)\}_{n\ge 1}\) 之间存在严格的 Möbius/Witt 互换（见下命题）。
+\end{remark}
+
+\begin{proposition}[Witt/Möbius 反演：由迹序列提取 primitive 分层谱]\label{prop:zetaK-mobius-primitive}
+沿用定义 \ref{def:zetaK-zu}--\ref{rem:zetaK-euler-product} 的记号。则对任意 \(n\ge 1\)：
+\begin{equation}\label{eq:zetaK-trace-from-primitive}
+a_n(u)=\sum_{d\mid n} d\,B_d\!\bigl(u^{n/d}\bigr),
+\end{equation}
+并且由 Möbius 反演可严格恢复
+\begin{equation}\label{eq:zetaK-primitive-from-trace}
+\boxed{\;
+B_n(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}\!\bigl(u^{d}\bigr)\; }.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+把 Euler 乘积 \eqref{eq:zetaK-euler} 取对数并展开为几何级数，得
+\[
+\log\zeta_K(z,u)
+=\sum_{\gamma\in\mathcal{P}_K}\sum_{k\ge 1}\frac{1}{k}z^{k|\gamma|}u^{k\kappa(\gamma)}.
+\]
+将右侧按 \(n=k|\gamma|\) 分组，并注意每个 primitive 轨道 \(\gamma\) 的 \(k\) 次幂产生 \( |\gamma| \) 条不同起点的长度 \(n\) 闭路，从而长度 \(n\) 的迹计数满足 \eqref{eq:zetaK-trace-from-primitive}。再对 \eqref{eq:zetaK-trace-from-primitive} 作 Möbius 反演即得 \eqref{eq:zetaK-primitive-from-trace}。证毕。
+\end{proof}
+
+\begin{remark}[\texorpdfstring{$u$}{u} 的解释：把“不可并行 delay/串行代价”乘法化]\label{rem:zetaK-u-delay}
+在本文的核/扫描算子语境中，\(\kappa(e)\) 可取为每一步不可并行的代价事件数（例如 carry 触发次数、固定延迟事件数等）。则 \eqref{eq:zetaK-euler} 表明：沿 primitive 轨道 \(\gamma\) 的总代价 \(\kappa(\gamma)\) 以乘法权重 \(u^{\kappa(\gamma)}\) 进入 primitive 因子
+\[
+\bigl(1-z^{|\gamma|}u^{\kappa(\gamma)}\bigr)^{-1},
+\]
+从而“时间侧的串行代价”在 prime-like 侧被\emph{自动转译}为 Euler 乘积的乘法指数。
+这正是本文所需的可检验桥包：给定带势转移核 \(M_K(u)\)，既可在迹侧计算 \(a_n(u)=\Tr(M_K(u)^n)\)，也可经 \eqref{eq:zetaK-primitive-from-trace} 严格提取 primitive 分层谱 \(B_n(u)\)，再由 \eqref{eq:zetaK-euler} 复原 Euler 乘积。
+\end{remark}
+
 \begin{remark}[从 toy-RH 到 RH：有限维极点格点的结构性门槛]\label{rem:finite-pole-lattice-barrier}
 本文大量使用的有限维口径（邻接矩阵/有限状态核）在审计性与可计算性上有决定性优势；但在 \(s\)-平面“临界线几何”的层面，它也携带一个不可回避的结构性限制。
 
@@ -46,7 +118,7 @@
 
 与附录 \ref{app:op-algebra} 的“投影读出”语言相呼应：在 SFT 上，柱事件对应一族两两正交投影，它们生成一个交换子代数；最大熵态（Parry 测度）给出其上的规范态。更进一步，Cuntz--Krieger 代数 $\mathcal{O}_A$ 为该 SFT 提供一个非交换的普适 C*-代数封装，其对角子代数与柱投影自然同构。
 
-\begin{proposition}[柱投影的 C*-代数封装（精确口径）]\label{prop:ck-diagonal-cylinders}
+\begin{remark}[柱投影的 C*-代数封装（标准事实）]\label{prop:ck-diagonal-cylinders}
 令 $A$ 为不可约的 $0$--$1$ 矩阵，$X_A^+$ 为一侧 SFT。设 $\mathcal{O}_A$ 为 Cuntz--Krieger 代数（\cite{CuntzKrieger1980}），并记其标准部分等距元为 $(S_i)_{i\in\mathcal{A}}$（字母表 $\mathcal{A}$ 的索引）。对任意允许词 $\mu=\mu_1\cdots\mu_m$，记 $S_\mu:=S_{\mu_1}\cdots S_{\mu_m}$ 并定义
 \[
 P_\mu:=S_\mu S_\mu^*.
@@ -57,11 +129,7 @@ P_\mu:=S_\mu S_\mu^*.
   \item 存在自然同构 \(\mathcal{D}_A\cong C(X_A^+)\)，在该同构下 \(P_\mu\) 对应于长度 \(m\) 柱集 \([\mu]\subset X_A^+\) 的指示函数；
   \item 因而任何 SFT 上的概率测度（特别是 Parry 最大熵测度）都诱导 \(\mathcal{D}_A\) 上的一个态。
 \end{enumerate}
-\end{proposition}
-
-\begin{proof}
-这是 Cuntz--Krieger 代数的标准结构：投影族 $P_\mu$ 生成对角子代数并与 $C(X_A^+)$ 的柱函数同构；参见 \cite{CuntzKrieger1980,Renault1980Groupoid}。
-\end{proof}
+\end{remark}
 
 \subsubsection{本文的新颖桥接点：分辨率折叠作为可审计的子代数选择}
 

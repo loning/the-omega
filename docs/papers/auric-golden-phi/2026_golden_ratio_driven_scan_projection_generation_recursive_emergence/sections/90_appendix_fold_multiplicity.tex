@@ -11,3 +11,120 @@ d_m\sim C\left(\frac{2}{\varphi}\right)^m,\quad C=\frac{\sqrt5}{\varphi^2}.
 因此对固定窗口长度 $m$，观测将大量微态压缩为同一稳定类型；当 $m$ 增大时，稳定类型虽增多，但微态增长更快，从而"可区分细节"在有限分辨率下持续被折叠。这给出"规律不可读出可归因于分辨率不足"的数学版本：不可读出对应不同微态在折叠后不可区分，而稳定规律对应 $X_m$ 上的递归计数与不变分布仍可复核。
 
 \input{sections/generated/tab_fold_multiplicity_histogram}
+
+\subsection{二进制区间到 Zeckendorf 前缀的折叠：最大纤维与饱和判别}\label{app:fold-binary-prefix}
+
+前文主要讨论 \(\Fold_m:\Omega_m=\{0,1\}^m\to X_m\)（Fibonacci 权重口径）诱导的折叠多重度。
+为刻画“\(\,2^m\) 个二进制地址在 Zeckendorf（\(\varphi\)-基）分层中的投影压缩”，这里引入一个与 \(|\Omega_m|=2^m\) 同规模、但以\emph{整数区间}为输入的折叠投影。
+
+\begin{definition}[二进制区间折叠 \(\mathrm{Fold}^{\mathrm{bin}}_m\)]\label{def:fold-bin}
+设 \(Z:\ZZ_{\ge 0}\to\{0,1\}^{\NN}\) 为 Zeckendorf 编码：对每个 \(n\ge 0\)，存在唯一的合法位串
+\[
+Z(n)=(z_1,z_2,\dots),\qquad z_k\in\{0,1\},\quad z_k z_{k+1}=0,
+\]
+使得
+\[
+n=\sum_{k\ge 1} z_k F_{k+1}.
+\]
+记截断算子 \(\pi_m(z_1,z_2,\dots):=(z_1,\dots,z_m)\in X_m\)。定义
+\[
+\mathrm{Fold}^{\mathrm{bin}}_m:\{0,1,\dots,2^m-1\}\to X_m,\qquad
+\mathrm{Fold}^{\mathrm{bin}}_m(n):=\pi_m(Z(n)).
+\]
+\end{definition}
+
+\begin{definition}[\(K(m)\) 与 Zeckendorf 值]\label{def:K-of-m}
+令 \(K(m)\) 为满足
+\begin{equation}\label{eq:K-of-m}
+F_{K(m)+1}\le 2^m-1 < F_{K(m)+2}
+\end{equation}
+的唯一整数。对 \(w=(w_1,\dots,w_m)\in X_m\) 定义其 Zeckendorf 值
+\[
+V_m(w):=\sum_{k=1}^m w_k F_{k+1}.
+\]
+\end{definition}
+
+\begin{proposition}[纤维的尾部表示]\label{prop:fold-bin-fiber-tail}
+设 \(m\ge 1\)，\(w\in X_m\)，并令 \(K=K(m)\)。记尾部长度 \(L:=K-m\ge 0\)。
+则 \(\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\) 与满足下列约束的尾部位串 \((c_{m+1},\dots,c_K)\in\{0,1\}^{L}\) 一一对应：
+\[
+n
+=V_m(w)+\sum_{k=m+1}^{K} c_k F_{k+1},
+\]
+其中
+\begin{enumerate}
+  \item \textbf{相邻约束：}\quad \(c_k c_{k+1}=0\)（对 \(m+1\le k\le K-1\)）；
+  \item \textbf{边界约束：}\quad \(w_m\,c_{m+1}=0\)；
+  \item \textbf{阈值约束：}\quad \(V_m(w)+\sum_{k=m+1}^{K} c_k F_{k+1}\le 2^m-1\)。
+\end{enumerate}
+从而纤维多重度
+\(
+d^{\mathrm{bin}}_m(w):=\bigl|\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\bigr|
+\)
+只依赖于 \((V_m(w),w_m)\)。
+\end{proposition}
+
+\begin{corollary}[最大纤维、组合上界与饱和判别]\label{cor:fold-bin-saturation}
+对任意 \(m\ge 1\)，最大纤维由 \(w=0^m\) 取得，并满足组合上界
+\begin{equation}\label{eq:fold-bin-upper}
+d^{\mathrm{bin}}_{\max}(m):=d^{\mathrm{bin}}_m(0^m)\le |X_{K(m)-m}|=F_{K(m)-m+2}.
+\end{equation}
+记 \(K=K(m)\)、\(L=K-m\)，并定义在相邻约束下的\emph{最大尾和}
+\[
+S_{\max}(m):=\max\Bigl\{\sum_{k=m+1}^{K} c_k F_{k+1}:\ (c_{m+1},\dots,c_K)\in\{0,1\}^{L},\ c_k c_{k+1}=0\Bigr\}.
+\]
+则对 \(w=0^m\)，上界 \eqref{eq:fold-bin-upper} 饱和当且仅当阈值约束对所有合法尾部都是冗余的，即
+\begin{equation}\label{eq:fold-bin-sat-iff}
+d^{\mathrm{bin}}_{\max}(m)=F_{K(m)-m+2}\quad\Longleftrightarrow\quad 2^m-1\ge S_{\max}(m).
+\end{equation}
+并且 \(S_{\max}(m)\) 具有完全显式的闭式（由“1010\(\cdots\)”极大尾部取得）：
+\begin{equation}\label{eq:fold-bin-Smax-closed}
+S_{\max}(m)=
+\begin{cases}
+F_{K(m)+2}-F_{m+1}, & L=K(m)-m\ \text{为奇数},\\
+F_{K(m)+2}-F_{m+2}, & L=K(m)-m\ \text{为偶数}.
+\end{cases}
+\end{equation}
+等价地，饱和判别可改写为
+\[
+F_{K(m)+2}-2^m\le
+\begin{cases}
+F_{m+1}-1,& L\ \text{奇},\\
+F_{m+2}-1,& L\ \text{偶}.
+\end{cases}
+\]
+\end{corollary}
+
+\begin{remark}[指数级 Diophantine 近似与“仅有限次饱和”]\label{rem:fold-bin-finite}
+由 \eqref{eq:fold-bin-Smax-closed} 可见，饱和条件强迫 \(2^m\) 与某个 Fibonacci 数 \(F_{K(m)+2}\) \emph{异常接近}。
+用 Binet 公式 \(F_n=\varphi^n/\sqrt5+O(\varphi^{-n})\) 将其改写，可导出一个指数级小的线性对数形式约束：
+\[
+\Bigl|(K(m)+2)\log\varphi - m\log 2 - \log\sqrt5\Bigr|
+\ \lesssim\ \Bigl(\frac{\varphi}{2}\Bigr)^m.
+\]
+由于 \(\varphi\) 为代数数而 \(2\) 为有理数，上式左侧是非零的对数线性形式；而 Baker 型下界（例如 Matveev 的显式形式）给出其\emph{至多多项式级}的小下界（见 \cite{Matveev2000LinearFormsLogs,BakerWustholz2007LogarithmicForms}），从而与右侧的指数级小量矛盾，推出：
+\[
+\text{上界饱和只能发生有限次。}
+\]
+本结论在本文的可复现管线中可直接数值审计（见表 \ref{tab:fold_binary_saturation_points}）。
+\end{remark}
+
+\begin{proposition}[计算 \(\boldsymbol{d^{\mathrm{bin}}_m(w)}\) 的 \(O(m)\) Fibonacci-digit DP]\label{prop:fold-bin-digit-dp}
+给定 \(m\ge 1\) 与 \(w\in X_m\)。令 \(K=K(m)\) 并记 \(V=V_m(w)\)，再令 \(\mathrm{slack}:=2^m-1-V\)。
+将 \(\mathrm{slack}\) 写为 Zeckendorf 位串 \(Z(\mathrm{slack})=(b_1,\dots,b_K)\)（合法，无相邻 \(11\)）。
+则 \(d^{\mathrm{bin}}_m(w)\) 可由如下 digit DP 在 \(O(K-m)=O(m)\) 时间内精确计算：
+\[
+\mathrm{DP}(k,\mathrm{prev},\mathrm{tight})
+\quad(k=K,K-1,\dots,m+1),
+\]
+其中 \(\mathrm{prev}\in\{0,1\}\) 记录上一个（更高位）是否取 \(1\)，\(\mathrm{tight}\in\{0,1\}\) 表示当前前缀是否仍与 \((b_k,\dots,b_K)\) 相同；
+转移时允许选择 \(c_k\in\{0,1\}\)，满足
+\[
+c_k c_{k+1}=0,\qquad
+\mathrm{tight}=1\Rightarrow c_k\le b_k,\qquad
+w_m=1\Rightarrow c_{m+1}=0,
+\]
+并按是否保持等号更新 \(\mathrm{tight}\)。该 DP 的输出即为满足 \(\sum_{k=m+1}^K c_k F_{k+1}\le \mathrm{slack}\) 的尾部数目，从而等于 \(d^{\mathrm{bin}}_m(w)\)。
+\end{proposition}
+
+\input{sections/generated/tab_fold_binary_saturation_points}
