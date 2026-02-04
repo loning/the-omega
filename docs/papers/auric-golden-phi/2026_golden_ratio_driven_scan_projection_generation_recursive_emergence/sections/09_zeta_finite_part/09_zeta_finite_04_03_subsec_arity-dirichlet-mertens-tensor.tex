@@ -102,6 +102,74 @@ $$
 $$
 \mathsf{M}\approx 0.322903002999.
 $$
+
+\begin{proposition}[Chebotarev--Mertens 常数张量的离散傅里叶闭式]\label{prop:arity-chebotarev-mertens-fourier}
+令 $G$ 为有限交换群（在本节的具体算例中 $G=(\ZZ/m_1)\times(\ZZ/m_2)\times(\ZZ/m_3)$，其元素由 residue 向量 $(a,b,c)$ 表示），并记 $\widehat G$ 为其角色群。对每个同余类 $g\in G$，记 $p_{n,g}$ 为长度为 $n$ 的 primitive 轨道计数（按轨道计），并定义 Abel 生成函数
+$$
+P_g(r):=\sum_{n\ge 1}\frac{p_{n,g}}{\lambda^n}r^n,\qquad 0\le r<1.
+$$
+对每个角色 $\chi\in\widehat G$，定义扭曲计数与其 Abel 生成函数
+$$
+p_{n,\chi}:=\sum_{g\in G}\overline{\chi(g)}\,p_{n,g},
+\qquad
+P_\chi(r):=\sum_{n\ge 1}\frac{p_{n,\chi}}{\lambda^n}r^n.
+$$
+则有严格的离散傅里叶互换
+$$
+P_g(r)=\frac{1}{|G|}\sum_{\chi\in\widehat G}\chi(g)\,P_\chi(r).
+$$
+并且当 $r\uparrow 1$ 时，存在常数 $\log\mathfrak{M}_g$ 使得
+$$
+P_g(r)=-\frac{1}{|G|}\log(1-r)+\log\mathfrak{M}_g+o(1),
+$$
+且 $\log\mathfrak{M}_g$ 满足闭式
+$$
+\boxed{\ 
+\log\mathfrak{M}_g
+=\frac{1}{|G|}\log\mathfrak{M}
+\;+\;\frac{1}{|G|}\sum_{\chi\neq \chi_0}\chi(g)\,P_\chi(1)\ 
+}
+$$
+其中 $\chi_0$ 为平凡角色，$\log\mathfrak{M}$ 为总体（不分层）primitive Abel 有限部常数（定义 \ref{def:abel-finite-part}，以及附录 \ref{app:real-input-40-dirichlet} 的 Dirichlet 等价口径）。
+\end{proposition}
+
+\begin{proof}
+离散傅里叶互换来自角色正交性：由 $p_{n,\chi}=\sum_{g}\overline{\chi(g)}p_{n,g}$ 与反演公式
+$
+p_{n,g}=\frac{1}{|G|}\sum_{\chi\in\widehat G}\chi(g)\,p_{n,\chi}
+$
+逐项乘以 $(r/\lambda)^n$ 并对 $n\ge 1$ 求和即可得到 $P_g(r)$ 的反演式。
+
+奇性分解来自“平凡块给出对数发散，非平凡块在 $r=1$ 收敛”。更具体地：平凡角色对应总计数，按总体 Mertens 定理的 Abel 口径有
+$
+P_{\chi_0}(r)=-\log(1-r)+\log\mathfrak{M}+o(1)
+$
+（参见主文与附录 \ref{app:real-input-40-abel} 的通用口径）。而对任意非平凡角色 $\chi\neq\chi_0$，由本节对各分层给出的指数级等分布误差估计
+\(
+p_{n,g}=\frac{p_n}{|G|}+O(\rho^n/n)
+\)
+（其中 $\rho<\lambda$ 为某个最坏扭曲谱半径上界）与角色正交性可得
+\(
+p_{n,\chi}=O(\rho_\chi^n/n)
+\)
+（某个 $\rho_\chi<\lambda$），从而级数 $\sum_{n\ge 1}p_{n,\chi}\lambda^{-n}$ 绝对收敛，故 $P_\chi(1)$ 存在且有限。把 $P_{\chi_0}(r)$ 的对数奇性与其余 $P_\chi(1)$ 的有限极限代回傅里叶反演式，即得到所述展开与闭式。证毕。
+\end{proof}
+
+\begin{corollary}[常数张量的归一化一致性]\label{cor:arity-chebotarev-mertens-sum}
+在上述记号下有
+$$
+\sum_{g\in G}\log\mathfrak{M}_g=\log\mathfrak{M}.
+$$
+从而（把 Abel 有限部常数换回部分和常数的口径）亦可解释本节各级常数张量满足的求和恒等式
+$
+\sum_g C_g=\mathsf{M}
+$
+为角色正交性在有限部常数层面的直接投影。
+\end{corollary}
+
+\begin{proof}
+对闭式在 $g\in G$ 上求和，使用 $\sum_{g\in G}\chi(g)=0$（$\chi\neq\chi_0$）即得。
+\end{proof}
 对应的常数张量数值与最坏误差指数（$\rho/\lambda$）由脚本
 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py}
 自动生成并输出为可 \verb|\input| 的 \LaTeX\ 片段：

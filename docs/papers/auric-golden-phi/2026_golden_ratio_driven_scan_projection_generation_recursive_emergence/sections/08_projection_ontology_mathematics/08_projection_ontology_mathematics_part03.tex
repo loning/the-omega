@@ -926,6 +926,58 @@ $$
 从而 \(r_q\) 的界成立。代入 \(h_q=q\log 2-\log r_q\) 即得 \(h_q\) 的等价界。证毕。
 \end{proof}
 
+\begin{proposition}[极端阶端点：\texorpdfstring{$r_q^{1/q}\to\sqrt{\varphi}$}{rq^(1/q)->sqrt(phi)} 与归一化熵端点常数]\label{prop:pom-rq-qinfty-endpoint}
+令 \(r_q\) 表示 \(S_q(m)\) 的指数增长率（例如由 moment-kernel 的 Perron 根给出），并记 \(\varphi\) 为黄金比例。
+则当 \(q\to\infty\) 时有极限
+\[
+\boxed{\;
+\lim_{q\to\infty} r_q^{1/q}=\sqrt{\varphi}\; }.
+\]
+等价地，
+\[
+\lim_{q\to\infty}\frac{1}{q}\,h_q
+=\log\!\left(\frac{2}{\sqrt{\varphi}}\right),
+\qquad
+\lim_{q\to\infty}\frac{1}{q-1}\,h_q
+=\log\!\left(\frac{2}{\sqrt{\varphi}}\right),
+\]
+从而 Rényi 维数谱端点满足
+\[
+\lim_{q\to\infty}D_q
+=\frac{\log\!\left(2/\sqrt{\varphi}\right)}{\log\varphi}
+\]
+（其中 \(D_q\) 见命题 \ref{prop:pom-renyi-dimension-spectrum}）。
+\end{proposition}
+\begin{proof}
+对任意 \(m,q\ge 2\)，由
+\(
+D_m:=\max_x d_m(x)
+\)
+得两侧夹逼
+\[
+D_m^q\ \le\ S_q(m)\ \le\ |X_m|\,D_m^q.
+\]
+两端取 \(1/(mq)\) 次方，得到
+\[
+D_m^{1/m}\ \le\ S_q(m)^{1/(mq)}\ \le\ D_m^{1/m}\,|X_m|^{1/(mq)}.
+\]
+令 \(m\to\infty\)，左端由定理 \ref{thm:pom-max-fiber} 给出
+\(
+\lim_{m\to\infty}D_m^{1/m}=\varphi^{1/2}
+\)；
+右端的因子满足
+\(
+\lim_{m\to\infty}|X_m|^{1/(mq)}=\varphi^{1/q}
+\)
+（因为 \(|X_m|=F_{m+2}\sim \varphi^m/\sqrt5\)）。
+因此对每个固定 \(q\ge 2\) 有
+\[
+\sqrt{\varphi}\ \le\ r_q^{1/q}\ \le\ \sqrt{\varphi}\,\varphi^{1/q}.
+\]
+令 \(q\to\infty\) 即得 \(\lim_{q\to\infty}r_q^{1/q}=\sqrt{\varphi}\)。
+最后由 \(h_q=q\log 2-\log r_q\) 与命题 \ref{prop:pom-renyi-dimension-spectrum} 的闭式，直接得到各端点极限。证毕。
+\end{proof}
+
 \begin{remark}[更高阶碰撞矩的精确递推与阶数规律（可审计）]\label{rem:pom-moment-rec}
 二阶与三阶碰撞矩分别由三态核 \(A_2,A_3\) 实现（命题 \ref{prop:pom-s2-recurrence} 与 \ref{prop:pom-s3-recurrence}）。更高阶 \(q\) 下，序列 \(\{S_q(m)\}\) 仍呈现出\textbf{小阶整数线性递推}的现象：对 \(q=4,5,6,7,8\) 可验证存在阶数分别为 \(5,5,7,7,9\) 的精确递推（从某个 \(m\) 起对所有 \(m\) 成立），其系数见表 \ref{tab:fold_collision_moment_recursions}。这些递推等价于“存在有限维的 \(q\)-阶碰撞核/矩阵 realization”，从而 \(S_q(m)=\Theta(r_q^m)\) 的指数尺度由对应特征多项式的 Perron 根 \(r_q\) 控制。
 
@@ -1028,6 +1080,52 @@ $$
 f(\gamma):=\lim_{\varepsilon\downarrow 0}\ \limsup_{m\to\infty}\ \frac{1}{m}\log N_m(\gamma,\varepsilon).
 $$
 \end{definition}
+
+\begin{proposition}[碰撞谱的几何含义：纤维指数的指数矩母函数]\label{prop:pom-fiber-index-cgf}
+沿用 \(\pi_m(x)=d_m(x)/2^m\) 的输出分布记号，并把 \(\gamma_m(X)\) 视为在 \(X_m\) 上以 \(\pi_m\) 抽样的随机变量。
+则对任意整数 \(q\ge 2\) 有严格恒等式
+\[
+\boxed{\;
+\mathbb{E}_{\pi_m}\!\left[\exp\!\bigl((q-1)m\,\gamma_m(X)\bigr)\right]
+=\frac{S_q(m)}{2^m}\; }.
+\]
+从而
+\[
+\frac{1}{m}\log \mathbb{E}_{\pi_m}\!\left[\exp\!\bigl((q-1)m\,\gamma_m(X)\bigr)\right]
+=\frac{1}{m}\log S_q(m)-\log 2.
+\]
+特别地，若存在 Perron 主尺度 \(S_q(m)=\Theta(r_q^m)\)（例如由 moment-kernel 实现给出），则极限累积母函数在整点 \(t=q-1\) 上满足
+\[
+\lim_{m\to\infty}\frac{1}{m}\log \mathbb{E}_{\pi_m}\!\left[e^{t m\,\gamma_m(X)}\right]
+=\log r_{t+1}-\log 2,
+\qquad
+h_{t+1}=(t+1)\log 2-\log r_{t+1}.
+\]
+\end{proposition}
+\begin{proof}
+按定义展开并用 \(\pi_m(x)=d_m(x)/2^m\)：
+\[
+\mathbb{E}_{\pi_m}\!\left[\exp\!\bigl((q-1)m\,\gamma_m(X)\bigr)\right]
+=\sum_{x\in X_m}\pi_m(x)\,e^{(q-1)\log d_m(x)}
+=\sum_{x\in X_m}\frac{d_m(x)}{2^m}\,d_m(x)^{q-1}
+=\frac{1}{2^m}\sum_{x\in X_m}d_m(x)^q
+=\frac{S_q(m)}{2^m}.
+\]
+取对数并除以 \(m\) 得第二式。最后一段由 \(S_q(m)=\Theta(r_q^m)\) 的指数尺度与 \(h_q=\log(2^q/r_q)\) 的定义直接推出。证毕。
+\end{proof}
+
+\begin{remark}[大偏差/多分形反演（作为可检验目标）]\label{rem:pom-fiber-index-ldp}
+命题 \ref{prop:pom-fiber-index-cgf} 表明：碰撞谱 \(q\mapsto h_q\) 等价于纤维指数 \(\gamma_m\) 的指数矩母函数在整点的增长率。
+若进一步能把 \(q\)-重 moment-kernel 的“整数参数”推广为实参数 \(t\ge 0\) 的加权核，从而得到一个凸函数
+\(
+\Lambda(t):=\lim_{m\to\infty}\frac{1}{m}\log \mathbb{E}_{\pi_m}[e^{t m\,\gamma_m(X)}]
+\)
+并满足标准的可微/本质严格凸条件，则 Gartner--Ellis 定理给出 \(\gamma_m\) 的大偏差率函数
+\[
+I(\gamma)=\sup_{t\ge 0}\bigl(t\gamma-\Lambda(t)\bigr).
+\]
+此时 \(I\)（从而纤维厚度谱）可由碰撞谱“反演”得到，构成“从 \(h_q\) 指纹回推纤维几何”的可证伪计算目标。
+\end{remark}
 
 \begin{proposition}[Legendre 上界：谱由 moment 压力控制]\label{prop:pom-spectrum-legendre-upper}
 对任意 \(q\ge 2\) 与任意 \(\gamma\ge 0\)，有上界
@@ -1405,6 +1503,92 @@ $$
 \end{proposition}
 \begin{proof}
 第一式为定义 \ref{def:pom-fold-aware-restriction} 的直接展开。兼容性由稳定层的逆系统映射满足的泛性质给出（定理 \ref{thm:pom-inverse-limit}），而折叠后的坐标才是逆系统对象。证毕。
+\end{proof}
+
+\begin{definition}[分辨率反射子（跨分辨率纤维均匀化）]\label{def:pom-resolution-reflector}
+固定顶层分辨率 $M$，并把微态空间取为 $\Omega_M$。
+对任意 $1\le m\le M$，以折叠感知限制
+\(
+r^{\mathrm{e}}_{M\to m}=\pi_{M\to m}\circ \Fold_M:\Omega_M\to X_m
+\)
+为 coarse-graining 映射，定义推前算子
+\[
+P_{M\to m}:=(r^{\mathrm{e}}_{M\to m})_*:\Delta(\Omega_M)\to\Delta(X_m),
+\]
+并记其纤维基数为
+\[
+d_{M\to m}(x):=\bigl|(r^{\mathrm{e}}_{M\to m})^{-1}(x)\bigr|\qquad(x\in X_m).
+\]
+定义纤维均匀提升算子
+\[
+Q_{M\to m}:\Delta(X_m)\to\Delta(\Omega_M),
+\qquad
+(Q_{M\to m}\pi)(\omega):=\frac{\pi(r^{\mathrm{e}}_{M\to m}(\omega))}{d_{M\to m}(r^{\mathrm{e}}_{M\to m}(\omega))}.
+\]
+则 $P_{M\to m}\circ Q_{M\to m}=\mathrm{id}_{\Delta(X_m)}$。
+对任意 $\mu\in\Delta(\Omega_M)$，定义其分辨率 $m$ 的规范化反射（纤维均匀化）为
+\[
+\mu^{(m)}:=Q_{M\to m}P_{M\to m}\mu\in\Delta(\Omega_M).
+\]
+当 $m=M$ 时，上述构造退化为小节 \ref{subsec:pom-information-ledger} 的 $P_M,Q_M$ 与 $\mu^{e}$（仅记号不同）。
+\end{definition}
+
+\begin{theorem}[KL-毕达哥拉斯：分辨率塔上的残差可加]\label{thm:pom-kl-pythagoras-tower}
+沿用定义 \ref{def:pom-resolution-reflector}，并以定理 \ref{thm:pom-kl-ledger} 的口径记 KL 散度。
+则对任意 $M\ge m_2\ge m_1\ge 1$ 与任意 $\mu\in\Delta(\Omega_M)$，成立严格恒等式
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\mu\|\mu^{(m_1)})
+=D_{\mathrm{KL}}(\mu\|\mu^{(m_2)})
++D_{\mathrm{KL}}(\mu^{(m_2)}\|\mu^{(m_1)})\; }.
+\]
+\end{theorem}
+\begin{proof}
+由 KL 定义，
+\[
+D_{\mathrm{KL}}(\mu\|\mu^{(m_1)})-D_{\mathrm{KL}}(\mu\|\mu^{(m_2)})
+=\sum_{\omega\in\Omega_M}\mu(\omega)\log\frac{\mu^{(m_2)}(\omega)}{\mu^{(m_1)}(\omega)}.
+\]
+对固定的 $y\in X_{m_2}$，在纤维 $(r^{\mathrm{e}}_{M\to m_2})^{-1}(y)$ 上，上式中的比值
+\(
+\mu^{(m_2)}(\omega)/\mu^{(m_1)}(\omega)
+\)
+为常数（因为 $\mu^{(m)}$ 在每条 $r^{\mathrm{e}}_{M\to m}$-纤维上均匀）。
+因此按 $y$ 分组可得
+\[
+\sum_{\omega\in\Omega_M}\mu(\omega)\log\frac{\mu^{(m_2)}(\omega)}{\mu^{(m_1)}(\omega)}
+=\sum_{y\in X_{m_2}}(P_{M\to m_2}\mu)(y)\,
+\log\frac{\mu^{(m_2)}(\omega_y)}{\mu^{(m_1)}(\omega_y)},
+\]
+其中 $\omega_y$ 为该纤维内任意代表点。
+另一方面，由定义 \(\mu^{(m_2)}=Q_{M\to m_2}P_{M\to m_2}\mu\) 得
+\(
+P_{M\to m_2}\mu^{(m_2)}=P_{M\to m_2}\mu
+\)，
+从而上式右端可将系数 $(P_{M\to m_2}\mu)(y)$ 替换为 $(P_{M\to m_2}\mu^{(m_2)})(y)$。
+再将分组表达“反展开”回 $\Omega_M$，即得
+\[
+\sum_{\omega\in\Omega_M}\mu(\omega)\log\frac{\mu^{(m_2)}(\omega)}{\mu^{(m_1)}(\omega)}
+=\sum_{\omega\in\Omega_M}\mu^{(m_2)}(\omega)\log\frac{\mu^{(m_2)}(\omega)}{\mu^{(m_1)}(\omega)}
+=D_{\mathrm{KL}}(\mu^{(m_2)}\|\mu^{(m_1)}).
+\]
+移项即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[跨分辨率的信息守恒账本：望远镜分解]\label{cor:pom-kl-ledger-telescope}
+在定理 \ref{thm:pom-kl-pythagoras-tower} 的设定下，定义单步外置量
+\[
+\Delta_m(\mu):=D_{\mathrm{KL}}(\mu^{(m)}\|\mu^{(m-1)})\qquad(2\le m\le M).
+\]
+则对任意 $M\ge 1$ 有严格望远镜分解
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\mu\|\mu^{(1)})
+=\sum_{m=2}^{M}\Delta_m(\mu)\;+\;D_{\mathrm{KL}}(\mu\|\mu^{(M)})\; }.
+\]
+\end{corollary}
+\begin{proof}
+对 $m=2,3,\dots,M$ 依次将定理 \ref{thm:pom-kl-pythagoras-tower} 应用于三元组 $(m_1,m_2)=(m-1,m)$ 并求和，所有中间项望远镜抵消，得到所示恒等式。证毕。
 \end{proof}
 
 \begin{remark}[结构判据：伪不变量来自坐标不一致]\label{rem:pom-gauge-criterion}

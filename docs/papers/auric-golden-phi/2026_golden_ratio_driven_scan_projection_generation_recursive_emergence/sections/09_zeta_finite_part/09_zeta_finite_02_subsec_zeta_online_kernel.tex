@@ -15,9 +15,41 @@ B_{ij}:=\#\{d\in\{0,1,2\}:\ q_i\xrightarrow{d}q_j\},
 \]
 因此主极点位于 $z_\star=1/3$，对应 Perron--Frobenius 主特征值 $\lambda=3$，并且
 \[
-\zeta_B(z)=\frac{C_B}{1-3z}+O(1),\qquad C_B=\frac{243}{272}
+\zeta_B(z)=\frac{C_B}{1-3z}+O(1)
 \]
-（$C_B$ 为该极点留数，见附录 B）。令 $p_n$ 为长度 $n$ 的 primitive 轨道数（按轨道计），则
+其中留数常数 \(C_B\) 可由下述闭式直接读出。令 $p_n$ 为长度 $n$ 的 primitive 轨道数（按轨道计），则
+
+\begin{lemma}[10 状态同步核的主极点留数常数]\label{lem:sync-kernel-10-residue-constant}
+在 \(z_\star=1/3\) 处定义
+\(
+C_B:=\lim_{z\to z_\star}(1-3z)\zeta_B(z)
+\)。
+则有闭式
+\[
+\boxed{\; C_B=\frac{243}{272}\; }.
+\]
+\end{lemma}
+\begin{proof}
+由 \(\zeta_B(z)=1/\det(I-zB)\) 与因式分解，
+\[
+C_B
+=\lim_{z\to 1/3}\frac{1-3z}{(z-1)(z+1)(3z-1)\bigl(z^3-z^2+z+1\bigr)}
+=-\frac{1}{(z-1)(z+1)\bigl(z^3-z^2+z+1\bigr)}\Big|_{z=1/3}.
+\]
+代入 \(z=1/3\) 得
+\(
+(z-1)(z+1)=(-2/3)(4/3)=-8/9
+\)
+与
+\(
+z^3-z^2+z+1=34/27
+\)，
+故
+\(
+C_B=-1/((-8/9)(34/27))=243/272
+\)。
+证毕。
+\end{proof}
 \[
 a_n=\sum_{d\mid n} d\,p_d,
 \qquad
@@ -135,6 +167,33 @@ p_n(u)=\sum_{k\ge 0}p_{n,k}u^k,\qquad n\ge 1.
 把 primitive 轨道按 \((n,k)=(|\tau|,S_\tau\varphi)\) 分组，且记每组的轨道计数为 \(p_{n,k}\)，即可得到所示双重乘积（在形式幂级数环 \(\ZZ[u][[z]]\) 中逐阶比较即可严格化）。证毕。
 \end{proof}
 
+\begin{proposition}[联合素数谱与 action gap：Newton 支撑与可计算性]\label{prop:sync-action-gap}
+沿用命题 \ref{prop:sync-bivariate-euler-product} 的联合 primitive 计数 \(p_{n,k}\)。
+把 \((n,k)\) 视为“长度--能量”坐标，并记联合 primitive 生成函数
+\[
+P(z,u):=\sum_{n\ge 1}\sum_{k\ge 0}p_{n,k}\,z^n u^k.
+\]
+定义 action gap（最小正能量可达性）为
+\[
+A_B:=\min\{k>0:\ \exists n\ \text{使}\ p_{n,k}>0\}.
+\]
+则：
+\begin{enumerate}
+  \item \(A_B>0\) 当且仅当存在某条 primitive 回路携带正能量（等价地：存在一条含正能量边的有向环）；
+  \item \(A_B\) 与更细的“最小平均能量回路”均为可计算组合不变量：若把每条边赋能量权 \(\kappa(e)\in\ZZ_{\ge 0}\)（本节的输出位势即为一例），则最小平均能量
+  \[
+  \bar\kappa_{\min}:=\min_{\gamma\ \mathrm{cycle}}\ \frac{\sum_{e\in\gamma}\kappa(e)}{|\gamma|}
+  \]
+  可用 Karp 的 min-mean-cycle 算法在多项式时间内求出（参见注 \ref{rem:pom-order-as-zero-temp} 的同口径描述）。
+\end{enumerate}
+因此联合素数谱 \(p_{n,k}\) 不仅给出二变量 Euler 乘积，还诱导出一族不会退化为 \(0\) 的“第一激发”核指纹（\(A_B,\bar\kappa_{\min}\)），可用于区分不同同步核/加权势的机制差异。
+\end{proposition}
+\begin{proof}
+(1) 若存在 \(p_{n,k}>0\)（\(k>0\)），则存在一条 primitive 回路 \(\tau\) 满足 \(|\tau|=n\) 且能量为 \(k\)，因而其边集包含至少一条正能量边并形成有向环。反之若存在含正能量边的有向环，则该环分解为若干 primitive 回路，其中至少一条 primitive 回路具有正能量，从而某个 \(p_{n,k}\)（\(k>0\)）非零，故 \(A_B\) 良定义且为正。
+
+(2) \(\bar\kappa_{\min}\) 是有向图上边权的最小平均回路权，Karp 算法给出其多项式时间可计算性；这与本节的“硬序投影/零温极限”口径同型（见注 \ref{rem:pom-order-as-zero-temp}）。证毕。
+\end{proof}
+
 \begin{proposition}[completion \texorpdfstring{$\to$}{->} cyclotomic resultant]\label{prop:sync-cyclotomic-elimination}
 记 $\Delta(z,u)=\det(I-zB(u))$。引入完成化变量
 \[
@@ -201,15 +260,25 @@ u=r^2,\ s=r+r^{-1}
 \begin{remark}[压力展开给出 \texorpdfstring{$\rho_m$}{rhom} 的高精度渐近预测]\label{rem:sync-rho-pressure-asymp}
 由附录 \ref{app:pressure-analytic} 的 Taylor 展开
 \[
-P(\theta)=\log 3+\frac12\theta+\frac{11}{204}\theta^2+\frac{1559}{1414944}\theta^4+O(\theta^6),
+P(\theta)=\log 3+\frac12\theta+\frac{11}{204}\theta^2+\frac{1559}{1414944}\theta^4
+-\frac{17123893}{1177686190080}\theta^6
+-\frac{122803509253}{25412897733672960}\theta^8
++O(\theta^{10}),
 \]
 取 $\theta=it$ 并记 $u=e^{it}$，则
 \[
-\log|\lambda(e^{it})|=\Re P(it)=\log 3-\frac{11}{204}t^2+\frac{1559}{1414944}t^4+O(t^6).
+\log|\lambda(e^{it})|=\Re P(it)=\log 3-\frac{11}{204}t^2+\frac{1559}{1414944}t^4
++\frac{17123893}{1177686190080}t^6
+-\frac{122803509253}{25412897733672960}t^8
++O(t^{10}).
 \]
 令 $t=2\pi/m$，得到可直接使用的预测式
 \[
-\rho_m\approx 3\exp\!\Bigl(-\frac{11}{204}\Bigl(\frac{2\pi}{m}\Bigr)^2+\frac{1559}{1414944}\Bigl(\frac{2\pi}{m}\Bigr)^4\Bigr),
+\rho_m\approx 3\exp\!\Bigl(
+-\frac{11}{204}\Bigl(\frac{2\pi}{m}\Bigr)^2+\frac{1559}{1414944}\Bigl(\frac{2\pi}{m}\Bigr)^4
++\frac{17123893}{1177686190080}\Bigl(\frac{2\pi}{m}\Bigr)^6
+-\frac{122803509253}{25412897733672960}\Bigl(\frac{2\pi}{m}\Bigr)^8
+\Bigr),
 \]
 其与上面的 resultant 精确值吻合度极高：例如用 $\widehat\Delta(w,s_m)=0$ 的最小模零点定义“真值” $\rho_m$，则
 \[
@@ -239,6 +308,56 @@ P(\theta)=\log 3+\frac12\theta+\frac{11}{204}\theta^2+\frac{1559}{1414944}\theta
 =3\exp\!\Bigl(-\frac{11}{204}\Bigl(\frac{2\pi}{m}\Bigr)^2+\frac{1559}{1414944}\Bigl(\frac{2\pi}{m}\Bigr)^4+O(m^{-6})\Bigr),
 \]
 与表 \ref{tab:sync_kernel_cyclotomic_elimination_summary} 的 resultant 真值在中等 \(m\) 上已呈现机器精度级吻合（见注 \ref{rem:sync-rho-pressure-asymp} 的误差比对）。
+\end{corollary}
+
+\begin{corollary}[\texorpdfstring{$m^{-8}$}{m^-8} 精度与 \texorpdfstring{$m^2$}{m^2} 扩散尺度]\label{cor:sync-rho-gap-m8-diffusive}
+沿用推论 \ref{cor:sync-rho-gap-m2} 的记号，并令 \(t=2\pi/m\)。
+由注 \ref{rem:sync-rho-pressure-asymp} 中 \(P(\theta)\) 的 \(\theta^8\) 展开，得到
+\[
+\rho_m
+=3\exp\!\Bigl(
+-\frac{11}{204}t^2+\frac{1559}{1414944}t^4
++\frac{17123893}{1177686190080}t^6
+-\frac{122803509253}{25412897733672960}t^8
++O(t^{10})\Bigr),
+\]
+从而
+\[
+\boxed{\;
+\rho_m
+=3-\frac{11\pi^2}{17m^2}
+\frac{1808\pi^4}{14739m^4}
+-\frac{27872249\pi^6}{2044594080m^6}
+-\frac{77645433997\pi^8}{33089710590720m^8}
++O(m^{-10}).\;}
+\]
+另一方面定义“频率代价/扩散常数”
+\[
+\delta_m:=\log\frac{3}{\rho_m}=\log 3-\Re P\!\left(\frac{2\pi i}{m}\right),
+\]
+则
+\[
+\boxed{\;
+\delta_m
+=\frac{11\pi^2}{51m^2}
+-\frac{1559\pi^4}{88434m^4}
+-\frac{17123893\pi^6}{18401346720m^6}
++\frac{122803509253\pi^8}{99269131772160m^8}
++O(m^{-10}).\;}
+\]
+因此对任意由 DFT/Witt 接口导出的 residue--class 误差界
+\(
+\mathrm{err}_{n,m}\ll (\rho_m/3)^n
+\)
+（把常数并入 \(\ll\)），若希望 \(\mathrm{err}_{n,m}\le \varepsilon\)，则充分条件为
+\[
+n\ \ge\ \frac{\log(1/\varepsilon)+O(1)}{\delta_m},
+\]
+从而在主阶上得到扩散型时间尺度
+\[
+\boxed{\;
+n_\varepsilon(m)\sim \frac{51}{11\pi^2}\,m^2\log\frac{1}{\varepsilon}\qquad(m\to\infty).\;}
+\]
 \end{corollary}
 
 \paragraph{\texorpdfstring{$s$}{s}-平面零极点字典：谱半径与“右半临界带无极点”}\label{par:s-plane-pole-dictionary}
