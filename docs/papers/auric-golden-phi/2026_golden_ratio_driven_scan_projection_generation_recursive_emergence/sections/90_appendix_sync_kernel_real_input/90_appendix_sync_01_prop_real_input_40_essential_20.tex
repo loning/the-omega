@@ -110,6 +110,89 @@ A=\begin{pmatrix}
 因此 Perron 根 $\lambda=\rho(M)=\varphi^2$ 完全由输入骨架 $A$ 决定，而核方向只贡献更小模的谱与指数级修正。
 \end{proposition}
 
+\begin{proposition}[骨架矩阵的黄金均值张量平方与一个隐藏的 \texorpdfstring{$(-A_0)$}{(-A0)} 因子]\label{prop:real-input-40-A0-tensor-hidden}
+定义黄金均值（Fibonacci）邻接矩阵
+\[
+A_0:=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix}.
+\]
+按记忆状态顺序 \((00,01,10,11)\)，命题 \ref{prop:real-input-40-skeleton-factor} 的 \(4\times 4\) 记忆骨架矩阵满足
+\[
+\boxed{\ A=A_0\otimes A_0\ }.
+\]
+从而有因子分解
+\[
+\det(I-zA)=\det\!\bigl(I-z(A_0\otimes A_0)\bigr)
+=(1+z)^2(1-3z+z^2).
+\]
+进一步，纵向残差因子可改写为
+\[
+\boxed{\ \det_{\mathrm{vert}}(z)=(1-z)^2(1+z)\,\det(I+zA_0)\ },
+\qquad
+\det(I+zA_0)=1+z-z^2.
+\]
+因此 40 状态核的行列式分解可被提升为“三因子”结构：
+\[
+\boxed{\;
+\det(I-zM)
+=(1-z)^2(1+z)\,
+\det\!\bigl(I-z(A_0\otimes A_0)\bigr)\,
+\det\!\bigl(I-z(-A_0)\bigr)\; }.
+\]
+等价地，对应的动力学 \(\zeta\) 分解为
+\[
+\boxed{\;
+\zeta_M(z)=\frac{1}{(1-z)^2(1+z)}\cdot
+\zeta_{A_0\otimes A_0}(z)\cdot
+\zeta_{-A_0}(z),\qquad
+\zeta_T(z):=\det(I-zT)^{-1}\; }.
+\]
+\end{proposition}
+
+\begin{proof}
+首先由 Kronecker 积的定义，在顺序 \((00,01,10,11)\) 下，
+\[
+A_0\otimes A_0=
+\begin{pmatrix}
+1\cdot A_0 & 1\cdot A_0\\
+1\cdot A_0 & 0\cdot A_0
+\end{pmatrix}
+=
+\begin{pmatrix}
+1&1&1&1\\
+1&0&1&0\\
+1&1&0&0\\
+1&0&0&0
+\end{pmatrix}=A,
+\]
+得到 \(A=A_0\otimes A_0\)。
+其次，由 \(A_0\) 的谱为 \(\{\varphi,-\varphi^{-1}\}\) 可知 \(A_0\otimes A_0\) 的谱为四个两两乘积
+\(\{\varphi^2,-1,-1,\varphi^{-2}\}\)，从而
+\(\det(I-z(A_0\otimes A_0))=(1-\varphi^2 z)(1+\!z)^2(1-\varphi^{-2}z)\)，化简即得 \((1+z)^2(1-3z+z^2)\)。
+最后，由命题 \ref{prop:real-input-40-skeleton-factor} 的显式式子
+\[
+\det_{\mathrm{vert}}(z)=-(z-1)^2(z+1)(z^2-z-1)
+=(1-z)^2(1+z)(1+z-z^2),
+\]
+而 \(1+z-z^2=\det(I+zA_0)=\det(I-z(-A_0))\)，得出所示三因子分解与 \(\zeta\) 分解。证毕。
+\end{proof}
+
+\begin{remark}[置换 lift（覆盖）口径：旧谱/新谱与 Ramanujan 界]\label{rem:real-input-40-permutation-lift}
+由块表示
+\[
+M=
+\begin{pmatrix}
+B^{(0)} & B^{(1)} & B^{(1)} & B^{(2)}\\
+B^{(0)} & 0   & B^{(1)} & 0\\
+B^{(0)} & B^{(1)} & 0   & 0\\
+B^{(0)} & 0   & 0   & 0
+\end{pmatrix}
+\]
+以及 \(B^{(d)}\) 为置换矩阵可知：真实输入 40 状态核可视为一个典型的\emph{置换 lift（覆盖）}。
+基图为 \(4\) 顶点的记忆骨架（邻接矩阵 \(A=A_0\otimes A_0\)），纤维为同步核内部态集合 \(Q\)（\(|Q|=10\)），而每条基边携带的提升数据是由输入数字 \(d\) 诱导的置换 \(B^{(d)}\)。
+在该口径下，子空间 \(U=\RR^4\otimes\langle\mathbf{1}\rangle\) 给出 lift 的\textbf{旧谱}（等于基图谱），而 \(U^\perp\)（等价地 \(\det_{\mathrm{vert}}\)）控制 lift 的\textbf{新谱}。
+因此 kernel RH/GRH 的半径界可理解为“把新本征值压到 \(\sqrt{\lambda}\) 内”的 Ramanujan 型谱界（参见附录 \ref{app:real-input-40-finite-rh} 的命题 \ref{prop:finite-rh-triangle-dict}），而本核的唯一达界点 \(-\sqrt{\lambda}\) 则由隐藏的二维因子 \((-A_0)\) 强制出现（注 \ref{rem:finite-rh-40-hidden-minusA0}）。
+\end{remark}
+
 \begin{proposition}[同步复位词：\texorpdfstring{$0^5$}{0^5}]\label{prop:real-input-40-reset-word}
 令同步核的确定性转移为 $\delta:Q\times\{0,1,2\}\to Q$。则对任意 $s\in Q$ 都有
 \[
