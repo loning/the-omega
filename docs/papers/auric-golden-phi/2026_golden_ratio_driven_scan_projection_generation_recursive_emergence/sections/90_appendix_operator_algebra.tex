@@ -103,6 +103,58 @@ E_m(\widetilde P_xP_a\widetilde P_x)=E_m(P_a)=\frac{1}{d_m(x)}\widetilde P_x
 命题 \ref{prop:fold-conditional-expectation} 给出的 $E_m$ 是一个完全显式的“纤维平均”算子：它把微态层可观测量 $A\in\mathcal{A}_m$ 压缩为对折叠纤维常值的部分 $E_m(A)\in\mathcal{B}_m$。其系数仅依赖于折叠多重度 $d_m(x)$（见附录 \ref{app:fold-multiplicity}），因此可作为折叠诱导的一个结构性不变量接口：不同折叠/不同归一化规则会改变纤维结构，从而改变 $E_m$ 的块平均方式。
 \end{remark}
 
+\begin{proposition}[条件期望的奇异值谱：完全由纤维多重度决定]\label{prop:fold-conditional-expectation-singular-spectrum}
+将 $E_m$ 识别为线性算子
+\[
+E_m:\ell^2(\Omega_m)\to \ell^2(X_m),
+\qquad
+(E_m f)(x):=\frac{1}{d_m(x)}\sum_{\Fold_m(a)=x} f(a),
+\]
+其中两侧的内积均取计数测度下的标准内积。则其伴随算子满足
+\[
+(E_m^\ast g)(a)=\frac{1}{d_m(\Fold_m(a))}\,g(\Fold_m(a)),
+\]
+并且 \(E_mE_m^\ast\) 在 \(\ell^2(X_m)\) 上为对角算子：
+\[
+(E_mE_m^\ast g)(x)=\frac{1}{d_m(x)}\,g(x).
+\]
+因此 \(E_m\) 的全部奇异值为
+\[
+\boxed{\ \sigma_x(E_m)=d_m(x)^{-1/2}\qquad(x\in X_m).\ }
+\]
+\end{proposition}
+\begin{proof}
+由定义对任意 \(f\in\ell^2(\Omega_m)\)、\(g\in\ell^2(X_m)\) 计算配对：
+\[
+\langle E_m f,\ g\rangle_{\ell^2(X_m)}
+=\sum_{x\in X_m}\left(\frac{1}{d_m(x)}\sum_{\Fold_m(a)=x} f(a)\right)\overline{g(x)}
+=\sum_{a\in\Omega_m} f(a)\,\overline{\left(\frac{1}{d_m(\Fold_m(a))}g(\Fold_m(a))\right)},
+\]
+故得到 \(E_m^\ast\) 的坐标公式。再代入
+\[
+(E_mE_m^\ast g)(x)
+=\frac{1}{d_m(x)}\sum_{\Fold_m(a)=x}(E_m^\ast g)(a)
+=\frac{1}{d_m(x)}\sum_{\Fold_m(a)=x}\frac{1}{d_m(x)}\,g(x)
+=\frac{1}{d_m(x)}\,g(x).
+\]
+于是 \(E_mE_m^\ast\) 的本征值为 \(\{1/d_m(x)\}_{x\in X_m}\)，从而奇异值为其平方根。证毕。
+\end{proof}
+
+\begin{corollary}[Schatten 范数族：负矩阶“投影成本谱”]\label{cor:fold-conditional-expectation-schatten}
+对任意 \(p\ge 1\)，Schatten 范数满足
+\[
+\boxed{\ \|E_m\|_{S_p}^p=\sum_{x\in X_m} d_m(x)^{-p/2}\ }.
+\]
+特别地
+\[
+\|E_m\|_{HS}^2=\sum_{x\in X_m}\frac{1}{d_m(x)},
+\qquad
+\|E_m\|_{op}=\max_{x\in X_m} d_m(x)^{-1/2}=d_{\min}^{-1/2}.
+\]
+表 \ref{tab:fold_conditional_expectation_singular_spectrum} 给出若干 \(m\) 的可复现数值输出。
+\input{sections/generated/tab_fold_conditional_expectation_singular_spectrum}
+\end{corollary}
+
 \begin{proposition}[折叠的推前与提升：概率单纯形上的 Markov 核对偶]\label{prop:fold-pushforward-lift}
 在交换情形下，可将 $\mathcal{A}_m$ 与 $\mathcal{B}_m$ 分别识别为有限集上的复值函数代数：
 \[
