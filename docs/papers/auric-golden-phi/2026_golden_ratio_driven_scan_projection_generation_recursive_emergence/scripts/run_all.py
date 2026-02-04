@@ -324,6 +324,17 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_weighted_3d_exact_audits",
+            script="exp_sync_kernel_weighted_3d_exact_audits.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_weighted_3d_exact_audits.json",
+                "sections/generated/eq_sync_kernel_3d_critical_w_half_delta.tex",
+                "sections/generated/eq_sync_kernel_3d_hessian_inverse_exact.tex",
+                "sections/generated/eq_sync_kernel_3d_quadratic_orthobasis.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_weighted_primitive_completed",
             script="exp_sync_kernel_weighted_primitive_completed.py",
             args=[],
@@ -501,6 +512,14 @@ def build_steps() -> List[Step]:
                 "sections/generated/tab_real_input_40_arity_dirichlet_mertens_333.tex",
                 "sections/generated/tab_real_input_40_arity_dirichlet_mertens_335.tex",
                 "sections/generated/tab_real_input_40_arity_dirichlet_mertens_555.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_mertens_tensor_bias_222",
+            script="exp_real_input_40_mertens_tensor_bias_222.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_real_input_40_arity_dirichlet_mertens_222_bias.tex",
             ],
         ),
         Step(
