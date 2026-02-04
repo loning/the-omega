@@ -790,6 +790,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_primitive_artin_split",
+            script="exp_real_input_40_primitive_artin_split.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_primitive_artin_split.json",
+                "sections/generated/tab_real_input_40_primitive_artin_split.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_abel_mertens_two_series_split",
             script="exp_real_input_40_abel_mertens_two_series_split.py",
             args=["--N", "160", "--dps", "80"],
@@ -907,6 +916,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/parallel_addition_kernels_ihara.json",
                 "sections/generated/tab_parallel_addition_kernels_ihara_fingerprint.tex",
+            ],
+        ),
+        Step(
+            name="parallel_addition_kernels_backtracking_entropy_gap",
+            script="exp_parallel_addition_kernels_backtracking_entropy_gap.py",
+            args=["--n", "50"],
+            expected_outputs=[
+                "artifacts/export/parallel_addition_kernels_backtracking_entropy_gap.json",
+                "sections/generated/tab_parallel_addition_kernels_backtracking_entropy_gap.tex",
             ],
         ),
         Step(

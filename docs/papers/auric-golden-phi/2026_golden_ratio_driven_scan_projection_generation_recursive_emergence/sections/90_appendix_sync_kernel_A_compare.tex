@@ -349,6 +349,19 @@ $$
 它直接量化“禁止回溯”带来的指数增长率损失比例。表 \ref{tab:parallel-addition-kernels-ihara-fingerprint} 的输出显示：在三核中 \(21\)-local 的 \(\pi_{\mathrm{bt}}\) 显著更大，表明其原子操作骨架中“可逆撤销/短回溯”结构占比更高，因此以 Ihara primes（无回溯）对素数影子做正规化的必要性也更强。
 \end{remark}
 
+\begin{remark}[回溯熵缺口 \texorpdfstring{$\Delta h$}{Delta h}：Table 18 的定量推论]\label{rem:ihara-entropy-gap}
+进一步把 \((\rho(A),\rho(B))\) 转成“指数尺度”的缺口：
+\[
+\Delta h_K:=\log\rho(A)-\log\rho(B)=\log\!\left(\frac{\rho(A)}{\rho(B)}\right)\ge 0.
+\]
+则 ordinary closed walk 与 non-backtracking closed walk 的增长率比在长度 \(n\) 上呈指数放大：
+\[
+\left(\frac{\rho(A)}{\rho(B)}\right)^n=e^{n\Delta h_K}.
+\]
+表 \ref{tab:parallel_addition_kernels_backtracking_entropy_gap} 给出 \(n=50\) 的放大量级；其中 \(21\)-local 的放大已达 \(\sim 10^2\) 量级，说明在最小字母表 regime 下，“primitive cycle”统计更容易被立即回溯的伪周期污染，因此 Ihara primes 的正规化不仅是叙事更自然，而是量化上更必要。
+\input{sections/generated/tab_parallel_addition_kernels_backtracking_entropy_gap}
+\end{remark}
+
 \paragraph{Ihara primes：无回溯原子环的规范化素数}
 在“原子操作图”（边为原子操作、反向边为其逆）上，把 prime-like 对象定义为\textbf{无回溯、无尾（tailless）的 primitive 环}：即闭环 $p=e_1\cdots e_\ell$ 满足 $e_{i+1}\neq e_i^{-1}$ 且 $e_1\neq e_\ell^{-1}$，并且不为更短环的幂；此外按循环平移视为同一环。其 Euler 乘积为
 \[
@@ -364,16 +377,87 @@ Z_K(u,t):=\prod_{p}\left(1-t^{\ell(p)}u^{\kappa(p)}\right)^{-1}
 \]
 从而“原子能量”进入谱指纹并保持行列式可计算性（Bass--Hashimoto 三项行列式公式可视为上述定义在无向骨架上的等价表述）。该双参数对象给出一族\textbf{矩阵多项式行列式不变量}，比单一的周期点迹更贴近“可逆重写群胚”的素数谱。
 
+\begin{proposition}[Ihara--Witt 复合桥包：无回溯 primes 的能量分辨 primitive 谱]\label{prop:ihara-witt-primitive-spectrum}
+对带权 Hashimoto 算子 \(B(u)\)，定义 Ihara 迹多项式
+\[
+b_n(u):=\Tr(B(u)^n)\in\ZZ[u],
+\]
+并定义 Ihara-primitive 多项式（Witt 坐标）
+\[
+q_n(u):=\frac{1}{n}\sum_{d\mid n}\mu(d)\,b_{n/d}(u^d)\in\QQ[u].
+\]
+则带权 Ihara \(\zeta\) 具有严格的 Witt Euler 乘积展开：
+\[
+\boxed{\ 
+Z_K(u,t)
+=\exp\!\left(\sum_{n\ge 1}\frac{b_n(u)}{n}t^n\right)
+=\prod_{n\ge 1}\bigl(1-t^n\bigr)^{-q_n(u)}
+\ }.
+\]
+写 \(q_n(u)=\sum_k q_{n,k}u^k\)，则 \(\{q_{n,k}\}\) 给出\textbf{无回溯 Ihara primes 的能量分辨 primitive 谱}。
+\end{proposition}
+\begin{proof}
+将本附录 \S\ref{app:witt-bridge-package} 中对任意带参矩阵族 \(T(u)\) 的 Big-Witt 恒等式应用于 \(T(u)=B(u)\)（并把变量 \(z\) 替换为 \(t\)）即可。证毕。
+\end{proof}
+
+\begin{corollary}[Ihara necklace 整除律与 Dwork 型同余]\label{cor:ihara-witt-dwork}
+在命题 \ref{prop:ihara-witt-primitive-spectrum} 的记号下：
+\begin{enumerate}
+  \item \textbf{（整性/整除）}对所有 \(n\ge 1\) 有 \(n\,q_n(u)\in\ZZ[u]\)；
+  \item \textbf{（\(p\)-幂同余）}对任意素数 \(p\) 与 \(k\ge 1\)，有
+  \[
+  \boxed{\ b_{p^k}(u)\equiv b_{p^{k-1}}(u^p)\ (\mathrm{mod}\ p^k)\quad\text{in }\ZZ[u]\ },
+  \]
+  等价地
+  \[
+  \boxed{\ p^k\,q_{p^k}(u)=b_{p^k}(u)-b_{p^{k-1}}(u^p)\in\ZZ[u]\ }.
+\]
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+将命题 \ref{prop:witt-necklace-div} 与推论 \ref{cor:witt-dwork-congruence} 应用于 \(T(u)=B(u)\) 即得。证毕。
+\end{proof}
+
 \paragraph{核版 RH/Ramanujan 指标}
 记 $\lambda_1(u)=\rho(B(u))$ 为无回溯主谱半径，$\lambda_\star(u)$ 为最大非平凡特征值模。定义
 \[
 R_K(u):=\frac{\lambda_\star(u)}{\sqrt{\lambda_1(u)}}.
 \]
-当 $R_K(u)\le 1$ 时，prime cycle 的长度计数可达平方根级误差：对对应的 primitive 计数 $p_n(u)$，谱分解给出主项
+当 $R_K(u)\le 1$ 时，prime cycle 的长度计数可达平方根级误差：对对应的 Ihara-primitive 计数 $q_n(u)$，谱分解给出主项
 \[
-p_n(u)=\frac{\lambda_1(u)^n}{n}+O\!\left(\frac{\lambda_1(u)^{n/2}}{n}\right),
+q_n(u)=\frac{\lambda_1(u)^n}{n}+O\!\left(\frac{\lambda_1(u)^{n/2}}{n}\right),
 \]
 这在有限矩阵框架下无需额外 Tauberian 工具。该指标为“素数影子质量”的可检验谱界（Ihara--RH/Ramanujan 类比；参见 \cite{TerrasZetaGraphs,StarkTerras1996GraphCoverings} 的图版 RH 综述）。
+
+\begin{proposition}[Ihara--Mertens 常数：无回溯 primes 的 Abel 有限部不变量]\label{prop:ihara-mertens-constant}
+固定 \(u>0\)，令 \(\lambda_1(u):=\rho(B(u))\) 且 \(t_\star(u):=\lambda_1(u)^{-1}\)。设 \(B(u)\) 满足 Perron--Frobenius 型谱隙（从而 Ihara-primitive 多项式 \(q_n(u)\) 满足 \(q_n(u)=\lambda_1(u)^n/n+O(\rho(u)^n/n)\)）。
+定义 Ihara 口径的 Mertens Abel 和
+\[
+\mathcal{M}^{\mathrm{Ih}}_K(N;u):=\sum_{n\le N}\frac{q_n(u)}{\lambda_1(u)^n}.
+\]
+则存在常数 \(M^{\mathrm{Ih}}_K(u)\) 使得
+\[
+\boxed{\ \mathcal{M}^{\mathrm{Ih}}_K(N;u)=\log N+M^{\mathrm{Ih}}_K(u)+o(1)\ }.
+\]
+其 Abel 有限部常数 \(\log\mathfrak{M}^{\mathrm{Ih}}_K(u):=M^{\mathrm{Ih}}_K(u)-\gamma\) 具有与 \(\log\mathfrak{M}\) 平行的 Möbius--Abel 快速配方：
+\[
+\boxed{\ 
+\log\mathfrak{M}^{\mathrm{Ih}}_K(u)
+=\log C^{\mathrm{Ih}}_K(u)
+\sum_{m\ge 2}\frac{\mu(m)}{m}\log Z_K\!\bigl(u^m,\,t_\star(u)^m\bigr)
+\ },
+\qquad
+C^{\mathrm{Ih}}_K(u):=\frac{1}{-t_\star(u)\,\partial_t\det(I-tB(u))\big|_{t=t_\star(u)}}.
+\]
+\end{proposition}
+
+\begin{conjecture}[自对偶的 Ihara 提升：无回溯 primitive 能量镜像对称]\label{conj:ihara-duality-lift}
+若状态层自对偶对合可提升到无回溯边空间，使得 \(B(u)\) 满足某种相似关系 \(B(u)\sim u\,B(1/u)\)，则 Ihara 迹多项式满足回文
+\(
+b_n(u)=u^n b_n(1/u)
+\)，从而 \(q_{n,k}=q_{n,n-k}\)。
+该条件可用“一行测试”审计：对小 \(n\) 计算 \(b_n(u)\) 并检验系数镜像对称。
+\end{conjecture}
 
 \paragraph{核版 Chebotarev：群标签的同余类分布}
 给每条边赋有限群标签 $g(e)\in G$（隐含属性），对 prime 环定义 Frobenius 类 $\mathrm{Fr}(p)=\prod_{e\in p}g(e)$。对每个不可约表示 $\rho$，定义扭曲 Hashimoto 算子 $B_{\rho}(u)$ 与
