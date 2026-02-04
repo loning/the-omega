@@ -63,6 +63,13 @@ class PlanItem:
     sources_hash: str
 
 
+@dataclass(frozen=True)
+class BuildResult:
+    success: bool
+    last_rc: int | None
+    error: str | None = None
+
+
 def _iter_source_files(root: Path) -> list[Path]:
     files: list[Path] = []
     for p in root.rglob("*"):
@@ -189,7 +196,7 @@ def _is_chinese_paper(paper_dir: Path) -> bool:
         return False
 
 
-def _run_latexmk(paper_dir: Path) -> None:
+def _run_latexmk(paper_dir: Path) -> BuildResult:
     is_chinese = _is_chinese_paper(paper_dir)
     
     if is_chinese:
@@ -209,12 +216,33 @@ def _run_latexmk(paper_dir: Path) -> None:
 
     last_rc: int | None = None
     for cmd in cmds:
-        proc = subprocess.run(cmd, cwd=str(paper_dir))
+        try:
+            proc = subprocess.run(cmd, cwd=str(paper_dir))
+        except Exception as exc:
+            return BuildResult(False, None, str(exc))
         last_rc = proc.returncode
         if proc.returncode == 0:
-            return
+            return BuildResult(True, last_rc)
 
-    raise RuntimeError(f"latexmk failed in {paper_dir} (last exit code: {last_rc})")
+    return BuildResult(False, last_rc)
+
+
+def _report_build_failure(paper_dir: Path, error: str) -> None:
+    log_path = paper_dir / "main.log"
+    print(f"Build failed in: {paper_dir}", file=sys.stderr)
+    print(f"Error: {shorten(str(error), width=500)}", file=sys.stderr)
+    if log_path.exists():
+        try:
+            lines = log_path.read_text(encoding="utf-8", errors="replace").splitlines()
+            tail = lines[-200:] if len(lines) > 200 else lines
+            print("---- main.log (tail) ----", file=sys.stderr)
+            for line in tail:
+                print(line, file=sys.stderr)
+            print("---- end main.log ----", file=sys.stderr)
+        except Exception as log_e:
+            print(f"Could not read log file {log_path}: {log_e}", file=sys.stderr)
+    else:
+        print(f"Log file not found: {log_path}", file=sys.stderr)
 
 
 def _clean_latexmk(paper_dir: Path) -> None:
@@ -236,30 +264,24 @@ def build_from_plan(
 
         print(f"Building: {paper_dir}")
         try:
-            _run_latexmk(paper_dir)
+            result = _run_latexmk(paper_dir)
+            if not result.success:
+                msg = result.error or f"latexmk failed (last exit code: {result.last_rc})"
+                _report_build_failure(paper_dir, msg)
+                failed.append(paper_dir)
+                continue
+
             pdf_path = paper_dir / "main.pdf"
             if not pdf_path.exists():
-                raise FileNotFoundError(f"Expected PDF not found: {pdf_path}")
+                _report_build_failure(paper_dir, f"Expected PDF not found: {pdf_path}")
+                failed.append(paper_dir)
+                continue
 
             write_stamp(stamp_path(stamp_root, papers_root, paper_dir), sources_hash)
             if clean:
                 _clean_latexmk(paper_dir)
         except Exception as e:
-            log_path = paper_dir / "main.log"
-            print(f"Build failed in: {paper_dir}", file=sys.stderr)
-            print(f"Error: {shorten(str(e), width=500)}", file=sys.stderr)
-            if log_path.exists():
-                try:
-                    lines = log_path.read_text(encoding="utf-8", errors="replace").splitlines()
-                    tail = lines[-200:] if len(lines) > 200 else lines
-                    print("---- main.log (tail) ----", file=sys.stderr)
-                    for line in tail:
-                        print(line, file=sys.stderr)
-                    print("---- end main.log ----", file=sys.stderr)
-                except Exception as log_e:
-                    print(f"Could not read log file {log_path}: {log_e}", file=sys.stderr)
-            else:
-                print(f"Log file not found: {log_path}", file=sys.stderr)
+            _report_build_failure(paper_dir, str(e))
             failed.append(paper_dir)
             continue
 

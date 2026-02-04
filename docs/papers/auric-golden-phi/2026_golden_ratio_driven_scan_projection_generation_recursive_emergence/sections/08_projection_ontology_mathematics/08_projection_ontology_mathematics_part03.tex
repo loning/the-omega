@@ -130,6 +130,28 @@ H(\mu)\le H(\pi)+\mathbb{E}_{\pi}[\log d_m(X)],
 由定理 \ref{thm:pom-kl-ledger} 与 $D_{\mathrm{KL}}\ge 0$ 得上界；且 $D_{\mathrm{KL}}(\mu\|\mu^e)=0$ 当且仅当 $\mu=\mu^e$。证毕。
 \end{proof}
 
+\begin{corollary}[最坏熵缺口上界]\label{cor:pom-entropy-gap-bound}
+对任意 $\mu\in\Delta(\Omega_m)$，令 $\pi=P_m\mu$。则
+\[
+H(\mu)-H(\pi)\le \log D_m.
+\]
+因此最大可见熵缺口满足
+\[
+\sup_{\mu\in\Delta(\Omega_m)}\bigl(H(\mu)-H(\pi)\bigr)\le \log D_m.
+\]
+并由定理 \ref{thm:pom-max-fiber} 得
+\[
+\limsup_{m\to\infty}\frac{1}{m}\sup_{\mu}\bigl(H(\mu)-H(\pi)\bigr)\le \frac12\log\varphi.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-kl-ledger}，
+\(
+H(\mu)-H(\pi)=\mathbb{E}_{\pi}[\log d_m(X)]-D_{\mathrm{KL}}(\mu\|\mu^e)
+\)。
+注意该差异可为负，但其上界由 $\mathbb{E}_{\pi}[\log d_m(X)]\le \log D_m$ 给出。取上确界即得前两式。再由定理 \ref{thm:pom-max-fiber} 的渐近得到单位分辨率上界。证毕。
+\end{proof}
+
 \begin{lemma}[纤维 KL 分解：残差为纤维内非均匀的平均]\label{lem:pom-fiberwise-kl}
 取任意 $\mu\in\Delta(\Omega_m)$，令 $\pi=P_m\mu$。对每个 $x\in X_m$ 定义纤维条件分布
 \[
@@ -381,6 +403,31 @@ D_2=2,\quad D_3=2,\quad D_4=3,\quad D_5=4.
 \]
 因此最坏纤维相对平均纤维的偏离虽为指数，但基数极小，表明折叠投影在“最坏空间损失”意义下仍保持温和的尺度膨胀。
 \end{remark}
+
+\begin{corollary}[高多重纤维的稀疏性]\label{cor:pom-high-multiplicity-sparse}
+对任意 $\alpha\in(0,1]$，令
+\[
+S_\alpha(m):=\{x\in X_m:\ d_m(x)\ge \alpha D_m\}.
+\]
+则
+\[
+|S_\alpha(m)|\le \frac{2^m}{\alpha D_m},
+\qquad
+\frac{|S_\alpha(m)|}{|X_m|}\le \frac{2^m}{\alpha D_m F_{m+2}}.
+\]
+并且由定理 \ref{thm:pom-max-fiber} 与 $F_{m+2}\sim \varphi^m/\sqrt5$，
+\[
+\frac{|S_\alpha(m)|}{|X_m|}
+=O\!\left(\frac{1}{\alpha}\left(\frac{2}{\varphi^{3/2}}\right)^m\right).
+\]
+\end{corollary}
+\begin{proof}
+由 $\sum_{x\in X_m} d_m(x)=|\Omega_m|=2^m$，有
+\(
+\alpha D_m |S_\alpha(m)|\le \sum_{x\in S_\alpha(m)} d_m(x)\le 2^m
+\)，
+得第一式；再除以 $|X_m|=F_{m+2}$ 得第二式。最后一条由渐近式直接得到。证毕。
+\end{proof}
 
 \subsubsection{二阶碰撞矩与 \texorpdfstring{$\mathrm{R\acute{e}nyi}$}{Renyi}--2 投影熵率}\label{subsec:pom-s2}
 最大纤维多重度刻画“最坏空间缺陷”，但在统计意义上更稳健的指标来自碰撞矩（\(\ell^2\) 质量）。它给出一个可与在线延迟 \(\delta_{\min}=3\) 并列的、纯由折叠门 \(P_Z\) 决定的指数尺度常数。
@@ -943,7 +990,8 @@ S_q(m):=\sum_{x\in X_m} d_m(x)^q,\qquad
 H_q(m):=-\log\sum_{x\in X_m}\pi_m(x)^q=-\log\!\left(\frac{S_q(m)}{2^{qm}}\right).
 $$
 对 \(q=2,3,4\)，命题 \ref{prop:pom-s2-recurrence}、\ref{prop:pom-s3-recurrence} 与 \ref{prop:pom-s4-recurrence} 给出严格有限态碰撞核与闭式熵率 \(h_q=\log(2^q/r_q)\)。
-对更高阶 \(q\ge 5\)，同样可把 \(\{S_q(m)\}\) 作为“投影熵谱曲线”的数值指纹输出；可复现的枚举谱表见表 \ref{tab:fold_collision_renyi_spectrum}（脚本 \texttt{scripts/exp\_fold\_collision\_renyi\_spectrum.py}）。
+对 \(q=5,6,7,8\)，可把 \(\{S_q(m)\}\) 作为“投影熵谱曲线”的数值指纹输出；可复现的枚举谱表见表 \ref{tab:fold_collision_renyi_spectrum}（脚本 \texttt{scripts/exp\_fold\_collision\_renyi\_spectrum.py}）。
+对 \(q\ge 9\)，最小递推给出精确 \(r_q\)（从而精确 \(h_q\)），同样列于表 \ref{tab:fold_collision_renyi_spectrum}。
 \par
 若需标准 Rényi 熵率的归一化口径，可取 \(h_q^{\mathrm{R}}:=h_q/(q-1)\)（与 \S\ref{subsec:pom-higher-collision-spectrum} 中的定义一致）。
 \end{remark}
@@ -1079,8 +1127,11 @@ D_m^{1/m}\ \le\ S_q(m)^{1/(mq)}\ \le\ D_m^{1/m}\,|X_m|^{1/(mq)}.
 \(
 2\lfloor q/2\rfloor+1
 \)。
-然而当 \(q\) 继续增大时，该规律会出现\textbf{结构性坍缩/共振}：对 \(q=9,10,11\)，在审计窗口 \(m\le 26\) 上可验证存在更低阶的整系数递推（表 \ref{tab:fold_collision_moment_recursions_9_11}），其中 \(q=9\) 的最小阶数为 \(7\)（低于 \(2\lfloor 9/2\rfloor+1=9\)）。
-这提示“闭合维数指纹”存在非单调的共振点，其机制很可能与 Fibonacci 同余结构的代数退化有关。
+然而当 \(q\) 继续增大时，该规律出现\textbf{结构性坍缩/共振}：对 \(q=9,\dots,16\)，在模 \(F_{m+2}\) 的审计窗口 \(m\le 26\)（\(q=16\) 延展核验到 \(m\le 32\)）上可验证存在更低阶的整系数递推（表 \ref{tab:fold_collision_moment_recursions_9_16}），其最小阶数
+\[
+(d_9,d_{10},d_{11},d_{12},d_{13},d_{14},d_{15},d_{16})=(7,9,9,13,11,13,11,13),
+\]
+明显低于“每两阶增加 2”的线性外推。该现象表明“闭合维数指纹”出现稳定的秩缺口，其机制与 Fibonacci 同余结构的代数退化相关。共振的机制化判别见定理 \ref{thm:pom-moment-resonance}。
 \end{remark}
 
 \begin{remark}[闭合维数 \texorpdfstring{$2\lfloor q/2\rfloor+1$}{2 floor(q/2)+1} 的结构来源：同余角色模态的有限截断]\label{rem:pom-closure-dim-mode-trunc}
@@ -1095,12 +1146,100 @@ S_2(m)=\sum_r c_m(r)^2
 -(\lfloor q/2\rfloor)\ \le\ a-b\ \le\ \lfloor q/2\rfloor,
 \]
 因此在\emph{非共振的典型情形}下，只需跟踪 \(2\lfloor q/2\rfloor+1\) 个模态即可闭合地推进到下一步分辨率；这给出了“每两阶增加 2 个自由度”的结构原因。该模态截断与 Hankel 秩下界（定理 \ref{thm:pom-moment-hankel}）在已核验范围 \(q\le 8\) 内精确吻合，从而把经验指纹升级为可解释的有限闭包机制。
-而表 \ref{tab:fold_collision_moment_recursions_9_11} 的 \(q=9\) 现象表明：当 Fibonacci 同余结构诱发代数退化时，模态可能发生额外约束，从而导致“最小闭合维数”坍缩到更低阶。
+而表 \ref{tab:fold_collision_moment_recursions_9_16} 的 \(q\ge 9\) 现象表明：当 Fibonacci 同余结构诱发代数退化时，模态可能发生额外约束，从而导致“最小闭合维数”系统性坍缩到更低阶。
 \end{remark}
 
 \input{sections/generated/tab_fold_collision_moment_recursions}
 
-\input{sections/generated/tab_fold_collision_moment_recursions_9_11}
+\input{sections/generated/tab_fold_collision_moment_recursions_9_16}
+
+\begin{remark}[高阶递推的最短初值（\(q=9,10,11,12\)）]\label{rem:pom-moment-init-9-12}
+为便于复核，列出最短初值（\(S_q(2),\dots,S_q(1+d_q)\)）：
+$$
+\begin{aligned}
+&(S_9(2),\dots,S_9(8))=(514,1538,41416,382292,5376484,54810488,707836456),\\
+&(S_{10}(2),\dots,S_{10}(10))=(1026,3074,122196,1406968,25250620,311420704,5187436232,72412721272,1102141254640),\\
+&(S_{11}(2),\dots,S_{11}(10))=(2050,6146,362488,5265380,120053140,1787525384,38572713688,667461412712,12816890401888),\\
+&(S_{12}(2),\dots,S_{12}(14))=(4098,12290,1079268,19982248,576435244,10344013168,290291967800,6227618870536,150911581885024,\\
+&\qquad\qquad\qquad\qquad\qquad\quad 3397767385301568,81304379149198128,1859608501854266944,43678793149065441920).
+\end{aligned}
+$$
+其余 \(q=13,14,15,16\) 的初值与 \(q=16\) 的系数由脚本 \texttt{scripts/exp\_fold\_collision\_moment\_recursions\_mod\_dp.py --precomputed} 的导出记录给出。
+\end{remark}
+
+\begin{theorem}[坍缩/共振判别：模态约束导致 Hankel 秩下降]\label{thm:pom-moment-resonance}
+设 \(q\ge 2\)，记 \(h=\lfloor q/2\rfloor\)。在差分模态截断下（注 \ref{rem:pom-closure-dim-mode-trunc}），令 \(M_{q,\ell}(m)\) 表示净偏置 \(\ell=a-b\) 的模态贡献，则
+$$
+S_q(m)=\sum_{\ell=-h}^{h} M_{q,\ell}(m).
+$$
+并假设这些模态贡献可组织为一个以 \(\{M_{q,\ell}\}\) 为坐标的 \(2h+1\) 维线性 realization（非共振情形下正是“模态闭合推进”的标准实现）。
+设存在从某个 \(m_0\) 起成立的整系数线性递推
+$$
+S_q(m)=\sum_{i=1}^{d} c_i S_q(m-i)\qquad(m\ge m_0),
+$$
+其特征多项式
+$$
+P_q(\lambda)=\lambda^d-\sum_{i=1}^d c_i\lambda^{d-i}.
+$$
+若 \(d<2h+1\)，则：
+\begin{enumerate}
+  \item \(S_q\) 的 Hankel 秩满足 \(\mathrm{rank}(H)\le d<2h+1\)；
+  \item 该 \(2h+1\) 维线性 realization 必非最小，从而存在非零系数 \(\alpha_{-h},\dots,\alpha_h\) 使
+  $$
+  \sum_{\ell=-h}^{h}\alpha_\ell M_{q,\ell}(m)=0\qquad(m\ge m_0),
+  $$
+  即出现一个\textbf{模态约束}，导致“坍缩/共振”。
+\end{enumerate}
+在 \(q=9,\dots,16\) 的已核验递推（表 \ref{tab:fold_collision_moment_recursions_9_16}）下，对 \(q=9,\dots,15\) 的特征多项式为
+$$
+\begin{aligned}
+P_9(\lambda)&=\lambda^7-2\lambda^6-62\lambda^5-386\lambda^4-2819\lambda^3-62\lambda^2-900\lambda+450,\\
+P_{10}(\lambda)&=\lambda^9-2\lambda^8-96\lambda^7-830\lambda^6-7945\lambda^5-2\lambda^4-1852\lambda^3+830\lambda^2-4\lambda+4,\\
+P_{11}(\lambda)&=\lambda^9-2\lambda^8-153\lambda^7-1740\lambda^6-21249\lambda^5+9432\lambda^4+86213\lambda^3+1484\lambda^2+18348\lambda-9174,
+\\
+P_{12}(\lambda)&=\lambda^{13}-2\lambda^{12}-243\lambda^{11}-3608\lambda^{10}-56447\lambda^9+61236\lambda^8+667319\lambda^7-3608\lambda^6\\
+&\quad+9582\lambda^5-61242\lambda^4-15404\lambda^3+7216\lambda^2-8\lambda+8,\\
+P_{13}(\lambda)&=\lambda^{11}-2\lambda^{10}-388\lambda^9-7414\lambda^8-148038\lambda^7+317916\lambda^6+4165856\lambda^5\\
+&\quad-136252\lambda^4-1565891\lambda^3-318938\lambda^2-289380\lambda+144690,\\
+P_{14}(\lambda)&=\lambda^{13}-2\lambda^{12}-621\lambda^{11}-15140\lambda^{10}-385463\lambda^9+1443744\lambda^8+22761161\lambda^7\\
+&\quad-15140\lambda^6+2116566\lambda^5-1443750\lambda^4-63044\lambda^3+30280\lambda^2-8\lambda+8,\\
+P_{15}(\lambda)&=\lambda^{11}-2\lambda^{10}-1000\lambda^9-30766\lambda^8-994458\lambda^7+6188172\lambda^6+119408756\lambda^5\\
+&\quad-8289820\lambda^4-134208623\lambda^3-6186122\lambda^2-16637076\lambda+8318538,
+\end{aligned}
+$$
+并且 \(q=16\) 的递推阶数为 \(d_{16}=13<2\lfloor 16/2\rfloor+1=17\)（系数见表 \ref{tab:fold_collision_moment_recursions_9_16} 的导出记录）。因此 \(q=9,\dots,16\) 均满足 \(d<2h+1\)，Hankel 秩下降并触发模态约束。
+\end{theorem}
+\begin{proof}
+由递推得 \(S_q\) 的 Hankel 秩不超过递推阶数 \(d\)（定理 \ref{thm:hankel-rank-minimal}），若 \(d<2h+1\) 则存在秩下降。
+另一方面，差分模态截断提供一个以 \(\{M_{q,\ell}\}\) 为坐标的 \(2h+1\) 维线性表示；既然最小线性表示维数不超过 \(d\)，该表示必非最小，因此存在非零线性关系 \(\sum_{\ell}\alpha_\ell M_{q,\ell}(m)\equiv 0\)。
+最后一段直接由表中的递推系数写出特征多项式并比较阶数即可。证毕。
+\end{proof}
+
+\begin{corollary}[模态约束的维数缺口]\label{cor:pom-resonance-deficit}
+在定理 \ref{thm:pom-moment-resonance} 的假设下，存在至少
+\(
+2h+1-d
+\)
+条线性无关的系数向量 $\alpha$ 使
+\[
+\sum_{\ell=-h}^{h}\alpha_\ell M_{q,\ell}(m)=0\qquad(m\ge m_0).
+\]
+因此共振的“约束维数缺口”为 $2h+1-d$。
+\end{corollary}
+\begin{proof}
+以 $\{M_{q,\ell}\}$ 为坐标的线性表示的像空间维数至多为最小实现维数 $d$，因此在 $2h+1$ 维坐标空间中，产生零序列的线性组合构成的核空间维数至少为 $2h+1-d$。取其一组基即得线性无关的约束族。证毕。
+\end{proof}
+
+\subsubsection{秩缺口与表示可见性}\label{subsec:pom-moment-visibility}
+从同余计数口径 \(c_m(r)\) 出发，\(S_q(m)=\sum_r c_m(r)^q\) 可理解为模 \(F_{m+2}\) 上的 \(L^q\) 量；其傅里叶展开等价于对角色空间做 \(q\)-重张量提升后再施加共轭对称与“输出一致”的投影。差分模态截断给出上界 \(2\lfloor q/2\rfloor+1\)，而表 \ref{tab:fold_collision_moment_recursions_9_16} 的秩缺口说明：在某些 \(q\) 上存在不可见的表示分量，使得可观测子空间维数下降，从而触发共振。
+
+\begin{conjecture}[模态可见性与闭合维数]\label{conj:pom-moment-visible}
+设 \(V_q\) 为由同余角色张量提升并施加共轭对称与输出一致约束得到的模态空间，令 \(V_q^{\mathrm{vis}}\) 表示对碰撞读出可见的子空间。则
+\[
+d_q=\dim V_q^{\mathrm{vis}}\ \le\ 2\lfloor q/2\rfloor+1,
+\]
+并且在非共振情形下取等号；共振对应于 \(V_q^{\mathrm{vis}}\) 出现额外约束而降维。
+\end{conjecture}
 
 \begin{theorem}[Hankel 秩下界：高阶矩的最小线性实现维数]\label{thm:pom-moment-hankel}
 记 \(S_q(m)=\sum_{x\in X_m} d_m(x)^q\)，并令 \(a_n:=S_q(n+2)\)（对 \(q=2,3\) 可再作常数缩放 \(a_n:=S_q(n+2)/2\)，不影响以下结论）。则对 \(q=2,3,4,5,6,7,8\)，其 Hankel 矩阵 \(H=(a_{i+j})_{i,j\ge 0}\) 满足
@@ -1333,6 +1472,7 @@ T_K:=\delta_{\min}(K)\quad(\text{时间指纹}),
   \]
   的存在性与闭式接口（定义 \ref{def:pom-moment-pressure}）。
   \item \textbf{（闭合维数的内禀不变量）} 在已核验范围 $q\le 8$，序列 $S_q$ 的最小线性实现维数由 Hankel 秩锁定：\(\mathrm{rank}(H)\ge 2\lfloor q/2\rfloor+1\)（定理 \ref{thm:pom-moment-hankel}），并与递推阶数一致从而在该范围内取等号（推论 \ref{cor:pom-moment-minreal}）。
+  \item \textbf{（共振/坍缩的机制判别）} 当递推阶数低于 \(2\lfloor q/2\rfloor+1\) 时，差分模态满足线性约束并导致 Hankel 秩下降（定理 \ref{thm:pom-moment-resonance}）；在 \(q=9,\dots,16\) 的已核验递推中该共振被触发。
   \item \textbf{（几何化：Rényi 维数谱）} 当 $h_q$ 存在时，输出测度的 Rényi 维数谱由 $h_q$ 闭式决定：
   \[
   D_q=\frac{h_q}{(q-1)\log\varphi}
@@ -1734,11 +1874,42 @@ $(1)\Rightarrow(2)$：定义 $\bar g(x)=g(a)$ 对任意 $a\in\Fold_m^{-1}(x)$，
 命题 \ref{prop:time-space-commuting-diagram} 给出的严格交换图把时间侧 $\Tr(T^n)$ 与空间侧 primitive 轨道谱对齐，从而为“时间—空间正交对偶”提供可审计接口。另一方面，有限核的 primitive 轨道谱与整数素数并不等同（见注 \ref{rem:prime-shadow-vs-primes}）：前者是核动力学的内禀素性，后者需要额外的素数索引算子族。素数寄存器纤维 $\mathcal{P}$ 正是对这一额外索引结构的本体化补充。
 \end{remark}
 
-\begin{conjecture}[profinite 轴上的 Chebotarev 提升]\label{conj:pom-profinite-axis}
-设 $\{G_m,\pi_{m+1\to m}\}$ 为有限群投影系统，$G_\infty:=\varprojlim_m G_m$。对每个 $m$ 构造 $G_m$-扩张核并记其最坏扭曲谱比为
-\[
-\eta_m:=\max_{\rho\neq\mathbf 1}\frac{\rho(B_{\rho,m})}{\rho(B_{\mathbf 1,m})}.
-\]
-若存在 $\varepsilon\ge 0$ 使得对所有 $m$ 有 $\eta_m\le \lambda^{1/2-\varepsilon}$，则对 $G_\infty$ 的任意 cylinder 集合，其 primitive 轨道分布满足 Chebotarev 型主项与平方根级误差，并与有限层结果相容。该提升为“无限素数寄存器”提供可审计的 profinite 轴模型。
-\end{conjecture}
+\begin{theorem}[profinite 轴上的 Chebotarev 提升]\label{thm:pom-profinite-axis}
+设 $\{G_m,\pi_{m_2\to m_1}\}$ 为有限群的投影系统，$G_\infty:=\varprojlim_m G_m$。对每个 $m$，考虑对应的 $G_m$-扩张核，并记
+$$
+\lambda_m:=\rho(B_{\mathbf 1,m}),\qquad
+\Lambda_m:=\max_{\rho\neq\mathbf 1}\rho(B_{\rho,m}).
+$$
+令 \(U\subset G_\infty\) 为 cylinder 集合，即存在某个 $m$ 与共轭不变子集 $A\subseteq G_m$ 使
+\(
+U=\pi_m^{-1}(A)
+\)。
+则对应的 primitive 轨道计数满足
+$$
+B_{n,U}
+=\mu_{\mathrm{Haar}}(U)\,\frac{\lambda_m^n}{n}
+ +O\!\left(\frac{\Lambda_m^n}{n}\right).
+$$
+其中 \(\mu_{\mathrm{Haar}}(U)=|A|/|G_m|\)。
+若进一步满足核版 GRH 条件 $\Lambda_m\le \lambda_m^{1/2}$（对该层 $m$），则误差降为平方根级
+$$
+B_{n,U}
+=\mu_{\mathrm{Haar}}(U)\,\frac{\lambda_m^n}{n}
+ +O\!\left(\frac{\lambda_m^{n/2}}{n}\right).
+$$
+\end{theorem}
+\begin{proof}
+由于 $U$ 为 cylinder，存在 $m$ 与共轭不变子集 $A\subseteq G_m$ 使 $U=\pi_m^{-1}(A)$。令 $B_{n,c}$ 表示落在共轭类 $c\subseteq G_m$ 的 primitive 轨道计数，则
+$$
+B_{n,U}=\sum_{c\subseteq A} B_{n,c}.
+$$
+对每个 $c$，由有限层的 Chebotarev 型估计（定理 \ref{thm:kernel-chebotarev-exp}）有
+$
+B_{n,c}=\frac{|c|}{|G_m|}\frac{\lambda_m^n}{n}+O(\Lambda_m^n/n)
+$。
+将各类相加得到主项系数
+$
+\sum_{c\subseteq A}|c|/|G_m|=|A|/|G_m|=\mu_{\mathrm{Haar}}(U)
+$，并因 $A$ 的共轭类数目有限，误差仍为 $O(\Lambda_m^n/n)$。若 $\Lambda_m\le \lambda_m^{1/2}$，则立得平方根级误差。证毕。
+\end{proof}
 

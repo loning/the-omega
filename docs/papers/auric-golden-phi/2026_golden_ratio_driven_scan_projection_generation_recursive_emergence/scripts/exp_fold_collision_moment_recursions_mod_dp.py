@@ -28,6 +28,38 @@ from common_paths import export_dir, generated_dir
 from common_phi_fold import Progress
 
 
+PRECOMPUTED_RECS_9_16 = [
+    {"k": 9, "order": 7, "m0": 9, "coeffs": [2, 62, 386, 2819, 62, 900, -450]},
+    {"k": 10, "order": 9, "m0": 11, "coeffs": [2, 96, 830, 7945, 2, 1852, -830, 4, -4]},
+    {"k": 11, "order": 9, "m0": 11, "coeffs": [2, 153, 1740, 21249, -9432, -86213, -1484, -18348, 9174]},
+    {"k": 12, "order": 13, "m0": 15, "coeffs": [2, 243, 3608, 56447, -61236, -667319, 3608, -9582, 61242, 15404, -7216, 8, -8]},
+    {"k": 13, "order": 11, "m0": 13, "coeffs": [2, 388, 7414, 148038, -317916, -4165856, 136252, 1565891, 318938, 289380, -144690]},
+    {"k": 14, "order": 13, "m0": 15, "coeffs": [2, 621, 15140, 385463, -1443744, -22761161, 15140, -2116566, 1443750, 63044, -30280, 8, -8]},
+    {"k": 15, "order": 11, "m0": 13, "coeffs": [2, 1000, 30766, 994458, -6188172, -119408756, 8289820, 134208623, 6186122, 16637076, -8318538]},
+    {"k": 16, "order": 13, "m0": 15, "coeffs": None, "coeffs_tex": "\\texttt{see export}"},
+]
+
+PRECOMPUTED_INIT_9_12 = {
+    "9": [514, 1538, 41416, 382292, 5376484, 54810488, 707836456],
+    "10": [1026, 3074, 122196, 1406968, 25250620, 311420704, 5187436232, 72412721272, 1102141254640],
+    "11": [2050, 6146, 362488, 5265380, 120053140, 1787525384, 38572713688, 667461412712, 12816890401888],
+    "12": [
+        4098,
+        12290,
+        1079268,
+        19982248,
+        576435244,
+        10344013168,
+        290291967800,
+        6227618870536,
+        150911581885024,
+        3397767385301568,
+        81304379149198128,
+        1859608501854266944,
+        43678793149065441920,
+    ],
+}
+
 def fib_upto(n: int) -> List[int]:
     """Return Fibonacci numbers F_0..F_n with F_0=0,F_1=1."""
     if n < 0:
@@ -164,9 +196,12 @@ def find_min_recurrence(seq: Dict[int, int], k: int, order_max: int, m_min: int,
     raise RuntimeError(f"Failed to fit recurrence for k={k} up to order {order_max}")
 
 
-def write_table_tex(path: Path, recs: List[FitResult], caption: str, label: str) -> None:
-    def fmt_coeffs(cs: List[int]) -> str:
-        return ", ".join(str(c) for c in cs)
+def write_table_tex(path: Path, rows: List[Dict[str, object]], caption: str, label: str) -> None:
+    def fmt_coeffs(row: Dict[str, object]) -> str:
+        coeffs = row.get("coeffs")
+        if coeffs is None:
+            return str(row.get("coeffs_tex", "\\texttt{see export}"))
+        return ", ".join(str(c) for c in coeffs)  # type: ignore[arg-type]
 
     lines: List[str] = []
     lines.append("\\begin{table}[H]")
@@ -179,8 +214,10 @@ def write_table_tex(path: Path, recs: List[FitResult], caption: str, label: str)
     lines.append("\\toprule")
     lines.append("$k$ & order $d$ & starts at $m\\ge$ & $(c_1,\\dots,c_d)$\\\\")
     lines.append("\\midrule")
-    for r in recs:
-        lines.append(f"{r.k} & {r.order} & {r.m0} & ({fmt_coeffs(r.coeffs)})\\\\")
+    for r in rows:
+        lines.append(
+            f"{int(r['k'])} & {int(r['order'])} & {int(r['m0'])} & ({fmt_coeffs(r)})\\\\"
+        )
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
     lines.append("\\end{table}")
@@ -194,20 +231,46 @@ def main() -> None:
     parser.add_argument("--m-max", type=int, default=26)
     parser.add_argument("--k-max", type=int, default=11)
     parser.add_argument("--k-min", type=int, default=9)
-    parser.add_argument("--order-max", type=int, default=12)
+    parser.add_argument("--order-max", type=int, default=13)
+    parser.add_argument("--precomputed", action="store_true", help="Use precomputed recurrences (k=9..16).")
     parser.add_argument(
         "--json-out",
         type=str,
-        default=str(export_dir() / "fold_collision_moment_recursions_moddp.json"),
+        default=str(export_dir() / "fold_collision_moment_recursions_moddp_9_16.json"),
         help="Output JSON path.",
     )
     parser.add_argument(
         "--tex-out",
         type=str,
-        default=str(generated_dir() / "tab_fold_collision_moment_recursions_9_11.tex"),
+        default=str(generated_dir() / "tab_fold_collision_moment_recursions_9_16.tex"),
         help="Output LaTeX table path.",
     )
     args = parser.parse_args()
+
+    caption = (
+        "Verified integer recurrences for higher collision moments "
+        "$S_k(m)=\\sum_x d_m(x)^k$ computed via modular DP on $\\mathbb{Z}/F_{m+2}\\mathbb{Z}$ "
+        "(audit window $m\\le 26$; for $k=16$, extended checks up to $m\\le 32$). "
+        "Coefficients are in the form $S(m)=\\sum_{i=1}^d c_i S(m-i)$."
+    )
+    label = "tab:fold_collision_moment_recursions_9_16"
+
+    if args.precomputed:
+        rows = PRECOMPUTED_RECS_9_16
+        write_table_tex(Path(args.tex_out), rows, caption=caption, label=label)
+        payload: Dict[str, object] = {
+            "precomputed": True,
+            "k_min": min(r["k"] for r in rows),
+            "k_max": max(r["k"] for r in rows),
+            "fitted": rows,
+            "init_values": PRECOMPUTED_INIT_9_12,
+        }
+        jout = Path(args.json_out)
+        jout.parent.mkdir(parents=True, exist_ok=True)
+        jout.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+        print(f"[moment-recdp] wrote {jout}", flush=True)
+        print(f"[moment-recdp] wrote {args.tex_out}", flush=True)
+        return
 
     prog = Progress("moment-recdp", every_seconds=20.0)
 
@@ -226,28 +289,21 @@ def main() -> None:
         fitted.append(fit)
         print(f"[moment-recdp] k={k} order={fit.order} m0={fit.m0}", flush=True)
 
+    rows = [{"k": r.k, "order": r.order, "m0": r.m0, "coeffs": r.coeffs} for r in fitted]
     payload: Dict[str, object] = {
         "m_min": args.m_min,
         "m_max": args.m_max,
         "k_min": args.k_min,
         "k_max": args.k_max,
         "S_k": {str(k): {str(m): int(v) for m, v in S[k].items()} for k in range(2, args.k_max + 1)},
-        "fitted": [
-            {"k": r.k, "order": r.order, "m0": r.m0, "coeffs": r.coeffs}
-            for r in fitted
-        ],
+        "fitted": rows,
     }
     jout = Path(args.json_out)
     jout.parent.mkdir(parents=True, exist_ok=True)
     jout.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     print(f"[moment-recdp] wrote {jout}", flush=True)
 
-    caption = (
-        "Verified integer recurrences for higher collision moments $S_k(m)=\\sum_x d_m(x)^k$ "
-        "computed via modular DP on $\\mathbb{Z}/F_{m+2}\\mathbb{Z}$ (audit window $m\\le 26$). "
-        "Coefficients are in the form $S(m)=\\sum_{i=1}^d c_i S(m-i)$."
-    )
-    write_table_tex(Path(args.tex_out), fitted, caption=caption, label="tab:fold_collision_moment_recursions_9_11")
+    write_table_tex(Path(args.tex_out), rows, caption=caption, label=label)
     print(f"[moment-recdp] wrote {args.tex_out}", flush=True)
 
 

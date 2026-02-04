@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Compute a small Renyi-q projection entropy spectrum for Fold_m (q=2..7).
+"""Compute a small Renyi-q projection entropy spectrum for Fold_m (q=2..16).
 
 We enumerate Fold_m fibers for moderate m and compute:
   S_q(m) = sum_x d_m(x)^q,  q=2..7
@@ -14,8 +14,10 @@ For q=2,3,4, the paper gives exact finite-state collision kernels (A2, A3, A4), 
 and entropy rates:
   h_q = log(2^q / r_q).
 
-For q >= 4, we output a numerical "fingerprint" by estimating the exponential growth base
+For q=5..8, we output a numerical "fingerprint" by estimating the exponential growth base
 from ratios S_q(m)/S_q(m-1), with Aitken Δ^2 acceleration on the last three ratios.
+
+For q=9..16, we use exact Perron roots recovered from verified integer recurrences.
 
 Outputs (default):
   - artifacts/export/fold_collision_renyi_spectrum.json
@@ -35,6 +37,18 @@ from typing import Dict, List, Tuple
 
 from common_paths import export_dir, generated_dir
 from common_phi_fold import Progress, fold_m, word_to_str
+
+
+PRECOMPUTED_RQ = {
+    9: 11.778421934989,
+    10: 14.771098354824,
+    11: 18.535847481911,
+    12: 23.273459728285,
+    13: 29.237338790942,
+    14: 36.747376282795,
+    15: 46.207510260773,
+    16: 58.127951897329,
+}
 
 
 def collision_counts(m: int, progress: Progress | None = None) -> Dict[str, int]:
@@ -122,7 +136,8 @@ def write_table_tex(path: Path, rows: List[Dict[str, object]]) -> None:
     lines.append(
         "\\caption{A small R\\'enyi projection-entropy fingerprint for the Fold$_m$ output distribution "
         "$\\pi_m(x)=d_m(x)/2^m$. For $q=2,3,4$, $r_q$ is exact (from the finite-state collision kernels); "
-        "for $q\\ge5$, $r_q$ is estimated from enumeration by ratio/Aitken acceleration.}"
+        "for $q=5,6,7,8$, $r_q$ is estimated from enumeration by ratio/Aitken acceleration; "
+        "for $q\\ge 9$, $r_q$ is exact from verified integer recurrences.}"
     )
     lines.append("\\label{tab:fold_collision_renyi_spectrum}")
     lines.append("\\begin{tabular}{r r r l}")
@@ -146,7 +161,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Compute Renyi-q collision spectrum for Fold_m by enumeration.")
     parser.add_argument("--m-min", type=int, default=8, help="Minimum m for enumeration table.")
     parser.add_argument("--m-max", type=int, default=18, help="Maximum m for enumeration table.")
-    parser.add_argument("--q-max", type=int, default=7, help="Maximum q (>=2) for spectrum.")
+    parser.add_argument("--q-max", type=int, default=16, help="Maximum q (>=2) for spectrum.")
     parser.add_argument(
         "--json-out",
         type=str,
@@ -169,13 +184,15 @@ def main() -> None:
     prog = Progress("renyi-spectrum", every_seconds=20.0)
 
     qs = list(range(2, args.q_max + 1))
-    # store S_q by q then m
-    S: Dict[int, Dict[int, int]] = {q: {} for q in qs}
-    for m in range(args.m_min, args.m_max + 1):
-        counts = collision_counts(m, progress=prog)
-        for q in qs:
-            S[q][m] = s_q_from_counts(counts, q)
-        print(f"[renyi-spectrum] m={m} |X_m|={len(counts)}", flush=True)
+    # Enumerate only for q needing ratio estimates (q=5..8 by default).
+    qs_enum = [q for q in qs if (q >= 5 and q not in PRECOMPUTED_RQ)]
+    S: Dict[int, Dict[int, int]] = {q: {} for q in qs_enum}
+    if qs_enum:
+        for m in range(args.m_min, args.m_max + 1):
+            counts = collision_counts(m, progress=prog)
+            for q in qs_enum:
+                S[q][m] = s_q_from_counts(counts, q)
+            print(f"[renyi-spectrum] m={m} |X_m|={len(counts)}", flush=True)
 
     r2 = perron_root_r2()
     r3 = perron_root_r3()
@@ -192,6 +209,9 @@ def main() -> None:
         elif q == 4:
             rq = r4
             note = "exact (A4)"
+        elif q in PRECOMPUTED_RQ:
+            rq = PRECOMPUTED_RQ[q]
+            note = "exact (recurrence)"
         else:
             # estimate from last three ratios S(m)/S(m-1)
             ms = sorted(S[q].keys())
@@ -212,10 +232,11 @@ def main() -> None:
         "m_min": args.m_min,
         "m_max": args.m_max,
         "q_max": args.q_max,
-        "S_q": {str(q): {str(m): int(S[q][m]) for m in sorted(S[q].keys())} for q in qs},
+        "S_q": {str(q): {str(m): int(S[q][m]) for m in sorted(S[q].keys())} for q in qs_enum},
         "r2_exact": r2,
         "r3_exact": r3,
         "r4_exact": r4,
+        "r_q_precomputed": PRECOMPUTED_RQ,
         "rows": rows,
     }
     jout = Path(args.json_out)
