@@ -90,6 +90,89 @@ D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\ \le\ (m+1)\,D_N^*(\alpha
 \]
 \end{theorem}
 
+\subsection{Markov 源下的 TV 置信包络：样本预算与 \texorpdfstring{$\kappa_m$}{kappa}-置信条}\label{subsec:markov-tv-envelope}
+上一小节的证书利用旋转模型的差异度结构给出完全确定性的 TV 上界。
+在另一条常用口径下，若把折叠后直方图视为某个有限状态 Markov 过程的经验分布，则可用“伪谱隙（pseudo spectral gap）”把 TV 偏差参数化为一条\textbf{可审计的置信包络}，并由此直接导出实验预算与 \(\kappa_m\) 的置信条。
+
+\begin{definition}[伪谱隙与经验直方图]\label{def:markov-pseudo-gap-hist}
+设 \((Z_t)_{t\ge 0}\) 为有限状态空间 \(S\) 上的不可约遍历 Markov 链，转移核为 \(P\)，平稳分布为 \(\pi\)。
+记经验直方图为
+\[
+\hat{\pi}_N(s):=\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}_{\{Z_t=s\}},\qquad s\in S.
+\]
+记 \(\gamma_{\mathrm{ps}}\in(0,1]\) 为该链的伪谱隙（pseudo spectral gap，见 \cite{Paulin2015MarkovConcentration} 的定义与性质）。
+\end{definition}
+
+\begin{theorem}[Markov 直方图的 TV 置信包络（伪谱隙参数化）]\label{thm:markov-tv-envelope}
+在定义 \ref{def:markov-pseudo-gap-hist} 的设定下，若链从平稳分布启动（\(Z_0\sim\pi\)），则对任意 \(\delta\in(0,1)\)，以概率至少 \(1-\delta\) 有
+\[
+\boxed{\;
+D_{\mathrm{TV}}(\hat{\pi}_N,\pi)\le \frac12|S|\,\eta(N,|S|,\delta)\;},
+\qquad
+\eta(N,|S|,\delta):=\sqrt{\frac{2}{\gamma_{\mathrm{ps}}\,N}\log\frac{2|S|}{\delta}}.
+\]
+\end{theorem}
+
+\begin{remark}[与 IID 的一致性]
+当观测为 IID（可视为 \(\gamma_{\mathrm{ps}}=1\) 的极限口径）时，上式退化为经验分布的 \(L^1\) 偏差界（例如 \cite{WeissmanEtAl2003L1Empirical}）；Markov 情形的差异仅在于有效样本量被 \(\gamma_{\mathrm{ps}}\) 缩放。
+\end{remark}
+
+\begin{corollary}[样本复杂度闭式：给定 \texorpdfstring{$\tau$}{tau} 与 \texorpdfstring{$\delta$}{delta} 的预算]\label{cor:markov-tv-sample-complexity}
+沿用定理 \ref{thm:markov-tv-envelope}。若希望以置信度 \(1-\delta\) 达到
+\(
+D_{\mathrm{TV}}(\hat{\pi}_N,\pi)\le \tau
+\)，
+则充分条件为
+\[
+\boxed{\;
+N\ \ge\ \frac{|S|^{2}}{2\,\gamma_{\mathrm{ps}}\,\tau^{2}}
+\log\frac{2|S|}{\delta}\; }.
+\]
+\end{corollary}
+
+\begin{proof}
+令 \(\frac12|S|\eta(N,|S|,\delta)\le \tau\) 并解出 \(N\) 即得。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$\kappa_m$}{kappa} 的置信区间：由 TV 包络直接给出误差条]\label{cor:kappa-confidence-from-tv}
+令 \(m\ge 1\)，并取 \(S=X_m\)。对任意分布 \(\pi\in\Delta(X_m)\)，\(\kappa_m(\pi):=\mathbb{E}_{\pi}[\log d_m(X)]\)（定义 \ref{def:pom-kappa}）。
+则对任意经验直方图 \(\hat{\pi}\in\Delta(X_m)\) 有确定性不等式
+\[
+\boxed{\;
+\bigl|\kappa_m(\hat{\pi})-\kappa_m(\pi)\bigr|
+\le 2\|\log d_m\|_{\infty}\,D_{\mathrm{TV}}(\hat{\pi},\pi)\;}
+\le 2\log D_m\cdot D_{\mathrm{TV}}(\hat{\pi},\pi),
+\]
+其中 \(D_m=\max_{x\in X_m}d_m(x)\)（定理 \ref{thm:pom-max-fiber}）。
+把定理 \ref{thm:markov-tv-envelope} 的 TV 包络代入，即得 \(\kappa_m\) 的显式置信半径：
+以概率至少 \(1-\delta\) 有
+\[
+\bigl|\kappa_m(\hat{\pi}_N)-\kappa_m(\pi)\bigr|
+\le \log D_m\cdot |X_m|\,
+\sqrt{\frac{2}{\gamma_{\mathrm{ps}}\,N}\log\frac{2|X_m|}{\delta}}.
+\]
+\end{corollary}
+
+\begin{proof}
+由 \(D_{\mathrm{TV}}=\frac12\|\cdot\|_1\) 与
+\(
+|\mathbb{E}_{\hat{\pi}}f-\mathbb{E}_{\pi}f|
+\le \|f\|_{\infty}\|\hat{\pi}-\pi\|_1
+=2\|f\|_{\infty}D_{\mathrm{TV}}(\hat{\pi},\pi)
+\)
+取 \(f(x)=\log d_m(x)\) 得第一条不等式；再用 \(\|\log d_m\|_\infty\le \log D_m\) 得第二条；最后把 TV 置信包络代入即得。
+\end{proof}
+
+\begin{remark}[可复现预算表（仅计算右端）]\label{rem:fold-kappa-tv-budget-repro}
+脚本 \texttt{scripts/exp\_fold\_kappa\_tv\_budget.py} 以闭式计算
+\[
+|X_m|=F_{m+2},\qquad D_m,\qquad
+N_{\min}=\frac{|X_m|^{2}}{2\,\gamma_{\mathrm{ps}}\,\tau^{2}}\log\frac{2|X_m|}{\delta}
+\]
+以及对应的 \(\kappa_m\) 置信半径上界 \(2\log D_m\cdot\tau\)，并输出表 \ref{tab:fold_kappa_tv_budget} 作为实验预算示例（不对概率事件做数值核验）。
+\input{sections/generated/tab_fold_kappa_tv_budget}
+\end{remark}
+
 \subsection{一个新的审计量：跨分辨率一致性残差}\label{subsec:multiscale-residual}
 
 \begin{definition}[跨分辨率一致性残差]\label{def:multiscale-residual}

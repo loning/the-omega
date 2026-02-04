@@ -267,6 +267,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_kappa_tv_budget",
+            script="exp_fold_kappa_tv_budget.py",
+            args=["--m-list", "8,10,12,14,16", "--tau", "0.02", "--delta", "1e-6"],
+            expected_outputs=[
+                "artifacts/export/fold_kappa_tv_budget.json",
+                "sections/generated/tab_fold_kappa_tv_budget.tex",
+            ],
+        ),
+        Step(
             name="pom_rewriting_engine_demo",
             script="exp_pom_rewriting_engine_demo.py",
             args=[],
@@ -925,6 +934,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/real_input_40_abel_mertens_two_series_split.json",
                 "sections/generated/tab_real_input_40_abel_mertens_two_series_split.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_carry_constant_certified",
+            script="exp_real_input_40_carry_constant_certified.py",
+            args=["--N", "160", "--dps", "120"],
+            expected_outputs=[
+                "artifacts/export/real_input_40_carry_constant_certified.json",
+                "sections/generated/eq_real_input_40_carry_constant_certified.tex",
             ],
         ),
         Step(
