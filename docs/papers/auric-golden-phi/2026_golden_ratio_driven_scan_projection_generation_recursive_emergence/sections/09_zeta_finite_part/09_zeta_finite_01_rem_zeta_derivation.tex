@@ -1,6 +1,7 @@
 \subsection{动力学 \texorpdfstring{$\zeta$}{zeta} 函数（稳定语法层）}
 
-在稳定语法层，考虑黄金均值约束的双边移位空间 $X\subset\{0,1\}^{\ZZ}$（禁止相邻 $11$）及其左移位 $\sigma$。对一般动力系统 $(Y,S)$，动力学 $\zeta$ 函数定义为
+在稳定语法层，考虑黄金均值约束的双边移位空间 $X\subset\{0,1\}^{\ZZ}$（禁止相邻 $11$）及其左移位 $\sigma$。下述等式均为标准事实，仅用于固定记号与提供后续接口（参见 \cite{LindMarcus1995}）。
+对一般动力系统 $(Y,S)$，动力学 $\zeta$ 函数定义为
 \[
 \zeta_{S}(z):=\exp\left(\sum_{n\ge1}\frac{\#\mathrm{Fix}(S^n)}{n}z^n\right),
 \]
@@ -10,7 +11,7 @@
 \quad\text{且}\quad
 \#\mathrm{Fix}(\sigma^n)=\mathrm{Tr}(A^n)
 \]
-（参见 \cite{LindMarcus1995} 中关于有限型子移位与 $\zeta$ 函数的标准章节）。对黄金均值约束的
+（见 \cite{LindMarcus1995}）。对黄金均值约束的
 \(
 A=\begin{pmatrix}1&1\\1&0\end{pmatrix}
 \)
@@ -18,12 +19,50 @@ A=\begin{pmatrix}1&1\\1&0\end{pmatrix}
 \[
 \zeta(z)=\frac{1}{\det(I-zA)}=\frac{1}{1-z-z^2}.
 \]
-其极点结构直接由 $\varphi$ 控制。这提供一个“语法—谱—$\zeta$”的闭合环：黄金比例既决定语法的增长率，也决定 $\zeta$ 的主极点。
+主极点为 $z_\star=\varphi^{-1}$，从而该稳定语法层的增长率与谱尺度由 $\varphi$ 锁定。
 
-\begin{remark}[等式的可审计推导]\label{rem:zeta-derivation}
-上式中 $\#\mathrm{Fix}(\sigma^n)=\mathrm{Tr}(A^n)$ 仅依赖“周期点 $\leftrightarrow$ 长度 $n$ 闭路径”的计数对应；而
+\begin{remark}[差异对象：degeneracy-$\zeta$ 把 trace 侧与 primitive 侧同时对齐]\label{rem:degeneracy-zeta-bridge}
+为把“无稳定约束”与“黄金稳定约束”的差异压缩为一个可计算对象，引入对照系统：二符号全移位（full $2$-shift）。其周期点计数满足
+\[
+\#\mathrm{Fix}(\sigma_{\mathrm{full}}^n)=2^n,
+\qquad
+\zeta_{\mathrm{full}}(z)=\exp\!\left(\sum_{n\ge1}\frac{2^n}{n}z^n\right)=\frac{1}{1-2z}.
+\]
+另一方面，黄金均值 SFT 的周期点计数为
 \(
-\exp\!\left(\sum_{n\ge1}\mathrm{Tr}(A^n)\,z^n/n\right)=1/\det(I-zA)
+\#\mathrm{Fix}(\sigma^n)=\Tr(A^n)
 \)
-来自矩阵恒等式 $\log\det(I-zA)=-\sum_{n\ge 1}\mathrm{Tr}(A^n)z^n/n$（当 $|z|$ 足够小时成立，并由解析延拓得到有理函数等式）。这给出一条完全可核验的“计数 $\Rightarrow$ 行列式”推导链。
+并满足 Lucas 口径
+\[
+\Tr(A^n)=F_{n-1}+F_{n+1}=:L_n.
+\]
+定义差异比值（degeneracy-$\zeta$）为
+\[
+\zeta_{\mathrm{deg}}(z):=\frac{\zeta_{\mathrm{full}}(z)}{\zeta(z)}
+=\frac{1-z-z^2}{1-2z}.
+\]
+则其对数系数直接打包“trace 侧差异”：
+\[
+\log \zeta_{\mathrm{deg}}(z)
+=\sum_{n\ge 1}\frac{2^n-\Tr(A^n)}{n}z^n
+=\sum_{n\ge 1}\frac{2^n-L_n}{n}z^n.
+\]
+在周期闭合（cyclic/trace）口径下，相应的“时间侧退化比”可取为
+\[
+\delta_n^{\mathrm{cyc}}:=\frac{2^n}{\Tr(A^n)}=\frac{2^n}{L_n},
+\]
+其指数率由谱半径之比 \(2/\varphi\) 给出；这与窗口层折叠平均多重度 \(2^m/F_{m+2}\) 的指数率同源，只是开放词（Fibonacci）与闭轨（Lucas）的口径差异。
+
+更关键地：同一差异对象也自然决定“prime-like（primitive 周期轨道）侧差异”。把迹序列记为
+\(
+a_n^{\mathrm{full}}:=2^n,\ a_n^{\mathrm{gold}}:=\Tr(A^n)
+\)，则 primitive 计数由 Witt/Möbius 反演给出（附录 \S\ref{app:witt-bridge-package}）：
+\[
+p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}.
+\]
+因此差异 primitive 计数
+\(
+p_n^{\mathrm{deg}}:=p_n^{\mathrm{full}}-p_n^{\mathrm{gold}}
+\)
+由同一套 Möbius/Witt 变换从 \(\{2^n-\Tr(A^n)\}\) 中提取。换言之，\(\zeta_{\mathrm{deg}}\) 作为一个单一对象，既输出 trace 侧差异（周期点/闭路），也输出 primitive 侧差异（“素数类闭环”），从而把“trace \(\Rightarrow\) prime-like”的桥接函子化为可审计的差异封装。
 \end{remark}

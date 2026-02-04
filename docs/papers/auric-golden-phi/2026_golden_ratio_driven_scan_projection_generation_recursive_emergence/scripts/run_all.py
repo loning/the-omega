@@ -1003,6 +1003,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_multiplicity_histogram",
+            script="exp_fold_multiplicity_histogram.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_multiplicity_histogram.json",
+                "sections/generated/tab_fold_multiplicity_histogram.tex",
+            ],
+        ),
+        Step(
             name="fold_conditional_expectation_singular_spectrum",
             script="exp_fold_conditional_expectation_singular_spectrum.py",
             args=[],
