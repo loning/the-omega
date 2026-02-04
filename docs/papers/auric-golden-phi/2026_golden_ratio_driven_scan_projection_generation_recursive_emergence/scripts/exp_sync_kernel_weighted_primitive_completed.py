@@ -19,6 +19,7 @@ All output is English-only by repository convention.
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 from typing import Dict
 
@@ -172,6 +173,12 @@ def main() -> None:
         default=str(generated_dir() / "eq_sync_kernel_weighted_primitive_pn_first10.tex"),
         help="Output LaTeX equation block for p_1..p_10.",
     )
+    parser.add_argument(
+        "--audit-json-out",
+        type=str,
+        default=str(generated_dir() / "audit_sync_kernel_weighted_dwork_coeffs.json"),
+        help="Output JSON for coefficient-level Dwork defect checks (small n).",
+    )
     args = parser.parse_args()
 
     u = sp.Symbol("u")
@@ -184,6 +191,36 @@ def main() -> None:
     _write_pn_eq_tex(Path(args.pn_eq_tex_out), p)
     print(f"[primitive-completed] wrote {args.tex_out}", flush=True)
     print(f"[primitive-completed] wrote {args.pn_eq_tex_out}", flush=True)
+
+    # Coefficient-level Dwork defect audit for small n (within computed traces).
+    # We check: Δ_{p,k}(u) = a_{p^k}(u) - a_{p^{k-1}}(u^p) has all coefficients divisible by p^k.
+    audit_rows: list[dict] = []
+    for p0 in (3, 5, 7, 11):
+        k = 1
+        while p0**k <= 10:
+            n_pk = p0**k
+            n_prev = p0 ** (k - 1)
+            delta = sp.expand(a[n_pk] - a[n_prev].subs(u, u**p0))
+            poly = sp.Poly(delta, u, domain=sp.ZZ)
+            mod = p0**k
+            coeffs = [int(c) for c in poly.all_coeffs()]  # highest degree first
+            ok = all((c % mod) == 0 for c in coeffs)
+            audit_rows.append(
+                {
+                    "p": int(p0),
+                    "k": int(k),
+                    "n": int(n_pk),
+                    "mod": int(mod),
+                    "delta_degree": int(poly.degree()) if poly.degree() is not None else 0,
+                    "all_coeffs_divisible": bool(ok),
+                }
+            )
+            k += 1
+
+    audit_path = Path(args.audit_json_out)
+    audit_path.parent.mkdir(parents=True, exist_ok=True)
+    audit_path.write_text(json.dumps({"N_traces": 10, "rows": audit_rows}, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    print(f"[primitive-completed] wrote {audit_path}", flush=True)
 
 
 if __name__ == "__main__":

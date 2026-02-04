@@ -1,0 +1,96 @@
+\begin{proposition}[\texorpdfstring{$p^k$}{p^k}-稀疏化：模 \texorpdfstring{$p^k$}{p^k} 下只保留 \texorpdfstring{$u^p$}{u^p}-子环]\label{prop:witt-pk-sparsification}
+令 \(p\) 为素数、\(k\ge 1\)。将
+\[
+a_{p^k}(u)=\sum_{j\ge 0}a_{p^k,j}\,u^j\in\ZZ[u]
+\]
+按 \(u\) 的幂展开。由推论 \ref{cor:witt-dwork-congruence} 的同余
+\(
+a_{p^k}(u)\equiv a_{p^{k-1}}(u^p)\ (\mathrm{mod}\ p^k)
+\)
+逐系数比较得到：
+\begin{enumerate}
+  \item 若 \(p\nmid j\)，则 \(a_{p^k,j}\equiv 0\ (\mathrm{mod}\ p^k)\)；
+  \item 若 \(j=p\ell\)，则
+  \[
+  a_{p^k,p\ell}\equiv a_{p^{k-1},\ell}\pmod{p^k}.
+  \]
+\end{enumerate}
+等价地，在 \(\ZZ[u]/(p^k)\) 中有
+\[
+a_{p^k}(u)\equiv \sum_{\ell\ge 0}a_{p^{k-1},\ell}\,u^{p\ell}\in \bigl(\ZZ/p^k\ZZ\bigr)[u^p].
+\]
+\end{proposition}
+\begin{proof}
+由推论 \ref{cor:witt-dwork-congruence} 知
+\(
+a_{p^k}(u)-a_{p^{k-1}}(u^p)\in p^k\ZZ[u]
+\)。
+又
+\(
+a_{p^{k-1}}(u^p)=\sum_{\ell\ge 0}a_{p^{k-1},\ell}\,u^{p\ell}
+\)
+只含 \(u^{p\ell}\) 项。逐幂次比较即可得到两条系数同余。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$u^p=1$}{u^p=1} 的塔式锁定：扭曲迹被推回无扭曲层]\label{cor:witt-root-of-unity-tower-lock}
+令 \(p\) 为素数、\(k\ge 1\)，并令 \(R\) 为交换环。若 \(u\in R\) 满足 \(u^p=1\)，则
+\[
+a_{p^k}(u)\equiv a_{p^{k-1}}(1)\pmod{p^k}\qquad\text{于}\ R.
+\]
+更一般地，对任意 \(1\le \ell\le k\)，有
+\[
+\boxed{\ a_{p^k}(u)\equiv a_{p^{k-\ell}}(1)\pmod{p^\ell}\ }\qquad\text{于}\ R.
+\]
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:witt-dwork-congruence}，
+\(
+a_{p^k}(u)\equiv a_{p^{k-1}}(u^p)\ (\mathrm{mod}\ p^k)
+\)。
+在 \(u^p=1\) 下得 \(a_{p^{k-1}}(u^p)=a_{p^{k-1}}(1)\)，从而得到第一式。
+对第二式，只需将同余在指数链上迭代 \(\ell\) 次：由于 \(u^{p^j}=1\)（\(j\ge 1\)），每一步都把参数 \(u^{p^j}\) 退化为 \(1\)，并且模数每次下降一阶，最终得到模 \(p^\ell\) 的锁定同余。证毕。
+\end{proof}
+
+\begin{remark}[模 \texorpdfstring{$p^k$}{p^k} 的计算加速律]\label{rem:witt-root-of-unity-acceleration}
+在推论 \ref{cor:witt-root-of-unity-tower-lock} 的条件 \(u^p=1\) 下，模 \(p^k\) 的值
+\(
+a_{p^k}(u)\bmod p^k
+\)
+被完全锁定为
+\(
+a_{p^{k-1}}(1)\bmod p^k
+\)：
+因此对“非平凡角色扭曲”在 \(p\)-幂长度层的 \(\bmod p^k\) 扫描，不必显式计算高次矩阵幂
+\(
+B(u)^{p^k}
+\)；
+只需在无扭曲点 \(u=1\) 计算较短长度的迹 \(a_{p^{k-1}}(1)\)，并用塔式锁定把结果提升回 \(p^k\) 层即可。
+\end{remark}
+
+\begin{definition}[Frobenius 缺陷多项式]\label{def:witt-frobenius-defect}
+对素数 \(p\) 与 \(k\ge 1\)，定义
+\[
+\Delta_{p,k}(u):=a_{p^k}(u)-a_{p^{k-1}}(u^p)\in\ZZ[u].
+\]
+\end{definition}
+
+\begin{proposition}[Frobenius 缺陷的整除深度：\texorpdfstring{$\Delta_{p,k}(u)\in p^k\ZZ[u]$}{Delta in p^k Z[u]}]\label{prop:witt-frobenius-defect-divisibility}
+对任意素数 \(p\) 与 \(k\ge 1\)，有
+\[
+\boxed{\ \Delta_{p,k}(u)\in p^k\,\ZZ[u]\ },
+\]
+等价地，\(\Delta_{p,k}(u)\) 的全部系数都被 \(p^k\) 整除。
+\end{proposition}
+\begin{proof}
+这正是推论 \ref{cor:witt-dwork-congruence} 的重述：同余
+\(
+a_{p^k}(u)\equiv a_{p^{k-1}}(u^p)\ (\mathrm{mod}\ p^k)
+\)
+按定义等价于 \(\Delta_{p,k}(u)\in p^k\ZZ[u]\)。证毕。
+\end{proof}
+
+\begin{remark}[整数层审计与谱层指标的分层]\label{rem:witt-frobenius-defect-audit}
+在任何一次可复现计算中，可先对一组 \((p,k)\) 检查 \(\Delta_{p,k}(u)\) 在 \(\bmod p^k\) 下的消失（或其系数整除深度），以确认“primitive--periodic 的 Big-Witt 桥包”在实现层没有破坏。
+在该整数层审计通过之后，再讨论单位圆扭曲谱半径（例如 \(\rho/\lambda\)）的偏移，才具有可解释的结构意义；否则应优先定位为实现/数据管线层的失败。
+\end{remark}
+
