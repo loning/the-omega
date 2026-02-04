@@ -170,12 +170,30 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_renyi_endpoint_convergence_q60",
+            script="exp_fold_collision_renyi_endpoint_convergence_q60.py",
+            args=["--m-min", "24", "--m-max", "30", "--q-list", "20,30,40,60"],
+            expected_outputs=[
+                "artifacts/export/fold_collision_renyi_endpoint_convergence_q60.json",
+                "sections/generated/tab_fold_collision_renyi_endpoint_convergence_q60.tex",
+            ],
+        ),
+        Step(
             name="fold_max_fiber_achievers_phase",
             script="exp_fold_max_fiber_achievers_phase.py",
             args=["--m-min", "2", "--m-max", "30", "--show-words", "4"],
             expected_outputs=[
                 "artifacts/export/fold_max_fiber_achievers_phase.json",
                 "sections/generated/tab_fold_max_fiber_achievers_phase.tex",
+            ],
+        ),
+        Step(
+            name="fold_max_fiber_achievers_bsplit",
+            script="exp_fold_max_fiber_achievers_bsplit.py",
+            args=["--m-min", "2", "--m-max", "30", "--show-words", "4"],
+            expected_outputs=[
+                "artifacts/export/fold_max_fiber_achievers_bsplit.json",
+                "sections/generated/tab_fold_max_fiber_achievers_bsplit.tex",
             ],
         ),
         Step(

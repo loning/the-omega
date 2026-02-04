@@ -383,6 +383,7 @@ D_2=2,\quad D_3=2,\quad D_4=3,\quad D_5=4.
 \end{remark}
 
 \input{sections/generated/tab_fold_max_fiber_achievers_phase}
+\input{sections/generated/tab_fold_max_fiber_achievers_bsplit}
 
 \begin{remark}[最大纤维达到者的相位结构（可复现观察）]\label{rem:pom-max-fiber-achievers-phase}
 表 \ref{tab:fold_max_fiber_achievers_phase} 用模 \(F_{m+2}\) 的 residue DP 直接计算了
@@ -400,6 +401,36 @@ c_m(r)=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\ (\mathrm{mod}\ F_{m+2})\}
 进一步，表 \ref{tab:fold_max_fiber_achievers_phase} 同时列出次大多重度 \(D_m^{(2)}\) 及比值 \(D_m^{(2)}/D_m\)。在 \(m\le 30\) 的窗口内，该比值稳定地落在 \(0.94\sim 0.96\) 附近，并呈现出奇偶交错的两条数值带。这提供了一个可证伪的“间隙”诊断量：若存在一致常数 \(\theta<1\) 使对所有充分大 \(m\) 有 \(D_m^{(2)}\le \theta D_m\)，则高阶矩 \(S_q(m)\) 的指数主尺度将被最大纤维族完全主导，从而在 \(q\to\infty\) 极限下出现更强的主项钉死（把 \(r_q\) 的 prefactor 退化为平凡常数级）。
 \par
 该现象强化了“最大纤维并非散落在指数多个类型中，而是集中在有限相位上”的结构图景，为高阶 moment 指纹在 \(q\to\infty\) 端点的主导机制提供了新的可检验抓手。
+\end{remark}
+
+\begin{remark}[最大纤维达到者的隐藏位分裂：\texorpdfstring{$(d_{m,0},d_{m,1})$}{(d0,d1)} 的 Fibonacci 刚性（可复现观察）]\label{rem:pom-max-fiber-achievers-bsplit}
+由引理 \ref{lem:pom-one-bit}（单隐藏位分解），对每个 \(x\in X_m\) 定义
+\[
+d_{m,b}(x):=\#\{\omega\in\Omega_m:\ \Fold_m(\omega)=x,\ b(\omega)=b\}\qquad(b\in\{0,1\}),
+\]
+则 \(d_m(x)=d_{m,0}(x)+d_{m,1}(x)\)。
+由于最大窗口值满足 \(\max_{\omega}N(\omega)=F_{m+3}-2<2F_{m+2}\)（\(m\ge 2\)），隐藏位 \(b(\omega)\) 等价于 \(N(\omega)\) 除以 \(F_{m+2}\) 的商，因此对 \(r=V_m(x)\in[0,F_{m+2})\) 有
+\[
+d_{m,0}(x)=\#\{\omega:\ N(\omega)=r\},\qquad
+d_{m,1}(x)=\#\{\omega:\ N(\omega)=r+F_{m+2}\}.
+\]
+表 \ref{tab:fold_max_fiber_achievers_bsplit} 对 \(m\le 30\) 的可审计窗口直接计算了所有达到者 \(x\) 的分裂对 \((d_{m,0}(x),d_{m,1}(x))\)。
+其输出显示出一组与定理 \ref{thm:pom-max-fiber} 相容、但更细的 Fibonacci 刚性：
+\begin{itemize}
+  \item \textbf{偶数 \(m=2k\)：}当 \(m\ge 10\) 时，达到者恰有两相位，且分裂对为
+  \[
+  (d_{2k,0},d_{2k,1})\in\{(F_{k+1},F_k),(F_k,F_{k+1})\},\qquad d_{2k,0}+d_{2k,1}=F_{k+2}=D_{2k}.
+  \]
+  \item \textbf{奇数 \(m=2k+1\)：}当 \(m\ge 13\) 时，达到者恰有四相位，其中两者为平衡分裂、两者为偏置分裂（互为交换）：
+  \[
+  (d_{2k+1,0},d_{2k+1,1})=(F_{k+1},F_{k+1})\ \text{出现两次},
+  \]
+  \[
+  (d_{2k+1,0},d_{2k+1,1})\in\{(F_{k+1}-F_{k-2},F_{k+1}+F_{k-2}),(F_{k+1}+F_{k-2},F_{k+1}-F_{k-2})\},
+  \]
+  且总和恒为 \(2F_{k+1}=D_{2k+1}\)。
+\end{itemize}
+该分裂结构把“最大纤维计数 = 链上独立集计数”（注 \ref{rem:pom-overflow-rec}）进一步细分为“端点约束下的两类独立集计数”，从而在达到者层面强制出现相邻 Fibonacci 数的交换分裂。
 \end{remark}
 
 \begin{corollary}[空间缺陷的夹逼区间]\label{cor:pom-defect-band}
@@ -1173,6 +1204,17 @@ S_q(m)=\sum_{r\in\ZZ/F_{m+2}\ZZ}c_m(r)^q
 表 \ref{tab:fold_collision_renyi_spectrum_mod_dp_q20} 给出 \(q\le 20\) 的可复核扩展输出；其中 \(q\le 16\) 与由递推/有限核抽取的精确 \(r_q\) 在数值上吻合到表格精度，\(q\ge 17\) 则给出 DP 窗口 \(m\le 30\) 下的稳定估计值（脚本 \texttt{scripts/exp\_fold\_collision\_renyi\_spectrum\_mod\_dp\_q20.py} 一键生成）。
 \end{remark}
 \input{sections/generated/tab_fold_collision_renyi_spectrum_mod_dp_q20}
+
+\begin{remark}[端点收敛速度（可复核）：\texorpdfstring{$q\le 60$}{q<=60} 时 \texorpdfstring{$h_q/q\to\log(2/\sqrt{\varphi})$}{hq/q->log(2/sqrt(phi))}]\label{rem:pom-renyi-endpoint-q60}
+命题 \ref{prop:pom-rq-qinfty-endpoint} 给出端点常数
+\(
+\lim_{q\to\infty}h_q/q=\log(2/\sqrt{\varphi})
+\)
+以及 \(O(1/q)\) 级误差界。
+表 \ref{tab:fold_collision_renyi_endpoint_convergence_q60} 用模 \(F_{m+2}\) 的 residue DP 在窗口 \(m\in[24,30]\) 上计算 \(S_q(m)=\sum_r c_m(r)^q\)，并对 \(\log S_q(m)\) 作线性回归估计 \(\log r_q\)，从而得到 \(h_q/q\) 的数值证书：
+当 \(q=60\) 时，\(\log(2/\sqrt{\varphi})-(h_q/q)\) 已降至 \(10^{-4}\) 量级，与端点误差界的 \(O(1/q)\) 形状一致。
+\end{remark}
+\input{sections/generated/tab_fold_collision_renyi_endpoint_convergence_q60}
 
 \begin{proposition}[普适夹逼：高阶碰撞主指数与投影熵率仅由 \texorpdfstring{$|X_m|$}{|Xm|} 与最大纤维锁定]\label{prop:pom-rq-universal-bounds}
 对整数 \(q\ge 2\)，令
