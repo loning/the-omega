@@ -249,6 +249,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_fiber_log_moments_mu_sigma",
+            script="exp_fold_fiber_log_moments_mu_sigma.py",
+            args=["--m-min", "8", "--m-max", "30", "--m-step", "2"],
+            expected_outputs=[
+                "artifacts/export/fold_fiber_log_moments_mu_sigma.json",
+                "sections/generated/tab_fold_fiber_log_moments_mu_sigma.tex",
+            ],
+        ),
+        Step(
             name="pom_rewriting_engine_demo",
             script="exp_pom_rewriting_engine_demo.py",
             args=[],
