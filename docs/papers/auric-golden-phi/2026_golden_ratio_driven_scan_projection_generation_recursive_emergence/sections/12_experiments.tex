@@ -167,6 +167,42 @@ D_{\mathrm{KL}}(\hat\mu_{m,N}\|\mu_m)
 
 \input{sections/generated/tab_rotation_microstate_kl_certificate}
 
+\begin{lemma}[KL 对推前（粗化）的单调性]\label{lem:kl-monotone-pushforward}
+设 $S,T$ 为有限集合，$F:S\to T$ 为映射，$p,q$ 为 $S$ 上的概率分布且 $p\ll q$。则
+\[
+D_{\mathrm{KL}}(F_*p\|F_*q)\ \le\ D_{\mathrm{KL}}(p\|q).
+\]
+\end{lemma}
+
+\begin{proof}
+记 $T$ 上的推前分布为 $\bar p(y)=\sum_{x:F(x)=y}p(x)$、$\bar q(y)=\sum_{x:F(x)=y}q(x)$。
+对每个 $y$，令 $p_y(x)=p(x)/\bar p(y)$ 与 $q_y(x)=q(x)/\bar q(y)$ 为纤维上的条件分布（若 $\bar p(y)=0$ 则忽略该 $y$）。
+则
+\[
+\frac{p(x)}{q(x)}=\frac{\bar p(F(x))}{\bar q(F(x))}\,\frac{p_{F(x)}(x)}{q_{F(x)}(x)}.
+\]
+从而
+\[
+\begin{aligned}
+D_{\mathrm{KL}}(p\|q)
+&=\sum_{y\in T}\sum_{x:F(x)=y}p(x)\log\frac{p(x)}{q(x)}\\
+&=\sum_{y\in T}\bar p(y)\log\frac{\bar p(y)}{\bar q(y)}\ +\ \sum_{y\in T}\bar p(y)\sum_{x:F(x)=y}p_y(x)\log\frac{p_y(x)}{q_y(x)}\\
+&=D_{\mathrm{KL}}(\bar p\|\bar q)\ +\ \sum_{y\in T}\bar p(y)\,D_{\mathrm{KL}}(p_y\|q_y)\ \ge\ D_{\mathrm{KL}}(\bar p\|\bar q),
+\end{aligned}
+\]
+即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[折叠后稳定类型的 KL 证书]\label{cor:rotation-folded-kl-certificate}
+在推论 \ref{cor:rotation-microstate-kl-certificate} 的条件下，令 $\hat\pi_{m,N}=(\Fold_m)_*\hat\mu_{m,N}$、$\pi_m^{\mathrm{fold}}=(\Fold_m)_*\mu_m$。则
+\[
+D_{\mathrm{KL}}(\hat\pi_{m,N}\|\pi_m^{\mathrm{fold}})\ \le\ D_{\mathrm{KL}}(\hat\mu_{m,N}\|\mu_m)\ \le\ \frac{2(m+1)^2D_N^*(\alpha;x_0)^2}{q_{\min}(m)}.
+\]
+特别地，对黄金分支可取 $q_{\min}(m)\ge 1/(\sqrt5\,m)$，从而获得完全显式的上界证书。
+\end{corollary}
+
+\input{sections/generated/tab_rotation_folded_kl_certificate}
+
 \begin{proof}
 由命题 \ref{prop:sturmian-interval-partition}，$\hat{\mu}_{m,N}$ 与 $\mu_m$ 都可视为对分割 $\{I_j\}_{j=1}^{m+1}$ 的概率向量。对每个半开区间 $I_j=[a_j,b_j)$，由星差异度定义（定义 \ref{def:instability-envelope}）与“任意区间可写为两段前缀区间之差”的标准技巧可得
 \[
