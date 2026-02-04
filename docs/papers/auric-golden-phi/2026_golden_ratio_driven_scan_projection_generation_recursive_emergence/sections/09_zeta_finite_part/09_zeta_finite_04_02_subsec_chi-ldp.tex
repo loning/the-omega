@@ -61,7 +61,25 @@ $P_\chi(t)$ 控制 leading 指数尺度（典型密度、涨落与大偏差）�
 \paragraph{相关时间与角色扭曲混合时间的分离（可审计对比）}
 上一段的 $\tau_{\mathrm{corr}}(t)$ 来自同一切片平衡态内的相关衰减；而注 \ref{rem:pom-chi-mixing} 中的 $\tau_{\mathrm{mix}}$ 则来自角色扭曲后谱半径比 $\rho/\lambda$ 所控制的“读出偏置”指数衰减。
 表 \ref{tab:real-input-40-tau-corr-vs-tau-mix} 将二者在 $t=0$ 与 $((3,3,5))$ 最坏扭曲处并列，并进一步给出三条可复核的“对齐”读出：离散网格最近点 $t_\star$、用于线性插值的网格括号 $[t_-,t_+]$，以及在该括号上的线性根估计 $t_0$（可复现）。
+此外，若把 $y(t):=\tau_{\mathrm{corr}}(t)-\tau_{\mathrm{mix}}(3,3,5)$ 视作关于 $t$ 的连续函数，则其离散采样的符号变号次数与根区间计数（表 \ref{tab:real-input-40-tau-corr-monotonicity}）给出“交点多重性”的粗证书，并可通过网格加密表 \ref{tab:real-input-40-tau-corr-monotonicity-refinement} 进行稳定性复核。
+
+\begin{proposition}[离散变号证书：交点存在性与多重性下界（可审计）]\label{prop:chi-slice-sign-change-certificate}
+令
+\[
+y(t):=\tau_{\mathrm{corr}}(t)-\tau_{\mathrm{mix}}(3,3,5),
+\]
+并取严格递增的离散网格 $t_0<t_1<\cdots<t_N$。
+假设在每个区间 $[t_i,t_{i+1}]$ 上，映射 $t\mapsto \tau_{\mathrm{corr}}(t)$ 连续（从而 $y$ 连续）。
+则：
+\begin{enumerate}
+  \item 若存在 $i$ 使得 $y(t_i)\,y(t_{i+1})<0$，则由介值定理存在 $t\in(t_i,t_{i+1})$ 使 $y(t)=0$，即 $\tau_{\mathrm{corr}}(t)=\tau_{\mathrm{mix}}(3,3,5)$。
+  \item 若在离散序列 $\{y(t_i)\}_{i=0}^N$ 中出现 $K$ 个两两不相交的根区间（每个根区间要么对应一次严格变号 $y(t_i)\,y(t_{i+1})<0$，要么对应一段连续的离散零值块 $y(t_i)=\cdots=y(t_j)=0$），则连续函数 $y$ 在对应的 $K$ 个互不相交区间上至少各含一个零点；因此 $y(t)=0$ 的零点集合至少具有 $K$ 个互不相交的连通成分。
+\end{enumerate}
+表 \ref{tab:real-input-40-tau-corr-monotonicity} 报告的 $y(t)$ 符号变号次数与根区间计数，给出上述结论的可复现“证书化摘要”；表 \ref{tab:real-input-40-tau-corr-monotonicity-refinement} 在网格加密下对这些离散证书做一致性复核。
+\end{proposition}
 \input{sections/generated/tab_real_input_40_tau_corr_vs_tau_mix}
+\input{sections/generated/tab_real_input_40_tau_corr_monotonicity}
+\input{sections/generated/tab_real_input_40_tau_corr_monotonicity_refinement}
 \input{sections/generated/fig_real_input_40_tau_corr_vs_tau_mix}
 
 \paragraph{把 \texorpdfstring{$\log\mathfrak{M}$}{logM} 完全对齐到显式 \texorpdfstring{$\zeta_M$}{zeta\_M}（闭式常数 + 数值）}

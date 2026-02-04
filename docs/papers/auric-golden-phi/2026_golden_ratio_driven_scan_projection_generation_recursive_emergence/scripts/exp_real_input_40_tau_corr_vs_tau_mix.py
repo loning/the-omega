@@ -17,6 +17,8 @@ Outputs:
 - sections/generated/tab_real_input_40_tau_corr_vs_tau_mix.tex
 - artifacts/export/real_input_40_tau_corr_vs_tau_mix.png
 - sections/generated/fig_real_input_40_tau_corr_vs_tau_mix.tex
+- artifacts/export/real_input_40_tau_corr_monotonicity.json
+- sections/generated/tab_real_input_40_tau_corr_monotonicity.tex
 """
 
 from __future__ import annotations
@@ -86,6 +88,104 @@ def _lin_interp_root(t0: float, y0: float, t1: float, y1: float) -> float:
     return t0 + (0.0 - y0) * (t1 - t0) / (y1 - y0)
 
 
+def _sgn(x: float, eps: float = 1e-12) -> int:
+    if not math.isfinite(x):
+        return 0
+    if x > eps:
+        return 1
+    if x < -eps:
+        return -1
+    return 0
+
+
+def _count_sign_changes(seq: List[float], eps: float = 1e-12) -> int:
+    signs = [_sgn(x, eps=eps) for x in seq]
+    signs = [s for s in signs if s != 0]
+    if len(signs) <= 1:
+        return 0
+    return sum(1 for i in range(len(signs) - 1) if signs[i] != signs[i + 1])
+
+
+def _count_root_intervals(y: List[float], eps: float = 1e-12) -> int:
+    """Count disjoint grid intervals indicating y(t)=0 (by sign change or exact zeros)."""
+    n = len(y)
+    if n == 0:
+        return 0
+    s = [_sgn(v, eps=eps) for v in y]
+    count = 0
+    i = 0
+    while i < n:
+        if s[i] == 0:
+            count += 1
+            j = i
+            while j < n and s[j] == 0:
+                j += 1
+            i = j
+            continue
+        if i + 1 < n and s[i] * s[i + 1] < 0:
+            count += 1
+        i += 1
+    return count
+
+
+def _extract_grid_pairs(tc_payload: Dict[str, Any]) -> List[Tuple[float, float]]:
+    grid = tc_payload.get("grid")
+    if not isinstance(grid, list):
+        return []
+    out: List[Tuple[float, float]] = []
+    for g in grid:
+        if not isinstance(g, dict):
+            continue
+        try:
+            tt = float(g.get("t", float("nan")))
+            tau_t = float(g.get("tau", float("nan")))
+        except Exception:
+            continue
+        if math.isfinite(tt) and math.isfinite(tau_t):
+            out.append((tt, tau_t))
+    out.sort(key=lambda x: x[0])
+    return out
+
+
+def _monotonicity_metrics(
+    ts: List[float], taus: List[float], tau_mix: float
+) -> Dict[str, float]:
+    dtaus = [taus[i + 1] - taus[i] for i in range(len(taus) - 1)]
+    n_sign_changes_dtau = float(_count_sign_changes(dtaus))
+    n_monotone_segments = float(int(n_sign_changes_dtau) + 1) if len(taus) >= 2 else 1.0
+
+    ds = [_sgn(x) for x in dtaus]
+    ds_nz = [x for x in ds if x != 0]
+    n_local_min = 0
+    n_local_max = 0
+    for i in range(len(ds_nz) - 1):
+        if ds_nz[i] < 0 and ds_nz[i + 1] > 0:
+            n_local_min += 1
+        if ds_nz[i] > 0 and ds_nz[i + 1] < 0:
+            n_local_max += 1
+
+    y = [tau_t - tau_mix for tau_t in taus] if math.isfinite(tau_mix) else []
+    y_sign_changes = float(_count_sign_changes(y)) if y else 0.0
+    n_root_intervals = float(_count_root_intervals(y)) if y else 0.0
+
+    dt_local = float("nan")
+    if len(ts) >= 2:
+        dts = [abs(ts[i + 1] - ts[i]) for i in range(len(ts) - 1)]
+        dts = [x for x in dts if x > 0]
+        dt_local = float(min(dts)) if dts else float("nan")
+
+    return {
+        "grid_n": float(len(ts)),
+        "dtau_sign_changes": n_sign_changes_dtau,
+        "monotone_segments": n_monotone_segments,
+        "local_min": float(n_local_min),
+        "local_max": float(n_local_max),
+        "y_sign_changes": y_sign_changes,
+        "y_root_intervals": n_root_intervals,
+        "dt_min": dt_local,
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Compare tau_corr(0) vs tau_mix from (3,3,5) twisted ratio"
@@ -125,6 +225,21 @@ def main() -> None:
         "--fig-tex-out",
         type=str,
         default=str(generated_dir() / "fig_real_input_40_tau_corr_vs_tau_mix.tex"),
+    )
+    parser.add_argument(
+        "--mon-json-out",
+        type=str,
+        default=str(export_dir() / "real_input_40_tau_corr_monotonicity.json"),
+    )
+    parser.add_argument(
+        "--mon-tex-out",
+        type=str,
+        default=str(generated_dir() / "tab_real_input_40_tau_corr_monotonicity.tex"),
+    )
+    parser.add_argument(
+        "--time-corr-json-fine",
+        type=str,
+        default="artifacts/export/real_input_40_time_correlation_fine.json",
     )
     args = parser.parse_args()
 
@@ -376,9 +491,144 @@ def main() -> None:
 
     tex_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
+    # Prepare a sorted (t, tau(t)) grid for audits.
+    grid_pairs = _extract_grid_pairs(tc)
+    ts = [p[0] for p in grid_pairs]
+    taus = [p[1] for p in grid_pairs]
+
+    # Monotonicity/crossing audit for tau_corr(t) and y(t)=tau_corr(t)-tau_mix.
+    coarse_metrics = _monotonicity_metrics(ts, taus, tau_mix=tau_mix)
+    n_sign_changes_dtau = int(coarse_metrics["dtau_sign_changes"])
+    n_monotone_segments = int(coarse_metrics["monotone_segments"])
+    n_local_min = int(coarse_metrics["local_min"])
+    n_local_max = int(coarse_metrics["local_max"])
+    n_root_intervals = int(coarse_metrics["y_root_intervals"])
+
+    mon_payload: Dict[str, object] = {
+        "model": "real_input_40",
+        "slice": "chi",
+        "theta_map": "theta(t)=(t,0,-t)",
+        "grid_n": int(len(taus)),
+        "dtau_sign_changes": int(n_sign_changes_dtau),
+        "monotone_segments": int(n_monotone_segments),
+        "local_min": int(n_local_min),
+        "local_max": int(n_local_max),
+        "y_root_intervals": int(n_root_intervals),
+        "tau_mix": float(tau_mix),
+    }
+    mon_json = Path(args.mon_json_out)
+    mon_json.parent.mkdir(parents=True, exist_ok=True)
+    mon_json.write_text(
+        json.dumps(mon_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+
+    mon_tex = Path(args.mon_tex_out)
+    mon_tex.parent.mkdir(parents=True, exist_ok=True)
+    mon_lines: List[str] = []
+    mon_lines.append(
+        "% AUTO-GENERATED by scripts/exp_real_input_40_tau_corr_vs_tau_mix.py"
+    )
+    mon_lines.append("\\begin{table}[H]")
+    mon_lines.append("\\centering")
+    mon_lines.append("\\small")
+    mon_lines.append("\\setlength{\\tabcolsep}{8pt}")
+    mon_lines.append("\\renewcommand{\\arraystretch}{1.15}")
+    mon_lines.append(
+        "\\caption{$\\tau_{\\mathrm{corr}}(t)$ 的离散单调性/多解性审计（$\\chi$ 切片；同一网格）。}"
+    )
+    mon_lines.append("\\label{tab:real-input-40-tau-corr-monotonicity}")
+    mon_lines.append("\\begin{tabular}{l r}")
+    mon_lines.append("\\toprule")
+    mon_lines.append("指标 & 数值\\\\")
+    mon_lines.append("\\midrule")
+    mon_lines.append(f"grid size & {int(len(taus))}\\\\")
+    mon_lines.append(
+        f"sign changes of $\\Delta \\tau_{{\\mathrm{{corr}}}}$ & {int(n_sign_changes_dtau)}\\\\"
+    )
+    mon_lines.append(f"monotone segments & {int(n_monotone_segments)}\\\\")
+    mon_lines.append(f"local minima (count) & {int(n_local_min)}\\\\")
+    mon_lines.append(f"local maxima (count) & {int(n_local_max)}\\\\")
+    mon_lines.append(
+        f"$y(t)$ sign changes & {int(coarse_metrics['y_sign_changes'])}\\\\"
+    )
+    mon_lines.append(
+        f"$y(t)=\\tau_{{\\mathrm{{corr}}}}(t)-\\tau_{{\\mathrm{{mix}}}}(3,3,5)$ root-intervals & {int(n_root_intervals)}\\\\"
+    )
+    mon_lines.append("\\bottomrule")
+    mon_lines.append("\\end{tabular}")
+    mon_lines.append("\\end{table}")
+    mon_tex.write_text("\n".join(mon_lines) + "\n", encoding="utf-8")
+
+    # Grid refinement audit (requires fine grid output).
+    tc_fine = _load_json(str(args.time_corr_json_fine))
+    fine_pairs = _extract_grid_pairs(tc_fine)
+    if not fine_pairs:
+        raise RuntimeError("fine time correlation json: missing/empty grid")
+    ts_f = [p[0] for p in fine_pairs]
+    taus_f = [p[1] for p in fine_pairs]
+    fine_metrics = _monotonicity_metrics(ts_f, taus_f, tau_mix=tau_mix)
+
+    ref_payload: Dict[str, object] = {
+        "model": "real_input_40",
+        "slice": "chi",
+        "theta_map": "theta(t)=(t,0,-t)",
+        "tau_mix": float(tau_mix),
+        "coarse": coarse_metrics,
+        "fine": fine_metrics,
+    }
+    ref_json = export_dir() / "real_input_40_tau_corr_monotonicity_refinement.json"
+    ref_json.write_text(
+        json.dumps(ref_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+
+    ref_tex = generated_dir() / "tab_real_input_40_tau_corr_monotonicity_refinement.tex"
+    ref_lines: List[str] = []
+    ref_lines.append(
+        "% AUTO-GENERATED by scripts/exp_real_input_40_tau_corr_vs_tau_mix.py"
+    )
+    ref_lines.append("\\begin{table}[H]")
+    ref_lines.append("\\centering")
+    ref_lines.append("\\small")
+    ref_lines.append("\\setlength{\\tabcolsep}{8pt}")
+    ref_lines.append("\\renewcommand{\\arraystretch}{1.15}")
+    ref_lines.append(
+        "\\caption{$\\tau_{\\mathrm{corr}}(t)$ 审计在网格加密下的稳定性（粗网格 vs 细网格）。}"
+    )
+    ref_lines.append("\\label{tab:real-input-40-tau-corr-monotonicity-refinement}")
+    ref_lines.append("\\begin{tabular}{l r r}")
+    ref_lines.append("\\toprule")
+    ref_lines.append("指标 & coarse & fine\\\\")
+    ref_lines.append("\\midrule")
+    ref_lines.append(
+        f"grid size & {int(coarse_metrics['grid_n'])} & {int(fine_metrics['grid_n'])}\\\\"
+    )
+    ref_lines.append(
+        f"$\\min \\Delta t$ & {coarse_metrics['dt_min']:.12f} & {fine_metrics['dt_min']:.12f}\\\\"
+    )
+    ref_lines.append(
+        f"sign changes of $\\Delta \\tau_{{\\mathrm{{corr}}}}$ & {int(coarse_metrics['dtau_sign_changes'])} & {int(fine_metrics['dtau_sign_changes'])}\\\\"
+    )
+    ref_lines.append(
+        f"monotone segments & {int(coarse_metrics['monotone_segments'])} & {int(fine_metrics['monotone_segments'])}\\\\"
+    )
+    ref_lines.append(
+        f"local minima (count) & {int(coarse_metrics['local_min'])} & {int(fine_metrics['local_min'])}\\\\"
+    )
+    ref_lines.append(
+        f"local maxima (count) & {int(coarse_metrics['local_max'])} & {int(fine_metrics['local_max'])}\\\\"
+    )
+    ref_lines.append(
+        f"$y(t)$ sign changes & {int(coarse_metrics['y_sign_changes'])} & {int(fine_metrics['y_sign_changes'])}\\\\"
+    )
+    ref_lines.append(
+        f"$y(t)$ root-intervals & {int(coarse_metrics['y_root_intervals'])} & {int(fine_metrics['y_root_intervals'])}\\\\"
+    )
+    ref_lines.append("\\bottomrule")
+    ref_lines.append("\\end{tabular}")
+    ref_lines.append("\\end{table}")
+    ref_tex.write_text("\n".join(ref_lines) + "\n", encoding="utf-8")
+
     # Figure: tau_corr(t) curve with tau_mix horizontal line.
-    ts = [float(g["t"]) for g in grid if "t" in g]
-    taus = [float(g.get("tau", float("inf"))) for g in grid]
     out_png = Path(args.png_out)
     out_png.parent.mkdir(parents=True, exist_ok=True)
 
@@ -416,6 +666,10 @@ def main() -> None:
     print(f"[tau-compare] wrote {tex_path}", flush=True)
     print(f"[tau-compare] wrote {out_png}", flush=True)
     print(f"[tau-compare] wrote {fig_tex_path}", flush=True)
+    print(f"[tau-compare] wrote {mon_json}", flush=True)
+    print(f"[tau-compare] wrote {mon_tex}", flush=True)
+    print(f"[tau-compare] wrote {ref_json}", flush=True)
+    print(f"[tau-compare] wrote {ref_tex}", flush=True)
     print("[tau-compare] done", flush=True)
 
 

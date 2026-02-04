@@ -5,10 +5,12 @@
 We focus on the arity-charge slice theta(t)=(t,0,-t), where the edge weight is
 exp(t * chi) with chi = e - 1_{d=2} in {-1,0,1}.
 
-Outputs:
+Outputs (default tag=""):
 - artifacts/export/real_input_40_time_correlation.json
 - artifacts/export/real_input_40_time_correlation.png
 - sections/generated/fig_real_input_40_time_correlation.tex
+
+With --tag TAG (non-empty), outputs are suffixed by _TAG.
 """
 
 from __future__ import annotations
@@ -141,6 +143,7 @@ def main() -> None:
     parser.add_argument("--t-max", type=float, default=1.0)
     parser.add_argument("--t-steps", type=int, default=61)
     parser.add_argument("--corr-n", type=int, default=80)
+    parser.add_argument("--tag", type=str, default="")
     parser.add_argument("--no-output", action="store_true")
     args = parser.parse_args()
 
@@ -203,7 +206,9 @@ def main() -> None:
     r0 = next((x["r"] for x in grid if abs(x["t"]) < 1e-12), 0.0)
     env = [(r0**n) for n in ns]
 
-    out_png = export_dir() / "real_input_40_time_correlation.png"
+    tag = str(args.tag).strip()
+    suffix = f"_{tag}" if tag else ""
+    out_png = export_dir() / f"real_input_40_time_correlation{suffix}.png"
     fig, ax = plt.subplots(1, 2, figsize=(10.8, 4.2))
 
     ax[0].plot([g["t"] for g in grid], [g["tau"] for g in grid], lw=2.0)
@@ -227,7 +232,7 @@ def main() -> None:
         plt.savefig(out_png, dpi=160)
     plt.close(fig)
 
-    out_json = export_dir() / "real_input_40_time_correlation.json"
+    out_json = export_dir() / f"real_input_40_time_correlation{suffix}.json"
     payload: Dict[str, object] = {
         "model": "real_input_40",
         "slice": "chi",
@@ -247,16 +252,23 @@ def main() -> None:
         out_json.write_text(
             json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8"
         )
+        fig_name = f"fig_real_input_40_time_correlation{suffix}"
+        png_rel = f"artifacts/export/real_input_40_time_correlation{suffix}.png"
+        fig_label = (
+            f"fig:real-input-40-time-correlation-{tag}"
+            if tag
+            else "fig:real-input-40-time-correlation"
+        )
         write_fig_tex(
-            fig_name="fig_real_input_40_time_correlation",
-            png_rel="artifacts/export/real_input_40_time_correlation.png",
+            fig_name=fig_name,
+            png_rel=png_rel,
             caption=(
                 "真实输入 40 状态核在 arity-charge 切片 $\\theta(t)=(t,0,-t)$ 下的内生时间尺度读出："
                 "左为谱隙比 $\\Lambda/\\lambda_1$ 导出的相关时间 $\\tau_{\\mathrm{corr}}(t)$；右为 $t=0$ 的 Parry 测度下，"
                 "一步势 $\\chi=e-\\mathbf{1}_{\\{d=2\\}}$ 的状态条件均值自相关的指数衰减（取绝对值），并与 "
                 "$(\\Lambda/\\lambda_1)^n$ 的指数包络一致。"
             ),
-            label="fig:real-input-40-time-correlation",
+            label=fig_label,
         )
 
     print(f"[real-input-40-time-corr] wrote {out_json}", flush=True)

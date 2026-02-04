@@ -446,6 +446,21 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_time_correlation_fine",
+            script="exp_real_input_40_time_correlation.py",
+            args=[
+                "--t-steps",
+                "241",
+                "--tag",
+                "fine",
+            ],
+            expected_outputs=[
+                "artifacts/export/real_input_40_time_correlation_fine.json",
+                "artifacts/export/real_input_40_time_correlation_fine.png",
+                "sections/generated/fig_real_input_40_time_correlation_fine.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_tau_corr_vs_tau_mix",
             script="exp_real_input_40_tau_corr_vs_tau_mix.py",
             args=[],
@@ -454,6 +469,10 @@ def build_steps() -> List[Step]:
                 "sections/generated/tab_real_input_40_tau_corr_vs_tau_mix.tex",
                 "artifacts/export/real_input_40_tau_corr_vs_tau_mix.png",
                 "sections/generated/fig_real_input_40_tau_corr_vs_tau_mix.tex",
+                "artifacts/export/real_input_40_tau_corr_monotonicity.json",
+                "sections/generated/tab_real_input_40_tau_corr_monotonicity.tex",
+                "artifacts/export/real_input_40_tau_corr_monotonicity_refinement.json",
+                "sections/generated/tab_real_input_40_tau_corr_monotonicity_refinement.tex",
             ],
         ),
         Step(
