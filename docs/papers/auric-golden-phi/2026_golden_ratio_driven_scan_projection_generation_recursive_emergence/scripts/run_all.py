@@ -298,6 +298,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_weighted_padic_unit_root",
+            script="exp_sync_kernel_weighted_padic_unit_root.py",
+            args=["--p", "5", "--N", "12", "--k-max", "6", "--u", "minus1"],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_weighted_padic_unit_root.json",
+                "sections/generated/tab_sync_kernel_weighted_padic_unit_root.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_time_correlation",
             script="exp_sync_kernel_time_correlation.py",
             args=[],
@@ -716,6 +725,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/real_input_40_finite_part_split.json",
                 "sections/generated/tab_real_input_40_finite_part_split.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_vert_single_series",
+            script="exp_real_input_40_vert_single_series.py",
+            args=["--k-max", "800"],
+            expected_outputs=[
+                "artifacts/export/real_input_40_vert_single_series.json",
+                "sections/generated/tab_real_input_40_vert_single_series.tex",
             ],
         ),
         Step(
