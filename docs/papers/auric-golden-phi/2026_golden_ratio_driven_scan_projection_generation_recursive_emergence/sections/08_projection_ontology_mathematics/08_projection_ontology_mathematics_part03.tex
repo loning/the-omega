@@ -801,6 +801,68 @@ R_m=F_{m+2}\cdot \Theta\!\left(\left(\frac{r_2}{4}\right)^m\right)
 其中使用 Fibonacci 渐近 \(F_{m+2}=\Theta(\varphi^m)\)。取对数除以 \(m\) 并令 \(m\to\infty\) 得结论。证毕。
 \end{proof}
 
+\begin{corollary}[熵谱夹逼：\texorpdfstring{$h_2\le h_1\le \log\varphi$}{h2<=h1<=log phi}]\label{cor:pom-shannon-entropy-squeeze}
+令 \(\pi_m(x)=d_m(x)/2^m\) 为折叠输出分布，并定义其 Shannon 熵
+\[
+H_1(m):=-\sum_{x\in X_m}\pi_m(x)\log\pi_m(x).
+\]
+设其熵率上下极限为
+\[
+\underline h_1:=\liminf_{m\to\infty}\frac{1}{m}H_1(m),
+\qquad
+\overline h_1:=\limsup_{m\to\infty}\frac{1}{m}H_1(m).
+\]
+则有夹逼
+\[
+\boxed{\;
+h_2\ \le\ \underline h_1\ \le\ \overline h_1\ \le\ \log\varphi\; }.
+\]
+从而 \(\overline h_1\) 与上界 \(\log\varphi\) 的间隙被二阶常数完全量化：
+\[
+0\ \le\ \log\varphi-\overline h_1\ \le\ \log\varphi-h_2
+=\log\!\left(\frac{\varphi r_2}{4}\right),
+\]
+其中右端恰为推论 \ref{cor:pom-renyi2-near-uniform} 的偏离指数常数（约 \(3.657482\times 10^{-3}\)）。
+\end{corollary}
+\begin{proof}
+对任意有限支持分布 \(\pi\)，Rényi 熵随阶数单调递减，故 \(H_2(\pi)\le H_1(\pi)\le H_0(\pi)\)；
+这里 \(H_2(\pi)=-\log\sum_x\pi(x)^2\)、\(H_0(\pi)=\log|\mathrm{supp}(\pi)|\)。
+应用于 \(\pi=\pi_m\) 得
+\[
+-\log\sum_x\pi_m(x)^2\ \le\ H_1(m)\ \le\ \log|X_m|=\log F_{m+2}.
+\]
+两端除以 \(m\) 并取 \(\liminf,\limsup\)，再用 \(\lim_{m\to\infty}\frac{1}{m}\log F_{m+2}=\log\varphi\) 与推论 \ref{cor:pom-s2-asymptotic} 的
+\(
+h_2=\lim_{m\to\infty}\frac{1}{m}\bigl(-\log\sum_x\pi_m(x)^2\bigr)
+\)
+即得第一组夹逼。不等式 \(\log\varphi-h_2=\log(\varphi r_2/4)\) 由 \(h_2=\log(4/r_2)\) 直接化简得到。证毕。
+\end{proof}
+
+\begin{corollary}[min-entropy 熵率的闭式端点]\label{cor:pom-min-entropy-rate}
+令
+\[
+H_\infty(m):=-\log\max_{x\in X_m}\pi_m(x),
+\qquad
+h_\infty:=\lim_{m\to\infty}\frac{1}{m}H_\infty(m).
+\]
+则极限存在且满足闭式
+\[
+\boxed{\;
+h_\infty=\log 2-\frac{1}{2}\log\varphi=\log\!\left(\frac{2}{\sqrt{\varphi}}\right).\;}
+\]
+\end{corollary}
+\begin{proof}
+由 \(\max_x\pi_m(x)=D_m/2^m\)（其中 \(D_m=\max_x d_m(x)\)），有
+\(
+H_\infty(m)=m\log 2-\log D_m
+\)。
+再由定理 \ref{thm:pom-max-fiber} 的 \(D_m=\Theta(\varphi^{m/2})\) 得
+\(
+\lim_{m\to\infty}\frac{1}{m}\log D_m=\frac{1}{2}\log\varphi
+\)，
+代入即得结论。证毕。
+\end{proof}
+
 \begin{definition}[碰撞核 SFT 与碰撞 \texorpdfstring{$\zeta$}{zeta}]\label{def:pom-collision-zeta}
 令 \(A_2\) 为命题 \ref{prop:pom-s2-recurrence} 中的三态非负整数矩阵，并记其边移位为 \((X_{A_2},\sigma)\)。定义碰撞 \(\zeta\)-函数
 $$
@@ -831,6 +893,22 @@ $$
 \begin{proof}
 对 \(A_2\) 直接计算行列式得 \(\det(I-zA_2)=1-2z-2z^2+2z^3\)。主极点对应 \(\det(I-zA_2)\) 的最小模零点，即 \(z_\star=1/\rho(A_2)=1/r_2\)。而 SFT 的拓扑熵等于 \(\log\rho(A_2)\)，故得 \(\log r_2\)。证毕。
 \end{proof}
+
+\begin{remark}[primitive 谱的快速计算器：\texorpdfstring{$O(N\log N)$}{O(N log N)} 生成 \texorpdfstring{$p_n(A_2)$}{p_n(A2)}]\label{rem:pom-a2-primitive-fast}
+令 \(t_n:=\mathrm{Tr}(A_2^n)\)。
+由 \(A_2\) 的特征多项式 \(\lambda^3-2\lambda^2-2\lambda+2=0\)（等价于 Cayley--Hamilton 恒等式 \(A_2^3=2A_2^2+2A_2-2I\)），两边乘以 \(A_2^{n-3}\) 并取迹得三阶递推
+\[
+\boxed{\;
+t_n=2t_{n-1}+2t_{n-2}-2t_{n-3}\qquad(n\ge 4)\;}
+\]
+且初值为 \(t_1=2,t_2=8,t_3=14\)。
+另一方面由 Witt/Möbius 反演（定义 \ref{def:pom-collision-zeta}）有
+\[
+p_n(A_2)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,t_{n/d}.
+\]
+因此对任意 \(N\)，可先用递推在 \(O(N)\) 时间生成 \(\{t_n\}_{n\le N}\)，再用约数和的筛法在 \(O(N\log N)\) 时间生成全部 \(\{p_n(A_2)\}_{n\le N}\)；
+这为把 \(A_2\) 当作“碰撞 primitive 谱基准器”（用于对比更复杂核族的指数常数与有限部常数偏移）提供了一个直接可复现的算法口径。
+\end{remark}
 
 \begin{remark}[二阶碰撞核的严格 RH 裕量（\texorpdfstring{$A_2$}{A2}）]\label{rem:pom-collision-rh-margin}
 记 \(\lambda:=\rho(A_2)=r_2\approx 2.481194304092\)。由 \(A_2\) 的特征多项式

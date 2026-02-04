@@ -648,6 +648,37 @@ S_c=A(p)+B-2\log\!\left(2\sin\frac{\pi |c|}{p}\right)+o(1)\qquad(p\to\infty)\; }
 把常数张量 $C^{(3,3,5)}_{a,b,c}$ 视为实矩阵 $T\in\RR^{5\times 9}$（行指标为 $c\in\{0,1,2,3,4\}$，列指标为扁平化后的 $(a,b)\in(\ZZ/3)^2$）。令其奇异值为 $s_1\ge \cdots\ge s_5$。二级摘要输出显示：仅用前三个奇异模态即可捕获几乎全部 Frobenius 能量（$\sum_{i\le 3}s_i^2/\sum_{i\le 5}s_i^2$ 逼近 $1$），因此整个 $45$ 项张量在常数级分辨率下可被极低维近似稳定表征（可作为新的“核指纹”不变量）。
 \end{proposition}
 
+\begin{definition}[最小完备指纹：\texorpdfstring{$((3,3,5))$}{(3,3,5)} 的七元组压缩]\label{def:arity-335-minimal-fingerprint}
+沿用命题 \ref{prop:arity-335-fourier-fingerprint} 的记号，把 \(f_{a,b}(c)=C^{(3,3,5)}_{a,b,c}\) 的 \(c\)-轴信息压缩为三张矩阵
+\[
+\widehat f(0),\ \widehat f(1),\ \widehat f(2)\in\CC^{3\times 3}.
+\]
+并把张量展平矩阵 \(T\in\RR^{5\times 9}\) 的奇异值能量累计占比记为
+\[
+\eta_2:=\frac{s_1^2+s_2^2}{\sum_{i=1}^5 s_i^2},
+\qquad
+\eta_3:=\frac{s_1^2+s_2^2+s_3^2}{\sum_{i=1}^5 s_i^2}.
+\]
+定义 \(((3,3,5))\) 的\textbf{最小完备指纹}为七元组
+\[
+\boxed{\;
+\mathcal{F}_{3,3,5}:=
+\Bigl(\widehat f(0),\widehat f(1),\widehat f(2),\ \eta_2,\eta_3,\ \rho_{3,3,5}/\lambda,\ \kappa_5\Bigr)\;},
+\]
+其中 \(\rho_{3,3,5}/\lambda\) 为最坏扭曲谱半径比（命题 \ref{prop:arity-335-collision-dominant} 与推论 \ref{cor:arity-335-rho-closed-form}），而 \(\kappa_5\) 为 near-coboundary 二次律常数 \(\kappa_p\) 在 \(p=5\) 的取值（注 \ref{rem:arity-kappa-empirical-vs-theory}）。
+\end{definition}
+
+\begin{remark}[完备性与可对比性：七元组 \texorpdfstring{$\mathcal{F}_{3,3,5}$}{F335} 足以重建并审计]\label{rem:arity-335-minimal-fingerprint-complete}
+定义 \ref{def:arity-335-minimal-fingerprint} 之所以称为“完备”，原因是：
+\begin{itemize}
+  \item \textbf{（精确重建）}\(\widehat f(0),\widehat f(1),\widehat f(2)\) 通过 inverse DFT 精确重建全部五张切片 \(C^{(3,3,5)}_{a,b,c}\)；
+  \item \textbf{（有效维数）}\(\eta_2,\eta_3\) 量化常数张量在 Frobenius 意义下的低秩压缩程度（命题 \ref{prop:arity-335-low-rank}）；
+  \item \textbf{（速率指纹）}\(\rho_{3,3,5}/\lambda\) 给出等分布误差的主指数尺度与混合标尺 \(\tau_{\mathrm{mix}}\)（推论 \ref{cor:arity-335-collision-mixing-scale}）；
+  \item \textbf{（小角刚性）}\(\kappa_5\) 将 \(p=5\) 的有限角缺口与极限二次律 \(\kappa_\infty\) 的漂移定量对齐（注 \ref{rem:arity-kappa-empirical-vs-theory}）。
+\end{itemize}
+因此相较于逐项列出 \(45\) 个常数，\(\mathcal{F}_{3,3,5}\) 更适合作为跨版本、跨实现与跨核族的\emph{可审计对比}对象：它既包含可精确重建的矩阵级信息，也包含可稳定汇总的标量级信息。
+\end{remark}
+
 \begin{remark}[结构来源：\texorpdfstring{$c$}{c} 轴的傅里叶压缩 \texorpdfstring{$+$}{+} 额外的近 rank-2 现象]\label{rem:arity-335-low-rank-source}
 命题 \ref{prop:arity-335-fourier-fingerprint} 给出一个对所有 $(a,b)$ 与全部 $c$ \emph{精确成立}的分解：
 \[

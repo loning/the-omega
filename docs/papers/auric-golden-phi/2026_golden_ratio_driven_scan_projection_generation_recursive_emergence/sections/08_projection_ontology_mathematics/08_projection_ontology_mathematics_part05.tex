@@ -135,6 +135,52 @@ $$
 这为“可推演、可重写、可计算”的演算学提供了一个抽象边界：重写系统在词法层闭合，而验证在指纹层完成。
 \end{remark}
 
+\subsubsection{投影词重写：终止性与正规形}\label{subsec:pom-rewriting-calculus}
+本小节把“接口串联”提升为可推演的演算学：在词法层给出一个可终止重写系统，使“在线规范投影的可消去性”与“序投影的空间化”以规则形式落地；其正确性由本文已证的结构定理保证（尤其是一次投影正规形与 CRT 空间化定律）。
+
+\begin{definition}[值层投影词语言与规范化重写]\label{def:pom-rewriting-val}
+考虑值层微码词的子语言 \(\mathbf{W}_{\mathrm{val}}\)，其生成元包含本体演化步 \texttt{EVOLVE(op)}（其中 \texttt{op} 属于值层半环闭包 \(\oplus,\otimes\) 可表达的局部组合）与规范投影 \texttt{PROJ\_NORM}（即 \(P_Z\)），并允许与 \texttt{CLEAN} 做有限复合。
+定义重写关系 \(\Rightarrow\) 为下述两条规则生成的最小兼容闭包（对任意上下文闭合）：
+\[
+\text{(RZ)}\quad
+\texttt{PROJ\_NORM;\ PROJ\_NORM}\ \Rightarrow\ \texttt{PROJ\_NORM},
+\]
+\[
+\text{(RNF)}\quad
+\texttt{PROJ\_NORM;\ w;\ PROJ\_NORM}\ \Rightarrow\ \texttt{w;\ PROJ\_NORM}
+\quad (\text{其中 }w\in\mathbf{W}_{\mathrm{val}}\text{ 不含 }\texttt{PROJ\_NORM}).
+\]
+这里 (RNF) 的语义对应定理 \ref{thm:pom-one-fold-normal-form} 的“一次投影正规形”：值层半环闭包的中间规范化可推到末端一次完成。
+\end{definition}
+
+\begin{proposition}[终止性与正规形存在（值层）]\label{prop:pom-rewriting-terminating}
+在定义 \ref{def:pom-rewriting-val} 的 \(\mathbf{W}_{\mathrm{val}}\) 上，重写系统 \((\mathbf{W}_{\mathrm{val}},\Rightarrow)\) 终止；并且每个词均可归约到一个正规形
+\[
+w\ \Rightarrow^\ast\ \widetilde w\cdot \texttt{PROJ\_NORM},
+\]
+其中 \(\widetilde w\) 不含 \texttt{PROJ\_NORM}，且末端 \texttt{PROJ\_NORM} 至多出现一次。
+\end{proposition}
+\begin{proof}
+取下降度量为二元序
+\(
+\big(\#(\texttt{PROJ\_NORM}),\ \text{末端以外的 }\texttt{PROJ\_NORM}\text{ 出现次数}\big)
+\)
+按字典序比较。
+规则 (RZ) 严格减少第一分量；规则 (RNF) 不增第一分量但严格减少第二分量。
+故不存在无限下降链，系统终止。终止后若仍有 \texttt{PROJ\_NORM} 不在末端，则必可用 (RNF) 再次规约，矛盾；因此正规形必为所述形式。证毕。
+\end{proof}
+
+\begin{remark}[序投影的空间化作为编译重写模式]\label{rem:pom-rewriting-order-spatialize}
+定理 \ref{thm:pom-order-spatialization} 给出一个与“词法重写”同型的编译模式：把序投影 \texttt{PROJ\_ORDER}（即 \(P_{\le}\)）替换为“模轴束上的点wise 计算 + CRT 重建”的并行路径。
+在 typed 口径下，它并非在同一对象上闭合的等式，而是一个改变纤维配置的自然变换：
+\[
+\texttt{PROJ\_ORDER}
+\ \Longrightarrow\
+\texttt{LIFT\_PRIME; (pointwise);\ CRT\_READOUT; PROJ\_NORM},
+\]
+其正确性由 CRT 唯一重建保证；其代价语义把时间瓶颈转移为可并行的模轴空间预算。
+\end{remark}
+
 \paragraph{统一微码模板}
 \begin{itemize}
   \item \texttt{ZADD}：\texttt{LIFT\_SCALE; EVOLVE(add); PROJ\_NORM; CLEAN}.
