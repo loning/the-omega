@@ -32,6 +32,75 @@ a_{p^{k-1}}(u^p)=\sum_{\ell\ge 0}a_{p^{k-1},\ell}\,u^{p\ell}
 只含 \(u^{p\ell}\) 项。逐幂次比较即可得到两条系数同余。证毕。
 \end{proof}
 
+\begin{lemma}[偶次回文迹的 \texorpdfstring{$t=u+u^{-1}$}{t=u+u^{-1}} 不变量分解]\label{lem:trace-palindrome-even-invariant}
+设 \(n\ge 2\) 为偶数，且 \(a_n(u)\in\ZZ[u]\) 满足回文对称
+\(
+a_n(u)=u^n a_n(1/u)
+\)
+（见命题 \ref{prop:trace-palindrome}）。
+则存在唯一多项式 \(A_n(t)\in\ZZ[t]\) 使得在 Laurent 环 \(\ZZ[u,u^{-1}]\) 中成立
+\[
+\boxed{\ a_n(u)=u^{n/2}\,A_n\!\left(u+u^{-1}\right)\ }.
+\]
+\end{lemma}
+\begin{proof}
+令 \(t:=u+u^{-1}\)。
+回文对称等价于 \(u^{-n/2}a_n(u)\) 在 \(u\mapsto 1/u\) 下不变，因此
+\(
+u^{-n/2}a_n(u)\in \ZZ[u,u^{-1}]^{\,u\mapsto 1/u}=\ZZ[u+u^{-1}]=\ZZ[t]
+\)。
+于是存在 \(A_n(t)\in\ZZ[t]\) 使 \(u^{-n/2}a_n(u)=A_n(t)\)，即得所示分解。
+唯一性来自嵌入 \(\ZZ[t]\hookrightarrow \ZZ[u,u^{-1}]\) 的单射性（把 \(t\) 视为 \(u\) 的代数不变量）。证毕。
+\end{proof}
+
+\begin{theorem}[Chebyshev--Dwork 同余链：\texorpdfstring{$p=2$}{p=2} 的 Frobenius 在不变量坐标上闭合]\label{thm:chebyshev-dwork-congruence-chain}
+令 \(a_n(u)=\Tr(B(u)^n)\in\ZZ[u]\) 为周期迹多项式，并令 \(t:=u+u^{-1}\)。
+对每个 \(k\ge 1\)，令 \(A_{2^k}(t)\in\ZZ[t]\) 为引理 \ref{lem:trace-palindrome-even-invariant} 给出的不变量表示：
+\[
+a_{2^k}(u)=u^{2^{k-1}}A_{2^k}(t).
+\]
+则对所有 \(k\ge 2\)，由 Dwork 型同余 \(a_{2^k}(u)\equiv a_{2^{k-1}}(u^2)\ (\mathrm{mod}\ 2^k)\) 推出在 \(\ZZ[t]\) 内闭合的同余递推：
+\[
+\boxed{\ A_{2^k}(t)\equiv A_{2^{k-1}}(t^2-2)\pmod{2^k}\qquad\text{于 }\ZZ[t].\ }
+\]
+\end{theorem}
+\begin{proof}
+由推论 \ref{cor:witt-dwork-congruence}（取 \(p=2\)）有
+\(
+a_{2^k}(u)\equiv a_{2^{k-1}}(u^2)\ (\mathrm{mod}\ 2^k)
+\) 于 \(\ZZ[u]\)。
+对偶次 \(n=2^k\) 与 \(n=2^{k-1}\) 应用引理 \ref{lem:trace-palindrome-even-invariant}，写成
+\[
+a_{2^k}(u)=u^{2^{k-1}}A_{2^k}(t),\qquad
+a_{2^{k-1}}(u^2)=(u^2)^{2^{k-2}}A_{2^{k-1}}(u^2+u^{-2}).
+\]
+注意恒等式
+\(
+u^2+u^{-2}=(u+u^{-1})^2-2=t^2-2
+\)，故
+\(
+a_{2^{k-1}}(u^2)=u^{2^{k-1}}A_{2^{k-1}}(t^2-2)
+\)。
+将其代入 Dwork 同余并在 \(\ZZ[u,u^{-1}]\) 中消去共同因子 \(u^{2^{k-1}}\)，得到
+\(
+A_{2^k}(t)\equiv A_{2^{k-1}}(t^2-2)\ (\mathrm{mod}\ 2^k)
+\) 于 \(\ZZ[t]\)。
+证毕。
+\end{proof}
+
+\begin{remark}[可复现审计：\texorpdfstring{$A_{2^k}(t)$}{A_{2^k}(t)} 的同余链逐级通过]\label{rem:chebyshev-dwork-audit}
+脚本 \texttt{scripts/exp\_sync\_kernel\_weighted\_chebyshev\_dwork\_chain.py} 直接从矩阵幂计算
+\(
+a_{2^k}(u)=\Tr(B(u)^{2^k})
+\)
+并构造 \(A_{2^k}(t)\)，随后在 \(\ZZ[t]\) 中逐系数检查
+\(
+A_{2^k}(t)-A_{2^{k-1}}(t^2-2)\in 2^k\ZZ[t]
+\)
+（\(k\ge 2\)）。其通过/失败结果汇总于表 \ref{tab:sync_kernel_weighted_chebyshev_dwork_chain}（可作为管线自审计护栏）。
+\end{remark}
+\input{sections/generated/tab_sync_kernel_weighted_chebyshev_dwork_chain}
+
 \begin{proposition}[\texorpdfstring{$\theta$}{theta}-导数的 \texorpdfstring{$p$}{p}-进滤波：逐阶可审计缩放律]\label{prop:witt-theta-derivative-filter}
 令 \(p\) 为素数、\(k\ge 1\)。设 \(a_n(u)\in\ZZ[u]\) 为周期迹多项式（主文与附录统一记号），并令 \(u=e^\theta\)。
 定义在 \(\theta=0\) 处的导数矩（等价于“幂次矩”）

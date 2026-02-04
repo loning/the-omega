@@ -406,6 +406,33 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_rate_curve_elimination",
+            script="exp_sync_kernel_rate_curve_elimination.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_rate_curve_resultant.json",
+                "sections/generated/tab_sync_kernel_rate_curve_resultant_degree.tex",
+                "sections/generated/eq_sync_kernel_rate_curve_resultant_structure.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_rate_curve_curvature_bounds",
+            script="exp_sync_kernel_rate_curve_curvature_bounds.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_sync_kernel_rate_curve_curvature_bounds.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_weighted_chebyshev_dwork_chain",
+            script="exp_sync_kernel_weighted_chebyshev_dwork_chain.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_weighted_chebyshev_dwork_chain.json",
+                "sections/generated/tab_sync_kernel_weighted_chebyshev_dwork_chain.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_weighted_phase_amplitude",
             script="exp_sync_kernel_weighted_phase_amplitude_separation.py",
             args=[],
