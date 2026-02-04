@@ -258,6 +258,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="pom_projword_lift_proj_normalizer_demo",
+            script="exp_pom_projword_lift_proj_normalizer_demo.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_projword_lift_proj_normalizer_demo.json",
+                "sections/generated/tab_pom_projword_lift_proj_normalizer_demo.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_moment_hankel_rank",
             script="exp_fold_collision_moment_hankel_rank.py",
             args=[],
@@ -557,6 +566,17 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_dirichlet_mertens_tensor_anova",
+            script="exp_real_input_40_dirichlet_mertens_tensor_anova.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_dirichlet_mertens_tensor_anova.json",
+                "artifacts/export/real_input_40_dirichlet_mertens_tensor_anova_scatter.png",
+                "sections/generated/tab_real_input_40_dirichlet_mertens_tensor_anova.tex",
+                "sections/generated/fig_real_input_40_dirichlet_mertens_tensor_anova_scatter.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_covariance_worst_character",
             script="exp_real_input_40_covariance_predict_worst_character.py",
             args=["--triple", "3x3x5", "--third-axis", "N2", "--h", "0.0002"],
@@ -626,6 +646,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/arity_335_n2_limit_law.json",
                 "sections/generated/tab_real_input_40_arity_335_n2_limit_law.tex",
+            ],
+        ),
+        Step(
+            name="arity_335_kappa_poisson",
+            script="exp_arity_335_kappa_poisson.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/arity_335_kappa_poisson.json",
+                "sections/generated/eq_arity_335_kappa_poisson.tex",
             ],
         ),
         Step(

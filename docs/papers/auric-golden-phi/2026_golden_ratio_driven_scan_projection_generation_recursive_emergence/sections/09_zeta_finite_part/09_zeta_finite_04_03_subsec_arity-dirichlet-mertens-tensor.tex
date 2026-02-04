@@ -687,6 +687,38 @@ P(t):=\log\rho(M(1,1,e^t))
 给出：\(\sigma_\xi^2=P''(0)\)（与命题 \ref{prop:kernel-clt-ldp} 的有限状态 Markov 压力导数口径一致）。
 \end{proposition}
 
+\begin{remark}[\texorpdfstring{$\kappa_\infty$}{kappa} 的变分/Poisson 方程表达（可计算）]\label{rem:arity-335-kappa-poisson}
+命题 \ref{prop:arity-335-kappa-variance} 给出 \(\kappa_\infty=\sigma_\xi^2/2\) 的“压力二阶导数”口径。
+同一常数亦可被刻画为一个严格凸的最小能量问题，并因此可由一把线性代数直接求出。
+\par
+令 \(A:=M(1,1,1)\) 为无扭曲核的非负邻接矩阵（把整数条目视为平行边计数），\(\lambda=\rho(A)\) 为 Perron 根。
+取左右 Perron 向量 \(r,\ell>0\) 并归一化 \(\ell^\top r=1\)。
+由 Parry 归一化得到马尔可夫核与平衡分布
+$$
+P_{ij}:=\frac{A_{ij}r_j}{\lambda r_i},\qquad \pi_i:=\ell_i r_i.
+$$
+对边 cocycle \(\xi\in\{0,1\}\)（此处为碰撞 cocycle \(\xi=\mathbf{1}_{\{d=2\}}\)），令边均值为
+$$
+\mu:=\sum_{i,j}\pi_iP_{ij}\,\mathbb{E}[\xi(i\to j)\mid i\to j],
+$$
+其中条件期望按“平行边的均匀选择”定义。
+对任意顶点函数 \(f:V\to\RR\) 定义残差能量泛函
+$$
+\mathcal{E}(f):=\sum_{i,j}\pi_iP_{ij}\,\mathbb{E}\Big[(\xi(i\to j)-\mu+f(j)-f(i))^2\ \big|\ i\to j\Big].
+$$
+则有效方差密度满足变分表达
+$$
+\boxed{\ \sigma_\xi^2=\inf_f\mathcal{E}(f)\ },
+$$
+并且极小点 \(f_\star\)（在规约条件 \(\sum_i\pi_if_i=0\) 下唯一）满足 Poisson 方程
+$$
+\boxed{\ (I-P)f=b,\qquad b_i:=\sum_jP_{ij}\,\mathbb{E}[\xi(i\to j)-\mu\mid i\to j]\ }.
+$$
+因此 \(\kappa_\infty=\sigma_\xi^2/2\) 不仅可由 \(\sigma_\xi^2=P''(0)\) 估计，也可通过求解 \((I-P)f=b\) 精确抽取。
+脚本 \texttt{scripts/exp\_arity\_335\_kappa\_poisson.py} 给出该计算的可复现实现，并与压力差分的 \(\sigma_\xi^2\) 逐项对照（两者一致到 \(10^{-9}\) 量级），同时给出 \(p=5\) 的离散角对照：
+\input{sections/generated/eq_arity_335_kappa_poisson}
+\end{remark}
+
 \begin{remark}[偶性强化的二次律与 Richardson 外推估计器]\label{rem:arity-335-richardson-kappa}
 由引理 \ref{lem:unit-circle-evenness}，$\log(\rho(\theta)/\lambda)$ 的展开不含奇次项，因此存在常数 $c_4\in\RR$ 使得
 \[
@@ -965,6 +997,35 @@ $$
 与 $((3,3,3))$ 的最坏角色 $(1,2,2),(2,1,1)$ 及 $\rho_{3,3,3}/\lambda\approx 0.936686$ 对照可见：
 提升第三维模数后，最慢模态稳定地退化为\textbf{纯碰撞扭曲}，同时 $\rho/\lambda$ 更接近 $1$，表明混合变慢、相关长度增加。
 \end{corollary}
+
+\begin{remark}[常数张量的交互阶指纹：ANOVA/Hoeffding 正交分解]\label{rem:dirichlet-mertens-anova-fingerprint}
+对任意三维 Dirichlet--Mertens 常数张量 \(C_{a,b,c}\)（其中 \(a=\chi\bmod m_1\)，\(b=N_-\bmod m_2\)，\(c\) 为第三轴同余坐标），令
+$$
+\widetilde C_{a,b,c}:=C_{a,b,c}-\frac{\mathsf{M}}{|G|},
+\qquad
+G=(\ZZ/m_1)\times(\ZZ/m_2)\times(\ZZ/m_3).
+$$
+在 \(G\) 的均匀内积下，对 \(\widetilde C\) 作标准 Hoeffding/ANOVA 正交分解
+$$
+\widetilde C
+=C^{(A)}+C^{(B)}+C^{(C)}+C^{(AB)}+C^{(AC)}+C^{(BC)}+C^{(ABC)},
+$$
+其中每个分量在其相应边际上取零和，并两两正交。
+定义三体交互阶参数与“\(\chi\)--第三轴锁定指数”
+$$
+S_{ABC}:=\frac{\|C^{(ABC)}\|_2^2}{\|\widetilde C\|_2^2}\in[0,1],
+\qquad
+L_{A\leftrightarrow C}:=\frac{\|C^{(AC)}\|_2^2+\|C^{(ABC)}\|_2^2}{\|\widetilde C\|_2^2}\in[0,1],
+$$
+其中 \(A\) 固定为 \(\chi\) 轴，而 \(C\) 表示第三轴（在不同张量中可取 \(N_e\bmod m_3\) 或 \(N_2\bmod m_3\)）。
+表 \ref{tab:real_input_40_dirichlet_mertens_tensor_anova} 与图 \ref{fig:real_input_40_dirichlet_mertens_tensor_anova_scatter} 给出已生成的交互阶诊断与对应的最坏扭曲比值/最坏角色：
+\input{sections/generated/tab_real_input_40_dirichlet_mertens_tensor_anova}
+\input{sections/generated/fig_real_input_40_dirichlet_mertens_tensor_anova_scatter}
+\par
+在该核的可复现样本中，\(((3,3,5))\) 的第三轴从 \(N_e\bmod 5\) 改为 \(N_2\bmod 5\) 会显著压低 \(S_{ABC}\) 与 \(L_{A\leftrightarrow C}\)；
+与此同时，其最坏角色保持为纯第三轴 \((0,0,1),(0,0,4)\)，从而把慢模机制隔离到碰撞同余变量上。
+这为“常数级漂移张量的交互阶结构”与“最坏扭曲慢模的几何方向”之间建立了一个可核验的桥接指纹。
+\end{remark}
 
 \paragraph{为何称为“真正的 arity 维度素数谱”}
 上述输出同时给出三层可审计结构：
