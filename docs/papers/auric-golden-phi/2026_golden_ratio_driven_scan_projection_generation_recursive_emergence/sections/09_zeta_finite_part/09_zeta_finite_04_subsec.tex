@@ -454,7 +454,70 @@ $$
 $$
 C(j_1,j_2,j_3):=\sum_{m\ge 1}\frac{\mu(m)}{m}\log\zeta_{j_1m,\ j_2m,\ j_3m}(\lambda^{-m}),
 $$
-其中 $(j_1m,\ j_2m,\ j_3m)$ 按模 $(3,3,5)$ 取值。最后由三维离散傅里叶反演得到常数张量：
+其中 $(j_1m,\ j_2m,\ j_3m)$ 按模 $(3,3,5)$ 取值。
+
+\begin{lemma}[扭曲常数的主奇点对应与尾项上界]\label{lem:twist-constant-principal-singularity}
+对固定的非平凡角色索引 \(j=(j_1,j_2,j_3)\neq(0,0,0)\)，记
+\[
+\rho(j):=\rho(M_j),\qquad r(j):=\frac{\rho(j)}{\lambda}\in(0,1),
+\qquad D:=\dim(M_j)=40,
+\]
+并进一步记沿 \(m\)-倍通道的最坏比值
+\[
+r^\sharp(j):=\max_{m\ge 1}\frac{\rho(M_{jm})}{\lambda}\in(0,1),
+\]
+其中 \(jm\) 按模 \((3,3,5)\) 取值。
+则扭曲常数可分解为
+\[
+\boxed{\ C(j)=\log\zeta_j(\lambda^{-1})+R_j\ },
+\qquad
+R_j:=\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta_{jm}(\lambda^{-m}),
+\]
+并且余项满足一致上界
+\[
+\boxed{\ |R_j|\le D\sum_{m\ge 2}\frac{1}{m}\Bigl(-\log\bigl(1-(r^\sharp(j))^{m}\bigr)\Bigr)\ }.
+\]
+\end{lemma}
+\begin{proof}
+由定义
+\(
+\log\zeta_{jm}(z)=\sum_{n\ge 1}\Tr(M_{jm}^n)z^n/n
+\)。
+对任意 \(D\times D\) 矩阵 \(A\) 有 \(|\Tr(A^n)|\le D\,\rho(A)^n\)，故当 \(|z|<\rho(A)^{-1}\) 时
+\[
+\bigl|\log\zeta_A(z)\bigr|
+\le
+\sum_{n\ge 1}\frac{D\,\rho(A)^n}{n}|z|^n
+=
+-D\log\bigl(1-\rho(A)|z|\bigr).
+\]
+取 \(A=M_{jm}\) 且 \(z=\lambda^{-m}\) 得
+\[
+|\log\zeta_{jm}(\lambda^{-m})|
+\le
+-D\log\Bigl(1-\Bigl(\frac{\rho(M_{jm})}{\lambda}\Bigr)^{m}\Bigr)
+\le
+-D\log\bigl(1-(r^\sharp(j))^m\bigr).
+\]
+最后把 \(C(j)\) 的 \(m=1\) 项分离，余下 \(m\ge 2\) 用三角不等式并用 \(|\mu(m)|\le 1\) 即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[常数侧慢模定位的可审计诊断（轴向版本）]\label{cor:twist-constant-locates-slowest-mode}
+在 \(((3,3,5))\) 的第三轴为碰撞同余类 \(c=N_2\bmod 5\) 的设定下，命题 \ref{prop:arity-335-collision-dominant} 表明最坏扭曲谱半径由\textbf{纯第三轴扭曲}达到，即只需考虑子族
+\[
+\mathcal{J}_3:=\{(0,0,j_3):\ j_3\in\ZZ/5,\ j_3\neq 0\}.
+\]
+定义轴向常数侧与谱侧最大化器
+\[
+j_{\max,3}^{\mathrm{const}}:=\arg\max_{j\in\mathcal{J}_3}\Re C(j),
+\qquad
+j_{\max,3}^{\mathrm{spec}}:=\arg\max_{j\in\mathcal{J}_3}\rho(j).
+\]
+引理 \ref{lem:twist-constant-principal-singularity} 表明：当某个轴向通道的 \(r(j)=\rho(j)/\lambda\) 明显逼近 \(1\)（near-coboundary 慢模窗口）时，\(C(j)\) 的主量级由 \(\log\zeta_j(\lambda^{-1})\) 的对数型奇性控制，而 \(m\ge 2\) 的尾项被显式压住。
+因此 \(j_{\max,3}^{\mathrm{const}}\) 可作为 \(j_{\max,3}^{\mathrm{spec}}\) 的候选定位器；两者是否一致可用同一脚本同时输出的 \(\Re C(j)\) 与 \(\rho(j)\) 在 \(\mathcal{J}_3\) 上直接交叉核验（错配即为可证伪信号）。
+\end{corollary}
+
+最后由三维离散傅里叶反演得到常数张量：
 $$
 C^{(3,3,5)}_{a,b,c}
 =\frac{\mathsf{M}}{45}

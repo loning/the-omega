@@ -418,6 +418,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_output_potential_branch_radius_certificate",
+            script="exp_sync_kernel_output_potential_branch_radius_certificate.py",
+            args=["--dps", "80", "--nphi", "512", "--radial-steps", "120"],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_output_potential_branch_radius_certificate.json",
+                "sections/generated/eq_sync_kernel_output_potential_branch_radius_certificate.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_phi_minus_cubic_series",
             script="exp_sync_kernel_phi_minus_cubic_series.py",
             args=[],
@@ -483,6 +492,15 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/sync_kernel_real_input_40_zeta_u.json",
+            ],
+        ),
+        Step(
+            name="real_input_40_output_potential_zero_temp_ground_sft",
+            script="exp_real_input_40_output_potential_zero_temp_ground_sft.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_output_potential_zero_temp_ground_sft.json",
+                "sections/generated/eq_real_input_40_output_potential_zero_temp_ground_sft.tex",
             ],
         ),
         Step(
@@ -592,6 +610,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/real_input_40_output_potential_dirichlet_twists.json",
                 "sections/generated/tab_real_input_40_output_potential_dirichlet_twists.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_output_potential_activated_branch_series",
+            script="exp_real_input_40_output_potential_activated_branch_series.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_output_potential_activated_branch_series.json",
+                "sections/generated/eq_real_input_40_output_potential_activated_branch_series.tex",
             ],
         ),
         Step(
@@ -721,6 +748,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/real_input_40_output_potential_cumulants_closed.json",
                 "sections/generated/tab_real_input_40_output_potential_cumulants_closed.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_output_potential_ldp_algebraic_param",
+            script="exp_real_input_40_output_potential_ldp_algebraic_param.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_output_potential_ldp_algebraic_param.json",
+                "sections/generated/eq_real_input_40_output_potential_ldp_algebraic_param.tex",
             ],
         ),
         Step(

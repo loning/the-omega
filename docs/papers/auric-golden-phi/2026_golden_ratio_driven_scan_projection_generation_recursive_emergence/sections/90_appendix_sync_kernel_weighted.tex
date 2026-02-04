@@ -346,6 +346,71 @@ a_{p^k}(u)=u\,a_{p^k}(1/u).
 \[
 \Delta(z,u)=\det(I-zB(u))=\det(I-uzB(1/u))=\Delta(uz,1/u).
 \]
+
+\begin{proposition}[自对偶诱导的 \texorpdfstring{$(1+u)$}{(1+u)}--\texorpdfstring{$(1-u)$}{(1-u)} 两参数正常形]\label{prop:self-dual-normal-form-1pmu}
+设 \(B(u)=B_0+uB_1\) 且自对偶置换矩阵 \(\Pi\) 满足 \(\Pi^{-1}B_0\Pi=B_1\)。
+令
+\[
+V_+:=\ker(\Pi-I),\qquad V_-:=\ker(\Pi+I),
+\qquad V=V_+\oplus V_-,
+\]
+并把 \(B_0\) 在分解 \(V_+\oplus V_-\) 下写成分块算子
+\[
+B_0=
+\begin{pmatrix}
+X & Y\\
+Z & W
+\end{pmatrix}.
+\]
+则对所有 \(u\in\CC\) 有
+\[
+\boxed{
+B(u)=B_0+u\Pi^{-1}B_0\Pi
+=
+\begin{pmatrix}
+(1+u)X & (1-u)Y\\
+(1-u)Z & (1+u)W
+\end{pmatrix}.
+}
+\]
+在本同步核上，\(\Pi\) 为五个互换的直和，故 \(\dim V_+=\dim V_-=5\)。
+\end{proposition}
+\begin{proof}
+在分解 \(V=V_+\oplus V_-\) 下，\(\Pi\) 作用为 \(\Pi|_{V_+}=+I,\ \Pi|_{V_-}=-I\)，故对任意分块算子 \(T=\bigl(\begin{smallmatrix}X&Y\\ Z&W\end{smallmatrix}\bigr)\) 有
+\(
+\Pi^{-1}T\Pi=\bigl(\begin{smallmatrix}X&-Y\\ -Z&W\end{smallmatrix}\bigr)
+\)。
+取 \(T=B_0\) 并代入 \(B(u)=B_0+u\Pi^{-1}B_0\Pi\) 即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$u=1$}{u=1} 的强制解耦]\label{cor:self-dual-u1-decouple}
+在命题 \ref{prop:self-dual-normal-form-1pmu} 的分块表示下，
+\[
+\boxed{\ B(1)=
+\begin{pmatrix}
+2X & 0\\
+0 & 2W
+\end{pmatrix}\ }.
+\]
+因此跨子空间耦合项仅通过系数 \((1-u)\) 出现并在 \(u=1\) 处被强制抑制。
+\end{corollary}
+
+\begin{corollary}[\texorpdfstring{$\Delta(z,u)$}{Delta(z,u)} 的 \texorpdfstring{$(1-u)^2$}{(1-u)^2} 依赖压缩]\label{cor:self-dual-delta-even-in-1mu}
+在命题 \ref{prop:self-dual-normal-form-1pmu} 的正常形下，对每个固定的 \(z\)，
+\(\Delta(z,u)=\det(I-zB(u))\)
+作为 \(u\) 的多项式，其对 \((1-u)\) 仅以偶次出现；等价地，
+\[
+\boxed{\ \Delta(z,u)\in \ZZ[z]\bigl[(1+u),\ (1-u)^2\bigr]\ }.
+\]
+同样地，若把 \(a_n(u)=\Tr(B(u)^n)\) 展开为 \(u\)-多项式，则其系数也可重写为 \(\ZZ[(1+u),(1-u)^2]\) 中的元素。
+\end{corollary}
+\begin{proof}
+行列式的置换展开由置换循环组成；每个循环必须回到起点，因此它跨越 \(V_+\leftrightarrow V_-\) 的次数为偶数。
+而跨越仅来自 off-diagonal 分块 \((1-u)Y,(1-u)Z\)，故每一项中 \((1-u)\) 的总指数为偶数，从而 \(\Delta\) 为 \((1-u)^2\) 的多项式。
+对 \(\Tr(B(u)^n)\) 同理：它是长度 \(n\) 闭路的权重和，每条闭路的子空间翻转次数亦为偶数。
+证毕。
+\end{proof}
+
 此外，\(\Delta\) 在本核上可由六次方程 \(F(\lambda,u)=0\) 直接恢复为一个显式多项式（并与 \(10\times 10\) 的矩阵定义逐点验算一致）：
 \input{sections/generated/eq_sync_kernel_weighted_delta_explicit}
 \begin{proposition}[完成化行列式的二元闭式：\texorpdfstring{$\Delta(z,u)=\widehat\Delta(w,s)$}{Delta=hatDelta}]\label{prop:sync-kernel-weighted-hat-delta}
@@ -775,6 +840,8 @@ P(\theta)\to 0\quad(\theta\to-\infty),\qquad
 P(\theta)\sim \theta\quad(\theta\to+\infty),
 \]
 对应极端权重下的冻结极限。
+
+\input{sections/generated/eq_sync_kernel_output_potential_branch_radius_certificate}
 
 \begin{proposition}[极端温度的代数渐近：低温与高温的首项系数]\label{prop:lambda-extreme-asymp}
 令 \(\lambda(u)\) 为六次方程 \(F(\lambda,u)=0\) 在 \(u>0\) 上的 Perron 分支（本节记号），并记 \(u=e^\theta\)。
