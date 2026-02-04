@@ -9,6 +9,8 @@ and compute the dominant root r_k of the characteristic polynomial
   x^d - c_1 x^{d-1} - ... - c_d = 0.
 Then the (unnormalized) Renyi-q projection entropy rate is
   h_k = log(2^k / r_k).
+The normalized (standard) Renyi rate is
+  h_k^R = h_k / (k-1).
 
 Outputs:
   - artifacts/export/fold_collision_moment_spectrum_k2_8.json
@@ -22,11 +24,11 @@ from __future__ import annotations
 import argparse
 import json
 import math
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from pathlib import Path
 from typing import List
 
-import numpy as np
+import sympy as sp
 
 from common_paths import export_dir, generated_dir
 
@@ -49,14 +51,19 @@ RECS: List[Rec] = [
 ]
 
 
-def dominant_root(coeffs: List[int]) -> float:
+def dominant_root(coeffs: List[int], dps: int = 80) -> float:
+    """Return dominant root of x^d - c1 x^{d-1} - ... - cd with high precision."""
     d = len(coeffs)
-    # x^d - c1 x^{d-1} - ... - cd
-    poly = [1.0] + [-float(c) for c in coeffs]
-    roots = np.roots(poly)
-    # choose max modulus root; in our cases it is a positive real
-    r = roots[np.argmax(np.abs(roots))]
-    if abs(r.imag) > 1e-8:
+    x = sp.Symbol("x")
+    poly = x**d
+    for i, c in enumerate(coeffs, start=1):
+        poly -= int(c) * x ** (d - i)
+    # SymPy nroots uses `n` for decimal digits of precision (API varies by version).
+    roots = sp.nroots(poly, n=int(dps), maxsteps=200)
+
+    roots_c = [complex(sp.re(r).evalf(dps), sp.im(r).evalf(dps)) for r in roots]
+    r = max(roots_c, key=lambda z: abs(z))
+    if abs(r.imag) > 1e-20:
         raise RuntimeError(f"dominant root is not (numerically) real: {r}")
     rr = float(r.real)
     if rr <= 0:
@@ -74,16 +81,17 @@ def write_table_tex(path: Path, rows: List[dict]) -> None:
         "\\caption{Exact recurrences and Perron roots for collision moments "
         "$S_k(m)=\\sum_x d_m(x)^k$ (Fold$_m$ fibers), $k=2,\\dots,8$. "
         "Here $r_k$ is the dominant root of the recurrence characteristic polynomial, "
-        "and $h_k=\\log(2^k/r_k)$ is the corresponding (unnormalized) R\\'enyi fingerprint rate.}"
+        "and $h_k=\\log(2^k/r_k)$ is the corresponding (unnormalized) R\\'enyi fingerprint rate. "
+        "We also report the normalized rate $h_k^{\\mathrm R}=h_k/(k-1)$.}"
     )
     lines.append("\\label{tab:fold_collision_moment_spectrum_k2_8}")
-    lines.append("\\begin{tabular}{r r r r r}")
+    lines.append("\\begin{tabular}{r r r r r r}")
     lines.append("\\toprule")
-    lines.append("$k$ & order $d$ & starts at $m\\ge$ & $r_k$ & $h_k$\\\\")
+    lines.append("$k$ & order $d$ & starts at $m\\ge$ & $r_k$ & $h_k$ & $h_k^{\\mathrm R}$\\\\")
     lines.append("\\midrule")
     for r in rows:
         lines.append(
-            f"{r['k']} & {r['order']} & {r['m0']} & {r['r_k']:.12f} & {r['h_k']:.12f}\\\\"
+            f"{r['k']} & {r['order']} & {r['m0']} & {r['r_k']:.12f} & {r['h_k']:.12f} & {r['h_k_R']:.12f}\\\\"
         )
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
@@ -94,6 +102,7 @@ def write_table_tex(path: Path, rows: List[dict]) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Summarize r_k,h_k for k=2..8 from exact recurrences.")
+    parser.add_argument("--dps", type=int, default=80, help="Precision for algebraic root extraction.")
     parser.add_argument(
         "--json-out",
         type=str,
@@ -108,8 +117,9 @@ def main() -> None:
 
     rows: List[dict] = []
     for rec in RECS:
-        rk = dominant_root(rec.coeffs)
+        rk = dominant_root(rec.coeffs, dps=int(args.dps))
         hk = math.log((2.0**rec.k) / rk)
+        hkR = hk / (rec.k - 1)
         rows.append(
             {
                 "k": rec.k,
@@ -118,6 +128,7 @@ def main() -> None:
                 "coeffs": rec.coeffs,
                 "r_k": rk,
                 "h_k": hk,
+                "h_k_R": hkR,
             }
         )
 

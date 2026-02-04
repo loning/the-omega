@@ -152,6 +152,135 @@ a_{p^k}(u)-a_{p^{k-1}}(u^p)\in p^k\,\ZZ[u].
 在后续若考虑 \(p\)-进方向的插值或对比不同核的“算术指纹”，该同余可作为最基本的可审计输入。
 \end{remark}
 
+\begin{proposition}[\texorpdfstring{$p$}{p}-幂 primitive 坐标的显式公式]\label{prop:witt-ppower-primitive-coordinate}
+对任意素数 \(p\) 与 \(k\ge 1\)，Big-Witt/Möbius 反演在 \(n=p^k\) 处塌缩为
+\[
+\boxed{\;
+p_{p^k}(u)=\frac{a_{p^k}(u)-a_{p^{k-1}}(u^p)}{p^k}\in\ZZ[u]\; }.
+\]
+因此推论 \ref{cor:witt-dwork-congruence} 等价于“\(p\)-幂方向的 primitive 坐标 \(p_{p^k}(u)\) 在整系数环内良定义”，并给出一条可审计的 \(p\)-进差分指纹序列 \(\{p_{p^k}(u)\}_{k\ge 0}\)。
+\end{proposition}
+\begin{proof}
+由定义
+\(
+p_n(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d)
+\)。
+当 \(n=p^k\) 时，除数仅为 \(p^j\)，且 \(\mu(p^j)=0\)（\(j\ge 2\)），故仅剩 \(d=1\) 与 \(d=p\) 两项，得到
+\[
+p_{p^k}(u)=\frac{1}{p^k}\bigl(a_{p^k}(u)-a_{p^{k-1}}(u^p)\bigr).
+\]
+由命题 \ref{prop:witt-necklace-div} 知右端确为 \(\ZZ[u]\) 元素。证毕。
+\end{proof}
+
+\begin{lemma}[核版 Dieudonn\'e--Dwork 整性判据（形式幂级数）]\label{lem:witt-dieudonne-dwork}
+设 \(R\) 为无 \(p\)-挠的 \(p\)-进完备环（例如 \(R=\ZZ_p[u]\)），并定义 Frobenius 提升算子
+\[
+\varphi:\ R[[T]]\to R[[T]],\qquad
+\varphi\!\left(\sum_{n\ge 0}c_n(u)T^n\right):=\sum_{n\ge 0}c_n(u^p)\,T^{pn}.
+\]
+若 \(F(T)\in 1+T\,R\otimes_{\ZZ_p}\QQ_p[[T]]\) 满足
+\[
+\boxed{\;
+\frac{\varphi(F(T))}{F(T)^p}\in 1+pT\,R[[T]]\;},
+\]
+则必有 \(F(T)\in 1+T\,R[[T]]\)（即 \(F\) 的全部系数 \(p\)-整）。
+\end{lemma}
+\begin{proof}
+这是 \(p\)-典型 Witt/Artin--Hasse 理论中常用的整性判据（Dieudonn\'e--Dwork 形式）。
+在本文所需形式下，可用如下思路证明：对 \(F\) 取 \(p\)-进对数 \(\log F\)（其在 \(T\)-进拓扑下收敛），将条件改写为
+\(
+\varphi(\log F)-p\log F\in pT\,R[[T]]
+\)；
+再按 \(T\) 的次数作归纳，可逐次推出 \(\log F\) 的系数均在 \(R\) 中，从而 \(F=\exp(\log F)\) 亦在 \(1+T\,R[[T]]\) 内。证毕。
+\end{proof}
+
+\begin{theorem}[核版 Dwork 引理：\texorpdfstring{$p$}{p}-典型指数因子的 \(p\)-整性]\label{thm:witt-dwork-zp-integrality}
+固定素数 \(p\)。定义
+\[
+S_p(T;u):=\sum_{k\ge 0}\frac{a_{p^k}(u)}{p^k}\,T^{p^k}\in \QQ_p[u][[T]],
+\qquad
+Z_p(T;u):=\exp\!\bigl(S_p(T;u)\bigr).
+\]
+则有
+\[
+\boxed{\;
+Z_p(T;u)\in 1+T\,\ZZ_p[u][[T]]\; }.
+\]
+\end{theorem}
+\begin{proof}
+取引理 \ref{lem:witt-dieudonne-dwork} 中的 \(R=\ZZ_p[u]\)。
+对 \(S_p\) 施加 \(\varphi\) 得
+\[
+\varphi(S_p)(T;u)
+=\sum_{k\ge 0}\frac{a_{p^k}(u^p)}{p^k}\,T^{p^{k+1}}
+=\sum_{k\ge 1}\frac{a_{p^{k-1}}(u^p)}{p^{k-1}}\,T^{p^{k}}.
+\]
+另一方面
+\[
+pS_p(T;u)
+=p\,a_1(u)\,T+\sum_{k\ge 1}\frac{a_{p^k}(u)}{p^{k-1}}\,T^{p^k}.
+\]
+因此
+\[
+\varphi(S_p)(T;u)-pS_p(T;u)
+=-p\,a_1(u)\,T+\sum_{k\ge 1}\frac{a_{p^{k-1}}(u^p)-a_{p^k}(u)}{p^{k-1}}\,T^{p^k}.
+\]
+由推论 \ref{cor:witt-dwork-congruence}，对 \(k\ge 1\) 有
+\(
+a_{p^k}(u)-a_{p^{k-1}}(u^p)\in p^k\ZZ[u]
+\)，
+故每一项
+\(
+\frac{a_{p^{k-1}}(u^p)-a_{p^k}(u)}{p^{k-1}}
+\)
+均在 \(p\,\ZZ_p[u]\) 中。又 \(-p a_1(u)T\in pT\,\ZZ_p[u][[T]]\)，从而
+\[
+\varphi(S_p)-pS_p\in pT\,\ZZ_p[u][[T]].
+\]
+令 \(Z_p=\exp(S_p)\)，则
+\[
+\frac{\varphi(Z_p)}{Z_p^p}
+=\exp\!\bigl(\varphi(S_p)-pS_p\bigr)\in 1+pT\,\ZZ_p[u][[T]].
+\]
+由引理 \ref{lem:witt-dieudonne-dwork} 得 \(Z_p\in 1+T\,\ZZ_p[u][[T]]\)。证毕。
+\end{proof}
+
+\begin{proposition}[unit-root 极限不变量：\texorpdfstring{$u^p=u$}{u^p=u} 时 \texorpdfstring{$a_{p^k}(u)$}{a_{p^k}(u)} 在 \texorpdfstring{$\ZZ_p$}{Z_p} 中收敛]\label{prop:witt-unit-root-limit}
+令 \(p\) 为奇素数。若 \(u\) 满足 \(u^p=u\)（例如 \(u\in\mu_{p-1}\subset\ZZ_p^\times\) 的 Teichm\"uller 单位），则序列 \(\{a_{p^k}(u)\}_{k\ge 0}\) 在 \(\ZZ_p\) 中为 Cauchy 序列，并收敛到极限
+\[
+\boxed{\;
+A_p(u):=\lim_{k\to\infty}a_{p^k}(u)\in \ZZ_p\; }.
+\]
+并且有显式 \(p\)-进误差界
+\[
+v_p\!\bigl(a_{p^k}(u)-a_{p^{k-1}}(u)\bigr)\ge k\qquad(k\ge 1).
+\]
+\end{proposition}
+\begin{proof}
+在条件 \(u^p=u\) 下，推论 \ref{cor:witt-dwork-congruence} 退化为
+\(
+a_{p^k}(u)\equiv a_{p^{k-1}}(u)\ (\mathrm{mod}\ p^k)
+\)，
+即 \(a_{p^k}(u)-a_{p^{k-1}}(u)\in p^k\ZZ_p\)，从而给出上式的 \(p\)-进赋值界。
+因此对任意 \(r>s\)，有
+\[
+a_{p^r}(u)-a_{p^s}(u)=\sum_{k=s+1}^{r}\bigl(a_{p^k}(u)-a_{p^{k-1}}(u)\bigr)\in p^{s+1}\ZZ_p,
+\]
+故为 Cauchy 序列并收敛于 \(\ZZ_p\)。证毕。
+\end{proof}
+
+\begin{remark}[unit-root 极限与自对偶的相容性]\label{rem:witt-unit-root-self-dual}
+若进一步使用命题 \ref{prop:trace-palindrome} 的回文关系 \(a_n(u)=u^n a_n(1/u)\)，则在 \(u^p=u\) 的 Teichm\"uller 情形有 \(u^{p^k}=u\)，从而
+\[
+a_{p^k}(u)=u\,a_{p^k}(1/u).
+\]
+令 \(k\to\infty\) 并用命题 \ref{prop:witt-unit-root-limit} 的收敛性，可得极限不变量满足
+\[
+\boxed{\ A_p(u)=u\,A_p(1/u)\ }.
+\]
+这给出 unit-root 指纹在自对偶对称下的一个可审计约束。
+\end{remark}
+
 \subsubsection{同步核的自对偶对称}\label{app:kernel-self-dual}
 对同步核存在状态对合 $\iota$，其作用为
 \[

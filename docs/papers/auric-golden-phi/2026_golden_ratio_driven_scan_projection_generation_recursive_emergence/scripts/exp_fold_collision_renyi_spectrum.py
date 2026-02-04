@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Compute a small Renyi-q projection entropy spectrum for Fold_m (q=2..16).
+"""Compute a small Renyi-q projection entropy spectrum for Fold_m (q=2..17).
 
 We enumerate Fold_m fibers for moderate m and compute:
   S_q(m) = sum_x d_m(x)^q,  q=2..7
@@ -54,6 +54,7 @@ PRECOMPUTED_RQ = {
     14: 36.747376282795,
     15: 46.207510260773,
     16: 58.127951897329,
+    17: 73.153329263205,
 }
 
 
@@ -166,7 +167,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Compute Renyi-q collision spectrum for Fold_m by enumeration.")
     parser.add_argument("--m-min", type=int, default=8, help="Minimum m for enumeration table.")
     parser.add_argument("--m-max", type=int, default=18, help="Maximum m for enumeration table.")
-    parser.add_argument("--q-max", type=int, default=16, help="Maximum q (>=2) for spectrum.")
+    parser.add_argument("--q-max", type=int, default=17, help="Maximum q (>=2) for spectrum.")
     parser.add_argument(
         "--json-out",
         type=str,

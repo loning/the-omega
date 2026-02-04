@@ -170,12 +170,30 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_renyi_endpoint_convergence_q60",
+            script="exp_fold_collision_renyi_endpoint_convergence_q60.py",
+            args=["--m-min", "24", "--m-max", "30", "--q-list", "20,30,40,60"],
+            expected_outputs=[
+                "artifacts/export/fold_collision_renyi_endpoint_convergence_q60.json",
+                "sections/generated/tab_fold_collision_renyi_endpoint_convergence_q60.tex",
+            ],
+        ),
+        Step(
             name="fold_max_fiber_achievers_phase",
             script="exp_fold_max_fiber_achievers_phase.py",
-            args=["--m-min", "2", "--m-max", "30", "--show-words", "4"],
+            args=["--m-min", "2", "--m-max", "32", "--show-words", "4"],
             expected_outputs=[
                 "artifacts/export/fold_max_fiber_achievers_phase.json",
                 "sections/generated/tab_fold_max_fiber_achievers_phase.tex",
+            ],
+        ),
+        Step(
+            name="fold_max_fiber_achievers_bsplit",
+            script="exp_fold_max_fiber_achievers_bsplit.py",
+            args=["--m-min", "2", "--m-max", "32", "--show-words", "4"],
+            expected_outputs=[
+                "artifacts/export/fold_max_fiber_achievers_bsplit.json",
+                "sections/generated/tab_fold_max_fiber_achievers_bsplit.tex",
             ],
         ),
         Step(
@@ -188,12 +206,30 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_moment_recursions_moddp_9_17_precomputed",
+            script="exp_fold_collision_moment_recursions_mod_dp.py",
+            args=["--precomputed"],
+            expected_outputs=[
+                "artifacts/export/fold_collision_moment_recursions_moddp_9_17.json",
+                "sections/generated/tab_fold_collision_moment_recursions_9_17.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_moment_spectrum_k2_8",
             script="exp_fold_collision_moment_spectrum_k2_8.py",
             args=[],
             expected_outputs=[
                 "artifacts/export/fold_collision_moment_spectrum_k2_8.json",
                 "sections/generated/tab_fold_collision_moment_spectrum_k2_8.tex",
+            ],
+        ),
+        Step(
+            name="pom_rewriting_engine_demo",
+            script="exp_pom_rewriting_engine_demo.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_rewriting_engine_demo.json",
+                "sections/generated/tab_pom_rewriting_engine_demo.tex",
             ],
         ),
         Step(
@@ -277,6 +313,15 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "sections/generated/eq_sync_kernel_weighted_delta_explicit.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_weighted_padic_unit_root",
+            script="exp_sync_kernel_weighted_padic_unit_root.py",
+            args=["--p", "5", "--N", "12", "--k-max", "6", "--u", "minus1"],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_weighted_padic_unit_root.json",
+                "sections/generated/tab_sync_kernel_weighted_padic_unit_root.tex",
             ],
         ),
         Step(
@@ -698,6 +743,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/real_input_40_finite_part_split.json",
                 "sections/generated/tab_real_input_40_finite_part_split.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_vert_single_series",
+            script="exp_real_input_40_vert_single_series.py",
+            args=["--k-max", "800"],
+            expected_outputs=[
+                "artifacts/export/real_input_40_vert_single_series.json",
+                "sections/generated/tab_real_input_40_vert_single_series.tex",
             ],
         ),
         Step(

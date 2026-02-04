@@ -28,7 +28,7 @@ from common_paths import export_dir, generated_dir
 from common_phi_fold import Progress
 
 
-PRECOMPUTED_RECS_9_16 = [
+PRECOMPUTED_RECS_9_17 = [
     {"k": 9, "order": 7, "m0": 9, "coeffs": [2, 62, 386, 2819, 62, 900, -450]},
     {"k": 10, "order": 9, "m0": 11, "coeffs": [2, 96, 830, 7945, 2, 1852, -830, 4, -4]},
     {"k": 11, "order": 9, "m0": 11, "coeffs": [2, 153, 1740, 21249, -9432, -86213, -1484, -18348, 9174]},
@@ -36,7 +36,27 @@ PRECOMPUTED_RECS_9_16 = [
     {"k": 13, "order": 11, "m0": 13, "coeffs": [2, 388, 7414, 148038, -317916, -4165856, 136252, 1565891, 318938, 289380, -144690]},
     {"k": 14, "order": 13, "m0": 15, "coeffs": [2, 621, 15140, 385463, -1443744, -22761161, 15140, -2116566, 1443750, 63044, -30280, 8, -8]},
     {"k": 15, "order": 11, "m0": 13, "coeffs": [2, 1000, 30766, 994458, -6188172, -119408756, 8289820, 134208623, 6186122, 16637076, -8318538]},
-    {"k": 16, "order": 13, "m0": 15, "coeffs": None, "coeffs_tex": "\\texttt{see export}"},
+    {"k": 16, "order": 13, "m0": 15, "coeffs": [2, 1611, 62312, 2559407, -24862788, -585266591, 62312, -44606766, 24862794, 255692, -124624, 8, -8]},
+    {
+        "k": 17,
+        "order": 13,
+        "m0": 15,
+        "coeffs": [
+            2,
+            2599,
+            125872,
+            6569850,
+            -96034590,
+            -2764163954,
+            -643026032,
+            -15022392733,
+            769974566,
+            15329386299,
+            642908352,
+            1347896340,
+            -673948170,
+        ],
+    },
 ]
 
 PRECOMPUTED_INIT_9_12 = {
@@ -236,13 +256,13 @@ def main() -> None:
     parser.add_argument(
         "--json-out",
         type=str,
-        default=str(export_dir() / "fold_collision_moment_recursions_moddp_9_16.json"),
+        default=str(export_dir() / "fold_collision_moment_recursions_moddp_9_17.json"),
         help="Output JSON path.",
     )
     parser.add_argument(
         "--tex-out",
         type=str,
-        default=str(generated_dir() / "tab_fold_collision_moment_recursions_9_16.tex"),
+        default=str(generated_dir() / "tab_fold_collision_moment_recursions_9_17.tex"),
         help="Output LaTeX table path.",
     )
     args = parser.parse_args()
@@ -253,10 +273,10 @@ def main() -> None:
         "(audit window $m\\le 26$; for $k=16$, extended checks up to $m\\le 32$). "
         "Coefficients are in the form $S(m)=\\sum_{i=1}^d c_i S(m-i)$."
     )
-    label = "tab:fold_collision_moment_recursions_9_16"
+    label = "tab:fold_collision_moment_recursions_9_17"
 
     if args.precomputed:
-        rows = PRECOMPUTED_RECS_9_16
+        rows = PRECOMPUTED_RECS_9_17
         write_table_tex(Path(args.tex_out), rows, caption=caption, label=label)
         payload: Dict[str, object] = {
             "precomputed": True,
