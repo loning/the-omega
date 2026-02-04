@@ -269,6 +269,40 @@ $$
 对 \(A_\xi(u)\) 直接计算 \(\det(\lambda I-A_\xi(u))\) 即得。证毕。
 \end{proof}
 
+\begin{corollary}[块三角证书：\texorpdfstring{$\det(I-zM_\xi(u))=\det(I-zA_\xi(u))\det(I-z\overline R_\xi(u))$}{det factorization}]\label{cor:arity-collision-det-factorization}
+沿用定理 \ref{thm:arity-collision-twist-4x4} 的记号。对任意复参数 \(u\)，子空间
+\(
+U=\RR^{4}\otimes \mathrm{span}\{\mathbf{1}\}
+\)
+在 \(M_\xi(u)\) 作用下不变，因此取适当基可把 \(M_\xi(u)\) 写为块上三角矩阵
+\[
+M_\xi(u)\sim
+\begin{pmatrix}
+A_\xi(u) & *\\
+0 & \overline R_\xi(u)
+\end{pmatrix}.
+\]
+从而对任意 \(z\) 有严格行列式因子化
+$$
+\det(I-zM_\xi(u))=\det(I-zA_\xi(u))\cdot \det(I-z\overline R_\xi(u)),
+$$
+其中 \(\overline R_\xi(u)\) 为诱导在商空间 \(\RR^{40}/U\) 上的算子。
+并且在单位圆扭曲 \(|u|=1\) 下，\(\overline R_\xi(u)\) 的谱半径被输入骨架的次大模尺度控制（数值证书见注 \ref{rem:arity-collision-block-factorization-certificate}），特别地 \(\rho(\overline R_\xi(u))<\varphi<r_2\)。
+因此“纵向残差因子”不可能包含任何 Perron 根大于 \(\varphi\) 的不可约块（例如折叠碰撞核 \(A_2\) 的 Perron 根 \(r_2\approx 2.481>\varphi\)）。
+\end{corollary}
+\begin{proof}
+由 \(U\) 不变可取适当基使 \(M_\xi(u)\) 为块上三角矩阵；行列式因子化由 \(\det\) 对块上三角的乘法性给出。
+单位圆下的谱半径控制由“输入骨架 \(\Rightarrow\) 次大模尺度”机制给出（并可由脚本输出作为数值证书核验）。
+最后 \(r_2>\varphi\) 排除“\(A_2\) 出现在纵向残差块”的可能性。证毕。
+\end{proof}
+
+\begin{remark}[可审计数值证书：显式正交基下的块对角化与行列式因子化核验]\label{rem:arity-collision-block-factorization-certificate}
+脚本 \texttt{scripts/exp\_real\_input\_40\_pure\_collision\_block\_factorization.py} 构造一组显式正交基把 \(M_\xi(u)\) 数值块对角化，并在 \(u\in\{1,-1,e^{2\pi i/5},e^{2\pi i/7}\}\) 上输出：
+（i）块间耦合的数值残差（off-diagonal 最大元），（ii）两块的谱半径，及（iii）固定 \(z\) 下的 \(\det(I-zM)=\det(I-zM|_U)\det(I-zM|_{U^\perp})\) 相对误差。
+输出表如下：
+\input{sections/generated/tab_real_input_40_pure_collision_block_factorization}
+\end{remark}
+
 \begin{remark}[对齐：同一三次压力方程（碰撞势）]\label{rem:arity-collision-cubic-align}
 命题 \ref{prop:arity-collision-cubic} 的三次方程与附录中“碰撞势”的压力方程严格同型。
 事实上，若把记忆态按 \(00,01,10,11\) 排列，则

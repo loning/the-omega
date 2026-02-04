@@ -459,6 +459,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_pure_collision_block_factorization",
+            script="exp_real_input_40_pure_collision_block_factorization.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_pure_collision_block_factorization.json",
+                "sections/generated/tab_real_input_40_pure_collision_block_factorization.tex",
+            ],
+        ),
+        Step(
             name="arity_335_n2_master_curve",
             script="exp_arity_335_n2_master_curve.py",
             args=["--p-list", "7,11,13", "--k-max", "1", "--diff-h", "0.0002"],
