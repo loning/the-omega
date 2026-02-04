@@ -85,6 +85,76 @@ $$
 即 $P=E_m$。证毕。
 \end{proof}
 
+\begin{theorem}[纤维均匀提升下的 $L^2$ 正交分解与信息丢失能量]\label{thm:pom-fold-L2-pythagoras}
+固定 $m$。取任意概率向量 $\pi\in\Delta(X_m)$，并定义其在微态空间 $\Omega_m$ 上的\textbf{纤维均匀提升}
+\begin{equation}
+\label{eq:pom-fiber-uniform-lift}
+\mu(a):=\frac{\pi(\Fold_m(a))}{d_m(\Fold_m(a))},\qquad a\in\Omega_m,
+\end{equation}
+其中 $d_m(x):=|\Fold_m^{-1}(x)|$。
+在内积 $\langle f,g\rangle_{\mu}:=\sum_{a\in\Omega_m} f(a)g(a)\mu(a)$ 与范数 $\|f\|_{2,\mu}^2:=\langle f,f\rangle_{\mu}$ 下，对任意 $f\in\mathcal{A}_m$ 有：
+\begin{enumerate}
+  \item \textbf{（正交投影）} $E_m$ 是 $L^2(\mu)$ 上到子空间 $\mathcal{B}_m$ 的正交投影：对任意 $b\in\mathcal{B}_m$，
+  $$
+  \langle f-E_m f,\ b\rangle_{\mu}=0.
+  $$
+  \item \textbf{（毕达哥拉斯恒等式）}
+  \begin{equation}
+  \label{eq:pom-L2-pythagoras}
+  \boxed{\ \|f\|_{2,\mu}^2\ =\ \|E_m f\|_{2,\mu}^2\ +\ \|f-E_m f\|_{2,\mu}^2\ }.
+  \end{equation}
+  \item \textbf{（最小误差刻画）}对任意 $b\in\mathcal{B}_m$，有
+  $$
+  \|f-b\|_{2,\mu}^2\ \ge\ \|f-E_m f\|_{2,\mu}^2,
+  $$
+  且当且仅当 $b=E_m f$ 取等号。
+\end{enumerate}
+因此 $\|f-E_m f\|_{2,\mu}^2$ 给出 $f$ 在分辨率-$m$ 折叠下的\textbf{不可见残差能量}：它是将 $f$ 近似为任意稳定可见观测量（即纤维常值函数）的最小 $L^2$ 误差。
+\end{theorem}
+
+\begin{remark}[数值核对（脚本与产物）]\label{rem:pom-fold-L2-pythagoras-script}
+表 \ref{tab:fold_conditional_expectation_pythagoras} 由脚本 \texttt{scripts/exp\_fold\_conditional\_expectation\_pythagoras.py} 一键生成，用于对公式 \eqref{eq:pom-L2-pythagoras} 的实现与符号约定做回归核对（产物路径见 \texttt{artifacts/export/fold\_conditional\_expectation\_pythagoras.json}）。
+\end{remark}
+
+\begin{remark}[与射影度量收缩口径的对齐]\label{rem:pom-fold-projective-metric}
+定理 \ref{thm:pom-fold-L2-pythagoras} 以 $L^2(\mu)$ 口径将 $P_Z$ 的 coarse-graining 分解为“可见分量 + 残差能量”。若将 coarse-graining 视为一般正算子/Markov 算子并改用 Hilbert 射影度量或 Hopf 振荡半范数，则可获得“跨纤维一致化/混合”意义下的收缩系数刻画与更强的普适性表述；参见 \cite{GaubertQu2015DobrushinCones} 及其在量子信道语境下的射影度量工具 \cite{ReebKastoryanoWolf2011HilbertProjectiveQuantum}。
+\end{remark}
+
+\input{sections/generated/tab_fold_conditional_expectation_pythagoras}
+
+\begin{proof}
+记 $x=\Fold_m(a)$。由命题 \ref{prop:fold-conditional-expectation} 的坐标形式，
+\[
+(E_m f)(a)=\frac{1}{d_m(x)}\sum_{\Fold_m(b)=x} f(b),
+\]
+故 $E_m f\in\mathcal{B}_m$。
+
+对任意 $b\in\mathcal{B}_m$，存在函数 $\beta:X_m\to\RR$ 使 $b(a)=\beta(\Fold_m(a))$。于是
+\[
+\langle f-E_m f,\ b\rangle_{\mu}
+=\sum_{x\in X_m}\sum_{\Fold_m(a)=x}\bigl(f(a)-(E_m f)(a)\bigr)\,\beta(x)\,\frac{\pi(x)}{d_m(x)}.
+\]
+对每个固定 $x$，由于 $\beta(x)\pi(x)/d_m(x)$ 在纤维上为常数，并且
+\(
+\sum_{\Fold_m(a)=x}\bigl(f(a)-(E_m f)(a)\bigr)=0
+\)
+（因为 $E_m f$ 是该纤维的算术平均），故纤维内和为零，从而 $\langle f-E_m f,\ b\rangle_{\mu}=0$。
+这证明了 (1)。
+
+由 (1) 且 $E_m f\in\mathcal{B}_m$，取 $b=E_m f$ 得到 $\langle f-E_m f,\ E_m f\rangle_{\mu}=0$。展开
+\(
+\|f\|_{2,\mu}^2=\|E_m f\|_{2,\mu}^2+\|f-E_m f\|_{2,\mu}^2+2\langle f-E_m f,\ E_m f\rangle_{\mu}
+\)
+即得 (2)。
+
+对任意 $b\in\mathcal{B}_m$，由 $f-b=(f-E_m f)+(E_m f-b)$ 且 (1) 给出正交性 $\langle f-E_m f,\ E_m f-b\rangle_{\mu}=0$，因此
+\[
+\|f-b\|_{2,\mu}^2
+=\|f-E_m f\|_{2,\mu}^2+\|E_m f-b\|_{2,\mu}^2\ \ge\ \|f-E_m f\|_{2,\mu}^2,
+\]
+并且当且仅当 $b=E_m f$ 取等号，得到 (3)。
+\end{proof}
+
 \begin{proposition}[条件期望塔]\label{prop:pom-expectation-tower}
 对任意 $m_2\ge m_1$，由柱事件延拓给出代数包含
 \(
