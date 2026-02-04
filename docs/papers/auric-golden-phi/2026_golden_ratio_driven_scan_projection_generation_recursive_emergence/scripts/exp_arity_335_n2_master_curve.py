@@ -87,7 +87,7 @@ class Point:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Master-curve experiment for ((3,3,p)) pure collision twists.")
-    parser.add_argument("--p-list", type=str, default="11,13", help="Comma-separated odd primes p.")
+    parser.add_argument("--p-list", type=str, default="7,11,13", help="Comma-separated odd primes p.")
     parser.add_argument("--k-max", type=int, default=1, help="Compute k=1..k_max (keep small for small-angle regime).")
     parser.add_argument("--diff-h", type=float, default=2e-4, help="Step for pressure derivatives P''(0), P''''(0).")
     parser.add_argument(
