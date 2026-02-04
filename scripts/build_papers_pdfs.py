@@ -229,6 +229,7 @@ def build_from_plan(
     *,
     clean: bool,
 ) -> None:
+    failed: list[Path] = []
     for item in plan_items:
         paper_dir = item.paper_dir
         sources_hash = item.sources_hash
@@ -236,6 +237,13 @@ def build_from_plan(
         print(f"Building: {paper_dir}")
         try:
             _run_latexmk(paper_dir)
+            pdf_path = paper_dir / "main.pdf"
+            if not pdf_path.exists():
+                raise FileNotFoundError(f"Expected PDF not found: {pdf_path}")
+
+            write_stamp(stamp_path(stamp_root, papers_root, paper_dir), sources_hash)
+            if clean:
+                _clean_latexmk(paper_dir)
         except Exception as e:
             log_path = paper_dir / "main.log"
             print(f"Build failed in: {paper_dir}", file=sys.stderr)
@@ -252,15 +260,12 @@ def build_from_plan(
                     print(f"Could not read log file {log_path}: {log_e}", file=sys.stderr)
             else:
                 print(f"Log file not found: {log_path}", file=sys.stderr)
-            raise
+            failed.append(paper_dir)
+            continue
 
-        pdf_path = paper_dir / "main.pdf"
-        if not pdf_path.exists():
-            raise FileNotFoundError(f"Expected PDF not found: {pdf_path}")
-
-        write_stamp(stamp_path(stamp_root, papers_root, paper_dir), sources_hash)
-        if clean:
-            _clean_latexmk(paper_dir)
+    if failed:
+        failed_list = ", ".join(str(p) for p in failed)
+        print(f"Build skipped for {len(failed)} paper(s): {failed_list}", file=sys.stderr)
 
 
 def verify_all_pdfs(papers_root: Path) -> None:

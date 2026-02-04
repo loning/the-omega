@@ -1075,11 +1075,12 @@ D_m^{1/m}\ \le\ S_q(m)^{1/(mq)}\ \le\ D_m^{1/m}\,|X_m|^{1/(mq)}.
 \begin{remark}[更高阶碰撞矩的精确递推与阶数规律（可审计）]\label{rem:pom-moment-rec}
 二阶与三阶碰撞矩分别由三态核 \(A_2,A_3\) 实现（命题 \ref{prop:pom-s2-recurrence} 与 \ref{prop:pom-s3-recurrence}）。更高阶 \(q\) 下，序列 \(\{S_q(m)\}\) 仍呈现出\textbf{小阶整数线性递推}的现象：对 \(q=4,5,6,7,8\) 可验证存在阶数分别为 \(5,5,7,7,9\) 的精确递推（从某个 \(m\) 起对所有 \(m\) 成立），其系数见表 \ref{tab:fold_collision_moment_recursions}。这些递推等价于“存在有限维的 \(q\)-阶碰撞核/矩阵 realization”，从而 \(S_q(m)=\Theta(r_q^m)\) 的指数尺度由对应特征多项式的 Perron 根 \(r_q\) 控制。
 
-上述现象提示一个自然猜想：\(\{S_q(m)\}\) 的最小递推阶数在 \(q\) 增加时按每两步增加 \(2\) 的规律增长，即
+在已核验范围 \(q\le 8\) 内，上述最小递推阶数与 Hankel 最小实现维数均呈现出“每两阶增加 \(2\)”的规律（见定理 \ref{thm:pom-moment-hankel} 与推论 \ref{cor:pom-moment-minreal}），即经验指纹
 \(
 2\lfloor q/2\rfloor+1
 \)。
-该阶数规律可视为“高阶相关量闭合维数”的指纹；其可复现核验由脚本 \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py} 给出。
+然而当 \(q\) 继续增大时，该规律会出现\textbf{结构性坍缩/共振}：对 \(q=9,10,11\)，在审计窗口 \(m\le 26\) 上可验证存在更低阶的整系数递推（表 \ref{tab:fold_collision_moment_recursions_9_11}），其中 \(q=9\) 的最小阶数为 \(7\)（低于 \(2\lfloor 9/2\rfloor+1=9\)）。
+这提示“闭合维数指纹”存在非单调的共振点，其机制很可能与 Fibonacci 同余结构的代数退化有关。
 \end{remark}
 
 \begin{remark}[闭合维数 \texorpdfstring{$2\lfloor q/2\rfloor+1$}{2 floor(q/2)+1} 的结构来源：同余角色模态的有限截断]\label{rem:pom-closure-dim-mode-trunc}
@@ -1093,10 +1094,13 @@ S_2(m)=\sum_r c_m(r)^2
 \[
 -(\lfloor q/2\rfloor)\ \le\ a-b\ \le\ \lfloor q/2\rfloor,
 \]
-因此只需跟踪 \(2\lfloor q/2\rfloor+1\) 个模态即可闭合地推进到下一步分辨率；这给出了“每两阶增加 2 个自由度”的结构原因。该模态截断与 Hankel 秩下界（定理 \ref{thm:pom-moment-hankel}）在已核验范围内精确吻合，从而把经验指纹升级为可解释的有限闭包机制。
+因此在\emph{非共振的典型情形}下，只需跟踪 \(2\lfloor q/2\rfloor+1\) 个模态即可闭合地推进到下一步分辨率；这给出了“每两阶增加 2 个自由度”的结构原因。该模态截断与 Hankel 秩下界（定理 \ref{thm:pom-moment-hankel}）在已核验范围 \(q\le 8\) 内精确吻合，从而把经验指纹升级为可解释的有限闭包机制。
+而表 \ref{tab:fold_collision_moment_recursions_9_11} 的 \(q=9\) 现象表明：当 Fibonacci 同余结构诱发代数退化时，模态可能发生额外约束，从而导致“最小闭合维数”坍缩到更低阶。
 \end{remark}
 
 \input{sections/generated/tab_fold_collision_moment_recursions}
+
+\input{sections/generated/tab_fold_collision_moment_recursions_9_11}
 
 \begin{theorem}[Hankel 秩下界：高阶矩的最小线性实现维数]\label{thm:pom-moment-hankel}
 记 \(S_q(m)=\sum_{x\in X_m} d_m(x)^q\)，并令 \(a_n:=S_q(n+2)\)（对 \(q=2,3\) 可再作常数缩放 \(a_n:=S_q(n+2)/2\)，不影响以下结论）。则对 \(q=2,3,4,5,6,7,8\)，其 Hankel 矩阵 \(H=(a_{i+j})_{i,j\ge 0}\) 满足
