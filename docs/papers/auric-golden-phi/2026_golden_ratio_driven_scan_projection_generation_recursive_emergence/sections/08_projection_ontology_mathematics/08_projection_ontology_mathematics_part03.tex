@@ -850,9 +850,81 @@ H_q(m):=-\log\sum_{x\in X_m}\pi_m(x)^q=-\log\!\left(\frac{S_q(m)}{2^{qm}}\right)
 $$
 对 \(q=2,3,4\)，命题 \ref{prop:pom-s2-recurrence}、\ref{prop:pom-s3-recurrence} 与 \ref{prop:pom-s4-recurrence} 给出严格有限态碰撞核与闭式熵率 \(h_q=\log(2^q/r_q)\)。
 对更高阶 \(q\ge 5\)，同样可把 \(\{S_q(m)\}\) 作为“投影熵谱曲线”的数值指纹输出；可复现的枚举谱表见表 \ref{tab:fold_collision_renyi_spectrum}（脚本 \texttt{scripts/exp\_fold\_collision\_renyi\_spectrum.py}）。
+\par
+若需标准 Rényi 熵率的归一化口径，可取 \(h_q^{\mathrm{R}}:=h_q/(q-1)\)（与 \S\ref{subsec:pom-higher-collision-spectrum} 中的定义一致）。
+\end{remark}
+
+\begin{proposition}[\texorpdfstring{$h_q$}{hq} 的几何化：投影输出测度的 Rényi 维数谱]\label{prop:pom-renyi-dimension-spectrum}
+沿用上文 \(\pi_m(x)=d_m(x)/2^m\) 的输出分布记号。把分辨率 \(m\) 与几何尺度对应为
+\[
+\varepsilon_m:=\varphi^{-m}.
+\]
+定义输出测度在尺度 \(\varepsilon_m\) 下的 \(q\)-阶 Rényi 维数近似为
+\[
+D_q(m):=\frac{1}{q-1}\cdot \frac{\log\sum_{x\in X_m}\pi_m(x)^q}{\log \varepsilon_m}
+\qquad(q\ge 2).
+\]
+若 \(h_q=\lim_{m\to\infty}\frac{1}{m}H_q(m)\) 存在（例如当 \(S_q(m)=\Theta(r_q^m)\) 时成立），则极限
+\[
+D_q:=\lim_{m\to\infty}D_q(m)
+\]
+存在且满足闭式
+\[
+\boxed{\;
+D_q=\frac{h_q}{(q-1)\log\varphi}\; }.
+\]
+\end{proposition}
+\begin{proof}
+由定义 \(H_q(m)=-\log\sum_x\pi_m(x)^q\) 与 \(\log\varepsilon_m=-m\log\varphi\) 得
+\[
+D_q(m)=\frac{1}{q-1}\cdot \frac{-H_q(m)}{-m\log\varphi}
+=\frac{1}{(q-1)\log\varphi}\cdot \frac{1}{m}H_q(m).
+\]
+令 \(m\to\infty\) 即得结论。证毕。
+\end{proof}
+
+\begin{remark}[可审计输出：\(D_q\) 由表中 \(h_q\) 直接读出]\label{rem:pom-renyi-dimension-values}
+命题 \ref{prop:pom-renyi-dimension-spectrum} 表明：一旦 \(h_q\) 可由碰撞核/递推谱半径抽取，则几何维数谱 \(D_q\) 无需额外假设即可直接由闭式给出。
+由表 \ref{tab:fold_collision_renyi_spectrum} 可见 \(D_q\) 在已核验范围内非常接近 \(1\) 且随 \(q\) 缓慢下降；这可理解为：高阶矩更偏向大纤维（极少数 \(x\) 的 \(d_m(x)\) 主导），从而“内空间厚度”在 Rényi 意义下逐步变薄。
 \end{remark}
 
 \input{sections/generated/tab_fold_collision_renyi_spectrum}
+
+\begin{proposition}[普适夹逼：高阶碰撞主指数与投影熵率仅由 \texorpdfstring{$|X_m|$}{|Xm|} 与最大纤维锁定]\label{prop:pom-rq-universal-bounds}
+对整数 \(q\ge 2\)，令
+$$
+S_q(m):=\sum_{x\in X_m} d_m(x)^q,\qquad d_m(x):=\bigl|\Fold_m^{-1}(x)\bigr|.
+$$
+并令 \(r_q\) 表示 \(S_q(m)\) 的指数增长率（例如定理 \ref{thm:pom-collision-kernel-ak} 给出的 Perron 根；等价地 \(r_q=\lim_{m\to\infty}S_q(m)^{1/m}\)），定义未归一化 \(q\)-阶投影熵率
+$$
+h_q:=\log\!\left(\frac{2^q}{r_q}\right)=q\log 2-\log r_q.
+$$
+则有两侧界
+$$
+\frac{2^q}{\varphi^{q-1}}\ \le\ r_q\ \le\ 2\,\varphi^{(q-1)/2},
+$$
+等价地
+$$
+(q-1)\log\!\left(\frac{2}{\sqrt{\varphi}}\right)\ \le\ h_q\ \le\ (q-1)\log\varphi.
+$$
+\end{proposition}
+\begin{proof}
+对任意固定 \(m\) 与 \(q\ge 2\)，由幂均值/Holder 不等式，
+$$
+S_q(m)=\sum_{x\in X_m}d_m(x)^q\ \ge\ \frac{\bigl(\sum_x d_m(x)\bigr)^q}{|X_m|^{\,q-1}}
+=\frac{2^{qm}}{F_{m+2}^{\,q-1}},
+$$
+其中 \(\sum_x d_m(x)=|\Omega_m|=2^m\) 且 \(|X_m|=F_{m+2}\)。
+另一方面令 \(D_m:=\max_{x\in X_m} d_m(x)\)，则
+$$
+S_q(m)=\sum_x d_m(x)^q\ \le\ D_m^{\,q-1}\sum_x d_m(x)=2^m D_m^{\,q-1}.
+$$
+两式取对数并除以 \(m\)，再令 \(m\to\infty\)，结合 Fibonacci 渐近 \(F_{m+2}\sim \varphi^{m}/\sqrt5\) 与最大纤维渐近 \(D_m=\Theta(\varphi^{m/2})\)（定理 \ref{thm:pom-max-fiber}），得到
+$$
+\log r_q=\lim_{m\to\infty}\frac{1}{m}\log S_q(m)\in\Bigl[q\log 2-(q-1)\log\varphi,\ \log 2+\frac{q-1}{2}\log\varphi\Bigr],
+$$
+从而 \(r_q\) 的界成立。代入 \(h_q=q\log 2-\log r_q\) 即得 \(h_q\) 的等价界。证毕。
+\end{proof}
 
 \begin{remark}[更高阶碰撞矩的精确递推与阶数规律（可审计）]\label{rem:pom-moment-rec}
 二阶与三阶碰撞矩分别由三态核 \(A_2,A_3\) 实现（命题 \ref{prop:pom-s2-recurrence} 与 \ref{prop:pom-s3-recurrence}）。更高阶 \(q\) 下，序列 \(\{S_q(m)\}\) 仍呈现出\textbf{小阶整数线性递推}的现象：对 \(q=4,5,6,7,8\) 可验证存在阶数分别为 \(5,5,7,7,9\) 的精确递推（从某个 \(m\) 起对所有 \(m\) 成立），其系数见表 \ref{tab:fold_collision_moment_recursions}。这些递推等价于“存在有限维的 \(q\)-阶碰撞核/矩阵 realization”，从而 \(S_q(m)=\Theta(r_q^m)\) 的指数尺度由对应特征多项式的 Perron 根 \(r_q\) 控制。

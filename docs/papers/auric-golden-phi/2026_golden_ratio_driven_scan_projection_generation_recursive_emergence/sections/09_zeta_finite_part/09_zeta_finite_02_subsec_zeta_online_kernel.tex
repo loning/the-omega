@@ -116,6 +116,25 @@ p_{n,a}^{(m)}=\frac{1}{m}\sum_{r=0}^{m-1}\omega_m^{-ar}\,p_n(\omega_m^r),
 \]
 控制（$r=0$ 为平凡频率给出主项）。下面把 $\rho_m$ 变成一个\emph{整系数代数方程}（resultant）问题。
 
+\begin{proposition}[能量分辨的 Euler 乘积：\texorpdfstring{$\zeta(z,u)=\prod_{n,k}(1-z^n u^k)^{-p_{n,k}}$}{zeta(z,u)=prod(1-z^n u^k)^(-p_{n,k})}]\label{prop:sync-bivariate-euler-product}
+沿用上文的记号，把 primitive 轨道按长度与输出能量分解为整数系数 \(p_{n,k}\)：
+\[
+p_n(u)=\sum_{k\ge 0}p_{n,k}u^k,\qquad n\ge 1.
+\]
+则加权 \(\zeta\)-函数具有精确的二变量 Euler 乘积
+\[
+\zeta(z,u)=\frac{1}{\det(I-zB(u))}
+=\prod_{n\ge 1}\ \prod_{k\ge 0}\bigl(1-z^n u^k\bigr)^{-p_{n,k}}.
+\]
+\end{proposition}
+\begin{proof}
+由附录 \ref{app:witt-weighted} 的 primitive 轨道乘积式，
+\(
+\zeta(z,u)=\prod_{\tau\ \mathrm{primitive}}\bigl(1-z^{|\tau|}u^{S_\tau\varphi}\bigr)^{-1}
+\)。
+把 primitive 轨道按 \((n,k)=(|\tau|,S_\tau\varphi)\) 分组，且记每组的轨道计数为 \(p_{n,k}\)，即可得到所示双重乘积（在形式幂级数环 \(\ZZ[u][[z]]\) 中逐阶比较即可严格化）。证毕。
+\end{proof}
+
 \begin{proposition}[completion \texorpdfstring{$\to$}{->} cyclotomic resultant]\label{prop:sync-cyclotomic-elimination}
 记 $\Delta(z,u)=\det(I-zB(u))$。引入完成化变量
 \[
@@ -138,6 +157,20 @@ R_m(w):=\operatorname{Res}_s\bigl(\widehat{\Delta}(w,s),\Phi_m^+(s)\bigr)\in\ZZ[
 \rho_m=\frac{1}{\min\{|w|:R_m(w)=0\}}.
 \]
 \end{proposition}
+
+\begin{remark}[completion 的不变量子环：乘法扭曲 \texorpdfstring{$u$}{u} 压缩为加法坐标 \texorpdfstring{$s$}{s}]\label{rem:completion-invariant-ring}
+在变量层面，完成化所用的替换
+\(
+u=r^2,\ s=r+r^{-1}
+\)
+可理解为对合 \(r\mapsto r^{-1}\) 的不变量化：Laurent 环的固定子环满足
+\[
+\ZZ[r,r^{-1}]^{\,r\mapsto r^{-1}}
+=\ZZ\!\left[r+r^{-1}\right]
+=\ZZ[s].
+\]
+因此在自对偶对称（\(u\leftrightarrow 1/u\)）下，root-of-unity 的乘法扭曲参数 \(u\in\CC^\times\) 经 completion 被压缩为一个实的“迹坐标” \(s=2\cos(\pi/m)\)，而 \(\widehat\Delta(w,s)\in\ZZ[s][w]\) 则提供了把“乘法侧扭曲谱”转写为“加法侧代数证书”的统一接口。
+\end{remark}
 
 \begin{remark}[同步核的完成化行列式显式式与 \texorpdfstring{$s\mapsto -s$}{s->-s} 对称]\label{rem:sync-hatdelta-explicit}
 对同步核的输出位势加权，附录 \ref{app:pressure-analytic} 给出非零谱的特征多项式 $F(\lambda,u)\in\ZZ[u][\lambda]$，并且
@@ -185,6 +218,28 @@ P(\theta)=\log 3+\frac12\theta+\frac{11}{204}\theta^2+\frac{1559}{1414944}\theta
 \frac{|\rho_{20}^{\mathrm{pred}}-\rho_{20}|}{\rho_{20}}\approx 1.35\times 10^{-8}.
 \]
 \end{remark}
+
+\begin{corollary}[\texorpdfstring{$m^{-2}$}{m^-2} 间隙定律：\texorpdfstring{$3-\rho_m$}{3-rho_m} 的闭式常数]\label{cor:sync-rho-gap-m2}
+令 \(\rho_m:=\max_{1\le r\le m-1}|\lambda(\omega_m^r)|\) 如上，且取 \(t=2\pi/m\)。
+则当 \(m\to\infty\)（等价 \(t\to 0\)）时有
+\[
+\rho_m
+=3\exp\!\Bigl(-\frac{11}{204}t^2+O(t^4)\Bigr)
+=3-\frac{11}{68}t^2+O(t^4),
+\]
+从而得到显式的 \(m^{-2}\) 间隙常数
+\[
+\boxed{\;
+3-\rho_m\sim \frac{11\pi^2}{17}\cdot\frac{1}{m^2}\qquad(m\to\infty).
+\;}
+\]
+若进一步保留四阶项，则
+\[
+\rho_m
+=3\exp\!\Bigl(-\frac{11}{204}\Bigl(\frac{2\pi}{m}\Bigr)^2+\frac{1559}{1414944}\Bigl(\frac{2\pi}{m}\Bigr)^4+O(m^{-6})\Bigr),
+\]
+与表 \ref{tab:sync_kernel_cyclotomic_elimination_summary} 的 resultant 真值在中等 \(m\) 上已呈现机器精度级吻合（见注 \ref{rem:sync-rho-pressure-asymp} 的误差比对）。
+\end{corollary}
 
 \paragraph{\texorpdfstring{$s$}{s}-平面零极点字典：谱半径与“右半临界带无极点”}\label{par:s-plane-pole-dictionary}
 本节的 \(\zeta\)-函数在有限矩阵口径下是有理函数，因此其全部奇点由有限谱完全决定。

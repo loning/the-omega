@@ -133,3 +133,97 @@ u=\frac{\rho(\rho^2-2\rho-1)}{\rho-1}\qquad(\rho>1).
 I_2(\alpha(\rho))=\alpha(\rho)\log u(\rho)-\log\rho,\qquad \rho\in(1,\infty).
 \]
 \end{remark}
+
+\begin{proposition}[全实谱与根型在 \texorpdfstring{$u>0$}{u>0} 上固定]\label{prop:real-input-40-collision-all-real}
+对任意 \(u>0\)，三次多项式
+\[
+f(\lambda;u):=\lambda^3-2\lambda^2-(u+1)\lambda+u
+\]
+的判别式为
+\[
+\Delta(u)=4u^3+25u^2+88u+8>0.
+\]
+因此 \(f(\lambda;u)\) 在 \(\RR\) 上恒有三个互异实根；结合额外特征值 \(-1\)，矩阵 \(W(u)=D(u)A\) 的全部特征值均为实数。
+并且根型（按大小/符号）满足：
+\[
+\lambda_+(u)>1,\qquad 0<\lambda_0(u)<1,\qquad \lambda_-(u)<0,
+\]
+其中 \(\lambda_+(u)\) 为 Perron 根（命题 \ref{prop:real-input-40-collision-pressure}）。
+更具体地，\(u\le 1\) 时有 \(\lambda_-(u)\in[-1,0)\)，而 \(u>1\) 时有 \(\lambda_-(u)<-1\)。
+\end{proposition}
+\begin{proof}
+判别式直接计算得 \(\Delta(u)=4u^3+25u^2+88u+8>0\)（\(u>0\) 显然），故三根互异且全实。
+又有 \(f(0;u)=u>0,\ f(1;u)=1-2-(u+1)+u=-2<0\)，故在 \((0,1)\) 内存在一根 \(\lambda_0(u)\)。
+并且 \(f(\lambda;u)\to+\infty\) 当 \(\lambda\to+\infty\)，结合 \(f(1;u)<0\) 得在 \((1,\infty)\) 内存在一根 \(\lambda_+(u)>1\)。
+由 Vieta 关系，三根乘积为 \(\lambda_+(u)\lambda_0(u)\lambda_-(u)=-u<0\)，故第三根 \(\lambda_-(u)\) 为负数。
+最后计算
+\(
+f(-1;u)=2(u-1)
+\)：
+当 \(u\le 1\) 时 \(f(-1;u)\le 0\) 且 \(f(0;u)>0\)，故负根落在 \([-1,0)\)；
+当 \(u>1\) 时 \(f(-1;u)>0\) 且 \(f(\lambda;u)\to-\infty\) 当 \(\lambda\to-\infty\)，故负根满足 \(\lambda_-(u)<-1\)。
+证毕。
+\end{proof}
+
+\begin{proposition}[碰撞位势的核版 RH/Ramanujan 窗口与临界五次方程]\label{prop:real-input-40-collision-rhk-window}
+令 \(\lambda_1(u):=\lambda_+(u)\) 为 Perron 根，并记次谱半径
+\[
+\Lambda(u):=\max\{|\lambda_0(u)|,|\lambda_-(u)|,1\}.
+\]
+则核版 RH 条件 \(\textsf{RH}(u)\)（定义 \ref{def:kernel-rh}）在该 \(4\times4\) 碰撞位势上等价于
+\[
+\Lambda(u)\le \lambda_1(u)^{1/2}.
+\]
+存在唯一的临界参数 \(u_R>1\) 使得
+\[
+u_R^5+4u_R^4+3u_R^3-96u_R^2-42u_R-14=0,
+\]
+并且
+\[
+\textsf{RH}(u)\ \Longleftrightarrow\ 0<u\le u_R.
+\]
+数值上 \(u_R\approx 3.59262181344\)（\(\theta_R=\log u_R\approx 1.27888\)）。
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:real-input-40-collision-all-real}，当 \(u\le 1\) 时 \(|\lambda_-(u)|\le 1\) 且 \(0<\lambda_0(u)<1\)，故 \(\Lambda(u)=1\)，而 \(\lambda_1(u)>1\) 给出 \(1\le \sqrt{\lambda_1(u)}\)，于是 \(\textsf{RH}(u)\) 自动成立。
+
+当 \(u>1\) 时有 \(\lambda_-(u)<-1\)，故 \(\Lambda(u)=-\lambda_-(u)\)。
+因此 \(\textsf{RH}(u)\) 等价于
+\[
+(-\lambda_-(u))^2\le \lambda_+(u).
+\]
+令 \(b:=-\lambda_-(u)>1\)。临界等号发生当且仅当存在 \(b>1\) 使得
+\(
+f(-b;u)=0
+\)
+且
+\(
+f(b^2;u)=0
+\)。
+消去参数 \(b\)（对 \(b\) 取 resultant）得到关于 \(u\) 的代数方程
+\(
+u(u^5+4u^4+3u^3-96u^2-42u-14)=0
+\)；
+由于 \(u>0\)，临界点由五次多项式的正实根给出。该五次的系数符号序列为 \((+,+,+,-,-,-)\)，由 Descartes 法则知其恰有一个正实根，记为 \(u_R\)。
+最后由根的连续性与不等式在 \(u=1\) 处为真，得 \(\textsf{RH}(u)\) 在 \((0,u_R]\) 成立且在 \((u_R,\infty)\) 失效。证毕。
+\end{proof}
+
+\begin{corollary}[素轨道计数误差指数的相变：\texorpdfstring{$\beta(u)$}{beta(u)} 从 \texorpdfstring{$\le 1/2$}{<=1/2} 连续劣化到 \texorpdfstring{$1$}{1}]\label{cor:real-input-40-collision-error-phase}
+在碰撞位势 \(W(u)\) 上，令 \(\lambda(u):=\lambda_1(u)=\lambda_+(u)\)，并记 \(\Lambda(u)\) 为命题 \ref{prop:real-input-40-collision-rhk-window} 的次谱半径。
+则 prime-orbit 计数的主项为 \(\lambda(u)^n/n\)，误差指数由
+\[
+\beta(u):=\frac{\log \Lambda(u)}{\log \lambda(u)}
+\]
+控制：
+\begin{itemize}
+  \item \(0<u\le 1\) 时 \(\Lambda(u)=1\)，故 \(\beta(u)=0\)（误差至多常数量级）；
+  \item \(1<u\le u_R\) 时 \(\Lambda(u)\le \sqrt{\lambda(u)}\)，故 \(\beta(u)\le \tfrac12\)（平方根相；推论 \ref{cor:kernel-rh-sqrt-error}）；
+  \item \(u>u_R\) 时 \(\Lambda(u)>\sqrt{\lambda(u)}\)，故 \(\beta(u)>\tfrac12\)，并且当 \(u\to\infty\) 时 \(\beta(u)\to 1\)。
+\end{itemize}
+更具体地，当 \(u\to\infty\) 时三次方程的 Puiseux 展开给出
+\[
+\lambda_+(u)=\sqrt u+\frac12+\frac{9}{8\sqrt u}+O(u^{-1}),\qquad
+\lambda_-(u)=-\sqrt u+\frac12-\frac{9}{8\sqrt u}+O(u^{-1}),
+\]
+从而 \(\Lambda(u)/\lambda_+(u)\to 1\)（谱隙塌缩）。
+\end{corollary}

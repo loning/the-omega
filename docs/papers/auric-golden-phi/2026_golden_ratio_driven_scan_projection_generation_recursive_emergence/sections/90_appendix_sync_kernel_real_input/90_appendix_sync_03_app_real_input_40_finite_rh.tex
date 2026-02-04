@@ -48,6 +48,93 @@ s=\frac{\log\mu+2\pi i k}{\log\lambda},
 因此该核达到 toy-RH 的“单频临界振荡”情形：临界带中的全部非平凡极点由 $-\sqrt{\lambda}$ 单独产生。
 \end{remark}
 
+\paragraph{相位增殖：保持 RH-sharp 的循环提升}
+经典 \(\zeta(s)\) 的困难部分不仅是“实部落在 \(\tfrac12\)”这一条临界线，而是临界线上存在大量、且虚部结构复杂的零点族。
+在有限维核模型中，可以在\textbf{保持 Ramanujan/RH-sharp 半径界}的同时，把“单一相位”的临界极点列增殖为任意细的相位梳齿；这为后续把 toy-RH 推向 toy-GRH（通过群扩张/Artin 分解）提供了一个最小可审计机制。
+
+\begin{proposition}[循环相位提升：谱相位细分且保持 Ramanujan 半径界]\label{prop:finite-rh-phase-lift}
+设 $M$ 为有限维矩阵，$\lambda=\rho(M)>1$。取整数 $q\ge 2$，令 $P_q$ 为 $q$-循环置换矩阵（$P_q e_j=e_{j+1}$，指标按 $q$ 取模），并定义循环提升矩阵
+\[
+M^{\langle q\rangle}:=M\otimes P_q.
+\]
+则：
+\begin{enumerate}
+  \item \textbf{（谱相位细分）} 设 $\omega_q=e^{2\pi i/q}$。有谱恒等式
+  \[
+  \mathrm{spec}(M^{\langle q\rangle})
+  =\{\mu\,\omega_q^k:\ \mu\in \mathrm{spec}(M),\ k=0,1,\dots,q-1\},
+  \]
+  按代数重数计。
+  \item \textbf{（谱半径保持）} $\rho(M^{\langle q\rangle})=\rho(M)=\lambda$。
+  \item \textbf{（Ramanujan 界保持）} 若 $M$ 满足 $\max_{\mu\neq \lambda}|\mu|\le \sqrt{\lambda}$，则 $M^{\langle q\rangle}$ 亦满足同一半径界。
+  \item \textbf{（临界线极点梳齿）} 令
+  \(
+  \widehat{\zeta}^{\langle q\rangle}(s):=\det(I-\lambda^{-s}M^{\langle q\rangle})^{-1}
+  \)。
+  若 $\mu=\sqrt{\lambda}e^{i\theta}$ 是 $M$ 的某个达界特征值，则它在 $M^{\langle q\rangle}$ 上生成 $q$ 条互相平移的临界线极点列：
+  \[
+  s=\frac12+\frac{i}{\log\lambda}\Bigl(\theta+2\pi\Bigl(\frac{k}{q}+m\Bigr)\Bigr),
+  \qquad k\in\{0,\dots,q-1\},\ m\in\ZZ.
+  \]
+\end{enumerate}
+当 $q\to\infty$ 时，上述极点在每个基本周期窗 $[0,2\pi/\log\lambda)$ 内的虚部位置变得任意稠密。
+\end{proposition}
+
+\begin{proof}
+置换矩阵 $P_q$ 可被离散傅里叶变换对角化，其特征值为 $\omega_q^k$（$0\le k\le q-1$）。
+对任意 $M$ 的特征对 $(\mu,v)$ 与任意 $P_q$ 的特征对 $(\omega_q^k,w_k)$，张量向量 $v\otimes w_k$ 满足
+\(
+(M\otimes P_q)(v\otimes w_k)=(Mv)\otimes(P_qw_k)=\mu\,\omega_q^k (v\otimes w_k)
+\)，从而得到谱相位细分公式；反向包含由维数计数或 Kronecker 谱性质得到。
+谱半径与 Ramanujan 界的保持性来自 $|\omega_q^k|=1$。
+最后极点公式由命题 \ref{prop:finite-rh-triangle-dict} 对 $M^{\langle q\rangle}$ 逐个特征值应用并取达界模长 $|\mu|=\sqrt{\lambda}$ 得到。证毕。
+\end{proof}
+
+\begin{remark}[应用到真实输入 $40$ 状态核：单频 \texorpdfstring{$\pi$}{pi} 振荡的细分]\label{rem:finite-rh-40-phase-lift}
+对真实输入 $40$ 状态核，唯一达界特征值为 $-\sqrt{\lambda}=-\varphi=\sqrt{\lambda}e^{i\pi}$（注 \ref{rem:finite-rh-40-ramanujan}）。
+因此循环相位提升把原来的单一临界列
+\(
+s=\tfrac12+\frac{(2m+1)\pi i}{\log\lambda}
+\)
+细分为
+\[
+s=\frac12+\frac{i}{\log\lambda}\Bigl(\pi+2\pi\Bigl(\frac{k}{q}+m\Bigr)\Bigr),
+\qquad k=0,\dots,q-1,\ m\in\ZZ,
+\]
+在保持 RH-sharp 的同时把临界线上的虚部结构从“单栅栏”提升为“$q$-梳齿”。
+\end{remark}
+
+\begin{proposition}[循环提升的 Artin 因子化（阿贝尔角色通道的显式分解）]\label{prop:finite-rh-phase-lift-artin}
+沿用命题 \ref{prop:finite-rh-phase-lift} 的记号。令
+\(
+\omega_q=e^{2\pi i/q}
+\)，并把循环群 \(G=\ZZ/q\ZZ\) 的角色记为 \(\chi_k(j)=\omega_q^{kj}\)（\(k\in\{0,\dots,q-1\}\)）。
+则对任意复参数 \(z\) 有行列式分解
+\[
+\det\!\bigl(I-zM^{\langle q\rangle}\bigr)
+=\prod_{k=0}^{q-1}\det\!\bigl(I-z\,\omega_q^k M\bigr).
+\]
+等价地，循环提升的 \(\zeta\)-函数满足
+\[
+\zeta_{M^{\langle q\rangle}}(z)
+=\prod_{k=0}^{q-1}\zeta_{M}(z\omega_q^k),
+\qquad
+\zeta_M(z):=\det(I-zM)^{-1}.
+\]
+因此“相位增殖”不仅是谱点集合的旋转细分，更是一个可审计的\textbf{阿贝尔 Artin 分解}：每个角色通道 \(\chi_k\) 对应一个“扭曲因子” \(\det(I-z\,\omega_q^k M)\)。
+\end{proposition}
+
+\begin{proof}
+取离散傅里叶矩阵 \(F\) 使得 \(F^{-1}P_qF=\mathrm{diag}(\omega_q^0,\dots,\omega_q^{q-1})\)。
+则
+\[
+I-z(M\otimes P_q)
+\sim
+I-z\bigl(M\otimes \mathrm{diag}(\omega_q^0,\dots,\omega_q^{q-1})\bigr)
+\]
+在相似意义下等价于一个按 \(k\) 分块的块对角矩阵，其第 \(k\) 个块为 \(I-z\,\omega_q^k M\)。对块对角矩阵取行列式并相乘即得结论。证毕。
+\end{proof}
+
 \begin{proposition}[临界带中的非平凡极点都在 \texorpdfstring{$\Re(s)=\tfrac12$}{Re(s)=1/2}]\label{prop:finite-rh-40}
 设 $\lambda=\rho(M)=\varphi^2$。则在开带 $0<\Re(s)<1$ 中，$\widehat{\zeta}(s)$ 的全部极点均严格落在直线
 \[

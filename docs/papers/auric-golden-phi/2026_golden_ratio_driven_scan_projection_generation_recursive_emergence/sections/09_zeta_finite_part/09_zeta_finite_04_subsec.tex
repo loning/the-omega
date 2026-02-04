@@ -191,6 +191,144 @@ $$
 由于 $j_1=j_2=0$，该扭曲对 $\chi(\gamma)\bmod 3$ 与 $N_-(\gamma)\bmod 3$ 不施加任何角色权重，唯一的扭曲来自第三轴（即 $\xi=\mathbf{1}_{\{d=2\}}$ 的 $\ZZ/5$ 角色），从而慢模阻塞由碰撞 cocycle 单独主导。
 \end{proof}
 
+\subsubsection{纯碰撞扭曲的 \texorpdfstring{$4\times 4$}{4x4} 解析降维与闭式常数}\label{subsec:arity-335-collision-4x4}
+本小节把命题 \ref{prop:arity-335-collision-dominant} 的“纯碰撞慢模主导”从数值观察提升为闭式可算：对第三轴纯碰撞 cocycle
+\(
+\xi=\mathbf{1}_{\{d=2\}}
+\)
+的扭曲，最坏谱半径 \(\rho_{3,3,p}\) 无需在 \(40\times 40\) 上扫描，而可在 \(4\times 4\) 记忆骨架上精确求得。
+
+\begin{definition}[纯碰撞扭曲矩阵与扭曲骨架]\label{def:arity-collision-twist-skeleton}
+对复参数 \(u\in\CC\)，令 \(M_\xi(u)\) 表示真实输入 \(40\) 状态核的纯碰撞扭曲：对每条边 \(e\) 赋权 \(u^{\xi(e)}\)，并保持其余两轴（\(\chi,\nu\)）无扭曲，即取 \((j_1,j_2)=(0,0)\)。
+等价地，在 \(((3,3,p))\) 的 DFT 扭曲中（第三轴为 \(N_2\bmod p\)），取 \(u=\omega_p^{j_3}\) 且 \(q=r=1\)。
+
+定义其 \(4\times 4\) 扭曲骨架矩阵为
+$$
+A_\xi(u):=
+\begin{pmatrix}
+1&1&1&u\\
+1&0&1&0\\
+1&1&0&0\\
+1&0&0&0
+\end{pmatrix},
+$$
+其中状态顺序为记忆态 \(00,01,10,11\)（见命题 \ref{prop:real-input-40-skeleton-factor} 的块结构）。
+\end{definition}
+
+\begin{theorem}[纯碰撞扭曲的骨架降维：\texorpdfstring{$\rho(M_\xi(u))=\rho(A_\xi(u))$}{rho(M)=rho(A)}]\label{thm:arity-collision-twist-4x4}
+对任意满足 \(|u|=1\) 的复参数 \(u\)（特别是 \(u=\omega_p^{j_3}\) 的单位根扭曲），纯碰撞扭曲矩阵满足
+$$
+\rho\bigl(M_\xi(u)\bigr)=\rho\bigl(A_\xi(u)\bigr).
+$$
+特别地，对任意奇素数 \(p\) 与 \(j_3\in\{1,\dots,p-1\}\)，有
+$$
+\rho_{3,3,p}=\rho\bigl(M_\xi(\omega_p^{j_3})\bigr)=\rho\bigl(A_\xi(\omega_p^{j_3})\bigr),
+\qquad \omega_p=e^{2\pi i/p},
+$$
+并且当 \(p=5\) 时得到正文表中最坏比值 \(\rho_{3,3,5}/\lambda\) 的精确闭式来源。
+\end{theorem}
+\begin{proof}
+由附录命题 \ref{prop:real-input-40-skeleton-factor}，真实输入 \(40\) 状态核的邻接矩阵具有 \(4\times 4\) 的 \(10\times 10\) 置换块结构，且每个 \(B^{(d)}\) 为置换型矩阵。
+纯碰撞 cocycle \(\xi=\mathbf{1}_{\{d=2\}}\) 仅依赖于输入和位 \(d\in\{0,1,2\}\)，因此扭曲 \(M_\xi(u)\) 只会把块结构中的 \(B^{(2)}\) 乘以标量 \(u\)，其余非零块保持不变。
+
+令 \(U:=\RR^{4}\otimes \mathrm{span}\{\mathbf{1}\}\subset\RR^{40}\)（\(\mathbf{1}\) 为 \(10\)-维全 \(1\) 向量）。由于 \(B^{(d)}\mathbf{1}=\mathbf{1}\) 且扭曲只引入标量 \(u\)，子空间 \(U\) 在 \(M_\xi(u)\) 作用下仍不变，并且限制算子 \(M_\xi(u)|_U\) 等价于把每个非零块 \(B^{(d)}\) 替换为标量 \(1\) 并在 \(d=2\) 的唯一块处保留权重 \(u\)，从而得到 \(A_\xi(u)\)。因此
+\(
+\mathrm{spec}(A_\xi(u))\subseteq \mathrm{spec}(M_\xi(u))
+\)
+且 \(\rho(M_\xi(u))\ge \rho(A_\xi(u))\)。
+
+另一方面，每个 \(B^{(d)}\) 为置换矩阵，因而是正交算子并保持分解
+\(
+\RR^{10}=\mathrm{span}\{\mathbf{1}\}\oplus \mathbf{1}^\perp
+\)；
+于是
+\(
+\RR^{40}=\RR^4\otimes \RR^{10}
+\)
+分解为 \(U\oplus (\RR^4\otimes \mathbf{1}^\perp)\)，两部分均在 \(M_\xi(u)\) 作用下不变。
+当 \(|u|=1\) 时，后者上的每个非零块仍为正交算子（置换块或其乘以单位模标量），从而其谱半径被输入骨架的非 Perron 尺度控制：对应的增长率不超过 \(A\) 的次大模特征值 \(|-\varphi|=\varphi\)（见命题 \ref{prop:real-input-40-skeleton-factor} 中 \(A\) 的显式谱分解）。因此
+\(
+\rho\bigl(M_\xi(u)|_{\RR^4\otimes \mathbf{1}^\perp}\bigr)\le \varphi
+\)。
+而对 \(|u|=1\) 的纯碰撞扭曲，\(\rho(A_\xi(u))> \varphi\)（可由命题 \ref{prop:arity-collision-cubic} 的三次方程直接检验；例如在 \(u=-1\) 时亦有 \(\rho(A_\xi(-1))\approx 2.2055>\varphi\)）。
+故 \(M_\xi(u)\) 的谱半径必由 \(U\) 上的骨架分量给出，即 \(\rho(M_\xi(u))=\rho(A_\xi(u))\)。证毕。
+\end{proof}
+
+\begin{proposition}[三次方程闭式：纯碰撞扭曲谱半径由 \texorpdfstring{$\lambda^3-2\lambda^2-(u+1)\lambda+u$}{cubic} 决定]\label{prop:arity-collision-cubic}
+对任意 \(u\in\CC\)，有因式分解
+$$
+\det(\lambda I-A_\xi(u))=(\lambda+1)\Bigl(\lambda^3-2\lambda^2-(u+1)\lambda+u\Bigr).
+$$
+因此 \(\rho(A_\xi(u))\) 由三次方程
+$$
+\lambda^3-2\lambda^2-(u+1)\lambda+u=0
+$$
+的根的最大模确定。
+\end{proposition}
+\begin{proof}
+对 \(A_\xi(u)\) 直接计算 \(\det(\lambda I-A_\xi(u))\) 即得。证毕。
+\end{proof}
+
+\begin{corollary}[闭式复现 \texorpdfstring{$((3,3,5))$}{(3,3,5)} 的最坏谱半径比]\label{cor:arity-335-rho-closed-form}
+取 \(u=\omega_5=e^{2\pi i/5}\)。则
+$$
+\rho_{3,3,5}=\rho\bigl(A_\xi(\omega_5)\bigr)\approx 2.488758321093,
+\qquad
+\rho_{3,3,5}/\lambda\approx 0.950621088873,
+$$
+与表格输出完全一致。进一步可得若干更高模数的闭式基准：
+$$
+\rho_{3,3,7}/\lambda\approx 0.973816512450,\quad
+\rho_{3,3,11}/\lambda\approx 0.989165564951,\quad
+\rho_{3,3,13}/\lambda\approx 0.992211924196.
+$$
+\end{corollary}
+
+\begin{remark}[两条“碰撞谱常数”的数值对照：窗口层 \texorpdfstring{$r_2$}{r2} 与轨道层 \texorpdfstring{$\rho_{3,3,5}$}{rho(3,3,5)}]\label{rem:arity-335-r2-vs-rho}
+折叠门的二阶碰撞核 \(A_2\) 给出窗口层的 Perron 常数 \(r_2=\rho(A_2)\approx 2.481194304092\)（见 \S\ref{subsec:pom-higher-collision-spectrum} 与命题 \ref{prop:pom-collision-det}）。
+而真实输入 \(40\) 状态核在第三轴 \(N_2\bmod 5\) 的纯碰撞扭曲给出轨道层最坏慢模常数 \(\rho_{3,3,5}\approx 2.488758321093\)（推论 \ref{cor:arity-335-rho-closed-form}）。
+两者数值非常接近：
+\[
+\rho_{3,3,5}-r_2\approx 7.564\times 10^{-3},
+\qquad
+\rho_{3,3,5}/r_2\approx 1.003048.
+\]
+需要强调：\(r_2\) 属于“折叠纤维积”诱导的碰撞核（窗口层的纤维统计），而 \(\rho_{3,3,5}\) 属于“轨道层的单位根扭曲”谱半径（primitive 计数的等分布误差尺度）；两者并非同一对象的重述。
+但这种贴合提示了一个可证伪的结构问题：是否存在把“折叠的二阶碰撞结构”提升到“真实输入核的碰撞 cocycle 慢模”的统一函子/比较原则，使得 \(\rho_{3,3,p}\) 与 \(r_2\) 在一般模数 \(p\) 下满足稳定的夹逼或同一压力族的不同截面？
+\end{remark}
+
+\begin{proposition}[二次律常数的闭式锁定与 \texorpdfstring{$p^{-4}$}{p^{-4}} 修正]\label{prop:arity-collision-quadratic-closed}
+令 \(u=e^{z}\) 并定义压力函数
+$$
+P_\xi(z):=\log\rho\bigl(A_\xi(e^{z})\bigr)\qquad(z\ \text{在 }0\text{ 的邻域}).
+$$
+则 \(P_\xi\) 在 \(z=0\) 处解析，且二阶与四阶导数具有闭式
+$$
+P_\xi''(0)=\frac{6\sqrt5-5}{125}\approx 0.06733126292,
+\qquad
+P_\xi^{(4)}(0)=\frac{7+24\sqrt5}{3125}\approx 0.01941300207.
+$$
+因此当取单位根扭曲 \(u=e^{i\alpha}\) 且 \(\alpha\to 0\) 时，
+$$
+\log\frac{\rho\bigl(A_\xi(e^{i\alpha})\bigr)}{\rho\bigl(A_\xi(1)\bigr)}
+=-\frac{P_\xi''(0)}{2}\alpha^2+\frac{P_\xi^{(4)}(0)}{24}\alpha^4+O(\alpha^6),
+$$
+从而对奇素数 \(p\) 取 \(\alpha=2\pi/p\) 得到更强的渐近（包含 \(p^{-4}\) 修正）：
+$$
+\frac{\rho_{3,3,p}}{\lambda}
+\approx
+\exp\!\left(
+-\kappa_\infty\left(\frac{2\pi}{p}\right)^2+\frac{P_\xi^{(4)}(0)}{24}\left(\frac{2\pi}{p}\right)^4
+\right),
+\qquad
+\kappa_\infty:=\frac{P_\xi''(0)}{2}=\frac{6\sqrt5-5}{250}.
+$$
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:arity-collision-cubic}，\(\lambda(z):=\rho(A_\xi(e^z))\) 在 \(z=0\) 的邻域内由三次方程的最大实根解析延拓给出。
+对方程作 \(z\) 的级数代入并逐阶匹配即可得到 \(P_\xi''(0),P_\xi^{(4)}(0)\) 的闭式；再对 \(z=i\alpha\) 取实部即得单位根扭曲的展开式。证毕。
+\end{proof}
+
 \begin{corollary}[等分布的主相关长度尺度由纯碰撞扭曲给出]\label{cor:arity-335-collision-mixing-scale}
 设 \(\rho_{3,3,5}\) 与 \(\lambda=\rho(M)\) 如上。则 \(((3,3,5))\) 同余类计数的最坏扭曲误差以指数率
 \(
@@ -300,9 +438,41 @@ f_{a,b}(c)
 从而五张切片在 $c$ 轴上的全部信息可被等价地压缩为三张矩阵：均值矩阵 $\widehat f(0)$ 与两张复矩阵 $\widehat f(1),\widehat f(2)$。该分解与其数值（含 $\|\widehat f(1)\|_\infty,\|\widehat f(2)\|_\infty$）由同一脚本输出并可审计复核。
 \end{proposition}
 
+\begin{remark}[偏置能量的 Parseval 守恒式（强一致性检验）]\label{rem:arity-335-parseval-bias}
+令 \(G:=\ZZ/5\)。
+对任意实向量 \(x=(x_c)_{c\in G}\)，记其去均值部分为
+\[
+x_c^\circ:=x_c-\frac{1}{|G|}\sum_{c'\in G}x_{c'},
+\]
+并定义离散傅里叶系数
+\[
+\widehat x(j):=\sum_{c\in G}x_c^\circ\,\omega_5^{-jc}\qquad(j\in G).
+\]
+则由有限阿贝尔群角色的正交关系（Plancherel）有 Parseval 恒等式
+\[
+\sum_{c\in G}\bigl|x_c^\circ\bigr|^2
+=\frac{1}{|G|}\sum_{j\in G}\bigl|\widehat x(j)\bigr|^2
+=\frac{1}{|G|}\sum_{j\in G\setminus\{0\}}\bigl|\widehat x(j)\bigr|^2,
+\]
+其中最后一步使用了 \(\widehat x(0)=\sum_c x_c^\circ=0\)。
+\par
+把 \(x\) 取为聚合漂移 \(S_c=\sum_{a,b}C^{(3,3,5)}_{a,b,c}\)（见二级摘要的数值输出），则该恒等式给出一个单标量的强一致性检验：既可在 \(c\)-空间直接计算左边，也可在非平凡频率（纯第三轴扭曲）空间用 \(\widehat S(1),\widehat S(2)\) 计算右边；两者必须一致。
+因此“常数张量低秩/可压缩”可以被解释为：只有少数非平凡频率的 \(|\widehat S(j)|\) 显著，其余频率能量很小。
+\end{remark}
+
 \begin{proposition}[低秩可压缩：\texorpdfstring{$((3,3,5))$}{(3,3,5)} 张量的三模近似指纹]\label{prop:arity-335-low-rank}
 把常数张量 $C^{(3,3,5)}_{a,b,c}$ 视为实矩阵 $T\in\RR^{5\times 9}$（行指标为 $c\in\{0,1,2,3,4\}$，列指标为扁平化后的 $(a,b)\in(\ZZ/3)^2$）。令其奇异值为 $s_1\ge \cdots\ge s_5$。二级摘要输出显示：仅用前三个奇异模态即可捕获几乎全部 Frobenius 能量（$\sum_{i\le 3}s_i^2/\sum_{i\le 5}s_i^2$ 逼近 $1$），因此整个 $45$ 项张量在常数级分辨率下可被极低维近似稳定表征（可作为新的“核指纹”不变量）。
 \end{proposition}
+
+\begin{remark}[结构来源：\texorpdfstring{$c$}{c} 轴的傅里叶压缩 \texorpdfstring{$+$}{+} 额外的近 rank-2 现象]\label{rem:arity-335-low-rank-source}
+命题 \ref{prop:arity-335-fourier-fingerprint} 给出一个对所有 $(a,b)$ 与全部 $c$ \emph{精确成立}的分解：
+\[
+C^{(3,3,5)}_{a,b,c}
+=\widehat f_{a,b}(0)+2\Re\bigl(\widehat f_{a,b}(1)\omega_5^{c}\bigr)+2\Re\bigl(\widehat f_{a,b}(2)\omega_5^{2c}\bigr),
+\]
+因此从“沿 $c$ 的信息内容”看，\(((3,3,5))\) 的五切片天然被压缩为“均值矩阵 + 两张复谐波矩阵”三件套。
+二级摘要进一步显示：若对 $T$ 做 $c$-方向中心化（每列减去其在 $c$ 上的均值），则 Frobenius 能量几乎被前两奇异模态捕获（累计占比约为 $0.998992$；前三模约为 $0.999979$）。这说明除了傅里叶压缩的\emph{确定性结构}之外，数值上还存在一个更强的“近 rank-2”可压缩性，提示碰撞同余类轴上的主要变分由少数主形状驱动（可与 near-coboundary 证书、纯碰撞慢模主导相互对照）。
+\end{remark}
 
 \begin{remark}[near-coboundary 二次律：跨素数的可证伪选择律实验]\label{rem:arity-335-near-coboundary-scaling}
 把第三轴固定为 $c=N_2(\gamma)\bmod p$ 的 \(((3,3,p))\) 最坏扭曲谱半径比记为 \(\rho_{3,3,p}/\lambda\)，并定义
@@ -311,11 +481,48 @@ f_{a,b}(c)
 \qquad
 g(p):=\left(1-\frac{\rho_{3,3,p}}{\lambda}\right)p^2.
 \]
-若“近共边界的小角微扰”机制成立，则 \(g(p)\) 应仅缓慢漂移并趋向常数量级（等价地 \(\kappa_p\) 逼近极限 \(\kappa_\infty=\sigma_\xi^2/2\)）；若“\(p=5\) 的特异共振”机制成立，则 \(g(5)\) 将显著偏离其它素数。对 \(p\in\{5,7,11,13\}\) 的可复现扫描见表 \ref{tab:real_input_40_arity_335_n2_selection_law_primes} 与注记 \ref{rem:arity-335-selection-law-gp}。
+由命题 \ref{prop:arity-collision-quadratic-closed}，纯碰撞扭曲下的二次律极限常数具有闭式
+\(
+\kappa_\infty=(6\sqrt5-5)/250
+\)。
+因此若“近共边界的小角微扰”机制成立，则 \(g(p)\) 应仅缓慢漂移并趋向常数量级（等价地 \(\kappa_p\to\kappa_\infty\)）；并且当 \(p\) 不大时，可用 \(p^{-4}\) 修正项解释 \(p=5\) 相对二次律的主要偏差（命题 \ref{prop:arity-collision-quadratic-closed}）。
+对 \(p\in\{5,7,11,13\}\) 的可复现扫描见表 \ref{tab:real_input_40_arity_335_n2_selection_law_primes} 与注记 \ref{rem:arity-335-selection-law-gp}。
+\par
+还需强调：用 \(p=5\) 的有限角缺口 \(1-\rho_{3,3,5}/\lambda\) “反推方差密度”会得到近似值（见二级摘要中的线性/对数两种反推口径），但碰撞 cocycle 的真实方差密度来自压力二阶导数并已有闭式：
+\[
+\sigma_\xi^2=P_\xi''(0)=\frac{6\sqrt5-5}{125}\approx 0.06733126
+\]
+（命题 \ref{prop:arity-collision-quadratic-closed}），从而 \(\kappa_\infty=\sigma_\xi^2/2\)。
+因此诸如 \(\sigma_\xi^2=1/16\) 的“精确常数猜想”与当前可证明闭式并不一致；\(p=5\) 反推值偏小主要反映了小角近似在有限角下的系统误差，并可由 \(p^{-4}\) 修正项定量解释。
+\par
+另一方面，若把“常数级偏置的易感度”定义为
+\[
+\chi_p:=\frac{1}{1-\rho_{3,3,p}/\lambda},
+\]
+则由二次律与 \(-\log(1-x)=x+O(x^2)\) 得到一个刚性的模数标度主项：
+\[
+\log\chi_p
+=-\log\!\left(1-\frac{\rho_{3,3,p}}{\lambda}\right)
+=2\log p-\log\!\bigl(4\pi^2\kappa_\infty\bigr)+O(p^{-2}).
+\]
+因此只要 near-coboundary 机制成立，任何由最坏扭曲控制的“常数级偏置幅度上界/主尺度”（例如二级摘要中给出的 \(\chi\) 或其推广）在主阶上都必须呈 \(2\log p\) 的增长率：不会是 \(o(\log p)\)，也不会是 \(p^\alpha\) 的幂增长；差别只体现在常数项与 \(p^{-2}\) 修正。
 \end{remark}
 
 \begin{remark}[碰撞 cocycle 的共边界缺陷证书：best \texorpdfstring{$\ZZ/5$}{Z/5} 着色]\label{rem:arity-335-best-5-coloring}
 把 40 状态图的每条边赋 cocycle $\xi=\mathbf{1}_{\{d=2\}}\in\ZZ/5$。若存在 $h:V\to\ZZ/5$ 使得 $h(v)-h(u)\equiv \xi(u\to v)\pmod 5$ 在全部边上成立，则第三轴扭曲可由共轭消去，因而不会降低谱半径（$\rho/\lambda=1$）。二级摘要输出给出一个可复现的“best found” 着色缺陷 $\varepsilon$（不一致边比例），作为“near-coboundary” 的组合学证书；其值与谱缺口 $1-\rho_{3,3,5}/\lambda$ 应在机制上相关。
+\par
+在 \(((3,3,5))\) 的数据中，谱缺口
+\(
+\delta_{\mathrm{spec}}:=1-\rho_{3,3,5}/\lambda\approx 0.049379
+\)
+而 best found 的缺陷满足 \(\varepsilon\lesssim 0.066667\)（二级摘要）。因此至少在数值层面出现了同阶关系与比较不等式 \(\delta_{\mathrm{spec}}<\varepsilon\)。
+更细的加权缺陷（按无扭曲 PF 平衡边测度加权）为 \(\varepsilon_\pi\approx 0.076393\)，并满足一般上界 \(\kappa_\infty\le \varepsilon_\pi/2\)（二级摘要给出）。
+\par
+这提示一个可证伪的“缺陷边 \(\Rightarrow\) 谱缺口”选择律：是否存在只依赖图的局部参数（如最大出度、最小正权重）的常数 \(C\)，使得对单位根扭曲 \(u=\omega_p\) 有
+\[
+1-\frac{\rho(M_\xi(u))}{\rho(M_\xi(1))}\ \le\ C\,\varepsilon_\pi \qquad(\text{或 } C\,\varepsilon),
+\]
+从而把“near-coboundary 的组合学证书”提升为对慢模谱缺口的可审计上界？
 \end{remark}
 
 \begin{remark}[对照：第三维取 \texorpdfstring{$N_e\bmod 5$}{Ne mod 5} 的版本]\label{rem:arity-335-ne-mod5}

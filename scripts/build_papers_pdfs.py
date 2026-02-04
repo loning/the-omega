@@ -177,12 +177,35 @@ def plan_all_builds(papers_root: Path) -> tuple[list[Path], list[PlanItem]]:
     return paper_dirs, items
 
 
+def _is_chinese_paper(paper_dir: Path) -> bool:
+    """Check if the paper is Chinese by looking for ctexart document class."""
+    main_tex = paper_dir / "main.tex"
+    if not main_tex.exists():
+        return False
+    try:
+        content = main_tex.read_text(encoding="utf-8")
+        return "ctexart" in content
+    except Exception:
+        return False
+
+
 def _run_latexmk(paper_dir: Path) -> None:
-    cmds = [
-        ["latexmk", "-f", "-quiet", "-pdf", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
-        ["latexmk", "-f", "-quiet", "-pdfxe", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
-        ["latexmk", "-f", "-quiet", "-pdflua", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
-    ]
+    is_chinese = _is_chinese_paper(paper_dir)
+    
+    if is_chinese:
+        # For Chinese papers, prefer xelatex
+        cmds = [
+            ["latexmk", "-f", "-quiet", "-pdfxe", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
+            ["latexmk", "-f", "-quiet", "-pdf", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
+            ["latexmk", "-f", "-quiet", "-pdflua", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
+        ]
+    else:
+        # For non-Chinese papers, use default order
+        cmds = [
+            ["latexmk", "-f", "-quiet", "-pdf", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
+            ["latexmk", "-f", "-quiet", "-pdfxe", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
+            ["latexmk", "-f", "-quiet", "-pdflua", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
+        ]
 
     last_rc: int | None = None
     for cmd in cmds:
