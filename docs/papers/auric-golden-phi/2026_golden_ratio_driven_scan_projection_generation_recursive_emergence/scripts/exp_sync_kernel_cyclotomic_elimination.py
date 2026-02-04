@@ -24,7 +24,9 @@ Numerically (and in the paper's conventions), the prime-shadow residue-class mix
   ρ_m = max_{r=1..m-1} |λ(ω_m^r)| = 1 / min{|w| : R_m(w)=0}.
 
 We also compare ρ_m against the pressure-based asymptotic prediction from the appendix:
-  Re P(i t) = log 3 - (11/204) t^2 + (1559/1414944) t^4 + O(t^6),  t=2π/m.
+  Re P(i t) = log 3 - (11/204) t^2 + (1559/1414944) t^4 + (17123893/1177686190080) t^6
+             - (122803509253/25412897733672960) t^8 + (518906628614669/10575831520845339033600) t^10 + O(t^12),
+  t=2π/m.
 
 Outputs (default):
   - artifacts/export/sync_kernel_cyclotomic_elimination.json
@@ -160,8 +162,13 @@ def rho_exact_from_F(m: int, *, prog: Progress, prec: int = 80) -> float:
 
 def rho_pred_from_pressure(m: int) -> float:
     t = 2.0 * math.pi / m
-    # Re P(i t) ≈ log 3 - (11/204) t^2 + (1559/1414944) t^4.
-    return 3.0 * math.exp(-(11.0 / 204.0) * (t * t) + (1559.0 / 1414944.0) * (t**4))
+    # Re P(i t) ≈ log 3 - a2 t^2 + a4 t^4 + a6 t^6 - a8 t^8 + a10 t^10.
+    a2 = 11.0 / 204.0
+    a4 = 1559.0 / 1414944.0
+    a6 = 17123893.0 / 1177686190080.0
+    a8 = 122803509253.0 / 25412897733672960.0
+    a10 = 518906628614669.0 / 10575831520845339033600.0
+    return 3.0 * math.exp(-(a2) * (t**2) + a4 * (t**4) + a6 * (t**6) - a8 * (t**8) + a10 * (t**10))
 
 
 def poly_to_compact_latex(P: sp.Poly, var: str = "w") -> str:
