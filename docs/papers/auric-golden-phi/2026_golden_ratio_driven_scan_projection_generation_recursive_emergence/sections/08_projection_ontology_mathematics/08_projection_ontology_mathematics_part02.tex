@@ -201,6 +201,30 @@ T_I(n)=k_Z(I)\,\delta_Z+k_{\le}(I)\,T_{\le}(n)+D_U(n).
 该模型把投影读出与演化深度分离，用于比较不同实现把“混合”置于时间还是空间的策略差异。
 \end{definition}
 
+\begin{remark}[分辨率降阶不是“扔尾巴”：\texorpdfstring{$\mathrm{RESCALE}\downarrow$}{RESCALE down} 与规范差下界]\label{rem:pom-rescale-gauge-anomaly}
+除投影词中的 \(P_Z,P_{\le}\) 外，分辨率变换本身也可视为一个不可省略的投影门：在微态空间 \(\Omega_{m+1}\) 上，朴素截断
+\(
+r_{m+1\to m}:\Omega_{m+1}\to\Omega_m
+\)
+一般不与折叠相容，而折叠感知 restriction
+\(
+\widetilde r_{m+1\to m}(\omega)=\pi_{m+1\to m}(\Fold_{m+1}(\omega))\in X_m
+\)
+才是跨尺度一致的降分辨率读出（小节 \ref{subsec:fold-omega-restriction}）。
+因此在 ISA/微码抽象中，可把
+$$
+\mathrm{RESCALE}\downarrow:\ \Omega_{m+1}\to X_m,\qquad \omega\mapsto \widetilde r_{m+1\to m}(\omega)
+$$
+当作一个原语投影门来计入成本。
+\par
+更关键的是：该门的“时间投影支持规模”在最坏情形下是线性的。定义规范差 \(G_m(\omega)\) 为
+\(
+|r_{m+1\to m}(\omega)\oplus \widetilde r_{m+1\to m}(\omega)|_0
+\)
+（定义 \ref{def:fold-gauge-anomaly}），则定理 \ref{thm:fold-gauge-anomaly-max} 给出最坏下界 \(G_m^{\max}=m\)。
+这说明“在线延迟为常数”（因果锥长度）并不排除“降一阶分辨率需要触及整条外表寄存器”的最坏情形：两者刻画的是正交的复杂度分量（延迟 vs.\ 总体支持规模）。
+\end{remark}
+
 \begin{remark}[原子投影读出成本]\label{rem:pom-cost-prim}
 若需要读取 primitive 原子层谱，可在成本模型中添加
 \[

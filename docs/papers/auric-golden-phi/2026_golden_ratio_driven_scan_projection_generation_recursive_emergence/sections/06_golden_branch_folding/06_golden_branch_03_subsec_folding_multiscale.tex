@@ -118,3 +118,92 @@ r_{m+1\to m}(\omega_1\cdots\omega_m\omega_{m+1}):=\omega_1\cdots\omega_m
 \]
 证毕。
 \end{proof}
+
+\subsubsection{规范差（gauge anomaly）：朴素截断与折叠感知 restriction 的最坏全域偏离}\label{subsec:fold-gauge-anomaly}
+\paragraph{两个降分辨率输出之间的“最小修正量”}
+在微态层面，我们已经区分了普通截断 \(r_{m+1\to m}\) 与折叠感知 restriction \(\widetilde r_{m+1\to m}\)（小节 \ref{subsec:fold-omega-restriction}）。
+下面把二者的不一致用一个纯组合量度“量化”为一个可计算标量。
+
+\begin{definition}[规范差 \texorpdfstring{$G_m(\omega)$}{Gm(omega)}]\label{def:fold-gauge-anomaly}
+对 \(m\ge 1\) 与任意 \(\omega\in\Omega_{m+1}\)，定义长度 \(m\) 的规范差
+$$
+G_m(\omega)
+:=\bigl|\,r_{m+1\to m}(\omega)\ \oplus\ \widetilde r_{m+1\to m}(\omega)\,\bigr|_0,
+$$
+其中 \(\oplus\) 为逐位异或（在 \(\{0,1\}^m\) 上按模 \(2\) 相加），而 \(|\cdot|_0\) 为汉明重量（非零位计数）。
+\end{definition}
+
+\begin{remark}[语义：分辨率降阶的“时间投影”下界]
+\(\widetilde r_{m+1\to m}\) 在定义上是“先折叠再截断”的 coarse-graining；而 \(r_{m+1\to m}\) 是“直接丢弃末位”的朴素降维。
+量 \(G_m(\omega)\) 精确回答：若从朴素截断 \(r_{m+1\to m}(\omega)\) 出发，希望恢复到与折叠一致的低分辨率输出 \(\widetilde r_{m+1\to m}(\omega)\)，至少需要改动多少个输出比特（在汉明意义下）。
+因此它是“升维—投影”语言中一个可审计的时间投影证书：它度量了降分辨率所触及的输出支持规模，而非局部因果锥的延迟长度。
+\end{remark}
+
+\begin{theorem}[最坏规范差为满长：存在全域翻转输入]\label{thm:fold-gauge-anomaly-max}
+对任意 \(m\ge 1\)，存在 \(\omega^\star(m)\in\Omega_{m+1}\) 使得
+$$
+G_m\bigl(\omega^\star(m)\bigr)=m.
+$$
+换言之，朴素截断与折叠感知 restriction 在最坏输入下会在前 \(m\) 位上\emph{逐位全异}。
+\end{theorem}
+
+\begin{proof}
+显然 \(0\le G_m(\omega)\le m\)。
+下面构造使其取到上界的 \(\omega^\star(m)\)。
+\par
+令 \(\omega^\star=\omega^\star(m)\in\Omega_{m+1}\) 的前 \(m\) 位按周期模式 \(110\) 给出：
+$$
+\omega^\star_k=
+\begin{cases}
+1,& k\equiv 1,2\pmod 3,\ 1\le k\le m,\\
+0,& k\equiv 0\pmod 3,\ 1\le k\le m,
+\end{cases}
+$$
+并令末位
+$$
+\omega^\star_{m+1}:=\mathbf{1}_{\{m\equiv 1\ (\mathrm{mod}\ 3)\}}.
+$$
+于是 \(r_{m+1\to m}(\omega^\star)\) 为长度 \(m\) 的 \(110110\cdots\) 前缀。
+\par
+将 \(\omega^\star\) 嵌入配置空间 \(a:=\iota_{m+1}(\omega^\star)\in\mathcal D\)（定义 \ref{def:fold-word}）。
+对每个满足 \(3j+1\le m\) 的 \(j\ge 0\)，都有 \(a_{3j+1}=a_{3j+2}=1\)，因此相邻合并规则 (R\_adj)（定义 \ref{def:fold-word} 的 \textbf{(R\_adj)}）可在这些两两不相交的位置同时应用：
+$$
+a\ \to\ a':=a-\sum_{3j+1\le m}\bigl(e_{3j+1}+e_{3j+2}\bigr)+\sum_{3j+1\le m}e_{3j+3}.
+$$
+按 Fibonacci 恒等式 \(F_{k+1}+F_{k+2}=F_{k+3}\)，每一步都保持 \(\mathrm{Val}\) 不变，故 \(\mathrm{Val}(a')=\mathrm{Val}(a)=N(\omega^\star)\)。
+\par
+由构造可见：在 \(1\le k\le m\) 上，\(a'_k\) 正是周期模式 \(001001\cdots\) 的长度 \(m\) 前缀；并且该前缀不含相邻 \(11\)，故 \(a'\) 是不可约形（落在 \(X_\infty\)）。
+由命题 \ref{prop:fold-rewrite-newman} 的合流与 Zeckendorf 唯一性，\(a'\) 必等于正规形 \(\mathrm{NF}(a)\)。
+于是
+$$
+\Fold_{m+1}(\omega^\star)=\pi_{m+1}(\mathrm{NF}(a))=\pi_{m+1}(a'),
+\qquad
+\widetilde r_{m+1\to m}(\omega^\star)=\pi_{m+1\to m}(\Fold_{m+1}(\omega^\star))=\pi_m(a').
+$$
+因此 \(\widetilde r_{m+1\to m}(\omega^\star)\) 为长度 \(m\) 的 \(001001\cdots\) 前缀。
+两者逐位异或得到全 \(1\) 串，故 \(G_m(\omega^\star)=m\)。证毕。
+\end{proof}
+
+\begin{corollary}[任意“只修末端常数位”的降分辨率补丁都不完备]\label{cor:fold-tail-patch-incomplete}
+固定常数 \(R\ge 0\)。设某一替代映射 \(T_{m,R}:\Omega_{m+1}\to\Omega_m\) 满足：对任意 \(\omega\in\Omega_{m+1}\)，字符串 \(T_{m,R}(\omega)\) 与朴素截断 \(r_{m+1\to m}(\omega)\) 的不同位只可能落在末端 \(R\) 个坐标上（即最多改动末端 \(R\) 位）。
+则对所有 \(m>R\)，存在 \(\omega\in\Omega_{m+1}\) 使得 \(T_{m,R}(\omega)\ne \widetilde r_{m+1\to m}(\omega)\)。
+\end{corollary}
+
+\begin{proof}
+取定理 \ref{thm:fold-gauge-anomaly-max} 的 \(\omega^\star(m)\)。
+由于 \(r_{m+1\to m}(\omega^\star)\) 与 \(\widetilde r_{m+1\to m}(\omega^\star)\) 在前 \(m\) 位逐位全异，而 \(T_{m,R}\) 最多只能改动末端 \(R\) 位，故 \(T_{m,R}(\omega^\star)\) 至少在前 \(m-R\) 位与 \(\widetilde r_{m+1\to m}(\omega^\star)\) 不同，从而不可能相等。证毕。
+\end{proof}
+
+\begin{remark}[统计现象：均匀输入下的平均规范差（可复现枚举）]\label{rem:fold-gauge-anomaly-typical}
+除最坏情形外，均匀输入基线下的平均规范差同样呈线性尺度。
+令
+$$
+\bar G_m:=\mathbb{E}_{\omega\sim\mathrm{Unif}(\Omega_{m+1})}\,G_m(\omega).
+$$
+脚本 \texttt{scripts/exp\_fold\_gauge\_anomaly.py} 对 \(m\le 20\) 做精确枚举并输出 \(\bar G_m\) 与 \(\bar G_m/m\)（表 \ref{tab:fold_gauge_anomaly_stats}），显示 \(\bar G_m/m\) 随 \(m\) 增大单调上升并在 \(m=20\) 时达到约 \(0.4176\) 的水平。
+这提示：大规模“降分辨率重写”并非仅由极端构造触发，在无结构输入下也会以正的密度铺满全串。
+\end{remark}
+
+\IfFileExists{sections/generated/tab_fold_gauge_anomaly_stats.tex}{%
+\input{sections/generated/tab_fold_gauge_anomaly_stats}%
+}{}
