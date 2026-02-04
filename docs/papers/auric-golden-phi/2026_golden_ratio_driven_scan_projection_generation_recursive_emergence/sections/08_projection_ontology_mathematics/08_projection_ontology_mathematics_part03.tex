@@ -56,7 +56,7 @@ d_m(x):=\left|\Fold_m^{-1}(x)\right|,
 \qquad
 D_m:=\max_{x\in X_m} d_m(x).
 \]
-\subsubsection{信息账本：可见熵 + 纤维体积 $-$ 残差信息}\label{subsec:pom-information-ledger}
+\subsubsection{信息账本：可见熵 + 纤维体积 - 残差信息}\label{subsec:pom-information-ledger}
 固定分辨率 $m$，令 $\Omega_m=\{0,1\}^m$，$X_m$ 为禁词 $(11)$ 的稳定语言块，并设 $\Fold_m:\Omega_m\to X_m$ 为折叠投影。
 记概率单纯形为 $\Delta(\Omega_m),\Delta(X_m)$。
 定义推前（读出）算子
@@ -670,6 +670,64 @@ $$
 =\sum_{r}c_m(r)^q.
 $$
 与 \(|R_m^{(q)}|=S_q(m)\) 合并即得结论。证毕。
+\end{proof}
+
+\begin{proposition}[任意 \texorpdfstring{$q$}{q} 的傅里叶 moment-kernel 闭式]\label{prop:pom-moment-fourier-q}
+令 $F:=F_{m+2}$，并在加法群 $G:=\ZZ/F\ZZ$ 上定义同余分布
+$$
+c_m(r):=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\ (\mathrm{mod}\ F)\},\qquad r\in G.
+$$
+取 $\omega_F:=e^{2\pi i/F}$，定义离散傅里叶变换
+$$
+\widehat c_m(t):=\sum_{r\in G} c_m(r)\,\omega_F^{tr},\qquad t\in G.
+$$
+则对任意整数 $q\ge 2$ 有显式公式
+$$
+\boxed{\;
+S_q(m)=\frac{1}{F^{\,q-1}}
+\sum_{t_1,\dots,t_{q-1}\in G}
+\widehat c_m(t_1)\cdots \widehat c_m(t_{q-1})\,
+\widehat c_m\!\Bigl(-\sum_{j=1}^{q-1}t_j\Bigr)\;}
+$$
+并且 $\widehat c_m$ 具有完全因子化形式
+$$
+\boxed{\;
+\widehat c_m(t)=\sum_{\omega\in\Omega_m}\omega_F^{tN(\omega)}
+=\prod_{k=1}^m\bigl(1+\omega_F^{tF_{k+1}}\bigr)\; }.
+$$
+\end{proposition}
+\begin{proof}
+因子化式由
+$$
+\widehat c_m(t)=\sum_{\omega_1,\dots,\omega_m\in\{0,1\}}\ \prod_{k=1}^m \omega_F^{t\omega_kF_{k+1}}
+=\prod_{k=1}^m\sum_{\omega_k\in\{0,1\}} \omega_F^{t\omega_kF_{k+1}}
+$$
+直接得到。
+
+为得一般 $q$ 的闭式，先用傅里叶反演
+$$
+c_m(r)=\frac{1}{F}\sum_{t\in G}\widehat c_m(t)\,\omega_F^{-tr}.
+$$
+代入 $S_q(m)=\sum_{r\in G}c_m(r)^q$ 并展开：
+$$
+S_q(m)
+=\frac{1}{F^q}\sum_{t_1,\dots,t_q\in G}\widehat c_m(t_1)\cdots\widehat c_m(t_q)\sum_{r\in G}\omega_F^{-(t_1+\cdots+t_q)r}.
+$$
+由角色正交性，
+$$
+\sum_{r\in G}\omega_F^{-(t_1+\cdots+t_q)r}
+=
+\begin{cases}
+F,& t_1+\cdots+t_q\equiv 0\ (\mathrm{mod}\ F),\\
+0,& \text{否则}.
+\end{cases}
+$$
+因此
+$$
+S_q(m)=\frac{1}{F^{q-1}}\sum_{\substack{t_1,\dots,t_q\in G\\ t_1+\cdots+t_q\equiv 0}}
+\widehat c_m(t_1)\cdots\widehat c_m(t_q).
+$$
+再以 $t_q=-(t_1+\cdots+t_{q-1})$ 消去约束即得所述公式。证毕。
 \end{proof}
 
 \begin{definition}[折叠碰撞矩]\label{def:pom-s2}
@@ -2093,6 +2151,95 @@ N(\omega)=V_m(\Fold_m(\omega)) + b(\omega)\,F_{m+2}.
 
 \input{sections/08_projection_ontology_mathematics/08_projection_ontology_mathematics_overflow_global_count.tex}
 
+\begin{proposition}[纤维自由度的二层分解]\label{prop:pom-fiber-decompose}
+对任意 $x\in X_m$，记 $I(x)$ 为 $x$ 中可执行逆代换 $100\mapsto 011$ 的局部位点集合（以长度 $3$ 窗口计），并要求所选位点两两不相邻以避免重叠。则任意 $\omega\in\Fold_m^{-1}(x)$ 可视为"一个余量位 $b\in\{0,1\}$"与"一组不相邻逆代换位点"的组合；因此
+\[
+d_m(x)\le 2\cdot \#\{\text{路径图 }P_{|I(x)|}\text{ 的独立集}\}
+\le 2F_{\lfloor m/2\rfloor+2}.
+\]
+\end{proposition}
+\begin{proof}
+由引理 \ref{lem:pom-one-bit}，给定 $\omega$ 的超出前 $m$ 位的信息至多是一位 $b$。其余自由度来自逆代换 $100\mapsto 011$ 的选择：当两次逆代换发生重叠时会产生非二元符号，因此合法选择只能来自一条线性链上的不相邻位点集合。路径图独立集计数即为 Fibonacci 数，从而得到上述上界。证毕。
+\end{proof}
+
+\begin{theorem}[一步可判别与右解析性]\label{thm:pom-right-resolving}
+对任意 $m\ge 2$ 与任意 $v\in V_m=\{0,1\}^{m-1}$，有
+$$
+\boxed{\ |B_m|=\left\lfloor \frac{2^m}{3}\right\rfloor\ }
+$$
+等价地
+$$
+|B_m|=
+\begin{cases}
+\dfrac{2^m-1}{3}, & m\ \text{为偶数},\\[6pt]
+\dfrac{2^m-2}{3}, & m\ \text{为奇数}.
+\end{cases}
+$$
+\end{theorem}
+\begin{proof}
+由引理 \ref{lem:zeckendorf-range-bijection} 知 $V_m(X_m)=\{0,1,\dots,F_{m+2}-1\}$。故由引理 \ref{lem:pom-one-bit} 的分解
+$$
+N(\omega)=V_m(\Fold_m(\omega))+b(\omega)F_{m+2}
+$$
+可得
+$$
+b(\omega)=1\quad\Longleftrightarrow\quad N(\omega)\ge F_{m+2}.
+$$
+下面对最高位 $\omega_m$ 分类计数。
+
+\paragraph{(1) 若 $\omega_m=0$}
+则
+$$
+N(\omega)\le \sum_{k=1}^{m-1}F_{k+1}=F_{m+2}-1,
+$$
+故不可能满足 $N(\omega)\ge F_{m+2}$，从而该分支对 $B_m$ 无贡献。
+
+\paragraph{(2) 若 $\omega_m=1$}
+写
+$$
+N(\omega)=F_{m+1}+\omega_{m-1}F_m+\sum_{k=1}^{m-2}\omega_kF_{k+1}.
+$$
+阈值为 $F_{m+2}=F_{m+1}+F_m$，故 $N(\omega)\ge F_{m+2}$ 等价于
+$$
+\omega_{m-1}F_m+\sum_{k=1}^{m-2}\omega_kF_{k+1}\ \ge\ F_m.
+$$
+再对 $\omega_{m-1}$ 分类：
+\begin{itemize}
+  \item 若 $\omega_{m-1}=1$，条件自动成立；其余 $m-2$ 位任意，贡献 $2^{m-2}$ 个。
+  \item 若 $\omega_{m-1}=0$，条件化为
+  $$
+  \sum_{k=1}^{m-2}\omega_kF_{k+1}\ge F_m.
+  $$
+  这与“长度 $m-2$ 的同型阈值问题”一致：右端正是 $F_{(m-2)+2}=F_m$，因此该分支贡献 $|B_{m-2}|$ 个。
+\end{itemize}
+综上得到递推
+$$
+|B_m|=2^{m-2}+|B_{m-2}|\qquad(m\ge 3),
+$$
+并由直接枚举得初值 $|B_1|=0$、$|B_2|=1$。
+
+解递推：若 $m=2k$，则
+$$
+|B_{2k}|=1+\sum_{j=1}^{k-1}2^{2j}=\frac{2^{2k}-1}{3}.
+$$
+若 $m=2k+1$，则
+$$
+|B_{2k+1}|=\sum_{j=0}^{k-1}2^{2j+1}=\frac{2^{2k+1}-2}{3}.
+$$
+两式统一为 $|B_m|=\lfloor 2^m/3\rfloor$。证毕。
+\end{proof}
+
+\begin{corollary}[极限密度与“非均匀的一比特”]\label{cor:pom-hidden-bit-entropy}
+在 $\Omega_m$ 上取均匀分布，则
+$$
+\mathbb{P}[b(\omega)=1]=\frac{|B_m|}{2^m}
+=\frac{1}{3}-\frac{\varepsilon_m}{3\cdot 2^m},
+$$
+其中 $\varepsilon_m=1$ 当 $m$ 为偶数、$\varepsilon_m=2$ 当 $m$ 为奇数。因而
+$$
+\lim_{m\to\infty}\mathbb{P}[b(\omega)=1]=\frac{1}{3},\qquad
+\lim_{m\to\infty}\mathbb{P}[b(\omega)=0]=\frac{2}{3}.
+$$
 \begin{proposition}[纤维自由度的二层分解]\label{prop:pom-fiber-decompose}
 对任意 $x\in X_m$，记 $I(x)$ 为 $x$ 中可执行逆代换 $100\mapsto 011$ 的局部位点集合（以长度 $3$ 窗口计），并要求所选位点两两不相邻以避免重叠。则任意 $\omega\in\Fold_m^{-1}(x)$ 可视为“一个余量位 $b\in\{0,1\}$”与“一组不相邻逆代换位点”的组合；因此
 \[

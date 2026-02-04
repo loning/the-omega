@@ -394,6 +394,65 @@ S_k(m)=\widetilde u_k^{\mathsf T}\,\widetilde A_k^{\,m}\,\widetilde v_k,
 最后，$A_k$ 与 $\widetilde A_k$ 的关系可视为把表示空间按 $S_k$-不变子空间投影（或把加权自动机做确定性最小化之前的对称化预压缩），其 Perron 主尺度由本质强连通分量上的增长率决定；对称化不会改变“可接受路径条数”的指数增长率，因此谱半径保持为同一 \(r_k\)。证毕。
 \end{proof}
 
+\begin{proposition}[对称商 moment-kernel 的转移权重：多项式时间可计算]\label{prop:pom-ak-symmetric-transition-poly}
+沿定理 \ref{thm:pom-collision-kernel-ak} 的构造，设在线同步核为确定性转导器：状态集 $Q$，输入字母表 $\{0,1\}$，并存在确定性函数
+$$
+\delta:Q\times\{0,1\}\to Q,\qquad \varepsilon:Q\times\{0,1\}\to\{0,1\},
+$$
+其中 $\delta(q,d)$ 为下一状态、$\varepsilon(q,d)$ 为输出位。令 $k\ge 2$，并用直方图状态
+$$
+\nu\in\NN^{Q},\qquad \sum_{q\in Q}\nu(q)=k
+$$
+表示 $k$ 份拷贝在各同步状态上的出现次数。
+
+则对任意输出位 $e\in\{0,1\}$ 与任意两直方图 $\nu,\nu'$，从 $\nu$ 以“逐位输出一致且等于 $e$”约束一步转移到 $\nu'$ 的权重可写为
+$$
+w_e(\nu,\nu')
+=
+\sum_{\{a_q\}}
+\ \prod_{q\in Q}\binom{\nu(q)}{a_q},
+$$
+其中求和对所有整数族 $\{a_q\}_{q\in Q}$ 进行，满足：
+\begin{itemize}
+  \item \textbf{(输出一致约束)} 对每个 $q\in Q$，必须有
+  $$
+  \varepsilon(q,0)\neq e\ \Rightarrow\ a_q=0,\qquad
+  \varepsilon(q,1)\neq e\ \Rightarrow\ a_q=\nu(q),
+  $$
+  即 $a_q$ 仅在允许的输入位上取值（$a_q$ 解释为“处于状态 $q$ 的轨道中，选择输入 $0$ 的条数”）；
+  \item \textbf{(下一直方图约束)} $\nu'$ 由 $\{a_q\}$ 唯一确定，且要求满足
+  $$
+  \nu'(q')
+  =
+  \sum_{q\in Q}\Bigl(
+  a_q\,\mathbf{1}_{\delta(q,0)=q'}+(\nu(q)-a_q)\,\mathbf{1}_{\delta(q,1)=q'}
+  \Bigr),
+  \qquad \forall q'\in Q.
+  $$
+\end{itemize}
+因此对称商核的一步邻接权重为
+$$
+\widetilde A_k(\nu,\nu')=w_0(\nu,\nu')+w_1(\nu,\nu').
+$$
+并且当 $|Q|$ 固定（本文为 $|Q|=10$）时，给定任意 $\nu$，全体 $w_e(\nu,\nu')$（对所有 $\nu'$）可通过对 $q\in Q$ 逐状态做一次多项式卷积/动态规划在 $\mathrm{poly}(k)$ 时间内计算，从而 \(\widetilde A_k\) 的构造为可执行的多项式级过程。
+\end{proposition}
+\begin{proof}[证明要点（计数=二项式系数卷积）]
+固定 $\nu$ 与输出位 $e$。对每个同步状态 $q$，处于 $q$ 的 $\nu(q)$ 条轨道在满足 $\varepsilon(q,d)=e$ 的输入位 $d\in\{0,1\}$ 中作选择；当两种输入均允许时，选择 $a_q$ 条取 $0$、其余取 $1$ 的方式数为 $\binom{\nu(q)}{a_q}$；当仅一种输入允许时，$a_q$ 被强制为 $0$ 或 $\nu(q)$。
+
+在给定所有 $\{a_q\}$ 后，每条轨道的下一状态由 $\delta(q,0)$ 或 $\delta(q,1)$ 确定，从而得到唯一的下一直方图 $\nu'$，其坐标满足题中线性约束式。对所有可行 $\{a_q\}$ 求和即得到 $w_e(\nu,\nu')$。
+
+算法层面，这就是一组“按状态独立选择 $\Rightarrow$ 按目标状态聚合”的计数卷积：把每个 $q$ 的选择视为在变量族 $\{z_{q'}\}_{q'\in Q}$ 上的多项式
+$$
+P_{q,e}(z):=\mathbf{1}_{\varepsilon(q,0)=e}\,z_{\delta(q,0)}+\mathbf{1}_{\varepsilon(q,1)=e}\,z_{\delta(q,1)},
+$$
+则对固定 $\nu$ 有生成函数
+$$
+\prod_{q\in Q} P_{q,e}(z)^{\nu(q)}
+=\sum_{\nu'} w_e(\nu,\nu')\,z^{\nu'},
+$$
+其中 $z^{\nu'}:=\prod_{q'\in Q} z_{q'}^{\nu'(q')}$。在 $|Q|$ 固定时，系数抽取可用逐状态卷积 DP 实现，复杂度为 $k$ 的某个固定次数多项式。证毕。
+\end{proof}
+
 \subsubsection{由 \texorpdfstring{$r_k$}{rk} 导出的空间损失谱：Rényi 族与多重分形上包络}\label{subsec:pom-multifractal-from-rk}
 定义 Fold 输出分布（对 $\Omega_m$ 上均匀输入的推前）为
 \[
