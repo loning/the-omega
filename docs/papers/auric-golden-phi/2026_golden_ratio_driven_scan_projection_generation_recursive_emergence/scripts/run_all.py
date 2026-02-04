@@ -226,6 +226,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_time_correlation",
+            script="exp_sync_kernel_time_correlation.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_time_correlation.json",
+                "artifacts/export/sync_kernel_time_correlation.png",
+                "sections/generated/fig_sync_kernel_time_correlation.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_cyclotomic_elimination",
             script="exp_sync_kernel_cyclotomic_elimination.py",
             args=[],
@@ -414,6 +424,27 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/sync_kernel_real_input_40_logM_theta_taylor.json",
                 "sections/generated/tab_real_input_40_logM_theta_taylor.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_time_correlation",
+            script="exp_real_input_40_time_correlation.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_time_correlation.json",
+                "artifacts/export/real_input_40_time_correlation.png",
+                "sections/generated/fig_real_input_40_time_correlation.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_tau_corr_vs_tau_mix",
+            script="exp_real_input_40_tau_corr_vs_tau_mix.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_tau_corr_vs_tau_mix.csv",
+                "sections/generated/tab_real_input_40_tau_corr_vs_tau_mix.tex",
+                "artifacts/export/real_input_40_tau_corr_vs_tau_mix.png",
+                "sections/generated/fig_real_input_40_tau_corr_vs_tau_mix.tex",
             ],
         ),
         Step(

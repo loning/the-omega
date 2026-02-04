@@ -20,6 +20,42 @@ n\ \ge\ \frac{\log(C/\varepsilon)}{\log\!\bigl(\lambda_1(u)/|\lambda_2(u)|\bigr)
 若同步核满足附录 \ref{app:kernel-self-dual} 的自对偶关系，则完成化后的 $\zeta$ 函数在 $\theta$ 变量上呈严格偶性。于是其对 $\theta$ 的奇阶导数在 $\theta=0$ 处消失，这对代价势的涨落统计施加对称性约束；相应的可调性仅能通过破坏该自对偶结构实现。
 \end{remark}
 
+\subsubsection{内生时间相关：谱隙给出的相关长度尺度（无外部输入）}
+
+本小节把“谱隙”从 prime-orbit 误差控制进一步解释为\textbf{时间相关的衰减尺度}。这里强调“无外部输入”：考虑的随机性来自核自身的 Parry/平衡测度（即由有限维传输算子诱导的平稳马尔可夫结构），而非外加噪声或外部驱动。
+
+\begin{proposition}[谱隙 \texorpdfstring{$\Rightarrow$}{=>} 时间相关指数衰减（可审计）]\label{prop:pom-time-corr-gap}
+设 $B_\theta$ 为有限状态同步核的倾斜传输矩阵族（例如对输出位势 $e$ 的一维倾斜），并假设对给定 $\theta$ 矩阵 $B_\theta$ 原始。记
+\(
+\lambda_1(\theta)=\rho(B_\theta),\quad
+\Lambda(\theta)=\max\{ |\lambda|:\ \lambda\in\mathrm{spec}(B_\theta),\ |\lambda|<\lambda_1(\theta)\}
+\)，并令
+\[
+\rho(\theta):=\frac{\Lambda(\theta)}{\lambda_1(\theta)}\in[0,1),
+\qquad
+g(\theta):=-\log \rho(\theta)\in(0,+\infty).
+\]
+则对任意依赖有限窗口的可观测量 $F,G$（以块提升化为单时刻函数后），在 $B_\theta$ 的 Parry/平衡测度下存在常数 $C_{F,G}(\theta)<\infty$ 使得对所有 $n\ge 0$ 有
+\[
+\bigl|\mathrm{Cov}(F,\,G\circ\sigma^n)\bigr|\ \le\ C_{F,G}(\theta)\,\rho(\theta)^n.
+\]
+因此可把
+\(
+\tau(\theta):=1/g(\theta)
+\)
+解释为“相关时间”，并可把 $\tau_{1/2}(\theta):=\log 2\,/\,g(\theta)$ 解释为半衰期（指数包络衰减到 $1/2$ 的时间）。
+\end{proposition}
+
+\begin{proof}
+对原始非负矩阵 $B_\theta$，Perron--Frobenius 理论给出唯一主特征值 $\lambda_1(\theta)>0$ 及相应左右正特征向量。由 Parry 测度的标准构造（Doob 变换）可把协方差写为
+\(
+\mathrm{Cov}(F,G\circ\sigma^n)=\langle f,\,\mathcal{T}_\theta^n g\rangle
+\)
+的形式，其中 $\mathcal{T}_\theta$ 为归一化后的转移算子（谱半径 $1$），且其非平凡谱半径为 $\rho(\theta)$。对中心化函数，主特征模态消失，仅剩余谱贡献，从而得到指数衰减界。全部量均为有限维线性代数对象，可直接由矩阵谱与向量内积审计。
+\end{proof}
+
+\input{sections/generated/fig_sync_kernel_time_correlation}
+
 \subsection{新结论簇 IV：指数尺度饱和与常数级指纹}\label{subsec:pom-lambda-saturation}
 \begin{proposition}[指数尺度的输入饱和]\label{prop:pom-lambda-saturation}
 对确定性、完备读入的同步核，Perron 根 $\lambda$ 主要由输入骨架决定，而核方向仅贡献更小模的谱修正。具体地，40 状态真实输入核满足 $\rho(M)=\rho(A)=\varphi^2$（命题 \ref{prop:real-input-40-skeleton-factor}），10 状态同步核满足 $\lambda=3$（附录 \ref{app:sync-kernel-basic} 的行列式分解）。因此 $\log\lambda$ 更接近“输入分支熵”的饱和尺度，而非机制差异的细粒度指纹。
@@ -352,4 +388,3 @@ t(c_1,\dots,c_k)=Z\!\left(P\bigl(\mathrm{Val}(c_1),\dots,\mathrm{Val}(c_k)\bigr)
 \begin{remark}[纲领：读出层级塔]\label{rem:pom-hyper-iteration}
 定理 \ref{thm:pom-one-fold-normal-form} 表明，在半环闭包内“规范投影只需末端一次”。进一步可沿定理 \ref{thm:composition-two-layer} 的思路构造读出层级塔：第 $0$ 层以合成 $\circ$ 的一次迭代读出对应加法，第 $1$ 层以“加法迭代”对应乘法；按同样方式递归定义第 $k$ 层的“运算”为第 $k{-}1$ 层的迭代读出。该层级塔在过程层不引入新原语，而将复杂度转移为读出层级的提升。
 \end{remark}
-
