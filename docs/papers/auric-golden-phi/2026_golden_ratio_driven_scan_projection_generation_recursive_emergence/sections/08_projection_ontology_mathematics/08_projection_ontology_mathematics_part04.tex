@@ -357,6 +357,72 @@ P(\theta)=\frac{\theta}{2}+\log c+o(1),
 是 Pontryagin 对偶上的自然坐标。由此“有限同余轴 + 相位对角化 + 扭曲 $\zeta$”形成一条可审计的构造路径，极限即为“无限素数寄存器纤维”的严格实现。
 \end{remark}
 
+\begin{proposition}[profinite 角色对角化：Hilbert 空间上的 Artin 分解与核版 GRH 的算子化]\label{prop:pom-profinite-artin-hilbert}
+令 \(K\) 为有限核（有向图/Markov 核），顶点集为 \(V\)，并令 \(\kappa:E(K)\to\ZZ\) 为一步可加势（例如 carry/碰撞/输出位势）。
+取 profinite 同余轴 \(G_\infty:=\widehat{\ZZ}\)（或其单位部分 \(\widehat{\ZZ}^{\,\times}\)，见注 \ref{rem:pom-profinite-units}），并令
+\(
+g:E(K)\to G_\infty
+\)
+为一步同余 cocycle（即把每条边标记为某个 residue 增量；对有限模 \(m\) 的读出即为合成 \(G_\infty\to\ZZ/m\ZZ\)）。
+在 Hilbert 空间
+\[
+\mathcal{H}:=\CC^{V}\otimes L^2(G_\infty)
+\]
+（\(G_\infty\) 上取 Haar 测度）上定义“群扩张邻接算子”
+\[
+\bigl(\mathcal{M}_u f\bigr)(j,h)
+:=\sum_{e:i\to j} u^{\kappa(e)}\, f\!\bigl(i,\ h\cdot g(e)\bigr),
+\qquad u>0,
+\]
+其中 \(f\in\mathcal{H}\) 视为 \(V\times G_\infty\) 上的平方可积函数，且 \(h\mapsto h\cdot g(e)\) 为右乘平移。
+则：
+\begin{enumerate}
+  \item \textbf{（Fourier 分解与块对角化）} 由于 \(G_\infty\) 为紧致交换群，存在角色正交基分解
+  \[
+  L^2(G_\infty)\cong \bigoplus_{\chi\in\widehat{G_\infty}}\CC\,\chi,
+  \]
+  且在该分解下 \(\mathcal{M}_u\) 以酉等价方式化为直和
+  \[
+  \mathcal{M}_u\ \cong\ \bigoplus_{\chi\in\widehat{G_\infty}} M_\chi(u),
+  \]
+  其中每个块 \(M_\chi(u)\) 是 \(\CC^{V}\) 上的有限维扭曲矩阵：
+  \[
+  (M_\chi(u))_{i\to j}:=\sum_{e:i\to j} u^{\kappa(e)}\,\chi\!\bigl(g(e)\bigr).
+  \]
+  \item \textbf{（最坏扭曲谱半径的算子读出）} 记平凡角色为 \(1\)，并令
+  \(
+  \mathcal{H}_0:=\CC^V\otimes\mathrm{span}\{1\}
+  \)
+  及 \(\mathcal{H}_\perp:=\mathcal{H}_0^\perp\)。
+  则
+  \[
+  \rho\!\left(\mathcal{M}_u|_{\mathcal{H}_\perp}\right)
+  =\sup_{\chi\neq 1}\rho\!\left(M_\chi(u)\right),
+  \qquad
+  \rho\!\left(\mathcal{M}_u|_{\mathcal{H}_0}\right)=\rho\!\left(M_1(u)\right)=:\lambda_1(u).
+  \]
+  \item \textbf{（核版 GRH 的算子化）} 若核版 GRH（定义 \ref{def:kernel-rh} 的同型条件）在该 profinite 角色族上成立，即
+  \(
+  \sup_{\chi\neq 1}\rho(M_\chi(u))\le \lambda_1(u)^{1/2}
+  \),
+  则等价地有算子谱半径不等式
+  \[
+  \rho\!\left(\mathcal{M}_u|_{\mathcal{H}_\perp}\right)\ \le\ \lambda_1(u)^{1/2}.
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+对有限模 \(m\) 的轴束，命题 \ref{prop:kernel-artin-factorization} 给出有限群版本的行列式因子化，其本质是正则表示的 Fourier/角色分解。
+对紧致交换群 \(G_\infty\)，Pontryagin 对偶 \(\widehat{G_\infty}\) 为离散交换群，角色在 \(L^2(G_\infty)\) 中形成正交基；右乘平移 \(T_{g(e)}:f(h)\mapsto f(h\cdot g(e))\) 在该基上对角化，特征值为 \(\chi(g(e))\)。
+因此 \(\mathcal{M}_u\) 在 \(L^2(G_\infty)\) 的 Fourier 基下逐角色约化为有限维块 \(M_\chi(u)\)，从而得到直和分解。谱半径恒等式由直和算子的谱为各块谱的并集给出。证毕。
+\end{proof}
+
+\begin{remark}[对照：Ihara--Ramanujan 机制的同构版]\label{rem:pom-profinite-ihara-ramanujan}
+命题 \ref{prop:pom-profinite-artin-hilbert} 的结构与图论 Ihara-\(\zeta\) 的“图版 RH \(\Leftrightarrow\) Ramanujan 谱界”完全同型：
+角色分解把覆盖/轴束上的算子对角化为扭曲块，而“平方根界”就是对全部非平凡块的统一谱半径控制。
+本文的核版 RH/GRH（定义 \ref{def:kernel-rh}）正是把这一机制移植到“primitive 轨道计数/显式公式误差”的可审计场景中（参见注 \ref{rem:kernel-graph-rh}）。
+\end{remark}
+
 \begin{remark}[素数长度作为并行结构探针]\label{rem:pom-prime-length-probe}
 在张量装配的全局核上，迹序列满足 $a_n^{\mathrm{glob}}(u)=a_n^{\mathrm{flow}}(u)^m$，primitive 谱由 Witt/Möbius 反演给出（推论 \ref{cor:par-add-global-lift-endpoints}）。当 $n=\ell$ 为素数时，
 \[

@@ -39,6 +39,9 @@ Q_-:=\{0\overline{1}2,\,1\overline{1}2,\,01\overline{1},\,11\overline{1}\},
 P'(0)=\frac{1}{8}\ \ (\approx 0.1250000006),\qquad
 P''(0)=\frac{25}{128}\ \ (\approx 0.1953128548).
 \]
+进一步，由三次方程在 \(\theta=0\) 处的解析分支可把更高阶累积量（偏斜、峰度等）闭式导出；下式由脚本 \texttt{scripts/exp\_sync\_kernel\_phi\_minus\_cubic\_series.py} 一键生成并可回归测试：
+
+\input{sections/generated/eq_sync_kernel_phi_minus_cubic_series}
 因此典型频率 $\alpha_\star=P'(0)=1/8$，局部二次近似为
 \[
 I(\alpha)\approx \frac{(\alpha-\frac18)^2}{2P''(0)}=\frac{64}{25}\Bigl(\alpha-\frac18\Bigr)^2,
@@ -187,6 +190,12 @@ P(\theta)=\log 3+\frac12\theta_e+\frac18\theta_-+\frac13\theta_2
 +\frac{11}{204}\theta_e^2+\frac{25}{256}\theta_-^2+\frac19\theta_2^2
 +\frac{181}{1632}\theta_e\theta_2+\frac{5}{128}\theta_-\theta_2+O(|\theta|^3).
 \]
+这意味着在二阶近似下 \(\varphi_e\) 与 \(\varphi_-\) \textbf{零相关}，但二者分别与 \(\varphi_2\) 正相关；因此在以 \(\varphi_2\) 为中介作条件化后会出现\textbf{条件负相关}（Schur 补读出）：
+
+\input{sections/generated/eq_sync_kernel_3d_conditional_covariance}
+
+\noindent
+从而“零相关但非独立”在本三势耦合中具有一个可审计的定量证书。
 三维大偏差率函数
 \[
 I(\alpha)=\sup_{\theta\in\mathbb{R}^3}\bigl(\theta\cdot\alpha-(P(\theta)-P(0))\bigr)

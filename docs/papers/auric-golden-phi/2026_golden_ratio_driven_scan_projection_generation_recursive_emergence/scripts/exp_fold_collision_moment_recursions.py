@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Verify and summarize higher collision-moment recurrences S_k(m).
+"""Verify and summarize collision-moment recurrences S_k(m).
 
 We work with the Fold_m fiber multiplicities d_m(x)=|Fold_m^{-1}(x)| and define:
   S_k(m) = sum_x d_m(x)^k.
 
-The paper already treats k=2 (A2 kernel) and k=3 (A3 kernel).
-This script verifies the proposed exact integer recurrences for k=4..8 against
-enumerated S_k(m), and writes a small LaTeX table for auditability.
+The paper treats k=2 (A2 kernel), k=3 (A3 kernel), and k=4 (A4 kernel) explicitly.
+This script verifies exact integer recurrences for k=2..8 against enumerated S_k(m),
+and writes a small LaTeX table for auditability.
 
 All output is English-only by repository convention.
 """
@@ -81,6 +81,9 @@ class RecSpec:
 
 
 RECS: List[RecSpec] = [
+    # k=2,3: exact 3rd-order recurrences (A2, A3)
+    RecSpec(k=2, order=3, m0_hint=5, coeffs=[2, 2, -2]),
+    RecSpec(k=3, order=3, m0_hint=5, coeffs=[2, 4, -2]),
     RecSpec(k=4, order=5, m0_hint=13, coeffs=[2, 7, 0, 2, -2]),
     RecSpec(k=5, order=5, m0_hint=13, coeffs=[2, 11, 8, 20, -10]),
     RecSpec(k=6, order=7, m0_hint=15, coeffs=[2, 17, 28, 88, -26, 4, -4]),

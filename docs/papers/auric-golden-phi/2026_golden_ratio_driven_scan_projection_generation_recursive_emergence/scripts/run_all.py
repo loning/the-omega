@@ -178,6 +178,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_moment_spectrum_k2_8",
+            script="exp_fold_collision_moment_spectrum_k2_8.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_moment_spectrum_k2_8.json",
+                "sections/generated/tab_fold_collision_moment_spectrum_k2_8.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_moment_hankel_rank",
             script="exp_fold_collision_moment_hankel_rank.py",
             args=[],
@@ -235,6 +244,24 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_weighted_primitive_completed",
+            script="exp_sync_kernel_weighted_primitive_completed.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_sync_kernel_weighted_primitive_completed.tex",
+                "sections/generated/eq_sync_kernel_weighted_primitive_pn_first10.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_weighted_completion_Q_sy",
+            script="exp_sync_kernel_weighted_completion_Q_sy.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_weighted_completion_Q_sy.json",
+                "sections/generated/eq_sync_kernel_weighted_completion_Q_sy.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_time_correlation",
             script="exp_sync_kernel_time_correlation.py",
             args=[],
@@ -252,6 +279,38 @@ def build_steps() -> List[Step]:
                 "artifacts/export/sync_kernel_cyclotomic_elimination.json",
                 "sections/generated/tab_sync_kernel_cyclotomic_elimination_summary.tex",
                 "sections/generated/tab_sync_kernel_cyclotomic_elimination_polys.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_phi_minus_cubic_series",
+            script="exp_sync_kernel_phi_minus_cubic_series.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_sync_kernel_phi_minus_cubic_series.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_3d_conditional_covariance",
+            script="exp_sync_kernel_3d_conditional_covariance.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_sync_kernel_3d_conditional_covariance.tex",
+            ],
+        ),
+        Step(
+            name="arity_335_cross_layer_diagnostics",
+            script="exp_arity_335_cross_layer_diagnostics.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_arity_335_cross_layer_diagnostics.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_logM_artin_factorization",
+            script="exp_real_input_40_logM_artin_factorization.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_real_input_40_logM_artin_factorization.tex",
             ],
         ),
         Step(
@@ -369,6 +428,24 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/arity_335_n2_master_curve.json",
                 "sections/generated/tab_real_input_40_arity_335_n2_master_curve.tex",
+            ],
+        ),
+        Step(
+            name="arity_pure_collision_cubic_asymp_coeffs",
+            script="exp_arity_pure_collision_cubic_asymp_coeffs.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/arity_pure_collision_cubic_asymp_coeffs.json",
+                "sections/generated/tab_arity_pure_collision_cubic_asymp_coeffs.tex",
+            ],
+        ),
+        Step(
+            name="arity_pure_collision_cubic_primes",
+            script="exp_arity_pure_collision_cubic_primes.py",
+            args=["--p-max", "101", "--dps", "80"],
+            expected_outputs=[
+                "artifacts/export/arity_pure_collision_cubic_primes.json",
+                "sections/generated/tab_arity_pure_collision_cubic_primes.tex",
             ],
         ),
         Step(
@@ -492,6 +569,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/real_input_40_finite_part_split.json",
                 "sections/generated/tab_real_input_40_finite_part_split.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_abel_mertens_two_series_split",
+            script="exp_real_input_40_abel_mertens_two_series_split.py",
+            args=["--N", "160", "--dps", "80"],
+            expected_outputs=[
+                "artifacts/export/real_input_40_abel_mertens_two_series_split.json",
+                "sections/generated/tab_real_input_40_abel_mertens_two_series_split.tex",
             ],
         ),
         Step(

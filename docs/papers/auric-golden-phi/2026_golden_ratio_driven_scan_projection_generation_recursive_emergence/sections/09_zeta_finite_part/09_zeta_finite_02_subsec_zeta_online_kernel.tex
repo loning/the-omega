@@ -158,6 +158,38 @@ I(\alpha)=\frac{(\alpha-\frac12)^2}{2P''(0)}+O\!\left((\alpha-\tfrac12)^3\right)
 \]
 其中 $I$ 为输出位计数的 LDP 率函数（见附录 \ref{app:pressure-analytic} 与 \ref{app:rate-param}）。有限 $n$ 的镜像对称与其导出的 Mertens 偶性见推论 \ref{cor:primitive-finite-sym} 与命题 \ref{prop:mertens-even}；周期迹多项式与 $\Delta$ 系数的逐项回文约束见命题 \ref{prop:trace-palindrome} 与推论 \ref{cor:delta-coeff-palindrome}。
 
+\begin{proposition}[完成化零点的对偶--共轭对称（核版 RH 的基本域）]\label{prop:completed-zero-symmetry}
+设 \(\Delta(z,u)=\det(I-zB(u))\) 满足自对偶对称 \(\Delta(z,u)=\Delta(uz,1/u)\)，并令 \(N:=\dim B\)。
+定义完成化变量与完成化行列式
+\[
+w:=z\,u^{1/2},\qquad
+\widehat{\Delta}(w,u):=u^{-N/2}\,\Delta(wu^{-1/2},u).
+\]
+则有：
+\begin{enumerate}
+  \item \textbf{（对偶识别）}\(\widehat{\Delta}(w,1/u)=u^{N}\widehat{\Delta}(w,u)\)。因此对任意 \(u\neq 0\)，完成化零点集只依赖于不变量
+  \(s:=u^{1/2}+u^{-1/2}\)（等价于 \(u\leftrightarrow 1/u\) 给出同一条完成化曲线）。
+  \item \textbf{（单位圆上的共轭对称）} 当 \(|u|=1\) 时，\(\widehat{\Delta}(\,\cdot\,,u)\) 的零点在 \(w\)-平面上关于共轭成对：若 \(\widehat{\Delta}(w_0,u)=0\)，则 \(\widehat{\Delta}(\overline{w_0},u)=0\)。
+  \item \textbf{（Klein 四群作用：在 \((w,u)\) 平面）} 当 \(|u|=1\) 时，零点集在
+  \((w,u)\mapsto (w,1/u)\) 与 \((w,u)\mapsto(\overline{w},\overline{u})\) 的生成下闭合；由于此时 \(1/u=\overline{u}\)，这两种对称生成一个 Klein 四群，从而把“核版 RH 的检查”约化到一个基本域（例如只需扫描 \(t\in[0,\pi]\) 且 \(\Im w\ge 0\)）。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+（1）由 \(\Delta(z,u)=\Delta(uz,1/u)\) 得
+\[
+\widehat{\Delta}(w,1/u)
+=(1/u)^{-N/2}\Delta(w(1/u)^{-1/2},1/u)
+=u^{N/2}\Delta(wu^{1/2},1/u).
+\]
+再用 \(\Delta(z,1/u)=\Delta((1/u)z,u)\) 得 \(\Delta(wu^{1/2},1/u)=\Delta(wu^{-1/2},u)\)，从而
+\(\widehat{\Delta}(w,1/u)=u^{N}\widehat{\Delta}(w,u)\)，零点集一致。
+
+（2）由于 \(\Delta\) 的系数在 \(\ZZ[u]\)（从而满足 \(\overline{\Delta(z,u)}=\Delta(\overline{z},\overline{u})\)），若 \(\widehat{\Delta}(w_0,u)=0\) 则 \(\widehat{\Delta}(\overline{w_0},\overline{u})=0\)。
+当 \(|u|=1\) 时 \(\overline{u}=1/u\)，由（1）零点集对 \(u\leftrightarrow 1/u\) 不变，故 \(\widehat{\Delta}(\overline{w_0},u)=0\)。
+
+（3）由（1）与（2）直接得到闭合性与基本域约化。证毕。
+\end{proof}
+
 \begin{theorem}[压力对称 \texorpdfstring{$\Rightarrow$}{=>} 大偏差谱的精确镜像]\label{thm:sync-pressure-sym-ldp-mirror}
 设同步核满足自对偶对称，从而压力函数满足
 \[
@@ -268,6 +300,37 @@ A_B:=\min\{k>0:\ \exists n\ \text{使}\ p_{n,k}>0\}.
 (1) 若存在 \(p_{n,k}>0\)（\(k>0\)），则存在一条 primitive 回路 \(\tau\) 满足 \(|\tau|=n\) 且能量为 \(k\)，因而其边集包含至少一条正能量边并形成有向环。反之若存在含正能量边的有向环，则该环分解为若干 primitive 回路，其中至少一条 primitive 回路具有正能量，从而某个 \(p_{n,k}\)（\(k>0\)）非零，故 \(A_B\) 良定义且为正。
 
 (2) \(\bar\kappa_{\min}\) 是有向图上边权的最小平均回路权，Karp 算法给出其多项式时间可计算性；这与本节的“硬序投影/零温极限”口径同型（见注 \ref{rem:pom-order-as-zero-temp}）。证毕。
+\end{proof}
+
+\begin{proposition}[Newton 支撑的极端斜率：\texorpdfstring{$\alpha_{\min},\alpha_{\max}$}{alpha_min, alpha_max} 与饱和端点]\label{prop:sync-newton-extreme-slopes}
+沿用命题 \ref{prop:sync-bivariate-euler-product} 的联合 primitive 计数 \(p_{n,k}\)。
+令
+\[
+\alpha_{\min}:=\inf\left\{\frac{k}{n}:\ p_{n,k}>0\right\},\qquad
+\alpha_{\max}:=\sup\left\{\frac{k}{n}:\ p_{n,k}>0\right\}.
+\]
+并把 \(\alpha_{\min},\alpha_{\max}\) 视为 \((n,k)\)-平面上 Newton 支撑（\(\{(n,k):p_{n,k}>0\}\) 的凸包）两条外支撑边的极端斜率。
+则：
+\begin{enumerate}
+  \item \(\alpha_{\min},\alpha_{\max}\) 等价于回路的极端平均能量密度：
+  \[
+  \alpha_{\min}=\min_{\gamma\ \mathrm{cycle}}\frac{\sum_{e\in\gamma}\kappa(e)}{|\gamma|},
+  \qquad
+  \alpha_{\max}=\max_{\gamma\ \mathrm{cycle}}\frac{\sum_{e\in\gamma}\kappa(e)}{|\gamma|},
+  \]
+  其中 \(\kappa(e):=\varphi(e)\in\ZZ_{\ge 0}\) 为边势（本节的输出位势即 \(\kappa\in\{0,1\}\)）。
+  \item 对压力 \(P(\theta)=\log\rho(B(e^{\theta}))\) 与典型密度 \(\alpha(\theta)=P'(\theta)\)，有饱和端点恒等式
+  \[
+  \lim_{\theta\to-\infty}\alpha(\theta)=\alpha_{\min},\qquad
+  \lim_{\theta\to+\infty}\alpha(\theta)=\alpha_{\max},
+  \]
+  且在极端温度下 \(P(\theta)=\alpha_{\max}\theta+O(1)\)（\(\theta\to+\infty\)）与 \(P(\theta)=\alpha_{\min}\theta+O(1)\)（\(\theta\to-\infty\)）。
+  \item \(\alpha_{\min}\)（min-mean-cycle）与 \(\alpha_{\max}\)（max-mean-cycle）均为多项式时间可计算的组合不变量（Karp 型算法）。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:sync-bivariate-euler-product}，每个 \(p_{n,k}>0\) 对应一条 primitive 回路 \(\tau\) 满足 \((|\tau|,S_\tau\varphi)=(n,k)\)，故 \(k/n\) 必为某条回路（从而某条有向环）的平均能量密度；反之任意有向环分解为 primitive 回路，其平均能量位于这些 primitive 分量的凸包内，故 \(\alpha_{\min},\alpha_{\max}\) 等于所有回路平均能量的极值。
+端点等式与 \(P(\theta)=\log\rho(B(e^\theta))\) 在 \(\theta\to\pm\infty\) 的主导项由极端平均回路给出是有限图热力学形式的标准结论（可由 max-plus Perron--Frobenius 或直接比较回路权重得到）；组合可计算性由 Karp 算法给出。证毕。
 \end{proof}
 
 \begin{proposition}[completion \texorpdfstring{$\to$}{->} cyclotomic resultant]\label{prop:sync-cyclotomic-elimination}

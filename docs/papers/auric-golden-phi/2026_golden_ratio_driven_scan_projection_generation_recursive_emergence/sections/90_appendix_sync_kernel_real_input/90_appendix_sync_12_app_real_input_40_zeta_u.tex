@@ -66,6 +66,72 @@ a^{\mathrm{cycle}}_n(u)=
 该“单独 Euler 因子”可从总体 $\zeta(z,u)$ 中完全剥离，剩余部分由 $F(z,u)$ 的 primitive 谱承担。
 \end{remark}
 
+\begin{proposition}[primitive 轨道手术：可剥离 Euler 因子的精确常数修正]\label{prop:primitive-orbit-surgery}
+设某个加权 SFT/有限矩阵族的 \(\zeta\)-函数在形式幂级数环中分解为
+\[
+\zeta(z,u)=\frac{1}{(1-u^{E}z^{\ell})^{m}}\cdot \zeta_{\mathrm{core}}(z,u),
+\qquad m\in\ZZ_{\ge 1},\ \ell\ge 1,\ E\ge 0,
+\]
+并且因子 \(1-u^{E}z^{\ell}\) 在主极点 \(z=z_\star(u)\) 处解析且不为零（从而主增长率 \(\lambda(u)=z_\star(u)^{-1}\) 由 \(\zeta_{\mathrm{core}}\) 的极点决定）。
+则：
+\begin{enumerate}
+  \item Euler 乘积中恰有 \(m\) 条 primitive 轨道满足 \((|\tau|,E(\tau))=(\ell,E)\)；
+  \item primitive 生成函数满足精确“手术”分解
+  \[
+  P(z,u)=P_{\mathrm{core}}(z,u)+m\,u^{E}z^{\ell},
+  \]
+  其中 \(P(z,u)=\sum_{n\ge 1}p_n(u)z^n\) 且 \(P_{\mathrm{core}}\) 对应 \(\zeta_{\mathrm{core}}\) 的 primitive 系列；
+  \item 若定义 Abel 有限部常数（固定 \(u>0\)）
+  \[
+  \log\mathfrak{M}(u):=\sum_{n\ge 1}\left(\frac{p_n(u)}{\lambda(u)^n}-\frac{1}{n}\right),
+  \]
+  则满足精确常数修正
+  \[
+  \boxed{\ \log\mathfrak{M}(u)=\log\mathfrak{M}_{\mathrm{core}}(u)+m\,u^{E}\,z_\star(u)^{\ell}\ }.
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+把分解式取对数得
+\(
+\log\zeta(z,u)=m\sum_{k\ge 1}\frac{u^{kE}}{k}z^{k\ell}+\log\zeta_{\mathrm{core}}(z,u)
+\)。
+与 Witt 分解 \(\log\zeta=\sum_{r\ge 1}\frac{1}{r}P(z^{r},u^{r})\) 比较系数，可知 primitive 系列在 \((\ell,E)\) 处仅增加 \(m\) 个原子，即
+\(
+P(z,u)=P_{\mathrm{core}}(z,u)+m u^{E}z^{\ell}
+\)，从而 Euler 乘积中 \((\ell,E)\) 的 primitive 轨道数为 \(m\)。
+最后将 \(P\) 的变化代入 \(\log\mathfrak{M}(u)\) 的级数定义，常数项只在 \(n=\ell\) 处增量为 \(m u^{E}/\lambda(u)^{\ell}=m u^{E}z_\star(u)^{\ell}\)，即得所示恒等式。
+\end{proof}
+
+\begin{corollary}[因子 \texorpdfstring{$(1-uz^2)$}{(1-uz^2)} 的谱含义：\texorpdfstring{$\pm\sqrt u$}{±sqrt(u)}]\label{cor:real-input-40-factor-sqrtu-eigs}
+若对某个加权矩阵族 \(M(u)\) 有
+\(
+\Delta(z,u)=\det(I-zM(u))=(1-uz^2)F(z,u)
+\)
+且 \(u>0\)，则 \(M(u)\) 的谱中必包含两条显式特征值
+\[
+\boxed{\ \lambda_\pm(u)=\pm\sqrt u\ }.
+\]
+因此对任意 \(n\ge 1\) 有一个完全显式的迹贡献
+\[
+\mathrm{Tr}(M(u)^n)
+=\bigl(\sqrt u\bigr)^n+\bigl(-\sqrt u\bigr)^n+\text{\rm(其余谱项)}
+=
+\begin{cases}
+2u^{n/2}+\cdots,& n\ \text{偶},\\
+0+\cdots,& n\ \text{奇}.
+\end{cases}
+\]
+\end{corollary}
+\begin{proof}
+由
+\(
+\det(I-zM(u))=\prod_i(1-z\nu_i(u))
+\)
+（\(\nu_i(u)\) 为 \(M(u)\) 的特征值，按重数计），可知 \(1-uz^2\) 必可分解为
+\((1-z\sqrt u)(1+z\sqrt u)\)，从而 \(\pm\sqrt u\) 必为 \(M(u)\) 的两条特征值。迹公式由特征值幂和给出。证毕。
+\end{proof}
+
 \begin{proof}
 对带权 SFT，闭轨道 Euler 乘积给出
 \[
@@ -125,6 +191,23 @@ G(\lambda,u):=\lambda^8\,F(\lambda^{-1},u)
 即输出 $1$ 的典型密度在极端偏置下冻结在区间 $[0,\tfrac12]$。
 \end{proposition}
 
+\begin{corollary}[饱和端点的组合证书：\texorpdfstring{$\alpha_{\max}$}{alpha_max} 为最大平均能量密度]\label{cor:real-input-40-alpha-max}
+对一般有限状态加权（边势取 \(\varphi_e=e\in\{0,1\}\)），记每条有向回路 \(\gamma\) 的平均能量密度为
+\[
+\bar e(\gamma):=\frac{1}{|\gamma|}\sum_{e\in\gamma} e.
+\]
+则存在极限
+\[
+\alpha_{\max}:=\lim_{\theta\to+\infty}P'(\theta)=\max_{\gamma}\bar e(\gamma),
+\]
+并且该最大值可由最大平均回路权（Karp 型算法）在多项式时间内求出。
+在真实输入 40 状态核的输出位势加权中，命题 \ref{prop:real-input-40-pressure-freezing} 已给出
+\(\lim_{\theta\to+\infty}P'(\theta)=1/2\)，因此该核的极端饱和密度为
+\[
+\boxed{\ \alpha_{\max}=\frac12\ }.
+\]
+\end{corollary}
+
 \begin{proposition}[输出位势的局部累积量闭式：\texorpdfstring{$P^{(k)}(0)\in\mathbb Q(\sqrt5)$}{P(k)(0) in Q(sqrt5)}]\label{prop:real-input-40-output-cumulants-closed}
 在输出位势 \(\varphi_e=e\) 的一参数加权下，令 \(u=e^\theta\) 并记压力
 \(
@@ -142,6 +225,41 @@ P(\theta)=\log\lambda(e^\theta)
 \begin{remark}[权重激活的零特征分支]\label{rem:real-input-40-zero-activation}
 在 $\Delta(z,u)=(1-uz^2)F(z,u)$ 中，$F$ 的最高次项系数为 $(u^3-u^4)z^8=u^3(1-u)z^8$。因此当 $u=1$ 时该项消失，$F$ 的次数由 $8$ 降为 $7$；而当 $u\neq 1$ 时次数恢复为 $8$。这意味着：无权核中有一条零特征方向在权重扭曲下被“激活”为非零特征分支，且该分支在 $u\to 1$ 时退化回 $0$。
 \end{remark}
+
+\begin{proposition}[激活分支的临界指数：\texorpdfstring{$\lambda_{\mathrm{act}}(u)\sim u-1$}{lambda_act(u) ~ u-1}]\label{prop:real-input-40-activated-branch-linear}
+沿用命题 \ref{prop:real-input-40-pressure-freezing} 的多项式
+\[
+G(\lambda,u)=\lambda^8\,F(\lambda^{-1},u).
+\]
+则在 \(u=1\) 处存在唯一（简单）的小特征值分支 \(\lambda_{\mathrm{act}}(u)\) 满足
+\[
+G(\lambda_{\mathrm{act}}(u),u)=0,\qquad \lambda_{\mathrm{act}}(1)=0,
+\]
+并且其在 \(u\to 1\) 时具有线性渐近
+\[
+\boxed{\ \lambda_{\mathrm{act}}(u)=(u-1)+O\!\bigl((u-1)^2\bigr)\ }.
+\]
+因此该分支的临界指数为 \(1\)：\(\lambda_{\mathrm{act}}(u)=\Theta(u-1)\)。
+\end{proposition}
+\begin{proof}
+由 \(G(\lambda,u)\) 的显式形式（式 \eqref{prop:real-input-40-pressure-freezing} 中给出），其常数项为
+\(
+G(0,u)=u^3-u^4=u^3(1-u)
+\)，因此 \(G(0,1)=0\)，即 \(u=1\) 时 \(\lambda=0\) 为根。
+同时 \(G\) 的一次项系数为 \((4u^3-3u^2)\lambda\)，故
+\(
+\partial_\lambda G(0,1)=4-3=1\neq 0
+\)，从而 \(\lambda=0\) 在 \(u=1\) 处为简单根。
+由隐函数定理，存在解析函数 \(\lambda_{\mathrm{act}}(u)\) 满足 \(G(\lambda_{\mathrm{act}}(u),u)=0\) 且 \(\lambda_{\mathrm{act}}(1)=0\)，并且
+\[
+\lambda_{\mathrm{act}}'(1)=-\frac{\partial_u G(0,1)}{\partial_\lambda G(0,1)}.
+\]
+又 \(\partial_u G(0,u)=\frac{d}{du}(u^3-u^4)=3u^2-4u^3\)，故 \(\partial_u G(0,1)=-1\)。因此 \(\lambda'_{\mathrm{act}}(1)=1\)，从而
+\(
+\lambda_{\mathrm{act}}(u)=(u-1)+O((u-1)^2)
+\)。
+证毕。
+\end{proof}
 
 \begin{corollary}[端点大偏差代价]\label{cor:real-input-40-rate-endpoints}
 设 $I(\alpha)$ 为输出位势 $\varphi_e=e$ 的（归一化）大偏差速率函数（以 $P(\theta)$ 的 Legendre 形式定义）。则端点满足
