@@ -446,6 +446,67 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_output_potential_cumulants_closed",
+            script="exp_real_input_40_output_potential_cumulants_closed.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_output_potential_cumulants_closed.json",
+                "sections/generated/tab_real_input_40_output_potential_cumulants_closed.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_event_time_dilation",
+            script="exp_real_input_40_event_time_dilation.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_event_time_dilation.json",
+                "sections/generated/tab_real_input_40_event_time_dilation.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_event_clock_vs_tau_mix",
+            script="exp_real_input_40_event_clock_vs_tau_mix.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_event_clock_vs_tau_mix.json",
+                "sections/generated/tab_real_input_40_event_clock_vs_tau_mix.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_event_clock_deviation_certificate",
+            script="exp_real_input_40_event_clock_deviation_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_event_clock_deviation_certificate.json",
+                "sections/generated/tab_real_input_40_event_clock_deviation_certificate.tex",
+                "sections/generated/tab_real_input_40_hitting_time_deviation_certificate.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_hitting_time_exact_quantiles",
+            script="exp_real_input_40_hitting_time_exact_quantiles.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_hitting_time_exact_quantiles.json",
+                "sections/generated/tab_real_input_40_hitting_time_exact_quantiles.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_event_time_rescaling_error_budget",
+            script="exp_real_input_40_event_time_rescaling_error_budget.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_event_time_rescaling_error_budget.json",
+                "artifacts/export/real_input_40_event_time_envelope_vs_tau_mix.json",
+                "artifacts/export/real_input_40_event_time_tau_eff_vs_tau_mix.json",
+                "artifacts/export/real_input_40_event_time_rho_tau_expectation_vs_tau_mix.json",
+                "sections/generated/tab_real_input_40_event_time_rescaling_error_budget.tex",
+                "sections/generated/tab_real_input_40_event_time_envelope_vs_tau_mix.tex",
+                "sections/generated/tab_real_input_40_event_time_tau_eff_vs_tau_mix.tex",
+                "sections/generated/tab_real_input_40_event_time_rho_tau_expectation_vs_tau_mix.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_time_correlation_fine",
             script="exp_real_input_40_time_correlation.py",
             args=[
@@ -468,6 +529,17 @@ def build_steps() -> List[Step]:
                 "artifacts/export/real_input_40_time_correlation_decay_certificate.json",
                 "sections/generated/tab_real_input_40_time_correlation_decay_certificate.tex",
                 "sections/generated/tab_real_input_40_time_correlation_decay_certificate_tail.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_time_correlation_phase",
+            script="exp_real_input_40_time_correlation_phase.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_time_correlation_phase.json",
+                "artifacts/export/real_input_40_time_correlation_phase.png",
+                "sections/generated/fig_real_input_40_time_correlation_phase.tex",
+                "sections/generated/tab_real_input_40_time_correlation_phase.tex",
             ],
         ),
         Step(

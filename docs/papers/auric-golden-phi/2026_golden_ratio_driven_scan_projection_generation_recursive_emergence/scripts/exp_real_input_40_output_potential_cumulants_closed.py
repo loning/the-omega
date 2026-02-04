@@ -121,7 +121,9 @@ def _tex_table(path: Path, res: CumulantsClosed) -> None:
     P2 = sp.sympify(res.P2)
     P3 = sp.sympify(res.P3)
     P4 = sp.sympify(res.P4)
-    lines.append(f"$\\lambda(1)$ & ${sp.latex(lam0)}$ & ${_as_float_str(lam0, 18)}$\\\\")
+    lines.append(
+        f"$\\lambda(1)$ & ${sp.latex(lam0)}$ & ${_as_float_str(lam0, 18)}$\\\\"
+    )
     lines.append(f"$P'(0)$ & ${sp.latex(P1)}$ & ${res.P1_float}$\\\\")
     lines.append(f"$P''(0)$ & ${sp.latex(P2)}$ & ${res.P2_float}$\\\\")
     lines.append(f"$P^{{(3)}}(0)$ & ${sp.latex(P3)}$ & ${res.P3_float}$\\\\")
@@ -134,16 +136,22 @@ def _tex_table(path: Path, res: CumulantsClosed) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Closed-form cumulants for output potential (real input 40-state).")
+    parser = argparse.ArgumentParser(
+        description="Closed-form cumulants for output potential (real input 40-state)."
+    )
     parser.add_argument(
         "--json-out",
         type=str,
-        default=str(export_dir() / "real_input_40_output_potential_cumulants_closed.json"),
+        default=str(
+            export_dir() / "real_input_40_output_potential_cumulants_closed.json"
+        ),
     )
     parser.add_argument(
         "--tex-out",
         type=str,
-        default=str(generated_dir() / "tab_real_input_40_output_potential_cumulants_closed.tex"),
+        default=str(
+            generated_dir() / "tab_real_input_40_output_potential_cumulants_closed.tex"
+        ),
     )
     args = parser.parse_args()
 
@@ -168,7 +176,9 @@ def main() -> None:
 
     jout = Path(args.json_out)
     jout.parent.mkdir(parents=True, exist_ok=True)
-    jout.write_text(json.dumps(asdict(res), indent=2, sort_keys=True) + "\\n", encoding="utf-8")
+    jout.write_text(
+        json.dumps(asdict(res), indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
     print(f"[output-cumulants] wrote {jout}", flush=True)
 
     tout = Path(args.tex_out)
@@ -178,4 +188,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
