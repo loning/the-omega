@@ -410,6 +410,22 @@ m:=\left\lfloor \frac{t\,p\log\lambda}{2\pi}\right\rceil
 只要 $M$ 为 primitive 非负整数矩阵（保证 Perron 根简单）并以同样方式定义 primitive--Dirichlet 级数，完全同型的稠密奇点机制都会出现。
 \end{remark}
 
+\paragraph{把 toy-RH 推进到“真实 RH 研究形态”的五件套（本稿已闭合的接口清单）}\label{par:finite-rh-rhstyle-toolkit}
+为了避免把同一内容以多种叙事重复陈述，这里把本文已经得到的“RH 形状”接口按经典研究路线所需的层级重新打包为五个可审计部件（均为本稿中已给出的可引用命题/定理）：
+\begin{enumerate}
+  \item \textbf{谱 \(\leftrightarrow\) 临界线字典（几何对齐）}：
+  由 Dirichlet 变量 \(z=\lambda^{-s}\) 得极点竖线实部恒等式 \(\Re(s)=\log|\mu|/\log\lambda\)，从而 \(|\mu|=\sqrt{\lambda}\iff \Re(s)=1/2\)（见第 \ref{sec:zeta-finite-part} 节的命题 \ref{prop:s-plane-spectrum-poles} 及其推论 \ref{cor:rh-stratification-splane}，并与本附录命题 \ref{prop:finite-rh-40} 的特例一致）。
+  \item \textbf{平方根误差的刚性二分（达界 \(\Rightarrow\) \(\Omega\)-振荡）}：
+  有限维显式公式模板（命题 \ref{prop:finite-dimensional-explicit-formula}）表明：一旦存在达界谱点 \(|\mu|=\sqrt{\lambda}\)，则一般出现不可改进的平方根级振荡；在真实输入核上该振荡由唯一达界特征值 \(-\sqrt{\lambda}\) 产生并被完全显式化（命题 \ref{prop:finite-rh-40} 与推论 \ref{cor:real-input-40-chebyshev-explicit}）。
+  \item \textbf{从长度到“尺度” \(x\) 的素数定理形状（\(x/\log x\) 主项）}：
+  primitive 主项 \(p_n\sim \lambda^n/n\) 在末项主导下等价转写为 \(\pi(x)\sim \frac{\lambda\log\lambda}{\lambda-1}\frac{x}{\log x}\)（见本附录第 \ref{par:finite-rh-angle-entropy} 段前的“primitive 轨道计数曲线与 \(x/\log x\)”段落）。
+  \item \textbf{toy-GRH 的极限化（profinite/Haar 等分）}：
+  对有限模轴束的 Chebotarev 估计在核版 GRH（平方根界）下可提升到 profinite 逆极限轴：对任意 cylinder 集合给出 Haar 权重的主项与平方根误差（定理 \ref{thm:pom-profinite-axis}）。
+  \item \textbf{prime Dirichlet 级数的自然边界（“素数层直接级数”的硬障碍）}：
+  primitive--Dirichlet 级数 \(\mathcal{P}(s)\) 在 \(\Re(s)=0\) 上出现稠密分支奇点，故虚轴为自然边界（定理 \ref{thm:real-input-40-primedirichlet-dense-branch}），并且该机制在 primitive 非负整数核的一般情形下普适（注 \ref{rem:primedirichlet-natural-boundary-universal}）。
+\end{enumerate}
+上述五件套给出一个更接近经典 RH 研究的“可累积路线图”：首先在谱侧通过 lift/扭曲增加临界角度多样性（注 \ref{rem:finite-rh-angle-entropy}），同时用 Chebotarev/profinite 轴把同余等分布提升到极限口径；并在 prime-zeta 的自然边界约束下，优先通过 \(\zeta\)（或其对数导数/显式公式）而非直接 primitive 级数来组织误差项与振荡项的可控叠加。
+
 \paragraph{与解析数论零密度技术的对齐（定位性备注）}
 在经典 \(\zeta\) 理论中，“向 RH 推进”的一条可累积路线是改进 Dirichlet 多项式的大值控制，从而改进零密度界 \(N(\sigma,T)\) 并反馈到素数误差项的阈值。
 例如 Guth--Maynard 给出新的大值估计并推出改进的零密度上界与短区间素数计数阈值（\(N(\sigma,T)\le T^{30(1-\sigma)/13+o(1)}\) 及相关推论，见 \cite{GuthMaynard2024LargeValues}）。
@@ -536,6 +552,37 @@ C_{\mathrm{real}}:=\lim_{z\to z_\star}(1-\lambda z)\,\zeta_M(z).
 C_{\mathrm{real}}=\frac{47+21\sqrt5}{100}=\frac{13+21\varphi}{50}\; }.
 \]
 \end{proposition}
+
+\begin{corollary}[动力系统版 Chebyshev 显式公式：主项 \(\boldsymbol{+}\) 平方根振荡项]\label{cor:real-input-40-chebyshev-explicit}
+记
+\[
+\Lambda(n):=a_n=\Tr(M^n),
+\qquad
+\Psi(N):=\sum_{n\le N}\Lambda(n).
+\]
+则由谱闭式
+\(
+a_n=\varphi^{2n}+(-\varphi)^n+2+3(-1)^n+\varphi^{-2n}+\varphi^{-n}
+\)
+对几何级数逐项求和，得到完全精确恒等式（无任何 \(O(\cdot)\) 项）：
+\[
+\boxed{\;
+\begin{aligned}
+\Psi(N)
+={}&\frac{\lambda^{N+1}-\lambda}{\lambda-1}
++\frac{1-\lambda^{-N}}{\lambda-1}
++\frac{(-\varphi)^N-1}{\varphi}
++2N+\frac{3}{2}\bigl((-1)^N-1\bigr)
++\bigl(\varphi-\varphi^{1-N}\bigr),
+\end{aligned}}
+\]
+其中 \(\lambda=\varphi^2\)。
+因此“RH-sharp”的平方根尺度振荡项具有显式主振幅：
+\[
+\frac{(-\varphi)^N}{\varphi}=(-1)^N\frac{1}{\varphi}\,\lambda^{N/2},
+\]
+其大小恰为主项尺度的平方根，且符号严格交替。
+\end{corollary}
 \begin{proof}
 由 \(\zeta_M(z)=1/\Delta(z)\) 且 \(z_\star\) 为 \(\Delta\) 的简单零点，得
 \(
