@@ -2,14 +2,6 @@
 
 折叠的目标是：把任意窗口微态 $\omega=\omega_1\cdots \omega_m\in\Omega_m$ 规范化为一个合法词 $x\in X_m$。
 
-\begin{lemma}[权重的刚性：二阶递推强制 Fibonacci]\label{lem:fib-weight-rigidity}
-设权重序列 $(a_k)_{k\ge 1}$ 满足二阶线性递推 $a_{k+2}=a_{k+1}+a_k$ 且归一化 $a_1=a_2=1$。则对所有 $k\ge 1$ 有 $a_k=F_k$。
-\end{lemma}
-
-\begin{proof}
-由初值 $a_1=a_2=1$ 与递推 $a_{k+2}=a_{k+1}+a_k$ 归纳得 $a_3=2,a_4=3,\dots$，并与 Fibonacci 数列定义一致，故 $a_k=F_k$。
-\end{proof}
-
 为避免任何“人为编号”，本文直接以 Fibonacci 权重给微态赋一个可审计整数值，再取 Zeckendorf 规范形：
 \begin{definition}[Fibonacci 加权值与折叠算子]\label{def:fold-word}
 对 $\omega=\omega_1\cdots\omega_m\in\Omega_m$ 定义其 Fibonacci 加权值
@@ -70,7 +62,7 @@ F_{k+1}+F_{k+2}=F_{k+3},
 \)，因此每一步都保持 $\mathrm{Val}$ 不变。
 
 \paragraph{不可约项与 Zeckendorf 规范形}
-记 $X_\infty=\{(c_1,c_2,\dots)\in\{0,1\}^{\mathbb{N}}:\ c_kc_{k+1}=0\}$。显然 $a\in X_\infty$ 时上述规则均不可用，故 $X_\infty$ 中元素不可约；反之，若 $a$ 不可约，则必有 $a_k\le 1$ 且不存在相邻的正数，故 $a\in X_\infty$。因此不可约项恰为 $X_\infty$。
+记 $X_\infty=\{(c_1,c_2,\dots)\in\{0,1\}^{\mathbb{N}}:\ c_kc_{k+1}=0\}$。上述规则恰在出现相邻 $11$ 或某位数字 $\ge 2$ 时可用，因此不可约项当且仅当属于 $X_\infty$。
 
 \begin{proposition}[终止性、局部合流与合流（纽曼引理）]\label{prop:fold-rewrite-newman}
 上述重写系统在 $\mathcal{D}$ 上强终止，且局部合流；因此由纽曼引理它是合流的。于是每个 $a\in\mathcal{D}$ 的正规形存在且唯一，记为 $\mathrm{NF}(a)\in X_\infty$，并满足
@@ -80,23 +72,11 @@ F_{k+1}+F_{k+2}=F_{k+3},
 \end{proposition}
 
 \begin{proof}
-\textbf{（终止性）}令
-\[
-A(a)=\sum_{k\ge 1} a_k,\qquad
-B(a)=\sum_{k\ge 1} k\,a_k,\qquad
-C(a)=a_2,
-\qquad
-\mu(a)=(A(a),B(a),C(a))
-\]
-按字典序比较。则 (R\_adj) 与 (R\_1) 使 $A$ 减少 1；$(R_k,\,k\ge 3)$ 使 $B$ 减少 1；(R\_2) 保持 $A,B$ 不变但使 $C$ 减少 2。故每步重写都严格降低 $\mu$，系统强终止。
+\textbf{（终止性）}令 $A(a)=\sum_{k\ge 1} a_k$、$B(a)=\sum_{k\ge 1} k\,a_k$、$C(a)=a_2$，并设 $\mu(a)=(A(a),B(a),C(a))$ 按字典序比较。则 (R\_adj),(R\_1) 使 $A$ 减少；$(R_k,\,k\ge 3)$ 使 $B$ 减少；(R\_2) 保持 $A,B$ 不变但使 $C$ 减少。故每步重写都严格降低 $\mu$，系统强终止。
 
-\textbf{（局部合流）}任取 $a$ 的两条一步归约 $a\to a_1$ 与 $a\to a_2$。由终止性，$a_1,a_2$ 均可继续归约到不可约正规形 $\mathrm{NF}(a_1),\mathrm{NF}(a_2)\in X_\infty$。又因每一步保持 $\mathrm{Val}$，有
-\[
-\mathrm{Val}(\mathrm{NF}(a_1))=\mathrm{Val}(a_1)=\mathrm{Val}(a)=\mathrm{Val}(a_2)=\mathrm{Val}(\mathrm{NF}(a_2)).
-\]
-而在 $X_\infty$ 中，同值元素由 Zeckendorf 唯一性必相同，故 $\mathrm{NF}(a_1)=\mathrm{NF}(a_2)$，从而两条一步归约可汇合，系统局部合流。
+\textbf{（局部合流）}若 $a$ 有两条一步归约 $a\to a_1,a_2$，则两侧继续归约到不可约形后都落在 $X_\infty$，且由于每步保持 $\mathrm{Val}$，两不可约形同值；由 Zeckendorf 唯一性它们相同，于是两支可汇合。
 
-\textbf{（合流）}由纽曼引理（强终止 $\Rightarrow$ 局部合流等价于合流）得系统合流。唯一正规形与值保持性质随之成立。
+\textbf{（合流）}由纽曼引理（强终止 + 局部合流 $\Rightarrow$ 合流）即得结论。
 \end{proof}
 
 \begin{corollary}[\texorpdfstring{$\Fold_m$}{Fold\_m} 的归约顺序无关实现]\label{cor:foldm-order-indep}

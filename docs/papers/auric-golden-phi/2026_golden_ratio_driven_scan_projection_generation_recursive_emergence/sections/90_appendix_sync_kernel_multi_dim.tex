@@ -237,3 +237,51 @@ $a_n(\theta)=\mathrm{Tr}(B(u,v,w)^n)$ 经 Möbius 反演提取。数值复现见
 (p_1,\dots,p_{10})=(2,6,6,20,44,123,302,825,2158,5926),
 \]
 并呈现典型 prime-orbit 主项 $p_n\sim 3^n/n$。
+
+\subsubsection{多维 Big-Witt 同余护栏：\texorpdfstring{$\ZZ[u,v]$}{Z[u,v]} 与 \texorpdfstring{$\ZZ[u,v,w]$}{Z[u,v,w]}}\label{app:multi-dim-witt-guardrails}
+本附录的二维/三维势并不改变 primitive--periodic 的 Big-Witt/necklace 结构：其差异仅在系数环从 \(\ZZ[u]\) 升级到多变量多项式环。
+因此，附录 \ref{app:witt-bridge-package} 的整除律与 Dwork 型同余可逐字推广为多维版本，并立即给出一个零成本的“实现自审计护栏”。
+
+\paragraph{二维势：\texorpdfstring{$R=\ZZ[u,v]$}{R=Z[u,v]}}
+对二维加权矩阵 \(B(u,v)\)（\S\ref{app:vector-potential}），令
+\[
+a_n(u,v):=\Tr\bigl(B(u,v)^n\bigr)\in\ZZ[u,v],
+\qquad
+\psi^d:\ZZ[u,v]\to\ZZ[u,v],\ \ \psi^d(f)(u,v):=f(u^d,v^d).
+\]
+则由命题 \ref{prop:witt-necklace-dwork-R}（取 \(R=\ZZ[u,v]\)）直接推出：
+\begin{enumerate}
+  \item \textbf{（多维 necklace 整除）}对任意 \(n\ge 1\)，
+  \[
+  \boxed{\ \sum_{d\mid n}\mu(d)\,a_{n/d}(u^d,v^d)\in n\,\ZZ[u,v]\ }.
+  \]
+  \item \textbf{（多维 Dwork 同余）}对任意素数 \(p\) 与 \(k\ge 1\)，
+  \[
+  \boxed{\ a_{p^k}(u,v)\equiv a_{p^{k-1}}(u^p,v^p)\pmod{p^k}\quad\text{于}\ \ZZ[u,v]\ }.
+  \]
+\end{enumerate}
+
+\paragraph{三维势：\texorpdfstring{$R=\ZZ[u,v,w]$}{R=Z[u,v,w]}}
+对三维加权矩阵 \(B(u,v,w)\)（见本附录三维势小节给出的显式 \(10\times 10\) 矩阵），令
+\[
+a_n(u,v,w):=\Tr\bigl(B(u,v,w)^n\bigr)\in\ZZ[u,v,w],
+\qquad
+\psi^d(f)(u,v,w):=f(u^d,v^d,w^d).
+\]
+同理得到：
+\begin{enumerate}
+  \item \textbf{（多维 necklace 整除）}对任意 \(n\ge 1\)，
+  \[
+  \boxed{\ \sum_{d\mid n}\mu(d)\,a_{n/d}(u^d,v^d,w^d)\in n\,\ZZ[u,v,w]\ }.
+  \]
+  \item \textbf{（多维 Dwork 同余）}对任意素数 \(p\) 与 \(k\ge 1\)，
+  \[
+  \boxed{\ a_{p^k}(u,v,w)\equiv a_{p^{k-1}}(u^p,v^p,w^p)\pmod{p^k}\quad\text{于}\ \ZZ[u,v,w]\ }.
+  \]
+\end{enumerate}
+
+\begin{remark}[自审计要点：只用迹序列做模同余检查]\label{rem:multi-dim-self-audit}
+上述两条约束对任何“声称来自 Euler 乘积/primitive 分解”的多维核都是必要条件。
+因此无需谱分解、无需先算 primitive：只要能计算 \(a_n(\cdot)=\Tr(B(\cdot)^n)\)，就可在系数环内做
+\(\bmod n\) 的整除审计与 \(\bmod p^k\) 的 Frobenius 兼容审计；一旦失败，即可判定实现不可能来自本文的 \(\zeta\)--Euler 乘积体系。
+\end{remark}

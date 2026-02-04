@@ -43,44 +43,8 @@ m:=\max\{k:\ c_k=1\text{ 或 }d_k=1\}.
   \item \textbf{稳定乘法：}分辨率口径为“值层乘法成本 + $O(m)$”；比特口径为 $O(M(m)+m^2)$，其中 $M(m)$ 为 $\\Theta(m)$ 比特整数乘法成本（学校乘法为 $O(m^2)$）。
 \end{itemize}
 
-\subsubsection{纯局部归一化（可选扩展）}\label{subsec:local-normalize}
-本方向用 Zeckendorf 数字上的局部 carry/normalize 直接实现 $\Fold_\infty$，避免显式值层运算。以逐位叠加得到的串 $s\in\{0,1,2\}^m$ 为输入，给出一个三趟局部规则体系（每步保持 $\mathrm{Val}$；规则可由 Fibonacci 递推验证，见 \cite{AhlbachUsatineFrougnyPippenger2013}）：
-\begin{itemize}
-  \item \textbf{第 1 趟（宽度 4，左到右）}：对 $x\in\{0,1,2\}$，
-  \[
-  020x\Rightarrow 100x^{+},\quad
-  030x\Rightarrow 110x^{+},\quad
-  021x\Rightarrow 110x,\quad
-  012x\Rightarrow 101x,
-  \]
-  其中 $x^{+}:=x+1$。末端清理可取
-  \[
-  030\Rightarrow 111,\quad 020\Rightarrow 101,\quad 0120\Rightarrow 1010,\quad
-  03\Rightarrow 11,\quad 02\Rightarrow 10,\quad 012\Rightarrow 101.
-  \]
-  \item \textbf{第 2--3 趟（宽度 3）}：用规则
-  \[
-  011\Rightarrow 100
-  \]
-  先右到左、再左到右各扫一遍，消去相邻 $11$。
-\end{itemize}
-
-\begin{theorem}[三趟局部归一化与 $\Fold_\infty$ 一致]\label{thm:local-normalize-fold}
-令 $T:=T_3\circ T_2\circ T_1$ 为上述三趟归一化。则对任意 $s\in\{0,1,2\}^m$，
-\[
-T(s)=\Fold_\infty(s)\in X_m.
-\]
-\end{theorem}
-
-\textbf{证明：}
-每条规则保持 $\mathrm{Val}$（等价地：在群胚生成元轨道内移动），且第 2--3 趟保证输出无相邻 $11$，从而落在 $X_m$。由定理 \ref{thm:zeckendorf-transversal} 的横截面唯一性交点，终止形必为 $\Fold_\infty(s)$。证毕。
-
-\begin{corollary}[有限状态实现与线性时间]\label{cor:local-normalize-fst}
-上述三趟均可由有限状态转导器以常数延迟实现，故分辨率口径下归一化为 $O(m)$。例如第 1 趟可取状态集 $Q_1=\{0,1,2,3\}^3$（至多 $4^3$ 个状态），第 2--3 趟可取 $Q_2=\{0,1\}^2$（至多 $2^2$ 个状态）。\cite{AhlbachUsatineFrougnyPippenger2013,Frougny1999OnlineAddition}
-\end{corollary}
-
 \subsubsection{单趟在线延迟 \texorpdfstring{$3$}{3}：统一转导器}\label{subsec:online-delay}
-三趟局部规则可视为转导器串联的产品自动机。更强的结果是存在\textbf{单趟在线}转导器（延迟 3）直接实现同一归一化；其同步部分可用“余量守恒”给出（\cite{Frougny1999OnlineAddition}）。
+存在\textbf{单趟在线}转导器（延迟 3）直接实现归一化；其同步部分可用“余量守恒”给出（\cite{Frougny1999OnlineAddition}）。
 
 令 $\varphi=(1+\sqrt5)/2$，定义余量
 \[
@@ -262,4 +226,3 @@ p_\ell^{\mathrm{glob}}(u)=\frac{1}{\ell}\left(\bigl(a_\ell^{\mathrm{flow}}(u)\bi
 \]
 该等式把“时间侧的幂次/乘法”精确翻译为“空间侧 primitive 谱的非平凡 Witt 多项式律”（见推论 \ref{cor:par-add-global-lift-endpoints} 的同型口径），从而给出“不可并行活动”的一个可审计 prime-like 读出接口。
 \end{remark}
-

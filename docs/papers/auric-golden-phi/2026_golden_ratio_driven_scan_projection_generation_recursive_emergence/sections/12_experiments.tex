@@ -108,6 +108,71 @@ D_{\mathrm{TV}}\!\left(\hat{\pi}_{m,N},\ \pi_{m+1\to m*}\hat{\pi}_{m+1,N}\right)
 量 \(E_{m,N}\) 不依赖任何外部基准（例如 Parry/PF），仅度量“相邻分辨率的经验分布是否可视为同一逆系统上的相容边缘”。因此它可作为一个额外的结构性审计量：当某个 \(m\) 上看似与某基准接近，但相邻层之间显著不相容时，\(E_{m,N}\) 会直接显现这种跨尺度不一致。
 \end{remark}
 
+\begin{definition}[折叠边界扰动事件]\label{def:fold-boundary-event}
+对任意 $m\ge 1$，令 $r_{m+1\to m}:\Omega_{m+1}\to\Omega_m$ 为朴素截断（定义见小节 \ref{subsec:fold-omega-restriction}），并定义两条由同一 $(m{+}1)$-窗诱导的“降分辨率”输出：
+\[
+f_m(\omega):=\Fold_m\bigl(r_{m+1\to m}(\omega)\bigr),\qquad
+g_m(\omega):=\pi_{m+1\to m}\bigl(\Fold_{m+1}(\omega)\bigr),\qquad \omega\in\Omega_{m+1}.
+\]
+定义折叠边界扰动事件
+\[
+\mathcal{B}_{m+1}:=\{\omega\in\Omega_{m+1}:\ f_m(\omega)\ne g_m(\omega)\}.
+\]
+\end{definition}
+
+\begin{proposition}[跨分辨率一致性残差的可审计上界（由边界扰动事件控制）]\label{prop:multiscale-residual-by-boundary}
+令 $\hat\mu_{m+1,N}$ 为长度-$(m{+}1)$ 微态 $\omega_{m+1}(x;t)=s_t\cdots s_{t+m}\in\Omega_{m+1}$（$t=0,\dots,N-1$）的经验分布。则
+\[
+E_{m,N}
+=D_{\mathrm{TV}}\!\left(\hat\pi_{m,N},\ \pi_{m+1\to m*}\hat\pi_{m+1,N}\right)
+\le\ \hat\mu_{m+1,N}(\mathcal{B}_{m+1}).
+\]
+并且 $\mathcal{B}_{m+1}$ 具有一个完全可计算的等价刻画：记 $x:=\Fold_m(r_{m+1\to m}(\omega))\in X_m$，则
+\[
+\omega\in\mathcal{B}_{m+1}\ \Longleftrightarrow\ \omega_{m+1}=1\ \text{且}\ x_m=1,
+\]
+其中 $x_m$ 为 $x$ 的末位符号。
+\end{proposition}
+
+\begin{proof}
+记 $\nu:=\hat\mu_{m+1,N}$。由定义，$\hat\pi_{m,N}=(f_m)_*\nu$ 且 $\pi_{m+1\to m*}\hat\pi_{m+1,N}=(g_m)_*\nu$。
+对任意集合 $A\subset X_m$，有
+\[
+\bigl|\nu(f_m\in A)-\nu(g_m\in A)\bigr|\le \nu(f_m\ne g_m)=\nu(\mathcal{B}_{m+1}).
+\]
+取上确界即得 $D_{\mathrm{TV}}((f_m)_*\nu,(g_m)_*\nu)\le \nu(\mathcal{B}_{m+1})$。
+
+下面给出等价刻画。取任意 $\omega\in\Omega_{m+1}$，记其前缀 $\omega^-:=r_{m+1\to m}(\omega)\in\Omega_m$，并记 $x:=\Fold_m(\omega^-)\in X_m$。
+若 $\omega_{m+1}=0$，则 $N(\omega)=N(\omega^-)$，从而
+\(
+\Fold_{m+1}(\omega)=\pi_{m+1}(Z(N(\omega^-)))
+\)
+的前 $m$ 位等于 $\pi_m(Z(N(\omega^-)))=x$，即 $g_m(\omega)=x=f_m(\omega)$。
+
+若 $\omega_{m+1}=1$，则 $N(\omega)=N(\omega^-)+F_{m+2}$。
+当 $x_m=0$ 时，$(x_1,\dots,x_m,1)$ 是合法 Zeckendorf 数字（无相邻 $11$），且其值恰为 $N(\omega^-)+F_{m+2}$；由 Zeckendorf 唯一性知
+\(
+\pi_{m+1}(Z(N(\omega)))=(x_1,\dots,x_m,1)
+\)，从而 $g_m(\omega)=x$。
+当 $x_m=1$ 时，$(x_1,\dots,x_m,1)$ 含有末端相邻 $11$，因此不可能是 $Z(N(\omega))$ 的长度-$(m{+}1)$ 前缀；等价地，规范化必须在第 $m,m{+}1$ 位触发合并并改变前 $m$ 位，从而 $g_m(\omega)\ne x$。
+综上，$f_m(\omega)\ne g_m(\omega)$ 当且仅当 $\omega_{m+1}=1$ 且 $x_m=1$。
+\end{proof}
+
+\begin{corollary}[稳定源的零残差（无边界扰动）]\label{cor:multiscale-zero-stable}
+若所观测到的长度-$(m{+}1)$ 微态几乎处处满足 $\omega_{m+1}(x;t)\in X_{m+1}$（等价地：底层二元序列不存在相邻 $11$，即 $s\in X_\infty$），则 $\mathcal{B}_{m+1}=\varnothing$，从而对任意样本量 $N$ 有
+\[
+E_{m,N}=0.
+\]
+特别地，在 Parry 源（黄金均值马尔可夫链）这类“输出过程本身即满足黄金均值约束”的基线下，跨分辨率一致性残差恒为零。
+\end{corollary}
+
+\begin{proof}
+当 $\omega\in X_{m+1}$ 时，折叠幂等性给出 $\Fold_{m+1}(\omega)=\omega$。
+其前缀 $r_{m+1\to m}(\omega)$ 亦属于 $X_m$，故 $\Fold_m(r_{m+1\to m}(\omega))=r_{m+1\to m}(\omega)$。
+于是 $f_m(\omega)=g_m(\omega)$ 对所有 $\omega\in X_{m+1}$ 成立，从而 $\mathcal{B}_{m+1}=\varnothing$。
+再由定义 \ref{def:multiscale-residual} 得 $E_{m,N}=0$。
+\end{proof}
+
 \begin{proposition}[与 Parry 基准偏差的确定性联系]\label{prop:multiscale-residual-parry-bound}
 令 \(\pi_m\) 为黄金均值 SFT 的 Parry 最大熵柱分布，则其满足投影一致性 \(\pi_m=\pi_{m+1\to m*}\pi_{m+1}\)。因此对任意 \(m,N\)，有
 \[
@@ -214,22 +279,7 @@ D_{\mathrm{KL}}(F_*p\|F_*q)\ \le\ D_{\mathrm{KL}}(p\|q).
 \end{lemma}
 
 \begin{proof}
-记 $T$ 上的推前分布为 $\bar p(y)=\sum_{x:F(x)=y}p(x)$、$\bar q(y)=\sum_{x:F(x)=y}q(x)$。
-对每个 $y$，令 $p_y(x)=p(x)/\bar p(y)$ 与 $q_y(x)=q(x)/\bar q(y)$ 为纤维上的条件分布（若 $\bar p(y)=0$ 则忽略该 $y$）。
-则
-\[
-\frac{p(x)}{q(x)}=\frac{\bar p(F(x))}{\bar q(F(x))}\,\frac{p_{F(x)}(x)}{q_{F(x)}(x)}.
-\]
-从而
-\[
-\begin{aligned}
-D_{\mathrm{KL}}(p\|q)
-&=\sum_{y\in T}\sum_{x:F(x)=y}p(x)\log\frac{p(x)}{q(x)}\\
-&=\sum_{y\in T}\bar p(y)\log\frac{\bar p(y)}{\bar q(y)}\ +\ \sum_{y\in T}\bar p(y)\sum_{x:F(x)=y}p_y(x)\log\frac{p_y(x)}{q_y(x)}\\
-&=D_{\mathrm{KL}}(\bar p\|\bar q)\ +\ \sum_{y\in T}\bar p(y)\,D_{\mathrm{KL}}(p_y\|q_y)\ \ge\ D_{\mathrm{KL}}(\bar p\|\bar q),
-\end{aligned}
-\]
-即得结论。证毕。
+这是相对熵的数据处理不等式的离散形式；一种直接证明是把 $D_{\mathrm{KL}}(p\|q)$ 按 $F$ 的纤维分解为“推前项 $+$ 条件相对熵项”，后者非负，从而推出单调性（参见 \cite{SasonVerdu2016fDivergence}）。
 \end{proof}
 
 \begin{corollary}[折叠后稳定类型的 KL 证书]\label{cor:rotation-folded-kl-certificate}
@@ -243,23 +293,9 @@ D_{\mathrm{KL}}(\hat\pi_{m,N}\|\pi_m^{\mathrm{fold}})\ \le\ D_{\mathrm{KL}}(\hat
 \input{sections/generated/tab_rotation_folded_kl_certificate}
 
 \begin{proof}
-由命题 \ref{prop:sturmian-interval-partition}，$\hat{\mu}_{m,N}$ 与 $\mu_m$ 都可视为对分割 $\{I_j\}_{j=1}^{m+1}$ 的概率向量。对每个半开区间 $I_j=[a_j,b_j)$，由星差异度定义（定义 \ref{def:instability-envelope}）与“任意区间可写为两段前缀区间之差”的标准技巧可得
-\[
-\left|\frac{1}{N}\sum_{t=0}^{N-1}\ind_{I_j}(x_t)-|I_j|\right|
-\le
-\left|\frac{1}{N}\sum_{t=0}^{N-1}\ind_{[0,b_j)}(x_t)-b_j\right|
-\,+\,
-\left|\frac{1}{N}\sum_{t=0}^{N-1}\ind_{[0,a_j)}(x_t)-a_j\right|
-\le 2D_N^*(\alpha;x_0).
-\]
-因此
-\[
-\|\hat{\mu}_{m,N}-\mu_m\|_1=\sum_{j=1}^{m+1}|\hat{\mu}_{m,N}(u_j)-\mu_m(u_j)|\le 2(m+1)D_N^*(\alpha;x_0),
-\]
-从而 $D_{\mathrm{TV}}=\frac12\|\cdot\|_1$ 给出第一条结论。
-
-第二条由总变差对推前（粗化）单调性得到：对任意可测映射 $F$，有
-$D_{\mathrm{TV}}(F_*\nu,F_*\nu')\le D_{\mathrm{TV}}(\nu,\nu')$。取 $F=\Fold_m$ 即得。
+由引理 \ref{lem:kl-monotone-pushforward}（取 $F=\Fold_m$）得
+$D_{\mathrm{KL}}((\Fold_m)_*\hat\mu_{m,N}\|(\Fold_m)_*\mu_m)\le D_{\mathrm{KL}}(\hat\mu_{m,N}\|\mu_m)$。
+再代入推论 \ref{cor:rotation-microstate-kl-certificate} 的上界即得。
 \end{proof}
 
 \begin{corollary}[到 Parry 基线的误差分解（可审计）]\label{cor:tv-decomposition-parry}

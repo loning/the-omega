@@ -253,9 +253,25 @@ K_m(a,b):=
 特别地，$\Omega_m$ 上的均匀分布 $u_{\Omega_m}(a)\equiv 2^{-m}$ 为不变分布（由双随机性立得）。
 \end{proposition}
 \begin{proof}
-对固定 $x\in X_m$，将 $\Omega_m$ 分解为纤维并注意：限制在纤维 $\Fold_m^{-1}(x)$ 上，$K_m$ 的矩阵块是常数矩阵 $J/d_m(x)$（其中 $J$ 为全 $1$ 矩阵），其余块为 $0$。
-因此 $(J/d)^2=J/d$ 给出幂等性；常数矩阵显然对称；行和为 $1$，而列和也为 $1$（每一列在该纤维内有 $d$ 个相同项 $1/d$）。
-函数版公式就是矩阵乘法定义的展开。证毕。
+将 $\Omega_m$ 分解为折叠纤维。对每个 $x\in X_m$，$K_m$ 在块 $\Fold_m^{-1}(x)\times\Fold_m^{-1}(x)$ 上是常数矩阵 $J/d_m(x)$（其余块为 $0$）。因此 $(J/d)^2=J/d$、$J$ 对称且行列和一致，给出幂等/对称/双随机；函数版公式是矩阵作用的逐项展开。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$K_m$}{Km} 的谱与投影解释]\label{cor:pom-Km-spectrum}
+把 $K_m$ 视为作用在 $\RR^{\Omega_m}$（或 $\CC^{\Omega_m}$）上的线性算子，则：
+\begin{enumerate}
+  \item $K_m$ 是（计数内积下的）正交投影，其像空间恰为纤维常值函数空间
+  \[
+  \mathrm{Im}(K_m)=\{f:\Omega_m\to\RR:\ f(a)=f(b)\ \text{当且仅当}\ \Fold_m(a)=\Fold_m(b)\}.
+  \]
+  \item $\mathrm{rank}(K_m)=|X_m|$，并且其谱仅由 $\{0,1\}$ 构成：特征值 $1$ 的重数为 $|X_m|$，特征值 $0$ 的重数为 $|\Omega_m|-|X_m|=2^m-|X_m|$。
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+由命题 \ref{prop:pom-Km-bistochastic} 知 $K_m^2=K_m$ 且 $K_m$ 对称，故它是正交投影。
+对每个 $x\in X_m$，限制到块 $\Fold_m^{-1}(x)$ 上，$K_m$ 就是 $J/d$（其中 $d=d_m(x)$）。该块的像为常值向量张成的一维子空间，核为“纤维内和为 $0$”的余维 $1$ 子空间。
+于是全空间分解为各纤维的直和，$\mathrm{Im}(K_m)$ 正是纤维常值函数；因此秩为纤维数 $|X_m|$。
+每个块贡献一个特征值 $1$ 与 $d-1$ 个特征值 $0$，汇总得到谱与重数公式。证毕。
 \end{proof}
 
 \begin{corollary}[最大熵提升的 I-投影表述]\label{cor:pom-Iproj-maxent}
@@ -299,6 +315,114 @@ D_{\mathrm{KL}}(\nu\|u_{\Omega_m})=\sum_a \nu(a)\log\nu(a)+m\log 2=\log(2^m)-H(\
 \widetilde K\pi_0=P_m(K(Q_m\pi_0))
 \)，
 则逐点相等推出 $\widetilde K=\overline K$。证毕。
+\end{proof}
+
+\begin{definition}[可并行逆代换位点与干涉图]\label{def:pom-carry-interference-graph}
+对 $x=x_1\cdots x_m\in X_m$，定义其\emph{可并行逆代换位点集合}
+\[
+J(x):=\{i\in\{1,\dots,m-2\}:\ x_ix_{i+1}x_{i+2}=100\}.
+\]
+定义干涉图 $G(x)$：其顶点集为 $J(x)$，并在 $i\neq j$ 时连边当且仅当区间 $[i,i+2]$ 与 $[j,j+2]$ 相交（等价于 $|i-j|\le 2$）。记 $\mathsf{Ind}(G(x))$ 为 $G(x)$ 的独立集族。
+\end{definition}
+
+\begin{lemma}[自由逆代换给出的纤维下界]\label{lem:pom-fiber-lower-bound-independent-sets}
+对任意 $x\in X_m$，有
+\[
+d_m(x)\ \ge\ \#\mathsf{Ind}(G(x)).
+\]
+\end{lemma}
+
+\begin{proof}
+取任意独立集 $S\in\mathsf{Ind}(G(x))$。由于 $S$ 中任意两点对应的长度 $3$ 区间不相交，故可在 $x$ 上对所有 $i\in S$ 同时（或任意顺序）执行逆代换 $100\mapsto 011$，得到一个二元词 $\omega_S\in\Omega_m$。
+将该过程反向，即对 $\omega_S$ 在这些位点执行正向进位 $011\mapsto 100$，可恢复 $x$；因此 $\Fold_m(\omega_S)=x$。
+又因为 $S$ 可由 $\omega_S$ 中发生改变的那些长度-$3$ 位置唯一恢复（区间互不相交使得这些局部改变互不混淆），映射 $S\mapsto \omega_S$ 为单射。
+于是 $\#\Fold_m^{-1}(x)=d_m(x)\ge \#\mathsf{Ind}(G(x))$。证毕。
+\end{proof}
+
+\begin{lemma}[独立集计数的线性时间递推（半径 2 冲突）]\label{lem:pom-independence-dp-radius2}
+令 $x\in X_m$，并将 $J(x)$ 升序写为
+\[
+J(x)=\{i_1<i_2<\cdots<i_k\}.
+\]
+对 $t\in\{1,\dots,k\}$ 定义
+\[
+p(t):=\max\{s\in\{0,1,\dots,t-1\}:\ i_t-i_s>2\},
+\]
+其中约定 $i_0:=-\infty$（等价地：$p(t)$ 是满足 $i_t-i_{p(t)}>2$ 的最大下标；若对所有 $s\le t-1$ 都有 $i_t-i_s\le 2$，则 $p(t)=0$）。
+定义序列 $a_0:=1$ 且对 $t\ge 1$ 递推
+\[
+a_t:=a_{t-1}+a_{p(t)}.
+\]
+则有
+\[
+\#\mathsf{Ind}(G(x))=a_k.
+\]
+\end{lemma}
+
+\begin{proof}
+按 $\{i_1,\dots,i_t\}$ 的前缀递推计数独立集数。
+任取独立集 $S\subseteq\{i_1,\dots,i_t\}$，分两类：
+\begin{enumerate}
+  \item 若 $i_t\notin S$，则 $S$ 是前缀 $\{i_1,\dots,i_{t-1}\}$ 的独立集，计数为 $a_{t-1}$；
+  \item 若 $i_t\in S$，则由 $G(x)$ 的边定义（$|i-j|\le 2$ 冲突），$S$ 不能包含任何 $i_s$ 满足 $i_t-i_s\le 2$。因此 $S\setminus\{i_t\}$ 必为前缀 $\{i_1,\dots,i_{p(t)}\}$ 的独立集，计数为 $a_{p(t)}$。
+\end{enumerate}
+两类互斥且覆盖全部情形，因此 $a_t=a_{t-1}+a_{p(t)}$。
+取 $t=k$ 得 $\#\mathsf{Ind}(G(x))=a_k$。证毕。
+\end{proof}
+
+\begin{corollary}[一个可计算的纤维下界]\label{cor:pom-fiber-lower-bound-dp}
+对任意 $x\in X_m$，用引理 \ref{lem:pom-independence-dp-radius2} 的递推计算出 $a_k$，则
+\[
+d_m(x)\ge a_k.
+\]
+\end{corollary}
+
+\begin{proof}
+由引理 \ref{lem:pom-fiber-lower-bound-independent-sets} 与引理 \ref{lem:pom-independence-dp-radius2} 直接得到。
+\end{proof}
+
+\begin{lemma}[干涉图的块分解与独立集乘法公式]\label{lem:pom-ind-factorization}
+令 $x\in X_m$，并将 $J(x)$ 升序写为 $\{i_1<\cdots<i_k\}$。
+把指标集合按“断点”分解为若干连续块：记 $t$ 为断点当且仅当 $i_{t+1}-i_t>2$，并据此把 $J(x)$ 分解为若干不相交子集
+\[
+J(x)=J_1\sqcup\cdots\sqcup J_r,
+\]
+其中每个 $J_\ell$ 在升序下满足相邻差 $\le 2$。
+则干涉图 $G(x)$ 分裂为互不相连的诱导子图直和
+\(
+G(x)=G[J_1]\sqcup\cdots\sqcup G[J_r]
+\)，
+并且独立集计数满足乘法公式
+\[
+\#\mathsf{Ind}(G(x))=\prod_{\ell=1}^r \#\mathsf{Ind}(G[J_\ell]).
+\]
+\end{lemma}
+
+\begin{proof}
+若 $i\in J_a$、$j\in J_b$ 且 $a\neq b$，则由分块定义有 $|i-j|>2$，故 $G(x)$ 中不存在跨块边，从而图为不相连直和。
+对不相连图，独立集在各连通分量上独立选择，计数乘法性成立。
+\end{proof}
+
+\begin{lemma}[单块情形的局部递推：\texorpdfstring{$a_t=a_{t-1}+a_{t-2}$}{a=a+a} 与 \texorpdfstring{$a_t=a_{t-1}+a_{t-3}$}{a=a+a} 的分岔]\label{lem:pom-ind-local-recurrence}
+沿用引理 \ref{lem:pom-independence-dp-radius2} 的记号。
+设 $J(x)$ 自身为单块（即对所有 $t$ 有 $i_{t+1}-i_t\le 2$）。则对 $t\ge 3$：
+\begin{enumerate}
+  \item 若 $i_t-i_{t-2}>2$，则 $p(t)=t-2$，从而
+  \[
+  a_t=a_{t-1}+a_{t-2};
+  \]
+  \item 若 $i_t-i_{t-2}=2$（等价于 $i_{t-1}=i_t-1$ 且 $i_{t-2}=i_t-2$），则 $p(t)=t-3$，从而
+  \[
+  a_t=a_{t-1}+a_{t-3}.
+  \]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+在单块条件下，必有 $i_t-i_{t-1}\le 2$，故 $p(t)\le t-2$。
+若 $i_t-i_{t-2}>2$，则 $s=t-2$ 满足定义条件且为最大者，故 $p(t)=t-2$。
+若 $i_t-i_{t-2}=2$，则 $s=t-2$ 不满足条件；而由于 $i_{t-2}-i_{t-3}\ge 1$，得 $i_t-i_{t-3}\ge 3$，故 $p(t)=t-3$。
+代入引理 \ref{lem:pom-independence-dp-radius2} 的递推即得。
 \end{proof}
 \begin{theorem}[最大纤维闭式]\label{thm:pom-max-fiber}
 取 Fibonacci 延拓到 $F_0=0,F_1=1$。对 $m\ge 2$，有精确闭式
@@ -395,13 +519,17 @@ c_m(r)=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\ (\mathrm{mod}\ F_{m+2})\}
 \kappa_m:=\#\{r\in\ZZ/F_{m+2}\ZZ:\ c_m(r)=D_m\}
 =\#\{x\in X_m:\ d_m(x)=D_m\}.
 \]
-在可审计窗口 \(m\le 32\) 内，\(\kappa_m\) 呈现出稳定的“有限相位”行为：对所有偶数 \(m\ge 4\)，有 \(\kappa_m=2\)；对所有奇数 \(m\ge 13\)，有 \(\kappa_m=4\)（小 \(m\) 处出现若干例外，见表 \ref{tab:fold_max_fiber_achievers_phase}）。
-并且最大纤维的代表稳定词呈现近周期核 \(\texttt{0001}\) 的相位截断（例如 \(m=30\) 时的两条达到者正是“每隔四位一个 \(1\)”的两种相位平移）。
-\par
-进一步，表 \ref{tab:fold_max_fiber_achievers_phase} 同时列出次大多重度 \(D_m^{(2)}\) 及比值 \(D_m^{(2)}/D_m\)。在 \(m\le 30\) 的窗口内，该比值稳定地落在 \(0.94\sim 0.96\) 附近，并呈现出奇偶交错的两条数值带。这提供了一个可证伪的“间隙”诊断量：若存在一致常数 \(\theta<1\) 使对所有充分大 \(m\) 有 \(D_m^{(2)}\le \theta D_m\)，则高阶矩 \(S_q(m)\) 的指数主尺度将被最大纤维族完全主导，从而在 \(q\to\infty\) 极限下出现更强的主项钉死（把 \(r_q\) 的 prefactor 退化为平凡常数级）。
-\par
-该现象强化了“最大纤维并非散落在指数多个类型中，而是集中在有限相位上”的结构图景，为高阶 moment 指纹在 \(q\to\infty\) 端点的主导机制提供了新的可检验抓手。
+在可审计窗口 \(m\le 32\) 内，\(\kappa_m\) 呈现出稳定的“有限相位”行为（见表 \ref{tab:fold_max_fiber_achievers_phase}）：偶数 \(m\) 多为两相位达到、奇数 \(m\) 多为四相位达到；代表稳定词表现出近周期核 \(\texttt{0001}\) 的相位截断。
+此外，在 \(m\le 30\) 的窗口内，次大多重度比值 \(D_m^{(2)}/D_m\) 稳定地落在 \(0.94\sim 0.96\) 附近并呈现奇偶交错。这给出一个可证伪的“间隙”诊断：若该间隙在大 \(m\) 保持为某个 \(\theta<1\)，则高阶矩将更快被最大纤维族主导。
 \end{remark}
+
+\begin{conjecture}[最大纤维达到者的有限相位与间隙]\label{conj:pom-max-fiber-achievers-phase-gap}
+存在 $m_0$ 使对所有充分大 $m$：
+\begin{enumerate}
+  \item 若 $m$ 为偶数，则 $\kappa_m=2$；若 $m$ 为奇数，则 $\kappa_m=4$；
+  \item 存在常数 $\theta<1$ 使 $D_m^{(2)}\le \theta D_m$。
+\end{enumerate}
+\end{conjecture}
 
 \begin{remark}[最大纤维达到者的隐藏位分裂：\texorpdfstring{$(d_{m,0},d_{m,1})$}{(d0,d1)} 的 Fibonacci 刚性（可复现观察）]\label{rem:pom-max-fiber-achievers-bsplit}
 由引理 \ref{lem:pom-one-bit}（单隐藏位分解），对每个 \(x\in X_m\) 定义
@@ -1842,6 +1970,163 @@ T_K:=\delta_{\min}(K)\quad(\text{时间指纹}),
 \end{enumerate}
 \end{theorem}
 
+\subsubsection{可复算 commuting package：真实输入 $40$ 状态核}\label{subsec:real-input-40-commuting-package}
+\paragraph{对象：真实输入的确定性 skew-product}
+令黄金均值移位（禁词 $(11)$）的邻接矩阵
+\[
+A=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix},\qquad \rho(A)=\varphi.
+\]
+把两条合法 Zeckendorf 输入轨道 $(x,y)\in X\times X$ 并入同步核状态，得到
+\(
+\Sigma:=Q\times\{0,1\}^2
+\)
+（$|Q|=10,|\Sigma|=40$）。
+每步读入 $(x_k,y_k)\in\{0,1\}^2$（受黄金均值守卫约束），令 $d_k=x_k+y_k\in\{0,1,2\}$，
+并用 10 状态核的确定性转移 $s_{k+1}=\delta(s_k,d_k)$ 更新纤维坐标 $s\in Q$；
+从而得到一个 $40$ 状态 SFT，其邻接矩阵记为 $M$（详见附录 \ref{app:real-input-40-abel}）。
+
+\begin{proposition}[确定性扩张不增熵：$\rho(M)=\varphi^2$]\label{prop:real-input-40-entropy}
+真实输入 $40$ 状态核的拓扑熵满足
+\[
+h_{\mathrm{top}}(\Sigma)=h_{\mathrm{top}}(X\times X)=2\log\varphi,
+\qquad
+\rho(M)=e^{h_{\mathrm{top}}(\Sigma)}=\varphi^2.
+\]
+\end{proposition}
+\begin{proof}
+基系统为输入对语法 $X\times X$，其邻接矩阵为 $A\otimes A$，故 $h_{\mathrm{top}}(X\times X)=\log\rho(A\otimes A)=2\log\varphi$。
+另一方面，给定任意基系统符号序列 $\{(x_k,y_k)\}$，则 $d_k=x_k+y_k$ 唯一确定，因而纤维更新 $s_{k+1}=\delta(s_k,d_k)$ 亦唯一确定。
+因此对任意长度 $n$ 的基系统路径，从每个初始纤维态 $s_0$ 出发至多抬升出一条 $\Sigma$-路径，总路径数仅乘以常数 $|Q|$，指数增长率不变。
+故 $h_{\mathrm{top}}(\Sigma)=h_{\mathrm{top}}(X\times X)$，从而 $\rho(M)=\varphi^2$。证毕。
+\end{proof}
+
+\paragraph{谱—迹—Euler 乘积的闭式桥包}
+附录 \ref{app:abel-mertens-universal} 与 \ref{app:real-input-40-abel} 给出该核的完全因子分解：
+\[
+\boxed{\;
+\det(I-zM)=(1-z)^2(1+z)^3(1-3z+z^2)(1+z-z^2).\;}
+\]
+因此除零特征值外的非零谱（按重数计）为
+\[
+\sigma(M)\setminus\{0\}=\{1,1,\,-1,-1,-1,\,\varphi^2,\,\varphi^{-2},\,-\varphi,\,\varphi^{-1}\}.
+\]
+对应周期迹（周期点计数）有全闭式
+\[
+\boxed{\;
+a_n:=\Tr(M^n)=
+2+3(-1)^n+\varphi^{2n}+\varphi^{-2n}+\varphi^{-n}+(-\varphi)^n.\;}
+\]
+primitive 轨道数（按轨道计）由 Witt/Möbius 反演严格抽取：
+\[
+\boxed{\;
+p_n=\frac1n\sum_{d\mid n}\mu(d)\,a_{n/d}.\;}
+\]
+并且 Euler 乘积（prime-like 侧）与迹侧严格对齐：
+\[
+\zeta_M(z)
+=\exp\!\left(\sum_{n\ge 1}\frac{a_n}{n}z^n\right)
+=\prod_{\gamma\ \mathrm{primitive}}\frac{1}{1-z^{|\gamma|}}
+=\frac{1}{\det(I-zM)}.
+\]
+
+\paragraph{Abel/有限部常数：主极点与留数闭式}
+由 $\rho(M)=\varphi^2$ 得主极点
+\[
+z_\star=\rho(M)^{-1}=\varphi^{-2}.
+\]
+对应留数常数与 Abel 有限部常数具有闭式读出（附录 \ref{app:real-input-40-abel}）：
+\[
+\boxed{\;
+C=\lim_{z\to z_\star}(1-\varphi^2 z)\,\zeta_M(z)=\frac{47+21\sqrt5}{100}\approx 0.9395742753,\;}
+\]
+\[
+\boxed{\;
+\log\mathfrak{M}=\log C+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta_M(z_\star^{\,m})
+\approx -0.2543126619.\;}
+\]
+
+\paragraph{Dirichlet/模分层：arity-charge 的有限维 Fourier 反演}
+定义 arity-charge（附录 \ref{app:real-input-40-arity-charge}）
+\[
+\chi(s,d):=e-\mathbf{1}_{\{d=2\}}\in\{-1,0,1\},
+\]
+并以 $q^{\chi}$ 对边加权得到矩阵族 $M(q)$。
+令
+\(
+c_n(q):=\Tr(M(q)^n)
+\)
+与 primitive 生成多项式
+\[
+P_n(q):=\sum_{\substack{\gamma\ \mathrm{primitive}\\|\gamma|=n}}q^{\chi(\gamma)}.
+\]
+则有加权 Witt/Möbius 反演：
+\[
+c_n(q)=\sum_{d\mid n}d\,P_d\!\left(q^{n/d}\right),
+\qquad
+P_n(q)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,c_{n/d}\!\left(q^{d}\right).
+\]
+对模 $m$ 的分层计数
+\(
+N_{n,r}^{(m)}:=\sum_{k\equiv r\ (\mathrm{mod}\ m)}[q^k]P_n(q)
+\)
+可由离散傅里叶反演直接写成
+\[
+\boxed{\;
+N_{n,r}^{(m)}=\frac{1}{m}\sum_{j=0}^{m-1}\zeta_m^{-jr}P_n(\zeta_m^j),
+\qquad \zeta_m=e^{2\pi i/m}.\;}
+\]
+例如模 $2$ 时
+\(
+N_{n,0}^{(2)}=(P_n(1)+P_n(-1))/2,\,
+N_{n,1}^{(2)}=(P_n(1)-P_n(-1))/2
+\)，并且
+\[
+P_{10}(q)=54q^5+334q^4+634q^3+410q^2+79q+2,
+\qquad
+(N_{10,0}^{(2)},N_{10,1}^{(2)})=(746,767).
+\]
+
+\paragraph{时间复杂度轴：负携带势的三次压力方程与大偏差端点}
+把“串行冲突/携带活跃度”作为可观测势引入后，压力与大偏差仍保持可审计的有限维闭式。
+例如负携带势取（附录 \ref{app:vector-potential}）
+\[
+Q_-:=\{0\overline{1}2,\,1\overline{1}2,\,01\overline{1},\,11\overline{1}\},
+\qquad
+\phi(s\to t):=\mathbf{1}_{\{t\in Q_-\}},
+\]
+令 $u=e^\theta$，则主特征值 $\lambda(u)$ 满足三次方程
+\[
+\boxed{\;
+\lambda^3-(u+2)\lambda^2+(u-2)\lambda+3u=0,\qquad u=e^\theta,\;}
+\]
+从而压力 $P(\theta)=\log\lambda(e^\theta)$ 被该三次方程的最大实根完全锁定，并且
+\[
+P'(0)=\frac18,\qquad P''(0)=\frac{25}{128},
+\qquad
+I(0)=\log\frac{3}{1+\sqrt3},\quad I(1)=\log 3.
+\]
+
+\paragraph{多维势：张量化观测仍保持“有限矩阵—行列式—压力/大偏差”闭环}
+对一般向量势
+\(
+\boldsymbol{\varphi}(e)=(\varphi_1(e),\dots,\varphi_d(e))
+\)
+定义加权矩阵族
+\[
+B(\boldsymbol{\theta})_{ij}=\sum_{e:i\to j}\exp\!\bigl(\langle\boldsymbol{\theta},\boldsymbol{\varphi}(e)\rangle\bigr),
+\qquad
+P(\boldsymbol{\theta})=\log\rho(B(\boldsymbol{\theta})),
+\]
+则
+\(
+\zeta(z;\boldsymbol{\theta})=\det(I-zB(\boldsymbol{\theta}))^{-1}
+\)
+给出与标量势同型的可审计接口，且大偏差率函数由 Legendre 变换
+\(
+I(\alpha)=\sup_{\boldsymbol{\theta}}(\langle\boldsymbol{\theta},\alpha\rangle-(P(\boldsymbol{\theta})-P(0)))
+\)
+读出（见附录 \ref{app:vector-potential} 的二维/三维闭式示例）。
+
 \subsection{新结论簇 I：熵饱和与最大熵提升}\label{subsec:pom-entropy-maxent}
 \begin{definition}[窗口值与外表值]\label{def:pom-window-value}
 对 $\omega=\omega_1\cdots\omega_m\in\Omega_m$，定义窗口值
@@ -1864,12 +2149,21 @@ N(\omega)=V_m(\Fold_m(\omega)) + b(\omega)\,F_{m+2}.
 由 $\sum_{k=1}^m F_{k+1}=F_{m+3}-2$ 得 $0\le N(\omega)<F_{m+3}$。因此 $N(\omega)$ 的 Zeckendorf 表示中不可能出现权重 $F_{m+3}$，其非零位仅可能到 $F_{m+2}$。由 $\Fold_m$ 的定义，$\Fold_m(\omega)$ 给出前 $m$ 位，余下唯一可能的高位即 $F_{m+2}$，于是存在唯一 $b(\omega)\in\{0,1\}$ 使等式成立。证毕。
 \end{proof}
 
-\begin{theorem}[单隐藏位的精确密度律：常数 \texorpdfstring{$1/3$}{1/3}]\label{thm:pom-hidden-bit-density}
-令
-$$
-B_m:=\{\omega\in\{0,1\}^m:\ b(\omega)=1\}.
-$$
-则对所有 $m\ge 1$ 有精确闭式
+\input{sections/08_projection_ontology_mathematics/08_projection_ontology_mathematics_overflow_global_count.tex}
+
+\begin{proposition}[纤维自由度的二层分解]\label{prop:pom-fiber-decompose}
+对任意 $x\in X_m$，记 $I(x)$ 为 $x$ 中可执行逆代换 $100\mapsto 011$ 的局部位点集合（以长度 $3$ 窗口计），并要求所选位点两两不相邻以避免重叠。则任意 $\omega\in\Fold_m^{-1}(x)$ 可视为"一个余量位 $b\in\{0,1\}$"与"一组不相邻逆代换位点"的组合；因此
+\[
+d_m(x)\le 2\cdot \#\{\text{路径图 }P_{|I(x)|}\text{ 的独立集}\}
+\le 2F_{\lfloor m/2\rfloor+2}.
+\]
+\end{proposition}
+\begin{proof}
+由引理 \ref{lem:pom-one-bit}，给定 $\omega$ 的超出前 $m$ 位的信息至多是一位 $b$。其余自由度来自逆代换 $100\mapsto 011$ 的选择：当两次逆代换发生重叠时会产生非二元符号，因此合法选择只能来自一条线性链上的不相邻位点集合。路径图独立集计数即为 Fibonacci 数，从而得到上述上界。证毕。
+\end{proof}
+
+\begin{theorem}[一步可判别与右解析性]\label{thm:pom-right-resolving}
+对任意 $m\ge 2$ 与任意 $v\in V_m=\{0,1\}^{m-1}$，有
 $$
 \boxed{\ |B_m|=\left\lfloor \frac{2^m}{3}\right\rfloor\ }
 $$
@@ -1946,14 +2240,6 @@ $$
 \lim_{m\to\infty}\mathbb{P}[b(\omega)=1]=\frac{1}{3},\qquad
 \lim_{m\to\infty}\mathbb{P}[b(\omega)=0]=\frac{2}{3}.
 $$
-进一步，其二元熵（以比特计）趋于
-$$
-H_2(b)
-:=-\frac{1}{3}\log_2\frac{1}{3}-\frac{2}{3}\log_2\frac{2}{3}
-\approx 0.9183.
-$$
-\end{corollary}
-
 \begin{proposition}[纤维自由度的二层分解]\label{prop:pom-fiber-decompose}
 对任意 $x\in X_m$，记 $I(x)$ 为 $x$ 中可执行逆代换 $100\mapsto 011$ 的局部位点集合（以长度 $3$ 窗口计），并要求所选位点两两不相邻以避免重叠。则任意 $\omega\in\Fold_m^{-1}(x)$ 可视为“一个余量位 $b\in\{0,1\}$”与“一组不相邻逆代换位点”的组合；因此
 \[
@@ -2358,4 +2644,3 @@ $
 \sum_{c\subseteq A}|c|/|G_m|=|A|/|G_m|=\mu_{\mathrm{Haar}}(U)
 $，并因 $A$ 的共轭类数目有限，误差仍为 $O(\Lambda_m^n/n)$。若 $\Lambda_m\le \lambda_m^{1/2}$，则立得平方根级误差。证毕。
 \end{proof}
-
