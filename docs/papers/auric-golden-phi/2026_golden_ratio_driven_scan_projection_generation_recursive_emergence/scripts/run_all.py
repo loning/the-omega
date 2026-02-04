@@ -272,6 +272,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_weighted_delta_explicit",
+            script="exp_sync_kernel_weighted_delta_explicit.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_sync_kernel_weighted_delta_explicit.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_time_correlation",
             script="exp_sync_kernel_time_correlation.py",
             args=[],
