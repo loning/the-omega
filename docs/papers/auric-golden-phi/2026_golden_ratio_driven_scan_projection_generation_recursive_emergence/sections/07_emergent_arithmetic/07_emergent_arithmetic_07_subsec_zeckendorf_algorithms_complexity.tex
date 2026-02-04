@@ -97,6 +97,21 @@ Q=\{000,001,002,010,100,101,0\overline{1}2,1\overline{1}2,01\overline{1},11\over
 \textbf{证明：}
 守恒式保证值不变量，末端函数输出落在 $X_m$；由定理 \ref{thm:zeckendorf-transversal} 的横截面唯一性得 $\Fold_\infty(s)$。同步图与附录 B 的状态/转移一致。证毕。
 
+\subsubsection{统计指纹：最大熵输入驱动下的平稳分布、输入--输出耦合、反持续与输出熵率}\label{subsec:sync10-stat-fingerprint}
+上面的同步核是\emph{确定性}转导器：给定当前状态 $s_t\in Q$ 与输入 $d_t\in\{0,1,2\}$，则输出位 $e_t\in\{0,1\}$ 与下一状态 $s_{t+1}$ 唯一确定（见边表的 $d/e$ 标记）。
+为提取一个不依赖外部对象（$\zeta$、Abel 有限部、primitive 谱等）的\textbf{机制级统计指纹}，这里固定“最大熵驱动”：
+$$
+d_t\ \text{i.i.d. 且}\ \mathbb P(d_t=0)=\mathbb P(d_t=1)=\mathbb P(d_t=2)=\frac{1}{3}.
+$$
+这把同步核诱导为一个 10 状态马尔可夫链（隐藏状态为 $Q$，观测输出为 $e_t$）。其平稳分布、输入--输出耦合、输出短程相关与输出熵率都可由边表逐项枚举得到，且落在\textbf{精确有理数/可复现常数}中：
+\input{sections/generated/eq_sync_kernel_10_state_uniform_input_fingerprint}
+
+\begin{remark}[回推到扩张--取整表示的闭合方向（机制 \texorpdfstring{$\leftrightarrow$}{<->} 实动力学）]
+注记“扩张--取整表示”给出了 $[0,1)$ 上的分支扩张与取整 cocycle。
+进一步可把 10 个同步状态识别为该动力系统的一个 Markov 分割，并证明其不变密度在这些分割区间上的质量恰等于上面的平稳权重 $\pi(s)$。
+这样可把“符号核”与“实动力系统”完全闭合为同一个对象，并把统计指纹直接提升为区间动力学的可审计输出。
+\end{remark}
+
 \begin{remark}[操作数不一致与隐含属性]
 原子生成元 $E_k,E_k^{-1}$ 具有尺度参数 $k$ 与守卫条件，体现为“隐含类型”。令 $\nu(a):=\sum_k a_k$ 表示块数，则
 \[

@@ -452,6 +452,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_10_state_uniform_input_fingerprint",
+            script="exp_sync_kernel_10_state_uniform_input_fingerprint.py",
+            args=["--steps", "10000000", "--burn-in", "200000", "--seed", "7"],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_10_state_uniform_input_fingerprint.json",
+                "sections/generated/eq_sync_kernel_10_state_uniform_input_fingerprint.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_cyclotomic_elimination",
             script="exp_sync_kernel_cyclotomic_elimination.py",
             args=[],
