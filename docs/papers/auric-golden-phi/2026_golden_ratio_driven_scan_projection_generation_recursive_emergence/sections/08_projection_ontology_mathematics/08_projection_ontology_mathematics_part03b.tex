@@ -1,0 +1,600 @@
+\subsubsection{二阶碰撞矩与 \texorpdfstring{$\mathrm{R\acute{e}nyi}$}{Renyi}--2 投影熵率}\label{subsec:pom-s2}
+最大纤维多重度刻画“最坏空间缺陷”，但在统计意义上更稳健的指标来自碰撞矩（\(\ell^2\) 质量）。它给出一个可与在线延迟 \(\delta_{\min}=3\) 并列的、纯由折叠门 \(P_Z\) 决定的指数尺度常数。
+
+\begin{lemma}[碰撞等价于模 \texorpdfstring{$F_{m+2}$}{F\_{m+2}} 同余]\label{lem:pom-fold-congruence}
+设 \(\omega,\omega'\in\Omega_m=\{0,1\}^m\)，并定义窗口值
+$$
+N(\omega):=\sum_{k=1}^m \omega_k F_{k+1}.
+$$
+则有等价关系
+$$
+\Fold_m(\omega)=\Fold_m(\omega')
+\quad\Longleftrightarrow\quad
+N(\omega)\equiv N(\omega')\pmod{F_{m+2}}.
+$$
+\end{lemma}
+\begin{proof}
+记 \(x=\Fold_m(\omega)\in X_m\)、\(x'=\Fold_m(\omega')\in X_m\)。由引理 \ref{lem:pom-one-bit}（单隐藏位分解）存在唯一 \(b(\omega),b(\omega')\in\{0,1\}\) 使
+$$
+N(\omega)=V_m(x)+b(\omega)F_{m+2},\qquad
+N(\omega')=V_m(x')+b(\omega')F_{m+2}.
+$$
+若 \(x=x'\)，则两式相减得 \(N(\omega)-N(\omega')=(b(\omega)-b(\omega'))F_{m+2}\)，从而同余成立。
+反之，若 \(N(\omega)\equiv N(\omega')\ (\mathrm{mod}\ F_{m+2})\)，则两者在模 \(F_{m+2}\) 下的余数相同。又由于 \(V_m(\Fold_m(\cdot))\) 正是 Zeckendorf 规范形在前 \(m\) 位对应的值（定义 \ref{def:pom-window-value}），该余数唯一确定折叠后的稳定类型 \(x\in X_m\)，因此 \(x=x'\)，即 \(\Fold_m(\omega)=\Fold_m(\omega')\)。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$q$}{q}-重碰撞的同余矩表达]\label{prop:pom-moment-congruence-q}
+对任意整数 \(q\ge 2\)，定义
+$$
+S_q(m):=\sum_{x\in X_m} d_m(x)^q.
+$$
+并令
+$$
+c_m(r):=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\ (\mathrm{mod}\ F_{m+2})\},\qquad r\in\ZZ/F_{m+2}\ZZ.
+$$
+则有恒等式
+$$
+\boxed{\ 
+S_q(m)=\sum_{r\in\ZZ/F_{m+2}\ZZ} c_m(r)^q.
+\ }
+$$
+\end{proposition}
+\begin{proof}
+记
+$$
+R_m^{(q)}:=\{(\omega^{(1)},\dots,\omega^{(q)})\in\Omega_m^q:\ \Fold_m(\omega^{(1)})=\cdots=\Fold_m(\omega^{(q)})\}.
+$$
+由定义立得 \(|R_m^{(q)}|=\sum_{x\in X_m}d_m(x)^q=S_q(m)\)。
+另一方面，由引理 \ref{lem:pom-fold-congruence}，对任意两条窗口 \(\omega,\omega'\) 有
+\(
+\Fold_m(\omega)=\Fold_m(\omega')\iff N(\omega)\equiv N(\omega')\ (\mathrm{mod}\ F_{m+2})
+\)。
+因此 \((\omega^{(1)},\dots,\omega^{(q)})\in R_m^{(q)}\) 当且仅当
+$$
+N(\omega^{(1)})\equiv \cdots \equiv N(\omega^{(q)})\pmod{F_{m+2}}.
+$$
+按共同余数类 \(r\in\ZZ/F_{m+2}\ZZ\) 分组计数，得到
+$$
+|R_m^{(q)}|
+=\sum_{r\in\ZZ/F_{m+2}\ZZ}\#\{\omega^{(1)}:\ N(\omega^{(1)})\equiv r\}\cdots \#\{\omega^{(q)}:\ N(\omega^{(q)})\equiv r\}
+=\sum_{r}c_m(r)^q.
+$$
+与 \(|R_m^{(q)}|=S_q(m)\) 合并即得结论。证毕。
+\end{proof}
+
+\begin{proposition}[任意 \texorpdfstring{$q$}{q} 的傅里叶 moment-kernel 闭式]\label{prop:pom-moment-fourier-q}
+令 $F:=F_{m+2}$，并在加法群 $G:=\ZZ/F\ZZ$ 上定义同余分布
+$$
+c_m(r):=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\ (\mathrm{mod}\ F)\},\qquad r\in G.
+$$
+取 $\omega_F:=e^{2\pi i/F}$，定义离散傅里叶变换
+$$
+\widehat c_m(t):=\sum_{r\in G} c_m(r)\,\omega_F^{tr},\qquad t\in G.
+$$
+则对任意整数 $q\ge 2$ 有显式公式
+$$
+\boxed{\;
+S_q(m)=\frac{1}{F^{\,q-1}}
+\sum_{t_1,\dots,t_{q-1}\in G}
+\widehat c_m(t_1)\cdots \widehat c_m(t_{q-1})\,
+\widehat c_m\!\Bigl(-\sum_{j=1}^{q-1}t_j\Bigr)\;}
+$$
+并且 $\widehat c_m$ 具有完全因子化形式
+$$
+\boxed{\;
+\widehat c_m(t)=\sum_{\omega\in\Omega_m}\omega_F^{tN(\omega)}
+=\prod_{k=1}^m\bigl(1+\omega_F^{tF_{k+1}}\bigr)\; }.
+$$
+\end{proposition}
+\begin{proof}
+因子化式由
+$$
+\widehat c_m(t)=\sum_{\omega_1,\dots,\omega_m\in\{0,1\}}\ \prod_{k=1}^m \omega_F^{t\omega_kF_{k+1}}
+=\prod_{k=1}^m\sum_{\omega_k\in\{0,1\}} \omega_F^{t\omega_kF_{k+1}}
+$$
+直接得到。
+
+为得一般 $q$ 的闭式，先用傅里叶反演
+$$
+c_m(r)=\frac{1}{F}\sum_{t\in G}\widehat c_m(t)\,\omega_F^{-tr}.
+$$
+代入 $S_q(m)=\sum_{r\in G}c_m(r)^q$ 并展开：
+$$
+S_q(m)
+=\frac{1}{F^q}\sum_{t_1,\dots,t_q\in G}\widehat c_m(t_1)\cdots\widehat c_m(t_q)\sum_{r\in G}\omega_F^{-(t_1+\cdots+t_q)r}.
+$$
+由角色正交性，
+$$
+\sum_{r\in G}\omega_F^{-(t_1+\cdots+t_q)r}
+=
+\begin{cases}
+F,& t_1+\cdots+t_q\equiv 0\ (\mathrm{mod}\ F),\\
+0,& \text{否则}.
+\end{cases}
+$$
+因此
+$$
+S_q(m)=\frac{1}{F^{q-1}}\sum_{\substack{t_1,\dots,t_q\in G\\ t_1+\cdots+t_q\equiv 0}}
+\widehat c_m(t_1)\cdots\widehat c_m(t_q).
+$$
+再以 $t_q=-(t_1+\cdots+t_{q-1})$ 消去约束即得所述公式。证毕。
+\end{proof}
+
+\begin{definition}[折叠碰撞矩]\label{def:pom-s2}
+定义二阶碰撞和
+$$
+S_2(m):=\sum_{x\in X_m} d_m(x)^2,
+\qquad d_m(x):=\bigl|\Fold_m^{-1}(x)\bigr|.
+$$
+等价地，从 \(\Omega_m\) 上均匀独立抽取两条窗口 \(\omega,\omega'\)，则
+$$
+\mathbb{P}\bigl[\Fold_m(\omega)=\Fold_m(\omega')\bigr]=\frac{S_2(m)}{4^m}.
+$$
+\end{definition}
+
+\begin{proposition}[碰撞核的三态表示与三阶递推]\label{prop:pom-s2-recurrence}
+令碰撞关系
+$$
+R_m:=\{(\omega,\omega')\in\Omega_m\times\Omega_m:\Fold_m(\omega)=\Fold_m(\omega')\}.
+$$
+则存在一个三态的非负整数矩阵（可视为“碰撞核”的邻接矩阵）
+$$
+A_2:=
+\begin{pmatrix}
+0&0&1\\
+0&1&1\\
+2&1&1
+\end{pmatrix},
+$$
+使得对一切 \(m\ge 2\),
+$$
+S_2(m)=|R_m|
+=2\,\mathbf{1}^{\mathsf T}A_2^{\,m-2}\mathbf{1},
+\qquad \mathbf{1}:=(1,1,1)^{\mathsf T}.
+$$
+从而 \(S_2(m)\) 满足精确递推（\(m\ge 5\)）
+$$
+S_2(m)=2S_2(m-1)+2S_2(m-2)-2S_2(m-3),
+$$
+并具有初值 \(S_2(2)=6,S_2(3)=14,S_2(4)=36\)。
+\end{proposition}
+\begin{proof}
+由引理 \ref{lem:pom-fold-congruence}，有
+$$
+|R_m|
+=\#\{(\omega,\omega'):\ N(\omega)\equiv N(\omega')\ (\mathrm{mod}\ F_{m+2})\}
+=\sum_{r\in\ZZ/F_{m+2}\ZZ} c_m(r)^2,
+$$
+其中 \(c_m(r):=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\ (\mathrm{mod}\ F_{m+2})\}\)。
+因此 \(S_2(m)\) 完全由“模 \(F_{m+2}\) 的值同余计数”决定，可视为一个离散有限状态计数问题的平方和（碰撞核的 \(\ell^2\) 质量）。
+
+接着给出一个\textbf{可审计构造}：三态非负 realization 可取上式所示的 \(A_2\)。该矩阵并非任意猜测——它可以从小 \(m\) 的枚举数据出发自动恢复：先由 \(S_2(2),\dots,S_2(7)\) 解出最小三阶递推系数，再在小整数矩阵类中搜索满足
+\(
+S_2(m)=2\,\mathbf{1}^{\mathsf T}A^{m-2}\mathbf{1}
+\)
+的非负 \(3\times 3\) realization，得到的规范解即为此 \(A_2\)（可复现脚本 \texttt{scripts/exp\_fold\_collision\_kernel\_a2\_search.py}）。
+为核对其正确性，直接计算得
+$$
+2\,\mathbf{1}^{\mathsf T}A_2^{\,0}\mathbf{1}=6,\qquad
+2\,\mathbf{1}^{\mathsf T}A_2^{\,1}\mathbf{1}=14,\qquad
+2\,\mathbf{1}^{\mathsf T}A_2^{\,2}\mathbf{1}=36,
+$$
+与 \(S_2(2),S_2(3),S_2(4)\) 一致。另一方面，\(A_2\) 的特征多项式为
+$$
+\det(\lambda I-A_2)=\lambda^3-2\lambda^2-2\lambda+2,
+$$
+因此对任意向量序列 \(u_m:=\mathbf{1}^{\mathsf T}A_2^{m}\mathbf{1}\)（\(m\ge 0\)）满足由 Cayley--Hamilton 定理诱导的三阶线性递推。乘以常数 \(2\) 并作指标平移即可得到 \(S_2(m)\) 的递推式与初值。
+
+最后，\(\mathbf{1}\) 与 \(A_2\) 的取法给出一个完全显式、可审计的三态“碰撞核”实现；其数值、递推与 \(A_2\) realization 的一致性可由脚本 \texttt{scripts/exp\_fold\_collision\_s2.py} 与 \texttt{scripts/exp\_fold\_collision\_kernel\_a2\_search.py} 逐项核验。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$S_2(m)$}{S2(m)} 的 Plancherel 表达与角色因子化]\label{prop:pom-s2-plancherel}
+令 \(G_m:=\ZZ/F_{m+2}\ZZ\)，并取其标准角色
+\(
+\chi_j(r):=\exp(2\pi i jr/F_{m+2})
+\)
+（\(j\in G_m\)）。对同余计数 \(c_m(r)=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\}\) 定义离散傅里叶变换
+\[
+\widehat c_m(j):=\sum_{r\in G_m} c_m(r)\,\chi_j(r).
+\]
+则二阶碰撞矩满足严格恒等式
+\[
+\boxed{\;
+S_2(m)=\sum_{r\in G_m}c_m(r)^2=\frac{1}{|G_m|}\sum_{j\in G_m}\bigl|\widehat c_m(j)\bigr|^2\;}
+\]
+并且 \(\widehat c_m(j)\) 具有完全因子化形式
+\[
+\boxed{\;
+\widehat c_m(j)=\sum_{\omega\in\Omega_m}\chi_j\!\bigl(N(\omega)\bigr)
+=\prod_{k=1}^m\Bigl(1+\chi_j(F_{k+1})\Bigr)
+=\prod_{k=1}^m\left(1+\exp\!\frac{2\pi i j F_{k+1}}{F_{m+2}}\right).\;}
+\]
+从而
+\[
+S_2(m)
+=\frac{1}{F_{m+2}}\sum_{j=0}^{F_{m+2}-1}\ \prod_{k=1}^m\left|1+\exp\!\frac{2\pi i j F_{k+1}}{F_{m+2}}\right|^2.
+\]
+\end{proposition}
+\begin{proof}
+第一式是有限阿贝尔群上的 Plancherel 恒等式。这里给出与本节记号一致的直接推导：由反演公式
+\(
+c_m(r)=\frac{1}{|G_m|}\sum_{j}\widehat c_m(j)\,\overline{\chi_j(r)}
+\)
+与角色正交性
+\(
+\sum_{r}\chi_j(r)\overline{\chi_{j'}(r)}=|G_m|\,\mathbf{1}_{j=j'}
+\)
+立得
+\[
+\sum_{r}c_m(r)^2
+=\frac{1}{|G_m|}\sum_{j}|\widehat c_m(j)|^2.
+\]
+
+对因子化：由定义
+\[
+\widehat c_m(j)
+=\sum_{r}\sum_{\substack{\omega\in\Omega_m\\N(\omega)\equiv r}}\chi_j(r)
+=\sum_{\omega\in\Omega_m}\chi_j\!\bigl(N(\omega)\bigr).
+\]
+再用窗口值的线性分解 \(N(\omega)=\sum_{k=1}^m \omega_k F_{k+1}\)（定义 \ref{def:pom-window-value}）与角色的乘法性，
+\[
+\chi_j\!\bigl(N(\omega)\bigr)
+=\prod_{k=1}^m \chi_j(F_{k+1})^{\omega_k},
+\]
+对每一位 \(\omega_k\in\{0,1\}\) 求和即可得到
+\(
+\widehat c_m(j)=\prod_{k=1}^m(1+\chi_j(F_{k+1}))
+\)。
+最后一式由 \(|G_m|=F_{m+2}\) 与 \(\chi_j(F_{k+1})=\exp(2\pi i jF_{k+1}/F_{m+2})\) 代入得到。证毕。
+\end{proof}
+
+\begin{lemma}[三阶递推的最小性]\label{lem:pom-s2-minimal-order}
+序列 \(\{S_2(m)\}_{m\ge 2}\) 不满足任何二阶常系数线性递推。因而命题 \ref{prop:pom-s2-recurrence} 的三阶递推在“线性递推阶数”意义下是最小的。
+\end{lemma}
+\begin{proof}
+反设存在常数 \(\alpha,\beta\) 使对所有 \(m\) 有 \(S_2(m)=\alpha S_2(m-1)+\beta S_2(m-2)\)。
+由初值 \(S_2(2)=6,S_2(3)=14,S_2(4)=36,S_2(5)=88\) 解线性方程组
+$$
+36=\alpha\cdot 14+\beta\cdot 6,\qquad
+88=\alpha\cdot 36+\beta\cdot 14
+$$
+得 \(\alpha=6/5,\ \beta=16/5\)。于是
+$$
+S_2(6)=\alpha S_2(5)+\beta S_2(4)=\frac65\cdot 88+\frac{16}{5}\cdot 36=\frac{1104}{5}=220.8,
+$$
+与 \(S_2(6)=220\)（命题 \ref{prop:pom-s2-recurrence} 或脚本 \texttt{scripts/exp\_fold\_collision\_s2.py}）矛盾。故不存在二阶递推。证毕。
+\end{proof}
+
+\begin{remark}[最小 realization 维数与非负核]\label{rem:pom-s2-minimal-realization}
+由引理 \ref{lem:pom-s2-minimal-order}，\(\{S_2(m)\}\) 的最小线性递推阶数为 \(3\)，因此任何线性状态空间表示 \(S_2(m)=u^{\mathsf T}B^{m}v\) 的最小维数至少为 \(3\)。命题 \ref{prop:pom-s2-recurrence} 给出的三态矩阵 \(A_2\) 因而在维数意义下是最小的；并且它是一个\emph{非负整数} realization（可视为一张三态有限图的邻接矩阵），从而将 \(S_2\) 的指数尺度完全纳入 Perron--Frobenius/\(\zeta\) 的统一接口。
+\end{remark}
+
+\begin{remark}[Hankel 最小实现与 \texorpdfstring{$A_2$}{A2} 的非负相似标准形]\label{rem:pom-s2-hankel}
+将序列重标为 \(a_n:=S_2(n+2)/2\)（\(n\ge 0\)）。由递推阶数为 \(3\) 可知 Hankel 矩阵族的秩为 \(3\)，因此存在一个三维的\textbf{最小线性实现}（加权自动机/线性表示的标准口径）：取
+$$
+H_0=(a_{i+j})_{0\le i,j\le 2},\qquad H_1=(a_{i+j+1})_{0\le i,j\le 2},
+$$
+则在 \(H_0\) 可逆时可定义“移位实现矩阵”
+$$
+A:=H_0^{-1}H_1,
+$$
+从而 \(a_n=u^{\mathsf T}A^{n}v\)（某些 \(u,v\)）给出最小 realization。该 Hankel 标准形 \(A\) 一般包含符号（例如出现负系数），但它与非负整数核 \(A_2\) 相似：存在行列式为 \(\pm 1\) 的整矩阵 \(P\) 使
+$$
+P^{-1}AP=A_2.
+$$
+上述 Hankel 构造与 unimodular 相似变换可由脚本 \texttt{scripts/exp\_fold\_collision\_hankel\_realization.py} 一键复现，从而把“最小 realization（可证明）”与“非负核（可解释为有限图）”严格对齐。
+\end{remark}
+
+\begin{theorem}[Hankel 秩定理（加权自动机的线性 Myhill--Nerode 口径）]\label{thm:hankel-rank-minimal}
+设 \(k\) 为域（例如 \(\mathbb{Q}\) 或 \(\mathbb{R}\)）。给定一个序列 \(a=(a_n)_{n\ge 0}\subset k\)，其 Hankel 矩阵定义为
+$$
+H(a):=(a_{i+j})_{i,j\ge 0}.
+$$
+称 \((u,A,v)\) 为 \(a\) 的一个线性表示（linear representation），若 \(u,v\in k^d\)、\(A\in k^{d\times d}\)，且对一切 \(n\ge 0\) 有
+$$
+a_n=u^{\mathsf T}A^n v.
+$$
+则有
+$$
+\mathrm{rank}\bigl(H(a)\bigr)=\min\{d:\exists\ (u,A,v)\text{ 给出维数为 }d\text{ 的线性表示}\}.
+$$
+等价地，\(\mathrm{rank}(H(a))\) 等于生成该序列的最小加权自动机（有理级数）的状态数（见 \cite{BerstelReutenauer1988RationalSeries}）。
+\end{theorem}
+
+\begin{lemma}[Hankel 窗口行列式非零：秩至少为 \texorpdfstring{$3$}{3}]\label{lem:pom-s2-hankel-det}
+令 \(a_n:=S_2(n+2)/2\)。取 \(3\times 3\) Hankel 窗口
+$$
+H_0:=
+\begin{pmatrix}
+a_0 & a_1 & a_2\\
+a_1 & a_2 & a_3\\
+a_2 & a_3 & a_4
+\end{pmatrix}.
+$$
+则
+$$
+(a_0,a_1,a_2,a_3,a_4)=\Bigl(3,7,18,44,110\Bigr),
+\qquad
+\det(H_0)=-2\neq 0.
+$$
+因此 Hankel 秩至少为 \(3\)，从而任何线性 realization 的最小维数至少为 \(3\)。
+\end{lemma}
+\begin{proof}
+由 \(S_2(2)=6,S_2(3)=14,S_2(4)=36,S_2(5)=88,S_2(6)=220\)（命题 \ref{prop:pom-s2-recurrence}），即得
+\(
+a_n=S_2(n+2)/2
+\)
+的前五项为 \((3,7,18,44,110)\)。直接代入计算 \(\det(H_0)\) 得 \(-2\)。证毕。
+\end{proof}
+
+\begin{theorem}[Hankel 秩恰为 \texorpdfstring{$3$}{3}，且三态为最小碰撞核]\label{thm:pom-s2-rank-exact}
+令 \(a_n:=S_2(n+2)/2\) 并以 \(H=(a_{i+j})_{i,j\ge 0}\) 表示其 Hankel 矩阵。则：
+\begin{enumerate}
+  \item \(\mathrm{rank}(H)=3\)。
+  \item \(a_n\) 的最小线性表示（等价于最小加权自动机）的状态维数为 \(3\)（由定理 \ref{thm:hankel-rank-minimal}）。
+  \item 命题 \ref{prop:pom-s2-recurrence} 给出的三态非负整数核 \(A_2\) 在维数意义下是最小的碰撞核 realization。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\textbf{(1)} 由引理 \ref{lem:pom-s2-hankel-det}，存在一个 \(3\times 3\) Hankel 主子式 \(\det(H_0)\neq 0\)，故 \(\mathrm{rank}(H)\ge 3\)。
+另一方面，命题 \ref{prop:pom-s2-recurrence} 给出三维线性 realization
+$$
+a_n=\mathbf{1}^{\mathsf T}A_2^{\,n}\mathbf{1},
+$$
+因此 Hankel 矩阵的行/列空间包含于 \(\mathbb{R}^3\) 的一个 3 维线性表示所张成的子空间，从而 \(\mathrm{rank}(H)\le 3\)。合并得 \(\mathrm{rank}(H)=3\)。
+
+\textbf{(2)} 由定理 \ref{thm:hankel-rank-minimal}，\(\mathrm{rank}(H)\) 等于最小线性表示维数；结合 (1) 的 \(\mathrm{rank}(H)=3\)，得最小维数为 \(3\)。
+
+\textbf{(3)} 由 (2) 得任何实现的维数至少为 3，而 \(A_2\) 给出 3 维实现，故其在维数意义下最小。证毕。
+\end{proof}
+
+\begin{corollary}[碰撞指数与 \texorpdfstring{$h_2$}{h2}]\label{cor:pom-s2-asymptotic}
+令 \(r_2\) 为多项式
+$$
+x^3-2x^2-2x+2=0
+$$
+的最大实根（\(r_2\approx 2.481194304092\)）。则
+$$
+S_2(m)=\Theta(r_2^m),
+\qquad
+\mathbb{P}\bigl[\Fold_m(\omega)=\Fold_m(\omega')\bigr]
+=\Theta\!\left(\left(\frac{r_2}{4}\right)^m\right).
+$$
+进一步，令 \(\pi_m(x):=d_m(x)/2^m\) 为均匀微态经折叠后的输出分布，则其 \(\mathrm{R\acute{e}nyi}\)--2 投影熵率存在且为
+$$
+h_2:=\lim_{m\to\infty}\frac{1}{m}\Bigl(-\log\sum_{x\in X_m}\pi_m(x)^2\Bigr)
+=\log\!\left(\frac{4}{r_2}\right)\approx 0.477554342632.
+$$
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:pom-s2-recurrence}，\(S_2(m)\) 的生成函数具有分母 \(1-2z-2z^2+2z^3\)，其收敛半径由该分母的最小模零点决定，等价于递推特征多项式的最大实根 \(r_2\)。因此 \(S_2(m)=\Theta(r_2^m)\)。又
+$$
+\sum_{x\in X_m}\pi_m(x)^2=\sum_x \frac{d_m(x)^2}{4^m}=\frac{S_2(m)}{4^m},
+$$
+代入渐近即可得 \(h_2=\log(4/r_2)\)。证毕。
+\end{proof}
+
+\begin{corollary}[二阶意义下的“近似均匀覆盖”：偏离常数的指数刻画]\label{cor:pom-renyi2-near-uniform}
+令 \(\pi_m(x)=d_m(x)/2^m\) 为折叠输出分布，并令 \(u_m(x)\equiv 1/|X_m|=1/F_{m+2}\) 为 \(X_m\) 上的均匀分布。定义二阶碰撞比（亦即 Rényi--2 相对熵的指数化量）
+\[
+R_m
+:=\frac{\sum_{x\in X_m}\pi_m(x)^2}{\sum_{x\in X_m}u_m(x)^2}
+=|X_m|\sum_{x\in X_m}\pi_m(x)^2
+=\frac{F_{m+2}\,S_2(m)}{4^m}.
+\]
+则有指数率
+\[
+\boxed{\;
+\lim_{m\to\infty}\frac{1}{m}\log R_m
+=\log\!\left(\frac{\varphi\,r_2}{4}\right)
+\approx 3.657482\times 10^{-3}\; }.
+\]
+因此二阶意义下，\(\pi_m\) 偏离均匀分布的强度以基数 \(\varphi r_2/4\approx 1.003664\) 逐分辨率增长。
+\end{corollary}
+\begin{proof}
+由定义，
+\(
+\sum_x u_m(x)^2=|X_m|\cdot |X_m|^{-2}=|X_m|^{-1}=F_{m+2}^{-1}
+\)。
+又由定义 \ref{def:pom-s2} 与推论 \ref{cor:pom-s2-asymptotic}，
+\(
+\sum_x\pi_m(x)^2=S_2(m)/4^m=\Theta((r_2/4)^m)
+\)。
+于是
+\[
+R_m=F_{m+2}\cdot \Theta\!\left(\left(\frac{r_2}{4}\right)^m\right)
+=\Theta\!\left(\left(\frac{\varphi\,r_2}{4}\right)^m\right),
+\]
+其中使用 Fibonacci 渐近 \(F_{m+2}=\Theta(\varphi^m)\)。取对数除以 \(m\) 并令 \(m\to\infty\) 得结论。证毕。
+\end{proof}
+
+\begin{corollary}[熵谱夹逼：\texorpdfstring{$h_2\le h_1\le \log\varphi$}{h2<=h1<=log phi}]\label{cor:pom-shannon-entropy-squeeze}
+令 \(\pi_m(x)=d_m(x)/2^m\) 为折叠输出分布，并定义其 Shannon 熵
+\[
+H_1(m):=-\sum_{x\in X_m}\pi_m(x)\log\pi_m(x).
+\]
+设其熵率上下极限为
+\[
+\underline h_1:=\liminf_{m\to\infty}\frac{1}{m}H_1(m),
+\qquad
+\overline h_1:=\limsup_{m\to\infty}\frac{1}{m}H_1(m).
+\]
+则有夹逼
+\[
+\boxed{\;
+h_2\ \le\ \underline h_1\ \le\ \overline h_1\ \le\ \log\varphi\; }.
+\]
+从而 \(\overline h_1\) 与上界 \(\log\varphi\) 的间隙被二阶常数完全量化：
+\[
+0\ \le\ \log\varphi-\overline h_1\ \le\ \log\varphi-h_2
+=\log\!\left(\frac{\varphi r_2}{4}\right),
+\]
+其中右端恰为推论 \ref{cor:pom-renyi2-near-uniform} 的偏离指数常数（约 \(3.657482\times 10^{-3}\)）。
+\end{corollary}
+\begin{proof}
+对任意有限支持分布 \(\pi\)，Rényi 熵随阶数单调递减，故 \(H_2(\pi)\le H_1(\pi)\le H_0(\pi)\)；
+这里 \(H_2(\pi)=-\log\sum_x\pi(x)^2\)、\(H_0(\pi)=\log|\mathrm{supp}(\pi)|\)。
+应用于 \(\pi=\pi_m\) 得
+\[
+-\log\sum_x\pi_m(x)^2\ \le\ H_1(m)\ \le\ \log|X_m|=\log F_{m+2}.
+\]
+两端除以 \(m\) 并取 \(\liminf,\limsup\)，再用 \(\lim_{m\to\infty}\frac{1}{m}\log F_{m+2}=\log\varphi\) 与推论 \ref{cor:pom-s2-asymptotic} 的
+\(
+h_2=\lim_{m\to\infty}\frac{1}{m}\bigl(-\log\sum_x\pi_m(x)^2\bigr)
+\)
+即得第一组夹逼。不等式 \(\log\varphi-h_2=\log(\varphi r_2/4)\) 由 \(h_2=\log(4/r_2)\) 直接化简得到。证毕。
+\end{proof}
+
+\begin{corollary}[min-entropy 熵率的闭式端点]\label{cor:pom-min-entropy-rate}
+令
+\[
+H_\infty(m):=-\log\max_{x\in X_m}\pi_m(x),
+\qquad
+h_\infty:=\lim_{m\to\infty}\frac{1}{m}H_\infty(m).
+\]
+则极限存在且满足闭式
+\[
+\boxed{\;
+h_\infty=\log 2-\frac{1}{2}\log\varphi=\log\!\left(\frac{2}{\sqrt{\varphi}}\right).\;}
+\]
+\end{corollary}
+\begin{proof}
+由 \(\max_x\pi_m(x)=D_m/2^m\)（其中 \(D_m=\max_x d_m(x)\)），有
+\(
+H_\infty(m)=m\log 2-\log D_m
+\)。
+再由定理 \ref{thm:pom-max-fiber} 的 \(D_m=\Theta(\varphi^{m/2})\) 得
+\(
+\lim_{m\to\infty}\frac{1}{m}\log D_m=\frac{1}{2}\log\varphi
+\)，
+代入即得结论。证毕。
+\end{proof}
+
+\begin{definition}[碰撞核 SFT 与碰撞 \texorpdfstring{$\zeta$}{zeta}]\label{def:pom-collision-zeta}
+令 \(A_2\) 为命题 \ref{prop:pom-s2-recurrence} 中的三态非负整数矩阵，并记其边移位为 \((X_{A_2},\sigma)\)。定义碰撞 \(\zeta\)-函数
+$$
+\zeta_{A_2}(z):=\exp\!\left(\sum_{n\ge 1}\frac{\mathrm{Tr}(A_2^n)}{n}z^n\right)
+=\frac{1}{\det(I-zA_2)}.
+$$
+并定义 primitive 轨道数 \(p_n(A_2)\)（按轨道计）为满足
+$$
+\mathrm{Tr}(A_2^n)=\sum_{d\mid n} d\,p_d(A_2),
+\qquad
+p_n(A_2)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\mathrm{Tr}(A_2^{n/d}).
+$$
+\end{definition}
+
+\input{sections/generated/tab_collision_kernel_A2_primitive}
+\input{sections/generated/tab_collision_kernel_A2_finite_part}
+
+\begin{proposition}[碰撞核的行列式与主极点]\label{prop:pom-collision-det}
+有闭式
+$$
+\det(I-zA_2)=1-2z-2z^2+2z^3.
+$$
+因此 \(\zeta_{A_2}(z)\) 的主极点位于 \(z_\star=1/r_2\)，其中 \(r_2\) 为 \(x^3-2x^2-2x+2=0\) 的最大实根（推论 \ref{cor:pom-s2-asymptotic}），并且碰撞核的拓扑熵为
+$$
+h_{\mathrm{top}}(X_{A_2},\sigma)=\log r_2.
+$$
+\end{proposition}
+\begin{proof}
+对 \(A_2\) 直接计算行列式得 \(\det(I-zA_2)=1-2z-2z^2+2z^3\)。主极点对应 \(\det(I-zA_2)\) 的最小模零点，即 \(z_\star=1/\rho(A_2)=1/r_2\)。而 SFT 的拓扑熵等于 \(\log\rho(A_2)\)，故得 \(\log r_2\)。证毕。
+\end{proof}
+
+\begin{remark}[primitive 谱的快速计算器：\texorpdfstring{$O(N\log N)$}{O(N log N)} 生成 \texorpdfstring{$p_n(A_2)$}{p_n(A2)}]\label{rem:pom-a2-primitive-fast}
+令 \(t_n:=\mathrm{Tr}(A_2^n)\)。
+由 \(A_2\) 的特征多项式 \(\lambda^3-2\lambda^2-2\lambda+2=0\)（等价于 Cayley--Hamilton 恒等式 \(A_2^3=2A_2^2+2A_2-2I\)），两边乘以 \(A_2^{n-3}\) 并取迹得三阶递推
+\[
+\boxed{\;
+t_n=2t_{n-1}+2t_{n-2}-2t_{n-3}\qquad(n\ge 4)\;}
+\]
+且初值为 \(t_1=2,t_2=8,t_3=14\)。
+另一方面由 Witt/Möbius 反演（定义 \ref{def:pom-collision-zeta}）有
+\[
+p_n(A_2)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,t_{n/d}.
+\]
+因此对任意 \(N\)，可先用递推在 \(O(N)\) 时间生成 \(\{t_n\}_{n\le N}\)，再用约数和的筛法在 \(O(N\log N)\) 时间生成全部 \(\{p_n(A_2)\}_{n\le N}\)；
+这为把 \(A_2\) 当作“碰撞 primitive 谱基准器”（用于对比更复杂核族的指数常数与有限部常数偏移）提供了一个直接可复现的算法口径。
+\end{remark}
+
+\begin{remark}[二阶碰撞核的严格 RH 裕量（\texorpdfstring{$A_2$}{A2}）]\label{rem:pom-collision-rh-margin}
+记 \(\lambda:=\rho(A_2)=r_2\approx 2.481194304092\)。由 \(A_2\) 的特征多项式
+\[
+\det(\lambda I-A_2)=\lambda^3-2\lambda^2-2\lambda+2
+\]
+可知三条特征值均为实数。除 Perron 根外另外两根数值约为
+\[
+\mu_2\approx -1.170086486626,\qquad
+\mu_3\approx 0.688892182534.
+\]
+因此
+\[
+\max\{|\mu_2|,|\mu_3|\}\approx 1.170086\ <\ \sqrt{r_2}\approx 1.575181,
+\]
+即二阶碰撞核在核版 RH 不等式上严格留有裕量：非主谱严格落在平方根圆盘内。
+\end{remark}
+
+\begin{remark}[与时间—空间交换图的同型位置：二阶矩 \texorpdfstring{$\leftrightarrow$}{<->} 纤维积核]\label{rem:pom-collision-diagram}
+第 \ref{subsec:pom-time-space-diagram} 小节把“时间迹 \(\mathrm{Tr}(T^n)\)”与“primitive 原子谱”用 \(\zeta\) 行列式统一（命题 \ref{prop:time-space-commuting-diagram}）。碰撞核 \(A_2\) 给出一个同型接口：它不是对原核的逐步时间迹，而是对 Fold 的“二阶矩/碰撞统计”所诱导的纤维积核。其 Perron 根 \(r_2\) 与 \(\zeta_{A_2}\) 的主极点控制 Rényi-2 投影熵率 \(h_2=\log(4/r_2)\)（推论 \ref{cor:pom-s2-asymptotic}），从而把“窗口层的纤维缺陷泛函”提升为一个可审计的谱指纹对象，与第 9 节的 \(\zeta\)/primitive/有限部常数接口处于同一范式。
+\end{remark}
+
+\begin{remark}[与 \texorpdfstring{$\zeta$}{zeta}/谱指纹接口同型]\label{rem:pom-s2-zeta}
+命题 \ref{prop:pom-s2-recurrence} 的本质是：碰撞关系 \(R_m\) 由一个有限状态纤维积核生成，其计数的主尺度由 Perron 根 \(r_2\) 控制。该角色与第 \ref{sec:zeta-finite-part} 节中“带权核 \(\Rightarrow\) 谱半径/极点 \(\Rightarrow\) 指数尺度”的接口同型：\(r_2\) 给出一个新的、纯由折叠门诱导的可审计指数常数，从而把窗口尺度的纤维结构 \((d_m,E_m)\) 与轨道尺度的 \(\zeta/\lambda\) 接口对齐到同一“谱尺度”范式中。
+\end{remark}
+
+\subsubsection{三阶碰撞矩与 \texorpdfstring{$\mathrm{R\acute{e}nyi}$}{Renyi}--3 投影熵率}\label{subsec:pom-s3}
+二阶碰撞矩 \(S_2(m)\) 描述“成对折叠碰撞”的 \(\ell^2\) 质量；更高阶的碰撞矩把纤维分布的尖锐程度分解为一族 \(\mathrm{R\acute{e}nyi}\) 指纹。下面给出三阶（\(q=3\)）的最小三态实现，其结构与命题 \ref{prop:pom-s2-recurrence} 完全同型。
+
+\begin{definition}[三阶折叠碰撞矩]\label{def:pom-s3}
+定义三阶碰撞和
+$$
+S_3(m):=\sum_{x\in X_m} d_m(x)^3.
+$$
+等价地，从 \(\Omega_m\) 上均匀独立抽取三条窗口 \(\omega_1,\omega_2,\omega_3\)，则
+$$
+\mathbb{P}\bigl[\Fold_m(\omega_1)=\Fold_m(\omega_2)=\Fold_m(\omega_3)\bigr]=\frac{S_3(m)}{8^m}.
+$$
+\end{definition}
+
+\begin{proposition}[三阶碰撞核的三态表示与三阶递推]\label{prop:pom-s3-recurrence}
+存在一个三态的非负整数矩阵
+$$
+A_3:=
+\begin{pmatrix}
+0&2&2\\
+1&0&2\\
+0&1&2
+\end{pmatrix},
+$$
+以及读出向量
+$$
+u_3:=(5,13,34)^{\mathsf T},\qquad v_3:=(1,0,0)^{\mathsf T},
+$$
+使得对一切 \(m\ge 2\),
+$$
+S_3(m)=2\,u_3^{\mathsf T}A_3^{\,m-2}v_3.
+$$
+从而 \(S_3(m)\) 满足精确递推（\(m\ge 5\)）
+$$
+S_3(m)=2S_3(m-1)+4S_3(m-2)-2S_3(m-3),
+$$
+并具有初值 \(S_3(2)=10,S_3(3)=26,S_3(4)=88\)。
+\end{proposition}
+\begin{proof}
+与命题 \ref{prop:pom-s2-recurrence} 相同，本命题以\textbf{可审计构造}给出：三态非负 realization 可由小 \(m\) 的枚举数据恢复，并由脚本 \texttt{scripts/exp\_fold\_collision\_s3.py} 逐项核验（同时核验递推与读出公式）。给定 \(A_3\) 与读出向量，序列
+\(
+a_n:=u_3^{\mathsf T}A_3^{n}v_3
+\)
+自动满足由 Cayley--Hamilton 定理诱导的三阶线性递推，其系数由 \(A_3\) 的特征多项式决定。直接计算得
+$$
+\det(\lambda I-A_3)=\lambda^3-2\lambda^2-4\lambda+2,
+$$
+再乘以常数 \(2\) 并作指标平移即得所述递推式。证毕。
+\end{proof}
+
+\begin{corollary}[三阶碰撞指数与 \texorpdfstring{$h_3$}{h3}]\label{cor:pom-s3-asymptotic}
+令 \(r_3\) 为多项式
+$$
+x^3-2x^2-4x+2=0
+$$
+的最大实根（\(r_3\approx 3.086130197651\)）。则

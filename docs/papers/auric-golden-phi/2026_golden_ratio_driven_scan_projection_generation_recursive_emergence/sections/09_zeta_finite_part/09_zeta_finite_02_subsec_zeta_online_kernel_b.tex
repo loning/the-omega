@@ -1,0 +1,315 @@
+使得对所有可逆 $r$ 都有恒等式
+\[
+\widehat{\Delta}(w,r+r^{-1})=\Delta(w/r,r^2).
+\]
+令 $\Phi_m^+(s)$ 为代数数 $s_m:=2\cos(\pi/m)$ 的最小多项式（整系数、首一），并定义
+\[
+R_m(w):=\operatorname{Res}_s\bigl(\widehat{\Delta}(w,s),\Phi_m^+(s)\bigr)\in\ZZ[w].
+\]
+则当 $u=e^{2\pi i/m}$ 时，$\Delta(z,u)=0$ 的解 $z$（等价地 $w=z\sqrt{u}$）必满足 $R_m(w)=0$。并且在单位圆扭曲 $|u|=1$ 下有
+\[
+\rho_m=\frac{1}{\min\{|w|:R_m(w)=0\}}.
+\]
+\end{proposition}
+
+\begin{remark}[completion 的不变量子环：乘法扭曲 \texorpdfstring{$u$}{u} 压缩为加法坐标 \texorpdfstring{$s$}{s}]\label{rem:completion-invariant-ring}
+在变量层面，完成化所用的替换
+\(
+u=r^2,\ s=r+r^{-1}
+\)
+可理解为对合 \(r\mapsto r^{-1}\) 的不变量化：Laurent 环的固定子环满足
+\[
+\ZZ[r,r^{-1}]^{\,r\mapsto r^{-1}}
+=\ZZ\!\left[r+r^{-1}\right]
+=\ZZ[s].
+\]
+因此在自对偶对称（\(u\leftrightarrow 1/u\)）下，root-of-unity 的乘法扭曲参数 \(u\in\CC^\times\) 经 completion 被压缩为一个实的“迹坐标” \(s=2\cos(\pi/m)\)，而 \(\widehat\Delta(w,s)\in\ZZ[s][w]\) 则提供了把“乘法侧扭曲谱”转写为“加法侧代数证书”的统一接口。
+\end{remark}
+
+\begin{remark}[同步核的完成化行列式显式式与 \texorpdfstring{$s\mapsto -s$}{s->-s} 对称]\label{rem:sync-hatdelta-explicit}
+对同步核的输出位势加权，附录 \ref{app:pressure-analytic} 给出非零谱的特征多项式 $F(\lambda,u)\in\ZZ[u][\lambda]$，并且
+\[
+\Delta(z,u)=z^6F(1/z,u)
+\]
+（等价地，$B(u)$ 仅有 $6$ 个非零特征值）。取完成化变量 $u=r^2,\ w=zr,\ s=r+r^{-1}$，则命题 \ref{prop:sync-cyclotomic-elimination} 中的完成化行列式可写成以下\textbf{整系数闭式}：
+\[
+\boxed{\;
+\widehat\Delta(w,s)=
+1-sw-5w^2+3sw^3+(5-s^2)w^4+(s^3-6s)w^5+(s^2-1)w^6.
+\;}
+\]
+并且直接代入可验其满足
+\[
+\widehat\Delta(w,-s)=\widehat\Delta(-w,s).
+\]
+因此当 $s$ 变号时，$w$-根集合在 $w\mapsto -w$ 下对应，零点模长不变；从而由 $\min\{|w|:\widehat\Delta(w,s)=0\}$ 所定义的“最小模零点”仅依赖于 $|s|$。
+\end{remark}
+
+\begin{remark}[谱分歧点的代数证书：\texorpdfstring{$\mathrm{Disc}_w(\widehat\Delta)$}{Disc} 的实根]\label{rem:sync-hatdelta-discriminant-branch}
+对 \(w\) 的六次多项式 \(\widehat\Delta(w,s)\)，其判别式 \(\mathrm{Disc}_w(\widehat\Delta)(s)\in\ZZ[s]\) 的零点刻画了“存在重根”的参数值 \(s\)，即谱分支在 \(s\) 方向上发生碰撞/交换的候选位置。
+下式与相应的正实根（限制在 \(s\in(0,2]\)，对应单位圆扭曲 \(s=2\cos(\theta/2)\)）由脚本 \texttt{scripts/exp\_sync\_kernel\_hatdelta\_discriminant.py} 一键导出：
+\input{sections/generated/eq_sync_kernel_hatdelta_discriminant}
+\input{sections/generated/tab_sync_kernel_hatdelta_branch_points}
+\end{remark}
+
+\begin{remark}[可复现输出：\texorpdfstring{$m=3,\dots,12$}{m=3..12} 的 \texorpdfstring{$R_m$}{Rm} 与 \texorpdfstring{$\rho_m$}{rhom}]\label{rem:sync-cyclotomic-elimination-table}
+脚本 \texttt{scripts/exp\_sync\_kernel\_cyclotomic\_elimination.py} 由附录 \ref{app:pressure-analytic} 的 $F(\lambda,u)$ 构造 $\widehat{\Delta}(w,s)$，并对 $m=3,\dots,12$ 计算 $R_m(w)$ 与 $\rho_m$；输出见表 \ref{tab:sync_kernel_cyclotomic_elimination_summary} 与多项式块 \texttt{tab\_sync\_kernel\_cyclotomic\_elimination\_polys.tex}（可直接回归测试）。
+\end{remark}
+
+\input{sections/generated/tab_sync_kernel_cyclotomic_elimination_summary}
+\input{sections/generated/tab_sync_kernel_cyclotomic_elimination_polys}
+
+\begin{remark}[压力展开给出 \texorpdfstring{$\rho_m$}{rhom} 的高精度渐近预测]\label{rem:sync-rho-pressure-asymp}
+由附录 \ref{app:pressure-analytic} 的 Taylor 展开
+\[
+P(\theta)=\log 3+\frac12\theta+\frac{11}{204}\theta^2+\frac{1559}{1414944}\theta^4
+-\frac{17123893}{1177686190080}\theta^6
+-\frac{122803509253}{25412897733672960}\theta^8
+\;-\frac{518906628614669}{10575831520845339033600}\theta^{10}
+\;+\frac{24353138488976295223}{880247609142999258444595200}\theta^{12}
++O(\theta^{14}),
+\]
+取 $\theta=it$ 并记 $u=e^{it}$，则
+\[
+\log|\lambda(e^{it})|=\Re P(it)=\log 3-\frac{11}{204}t^2+\frac{1559}{1414944}t^4
++\frac{17123893}{1177686190080}t^6
+-\frac{122803509253}{25412897733672960}t^8
+\;+\frac{518906628614669}{10575831520845339033600}t^{10}
+\;+\frac{24353138488976295223}{880247609142999258444595200}t^{12}
++O(t^{14}).
+\]
+令 $t=2\pi/m$，得到可直接使用的预测式
+\[
+\rho_m\approx 3\exp\!\Bigl(
+-\frac{11}{204}\Bigl(\frac{2\pi}{m}\Bigr)^2+\frac{1559}{1414944}\Bigl(\frac{2\pi}{m}\Bigr)^4
++\frac{17123893}{1177686190080}\Bigl(\frac{2\pi}{m}\Bigr)^6
+-\frac{122803509253}{25412897733672960}\Bigl(\frac{2\pi}{m}\Bigr)^8
+\;+\frac{518906628614669}{10575831520845339033600}\Bigl(\frac{2\pi}{m}\Bigr)^{10}
+\;+\frac{24353138488976295223}{880247609142999258444595200}\Bigl(\frac{2\pi}{m}\Bigr)^{12}
+\Bigr),
+\]
+其与上面的 resultant 精确值吻合度极高：例如用 $\widehat\Delta(w,s_m)=0$ 的最小模零点定义“真值” $\rho_m$，则
+\[
+\frac{|\rho_5^{\mathrm{pred}}-\rho_5|}{\rho_5}\approx 3.99\times 10^{-7},\qquad
+\frac{|\rho_{10}^{\mathrm{pred}}-\rho_{10}|}{\rho_{10}}\approx 1.03\times 10^{-10},\qquad
+\frac{|\rho_{20}^{\mathrm{pred}}-\rho_{20}|}{\rho_{20}}\approx 2.55\times 10^{-14}.
+\]
+\end{remark}
+
+\begin{corollary}[\texorpdfstring{$m^{-2}$}{m^-2} 间隙定律：\texorpdfstring{$3-\rho_m$}{3-rho_m} 的闭式常数]\label{cor:sync-rho-gap-m2}
+令 \(\rho_m:=\max_{1\le r\le m-1}|\lambda(\omega_m^r)|\) 如上，且取 \(t=2\pi/m\)。
+则当 \(m\to\infty\)（等价 \(t\to 0\)）时有
+\[
+\rho_m
+=3\exp\!\Bigl(-\frac{11}{204}t^2+O(t^4)\Bigr)
+=3-\frac{11}{68}t^2+O(t^4),
+\]
+从而得到显式的 \(m^{-2}\) 间隙常数
+\[
+\boxed{\;
+3-\rho_m\sim \frac{11\pi^2}{17}\cdot\frac{1}{m^2}\qquad(m\to\infty).
+\;}
+\]
+若进一步保留四阶项，则
+\[
+\rho_m
+=3\exp\!\Bigl(-\frac{11}{204}\Bigl(\frac{2\pi}{m}\Bigr)^2+\frac{1559}{1414944}\Bigl(\frac{2\pi}{m}\Bigr)^4+O(m^{-6})\Bigr),
+\]
+与表 \ref{tab:sync_kernel_cyclotomic_elimination_summary} 的 resultant 真值在中等 \(m\) 上已呈现机器精度级吻合（见注 \ref{rem:sync-rho-pressure-asymp} 的误差比对）。
+\end{corollary}
+
+\begin{corollary}[\texorpdfstring{$m^{-12}$}{m^-12} 精度与 \texorpdfstring{$m^2$}{m^2} 扩散尺度]\label{cor:sync-rho-gap-m8-diffusive}
+沿用推论 \ref{cor:sync-rho-gap-m2} 的记号，并令 \(t=2\pi/m\)。
+由注 \ref{rem:sync-rho-pressure-asymp} 中 \(P(\theta)\) 的 \(\theta^{12}\) 展开，得到
+\[
+\rho_m
+=3\exp\!\Bigl(
+-\frac{11}{204}t^2+\frac{1559}{1414944}t^4
++\frac{17123893}{1177686190080}t^6
+-\frac{122803509253}{25412897733672960}t^8
++\frac{518906628614669}{10575831520845339033600}t^{10}
+\;+\frac{24353138488976295223}{880247609142999258444595200}t^{12}
++O(t^{14})\Bigr),
+\]
+从而
+\[
+\boxed{\;
+\rho_m
+=3-\frac{11\pi^2}{17m^2}
++\frac{1808\pi^4}{14739m^4}
+-\frac{27872249\pi^6}{2044594080m^6}
+-\frac{77645433997\pi^8}{33089710590720m^8}
+\;+\frac{2976802482983509\pi^{10}}{3442653489858508800m^{10}}
+\;+\frac{3832209193654464509\pi^{12}}{23878244605658617036800m^{12}}
++O(m^{-14}).\;}
+\]
+另一方面定义“频率代价/扩散常数”
+\[
+\delta_m:=\log\frac{3}{\rho_m}=\log 3-\Re P\!\left(\frac{2\pi i}{m}\right),
+\]
+则
+\[
+\boxed{\;
+\delta_m
+=\frac{11\pi^2}{51m^2}
+-\frac{1559\pi^4}{88434m^4}
+-\frac{17123893\pi^6}{18401346720m^6}
++\frac{122803509253\pi^8}{99269131772160m^8}
+\;-\frac{518906628614669\pi^{10}}{10327960469575526400m^{10}}
+\;-\frac{24353138488976295223\pi^{12}}{214904201450927553331200m^{12}}
++O(m^{-14}).\;}
+\]
+因此对任意由 DFT/Witt 接口导出的 residue--class 误差界
+\(
+\mathrm{err}_{n,m}\ll (\rho_m/3)^n
+\)
+（把常数并入 \(\ll\)），若希望 \(\mathrm{err}_{n,m}\le \varepsilon\)，则充分条件为
+\[
+n\ \ge\ \frac{\log(1/\varepsilon)+O(1)}{\delta_m},
+\]
+从而在主阶上得到扩散型时间尺度
+\[
+\boxed{\;
+n_\varepsilon(m)\sim \frac{51}{11\pi^2}\,m^2\log\frac{1}{\varepsilon}\qquad(m\to\infty).\;}
+\]
+\end{corollary}
+
+\paragraph{\texorpdfstring{$s$}{s}-平面零极点字典：谱半径与“右半临界带无极点”}\label{par:s-plane-pole-dictionary}
+本节的 \(\zeta\)-函数在有限矩阵口径下是有理函数，因此其全部奇点由有限谱完全决定。
+为把“谱隙版 RH/GRH”提升到经典的 \((s)\)-平面语言，引入 Dirichlet 坐标
+\[
+z=\lambda^{-s},\qquad \lambda:=\rho(M)>0.
+\]
+\begin{remark}[谱 \(\Longleftrightarrow\) Dirichlet 极点列]\label{prop:s-plane-spectrum-poles}
+设 \(M\) 为有限维矩阵，\(\lambda:=\rho(M)>0\)。定义
+\[
+Z_M(s):=\frac{1}{\det\!\bigl(I-\lambda^{-s}M\bigr)}.
+\]
+则：
+\begin{enumerate}
+  \item \(Z_M(s)\) 的极点与 \(M\) 的非零特征值 \(\mu\) 一一对应（按代数重数）。更具体，\(\lambda^{-s}\mu=1\) 当且仅当
+  \[
+  s=\frac{\log\mu+2\pi i k}{\log\lambda}\qquad(k\in\ZZ),
+  \]
+  其中 \(\log\mu\) 为复对数的任一分支。
+  \item 极点所在竖线的实部由模长给出：
+  \[
+  \Re(s)=\frac{\log|\mu|}{\log\lambda}.
+  \]
+\end{enumerate}
+因此，核版 RH 条件
+\(
+\max_{i\ge 2}|\mu_i|\le \sqrt{\lambda}
+\)
+等价于：除主极点列（来自 \(\mu=\lambda\)，对应 \(\Re(s)=1\)）外，所有极点皆满足 \(\Re(s)\le \tfrac12\)，亦即 \(\Re(s)>\tfrac12\) 的区域无非平凡极点贡献。
+\end{remark}
+
+\paragraph{有限维显式公式：素数影子的误差即“临界圆谱贡献”}\label{par:finite-explicit-formula}
+对有限维核，primitive 轨道计数的“主项 + 误差”可完全写成特征值的有限和，从而把平方根振荡直接识别为临界圆 \(|\mu|=\sqrt{\lambda}\) 上的谱贡献。
+\begin{remark}[有限维显式公式模板]\label{prop:finite-dimensional-explicit-formula}
+设 \(M\) 的特征值（按代数重数）为 \(\mu_1,\dots,\mu_d\)，并记
+\(
+a_n:=\Tr(M^n)=\sum_{j=1}^d \mu_j^n
+\)。
+令 \(p_n\) 为长度 \(n\) 的 primitive 轨道数（按轨道计），则 Möbius 反演给出
+\[
+p_n=\frac{1}{n}\sum_{m\mid n}\mu(m)\,a_{n/m}
+=\frac{1}{n}\sum_{j=1}^d\ \sum_{m\mid n}\mu(m)\,\mu_j^{\,n/m}.
+\]
+特别地，若 \(\lambda:=\rho(M)\) 为简单 Perron 根，则
+\[
+p_n=\frac{\lambda^n}{n}+O\!\left(\frac{\Lambda^n}{n}\right),
+\qquad
+\Lambda:=\max_{j\ge 2}|\mu_j|.
+\]
+若存在某个非平凡特征值满足 \(|\mu|=\sqrt{\lambda}\)，则一般出现不可改进的平方根级振荡项（\(\Omega(\lambda^{n/2}/n)\)）。
+\end{remark}
+
+\begin{proposition}[三类核的 RH 分层：同步核非 RH，真实输入核 RH-sharp，碰撞核严格 RH]\label{prop:rh-stratification-three-kernels}
+在无权情形（$u=1$）下，本文出现的三类典型有限核满足下述可审计分层：
+\begin{enumerate}
+  \item \textbf{（同步核：非 RH）} 10 状态同步核 $B$ 不满足核版 RH：存在 \(|\mu|>\sqrt{\lambda}\) 的非平凡特征值（命题 \ref{prop:sync-kernel-10-nonrh}）。
+  \item \textbf{（真实输入核：RH-sharp）} 40 状态真实输入核 $M$ 的核版 RH 达到等号：存在达界特征值 \(\mu=-\sqrt{\lambda}\)，使得平方根级振荡不可消去（命题 \ref{prop:finite-rh-40} 与命题 \ref{prop:finite-dimensional-explicit-formula}）。
+  \item \textbf{（折叠碰撞核：严格 RH）} 二阶与三阶碰撞核 \(A_2,A_3\) 的非主谱严格落在平方根圆盘内，即
+  \[
+  \max_{i\ge 2}|\lambda_i(A_q)|<\sqrt{\rho(A_q)}\qquad(q=2,3),
+  \]
+  因而其 prime-orbit 误差尺度严格优于平方根上界（注 \ref{rem:pom-collision-rh-margin} 与注 \ref{rem:pom-collision-rh-margin-a3}）。
+\end{enumerate}
+\end{proposition}
+
+\begin{corollary}[\texorpdfstring{$s$}{s}-平面几何判别：右半临界带的极点层级]\label{cor:rh-stratification-splane}
+令 \(Z_M(s)=\det(I-\lambda^{-s}M)^{-1}\) 为 Dirichlet 化后的 \(\zeta\)-函数（命题 \ref{prop:s-plane-spectrum-poles}）。则上述三类核的 RH 分层可等价翻译为 \(s\)-平面的极点几何层级：
+\begin{enumerate}
+  \item \textbf{（同步核：非 RH）} 因存在 \(|\mu|>\sqrt{\lambda}\) 的非平凡特征值，故存在一列极点落在竖线
+  \(
+  \Re(s)=\log|\mu|/\log\lambda
+  \)
+  上，且该实部严格大于 \(1/2\)。因此右半开带 \(\tfrac12<\Re(s)<1\) 内出现非平凡极点。
+  \item \textbf{（真实输入核：RH-sharp）} 临界带内的全部非平凡极点列恰落在 \(\Re(s)=1/2\)（附录 \ref{app:real-input-40-finite-rh} 的命题 \ref{prop:finite-rh-40}）。
+  \item \textbf{（折叠碰撞核：严格 RH）} 对 \(A_2,A_3\) 有 \(\max_{i\ge 2}|\mu_i|<\sqrt{\lambda}\)，故 \(\tfrac12\le \Re(s)<1\) 的区域内无非平凡极点；换言之临界线 \(\Re(s)=1/2\) 上也无达界极点列贡献（除主极点列 \(\Re(s)=1\) 外）。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:s-plane-spectrum-poles}，每个非零特征值 \(\mu\) 生成一列极点，且其竖线实部为 \(\Re(s)=\log|\mu|/\log\lambda\)。三种情形分别对应：
+非 RH 时存在 \(|\mu|>\sqrt{\lambda}\Rightarrow \Re(s)>1/2\)；
+RH-sharp 时存在 \(|\mu|=\sqrt{\lambda}\Rightarrow \Re(s)=1/2\)；
+严格 RH 时对所有非平凡 \(|\mu|<\sqrt{\lambda}\Rightarrow \Re(s)<1/2\)。
+证毕。
+\end{proof}
+
+\paragraph{\texorpdfstring{$s$}{s}-平面完成化函数方程的谱互反判据}\label{par:s-plane-functional-eq-criterion}
+上一段的“函数方程”发生在参数侧（$u\leftrightarrow 1/u$ 或 $\theta\leftrightarrow-\theta$）。
+若希望把对称进一步提升为 Dirichlet 坐标 $z=\lambda^{-s}$ 下的
+\(
+s\leftrightarrow 1-s
+\)
+型对称，则需要一个独立于参数自对偶的谱互反结构。
+
+\begin{remark}[谱互反闭包 $\Rightarrow$ 完成化后 \texorpdfstring{$s\leftrightarrow 1-s$}{s<->1-s}]\label{prop:reciprocal-spectrum-functional-equation}
+设 $M$ 为有限维矩阵，$\lambda:=\rho(M)>0$ 为其 Perron 根。令
+\[
+\Delta_M(z):=\det(I-zM),\qquad
+Z_M(s):=\Delta_M(\lambda^{-s})^{-1}.
+\]
+记 $r:=\deg_z\Delta_M(z)$（等价于 $M$ 的非零特征值按代数重数计的个数）。
+若 $M$ 的非零谱满足\textbf{互反闭包}
+\[
+\mu\in\mathrm{spec}(M)\setminus\{0\}
+\ \Longrightarrow\
+\frac{\lambda}{\mu}\in\mathrm{spec}(M)\setminus\{0\}
+\qquad(\text{重数相同}),
+\]
+则存在常数 $C\neq 0$ 使得完成化函数
+\[
+\Xi_M(s):=\lambda^{-rs/2}\,Z_M(s)
+\]
+满足函数方程
+\[
+\Xi_M(s)=C\,\Xi_M(1-s).
+\]
+\end{remark}
+
+\begin{remark}[等价的 \texorpdfstring{$\Delta_M$}{Delta}-互反多项式判据]\label{rem:delta-reciprocal-polynomial}
+命题 \ref{prop:reciprocal-spectrum-functional-equation} 的谱条件等价于 $z$-根集合在
+\(
+z\mapsto (\lambda z)^{-1}
+\)
+下按重数不变，亦等价于存在 $C'\neq 0$ 使得
+\[
+\lambda^{r}z^{r}\Delta_M\!\left(\frac{1}{\lambda z}\right)=C'\Delta_M(z).
+\]
+因此当 $\Delta_M$ 的系数可精确计算（例如整系数矩阵）时，上式提供一个逐项可审计的判别式。
+\end{remark}
+
+\begin{remark}[有限维与“无限零点”的缺口]\label{rem:finite-vs-infinite-zeros}
+由于 \(Z_M(s)\) 来自有限维行列式，其 \((s)\)-平面的极点/零点结构必为有限族的竖向晶格（每个非零特征值贡献一条周期列）。因此若要在本框架内逼近经典 \(\zeta(s)\) 的“无限多非平凡零点”现象，需要引入一个维度 \(\to\infty\) 的极限机制，使得谱点在极限中形成无限谱并在 Dirichlet 坐标下产生更复杂的零极点分布；这为后续构造“无限塔/无限覆盖/逆极限核”的路线提供了明确的结构目标。
+\end{remark}
+
+\begin{remark}[本节两类核的检验结论（可复现）]\label{rem:reciprocal-check-outcome}
+上述 $s$-平面对称并非自动成立：它要求非零谱在 $\mu\mapsto\lambda/\mu$ 下封闭。
+对 10 状态同步核 $B$，由 \(\det(I-zB)\) 的因子 \((z+1)\) 知 \(\mu=-1\in\mathrm{spec}(B)\)，但 \(\lambda/\mu=-3\notin\mathrm{spec}(B)\)，故互反闭包失败。
+对 40 状态真实输入核 $M$，定理 \ref{thm:pom-rh-sharp} 给出 \(\lambda^{-1}\in\mathrm{spec}(M)\setminus\{0\}\)，但 \(\lambda/(\lambda^{-1})=\lambda^2\notin\mathrm{spec}(M)\setminus\{0\}\)，故亦失败。
+相应的谱互反闭包/系数互反判别由脚本 \texttt{scripts/exp\_reciprocal\_spectrum\_functional\_equation\_check.py} 自动输出到
+\texttt{artifacts/export/reciprocal\_spectrum\_functional\_equation\_check.json}。
+\end{remark}
