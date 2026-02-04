@@ -270,6 +270,35 @@ C_{\mathrm{real}}=\frac{\lambda}{\Delta'(z_\star)}=\frac{1}{-z_\star\Delta'(z_\s
 \]
 \end{lemma}
 
+\begin{proof}
+第一条恒等式可由幂级数展开直接核对：当 $|z|<1$ 时
+\[
+\sum_{m\ge 1}\frac{\mu(m)}{m}\log(1-z^m)
+=-\sum_{m\ge 1}\frac{\mu(m)}{m}\sum_{k\ge 1}\frac{z^{mk}}{k}
+=-\sum_{n\ge 1}\frac{z^n}{n}\sum_{m\mid n}\mu(m)
+=-z.
+\]
+其中用到恒等式 $\sum_{m\mid n}\mu(m)=\mathbf{1}_{\{n=1\}}$。
+
+第二条恒等式由
+\(
+\log(1+z^m)=\log(1-z^{2m})-\log(1-z^m)
+\)
+化为第一条：令
+\(
+f(z):=\sum_{m\ge 1}\frac{\mu(m)}{m}\log(1-z^m)
+\)，
+则
+\[
+\sum_{m\ge 1}\frac{\mu(m)}{m}\log(1+z^m)=f(z^2)-f(z)=(-z^2)-(-z)=z-z^2.
+\]
+最后一式由线性组合
+\(
+-a\log(1-z^m)-b\log(1+z^m)
+\)
+与前两条直接推出。证毕。
+\end{proof}
+
 \begin{lemma}[从 \texorpdfstring{$m\ge 2$}{m>=2} 开始的显式求和]\label{lem:mobius-collapse-mge2}
 对 $|z|<1$ 有恒等式
 \[
@@ -285,6 +314,26 @@ C_{\mathrm{real}}=\frac{\lambda}{\Delta'(z_\star)}=\frac{1}{-z_\star\Delta'(z_\s
 \sum_{m\ge 2}=\sum_{m\ge 1}-\text{(}m=1\text{项)}
 \)
 即得。证毕。
+\end{proof}
+
+\begin{corollary}[一般形态：\texorpdfstring{$(1-z)^a(1+z)^b$}{(1-z)^a(1+z)^b} 的 \texorpdfstring{$m\ge 2$}{m>=2} Möbius--$\log$ 闭式]\label{cor:mobius-collapse-mge2-ab}
+对 $|z|<1$，令
+\[
+S_{a,b}(z):=\sum_{m\ge 2}\frac{\mu(m)}{m}\log\Bigl((1-z^m)^{-a}(1+z^m)^{-b}\Bigr).
+\]
+则有严格恒等式
+\[
+\boxed{\;
+S_{a,b}(z)=(a-b)z+bz^2+a\log(1-z)+b\log(1+z)\; }.
+\]
+\end{corollary}
+
+\begin{proof}
+由定义
+\(
+S_{a,b}(z)=-a\sum_{m\ge 2}\frac{\mu(m)}{m}\log(1-z^m)-b\sum_{m\ge 2}\frac{\mu(m)}{m}\log(1+z^m)
+\)。
+代入引理 \ref{lem:mobius-collapse-mge2} 的两条闭式并整理即得。证毕。
 \end{proof}
 
 \begin{remark}[剥离平凡因子后的非平凡部分]
@@ -373,6 +422,62 @@ P_{\mathrm{triv}}(z)
 \(\log K_0\) 的量级约为 \(10^{-3}\)，而 \(\log\mathfrak{M}\) 的主贡献来自两条二次因子
 \((1-3z+z^2)\) 与 \((1+z-z^2)\) 对应的两条 Möbius--$\log$ 级数之和。
 \input{sections/generated/tab_real_input_40_abel_mertens_two_series_split}
+\end{remark}
+
+\begin{theorem}[平凡因子完全闭式剥离与 \texorpdfstring{$\mathfrak{M}_{\mathrm{carry}}$}{M_carry}（二次 carry-常数）]\label{thm:real-input-40-carry-constant}
+令 \(z_\star=\varphi^{-2}\)、\(C=\frac{47+21\sqrt5}{100}\)。
+定义
+\[
+\mathfrak{M}_{\mathrm{carry}}
+:=\exp\!\left(
+-\sum_{m\ge 2}\frac{\mu(m)}{m}
+\Bigl[
+\log(1-3z_\star^{\,m}+z_\star^{\,2m})
+\;+\;
+\log(1+z_\star^{\,m}-z_\star^{\,2m})
+\Bigr]\right).
+\]
+则 Abel 有限部常数满足乘法分解
+\[
+\boxed{\;
+\mathfrak{M}
+\;=\;
+\underbrace{C\cdot z_\star(1+z_\star)^3\cdot e^{z_\star^3}}_{\text{完全闭式的平凡因子部分}}
+\cdot
+\underbrace{\mathfrak{M}_{\mathrm{carry}}}_{\text{仅由两条二次因子贡献的 carry-常数}}\; }.
+\]
+\end{theorem}
+
+\begin{proof}
+由命题 \ref{prop:real-input-40-mertens-two-series}，
+\(
+\log\mathfrak{M}
+=\log K_0-(S_3+S_\pm)
+\)，
+其中
+\(
+\log K_0=\log C-z_\star+3z_\star^2+2\log(1-z_\star)+3\log(1+z_\star)
+\)。
+注意到 \(z_\star=\varphi^{-2}\) 满足 \(1-z_\star=\varphi^{-1}\)，从而 \((1-z_\star)^2=z_\star\)；并且由 \(z_\star^2-3z_\star+1=0\) 得
+\(
+-z_\star+3z_\star^2=z_\star^3
+\)。
+于是
+\[
+K_0=C\cdot (1-z_\star)^2(1+z_\star)^3\cdot e^{-z_\star+3z_\star^2}
+=C\cdot z_\star(1+z_\star)^3\cdot e^{z_\star^3}.
+\]
+把 \(\mathfrak{M}_{\mathrm{carry}}:=\exp(-(S_3+S_\pm))\) 代回即得乘法分解。证毕。
+\end{proof}
+
+\begin{remark}[可复现数值与可认证误差界（carry-常数拆分）]\label{rem:real-input-40-carry-constant-certified}
+脚本 \texttt{scripts/exp\_real\_input\_40\_carry\_constant\_certified.py} 直接按定理 \ref{thm:real-input-40-carry-constant} 计算
+\(\log\mathfrak{M}\)、\(\log\mathfrak{M}_{\mathrm{carry}}\)
+以及显式尾界
+\(
+|\mathrm{tail}(N)|\le \frac{5 z_\star^{N+1}}{(N+1)(1-z_\star)}
+\)，并输出一段可直接嵌入的公式块：
+\input{sections/generated/eq_real_input_40_carry_constant_certified}
 \end{remark}
 
 \begin{remark}[常数层的 Artin 分解：\texorpdfstring{$\log\mathfrak{M}$}{logM} 的三因子乘法因子化]\label{rem:real-input-40-logM-artin-factorization}

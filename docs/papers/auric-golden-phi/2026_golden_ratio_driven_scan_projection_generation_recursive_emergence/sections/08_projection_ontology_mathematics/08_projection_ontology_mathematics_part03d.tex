@@ -591,6 +591,47 @@ H(\widetilde\pi)
 纤维均匀提升 $\widetilde\pi$ 与条件期望 $E_m$ 构成对偶接口：$E_m$ 在观测量层面是“纤维平均”，而 $\widetilde\pi$ 在概率层面是“纤维均匀化”。二者分别给出折叠的算子化与信息论刻画。
 \end{remark}
 
+\begin{proposition}[全局 KL 缺陷恒等式：偏离最大熵提升的精确距离]\label{prop:pom-kl-defect-identity}
+固定任意 \(\pi\in\Delta(X_m)\)，并令 \(\widetilde\pi\in\Delta(\Omega_m)\) 为其纤维均匀提升（定义 \ref{def:pom-maxent-lift}）。
+则对任意满足 \((\Fold_m)_*\mu=\pi\) 的 \(\mu\in\Delta(\Omega_m)\)，有严格恒等式
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\mu\|\widetilde\pi)=H(\widetilde\pi)-H(\mu)\;}
+\]
+特别地，由定义 \ref{def:pom-kappa} 与定理 \ref{thm:pom-maxent-lift}，恒有
+\[
+H(\widetilde\pi)=H(\pi)+\kappa_m(\pi),
+\qquad
+D_{\mathrm{KL}}(\mu\|\widetilde\pi)=H(\pi)+\kappa_m(\pi)-H(\mu),
+\]
+从而 \(\kappa_m(\pi)\) 可被视为“在宏观分布 \(\pi\) 固定时，微观层面可被压掉的最大熵缺陷”。
+\end{proposition}
+
+\begin{proof}
+由 KL 定义
+\[
+D_{\mathrm{KL}}(\mu\|\widetilde\pi):=\sum_{a\in\Omega_m}\mu(a)\log\frac{\mu(a)}{\widetilde\pi(a)}
+=-H(\mu)-\sum_{a\in\Omega_m}\mu(a)\log\widetilde\pi(a).
+\]
+而由 \(\widetilde\pi(a)=\pi(x)/d_m(x)\)（其中 \(x=\Fold_m(a)\)），并用 \((\Fold_m)_*\mu=\pi\) 得
+\[
+\sum_{a\in\Omega_m}\mu(a)\log\widetilde\pi(a)
+=\sum_{a\in\Omega_m}\mu(a)\bigl(\log\pi(\Fold_m(a))-\log d_m(\Fold_m(a))\bigr)
+=\sum_{x\in X_m}\pi(x)\log\pi(x)-\sum_{x\in X_m}\pi(x)\log d_m(x).
+\]
+对 \(\widetilde\pi\) 直接展开熵可得
+\[
+H(\widetilde\pi)
+=-\sum_{a\in\Omega_m}\widetilde\pi(a)\log\widetilde\pi(a)
+=-\sum_{x\in X_m}\pi(x)\log\pi(x)+\sum_{x\in X_m}\pi(x)\log d_m(x).
+\]
+故 \(-\sum_a\mu(a)\log\widetilde\pi(a)=H(\widetilde\pi)\)，代回即得
+\(
+D_{\mathrm{KL}}(\mu\|\widetilde\pi)=H(\widetilde\pi)-H(\mu)
+\)。
+证毕。
+\end{proof}
+
 \begin{remark}[延迟归一化推迟律]\label{rem:pom-lazy-fold}
 若中间演化 $U_t$ 在观测层不区分折叠纤维，即对任意 $g\in\mathcal{A}_m$ 有 $g\circ U_t\in\mathcal{B}_m$ 等价于 $g=\bar g\circ\Fold_m$（命题 \ref{prop:pom-fiber-invariance}），则
 \[

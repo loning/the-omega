@@ -10,6 +10,155 @@ d_m\sim C\left(\frac{2}{\varphi}\right)^m,\quad C=\frac{\sqrt5}{\varphi^2}.
 \]
 因此对固定窗口长度 $m$，观测将大量微态压缩为同一稳定类型；当 $m$ 增大时，稳定类型虽增多，但微态增长更快，从而"可区分细节"在有限分辨率下持续被折叠。这给出"规律不可读出可归因于分辨率不足"的数学版本：不可读出对应不同微态在折叠后不可区分，而稳定规律对应 $X_m$ 上的递归计数与不变分布仍可复核。
 
+\subsection{折叠同余与有限分辨率半环}
+为把折叠多重度与第 7 节的有限分辨率算术对接，这里给出折叠同余的代数化表述。
+
+\begin{definition}[折叠同余与值模映射]
+记 $\Omega_m:=\{0,1\}^m$，并定义折叠同余
+\[
+\omega\equiv_m\omega'\quad\Longleftrightarrow\quad\Fold_m(\omega)=\Fold_m(\omega').
+\]
+令
+\[
+N(\omega):=\sum_{k=1}^m \omega_k F_{k+1},
+\qquad
+\pi_m(\omega):=N(\omega)\bmod F_{m+2}.
+\]
+并记 $w(r):=\pi_m(Z(r))\in X_m\subset\Omega_m$（$0\le r\le F_{m+2}-1$）。
+\end{definition}
+
+\begin{theorem}[折叠同余的模半环表示]
+\label{thm:fold-congruence-mod-semirings}
+映射 $\pi_m$ 在 $\equiv_m$ 上良定义并诱导双射
+\[
+\overline\pi_m:\Omega_m/\!\equiv_m\;\longrightarrow\;\ZZ/(F_{m+2}\ZZ).
+\]
+进一步，若在 $\Omega_m/\!\equiv_m$ 上定义
+\[
+[\omega]\,\boxplus_m\,[\eta]:=[w(\overline\pi_m([\omega])\!+\!\overline\pi_m([\eta])\bmod F_{m+2})],
+\]
+\[
+[\omega]\,\boxtimes_m\,[\eta]:=[w(\overline\pi_m([\omega])\,\overline\pi_m([\eta])\bmod F_{m+2})],
+\]
+则 $\overline\pi_m$ 给出半环同构
+\[
+(\Omega_m/\!\equiv_m,\boxplus_m,\boxtimes_m)\cong\bigl(\ZZ/(F_{m+2}\ZZ),+,\times\bigr).
+\]
+\end{theorem}
+
+\textbf{证明：}
+若 $\omega\equiv_m\omega'$，则 $\Fold_m(\omega)=\Fold_m(\omega')=:x\in X_m$。
+由引理 \ref{lem:zeckendorf-range-bijection}，$V_m(x)$ 唯一确定模 $F_{m+2}$ 的剩余类，且
+\(V_m(x)\equiv N(\omega)\equiv N(\omega')\pmod{F_{m+2}}\)。
+故 $\pi_m$ 在 $\equiv_m$ 上良定义并诱导 $\overline\pi_m$。又对任意 $r$，取 $w(r)\in X_m\subset\Omega_m$，有
+\(\overline\pi_m([w(r)])=r\)，故 $\overline\pi_m$ 为双射。由定义可见 $\overline\pi_m$ 保持加法与乘法，故为半环同构。证毕。
+
+\subsection{多重度谱与方差能量恒等式}
+将折叠多重度视为模环上的类函数，并给出其 $\ell^2$ 能量与频谱的精确对应。
+
+\begin{definition}[多重度谱]
+对 $r\in\ZZ/(F_{m+2}\ZZ)$ 定义多重度剖面
+\[
+d_m(r):=\bigl|\{\omega\in\Omega_m:\pi_m(\omega)=r\}\bigr|.
+\]
+记其离散 Fourier 变换为
+\[
+\widehat d_m(k):=\sum_{r\in\ZZ/(F_{m+2}\ZZ)} d_m(r)\,e^{-2\pi i kr/F_{m+2}},
+\qquad k\in\ZZ/(F_{m+2}\ZZ).
+\]
+并记均值
+\(
+\overline d_m:=\frac{1}{F_{m+2}}\sum_r d_m(r)=\frac{2^m}{F_{m+2}}.
+\)
+\end{definition}
+
+\begin{theorem}[多重度能量与方差的谱表示]
+\label{thm:fold-multiplicity-energy}
+设 $d_m(r)$ 如上，则有精确恒等式
+\[
+\sum_{r} d_m(r)^2=\frac{1}{F_{m+2}}\sum_{k}|\widehat d_m(k)|^2,
+\]
+并且方差满足
+\[
+\frac{1}{F_{m+2}}\sum_r\bigl(d_m(r)-\overline d_m\bigr)^2
+=\frac{1}{F_{m+2}^2}\sum_{k\ne 0}|\widehat d_m(k)|^2.
+\]
+其中 $k=0$ 项给出 $\widehat d_m(0)=2^m$。
+\end{theorem}
+
+\textbf{证明：}
+在有限交换群 $\ZZ/(F_{m+2}\ZZ)$ 上应用离散 Parseval 恒等式即得
+\(
+\sum_r d_m(r)^2=\frac{1}{F_{m+2}}\sum_k|\widehat d_m(k)|^2
+\)。
+又 $\widehat d_m(0)=\sum_r d_m(r)=|\Omega_m|=2^m$，代入
+\(
+\sum_r(d_m(r)-\overline d_m)^2=\sum_r d_m(r)^2-F_{m+2}\,\overline d_m^2
+\)
+并整理即可。证毕。
+
+\begin{definition}[折叠碰撞概率]
+对独立均匀的 $\omega,\eta\in\Omega_m$，定义
+\[
+\mathsf{Col}_m:=\mathbb{P}\bigl(\pi_m(\omega)=\pi_m(\eta)\bigr)
+=\frac{1}{2^{2m}}\sum_r d_m(r)^2.
+\]
+称 $\mathsf{Col}_m-1/F_{m+2}$ 为折叠的均匀性缺口。
+\end{definition}
+
+\begin{theorem}[碰撞概率的谱恒等式]
+\label{thm:fold-collision-spectrum}
+折叠碰撞概率满足精确恒等式
+\[
+\mathsf{Col}_m=\frac{1}{F_{m+2}}+\frac{1}{2^{2m}F_{m+2}^2}\sum_{k\ne 0}|\widehat d_m(k)|^2.
+\]
+因此 $\mathsf{Col}_m\ge 1/F_{m+2}$，且等号当且仅当 $d_m(r)\equiv 2^m/F_{m+2}$ 为常数。
+\end{theorem}
+
+\textbf{证明：}
+由定理 \ref{thm:fold-multiplicity-energy} 的方差恒等式，
+\(
+\sum_r d_m(r)^2=F_{m+2}\,\overline d_m^2+\frac{1}{F_{m+2}}\sum_{k\ne 0}|\widehat d_m(k)|^2
+\)，
+再代入 $\overline d_m=2^m/F_{m+2}$ 即得结论。
+
+\begin{theorem}[多重度谱的乘法分解]
+\label{thm:fold-spectrum-factorization}
+对任意 $k\in\ZZ/(F_{m+2}\ZZ)$，有
+\[
+\widehat d_m(k)=\prod_{j=1}^m\Bigl(1+e^{-2\pi i k F_{j+1}/F_{m+2}}\Bigr).
+\]
+从而
+\[
+|\widehat d_m(k)|=2^m\prod_{j=1}^m\Bigl|\cos\Bigl(\pi k\,F_{j+1}/F_{m+2}\Bigr)\Bigr|.
+\]
+\end{theorem}
+
+\textbf{证明：}
+按定义
+\(
+\widehat d_m(k)=\sum_{\omega\in\Omega_m}e^{-2\pi i k\pi_m(\omega)/F_{m+2}}
+\)。
+又 $\pi_m(\omega)\equiv \sum_{j=1}^m \omega_j F_{j+1}\pmod{F_{m+2}}$，故
+\[
+\widehat d_m(k)=\sum_{\omega\in\Omega_m}\prod_{j=1}^m e^{-2\pi i k\omega_j F_{j+1}/F_{m+2}}
+=\prod_{j=1}^m\bigl(1+e^{-2\pi i k F_{j+1}/F_{m+2}}\bigr).
+\]
+利用 $1+e^{-i\theta}=e^{-i\theta/2}\,2\cos(\theta/2)$ 得到模长公式。证毕。
+
+\begin{corollary}[非平凡频谱的乘性上界]
+\label{cor:fold-spectrum-nontrivial-bound}
+对任意 $k\ne 0$，有
+\[
+|\widehat d_m(k)|\le 2^m\prod_{j=1}^m\Bigl|\cos\Bigl(\pi k\,F_{j+1}/F_{m+2}\Bigr)\Bigr|<2^m.
+\]
+因此碰撞缺口满足
+\[
+\mathsf{Col}_m-\frac{1}{F_{m+2}}=\frac{1}{2^{2m}F_{m+2}^2}\sum_{k\ne 0}|\widehat d_m(k)|^2
+\le\frac{1}{F_{m+2}^2}\sum_{k\ne 0}\prod_{j=1}^m\cos^2\Bigl(\pi k\,F_{j+1}/F_{m+2}\Bigr).
+\]
+\end{corollary}
+
 \input{sections/generated/tab_fold_multiplicity_histogram}
 
 \subsection{二进制区间到 Zeckendorf 前缀的折叠：最大纤维与饱和判别}\label{app:fold-binary-prefix}
