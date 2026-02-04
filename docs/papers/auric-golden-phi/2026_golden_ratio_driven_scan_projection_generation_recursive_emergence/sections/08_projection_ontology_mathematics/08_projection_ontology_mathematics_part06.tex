@@ -53,6 +53,25 @@ $$
 这是定理 \ref{thm:pom-order-spatialization} 的直接翻译：\(P>2B\) 保证 \([-B,B]\) 中的整数在模 \(P\) 下唯一代表，CRT 提供唯一重建。证毕。
 \end{proof}
 
+\begin{definition}[值投影推迟/压缩的重写模式（带纤维不可见证书）]\label{def:pom-value-delay-rewrite}
+在投影词片段中引入一个“本体演化门” \(U_t\)（\(t\ge 0\)）与条件期望门 \(E_m\)（等价于值投影 \(P_Z\) 的算子化口径，见定义 \ref{def:pom-proj-norm}）。
+若中间演化段 \(U_t\) 在第 \(m\) 层对折叠纤维\textbf{不可见}（即满足命题 \ref{prop:pom-fiber-invariance} 的纤维不区分条件；等价地，观测层不再区分 \(\Fold_m\) 的纤维），则把下式视为一条可定向的重写规则：
+$$
+\text{(RDelay)}\quad
+E_m\circ U_t\circ E_m\ \Longrightarrow\ E_m\circ U_t.
+$$
+该规则正是注 \ref{rem:pom-lazy-fold} 的算子等式在投影词语法层的取向形式：一旦演化段对纤维不可见，则中间的重复值投影可以被压缩为末端一次。
+\end{definition}
+
+\begin{remark}[一次值投影正规形：在不可见演化段内把 \texorpdfstring{$E_m$}{Em} 推迟到末端]\label{rem:pom-value-delay-normal-form}
+在定义 \ref{def:pom-value-delay-rewrite} 的侧条件下，规则 (RDelay) 与幂等律 \(E_m\circ E_m\Rightarrow E_m\) 结合，允许把任意仅由 \(U_t\) 与 \(E_m\) 生成的投影词规约为
+$$
+U_{t_1}\circ U_{t_2}\circ\cdots\circ U_{t_r}\circ E_m,
+$$
+亦即把所有内部的值投影门推迟/压缩到末端一次执行。
+这给出一个与“固定延迟在线归一化”（定理 \ref{thm:online-delay-fold}）相容的编译口径：只要能为某段 \(U_t\) 给出纤维不可见证书，则编译器可在词法层安全消去中间值投影而不改变可见读出。
+\end{remark}
+
 \begin{remark}[可复现：含 \texorpdfstring{$E_m$}{Em}/\texorpdfstring{$\mathrm{LIFT}_G$}{LIFT}/\texorpdfstring{$\mathrm{PROJ}_u$}{PROJ} 的投影词正规化示例]\label{rem:pom-projword-lift-proj-normalizer-demo}
 为把 “\(2\)-态射 = 重写证书” 落到可执行层面，脚本 \texttt{scripts/exp\_pom\_projword\_lift\_proj\_normalizer\_demo.py} 实现了一个最小扩展示例：
 在 \(\mathbf{PW}\) 的子片段里加入
