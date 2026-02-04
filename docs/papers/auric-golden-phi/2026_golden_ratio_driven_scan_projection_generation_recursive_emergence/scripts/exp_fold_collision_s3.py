@@ -7,7 +7,7 @@ This script is for auditability:
   where d_m(x) = |Fold_m^{-1}(x)|.
 
 It verifies an explicit 3-state realization and recurrence (as stated in the paper draft):
-  S3(m) = 2 u^T A3^(m-2) 1,  m >= 2,
+  S3(m) = 2 u^T A3^(m-2) v,  m >= 2,
   S3(m) = 2 S3(m-1) + 4 S3(m-2) - 2 S3(m-3),  m >= 5.
 
 All output is English-only by repository convention.
@@ -60,11 +60,11 @@ def s3_from_A3(m: int) -> int:
     """Compute S3(m) from the explicit 3-state kernel A3 and readout vectors."""
     if m < 2:
         raise ValueError("m must be >= 2")
-    A3 = [[0, 0, 1], [0, 1, 1], [2, 3, 1]]
-    u = [1, 3, 1]
-    one = [1, 1, 1]
+    A3 = [[0, 2, 2], [1, 0, 2], [0, 1, 2]]
+    u = [5, 13, 34]
+    v = [1, 0, 0]
     P = _matpow3(A3, m - 2)
-    return 2 * _dot(u, P, one)
+    return 2 * _dot(u, P, v)
 
 
 def collision_counts(m: int, progress: Progress | None = None) -> Dict[str, int]:

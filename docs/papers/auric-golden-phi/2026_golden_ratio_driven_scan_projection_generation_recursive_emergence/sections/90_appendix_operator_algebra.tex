@@ -169,6 +169,94 @@ E_m(\widetilde P_xP_a\widetilde P_x)=E_m(P_a)=\frac{1}{d_m(x)}\widetilde P_x
 与上式一致。
 \end{proof}
 
+\subsubsection{投影词范畴：可组合、可重写、可判等价}\label{app:op-algebra-projection-word}
+本附录前两节已经给出三类硬接口：折叠不变量子代数 \(\mathcal{B}_m\subset\mathcal{A}_m\)（命题 \ref{prop:fold-invariant-subalgebra}）、条件期望 \(E_m:\mathcal{A}_m\to\mathcal{B}_m\)（命题 \ref{prop:fold-conditional-expectation}），以及概率单纯形上的推前 \(P_m=(\Fold_m)_*\) 与纤维均匀提升 \(Q_m\)（命题 \ref{prop:fold-pushforward-lift}）。
+本小节把它们收紧为一套“投影词演算”：允许把这些接口作为生成元自由复合，并给出可终止的消去规则与正规形，从而把“算法等价”提升为“投影词等价”的可判定问题（在固定分辨率 \(m\) 的语义层面）。
+
+\paragraph{两侧对象：观测量侧与分布侧}
+为避免把态与可观测量混写，我们对固定 \(m\) 引入两条并行的对象层：
+\begin{itemize}
+  \item \textbf{观测量侧：}\(\mathcal{A}_m\simeq \CC^{\Omega_m}\)、\(\mathcal{B}_m\simeq \CC^{X_m}\)，以及可见化算子 \(E_m:\mathcal{A}_m\to\mathcal{B}_m\)；
+  \item \textbf{分布侧：}\(\Delta(\Omega_m)\)、\(\Delta(X_m)\)，以及推前 \(P_m:\Delta(\Omega_m)\to\Delta(X_m)\) 与最大熵/纤维均匀提升 \(Q_m:\Delta(X_m)\to\Delta(\Omega_m)\)。
+\end{itemize}
+二者以自然配对
+\(
+\langle f,\mu\rangle:=\sum_{a\in\Omega_m} f(a)\mu(a)
+\)
+连接，命题 \ref{prop:fold-pushforward-lift} (3) 给出 \(E_m\) 与 \(Q_m\circ P_m\) 的伴随关系。
+
+\begin{definition}[投影词范畴（固定分辨率）]\label{def:projection-word-category}
+固定 \(m\)。定义两端点集合
+\[
+\mathrm{Obj}_{\mathrm{obs}}(m):=\{\mathcal{A}_m,\mathcal{B}_m\},\qquad
+\mathrm{Obj}_{\mathrm{mea}}(m):=\{\Delta(\Omega_m),\Delta(X_m)\}.
+\]
+并定义两类基本态射：
+\begin{enumerate}
+  \item \textbf{观测量侧生成元：}包含 \(E_m:\mathcal{A}_m\to\mathcal{B}_m\) 与折叠拉回（包含）算子
+  \[
+  \iota_m:\mathcal{B}_m\to\mathcal{A}_m,\qquad
+  (\iota_m b)(a):=b(\Fold_m(a)).
+  \]
+  \item \textbf{分布侧生成元：}包含推前 \(P_m:\Delta(\Omega_m)\to\Delta(X_m)\) 与提升 \(Q_m:\Delta(X_m)\to\Delta(\Omega_m)\)（式 \eqref{eq:pom-fiber-uniform-lift} 与命题 \ref{prop:fold-pushforward-lift}）。
+\end{enumerate}
+允许上述生成元做有限复合，得到的复合词称为分辨率 \(m\) 的\emph{投影词}。
+\end{definition}
+
+\begin{proposition}[基本消去规则与幂等投影]\label{prop:projection-word-rewrite}
+在定义 \ref{def:projection-word-category} 下，存在两条严格消去恒等式
+\[
+\boxed{\ E_m\circ \iota_m=\mathrm{id}_{\mathcal{B}_m}\ },\qquad
+\boxed{\ P_m\circ Q_m=\mathrm{id}_{\Delta(X_m)}\ }.
+\]
+并且由此定义的两条“投影闭包”都是幂等的：
+\[
+\Pi_m:=\iota_m\circ E_m:\mathcal{A}_m\to\mathcal{A}_m,\qquad
+K_m:=Q_m\circ P_m:\Delta(\Omega_m)\to\Delta(\Omega_m),
+\]
+满足 \(\Pi_m^2=\Pi_m\)、\(K_m^2=K_m\)；且 \(\Pi_m\)（分别 \(K_m\)）的像恰为“纤维常值观测量”（分别“纤维均匀分布”）子空间。
+\end{proposition}
+\begin{proof}
+恒等式 \(E_m\circ\iota_m=\mathrm{id}\) 直接由命题 \ref{prop:fold-conditional-expectation} 的 (2)（\(E_m\) 在 \(\mathcal{B}_m\) 上为恒等）与 \(\iota_m(\widetilde P_x)=\widetilde P_x\) 给出。
+恒等式 \(P_m\circ Q_m=\mathrm{id}\) 由命题 \ref{prop:fold-pushforward-lift} (2) 给出。
+\par
+幂等性由消去恒等式立得：\(\Pi_m^2=\iota_m(E_m\iota_m)E_m=\iota_mE_m=\Pi_m\)，\(K_m^2=Q_m(P_mQ_m)P_m=Q_mP_m=K_m\)。
+像空间刻画来自 \(\Pi_m\)（\(K_m\)）的定义：\(\Pi_m f\) 在每条纤维上取其平均值并复制回纤维，故像为纤维常值子空间；同理 \(K_m\mu\) 在每条纤维上变为均匀分配，故像为纤维均匀分布子空间。证毕。
+\end{proof}
+
+\begin{proposition}[投影词正规形与可判等价]\label{prop:projection-word-normal-form}
+固定 \(m\)。在观测量侧，任意投影词 \(w:\mathcal{A}_m\to\mathcal{A}_m\) 在等式意义下都可约化为三种正规形之一：
+\[
+\mathrm{id}_{\mathcal{A}_m},\qquad
+\Pi_m=\iota_m\circ E_m,\qquad
+\iota_m\circ \beta\circ E_m\ \ (\beta\in\mathrm{End}(\mathcal{B}_m)).
+\]
+在分布侧，任意投影词 \(w:\Delta(\Omega_m)\to\Delta(\Omega_m)\) 可约化为
+\[
+\mathrm{id}_{\Delta(\Omega_m)},\qquad
+K_m=Q_m\circ P_m,\qquad
+Q_m\circ \alpha\circ P_m\ \ (\alpha\in\mathrm{End}(\Delta(X_m))).
+\]
+因此在固定 \(m\) 的纯“投影词语言”中，词等价可通过消去规则 \(E_m\iota_m\Rightarrow \mathrm{id}\)、\(P_mQ_m\Rightarrow \mathrm{id}\) 的有限归约判定。
+\end{proposition}
+\begin{proof}
+观测量侧：任意复合词由 \(\iota_m\) 与 \(E_m\) 交替出现构成。使用消去规则 \(E_m\circ\iota_m=\mathrm{id}_{\mathcal{B}_m}\) 可消去所有相邻的 \(E_m\iota_m\) 子词，最终得到“无可进一步消去”的交替形态；其两端点若同为 \(\mathcal{A}_m\)，则必为 \(\mathrm{id}\) 或 \(\iota_m(\cdot)E_m\) 夹着一个 \(\mathcal{B}_m\) 自同态的形式。
+分布侧同理，使用 \(P_m\circ Q_m=\mathrm{id}_{\Delta(X_m)}\) 即得。
+由于每次消去严格缩短词长，归约必终止，从而得到可判等价性。证毕。
+\end{proof}
+
+\begin{remark}[熵增作为投影词的标量语义]\label{rem:projection-word-entropy-defect}
+对分布侧的提升 \(Q_m\)，正文定理 \ref{thm:pom-maxent-lift} 给出严格“最大熵提升”的唯一性，并定义纤维缺陷泛函
+\[
+\kappa_m(\pi):=\mathbb{E}_{\pi}\bigl[\log d_m(X)\bigr]\qquad(\pi\in\Delta(X_m)).
+\]
+它可视为投影词 \(Q_m\) 的一条\textbf{标量语义}：对任意 \(\pi\)，提升后的熵满足
+\(
+H(Q_m\pi)=H(\pi)+\kappa_m(\pi)
+\)。
+因此在“投影词演算”的语义层，除了谱指纹（\(\rho,\log\mathfrak{M},\) Dirichlet--Mertens 张量等）之外，\(\kappa_m\) 提供了一个与分辨率 \(m\) 强绑定的可审计标量不变量接口。
+\end{remark}
+
 \subsubsection{谱半径的可审计证书：Lyapunov 不等式与半正定可行性}\label{app:op-algebra-lyapunov}
 在正文的核版 RH/GRH 判据中，“平方根界”与“最坏扭曲谱半径界”都以谱半径不等式表述。
 本段给出一个在有限维上完全严格、且可作为\textbf{可审计证书}输出的等价刻画：把谱半径上界转写为一个 Lyapunov 型矩阵不等式的可行性。

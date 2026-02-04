@@ -305,6 +305,31 @@ a_{p^k}(u)=u\,a_{p^k}(1/u).
 \]
 此外，\(\Delta\) 在本核上可由六次方程 \(F(\lambda,u)=0\) 直接恢复为一个显式多项式（并与 \(10\times 10\) 的矩阵定义逐点验算一致）：
 \input{sections/generated/eq_sync_kernel_weighted_delta_explicit}
+\begin{proposition}[完成化行列式的二元闭式：\texorpdfstring{$\Delta(z,u)=\widehat\Delta(w,s)$}{Delta=hatDelta}]\label{prop:sync-kernel-weighted-hat-delta}
+取完成化坐标
+\[
+u=r^2,\qquad w:=zr=z\sqrt{u},\qquad s:=r+r^{-1}=\sqrt{u}+\frac{1}{\sqrt{u}}.
+\]
+则存在整系数二元多项式 \(\widehat\Delta(w,s)\in\ZZ[w,s]\) 使得
+\[
+\boxed{\ \Delta(z,u)=\widehat\Delta\!\left(z\sqrt{u},\ \sqrt{u}+\frac{1}{\sqrt{u}}\right)\ }.
+\]
+在本核上，\(\widehat\Delta\) 可取为式 \eqref{eq:sync-kernel-weighted-delta-completed} 的闭式（由脚本直接生成并与 \eqref{eq:sync-kernel-weighted-delta-explicit} 逐项核验一致）：
+\input{sections/generated/eq_sync_kernel_weighted_delta_completed}
+\end{proposition}
+\begin{proof}
+由自对偶 \(\Delta(z,u)=\Delta(uz,1/u)\)，把 \(u=r^2\) 并令 \(w=zr\)，可知
+\(
+\Delta(w/r,r^2)
+\)
+在 \(r\mapsto r^{-1}\) 下不变。
+而不变量子环恒等式
+\(
+\ZZ[r,r^{-1}]^{\,r\mapsto r^{-1}}=\ZZ[r+r^{-1}]=\ZZ[s]
+\)
+保证其可写成某个 \(\widehat\Delta(w,s)\in\ZZ[w,s]\)。
+把 \eqref{eq:sync-kernel-weighted-delta-explicit} 代入 \(u=r^2,z=w/r\) 并在不变量基 \(C_k(s)=r^k+r^{-k}\) 上化简，即得 \eqref{eq:sync-kernel-weighted-delta-completed}；脚本 \texttt{scripts/exp\_sync\_kernel\_weighted\_delta\_completed.py} 对该恒等式作了符号核验。证毕。
+\end{proof}
 设 $z_\star(u)$ 为最小正根、$\lambda(u)=1/z_\star(u)$，则
 \[
 \lambda(u)=u\,\lambda(1/u),
@@ -526,6 +551,54 @@ u(1-s)=\lambda^{2(1-s)-1}=\lambda^{1-2s}
 由定义 $u(s)=\lambda^{2s-1}$ 可见：直线 $\Re(s)=\tfrac12$ 满足 $|u(s)|=1$，并且 $s=\tfrac12$ 为对称固定点（对应 $u=1$）。
 因此在该完成化截面上，“临界线”自然等价为“自对偶对称面/单位圆权重”。
 \end{remark}
+
+\begin{definition}[核 Hardy 函数：临界线实值化]\label{def:kernel-hardy-function}
+沿用命题 \ref{prop:kernel-xi-functional-equation} 的记号。定义
+$$
+Z(t):=\widetilde{\Delta}\!\bigl(\lambda^{-1/2},\,2it\log\lambda\bigr),
+\qquad t\in\RR,
+$$
+并称其为同步核完成化行列式的 Hardy 型实值化。
+\end{definition}
+
+\begin{proposition}[Hardy 实值性、偶性与临界线截面恒等式]\label{prop:kernel-hardy-real-even}
+对一切实数 \(t\in\RR\)，有
+$$
+\boxed{\ Z(t)\in\RR,\qquad Z(t)=Z(-t)\ }.
+$$
+并且若令 \(s=\tfrac12+it\)，则临界线上的截面恒等式成立：
+$$
+\boxed{\ Z(t)=\Xi\!\left(\tfrac12+it\right)\ }.
+$$
+\end{proposition}
+\begin{proof}
+取 \(\theta:=2it\log\lambda\) 与 \(u=e^\theta=\lambda^{2it}\)，则 \(|u|=1\)。
+由完成化定义（\S\ref{app:kernel-completion}）
+\[
+\widetilde{\Delta}(z,\theta)=\Delta(e^{-\theta/2}z,e^\theta)
+\]
+可得
+\[
+Z(t)=\widetilde{\Delta}(\lambda^{-1/2},\theta)
+=\Delta\!\bigl(e^{-\theta/2}\lambda^{-1/2},\,u\bigr)
+=\Delta\!\bigl(\lambda^{-1/2-it},\,\lambda^{2it}\bigr)
+=\Delta\!\bigl(\lambda^{-s},\,\lambda^{2s-1}\bigr)
+=\Xi(s),
+\]
+从而得到 \(Z(t)=\Xi(\tfrac12+it)\)。
+\par
+另一方面，由 \(\Delta(z,u)=\sum_{j=0}^{10}c_j(u)z^j\) 与完成化定义立得
+\[
+\widetilde{\Delta}(z,\theta)=\sum_{j=0}^{10}c_j(u)\,e^{-j\theta/2}z^j
+=\sum_{j=0}^{10}\bigl(u^{-j/2}c_j(u)\bigr)\,z^j
+=\sum_{j=0}^{10}d_j(u)\,z^j,
+\]
+其中 \(d_j(u)=u^{-j/2}c_j(u)\)。
+由推论 \ref{cor:completion-real-line}，当 \(|u|=1\) 时 \(d_j(u)\in\RR\)。
+因此 \(\widetilde{\Delta}(z,\theta)\) 作为关于 \(z\) 的多项式在 \(z\in\RR\) 上取实值，特别地 \(Z(t)=\widetilde{\Delta}(\lambda^{-1/2},\theta)\in\RR\)。
+\par
+偶性由完成化偶性 \(\widetilde{\Delta}(z,-\theta)=\widetilde{\Delta}(z,\theta)\)（\S\ref{app:kernel-completion}）直接推出：把 \(\theta=2it\log\lambda\) 代入得 \(Z(-t)=Z(t)\)。证毕。
+\end{proof}
 
 \subsubsection{压力函数的解析性与显式导数}\label{app:pressure-analytic}
 对 $u=e^\theta>0$，矩阵 $B(u)$ 仍为 primitive，故 Perron 根 $\lambda(u)$ 在 $u>0$ 上为单根并随 $u$ 实解析。记 $\lambda=\lambda(u)$，其满足六次方程
@@ -955,6 +1028,24 @@ r^{-dn}f(r^{2d})=\widehat f(C_d(s))
 a_n(u)=\sum_{d\mid n} d\,p_d(u^{n/d})
 \)
 完成化得到。
+\end{proof}
+
+\begin{corollary}[素数长度同余：\texorpdfstring{$\widehat a_p(s)\equiv C_p(s)\ (\mathrm{mod}\ p)$}{hat a_p congruent Cp mod p}]\label{cor:completed-prime-congruence}
+沿用推论 \ref{cor:chebyshev-witt-completed} 的完成化记号。若 \(p\) 为素数，则有整系数同余
+\[
+\boxed{\ \widehat a_p(s)\equiv C_p(s)\pmod p\ }.
+\]
+\end{corollary}
+\begin{proof}
+对素数 \(p\)，由 \(\widehat p_p(s)=\frac1p\bigl(\widehat a_p(s)-\widehat a_1(C_p(s))\bigr)\)（推论 \ref{cor:chebyshev-witt-completed} 的第一式，因子仅为 \(d=1,p\)）可知
+\[
+\widehat a_p(s)-\widehat a_1(C_p(s))\in p\,\ZZ[s].
+\]
+而在本核上 \(a_1(u)=\Tr(B(u))=p_1(u)=1+u\)，故
+\(
+\widehat a_1(s)=r^{-1}(1+r^2)=r+r^{-1}=s
+\)，从而 \(\widehat a_1(C_p(s))=C_p(s)\)。
+代回即得同余。证毕。
 \end{proof}
 
 \input{sections/generated/tab_sync_kernel_weighted_primitive_completed}

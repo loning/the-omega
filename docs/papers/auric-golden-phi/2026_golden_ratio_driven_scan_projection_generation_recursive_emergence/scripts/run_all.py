@@ -116,6 +116,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_weighted_delta_completed",
+            script="exp_sync_kernel_weighted_delta_completed.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_sync_kernel_weighted_delta_completed.tex",
+            ],
+        ),
+        Step(
             name="collision_kernel_A2_primitive",
             script="exp_collision_kernel_A2_primitive.py",
             args=[],
@@ -239,6 +247,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_collision_moment_hankel_rank.json",
                 "sections/generated/tab_fold_collision_moment_hankel_rank.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_local_bigeometry_invariants",
+            script="exp_real_input_40_local_bigeometry_invariants.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_local_bigeometry_invariants.json",
+                "sections/generated/tab_real_input_40_local_bigeometry_invariants.tex",
             ],
         ),
         Step(

@@ -985,18 +985,18 @@ $$
 $$
 A_3:=
 \begin{pmatrix}
-0&0&1\\
-0&1&1\\
-2&3&1
+0&2&2\\
+1&0&2\\
+0&1&2
 \end{pmatrix},
 $$
 以及读出向量
 $$
-u:=(1,3,1)^{\mathsf T},\qquad \mathbf{1}:=(1,1,1)^{\mathsf T},
+u_3:=(5,13,34)^{\mathsf T},\qquad v_3:=(1,0,0)^{\mathsf T},
 $$
 使得对一切 \(m\ge 2\),
 $$
-S_3(m)=2\,u^{\mathsf T}A_3^{\,m-2}\mathbf{1}.
+S_3(m)=2\,u_3^{\mathsf T}A_3^{\,m-2}v_3.
 $$
 从而 \(S_3(m)\) 满足精确递推（\(m\ge 5\)）
 $$
@@ -1007,7 +1007,7 @@ $$
 \begin{proof}
 与命题 \ref{prop:pom-s2-recurrence} 相同，本命题以\textbf{可审计构造}给出：三态非负 realization 可由小 \(m\) 的枚举数据恢复，并由脚本 \texttt{scripts/exp\_fold\_collision\_s3.py} 逐项核验（同时核验递推与读出公式）。给定 \(A_3\) 与读出向量，序列
 \(
-a_n:=u^{\mathsf T}A_3^{n}\mathbf{1}
+a_n:=u_3^{\mathsf T}A_3^{n}v_3
 \)
 自动满足由 Cayley--Hamilton 定理诱导的三阶线性递推，其系数由 \(A_3\) 的特征多项式决定。直接计算得
 $$
@@ -1088,21 +1088,21 @@ $$
 $$
 A_4:=
 \begin{pmatrix}
-0&0&0&2&2\\
-1&0&0&0&0\\
 0&1&0&0&0\\
-0&0&1&0&7\\
-0&0&0&1&2
+0&0&7&0&1\\
+0&1&2&0&0\\
+1&0&1&0&0\\
+0&0&0&1&0
 \end{pmatrix},
 $$
 以及读出向量
 $$
-u_4:=(18,50,228,808,3208)^{\mathsf T},\qquad
+u_4:=(9,404,1613,25,114)^{\mathsf T},\qquad
 v_4:=(1,0,0,0,0)^{\mathsf T},
 $$
 使得对一切 \(m\ge 2\),
 $$
-S_4(m)=u_4^{\mathsf T}A_4^{\,m-2}v_4.
+S_4(m)=2\,u_4^{\mathsf T}A_4^{\,m-2}v_4.
 $$
 从而 \(S_4(m)\) 满足精确五阶递推：对一切 \(m\ge 13\),
 $$
@@ -1110,7 +1110,7 @@ S_4(m)=2S_4(m-1)+7S_4(m-2)+2S_4(m-4)-2S_4(m-5).
 $$
 \end{proposition}
 \begin{proof}
-把 \(a_n:=S_4(n+2)\) 视为一列整数序列。由表 \ref{tab:fold_collision_moment_recursions} 可审计地核验 \(a_n\) 满足阶数为 \(5\) 的整数递推（脚本 \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py}）。由 Hankel 标准构造 \(A=H_0^{-1}H_1\) 得到一个整系数 shift realization，再通过 unimodular 相似变换把其压到上述非负整数矩阵 \(A_4\)；同时读出向量随基变换更新，得到所述 \(u_4,v_4\) 与读出公式。整个构造由脚本 \texttt{scripts/exp\_fold\_collision\_hankel\_realization\_q4.py} 输出并可复核。证毕。
+由表 \ref{tab:fold_collision_moment_recursions} 可审计地核验 \(S_4(m)\) 满足阶数为 \(5\) 的整数递推（脚本 \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py}）。另一方面，上述 \(A_4\) 与 \((u_4,v_4)\) 给出一个完全显式的五态非负整数 realization；其与递推以及小 \(m\) 的枚举值一致性可由脚本 \texttt{scripts/exp\_fold\_collision\_kernel\_A4\_verify.py} 逐项核验。证毕。
 \end{proof}
 
 \begin{corollary}[四阶碰撞指数与 \texorpdfstring{$h_4$}{h4}]\label{cor:pom-s4-asymptotic}
@@ -1145,6 +1145,43 @@ $$
 
 \input{sections/generated/tab_collision_kernel_A4_primitive}
 \input{sections/generated/tab_collision_kernel_A4_finite_part}
+
+\subsubsection{五阶碰撞矩与 \texorpdfstring{$\mathrm{R\acute{e}nyi}$}{Renyi}--5 投影熵率}\label{subsec:pom-s5}
+\begin{definition}[五阶折叠碰撞矩]\label{def:pom-s5}
+定义五阶碰撞和
+$$
+S_5(m):=\sum_{x\in X_m} d_m(x)^5.
+$$
+等价地，从 \(\Omega_m\) 上均匀独立抽取五条窗口 \(\omega_1,\dots,\omega_5\)，则
+$$
+\mathbb{P}\bigl[\Fold_m(\omega_1)=\cdots=\Fold_m(\omega_5)\bigr]=\frac{S_5(m)}{32^m}.
+$$
+\end{definition}
+
+\begin{proposition}[五阶递推、主根与 \texorpdfstring{$h_5$}{h5}]\label{prop:pom-s5-recurrence}
+对一切 \(m\ge 13\) 有精确递推
+$$
+S_5(m)=2S_5(m-1)+11S_5(m-2)+8S_5(m-3)+20S_5(m-4)-10S_5(m-5).
+$$
+令 \(r_5\) 为特征多项式
+$$
+x^5-2x^4-11x^3-8x^2-20x+10=0
+$$
+的最大实根（\(r_5\approx 4.800521005045\)）。则
+$$
+S_5(m)=\Theta(r_5^m),
+\qquad
+h_5:=\lim_{m\to\infty}\frac{1}{m}\Bigl(-\log\sum_{x\in X_m}\pi_m(x)^5\Bigr)
+=\log\!\left(\frac{32}{r_5}\right).
+$$
+\end{proposition}
+\begin{proof}
+递推由脚本 \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py} 对枚举值逐项核验（并确定最早起始点）。其特征多项式的 Perron 根为 \(r_5\)，从而 \(S_5(m)=\Theta(r_5^m)\)。再用
+$$
+\sum_{x\in X_m}\pi_m(x)^5=\sum_x\frac{d_m(x)^5}{32^m}=\frac{S_5(m)}{32^m},
+$$
+即得 \(h_5=\log(32/r_5)\)。证毕。
+\end{proof}
 
 \begin{remark}[\texorpdfstring{$\mathrm{R\acute{e}nyi}$}{Renyi} 指纹谱：从 \texorpdfstring{$q=2,3$}{q=2,3} 到更高阶]\label{rem:pom-renyi-spectrum}
 对任意整数 \(q\ge 2\) 定义
