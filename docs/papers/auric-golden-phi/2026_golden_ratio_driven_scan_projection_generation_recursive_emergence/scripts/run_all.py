@@ -452,6 +452,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_time_correlation_decay_certificate",
+            script="exp_real_input_40_time_correlation_decay_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_time_correlation_decay_certificate.json",
+                "sections/generated/tab_real_input_40_time_correlation_decay_certificate.tex",
+                "sections/generated/tab_real_input_40_time_correlation_decay_certificate_tail.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_tau_corr_vs_tau_mix",
             script="exp_real_input_40_tau_corr_vs_tau_mix.py",
             args=[],

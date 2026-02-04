@@ -58,6 +58,36 @@ $P_\chi(t)$ 控制 leading 指数尺度（典型密度、涨落与大偏差）�
 
 \input{sections/generated/fig_real_input_40_time_correlation}
 
+\begin{corollary}[黄金点的闭式相关时间（真实输入 40 状态核）]\label{cor:chi-slice-t0-golden-tau}
+对真实输入 40 状态核在 $t=0$ 的 $\chi$ 切片平衡态，谱隙比满足
+\[
+\rho_{\mathrm{corr}}(0)=\frac{\Lambda(0)}{\lambda_1(0)}=\varphi^{-1},
+\qquad
+\tau_{\mathrm{corr}}(0)=\frac{1}{-\log\rho_{\mathrm{corr}}(0)}=\frac{1}{\log\varphi}.
+\]
+该闭式与图 \ref{fig:real-input-40-time-correlation} 的 $t=0$ 读出一致。
+\end{corollary}
+
+\paragraph{指数包络的离散审计证书}
+在 $t=0$ 的 Parry 平衡态下，脚本输出的自相关序列 $\{\mathrm{Corr}(n)\}_{n=0}^N$ 与谱隙包络 $r^n$（$r=\rho_{\mathrm{corr}}(0)$）允许构造一个完全可复现的离散证书：
+\[
+C_N:=\max_{0\le n\le N}\frac{|\mathrm{Corr}(n)|}{r^n}.
+\]
+\input{sections/generated/tab_real_input_40_time_correlation_decay_certificate}
+上表给出 $C_N$ 的数值及其达到位置，从而把命题 \ref{prop:chi-slice-time-correlation} 中的“存在常数 $C(0)$”具体化为可审计的上界候选。
+
+\paragraph{尾部包络证书（排除 $n=0$）}
+为避免 $n=0$ 所诱导的平凡最大比值（$\mathrm{Corr}(0)=1$），定义尾部证书
+\[
+C_N^{(1)}:=\max_{1\le n\le N}\frac{|\mathrm{Corr}(n)|}{r^n}.
+\]
+由定义立即得到：对一切 $1\le n\le N$，均有
+\[
+|\mathrm{Corr}(n)|\le C_N^{(1)} r^n.
+\]
+下表给出离散样本上的 $C_N^{(1)}$ 及其达到位置，作为 $n\ge 1$ 尾部指数包络的可审计证书。
+\input{sections/generated/tab_real_input_40_time_correlation_decay_certificate_tail}
+
 \paragraph{相关时间与角色扭曲混合时间的分离（可审计对比）}
 上一段的 $\tau_{\mathrm{corr}}(t)$ 来自同一切片平衡态内的相关衰减；而注 \ref{rem:pom-chi-mixing} 中的 $\tau_{\mathrm{mix}}$ 则来自角色扭曲后谱半径比 $\rho/\lambda$ 所控制的“读出偏置”指数衰减。
 表 \ref{tab:real-input-40-tau-corr-vs-tau-mix} 将二者在 $t=0$ 与 $((3,3,5))$ 最坏扭曲处并列，并进一步给出三条可复核的“对齐”读出：离散网格最近点 $t_\star$、用于线性插值的网格括号 $[t_-,t_+]$，以及在该括号上的线性根估计 $t_0$（可复现）。
