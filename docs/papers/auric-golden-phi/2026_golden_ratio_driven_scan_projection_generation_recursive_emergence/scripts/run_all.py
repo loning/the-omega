@@ -272,6 +272,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_weighted_delta_explicit",
+            script="exp_sync_kernel_weighted_delta_explicit.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_sync_kernel_weighted_delta_explicit.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_time_correlation",
             script="exp_sync_kernel_time_correlation.py",
             args=[],
@@ -429,6 +437,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/real_input_40_covariance_worst_character.json",
                 "sections/generated/tab_real_input_40_covariance_worst_character.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_output_potential_dirichlet_twists",
+            script="exp_real_input_40_output_potential_dirichlet_twists.py",
+            args=["--m-list", "2,3,4,5,6,10,20", "--dps", "90"],
+            expected_outputs=[
+                "artifacts/export/real_input_40_output_potential_dirichlet_twists.json",
+                "sections/generated/tab_real_input_40_output_potential_dirichlet_twists.tex",
             ],
         ),
         Step(
