@@ -35,14 +35,14 @@ N\in\{10^4,3\times 10^4,10^5,3\times 10^5\},
 \beta\in\{0.2,0.3,0.5,0.6180339887\},\qquad
 x_0\in\{0.123,0.271,0.731\}.
 \]
-每个配置会输出偏差指标（TV/KL）、稳定类型数 \texttt{unique\_types}，以及差异度上界 \texttt{DN\_star\_upper\_bound}（黄金分支使用附录 H 的显式上界）。
+每个配置会输出偏差指标（TV/KL）、稳定类型数 \texttt{unique\_types}，以及差异度证书（\texttt{DN\_star\_upper\_bound} 与可直接排序核验的 \texttt{DN\_star\_exact}）。此外，对若干中等分辨率（例如 $m\le 14$）额外输出跨分辨率一致性残差 \texttt{tv\_multiscale\_residual}（定义 \ref{def:multiscale-residual}），用于审计“同一数据在相邻分辨率上的投影一致性”。
 \end{remark}
 
 \begin{remark}[原始数据文件与字段说明]\label{rem:exp-data-files}
 \begin{sloppypar}
 原始逐配置数据写入 \texttt{artifacts/export/rotation\_fold\_vs\_parry.csv}。CSV 字段（见表头）包括
 \[
-\texttt{alpha\_name,\allowbreak alpha,\allowbreak beta,\allowbreak x0,\allowbreak m,\allowbreak N,\allowbreak tv,\allowbreak kl,\allowbreak unique\_types,\allowbreak DN\_star\_upper\_bound,\allowbreak elapsed\_s}
+\texttt{alpha\_name,\allowbreak alpha,\allowbreak beta,\allowbreak x0,\allowbreak m,\allowbreak N,\allowbreak tv,\allowbreak kl,\allowbreak unique\_types,\allowbreak DN\_star\_upper\_bound,\allowbreak DN\_star\_exact,\allowbreak tv\_multiscale\_residual,\allowbreak elapsed\_s}
 \]
 等。本文正文仅展示其中两个代表性切片：固定 $N$ 观察随 $m$ 的趋势、以及固定 $m$ 观察随 $N$ 的趋势；完整表可由该 CSV 再生成任意切片。
 \end{sloppypar}
@@ -92,6 +92,45 @@ D_{\mathrm{TV}}(\hat{\mu}_{m,N},\mu_m)\ \le\ (m+1)\,D_N^*(\alpha;x_0).
 D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\ \le\ (m+1)\,D_N^*(\alpha;x_0).
 \]
 \end{theorem}
+
+\subsection{一个新的审计量：跨分辨率一致性残差}\label{subsec:multiscale-residual}
+
+\begin{definition}[跨分辨率一致性残差]\label{def:multiscale-residual}
+对同一数据流，令 \(\hat{\pi}_{m,N}\in\Delta(X_m)\) 与 \(\hat{\pi}_{m+1,N}\in\Delta(X_{m+1})\) 分别为分辨率 \(m\) 与 \(m+1\) 的折叠稳定类型直方图（定义 \ref{def:source-and-fold-output}）。令 \(\pi_{m+1\to m}:X_{m+1}\to X_m\) 为前缀限制映射（删去末位符号），并以 \(\pi_{m+1\to m*}\) 表示其对分布的推前。定义
+\[
+E_{m,N}
+:=
+D_{\mathrm{TV}}\!\left(\hat{\pi}_{m,N},\ \pi_{m+1\to m*}\hat{\pi}_{m+1,N}\right).
+\]
+\end{definition}
+
+\begin{remark}[语义与可判读性]
+量 \(E_{m,N}\) 不依赖任何外部基准（例如 Parry/PF），仅度量“相邻分辨率的经验分布是否可视为同一逆系统上的相容边缘”。因此它可作为一个额外的结构性审计量：当某个 \(m\) 上看似与某基准接近，但相邻层之间显著不相容时，\(E_{m,N}\) 会直接显现这种跨尺度不一致。
+\end{remark}
+
+\begin{proposition}[与 Parry 基准偏差的确定性联系]\label{prop:multiscale-residual-parry-bound}
+令 \(\pi_m\) 为黄金均值 SFT 的 Parry 最大熵柱分布，则其满足投影一致性 \(\pi_m=\pi_{m+1\to m*}\pi_{m+1}\)。因此对任意 \(m,N\)，有
+\[
+E_{m,N}\ \le\ D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)\ +\ D_{\mathrm{TV}}(\hat{\pi}_{m+1,N},\pi_{m+1}).
+\]
+\end{proposition}
+
+\begin{proof}
+由三角不等式与推前的收缩性（对任意映射 \(F\)，\(D_{\mathrm{TV}}(F_*p,F_*q)\le D_{\mathrm{TV}}(p,q)\)）得
+\[
+\begin{aligned}
+E_{m,N}
+&=D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_{m+1\to m*}\hat{\pi}_{m+1,N})\\
+&\le D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)+D_{\mathrm{TV}}(\pi_m,\pi_{m+1\to m*}\pi_{m+1})+D_{\mathrm{TV}}(\pi_{m+1\to m*}\pi_{m+1},\pi_{m+1\to m*}\hat{\pi}_{m+1,N})\\
+&\le D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)+0+D_{\mathrm{TV}}(\pi_{m+1},\hat{\pi}_{m+1,N}),
+\end{aligned}
+\]
+其中中间项为零来自 \(\pi_m=\pi_{m+1\to m*}\pi_{m+1}\)。证毕。
+\end{proof}
+
+\IfFileExists{sections/generated/tab_rotation_multiscale_residual_summary.tex}{%
+\input{sections/generated/tab_rotation_multiscale_residual_summary}%
+}{}
 
 \subsection{一个新的可审计结论：旋转微态的 \texorpdfstring{$D_{\mathrm{KL}}$}{KL} 证书}
 

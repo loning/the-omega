@@ -399,6 +399,53 @@ h(R_\alpha(x))=h(x)+m-\frac{1}{\alpha}=h(x)-\alpha_1\pmod{1}.
 （若采用 $x\mapsto\{x+\alpha_1\}$ 的约定，则对应地把上式换为 $\alpha_1\mapsto 1-\alpha_1$，仅为方向约定差异。）
 \end{proof}
 
+\subsection{Slater 三返回时间定理：一般窗口的三值返回谱}
+前述定理 \ref{thm:return-time-two-values} 处理了特殊窗口 $J_\alpha=[0,\alpha)$ 的二值返回谱。
+对一般窗口 $I=[0,\beta)$，返回时间不再总是二值，但依然具有严格的有限性：在无理旋转下，Poincar\'e 回归时间最多取三值。
+该结论是三间隙/三步长定理的回归时间版本，并可通过端点迭代与诱导区间交换的结构给出。
+
+\begin{theorem}[Slater：区间回归时间至多三值]\label{thm:slater-three-return-times}
+令 $\alpha\in(0,1)$ 为无理数，$T_\alpha(x)=\{x+\alpha\}$。
+给定 $\beta\in(0,1)$ 并设区间 $I=[0,\beta)$。
+对 $x\in I$ 定义首回归时间
+\[
+\tau_I(x):=\min\{k\in\NN_{>0}: T_\alpha^k(x)\in I\}.
+\]
+定义两个端点的命中时间
+\[
+r:=\min\{k\in\NN_{>0}: \{k\alpha\}\in[0,\beta)\},
+\qquad
+s:=\min\{k\in\NN_{>0}: \{k\alpha\}\in(1-\beta,1)\}.
+\]
+则对所有 $x\in I$ 有
+\[
+\tau_I(x)\in\{r,\ s,\ r+s\}.
+\]
+并且若 $\tau_I$ 取三种不同值，则它们（在交换 $r,s$ 后）恰为 $r,s,r+s$。
+\end{theorem}
+
+\begin{proof}[证明要点与引用]
+诱导变换 $T_\alpha$ 在区间 $I$ 上的首回归映射是一个至多三段的区间交换/分段平移：其不连续性只来自端点 $0$ 与 $\beta$ 的有限次前向迭代在返回 $I$ 之前所产生的切分。
+回归时间在每段上为常数，因此至多取三值。
+将三段对应的常数回归时间写成端点命中时间的组合，可取为 $r,s$ 与 $r+s$。
+完整证明及其与连分数分类的等价表述参见 Slater 的原始工作 \cite{Slater1950DistributionIntegers,Slater1967GapsSteps}。
+\end{proof}
+
+\begin{corollary}[黄金分支：三值返回谱的 Fibonacci 形态]\label{cor:golden-three-fib-return}
+取 $\alpha=\varphi^{-2}$。
+则对任意 $\beta\in(0,1)$，定理 \ref{thm:slater-three-return-times} 的三值集合 $\{r,s,r+s\}$ 可由 $\alpha$ 的连分数收敛分母给出；由于 $\varphi^{-2}=[0;2,1,1,1,\dots]$，这些分母在指数增长率上与 Fibonacci 数列一致。
+因此存在某个 $n$ 使得
+\[
+\{\tau_I(x):x\in[0,\beta)\}\subseteq\{F_n,\ F_{n+1},\ F_{n+2}\},
+\]
+其中 $(F_n)$ 为 Fibonacci 数列（定义 \ref{def:fib-zeckendorf}）。
+\end{corollary}
+
+\begin{remark}[可复现的数值核验（端点外采样）]
+脚本 \path{scripts/exp_return_time_slater_certificate.py} 对 $\alpha=\varphi^{-2}$ 的若干 $\beta$，在避开端点的采样点上数值核验 $\tau_I(x)\in\{r,s,r+s\}$，并输出表格片段：
+\input{sections/generated/tab_slater_return_time_certificate}
+\end{remark}
+
 \begin{corollary}[黄金分支的返回时间谱与 gap 字一致]\label{cor:golden-return-gaps}
 取 $\alpha=\varphi^{-2}$，则 $\lfloor 1/\alpha\rfloor=2$ 且 $\{1/\alpha\}=\varphi^{-1}$。
 因此窗口 $J_\alpha=[0,\varphi^{-2})$ 上的返回时间函数只取值 $2$ 与 $3$；并且沿诱导轨道得到的返回时间字与定理 \ref{thm:wythoff-gaps-fib} 的 Wythoff gap 字在字母重标记下相同。

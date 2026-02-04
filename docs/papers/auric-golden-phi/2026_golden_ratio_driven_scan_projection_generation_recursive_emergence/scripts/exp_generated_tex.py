@@ -30,6 +30,8 @@ class Row:
     kl: float
     unique_types: int
     DN_star_upper_bound: float | None
+    DN_star_exact: float | None
+    tv_multiscale_residual: float | None
 
 
 @dataclass(frozen=True)
@@ -55,6 +57,9 @@ def read_rows(csv_path: Path) -> List[Row]:
     with csv_path.open("r", encoding="utf-8") as f:
         rd = csv.DictReader(f)
         for r in rd:
+            ub_s = (r.get("DN_star_upper_bound", "") or "").strip()
+            ex_s = (r.get("DN_star_exact", "") or "").strip()
+            em_s = (r.get("tv_multiscale_residual", "") or "").strip()
             out.append(
                 Row(
                     model=r["model"],
@@ -68,9 +73,9 @@ def read_rows(csv_path: Path) -> List[Row]:
                     tv=float(r["tv"]),
                     kl=float(r["kl"]),
                     unique_types=int(r["unique_types"]),
-                    DN_star_upper_bound=float(r["DN_star_upper_bound"])
-                    if r.get("DN_star_upper_bound", "").strip()
-                    else None,
+                    DN_star_upper_bound=float(ub_s) if ub_s else None,
+                    DN_star_exact=float(ex_s) if ex_s else None,
+                    tv_multiscale_residual=float(em_s) if em_s else None,
                 )
             )
     return out
@@ -143,6 +148,34 @@ def group_dn_star_upper(rows: List[Row]) -> Dict[Tuple[str, int, int], float]:
     return out
 
 
+def group_dn_star_exact(rows: List[Row]) -> Dict[Tuple[str, int, int], Tuple[float, float]]:
+    """Key: (alpha_name, m, N) -> (mean_exact, std_exact) over x0."""
+    buckets: Dict[Tuple[str, int, int], List[float]] = {}
+    for r in rows:
+        if r.DN_star_exact is None:
+            continue
+        k = (r.alpha_name, r.m, r.N)
+        buckets.setdefault(k, []).append(r.DN_star_exact)
+    out: Dict[Tuple[str, int, int], Tuple[float, float]] = {}
+    for k, xs in buckets.items():
+        out[k] = (mean(xs), std(xs))
+    return out
+
+
+def group_multiscale_residual(rows: List[Row]) -> Dict[Tuple[str, int, int], Tuple[float, float]]:
+    """Key: (alpha_name, m, N) -> (mean_E, std_E) over (beta,x0), when available."""
+    buckets: Dict[Tuple[str, int, int], List[float]] = {}
+    for r in rows:
+        if r.tv_multiscale_residual is None:
+            continue
+        k = (r.alpha_name, r.m, r.N)
+        buckets.setdefault(k, []).append(r.tv_multiscale_residual)
+    out: Dict[Tuple[str, int, int], Tuple[float, float]] = {}
+    for k, xs in buckets.items():
+        out[k] = (mean(xs), std(xs))
+    return out
+
+
 def latex_escape_text(s: str) -> str:
     """Escape minimal LaTeX special chars for plain text fields."""
     return s.replace("_", "\\_")
@@ -199,6 +232,57 @@ def write_table_summary(rows: List[Row], out_name: str, N_pick: int) -> None:
             tv_mu, _, kl_mu, _ = gs.get((a, m, N_pick), (0.0, 0.0, 0.0, 0.0))
             row_cells.append(f"{tv_mu:.3g}")
             row_cells.append(f"{kl_mu:.3g}")
+        lines.append(" & ".join(row_cells) + "\\\\")
+
+    lines.append("\\bottomrule")
+    lines.append("\\end{tabular}")
+    lines.append("}%")
+    lines.append("\\end{table}")
+    (generated_dir() / f"{out_name}.tex").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def write_table_multiscale_residual(rows: List[Row], out_name: str, N_pick: int) -> None:
+    gs_e = group_multiscale_residual(rows)
+    dn_exact = group_dn_star_exact(rows)
+    alpha_names = sorted({r.alpha_name for r in rows})
+    ms = sorted({r.m for r in rows if r.N == N_pick and r.tv_multiscale_residual is not None})
+
+    lines: List[str] = []
+    lines.append("\\begin{table}[H]")
+    lines.append("\\centering")
+    lines.append("\\scriptsize")
+    lines.append("\\setlength{\\tabcolsep}{4pt}")
+    lines.append(
+        "\\caption{旋转扫描模型：跨分辨率一致性残差 $E_m:=D_\\mathrm{TV}(\\hat\\pi_{m,N},\\pi_{m+1\\to m*}\\hat\\pi_{m+1,N})$（对 $(\\beta,x_0)$ 取平均）。同时给出代表性的星差异度 $D_N^*$（对 $x_0$ 取平均）。}"
+    )
+    lines.append("\\label{tab:rotation_multiscale_residual_summary}")
+    lines.append("\\resizebox{\\linewidth}{!}{%")
+    lines.append("\\begin{tabular}{rr" + "r" * (1 + len(alpha_names)) + "}")
+    lines.append("\\toprule")
+
+    hdr = ["$m$", "$N$", "$\\overline{D_N^*}$"]
+    for a in alpha_names:
+        hdr.append(f"{latex_escape_text(a)} $\\overline{{E_m}}$")
+    lines.append(" & ".join(hdr) + "\\\\")
+    lines.append("\\midrule")
+
+    for m in ms:
+        dn_cell = "--"
+        # Use any available exact D_N^* at this (m,N) (independent of beta).
+        for a in alpha_names:
+            k = (a, m, N_pick)
+            if k in dn_exact:
+                dn_cell = f"{dn_exact[k][0]:.3g}"
+                break
+
+        row_cells = [str(m), str(N_pick), dn_cell]
+        for a in alpha_names:
+            k = (a, m, N_pick)
+            if k in gs_e:
+                mu, _ = gs_e[k]
+                row_cells.append(f"{mu:.3g}")
+            else:
+                row_cells.append("--")
         lines.append(" & ".join(row_cells) + "\\\\")
 
     lines.append("\\bottomrule")
@@ -558,6 +642,7 @@ def main() -> None:
     )
 
     write_table_summary(rows, out_name="tab_rotation_fold_vs_parry_summary", N_pick=N_pick)
+    write_table_multiscale_residual(rows, out_name="tab_rotation_multiscale_residual_summary", N_pick=N_pick)
 
     # IID baselines (Bernoulli / Parry blocks) with confidence envelopes.
     iid_csv = export_dir() / "iid_sources_fold_vs_parry.csv"

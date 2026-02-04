@@ -96,6 +96,21 @@ def kl_divergence_int(p: Dict[int, float], q: Dict[int, float], eps: float = 1e-
     return s
 
 
+def star_discrepancy(xs: np.ndarray) -> float:
+    """Exact 1D star discrepancy for points in [0,1), by sorting."""
+    n = int(xs.size)
+    if n <= 0:
+        return 1.0
+    ys = np.sort(xs.astype(np.float64, copy=False))
+    invn = 1.0 / float(n)
+    m1 = 0.0
+    m2 = 0.0
+    for i, y in enumerate(ys, start=1):
+        m1 = max(m1, float(i) * invn - float(y))
+        m2 = max(m2, float(y) - float(i - 1) * invn)
+    return float(max(m1, m2))
+
+
 def _golden_discrepancy_upper_bound_explicit(N: int) -> float:
     """Appendix-H explicit bound for alpha=phi^{-1}, valid for N>=2."""
     if N < 2:
@@ -152,6 +167,12 @@ def rotation_bits(alpha: float, x0: float, beta: float, n: int) -> np.ndarray:
     return (xs < beta).astype(np.uint8)
 
 
+def rotation_points(alpha: float, x0: float, n: int) -> np.ndarray:
+    """Kronecker points x_t = {x0 + t alpha} in [0,1), length n."""
+    ts = np.arange(n, dtype=np.float64)
+    return (x0 + alpha * ts) % 1.0
+
+
 @dataclass(frozen=True)
 class Config:
     alpha_name: str
@@ -175,6 +196,14 @@ def count_folded_hist(s: np.ndarray, m: int, N: int, fold_map: List[int], prog: 
         counts[folded] = counts.get(folded, 0) + 1
         prog.tick(f"count m={m} t={t}/{N}")
     return counts
+
+
+def pushforward_truncate_last_bit(counts_m1: Dict[int, int]) -> Dict[int, int]:
+    """Push forward X_{m+1} histogram to X_m by truncating the last bit (prefix map)."""
+    out: Dict[int, int] = {}
+    for w, c in counts_m1.items():
+        out[w >> 1] = out.get(w >> 1, 0) + c
+    return out
 
 
 def main() -> None:
@@ -229,7 +258,10 @@ def main() -> None:
     prog = Progress("exp_rotation_fold_vs_parry", every_seconds=20.0)
 
     t0_all = time.time()
-    for m in ms:
+    # For cross-resolution residual E_m we may need fold maps at m+1 (prefix pushforward).
+    m_em_max = 14
+    ms_all = set(ms) | {m + 1 for m in ms if m + 1 <= m_em_max}
+    for m in sorted(ms_all):
         fold_maps[m] = build_fold_map(m, prog)
         parry_qs[m] = build_parry_q(m)
 
@@ -249,16 +281,20 @@ def main() -> None:
                 "kl",
                 "unique_types",
                 "DN_star_upper_bound",
+                "DN_star_exact",
+                "tv_multiscale_residual",
                 "elapsed_s",
             ],
         )
         wr.writeheader()
 
         for cfg in configs:
+            # Points are independent of m,beta: compute once for exact D_N^*.
+            Nmax = max(Ns)
+            xs_full = rotation_points(cfg.alpha, cfg.x0, Nmax)
             for m in ms:
                 # Generate bits once per (cfg,m,Nmax) and slice prefixes for smaller N.
-                Nmax = max(Ns)
-                s_len = Nmax + m - 1
+                s_len = Nmax + (m + 1 if (m + 1) in fold_maps else m) - 1
                 s = rotation_bits(cfg.alpha, cfg.x0, cfg.beta, s_len)
 
                 for N in Ns:
@@ -283,6 +319,23 @@ def main() -> None:
                     tv = tv_distance_int(p, q)
                     kl = kl_divergence_int(p, q)
 
+                    # Exact star discrepancy on the first N Kronecker points.
+                    dn_star_exact = star_discrepancy(xs_full[:N])
+
+                    # Cross-resolution projective residual E_m (only for moderate m).
+                    tv_multiscale = None
+                    if (m + 1) in fold_maps:
+                        counts_m1 = count_folded_hist(
+                            s=s,
+                            m=m + 1,
+                            N=N,
+                            fold_map=fold_maps[m + 1],
+                            prog=prog,
+                        )
+                        p_m1_push = pushforward_truncate_last_bit(counts_m1)
+                        p_push: Dict[int, float] = {k: v / float(N) for k, v in p_m1_push.items()}
+                        tv_multiscale = tv_distance_int(p, p_push)
+
                     elapsed = time.time() - t0
                     wr.writerow(
                         {
@@ -300,6 +353,8 @@ def main() -> None:
                             "DN_star_upper_bound": f"{min(_golden_discrepancy_upper_bound_explicit(N), discrepancy_upper_bound_from_partial_quotients(N, cfg.partial_quotients_prefix)):.12g}"
                             if cfg.alpha_name == "golden"
                             else f"{discrepancy_upper_bound_from_partial_quotients(N, cfg.partial_quotients_prefix):.12g}",
+                            "DN_star_exact": f"{dn_star_exact:.12g}",
+                            "tv_multiscale_residual": f"{tv_multiscale:.12g}" if tv_multiscale is not None else "",
                             "elapsed_s": f"{elapsed:.6g}",
                         }
                     )

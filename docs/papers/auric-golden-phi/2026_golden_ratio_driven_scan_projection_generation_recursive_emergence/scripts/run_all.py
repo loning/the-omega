@@ -622,6 +622,7 @@ def build_steps() -> List[Step]:
                 "artifacts/export/sync_kernel_real_input_40_logM_chi.json",
                 "artifacts/export/sync_kernel_real_input_40_logM_chi.png",
                 "sections/generated/fig_real_input_40_logM_chi.tex",
+                "sections/generated/tab_real_input_40_logM_chi_local_derivatives.tex",
             ],
         ),
         Step(

@@ -144,6 +144,81 @@ j_\star\ \approx\ \arg\min_{j\neq 0}\ \vartheta(j)^{\mathsf T}\Sigma\,\vartheta(
 离散索引 \(\vartheta(j)\) 的结论由把 \(\vartheta\) 限制到角格并对上述二次近似取最大（等价取二次型最小）得到。证毕。
 \end{proof}
 
+\begin{corollary}[Dirichlet 模数的 \texorpdfstring{$m^2$}{m2} 扩散障碍（由方差密度锁死）]\label{cor:dirichlet-modulus-diffusion-barrier}
+在定理 \ref{thm:real-input-40-near-coboundary-svp} 的设定下，固定一个整数值线性组合
+\(
+F:=a_e\varphi_e+a_-\varphi_-+a_2\varphi_2
+\)
+（\(a_e,a_-,a_2\in\ZZ\)），并沿该方向取一维单位圆扭曲
+\[
+M_{itF}:=M_{i(t a_e,\ t a_-,\ t a_2)},\qquad t\in\RR.
+\]
+令
+\(
+\sigma_F^2:=\mathrm{Var}_\infty(F)=a^{\mathsf T}\Sigma a
+\)
+为该组合的协方差密度（其中 \(a=(a_e,a_-,a_2)^{\mathsf T}\)，\(\Sigma=\nabla^2P(0)\)）。
+则当模数 \(m\to\infty\) 时，对最小非平凡角 \(t_m:=2\pi/m\) 有渐近
+\[
+\boxed{\;
+\log\frac{\rho(M_{it_mF})}{\lambda}
+
+=-\frac{\sigma_F^2}{2}\left(\frac{2\pi}{m}\right)^2+O(m^{-4})
+\;}
+\]
+从而
+\[
+\boxed{\;
+\frac{\rho(M_{it_mF})}{\lambda}
+=\exp\!\left(-\frac{2\pi^2\sigma_F^2}{m^2}+O(m^{-4})\right)
+=1-\frac{2\pi^2\sigma_F^2}{m^2}+O(m^{-4}).
+\;}
+\]
+因此，对 \(m\) 个余类的等分布误差项 \(O(\rho^n/n)\) 而言，其“有效衰减长度”满足
+\[
+n\ \gtrsim\ \frac{m^2}{2\pi^2\sigma_F^2},
+\]
+即模数提升在主导尺度上出现一个由方差密度决定的 \(m^2\) 扩散障碍。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:real-input-40-near-coboundary-svp} 的盒装式，对 \(\vartheta=t a\) 得
+\(
+\log(\rho(ta)/\lambda)=-\frac12 t^2 a^{\mathsf T}\Sigma a+O(t^4)
+=-\frac12\sigma_F^2 t^2+O(t^4)
+\)。
+取 \(t=t_m=2\pi/m\) 即得结论。
+\end{proof}
+
+\begin{remark}[数值闭环：输出位势的 \texorpdfstring{$m=5$}{m=5} 最坏比值]
+取 \(F=\varphi_e\)（输出位势），则 \(\sigma_F^2=\Sigma_{ee}\approx 0.04874118\)（由真实输入 40 状态核的 \(\nabla^2P(0)\) 读出）。
+代入推论 \ref{cor:dirichlet-modulus-diffusion-barrier} 给出一阶预测
+\(
+\rho/\lambda\approx \exp(-2\pi^2\Sigma_{ee}/m^2)
+\)，在 \(m=5\) 时约为 \(0.9623\)；
+而表 \ref{tab:real_input_40_output_potential_dirichlet_twists}（输出位势的一维单位根扭曲扫描与累积量预测）以及 \(((5,5,5))\) 的三维张量输出片段 \verb|\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_555}| 都给出实测
+\(
+\rho_{5,5,5}/\lambda\approx 0.962814
+\)，与该 \(m^{-2}\) 主项尺度一致；加入 \(\kappa_4=P^{(4)}(0)\) 的 \(m^{-4}\) 修正后（表 \ref{tab:real_input_40_output_potential_dirichlet_twists} 的“pred.”列）吻合进一步收紧到 \(10^{-6}\) 量级。
+\end{remark}
+
+\begin{remark}[“Siegel 条带”型逼近：扭曲主极点以 \texorpdfstring{$1/m^2$}{1/m2} 速度贴近 \texorpdfstring{$\Re(s)=1$}{Re(s)=1}]
+在一维扭曲设定下，扭曲 zeta 的主奇点位于
+\(
+z_\star(t)=\lambda(it)^{-1}
+\)。
+若用标准参数化 \(z=\lambda^{-s}\)（即 \(s=-\log z/\log\lambda\)，其中 \(\lambda=\lambda(0)\)），则对应的 \(s\)-坐标满足
+\[
+s(t)=\frac{P(it)}{\log\lambda}.
+\]
+因此对最小非平凡角 \(t_m=2\pi/m\)，由推论 \ref{cor:dirichlet-modulus-diffusion-barrier} 得到
+\[
+\Re s(t_m)
+=1-\frac{2\pi^2\sigma_F^2}{m^2\log\lambda}+O(m^{-4}),
+\]
+即当 \(m\to\infty\) 时出现一族主奇点以 \(1/m^2\) 的速率向 \(\Re(s)=1\) 逼近；其贴近速度完全由方差密度 \(\sigma_F^2\)（亦即 \(\nabla^2P(0)\) 的相应二次型）控制。
+\end{remark}
+
 \begin{proposition}[曲率错配谱：\texorpdfstring{$\log\mathfrak{M}$}{logM} 相对 Fisher 几何的鞍点签名]\label{prop:real-input-40-logM-curvature-mismatch-spectrum}
 令 \(g:=\nabla^2P(0)\succ 0\) 视为 Fisher 度量（协方差密度），并令 \(H:=\nabla^2\log\mathfrak{M}(0)\)（表 \ref{tab:real-input-40-logM-theta-taylor}）。
 考虑广义特征值问题
