@@ -257,6 +257,18 @@ W_1\ \simeq\ W_2\quad\Longleftrightarrow\quad N(W_1)=N(W_2),
 这提供“算法等价 \(\Rightarrow\) 投影词等价”的最小可执行原型：在该片段中，等价性完全由正规形决定。
 \end{remark}
 
+\begin{remark}[split-epi 扩展片段的可计算正规化器：\texorpdfstring{$\mathbf{PW}_{Z,E,P,Q}$}{PW_{Z,E,P,Q}}]\label{rem:pom-projword-zepq-normalizer-script}
+在分辨率 \(m\) 上，折叠推前 \(P_m:=(\Fold_m)_*\) 与纤维均匀提升 \(Q_m\) 满足 split-epi 恒等式
+\(
+P_m\circ Q_m=\mathrm{id}
+\)
+（见 \S\ref{subsec:pom-information-ledger} 及定理 \ref{thm:pom-fiber-reflector}）。
+令 \(K_m:=Q_m\circ P_m\) 为纤维反射子，则 \(K_m^2=K_m\)，并且 \(P_m\circ K_m=P_m\)、\(K_m\circ Q_m=Q_m\)。
+\par
+脚本 \texttt{scripts/exp\_pom\_projword\_zepq\_normalizer.py} 给出包含这些局部规则的一个可执行正规化器：输入由 \texttt{PZ}, \texttt{E[m]}, \texttt{P[m]}, \texttt{Q[m]}, \texttt{K[m]} 组成的复合词，按局部重写规则将其缩并到不可约正规形。
+该实现提供一个更接近“投影词范畴”直觉的可复现原型：在读出塔规则之外，把 split-epi（推前/提升对偶）也纳入可推迟执行与冗余消除的可计算重写框架。
+\end{remark}
+
 \begin{remark}[边界：序投影 \texorpdfstring{$P_{\le}$}{P<=} 不属于局部可消去片段]\label{rem:pom-rewrite-boundary-order}
 定理 \ref{thm:pom-rewrite-termination-confluence} 只处理“局部 coarse-graining 冗余”的可终止片段。
 一旦投影词中出现 $P_{\le}$（或其实现 $\mathrm{PROJ}_u$ 的零温硬化极限），其读出通常依赖跨窗口聚合（定义 \ref{def:pom-proj-order}），不再具有由分辨率指标单调下降所控制的缩并度量；因此 $P_{\le}$ 是投影词演算学中的结构性边界：它标记了不可并行增长项的进入点，而非可被局部重写消去的冗余。

@@ -12,7 +12,7 @@ Define u = exp(z) and the principal Perron branch ρ(z) solving the cubic
 with ρ(0)=φ^2, then define the pressure:
   P_xi(z) = log ρ(z).
 
-This script computes exact closed forms for P_xi''(0) and P_xi^{(4)}(0),
+This script computes exact closed forms for P_xi^{(k)}(0) for k=2,4,6,8,
 exports a small LaTeX table, and writes a JSON artifact.
 
 All output is English-only by repository convention.
@@ -24,7 +24,7 @@ import argparse
 import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Dict, List
+from typing import List
 
 import sympy as sp
 
@@ -35,34 +35,57 @@ from common_paths import export_dir, generated_dir
 class Coeffs:
     P2: str
     P4: str
+    P6: str
+    P8: str
     kappa_inf: str
     beta: str
+    gamma6: str
+    gamma8: str
 
 
-def _series_perron_branch(order: int = 6) -> sp.SeriesBase:
+def _ns_qsqrt5(expr: sp.Expr, dps: int = 80) -> sp.Expr:
+    """Fast exactification into Q(sqrt(5)) via nsimplify."""
+    s5 = sp.sqrt(5)
+    return sp.nsimplify(sp.N(expr, dps), [s5])
+
+
+def _implicit_derivatives_at_zero(max_order: int = 8) -> tuple[sp.Expr, List[sp.Expr]]:
+    """
+    Compute rho(0) and rho^{(k)}(0) for k=1..max_order exactly by implicit differentiation.
+
+    Cubic: F(r,u) = r^3 - 2 r^2 - (u+1) r + u = 0,  with u=exp(z).
+    We differentiate w.r.t. z at z=0 on the Perron branch r(0)=phi^2.
+    """
     z = sp.Symbol("z")
     u = sp.exp(z)
-    # Perron root at u=1 is φ^2.
     phi = (1 + sp.sqrt(5)) / 2
-    rho0 = sp.simplify(phi**2)
+    r0 = sp.simplify(phi**2)
 
-    # Unknown power series rho(z) = sum_{n>=0} a_n z^n
-    a = sp.symbols(f"a0:{order}")
-    rho = sum(a[n] * z**n for n in range(order))
-    eq = sp.expand(rho**3 - 2 * rho**2 - (u + 1) * rho + u)
-    eqs = []
-    # impose a0=rho0
-    eqs.append(sp.Eq(a[0], rho0))
-    # match coefficients of z^n for n=0..order-1 in cubic equation
-    series_eq = sp.series(eq, z, 0, order).removeO()
-    for n in range(order):
-        eqs.append(sp.Eq(sp.expand(series_eq).coeff(z, n), 0))
-    # Solve sequentially; sympy can do a direct solve because it's triangular.
-    sol = sp.solve(eqs, list(a), dict=True)
-    if not sol:
-        raise RuntimeError("Failed to solve series coefficients for Perron branch.")
-    rho_series = sp.expand(rho.subs(sol[0]))
-    return sp.series(rho_series, z, 0, order)
+    if max_order < 1 or max_order > 12:
+        raise ValueError("max_order must be in [1,12].")
+
+    # Symbols for derivatives at 0.
+    rs = sp.symbols(" ".join([f"r{i}" for i in range(1, max_order + 1)]))
+
+    # Build truncated Taylor r(z)=r0 + Σ r_n z^n/n!
+    r = r0
+    for n, sym in enumerate(rs, start=1):
+        r += sym * z**n / sp.factorial(n)
+    F = sp.expand(r**3 - 2 * r**2 - (u + 1) * r + u)
+    S = sp.series(F, z, 0, max_order + 1).removeO()
+
+    subs: dict[sp.Symbol, sp.Expr] = {}
+    out: List[sp.Expr] = []
+    for n, sym in enumerate(rs, start=1):
+        eqn = sp.expand(S).coeff(z, n).subs(subs)
+        print(f"[pure-collision-asymp] solving rho^{n}(0)...", flush=True)
+        sol = sp.solve(sp.Eq(eqn, 0), sym)
+        if not sol:
+            raise RuntimeError(f"Failed to solve for derivative order {n}.")
+        val = sp.simplify(sol[0])
+        subs[sym] = val
+        out.append(val)
+    return r0, out
 
 
 def main() -> None:
@@ -79,20 +102,65 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    z = sp.Symbol("z")
-    rho_ser = _series_perron_branch(order=8).removeO()
-    P_ser = sp.series(sp.log(rho_ser), z, 0, 8).removeO()
+    r0, ders = _implicit_derivatives_at_zero(max_order=8)
+    r1, r2, r3, r4, r5, r6, r7, r8 = ders
+    print("[pure-collision-asymp] converting to pressure derivatives...", flush=True)
 
-    # Extract derivatives via series coefficients.
-    c2 = sp.expand(P_ser).coeff(z, 2)
-    c4 = sp.expand(P_ser).coeff(z, 4)
-    P2 = sp.simplify(2 * c2)  # 2! * c2
-    P4 = sp.simplify(24 * c4)  # 4! * c4
+    # P(z)=log r(z). We compute its Taylor coefficients up to z^8 via
+    # formal power series arithmetic, to avoid heavy symbolic expansion.
+    order = 8
+    rs = [sp.Integer(0)] * (order + 1)
+    rs[0] = r0
+    derivs = [None, r1, r2, r3, r4, r5, r6, r7, r8]
+    for n in range(1, order + 1):
+        rs[n] = sp.simplify(derivs[n] / sp.factorial(n))
+
+    # s(z) := (r(z)-r0)/r0, so log r(z) = log r0 + log(1+s(z)).
+    s = [sp.Integer(0)] * (order + 1)
+    for n in range(1, order + 1):
+        s[n] = sp.simplify(rs[n] / r0)
+
+    def mul(a: List[sp.Expr], b: List[sp.Expr]) -> List[sp.Expr]:
+        out = [sp.Integer(0)] * (order + 1)
+        for i in range(0, order + 1):
+            if a[i] == 0:
+                continue
+            for j in range(0, order + 1 - i):
+                if b[j] == 0:
+                    continue
+                out[i + j] += a[i] * b[j]
+        return out
+
+    log1p = [sp.Integer(0)] * (order + 1)
+    power = s[:]  # s^1
+    for m in range(1, order + 1):
+        coef = sp.Rational(1, m) if (m % 2 == 1) else -sp.Rational(1, m)
+        for n in range(1, order + 1):
+            if power[n] != 0:
+                log1p[n] += coef * power[n]
+        power = mul(power, s)
+
+    # Derivatives: P^{(n)}(0)=n!*coeff[z^n] log r(z).
+    P2 = sp.simplify(sp.factorial(2) * log1p[2])
+    P4 = sp.simplify(sp.factorial(4) * log1p[4])
+    P6 = sp.simplify(sp.factorial(6) * log1p[6])
+    P8 = sp.simplify(sp.factorial(8) * log1p[8])
 
     kappa_inf = sp.simplify(P2 / 2)
     beta = sp.simplify(P4 / 24)
+    gamma6 = sp.simplify(-P6 / sp.factorial(6))  # coefficient for alpha^6 in Re P(i alpha)
+    gamma8 = sp.simplify(P8 / sp.factorial(8))   # coefficient for alpha^8 in Re P(i alpha)
 
-    coeffs = Coeffs(P2=sp.latex(P2), P4=sp.latex(P4), kappa_inf=sp.latex(kappa_inf), beta=sp.latex(beta))
+    coeffs = Coeffs(
+        P2=sp.latex(P2),
+        P4=sp.latex(P4),
+        P6=sp.latex(P6),
+        P8=sp.latex(P8),
+        kappa_inf=sp.latex(kappa_inf),
+        beta=sp.latex(beta),
+        gamma6=sp.latex(gamma6),
+        gamma8=sp.latex(gamma8),
+    )
 
     jout = Path(args.json_out)
     jout.parent.mkdir(parents=True, exist_ok=True)
@@ -115,8 +183,12 @@ def main() -> None:
     lines.append("\\toprule")
     lines.append("$P_\\xi''(0)$ & $" + coeffs.P2 + "$\\\\")
     lines.append("$P_\\xi^{(4)}(0)$ & $" + coeffs.P4 + "$\\\\")
+    lines.append("$P_\\xi^{(6)}(0)$ & $" + coeffs.P6 + "$\\\\")
+    lines.append("$P_\\xi^{(8)}(0)$ & $" + coeffs.P8 + "$\\\\")
     lines.append("$\\kappa_\\infty=P_\\xi''(0)/2$ & $" + coeffs.kappa_inf + "$\\\\")
     lines.append("$\\beta=P_\\xi^{(4)}(0)/24$ & $" + coeffs.beta + "$\\\\")
+    lines.append("$\\gamma_6=-P_\\xi^{(6)}(0)/6!$ & $" + coeffs.gamma6 + "$\\\\")
+    lines.append("$\\gamma_8=P_\\xi^{(8)}(0)/8!$ & $" + coeffs.gamma8 + "$\\\\")
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
     lines.append("\\end{table}")

@@ -294,6 +294,38 @@ $$
 $$
 \end{corollary}
 
+\begin{remark}[可复核素数谱：纯三次方程给出 \texorpdfstring{$\rho_{3,3,p}/\lambda$}{rho/lambda} 与 \texorpdfstring{$\tau_{\mathrm{mix}}(p)$}{tau_mix(p)}]\label{rem:arity-collision-cubic-primes-table}
+命题 \ref{prop:arity-collision-cubic} 表明：对任意奇素数 \(p\)，最坏纯碰撞慢模可在单位根集合 \(u=\omega_p^j\ (1\le j\le p-1)\) 上通过“解三次方程并取最大模根”闭式复算。
+脚本 \texttt{scripts/exp\_arity\_pure\_collision\_cubic\_primes.py} 直接输出
+\(
+\rho_{3,3,p}/\lambda
+\)
+及其对应的混合尺度
+\(
+\tau_{\mathrm{mix}}(p)=1/(-\log(\rho_{3,3,p}/\lambda))
+\)
+并与 \(p^{-4}\) 渐近式作对照，见表 \ref{tab:arity_pure_collision_cubic_primes}。
+\end{remark}
+\input{sections/generated/tab_arity_pure_collision_cubic_primes}
+
+\begin{remark}[两阶段可证伪检验：\texorpdfstring{$p=5$}{p=5} 的“经验二次律” vs \texorpdfstring{$\kappa_\infty$}{kappa_infty} 的“理论二次律”]\label{rem:arity-kappa-empirical-vs-theory}
+令 \(\alpha:=2\pi/p\)，并以“二次律常数”的反推定义
+\[
+\kappa_p:=\frac{1-\rho_{3,3,p}/\lambda}{\alpha^2}.
+\]
+表 \ref{tab:arity_pure_collision_cubic_primes} 给出 \(\kappa_p\) 的闭式复现值，并显示其随 \(p\) 增大趋近极限
+\(
+\kappa_\infty=P_\xi''(0)/2
+\)
+（命题 \ref{prop:arity-collision-quadratic-closed} 的闭式常数）。
+数值上 \(p=5\) 的 \(\kappa_5\approx 0.03127\) 明显小于 \(\kappa_\infty\approx 0.03367\)（相对差约 \(7\%\)），这并不意味着“模数 \(5\) 的特异共振”，而首先可被解释为有限角度 \(\alpha=2\pi/5\) 下的高阶累积量修正：表中最后一列的 \(\exp(-\kappa_\infty\alpha^2+\beta\alpha^4)\) 已把该修正显式纳入。
+因此对真实输入核的 \(((3,3,p))\) 数据，建议采用严格的两阶段检验：
+\begin{enumerate}
+  \item 先以纯三次方程给出的闭式基准 \(\rho_{3,3,p}/\lambda\)（表 \ref{tab:arity_pure_collision_cubic_primes}）作为“纯碰撞理论曲线”；
+  \item 再比较真实核输出与该曲线的系统偏差；仅当偏差在多个 \(p\) 上稳定超出高阶修正尺度时，才有必要引入额外的“模数特异机制”解释。
+\end{enumerate}
+\end{remark}
+
 \begin{remark}[两条“碰撞谱常数”的数值对照：窗口层 \texorpdfstring{$r_2$}{r2} 与轨道层 \texorpdfstring{$\rho_{3,3,5}$}{rho(3,3,5)}]\label{rem:arity-335-r2-vs-rho}
 折叠门的二阶碰撞核 \(A_2\) 给出窗口层的 Perron 常数 \(r_2=\rho(A_2)\approx 2.481194304092\)（见 \S\ref{subsec:pom-higher-collision-spectrum} 与命题 \ref{prop:pom-collision-det}）。
 而真实输入 \(40\) 状态核在第三轴 \(N_2\bmod 5\) 的纯碰撞扭曲给出轨道层最坏慢模常数 \(\rho_{3,3,5}\approx 2.488758321093\)（推论 \ref{cor:arity-335-rho-closed-form}）。
@@ -307,12 +339,29 @@ $$
 但这种贴合提示了一个可证伪的结构问题：是否存在把“折叠的二阶碰撞结构”提升到“真实输入核的碰撞 cocycle 慢模”的统一函子/比较原则，使得 \(\rho_{3,3,p}\) 与 \(r_2\) 在一般模数 \(p\) 下满足稳定的夹逼或同一压力族的不同截面？
 \end{remark}
 
+\begin{remark}[跨层同源与“超结构残差”：把 \texorpdfstring{$r_2,\rho_{3,3,5}$}{r2,rho}、SVD、协方差与谐波指纹拼接为可审计诊断量]\label{rem:arity-335-cross-layer-diagnostics}
+除上文的 \(r_2\) 与 \(\rho_{3,3,5}\) 对照外，\(((3,3,5))\) 的二级摘要输出还给出两组与机制直接相关的“跨层拼接指纹”：
+\begin{itemize}
+  \item \textbf{低秩残差：}把常数张量 \(C^{(3,3,5)}_{a,b,c}\) 展平为 \(T\in\RR^{5\times 9}\) 并取奇异值 \(s_1\ge\cdots\ge s_5\)，则
+  \(
+  \varepsilon_{\mathrm{extra}}
+  :=1-\frac{s_1^2+s_2^2+s_3^2}{\sum_i s_i^2}
+  \)
+  给出“超出三模可承载信息”的残差能量尺度；
+  \item \textbf{偏置谱 vs 速率谱：}常数张量在 \(c\in\ZZ/5\) 轴上的 Fourier 两谐波 \(A^{(1)},A^{(2)}\) 满足 \(\max|A^{(2)}|/\max|A^{(1)}|\approx 1\)，但最坏慢模由 \(j_3=\pm 1\)（而非 \(\pm 2\)）实现，从而“常数项幅度”与“指数误差速率”必须并列报告；
+  \item \textbf{强耦合与 GRH 诊断：}对 \((\chi,\nu,\xi)\) 的协方差预测（\(\nu\) 为负携带、\(\xi\) 为碰撞）给出 \(\mathrm{Corr}(\nu,\xi)\approx 0.85\)，并且 \(\rho_{3,3,5}/\sqrt{\lambda}>1\) 表明该模轴扭曲远离平方根谱界（核版 GRH 不成立），误差处于指数衰减区间而非平方根区间。
+\end{itemize}
+上述标量指纹由脚本 \texttt{scripts/exp\_arity\_335\_cross\_layer\_diagnostics.py} 从同一组 JSON 输出一键复现：
+
+\input{sections/generated/eq_arity_335_cross_layer_diagnostics}
+\end{remark}
+
 \begin{proposition}[二次律常数的闭式锁定与 \texorpdfstring{$p^{-4}$}{p^{-4}} 修正]\label{prop:arity-collision-quadratic-closed}
 令 \(u=e^{z}\) 并定义压力函数
 $$
 P_\xi(z):=\log\rho\bigl(A_\xi(e^{z})\bigr)\qquad(z\ \text{在 }0\text{ 的邻域}).
 $$
-则 \(P_\xi\) 在 \(z=0\) 处解析，且二阶与四阶导数具有闭式
+则 \(P_\xi\) 在 \(z=0\) 处解析，且偶阶导数具有闭式（见表 \ref{tab:arity_pure_collision_cubic_asymp_coeffs}）
 $$
 P_\xi''(0)=\frac{6\sqrt5-5}{125}\approx 0.06733126292,
 \qquad
@@ -321,7 +370,7 @@ $$
 因此当取单位根扭曲 \(u=e^{i\alpha}\) 且 \(\alpha\to 0\) 时，
 $$
 \log\frac{\rho\bigl(A_\xi(e^{i\alpha})\bigr)}{\rho\bigl(A_\xi(1)\bigr)}
-=-\frac{P_\xi''(0)}{2}\alpha^2+\frac{P_\xi^{(4)}(0)}{24}\alpha^4+O(\alpha^6),
+=-\frac{P_\xi''(0)}{2}\alpha^2+\frac{P_\xi^{(4)}(0)}{24}\alpha^4-\frac{P_\xi^{(6)}(0)}{6!}\alpha^6+\frac{P_\xi^{(8)}(0)}{8!}\alpha^8+O(\alpha^{10}),
 $$
 从而对奇素数 \(p\) 取 \(\alpha=2\pi/p\) 得到更强的渐近（包含 \(p^{-4}\) 修正）：
 $$
@@ -334,6 +383,7 @@ $$
 \kappa_\infty:=\frac{P_\xi''(0)}{2}=\frac{6\sqrt5-5}{250}.
 $$
 \end{proposition}
+\input{sections/generated/tab_arity_pure_collision_cubic_asymp_coeffs}
 \begin{proof}
 由命题 \ref{prop:arity-collision-cubic}，\(\lambda(z):=\rho(A_\xi(e^z))\) 在 \(z=0\) 的邻域内由三次方程的最大实根解析延拓给出。
 对方程作 \(z\) 的级数代入并逐阶匹配即可得到 \(P_\xi''(0),P_\xi^{(4)}(0)\) 的闭式；再对 \(z=i\alpha\) 取实部即得单位根扭曲的展开式。证毕。
@@ -352,6 +402,31 @@ t_{1/2}:=\frac{\log 2}{-\log(\rho_{3,3,5}/\lambda)}.
 $$
 并且按命题 \ref{prop:arity-335-collision-dominant}，该最坏衰减模式由纯碰撞扭曲 $(0,0,1)$ 或 $(0,0,4)$ 产生。
 \end{corollary}
+
+\begin{remark}[有限部常数的位移与慢模谱缺口的数值对齐（可证伪）]\label{rem:arity-335-logm-gap-bridge}
+同步核（无真实输入约束）在 \(\theta=0\) 的 Abel 有限部常数为
+\(
+\log\mathfrak{M}_{\mathrm{sync}}\approx -0.303326878831088
+\)
+（见附录 \ref{app:mertens-weighted}）。
+真实输入 \(40\) 状态核在未加权 primitive 侧的 Abel 有限部常数为
+\(
+\log\mathfrak{M}_{\mathrm{real}}\approx -0.254312661901716
+\)
+（见附录 \ref{app:finite-rh-40}）。
+因此“有限部位移”
+\[
+\Delta\log\mathfrak{M}:=\log\mathfrak{M}_{\mathrm{real}}-\log\mathfrak{M}_{\mathrm{sync}}
+\approx 0.049014216929372.
+\]
+另一方面，\(((3,3,5))\) 的纯碰撞最坏扭曲谱缺口为
+\(
+\delta_{\mathrm{spec}}:=1-\rho_{3,3,5}/\lambda\approx 0.049378911127
+\)
+（表 \ref{tab:real_input_40_arity_335_n2_selection_law_primes}）。
+两者在数值上同阶且非常接近（差约 \(3.65\times 10^{-4}\)）。
+这提示一个可证伪桥接猜想：真实输入约束引入的“常数级有限部增益”与“碰撞同余慢模的指数缺口”可能由同一隐藏机制参数主导。
+\end{remark}
 
 \paragraph{结果（五张 \texorpdfstring{$3\times 3$}{3x3} 切片 \texorpdfstring{$+$}{+} 最坏误差指数 \texorpdfstring{$+$}{+} 两条审计）}
 下述 \LaTeX\ 片段直接给出 $c=0,1,2,3,4$ 的 5 张切片、最坏谱半径比 $\rho_{3,3,5}/\lambda$ 与达到最坏的角色索引，并输出两条审计误差（总和校验与边际一致性）：
@@ -497,6 +572,43 @@ S_c=A(p)+B-2\log\!\left(2\sin\frac{\pi |c|}{p}\right)+o(1)\qquad(p\to\infty)\; }
 \]
 其中 \(A(p)\) 的主增长为 \(2\log p\) 量级，而 \(c\)-依赖部分趋于通用的离散 log-sine 核；并且该形状与推论 \ref{cor:arity-335-cosine-only} 的“仅余弦模态”刚性相容。
 \end{conjecture}
+
+\begin{corollary}[log-sine 形状的差分律：\texorpdfstring{$\cot$}{cot} 与 \texorpdfstring{$\csc^2$}{csc^2} 轮廓]\label{cor:arity-335-log-sine-differences}
+在猜想 \ref{conj:arity-335-log-sine-shape} 的设定下，令中心化偏置
+\[
+\beta_c:=S_c-\frac{1}{p}\sum_{c'\in\ZZ/p}S_{c'}.
+\]
+则对 \(1\le c\le (p-3)/2\) 有可检验的一阶差分形状（常数项完全消去）：
+\[
+\boxed{\
+\beta_{c+1}-\beta_{c}
+\;=\;
+-2\log\!\left(\frac{\sin\!\bigl(\pi(c+1)/p\bigr)}{\sin\!\bigl(\pi c/p\bigr)}\right)
+ +o(1)\qquad(p\to\infty).
+}
+\]
+进一步对 \(c\) 在上述区间内保持远离端点（例如 \(c/p\in[\delta,1/2-\delta]\)）时，可将其展开为离散 \(\cot\) 轮廓：
+\[
+\beta_{c+1}-\beta_c
+=-\frac{2\pi}{p}\cot\!\left(\frac{\pi c}{p}\right)+O(p^{-3}).
+\]
+同理二阶差分满足离散 \(\csc^2\) 轮廓：
+\[
+(\Delta\beta)_c:=2\beta_c-\beta_{c-1}-\beta_{c+1}
+=\frac{2\pi^2}{p^2}\csc^2\!\left(\frac{\pi c}{p}\right)+O(p^{-4}),
+\]
+其中 \(O(\cdot)\) 的常数在 \(c/p\in[\delta,1/2-\delta]\) 上一致。
+\end{corollary}
+\begin{proof}
+由猜想 \ref{conj:arity-335-log-sine-shape}，\(\beta_c\) 与 \(-2\log(2\sin(\pi|c|/p))\) 只差一个与 \(c\) 无关的常数加上 \(o(1)\) 误差。
+对相邻 \(c\) 作差即可得到第一条差分公式。
+在 \(c/p\) 远离端点时对 \(\log\sin\) 作 Taylor 展开并用
+\(
+\frac{d}{dx}\log\sin x=\cot x,\ 
+\frac{d^2}{dx^2}\log\sin x=-\csc^2 x
+\)
+即可得到后两式。证毕。
+\end{proof}
 
 \begin{proposition}[低秩可压缩：\texorpdfstring{$((3,3,5))$}{(3,3,5)} 张量的三模近似指纹]\label{prop:arity-335-low-rank}
 把常数张量 $C^{(3,3,5)}_{a,b,c}$ 视为实矩阵 $T\in\RR^{5\times 9}$（行指标为 $c\in\{0,1,2,3,4\}$，列指标为扁平化后的 $(a,b)\in(\ZZ/3)^2$）。令其奇异值为 $s_1\ge \cdots\ge s_5$。二级摘要输出显示：仅用前三个奇异模态即可捕获几乎全部 Frobenius 能量（$\sum_{i\le 3}s_i^2/\sum_{i\le 5}s_i^2$ 逼近 $1$），因此整个 $45$ 项张量在常数级分辨率下可被极低维近似稳定表征（可作为新的“核指纹”不变量）。

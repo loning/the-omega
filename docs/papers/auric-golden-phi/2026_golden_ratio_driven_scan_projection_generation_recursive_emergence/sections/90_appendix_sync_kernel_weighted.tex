@@ -123,6 +123,35 @@ p^k\,p_{p^k}(u)=a_{p^k}(u)-a_{p^{k-1}}(u^p)
 利用命题 \ref{prop:witt-necklace-div} 即得结论。证毕。
 \end{proof}
 
+\begin{corollary}[\texorpdfstring{$p$}{p}-进超同余：\texorpdfstring{$a_{p^k}(-1)$}{a_{p^k}(-1)} 被 \texorpdfstring{$p^k$}{p^k} 整除]\label{cor:witt-dwork-supercongruence-minus1}
+取任意奇素数 \(p\)。则对任意 \(k\ge 1\) 有
+\[
+\boxed{\ a_{p^k}(-1)\equiv 0\pmod{p^k}\ }.
+\]
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:witt-dwork-congruence}，对 \(k\ge 1\) 有
+\[
+a_{p^k}(u)\equiv a_{p^{k-1}}(u^p)\pmod{p^k}\qquad\text{于}\ \ZZ[u].
+\]
+在 \(u=-1\) 处特化并用 \(p\) 为奇数（从而 \((-1)^p=-1\)）得
+\[
+a_{p^k}(-1)\equiv a_{p^{k-1}}(-1)\pmod{p^k}.
+\]
+而 \(p^{k-1}\) 为奇数，故由命题 \ref{prop:trace-palindrome} 的结论 \(a_n(-1)=0\)（奇数 \(n\)）知 \(a_{p^{k-1}}(-1)=0\)。
+于是 \(a_{p^k}(-1)\equiv 0\pmod{p^k}\)。证毕。
+\end{proof}
+
+\begin{remark}[\texorpdfstring{$p$}{p}-幂方向的 Witt 解释：Frobenius 兼容的 ghost 分量]\label{rem:witt-ptypical-ghost}
+把 \(a_n(u)\) 视作 Big-Witt（necklace）环上的 ghost 坐标，则 \(\{a_{p^k}(u)\}_{k\ge 0}\) 是其在 \(p\)-幂索引上的 ghost 子序列。
+推论 \ref{cor:witt-dwork-congruence} 的 Dwork 型同余表明该子序列在 \(u\mapsto u^p\) 的 Adams/Frobenius 操作下满足强的 \(p\)-进兼容性：
+\[
+a_{p^k}(u)-a_{p^{k-1}}(u^p)\in p^k\,\ZZ[u].
+\]
+因此同步核的 primitive/trace 桥包不仅在复解析侧可检验（\(\zeta\)、Euler 乘积），在 \(p\)-进整性侧也携带一条自然的“Frobenius-lift”约束。
+在后续若考虑 \(p\)-进方向的插值或对比不同核的“算术指纹”，该同余可作为最基本的可审计输入。
+\end{remark}
+
 \subsubsection{同步核的自对偶对称}\label{app:kernel-self-dual}
 对同步核存在状态对合 $\iota$，其作用为
 \[
@@ -156,6 +185,35 @@ P(\theta)=\theta+P(-\theta).
 p_{n,k}=p_{n,n-k}\quad(n\ge 2),
 \]
 等价地 $u^{-1}p_n(u)$ 为次数 $n-2$ 的回文多项式。
+
+\begin{theorem}[自对偶强制的 Gallavotti--Cohen 涨落对称（全域形式）]\label{thm:sync-kernel-gallavotti-cohen}
+令 \(u=e^{\theta}\) 且 \(P(\theta)=\log\lambda(e^\theta)\)。定义完成化后的中心化累积母函数
+\[
+\Lambda(\theta):=P(\theta)-\frac{\theta}{2}.
+\]
+则对所有实 \(\theta\) 有精确恒等式
+\[
+\boxed{\ \Lambda(\theta)=\Lambda(-\theta)\ }.
+\]
+等价地，
+\[
+\boxed{\ P(\theta)=\theta+P(-\theta)\ }.
+\]
+此外：
+\begin{enumerate}
+  \item \textbf{（有限长度镜像对称）} 对任意 \(n\ge 2\) 有 \(p_{n,k}=p_{n,n-k}\)；
+  \item \textbf{（率函数对称）} 若 \(I(\alpha)\) 为 \(\alpha=k/n\) 的大偏差率函数，则在其定义域上有
+  \(\boxed{\,I(\alpha)=I(1-\alpha)\,}\)；
+  \item \textbf{（奇阶累积量消失）} \(\Lambda\) 为偶函数蕴含 centered current 的所有奇阶累积量严格为零：
+  \(P^{(2j+1)}(0)=0\ (j\ge 1)\)（参见命题 \ref{prop:fluctuation-even}）。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\(\Lambda(\theta)\) 为偶函数与 \(P(\theta)=\theta+P(-\theta)\) 在代数上等价。
+而 \(P(\theta)=\theta+P(-\theta)\) 正是本节自对偶相似恒等式 \(\Pi^{-1}B(u)\Pi=uB(1/u)\) 对 Perron 根取对数的直接推论。
+有限长度镜像对称 \(p_{n,k}=p_{n,n-k}\) 已在上文给出；由 Legendre 对偶 \(I(\alpha)=\sup_{\theta}(\alpha\theta-P(\theta))\) 与 \(P(\theta)=\theta+P(-\theta)\) 即得 \(I(\alpha)=I(1-\alpha)\)。
+最后奇阶累积量的结论由 \(\Lambda\) 偶性对 \(\theta=0\) 的导数给出，并与命题 \ref{prop:fluctuation-even} 的表述一致。证毕。
+\end{proof}
 
 \begin{proposition}[表示级自对偶：一维角色扭曲的函数方程]\label{prop:kernel-self-dual-character}
 沿用 \S\ref{app:kernel-self-dual} 的记号。设 \(G\) 为有限阿贝尔群，\(\chi:G\to\CC^\times\) 为一维角色，且假设群标签只依赖输出位 \(e\in\{0,1\}\)：对 \(e=0\) 取标签为单位元、对 \(e=1\) 取某固定元 \(g_1\in G\)。
@@ -347,6 +405,33 @@ F(\lambda,u)
 &\ -u(u^2-3u+1)\lambda^2+u(u^3-3u^2-3u+1)\lambda+u^2(u^2+u+1)=0.
 \end{aligned}
 \]
+\begin{proposition}[完成化回文降维：\texorpdfstring{$F(\lambda,u)=0$}{F=0} 等价于 \texorpdfstring{$Q(s,y)=0$}{Q=0}]\label{prop:weighted-completion-Q}
+令
+$$
+u=r^2,\qquad y:=\frac{\lambda(u)}{r},\qquad s:=r+r^{-1}.
+$$
+则 Perron 分支 \(\lambda(u)\) 的六次代数方程 \(F(\lambda,u)=0\) 等价于二维代数曲线
+\[
+Q(s,y)=0,
+\]
+其中 \(Q\in\ZZ[s,y]\) 为下式（可复现生成）：
+\input{sections/generated/eq_sync_kernel_weighted_completion_Q_sy}
+并且对 \(u=e^\theta\)（取 \(r=e^{\theta/2}\)）有
+\[
+\boxed{\;
+P(\theta)=\log\lambda(e^\theta)=\frac{\theta}{2}+\log y\!\left(2\cosh\frac{\theta}{2}\right)\; }.
+\]
+\end{proposition}
+\begin{proof}
+把 \(u=r^2,\ \lambda=r y\) 代入 \(F(\lambda,u)=0\) 并除以 \(r^6\)，得到关于 \(r\) 的 Laurent 多项式恒等式。
+由自对偶 \(\lambda(u)=u\,\lambda(1/u)\) 可知该恒等式在 \(r\mapsto r^{-1}\) 下不变，因此它落在不变量子环
+\(
+\QQ[r,r^{-1}]^{\,r\mapsto r^{-1}}=\QQ[r+r^{-1}]=\QQ[s]
+\)
+中，从而等价为某个 \(Q(s,y)=0\)。
+显式 \(Q\) 可通过消去 \(r\)（联立 \(F(r y,r^2)=0\) 与 \(r^2-sr+1=0\) 取 resultant）得到；脚本 \texttt{scripts/exp\_sync\_kernel\_weighted\_completion\_Q\_sy.py} 输出的结果即为可直接 \verb|\input| 的 \LaTeX\ 片段。
+最后由 \(r=e^{\theta/2}\) 与 \(s=r+r^{-1}=2\cosh(\theta/2)\) 以及 \(\lambda=r y\) 得到压力表达式。证毕。
+\end{proof}
 由隐式微分
 \[
 \lambda_u=-\frac{F_u}{F_\lambda},\qquad
@@ -640,21 +725,13 @@ C(u):=\lim_{z\to z_\star}(1-z/z_\star)\zeta(z,u)=\frac{1}{-z_\star\,\partial_z\D
 其中级数以指数速度收敛。
 
 \subsubsection{前 10 个 primitive 加权谱多项式}\label{app:weighted-primitive-table}
-前 10 项 $p_n(u)=\sum_{\tau\ \mathrm{primitive},\,|\tau|=n}u^{S_\tau\varphi}$ 为
-\[
-\begin{aligned}
-p_1(u)&=1+u,\qquad
-p_2(u)=6u,\qquad
-p_3(u)=3u+3u^2,\\
-p_4(u)&=2u+16u^2+2u^3,\qquad
-p_5(u)=3u+19u^2+19u^3+3u^4,\\
-p_6(u)&=3u+26u^2+65u^3+26u^4+3u^5,\\
-p_7(u)&=9u+66u^2+276u^3+276u^4+66u^5+9u^6,\\
-p_8(u)&=30u+207u^2+861u^3+1925u^4+861u^5+207u^6+30u^7,\\
-p_9(u)&=103u+840u^2+4062u^3+9194u^4+9194u^5+4062u^6+840u^7+103u^8,\\
-p_{10}(u)&=340u+3330u^2+18437u^3+51822u^4+74757u^5+51822u^6+18437u^7+3330u^8+340u^9.
-\end{aligned}
-\]
+前 10 项 $p_n(u)=\sum_{\tau\ \mathrm{primitive},\,|\tau|=n}u^{S_\tau\varphi}$ 由
+\(
+p_n(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d)
+\)
+从矩阵 \(B(u)\) 的迹多项式 \(a_n(u)=\Tr(B(u)^n)\) 严格计算得到；一键生成输出如下（脚本 \texttt{scripts/exp\_sync\_kernel\_weighted\_primitive\_completed.py}）：
+
+\input{sections/generated/eq_sync_kernel_weighted_primitive_pn_first10}
 当 $n\ge 2$ 时无 $u^0$ 与 $u^n$ 项，且系数满足 $p_{n,k}=p_{n,n-k}$。
 
 \begin{corollary}[primitive 多项式的完成化：\texorpdfstring{$\widehat p_n(s)\in\ZZ[s]$}{hat p in Z[s]} 与 Chebyshev--Adams 运算]\label{cor:primitive-completion-hatp}
@@ -717,6 +794,36 @@ C_d(s)=r^d+r^{-d}
 r^{-dn}p_n(r^{2d})=\widehat p_n(r^d+r^{-d})=\widehat p_n(C_d(s)),
 \]
 即所述倍角律。证毕。
+\end{proof}
+
+\begin{corollary}[完成化的 Chebyshev--Witt 变换：\texorpdfstring{$\widehat a\leftrightarrow \widehat p$}{hat a <-> hat p}]\label{cor:chebyshev-witt-completed}
+在同一完成化坐标 \(u=r^2,s=r+r^{-1}\) 下，定义 completed ghost（迹）多项式
+\[
+\widehat a_n(s):=r^{-n}a_n(r^2)=r^{-n}\Tr(B(r^2)^n)\in\ZZ[s].
+\]
+则对任意 \(n\ge 1\) 有严格恒等式
+\[
+\boxed{\ 
+\widehat p_n(s)=\frac1n\sum_{d\mid n}\mu(d)\,\widehat a_{n/d}\!\bigl(C_d(s)\bigr),
+\qquad
+\widehat a_n(s)=\sum_{d\mid n}d\,\widehat p_d\!\bigl(C_{n/d}(s)\bigr)
+\ }.
+\]
+\end{corollary}
+\begin{proof}
+对 \(u=r^2\) 的 Witt/Möbius 反演
+\(
+p_n(u)=\frac1n\sum_{d\mid n}\mu(d)a_{n/d}(u^d)
+\)
+两侧同乘 \(r^{-n}\)，并用完成化倍角律
+\(
+r^{-dn}f(r^{2d})=\widehat f(C_d(s))
+\)
+（对 \(f=a_{n/d}\) 与 \(f=p_d\) 分别应用）即可得到第一式；第二式同理由
+\(
+a_n(u)=\sum_{d\mid n} d\,p_d(u^{n/d})
+\)
+完成化得到。
 \end{proof}
 
 \input{sections/generated/tab_sync_kernel_weighted_primitive_completed}
