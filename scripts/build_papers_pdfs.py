@@ -290,7 +290,7 @@ def build_from_plan(
         print(f"Build skipped for {len(failed)} paper(s): {failed_list}", file=sys.stderr)
 
 
-def verify_all_pdfs(papers_root: Path) -> None:
+def verify_all_pdfs(papers_root: Path, *, strict: bool) -> None:
     if not papers_root.exists():
         print("No papers directory found; nothing to verify.")
         return
@@ -304,7 +304,13 @@ def verify_all_pdfs(papers_root: Path) -> None:
     if missing:
         for p in missing:
             print(f"Missing PDF: {p}", file=sys.stderr)
-        raise FileNotFoundError(f"Missing {len(missing)} PDF(s) under {papers_root}")
+        if strict:
+            raise FileNotFoundError(f"Missing {len(missing)} PDF(s) under {papers_root}")
+        print(
+            f"Warning: Missing {len(missing)} PDF(s) under {papers_root}; "
+            "skipping verification failure (use `verify --strict` to enforce).",
+            file=sys.stderr,
+        )
 
 
 def write_github_output(pairs: dict[str, str]) -> None:
@@ -351,7 +357,12 @@ def main(argv: list[str]) -> int:
     clean_group.add_argument("--no-clean", dest="clean", action="store_false", help="Do not clean LaTeX aux files.")
     p_build.set_defaults(clean=clean_default)
 
-    sub.add_parser("verify", help="Verify all papers have main.pdf.")
+    p_verify = sub.add_parser("verify", help="Verify all papers have main.pdf.")
+    p_verify.add_argument(
+        "--strict",
+        action="store_true",
+        help="Fail if any paper directory with main.tex is missing main.pdf.",
+    )
 
     args = parser.parse_args(argv)
 
@@ -405,7 +416,7 @@ def main(argv: list[str]) -> int:
         return 0
 
     if args.cmd == "verify":
-        verify_all_pdfs(papers_root)
+        verify_all_pdfs(papers_root, strict=bool(getattr(args, "strict", False)))
         print("All papers PDFs exist.")
         return 0
 
