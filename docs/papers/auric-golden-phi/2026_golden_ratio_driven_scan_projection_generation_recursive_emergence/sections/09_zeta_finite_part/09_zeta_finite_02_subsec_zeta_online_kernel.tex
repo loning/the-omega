@@ -125,6 +125,43 @@ p_n(u)=\frac1n\sum_{d\mid n}\mu(d)\,\psi^d\!\bigl(a_{n/d}\bigr)
 其二，Witt（necklace）分解与 Möbius 反演把“幂重复闭环”从 primitive 原子中剥离出来（见附录 \ref{app:witt-weighted} 与 \ref{app:witt-bridge-package}）。
 因此，“迹侧的时间序列（ghost 坐标）”与“prime-like 原子侧的 Euler 乘积（Witt 坐标）”之间并非类比，而是被上述交换图强迫的结构。
 
+\begin{corollary}[Big-Witt 同余护栏：necklace 整除律与 Dwork 型 \texorpdfstring{$p$}{p}-幂同余]\label{cor:big-witt-audit-guardrails}
+设某一核（可为一维/二维/三维势，或真实输入核等）由有限加权同步图/有限状态核给出，从而其 \(\zeta\)-函数具有行列式口径
+\[
+\zeta(z;\mathbf u)=\det(I-zB(\mathbf u))^{-1}=\exp\!\left(\sum_{n\ge 1}\frac{a_n(\mathbf u)}{n}z^n\right),
+\qquad a_n(\mathbf u):=\Tr(B(\mathbf u)^n).
+\]
+令 \(\psi^d\) 为参数的 Adams 操作（逐变量幂替换 \(\mathbf u\mapsto \mathbf u^d\)）。
+则对任意 \(n\ge 1\) 与任意素数 \(p\)、\(k\ge 1\)，有严格约束
+\[
+\boxed{\ \sum_{d\mid n}\mu(d)\,\psi^d\!\bigl(a_{n/d}\bigr)\in nR\ },
+\qquad
+\boxed{\ a_{p^k}\equiv \psi^p(a_{p^{k-1}})\pmod{p^k}\ },
+\]
+其中 \(R\) 为该核的系数环（例如 \(\ZZ[u]\)、\(\ZZ[u,v]\)、\(\ZZ[u,v,w]\)）。
+\end{corollary}
+\begin{proof}
+直接应用附录命题 \ref{prop:witt-necklace-dwork-R}。证毕。
+\end{proof}
+
+\begin{algorithm}[自审计协议：不算谱、不算 primitive 的同余一致性检查]\label{alg:self-audit-witt}
+给定一个核的加权邻接矩阵族 \(B(\mathbf u)\)（系数环 \(R\)），以及一组要审计的整数集合 \(\mathcal N\) 与素数幂集合 \(\mathcal P=\{(p,k)\}\)：
+\begin{enumerate}
+  \item 计算周期迹多项式 \(a_n(\mathbf u)=\Tr(B(\mathbf u)^n)\in R\)（对核的常见规模，这一步可用精确矩阵幂/递推完成）。
+  \item 对每个 \(n\in\mathcal N\)，构造
+  \[
+  S_n(\mathbf u):=\sum_{d\mid n}\mu(d)\,a_{n/d}(\mathbf u^d)\in R,
+  \]
+  并检查 \(S_n(\mathbf u)\in nR\)（系数逐项能被 \(n\) 整除）。
+  \item 对每个 \((p,k)\in\mathcal P\)，检查
+  \[
+  a_{p^k}(\mathbf u)-a_{p^{k-1}}(\mathbf u^p)\in p^kR
+  \]
+  （系数逐项 \(\equiv 0\ \mathrm{mod}\ p^k\)）。
+\end{enumerate}
+任何一次失败都意味着：该迹序列不可能来自本文的 Euler 乘积/primitive--periodic Big-Witt 桥包，因此可直接定位为“实现/数据管线错误”或“对象并非本文口径的 \(\zeta\)”。
+\end{algorithm}
+
 由 $B$ 的原始性（例如 $B^5$ 全正），得到
 \[
 a_n=3^n+O(\rho^n),\qquad

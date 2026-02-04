@@ -28,28 +28,14 @@
 \end{proposition}
 
 \begin{proof}
-对由邻接矩阵 $A$ 给出的 SFT，$n$ 周期点与长度 $n$ 的允许闭路径一一对应，故 $\#\mathrm{Fix}(\sigma^n)=\mathrm{Tr}(A^n)$（\cite{LindMarcus1995}）。当 $|z|$ 足够小时，谱半径控制下矩阵级数收敛，并且有标准恒等式
-\[
-\log\det(I-zA)=\mathrm{Tr}\,\log(I-zA)=-\sum_{n\ge 1}\frac{\mathrm{Tr}(A^n)}{n}z^n.
-\]
-两边取指数并代入动力学 $\zeta$ 的定义即得
-\(\zeta_\sigma(z)=1/\det(I-zA)\)。
-
-关于“Fredholm 行列式”口径：由定义 \ref{def:fredholm-determinant}，只要能识别 \(\mathrm{Tr}(\mathcal{L}^n)\) 与 \(\mathrm{Tr}(A^n)\) 的计数对应（SFT 上为周期点/闭路径计数），就得到
-\(
-\det(I-z\mathcal{L})=\det(I-zA)
-\)
-并因此
-\(
-\zeta_\sigma(z)=1/\det(I-z\mathcal{L})
-\)。
-该路线在更一般的（扩张/双曲）系统上给出 \(\zeta\) 的解析延拓与谱解释（见 \cite{Ruelle1976ZetaExpanding,ParryPollicott1990Zeta}）。
+SFT 的周期点计数满足 $\#\mathrm{Fix}(\sigma^n)=\mathrm{Tr}(A^n)$，从而由动力学 $\zeta$ 的定义与矩阵恒等式 $\log\det(I-zA)=-\sum_{n\ge 1}\mathrm{Tr}(A^n)z^n/n$ 得 $\zeta_\sigma(z)=1/\det(I-zA)$（\cite{LindMarcus1995,ParryPollicott1990Zeta}）。
+另一方面，零势 Ruelle 转移算子在柱函数有限维截断上与 $A^{\mathsf T}$ 等价，因此同一关系亦可表述为 Fredholm 行列式 $\det(I-z\mathcal{L})$（\cite{Ruelle1976ZetaExpanding,Ruelle1978Thermodynamic,ParryPollicott1990Zeta}）。
 \end{proof}
 
 \begin{remark}[从 toy-RH 到 RH：有限维极点格点的结构性门槛]\label{rem:finite-pole-lattice-barrier}
 本文大量使用的有限维口径（邻接矩阵/有限状态核）在审计性与可计算性上有决定性优势；但在 \(s\)-平面“临界线几何”的层面，它也携带一个不可回避的结构性限制。
 
-确切地：对任意有限维矩阵核 \(M\) 与 \(\lambda=\rho(M)\)，令
+对任意有限维矩阵核 \(M\) 与 \(\lambda=\rho(M)\)，令
 \(
 \widehat{\zeta}(s)=\det(I-\lambda^{-s}M)^{-1}
 \)。
@@ -60,8 +46,7 @@
 上的等差格点族（公差 \(2\pi/\log\lambda\)），因此在任意有限维模型中，临界带内的“非平凡极点几何”只能由\textbf{有限条竖直直线 + 有限相位的等差梳齿}组成。
 这解释了为何 40 状态核的 toy-RH（命题 \ref{prop:finite-rh-40}）虽能把极点压到 \(\Re(s)=\tfrac12\)，但临界线上的虚部结构仍是高度刚性的（由有限多个相位决定）。
 
-因此，若要在统计层面逼近经典 \(\zeta(s)\) 的“无穷非周期零点结构”（例如零点计数的 \(T\log T\) 级增长与高度相关的局部间距分布），必须引入一个极限过程：要么让截断维数/状态数增长（\(\dim M\to\infty\) 的 sofic/SFT 逼近序列），要么直接进入无穷维转移算子上的 Fredholm 行列式口径。
-本小节的算子论框架正是为这一缺口准备的：在无穷维 Banach 空间上，\(\det(I-z\mathcal{L})\) 的解析延拓与谱解释允许出现远比有限维“相位梳齿”更丰富的奇点结构，从而为把“平方根谱界（RH-sharp）”与“临界线频率密度/统计”这两层目标同时推进提供自然舞台。
+因此，若希望出现更丰富的“临界线几何/统计”，需要引入极限过程（状态数增长的 sofic/SFT 逼近序列）或直接进入无穷维转移算子的 Fredholm 行列式口径；后者允许出现超出有限维“相位梳齿”的奇点结构（\cite{Ruelle1976ZetaExpanding,Ruelle1978Thermodynamic,ParryPollicott1990Zeta}）。
 \end{remark}
 
 \subsubsection{柱投影与最大熵态：C*-代数口径}
@@ -82,7 +67,7 @@ P_\mu:=S_\mu S_\mu^*.
 \end{proposition}
 
 \begin{proof}
-这是一类标准结构事实：Cuntz--Krieger 关系保证 \(P_\mu\) 为投影且对不同柱集具有正交/包含关系的代数对应，从而它们生成交换子代数。另一方面，\(\mathcal{D}_A\) 可视为由柱集指示函数生成的稠密 *-子代数的 C*-闭包，并与 \(C(X_A^+)\) 自然同构；该同构把 \(P_\mu\) 送到 \(\ind_{[\mu]}\)。详见 \cite{CuntzKrieger1980} 中对“拓扑 Markov 链 \(\leftrightarrow\) C*-代数”对应的基本构造；从群胚角度看亦可在 \cite{Renault1980Groupoid} 的框架下统一表述。
+这是 Cuntz--Krieger 代数的标准结构：投影族 $P_\mu$ 生成对角子代数并与 $C(X_A^+)$ 的柱函数同构；参见 \cite{CuntzKrieger1980,Renault1980Groupoid}。
 \end{proof}
 
 \subsubsection{本文的新颖桥接点：分辨率折叠作为可审计的子代数选择}

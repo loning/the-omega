@@ -338,6 +338,92 @@ d_m(x)\ \ge\ \#\mathsf{Ind}(G(x)).
 又因为 $S$ 可由 $\omega_S$ 中发生改变的那些长度-$3$ 位置唯一恢复（区间互不相交使得这些局部改变互不混淆），映射 $S\mapsto \omega_S$ 为单射。
 于是 $\#\Fold_m^{-1}(x)=d_m(x)\ge \#\mathsf{Ind}(G(x))$。证毕。
 \end{proof}
+
+\begin{lemma}[独立集计数的线性时间递推（半径 2 冲突）]\label{lem:pom-independence-dp-radius2}
+令 $x\in X_m$，并将 $J(x)$ 升序写为
+\[
+J(x)=\{i_1<i_2<\cdots<i_k\}.
+\]
+对 $t\in\{1,\dots,k\}$ 定义
+\[
+p(t):=\max\{s\in\{0,1,\dots,t-1\}:\ i_t-i_s>2\},
+\]
+其中约定 $i_0:=-\infty$（等价地：$p(t)$ 是满足 $i_t-i_{p(t)}>2$ 的最大下标；若对所有 $s\le t-1$ 都有 $i_t-i_s\le 2$，则 $p(t)=0$）。
+定义序列 $a_0:=1$ 且对 $t\ge 1$ 递推
+\[
+a_t:=a_{t-1}+a_{p(t)}.
+\]
+则有
+\[
+\#\mathsf{Ind}(G(x))=a_k.
+\]
+\end{lemma}
+
+\begin{proof}
+按 $\{i_1,\dots,i_t\}$ 的前缀递推计数独立集数。
+任取独立集 $S\subseteq\{i_1,\dots,i_t\}$，分两类：
+\begin{enumerate}
+  \item 若 $i_t\notin S$，则 $S$ 是前缀 $\{i_1,\dots,i_{t-1}\}$ 的独立集，计数为 $a_{t-1}$；
+  \item 若 $i_t\in S$，则由 $G(x)$ 的边定义（$|i-j|\le 2$ 冲突），$S$ 不能包含任何 $i_s$ 满足 $i_t-i_s\le 2$。因此 $S\setminus\{i_t\}$ 必为前缀 $\{i_1,\dots,i_{p(t)}\}$ 的独立集，计数为 $a_{p(t)}$。
+\end{enumerate}
+两类互斥且覆盖全部情形，因此 $a_t=a_{t-1}+a_{p(t)}$。
+取 $t=k$ 得 $\#\mathsf{Ind}(G(x))=a_k$。证毕。
+\end{proof}
+
+\begin{corollary}[一个可计算的纤维下界]\label{cor:pom-fiber-lower-bound-dp}
+对任意 $x\in X_m$，用引理 \ref{lem:pom-independence-dp-radius2} 的递推计算出 $a_k$，则
+\[
+d_m(x)\ge a_k.
+\]
+\end{corollary}
+
+\begin{proof}
+由引理 \ref{lem:pom-fiber-lower-bound-independent-sets} 与引理 \ref{lem:pom-independence-dp-radius2} 直接得到。
+\end{proof}
+
+\begin{lemma}[干涉图的块分解与独立集乘法公式]\label{lem:pom-ind-factorization}
+令 $x\in X_m$，并将 $J(x)$ 升序写为 $\{i_1<\cdots<i_k\}$。
+把指标集合按“断点”分解为若干连续块：记 $t$ 为断点当且仅当 $i_{t+1}-i_t>2$，并据此把 $J(x)$ 分解为若干不相交子集
+\[
+J(x)=J_1\sqcup\cdots\sqcup J_r,
+\]
+其中每个 $J_\ell$ 在升序下满足相邻差 $\le 2$。
+则干涉图 $G(x)$ 分裂为互不相连的诱导子图直和
+\(
+G(x)=G[J_1]\sqcup\cdots\sqcup G[J_r]
+\)，
+并且独立集计数满足乘法公式
+\[
+\#\mathsf{Ind}(G(x))=\prod_{\ell=1}^r \#\mathsf{Ind}(G[J_\ell]).
+\]
+\end{lemma}
+
+\begin{proof}
+若 $i\in J_a$、$j\in J_b$ 且 $a\neq b$，则由分块定义有 $|i-j|>2$，故 $G(x)$ 中不存在跨块边，从而图为不相连直和。
+对不相连图，独立集在各连通分量上独立选择，计数乘法性成立。
+\end{proof}
+
+\begin{lemma}[单块情形的局部递推：\texorpdfstring{$a_t=a_{t-1}+a_{t-2}$}{a=a+a} 与 \texorpdfstring{$a_t=a_{t-1}+a_{t-3}$}{a=a+a} 的分岔]\label{lem:pom-ind-local-recurrence}
+沿用引理 \ref{lem:pom-independence-dp-radius2} 的记号。
+设 $J(x)$ 自身为单块（即对所有 $t$ 有 $i_{t+1}-i_t\le 2$）。则对 $t\ge 3$：
+\begin{enumerate}
+  \item 若 $i_t-i_{t-2}>2$，则 $p(t)=t-2$，从而
+  \[
+  a_t=a_{t-1}+a_{t-2};
+  \]
+  \item 若 $i_t-i_{t-2}=2$（等价于 $i_{t-1}=i_t-1$ 且 $i_{t-2}=i_t-2$），则 $p(t)=t-3$，从而
+  \[
+  a_t=a_{t-1}+a_{t-3}.
+  \]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+在单块条件下，必有 $i_t-i_{t-1}\le 2$，故 $p(t)\le t-2$。
+若 $i_t-i_{t-2}>2$，则 $s=t-2$ 满足定义条件且为最大者，故 $p(t)=t-2$。
+若 $i_t-i_{t-2}=2$，则 $s=t-2$ 不满足条件；而由于 $i_{t-2}-i_{t-3}\ge 1$，得 $i_t-i_{t-3}\ge 3$，故 $p(t)=t-3$。
+代入引理 \ref{lem:pom-independence-dp-radius2} 的递推即得。
+\end{proof}
 \begin{theorem}[最大纤维闭式]\label{thm:pom-max-fiber}
 取 Fibonacci 延拓到 $F_0=0,F_1=1$。对 $m\ge 2$，有精确闭式
 \[
