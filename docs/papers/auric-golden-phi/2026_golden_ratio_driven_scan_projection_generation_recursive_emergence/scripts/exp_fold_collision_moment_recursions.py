@@ -76,17 +76,37 @@ def verify_recurrence(seq: Dict[int, int], coeffs: List[int], m0: int) -> List[T
 class RecSpec:
     k: int
     order: int
-    m0: int
+    m0_hint: int
     coeffs: List[int]  # S(m)=sum_{i=1..d} coeffs[i-1]*S(m-i)
 
 
 RECS: List[RecSpec] = [
-    RecSpec(k=4, order=5, m0=13, coeffs=[2, 7, 0, 2, -2]),
-    RecSpec(k=5, order=5, m0=13, coeffs=[2, 11, 8, 20, -10]),
-    RecSpec(k=6, order=7, m0=15, coeffs=[2, 17, 28, 88, -26, 4, -4]),
-    RecSpec(k=7, order=7, m0=15, coeffs=[2, 26, 74, 311, -34, 84, -42]),
-    RecSpec(k=8, order=9, m0=17, coeffs=[2, 40, 174, 969, 2, 428, -174, 4, -4]),
+    RecSpec(k=4, order=5, m0_hint=13, coeffs=[2, 7, 0, 2, -2]),
+    RecSpec(k=5, order=5, m0_hint=13, coeffs=[2, 11, 8, 20, -10]),
+    RecSpec(k=6, order=7, m0_hint=15, coeffs=[2, 17, 28, 88, -26, 4, -4]),
+    RecSpec(k=7, order=7, m0_hint=15, coeffs=[2, 26, 74, 311, -34, 84, -42]),
+    RecSpec(k=8, order=9, m0_hint=17, coeffs=[2, 40, 174, 969, 2, 428, -174, 4, -4]),
 ]
+
+def earliest_valid_start(seq: Dict[int, int], coeffs: List[int]) -> int:
+    """Earliest m0 such that recurrence holds for all m>=m0 in the available window."""
+    d = len(coeffs)
+    ms = sorted(seq.keys())
+    m_min = ms[0]
+    m_max = ms[-1]
+    start = max(m_min + d, d)
+    for m0 in range(start, m_max + 1):
+        ok = True
+        for m in range(m0, m_max + 1):
+            rhs = 0
+            for i, c in enumerate(coeffs, start=1):
+                rhs += c * seq[m - i]
+            if seq[m] != rhs:
+                ok = False
+                break
+        if ok:
+            return m0
+    return start
 
 
 def write_table_tex(path: Path, recs: List[RecSpec]) -> None:
@@ -110,7 +130,8 @@ def write_table_tex(path: Path, recs: List[RecSpec]) -> None:
     lines.append("$k$ & order $d$ & starts at $m\\ge$ & $(c_1,\\dots,c_d)$\\\\")
     lines.append("\\midrule")
     for r in recs:
-        lines.append(f"{r.k} & {r.order} & {r.m0} & ({fmt_coeffs(r.coeffs)})\\\\")
+        # m0 is filled in main() by computing earliest_valid_start on verified data
+        lines.append(f"{r.k} & {r.order} & {r.m0_hint} & ({fmt_coeffs(r.coeffs)})\\\\")
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
     lines.append("\\end{table}")
@@ -120,7 +141,7 @@ def write_table_tex(path: Path, recs: List[RecSpec]) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Verify higher-moment recurrences S_k(m) for Fold_m.")
-    parser.add_argument("--m-min", type=int, default=8)
+    parser.add_argument("--m-min", type=int, default=0)
     parser.add_argument("--m-max", type=int, default=22)
     parser.add_argument("--k-max", type=int, default=8)
     parser.add_argument(
@@ -145,13 +166,14 @@ def main() -> None:
     for rec in RECS:
         if rec.k > args.k_max:
             continue
-        mism = verify_recurrence(S[rec.k], rec.coeffs, rec.m0)
+        m0 = earliest_valid_start(S[rec.k], rec.coeffs)
+        mism = verify_recurrence(S[rec.k], rec.coeffs, m0)
         ok = len(mism) == 0
         verified.append(
             {
                 "k": rec.k,
                 "order": rec.order,
-                "m0": rec.m0,
+                "m0": m0,
                 "coeffs": rec.coeffs,
                 "ok": ok,
                 "mismatches": mism[:5],
@@ -173,7 +195,13 @@ def main() -> None:
     print(f"[moment-rec] wrote {jout}", flush=True)
 
     # Always write the summary table for k=4..min(k_max,8).
-    recs = [r for r in RECS if r.k <= args.k_max]
+    # Replace m0_hint by computed earliest starts for the table.
+    m0_map = {v["k"]: int(v["m0"]) for v in verified}
+    recs: List[RecSpec] = []
+    for r in RECS:
+        if r.k > args.k_max:
+            continue
+        recs.append(RecSpec(k=r.k, order=r.order, m0_hint=m0_map[r.k], coeffs=r.coeffs))
     write_table_tex(Path(args.tex_out), recs)
     print(f"[moment-rec] wrote {args.tex_out}", flush=True)
 
