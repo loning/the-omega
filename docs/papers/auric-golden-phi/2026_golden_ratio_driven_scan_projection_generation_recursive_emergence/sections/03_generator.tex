@@ -305,3 +305,122 @@ u_k:=\lfloor (k+1)\varphi^{-1}\rfloor-\lfloor k\varphi^{-1}\rfloor\in\{0,1\},\qq
 直接计算得 $\tau(3)=\kappa(\sigma(1))=32$ 与 $\tau(2)=\kappa(\sigma(0))=3$。
 故 $g_1g_2g_3\cdots$ 为 $\tau$ 的以 $3$ 开始的不动点。
 \end{proof}
+
+\subsection{窗口诱导返回时间谱与 Gauss 重整化：IET 形式的最小自相似原型}
+上一小节在整数索引侧给出了 gap 字的替换不动点结构。本小节给出一个与动力系统侧严格对齐的等价表述：在旋转扫描上对一个长度等于斜率的窗口做诱导（first return induction），返回时间函数只取两值，并且诱导变换在尺度归一化后与 Gauss 映射 $\alpha\mapsto \{1/\alpha\}$ 兼容。黄金分支恰对应一个一周期的重整化不动点，从而把“gap 的 Fibonacci 不动点”解释为一个诱导重整化固定点证书。
+
+\begin{definition}[窗口诱导与返回时间函数]\label{def:window-induction-return-time}
+令 $\alpha\in(0,1)$ 为无理数，考虑圆周旋转 $T_\alpha(x)=\{x+\alpha\}$。
+取窗口
+\[
+J_\alpha:=[0,\alpha)\subset[0,1),
+\]
+并定义返回时间函数
+\[
+r_\alpha(x):=\min\{n\in\NN_{>0}: T_\alpha^n(x)\in J_\alpha\},\qquad x\in J_\alpha.
+\]
+诱导变换（first return map）定义为
+\[
+R_\alpha(x):=T_\alpha^{r_\alpha(x)}(x),\qquad x\in J_\alpha.
+\]
+\end{definition}
+
+\begin{theorem}[返回时间二值性与显式分割]\label{thm:return-time-two-values}
+令 $\alpha\in(0,1)$ 为无理数，并设
+\[
+m:=\big\lfloor 1/\alpha\big\rfloor,\qquad \theta:=\{1/\alpha\}=1/\alpha-m\in(0,1).
+\]
+则对所有 $x\in J_\alpha$ 有
+\[
+r_\alpha(x)\in\{m,\,m+1\},
+\]
+并且存在显式分割
+\[
+J_\alpha=[0,\theta\alpha)\ \sqcup\ [\theta\alpha,\alpha)
+\]
+使得
+\[
+r_\alpha(x)=\begin{cases}
+m+1, & x\in[0,\theta\alpha),\\
+m,   & x\in[\theta\alpha,\alpha).
+\end{cases}
+\]
+\end{theorem}
+
+\begin{proof}
+由 $m\le 1/\alpha<m+1$ 得 $m\alpha<1<(m+1)\alpha$。
+对任意 $x\in[0,\alpha)$，先考察 $T_\alpha^m(x)=\{x+m\alpha\}$。
+由于 $x+m\alpha\in[m\alpha,\,m\alpha+\alpha)=[m\alpha,\,(m+1)\alpha)$ 且 $(m+1)\alpha>1$，该区间跨过 $1$。
+当且仅当 $x+m\alpha\ge 1$ 时，有 $\{x+m\alpha\}=x+m\alpha-1\in[0,(m+1)\alpha-1)$。
+并且
+\[
+\{x+m\alpha\}<\alpha\iff x+m\alpha-1<\alpha\iff x<1-(m-1)\alpha.
+\]
+注意 $1-m\alpha=\theta\alpha\in(0,\alpha)$，且 $1-(m-1)\alpha=\alpha+(1-m\alpha)>\alpha$。
+因此对 $x\in[\theta\alpha,\alpha)$ 恒有 $x+m\alpha\ge 1$ 且 $\{x+m\alpha\}<\alpha$，从而 $r_\alpha(x)=m$。
+
+对 $x\in[0,\theta\alpha)$，有 $x+m\alpha<1$，故 $T_\alpha^m(x)=x+m\alpha\in[m\alpha,1)$，不可能落在 $[0,\alpha)$。
+再看 $T_\alpha^{m+1}(x)=\{x+(m+1)\alpha\}=x+(m+1)\alpha-1$，则
+\[
+0\le x+(m+1)\alpha-1<\alpha \iff x<1-m\alpha=\theta\alpha.
+\]
+故对 $x\in[0,\theta\alpha)$ 有 $r_\alpha(x)=m+1$。
+综上得到二值性与显式分割。
+\end{proof}
+
+\begin{theorem}[诱导旋转的 Gauss 重整化共轭]\label{thm:induction-gauss-conjugacy}
+在定理 \ref{thm:return-time-two-values} 的记号下，令 $\alpha_1:=\theta=\{1/\alpha\}$。
+定义归一化映射
+\[
+h:J_\alpha\to[0,1),\qquad h(x):=x/\alpha.
+\]
+则在 Lebesgue 几乎处处意义下成立共轭关系
+\[
+h\circ R_\alpha = T_{\alpha_1}\circ h.
+\]
+即窗口诱导把旋转参数 $\alpha$ 重整化为 $\alpha_1=\{1/\alpha\}$。
+\end{theorem}
+
+\begin{proof}
+对 $x\in[0,\theta\alpha)$，由定理 \ref{thm:return-time-two-values} 得 $r_\alpha(x)=m+1$ 且
+\[
+R_\alpha(x)=x+(m+1)\alpha-1.
+\]
+两边除以 $\alpha$ 得
+\[
+h(R_\alpha(x))=\frac{x}{\alpha}+(m+1)-\frac{1}{\alpha}=h(x)+1-\Bigl(\frac{1}{\alpha}-m\Bigr)=h(x)+1-\alpha_1\equiv h(x)-\alpha_1\pmod{1}.
+\]
+对 $x\in[\theta\alpha,\alpha)$，有 $r_\alpha(x)=m$ 且 $R_\alpha(x)=x+m\alpha-1$，从而
+\[
+h(R_\alpha(x))=h(x)+m-\frac{1}{\alpha}=h(x)-\alpha_1\pmod{1}.
+\]
+因此在两段上均有 $h(R_\alpha(x))\equiv h(x)-\alpha_1\pmod{1}$。
+将 $T_{\alpha_1}$ 取为 $x\mapsto\{x-\alpha_1\}$ 即得共轭。
+（若采用 $x\mapsto\{x+\alpha_1\}$ 的约定，则对应地把上式换为 $\alpha_1\mapsto 1-\alpha_1$，仅为方向约定差异。）
+\end{proof}
+
+\begin{corollary}[黄金分支的返回时间谱与 gap 字一致]\label{cor:golden-return-gaps}
+取 $\alpha=\varphi^{-2}$，则 $\lfloor 1/\alpha\rfloor=2$ 且 $\{1/\alpha\}=\varphi^{-1}$。
+因此窗口 $J_\alpha=[0,\varphi^{-2})$ 上的返回时间函数只取值 $2$ 与 $3$；并且沿诱导轨道得到的返回时间字与定理 \ref{thm:wythoff-gaps-fib} 的 Wythoff gap 字在字母重标记下相同。
+\end{corollary}
+
+\begin{theorem}[黄金分支扫描的三重等价：索引分拆、诱导返回谱与替换不动点]\label{thm:golden-triple-equivalence}
+令 $\varphi=(1+\sqrt5)/2$。
+考虑以下三个对象：
+\begin{enumerate}
+  \item （索引分拆）Wythoff/Beatty 上序列 $B_k=\lfloor k\varphi^2\rfloor$（$k\ge 1$）及其 gap 字 $g_k=B_{k+1}-B_k$。
+  \item （诱导返回谱）旋转 $T_{\varphi^{-2}}(x)=\{x+\varphi^{-2}\}$ 在窗口 $J=[0,\varphi^{-2})$ 上的返回时间函数 $r(x)$（定义 \ref{def:window-induction-return-time}）。
+  \item （替换不动点）二字母替换 $\tau:3\mapsto 32,\ 2\mapsto 3$ 的以 $3$ 开始的不动点 $w=\lim_{n\to\infty}\tau^n(3)$。
+\end{enumerate}
+则三者在如下意义下等价：
+\begin{enumerate}
+  \item gap 字 $g_1g_2g_3\cdots$ 与返回时间字 $r(x),r(Rx),r(R^2x),\dots$ 在几乎处处的 $x\in J$ 上一致（字母表均为 $\{2,3\}$），并且它们同为 $\tau$ 的不动点 $w$（定理 \ref{thm:wythoff-gaps-fib} 与推论 \ref{cor:golden-return-gaps}）。
+  \item 由 Zeckendorf 移位定理 \ref{thm:zeckendorf-shift-beatty-wythoff} 可用纯整数方式生成 $B_k$，从而把（1）与（2）的动态/替换描述落为可计算的索引证书。
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}[可迁移模板：二次无理数与更一般的窗口诱导]
+定理 \ref{thm:induction-gauss-conjugacy} 表明：对一般无理 $\alpha$，窗口诱导把参数更新为 $\{1/\alpha\}$（Gauss 重整化）。
+当 $\alpha$ 为二次无理数时，其连分数最终周期性导致该重整化在有限步后进入周期，从而对应一个有限字母替换系统（标准 Sturmian 代换）的周期点；黄金分支是最小周期（1）情形，因而出现最简单的 Fibonacci 型固定点。
+在更高维环面平移与 cut-and-project 读出中，窗口诱导对应更一般的区间交换/多面体交换的重整化（例如 Rauzy--Veech 型），其“有限返回谱 + 周期点 = 可计算替换/自动机证书”的结构可作为统一接口的迁移模板。
+\end{remark}
