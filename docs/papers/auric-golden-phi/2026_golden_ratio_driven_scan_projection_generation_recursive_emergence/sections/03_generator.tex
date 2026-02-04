@@ -43,13 +43,265 @@ $\Omega_m$ 是分辨率 $m$ 下可观测的全部微态集合，其基数为 $\a
 \[
 C_{a,t}=T^{-t}C_a.
 \]
-\end{lemma}\subsection{例：圆周旋转二分割与 Sturmian 复杂度证书}作为一个完全标准且可检验的实例，取 $X=\TT^1=\RR/\ZZ$，令 $T(x)=x+\alpha\ (\mathrm{mod}\ 1)$ 为无理旋转（$\alpha\notin\QQ$），并取两区间分割（等价于窗集为区间）生成二元读出 $s_t(x)=\ind_W(T^t x)$。则由旋转符号化理论可得该读出序列为 Sturmian，且其因子复杂度达到二字母非周期序列的最小可能值：
+\end{lemma}
+
+\subsection{例：圆周旋转二分割与 Sturmian 复杂度证书}
+作为一个完全标准且可检验的实例，取 $X=\TT^1=\RR/\ZZ$，令 $T(x)=x+\alpha\ (\mathrm{mod}\ 1)$ 为无理旋转（$\alpha\notin\QQ$），并取两区间分割（等价于窗集为区间）生成二元读出 $s_t(x)=\ind_W(T^t x)$。则由旋转符号化理论可得该读出序列为 Sturmian，且其因子复杂度达到二字母非周期序列的最小可能值：
 \begin{theorem}[Sturmian 最小复杂度（旋转二分割）]\label{thm:sturmian-min-complexity-rotation}
 在非退化情形（分割端点不落在轨道上）下，序列 $s_0(x)s_1(x)\cdots$ 的因子复杂度满足
 \[
 p(n)=n+1,\qquad \forall n\ge 1,
 \]
 其中 $p(n)$ 为长度 $n$ 的不同子词数量（参见 \cite{MorseHedlund1940,LindMarcus1995}）。
-\end{theorem}\begin{remark}
+\end{theorem}
+
+\begin{remark}
 当 $\alpha=\varphi^{-1}$ 时，该 Sturmian 序列退化为 Fibonacci 词的典型代表，从而与第 \ref{thm:golden-antiresonance} 节的黄金分支选择在同一对象上对接。
 \end{remark}
+
+\subsection{Zeckendorf 移位与黄金 Beatty/Wythoff 索引：纯整数的扫描调度生成}
+本小节给出一个与“扫描—投影生成器”直接兼容的纯整数化结论：黄金分支下的互补索引（Beatty/Wythoff）可由 Zeckendorf 规范形在一次“移位”后加一个一比特校正得到。该形式既提供可证明的算术骨架，也给出无需浮点的可复现调度算法。
+
+\begin{definition}[Fibonacci 数列与 Zeckendorf 规范形]\label{def:fib-zeckendorf}
+令 $(F_n)_{n\ge 0}$ 为 Fibonacci 数列，满足 $F_0=0,F_1=1$ 与递推 $F_{n+1}=F_n+F_{n-1}$。
+对任意整数 $n\ge 1$，其 \emph{Zeckendorf 规范形} 指表示
+\[
+n=\sum_{i\ge 2} d_i F_i,\qquad d_i\in\{0,1\},\qquad d_i d_{i+1}=0\ \ (\forall i\ge 2),
+\]
+并要求 $d_i=0$ 对足够大 $i$（参见 \cite{Zeckendorf1972}）。
+记最低非零位指标
+\[
+\ell(n):=\min\{i\ge 2: d_i=1\}.
+\]
+\end{definition}
+
+\begin{definition}[Zeckendorf 移位算子]\label{def:zeckendorf-shift}
+在定义 \ref{def:fib-zeckendorf} 的记号下，定义
+\[
+S_1(n):=\sum_{i\ge 2} d_i F_{i+1},\qquad S_2(n):=\sum_{i\ge 2} d_i F_{i+2}.
+\]
+注意 $S_2(n)=S_1(n)+n$，因为 $F_{i+2}=F_{i+1}+F_i$。
+\end{definition}
+
+\begin{lemma}[Binet 余项与首位主导]\label{lem:phi-fib-remainder-dominance}
+令 $\varphi=(1+\sqrt5)/2$，并记其 Galois 共轭 $\psi=-\varphi^{-1}$。
+则对每个 $i\ge 2$ 有恒等式
+\[
+\varphi F_i = F_{i+1} - \psi^i.
+\]
+并且若 $(d_i)$ 为 Zeckendorf 规范形的数字，则
+\[
+\varepsilon(n):=\sum_{i\ge 2} d_i(-\psi^i)
+\]
+满足 $\varepsilon(n)\in(-1,1)$，且其符号由最低非零位 $\ell(n)$ 决定：
+\[
+\mathrm{sign}\,\varepsilon(n)=\mathrm{sign}\,(-\psi^{\ell(n)}).
+\]
+\end{lemma}
+
+\begin{proof}
+由 Binet 公式 $F_i=(\varphi^i-\psi^i)/\sqrt5$ 得
+\(
+\varphi F_i=(\varphi^{i+1}-\varphi\psi^i)/\sqrt5
+\)
+与
+\(
+F_{i+1}=(\varphi^{i+1}-\psi^{i+1})/\sqrt5
+\)
+相减，注意到 $\psi^{i+1}-\varphi\psi^i=\psi^i(\psi-\varphi)=-\psi^i(\varphi+\varphi^{-1})=-\sqrt5\,\psi^i$，于是得到 $\varphi F_i-F_{i+1}=-\psi^i$。
+
+对第二部分，因 $\abs{\psi}=\varphi^{-1}<1$，且 Zeckendorf 约束 $d_id_{i+1}=0$ 意味着当 $\ell=\ell(n)$ 时下一可能的 $1$ 位至多出现在 $\ell+2$，从而
+\[
+\left|\sum_{i>\ell} d_i(-\psi^i)\right|\le \sum_{k\ge 1} \abs{\psi}^{\ell+2k}=\frac{\abs{\psi}^{\ell+2}}{1-\abs{\psi}^2}=\abs{\psi}^{\ell+1}.
+\]
+另一方面，主项满足 $\abs{-\psi^{\ell}}=\abs{\psi}^{\ell}$，故余项严格小于主项幅度，从而 $\varepsilon(n)$ 的符号由主项 $-\psi^{\ell}$ 决定。
+此外 $\abs{\varepsilon(n)}\le \sum_{k\ge 0}\abs{\psi}^{2+k}=\abs{\psi}^2/(1-\abs{\psi})<1$，故 $\varepsilon(n)\in(-1,1)$。
+\end{proof}
+
+\begin{theorem}[Zeckendorf 移位实现黄金 Beatty/Wythoff 索引]\label{thm:zeckendorf-shift-beatty-wythoff}
+设 $\varphi=(1+\sqrt5)/2$。
+对任意整数 $n\ge 1$，令 $n=\sum_{i\ge 2} d_iF_i$ 为其 Zeckendorf 规范形，并定义 $S_1,S_2,\ell(n)$ 如定义 \ref{def:zeckendorf-shift} 与 \ref{def:fib-zeckendorf}。
+则有显式公式
+\[
+\bigl\lfloor n\varphi\bigr\rfloor = S_1(n)-\ind_{\{\ell(n)\ \mathrm{even}\}},
+\qquad
+\bigl\lfloor n\varphi^2\bigr\rfloor = S_2(n)-\ind_{\{\ell(n)\ \mathrm{even}\}}.
+\]
+因此 Wythoff 对 $(a_n,b_n):=(\lfloor n\varphi\rfloor,\lfloor n\varphi^2\rfloor)$ 满足 $b_n=a_n+n$ 且可由 Zeckendorf 数字在一次移位后经一比特校正得到。
+\end{theorem}
+
+\begin{proof}
+由引理 \ref{lem:phi-fib-remainder-dominance} 的恒等式
+\(\varphi F_i=F_{i+1}-\psi^i\)
+得
+\[
+n\varphi = \sum_{i\ge 2} d_i\varphi F_i = \sum_{i\ge 2} d_iF_{i+1} + \sum_{i\ge 2} d_i(-\psi^i) = S_1(n)+\varepsilon(n).
+\]
+其中 $S_1(n)$ 为整数而 $\varepsilon(n)\in(-1,1)$。
+故
+\[
+\lfloor n\varphi\rfloor=S_1(n)+\lfloor \varepsilon(n)\rfloor,
+\]
+而 $\lfloor\varepsilon(n)\rfloor$ 仅可能取 $0$ 或 $-1$。
+由引理 \ref{lem:phi-fib-remainder-dominance}，$\varepsilon(n)$ 的符号等于 $-\psi^{\ell(n)}$ 的符号。
+注意 $-\psi^{\ell}= -(-\varphi^{-1})^{\ell}= -(-1)^{\ell}\varphi^{-\ell}$，因此
+\(
+\varepsilon(n)<0\iff \ell(n)\ \text{为偶数}.
+\)
+从而 $\lfloor\varepsilon(n)\rfloor=-\ind_{\{\ell(n)\ \mathrm{even}\}}$，得到第一式。
+
+第二式由 $\varphi^2=\varphi+1$ 与定义 \ref{def:zeckendorf-shift} 的 $S_2(n)=S_1(n)+n$ 立得：
+\(
+n\varphi^2=n\varphi+n=S_2(n)+\varepsilon(n)
+\)
+故同样的 $\lfloor\varepsilon(n)\rfloor$ 给出同一校正项。
+最后 $b_n-a_n=\lfloor n\varphi^2\rfloor-\lfloor n\varphi\rfloor = n$。
+\end{proof}
+
+\begin{corollary}[黄金互补索引的可计算调度]\label{cor:golden-index-scheduler}
+定义两序列
+\[
+A:=\{\lfloor n\varphi\rfloor:n\ge 1\},\qquad B:=\{\lfloor n\varphi^2\rfloor:n\ge 1\}.
+\]
+则 $A$ 与 $B$ 在正整数上互补分拆（Beatty 互补定理，见 \cite{Beatty1926}），并且由定理 \ref{thm:zeckendorf-shift-beatty-wythoff}，对任意 $n$ 可在不使用实数运算的情况下计算 $a_n\in A$ 与 $b_n\in B$。
+因此“命中/未命中索引”的生成可被实现为：输入 $n$ 的 Zeckendorf 数字，执行一次移位，再依据最低非零位奇偶性减去 $1$。
+\end{corollary}
+
+\begin{remark}[可复现的整数核验表]
+脚本 \path{scripts/exp_wythoff_shift_certificate.py} 生成一个有限范围的整数核验表，用于对定理 \ref{thm:zeckendorf-shift-beatty-wythoff} 的等式在实现层面做回归审计：
+\input{sections/generated/tab_wythoff_shift_certificate}
+\end{remark}
+
+\begin{algorithm}[纯整数黄金调度生成]\label{alg:integer-golden-scheduler}
+输入：整数 $n\ge 1$。
+\begin{enumerate}
+  \item 计算 $n$ 的 Zeckendorf 规范形 $n=\sum_{i\ge 2} d_iF_i$（无相邻 $11$）。
+  \item 计算移位值 $S_1(n)=\sum_{i\ge 2} d_iF_{i+1}$ 与 $S_2(n)=S_1(n)+n$。
+  \item 令 $\ell(n)=\min\{i\ge 2:d_i=1\}$，并设校正位 $\delta(n)=\ind_{\{\ell(n)\ \mathrm{even}\}}$。
+  \item 输出 $(a_n,b_n)=(S_1(n)-\delta(n),\,S_2(n)-\delta(n))=(\lfloor n\varphi\rfloor,\lfloor n\varphi^2\rfloor)$。
+\end{enumerate}
+\end{algorithm}
+
+\subsection{机械字与 Beatty 互补索引：扫描—投影与整数分拆的同构}
+本小节把“旋转扫描的窗命中”与“Beatty/Wythoff 的整数索引分拆”对接为同一对象：机械字（mechanical word）。该等价不仅提供一个不依赖实数计算的索引生成方式（已由算法 \ref{alg:integer-golden-scheduler} 给出），也把后续出现的 Fibonacci 替换不动点、gap 递归与最小复杂度结论落在统一的扫描—投影接口上。
+
+\begin{definition}[机械字与命中集合]\label{def:mechanical-word-hitset}
+令 $\alpha\in(0,1)$，并对 $n\in\NN$ 定义机械字
+\[
+s_n(\alpha):=\big\lfloor (n+1)\alpha\big\rfloor-\big\lfloor n\alpha\big\rfloor\in\ZZ.
+\]
+并定义旋转轨道小数部分 $x_n:=\{n\alpha\}\in[0,1)$。
+令窗集 $W_\alpha:=[1-\alpha,1)$，并记命中集合
+\[
+\mathcal H(\alpha):=\{n\in\NN: x_n\in W_\alpha\}.
+\]
+\end{definition}
+
+\begin{theorem}[机械字与 Beatty 集合的等价刻画]\label{thm:mech-beatty}
+令 $\alpha\in(0,1)$ 为无理数，定义 $s_n(\alpha)$ 与 $\mathcal H(\alpha)$ 如定义 \ref{def:mechanical-word-hitset}。
+则 $s_n(\alpha)\in\{0,1\}$，并且对任意 $n\in\NN$ 有以下等价：
+\begin{enumerate}
+  \item $s_n(\alpha)=1$。
+  \item $x_n=\{n\alpha\}\in[1-\alpha,1)$，即 $n\in\mathcal H(\alpha)$。
+  \item 存在 $k\in\NN_{>0}$ 使得 $n=\big\lfloor k/\alpha\big\rfloor$。
+\end{enumerate}
+此外对任意 $N\ge 1$ 有望远镜恒等式
+\[
+\sum_{n=0}^{N-1} s_n(\alpha)=\big\lfloor N\alpha\big\rfloor.
+\]
+\end{theorem}
+
+\begin{proof}
+由于 $0<\alpha<1$，故 $0< (n+1)\alpha-n\alpha=\alpha<1$，从而
+\(
+\lfloor (n+1)\alpha\rfloor-\lfloor n\alpha\rfloor\in\{0,1\}
+\)，即 $s_n(\alpha)\in\{0,1\}$。
+
+对等价 (1)$\Leftrightarrow$(2)，注意
+\[
+s_n(\alpha)=1\iff \lfloor (n+1)\alpha\rfloor=\lfloor n\alpha\rfloor+1\iff \{n\alpha\}+\alpha\ge 1.
+\]
+等价于 $\{n\alpha\}\in[1-\alpha,1)$。
+
+对 (1)$\Leftrightarrow$(3)，先证 (3)$\Rightarrow$(1)。若 $n=\lfloor k/\alpha\rfloor$（$k\ge 1$），则
+\[
+n\le k/\alpha<n+1\ \Longrightarrow\ n\alpha\le k<(n+1)\alpha.
+\]
+因 $\alpha$ 无理，$n\alpha\notin\ZZ$，故 $n\alpha<k$；于是区间 $(n\alpha,(n+1)\alpha)$ 内含整数 $k$，从而 $\lfloor (n+1)\alpha\rfloor\ge \lfloor n\alpha\rfloor+1$。
+又因差值至多为 $1$，故 $s_n(\alpha)=1$。
+
+反之若 $s_n(\alpha)=1$，令 $k:=\lfloor (n+1)\alpha\rfloor$，则 $k\in\NN_{>0}$ 且
+\[
+\lfloor n\alpha\rfloor=k-1\ \Longrightarrow\ k-1<n\alpha<k\le (n+1)\alpha<k+1.
+\]
+两边除以 $\alpha>0$ 得 $n<k/\alpha\le n+1$，从而 $n=\lfloor k/\alpha\rfloor$。
+
+最后望远镜恒等式由
+\(
+\sum_{n=0}^{N-1}(\lfloor(n+1)\alpha\rfloor-\lfloor n\alpha\rfloor)=\lfloor N\alpha\rfloor
+\)
+立即得到。
+\end{proof}
+
+\begin{corollary}[黄金分支下的 Wythoff/Beatty 互补命中]\label{cor:wythoff-indicator}
+令 $\varphi=(1+\sqrt5)/2$ 并取 $\alpha=\varphi^{-2}$。
+定义两序列
+\[
+A_k:=\lfloor k\varphi\rfloor,\qquad B_k:=\lfloor k\varphi^2\rfloor,\qquad k\in\NN_{>0}.
+\]
+则
+\[
+\mathcal H(\varphi^{-2})=\{n\in\NN: s_n(\varphi^{-2})=1\}=\{B_k:k\in\NN_{>0}\}.
+\]
+并且由 Beatty 互补定理（见 \cite{Beatty1926}），$\{A_k\}_{k\ge 1}$ 与 $\{B_k\}_{k\ge 1}$ 在 $\NN_{>0}$ 上互不相交且并为 $\NN_{>0}$。
+\end{corollary}
+
+\subsection{黄金 gap 递归与 Fibonacci 替换不动点}
+上一小节把命中集合与机械字等价化。进一步地，对 Beatty/Wythoff 序列，其相邻差分（gap）本身构成一个二字母序列，并在黄金分支下满足 Fibonacci 替换的不动点性质。这为后续“递归涌现”的论证提供一个最小的、完全可审计的离散自相似原型。
+
+\begin{theorem}[Wythoff 上序列的 gap 字与 Fibonacci 替换不变性]\label{thm:wythoff-gaps-fib}
+令 $B_k:=\lfloor k\varphi^2\rfloor$（$k\in\NN_{>0}$），并定义 gap 序列
+\[
+g_k:=B_{k+1}-B_k,\qquad k\in\NN_{>0}.
+\]
+则 $g_k\in\{2,3\}$。
+并且右无穷字 $g_1g_2g_3\cdots$ 是替换
+\[
+\tau:\ \begin{cases}
+3\mapsto 32,\\
+2\mapsto 3
+\end{cases}
+\]
+的以 $3$ 开始的不动点：
+\[
+g_1g_2g_3\cdots=\lim_{n\to\infty}\tau^n(3).
+\]
+\end{theorem}
+
+\begin{proof}
+利用 $\varphi^2=\varphi+1=2+\varphi^{-1}$，对任意 $k\ge 1$ 有
+\[
+B_k=\lfloor k\varphi^2\rfloor=\lfloor k(2+\varphi^{-1})\rfloor=2k+\lfloor k\varphi^{-1}\rfloor.
+\]
+因此
+\[
+g_k=B_{k+1}-B_k=2+\Bigl(\lfloor (k+1)\varphi^{-1}\rfloor-\lfloor k\varphi^{-1}\rfloor\Bigr)=:2+u_k,
+\]
+其中 $u_k\in\{0,1\}$ 为斜率 $\varphi^{-1}$ 的机械字差分，因此 $g_k\in\{2,3\}$。
+
+更进一步，令
+\[
+u_k:=\lfloor (k+1)\varphi^{-1}\rfloor-\lfloor k\varphi^{-1}\rfloor\in\{0,1\},\qquad k\in\NN_{>0}.
+\]
+由于 $\varphi^{-1}=[0;1,1,1,\dots]$，该机械字对应于黄金斜率的标准 Sturmian 字；其作为二字母无限词是 Fibonacci 替换的标准不动点之一（参见 \cite{MorseHedlund1940,LindMarcus1995,Fogg2002}）。
+以字母重标记 $\kappa(0)=2,\ \kappa(1)=3$ 定义 $g_k:=\kappa(u_k)$。令 Fibonacci 替换 $\sigma$ 作用于 $\{0,1\}$ 上为
+\[
+\sigma:\ \begin{cases}
+1\mapsto 10,\\
+0\mapsto 1.
+\end{cases}
+\]
+则 $g_1g_2\cdots$ 是替换 $\tau:=\kappa\circ\sigma\circ\kappa^{-1}$ 的不动点。
+直接计算得 $\tau(3)=\kappa(\sigma(1))=32$ 与 $\tau(2)=\kappa(\sigma(0))=3$。
+故 $g_1g_2g_3\cdots$ 为 $\tau$ 的以 $3$ 开始的不动点。
+\end{proof}
