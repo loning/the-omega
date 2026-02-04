@@ -71,6 +71,104 @@ S_Z^{(\alpha)}(m)=\log\frac{2^m}{F_{m+2}}
 因此 $\kappa(\varphi^{-1})=\log(2/\varphi)$，与本文二元折叠的熵隙常数一致（见第 \ref{subsec:pom-projection-entropy} 小节的相关公式）。
 \end{remark}
 
+\subsubsection{金属平均族：常数型 \texorpdfstring{$\alpha_A=[0;A,A,A,\dots]$}{alphaA} 的两态语法与“压缩/反共振”对偶}
+
+\paragraph{两态 SFT 表示（合法语法的最小记忆）}
+当 $a_n\equiv A$ 为常数（$A\in\NN_{\ge 1}$）时，合法约束
+\(
+d_n=A\Rightarrow d_{n-1}=0
+\)
+只依赖“上一位是否为 $0$”。因此可用两态记忆刻画：
+\[
+S_0:\ d_{n-1}=0,\qquad S_+:\ d_{n-1}\in\{1,\dots,A\}.
+\]
+
+\begin{proposition}[金属平均族的合法语法是两态 SFT]\label{prop:metallic-two-state-sft}
+设 $\alpha_A=[0;A,A,A,\dots]$（$A\in\NN_{\ge 1}$）。则长度-$m$ 的合法集合 $X_m^{(\alpha_A)}$ 可由两态 SFT 的计数矩阵给出：
+\[
+M_A=
+\begin{pmatrix}
+1 & A\\
+1 & A-1
+\end{pmatrix},
+\qquad
+\chi_{M_A}(\lambda)=\lambda^2-A\lambda-1,
+\]
+其 Perron 根为
+\[
+\lambda_A=\frac{A+\sqrt{A^2+4}}{2}.
+\]
+并且拓扑熵满足
+\[
+h_{\mathrm{top}}\bigl(X^{(\alpha_A)}\bigr)=\log\lambda_A.
+\]
+\end{proposition}
+\begin{proof}
+转移计数为：从 $S_0$ 选 $0$（$1$ 种）留在 $S_0$，选 $1,\dots,A$（$A$ 种）到 $S_+$；从 $S_+$ 选 $0$（$1$ 种）到 $S_0$，选 $1,\dots,A-1$（$A-1$ 种）留在 $S_+$（$A$ 被禁止）。故计数矩阵为 $M_A$。
+其特征多项式与 Perron 根为直接计算；而有限型移位的拓扑熵等于邻接矩阵谱半径的对数，故得结论。证毕。
+\end{proof}
+
+\paragraph{折叠压缩的最优性：存在内部极大点}
+对金属平均族，原始数字空间规模为 $|\Omega_m^{(\alpha_A)}|=(A+1)^m$，而命题 \ref{prop:Xm-alpha-cardinality} 给出
+\(
+|X_m^{(\alpha_A)}|=q_{m+1}\asymp \lambda_A^m
+\)。
+因此折叠压缩的指数斜率为
+\[
+h_Z(A):=\lim_{m\to\infty}\frac{1}{m}\log\frac{|\Omega_m^{(\alpha_A)}|}{|X_m^{(\alpha_A)}|}
+=\log\!\left(\frac{A+1}{\lambda_A}\right).
+\]
+
+\begin{proposition}[金属平均族的投影压缩率在 \texorpdfstring{$A=\frac{3}{2}$}{A=3/2} 处取极大]\label{prop:metallic-compression-extremum}
+把 $A$ 连续化为实参数（$A\ge 1$），则函数
+\(
+h_Z(A)=\log\!\left(\frac{A+1}{\lambda_A}\right)
+\)
+在区间 $[1,\infty)$ 上存在唯一极大点
+\[
+A_\star=\frac{3}{2}.
+\]
+若限制 $A\in\ZZ_{\ge 1}$，则 $h_Z(A)$ 的最大值在 $A=2$（白银分支）处取得。
+\end{proposition}
+\begin{proof}
+由 $\lambda_A=(A+\sqrt{A^2+4})/2$，直接求导得到
+\[
+h_Z'(A)=\frac{1}{A+1}-\frac{1}{\sqrt{A^2+4}}.
+\]
+方程 $h_Z'(A)=0$ 等价于 $\sqrt{A^2+4}=A+1$，唯一解为 $A_\star=3/2$。再由
+\[
+h_Z''(A)=-\frac{1}{(A+1)^2}+\frac{A}{(A^2+4)^{3/2}}<0\qquad(A\ge 1)
+\]
+（可平方化为一条初等不等式）知该临界点为严格极大点，且全局唯一。
+对整数点，因 $h_Z$ 在 $[1,A_\star]$ 上严格增、在 $[A_\star,\infty)$ 上严格减，最大只能在 $A=1,2$ 中取到。比较
+\[
+h_Z(2)-h_Z(1)=\log\!\left(\frac{3}{1+\sqrt2}\cdot\frac{1+\sqrt5}{4}\right)
+\]
+只需验证
+\(
+3(1+\sqrt5)>4(1+\sqrt2)
+\)，即
+\(
+3\sqrt5-4\sqrt2>1
+\)，其平方为 $77-24\sqrt{10}>1$，等价于 $(19/6)^2>10$，成立。故整数最大在 $A=2$。证毕。
+\end{proof}
+
+\paragraph{与反共振证书的不可兼得}
+附录 H 的 gap/差异度证书给出另一条“反共振强度”泛函，其典型形式可写为
+\[
+\kappa(A):=\frac{A}{\log\lambda_A},
+\]
+并且在 $A\ge 1$ 上严格递增（黄金分支 $A=1$ 在该证书意义下严格最优）。
+
+\begin{remark}[两类最优性分离：反共振 vs 投影压缩]\label{rem:metallic-dual-optimality}
+金属平均族的尺度更换并非“黄金最优”的一句话：同一参数轴上存在两条竞争的极值目标。
+\begin{itemize}
+  \item \textbf{反共振/有限样本稳定性证书最强：}由 $\kappa(A)$ 的单调性，取 $A=1$（黄金）最优；
+  \item \textbf{投影压缩率最大（每位被压扁的信息量最大）：}由命题 \ref{prop:metallic-compression-extremum}，连续极值在 $A=3/2$，整数最优在 $A=2$（白银）。
+\end{itemize}
+因此“反共振最优性”与“投影压缩最优性”在金属平均族上不可兼得：它们对应两条不同的可审计泛函，且极值点分离。
+\end{remark}
+
 \subsubsection{一般折叠算子 \texorpdfstring{$\Fold_m^{(\alpha)}$}{Fold\_m(alpha)}}
 
 为了与本文的“折叠 = 取值 + 取规范形”机制保持一致，我们把一般 Ostrowski 折叠定义为：先将“未规范数字”（允许违反相邻最大值约束）赋一个可审计整数值，再取 Ostrowski 规范形并截断。
