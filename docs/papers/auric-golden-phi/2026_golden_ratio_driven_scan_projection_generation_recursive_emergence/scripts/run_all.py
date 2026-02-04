@@ -342,6 +342,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_weighted_phase_amplitude",
+            script="exp_sync_kernel_weighted_phase_amplitude_separation.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_weighted_phase_amplitude.json",
+                "sections/generated/tab_sync_kernel_weighted_phase_amplitude.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_time_correlation",
             script="exp_sync_kernel_time_correlation.py",
             args=[],

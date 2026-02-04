@@ -330,6 +330,40 @@ u=r^2,\qquad w:=zr=z\sqrt{u},\qquad s:=r+r^{-1}=\sqrt{u}+\frac{1}{\sqrt{u}}.
 保证其可写成某个 \(\widehat\Delta(w,s)\in\ZZ[w,s]\)。
 把 \eqref{eq:sync-kernel-weighted-delta-explicit} 代入 \(u=r^2,z=w/r\) 并在不变量基 \(C_k(s)=r^k+r^{-k}\) 上化简，即得 \eqref{eq:sync-kernel-weighted-delta-completed}；脚本 \texttt{scripts/exp\_sync\_kernel\_weighted\_delta\_completed.py} 对该恒等式作了符号核验。证毕。
 \end{proof}
+
+\begin{corollary}[单位圆扭曲的相位--幅度分离：\texorpdfstring{$P(i\theta)=\frac{i\theta}{2}+\log|\Lambda(s)|$}{P(i theta)=i theta/2 + log|Lambda(s)|}]\label{cor:sync-kernel-weighted-phase-amplitude}
+取单位圆扭曲 \(u=e^{i\theta}\)（\(\theta\in\RR\)），并令
+\[
+r:=e^{i\theta/2},\qquad s:=r+r^{-1}=2\cos(\theta/2)\in[-2,2].
+\]
+设 \(w_\star(s)\) 为方程 \(\widehat\Delta(w,s)=0\) 的根中满足 \(|w|\) 最小者，并定义
+\[
+\Lambda(s):=\frac{1}{w_\star(s)}.
+\]
+则最小极点与 Perron 根满足
+\[
+\boxed{\ z_\star(e^{i\theta})=\frac{w_\star(s)}{r},\qquad \lambda(e^{i\theta})=\frac{1}{z_\star(e^{i\theta})}=r\cdot \Lambda(s)\ },
+\]
+从而压力出现严格的“相位--幅度分离”：
+\[
+\boxed{\ P(i\theta)=\log\lambda(e^{i\theta})=\frac{i\theta}{2}+\log|\Lambda(2\cos(\theta/2))|\ }.
+\]
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:sync-kernel-weighted-hat-delta}，在 \(u=r^2\) 下有
+\(
+\Delta(z,u)=\widehat\Delta(zr,s)
+\)。
+对单位圆权重 \(|u|=1\) 有 \(|r|=1\)，因此对任意 \(w=zr\) 有 \(|z|=|w|\)。
+故 \(\Delta(z,u)=0\) 在 \(z\)-平面上距离原点最近的零点（最小极点）与 \(\widehat\Delta(w,s)=0\) 在 \(w\)-平面上距离原点最近的零点一一对应，并满足 \(z_\star=w_\star/r\)。
+由定义 \(\lambda(u)=1/z_\star(u)\) 得 \(\lambda(e^{i\theta})=r/w_\star(s)=r\Lambda(s)\)。取对数即得结论。证毕。
+\end{proof}
+
+\begin{remark}[数值核对（可复现）]\label{rem:sync-kernel-weighted-phase-amplitude-table}
+表 \ref{tab:sync_kernel_weighted_phase_amplitude} 用矩阵本征值与完成化根 \(w_\star(s)\) 逐点核验
+\(\arg\lambda(e^{i\theta})=\theta/2\) 与 \(\Im(\lambda(e^{i\theta})/e^{i\theta/2})\approx 0\)：
+\input{sections/generated/tab_sync_kernel_weighted_phase_amplitude}
+\end{remark}
 设 $z_\star(u)$ 为最小正根、$\lambda(u)=1/z_\star(u)$，则
 \[
 \lambda(u)=u\,\lambda(1/u),
@@ -927,6 +961,20 @@ C(u):=\lim_{z\to z_\star}(1-z/z_\star)\zeta(z,u)=\frac{1}{-z_\star\,\partial_z\D
 =\log C(u)-\sum_{m\ge 2}\frac{\mu(m)}{m}\log\Delta(z_\star^m,u^m),
 \]
 其中级数以指数速度收敛。
+
+\begin{corollary}[完成化的纯实计算：单位圆上 \texorpdfstring{$\Delta(z_\star^m,u^m)$}{Delta(z*^m,u^m)} 的实代数化]\label{cor:sync-kernel-weighted-logM-completed-real}
+取 \(u=e^{i\theta}\) 并令 \(r=e^{i\theta/2}\)、\(s=r+r^{-1}=2\cos(\theta/2)\in[-2,2]\)。记 \(w_\star(s)\) 为 \(\widehat\Delta(w,s)=0\) 的最小模根，则 \(z_\star(u)=w_\star(s)/r\)。
+对任意 \(m\ge 1\)，令
+\[
+S_m(s):=r^m+r^{-m}=2\cos(m\theta/2)=:C_m(s)\in\ZZ[s]
+\]
+（\(C_m\) 为 Chebyshev--Adams 运算；见推论 \ref{cor:primitive-completion-hatp}）。
+则有恒等式
+\[
+\boxed{\ \Delta(z_\star(u)^m,u^m)=\widehat\Delta\!\bigl(w_\star(s)^m,\ S_m(s)\bigr)\ }.
+\]
+因此在单位圆扭曲上，\(\log\mathfrak{M}(\theta)\) 的 \(\Delta\)-only 级数每一项都可在实域上计算：输入仅为实参数 \(s\in[-2,2]\) 与实数 \(w_\star(s)\) 及其幂。
+\end{corollary}
 
 \subsubsection{前 10 个 primitive 加权谱多项式}\label{app:weighted-primitive-table}
 前 10 项 $p_n(u)=\sum_{\tau\ \mathrm{primitive},\,|\tau|=n}u^{S_\tau\varphi}$ 由
