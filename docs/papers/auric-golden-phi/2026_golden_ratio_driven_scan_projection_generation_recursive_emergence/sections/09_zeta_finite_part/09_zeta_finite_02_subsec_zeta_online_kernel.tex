@@ -158,6 +158,52 @@ I(\alpha)=\frac{(\alpha-\frac12)^2}{2P''(0)}+O\!\left((\alpha-\tfrac12)^3\right)
 \]
 其中 $I$ 为输出位计数的 LDP 率函数（见附录 \ref{app:pressure-analytic} 与 \ref{app:rate-param}）。有限 $n$ 的镜像对称与其导出的 Mertens 偶性见推论 \ref{cor:primitive-finite-sym} 与命题 \ref{prop:mertens-even}；周期迹多项式与 $\Delta$ 系数的逐项回文约束见命题 \ref{prop:trace-palindrome} 与推论 \ref{cor:delta-coeff-palindrome}。
 
+\begin{theorem}[压力对称 \texorpdfstring{$\Rightarrow$}{=>} 大偏差谱的精确镜像]\label{thm:sync-pressure-sym-ldp-mirror}
+设同步核满足自对偶对称，从而压力函数满足
+\[
+P(\theta)=\theta+P(-\theta)
+\qquad(\theta\ \text{在某邻域内}).
+\]
+令 \(I\) 为输出位计数（单位长度输出密度 \(\alpha\)）的大偏差率函数，其在可微区可由 Legendre 变换给出
+\[
+I(\alpha)=\sup_{\theta\in\RR}\bigl(\theta\alpha-P(\theta)\bigr)
+\]
+（见附录 \ref{app:rate-param}）。则：
+\begin{enumerate}
+  \item \textbf{（典型密度镜像）} 若定义倾斜族的典型密度为 \(\alpha(\theta):=P'(\theta)\)，则
+  \[
+  \alpha(\theta)+\alpha(-\theta)=1.
+  \]
+  \item \textbf{（率函数镜像）} 对所有 \(\alpha\)（落在有效域内）有精确恒等式
+  \[
+  \boxed{\ I(\alpha)=I(1-\alpha)\ }.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+对压力对称恒等式两边求导得 \(P'(\theta)=1-P'(-\theta)\)，即 \(\alpha(\theta)+\alpha(-\theta)=1\)。
+
+对率函数，按定义
+\[
+I(1-\alpha)=\sup_{\theta}\bigl(\theta(1-\alpha)-P(\theta)\bigr).
+\]
+令 \(\theta'=-\theta\)，并用 \(P(-\theta')=P(\theta')-\theta'\)（等价于压力对称）代入，得到
+\[
+I(1-\alpha)
+=\sup_{\theta'}\bigl(\theta'\alpha-P(\theta')\bigr)
+=I(\alpha).
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[二次型刚性常数由 \texorpdfstring{$P''(0)$}{P''(0)} 锁定]\label{cor:sync-ldp-quadratic-locked}
+在定理 \ref{thm:sync-pressure-sym-ldp-mirror} 的条件下，典型密度为 \(\alpha_\star=P'(0)=1/2\)，且其附近的二次近似系数由 \(P''(0)\) 唯一确定：
+\[
+I\!\left(\tfrac12+\delta\right)=\frac{\delta^2}{2P''(0)}+o(\delta^2)
+=\frac{51}{11}\delta^2+o(\delta^2).
+\]
+\end{corollary}
+
 \paragraph{Cyclotomic elimination：模 \texorpdfstring{$m$}{m} 的 residue mixing 误差指数是整系数代数数}
 把加权 primitive 轨道谱写成
 \[
@@ -460,6 +506,26 @@ p_n=\frac{\lambda^n}{n}+O\!\left(\frac{\Lambda^n}{n}\right),
   因而其 prime-orbit 误差尺度严格优于平方根上界（注 \ref{rem:pom-collision-rh-margin} 与注 \ref{rem:pom-collision-rh-margin-a3}）。
 \end{enumerate}
 \end{proposition}
+
+\begin{corollary}[\texorpdfstring{$s$}{s}-平面几何判别：右半临界带的极点层级]\label{cor:rh-stratification-splane}
+令 \(Z_M(s)=\det(I-\lambda^{-s}M)^{-1}\) 为 Dirichlet 化后的 \(\zeta\)-函数（命题 \ref{prop:s-plane-spectrum-poles}）。则上述三类核的 RH 分层可等价翻译为 \(s\)-平面的极点几何层级：
+\begin{enumerate}
+  \item \textbf{（同步核：非 RH）} 因存在 \(|\mu|>\sqrt{\lambda}\) 的非平凡特征值，故存在一列极点落在竖线
+  \(
+  \Re(s)=\log|\mu|/\log\lambda
+  \)
+  上，且该实部严格大于 \(1/2\)。因此右半开带 \(\tfrac12<\Re(s)<1\) 内出现非平凡极点。
+  \item \textbf{（真实输入核：RH-sharp）} 临界带内的全部非平凡极点列恰落在 \(\Re(s)=1/2\)（附录 \ref{app:real-input-40-finite-rh} 的命题 \ref{prop:finite-rh-40}）。
+  \item \textbf{（折叠碰撞核：严格 RH）} 对 \(A_2,A_3\) 有 \(\max_{i\ge 2}|\mu_i|<\sqrt{\lambda}\)，故 \(\tfrac12\le \Re(s)<1\) 的区域内无非平凡极点；换言之临界线 \(\Re(s)=1/2\) 上也无达界极点列贡献（除主极点列 \(\Re(s)=1\) 外）。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:s-plane-spectrum-poles}，每个非零特征值 \(\mu\) 生成一列极点，且其竖线实部为 \(\Re(s)=\log|\mu|/\log\lambda\)。三种情形分别对应：
+非 RH 时存在 \(|\mu|>\sqrt{\lambda}\Rightarrow \Re(s)>1/2\)；
+RH-sharp 时存在 \(|\mu|=\sqrt{\lambda}\Rightarrow \Re(s)=1/2\)；
+严格 RH 时对所有非平凡 \(|\mu|<\sqrt{\lambda}\Rightarrow \Re(s)<1/2\)。
+证毕。
+\end{proof}
 
 \paragraph{\texorpdfstring{$s$}{s}-平面完成化函数方程的谱互反判据}\label{par:s-plane-functional-eq-criterion}
 上一段的“函数方程”发生在参数侧（$u\leftrightarrow 1/u$ 或 $\theta\leftrightarrow-\theta$）。
