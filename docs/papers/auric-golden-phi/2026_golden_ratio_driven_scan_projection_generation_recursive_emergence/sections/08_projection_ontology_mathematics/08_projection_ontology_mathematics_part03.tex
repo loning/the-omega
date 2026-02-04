@@ -2678,3 +2678,67 @@ $
 \sum_{c\subseteq A}|c|/|G_m|=|A|/|G_m|=\mu_{\mathrm{Haar}}(U)
 $，并因 $A$ 的共轭类数目有限，误差仍为 $O(\Lambda_m^n/n)$。若 $\Lambda_m\le \lambda_m^{1/2}$，则立得平方根级误差。证毕。
 \end{proof}
+
+\subsubsection{\texorpdfstring{$L^2(\widehat{\ZZ})$}{L2(Zhat)} 上的寄存器提升算子：角色直和分解与“统一全部模数”的算子框架}\label{subsec:profinite-operator-l2}
+定理 \ref{thm:pom-profinite-axis} 以“每个有限层 \(G_m\)”为单位给出 Chebotarev 计数与误差口径。
+本小节给出一个更接近 Hilbert--P{\'o}lya 语义的压缩：把所有模数的扭曲通道统一为一个作用在 \(L^2(G_\infty)\) 上的提升算子，并在 Pontryagin 对偶侧把它严格对角化为一族 twist 矩阵。
+
+\paragraph{专门化到素数寄存器轴：\texorpdfstring{$G_\infty=\widehat{\ZZ}$}{G=Zhat}}
+取
+\[
+G_\infty=\widehat{\ZZ}=\varprojlim_m \ZZ/m\ZZ,
+\]
+它是紧阿贝尔群，其 Pontryagin 对偶为离散群
+\[
+\widehat{G_\infty}\cong \QQ/\ZZ,
+\]
+并存在一组标准正交角色基 \(\{\chi_\alpha\}_{\alpha\in\QQ/\ZZ}\subset L^2(\widehat{\ZZ})\)（见正文关于角色基与对偶的讨论，以及附录中同余轴的 DFT 口径）。
+
+\paragraph{提升算子}
+设核的状态集合为有限集 \(V\)，并记带权有向边集合为 \(E\subset V\times V\)。
+对每条边 \(e:i\to j\) 赋一个权重 \(w(e)\in\CC\)（例如由输出位势/碰撞势/温度化门给出），并赋一个“寄存器增量”标记
+\(\gamma(e)\in \widehat{\ZZ}\)
+（在有限层 \(\ZZ/m\ZZ\) 上它就是同余更新步；逆极限上由相容性唯一确定）。
+定义 Hilbert 空间
+\[
+\mathcal{H}:=\ell^2(V)\otimes L^2(\widehat{\ZZ}),
+\]
+并定义提升算子 \(T:\mathcal{H}\to\mathcal{H}\) 为
+\[
+\boxed{\ (Tf)_j(x):=\sum_{e:i\to j} w(e)\,f_i\!\bigl(x-\gamma(e)\bigr)\qquad(x\in\widehat{\ZZ})\ }.
+\]
+这正是“有限状态 \(\times\) 紧群平移”型的标准构造：它把有限核的转移与寄存器平移耦合为一个单一算子。
+
+\paragraph{角色分解：一切扭曲通道同时对角化}
+由于 \(\widehat{\ZZ}\) 为紧阿贝尔群，Fourier 变换给出幺正同构
+\[
+L^2(\widehat{\ZZ})\ \cong\ \ell^2(\QQ/\ZZ),
+\]
+并把平移作用对角化为角色乘子。于是 \(T\) 在 Fourier 侧分解为一个\textbf{严格直和}（可视为以计数测度的直积分）：
+\[
+\boxed{\ T\ \simeq\ \bigoplus_{\alpha\in\QQ/\ZZ} M_{\chi_\alpha}\ },
+\]
+其中每个纤维 twist 矩阵 \(M_{\chi}\in\CC^{V\times V}\) 的条目为
+\[
+\boxed{\ (M_\chi)_{ij}:=\sum_{e:i\to j} w(e)\,\chi\!\bigl(\gamma(e)\bigr)\ }.
+\]
+因此“对所有模数/所有角色的扭曲”被统一为同一个算子 \(T\) 的角色分量谱。
+在有限层 \(G_m=\ZZ/m\ZZ\) 上，上式退化为离散傅里叶变换（DFT）下的块对角化，正是定理 \ref{thm:pom-profinite-axis} 与有限层 Chebotarev 估计背后的线性代数机制。
+
+\paragraph{归一化谱与 GRH 语义}
+记平凡通道的 Perron 根为 \(\lambda:=\rho(M_{\mathbf{1}})\)，并对任意角色 \(\chi\) 定义归一化纤维算子
+\[
+U_\chi:=\lambda^{-1/2}M_\chi.
+\]
+令 \(w_{\chi,1},\dots,w_{\chi,|V|}\) 为 \(U_\chi\) 的特征值，则“临界圆”条件为 \(|w_{\chi,i}|=1\)。
+由 \S\ref{subsec:zeta-online-kernel} 的谱--\(s\) 平面字典（命题 \ref{prop:s-plane-spectrum-poles} 与附录 \ref{app:real-input-40-finite-rh} 的 toy-RH 讨论），这等价于把对应极点压到 \(\Re(s)=\tfrac12\)。
+因此核版 GRH 的一个可操作“谱酉化指标”可取
+\[
+\mathcal{E}(\chi):=\max_{1\le i\le |V|}\bigl|\log|w_{\chi,i}|\bigr|,
+\]
+并把“GRH-型断言”理解为：在所关心的角色域/尺度域内，\(\mathcal{E}(\chi)\) 足够小（或在极限中趋于零）。
+
+\paragraph{双尺度障碍与扩散口径}
+当把角色族推进到 \(\QQ/\ZZ\)（包含任意高阶小角角色）时，“最坏扭曲谱半径比”一般不可能在全部模数上保持统一远离 \(1\) 的界。
+同步核加权情形里，附录已给出 near-coboundary 小角二次律并导出扩散阈值 \(n\asymp m^2\)（推论 \ref{cor:sync-rho-gap-m8-diffusive}）。
+这一现象提示：在 profinite 逆极限语义下，更自然的 GRH/Chebotarev 形式应采用长度 \(n\) 与模数 \(m\) 的双极限尺度（参见猜想 \ref{conj:scaled-kernel-grh-diffusive} 的抽象表述）。
