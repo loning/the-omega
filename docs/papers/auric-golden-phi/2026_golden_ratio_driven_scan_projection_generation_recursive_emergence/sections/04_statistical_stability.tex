@@ -72,8 +72,8 @@ D_{\mathrm{KL}}(\hat{\pi}_m\|\pi_m):=\sum_{u\in X_m}\hat{\pi}_m(u)\log\frac{\hat
 \]
 这一定量化步骤不依赖任何模拟；其意义仅在于：若系统在分辨率 $m$ 的稳定层确由黄金语法支配，则 $\hat{\pi}_m$ 应在遍历假设下趋近 $\pi_m$，且偏差可被直接审计。若进一步以 Parry 最大熵测度作为基准马尔可夫链，则低阶边缘分布的收敛还具有显式指数速率（推论 \ref{cor:golden-markov-mixing}）。
 
-\subsection{自然源类下的测度收敛与偏差界：折叠直方图的统一口径}\label{subsec:histogram-convergence-natural-sources}
-本小节仅记录折叠输出直方图在常见源模型下的两条标准事实：平稳遍历源下的几乎处处收敛（遍历定理），以及 i.i.d. 源下通过分块获得的显式 TV 置信包络（\cite{WeissmanEtAl2003L1Empirical}）。更一般的马尔可夫源/混合源下可直接套用现成的马尔可夫链浓缩工具（例如 \cite{Paulin2015MarkovConcentration}）；本文后续实验部分以 i.i.d. 块采样为基线，不再展开该一般化细节。
+\subsection{源模型与折叠输出的记号（仅用于定位对象）}\label{subsec:histogram-convergence-natural-sources}
+本节只固定“源 $\Rightarrow$ 折叠输出直方图”的记号；关于平稳遍历收敛、i.i.d./马尔可夫源的非渐近偏差界等标准事实不进入本文的依赖链，故不在此展开。
 
 \begin{definition}[一般源与折叠输出过程]\label{def:source-and-fold-output}
 令 $S=(S_t)_{t\in\ZZ}$ 为取值于 $\{0,1\}$ 的双边随机过程，定义长度-$m$ 窗口与折叠输出为
@@ -91,7 +91,9 @@ Y_t^{(m)}:=\Fold_m(W_t^{(m)})\in X_m.
 \[
 \pi_m^{\mathrm{fold}}(u):=\mathbb{P}\bigl(Y_0^{(m)}=u\bigr),\qquad u\in X_m.
 \]
-\end{definition}\begin{theorem}[平稳遍历源下的几乎处处收敛]\label{thm:histogram-a.s.-ergodic}
+\end{definition}
+
+\begin{theorem}[平稳遍历源下的几乎处处收敛]\label{thm:histogram-a.s.-ergodic}
 若 $S$ 平稳且遍历，则对任意固定 $m$ 与任意 $u\in X_m$，
 \[
 \hat{\pi}_{m,N}(u)\ \xrightarrow[N\to\infty]{}\ \pi_m^{\mathrm{fold}}(u)
@@ -110,7 +112,9 @@ D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\ \xrightarrow[N\to\infty]
 \frac{1}{N}\sum_{t=0}^{N-1} f_u(\sigma^t S)\ \to\ \mathbb{E}[f_u(S)]=\mathbb{P}(Y_0^{(m)}=u),
 \]
 即 $\hat{\pi}_{m,N}(u)\to \pi_m^{\mathrm{fold}}(u)$。总变差收敛由有限字母表上的范数等价与逐坐标收敛推出（参见 \cite{WaltersErgodicTheory}）。
-\end{proof}\begin{proposition}[i.i.d. 输入下的显式 TV 置信包络：重叠窗口]\label{prop:histogram-tv-iid-overlap}
+\end{proof}
+
+\begin{proposition}[i.i.d. 输入下的显式 TV 置信包络：重叠窗口]\label{prop:histogram-tv-iid-overlap}
 设 $S_t$ 为 i.i.d. 伯努利源。令
 \[
 N_j:=\left\lfloor\frac{N-j+m-1}{m}\right\rfloor,\qquad j=0,1,\dots,m-1,

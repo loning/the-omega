@@ -99,6 +99,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="rotation_multiscale_residual_summary",
+            script="exp_rotation_multiscale_residual_summary.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_rotation_multiscale_residual_summary.tex",
+            ],
+        ),
+        Step(
             name="iid_sources_fold_vs_parry",
             script="exp_iid_sources_fold_vs_parry.py",
             args=[],
