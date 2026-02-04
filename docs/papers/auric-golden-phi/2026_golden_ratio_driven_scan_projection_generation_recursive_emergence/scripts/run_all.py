@@ -160,6 +160,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_renyi_spectrum_mod_dp_q20",
+            script="exp_fold_collision_renyi_spectrum_mod_dp_q20.py",
+            args=["--m-min", "8", "--m-max", "30", "--q-max", "20"],
+            expected_outputs=[
+                "artifacts/export/fold_collision_renyi_spectrum_mod_dp_q20.json",
+                "sections/generated/tab_fold_collision_renyi_spectrum_mod_dp_q20.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_moment_recursions",
             script="exp_fold_collision_moment_recursions.py",
             args=[],
