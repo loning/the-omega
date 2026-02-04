@@ -19,6 +19,7 @@ for the full-domain rate curve.
 This script writes:
   - artifacts/export/sync_kernel_rate_curve_resultant.json
   - sections/generated/tab_sync_kernel_rate_curve_resultant_degree.tex
+  - sections/generated/eq_sync_kernel_rate_curve_resultant_structure.tex
 
 All output is English-only by repository convention.
 """
@@ -45,6 +46,7 @@ class ResultantSummary:
     content_gcd: str
     leading_monomial: str
     leading_coeff: str
+    u_adic_valuation: int
     elapsed_sec: float
 
 
@@ -61,6 +63,19 @@ def _build_F(lam: sp.Symbol, u: sp.Symbol) -> sp.Expr:
     )
 
 
+def _u_adic_valuation(poly_u: sp.Poly, u: sp.Symbol) -> int:
+    """Return the smallest exponent j such that [u^j] poly_u != 0."""
+    if poly_u.is_zero:
+        return 0
+    min_j = None
+    for mon, coeff in poly_u.terms():
+        # mon is a 1-tuple (j,)
+        j = int(mon[0])
+        if coeff != 0:
+            min_j = j if min_j is None else min(min_j, j)
+    return int(min_j or 0)
+
+
 def _tex_table(summary: ResultantSummary) -> str:
     lines: list[str] = []
     lines.append("\\begin{table}[H]")
@@ -71,8 +86,10 @@ def _tex_table(summary: ResultantSummary) -> str:
         "\\caption{Elimination certificate for the rate curve. "
         "We eliminate $\\lambda$ from $F(\\lambda,u)=0$ and "
         "$\\alpha\\lambda F_{\\lambda}(\\lambda,u)+uF_u(\\lambda,u)=0$ to obtain "
-        "$R(\\alpha,u)\\in\\mathbb{Z}[\\alpha,u]$. "
-        "This table records the degree/size of $R$ (see script).}"
+        "a resultant in $\\mathbb{Z}[\\alpha,u]$. "
+        "We then divide out the maximal $u$-power (the $u$-adic valuation) "
+        "to get the normalized polynomial $R(\\alpha,u)$ of minimal $u$-degree. "
+        "This table records the degree/size of the normalized $R$ (see script).}"
     )
     lines.append("\\label{tab:sync_kernel_rate_curve_resultant_degree}")
     lines.append("\\begin{tabular}{l l}")
@@ -89,11 +106,82 @@ def _tex_table(summary: ResultantSummary) -> str:
                  % summary.leading_monomial.replace("_", "\\_"))
     lines.append("leading coeff & $%s$\\\\"
                  % summary.leading_coeff.replace("_", "\\_"))
+    lines.append("$v_u(R_{\\mathrm{raw}})$ & $%d$\\\\"
+                 % summary.u_adic_valuation)
     lines.append("elapsed (sec) & %.3f\\\\"
                  % summary.elapsed_sec)
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
     lines.append("\\end{table}")
+    return "\n".join(lines) + "\n"
+
+
+def _tex_structure_block(
+    R_norm: sp.Poly,
+    alpha: sp.Symbol,
+    u: sp.Symbol,
+) -> str:
+    """Write the auditable structural facts about R(alpha,u) as TeX equations."""
+    # Work as a polynomial in u with coefficients in Z[alpha].
+    Pu = sp.Poly(R_norm.as_expr(), u, domain=sp.ZZ[alpha])
+    deg_u = int(Pu.degree())
+
+    r0 = sp.factor(Pu.coeff_monomial(u**0))
+    rd = sp.factor(Pu.coeff_monomial(u**deg_u))
+    r1 = sp.factor(Pu.coeff_monomial(u**1))
+    rd1 = sp.factor(Pu.coeff_monomial(u ** (deg_u - 1)))
+
+    # alpha=1/2 specialization factorization.
+    expr_half = sp.expand(R_norm.as_expr().subs(alpha, sp.Rational(1, 2)))
+    fac_half = sp.factor(expr_half)
+
+    # Extract the palindromic Q(u) factor from the known form:
+    # R(u,1/2) = -(u-1)^6 * Q(u) / 64.
+    # We compute Q by dividing and clearing denominators.
+    Ph = sp.Poly(expr_half, u, domain=sp.QQ)
+    lin = sp.Poly(u - 1, u, domain=sp.QQ)
+    Q = Ph
+    for _ in range(6):
+        Q, rem = sp.div(Q, lin)
+        if sp.simplify(rem.as_expr()) != 0:
+            break
+    # Q is rational; clear denominators to get integer coefficients.
+    Qq = sp.Poly(Q.as_expr(), u, domain=sp.QQ)
+    den = sp.ilcm(*[sp.denom(c) for c in Qq.all_coeffs()]) if Qq.all_coeffs() else 1
+    QZ = sp.Poly(sp.expand(Qq.as_expr() * den), u, domain=sp.ZZ)
+    # Fix sign so that the leading coefficient is positive.
+    if QZ.LC() < 0:
+        QZ = sp.Poly(-QZ.as_expr(), u, domain=sp.ZZ)
+        den = -den
+
+    # Sanity: Q(u) has positive coefficients in the normalized form.
+    if any(int(c) <= 0 for c in QZ.all_coeffs()):
+        raise RuntimeError("Expected Q(u) to have strictly positive coefficients.")
+
+    lines: list[str] = []
+    lines.append("% Auto-generated; do not edit by hand.")
+    lines.append("\\begin{align}")
+    lines.append(
+        "R(\\alpha,u)&=\\sum_{j=0}^{%d} r_j(\\alpha)\\,u^j\\in\\mathbb{Z}[\\alpha,u],\\\\"
+        % deg_u
+    )
+    lines.append(
+        "R(\\alpha,u)&=u^{%d}\\,R(1-\\alpha,1/u),\\\\"
+        % deg_u
+    )
+    lines.append(
+        "r_0(\\alpha)&=%s,\\qquad r_{%d}(\\alpha)=%s,\\\\"
+        % (sp.latex(r0), deg_u, sp.latex(rd))
+    )
+    lines.append(
+        "r_1(\\alpha)&=%s,\\qquad r_{%d}(\\alpha)=%s,\\\\"
+        % (sp.latex(r1), deg_u - 1, sp.latex(rd1))
+    )
+    lines.append(
+        "R\\!\\left(\\tfrac12,u\\right)&=-\\frac{(u-1)^6}{64}\\,Q(u),\\qquad Q(u)=%s."
+        % sp.latex(QZ.as_expr())
+    )
+    lines.append("\\end{align}")
     return "\n".join(lines) + "\n"
 
 
@@ -108,6 +196,11 @@ def main() -> None:
         "--tex-out",
         type=str,
         default=str(generated_dir() / "tab_sync_kernel_rate_curve_resultant_degree.tex"),
+    )
+    parser.add_argument(
+        "--structure-tex-out",
+        type=str,
+        default=str(generated_dir() / "eq_sync_kernel_rate_curve_resultant_structure.tex"),
     )
     args = parser.parse_args()
 
@@ -124,11 +217,17 @@ def main() -> None:
     # Eliminate lam by resultant. This can take time; print a heartbeat.
     print("[elim] building resultant R(alpha,u) ...", flush=True)
     t1 = time.time()
-    R = sp.resultant(F, G, lam)
+    R_raw = sp.resultant(F, G, lam)
     elapsed = time.time() - t1
     print(f"[elim] resultant computed in {elapsed:.3f}s", flush=True)
 
-    PR = sp.Poly(R, alpha, u, domain="ZZ")
+    PR_raw = sp.Poly(R_raw, alpha, u, domain="ZZ")
+    # Normalize by removing the maximal u-power factor (u-adic valuation).
+    Pu_raw = sp.Poly(PR_raw.as_expr(), u, domain=sp.ZZ[alpha])
+    v_u = _u_adic_valuation(Pu_raw, u=u)
+    R_norm_expr = sp.expand(Pu_raw.as_expr() / (u**v_u))
+    PR = sp.Poly(R_norm_expr, alpha, u, domain="ZZ")
+
     deg_alpha = int(PR.degree(alpha))
     deg_u = int(PR.degree(u))
     n_terms = len(PR.terms())
@@ -146,6 +245,7 @@ def main() -> None:
         content_gcd=str(content),
         leading_monomial=leading_monomial,
         leading_coeff=leading_coeff,
+        u_adic_valuation=int(v_u),
         elapsed_sec=time.time() - t0,
     )
 
@@ -158,6 +258,11 @@ def main() -> None:
     tout.parent.mkdir(parents=True, exist_ok=True)
     tout.write_text(_tex_table(summary), encoding="utf-8")
     print(f"[elim] wrote {tout}", flush=True)
+
+    sout = Path(args.structure_tex_out)
+    sout.parent.mkdir(parents=True, exist_ok=True)
+    sout.write_text(_tex_structure_block(PR, alpha=alpha, u=u), encoding="utf-8")
+    print(f"[elim] wrote {sout}", flush=True)
 
 
 if __name__ == "__main__":

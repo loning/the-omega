@@ -342,6 +342,73 @@ a_{p^k}(u)=u\,a_{p^k}(1/u).
 \[
 \Pi^{-1}B(u)\Pi=uB(1/u).
 \]
+\begin{definition}[完成化矩阵]\label{def:completed-matrix}
+令 \(u=e^{\theta}\)（\(\theta\in\CC\)），并定义完成化矩阵
+\[
+\widetilde B(\theta):=e^{-\theta/2}B(e^{\theta}).
+\]
+\end{definition}
+
+\begin{lemma}[完成化的自对偶相似]\label{lem:completed-similarity}
+在上述记号下，对所有 \(\theta\) 有
+\[
+\boxed{\ \Pi^{-1}\widetilde B(\theta)\Pi=\widetilde B(-\theta)\ }.
+\]
+因此 \(\widetilde B(\theta)\) 与 \(\widetilde B(-\theta)\) 相似；特别地，
+\(\det(\lambda I-\widetilde B(\theta))\) 作为 \(\theta\) 的解析函数是偶函数。
+\end{lemma}
+\begin{proof}
+由自对偶 \(\Pi^{-1}B(u)\Pi=uB(1/u)\)，代入 \(u=e^{\theta}\) 得
+\(
+\Pi^{-1}B(e^\theta)\Pi=e^\theta B(e^{-\theta})
+\)。
+两边同乘 \(e^{-\theta/2}\) 即得
+\(
+\Pi^{-1}\widetilde B(\theta)\Pi=\widetilde B(-\theta)
+\)。
+相似性推出特征多项式相同，故 \(\det(\lambda I-\widetilde B(\theta))=\det(\lambda I-\widetilde B(-\theta))\)，即为 \(\theta\) 的偶函数。证毕。
+\end{proof}
+
+\begin{theorem}[谱切线锁定：\texorpdfstring{$u=1$}{u=1} 处全谱对数斜率恒为 \texorpdfstring{$1/2$}{1/2}]\label{thm:sync-spectral-tangent-lock}
+令 \(\widetilde B(\theta)\) 如定义 \ref{def:completed-matrix}。
+取 \(\widetilde B(0)=B(1)\) 的任一\textbf{非零单特征值} \(\mu_0\neq 0\)（即其在特征多项式中为单根）。
+则存在唯一解析函数 \(\mu(\theta)\)（在 \(\theta=0\) 的某邻域）满足
+\[
+\mu(0)=\mu_0,\qquad \mu(\theta)\in\mathrm{spec}\bigl(\widetilde B(\theta)\bigr),
+\]
+并且该分支满足严格偶性
+\[
+\boxed{\ \mu(\theta)=\mu(-\theta)\ } \qquad(\text{从而 } \mu'(0)=0).
+\]
+令
+\[
+\lambda(\theta):=e^{\theta/2}\mu(\theta),
+\]
+则 \(\lambda(\theta)\) 是矩阵 \(B(e^{\theta})\) 的一条解析特征分支（且 \(\lambda(0)=\mu_0\neq 0\)），并满足
+\[
+\boxed{\ \left.\frac{\mathrm{d}}{\mathrm{d}\theta}\log\lambda(\theta)\right|_{\theta=0}=\frac12\ }.
+\]
+\end{theorem}
+\begin{proof}
+由引理 \ref{lem:completed-similarity}，\(\chi(\lambda,\theta):=\det(\lambda I-\widetilde B(\theta))\) 是 \(\theta\) 的偶函数，且 \(\chi(\mu_0,0)=0\)。
+由于 \(\mu_0\) 为单特征值，有 \(\partial_\lambda\chi(\mu_0,0)\neq 0\)，故由隐函数定理存在唯一解析分支 \(\mu(\theta)\) 使 \(\chi(\mu(\theta),\theta)=0\) 且 \(\mu(0)=\mu_0\)。
+另一方面，偶性给出 \(\chi(\lambda,\theta)=\chi(\lambda,-\theta)\)，从而 \(\mu(-\theta)\) 亦满足同一方程且取同一初值 \(\mu(-0)=\mu_0\)；由唯一性得到 \(\mu(\theta)=\mu(-\theta)\)，于是 \(\mu'(0)=0\)。
+最后由 \(B(e^\theta)=e^{\theta/2}\widetilde B(\theta)\) 知 \(\lambda(\theta)=e^{\theta/2}\mu(\theta)\) 为 \(B(e^\theta)\) 的特征值分支，并且
+\[
+\left.\frac{\mathrm{d}}{\mathrm{d}\theta}\log\lambda(\theta)\right|_{\theta=0}
+=\left.\frac{\mathrm{d}}{\mathrm{d}\theta}\left(\frac{\theta}{2}+\log\mu(\theta)\right)\right|_{\theta=0}
+=\frac12+\frac{\mu'(0)}{\mu(0)}
+=\frac12.
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[同步核的 \texorpdfstring{$6$}{6} 条非零谱分支在 \texorpdfstring{$u=1$}{u=1} 处同时锁定]\label{cor:sync-spectral-tangent-lock-6}
+对本同步核，矩阵 \(B(1)\) 的非零谱共有 \(6\) 条解析分支且在 \(u=1\) 处均为单特征值（其特征多项式为次数 \(6\) 的 \(\det(I-zB(1))\)，见附录 \ref{app:sync-kernel-basic} 的显式分解）。
+因此这 \(6\) 条非零谱分支均满足定理 \ref{thm:sync-spectral-tangent-lock} 的结论：
+在 \(u=e^\theta\) 的参数下，\(\left.\frac{\mathrm{d}}{\mathrm{d}\theta}\log\lambda_j(\theta)\right|_{\theta=0}=\frac12\)。
+\end{corollary}
+
 于是
 \[
 \Delta(z,u)=\det(I-zB(u))=\det(I-uzB(1/u))=\Delta(uz,1/u).

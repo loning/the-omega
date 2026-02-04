@@ -232,6 +232,30 @@ P(\theta)\sim \theta\quad(\theta\to+\infty),
 第二条展开由自对偶恒等式 \(\lambda(u)=u\lambda(1/u)\) 对 \(u\mapsto 1/u\) 的代入直接推出。证毕。
 \end{proof}
 
+\begin{corollary}[端点密度 \texorpdfstring{$\alpha(u)=P'(\log u)$}{alpha(u)=P'(log u)} 的局部展开]\label{cor:alpha-endpoint-series}
+令 \(\alpha(u)=P'(\theta)=\frac{u\lambda_u(u)}{\lambda(u)}\)（其中 \(u=e^\theta\)），并取 Perron 分支 \(\lambda(u)\)。
+则当 \(u\to 0^+\) 时有收敛幂级数展开
+\[
+\boxed{\ \alpha(u)=3u-5u^2-114u^3+1103u^4+O(u^5)\ }.
+\]
+由自对偶恒等式 \(\lambda(u)=u\lambda(1/u)\) 等价推出的镜像关系
+\(
+\alpha(u)+\alpha(1/u)=1
+\)
+（见定理 \ref{thm:sync-pressure-sym-ldp-mirror} 的 \(\alpha(\theta)+\alpha(-\theta)=1\)），进一步得到高温端 \(u\to+\infty\) 的反幂展开
+\[
+\boxed{\ \alpha(u)=1-\frac{3}{u}+\frac{5}{u^2}+\frac{114}{u^3}-\frac{1103}{u^4}+O(u^{-5})\ }.
+\]
+\end{corollary}
+\begin{proof}
+第一条展开由命题 \ref{prop:lambda-extreme-asymp} 的 \(\lambda(u)\) 级数代入
+\(
+\alpha(u)=u\lambda_u(u)/\lambda(u)
+\)
+并逐阶化简得到。
+第二条展开由镜像关系 \(\alpha(u)+\alpha(1/u)=1\) 对 \(u\mapsto 1/u\) 的代入直接推出。证毕。
+\end{proof}
+
 \begin{corollary}[中心化后的四阶修正系数]\label{cor:edgeworth-fourth}
 令 $X:=e-\frac12$，则所有奇阶累积量为 $0$，并且
 \[
@@ -360,6 +384,18 @@ R(\alpha,u)\in\ZZ[\alpha,u]
 脚本 \texttt{scripts/exp\_sync\_kernel\_rate\_curve\_elimination.py} 以 resultant 的方式显式构造 \(R(\alpha,u)\) 并输出其次数/项数等规模摘要（表 \ref{tab:sync_kernel_rate_curve_resultant_degree}），从而把“率函数是级数”提升为“率曲线是代数对象”的可复现结论。
 \end{remark}
 \input{sections/generated/tab_sync_kernel_rate_curve_resultant_degree}
+\begin{remark}[消元曲线的对偶对称、端点奇异簇与 \texorpdfstring{$\alpha=\tfrac12$}{alpha=1/2} 聚合指纹]\label{rem:rate-algebraic-elimination-structure}
+在本同步核上，resultant 的原始输出带有一个幂因子 \(u^{v_u}\)（来自 \(u\to 0\) 端的退化分支）。
+脚本 \texttt{scripts/exp\_sync\_kernel\_rate\_curve\_elimination.py} 将其除去并得到最小 \(u\)-次数的规范化消元多项式 \(R(\alpha,u)\in\ZZ[\alpha,u]\)。
+该 \(R\) 除了给出 Perron 率曲线 \(u\mapsto \alpha(u)\) 的代数闭包外，还强制携带三类结构性指纹：
+\begin{itemize}
+  \item \textbf{（对偶自对称）} \((u,\alpha)\mapsto(1/u,1-\alpha)\) 在代数曲线层面闭合；
+  \item \textbf{（端点侧翼簇）} 在 \(u\to 0\) 与 \(u\to\infty\) 端分别强制出现 \(\alpha\to \tfrac14\) 与 \(\alpha\to \tfrac34\) 的四重簇；
+  \item \textbf{（中心聚合）} 在 \(\alpha=\tfrac12\) 截面上出现 \((u-1)^6\) 的六重聚合，其解析意义是：在 \(u=1\) 处全部 \(6\) 条非零谱分支同时满足 \(\alpha=1/2\)（见定理 \ref{thm:sync-spectral-tangent-lock}）。
+\end{itemize}
+这些刚性因子与对称关系由下列可复现的符号证书给出：
+\input{sections/generated/eq_sync_kernel_rate_curve_resultant_structure}
+\end{remark}
 端点值为
 \[
 I(0)=I(1)=\log 3.
