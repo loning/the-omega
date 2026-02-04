@@ -812,6 +812,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_conditional_expectation_pythagoras",
+            script="exp_fold_conditional_expectation_pythagoras.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_conditional_expectation_pythagoras.json",
+                "sections/generated/tab_fold_conditional_expectation_pythagoras.tex",
+            ],
+        ),
+        Step(
             name="generated_tex_fragments",
             script="exp_generated_tex.py",
             args=[],
