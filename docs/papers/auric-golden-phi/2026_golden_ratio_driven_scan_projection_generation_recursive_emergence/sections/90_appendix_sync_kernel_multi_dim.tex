@@ -96,7 +96,7 @@ P(\theta_e,\theta_-)=\log\lambda(e^{\theta_e},e^{\theta_-}).
 \[
 \partial^2_{\theta_e\theta_e}P(0,0)=\frac{11}{102}\ \ (\approx 0.1078436229),\quad
 \partial^2_{\theta_-\theta_-}P(0,0)=\frac{25}{128}\ \ (\approx 0.1953128548),\quad
-\partial^2_{\theta_e\theta_-}P(0,0)\approx 0.
+\partial^2_{\theta_e\theta_-}P(0,0)=0.
 \]
 因此局部二次近似为
 \[
@@ -115,6 +115,71 @@ I(\alpha_e,\alpha_-)\approx \frac{51}{11}\Bigl(\alpha_e-\frac12\Bigr)^2+\frac{64
 p_n(\theta_e,\theta_-)\asymp \frac{e^{nP(\theta_e,\theta_-)}}{n}
 \]
 并由 Möbius 反演从 $a_n(\theta_e,\theta_-)=\mathrm{Tr}(B(u,v)^n)$ 提取。数值复现见脚本 \texttt{scripts/exp\_sync\_kernel\_weighted\_pressure\_2d.py}。
+
+\begin{proposition}[二维势的二阶严格解耦与首个非高斯混合项]\label{prop:sync-kernel-2d-exact-decouple}
+对本小节的二维势 \((\varphi_e,\varphi_-)\)，压力
+\(
+P(\theta_e,\theta_-)=\log\lambda(e^{\theta_e},e^{\theta_-})
+\)
+满足以下精确结构结论：
+\begin{enumerate}
+  \item \textbf{（二阶严格解耦）}
+  \[
+  \boxed{\ \partial^2_{\theta_e\theta_-}P(0,0)=0\ }.
+  \]
+  因而在典型点附近的二次型近似中\textbf{无交叉项}，二维局部率函数二次项严格可分离。
+  \item \textbf{（三阶“单向耦合”）}
+  \[
+  \boxed{\ \partial^3_{\theta_e\theta_-\theta_-}P(0,0)=0,\qquad
+  \partial^3_{\theta_e\theta_e\theta_-}P(0,0)=-\frac{1453}{36992}<0\ }.
+  \]
+  \item \textbf{（四阶混合曲率为负）}
+  \[
+  \boxed{\ \partial^4_{\theta_e\theta_e\theta_-\theta_-}P(0,0)=-\frac{422483}{10061824}<0,\qquad
+  \partial^4_{\theta_e\theta_-\theta_-\theta_-}P(0,0)=0\ }.
+  \]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+这里不需要数值差分。因为 \(\Delta(z;u,v)\) 是显式整系数多项式且
+\(
+z_\star(1,1)=1/3
+\)
+对应 \(\lambda(1,1)=3\)，可在 \((u,v)=(1,1)\) 邻域把最小正根写为解析分支
+\(
+z_\star(u,v)
+\)
+并用隐式方程 \(\Delta(z_\star(u,v);u,v)=0\) 对 \((\theta_e,\theta_-)\) 作隐式微分（或等价地作幂级数消元），得到所示导数值。
+脚本 \texttt{scripts/exp\_sync\_kernel\_weighted\_pressure\_2d\_exact\_mixed\_derivatives.py} 对该推导做了完全有理数的自动化核验并输出可 \verb|\input| 的结果：
+\input{sections/generated/eq_sync_kernel_weighted_pressure_2d_exact_mixed_derivatives}
+证毕。
+\end{proof}
+
+\begin{remark}[局部率函数的“严格可分离二次项”与可检验的非高斯耦合指纹]\label{rem:sync-kernel-2d-nongaussian-coupling}
+命题 \ref{prop:sync-kernel-2d-exact-decouple} 的第一条给出
+\(
+\nabla^2 P(0,0)
+\)
+在 \((\theta_e,\theta_-)\) 坐标下的严格对角结构，因此
+\[
+I(\alpha_e,\alpha_-)
+=\frac{(\alpha_e-\frac12)^2}{2\,\partial^2_{\theta_e\theta_e}P(0,0)}
+\;+\;
+\frac{(\alpha_--\frac18)^2}{2\,\partial^2_{\theta_-\theta_-}P(0,0)}
+\;+\;O(|\alpha-\alpha_\star|^3),
+\]
+且二次项\emph{严格无交叉项}。
+另一方面，三、四阶混合导数给出首个非高斯层面的耦合常数：例如三阶项
+\(
+\partial^3_{\theta_e\theta_e\theta_-}P(0,0)<0
+\)
+预测了在长样本下
+\(
+(\bar\varphi_e-\tfrac12)^2(\bar\varphi_- -\tfrac18)
+\)
+的中心化平均出现负号偏斜；四阶混合曲率为负则给出“联合尾部”相对于独立二次模型的偏离方向。
+\end{remark}
 
 \subsubsection{三维加权素数谱（输出位 + 负携带 + 碰撞）}
 定义三维势
