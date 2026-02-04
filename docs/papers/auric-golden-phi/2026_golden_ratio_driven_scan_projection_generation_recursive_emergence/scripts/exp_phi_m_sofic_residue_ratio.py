@@ -222,6 +222,33 @@ def _residue_leading_pole(M: np.ndarray, rho: float) -> float:
     return float(R.real)
 
 
+def _pick_best_scc_from_adj(B: np.ndarray) -> np.ndarray:
+    """Pick SCC with maximum spectral radius and return its adjacency submatrix."""
+    n = int(B.shape[0])
+    adj: List[List[int]] = [[] for _ in range(n)]
+    for i in range(n):
+        adj[i] = [int(j) for j in np.nonzero(B[i, :])[0]]
+    comps = _scc_kosaraju(adj)
+
+    best_rho = 0.0
+    best_nodes: List[int] = []
+    for comp in comps:
+        if len(comp) == 1:
+            v = comp[0]
+            if v not in adj[v]:
+                continue
+        nodes = sorted(comp)
+        M = B[np.ix_(nodes, nodes)].astype(np.float64)
+        rho = _spectral_radius(M)
+        if rho > best_rho:
+            best_rho = rho
+            best_nodes = nodes
+
+    if not best_nodes:
+        return np.zeros((0, 0), dtype=np.int64)
+    return B[np.ix_(best_nodes, best_nodes)].astype(np.int64)
+
+
 def _essential_component_mult_adj(start: int, det_min: List[Dict[int, int]]) -> Tuple[List[int], np.ndarray]:
     """Return (states_in_best_scc, multiplicity adjacency matrix B)."""
     n = len(det_min)
@@ -306,19 +333,32 @@ def _build_cover_A_on_scc(states: List[int], det_min: List[Dict[int, int]]) -> n
     return A
 
 
-def _build_intrinsic_B_transition_semigroup(det_min: List[Dict[int, int]], prog: Progress) -> np.ndarray:
-    """Build 0-1 adjacency B on accepting partial maps τ_w (having a fixed point)."""
-    S = len(det_min)
+def _build_intrinsic_B_transition_semigroup(states_scc: List[int], det_min: List[Dict[int, int]], prog: Progress) -> np.ndarray:
+    """Build 0-1 adjacency B on accepting partial maps τ_w (having a fixed point).
+
+    We first enumerate the full reachable transition semigroup from the identity map
+    (no acceptance filtering), then restrict to the accepting subset and keep edges
+    that stay within accepting states.
+    """
+    # Work on the entropy-carrying SCC only.
+    S = len(states_scc)
+    pos = {states_scc[i]: i for i in range(S)}
+    state_set = set(states_scc)
+
     # Alphabet: all labels that appear as outgoing edges.
-    alphabet: List[int] = sorted({a for s in range(S) for a in det_min[s].keys()})
+    alphabet: List[int] = sorted({a for s in states_scc for a in det_min[s].keys()})
 
     # Generators as partial maps on S, encoded on {0..S} where 0 means undefined, i+1 means i.
     gens: List[np.ndarray] = []
     for a in alphabet:
         g = np.zeros((S + 1,), dtype=np.int32)
-        for s in range(S):
-            t = det_min[s].get(a, None)
-            g[s + 1] = 0 if t is None else (int(t) + 1)
+        for s_orig in states_scc:
+            s = pos[s_orig]
+            t_orig = det_min[s_orig].get(a, None)
+            if t_orig is None or (t_orig not in state_set):
+                g[s + 1] = 0
+            else:
+                g[s + 1] = pos[int(t_orig)] + 1
         gens.append(g)
 
     idx = np.arange(1, S + 1, dtype=np.int32)  # fixed point test vector
@@ -331,27 +371,18 @@ def _build_intrinsic_B_transition_semigroup(det_min: List[Dict[int, int]], prog:
         # (gen ∘ tau)(i) where 0 encodes undefined.
         return gen[tau]
 
-    # BFS on accepting states only.
+    # BFS on all reachable semigroup elements (no acceptance filtering).
     tau0 = np.arange(1, S + 1, dtype=np.int32)  # identity (total)
-    if not is_accepting(tau0):
-        raise RuntimeError("Identity should be accepting.")
-
     key0 = tau0.tobytes()
     id_of: Dict[bytes, int] = {key0: 0}
     taus: List[np.ndarray] = [tau0]
     q: deque[int] = deque([0])
-    edges: List[List[int]] = []
 
     while q:
         u = q.popleft()
-        while len(edges) <= u:
-            edges.append([])
         tau = taus[u]
-
-        for gi, g in enumerate(gens):
+        for g in gens:
             nxt = compose(g, tau)
-            if not is_accepting(nxt):
-                continue
             k = nxt.tobytes()
             v = id_of.get(k)
             if v is None:
@@ -359,15 +390,27 @@ def _build_intrinsic_B_transition_semigroup(det_min: List[Dict[int, int]], prog:
                 id_of[k] = v
                 taus.append(nxt)
                 q.append(v)
-            edges[u].append(v)
+        prog.tick(f"enum_semigroup states={len(taus)} queue={len(q)} S={S} |X|={len(alphabet)}")
 
-        prog.tick(f"build_B accepting_states={len(taus)} queue={len(q)} S={S} |X|={len(alphabet)}")
-
-    n = len(taus)
+    # Accepting subset.
+    acc_ids = [i for i, tau in enumerate(taus) if is_accepting(tau)]
+    acc_pos = {sid: k for k, sid in enumerate(acc_ids)}
+    n = len(acc_ids)
     B = np.zeros((n, n), dtype=np.int64)
-    for u in range(n):
-        for v in edges[u]:
+    for sid in acc_ids:
+        u = acc_pos[sid]
+        tau = taus[sid]
+        for g in gens:
+            nxt = compose(g, tau)
+            vid = id_of.get(nxt.tobytes())
+            if vid is None:
+                continue
+            v = acc_pos.get(vid)
+            if v is None:
+                continue
             B[u, v] = 1
+        prog.tick(f"build_B acc={n} processed={u+1}/{n} semigroup={len(taus)}")
+
     return B
 
 
@@ -435,25 +478,14 @@ def main() -> None:
     for m in ms:
         fold_map = build_fold_map(m, prog)
         nV, trans = build_Gm_edges(m, fold_map)
-        _, det = determinize(nV, trans, prog)
-        start_min, det_min = minimize_right_language(det)
+        start_rr, det_rr = determinize(nV, trans, prog)
 
-        # Cover: restrict Fischer cover to its entropy-carrying SCC, then build A on that SCC.
-        states_scc, A_scc = _essential_component_mult_adj(start_min, det_min)
-        A = _build_cover_A_on_scc(states_scc, det_min)
+        # Cover: take the right-resolving presentation det_rr and restrict to its entropy-carrying SCC.
+        states_scc, _ = _essential_component_mult_adj(start_rr, det_rr)
+        A = _build_cover_A_on_scc(states_scc, det_rr)
         # Intrinsic: build transition semigroup automaton adjacency and restrict to its best SCC.
-        B_full = _build_intrinsic_B_transition_semigroup(det_min, prog)
-        # Extract the best SCC for B_full by reusing the mult-adj SCC picker on a "fake" det list.
-        # Here we treat each 1 in B_full as a distinct label-less edge (multiplicity 1).
-        B_det: List[Dict[int, int]] = []
-        for i in range(int(B_full.shape[0])):
-            drow: Dict[int, int] = {}
-            for j in np.nonzero(B_full[i, :])[0]:
-                # Use j as a unique "label" to ensure multiplicity adjacency matches 0-1 adjacency.
-                drow[int(j)] = int(j)
-            B_det.append(drow)
-        states_B_scc, B = _essential_component_mult_adj(0, B_det)
-        # B returned is multiplicity adjacency on SCC of size dim(B); in this construction it matches 0-1.
+        B_full = _build_intrinsic_B_transition_semigroup(states_scc, det_rr, prog)
+        B = _pick_best_scc_from_adj(B_full)
 
         rhoA = _spectral_radius(A.astype(np.float64))
         rhoB = _spectral_radius(B.astype(np.float64))
@@ -467,7 +499,7 @@ def main() -> None:
         R_int = _residue_leading_pole(B.astype(np.float64), rho=rhoB)
         eta = R_int / R_cov
 
-        S_total = len(det_min)
+        S_total = len(det_rr)
         rows.append(
             Row(
                 m=m,
