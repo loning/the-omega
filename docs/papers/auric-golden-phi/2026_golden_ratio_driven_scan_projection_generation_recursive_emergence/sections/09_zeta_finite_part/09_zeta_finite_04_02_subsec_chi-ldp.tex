@@ -25,6 +25,45 @@ $P_\chi(t)$ 控制 leading 指数尺度（典型密度、涨落与大偏差）�
 因此在同一切片上同时记录 $t\mapsto(P_\chi(t),\log\mathfrak{M}_\chi(t))$，可把“指数尺度的代价”（由 $P_\chi$ 给出）与“常数级漂移的再分配”（由 $\log\mathfrak{M}_\chi$ 给出）作为两种互补指纹并列比较。
 \end{remark}
 
+\paragraph{内生时间尺度（无外部输入）：\texorpdfstring{$\chi$}{chi} 切片的相关时间}
+本小节的 $t$ 参数不仅控制指数倾斜的静态代价（$P_\chi(t)$）与常数级漂移（$\log\mathfrak{M}_\chi(t)$），也同时诱导一条\textbf{纯核内生}的时间尺度：在 $\theta(t)=(t,0,-t)$ 的平衡态下，arity-charge 观测量的时间相关以谱隙速率指数衰减。
+为避免与角色投影 $P_\chi$ 的混合时间 $\tau_{\mathrm{mix}}$（注 \ref{rem:pom-chi-mixing}）混淆，这里把该尺度记为 $\tau_{\mathrm{corr}}$。
+
+\begin{proposition}[\texorpdfstring{$\chi$}{chi} 切片的相关时间（可审计）]\label{prop:chi-slice-time-correlation}
+设真实输入 40 状态核在 $\theta(t)=(t,0,-t)$ 下的加权矩阵为 $M_{\theta(t)}$，并假设在给定 $t$ 的邻域内矩阵族原始。
+记
+\[
+\lambda_1(t):=\rho\bigl(M_{\theta(t)}\bigr),
+\qquad
+\Lambda(t):=\max\{ |\lambda|:\ \lambda\in\mathrm{spec}(M_{\theta(t)}),\ |\lambda|<\lambda_1(t)\},
+\qquad
+\rho_{\mathrm{corr}}(t):=\frac{\Lambda(t)}{\lambda_1(t)}\in[0,1).
+\]
+并定义相关时间
+\[
+\tau_{\mathrm{corr}}(t):=\frac{1}{-\log \rho_{\mathrm{corr}}(t)}.
+\]
+则在 $M_{\theta(t)}$ 所诱导的 Parry/平衡测度下，存在常数 $C(t)<\infty$ 使得对所有 $n\ge 0$ 有
+\[
+\bigl|\mathrm{Cov}(\chi_0,\chi_n)\bigr|\ \le\ C(t)\,\rho_{\mathrm{corr}}(t)^n.
+\]
+因此 $\tau_{\mathrm{corr}}(t)$ 可作为 arity-charge 方向的\textbf{内生相关长度尺度}；该尺度完全由有限矩阵谱读出，符合本文“可审计/可复现”口径。
+\end{proposition}
+
+\begin{proof}
+对原始有限状态加权矩阵 $M_{\theta(t)}$，Perron--Frobenius 理论给出唯一主特征值与正的左右特征向量，从而可构造 Parry 平衡马尔可夫链。
+把可观测量提升为有限状态函数并中心化后，其协方差可写为归一化转移算子的幂作用下的内积；主模态对中心化协方差不贡献，余项由非平凡谱半径 $\rho_{\mathrm{corr}}(t)$ 控制，从而得到指数衰减界。
+全部量均为有限维线性代数对象，因此在本文口径下可直接复核。
+\end{proof}
+
+\input{sections/generated/fig_real_input_40_time_correlation}
+
+\paragraph{相关时间与角色扭曲混合时间的分离（可审计对比）}
+上一段的 $\tau_{\mathrm{corr}}(t)$ 来自同一切片平衡态内的相关衰减；而注 \ref{rem:pom-chi-mixing} 中的 $\tau_{\mathrm{mix}}$ 则来自角色扭曲后谱半径比 $\rho/\lambda$ 所控制的“读出偏置”指数衰减。
+表 \ref{tab:real-input-40-tau-corr-vs-tau-mix} 将二者在 $t=0$ 与 $((3,3,5))$ 最坏扭曲处并列，并进一步给出三条可复核的“对齐”读出：离散网格最近点 $t_\star$、用于线性插值的网格括号 $[t_-,t_+]$，以及在该括号上的线性根估计 $t_0$（可复现）。
+\input{sections/generated/tab_real_input_40_tau_corr_vs_tau_mix}
+\input{sections/generated/fig_real_input_40_tau_corr_vs_tau_mix}
+
 \paragraph{把 \texorpdfstring{$\log\mathfrak{M}$}{logM} 完全对齐到显式 \texorpdfstring{$\zeta_M$}{zeta\_M}（闭式常数 + 数值）}
 对 40 状态真实输入核，附录 \ref{app:real-input-40-abel} 给出
 \[
