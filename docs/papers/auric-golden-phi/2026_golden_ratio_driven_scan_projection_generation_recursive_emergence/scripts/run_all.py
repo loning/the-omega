@@ -87,6 +87,7 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/rotation_microstate_kl_certificate.csv",
                 "sections/generated/tab_rotation_microstate_kl_certificate.tex",
+                "sections/generated/tab_rotation_folded_kl_certificate.tex",
             ],
         ),
         Step(
@@ -586,10 +587,12 @@ def build_steps() -> List[Step]:
                 "artifacts/export/real_input_40_event_time_envelope_vs_tau_mix.json",
                 "artifacts/export/real_input_40_event_time_tau_eff_vs_tau_mix.json",
                 "artifacts/export/real_input_40_event_time_rho_tau_expectation_vs_tau_mix.json",
+                "artifacts/export/real_input_40_event_time_tauE_delta_vs_tau_mix.json",
                 "sections/generated/tab_real_input_40_event_time_rescaling_error_budget.tex",
                 "sections/generated/tab_real_input_40_event_time_envelope_vs_tau_mix.tex",
                 "sections/generated/tab_real_input_40_event_time_tau_eff_vs_tau_mix.tex",
                 "sections/generated/tab_real_input_40_event_time_rho_tau_expectation_vs_tau_mix.tex",
+                "sections/generated/tab_real_input_40_event_time_tauE_delta_vs_tau_mix.tex",
             ],
         ),
         Step(
@@ -626,6 +629,15 @@ def build_steps() -> List[Step]:
                 "artifacts/export/real_input_40_time_correlation_phase.png",
                 "sections/generated/fig_real_input_40_time_correlation_phase.tex",
                 "sections/generated/tab_real_input_40_time_correlation_phase.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_time_correlation_phase_windows",
+            script="exp_real_input_40_time_correlation_phase_windows.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_time_correlation_phase_windows.json",
+                "sections/generated/tab_real_input_40_time_correlation_phase_windows.tex",
             ],
         ),
         Step(

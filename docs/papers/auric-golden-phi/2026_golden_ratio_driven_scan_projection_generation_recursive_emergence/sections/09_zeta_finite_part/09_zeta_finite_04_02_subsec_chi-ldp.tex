@@ -279,6 +279,35 @@ $$
 
 \input{sections/generated/tab_real_input_40_event_time_rho_tau_expectation_vs_tau_mix}
 
+\begin{proposition}[期望有效指数与偏移：$\tau^{(E)}(k)$ 与 $\Delta^{(E)}(k)$]
+\label{prop:chi-event-time-tauE-delta}
+在命题 \ref{prop:chi-event-time-rho-tau-expectation} 的设定下，假设 $0<\rho<1$。
+定义事件换时的期望有效指数
+$$
+\tau^{(E)}(k):=\frac{\log\mathbb{E}(\rho^{\tau(k)})}{\log\rho},
+$$
+以及其相对线性重标定 $k/\mu_e$ 的偏移
+$$
+\Delta^{(E)}(k):=\tau^{(E)}(k)-\frac{k}{\mu_e}.
+$$
+若已知 $\mathbb{E}(\rho^{\tau(k)})\in[E_{\mathrm{lo}},E_{\mathrm{hi}}]$ 为严格区间，则由 $\log$ 的单调性与 $\log\rho<0$，得到
+$$
+\tau^{(E)}(k)\in\Bigl[\frac{\log E_{\mathrm{hi}}}{\log\rho},\,\frac{\log E_{\mathrm{lo}}}{\log\rho}\Bigr],
+\qquad
+\Delta^{(E)}(k)\in\Bigl[\frac{\log E_{\mathrm{hi}}}{\log\rho}-\frac{k}{\mu_e},\,\frac{\log E_{\mathrm{lo}}}{\log\rho}-\frac{k}{\mu_e}\Bigr].
+$$
+因此 $\Delta^{(E)}(k)$ 可被视为“期望层面”的事件换时偏移证书：它把 $\tau(k)$ 的全分布信息通过 $\mathbb{E}(\rho^{\tau(k)})$ 聚合为一个可审计的有效指数偏移。
+\end{proposition}
+
+\begin{corollary}[对齐到 $k_{\mathrm{mix}}$ 的期望偏移证书]
+\label{cor:chi-event-time-tauE-delta-vs-tau-mix}
+在命题 \ref{prop:chi-event-time-tauE-delta} 的设定下取 $k_{\mathrm{mix}}:=\lceil\mu_e\tau_{\mathrm{mix}}\rceil$。
+表 \ref{tab:real-input-40-event-time-tauE-delta-vs-tau-mix} 给出 $k_{\mathrm{mix}}$ 邻域内的 $\tau^{(E)}(k)$ 与 $\Delta^{(E)}(k)$ 的严格区间。
+该对照把“事件时间 $k$ 与步数时间指数包络”之间的换时误差在期望层面压缩为可复现的偏移量，并显示该偏移在对齐尺度处仅为常数阶。
+\end{corollary}
+
+\input{sections/generated/tab_real_input_40_event_time_tauE_delta_vs_tau_mix}
+
 \paragraph{指数包络的离散审计证书}
 在 $t=0$ 的 Parry 平衡态下，脚本输出的自相关序列 $\{\mathrm{Corr}(n)\}_{n=0}^N$ 与谱隙包络 $r^n$（$r=\rho_{\mathrm{corr}}(0)$）允许构造一个完全可复现的离散证书：
 \[
@@ -335,6 +364,20 @@ T_{\mathrm{osc}}(t):=\frac{2\pi}{|\omega(t)|}.
 
 \input{sections/generated/fig_real_input_40_time_correlation_phase}
 \input{sections/generated/tab_real_input_40_time_correlation_phase}
+
+\begin{proposition}[离散相位相区证书：次主模态由实负到复振荡]
+\label{prop:chi-slice-phase-windows-certificate}
+沿 $\chi$ 切片取离散网格 $t_0<t_1<\cdots<t_N$，并对每个 $t_i$ 记录满足 $|\lambda_2(t_i)|=\Lambda(t_i)$ 的次主特征值 $\lambda_2(t_i)$ 的实部与虚部。
+固定阈值 $\varepsilon>0$，定义离散相区标签
+\(
+\kappa(t_i)\in\{\texttt{neg\_real},\texttt{pos\_real},\texttt{complex}\}
+\)
+为：若 $|\Im\lambda_2(t_i)|>\varepsilon$ 则 $\kappa(t_i)=\texttt{complex}$；否则按 $\Re\lambda_2(t_i)$ 的符号取 $\texttt{neg\_real}$ 或 $\texttt{pos\_real}$。
+则离散序列 $\{\kappa(t_i)\}$ 的极大常值网格段给出一个完全可复现的“内生相位相区”证书：每一段上 $\omega(t)=\arg\lambda_2(t)$ 与 $T_{\mathrm{osc}}(t)=2\pi/|\omega(t)|$ 的取值范围由有限维谱读出直接确定。
+表 \ref{tab:real-input-40-time-corr-phase-windows} 给出真实输入 40 状态核在本文默认网格上的相区分解。
+\end{proposition}
+
+\input{sections/generated/tab_real_input_40_time_correlation_phase_windows}
 
 \paragraph{相关时间与角色扭曲混合时间的分离（可审计对比）}
 上一段的 $\tau_{\mathrm{corr}}(t)$ 来自同一切片平衡态内的相关衰减；而注 \ref{rem:pom-chi-mixing} 中的 $\tau_{\mathrm{mix}}$ 则来自角色扭曲后谱半径比 $\rho/\lambda$ 所控制的“读出偏置”指数衰减。
