@@ -116,6 +116,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_weighted_delta_completed",
+            script="exp_sync_kernel_weighted_delta_completed.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_sync_kernel_weighted_delta_completed.tex",
+            ],
+        ),
+        Step(
             name="collision_kernel_A2_primitive",
             script="exp_collision_kernel_A2_primitive.py",
             args=[],

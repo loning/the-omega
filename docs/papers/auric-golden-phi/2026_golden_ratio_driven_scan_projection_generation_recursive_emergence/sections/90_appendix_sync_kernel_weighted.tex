@@ -305,6 +305,31 @@ a_{p^k}(u)=u\,a_{p^k}(1/u).
 \]
 此外，\(\Delta\) 在本核上可由六次方程 \(F(\lambda,u)=0\) 直接恢复为一个显式多项式（并与 \(10\times 10\) 的矩阵定义逐点验算一致）：
 \input{sections/generated/eq_sync_kernel_weighted_delta_explicit}
+\begin{proposition}[完成化行列式的二元闭式：\texorpdfstring{$\Delta(z,u)=\widehat\Delta(w,s)$}{Delta=hatDelta}]\label{prop:sync-kernel-weighted-hat-delta}
+取完成化坐标
+\[
+u=r^2,\qquad w:=zr=z\sqrt{u},\qquad s:=r+r^{-1}=\sqrt{u}+\frac{1}{\sqrt{u}}.
+\]
+则存在整系数二元多项式 \(\widehat\Delta(w,s)\in\ZZ[w,s]\) 使得
+\[
+\boxed{\ \Delta(z,u)=\widehat\Delta\!\left(z\sqrt{u},\ \sqrt{u}+\frac{1}{\sqrt{u}}\right)\ }.
+\]
+在本核上，\(\widehat\Delta\) 可取为式 \eqref{eq:sync-kernel-weighted-delta-completed} 的闭式（由脚本直接生成并与 \eqref{eq:sync-kernel-weighted-delta-explicit} 逐项核验一致）：
+\input{sections/generated/eq_sync_kernel_weighted_delta_completed}
+\end{proposition}
+\begin{proof}
+由自对偶 \(\Delta(z,u)=\Delta(uz,1/u)\)，把 \(u=r^2\) 并令 \(w=zr\)，可知
+\(
+\Delta(w/r,r^2)
+\)
+在 \(r\mapsto r^{-1}\) 下不变。
+而不变量子环恒等式
+\(
+\ZZ[r,r^{-1}]^{\,r\mapsto r^{-1}}=\ZZ[r+r^{-1}]=\ZZ[s]
+\)
+保证其可写成某个 \(\widehat\Delta(w,s)\in\ZZ[w,s]\)。
+把 \eqref{eq:sync-kernel-weighted-delta-explicit} 代入 \(u=r^2,z=w/r\) 并在不变量基 \(C_k(s)=r^k+r^{-k}\) 上化简，即得 \eqref{eq:sync-kernel-weighted-delta-completed}；脚本 \texttt{scripts/exp\_sync\_kernel\_weighted\_delta\_completed.py} 对该恒等式作了符号核验。证毕。
+\end{proof}
 设 $z_\star(u)$ 为最小正根、$\lambda(u)=1/z_\star(u)$，则
 \[
 \lambda(u)=u\,\lambda(1/u),
@@ -1003,6 +1028,24 @@ r^{-dn}f(r^{2d})=\widehat f(C_d(s))
 a_n(u)=\sum_{d\mid n} d\,p_d(u^{n/d})
 \)
 完成化得到。
+\end{proof}
+
+\begin{corollary}[素数长度同余：\texorpdfstring{$\widehat a_p(s)\equiv C_p(s)\ (\mathrm{mod}\ p)$}{hat a_p congruent Cp mod p}]\label{cor:completed-prime-congruence}
+沿用推论 \ref{cor:chebyshev-witt-completed} 的完成化记号。若 \(p\) 为素数，则有整系数同余
+\[
+\boxed{\ \widehat a_p(s)\equiv C_p(s)\pmod p\ }.
+\]
+\end{corollary}
+\begin{proof}
+对素数 \(p\)，由 \(\widehat p_p(s)=\frac1p\bigl(\widehat a_p(s)-\widehat a_1(C_p(s))\bigr)\)（推论 \ref{cor:chebyshev-witt-completed} 的第一式，因子仅为 \(d=1,p\)）可知
+\[
+\widehat a_p(s)-\widehat a_1(C_p(s))\in p\,\ZZ[s].
+\]
+而在本核上 \(a_1(u)=\Tr(B(u))=p_1(u)=1+u\)，故
+\(
+\widehat a_1(s)=r^{-1}(1+r^2)=r+r^{-1}=s
+\)，从而 \(\widehat a_1(C_p(s))=C_p(s)\)。
+代回即得同余。证毕。
 \end{proof}
 
 \input{sections/generated/tab_sync_kernel_weighted_primitive_completed}
