@@ -378,6 +378,11 @@ def main() -> None:
 
     c, P = compute_c_and_P(args.max_n, prog, states, kernel_map)
     P_latex = [poly_to_latex(P[n]) for n in range(1, args.max_n + 1)]
+    # Audit: minimum q-exponent in each P_n(q,r) (evidence for nonnegativity conjecture).
+    min_q_exp: List[int] = []
+    for n in range(1, args.max_n + 1):
+        exps = [eq for (eq, _er) in P[n].keys()]
+        min_q_exp.append(int(min(exps)) if exps else 0)
 
     # Unweighted Mertens constant
     phi = (1.0 + 5.0**0.5) / 2.0
@@ -455,6 +460,8 @@ def main() -> None:
         "P_n_2d_terms": [
             {f"{eq},{er}": coeff for (eq, er), coeff in P[n].items()} for n in range(1, args.max_n + 1)
         ],
+        "P_n_2d_min_q_exp": min_q_exp,
+        "P_n_2d_all_q_exp_nonnegative": all(x >= 0 for x in min_q_exp),
         "mathsf_M": mathsf_M,
         "pair_values": pair_keys,
         "pair_twist_C": pair_twist_C,
