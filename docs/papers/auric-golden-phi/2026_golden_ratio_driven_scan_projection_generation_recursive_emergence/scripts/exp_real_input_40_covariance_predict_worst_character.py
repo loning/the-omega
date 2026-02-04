@@ -228,6 +228,8 @@ def main() -> None:
     # Hessian / covariance matrix.
     Sigma = hessian_central(third_axis=str(args.third_axis), h=float(args.h))
     evals, evecs = np.linalg.eigh(Sigma)
+    # Correlations (dimensionless).
+    corr_nu_xi = float(Sigma[1, 2] / math.sqrt(Sigma[1, 1] * Sigma[2, 2]))
 
     # Predicted worst index: minimize t^T Sigma t over nontrivial j.
     best_val = float("inf")
@@ -295,6 +297,9 @@ def main() -> None:
         + f"{Sigma[1,0]:.6g}&{Sigma[1,1]:.6g}&{Sigma[1,2]:.6g}\\\\"
         + f"{Sigma[2,0]:.6g}&{Sigma[2,1]:.6g}&{Sigma[2,2]:.6g}"
         + "\\end{smallmatrix}$}\\\\"
+    )
+    lines.append(
+        f"$\\mathrm{{Corr}}(\\nu,\\xi)$ & \\multicolumn{{2}}{{l}}{{{corr_nu_xi:.6f}}}\\\\"
     )
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")

@@ -241,6 +241,22 @@ T_I(n)\ \approx\ k_Z(I)\,\delta_Z\ +\ k_\chi(I)\,\tau_{\mathrm{mix}}\ +\ D_U(n).
 \textbf{合流性与正规形：}在 $\{E_m\}$ 片段中，任意二元相邻子词都可由 (R$_E$) 缩并为较小指标的 $E$；因此任意重写都只可能把词逐步缩并到“仅剩一个最小指标”的形式。由于塔性质本身给出等式 $E_{m_1}\circ E_{m_2}=E_{m_1}$（命题 \ref{prop:pom-expectation-tower}），不同缩并顺序对应同一复合算子，故不可约正规形唯一。含 $P_Z$ 的情形同理：幂等缩并把多余的 $P_Z$ 归并为一个。证毕。
 \end{proof}
 
+\begin{proposition}[半环闭包内的判等性：正规形 \texorpdfstring{$\Rightarrow$}{=>} 可判定词问题]\label{prop:pom-projword-decidable}
+在片段 $\mathbf{PW}_{Z,E}$ 上，$1$-态射（投影词）的等价关系（由 $2$-态射给出的可重写等式闭包）是可判定的：给定任意两词 $W_1,W_2\in\mathbf{PW}_{Z,E}$，计算其在重写系统 \ref{def:pom-rewrite-E-tower} 下的不可约正规形 $N(W_1),N(W_2)$，则
+\[
+W_1\ \simeq\ W_2\quad\Longleftrightarrow\quad N(W_1)=N(W_2),
+\]
+从而词问题可在多项式时间内解决（正规化仅需逐步缩并相邻子词）。
+\end{proposition}
+\begin{proof}
+由定理 \ref{thm:pom-rewrite-termination-confluence}，重写系统终止且（局部）合流，因此每个词存在且仅存在一个不可约正规形；并且两词等价当且仅当它们可重写到同一正规形。证毕。
+\end{proof}
+
+\begin{remark}[可计算实现：读出塔正规化器]\label{rem:pom-projword-normalizer-script}
+脚本 \texttt{scripts/exp\_pom\_projword\_ze\_normalizer.py} 给出 $\mathbf{PW}_{Z,E}$ 片段的一个最小可复现正规化器：输入一个由符号 \texttt{PZ} 与 \texttt{E[m]} 组成的复合词（按从左到右的复合顺序），输出按 (R$_Z$),(R$_E$) 缩并后的正规形。
+这提供“算法等价 \(\Rightarrow\) 投影词等价”的最小可执行原型：在该片段中，等价性完全由正规形决定。
+\end{remark}
+
 \begin{remark}[边界：序投影 \texorpdfstring{$P_{\le}$}{P<=} 不属于局部可消去片段]\label{rem:pom-rewrite-boundary-order}
 定理 \ref{thm:pom-rewrite-termination-confluence} 只处理“局部 coarse-graining 冗余”的可终止片段。
 一旦投影词中出现 $P_{\le}$（或其实现 $\mathrm{PROJ}_u$ 的零温硬化极限），其读出通常依赖跨窗口聚合（定义 \ref{def:pom-proj-order}），不再具有由分辨率指标单调下降所控制的缩并度量；因此 $P_{\le}$ 是投影词演算学中的结构性边界：它标记了不可并行增长项的进入点，而非可被局部重写消去的冗余。

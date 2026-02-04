@@ -269,6 +269,16 @@ $$
 对 \(A_\xi(u)\) 直接计算 \(\det(\lambda I-A_\xi(u))\) 即得。证毕。
 \end{proof}
 
+\begin{remark}[对齐：同一三次压力方程（碰撞势）]\label{rem:arity-collision-cubic-align}
+命题 \ref{prop:arity-collision-cubic} 的三次方程与附录中“碰撞势”的压力方程严格同型。
+事实上，若把记忆态按 \(00,01,10,11\) 排列，则
+\(
+A_\xi(u)=D(u)\,(F\otimes F)
+\)
+（其中 \(D(u)=\mathrm{diag}(1,1,1,u)\)），这正是附录命题 \ref{prop:real-input-40-collision-pressure} 所定义的 \(W(u)\)；其 Perron 根 \(\rho(u)\) 因而满足相同的三次代数方程，并给出压力 \(P_2(\theta)=\log\rho(e^\theta)\)。
+因此本小节把 \(((3,3,p))\) 的“纯碰撞慢模”与附录 B 的“碰撞势”在同一三次压力方程上实现了严格对齐：只是 \(u\) 的取值从实参 \(u=e^\theta\) 推广到单位根扭曲 \(u=\omega_p^{j_3}\)。
+\end{remark}
+
 \begin{corollary}[闭式复现 \texorpdfstring{$((3,3,5))$}{(3,3,5)} 的最坏谱半径比]\label{cor:arity-335-rho-closed-form}
 取 \(u=\omega_5=e^{2\pi i/5}\)。则
 $$
@@ -566,6 +576,50 @@ g(p):=\left(1-\frac{\rho_{3,3,p}}{\lambda}\right)p^2.
 \]
 从而把“near-coboundary 的组合学证书”提升为对慢模谱缺口的可审计上界？
 \end{remark}
+
+\begin{proposition}[缺陷边 \(\Rightarrow\) 谱缺口：一个可审计的线性上界]\label{prop:arity-defect-implies-gap}
+设 \(M\) 为 primitive 非负矩阵，\(\lambda:=\rho(M)\)。令 \(M_\xi(u)\) 为对边施加单位模权重的扭曲（本节的纯碰撞扭曲为特例），并取 \(|u|=1\)。
+给定任意“着色/规约” \(h:V\to \ZZ/p\)（或更一般 \(h:V\to \RR/2\pi\ZZ\)），以对角共轭把扭曲写为
+\[
+\widetilde M(u):=D_h^{-1}M_\xi(u)\,D_h,
+\qquad D_h:=\mathrm{diag}(u^{h(v)})_{v\in V}.
+\]
+则 \(\rho(\widetilde M(u))=\rho(M_\xi(u))\)，并且存在一个分解
+\[
+\widetilde M(u)=M_{\mathrm{sat}}+\sum_{t\neq 0}u^{t}\,M_{\mathrm{viol}}^{(t)},
+\qquad
+M=M_{\mathrm{sat}}+\sum_{t\neq 0}M_{\mathrm{viol}}^{(t)},
+\]
+其中 \(M_{\mathrm{sat}},M_{\mathrm{viol}}^{(t)}\) 皆为非负矩阵，且 \(M_{\mathrm{viol}}^{(t)}\) 的支持恰对应“违反同余约束”的边集合（按残差 \(t\) 分类）。
+令 \(\ell,r\succ 0\) 为 \(M\) 的 Perron 左/右特征向量，归一化为 \(\ell^{\mathsf T}r=1\)，并定义加权缺陷
+\[
+\varepsilon_\pi(h):=\frac{1}{\lambda}\sum_{t\neq 0}\ell^{\mathsf T}M_{\mathrm{viol}}^{(t)}r\ \in[0,1].
+\]
+则对任意 \(|u|=1\) 有谱缺口上界
+\[
+\boxed{\;
+1-\frac{\rho(M_\xi(u))}{\lambda}\ \le\ 2\,\varepsilon_\pi(h)\; }.
+\]
+\end{proposition}
+\begin{proof}
+由谱半径的变分下界，对任意矩阵 \(A\) 与向量 \(\ell,r\) 有
+\(
+\rho(A)\ge |\ell^{\mathsf T}Ar|/(\ell^{\mathsf T}r)
+\)。
+对 \(A=\widetilde M(u)\) 且 \(\ell^{\mathsf T}r=1\)，得
+\[
+\rho(M_\xi(u))=\rho(\widetilde M(u))\ge \left|\ell^{\mathsf T}\widetilde M(u)r\right|
+=\left|\lambda+\sum_{t\neq 0}(u^t-1)\,\ell^{\mathsf T}M_{\mathrm{viol}}^{(t)}r\right|.
+\]
+由三角不等式与 \(|u^t-1|\le 2\)（\(|u|=1\)）得到
+\[
+\left|\ell^{\mathsf T}\widetilde M(u)r\right|
+\ge
+\lambda-2\sum_{t\neq 0}\ell^{\mathsf T}M_{\mathrm{viol}}^{(t)}r
+=\lambda\bigl(1-2\varepsilon_\pi(h)\bigr).
+\]
+两边除以 \(\lambda\) 并移项即得结论。证毕。
+\end{proof}
 
 \begin{remark}[对照：第三维取 \texorpdfstring{$N_e\bmod 5$}{Ne mod 5} 的版本]\label{rem:arity-335-ne-mod5}
 若把第三维改为输出计数 $N_e(\gamma)\bmod 5$，则得到另一个同型的 $((3,3,5))$ 常数张量（主项系数同为 $1/45$），其输出片段为
