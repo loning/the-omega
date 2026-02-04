@@ -486,6 +486,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_output_potential_zero_temp_ground_sft",
+            script="exp_real_input_40_output_potential_zero_temp_ground_sft.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_output_potential_zero_temp_ground_sft.json",
+                "sections/generated/eq_real_input_40_output_potential_zero_temp_ground_sft.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_rotation_polytope",
             script="exp_real_input_40_rotation_polytope.py",
             args=[],
@@ -592,6 +601,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/real_input_40_output_potential_dirichlet_twists.json",
                 "sections/generated/tab_real_input_40_output_potential_dirichlet_twists.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_output_potential_activated_branch_series",
+            script="exp_real_input_40_output_potential_activated_branch_series.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_output_potential_activated_branch_series.json",
+                "sections/generated/eq_real_input_40_output_potential_activated_branch_series.tex",
             ],
         ),
         Step(
@@ -721,6 +739,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/real_input_40_output_potential_cumulants_closed.json",
                 "sections/generated/tab_real_input_40_output_potential_cumulants_closed.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_output_potential_ldp_algebraic_param",
+            script="exp_real_input_40_output_potential_ldp_algebraic_param.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_output_potential_ldp_algebraic_param.json",
+                "sections/generated/eq_real_input_40_output_potential_ldp_algebraic_param.tex",
             ],
         ),
         Step(
