@@ -73,6 +73,12 @@ a\mapsto a^n b,\qquad b\mapsto a
 
 作为比较：在双曲动力系统（如环面自同态）中，Markov 划分可把光滑动力系统编码为有限型子移位（SFT），并将不变测度/熵等问题转移到图上；而 sofic 系统可视为 SFT 的因子，其覆盖与因子码的结构亦有成熟理论（仍可参见 \cite{LindMarcus1995}）。本文的旋转扫描模型本质上是等距系统，其自然符号化产物是 Sturmian（非 SFT）；本文的折叠 $\Phi_m$ 因而不应被理解为“来自 Markov 划分的 SFT 编码”，而是一个以 Zeckendorf/Ostrowski 计数为规范的\textbf{分辨率压缩与类型化规则}：它把窗口层的微态空间规约到可计算的稳定语法空间，并以 Parry 最大熵态作为一条可审计的比较基准。
 
+\subsection{工程侧的 golden-angle 采样：任意前缀均匀性与可回溯重分箱}
+
+在 MRI/CT 等成像工程中，“黄金角（golden angle）/黄金比例驱动的视角顺序”常作为一种经验有效的投影访问策略：其核心卖点并非某个固定帧长的均匀性，而是\textbf{任意前缀长度}的覆盖都较为均衡，从而支持“随时停止”以及事后按任意时间窗重分箱（retrospective binning）。例如，径向 MRI 的黄金比例角步进视角顺序在动态重建中被系统化使用（\cite{Winkelmann2007GoldenRatioRadialMRI,Feng2014GRASP}），并进一步出现了面向硬件/周期性的广义 Fibonacci 近似替代（\cite{Wundrak2015FibonacciSurrogateGoldenAngle}）；在三维径向轨迹中，phyllotaxis/斐波那契结构也被用于构造更平衡的球面覆盖（\cite{Piccini2011SpiralPhyllotaxis}）。在迭代重建与投影访问策略语境下，\cite{Koehler2004GoldenSectionProjectionAccess} 亦明确提出用 golden-section/golden-ratio 型步进组织投影访问，以改善“任意截断/任意子集”下的迭代行为。
+
+本文的工作与上述工程路线的关系是互补的：工程文献多以点扩散函数/旁瓣与重建稳定性的数值经验为主要论据；本文则把“任意前缀均匀性”落实到\textbf{可审计的差异度证书链条}上，并进一步给出从差异度到 \(D_{\mathrm{TV}}\)（以及本稿新增的 \(D_{\mathrm{KL}}\)）的显式上界翻译（第 \ref{sec:experiments} 节）。从而，“黄金驱动的投影访问/扫描顺序”在本文中不只是启发性经验法则，而是与连分数/Markov 常数等硬不变量对齐、可被独立复核的数学对象。
+
 \subsection{自动机与可判定性路线：Ostrowski-automatic 与“加法器”传统}
 当 $\alpha$ 为二次无理时，Ostrowski 数制下的加法可以被有限自动机识别，进而导出若干扩展 Presburger 算术的可判定性（例如 \cite{HieronymiTerry2018OstrowskiAddition}）。更进一步，\cite{BaranwalaSchaefferShallit2021OstrowskiAutomatic} 系统化了 Ostrowski-automatic 序列并实现了相应加法器与决策流程，用于自动化证明词组合性质。
 

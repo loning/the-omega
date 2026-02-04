@@ -93,6 +93,80 @@ D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\ \le\ (m+1)\,D_N^*(\alpha
 \]
 \end{theorem}
 
+\subsection{一个新的可审计结论：旋转微态的 \texorpdfstring{$D_{\mathrm{KL}}$}{KL} 证书}
+
+上一节给出了在旋转扫描（Sturmian）模型下，从星差异度导出的 \(D_{\mathrm{TV}}\) 有限样本证书。
+这里补充一个同样完全可审计的强化：在微态层面（\(\Omega_m\) 上），可以把该 \(D_{\mathrm{TV}}\) 证书进一步转译为 \(D_{\mathrm{KL}}\) 的上界证书。
+
+关键观察是：对固定 \(m\)，旋转模型产生的长度-\(m\) 微态只落在 \(m{+}1\) 个 Sturmian 因子上（命题 \ref{prop:sturmian-interval-partition}），因此其极限分布 \(\mu_m\) 在该有限支撑上具有一个正的最小原子质量
+\(
+q_{\min}(m):=\min\{\mu_m(u):\ u\in\mathcal{W}_m\}>0
+\)。一旦得到 \(q_{\min}(m)\) 的下界，就可以把 \(D_{\mathrm{TV}}\) 控制转为 \(D_{\mathrm{KL}}\) 控制。
+
+\begin{lemma}[从 TV 到 KL：由最小原子下界给出的显式上界]\label{lem:kl-from-tv-qmin}
+设 \(p,q\) 为同一有限集合 \(S\) 上的两概率分布，并假设 \(p\ll q\)（即 \(p(s)>0\Rightarrow q(s)>0\)）。定义
+\(
+q_{\min}:=\min\{q(s):\ p(s)>0\}>0
+\)。则有
+\[
+D_{\mathrm{KL}}(p\|q)\ \le\ \ln\!\Bigl(1+\frac{\|p-q\|_1^2}{2q_{\min}}\Bigr)
+\ \le\ \frac{1}{2q_{\min}}\|p-q\|_1^2
+=\frac{2}{q_{\min}}\,D_{\mathrm{TV}}(p,q)^2,
+\]
+其中第一条不等式可由 \(D_{\mathrm{KL}}\le \ln(1+\chi^2)\) 与 \(\chi^2\le \|p-q\|_1^2/(2q_{\min})\) 推出（参见 \cite{SasonVerdu2016fDivergence}）。
+\end{lemma}
+
+\begin{proof}
+由于 \(p\ll q\)，可定义 \(r(s):=p(s)/q(s)\)。由不等式 \(\log x\le x-1\) 得
+\[
+D_{\mathrm{KL}}(p\|q)=\sum_{s\in S}p(s)\log r(s)
+\le \sum_{s\in S}p(s)\,(r(s)-1)
+=\sum_{s\in S}\frac{(p(s)-q(s))^2}{q(s)}.
+\]
+从而
+\[
+D_{\mathrm{KL}}(p\|q)\le \frac{1}{q_{\min}}\sum_{s\in S}(p(s)-q(s))^2.
+\]
+令 \(v(s):=p(s)-q(s)\)，则 \(\sum_s v(s)=0\)。记 \(a:=\sum_{v(s)>0}v(s)=\sum_{v(s)<0}(-v(s))=\tfrac12\|p-q\|_1\)。于是
+\(
+\sum_s v(s)^2\le a^2+a^2=2a^2=\tfrac12\|p-q\|_1^2
+\)，从而得到所述不等式。证毕。
+\end{proof}
+
+接下来给出 \(q_{\min}(m)\) 的一个完全显式的下界。为简化叙述，我们取本文最常用的“规范窗”\(\beta=\alpha\)，此时长度-\(m\) 微态分割的端点集合退化为 \(\{ -k\alpha\}\ (k=0,\dots,m)\)（重复点合并后至多 \(m{+}1\) 个），每个原子就是这些点诱导的相邻间隙。
+
+\begin{proposition}[微态最小原子下界：由 Markov 常数控制]\label{prop:qmin-lowerbound-markov}
+在第 3 节的旋转二分割模型中，取 \(\beta=\alpha\)，并设 \(\alpha\) badly approximable（等价于 \(c(\alpha)>0\)，定义 \ref{def:markov-constant}）。则对任意 \(m\ge 1\)，
+\[
+q_{\min}(m)\ \ge\ \min_{1\le k\le m}\|k\alpha\|\ \ge\ \frac{c(\alpha)}{m},
+\]
+其中 \(\|x\|:=\min_{n\in\ZZ}|x-n|\)。特别地，对黄金分支 \(\alpha=\varphi^{-1}\)，有 \(c(\alpha)=1/\sqrt5\)，从而
+\[
+q_{\min}(m)\ \ge\ \frac{1}{\sqrt5\,m}.
+\]
+\end{proposition}
+
+\begin{proof}
+当 \(\beta=\alpha\) 时，长度-\(m\) 微态分割端点属于集合 \(\{ -k\alpha\}\ (k=0,\dots,m)\)。按圆周顺序排序后，相邻两端点之差为某个 \(\|(i-j)\alpha\|\)（其中 \(1\le |i-j|\le m\)），因此每个原子长度均不小于 \(\min_{1\le k\le m}\|k\alpha\|\)，从而得到第一条不等式。
+
+另一方面，由 Markov 常数定义，任意 \(k\ge 1\) 有
+\(
+\|k\alpha\|=\min_{p\in\ZZ}|k\alpha-p|=k\min_{p\in\ZZ}|\alpha-p/k|\ge c(\alpha)/k\ge c(\alpha)/m
+\)，得到第二条不等式。黄金分支的常数值由定理 \ref{thm:golden-antiresonance} 给出。
+\end{proof}
+
+\begin{corollary}[旋转微态的 KL 证书（显式）]\label{cor:rotation-microstate-kl-certificate}
+在命题 \ref{prop:sturmian-interval-partition} 的条件下，取 \(\beta=\alpha\)，令 \(\hat\mu_{m,N}\) 为长度-\(m\) 微态经验分布，\(\mu_m\) 为其极限分布。则由定理 \ref{thm:tv-certificate-hist}、引理 \ref{lem:kl-from-tv-qmin} 与命题 \ref{prop:qmin-lowerbound-markov}，得到
+\[
+D_{\mathrm{KL}}(\hat\mu_{m,N}\|\mu_m)
+\ \le\ \frac{2\,D_{\mathrm{TV}}(\hat\mu_{m,N},\mu_m)^2}{q_{\min}(m)}
+\ \le\ \frac{2\,(m+1)^2\,D_N^*(\alpha;x_0)^2}{q_{\min}(m)}.
+\]
+特别地，对黄金分支 \(\alpha=\varphi^{-1}\) 有显式下界 \(q_{\min}(m)\ge 1/(\sqrt5\,m)\)，从而获得一个完全显式、仅由 \((m,N)\) 控制的 KL 上界证书。
+\end{corollary}
+
+\input{sections/generated/tab_rotation_microstate_kl_certificate}
+
 \begin{proof}
 由命题 \ref{prop:sturmian-interval-partition}，$\hat{\mu}_{m,N}$ 与 $\mu_m$ 都可视为对分割 $\{I_j\}_{j=1}^{m+1}$ 的概率向量。对每个半开区间 $I_j=[a_j,b_j)$，由星差异度定义（定义 \ref{def:instability-envelope}）与“任意区间可写为两段前缀区间之差”的标准技巧可得
 \[
@@ -348,4 +422,3 @@ B_n^{\mathrm{glob}}(u)=\frac1n\sum_{d\mid n}\mu(d)\Tr(M_{\mathrm{flow}}(u^d)^{n/
 \end{itemize}
 表 \ref{tab:parallel-addition-kernels-fingerprint-u-samples} 给出一个最小可用的对比表模板：每行一个核，列包含端点 $\zeta_K(z,0)$、压力曲线 $\lambda_K(u)$ 的采样值、以及若干 $n$ 与 $u$ 下的 $\widehat B_{K,n}(u)$。
 \input{sections/generated/tab_parallel_addition_kernels_fingerprint_u_samples}
-

@@ -81,6 +81,15 @@ def _outputs_ok(step: Step) -> Tuple[bool, List[str]]:
 def build_steps() -> List[Step]:
     return [
         Step(
+            name="rotation_microstate_kl_certificate",
+            script="exp_rotation_microstate_kl_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/rotation_microstate_kl_certificate.csv",
+                "sections/generated/tab_rotation_microstate_kl_certificate.tex",
+            ],
+        ),
+        Step(
             name="rotation_fold_vs_parry",
             script="exp_rotation_fold_vs_parry.py",
             args=[],
@@ -344,21 +353,21 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="arity_335_n2_limit_law",
-            script="exp_arity_335_n2_limit_law_table.py",
-            args=[],
-            expected_outputs=[
-                "artifacts/export/arity_335_n2_limit_law.json",
-                "sections/generated/tab_real_input_40_arity_335_n2_limit_law.tex",
-            ],
-        ),
-        Step(
             name="arity_335_N2_selection_law_primes",
             script="exp_arity_335_n2_selection_law_primes.py",
             args=[],
             expected_outputs=[
                 "artifacts/export/arity_335_n2_selection_law_primes.json",
                 "sections/generated/tab_real_input_40_arity_335_n2_selection_law_primes.tex",
+            ],
+        ),
+        Step(
+            name="arity_335_n2_limit_law",
+            script="exp_arity_335_n2_limit_law_table.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/arity_335_n2_limit_law.json",
+                "sections/generated/tab_real_input_40_arity_335_n2_limit_law.tex",
             ],
         ),
         Step(
@@ -555,9 +564,15 @@ def build_steps() -> List[Step]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run reproducible experiment pipeline (with step cache).")
-    parser.add_argument("--force", action="store_true", help="Force rerun all steps (ignore cache).")
-    parser.add_argument("--no-cache", action="store_true", help="Disable cache (always run).")
+    parser = argparse.ArgumentParser(
+        description="Run reproducible experiment pipeline (with step cache)."
+    )
+    parser.add_argument(
+        "--force", action="store_true", help="Force rerun all steps (ignore cache)."
+    )
+    parser.add_argument(
+        "--no-cache", action="store_true", help="Disable cache (always run)."
+    )
     args = parser.parse_args()
 
     steps = build_steps()
@@ -586,14 +601,20 @@ def main() -> None:
             steps_cache[st.name] = sig
             cache["steps"] = steps_cache
             _write_cache(cache)
-            print(f"[run_all] SKIP {st.name} (cache warm-up: outputs already present)", flush=True)
+            print(
+                f"[run_all] SKIP {st.name} (cache warm-up: outputs already present)",
+                flush=True,
+            )
             continue
 
         if ok and (not args.force) and (not args.no_cache) and cached != sig:
             # Outputs exist but signature changed; rerun for auditability.
             print(f"[run_all] RERUN {st.name} (signature changed)", flush=True)
         elif not ok:
-            print(f"[run_all] RERUN {st.name} (missing outputs: {', '.join(missing)})", flush=True)
+            print(
+                f"[run_all] RERUN {st.name} (missing outputs: {', '.join(missing)})",
+                flush=True,
+            )
 
         cmd = [sys.executable, str(script_path), *list(st.args)]
         print(f"[run_all] RUN {st.name}: {' '.join(cmd)}", flush=True)
@@ -615,4 +636,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
