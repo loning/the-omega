@@ -380,23 +380,28 @@ def main(argv: list[str]) -> int:
         return 0
 
     if args.cmd == "build":
-        if getattr(args, "all", False):
-            _, plan_items = plan_all_builds(papers_root)
-        elif not plan_file.exists():
-            if not args.replan_if_missing:
-                raise FileNotFoundError(
-                    f"Plan file not found: {plan_file}. Run `plan` first or pass --replan-if-missing."
-                )
-            _, to_build = plan_rebuilds(papers_root, stamp_root)
-            plan_items = to_build
-        else:
-            plan_items = read_plan_file(plan_file)
+        try:
+            if getattr(args, "all", False):
+                _, plan_items = plan_all_builds(papers_root)
+            elif not plan_file.exists():
+                if not args.replan_if_missing:
+                    print(
+                        f"Plan file not found: {plan_file}. Run `plan` first or pass --replan-if-missing.",
+                        file=sys.stderr,
+                    )
+                    return 0
+                _, to_build = plan_rebuilds(papers_root, stamp_root)
+                plan_items = to_build
+            else:
+                plan_items = read_plan_file(plan_file)
 
-        if not plan_items:
-            print("No papers to build.")
-            return 0
+            if not plan_items:
+                print("No papers to build.")
+                return 0
 
-        build_from_plan(papers_root, stamp_root, plan_items, clean=bool(getattr(args, "clean", False)))
+            build_from_plan(papers_root, stamp_root, plan_items, clean=bool(getattr(args, "clean", False)))
+        except Exception as exc:
+            print(f"Build encountered error: {exc}", file=sys.stderr)
         return 0
 
     if args.cmd == "verify":
