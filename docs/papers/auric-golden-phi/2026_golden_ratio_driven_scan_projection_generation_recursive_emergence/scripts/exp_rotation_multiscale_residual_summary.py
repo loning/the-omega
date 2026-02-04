@@ -72,6 +72,46 @@ def count_folded_hist(
     return counts
 
 
+def count_folded_hist_m1_and_boundary(
+    s: np.ndarray,
+    m: int,
+    N: int,
+    fold_map_m: List[int],
+    fold_map_m1: List[int],
+    prog: Progress,
+) -> Tuple[Dict[int, int], int]:
+    """Count folded (m+1)-hist and boundary event rate.
+
+    Boundary event B_{m+1} (paper Def. fold-boundary-event) is:
+      last_bit(window_{m+1}) == 1  and  last_bit(Fold_m(prefix_m)) == 1.
+    """
+
+    m1 = m + 1
+    if N + m1 - 1 > len(s):
+        raise ValueError("s too short for requested N,m+1")
+    mask_m1 = (1 << m1) - 1
+
+    w = _pack_bits_to_int(s[:m1], m1)
+    counts: Dict[int, int] = {}
+    boundary = 0
+    for t in range(N):
+        if t > 0:
+            w = ((w << 1) & mask_m1) | int(s[t + m1 - 1])
+
+        folded_m1 = fold_map_m1[w]
+        counts[folded_m1] = counts.get(folded_m1, 0) + 1
+
+        last_bit = w & 1
+        if last_bit:
+            prefix = w >> 1
+            if fold_map_m[prefix] & 1:
+                boundary += 1
+
+        prog.tick(f"count m1={m1} t={t}/{N}")
+
+    return counts, boundary
+
+
 def pushforward_truncate_last_bit(counts_m1: Dict[int, int]) -> Dict[int, int]:
     out: Dict[int, int] = {}
     for w, c in counts_m1.items():
@@ -87,7 +127,7 @@ def tv_distance_int(p: Dict[int, float], q: Dict[int, float]) -> float:
     return 0.5 * s
 
 
-def write_tex(rows: List[Tuple[int, int, float]], out_path: Path) -> None:
+def write_tex(rows: List[Tuple[int, int, float, float]], out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     lines: List[str] = []
     lines.append(
@@ -96,16 +136,16 @@ def write_tex(rows: List[Tuple[int, int, float]], out_path: Path) -> None:
     lines.append("\\begin{table}[H]")
     lines.append("\\centering")
     lines.append("\\small")
-    lines.append("\\begin{tabular}{rrr}")
+    lines.append("\\begin{tabular}{rrrr}")
     lines.append("\\toprule")
-    lines.append("$m$ & $N$ & $E_{m,N}$ \\\\")
+    lines.append("$m$ & $N$ & $E_{m,N}$ & $\\hat\\mu_{m+1,N}(\\mathcal{B}_{m+1})$ \\\\")
     lines.append("\\midrule")
-    for m, N, e in rows:
-        lines.append(f"{m} & {N} & {e:.6g} \\\\")
+    for m, N, e, b in rows:
+        lines.append(f"{m} & {N} & {e:.6g} & {b:.6g} \\\\")
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
     lines.append(
-        "\\caption{Cross-resolution projective residual $E_{m,N}$ in the rotation scan model (small audit grid).}"
+        "\\caption{Cross-resolution projective residual $E_{m,N}$ and the boundary perturbation rate $\\hat\\mu_{m+1,N}(\\mathcal{B}_{m+1})$ in the rotation scan model (small audit grid).}"
     )
     lines.append("\\label{tab:rotation_multiscale_residual_summary}")
     lines.append("\\end{table}")
@@ -128,7 +168,7 @@ def main() -> None:
     for m in sorted(set(ms) | {m + 1 for m in ms}):
         fold_maps[m] = build_fold_map(m, prog)
 
-    rows: List[Tuple[int, int, float]] = []
+    rows: List[Tuple[int, int, float, float]] = []
     Nmax = max(Ns)
     for m in ms:
         s_len = Nmax + (m + 1) - 1
@@ -137,16 +177,22 @@ def main() -> None:
             counts_m = count_folded_hist(
                 s=s, m=m, N=N, fold_map=fold_maps[m], prog=prog
             )
-            counts_m1 = count_folded_hist(
-                s=s, m=m + 1, N=N, fold_map=fold_maps[m + 1], prog=prog
+            counts_m1, boundary = count_folded_hist_m1_and_boundary(
+                s=s,
+                m=m,
+                N=N,
+                fold_map_m=fold_maps[m],
+                fold_map_m1=fold_maps[m + 1],
+                prog=prog,
             )
 
             p_m: Dict[int, float] = {k: v / float(N) for k, v in counts_m.items()}
             p_m1_push = pushforward_truncate_last_bit(counts_m1)
             p_push: Dict[int, float] = {k: v / float(N) for k, v in p_m1_push.items()}
             e = tv_distance_int(p_m, p_push)
-            rows.append((m, N, e))
-            prog.tick(f"done m={m} N={N} E={e:.6g}")
+            b = boundary / float(N)
+            rows.append((m, N, e, b))
+            prog.tick(f"done m={m} N={N} E={e:.6g} B={b:.6g}")
 
     out = GEN / "tab_rotation_multiscale_residual_summary.tex"
     write_tex(rows, out)
