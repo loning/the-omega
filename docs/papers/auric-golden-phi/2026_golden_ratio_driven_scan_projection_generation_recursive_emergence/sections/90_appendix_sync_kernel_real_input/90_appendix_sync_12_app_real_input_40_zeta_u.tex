@@ -10,23 +10,35 @@
 +(4u^3-3u^2)z^7+(u^3-u^4)z^8
 \Bigr).
 \]
-其中因子 $1-uz^2$ 并非“偶然代数分解”：它对应一条可在 primitive 层面被\textbf{精确定位}的原子闭轨道，并由此给出 Abel 有限部常数的精确剥离。
+其中因子 $1-uz^2$ 并非“偶然代数分解”：它对应一个可在 primitive（Big-Witt）层面被\textbf{精确剥离}的原子分量（等价地给出显式谱支 \(\pm\sqrt u\)），并由此给出 Abel 有限部常数的精确位移。
 
-\begin{proposition}[原子 \texorpdfstring{$(2,1)$}{(2,1)}-prime orbit 与有限部常数的精确剥离]\label{prop:atomic-2-orbit-split-logM}
-对加权矩阵族 $M(u)$，令每条 primitive 周期轨道 $\tau$ 的长度为 $|\tau|$，并记其一圈累计输出 $1$ 的次数为
-\[
-E(\tau):=\sum_{e\in\tau} e\in\ZZ_{\ge 0}.
-\]
-则有且仅有一条 primitive 轨道 $\tau_2$ 满足
-\[
-|\tau_2|=2,\qquad E(\tau_2)=1,
-\]
-并且该轨道在加权 zeta 的 Euler 乘积中贡献出因子 $(1-uz^2)^{-1}$。
-
-进一步，令未加权 primitive 生成函数
+\begin{proposition}[因子 \texorpdfstring{$(1-uz^2)$}{(1-uz^2)} 的原子 Witt 分量与有限部常数的精确剥离]\label{prop:atomic-2-orbit-split-logM}
+对加权矩阵族 \(M(u)\) 定义
 \(
-P(z)=\sum_{n\ge 1}p_n z^n
-\)（$p_n$ 为未加权 primitive 轨道数，按轨道计），并定义“去掉原子 $2$-轨道后的核心部分”
+\zeta(z,u)=\det(I-zM(u))^{-1}
+\)
+并令 \(P(z,u)=\sum_{n\ge 1}p_n(u)z^n\) 为其 primitive 生成函数（由 Witt/Möbius 变换给出，见 \S\ref{app:witt-weighted}）：
+\[
+P(z,u)=\sum_{m\ge 1}\frac{\mu(m)}{m}\log\zeta(z^m,u^m).
+\]
+若 \(\Delta(z,u)=\det(I-zM(u))\) 显式分解为
+\(
+\Delta(z,u)=(1-uz^2)\,F(z,u)
+\)，并定义 \(\zeta_{\mathrm{core}}(z,u):=F(z,u)^{-1}\) 及其 primitive 生成函数 \(P_{\mathrm{core}}(z,u)\)，则有精确“原子剥离”
+\[
+\boxed{\ P(z,u)=u z^2+P_{\mathrm{core}}(z,u)\ }.
+\]
+特别地取 \(u=1\) 得未加权 primitive 生成函数的分解
+\[
+P(z)=z^2+P_{\mathrm{core}}(z),
+\]
+其中 \(P(z)=\sum_{n\ge 1}p_n z^n\) 的系数 \(p_n\) 与表 \ref{tab:sync-kernel-A-compare} 一致。
+
+此外，脚本也可在“\((x,y)\) 分支层”把所有满足 \((|\tau|,E)=(2,1)\) 的两步回路逐项列出以作审计：
+
+\input{sections/generated/eq_real_input_40_atomic_2cycle_states}
+
+进一步，定义“去掉原子 Witt 分量后的核心部分”
 \[
 P_{\mathrm{core}}(z):=P(z)-z^2.
 \]
@@ -51,7 +63,7 @@ z_\star^2=\varphi^{-4}=\frac{7-3\sqrt5}{2}\approx 0.145898033750315.
 \end{proposition}
 
 \begin{remark}[可剥离的单独 Euler 因子]\label{rem:real-input-40-single-euler}
-因子 $(1-uz^2)^{-1}$ 对应唯一的长度 $2$ primitive 轨道，其 Witt 坐标满足
+因子 $(1-uz^2)^{-1}$ 对应一个可剥离的原子 Witt 分量，其 primitive 坐标满足
 \[
 p^{\mathrm{cycle}}_2(u)=u,\qquad p^{\mathrm{cycle}}_n(u)=0\ (n\neq 2),
 \]
@@ -177,17 +189,24 @@ y^4-6y^3+9y^2-y-1=0
 \end{remark}
 
 \begin{proof}
-对带权 SFT，闭轨道 Euler 乘积给出
+由
+\(
+\zeta(z,u)=\Delta(z,u)^{-1}=(1-uz^2)^{-1}\zeta_{\mathrm{core}}(z,u)
+\)
+取对数得
 \[
-\zeta(z,u)=\prod_{\tau\ \mathrm{primitive}}\left(1-u^{E(\tau)}z^{|\tau|}\right)^{-1}
-\qquad\text{（参见 \cite{BrinStuck2002,ParryPollicott1990Zeta} 的同型推导）}.
+\log\zeta(z,u)=-\log(1-uz^2)+\log\zeta_{\mathrm{core}}(z,u)
+=\sum_{k\ge 1}\frac{u^k}{k}z^{2k}+\log\zeta_{\mathrm{core}}(z,u).
 \]
-与 $\Delta(z,u)=\det(I-zM(u))$ 的显式分解相比，因子 $(1-uz^2)^{-1}$ 只能由满足 $(|\tau|,E(\tau))=(2,1)$ 的 primitive 轨道贡献。
-若存在两条不同的此类轨道，则该因子在乘积中应出现二次幂；与行列式分解矛盾，故此类轨道存在且唯一。
-
-另一方面，$u=1$ 时该轨道在未加权 primitive 生成函数中贡献 $z^{|\tau_2|}=z^2$，从而
-$P(z)=z^2+P_{\mathrm{core}}(z)$。由于 $z^2$ 在 $z=z_\star$ 处解析，故 Abel 有限部常数相差恰为
-$z_\star^2$，即 $\log\mathfrak{M}=\log\mathfrak{M}_{\mathrm{core}}+z_\star^2$。
+另一方面，由 Witt 分解 \(\log\zeta=\sum_{r\ge 1}\frac{1}{r}P(z^{r},u^{r})\)（见 \S\ref{app:witt-weighted}），并对 \(\zeta_{\mathrm{core}}\) 同理。比较可知原子项 \(\sum_{k\ge 1}\frac{u^k}{k}z^{2k}\) 恰对应 \(P(z,u)\) 中的 \(u z^2\)，从而得到
+\(
+P(z,u)=u z^2+P_{\mathrm{core}}(z,u)
+\)。
+取 \(u=1\) 即得 \(P(z)=z^2+P_{\mathrm{core}}(z)\)。
+最后，由 Abel 有限部常数的级数定义，加入解析项 \(z^2\) 只会在常数项上产生增量 \(z_\star^2=\lambda^{-2}\)，故
+\(
+\log\mathfrak{M}=\log\mathfrak{M}_{\mathrm{core}}+z_\star^2
+\)。
 \end{proof}
 
 \begin{proposition}[输出压力的冻结端点与 \texorpdfstring{$\sqrt u$}{sqrt(u)} 标度]\label{prop:real-input-40-pressure-freezing}
