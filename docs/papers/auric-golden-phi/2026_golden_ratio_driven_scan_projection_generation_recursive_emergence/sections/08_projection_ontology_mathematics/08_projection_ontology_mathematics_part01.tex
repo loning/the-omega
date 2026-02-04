@@ -122,6 +122,114 @@ $$
 
 \input{sections/generated/tab_fold_conditional_expectation_pythagoras}
 
+\begin{theorem}[折叠诱导的 Markov 投影与 TV 分解上界]\label{thm:pom-fold-tv-decomposition}
+固定 $m$。令 $P_m=(\Fold_m)_*:\Delta(\Omega_m)\to\Delta(X_m)$ 为推前，令 $Q_m:\Delta(X_m)\to\Delta(\Omega_m)$ 为纤维均匀提升（命题 \ref{prop:fold-pushforward-lift}），并定义
+\begin{equation}
+\label{eq:pom-Km-def}
+K_m:=Q_m\circ P_m:\Delta(\Omega_m)\to\Delta(\Omega_m).
+\end{equation}
+则 $K_m$ 满足：
+\begin{enumerate}
+  \item \textbf{（幂等 Markov 投影）} $K_m$ 为 Markov 算子且 $K_m^2=K_m$；并且对任意 $\mu\in\Delta(\Omega_m)$ 有 $P_m(K_m\mu)=P_m\mu$。
+  \item \textbf{（可见距离等式）}对任意 $\mu,\nu\in\Delta(\Omega_m)$，
+  \begin{equation}
+  \label{eq:pom-tv-visible-equality}
+  \boxed{\ D_{\mathrm{TV}}(K_m\mu,\ K_m\nu)\ =\ D_{\mathrm{TV}}(P_m\mu,\ P_m\nu)\ }.
+  \end{equation}
+  \item \textbf{（TV 分解上界）}对任意 $\mu,\nu\in\Delta(\Omega_m)$，成立
+  \begin{equation}
+  \label{eq:pom-tv-decomposition-upper}
+  \boxed{\ D_{\mathrm{TV}}(\mu,\nu)\ \le\ D_{\mathrm{TV}}(P_m\mu,P_m\nu)\ +\ D_{\mathrm{TV}}(\mu,K_m\mu)\ +\ D_{\mathrm{TV}}(\nu,K_m\nu)\ }.
+  \end{equation}
+\end{enumerate}
+因此 $D_{\mathrm{TV}}(\mu,K_m\mu)$ 给出一个完全可计算的“不可见残差”指标：它精确量化了分布 $\mu$ 在折叠纤维内部的非均匀性；并且任意两条微观分布的差异均由“可见推前差异 + 两侧残差”控制。
+\end{theorem}
+
+\begin{proof}
+由命题 \ref{prop:fold-pushforward-lift} 的 (2) 知 $(\Fold_m)_*\circ Q_m=\mathrm{id}$，从而 $P_m\circ K_m=P_m$。又因为 $P_m\circ Q_m=\mathrm{id}$，故 $K_m^2=Q_mP_mQ_mP_m=Q_mP_m=K_m$，并且 $K_m$ 明显保持非负与总质量 1，故为 Markov 算子，得 (1)。
+
+为证 (2)，记 $d_x:=d_m(x)=|\Fold_m^{-1}(x)|$。对任意 $a\in\Omega_m$，有
+\(
+(K_m\mu)(a)=\frac{(P_m\mu)(\Fold_m(a))}{d_{\Fold_m(a)}}
+\)
+且同理对 $\nu$。于是
+\[
+\|K_m\mu-K_m\nu\|_{\ell^1(\Omega_m)}
+=\sum_{x\in X_m}\sum_{\Fold_m(a)=x}\left|\frac{(P_m\mu)(x)-(P_m\nu)(x)}{d_x}\right|
+=\sum_{x\in X_m}|(P_m\mu)(x)-(P_m\nu)(x)|,
+\]
+两边乘以 $1/2$ 即得 \eqref{eq:pom-tv-visible-equality}。
+
+为证 (3)，用三角不等式分解
+\[
+D_{\mathrm{TV}}(\mu,\nu)
+\le D_{\mathrm{TV}}(\mu,K_m\mu)+D_{\mathrm{TV}}(K_m\mu,K_m\nu)+D_{\mathrm{TV}}(K_m\nu,\nu),
+\]
+并将中项由 (2) 改写为 $D_{\mathrm{TV}}(P_m\mu,P_m\nu)$ 即得 \eqref{eq:pom-tv-decomposition-upper}。
+\end{proof}
+
+\begin{remark}[数值核对（脚本与产物）]\label{rem:pom-fold-tv-decomposition-script}
+表 \ref{tab:fold_markov_projection_tv_decomposition} 由脚本 \texttt{scripts/exp\_fold\_markov\_projection\_tv\_decomposition.py} 生成，用于对等式 \eqref{eq:pom-tv-visible-equality} 与上界 \eqref{eq:pom-tv-decomposition-upper} 的实现做回归核对（产物路径见 \texttt{artifacts/export/fold\_markov\_projection\_tv\_decomposition.json}）。
+\end{remark}
+
+\input{sections/generated/tab_fold_markov_projection_tv_decomposition}
+
+\begin{theorem}[任意微观分布下的条件期望与方差分解]\label{thm:pom-conditional-variance}
+固定 $m$。令 $\mu\in\Delta(\Omega_m)$，并记 $\pi=P_m\mu$。
+对任意函数 $f:\Omega_m\to\RR$，定义其在 $\sigma(\Fold_m)$ 下的\textbf{条件期望} $E_{\mu}[f\mid\Fold_m]$ 为纤维上的条件平均：对任意 $a\in\Omega_m$，令 $x=\Fold_m(a)$，并置
+\begin{equation}
+\label{eq:pom-Emu-def}
+(E_{\mu}[f\mid\Fold_m])(a)
+:=
+\begin{cases}
+\dfrac{1}{\pi(x)}\sum_{b\in\Fold_m^{-1}(x)}\mu(b)f(b),& \pi(x)>0,\\
+0,& \pi(x)=0.
+\end{cases}
+\end{equation}
+则在内积 $\langle f,g\rangle_{\mu}:=\sum_{a\in\Omega_m} f(a)g(a)\mu(a)$ 下，有：
+\begin{enumerate}
+  \item \textbf{（正交投影）} $E_{\mu}[\cdot\mid\Fold_m]$ 是 $L^2(\mu)$ 上到子空间 $\mathcal{B}_m$ 的正交投影；特别地对任意 $b\in\mathcal{B}_m$，
+  $$
+  \langle f-E_{\mu}[f\mid\Fold_m],\ b\rangle_{\mu}=0.
+  $$
+  \item \textbf{（$L^2$ 毕达哥拉斯）}
+  \begin{equation}
+  \label{eq:pom-Emu-pythagoras}
+  \boxed{\ \|f\|_{2,\mu}^2\ =\ \|E_{\mu}[f\mid\Fold_m]\|_{2,\mu}^2\ +\ \|f-E_{\mu}[f\mid\Fold_m]\|_{2,\mu}^2\ }.
+  \end{equation}
+  \item \textbf{（方差分解）}令 $\mathrm{Var}_{\mu}(f):=\mathbb{E}_{\mu}[f^2]-\mathbb{E}_{\mu}[f]^2$，并把纤维条件分布 $\mu_x$ 定义如引理 \ref{lem:pom-fiberwise-kl}。则有
+  \begin{equation}
+  \label{eq:pom-var-decomposition}
+  \boxed{\ \mathrm{Var}_{\mu}(f)\ =\ \mathbb{E}_{\mu}[\mathrm{Var}_{\mu}(f\mid\Fold_m)]\ +\ \mathrm{Var}_{\pi}\bigl(\mathbb{E}_{\mu}[f\mid\Fold_m]\bigr)\ },
+  \end{equation}
+  其中 $\mathbb{E}_{\mu}[\mathrm{Var}_{\mu}(f\mid\Fold_m)]=\sum_{x\in X_m}\pi(x)\,\mathrm{Var}_{\mu_x}(f)$。
+\end{enumerate}
+因此 $\|f-E_{\mu}[f\mid\Fold_m]\|_{2,\mu}^2$ 是在分辨率-$m$ 可见子代数下对 $f$ 的最小二乘残差，并且等于“纤维内波动”的平均能量。
+\end{theorem}
+
+\begin{proof}
+由定义 \eqref{eq:pom-Emu-def}，$E_{\mu}[f\mid\Fold_m]$ 在每条纤维上为常数，故属于 $\mathcal{B}_m$。
+对任意 $b\in\mathcal{B}_m$，存在 $\beta:X_m\to\RR$ 使 $b(a)=\beta(\Fold_m(a))$。于是
+\[
+\langle f-E_{\mu}[f\mid\Fold_m],\ b\rangle_{\mu}
+=\sum_{x\in X_m}\beta(x)\sum_{a\in\Fold_m^{-1}(x)}\mu(a)\Bigl(f(a)-\frac{\sum_{b\in\Fold_m^{-1}(x)}\mu(b)f(b)}{\pi(x)}\Bigr).
+\]
+当 $\pi(x)=0$ 时内和为 $0$；当 $\pi(x)>0$ 时括号内定义保证纤维加权和为 $0$。故内积为 $0$，得到 (1)。
+取 $b=E_{\mu}[f\mid\Fold_m]$ 并展开平方即得 (2)。
+最后，注意
+\(
+\mathbb{E}_{\mu}[f\mid\Fold_m]
+\)
+是 $\sigma(\Fold_m)$-可测随机变量且对任意 $x$ 恰等于 $\mathbb{E}_{\mu_x}[f]$。
+将 $f$ 分解为 $f=\mathbb{E}_{\mu}[f\mid\Fold_m]+(f-\mathbb{E}_{\mu}[f\mid\Fold_m])$，并对方差作同样展开，交叉项消失（由 (1) 的正交性）即可得到 \eqref{eq:pom-var-decomposition}。证毕。
+\end{proof}
+
+\begin{remark}[数值核对（脚本与产物）]\label{rem:pom-conditional-variance-script}
+表 \ref{tab:fold_conditional_variance_decomposition} 由脚本 \texttt{scripts/exp\_fold\_conditional\_variance\_decomposition.py} 一键生成，对 \eqref{eq:pom-Emu-pythagoras} 与 \eqref{eq:pom-var-decomposition} 作回归核对（产物路径见 \texttt{artifacts/export/fold\_conditional\_variance\_decomposition.json}）。
+\end{remark}
+
+\input{sections/generated/tab_fold_conditional_variance_decomposition}
+
 \begin{proof}
 记 $x=\Fold_m(a)$。由命题 \ref{prop:fold-conditional-expectation} 的坐标形式，
 \[

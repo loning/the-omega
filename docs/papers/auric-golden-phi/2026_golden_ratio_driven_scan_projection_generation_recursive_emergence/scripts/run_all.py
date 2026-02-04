@@ -811,6 +811,24 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_markov_projection_tv_decomposition",
+            script="exp_fold_markov_projection_tv_decomposition.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_markov_projection_tv_decomposition.json",
+                "sections/generated/tab_fold_markov_projection_tv_decomposition.tex",
+            ],
+        ),
+        Step(
+            name="fold_conditional_variance_decomposition",
+            script="exp_fold_conditional_variance_decomposition.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_conditional_variance_decomposition.json",
+                "sections/generated/tab_fold_conditional_variance_decomposition.tex",
+            ],
+        ),
+        Step(
             name="generated_tex_fragments",
             script="exp_generated_tex.py",
             args=[],
