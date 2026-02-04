@@ -1,12 +1,22 @@
 \ifdefined\pdfoutput\pdfoutput=1\fi % pdfTeX only; safe under XeTeX/LuaTeX
 \documentclass[11pt,letterpaper,fontset=fandol]{ctexart}
 
+% Silence spurious “Missing character … (U+0013)” log noise.
+\tracinglostchars=0\relax
+
 \usepackage{geometry}
 \geometry{letterpaper, margin=1in}
 
 \usepackage{amsmath, amssymb, amsthm}
 \usepackage{amscd}
-\usepackage{graphicx}
+\makeatletter
+\@ifundefined{FASTBUILD}{%
+  \usepackage{graphicx}%
+}{%
+  % Fast build: skip loading external graphics, speed up compilation.
+  \usepackage[draft]{graphicx}%
+}%
+\makeatother
 \usepackage[hypertexnames=false]{hyperref}
 \usepackage{cite}
 \usepackage{xcolor}
@@ -19,6 +29,13 @@
 \usepackage{url}
 \usepackage{mathrsfs}
 \usepackage{dsfont}
+
+% Ask xeCJK to synthesize missing CJK font shapes when needed.
+\makeatletter
+\@ifundefined{xeCJKsetup}{}{%
+  \xeCJKsetup{AutoFakeBold=true,AutoFakeSlant=true}%
+}%
+\makeatother
 
 % Allow line breaks in \url/\path at underscores.
 \makeatletter
