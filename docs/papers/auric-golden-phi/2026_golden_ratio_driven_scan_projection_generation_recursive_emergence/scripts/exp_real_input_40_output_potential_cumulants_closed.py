@@ -22,9 +22,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import threading
+import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Dict
+from typing import Callable, Dict, Optional
 
 import sympy as sp
 
@@ -47,6 +49,41 @@ class CumulantsClosed:
     lambda0: str
 
 
+class _Progress:
+    def __init__(
+        self, *, enabled: bool, every_seconds: float, prefix: str = "[output-cumulants]"
+    ) -> None:
+        self._enabled = enabled and every_seconds > 0
+        self._every_seconds = float(every_seconds)
+        self._prefix = prefix
+        self._stop = threading.Event()
+        self._thread: Optional[threading.Thread] = None
+        self._t0 = 0.0
+
+    def start(self, msg: str) -> None:
+        if not self._enabled:
+            return
+        self._t0 = time.time()
+        print(f"{self._prefix} {msg}", flush=True)
+
+        def _run() -> None:
+            while not self._stop.wait(self._every_seconds):
+                dt = time.time() - self._t0
+                print(f"{self._prefix} still running... elapsed={dt:.1f}s", flush=True)
+
+        self._thread = threading.Thread(target=_run, name="progress", daemon=True)
+        self._thread.start()
+
+    def stop(self, msg: str) -> None:
+        if not self._enabled:
+            return
+        self._stop.set()
+        if self._thread is not None:
+            self._thread.join(timeout=1.0)
+        dt = time.time() - self._t0
+        print(f"{self._prefix} {msg} elapsed={dt:.1f}s", flush=True)
+
+
 def _build_G(lam: sp.Symbol, u: sp.Symbol) -> sp.Expr:
     # Must match `90_appendix_sync_12_app_real_input_40_zeta_u.tex`.
     return (
@@ -62,7 +99,7 @@ def _build_G(lam: sp.Symbol, u: sp.Symbol) -> sp.Expr:
     )
 
 
-def _series_P_derivatives() -> Dict[str, sp.Expr]:
+def _series_P_derivatives(log: Optional[Callable[[str], None]] = None) -> Dict[str, sp.Expr]:
     theta = sp.Symbol("theta")
     u = sp.exp(theta)
     lam0 = (sp.Integer(3) + sp.sqrt(5)) / 2  # phi^2
@@ -75,19 +112,63 @@ def _series_P_derivatives() -> Dict[str, sp.Expr]:
     G = _build_G(lam, uu)
 
     # Expand G(lam(theta), exp(theta)) and solve coefficients.
+    if log is not None:
+        log("building series constraints up to order 4")
     expr = sp.expand(G.subs({lam: lam_series, uu: u}))
     ser = sp.series(expr, theta, 0, 5).removeO()
-    eqs = [sp.Eq(sp.expand(ser).coeff(theta, k), 0) for k in range(0, 5)]
-    # theta^0 should be 0 automatically if lam0 is correct; include for safety.
-    sol = sp.solve(eqs, [c1, c2, c3, c4], dict=True)
-    if not sol:
-        raise RuntimeError("No solution for lambda-series coefficients.")
-    sol0 = sol[0]
+    ser_exp = sp.expand(ser)
+    e0 = sp.simplify(ser_exp.coeff(theta, 0))
+    e1 = sp.simplify(ser_exp.coeff(theta, 1))
+    e2 = sp.simplify(ser_exp.coeff(theta, 2))
+    e3 = sp.simplify(ser_exp.coeff(theta, 3))
+    e4 = sp.simplify(ser_exp.coeff(theta, 4))
 
-    lam_series = sp.expand(lam_series.subs(sol0))
+    if log is not None:
+        log("solving lambda-series coefficients (c1..c4)")
+    # Coefficient at theta^0 should be 0 automatically if lam0 is correct; keep for safety.
+    if e0 != 0:
+        raise RuntimeError("Series constant term is nonzero; lambda0 may be incorrect.")
+
+    # Solve sequentially; each equation is linear in the next coefficient.
+    s1 = sp.solve(e1, c1, dict=True)
+    if not s1:
+        raise RuntimeError("No solution for c1.")
+    sol1 = s1[0]
+    if log is not None:
+        log("solved c1")
+
+    e2s = sp.simplify(e2.subs(sol1))
+    s2 = sp.solve(e2s, c2, dict=True)
+    if not s2:
+        raise RuntimeError("No solution for c2.")
+    sol2 = {**sol1, **s2[0]}
+    if log is not None:
+        log("solved c2")
+
+    e3s = sp.simplify(e3.subs(sol2))
+    s3 = sp.solve(e3s, c3, dict=True)
+    if not s3:
+        raise RuntimeError("No solution for c3.")
+    sol3 = {**sol2, **s3[0]}
+    if log is not None:
+        log("solved c3")
+
+    e4s = sp.simplify(e4.subs(sol3))
+    s4 = sp.solve(e4s, c4, dict=True)
+    if not s4:
+        raise RuntimeError("No solution for c4.")
+    sol4 = {**sol3, **s4[0]}
+    if log is not None:
+        log("solved c4")
+
+    lam_series = sp.expand(lam_series.subs(sol4))
+    if log is not None:
+        log("deriving P(theta)=log lambda(exp(theta))")
     P_series = sp.series(sp.log(lam_series), theta, 0, 5).removeO()
 
     # Extract derivatives: P(theta)=P0 + P1 theta + P2/2 theta^2 + ...
+    if log is not None:
+        log("extracting derivatives at theta=0")
     P1 = sp.simplify(sp.diff(P_series, theta, 1).subs(theta, 0))
     P2 = sp.simplify(sp.diff(P_series, theta, 2).subs(theta, 0))
     P3 = sp.simplify(sp.diff(P_series, theta, 3).subs(theta, 0))
@@ -140,6 +221,12 @@ def main() -> None:
         description="Closed-form cumulants for output potential (real input 40-state)."
     )
     parser.add_argument(
+        "--progress-seconds",
+        type=float,
+        default=20.0,
+        help="Print a heartbeat progress line every N seconds (0 disables).",
+    )
+    parser.add_argument(
         "--json-out",
         type=str,
         default=str(
@@ -155,7 +242,15 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    d = _series_P_derivatives()
+    prog = _Progress(
+        enabled=(args.progress_seconds > 0),
+        every_seconds=float(args.progress_seconds),
+    )
+    prog.start("starting symbolic derivation")
+    try:
+        d = _series_P_derivatives(log=lambda s: print(f"[output-cumulants] {s}", flush=True))
+    finally:
+        prog.stop("symbolic derivation finished")
     lam0 = sp.simplify(d["lambda0"])
     P1 = sp.simplify(d["P1"])
     P2 = sp.simplify(d["P2"])
