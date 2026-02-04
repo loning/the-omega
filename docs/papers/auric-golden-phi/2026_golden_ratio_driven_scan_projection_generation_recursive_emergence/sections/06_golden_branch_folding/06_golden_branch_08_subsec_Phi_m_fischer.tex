@@ -34,6 +34,39 @@ S \xrightarrow{\ a\ } \delta_m(S,a).
 \textbf{(2)} 从 $G_m$ 到 $H_m^{\mathrm{det}}$ 的子集构造是正则语言/有限自动机理论的标准确定化过程：$H_m^{\mathrm{det}}$ 识别的正是 $G_m$ 的标记语言，因此两者给出相同的标记移位。结合定理 \ref{thm:Phi_m-sofic-graph} 的 $Y_m=\mathcal{L}_m(Z_m)$ 即得结论。关于该构造在符号动力系统中的标准表述，可参见 \cite{LindMarcus1995,Kitchens1998SymbolicDynamics} 中对 sofic shift 的右解析表示与 Fischer cover 的讨论。
 \end{proof}
 
+\begin{proposition}[主极点留数比作为常数级核指纹：一个可审计的新不变量]\label{prop:Ym-zeta-residue-ratio}
+设 cover 的 \(\zeta\) 与内禀 \(\zeta\) 在共同的主极点模长 \(z_\star=\rho_m^{-1}\)（其中 \(\rho_m:=\rho(A_m)=\rho(B_m)\)）处均为一阶极点。将其 Laurent 主部写为
+\[
+\zeta_{X_{A_m}}(z)\sim \frac{R_m^{\mathrm{cov}}}{1-\rho_m z},
+\qquad
+\zeta_{Y_m}(z)\sim \frac{R_m^{\mathrm{int}}}{1-\rho_m z},
+\qquad (z\to z_\star),
+\]
+并定义常数比值
+\[
+\boxed{\ \eta_m:=\frac{R_m^{\mathrm{int}}}{R_m^{\mathrm{cov}}}\ }.
+\]
+则 \(\eta_m\) 仅由 \((A_m,B_m)\) 的解析结构决定，因而是一个常数级的“折叠核指纹”。并且由命题 \ref{prop:periodic-count-sandwich} 的上界可推出
+\[
+0<\eta_m\le 1.
+\]
+\end{proposition}
+\begin{proof}
+\(\eta_m\) 的不变量性来自定义：\(R_m^{\mathrm{cov}},R_m^{\mathrm{int}}\) 是两类 \(\zeta\) 在主极点处的主部系数。
+
+由 \(\zeta\) 的周期点展开式（定义 \(\zeta_{Y_m}(z)=\exp(\sum_{n\ge 1}\#\mathrm{Fix}(\sigma^n|_{Y_m})z^n/n)\)）与命题 \ref{prop:periodic-count-sandwich} 的逐 \(n\) 上界
+\(\#\mathrm{Fix}(\sigma^n|_{Y_m})\le \#\mathrm{Fix}(\sigma^n|_{X_{A_m}})\)
+得到对任意 \(0\le z<z_\star\) 的比较：
+\[
+\log\zeta_{Y_m}(z)
+=\sum_{n\ge 1}\frac{\#\mathrm{Fix}(\sigma^n|_{Y_m})}{n}z^n
+\le
+\sum_{n\ge 1}\frac{\#\mathrm{Fix}(\sigma^n|_{X_{A_m}})}{n}z^n
+=\log\zeta_{X_{A_m}}(z),
+\]
+从而 \(\zeta_{Y_m}(z)\le \zeta_{X_{A_m}}(z)\)。令 \(z\uparrow z_\star\) 并乘以 \(1-\rho_m z\)，结合两者主部展开即得 \(R_m^{\mathrm{int}}\le R_m^{\mathrm{cov}}\)，从而 \(0<\eta_m\le 1\)。证毕。
+\end{proof}
+
 \begin{remark}[右 Fischer cover（最小右解析表示）]\label{rem:fischer-cover}
 进一步将 $H_m^{\mathrm{det}}$ 做\textbf{状态最小化}（合并具有相同 follower 集的状态），即可得到 $Y_m$ 的右 Fischer cover：一个右解析且 follower-separated 的标记图表示，其同构类由 $Y_m$ 唯一确定（\cite{LindMarcus1995,Kitchens1998SymbolicDynamics}）。下文关于熵与 Parry 测度的计算在任何这样的右解析表示上均可执行；采用 Fischer cover 的优势在于它给出\textbf{最小}的可计算状态空间。
 \end{remark}

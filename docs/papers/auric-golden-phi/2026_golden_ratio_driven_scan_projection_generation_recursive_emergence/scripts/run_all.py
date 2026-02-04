@@ -267,15 +267,6 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="phi_m_sofic_residue_ratio",
-            script="exp_phi_m_sofic_residue_ratio.py",
-            args=[],
-            expected_outputs=[
-                "artifacts/export/phi_m_sofic_residue_ratio.json",
-                "sections/generated/tab_phi_m_sofic_residue_ratio.tex",
-            ],
-        ),
-        Step(
             name="sync_kernel_primitive_spectrum",
             script="exp_sync_kernel_primitive_spectrum.py",
             args=[],
@@ -916,6 +907,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_conditional_expectation_pythagoras.json",
                 "sections/generated/tab_fold_conditional_expectation_pythagoras.tex",
+            ],
+        ),
+        Step(
+            name="fold_conditional_expectation_singular_spectrum",
+            script="exp_fold_conditional_expectation_singular_spectrum.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_conditional_expectation_singular_spectrum.json",
+                "sections/generated/tab_fold_conditional_expectation_singular_spectrum.tex",
             ],
         ),
         Step(
