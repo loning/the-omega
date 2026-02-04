@@ -510,6 +510,43 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     max_abs_A1 = float(np.max(np.abs(A1)))
     max_abs_A2 = float(np.max(np.abs(A2)))
     ratio_A2_A1 = (max_abs_A2 / max_abs_A1) if max_abs_A1 > 0 else 0.0
+
+    # Extra certificates derived from the exact two-harmonic representation.
+    #
+    # (a) Resonance-cell near extremality for the sharp Fourier-norm bound.
+    # For each fixed (a,b), define the oscillatory lift:
+    #   Delta_{b,a}(c) := f_{a,b}(c) - \hat f_{a,b}(0).
+    # Then |Delta_{b,a}(c)| <= 2(|A1_{b,a}| + |A2_{b,a}|) for all (b,a,c),
+    # hence also <= 2(max|A1| + max|A2|).
+    delta_res = float(C(1, 0, 0) - mean[0, 1])  # resonance cell (a,b,c)=(1,0,0)
+    bound_universal = 2.0 * (max_abs_A1 + max_abs_A2)
+    ratio_extremal = (delta_res / bound_universal) if bound_universal > 0 else float("nan")
+    # Verify that both harmonics attain their entrywise maxima at the same cell (b=0,a=1).
+    iA1 = int(np.argmax(np.abs(A1)))
+    iA2 = int(np.argmax(np.abs(A2)))
+    locA1 = (int(iA1 // 3), int(iA1 % 3))  # (b,a)
+    locA2 = (int(iA2 // 3), int(iA2 % 3))  # (b,a)
+    phase_A1_res = float(cmath.phase(A1[0, 1]))
+    phase_A2_res = float(cmath.phase(A2[0, 1]))
+    phase_gap = float(abs(((phase_A2_res - phase_A1_res + math.pi) % (2.0 * math.pi)) - math.pi))
+
+    # (b) 2D marginal matrix over c and the 1D marginal over b=N_- mod 3:
+    #   sum_c C_{a,b,c} = 5 * mean[b,a],
+    #   C^{(-)}_b := sum_{a,c} C_{a,b,c} = 5 * sum_a mean[b,a].
+    marg_ab = 5.0 * mean
+    marg_b = 5.0 * np.sum(mean, axis=1)
+
+    # (c) Harmonic alignment certificate (Frobenius best collinearity): A2 ≈ eta* A1.
+    def _frob_inner(X: np.ndarray, Y: np.ndarray) -> complex:
+        return complex(np.vdot(X, Y))  # conj(X)*Y summed over entries
+
+    denom_eta = _frob_inner(A1, A1)
+    eta_star = (_frob_inner(A1, A2) / denom_eta) if denom_eta != 0 else complex("nan")
+    eps_parallel = (
+        float(np.linalg.norm(A2 - eta_star * A1) / np.linalg.norm(A2))
+        if float(np.linalg.norm(A2)) > 0
+        else float("nan")
+    )
     # Harmonic energy ratio (new fingerprint):
     #   E1 := ||A^(1)||_F^2 / (||A^(1)||_F^2 + ||A^(2)||_F^2),
     # where A^(1), A^(2) are the j=1 and j=2 Fourier matrices on Z/5.
@@ -889,6 +926,83 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     )
     lines.append("$$")
     lines.append("其中 $A^{(1)}$ 与 $A^{(2)}$ 的具体条目可由同一脚本在 JSON 输出中复核。")
+
+    lines.append("\\paragraph{（iv$^\\star$）二维边际矩阵与 $N_-\\bmod 3$ 的新边际向量（精确）}")
+    lines.append(
+        "由 $\\sum_{c=0}^4\\omega_5^c=0$，对每个 $(a,b)$ 有严格恒等式 "
+        "$\\sum_{c=0}^{4}C^{(3,3,5)}_{a,b,c}=5\\,\\overline C_{b,a}$。因此二维边际矩阵（行 $b$、列 $a$）为"
+    )
+    lines.append("$$")
+    lines.append("C^{(3,3)}=")
+    lines.append("\\begin{pmatrix}")
+    for b in range(3):
+        row = " & ".join(f"{marg_ab[b, a]:+.8f}".replace("+", "\\phantom{-}") for a in range(3))
+        lines.append(row + ("\\\\" if b < 2 else ""))
+    lines.append("\\end{pmatrix}")
+    lines.append("$$")
+    lines.append("进一步对 $a,c$ 求和得到 $N_-\\bmod 3$ 的一维边际常数向量（按 $b=0,1,2$ 排列）")
+    lines.append("$$")
+    lines.append(
+        (
+            "\\bigl(C^{(-)}_0,C^{(-)}_1,C^{(-)}_2\\bigr)"
+            f"\\approx\\bigl({marg_b[0]:+.8f},{marg_b[1]:+.8f},{marg_b[2]:+.8f}\\bigr)."
+        ).replace("+", "\\phantom{-}")
+    )
+    lines.append("$$")
+
+    lines.append("\\paragraph{（iv$^\\dagger$）共振胞元的傅里叶范数近极值：相位构造性对齐（定量）}")
+    lines.append(
+        "在共振胞元 $(a,b,c)=(1,0,0)$ 处，定义振荡抬升 "
+        "$\\Delta_{b,a}(0):=C^{(3,3,5)}_{a,b,0}-\\overline C_{b,a}$。"
+        "由两谐波恒等分解对任意 $(a,b,c)$ 有"
+    )
+    lines.append("$$")
+    lines.append(
+        "\\left|\\Delta_{b,a}(c)\\right|\\le 2\\bigl(|A^{(1)}_{b,a}|+|A^{(2)}_{b,a}|\\bigr)"
+        "\\le 2\\bigl(\\|A^{(1)}\\|_\\infty+\\|A^{(2)}\\|_\\infty\\bigr)."
+    )
+    lines.append("$$")
+    lines.append("而在该共振胞元处")
+    lines.append("$$")
+    lines.append(
+        f"\\Delta_{{(b,a)=(0,1)}}(0)\\approx {delta_res:.8f},\\qquad "
+        f"2\\bigl(\\|A^{{(1)}}\\|_\\infty+\\|A^{{(2)}}\\|_\\infty\\bigr)\\approx {bound_universal:.9f},\\qquad "
+        f"\\frac{{\\Delta_{{(0,1)}}(0)}}{{2(\\|A^{{(1)}}\\|_\\infty+\\|A^{{(2)}}\\|_\\infty)}}\\approx {ratio_extremal:.9f}."
+    )
+    lines.append("$$")
+    lines.append("并且两条谐波的条目最大值同在该胞元（以 $(b,a)$ 坐标计）：")
+    lines.append("$$")
+    lines.append(
+        f"\\operatorname*{{argmax}}|A^{{(1)}}|=({locA1[0]},{locA1[1]}),\\qquad "
+        f"\\operatorname*{{argmax}}|A^{{(2)}}|=({locA2[0]},{locA2[1]})."
+    )
+    lines.append("$$")
+    lines.append("对应相位在 $c=0$ 处近同相，绝对相位差为")
+    lines.append("$$")
+    lines.append(f"\\bigl|\\arg A^{{(2)}}_{{0,1}}-\\arg A^{{(1)}}_{{0,1}}\\bigr|\\approx {phase_gap:.6f}\\ \\text{{(radian)}}.")
+    lines.append("$$")
+
+    lines.append("\\paragraph{（iv$^\\ddagger$）两谐波矩阵的对齐证书：Frobenius 最佳共线残差}")
+    lines.append("以 Frobenius 内积定义最佳共线系数")
+    lines.append("$$")
+    lines.append(
+        "\\eta^\\star:=\\frac{\\langle A^{(2)},A^{(1)}\\rangle_F}{\\|A^{(1)}\\|_F^2},\\qquad "
+        "\\varepsilon_{\\parallel}:=\\frac{\\|A^{(2)}-\\eta^\\star A^{(1)}\\|_F}{\\|A^{(2)}\\|_F}."
+    )
+    lines.append("$$")
+    lines.append("数值上")
+    lines.append("$$")
+    sgn = "+" if eta_star.imag >= 0 else "-"
+    lines.append(
+        f"\\eta^\\star\\approx {eta_star.real:+.8f}{sgn}{abs(eta_star.imag):.8f}\\,\\mathrm{{i}},\\qquad "
+        f"\\varepsilon_\\parallel\\approx {eps_parallel:.6f}."
+    )
+    lines.append("$$")
+    lines.append(
+        "该证书表明：尽管尾部切片在 $(a,b)$ 上接近 rank-$0$ 标量矩阵（见 $\\Delta_3,\\Delta_4$ 的量级），"
+        "两条谐波矩阵在整体 Frobenius 意义下并不近共线；尾部近标量化更精确地表现为“均值矩阵的各向异性”与"
+        "两谐波在特定相位处的抵消。"
+    )
 
     lines.append("\\paragraph{（vi）整体低秩可压缩：$c$-中心化后的 rank-2 诊断（SVD）}")
     lines.append("把张量 $C^{(3,3,5)}_{a,b,c}$ 展平成 $T\\in\\RR^{5\\times 9}$（行索引 $c$，列索引为扁平化的 $(a,b)$），并做 $c$-方向中心化：对每一列减去其在 $c$ 上的均值。令中心化后的奇异值为 $s_1\\ge\\cdots\\ge s_5$，则（Frobenius 能量）累计占比为")
