@@ -16,15 +16,12 @@
 唯一遍历通常先保证对连续观测的均匀收敛；对 $f=\ind_W$ 这类指示函数，要得到与初值无关的频率结论，常用的可检验正则性条件是 $\mu(\partial W)=0$（参见 \cite{WaltersErgodicTheory}）。
 \end{remark}
 
-\begin{theorem}[唯一遍历下的相位无关频率（柱事件）]\label{thm:unique-ergodic-cylinder-freq}
 在假设 \ref{assump:freq-min} 的“唯一遍历 + 边界零测”情形下，对任意固定窗口长度 $m$ 与任意柱事件 $A\in\mathcal{F}_m$，极限
 \[
 \lim_{N\to\infty}\mathrm{freq}_N(A;x)=\mu(A)
 \]
 存在且与 $x$ 无关（参见 \cite{WaltersErgodicTheory} 中关于唯一遍历与不连续观测的标准处理）。
-\end{theorem}
 
-\begin{proposition}[无需概率的有限样本误差证书：差异度不等式]\label{prop:discrepancy-certificate}
 设 $x_0,\dots,x_{N-1}\in[0,1)$，记经验平均 $A_N(f):=\frac1N\sum_{t=0}^{N-1}f(x_t)$。定义星差异度
 \[
 D_N^*:=\sup_{0\le a\le 1}\left|\frac1N\sum_{t=0}^{N-1}\ind_{[0,a)}(x_t)-a\right|.
@@ -33,10 +30,7 @@ D_N^*:=\sup_{0\le a\le 1}\left|\frac1N\sum_{t=0}^{N-1}\ind_{[0,a)}(x_t)-a\right|
 \[
 \left|A_N(f)-\int_0^1 f(u)\,\dd u\right|\ \le\ \mathrm{Var}(f)\,D_N^*,
 \]
-特别地对区间指示函数 $f=\ind_{[0,a)}$ 有 $\mathrm{Var}(f)=1$，从而误差被 $D_N^*$ 直接控制（参见 \cite{KuipersNiederreiter1974}）。
-此外在一维情形，$D_N^*$ 可由对样本点排序给出完全显式的最大偏差表达式，因此可作为无需概率假设的可审计证书（\cite{KuipersNiederreiter1974}）。
-在 Kronecker 序列 $x_t=\{x_0+t\alpha\}$ 的情形，$D_N^*$ 可用连分数部分商给出显式上界；特别地当 $\alpha$ badly approximable 时有 $D_N^*(\alpha)=O((\log N)/N)$（\cite{KuipersNiederreiter1974,Goda2024QuasiUniformKronecker}）。
-\end{proposition}
+对区间指示函数 $f=\ind_{[0,a)}$ 有 $\mathrm{Var}(f)=1$，从而误差被 $D_N^*$ 直接控制（参见 \cite{KuipersNiederreiter1974}）。在 Kronecker 序列 $x_t=\{x_0+t\alpha\}$ 的情形，$D_N^*$ 可用连分数部分商给出显式上界；特别地当 $\alpha$ badly approximable 时有 $D_N^*(\alpha)=O((\log N)/N)$（\cite{KuipersNiederreiter1974,Goda2024QuasiUniformKronecker}）。
 
 \subsection{稳定概念的定义}
 
@@ -93,66 +87,18 @@ Y_t^{(m)}:=\Fold_m(W_t^{(m)})\in X_m.
 \]
 \end{definition}
 
-\begin{theorem}[平稳遍历源下的几乎处处收敛]\label{thm:histogram-a.s.-ergodic}
 若 $S$ 平稳且遍历，则对任意固定 $m$ 与任意 $u\in X_m$，
 \[
 \hat{\pi}_{m,N}(u)\ \xrightarrow[N\to\infty]{}\ \pi_m^{\mathrm{fold}}(u)
 \quad\text{几乎处处},
 \]
-从而
-\[
-D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\ \xrightarrow[N\to\infty]{}\ 0
-\quad\text{几乎处处}.
-\]
-\end{theorem}
+从而 $D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\to 0$（参见 \cite{WaltersErgodicTheory} 对遍历定理与有限字母表收敛的标准推论）。
 
-\begin{proof}
-令 $f_u(s):=\ind_{\{\Fold_m(s_0\cdots s_{m-1})=u\}}$，它是 $\{0,1\}^{\ZZ}$ 上的有界可测函数并且只依赖有限坐标。由于 $S$ 平稳遍历，Birkhoff 遍历定理对每个 $u$ 给出
+设 $S_t$ 为 i.i.d. 伯努利源。对重叠窗口的折叠直方图，可用分段子序列的 i.i.d. 结构与 \cite{WeissmanEtAl2003L1Empirical} 的 TV 置信半径得到显式指数型证书；其有效样本量降为 $N_{\min}=\lfloor N/m\rfloor$，相应的置信半径为
 \[
-\frac{1}{N}\sum_{t=0}^{N-1} f_u(\sigma^t S)\ \to\ \mathbb{E}[f_u(S)]=\mathbb{P}(Y_0^{(m)}=u),
+\varepsilon_{\mathrm{TV}}(N_{\min},|X_m|;\delta)=\frac12\sqrt{\frac{2}{N_{\min}}\Bigl(|X_m|\log 2+\log(1/\delta)\Bigr)}.
 \]
-即 $\hat{\pi}_{m,N}(u)\to \pi_m^{\mathrm{fold}}(u)$。总变差收敛由有限字母表上的范数等价与逐坐标收敛推出（参见 \cite{WaltersErgodicTheory}）。
-\end{proof}
-
-\begin{proposition}[i.i.d. 输入下的显式 TV 置信包络：重叠窗口]\label{prop:histogram-tv-iid-overlap}
-设 $S_t$ 为 i.i.d. 伯努利源。令
-\[
-N_j:=\left\lfloor\frac{N-j+m-1}{m}\right\rfloor,\qquad j=0,1,\dots,m-1,
-\qquad
-N_{\min}:=\min_j N_j=\left\lfloor\frac{N}{m}\right\rfloor.
-\]
-定义 $m$ 个交错子序列直方图
-\[
-\hat{\pi}_{m,N}^{(j)}(u):=\frac{1}{N_j}\sum_{k=0}^{N_j-1}\ind_{\{Y^{(m)}_{j+km}=u\}}.
-\]
-则对任意 $\varepsilon>0$ 与任意 $\delta\in(0,1)$，存在一个完全显式的 $95\%$-型证书：若
-\[
-\varepsilon_{\mathrm{TV}}(N_{\min},|X_m|;\delta):=\frac12\sqrt{\frac{2}{N_{\min}}\Bigl(|X_m|\log 2+\log(1/\delta)\Bigr)}
-\]
-（\cite{WeissmanEtAl2003L1Empirical} 的 TV 证书），则以概率至少 $1-\delta$ 有
-\[
-D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})
-\ \le\
-\frac{1}{m}\sum_{j=0}^{m-1} D_{\mathrm{TV}}(\hat{\pi}_{m,N}^{(j)},\pi_m^{\mathrm{fold}})
-\ \le\
-\varepsilon_{\mathrm{TV}}(N_{\min},|X_m|;\delta).
-\]
-\end{proposition}
-
-\begin{proof}
-由于 $Y_t^{(m)}$ 仅依赖 $(S_t,\dots,S_{t+m-1})$，故当时间间隔至少为 $m$ 时对应窗口不重叠，从而子序列 $\{Y^{(m)}_{j+km}\}_{k\ge 0}$ 为 i.i.d.；因此对每个 $j$ 可直接应用 \cite{WeissmanEtAl2003L1Empirical} 得到 $D_{\mathrm{TV}}(\hat{\pi}_{m,N}^{(j)},\pi_m^{\mathrm{fold}})$ 的指数尾界并导出置信半径 $\varepsilon_{\mathrm{TV}}$。
-
-另一方面，按定义有凸分解
-\[
-\hat{\pi}_{m,N}=\sum_{j=0}^{m-1}\frac{N_j}{N}\,\hat{\pi}_{m,N}^{(j)}.
-\]
-由 $D_{\mathrm{TV}}$ 的凸性，
-\(
-D_{\mathrm{TV}}(\sum_j a_j P_j,\ Q)\le \sum_j a_j D_{\mathrm{TV}}(P_j,Q)
-\)
-（$a_j\ge 0,\sum_j a_j=1$），并用 $N_j/N\le 1/m$ 与 $N_{\min}\le N_j$ 得到所示上界。
-\end{proof}
 
 \begin{remark}[与 IID 块采样实验的关系]\label{rem:iid-overlap-vs-blocks}
-第 \ref{sec:experiments} 节的 IID 基线实验采用“独立 $m$-块采样”，因此其有效样本量为 $N$ 而非 $N/m$（证书更紧）。命题 \ref{prop:histogram-tv-iid-overlap} 说明：即便回到更自然的“沿时间滑窗采样（重叠窗口）”，也仍可获得完全显式的指数型 TV 证书，只是有效样本量降为 $\lfloor N/m\rfloor$，这与“窗口重叠导致相关”完全一致。
+第 \ref{sec:experiments} 节的 IID 基线实验采用“独立 $m$-块采样”，因此其有效样本量为 $N$ 而非 $N/m$（证书更紧）。若回到更自然的“沿时间滑窗采样（重叠窗口）”，则可用上述标准证书得到同型的指数型 TV 界，但有效样本量降为 $\lfloor N/m\rfloor$，这与“窗口重叠导致相关”一致。
 \end{remark}
