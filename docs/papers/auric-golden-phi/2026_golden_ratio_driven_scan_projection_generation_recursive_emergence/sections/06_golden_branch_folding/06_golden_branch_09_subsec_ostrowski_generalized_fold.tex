@@ -200,6 +200,41 @@ $\Fold_m^{(\alpha)}$ 良定义且满足：
 第 1 条由 Ostrowski 表示的合法性立得。第 2 条：若 $\omega$ 已合法，则 $\omega$ 即为某个整数的规范 Ostrowski 数字的前 $m$ 位，唯一性迫使规范化后截断不变。第 3 条：对任意 $x\in X_m^{(\alpha)}$，取 $\omega=x$ 即有 $\Fold_m^{(\alpha)}(\omega)=x$。第 4 条由截断与“先取值再取规范形”的函子性得到：对任意 $\omega$，两边都等于 $\pi_{m_1}^{(\alpha)}(Z_\alpha(N_\alpha(\omega)))$。
 \end{proof}
 
+\begin{theorem}[“先规范形再截断”与跨分辨率函子性]\label{thm:normalize-then-truncate-functorial}
+一般 Ostrowski 折叠按定义 \ref{def:fold-alpha} 采取“取值 \(\to\) 取规范形 \(\to\) 截断”的顺序，因此跨分辨率交换图（命题 \ref{prop:fold-alpha-basic}-(4)）是\textbf{定义性}成立的：它并非额外结构，而是由规范化顺序强制给出。
+\par
+在本文的二元 Zeckendorf 折叠中，微态空间 \(\Omega_m=\{0,1\}^m\) 上的朴素截断 \(r_{m+1\to m}\)（小节 \ref{subsec:fold-omega-restriction}）对应的是“先截断再规范化”的顺序，因此一般不满足交换。
+相反，折叠感知 restriction
+\[
+\widetilde r_{m+1\to m}:=\pi_{m+1\to m}\circ \Fold_{m+1}\qquad(\Omega_{m+1}\to X_m\subset\Omega_m)
+\]
+正是把微态层的降分辨率顺序纠正为“先规范形再截断”，从而恢复严格交换（命题 \ref{prop:fold-omega-commute}）。
+\par
+并且在如下“自然性”约束下该修正是唯一的：若映射 \(\widehat r_{m+1\to m}:\Omega_{m+1}\to X_m\) 满足
+\[
+\Fold_m\circ \widehat r_{m+1\to m}=\pi_{m+1\to m}\circ \Fold_{m+1},
+\]
+则必有 \(\widehat r_{m+1\to m}=\widetilde r_{m+1\to m}\)。
+\end{theorem}
+
+\begin{proof}
+前两段只是对定义 \ref{def:fold-alpha} 与命题 \ref{prop:fold-alpha-basic}-(4) 的逻辑展开，以及对小节 \ref{subsec:fold-omega-restriction} 中“朴素截断不交换、折叠感知 restriction 交换”的机制解释。
+\par
+对唯一性：若 \(\widehat r_{m+1\to m}(\omega)\in X_m\)，则由二元折叠的幂等性（定理 \ref{thm:fold-suite}-(2)，即 \(\Fold_m|_{X_m}=\mathrm{id}\)）有
+\[
+(\Fold_m\circ \widehat r_{m+1\to m})(\omega)=\widehat r_{m+1\to m}(\omega).
+\]
+与假设 \(\Fold_m\circ \widehat r_{m+1\to m}=\pi_{m+1\to m}\circ \Fold_{m+1}\) 合并即得
+\(
+\widehat r_{m+1\to m}(\omega)=\pi_{m+1\to m}(\Fold_{m+1}(\omega))=\widetilde r_{m+1\to m}(\omega)
+\)
+对所有 \(\omega\) 成立。证毕。
+\end{proof}
+
+\begin{corollary}[跨分辨率可审计不变量的判据]\label{cor:multiscale-auditable-invariants}
+若某一“跨分辨率规律/指纹”依赖于使用朴素截断 \(r_{m+1\to m}\) 而非折叠感知 restriction \(\widetilde r_{m+1\to m}\)，则它不具备命题 \ref{prop:fold-omega-commute} 的自然性，因而只能被视为由降分辨率规范选择诱发的 gauge 现象，而不能进入跨分辨率的可审计不变量库。
+\end{corollary}
+
 \begin{remark}[与本文二元读出的关系]
 本文的主线实验固定二元读出与黄金语法（便于得到闭式 PF/Parry/$\zeta$ 基线）。上述一般化表明：若允许更一般的计数/地址字母表（或更一般的观测通道），则“折叠 = 取值 + Ostrowski 规范形”的机制可原则化推广；黄金分支只是其中最简、最可闭式分析的特例。
 \end{remark}
