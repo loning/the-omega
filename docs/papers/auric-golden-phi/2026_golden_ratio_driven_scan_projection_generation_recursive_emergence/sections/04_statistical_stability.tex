@@ -10,15 +10,10 @@
 \[
 \mathrm{freq}_N(A;x)=\frac1N\sum_{t=0}^{N-1}\ind_A(T^t x).
 \]
-当 $T$ 遍历时，Birkhoff 遍历定理保证对任意 $f\in L^1(\mu)$ 有
-\[
-\lim_{N\to\infty}\frac1N\sum_{t=0}^{N-1} f(T^t x)=\int f\,\dd\mu
-\quad\text{对 }\mu\text{-几乎处处 }x,
-\]
-将 $f=\ind_A$ 即得 $\mathrm{freq}_N(A;x)\to\mu(A)$（参见 \cite{WaltersErgodicTheory}）。在唯一遍历情形（例如某些紧系统上的无理旋转及其符号因子），更可得到与初值无关的收敛结论（同上）。
+当 $T$ 遍历时，Birkhoff 遍历定理给出 $\mathrm{freq}_N(A;x)\to\mu(A)$（\cite{WaltersErgodicTheory}）。在唯一遍历情形下，若观测满足边界零测等标准正则性，则可把该收敛强化为相位无关（同上）。
 
 \begin{remark}[唯一遍历下的指示函数]\label{rem:unique-ergodic-indicator}
-唯一遍历常给出对连续函数的均匀收敛；若 $f=\ind_W$ 这类不连续可测函数要获得与初值无关的结论，通常需对边界 $\partial W$ 施加 $\mu(\partial W)=0$ 等标准条件。本文在需要“与初值无关”的频率结论时，默认采用此类可检验的边界零测条件（参见 \cite{WaltersErgodicTheory}）。
+唯一遍历通常先保证对连续观测的均匀收敛；对 $f=\ind_W$ 这类指示函数，要得到与初值无关的频率结论，常用的可检验正则性条件是 $\mu(\partial W)=0$（参见 \cite{WaltersErgodicTheory}）。
 \end{remark}
 
 \begin{theorem}[唯一遍历下的相位无关频率（柱事件）]\label{thm:unique-ergodic-cylinder-freq}
@@ -28,10 +23,6 @@
 \]
 存在且与 $x$ 无关（参见 \cite{WaltersErgodicTheory} 中关于唯一遍历与不连续观测的标准处理）。
 \end{theorem}
-
-\begin{corollary}[统计全息（单实现恢复统计律）]\label{cor:statistical-holography}
-在定理 \ref{thm:unique-ergodic-cylinder-freq} 条件下，任意典型单轨道的长时频率即可恢复由 $\mu$ 决定的全局统计律；因此“局部实现差异”与“统计一致”在严格意义上并存。
-\end{corollary}
 
 \begin{proposition}[无需概率的有限样本误差证书：差异度不等式]\label{prop:discrepancy-certificate}
 设 $x_0,\dots,x_{N-1}\in[0,1)$，记经验平均 $A_N(f):=\frac1N\sum_{t=0}^{N-1}f(x_t)$。定义星差异度
@@ -72,14 +63,6 @@ D_N^*(\alpha)=O\!\left(\frac{\log N}{N}\right),
 
 该定义将“不可忽略规律”精确化：规律对应极限频率（或状态期望）存在并由不变状态决定。
 
-\begin{proposition}[遍历性给出的稳定性闭合]\label{prop:ergodic-implies-stable}
-若 $T$ 在 $(X,\mathcal{B},\mu)$ 上遍历，则对任意 $m$ 与任意 $A\in\mathcal{F}_m$，都有
-\[
-\lim_{N\to\infty}\mathrm{freq}_N(A;x)=\mu(A)\quad\text{对 }\mu\text{-几乎处处 }x.
-\]
-因此在遍历前提下，$\mathcal{F}_m$ 的全部事件均是分辨率 $m$ 下的稳定概念，且 $p(A)$ 被强制为 $\mu(A)$（\cite{WaltersErgodicTheory}）。
-\end{proposition}
-
 \subsection{稳定性与有限分辨率}
 
 有限 $m$ 下微态空间 $\Omega_m$ 过大时，单纯以原始微态为概念会导致不可控的稀疏性与不稳定。为建立可递归的概念层级，需要一个将 $\Omega_m$ 折叠到更小稳定类型空间的机制（第 \ref{sec:folding} 节）。该机制的数学要求是：折叠后类型空间随 $m$ 增长呈现自相似递归，并与黄金比例一致。
@@ -101,12 +84,7 @@ D_{\mathrm{KL}}(\hat{\pi}_m\|\pi_m):=\sum_{u\in X_m}\hat{\pi}_m(u)\log\frac{\hat
 这一定量化步骤不依赖任何模拟；其意义仅在于：若系统在分辨率 $m$ 的稳定层确由黄金语法支配，则 $\hat{\pi}_m$ 应在遍历假设下趋近 $\pi_m$，且偏差可被直接审计。若进一步以 Parry 最大熵测度作为基准马尔可夫链，则低阶边缘分布的收敛还具有显式指数速率（推论 \ref{cor:golden-markov-mixing}）。
 
 \subsection{自然源类下的测度收敛与偏差界：折叠直方图的统一口径}\label{subsec:histogram-convergence-natural-sources}
-上一小节把“折叠直方图”作为判别量，但并未说明其在何种数据生成假设下必然收敛、以及收敛偏差是否可定量控制。为使该接口可被审计，本小节给出一个最小层次的结论链：
-\begin{itemize}
-  \item 在\textbf{平稳遍历}前提下，$\hat{\pi}_{m,N}$ 对真实极限分布几乎处处收敛（纯遍历定理层结论，最少输入）；
-  \item 在\textbf{i.i.d. 输入}下，尽管窗口重叠导致输出相关，但可通过 $m$-分块得到一个完全显式的 TV 置信包络（有效样本量 $\asymp N/m$）；
-  \item 在\textbf{有限状态马尔可夫输入}下，输出可视为有限状态马尔可夫链的函数，因而可直接调用马尔可夫链浓缩不等式得到指数尾界（\cite{Paulin2015MarkovConcentration}）。
-\end{itemize}
+本小节仅记录折叠输出直方图在常见源模型下的两条标准事实：平稳遍历源下的几乎处处收敛（遍历定理），以及 i.i.d. 源下通过分块获得的显式 TV 置信包络（\cite{WeissmanEtAl2003L1Empirical}）。更一般的马尔可夫源/混合源下可直接套用现成的马尔可夫链浓缩工具（例如 \cite{Paulin2015MarkovConcentration}）；本文后续实验部分以 i.i.d. 块采样为基线，不再展开该一般化细节。
 
 \begin{definition}[一般源与折叠输出过程]\label{def:source-and-fold-output}
 令 $S=(S_t)_{t\in\ZZ}$ 为取值于 $\{0,1\}$ 的双边随机过程，定义长度-$m$ 窗口与折叠输出为
@@ -184,89 +162,4 @@ D_{\mathrm{TV}}(\sum_j a_j P_j,\ Q)\le \sum_j a_j D_{\mathrm{TV}}(P_j,Q)
 
 \begin{remark}[与 IID 块采样实验的关系]\label{rem:iid-overlap-vs-blocks}
 第 \ref{sec:experiments} 节的 IID 基线实验采用“独立 $m$-块采样”，因此其有效样本量为 $N$ 而非 $N/m$（证书更紧）。命题 \ref{prop:histogram-tv-iid-overlap} 说明：即便回到更自然的“沿时间滑窗采样（重叠窗口）”，也仍可获得完全显式的指数型 TV 证书，只是有效样本量降为 $\lfloor N/m\rfloor$，这与“窗口重叠导致相关”完全一致。
-\end{remark}
-
-\begin{remark}[IID 重叠窗口的“逐坐标 Hoeffding”版本（可选增强）]\label{rem:iid-overlap-hoeffding}
-对固定 $u\in X_m$，指示过程 $Z_t:=\ind_{\{Y_t^{(m)}=u\}}$ 在 IID 输入下是 $m$-依赖的：若 $|t-t'|\ge m$，则 $Z_t$ 与 $Z_{t'}$ 独立。因此也可用 $m$-分块将均值写成 $m$ 个独立样本均值的加权组合，并对每一条子序列应用 Hoeffding 不等式得到
-\[
-\mathbb{P}\Bigl(\bigl|\hat{\pi}_{m,N}(u)-\pi_m^{\mathrm{fold}}(u)\bigr|\ge \varepsilon\Bigr)
-\ \le\ 2m\exp\!\Bigl(-2\,\Bigl\lfloor\frac{N}{m}\Bigr\rfloor\,\varepsilon^2\Bigr).
-\]
-该界在形式上更“参数透明”（只显式出现 $m$），但将其提升为 TV 置信包络时需再对 $|X_m|$ 做并合（通常较松）。因此本文主用命题 \ref{prop:histogram-tv-iid-overlap} 的 Weissman 型 TV 证书作为统一输出口径。
-\par
-从方法论上看，这正是“分块把依赖和切开”的标准做法：可参见 Janson 对局部依赖/分块的大偏差处理（\cite{Janson2004PartlyDependentLD}），以及 Paulin 在马尔可夫链情形用分块与耦合矩阵实现 McDiarmid 型集中（\cite{Paulin2015MarkovConcentration}）。
-\end{remark}
-
-\begin{definition}[马尔可夫源的可计算混合参数：\texorpdfstring{$m$}{m}-块提升与伪谱隙]\label{def:pseudo-spectral-gap}
-令 $S$ 为 $\{0,1\}$ 上的不可约非周期马尔可夫链，转移矩阵为 $P$、稳态分布为 $\pi$。固定 $m\ge 1$，定义 \((m-1)\)-块提升链
-\[
-U_t:=(S_t,S_{t+1},\dots,S_{t+m-2})\in\{0,1\}^{m-1}.
-\]
-其转移矩阵 \(P^{(m)}\) 由“移位并追加一比特”显式给出：从状态 \(u=(u_1,\dots,u_{m-1})\) 到 \(u'=(u_2,\dots,u_{m-1},b)\) 的概率为 \(P_{u_{m-1},b}\)，否则为 \(0\)。该链的稳态分布 \(\pi^{(m)}\) 即原链的 \((m-1)\)-块边缘，完全由 \((\pi,P)\) 计算得出。
-
-定义加权内积 \(\langle f,g\rangle_{\pi^{(m)}}:=\sum_{u}\pi^{(m)}(u)f(u)g(u)\)，并记时间反演 \( (P^{(m)})^\ast := D^{-1}(P^{(m)})^{\mathsf T}D\)（其中 \(D=\mathrm{diag}(\pi^{(m)})\)）。按 \cite{Paulin2015MarkovConcentration}，可用\textbf{伪谱隙} \(\gamma_{\mathrm{ps}}^{(m)}\in(0,1]\) 作为可计算的混合强度参数（其定义与可计算形式见 \cite{Paulin2015MarkovConcentration} 的定义/定理段落；在有限状态情形可由 \(P^{(m)}\) 的乘积与谱半径数值计算给出）。
-\end{definition}
-
-\begin{proposition}[有限状态马尔可夫源下的显式指数偏差界（可计算谱参数）]\label{prop:histogram-markov-concentration}
-在定义 \ref{def:pseudo-spectral-gap} 的设定下，进一步假设链从稳态启动（$S_0\sim\pi$，从而 \(U_0\sim\pi^{(m)}\)）。则对任意固定 \(u\in X_m\) 与任意 \(\varepsilon>0\)，存在完全显式的指数尾界：
-\[
-\mathbb{P}\Bigl(\bigl|\hat{\pi}_{m,N}(u)-\pi_m^{\mathrm{fold}}(u)\bigr|\ge \varepsilon\Bigr)
-\ \le\ 2\exp\!\Bigl(-\frac{\gamma_{\mathrm{ps}}^{(m)}\,N\,\varepsilon^2}{2}\Bigr),
-\]
-其中 \(\gamma_{\mathrm{ps}}^{(m)}\) 为 \((m-1)\)-块提升链 \(U_t\) 的伪谱隙（定义 \ref{def:pseudo-spectral-gap}）。
-\end{proposition}
-
-\begin{proof}
-对固定 \(u\in X_m\) 令
-\[
-f_u(U_t):=\ind_{\{\Fold_m(U_t S_{t+m-1})=u\}}\in[0,1],
-\]
-则 \(\hat{\pi}_{m,N}(u)=\frac{1}{N}\sum_{t=0}^{N-1}f_u(U_t)\)，且 \(\pi_m^{\mathrm{fold}}(u)=\mathbb{E}_{\pi^{(m)}}[f_u]\)。由 \cite{Paulin2015MarkovConcentration} 的马尔可夫链浓缩不等式（以伪谱隙参数化）即可得到所示形式的指数尾界。这里强调“可计算性”：由于 \(U_t\) 是有限状态链，\(\gamma_{\mathrm{ps}}^{(m)}\) 可由 \(P^{(m)}\) 的有限维线性代数对象数值获得，因此该界在本文“可审计/可复现”口径下是有效的。
-\end{proof}
-
-\begin{remark}[从逐坐标到 TV 的统一上界]\label{rem:tv-from-coordinate-bounds}
-对任意有限字母表分布，若对所有 $u\in X_m$ 同时具有
-\(
-|\hat{\pi}_{m,N}(u)-\pi_m^{\mathrm{fold}}(u)|\le \eta
-\)
-，则
-\(
-D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\le \frac12|X_m|\eta
-\)。
-因此一旦获得逐坐标的指数尾界（例如命题 \ref{prop:histogram-markov-concentration}），即可用并合界把它提升为对 $D_{\mathrm{TV}}$ 的显式置信包络。
-\end{remark}
-
-\begin{corollary}[Markov 源下的显式 TV 置信包络（完全可审计，但保守）]\label{cor:tv-envelope-markov}
-在命题 \ref{prop:histogram-markov-concentration} 的条件下，给定置信度参数 \(\delta\in(0,1)\)，令
-\[
-\eta(N,m,\delta)
-:=
-\sqrt{\frac{2}{\gamma_{\mathrm{ps}}^{(m)}\,N}\,\log\frac{2|X_m|}{\delta}}.
-\]
-则以概率至少 \(1-\delta\) 有
-\[
-D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})
-\ \le\
-\frac12\,|X_m|\,\eta(N,m,\delta).
-\]
-\end{corollary}
-
-\begin{proof}
-对每个 \(u\in X_m\)，由命题 \ref{prop:histogram-markov-concentration} 取 \(\varepsilon=\eta\) 得
-\[
-\mathbb{P}\Bigl(\bigl|\hat{\pi}_{m,N}(u)-\pi_m^{\mathrm{fold}}(u)\bigr|\ge \eta\Bigr)
-\ \le\ 2\exp\!\Bigl(-\frac{\gamma_{\mathrm{ps}}^{(m)}N\eta^2}{2}\Bigr)
-\ =\ \frac{\delta}{|X_m|}.
-\]
-对全部 \(u\in X_m\) 作并合，得以概率至少 \(1-\delta\) 同时成立
-\(
-|\hat{\pi}_{m,N}(u)-\pi_m^{\mathrm{fold}}(u)|\le \eta
-\)。
-代入备注 \ref{rem:tv-from-coordinate-bounds} 即得结论。
-\end{proof}
-
-\begin{remark}[如何把该包络变得更紧]\label{rem:tv-envelope-tighten}
-推论 \ref{cor:tv-envelope-markov} 的松弛主要来自两处：对 \(u\) 的并合因子 \(|X_m|\)，以及从逐坐标上界提升到 \(L^1\) 的粗界。若需要更紧的 TV 置信包络，通常要直接对经验分布的 \(L^1\)/TV 偏差建立马尔可夫链版本的集中不等式（而非逐坐标并合）。本文在实验部分选择 IID 块采样时使用 \cite{WeissmanEtAl2003L1Empirical} 的 \(L^1\) 界，正是为了保持证书既显式又尽量紧。
-\par
-值得指出：在马尔可夫链设定下，“经验分布到稳态的 TV 距离”本身已存在直接的集中不等式与期望上界（例如 \cite{Paulin2015MarkovConcentration} 中关于 \(d_{\mathrm{TV}}(\pi_{\mathrm{emp}},\pi)\) 的应用段落给出围绕期望的指数集中，并可进一步结合谱性质上界其期望）。若未来需要把该路线与本文的折叠输出过程完全对齐，可将 \(Y_t^{(m)}\) 视为有限状态提升链 \(U_t\) 的有界观测，并对函数 \(f((U_0,\dots,U_{N-1})):=D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\) 直接应用该类 McDiarmid/耦合矩阵工具，以避免逐坐标并合带来的 \(|X_m|\) 预因子。
 \end{remark}
