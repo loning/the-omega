@@ -176,23 +176,6 @@ A_0\otimes A_0=
 而 \(1+z-z^2=\det(I+zA_0)=\det(I-z(-A_0))\)，得出所示三因子分解与 \(\zeta\) 分解。证毕。
 \end{proof}
 
-\begin{remark}[置换 lift（覆盖）口径：旧谱/新谱与 Ramanujan 界]\label{rem:real-input-40-permutation-lift}
-由块表示
-\[
-M=
-\begin{pmatrix}
-B^{(0)} & B^{(1)} & B^{(1)} & B^{(2)}\\
-B^{(0)} & 0   & B^{(1)} & 0\\
-B^{(0)} & B^{(1)} & 0   & 0\\
-B^{(0)} & 0   & 0   & 0
-\end{pmatrix}
-\]
-以及 \(B^{(d)}\) 为置换矩阵可知：真实输入 40 状态核可视为一个典型的\emph{置换 lift（覆盖）}。
-基图为 \(4\) 顶点的记忆骨架（邻接矩阵 \(A=A_0\otimes A_0\)），纤维为同步核内部态集合 \(Q\)（\(|Q|=10\)），而每条基边携带的提升数据是由输入数字 \(d\) 诱导的置换 \(B^{(d)}\)。
-在该口径下，子空间 \(U=\RR^4\otimes\langle\mathbf{1}\rangle\) 给出 lift 的\textbf{旧谱}（等于基图谱），而 \(U^\perp\)（等价地 \(\det_{\mathrm{vert}}\)）控制 lift 的\textbf{新谱}。
-因此 kernel RH/GRH 的半径界可理解为“把新本征值压到 \(\sqrt{\lambda}\) 内”的 Ramanujan 型谱界（参见附录 \ref{app:real-input-40-finite-rh} 的命题 \ref{prop:finite-rh-triangle-dict}），而本核的唯一达界点 \(-\sqrt{\lambda}\) 则由隐藏的二维因子 \((-A_0)\) 强制出现（注 \ref{rem:finite-rh-40-hidden-minusA0}）。
-\end{remark}
-
 \begin{proposition}[同步复位词：\texorpdfstring{$0^5$}{0^5}]\label{prop:real-input-40-reset-word}
 令同步核的确定性转移为 $\delta:Q\times\{0,1,2\}\to Q$。则对任意 $s\in Q$ 都有
 \[
@@ -294,6 +277,77 @@ U^\perp=\RR^{4}\otimes \mathbf{1}^\perp
 给出“旧谱/新谱”的标准分解：由于置换满足 \(B^{(d)}\mathbf{1}=\mathbf{1}\)，故 \(U\) 不变且 \(M|_U\simeq A\)；其余全部谱信息落在 \(U^\perp\) 上并由 \(\det_{\mathrm{vert}}(z)\) 捕获（命题 \ref{prop:real-input-40-skeleton-factor}）。
 这与图 \(\zeta\)/覆盖 \(\zeta\) 的行列式因子化现象同型（参见 \cite{StarkTerras1996GraphCoverings,TerrasZetaGraphs} 及加权覆盖的 Bartholdi \(\zeta\) 文献 \cite{ChoeKwakParkSato2007Bartholdi,Sato2008WeightedBartholdiCoverings}）。
 \end{remark}
+
+\begin{proposition}[置换 lift 的表示分解：旧谱通道与新谱通道的 Artin 型因子化]\label{prop:real-input-40-lift-artin-rep}
+令 \(Q\) 为纤维集合（\(|Q|=10\)），并令
+\[
+P_d:=B^{(d)}\in S(Q),\qquad d\in\{0,1,2\}.
+\]
+设 \(G\le S(Q)\) 为由 \(\{P_0,P_1,P_2\}\) 生成的有限置换群，并记其置换表示为
+\[
+\pi:G\to \mathrm{GL}(\CC^{Q}),\qquad \pi(g)e_s:=e_{g(s)}.
+\]
+对任意有限维复表示 \(\rho:G\to\mathrm{GL}(V_\rho)\)，定义一个“表示通道”的扭曲块矩阵
+\[
+M_\rho:=
+\begin{pmatrix}
+\rho(P_0) & \rho(P_1) & \rho(P_1) & \rho(P_2)\\
+\rho(P_0) & 0   & \rho(P_1) & 0\\
+\rho(P_0) & \rho(P_1) & 0   & 0\\
+\rho(P_0) & 0   & 0   & 0
+\end{pmatrix}
+\in \mathrm{End}(\CC^4\otimes V_\rho),
+\]
+其中 \(0\) 表示相应大小的零算子。
+将 \(\CC^{Q}\) 作为 \(G\)-模分解为不可约表示的直和
+\[
+\CC^{Q}\cong \bigoplus_{\rho\in\widehat{G}} m_\rho\,V_\rho,
+\]
+其中 \(\widehat{G}\) 为 \(G\) 的不可约表示集合，\(m_\rho\in\ZZ_{\ge 0}\) 为重数。
+则有行列式的 Artin 型因子化：
+\[
+\boxed{\;
+\det(I-zM)
+\;=\;
+\prod_{\rho\in\widehat{G}}
+\det(I-zM_\rho)^{m_\rho}\; }.
+\]
+特别地，平凡表示 \(\mathbf{1}\) 满足 \(M_{\mathbf{1}}=A\)，从而
+\[
+\det(I-zA)\mid \det(I-zM),
+\qquad
+\det_{\mathrm{vert}}(z)
+\;=\;
+\prod_{\rho\in\widehat{G}\setminus\{\mathbf{1}\}}
+\det(I-zM_\rho)^{m_\rho}.
+\]
+因此 kernel RH/GRH 的平方根界（把全部非平凡谱压到 \(\sqrt{\lambda}\) 内）可被理解为：对所有非平凡表示通道 \(\rho\neq\mathbf{1}\)，其“新谱块”满足相应的谱半径界（与命题 \ref{prop:kernel-artin-factorization} 的 Artin 因子化口径对齐）。
+\end{proposition}
+
+\begin{proof}
+将置换表示 \(\pi\) 分解为不可约之和后，存在同构
+\(
+T:\CC^{Q}\to \bigoplus_{\rho} m_\rho V_\rho
+\)
+使得对任意 \(g\in G\)，矩阵 \(T\,\pi(g)\,T^{-1}\) 在右端为按 \(\rho\) 分块的块对角形式，每块为 \(m_\rho\) 份 \(\rho(g)\) 的直和。
+因此对 \(d\in\{0,1,2\}\)，有
+\[
+(I_4\otimes T)\,(I_4\otimes \pi(P_d))\,(I_4\otimes T^{-1})
+\;=\;
+\bigoplus_{\rho\in\widehat{G}} m_\rho\,(I_4\otimes \rho(P_d)).
+\]
+而 \(M\) 正是以上述三种置换块按固定骨架模式拼成的线性组合，因此同一共轭把 \(M\) 变为按 \(\rho\) 分块的块对角算子，其 \(\rho\)-块恰为 \(m_\rho\) 份 \(M_\rho\) 的直和：
+\[
+(I_4\otimes T)\,M\,(I_4\otimes T^{-1})
+\;=\;
+\bigoplus_{\rho\in\widehat{G}} m_\rho\,M_\rho.
+\]
+对块对角矩阵取行列式并相乘即可得到
+\(
+\det(I-zM)=\prod_{\rho}\det(I-zM_\rho)^{m_\rho}
+\)。
+平凡通道与 \(\det_{\mathrm{vert}}\) 的表述由 \(B^{(d)}\mathbf{1}=\mathbf{1}\)（等价于 \(\mathbf{1}\) 为 \(\pi\) 的平凡子表示）与命题 \ref{prop:real-input-40-skeleton-factor} 立即推出。证毕。
+\end{proof}
 
 \input{sections/generated/fig_sync_kernel_real_input_40_matrix}
 

@@ -176,6 +176,94 @@ d_m(r):=\bigl|\{\omega\in\Omega_m:\pi_m(\omega)=r\}\bigr|.
 \]
 当 $m+2\equiv 0\pmod 3$ 时，$F_{m+2}$ 为偶数，$k=F_{m+2}/2$ 为整数。又 Fibonacci 数奇偶性以 3 为周期，存在 $j$ 使 $F_{j+1}$ 为奇数，故因子 $1+(-1)^{F_{j+1}}=0$，从而乘积为零。证毕。
 
+\begin{theorem}[谱零点的同余判别]
+\label{thm:fold-spectrum-zero-criterion}
+对任意 $k\in\ZZ/(F_{m+2}\ZZ)$，有
+\[
+\widehat d_m(k)=0\quad\Longleftrightarrow\quad\exists\,j\in\{1,\dots,m\}\ \text{s.t.}\ 2kF_{j+1}\equiv F_{m+2}\pmod{2F_{m+2}}.
+\]
+等价地，存在 $j$ 使得
+\(
+e^{-2\pi i k F_{j+1}/F_{m+2}}=-1
+\)。
+\end{theorem}
+
+\textbf{证明：}
+由定理 \ref{thm:fold-spectrum-factorization}，
+\(
+\widehat d_m(k)=\prod_{j=1}^m(1+e^{-2\pi i k F_{j+1}/F_{m+2}})
+\)。
+乘积为零当且仅当存在某个 $j$ 使得因子为零，即
+\(
+e^{-2\pi i k F_{j+1}/F_{m+2}}=-1
+\)。
+将其改写为同余条件得到结论。证毕。
+
+\begin{corollary}[零点类的存在与计数]
+\label{cor:fold-spectrum-zero-count}
+若 $m+2\equiv 0\pmod 3$，则谱零点集合至少包含
+\[
+\mathcal{Z}_m:=\left\{\frac{F_{m+2}}{2}\right\},
+\]
+并且对任意 $t\in\NN$，若存在 $j$ 使 $F_{j+1}\equiv 1\pmod{2t}$ 且 $2t\mid F_{m+2}$，则
+\[
+k=\frac{F_{m+2}}{2t}
+\]
+给出新的零点。特别地，零点数至少不小于满足 $2t\mid F_{m+2}$ 且某个 $F_{j+1}\equiv 1\pmod{2t}$ 的 $t$ 的个数。
+\end{corollary}
+
+\textbf{证明：}
+由定理 \ref{thm:fold-spectrum-zero-criterion}，
+\(
+2kF_{j+1}\equiv F_{m+2}\pmod{2F_{m+2}}
+\)
+等价于 $e^{-2\pi i k F_{j+1}/F_{m+2}}=-1$。当 $2t\mid F_{m+2}$ 且 $F_{j+1}\equiv 1\pmod{2t}$ 时，取 $k=F_{m+2}/(2t)$ 得
+\(
+2kF_{j+1}=F_{m+2}\cdot F_{j+1}/t\equiv F_{m+2}\pmod{2F_{m+2}}
+\)，
+从而 $k$ 为零点。首项 $t=1$ 即给出 $k=F_{m+2}/2$。证毕。
+
+\begin{theorem}[零点削减的碰撞上界]
+\label{thm:fold-collision-zero-reduction}
+设 $\mathcal{Z}_m:=\{k\in\ZZ/(F_{m+2}\ZZ):\widehat d_m(k)=0\}$，则
+\[
+\mathsf{Col}_m\le \frac{1}{F_{m+2}}+\frac{F_{m+2}-1-|\mathcal{Z}_m|}{F_{m+2}^2}.
+\]
+特别地，当 $|\mathcal{Z}_m|\ge 1$ 时，
+\[
+\mathsf{Col}_m\le \frac{1}{F_{m+2}}+\frac{F_{m+2}-2}{F_{m+2}^2}.
+\]
+\end{theorem}
+
+\textbf{证明：}
+由定理 \ref{thm:fold-collision-spectrum}，
+\(
+\mathsf{Col}_m-\frac{1}{F_{m+2}}=\frac{1}{2^{2m}F_{m+2}^2}\sum_{k\ne 0}|\widehat d_m(k)|^2
+\)。
+而 $|\widehat d_m(k)|\le\sum_r d_m(r)=2^m$，且对 $k\in\mathcal{Z}_m$ 取值为 0，故
+\(
+\sum_{k\ne 0}|\widehat d_m(k)|^2\le (F_{m+2}-1-|\mathcal{Z}_m|)\,2^{2m}
+\)。
+代入即得结论。证毕。
+
+\begin{corollary}[整除结构给出的零点下界]
+\label{cor:fold-spectrum-zero-divisor}
+设 $d(n)$ 为正整数 $n$ 的除子个数。若 $m+2\equiv 0\pmod 3$，则
+\[
+|\mathcal{Z}_m|\ge d\Bigl(\frac{F_{m+2}}{2}\Bigr).
+\]
+从而
+\[
+\mathsf{Col}_m\le \frac{1}{F_{m+2}}+\frac{F_{m+2}-1-d(F_{m+2}/2)}{F_{m+2}^2}.
+\]
+\end{corollary}
+
+\textbf{证明：}
+当 $m+2\equiv 0\pmod 3$ 时，$F_{m+2}$ 为偶数。取任意 $t\mid F_{m+2}/2$，则 $2t\mid F_{m+2}$。
+又 $F_2=1\equiv 1\pmod{2t}$，由推论 \ref{cor:fold-spectrum-zero-count} 可知
+\(k=F_{m+2}/(2t)\) 为零点。不同 $t$ 给出不同的 $k$，故零点数至少为 $d(F_{m+2}/2)$。
+再代入定理 \ref{thm:fold-collision-zero-reduction} 即得上界。证毕。
+
 \input{sections/generated/tab_fold_multiplicity_histogram}
 
 \subsection{二进制区间到 Zeckendorf 前缀的折叠：最大纤维与饱和判别}\label{app:fold-binary-prefix}
