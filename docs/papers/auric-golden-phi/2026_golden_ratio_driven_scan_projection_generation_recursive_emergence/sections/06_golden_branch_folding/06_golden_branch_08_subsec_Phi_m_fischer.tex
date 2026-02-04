@@ -232,3 +232,50 @@ sofic shift 的周期点计数指数增长率与拓扑熵一致，参见 \cite{W
 即 \(h_{\mathrm{top}}(Y_m)=\log\rho(A_m)\)（命题 \ref{prop:Ym-zeta-leading-pole}）。
 因此“丢失的信息”不是被指数压扁为熵损失，而是迁移进右解析状态集 \(\mathcal{S}_m\) 所携带的记忆结构：窗口层的多重度对应的是有限记忆的重编码，而非指数增长率的衰减。
 \end{remark}
+
+\begin{corollary}[单点本质态 \texorpdfstring{$\Rightarrow$}{=>} 有限延迟右解码]\label{cor:Ym-singleton-essential-finite-delay}
+沿用定义 \ref{def:G_m} 与定义 \ref{def:Phi_m-right-resolving} 的记号。设通过“子集确定化 + 右语言最小化”得到的一个右解析最小表示（例如右 Fischer cover 或其等价的最小确定性表示）满足如下\textbf{单点本质态}条件：
+\begin{equation}\label{eq:Ym-singleton-essential-assumption}
+\text{其最大熵本质强连通分量的状态可辨识为全部单点子集 }\ \{\{v\}:v\in V_m\}.
+\end{equation}
+则在该本质分量上成立：
+\begin{enumerate}
+  \item \textbf{（无标记碰撞）}对任意 \(v\in V_m\)，两条出边 \((v,0)\)、\((v,1)\) 的标记不同：
+  \[
+  \Fold_m(v0)\neq \Fold_m(v1).
+  \]
+  \item \textbf{（逐步解码）}存在一个有限状态右逆转导器（解码器），其状态可取为 \(V_m\)。当处于状态 \(v_t\in V_m\) 且读入输出符号 \(a_t\in X_m\) 时，唯一确定 \(b_t\in\{0,1\}\) 使
+  \[
+  \Fold_m(v_t b_t)=a_t,
+  \]
+  并更新 \(v_{t+1}=v_t\) 去首加尾 \((b_t)\)。因此一旦输出轨道进入上述单点本质分量，输入比特序列从该时刻起可\textbf{零额外预期性}在线恢复。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+\textbf{(1)} 在右解析确定化表示中，对任意单点状态 \(\{v\}\) 与输出符号 \(a\)，后继由
+\(
+\delta_m(\{v\},a)
+\)
+给出。若存在 \(\Fold_m(v0)=\Fold_m(v1)=a\)，则从 \(\{v\}\) 读入 \(a\) 时两条不同的 \(b\)-边都会被纳入，从而
+\(
+\delta_m(\{v\},a)
+\)
+将包含至少两个顶点，迫使确定化状态离开单点类；这与“单点态在本质强连通分量上封闭”（假设 \eqref{eq:Ym-singleton-essential-assumption}）矛盾。故 \(\Fold_m(v0)\neq \Fold_m(v1)\)。
+
+\textbf{(2)} 由 (1) 可知对每个 \(v_t\) 与允许的输出 \(a_t\)，在 \(b_t\in\{0,1\}\) 中恰有一个满足 \(\Fold_m(v_t b_t)=a_t\)。更新规则 \(v_{t+1}=v_t\) 去首加尾由定义 \ref{def:G_m} 的边结构给出，因此该过程在单点本质分量内闭合并确定一个有限状态转导器；其逐步输出 \(b_t\) 给出一条右逆（在该分量上逐时刻反演标记）。证毕。
+\end{proof}
+
+\begin{corollary}[歧义壳的熵严格低于 \texorpdfstring{$\log 2$}{log 2}]\label{cor:Ym-ambiguity-shell-low-entropy}
+在推论 \ref{cor:Ym-singleton-essential-finite-delay} 的条件下，设右解析最小表示的状态图按强连通分量分解，其中最大熵本质分量为单点态分量（其熵为 \(\log 2\)，参见表 \ref{tab:phi_m_sofic_entropy} 的数值证书）。
+令 \(Y_m^{\mathrm{amb}}\subset Y_m\) 为那些在该右解析最小表示中\textbf{完全不进入}单点本质分量的标记序列所构成的 sofic 子系统（等价地：其 lift 的当前候选集合在一侧读入过程中始终为非单点）。
+则有严格不等式
+\[
+h_{\mathrm{top}}(Y_m^{\mathrm{amb}})<\log 2.
+\]
+因此“窗口层的多对一”在时间层不会产生指数级丢熵；它只对应一个\textbf{严格低熵}的歧义壳层，而最大熵部分在有限状态记忆中可右解码。
+\end{corollary}
+\begin{proof}
+由假设，单点态本质分量承载 \(Y_m\) 的最大熵，其邻接计数矩阵的谱半径为 \(2\)，故 \(h_{\mathrm{top}}=\log 2\)。
+而 \(Y_m^{\mathrm{amb}}\) 由\emph{剔除该本质分量后的其余强连通分量}所呈现：这些分量的谱半径都严格小于最大值 \(2\)（否则将出现另一个同熵本质分量，与“最大熵分量由单点态承载”的设定矛盾）。
+因此 \(Y_m^{\mathrm{amb}}\) 的拓扑熵严格小于 \(\log 2\)。证毕。
+\end{proof}

@@ -79,6 +79,60 @@ $$
 作为可审计示例，我们在 essential 20 状态核心上取 $\Phi=(\chi,\nu,\xi)$，对若干方向 $\theta$ 做标量化并在图上求最小平均回路权与见证周期轨道，输出其周期均值（rotation vector）：
 \input{sections/generated/tab_real_input_40_rotation_polytope_sample}
 
+\begin{proposition}[规范剪切：\texorpdfstring{$(\chi,\nu,\xi)$}{(chi,nu,xi)} rotation polytope 与 \texorpdfstring{$(e,\nu,\xi)$}{(e,nu,xi)} rotation polytope 的线性同胚]\label{prop:rotation-polytope-shear}
+在真实输入 40 状态核的同步边口径下，令
+\[
+\Phi^{(e)}(e):=(e(e),\nu(e),\xi(e))\in\ZZ^3,
+\qquad
+\Phi^{(\chi)}(e):=(\chi(e),\nu(e),\xi(e))\in\ZZ^3,
+\]
+其中 \(\chi=e-\xi\)。定义线性剪切
+\[
+L:\RR^3\to\RR^3,\qquad L(x_e,x_\nu,x_\xi):=(x_e-x_\xi,\ x_\nu,\ x_\xi).
+\]
+则 rotation 集满足
+\[
+\mathrm{Rot}(\Phi^{(\chi)})=L\bigl(\mathrm{Rot}(\Phi^{(e)})\bigr),
+\]
+从而两者的 rotation polytope 仅相差一个可逆线性剪切同胚（其逆为 \(L^{-1}(x_\chi,x_\nu,x_\xi)=(x_\chi+x_\xi,x_\nu,x_\xi)\)）。
+进一步，对任意方向 \(\theta=(\theta_\chi,\theta_-,\theta_2)\in\RR^3\)，其最小支撑函数满足
+\[
+\boxed{\;
+h_{\min}^{(\chi)}(\theta_\chi,\theta_-,\theta_2)
+=h_{\min}^{(e)}(\theta_e,\theta_-,\widetilde\theta_2)\;},
+\qquad
+(\theta_e,\widetilde\theta_2):=(\theta_\chi,\ \theta_2-\theta_\chi),
+\]
+因此 \((\chi,\nu,\xi)\) 的 normal fan（零温相图分区）是 \((e,\nu,\xi)\) 相图在 \((\theta_e,\theta_2)\)-平面上沿直线族 \(\theta_2-\theta_e=\mathrm{const}\) 的拉回。
+\end{proposition}
+\begin{proof}
+由 \(\chi=e-\xi\)，对任意不变测度 \(\mu\) 有
+\[
+\int \Phi^{(\chi)}\,\dd\mu=\left(\int e\,\dd\mu-\int \xi\,\dd\mu,\ \int \nu\,\dd\mu,\ \int \xi\,\dd\mu\right)
+=L\left(\int \Phi^{(e)}\,\dd\mu\right).
+\]
+对所有不变测度取像即得 \(\mathrm{Rot}(\Phi^{(\chi)})=L(\mathrm{Rot}(\Phi^{(e)}))\)。
+
+对支撑函数，注意
+\[
+\langle\theta,\Phi^{(\chi)}\rangle
+=\theta_\chi\chi+\theta_-\nu+\theta_2\xi
+=\theta_\chi e+\theta_-\nu+(\theta_2-\theta_\chi)\xi
+=\left\langle(\theta_\chi,\theta_-,\theta_2-\theta_\chi),\,\Phi^{(e)}\right\rangle.
+\]
+将该恒等式代入上文对最小平均回路权 \(h_{\min}(\theta)\) 的刻画即可得到支撑函数等价；normal fan 的拉回结论是支撑函数在对偶参数空间的线性变换推论。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$\chi$}{chi} 扭曲的降维与参数冗余]\label{cor:chi-twist-dimension-reduction}
+对任意 \(\mathbf{u}=(u_\chi,u_-,u_2)\in(\CC^\times)^3\)，矩阵族 \(M(\mathbf{u})\) 的权重满足
+\[
+u_\chi^{\chi(e)}u_-^{\nu(e)}u_2^{\xi(e)}
+=u_\chi^{e(e)}u_-^{\nu(e)}\left(\frac{u_2}{u_\chi}\right)^{\xi(e)}.
+\]
+因此把 \(\chi\) 作为一条额外扭曲轴并不会引入新的自由度：它等价于在 \((e,\nu,\xi)\) 的三基势上做一次线性重参数化（参见附录 \ref{app:real-input-40-logm-theta} 的命题 \ref{prop:chi-reparam-4d}）。
+特别地，在单位根 Dirichlet 扭曲（有限群角色）口径下，沿 \(\chi\) 的角色扭曲可分解为沿 \(e\) 与 \(\xi\) 的反向组合；因此在枚举 \(((m,m,p))\) 一类三轴扭曲参数时，若其中一轴取 \(\chi\)，则存在一个可消去的线性冗余方向，可把枚举空间降一维。
+\end{corollary}
+
 \begin{remark}[无回溯素数影子与覆盖的 \texorpdfstring{$L$}{L}-函数分解]\label{rem:rotation-polytope-bartholdi}
 上文的 primitive Euler 乘积基于“周期点/闭路”口径；但在“原子更新近可逆”的核语境里，更自然的素数影子常需\textbf{排除回溯}（做了又撤销）。这对应 Ihara--Bass--Hashimoto/Bartholdi 的无回溯素回路框架：对（有向/带权）图可定义加权 Bartholdi $\zeta$ 与相应的加权 $L$-函数，并给出行列式表达；在图覆盖（有限群标记）下还存在 Artin 型分解：覆盖的 $\zeta$ 可分解为各不可约表示的扭曲 $L$-函数乘积（见 \cite{ChoeKwakParkSato2007Bartholdi,Sato2008WeightedBartholdiCoverings}）。与本节的 Dirichlet 扭曲谱半径比 $\rho/\lambda$ 类似，覆盖/扭曲的谱半径比提供了“同余类偏差”的可计算指数尺度；在 Axiom A/超曲性动力系统中，这一类比进一步对应到 Chebotarev 型分布定理（参见 \cite{PollicottSharp2007Chebotarev}）。
 \end{remark}
@@ -366,39 +420,6 @@ C^{(3,3,5)}_{a,b,c}
 +\frac{1}{45}\!\!\!\sum_{\substack{0\le j_1\le 2\\0\le j_2\le 2\\0\le j_3\le 4\\(j_1,j_2,j_3)\ne(0,0,0)}}
 \omega_3^{-j_1 a}\,\omega_3^{-j_2 b}\,\omega_5^{-j_3 c}\ C(j_1,j_2,j_3).
 $$
-\begin{remark}[角色稀疏逼近定理：常数张量的最佳 \(K\)-角色截断]\label{thm:arity-335-best-k-character-truncation}
-把均值项剥离，定义去均值张量
-\[
-\widetilde C_{a,b,c}:=C^{(3,3,5)}_{a,b,c}-\frac{\mathsf{M}}{45}.
-\]
-并对每个非平凡角色索引 \(j=(j_1,j_2,j_3)\neq(0,0,0)\) 定义角色基函数
-\[
-\chi_j(a,b,c):=\omega_3^{-j_1 a}\,\omega_3^{-j_2 b}\,\omega_5^{-j_3 c}.
-\]
-则三维反演式等价于严格的正交展开
-\[
-\widetilde C=\frac{1}{45}\sum_{j\neq 0} C(j)\,\chi_j.
-\]
-在 Frobenius 内积
-\(
-\langle X,Y\rangle:=\sum_{a,b,c}X_{a,b,c}\overline{Y_{a,b,c}}
-\)
-下，\(\{\chi_j\}\) 两两正交，且 \(\|\chi_j\|_F^2=45\)。
-因此对任意大小为 \(K\) 的索引集合 \(J\subset\{j\neq 0\}\)，令
-\[
-\widetilde C^{(J)}:=\frac{1}{45}\sum_{j\in J} C(j)\,\chi_j,
-\]
-则误差满足精确恒等式
-\[
-\boxed{\ 
-\bigl\|\widetilde C-\widetilde C^{(J)}\bigr\|_F^2
-=\frac{1}{45}\sum_{j\notin J}|C(j)|^2
-\ }.
-\]
-从而在所有 \(|J|=K\) 的 \(K\)-项角色截断中，使误差 \(\|\widetilde C-\widetilde C^{(J)}\|_F\) 最小的 \(J\) 必由 \(|C(j)|\) 最大的 \(K\) 个角色索引组成；最优误差即由“尾部角色能量”完全刻画。
-\par
-该结论只用到了本节已给出的“扭曲常数 \(C(j)\) \(\Rightarrow\) 三维反演”闭环与角色正交性：它把 44 个非平凡角色常数压缩为 \(K\) 个“机制原子”时的最优策略，从 SVD/启发式挑选提升为可审计的稀疏谱证书。
-\end{remark}
 该计算链同时输出最坏扭曲谱半径比 $\rho_{3,3,5}/\lambda$（指数误差尺度）与两条校验：
 $$
 \sum_{a,b,c}C^{(3,3,5)}_{a,b,c}=\mathsf{M},
@@ -414,6 +435,74 @@ $$
 \paragraph{二级推论（由上述五切片与最坏谱半径比直接推出）}
 为了把“表格输出”进一步压缩为可直接引用的结构性结论，我们额外输出一份仅由上述五切片与最坏谱半径比计算得到的二级摘要（同一脚本生成）：
 \input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2_summary}
+
+\begin{corollary}[边际--角色反演（\(\chi\bmod 3\)）：由一维边际恢复隐藏复扭曲常数]\label{cor:arity-335-marginal-invert-chi}
+令 \(C^{(3)}_a:=\sum_{b\in\ZZ/3}\sum_{c\in\ZZ/5}C^{(3,3,5)}_{a,b,c}\) 为 \(\chi\bmod 3\) 的一维边际常数（由表格输出给出），并记 \(M:=\sum_{a=0}^2 C^{(3)}_a=\mathsf{M}\)。
+则由引理 \ref{lem:arity-character-projection}（取 \(m_1=3\)）有严格恒等式
+\[
+C^{(3)}_a=\frac{M}{3}+\frac13\sum_{j_1=1}^{2}\omega_3^{-j_1a}\,C(j_1,0,0).
+\]
+因此三点离散傅里叶反演给出
+\[
+C(1,0,0)=\sum_{a=0}^{2}C^{(3)}_a\,\omega_3^{a},\qquad
+C(2,0,0)=\overline{C(1,0,0)}.
+\]
+代入可复现输出的边际 \(\bigl(-0.01360430,\ 0.62427101,\ -0.28776371\bigr)\) 得
+\[
+C(1,0,0)\approx -0.18185795+0.78984524\,\mathrm{i},
+\qquad
+|C(1,0,0)|\approx 0.81051,
+\qquad
+\arg C(1,0,0)\approx 103.0^\circ.
+\]
+可将 \(\Xi_\chi:=C(1,0,0)\in\CC\) 视为“\(\chi\bmod 3\) 偏置的相位与幅度指纹”。
+\end{corollary}
+
+\begin{corollary}[碰撞边际只由纯碰撞角色决定：并可显式恢复 \(C(0,0,1..4)\)]\label{cor:arity-335-marginal-invert-collision}
+定义碰撞同余类的聚合漂移
+\[
+S_c:=\sum_{a\in\ZZ/3}\sum_{b\in\ZZ/3}C^{(3,3,5)}_{a,b,c},
+\qquad c\in\ZZ/5.
+\]
+则由引理 \ref{lem:arity-character-projection}（对 \(a,b\) 求和）有
+\[
+S_c=\frac{\mathsf{M}}{5}+\frac15\sum_{j_3=1}^{4}\omega_5^{-j_3c}\,C(0,0,j_3).
+\]
+换言之：整个 \(c\)-轴边际只由四个“纯碰撞扭曲常数” \(C(0,0,1),\dots,C(0,0,4)\) 决定；所有 \(j_1\ne0\) 或 \(j_2\ne0\) 的角色在边际里被正交性完全消去。
+并且对 \(k=1,2,3,4\)，五点离散傅里叶反演给出
+\[
+C(0,0,k)=\sum_{c=0}^{4}S_c\,\omega_5^{kc}.
+\]
+由五张切片逐项求和得到
+\(
+(S_0,\dots,S_4)\approx(1.68533037,\,0.13018942,\,-0.32106657,\,-0.52830155,\,-0.64324865)
+\)，从而
+\[
+\begin{aligned}
+C(0,0,1)&\approx 2.21393959+0.85739298\,\mathrm{i},&
+C(0,0,2)&\approx 1.83793482+0.25752331\,\mathrm{i},\\
+C(0,0,3)&=\overline{C(0,0,2)},&
+C(0,0,4)&=\overline{C(0,0,1)}.
+\end{aligned}
+\]
+由此得到新的谐波优势指纹
+\[
+H_{\mathrm{coll}}:=\frac{|C(0,0,2)|}{|C(0,0,1)|}\approx 0.782,
+\qquad
+\Delta\arg:=\arg C(0,0,2)-\arg C(0,0,1)\approx 13.2^\circ,
+\]
+解释了为何最坏扭曲角色锁定在 \(j_3=\pm1\) 而非 \(j_3=\pm2\)（第一谐波幅度更强，且两谐波近同相）。
+\end{corollary}
+
+\begin{remark}[按需求投影的计算缩并：很多问题不必计算全部 \(44\) 个非平凡 \(C(j)\)]\label{rem:arity-335-projection-compression}
+反演式形式上涉及全部非平凡 \(C(j_1,j_2,j_3)\)，但引理 \ref{lem:arity-character-projection} 表明：任何边际求和都等价于角色空间的投影。
+因此在 \(((3,3,5))\) 中：
+\begin{itemize}
+  \item 若只关心 \(c\)-轴总体偏置 \(S_c\) 及其主导慢模，只需计算四个纯碰撞常数 \(C(0,0,1..4)\)；
+  \item 若只关心 \(\chi\bmod 3\) 的总体偏置，只需计算一个复常数 \(C(1,0,0)\)（并由共轭得到 \(C(2,0,0)\)）。
+\end{itemize}
+这提供一个“按需求投影”的可审计计算策略：用少量角色常数替代全角色表计算，但仍完全遵循本文的 Möbius--\(\log\zeta\) 定义链。
+\end{remark}
 
 \begin{remark}[有限维 Artin--Dirichlet 显式公式：常数张量作为扭曲行列式常数项的有限和]\label{thm:arity-dirichlet-explicit-constant}
 在 \(((m_1,m_2,m_3))\) 的三维 Dirichlet 分层中（本节以 \(((3,3,5))\) 为代表），对每个非平凡角色索引 \(j\neq 0\) 记扭曲 \(\zeta\)-行列式
@@ -473,6 +562,7 @@ S_c:=\sum_{a=0}^{2}\sum_{b=0}^{2}C^{(3,3,5)}_{a,b,c},
 \qquad c\in\ZZ/5.
 \]
 则在真实输入 40 状态核的 \(((3,3,5))\) 分层（第三轴取 $c=N_2(\gamma)\bmod 5$）下，可复现输出显示：$S_0$ 显著为正，而 $S_2,S_3,S_4$ 为负，并且 $\sum_{c=0}^4 S_c=\mathsf{M}$。因此在 Abel/Hadamard 有限部（常数级漂移）口径下，primitive 轨道对碰撞同余类 $c$ 的偏置主要体现为“$c=0$ 的强正漂移 + 其余同余类的系统性负漂移”。
+更强地，由推论 \ref{cor:arity-335-marginal-invert-collision}，该 \(c\)-轴边际完全由四个纯碰撞扭曲常数 \(C(0,0,1..4)\) 决定，并可由 \(S_c\) 直接离散傅里叶反演恢复。
 \end{remark}
 
 \begin{remark}[符号相变阈值与正漂移稀疏性]\label{cor:arity-335-sign-sparsity}
