@@ -107,6 +107,7 @@ class Row:
     n: int
     a_mod: int
     diff_to_prev_mod_p_pow_k: int
+    dwork_defect_mod_p_pow_k: int
 
 
 def main() -> None:
@@ -159,7 +160,10 @@ def main() -> None:
 
     prog = Progress("sync-kernel-weighted-padic-unit-root", every_seconds=20.0)
 
-    B = _build_B_mod(u=u, mod=mod)
+    u_mod = int(u % mod)
+    u_p_mod = pow(u_mod, p, mod)
+    B = _build_B_mod(u=u_mod, mod=mod)
+    B_up = _build_B_mod(u=u_p_mod, mod=mod)
     rows: List[Row] = []
     prev = None
     for k in range(0, k_max + 1):
@@ -169,7 +173,20 @@ def main() -> None:
             diff = 0
         else:
             diff = (a_mod - prev) % (p**k if k >= 1 else 1)
-        rows.append(Row(k=k, n=n, a_mod=a_mod, diff_to_prev_mod_p_pow_k=diff))
+        if k == 0:
+            defect = 0
+        else:
+            a_prev_up_mod = _matpow_trace_mod(B_up, n=p ** (k - 1), mod=mod)
+            defect = (a_mod - a_prev_up_mod) % (p**k)
+        rows.append(
+            Row(
+                k=k,
+                n=n,
+                a_mod=a_mod,
+                diff_to_prev_mod_p_pow_k=diff,
+                dwork_defect_mod_p_pow_k=defect,
+            )
+        )
         prev = a_mod
         prog.tick(f"k={k}/{k_max} n={n}")
 
@@ -181,9 +198,14 @@ def main() -> None:
         "N": N,
         "mod": mod,
         "u_label": u_label,
-        "u_mod": int(u % mod),
+        "u_mod": u_mod,
+        "u_p_mod": u_p_mod,
         "rows": [asdict(r) for r in rows],
-        "note": "diff_to_prev_mod_p_pow_k should be 0 when u^p=u and Dwork congruence holds.",
+        "note": (
+            "dwork_defect_mod_p_pow_k should be 0 when the Dwork congruence "
+            "a_{p^k}(u) ≡ a_{p^{k-1}}(u^p) (mod p^k) holds on evaluations. "
+            "diff_to_prev_mod_p_pow_k is the fixed-point Cauchy check when u^p=u."
+        ),
     }
     jout.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(f"[padic-unit-root] wrote {jout}", flush=True)
@@ -199,15 +221,23 @@ def main() -> None:
     lines.append(
         "\\caption{p-adic unit-root experiment for the weighted sync-kernel. "
         "We compute $a_{p^k}(u)=\\mathrm{Tr}(B(u)^{p^k})$ modulo $p^N$ and report the "
-        "congruence check $a_{p^k}(u)\\equiv a_{p^{k-1}}(u)\\ (\\mathrm{mod}\\ p^k)$ in the fixed-point case $u^p=u$.}"
+        "Dwork-type defect $a_{p^k}(u)-a_{p^{k-1}}(u^p)$ modulo $p^k$. "
+        "In the fixed-point case $u^p=u$, we also report the Cauchy check "
+        "$a_{p^k}(u)-a_{p^{k-1}}(u)$ modulo $p^k$.}"
     )
     lines.append("\\label{tab:sync_kernel_weighted_padic_unit_root}")
-    lines.append("\\begin{tabular}{r r r r}")
+    lines.append("\\begin{tabular}{r r r r r}")
     lines.append("\\toprule")
-    lines.append("$k$ & $p^k$ & $a_{p^k}(u)\\bmod p^N$ & $a_{p^k}(u)-a_{p^{k-1}}(u)\\bmod p^k$\\\\")
+    lines.append(
+        "$k$ & $p^k$ & $a_{p^k}(u)\\bmod p^N$ & "
+        "$a_{p^k}(u)-a_{p^{k-1}}(u)\\bmod p^k$ & "
+        "$a_{p^k}(u)-a_{p^{k-1}}(u^p)\\bmod p^k$\\\\"
+    )
     lines.append("\\midrule")
     for r in rows:
-        lines.append(f"{r.k} & {r.n} & {r.a_mod} & {r.diff_to_prev_mod_p_pow_k}\\\\")
+        lines.append(
+            f"{r.k} & {r.n} & {r.a_mod} & {r.diff_to_prev_mod_p_pow_k} & {r.dwork_defect_mod_p_pow_k}\\\\"
+        )
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
     lines.append("\\end{table}")

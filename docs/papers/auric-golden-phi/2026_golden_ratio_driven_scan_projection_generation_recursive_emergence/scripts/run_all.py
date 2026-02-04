@@ -115,6 +115,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="parry_endpoint_audit",
+            script="exp_parry_endpoint_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/parry_endpoint_audit.json",
+                "sections/generated/tab_parry_endpoint_audit.tex",
+            ],
+        ),
+        Step(
             name="prime_shadow_window_mi",
             script="exp_prime_shadow_window_mi.py",
             args=[],
