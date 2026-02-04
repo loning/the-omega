@@ -250,6 +250,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="phi_m_sofic_residue_ratio",
+            script="exp_phi_m_sofic_residue_ratio.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/phi_m_sofic_residue_ratio.json",
+                "sections/generated/tab_phi_m_sofic_residue_ratio.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_primitive_spectrum",
             script="exp_sync_kernel_primitive_spectrum.py",
             args=[],
@@ -474,6 +483,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/sync_kernel_real_input_40_arity_3d_N2_335.json",
                 "sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2.tex",
+            ],
+        ),
+        Step(
+            name="arity_335_character_energy",
+            script="exp_arity_335_character_energy.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/arity_335_character_energy.json",
+                "sections/generated/tab_arity_335_character_energy_head.tex",
             ],
         ),
         Step(

@@ -648,6 +648,63 @@ S_c=A(p)+B-2\log\!\left(2\sin\frac{\pi |c|}{p}\right)+o(1)\qquad(p\to\infty)\; }
 把常数张量 $C^{(3,3,5)}_{a,b,c}$ 视为实矩阵 $T\in\RR^{5\times 9}$（行指标为 $c\in\{0,1,2,3,4\}$，列指标为扁平化后的 $(a,b)\in(\ZZ/3)^2$）。令其奇异值为 $s_1\ge \cdots\ge s_5$。二级摘要输出显示：仅用前三个奇异模态即可捕获几乎全部 Frobenius 能量（$\sum_{i\le 3}s_i^2/\sum_{i\le 5}s_i^2$ 逼近 $1$），因此整个 $45$ 项张量在常数级分辨率下可被极低维近似稳定表征（可作为新的“核指纹”不变量）。
 \end{proposition}
 
+\begin{theorem}[角色分解 \texorpdfstring{$\Rightarrow$}{=>} 低秩机制：\texorpdfstring{$((3,3,5))$}{(3,3,5)} 的秩一外积分解与 Parseval 能量恒等式]\label{thm:arity-335-character-energy}
+把中心化常数张量定义为
+\[
+\widetilde C_{a,b,c}:=C^{(3,3,5)}_{a,b,c}-\frac{\mathsf{M}}{45},
+\qquad
+\mathsf{M}:=\sum_{a=0}^2\sum_{b=0}^2\sum_{c=0}^4 C^{(3,3,5)}_{a,b,c}.
+\]
+将其展平为矩阵 \(\widetilde T\in\CC^{5\times 9}\)，行指标为 \(c\in\ZZ/5\)，列指标为扁平化后的 \((a,b)\in(\ZZ/3)^2\)。
+对每个非平凡角色索引 \(j=(j_1,j_2,j_3)\in(\ZZ/3)^2\times(\ZZ/5)\setminus\{(0,0,0)\}\)，令
+\[
+(v_{j_3})_c:=\omega_5^{-j_3 c}\in\CC^{5},
+\qquad
+(w_{j_1,j_2})_{(a,b)}:=\omega_3^{-j_1 a}\omega_3^{-j_2 b}\in\CC^{9},
+\]
+并定义未归一化的三维离散傅里叶系数
+\[
+\widehat{\widetilde C}(j)
+:=
+\sum_{a=0}^2\sum_{b=0}^2\sum_{c=0}^4
+\widetilde C_{a,b,c}\,\omega_3^{j_1 a}\omega_3^{j_2 b}\omega_5^{j_3 c}.
+\]
+则成立严格分解
+\[
+\boxed{\;
+\widetilde T
+\ =\ 
+\frac{1}{45}\sum_{j\neq(0,0,0)}
+\widehat{\widetilde C}(j)\,v_{j_3}\,w_{j_1,j_2}^{\mathsf T}\; }.
+\]
+并且由角色正交性得到 Parseval 恒等式
+\[
+\boxed{\;
+\|\widetilde T\|_F^2
+=
+\sum_{a,b,c}|\widetilde C_{a,b,c}|^2
+=
+\frac{1}{45}\sum_{j\neq(0,0,0)}\bigl|\widehat{\widetilde C}(j)\bigr|^2\; }.
+\]
+\end{theorem}
+\begin{proof}
+三维离散傅里叶变换在有限阿贝尔群 \(G=(\ZZ/3)^2\times(\ZZ/5)\) 上给出正交基；中心化使得零频模态消失，即 \(\widehat{\widetilde C}(0,0,0)=0\)。
+由逆变换公式对 \((a,b,c)\) 逐点成立：
+\[
+\widetilde C_{a,b,c}
+\ =\ 
+\frac{1}{45}\sum_{j\in G}\widehat{\widetilde C}(j)\,\omega_3^{-j_1 a}\omega_3^{-j_2 b}\omega_5^{-j_3 c},
+\]
+将右端按 \(c\) 与 \((a,b)\) 的外积形式重写即得矩阵分解。Parseval 恒等式是 Fourier 基正交性的标准结论。证毕。
+\end{proof}
+
+\begin{remark}[可审计诊断：SVD 能量集中 \texorpdfstring{$\Leftrightarrow$}{<->} 角色能量头部集中]\label{rem:arity-335-character-energy-diagnostic}
+定理 \ref{thm:arity-335-character-energy} 表明：每个角色 \(j\) 在展平矩阵上只贡献一个秩一外积模态，且其 Frobenius 能量恰为 \(|\widehat{\widetilde C}(j)|^2/45\)。
+因此若存在一个很小的角色集合 \(J\) 使 \(\sum_{j\in J}|\widehat{\widetilde C}(j)|^2\) 捕获几乎全部能量，则 \(\widetilde T\) 必具有极低的有效秩；反之，\(\widetilde T\) 的奇异值能量高度集中意味着“常数级漂移”主要由少数角色模态驱动。
+脚本 \texttt{scripts/exp\_arity\_335\_character\_energy.py} 输出中心化张量的角色能量头部表（并以 Parseval 误差作一致性核验）：
+\input{sections/generated/tab_arity_335_character_energy_head}
+\end{remark}
+
 \begin{definition}[最小完备指纹：\texorpdfstring{$((3,3,5))$}{(3,3,5)} 的七元组压缩]\label{def:arity-335-minimal-fingerprint}
 沿用命题 \ref{prop:arity-335-fourier-fingerprint} 的记号，把 \(f_{a,b}(c)=C^{(3,3,5)}_{a,b,c}\) 的 \(c\)-轴信息压缩为三张矩阵
 \[
