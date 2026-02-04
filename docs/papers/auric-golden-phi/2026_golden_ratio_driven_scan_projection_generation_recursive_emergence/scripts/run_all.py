@@ -181,7 +181,7 @@ def build_steps() -> List[Step]:
         Step(
             name="fold_max_fiber_achievers_phase",
             script="exp_fold_max_fiber_achievers_phase.py",
-            args=["--m-min", "2", "--m-max", "30", "--show-words", "4"],
+            args=["--m-min", "2", "--m-max", "32", "--show-words", "4"],
             expected_outputs=[
                 "artifacts/export/fold_max_fiber_achievers_phase.json",
                 "sections/generated/tab_fold_max_fiber_achievers_phase.tex",
@@ -190,7 +190,7 @@ def build_steps() -> List[Step]:
         Step(
             name="fold_max_fiber_achievers_bsplit",
             script="exp_fold_max_fiber_achievers_bsplit.py",
-            args=["--m-min", "2", "--m-max", "30", "--show-words", "4"],
+            args=["--m-min", "2", "--m-max", "32", "--show-words", "4"],
             expected_outputs=[
                 "artifacts/export/fold_max_fiber_achievers_bsplit.json",
                 "sections/generated/tab_fold_max_fiber_achievers_bsplit.tex",
@@ -206,12 +206,30 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_moment_recursions_moddp_9_17_precomputed",
+            script="exp_fold_collision_moment_recursions_mod_dp.py",
+            args=["--precomputed"],
+            expected_outputs=[
+                "artifacts/export/fold_collision_moment_recursions_moddp_9_17.json",
+                "sections/generated/tab_fold_collision_moment_recursions_9_17.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_moment_spectrum_k2_8",
             script="exp_fold_collision_moment_spectrum_k2_8.py",
             args=[],
             expected_outputs=[
                 "artifacts/export/fold_collision_moment_spectrum_k2_8.json",
                 "sections/generated/tab_fold_collision_moment_spectrum_k2_8.tex",
+            ],
+        ),
+        Step(
+            name="pom_rewriting_engine_demo",
+            script="exp_pom_rewriting_engine_demo.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_rewriting_engine_demo.json",
+                "sections/generated/tab_pom_rewriting_engine_demo.tex",
             ],
         ),
         Step(

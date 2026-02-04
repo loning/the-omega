@@ -163,7 +163,7 @@ def main() -> None:
     lines.append(f"$S_F(z_\\star)$ & {res.S_F:.15f}\\\\")
     lines.append(f"$P_{{\\mathrm{{vert}}}}(z_\\star)$ & {res.P_vert:.15f}\\\\")
     lines.append(f"consistency err & {res.consistency_err:.3e}\\\\")
-    lines.append(f"$k_\\max$ & {res.k_max}\\\\")
+    lines.append(f"$k_{{\\max}}$ & {res.k_max}\\\\")
     lines.append(f"tail proxy & {res.tail_proxy:.3e}\\\\")
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
