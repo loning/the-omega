@@ -839,6 +839,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_pinsker_residual_bridge",
+            script="exp_fold_pinsker_residual_bridge.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_pinsker_residual_bridge.json",
+                "sections/generated/tab_fold_pinsker_residual_bridge.tex",
+            ],
+        ),
+        Step(
             name="generated_tex_fragments",
             script="exp_generated_tex.py",
             args=[],

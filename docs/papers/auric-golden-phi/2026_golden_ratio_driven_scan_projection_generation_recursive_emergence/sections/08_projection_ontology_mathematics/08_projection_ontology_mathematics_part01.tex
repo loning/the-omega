@@ -230,6 +230,32 @@ D_{\mathrm{TV}}(\mu,\nu)
 
 \input{sections/generated/tab_fold_conditional_variance_decomposition}
 
+\begin{lemma}[Pinsker 不等式（TV--KL 桥接，有限字母表）]\label{lem:pinsker-tv-kl}
+设 $p,q$ 为有限集合 $\mathcal{S}$ 上的概率分布，则
+\begin{equation}
+\label{eq:pinsker-tv-kl}
+\boxed{\ D_{\mathrm{TV}}(p,q)\ \le\ \sqrt{\frac{1}{2}\,D_{\mathrm{KL}}(p\|q)}\ }.
+\end{equation}
+\end{lemma}
+\begin{proof}
+该不等式是经典的 Csisz{\'a}r--Kullback--Pinsker 型界，参见例如 \cite{CoverThomas2006,Tsybakov2009Nonparametric}。为保持本文“可审计口径”，本节后续仅使用其有限字母表版本 \eqref{eq:pinsker-tv-kl}。
+\end{proof}
+
+\begin{corollary}[折叠残差：TV 由 KL 残差控制]\label{cor:pom-residual-tv-by-kl}
+对任意 $\mu\in\Delta(\Omega_m)$，令 $\mu^e:=K_m\mu$。则
+\begin{equation}
+\label{eq:pom-residual-tv-by-kl}
+\boxed{\ D_{\mathrm{TV}}(\mu,\mu^e)\ \le\ \sqrt{\frac{1}{2}\,D_{\mathrm{KL}}(\mu\|\mu^e)}\ }.
+\end{equation}
+结合引理 \ref{lem:pom-fiberwise-kl} 的纤维 KL 分解，这给出一个把“不可见残差”从概率口径转写为可见纤维平均的统一上界。
+\end{corollary}
+
+\begin{remark}[数值核对（脚本与产物）]\label{rem:pom-pinsker-residual-script}
+表 \ref{tab:fold_pinsker_residual_bridge} 由脚本 \texttt{scripts/exp\_fold\_pinsker\_residual\_bridge.py} 生成，用于对 \eqref{eq:pom-residual-tv-by-kl} 的实现与数值规模做回归核对（产物路径见 \texttt{artifacts/export/fold\_pinsker\_residual\_bridge.json}）。
+\end{remark}
+
+\input{sections/generated/tab_fold_pinsker_residual_bridge}
+
 \begin{proof}
 记 $x=\Fold_m(a)$。由命题 \ref{prop:fold-conditional-expectation} 的坐标形式，
 \[
