@@ -522,15 +522,15 @@ h_{\mathrm{top}}(Y_m)=\log 2.
 \]
 更强地，该“有限缺陷”可被提升为一个显式的缺陷寄存器：令
 \[
-D_m:=V_m=\{0,1\}^{m-1}.
+\mathcal{D}_m:=V_m=\{0,1\}^{m-1}.
 \]
 定义映射
 \[
-\Psi_m:\{0,1\}^{\ZZ}\to Y_m\times D_m,\qquad
+\Psi_m:\{0,1\}^{\ZZ}\to Y_m\times \mathcal{D}_m,\qquad
 \Psi_m(s):=\bigl(\Phi_m(s),\,s_0s_1\cdots s_{m-2}\bigr).
 \]
 则 $\Psi_m$ 为单射：给定 $y=\Phi_m(s)$ 与缺陷寄存器 $\delta:=s_0\cdots s_{m-2}$，可用定理 \ref{thm:pom-right-resolving} 逐步恢复所有 $t\ge 0$ 的后继比特（由窗口末位的二选一可判别），并用定理 \ref{thm:pom-left-resolving} 逐步恢复所有 $t<0$ 的前驱比特（由窗口首位的二选一可判别），从而恢复整条输入序列 $s$。
-因此每条 $y\in Y_m$ 的前像数至多为 $|D_m|=2^{m-1}$，并且“折叠丢失”可被理解为一个有限的初态/横截面寄存器，而非熵率损失。
+因此每条 $y\in Y_m$ 的前像数至多为 $|\mathcal{D}_m|=2^{m-1}$，并且“折叠丢失”可被理解为一个有限的初态/横截面寄存器，而非熵率损失。
 
 这种有限缺陷可由纤维多重度 $d_m(x)$ 与条件期望 $E_m$ 的块平均结构刻画（命题 \ref{prop:fold-conditional-expectation}），并与 Abel/Hadamard 有限部常数形成互补的“常数级指纹”（定义 \ref{def:abel-finite-part} 及相关附录接口）。因此折叠的“丢失”属于有限分辨率残差，而非熵率损失。
 \end{remark}
@@ -582,6 +582,86 @@ H(\widetilde\pi)
 \]
 由定理 \ref{thm:pom-maxent-lift}，$\kappa_m(\pi)=H(\widetilde\pi)-H(\pi)$，因此 $\kappa_m$ 给出“折叠纤维被压掉的自由度”的可观测标量刻画。
 \end{definition}
+
+\begin{definition}[自然基准分布：均匀微态的折叠推前]\label{def:pom-wm-baseline}
+令 $u_{\Omega_m}$ 表示 $\Omega_m=\{0,1\}^m$ 上的均匀分布（$u_{\Omega_m}(a)\equiv 2^{-m}$）。
+定义 $X_m$ 上的自然基准分布
+\[
+w_m:=(\Fold_m)_*u_{\Omega_m},\qquad
+w_m(x)=\frac{d_m(x)}{2^m}\quad(x\in X_m).
+\]
+它刻画了“均匀微态”在折叠后的输出分布（亦即把纤维多重度归一化为概率权重）。\footnote{为避免与第 \ref{sec:experiments} 节 Parry(PF) 基线的 $\pi_m$ 记号混淆，这里用 $w_m$ 表示该分布；在碰撞矩/R\'enyi 指纹小节中它也常被记为 $\pi_m(x)=d_m(x)/2^m$。}
+\end{definition}
+
+\begin{proposition}[\texorpdfstring{$\kappa_m(\pi)$}{kappa} 的 KL 精确分解]\label{prop:pom-kappa-kl-decomposition}
+对任意 $\pi\in\Delta(X_m)$，令 $w_m$ 为定义 \ref{def:pom-wm-baseline} 的自然基准分布。则有严格恒等式
+\[
+\boxed{\;
+\kappa_m(\pi)=m\log 2\;-\;H(\pi)\;-\;D_{\mathrm{KL}}(\pi\|w_m)\; }.
+\]
+因此 $\kappa_m(\pi)\le m\log 2-H(\pi)$，且当且仅当 $\pi=w_m$ 时取等号。
+\end{proposition}
+\begin{proof}
+由 KL 定义与 $w_m(x)=d_m(x)/2^m$，
+\[
+D_{\mathrm{KL}}(\pi\|w_m)
+=\sum_{x\in X_m}\pi(x)\log\frac{\pi(x)}{d_m(x)/2^m}
+=\sum_x\pi(x)\log\pi(x)-\sum_x\pi(x)\log d_m(x)+m\log 2
+=-H(\pi)-\kappa_m(\pi)+m\log 2.
+\]
+移项即得恒等式；不等式与取等号条件由 $D_{\mathrm{KL}}\ge 0$ 与 $D_{\mathrm{KL}}(\pi\|w_m)=0\Leftrightarrow \pi=w_m$ 得到。证毕。
+\end{proof}
+
+\begin{proposition}[折叠的“近正则性”：\texorpdfstring{$D_{\mathrm{KL}}(w_m\|U_m)$}{KL(w||U)} 的温和线性上界]\label{prop:pom-wm-kl-to-uniform}
+令 $U_m$ 为 $X_m$ 上的均匀分布（$U_m(x)\equiv 1/|X_m|=1/F_{m+2}$），并令平均纤维多重度为
+\(
+\overline d_m:=2^m/|X_m|=2^m/F_{m+2}
+\)。
+则
+\[
+\boxed{\;
+D_{\mathrm{KL}}(w_m\|U_m)\ \le\ \log\frac{D_m}{\overline d_m}
+\;=\;\log\!\left(\frac{D_m\,F_{m+2}}{2^m}\right)\; }.
+\]
+并且由注 \ref{rem:pom-defect-gap}，
+\[
+D_{\mathrm{KL}}(w_m\|U_m)\ \le\ m\log\!\left(\frac{\varphi^{3/2}}{2}\right)+O(1),
+\qquad \log(\varphi^{3/2}/2)\approx 0.0286.
+\]
+\end{proposition}
+\begin{proof}
+注意
+\(
+\frac{w_m(x)}{U_m(x)}=\frac{d_m(x)/2^m}{1/|X_m|}=\frac{d_m(x)}{\overline d_m}
+\)，
+故 $\sup_x \frac{w_m(x)}{U_m(x)}=D_m/\overline d_m$。由一般不等式
+\(
+D_{\mathrm{KL}}(P\|Q)\le \log \sup_x \frac{P(x)}{Q(x)}
+\)
+立得第一式；第二式由注 \ref{rem:pom-defect-gap} 的 $D_m/\overline d_m=\Theta((\varphi^{3/2}/2)^m)$ 取对数得到。证毕。
+\end{proof}
+
+\begin{corollary}[最大纤维达到者的指数稀有性（均匀基线）]\label{cor:pom-maxfiber-rare-uniform}
+在 $U_m$（$X_m$ 上均匀分布）下，有
+\[
+\mathbb{P}_{U_m}\!\bigl(d_m(X)=D_m\bigr)
+\le \mathbb{P}_{U_m}\!\bigl(d_m(X)\ge D_m\bigr)
+\le \frac{\overline d_m}{D_m}
+=\Theta\!\left(\left(\frac{2}{\varphi^{3/2}}\right)^m\right).
+\]
+换言之，尽管 $D_m$ 随 $m$ 增长，达到最大纤维的稳定类型在 $X_m$ 中所占比例指数趋零。
+\end{corollary}
+\begin{proof}
+在 $U_m$ 下，
+\(
+\mathbb{E}_{U_m}[d_m(X)]=\frac{1}{|X_m|}\sum_{x\in X_m}d_m(x)=\frac{2^m}{|X_m|}=\overline d_m
+\)。
+对非负随机变量 $d_m(X)$ 用 Markov 不等式得
+\(
+\mathbb{P}_{U_m}(d_m(X)\ge D_m)\le \overline d_m/D_m
+\)；
+最后一条 $\Theta$ 渐近由注 \ref{rem:pom-defect-gap} 给出。证毕。
+\end{proof}
 
 \begin{remark}[窗口缺陷与有限部常数的同型]\label{rem:pom-kappa-logm}
 窗口尺度上，$\kappa_m(\pi)$ 是一次折叠投影的对数纤维体积缺陷；轨道尺度上，$\log\mathfrak{M}(\theta)$ 是 primitive 轨道乘积在无限尺度下的 Möbius--Abel 正则化有限部（定义 \ref{def:abel-finite-part}）。二者分别给出微观/宏观的“纤维缺陷”接口，为跨尺度缺陷泛函的对齐提供了统一口径。
