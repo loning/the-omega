@@ -418,6 +418,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_output_potential_branch_radius_certificate",
+            script="exp_sync_kernel_output_potential_branch_radius_certificate.py",
+            args=["--dps", "80", "--nphi", "512", "--radial-steps", "120"],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_output_potential_branch_radius_certificate.json",
+                "sections/generated/eq_sync_kernel_output_potential_branch_radius_certificate.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_phi_minus_cubic_series",
             script="exp_sync_kernel_phi_minus_cubic_series.py",
             args=[],
