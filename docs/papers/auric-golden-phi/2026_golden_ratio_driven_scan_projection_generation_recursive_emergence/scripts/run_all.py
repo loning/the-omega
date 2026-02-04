@@ -242,6 +242,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_local_bigeometry_invariants",
+            script="exp_real_input_40_local_bigeometry_invariants.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_local_bigeometry_invariants.json",
+                "sections/generated/tab_real_input_40_local_bigeometry_invariants.tex",
+            ],
+        ),
+        Step(
             name="phi_m_sofic_entropy",
             script="exp_phi_m_sofic_entropy.py",
             args=[],
