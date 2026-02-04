@@ -279,6 +279,24 @@ K_m^2=Q_mP_mQ_mP_m=Q_m(P_mQ_m)P_m=Q_mP_m=K_m
 最后，$K_m$ 的像空间恰为 $\{Q_m\pi:\pi\in\Delta(X_m)\}$；因此 $K_m\mu=\mu$ 当且仅当 $\mu$ 属于该像空间，即在每条纤维上条件均匀。证毕。
 \end{proof}
 
+\begin{corollary}[熵单调化通道：\texorpdfstring{$Q_m\circ P_m$}{Q∘P} 的“窗口第二定律”]\label{cor:pom-second-law-Km}
+对任意 $\mu\in\Delta(\Omega_m)$，有严格恒等式
+\[
+\boxed{\;
+H(K_m\mu)-H(\mu)=D_{\mathrm{KL}}(\mu\|K_m\mu)\ \ge\ 0,
+\;}
+\]
+并且等号当且仅当 $K_m\mu=\mu$（等价于 $\mu$ 在每条纤维上条件均匀）。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-fiber-reflector}，对任意 $\mu$ 有 $K_m\mu=\mu^e$。
+将此代入推论 \ref{cor:pom-ent-increase-equals-kl} 即得
+\(
+H(K_m\mu)-H(\mu)=D_{\mathrm{KL}}(\mu\|K_m\mu)
+\)；
+非负性与取等号条件由 KL 的基本性质与定理 \ref{thm:pom-fiber-reflector} 的固定点刻画给出。证毕。
+\end{proof}
+
 \begin{proposition}[\texorpdfstring{$K_m$}{Km} 的核矩阵：对称、双随机与纤维平均]\label{prop:pom-Km-bistochastic}
 把 $K_m$ 视为 $\Omega_m$ 上的 Markov 核，其转移核为
 \[
@@ -324,6 +342,88 @@ K_m(a,b):=
 每个块贡献一个特征值 $1$ 与 $d-1$ 个特征值 $0$，汇总得到谱与重数公式。证毕。
 \end{proof}
 
+\begin{proposition}[任意权重下的条件期望：正交投影与精确方差分解]\label{prop:pom-weighted-condexp-variance}
+取任意 $\mu\in\Delta(\Omega_m)$，令 $\pi:=P_m\mu\in\Delta(X_m)$，并沿用引理 \ref{lem:pom-fiberwise-kl} 的纤维条件分布 $\{\mu_x\}_{x\in X_m}$。
+对任意函数 $f:\Omega_m\to\RR$，定义（依赖 $\mu$ 的）条件期望算子
+\[
+(E_{m}^{(\mu)}f)(a):=
+\begin{cases}
+\displaystyle \sum_{b\in \Fold_m^{-1}(x)} f(b)\,\mu_x(b),& x=\Fold_m(a),\ \pi(x)>0,\\[6pt]
+0,& x=\Fold_m(a),\ \pi(x)=0.
+\end{cases}
+\]
+并定义加权内积
+\[
+\langle f,g\rangle_\mu:=\sum_{a\in\Omega_m} f(a)g(a)\,\mu(a).
+\]
+则：
+\begin{enumerate}
+  \item $E_m^{(\mu)}f$ 仅依赖于 $x=\Fold_m(a)$，因此属于纤维常值子空间（等价于由 $X_m$ 上的某个函数拉回）；
+  \item $E_m^{(\mu)}$ 是 $L^2(\mu)$ 中到纤维常值子空间的正交投影：对任意函数 $f$ 与任意纤维常值函数 $g$，恒有
+  \[
+  \boxed{\;\langle f-E_m^{(\mu)}f,\ g\rangle_\mu=0.\;}
+  \]
+  \item 写
+  \(
+  \mathbb{E}_\mu[f]:=\sum_a f(a)\mu(a)
+  \)
+  与
+  \(
+  \mathrm{Var}_\mu(f):=\mathbb{E}_\mu[(f-\mathbb{E}_\mu[f])^2]
+  \)。
+  则有精确的方差分解（全为有限求和）：
+  \[
+  \boxed{\;
+  \mathrm{Var}_\mu(f)=\mathrm{Var}_\mu(E_m^{(\mu)}f)\;+\;\sum_{x\in X_m}\pi(x)\,\mathrm{Var}_{\mu_x}(f).
+  \;}
+  \]
+\end{enumerate}
+特别地，若 $\mu$ 在每条纤维上条件均匀（即 $\mu=\mu^e=K_m\mu$），则 $E_m^{(\mu)}$ 与 $K_m$ 的函数版作用一致：$E_m^{(\mu)}f=K_m f$。
+\end{proposition}
+\begin{proof}
+（1）由定义，若 $\Fold_m(a)=\Fold_m(a')=x$ 且 $\pi(x)>0$，则
+\(
+E_m^{(\mu)}f(a)=\sum_{b\in\Fold_m^{-1}(x)}f(b)\mu_x(b)=E_m^{(\mu)}f(a')
+\)；当 $\pi(x)=0$ 时该纤维在 $\mu$ 下零测，按定义取零不影响任何 $\mu$-积分。
+
+（2）任取纤维常值 $g$。存在 $\bar g:X_m\to\RR$ 使 $g(a)=\bar g(\Fold_m(a))$。
+按纤维分组并用 $\mu(a)=\pi(x)\mu_x(a)$（$\pi(x)>0$）得
+\[
+\langle f-E_m^{(\mu)}f,\ g\rangle_\mu
+=\sum_{x\in X_m}\sum_{a\in\Fold_m^{-1}(x)}\pi(x)\mu_x(a)\bigl(f(a)-\mathbb{E}_{\mu_x}[f]\bigr)\bar g(x)=0,
+\]
+因为对每个固定 $x$，内层和为
+\(
+\bar g(x)\pi(x)\bigl(\mathbb{E}_{\mu_x}[f]-\mathbb{E}_{\mu_x}[f]\bigr)=0
+\)。
+故 $E_m^{(\mu)}$ 为正交投影（且显然幂等）。
+
+（3）由（2）的正交性，对 $g:=E_m^{(\mu)}f-\mathbb{E}_\mu[f]$（它是纤维常值）应用勾股分解：
+\[
+\mathbb{E}_\mu\!\bigl[(f-\mathbb{E}_\mu[f])^2\bigr]
+=\mathbb{E}_\mu\!\bigl[(E_m^{(\mu)}f-\mathbb{E}_\mu[f])^2\bigr]+\mathbb{E}_\mu\!\bigl[(f-E_m^{(\mu)}f)^2\bigr].
+\]
+第一项即 $\mathrm{Var}_\mu(E_m^{(\mu)}f)$。第二项按纤维分组并用 $\mu(a)=\pi(x)\mu_x(a)$ 得
+\[
+\mathbb{E}_\mu[(f-E_m^{(\mu)}f)^2]
+=\sum_{x\in X_m}\pi(x)\sum_{a\in\Fold_m^{-1}(x)}\mu_x(a)\bigl(f(a)-\mathbb{E}_{\mu_x}[f]\bigr)^2
+=\sum_{x\in X_m}\pi(x)\,\mathrm{Var}_{\mu_x}(f).
+\]
+合并即得方差分解。最后一段：若 $\mu$ 在每条纤维上条件均匀，则 $\mu_x=u_x$，从而
+\(
+E_m^{(\mu)}f(a)=\frac{1}{d_m(x)}\sum_{\Fold_m(b)=x}f(b)=(K_m f)(a)
+\)。
+证毕。
+\end{proof}
+
+\begin{definition}[折叠可见度：方差保留比例指标]\label{def:pom-fold-visibility}
+对任意 $\mu\in\Delta(\Omega_m)$ 与任意非零方差观测 $f:\Omega_m\to\RR$（即 $\mathrm{Var}_\mu(f)>0$），定义“折叠可见度”
+\[
+\mathcal{R}_{m,\mu}(f):=\frac{\mathrm{Var}_\mu(E_m^{(\mu)}f)}{\mathrm{Var}_\mu(f)}\in(0,1].
+\]
+当 $\mathcal{R}_{m,\mu}(f)\approx 1$ 时，观测 $f$ 的主要起伏已由稳定类型 $x=\Fold_m(a)$ 决定（宏观可见）；当 $\mathcal{R}_{m,\mu}(f)\approx 0$ 时，起伏主要发生在纤维内部（宏观不可见）。
+\end{definition}
+
 \begin{corollary}[最大熵提升的 I-投影表述]\label{cor:pom-Iproj-maxent}
 记 $u_{\Omega_m}$ 为 $\Omega_m$ 上的均匀分布。对任意固定 $\pi\in\Delta(X_m)$，约束集
 \[
@@ -345,6 +445,61 @@ D_{\mathrm{KL}}(\nu\|u_{\Omega_m})=\sum_a \nu(a)\log\nu(a)+m\log 2=\log(2^m)-H(\
 \)，
 故在同一约束集 $\mathcal{C}_\pi$ 上，“最小 KL 到均匀”与“最大熵”等价。
 而最大熵解的唯一性由定理 \ref{thm:pom-maxent-lift}（或按纤维逐块严格凹性）给出。证毕。
+\end{proof}
+
+\begin{theorem}[到均匀微态的 KL 勾股分解（精确三项恒等式）]\label{thm:pom-kl-pythagoras-uniform}
+记 $u_{\Omega_m}$ 为 $\Omega_m$ 上的均匀分布，并定义其稳定推前（均匀微态基准）
+\[
+w_m:=P_m u_{\Omega_m}\in\Delta(X_m),\qquad
+w_m(x)=\frac{d_m(x)}{2^m}.
+\]
+取任意 $\mu\in\Delta(\Omega_m)$，令 $\pi:=P_m\mu\in\Delta(X_m)$，并令 $\mu^e:=Q_m\pi$ 为其纤维均匀提升。
+则有严格恒等式
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\mu\|u_{\Omega_m})
+=D_{\mathrm{KL}}(\pi\|w_m)\;+\;D_{\mathrm{KL}}(\mu\|\mu^e).
+\;}
+\]
+\end{theorem}
+\begin{proof}
+按 KL 定义展开，并用 $u_{\Omega_m}(a)\equiv 2^{-m}$ 得
+\[
+D_{\mathrm{KL}}(\mu\|u_{\Omega_m})
+=\sum_{a\in\Omega_m}\mu(a)\log\mu(a)+m\log 2
+=m\log 2-H(\mu).
+\]
+另一方面，由定理 \ref{thm:pom-kl-ledger}（信息账本恒等式）
+\(
+H(\mu)=H(\pi)+\mathbb{E}_\pi[\log d_m(X)]-D_{\mathrm{KL}}(\mu\|\mu^e)
+\)，
+代回可得
+\[
+D_{\mathrm{KL}}(\mu\|u_{\Omega_m})
+=m\log 2-H(\pi)-\mathbb{E}_\pi[\log d_m(X)]\;+\;D_{\mathrm{KL}}(\mu\|\mu^e).
+\]
+而由 $w_m(x)=d_m(x)/2^m$ 直接计算
+\[
+D_{\mathrm{KL}}(\pi\|w_m)
+=\sum_{x\in X_m}\pi(x)\log\frac{\pi(x)}{d_m(x)/2^m}
+=m\log 2-H(\pi)-\mathbb{E}_\pi[\log d_m(X)].
+\]
+合并即得所示恒等式。证毕。
+\end{proof}
+
+\begin{corollary}[I-投影的精确误差刻画：KL 距离即为“微观残差”]\label{cor:pom-Iproj-gap-exact}
+沿用定理 \ref{thm:pom-kl-pythagoras-uniform} 的记号，固定任意 $\pi\in\Delta(X_m)$ 并取任意 $\mu\in\mathcal{C}_\pi$。
+则
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\mu\|u_{\Omega_m})-D_{\mathrm{KL}}(\mu^e\|u_{\Omega_m})
+=D_{\mathrm{KL}}(\mu\|\mu^e).
+\;}
+\]
+\end{corollary}
+\begin{proof}
+对固定 $\pi$，由定理 \ref{thm:pom-kl-pythagoras-uniform} 先对一般 $\mu\in\mathcal{C}_\pi$ 写出分解；
+再对 $\mu=\mu^e$ 代入同一分解，因 $P_m\mu^e=\pi$ 得其宏观项相同，二式相减即得结论。证毕。
 \end{proof}
 
 \begin{theorem}[规范的粗粒化动力学：先提升—再演化—再读出]\label{thm:pom-coarse-grained-kernel}
