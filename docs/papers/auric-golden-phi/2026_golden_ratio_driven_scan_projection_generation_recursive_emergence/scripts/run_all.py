@@ -300,6 +300,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_hatdelta_discriminant",
+            script="exp_sync_kernel_hatdelta_discriminant.py",
+            args=["--dps", "80"],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_hatdelta_discriminant.json",
+                "sections/generated/eq_sync_kernel_hatdelta_discriminant.tex",
+                "sections/generated/tab_sync_kernel_hatdelta_branch_points.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_phi_minus_cubic_series",
             script="exp_sync_kernel_phi_minus_cubic_series.py",
             args=[],
@@ -451,7 +461,7 @@ def build_steps() -> List[Step]:
         Step(
             name="arity_335_n2_master_curve",
             script="exp_arity_335_n2_master_curve.py",
-            args=["--p-list", "11,13", "--k-max", "1", "--diff-h", "0.0002"],
+            args=["--p-list", "7,11,13", "--k-max", "1", "--diff-h", "0.0002"],
             expected_outputs=[
                 "artifacts/export/arity_335_n2_master_curve.json",
                 "sections/generated/tab_real_input_40_arity_335_n2_master_curve.tex",
