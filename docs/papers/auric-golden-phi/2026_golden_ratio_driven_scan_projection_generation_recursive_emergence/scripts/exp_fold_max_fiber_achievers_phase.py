@@ -112,6 +112,8 @@ class Row:
     m: int
     D_closed: int
     D_dp: int
+    D2_dp: int
+    gap_ratio: float
     kappa: int
     residues: List[int]
     words: List[str]
@@ -130,9 +132,9 @@ def write_table_tex(path: Path, rows: List[Row]) -> None:
         "Representative maximizers are shown only for the largest $m$ in the window.}"
     )
     lines.append("\\label{tab:fold_max_fiber_achievers_phase}")
-    lines.append("\\begin{tabular}{r r r r l}")
+    lines.append("\\begin{tabular}{r r r r r l}")
     lines.append("\\toprule")
-    lines.append("$m$ & $D_m$ (closed) & $D_m$ (DP) & $\\kappa_m$ & representative maximizers\\\\")
+    lines.append("$m$ & $D_m$ (closed) & $D_m$ (DP) & $D_m^{(2)}$ (DP) & $D_m^{(2)}/D_m$ & representative maximizers\\\\")
     lines.append("\\midrule")
     m_max = max(r.m for r in rows) if rows else 0
     show_ms = {m_max, m_max - 1} if m_max >= 3 else {m_max}
@@ -141,7 +143,7 @@ def write_table_tex(path: Path, rows: List[Row]) -> None:
             ex = ",\\;".join([f"\\texttt{{{w}}}" for w in r.words])
         else:
             ex = "--"
-        lines.append(f"{r.m} & {r.D_closed} & {r.D_dp} & {r.kappa} & {ex}\\\\")
+        lines.append(f"{r.m} & {r.D_closed} & {r.D_dp} & {r.D2_dp} & {r.gap_ratio:.6f} & {ex}\\\\")
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
     lines.append("\\end{table}")
@@ -177,6 +179,11 @@ def main() -> None:
     for m in range(args.m_min, args.m_max + 1):
         c = counts_mod_fib(m, prog=prog)
         Ddp = int(np.max(c))
+        # Second maximum (may equal Ddp only if all equal; impossible for m>=2, but keep safe).
+        vals = np.unique(c)
+        vals_sorted = np.sort(vals)
+        D2 = int(vals_sorted[-2]) if len(vals_sorted) >= 2 else int(Ddp)
+        gap_ratio = float(D2 / Ddp) if Ddp > 0 else float("nan")
         residues = np.flatnonzero(c == Ddp).astype(int).tolist()
         kappa = int(len(residues))
 
@@ -193,12 +200,17 @@ def main() -> None:
                 m=m,
                 D_closed=Dc,
                 D_dp=Ddp,
+                D2_dp=D2,
+                gap_ratio=gap_ratio,
                 kappa=kappa,
                 residues=residues_sorted,
                 words=words,
             )
         )
-        print(f"[fold-max-fiber] m={m} mod={len(c)} D={Ddp} kappa={kappa}", flush=True)
+        print(
+            f"[fold-max-fiber] m={m} mod={len(c)} D={Ddp} D2={D2} gap={gap_ratio:.6f} kappa={kappa}",
+            flush=True,
+        )
 
     jout = Path(args.json_out)
     jout.parent.mkdir(parents=True, exist_ok=True)
