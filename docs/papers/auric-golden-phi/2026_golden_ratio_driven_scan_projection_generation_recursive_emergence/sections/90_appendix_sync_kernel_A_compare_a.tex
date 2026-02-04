@@ -240,12 +240,39 @@ c_1=\frac{\ell^{\mathsf T}A_1 r}{\ell^{\mathsf T}r},
 从而零温附近的“抗 carry”排序为 $K_{13}<K_{21}<K_{9}$。
 \end{corollary}
 
+\begin{remark}[零温“抗 carry”二维标度：斜率 \texorpdfstring{$\chi_0$}{chi0} 与“斜率/骨架熵”比值 \texorpdfstring{$\Xi$}{Xi}]\label{rem:zero-temp-two-scales}
+在命题 \ref{prop:lambda-linear-response} 的设定下，定义零温响应斜率（无量纲）
+$$
+\chi_0:=\frac{c_1}{\lambda_0},
+$$
+以及 carry-free 骨架的熵率
+$$
+h_0:=\log\rho(A_0)=\log\lambda_0.
+$$
+则可进一步定义一个归一化二维指纹
+$$
+\Xi:=\frac{\chi_0}{h_0}.
+$$
+解释上，\(h_0\) 小表示 carry-free 语法更紧（骨架熵低），而 \(\chi_0\) 大表示一旦 \(u>0\) 打开，\(\kappa=1\) 通道会在一阶就被大量激活（对温度轴高度敏感）。因此 \((h_0,\chi_0)\) 及其比值 \(\Xi\) 给出一种把“骨架复杂度”与“零温激活敏感度”并列读出的可审计接口。
+\end{remark}
+
 此外，流级延迟 $\delta_{\mathrm{flow}}$（按块时间计）对应的数字级在线延迟为
 \[
 \delta_{\mathrm{digits}}=m\,\delta_{\mathrm{flow}},
 \]
 这与 $p$-local 的 $(t,r)$ 参数在原文中的标注一致（例如 $9/13/21$-local 分别对应 $t=4,6,10$）。\cite{FrougnyHellerPelantovaSvobodovaParallelAlgorithmsSlides,Frougny2012NumbersAsStreamsLeiden}
 并且与 AAMP VIII 的算法总结表述一致。 \cite{SvobodovaAAMPVIIIParallelAddition}
+
+\begin{remark}[熵—延迟互补的二维升级：把 \texorpdfstring{$c_1$}{c1} 纳入互补轴]\label{rem:entropy-delay-complement-c1}
+在三核对比中，若仅比较 carry-free 骨架的分支复杂度（例如 \(\rho(A_0)\) 或 \(h_0=\log\rho(A_0)\)），会遗漏“骨架之外最易被激活的边通道数”这一首阶信息；该信息正由 \(A_1\) 与 \(c_1\) 捕获（命题 \ref{prop:lambda-linear-response}）。
+因此，把延迟对齐到同一标度（\(\delta_{\mathrm{digits}}\)）后，建议把互补猜想细化为一个二维/三维可审计接口，例如
+$$
+\bigl(\delta_{\mathrm{digits}},\ \rho(A_0),\ c_1\bigr)
+\qquad\text{或等价地}\qquad
+\bigl(\delta_{\mathrm{digits}},\ h_0,\ \chi_0\bigr).
+$$
+其机制直觉是：压低 \(\delta\) 往往意味着更早做决定，从而更容易产生 \(\kappa=1\) 的边（\(c_1\) 上升）；而若强行把 carry-free 骨架收紧（小 \(\rho(A_0)\)），则常迫使更长的串行消元链（\(\delta\) 上升），并伴随较低的一阶激活斜率（\(c_1\) 下降）。
+\end{remark}
 
 \paragraph{核指纹总表（单流 $\Rightarrow$ 全局）}
 表 \ref{tab:parallel-addition-kernels-fingerprint} 把单流 BFS 结果通过上述“直积/张量积”装配为全局块级在线机，并给出 carry-free 骨架的闭式 $\det(I-zA_0)$ 与 primitive 轨道谱对照（仅需 $\Tr(A_0^n)$，用 Möbius/Witt 反演即可）。

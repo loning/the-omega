@@ -271,6 +271,27 @@ M_K(u)\,r=\lambda r,\ \ell^{\mathsf T}M_K(u)=\lambda \ell^{\mathsf T}
 与注 \ref{prop:parry-measure-golden} 的显式公式一致。
 \end{corollary}
 
+\begin{remark}[零温谱的“可微指纹”：从 \texorpdfstring{$u=0$}{u=0} 骨架读出一阶响应]\label{rem:kernel-zero-temp-differential-fingerprint}
+除“零温极限支撑在哪里”外，更细的机制差异可在 \(u=0\) 骨架上以导数形式直接读出。
+具体地，把单流带权矩阵写为
+$$
+M_K(u)=A_0+uA_1+u^2A_2+\cdots,
+$$
+并假设 carry-free 骨架 \(A_0\) 的 Perron 根 \(\lambda_0\) 为简单特征值，则谱半径 \(\lambda_K(u)=\rho(M_K(u))\) 在 \(u=0\) 的邻域解析，且一阶系数 \(c_1\) 具有显式 PF 微扰公式（见附录 \ref{app:sync-kernel-A-compare} 的命题 \ref{prop:lambda-linear-response}）：
+$$
+\lambda_K(u)=\lambda_0+c_1u+O(u^2),
+\qquad
+c_1=\frac{\ell^{\mathsf T}A_1 r}{\ell^{\mathsf T}r}.
+$$
+因此平均 carry 密度满足
+$$
+\mathbb{E}_u[\kappa]
+=u\frac{d}{du}\log\lambda_K(u)
+=\frac{c_1}{\lambda_0}u+O(u^2),
+$$
+这使得“无需跑到中间温度，也能在 \(u=0\) 的骨架上区分机制”的审计接口在本文口径下完全闭合。
+\end{remark}
+
 \paragraph{carry 统计：CLT 与大偏差（固定温度）}
 在 $u\in(0,1)$ 固定时，$\mu_u$ 是有限状态 Markov 平衡态；对边可观测量 $\kappa$ 的部分和
 \(
@@ -297,6 +318,38 @@ P(\theta):=\log\rho(M_K(e^\theta))
   \]
 \end{enumerate}
 \end{proposition}
+
+\begin{corollary}[\texorpdfstring{$K_9$}{K9} 的闭式压力曲线：CLT 方差密度与 LDP 率函数全显式]\label{cor:k9-integrable-pressure-ldp}
+对强核 \(K_9\) 的单流编译（附录 \ref{app:sync-kernel-A-compare}），有严格线性
+$$
+\lambda_9(u)=7+14u,
+$$
+因此压力（取 \(\theta=\log u\)）为
+$$
+P_9(\theta)=\log\lambda_9(e^\theta)=\log\!\bigl(7+14e^\theta\bigr).
+$$
+其导数给出 carry 密度与方差密度（即 CLT 的方差密度）：
+$$
+P_9'(\theta)=\frac{2e^\theta}{1+2e^\theta},\qquad
+P_9''(\theta)=\frac{2e^\theta}{(1+2e^\theta)^2}.
+$$
+从而
+$$
+\mathbb{E}_{u}[\kappa]=u\frac{d}{du}\log\lambda_9(u)=\frac{2u}{1+2u}.
+$$
+并且对任意基准 \(\theta_0=\log u_0\)，记
+$$
+\alpha_0:=P_9'(\theta_0)=\frac{2e^{\theta_0}}{1+2e^{\theta_0}}\in(0,1).
+$$
+则由命题 \ref{prop:kernel-clt-ldp} 的 Legendre 变换接口，经验均值 \(\bar\kappa_n=S_n/n\) 在 \(\theta_0\) 平衡态下的率函数可写为闭式
+$$
+I_{\theta_0}(\alpha)
+=\alpha\log\frac{\alpha}{\alpha_0}+(1-\alpha)\log\frac{1-\alpha}{1-\alpha_0},
+\qquad \alpha\in[0,1],
+$$
+其中端点按连续延拓理解（例如 \(\alpha=0\) 时取 \(0\log 0:=0\)）。
+该闭式只依赖压力曲线的闭式表达，不要求额外的独立性假设。
+\end{corollary}
 
 \paragraph{加权 prime-orbit 定理（“素数影子”的热力学主项）}
 对 $B_n(u)=\sum_{|\gamma|=n,\ \gamma\ \mathrm{primitive}}u^{\kappa(\gamma)}$，由迹公式 $a_n(u)=\Tr(M_K(u)^n)$ 与 Möbius 反演可把主项与误差直接追踪到谱隙。

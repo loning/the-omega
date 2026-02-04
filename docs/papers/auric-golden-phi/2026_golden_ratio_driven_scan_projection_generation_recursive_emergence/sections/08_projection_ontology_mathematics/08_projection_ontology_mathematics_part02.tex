@@ -66,6 +66,43 @@ M_E(u)_{ij}:=\sum_{e:i\to j}u^{E(e)}.
 在有限图上，零温基态可由最小平均回路权精确表征：令 $\phi_\theta=\langle\theta,\Phi\rangle$ 或一般取 $\phi=E$，则最小平均代价等于图上的 min-mean-cycle 值，并可用 Karp 算法多项式时间求出（\cite{Karp1978MinCycleMean}）。这把序投影的关键制约因素转化为一个可审计的组合证书接口。
 \end{remark}
 
+\subsubsection{由势诱导的凸几何：可达均值凸体与对偶压力}\label{subsec:pom-potential-convex-geometry}
+\paragraph{势向量作为内禀坐标}
+对有限图核（SFT）\(\Gamma\)，给每条边赋一个多维可加观测量（势向量）
+$$
+\varphi:E(\Gamma)\to \ZZ^d.
+$$
+对任一 \(\sigma\)-不变测度 \(\mu\)，其平均观测向量定义为
+$$
+m(\mu):=\int \varphi\,d\mu\ \in\ \RR^d.
+$$
+定义\textbf{可达均值集合}（rotation/mean set）
+$$
+\mathcal{R}_\varphi:=\{m(\mu):\ \mu\ \text{为}\ \Gamma\ \text{上的}\ \sigma\text{-不变测度}\}\subset\RR^d.
+$$
+由于不变测度集合在弱-\(\ast\) 拓扑下紧且凸、而 \(\mu\mapsto m(\mu)\) 为连续线性映射，故 \(\mathcal{R}_\varphi\) 也是紧凸集。
+
+\paragraph{压力面与率函数：凸对偶把“几何”读出来}
+对参数 \(\theta\in\RR^d\)，令边权取为 \(\exp\langle\theta,\varphi(e)\rangle\)，得到加权矩阵族 \(M_\theta\) 与压力
+$$
+P(\theta):=\log\rho(M_\theta).
+$$
+在原始情形，\(\nabla P(\theta)\) 给出平衡态下的典型均值密度，而 Hessian \(\nabla^2P(\theta)\) 给出协方差密度（正文 \ref{subsec:logM-analyticity} 已将这种“可微分指纹”作为实现接口固定）。
+更重要的是：对固定基准 \(\theta_0\)，经验均值的 LDP 率函数可写为
+$$
+I_{\theta_0}(x)=\sup_{t\in\RR^d}\Bigl(\langle t,x\rangle-\bigl(P(\theta_0+t)-P(\theta_0)\bigr)\Bigr),
+$$
+其有效域恰落在 \(\mathcal{R}_\varphi\) 上（域外取 \(+\infty\)）。
+因此，“几何”无需先验嵌入欧氏空间：它由势向量的并置与核约束内生生成，并通过 \((P\leftrightarrow I)\) 的 Legendre--Fenchel 对偶被量化读出。
+
+\paragraph{6D 超立方体与 3D 切面（最小形式）}
+若选取 \(6\) 个二元通道（每步取值 \(0/1\)）作为势分量 \(\varphi=(\varphi_1,\dots,\varphi_6)\)，则任一长度 \(n\) 的轨道给出计数向量
+$$
+N_n:=\sum_{t=0}^{n-1}\varphi(e_t)\in\{0,1,\dots,n\}^6,
+$$
+归一化后落在 \([0,1]^6\)。真实可达集合是其中由核允许路径裁剪出的凸子体（即 \(\mathcal{R}_\varphi\) 在该选择下的具体化）。
+所谓“6D 立方体的 3D 切面”，就是固定其中 \(3\) 个坐标（或固定 \(3\) 个线性组合，例如 \(\chi=\varphi_e-\varphi_2\) 这类）所得到的截面；而在 \(\theta\) 空间中对该切片做梯度/Hessian 读出，即对应对该凸体在该切片上的一阶与二阶局部测量。
+
 \begin{remark}[范畴边界与不可并行增长]\label{rem:pom-factor-boundary}
 任意滑动块因子码均具有常数在线延迟，因此所有随规模增长的读出深度必然来自非因子码投影（典型即 $P_{\le}$）或把混合留在演化深度 $D_U$ 中。这一“范畴边界”把增长项从算法技巧提升为结构性约束。
 \end{remark}
