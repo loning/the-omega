@@ -440,6 +440,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_output_potential_dirichlet_twists",
+            script="exp_real_input_40_output_potential_dirichlet_twists.py",
+            args=["--m-list", "2,3,4,5,6,10,20", "--dps", "90"],
+            expected_outputs=[
+                "artifacts/export/real_input_40_output_potential_dirichlet_twists.json",
+                "sections/generated/tab_real_input_40_output_potential_dirichlet_twists.tex",
+            ],
+        ),
+        Step(
             name="arity_335_n2_master_curve",
             script="exp_arity_335_n2_master_curve.py",
             args=["--p-list", "11,13", "--k-max", "1", "--diff-h", "0.0002"],

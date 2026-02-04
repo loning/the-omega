@@ -222,6 +222,86 @@ P(\theta)=\log\lambda(e^\theta)
 \end{remark}
 \input{sections/generated/tab_real_input_40_output_potential_cumulants_closed}
 
+\begin{proposition}[输出 $1$ 计数模 $m$ 的 Dirichlet 扭曲谱：平方根误差的系统性失效]\label{prop:real-input-40-output-dirichlet-nonrh}
+固定整数 \(m\ge 2\)。令 \(\omega_m:=e^{2\pi i/m}\)，并对每个 \(1\le j\le m-1\) 定义复权矩阵
+\[
+M(\omega_m^j):=M(u)\big|_{u=\omega_m^j},
+\qquad
+\rho_{m,j}:=\rho\!\bigl(M(\omega_m^j)\bigr).
+\]
+等价地，由 \(\Delta(z,u)=\det(I-zM(u))\) 有
+\[
+\rho_{m,j}=\frac{1}{\min\{|z|:\Delta(z,\omega_m^j)=0\}}.
+\]
+令 \(\lambda:=\rho(M(1))=\varphi^2\)，并记相应的“误差指数”
+\[
+\theta_{m,j}:=\frac{\log \rho_{m,j}}{\log \lambda},
+\qquad
+\rho_m:=\max_{1\le j\le m-1}\rho_{m,j},\quad
+\theta_m:=\max_{1\le j\le m-1}\theta_{m,j}.
+\]
+则输出 \(1\) 的计数模 \(m\) 的非平凡 Fourier 分量（在 periodic/primitive 两个层面）均以 \(O(\rho_m^n)\) 的指数率衰减；并且在本核上存在明确的 \(m\) 使得
+\[
+\theta_m>\frac12,
+\]
+从而对应的 Dirichlet/扭曲误差不具备“RH 形”的平方根指数。
+\end{proposition}
+\begin{proof}
+对 periodic 层，\(a_n(u)=\Tr(M(u)^n)\) 满足
+\(
+a_n(\omega_m^j)=\sum_{\gamma:\,|\gamma|=n}\omega_m^{jE(\gamma)}
+\)
+为能量 \(E(\gamma)\bmod m\) 的 Fourier 分量。由谱半径与矩阵幂有界性，存在常数 \(C_{m,j}>0\) 使得
+\(
+|a_n(\omega_m^j)|\le C_{m,j}\,\rho_{m,j}^n
+\)
+对所有 \(n\ge 1\) 成立。
+primitive 层由 Witt/Möbius 反演
+\(
+p_n(u)=\frac1n\sum_{d\mid n}\mu(d)a_{n/d}(u^d)
+\)
+得到同阶指数上界，因此最坏模态由 \(\rho_m\) 控制。
+最后，脚本 \texttt{scripts/exp\_real\_input\_40\_output\_potential\_dirichlet\_twists.py} 用 \(\Delta(z,u)=(1-uz^2)F(z,u)\) 的显式闭式在 \(u=\omega_m^j\) 处直接求根并取最小模根，给出表 \ref{tab:real_input_40_output_potential_dirichlet_twists} 的数值证书；其中例如 \(m=2\) 已满足 \(\theta_2>1/2\)。证毕。
+\end{proof}
+
+\begin{corollary}[偶阶累积量控制大模数扭曲：\texorpdfstring{$\rho_{m,1}/\lambda$}{rho/lambda} 的 \(m^{-2},m^{-4}\) 渐近]\label{cor:real-input-40-output-dirichlet-cumulant-bridge}
+令 \(\kappa_2:=P''(0)\)、\(\kappa_4:=P^{(4)}(0)\) 为输出位势压力 \(P(\theta)=\log\lambda(e^\theta)\) 在 \(0\) 处的偶阶累积量（表 \ref{tab:real_input_40_output_potential_cumulants_closed}）。
+当 \(m\to\infty\) 时，取 \(u=\omega_m=e^{2\pi i/m}\) 有
+\[
+\log\frac{\rho_{m,1}}{\lambda}
+\;=\;
+\Re\bigl(P(i\,2\pi/m)-P(0)\bigr)
+\;=\;
+-\frac{\kappa_2}{2}\Bigl(\frac{2\pi}{m}\Bigr)^2
++\frac{\kappa_4}{24}\Bigl(\frac{2\pi}{m}\Bigr)^4
++O(m^{-6}),
+\]
+从而
+\[
+\frac{\rho_{m,1}}{\lambda}
+=\exp\!\Bigl(
+-\frac{\kappa_2}{2}\Bigl(\frac{2\pi}{m}\Bigr)^2
++\frac{\kappa_4}{24}\Bigl(\frac{2\pi}{m}\Bigr)^4
++O(m^{-6})
+\Bigr).
+\]
+\end{corollary}
+\begin{proof}
+由于主特征值 \(\lambda(u)\) 在 \(u=1\) 处为单根，故在 \(u\) 的复邻域内存在解析特征值分支，并可定义解析压力 \(P(\theta)=\log\lambda(e^\theta)\)。
+令 \(\theta=i t\) 且 \(t\) 足够小，则
+\(
+\log|\lambda(e^{it})|=\Re P(it)
+\)
+并由 Taylor 展开得到
+\(
+\Re(P(it)-P(0))=-\kappa_2 t^2/2+\kappa_4 t^4/24+O(t^6)
+\)
+（奇阶项在 \(t\in\RR\) 上贡献纯虚部，故实部只由偶阶项控制）。
+取 \(t=2\pi/m\) 即得结论。证毕。
+\end{proof}
+
+\input{sections/generated/tab_real_input_40_output_potential_dirichlet_twists}
+
 \begin{remark}[权重激活的零特征分支]\label{rem:real-input-40-zero-activation}
 在 $\Delta(z,u)=(1-uz^2)F(z,u)$ 中，$F$ 的最高次项系数为 $(u^3-u^4)z^8=u^3(1-u)z^8$。因此当 $u=1$ 时该项消失，$F$ 的次数由 $8$ 降为 $7$；而当 $u\neq 1$ 时次数恢复为 $8$。这意味着：无权核中有一条零特征方向在权重扭曲下被“激活”为非零特征分支，且该分支在 $u\to 1$ 时退化回 $0$。
 \end{remark}
