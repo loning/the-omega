@@ -50,11 +50,41 @@ C_B=-1/((-8/9)(34/27))=243/272
 \)。
 证毕。
 \end{proof}
+
+\begin{remark}[主留数常数的数域分层：同步核在 \texorpdfstring{$\mathbb{Q}$}{Q}，真实输入核进入 \texorpdfstring{$\mathbb{Q}(\sqrt5)$}{Q(sqrt5)}]\label{rem:residue-field-sync-vs-real}
+同步核 \(B\) 的主留数常数 \(C_B=243/272\in\QQ\)（引理 \ref{lem:sync-kernel-10-residue-constant}）。
+而 40 状态真实输入核的主留数常数 \(C_{\mathrm{real}}\) 具有闭式并落在二次数域 \(\QQ(\sqrt5)\) 中（命题 \ref{prop:real-input-40-residue-constant}）。
+这表明“并入真实输入约束”的机制提升不仅改变主谱尺度（从 \(\lambda=3\) 到 \(\lambda=\varphi^2\)），也把有限部接口的算术类型提升到黄金二次域，与本文反复出现的 \(\varphi\)-几何结构同源。
+\end{remark}
 \[
 a_n=\sum_{d\mid n} d\,p_d,
 \qquad
 p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}.
 \]
+
+\begin{proposition}[10 状态同步核不满足核版 RH（\texorpdfstring{$u=1$}{u=1}）]\label{prop:sync-kernel-10-nonrh}
+记 10 状态同步核的邻接矩阵为 $B$，其 Perron 根为 $\lambda=\rho(B)=3$。则存在非平凡特征值 $\mu$ 满足
+\[
+|\mu|>\sqrt{\lambda}=\sqrt{3},
+\]
+从而核版 RH 条件（定义 \ref{def:kernel-rh}）在 $u=1$ 处不成立。
+\end{proposition}
+\begin{proof}
+由 \(\det(I-zB)=(z-1)(z+1)(3z-1)(z^3-z^2+z+1)\)，立方因子
+\[
+f(z):=z^3-z^2+z+1
+\]
+存在一个实根 $z_0\in(-0.55,-0.54)$：因为
+\[
+f(-0.55)=-0.166375-0.3025-0.55+1<0,\qquad
+f(-0.54)=-0.157464-0.2916-0.54+1>0.
+\]
+于是 \(\mu_0:=1/z_0\in\mathrm{spec}(B)\) 且
+\[
+|\mu_0|=\frac{1}{|z_0|}\ >\ \frac{1}{0.55}\ >\ \sqrt{3}.
+\]
+故 RH 条件失败。证毕。
+\end{proof}
 
 \paragraph{HTF/Big-Witt 桥包的函子化：迹序列 $\Rightarrow$ primitive 原子 $\Rightarrow$ Euler 乘积的严格交换图}
 令 $R$ 为带 Adams 操作的交换环（本文的加权情形取 $R=\ZZ[u]$ 并令
@@ -417,6 +447,19 @@ p_n=\frac{\lambda^n}{n}+O\!\left(\frac{\Lambda^n}{n}\right),
 由 \(a_n=\sum_{m\mid n} m\,p_m\) 的标准周期--primitive 关系做 Möbius 反演得到第一式。
 后两式由谱分解 \(a_n=\lambda^n+\sum_{j\ge 2}\mu_j^n\) 代回并估计即可；当某个 \(|\mu|=\sqrt{\lambda}\) 时，对应项规模为 \(\lambda^{n/2}\) 且无法被更小模的项一致抵消，从而给出 \(\Omega\)-振荡。证毕。
 \end{proof}
+
+\begin{proposition}[三类核的 RH 分层：同步核非 RH，真实输入核 RH-sharp，碰撞核严格 RH]\label{prop:rh-stratification-three-kernels}
+在无权情形（$u=1$）下，本文出现的三类典型有限核满足下述可审计分层：
+\begin{enumerate}
+  \item \textbf{（同步核：非 RH）} 10 状态同步核 $B$ 不满足核版 RH：存在 \(|\mu|>\sqrt{\lambda}\) 的非平凡特征值（命题 \ref{prop:sync-kernel-10-nonrh}）。
+  \item \textbf{（真实输入核：RH-sharp）} 40 状态真实输入核 $M$ 的核版 RH 达到等号：存在达界特征值 \(\mu=-\sqrt{\lambda}\)，使得平方根级振荡不可消去（命题 \ref{prop:finite-rh-40} 与命题 \ref{prop:finite-dimensional-explicit-formula}）。
+  \item \textbf{（折叠碰撞核：严格 RH）} 二阶与三阶碰撞核 \(A_2,A_3\) 的非主谱严格落在平方根圆盘内，即
+  \[
+  \max_{i\ge 2}|\lambda_i(A_q)|<\sqrt{\rho(A_q)}\qquad(q=2,3),
+  \]
+  因而其 prime-orbit 误差尺度严格优于平方根上界（注 \ref{rem:pom-collision-rh-margin} 与注 \ref{rem:pom-collision-rh-margin-a3}）。
+\end{enumerate}
+\end{proposition}
 
 \paragraph{\texorpdfstring{$s$}{s}-平面完成化函数方程的谱互反判据}\label{par:s-plane-functional-eq-criterion}
 上一段的“函数方程”发生在参数侧（$u\leftrightarrow 1/u$ 或 $\theta\leftrightarrow-\theta$）。

@@ -188,7 +188,11 @@ T_I(n)\ \approx\ k_Z(I)\,\delta_Z\ +\ k_\chi(I)\,\tau_{\mathrm{mix}}\ +\ D_U(n).
 \begin{definition}[带参数的投影词 \texorpdfstring{$2$}{2}-范畴]\label{def:pom-projword-2cat}
 定义一个（弱）$2$-范畴 $\mathbf{PW}$（projection-word）如下：
 \begin{itemize}
-  \item \textbf{对象：}读出层与纤维配置（例如“窗口层/稳定层/角色层”以及激活纤维族 $\mathcal F$；见定义 \ref{def:pom-fiber-kernel-choice}）。
+  \item \textbf{对象（带类型的接口）：}一个对象可取为三元接口
+  \[
+  \mathcal{I}(m;K;\kappa),
+  \]
+  其中 $m$ 为分辨率（窗口长度/截断尺度），$K$ 为机制核（同步核、真实输入核、碰撞核等），$\kappa$ 为边势/可观测（事件势、角色势、同余标签或 cocycle）。该对象等价于“读出层与纤维配置”的带参化版本：它把“在哪个尺度上、用哪个核、读哪个可观测”固定为类型，从而把后续投影词的复合约束为可检查的类型匹配。
   \item \textbf{$1$-态射：}由生成元与其参数标注组成的投影词（允许有限复合）：
   \[
   \{\ P_Z,\ P_{\le},\ P_\chi,\ P_{\mathrm{prim}},\ E_m,\ \mathrm{PROJ}_u,\ \mathrm{LIFT}_G,\ \mathrm{MOM}_q,\ \mathrm{TWIST}(\chi),\ U\ \}
@@ -205,6 +209,42 @@ T_I(n)\ \approx\ k_Z(I)\,\delta_Z\ +\ k_\chi(I)\,\tau_{\mathrm{mix}}\ +\ D_U(n).
 \end{itemize}
 将这些 $2$-态射视为“可证明等价/可交换的编译变换”，即可在 $\mathbf{PW}$ 中进行带证书的重写。
 \end{definition}
+
+\paragraph{局部可终止/可合流的重写片段（读出冗余的正规形）}
+\begin{definition}[读出塔重写系统]\label{def:pom-rewrite-E-tower}
+在 $\mathbf{PW}$ 的生成元中，取仅由条件期望门与规范投影门生成的局部子片段
+\[
+\mathbf{PW}_{Z,E}:=\langle P_Z,\ \{E_m\}_{m\ge 1}\rangle.
+\]
+定义其上的重写规则族为：
+\begin{enumerate}
+  \item \textbf{(R$_Z$) 幂等缩并：} $P_Z\circ P_Z\Rightarrow P_Z$；
+  \item \textbf{(R$_E$) 条件期望塔缩并：} 若 $m_2\ge m_1$，则 $E_{m_1}\circ E_{m_2}\Rightarrow E_{m_1}$。
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}[读出塔重写的终止性与合流性（局部正规形）]\label{thm:pom-rewrite-termination-confluence}
+在重写系统 \ref{def:pom-rewrite-E-tower} 下，任意 $\mathbf{PW}_{Z,E}$-投影词都：
+\begin{enumerate}
+  \item \textbf{终止：}不存在无限重写链；
+  \item \textbf{（局部）合流：}任意两条重写序列最终可汇合到同一不可约词；
+  \item \textbf{正规形唯一：}对任意仅含 $\{E_m\}$ 的复合词，其正规形唯一且等于单个 $E_{m_\star}$，其中 $m_\star$ 为该词中出现的最小分辨率指标；对含 $P_Z$ 的词，其正规形至多含一个 $P_Z$ 因子。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\textbf{终止性：}对任意词，定义度量
+\[
+\mu(W):=\bigl(\#P_Z(W)+\#E(W),\ \min\{m:\ E_m\ \text{出现在}\ W\}\bigr)\in\NN\times(\NN\cup\{+\infty\})
+\]
+并按字典序比较。规则 (R$_Z$) 与 (R$_E$) 都严格减少 $\#P_Z+\#E$，因此不存在无限重写链。
+
+\textbf{合流性与正规形：}在 $\{E_m\}$ 片段中，任意二元相邻子词都可由 (R$_E$) 缩并为较小指标的 $E$；因此任意重写都只可能把词逐步缩并到“仅剩一个最小指标”的形式。由于塔性质本身给出等式 $E_{m_1}\circ E_{m_2}=E_{m_1}$（命题 \ref{prop:pom-expectation-tower}），不同缩并顺序对应同一复合算子，故不可约正规形唯一。含 $P_Z$ 的情形同理：幂等缩并把多余的 $P_Z$ 归并为一个。证毕。
+\end{proof}
+
+\begin{remark}[边界：序投影 \texorpdfstring{$P_{\le}$}{P<=} 不属于局部可消去片段]\label{rem:pom-rewrite-boundary-order}
+定理 \ref{thm:pom-rewrite-termination-confluence} 只处理“局部 coarse-graining 冗余”的可终止片段。
+一旦投影词中出现 $P_{\le}$（或其实现 $\mathrm{PROJ}_u$ 的零温硬化极限），其读出通常依赖跨窗口聚合（定义 \ref{def:pom-proj-order}），不再具有由分辨率指标单调下降所控制的缩并度量；因此 $P_{\le}$ 是投影词演算学中的结构性边界：它标记了不可并行增长项的进入点，而非可被局部重写消去的冗余。
+\end{remark}
 
 \begin{definition}[签名函子与投影门估价]\label{def:pom-sigma-functor}
 把指令签名 $\Sigma$（定义 \ref{def:pom-instruction-signature}）从“指令集合”提升为 $\mathbf{PW}$ 上的一个（弱）$2$-函子
@@ -296,6 +336,35 @@ S_k(m)=u_k^{\mathsf T}\,A_k^{\,m}\,v_k.
 \)
 ；入口脚本见 \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py}）。
 \end{remark}
+
+\begin{proposition}[对称化编译：\texorpdfstring{$A_k$}{Ak} 的多项式规模上界（可计算）]\label{prop:pom-ak-symmetric-compression}
+令 $\Fold_\infty$ 的固定延迟在线实现的同步状态集为 $Q$（本论文的 delay-$3$ 同步核取 $|Q|=10$），并按定理 \ref{thm:pom-collision-kernel-ak} 的 fiber-product 构造得到 $k$ 重 moment-kernel \(A_k\)。
+则存在一个由对称化（商去 $S_k$ 作用）得到的非负整数核 \(\widetilde A_k\) 及相应读出向量 \(\widetilde u_k,\widetilde v_k\)，使得对充分大的 $m$ 有
+\[
+S_k(m)=\widetilde u_k^{\mathsf T}\,\widetilde A_k^{\,m}\,\widetilde v_k,
+\qquad
+\rho(\widetilde A_k)=\rho(A_k)=r_k.
+\]
+并且其状态数满足显式上界
+\[
+\dim(\widetilde A_k)\ \le\ \binom{k+|Q|-1}{|Q|-1}.
+\]
+特别地，对本文的 10 状态同步核（$|Q|=10$）有
+\[
+\boxed{\ \dim(\widetilde A_k)\le \binom{k+9}{9}=O(k^9)\ }.
+\]
+\end{proposition}
+\begin{proof}[证明思路]
+在 $Q^k$ 上对称群 $S_k$ 作用为置换坐标。fiber-product 的“逐位输出一致”约束与每步计数权重仅依赖于各坐标所处的同步状态与可用边集合，因此对坐标置换不变。故可将 $Q^k$ 的状态按 $S_k$-轨道分组，等价地用“直方图/多重集合”状态
+\[
+\nu\in\NN^{Q},\qquad \sum_{q\in Q}\nu(q)=k
+\]
+代表：$\nu(q)$ 记录 $k$ 份拷贝中处于状态 $q$ 的个数。此类 $\nu$ 的总数即为“把 $k$ 分到 $|Q|$ 个盒子”的组合数 \(\binom{k+|Q|-1}{|Q|-1}\)。
+
+对任意两类直方图状态 $\nu,\nu'$，定义 \(\widetilde A_k(\nu,\nu')\) 为所有满足“输出一致”约束、并使得从任一代表元（具有直方图 $\nu$）出发一步更新后直方图变为 $\nu'$ 的输入 $k$-tuple 的总数；该数由于置换不变性与计数可加性而良定义，并给出一个非负整数邻接矩阵 \(\widetilde A_k\)。起止向量的对称化同理得到 \(\widetilde u_k,\widetilde v_k\)。这样得到的路径计数与原 $A_k$ 在轨道计数意义下相同，从而给出同一序列 $S_k(m)$ 的线性表示。
+
+最后，$A_k$ 与 $\widetilde A_k$ 的关系可视为把表示空间按 $S_k$-不变子空间投影（或把加权自动机做确定性最小化之前的对称化预压缩），其 Perron 主尺度由本质强连通分量上的增长率决定；对称化不会改变“可接受路径条数”的指数增长率，因此谱半径保持为同一 \(r_k\)。证毕。
+\end{proof}
 
 \subsubsection{由 \texorpdfstring{$r_k$}{rk} 导出的空间损失谱：Rényi 族与多重分形上包络}\label{subsec:pom-multifractal-from-rk}
 定义 Fold 输出分布（对 $\Omega_m$ 上均匀输入的推前）为

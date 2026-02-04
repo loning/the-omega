@@ -514,6 +514,66 @@ $$
 最后，\(\mathbf{1}\) 与 \(A_2\) 的取法给出一个完全显式、可审计的三态“碰撞核”实现；其数值、递推与 \(A_2\) realization 的一致性可由脚本 \texttt{scripts/exp\_fold\_collision\_s2.py} 与 \texttt{scripts/exp\_fold\_collision\_kernel\_a2\_search.py} 逐项核验。证毕。
 \end{proof}
 
+\begin{proposition}[\texorpdfstring{$S_2(m)$}{S2(m)} 的 Plancherel 表达与角色因子化]\label{prop:pom-s2-plancherel}
+令 \(G_m:=\ZZ/F_{m+2}\ZZ\)，并取其标准角色
+\(
+\chi_j(r):=\exp(2\pi i jr/F_{m+2})
+\)
+（\(j\in G_m\)）。对同余计数 \(c_m(r)=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\}\) 定义离散傅里叶变换
+\[
+\widehat c_m(j):=\sum_{r\in G_m} c_m(r)\,\chi_j(r).
+\]
+则二阶碰撞矩满足严格恒等式
+\[
+\boxed{\;
+S_2(m)=\sum_{r\in G_m}c_m(r)^2=\frac{1}{|G_m|}\sum_{j\in G_m}\bigl|\widehat c_m(j)\bigr|^2\;}
+\]
+并且 \(\widehat c_m(j)\) 具有完全因子化形式
+\[
+\boxed{\;
+\widehat c_m(j)=\sum_{\omega\in\Omega_m}\chi_j\!\bigl(N(\omega)\bigr)
+=\prod_{k=1}^m\Bigl(1+\chi_j(F_{k+1})\Bigr)
+=\prod_{k=1}^m\left(1+\exp\!\frac{2\pi i j F_{k+1}}{F_{m+2}}\right).\;}
+\]
+从而
+\[
+S_2(m)
+=\frac{1}{F_{m+2}}\sum_{j=0}^{F_{m+2}-1}\ \prod_{k=1}^m\left|1+\exp\!\frac{2\pi i j F_{k+1}}{F_{m+2}}\right|^2.
+\]
+\end{proposition}
+\begin{proof}
+第一式是有限阿贝尔群上的 Plancherel 恒等式。这里给出与本节记号一致的直接推导：由反演公式
+\(
+c_m(r)=\frac{1}{|G_m|}\sum_{j}\widehat c_m(j)\,\overline{\chi_j(r)}
+\)
+与角色正交性
+\(
+\sum_{r}\chi_j(r)\overline{\chi_{j'}(r)}=|G_m|\,\mathbf{1}_{j=j'}
+\)
+立得
+\[
+\sum_{r}c_m(r)^2
+=\frac{1}{|G_m|}\sum_{j}|\widehat c_m(j)|^2.
+\]
+
+对因子化：由定义
+\[
+\widehat c_m(j)
+=\sum_{r}\sum_{\substack{\omega\in\Omega_m\\N(\omega)\equiv r}}\chi_j(r)
+=\sum_{\omega\in\Omega_m}\chi_j\!\bigl(N(\omega)\bigr).
+\]
+再用窗口值的线性分解 \(N(\omega)=\sum_{k=1}^m \omega_k F_{k+1}\)（定义 \ref{def:pom-window-value}）与角色的乘法性，
+\[
+\chi_j\!\bigl(N(\omega)\bigr)
+=\prod_{k=1}^m \chi_j(F_{k+1})^{\omega_k},
+\]
+对每一位 \(\omega_k\in\{0,1\}\) 求和即可得到
+\(
+\widehat c_m(j)=\prod_{k=1}^m(1+\chi_j(F_{k+1}))
+\)。
+最后一式由 \(|G_m|=F_{m+2}\) 与 \(\chi_j(F_{k+1})=\exp(2\pi i jF_{k+1}/F_{m+2})\) 代入得到。证毕。
+\end{proof}
+
 \begin{lemma}[三阶递推的最小性]\label{lem:pom-s2-minimal-order}
 序列 \(\{S_2(m)\}_{m\ge 2}\) 不满足任何二阶常系数线性递推。因而命题 \ref{prop:pom-s2-recurrence} 的三阶递推在“线性递推阶数”意义下是最小的。
 \end{lemma}
@@ -671,6 +731,23 @@ $$
 对 \(A_2\) 直接计算行列式得 \(\det(I-zA_2)=1-2z-2z^2+2z^3\)。主极点对应 \(\det(I-zA_2)\) 的最小模零点，即 \(z_\star=1/\rho(A_2)=1/r_2\)。而 SFT 的拓扑熵等于 \(\log\rho(A_2)\)，故得 \(\log r_2\)。证毕。
 \end{proof}
 
+\begin{remark}[二阶碰撞核的严格 RH 裕量（\texorpdfstring{$A_2$}{A2}）]\label{rem:pom-collision-rh-margin}
+记 \(\lambda:=\rho(A_2)=r_2\approx 2.481194304092\)。由 \(A_2\) 的特征多项式
+\[
+\det(\lambda I-A_2)=\lambda^3-2\lambda^2-2\lambda+2
+\]
+可知三条特征值均为实数。除 Perron 根外另外两根数值约为
+\[
+\mu_2\approx -1.170086486626,\qquad
+\mu_3\approx 0.688892182534.
+\]
+因此
+\[
+\max\{|\mu_2|,|\mu_3|\}\approx 1.170086\ <\ \sqrt{r_2}\approx 1.575181,
+\]
+即二阶碰撞核在核版 RH 不等式上严格留有裕量：非主谱严格落在平方根圆盘内。
+\end{remark}
+
 \begin{remark}[与时间—空间交换图的同型位置：二阶矩 \texorpdfstring{$\leftrightarrow$}{<->} 纤维积核]\label{rem:pom-collision-diagram}
 第 \ref{subsec:pom-time-space-diagram} 小节把“时间迹 \(\mathrm{Tr}(T^n)\)”与“primitive 原子谱”用 \(\zeta\) 行列式统一（命题 \ref{prop:time-space-commuting-diagram}）。碰撞核 \(A_2\) 给出一个同型接口：它不是对原核的逐步时间迹，而是对 Fold 的“二阶矩/碰撞统计”所诱导的纤维积核。其 Perron 根 \(r_2\) 与 \(\zeta_{A_2}\) 的主极点控制 Rényi-2 投影熵率 \(h_2=\log(4/r_2)\)（推论 \ref{cor:pom-s2-asymptotic}），从而把“窗口层的纤维缺陷泛函”提升为一个可审计的谱指纹对象，与第 9 节的 \(\zeta\)/primitive/有限部常数接口处于同一范式。
 \end{remark}
@@ -754,6 +831,23 @@ $$
 $$
 代入渐近即得 \(h_3=\log(8/r_3)\)。证毕。
 \end{proof}
+
+\begin{remark}[三阶碰撞核的严格 RH 裕量（\texorpdfstring{$A_3$}{A3}）]\label{rem:pom-collision-rh-margin-a3}
+记 \(\lambda:=\rho(A_3)=r_3\approx 3.086130197651\)。由
+\[
+\det(\lambda I-A_3)=\lambda^3-2\lambda^2-4\lambda+2
+\]
+可得三条特征值均为实数，除 Perron 根外另外两根数值约为
+\[
+\mu_2\approx -1.514136929335,\qquad
+\mu_3\approx 0.428006731684.
+\]
+因此
+\[
+\max\{|\mu_2|,|\mu_3|\}\approx 1.514137\ <\ \sqrt{r_3}\approx 1.756739,
+\]
+即三阶碰撞核同样严格满足核版 RH 不等式并留有裕量。
+\end{remark}
 
 \begin{definition}[三阶碰撞核的 \texorpdfstring{$\zeta$}{zeta} 与有限部常数]\label{def:pom-collision-zeta-a3}
 对三态核 \(A_3\) 定义
@@ -986,6 +1080,20 @@ D_m^{1/m}\ \le\ S_q(m)^{1/(mq)}\ \le\ D_m^{1/m}\,|X_m|^{1/(mq)}.
 2\lfloor q/2\rfloor+1
 \)。
 该阶数规律可视为“高阶相关量闭合维数”的指纹；其可复现核验由脚本 \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py} 给出。
+\end{remark}
+
+\begin{remark}[闭合维数 \texorpdfstring{$2\lfloor q/2\rfloor+1$}{2 floor(q/2)+1} 的结构来源：同余角色模态的有限截断]\label{rem:pom-closure-dim-mode-trunc}
+命题 \ref{prop:pom-s2-plancherel} 给出一个把“几何—同余—谱”焊接在一起的可审计模板：二阶碰撞矩
+\(
+S_2(m)=\sum_r c_m(r)^2
+\)
+既是同余切片上 residue 分布的 \(\ell^2\) 质量，也是其离散傅里叶系数的 Plancherel 能量平均；并且每个频率 \(j\) 上的傅里叶系数 \(\widehat c_m(j)\) 由局部因子 \(\prod_k(1+\chi_j(F_{k+1}))\) 完全决定。
+
+在更高阶 \(q\) 的 moment-kernel 编译（命题 \ref{prop:pom-moment-kernel-exists}）中，本质上是在同步直积上施加“逐位输出一致”的约束；该约束把 \(q\) 份拷贝的相位信息压缩为一个\textbf{有限取值的差分模态索引}：它记录“相位在共轭配对下的净偏置”（可理解为 \(\widehat c\) 与 \(\overline{\widehat c}\) 的幂次差 \(a-b\) 的有效范围）。由配对/共轭不变性，净偏置的可取范围被强制截断为
+\[
+-(\lfloor q/2\rfloor)\ \le\ a-b\ \le\ \lfloor q/2\rfloor,
+\]
+因此只需跟踪 \(2\lfloor q/2\rfloor+1\) 个模态即可闭合地推进到下一步分辨率；这给出了“每两阶增加 2 个自由度”的结构原因。该模态截断与 Hankel 秩下界（定理 \ref{thm:pom-moment-hankel}）在已核验范围内精确吻合，从而把经验指纹升级为可解释的有限闭包机制。
 \end{remark}
 
 \input{sections/generated/tab_fold_collision_moment_recursions}
