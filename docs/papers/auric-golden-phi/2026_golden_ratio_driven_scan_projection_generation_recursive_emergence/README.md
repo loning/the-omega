@@ -4,10 +4,16 @@
 
 ## 编译
 
-在本目录下运行（与仓库内其他 `ctex` 论文一致）：
+日常迭代建议默认使用 `main_fast.tex`（快速编译：跳过外部图像读取等）：
 
 ```bash
-latexmk -xelatex -interaction=nonstopmode main.tex
+latexmk -pdfxe -interaction=nonstopmode -halt-on-error -file-line-error main_fast.tex
+```
+
+正式全量编译（用于最终导出）使用 `main.tex`：
+
+```bash
+latexmk -pdfxe -interaction=nonstopmode -halt-on-error -file-line-error main.tex
 ```
 
 ## 复现实验
