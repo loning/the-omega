@@ -10,13 +10,7 @@
 
 \subsection{反共振最优性原则}
 
-在需要从连续/高维结构产生离散读出时，常见困难来自有理近似导致的周期性共振。黄金比例及其逆在连分数意义下具有“最难被有理数逼近”的极值性质，因而可作为最强的反共振选择。本文采用如下数学化原则：
-\begin{itemize}
-  \item 在给定读出通道数固定（此处为二元）时，选择使符号复杂度最小、且有理近似共振最弱的参数分支；
-  \item 该原则在一维旋转编码与 Fibonacci/Ostrowski 编码中均自然选出 $\alpha=\varphi^{-1}$ 的“黄金分支”。
-\end{itemize}
-
-为避免“偏好”式表述，本文将反共振具体化为一个可比较的数论不变量，并引用其极值性质（\cite{Cassels1957,KuipersNiederreiter1974}）。
+在从连续/高维结构生成离散读出序列时，有理近似诱导的周期性共振会放大有限样本偏差。本文不将相关数论极值性质视为原创结论，而将其作为外部标准输入：在 Hurwitz/Markov（最坏有理逼近）尺度下，黄金分支可作为一个规范代表，用于固定一个可审计的反共振基线（\cite{Cassels1957,KuipersNiederreiter1974}）。
 
 \begin{definition}[共振强度]\label{def:resonance-strength}
 对 $\alpha\in\RR\setminus\QQ$，定义其有理近似共振强度为
@@ -40,25 +34,9 @@ c(\alpha):=\inf_{(p,q)\in\ZZ\times\NN} q^2\left|\alpha-\frac{p}{q}\right|\in[0,\
 若 $c(\alpha)>0$（等价于 $\alpha$ badly approximable），则 $R(\alpha)=1/c(\alpha)$。
 \end{definition}
 
-经典 Hurwitz 定理与 Markov/Lagrange 谱给出：对任意无理数 $\beta$，存在无穷多 $p/q$ 使
-\[
-\left|\beta-\frac{p}{q}\right|<\frac{1}{\sqrt5\,q^2},
-\]
-且常数 $1/\sqrt5$ 不能整体改大；与此同时，达到谱底 $\sqrt5$ 的等价类由 $\mathrm{SL}(2,\ZZ)$ 的分式线性变换刻画，规范区间 $(0,1)$ 的代表为 $\varphi^{-1}$（参见 \cite{Cassels1957,KuipersNiederreiter1974}）。因此 $R(\varphi^{-1})=\sqrt5$ 且 $R(\beta)\ge \sqrt5$。
-
-\begin{definition}[模群等价（唯一性口径）]\label{def:modular-equivalence}
-称两无理数 $\alpha,\beta\in\RR\setminus\QQ$ \emph{等价}，若存在整数矩阵
-\(
-\begin{pmatrix}a&b\\c&d\end{pmatrix}\in \mathrm{SL}(2,\ZZ)
-\)
-使得
-\[
-\beta=\frac{a\alpha+b}{c\alpha+d}.
-\]
-这是连分数理论中的标准等价关系（保持 Lagrange/Markov 不变量；见 \cite{Cassels1957}）。
-\end{definition}
-
-由上述标准结论，若分辨率或返归时间由分母 $q$ 控制，则黄金分支在最坏情形下提供统一的低阶共振抑制上界（参见 \cite{Cassels1957,KuipersNiederreiter1974}）。
+\begin{remark}[标准事实（Hurwitz 常数与极值代表）]
+经典 Hurwitz 定理与 Markov/Lagrange 谱理论表明：存在一个普适常数使任意无理数都具有平方反比级的最佳逼近序列，且该常数在黄金分支上达到极值（参见 \cite{Cassels1957,KuipersNiederreiter1974}）。本文仅以此为反共振基线的引用点，不在此处引入额外结论。
+\end{remark}
 
 \subsection{从反共振到有限样本稳定性：一个可审计的优化问题}
 
@@ -76,24 +54,14 @@ D_N^*(\alpha;x_0):=\sup_{0\le a\le 1}\left|\frac1N\sum_{t=0}^{N-1}\ind_{[0,a)}(x
 我们将 $D_N^*(\alpha;x_0)$ 视为样本量 $N$ 下、在\textbf{全部区间窗二元读出}意义下的“共振诱导不稳定性”证书：它同时给出最坏窗集频率误差，并可由排序在有限样本上直接计算（参见 \cite{KuipersNiederreiter1974}）。
 \end{definition}
 
-\begin{proposition}[反共振$\Rightarrow$差异度上界$\Rightarrow$窗频率误差界]\label{prop:antiresonance-to-stability}
-在定义 \ref{def:instability-envelope} 的 Kronecker 扫描模型中，对任意区间窗 $W=[0,a)$ 的指示读出 $s_t=\ind_W(x_t)$，其频率误差满足
+由定义 \ref{def:instability-envelope} 立得：对任意区间窗 $W=[0,a)$ 的指示读出 $s_t=\ind_W(x_t)$，有
 \[
 \left|\frac1N\sum_{t=0}^{N-1}s_t-a\right|\le D_N^*(\alpha;x_0).
 \]
-并且当 $\alpha$ badly approximable（等价于连分数部分商有界，亦等价于 $R(\alpha)<\infty$；参见 \cite{Cassels1957,KuipersNiederreiter1974}）时，$D_N^*(\alpha;x_0)$ 具有显式上界，从而给出可审计的有限样本稳定性证书（见附录 H）。
-\end{proposition}
-
-\begin{corollary}[黄金分支的显式有限样本证书]\label{cor:golden-finite-sample-certificate}
-取 $\alpha=\varphi^{-1}$。则对任意初相位 $x_0$ 与任意 $N\ge 2$，
-\[
-D_N^*(\varphi^{-1};x_0)\ \le\ \frac{3+\left\lceil \frac{\log(\sqrt5\,N)}{\log \varphi}\right\rceil}{N}
-\]
-（见附录 \ref{app:kronecker-discrepancy} 的标准上界）。因此在区间窗二元读出意义下，黄金分支给出一个统一、显式的“共振诱导不稳定性”衰减证书，阶为 $O((\log N)/N)$。
-\end{corollary}
+此外，当 $\alpha$ badly approximable 时，$D_N^*(\alpha;x_0)$ 存在显式的 $O((\log N)/N)$ 型上界；对黄金分支 $\alpha=\varphi^{-1}$ 的一个完全显式版本见附录 \ref{app:kronecker-discrepancy}（\cite{KuipersNiederreiter1974}）。
 
 \begin{remark}[本文所解决与未解决的“最优性”问题]\label{rem:what-is-optimized}
-本文在二元读出约束下采用的“黄金分支”选择，严格对应于如下可审计目标的极值：在 Hurwitz 意义下最小化最坏有理逼近常数 $R(\alpha)$（参见 \cite{Cassels1957,KuipersNiederreiter1974}），并与旋转二分割的经典符号化结果相容（参见 \cite{MorseHedlund1940,LindMarcus1995}）。
+本文在二元区间窗读出约束下采用黄金分支，仅对应于一个外部可审计目标的引用点：在 Hurwitz/Markov 的最坏逼近尺度上固定反共振基线（\cite{Cassels1957,KuipersNiederreiter1974}），并与旋转二分割的经典符号化结果相容（\cite{MorseHedlund1940,LindMarcus1995}）。
 
-需要强调的是：$R(\alpha)$ 的极小化并不自动推出对\textbf{所有}“不稳定性”概念（例如更一般观测、折叠后的类型分布、或与 Parry 测度的距离）也达到唯一最小。本文在这类更强主张上采取保守口径：仅将能够由差异度/遍历工具链严格推出的部分写为定理（如命题 \ref{prop:antiresonance-to-stability} 与推论 \ref{cor:golden-finite-sample-certificate}），其余作为需要额外结构与证明的开放问题（参见第 \ref{sec:experiments} 节与结论）。
+需要强调的是：上述数论尺度的极值并不自动推出对更强的统计泛函（例如折叠后的类型分布、或与 Parry 基线的距离）亦具有全局最优性。本文在此类陈述上保持保守口径：仅在能够闭合到本文内部编号结果或外部标准定理引用点时才使用之；其余不作结论。
 \end{remark}

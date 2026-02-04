@@ -60,252 +60,78 @@ a_n^{\mathrm{glob}}(u)=a_n^{\mathrm{flow}}(u)^m
 规范投影 $P_Z$ 同时具有两种相容实现：其一是在态/地址层面由 $\Fold_m$ 或 $\Fold_\infty$ 给出的横截面选择；其二是在可观测量层面由条件期望 $E_m$ 给出的纤维平均。二者分别刻画“唯一代表的选取”与“信息遗忘的量化”，共同组成 $P_Z$ 的双态结构。
 \end{remark}
 
-\begin{proposition}[规范投影的本体刻画：纤维平均的唯一性]\label{prop:pom-pz-unique-expectation}
-把 $\mathcal{A}_m\simeq \mathbb{C}^{\Omega_m}$ 视为窗口微态上的函数代数，$\mathcal{B}_m\simeq \mathbb{C}^{X_m}$ 视为折叠不变量子代数（命题 \ref{prop:fold-invariant-subalgebra}），并记折叠纤维为
-$$
-\Fold_m^{-1}(x)\subset\Omega_m,\qquad x\in X_m.
-$$
-设 $P:\mathcal{A}_m\to\mathcal{B}_m$ 为线性算子，满足：
-\begin{enumerate}
-  \item \textbf{幂等与保持稳定：}$P^2=P$，且对一切 $b\in\mathcal{B}_m$ 有 $P(b)=b$；
-  \item \textbf{正性与单位元：}$P(\mathbf 1)=\mathbf 1$，并且 $f\ge 0\Rightarrow P(f)\ge 0$；
-  \item \textbf{纤维对称（coarse-graining 只依赖折叠纤维）：}对任意 $x\in X_m$、任意纤维内置换 $\sigma:\Fold_m^{-1}(x)\to\Fold_m^{-1}(x)$，以及任意 $f\in\mathcal{A}_m$，有
-  $$
-  P(f)=P(f\circ\sigma).
-  $$
-\end{enumerate}
-则 $P=E_m$，其中 $E_m$ 为沿折叠纤维的\emph{均匀}平均条件期望（命题 \ref{prop:fold-conditional-expectation}）。
-\end{proposition}
-\begin{proof}
-对任意 $x\in X_m$，把 $P(f)$ 识别为 $X_m$ 上函数，则 $P(f)(x)$ 只依赖于 $f$ 在纤维 $\Fold_m^{-1}(x)$ 上的取值，并且由纤维置换不变性可知：若只改变 $f$ 在该纤维上的排列，则 $P(f)(x)$ 不变。
-因此 $P(f)(x)$ 仅能依赖于 $f$ 在该纤维上的\emph{对称统计量}。由正性与 $P(\mathbf 1)=\mathbf 1$，并结合幂等与 $P|\_{\mathcal{B}_m}=\mathrm{id}$（即对纤维常值函数不改变），可推出对每条纤维，唯一与上述结构相容的线性对称泛函是“算术平均”。从而对任意 $f\in\mathcal{A}_m$，
-$$
-P(f)(x)=\frac{1}{d_m(x)}\sum_{a\in\Fold_m^{-1}(x)} f(a)=E_m(f)(x),
-$$
-即 $P=E_m$。证毕。
-\end{proof}
+在函数代数口径下，沿折叠纤维的 coarse-graining 由条件期望 $E_m$ 给出：它对每条纤维取均匀平均，并保持折叠不变量子代数 $\mathcal{B}_m$ 不变。该刻画可由“纤维内置换不变 + 正性 + 幂等”直接推出，是标准的对称平均口径。
 
-\begin{theorem}[纤维均匀提升下的 $L^2$ 正交分解与信息丢失能量]\label{thm:pom-fold-L2-pythagoras}
 固定 $m$。取任意概率向量 $\pi\in\Delta(X_m)$，并定义其在微态空间 $\Omega_m$ 上的\textbf{纤维均匀提升}
 \begin{equation}
 \label{eq:pom-fiber-uniform-lift}
 \mu(a):=\frac{\pi(\Fold_m(a))}{d_m(\Fold_m(a))},\qquad a\in\Omega_m,
 \end{equation}
-其中 $d_m(x):=|\Fold_m^{-1}(x)|$。
-在内积 $\langle f,g\rangle_{\mu}:=\sum_{a\in\Omega_m} f(a)g(a)\mu(a)$ 与范数 $\|f\|_{2,\mu}^2:=\langle f,f\rangle_{\mu}$ 下，对任意 $f\in\mathcal{A}_m$ 有：
-\begin{enumerate}
-  \item \textbf{（正交投影）} $E_m$ 是 $L^2(\mu)$ 上到子空间 $\mathcal{B}_m$ 的正交投影：对任意 $b\in\mathcal{B}_m$，
-  $$
-  \langle f-E_m f,\ b\rangle_{\mu}=0.
-  $$
-  \item \textbf{（毕达哥拉斯恒等式）}
-  \begin{equation}
-  \label{eq:pom-L2-pythagoras}
-  \boxed{\ \|f\|_{2,\mu}^2\ =\ \|E_m f\|_{2,\mu}^2\ +\ \|f-E_m f\|_{2,\mu}^2\ }.
-  \end{equation}
-  \item \textbf{（最小误差刻画）}对任意 $b\in\mathcal{B}_m$，有
-  $$
-  \|f-b\|_{2,\mu}^2\ \ge\ \|f-E_m f\|_{2,\mu}^2,
-  $$
-  且当且仅当 $b=E_m f$ 取等号。
-\end{enumerate}
-因此 $\|f-E_m f\|_{2,\mu}^2$ 给出 $f$ 在分辨率-$m$ 折叠下的\textbf{不可见残差能量}：它是将 $f$ 近似为任意稳定可见观测量（即纤维常值函数）的最小 $L^2$ 误差。
-\end{theorem}
-
-\begin{remark}[数值核对（脚本与产物）]\label{rem:pom-fold-L2-pythagoras-script}
-表 \ref{tab:fold_conditional_expectation_pythagoras} 由脚本 \texttt{scripts/exp\_fold\_conditional\_expectation\_pythagoras.py} 一键生成，用于对公式 \eqref{eq:pom-L2-pythagoras} 的实现与符号约定做回归核对（产物路径见 \texttt{artifacts/export/fold\_conditional\_expectation\_pythagoras.json}）。
-\end{remark}
+其中 $d_m(x):=|\Fold_m^{-1}(x)|$。在 $L^2(\mu)$ 内积下，$E_m$ 是到 $\mathcal{B}_m$ 的正交投影，因此对任意 $f\in\mathcal{A}_m$ 有标准的 $L^2$ 分解与最小误差刻画：
+\begin{equation}
+\label{eq:pom-L2-pythagoras}
+\|f\|_{2,\mu}^2=\|E_m f\|_{2,\mu}^2+\|f-E_m f\|_{2,\mu}^2,
+\end{equation}
+且 $E_m f$ 为在 $\mathcal{B}_m$ 上的最小二乘近似。
 
 \begin{remark}[与射影度量收缩口径的对齐]\label{rem:pom-fold-projective-metric}
-定理 \ref{thm:pom-fold-L2-pythagoras} 以 $L^2(\mu)$ 口径将 $P_Z$ 的 coarse-graining 分解为“可见分量 + 残差能量”。若将 coarse-graining 视为一般正算子/Markov 算子并改用 Hilbert 射影度量或 Hopf 振荡半范数，则可获得“跨纤维一致化/混合”意义下的收缩系数刻画与更强的普适性表述；参见 \cite{GaubertQu2015DobrushinCones} 及其在量子信道语境下的射影度量工具 \cite{ReebKastoryanoWolf2011HilbertProjectiveQuantum}。
+$L^2(\mu)$ 口径下的正交分解可与 Hilbert 射影度量或 Hopf 振荡半范数的收缩系数刻画对齐，从而给出“跨纤维一致化/混合”的普适性表述；参见 \cite{GaubertQu2015DobrushinCones} 及其在量子信道语境下的射影度量工具 \cite{ReebKastoryanoWolf2011HilbertProjectiveQuantum}。
 \end{remark}
 
-\input{sections/generated/tab_fold_conditional_expectation_pythagoras}
-
-\begin{theorem}[折叠诱导的 Markov 投影与 TV 分解上界]\label{thm:pom-fold-tv-decomposition}
-固定 $m$。令 $P_m=(\Fold_m)_*:\Delta(\Omega_m)\to\Delta(X_m)$ 为推前，令 $Q_m:\Delta(X_m)\to\Delta(\Omega_m)$ 为纤维均匀提升（命题 \ref{prop:fold-pushforward-lift}），并定义
+固定 $m$。令 $P_m=(\Fold_m)_*:\Delta(\Omega_m)\to\Delta(X_m)$ 为推前，$Q_m$ 为纤维均匀提升（命题 \ref{prop:fold-pushforward-lift}），并定义
 \begin{equation}
 \label{eq:pom-Km-def}
 K_m:=Q_m\circ P_m:\Delta(\Omega_m)\to\Delta(\Omega_m).
 \end{equation}
-则 $K_m$ 满足：
-\begin{enumerate}
-  \item \textbf{（幂等 Markov 投影）} $K_m$ 为 Markov 算子且 $K_m^2=K_m$；并且对任意 $\mu\in\Delta(\Omega_m)$ 有 $P_m(K_m\mu)=P_m\mu$。
-  \item \textbf{（可见距离等式）}对任意 $\mu,\nu\in\Delta(\Omega_m)$，
-  \begin{equation}
-  \label{eq:pom-tv-visible-equality}
-  \boxed{\ D_{\mathrm{TV}}(K_m\mu,\ K_m\nu)\ =\ D_{\mathrm{TV}}(P_m\mu,\ P_m\nu)\ }.
-  \end{equation}
-  \item \textbf{（TV 分解上界）}对任意 $\mu,\nu\in\Delta(\Omega_m)$，成立
-  \begin{equation}
-  \label{eq:pom-tv-decomposition-upper}
-  \boxed{\ D_{\mathrm{TV}}(\mu,\nu)\ \le\ D_{\mathrm{TV}}(P_m\mu,P_m\nu)\ +\ D_{\mathrm{TV}}(\mu,K_m\mu)\ +\ D_{\mathrm{TV}}(\nu,K_m\nu)\ }.
-  \end{equation}
-\end{enumerate}
-因此 $D_{\mathrm{TV}}(\mu,K_m\mu)$ 给出一个完全可计算的“不可见残差”指标：它精确量化了分布 $\mu$ 在折叠纤维内部的非均匀性；并且任意两条微观分布的差异均由“可见推前差异 + 两侧残差”控制。
-\end{theorem}
+则 $K_m$ 是幂等 Markov 投影，且对任意 $\mu,\nu\in\Delta(\Omega_m)$ 有标准的可见距离等式与 TV 分解上界：
+\begin{equation}
+\label{eq:pom-tv-visible-equality}
+D_{\mathrm{TV}}(K_m\mu,\ K_m\nu)=D_{\mathrm{TV}}(P_m\mu,\ P_m\nu),
+\end{equation}
+\begin{equation}
+\label{eq:pom-tv-decomposition-upper}
+D_{\mathrm{TV}}(\mu,\nu)\le D_{\mathrm{TV}}(P_m\mu,P_m\nu)+D_{\mathrm{TV}}(\mu,K_m\mu)+D_{\mathrm{TV}}(\nu,K_m\nu).
+\end{equation}
+其中 $D_{\mathrm{TV}}(\mu,K_m\mu)$ 量化纤维内非均匀性的残差。
 
-\begin{proof}
-由命题 \ref{prop:fold-pushforward-lift} 的 (2) 知 $(\Fold_m)_*\circ Q_m=\mathrm{id}$，从而 $P_m\circ K_m=P_m$。又因为 $P_m\circ Q_m=\mathrm{id}$，故 $K_m^2=Q_mP_mQ_mP_m=Q_mP_m=K_m$，并且 $K_m$ 明显保持非负与总质量 1，故为 Markov 算子，得 (1)。
-
-为证 (2)，记 $d_x:=d_m(x)=|\Fold_m^{-1}(x)|$。对任意 $a\in\Omega_m$，有
-\(
-(K_m\mu)(a)=\frac{(P_m\mu)(\Fold_m(a))}{d_{\Fold_m(a)}}
-\)
-且同理对 $\nu$。于是
-\[
-\|K_m\mu-K_m\nu\|_{\ell^1(\Omega_m)}
-=\sum_{x\in X_m}\sum_{\Fold_m(a)=x}\left|\frac{(P_m\mu)(x)-(P_m\nu)(x)}{d_x}\right|
-=\sum_{x\in X_m}|(P_m\mu)(x)-(P_m\nu)(x)|,
-\]
-两边乘以 $1/2$ 即得 \eqref{eq:pom-tv-visible-equality}。
-
-为证 (3)，用三角不等式分解
-\[
-D_{\mathrm{TV}}(\mu,\nu)
-\le D_{\mathrm{TV}}(\mu,K_m\mu)+D_{\mathrm{TV}}(K_m\mu,K_m\nu)+D_{\mathrm{TV}}(K_m\nu,\nu),
-\]
-并将中项由 (2) 改写为 $D_{\mathrm{TV}}(P_m\mu,P_m\nu)$ 即得 \eqref{eq:pom-tv-decomposition-upper}。
-\end{proof}
-
-\begin{remark}[数值核对（脚本与产物）]\label{rem:pom-fold-tv-decomposition-script}
-表 \ref{tab:fold_markov_projection_tv_decomposition} 由脚本 \texttt{scripts/exp\_fold\_markov\_projection\_tv\_decomposition.py} 生成，用于对等式 \eqref{eq:pom-tv-visible-equality} 与上界 \eqref{eq:pom-tv-decomposition-upper} 的实现做回归核对（产物路径见 \texttt{artifacts/export/fold\_markov\_projection\_tv\_decomposition.json}）。
-\end{remark}
-
-\input{sections/generated/tab_fold_markov_projection_tv_decomposition}
-
-\begin{theorem}[任意微观分布下的条件期望与方差分解]\label{thm:pom-conditional-variance}
-固定 $m$。令 $\mu\in\Delta(\Omega_m)$，并记 $\pi=P_m\mu$。
-对任意函数 $f:\Omega_m\to\RR$，定义其在 $\sigma(\Fold_m)$ 下的\textbf{条件期望} $E_{\mu}[f\mid\Fold_m]$ 为纤维上的条件平均：对任意 $a\in\Omega_m$，令 $x=\Fold_m(a)$，并置
+固定 $m$。令 $\mu\in\Delta(\Omega_m)$，并记 $\pi=P_m\mu$。对任意函数 $f:\Omega_m\to\RR$，在 $\sigma(\Fold_m)$ 下的条件期望可写为纤维上的条件平均
 \begin{equation}
 \label{eq:pom-Emu-def}
 (E_{\mu}[f\mid\Fold_m])(a)
 :=
 \begin{cases}
 \dfrac{1}{\pi(x)}\sum_{b\in\Fold_m^{-1}(x)}\mu(b)f(b),& \pi(x)>0,\\
-0,& \pi(x)=0.
+0,& \pi(x)=0,
 \end{cases}
+\qquad x=\Fold_m(a).
 \end{equation}
-则在内积 $\langle f,g\rangle_{\mu}:=\sum_{a\in\Omega_m} f(a)g(a)\mu(a)$ 下，有：
-\begin{enumerate}
-  \item \textbf{（正交投影）} $E_{\mu}[\cdot\mid\Fold_m]$ 是 $L^2(\mu)$ 上到子空间 $\mathcal{B}_m$ 的正交投影；特别地对任意 $b\in\mathcal{B}_m$，
-  $$
-  \langle f-E_{\mu}[f\mid\Fold_m],\ b\rangle_{\mu}=0.
-  $$
-  \item \textbf{（$L^2$ 毕达哥拉斯）}
-  \begin{equation}
-  \label{eq:pom-Emu-pythagoras}
-  \boxed{\ \|f\|_{2,\mu}^2\ =\ \|E_{\mu}[f\mid\Fold_m]\|_{2,\mu}^2\ +\ \|f-E_{\mu}[f\mid\Fold_m]\|_{2,\mu}^2\ }.
-  \end{equation}
-  \item \textbf{（方差分解）}令 $\mathrm{Var}_{\mu}(f):=\mathbb{E}_{\mu}[f^2]-\mathbb{E}_{\mu}[f]^2$，并把纤维条件分布 $\mu_x$ 定义如引理 \ref{lem:pom-fiberwise-kl}。则有
-  \begin{equation}
-  \label{eq:pom-var-decomposition}
-  \boxed{\ \mathrm{Var}_{\mu}(f)\ =\ \mathbb{E}_{\mu}[\mathrm{Var}_{\mu}(f\mid\Fold_m)]\ +\ \mathrm{Var}_{\pi}\bigl(\mathbb{E}_{\mu}[f\mid\Fold_m]\bigr)\ },
-  \end{equation}
-  其中 $\mathbb{E}_{\mu}[\mathrm{Var}_{\mu}(f\mid\Fold_m)]=\sum_{x\in X_m}\pi(x)\,\mathrm{Var}_{\mu_x}(f)$。
-\end{enumerate}
-因此 $\|f-E_{\mu}[f\mid\Fold_m]\|_{2,\mu}^2$ 是在分辨率-$m$ 可见子代数下对 $f$ 的最小二乘残差，并且等于“纤维内波动”的平均能量。
-\end{theorem}
+于是得到标准的 $L^2$ 分解与方差分解公式：
+\begin{equation}
+\label{eq:pom-Emu-pythagoras}
+\|f\|_{2,\mu}^2=\|E_{\mu}[f\mid\Fold_m]\|_{2,\mu}^2+\|f-E_{\mu}[f\mid\Fold_m]\|_{2,\mu}^2,
+\end{equation}
+\begin{equation}
+\label{eq:pom-var-decomposition}
+\mathrm{Var}_{\mu}(f)=\mathbb{E}_{\mu}[\mathrm{Var}_{\mu}(f\mid\Fold_m)]+\mathrm{Var}_{\pi}\bigl(\mathbb{E}_{\mu}[f\mid\Fold_m]\bigr),
+\end{equation}
+其中 $\mathbb{E}_{\mu}[\mathrm{Var}_{\mu}(f\mid\Fold_m)]=\sum_{x\in X_m}\pi(x)\,\mathrm{Var}_{\mu_x}(f)$。
 
-\begin{proof}
-由定义 \eqref{eq:pom-Emu-def}，$E_{\mu}[f\mid\Fold_m]$ 在每条纤维上为常数，故属于 $\mathcal{B}_m$。
-对任意 $b\in\mathcal{B}_m$，存在 $\beta:X_m\to\RR$ 使 $b(a)=\beta(\Fold_m(a))$。于是
-\[
-\langle f-E_{\mu}[f\mid\Fold_m],\ b\rangle_{\mu}
-=\sum_{x\in X_m}\beta(x)\sum_{a\in\Fold_m^{-1}(x)}\mu(a)\Bigl(f(a)-\frac{\sum_{b\in\Fold_m^{-1}(x)}\mu(b)f(b)}{\pi(x)}\Bigr).
-\]
-当 $\pi(x)=0$ 时内和为 $0$；当 $\pi(x)>0$ 时括号内定义保证纤维加权和为 $0$。故内积为 $0$，得到 (1)。
-取 $b=E_{\mu}[f\mid\Fold_m]$ 并展开平方即得 (2)。
-最后，注意
-\(
-\mathbb{E}_{\mu}[f\mid\Fold_m]
-\)
-是 $\sigma(\Fold_m)$-可测随机变量且对任意 $x$ 恰等于 $\mathbb{E}_{\mu_x}[f]$。
-将 $f$ 分解为 $f=\mathbb{E}_{\mu}[f\mid\Fold_m]+(f-\mathbb{E}_{\mu}[f\mid\Fold_m])$，并对方差作同样展开，交叉项消失（由 (1) 的正交性）即可得到 \eqref{eq:pom-var-decomposition}。证毕。
-\end{proof}
-
-\begin{remark}[数值核对（脚本与产物）]\label{rem:pom-conditional-variance-script}
-表 \ref{tab:fold_conditional_variance_decomposition} 由脚本 \texttt{scripts/exp\_fold\_conditional\_variance\_decomposition.py} 一键生成，对 \eqref{eq:pom-Emu-pythagoras} 与 \eqref{eq:pom-var-decomposition} 作回归核对（产物路径见 \texttt{artifacts/export/fold\_conditional\_variance\_decomposition.json}）。
-\end{remark}
-
-\input{sections/generated/tab_fold_conditional_variance_decomposition}
-
-\begin{lemma}[Pinsker 不等式（TV--KL 桥接，有限字母表）]\label{lem:pinsker-tv-kl}
-设 $p,q$ 为有限集合 $\mathcal{S}$ 上的概率分布，则
+有限字母表上的 Pinsker 不等式给出 TV 与 KL 的标准桥接：
 \begin{equation}
 \label{eq:pinsker-tv-kl}
-\boxed{\ D_{\mathrm{TV}}(p,q)\ \le\ \sqrt{\frac{1}{2}\,D_{\mathrm{KL}}(p\|q)}\ }.
+D_{\mathrm{TV}}(p,q)\le \sqrt{\frac{1}{2}D_{\mathrm{KL}}(p\|q)}\qquad (p,q\in\Delta(\mathcal{S})),
 \end{equation}
-\end{lemma}
-\begin{proof}
-该不等式是经典的 Csisz{\'a}r--Kullback--Pinsker 型界，参见例如 \cite{CoverThomas2006,Tsybakov2009Nonparametric}。为保持本文“可审计口径”，本节后续仅使用其有限字母表版本 \eqref{eq:pinsker-tv-kl}。
-\end{proof}
-
-\begin{corollary}[折叠残差：TV 由 KL 残差控制]\label{cor:pom-residual-tv-by-kl}
-对任意 $\mu\in\Delta(\Omega_m)$，令 $\mu^e:=K_m\mu$。则
+从而对任意 $\mu\in\Delta(\Omega_m)$ 与 $\mu^e:=K_m\mu$ 有
 \begin{equation}
 \label{eq:pom-residual-tv-by-kl}
-\boxed{\ D_{\mathrm{TV}}(\mu,\mu^e)\ \le\ \sqrt{\frac{1}{2}\,D_{\mathrm{KL}}(\mu\|\mu^e)}\ }.
+D_{\mathrm{TV}}(\mu,\mu^e)\le \sqrt{\frac{1}{2}D_{\mathrm{KL}}(\mu\|\mu^e)}
 \end{equation}
-结合引理 \ref{lem:pom-fiberwise-kl} 的纤维 KL 分解，这给出一个把“不可见残差”从概率口径转写为可见纤维平均的统一上界。
-\end{corollary}
+（参见 \cite{CoverThomas2006,Tsybakov2009Nonparametric}）。结合引理 \ref{lem:pom-fiberwise-kl} 的纤维 KL 分解，这给出把“不可见残差”转写为可见纤维平均的统一上界。
 
-\begin{remark}[数值核对（脚本与产物）]\label{rem:pom-pinsker-residual-script}
-表 \ref{tab:fold_pinsker_residual_bridge} 由脚本 \texttt{scripts/exp\_fold\_pinsker\_residual\_bridge.py} 生成，用于对 \eqref{eq:pom-residual-tv-by-kl} 的实现与数值规模做回归核对（产物路径见 \texttt{artifacts/export/fold\_pinsker\_residual\_bridge.json}）。
-\end{remark}
-
-\input{sections/generated/tab_fold_pinsker_residual_bridge}
-
-\begin{proof}
-记 $x=\Fold_m(a)$。由命题 \ref{prop:fold-conditional-expectation} 的坐标形式，
-\[
-(E_m f)(a)=\frac{1}{d_m(x)}\sum_{\Fold_m(b)=x} f(b),
-\]
-故 $E_m f\in\mathcal{B}_m$。
-
-对任意 $b\in\mathcal{B}_m$，存在函数 $\beta:X_m\to\RR$ 使 $b(a)=\beta(\Fold_m(a))$。于是
-\[
-\langle f-E_m f,\ b\rangle_{\mu}
-=\sum_{x\in X_m}\sum_{\Fold_m(a)=x}\bigl(f(a)-(E_m f)(a)\bigr)\,\beta(x)\,\frac{\pi(x)}{d_m(x)}.
-\]
-对每个固定 $x$，由于 $\beta(x)\pi(x)/d_m(x)$ 在纤维上为常数，并且
-\(
-\sum_{\Fold_m(a)=x}\bigl(f(a)-(E_m f)(a)\bigr)=0
-\)
-（因为 $E_m f$ 是该纤维的算术平均），故纤维内和为零，从而 $\langle f-E_m f,\ b\rangle_{\mu}=0$。
-这证明了 (1)。
-
-由 (1) 且 $E_m f\in\mathcal{B}_m$，取 $b=E_m f$ 得到 $\langle f-E_m f,\ E_m f\rangle_{\mu}=0$。展开
-\(
-\|f\|_{2,\mu}^2=\|E_m f\|_{2,\mu}^2+\|f-E_m f\|_{2,\mu}^2+2\langle f-E_m f,\ E_m f\rangle_{\mu}
-\)
-即得 (2)。
-
-对任意 $b\in\mathcal{B}_m$，由 $f-b=(f-E_m f)+(E_m f-b)$ 且 (1) 给出正交性 $\langle f-E_m f,\ E_m f-b\rangle_{\mu}=0$，因此
-\[
-\|f-b\|_{2,\mu}^2
-=\|f-E_m f\|_{2,\mu}^2+\|E_m f-b\|_{2,\mu}^2\ \ge\ \|f-E_m f\|_{2,\mu}^2,
-\]
-并且当且仅当 $b=E_m f$ 取等号，得到 (3)。
-\end{proof}
-
-\begin{proposition}[条件期望塔]\label{prop:pom-expectation-tower}
-对任意 $m_2\ge m_1$，由柱事件延拓给出代数包含
-\(
-\mathcal{A}_{m_1}\subseteq \mathcal{A}_{m_2}
-\)
-与
-\(
-\mathcal{B}_{m_1}\subseteq \mathcal{B}_{m_2}
-\)。
-并且条件期望满足
+对任意 $m_2\ge m_1$，由柱事件延拓得到 $\mathcal{A}_{m_1}\subseteq \mathcal{A}_{m_2}$ 与 $\mathcal{B}_{m_1}\subseteq \mathcal{B}_{m_2}$；相应的条件期望满足塔性质
 \[
 E_{m_1}\circ E_{m_2}=E_{m_1}\qquad\text{于}\ \mathcal{A}_{m_2}.
 \]
-\end{proposition}
-\begin{proof}
-折叠在不同分辨率下满足截断相容性（见定理 \ref{thm:pom-inverse-limit}），因此“先细分再粗粒化”与“直接粗粒化”对纤维平均给出同一结果；即 $E_{m_1}$ 与 $E_{m_2}$ 形成条件期望塔。证毕。
-\end{proof}
 
 \begin{remark}[本体可见性判据]\label{rem:pom-visible-criterion}
 对任意 $A\in\mathcal{A}_m$，有
@@ -381,8 +207,8 @@ Zeckendorf 坐标与素数指数坐标分别线性化加法与乘法；同一整
   \mathcal{A}_{m_1}\subseteq\mathcal{A}_{m_2},\ 
   \mathcal{B}_{m_1}\subseteq\mathcal{B}_{m_2}
   \)
-  以及条件期望塔 \(E_{m_1}\circ E_{m_2}=E_{m_1}\)（命题 \ref{prop:pom-expectation-tower}）。因此旧层可判定的事件在新层仍保持可判定性，新层仅增加可寻址的组合与细化，而不抹除旧真值。
-  \item \textbf{机制层（遗忘显式化为纤维残差）：}投影 \(P_Z\) 的“丢失”发生在有限分辨率：\(\Fold_m:\Omega_m\to X_m\) 必然多对一，其纤维多重度 \(d_m(x)\) 与条件期望 \(E_m\) 给出沿纤维平均的唯一 coarse-graining 接口（命题 \ref{prop:pom-pz-unique-expectation}）。因此丢失不再是黑箱，而是由可计数的纤维自由度显式量化；并且该残差可通过额外轴束（例如素数寄存器纤维 \(\mathcal{P}\)；注 \ref{rem:pom-prime-carry}）外置存储，从而在更高态空间中实现“信息守恒”的可审计版本。
+  以及条件期望塔 \(E_{m_1}\circ E_{m_2}=E_{m_1}\)。因此旧层可判定的事件在新层仍保持可判定性，新层仅增加可寻址的组合与细化，而不抹除旧真值。
+  \item \textbf{机制层（遗忘显式化为纤维残差）：}投影 \(P_Z\) 的“丢失”发生在有限分辨率：\(\Fold_m:\Omega_m\to X_m\) 必然多对一，其纤维多重度 \(d_m(x)\) 与条件期望 \(E_m\) 给出沿纤维平均的 coarse-graining 接口。因此丢失不再是黑箱，而是由可计数的纤维自由度显式量化；并且该残差可通过额外轴束（例如素数寄存器纤维 \(\mathcal{P}\)；注 \ref{rem:pom-prime-carry}）外置存储，从而在更高态空间中实现“信息守恒”的可审计版本。
 \end{enumerate}
 以上三点把“生长但不丢信息”精确化为：主尺度（本体对象与熵率）保持不变，差异被转写为可追踪的残差坐标；体系的增长体现在分辨率与语义表达的保守细化上，而不体现为对旧结构的覆盖。
 \end{remark}

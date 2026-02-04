@@ -1,17 +1,13 @@
 \section{结论}
 
-本文给出一条纯数学的递归生成链，并刻意将“可证结果”与“解释性框架”分层呈现（见引言小节 \ref{subsec:reading-guide}）：前者以定理/命题形式给出并可独立审计；后者仅用于动机与术语组织。本文的主要\textbf{数学结论}可概括为：
+本文围绕扫描—投影生成器及其诱导的折叠/读出算子，给出一组可独立审计的原创结论。为强调可复核性，下列条目均以定义/定理编号为锚点：
 \begin{enumerate}
-  \item \textbf{（事件与地址的形式化）}把“概念”落实为可测事件与其平移生成的柱事件族；递归地址化仅执行 $\sigma$-代数细化而不引入外加结构（第 3、5 节）。
-  \item \textbf{（黄金分支的极值口径）}在 Hurwitz/Markov 意义下给出反共振极值与唯一性口径，并将其转译为差异度证书的可审计上界；在金属平均族（常数型连分数）中进一步得到差异度证书主导对数系数的严格 gap（第 2 节与附录 H/H$'$）。
-  \item \textbf{（从差异度到 \texorpdfstring{$D_{\mathrm{KL}}$}{KL} 的新证书链）}在旋转扫描微态层面，把星差异度证书给出的 \(D_{\mathrm{TV}}\) 上界进一步转译为 \(D_{\mathrm{KL}}\) 的显式上界：先用 Markov 常数给出微态分割最小原子下界，再以 \(\log x\le x-1\) 导出 \(D_{\mathrm{KL}}\le 4D_{\mathrm{TV}}^2/q_{\min}\)（第 \ref{sec:experiments} 节）。
-  \item \textbf{（折叠与多尺度一致）}构造可计算满射 $\Fold_m:\Omega_m\to X_m$ 将 $2^m$ 微态折叠到 $F_{m+2}$ 稳定类型，并用逆系统/逆极限形式化跨分辨率相容性（第 \ref{subsec:folding-multiscale} 小节与附录 \ref{app:multiscale-inverse-limit}）。
-  \item \textbf{（序列级因子与有限状态表示）}把折叠提升为滑动块算子 $\Phi_m$，给出因子性质与显式 sofic 图表示（第 6 节）。
-  \item \textbf{（归一化算术与实现）}把 Zeckendorf 规范代表视为值纤维横截面，给出“逐位叠加 $\Rightarrow$ 折叠归一化”的等价表述，并引用纯数字层（有限状态/线性时间）的 Zeckendorf 算术实现（第 7 节与附录 E）。
-  \item \textbf{（投影本体数学）}在折叠与算子接口上引入三条先验纤维与双投影语法，定义折叠指标/投影熵率与谱隙读出尺度，并给出序投影空间化与 ISA/微码抽象层（第 8 节）。
-  \item \textbf{（共振/坍缩的机制判别）}对高阶碰撞矩给出模态约束导致 Hankel 秩下降的充分判别，并在 \(q=9,\dots,16\) 上给出秩缺口的可审计证据，从而把共振从现象提升为机制（第 8 节，定理 \ref{thm:pom-moment-resonance}）。
-  \item \textbf{（profinite Chebotarev 提升）}在核版 GRH 条件下，把有限层的 Chebotarev 计数提升到素数寄存器的逆极限轴上，对任意 cylinder 集合给出平方根级等分布误差（第 8 节，定理 \ref{thm:pom-profinite-axis}）。
-  \item \textbf{（Parry/\(\zeta\)/算子接口）}在黄金均值 SFT 上给出 Parry 最大熵测度与动力学 $\zeta$ 的标准闭式表达，并将柱投影与对角子代数的口径写成可核验命题（第 9--10 节）。
+  \item \textbf{（递归地址化的结构性极简性）}证明递归地址化仅对应于可测柱事件族的 $\sigma$-代数细化，不引入外加结构（命题 \ref{prop:recursive-addressing-refinement}）。
+  \item \textbf{（有限窗口折叠与跨分辨率相容）}构造有限窗口折叠 $\Fold_m$ 及其可计算实现，并证明合流性、逆系统相容与 sofic 因子接口的统一结论（定理 \ref{thm:fold-suite}；并见定义 \ref{def:fold-word} 与命题 \ref{prop:fold-basic}）。
+  \item \textbf{（投影本体数学与信息账本）}建立投影本体数学框架：定义扫描—投影生成器与投影词演算（定义 \ref{def:pom-spg}、\ref{def:pom-projection-word}、\ref{def:pom-projword-2cat}），并给出相对熵缺陷的闭式信息账本恒等式及其推论（定理 \ref{thm:pom-kl-ledger} 与推论 \ref{cor:pom-ent-increase-equals-kl}），从而将粗粒化的信息损失对象化为可计算的残差项。
+  \item \textbf{（读出塔重写与可判定闭环）}在投影词的局部读出塔片段上证明终止性与合流性并给出正规形（定理 \ref{thm:pom-rewrite-termination-confluence}），并由此得到词问题的可判定性与审计闭环（命题 \ref{prop:pom-projword-decidable}、\ref{prop:pom-rewrite-audit-loop}）。
+  \item \textbf{（碰撞核编译与共振判别）}对任意阶碰撞矩给出有限状态的 moment-kernel 编译与 Perron 主谱刻画（定理 \ref{thm:pom-collision-kernel-ak}），并给出模态约束导致 Hankel 秩下降的充分判别，从而将共振定位为可检验的机制（定理 \ref{thm:pom-moment-resonance}）。
+  \item \textbf{（profinite 轴上的 Chebotarev 提升）}在核版 GRH 的平方根界假设下，沿素数寄存器的逆极限轴提升有限层 Chebotarev 计数，并对任意 cylinder 集合给出平方根级等分布误差（定理 \ref{thm:pom-profinite-axis}）。
 \end{enumerate}
 
-最后再次强调两点：其一，本文的“涌现”用语只作为解释性组织语言；其二，本文关于“黄金分支最优性”的严格结论仅限于 Hurwitz/Markov 与差异度证书链条，并不覆盖“折叠后分布到 Parry 基线的 TV/KL 距离”等更强泛函的全局最优性（详见注 \ref{rem:what-is-optimized} 与第 \ref{sec:experiments} 节）。
+最后指出：本文中的术语“涌现”仅用于组织动机与解释性叙事；任何后续推理均以编号结果为前提。关于黄金分支的“最优性”讨论亦严格限定在文中显式给出的数论证书链条之内，且不外推到更强的统计泛函最优性（见注 \ref{rem:what-is-optimized}）。
