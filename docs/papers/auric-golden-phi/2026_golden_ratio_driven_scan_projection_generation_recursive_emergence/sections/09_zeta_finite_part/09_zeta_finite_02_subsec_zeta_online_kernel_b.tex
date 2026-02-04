@@ -302,9 +302,36 @@ z\mapsto (\lambda z)^{-1}
 因此当 $\Delta_M$ 的系数可精确计算（例如整系数矩阵）时，上式提供一个逐项可审计的判别式。
 \end{remark}
 
-\begin{remark}[有限维与“无限零点”的缺口]\label{rem:finite-vs-infinite-zeros}
-由于 \(Z_M(s)\) 来自有限维行列式，其 \((s)\)-平面的极点/零点结构必为有限族的竖向晶格（每个非零特征值贡献一条周期列）。因此若要在本框架内逼近经典 \(\zeta(s)\) 的“无限多非平凡零点”现象，需要引入一个维度 \(\to\infty\) 的极限机制，使得谱点在极限中形成无限谱并在 Dirichlet 坐标下产生更复杂的零极点分布；这为后续构造“无限塔/无限覆盖/逆极限核”的路线提供了明确的结构目标。
-\end{remark}
+\begin{proposition}[有限维行列式的竖向晶格障碍]\label{prop:finite-kernel-lattice-obstruction}
+设 \(M\) 为有限维矩阵，\(\lambda:=\rho(M)>1\)，并定义
+\[
+Z_M(s):=\det(I-\lambda^{-s}M)^{-1}.
+\]
+则 \(Z_M(s)\) 的全部极点（按重数计）构成有限并集
+\[
+\mathcal{S}(M)=\bigcup_{\mu\in\mathrm{spec}(M)\setminus\{0\}}\ \Bigl\{\frac{\log\mu+2\pi i k}{\log\lambda}\;:\;k\in\ZZ\Bigr\},
+\]
+其中 \(\log\mu\) 取任意复对数分支。特别地，每个非零特征值 \(\mu\) 贡献一条\textbf{严格等差}的竖向极点列，其虚部步长恒为
+\[
+\Delta=\frac{2\pi}{\log\lambda}.
+\]
+更一般地，任取有限个三元组 \((M_j,\lambda_j,\varepsilon_j)\)（其中 \(M_j\) 有限维、\(\lambda_j>1\)、\(\varepsilon_j\in\{\pm 1\}\)），并考虑有限乘积/商
+\[
+F(s):=\prod_{j=1}^{J}\det(I-\lambda_j^{-s}M_j)^{-\varepsilon_j},
+\]
+则 \(F\) 的零点与极点集合是\textbf{有限条竖向等差列的有限并集}，从而其计数函数满足
+\[
+N_F(T):=\#\{\,s\in\mathrm{Zeros}(F)\cup\mathrm{Poles}(F):\ 0<\Im(s)\le T\,\}=O(T).
+\]
+因此不存在任何固定有限乘积 \(F\) 使其“临界带内的零点/极点集合”与经典黎曼 \(\zeta(s)\)（或 \(\xi(s)\)）的非平凡零点集合一致：后者由 Riemann--von Mangoldt 公式满足 \(N_\zeta(T)\asymp T\log T\)。
+\end{proposition}
+\begin{proof}
+第一段是命题 \ref{prop:s-plane-spectrum-poles} 的直接展开：\(\det(I-\lambda^{-s}M)=0\) 当且仅当 \(\lambda^{-s}=1/\mu\)（某个 \(\mu\neq 0\)），取对数即得极点列公式；虚部步长来自 \(\log(\cdot)\) 的 \(2\pi i\)-多值性。
+\par
+对有限乘积 \(F\)，其零点/极点只可能来自各因子 \(\det(I-\lambda_j^{-s}M_j)\) 的零点集合之并集；每个因子在 \((0,T]\) 内贡献 \(O(T)\) 个等差点（常数仅依赖 \(\log\lambda_j\) 与 \(\#(\mathrm{spec}(M_j)\setminus\{0\})\)），故并集仍为 \(O(T)\)。
+\par
+最后一段：经典 \(\zeta(s)\) 的非平凡零点计数满足 \(N_\zeta(T)=\frac{T}{2\pi}\log\frac{T}{2\pi}-\frac{T}{2\pi}+O(\log T)\)，故 \(N_\zeta(T)\) 与 \(O(T)\) 的增长级别不相容，因而不可能与任何固定有限乘积 \(F\) 的零/极点集合一致。证毕。
+\end{proof}
 
 \begin{remark}[本节两类核的检验结论（可复现）]\label{rem:reciprocal-check-outcome}
 上述 $s$-平面对称并非自动成立：它要求非零谱在 $\mu\mapsto\lambda/\mu$ 下封闭。
