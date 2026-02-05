@@ -52,6 +52,26 @@ E_m\circ \mathrm{LIFT}_G
 一般情形下，交换不再是严格等式；但由于本文所有可审计输出最终都通过同一个 \(\zeta_\theta=1/\det(I-zM_\theta)\) 与有限部接口抽取（定义 \ref{def:abel-finite-part}），交换破缺的\emph{可观测部分}必然落在“非平凡扭曲通道相对于平凡通道”的有限部差异上，即 \(\mathsf{Anom}_G(K;\theta)\)。
 \end{proof}
 
+\begin{corollary}[零异常 \texorpdfstring{$\Longleftrightarrow$}{<->} Beck--Chevalley 可拉回（闭环接口版）]\label{cor:pom-zero-anom-pullback-exactness}
+在命题 \ref{prop:pom-em-lift-residual-swap} 的设定下，把“严格交换”理解为：对每个扭曲角色通道 \(\chi\in\widehat G\)，在本文采用的闭环接口
+\[
+\text{有限核/矩阵族}\Rightarrow \zeta \Rightarrow \log\mathfrak{M}
+\]
+上，复合 \(E_m\circ \mathrm{LIFT}_G\) 与 \(\mathrm{LIFT}_G\circ E_m\) 给出相同的通道输出（等价地：该方块是离散 Beck--Chevalley 型的可拉回方块）。
+则有等价刻画：
+\[
+\boxed{\;
+\mathsf{Anom}_G(K;\theta)=0
+\quad\Longleftrightarrow\quad
+E_m\ \text{与}\ \mathrm{LIFT}_G\ \text{在所有扭曲通道上严格交换（接口意义下）}.}
+\]
+\end{corollary}
+
+\begin{proof}
+命题 \ref{prop:pom-em-lift-residual-swap} 已把交换失败的全部可观测残差压缩为 \(\mathsf{Anom}_G(K;\theta)\)；
+因此“残差为零”与“闭环接口上严格交换”互为充要条件。
+\end{proof}
+
 \subsubsection{异常签名的可组合律：作为 \texorpdfstring{$\mathbf{PW}$}{PW} 的 \texorpdfstring{$2$}{2}-上同调类}\label{subsec:pom-anom-cohomology}
 把命题 \ref{prop:pom-em-lift-residual-swap} 的“带标签交换证书”视为 \(\mathbf{PW}\) 的一个 \(2\)-态射生成元，其关键收益是：异常不再是事后补丁，而是一个可在重写层面组合、并在改变规约路径时只发生边界变换的残差类。
 
@@ -144,6 +164,28 @@ E_m\circ \mathrm{LIFT}_G\ \Rightarrow\ \mathrm{LIFT}_G\circ E_m
 而 residual mismatch 的出现对应于命题 \ref{prop:pom-anom-additive-up-to-boundary} 中的边界项，
 脚本在 JSON 中给出按临界对类型聚类的 completion 候选修正。
 \end{remark}
+
+\begin{proposition}[合流不是绝对合流，而是合流模异常（有界审计版）]\label{prop:pom-confluence-mod-anom-audited}
+在与注 \ref{rem:pom-threegen-kb-completion-audit} 相同的复杂度上界内，三生成元片段 \((\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)\) 满足：
+\begin{enumerate}
+  \item \textbf{（正规形唯一）} 对任意被审计的 overlap 临界对，两条局部规约分支都可并到同一个接口正规形，因此在该复杂度类上正规形是路径不变量（表 \ref{tab:pom_projword_three_gen_kb_completion_audit} 的 \(\#\mathrm{NF\ mismatch}=0\)）。
+  \item \textbf{（残差仅差边界）} 规约路径可能产生不同的残差标签（表 \ref{tab:pom_projword_three_gen_kb_completion_audit} 的 residual mismatch），但其差异必落在命题 \ref{prop:pom-anom-additive-up-to-boundary} 的边界项（coboundary）中；因此异常的上同调类 \([\mathrm{Anom}(w)]\) 与“异常是否为零”均为路径不变量（推论 \ref{cor:pom-anom-cohomology-class}）。
+\end{enumerate}
+因此，把投影词的判等关系取为“正规形一致 + 异常类一致”是自然的：改变规约优先级只改变一个 coboundary，而不改变异常类是否为零。
+\end{proposition}
+
+\begin{definition}[算法等价（正规形 + 异常类）]\label{def:pom-algorithmic-equivalence-nf-anom}
+在上述复杂度上界内，对任意两个投影词 \(w_1,w_2\)，定义
+\[
+w_1\sim w_2
+\iff
+\mathrm{NF}(w_1)=\mathrm{NF}(w_2)
+\ \text{且}\
+[\mathrm{Anom}(w_1)]=[\mathrm{Anom}(w_2)].
+\]
+其中 \(\mathrm{NF}\) 可取命题 \ref{prop:pom-three-gen-interface-normal-form} 的接口正规形代表，而 \([\mathrm{Anom}(w)]\) 为命题 \ref{prop:pom-anom-additive-up-to-boundary} 所确定的异常上同调类（在任一固定规约证书规范下计算的代表元，按 coboundary 取商）。
+在本文实现中我们固定一种正规化器与证书规范，因此该等价关系可由推论 \ref{cor:pom-three-gen-normal-form-decidable} 的“正规形参数 + 有限异常签名核对”直接判定。
+\end{definition}
 
 \begin{corollary}[含 \texorpdfstring{$(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)$}{(PROJ,Em,LIFT)} 的正规形与有限签名判等]\label{cor:pom-three-gen-normal-form-decidable}
 固定词复杂度上界（例如限制 \(m\)、限制 lift 的群大小、限制温度参数采样集合）。
@@ -371,6 +413,27 @@ R_m^{(pq)}=\Bigl\{(\omega^{(1)},\dots,\omega^{(pq)})\in\Omega_m^{pq}:\ \Fold_m(\
 工程上，这允许把“直接编译 \(\mathrm{MOM}_q\)”替换为“逐素因子编译 \(\Rightarrow\) 每步做 Hankel/递推最小化（命题 \ref{prop:pom-hankel-realization-protocol}）或对称幂压缩（命题 \ref{prop:pom-moment-symmetric-power}）\(\Rightarrow\) 再进入下一步”的流水线。
 由于许多 \(q\) 的最小 realization 维数远小于对称幂上界（尤其在共振窗口中出现结构性坍缩，定理 \ref{thm:pom-moment-resonance}），该“素因子链”可把后续每一步的状态规模建立在已压缩核之上，从而把高阶 moment 指纹推进到更大 \(q\) 仍保持可计算/可审计。
 \end{remark}
+
+\begin{theorem}[素因子 moment 编译与共振杠杆（可审计复杂度缩减）]\label{thm:pom-prime-factor-moment-compiler-resonance}
+设 \(q=\prod_{i=1}^{k}p_i\) 为素因子分解，并在扩展规则族 \ref{def:pom-four-gen-rewrite-rules} 下采用“素因子链 + 逐步压缩”的编译策略（注 \ref{rem:pom-mom-prime-factor-compiler}）：
+先将 \(\mathrm{MOM}_q\) 表示为链
+\[
+\mathrm{MOM}_{p_1}\circ\cdots\circ \mathrm{MOM}_{p_k}\Rightarrow \mathrm{MOM}_q
+\]
+并在每一步 moment 编译后立即对后端核做 Hankel/递推最小化（命题 \ref{prop:pom-hankel-realization-protocol}）或对称幂商压缩（命题 \ref{prop:pom-moment-symmetric-power}）。
+则：
+\begin{enumerate}
+  \item \textbf{（语义保真与证书可组合）} 由命题 \ref{prop:pom-rmom-sound}，链式合并在语义上严格保真；逐步压缩保持同一 \(q\)-moment 指纹并可输出可核对证书（最小 realization/递推 + 交换残差标签）。
+  \item \textbf{（共振杠杆）} 在共振窗口中，最小 realization 维数可显著低于对称幂上界并出现结构性坍缩（定理 \ref{thm:pom-moment-resonance}），因此“逐步压缩”可把高阶 \(q\) 的状态规模建立在更小的中间核之上。
+\end{enumerate}
+从而高阶 moment 不仅可计算，还具有一条\emph{可审计的生成路径}：高阶对象由一串低阶 moment 的合并与逐步压缩得到，每一步都携带可复核证书与异常标签，避免把规则扩展退化为不可追踪的补丁堆叠。
+\end{theorem}
+
+\begin{proof}[证明思路]
+将注 \ref{rem:pom-mom-prime-factor-compiler} 的素因子链与命题 \ref{prop:pom-rmom-sound} 的严格保真相串接；
+再用 Hankel/递推最小化协议（命题 \ref{prop:pom-hankel-realization-protocol}）或对称幂压缩实现（命题 \ref{prop:pom-moment-symmetric-power}）保证每一步压缩不改变输出指纹，并保留可核对证书；
+共振维数坍缩由定理 \ref{thm:pom-moment-resonance} 给出。证毕。
+\end{proof}
 
 \paragraph{moment 残差：\texorpdfstring{$E_m$}{Em} 与 \texorpdfstring{$\mathrm{MOM}_q$}{MOMq} 的不交换}
 把 \(\mathrm{MOM}_q\) 加入重写闭包后，最小的新临界对来自
@@ -783,6 +846,48 @@ b\le b'\ \Longrightarrow\ \mathbb{T}(b)\le \mathbb{T}(b').
 此时可把 \(\mathrm{Ty}_{\mathrm{space}}(w_i;\chi,u)\) 作为静态预算类型：在点wise 序 \( \le \) 下选择最小者作为词法正规形代表，并把差额以证书形式记入（例如 \((\mathrm{RCRT}_\varepsilon)\) 的失败概率账本与 \(\gamma\)-证书）。
 由于 \(\mathbb{T}\) 把预算正规化为离散凸对象，最优化（例如对偶最优矩阶 \(q^\star\) 的搜索）在整数上具备离散准凸结构（见 \S\ref{subsec:pom-quantile-budget-law} 的单峰性质讨论），从而把“选 \(q\)”与“选编译策略”统一为一个可审计的类型最小化问题。
 \end{remark}
+
+\begin{definition}[kink 与 kink 集合（离散凸预算）]\label{def:pom-kink-set}
+设 \(b\in\mathbf{Conv}\)，并在一个有限窗口 \(q\in\{2,3,\dots,Q_{\max}\}\) 上考虑其离散斜率
+\[
+\Delta b(q):=b(q)-b(q-1)\qquad(q=3,\dots,Q_{\max}).
+\]
+离散凸性等价于 \(\Delta b(q)\) 随 \(q\) 单调不减。
+定义 \(b\) 在该窗口上的 \textbf{kink 集合}为
+\[
+\mathrm{Kink}(b)
+:=\{2,Q_{\max}\}\ \cup\
+\Bigl\{\,q\in\{3,\dots,Q_{\max}-1\}:\ \Delta b(q+1)>\Delta b(q)\Bigr\}.
+\]
+\end{definition}
+
+\begin{proposition}[Kink principle for \texorpdfstring{$q$}{q}-selection（类型闭包的离散优化缩并）]\label{prop:pom-kink-principle-q-selection}
+固定通道参数 \((\chi,u)\) 与投影词 \(w\)，令
+\(
+b:=\mathrm{Ty}_{\mathrm{space}}(w;\chi,u)\in\mathbf{Conv}
+\)
+为其谱资源类型正规形（定义见 \S\ref{subsec:pom-spectral-resource-type}）。
+则在任意有限窗口 \(q\in\{2,\dots,Q_{\max}\}\) 上：
+\begin{enumerate}
+  \item \textbf{（只需检查 kink）} 对任意仿射目标 \(L(q)=aq+c\)，离散凸优化
+  \[
+  \arg\min_{q\in\{2,\dots,Q_{\max}\}}\bigl(b(q)+L(q)\bigr)
+  \]
+  的最优解集合是一个（可能退化的）连续整数区间；因此存在一个最优点落在 \(\mathrm{Kink}(b)\) 上。
+  \item \textbf{（对偶搜索的等价表述）} 等价地，对任意 \(\gamma\in\RR\)，函数
+  \(
+  q\mapsto (q-1)\gamma-b(q)
+  \)
+  的最大化问题（离散 Legendre--Fenchel 对偶）可通过比较离散斜率 \(\Delta b(q)\) 与 \(\gamma\) 在 \(\mathrm{Kink}(b)\) 上定位：最优 \(q^\star\) 可取为某个 kink，使得 \(\gamma\) 落在其左右斜率区间内。
+\end{enumerate}
+因此任何“基于类型闭包 \(\mathbb{T}\)”的 \(q\)-优化都不必全扫描：只需在类型正规形的 kink 集合上做有限检查即可（kink 数通常远小于扫描窗口长度，并可在计算 \(\mathbb{T}\) 时顺带输出）。
+\end{proposition}
+
+\begin{proof}
+(1) 因为 \(b\in\mathbf{Conv}\)，故 \(\Delta b(q)\) 单调不减，且 \(b(q)+aq\) 仍为离散凸函数。
+离散凸函数的子水平集是区间，从而最优解集合亦为区间；区间端点处对应离散斜率发生跳变（或落在窗口边界），即属于定义 \ref{def:pom-kink-set} 的 kink 集合。
+(2) 是 (1) 的对偶表述：最大化 \((q-1)\gamma-b(q)\) 等价于最小化 \(b(q)-(q-1)\gamma\)；最优 \(q^\star\) 的判据由离散斜率的单调性给出。
+\end{proof}
 
 \subsubsection{分位配额律：从纤维多重度尾部到 prime-register 预算}\label{subsec:pom-quantile-budget-law}
 
