@@ -1,0 +1,72 @@
+\subsection{审计落脚点：统一命题的可复现接口}\label{subsec:group-unification-audit-pointers}
+
+本节不引入新的证明前提，而是将本章中关于统一的关键结论逐条落实到仓库内的可复现输出与可证伪检查上，
+从而读者无需诉诸解释层即可定位相应脚本、生成片段与审计证书。
+
+\paragraph{R1（可复核算术事实）：Fibonacci--Lie 共振梯（可复现穷举）}
+稳定类型计数律 \(|X_m|=F_{m+2}\)（本章口径）在小窗口上出现对经典紧李代数维数的精确共振（小节 \ref{subsec:fib-lie-resonance}）。
+其关键部分是将等式写成丢番图方程并作有限窗口穷举，从而得到可复现的解集（与解释层叙述无关）：
+\begin{itemize}
+  \item \textbf{生成脚本：}\texttt{\detokenize{scripts/exp_fibonacci_lie_resonance_ladder.py}}。
+  \item \textbf{LaTeX 生成物：}\texttt{\detokenize{sections/generated/tab_fibonacci_lie_resonance_ladder.tex}}，
+  \texttt{\detokenize{sections/generated/eq_fib_lie_resonance_solutions.tex}}。
+  \item \textbf{审计 JSON：}\texttt{\detokenize{artifacts/export/fibonacci_lie_resonance_ladder.json}}。
+\end{itemize}
+任何对共振点/解集的修改，都必须能通过上述脚本在声明的扫描窗口上复现。
+
+\paragraph{R2（可复核接口）：\(m=6\) 的 \(18\oplus 3\) 分裂与 \(B_3/C_3\) 统一种子}
+在边界词塔口径下，\(m=6\) 的端点纤维给出三条边界词（见 \texttt{\detokenize{sections/generated/eq_boundary_tower_sm12.tex}}），并由 \(X_6=X_6^{\mathrm{cyc}}\sqcup X_6^{\mathrm{bdry}}\) 的 \(18\oplus 3\) 分裂将 \(21\) 维统一种子限定为 \(B_3/C_3\)（小节 \ref{subsec:bdry-tower-zeck-gut}）。
+为避免人工配对，本文将该种子进一步落实为根字典与 Weyl 群轨道大小的核验输出：
+\begin{itemize}
+  \item \textbf{生成脚本：}\texttt{\detokenize{scripts/exp_fold6_b3c3_seed.py}}。
+  \item \textbf{LaTeX 生成物：}\texttt{\detokenize{sections/generated/eq_fold6_b3c3_seed.tex}}，
+  \texttt{\detokenize{sections/generated/tab_fold6_b3c3_root_dictionary_B3.tex}}，
+  \texttt{\detokenize{sections/generated/tab_fold6_b3c3_root_dictionary_C3.tex}}。
+  \item \textbf{审计 JSON：}\texttt{\detokenize{artifacts/export/fold6_b3c3_seed.json}}（含 \(18\oplus 3\)、\(6+12\) 指纹、两套字典与 \(|W|=48\) 的轨道核验直方图）。
+\end{itemize}
+
+\paragraph{R3（接口推进）：将 lapse、折叠缺陷与耦合漂移归约到同一主标量场}
+本章在注 \ref{rem:lapse-modulated-tau-mix} 中已将外部时间重标定写成一个最小的 lapse 代理
+\(
+N:=\kappa_0/\kappa
+\)
+（其中 \(\kappa\) 是背景依赖的路由/逆搜索开销，单位为“每内部步的外部代价”）。
+另一方面，折叠侧已经定义了纤维缺陷标量
+\begin{equation}\label{eq:gut_kappa_m_defect}
+\kappa_m(\pi):=\mathbb{E}_{\pi}[\log d_m(X)]
+\qquad(\text{定义 \ref{def:pom-kappa}；其中 }d_m(x)=|\Fold_m^{-1}(x)|).
+\end{equation}
+因此可以引入一个统一的主标量（纯定义，不含物理解释）：
+\[
+u:=\log\frac{\kappa}{\kappa_0}=-\log N.
+\]
+\emph{接口级}假设是：在带空间索引的读出（例如 Hilbert 地址化窗口）下，局部开销场 \(u(x)\) 与某个局部折叠统计的缺陷量同构，
+例如以局部分布 \(\pi_{m,x}\in\Delta(X_m)\) 读出
+\(
+\kappa_m(\pi_{m,x})
+\)
+并设
+\[
+u(x)\ \approx\ c\,\kappa_m(\pi_{m,x})
+\qquad(c>0\ \text{为标定常数}).
+\]
+一旦将任意有效耦合或有效常数的漂移写成主标量的函数（线性化形式）
+\[
+g_i^{-2}(x)=a_i+b_i\,u(x)+\cdots,
+\]
+就得到一个\textbf{可证伪的相关性}：
+\[
+\Delta g_i^{-2}\ \approx\ b_i\,\Delta u\ =\ -b_i\,\Delta\log N.
+\]
+该相关性本身不依赖连续极限；它只要求在同一数据/同一协议族上同时输出 \(N\) 与 \(g_i\) 的代理量并做联合检验。
+\par
+更完整的 overhead\(\to\)lapse\(\to\)弱场引力闭合，以及从地址化窗口与折叠退化统计重建空间标量场的可执行协议，属于接口层的进一步构造；
+本稿在此仅记录其在本章变量上的最小同构关系与可证伪相关性形式。
+
+\paragraph{R4（有限检验模板）：Hecke 刚性与 Sturm 界的有限素数骨架判定}
+若把三通道 \((\varphi,\pi,e)\) 的指纹组织为一组可比的系数数据（例如某种 \(q\)-级数/Hecke 本征值 \(a_p\) 或等价的素数局部因子），
+则经典的 Hecke 刚性与 Sturm 定理提供一个有限确定性模板：比较有限个系数即可判定是否为同一对象。
+从而可将统一命题表述为有限计算的二值判定问题（而非依赖无限条件）。
+\par
+在审计实现上，该模板可作为一致性检验的约束族：先声明权重/层级等离散参数，再以 Sturm 界给出有限截断，比较对应素数骨架数据是否满足同构条件。
+
