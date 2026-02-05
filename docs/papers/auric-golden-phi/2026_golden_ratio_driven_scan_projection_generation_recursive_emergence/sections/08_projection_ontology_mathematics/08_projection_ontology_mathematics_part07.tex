@@ -52,6 +52,50 @@ E_m\circ \mathrm{LIFT}_G
 一般情形下，交换不再是严格等式；但由于本文所有可审计输出最终都通过同一个 \(\zeta_\theta=1/\det(I-zM_\theta)\) 与有限部接口抽取（定义 \ref{def:abel-finite-part}），交换破缺的\emph{可观测部分}必然落在“非平凡扭曲通道相对于平凡通道”的有限部差异上，即 \(\mathsf{Anom}_G(K;\theta)\)。
 \end{proof}
 
+\subsubsection{异常签名的可组合律：作为 \texorpdfstring{$\mathbf{PW}$}{PW} 的 \texorpdfstring{$2$}{2}-上同调类}\label{subsec:pom-anom-cohomology}
+把命题 \ref{prop:pom-em-lift-residual-swap} 的“带标签交换证书”视为 \(\mathbf{PW}\) 的一个 \(2\)-态射生成元，其关键收益是：异常不再是事后补丁，而是一个可在重写层面组合、并在改变规约路径时只发生边界变换的残差类。
+
+\begin{definition}[异常累积与规范化异常]\label{def:pom-anom-accumulation}
+固定一个带参对象 \(\mathcal{I}(m;K;\kappa)\)、一个有限阿贝尔 lift 群 \(G\) 与势参数 \(\theta\)。
+在仅由 \(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G\) 生成的子片段中，令
+\[
+\mathcal{A}_G:=\RR^{\widehat G\setminus\{\chi_0\}}
+\]
+并以分量加法为群运算。
+对任意重写证书（\(2\)-态射） \(\alpha:w\Rightarrow w'\)，定义其\textbf{异常累积}
+\(\mathrm{anom}(\alpha)\in\mathcal{A}_G\)
+为：把 \(\alpha\) 分解为一串局部重写步后，对每一步取其标签并求和，其中
+(i) 幂等/塔缩并/严格可交换步的标签取 \(0\)；
+(ii) 每一次 \(E_m\)--\(\mathrm{LIFT}_G\) 的带残差交换步的标签取 \(\mathsf{Anom}_G(K;\theta)\)（定义 \ref{def:pom-anom-signature}）。
+给定一个正规形选择算子 \(N\) 及其规范化证书族 \(\eta_w:w\Rightarrow N(w)\)，定义词的\textbf{规范化异常}为
+\[
+\mathrm{Anom}(w):=\mathrm{anom}(\eta_w).
+\]
+\end{definition}
+
+\begin{proposition}[加法复合律与边界项]\label{prop:pom-anom-additive-up-to-boundary}
+在定义 \ref{def:pom-anom-accumulation} 的设定下，\(\mathrm{anom}\) 对 \(2\)-态射的纵向复合严格可加：若 \(\alpha:w\Rightarrow w'\) 与 \(\beta:w'\Rightarrow w''\) 可复合，则
+\[
+\mathrm{anom}(\beta\circ\alpha)=\mathrm{anom}(\beta)+\mathrm{anom}(\alpha).
+\]
+进一步地，对任意可复合的 \(1\)-态射 \(w_1,w_2\)，存在一个仅依赖于正规形选择的 \(2\)-cochain \(B(w_2,w_1)\in\mathcal{A}_G\)，使得
+\[
+\mathrm{Anom}(w_2\circ w_1)
+=
+\mathrm{Anom}(w_2)+\mathrm{Anom}(w_1)+\partial B(w_2,w_1),
+\]
+其中 \(\partial B\) 表示因“先各自规约再合并”与“直接规约”两条规范化路径的比较而产生的边界项（等价地：改变规范化证书族 \(\{\eta_w\}\) 时，\(\mathrm{Anom}\) 只改变一个 coboundary）。
+\end{proposition}
+
+\begin{corollary}[零异常是路径不变量]\label{cor:pom-anom-cohomology-class}
+“异常是否为零”与规约路径/规约基准无关：若在某一正规化选择下 \(\mathrm{Anom}(w)=0\)，则对任意其他正规化选择所得的 \(\mathrm{Anom}'(w)\) 亦为零。
+等价地，\(\mathrm{Anom}\) 定义了一个可计算的（\(2\)-）上同调类，其消失刻画了交换失败是否可被重写完全消去。
+\end{corollary}
+
+\begin{remark}[面向 completion：critical pairs 决定新增异常生成元]\label{rem:pom-anom-completion}
+推论 \ref{cor:pom-anom-cohomology-class} 的工程含义是：当把投影词片段扩展（例如加入 \(\mathrm{MOM}_q\) 或更一般的 lift/cocycle）时，只需枚举新旧生成元之间的临界对（critical pairs）并对重写系统做 completion，新增的“不可严格交换”将自动表现为 \(\mathcal{A}\)-值标签；异常签名因此成为一个可组合的残差簇，而非逐条规则的临时补丁。
+\end{remark}
+
 \begin{corollary}[含 \texorpdfstring{$(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)$}{(PROJ,Em,LIFT)} 的正规形与有限签名判等]\label{cor:pom-three-gen-normal-form-decidable}
 固定词复杂度上界（例如限制 \(m\)、限制 lift 的群大小、限制温度参数采样集合）。
 则任何仅由 \(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G\) 生成的投影词，都可归约到一类接口正规形（参见注 \ref{rem:pom-zeta-normal-form} 的编译顺序）并附带有限异常签名
