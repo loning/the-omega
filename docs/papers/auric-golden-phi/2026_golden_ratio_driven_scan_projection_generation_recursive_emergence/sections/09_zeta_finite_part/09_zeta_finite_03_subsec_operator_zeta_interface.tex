@@ -88,6 +88,35 @@ B_n(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}\!\bigl(u^{d}\bigr)\; }.
 将右侧按 \(n=k|\gamma|\) 分组，并注意每个 primitive 轨道 \(\gamma\) 的 \(k\) 次幂产生 \( |\gamma| \) 条不同起点的长度 \(n\) 闭路，从而长度 \(n\) 的迹计数满足 \eqref{eq:zetaK-trace-from-primitive}。再对 \eqref{eq:zetaK-trace-from-primitive} 作 Möbius 反演即得 \eqref{eq:zetaK-primitive-from-trace}。证毕。
 \end{proof}
 
+\begin{remark}[严格交换的“迹 $\to$ primitive $\to$ Euler”桥包（交换图）]\label{rem:zetaK-commuting-diagram}
+命题 \ref{prop:zetaK-mobius-primitive} 与定义 \ref{def:zetaK-zu}（行列式口径 \eqref{eq:zetaK-det}）合在一起，给出本文反复调用的\textbf{严格交换}桥包：对任意有限核/有限矩阵 \(T\)（例如固定 \(u\) 后的 \(T=M_K(u)\)），令
+\[
+a_n(T):=\Tr(T^n)\quad(n\ge 1),
+\qquad
+p_n(T):=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(T),
+\]
+并定义 Euler 变换
+\[
+\mathrm{Euler}\bigl((p_n)_{n\ge 1}\bigr)(z):=\prod_{n\ge 1}(1-z^n)^{-p_n}.
+\]
+则对每个 \(T\) 都有逐项恒等式
+\[
+\boxed{\;
+\zeta_T(z):=\frac{1}{\det(I-zT)}
+=\exp\!\Bigl(\sum_{n\ge 1}\frac{a_n(T)}{n}z^n\Bigr)
+=\prod_{n\ge 1}(1-z^n)^{-p_n(T)}\; }.
+\]
+换言之，把“迹序列（ghost）$\to$ Möbius/Witt 反演（primitive）$\to$ Euler 乘积（prime-like）”压成最小结构，可写为如下严格交换图：
+\[
+\begin{CD}
+T @>\mathrm{TrSeq}>> (a_n(T))_{n\ge 1} @>\mathrm{Mob}>> (p_n(T))_{n\ge 1} @>\mathrm{Euler}>> \prod_{n\ge 1}(1-z^n)^{-p_n(T)}\\
+@V\mathrm{ZetaDet}VV @. @. @VV=V\\
+\det(I-zT)^{-1} @. @. \det(I-zT)^{-1}
+\end{CD}
+\]
+其中 \(\mathrm{TrSeq}(T)=(a_n(T))\)、\(\mathrm{Mob}(a)=p\) 为 Möbius 反演，而 \(\mathrm{ZetaDet}(T)=\det(I-zT)^{-1}\)。
+\end{remark}
+
 \begin{remark}[\texorpdfstring{$u$}{u} 的解释：把“不可并行 delay/串行代价”乘法化]\label{rem:zetaK-u-delay}
 在本文的核/扫描算子语境中，\(\kappa(e)\) 可取为每一步不可并行的代价事件数（例如 carry 触发次数、固定延迟事件数等）。则 \eqref{eq:zetaK-euler} 表明：沿 primitive 轨道 \(\gamma\) 的总代价 \(\kappa(\gamma)\) 以乘法权重 \(u^{\kappa(\gamma)}\) 进入 primitive 因子
 \[

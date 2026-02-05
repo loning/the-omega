@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Primitive Artin split for the real-input 40-state kernel: p_n(M)=p_n(in)+q_n.
+Primitive Artin split for the real-input 40-state kernel.
+
+We report a refined decomposition:
+  p_n(M) = p_n(in) + p_n(-F) + b_n,
+where
+  - in := the input-skeleton channel (A = F ⊗ F),
+  - -F := the twist channel (golden factor with sign),
+  - b_n is a boundary short-cycle term supported only at n=1,2.
 
 We use the determinant factorization:
   det(I-zM) = det(I-zA) * det_vert(z),
@@ -14,11 +21,14 @@ so
 At the primitive level, the Möbius--log transform is additive:
   P_M(z) = P_in(z) + P_vert(z),
 so coefficients satisfy p_n(M)=p_n(in)+q_n with q_n := [z^n] P_vert(z).
+Moreover, for this kernel q_n splits as q_n = p_n(-F) + b_n.
 
 We compute:
   - p_n(M) from artifacts/export/sync_kernel_real_input_40.json (already audited from M),
   - p_n(in) from the closed-form trace of A via its characteristic polynomial,
-  - q_n by subtraction, and expose that q_n can be negative (signed primitive spectrum).
+  - the twist contribution p_n(-F) from Lucas traces (Tr(F^n)),
+  - b_n explicitly (only n=1,2),
+  - q_n by subtraction and by checking q_n = p_n(-F)+b_n.
 
 Outputs:
   - artifacts/export/real_input_40_primitive_artin_split.json
@@ -79,6 +89,25 @@ def traces_in(n_max: int) -> List[int]:
     return out
 
 
+def lucas(n_max: int) -> List[int]:
+    """Return Lucas numbers L_n = Tr(F^n) for n=0..n_max (integers)."""
+    if n_max < 0:
+        return []
+    L = [0] * (n_max + 1)
+    L[0] = 2
+    if n_max >= 1:
+        L[1] = 1
+    for n in range(2, n_max + 1):
+        L[n] = L[n - 1] + L[n - 2]
+    return L
+
+
+def traces_twist(n_max: int) -> List[int]:
+    """a_n(twist) = Tr((-F)^n) = (-1)^n Tr(F^n) = (-1)^n L_n for n=1..n_max."""
+    L = lucas(n_max)
+    return [(((-1) ** n) * L[n]) for n in range(1, n_max + 1)]
+
+
 def primitives_from_traces(a: List[int]) -> List[int]:
     """Given a_n for n=1..N, return p_n for n=1..N."""
     N = len(a)
@@ -98,6 +127,8 @@ def primitives_from_traces(a: List[int]) -> List[int]:
 class Row:
     n: int
     p_in: int
+    p_twist: int
+    p_bdry: int
     q_vert: int
     p_M: int
 
@@ -107,19 +138,21 @@ def write_table_tex(path: Path, rows: List[Row]) -> None:
     lines.append("\\begin{table}[H]")
     lines.append("\\centering")
     lines.append("\\scriptsize")
-    lines.append("\\setlength{\\tabcolsep}{6pt}")
+    lines.append("\\setlength{\\tabcolsep}{5pt}")
     lines.append(
-        "\\caption{Primitive Artin split for the real-input $40$-state kernel. "
-        "We report $p_n(M)$ (true primitive orbit counts), $p_n(\\mathrm{in})$ (input-skeleton primitive counts), "
-        "and the signed vertical contribution $q_n:=p_n(M)-p_n(\\mathrm{in})=[z^n]P_{\\mathrm{vert}}(z)$.}"
+        "\\caption{Primitive split for the real-input $40$-state kernel. "
+        "We report the space/twist/boundary decomposition "
+        "$p_n(M)=p_n(\\mathrm{in})+p_n(-F)+b_n$, where "
+        "$q_n:=p_n(M)-p_n(\\mathrm{in})=p_n(-F)+b_n$ is the signed vertical contribution and "
+        "$b_n$ is supported only at $n=1,2$.}"
     )
     lines.append("\\label{tab:real_input_40_primitive_artin_split}")
-    lines.append("\\begin{tabular}{r r r r}")
+    lines.append("\\begin{tabular}{r r r r r r}")
     lines.append("\\toprule")
-    lines.append("$n$ & $p_n(\\mathrm{in})$ & $q_n$ (signed) & $p_n(M)$\\\\")
+    lines.append("$n$ & $p_n(\\mathrm{in})$ & $p_n(-F)$ (signed) & $b_n$ & $q_n$ (signed) & $p_n(M)$\\\\")
     lines.append("\\midrule")
     for r in rows:
-        lines.append(f"{r.n} & {r.p_in} & {r.q_vert} & {r.p_M}\\\\")
+        lines.append(f"{r.n} & {r.p_in} & {r.p_twist} & {r.p_bdry} & {r.q_vert} & {r.p_M}\\\\")
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
     lines.append("\\end{table}")
@@ -156,7 +189,29 @@ def main() -> None:
     p_in = primitives_from_traces(a_in)
     q = [pm - pin for pm, pin in zip(p_M, p_in, strict=True)]
 
-    rows = [Row(n=i + 1, p_in=p_in[i], q_vert=q[i], p_M=p_M[i]) for i in range(N)]
+    # Twist block: -F, where Tr(F^n)=Lucas number L_n and Tr((-F)^n)=(-1)^n L_n.
+    a_tw = traces_twist(N)
+    p_tw = primitives_from_traces(a_tw)
+
+    # Boundary short-cycle term: (1-z)^{-2}(1+z)^{-1} contributes b_1=b_2=1, else 0.
+    p_bdry = [1 if (i + 1) in (1, 2) else 0 for i in range(N)]
+
+    # Audit the refined split: q_n = p_n(-F) + b_n.
+    q_refined = [pt + pb for pt, pb in zip(p_tw, p_bdry, strict=True)]
+    if q_refined != q:
+        raise ValueError(f"refined split mismatch: q != p_twist + b at max_n={N}")
+
+    rows = [
+        Row(
+            n=i + 1,
+            p_in=p_in[i],
+            p_twist=p_tw[i],
+            p_bdry=p_bdry[i],
+            q_vert=q[i],
+            p_M=p_M[i],
+        )
+        for i in range(N)
+    ]
 
     jout = Path(args.json_out)
     jout.parent.mkdir(parents=True, exist_ok=True)
@@ -166,6 +221,8 @@ def main() -> None:
                 "max_n": int(args.max_n),
                 "p_M": p_M,
                 "p_in": p_in,
+                "p_twist": p_tw,
+                "p_boundary": p_bdry,
                 "q_vert": q,
                 "rows": [asdict(r) for r in rows],
             },
