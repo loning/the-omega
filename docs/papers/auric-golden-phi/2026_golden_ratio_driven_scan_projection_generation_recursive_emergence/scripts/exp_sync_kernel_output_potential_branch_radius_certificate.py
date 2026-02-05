@@ -230,11 +230,19 @@ class BranchRadiusPayload:
     D_u: str
     D_degree: int
     D_is_palindromic: bool
+    D_is_squarefree: bool
+    D_inv_x: str
+    D_inv_degree: int
     nearest_u: str
     nearest_u_inv: str
     theta_star: str
     R_theta: float
     arg_theta_star: float
+    arg_theta_star_over_pi: float
+    near_period_9_delta_rad: float
+    near_period_9_k_drift: float
+    D_inv_real_roots_in_minus2_2: int
+    unit_circle_branch_angles_t: List[float]
     r_used: float
     Mr_bound: float
     remainder_bound_theta_le_0_5: float
@@ -247,6 +255,70 @@ class BranchRadiusPayload:
 def _is_palindromic(P: sp.Poly) -> bool:
     coeffs = [int(c) for c in P.all_coeffs()]
     return coeffs == list(reversed(coeffs))
+
+
+def _palindromic_invariant_reduction_degree10(Dpoly: sp.Poly) -> sp.Poly:
+    """
+    Given a palindromic integer polynomial D(u) of degree 20, compute the unique
+    D_inv(x) in Z[x] of degree 10 such that:
+
+      D(u) = u^10 * D_inv(u + u^{-1}).
+
+    We use the Chebyshev-type basis U_k(x) = u^k + u^{-k} with recurrence:
+      U_0=2, U_1=x, U_{k+1} = x U_k - U_{k-1}.
+    """
+    u = Dpoly.gens[0]
+    deg = int(Dpoly.degree())
+    if deg != 20:
+        raise ValueError(f"expected deg(D)=20, got {deg}")
+    if not _is_palindromic(Dpoly):
+        raise ValueError("expected palindromic D(u)")
+
+    n = 10
+    x = sp.Symbol("x")
+
+    # Coefficients ascending in u^j.
+    coeff_desc = [sp.Integer(c) for c in Dpoly.all_coeffs()]  # u^20..u^0
+    d = list(reversed(coeff_desc))  # u^0..u^20
+
+    U: List[sp.Expr] = [sp.Integer(0)] * (n + 1)
+    U[0] = sp.Integer(2)
+    U[1] = x
+    for k in range(1, n):
+        U[k + 1] = sp.expand(x * U[k] - U[k - 1])
+
+    Dinv = sp.Integer(d[n])
+    for k in range(1, n + 1):
+        Dinv = sp.expand(Dinv + sp.Integer(d[n + k]) * U[k])
+
+    Dinv_poly = sp.Poly(Dinv, x, domain=sp.ZZ)
+
+    # Sanity check: u^10 * D_inv(u+u^{-1}) == D(u).
+    lhs = sp.expand(Dpoly.as_expr())
+    rhs = sp.expand(u**n * Dinv_poly.as_expr().subs(x, u + 1 / u))
+    if sp.expand(lhs - rhs) != 0:
+        raise RuntimeError("palindromic invariant reduction sanity check failed")
+    return Dinv_poly
+
+
+def _min_theta_from_invariant_root(x0: complex, max_k: int = 8) -> complex:
+    """
+    Solve 2 cosh(theta) = x0 and return the solution with minimal |theta|
+    among the candidates theta = ±acosh(x0/2) + 2π i k.
+    """
+    import mpmath as mp
+
+    z = mp.mpc(x0) / 2
+    base = mp.acosh(z)  # principal
+    best: complex | None = None
+    for sign in (1, -1):
+        for k in range(-max_k, max_k + 1):
+            th = sign * base + 2j * mp.pi * k
+            th_c = complex(th)
+            if best is None or abs(th_c) < abs(best):
+                best = th_c
+    assert best is not None
+    return best
 
 
 def main() -> None:
@@ -297,30 +369,66 @@ def main() -> None:
         Dpoly = sp.Poly(D, u, domain=sp.ZZ)
         deg = int(Dpoly.degree())
         pal = _is_palindromic(Dpoly)
+        D_squarefree = bool(sp.gcd(Dpoly, Dpoly.diff()).degree() == 0)
 
-        # Numerical roots of D(u)=0.
-        print("[sync-branch-radius] finding roots of D(u)=0", flush=True)
-        roots = sp.nroots(Dpoly, n=int(args.dps), maxsteps=250)
-        roots_c: List[complex] = [complex(sp.N(r, int(args.dps))) for r in roots]
-        # Choose u_star that minimizes min_k |Log(u)+2π i k|.
-        best_u = None
+        # Palindromic invariant reduction: D(u)=u^10 D_inv(u+u^{-1})
+        Dinv_poly = _palindromic_invariant_reduction_degree10(Dpoly)
+        x = Dinv_poly.gens[0]
+        Dinv_deg = int(Dinv_poly.degree())
+
+        # Unit-circle (theta=it) branch angles: real roots of D_inv(x) in [-2,2].
+        # Root count is exact (Sturm sequence), angles are numerical.
+        root_count_minus2_2 = int(Dinv_poly.count_roots(-2, 2))
+
+        # Numerical roots of D_inv(x)=0 (degree-10), then map via 2 cosh(theta)=x.
+        print("[sync-branch-radius] finding roots of D_inv(x)=0 (degree 10)", flush=True)
+        roots_x = sp.nroots(Dinv_poly, n=int(args.dps), maxsteps=250)
+        roots_x_c: List[complex] = [complex(sp.N(r, int(args.dps))) for r in roots_x]
+
+        # Choose theta_star that minimizes |theta| over all roots and 2π i Z lifts.
         best_theta = None
-        for uu in roots_c:
-            if abs(uu) == 0:
-                continue
-            th = _min_theta_distance(uu, max_k=8)
+        best_x = None
+        for xx in roots_x_c:
+            th = _min_theta_from_invariant_root(xx, max_k=10)
             if best_theta is None or abs(th) < abs(best_theta):
                 best_theta = th
-                best_u = uu
-        assert best_u is not None and best_theta is not None
-        # Use the inverse if it gives a theta with positive real part (presentation choice).
-        u_inv = 1.0 / best_u
-        theta_inv = _min_theta_distance(u_inv, max_k=8)
-        theta_star = theta_inv if (theta_inv.real >= 0) else best_theta
-        u_star = u_inv if (theta_inv.real >= 0) else best_u
+                best_x = xx
+        assert best_theta is not None and best_x is not None
+
+        # Presentation conventions: prefer Re(theta)>=0 and Im(theta)>=0 (use symmetries).
+        theta_star = best_theta
+        if theta_star.real < 0:
+            theta_star = -theta_star
+        if theta_star.imag < 0:
+            theta_star = theta_star.conjugate()
+
+        import cmath
+
+        u_star = cmath.exp(theta_star)
+        u_inv = 1.0 / u_star
 
         R_theta = float(abs(theta_star))
         arg_theta = float(math.atan2(theta_star.imag, theta_star.real))
+
+        # Unit-circle branch angles t in (0,pi]: theta=it => x=2cos t in [-2,2].
+        unit_circle_t: List[float] = []
+        # Use numerical roots to list angles (count is already exact).
+        for rr in roots_x:
+            re = float(sp.re(rr))
+            im = float(sp.im(rr))
+            if abs(im) > 1e-30:
+                continue
+            if re < -2 - 1e-12 or re > 2 + 1e-12:
+                continue
+            # t = arccos(x/2) in [0,pi]
+            t = float(mp.acos(mp.mpf(re) / 2))
+            unit_circle_t.append(t)
+        unit_circle_t = sorted(unit_circle_t)
+
+        # Near-period-9 diagnostic from arg(theta_star).
+        arg_over_pi = float(arg_theta / math.pi)
+        delta9 = float(arg_theta - (4.0 * math.pi / 9.0))
+        k_drift = float(math.pi / (2.0 * abs(delta9))) if delta9 != 0 else float("inf")
 
         # Cauchy remainder certificate via M_r on |theta|=r.
         r_used = float(args.radius_factor) * R_theta
@@ -369,11 +477,19 @@ def main() -> None:
             D_u=str(D),
             D_degree=deg,
             D_is_palindromic=bool(pal),
+            D_is_squarefree=bool(D_squarefree),
+            D_inv_x=str(Dinv_poly.as_expr()),
+            D_inv_degree=int(Dinv_deg),
             nearest_u=f"{u_star.real:.10f}{u_star.imag:+.10f}i",
-            nearest_u_inv=f"{(1.0/u_star).real:.10f}{(1.0/u_star).imag:+.10f}i",
+            nearest_u_inv=f"{u_inv.real:.10f}{u_inv.imag:+.10f}i",
             theta_star=f"{theta_star.real:.10f}{theta_star.imag:+.10f}i",
             R_theta=float(R_theta),
             arg_theta_star=float(arg_theta),
+            arg_theta_star_over_pi=float(arg_over_pi),
+            near_period_9_delta_rad=float(delta9),
+            near_period_9_k_drift=float(k_drift),
+            D_inv_real_roots_in_minus2_2=int(root_count_minus2_2),
+            unit_circle_branch_angles_t=[float(t) for t in unit_circle_t],
             r_used=float(r_used),
             Mr_bound=float(Mr_bound),
             remainder_bound_theta_le_0_5=float(rem),
@@ -393,6 +509,10 @@ def main() -> None:
         # Present D(u) as a full polynomial (auditable).
         D_latex = sp.latex(D_expr)
         disc_latex = sp.latex(sp.Poly(disc, u_tex, domain=sp.ZZ).as_expr())
+
+        x_tex = sp.Symbol("x")
+        Dinv_expr = sp.Poly(Dinv_poly.as_expr(), x_tex, domain=sp.ZZ).as_expr()
+        Dinv_latex = sp.latex(Dinv_expr)
 
         disc2_expr = sp.Poly(disc2, u_tex, domain=sp.ZZ).as_expr()
         disc2_latex = sp.latex(disc2_expr)
@@ -420,6 +540,41 @@ def main() -> None:
         tex_lines.append("D(u)=" + D_latex + ".")
         tex_lines.append("$$")
         tex_lines.append("\\end{proposition}")
+        tex_lines.append("")
+        tex_lines.append("\\begin{corollary}[回文判别式的 $10$ 次不变量降阶]\\label{cor:pressure-discriminant-invariant-reduction}")
+        tex_lines.append("由于 $D(u)$ 为 $20$ 次回文多项式（$u^{20}D(1/u)=D(u)$），存在唯一 $D_{\\mathrm{inv}}(x)\\in\\ZZ[x]$（$\\deg=10$）使得")
+        tex_lines.append("$$")
+        tex_lines.append("D(u)=u^{10}\\,D_{\\mathrm{inv}}\\!\\left(u+u^{-1}\\right).")
+        tex_lines.append("$$")
+        tex_lines.append("写 $u=e^{\\theta}$，则 $u+u^{-1}=2\\cosh\\theta$，从而")
+        tex_lines.append("$$")
+        tex_lines.append("D(e^{\\theta})=e^{10\\theta}\\,D_{\\mathrm{inv}}(2\\cosh\\theta).")
+        tex_lines.append("$$")
+        tex_lines.append("因此除去平凡因子 $u^5$ 外，Perron 分支的有限分歧点由一元 $10$ 次方程 $D_{\\mathrm{inv}}(2\\cosh\\theta)=0$ 完全刻画；求最近分歧点可先解 $D_{\\mathrm{inv}}(x)=0$ 再用 $2\\cosh\\theta=x$ 的反双曲余弦映射选取 $|\\theta|$ 最小的 $2\\pi i\\ZZ$-lift。")
+        tex_lines.append("对本核有完全显式的整数多项式")
+        tex_lines.append("$$")
+        tex_lines.append("D_{\\mathrm{inv}}(x)=" + Dinv_latex + ".")
+        tex_lines.append("$$")
+        tex_lines.append("并且若取完成化变量 $u=r^2,\\ s=r+r^{-1}$（命题 \\ref{prop:weighted-completion-Q}），则 $u+u^{-1}=s^2-2$，从而")
+        tex_lines.append("$$")
+        tex_lines.append("\\mathrm{Disc}_w\\bigl(\\widehat\\Delta(w,s)\\bigr)=D_{\\mathrm{inv}}(s^2-2),")
+        tex_lines.append("$$")
+        tex_lines.append("这与式 \\eqref{eq:sync_kernel_hatdelta_discriminant} 的 $20$ 次多项式完全一致。")
+        tex_lines.append("\\end{corollary}")
+        tex_lines.append("")
+        tex_lines.append("\\begin{corollary}[单位圆扭曲上的三个本征分歧角]\\label{cor:pressure-unit-circle-branch-angles}")
+        tex_lines.append("取 $u=e^{it}$（即 $\\theta=it$，$t\\in\\RR$），则 $u+u^{-1}=2\\cos t\\in[-2,2]$。因此单位圆上的分歧点与 $D_{\\mathrm{inv}}(x)$ 在区间 $[-2,2]$ 内的实根一一对应。")
+        tex_lines.append(f"对本核，Sturm 计数给出 $D_{{\\mathrm{{inv}}}}$ 在 $[-2,2]$ 内恰有 {root_count_minus2_2} 个实根，故在一个周期 $t\\in(0,\\pi]$ 内恰有三个位于纯虚轴的分歧角（再加 $2\\pi\\ZZ$ 平移）：")
+        tex_lines.append("$$")
+        # angles: print in increasing order, aligned with Table tab_sync_kernel_hatdelta_branch_points
+        if len(unit_circle_t) >= 3:
+            t1, t2, t3 = unit_circle_t[:3]
+            tex_lines.append(f"t_1\\approx {t1:.12f},\\qquad t_2\\approx {t2:.12f},\\qquad t_3\\approx {t3:.12f}.")
+        else:
+            tex_lines.append("\\text{（数值根略）}")
+        tex_lines.append("$$")
+        tex_lines.append("等价地，在完成化坐标 $s=r+r^{-1}=2\\cos(t/2)$ 下对应表 \\ref{tab:sync_kernel_hatdelta_branch_points} 所列的三个单位圆分歧点。")
+        tex_lines.append("\\end{corollary}")
         tex_lines.append("")
         tex_lines.append("\\begin{corollary}[最近分歧点与 $\\theta$-解析半径]\\label{cor:pressure-analytic-radius}")
         tex_lines.append("以 $\\theta=\\log u$ 为局部坐标，并以 $\\lambda(1)=3$ 的 Perron 分支为基准进行解析延拓。")
@@ -484,6 +639,17 @@ def main() -> None:
         tex_lines.append("其主导模式由 $\\pm\\theta_\\star$ 及其共轭贡献叠加给出，故 $f^{(2k)}(0)$ 的符号可由")
         tex_lines.append("$\\cos\\bigl(2k\\arg(\\theta_\\star)+\\phi_0\\bigr)$ 型项控制（$\\phi_0$ 为分支点局部相位）。")
         tex_lines.append(f"在本核上 $\\arg(\\theta_\\star)\\approx {payload.arg_theta_star:.10f}$。")
+        tex_lines.append("进一步，由于 $\\gcd(D(u),D'(u))=1$，$D(u)$ 在 $\\CC$ 上无重根，因此每个有限分歧点都是简单谱碰撞并诱导平方根型 Puiseux 分歧。于是高阶偶导数具有通用包络指数 $k^{-3/2}$：存在常数 $C\\neq 0$ 使得（$k\\to\\infty$）")
+        tex_lines.append("$$")
+        tex_lines.append("f^{(2k)}(0)\\sim C\\,(2k)!\\,|\\theta_\\star|^{-2k}\\,k^{-3/2}\\cos\\bigl(2k\\arg(\\theta_\\star)+\\phi_0\\bigr).")
+        tex_lines.append("$$")
+        tex_lines.append(
+            f"并且 $\\arg(\\theta_\\star)/\\pi\\approx {payload.arg_theta_star_over_pi:.10f}\\approx 4/9$，"
+            f"与 $4\\pi/9$ 的偏差 $\\Delta\\approx {payload.near_period_9_delta_rad:.6e}$（弧度）给出近 $9$ 周期的漂移尺度"
+        )
+        tex_lines.append("$$")
+        tex_lines.append(f"k_\\mathrm{{drift}}\\sim \\frac{{\\pi}}{{2|\\Delta|}}\\approx {payload.near_period_9_k_drift:.3f}.")
+        tex_lines.append("$$")
         tex_lines.append("\\end{remark}")
 
         tout = Path(args.tex_out)
