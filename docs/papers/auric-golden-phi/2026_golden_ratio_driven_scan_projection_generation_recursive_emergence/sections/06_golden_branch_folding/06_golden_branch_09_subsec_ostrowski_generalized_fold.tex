@@ -147,7 +147,7 @@ h_Z(2)-h_Z(1)=\log\!\left(\frac{3}{1+\sqrt2}\cdot\frac{1+\sqrt5}{4}\right)
 \end{proof}
 
 \paragraph{与反共振证书的不可兼得}
-附录 H 的 gap/差异度证书给出另一条“反共振强度”泛函，其典型形式可写为
+附录 \ref{app:kronecker-discrepancy-metallic-gap} 的 gap/差异度证书给出另一条“反共振强度”泛函，其典型形式可写为
 \[
 \kappa(A):=\frac{A}{\log\lambda_A},
 \]
@@ -161,6 +161,8 @@ h_Z(2)-h_Z(1)=\log\!\left(\frac{3}{1+\sqrt2}\cdot\frac{1+\sqrt5}{4}\right)
 \end{itemize}
 因此“反共振最优性”与“投影压缩最优性”在金属平均族上不可兼得：它们对应两条不同的可审计泛函，且极值点分离。
 \end{remark}
+
+\paragraph{金属平均族的二目标相图：帕累托前沿、标量化阈值与有限样本设计律}
 
 \begin{proposition}[金属平均族的两目标帕累托前沿：\texorpdfstring{$\lambda$}{lambda} 一参数闭式刻画]\label{prop:metallic-pareto-frontier-lambda}
 令 \(\lambda:=\lambda_A\) 为命题 \ref{prop:metallic-two-state-sft} 的 Perron 根。由特征方程
@@ -193,6 +195,15 @@ h_Z(A)=\log\bigl((A+1)/\lambda_A\bigr)
 因此当 \(A>3/2\) 时，取 \(A_\star=3/2\) 有 \(\kappa(A_\star)<\kappa(A)\) 且 \(h_Z(A_\star)>h_Z(A)\)，故该分支被严格支配；而 \(A\in[1,3/2]\) 上任意两点一增一减，互不支配，从而构成帕累托前沿。证毕。
 \end{proof}
 
+\begin{remark}[设计空间缩减：无需讨论 \texorpdfstring{$A>3/2$}{A>3/2}]\label{rem:metallic-design-space-reduction}
+命题 \ref{prop:metallic-pareto-frontier-lambda} 表明：在连续参数下，所有 \(A>3/2\) 的分支在“压缩/反共振”二目标意义下都被 \(A_\star=3/2\) 严格支配，因而不属于帕累托集合。
+因此若允许 \(A\) 连续化，则设计空间可无损缩减为
+\[
+A\in\left[1,\frac{3}{2}\right].
+\]
+若强制 \(A\in\ZZ_{\ge 1}\)，则由同样的单调性可知 \(A\ge 3\) 均被 \(A=2\) 严格支配，从而整数帕累托集合缩减为 \(\{1,2\}\)。
+\end{remark}
+
 \begin{corollary}[最大投影压缩的“语法熵锁定”：\texorpdfstring{$\lambda=2$}{lambda=2}]\label{cor:metallic-compression-locking-lambda2}
 命题 \ref{prop:metallic-compression-extremum} 的连续极大点 \(A_\star=3/2\) 等价于
 \[
@@ -210,6 +221,114 @@ h_Z(A_\star)=h_Z(\lambda=2)=\log\!\left(\frac{5}{4}\right).
 h_Z(A_\star)=\log((5/2)/2)=\log(5/4)
 \)。证毕。
 \end{proof}
+
+\begin{proposition}[线性权衡的端点相变阈值]\label{prop:metallic-linear-scalarization-threshold}
+对权重 \(\beta\ge 0\)，考虑线性标量化目标
+\[
+J_\beta(A):=h_Z(A)-\beta\,\kappa(A),\qquad A\ge 1.
+\]
+定义临界阈值
+\[
+\beta_c:=\frac{h_Z'(1)}{\kappa'(1)}
+=\frac{\left(\frac{1}{2}-\frac{1}{\sqrt5}\right)(\log\varphi)^2}{\log\varphi-\frac{1}{\sqrt5}}
+\approx 0.35953.
+\]
+则 \(J_\beta\) 的最大化点 \(A_\beta\) 满足：
+\begin{itemize}
+  \item 若 \(\beta\ge \beta_c\)，则 \(A_\beta=1\)（黄金端点被强制选中）；
+  \item 若 \(0\le \beta<\beta_c\)，则存在唯一 \(A_\beta\in(1,3/2]\) 使得 \(J_\beta'(A_\beta)=0\)，并且当 \(\beta\downarrow 0\) 时 \(A_\beta\to 3/2\)。
+\end{itemize}
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:metallic-pareto-frontier-lambda}，对任意 \(A>3/2\) 都有 \(h_Z(A)<h_Z(3/2)\) 且 \(\kappa(A)>\kappa(3/2)\)，因此对任意 \(\beta\ge 0\)，
+\[
+J_\beta(A)=h_Z(A)-\beta\kappa(A)\ <\ h_Z(3/2)-\beta\kappa(3/2)=J_\beta(3/2),
+\]
+从而最大化点必落在紧区间 \([1,3/2]\)。
+\par
+在该区间上，由命题 \ref{prop:metallic-compression-extremum} 的推导可得
+\[
+h_Z'(A)=\frac{1}{A+1}-\frac{1}{\sqrt{A^2+4}},\qquad
+h_Z''(A)=-\frac{1}{(A+1)^2}+\frac{A}{(A^2+4)^{3/2}}<0.
+\]
+另一方面，由 \(\lambda_A^2-A\lambda_A-1=0\) 微分得到
+\[
+(\log\lambda_A)'=\frac{1}{\sqrt{A^2+4}},
+\]
+从而
+\[
+\kappa'(A)=\frac{\log\lambda_A-\frac{A}{\sqrt{A^2+4}}}{(\log\lambda_A)^2}.
+\]
+再令
+\[
+f(A):=\frac{2A\sqrt{A^2+4}}{A^2+8}-\log\lambda_A.
+\]
+直接计算得到
+\[
+f'(A)=\frac{A^2(8-A^2)}{\sqrt{A^2+4}\,(A^2+8)^2}>0\qquad(1\le A\le 3/2),
+\]
+并且 \(f(1)=2\sqrt5/9-\log\varphi\approx 1.50\times 10^{-2}>0\)，故 \(f(A)>0\) 在 \([1,3/2]\) 上成立。
+注意到
+\[
+\kappa''(A)=\frac{-A^2-8+\frac{2A\sqrt{A^2+4}}{\log\lambda_A}}{(A^2+4)^{3/2}(\log\lambda_A)^2},
+\]
+其分子与 \(f(A)\) 同号，故 \(\kappa''(A)>0\) 在 \([1,3/2]\) 上成立。
+于是对任意 \(\beta\ge 0\)，
+\[
+J_\beta''(A)=h_Z''(A)-\beta\,\kappa''(A)<0\qquad(1\le A\le 3/2),
+\]
+即 \(J_\beta\) 在 \([1,3/2]\) 上严格凹，从而最大化点唯一。
+\par
+再计算 \(J_\beta'(1)=h_Z'(1)-\beta\kappa'(1)\)。当 \(\beta\ge\beta_c\) 时，\(J_\beta'(1)\le 0\)，结合严格凹性可知最大化点为端点 \(A_\beta=1\)。
+当 \(0\le\beta<\beta_c\) 时，\(J_\beta'(1)>0\)，且 \(J_\beta'(3/2)=h_Z'(3/2)-\beta\kappa'(3/2)=-\beta\kappa'(3/2)<0\)，由介值定理存在唯一 \(A_\beta\in(1,3/2]\) 使 \(J_\beta'(A_\beta)=0\)，并由严格凹性知其即为最大化点。
+最后，当 \(\beta\downarrow 0\) 时，\(J_\beta'\to h_Z'\)（在紧区间上一致），而 \(h_Z'\) 在 \(A_\star=3/2\) 处唯一为零，故 \(A_\beta\to 3/2\)。证毕。
+\end{proof}
+
+\begin{corollary}[把权重绑定到有限样本证书的样本量阈值]\label{cor:metallic-sample-threshold}
+令
+\[
+\beta(N):=\frac{\log N}{N}\qquad(N\ge 2),
+\]
+并记 \(A_N:=A_{\beta(N)}\) 为命题 \ref{prop:metallic-linear-scalarization-threshold} 的最大化点。
+令 \(N_c\) 为方程 \(\beta(N)=\beta_c\) 在区间 \(N\in[e,\infty)\) 上的唯一解，则
+\[
+N_c\approx 3.42058.
+\]
+于是对所有整数 \(N\ge 4\)，均有 \(A_N\in(1,3/2]\)，并且当 \(N\to\infty\) 时 \(A_N\to 3/2\)。
+\end{corollary}
+\begin{proof}
+函数 \(N\mapsto \beta(N)=\log N/N\) 在 \(N\ge e\) 上严格递减，且 \(\beta(e)=1/e>\beta_c\)、\(\lim_{N\to\infty}\beta(N)=0\)，故在 \([e,\infty)\) 上存在唯一解 \(N_c\)。
+数值近似由该一元方程直接求得（可复现计算）。
+当 \(N\ge 4>N_c\) 时有 \(\beta(N)<\beta_c\)，由命题 \ref{prop:metallic-linear-scalarization-threshold} 得 \(A_N\in(1,3/2]\)。
+又因 \(\beta(N)\to 0\)，结合同一命题的极限结论得到 \(A_N\to 3/2\)。证毕。
+\end{proof}
+
+\begin{remark}[“最后 \texorpdfstring{$5\%$}{5\%} 压缩”的边际代价常数]\label{rem:metallic-marginal-price}
+由推论 \ref{cor:metallic-compression-locking-lambda2} 的连续压缩最优点 \(A_\star=3/2\) 与黄金端点 \(A=1\) 的比较，
+压缩斜率增量为
+\[
+\Delta h:=h_Z(3/2)-h_Z(1)
+=\log\!\left(\frac{5}{4}\right)-\log\!\left(\frac{2}{\varphi}\right)
+=\log\!\left(\frac{5\varphi}{8}\right)\approx 1.12082\times 10^{-2},
+\]
+相对增益 \(\Delta h/h_Z(1)\approx 5.29\%\)。
+而反共振证书系数增量为
+\[
+\Delta \kappa:=\kappa(3/2)-\kappa(1)
+=\frac{3}{2\log 2}-\frac{1}{\log\varphi}\approx 8.59556\times 10^{-2}.
+\]
+因此“单位压缩增益对应的证书代价”可由可复现常数指纹
+\[
+\boxed{\ \Pi:=\frac{\Delta \kappa}{\Delta h}\approx 7.669\ }
+\]
+量化。
+\par
+若强制整数 \(A\in\ZZ_{\ge 1}\)，则黄金 \(\to\) 白银（\(A=2\)）的对应比值为
+\[
+\Pi_{2:1}:=\frac{\kappa(2)-\kappa(1)}{h_Z(2)-h_Z(1)}\approx 36.03,
+\]
+体现出整数分支上“低回报-高代价”段更为陡峭。
+\end{remark}
 
 \begin{remark}[设计律：黄金 \texorpdfstring{$A=1$}{A=1} $\to$ 白银 \texorpdfstring{$A=2$}{A=2} 属于“低回报-高代价”段]\label{rem:metallic-design-law-low-return}
 在 \(A\in[1,2]\)（等价于 \(\lambda\in[\varphi,1+\sqrt2]\)）上，压缩斜率的增益很小而反共振证书单调变差：
