@@ -29,6 +29,59 @@
   \item \textbf{（Fold6 的刚性统一种子与先验离散 Weyl 作用）}在 \(m=6\) 的稳定类型层上，\(X_6\) 的 \(18\oplus 3\) 分裂及其 cyclic 子集的 \(6+12\) Hamming-weight 指纹，把“Cartan-like 三方向 + 根样十八方向”的计数结构直接锁定到 rank-\(3\)、维 \(21\) 的简单李型 \(B_3/C_3\) 候选；相应离散对称核为 \(W(B_3)\cong W(C_3)\cong (\ZZ_2)^3\rtimes S_3\) 且阶为 \(48\)。进一步，在势—响应辛相空间的连续包络口径下，\(C_3\) 一侧可被解释为 \(\mathrm{Sp}(6)\) 的最小连续统一群（注 \ref{rem:sp6-minimal-continuous-envelope}；表 \ref{tab:sync_kernel_weighted_sp6_isotropy_scan} 给出一个可复现的“单尺度/各向同性”扫描检验）。该结论以可复现脚本与根字典表给出（见 \ref{subsec:bdry-tower-zeck-gut}；附录 \ref{app:fold6-b3c3-seed-dictionary}）。
 \end{enumerate}
 
+\subsection{结构性洞察：三个反直觉界面（讨论）}\label{subsec:structural-insights}
+本文中最“反直觉”的要点并非由某一孤立定理单独承载，而是若干跨章节结果在同一机制上的\textbf{相互锁定}：分辨率降阶的非局域性、序列层的记忆补偿（从而可逆/熵率不降）、以及值保持群胚重写所提供的算术横截面。为遵循本文的 scope control 约定，本小节仅以已证明的编号结果为锚点给出解释性综合，不引入新的数学主张。
+
+\subsubsection{规范差的全域翻转与分辨率降阶的不可逆性}\label{subsubsec:insight-gauge-anomaly}
+\paragraph{可证锚点（最坏全域翻转）}
+在微态层面，从分辨率 \(m+1\) 降至 \(m\) 时需区分两类降阶：朴素截断 \(r_{m+1\to m}\)（直接丢弃末位）与折叠感知 restriction \(\widetilde r_{m+1\to m}\)（先折叠再截断；小节 \ref{subsec:fold-omega-restriction}）。规范差 \(G_m(\omega)\) 以可计算的组合量度刻画两者偏离（定义 \ref{def:fold-gauge-anomaly}），并在最坏情形下达到满长（定理 \ref{thm:fold-gauge-anomaly-max}）：
+\[
+G_m(\omega^\star)=m,
+\]
+即两种降阶输出在前 \(m\) 位上逐位全异。该结论同时给出一条硬障碍：任何“只修正末端常数位”的降分辨率补丁在一般情形下都不可能完备（推论 \ref{cor:fold-tail-patch-incomplete}）。
+此外，即便在均匀输入基线下，平均规范差也呈线性尺度并具有确定的常数密度极限 \(g_\ast=4/9\)（注 \ref{rem:fold-gauge-anomaly-typical}；定理 \ref{thm:fold-gauge-anomaly-density}），表明“大规模前缀重写”并非仅由病态构造触发。
+
+\paragraph{反直觉性（非局域 coarse-graining）}
+朴素直觉倾向于把“降分辨率”理解为“仅损失末位细节、其余前缀保持不变或仅发生局部扰动”。定理 \ref{thm:fold-gauge-anomaly-max} 表明这一理解在折叠/规范形机制下是错误的：\(\widetilde r_{m+1\to m}\) 由“先规范化再截断”的顺序强制给出，其输出受全局约束支配；因此高分辨率的一个末位差异可以在规范化过程中触发不同的重写路径，从而将低分辨率前缀整体重写为互补串。这说明：折叠不是温和的近似，而是一个\textbf{非局域、非线性}的 coarse-graining。
+
+\paragraph{解释性含义（跨尺度描述的逻辑不相容）}
+上述“全域翻转”现象可被视为一种可审计的跨尺度不相容原型：低分辨率描述并非高分辨率描述的简单模糊化，而可能需要对前缀做线性尺度的全局纠偏（由 \(G_m\) 精确度量）。在投影本体数学的语言中，这对应于“降阶”不仅是去尾，更是选择一个与规范横截面一致的投影（定义 \ref{def:fold-gauge-anomaly} 的语义 remark）。该观察为讨论“粗粒化会否引入结构性断裂”提供了一个严格、可复现的数学基准（此处仅作类比性解释，不构成物理外推）。
+
+\subsubsection{序列层共轭与熵率不降：信息的有限记忆化}\label{subsubsec:insight-entropy-memory}
+\paragraph{可证锚点（熵率不降与有限窗逆码）}
+窗口层折叠 \(\Fold_m:\Omega_m\to X_m\) 典型为多对一，因而若仅在单个窗口上观察，确有“区分度丢失”。然而，当把折叠沿滑动窗口提升为序列层滑动块码 \(\Phi_m\)（定义 \ref{def:Phi_m}）时，信息率结论发生根本变化：
+\begin{itemize}
+  \item 对任意 \(m\ge 2\)，序列像 \(Y_m\) 的拓扑熵满足 \(h_{\mathrm{top}}(Y_m)=\log 2\)，即\textbf{熵不降}（推论 \ref{cor:Phi_m-entropy-no-drop}）；
+  \item 对任意 \(m\ge 3\)，更进一步有 \(\Phi_m:\{0,1\}^{\ZZ}\to Y_m\) 为\textbf{拓扑共轭}，并存在一个记忆为 \(m-1\) 的有限窗逆码 \(\Psi_m\) 使 \(\Psi_m\circ\Phi_m=\mathrm{id}\)、\(\Phi_m\circ\Psi_m=\mathrm{id}\)（定理 \ref{thm:Phi_m-conjugacy-threshold}）。
+\end{itemize}
+因此，尽管 \(\Fold_m\) 在窗口层剧烈多对一，序列层机制不仅不压缩每步 \(1\) 比特的自由度，在 \(m\ge 3\) 时甚至\textbf{完全可逆}，且可逆性由显式、可执行的有限窗解码器给出。
+
+\paragraph{反直觉性（“丢失”不是湮灭而是迁移）}
+推论 \ref{cor:Phi_m-entropy-no-drop} 与定理 \ref{thm:Phi_m-conjugacy-threshold} 所揭示的反直觉点在于：窗口层的多对一压缩并未在序列层造成不可恢复的信息湮灭；相反，窗口层被压扁的纤维自由度被系统性地\textbf{迁移}为时间方向的有限状态记忆（推论 \ref{cor:Phi_m-entropy-no-drop} 的末段解释）。从因果结构看，解码所需的“额外自由度”并不以更高瞬时分辨率出现，而以内嵌在时间结构中的有限延迟形式出现。
+
+\paragraph{解释性含义（有限态“全息式”编码的原型）}
+上述机制提供了一种严格的、有限态的“体—边”编码原型：高维/高分辨率的微态区分可被完整编码为低维输出序列及其伴随的有限记忆状态（例如定理 \ref{thm:Phi_m-conjugacy-threshold} 的 \(\Psi_m\) 仅需长度 \(m\) 的局部窗口即可恢复输入位）。在本文语境下，这可被理解为“信息守恒”并非以显式的逐窗注入出现，而是通过\textbf{时间结构与空间结构的互换}来实现；相应的“信息账本”视角在 POM 框架中被进一步对象化（见定理 \ref{thm:pom-kl-ledger} 及其推论）。
+
+\subsubsection{群胚生成元：操作数不对称的局部可逆重写作为算术底座}\label{subsubsec:insight-groupoid-generators}
+\paragraph{可证锚点（值保持轨道与规范横截面）}
+在群胚视角下（小节 \ref{sec:groupoid-zeckendorf}），Fibonacci 关系被实现为一族局部可逆重写生成元 \(\{E_k,E_k^{-1}\}\)（定义 \ref{def:fib-moves}），其核心性质是\textbf{值保持}（命题 \ref{prop:orbits-preserve-val}）。由此得到一个严格的“轨道—横截面”结构：群胚轨道恰等于值纤维，而 Zeckendorf 合法集合 \(X_\infty\) 给出每个轨道的唯一规范代表（定理 \ref{thm:zeckendorf-transversal}），折叠 \(\Fold_\infty\) 因而可解释为“沿值保持对称轨道投影到横截面”的算子。
+
+\paragraph{反直觉性（基本原语并非 \texorpdfstring{$+1$}{+1}，而是裂解/合并对）}
+在这一组织方式中，算术的“微观原语”更自然地不是后继函数或 \(\,+1\)，而是一对互逆的局部变换：它们在保持 \(\mathrm{Val}\) 不变的同时实现局部裂解/合并（典型如 \(E_k(a)=a+e_k+e_{k+1}-e_{k+2}\) 与其逆 \(E_k^{-1}\)；定义 \ref{def:fib-moves}）。尤其值得强调的是，这对生成元的正向与逆向在“块数/操作数”意义下天然不对称（裂解对应 \(1\to 2\)，合并对应 \(2\to 1\)；见小节 \ref{subsec:zeckendorf-algorithms-complexity} 中关于 \(\nu(E_k(a))\) 的讨论）。因此，“可计数对象”与“加法规则”的稳定性可被理解为：在值守恒约束下，所有局部裂解/合并轨道被折叠压缩为唯一正规形，从而在横截面上诱导出与经典算术同构的稳定运算。
+
+\paragraph{解释性含义（从可逆微操作到稳定代数律）}
+上述图景把“算术法则为何稳定”转译为两个可审计接口的复合：其一是值保持群胚所给出的等价关系与轨道结构（定理 \ref{thm:zeckendorf-transversal}），其二是规范形选择所保证的终止性与唯一正规形（命题 \ref{prop:directed-rewrite-termination}）。在该意义下，交换律/结合律等“宏观代数律”并非先验原语，而是对局部可逆重写在全局值守恒约束下达到稳态横截面的结构性后果（此处为解释性表述；对应的严格同构由值映射取商并识别为 \((\NN,+)\) 的结论给出，见定理 \ref{thm:monoid-quotient-is-N}）。
+
+\paragraph{综合总结（解释性）}
+以上三条界面共同指向一个可在本文内部自洽表述的观点：在有限分辨率读出下，“基本概念”（自然数对象、加法法则、以及相应的稳定类型）可被理解为折叠/投影过程在统计稳定与规范横截面约束下\textbf{被迫显现}的有效结构；微观区分度虽在窗口层被压缩，但可通过序列层的有限记忆结构被完整恢复（定理 \ref{thm:Phi_m-conjugacy-threshold}）。
+该观点至少包含三条易被忽略的含义：
+\begin{enumerate}
+  \item \textbf{基础结构的派生性：}最“坚实”的对象/运算并不作为外加原语出现，而是由值保持轨道与规范横截面机制导出的稳定坐标（小节 \ref{sec:groupoid-zeckendorf}）。
+  \item \textbf{信息的维度迁移：}窗口层的多对一压缩可在序列层以有限记忆的方式补偿，从而使“信息守恒”以时间相关的形式实现（推论 \ref{cor:Phi_m-entropy-no-drop}；定理 \ref{thm:Phi_m-conjugacy-threshold}）。
+  \item \textbf{稳定性极值的规范代表：}黄金分支 \(\varphi^{-1}\) 在本文中作为反共振/最坏有理逼近口径下的规范代表出现；其“最优性”只在该口径与显式证书链条之内成立（注 \ref{rem:what-is-optimized}），不外推为更强的全局最优性主张。
+\end{enumerate}
+在这一解释框架下，可将本文的折叠/投影机制理解为一种由观测稳定性约束诱导的最稳定“可读出”横截面选择：观测者在有限分辨率下所见的对象—运算—概念层级，更接近于该动力系统的投影像，而非其全部微观自由度（此段为解释性语言）。
+
 \subsection{桥包升级：三条可证伪预测（可复现接口）}
 以下三条并非“复述正文已有结论”，而是把共振缺口 \(\Delta(q)\)、profinite Chebotarev 的对数预算、以及二维慢模指纹 \(\mathbf{R}_{m,2}\) 拼接后自然得到的\textbf{下一步可证伪命题}：
 \begin{enumerate}
