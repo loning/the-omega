@@ -145,6 +145,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_clt_variance",
+            script="exp_fold_gauge_anomaly_clt_variance.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_clt_variance.json",
+                "sections/generated/eq_fold_gauge_anomaly_clt_variance.tex",
+            ],
+        ),
+        Step(
             name="iid_sources_fold_vs_parry",
             script="exp_iid_sources_fold_vs_parry.py",
             args=[],
