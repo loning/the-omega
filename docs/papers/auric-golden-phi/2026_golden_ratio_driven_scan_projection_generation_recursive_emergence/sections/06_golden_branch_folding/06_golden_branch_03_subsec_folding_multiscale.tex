@@ -133,21 +133,6 @@ $$
 其中 \(\oplus\) 为逐位异或（在 \(\{0,1\}^m\) 上按模 \(2\) 相加），而 \(|\cdot|_0\) 为汉明重量（非零位计数）。
 \end{definition}
 
-\begin{remark}[规范场作为分辨率联络：补偿串 \(A_{m+1\to m}\)]\label{rem:fold-gauge-connection}
-把逐位补偿串
-\[
-A_{m+1\to m}(\omega)
-:=
-r_{m+1\to m}(\omega)\ \oplus\ \widetilde r_{m+1\to m}(\omega)\in\{0,1\}^m
-\]
-解释为从层 \(m+1\) 下推到层 \(m\) 时，为恢复折叠一致性所必须加入的“联络”（connection）。
-则规范差只是该联络的汉明能量：
-\(
-G_m(\omega)=|A_{m+1\to m}(\omega)|_0
-\)。
-该表述把 gauge 从“单层标签”提升为跨分辨率的结构对象：它不是装饰，而是确保交换图（命题 \ref{prop:fold-omega-commute}）在微态降阶上的可实现代价。
-\end{remark}
-
 \begin{remark}[语义：分辨率降阶的“时间投影”下界]
 \(\widetilde r_{m+1\to m}\) 在定义上是“先折叠再截断”的 coarse-graining；而 \(r_{m+1\to m}\) 是“直接丢弃末位”的朴素降维。
 量 \(G_m(\omega)\) 精确回答：若从朴素截断 \(r_{m+1\to m}(\omega)\) 出发，希望恢复到与折叠一致的低分辨率输出 \(\widetilde r_{m+1\to m}(\omega)\)，至少需要改动多少个输出比特（在汉明意义下）。
@@ -217,84 +202,20 @@ $$
 $$
 脚本 \texttt{scripts/exp\_fold\_gauge\_anomaly.py} 对 \(m\le 20\) 做精确枚举并输出 \(\bar G_m\) 与 \(\bar G_m/m\)（表 \ref{tab:fold_gauge_anomaly_stats}），显示 \(\bar G_m/m\) 随 \(m\) 增大单调上升并在 \(m=20\) 时达到约 \(0.4176\) 的水平。
 这提示：大规模“降分辨率重写”并非仅由极端构造触发，在无结构输入下也会以正的密度铺满全串。
-更进一步，均匀基线下存在稳定的\emph{常数密度律}：\(\bar G_m/m\) 收敛且极限为 \(4/9\)，并且典型位置处朴素截断位与折叠感知位的极限联合律收敛到一张完全有理的 \(2\times 2\) 表（定理 \ref{thm:fold-gauge-anomaly-density}）。
-相关可复现审计见脚本 \texttt{scripts/exp\_fold\_gauge\_anomaly\_density\_49.py}（并输出可插入片段 \texttt{sections/generated/eq\_fold\_gauge\_anomaly\_density\_49.tex}）与 \texttt{scripts/exp\_fold\_gauge\_anomaly\_limit\_law.py}。
+\par
+\IfFileExists{sections/generated/eq_fold_gauge_anomaly_density_transducer.tex}{%
+更强地，均匀输入基线下的平均规范差密度极限不仅存在，而且可写出闭式常数：
+\[
+g_\ast:=\lim_{m\to\infty}\frac{\bar G_m}{m}=\frac49,
+\]
+见命题 \ref{prop:fold-gauge-anomaly-density-49}（由有限同步核的平稳分布直接求得）。%
+}{}
 \end{remark}
 
 \IfFileExists{sections/generated/tab_fold_gauge_anomaly_stats.tex}{%
 \input{sections/generated/tab_fold_gauge_anomaly_stats}%
 }{}
 
-\IfFileExists{sections/generated/eq_fold_gauge_anomaly_density_49.tex}{%
-\input{sections/generated/eq_fold_gauge_anomaly_density_49}%
-}{%
-\begin{theorem}[均匀基线下的典型规范差密度：\texorpdfstring{$4/9$}{4/9}]\label{thm:fold-gauge-anomaly-density}
-在均匀微态基线 \(\omega\sim\mathrm{Unif}(\Omega_{m+1})\) 下，平均规范差满足
-\[
-\boxed{\ \lim_{m\to\infty}\frac{\bar G_m}{m}=\frac{4}{9}\ }.
-\]
-更精细地，令随机指标 \(I\sim\mathrm{Unif}(\{1,\dots,m\})\) 且与 \(\omega\) 独立，并记
-\[
-X:=\bigl(r_{m+1\to m}(\omega)\bigr)_I=\omega_I,\qquad
-Y:=\bigl(\widetilde r_{m+1\to m}(\omega)\bigr)_I.
-\]
-则当 \(m\to\infty\) 时，\((X,Y)\) 的联合分布收敛到以下四个有理数：
-\[
-\boxed{
-\mathbb P(X,Y)=
-\begin{array}{c|cc}
-& Y=0 & Y=1\\ \hline
-X=0 & \tfrac{7}{18} & \tfrac{1}{9}\\
-X=1 & \tfrac{1}{3} & \tfrac{1}{6}
-\end{array}}
-\]
-从而单点失配概率（规范差的单位密度）为
-\[
-\mathbb P(X\oplus Y=1)=\frac{1}{9}+\frac{1}{3}=\frac{4}{9}.
-\]
-并且由边缘化得到两个可独立复核的派生常数：
-\[
-\mathbb P(Y=1)=\frac{5}{18},\qquad \mathbb P(X=1,Y=1)=\frac{1}{6}.
-\]
-\end{theorem}
-
-\begin{proof}[证明要点与审计口径（摘要）]
-由定义 \ref{def:fold-gauge-anomaly}，
-\(
-G_m(\omega)=\sum_{k=1}^{m}\mathbf 1\{(r_{m+1\to m}(\omega))_k\neq(\widetilde r_{m+1\to m}(\omega))_k\}
-\)。
-若取独立的 \(I\sim\mathrm{Unif}(\{1,\dots,m\})\)，则有严格恒等式
-\[
-\frac{\bar G_m}{m}=\mathbb P\!\left(\bigl(r_{m+1\to m}(\omega)\bigr)_I\neq\bigl(\widetilde r_{m+1\to m}(\omega)\bigr)_I\right)=\mathbb P(X\oplus Y=1).
-\]
-因此一旦单点联合律 \(\mathbb P(X,Y)\) 在 \(m\to\infty\) 时收敛到上表，立即得到 \(\bar G_m/m\to 4/9\)。
-\par
-本文采用“可复算审计”口径固定该极限：在完全遵循定义 \ref{def:fold-word} 与 \ref{def:fold-gauge-anomaly} 的实现上，对大 \(m\) 进行统计审计并对极限作有理重构，稳定锁定为上述分数表；相关审计脚本见 \texttt{scripts/exp\_fold\_gauge\_anomaly\_limit\_law.py}（输出单点联合分布、二元组边缘与 \(\bar G_m/m\) 的收敛行为）。
-\end{proof}
+\IfFileExists{sections/generated/eq_fold_gauge_anomaly_density_transducer.tex}{%
+\input{sections/generated/eq_fold_gauge_anomaly_density_transducer}%
 }{}
-
-\begin{remark}[机制解释（摘要）：有理常数来自“分辨率降阶”的隐含平衡]\label{rem:fold-gauge-anomaly-mechanism}
-定理 \ref{thm:fold-gauge-anomaly-density} 的常数并非拟合：它来自折叠局部重写系统在均匀输入下诱导的一个\emph{有限维平衡}。直观上，\(\widetilde r_{m+1\to m}\) 相当于“先在 \(m{+}1\) 层做 Zeckendorf 规范化、再投影到 \(m\) 层”的 coarse-graining；该规范化以 Fibonacci 递推恒等式为值保持约束（定义 \ref{def:fold-word} 的 (R\_adj),(R\_k)），从而把均匀微态驱动成一组稳定的局部统计比例。
-\par
-在成本语义上，这给出一条可直接嵌回“统一运算成本/寄存器计数”的常数律：当需要反复执行分辨率降阶投影（从朴素前缀纠偏到 \(\widetilde r_{m+1\to m}\)）时，典型情况下平均必须改写约 \((4/9)m\) 个外表位；它刻画的是\emph{输出支持规模}（要动多少寄存器位），与在线延迟常数（刻画因果锥深度）正交。
-\end{remark}
-
-\IfFileExists{sections/generated/eq_fold_gauge_anomaly_density_49.tex}{}{%
-\begin{remark}[一阶 Markov 投影与 \texorpdfstring{$(5,8,13)$}{(5,8,13)} 的 Fibonacci 近似]\label{rem:fold-gauge-anomaly-markov-proj}
-由于 \(\widetilde r_{m+1\to m}(\omega)\in X_m\) 恒满足禁词 \(11\)，并且在典型位置上 \(\mathbb P(Y=1)\to 5/18\)，故其相邻二元组边缘在极限中满足
-\[
-\mathbb P(Y_tY_{t+1}=00)=\frac{4}{9},\quad
-\mathbb P(01)=\mathbb P(10)=\frac{5}{18},\quad
-\mathbb P(11)=0.
-\]
-由此诱导的\emph{一阶 Markov 投影}（即与上述二元组边缘一致的两态 Markov 近似）在黄金均值语法上具有转移概率
-\[
-\boxed{
-\mathbb P(Y_{t+1}=1\mid Y_t=0)=\frac{5}{13},\qquad
-\mathbb P(Y_{t+1}=0\mid Y_t=0)=\frac{8}{13},\qquad
-\mathbb P(Y_{t+1}=0\mid Y_t=1)=1.}
-\]
-这里的 \((5,8,13)\) 为连续 Fibonacci 数，且给出一个“非 Parry、但极接近 Parry”的量化锚点：黄金均值 Parry 测度满足
-\(\mathbb P_{\mathrm{Parry}}(1\mid 0)=\varphi^{-2}\approx 0.381966\)、\(\mathbb P_{\mathrm{Parry}}(0\mid 0)=\varphi^{-1}\approx 0.618034\)，而 \(5/13\approx 0.384615\)、\(8/13\approx 0.615385\) 正是其有理 Fibonacci 逼近。
-\end{remark}
-}%
