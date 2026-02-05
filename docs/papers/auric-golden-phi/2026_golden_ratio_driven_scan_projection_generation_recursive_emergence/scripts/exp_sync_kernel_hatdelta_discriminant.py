@@ -309,9 +309,9 @@ def main() -> None:
     t2.append("$x_\\star$ & $s_\\star$ & $\\theta_\\star$ & $|\\theta_\\star|$ & $\\Re(s_\\star)-\\sqrt3$\\\\")
     t2.append("\\midrule")
     t2.append(
-        f"${nearest.x_re} \\\\mp {nearest.x_im_abs}\\,i$ & "
-        f"${nearest.s_re} \\\\mp {nearest.s_im_abs}\\,i$ & "
-        f"${nearest.theta_re} \\\\pm {nearest.theta_im_abs}\\,i$ & "
+        f"${nearest.x_re} \\mp {nearest.x_im_abs}\\,i$ & "
+        f"${nearest.s_re} \\mp {nearest.s_im_abs}\\,i$ & "
+        f"${nearest.theta_re} \\pm {nearest.theta_im_abs}\\,i$ & "
         f"${nearest.theta_abs}$ & "
         f"${nearest.re_s_minus_sqrt3}$\\\\"
     )

@@ -291,6 +291,17 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_multifractal_envelope_pz_q10",
+            script="exp_fold_collision_multifractal_envelope_pz_q10.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_multifractal_envelope_pz_q10.json",
+                "artifacts/export/fold_collision_multifractal_envelope_pz_q10.png",
+                "sections/generated/tab_fold_collision_multifractal_envelope_pz_q10.tex",
+                "sections/generated/fig_fold_collision_multifractal_envelope_pz_q10.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_renyi_endpoint_convergence_q60",
             script="exp_fold_collision_renyi_endpoint_convergence_q60.py",
             args=["--m-min", "24", "--m-max", "30", "--q-list", "20,30,40,60"],
@@ -359,6 +370,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_charpoly_mod2_shadow_q9_17",
+            script="exp_fold_collision_charpoly_mod2_shadow_q9_17.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_charpoly_mod2_shadow_q9_17.json",
+                "sections/generated/tab_fold_collision_charpoly_mod2_shadow_q9_17.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_resonance_nullmodes_hankel_q9_17",
             script="exp_fold_collision_resonance_nullmodes_hankel.py",
             args=[],
@@ -412,6 +432,24 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_collision_moment_spectrum_k18_23.json",
                 "sections/generated/tab_fold_collision_moment_spectrum_k18_23.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_phi_reconstruction_from_renyi",
+            script="exp_fold_collision_phi_reconstruction_from_renyi.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_phi_reconstruction_from_renyi.json",
+                "sections/generated/tab_fold_collision_phi_reconstruction_from_renyi.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_crossq_g_profile_q2_23",
+            script="exp_fold_collision_crossq_g_profile_q2_23.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_crossq_g_profile_q2_23.json",
+                "sections/generated/tab_fold_collision_crossq_g_profile_q2_23.tex",
             ],
         ),
         Step(
@@ -723,6 +761,7 @@ def build_steps() -> List[Step]:
                 "artifacts/export/sync_kernel_hatdelta_discriminant.json",
                 "sections/generated/eq_sync_kernel_hatdelta_discriminant.tex",
                 "sections/generated/tab_sync_kernel_hatdelta_branch_points.tex",
+                "sections/generated/tab_sync_kernel_hatdelta_nearest_complex_branch_point.tex",
             ],
         ),
         Step(

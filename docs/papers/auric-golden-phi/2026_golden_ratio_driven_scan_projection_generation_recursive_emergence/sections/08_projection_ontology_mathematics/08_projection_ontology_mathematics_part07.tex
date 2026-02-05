@@ -60,6 +60,7 @@ E_m\circ \mathrm{LIFT}_G
 在仅由 \(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G\) 生成的子片段中，令
 \[
 \mathcal{A}_G:=\RR^{\widehat G\setminus\{\chi_0\}}
+\]
 并以分量加法为群运算。
 对任意重写证书（\(2\)-态射） \(\alpha:w\Rightarrow w'\)，定义其\textbf{异常累积}
 \(\mathrm{anom}(\alpha)\in\mathcal{A}_G\)
@@ -69,12 +70,14 @@ E_m\circ \mathrm{LIFT}_G
 给定一个正规形选择算子 \(N\) 及其规范化证书族 \(\eta_w:w\Rightarrow N(w)\)，定义词的\textbf{规范化异常}为
 \[
 \mathrm{Anom}(w):=\mathrm{anom}(\eta_w).
+\]
 \end{definition}
 
 \begin{proposition}[加法复合律与边界项]\label{prop:pom-anom-additive-up-to-boundary}
 在定义 \ref{def:pom-anom-accumulation} 的设定下，\(\mathrm{anom}\) 对 \(2\)-态射的纵向复合严格可加：若 \(\alpha:w\Rightarrow w'\) 与 \(\beta:w'\Rightarrow w''\) 可复合，则
 \[
 \mathrm{anom}(\beta\circ\alpha)=\mathrm{anom}(\beta)+\mathrm{anom}(\alpha).
+\]
 进一步地，对任意可复合的 \(1\)-态射 \(w_1,w_2\)，存在一个仅依赖于正规形选择的 \(2\)-cochain \(B(w_2,w_1)\in\mathcal{A}_G\)，使得
 \[
 \mathrm{Anom}(w_2\circ w_1)
@@ -269,6 +272,52 @@ $$
   \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}(K;\theta)\)（定义 \ref{def:pom-moment-anom-signature}），以承载 \(E_m\) 与 moment 编译在一般情形下的非严格交换。
 \end{enumerate}
 \end{definition}
+
+\begin{proposition}[指数律 \texorpdfstring{$(\mathrm{RMOM})$}{RMOM} 的语义正确性（fiber-product 结合律）]\label{prop:pom-rmom-sound}
+在定义 \ref{def:pom-projword-2cat} 的 \(\mathrm{MOM}_q\) 语义下，规则
+\[
+\mathrm{MOM}_p\circ \mathrm{MOM}_q\ \Rightarrow\ \mathrm{MOM}_{pq}
+\]
+在底层“逐位同输出”的 fiber-product 编译口径中严格保真：两侧编译得到同一个 \(pq\)-重碰撞核（同一计数语言），从而对所有读出目标（\(S_{pq}(m)\)、Perron 主尺度、以及由其导出的压力/有限部等）给出相同指纹。
+\end{proposition}
+
+\begin{proof}
+按定义 \ref{def:pom-moment-q} 的 \(q\)-重碰撞关系，\(\mathrm{MOM}_q\) 的语义是把“\(q\) 条轨道逐位同输出”的同步约束编译到有限核上（命题 \ref{prop:pom-moment-kernel-exists}）。
+对任意长度 \(m\)，先做 \(\mathrm{MOM}_q\) 再做 \(\mathrm{MOM}_p\) 等价于：把路径分成 \(p\) 组，每组 \(q\) 条，并要求这 \(p\) 组的输出词相同；这恰等价于一次性要求 \(pq\) 条轨道逐位同输出。
+因此两侧都计数同一个集合
+\[
+R_m^{(pq)}=\Bigl\{(\omega^{(1)},\dots,\omega^{(pq)})\in\Omega_m^{pq}:\ \Fold_m(\omega^{(1)})=\cdots=\Fold_m(\omega^{(pq)})\Bigr\}
+\]
+并生成同一序列 \(S_{pq}(m)=|R_m^{(pq)}|\)；对应的有限核 realization 可选为同构（差别仅在 realization 选型），从而规则 \((\mathrm{RMOM})\) 在语义上成立。证毕。
+\end{proof}
+
+\begin{proposition}[Lift--Moment 的 Beck--Chevalley 交换律（群轴复制）]\label{prop:pom-mom-lift-beck-chevalley}
+对任意有限群 \(G\) 与整数 \(q\ge 2\)，在 lift 语义由“每份拷贝携带一份群坐标”的并置口径下，有自然同构（可作为可重写证书）：
+\[
+\boxed{\;
+\mathrm{LIFT}_G\circ \mathrm{MOM}_q\ \simeq\ \mathrm{MOM}_q\circ \mathrm{LIFT}_{G^{\times q}}\; }.
+\]
+等价地，在需要把 \(\mathrm{MOM}_q\) 外提为左前缀时，\((\mathrm{RMOM\text{-}BUBBLE})\) 的 lift 分支可取为
+\[
+\mathrm{LIFT}_G\circ \mathrm{MOM}_q\ \Rightarrow\ \mathrm{MOM}_q\circ \mathrm{LIFT}_{G^{\times q}}.
+\]
+\end{proposition}
+
+\begin{proof}
+\(\mathrm{LIFT}_G\) 把底层状态扩张为“原状态 \(\times\) 群坐标”，每一步在群坐标上累积 cocycle（第 \ref{sec:zeta-finite-part} 节的群扩张接口）。
+随后施加 \(\mathrm{MOM}_q\) 的 \(q\)-重同步积时，状态空间自然为 \((Q\times G)^q\cong Q^q\times G^q\)，并且“逐位同输出”的筛选只约束输出符号，不耦合各份群坐标。
+因此该复合等价于：先在底层做 \(q\)-重同步积得到 \(Q^q\)，再一次性把标签轴提升为 \(G^q\)（即 \(\mathrm{LIFT}_{G^{\times q}}\)），最后再施加同型的输出一致筛选；这正对应于右侧 \(\mathrm{MOM}_q\circ \mathrm{LIFT}_{G^{\times q}}\) 的语义。证毕。
+\end{proof}
+
+\begin{remark}[素因子 moment 编译器：把大阶 \texorpdfstring{$q$}{q} 拆成小阶链并逐步最小化]\label{rem:pom-mom-prime-factor-compiler}
+由 \((\mathrm{RMOM})\) 可将任意 \(q=\prod_i p_i\)（素因子分解）等价实现为一条可审计的 moment 链：
+\[
+\mathrm{MOM}_{p_1}\circ\mathrm{MOM}_{p_2}\circ\cdots\circ\mathrm{MOM}_{p_k}
+\ \Rightarrow\ \mathrm{MOM}_q.
+\]
+工程上，这允许把“直接编译 \(\mathrm{MOM}_q\)”替换为“逐素因子编译 \(\Rightarrow\) 每步做 Hankel/递推最小化（命题 \ref{prop:pom-hankel-realization-protocol}）或对称幂压缩（命题 \ref{prop:pom-moment-symmetric-power}）\(\Rightarrow\) 再进入下一步”的流水线。
+由于许多 \(q\) 的最小 realization 维数远小于对称幂上界（尤其在共振窗口中出现结构性坍缩，定理 \ref{thm:pom-moment-resonance}），该“素因子链”可把后续每一步的状态规模建立在已压缩核之上，从而把高阶 moment 指纹推进到更大 \(q\) 仍保持可计算/可审计。
+\end{remark}
 
 \paragraph{moment 残差：\texorpdfstring{$E_m$}{Em} 与 \texorpdfstring{$\mathrm{MOM}_q$}{MOMq} 的不交换}
 把 \(\mathrm{MOM}_q\) 加入重写闭包后，最小的新临界对来自
@@ -469,6 +518,69 @@ P(q,u):=\log r_q(u)-q\log|A_{\mathrm{out}}|\;}.
   \item \textbf{（时间端点）}形式上取 \(q=1\) 时“碰撞约束”平凡化，\(\widetilde A_1(u)\) 退化为底层带权核的邻接矩阵（定义 \ref{def:pom-proj-temp} 的 \(M_E(u)\) 口径），因此 \(r_1(u)=\lambda_1(u)\) 回到单轴温度压力 \(P(1,u)=\log\lambda_1(u)-\log|A_{\mathrm{out}}|\)。
 \end{enumerate}
 因此 \(P(q,u)\) 可作为“空间（碰撞矩谱）—时间（温度倾斜）”的统一相图坐标，为注 \ref{rem:pom-hardening-u-vs-q} 的 \((u,q,\varepsilon)\) 三旋钮调度提供一条可计算的谱侧底座。
+
+\begin{definition}[归一化混合压力 \texorpdfstring{$\Psi(q,u)$}{Psi(q,u)}（Renyi/碰撞谱的温度缩放量）]\label{def:pom-psi-mixed-pressure}
+在二维压力曲面 \(P(q,u)\) 的基础上，定义
+\[
+\boxed{\;
+\Psi(q,u):=P(q,u)-qP(1,u)
+=\log r_q(u)-q\log r_1(u)\;}
+\qquad(q\ge 2,\ u\in(0,1]).
+\]
+它等价于“\(q\)-碰撞主尺度相对于基准温度自由能 \(r_1(u)\) 的归一化差”。
+\end{definition}
+
+\begin{proposition}[温度缩放律：\texorpdfstring{$\mathrm{PROJ}_u$}{PROJ_u} 读出的 \texorpdfstring{$q$}{q}-碰撞谱由 \texorpdfstring{$\Psi(q,u)$}{Psi} 给出]\label{prop:pom-proj-mom-psi-law}
+沿定义 \ref{def:pom-proj-temp}，取逐步读出 \(R\) 并记 \(\nu_{u,m}\) 为平衡态 \(\mu_u\) 在长度 \(m\) 的读出词空间 \(A_{\mathrm{out}}^m\) 上的推前分布。
+则对任意整数 \(q\ge 2\) 有
+\[
+\lim_{m\to\infty}\frac{1}{m}\log\sum_{x\in A_{\mathrm{out}}^m}\nu_{u,m}(x)^q
+=\Psi(q,u).
+\]
+\end{proposition}
+
+\begin{proof}
+把 \(\sum_x\nu_{u,m}(x)^q\) 展开为对 \(q\) 份独立路径的求和，并用“逐位同输出”把求和限制在 \(q\)-重同步积的可达路径上（命题 \ref{prop:pom-moment-kernel-exists}）。
+分子由加权 moment-kernel \(\widetilde A_q(u)\) 的路径权计数给出，其指数增长率为 \(r_q(u)\)；分母来自 \(\mu_u\) 的 PF 归一化：每条长度 \(m\) 路径的概率都带一因子 \(r_1(u)^{-m}\)，因此 \(q\) 次幂贡献 \(r_1(u)^{-qm}\)。
+由 Perron--Frobenius 主尺度即得
+\[
+\sum_{x\in A_{\mathrm{out}}^m}\nu_{u,m}(x)^q=\Theta\!\left(\left(\frac{r_q(u)}{r_1(u)^q}\right)^{\!m}\right),
+\]
+取 \(\frac1m\log\) 并令 \(m\to\infty\) 即得结论。证毕。
+\end{proof}
+
+\begin{remark}[二维 Legendre--Fenchel 前沿：从 \texorpdfstring{$\Psi(q,u)$}{Psi} 反演空间--能量联合谱（条件性公式）]\label{rem:pom-psi-2d-legendre-front}
+令 \(\gamma_m(x)=\frac{1}{m}\log d_m(x)\) 为纤维对数多重度密度（定义 \ref{def:pom-fiber-spectrum}），并令
+\[
+\mathcal{E}_m:=\frac{1}{m}\sum_{t=1}^m E(e_t)
+\]
+为势的能量密度（定义 \ref{def:pom-proj-temp}）。
+在标准热力学形式的条件下，\(\Psi(q,u)\) 可视为 \((\gamma_m,\mathcal{E}_m)\) 的混合对数矩母函数极限；因此联合前沿（速率函数）可由二维 Legendre--Fenchel 变换给出：
+\[
+I(\gamma,\mathcal{E})
+=\sup_{q\ge 2,\ u\in(0,1)}
+\Bigl((q-1)\gamma+(\log u)\mathcal{E}-\Psi(q,u)\Bigr).
+\]
+该式把“空间损失谱”从单参数 \(q\) 升级为同时含温度轴 \(u\) 的联合谱前沿，并且所有输入量都可由有限核的 Perron 根计算；因此即便只在离散 \(q\) 与采样 \(u\) 网格上可计算，仍可输出一条可审计的二维上包络/下包络作为编译器与审计链的前沿证书。
+\end{remark}
+
+\begin{definition}[硬化--端点交换异常 \texorpdfstring{$\Delta_{\mathrm{swap}}$}{Delta_swap}（不可规约证书原语）]\label{def:pom-hard-tail-swap-anomaly}
+在混合压力 \(\Psi(q,u)\) 的口径下，定义双极限交换子
+\[
+\boxed{\;
+\Delta_{\mathrm{swap}}
+:=
+\Bigl(\lim_{u\downarrow 0}\ \limsup_{q\to\infty}\ \frac{1}{q}\Psi(q,u)\Bigr)
+-
+\Bigl(\limsup_{q\to\infty}\ \frac{1}{q}\ \lim_{u\downarrow 0}\Psi(q,u)\Bigr).\;}
+\]
+\end{definition}
+
+\begin{remark}[解释：\texorpdfstring{$\Delta_{\mathrm{swap}}$}{Delta_swap} 非零即“边界不可同时被正规形吸收”]\label{rem:pom-hard-tail-swap-anomaly}
+\(\Delta_{\mathrm{swap}}\) 比较“先硬化 \(u\to 0\) 再取最坏碰撞 \(q\to\infty\)”与“先取最坏碰撞再硬化”两条边界路径。
+当 \(\Delta_{\mathrm{swap}}=0\) 时，两条路径在归一化压力的端点尺度上一致，支持把硬序门边界与高阶 moment 端点统一规约到同一谱对象；
+当 \(\Delta_{\mathrm{swap}}\neq 0\) 时，表示两种全局化极限在语义上不可交换，从而为“仅靠重写无法同时消去二者全局性”提供一个可计算的障碍量（可作为审计链输出的不可规约证书）。
+\end{remark}
 
 \paragraph{可复现实现（示例核）}
 脚本 \texttt{scripts/exp\_moment\_kernel\_pressure\_surface\_sync10.py} 在本文的 10 状态同步核上，使用直方图 DP（注 \ref{rem:pom-moment-symmetric-power-coefficient-extraction}）直接构造加权核 \(\widetilde A_q(u)\) 并估计 \(r_q(u)\)，从而输出一张离散网格上的压力热图：

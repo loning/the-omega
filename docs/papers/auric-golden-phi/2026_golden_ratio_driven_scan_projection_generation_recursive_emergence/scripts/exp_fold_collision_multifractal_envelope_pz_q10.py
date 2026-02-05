@@ -81,9 +81,11 @@ def _write_tex_table(path: Path, rows: List[Row], source_tex: str) -> None:
     lines.append("\\centering")
     lines.append("\\scriptsize")
     lines.append("\\setlength{\\tabcolsep}{6pt}")
+    # Use \detokenize to safely render filenames with underscores in text mode.
+    source_tex_tt = "\\texttt{\\detokenize{" + source_tex + "}}"
     lines.append(
         "\\caption{Paley--Zygmund lower-envelope points derived from the audited $r_q$ table "
-        f"(source: \\texttt{{{source_tex}}}). "
+        f"(source: {source_tex_tt}). "
         "We report $\\gamma_q=(\\log r_q-\\log\\varphi)/q$, "
         "$\\underline f(q)=2\\log r_q-\\log r_{2q}$, and "
         "$\\delta(q)=\\log\\varphi-\\underline f(q)$ (all logs are natural).}"

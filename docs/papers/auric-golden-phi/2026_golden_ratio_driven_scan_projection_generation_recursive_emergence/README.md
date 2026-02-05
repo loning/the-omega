@@ -37,3 +37,6 @@ python3 scripts/run_all.py
 - `sections/generated/*.tex`：可直接 `\input{}` 的图/表 LaTeX 片段
 - `artifacts/export/*`：CSV/PNG 等导出（用于审计与复核）
 
+## 脚本添加
+
+添加实验脚本需要同时添加到run_all.py
