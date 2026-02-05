@@ -166,6 +166,34 @@ y+y^{-1}=2\cos\theta\in[-2,2]
 同步核加权例子中，脚本 \texttt{scripts/exp\_sync\_kernel\_xi\_cubic\_cos\_polynomial.py} 已直接输出 \(P_L\) 的根与对应离线竖线参数，可作为该证书流程的最小可审计实例。
 \end{remark}
 
+\begin{remark}[Artin 通道化的完成化判据：把核版 (G)RH 拆成有限个单位圆/区间根检验]\label{rem:xi-artin-channel-pipeline}
+第 \ref{sec:A-kernel-compare-main} 节的定义 \ref{def:kernel-group-twist} 引入了带有限群标签的通道矩阵族 \(M_{K,\rho}(u)\) 与通道因子
+\(
+L_{K,\rho}(z,u):=\det(I-zM_{K,\rho}(u))^{-1}
+\)，并在命题 \ref{prop:kernel-artin-factorization} 给出覆盖行列式的 Artin 因子化。
+若某个核的自对偶/完成化结构与群作用相容，使得对每个不可约表示 \(\rho\) 的通道行列式
+\[
+\Delta_\rho(z,u):=\det(I-zM_{K,\rho}(u))
+\]
+仍满足二变量自对偶 \(\Delta_\rho(z,u)=\Delta_\rho(uz,1/u)\)，并可写成完成化形式
+\[
+\Delta_\rho(z,u)=\widehat\Delta_\rho\!\left(z\sqrt{u},\ \sqrt{u}+\frac{1}{\sqrt{u}}\right),
+\]
+则对任意底 \(L>1\) 可定义通道截面
+\[
+\Xi_{\rho,L}(s):=\Delta_\rho(L^{-s},L^{2s-1})
+=\widehat\Delta_\rho\!\bigl(L^{-1/2},S_L(s)\bigr),
+\qquad S_L(s)=L^{s-1/2}+L^{1/2-s}.
+\]
+从而命题 \ref{prop:xi-rh-interval-criterion} 与推论 \ref{cor:xi-rh-unit-circle-reciprocal} 逐通道给出等价判据：
+\[
+\Xi_{\rho,L}\ \text{的全部零点在}\ \Re(s)=\tfrac12
+\quad\Longleftrightarrow\quad
+P_{L,\rho}(S):=\widehat\Delta_\rho(L^{-1/2},S)\ \text{的全部根在}\ [-2,2].
+\]
+因此，“完成化 + Artin 因子化”把核版 (G)RH 的检查压缩为有限多个一元多项式根的证书化问题（Sturm 序列/区间算术即可独立核验）；并可与第 \ref{sec:A-kernel-compare-main} 节的通道级谱半径界（定义 \ref{def:kernel-rh}）形成一条可执行的检验流水线。
+\end{remark}
+
 \paragraph{条带版 \texorpdfstring{$\Xi$}{Xi}-RH：只约束开临界条带内的离线零点}
 经典 RH 的语义并非“全体零点皆在临界线”，而是只约束开临界条带 \(0<\Re(s)<1\) 内的非平凡零点；
 条带外的零点被视作平凡零点。
@@ -232,6 +260,49 @@ S(\theta)=\Bigl(\sqrt{L}+\frac{1}{\sqrt{L}}\Bigr)\cos\theta
 并且虚部步长恒为 \(\Delta_t=2\pi/\log 3\)（由 \(y=L^{s-1/2}\) 的对数多值性给出）。
 \end{remark}
 
+\paragraph{单尺度 Dirichlet 化的虚周期刚性：从“梳齿晶格”到零点密度障碍}
+在有限维/单尺度口径下，把复变量 \(s\) 压到单一指数 \(z=L^{-s}\)（或其同一底的有限个指数幂）会强制出现严格虚周期，从而把零点/极点限制在有限条等差竖线簇上。
+
+\begin{proposition}[单尺度 Dirichlet 化的严格虚周期]\label{prop:single-scale-dirichlet-imag-period}
+取常数 \(L>1\)，并令 \(g\) 为一变量亚纯函数。定义
+\[
+f(s):=g(L^{-s}).
+\]
+则 \(f\) 在虚方向具有严格周期
+\[
+T_L:=\frac{2\pi i}{\log L},\qquad f(s+T_L)=f(s).
+\]
+特别地，对任意有限维矩阵 \(M\) 定义
+\(
+\widehat{\zeta}_{M,L}(s):=\det(I-L^{-s}M)^{-1}
+\)，则有 \(\widehat{\zeta}_{M,L}(s+T_L)=\widehat{\zeta}_{M,L}(s)\)。
+\end{proposition}
+\begin{proof}
+由 \(L^{-(s+T_L)}=\exp(-(s+T_L)\log L)=\exp(-s\log L)\exp(-2\pi i)=L^{-s}\) 直接得出。
+\end{proof}
+
+\begin{corollary}[零/极点的梳齿晶格与线性计数上界]\label{cor:single-scale-dirichlet-lattice}
+在命题 \ref{prop:single-scale-dirichlet-imag-period} 的记号下，若 \(g\) 为有理函数，则：
+\begin{enumerate}
+  \item \(f\) 的全部零与极点在虚方向上按步长 \(2\pi/\log L\) 周期复制；更具体地，它们是有限多个等差竖线簇的并。
+  \item 在任意固定竖直条带 \(\sigma_1\le \Re(s)\le \sigma_2\) 内，满足 \(|\Im(s)|\le T\) 的零点与极点总数为 \(O(T)\)。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+由于 \(g\) 的零点/极点在 \(z\)-平面是有限集 \(\{z_j\}\)（按重数计），解方程 \(L^{-s}=z_j\) 得
+\[
+s=\frac{-\log z_j+2\pi i k}{\log L},\qquad k\in\ZZ,
+\]
+从而每个 \(z_j\) 贡献一条等差竖线；合并有限多个 \(j\) 得 (1)。
+计数上界 (2) 由每条竖线在高度窗 \(|\Im(s)|\le T\) 内最多容纳 \(O(T)\) 个点立得。
+\end{proof}
+
+\begin{remark}[为什么这是通往 RH 的结构性门槛]\label{rem:single-scale-dirichlet-obstruction}
+经典黎曼 \(\zeta(s)\) 的非平凡零点满足 \(N_\zeta(T)\sim \frac{T}{2\pi}\log\frac{T}{2\pi}\)，其零点密度随 \(T\) 以 \(\log T\) 增长。
+而单尺度 Dirichlet 化的任何有理模型（如 \(\det(I-L^{-s}M)^{-1}\) 及其有限乘积/商）其零点/极点计数至多为 \(O(T)\)（推论 \ref{cor:single-scale-dirichlet-lattice}），因此在“零点密度阶”上就与真实 \(\zeta\) 的现象不兼容。
+这解释了为什么引入多尺度（例如下面的连续底混合）是从 toy-RH 走向 RH 研究形态的必要升级。
+\end{remark}
+
 \paragraph{新增：尺度 Mellin 叠加完成化（连续底混合）}
 文稿已证明：在自对偶假设下，对任意底 \(L>1\) 都有严格函数方程（命题 \ref{prop:xi-delta-L-functional-equation}）与临界线实值性（命题 \ref{prop:xi-delta-L-critical-line-real}）。
 因此可把 \(L\) 视为一个连续尺度参数，并对其做 Mellin 型叠加。
@@ -264,7 +335,7 @@ S(\theta)=\Bigl(\sqrt{L}+\frac{1}{\sqrt{L}}\Bigr)\cos\theta
 \end{proof}
 
 \begin{remark}[动机：连续尺度混合打破有限竖向晶格刚性]\label{rem:xi-scale-mellin-break-lattice}
-对固定有限维 \(M\) 的 \(\det(I-\lambda^{-s}M)\)（或有限个此类对象的有限乘积/商），其零极点只能落在有限条等差竖线簇上（见附录 \ref{app:real-input-40-finite-rh} 的谱--极点字典），因此其计数函数至多为 \(O(T)\)。
+对固定有限维 \(M\) 的 \(\det(I-\lambda^{-s}M)\)（或有限个此类对象的有限乘积/商），其零极点只能落在有限条等差竖线簇上（推论 \ref{cor:single-scale-dirichlet-lattice}；亦可参见附录 \ref{app:real-input-40-finite-rh} 的谱--极点字典），因此其计数函数至多为 \(O(T)\)。
 而 \(\mathcal X_{\Delta,w}\) 是对连续尺度族 \(L\in(1,\infty)\) 的叠加：在临界线 \(s=\tfrac12+it\) 上
 \[
 \mathcal X_{\Delta,w}\!\left(\tfrac12+it\right)=\int_0^\infty w(x)\,\Delta\!\bigl(e^{-x/2}e^{-itx},e^{2itx}\bigr)\,dx,
