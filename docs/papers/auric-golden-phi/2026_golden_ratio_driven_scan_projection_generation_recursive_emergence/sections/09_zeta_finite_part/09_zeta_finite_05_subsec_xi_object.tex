@@ -83,6 +83,102 @@ d_j(u):=u^{-j/2}c_j(u).
 \]
 从而“要在模 \(m\) 上看到稳定等分布”自然对应扩散阈值 \(n\gg m^2\)。
 
+\paragraph{新增：\texorpdfstring{$s$}{s}-平面 near-\texorpdfstring{$1$}{1} 极点的扩散律（含漂移项）}
+上面的二次律不仅给出 \(\eta_m\) 的贴近速度，也可把“最慢扭曲通道的主奇点”直接拉回到
+\(s\)-平面，从而解释 near-\(1\) pole 图的几何形状，并把常数完全锁定到文稿中可计算的
+\(\nabla P(0)\)、\(\nabla^2P(0)\) 上。
+
+\begin{proposition}[纯虚小角扭曲的二阶压力展开与近 \texorpdfstring{$1$}{1} 极点位置]\label{prop:near1-pole-diffusive-sp}
+取真实输入 \(40\) 状态核的纯碰撞势切片（沿 \(\varphi_2=\mathbf{1}_{\{d=2\}}\)）
+\[
+P_2(\theta):=P(0,0,\theta)=\log\rho(M_{(0,0,\theta)}),
+\qquad \lambda:=\rho(M_{(0,0,0)})=\varphi^2.
+\]
+记
+\[
+\mu_2:=P_2'(0)=\mathbb{E}[\varphi_2]=\partial_{\theta_2}P(0),
+\qquad
+\sigma_2^2:=P_2''(0)=\mathrm{Var}_\infty(\varphi_2)=\partial_{\theta_2\theta_2}^2P(0),
+\]
+其数值在附录 \ref{app:real-input-40-arity-3d}（式 \(\nabla P(0)\)、\(\nabla^2P(0)\)）中已给出。
+则存在 \(\delta>0\) 使得当 \(t\in\RR\) 且 \(|t|\le \delta\) 时，沿纯虚扭曲 \(\theta=it\) 有解析展开
+\[
+P_2(it)
+=\log\lambda+i\mu_2 t-\frac{\sigma_2^2}{2}t^2+O(t^3).
+\]
+令 \(t_m:=2\pi/m\)（\(m\ge 2\)）并定义扭曲主奇点的 \(s\)-坐标
+\[
+s_m:=\frac{P_2(it_m)}{\log\lambda}
+\qquad(\text{等价于 } \lambda^{-s_m}=\rho(M_{it_m})^{-1}),
+\]
+则当 \(m\to\infty\) 时有
+\[
+\boxed{\;
+s_m
+=1+i\,\frac{\mu_2}{\log\lambda}\frac{2\pi}{m}
+-\frac{\sigma_2^2}{2\log\lambda}\Bigl(\frac{2\pi}{m}\Bigr)^2
++O(m^{-3})\; }.
+\]
+特别地，
+\[
+\Re(s_m)=1-\frac{c}{m^2}+O(m^{-3}),
+\qquad
+\Im(s_m)=\frac{d}{m}+O(m^{-2}),
+\]
+其中常数由 \((\mu_2,\sigma_2^2,\lambda)\) 显式给出
+\[
+\boxed{\;
+c=\frac{2\pi^2\sigma_2^2}{\log\lambda},
+\qquad
+d=\frac{2\pi\mu_2}{\log\lambda}\; }.
+\]
+在本核上 \(\lambda=\varphi^2\)、\(\mu_2=\frac{3-\sqrt5}{10}\)、\(\sigma_2^2=\frac{6\sqrt5-5}{125}\)，从而数值上
+\[
+c\approx 1.38095,
+\qquad
+d\approx 0.498733.
+\]
+对应的可复现预测表见表 \ref{tab:real_input_40_collision_near1_pole_predictions}。
+\end{proposition}
+
+\begin{corollary}[抛物线轨迹：二阶耗散锁定一阶漂移的平方]\label{cor:near1-pole-parabola}
+沿命题 \ref{prop:near1-pole-diffusive-sp} 的记号，当 \(m\to\infty\) 时可消去 \(m\) 得
+\[
+\boxed{\;
+1-\Re(s_m)
+=\frac{\sigma_2^2\log\lambda}{2\mu_2^2}\,\Im(s_m)^2\ +\ o\!\bigl(\Im(s_m)^2\bigr)\; }.
+\]
+因此 near-\(1\) 极点并非“任意靠近”，而是以扩散律强制落在一条由
+\(\sigma_2^2,\mu_2,\lambda\) 决定的抛物线邻域上。
+\end{corollary}
+
+\begin{corollary}[混合时间 \texorpdfstring{$\tau_{\mathrm{mix}}(m)\sim\mathrm{const}\cdot m^2$}{tau_mix(m)~const*m^2} 的常数闭式]\label{cor:near1-pole-taumix-m2}
+令 \(\rho_m:=\rho(M_{it_m})\) 且定义谱比混合时间
+\[
+\tau_{\mathrm{mix}}(m):=\frac{1}{-\log(\rho_m/\lambda)}.
+\]
+则由 \(\Re(P_2(it)-P_2(0))=-\sigma_2^2 t^2/2+O(t^4)\) 得
+\[
+\boxed{\;
+\tau_{\mathrm{mix}}(m)
+=\frac{m^2}{2\pi^2\sigma_2^2}\bigl(1+O(m^{-2})\bigr)\; }.
+\]
+\end{corollary}
+
+\begin{corollary}[Abelian tower 的 no-go：统一平方根谱隙假设必然失败]\label{cor:abelian-tower-no-go}
+设一族同余层 \(G_m\) 含有 \(\ZZ/m\ZZ\) 的阿贝尔分量，使得存在一维单位根扭曲 \(u=\omega_m\to 1\)
+对应于某个整数值 cocycle \(F\) 且 \(\sigma_F^2=\mathrm{Var}_\infty(F)>0\)。
+则最坏非平凡谱半径比 \(\eta_m\) 满足
+\[
+\eta_m\ \ge\ \exp\!\Bigl(-\frac{\sigma_F^2}{2}(2\pi/m)^2+O(m^{-4})\Bigr)\ \xrightarrow[m\to\infty]{}\ 1,
+\]
+从而不存在任何 \(\varepsilon>0\) 使得 \(\eta_m\le \lambda^{-1/2-\varepsilon}\) 对所有 \(m\) 成立。
+因此，定理 \ref{thm:auditable-profinite-chebotarev-finite} 中用于推出“平方根级尾项”的统一谱隙假设，
+在含有此类阿贝尔模数塔的 profinite 轴上必然被 near-\(1\) 扭曲慢模所否定。
+\end{corollary}
+
+\input{sections/generated/tab_real_input_40_collision_near1_pole_predictions}
+
 \begin{conjecture}[尺度化核版 GRH/Chebotarev（双极限扩散口径）]\label{conj:scaled-kernel-grh-diffusive}
 存在常数 \(c>0\) 与 \(\kappa>0\)，使得对所有模数 \(m\ge 2\) 与所有长度 \(n\ge 1\)，任意由模 \(m\) 寄存器定义的同余 cylinder 事件的等分布误差满足
 \[
