@@ -578,6 +578,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_weighted_sp6_isotropy_scan",
+            script="exp_sync_kernel_weighted_sp6_isotropy_scan.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_weighted_sp6_isotropy_scan.json",
+                "sections/generated/tab_sync_kernel_weighted_sp6_isotropy_scan.tex",
+            ],
+        ),
+        Step(
             name="moment_pressure_surface_sync10",
             script="exp_moment_kernel_pressure_surface_sync10.py",
             args=[

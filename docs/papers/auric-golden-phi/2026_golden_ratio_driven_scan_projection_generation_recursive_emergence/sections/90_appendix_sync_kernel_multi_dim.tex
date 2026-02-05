@@ -316,6 +316,32 @@ I(\alpha)\approx \tfrac12(\alpha-\alpha_\star)^\top\bigl(\nabla^2P(0)\bigr)^{-1}
 \input{sections/generated/eq_sync_kernel_3d_quadratic_orthobasis}
 其在 \(\theta=0\) 的二次近似下两两不相关（协方差为零），从而二次型可被严格对角化。
 \end{corollary}
+
+\begin{remark}[三通道势—响应辛相空间与 \texorpdfstring{$\mathrm{Sp}(6)$}{Sp(6)} 各向同性扫描（可复现）]\label{rem:sync-kernel-3d-sp6-isotropy-scan}
+在三维加权势的口径下，压力 \(P(\theta_e,\theta_-,\theta_2)\) 给出自然的“势—响应”共轭对：
+\[
+J_e:=\partial_{\theta_e}P,\qquad
+J_-:=\partial_{\theta_-}P,\qquad
+J_2:=\partial_{\theta_2}P.
+\]
+因此相空间坐标 \((\theta;J)\in\RR^6\) 携带标准辛形式
+\[
+\omega=\dd\theta_e\wedge \dd J_e+\dd\theta_-\wedge \dd J_-+\dd\theta_2\wedge \dd J_2,
+\]
+其保持群为 \(\mathrm{Sp}(6)\)（见注 \ref{rem:sp6-minimal-continuous-envelope} 的统一解释口径）。
+在二次近似层，涨落由 Fisher/协方差矩阵
+\(
+\Sigma(\theta):=\nabla^2P(\theta)
+\)
+控制；在最小块对角提升 \(C=\mathrm{diag}(\Sigma,\Sigma)\) 下，\(C\) 的辛特征值退化为 \(\Sigma\) 的三个特征值，
+从而“单尺度（各向同性）”可用一个完全可审计的标量分数度量：
+\[
+\mathcal{I}(\theta):=\log\frac{\lambda_{\max}(\Sigma(\theta))}{\lambda_{\min}(\Sigma(\theta))}.
+\]
+脚本 \texttt{\detokenize{scripts/exp_sync_kernel_weighted_sp6_isotropy_scan.py}} 对 \((u,v,w)=(e^{\theta_e},e^{\theta_-},e^{\theta_2})\) 作网格扫描并输出最优候选点（最小化 \(\mathcal{I}\)），其生成表格见表 \ref{tab:sync_kernel_weighted_sp6_isotropy_scan}。
+\end{remark}
+\input{sections/generated/tab_sync_kernel_weighted_sp6_isotropy_scan}
+
 由此得到一个自然的 arity-charge
 \[
 \chi:=\varphi_e-\varphi_2\in\{-1,0,1\},
