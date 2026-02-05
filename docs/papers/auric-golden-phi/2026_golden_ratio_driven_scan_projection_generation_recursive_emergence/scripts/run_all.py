@@ -863,6 +863,26 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="bridge_kit_real_input_40_arity_335_N2",
+            script="exp_bridge_kit.py",
+            args=[
+                "--third-axis",
+                "N2",
+                "--triple",
+                "3x3x5",
+                "--k-max",
+                "200",
+                "--mertens-n",
+                "200",
+                "--output",
+                "artifacts/export/bridge_kit_real_input_40_arity_335_N2.json",
+            ],
+            expected_outputs=[
+                "artifacts/export/bridge_kit_real_input_40_arity_335_N2.json",
+                "sections/generated/eq_bridge_kit_real_input_40_arity_335_N2.tex",
+            ],
+        ),
+        Step(
             name="arity_335_character_energy",
             script="exp_arity_335_character_energy.py",
             args=[],
