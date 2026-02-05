@@ -52,6 +52,66 @@ W(B_3)\cong W(C_3)\cong (\ZZ_2)^3\rtimes S_3,\qquad |W|=48,
 \par
 为避免“手工配对”，脚本 \texttt{scripts/exp\_fold6\_b3c3\_seed.py} 输出两种规范化（长短根互换）的根字典表（表 \ref{tab:fold6_b3c3_root_dictionary_b3} 与表 \ref{tab:fold6_b3c3_root_dictionary_c3}；见附录），并写出 JSON 证书 \texttt{artifacts/export/fold6\_b3c3\_seed.json}。
 
+\paragraph{新结论 D（\texorpdfstring{$C_6$}{C6} 轨道刚性：从内禀环旋转分块到 Pati--Salam 型 Levi 骨架候选）}
+上段使用 \(\,X_6=X_6^{\mathrm{cyc}}\sqcup X_6^{\mathrm{bdry}}\) 的 \(18\oplus 3\) 计数接口来锁定 rank-\(3\) 的简单李型种子。
+同一窗口 \(m=6\) 还携带一个与“根长短”无关、而仅由\emph{环结构}诱导的内禀对称动作：令
+\[
+\rho(u_1u_2u_3u_4u_5u_6):=u_2u_3u_4u_5u_6u_1,
+\]
+则 \(\rho\) 生成 \(C_6\) 的环旋转作用。
+由于 \(X_6^{\mathrm{cyc}}\) 等价于“无相邻 \(11\)”并满足 \(u_1u_6=0\) 的闭词子集，故 \(C_6\) 作用在 \(X_6^{\mathrm{cyc}}\) 上封闭。
+该作用的轨道分解在 window-6 上是刚性的：
+\input{sections/generated/eq_window6_c6_orbit_decomposition}
+\input{sections/generated/tab_window6_c6_orbit_decomposition}
+从而 cyclic 扇区不仅给出 \(18\) 维“根式”接口，还在 orbit 层面强迫一个\emph{规范的} \(15\oplus 3\) 细分。
+令 \(\mathcal{O}(w):=\{\rho^k(w):k=0,1,\dots,5\}\subseteq X_6^{\mathrm{cyc}}\)。
+由表 \ref{tab:window6_c6_orbit_decomposition}，存在唯一的三元轨道 \(\mathcal{O}(\texttt{001001})\)，并且其余四条轨道的并为一个 \(15\) 维块：
+\[
+X^{\mathrm{cyc},3}_6:=\mathcal{O}(\texttt{001001}),\qquad
+X^{\mathrm{cyc},15}_6:=\mathcal{O}(\texttt{000000})\sqcup \mathcal{O}(\texttt{010101})\sqcup \mathcal{O}(\texttt{000001})\sqcup \mathcal{O}(\texttt{000101}).
+\]
+则 \(|X^{\mathrm{cyc},15}_6|=15\)、\(|X^{\mathrm{cyc},3}_6|=3\)。
+结合 \(|X_6^{\mathrm{bdry}}|=3\)，得到一个完全由 \(m=6\) 内禀动作导出的三块维数骨架
+\[
+21=15\oplus 3\oplus 3.
+\]
+在“只允许紧半单李代数作连续包络”的最小化口径下，该维数分块将候选 Levi 骨架锁定为
+\[
+\boxed{\;\mathfrak g_{6}^{\mathrm{Levi}}\ \cong\ \mathfrak{su}(4)\oplus\mathfrak{su}(2)_L\oplus\mathfrak{su}(2)_R\;}\qquad(\dim=15+3+3=21),
+\]
+即 Pati--Salam 型统一骨架（此处作为纯结构候选，不引入物理指称）。
+在该骨架下，表 \ref{tab:window6_c6_orbit_decomposition} 的 orbit 维数可被组织为一个“伴随分块字典”：
+\begin{itemize}
+  \item \(1\) 维轨道（\texttt{000000}）可与 \(\mathfrak{su}(4)\) 中与 \(\mathfrak{su}(3)\) 可交换的 \(\mathfrak{u}(1)\) 方向对齐；
+  \item \(2\) 维轨道（\texttt{010101}）与 \(\mathfrak{su}(3)\) 的 Cartan 子代数对齐（\(\dim=2\)）；
+  \item 两条 \(6\) 维轨道分别与 \(\mathfrak{su}(3)\) 的非对角阶梯方向（\(\dim=6\)）与
+  \(\mathfrak{su}(4)/(\mathfrak{su}(3)\oplus\mathfrak{u}(1))\) 的桥接方向（\(\mathbf{3}\oplus\bar{\mathbf{3}}\)，\(\dim=6\)）对齐；
+  \item cyclic 扇区剩余的 \(3\) 维轨道（\texttt{001001}）与一个 \(\mathfrak{su}(2)_L\) 伴随块对齐；boundary 扇区的 \(3\) 则对应 \(\mathfrak{su}(2)_R\) 伴随块。
+\end{itemize}
+进一步地，\(15\) 维块内部的 \(1\oplus 2\oplus 6\oplus 6\) 轨道尺寸与
+\(
+\mathfrak{su}(4)\supset \mathfrak{su}(3)\oplus \mathfrak{u}(1)
+\)
+的伴随分解在“Cartan/step/bridge”维数层级上精确对齐，为后续在更高分辨率用扭曲谱/异常签名判别两种统一种子（\(B_3/C_3\) vs.\ Levi-\(SU(4)\times SU(2)\times SU(2)\)）提供可审计靶标。
+
+\paragraph{新结论 E（boundary 扇区的 \texorpdfstring{$\delta=34$}{δ=34} 双层覆盖：内生 \texorpdfstring{$\ZZ_2$}{Z2} sheet parity）}
+在 dyadic 读出（附录 \ref{app:fold-multiplicity} 的二进制区间折叠 \(\mathrm{Fold}^{\mathrm{bin}}_6\)）下，
+window-6 的 uplift 偏移集合是一个硬算术对象，并且末位为 \(1\) 的类型被强制限制在两层：
+\input{sections/generated/eq_fold6_bin_uplift_delta_set}
+由于边界词满足 \(u_6=1\)（更强地 \(u_1=u_6=1\)），因此每个 \(w\in X_6^{\mathrm{bdry}}\) 都携带一个规范的二层覆盖
+\(
+(\mathrm{Fold}^{\mathrm{bin}}_6)^{-1}(w)=\{V_6(w),\,V_6(w)+34\}
+\)
+（差值严格为 \(34=F_9\)），并由此诱导出一个无歧义的 \(\ZZ_2\) 分级（sheet parity）：
+\[
+\pi_{\mathrm{sheet}}(V_6(w)):=0,\qquad \pi_{\mathrm{sheet}}(V_6(w)+34):=1.
+\]
+三条边界词的显式 preimage 对见表 \ref{tab:fold6_boundary_sheet_pairs}。
+\input{sections/generated/tab_fold6_boundary_sheet_pairs}
+作为跨分辨率稳健性检验，在同一 dyadic 折叠口径下，boundary 扇区的 uplift 结构从 \(m=6\) 的二层提升为 \(m=7,8\) 的三层（对应的 \(\delta\) 组合见表 \ref{tab:foldbin_boundary_lift_m6_m8}）。
+因此，window-6 的 \(\ZZ_2\) sheet parity 在该读出下是一个\emph{最小窗特有}的硬结构事实；若要把它推进为跨 \(m\) 的残余选择律，需要额外的协议门/投影约束在更高分辨率上重新锁定二层覆盖（该要求本身是可审计、可反驳的）。
+\input{sections/generated/tab_foldbin_boundary_lift_m6_m8}
+
 \begin{remark}[三通道势—响应辛相空间与 \texorpdfstring{$C_3=\mathrm{Sp}(6)$}{C3=Sp(6)} 连续包络]\label{rem:sp6-minimal-continuous-envelope}
 在附录 \ref{app:vector-potential} 的向量势口径下，给定三维势参数 \(\theta=(\theta_1,\theta_2,\theta_3)\) 的压力
 \(
