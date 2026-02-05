@@ -95,6 +95,23 @@ def _normalize_fragment(fragment: str, raw: Sequence[str], word: Optional[str]) 
             "rewrite_trace": trace,
         }
 
+    if fragment == "momtwist":
+        import exp_pom_projword_mom_twist_normalizer_demo as mt
+
+        if word is None:
+            word = " ".join(raw)
+        if not word.strip():
+            raise SystemExit("Empty word. Provide tokens or --word.")
+        toks = mt.parse_word(word)
+        nf, trace, certs = mt.normalize(toks)
+        return {
+            "fragment": fragment,
+            "input": mt.word_to_str(toks),
+            "normal_form": mt.word_to_str(nf),
+            "rewrite_trace": trace,
+            "certificates": certs,
+        }
+
     if fragment == "val":
         import exp_pom_rewriting_engine_demo as val
 
@@ -111,7 +128,7 @@ def _normalize_fragment(fragment: str, raw: Sequence[str], word: Optional[str]) 
             "rewrite_trace": trace,
         }
 
-    raise SystemExit(f"Unknown fragment {fragment!r}. Use one of: ze, zepq, liftproj, full, val.")
+    raise SystemExit(f"Unknown fragment {fragment!r}. Use one of: ze, zepq, liftproj, full, momtwist, val.")
 
 
 def cmd_normalize(args: argparse.Namespace) -> None:
@@ -248,19 +265,82 @@ def cmd_fold_spectrum(args: argparse.Namespace) -> None:
         print(f"[pom-cli] wrote {args.json_out}", flush=True)
 
 
+def _sync10_transducer():
+    import exp_sync_kernel_10_state_uniform_input_fingerprint as sync10
+    from common_moment_kernel_hist import build_transducer_from_edges
+
+    edges = sync10.build_edges()
+    states = list(sync10.STATES)
+    input_symbols = sorted({int(e.d) for e in edges})
+    return build_transducer_from_edges(
+        states=states,
+        input_symbols=input_symbols,
+        edges=edges,
+        src_attr="src",
+        dst_attr="dst",
+        in_attr="d",
+        out_attr="e",
+    )
+
+
+def cmd_moment_kernel(args: argparse.Namespace) -> None:
+    from common_moment_kernel_hist import (
+        build_collision_moment_kernel_sparse,
+        estimate_spectral_radius_sparse,
+        histogram_state_count,
+        pressure_from_rho,
+    )
+
+    kernel = str(args.kernel)
+    k = int(args.k)
+    if k < 1:
+        raise SystemExit("Require --k >= 1")
+    if kernel != "sync10":
+        raise SystemExit("Only --kernel=sync10 is supported in this CLI for now.")
+
+    T = _sync10_transducer()
+    dim = histogram_state_count(k, T.n_states())
+    print(f"[pom-cli] moment-kernel kernel={kernel} k={k} |Q|={T.n_states()} |H_k|={dim}", flush=True)
+
+    max_dim = int(args.max_dim)
+    if (not args.force) and dim > max_dim:
+        raise SystemExit(f"|H_k|={dim} exceeds --max-dim={max_dim}. Rerun with --force to execute.")
+
+    _states, rows = build_collision_moment_kernel_sparse(T, k=k, progress_every=int(args.progress_every))
+    rho = estimate_spectral_radius_sparse(rows, iters=int(args.iters), tol=float(args.tol))
+    P = pressure_from_rho(float(rho), k=k, out_alphabet_size=2)
+    print(f"[pom-cli] rho(A_k)~{float(rho):.12g}  pressure~{float(P):.12g}", flush=True)
+
+    if args.json_out:
+        _write_json(
+            args.json_out,
+            {
+                "kernel": kernel,
+                "k": k,
+                "n_states": int(T.n_states()),
+                "dim_Hk": int(dim),
+                "rho_est": float(rho),
+                "pressure": float(P),
+                "iters": int(args.iters),
+                "tol": float(args.tol),
+            },
+        )
+        print(f"[pom-cli] wrote {args.json_out}", flush=True)
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="POM CLI: normalize projection-words; summarize Fold_m fingerprints.")
     sub = p.add_subparsers(dest="cmd", required=True)
 
     p_norm = sub.add_parser("normalize", help="Normalize a projection word (rewrite to normal form).")
-    p_norm.add_argument("--fragment", choices=["ze", "zepq", "liftproj", "full", "val"], default="liftproj")
+    p_norm.add_argument("--fragment", choices=["ze", "zepq", "liftproj", "full", "momtwist", "val"], default="liftproj")
     p_norm.add_argument("--word", type=str, default=None, help="Optional raw word string (fragment-dependent).")
     p_norm.add_argument("--json-out", type=str, default=None, help="Write normalization payload to JSON.")
     p_norm.add_argument("tokens", nargs="*", help="Token list (used when --word is omitted).")
     p_norm.set_defaults(func=cmd_normalize)
 
     p_eq = sub.add_parser("equiv", help="Decide equivalence by comparing normal forms.")
-    p_eq.add_argument("--fragment", choices=["ze", "zepq", "liftproj", "full", "val"], default="liftproj")
+    p_eq.add_argument("--fragment", choices=["ze", "zepq", "liftproj", "full", "momtwist", "val"], default="liftproj")
     p_eq.add_argument("--word1", type=str, required=True, help="Word 1 (fragment-dependent string form).")
     p_eq.add_argument("--word2", type=str, required=True, help="Word 2 (fragment-dependent string form).")
     p_eq.set_defaults(func=cmd_equiv)
@@ -274,6 +354,20 @@ def build_parser() -> argparse.ArgumentParser:
     p_spec.add_argument("--q-max", type=int, default=17)
     p_spec.add_argument("--json-out", type=str, default=None)
     p_spec.set_defaults(func=cmd_fold_spectrum)
+
+    p_mk = sub.add_parser(
+        "moment-kernel",
+        help="Build histogram collision moment-kernel A_k and estimate rho(A_k).",
+    )
+    p_mk.add_argument("--kernel", choices=["sync10"], default="sync10")
+    p_mk.add_argument("--k", type=int, default=6, help="Moment order k (>=1).")
+    p_mk.add_argument("--iters", type=int, default=2500, help="Power-iteration max iterations.")
+    p_mk.add_argument("--tol", type=float, default=1e-13, help="Relative tolerance for power iteration.")
+    p_mk.add_argument("--max-dim", type=int, default=50_000, help="Safety cap on |H_k| (use --force to override).")
+    p_mk.add_argument("--force", action="store_true", help="Override --max-dim safety cap.")
+    p_mk.add_argument("--progress-every", type=int, default=0, help="Optional progress print cadence (rows).")
+    p_mk.add_argument("--json-out", type=str, default=None)
+    p_mk.set_defaults(func=cmd_moment_kernel)
 
     return p
 
