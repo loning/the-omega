@@ -514,6 +514,29 @@ $$
 其中 $z^{\nu'}:=\prod_{q'\in Q} z_{q'}^{\nu'(q')}$。在 $|Q|$ 固定时，系数抽取可用逐状态卷积 DP 实现，复杂度为 $k$ 的某个固定次数多项式。证毕。
 \end{proof}
 
+\begin{corollary}[系数抽取形式：转移多项式生成函数]\label{cor:pom-ak-coefficient-extraction}
+沿用命题 \ref{prop:pom-ak-symmetric-transition-poly} 的记号。
+对每个同步状态 \(q\in Q\) 与输出位 \(e\in\{0,1\}\)，定义转移多项式
+\[
+P_{q,e}(z):=\sum_{d\in\{0,1\}:\ \varepsilon(q,d)=e} z_{\delta(q,d)}.
+\]
+对直方图态 \(\nu\in\NN^Q\)（\(\sum_q\nu(q)=k\)），定义
+\[
+F_{\nu,e}(z):=\prod_{q\in Q}P_{q,e}(z)^{\nu(q)}.
+\]
+则有严格系数抽取恒等式
+\[
+F_{\nu,e}(z)=\sum_{\nu'} w_e(\nu,\nu')\,z^{\nu'},
+\qquad
+w_e(\nu,\nu')=[z^{\nu'}]\,F_{\nu,e}(z),
+\]
+其中 \([z^{\nu'}]\) 表示取单项式 \(z^{\nu'}=\prod_{q'\in Q} z_{q'}^{\nu'(q')}\) 的系数。
+因此对称商 moment-kernel 的一步权重满足
+\[
+\widetilde A_k(\nu,\nu')=\sum_{e\in\{0,1\}}[z^{\nu'}]\,F_{\nu,e}(z).
+\]
+\end{corollary}
+
 \subsubsection{由 \texorpdfstring{$r_k$}{rk} 导出的空间损失谱：Rényi 族与多重分形上包络}\label{subsec:pom-multifractal-from-rk}
 定义 Fold 输出分布（对 $\Omega_m$ 上均匀输入的推前）为
 \[
@@ -539,6 +562,66 @@ h_q^{\mathrm{R}}:=\frac{1}{q-1}\Bigl(q\log 2-\log r_q\Bigr)= -\frac{P(q)}{q-1}.
 \]
 对应的未归一化指纹为 \(h_q:=q\log 2-\log r_q=\log(2^q/r_q)\)，两者满足 \(h_q^{\mathrm{R}}=h_q/(q-1)\)。
 表 \ref{tab:fold_collision_renyi_spectrum} 给出了 $q=2,3,4$ 的精确值（有限状态核）与若干更高阶的枚举指纹。
+
+\begin{proposition}[两尺度下界与候选冻结阈值]\label{prop:pom-freeze-threshold}
+记平均纤维多重度
+\(
+\overline d_m:=2^m/|X_m|=2^m/F_{m+2}
+\)，
+最大纤维多重度
+\(
+D_m:=\max_{x\in X_m}d_m(x)
+\)，
+以及最大纤维达到者数 \(\kappa_m^{\mathrm{max}}\)（定义 \ref{def:pom-top-fiber-spectrum}）。
+则对任意整数 \(q\ge 2\) 与任意 \(m\ge 1\) 有两条严格下界：
+\[
+S_q(m)=\sum_{x\in X_m}d_m(x)^q\ \ge\ |X_m|\,\overline d_m^{\,q},
+\qquad
+S_q(m)\ \ge\ \kappa_m^{\mathrm{max}}\,D_m^{\,q}.
+\]
+从而结合 \(S_q(m)=\Theta(r_q^m)\)（定理 \ref{thm:pom-collision-kernel-ak}）与渐近
+\(|X_m|=\Theta(\varphi^m)\)、\(\overline d_m=\Theta((2/\varphi)^m)\)（命题 \ref{prop:pom-projection-entropy}）、
+\(D_m=\Theta(\varphi^{m/2})\)（定理 \ref{thm:pom-max-fiber}）以及 \(\kappa_m^{\mathrm{max}}=O(1)\)（定理 \ref{thm:pom-max-achievers-phase-stabilization}），得到指数尺度下界
+\[
+\boxed{\;
+\log r_q\ \ge\ \max\Bigl(\log\varphi+q(\log 2-\log\varphi),\ \tfrac{q}{2}\log\varphi\Bigr).\;}
+\]
+令 \(k_{\mathrm{freeze}}\) 为上述两条直线的交点，则
+\[
+\boxed{\;
+k_{\mathrm{freeze}}
+:=\frac{\log\varphi}{\tfrac32\log\varphi-\log 2}
+=\frac{\log\varphi}{\log(\varphi^{3/2}/2)}
+\approx 16.784. \;}
+\]
+因此在该“二尺度竞争”的口径下：当 \(q<k_{\mathrm{freeze}}\) 时 Jensen（平均尺度）下界更强；当 \(q>k_{\mathrm{freeze}}\) 时最大纤维（最坏尺度）下界更强。
+\end{proposition}
+\begin{proof}
+第一条下界由 Jensen 不等式给出：函数 \(t\mapsto t^q\)（\(q\ge 2\)）凸，故
+\(
+\frac1{|X_m|}\sum_x d_m(x)^q\ge \bigl(\frac1{|X_m|}\sum_x d_m(x)\bigr)^q=\overline d_m^q
+\)；
+第二条下界由最大值定义立得。
+再取 \(\frac1m\log(\cdot)\) 并令 \(m\to\infty\)，用所列渐近与定理 \ref{thm:pom-collision-kernel-ak} 的极限存在性即可得到 \(\log r_q\) 的下界。
+交点公式由解方程
+\(
+\log\varphi+q(\log 2-\log\varphi)=\frac{q}{2}\log\varphi
+\)
+得到；并注意 \(\tfrac32\log\varphi-\log2=\log(\varphi^{3/2}/2)\) 与注 \ref{rem:pom-defect-gap} 的“最坏/平均偏离基数”一致。证毕。
+\end{proof}
+
+\begin{remark}[可检验冻结预言：压力曲线的折点候选尺度]\label{rem:pom-freeze-prediction}
+命题 \ref{prop:pom-freeze-threshold} 给出一个完全由 Fold 的“平均尺度 vs 最坏尺度”推导出的可计算常数 \(k_{\mathrm{freeze}}\)。
+若进一步（可证伪目标）高多重度尾部的达到者数在指数尺度上仍为亚指数（即不存在一段新的“中间支”主导 \(S_q\) 的指数增长率），则压力
+\(
+P(q)=\log r_q-q\log2
+\)
+应在 \(q\approx k_{\mathrm{freeze}}\) 附近出现明显的曲率变化，并在高阶端逐步逼近由最坏尺度给出的线性支
+\(
+P(q)\approx q(\tfrac12\log\varphi-\log2)
+\)。
+表 \ref{tab:fold_collision_renyi_spectrum} 的 \(r_q\) 直接提供核验口径：对离散 \(q\) 计算 \(\Delta P(q)\) 与 \(\Delta^2P(q)\) 并观察其在 \(q\) 方向的收敛/衰减，即可把“冻结段/折点”从叙事转换为可审计判据。
+\end{remark}
 
 \begin{proposition}[矩谱给出的多重分形上包络（Legendre--Fenchel 口径）]\label{prop:pom-fold-multifractal-envelope}
 设 $P$ 仅在整数 $q\ge 2$ 上给定。令 $\widetilde P:\RR_{\ge 2}\to\RR\cup\{+\infty\}$ 为集合点 $\{(q,P(q)):\ q\in\ZZ_{\ge 2}\}$ 的\emph{下闭包凸延拓}（即最小的下半连续凸函数，使得 $\widetilde P(q)\le P(q)$ 对所有整数 $q\ge2$ 成立）。
