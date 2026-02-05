@@ -20,6 +20,86 @@
 确定化保证“给定状态 $S$ 与标记 $a$ 时后继唯一”，故右解析；而 $H_m^{\mathrm{det}}$ 与 $G_m$ 识别相同正则语言是自动机确定化的标准事实。参见 \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}。
 \end{proof}
 
+\subsubsection{歧义壳的瞬态结构：单调性、无环性与同步延迟}\label{subsec:Ym-amb-transient}
+本节把推论 \ref{cor:Ym-ambiguity-shell-low-entropy} 的“歧义壳低熵”进一步细化为一个更强、可审计的结构命题：在本文的 Zeckendorf 折叠下（$m\ge 3$），歧义不是可循环的“二义语法”，而是\textbf{有限步同步的纯瞬态层}；因此它不承载任何周期点，也不改变内禀 \(\zeta_{Y_m}\) 的周期点谱（见推论 \ref{cor:Phi_m-zeta-closed}）。
+
+\begin{proposition}[候选集合单调不增（右解析的集合动力学）]\label{prop:det-candidate-set-monotone}
+在定义 \ref{def:G_m} 的标记图 $G_m$ 上，若同一顶点的两条出边标记不同（即 $G_m$ 右解析；见定理 \ref{thm:pom-right-resolving}），则对任意候选集 $S\subset V_m$ 与任意输出符号 $a\in X_m$，若 $\delta_m(S,a)\neq\varnothing$ 则
+\[
+|\delta_m(S,a)|\le |S|.
+\]
+并且对任意单点集 $\{v\}$，其后继 $\delta_m(\{v\},a)$ 要么为空、要么仍为单点；换言之，$H_m^{\mathrm{det}}$ 中的单点态集合在前向读入下是封闭的：一旦进入单点态，就不可能回到非单点态。
+\end{proposition}
+\begin{proof}
+右解析性意味着：对每个 $v\in V_m$ 与每个 $a\in X_m$，从 $v$ 出发、标记为 $a$ 的出边至多一条。于是可定义一个部分函数
+\[
+f_a:V_m\rightharpoonup V_m,\qquad
+f_a(v):=
+\begin{cases}
+v' & \exists\,e:v\to v'\ \text{s.t. }\ell_m(e)=a,\\
+\text{undefined} & \text{otherwise}.
+\end{cases}
+\]
+按定义 \ref{def:Phi_m-right-resolving}，
+\(
+\delta_m(S,a)=\{f_a(v):v\in S,\ f_a(v)\text{ defined}\}
+\)
+是 $S$ 在 $f_a$ 下的像，因此其基数不超过 $|S|$。当 $S=\{v\}$ 时，$\delta_m(\{v\},a)$ 至多包含一个元素，故为单点或空集，从而单点态对前向读入封闭。证毕。
+\end{proof}
+
+\begin{theorem}[歧义壳无环：纯瞬态且无周期点]\label{thm:Ym-ambiguity-shell-dag}
+令 $H_m^{\mathrm{det}}$ 为定义 \ref{def:Phi_m-right-resolving} 的确定化右解析表示，其状态集记为 $\mathcal{S}_m^{\mathrm{det}}$。定义歧义态集合
+\[
+\mathcal{S}_m^{\mathrm{amb}}:=\{S\in\mathcal{S}_m^{\mathrm{det}}:\ |S|\ge 2\},
+\]
+并令 $H_m^{\mathrm{amb}}$ 为 $H_m^{\mathrm{det}}$ 在 $\mathcal{S}_m^{\mathrm{amb}}$ 上的诱导子图。
+则当 $m\ge 3$ 时，$H_m^{\mathrm{amb}}$ 为 DAG（不含任何有向环）。因此：
+\begin{enumerate}
+  \item $H_m^{\mathrm{amb}}$ 不承载任何周期轨道；等价地，$Y_m$ 的任何周期点都不可能在确定化滤波中永久停留在非单点态。
+  \item 对任意 $y\in Y_m$，从初始候选集 $S_0:=V_m$ 出发递推 $S_{t+1}:=\delta_m(S_t,y_t)$，则在有限步后必进入单点态并从此保持单点；更具体地，对所有 $t\ge m$ 有 $|S_t|=1$。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:Phi_m-conjugacy-threshold} 的“局部同步”部分（并见表 \ref{tab:phi_m_conjugacy_threshold}），当 $m\ge 3$ 时：对任意允许的长度-$m$ 输出块 $a_0\cdots a_{m-1}$，从 $S_0=V_m$ 出发按 $S_{j+1}=\delta_m(S_j,a_j)$ 递推得到的 $S_m$ 必为单点集。等价地，沿 $H_m^{\mathrm{det}}$ 从初始状态 $V_m$ 出发的任意长度-$m$ 标记路径，其终点都落在单点态集合中。
+
+结合命题 \ref{prop:det-candidate-set-monotone} 的“单点态前向封闭性”，立刻得到：对任意 $y\in Y_m$ 的滤波轨道 $(S_t)_{t\ge 0}$，一旦 $S_m$ 为单点，则对所有 $t\ge m$ 都保持单点，故结论 (2) 成立。
+
+为证 $H_m^{\mathrm{amb}}$ 无环，反设存在一个有向环完全落在 $\mathcal{S}_m^{\mathrm{amb}}$ 中。由于 $\mathcal{S}_m^{\mathrm{det}}$ 按定义是从初始状态 $V_m$ 可达的状态集合，该环上任取一状态必可由某条从 $V_m$ 出发的有限标记路径到达。随后沿该环循环可生成任意长的、始终停留在非单点态中的标记路径；这与“任意长度-$m$ 路径终点必落入单点态”矛盾。故 $H_m^{\mathrm{amb}}$ 不含有向环，为 DAG，从而也不承载周期轨道，结论 (1) 随之成立。证毕。
+\end{proof}
+
+\begin{corollary}[周期点刚性与内禀 \texorpdfstring{$\zeta_{Y_m}$}{zetaYm} 的退化]\label{cor:Ym-periodic-rigidity}
+当 $m\ge 3$ 时，对所有 $n\ge 1$ 有
+\[
+\#\mathrm{Fix}(\sigma^n|_{Y_m})=2^n,
+\qquad
+\zeta_{Y_m}(z)=\frac{1}{1-2z}.
+\]
+\end{corollary}
+\begin{proof}
+这是推论 \ref{cor:Phi_m-zeta-closed} 的直接重述（其证明基于定理 \ref{thm:Phi_m-conjugacy-threshold} 的共轭）。定理 \ref{thm:Ym-ambiguity-shell-dag} 进一步给出一个结构性解释：歧义壳为纯瞬态层，不贡献任何周期点，因此周期点谱完全由单点态骨架决定。证毕。
+\end{proof}
+
+\begin{corollary}[同步延迟的闭式与尖锐性]\label{cor:Ym-sync-delay}
+对 $y\in Y_m$ 定义确定化滤波轨道 $S_0:=V_m$、$S_{t+1}:=\delta_m(S_t,y_t)$（$t\ge 0$），并定义“最坏同步延迟”
+\[
+D_{\mathrm{sync}}(m):=\max\{\,t\ge 0:\exists\,y\in Y_m\ \text{s.t. }|S_t|>1\,\}.
+\]
+则当 $m\ge 3$ 时有
+\[
+\boxed{\ D_{\mathrm{sync}}(m)=m-1\ }.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:Phi_m-conjugacy-threshold}（并见表 \ref{tab:phi_m_conjugacy_threshold} 中 $R_m$ 的“non-singleton ends $(m)$”为 $0$），对任意 $y\in Y_m$ 都有 $|S_m|=1$，结合命题 \ref{prop:det-candidate-set-monotone} 的单调性知对所有 $t\ge m$ 亦有 $|S_t|=1$，从而 $D_{\mathrm{sync}}(m)\le m-1$。
+另一方面，同一张表同时给出 $R_{m-1}$ 的“non-singleton ends $(m-1)$”严格为正（$m\ge 3$），这意味着存在某个允许输出块使得 $|S_{m-1}|>1$，故 $D_{\mathrm{sync}}(m)\ge m-1$。两边合并即得等式。证毕。
+\end{proof}
+
+\begin{remark}[歧义壳作为子系统在 \texorpdfstring{$m\ge 3$}{m>=3} 时为空]\label{rem:Ym-amb-empty}
+在推论 \ref{cor:Ym-ambiguity-shell-low-entropy} 中，我们把“完全不进入单点本质分量”的点集记为歧义壳子系统 \(Y_m^{\mathrm{amb}}\)。
+而定理 \ref{thm:Ym-ambiguity-shell-dag} 的结论 (2) 表明：当 \(m\ge 3\) 时，从任意输出 \(y\in Y_m\) 出发的确定化滤波在至多 \(m\) 步内必进入并永远停留在单点态。
+因此在本文的 Zeckendorf 折叠模型里，\(Y_m^{\mathrm{amb}}=\varnothing\)（两边移位意义下不存在“永远保持歧义”的轨道）；所谓“歧义壳”真正表达的是一个\emph{有限步同步延迟层}，其最坏延迟由推论 \ref{cor:Ym-sync-delay} 精确给出。
+\end{remark}
+
 \begin{proposition}[主极点留数比作为常数级核指纹：一个可审计的新不变量]\label{prop:Ym-zeta-residue-ratio}
 设 cover 的 \(\zeta\) 与内禀 \(\zeta\) 在共同的主极点模长 \(z_\star=\rho_m^{-1}\)（其中 \(\rho_m:=\rho(A_m)=\rho(B_m)\)）处均为一阶极点。将其 Laurent 主部写为
 \[
@@ -265,6 +345,8 @@ R_m(n):=\frac{\#\mathrm{Fix}(\sigma^n|_{X_{A_m}})}{\#\mathrm{Fix}(\sigma^n|_{Y_m
 \]
 即 \(h_{\mathrm{top}}(Y_m)=\log\rho(A_m)\)（命题 \ref{prop:Ym-zeta-leading-pole}）。
 因此“丢失的信息”不是被指数压扁为熵损失，而是迁移进右解析状态集 \(\mathcal{S}_m\) 所携带的记忆结构：窗口层的多重度对应的是有限记忆的重编码，而非指数增长率的衰减。
+
+在本文的具体模型（Zeckendorf 折叠）中，上述机制还能进一步“封口”：定理 \ref{thm:Ym-ambiguity-shell-dag} 表明 $m\ge 3$ 时非单点歧义层是纯瞬态 DAG，完全不承载周期点；其造成的时间代价不是熵损失，而是一个可计入的有限同步延迟 \(D_{\mathrm{sync}}(m)=m-1\)（推论 \ref{cor:Ym-sync-delay}）。
 \end{remark}
 
 \begin{corollary}[单点本质态 \texorpdfstring{$\Rightarrow$}{=>} 有限延迟右解码]\label{cor:Ym-singleton-essential-finite-delay}
@@ -302,6 +384,7 @@ R_m(n):=\frac{\#\mathrm{Fix}(\sigma^n|_{X_{A_m}})}{\#\mathrm{Fix}(\sigma^n|_{Y_m
 \begin{corollary}[歧义壳的熵严格低于 \texorpdfstring{$\log 2$}{log 2}]\label{cor:Ym-ambiguity-shell-low-entropy}
 在推论 \ref{cor:Ym-singleton-essential-finite-delay} 的条件下，设右解析最小表示的状态图按强连通分量分解，其中最大熵本质分量为单点态分量（其熵为 \(\log 2\)，参见表 \ref{tab:phi_m_sofic_entropy} 的数值证书）。
 令 \(Y_m^{\mathrm{amb}}\subset Y_m\) 为那些在该右解析最小表示中\textbf{完全不进入}单点本质分量的标记序列所构成的 sofic 子系统（等价地：其 lift 的当前候选集合在一侧读入过程中始终为非单点）。
+（在本文的 Zeckendorf 折叠模型里，当 \(m\ge 3\) 时定理 \ref{thm:Ym-ambiguity-shell-dag} 进一步给出 \(Y_m^{\mathrm{amb}}=\varnothing\)，见备注 \ref{rem:Ym-amb-empty}；下述结论可视为一般 sofic 场景下“若歧义壳子系统非空，则其必严格低熵”的结构性备份。）
 则有严格不等式
 \[
 h_{\mathrm{top}}(Y_m^{\mathrm{amb}})<\log 2.
