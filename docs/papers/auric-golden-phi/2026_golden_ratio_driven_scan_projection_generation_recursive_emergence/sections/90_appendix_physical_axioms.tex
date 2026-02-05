@@ -1,0 +1,348 @@
+\section{物理公理的数学化重建（严格版本）}
+\label{app:physical-axioms-strict}
+
+本附录面向本文固定的“扫描—投影—折叠”（Scan--Project--Fold, SPG）结构，
+把“与经验物理相容且可由该结构推出”的最小物理骨架整理为一组可审计命题。
+其中“相容”指与现代物理中反复验证的结构性要求一致
+（可重复性、局域因果、相对论时空重建、量子测量的投影结构、重整化一致性等），
+而非预先假定某个拉氏量或场方程。
+
+为避免“额外假设混入”，我们把依赖链显式写出：H.0 汇总理论的最小基元；
+H.1 将物理相容性写成 \(P.1\)--\(P.7\) 的“物理公理”（以定理式陈述并给出出处）；
+H.2 给出从因果序到度量的严格重建路径（引用标准时空重建定理）；
+H.3 给出 lapse 代理与时间重标定的严格对应；H.4 说明这些结论在本文体系中的地位。
+
+% --------------------------------------------------------------------
+% Appendix-H-local theorem numbering: H.<subsection>.<n>
+% --------------------------------------------------------------------
+\newtheorem{hdefinition}{定义}[subsection]
+\newtheorem{hproposition}[hdefinition]{命题}
+\newtheorem{hcorollary}[hdefinition]{推论}
+\newtheorem{htheorem}[hdefinition]{定理}
+\newtheorem{hremark}[hdefinition]{注}
+
+% --------------------------------------------------------------------
+% Physical axioms numbered as P.1, P.2, ...
+% --------------------------------------------------------------------
+\newtheorem{physicalaxiom}{物理公理}
+\renewcommand{\thephysicalaxiom}{P.\arabic{physicalaxiom}}
+
+\setcounter{subsection}{-1}
+\subsection{预备：理论的最小结构（SPG 基元）}
+\label{subsec:appH0-prelim}
+
+\begin{hdefinition}[分辨率逆系统与稳定类型]\label{def:appH0-inverse-system}
+对每个分辨率 \(m\in\NN\)，取稳定语法集合 \(X_m\subset\{0,1\}^m\)（见定理 \ref{thm:fold-suite}），
+并以定义 \ref{def:pi-m2-m1-golden} 的截断映射
+\[
+\pi_{m_2\to m_1}:X_{m_2}\to X_{m_1}\qquad(m_2\ge m_1)
+\]
+构成 restriction 逆系统；一致性由引理 \ref{lem:pi-functorial-golden} 给出。
+由定理 \ref{thm:inverse-limit-golden} 得到分辨率无关对象
+\[
+X_\infty\ \cong\ \varprojlim X_m,
+\]
+其含义是“不同 \(m\) 的差异仅在可见前缀长度，而非统一对象本身”。
+\end{hdefinition}
+
+\begin{hdefinition}[折叠算子与多尺度相容]\label{def:appH0-fold}
+对每个 \(m\)，微态空间取为 \(\Omega_m:=\{0,1\}^m\)。
+折叠算子 \(\Fold_m:\Omega_m\to X_m\) 由定义 \ref{def:fold-word} 给出；
+其规范性、幂等性与满射性由命题 \ref{prop:fold-basic}（亦见定理 \ref{thm:fold-suite}）保证，
+并且折叠可计算（附录 C 命题 \ref{prop:fold-complexity}）。
+
+跨分辨率比较时，朴素截断一般不与折叠交换（命题 \ref{prop:pom-truncation-not-commute}）。
+本文采用 fold-aware restriction（定义 \ref{def:pom-fold-aware-restriction}）：
+对任意 \(m_2\ge m_1\)，令
+\[
+r^{\mathrm{e}}_{m_2\to m_1}:\Omega_{m_2}\to X_{m_1},
+\qquad
+r^{\mathrm{e}}_{m_2\to m_1}:=\pi_{m_2\to m_1}\circ \Fold_{m_2}.
+\]
+则 \(r^{\mathrm{e}}_{m_2\to m_1}\) 在稳定层上与逆系统相容（命题 \ref{prop:pom-gauge-natural}），
+并且由于 \(r^{\mathrm{e}}_{m_2\to m_1}(\omega)\in X_{m_1}\)，幂等性给出
+\[
+\Fold_{m_1}\bigl(r^{\mathrm{e}}_{m_2\to m_1}(\omega)\bigr)=r^{\mathrm{e}}_{m_2\to m_1}(\omega)
+\qquad(\forall\,\omega\in\Omega_{m_2}).
+\]
+\end{hdefinition}
+
+\begin{hdefinition}[投影可观测量与折叠不变量子代数]\label{def:appH0-observable-algebra}
+令 \(\{P_a\}_{a\in\Omega_m}\) 为微态极小投影（附录 \ref{app:op-algebra}）。
+对每个稳定类型 \(x\in X_m\)，定义折叠投影（亦称“等价类投影”）
+\[
+P_x^{\mathrm e}
+:=
+\sum_{\substack{a\in\Omega_m\\ \Fold_m(a)=x}}P_a
+\qquad(\text{与附录 \ref{app:op-algebra} 中的 }\widetilde P_x\text{ 同义}).
+\]
+由命题 \ref{prop:fold-invariant-subalgebra}，
+\(\{P_x^{\mathrm e}\}_{x\in X_m}\) 两两正交且 \(\sum_{x\in X_m}P_x^{\mathrm e}=I\)；
+它们生成的子代数
+\[
+\mathcal{B}_m:=\mathrm{span}\{P_x^{\mathrm e}:\ x\in X_m\}
+\]
+刻画“对折叠等价关系不变”的可观测量（在每条折叠纤维上取常值）。
+\end{hdefinition}
+
+\begin{hdefinition}[态与可观测直方图]\label{def:appH0-state-histogram}
+对任意态 \(\rho\) 与 \(x\in X_m\)，定义
+\[
+p_m(x):=\Tr(\rho\,P_x^{\mathrm e}).
+\]
+则 \(p_m\) 给出 \(\mathcal{B}_m\) 上的概率向量，
+并对应“折叠后稳定类型直方图”的理论对象（参见附录 \ref{app:op-algebra}）。
+\end{hdefinition}
+
+\begin{hdefinition}[本体态空间与局部有限传播演化]\label{def:appH0-ontic-evolution}
+对分辨率 \(n\)，本体态空间取为
+\[
+\mathcal{H}_n:=\mathcal{X}_n\times\mathcal{M}_n
+\]
+（定义 \ref{def:pom-state-space}）。
+存在本体一步演化算子 \(U:\mathcal{H}_n\to\mathcal{H}_n\)，
+满足局部性与有限传播公理 \ref{ax:pom-locality}。
+\end{hdefinition}
+
+\begin{hdefinition}[三投影读出与顺序投影]\label{def:appH0-three-projections}
+理论中固定三类读出相关投影门：规范投影 \(P_Z\)、原子投影 \(P_{\mathrm{prim}}\)、序投影 \(P_{\le}\)，
+以及其软化版本 \(\mathrm{PROJ}_u\)；
+见定义 \ref{def:pom-proj-norm}--\ref{def:pom-proj-temp}。
+\end{hdefinition}
+
+\begin{hdefinition}[信息外置与守恒型精化]\label{def:appH0-information-externalization}
+折叠（规范投影）作为 coarse-graining 门一般多对一，
+但可将“信息损失”外置到 prime-register 纤维：
+存在带 prime-register 残差的无损折叠提升（定义 \ref{def:pom-fold-prime-lift}），
+并由命题 \ref{prop:pom-fold-prime-lift-injective} 得到提升后折叠为单射，
+从而在包含外置寄存器的扩展系统中恢复可逆性。
+\end{hdefinition}
+
+\begin{hdefinition}[资源对偶：时间代价、空间代价与标准形]\label{def:appH0-resources}
+本文采用标准形描述“嵌入—演化—投影”的计算/演化过程（定义 \ref{def:pom-space-time}）：
+\[
+f_n=\Pi_n\circ U^{T(n)}\circ \iota_n,
+\]
+并定义空间代价 \(S(n):=\log|\mathcal{M}_n|\) 与时间代价 \(T(n)\) 等资源函数
+（参见定义 \ref{def:pom-cost} 与 \ref{def:pom-space-time}）。
+\end{hdefinition}
+
+\begin{hdefinition}[lapse proxy 与局域代价场]\label{def:appH0-lapse-proxy}
+把背景依赖的外部开销抽象为每内部步的外部代价 \(\kappa>0\)，并以参考值 \(\kappa_0\) 归一化，
+定义 lapse 代理（注 \ref{rem:lapse-modulated-tau-mix}）
+\[
+N:=\kappa_0/\kappa,
+\qquad
+\tau_{\mathrm{mix,eff}}:=\tau_{\mathrm{mix}}/N.
+\]
+并引入主标量场
+\[
+u(x):=-\log N(x)=\log\frac{\kappa(x)}{\kappa_0},
+\]
+其与折叠侧缺陷标量 \(\kappa_m(\pi)=\mathbb{E}_{\pi}[\log d_m(X)]\) 的同构关系在
+\(\eqref{eq:gut_kappa_m_defect}\) 及第 \ref{sec:group-unification} 节的接口说明中给出。
+作为最小的有效漂移参数化，可写
+\[
+g_i^{-2}(x)=a_i+b_i\,u(x)+\cdots.
+\]
+\end{hdefinition}
+
+\begin{hdefinition}[统计稳定性：保测系统与频率极限]\label{def:appH0-ergodic-stability}
+在需要“极限频率/不变状态”时，本文采用假设 \ref{assump:freq-min}：
+存在概率空间 \((X,\mathcal{B},\mu)\) 与保测变换 \(T\)，并由窗集 \(W\in\mathcal{B}\) 给出读出
+\(
+s_t(x)=\ind_W(T^t x)
+\)。
+在遍历假设下由 Birkhoff 定理得轨道频率收敛到 \(\mu(W)\)；
+在唯一遍历与边界零测等正则性条件下可强化为初值无关的稳定结论（\S\ref{sec:statistical-stability}）。
+\end{hdefinition}
+
+\subsection{可推出的物理公理：从 SPG 到经验物理的最小一致性}
+\label{subsec:appH1-physical-axioms}
+\setcounter{physicalaxiom}{0}
+
+下列“物理公理”均表述为在 H.0 的理论结构上可推出的性质；
+其“与经验物理相容”意指它们与现代物理中被反复验证的结构性要求一致，
+但不预设特定的动力学方程（例如不直接假定 Einstein 方程或某个特定拉氏量）。
+
+\begin{physicalaxiom}[可重复性与统计稳定性]\label{ax:P1-repeatability}
+在定义 \ref{def:appH0-ergodic-stability} 的前提下，对任意事件 \(A\in\mathcal{B}\)，轨道频率
+\[
+\mathrm{freq}_N(A;x):=\frac{1}{N}\sum_{t=0}^{N-1}\ind_A(T^t x)
+\]
+在遍历性下满足
+\[
+\mathrm{freq}_N(A;x)\to \mu(A)\qquad(\mu\text{-几乎处处}).
+\]
+在唯一遍历且满足 \(\mu(\partial W)=0\) 等正则性条件时，上述极限可取为与初值 \(x\) 无关的“可重复统计”。
+
+\medskip\noindent\textbf{物理含义：}同一实验协议的重复测量在足够长样本下收敛到稳定概率，满足实验可重复性所要求的统计稳定。
+\end{physicalaxiom}
+\begin{proof}
+见 \S\ref{sec:statistical-stability} 中假设 \ref{assump:freq-min} 的讨论与 \cite{WaltersErgodicTheory}。
+\end{proof}
+
+\begin{physicalaxiom}[投影读出与量子概率的兼容]\label{ax:P2-projection-prob}
+对每个分辨率 \(m\)，折叠投影 \(\{P_x^{\mathrm e}\}_{x\in X_m}\) 形成正交完备投影分解，
+并生成折叠不变量子代数 \(\mathcal{B}_m\)（定义 \ref{def:appH0-observable-algebra}）。
+对任意态 \(\rho\)，
+\[
+p_m(x):=\Tr(\rho P_x^{\mathrm e})
+\]
+给出 \(\mathcal{B}_m\) 上的概率向量（折叠直方图的理论对象）。
+
+\medskip\noindent\textbf{物理含义：}观测可取为有限分辨率的投影测量（是/否读出与直方图），并与量子理论中“态—投影—概率”的基本构型一致。
+\end{physicalaxiom}
+\begin{proof}
+投影分解与子代数刻画见命题 \ref{prop:fold-invariant-subalgebra}；概率向量由迹的正性与归一性直接推出。
+\end{proof}
+
+\begin{physicalaxiom}[局域性与有限传播所诱导的因果律]\label{ax:P3-causality}
+若本体演化 \(U\) 满足局部性与有限传播（公理 \ref{ax:pom-locality}），
+则存在随步数 \(t\) 至多线性扩张的影响域 \(\mathcal{I}(t)\)，使得任意局域扰动在 \(t\) 步后仅能影响 \(\mathcal{I}(t)\) 内的局域读出。
+因此可由“可影响关系”定义偏序型因果结构：若事件 \(e\) 在动力学上可影响事件 \(f\)，记 \(e\prec f\)。
+
+\medskip\noindent\textbf{物理含义：}不存在无限快的信息传播；离散步进下自然出现“因果锥”，从而与相对论性因果结构相容。
+\end{physicalaxiom}
+\begin{proof}
+把“局域扰动”定义为仅改变初态在某个有限半径块上的坐标，
+把“局域读出”定义为仅依赖于有限半径块的可观测量。
+由公理 \ref{ax:pom-locality}，一步更新仅依赖有限窗口且仅更新有限半径块；
+于是扰动的支撑在每一步最多向外扩张一个固定半径，归纳得 \(t\) 步后影响域至多线性增长。
+以“存在影响”定义二元关系 \(\prec\) 并取其传递闭包，得到偏序型因果结构。
+\end{proof}
+
+\begin{physicalaxiom}[跨分辨率可审计性与规范不变性]\label{ax:P4-gauge}
+折叠等价关系 \(a\sim b\iff \Fold_m(a)=\Fold_m(b)\) 的不变量可观测量恰由 \(\mathcal{B}_m\) 刻画（命题 \ref{prop:pom-fiber-invariance}）。
+跨分辨率比较必须以 fold-aware restriction \(r^{\mathrm e}\) 作为 Gauge 条件（命题 \ref{prop:pom-gauge-natural}）；
+否则在朴素截断口径下可能出现“坐标不一致导致的伪不变量/伪收敛”（注 \ref{rem:pom-gauge-criterion}）。
+
+\medskip\noindent\textbf{物理含义：}物理量必须对分辨率选择（粗粒化坐标）保持一致；这对应经验物理中“可观测量不应依赖不可观测的微观表象”的规范原则。
+\end{physicalaxiom}
+\begin{proof}
+\(\mathcal{B}_m\) 的纤维不变量判别见命题 \ref{prop:pom-fiber-invariance}。
+跨分辨率的严格交换与兼容性见命题 \ref{prop:pom-gauge-natural}；
+伪不变量风险的结构判据见注 \ref{rem:pom-gauge-criterion}。
+\end{proof}
+
+\begin{physicalaxiom}[重整化一致性：多尺度相容的粗粒化半群]\label{ax:P5-renormalization}
+设稳定层运算族 \(\{f_m:X_m\to X_m\}\) 满足对任意 \(m_2\ge m_1\) 的相容性
+\[
+\pi_{m_2\to m_1}\circ f_{m_2}=f_{m_1}\circ \pi_{m_2\to m_1}.
+\]
+则存在唯一极限运算 \(f_\infty:X_\infty\to X_\infty\) 使得对所有 \(m\) 有
+\[
+\pi_m\circ f_\infty=f_m\circ\pi_m.
+\]
+
+\medskip\noindent\textbf{物理含义：}粗粒化与动力学在多尺度上可交换，构成严格的“跨尺度一致性”；这是统计物理与量子场论中重整化程序所依赖的结构性条件（不以特定拉氏量为前提）。
+\end{physicalaxiom}
+\begin{proof}
+见定理 \ref{thm:pom-inverse-limit}；其依赖的逆极限同构为定理 \ref{thm:inverse-limit-golden}。
+\end{proof}
+
+\begin{physicalaxiom}[闭合系统的可逆性：信息外置守恒]\label{ax:P6-reversible-by-lift}
+若采用 prime-register 精化（定义 \ref{def:pom-fold-prime-lift}），
+则折叠导致的多对一不可逆性可完全解释为信息被转移到外置寄存器；
+在包含该寄存器的扩展系统中，折叠提升为单射并可逆（命题 \ref{prop:pom-fold-prime-lift-injective}）。
+
+\medskip\noindent\textbf{物理含义：}封闭系统层面可与幺正/可逆动力学相容；宏观不可逆可被解释为对外置自由度的遗忘（与统计物理的粗粒化不可逆性范式一致）。
+\end{physicalaxiom}
+\begin{proof}
+直接由命题 \ref{prop:pom-fold-prime-lift-injective}。
+\end{proof}
+
+\begin{physicalaxiom}[测量—时间界：统计推断所需样本下界]\label{ax:P7-sample-time}
+将折叠输出直方图视为有限状态 Markov 链的经验分布时，
+存在以伪谱隙 \(\gamma_{\mathrm{ps}}\) 参数化的 TV 置信包络：
+在平稳启动下，对任意 \(\delta\in(0,1)\)，以概率至少 \(1-\delta\) 有
+\[
+D_{\mathrm{TV}}(\hat{\pi}_N,\pi)\le \frac12|S|\sqrt{\frac{2}{\gamma_{\mathrm{ps}}\,N}\log\frac{2|S|}{\delta}}.
+\]
+
+\medskip\noindent\textbf{物理含义：}在给定混合性质（由 \(\gamma_{\mathrm{ps}}\) 控制）与态空间规模下，达到指定精度的统计稳定必然需要最小观测时间/样本预算；这给出“信息获取速率受动力学限制”的可审计严格版本。
+\end{physicalaxiom}
+\begin{proof}
+这是定理 \ref{thm:markov-tv-envelope} 的直接重述；其样本预算闭式见推论 \ref{cor:markov-tv-sample-complexity}。
+\end{proof}
+
+\subsection{时空结构的推理：从因果到度量}
+\label{subsec:appH2-spacetime}
+
+本节给出与广义相对论框架相容的时空重建路径，并说明其在本文中如何由
+\ref{ax:P3-causality}（因果序）、\ref{ax:P1-repeatability}（稳定测度/频率）、
+\ref{ax:P4-gauge}（规范口径的一致性）触发。
+
+\begin{hproposition}[因果结构对拓扑/共形结构的决定性]\label{prop:appH2-causal-determines-topology}
+在足够温和的因果条件下（例如 past and future distinguishing 等标准条件），
+类时曲线族/因果结构可决定时空拓扑；并且在适当条件下因果结构可确定共形结构
+（典型结果见 \cite{Malament1977TimelikeCurvesTopology,HawkingKingMcCarthy1976PathTopology}）。
+\end{hproposition}
+
+\noindent\textbf{在本文中的对应：}
+物理公理 \ref{ax:P3-causality} 给出由有限传播诱导的偏序 \(\prec\)（因果骨架）；
+物理公理 \ref{ax:P1-repeatability} 给出可重复的稳定频率/测度，从而使该因果结构成为可审计的经验对象。
+
+\begin{hproposition}[因果结构 + 体积测度确定度量尺度]\label{prop:appH2-causal-plus-volume-metric}
+在 globally hyperbolic 等典型物理条件下，
+因果序给出共形结构，而额外给定一项测度/体积信息可把度量从共形类提升为尺度固定的度量
+（一条可操作的严格路径可参见 \cite{MartinPanangadenSpacetimeGeometryCausalMeasurement}）。
+\end{hproposition}
+
+\noindent\textbf{在本文中的对应：}
+\begin{itemize}
+  \item 体积测度可由稳定态 \(\mu\)（物理公理 \ref{ax:P1-repeatability}）或事件计数极限给出；
+  \item 分辨率 \(m\) 的尺度标定在本文中以 \(\varepsilon_m:=\varphi^{-m}\) 固定，并可由投影输出测度的 Rényi 维数谱读出几何量
+  （命题 \ref{prop:pom-renyi-dimension-spectrum}）。
+  在经验相容的解释中，宏观极限的维数/尺度行为与已知物理维度（近似 \(4\) 维）一致属于模型选择条件，而非额外先验公设。
+\end{itemize}
+
+\begin{hproposition}[EPS 方案：由光传播与自由落体构造 Lorentz 度量]\label{prop:appH2-eps}
+EPS（Ehlers--Pirani--Schild）方案表明：若以光线轨道给出共形结构、以自由落体轨道给出射影结构，并施加兼容性公设，则可构造出 Lorentz 度量（或 Weyl 结构）并以操作方式测定（见 \cite{EhlersPiraniSchild1972FreeFallLight,Trautman2012EditorialEPS}）。
+\end{hproposition}
+
+\noindent\textbf{在本文中的嵌入方式：}
+\begin{itemize}
+  \item “光锥”可由物理公理 \ref{ax:P3-causality} 的最大传播前沿（离散因果锥边界）在连续极限中定义；
+  \item “自由落体”可由本体演化 \(U\) 在不施加强迫干预时的典型轨道类定义；
+  \item “兼容性”可由物理公理 \ref{ax:P4-gauge} 的规范不变性表达：光锥结构与自由落体结构在折叠不变量意义下必须一致。
+\end{itemize}
+
+\subsection{引力相关结构：lapse 与时间重标定的严格对应}
+\label{subsec:appH3-gravity}
+
+\begin{hproposition}[lapse proxy 与相对论 \texorpdfstring{$(3+1)$}{(3+1)} 分解中的 lapse 函数同型]\label{prop:appH3-lapse-adm}
+在广义相对论的 ADM \((3+1)\) 分解中，lapse 函数 \(N\) 把坐标时间 \(t\) 与 Eulerian 观察者的固有时 \(\tau\) 关联
+（系统阐明见 \cite{Gourgoulhon2007ThreePlusOne}）。
+本文的 lapse 代理 \(N=\kappa_0/\kappa\) 用于对有效混合时间作重标定
+\(
+\tau_{\mathrm{mix,eff}}=\tau_{\mathrm{mix}}/N
+\)
+（定义 \ref{def:appH0-lapse-proxy}）。
+因此若把“统计达到稳定所需的内部步数/混合时间”解释为钟的计时机制，
+则 \(\tau_{\mathrm{mix,eff}}\) 的位置依赖重标定与引力时间膨胀在结构上同型；
+该对应不预设 Einstein 方程，仅建立 lapse 层面的严格同型关系。
+\end{hproposition}
+
+\begin{hproposition}[局域代价场与有效耦合漂移的兼容性入口]\label{prop:appH3-u-coupling}
+令局域代价场 \(u(x):=-\log N(x)\)（定义 \ref{def:appH0-lapse-proxy}），并将有效耦合漂移参数化为
+\[
+g_i^{-2}(x)=a_i+b_i\,u(x)+\cdots.
+\]
+在弱场近似中，引力势常以度规时间分量的对数偏差表征；
+因此把 \(u(x)\) 作为“引力势的代理量”属于与相对论弱场近似相容的解释选择。
+该解释并不自动推出 Einstein 动力学方程，但给出在本文结构内实现“引力=时间重标定/耦合漂移”的一致入口。
+\end{hproposition}
+
+\subsection{结语：物理相容性的地位}
+\label{subsec:appH4-status}
+
+\begin{enumerate}
+  \item 上述 \(P.1\)--\(P.7\) 为本文结构内可推出的“物理相容骨架”：
+  可重复统计（统计物理基础）、投影测量结构、局域因果律、规范不变性、重整化一致性、闭合可逆性、测量样本预算下界。
+  \item “时空”在此框架中并非先验背景，而是由因果序与稳定测度触发的重建对象：
+  因果结构决定拓扑/共形结构（命题 \ref{prop:appH2-causal-determines-topology}），体积测度补足尺度以决定度量（命题 \ref{prop:appH2-causal-plus-volume-metric}）。
+  \item 任何进一步的、超出现代经验检验范围的算术/离散几何假说应与上述最小相容骨架分离处理：
+  前者属于模型扩展与选择，后者属于最小物理相容公理。
+\end{enumerate}
+
