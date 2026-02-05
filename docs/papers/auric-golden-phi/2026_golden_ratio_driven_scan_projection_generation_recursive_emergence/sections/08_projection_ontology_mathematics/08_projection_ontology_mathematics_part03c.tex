@@ -573,6 +573,64 @@ $$
 以 $\{M_{q,\ell}\}$ 为坐标的线性表示的像空间维数至多为最小实现维数 $d$，因此在 $2h+1$ 维坐标空间中，产生零序列的线性组合构成的核空间维数至少为 $2h+1-d$。取其一组基即得线性无关的约束族。证毕。
 \end{proof}
 
+\begin{definition}[共振缺口函数 \texorpdfstring{$\Delta(q)$}{Delta(q)}]\label{def:pom-resonance-gap-delta}
+对整数 \(q\ge 2\)，令 \(h=\lfloor q/2\rfloor\)，并令 \(d_q\) 表示 \(S_q(m)\) 的最小整系数递推阶数（等价地最小线性 realization 维数）。定义共振缺口函数
+$$
+\Delta(q):=\bigl(2\lfloor q/2\rfloor+1\bigr)-d_q.
+$$
+\end{definition}
+
+\begin{proposition}[缺口即约束维数：\texorpdfstring{$\Delta(q)$}{Delta(q)} 条线性无关的不可激发约束]\label{prop:pom-delta-counts-constraints}
+在定理 \ref{thm:pom-moment-resonance} 的假设下，若递推阶数为 \(d=d_q\)，则至少存在 \(\Delta(q)\) 条线性无关的系数向量 \(\alpha\) 使
+\[
+\sum_{\ell=-h}^{h}\alpha_\ell M_{q,\ell}(m)=0\qquad(m\ge m_0).
+\]
+因此 \(\Delta(q)\) 可作为“共振强度”的整数指纹：其数值等于至少可见的不可激发模态约束的维数下界。
+\end{proposition}
+
+\begin{proof}
+由推论 \ref{cor:pom-resonance-deficit} 立得：缺口为 \(2h+1-d_q=\Delta(q)\)。证毕。
+\end{proof}
+
+\begin{remark}[已核验窗口内的 \texorpdfstring{$\Delta(q)$}{Delta(q)} 读数（\(q=9,\dots,17\)）]\label{rem:pom-delta-q9-17}
+在已核验的最小递推阶数 \(d_q\)（表 \ref{tab:fold_collision_moment_recursions_9_17}）下，可直接计算 \(\Delta(q)\) 并得到一个可跨版本对比的整数指纹序列。
+下表由脚本 \texttt{scripts/exp\_fold\_collision\_resonance\_nullmodes\_hankel.py} 一键生成：
+\end{remark}
+
+\IfFileExists{sections/generated/tab_fold_collision_resonance_gap_delta_q_9_17.tex}{%
+\input{sections/generated/tab_fold_collision_resonance_gap_delta_q_9_17}%
+}{}
+
+\begin{remark}[双层降维框架：对称性降维与 Fibonacci 共振坍缩的来源可分解]\label{rem:pom-two-layer-dim-reduction}
+对固定的 \(q\)-重 moment-kernel，存在两类互不混淆的降维机制：
+\begin{itemize}
+  \item \textbf{普适层（群对称）：}由 \(S_q\)-置换对称，对称商核 \(\widetilde A_q\) 的维数满足
+  \(
+  \dim(\widetilde A_q)\le \binom{q+9}{9}=O(q^9)
+  \)
+  且保持同一 Perron 主尺度 \(r_q\)（命题 \ref{prop:pom-ak-symmetric-compression}）；
+  \item \textbf{特异层（算术共振）：}当 \(d_q<2\lfloor q/2\rfloor+1\) 时，由差分模态口径出现额外线性约束，其强度由缺口 \(\Delta(q)\) 量化（定义 \ref{def:pom-resonance-gap-delta} 与命题 \ref{prop:pom-delta-counts-constraints}）。
+\end{itemize}
+因此“从 \(Q^q\) 到多项式规模”的压缩可以被拆解为：先由群对称完成普适的直方图化降维，再由 Fibonacci 同余结构诱发的代数退化触发额外的算术坍缩（其可审计指纹即 \(\Delta(q)\) 与相应的线性证书）。
+\end{remark}
+
+\begin{remark}[可执行共振证书：Hankel-null 的 \texorpdfstring{$\mathrm{NullModes}(q)$}{NullModes(q)} 输出]\label{rem:pom-nullmodes-algorithm}
+对固定 \(q\)（例如 \(q=9,\dots,17\)），脚本 \texttt{scripts/exp\_fold\_collision\_resonance\_nullmodes\_hankel.py} 在审计窗口上计算序列 \(a_n:=S_q(n+2)\)，并构造尺寸 \((2h+1)\times L\) 的 Hankel 截断块 \(H=(a_{i+j})\)。
+当 \(d_q<2h+1\) 时，向量空间 \(\ker(H^{\mathsf T})\) 的维数至少为 \(\Delta(q)\)，其任意一组基
+\[
+\mathrm{NullModes}(q)=\{\alpha^{(j)}\}_{j=1}^{\Delta(q)}\subset\ZZ^{2h+1}
+\]
+给出一族可机读的“共振证书”：对审计窗口内所有可用的平移 \(t\)，都有
+\(
+\sum_{i=0}^{2h}\alpha^{(j)}_i\,a_{i+t}=0
+\)。
+该输出把“阶数下降/秩缺口”升级为可复现的显式线性组合证书，并可作为跨实现/跨版本的对比对象。
+\end{remark}
+
+\IfFileExists{sections/generated/tab_fold_collision_resonance_nullmodes_q9_17.tex}{%
+\input{sections/generated/tab_fold_collision_resonance_nullmodes_q9_17}%
+}{}
+
 \subsubsection{秩缺口与表示可见性}\label{subsec:pom-moment-visibility}
 从同余计数口径 \(c_m(r)\) 出发，\(S_q(m)=\sum_r c_m(r)^q\) 可理解为模 \(F_{m+2}\) 上的 \(L^q\) 量；其傅里叶展开等价于对角色空间做 \(q\)-重张量提升后再施加共轭对称与“输出一致”的投影。差分模态截断给出上界 \(2\lfloor q/2\rfloor+1\)，而表 \ref{tab:fold_collision_moment_recursions_9_17} 的秩缺口说明：在某些 \(q\) 上存在不可见的表示分量，使得可观测子空间维数下降，从而触发共振。
 
