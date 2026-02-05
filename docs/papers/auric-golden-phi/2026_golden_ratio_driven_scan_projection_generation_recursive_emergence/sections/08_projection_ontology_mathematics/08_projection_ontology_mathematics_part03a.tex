@@ -650,6 +650,27 @@ G(x)=G[J_1]\sqcup\cdots\sqcup G[J_r]
 对不相连图，独立集在各连通分量上独立选择，计数乘法性成立。
 \end{proof}
 
+\begin{corollary}[纤维下界的块级乘法级联]\label{cor:pom-fiber-lower-bound-cascade}
+沿用定义 \ref{def:pom-carry-interference-graph}，并把 $J(x)=J_1\sqcup\cdots\sqcup J_r$ 按引理 \ref{lem:pom-ind-factorization} 分解为块。
+记每块贡献
+\[
+I(J_\ell):=\#\mathsf{Ind}(G[J_\ell])\qquad(\ell=1,\dots,r).
+\]
+则对任意 $x\in X_m$ 都有
+\[
+\boxed{\;
+d_m(x)\ \ge\ \prod_{\ell=1}^r I(J_\ell)\;}
+\]
+从而其对数纤维体积至少具有可加分解
+\[
+\boxed{\;
+\log d_m(x)\ \ge\ \sum_{\ell=1}^r \log I(J_\ell).\;}
+\]
+\end{corollary}
+\begin{proof}
+由引理 \ref{lem:pom-fiber-lower-bound-independent-sets} 得 $d_m(x)\ge \#\mathsf{Ind}(G(x))$，再由引理 \ref{lem:pom-ind-factorization} 的乘法公式得到乘积下界。取对数即得第二式。证毕。
+\end{proof}
+
 \begin{lemma}[单块情形的局部递推：\texorpdfstring{$a_t=a_{t-1}+a_{t-2}$}{a=a+a} 与 \texorpdfstring{$a_t=a_{t-1}+a_{t-3}$}{a=a+a} 的分岔]\label{lem:pom-ind-local-recurrence}
 沿用引理 \ref{lem:pom-independence-dp-radius2} 的记号。
 设 $J(x)$ 自身为单块（即对所有 $t$ 有 $i_{t+1}-i_t\le 2$）。则对 $t\ge 3$：
@@ -671,6 +692,87 @@ G(x)=G[J_1]\sqcup\cdots\sqcup G[J_r]
 若 $i_t-i_{t-2}=2$，则 $s=t-2$ 不满足条件；而由于 $i_{t-2}-i_{t-3}\ge 1$，得 $i_t-i_{t-3}\ge 3$，故 $p(t)=t-3$。
 代入引理 \ref{lem:pom-independence-dp-radius2} 的递推即得。
 \end{proof}
+
+\begin{proposition}[单块的二字母矩阵语法]\label{prop:pom-ind-matrix-grammar}
+设 $J(x)=\{i_1<\cdots<i_k\}$ 为单块，并取引理 \ref{lem:pom-independence-dp-radius2} 的序列 $a_t$。
+对 $t\in\{3,\dots,k\}$ 定义“局部字母”
+\[
+\sigma_t:=
+\begin{cases}
+2,& i_t-i_{t-2}>2\quad(\text{等价于 }p(t)=t-2),\\
+3,& i_t-i_{t-2}=2\quad(\text{等价于 }p(t)=t-3),
+\end{cases}
+\]
+并令状态向量
+\(
+v_t:=(a_t,a_{t-1},a_{t-2})^\top
+\)。
+则对每个 $t=3,\dots,k$，递推都等价于两种固定线性更新之一：
+\[
+v_t=M_{\sigma_t}\,v_{t-1},
+\qquad
+M_2=
+\begin{pmatrix}
+1&1&0\\
+1&0&0\\
+0&1&0
+\end{pmatrix},
+\qquad
+M_3=
+\begin{pmatrix}
+1&0&1\\
+1&0&0\\
+0&1&0
+\end{pmatrix}.
+\]
+从而块贡献（单块独立集计数）可写为一个二生成元矩阵词的评价：
+\[
+I(J(x))=\#\mathsf{Ind}(G[J(x)])=a_k
+=e_1^\top\Bigl(\prod_{t=3}^k M_{\sigma_t}\Bigr)v_2,
+\]
+其中 $e_1=(1,0,0)^\top$，并且在单块情形下初值固定为
+\(
+v_2=(a_2,a_1,a_0)^\top=(3,2,1)^\top
+\)。
+\end{proposition}
+\begin{proof}
+由引理 \ref{lem:pom-ind-local-recurrence}，在单块中对 $t\ge 3$ 只有两种情形：
+若 $p(t)=t-2$ 则 $a_t=a_{t-1}+a_{t-2}$，等价于 $v_t=M_2v_{t-1}$；
+若 $p(t)=t-3$ 则 $a_t=a_{t-1}+a_{t-3}$，等价于 $v_t=M_3v_{t-1}$。
+将 $t=3,\dots,k$ 逐步迭代并取第一坐标即得矩阵词表达式。
+最后，单块意味着 $i_2-i_1\le 2$，从而 $p(1)=p(2)=0$，故 $a_0=1,a_1=2,a_2=3$。证毕。
+\end{proof}
+
+\begin{definition}[缺陷集]\label{def:pom-ind-defect-set}
+在命题 \ref{prop:pom-ind-matrix-grammar} 的单块设定下，定义缺陷位置集合
+\[
+\mathcal D(J(x)):=\{t\in\{3,\dots,k\}:\ \sigma_t=3\}
+=\{t\in\{3,\dots,k\}:\ i_t-i_{t-2}=2\}.
+\]
+\end{definition}
+
+\begin{remark}[谱层级的缺陷集分类原则]\label{rem:pom-ind-defect-class}
+命题 \ref{prop:pom-ind-matrix-grammar} 给出一个可审计的组织方式：
+\begin{enumerate}
+  \item \emph{块内：}单块贡献 $I(J)$ 由二字母矩阵词（等价地：由缺陷集 $\mathcal D(J)$）决定；缺陷自由的情形 $\mathcal D(J)=\emptyset$ 给出纯 Fibonacci 递推与最大指数增长（$M_2$ 的 Perron 根为 $\varphi$）。
+  \item \emph{全局：}由推论 \ref{cor:pom-fiber-lower-bound-cascade}，下界 $\#\mathsf{Ind}(G(x))$ 在块层面乘法级联，因此 $\log d_m(x)$ 的一个可计算下包络天然分解为各块 $\log I(J_\ell)$ 的和。
+\end{enumerate}
+这把“近极大谱层级为何呈现规律性缺口/分岔”的机制统一为：\emph{谱层级}可视为“块上缺陷集合的组合类”，并由块乘法级联拼装。
+\end{remark}
+
+\begin{definition}[Lyapunov 指纹常数（典型独立集下界指数）]\label{def:pom-ind-lyapunov-fingerprint}
+令 $\nu$ 为黄金均值移位 $X\subset\{0,1\}^{\mathbb N}$ 上的一个平稳遍历概率分布。
+对 $\nu$-典型的无限序列 $x=x_1x_2\cdots$，记其长度-$m$ 前缀为 $x_{1..m}$，并据定义 \ref{def:pom-carry-interference-graph} 构造干涉图 $G(x_{1..m})$。
+若极限存在，则定义
+\[
+\Lambda_{\mathsf{Ind}}(\nu):=\lim_{m\to\infty}\frac{1}{m}\log \#\mathsf{Ind}(G(x_{1..m})).
+\]
+\end{definition}
+
+\begin{remark}[随机矩阵乘积视角]\label{rem:pom-ind-random-matrix}
+在推论 \ref{cor:pom-fiber-lower-bound-cascade} 与命题 \ref{prop:pom-ind-matrix-grammar} 的表达下，$\#\mathsf{Ind}(G(x_{1..m}))$ 可被视为“块乘积 + 块内二字母矩阵词”的复合对象。
+因此，在任何给定的平稳遍历来源下，块序列与块内缺陷模式诱导一个平稳的矩阵乘积过程；其顶 Lyapunov 指数（再按“块顶点密度/原始长度密度”重标度）提供了典型下界指数 $\Lambda_{\mathsf{Ind}}$ 的一个可审计解释与数值估计路线。
+\end{remark}
 \begin{theorem}[最大纤维闭式]\label{thm:pom-max-fiber}
 取 Fibonacci 延拓到 $F_0=0,F_1=1$。对 $m\ge 2$，有精确闭式
 \[
