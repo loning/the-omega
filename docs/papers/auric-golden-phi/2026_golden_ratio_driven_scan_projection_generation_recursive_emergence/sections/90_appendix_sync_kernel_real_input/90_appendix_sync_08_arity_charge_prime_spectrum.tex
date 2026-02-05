@@ -60,6 +60,11 @@ g(e):=\chi(e)+V(v)-V(u)\in\{0,1\}.
 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_charge\_closed\_form.py}。
 \end{proof}
 
+\begin{remark}[Conjecture B.211 的证明]\label{rem:real-input-40-arity-charge-conjecture-b211}
+定理 \ref{thm:real-input-40-arity-charge-coboundary} 给出了 arity-charge 在闭轨上的非负性，
+从而证实 Conjecture B.211；更强的是它提供了逐边的 $0/1$ 共边界证书。
+\end{remark}
+
 \begin{remark}[有限证书（逐边核验表）]\label{rem:real-input-40-arity-charge-coboundary-audit}
 上述证明严格等价于一个有限不等式系统：在 essential $20$ 状态核心上逐边检查 $g(e)\in\{0,1\}$。
 本核的核心允许边总数为 $48$；表 \ref{tab:real-input-40-arity-charge-coboundary-audit} 给出全部边的 $(d,e,\chi,V(u),V(v),g)$，因此是一个可被逐行核对的有限证书。
@@ -84,6 +89,51 @@ P_n(q)\in\ZZ_{\ge 0}[q].
 \begin{proof}
 由定理 \ref{thm:real-input-40-arity-charge-coboundary}，$\chi$ 与 $g$ 在周期轨道上同和，且 $g$ 逐边取值于 $\{0,1\}$。
 因此每条 primitive 轨道权重 $q^{\chi(\gamma)}=q^{g(\gamma)}$ 为非负整数次幂，且系数为计数。证毕。
+\end{proof}
+
+\begin{theorem}[arity-charge 的密度上界与尖性]\label{thm:real-input-40-arity-charge-density-bound}
+对任意 primitive 周期轨道 $\gamma$，记 $n=|\gamma|$。则
+\[
+0\le \chi(\gamma)\le \left\lfloor \frac{n}{2}\right\rfloor.
+\]
+并且存在长度 $2$ 的 primitive 轨道满足 $\chi(\gamma)=1$，故上界可达。
+\end{theorem}
+
+\begin{proof}
+由定理 \ref{thm:real-input-40-arity-charge-coboundary}，取 $g(e)\in\{0,1\}$ 使 $\chi(\gamma)=\sum_{e\in\gamma}g(e)$。
+令
+\[
+w(e):=1-2g(e)\in\{+1,-1\}.
+\]
+存在势函数
+\[
+h:\Sigma_{\mathrm{ess}}\to\{-2,-1,0\}
+\]
+使得对任意核心边 $e:u\to v$ 有
+\[
+w(e)+h(u)-h(v)\ge 0.
+\]
+沿闭轨求和得到 $\sum_{e\in\gamma}w(e)\ge 0$，即 $\sum_{e\in\gamma}g(e)\le n/2$，从而得到上界。
+长度 $2$ 的可达性见表 \ref{tab:real-input-40-rotation-polytope-vertices} 中 $\bar\chi=1/2$ 的见证轨道。
+\end{proof}
+
+\begin{corollary}[primitive arity-charge 多项式的次数上界]\label{cor:real-input-40-arity-charge-degree-bound}
+对任意 $n\ge 1$，有
+\[
+\deg P_n(q)\le \left\lfloor \frac{n}{2}\right\rfloor.
+\]
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:real-input-40-arity-charge-density-bound} 对每条长度 $n$ 的 primitive 轨道成立 $\chi(\gamma)\le \lfloor n/2\rfloor$，故 $P_n(q)$ 的最高幂不超过该上界。
+\end{proof}
+
+\begin{corollary}[$g=1$ 子图无环与 $M_1$ 幂零]\label{cor:real-input-40-arity-charge-g1-acyclic}
+仅由 $g=1$ 边组成的子图无有向环，因此 $M_1$ 为幂零矩阵。
+\end{corollary}
+
+\begin{proof}
+若存在仅由 $g=1$ 边构成的闭轨，则有 $\chi(\gamma)=|\gamma|$，与定理 \ref{thm:real-input-40-arity-charge-density-bound} 矛盾。
 \end{proof}
 
 由推论 \ref{cor:real-input-40-arity-charge-no-laurent}，其前 12 项为
@@ -147,6 +197,27 @@ D(q):=\mathrm{diag}\bigl(q^{V(\cdot)}\bigr)
 由 $M_0$ 的有限维行列式计算可直接因子化得到所示闭式；复现见脚本
 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_charge\_closed\_form.py}。
 \end{proof}
+
+\begin{proposition}[零电荷子系统的 Abel/Mertens 常数]\label{prop:real-input-40-arity-charge-zero-constants}
+记 $z_0=\kappa^{-1}$，并定义主极点常数
+\[
+C_0:=\lim_{z\to z_0}(1-\kappa z)\,\zeta_0(z).
+\]
+按与 \S\ref{app:real-input-40-finite-part} 同型的 Abel 有限部，令
+\[
+\log\mathfrak{M}_0:=\log C_0+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta_0(z_0^m),
+\qquad
+\mathsf{M}_0:=\log\mathfrak{M}_0+\gamma.
+\]
+则数值上
+\[
+C_0\approx 0.604848,\quad
+\log\mathfrak{M}_0\approx -1.385549,\quad
+\mathsf{M}_0\approx -0.808334,
+\qquad
+\mathfrak{M}_0\approx 0.2505.
+\]
+\end{proposition}
 
 \begin{corollary}[\texorpdfstring{$\chi$}{chi} 的最小周期平均值为 $0$]\label{cor:real-input-40-arity-charge-min-average}
 存在周期轨道 $\gamma$ 使 $\chi(\gamma)=0$；因此
@@ -441,6 +512,21 @@ $s^3(s^4-5s^2+6)=0$，故极限分支满足 $s\in\{\sqrt2,\sqrt3\}$。
 从而 $P_\chi(\theta)=\log\lambda(e^\theta)=\frac12\theta+\frac12\log 3+o(1)$。
 最后一式由端点斜率给出。
 \end{proof}
+
+\begin{remark}[大偏置极限的组合机制]\label{rem:real-input-40-arity-charge-large-bias-mechanism}
+由推论 \ref{cor:real-input-40-arity-charge-g1-acyclic}，$M_1$ 幂零，故 $g=1$ 边无闭环；
+最大密度 $1/2$ 的轨道必须在 $g=0/1$ 间交替。
+令两步混合矩阵
+\[
+B:=M_0M_1+M_1M_0,
+\]
+直接有限计算得到 $\rho(B)=3$。因此
+\[
+\rho(M(q))\sim\sqrt{q\,\rho(B)}=\sqrt{3q},
+\]
+等价于 $P_\chi(\theta)=\frac12\theta+\frac12\log 3+o(1)$。
+这给出命题 \ref{prop:real-input-40-arity-charge-endpoints} 的结构性解释，并与密度上界 \ref{thm:real-input-40-arity-charge-density-bound} 一致。
+\end{remark}
 
 \begin{proposition}[零温展开：\texorpdfstring{$q\to+\infty$}{q->+infty} 的两项闭式]\label{prop:real-input-40-arity-charge-zero-temp-expansion}
 当 $q\to+\infty$ 时，Perron 根 $\lambda(q)=\rho(M(q))$ 具有 Puiseux 渐近展开
