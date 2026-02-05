@@ -239,14 +239,14 @@ $$
 $$
 S_5(m)=\Theta(r_5^m),
 \qquad
-h_5:=\lim_{m\to\infty}\frac{1}{m}\Bigl(-\log\sum_{x\in X_m}\pi_m(x)^5\Bigr)
+h_5:=\lim_{m\to\infty}\frac{1}{m}\Bigl(-\log\sum_{x\in X_m}w_m(x)^5\Bigr)
 =\log\!\left(\frac{32}{r_5}\right).
 $$
 \end{proposition}
 \begin{proof}
 递推由脚本 \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py} 对枚举值逐项核验（并确定最早起始点）。其特征多项式的 Perron 根为 \(r_5\)，从而 \(S_5(m)=\Theta(r_5^m)\)。再用
 $$
-\sum_{x\in X_m}\pi_m(x)^5=\sum_x\frac{d_m(x)^5}{32^m}=\frac{S_5(m)}{32^m},
+\sum_{x\in X_m}w_m(x)^5=\sum_x\frac{d_m(x)^5}{32^m}=\frac{S_5(m)}{32^m},
 $$
 即得 \(h_5=\log(32/r_5)\)。证毕。
 \end{proof}
@@ -255,7 +255,7 @@ $$
 对任意整数 \(q\ge 2\) 定义
 $$
 S_q(m):=\sum_{x\in X_m} d_m(x)^q,\qquad
-H_q(m):=-\log\sum_{x\in X_m}\pi_m(x)^q=-\log\!\left(\frac{S_q(m)}{2^{qm}}\right).
+H_q(m):=-\log\sum_{x\in X_m}w_m(x)^q=-\log\!\left(\frac{S_q(m)}{2^{qm}}\right).
 $$
 对 \(q=2,3,4\)，命题 \ref{prop:pom-s2-recurrence}、\ref{prop:pom-s3-recurrence} 与 \ref{prop:pom-s4-recurrence} 给出严格有限态碰撞核与闭式熵率 \(h_q=\log(2^q/r_q)\)。
 对 \(q=5,6,7,8\)，可审计地核验存在小阶整系数递推（表 \ref{tab:fold_collision_moment_recursions}；脚本 \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py}），从而 \(r_q\) 与 \(h_q\) 可由递推特征多项式的 Perron 根精确抽取；其数值列于表 \ref{tab:fold_collision_renyi_spectrum}（脚本 \texttt{scripts/exp\_fold\_collision\_renyi\_spectrum.py}）。
@@ -267,13 +267,13 @@ $$
 \input{sections/08_projection_ontology_mathematics/08_projection_ontology_mathematics_part03_collision_gibbs_extensions.tex}
 
 \begin{proposition}[\texorpdfstring{$h_q$}{hq} 的几何化：投影输出测度的 Rényi 维数谱]\label{prop:pom-renyi-dimension-spectrum}
-沿用上文 \(\pi_m(x)=d_m(x)/2^m\) 的输出分布记号。把分辨率 \(m\) 与几何尺度对应为
+令 \(w_m(x)=d_m(x)/2^m\) 为均匀微态的折叠推前。把分辨率 \(m\) 与几何尺度对应为
 \[
 \varepsilon_m:=\varphi^{-m}.
 \]
 定义输出测度在尺度 \(\varepsilon_m\) 下的 \(q\)-阶 Rényi 维数近似为
 \[
-D_q(m):=\frac{1}{q-1}\cdot \frac{\log\sum_{x\in X_m}\pi_m(x)^q}{\log \varepsilon_m}
+D_q(m):=\frac{1}{q-1}\cdot \frac{\log\sum_{x\in X_m}w_m(x)^q}{\log \varepsilon_m}
 \qquad(q\ge 2).
 \]
 若 \(h_q=\lim_{m\to\infty}\frac{1}{m}H_q(m)\) 存在（例如当 \(S_q(m)=\Theta(r_q^m)\) 时成立），则极限
@@ -287,7 +287,7 @@ D_q=\frac{h_q}{(q-1)\log\varphi}\; }.
 \]
 \end{proposition}
 \begin{proof}
-由定义 \(H_q(m)=-\log\sum_x\pi_m(x)^q\) 与 \(\log\varepsilon_m=-m\log\varphi\) 得
+由定义 \(H_q(m)=-\log\sum_x w_m(x)^q\) 与 \(\log\varepsilon_m=-m\log\varphi\) 得
 \[
 D_q(m)=\frac{1}{q-1}\cdot \frac{-H_q(m)}{-m\log\varphi}
 =\frac{1}{(q-1)\log\varphi}\cdot \frac{1}{m}H_q(m).
