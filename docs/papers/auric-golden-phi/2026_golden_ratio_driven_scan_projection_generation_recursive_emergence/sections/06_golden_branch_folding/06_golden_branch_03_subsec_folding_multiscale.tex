@@ -1,9 +1,9 @@
 \subsection{多尺度一致性：restriction 逆系统与相容性口径}\label{subsec:folding-multiscale}
 
-当比较不同窗口长度 $m$ 的输出时，“一致”必须被精确定义为跨尺度相容性：高分辨率输出经由自然的截断（restriction）投影到低分辨率后，应复现低分辨率输出所包含的内容。下面给出对象层的标准构造（完整证明见附录 G）。
+当比较不同窗口长度 $m$ 的输出时，“一致”应被精确定义为跨尺度相容性：高分辨率输出经由自然的截断（restriction）投影到低分辨率后，应复现低分辨率输出所包含的内容。下面给出对象层的标准构造（完整证明见附录 G）。
 
 \subsubsection{折叠与因子化的核心定理（汇总陈述）}\label{subsec:fold-theorem-suite}
-为回应“折叠是否提供了一个自洽且可审计的新接口”的审稿口径，本小节把由折叠专门引起的关键结构压缩为一个汇总定理：它给出折叠的精确定义、归约顺序无关（终止/合流）、幂等/满射、多尺度 restriction 逆系统相容、序列级 sofic 因子与最小右分辨覆盖，以及差异度证书到折叠直方图 TV 偏差的定量链条。
+为统一折叠接口的可审计性要求，本小节将折叠引起的关键结构归纳为一个汇总定理：它给出折叠的精确定义、归约顺序无关（终止/合流）、幂等/满射、多尺度 restriction 逆系统相容、序列级 sofic 因子与最小右分辨覆盖，以及差异度证书到折叠直方图 TV 偏差的定量链条。
 
 \begin{theorem}[有限窗口折叠：合流、逆系统相容、sofic 因子与定量证书]\label{thm:fold-suite}
 设 $\Omega_m=\{0,1\}^m$，$X_m=\{w\in\{0,1\}^m:\text{不含子词 }11\}$，并令 $\Fold_m:\Omega_m\to X_m$ 如定义 \ref{def:fold-word}。则：
@@ -11,7 +11,7 @@
   \item \textbf{（归约顺序无关的规范化）}折叠可由值保持的局部重写系统实现，且该系统强终止并合流；因此 $\Fold_m$ 的实现与归约顺序无关。
   \item \textbf{（幂等与满射）}\(\Fold_m(\omega)\in X_m\)；并且 \(\Fold_m|_{X_m}=\mathrm{id}\)、\(\Fold_m:\Omega_m\twoheadrightarrow X_m\)。
   \item \textbf{（restriction 逆系统与逆极限）}对任意 $m_2\ge m_1$，截断 $\pi_{m_2\to m_1}:X_{m_2}\to X_{m_1}$ 构成 restriction 逆系统，且存在自然同构 \(X_\infty\cong\varprojlim X_m\)（定理 \ref{thm:inverse-limit-golden}）。
-  \item \textbf{（跨分辨率相容的交换图）}朴素微态截断一般不与折叠交换；但定义 \ref{subsec:fold-omega-restriction} 的折叠感知 restriction \(\widetilde r_{m+1\to m}(\omega)=\pi_{m+1\to m}(\Fold_{m+1}(\omega))\) 使得交换图成立（命题 \ref{prop:fold-omega-commute}）。
+\item \textbf{（跨分辨率相容的交换图）}直接微态截断一般不与折叠交换；但定义 \ref{subsec:fold-omega-restriction} 的折叠感知 restriction \(\widetilde r_{m+1\to m}(\omega)=\pi_{m+1\to m}(\Fold_{m+1}(\omega))\) 使得交换图成立（命题 \ref{prop:fold-omega-commute}）。
   \item \textbf{（序列级因子与显式 sofic 图像）}由 \(\Fold_m\) 沿滑动窗口诱导的 \(\Phi_m\) 是滑动块码，记忆为 $0$、预期性为 $m-1$（命题 \ref{prop:Phi_m-radius}）；其像空间 \(Y_m\subset X_m^{\ZZ}\) 是 sofic 子移位，并可由显式标记图 \(G_m\) 给出（定理 \ref{thm:Phi_m-sofic-graph}）。
   \item \textbf{（最小右分辨覆盖）}对 \(Y_m\)，右分辨表示可由子集确定化得到（命题 \ref{prop:Phi_m-right-resolving}）；进一步按 follower 集最小化得到右 Fischer cover，其最小性为标准结论（参见 \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}）。
   \item \textbf{（定量证书：差异度 \(\Rightarrow\) 折叠直方图 TV 偏差）}在旋转扫描（Sturmian）模型下，对任意 $N\ge 1$，
@@ -70,15 +70,15 @@ X_\infty\ \cong\ \varprojlim X_m,
 \end{theorem}
 
 \subsubsection{关于微态截断与折叠的相容性：正确的交换图}\label{subsec:fold-omega-restriction}
-上述逆系统结构发生在稳定语法集合 $\{X_m\}$ 上，其 restriction 映射是定义 \ref{def:pi-m2-m1-golden} 的截断 $\pi_{m_2\to m_1}:X_{m_2}\to X_{m_1}$。一个自然但需要澄清的问题是：能否在微态空间 $\Omega_m=\{0,1\}^m$ 上直接用“去掉末位”的截断与折叠 $\Fold_m$ 形成交换图？
+上述逆系统结构发生在稳定语法集合 $\{X_m\}$ 上，其 restriction 映射是定义 \ref{def:pi-m2-m1-golden} 的截断 $\pi_{m_2\to m_1}:X_{m_2}\to X_{m_1}$。一个需要澄清的问题是：能否在微态空间 $\Omega_m=\{0,1\}^m$ 上直接用“去掉末位”的截断与折叠 $\Fold_m$ 形成交换图？
 
-\paragraph{朴素截断一般不与折叠交换}
+\paragraph{直接截断一般不与折叠交换}
 令
 \[
 r_{m+1\to m}:\Omega_{m+1}\to\Omega_m,\qquad
 r_{m+1\to m}(\omega_1\cdots\omega_m\omega_{m+1}):=\omega_1\cdots\omega_m
 \]
-为微态上的普通截断。一般地，
+为微态上的直接截断。一般地，
 \[
 \Fold_m\circ r_{m+1\to m}\ \neq\ \pi_{m+1\to m}\circ \Fold_{m+1}.
 \]
@@ -90,7 +90,7 @@ r_{m+1\to m}(\omega_1\cdots\omega_m\omega_{m+1}):=\omega_1\cdots\omega_m
 \widetilde r_{m+1\to m}:\Omega_{m+1}\to \Omega_m,\qquad
 \widetilde r_{m+1\to m}(\omega):=\pi_{m+1\to m}\bigl(\Fold_{m+1}(\omega)\bigr).
 \]
-注意 $\widetilde r_{m+1\to m}(\omega)\in X_m\subset\Omega_m$，因此该定义确实给出一条 $\Omega_{m+1}\to\Omega_m$ 的映射（它不是“原始截断”，而是“先折叠后截断”的可审计 coarse-graining）。
+注意 $\widetilde r_{m+1\to m}(\omega)\in X_m\subset\Omega_m$，因此该定义确实给出一条 $\Omega_{m+1}\to\Omega_m$ 的映射（它不是“原始截断”，而是“先折叠后截断”的可审计粗化）。
 
 \begin{proposition}[跨分辨率相容的交换图]\label{prop:fold-omega-commute}
 对任意 $m\ge 1$，下图交换：
@@ -119,10 +119,10 @@ r_{m+1\to m}(\omega_1\cdots\omega_m\omega_{m+1}):=\omega_1\cdots\omega_m
 证毕。
 \end{proof}
 
-\subsubsection{规范差（gauge anomaly）：朴素截断与折叠感知 restriction 的最坏全域偏离}\label{subsec:fold-gauge-anomaly}
-\paragraph{两个降分辨率输出之间的“最小修正量”}
-在微态层面，我们已经区分了普通截断 \(r_{m+1\to m}\) 与折叠感知 restriction \(\widetilde r_{m+1\to m}\)（小节 \ref{subsec:fold-omega-restriction}）。
-下面把二者的不一致用一个纯组合量度“量化”为一个可计算标量。
+\subsubsection{规范差（gauge anomaly）：直接截断与折叠感知 restriction 的最坏全域偏离}\label{subsec:fold-gauge-anomaly}
+\paragraph{两个降分辨率输出之间的最小修正量}
+在微态层面，我们区分了直接截断 \(r_{m+1\to m}\) 与折叠感知 restriction \(\widetilde r_{m+1\to m}\)（小节 \ref{subsec:fold-omega-restriction}）。
+下面将二者的不一致以纯组合量度量化为一个可计算标量。
 
 \begin{definition}[规范差 \texorpdfstring{$G_m(\omega)$}{Gm(omega)}]\label{def:fold-gauge-anomaly}
 对 \(m\ge 1\) 与任意 \(\omega\in\Omega_{m+1}\)，定义长度 \(m\) 的规范差
@@ -134,9 +134,9 @@ $$
 \end{definition}
 
 \begin{remark}[语义：分辨率降阶的“时间投影”下界]
-\(\widetilde r_{m+1\to m}\) 在定义上是“先折叠再截断”的 coarse-graining；而 \(r_{m+1\to m}\) 是“直接丢弃末位”的朴素降维。
-量 \(G_m(\omega)\) 精确回答：若从朴素截断 \(r_{m+1\to m}(\omega)\) 出发，希望恢复到与折叠一致的低分辨率输出 \(\widetilde r_{m+1\to m}(\omega)\)，至少需要改动多少个输出比特（在汉明意义下）。
-因此它是“升维—投影”语言中一个可审计的时间投影证书：它度量了降分辨率所触及的输出支持规模，而非局部因果锥的延迟长度。
+\(\widetilde r_{m+1\to m}\) 在定义上是“先折叠再截断”的粗化；而 \(r_{m+1\to m}\) 是“直接丢弃末位”的直接降维。
+量 \(G_m(\omega)\) 精确回答：若从直接截断 \(r_{m+1\to m}(\omega)\) 出发，希望恢复到与折叠一致的低分辨率输出 \(\widetilde r_{m+1\to m}(\omega)\)，至少需要改动多少个输出比特（在汉明意义下）。
+因此它是“升维—投影”语言中一个可审计的时间投影证书：它度量降分辨率所触及的输出支持规模，而非局部因果锥的延迟长度。
 \end{remark}
 
 \begin{theorem}[最坏规范差为满长：存在全域翻转输入]\label{thm:fold-gauge-anomaly-max}
@@ -144,11 +144,11 @@ $$
 $$
 G_m\bigl(\omega^\star(m)\bigr)=m.
 $$
-换言之，朴素截断与折叠感知 restriction 在最坏输入下会在前 \(m\) 位上\emph{逐位全异}。
+换言之，直接截断与折叠感知 restriction 在最坏输入下会在前 \(m\) 位上\emph{逐位全异}。
 \end{theorem}
 
 \begin{proof}
-显然 \(0\le G_m(\omega)\le m\)。
+由定义可得 \(0\le G_m(\omega)\le m\)。
 下面构造使其取到上界的 \(\omega^\star(m)\)。
 \par
 令 \(\omega^\star=\omega^\star(m)\in\Omega_{m+1}\) 的前 \(m\) 位按周期模式 \(110\) 给出：
@@ -185,7 +185,7 @@ $$
 \end{proof}
 
 \begin{corollary}[任意“只修末端常数位”的降分辨率补丁都不完备]\label{cor:fold-tail-patch-incomplete}
-固定常数 \(R\ge 0\)。设某一替代映射 \(T_{m,R}:\Omega_{m+1}\to\Omega_m\) 满足：对任意 \(\omega\in\Omega_{m+1}\)，字符串 \(T_{m,R}(\omega)\) 与朴素截断 \(r_{m+1\to m}(\omega)\) 的不同位只可能落在末端 \(R\) 个坐标上（即最多改动末端 \(R\) 位）。
+固定常数 \(R\ge 0\)。设某一替代映射 \(T_{m,R}:\Omega_{m+1}\to\Omega_m\) 满足：对任意 \(\omega\in\Omega_{m+1}\)，字符串 \(T_{m,R}(\omega)\) 与直接截断 \(r_{m+1\to m}(\omega)\) 的不同位只可能落在末端 \(R\) 个坐标上（即最多改动末端 \(R\) 位）。
 则对所有 \(m>R\)，存在 \(\omega\in\Omega_{m+1}\) 使得 \(T_{m,R}(\omega)\ne \widetilde r_{m+1\to m}(\omega)\)。
 \end{corollary}
 
@@ -201,14 +201,14 @@ $$
 \bar G_m:=\mathbb{E}_{\omega\sim\mathrm{Unif}(\Omega_{m+1})}\,G_m(\omega).
 $$
 脚本 \texttt{scripts/exp\_fold\_gauge\_anomaly.py} 对 \(m\le 20\) 做精确枚举并输出 \(\bar G_m\) 与 \(\bar G_m/m\)（表 \ref{tab:fold_gauge_anomaly_stats}），显示 \(\bar G_m/m\) 随 \(m\) 增大单调上升并在 \(m=20\) 时达到约 \(0.4176\) 的水平。
-这提示：大规模“降分辨率重写”并非仅由极端构造触发，在无结构输入下也会以正的密度铺满全串。
+该结果表明：大规模“降分辨率重写”并非仅由极端构造触发，在无结构输入下也会以正的密度铺满全串。
 \par
-更强地，均匀输入基线下的平均规范差密度极限不仅存在，而且可写出闭式常数：
+进一步，均匀输入基线下的平均规范差密度极限不仅存在，而且可写出闭式常数：
 \[
 g_\ast:=\lim_{m\to\infty}\frac{\bar G_m}{m}=\frac49,
 \]
 见定理 \ref{thm:fold-gauge-anomaly-density}（由有限同步核的平稳分布直接求得）。
-作为对“大 \(m\)”收敛速度的补充审计，脚本 \texttt{scripts/exp\_fold\_gauge\_anomaly\_mc.py} 对 \(m\in\{40,100,200\}\) 做 Monte Carlo 估计并报告标准误差，结果与 \(4/9\) 一致（表 \ref{tab:fold_gauge_anomaly_mc}）。
+作为对“大 \(m\)”收敛速度的补充审计，脚本 \texttt{scripts/exp\_fold\_gauge\_anomaly\_mc.py} 对 \(m\in\{40,100,200\}\) 做 Monte Carlo 估计并给出标准误差，结果与 \(4/9\) 一致（表 \ref{tab:fold_gauge_anomaly_mc}）。
 \end{remark}
 
 \input{sections/generated/tab_fold_gauge_anomaly_stats}
@@ -248,7 +248,7 @@ Q(1\mid 0)=\varphi^{-2},\qquad Q(0\mid 0)=\varphi^{-1},\qquad Q(0\mid 1)=1.
 =\frac{13}{18}\!\left(\frac{8}{13}\log\frac{8/13}{\varphi^{-1}}+\frac{5}{13}\log\frac{5/13}{\varphi^{-2}}\right)
 \approx 1.0728\times 10^{-5}\ \text{nats/step}.
 \]
-因此在二元组（order-1）统计层面，均匀基线折叠输出几乎已等同于 Parry 最大熵链；若存在系统性偏差，其主要承载必须出现在更长程依赖（order \(\ge 2\)）上。
+因此在二元组（order-1）统计层面，均匀基线折叠输出与 Parry 最大熵链一致；若存在系统性偏差，其主要承载应出现在更长程依赖（order \(\ge 2\)）上。
 \end{remark}
 
 \input{sections/generated/tab_fold_gauge_anomaly_mc}

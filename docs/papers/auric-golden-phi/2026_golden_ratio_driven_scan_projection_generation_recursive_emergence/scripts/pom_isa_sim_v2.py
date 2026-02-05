@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-POM ISA reference simulator v2 (executable, experiment-ready).
+POM ISA reference simulator (latest, experiment-ready).
 
 This script is an experiment-layer ISA/microcode simulator aligned with the paper's
 cost decomposition and signature philosophy:
@@ -9,11 +9,12 @@ cost decomposition and signature philosophy:
   Σ(I)  ~  (projection-word + kernel choice + fiber choice)
   and the projection-gate part is made auditable by explicit counters.
 
-What v2 adds beyond the minimal baseline:
-  - PROJ_CHI: an explicit P_χ cost hook (k_χ counter) to study τ_mix scaling.
-  - ZDIVMOD two routes:
-      * ZDIVMOD_LD  : long-division proxy (k_≤ grows ~ linearly in bit-size)
-      * ZDIVMOD_REC : reciprocal/iteration proxy (k_≤ ~ constant, growth moved into D_U)
+Key experiment hooks:
+  - PROJ_CHI: explicit P_χ projection gate (k_χ counter) for τ_mix scaling studies.
+  - ZDIVMOD: two true-microcode routes for the order gate P_≤:
+      * ZDIVMOD_LD  : binary long division (k_≤ grows ~ linearly in quotient bits)
+      * ZDIVMOD_REC : fixed-point reciprocal Newton iteration (k_≤ ~ constant; growth moved into D_U)
+  - --mulmode {const,log,serial}: multiplication-depth model for ZMUL / REC microcode.
   - support: RESCALE↓/gauge support budget via G_m accumulation (WGAUGE/WREM).
   - capbits: cap stored Z magnitudes for long programs without changing gate counters;
              D_U uses a logical bit-size proxy tracked separately from capped values.
@@ -24,15 +25,17 @@ What v2 adds beyond the minimal baseline:
   J: opcode(6) | imm26(26)
 
 Run:
-  python3 pom_isa_sim_v2.py --demo --capbits 32
+  python3 pom_isa_sim_v2.py --demo --capbits 32 --mulmode log
+  python3 pom_isa_sim_v2.py --bench-div --bits-a 1024 --bits-b 256 --iters 120 --mulmode log
   python3 pom_isa_sim_v2.py --gauge --m 10 --trials 20000
-  python3 pom_isa_sim_v2.py --workload --len 6000 --seed 7 --capbits 32
+  python3 pom_isa_sim_v2.py --workload --len 6000 --seed 7 --capbits 32 --divmode mixed
 """
 
 from __future__ import annotations
 
 import argparse
 import dataclasses
+import math
 import random
 import re
 import sys
@@ -565,6 +568,187 @@ def _cap_signed(x: int, capbits: Optional[int]) -> int:
     return int(y)
 
 
+def _mul_depth_proxy(mode: str, nbits_a: int, nbits_b: int) -> int:
+    """Multiplication linearization depth proxy.
+
+    mode:
+      - const : O(1)
+      - log   : O(log n)
+      - serial: O(n)
+    """
+    n = max(int(nbits_a), int(nbits_b), 1)
+    if mode == "const":
+        return 1
+    if mode == "serial":
+        return n
+    # default: log
+    return max(1, int(math.ceil(math.log2(n))))
+
+
+# 8-bit reciprocal seed table for normalized mantissas in [1,2).
+# Index v in [128..255] (interpreted as v/128) -> approx (1/(v/128)) scaled by 2^16.
+_RECIP8_Y_INV_Q16: List[int] = [0 for _ in range(256)]
+for _v in range(128, 256):
+    _RECIP8_Y_INV_Q16[_v] = int(((1 << 23) + (_v // 2)) // _v)  # round(2^23 / v)
+
+
+def _divmod_ld_unsigned(a: int, b: int, qbits: int, ctr: Counters) -> Tuple[int, int]:
+    """Binary long division microcode (unsigned).
+
+    - Counts one P_≤ call per quotient bit decision (k_le).
+    - Counts one U-step per quotient bit decision (D_U) as a simple depth proxy.
+    """
+    if a < 0 or b <= 0:
+        raise ValueError("_divmod_ld_unsigned expects a>=0, b>0")
+    q = 0
+    r = int(a)
+    for i in range(int(qbits), -1, -1):
+        ctr.k_le += 1
+        ctr.D_U += 1
+        bi = int(b) << int(i)
+        if r >= bi:
+            r -= bi
+            q |= 1 << int(i)
+    return int(q), int(r)
+
+
+def _divmod_ld_signed(a: int, ab: int, b: int, bb: int, ctr: Counters) -> Tuple[int, int]:
+    """Binary long division microcode (signed, Python-style floor divmod semantics)."""
+    if b == 0:
+        raise ZeroDivisionError("DIV by zero")
+    A = abs(int(a))
+    B = abs(int(b))
+    qbits = max(0, int(ab) - int(bb))
+
+    q0, r0 = _divmod_ld_unsigned(int(A), int(B), qbits=qbits, ctr=ctr)
+
+    if b > 0:
+        if a >= 0:
+            return int(q0), int(r0)
+        if r0 == 0:
+            return -int(q0), 0
+        # a = (-q0-1)*B + (B-r0)
+        return -int(q0) - 1, int(B) - int(r0)
+
+    # b < 0: remainder must be <= 0
+    if a <= 0:
+        return int(q0), -int(r0)
+    if r0 == 0:
+        return -int(q0), 0
+    return -int(q0) - 1, -int(B) + int(r0)
+
+
+def _recip_seed_Qp(b: int, bb: int, p: int) -> int:
+    """Seed X0 ≈ 2^p / b using a constant-time 8-bit mantissa table."""
+    if b <= 0:
+        raise ValueError("_recip_seed_Qp expects b>0")
+    m = max(int(bb), 1)
+    if m >= 8:
+        top8 = int(b) >> int(m - 8)
+    else:
+        top8 = int(b) << int(8 - m)
+    top8 &= 0xFF
+    if top8 < 128:
+        top8 = 128
+    inv_y_Q16 = int(_RECIP8_Y_INV_Q16[int(top8)])
+    # inv_y_Q16 ~ (1/y)*2^16, with y=b/2^{m-1}; thus 2^p/b = 2^{p-(m-1)}*(1/y).
+    shift = int(p) - (int(m) - 1) - 16
+    if shift >= 0:
+        return int(inv_y_Q16) << int(shift)
+    return int(inv_y_Q16) >> int(-shift)
+
+
+def _divmod_rec_unsigned(
+    a: int,
+    ab: int,
+    b: int,
+    bb: int,
+    ctr: Counters,
+    *,
+    mulmode: str,
+    extra_precision: int = 32,
+) -> Tuple[int, int]:
+    """Fixed-point reciprocal Newton microcode (unsigned).
+
+    Goal: exact (q,r) with k_le ~ O(1) via constant-time interval correction.
+    Growth is moved into D_U via multiplication-depth proxies.
+    """
+    if a < 0 or b <= 0:
+        raise ValueError("_divmod_rec_unsigned expects a>=0, b>0")
+
+    m = max(int(bb), 1)
+    # Use dividend-scale precision so q-estimate error stays O(1) after multiplying by a.
+    p = max(int(ab), int(bb), 1) + int(extra_precision)
+
+    # iterations: conservative seed (~8 correct bits from 8-bit mantissa table), then double each step
+    need_bits = max(1, int(p))
+    ratio = max(1.0, float(need_bits) / 8.0)
+    iters = max(1, int(math.ceil(math.log2(ratio))) + 1)
+
+    X = _recip_seed_Qp(int(b), bb=int(bb), p=p)
+    if X <= 0:
+        X = 1
+
+    for _ in range(int(iters)):
+        # b*X
+        ctr.D_U += _mul_depth_proxy(mulmode, m, max(1, int(X).bit_length()))
+        bX = int(b) * int(X)
+        # X*(2^{p+1} - bX) >> p
+        M = (1 << (int(p) + 1)) - int(bX)
+        ctr.D_U += _mul_depth_proxy(mulmode, max(1, int(X).bit_length()), max(1, int(M).bit_length()))
+        X = (int(X) * int(M)) >> int(p)
+        if X <= 0:
+            X = 1
+
+    # q ≈ floor(a * (2^p/b) / 2^p)
+    ctr.D_U += _mul_depth_proxy(mulmode, int(ab), max(1, int(X).bit_length()))
+    q = (int(a) * int(X)) >> int(p)
+    r = int(a) - int(q) * int(b)
+
+    # Constant-time interval correction (P_≤ calls).
+    for _ in range(16):
+        ctr.k_le += 1
+        if r < 0:
+            r += int(b)
+            q -= 1
+            continue
+        ctr.k_le += 1
+        if r >= int(b):
+            r -= int(b)
+            q += 1
+            continue
+        break
+
+    if not (0 <= int(r) < int(b)):
+        # Safety net: fall back to exact long-division microcode (still gate-auditable).
+        qbits = max(0, int(ab) - int(bb))
+        q, r = _divmod_ld_unsigned(int(a), int(b), qbits=qbits, ctr=ctr)
+    return int(q), int(r)
+
+
+def _divmod_rec_signed(a: int, ab: int, b: int, bb: int, ctr: Counters, *, mulmode: str) -> Tuple[int, int]:
+    """Fixed-point reciprocal Newton microcode (signed, Python-style floor divmod semantics)."""
+    if b == 0:
+        raise ZeroDivisionError("DIV by zero")
+    A = abs(int(a))
+    B = abs(int(b))
+    q0, r0 = _divmod_rec_unsigned(int(A), int(ab), int(B), int(bb), ctr, mulmode=mulmode)
+
+    if b > 0:
+        if a >= 0:
+            return int(q0), int(r0)
+        if r0 == 0:
+            return -int(q0), 0
+        return -int(q0) - 1, int(B) - int(r0)
+
+    # b < 0: remainder must be <= 0
+    if a <= 0:
+        return int(q0), -int(r0)
+    if r0 == 0:
+        return -int(q0), 0
+    return -int(q0) - 1, -int(B) + int(r0)
+
+
 @dataclass
 class CPU:
     Z: List[int]
@@ -572,18 +756,20 @@ class CPU:
     W: List[Window]
     P: List[PrimeVector]
     capbits: Optional[int] = None
+    mulmode: str = "log"
     pc: int = 0
     halted: bool = False
     ctr: Counters = dataclasses.field(default_factory=Counters)
 
     @staticmethod
-    def fresh(*, capbits: Optional[int] = None) -> "CPU":
+    def fresh(*, capbits: Optional[int] = None, mulmode: str = "log") -> "CPU":
         return CPU(
             Z=[0 for _ in range(32)],
             Z_bits=[0 for _ in range(32)],
             W=[Window() for _ in range(32)],
             P=[PrimeVector(sign=0, exps={}) for _ in range(32)],
             capbits=capbits,
+            mulmode=str(mulmode),
         )
 
     def _touch_nbits(self, *nbits: int) -> None:
@@ -648,8 +834,8 @@ class CPU:
             elif op == Opcode.ZSUB:
                 self._write_Z(ins.rd, a - b, max(ab, bb) + 1, do_fold=True)
             elif op == Opcode.ZMUL:
-                # D_U proxy: linear in logical bit-size (fiber choice decides constant).
-                self.ctr.D_U += int(ab) + int(bb)
+                # D_U proxy: multiplication linearization depth model.
+                self.ctr.D_U += _mul_depth_proxy(str(self.mulmode), int(ab), int(bb))
                 self._write_Z(ins.rd, a * b, int(ab) + int(bb), do_fold=True)
             elif op == Opcode.ZDIVQ:
                 self.ctr.k_le += 1
@@ -673,19 +859,12 @@ class CPU:
             b, bb = self._read_Z(ins.rs2)
             if b == 0:
                 raise ZeroDivisionError("ZDIVMOD by zero")
-            q = a // b
-            r = a % b
-            n = max(int(ab), int(bb), 1)
+            if op == Opcode.ZDIVMOD_LD:
+                q, r = _divmod_ld_signed(a, ab, b, bb, self.ctr)
+            else:
+                q, r = _divmod_rec_signed(a, ab, b, bb, self.ctr, mulmode=str(self.mulmode))
             qb = max(1, int(ab) - int(bb) + 1)
             rb = max(0, min(int(ab), int(bb)))
-
-            if op == Opcode.ZDIVMOD_LD:
-                # Long division: growth sits in k_≤.
-                self.ctr.k_le += int(n)
-            else:
-                # Reciprocal/iteration: keep k_≤ ~ constant and move work into D_U.
-                self.ctr.k_le += 2
-                self.ctr.D_U += int(n)
 
             rr = int(ins.imm) & 0x1F  # remainder register index packed in imm11
             self._write_Z(ins.rd, q, qb, do_fold=True)
@@ -758,7 +937,7 @@ class CPU:
             self.pc += 1
             return
 
-        # ---- v2 cost hook ----
+        # ---- P_χ projection hook ----
         if op == Opcode.PROJ_CHI:
             self.ctr.k_chi += 1
             self.pc += 1
@@ -801,23 +980,26 @@ def _cost_total(
     return T, {"kZ*deltaZ": cZ, "kLe*Tle": cLe, "kChi*tauMix": cChi, "D_U": cDU, "wSup*support": cSup}
 
 
-def cmd_demo(*, capbits: Optional[int], deltaZ: float, Tle: float, tauMix: float, wSup: float) -> None:
+def cmd_demo(*, capbits: Optional[int], mulmode: str, deltaZ: float, Tle: float, tauMix: float, wSup: float) -> None:
     asm = [
         "ZLI Z1, 123",
         "ZLI Z2, 77",
         "ZADD Z3, Z1, Z2",
         "ZMUL Z4, Z1, Z2",
         "ZDIVMOD_LD Z5, Z6, Z1, Z2",
+        "ZDIVMOD_REC Z7, Z8, Z1, Z2",
         "HALT",
     ]
     prog = assemble(parse_asm_lines(asm))
-    cpu = CPU.fresh(capbits=capbits)
+    cpu = CPU.fresh(capbits=capbits, mulmode=str(mulmode))
     run_program(cpu, prog)
-    print("[demo] Z1=123  Z2=77", flush=True)
+    print(f"[demo] Z1=123  Z2=77  mulmode={mulmode}", flush=True)
     print(f"[demo] Z3=Z1+Z2 => {cpu.Z[3]} (expect 200)", flush=True)
     print(f"[demo] Z4=Z1*Z2 => {cpu.Z[4]} (expect 9471)", flush=True)
-    print(f"[demo] Z5=Z1//Z2 => {cpu.Z[5]} (expect 1)", flush=True)
-    print(f"[demo] Z6=Z1%Z2  => {cpu.Z[6]} (expect 46)", flush=True)
+    print(f"[demo] LD : Z5=Z1//Z2 => {cpu.Z[5]} (expect 1)", flush=True)
+    print(f"[demo] LD : Z6=Z1%Z2  => {cpu.Z[6]} (expect 46)", flush=True)
+    print(f"[demo] REC: Z7=Z1//Z2 => {cpu.Z[7]} (expect 1)", flush=True)
+    print(f"[demo] REC: Z8=Z1%Z2  => {cpu.Z[8]} (expect 46)", flush=True)
     T, parts = _cost_total(cpu.ctr, deltaZ=deltaZ, Tle=Tle, tauMix=tauMix, wSup=wSup)
     print(
         f"[demo] counters: k_Z={cpu.ctr.k_Z} k_le={cpu.ctr.k_le} k_chi={cpu.ctr.k_chi} D_U={cpu.ctr.D_U} support={cpu.ctr.support} n_bits~{cpu.ctr.n_max_bits}",
@@ -879,6 +1061,7 @@ def cmd_support_bench(
     m_support: int,
     seed: int,
     capbits: Optional[int],
+    mulmode: str,
     deltaZ: float,
     Tle: float,
     tauMix: float,
@@ -905,10 +1088,10 @@ def cmd_support_bench(
     asm.append("HALT")
 
     prog = assemble(parse_asm_lines(asm))
-    cpu = CPU.fresh(capbits=capbits)
+    cpu = CPU.fresh(capbits=capbits, mulmode=str(mulmode))
     run_program(cpu, prog)
     T, parts = _cost_total(cpu.ctr, deltaZ=deltaZ, Tle=Tle, tauMix=tauMix, wSup=wSup)
-    print(f"[support-bench] iters={iters} m={m_support} seed={seed} capbits={capbits}", flush=True)
+    print(f"[support-bench] iters={iters} m={m_support} seed={seed} capbits={capbits} mulmode={mulmode}", flush=True)
     print(
         f"[support-bench] counters: k_Z={cpu.ctr.k_Z} k_le={cpu.ctr.k_le} k_chi={cpu.ctr.k_chi} D_U={cpu.ctr.D_U} support={cpu.ctr.support}",
         flush=True,
@@ -1022,6 +1205,7 @@ def cmd_workload(
     capbits: Optional[int],
     with_support: bool,
     m_support: int,
+    mulmode: str,
     deltaZ: float,
     Tle: float,
     tauMix: float,
@@ -1036,11 +1220,11 @@ def cmd_workload(
         m_support=m_support,
     )
     prog = assemble(parse_asm_lines(asm))
-    cpu = CPU.fresh(capbits=capbits)
+    cpu = CPU.fresh(capbits=capbits, mulmode=str(mulmode))
     run_program(cpu, prog)
     T, parts = _cost_total(cpu.ctr, deltaZ=deltaZ, Tle=Tle, tauMix=tauMix, wSup=wSup)
     print(
-        f"[workload] len={length} seed={seed} divmode={divmode} capbits={capbits} support_mode={with_support}",
+        f"[workload] len={length} seed={seed} divmode={divmode} capbits={capbits} mulmode={mulmode} support_mode={with_support}",
         flush=True,
     )
     print(
@@ -1051,11 +1235,104 @@ def cmd_workload(
     print(f"[workload] parts: {parts}", flush=True)
 
 
+def _rand_int_exact_bits(rng: random.Random, bits: int) -> int:
+    bits = int(bits)
+    if bits <= 0:
+        return 0
+    x = int(rng.getrandbits(bits))
+    x |= 1 << (bits - 1)
+    return int(x)
+
+
+def cmd_bench_div(
+    *,
+    bits_a: int,
+    bits_b: int,
+    iters: int,
+    seed: int,
+    mulmode: str,
+    deltaZ: float,
+    Tle: float,
+    tauMix: float,
+    wSup: float,
+) -> None:
+    bits_a = int(bits_a)
+    bits_b = int(bits_b)
+    iters = int(iters)
+    if bits_a <= 0 or bits_b <= 0:
+        raise ValueError("--bits-a/--bits-b must be positive")
+    if iters <= 0:
+        raise ValueError("--iters must be positive")
+    rng = random.Random(int(seed))
+
+    tot_ld = Counters()
+    tot_rec = Counters()
+
+    w_ld = enc_R(Opcode.ZDIVMOD_LD, 5, 1, 2, imm11=6)
+    w_rec = enc_R(Opcode.ZDIVMOD_REC, 5, 1, 2, imm11=6)
+
+    for _ in range(int(iters)):
+        a = _rand_int_exact_bits(rng, bits_a)
+        b = _rand_int_exact_bits(rng, bits_b)
+        if b == 0:
+            b = 1
+
+        # LD
+        cpu = CPU.fresh(capbits=None, mulmode=str(mulmode))
+        cpu.Z[1], cpu.Z_bits[1] = int(a), int(bits_a)
+        cpu.Z[2], cpu.Z_bits[2] = int(b), int(bits_b)
+        cpu._touch_nbits(int(bits_a), int(bits_b))
+        cpu.step(w_ld)
+        q, r = int(cpu.Z[5]), int(cpu.Z[6])
+        if not (0 <= r < b and a == q * b + r):
+            raise AssertionError("LD divmod invariant failed")
+        tot_ld.k_Z += int(cpu.ctr.k_Z)
+        tot_ld.k_le += int(cpu.ctr.k_le)
+        tot_ld.k_chi += int(cpu.ctr.k_chi)
+        tot_ld.D_U += int(cpu.ctr.D_U)
+        tot_ld.support += int(cpu.ctr.support)
+        tot_ld.n_max_bits = max(int(tot_ld.n_max_bits), int(cpu.ctr.n_max_bits))
+
+        # REC
+        cpu = CPU.fresh(capbits=None, mulmode=str(mulmode))
+        cpu.Z[1], cpu.Z_bits[1] = int(a), int(bits_a)
+        cpu.Z[2], cpu.Z_bits[2] = int(b), int(bits_b)
+        cpu._touch_nbits(int(bits_a), int(bits_b))
+        cpu.step(w_rec)
+        q, r = int(cpu.Z[5]), int(cpu.Z[6])
+        if not (0 <= r < b and a == q * b + r):
+            raise AssertionError("REC divmod invariant failed")
+        tot_rec.k_Z += int(cpu.ctr.k_Z)
+        tot_rec.k_le += int(cpu.ctr.k_le)
+        tot_rec.k_chi += int(cpu.ctr.k_chi)
+        tot_rec.D_U += int(cpu.ctr.D_U)
+        tot_rec.support += int(cpu.ctr.support)
+        tot_rec.n_max_bits = max(int(tot_rec.n_max_bits), int(cpu.ctr.n_max_bits))
+
+    T_ld, parts_ld = _cost_total(tot_ld, deltaZ=deltaZ, Tle=Tle, tauMix=tauMix, wSup=wSup)
+    T_rec, parts_rec = _cost_total(tot_rec, deltaZ=deltaZ, Tle=Tle, tauMix=tauMix, wSup=wSup)
+    parts_ld_avg = {k: float(v) / float(iters) for k, v in parts_ld.items()}
+    parts_rec_avg = {k: float(v) / float(iters) for k, v in parts_rec.items()}
+
+    print(f"[bench-div] bits-a={bits_a} bits-b={bits_b} iters={iters} seed={seed} mulmode={mulmode}", flush=True)
+    print(
+        f"[bench-div][LD ] avg counters: k_Z={tot_ld.k_Z/iters:.3g} k_le={tot_ld.k_le/iters:.3g} k_chi={tot_ld.k_chi/iters:.3g} D_U={tot_ld.D_U/iters:.3g} support={tot_ld.support/iters:.3g}",
+        flush=True,
+    )
+    print(f"[bench-div][LD ] avg cost: T~{(T_ld/iters):.6g} parts={parts_ld_avg}", flush=True)
+    print(
+        f"[bench-div][REC] avg counters: k_Z={tot_rec.k_Z/iters:.3g} k_le={tot_rec.k_le/iters:.3g} k_chi={tot_rec.k_chi/iters:.3g} D_U={tot_rec.D_U/iters:.3g} support={tot_rec.support/iters:.3g}",
+        flush=True,
+    )
+    print(f"[bench-div][REC] avg cost: T~{(T_rec/iters):.6g} parts={parts_rec_avg}", flush=True)
+
+
 def main() -> None:
-    ap = argparse.ArgumentParser(description="POM ISA simulator v2 (projection-gate counters + experiment harness).")
+    ap = argparse.ArgumentParser(description="POM ISA simulator (projection-gate counters + experiment harness).")
     ap.add_argument("--demo", action="store_true", help="Run a small arithmetic demo.")
     ap.add_argument("--gauge", action="store_true", help="Monte Carlo audit for G_m/m.")
     ap.add_argument("--workload", action="store_true", help="Run a random workload and print cost decomposition.")
+    ap.add_argument("--bench-div", action="store_true", help="Benchmark LD vs REC DIVMOD microcode on random inputs.")
     ap.add_argument("--chi-bench", type=int, default=0, help="Call PROJ_CHI N times and print cost decomposition.")
     ap.add_argument(
         "--support-bench",
@@ -1065,8 +1342,12 @@ def main() -> None:
     )
     ap.add_argument("--len", type=int, default=6000, help="Workload length (instructions).")
     ap.add_argument("--seed", type=int, default=7, help="RNG seed.")
+    ap.add_argument("--bits-a", type=int, default=1024, help="Dividend bit-length for --bench-div.")
+    ap.add_argument("--bits-b", type=int, default=256, help="Divisor bit-length for --bench-div.")
+    ap.add_argument("--iters", type=int, default=120, help="Iterations for --bench-div.")
     ap.add_argument("--divmode", choices=["mixed", "ld", "rec"], default="mixed", help="DIVMOD route selection mode.")
     ap.add_argument("--capbits", type=int, default=0, help="Cap stored |Z| to signed capbits (0 disables).")
+    ap.add_argument("--mulmode", choices=["const", "log", "serial"], default="log", help="Multiplication depth model.")
     ap.add_argument("--with-support", action="store_true", help="Include WGAUGE-based support accumulation in workload.")
     ap.add_argument("--m-support", type=int, default=15, help="m used by WGAUGE in support mode.")
     ap.add_argument("--m", type=int, default=10, help="m for --gauge.")
@@ -1079,6 +1360,7 @@ def main() -> None:
 
     capbits = int(args.capbits)
     cap = None if capbits <= 0 else capbits
+    mulmode = str(args.mulmode)
 
     if int(args.chi_bench) > 0:
         cmd_chi_bench(
@@ -1096,6 +1378,7 @@ def main() -> None:
             m_support=int(args.m_support),
             seed=int(args.seed),
             capbits=cap,
+            mulmode=mulmode,
             deltaZ=float(args.deltaZ),
             Tle=float(args.Tle),
             tauMix=float(args.tauMix),
@@ -1104,10 +1387,30 @@ def main() -> None:
         return
 
     if args.demo:
-        cmd_demo(capbits=cap, deltaZ=float(args.deltaZ), Tle=float(args.Tle), tauMix=float(args.tauMix), wSup=float(args.wSup))
+        cmd_demo(
+            capbits=cap,
+            mulmode=mulmode,
+            deltaZ=float(args.deltaZ),
+            Tle=float(args.Tle),
+            tauMix=float(args.tauMix),
+            wSup=float(args.wSup),
+        )
         return
     if args.gauge:
         cmd_gauge(m=int(args.m), trials=int(args.trials), seed=int(args.seed))
+        return
+    if args.bench_div:
+        cmd_bench_div(
+            bits_a=int(args.bits_a),
+            bits_b=int(args.bits_b),
+            iters=int(args.iters),
+            seed=int(args.seed),
+            mulmode=mulmode,
+            deltaZ=float(args.deltaZ),
+            Tle=float(args.Tle),
+            tauMix=float(args.tauMix),
+            wSup=float(args.wSup),
+        )
         return
     if args.workload:
         cmd_workload(
@@ -1117,6 +1420,7 @@ def main() -> None:
             capbits=cap,
             with_support=bool(args.with_support),
             m_support=int(args.m_support),
+            mulmode=mulmode,
             deltaZ=float(args.deltaZ),
             Tle=float(args.Tle),
             tauMix=float(args.tauMix),

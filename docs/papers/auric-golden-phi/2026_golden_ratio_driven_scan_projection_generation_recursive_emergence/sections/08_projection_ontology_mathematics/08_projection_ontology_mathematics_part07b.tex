@@ -141,12 +141,12 @@ return Anom
 
 \paragraph{接口 E：ISA/微码参考模拟器（32-bit 编码 + 成本计数）}
 为把 \S\ref{subsec:pom-isa} 的 ISA/微码口径落到可复现执行层面，本仓库提供脚本
-\texttt{scripts/pom\_isa\_sim\_v2.py}（实验层版本；最小版本为 \texttt{scripts/pom\_isa\_sim.py}）：
+\texttt{scripts/pom\_isa\_sim\_v2.py}（实验层版本；本文仅保留该最新版）：
 它实现 32 个可见寄存器（写回默认触发 \(P_Z\equiv\Fold_\infty\)）与两类程序不可见寄存器（窗口寄存器 \(W\) 与素数指数寄存器 \(P\)），并在执行过程中维护成本计数器
 \((k_Z,k_{\le},k_\chi,D_U)\)
 以及分辨率降阶的写回支持预算
 \(\mathrm{support}=\sum G_m\)。
-其中 \texttt{PROJ\_CHI} 作为 \(P_\chi\) 的成本钩子（以 \(k_\chi\) 计数），而 \texttt{ZDIVMOD\_LD}/\texttt{ZDIVMOD\_REC} 给出 DIVMOD 的两条可对照微码路线（长除式代理 vs 倒数/迭代代理），用于把“增长分界在 \(P_{\le}\)”这条结构命题落到可复现的成本分解上。
-该脚本可作为“ISA 层验收测试”：当更换 \(\Fold_\infty\) 的具体核实现、或调整 \(\mathrm{RESCALE}\downarrow\) 的 gauge 纠偏策略时，应保持 demo 的算术真值层输出不变，并可用 \texttt{--gauge} 模式对 \(G_m/m\) 的统计密度常数做回归核验（定理 \ref{thm:fold-gauge-anomaly-density}）；同时可用 \texttt{--workload} 模式生成随机程序并输出 \(k\)-计数与总成本 \(T\) 的分解，用于比较不同实现把代价放在 \(k_{\le}\) 还是 \(D_U\) 上。
+其中 \texttt{PROJ\_CHI} 作为 \(P_\chi\) 的成本钩子（以 \(k_\chi\) 计数），而 \texttt{ZDIVMOD\_LD}/\texttt{ZDIVMOD\_REC} 给出 DIVMOD 的两条可对照微码路线（真微码：二进制长除 vs 定点倒数牛顿迭代），用于把“增长分界在 \(P_{\le}\)”这条结构命题落到可复现的成本分解上；并提供 \texttt{--mulmode} 用于校准乘法线性化深度（从而影响 REC 路线的 \(D_U\) 常数因子）。
+该脚本可作为“ISA 层验收测试”：当更换 \(\Fold_\infty\) 的具体核实现、或调整 \(\mathrm{RESCALE}\downarrow\) 的 gauge 纠偏策略时，应保持 demo 的算术真值层输出不变，并可用 \texttt{--gauge} 模式对 \(G_m/m\) 的统计密度常数做回归核验（定理 \ref{thm:fold-gauge-anomaly-density}）；同时可用 \texttt{--bench-div} 在固定位长上直接对照 LD/REC 的 \(k_{\le}\) 与 \(D_U\) 分解，或用 \texttt{--workload} 生成随机程序并输出 \(k\)-计数与总成本 \(T\) 的分解，用于比较不同路线把增长放在 \(k_{\le}\) 还是 \(D_U\) 上。
 此外脚本提供两个极简基准模式：\texttt{--chi-bench}（重复调用 \texttt{PROJ\_CHI}，直接观察 \(\tau_{\mathrm{mix}}\) 标尺的线性放大）与 \texttt{--support-bench}（重复执行 \texttt{ZMUL}+\texttt{WGAUGE}，直接观察 \(\mathrm{support}=\sum G_m\) 这一“触及规模轴”在中等频率下的主导效应）。
 

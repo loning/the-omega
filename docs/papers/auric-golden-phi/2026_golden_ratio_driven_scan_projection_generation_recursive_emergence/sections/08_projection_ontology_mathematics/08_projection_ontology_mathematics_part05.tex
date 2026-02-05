@@ -135,8 +135,8 @@ K_2(m+1)D_N^*(\alpha;x_0).
 抽象层可取可数无限寄存器 $\{Z_i\}_{i\in\mathbb N}$；具体实现可截断为有限集合（例如 $Z_0,\dots,Z_{31}$）。可见寄存器内容始终保持在 $X_\infty$ 的规范地址上；写回时默认触发 $P_Z$。
 
 \begin{remark}[可复现：32-bit ISA/微码参考模拟器]\label{rem:pom-isa-sim}
-为把本节的 ISA/微码口径落到\emph{可执行}层面，仓库在本文论文目录下提供脚本
-\texttt{scripts/pom\_isa\_sim\_v2.py}（实验层版本；最小版本为 \texttt{scripts/pom\_isa\_sim.py}）：
+为把本节的 ISA/微码口径落到\emph{可执行}层面，仓库在本文论文目录下提供参考脚本
+\texttt{scripts/pom\_isa\_sim\_v2.py}（实验层版本；本文仅保留该最新版）：
 它实现 32 个可见寄存器 $Z0\ldots Z31$（写回默认触发 $P_Z\equiv\Fold_\infty$，并计入 $k_Z$），并给出两类程序不可见的微态寄存器：
 窗口寄存器 $W0\ldots W31$（保存 $\Omega_m$ 原始比特串，用于 $\Fold_m$、fold-aware restriction
 \(\widetilde r_{m+1\to m}=\pi_{m+1\to m}\circ \Fold_{m+1}\)
@@ -144,10 +144,12 @@ K_2(m+1)D_N^*(\alpha;x_0).
 以及素数指数寄存器 $P0\ldots P31$（可选，用于把乘除线性化为指数向量的逐坐标加减；与 \(\mathcal P\) 纤维口径对齐）。
 \par
 脚本采用固定的 32-bit 编码，并在执行时维护成本计数器
-\((k_Z,k_{\le},k_\chi,D_U)\)
+\((k_Z,k_{\le},k_\chi,D_U)\)，
 以及跨分辨率降阶的写回支持预算
 \(\mathrm{support}:=\sum G_m\)
 （对应成本模型中的 \(k_{\downarrow}T_{\downarrow}(m)\) 这一独立空间项）。
+\par
+此外脚本引入乘法线性化深度模型 \texttt{--mulmode}（\texttt{const|log|serial}），用于把“素数纤维点wise / 相位纤维 FFT-ish / 串行最坏”三种乘法深度口径落实为 \(D_U\) 的可对照计数。
 \par
 编码格式与运行示例如下：
 \begin{verbatim}
@@ -156,30 +158,40 @@ K_2(m+1)D_N^*(\alpha;x_0).
   I: opcode(6) | rd(5) | rs1(5) | imm16(16)
   J: opcode(6) | imm26(26)
 
-python3 scripts/pom_isa_sim_v2.py --demo --capbits 32
+python3 scripts/pom_isa_sim_v2.py --demo --capbits 32 --mulmode log
+python3 scripts/pom_isa_sim_v2.py --bench-div --bits-a 1024 --bits-b 256 --iters 120 --mulmode log
+python3 scripts/pom_isa_sim_v2.py --bench-div --bits-a 1024 --bits-b 256 --iters 120 --mulmode const
 python3 scripts/pom_isa_sim_v2.py --gauge --m 10 --trials 20000
-python3 scripts/pom_isa_sim_v2.py --workload --len 6000 --seed 7 --capbits 32 --divmode mixed
-python3 scripts/pom_isa_sim_v2.py --workload --len 6000 --seed 7 --capbits 32 --divmode ld
-python3 scripts/pom_isa_sim_v2.py --workload --len 6000 --seed 7 --capbits 32 --divmode rec
+python3 scripts/pom_isa_sim_v2.py --workload --len 6000 --seed 7 --capbits 32 --mulmode log --divmode mixed
+python3 scripts/pom_isa_sim_v2.py --workload --len 6000 --seed 7 --capbits 32 --mulmode log --divmode ld
+python3 scripts/pom_isa_sim_v2.py --workload --len 6000 --seed 7 --capbits 32 --mulmode log --divmode rec
 python3 scripts/pom_isa_sim_v2.py --chi-bench 5000 --tauMix 200
-python3 scripts/pom_isa_sim_v2.py --support-bench 1000 --m-support 15 --capbits 32
+python3 scripts/pom_isa_sim_v2.py --support-bench 1000 --m-support 15 --capbits 32 --mulmode log
 \end{verbatim}
 其中 \texttt{--gauge} 采样 \(\omega\sim\mathrm{Unif}(\Omega_{m+1})\) 并估计 \(\mathbb{E}[G_m]/m\)，用于核验
 定理 \ref{thm:fold-gauge-anomaly-density} 的 \(4/9\) 密度常数（亦可与表 \ref{tab:fold_gauge_anomaly_mc} 的 Monte Carlo 审计对照）。
 \par
-在 v2 中，\texttt{ZDIVMOD\_LD} 与 \texttt{ZDIVMOD\_REC} 提供同一 DIVMOD 语义的两条微码路线，用于做“增长分界在序投影”的可复现对照：
-前者把增长留在 \(k_{\le}\)（长除式代理），后者把增长转移到 \(D_U\)（倒数/迭代代理），并可按
+脚本中 \texttt{ZDIVMOD\_LD} 与 \texttt{ZDIVMOD\_REC} 在真值层都实现 \(\mathrm{divmod}(a,b)\)，但微码路线不同：
+\texttt{LD} 为二进制长除（每一位商决策触发一次 \(P_{\le}\)，故 \(k_{\le}^{LD}\sim \mathrm{qbits}\)），
+\texttt{REC} 为定点倒数牛顿迭代（\(P_{\le}\) 仅用于常数次末端区间校正，故 \(k_{\le}^{REC}=O(1)\)，增长转移到 \(D_U\)；其常数因子由 \texttt{--mulmode} 校准），并可按
 \[
 T\;=\;k_Z\delta_Z\;+\;k_{\le}T_{\le}\;+\;k_\chi\,\tau_{\mathrm{mix}}\;+\;D_U\;+\;w_{\mathrm{sup}}\cdot \mathrm{support}
 \]
 输出一条可审计的成本分解（各标尺参数可由命令行覆盖）。
 \par
-在该可执行口径下，正文中的三条结构判断都可被直接“跑出来核对”：
+由此同一语义的两条路线给出一条可写成编译/调度律的边界：
+\[
+\mathrm{qbits}\cdot T_{\le}\ \gtrsim\ C_{\times}\log \max\bigl(\mathrm{bitlen}(a),\mathrm{bitlen}(b)\bigr)\quad\Longrightarrow\quad \text{选 REC；否则选 LD.}
+\]
+其中 \(\mathrm{qbits}:=\max(0,\mathrm{bitlen}(a)-\mathrm{bitlen}(b))\)，\(C_{\times}\) 为由 \texttt{mulmode} 校准的乘法深度常数。
+\par
+在该可执行口径下，DIVMOD 路线的三条可复现结论（与正文“增长分界在序投影”的结构命题对齐）可直接跑出：
 \begin{itemize}
-  \item \textbf{DIVMOD 的增长分界在 \(P_{\le}\)：}长除式路线使 \(k_{\le}T_{\le}\) 主导；倒数/迭代路线把增长转移到 \(D_U\)。
-  \item \textbf{RESCALE↓ 支持规模是正交成本轴：}当 \texttt{WGAUGE}/\texttt{WREM} 中等频率出现时，\(\mathrm{support}=\sum G_m\)（因此 \(w_{\mathrm{sup}}\cdot\mathrm{support}\)）可压过 \(\delta_Z\) 与 \(D_U\)。
-  \item \textbf{\(P_\chi\) 的时间标尺独立：}仅改变 \(\tau_{\mathrm{mix}}\) 即可线性放大 \(k_\chi\,\tau_{\mathrm{mix}}\)，并在低频读出时仍可能主导总成本。
+  \item \textbf{当 \(\mathrm{bitlen}(a)\approx \mathrm{bitlen}(b)\) 时长除更优；当 \(\mathrm{qbits}\) 变大时倒数路线碾压。}
+  \item \textbf{\(k_{\le}^{LD}\sim \mathrm{qbits}\)，而 \(k_{\le}^{REC}=O(1)\)：}增长项确实落在序门调用次数上。
+  \item \textbf{\texttt{mulmode} 只改变 REC 的 \(D_U\) 常数因子，而不改变分界主导因子：}路线相图主要由 \(k_{\le}T_{\le}\) 与 \(D_U\) 的交换决定。
 \end{itemize}
+脚本亦保留 \texttt{PROJ\_CHI}（\(k_\chi\)）与 \(\mathrm{support}=\sum G_m\) 两条正交审计轴，可用 \texttt{--chi-bench}/\texttt{--support-bench} 直接观测 \(\tau_{\mathrm{mix}}\) 与触及规模项的线性放大。
 \end{remark}
 
 \paragraph{隐纤维（程序不可见）}
