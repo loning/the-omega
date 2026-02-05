@@ -1,0 +1,103 @@
+\begin{remark}[3-进影子选择律：\texorpdfstring{$P_q(\lambda)$}{Pq} 在模 \texorpdfstring{$3$}{3} 下的奇偶分界（可审计）]\label{rem:pom-charpoly-mod3-selection}
+沿用定理 \ref{thm:pom-moment-resonance} 的特征多项式约定
+\(
+P_q(\lambda)=\lambda^{d_q}-\sum_{i=1}^{d_q}c_i\lambda^{d_q-i}
+\)
+与前移算子 \(E\)（使 \((ES)(m):=S(m+1)\)）。
+在共振窗 \(q=13,14,15\) 上，对 \(P_q(\lambda)\) 在 \(\mathbb{F}_3[\lambda]\) 的分解给出一个可审计的强分界：
+\begin{itemize}
+  \item 对奇阶 \(q=13,15\)，\(P_q(\lambda)\) 在模 \(3\) 下完全坍缩为线性谱 \(\{0,\pm 1\}\) 的幂：
+  \[
+  P_{13}(\lambda)\equiv \lambda^2(\lambda-1)^4(\lambda+1)^5\pmod 3,
+  \qquad
+  P_{15}(\lambda)\equiv \lambda^2(\lambda-1)^4(\lambda+1)^5\pmod 3.
+  \]
+  \item 对偶阶 \(q=14\)，\(\mathbb{F}_3\) 上出现不可约因子（例如 \((\lambda^2+1)^2\)），从而引入扩域模态。
+\end{itemize}
+该分解由脚本 \texttt{scripts/exp\_fold\_collision\_charpoly\_mod3\_selection\_q13\_15.py} 一键导出，详见表 \ref{tab:fold_collision_charpoly_mod3_selection_q13_15}。
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_charpoly_mod3_selection_q13_15}
+
+\begin{proposition}[模 \texorpdfstring{$3$}{3} 的两相压缩：\texorpdfstring{$q=13,15$}{q=13,15} 只剩 \texorpdfstring{$1$}{1} 与 \texorpdfstring{$-1$}{-1} 两类广义相位]\label{prop:pom-moment-mod3-two-phase}
+在定理 \ref{thm:pom-moment-resonance} 的递推生效区间内，对 \(q\in\{13,15\}\) 令
+\(
+\widetilde S_q:=E^2S_q
+\)。
+则在 \(\mathbb{F}_3\) 上有显式湮灭律
+\[
+(E-1)^4(E+1)^5\,\widetilde S_q\equiv 0\pmod 3.
+\]
+等价地，存在系数 \(a_0,\dots,a_3,b_0,\dots,b_4\in\mathbb{F}_3\) 使得
+\[
+\widetilde S_q(m)\equiv
+\sum_{j=0}^{3}a_j\binom{m}{j}
+\ +\ 
+(-1)^m\sum_{j=0}^{4}b_j\binom{m}{j}
+\pmod 3,
+\]
+从而模 \(3\) 的长期动力学只允许常相位 \(1^m\) 与交替相位 \((-1)^m\) 两族广义模态；任何更高阶的有限域周期本征相位在该窗口内被严格排除。
+\end{proposition}
+\begin{proof}
+由表 \ref{tab:fold_collision_charpoly_mod3_selection_q13_15}，对 \(q\in\{13,15\}\) 有
+\(
+P_q(\lambda)\equiv \lambda^2(\lambda-1)^4(\lambda+1)^5\ (\mathrm{mod}\ 3)
+\)。
+将 \(\lambda\) 替换为 \(E\) 并作用于 \(S_q\)，得
+\[
+E^2(E-1)^4(E+1)^5S_q\equiv 0\pmod 3,
+\]
+即 \((E-1)^4(E+1)^5\widetilde S_q\equiv 0\)。
+\par
+由于 \((x-1)^4\) 与 \((x+1)^5\) 在 \(\mathbb{F}_3[x]\) 中互素，存在 \(U,V\in\mathbb{F}_3[x]\) 使
+\(
+U(x)(x-1)^4+V(x)(x+1)^5=1
+\)。
+令
+\(
+A:=V(E)(E+1)^5\widetilde S_q
+\)、
+\(
+B:=U(E)(E-1)^4\widetilde S_q
+\)，
+则 \(A+B=\widetilde S_q\)，且
+\[
+(E-1)^4A\equiv 0,\qquad (E+1)^5B\equiv 0\pmod 3.
+\]
+对 \(A\)：算子 \(E-1\) 为前向差分，\((E-1)^4A=0\) 的解空间由
+\(
+\binom{m}{0},\binom{m}{1},\binom{m}{2},\binom{m}{3}
+\)
+张成，因此 \(A(m)\equiv \sum_{j=0}^3 a_j\binom{m}{j}\)。
+\par
+对 \(B\)：设 \(C(m):=(-1)^mB(m)\)，则
+\(
+(E-1)^5C(m)=(-1)^m(E+1)^5B(m)
+\)
+在 \(\mathbb{F}_3\) 上为零，故同理
+\(
+C(m)\equiv \sum_{j=0}^4 b_j\binom{m}{j}
+\)，
+于是 \(B(m)\equiv (-1)^m\sum_{j=0}^4 b_j\binom{m}{j}\)。
+合并即得结论。证毕。
+\end{proof}
+
+\begin{conjecture}[模 \texorpdfstring{$3$}{3} 的奇偶分界选择律（可证伪）]\label{conj:pom-charpoly-mod3-odd-even}
+在定理 \ref{thm:pom-moment-resonance} 的共振窗内，奇阶 \(q\) 的 \(P_q(\lambda)\) 在 \(\mathbb{F}_3[\lambda]\) 上应倾向于只支持线性谱 \(\{0,\pm 1\}\)（不含非平凡不可约因子），而偶阶 \(q\) 更容易出现不可约因子并引入扩域模态。
+该选择律在 \(q=13,14,15\) 的已核验切片上成立（表 \ref{tab:fold_collision_charpoly_mod3_selection_q13_15}），其可证伪方式是继续对更大窗口的已核验递推计算模 \(3\) 分解并检验是否出现反例。
+\end{conjecture}
+
+\begin{remark}[5-进影子分岔律：同为奇阶亦可被 \texorpdfstring{$\mathbb{F}_5$}{F5} 区分（可审计）]\label{rem:pom-charpoly-mod5-branch}
+在模 \(5\) 上，即便固定在奇阶类内，特征多项式也会发生可审计的结构分岔。
+对 \(q=13,15\)，表 \ref{tab:fold_collision_charpoly_mod5_branch_q13_15} 给出 \(\mathbb{F}_5[\lambda]\) 分解并显式读出零本征值的重数 \(a_0\)：\(q=13\) 含 \(\lambda^2\) 因子而 \(q=15\) 不含。
+因此模 \(5\) 提供一个极便宜的“瞬态 vs 本征”诊断接口：检查 \(P_q(0)\equiv 0\ (\mathrm{mod}\ 5)\)（等价于常数项的 \(5\)-整除性）即可判定零模态是否存在。
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_charpoly_mod5_branch_q13_15}
+
+\begin{remark}[有限域因子指数指纹：差分阶上界与跨域审计筛子]\label{rem:pom-modp-factor-exponent-fingerprint}
+在有限域 \(\mathbb{F}_p\) 上，若 \(P_q(\lambda)\) 含线性因子 \((\lambda-\omega)^e\)，则相应的移位算子满足 \((E-\omega)^e\) 的广义湮灭律；指数 \(e\) 因而给出 \(\omega\)-相位广义阶数的上界。
+对 \(q=13,15\) 的模 \(3\) 坍缩情形，\((\lambda-1)^4(\lambda+1)^5\) 的指数对 \((4,5)\) 给出一个与缺口下界 \(2h+1-d\) 正交的算术指纹：它把 \(\widetilde S_q=E^2S_q\) 的可观测解空间压缩为“常相位阶 \(\le 4\)”与“交替相位阶 \(\le 5\)”的直和（命题 \ref{prop:pom-moment-mod3-two-phase}）。
+因此在未来显式求解模态约束向量 \(\alpha\)（定理 \ref{thm:pom-moment-resonance}）时，可将该 \((4,5)\) 指纹作为一个跨域审计筛子：任何候选 realization/约束若在模 \(3\) 投影后诱导出超出上述差分阶上界的相位成分，则与输出递推的有限域影子矛盾，从而可直接排除。
+\end{remark}
+

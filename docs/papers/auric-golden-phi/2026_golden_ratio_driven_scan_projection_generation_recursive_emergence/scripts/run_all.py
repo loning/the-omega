@@ -406,6 +406,24 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_charpoly_mod3_selection_q13_15",
+            script="exp_fold_collision_charpoly_mod3_selection_q13_15.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_charpoly_mod3_selection_q13_15.json",
+                "sections/generated/tab_fold_collision_charpoly_mod3_selection_q13_15.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_charpoly_mod5_branch_q13_15",
+            script="exp_fold_collision_charpoly_mod5_branch_q13_15.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_charpoly_mod5_branch_q13_15.json",
+                "sections/generated/tab_fold_collision_charpoly_mod5_branch_q13_15.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_resonance_nullmodes_hankel_q9_17",
             script="exp_fold_collision_resonance_nullmodes_hankel.py",
             args=[],
