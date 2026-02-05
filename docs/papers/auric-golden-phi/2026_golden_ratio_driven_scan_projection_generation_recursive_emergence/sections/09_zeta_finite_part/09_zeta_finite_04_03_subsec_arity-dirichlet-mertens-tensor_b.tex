@@ -89,6 +89,45 @@ V_c
 因此当 \(((3,3,5))\) 的第三轴慢变量由碰撞 cocycle 主导时，常数张量在 \(c\)-轴上的有效自由度自然被压缩到极低维子空间；\(\varepsilon_{\mathrm{extra}}\) 可被视为“超出三态碰撞 realization 之外”的剩余耦合信息量的无量纲度量。
 \end{remark}
 
+\begin{proposition}[二次律常数的闭式锁定与 \texorpdfstring{$p^{-4}$}{p^{-4}} 修正]\label{prop:arity-collision-quadratic-closed}
+令 \(u=e^{z}\) 并定义压力函数
+$$
+P_\xi(z):=\log\rho\bigl(A_\xi(e^{z})\bigr)\qquad(z\ \text{在 }0\text{ 的邻域}).
+$$
+则 \(P_\xi\) 在 \(z=0\) 处解析，且偶阶导数具有闭式（见表 \ref{tab:arity_pure_collision_cubic_asymp_coeffs}）：
+$$
+P_\xi''(0)=\frac{6\sqrt5-5}{125}\approx 0.06733126292,
+\qquad
+P_\xi^{(4)}(0)=\frac{7+24\sqrt5}{3125}\approx 0.01941300207.
+$$
+因此当取单位根扭曲 \(u=e^{i\alpha}\) 且 \(\alpha\to 0\) 时，
+$$
+\log\frac{\rho\bigl(A_\xi(e^{i\alpha})\bigr)}{\rho\bigl(A_\xi(1)\bigr)}
+=-\frac{P_\xi''(0)}{2}\alpha^2+\frac{P_\xi^{(4)}(0)}{24}\alpha^4-\frac{P_\xi^{(6)}(0)}{6!}\alpha^6+\frac{P_\xi^{(8)}(0)}{8!}\alpha^8+O(\alpha^{10}),
+$$
+从而对奇素数 \(p\) 取 \(\alpha=2\pi/p\) 得到更强的渐近（包含 \(p^{-4}\) 修正）：
+$$
+\frac{\rho_{3,3,p}}{\lambda}
+\approx
+\exp\!\left(
+-\kappa_\infty\left(\frac{2\pi}{p}\right)^2+\frac{P_\xi^{(4)}(0)}{24}\left(\frac{2\pi}{p}\right)^4
+\right),
+\qquad
+\kappa_\infty:=\frac{P_\xi''(0)}{2}=\frac{6\sqrt5-5}{250}.
+$$
+\end{proposition}
+\input{sections/generated/tab_arity_pure_collision_cubic_asymp_coeffs}
+\begin{proof}
+对四态骨架纯碰撞扭曲矩阵 \(A_\xi(u)\)（\(u\in\CC\)），其特征多项式可分解为
+$$
+\det(\lambda I-A_\xi(u))=(\lambda+1)\bigl(\lambda^3-2\lambda^2-(u+1)\lambda+u\bigr).
+$$
+在 \(u=1\) 处 Perron 根为 \(\rho(A_\xi(1))=\varphi^2\)，且对应的三次方程根为单根；故由隐函数定理，Perron 分支在 \(u=1\) 的邻域解析延拓。
+令 \(u=e^z\) 得 \(\rho(A_\xi(e^z))\) 与 \(P_\xi(z)\) 在 \(z=0\) 的邻域解析。
+对三次方程作 \(z\) 的级数代入并逐阶匹配可得 \(P_\xi^{(2k)}(0)\) 的代数闭式；表 \ref{tab:arity_pure_collision_cubic_asymp_coeffs} 给出前几阶的可复现输出。
+对 \(z=i\alpha\) 取实部并按 Taylor 展开即得单位根扭曲的展开式与 \(p^{-4}\) 修正。证毕。
+\end{proof}
+
 \begin{remark}[纯碰撞通道的 near-1 pole：扩散律、四阶外推与样本外素数点]\label{rem:arity-335-near-coboundary-scaling}
 在 \(((3,3,p))\) 的第三轴取纯碰撞扭曲（\(\xi=\mathbf{1}_{\{d=2\}}\)）时，
 最慢模态在 \(p\to\infty\) 极限中必然进入 near-coboundary 小角 regime：
@@ -128,6 +167,7 @@ p=31:&\ r_p\approx 0.998619324725,\quad \Re(s_p)\approx 0.998564427126.
 \]
 以上常数与素数点可由最小闭环脚本 \texttt{scripts/exp\_arity\_pure\_collision\_near1\_pole\_closed\_loop.py} 一键复算并导出 JSON（便于审计与回归）。
 \end{remark}
+\input{sections/generated/tab_arity_pure_collision_cubic_primes}
 
 \begin{remark}[单位圆扭曲的偶性与无三次项]\label{lem:unit-circle-evenness}
 设 $M_\theta$ 为一个实矩阵族，且其条目关于 $e^{\mathrm{i}\theta}$ 实解析，并满足
