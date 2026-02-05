@@ -1,0 +1,117 @@
+\section{射影压力算子：把整数 \texorpdfstring{$q$}{q} 的 moment-kernel 提升为实参数}\label{app:pom-projective-pressure-operator}
+
+本附录补上注 \ref{rem:pom-fiber-index-ldp} 中标出的“\(q\to t\)”缺口：给出一个对任意实参数 \(q\ge 1\) 定义的\textbf{射影转移算子}（projective transfer operator），其在整数点 \(q\in\ZZ_{\ge 2}\) 上严格退化为本文的对称幂 moment-kernel \(\widetilde A_q\)（注 \ref{rem:pom-moment-symmetric-power-substitution-operator}），从而把离散压力 \(\log r_q\) 升级为一条连续压力曲线的可执行候选。
+
+\subsection{从在线核到射影动力学：\texorpdfstring{$(\Phi_b,g_b)$}{(Phi,g)} 的定义}
+沿用定义 \ref{def:pom-collision-count-bisim} 的确定性在线核/转导器 \(\mathcal{T}\)：状态集 \(Q\)，输入字母表 \(A_{\mathrm{in}}\)，输出字母表 \(A_{\mathrm{out}}\)，以及确定性转移--输出映射
+\[
+\tau:Q\times A_{\mathrm{in}}\to Q\times A_{\mathrm{out}},\qquad (s,a)\mapsto (s',b).
+\]
+
+\begin{definition}[输出分桶转移矩阵与射影更新]\label{def:pom-projective-transfer-operator}
+对每个输出符号 \(b\in A_{\mathrm{out}}\)，定义非负整数矩阵 \(B_b\in\Mat_{Q\times Q}(\NN)\) 为
+\[
+(B_b)_{s',s}:=\#\{a\in A_{\mathrm{in}}:\ \tau(s,a)=(s',b)\}.
+\]
+令
+\[
+\Delta:=\Bigl\{w\in\RR_{\ge 0}^{Q}:\ \langle \mathbf{1},w\rangle=1\Bigr\}
+\]
+为状态权重的标准单纯形（\(\mathbf{1}\) 为全 \(1\) 向量）。
+对 \(w\in\Delta\) 与 \(b\in A_{\mathrm{out}}\)，定义
+\[
+g_b(w):=\langle \mathbf{1},B_b w\rangle\in\RR_{\ge 0},
+\qquad
+\Phi_b(w):=
+\begin{cases}
+\dfrac{B_b w}{\langle \mathbf{1},B_b w\rangle},& g_b(w)>0,\\[8pt]
+\text{任取 }\Delta\text{ 中一点（该项将被置零）},& g_b(w)=0.
+\end{cases}
+\]
+对任意实参数 \(q\ge 1\)，定义作用在函数 \(f:\Delta\to\RR\) 上的算子
+\[
+(\mathcal{L}_q f)(w):=\sum_{b\in A_{\mathrm{out}}} g_b(w)^{\,q}\, f(\Phi_b(w)),
+\]
+其中约定当 \(g_b(w)=0\) 时，对应求和项取 \(0\)（对 \(q\ge 1\) 与连续 \(f\) 该约定与任意 \(\Phi_b(w)\) 的选取无关）。
+\end{definition}
+
+\begin{remark}[解释：\texorpdfstring{$g_b$}{g} 是“局部纤维增长”，\texorpdfstring{$\Phi_b$}{Phi} 是“归一化后继”]
+把 \(w\) 理解为“当前隐藏态在 \(Q\) 上的权重分布”。则 \(B_b w\) 是在输出为 \(b\) 的条件下，对所有允许的输入字母做合并后得到的\emph{未归一化}后继权重；其总质量 \(g_b(w)\) 即该步“产生输出 \(b\)”的总计数（或总权重）。\(\Phi_b(w)\) 则把该未归一化权重重新投影回单纯形，得到一个射影动力学。
+\end{remark}
+
+\subsection{整数点的严格退化：\texorpdfstring{$\mathcal{L}_q|_{\mathcal{H}_q}=\widetilde A_q$}{Lq|Hq=Aq}}
+\begin{definition}[齐次多项式子空间]\label{def:pom-homogeneous-polynomials-simplex}
+对整数 \(q\ge 0\)，记 \(\mathcal{H}_q\) 为 \(\Delta\) 上齐次次数为 \(q\) 的多项式函数空间：
+\[
+\mathcal{H}_q:=\{\,p|_{\Delta}:\ p(w)=\sum_{|\nu|=q}c_\nu\,w^\nu,\ c_\nu\in\RR\,\},
+\qquad
+w^\nu:=\prod_{s\in Q} w_s^{\nu(s)}.
+\]
+\end{definition}
+
+\begin{proposition}[齐次子空间不变与分母消去]\label{prop:pom-projective-operator-invariant-homogeneous}
+对任意整数 \(q\ge 1\)，子空间 \(\mathcal{H}_q\) 在 \(\mathcal{L}_q\) 下不变；并且对任意 \(p\in\mathcal{H}_q\) 与 \(w\in\Delta\) 有恒等式
+\[
+(\mathcal{L}_q p)(w)=\sum_{b\in A_{\mathrm{out}}} p(B_b w).
+\]
+\end{proposition}
+\begin{proof}
+取 \(p\in\mathcal{H}_q\)，并固定 \(b\in A_{\mathrm{out}}\)。
+当 \(g_b(w)>0\) 时，\(\Phi_b(w)=B_b w/g_b(w)\)，而 \(p\) 齐次次数为 \(q\)，故
+\[
+p(\Phi_b(w))=p\!\left(\frac{B_b w}{g_b(w)}\right)=\frac{p(B_b w)}{g_b(w)^{\,q}}.
+\]
+代回定义 \ref{def:pom-projective-transfer-operator} 得
+\[
+g_b(w)^{\,q}\,p(\Phi_b(w))=p(B_b w).
+\]
+当 \(g_b(w)=0\) 时，\(B_b w\) 的总质量为零，且 \(B_b\ge 0,w\ge 0\) 蕴含 \(B_b w=0\)，从而 \(p(B_b w)=0\)（因 \(q\ge 1\)）。按定义该项在 \(\mathcal{L}_q\) 中也取 \(0\)。故对所有 \(w\in\Delta\) 恒有
+\[
+(\mathcal{L}_q p)(w)=\sum_{b} g_b(w)^{\,q}\,p(\Phi_b(w))=\sum_b p(B_b w).
+\]
+右端是齐次次数 \(q\) 多项式的有限和，因此仍落在 \(\mathcal{H}_q\)。证毕。
+\end{proof}
+
+\begin{theorem}[整数退化 = 对称幂 moment-kernel]\label{thm:pom-projective-operator-degenerates-to-moment-kernel}
+沿用命题 \ref{prop:pom-moment-symmetric-power} 与注 \ref{rem:pom-moment-symmetric-power-substitution-operator} 的记号。对每个整数 \(q\ge 2\)，算子 \(\mathcal{L}_q\) 在 \(\mathcal{H}_q\) 上的矩阵表示（单项式基 \(w^\nu\)）恰为对称幂商 moment-kernel \(\widetilde A_q\)：
+\[
+\bigl[\mathcal{L}_q|_{\mathcal{H}_q}\bigr]_{(w^\nu)}=\widetilde A_q.
+\]
+因此其谱半径满足
+\[
+\rho\!\bigl(\mathcal{L}_q|_{\mathcal{H}_q}\bigr)=\rho(\widetilde A_q)=r_q.
+\]
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:pom-projective-operator-invariant-homogeneous}，
+\(
+(\mathcal{L}_q p)(w)=\sum_{b} p(B_b w)
+\)
+对任意 \(p\in\mathcal{H}_q\) 成立。另一方面，在注 \ref{rem:pom-moment-symmetric-power-substitution-operator} 中，
+\(\mathcal{T}=\sum_b \mathcal{T}_b\)
+对多项式环的作用等价于把变量向量 \(\mathbf{x}=(x_s)_{s\in Q}\) 作线性替换 \(\mathbf{x}\mapsto B_b^{\mathsf T}\mathbf{x}\)（因为 \(x_s\mapsto T_s^{(b)}(\mathbf{x})\) 正是第 \(s\) 行的线性组合）。在“把 \(w\) 视为坐标向量”的识别下，\(p(B_b w)\) 与该替换作用同型。
+故 \(\mathcal{L}_q|_{\mathcal{H}_q}\) 与 \(\mathcal{T}|_{R_q}\) 共轭；而注 \ref{rem:pom-moment-symmetric-power-substitution-operator} 已给出 \(\mathcal{T}\) 在齐次次数 \(q\) 子空间上的矩阵表示为 \(\widetilde A_q\)。
+谱半径结论随之成立。证毕。
+\end{proof}
+
+\subsection{连续压力曲线与大偏差接口}
+\begin{remark}[从离散 \texorpdfstring{$r_q$}{rq} 到连续 \texorpdfstring{$\Lambda(t)$}{Lambda(t)} 的可执行路线]\label{rem:pom-projective-pressure-route}
+定理 \ref{thm:pom-projective-operator-degenerates-to-moment-kernel} 给出严格对齐：整数 \(q\ge 2\) 时，\(\mathcal{L}_q\) 在有限维不变子空间上的限制即 moment-kernel。
+因此可把注 \ref{rem:pom-fiber-index-ldp} 所需的连续累积母函数 \(\Lambda(t)\) 具体化为：令 \(q=t+1\ge 1\)，并在某个适当的函数空间（例如 Hölder 连续函数或有界变差函数空间）上求 \(\mathcal{L}_{t+1}\) 的 Perron 主特征值 \(\lambda(t+1)\)（存在性/唯一性可由常见的锥收缩/准紧性条件保证），再定义
+\[
+\Lambda(t):=\log\lambda(t+1)-\log|A_{\mathrm{out}}|.
+\]
+在整数点 \(t=q-1\) 处，上式严格退化为
+\(
+\Lambda(q-1)=\log r_q-\log|A_{\mathrm{out}}|
+\)
+（对 Fold 主核即 \(\log r_q-\log 2\)），与命题 \ref{prop:pom-fiber-index-cgf} 的整点恒等式精确一致。
+一旦 \(\Lambda\) 满足标准的可微/本质严格凸条件，G\"artner--Ellis 接口即可直接给出纤维指数的大偏差率函数 \(I(\gamma)=\sup_{t\ge 0}(t\gamma-\Lambda(t))\)。
+\end{remark}
+
+\begin{remark}[数值逼近建议：从有限维“整数截断”外推到实参数]\label{rem:pom-projective-pressure-numerics}
+工程上，可把 \(\mathcal{L}_{t+1}\) 视为对 \(\Delta\) 上函数的正算子并用 Galerkin/配点离散：
+用低阶多项式基、简单网格或稀疏网格在 \(\Delta\) 上构造有限维近似算子 \(\mathcal{L}_{t+1}^{(N)}\)，再取其 Perron 根近似 \(\lambda_N(t+1)\)。
+整数点上，\(\mathcal{L}_{q}\) 已在 \(\mathcal{H}_q\) 上给出\emph{严格有限维}表示 \(\widetilde A_q\)，因此可用 \(\rho(\widetilde A_q)=r_q\) 作为离散化/外推的强一致性回归锚点（尤其是检查 \(t\mapsto \log\lambda_N(t+1)\) 的凸性与在 \(t=q-1\) 处的插值误差）。
+\end{remark}
+

@@ -208,14 +208,22 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="m11_boundary_z34_fourier_certificate",
-            script="exp_m11_boundary_z34_fourier_certificate.py",
+            name="nap_selector_so10",
+            script="exp_nap_selector_so10.py",
             args=[],
             expected_outputs=[
-                "artifacts/export/m11_boundary_z34_fourier_certificate.json",
-                "sections/generated/eq_m11_boundary_z34_fourier_split.tex",
-                "sections/generated/tab_m11_boundary_words_fold7.tex",
-                "sections/generated/tab_m11_z34_cycle_adjacency_spectrum.tex",
+                "artifacts/export/nap_selector_so10.json",
+                "sections/generated/tab_nap_selector_so10.tex",
+                "sections/generated/eq_nap_selector_so10.tex",
+            ],
+        ),
+        Step(
+            name="m11_boundary_z34_fourier_decomposition",
+            script="exp_m11_boundary_z34_fourier_decomposition.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/m11_boundary_z34_fourier_decomposition.json",
+                "sections/generated/eq_m11_boundary_z34_decomposition.tex",
             ],
         ),
         Step(
