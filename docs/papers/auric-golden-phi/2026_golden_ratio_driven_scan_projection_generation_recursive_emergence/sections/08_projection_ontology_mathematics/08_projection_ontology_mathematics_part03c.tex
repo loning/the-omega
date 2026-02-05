@@ -337,6 +337,23 @@ S_q(m)=\sum_{r\in\ZZ/F_{m+2}\ZZ}c_m(r)^q
 并由比值收敛（Aitken \(\Delta^2\)）估计 \(r_q\)。
 表 \ref{tab:fold_collision_renyi_spectrum_mod_dp_q20} 给出 \(q\le 20\) 的可复核扩展输出；其中 \(q\le 16\) 与由递推/有限核抽取的精确 \(r_q\) 在数值上吻合到表格精度，\(q\ge 17\) 则给出 DP 窗口 \(m\le 30\) 下的稳定估计值（脚本 \texttt{scripts/exp\_fold\_collision\_renyi\_spectrum\_mod\_dp\_q20.py} 一键生成）。
 \end{remark}
+
+\begin{remark}[为何 \(m\le 30\) 的 DP 窗口足够：由特征多项式抽取的谱隙给出几何衰减（可复核）]\label{rem:pom-dp-window-spectral-gap}
+在已存在最小递推的情形下（例如 \(q\le 23\) 的已核验窗口内，见表 \ref{tab:fold_collision_kernel_rh_scan_q2_17} 与表 \ref{tab:fold_collision_kernel_rh_scan_q18_23}），记 \(r_q\) 为 Perron 根，\(\Lambda_q=\max_{\mu\ne r_q}|\mu|\) 为次谱模。
+则在一般位置（主根简单且主模态系数非零）下，比值估计 \(S_q(m+1)/S_q(m)\to r_q\) 的主误差项满足几何衰减率
+\[
+\left|\frac{S_q(m+1)}{S_q(m)}-r_q\right|=O\!\left(\left(\frac{\Lambda_q}{r_q}\right)^{m}\right),
+\]
+而 Aitken \(\Delta^2\) 会把主几何项进一步压低到更高阶。
+\par
+对本文关心的 DP 扩展区间 \(q\le 20\)，由表中可直接读出 \(\Lambda_q/r_q\) 仍显著小于 \(1\)：例如
+\[
+\frac{\Lambda_{15}}{r_{15}}\approx 0.6918,\qquad
+\frac{\Lambda_{20}}{r_{20}}\approx 0.7590,
+\]
+从而在窗口端点 \(m\approx 30\) 处几何项分别约为 \((0.69)^{30}\approx 1.5\times 10^{-5}\) 与 \((0.759)^{30}\approx 2.6\times 10^{-4}\)。
+这给出一个完全由已审计特征多项式导出的解释：为什么在 \(m\in[24,30]\) 的 residue DP 窗口上，简单的“比值收敛 + Aitken \(\Delta^2\)”就足以产出稳定的 \(r_q\) 指纹估计（并与表 \ref{tab:fold_collision_renyi_spectrum_mod_dp_q20} 的观测精度一致）。
+\end{remark}
 \input{sections/generated/tab_fold_collision_renyi_spectrum_mod_dp_q20}
 
 \begin{remark}[端点收敛速度（可复核）：\texorpdfstring{$q\le 60$}{q<=60} 时 \texorpdfstring{$h_q/q\to\log(2/\sqrt{\varphi})$}{hq/q->log(2/sqrt(phi))}]\label{rem:pom-renyi-endpoint-q60}
@@ -702,6 +719,35 @@ $$
 另一方面，差分模态截断提供一个以 \(\{M_{q,\ell}\}\) 为坐标的 \(2h+1\) 维线性表示；既然最小线性表示维数不超过 \(d\)，该表示必非最小，因此存在非零线性关系 \(\sum_{\ell}\alpha_\ell M_{q,\ell}(m)\equiv 0\)。
 最后一段直接由表中的递推系数写出特征多项式并比较阶数即可。证毕。
 \end{proof}
+
+\begin{remark}[2-进影子律：\texorpdfstring{$P_q(\lambda)$}{Pq} 在模 \texorpdfstring{$2$}{2} 下坍缩为 \texorpdfstring{$\lambda^a(\lambda+1)^b$}{lambda^a(lambda+1)^b}（可审计）]\label{rem:pom-charpoly-mod2-shadow}
+对共振窗口 \(q=9,\dots,17\) 的已核验最小递推（表 \ref{tab:fold_collision_moment_recursions_9_17}；定理 \ref{thm:pom-moment-resonance}），把特征多项式 \(P_q(\lambda)\) 的系数按奇偶性约化到 \(\mathbb{F}_2\) 上，会出现一个完全内部的“2-进影子坍缩”：
+\[
+P_q(\lambda)\equiv \lambda^{a_q}(\lambda+1)^{b_q}\pmod 2,
+\qquad a_q+b_q=d_q.
+\]
+其具体 \((a_q,b_q)\) 与对应的稀疏模 \(2\) 表达式见表 \ref{tab:fold_collision_charpoly_mod2_shadow_q9_17}（脚本 \texttt{scripts/exp\_fold\_collision\_charpoly\_mod2\_shadow\_q9\_17.py} 一键生成）。
+特别地，从定理 \ref{thm:pom-moment-resonance} 列出的系数可直接读出
+\[
+P_{13}(\lambda)\equiv \lambda^3(\lambda+1)^8,\qquad
+P_{14}(\lambda)\equiv \lambda^7(\lambda+1)^6,\qquad
+P_{15}(\lambda)\equiv \lambda^3(\lambda+1)^8\pmod 2.
+\]
+\par
+机制上，这意味着在特征 \(2\) 的世界里递推算子的谱点只落在 \(0\) 与 \(-1\)（注意 \(-1\equiv 1\in\mathbb{F}_2\)）两处：伴随矩阵在 \(\mathbb{F}_2\) 上呈现“幂零 + 幺正（unipotent）”的极端刚性形态。
+等价地，令前移算子 \(E\) 作用于序列 \(S\) 为 \((ES)(m):=S(m+1)\)，则递推在模 \(2\) 下满足完全显式的差分湮灭律：
+\[
+P_q(E)S_q\equiv 0\pmod 2
+\qquad\Longrightarrow\qquad
+E^{a_q}(E+1)^{b_q}S_q\equiv 0\pmod 2.
+\]
+把差分算子记为 \(\mathsf{D}:=E+1\)（特征 \(2\) 下等同于前向差分），即得一个“内生的奇偶选择定则”：对每个 \(q=9,\dots,17\)，都有
+\[
+\mathsf{D}^{b_q}S_q(m+a_q)\equiv 0\pmod 2.
+\]
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_charpoly_mod2_shadow_q9_17}
 
 \begin{remark}[最小递推的端点刚性：首系数 \(2\) 与偶阶的 \texorpdfstring{$\pm 8$}{±8} 尾差分块]\label{rem:pom-recurrence-endpoint-rigidity}
 在已核验的最小整系数递推中（表 \ref{tab:fold_collision_moment_recursions}、\ref{tab:fold_collision_moment_recursions_9_17}、\ref{tab:fold_collision_moment_recursions_18_23}），始终有
