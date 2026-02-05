@@ -159,6 +159,76 @@ a_{p^k}(u)\equiv a_{p^{k-1}}(u^p)\ (\mathrm{mod}\ p^k)
 对第二式，只需将同余在指数链上迭代 \(\ell\) 次：由于 \(u^{p^j}=1\)（\(j\ge 1\)），每一步都把参数 \(u^{p^j}\) 退化为 \(1\)，并且模数每次下降一阶，最终得到模 \(p^\ell\) 的锁定同余。证毕。
 \end{proof}
 
+\begin{corollary}[阶 \texorpdfstring{$p$}{p} 圆分扭曲的完全不可见性]\label{cor:witt-cyclotomic-invisibility}
+令 \(p\) 为素数、\(k\ge 1\)，并令 \(R\) 为交换环。若 \(u\in R\) 满足 \(u^p=1\)，则
+\[
+\boxed{\ a_{p^k}(u)\equiv a_{p^k}(1)\pmod{p^k}\qquad\text{于}\ R\ }.
+\]
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:witt-root-of-unity-tower-lock} 得 \(a_{p^k}(u)\equiv a_{p^{k-1}}(1)\pmod{p^k}\)。
+另一方面，对推论 \ref{cor:witt-dwork-congruence} 取 \(u=1\) 得 \(a_{p^k}(1)\equiv a_{p^{k-1}}(1)\pmod{p^k}\)。
+两式相减即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$\theta$}{theta}-导数的稳定首位残差：\texorpdfstring{$\alpha_{p,r}\in\mathbb{F}_p$}{alpha in F_p}]\label{cor:witt-theta-stable-residue}
+固定素数 \(p\) 与阶 \(r\ge 1\)。当 \(k>r\) 时，由命题 \ref{prop:witt-theta-derivative-filter} 有 \(p^{k-r}\mid A_{p^k}^{(r)}\)，从而可定义
+\[
+\alpha_{p,r}:=\left[p^{-(k-r)}A_{p^k}^{(r)}\right]\bmod p\ \in \mathbb{Z}/p\mathbb{Z}\cong\mathbb{F}_p.
+\]
+则 \(\alpha_{p,r}\) 与 \(k\) 的选择无关（只要 \(k>r\)）。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:witt-theta-derivative-filter} 的缩放同余，
+\(
+A_{p^k}^{(r)}=p^rA_{p^{k-1}}^{(r)}+p^k t
+\)
+对某个 \(t\in\ZZ\) 成立。两边除以 \(p^{k-r}\) 得
+\[
+p^{-(k-r)}A_{p^k}^{(r)}=p^{-(k-1-r)}A_{p^{k-1}}^{(r)}+p^{r}t.
+\]
+对模 \(p\) 取剩余，由 \(r\ge 1\) 知最后一项 \(p^r t\equiv 0\pmod p\)，故
+\(
+p^{-(k-r)}A_{p^k}^{(r)}\equiv p^{-(k-1-r)}A_{p^{k-1}}^{(r)}\pmod p
+\)。
+迭代即得 \(\alpha_{p,r}\) 在 \(k>r\) 区间内稳定。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$p$}{p}-进平坦球：\texorpdfstring{$u=e^\theta$}{u=exp(theta)} 在 \texorpdfstring{$u=1$}{u=1} 附近的 \texorpdfstring{$p^k$}{p^k}-不敏感性]\label{cor:witt-padic-flatness-ball}
+令 \(p\) 为素数、\(k\ge 1\)。取 \(\theta\in p\ZZ_p\)；当 \(p=2\) 时进一步假设 \(\theta\in 4\ZZ_2\)（等价于 \(v_2(\theta)\ge 2\)，以确保 \(e^\theta\) 收敛），并令 \(u=e^\theta\)。
+则在 \(\ZZ_p\) 中有
+\[
+\boxed{\ a_{p^k}(e^\theta)\equiv a_{p^k}(1)\pmod{p^k}\ }.
+\]
+\end{corollary}
+\begin{proof}
+当 \(k=1\) 时，由 \(v_p(\theta)\ge 1\) 知对任意 \(r\ge 1\) 有
+\(
+v_p(\theta^r/r!)=r\,v_p(\theta)-v_p(r!)\ge r-v_p(r!)\ge 1
+\)，
+故 Taylor 展开中的每个 \(r\ge 1\) 项都落在 \(p\ZZ_p\) 中，从而
+\(
+a_p(e^\theta)\equiv a_p(1)\pmod p
+\)。
+下设 \(k\ge 2\)。
+
+在 \(\theta=0\) 处作 Taylor 展开：
+\[
+a_{p^k}(e^\theta)=\sum_{r\ge 0}\frac{A_{p^k}^{(r)}}{r!}\,\theta^r.
+\]
+常数项为 \(a_{p^k}(1)=A_{p^k}^{(0)}\)。对非零阶项分两类估值：
+\begin{itemize}
+  \item \textbf{\(r=1\)：}由命题 \ref{prop:witt-theta-derivative-filter}（取 \(r=1\)）得 \(p^{k-1}\mid A_{p^k}^{(1)}\)，又 \(v_p(\theta)\ge 1\)，故
+  \(v_p(A_{p^k}^{(1)}\theta)\ge (k-1)+1=k\)。
+  \item \textbf{\(r\ge 2\)：}由同一缩放同余在 \(k=2\) 处知
+  \(A_{p^2}^{(r)}\equiv p^rA_{p}^{(r)}\equiv 0\pmod{p^2}\)，从而 \(p^2\mid A_{p^2}^{(r)}\)。
+  再对 \(k\ge 3\) 归纳：若 \(p^{k-1}\mid A_{p^{k-1}}^{(r)}\)，则
+  \(A_{p^k}^{(r)}\equiv p^rA_{p^{k-1}}^{(r)}\equiv 0\pmod{p^k}\)，故 \(p^k\mid A_{p^k}^{(r)}\)。
+  于是对所有 \(k\ge 2\) 与 \(r\ge 2\) 都有 \(A_{p^k}^{(r)}\in p^k\ZZ\)。又因 \(v_p(\theta)\ge 1\) 蕴含 \(v_p(\theta^r/r!)\ge 0\)，故每项 \(\frac{A_{p^k}^{(r)}}{r!}\theta^r\) 的 \(p\)-进估值均不小于 \(k\)。
+\end{itemize}
+综上，所有非零阶项都被 \(p^k\) 整除，因此 \(a_{p^k}(e^\theta)\equiv a_{p^k}(1)\pmod{p^k}\)。证毕。
+\end{proof}
+
 \begin{remark}[模 \texorpdfstring{$p^k$}{p^k} 的计算加速律]\label{rem:witt-root-of-unity-acceleration}
 在推论 \ref{cor:witt-root-of-unity-tower-lock} 的条件 \(u^p=1\) 下，模 \(p^k\) 的值
 \(
