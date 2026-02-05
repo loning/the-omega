@@ -398,11 +398,11 @@ def main() -> None:
         + r".\quad 3-point vs series (with tail bd): "
         + ("OK" if payload.audit_three_point_vs_series else "FAIL")
         + r".\quad "
-        + r"N_\varepsilon="
+        + r"$N_{\varepsilon}="
         + str(payload.N_eps)
-        + r", tail(3pt)\le "
+        + r",\ \text{tail}(3\text{pt})\le "
         + payload.logM_diff_three_point_tail_bd
-        + r"."
+        + r"$."
     )
     lines.append("")
     tout.write_text("\n".join(lines) + "\n", encoding="utf-8")

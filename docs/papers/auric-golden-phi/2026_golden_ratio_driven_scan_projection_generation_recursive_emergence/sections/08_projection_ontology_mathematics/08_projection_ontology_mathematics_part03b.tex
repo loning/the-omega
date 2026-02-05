@@ -515,6 +515,120 @@ $$
 已由推论 \ref{cor:pom-renyi2-near-uniform} 显式给出：它把 \(\pi_m\) 相对于均匀分布的 Rényi--2 偏离以一个纯常数级指数率完全量化。
 \end{corollary}
 
+\paragraph{最小 5 态“大统一”完备化：秩一统一直达 + 两重态交换}
+三态核 \(A_2\) 在 Hankel/递推意义下已是最小表示（定理 \ref{thm:pom-s2-rank-exact}）。
+但从“统一$\to$破缺”的结构视角，它还携带一个更细的低秩分解：把 \(A_2\) 写成秩一的“统一直达通道”加上秩二的“重态交换修正”。
+
+\begin{proposition}[二阶碰撞核 \(A_2\) 的最小 5 态完备化]\label{prop:pom-a2-gut-completion}
+令
+\[
+U:=
+\begin{pmatrix}
+0&0&1\\
+0&0&1\\
+0&0&1
+\end{pmatrix},
+\qquad
+R:=A_2-U=
+\begin{pmatrix}
+0&0&0\\
+0&1&0\\
+2&1&0
+\end{pmatrix}.
+\]
+则 \(\mathrm{rank}(U)=1\)、\(\mathrm{rank}(R)=2\)，并且存在 \(B\in\ZZ_{\ge 0}^{3\times 2}\)、\(C\in\ZZ_{\ge 0}^{2\times 3}\) 使 \(R=BC\)；例如可取
+\[
+B=
+\begin{pmatrix}
+0&0\\
+0&1\\
+1&0
+\end{pmatrix},
+\qquad
+C=
+\begin{pmatrix}
+2&1&0\\
+0&1&0
+\end{pmatrix}.
+\]
+从而
+\[
+A_2=U+BC.
+\]
+把中间维度 \(2\) 解释为两枚“重介子态/重交换态”，可将其外显为一个 \(5\times 5\) 的块核（统一母核）
+\[
+A_{\mathrm{GUT}}
+:=
+\begin{pmatrix}
+U & B\\
+C & 0_{2\times 2}
+\end{pmatrix}
+=
+\begin{pmatrix}
+0&0&1&0&0\\
+0&0&1&0&1\\
+0&0&1&1&0\\
+2&1&0&0&0\\
+0&1&0&0&0
+\end{pmatrix}.
+\]
+并且在“辅助态数目”意义下该完备化是最小的：任意分解 \(A_2=U+\widetilde B\widetilde C\)（其中 \(\mathrm{rank}(U)=1\)、\(\widetilde B\in\RR^{3\times k}\)、\(\widetilde C\in\RR^{k\times 3}\)）都必须满足 \(k\ge 2\)。
+\end{proposition}
+\begin{proof}
+显然 \(U=uv^{\mathsf T}\)（取 \(u=(1,1,1)^{\mathsf T}\)、\(v=(0,0,1)^{\mathsf T}\)），故 \(\mathrm{rank}(U)=1\)。
+而 \(R\) 的前两列分别为 \((0,0,2)^{\mathsf T}\)、\((0,1,1)^{\mathsf T}\)，线性无关，故 \(\mathrm{rank}(R)=2\)。
+直接乘法可核验所给 \(B,C\) 满足 \(BC=R\)，因此 \(A_2=U+BC\)。
+最后若 \(R=\widetilde B\widetilde C\) 且 \(\widetilde B\) 有 \(k\) 列，则 \(\mathrm{rank}(R)\le \mathrm{rank}(\widetilde B\widetilde C)\le k\)，与 \(\mathrm{rank}(R)=2\) 合并得 \(k\ge 2\)。证毕。
+\end{proof}
+
+\begin{proposition}[统一$\to$破缺插值与谱分裂三次族]\label{prop:pom-a2-gut-spectral-splitting}
+定义一参数“统一$\to$破缺”有效核
+\[
+A_{\mathrm{eff}}(\alpha):=U+\alpha\,R=U+\alpha\,BC,\qquad \alpha\in[0,1].
+\]
+则其特征多项式具有闭式
+\[
+\boxed{\;
+\chi_\alpha(\lambda)
+:=\det(\lambda I-A_{\mathrm{eff}}(\alpha))
+=
+\lambda^3-(1+\alpha)\lambda^2-2\alpha\lambda+2\alpha^2\; }.
+\]
+其中端点 \(\alpha=0\) 给出 \(\mathrm{spec}(A_{\mathrm{eff}}(0))=\{1,0,0\}\)，而 \(\alpha=1\) 退化回
+\(\det(\lambda I-A_2)=\lambda^3-2\lambda^2-2\lambda+2\)。
+\end{proposition}
+\begin{proof}
+由
+\(
+A_{\mathrm{eff}}(\alpha)=\begin{pmatrix}0&0&1\\0&\alpha&1\\2\alpha&\alpha&1\end{pmatrix}
+\)
+直接计算 \(\det(\lambda I-A_{\mathrm{eff}}(\alpha))\) 即得闭式。
+端点结论由代入 \(\alpha=0,1\) 得到。证毕。
+\end{proof}
+
+\begin{corollary}[可证伪反解：由有效主根恢复 \(\alpha\)]\label{cor:pom-a2-gut-invert-alpha}
+若某一尺度下观测到的有效主根为 \(\lambda=\rho(A_{\mathrm{eff}}(\alpha))\)，则 \(\alpha\) 必满足二次方程
+\[
+2\alpha^2-(\lambda^2+2\lambda)\alpha+\lambda^2(\lambda-1)=0.
+\]
+并且在物理分支 \(\alpha\in[0,1]\) 上有显式反解
+\[
+\boxed{\;
+\alpha(\lambda)=\frac{\lambda}{4}\Bigl((\lambda+2)-\sqrt{(\lambda-2)^2+8}\Bigr)\; }.
+\]
+因此一旦以独立方式给出“有效增长模” \(\lambda\)，该统一机制对 \(\alpha\) 的反演是零自由度的（可直接证伪/核验）。
+\end{corollary}
+\begin{proof}
+把命题 \ref{prop:pom-a2-gut-spectral-splitting} 的 \(\chi_\alpha(\lambda)=0\) 视为关于 \(\alpha\) 的方程，即得到所示二次式；
+用求根公式并取使 \(\alpha(1)=0\)、\(\alpha(r_2)=1\) 的分支即得闭式。证毕。
+\end{proof}
+
+\begin{remark}[“母核”与一步谱半径的区分]\label{rem:pom-a2-gut-mother-vs-effective}
+命题 \ref{prop:pom-a2-gut-completion} 的 \(A_{\mathrm{GUT}}\) 是一种把秩二交换项外显为两枚中间态的 bookkeeping 完备化；
+其“低能有效核”由 \(A_{\mathrm{eff}}(\alpha)=U+\alpha BC\) 给出。
+因此 \(A_{\mathrm{GUT}}\) 的 Perron 根不必等于 \(r_2=\rho(A_2)\)：统一$\to$破缺的插值发生在交换项的有效权重（\(\alpha\)）上，而非必然发生在一步邻接的谱半径上。
+\end{remark}
+
 \begin{proposition}[碰撞核的行列式与主极点]\label{prop:pom-collision-det}
 有闭式
 $$
