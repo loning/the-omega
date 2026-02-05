@@ -476,6 +476,101 @@ B^{\mathrm{cert}}_m(\varepsilon):=\exp\!\bigl(m\,\gamma^{\mathrm{cert}}_m(\varep
 脚本 \texttt{scripts/exp\_fold\_tail\_budget\_gamma\_cert.py} 进一步用 residue-DP 直方图对 \(\pi_m\) 下的真实尾部质量做核验并输出 JSON 证书。
 \end{remark}
 
+\begin{proposition}[Quantile-CRT 编译律：\texorpdfstring{$\varepsilon$}{eps}-sound 的序投影消元]\label{prop:pom-rcrt-epsilon}
+固定分辨率 \(m\) 与误差预算 \(\varepsilon\in(0,1)\)，在折叠读出口径下令 \(X\sim\pi_m\)。
+设序投影门 \(P_{\le}\) 作用的内部整数标签为随机变量 \(Y\)，并满足粗界
+\[
+|Y|\ \le\ d_m(X)
+\qquad(\text{例如：prime-register 承载的 fiber-index，或任何以纤维规模为上界的寄存器值}).
+\]
+取任意 \(B\ge 1\) 使得
+\[
+\mathbb{P}_{\pi_m}\big[d_m(X)>B\big]\ \le\ \varepsilon,
+\]
+并选择两两互素模数 \(p_1,\dots,p_r\) 使得其乘积 \(P=\prod_i p_i\) 满足 \(P>2B\)。
+则在误差富集口径（定义 \ref{def:pom-eps-sound-rewrite}）下存在 \(\varepsilon\)-sound 重写证书
+\[
+(\mathrm{RCRT}_\varepsilon)\qquad
+P_{\le}\ \Longrightarrow_{\varepsilon}\ \mathrm{CRT}_{\{p_i\}}\circ P_{\chi,\{p_i\}}.
+\]
+其中右端正是硬阈值版 (RCRT)（定义 \ref{def:pom-order-elimination-rewrite}）的空间化实现：先按模轴并行读出 residue（\(P_{\chi,\{p_i\}}\)），再用 CRT 重建（\(\mathrm{CRT}_{\{p_i\}}\)）。
+\end{proposition}
+\begin{proof}
+令坏事件 \(E:=\{|Y|>B\}\)。
+由假设 \(|Y|\le d_m(X)\) 得 \(E\subseteq\{d_m(X)>B\}\)，从而
+\(
+\mathbb{P}_{\pi_m}[E]\le \varepsilon
+\)。
+在好事件 \(E^c\) 上，\(Y\in[-B,B]\)，因此 \(P_{\le}\) 的序/区间判定可视为受限门 \(P_{\le,[-B,B]}\)。
+而在 \(P>2B\) 的侧条件下，硬阈值版 (RCRT) 对 \([-B,B]\) 上的整数读出保持正确（命题 \ref{prop:pom-order-elimination-correct}），故在 \(E^c\) 上有
+\(
+P_{\le}= \mathrm{CRT}_{\{p_i\}}\circ P_{\chi,\{p_i\}}
+\)
+（作为可见读出）。
+因此按定义 \ref{def:pom-eps-sound-rewrite}，上述重写在失败概率至多为 \(\varepsilon\) 的意义下成立。证毕。
+\end{proof}
+
+\begin{remark}[两条硬化路径与 \texorpdfstring{$(u,q,\varepsilon)$}{(u,q,eps)} 调度]\label{rem:pom-hardening-u-vs-q}
+序门的“硬化”在本文接口里至少有两条可执行路径：
+\begin{itemize}
+  \item \textbf{温度路径：}降低 \(u\)（注 \ref{rem:pom-order-as-zero-temp}）使软序门 \(\mathrm{PROJ}_u\) 硬化到 \(P_{\le}\)，其时间侧代价主要体现在扭曲谱隙/混合尺度 \(\tau_{\mathrm{mix}}(u)\)（命题 \ref{prop:pom-rewrite-audit-loop}）。
+  \item \textbf{moment-分位路径：}固定（或不极端降低）\(u\)，通过提高 \(q\) 并用 moment-kernel（\(\mathrm{MOM}_q\)）给出尾部证书，从而触发 \((\mathrm{RCRT}_\varepsilon)\)（命题 \ref{prop:pom-rcrt-epsilon}）把序门编译为空间化的 residue+CRT 读出；其空间侧代价主要体现在 prime-register 配额 \(\log P\)（推论 \ref{cor:pom-prime-register-quantile-budget} 与注 \ref{rem:pom-quantile-budget-computable} 的 \(\gamma\)-证书）。
+\end{itemize}
+因此编译器可以把 \((u,q,\varepsilon)\) 作为三旋钮：\(u\) 主控时间尺度、\(q\) 主控尾部放大与空间配额、\(\varepsilon\) 主控风险预算；并用命题 \ref{prop:pom-eps-sound-compose} 的加法律对多次近似消序门的总体失败概率做账。
+\end{remark}
+
+\begin{remark}[预算指数的三项分解：几何必然损失 + R\'enyi 非均匀惩罚 + 置信项]\label{rem:pom-quantile-budget-three-term}
+本小节的 Chernoff 证书既可看作“谱/矩侧 \(\Rightarrow\) prime-register 空间预算”的显式变换，也可进一步拆成三个\emph{可计算}项，从而把“空间/时间”权衡量化为一条加法律。
+
+\medskip\noindent\textbf{(i) 精确有限尺度恒等式（无需渐近假设）}
+令 \(u_m\) 为 \(X_m\) 上均匀分布：\(u_m(x)=1/|X_m|\)。
+对任意 \(q\ge 2\)，记 \(\mathrm{D}_q(\pi_m\Vert u_m)\) 为 R\'enyi-\(q\) 散度：
+\[
+\mathrm{D}_q(\pi_m\Vert u_m)
+:=\frac{1}{q-1}\log\Big(\sum_{x\in X_m}\pi_m(x)^q\cdot |X_m|^{q-1}\Big)
+\ \ge\ 0.
+\]
+则对任意 \(\varepsilon\in(0,1)\) 与任意 \(q\ge 2\)，命题 \ref{prop:pom-quantile-chernoff} 的有限尺度证书
+\[
+\gamma^{\mathrm{cert,fin}}_{m,q}(\varepsilon)
+:=\frac{\frac{1}{m}\log S_q(m)-\log 2+\frac{1}{m}\log(1/\varepsilon)}{q-1}
+\]
+满足如下\textbf{精确分解}：
+\[
+\boxed{\;
+\gamma^{\mathrm{cert,fin}}_{m,q}(\varepsilon)
+=
+\underbrace{\frac{1}{m}\log\Big(\frac{2^m}{|X_m|}\Big)}_{\text{几何必然损失（平均纤维指数）}}
+\;+\;
+\underbrace{\frac{1}{m}\mathrm{D}_q(\pi_m\Vert u_m)}_{\text{非均匀惩罚（输出分布偏离均匀）}}
+\;+\;
+\underbrace{\frac{1}{q-1}\cdot\frac{1}{m}\log(1/\varepsilon)}_{\text{置信项（尾部可靠性成本）}}
+\;}
+\]
+其证明仅为代数恒等式：由 \(\sum_x\pi_m(x)^q=S_q(m)/2^{qm}\) 代入 \(\mathrm{D}_q\) 并整理即可。
+
+\medskip\noindent\textbf{(ii) 渐近三项分解（与 \(\{r_q\}\) 的桥包对齐）}
+当 \(S_q(m)=\Theta(r_q^m)\) 且 \(|X_m|=F_{m+2}\sim\varphi^m\) 时，上式在指数尺度上收敛为
+\[
+\gamma(q,\alpha)
+=
+\log\frac{2}{\varphi}
+\;+\;
+\Delta_q
+\;+\;
+\frac{\alpha}{q-1},
+\qquad
+\Delta_q:=\lim_{m\to\infty}\frac{1}{m}\mathrm{D}_q(\pi_m\Vert u_m)
+=\frac{\log r_q-q\log 2+(q-1)\log\varphi}{q-1},
+\]
+其中 \(\alpha:=\lim_{m\to\infty}\frac{1}{m}\log(1/\varepsilon_m)\) 表示指数级可靠性要求 \(\varepsilon_m\approx e^{-\alpha m}\)。
+特别地，\(q=2\) 时
+\(
+\Delta_2=\log(\varphi r_2/4)
+\)
+正是本文多处出现的二阶偏离指数常数（见推论 \ref{cor:pom-shannon-entropy-squeeze} 的常数项口径）。
+\end{remark}
+
 \subsubsection{可实现接口：异常签名与 moment 证书的最小流水线}\label{subsec:pom-implementable-interfaces}
 
 为把“重写证书/异常签名/谱判等”真正落到可复现执行层面，本段给出与仓库脚本一一对应的最小流水线。

@@ -677,6 +677,61 @@ $$
 最后一段直接由表中的递推系数写出特征多项式并比较阶数即可。证毕。
 \end{proof}
 
+\begin{proposition}[奇滞后中性（odd-lag neutrality；可审计）]\label{prop:pom-moment-odd-lag-neutrality}
+在已核验范围 \(q=2,\dots,23\) 内（表 \ref{tab:fold_collision_moment_recursions}、表 \ref{tab:fold_collision_moment_recursions_9_17} 与表 \ref{tab:fold_collision_moment_recursions_18_23}），\(S_q(m)\) 的最小整系数递推可写为
+\[
+S_q(m)=\sum_{i=1}^{d_q} c_i\,S_q(m-i)\qquad(m\ge m_0),
+\]
+其中阶数 \(d_q\) 皆为奇数，并满足\textbf{奇滞后系数零和}：
+\[
+\sum_{\substack{1\le i\le d_q\\ i\ \mathrm{odd}}} c_i=0.
+\]
+等价地，若按约定
+\[
+P_q(\lambda)=\lambda^{d_q}-\sum_{i=1}^{d_q}c_i\,\lambda^{d_q-i},
+\]
+则有
+\[
+P_q(1)+P_q(-1)=0.
+\]
+亦即 \(P_q\) 的\textbf{偶次幂系数和为 \(0\)}（因为 \(d_q\) 为奇数时，偶次幂项恰对应递推中的奇滞后项）。
+\end{proposition}
+
+\begin{proof}
+由于 \(d_q\) 为奇数，\(1^{d_q}+(-1)^{d_q}=0\)，从而
+\[
+P_q(1)+P_q(-1)
+= -\sum_{i=1}^{d_q} c_i\bigl(1^{d_q-i}+(-1)^{d_q-i}\bigr)
+= -2\sum_{\substack{1\le i\le d_q\\ i\ \mathrm{odd}}}c_i,
+\]
+故 \(\sum_{i\ \mathrm{odd}}c_i=0\iff P_q(1)+P_q(-1)=0\)。
+在上述三张表中，\((c_1,\dots,c_{d_q})\) 已逐项显式给出；对每个 \(q\) 直接把奇指标项相加即可得到零和恒等式，从而命题成立。证毕。
+\end{proof}
+
+\begin{remark}[机制解释：奇通道的“直流中性”与差分型投影门]\label{rem:pom-moment-odd-lag-neutrality-gate}
+把递推按奇偶滞后拆开：
+\[
+S_q(m)=\sum_{i\ \mathrm{even}}c_i\,S_q(m-i)\ +\ \sum_{i\ \mathrm{odd}}c_i\,S_q(m-i).
+\]
+由命题 \ref{prop:pom-moment-odd-lag-neutrality} 的零和条件，并注意 \(d_q\) 为奇数（因此 \(d_q\) 本身属于奇滞后集合），可将奇滞后部分改写为“锚定差分”：
+\[
+\sum_{i\ \mathrm{odd}}c_i\,S_q(m-i)
+=\sum_{\substack{i\ \mathrm{odd}\\ i<d_q}}c_i\bigl(S_q(m-i)-S_q(m-d_q)\bigr).
+\]
+因此\textbf{奇滞后通道对常数模态（直流）完全中性}，只能读取历史窗口中的相对差分。
+等价地，把 \(P_q\) 分解为偶/奇部分
+\(
+E_q(\lambda):=\frac{P_q(\lambda)+P_q(-\lambda)}{2}=Q_q(\lambda^2)
+\)
+与
+\(
+O_q(\lambda):=\frac{P_q(\lambda)-P_q(-\lambda)}{2}
+\)，
+则奇滞后中性 \(P_q(1)+P_q(-1)=0\) 即 \(E_q(1)=0\)，从而 \(Q_q(1)=0\) 并推出 \((\lambda^2-1)\mid E_q(\lambda)\)。
+这把“先在两步尺度（\(\lambda^2\)）上升维，再经投影门消元”的直观口径转写为一个纯代数、可审计的因子约束。
+在“先升维再投影”的口径下，这等价于：递推算子在奇滞后子通道上内生地携带一个差分型投影门（消去一个不可见方向），从而提供一个零成本、可复算的一致性审计抓手：在已核验范围内，只需检查 \(\sum_{i\ \mathrm{odd}}c_i\) 是否为 \(0\) 即可。
+\end{remark}
+
 \begin{conjecture}[Fourier 零点簇驱动的 Hankel 共振（可证伪机制假说）]\label{conj:pom-fourier-zero-driven-resonance}
 附录 \ref{app:fold-multiplicity} 将折叠多重度剖面 \(d_m(r)\) 的频谱写成 Riesz 乘积并定义谱零点集合
 \(
@@ -731,6 +786,15 @@ $$
 \end{remark}
 
 \input{sections/generated/tab_fold_collision_resonance_gap_delta_q_9_17}
+
+\begin{conjecture}[秩缺口阶梯：\texorpdfstring{$\Delta(q)$}{Delta(q)} 的阶梯像与偶性]\label{conj:pom-delta-staircase}
+在定义 \ref{def:pom-resonance-gap-delta} 的记号下，随着 \(q\) 增大，共振缺口 \(\Delta(q)\)（即名义模态上界与最小实现维数之间的秩缺口）应呈现稳定的阶梯结构：
+\begin{enumerate}
+  \item \textbf{偶性：}\(\Delta(q)\in 2\mathbb{Z}_{\ge 0}\)；
+  \item \textbf{阶梯像：}\(\Delta(q)\) 在宽 \(q\)-区间内保持常值，偶尔以步长 \(2\)（或其倍数）跳变。
+\end{enumerate}
+在已核验范围 \(q\le 23\) 内，\(\Delta(q)\) 的读数确实只出现 \(0,2,4,6\)，并显示出“长平台 + 偶数跃迁”的稳定迹象（见表 \ref{tab:fold_collision_resonance_gap_delta_q_9_17} 与推论 \ref{cor:pom-moment-dim-collapse} 的 \(d_q\) 列表）。
+\end{conjecture}
 
 \begin{remark}[双层降维框架：对称性降维与 Fibonacci 共振坍缩的来源可分解]\label{rem:pom-two-layer-dim-reduction}
 对固定的 \(q\)-重 moment-kernel，存在两类互不混淆的降维机制：

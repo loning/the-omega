@@ -443,6 +443,138 @@ K_1(\mathcal O_A)\cong \ZZ^2.
 \end{remark}
 \input{sections/generated/tab_real_input_40_parry_internal_distribution}
 
+\paragraph{从表 \ref{tab:real_input_40_parry_internal_distribution} 反推出输入记忆边缘、贝叶斯后验与可观测性指标}
+表 \ref{tab:real_input_40_parry_internal_distribution} 给出两类信息：条件分布 $\mathbb{P}(s\mid m)$ 与同步态边缘 $\mathbb{P}(s)$。
+仅用这两类数据，即可进一步推出若干可直接用于“在线解码/可观测性/信息论”讨论的闭式结论。
+
+\begin{proposition}[输入记忆边缘分布的闭式反推]\label{prop:real-input-40-memory-marginal}
+在 Parry 最大熵测度下，输入记忆 $m=(p_x,p_y)\in\{00,01,10,11\}$ 的边缘分布为
+\[
+\mathbb{P}(00)=\frac{3+\sqrt5}{10},\qquad
+\mathbb{P}(01)=\mathbb{P}(10)=\frac15,\qquad
+\mathbb{P}(11)=\frac{3-\sqrt5}{10}.
+\]
+\end{proposition}
+
+\begin{proof}
+由表 \ref{tab:real_input_40_parry_internal_distribution} 可见同步态 $010$ 只在 $m=00$ 时出现，故
+\(
+\mathbb{P}(010)=\mathbb{P}(00)\mathbb{P}(010\mid 00)
+\)，
+从而
+\(
+\mathbb{P}(00)=\mathbb{P}(010)/\mathbb{P}(010\mid 00)=\frac{3+\sqrt5}{10}
+\)。
+同理 $0$-$12$ 只在 $m=11$ 时出现，故
+\(
+\mathbb{P}(11)=\mathbb{P}(0\text{-}12)/\mathbb{P}(0\text{-}12\mid 11)=\frac{3-\sqrt5}{10}
+\)。
+再由 $\sum_m \mathbb{P}(m)=1$ 与 $01\leftrightarrow 10$ 对称性得 $\mathbb{P}(01)=\mathbb{P}(10)=\frac15$。
+\end{proof}
+
+\begin{corollary}[Parry 下输入两比特的严格独立性]\label{cor:real-input-40-memory-independence}
+设 $m=(p_x,p_y)$，则
+\[
+\mathbb{P}(p_x=1)=\mathbb{P}(p_y=1)=\frac{5-\sqrt5}{10},
+\qquad
+\mathbb{P}(p_x,p_y)=\mathbb{P}(p_x)\mathbb{P}(p_y),
+\]
+即 $(p_x,p_y)$ 在 Parry 测度下严格独立。
+\end{corollary}
+
+\begin{remark}[本质 $20$ 状态核的全联合分布]\label{rem:real-input-40-parry-essential-20-joint}
+表 \ref{tab:real_input_40_parry_internal_distribution} 的四行（记忆条件）合计允许恰好 $20$ 个 $(s,m)$ 组合。
+由 $\mathbb{P}(s,m)=\mathbb{P}(m)\mathbb{P}(s\mid m)$ 得到其 Parry 联合分布的完全闭式（均在 $\mathbb{Q}(\sqrt5)$）：
+\[
+\begin{aligned}
+&\mathbb{P}(000,00)=\mathbb{P}(010,00)=\frac{1}{20}+\frac{\sqrt5}{20},\quad
+\mathbb{P}(001,00)=\mathbb{P}(01\text{-}1,00)=\frac{3}{20}-\frac{\sqrt5}{20},\\
+&\mathbb{P}(100,00)=\mathbb{P}(11\text{-}1,00)=-\frac{1}{20}+\frac{\sqrt5}{20};\\[2pt]
+&\mathbb{P}(000,01)=\mathbb{P}(000,10)=-\frac{11}{20}+\frac{\sqrt5}{4},\quad
+\mathbb{P}(001,01)=\mathbb{P}(001,10)=\frac{3}{10}-\frac{\sqrt5}{10},\\
+&\mathbb{P}(002,01)=\mathbb{P}(002,10)=-\frac15+\frac{\sqrt5}{10},\quad
+\mathbb{P}(100,01)=\mathbb{P}(100,10)=\frac12-\frac{\sqrt5}{5},\\
+&\mathbb{P}(101,01)=\mathbb{P}(101,10)=\frac{3}{20}-\frac{\sqrt5}{20};\\[2pt]
+&\mathbb{P}(0\text{-}12,11)=-\frac15+\frac{\sqrt5}{10},\quad
+\mathbb{P}(002,11)=-\frac34+\frac{7\sqrt5}{20},\\
+&\mathbb{P}(1\text{-}12,11)=\frac7{20}-\frac{3\sqrt5}{20},\quad
+\mathbb{P}(101,11)=\frac9{10}-\frac{2\sqrt5}{5}.
+\end{aligned}
+\]
+\end{remark}
+
+\begin{remark}[贝叶斯反推与“硬/软”解码分层]\label{rem:real-input-40-bayes-decode}
+由
+\[
+\mathbb{P}(m\mid s)=\frac{\mathbb{P}(s,m)}{\mathbb{P}(s)}
+\]
+可直接得到同步态对记忆位的后验分布。特别地，
+\[
+s\in\{01\text{-}1,010,11\text{-}1\}\Rightarrow \mathbb{P}(m=00\mid s)=1,
+\qquad
+s\in\{0\text{-}12,1\text{-}12\}\Rightarrow \mathbb{P}(m=11\mid s)=1,
+\]
+且这类“硬判定”同步态的总概率为
+\[
+\mathbb{P}(01\text{-}1)+\mathbb{P}(010)+\mathbb{P}(11\text{-}1)+\mathbb{P}(0\text{-}12)+\mathbb{P}(1\text{-}12)=\frac{3}{10}.
+\]
+作为例子，
+\[
+\mathbb{P}(00\mid 001)=\frac15,\quad
+\mathbb{P}(01\mid 001)=\mathbb{P}(10\mid 001)=\frac25,\quad
+\mathbb{P}(11\mid 001)=0,
+\]
+而
+\[
+\mathbb{P}(00\mid 000)=\frac{19+8\sqrt5}{41},\quad
+\mathbb{P}(01\mid 000)=\mathbb{P}(10\mid 000)=\frac{11-4\sqrt5}{41},\quad
+\mathbb{P}(11\mid 000)=0.
+\]
+除 $\pm12$ 外，只有 $s\in\{002,101\}$ 会使 $\mathbb{P}(11\mid s)\in(0,1)$，
+且
+\(
+\mathbb{P}(11\mid 002)=\frac{10-\sqrt5}{19}
+\),
+\(
+\mathbb{P}(11\mid 101)=\frac{8-3\sqrt5}{19}
+\)。
+\end{remark}
+
+\begin{remark}[互信息与可观测性（bit）]\label{rem:real-input-40-mutual-info}
+把 $(S,M)$ 视为一个观测信道，取二进制对数，则
+\[
+H(M)\approx 1.700979,\qquad
+H(S)\approx 2.989758,\qquad
+I(S;M)\approx 0.812300\ \text{bits}.
+\]
+进一步，把单比特 $p_x,p_y$ 与碰撞指示 $C:=\ind_{\{m=11\}}$ 作为函数变量，则
+\[
+I(S;p_x)=I(S;p_y)\approx 0.311298,\qquad
+I(S;C)\approx 0.282063\ \text{bits}.
+\]
+\end{remark}
+
+\begin{proposition}[最优在线判别率（MAP）]\label{prop:real-input-40-map-accuracies}
+给定同步态 $s$ 进行 MAP 判决（取使 $\mathbb{P}(\cdot\mid s)$ 最大者），则最优可达准确率为
+\[
+\mathrm{Acc}^*(M\leftarrow S)=\sum_s \mathbb{P}(s)\max_m \mathbb{P}(m\mid s)=\frac{3\sqrt5}{10}.
+\]
+对若干自然的二值函数亦可得到简洁闭式：
+\[
+\mathrm{Acc}^*(p_x\leftarrow S)=\mathrm{Acc}^*(p_y\leftarrow S)=\frac45,\qquad
+\mathrm{Acc}^*(C\leftarrow S)=\frac{17+\sqrt5}{20},\qquad
+\mathrm{Acc}^*(p_x\oplus p_y\leftarrow S)=\frac{37-9\sqrt5}{20}.
+\]
+\end{proposition}
+
+\begin{remark}[两条“动力学味道”的直接推论]\label{rem:real-input-40-two-dyn-inferences}
+(i) 碰撞事件的一半发生在同步态 $\pm12$：
+\[
+\mathbb{P}(0\text{-}12)+\mathbb{P}(1\text{-}12)=\frac{3-\sqrt5}{20}=\frac12\,\mathbb{P}(11).
+\]
+(ii) 同步态对记忆位的硬判定占比恰为 $3/10$（见注 \ref{rem:real-input-40-bayes-decode}）。
+\end{remark}
+
 \paragraph{零特征值的幂零指数：延迟与同步复位词的线性代数阴影}
 行列式因子化只给出 $0$ 特征值的代数重数；其 Jordan 块大小（幂零指数）需要通过 $\dim\ker(A^k)$ 链来识别。
 对本核而言，这一“不可对角化性”完全聚焦在 $0$ 上，并与在线同步的延迟/复位结构直接对应。
