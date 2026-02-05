@@ -31,6 +31,7 @@ from typing import List
 import sympy as sp
 
 from common_paths import export_dir, generated_dir
+from common_phi_fold import PHI
 
 
 @dataclass(frozen=True)
@@ -82,16 +83,19 @@ def write_table_tex(path: Path, rows: List[dict]) -> None:
         "$S_k(m)=\\sum_x d_m(x)^k$ (Fold$_m$ fibers), $k=2,\\dots,8$. "
         "Here $r_k$ is the dominant root of the recurrence characteristic polynomial, "
         "and $h_k=\\log(2^k/r_k)$ is the corresponding (unnormalized) R\\'enyi fingerprint rate. "
-        "We also report the normalized rate $h_k^{\\mathrm R}=h_k/(k-1)$.}"
+        "We also report the normalized rate $h_k^{\\mathrm R}=h_k/(k-1)$ "
+        "and its endpoint gap $h_k^{\\mathrm R}-\\log(2/\\sqrt{\\varphi})$.}"
     )
     lines.append("\\label{tab:fold_collision_moment_spectrum_k2_8}")
-    lines.append("\\begin{tabular}{r r r r r r}")
+    lines.append("\\begin{tabular}{r r r r r r r}")
     lines.append("\\toprule")
-    lines.append("$k$ & order $d$ & starts at $m\\ge$ & $r_k$ & $h_k$ & $h_k^{\\mathrm R}$\\\\")
+    lines.append(
+        "$k$ & order $d$ & starts at $m\\ge$ & $r_k$ & $h_k$ & $h_k^{\\mathrm R}$ & gap\\\\"
+    )
     lines.append("\\midrule")
     for r in rows:
         lines.append(
-            f"{r['k']} & {r['order']} & {r['m0']} & {r['r_k']:.12f} & {r['h_k']:.12f} & {r['h_k_R']:.12f}\\\\"
+            f"{r['k']} & {r['order']} & {r['m0']} & {r['r_k']:.12f} & {r['h_k']:.12f} & {r['h_k_R']:.12f} & {r['gap_to_endpoint']:.12f}\\\\"
         )
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
@@ -115,11 +119,13 @@ def main() -> None:
     )
     args = parser.parse_args()
 
+    endpoint = math.log(2.0 / math.sqrt(PHI))
     rows: List[dict] = []
     for rec in RECS:
         rk = dominant_root(rec.coeffs, dps=int(args.dps))
         hk = math.log((2.0**rec.k) / rk)
         hkR = hk / (rec.k - 1)
+        gap = hkR - endpoint
         rows.append(
             {
                 "k": rec.k,
@@ -129,12 +135,17 @@ def main() -> None:
                 "r_k": rk,
                 "h_k": hk,
                 "h_k_R": hkR,
+                "endpoint": endpoint,
+                "gap_to_endpoint": gap,
             }
         )
 
     jout = Path(args.json_out)
     jout.parent.mkdir(parents=True, exist_ok=True)
-    jout.write_text(json.dumps({"rows": rows}, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    jout.write_text(
+        json.dumps({"endpoint": endpoint, "rows": rows}, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
     print(f"[moment-spectrum] wrote {jout}", flush=True)
 
     tout = Path(args.tex_out)

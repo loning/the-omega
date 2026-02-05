@@ -390,21 +390,28 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="pom_holonomy_cocycle_audit",
+            script="exp_pom_holonomy_cocycle_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_holonomy_cocycle_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_tail_budget_gamma_cert",
+            script="exp_fold_tail_budget_gamma_cert.py",
+            args=["--m", "24", "--eps-list", "1e-6,1e-9", "--q-max", "17"],
+            expected_outputs=[
+                "artifacts/export/fold_tail_budget_gamma_cert.json",
+            ],
+        ),
+        Step(
             name="fold_collision_moment_hankel_rank",
             script="exp_fold_collision_moment_hankel_rank.py",
             args=[],
             expected_outputs=[
                 "artifacts/export/fold_collision_moment_hankel_rank.json",
                 "sections/generated/tab_fold_collision_moment_hankel_rank.tex",
-            ],
-        ),
-        Step(
-            name="real_input_40_local_bigeometry_invariants",
-            script="exp_real_input_40_local_bigeometry_invariants.py",
-            args=[],
-            expected_outputs=[
-                "artifacts/export/real_input_40_local_bigeometry_invariants.json",
-                "sections/generated/tab_real_input_40_local_bigeometry_invariants.tex",
             ],
         ),
         Step(
@@ -950,6 +957,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/sync_kernel_real_input_40_logM_theta_taylor.json",
                 "sections/generated/tab_real_input_40_logM_theta_taylor.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_local_bigeometry_invariants",
+            script="exp_real_input_40_local_bigeometry_invariants.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_local_bigeometry_invariants.json",
+                "sections/generated/tab_real_input_40_local_bigeometry_invariants.tex",
             ],
         ),
         Step(
