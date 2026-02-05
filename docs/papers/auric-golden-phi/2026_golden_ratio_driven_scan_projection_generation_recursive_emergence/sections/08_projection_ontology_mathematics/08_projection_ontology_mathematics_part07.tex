@@ -478,6 +478,109 @@ $$
 而 \(\gamma_m(X)>\gamma_m(\varepsilon)\) 的概率按定义 \ref{def:pom-gamma-quantile} 不超过 \(\varepsilon\)。证毕。
 \end{proof}
 
+\begin{corollary}[\texorpdfstring{$q$}{q}-参数化配额上界：失败概率—寄存器指数预算族]\label{cor:pom-prime-register-q-quota-family}
+对任意整数 \(q\ge 2\) 与任意阈值 \(B>0\)，有严格尾界
+\[
+\boxed{\;
+\mathbb{P}_{\pi_m}\!\bigl(d_m(X)\ge B\bigr)
+\ \le\
+\frac{S_q(m)}{2^m}\cdot B^{-(q-1)}\; }.
+\]
+特别地，若写 \(B=e^{m\gamma}\)，则
+\[
+\mathbb{P}_{\pi_m}\!\bigl(d_m(X)\ge e^{m\gamma}\bigr)
+\ \le\
+\exp\!\bigl(-(q-1)m\gamma\bigr)\cdot \frac{S_q(m)}{2^m},
+\]
+并且在 \(S_q(m)=\Theta(r_q^m)\) 的口径下可读出指数尺度“相图”
+\[
+\mathbb{P}_{\pi_m}\!\bigl(d_m(X)\ge e^{m\gamma}\bigr)
+\ \lesssim\
+\exp\!\Bigl(m\bigl(\log r_q-\log 2-(q-1)\gamma\bigr)\Bigr).
+\]
+因此若希望 \(\mathbb{P}_{\pi_m}(d_m(X)\ge B)\le \varepsilon\)，一个完全显式的足够条件是取
+\[
+\boxed{\;
+B\ \ge\ B_{m,q}^{\mathrm{fin}}(\varepsilon)
+::=\varepsilon^{-1/(q-1)}\left(\frac{S_q(m)}{2^m}\right)^{\!1/(q-1)}\; }.
+\]
+在已核验的指数口径 \(S_q(m)=\Theta(r_q^m)\) 下，这等价于指数尺度闭式预算族
+\[
+\boxed{\;
+B\ \gtrsim\ B_m^{(q)}(\varepsilon)
+::=\varepsilon^{-1/(q-1)}\left(\frac{r_q}{2}\right)^{\!m/(q-1)}\; }.
+\]
+将其代入 CRT 侧条件（定义 \ref{def:pom-order-elimination-rewrite} 的 \(P>2B\)），得到一个可审计的 prime-register 配额族：
+\[
+\boxed{\;
+P_m\ >\ 2\,B_{m,q}^{\mathrm{fin}}(\varepsilon)
+\ \Longrightarrow\
+\mathbb{P}(\text{CRT 标签超界导致不可唯一重建})\ \le\ \varepsilon\; }.
+\]
+记
+\[
+\beta_{m,q}^{\mathrm{fin}}
+:=\frac{1}{q-1}\left(\frac{1}{m}\log S_q(m)-\log 2\right),
+\qquad
+\beta_q:=\frac{\log r_q-\log 2}{q-1},
+\]
+则
+\(
+\log B_{m,q}^{\mathrm{fin}}(\varepsilon)
+=m\,\beta_{m,q}^{\mathrm{fin}}+\frac{1}{q-1}\log(1/\varepsilon)
+\)
+且在 \(r_q\) 口径下
+\(
+\log B_m^{(q)}(\varepsilon)=m\,\beta_q+\frac{1}{q-1}\log(1/\varepsilon)
+\)。
+\end{corollary}
+\begin{proof}
+令 \(\gamma=(1/m)\log B\)。则事件 \(\{d_m(X)\ge B\}\) 等价于 \(\{\gamma_m(X)\ge \gamma\}\)。
+将 \(\gamma=(1/m)\log B\) 代入命题 \ref{prop:pom-quantile-chernoff} 得
+\[
+\mathbb{P}_{\pi_m}\!\bigl(d_m(X)\ge B\bigr)
+=\mathbb{P}_{\pi_m}\!\bigl(\gamma_m(X)\ge \tfrac{1}{m}\log B\bigr)
+\le
+\exp\!\bigl(-(q-1)\log B\bigr)\cdot \frac{S_q(m)}{2^m}
+=\frac{S_q(m)}{2^m}\,B^{-(q-1)}.
+\]
+令右端 \(\le \varepsilon\) 并解出 \(B\) 得 \(B_{m,q}^{\mathrm{fin}}(\varepsilon)\)。
+最后一段“\(P_m>2B_{m,q}^{\mathrm{fin}}(\varepsilon)\Rightarrow\) 失败概率 \(\le\varepsilon\)”由推论 \ref{cor:pom-prime-register-quantile-budget} 对任意 \(B\) 的单调性立得：当 \(P_m>2B\) 时仅在事件 \(\{d_m(X)>B\}\) 上可能发生超界失败。
+证毕。
+\end{proof}
+
+\begin{remark}[ISA 级常数：\texorpdfstring{$\beta_q$}{betaq} 与端点闭环]\label{rem:pom-betaq-isa}
+推论 \ref{cor:pom-prime-register-q-quota-family} 把 prime-register 的“配额”压缩为一条可直接代入成本模型的指数律：
+\[
+\log P_m\ \gtrsim\ \log 2\ +\ m\,\beta_q\ +\ \frac{1}{q-1}\log(1/\varepsilon),
+\qquad
+\beta_q=\frac{\log r_q-\log 2}{q-1}.
+\]
+因此每个整数 \(q\ge 2\) 都诱导一个可审计的“寄存器指数预算斜率” \(\beta_q\)（表 \ref{tab:fold_collision_renyi_spectrum} 给出 \(q\le 17\) 的精确 \(r_q\)）。
+例如最便宜的二阶证书 \(q=2\) 给出
+\[
+B_m^{(2)}(\varepsilon)=\varepsilon^{-1}\left(\frac{r_2}{2}\right)^m,
+\qquad
+\beta_2=\log(r_2/2),
+\qquad
+r_2=2.481194304092,
+\]
+从而得到一条“极硬”的闭式空间预算。
+\par
+更重要的是：端点常数把“矩/时间轴”的 Rényi 指纹与“空间/最坏纤维”锁到同一事实。
+由命题 \ref{prop:pom-rq-qinfty-endpoint}（等价于最大纤维闭式定理 \ref{thm:pom-max-fiber} 与端点推论 \ref{cor:pom-max-fiber-rate-endpoint}）有
+\[
+\lim_{q\to\infty}\frac{1}{q}\log r_q=\log\sqrt{\varphi},
+\qquad\text{从而}\qquad
+\lim_{q\to\infty}\beta_q=\log\sqrt{\varphi}.
+\]
+而 \(D_m=\max_x d_m(x)\) 的闭式/枚举表（表 \ref{tab:fold_max_fiber_achievers_phase}）显示
+\(
+m^{-1}\log D_m
+\)
+在数值上快速贴近同一常数 \(\log\sqrt{\varphi}\)，使“高阶 Rényi 端点”与“最坏纤维指数”在本文体系内形成闭环对齐。
+\end{remark}
+
 \begin{remark}[可计算形式：用已核验的 \texorpdfstring{$r_q$}{rq} 给出显式预算上界]\label{rem:pom-quantile-budget-computable}
 在已核验范围内 \(S_q(m)=\Theta(r_q^m)\)（表 \ref{tab:fold_collision_moment_recursions}），从命题 \ref{prop:pom-quantile-chernoff} 直接得到
 $$
@@ -516,6 +619,20 @@ B^{\mathrm{cert}}_m(\varepsilon):=\exp\!\bigl(m\,\gamma^{\mathrm{cert}}_m(\varep
 其正确性由命题 \ref{prop:pom-quantile-chernoff} 直接保证（无需渐近假设）。
 脚本模块 \texttt{scripts/common\_tail\_budget.py} 实现了上述两种 \(\gamma\)-证书的扫描最优化；
 脚本 \texttt{scripts/exp\_fold\_tail\_budget\_gamma\_cert.py} 进一步用 residue-DP 直方图对 \(\pi_m\) 下的真实尾部质量做核验并输出 JSON 证书。
+\par
+\medskip\noindent\textbf{单峰选择（为何最优 \(q^\star\) 可审计地“可搜索”）}
+由命题 \ref{prop:pom-pressure-convexity}，\(q\mapsto \log r_q\) 在整数点离散凸。
+于是对固定的 \((m,\varepsilon)\)，证书目标
+\[
+q\ \longmapsto\ \gamma^{(q)}_{m}(\varepsilon)
+:=\frac{\log r_q-\log 2+\frac{1}{m}\log(1/\varepsilon)}{q-1}
+\]
+是一个离散准凸函数：对任意阈值 \(\Gamma\)，不等式 \(\gamma^{(q)}_m(\varepsilon)\le \Gamma\) 等价于
+\(
+\log r_q \le (q-1)\Gamma+\log 2-\frac{1}{m}\log(1/\varepsilon)
+\)，
+右端是 \(q\) 的仿射函数；而“离散凸函数 \(-\) 仿射函数”的子水平集在整数上必为区间。
+因此最优 \(q^\star\) 的集合是一个（通常很短的）连续整数区间，既可全表扫描，也可用单峰搜索在 \(O(\log q_{\max})\) 次评估中定位。
 \end{remark}
 
 \begin{proposition}[Quantile-CRT 编译律：\texorpdfstring{$\varepsilon$}{eps}-sound 的序投影消元]\label{prop:pom-rcrt-epsilon}
@@ -561,6 +678,52 @@ P_{\le}= \mathrm{CRT}_{\{p_i\}}\circ P_{\chi,\{p_i\}}
 因此编译器可以把 \((u,q,\varepsilon)\) 作为三旋钮：\(u\) 主控时间尺度、\(q\) 主控尾部放大与空间配额、\(\varepsilon\) 主控风险预算；并用命题 \ref{prop:pom-eps-sound-compose} 的加法律对多次近似消序门的总体失败概率做账。
 二维压力曲面 \(P(q,u)\) 提供把两条路径放入同一“谱相图”的统一坐标（\S\ref{subsec:pom-pressure-surface-qu}）。
 \end{remark}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\caption{空间—时间对偶图：同一 prime-register 容量变量在两类读出任务上的闭式预算。第一行给出“纤维标签唯一重建”的空间配额（由碰撞矩谱 \(\{r_q\}\) 控制）；第二行给出“cylinder 同余等分布”的时间预算（由 profinite Chebotarev 的最坏扭曲谱隙 \(\Lambda_m/\lambda_m\) 控制；见推论 \ref{cor:pom-profinite-cylinder-effective-n} 与反解推论 \ref{cor:pom-profinite-cylinder-capacity}）。}
+\label{tab:pom-space-time-duality-prime-register}
+\begin{tabular}{p{0.25\linewidth} p{0.60\linewidth} p{0.12\linewidth}}
+\toprule
+读出任务 & 足够预算（闭式不等式族） & 指纹输入\\
+\midrule
+Quantile-CRT（纤维标签超界失败 \(\le\varepsilon\)） &
+\(
+P_m>2B_m^{(q)}(\varepsilon),
+\ \ 
+B_m^{(q)}(\varepsilon)=\varepsilon^{-1/(q-1)}(r_q/2)^{m/(q-1)}
+\)
+（推论 \ref{cor:pom-prime-register-q-quota-family}；有限尺度版用 \(S_q(m)\) 得 \(B_{m,q}^{\mathrm{fin}}\)） &
+\(\{r_q\}\)\\
+
+Chebotarev cylinder（相对误差 \(\le\delta\)） &
+若 \(\Lambda_m\le \lambda_m^{1/2-\varepsilon_{\mathrm{gap}}}\)，则
+\(
+n\gtrsim \log(|G_m|/\delta)/((1/2+\varepsilon_{\mathrm{gap}})\log\lambda_m)
+\)
+（推论 \ref{cor:pom-profinite-cylinder-effective-n}），等价地
+\(
+\log|G_m|\lesssim (1/2+\varepsilon_{\mathrm{gap}})n\log\lambda_m-\log(1/\delta)
+\)
+（推论 \ref{cor:pom-profinite-cylinder-capacity}） &
+\(\Lambda_m/\lambda_m\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{拼接为同一“空间—时间直线带”}
+在 prime-register 轴取 \(G_m=\ZZ/P_m\ZZ\)（因此 \(|G_m|=P_m\)）。
+则表 \ref{tab:pom-space-time-duality-prime-register} 的两行预算通过同一容量变量 \(\log P_m\) 直接拼接：空间侧给出
+\(
+\log P_m\gtrsim \log 2+m\beta_q+\frac{1}{q-1}\log(1/\varepsilon)
+\)
+（推论 \ref{cor:pom-prime-register-q-quota-family}），时间侧给出
+\(
+\log P_m\lesssim (1/2+\varepsilon_{\mathrm{gap}})n\log\lambda_m-\log(1/\delta)
+\)；
+从而在 \((n,\log P_m)\) 平面形成一条可审计的可行带：同一寄存器同时被 \(\{r_q\}\) 与 \(\Lambda_m/\lambda_m\) 这两类谱指纹约束。
 
 \begin{remark}[预算指数的三项分解：几何必然损失 + R\'enyi 非均匀惩罚 + 置信项]\label{rem:pom-quantile-budget-three-term}
 本小节的 Chernoff 证书既可看作“谱/矩侧 \(\Rightarrow\) prime-register 空间预算”的显式变换，也可进一步拆成三个\emph{可计算}项，从而把“空间/时间”权衡量化为一条加法律。
