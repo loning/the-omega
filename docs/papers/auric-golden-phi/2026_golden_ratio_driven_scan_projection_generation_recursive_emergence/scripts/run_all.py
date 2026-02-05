@@ -1000,6 +1000,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_collision_branch_radius",
+            script="exp_real_input_40_collision_branch_radius.py",
+            args=["--dps", "80"],
+            expected_outputs=[
+                "artifacts/export/real_input_40_collision_branch_radius.json",
+                "sections/generated/eq_real_input_40_collision_branch_radius.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_A_compare",
             script="exp_sync_kernel_A_compare.py",
             args=[],
