@@ -343,6 +343,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_kernel_A4_edge_weight_threshold",
+            script="exp_collision_kernel_A4_edge_weight_threshold.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_edge_weight_threshold.json",
+                "sections/generated/eq_collision_kernel_A4_edge_weight_threshold.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_renyi_spectrum",
             script="exp_fold_collision_renyi_spectrum.py",
             args=[],
@@ -830,6 +839,15 @@ def build_steps() -> List[Step]:
                 "artifacts/export/sync_kernel_rate_curve_resultant.json",
                 "sections/generated/tab_sync_kernel_rate_curve_resultant_degree.tex",
                 "sections/generated/eq_sync_kernel_rate_curve_resultant_structure.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_rate_curve_duality_reduction",
+            script="exp_sync_kernel_rate_curve_duality_reduction.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_rate_curve_duality_reduction.json",
+                "sections/generated/eq_sync_kernel_rate_curve_duality_reduction.tex",
             ],
         ),
         Step(
