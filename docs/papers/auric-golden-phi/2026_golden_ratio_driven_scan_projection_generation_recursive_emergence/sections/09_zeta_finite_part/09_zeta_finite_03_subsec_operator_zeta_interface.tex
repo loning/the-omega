@@ -117,6 +117,62 @@ T @>\mathrm{TrSeq}>> (a_n(T))_{n\ge 1} @>\mathrm{Mob}>> (p_n(T))_{n\ge 1} @>\mat
 其中 \(\mathrm{TrSeq}(T)=(a_n(T))\)、\(\mathrm{Mob}(a)=p\) 为 Möbius 反演，而 \(\mathrm{ZetaDet}(T)=\det(I-zT)^{-1}\)。
 \end{remark}
 
+\begin{remark}[可验桥包：把信息账本/纤维反射子 \texorpdfstring{$K_m$}{Km} 嵌入交换图]\label{rem:reflected-witt-euler-bridge}
+本节的 Witt/Euler 桥包（注 \ref{rem:zetaK-commuting-diagram}）只使用了一个输入对象：有限维线性算子（有限核/有限矩阵）\(T\)。
+另一方面，第 \ref{subsec:pom-information-ledger} 节给出一个\textbf{更硬、可审计}的“读出—提升”结构：
+推前（读出）\(P_m=(\Fold_m)_*\)、纤维均匀提升（最大熵提升）\(Q_m\)，以及由此生成的纤维反射子 \(K_m:=Q_m\circ P_m\)
+（定理 \ref{thm:pom-kl-ledger}、定理 \ref{thm:pom-fiber-reflector}、推论 \ref{cor:pom-second-law-Km}）。
+（注意：此处的 \(K_m\) 是分辨率 \(m\) 的纤维反射子，不要与本节中用于标记“核/图”的下标 \(K\)（如 \(\Gamma_K,M_K(u)\)）混淆。）
+它把任意微观分布的熵严格分解为
+\[
+H(\mu)=H(P_m\mu)+\kappa_m(P_m\mu)-D_{\mathrm{KL}}(\mu\|K_m\mu),
+\qquad
+H(K_m\mu)-H(\mu)=D_{\mathrm{KL}}(\mu\|K_m\mu)\ge 0,
+\]
+其中 \(\kappa_m(\pi)=\mathbb{E}_{\pi}[\log d_m(X)]\)（定义 \ref{def:pom-kappa}）是窗口层“纤维体积”缺陷，而残差 KL 则是“纤维内非均匀”的不可约信息负担。
+从范畴化视角，\(K_m\) 正是一个分辨率 \(m\) 的\emph{反射子（reflector）}：它把任意微观分布反射到“每条纤维上条件均匀”的可读出子类，
+其幂等性与固定点刻画由定理 \ref{thm:pom-fiber-reflector} 给出，而“熵增 \(=\) 残差 KL”的度量版本由推论 \ref{cor:pom-second-law-Km} 给出。
+
+\paragraph{把 \(K_m\) 插入 End。}
+在有限维口径下，可将 \(P_m,Q_m,K_m\) 视为在向量空间 \(\CC^{\Omega_m}\)、\(\CC^{X_m}\) 上的线性算子（对概率单纯形的作用只是其限制）。
+对任意线性算子 \(T:\CC^{\Omega_m}\to\CC^{\Omega_m}\)，定义其分辨率 \(m\) 的\emph{可审计压缩}（稳定层算子）
+\[
+\overline T_m\ :=\ P_m\circ T\circ Q_m:\CC^{X_m}\to\CC^{X_m},
+\]
+并记该压缩算子为 \(\mathrm{Ref}_m(T):=\overline T_m\)。
+并定义对应的\emph{反射后可见部分}
+\[
+T_m^{\mathrm{aud}}\ :=\ Q_m\circ \overline T_m\circ P_m
+\ =\ (Q_mP_m)\,T\,(Q_mP_m)
+\ =\ K_m\,T\,K_m:\CC^{\Omega_m}\to\CC^{\Omega_m}.
+\]
+由 \(P_mQ_m=\mathrm{id}\)（命题 \ref{prop:fold-pushforward-lift}）可知：
+\begin{itemize}
+  \item \(T_m^{\mathrm{aud}}\) 的像与不变子空间包含于 \(\mathrm{Im}(K_m)=Q_m(\CC^{X_m})\)（亦即“纤维条件均匀”可读出子空间）；
+  \item \(\overline T_m\) 与 \(T_m^{\mathrm{aud}}\) 在该子空间上共轭，因此二者的\textbf{全部非零谱}一致，从而对任意 \(n\ge 1\) 有严格恒等式
+  \[
+  \boxed{\ \Tr\!\bigl((T_m^{\mathrm{aud}})^n\bigr)=\Tr\!\bigl((\overline T_m)^n\bigr)\ }.
+  \]
+\end{itemize}
+因此，在“迹$\to$primitive$\to$Euler”链条中，把输入对象从 \(T\) 替换为 \(\overline T_m\)（或等价的 \(T_m^{\mathrm{aud}}\)）不会改变任何迹序列/primitive 分层谱/Euler 乘积输出；这正是把“空间/时间对偶”的可审计反射结构\emph{嵌入}注 \ref{rem:zetaK-commuting-diagram} 的方式。
+
+\paragraph{四方交换的最小图示。}
+把上述“反射压缩 + Witt/Euler 严格交换 + 证书化谱界”压成一张图，可写为
+\[
+\begin{CD}
+T @>\mathrm{Ref}_m>> \overline T_m @>\mathrm{TrSeq}>> (a_n(\overline T_m))_{n\ge 1} @>\mathrm{Mob}>> (p_n(\overline T_m))_{n\ge 1} @>\mathrm{Euler}>> \zeta_{\overline T_m}(z)\\
+@. @V\mathrm{Cert}_rVV @. @. @. @.\\
+@. \{\,H\succ 0:\ \overline T_m^\ast H\,\overline T_m\prec r^2 H\,\} @. @. @. @.
+\end{CD}
+\]
+其中上行是注 \ref{rem:zetaK-commuting-diagram} 的严格交换桥包，而下行的 \(\mathrm{Cert}_r\) 是谱半径界的 Lyapunov 可行性证书（命题 \ref{prop:lyapunov-spectral-radius-certificate}）。
+
+\paragraph{可审计谱证书层。}
+当 prime-like/RH-like 判据需要验证某个谱半径界（例如对带势核 \(M_K(u)\) 的扭曲分量）时，
+附录 \ref{app:op-algebra} 的 Lyapunov 证书（命题 \ref{prop:lyapunov-spectral-radius-certificate}）把
+\(\rho(A)<r\) 等价改写为 LMI 可行性 \(\exists\,H\succ 0:\ A^\ast H A\prec r^2H\)，从而允许把“谱界”以一份矩阵 \(H\) 的形式作为\textbf{可复算审计证书}随结果输出（见注 \ref{rem:lyapunov-sdp}）。
+\end{remark}
+
 \begin{remark}[Fourier--Witt 双幽灵桥（FW-Bridge）]\label{rem:fw-bridge}
 注 \ref{rem:zetaK-commuting-diagram} 给出时间/谱侧的“迹 ghost \(\to\) primitive \(\to\) Euler”严格交换桥包（Witt 侧）。
 另一方面，Fold 支路在有限循环环 \(G_m=\ZZ/F_{m+2}\ZZ\) 上还有一条完全独立、同样严格交换的“卷积 \(\leftrightarrow\) 点乘 + Parseval 能量”桥包（Fourier 侧；见注 \ref{rem:fold-fourier-parseval-bridge}）。
