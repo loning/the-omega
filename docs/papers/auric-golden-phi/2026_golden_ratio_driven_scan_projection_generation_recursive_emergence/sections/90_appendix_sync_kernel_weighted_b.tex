@@ -398,27 +398,74 @@ R(\alpha,u)\in\ZZ[\alpha,u]
 该 \(R\) 除了给出 Perron 率曲线 \(u\mapsto \alpha(u)\) 的代数闭包外，还强制携带三类结构性指纹：
 \begin{itemize}
   \item \textbf{（对偶自对称）} \((u,\alpha)\mapsto(1/u,1-\alpha)\) 在代数曲线层面闭合；
-  \item \textbf{（端点侧翼簇）} 在 \(u\to 0\) 与 \(u\to\infty\) 端分别强制出现 \(\alpha\to \tfrac14\) 与 \(\alpha\to \tfrac34\) 的四重簇；
+  \item \textbf{（端点与侧翼退化簇）} 在 \(u\to 0\) 与 \(u\to\infty\) 端，既有物理端点 \(\alpha\to0\) 与 \(\alpha\to1\)（Perron 分支，见推论 \ref{cor:alpha-endpoint-series}），也强制携带来自 \(\lambda=0\) 退化谱分支的侧翼四重簇：\((u,\alpha)\to(0,\tfrac14)\) 与 \((u,\alpha)\to(\infty,\tfrac34)\)；
   \item \textbf{（中心聚合）} 在 \(\alpha=\tfrac12\) 截面上出现 \((u-1)^6\) 的六重聚合，其解析意义是：在 \(u=1\) 处全部 \(6\) 条非零谱分支同时满足 \(\alpha=1/2\)（见定理 \ref{thm:sync-spectral-tangent-lock}）。
 \end{itemize}
 \par
-\noindent\textbf{端点簇的真实分岔指数为 \(1/2\)。}
-端点“簇的阶数”不仅是 \(r_0\) 里出现 \((4\alpha-1)^4\) 这一代数事实，还决定了 Perron 分支靠近端点的\emph{速度}与相应的求根\emph{条件数}。
-由证书中
+\noindent\textbf{侧翼端点簇的 Puiseux 机制：指数不够，必须给出 jet 与统一化变量。}
+令 \(\alpha=\tfrac14+\delta\)。由结构证书中
 \(
 r_0(\alpha)=\alpha(\alpha-1)(4\alpha-1)^4
 \)、
 \(
-r_1(\alpha)=(4\alpha-1)^2(\cdots)
-\)，且括号多项式在 \(\alpha=\tfrac14\) 处非零，可知在 \(u\to 0\) 的 Perron 率曲线分支上，主平衡满足 \((\alpha-\tfrac14)^4\) 与 \(u(\alpha-\tfrac14)^2\) 同阶，从而存在 Puiseux 型端点标度
+r_1(\alpha)=(4\alpha-1)^2(104\alpha^4-172\alpha^3+50\alpha^2-12\alpha+3)
+\)，且括号多项式在 \(\alpha=\tfrac14\) 处取值 \(\tfrac{27}{32}\neq0\)，可知侧翼簇满足 Puiseux 指数
 \[
-\boxed{\ \alpha(u)-\tfrac14=\Theta(u^{1/2})\quad(u\to0)\ }.
+\boxed{\ \alpha-\tfrac14=\Theta(u^{1/2})\quad\bigl((u,\alpha)\to(0,\tfrac14)\bigr)\ }.
 \]
-由对偶自对称 \((u,\alpha)\mapsto(1/u,1-\alpha)\) 立刻得到对称端点
+但\emph{仅有指数并不足以稳定求根/延拓}：在本核上，侧翼端点的最低阶 jet 发生了完全平方退化，从而精确前导常数与正确统一化变量都被强制锁定。
+\par
+\noindent\textbf{（端点 jet 完全平方，给出精确常数 \(\boldsymbol{K_{\mathrm{end}}}\)）}
+把 \(R(\alpha,u)=\sum_{j=0}^{22}r_j(\alpha)u^j\) 视为 \(u\) 的多项式，并在 \((u,\delta)\to(0,0)\) 展开。
+由 \(r_0,r_1\) 的显式形状再加上系数 \(r_2(\tfrac14)=-\tfrac{243}{256}\)（同一脚本符号消元后可直接提取并做有理数审计），得到
 \[
-\boxed{\ \tfrac34-\alpha(u)=\Theta(u^{-1/2})\quad(u\to\infty)\ }.
+R\!\left(\tfrac14+\delta,u\right)
+=-48\,\delta^4+\frac{27}{2}\,\delta^2u-\frac{243}{256}\,u^2
++O(\delta^5)+O(u\delta^3)+O(u^2\delta)+O(u^3).
 \]
-该 \(1/2\) 指数比“端点四重簇”的纯代数口径更直接决定端点附近的误差放大与自适应步长选取。
+其中二次型部分可因式分解为
+\[
+-48\,\delta^4+\frac{27}{2}\,\delta^2u-\frac{243}{256}\,u^2
+=-\frac{3}{256}\,\bigl(64\delta^2-9u\bigr)^2.
+\]
+因此侧翼端点簇上所有局部分支都满足
+\[
+\boxed{\ \delta^2=\frac{9}{64}u+O(u^{5/4})\ },
+\qquad
+\boxed{\ \alpha(u)=\frac14\pm K_{\mathrm{end}}\sqrt{u}+O(u^{3/4}),\quad K_{\mathrm{end}}:=\frac{3}{8}\ }.
+\]
+这条“端点常数”是零成本强审计项：若未来重新生成 \(R\) 或更换参数族，端点处 \(r_0,r_1\) 的形状先锁定指数 \(1/2\)，再由 \(r_2(\tfrac14)\) 的有理值检验 jet 是否仍为完全平方，从而直接否决大量潜在的消元/实现错误。
+\par
+\noindent\textbf{（四分支与统一化变量必须取 \(u^{1/4}\)）}
+由于最低阶项为完全平方，侧翼端点的\emph{正确统一化变量}不是 \(t=\sqrt{u}\) 而是
+\[
+\boxed{\ u=s^4,\qquad s=u^{1/4}\ }.
+\]
+在该变量下，每一张局部分支 \(\alpha(s)\) 都是解析的；例如（取一条实分支）有
+\[
+\boxed{\ \alpha(s)=\frac14+\frac38 s^2+\frac{3}{16}s^3-\frac54 s^4+\frac{115}{64}s^5+O(s^6)\ }.
+\]
+于是局部上形成四页覆盖：对同一 \(u>0\)，四个取值 \(s\in\{\pm u^{1/4},\ \pm i\,u^{1/4}\}\) 给出两条实分支与一对共轭复分支。
+这对数值求根是致命信息：若直接在 \((\alpha,u)\) 平面用 Newton 迭代，端点簇附近的误差步长很容易把迭代抛入复分支；而以 \(s=u^{1/4}\) 做 continuation/homotopy 则可把四张分支稳定分离，并把端点从“几何分歧点”统一化为普通解析展开。
+\par
+\noindent\textbf{（相对条件数恒等律）}
+尽管 \(\alpha'(u)\sim \pm \tfrac{K_{\mathrm{end}}}{2}\,u^{-1/2}\) 在 \(u\to0\) 发散，但相对条件数
+\[
+\kappa_\alpha(u):=\frac{u\,|\alpha'(u)|}{|\alpha-\tfrac14|}
+\]
+沿任意侧翼端点分支都有
+\[
+\boxed{\ \kappa_\alpha(u)\to\frac12\quad\bigl((u,\alpha)\to(0,\tfrac14)\bigr)\ }.
+\]
+该极限说明端点的不稳定性来自“用 \(u\) 作为绝对步长参数”的尺度选择，而不是来自相对误差意义下的不可控放大。
+\par
+\noindent\textbf{（对偶端点 \(u\to\infty\) 的同系数强审计）}
+由对偶自对称 \((u,\alpha)\mapsto(1/u,1-\alpha)\) 可把上述一切端点结论无损搬运到 \((u,\alpha)\to(\infty,\tfrac34)\)：
+令 \(v=1/u\) 与 \(\alpha'=1-\alpha\)，则 \((\alpha',v)\to(\tfrac14,0)\) 给出
+\[
+\boxed{\ \alpha(u)=\frac34-\frac38\,u^{-1/2}\ \mp\ \frac{3}{16}\,u^{-3/4}\ +\ \frac54\,u^{-1}+O(u^{-5/4})\ }.
+\]
+因此在 \(u\to0\) 端 \(\alpha\) 必须以系数 \(K_{\mathrm{end}}=\tfrac38\) 以 \(\sqrt{u}\) 速度离开 \(\tfrac14\)，而在 \(u\to\infty\) 端必须以\emph{同一系数} \(K_{\mathrm{end}}\) 以 \(u^{-1/2}\) 速度离开 \(\tfrac34\)；这两端同时构成对 \(R\) 的“零成本、极强约束”审计对照。
 \par
 \noindent\textbf{中心聚合诱导的 \emph{order-6 singular inversion}。}
 由 \(R(\tfrac12,u)=-(u-1)^6Q(u)/64\) 且 \(Q(1)\neq0\) 可知 \(u=1\) 在 \(\alpha=\tfrac12\) 截面上为恰 \(6\) 重根，从而
