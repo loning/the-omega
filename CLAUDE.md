@@ -1,5 +1,6 @@
 **默认操作
-  - 直接修改默认工作论文, 如果不指定内容直接进行论文修改, 脚本要改run_all: docs/papers/auric-golden-phi/2026_golden_ratio_driven_scan_projection_generation_recursive_emergence
+  - 直接修改默认工作论文, 如果不指定内容直接进行论文修改,禁止口语, 学术化语言.
+  - 脚本要改run_all: docs/papers/auric-golden-phi/2026_golden_ratio_driven_scan_projection_generation_recursive_emergence
 
 **第一原则**
 - 持续思考, 同样问题, 反复正面、反面思考, 直到答案稳定, 如: 思考10次, 前两次结果升级, 后续结果逐渐稳定
