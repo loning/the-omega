@@ -14,7 +14,7 @@ and the number of maximizers equals #{r: c_m(r)=D_m}.
 This script computes, for m<=M:
   - D_m (closed form, for consistency check),
   - D_m (DP),
-  - kappa_m := #{ maximizers },
+  - kappa_m^{max} := #{ maximizers },
   - representative maximizer stable words (Zeckendorf/greedy map r -> x in X_m).
 
 Outputs:
@@ -113,7 +113,9 @@ class Row:
     D_closed: int
     D_dp: int
     D2_dp: int
+    D3_dp: int
     gap_ratio: float
+    gap3_ratio: float
     kappa: int
     residues: List[int]
     words: List[str]
@@ -127,14 +129,17 @@ def write_table_tex(path: Path, rows: List[Row]) -> None:
     lines.append("\\setlength{\\tabcolsep}{6pt}")
     lines.append(
         "\\caption{Max-fiber achiever multiplicity for Fold$_m$ via modular DP. "
-        "$\\kappa_m$ counts the number of stable types $x\\in X_m$ attaining $d_m(x)=D_m$. "
-        "Equivalently, $\\kappa_m=\\#\\{r\\in\\mathbb{Z}/F_{m+2}\\mathbb{Z}: c_m(r)=D_m\\}$ for residue counts $c_m$. "
+        "$\\kappa_m^{\\mathrm{max}}$ counts the number of stable types $x\\in X_m$ attaining $d_m(x)=D_m$. "
+        "Equivalently, $\\kappa_m^{\\mathrm{max}}=\\#\\{r\\in\\mathbb{Z}/F_{m+2}\\mathbb{Z}: c_m(r)=D_m\\}$ for residue counts $c_m$. "
+        "We also report the next two distinct spectrum levels $D_m^{(2)}$ and $D_m^{(3)}$. "
         "Representative maximizers are shown only for the largest $m$ in the window.}"
     )
     lines.append("\\label{tab:fold_max_fiber_achievers_phase}")
-    lines.append("\\begin{tabular}{r r r r r l}")
+    lines.append("\\begin{tabular}{r r r r r r l}")
     lines.append("\\toprule")
-    lines.append("$m$ & $D_m$ (closed) & $D_m$ (DP) & $D_m^{(2)}$ (DP) & $D_m^{(2)}/D_m$ & representative maximizers\\\\")
+    lines.append(
+        "$m$ & $D_m$ (closed) & $D_m$ (DP) & $D_m^{(2)}$ (DP) & $D_m^{(2)}/D_m$ & $D_m^{(3)}$ (DP) & representative maximizers\\\\"
+    )
     lines.append("\\midrule")
     m_max = max(r.m for r in rows) if rows else 0
     show_ms = {m_max, m_max - 1} if m_max >= 3 else {m_max}
@@ -143,7 +148,9 @@ def write_table_tex(path: Path, rows: List[Row]) -> None:
             ex = ",\\;".join([f"\\texttt{{{w}}}" for w in r.words])
         else:
             ex = "--"
-        lines.append(f"{r.m} & {r.D_closed} & {r.D_dp} & {r.D2_dp} & {r.gap_ratio:.6f} & {ex}\\\\")
+        lines.append(
+            f"{r.m} & {r.D_closed} & {r.D_dp} & {r.D2_dp} & {r.gap_ratio:.6f} & {r.D3_dp} & {ex}\\\\"
+        )
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
     lines.append("\\end{table}")
@@ -179,11 +186,13 @@ def main() -> None:
     for m in range(args.m_min, args.m_max + 1):
         c = counts_mod_fib(m, prog=prog)
         Ddp = int(np.max(c))
-        # Second maximum (may equal Ddp only if all equal; impossible for m>=2, but keep safe).
+        # Second/third maxima (distinct values).
         vals = np.unique(c)
         vals_sorted = np.sort(vals)
         D2 = int(vals_sorted[-2]) if len(vals_sorted) >= 2 else int(Ddp)
+        D3 = int(vals_sorted[-3]) if len(vals_sorted) >= 3 else int(D2)
         gap_ratio = float(D2 / Ddp) if Ddp > 0 else float("nan")
+        gap3_ratio = float(D3 / Ddp) if Ddp > 0 else float("nan")
         residues = np.flatnonzero(c == Ddp).astype(int).tolist()
         kappa = int(len(residues))
 
@@ -201,14 +210,16 @@ def main() -> None:
                 D_closed=Dc,
                 D_dp=Ddp,
                 D2_dp=D2,
+                D3_dp=D3,
                 gap_ratio=gap_ratio,
+                gap3_ratio=gap3_ratio,
                 kappa=kappa,
                 residues=residues_sorted,
                 words=words,
             )
         )
         print(
-            f"[fold-max-fiber] m={m} mod={len(c)} D={Ddp} D2={D2} gap={gap_ratio:.6f} kappa={kappa}",
+            f"[fold-max-fiber] m={m} mod={len(c)} D={Ddp} D2={D2} D3={D3} gap2={gap_ratio:.6f} gap3={gap3_ratio:.6f} kappa={kappa}",
             flush=True,
         )
 

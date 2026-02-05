@@ -131,12 +131,14 @@ def write_table_tex(path: Path, rows: List[Row]) -> None:
         "For each maximizer $x$ attaining $d_m(x)=D_m$, we report the pair "
         "$(d_{m,0}(x),d_{m,1}(x))$ coming from the unique one-bit decomposition "
         "$N(\\omega)=V_m(x)+b(\\omega)F_{m+2}$ (so $b\\in\\{0,1\\}$). "
-        "Pairs are listed with multiplicities among all achievers at that $m$.}"
+        "Pairs are listed with multiplicities among all achievers at that $m$. "
+        "The column $\\kappa_m^{\\mathrm{max}}$ is the achiever multiplicity "
+        "$\\#\\{x\\in X_m:\\ d_m(x)=D_m\\}$.}"
     )
     lines.append("\\label{tab:fold_max_fiber_achievers_bsplit}")
     lines.append("\\begin{tabular}{r r r l}")
     lines.append("\\toprule")
-    lines.append("$m$ & $D_m$ & $\\kappa_m$ & achiever split-pairs (mult.)\\\\")
+    lines.append("$m$ & $D_m$ & $\\kappa_m^{\\mathrm{max}}$ & achiever split-pairs (mult.)\\\\")
     lines.append("\\midrule")
     for r in rows:
         pieces = []

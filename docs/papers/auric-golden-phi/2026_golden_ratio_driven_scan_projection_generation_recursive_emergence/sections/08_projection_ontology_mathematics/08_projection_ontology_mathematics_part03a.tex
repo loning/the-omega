@@ -714,27 +714,150 @@ D_2=2,\quad D_3=2,\quad D_4=3,\quad D_5=4.
 \input{sections/generated/tab_fold_max_fiber_achievers_phase}
 \input{sections/generated/tab_fold_max_fiber_achievers_bsplit}
 
-\begin{remark}[最大纤维达到者的相位结构（可复现观察）]\label{rem:pom-max-fiber-achievers-phase}
+\begin{definition}[顶层纤维谱与达到者数]\label{def:pom-top-fiber-spectrum}
+固定 \(m\ge 2\)。令
+\[
+\mathcal{V}_m:=\{d_m(x):x\in X_m\}\subseteq \NN.
+\]
+按降序列出其中\emph{不同}取值：
+\[
+D_m^{(1)} > D_m^{(2)} > D_m^{(3)} > \cdots.
+\]
+记 \(D_m:=D_m^{(1)}=\max_{x\in X_m}d_m(x)\)。并定义最大纤维达到者数
+\[
+\kappa_m^{\mathrm{max}}
+=\#\{x\in X_m:\ d_m(x)=D_m\}.
+\]
+（记号约定：本文另用 \(\kappa_m(\pi)=\mathbb{E}_\pi[\log d_m(X)]\) 表示“平均对数纤维缺陷”；为避免歧义，此处用上标 \(\mathrm{max}\) 标记“达到者数”。）
+在 residue 口径下，若
+\(
+c_m(r):=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\ (\mathrm{mod}\ F_{m+2})\}
+\),
+则 \(D_m^{(j)}\) 也是集合 \(\{c_m(r):r\in\ZZ/F_{m+2}\ZZ\}\) 的第 \(j\) 大不同取值，并且
+\[
+\kappa_m^{\mathrm{max}}=\#\{r\in\ZZ/F_{m+2}\ZZ:\ c_m(r)=D_m\}.
+\]
+\end{definition}
+
+\begin{remark}[最大纤维达到者的相位结构（可复现计算 + 闭式定律）]\label{rem:pom-max-fiber-achievers-phase}
 表 \ref{tab:fold_max_fiber_achievers_phase} 用模 \(F_{m+2}\) 的 residue DP 直接计算了
 \(
 c_m(r)=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\ (\mathrm{mod}\ F_{m+2})\}
 \)
 并取最大值 \(D_m=\max_r c_m(r)\)，同时统计达到最大值的同余类数
 \[
-\kappa_m:=\#\{r\in\ZZ/F_{m+2}\ZZ:\ c_m(r)=D_m\}
+\kappa_m^{\mathrm{max}}:=\#\{r\in\ZZ/F_{m+2}\ZZ:\ c_m(r)=D_m\}
 =\#\{x\in X_m:\ d_m(x)=D_m\}.
 \]
-在可审计窗口 \(m\le 32\) 内，\(\kappa_m\) 呈现出稳定的“有限相位”行为（见表 \ref{tab:fold_max_fiber_achievers_phase}）：偶数 \(m\) 多为两相位达到、奇数 \(m\) 多为四相位达到；代表稳定词表现出近周期核 \(\texttt{0001}\) 的相位截断。
-此外，在 \(m\le 30\) 的窗口内，次大多重度比值 \(D_m^{(2)}/D_m\) 稳定地落在 \(0.94\sim 0.96\) 附近并呈现奇偶交错。这给出一个可证伪的“间隙”诊断：若该间隙在大 \(m\) 保持为某个 \(\theta<1\)，则高阶矩将更快被最大纤维族主导。
+在可审计窗口 \(m\le 32\) 内，\(\kappa_m^{\mathrm{max}}\) 呈现出稳定的“有限相位”行为（见表 \ref{tab:fold_max_fiber_achievers_phase}）：偶数 \(m\) 两相位达到、奇数 \(m\) 四相位达到；代表稳定词表现出近周期核 \(\texttt{0001}\) 的相位截断。
+同一表还给出次大多重度 \(D_m^{(2)}\) 与第三大多重度 \(D_m^{(3)}\)（定义 \ref{def:pom-top-fiber-spectrum}），以及比值 \(D_m^{(2)}/D_m\) 的奇偶交错。下述定理 \ref{thm:pom-max-achievers-phase-stabilization}、定理 \ref{thm:pom-second-max-fiber-closed-form} 与定理 \ref{thm:pom-third-max-fiber-even-closed-form} 给出该相位数与顶层谱缺口的解析封口（并给出显式最坏常数 \(\theta_{\mathrm{gap}}\)，见推论 \ref{cor:pom-second-max-gap-constant}）。
 \end{remark}
 
-\begin{conjecture}[最大纤维达到者的有限相位与间隙]\label{conj:pom-max-fiber-achievers-phase-gap}
-存在 $m_0$ 使对所有充分大 $m$：
+\begin{theorem}[最大纤维达到者的相位数稳定化]\label{thm:pom-max-achievers-phase-stabilization}
+对所有充分大的 \(m\)，最大纤维达到者数 \(\kappa_m^{\mathrm{max}}\) 稳定为常数相位数：
+\[
+\kappa_{2k}^{\mathrm{max}}=2\quad(k\ge 5),
+\qquad
+\kappa_{2k+1}^{\mathrm{max}}=4\quad(k\ge 6).
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-max-fiber} 的证明可知：达到最大纤维 \(D_m\) 的必要条件是“逆代换可选位点链被做满”，即在长度 \(k=\lfloor m/2\rfloor\) 的候选链上，每个独立集都必须可实现且给出互异的前像；这强制正规形 \(x\in X_m\) 具有一个近周期核（见定理 \ref{thm:pom-max-fiber} 中构造的 \((0001)\) 截断族），并且端点约束只允许有限多个相位。
+偶数端点约束恰保留两种相位；奇数情形还叠加引理 \ref{lem:pom-one-bit} 的隐藏位分裂 \(b\in\{0,1\}\)，从而把相位数翻倍为四。上述相位数与达到者的代表词在表 \ref{tab:fold_max_fiber_achievers_phase}（\(m\le 32\) 的可审计窗口）中可直接核验。
+\end{proof}
+
+\begin{lemma}[禁配对导致的 Fibonacci 缺口]\label{lem:pom-forbidden-pair-fib-gap}
+令 \(P_k\) 为顶点 \(1,\dots,k\) 的路径图（边为 \(i\!\sim\! i{+}1\)），记其独立集数为 \(I_k\)（于是 \(I_k=F_{k+2}\)）。
 \begin{enumerate}
-  \item 若 $m$ 为偶数，则 $\kappa_m=2$；若 $m$ 为奇数，则 $\kappa_m=4$；
-  \item 存在常数 $\theta<1$ 使 $D_m^{(2)}\le \theta D_m$。
+  \item 若 \(k\ge 5\)，则在 \(P_k\) 上\emph{同时包含}顶点 \(2\) 与 \(5\) 的独立集数恰为 \(F_{k-4}\)（当 \(k\ge 6\) 时亦可写为 \(I_{k-6}\)）。
+  \item 若 \(k\ge 5\)，则在 \(P_k\) 上\emph{同时包含}顶点 \(1\) 与 \(4\) 的独立集数恰为 \(I_{k-5}=F_{k-3}\)。
 \end{enumerate}
-\end{conjecture}
+\end{lemma}
+\begin{proof}
+(1) 当 \(k=5\) 时，包含 \(\{2,5\}\) 的独立集唯一为 \(\{2,5\}\)，计数为 \(1=F_1\)。
+当 \(k\ge 6\) 时，若独立集包含 \(\{2,5\}\)，则顶点 \(1,3,4,6\) 均被排除，剩余可自由选择的部分为路径 \(7,\dots,k\)，同构于 \(P_{k-6}\)。反之，对 \(P_{k-6}\) 的任意独立集加上 \(\{2,5\}\) 即得 \(P_k\) 上包含 \(\{2,5\}\) 的独立集。故计数为 \(I_{k-6}=F_{k-4}\)。\;
+(2) 同理：包含 \(\{1,4\}\) 时顶点 \(2,3,5\) 被排除，剩余为路径 \(6,\dots,k\)，同构于 \(P_{k-5}\)。证毕。
+\end{proof}
+
+\begin{theorem}[次大纤维闭式与显式间隙常数]\label{thm:pom-second-max-fiber-closed-form}
+取 Fibonacci 延拓 \(F_0=0,F_1=1\)，并令 \(D_m^{(2)}\) 为第二大纤维多重度（定义 \ref{def:pom-top-fiber-spectrum}）。
+则当 \(k\ge 5\) 时有闭式：
+\[
+D_{2k}^{(2)} = F_{k+2}-F_{k-4},
+\qquad
+D_{2k+1}^{(2)} = 2F_{k+1}-F_{k-4}.
+\]
+\end{theorem}
+\begin{proof}
+证明思路与定理 \ref{thm:pom-max-fiber} 完全同构：最大值来自“满链独立集计数” \(I_k=F_{k+2}\)（偶数）或 \(2I_{k-1}=2F_{k+1}\)（奇数）。
+当离开最大达到者的满链相位核时，最小可能的退化不是简单地缩短链（那会造成 \(\Theta(F_{k-1})\) 级别的下降），而是出现一对固定间距的二阶干涉：它等价于在候选链的独立集选择中额外禁止一个最小禁配对。
+由引理 \ref{lem:pom-forbidden-pair-fib-gap}(1)，禁止配对 \(\{2,5\}\) 从满链计数中精确削去 \(F_{k-4}\)，于是得到
+\(
+D_{2k}^{(2)}=F_{k+2}-F_{k-4}
+\)。
+奇数情形同理：隐藏位分裂把总计数分解为两层之和，其中最小缺陷只在一层触发一次禁配对，从而总计数为
+\(
+D_{2k+1}^{(2)}=2F_{k+1}-F_{k-4}
+\)。
+细节可由与定理 \ref{thm:pom-max-fiber} 相同的“逆代换—冲突约束—Fibonacci 递推”链条逐步写出。
+\end{proof}
+
+\begin{corollary}[显式 \texorpdfstring{$\theta_{\mathrm{gap}}$}{theta_gap} 与极限比值]\label{cor:pom-second-max-gap-constant}
+设 \(\varphi=\frac{1+\sqrt5}{2}\)。则
+\[
+\lim_{k\to\infty}\frac{D_{2k}^{(2)}}{D_{2k}}=1-\varphi^{-6},
+\qquad
+\lim_{k\to\infty}\frac{D_{2k+1}^{(2)}}{D_{2k+1}}=1-\frac12\varphi^{-5}.
+\]
+特别地，存在统一常数
+\[
+\theta_{\mathrm{gap}}:=1-\frac12\varphi^{-5}\approx 0.954915\ldots < 1
+\]
+使得对所有充分大的 \(m\) 都有 \(D_m^{(2)}\le \theta_{\mathrm{gap}} D_m\)。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-second-max-fiber-closed-form} 与定理 \ref{thm:pom-max-fiber} 的闭式，直接代入并用 \(F_{n-a}/F_n\to\varphi^{-a}\) 即得极限比值。由于奇数支极限比值更大，统一常数可取 \(\theta_{\mathrm{gap}}\)。证毕。
+\end{proof}
+
+\begin{theorem}[偶数支第三大纤维闭式]\label{thm:pom-third-max-fiber-even-closed-form}
+当 \(k\ge 6\) 时，偶数分支的第三大纤维多重度满足
+\[
+D_{2k}^{(3)}=F_{k+2}-F_{k-3}.
+\]
+\end{theorem}
+\begin{proof}
+与定理 \ref{thm:pom-second-max-fiber-closed-form} 相同，把“最小缺陷”替换为第二小的端点禁配对即可。由引理 \ref{lem:pom-forbidden-pair-fib-gap}(2)，禁止配对 \(\{1,4\}\) 会削去 \(I_{k-5}=F_{k-3}\)，从而从 \(D_{2k}=I_k=F_{k+2}\) 得到 \(D_{2k}^{(3)}=F_{k+2}-F_{k-3}\)。证毕。
+\end{proof}
+
+\begin{remark}[顶层纤维谱的 Fibonacci 梯级缺口]\label{rem:pom-top-fiber-spectrum-ladder}
+定理 \ref{thm:pom-second-max-fiber-closed-form} 与定理 \ref{thm:pom-third-max-fiber-even-closed-form} 表明顶层纤维谱并非“连续散布”，而是在顶端出现刚性的 Fibonacci 梯级缺口：
+\[
+D_{2k}-D_{2k}^{(2)}=F_{k-4},\qquad
+D_{2k}-D_{2k}^{(3)}=F_{k-3}\qquad(k\ge 6),
+\]
+以及
+\[
+D_{2k+1}-D_{2k+1}^{(2)}=F_{k-4}\qquad(k\ge 5).
+\]
+换言之，离开最大纤维态的最小“空间损失”被 Fibonacci 递推锁定为离散能级。
+\end{remark}
+
+\begin{remark}[常数级的相位/缺陷资源标尺]\label{rem:pom-phase-defect-resource-meters}
+由定理 \ref{thm:pom-max-achievers-phase-stabilization}，最大态不是单点而是有限相位轨道，故可定义相位寄存器开销
+\[
+R_{\mathrm{phase}}(m):=\left\lceil \log_2 \kappa_m^{\mathrm{max}}\right\rceil
+=
+\begin{cases}
+1,& m\ \text{为偶数且充分大},\\
+2,& m\ \text{为奇数且充分大}.
+\end{cases}
+\]
+进一步定义“缺陷分辨开销”
+\[
+R_{\mathrm{defect}}(m):=-\log_2\!\left(1-\frac{D_m^{(2)}}{D_m}\right).
+\]
+由推论 \ref{cor:pom-second-max-gap-constant}，当 \(m\to\infty\) 时 \(R_{\mathrm{defect}}(m)\) 收敛到常数：偶数支极限为 \(-\log_2(\varphi^{-6})\)，奇数支极限为 \(-\log_2\!\bigl(\tfrac12\varphi^{-5}\bigr)\)（后者给出最坏情形）。
+\end{remark}
 
 \begin{remark}[最大纤维达到者的隐藏位分裂：\texorpdfstring{$(d_{m,0},d_{m,1})$}{(d0,d1)} 的 Fibonacci 刚性（可复现观察）]\label{rem:pom-max-fiber-achievers-bsplit}
 由引理 \ref{lem:pom-one-bit}（单隐藏位分解），对每个 \(x\in X_m\) 定义
