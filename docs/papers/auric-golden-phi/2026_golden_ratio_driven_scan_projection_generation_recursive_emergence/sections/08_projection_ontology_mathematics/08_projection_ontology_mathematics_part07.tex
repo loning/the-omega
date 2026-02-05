@@ -284,6 +284,40 @@ $$
 对该加权核做路径计数，即得同一 \(S_q(m)\) 的矩阵幂读出表达。证毕。
 \end{proof}
 
+\begin{remark}[可实现：对称幂 moment-kernel 的系数提取公式]\label{rem:pom-moment-symmetric-power-coefficient-extraction}
+命题 \ref{prop:pom-moment-symmetric-power} 的“多项式计数”可写成一个一眼可实现的系数提取公式。
+沿用定义 \ref{def:pom-collision-count-bisim} 的确定性转导器 \(\tau(s,a)=(s',b)\)，并允许一步带权（势/温度门合成后的边权）
+\(
+w(s,a)\in\RR_{\ge 0}
+\)
+（无权情形取 \(w\equiv 1\) 即得到严格整数计数）。
+令 \(\mathbf{x}=(x_t)_{t\in Q}\)。
+对每个输出符号 \(b\in A_{\mathrm{out}}\) 与每个内部状态 \(s\in Q\)，定义\textbf{转移多项式}
+\[
+T_{s}^{(b)}(\mathbf{x})
+:=\sum_{a\in A_{\mathrm{in}}:\ \mathrm{out}(s,a)=b}\ w(s,a)\,x_{\mathrm{next}(s,a)},
+\]
+其中 \(\mathrm{next}(s,a)\) 与 \(\mathrm{out}(s,a)\) 由 \(\tau(s,a)=(\mathrm{next}(s,a),\mathrm{out}(s,a))\) 给出。
+\par
+对任意占据向量 \(\nu\in\mathcal{N}_q\)，令
+\[
+G_{\nu}^{(b)}(\mathbf{x})
+:=\prod_{s\in Q}\bigl(T_s^{(b)}(\mathbf{x})\bigr)^{\nu(s)}.
+\]
+则对称幂商核的条目可取为
+\[
+\boxed{\;
+\widetilde A_q(\nu,\nu')
+\ =\
+\sum_{b\in A_{\mathrm{out}}}\ [\mathbf{x}^{\nu'}]\;G_{\nu}^{(b)}(\mathbf{x})\;},
+\qquad
+[\mathbf{x}^{\nu'}]\ \text{表示取}\ \prod_{t\in Q}x_t^{\nu'(t)}\ \text{的系数}.
+\]
+直观上：\(\nu(s)\) 份拷贝在状态 \(s\) 时，要求它们\emph{同出同一输出符号 \(b\)}；而后继占据向量 \(\nu'\) 的系数正好给出“有多少种输入字母选择”会把 \(q\) 份拷贝整体送入该 \(\nu'\)。
+\par
+在预压缩命题 \ref{prop:pom-moment-col-lumping} 的口径下，只需把 \(Q\) 替换为 \(Q/{\sim_{\mathrm{col}}}\)，并把 \(T_s^{(b)}\) 改写为按类计数/加权的 \(T_C^{(b)}\)，即可得到同型的系数提取公式并直接在直方图态空间上实现。
+\end{remark}
+
 \begin{definition}[碰撞计数等价（\texorpdfstring{$\sim_{\mathrm{col}}$}{~col}）]\label{def:pom-collision-count-bisim}
 设 \(\mathcal{T}\) 为确定性在线核/转导器：状态集 \(Q\)，输入字母表 \(A_{\mathrm{in}}\)，输出字母表 \(A_{\mathrm{out}}\)，并有确定性转移--输出
 \[
