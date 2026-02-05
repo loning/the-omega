@@ -35,6 +35,34 @@ A_q=P^{-1}AP,\qquad P\in\mathrm{GL}_d(\ZZ),
 这一路径在 \(q=4\) 的五态核上已被脚本 \texttt{scripts/exp\_fold\_collision\_hankel\_realization\_q4.py} 以完全可复现方式实现；对更高阶 \(q\) 可按同一范式推进，并以“最小维数、最小最大条目、最小拓扑熵”等作为搜索准则，形成一个可无限上推的碰撞核谱系实验线路。
 \end{remark}
 
+\begin{corollary}[常数成本自由能求值器：由 Hankel 最小实现锁定 \texorpdfstring{$r_q$}{rq}]\label{cor:pom-hankel-free-energy-evaluator}
+在命题 \ref{prop:pom-hankel-realization-protocol} 的设定下，记最小维数为 \(d\)。
+则仅由 \(2d\) 个样本点
+\(
+S_q(2),S_q(3),\dots,S_q(2d+1)
+\)
+即可构造 \(H_0,H_1\)，从而得到最小实现矩阵 \(A=H_0^{-1}H_1\)。
+其特征值集合给出递推特征多项式的根，因此指数增长主尺度满足
+\[
+r_q=\rho(A),
+\]
+并且一旦找到某个非负整数 realization \(A_q=P^{-1}AP\)，则同样有 \(r_q=\rho(A_q)\)（Perron 根）。
+从而对固定整数 \(q\)，自由能 \(\tau(q)=\log r_q\) 及“典型损失”母函数整点值
+\(
+\Lambda(q-1)=\log r_q-\log2
+\)
+（见命题 \ref{prop:pom-fiber-index-cgf} 与注 \ref{rem:pom-lambda-tau-shift}）都可在 \(O(d^3)\) 的矩阵代数成本内读出，而无需把 \(m\) 推至很大再拟合斜率。
+\end{corollary}
+
+\begin{remark}[双路一致性审计：residue-DP 拟合 vs.\ realization Perron 根]\label{rem:pom-dp-vs-realization-audit}
+对每个固定 \(q\)，可并行输出两条可复核读出：
+\begin{itemize}
+  \item residue-DP 在有限窗口上计算 \(S_q(m)\) 并据此拟合得到的 \(\widehat r_q\)；
+  \item 由递推/伴随矩阵或 Hankel 最小实现（以及其非负整数核 \(A_q\)）读出的精确 \(r_q=\rho(A_q)\)。
+\end{itemize}
+二者应一致；若不一致，则要么 DP 窗口不足、要么 realization 并非同一序列的实现（或存在边界项未吸收进起止向量）。
+\end{remark}
+
 \subsubsection{内生 Gibbs 权重：由纤维体积诱导的输出平衡态与 transfer matrix}\label{subsubsec:pom-gibbs-pi}
 本文已将折叠输出分布定义为
 \[
@@ -62,4 +90,14 @@ Z_m:=\sum_{x\in X_m}e^{-E_m(x)}=\sum_{x\in X_m}d_m(x)=|\Omega_m|=2^m.
 表 \ref{tab:fold_output_gibbs_markov_fit} 给出一个代表性输出（脚本 \texttt{scripts/exp\_fold\_output\_gibbs\_markov\_fit.py} 一键生成）。
 \end{remark}
 \input{sections/generated/tab_fold_output_gibbs_markov_fit}
+
+\begin{remark}[接口闭环：碰撞谱 \texorpdfstring{$\leftrightarrow$}{<->} 典型空间损失的三条可审计推论]\label{rem:pom-interface-loop-collision-loss}
+本节把两条接口（Hankel 最小实现与内生 Gibbs 权重）并排写出后，可得到如下三条闭环推论（均由文内机制直接推出，并可用现有脚本核验）：
+\begin{itemize}
+  \item \textbf{（同构）}对 \(X\sim\pi_m\) 与 \(L_m=\log d_m(X)\)，有
+  \(\mathbb{E}_{\pi_m}[e^{(q-1)L_m}]=S_q(m)/2^m\)，从而 \(\Lambda(t)=\tau(t+1)-\log2\)，并给出 \(\mu=\tau'(1)\)、\(\sigma^2=\tau''(1)\)（命题 \ref{prop:pom-fiber-index-cgf} 与注 \ref{rem:pom-lambda-tau-shift}）。
+  \item \textbf{（零参数夹逼）}\(\tau\) 的凸性把 \(\mu\) 用三点端点夹死：\(\log(2/\varphi)\le \mu\le \log(r_2/2)\)；并且有限 \(m\) 上已给出逐项可审计夹逼（推论 \ref{cor:pom-mu-secant-audit}）。
+  \item \textbf{（常数成本求值器）}一旦由 Hankel 口径恢复出某个 \(q\) 的最小 realization（并进一步找到非负整数核 \(A_q\)），则 \(r_q=\rho(A_q)\) 立刻锁定，从而同时锁定 \(\tau(q)=\log r_q\) 与 \(\Lambda(q-1)=\log r_q-\log2\)，并可与 residue-DP 拟合输出做双路一致性审计（推论 \ref{cor:pom-hankel-free-energy-evaluator} 与注 \ref{rem:pom-dp-vs-realization-audit}）。
+\end{itemize}
+\end{remark}
 

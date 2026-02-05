@@ -75,6 +75,68 @@ L_m:=\log d_m(X),\qquad X\sim \pi_m,\ \ \pi_m(x)=\frac{d_m(x)}{2^m},
 \mu=\Lambda'(0)=\lim_{m\to\infty}\mu_m,\qquad
 \sigma^2=\Lambda''(0)=\lim_{m\to\infty}\sigma_m^2.
 \]
+\begin{remark}[碰撞谱 \texorpdfstring{$\leftrightarrow$}{<->} 典型损失：\texorpdfstring{$\Lambda(t)=\tau(t+1)-\log2$}{Lambda(t)=tau(t+1)-log2}]\label{rem:pom-lambda-tau-shift}
+把 \(S_q(m)\) 视为实参数 \(q\in\mathbb{R}\) 的分配函数
+\[
+S_q(m):=\sum_{x\in X_m} d_m(x)^q
+\]
+（当 \(q\in\mathbb{Z}_{\ge 2}\) 时与本文的碰撞矩一致）。
+则对任意固定 \(m\) 与任意 \(t\in\mathbb{R}\)，由 \(\pi_m(x)=d_m(x)/2^m\) 直接展开得严格恒等式
+\[
+\mathbb{E}_{\pi_m}[e^{tL_m}]
+=\sum_{x\in X_m}\frac{d_m(x)}{2^m}\,d_m(x)^t
+=\frac{S_{t+1}(m)}{2^m}.
+\]
+因此若记
+\[
+\tau_m(q):=\frac1m\log S_q(m),
+\qquad
+\tau(q):=\lim_{m\to\infty}\tau_m(q)\quad(\text{在极限存在处}),
+\]
+则
+\[
+\frac1m\log \mathbb{E}_{\pi_m}[e^{tL_m}]=\tau_m(t+1)-\log2,
+\qquad
+\Lambda(t)=\tau(t+1)-\log2.
+\]
+并且在 \(q=1\) 处（无需取极限）有精确导数恒等式
+\[
+\mu_m=\tau_m'(1),
+\qquad
+\sigma_m^2=\tau_m''(1).
+\]
+在可交换“取极限/求导”的假设下，上式取 \(m\to\infty\) 给出 \(\mu=\tau'(1)\) 与 \(\sigma^2=\tau''(1)\)。
+\end{remark}
+
+\begin{corollary}[零参数审计夹逼：\texorpdfstring{$\mu$}{mu} 被 \texorpdfstring{$(r_0,r_1,r_2)$}{(r0,r1,r2)} 两端夹死]\label{cor:pom-mu-secant-audit}
+对每个固定 \(m\)，函数 \(q\mapsto \tau_m(q)=(1/m)\log S_q(m)\) 为凸函数，故其在 \(q=1\) 处的导数满足 secant 夹逼
+\[
+\boxed{\;
+\tau_m(1)-\tau_m(0)\ \le\ \mu_m\ \le\ \tau_m(2)-\tau_m(1).\;}
+\]
+在 Fold 的口径下 \(S_1(m)=\sum_x d_m(x)=2^m\)、\(S_0(m)=|X_m|=F_{m+2}\)，从而得到可直接审计的有限 \(m\) 夹逼
+\[
+\boxed{\;
+\log2-\frac1m\log F_{m+2}\ \le\ \mu_m\ \le\ \frac1m\log S_2(m)-\log2.\;}
+\]
+若进一步 \(r_2=\lim_{m\to\infty}S_2(m)^{1/m}\) 存在（由二体碰撞核 \(A_2\) 精确给出），并记端点谱常数
+\(
+r_0:=\lim_{m\to\infty}|X_m|^{1/m}=\varphi
+\)
+与
+\(
+r_1:=2
+\)，
+则取 \(m\to\infty\) 得到极限版“零参数”审计区间
+\[
+\boxed{\;
+\log\frac{2}{r_0}\ \le\ \mu\ \le\ \log\frac{r_2}{2}\;}
+\qquad(\text{即 }\ \log(2/\varphi)\le\mu\le\log(r_2/2)).
+\]
+\end{corollary}
+\begin{proof}
+由于 \(S_q(m)=\sum_x e^{q\log d_m(x)}\)，函数 \(q\mapsto \log S_q(m)\) 为 log-sum-exp，因此凸；除以 \(m\) 保持凸性。对凸函数在点 \(q=1\) 应用 secant 夹逼即得第一条。其余陈述把 \(S_0,S_1\) 的端点等式代入并取极限即可。证毕。
+\end{proof}
 表 \ref{tab:fold_fiber_log_moments_mu_sigma} 给出通过模 \(F_{m+2}\) 的 residue DP 精确计算得到的 \((\mu_m,\sigma_m^2)\) 数值，作为“典型空间损失密度与热涨落强度”的可审计常数接口。
 
 \input{sections/generated/tab_fold_fiber_log_moments_mu_sigma}
