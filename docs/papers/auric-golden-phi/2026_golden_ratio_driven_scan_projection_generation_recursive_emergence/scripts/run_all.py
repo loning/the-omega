@@ -372,6 +372,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="pom_projword_mom_twist_normalizer_demo",
+            script="exp_pom_projword_mom_twist_normalizer_demo.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_projword_mom_twist_normalizer_demo.json",
+                "sections/generated/tab_pom_projword_mom_twist_normalizer_demo.tex",
+            ],
+        ),
+        Step(
             name="pom_projword_full_normalizer_demo",
             script="exp_pom_projword_full_normalizer_demo.py",
             args=[],
