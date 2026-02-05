@@ -117,6 +117,165 @@ $$
 在本文框架中，这一等号可被视为一条可证伪的结构目标：它把“空间损失是一条谱”转化为“\(\{r_q\}\) 族决定谱形”的可计算命题。
 \end{remark}
 
+\begin{proposition}[Paley--Zygmund 下包络：仅由 \texorpdfstring{$(r_q,r_{2q})$}{(rq,r2q)} 给出“厚尾”指数下界]\label{prop:pom-spectrum-pz-lower}
+取任意整数 \(q\ge 2\)。令 \(X\) 在 \(X_m\) 上均匀分布，并令非负随机变量
+\[
+Y:=d_m(X)^q.
+\]
+则对阈值 \(\theta=\tfrac12\) 的 Paley--Zygmund 不等式给出
+\[
+\#\Bigl\{x\in X_m:\ d_m(x)\ge \Bigl(\tfrac12\,\frac{S_q(m)}{|X_m|}\Bigr)^{1/q}\Bigr\}
+\ \ge\ \frac14\cdot\frac{S_q(m)^2}{S_{2q}(m)}.
+\]
+从而若极限 \(r_k=\lim_{m\to\infty}S_k(m)^{1/m}\) 在 \(k=q,2q\) 处存在，并且 \(\lim_{m\to\infty}\frac1m\log|X_m|=\log\varphi\)，则定义
+\[
+\gamma_q:=\frac{\log r_q-\log\varphi}{q},
+\qquad
+\underline f(q):=2\log r_q-\log r_{2q},
+\]
+有严格下界
+\[
+\boxed{\;
+\lim_{\varepsilon\downarrow 0}\ \liminf_{m\to\infty}\ \frac1m
+\log \#\bigl\{x\in X_m:\ \gamma_m(x)\ge \gamma_q-\varepsilon\bigr\}
+\ \ge\ \underline f(q)\; }.
+\]
+\end{proposition}
+\begin{proof}
+按均匀抽样 \(X\sim \mathrm{Unif}(X_m)\) 展开期望：
+\[
+\mathbb{E}[Y]=\frac{1}{|X_m|}\sum_{x\in X_m}d_m(x)^q=\frac{S_q(m)}{|X_m|},
+\qquad
+\mathbb{E}[Y^2]=\frac{S_{2q}(m)}{|X_m|}.
+\]
+对任意非负 \(Y\) 与 \(\theta\in(0,1)\)，Paley--Zygmund 不等式给出
+\[
+\mathbb{P}\!\left(Y\ge \theta\,\mathbb{E}Y\right)\ \ge\ (1-\theta)^2\frac{(\mathbb{E}Y)^2}{\mathbb{E}[Y^2]}.
+\]
+取 \(\theta=\tfrac12\) 并代入上式得到
+\[
+\mathbb{P}\!\left(Y\ge \tfrac12\,\mathbb{E}Y\right)\ \ge\ \frac14\cdot\frac{S_q(m)^2}{|X_m|\,S_{2q}(m)}.
+\]
+把概率乘以 \(|X_m|\) 即得到计数下界：
+\[
+\#\Bigl\{x\in X_m:\ d_m(x)^q\ge \tfrac12\,\frac{S_q(m)}{|X_m|}\Bigr\}
+\ \ge\ \frac14\cdot\frac{S_q(m)^2}{S_{2q}(m)},
+\]
+等价改写即得命题第一条不等式。
+\par
+对第二条，取对数并除以 \(m\)，并令 \(m\to\infty\)：
+右端给出
+\[
+\liminf_{m\to\infty}\frac1m\log\!\left(\frac14\cdot\frac{S_q(m)^2}{S_{2q}(m)}\right)
+=2\log r_q-\log r_{2q}=\underline f(q),
+\]
+而左端的阈值满足
+\[
+\frac1m\log\Bigl(\Bigl(\tfrac12\,\frac{S_q(m)}{|X_m|}\Bigr)^{1/q}\Bigr)
+=\frac{1}{q}\Bigl(\frac1m\log S_q(m)-\frac1m\log|X_m|+\frac1m\log\tfrac12\Bigr)
+\to \gamma_q.
+\]
+因此对任意 \(\varepsilon>0\)，当 \(m\) 足够大时左端集合包含于 \(\{\gamma_m(x)\ge \gamma_q-\varepsilon\}\)，从而得到所述的 \(\varepsilon\downarrow 0\) 的 \(\liminf\) 下界。证毕。
+\end{proof}
+
+\begin{corollary}[间歇性缺口 \texorpdfstring{$\delta(q)$}{delta(q)}：从表格数值可直接审计的“尾部变薄”指标]\label{cor:pom-spectrum-intermittency-deficit}
+在命题 \ref{prop:pom-spectrum-pz-lower} 的设定下，
+\[
+\underline f(q)\ \le\ \log\varphi,
+\]
+并可定义非负缺口
+\[
+\boxed{\;
+\delta(q):=\log\varphi-\underline f(q)
+=\log\varphi+\log r_{2q}-2\log r_q\ \ge\ 0.\;}
+\]
+此外，命题 \ref{prop:pom-spectrum-legendre-upper} 在特殊点
+\(
+\gamma=\gamma_q=(\log r_q-\log\varphi)/q
+\)
+处的上界读出为
+\[
+f(\gamma_q)\ \le\ \log r_q-q\gamma_q=\log\varphi,
+\]
+从而 \(\underline f(q)\) 给出“靠近 \(\gamma_q\) 的高多重度尾部”所必然包含的指数级稳定类型下界，而 \(\delta(q)\) 量化了该下界相对最大可能指数 \(\log\varphi\) 的亏损。
+\end{corollary}
+\begin{proof}
+由 Cauchy--Schwarz（或 Hölder）不等式
+\[
+\Bigl(\sum_{x\in X_m}d_m(x)^q\Bigr)^2\le |X_m|\sum_{x\in X_m}d_m(x)^{2q}
+\]
+得 \(S_q(m)^2\le |X_m|S_{2q}(m)\)。取对数并除以 \(m\)，再令 \(m\to\infty\)，得到
+\(
+2\log r_q-\log r_{2q}\le \log\varphi
+\)，即 \(\underline f(q)\le\log\varphi\) 与 \(\delta(q)\ge 0\)。
+其余陈述由命题 \ref{prop:pom-spectrum-pz-lower} 与 \(\gamma_q\) 的定义直接推出。证毕。
+\end{proof}
+
+\begin{remark}[可复核读出：\texorpdfstring{$q\le 10$}{q<=10} 的下包络点与两侧包络图]\label{rem:pom-spectrum-pz-numerics}
+对 \(q\le 10\)，由表 \ref{tab:fold_collision_renyi_spectrum_mod_dp_q20} 的 \((r_q,r_{2q})\) 可直接计算
+\(
+(\gamma_q,\underline f(q),\delta(q))
+\)（无需任何新 DP）。
+脚本 \texttt{scripts/exp\_fold\_collision\_multifractal\_envelope\_pz\_q10.py} 会从该表格片段读出 \(r_q\) 并生成派生表 \ref{tab:fold_collision_multifractal_envelope_pz_q10} 与对比图 \ref{fig:fold-collision-multifractal-envelope-pz}。
+例如由表中 \(r_2,r_4,r_{10},r_{20}\) 得
+\(
+\delta(2)\approx 0.0108
+\)、
+\(
+\delta(10)\approx 0.0804
+\)，显示高阶矩探针下“厚尾保证指数”随 \(q\) 增大而显著下降。
+\input{sections/generated/tab_fold_collision_multifractal_envelope_pz_q10}
+\input{sections/generated/fig_fold_collision_multifractal_envelope_pz_q10}
+\end{remark}
+
+\begin{proposition}[有限 \texorpdfstring{$m$}{m} 的“典型窗平台”：由 \texorpdfstring{$(\mu_m,\sigma_m^2)$}{(mu,sigma2)} 给出指数级下界]\label{prop:pom-spectrum-finite-m-plateau}
+令 \(w_m(x)=d_m(x)/2^m\) 为均匀微态的折叠推前（定义 \ref{def:pom-wm-baseline}；在本小节亦记作 \(\pi_m\)），令 \(X\sim w_m\)，并记
+\(
+\gamma_m(X)=(1/m)\log d_m(X)
+\)。
+则对任意 \(\varepsilon>0\)，Chebyshev 不等式给出
+\[
+\boxed{\;
+w_m\!\bigl(|\gamma_m(X)-\mu_m|>\varepsilon\bigr)\ \le\ \frac{\sigma_m^2}{m\varepsilon^2}\; }.
+\]
+因此集合
+\(
+A_m(\varepsilon):=\{x\in X_m:\ |\gamma_m(x)-\mu_m|\le \varepsilon\}
+\)
+满足计数下界
+\[
+\boxed{\;
+|A_m(\varepsilon)|
+\ \ge\
+\left(1-\frac{\sigma_m^2}{m\varepsilon^2}\right)
+\exp\!\bigl(m(\log 2-\mu_m-\varepsilon)\bigr)\; }.
+\]
+上式右端只依赖于表 \ref{tab:fold_fiber_log_moments_mu_sigma} 的 \((\mu_m,\sigma_m^2)\)（以及常数 \(\log 2\)），因此提供了一个完全可审计的有限分辨率“平台保证”：在固定窗口宽度 \(\varepsilon\) 下，存在指数级多的稳定类型其 \(\gamma_m\) 落在 \(\mu_m\) 附近。
+\end{proposition}
+\begin{proof}
+由 \(\mathrm{Var}(\log d_m(X))=m\sigma_m^2\) 与 Chebyshev 得
+\[
+w_m\bigl(|\log d_m(X)-\mathbb{E}\log d_m(X)|>m\varepsilon\bigr)
+\le \frac{m\sigma_m^2}{m^2\varepsilon^2}
+=\frac{\sigma_m^2}{m\varepsilon^2},
+\]
+除以 \(m\) 即得到第一式。
+\par
+对第二式，注意对任意 \(x\in A_m(\varepsilon)\)，有
+\(
+\log d_m(x)\le m(\mu_m+\varepsilon)
+\)，从而
+\(
+w_m(x)=d_m(x)/2^m\le \exp(m(\mu_m+\varepsilon))/2^m
+\)。
+于是
+\[
+w_m(A_m(\varepsilon))
+\le |A_m(\varepsilon)|\cdot \frac{\exp(m(\mu_m+\varepsilon))}{2^m}.
+\]
+结合第一式的下界 \(w_m(A_m(\varepsilon))\ge 1-\sigma_m^2/(m\varepsilon^2)\) 并移项即得。证毕。
+\end{proof}
+
 \begin{remark}[同一个凸共轭的两种读出：\texorpdfstring{Legendre 谱上界 \(\leftrightarrow\) Chernoff 尾界}{Legendre<->Chernoff}]\label{rem:pom-legendre-chernoff-same-dual}
 命题 \ref{prop:pom-spectrum-legendre-upper}（按计数测度的几何谱上界）与命题 \ref{prop:pom-quantile-chernoff}--推论 \ref{cor:pom-quantile-dual-optimizer}（按输出测度 \(\pi_m\) 的尾部控制）本质上由同一个凸对偶核给出。
 令
