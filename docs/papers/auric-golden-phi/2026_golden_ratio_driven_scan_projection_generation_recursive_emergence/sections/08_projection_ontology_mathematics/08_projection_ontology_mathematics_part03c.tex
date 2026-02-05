@@ -215,6 +215,26 @@ $$
 \input{sections/generated/tab_collision_kernel_A4_primitive}
 \input{sections/generated/tab_collision_kernel_A4_finite_part}
 
+\begin{remark}[常数层稀有性尺度：\texorpdfstring{$\mathsf{M}(A_4)/\mathsf{M}(A_3)$}{M(A4)/M(A3)} 的近减半]\label{rem:pom-collision-mertens-halving}
+表 \ref{tab:collision_kernel_A3_finite_part} 与表 \ref{tab:collision_kernel_A4_finite_part} 给出
+\(
+\mathsf{M}(A_3)\approx 0.1560083
+\)
+与
+\(
+\mathsf{M}(A_4)\approx 0.0730980
+\)。
+因此常数层收缩比
+\[
+\boxed{\;
+\frac{\mathsf{M}(A_4)}{\mathsf{M}(A_3)}\approx 0.4686\;}
+\]
+在数值上几乎“减半”。
+该比值提供一个\textbf{独立于指数主尺度 \(r_q\)} 的细结构指纹：当把碰撞从三重提升到四重时，
+除了 Perron 根 \(r_q\) 的指数尺度改变之外，primitive 主项的常数级漂移（Mertens 常数）也显著收缩。
+并且表中 \texttt{tail proxy} 极小，说明该 finite-part 常数的抽取在数值上高度稳定、适合作为跨阶稀有性刻度。
+\end{remark}
+
 \subsubsection{五阶碰撞矩与 \texorpdfstring{$\mathrm{R\acute{e}nyi}$}{Renyi}--5 投影熵率}\label{subsec:pom-s5}
 \begin{definition}[五阶折叠碰撞矩]\label{def:pom-s5}
 定义五阶碰撞和
@@ -299,6 +319,15 @@ D_q(m)=\frac{1}{q-1}\cdot \frac{-H_q(m)}{-m\log\varphi}
 \begin{remark}[可审计输出：\(D_q\) 由表中 \(h_q\) 直接读出]\label{rem:pom-renyi-dimension-values}
 命题 \ref{prop:pom-renyi-dimension-spectrum} 表明：一旦 \(h_q\) 可由碰撞核/递推谱半径抽取，则几何维数谱 \(D_q\) 无需额外假设即可直接由闭式给出。
 由表 \ref{tab:fold_collision_renyi_spectrum} 可见 \(D_q\) 在已核验范围内非常接近 \(1\) 且随 \(q\) 缓慢下降；这可理解为：高阶矩更偏向大纤维（极少数 \(x\) 的 \(d_m(x)\) 主导），从而“内空间厚度”在 Rényi 意义下逐步变薄。
+例如由表中精确 \(h_q\)（或等价的 \(r_q\)）直接代入
+\(
+D_q=h_q/((q-1)\log\varphi)
+\)
+得到
+\[
+D_3\approx 0.9897,\qquad D_4\approx 0.9875,\qquad D_5\approx 0.9855,
+\]
+从而“近均匀但随阶数缓慢变薄”的弱多重分形趋势在数值上清晰可见。
 \par
 更定量地，顶层纤维谱缺口（推论 \ref{cor:pom-second-max-gap-constant}）直接给出“次大层”相对“最大层”的显式衰减率。
 令
@@ -543,10 +572,14 @@ S_{q_1}(m)=\sum_{x\in X_m}d_m(x)^{q_1}
 对 \(q=2,\dots,8\)，递推阶数与 \(r_q,h_q\) 的汇总见表 \ref{tab:fold_collision_moment_spectrum_k2_8}。
 \input{sections/generated/tab_fold_collision_moment_spectrum_k2_8}
 
-在已核验范围 \(q\le 8\) 内，上述最小递推阶数与 Hankel 最小实现维数均呈现出“每两阶增加 \(2\)”的规律（见定理 \ref{thm:pom-moment-hankel} 与推论 \ref{cor:pom-moment-minreal}），即经验指纹
-\(
-2\lfloor q/2\rfloor+1
-\)。
+在已核验范围 \(q\le 8\) 内，上述最小递推阶数与 Hankel 最小实现维数均呈现出“每两阶增加 \(2\)”的规律（见定理 \ref{thm:pom-moment-hankel} 与推论 \ref{cor:pom-moment-minreal}）。
+把它整理为一个可直接核验的\textbf{闭包律}：记 \(d_q\) 为 \(S_q(m)\) 的最小整系数递推阶数（等价地最小线性 realization 维数），则在 \(q=2,\dots,8\) 上有
+\[
+\boxed{\;
+d_q = 2\left\lfloor \frac{q}{2}\right\rfloor+1\;}
+\]
+（等价地：奇 \(q\) 时 \(d_q=q\)，偶 \(q\) 时 \(d_q=q+1\)）。
+工程上这给出一个可审计的复杂度承诺：在非共振典型窗口中，推进到更高阶只需要 \(O(q)\) 级状态增长（每两阶仅增加 2 个自由度），而非指数级爆炸。
 然而当 \(q\) 继续增大时，该规律出现\textbf{结构性坍缩/共振}：对 \(q=9,\dots,17\)，在模 \(F_{m+2}\) 的审计窗口 \(m\le 26\)（并在额外窗口 \(m\le 32\) 上作点检）上可验证存在更低阶的整系数递推（表 \ref{tab:fold_collision_moment_recursions_9_17}），其最小阶数
 \[
 (d_9,d_{10},d_{11},d_{12},d_{13},d_{14},d_{15},d_{16},d_{17})=(7,9,9,13,11,13,11,13,13),
