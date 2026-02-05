@@ -17,6 +17,22 @@
   \usepackage[draft]{graphicx}%
 }%
 \makeatother
+
+% In FASTBUILD mode we still want compilation to succeed even if some
+% (pipeline-generated) graphics are missing. Replace missing graphics with a
+% small framed placeholder instead of a hard error.
+\makeatletter
+\@ifundefined{FASTBUILD}{}{%
+  \let\origincludegraphics\includegraphics
+  \renewcommand{\includegraphics}[2][]{%
+    \IfFileExists{#2}{%
+      \origincludegraphics[#1]{#2}%
+    }{%
+      \fbox{\ttfamily missing graphic: \detokenize{#2}}%
+    }%
+  }%
+}%
+\makeatother
 \usepackage[hypertexnames=false]{hyperref}
 \usepackage{cite}
 \usepackage{xcolor}
