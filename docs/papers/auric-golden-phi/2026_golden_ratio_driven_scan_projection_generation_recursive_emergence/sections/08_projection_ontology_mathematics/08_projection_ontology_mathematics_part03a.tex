@@ -682,6 +682,38 @@ d_{2k+1}(x^{(2k+1)})=2I_{k-1}=2F_{k+1}.
 上界可达即得 $D_m$ 的闭式；渐近式与常数界由 Fibonacci 渐近 $F_n\sim \varphi^n/\sqrt5$ 直接推出。证毕。
 \end{proof}
 
+\begin{corollary}[最大纤维概率端点与可审计极限常数]\label{cor:pom-max-fiber-rate-endpoint}
+令 \(\pi_m(x):=d_m(x)/2^m\) 为折叠输出分布，并定义最大纤维概率
+\[
+p_{\max}(m):=\max_{x\in X_m}\pi_m(x)=\frac{D_m}{2^m}.
+\]
+则由定理 \ref{thm:pom-max-fiber} 的闭式有显式表达
+\[
+p_{\max}(2k)=\frac{F_{k+2}}{2^{2k}},
+\qquad
+p_{\max}(2k+1)=\frac{2F_{k+1}}{2^{2k+1}}=\frac{F_{k+1}}{2^{2k}}.
+\]
+并且最大纤维率（亦即 min-entropy 端点率）
+\[
+h_{\max}(m):=-\frac{1}{m}\log p_{\max}(m)
+\]
+收敛到一个闭式常数：
+\[
+\boxed{\;
+\lim_{m\to\infty}h_{\max}(m)=\log\!\left(\frac{2}{\sqrt{\varphi}}\right)\; }.
+\]
+该常数同时是高阶 Rényi 指纹归一化端点的可审计锚点（见命题 \ref{prop:pom-rq-qinfty-endpoint} 中 \(\lim_{q\to\infty}h_q^{\mathrm R}=\log(2/\sqrt{\varphi})\)）。
+\end{corollary}
+\begin{proof}
+由上式的奇偶闭式与 Binet 渐近 \(F_n\asymp \varphi^n\)，可得
+\[
+-\frac{1}{2k}\log p_{\max}(2k)
+=-\frac{1}{2k}\Bigl(\log F_{k+2}-2k\log 2\Bigr)
+\longrightarrow \log 2-\frac12\log\varphi,
+\]
+奇数分支同理，从而极限为 \(\log(2/\sqrt{\varphi})\)。证毕。
+\end{proof}
+
 \begin{corollary}[二步递推与基值]\label{cor:pom-D-rec}
 $D_m$ 满足
 \[
@@ -805,21 +837,80 @@ D_{2k+1}^{(2)}=2F_{k+1}-F_{k-4}
 细节可由与定理 \ref{thm:pom-max-fiber} 相同的“逆代换—冲突约束—Fibonacci 递推”链条逐步写出。
 \end{proof}
 
-\begin{corollary}[显式 \texorpdfstring{$\theta_{\mathrm{gap}}$}{theta_gap} 与极限比值]\label{cor:pom-second-max-gap-constant}
-设 \(\varphi=\frac{1+\sqrt5}{2}\)。则
+\begin{corollary}[黄金常数极限、指数收敛与可审计 gap 证书]\label{cor:pom-second-max-gap-constant}
+设 \(\varphi=\frac{1+\sqrt5}{2}\)。当 \(k\ge 5\) 时，由定理 \ref{thm:pom-second-max-fiber-closed-form} 与定理 \ref{thm:pom-max-fiber} 的闭式可得精确比值
 \[
-\lim_{k\to\infty}\frac{D_{2k}^{(2)}}{D_{2k}}=1-\varphi^{-6},
+\frac{D_{2k}^{(2)}}{D_{2k}}=1-\frac{F_{k-4}}{F_{k+2}},
 \qquad
-\lim_{k\to\infty}\frac{D_{2k+1}^{(2)}}{D_{2k+1}}=1-\frac12\varphi^{-5}.
+\frac{D_{2k+1}^{(2)}}{D_{2k+1}}=1-\frac{F_{k-4}}{2F_{k+1}}.
 \]
-记 \(\theta_{\mathrm{even}}:=1-\varphi^{-6}\)、\(\theta_{\mathrm{odd}}:=1-\frac12\varphi^{-5}\) 为偶/奇分支的极限比值。特别地，由于 \(\theta_{\mathrm{odd}}>\theta_{\mathrm{even}}\)，存在统一常数
+因此两条奇偶支分别收敛到闭式黄金常数平台：
 \[
-\theta_{\mathrm{gap}}:=1-\frac12\varphi^{-5}\approx 0.954915\ldots < 1
+\frac{D_{2k}^{(2)}}{D_{2k}}
+\longrightarrow
+1-\varphi^{-6}
+=1-\frac{1}{9+4\sqrt5},
+\qquad
+\frac{D_{2k+1}^{(2)}}{D_{2k+1}}
+\longrightarrow
+1-\frac12\varphi^{-5}
+=1-\frac{1}{11+5\sqrt5}.
 \]
-使得对所有充分大的 \(m\) 都有 \(D_m^{(2)}\le \theta_{\mathrm{gap}} D_m\)。
+并且收敛误差为指数级：
+\[
+\left|\frac{D_{2k}^{(2)}}{D_{2k}}-\left(1-\varphi^{-6}\right)\right|=O(\varphi^{-2k}),
+\qquad
+\left|\frac{D_{2k+1}^{(2)}}{D_{2k+1}}-\left(1-\tfrac12\varphi^{-5}\right)\right|=O(\varphi^{-2k}).
+\]
+记奇数支（也是渐近最坏情形）的极限常数为
+\[
+\boxed{\;
+\theta_\star\;(:=\theta_{\mathrm{gap}})\;:=1-\frac{1}{11+5\sqrt5}
+=1-\tfrac12\varphi^{-5}
+\approx 0.9549150281<1.
+\;}
+\]
+则“存在 \(\theta<1\) 使 \(D_m^{(2)}\le \theta D_m\)”可取显式一刀切证书
+\[
+\boxed{\;
+\frac{D_m^{(2)}}{D_m}\le \frac{25}{26}\qquad(m\ge 2),
+\;}
+\]
+且该上界在 \(m=13\) 取等（从而为全局最优常数）。作为对照，渐近尺度上的最优候选常数为 \(\theta_\star\)，并且平台贴合误差满足 \(O(\varphi^{-2k})\)，解释了表 \ref{tab:fold_max_fiber_achievers_phase} 中 \(m\le 32\) 的“近常数”现象。
 \end{corollary}
 \begin{proof}
-由定理 \ref{thm:pom-second-max-fiber-closed-form} 与定理 \ref{thm:pom-max-fiber} 的闭式，直接代入并用 \(F_{n-a}/F_n\to\varphi^{-a}\) 即得极限比值。由于奇数支极限比值更大，统一常数可取 \(\theta_{\mathrm{gap}}\)。证毕。
+比值公式由闭式直接相除得到。
+极限常数由 Binet 公式 \(F_n=\frac{1}{\sqrt5}(\varphi^n-\psi^n)\)（\(\psi=-\varphi^{-1}\)）给出：例如
+\[
+\frac{F_{k-4}}{F_{k+2}}
+=\varphi^{-6}\frac{1-(\psi/\varphi)^{k-4}}{1-(\psi/\varphi)^{k+2}}
+=\varphi^{-6}\left(1+O(\varphi^{-2k})\right),
+\]
+同理 \(\frac{F_{k-4}}{F_{k+1}}=\varphi^{-5}\left(1+O(\varphi^{-2k})\right)\)，代入即得两条指数级误差。
+闭式形式 \(\varphi^6=9+4\sqrt5\)、\(2\varphi^5=11+5\sqrt5\) 可由恒等式 \(\varphi^n=F_n\varphi+F_{n-1}\)（取 \(n=5,6\)）得到。
+
+最后给出统一证书：由上式，
+\[
+\frac{D_{2k+1}^{(2)}}{D_{2k+1}}=1-\frac{F_{k-4}}{2F_{k+1}}
+\le 1-\frac{1}{26}=\frac{25}{26},
+\]
+其中不等号等价于 \(F_{k+1}\le 13F_{k-4}\)。
+写 \(n:=k-4\ge 1\)，即需证对所有 \(n\ge 1\) 有 \(F_{n+5}\le 13F_n\)。
+该不等式在 \(n=1,2\) 成立（\(F_6=8\le 13F_1\)、\(F_7=13=13F_2\)），且若对 \(n,n+1\) 成立，则
+\(
+F_{n+7}=F_{n+6}+F_{n+5}\le 13F_{n+1}+13F_n=13F_{n+2}
+\)，
+从而由归纳对一切 \(n\) 成立；等号仅在 \(n=2\)（即 \(k=6,m=13\)）发生。
+偶数支更强：因 \(F_{k+2}=F_{k+1}+F_k<2F_{k+1}\)，故当 \(k\ge 5\) 时
+\[
+\frac{D_{2k}^{(2)}}{D_{2k}}
+=1-\frac{F_{k-4}}{F_{k+2}}
+\;<\;
+1-\frac{F_{k-4}}{2F_{k+1}}
+=\frac{D_{2k+1}^{(2)}}{D_{2k+1}}
+\le \frac{25}{26}.
+\]
+对 \(m<10\) 的有限个初值情形可由表 \ref{tab:fold_max_fiber_achievers_phase} 直接审计。证毕。
 \end{proof}
 
 \begin{theorem}[偶数支第三大纤维闭式]\label{thm:pom-third-max-fiber-even-closed-form}
@@ -896,6 +987,29 @@ d_{m,1}(x)=\#\{\omega:\ N(\omega)=r+F_{m+2}\}.
 \end{itemize}
 该分裂结构把“最大纤维计数 = 链上独立集计数”（注 \ref{rem:pom-overflow-rec}）进一步细分为“端点约束下的两类独立集计数”，从而在达到者层面强制出现相邻 Fibonacci 数的交换分裂。
 \end{remark}
+
+\begin{corollary}[相位配对下隐藏位的精确无偏（偶数最大纤维族）]\label{cor:pom-max-fiber-phase-pair-unbiased}
+设 \(m=2k\ge 10\)。由定理 \ref{thm:pom-max-achievers-phase-stabilization}，最大纤维达到者恰有两相位，记为 \(x^{(1)},x^{(2)}\in X_{2k}\)。
+则由注 \ref{rem:pom-max-fiber-achievers-bsplit} 的闭式分裂对，
+\[
+\bigl(d_{2k,0}(x^{(1)}),d_{2k,1}(x^{(1)})\bigr)=(F_{k+1},F_k),
+\qquad
+\bigl(d_{2k,0}(x^{(2)}),d_{2k,1}(x^{(2)})\bigr)=(F_k,F_{k+1}),
+\]
+从而相位配对在最大纤维族上把隐藏位偏置\emph{严格抵消}：
+\[
+d_{2k,0}(x^{(1)})+d_{2k,0}(x^{(2)})=F_{k+1}+F_k=F_{k+2}=D_{2k},
+\]
+\[
+d_{2k,1}(x^{(1)})+d_{2k,1}(x^{(2)})=F_k+F_{k+1}=D_{2k}.
+\]
+等价地，若在两条最大相位之间取均匀平均，则隐藏位在最大纤维族上精确无偏：
+\[
+\mathbb{E}\!\left[\frac{d_{2k,0}(X)}{D_{2k}}\right]
+=\mathbb{E}\!\left[\frac{d_{2k,1}(X)}{D_{2k}}\right]
+=\frac12,\qquad X\sim\mathrm{Unif}\{x^{(1)},x^{(2)}\}.
+\]
+\end{corollary}
 
 \begin{corollary}[空间缺陷的夹逼区间]\label{cor:pom-defect-band}
 令平均纤维多重度 $\overline d_m=2^m/F_{m+2}$。则
