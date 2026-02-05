@@ -228,6 +228,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_a2_twist_difference_chain_scan",
+            script="exp_fold_collision_a2_twist_difference_chain_scan.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_a2_twist_difference_chain_scan.json",
+                "sections/generated/tab_fold_collision_a2_twist_difference_chain_scan.tex",
+            ],
+        ),
+        Step(
             name="collision_kernel_A3_primitive",
             script="exp_collision_kernel_A3_primitive.py",
             args=[],
