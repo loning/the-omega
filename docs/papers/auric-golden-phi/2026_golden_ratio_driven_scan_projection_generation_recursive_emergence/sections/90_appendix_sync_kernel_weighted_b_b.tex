@@ -1,0 +1,148 @@
+\subsubsection{仅用 \texorpdfstring{$\Delta$}{Delta} 的闭式计算}\label{app:delta-only}
+令 $z_\star(u)=\lambda(u)^{-1}$ 为 $\Delta(z,u)$ 的最小正根，定义
+\[
+C(u):=\lim_{z\to z_\star}(1-z/z_\star)\zeta(z,u)=\frac{1}{-z_\star\,\partial_z\Delta(z_\star,u)}.
+\]
+由 Witt 反演与 $\zeta=1/\Delta$ 可得
+\[
+\log\mathfrak{M}(\theta)
+=\log C(u)+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta(z_\star^m,u^m)
+=\log C(u)-\sum_{m\ge 2}\frac{\mu(m)}{m}\log\Delta(z_\star^m,u^m),
+\]
+其中级数以指数速度收敛。
+
+\begin{corollary}[完成化的纯实计算：单位圆上 \texorpdfstring{$\Delta(z_\star^m,u^m)$}{Delta(z*^m,u^m)} 的实代数化]\label{cor:sync-kernel-weighted-logM-completed-real}
+取 \(u=e^{i\theta}\) 并令 \(r=e^{i\theta/2}\)、\(s=r+r^{-1}=2\cos(\theta/2)\in[-2,2]\)。记 \(w_\star(s)\) 为 \(\widehat\Delta(w,s)=0\) 的最小模根，则 \(z_\star(u)=w_\star(s)/r\)。
+对任意 \(m\ge 1\)，令
+\[
+S_m(s):=r^m+r^{-m}=2\cos(m\theta/2)=:C_m(s)\in\ZZ[s]
+\]
+（\(C_m\) 为 Chebyshev--Adams 运算；见推论 \ref{cor:primitive-completion-hatp}）。
+则有恒等式
+\[
+\boxed{\ \Delta(z_\star(u)^m,u^m)=\widehat\Delta\!\bigl(w_\star(s)^m,\ S_m(s)\bigr)\ }.
+\]
+因此在单位圆扭曲上，\(\log\mathfrak{M}(\theta)\) 的 \(\Delta\)-only 级数每一项都可在实域上计算：输入仅为实参数 \(s\in[-2,2]\) 与实数 \(w_\star(s)\) 及其幂。
+\end{corollary}
+
+\subsubsection{前 10 个 primitive 加权谱多项式}\label{app:weighted-primitive-table}
+前 10 项 $p_n(u)=\sum_{\tau\ \mathrm{primitive},\,|\tau|=n}u^{S_\tau\varphi}$ 由
+\(
+p_n(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d)
+\)
+从矩阵 \(B(u)\) 的迹多项式 \(a_n(u)=\Tr(B(u)^n)\) 严格计算得到；一键生成输出如下（脚本 \texttt{scripts/exp\_sync\_kernel\_weighted\_primitive\_completed.py}）：
+
+\input{sections/generated/eq_sync_kernel_weighted_primitive_pn_first10}
+当 $n\ge 2$ 时无 $u^0$ 与 $u^n$ 项，且系数满足 $p_{n,k}=p_{n,n-k}$。
+
+\begin{corollary}[primitive 多项式的完成化：\texorpdfstring{$\widehat p_n(s)\in\ZZ[s]$}{hat p in Z[s]} 与 Chebyshev--Adams 运算]\label{cor:primitive-completion-hatp}
+取
+\[
+u=r^2,\qquad s:=r+r^{-1},
+\]
+并对 \(n\ge 1\) 定义 primitive 多项式的完成化
+\[
+\widehat p_n(s):=r^{-n}p_n(r^2).
+\]
+则对所有 \(n\ge 1\) 有 \(\widehat p_n(s)\in\ZZ[s]\)。并且：
+\begin{enumerate}
+  \item 若 \(n\) 为偶数，则 \(\widehat p_n(s)\) 为 \(s\) 的偶多项式；
+  \item 若 \(n\) 为奇数，则 \(\widehat p_n(s)\) 为 \(s\) 的奇多项式。
+\end{enumerate}
+进一步，对任意整数 \(d\ge 1\) 定义
+\[
+C_d(s):=r^d+r^{-d}\in\ZZ[s],
+\qquad
+C_d(s)=2T_d(s/2)
+\]
+（\(T_d\) 为第一类 Chebyshev 多项式）。则完成化坐标下的幂替换满足严格的“倍角律”：
+\[
+r^{-dn}\,p_n(r^{2d})=\widehat p_n\!\bigl(C_d(s)\bigr),
+\]
+即 Witt/Möbius 反演中的 \(u\mapsto u^d\) 在完成化后等价于 \(s\mapsto C_d(s)\) 的 Chebyshev--Adams 运算。
+\end{corollary}
+
+\begin{corollary}[奇长度的严格奇偶平衡：\texorpdfstring{$p_n(-1)=0$}{p_n(-1)=0}]\label{cor:primitive-odd-parity-balance}
+若 \(n\ge 3\) 为奇数，则由推论 \ref{cor:primitive-odd-div} 的整除律 \(u(u+1)\mid p_n(u)\) 得
+\[
+\boxed{\ p_n(-1)=\sum_{k\ge 0}(-1)^k p_{n,k}=0\ }.
+\]
+因此奇长度 primitive 轨道在“能量奇偶”两侧的计数严格相等（以符号加权意义表述）。
+\end{corollary}
+\begin{proof}
+由系数镜像对称 \(p_{n,k}=p_{n,n-k}\) 可得（见上文）
+\(
+p_n(u)=u^n p_n(1/u)
+\)。
+令 \(u=r^2\) 得
+\(
+p_n(r^2)=r^{2n}p_n(r^{-2})
+\)，
+从而 \(r^{-n}p_n(r^2)\) 在 \(r\mapsto r^{-1}\) 下不变。由不变量子环恒等式
+\(
+\ZZ[r,r^{-1}]^{\,r\mapsto r^{-1}}=\ZZ[r+r^{-1}]=\ZZ[s]
+\)
+即得 \(\widehat p_n(s)\in\ZZ[s]\)。
+\par
+奇偶性来自指数奇偶：\(p_n(r^2)\) 只含 \(r^{2k}\)，乘上 \(r^{-n}\) 后幂指数与 \(n\) 同奇偶；而 \(\ZZ[s]\) 中 \(s\mapsto -s\) 的奇偶分解与 \(r\mapsto -r\) 的幂奇偶一致，故得到 \(\widehat p_n\) 的奇偶性结论。
+\par
+最后令 \(s=r+r^{-1}\)，则
+\(
+C_d(s)=r^d+r^{-d}
+\)
+满足递推 \(C_{d+1}=sC_d-C_{d-1}\)，因而 \(C_d\in\ZZ[s]\)，并与 Chebyshev 多项式关系 \(C_d(s)=2T_d(s/2)\) 等价。代入 \(u=r^2\) 及 \(u^d=r^{2d}\) 得
+\[
+r^{-dn}p_n(r^{2d})=\widehat p_n(r^d+r^{-d})=\widehat p_n(C_d(s)),
+\]
+即所述倍角律。证毕。
+\end{proof}
+
+\begin{corollary}[完成化的 Chebyshev--Witt 变换：\texorpdfstring{$\widehat a\leftrightarrow \widehat p$}{hat a <-> hat p}]\label{cor:chebyshev-witt-completed}
+在同一完成化坐标 \(u=r^2,s=r+r^{-1}\) 下，定义 completed ghost（迹）多项式
+\[
+\widehat a_n(s):=r^{-n}a_n(r^2)=r^{-n}\Tr(B(r^2)^n)\in\ZZ[s].
+\]
+则对任意 \(n\ge 1\) 有严格恒等式
+\[
+\boxed{\ 
+\widehat p_n(s)=\frac1n\sum_{d\mid n}\mu(d)\,\widehat a_{n/d}\!\bigl(C_d(s)\bigr),
+\qquad
+\widehat a_n(s)=\sum_{d\mid n}d\,\widehat p_d\!\bigl(C_{n/d}(s)\bigr)
+\ }.
+\]
+\end{corollary}
+\begin{proof}
+对 \(u=r^2\) 的 Witt/Möbius 反演
+\(
+p_n(u)=\frac1n\sum_{d\mid n}\mu(d)a_{n/d}(u^d)
+\)
+两侧同乘 \(r^{-n}\)，并用完成化倍角律
+\(
+r^{-dn}f(r^{2d})=\widehat f(C_d(s))
+\)
+（对 \(f=a_{n/d}\) 与 \(f=p_d\) 分别应用）即可得到第一式；第二式同理由
+\(
+a_n(u)=\sum_{d\mid n} d\,p_d(u^{n/d})
+\)
+完成化得到。
+\end{proof}
+
+\begin{corollary}[素数长度同余：\texorpdfstring{$\widehat a_p(s)\equiv C_p(s)\ (\mathrm{mod}\ p)$}{hat a_p congruent Cp mod p}]\label{cor:completed-prime-congruence}
+沿用推论 \ref{cor:chebyshev-witt-completed} 的完成化记号。若 \(p\) 为素数，则有整系数同余
+\[
+\boxed{\ \widehat a_p(s)\equiv C_p(s)\pmod p\ }.
+\]
+\end{corollary}
+\begin{proof}
+对素数 \(p\)，由 \(\widehat p_p(s)=\frac1p\bigl(\widehat a_p(s)-\widehat a_1(C_p(s))\bigr)\)（推论 \ref{cor:chebyshev-witt-completed} 的第一式，因子仅为 \(d=1,p\)）可知
+\[
+\widehat a_p(s)-\widehat a_1(C_p(s))\in p\,\ZZ[s].
+\]
+而在本核上 \(a_1(u)=\Tr(B(u))=p_1(u)=1+u\)，故
+\(
+\widehat a_1(s)=r^{-1}(1+r^2)=r+r^{-1}=s
+\)，从而 \(\widehat a_1(C_p(s))=C_p(s)\)。
+代回即得同余。证毕。
+\end{proof}
+
+\input{sections/generated/tab_sync_kernel_weighted_primitive_completed}
