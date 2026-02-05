@@ -821,6 +821,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="arity_pure_collision_cubic_rh_threshold_beta",
+            script="exp_arity_pure_collision_cubic_rh_threshold_beta.py",
+            args=["--dps", "80"],
+            expected_outputs=[
+                "artifacts/export/arity_pure_collision_cubic_rh_threshold_beta.json",
+                "sections/generated/eq_arity_pure_collision_cubic_rh_threshold_uR.tex",
+                "sections/generated/tab_arity_pure_collision_cubic_rh_threshold_beta.tex",
+            ],
+        ),
+        Step(
             name="arity_335_N2_selection_law_primes",
             script="exp_arity_335_n2_selection_law_primes.py",
             args=[],
