@@ -23,6 +23,24 @@ $$
 反之，若 \(N(\omega)\equiv N(\omega')\ (\mathrm{mod}\ F_{m+2})\)，则两者在模 \(F_{m+2}\) 下的余数相同。又由于 \(V_m(\Fold_m(\cdot))\) 正是 Zeckendorf 规范形在前 \(m\) 位对应的值（定义 \ref{def:pom-window-value}），该余数唯一确定折叠后的稳定类型 \(x\in X_m\)，因此 \(x=x'\)，即 \(\Fold_m(\omega)=\Fold_m(\omega')\)。证毕。
 \end{proof}
 
+\begin{proposition}[折叠作为模同余投影的规范截面]\label{prop:pom-fold-as-section}
+令 \(r(\omega):=N(\omega)\bmod F_{m+2}\in\{0,1,\dots,F_{m+2}-1\}\)。
+对每个 \(0\le r\le F_{m+2}-1\)，令 \(Z(r)\in X_\infty\) 为 \(r\) 的 Zeckendorf 编码，并记截断 \(\pi_m: X_\infty\to X_m\)（第 6 节）。定义规范截面
+\[
+s_m(r):=\pi_m(Z(r))\in X_m.
+\]
+则对任意 \(\omega\in\Omega_m\) 都有
+\[
+\boxed{\;\Fold_m(\omega)=s_m\bigl(r(\omega)\bigr).\;}
+\]
+亦即 \(\Fold_m\) 因子化为“模 \(F_{m+2}\) 的线性投影”与一个规范截面的复合。
+\end{proposition}
+\begin{proof}
+由引理 \ref{lem:pom-fold-congruence}，\(\Fold_m(\omega)\) 只依赖于 \(r(\omega)=N(\omega)\bmod F_{m+2}\)。
+另一方面，\(V_m:X_m\to\{0,1,\dots,F_{m+2}-1\}\) 为双射（引理 \ref{lem:zeckendorf-range-bijection}），并且按定义 \(V_m(s_m(r))=r\)。
+因此当 \(r(\omega)=r\) 时，\(\Fold_m(\omega)\) 必等于该唯一满足 \(V_m(x)=r\) 的稳定类型 \(x=s_m(r)\)。证毕。
+\end{proof}
+
 \begin{proposition}[\texorpdfstring{$q$}{q}-重碰撞的同余矩表达]\label{prop:pom-moment-congruence-q}
 对任意整数 \(q\ge 2\)，定义
 $$
@@ -247,6 +265,24 @@ c_m(r)=\frac{1}{|G_m|}\sum_{j}\widehat c_m(j)\,\overline{\chi_j(r)}
 \)。
 最后一式由 \(|G_m|=F_{m+2}\) 与 \(\chi_j(F_{k+1})=\exp(2\pi i jF_{k+1}/F_{m+2})\) 代入得到。证毕。
 \end{proof}
+
+\begin{remark}[最大非平凡傅里叶系数证书与临界共振的阻碍]\label{rem:pom-max-fourier-obstruction}
+把同余计数归一化为概率分布 \(p_m(r):=c_m(r)/2^m\)，并记 \(\widehat p_m(j):=\widehat c_m(j)/2^m\)。
+则命题 \ref{prop:pom-s2-plancherel} 等价于
+\[
+\sum_{r\in G_m}p_m(r)^2=\frac{1}{F_{m+2}}\sum_{j\in G_m}\bigl|\widehat p_m(j)\bigr|^2.
+\]
+若令 \(A_m:=\max_{j\in G_m,\ j\neq 0}|\widehat p_m(j)|\)，则立刻得到
+\[
+\sum_{r\in G_m}p_m(r)^2\le \frac{1}{F_{m+2}}\Bigl(1+(F_{m+2}-1)A_m^2\Bigr).
+\]
+然而附录 \ref{app:fold-multiplicity} 的临界共振定理 \ref{thm:fold-critical-resonance-constant} 证明沿共振频率 \(j=F_m,F_{m+1}\) 有
+\(
+|\widehat p_m(j)|\to C_\varphi>0
+\)
+（并由推论 \ref{cor:fold-critical-resonance-gap} 给出相应的碰撞下界）。
+因此在 raw Fold 上，\(A_m\) 不可能随 \(m\) 指数衰减：若要在傅里叶侧推进“碰撞趋均匀/谱收缩”，需要控制的是频率\emph{平均能量}或对 edge/bulk 分解后的 bulk 大偏差，而非仅控制最大系数（另见注 \ref{rem:fold-edge-nondecay}）。
+\end{remark}
 
 \begin{lemma}[三阶递推的最小性]\label{lem:pom-s2-minimal-order}
 序列 \(\{S_2(m)\}_{m\ge 2}\) 不满足任何二阶常系数线性递推。因而命题 \ref{prop:pom-s2-recurrence} 的三阶递推在“线性递推阶数”意义下是最小的。
@@ -675,6 +711,39 @@ p_n(A_2)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,t_{n/d}.
 \]
 即二阶碰撞核在核版 RH 不等式上严格留有裕量：非主谱严格落在平方根圆盘内。
 \end{remark}
+
+\begin{proposition}[二阶碰撞核的严格 RH：区间证书]\label{prop:pom-a2-strict-rh-certificate}
+记 \(r_2=\rho(A_2)\)，并令
+\[
+\Lambda_2:=\max_{\mu\in\mathrm{spec}(A_2)\setminus\{r_2\}}|\mu|
+\]
+为次谱半径（sub-spectral radius）。则有严格不等式
+\[
+\boxed{\;\Lambda_2<\sqrt{r_2}.\;}
+\]
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:pom-collision-det}（或直接计算）可知 \(A_2\) 的特征多项式为
+\[
+p(\lambda):=\lambda^3-2\lambda^2-2\lambda+2.
+\]
+直接计算得到
+\[
+p\!\left(\frac94\right)=-\frac{79}{64}<0,\qquad
+p\!\left(\frac52\right)=\frac18>0,
+\]
+故存在根 \(r_2\in\left(\frac94,\frac52\right)\)，从而 \(\sqrt{r_2}>\frac32\)。
+另一方面，
+\[
+p\!\left(-\frac32\right)=-\frac{23}{8}<0,\qquad p(-1)=1>0
+\]
+给出一条负根 \(\mu_-\in\left(-\frac32,-1\right)\)，因而 \(|\mu_-|<\frac32\)；并且
+\[
+p(0)=2>0,\qquad p(1)=-1<0
+\]
+给出一条正根 \(\mu_+\in(0,1)\)，因而 \(|\mu_+|<1\)。
+因此 \(\Lambda_2=\max\{|\mu_-|,|\mu_+|\}<\frac32<\sqrt{r_2}\)。证毕。
+\end{proof}
 
 \begin{remark}[差值链扭曲核：三态 \texorpdfstring{$A_2$}{A2} 的“最小可审计”角色扭曲试验]\label{rem:pom-a2-diffchain-twist}
 命题 \ref{prop:pom-s2-recurrence} 给出的 \(A_2\) 是一个\emph{无标签}的非负 realization；若要定义角色扭曲 \(A_{2,\chi}\)，需要先在边上放置一个可加的“差值荷”标签。一个最小的、完全可审计的选取是从成对窗口的差值
