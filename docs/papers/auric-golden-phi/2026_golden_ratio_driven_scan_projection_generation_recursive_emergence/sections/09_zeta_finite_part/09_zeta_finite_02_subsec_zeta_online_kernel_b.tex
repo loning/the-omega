@@ -463,6 +463,125 @@ N_F(T):=\#\{\,s\in\mathrm{Zeros}(F)\cup\mathrm{Poles}(F):\ 0<\Im(s)\le T\,\}=O(T
 最后一段：经典 \(\zeta(s)\) 的非平凡零点计数满足 \(N_\zeta(T)=\frac{T}{2\pi}\log\frac{T}{2\pi}-\frac{T}{2\pi}+O(\log T)\)，故 \(N_\zeta(T)\) 与 \(O(T)\) 的增长级别不相容，因而不可能与任何固定有限乘积 \(F\) 的零/极点集合一致。证毕。
 \end{proof}
 
+\begin{corollary}[算术晶格封闭：虚部差集受有限生成加法子群约束]\label{cor:finite-determinant-arithmetic-lattice}
+沿用命题 \ref{prop:finite-kernel-lattice-obstruction} 的记号，并令 \(F\) 为其中的有限乘积/商。
+则存在有限集合 \(\Sigma\subset\CC\) 与有限集合 \(\{\Delta_1,\dots,\Delta_J\}\subset(0,\infty)\)（其中每个 \(\Delta_j=2\pi/\log\lambda_j\)）使得
+\[
+\mathrm{Zeros}(F)\cup\mathrm{Poles}(F)
+=\bigcup_{\ell}\Bigl\{\ \sigma_\ell+i(t_\ell+k\Delta_{j(\ell)})\ :\ k\in\ZZ\ \Bigr\}
+\qquad(\sigma_\ell\in\RR,\ t_\ell\in\RR).
+\]
+从而对任意实部带 \(a<\Re(s)<b\)，令
+\[
+\mathcal{T}_{F}(a,b)
+:=\bigl\{\Im(s):\ s\in\mathrm{Zeros}(F)\cup\mathrm{Poles}(F),\ a<\Re(s)<b\bigr\}\subset\RR,
+\]
+则其差集满足
+\[
+\mathcal{T}_{F}(a,b)-\mathcal{T}_{F}(a,b)
+\subseteq
+\mathcal{E}\ +\ \sum_{j=1}^{J}\Delta_j\ZZ,
+\]
+其中 \(\mathcal{E}\subset\RR\) 为某个有限集合。特别地，对每个在带内确有出现的步长 \(\Delta_j\)，差集包含一条严格算术子晶格 \(\Delta_j\ZZ\)。
+\end{corollary}
+\begin{proof}
+命题 \ref{prop:finite-kernel-lattice-obstruction} 已给出零/极点集合为有限条竖向等差列的有限并；将每条竖线上的点写成 \(\sigma_\ell+i(t_\ell+k\Delta_{j(\ell)})\) 形式即得首式。
+\par
+差集方面，任取两点 \(t=t_\ell+k\Delta_{j(\ell)}\)、\(t'=t_{\ell'}+k'\Delta_{j(\ell')}\)，则
+\[
+t-t'=(t_\ell-t_{\ell'})+\bigl(k\Delta_{j(\ell)}-k'\Delta_{j(\ell')}\bigr)\in (t_\ell-t_{\ell'})+\sum_{j=1}^J\Delta_j\ZZ,
+\]
+并且有限并集只引入有限个偏移量集合
+\(
+\mathcal{E}:=\{t_\ell-t_{\ell'}\}_{\ell,\ell'}.
+\)
+最后一段：若某个步长 \(\Delta_j\) 的等差列在带内出现，则该列在虚轴方向上含无穷点，故其内部差集必包含 \(\Delta_j\ZZ\)。证毕。
+\end{proof}
+
+\begin{corollary}[统计学晶格障碍：二点差分必含狄拉克梳齿]\label{cor:finite-determinant-statistical-lattice}
+在推论 \ref{cor:finite-determinant-arithmetic-lattice} 的条件下，若 \(\mathcal{T}_F(a,b)\) 中存在某条步长为 \(\Delta>0\) 的完整等差列 \(t_0+\Delta\ZZ\)（例如某个因子 \(\det(I-\lambda^{-s}M)\) 的特征值列未被完全相消），则定义二点差分测度
+\[
+\nu_T:=\frac{1}{T}\sum_{t,t'\in\mathcal{T}_F(a,b)\cap(0,T]}\delta_{t-t'}\qquad(T>0),
+\]
+则对每个 \(n\in\ZZ\) 都有
+\[
+\liminf_{T\to\infty}\ \nu_T\bigl(\{n\Delta\}\bigr)\ \ge\ \frac{1}{\Delta}\ >0.
+\]
+因此任意沿 \(T\to\infty\) 的极限二点差分统计必包含在 \(\Delta\ZZ\) 上的原子部分；这排除了所有“unfolding 后二点差分具有连续密度”的目标统计形态。
+\end{corollary}
+\begin{proof}
+设 \(\mathcal{A}_T:=(t_0+\Delta\ZZ)\cap(0,T]\)，则 \(|\mathcal{A}_T|=T/\Delta+O(1)\)。
+对任意整数 \(n\)，对偶差 \(t-t'=n\Delta\) 的有序对数至少包含 \(\{(t_0+(k+n)\Delta,\ t_0+k\Delta)\}\)（当两点均落在 \((0,T]\) 内），故
+\[
+\nu_T(\{n\Delta\})
+\ge
+\frac{1}{T}\#\bigl\{(t,t')\in\mathcal{A}_T^2:\ t-t'=n\Delta\bigr\}
+=\frac{|\mathcal{A}_T|-O(1)}{T}
+=\frac{1}{\Delta}+o(1).
+\]
+取 \(\liminf\) 即得结论。证毕。
+\end{proof}
+
+\begin{proposition}[临界圆模态数 \texorpdfstring{$B$}{B} 与临界线零极点密度的线性标定]\label{prop:critical-circle-density-calibration}
+设 \(M\) 为有限维矩阵，\(\lambda=\rho(M)>1\)，并令
+\(
+Z_M(s)=\det(I-\lambda^{-s}M)^{-1}
+\)。
+记临界圆上的全部达界特征值（按代数重数计）为
+\[
+\mu_1,\dots,\mu_B,\qquad |\mu_b|=\sqrt{\lambda}.
+\]
+则 \(Z_M\) 在临界线 \(\Re(s)=\tfrac12\) 上的全部极点由 \(B\) 条竖向等差列给出：
+\[
+s=\frac12+\frac{i(\arg\mu_b+2\pi k)}{\log\lambda},\qquad b=1,\dots,B,\ k\in\ZZ,
+\]
+其虚部步长恒为 \(\Delta=2\pi/\log\lambda\)。并且高度 \(T\) 内的临界线极点计数满足
+\[
+N_{\mathrm{crit}}(T)
+:=\sum_{\substack{s_0\in\mathrm{Poles}(Z_M)\\ \Re(s_0)=\tfrac12,\ 0<\Im(s_0)\le T}}\mathrm{ord}_{s_0}Z_M
+=\frac{B\log\lambda}{2\pi}\,T+O(1)\qquad(T\to\infty).
+\]
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:finite-kernel-lattice-obstruction} 的极点字典，\(\mu_b\) 产生极点列
+\(
+s=(\log\mu_b+2\pi ik)/\log\lambda
+\)。
+当 \(|\mu_b|=\sqrt{\lambda}\) 时 \(\Re(s)=\log|\mu_b|/\log\lambda=\tfrac12\)，并将 \(\log\mu_b\) 写成 \(\tfrac12\log\lambda+i\arg\mu_b\) 即得临界线参数式；步长由 \(2\pi i/\log\lambda\) 给出。
+\par
+计数方面，每条等差列在 \((0,T]\) 内贡献 \(T/\Delta+O(1)=(\log\lambda/(2\pi))T+O(1)\) 个点；对 \(b=1,\dots,B\) 求和得到所示主项与 \(O(1)\) 余项。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$T\log T$}{T log T} 密度匹配的必要条件：\texorpdfstring{$B(T)\asymp (\log T)/(\log\lambda)$}{B(T) ~ (log T)/(log lambda)}]\label{cor:critical-circle-mode-growth}
+若希望在“核版 RH/RH-sharp 的临界线模态”框架内把高度 \(T\) 内的临界线零极点密度提升到 \(N(T)\asymp T\log T\) 量级（如经典 Riemann--von Mangoldt 主项），则对任意固定 \(\lambda>1\) 的有限维核，必要地必须引入一族随尺度增长的核 \(M_T\) 使其临界圆模态数 \(B=B(T)\) 满足
+\[
+B(T)\ \asymp\ \frac{\log T}{\log\lambda}.
+\]
+在真实输入 \(40\) 状态核上 \(\lambda=\varphi^2\)，故 \(B(T)\asymp (\log T)/(2\log\varphi)\)。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:critical-circle-density-calibration}，固定 \(\lambda\) 时临界线点数满足 \(N_{\mathrm{crit}}(T)=\frac{B\log\lambda}{2\pi}T+O(1)\)。
+若要达到 \(N_{\mathrm{crit}}(T)\asymp T\log T\)，则必须有 \(B=B(T)\asymp (\log T)/(\log\lambda)\)。
+对 \(\lambda=\varphi^2\) 代入 \(\log\lambda=2\log\varphi\) 即得。证毕。
+\end{proof}
+
+\begin{remark}[对 \texorpdfstring{$\lambda=\varphi^2$}{lambda=phi^2} 的显式 lift 生成器：用循环提升把 \texorpdfstring{$B$}{B} 线性做大]\label{rem:critical-circle-mode-growth-cyclic-lift}
+附录 \ref{app:real-input-40-finite-rh} 已给出一个可审计的 lift 生成器：取 \(q\ge 2\)，令 \(P_q\) 为 \(q\)-循环置换矩阵并定义循环提升
+\(
+M^{\langle q\rangle}:=M\otimes P_q
+\)（命题 \ref{prop:finite-rh-phase-lift}）。
+对真实输入 \(40\) 状态核，临界圆上唯一达界特征值为 \(-\sqrt{\lambda}=-\varphi\)（注 \ref{rem:finite-rh-40-ramanujan}），故循环提升把临界圆模态数放大为 \(B=q\) 并将临界线梳齿间距细化为
+\(
+2\pi/(q\log\lambda)
+\)（注 \ref{rem:finite-rh-height-scale-calibration}）。
+因此若以 \(q\) 作为 lift 纤维大小，则密度匹配的必要尺度律可写为
+\[
+q(T)\ \asymp\ \frac{\log T}{\log\lambda}
+=\frac{\log T}{2\log\varphi},
+\]
+即为“lift--scale 标定律”的一个完全显式实例。
+\end{remark}
+
 \begin{remark}[本节两类核的检验结论（可复现）]\label{rem:reciprocal-check-outcome}
 上述 $s$-平面对称并非自动成立：它要求非零谱在 $\mu\mapsto\lambda/\mu$ 下封闭。
 对 10 状态同步核 $B$，由 \(\det(I-zB)\) 的因子 \((z+1)\) 知 \(\mu=-1\in\mathrm{spec}(B)\)，但 \(\lambda/\mu=-3\notin\mathrm{spec}(B)\)，故互反闭包失败。

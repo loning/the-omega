@@ -177,6 +177,48 @@ B_n''(1)=\sum_{\gamma\in\mathcal{P}_K,\ |\gamma|=n}\kappa(\gamma)\bigl(\kappa(\g
 因此，若希望出现更丰富的“临界线几何/统计”，需要引入极限过程（状态数增长的 sofic/SFT 逼近序列）或直接进入无穷维转移算子的 Fredholm 行列式口径；后者允许出现超出有限维“相位梳齿”的奇点结构（\cite{Ruelle1976ZetaExpanding,Ruelle1978Thermodynamic,ParryPollicott1990Zeta}）。
 \end{remark}
 
+\begin{remark}[余量扩张表示的可迭代细化：候选 \texorpdfstring{$\mathcal{L}_s$}{Ls} 与“粗分割退化为有限核”]\label{rem:remainder-map-transfer-operator-refinement}
+本段把 \S\ref{subsec:online-delay} 的余量动力学
+\[
+R(t)=\Bigl\{\varphi R(s)+d\varphi^{-3}\Bigr\},\qquad
+e=\Bigl\lfloor \varphi R(s)+d\varphi^{-3}\Bigr\rfloor\in\{0,1\},
+\]
+视为一个在 \(X:=[0,1)\) 上的\textbf{多分支扩张-取整系统}：对每个允许的分支对 \((d,e)\in\{0,1,2\}\times\{0,1\}\)，定义逆支（仿射收缩）
+\[
+\tau_{d,e}(r):=\frac{r+e-d\varphi^{-3}}{\varphi},
+\]
+并令 \(I_{d,e}:=\tau_{d,e}(X)\cap X\) 为其像区间（当 \((d,e)\) 不可达时该区间为空）。则对任意函数 \(f\)（例如有界变差函数或解析函数），可定义一个转移算子族
+\[
+(\mathcal{L}_s f)(r)
+:=\sum_{(d,e)}\mathbf{1}_{I_{d,e}}(r)\,w_{d,e}(r;s)\,f\!\bigl(\tau_{d,e}(r)\bigr),
+\]
+其中权函数 \(w_{d,e}(r;s)\) 可取为 \(e^{-s}\)（每步长度势）、也可取为更一般的解析权（例如把 carry/delay 事件势、或 \S\ref{subsec:xi-from-self-dual} 的连续尺度混合作为 \(s\)-依赖的非局部常势），从而把 \(\det(I-\mathcal{L}_s)\) 置于 Fredholm 行列式范式。
+\par
+关键点在于：\textbf{粗分割时它退化回本文已用的有限核}。具体地，\S\ref{subsec:online-delay} 已给出同步核的 $10$ 个状态 \(Q\) 与边表；并且该边表可等价解释为 \(X=[0,1)\) 上的一个 Markov 分割 \(\{J_q\}_{q\in Q}\)：
+对每个 \(q\in Q\)，令 \(J_q\subset[0,1)\) 为使当前余量落在该区间时“可实现状态”为 \(q\) 的取值域（端点由分支不连续点与其有限次原像生成）。
+则在分段常值子空间
+\(
+\mathcal{C}_Q:=\mathrm{span}\{\mathbf{1}_{J_q}:q\in Q\}
+\)
+上，\(\mathcal{L}_s\) 的作用由一个有限矩阵完全刻画；当取 \(w_{d,e}\equiv 1\) 时，该矩阵正是同步核的邻接矩阵转置 \(B^{\mathsf T}\)（附录 \ref{app:sync-kernel-basic}），亦即
+\[
+\mathcal{L}_0|_{\mathcal{C}_Q}\ \cong\ B^{\mathsf T}.
+\]
+\par
+更进一步，若以分支不连续点集合 \(\mathcal{D}_0:=\{0,1\}\cup\partial I_{d,e}\) 为初始切点，并递推细化
+\[
+\mathcal{D}_{m+1}:=\mathcal{D}_m\ \cup\ \bigcup_{(d,e)}\tau_{d,e}(\mathcal{D}_m),
+\qquad
+\Pi_m:=\text{由 }\mathcal{D}_m\text{ 诱导的区间分割},
+\]
+则得到一族可迭代的 Markov 细化分割 \(\Pi_m\)。在每个 \(\Pi_m\) 上取分段常值空间 \(\mathcal{C}_m\)，即可得到一串有限秩逼近
+\(
+\mathcal{L}_s|_{\mathcal{C}_m}
+\),
+其矩阵元素由“哪个逆支把某个原子映到另一个原子”逐项给出；并在 \(m=0\)（等价于同步核粗分割）时退化为上面的有限核 \(B^{\mathsf T}\)。
+这提供了一个最小可执行的升级接口：保留可审计的有限矩阵层，同时允许在 \(m\to\infty\) 的极限中进入真正的无穷维 Fredholm 行列式框架。
+\end{remark}
+
 \subsubsection{柱投影与最大熵态：C*-代数口径}
 
 与附录 \ref{app:op-algebra} 的“投影读出”语言相呼应：在 SFT 上，柱事件对应一族两两正交投影，它们生成一个交换子代数；最大熵态（Parry 测度）给出其上的规范态。更进一步，Cuntz--Krieger 代数 $\mathcal{O}_A$ 为该 SFT 提供一个非交换的普适 C*-代数封装，其对角子代数与柱投影自然同构。
