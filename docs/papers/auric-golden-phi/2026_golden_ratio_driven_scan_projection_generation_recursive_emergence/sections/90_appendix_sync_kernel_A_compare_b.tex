@@ -91,15 +91,77 @@ b_n(u)=u^n b_n(1/u)
 \end{conjecture}
 
 \paragraph{核版 Chebotarev：群标签的同余类分布}
-给每条边赋有限群标签 $g(e)\in G$（隐含属性），对 prime 环定义 Frobenius 类 $\mathrm{Fr}(p)=\prod_{e\in p}g(e)$。对每个不可约表示 $\rho$，定义扭曲 Hashimoto 算子 $B_{\rho}(u)$ 与
+给每条边赋有限群标签 \(g(e)\in G\)（隐含属性），对 Ihara prime 环 \(p\) 定义 Frobenius 共轭类
 \(
-L_{K,\rho}(u,t)=\det(I-tB_\rho(u))^{-1}
-\)。
-由定理 \ref{thm:kernel-chebotarev-exp}（见主文同余类分层）可得同余类等分布的误差由 $\max_{\rho\neq\mathbf 1}\rho(B_\rho(u))$ 控制。于是可定义可审计的偏差率指标
+\mathrm{Fr}(p):=\prod_{e\in p}g(e)\in G/\!\sim
+\)（按共轭类理解）。对每个不可约表示 \(\rho\in\widehat G\)，可在无回溯边空间上定义扭曲 Hashimoto 算子 \(B_{\rho}(u)\) 与扭曲行列式
 \[
-\theta_K(u):=\max_{\rho\neq\mathbf 1}\frac{\rho(B_\rho(u))}{\rho(B_{\mathbf 1}(u))},
+L^{\mathrm{Ih}}_{K,\rho}(u,t):=\det(I-tB_\rho(u))^{-1}.
 \]
-并据此量化“素数在同余类中的收敛速度”，形成“核版 Chebotarev/Artin-$L$”的完全可计算接口。
+
+\begin{proposition}[Artin 分解的 Ihara 版本（覆盖行列式因子化）]\label{prop:ihara-artin-factorization}
+令 \(B_{G}(u)\) 表示作用在“无回溯边空间 \(\otimes\CC[G]\)”上的群扩张 Hashimoto 算子（正则表示）。则有行列式恒等式
+\[
+\det(I-tB_{G}(u))=\prod_{\rho\in\widehat G}\det(I-tB_{\rho}(u))^{\dim\rho}.
+\]
+\end{proposition}
+
+\begin{proof}
+与命题 \ref{prop:kernel-artin-factorization} 同理：用正则表示分解
+\(
+\CC[G]\cong\bigoplus_{\rho\in\widehat G}\rho^{\oplus \dim\rho}
+\)
+把 \(B_G(u)\) 约化为不可约分量上的直和，取行列式即得。
+\end{proof}
+
+\begin{theorem}[Ihara--Chebotarev：按 Frobenius 共轭类的主项与指数误差]\label{thm:ihara-chebotarev-exp}
+固定 \(u>0\)。记 \(\lambda_1(u):=\rho(B(u))\) 为无回溯主谱半径，并记
+\[
+\lambda_\star(u):=\max_{\mu\in\mathrm{spec}(B(u))\setminus\{\lambda_1(u)\}}|\mu|,
+\qquad
+\eta(u):=\max_{\rho\in\widehat G,\ \rho\neq\mathbf 1}\rho(B_\rho(u)),
+\qquad
+\Lambda(u):=\max\{\lambda_\star(u),\eta(u)\}.
+\]
+对任一共轭类 \(C\subseteq G\)，定义按类分层的 Ihara-primitive 计数
+\[
+q_{n,C}(u):=\sum_{\substack{p\ \mathrm{Ihara\ prime}\\ \ell(p)=n\\ \mathrm{Fr}(p)\in C}}u^{\kappa(p)}.
+\]
+则当 \(n\to\infty\) 时有
+\[
+\boxed{\ 
+q_{n,C}(u)=\frac{|C|}{|G|}\cdot\frac{\lambda_1(u)^n}{n}
++O\!\left(\frac{\Lambda(u)^n}{n}\right)\ }.
+\]
+误差指数由 \(\Lambda(u)/\lambda_1(u)\) 显式控制；特别地若同时满足
+\(
+\lambda_\star(u)\le \lambda_1(u)^{1/2}
+\)
+与
+\(
+\eta(u)\le \lambda_1(u)^{1/2}
+\)
+（Ihara--RH/GRH 型谱隙），则误差为平方根级
+\(
+O(\lambda_1(u)^{n/2}/n)
+\)。
+\end{theorem}
+
+\begin{proof}
+证明与主文定理 \ref{thm:kernel-chebotarev-exp} 完全平行，只需把“周期迹 \(\Rightarrow\) Witt/Möbius 反演 \(\Rightarrow\) primitive”整条链中的算子 \(M(u)\) 替换为 \(B(u)\)，并把扭曲族 \(M_\rho(u)\) 替换为 \(B_\rho(u)\)。
+平凡表示给出主项 \(\lambda_1(u)^n/n\) 与误差 \(O(\lambda_\star(u)^n/n)\)；非平凡表示的贡献用粗界
+\(
+|\Tr(A^m)|\le (\dim A)\,\rho(A)^m
+\)
+控制为 \(O(\eta(u)^n/n)\)。再用类函数的角色正交把共轭类指示函数展开到表示分量上，即得结论。
+\end{proof}
+
+由该定理可定义可审计的偏差率指标
+\[
+\theta_K(u):=\max_{\rho\neq\mathbf 1}\frac{\rho(B_\rho(u))}{\rho(B_{\mathbf 1}(u))}
+=\frac{\eta(u)}{\lambda_1(u)},
+\]
+并据此量化“素数在同余类中的收敛速度”，形成“核版 Chebotarev/Artin-\(L\)”的完全可计算接口。
 
 \paragraph{零温能隙：最小平均回路的可计算性}
 把 $\kappa(e)$ 视为能量，定义 prime 环平均能量
@@ -355,6 +417,63 @@ T(\mathbf r;A):=\mathbf r^{\mathsf T}A\mathbf r.
   \item \textbf{pilot 自适应：}先用小 $S_0$ 估计方差与尺度，再按目标相对误差阈值放大到所需 $S$（该步骤只改变采样次数，不改变任何数学定义）。
 \end{itemize}
 由于本节的目的是给出一个“可落地、可复现”的协议口径，正文表格默认采用前一种固定预算输出，并把样本数 $S$ 写入表注以便审计。
+\end{remark}
+
+\begin{proposition}[Möbius/Witt 反演的误差传播（primitive 的 \texorpdfstring{$1/n$}{1/n} 滤波增益）]\label{prop:mobius-error-propagation}
+设 \(\{a_n\}_{n\ge 1}\) 为任意实数序列，并以 Möbius 反演定义 primitive 计数（按轨道计）
+\[
+p_n:=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}\qquad(n\ge 1).
+\]
+给定任意近似迹序列 \(\{\widehat a_n\}_{n\ge 1}\)，并用同一公式定义
+\[
+\widehat p_n:=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\widehat a_{n/d}.
+\]
+则对每个 \(n\ge 1\) 都有确定性上界
+\[
+\boxed{\ 
+\bigl|p_n-\widehat p_n\bigr|
+\le \frac{1}{n}\sum_{d\mid n}\bigl|a_{n/d}-\widehat a_{n/d}\bigr|
+\ }.
+\]
+\end{proposition}
+\begin{proof}
+由线性性
+\(
+p_n-\widehat p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,(a_{n/d}-\widehat a_{n/d})
+\)，
+取绝对值并用三角不等式即得。
+\end{proof}
+
+\begin{corollary}[指数型迹误差 \texorpdfstring{$\Rightarrow$}{=>} primitive 误差的 \texorpdfstring{$\tau(n)/n$}{tau(n)/n} 界]\label{cor:mobius-exp-bound}
+若存在常数 \(\epsilon>0\)、\(\rho\ge 1\) 使得对所有 \(m\le n\) 有
+\[
+|a_m-\widehat a_m|\le \epsilon\,\rho^m,
+\]
+则
+\[
+\boxed{\ 
+|p_n-\widehat p_n|
+\le \epsilon\,\frac{\tau(n)}{n}\,\rho^n
+\ },
+\]
+其中 \(\tau(n):=\sum_{d\mid n}1\) 为约数个数。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:mobius-error-propagation}，
+\(
+|p_n-\widehat p_n|
+\le \frac{1}{n}\sum_{d\mid n}\epsilon\,\rho^{n/d}
+\le \epsilon\,\frac{\tau(n)}{n}\,\rho^n
+\)
+（因 \(\rho^{n/d}\le \rho^n\) 对 \(\rho\ge 1\) 成立）。
+\end{proof}
+
+\begin{remark}[带权情形的逐点版本]\label{rem:mobius-error-weighted-pointwise}
+对带权核的 primitive 分层谱
+\(
+B_{K,n}(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d)
+\)
+（其中 \(a_m(u)=\Tr(M_K(u)^m)\)），命题 \ref{prop:mobius-error-propagation} 可逐点应用在每个固定 \(u\) 上，从而把任意可审计的迹误差界直接传播到 \(B_{K,n}(u)\) 的误差界；这正是“交换图闭合 \(\Rightarrow\) 可算同时可证”的工程闭环。
 \end{remark}
 
 \begin{proposition}[由单流避免全局直积大图：\texorpdfstring{$m$}{m}-流提升]\label{prop:hutchinson-global-lift}

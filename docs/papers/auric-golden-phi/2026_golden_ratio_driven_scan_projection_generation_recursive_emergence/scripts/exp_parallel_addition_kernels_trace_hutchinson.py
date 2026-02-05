@@ -179,7 +179,7 @@ def _make_table(rows: List[Dict[str, str]], *, u_grid: List[float], n_list: List
         + str(samples)
         + r"$；脚本 \texttt{scripts/exp\_parallel\_addition\_kernels\_trace\_hutchinson.py} 生成）。这里列出 $n\in\{"
         + n_cols
-        + r"\}$ 的 $\widehat B_{K,n}(u)$（数值为估计均值；误差量级由标准误差 $O(S^{-1/2})$ 控制）。"
+        + r"\}$ 的 $\widehat B_{K,n}(u)$（数值为估计均值，$\pm$ 后为标准误差 $\mathrm{se}=O(S^{-1/2})$；primitive 层对迹误差的线性传播与 $1/n$ 滤波增益见命题 \ref{prop:mobius-error-propagation}）。"
     )
     lines.append(r"\caption{" + caption + r"}")
     lines.append(r"\label{tab:parallel-addition-kernels-fingerprint-u-samples}")
@@ -357,7 +357,8 @@ def main() -> None:
             parts = []
             for u in u_grid:
                 est = Bhat[str(u)][str(n)]
-                parts.append(rf"$u={_latex_float(u,3)}:\ { _latex_float(est, 6)}$")
+                se = Bhat_se[str(u)][str(n)]
+                parts.append(rf"$u={_latex_float(u,3)}:\ { _latex_float(est, 6)} \pm { _latex_float(se, 3)}$")
             bh_lines.append(rf"$n={n}$: " + "; ".join(parts))
         bh_cell = r"\par ".join(bh_lines)
 
