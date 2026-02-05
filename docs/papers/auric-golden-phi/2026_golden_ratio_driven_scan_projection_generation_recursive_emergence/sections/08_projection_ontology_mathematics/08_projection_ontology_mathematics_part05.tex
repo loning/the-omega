@@ -108,6 +108,16 @@ n\ \gtrsim\ \frac{\log(1/\varepsilon)}{\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)
   \item \texttt{CLEAN}：排空有限余量并回写稳定地址。
 \end{itemize}
 
+\begin{remark}[跨分辨率 \texttt{RESCALE}$\downarrow$ 的典型外表重写常数]\label{rem:pom-rescale-space-constant}
+当实现需要显式降分辨率（例如把 \(m{+}1\) 位寄存器投影到 \(m\) 位寄存器）时，朴素“丢弃末位”截断一般不满足跨尺度一致性（见小节 \ref{subsec:fold-gauge-anomaly}），必须以折叠感知 restriction \(\widetilde r_{m+1\to m}\) 作为 Gauge 条件。
+此时从朴素截断纠偏到 \(\widetilde r_{m+1\to m}\) 的最小外表改动支持由规范差 \(G_m\) 精确刻画（定义 \ref{def:fold-gauge-anomaly}）。
+在均匀微态基线下，其典型密度存在并锁定为 \(4/9\)（定理 \ref{thm:fold-gauge-anomaly-density}），因此任何频繁执行 \texttt{RESCALE}$\downarrow$ 的微码都不可避免地出现一个新的不可约空间项
+\[
+T_{\mathrm{space}}(m)\ \asymp\ \frac{4}{9}m,
+\]
+它刻画的是\emph{要写回多少寄存器位}，与在线延迟常数（例如 \(\delta_{\min}(\Fold_\infty)=3\)，命题 \ref{prop:pom-delay-min}）正交。
+\end{remark}
+
 \paragraph{机制审计接口}
 规范投影 $P_Z$ 的实现核可用 $\zeta$、$\log\mathfrak{M}$、Dirichlet--Mertens 常数张量与 $\rho/\lambda$ 作为审计指纹（见第 \ref{sec:zeta-finite-part} 节）。原子投影 $P_{\mathrm{prim}}$ 与扭曲读出 \texttt{TWIST} 把 prime-like 轨道谱与 Chebotarev 型偏差转化为可计算指纹。序投影 $P_{\le,b}$ 与角色投影 $P_\chi$ 亦可按相同流程编译为有限同步核并抽取同类指纹，从而实现跨核对比。
 
