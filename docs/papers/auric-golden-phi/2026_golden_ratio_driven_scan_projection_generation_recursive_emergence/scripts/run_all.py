@@ -133,6 +133,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="boundary_tower_gut_signatures",
+            script="exp_boundary_tower_gut_signatures.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/boundary_tower_gut_signatures.json",
+                "sections/generated/eq_boundary_tower_sm12.tex",
+                "sections/generated/tab_zeckendorf_gut_signatures.tex",
+            ],
+        ),
+        Step(
             name="prime_shadow_window_mi",
             script="exp_prime_shadow_window_mi.py",
             args=[],
