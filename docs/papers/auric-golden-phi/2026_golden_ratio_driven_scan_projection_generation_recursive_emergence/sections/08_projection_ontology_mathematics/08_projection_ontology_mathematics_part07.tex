@@ -1039,18 +1039,73 @@ q^\star(m,\varepsilon)=\arg\min_{q\in\mathcal{Q}}\left(\beta_q+\frac{1}{m(q-1)}\
 \]
 右侧是“置信压力”（\(\varepsilon\) 越小或 \(m\) 越小越大），左侧是“矩阶代价增长”（\(\beta_q\) 的离散增量）。
 
-在表 \ref{tab:fold_collision_renyi_spectrum_mod_dp_q20} 给出的 \(q\le 20\) 可复核输出（写成 \(\widehat r_q\) 亦无碍）范围内，直接计算可见 \(q\mapsto \beta_q\) 单调上升（例如 \(\beta_2\approx 0.21559<\beta_{20}\approx 0.22586\)）。
-因此当 \(m\) 足够大且 \(\varepsilon\) 不极端小、使置信项 \(\frac{1}{q-1}\log(1/\varepsilon)\) 可忽略时，最优基准退化为最小斜率的 \(q=2\)；
-而当高置信度（小 \(\varepsilon\)）主导时，最优 \(q^\star\) 会被推向更大矩阶。
-
-\medskip\noindent\textbf{新结论 3：可审计样例（\(m=30,\ \varepsilon=10^{-2}\)）}
-取表 \ref{tab:fold_collision_renyi_spectrum_mod_dp_q20} 的 \(\widehat r_{20}=146.140670174756\)。
-代入上式（\(q=20\)）得到
+更强地，由命题 \ref{prop:pom-pressure-convexity} 的离散凸性与端点恒等式 \(r_1=2\)（即 \(P(1)=\log 2\)），割线斜率
+\(
+\beta_q=\frac{P(q)-P(1)}{q-1}
+\)
+随 \(q\ge 2\) 单调不减：对离散凸性取 \((q_0,q_1,q_2)=(1,q,q+1)\) 得
 \[
-\log P_{30}\ \gtrsim\ \log 2+\frac{30}{19}\bigl(\log \widehat r_{20}-\log 2\bigr)+\frac{1}{19}\log 100\ \approx\ 7.71,
+P(q)\ \le\ \frac{1}{q}P(1)+\frac{q-1}{q}P(q+1)
+\quad\Longleftrightarrow\quad
+\beta_q\le \beta_{q+1}.
 \]
-即 \(\log_2 P_{30}\gtrsim 11.13\) bits（约 \(P_{30}\gtrsim 2.23\times 10^3\)）。
-在同一张表的 \(q\in\{2,\dots,20\}\) 上全表扫描可核验该点的最优矩阶为 \(q^\star(30,10^{-2})=20\)。
+因此当 \(\log(1/\varepsilon)=o(m)\)（例如 \(\varepsilon\) 固定且 \(m\to\infty\)）时，
+\[
+\gamma_m^{(q)}(\varepsilon)=\beta_q+\frac{\alpha}{q-1}=\beta_q+o(1),
+\]
+其指数主项由 \(q=2\) 达到最小；提高 \(q\) 的收益主要来自有限 \(m\) 或极小 \(\varepsilon\) 时的可靠性项 \(\alpha/(q-1)\)。
+
+\medskip\noindent\textbf{（可靠性标度相变）}
+把 \(\varepsilon\) 视为随 \(m\) 变化的风险预算：若 \(\varepsilon_m=e^{-c m}\)（即 \(\alpha_m\to c>0\)），则在 \(r_q\) 证书口径下最优指数由
+\[
+\gamma^{\mathrm{cert}}(c)
+=\inf_{q\ge 2}\left(\beta_q+\frac{c}{q-1}\right)
+\]
+给出。
+当 \(c\downarrow 0\) 时恢复“常数失败率”相的 \(\beta_2=\log(r_2/2)\)；
+而当 \(c\to\infty\) 时，为压低 \(c/(q-1)\) 最优 \(q^\star\) 被推向大 \(q\)，并由 \(\lim_{q\to\infty}\beta_q=\log\sqrt{\varphi}\) 得
+\[
+\lim_{c\to\infty}\gamma^{\mathrm{cert}}(c)=\log\sqrt{\varphi},
+\]
+等价于逐步逼近“按最大纤维 provisioning”的端点指数：你越接近“几乎必然正确”，分位替代最坏值的收益越不可避免地消失。
+
+\medskip\noindent\textbf{新结论 3：可审计样例（\(m=30,\ \varepsilon=10^{-6}\)）}
+在精确指纹范围 \(q\le 17\)（表 \ref{tab:fold_collision_renyi_spectrum}）内，全表扫描得到最优矩阶 \(q^\star(30,10^{-6})=17\)，对应
+\[
+\gamma^{\mathrm{cert}}_{30}(10^{-6})\approx 0.253745,\qquad
+B^{\mathrm{cert}}_{30}(10^{-6})\approx 2.02\times 10^3,
+\]
+从而 prime-register 的乘积预算只需满足 \(P>2B\approx 4.05\times 10^3\)。
+脚本 \texttt{scripts/exp\_fold\_tail\_budget\_gamma\_cert.py} 的输出同时给出一组可直接使用的互素模数建议：例如取 \((2,3,5,7,11,13)\) 时其乘积 \(30030>2B\)。
+\par
+若允许把可审计范围推进到 DP 扩展指纹 \(q\le 20\)（表 \ref{tab:fold_collision_renyi_spectrum_mod_dp_q20}），则同一工作点的最优矩阶会推到 \(q^\star=20\)，并把预算进一步压到 \(B\approx 1.81\times 10^3\)（同一组素数仍足够）。
+作为对比，仅用二阶证书 \(q=2\) 时会得到 \(B\sim 6\times 10^8\) 的天文级预算，清晰体现了“高阶矩主要改善极小 \(\varepsilon\) 的可靠性项”这一结构性结论。
+
+\medskip\noindent\textbf{新结论 4：空间/时间对偶的 Pareto 前沿（可审计定义）}
+把证书侧的“时间成本”用可审计的 realization 规模代理量化：例如取
+\[
+T(q):=\text{实现/递推的阶数代理}\ d_q
+\]
+（在 Fold 情形下，\(d_q\) 可由已核验的整系数递推阶数读取；见表 \ref{tab:fold_collision_moment_spectrum_k2_8} 与表 \ref{tab:fold_collision_moment_spectrum_k9_17}）。
+把空间侧成本取为
+\(
+S(q):=\log_2 P_m^{(q)}(\varepsilon)
+\)
+的下界（由式 \(\log P_m\gtrsim \log2+m\beta_q+\frac{1}{q-1}\log(1/\varepsilon)\) 直接读出）。
+则离散点集
+\(
+\{(T(q),S(q)):\ q\in\mathcal{Q}_{\mathrm{cert}}\}
+\)
+的非支配子集给出一条可复核的 Pareto 前沿：它把“更高阶 moment 证书（更大 \(T\)）\(\Rightarrow\) 更小 prime-register（更小 \(S\)）”量化为一条离散前沿曲线。
+以样例 \((m,\varepsilon)=(30,10^{-6})\) 且 \(\mathcal{Q}_{\mathrm{cert}}=\{2,\dots,17\}\) 为例，扫描得到的前沿点出现在
+\[
+q\in\{3,5,9,11,15,17\},
+\]
+其 \((d_q,\log_2 P)\) 约为
+\[
+(3,20.35),\ (5,15.46),\ (7,13.08),\ (9,12.63),\ (11,12.13),\ (13,11.98),
+\]
+直观展示“时间/实现复杂度”与“空间/prime-register 预算”之间的可审计交换率。
 \end{remark}
 
 \begin{proposition}[Quantile-CRT 编译律：\texorpdfstring{$\varepsilon$}{eps}-sound 的序投影消元]\label{prop:pom-rcrt-epsilon}
