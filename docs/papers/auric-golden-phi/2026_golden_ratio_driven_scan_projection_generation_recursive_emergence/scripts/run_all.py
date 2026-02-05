@@ -174,6 +174,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fibonacci_lie_resonance_ladder",
+            script="exp_fibonacci_lie_resonance_ladder.py",
+            args=["--m-min", "1", "--m-max", "500"],
+            expected_outputs=[
+                "artifacts/export/fibonacci_lie_resonance_ladder.json",
+                "sections/generated/tab_fibonacci_lie_resonance_ladder.tex",
+                "sections/generated/eq_fib_lie_resonance_solutions.tex",
+            ],
+        ),
+        Step(
             name="prime_shadow_window_mi",
             script="exp_prime_shadow_window_mi.py",
             args=[],
@@ -529,6 +539,24 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/sync_kernel_weighted_pressure_3d.json",
+            ],
+        ),
+        Step(
+            name="moment_pressure_surface_sync10",
+            script="exp_moment_kernel_pressure_surface_sync10.py",
+            args=[
+                "--k-list",
+                "2,3,4,5",
+                "--u-grid",
+                "1,0.8,0.6,0.4,0.2",
+                "--energy",
+                "output",
+                "--plot",
+            ],
+            expected_outputs=[
+                "artifacts/export/moment_pressure_surface_sync10.json",
+                "artifacts/export/moment_pressure_surface_sync10.png",
+                "sections/generated/fig_moment_pressure_surface_sync10.tex",
             ],
         ),
         Step(

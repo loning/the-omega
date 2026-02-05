@@ -318,6 +318,48 @@ G_{\nu}^{(b)}(\mathbf{x})
 在预压缩命题 \ref{prop:pom-moment-col-lumping} 的口径下，只需把 \(Q\) 替换为 \(Q/{\sim_{\mathrm{col}}}\)，并把 \(T_s^{(b)}\) 改写为按类计数/加权的 \(T_C^{(b)}\)，即可得到同型的系数提取公式并直接在直方图态空间上实现。
 \end{remark}
 
+\subsubsection{二维压力曲面：把 \texorpdfstring{$q$}{q}-moment 与温度门 \texorpdfstring{$u$}{u} 统一为一个可计算相图}\label{subsec:pom-pressure-surface-qu}
+
+上文注 \ref{rem:pom-moment-symmetric-power-coefficient-extraction} 的系数提取公式允许一步边权
+\(
+w(s,a)\in\RR_{\ge 0}
+\)。
+当该边权来自温度化门 \(\mathrm{PROJ}_u\)（定义 \ref{def:pom-proj-temp}）时，可把“空间轴”（多重度矩阶 \(q\)）与“时间轴”（温度参数 \(u\)）组织为同一张二维谱曲面。
+
+\paragraph{加权碰撞核}
+取一个非负可加代价势 \(E:Q\times A_{\mathrm{in}}\to\ZZ_{\ge 0}\)，并令
+\[
+w_u(s,a):=u^{E(s,a)},\qquad u\in(0,1].
+\]
+把注 \ref{rem:pom-moment-symmetric-power-coefficient-extraction} 中的 \(w(s,a)\) 替换为 \(w_u(s,a)\)，即可得到一族依赖 \(u\) 的对称幂商 moment-kernel
+\(
+\widetilde A_q(u)
+\)
+（其条目仍由同型的系数提取公式给出）。
+记其 Perron 根为
+\[
+r_q(u):=\rho\!\bigl(\widetilde A_q(u)\bigr).
+\]
+当 \(u=1\) 时，\(w_u\equiv 1\) 退化回无权计数核 \(\widetilde A_q\) 与本文的主尺度 \(r_q\)。
+
+\paragraph{二维压力曲面}
+令 \(|A_{\mathrm{out}}|\) 为输出字母表大小（本文的折叠读出典型为 \(|A_{\mathrm{out}}|=2\)）。
+定义二维压力为
+\[
+\boxed{\;
+P(q,u):=\log r_q(u)-q\log|A_{\mathrm{out}}|\;}.
+\]
+它在两个极限方向上与本文既有一维指纹兼容：
+\begin{enumerate}
+  \item \textbf{（空间端点）} \(P(q,1)=\log r_q-q\log|A_{\mathrm{out}}|=P(q)\)（本文的 moment 压力曲线）；
+  \item \textbf{（时间端点）}形式上取 \(q=1\) 时“碰撞约束”平凡化，\(\widetilde A_1(u)\) 退化为底层带权核的邻接矩阵（定义 \ref{def:pom-proj-temp} 的 \(M_E(u)\) 口径），因此 \(r_1(u)=\lambda_1(u)\) 回到单轴温度压力 \(P(1,u)=\log\lambda_1(u)-\log|A_{\mathrm{out}}|\)。
+\end{enumerate}
+因此 \(P(q,u)\) 可作为“空间（碰撞矩谱）—时间（温度倾斜）”的统一相图坐标，为注 \ref{rem:pom-hardening-u-vs-q} 的 \((u,q,\varepsilon)\) 三旋钮调度提供一条可计算的谱侧底座。
+
+\paragraph{可复现实现（示例核）}
+脚本 \texttt{scripts/exp\_moment\_kernel\_pressure\_surface\_sync10.py} 在本文的 10 状态同步核上，使用直方图 DP（注 \ref{rem:pom-moment-symmetric-power-coefficient-extraction}）直接构造加权核 \(\widetilde A_q(u)\) 并估计 \(r_q(u)\)，从而输出一张离散网格上的压力热图：
+\input{sections/generated/fig_moment_pressure_surface_sync10}
+
 \begin{definition}[碰撞计数等价（\texorpdfstring{$\sim_{\mathrm{col}}$}{~col}）]\label{def:pom-collision-count-bisim}
 设 \(\mathcal{T}\) 为确定性在线核/转导器：状态集 \(Q\)，输入字母表 \(A_{\mathrm{in}}\)，输出字母表 \(A_{\mathrm{out}}\)，并有确定性转移--输出
 \[
@@ -517,6 +559,7 @@ P_{\le}= \mathrm{CRT}_{\{p_i\}}\circ P_{\chi,\{p_i\}}
   \item \textbf{moment-分位路径：}固定（或不极端降低）\(u\)，通过提高 \(q\) 并用 moment-kernel（\(\mathrm{MOM}_q\)）给出尾部证书，从而触发 \((\mathrm{RCRT}_\varepsilon)\)（命题 \ref{prop:pom-rcrt-epsilon}）把序门编译为空间化的 residue+CRT 读出；其空间侧代价主要体现在 prime-register 配额 \(\log P\)（推论 \ref{cor:pom-prime-register-quantile-budget} 与注 \ref{rem:pom-quantile-budget-computable} 的 \(\gamma\)-证书）。
 \end{itemize}
 因此编译器可以把 \((u,q,\varepsilon)\) 作为三旋钮：\(u\) 主控时间尺度、\(q\) 主控尾部放大与空间配额、\(\varepsilon\) 主控风险预算；并用命题 \ref{prop:pom-eps-sound-compose} 的加法律对多次近似消序门的总体失败概率做账。
+二维压力曲面 \(P(q,u)\) 提供把两条路径放入同一“谱相图”的统一坐标（\S\ref{subsec:pom-pressure-surface-qu}）。
 \end{remark}
 
 \begin{remark}[预算指数的三项分解：几何必然损失 + R\'enyi 非均匀惩罚 + 置信项]\label{rem:pom-quantile-budget-three-term}
