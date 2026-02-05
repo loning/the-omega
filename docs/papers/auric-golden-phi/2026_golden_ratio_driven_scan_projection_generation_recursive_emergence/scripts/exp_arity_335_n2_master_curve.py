@@ -74,6 +74,21 @@ def _central_fourth(f, h: float) -> float:
     return (f(-2.0 * h) - 4.0 * f(-h) + 6.0 * f(0.0) - 4.0 * f(h) + f(2.0 * h)) / (h**4)
 
 
+def _P2_closed() -> float:
+    # Closed form from the pure-collision cubic pressure branch:
+    #   P''(0) = (6*sqrt(5) - 5) / 125.
+    s5 = 5.0**0.5
+    return float((6.0 * s5 - 5.0) / 125.0)
+
+
+def _P4_closed() -> float:
+    # Closed form from the pure-collision cubic pressure branch:
+    #   P^{(4)}(0) = (7 + 24*sqrt(5)) / 3125.
+    s5 = 5.0**0.5
+    return float((7.0 + 24.0 * s5) / 3125.0)
+
+
+
 @dataclass(frozen=True)
 class Point:
     p: int
@@ -87,9 +102,9 @@ class Point:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Master-curve experiment for ((3,3,p)) pure collision twists.")
-    parser.add_argument("--p-list", type=str, default="7,11,13", help="Comma-separated odd primes p.")
+    parser.add_argument("--p-list", type=str, default="17,19,23,29,31", help="Comma-separated odd primes p.")
     parser.add_argument("--k-max", type=int, default=1, help="Compute k=1..k_max (keep small for small-angle regime).")
-    parser.add_argument("--diff-h", type=float, default=2e-4, help="Step for pressure derivatives P''(0), P''''(0).")
+    parser.add_argument("--diff-h", type=float, default=1e-2, help="Step for pressure derivatives P''(0), P''''(0).")
     parser.add_argument(
         "--json-out",
         type=str,
@@ -117,12 +132,19 @@ def main() -> None:
     kernel_map = build_kernel_map(edges)
     states = build_real_input_states()
 
+    # IMPORTANT:
+    # A naive 5-point stencil for the 4th derivative is numerically unstable in float64
+    # at very small h (catastrophic cancellation + division by h^4). Since this paper
+    # has a closed-form expression for the pure-collision pressure derivatives, we
+    # use the closed forms for the prediction table, and keep finite-difference values
+    # (with user-chosen h) only as an audit trail.
     h = float(args.diff_h)
     f = lambda t: _pressure_real_tilt(t, states=states, kernel_map=kernel_map)
-    P2 = _central_second(f, h)
-    P4 = _central_fourth(f, h)
+    P2_fd = _central_second(f, h)
+    P4_fd = _central_fourth(f, h)
 
-    sigma2 = P2
+    sigma2 = _P2_closed()
+    P4 = _P4_closed()
     kappa_inf = sigma2 / 2.0
 
     points: List[Point] = []
@@ -160,6 +182,10 @@ def main() -> None:
         "diff_h": h,
         "pressure_P2": sigma2,
         "pressure_P4": P4,
+        "pressure_P2_fd": float(P2_fd),
+        "pressure_P4_fd": float(P4_fd),
+        "pressure_P2_fd_abs_err": float(abs(P2_fd - sigma2)),
+        "pressure_P4_fd_abs_err": float(abs(P4_fd - P4)),
         "kappa_inf": kappa_inf,
         "points": [p.__dict__ for p in points],
     }

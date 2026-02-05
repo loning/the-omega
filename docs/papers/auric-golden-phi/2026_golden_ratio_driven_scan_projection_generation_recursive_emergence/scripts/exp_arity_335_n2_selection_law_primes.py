@@ -142,7 +142,7 @@ def main() -> None:
     parser.add_argument(
         "--p-list",
         type=str,
-        default="5,7,11,13",
+        default="5,7,11,13,17,19,23,29,31",
         help="Comma-separated list of moduli p to scan (typically primes).",
     )
     parser.add_argument(
