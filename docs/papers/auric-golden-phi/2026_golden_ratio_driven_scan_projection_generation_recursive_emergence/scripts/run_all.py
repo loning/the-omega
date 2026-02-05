@@ -708,6 +708,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="group_unification_spectral_alignment_diagnostics",
+            script="exp_group_unification_spectral_alignment_diagnostics.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/group_unification_spectral_alignment_diagnostics.json",
+                "sections/generated/eq_group_unification_spectral_alignment_diagnostics.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_covariance_worst_character",
             script="exp_real_input_40_covariance_predict_worst_character.py",
             args=["--triple", "3x3x5", "--third-axis", "N2", "--h", "0.0002"],
