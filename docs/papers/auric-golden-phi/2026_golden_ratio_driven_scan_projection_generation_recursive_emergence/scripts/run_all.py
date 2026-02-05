@@ -716,6 +716,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_weighted_newman_threshold",
+            script="exp_sync_kernel_weighted_newman_threshold.py",
+            args=["--dps", "120"],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_weighted_newman_threshold.json",
+                "sections/generated/eq_sync_kernel_weighted_newman_threshold.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_rate_curve_elimination",
             script="exp_sync_kernel_rate_curve_elimination.py",
             args=[],
@@ -870,6 +879,15 @@ def build_steps() -> List[Step]:
                 "sections/generated/tab_real_input_40_bf_ktheory.tex",
                 "sections/generated/tab_real_input_40_parry_internal_distribution.tex",
                 "sections/generated/tab_real_input_40_nilpotent_jordan.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_lucas_pipeline",
+            script="exp_real_input_40_lucas_pipeline.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_lucas_pipeline.json",
+                "sections/generated/eq_real_input_40_lucas_pipeline.tex",
             ],
         ),
         Step(
