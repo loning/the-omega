@@ -821,6 +821,41 @@ q\ \longmapsto\ \gamma^{(q)}_{m}(\varepsilon)
 \)，
 右端是 \(q\) 的仿射函数；而“离散凸函数 \(-\) 仿射函数”的子水平集在整数上必为区间。
 因此最优 \(q^\star\) 的集合是一个（通常很短的）连续整数区间，既可全表扫描，也可用单峰搜索在 \(O(\log q_{\max})\) 次评估中定位。
+
+\medskip\noindent\textbf{新结论 1：prime-register 总预算的显式闭式（对 \(q\) 可优化）}
+由推论 \ref{cor:pom-prime-register-q-quota-family} 的 \(B_m^{(q)}(\varepsilon)\) 形式与 CRT 侧条件 \(P_m>2B\)，对任意 \(q\ge 2\) 得到一条完全显式、可审计的充分预算：
+\[
+\boxed{\;
+\log P_m\ \gtrsim\ \log 2\ +\ \frac{m}{q-1}\bigl(\log r_q-\log 2\bigr)\ +\ \frac{1}{q-1}\log(1/\varepsilon)\;}
+\]
+因此在给定的可审计矩阶集合 \(\mathcal{Q}\subseteq\ZZ_{\ge 2}\) 上，“选矩阶”可直接写为
+\[
+q^\star(m,\varepsilon)=\arg\min_{q\in\mathcal{Q}}\left(\beta_q+\frac{1}{m(q-1)}\log(1/\varepsilon)\right),
+\qquad
+\beta_q=\frac{\log r_q-\log 2}{q-1}.
+\]
+
+\medskip\noindent\textbf{新结论 2：最优矩阶选择的相图（阈值判据 + 表格审计）}
+记 \(\alpha:=\frac{1}{m}\log(1/\varepsilon)\)。
+则 \(q+1\) 优于 \(q\) 的充要条件等价于一条局部判据：
+\[
+\boxed{\;
+\beta_{q+1}-\beta_q\ <\ \alpha\cdot\frac{1}{q(q-1)}\;}
+\]
+右侧是“置信压力”（\(\varepsilon\) 越小或 \(m\) 越小越大），左侧是“矩阶代价增长”（\(\beta_q\) 的离散增量）。
+
+在表 \ref{tab:fold_collision_renyi_spectrum_mod_dp_q20} 给出的 \(q\le 20\) 可复核输出（写成 \(\widehat r_q\) 亦无碍）范围内，直接计算可见 \(q\mapsto \beta_q\) 单调上升（例如 \(\beta_2\approx 0.21559<\beta_{20}\approx 0.22586\)）。
+因此当 \(m\) 足够大且 \(\varepsilon\) 不极端小、使置信项 \(\frac{1}{q-1}\log(1/\varepsilon)\) 可忽略时，最优基准退化为最小斜率的 \(q=2\)；
+而当高置信度（小 \(\varepsilon\)）主导时，最优 \(q^\star\) 会被推向更大矩阶。
+
+\medskip\noindent\textbf{新结论 3：可审计样例（\(m=30,\ \varepsilon=10^{-2}\)）}
+取表 \ref{tab:fold_collision_renyi_spectrum_mod_dp_q20} 的 \(\widehat r_{20}=146.140670174756\)。
+代入上式（\(q=20\)）得到
+\[
+\log P_{30}\ \gtrsim\ \log 2+\frac{30}{19}\bigl(\log \widehat r_{20}-\log 2\bigr)+\frac{1}{19}\log 100\ \approx\ 7.71,
+\]
+即 \(\log_2 P_{30}\gtrsim 11.13\) bits（约 \(P_{30}\gtrsim 2.23\times 10^3\)）。
+在同一张表的 \(q\in\{2,\dots,20\}\) 上全表扫描可核验该点的最优矩阶为 \(q^\star(30,10^{-2})=20\)。
 \end{remark}
 
 \begin{proposition}[Quantile-CRT 编译律：\texorpdfstring{$\varepsilon$}{eps}-sound 的序投影消元]\label{prop:pom-rcrt-epsilon}
