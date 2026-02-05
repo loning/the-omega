@@ -96,6 +96,22 @@ n\ \gtrsim\ \frac{\log(1/\varepsilon)}{\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)
   \item \texttt{FSTEP rs,prog}（FRACTRAN 一步）：$W=(0,1)$（prime-core first-fit 更新；见小节 \ref{subsec:pom-fractran}）。
 \end{itemize}
 
+\paragraph{共振/碰撞读出指令：\texttt{MOM} 协处理器}
+除“加减乘除商余”的值层指令外，本文的高阶碰撞矩 \(S_q(m)\)（定理 \ref{thm:pom-moment-resonance}）提供了一类\textbf{独立的可审计读出运算}：其接口由“已核验最小递推 + Hankel 证书抽取”完全确定，可作为共振机制的可执行后端。
+\begin{itemize}
+  \item \texttt{MOM.SET(q)}：选择阶 \(q\)，加载其已核验最小递推 \((d_q,m_0,(c_i)_{i=1}^{d_q})\) 与最短初值窗口 \((S_q(2),\dots,S_q(1+d_q))\)（例如注 \ref{rem:pom-moment-init-9-12} 与表 \ref{tab:fold_collision_moment_recursions_9_17}）。
+  \item \texttt{MOM.STEP}：执行一次递推更新
+  \(
+  S_q(m)\leftarrow \sum_{i=1}^{d_q} c_i S_q(m-i)
+  \)，并左移长度 \(d_q\) 的历史窗口。
+  \item \texttt{MOM.ODDNEU.CHECK}：检查并断言奇滞后中性
+  \(
+  \sum_{i\ \mathrm{odd}} c_i=0
+  \)
+  （命题 \ref{prop:pom-moment-odd-lag-neutrality}）；在已核验范围内，这是对系数表与“最小递推”声明的零成本一致性审计。
+  \item \texttt{RESO.EXTRACT(q)}（离线/批处理微码）：对足够长的 \(S_q\) 样本构造 Hankel 块并恢复最小实现；若 \(d_q<2\lfloor q/2\rfloor+1\)，则输出模态约束证书（定理 \ref{thm:pom-moment-resonance}）或 Hankel-null 证书（注 \ref{rem:pom-nullmodes-algorithm}）。
+\end{itemize}
+
 \paragraph{微码原语（英文标签，用于可审计性）}
 \begin{itemize}
   \item \texttt{LIFT\_SCALE}：进入 $\mathcal{S}_\varphi$；
