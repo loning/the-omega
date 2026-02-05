@@ -1288,6 +1288,42 @@ P_{\le}= \mathrm{CRT}_{\{p_i\}}\circ P_{\chi,\{p_i\}}
 （作为可见读出）。
 因此按定义 \ref{def:pom-eps-sound-rewrite}，上述重写在失败概率至多为 \(\varepsilon\) 的意义下成立。证毕。
 \end{proof}
+
+\begin{proposition}[序投影的分支计数下界：不可并行判定深度]\label{prop:pom-serial-branching-lower-bound}
+设某一类“序投影/比较”原语在一次调用中最多产生 \(b\ge 2\) 种可见分支（例如二路判定 \(b=2\)，三路比较 \(b=3\)）。
+考虑任何实现需要在某一事件 \(E\) 上确定一个取值空间大小至少为 \(d\) 的离散输出（例如：输出一个整数 \(Y\in[-B,B]\) 时 \(d=2B+1\)，或在一个纤维中选择唯一标签时 \(d=d_m(x)\)）。
+则在事件 \(E\) 上，该实现中不可并行的序门调用深度 \(k_{\le}\) 必满足
+\[
+k_{\le}\ \ge\ \left\lceil \log_b d\right\rceil=\left\lceil \frac{\log d}{\log b}\right\rceil.
+\]
+特别地，在命题 \ref{prop:pom-rcrt-epsilon} 的设定下，若选取 \(B\) 使得 \(\mathbb{P}[d_m(X)>B]\le \varepsilon\)，则任何以失败概率 \(\le\varepsilon\) 实现该序读出的串行路线，都必须在好事件 \(\{d_m(X)\le B\}\) 上支付
+\[
+k_{\le}\ \ge\ \left\lceil \log_b(2B+1)\right\rceil
+\]
+的不可并行深度。
+\end{proposition}
+\begin{proof}
+每次序门调用最多将计算树分成 \(b\) 个分支，深度为 \(k_{\le}\) 的决策树叶节点数最多为 \(b^{k_{\le}}\)。
+若要在事件 \(E\) 上区分至少 \(d\) 种可能输出，则必须有 \(b^{k_{\le}}\ge d\)，即 \(k_{\le}\ge \lceil \log_b d\rceil\)。
+对整数区间 \([-B,B]\) 的情形取 \(d=2B+1\) 即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[由 moment 谱反推的风险—时间下界曲线]\label{cor:pom-moment-to-serial-time-lb}
+在命题 \ref{prop:pom-rcrt-epsilon} 的折叠读出口径下，对任意 \(q\ge 2\) 令
+\[
+B_m^{(q)}(\varepsilon):=\varepsilon^{-1/(q-1)}\left(\frac{r_q}{2}\right)^{m/(q-1)}
+\]
+（表 \ref{tab:pom-space-time-duality-prime-register} 的 Quantile-CRT 配额）。
+则任何在失败概率 \(\le\varepsilon\) 意义下以 \(b\)-分支串行序门实现同一序读出的路线，其不可并行深度必须满足
+\[
+k_{\le}\ \ge\ \left\lceil \log_b\bigl(2B_m^{(q)}(\varepsilon)+1\bigr)\right\rceil.
+\]
+取 \(q\) 在可审计指纹范围内最优（注 \ref{rem:pom-quantile-budget-computable}）即可得到一条可计算的风险—时间下界曲线
+\(
+\varepsilon\mapsto \inf_q \lceil \log_b(2B_m^{(q)}(\varepsilon)+1)\rceil
+\)：
+\textbf{若不进行 (RCRT$_\varepsilon$) 的空间化消序门，则时间侧至少按该曲线增长。}
+\end{corollary}
 \begin{remark}[两条硬化路径与 \texorpdfstring{$(u,q,\varepsilon)$}{(u,q,eps)} 调度]\label{rem:pom-hardening-u-vs-q}
 序门的“硬化”在本文接口里至少有两条可执行路径：
 \begin{itemize}
