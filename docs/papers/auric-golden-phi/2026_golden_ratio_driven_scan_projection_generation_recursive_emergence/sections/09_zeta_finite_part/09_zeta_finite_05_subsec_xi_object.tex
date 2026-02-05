@@ -125,6 +125,47 @@ y+y^{-1}=2\cos\theta\in[-2,2]
 因此 “所有零点都满足 \(\Re(s)=\tfrac12\)” 等价于 “\(P_L\) 的所有根都在 \([-2,2]\)”。
 \end{proof}
 
+\begin{corollary}[单位圆根判据：\texorpdfstring{$\Xi$}{Xi}-RH \(\Longleftrightarrow\) 自倒数多项式的单位圆根分布]\label{cor:xi-rh-unit-circle-reciprocal}
+在命题 \ref{prop:xi-rh-interval-criterion} 的记号下，令 \(d:=\deg P_L\) 并定义
+\[
+\Phi_L(y):=y^{d}P_L(y+y^{-1})\in\RR[y].
+\]
+则：
+\begin{enumerate}
+  \item \(\Phi_L\) 为自倒数（reciprocal/palindromic）多项式，即
+  \[
+  \boxed{\ y^{2d}\Phi_L(1/y)=\Phi_L(y)\ }.
+  \]
+  \item 下列陈述等价：
+  \begin{enumerate}
+    \item[(i)] \(\Xi_{\Delta,L}\) 的全部零点都满足 \(\Re(s)=\tfrac12\)；
+    \item[(ii)] \(\Phi_L(y)\) 的全部复根都满足 \(|y|=1\)；
+    \item[(iii)] \(P_L(S)\) 的全部根都落在实区间 \([-2,2]\) 内。
+  \end{enumerate}
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+由定义 \(\Phi_L(y)=y^{d}P_L(y+y^{-1})\)，把 \(y\mapsto 1/y\) 代入得
+\(
+\Phi_L(1/y)=y^{-d}P_L(y+y^{-1})
+\)，
+故 \(y^{2d}\Phi_L(1/y)=y^{d}P_L(y+y^{-1})=\Phi_L(y)\)，从而 \(\Phi_L\) 自倒数。
+\par
+另一方面，\(\Phi_L(y)=0\) 当且仅当 \(P_L(S_0)=0\) 且 \(S_0=y+y^{-1}\)。
+若 \(S_0\in[-2,2]\)，则 \(y\) 必可写为 \(y=e^{i\theta}\)（\(\theta\in\RR\)），从而 \(|y|=1\)；反之若 \(|y|=1\)，则 \(S_0=y+y^{-1}\in[-2,2]\)。
+因此 “\(P_L\) 的根全在 \([-2,2]\)” 等价于 “\(\Phi_L\) 的根全在单位圆”，再与命题 \ref{prop:xi-rh-interval-criterion} 合并即得 (i)\(\Leftrightarrow\)(ii)\(\Leftrightarrow\)(iii)。
+\end{proof}
+
+\begin{remark}[证书化验零：从 \texorpdfstring{$P_L$}{PL} 或 \texorpdfstring{$\Phi_L$}{PhiL} 到 Hardy 截面零点区间]\label{rem:xi-hard-zero-certificate}
+在完成化表示下，
+\[
+\Xi_{\Delta,L}\!\left(\tfrac12+it\right)=P_L\!\bigl(2\cos(t\log L)\bigr),
+\]
+因此临界线零点问题可完全压缩为一元多项式根的证书化问题。
+例如可采用如下“可机核验”的有限流程：先用 Sturm 序列（或等价的有理区间算术）把 \(P_L\) 在 \([-2,2]\) 内的实根隔离成互不相交的有理区间；再把每个根区间通过单调的 \(\arccos(\cdot/2)\) 映射为一个 \(t\)-零点区间并按周期 \(2\pi/\log L\) 平移复制；最后用三角多项式的显式导数界在每个区间内给出“至多一个零点”的唯一性证书。
+同步核加权例子中，脚本 \texttt{scripts/exp\_sync\_kernel\_xi\_cubic\_cos\_polynomial.py} 已直接输出 \(P_L\) 的根与对应离线竖线参数，可作为该证书流程的最小可审计实例。
+\end{remark}
+
 \paragraph{条带版 \texorpdfstring{$\Xi$}{Xi}-RH：只约束开临界条带内的离线零点}
 经典 RH 的语义并非“全体零点皆在临界线”，而是只约束开临界条带 \(0<\Re(s)<1\) 内的非平凡零点；
 条带外的零点被视作平凡零点。
