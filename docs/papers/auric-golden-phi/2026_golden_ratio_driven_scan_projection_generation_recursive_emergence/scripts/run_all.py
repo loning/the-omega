@@ -219,6 +219,19 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="window6_c6_orbit_patisalam_seed",
+            script="exp_window6_c6_orbit_patisalam_seed.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_c6_orbit_patisalam_seed.json",
+                "sections/generated/eq_window6_c6_orbit_decomposition.tex",
+                "sections/generated/tab_window6_c6_orbit_decomposition.tex",
+                "sections/generated/eq_fold6_bin_uplift_delta_set.tex",
+                "sections/generated/tab_fold6_boundary_sheet_pairs.tex",
+                "sections/generated/tab_foldbin_boundary_lift_m6_m8.tex",
+            ],
+        ),
+        Step(
             name="fibonacci_lie_resonance_ladder",
             script="exp_fibonacci_lie_resonance_ladder.py",
             args=["--m-min", "1", "--m-max", "500"],
@@ -1010,6 +1023,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_rho_m2_fingerprint",
+            script="exp_real_input_40_rho_m2_fingerprint.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_rho_m2_fingerprint.json",
+                "sections/generated/tab_real_input_40_rho_m2_fingerprint.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_arity_3d",
             script="exp_sync_kernel_real_input_40_arity_3d.py",
             args=[],
@@ -1111,6 +1133,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/real_input_40_rho_ppp_prime_scan.json",
                 "sections/generated/tab_real_input_40_rho_ppp_prime_scan.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_spectral_tax_workload",
+            script="exp_real_input_40_spectral_tax_workload.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_spectral_tax_workload.json",
+                "sections/generated/tab_real_input_40_spectral_tax_workload.tex",
             ],
         ),
         Step(
@@ -1527,6 +1558,15 @@ def build_steps() -> List[Step]:
                 "sections/generated/tab_parallel_addition_kernels_bfs.tex",
                 "sections/generated/tab_parallel_addition_kernels_fingerprint.tex",
                 "sections/generated/tab_parallel_addition_kernels_fingerprint_main.tex",
+            ],
+        ),
+        Step(
+            name="parallel_addition_kernels_zero_temp_scales",
+            script="exp_parallel_addition_kernels_zero_temp_scales.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/parallel_addition_kernels_zero_temp_scales.json",
+                "sections/generated/tab_parallel_addition_kernels_zero_temp_scales.tex",
             ],
         ),
         Step(

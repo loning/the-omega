@@ -84,6 +84,38 @@ def main() -> None:
         )
     )
 
+    # Third derivative mu'''(1) via implicit differentiation (auditable, pure algebra).
+    # For F(mu(u),u)=0, let:
+    #   A=F_mu, B=F_mumu, C=F_mu_u,
+    #   E=F_mumumu, Fm=F_mumu_u, G=F_mu_uu, I=F_uuu
+    # then:
+    #   mu''' = -[ 3(B mu' + C) mu'' + E (mu')^3 + 3 Fm (mu')^2 + 3 G mu' + I ] / A
+    F_mumu = sp.diff(F, mu, 2)
+    F_mu_u_mixed = sp.diff(F, mu, 1, u, 1)
+    F_mumumu = sp.diff(F, mu, 3)
+    F_mumu_u = sp.diff(F, mu, 2, u, 1)
+    F_mu_uu = sp.diff(F, mu, 1, u, 2)
+    F_uuu = sp.diff(F, u, 3)
+
+    A0 = sp.simplify(F_mu.subs({u: u0, mu: mu0}))
+    B0 = sp.simplify(F_mumu.subs({u: u0, mu: mu0}))
+    C0 = sp.simplify(F_mu_u_mixed.subs({u: u0, mu: mu0}))
+    E0 = sp.simplify(F_mumumu.subs({u: u0, mu: mu0}))
+    F0 = sp.simplify(F_mumu_u.subs({u: u0, mu: mu0}))
+    G0 = sp.simplify(F_mu_uu.subs({u: u0, mu: mu0}))
+    I0 = sp.simplify(F_uuu.subs({u: u0, mu: mu0}))
+
+    mu_third = sp.simplify(
+        -(
+            3 * (B0 * mu_prime + C0) * mu_second
+            + E0 * mu_prime**3
+            + 3 * F0 * mu_prime**2
+            + 3 * G0 * mu_prime
+            + I0
+        )
+        / A0
+    )
+
     # Pressure: P(theta)=log rho(A_theta)=log(mu(u)/2), u=e^theta.
     # P'(0) = u * mu'(u)/mu(u) at u=1.
     g_star = sp.simplify((u * (-F_u / F_mu) / mu).subs({u: u0, mu: mu0}))
@@ -93,6 +125,21 @@ def main() -> None:
     P2 = sp.simplify(
         (u * ((mu_prime / mu0) + u * (mu_second / mu0 - (mu_prime**2) / (mu0**2)))).subs({u: u0})
     )
+
+    # Third theta-derivative P_G^{(3)}(0) from mu'(1),mu''(1),mu'''(1).
+    # Let r(u)=d/du log(mu(u))=mu'(u)/mu(u). Then:
+    #   P'(0)=r(1), P''(0)=r(1)+r'(1), P'''(0)=r(1)+3r'(1)+r''(1).
+    f0 = mu0
+    f1 = mu_prime
+    f2 = mu_second
+    f3 = mu_third
+    r0 = sp.simplify(f1 / f0)
+    r1 = sp.simplify((f2 * f0 - f1**2) / (f0**2))
+    r2 = sp.simplify((f3 * f0**2 - 3 * f1 * f2 * f0 + 2 * f1**3) / (f0**3))
+    P3 = sp.simplify(r0 + 3 * r1 + r2)
+
+    # Standardized per-step skewness intensity gamma1 = P'''(0) / (P''(0))^{3/2}.
+    gamma1_float = float(P3) / (float(P2) ** 1.5) if float(P2) > 0 else float("nan")
 
     payload: Dict[str, object] = {
         "meta": {
@@ -114,8 +161,11 @@ def main() -> None:
             "mu0": str(mu0),
             "mu_prime_at_u1": str(mu_prime),
             "mu_second_at_u1": str(mu_second),
+            "mu_third_at_u1": str(mu_third),
             "g_star_P_prime_0": str(g_star),
             "sigma2_P_second_0": str(P2),
+            "cum3_density_P_third_0": str(P3),
+            "gamma1_skewness_intensity_float": float(gamma1_float),
         },
     }
 
@@ -149,7 +199,15 @@ def main() -> None:
     tex.append(r"\]")
     tex.append(r"因此 $P_G(\theta)=\log(\mu(e^\theta)/2)$。并且在 $\theta=0$ 处可由隐式微分闭式读出：")
     tex.append(r"\[")
-    tex.append(r"\boxed{\ P_G'(0)=" + _sympy_to_tex(g_star) + r",\qquad P_G''(0)=" + _sympy_to_tex(P2) + r"\ }.")
+    tex.append(
+        r"\boxed{\ P_G'(0)="
+        + _sympy_to_tex(g_star)
+        + r",\qquad P_G''(0)="
+        + _sympy_to_tex(P2)
+        + r",\qquad P_G^{(3)}(0)="
+        + _sympy_to_tex(P3)
+        + r"\ }."
+    )
     tex.append(r"\]")
     tex.append(r"\end{proposition}")
     tex.append("")
@@ -161,11 +219,27 @@ def main() -> None:
         r"并且 $\mu(u)=2\rho(A_\theta)$ 满足特征方程 $\det(\mu I-2A_\theta)=0$，即上式四次多项式。"
     )
     tex.append(
-        r"在 $(u,\mu)=(1,2)$ 处对该代数关系做隐式微分，可得 $\mu'(1),\mu''(1)$，"
-        r"从而由 $P_G(\theta)=\log(\mu(e^\theta)/2)$ 得到 $P_G'(0)$ 与 $P_G''(0)$ 的闭式。"
+        r"在 $(u,\mu)=(1,2)$ 处对该代数关系做隐式微分，可得 $\mu'(1),\mu''(1),\mu'''(1)$，"
+        r"从而由 $P_G(\theta)=\log(\mu(e^\theta)/2)$ 得到 $P_G'(0),P_G''(0),P_G^{(3)}(0)$ 的闭式。"
         r"上述推导与代数运算可由脚本 \texttt{scripts/exp\_fold\_gauge\_anomaly\_pressure.py} 一键复算。"
     )
     tex.append(r"\end{proof}")
+    tex.append("")
+
+    tex.append(r"\begin{corollary}[三阶累积量密度（偏斜审计常数）]\label{cor:fold-gauge-anomaly-cumulant3}")
+    tex.append(
+        r"在同一均匀基线下，规范差和 $G_m=\sum_{t=1}^{m}g_t$ 的三阶累积量满足"
+        r"$\mathrm{cum}_3(G_m)=P_G^{(3)}(0)\,m+o(m)$。"
+        r"相应的“每步偏斜强度”（标准化偏斜系数）为"
+    )
+    tex.append(r"\[")
+    tex.append(
+        r"\boxed{\ \gamma_1^{(G)}:=\frac{P_G^{(3)}(0)}{(P_G''(0))^{3/2}}\approx %.3g\ }."
+        % float(gamma1_float)
+    )
+    tex.append(r"\]")
+    tex.append(r"其中 $P_G^{(3)}(0)<0$ 表明规范差涨落具有稳定的负偏斜（超出二次高斯近似可见范围）。")
+    tex.append(r"\end{corollary}")
     tex.append("")
 
     out_tex = generated_dir() / "eq_fold_gauge_anomaly_pressure.tex"

@@ -19,6 +19,7 @@
   最后，折叠在信息率意义下不压缩，其“丢失”可被提升为显式缺陷寄存器使整体映射单射（注 \ref{rem:pom-finite-defect}），而二进制区间折叠的上界饱和点集合 \(\{1,2,3,4,5,7,12\}\) 提供了稀有 Diophantine 事件的可复核指纹（附录 \ref{app:fold-multiplicity}；表 \ref{tab:fold_binary_saturation_points}）。
   \item \textbf{（读出塔重写与可判定闭环）}在投影词的局部读出塔片段上证明终止性与合流性并给出正规形（定理 \ref{thm:pom-rewrite-termination-confluence}），并由此得到词问题的可判定性与审计闭环（命题 \ref{prop:pom-projword-decidable}、\ref{prop:pom-rewrite-audit-loop}）。
   \item \textbf{（碰撞核编译与共振判别）}对任意阶碰撞矩给出有限状态的 moment-kernel 编译与 Perron 主谱刻画（定理 \ref{thm:pom-collision-kernel-ak}），并给出模态约束导致 Hankel 秩下降的充分判别，从而将共振定位为可检验的机制（定理 \ref{thm:pom-moment-resonance}）。
+  进一步地，共振缺口 \(\Delta(q)\) 不仅是约束维数的整数指纹（命题 \ref{prop:pom-delta-counts-constraints}），也可被解释为“使模态坐标恢复可见闭合”所需的最小新增读出轴/纤维数下界（推论 \ref{cor:pom-delta-min-extra-readouts}）。
   此外，在二阶碰撞核 \(A_2\) 上进一步给出一个秩分解驱动的“最小 5 态大统一完备化”：\(A_2\) 可写为秩一统一直达项加上秩二重态交换项 \(A_2=U+BC\)，从而只需两枚辅助重态即可生成三态低能有效核；相应的一参数插值 \(A_{\mathrm{eff}}(\alpha)=U+\alpha BC\) 的谱分裂由显式三次方程族控制，并可由主根反解 \(\alpha\)（命题 \ref{prop:pom-a2-gut-completion}、\ref{prop:pom-a2-gut-spectral-splitting}；推论 \ref{cor:pom-a2-gut-invert-alpha}）。
   \item \textbf{（二维压力曲面与编译相图底座）}在允许边权 \(w(s,a)\in\RR_{\ge 0}\) 的对称幂系数提取口径下，把温度化门 \(\mathrm{PROJ}_u\) 的权重注入 moment-kernel，得到统一二维谱对象 \(r_q(u)=\rho(\widetilde A_q(u))\) 与压力曲面 \(P(q,u)=\log r_q(u)-q\log|A_{\mathrm{out}}|\)（\S\ref{subsec:pom-pressure-surface-qu}；图 \ref{fig:moment-pressure-surface-sync10} 给出示例核的可复现热图）。进一步，定义归一化混合压力 \(\Psi(q,u)=P(q,u)-qP(1,u)\)（定义 \ref{def:pom-psi-mixed-pressure}），其等价于 \(\mathrm{PROJ}_u\) 推前读出的 \(q\)-碰撞指数（命题 \ref{prop:pom-proj-mom-psi-law}），并提出硬化--端点交换异常 \(\Delta_{\mathrm{swap}}\) 作为不可规约证书原语（定义 \ref{def:pom-hard-tail-swap-anomaly}），从而为 \((u,q,\varepsilon)\) 三旋钮的资源调度提供一个可计算相图坐标系。
   \item \textbf{（profinite 轴上的 Chebotarev 提升）}在核版 GRH 的平方根界假设下，沿素数寄存器的逆极限轴提升有限层 Chebotarev 计数，并对任意 cylinder 集合给出平方根级等分布误差（定理 \ref{thm:pom-profinite-axis}）。
@@ -26,6 +27,39 @@
   \item \textbf{（谱隙对齐的统一判据与常数域匹配的群选择器）}在群标签扭曲谱接口上定义表示通道的谱隙耦合量 \(g_{\varrho}(u)=\log(\lambda_1(u)/\rho(M_{K,\varrho}(u)))\)，并提出“统一 = 扭曲通道谱隙对齐”的可计算 minimax 判据；在自对偶 completion 下统一点自然钉在 \(u=1\)，并由六分支锁定与低阶 Rényi 近单谱维信号提供可审计数值锚点，同时给出离散素数模轴上的谱隙扩散跑动诊断与 lapse 重标定示例（见 \ref{subsec:group-unification-spectral-alignment}；表 \ref{tab:real-input-40-rho-ppp-prime-scan} 与表 \ref{tab:real-input-40-lapse-modulated-tau-mix}）。
   \item \textbf{（局部双几何的统一生成元与方向耦合比）}在真实输入 40 状态核的三维观测下，定义方向耦合比 \(\mathcal{W}(v)\) 并证明其驻点对应曲率错配谱的本征模态；数值上恒压漂移方向与唯一正曲率模态高度对齐，从而给出主导统一常数 \(W_{\mathrm{GUT}}\approx 5.32\)（定义 \ref{def:real-input-40-directional-coupling} 与命题 \ref{prop:real-input-40-unified-generator-alignment}）。
   \item \textbf{（Fold6 的刚性统一种子与先验离散 Weyl 作用）}在 \(m=6\) 的稳定类型层上，\(X_6\) 的 \(18\oplus 3\) 分裂及其 cyclic 子集的 \(6+12\) Hamming-weight 指纹，把“Cartan-like 三方向 + 根样十八方向”的计数结构直接锁定到 rank-\(3\)、维 \(21\) 的简单李型 \(B_3/C_3\) 候选；相应离散对称核为 \(W(B_3)\cong W(C_3)\cong (\ZZ_2)^3\rtimes S_3\) 且阶为 \(48\)。进一步，在势—响应辛相空间的连续包络口径下，\(C_3\) 一侧可被解释为 \(\mathrm{Sp}(6)\) 的最小连续统一群（注 \ref{rem:sp6-minimal-continuous-envelope}；表 \ref{tab:sync_kernel_weighted_sp6_isotropy_scan} 给出一个可复现的“单尺度/各向同性”扫描检验）。该结论以可复现脚本与根字典表给出（见 \ref{subsec:bdry-tower-zeck-gut}；附录 \ref{app:fold6-b3c3-seed-dictionary}）。
+\end{enumerate}
+
+\subsection{桥包升级：三条可证伪预测（可复现接口）}
+以下三条并非“复述正文已有结论”，而是把共振缺口 \(\Delta(q)\)、profinite Chebotarev 的对数预算、以及二维慢模指纹 \(\mathbf{R}_{m,2}\) 拼接后自然得到的\textbf{下一步可证伪命题}：
+\begin{enumerate}
+  \item \textbf{（P1：共振缺口与边界慢模主导的耦合）}
+  若 Hankel 共振的不可见核主要来自“碰撞/边界残差”机制（而非输入骨架的 bulk 混合），则在同余/角色分层的二维指纹上更易观察到 boundary 通道主导：
+  \[
+  \frac{\rho^{\mathrm{bd}}_{m,2}}{\lambda}\ \gtrsim\ \frac{\rho^{\mathrm{in}}_{m,2}}{\lambda}.
+  \]
+  该命题的可复现读数可由表 \ref{tab:real-input-40-rho-m2-fingerprint} 给出；更强的统计检验需要把 \(m\) 轴扩展到更宽模数窗并与共振/算术节拍点集做对齐回归（与猜想 \ref{conj:pom-fourier-zero-driven-resonance} 的检验口径同型）。
+  \item \textbf{（P2：最优“加轴”非单调；由谱隙税工作量 \(W\) 决定）}
+  在 Chebotarev 对数预算的最坏情形口径下，空间分层规模与时间步长的折中可被压缩为谱隙税率
+  \(
+  \Delta_m=-\log(\Lambda_m/\lambda_m)
+  \)
+  与工作量
+  \(
+  W(m)=\log|G_m|/\Delta_m
+  \)
+  （注 \ref{rem:pom-spectral-tax-workload}）。
+  因此“加轴是否加速”不是单调命题，而是一个\textbf{规模 \(\log|G_m|\) 与谱隙 \(\Delta_m\) 的折中最小化}问题；表 \ref{tab:real-input-40-spectral-tax-workload} 给出真实输入 \(40\) 状态核在离散素数模轴上的可复现例证。
+  \item \textbf{（P3：低延迟设计的瓶颈主要体现在 \(\chi_0\)，而非仅体现在 \(h_0\)）}
+  在零温极限下，把在线延迟对齐到数字尺度 \(\delta_{\mathrm{digits}}\) 后，carry-free 骨架熵率
+  \(
+  h_0=\log\rho(A_0)
+  \)
+  与一阶激活斜率
+  \(
+  \chi_0=c_1/\lambda_0
+  \)
+  给出两条基本正交的资源轴（注 \ref{rem:entropy-delay-complement-c1}）。
+  表 \ref{tab:parallel-addition-kernels-zero-temp-scales} 用 BFS 编译图直接抽取并列读数，提供一个可审计的“低延迟 \(\Rightarrow\) 边通道更易激活”代理检验口径。
 \end{enumerate}
 
 最后指出：本文中的术语“涌现”仅用于组织动机与解释性叙事；任何后续推理均以编号结果为前提。关于黄金分支的“最优性”讨论亦严格限定在文中显式给出的数论证书链条之内，且不外推到更强的统计泛函最优性（见注 \ref{rem:what-is-optimized}）。
