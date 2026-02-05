@@ -110,7 +110,8 @@ d_m(r):=\bigl|\{\omega\in\Omega_m:\pi_m(\omega)=r\}\bigr|.
 \label{thm:fold-collision-spectrum}
 折叠碰撞概率满足精确恒等式
 \[
-\mathsf{Col}_m=\frac{1}{F_{m+2}}+\frac{1}{2^{2m}F_{m+2}^2}\sum_{k\ne 0}|\widehat d_m(k)|^2.
+\mathsf{Col}_m=\frac{1}{F_{m+2}}+\frac{1}{2^{2m}F_{m+2}}\sum_{k\ne 0}|\widehat d_m(k)|^2
+=\frac{1}{F_{m+2}}\sum_{k}\left|\frac{\widehat d_m(k)}{2^m}\right|^2.
 \]
 因此 $\mathsf{Col}_m\ge 1/F_{m+2}$，且等号当且仅当 $d_m(r)\equiv 2^m/F_{m+2}$ 为常数。
 \end{theorem}
@@ -146,16 +147,29 @@ d_m(r):=\bigl|\{\omega\in\Omega_m:\pi_m(\omega)=r\}\bigr|.
 \]
 利用 $1+e^{-i\theta}=e^{-i\theta/2}\,2\cos(\theta/2)$ 得到模长公式。证毕。
 
-\begin{corollary}[非平凡频谱的乘性上界]
+\begin{corollary}[碰撞矩的完全 Fourier 化：Riesz 乘积精确公式]
 \label{cor:fold-spectrum-nontrivial-bound}
-对任意 $k\ne 0$，有
+定义归一化 Fourier 系数
 \[
-|\widehat d_m(k)|\le 2^m\prod_{j=1}^m\Bigl|\cos\Bigl(\pi k\,F_{j+1}/F_{m+2}\Bigr)\Bigr|<2^m.
+\widehat\mu_m(k):=\frac{\widehat d_m(k)}{2^m}\qquad\bigl(k\in\ZZ/(F_{m+2}\ZZ)\bigr).
 \]
-因此碰撞缺口满足
+则由定理 \ref{thm:fold-spectrum-factorization} 有精确模长公式
 \[
-\mathsf{Col}_m-\frac{1}{F_{m+2}}=\frac{1}{2^{2m}F_{m+2}^2}\sum_{k\ne 0}|\widehat d_m(k)|^2
-\le\frac{1}{F_{m+2}^2}\sum_{k\ne 0}\prod_{j=1}^m\cos^2\Bigl(\pi k\,F_{j+1}/F_{m+2}\Bigr).
+|\widehat\mu_m(k)|
+=\prod_{j=1}^m\Bigl|\cos\Bigl(\pi k\,F_{j+1}/F_{m+2}\Bigr)\Bigr|,
+\]
+并且当 $k\ne 0$ 时 $|\widehat\mu_m(k)|<1$。
+从而（Plancherel/Parseval）
+\[
+\mathsf{Col}_m
+=\sum_r\left(\frac{d_m(r)}{2^m}\right)^2
+=\frac{1}{F_{m+2}}\sum_{k}|\widehat\mu_m(k)|^2
+=\frac{1}{F_{m+2}}\sum_{k}\ \prod_{j=1}^m\cos^2\Bigl(\pi k\,F_{j+1}/F_{m+2}\Bigr),
+\]
+并且碰撞缺口具有完全显式的频谱分解
+\[
+\mathsf{Col}_m-\frac{1}{F_{m+2}}
+=\frac{1}{F_{m+2}}\sum_{k\ne 0}\ \prod_{j=1}^m\cos^2\Bigl(\pi k\,F_{j+1}/F_{m+2}\Bigr).
 \]
 \end{corollary}
 
@@ -340,28 +354,142 @@ g=F_d\le F_{\lfloor (m+2)/2\rfloor}
 从而该归一化能量剖面可以视为一类由 Fibonacci 频率驱动的有限 Riesz 乘积；其极值与大偏差控制正是进一步把“零点几何”推进到“振荡统计”的入口。
 \end{remark}
 
-\begin{theorem}[零点削减的碰撞上界]
-\label{thm:fold-collision-zero-reduction}
-记 $\mathcal{Z}_m$ 如定义 \ref{def:fold-spectrum-zero-set}，则
+\begin{lemma}[d'Ocagne 反射恒等式（共振压缩的同余触发器）]\label{lem:fold-docagne-reflection}
+对任意整数 $m\ge 1$ 与 $1\le j\le m$，成立整式恒等式
 \[
-\mathsf{Col}_m\le \frac{1}{F_{m+2}}+\frac{F_{m+2}-1-|\mathcal{Z}_m|}{F_{m+2}^2}.
+F_mF_{j+1}-F_{j-1}F_{m+2}=(-1)^{j+1}F_{m+1-j}.
 \]
-特别地，当 $|\mathcal{Z}_m|\ge 1$ 时，
+从而推出同余
 \[
-\mathsf{Col}_m\le \frac{1}{F_{m+2}}+\frac{F_{m+2}-2}{F_{m+2}^2}.
+F_mF_{j+1}\equiv (-1)^{j+1}F_{m+1-j}\pmod{F_{m+2}}.
+\]
+\end{lemma}
+
+\textbf{证明：}
+由递推 $F_{m+2}=F_{m+1}+F_m$ 与 $F_{j+1}-F_{j-1}=F_j$，左端化为
+\[
+F_m(F_{j+1}-F_{j-1})-F_{m+1}F_{j-1}=F_mF_j-F_{m+1}F_{j-1}.
+\]
+对 $(m,j-1)$ 应用 d'Ocagne 恒等式
+\(
+F_mF_j-F_{m+1}F_{j-1}=(-1)^{j-1}F_{m-j+1}
+\)
+并注意 $(-1)^{j-1}=(-1)^{j+1}$，得到结论。证毕。
+
+\begin{theorem}[Fibonacci 共振角色与黄金比例临界常数 $C_\varphi(u)$]\label{thm:fold-critical-resonance-constant}
+令 $Q:=F_{m+2}$，并取共振频率
+\[
+k_m:=F_m\in\ZZ/(Q\ZZ).
+\]
+则对任意固定整数 $u\in\ZZ$，
+\[
+\bigl|\widehat\mu_m(u k_m)\bigr|
+=\prod_{j=1}^m\left|\cos\Bigl(\pi u\,\frac{F_{m+1-j}}{F_{m+2}}\Bigr)\right|.
+\]
+并且当 $m\to\infty$ 时，上式收敛到严格正的无穷乘积常数
+\[
+\bigl|\widehat\mu_m(u k_m)\bigr|\longrightarrow
+C_\varphi(u):=\prod_{n=2}^{\infty}\left|\cos(\pi u\,\varphi^{-n})\right|,
+\qquad
+\varphi=\frac{1+\sqrt5}{2}.
+\]
+特别地，
+\[
+C_\varphi:=C_\varphi(1)
+=\prod_{n=2}^{\infty}\left|\cos(\pi \varphi^{-n})\right|
+\approx 0.22441782740472943.
 \]
 \end{theorem}
 
 \textbf{证明：}
-由定理 \ref{thm:fold-collision-spectrum}，
+由推论 \ref{cor:fold-spectrum-nontrivial-bound}，
+\[
+|\widehat\mu_m(u k_m)|
+=\prod_{j=1}^m\left|\cos\Bigl(\pi (uF_m)\,F_{j+1}/F_{m+2}\Bigr)\right|.
+\]
+由引理 \ref{lem:fold-docagne-reflection}，
 \(
-\mathsf{Col}_m-\frac{1}{F_{m+2}}=\frac{1}{2^{2m}F_{m+2}^2}\sum_{k\ne 0}|\widehat d_m(k)|^2
+F_mF_{j+1}\equiv (-1)^{j+1}F_{m+1-j}\pmod{F_{m+2}}
 \)。
-而 $|\widehat d_m(k)|\le\sum_r d_m(r)=2^m$，且对 $k\in\mathcal{Z}_m$ 取值为 0，故
+由于 $\cos(\pi(x+\ell))=(-1)^\ell\cos(\pi x)$，取绝对值后只依赖于模 $F_{m+2}$ 的剩余类，故得到精确压缩公式
+\[
+|\widehat\mu_m(u k_m)|
+=\prod_{j=1}^m\left|\cos\Bigl(\pi u\,F_{m+1-j}/F_{m+2}\Bigr)\right|.
+\]
+
+\paragraph{（1）无穷乘积 $C_\varphi(u)$ 的收敛与正性.}
+因为 $\varphi^{-n}$ 无理，故 $u\varphi^{-n}\notin \tfrac12+\ZZ$，从而每一项 $\cos(\pi u\varphi^{-n})\ne 0$ 且乘积项均为正。
+又对足够小的 $y$ 有 $-\log|\cos y|=O(y^2)$，因此
+\[
+\sum_{n\ge 2}\Bigl|\,\log\bigl|\cos(\pi u\varphi^{-n})\bigr|\,\Bigr|
+\;\ll\;
+\sum_{n\ge 2} u^2\varphi^{-2n}
+\;<\;\infty,
+\]
+从而 $C_\varphi(u)$ 作为无穷乘积收敛且 $C_\varphi(u)>0$。
+
+\paragraph{（2）有限乘积到无穷乘积的极限.}
+对每个固定的 $j$，有经典极限
+\[
+\frac{F_{m+1-j}}{F_{m+2}}\longrightarrow \varphi^{-(j+1)}\qquad(m\to\infty),
+\]
+因此对任意固定 $J$，有限段乘积
 \(
-\sum_{k\ne 0}|\widehat d_m(k)|^2\le (F_{m+2}-1-|\mathcal{Z}_m|)\,2^{2m}
+\prod_{j=1}^{J}\left|\cos\bigl(\pi u\,F_{m+1-j}/F_{m+2}\bigr)\right|
+\)
+收敛到
+\(
+\prod_{j=1}^{J}\left|\cos(\pi u\,\varphi^{-(j+1)})\right|
 \)。
-代入即得结论。证毕。
+另一方面，尾段 $j>J$ 的因子满足
+\(
+F_{m+1-j}/F_{m+2}\to 0
+\)
+且以指数速度衰减，因此由（1）中对 $-\log|\cos|$ 的二次控制可知尾段乘积可一致地逼近 $1$。
+令 $J\to\infty$ 即得
+\(
+|\widehat\mu_m(u k_m)|\to C_\varphi(u)
+\)。
+证毕。
+
+\begin{corollary}[临界共振的常数级指纹：碰撞下界]\label{cor:fold-critical-resonance-fingerprint}
+对任意固定整数 $U\ge 1$，有
+\[
+F_{m+2}\,\mathsf{Col}_m
+=\sum_{k}|\widehat\mu_m(k)|^2
+\;\ge\;
+1+2\sum_{u=1}^{U}\bigl|\widehat\mu_m(uF_m)\bigr|^2.
+\]
+从而
+\[
+\liminf_{m\to\infty}F_{m+2}\,\mathsf{Col}_m
+\;\ge\;
+1+2\sum_{u=1}^{U} C_\varphi(u)^2.
+\]
+特别地（取 $U=1$），
+\[
+\liminf_{m\to\infty}F_{m+2}\,\mathsf{Col}_m
+\;\ge\;
+1+2C_\varphi^2
+\approx 1.100726722514\ldots,
+\]
+等价地
+\[
+\mathsf{Col}_m\ \ge\ \frac{1+2C_\varphi^2+o(1)}{F_{m+2}}.
+\]
+\end{corollary}
+
+\textbf{证明：}
+由推论 \ref{cor:fold-spectrum-nontrivial-bound}，
+\(
+F_{m+2}\mathsf{Col}_m=\sum_k|\widehat\mu_m(k)|^2
+\)。
+并且由于 $d_m(r)$ 为实值函数，满足
+\(
+\widehat\mu_m(-k)=\overline{\widehat\mu_m(k)}
+\)
+从而 $|\widehat\mu_m(-k)|=|\widehat\mu_m(k)|$。对每个 $u\ge 1$，频率 $\pm uF_m$ 给出一对贡献，得到第一条不等式。
+令 $m\to\infty$ 并用定理 \ref{thm:fold-critical-resonance-constant} 即得下界。证毕。
 
 \begin{remark}[用约数结构精确计算 \texorpdfstring{$\card{\mathcal{Z}_m}$}{|Z_m|} 的可实现方案]\label{rem:fold-zero-coset-algorithm}
 当 \(F_{m+2}\) 为偶数时，推论 \ref{cor:fold-zero-coset-union} 将 \(\mathcal{Z}_m\) 表示为若干等差余类 \(S_g(F_{m+2})\) 的并。
@@ -374,17 +502,26 @@ g=F_d\le F_{\lfloor (m+2)/2\rfloor}
 该流程把“扫 \(k\)”降为“扫 \(m+2\) 的少量约数 + 有限次 \(\gcd\)/整除判定”，可直接接入数值审计管线。
 \end{remark}
 
-\begin{theorem}[最大纤维与谱能量]
+\begin{theorem}[最大偏差与谱能量]
 \label{thm:fold-max-fiber-spectrum}
 记
 \[
 M_m:=\max_{r\in\ZZ/(F_{m+2}\ZZ)} d_m(r).
 \]
+并记最小纤维
+\[
+m_m^{\min}:=\min_{r\in\ZZ/(F_{m+2}\ZZ)} d_m(r),
+\]
+以及最大偏差
+\[
+A_m:=\max_{r\in\ZZ/(F_{m+2}\ZZ)}\bigl|d_m(r)-\overline d_m\bigr|
+=\max\bigl\{M_m-\overline d_m,\ \overline d_m-m_m^{\min}\bigr\}.
+\]
 则有下界
 \[
-M_m\ge \overline d_m+\frac{1}{F_{m+2}}\Biggl(\sum_{k\ne 0}|\widehat d_m(k)|^2\Biggr)^{1/2}.
+A_m\ge \frac{1}{F_{m+2}}\Biggl(\sum_{k\ne 0}|\widehat d_m(k)|^2\Biggr)^{1/2}.
 \]
-亦即最大折叠纤维由非平凡频谱能量定量驱动。
+亦即：只要非平凡频谱能量不为零，必存在某条纤维相对均值产生至少 RMS 级别的偏差（偏差可发生在上侧或下侧）。
 \end{theorem}
 
 \textbf{证明：}
@@ -392,11 +529,11 @@ M_m\ge \overline d_m+\frac{1}{F_{m+2}}\Biggl(\sum_{k\ne 0}|\widehat d_m(k)|^2\Bi
 \(
 \frac{1}{F_{m+2}}\sum_r(d_m(r)-\overline d_m)^2=\frac{1}{F_{m+2}^2}\sum_{k\ne 0}|\widehat d_m(k)|^2
 \)。
-取达到最大值的 $r_*$，有
-\(
-\sum_r(d_m(r)-\overline d_m)^2\ge (M_m-\overline d_m)^2
-\)。
-合并即得结论。证毕。
+又因非负数的平均不超过最大值，
+\[
+A_m^2=\max_r (d_m(r)-\overline d_m)^2\ \ge\ \frac{1}{F_{m+2}}\sum_r(d_m(r)-\overline d_m)^2.
+\]
+合并即得所示下界。最后一个等号由 $A_m$ 的定义给出。证毕。
 
 \begin{theorem}[最大纤维给出的碰撞下界]
 \label{thm:fold-collision-max-fiber}
@@ -438,23 +575,32 @@ d_m(r)\ge \overline d_m+\frac{S_m}{F_{m+2}}
 \)。
 由最大值定义得到结论。证毕。
 
-\begin{theorem}[碰撞缺口的双向夹逼]
+\begin{theorem}[碰撞缺口的两条显式下界]
 \label{thm:fold-collision-sandwich}
-设 $M_m:=\max_r d_m(r)$ 与零点集合 $\mathcal{Z}_m$ 如前，则
+设 $M_m:=\max_r d_m(r)$。则
 \[
 \frac{M_m^2}{2^{2m}}-\frac{1}{F_{m+2}}
 \le
-\mathsf{Col}_m-\frac{1}{F_{m+2}}
-\le
-\frac{F_{m+2}-1-|\mathcal{Z}_m|}{F_{m+2}^2}.
+\mathsf{Col}_m-\frac{1}{F_{m+2}}.
 \]
-从而折叠均匀性缺口同时受最大纤维与谱零点数量的双向控制。
+并且取共振频率 $k=F_m$，有
+\[
+\mathsf{Col}_m-\frac{1}{F_{m+2}}
+=\frac{1}{F_{m+2}}\sum_{k\ne 0}|\widehat\mu_m(k)|^2
+\ \ge\
+\frac{2}{F_{m+2}}\bigl|\widehat\mu_m(F_m)\bigr|^2.
+\]
 \end{theorem}
 
 \textbf{证明：}
-左侧不等式由定理 \ref{thm:fold-collision-max-fiber} 直接给出。
-右侧不等式由定理 \ref{thm:fold-collision-zero-reduction} 得到。证毕。
+第一条不等式由定理 \ref{thm:fold-collision-max-fiber} 直接给出。
+第二条不等式由推论 \ref{cor:fold-spectrum-nontrivial-bound} 的完全 Fourier 化公式以及对称性
+\(
+|\widehat\mu_m(-k)|=|\widehat\mu_m(k)|
+\)
+得到。证毕。
 
+\iffalse % obsolete after correcting collision scaling
 \begin{corollary}[零点削减项的相对指数小量]
 \label{cor:fold-collision-zero-sparsity-impact}
 令 \(M:=F_{m+2}\)。若 \(M\) 为偶数，则定理 \ref{thm:fold-collision-zero-reduction} 的“零点削减”改进量满足
@@ -471,6 +617,7 @@ d_m(r)\ge \overline d_m+\frac{S_m}{F_{m+2}}
 \textbf{证明：}
 由定理 \ref{thm:fold-zero-density-sparse} 有 \(\card{\mathcal{Z}_m}\le \tau(m+2)\,F_{\lfloor (m+2)/2\rfloor}\)，两边同除以 \(M^2=F_{m+2}^2\) 并用 \(F_{\lfloor (m+2)/2\rfloor}/F_{m+2}=O(\varphi^{-m/2})\) 即得。证毕。
 
+\fi
 \input{sections/generated/tab_fold_multiplicity_histogram}
 
 \subsection{二进制区间到 Zeckendorf 前缀的折叠：最大纤维与饱和判别}\label{app:fold-binary-prefix}

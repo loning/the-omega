@@ -116,6 +116,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_truncation_curvature",
+            script="exp_fold_truncation_curvature.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_truncation_curvature_stats.json",
+                "sections/generated/tab_fold_truncation_curvature_stats.tex",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly_density_49",
             script="exp_fold_gauge_anomaly_density_49.py",
             args=[],

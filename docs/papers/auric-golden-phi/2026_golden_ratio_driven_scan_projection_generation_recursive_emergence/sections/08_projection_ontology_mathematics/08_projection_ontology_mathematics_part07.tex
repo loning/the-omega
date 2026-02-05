@@ -107,6 +107,17 @@ E_m\circ \mathrm{LIFT}_G
 比较正规形参数 \((u,m,G)\) 以及比较有限个采样点上的异常签名是否一致。
 \end{corollary}
 
+\begin{remark}[符号证书升级：用扭曲特征多项式替代有限采样]\label{rem:pom-anom-symbolic-certificate}
+推论 \ref{cor:pom-three-gen-normal-form-decidable} 的“有限采样签名”是工程友好的可审计口径；
+若希望把等价性进一步升级为\emph{完全形式化}的代数等式证书，可在固定复杂度上界下对扭曲通道做符号化：
+对每个非平凡角色 \(\chi\in\widehat G\setminus\{\chi_0\}\)，将投影词 \(w\)（含 \(\mathrm{PROJ}_u\) 的温度参数）编译为有限维扭曲矩阵 \(M_{\chi}^{(w)}(u)\)，并定义
+\[
+\Delta_\chi(w;z,u):=\det\bigl(I-z\,M_{\chi}^{(w)}(u)\bigr).
+\]
+在本文的接口设定中，矩阵条目由有限图核的边权生成（典型为 \(u\) 的幂或有限生成的解析函数），因此在给定复杂度类内 \(\Delta_\chi\) 是可计算的符号对象（关于 \(z\) 的多项式，系数在 \(u\) 的可计算代数域中）。
+一旦两实现对所有非平凡 \(\chi\) 的 \(\Delta_\chi\) 完全一致，则对应的扭曲 \(\zeta\) 与有限部常数一致，从而异常签名一致；此时“可审计”等价被提升为“可证明”等价。
+\end{remark}
+
 \subsubsection{三生成元的可计算重写系统与接口正规形}\label{subsec:pom-three-gen-rewrite-normal}
 
 本段把“语义接口”落回到词法层：给出一套只依赖参数的重写规则，把任何由
@@ -163,6 +174,60 @@ $$
 因此可把任意词排序为 \(\mathrm{LIFT}\to \mathrm{PROJ}\to E\) 的形式；再用合并律压缩多次出现的同类门，即得所示正规形与伴随异常签名。证毕。
 \end{proof}
 
+\subsubsection{加入 \texorpdfstring{$\mathrm{MOM}_q$}{MOMq} 的重写闭包：指数律与外提正规形}\label{subsec:pom-mom-rewrite-normal}
+
+在定义 \ref{def:pom-projword-2cat} 中，\(\mathrm{MOM}_q\)（\(q\ge 2\)）已被固定为 \(\mathbf{PW}\) 的一个 \(1\)-态射生成元：它把底层折叠/读出核编译为 \(q\)-重碰撞的 fiber-product moment-kernel，从而读出 \(S_q(m)=\sum_x d_m(x)^q\) 的递推与 Perron 主尺度 \(r_q\)（定理 \ref{thm:pom-collision-kernel-ak}）。
+要把“空间谱读取”从语义侧计算提升为\emph{词法侧可推演的演算学对象}，关键是把 \(\mathrm{MOM}_q\) 纳入重写闭包并提供可外提（bubble）的定向规则。
+
+\begin{definition}[\texorpdfstring{$(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G,\mathrm{MOM}_q)$}{(PROJ,Em,LIFT,MOM)} 片段上的扩展重写规则族]\label{def:pom-four-gen-rewrite-rules}
+在定义 \ref{def:pom-three-gen-rewrite-rules} 的三生成元片段之上，加入 \(\{\mathrm{MOM}_q\}_{q\ge 2}\) 并取定向扩展规则如下（均为 \(2\)-态射证书）：
+\begin{enumerate}
+  \item \textbf{moment 门的指数律（乘法合并）：}
+  $$
+  (\mathrm{RMOM})\quad
+  \mathrm{MOM}_p\circ \mathrm{MOM}_q\ \Rightarrow\ \mathrm{MOM}_{pq}.
+  $$
+  \item \textbf{moment 门的外提（结构性 bubble）：}
+  对任意生成元 \(X\in\{\mathrm{PROJ}_u,\mathrm{LIFT}_G,E_m\}\) 给出把 \(\mathrm{MOM}_q\) 外提为左前缀的交换证书
+  $$
+  (\mathrm{RMOM\text{-}BUBBLE})\quad
+  X\circ \mathrm{MOM}_q\ \Rightarrow\ \mathrm{MOM}_q\circ X',
+  $$
+  其中 \(X'\) 为同型的（可能带参数更新的）门：在严格可交换情形取 \(X'=X\)；
+  在涉及 lift 轴并置时，\(X'=\mathrm{LIFT}_{G^{\times q}}\) 反映“\(q\) 份拷贝的并置提升”；
+  在涉及 \(E_m\) 的情形，允许输出一个可核对的残差标签（类比定义 \ref{def:pom-anom-signature} 的异常签名口径），以承载 \(E_m\) 与 moment 编译在一般情形下的非严格交换。
+\end{enumerate}
+\end{definition}
+
+\begin{remark}[正规化策略：先合并，再外提]\label{rem:pom-mom-normalize-strategy}
+在规则族 \ref{def:pom-four-gen-rewrite-rules} 下，一条可实现的含 \(\mathrm{MOM}\) 的归一化策略是：
+先用 \((\mathrm{RMOM})\) 把所有出现的 moment 门合并为单个 \(\mathrm{MOM}_Q\)（其中 \(Q\) 为各阶的乘积），
+再用 \((\mathrm{RMOM\text{-}BUBBLE})\) 把 \(\mathrm{MOM}_Q\) 外提为投影词的最左前缀，
+最后对剩余不含 \(\mathrm{MOM}\) 的部分应用命题 \ref{prop:pom-three-gen-interface-normal-form} 的三生成元正规化并输出异常签名。
+工程上可复现的最小见证见注 \ref{rem:pom-projword-mom-twist-normalizer-demo}（表 \ref{tab:pom_projword_mom_twist_normalizer_demo}）。
+\end{remark}
+
+\begin{proposition}[含 \texorpdfstring{$\mathrm{MOM}$}{MOM} 的接口正规形（结构版）]\label{prop:pom-mom-interface-normal-form}
+在规则族 \ref{def:pom-four-gen-rewrite-rules} 与三生成元规则族 \ref{def:pom-three-gen-rewrite-rules} 的联合闭包下，
+任意仅由 \(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G,\mathrm{MOM}_q\) 生成的投影词，都可重写为一个以 \(\mathrm{MOM}_Q\) 为左前缀的接口正规形：
+$$
+\boxed{\;
+\mathrm{MOM}_Q\ \circ\ \mathrm{LIFT}_{G'}\ \circ\ \mathrm{PROJ}_{u'}\ \circ\ E_{m'}
+\;}
+$$
+并伴随两类可核对输出：
+(i) 来自 \(E_m\)--lift 交换的异常签名 \(\mathsf{Anom}_{G'}(K;\theta)\)，
+以及（在需要时）
+(ii) 来自 moment 外提交换的残差标签（例如 \(E_m\) 与 moment 编译的 Beck--Chevalley 失败项）。
+其中 \(Q\) 由 \((\mathrm{RMOM})\) 合并得到，\((G',u',m')\) 由三生成元正规化确定（并按外提中的类型提升对 lift 参数作一致更新）。
+\end{proposition}
+
+\begin{proof}[证明思路]
+把原词中全部 \(\mathrm{MOM}\) 因子用 \((\mathrm{RMOM})\) 合并为单个 \(\mathrm{MOM}_Q\)，再用 \((\mathrm{RMOM\text{-}BUBBLE})\) 将其逐步交换到最左端并同步更新必要的类型参数（例如 lift 轴的并置提升）。
+剩余不含 \(\mathrm{MOM}\) 的片段可由命题 \ref{prop:pom-three-gen-interface-normal-form} 归约到 \(\mathrm{LIFT}\circ\mathrm{PROJ}\circ E\) 形，并输出异常签名。
+把两段归约串接即得所示正规形与伴随残差输出。证毕。
+\end{proof}
+
 \subsubsection{对称幂压缩：从指数态到多项式态的 moment-kernel 编译}\label{subsec:pom-moment-symmetric-power}
 
 上文命题 \ref{prop:pom-moment-kernel-exists} 给出了任意 \(q\)-重碰撞的 fiber-product 构造：直接做 \(q\) 份同步直积会产生指数规模的中间态空间（大小 \(|Q|^q\)，其中 \(Q\) 为底层在线核的状态集）。
@@ -192,6 +257,48 @@ $$
 对任意一步输入符号与输出一致性筛选，直积核从一个轨道到另一个轨道的可行转移条数可由多项式计数（多项式系数/多项式展开的多项式计数）显式给出，因此得到一个以轨道为节点、以“轨道间转移条数”为边权的非负整数邻接矩阵 \(\widetilde A_q\)。
 对该加权核做路径计数，即得同一 \(S_q(m)\) 的矩阵幂读出表达。证毕。
 \end{proof}
+
+\begin{definition}[碰撞计数等价（\texorpdfstring{$\sim_{\mathrm{col}}$}{~col}）]\label{def:pom-collision-count-bisim}
+设 \(\mathcal{T}\) 为确定性在线核/转导器：状态集 \(Q\)，输入字母表 \(A_{\mathrm{in}}\)，输出字母表 \(A_{\mathrm{out}}\)，并有确定性转移--输出
+\[
+\tau:Q\times A_{\mathrm{in}}\to Q\times A_{\mathrm{out}},\qquad (s,a)\mapsto (s',b).
+\]
+称等价关系 \(\sim_{\mathrm{col}}\) 为\textbf{碰撞计数等价}，若它是满足下述“按输出分桶、按后继类计数”的最大（最粗）等价关系：
+对任意 \(s,t\in Q\)，若 \(s\sim_{\mathrm{col}} t\)，则对任意输出符号 \(b\in A_{\mathrm{out}}\) 与任意等价类 \(C\in Q/{\sim_{\mathrm{col}}}\) 都有
+\[
+N_{s}(b,C):=\#\{a\in A_{\mathrm{in}}:\ \tau(s,a)=(s',b)\ \text{且}\ s'\in C\}
+\ =\
+N_{t}(b,C).
+\]
+\end{definition}
+
+\begin{proposition}[对称幂之前的预压缩：用 \texorpdfstring{$r_{\mathrm{col}}=|Q/{\sim_{\mathrm{col}}}|$}{rcol} 替代 \texorpdfstring{$|Q|$}{|Q|}]\label{prop:pom-moment-col-lumping}
+沿用命题 \ref{prop:pom-moment-symmetric-power} 的设定。
+令 \(\sim_{\mathrm{col}}\) 为定义 \ref{def:pom-collision-count-bisim} 的碰撞计数等价，记
+\(
+r_{\mathrm{col}}:=|Q/{\sim_{\mathrm{col}}}|.
+\)
+则对任意 \(q\ge 2\)，存在一个与 \(\widetilde A_q\) 严格等价（生成同一 \(S_q(m)\)）的多项式态 moment-kernel，其状态空间可取为“类占据数向量”
+\[
+\widetilde{\mathcal{N}}_{q}:=\Bigl\{(n_{C})_{C\in Q/{\sim_{\mathrm{col}}}}\in\ZZ_{\ge 0}^{r_{\mathrm{col}}}:\ \sum_{C}n_{C}=q\Bigr\},
+\]
+从而状态数满足更强上界
+\[
+|\widetilde{\mathcal{N}}_q|=\binom{q+r_{\mathrm{col}}-1}{r_{\mathrm{col}}-1}.
+\]
+\end{proposition}
+
+\begin{proof}[证明思路]
+moment-kernel 的一步转移计数只依赖于：每个轨道当前所处的内部状态、以及在给定输出一致筛选下“有多少输入字母会把它送到哪个后继状态”。
+若在 \(\sim_{\mathrm{col}}\) 下同类状态对任意输出符号 \(b\) 与任意后继类 \(C\) 的输入计数 \(N_s(b,C)\) 完全一致，则在 \(q\) 重同步直积并施加“输出一致”筛选后，任何关于可行转移条数的计算都只依赖于“每个等价类里有多少条轨道”（即类占据向量），而不依赖于类内具体状态名。
+因此可先对底层状态做商 \(Q\to Q/{\sim_{\mathrm{col}}}\)，再做对称幂直方图压缩，得到所示 \(\widetilde{\mathcal{N}}_q\) 与同一 \(S_q(m)\) 的矩阵幂读出。证毕。
+\end{proof}
+
+\begin{remark}[可执行接口：分割细化与 histogram-DP]\label{rem:pom-moment-col-lumping-impl}
+定义 \ref{def:pom-collision-count-bisim} 的 \(\sim_{\mathrm{col}}\) 可用标准的分割细化（partition refinement）在多项式时间内求得；
+脚本模块 \texttt{scripts/common\_moment\_kernel\_hist.py} 实现了该分割求解器（函数 \texttt{collision\_count\_lumping\_partition}），并允许在构造 histogram moment-kernel 时先做一次 \(\sim_{\mathrm{col}}\) 预压缩（参数 \texttt{lump\_by\_collision\_counts}，以及 demo \texttt{scripts/exp\_moment\_kernel\_histogram\_dp\_demo.py --lump-col}）。
+该预压缩与命题 \ref{prop:pom-moment-symmetric-power} 的对称幂商压缩可叠加：先用 \(|Q/{\sim_{\mathrm{col}}}|\) 降维，再用直方图/轨道表示把指数态 \(Q^q\) 压到多项式态。
+\end{remark}
 
 \begin{remark}[实现建议：把 \texorpdfstring{$\widetilde A_q$}{Aq} 当作“编译器后端”而非最小实现]\label{rem:pom-moment-symmetric-power-impl}
 命题 \ref{prop:pom-moment-symmetric-power} 给出一个结构性保证：无需枚举 \(Q^q\) 的指数态空间，也能构造出一个严格等价的计数核。
@@ -233,6 +340,25 @@ $$
 \)。
 对事件 \(\{\gamma_m(X)\ge\gamma\}\) 应用 Markov 不等式得第一式；取对数并除以 \(m\)，再取 \(\limsup\) 得第二式。证毕。
 \end{proof}
+
+\begin{corollary}[对偶最优化：把 \texorpdfstring{$q$}{q} 变成可求解的预算控制器]\label{cor:pom-quantile-dual-optimizer}
+令 \(\tau(q)=\limsup_{m\to\infty}\frac{1}{m}\log S_q(m)\)（定义 \ref{def:pom-moment-pressure}），并定义
+\[
+\Phi(q):=\tau(q)-\log 2,
+\qquad
+I(\gamma):=\sup_{q\in\ZZ_{\ge 2}}\bigl((q-1)\gamma-\Phi(q)\bigr).
+\]
+则对任意 \(\gamma\ge 0\) 有指数尺度上界
+\[
+\limsup_{m\to\infty}\frac{1}{m}\log \mathbb{P}_{\pi_m}\big[\gamma_m(X)\ge \gamma\big]
+\ \le\ -\,I(\gamma).
+\]
+特别地，当 \(S_q(m)=\Theta(r_q^m)\)（从而 \(\tau(q)=\log r_q\)）时，
+\(
+\Phi(q)=\log r_q-\log 2
+\)
+把尾部控制完全组织为可计算的 moment 主尺度族 \(\{r_q\}_{q\ge 2}\) 的凸对偶。
+\end{corollary}
 
 \begin{corollary}[prime-register 的分位预算（把最坏值替换为尾部）]\label{cor:pom-prime-register-quantile-budget}
 取 \(\varepsilon\in(0,1)\)，并令 \(B_m(\varepsilon):=\exp(m\,\gamma_m(\varepsilon))\)。
