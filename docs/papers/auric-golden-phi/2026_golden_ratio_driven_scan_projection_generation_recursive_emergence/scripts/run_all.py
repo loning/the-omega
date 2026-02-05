@@ -174,6 +174,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fibonacci_lie_resonance_ladder",
+            script="exp_fibonacci_lie_resonance_ladder.py",
+            args=["--m-min", "1", "--m-max", "500"],
+            expected_outputs=[
+                "artifacts/export/fibonacci_lie_resonance_ladder.json",
+                "sections/generated/tab_fibonacci_lie_resonance_ladder.tex",
+                "sections/generated/eq_fib_lie_resonance_solutions.tex",
+            ],
+        ),
+        Step(
             name="prime_shadow_window_mi",
             script="exp_prime_shadow_window_mi.py",
             args=[],
