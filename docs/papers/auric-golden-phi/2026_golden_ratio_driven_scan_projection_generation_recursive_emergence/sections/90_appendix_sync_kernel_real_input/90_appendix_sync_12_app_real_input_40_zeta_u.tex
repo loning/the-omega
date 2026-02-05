@@ -369,6 +369,45 @@ p_n(u)=\frac1n\sum_{d\mid n}\mu(d)a_{n/d}(u^d)
 
 \input{sections/generated/tab_real_input_40_output_potential_dirichlet_twists}
 
+\begin{remark}[四阶累积预测的误差证书与经验阶次（可审计）]\label{rem:real-input-40-dirichlet-cumulant-error-order}
+表 \ref{tab:real_input_40_output_potential_dirichlet_twists} 记录了单位根扭曲 \(u=\omega_m^j\) 下的最坏谱半径比值 \(\rho_m/\lambda\) 与 \(j=1\) 通道的四阶累积预测（“pred.”列）。
+在表中列出的核验点上 \(j_{\mathrm{worst}}=1\)，因此实测最坏比值恰为 \(j=1\) 通道：\(\rho_m/\lambda=\rho_{m,1}/\lambda\)。
+\par
+\noindent 记四阶预测的绝对误差为
+\[
+\varepsilon_m^{(4)}:=\left\lvert\frac{\rho_m}{\lambda}-\Bigl(\frac{\rho_{m,1}}{\lambda}\Bigr)_{\mathrm{pred}}\right\rvert.
+\]
+则由表中数字可直接读出
+\[
+\varepsilon_{5}^{(4)}\approx 1.08\times 10^{-6},\qquad
+\varepsilon_{10}^{(4)}\approx 2.78\times 10^{-8},\qquad
+\varepsilon_{20}^{(4)}\approx 6.21\times 10^{-10}.
+\]
+对上述三点做对数拟合，在该可审计窗口内得到经验阶次
+\[
+\varepsilon_m^{(4)}\ \approx\ C\,m^{-5.38}.
+\]
+该拟合与推论 \ref{cor:real-input-40-output-dirichlet-cumulant-bridge} 的 \(O(m^{-6})\) 余项一致（在小 \(m\) 区间上可出现有效阶次略低于 \(6\) 的过渡行为）。
+\par
+\noindent 若只保留二阶项（高斯近似）
+\[
+\Bigl(\frac{\rho_{m,1}}{\lambda}\Bigr)^{(2)}
+:=\exp\!\Bigl(
+-\frac{\kappa_2}{2}\Bigl(\frac{2\pi}{m}\Bigr)^2
+\Bigr),
+\]
+并定义相应误差 \(\varepsilon_m^{(2)}:=\left\lvert\frac{\rho_m}{\lambda}-\Bigl(\frac{\rho_{m,1}}{\lambda}\Bigr)^{(2)}\right\rvert\)，则在 \(m=5,10,20\) 上分别约为
+\[
+\varepsilon_{5}^{(2)}\approx 5.67\times 10^{-4},\qquad
+\varepsilon_{10}^{(2)}\approx 3.66\times 10^{-5},\qquad
+\varepsilon_{20}^{(2)}\approx 2.30\times 10^{-6},
+\]
+并经验上接近 \(m^{-4}\) 的衰减。
+因此在该窗口内，四阶修正相对二阶近似把误差进一步压缩了约 \(5.3\times10^2\)、\(1.3\times10^3\)、\(3.7\times10^3\) 倍（对应 \(m=5,10,20\)）。
+\par
+\noindent 另外，表中 \(j_{\mathrm{worst}}\) 恒为 \(1\) 提示了一个可复用的算法规则：做大模数扫描时可优先只计算 \(j=1\) 通道（并用少量抽样核验其是否仍为最坏模态），从而把“全扫 \(j\)”降阶为“预测 + 少量校验”的可审计流程。
+\end{remark}
+
 \begin{remark}[权重激活的零特征分支]\label{rem:real-input-40-zero-activation}
 在 $\Delta(z,u)=(1-uz^2)F(z,u)$ 中，$F$ 的最高次项系数为 $(u^3-u^4)z^8=u^3(1-u)z^8$。因此当 $u=1$ 时该项消失，$F$ 的次数由 $8$ 降为 $7$；而当 $u\neq 1$ 时次数恢复为 $8$。这意味着：无权核中有一条零特征方向在权重扭曲下被“激活”为非零特征分支，且该分支在 $u\to 1$ 时退化回 $0$。
 \end{remark}
@@ -409,6 +448,23 @@ G(0,u)=u^3-u^4=u^3(1-u)
 \end{proof}
 
 \input{sections/generated/eq_real_input_40_output_potential_activated_branch_series}
+
+\begin{remark}[算法选择律：先剥离 \texorpdfstring{$\lambda_{\mathrm{act}}$}{lambda_act}，再消元/求根]\label{rem:real-input-40-deflate-activated-branch}
+激活分支 \(\lambda_{\mathrm{act}}(u)\) 在 \(u\approx 1\) 时满足 \(\lambda_{\mathrm{act}}(u)=\Theta(u-1)\)（命题 \ref{prop:real-input-40-activated-branch-linear}），并具有高阶 Taylor 展开（注 \ref{rem:real-input-40-activated-branch-series}）。
+数值上这意味着：当 \(u\) 接近 \(1\) 时，代数曲线 \(G(\lambda,u)=0\) 的根尺度出现强分离——一条根趋于 \(0\)，其余根保持 \(O(1)\) 量级——从而在对多项式做求根/消元时引入明显的尺度失配与系数取消。
+\par
+\noindent 因此在任何涉及 \(u\approx 1\) 的消元或数值求根任务（例如在 \(u\) 的复邻域内追踪谱分支、或对 \(\Delta(z,u)\) 的根做稳定计算）中，建议先对激活分支做一次\emph{显式剥离（deflation）}：
+\begin{itemize}
+  \item 用注 \ref{rem:real-input-40-activated-branch-series} 的展开在给定 \(u\) 处评估 \(\lambda_{\mathrm{act}}(u)\)（二次项系数为 \(0\)，截断到六阶通常已能显著稳定数值尺度）；
+  \item 在 \(\lambda\)-变量上将 \(G(\lambda,u)\) 视为一元多项式并做一次因子剥离
+  \(
+  G(\lambda,u)=(\lambda-\lambda_{\mathrm{act}}(u))\,\widetilde G(\lambda,u)
+  \)
+  （数值实现上可用合成除法或伴随矩阵的 deflation）；
+  \item 在 \(\widetilde G\) 上再做后续的求根、resultant 或分支追踪。
+\end{itemize}
+剥离后可显著减弱 \(u\to 1\) 时的病态尺度，使后续计算回到常规多项式问题的条件数水平；这也把“该展开可用于分支剥离”的提示推进为一条可复用的算法选择律：\textbf{先剥离激活分支，再做消元/求根}。
+\end{remark}
 
 \begin{corollary}[端点大偏差代价]\label{cor:real-input-40-rate-endpoints}
 设 $I(\alpha)$ 为输出位势 $\varphi_e=e$ 的（归一化）大偏差速率函数（以 $P(\theta)$ 的 Legendre 形式定义）。则端点满足

@@ -381,6 +381,10 @@ R(\alpha,u)\in\ZZ[\alpha,u]
 \)，使得 \(R(\alpha(u),u)=0\) 对所有 \(u>0\)（Perron 分支）成立。
 这提供了“全域率曲线”的一个可审计代数证书：给定任意 \(\alpha\in(0,1)\)，可通过解一元方程 \(R(\alpha,u)=0\)（并取满足 \(u>0\) 的分支）来恢复 \(u=e^\theta\) 与 \(I(\alpha)\) 的参数化值 \(I(\alpha)=\alpha\log u-\log\lambda(u)+\log 3\)。
 \par
+\noindent 更具体地，由表 \ref{tab:sync_kernel_rate_curve_resultant_degree} 可见 \(\deg_u R=22\) 且 \(\mathrm{content}(R)=1\)（原始整系数）。
+因此对每个固定的 \(\alpha\in(0,1)\)，反解方程 \(R(\alpha,u)=0\) 在代数意义下至多给出 \(22\) 个 \(u\)-分支（包含非 Perron 分支），从而 \(u(\alpha)\) 的代数次数上界被显式锁定。
+这给出一个直接的“可计算性界”：可以把求 \(u(\alpha)\) 视为\emph{整系数一元多项式求根}问题，再用分支判别（例如 \(u>0\) 与连续延拓）锁定 Perron 分支；同时可用模素数约化/因子分解等手段对根的选择做可复核审计，从而把“数值迭代”升级为“代数证书驱动的可审计求解”。
+\par
 脚本 \texttt{scripts/exp\_sync\_kernel\_rate\_curve\_elimination.py} 以 resultant 的方式显式构造 \(R(\alpha,u)\) 并输出其次数/项数等规模摘要（表 \ref{tab:sync_kernel_rate_curve_resultant_degree}），从而把“率函数是级数”提升为“率曲线是代数对象”的可复现结论。
 \end{remark}
 \input{sections/generated/tab_sync_kernel_rate_curve_resultant_degree}
@@ -393,6 +397,36 @@ R(\alpha,u)\in\ZZ[\alpha,u]
   \item \textbf{（端点侧翼簇）} 在 \(u\to 0\) 与 \(u\to\infty\) 端分别强制出现 \(\alpha\to \tfrac14\) 与 \(\alpha\to \tfrac34\) 的四重簇；
   \item \textbf{（中心聚合）} 在 \(\alpha=\tfrac12\) 截面上出现 \((u-1)^6\) 的六重聚合，其解析意义是：在 \(u=1\) 处全部 \(6\) 条非零谱分支同时满足 \(\alpha=1/2\)（见定理 \ref{thm:sync-spectral-tangent-lock}）。
 \end{itemize}
+\par
+\noindent\textbf{端点簇的真实分岔指数为 \(1/2\)。}
+端点“簇的阶数”不仅是 \(r_0\) 里出现 \((4\alpha-1)^4\) 这一代数事实，还决定了 Perron 分支靠近端点的\emph{速度}与相应的求根\emph{条件数}。
+由证书中
+\(
+r_0(\alpha)=\alpha(\alpha-1)(4\alpha-1)^4
+\)、
+\(
+r_1(\alpha)=(4\alpha-1)^2(\cdots)
+\)，且括号多项式在 \(\alpha=\tfrac14\) 处非零，可知在 \(u\to 0\) 的 Perron 率曲线分支上，主平衡满足 \((\alpha-\tfrac14)^4\) 与 \(u(\alpha-\tfrac14)^2\) 同阶，从而存在 Puiseux 型端点标度
+\[
+\boxed{\ \alpha(u)-\tfrac14=\Theta(u^{1/2})\quad(u\to0)\ }.
+\]
+由对偶自对称 \((u,\alpha)\mapsto(1/u,1-\alpha)\) 立刻得到对称端点
+\[
+\boxed{\ \tfrac34-\alpha(u)=\Theta(u^{-1/2})\quad(u\to\infty)\ }.
+\]
+该 \(1/2\) 指数比“端点四重簇”的纯代数口径更直接决定端点附近的误差放大与自适应步长选取。
+\par
+\noindent\textbf{中心聚合诱导的 \emph{order-6 singular inversion}。}
+由 \(R(\tfrac12,u)=-(u-1)^6Q(u)/64\) 且 \(Q(1)\neq0\) 可知 \(u=1\) 在 \(\alpha=\tfrac12\) 截面上为恰 \(6\) 重根，从而
+\[
+\partial_u^k R\!\left(\tfrac12,u\right)\Big|_{u=1}=0,\qquad k=0,1,\dots,5.
+\]
+当把 \(R(\alpha,u)=0\) 视为关于 \(u\) 的方程并反解 \(u(\alpha)\) 时，在一般横截条件 \(\partial_\alpha R(\tfrac12,1)\neq0\) 下有局部标度
+\[
+|u-1|\asymp|\alpha-\tfrac12|^{1/6},
+\]
+因此反解的条件数按 \(|u-1|^{-5}\) 级爆炸。
+这一量化阶次解释了 \(u\approx1\) 附近的 Newton/割线法病态，并提示应优先采用“先分支再求根”或以 \(u\) 为参数的前向计算（先求 \(\alpha(u)\) 再做分支选择）。
 这些刚性因子与对称关系由下列可复现的符号证书给出：
 \input{sections/generated/eq_sync_kernel_rate_curve_resultant_structure}
 \end{remark}
