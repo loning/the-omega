@@ -79,6 +79,22 @@ def _normalize_fragment(fragment: str, raw: Sequence[str], word: Optional[str]) 
             "rewrite_trace": trace,
         }
 
+    if fragment == "full":
+        import exp_pom_projword_full_normalizer_demo as full
+
+        if word is None:
+            word = " ".join(raw)
+        if not word.strip():
+            raise SystemExit("Empty word. Provide tokens or --word.")
+        toks = full.parse_word(word)
+        nf, trace = full.normalize(toks)
+        return {
+            "fragment": fragment,
+            "input": full.word_to_str(toks),
+            "normal_form": full.word_to_str(nf),
+            "rewrite_trace": trace,
+        }
+
     if fragment == "val":
         import exp_pom_rewriting_engine_demo as val
 
@@ -95,7 +111,7 @@ def _normalize_fragment(fragment: str, raw: Sequence[str], word: Optional[str]) 
             "rewrite_trace": trace,
         }
 
-    raise SystemExit(f"Unknown fragment {fragment!r}. Use one of: ze, zepq, liftproj, val.")
+    raise SystemExit(f"Unknown fragment {fragment!r}. Use one of: ze, zepq, liftproj, full, val.")
 
 
 def cmd_normalize(args: argparse.Namespace) -> None:
@@ -237,14 +253,14 @@ def build_parser() -> argparse.ArgumentParser:
     sub = p.add_subparsers(dest="cmd", required=True)
 
     p_norm = sub.add_parser("normalize", help="Normalize a projection word (rewrite to normal form).")
-    p_norm.add_argument("--fragment", choices=["ze", "zepq", "liftproj", "val"], default="liftproj")
+    p_norm.add_argument("--fragment", choices=["ze", "zepq", "liftproj", "full", "val"], default="liftproj")
     p_norm.add_argument("--word", type=str, default=None, help="Optional raw word string (fragment-dependent).")
     p_norm.add_argument("--json-out", type=str, default=None, help="Write normalization payload to JSON.")
     p_norm.add_argument("tokens", nargs="*", help="Token list (used when --word is omitted).")
     p_norm.set_defaults(func=cmd_normalize)
 
     p_eq = sub.add_parser("equiv", help="Decide equivalence by comparing normal forms.")
-    p_eq.add_argument("--fragment", choices=["ze", "zepq", "liftproj", "val"], default="liftproj")
+    p_eq.add_argument("--fragment", choices=["ze", "zepq", "liftproj", "full", "val"], default="liftproj")
     p_eq.add_argument("--word1", type=str, required=True, help="Word 1 (fragment-dependent string form).")
     p_eq.add_argument("--word2", type=str, required=True, help="Word 2 (fragment-dependent string form).")
     p_eq.set_defaults(func=cmd_equiv)

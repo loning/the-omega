@@ -213,6 +213,20 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_pressure_multifractal_q60",
+            script="exp_fold_collision_pressure_multifractal_q60.py",
+            args=["--m-min", "24", "--m-max", "30", "--q-max", "60", "--use-exact-up-to", "17"],
+            expected_outputs=[
+                "artifacts/export/fold_collision_pressure_multifractal_q60.json",
+                "artifacts/export/fold_collision_pressure_multifractal_q60_rq.png",
+                "artifacts/export/fold_collision_pressure_multifractal_q60_pressure.png",
+                "artifacts/export/fold_collision_pressure_multifractal_q60_falpha.png",
+                "sections/generated/fig_fold_collision_pressure_multifractal_q60_rq.tex",
+                "sections/generated/fig_fold_collision_pressure_multifractal_q60_pressure.tex",
+                "sections/generated/fig_fold_collision_pressure_multifractal_q60_falpha.tex",
+            ],
+        ),
+        Step(
             name="fold_max_fiber_achievers_phase",
             script="exp_fold_max_fiber_achievers_phase.py",
             args=["--m-min", "2", "--m-max", "32", "--show-words", "4"],
@@ -309,6 +323,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/pom_projword_lift_proj_normalizer_demo.json",
                 "sections/generated/tab_pom_projword_lift_proj_normalizer_demo.tex",
+            ],
+        ),
+        Step(
+            name="pom_projword_full_normalizer_demo",
+            script="exp_pom_projword_full_normalizer_demo.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_projword_full_normalizer_demo.json",
+                "sections/generated/tab_pom_projword_full_normalizer_demo.tex",
             ],
         ),
         Step(

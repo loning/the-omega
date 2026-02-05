@@ -756,6 +756,16 @@ $$
 线性递推由 Cayley--Hamilton 定理立得，且递推系数为整数（因为 \(A_q\) 为整数矩阵）。证毕。
 \end{proof}
 
+\begin{remark}[可计算的对称压缩：星形 fiber-product 的 \texorpdfstring{$O(q^2)$}{O(q^2)} 轨道表示]\label{rem:pom-star-sympress}
+命题 \ref{prop:pom-moment-kernel-exists} 的一般编译路线在 \(q\) 增大时会遇到同步直积状态数的指数爆炸。
+但在一类“星形耦合”情形下（即碰撞约束可被组织为“中心轨道与每条叶子轨道分别满足同一 pair 约束”，并且该 pair 约束带有\emph{中心输入符号}分解，例如存在 \(3\)-态 pair kernel 的分解 \(A_2=B_0+B_1\)），
+则 \(q\)-重碰撞的星形核天然具有叶子置换对称：
+未压缩态空间可取为 \(\{1,2,3\}^{q-1}\)，而 Perron 主特征值由对称子空间决定，从而可将其压缩到轨道计数态
+\((n_1,n_2,n_3)\)（满足 \(n_1+n_2+n_3=q-1\)）并把维度降至
+\(\binom{q+1}{2}\)。
+脚本 \texttt{scripts/exp\_fold\_collision\_star\_kernel\_sympress\_demo.py} 给出该“轨道压缩 \(\Rightarrow\) \(\widetilde A_q\) \(\Rightarrow\) Perron 根估计”的可执行转移计数接口（输入为分解矩阵 \(B_0,B_1\)）。
+\end{remark}
+
 \paragraph{从 \texorpdfstring{$r_q$}{r\_q} 到压力与“纤维多重度谱”：凸共轭上界（严格）}
 已核验的 \(q\)-阶碰撞核满足 \(S_q(m)=\Theta(r_q^m)\)，其中 \(r_q=\rho(A_q)\) 为 Perron 根（推论 \ref{cor:pom-s2-asymptotic}、\ref{cor:pom-s3-asymptotic}、\ref{cor:pom-s4-asymptotic} 及表 \ref{tab:fold_collision_moment_recursions}）。
 因此 moment 指纹不仅给出单点常数 \(h_q=\log(2^q/r_q)\)，还诱导出一条可做 Legendre 变换的“压力曲线”，从而把“空间损失”提升为真正的谱结构。
@@ -772,6 +782,25 @@ P(q):=\limsup_{m\to\infty}\frac{1}{m}\log\sum_{x\in X_m}\pi_m(x)^q
 $$
 当存在 Perron 根 \(r_q\) 使 \(S_q(m)=\Theta(r_q^m)\) 时，有 \(\tau(q)=\log r_q\)，并且 \(P(q)=\log(r_q/2^q)=-h_q\)。
 \end{definition}
+
+\begin{remark}[可复核：压力曲线 \texorpdfstring{$P(q)$}{P(q)}、离散下凸包与 Legendre 候选谱]\label{rem:pom-pressure-multifractal-q60}
+为把定义 \ref{def:pom-moment-pressure} 的压力曲线与后续的凸共轭谱反演变成\emph{可跑的数值对象}，
+脚本 \texttt{scripts/exp\_fold\_collision\_pressure\_multifractal\_q60.py} 用模 \(F_{m+2}\) 的 residue DP 在窗口 \(m\in[24,30]\) 上稳定计算 \(\log S_q(m)\)，并对每个整数 \(2\le q\le 60\) 以线性回归估计 \(\log r_q\)（在 \(q\le 17\) 处用已核验的精确 Perron 根覆盖）。
+由此输出：
+\begin{itemize}
+  \item \(\,r_q^{1/q}\) 的收敛图（对齐端点常数 \(\sqrt{\varphi}\)，命题 \ref{prop:pom-rq-qinfty-endpoint}）；
+  \item 压力 \(P(q)=\log r_q-q\log 2\) 的离散曲线与其下凸包（与命题 \ref{prop:pom-pressure-convexity} 的离散凸性一致），并叠加命题 \ref{prop:pom-rq-universal-bounds} 的两条线性夹逼；
+  \item 由凸共轭构造的 Legendre 候选谱
+  \[
+  f_{\mathrm{Leg}}(\gamma):=\log\varphi-\sup_{q\ge 2}\bigl(q\gamma-\log r_q\bigr),
+  \]
+  作为命题 \ref{prop:pom-spectrum-legendre-upper} 与注 \ref{rem:pom-spectrum-formalism} 所述“谱反演”目标的可计算上界/候选曲线。
+\end{itemize}
+一键生成的三张图见图 \ref{fig:fold-collision-rq-1q}--\ref{fig:fold-collision-falpha}。
+\input{sections/generated/fig_fold_collision_pressure_multifractal_q60_rq}
+\input{sections/generated/fig_fold_collision_pressure_multifractal_q60_pressure}
+\input{sections/generated/fig_fold_collision_pressure_multifractal_q60_falpha}
+\end{remark}
 
 \begin{definition}[纤维多重度的对数谱函数]\label{def:pom-fiber-spectrum}
 令
