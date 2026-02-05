@@ -50,7 +50,13 @@ g(e):=\chi(e)+V(v)-V(u)\in\{0,1\}.
 \end{theorem}
 
 \begin{proof}
-核心图有限，且 $V$ 已显式给出；逐边核验 $g(e)\in\{0,1\}$ 即得结论。可审计复现脚本见
+核心图有限，且 $V$ 已显式给出；逐边核验 $g(e)\in\{0,1\}$ 即得一个有限证书。
+对任意周期轨道 $\gamma$，有
+\[
+\sum_{e\in\gamma}g(e)=\sum_{e\in\gamma}\chi(e)+\sum_{e:u\to v\in\gamma}\bigl(V(v)-V(u)\bigr)=\chi(\gamma),
+\]
+其中势函数项在闭合回路上望远镜相消。于是 $\chi(\gamma)=\sum_{e\in\gamma}g(e)\ge 0$。
+可审计复现脚本见
 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_charge\_closed\_form.py}。
 \end{proof}
 
@@ -427,4 +433,30 @@ $s^3(s^4-5s^2+6)=0$，故极限分支满足 $s\in\{\sqrt2,\sqrt3\}$。
 由于 Perron 根选择最大正实根分支，得到 $s\to\sqrt3$，即 $\lambda(q)\sim \sqrt{3q}$，
 从而 $P_\chi(\theta)=\log\lambda(e^\theta)=\frac12\theta+\frac12\log 3+o(1)$。
 最后一式由端点斜率给出。
+\end{proof}
+
+\begin{proposition}[零温展开：\texorpdfstring{$q\to+\infty$}{q->+infty} 的两项闭式]\label{prop:real-input-40-arity-charge-zero-temp-expansion}
+当 $q\to+\infty$ 时，Perron 根 $\lambda(q)=\rho(M(q))$ 具有 Puiseux 渐近展开
+\[
+\lambda(q)=\sqrt{3q}+\frac23+\frac{56}{81}\,q^{-1}+O(q^{-3/2}).
+\]
+因此压力函数 $P_\chi(\theta)=\log\lambda(e^\theta)$ 满足
+\[
+P_\chi(\theta)=\frac12\,\theta+\frac12\log 3+\frac{2}{3\sqrt3}\,e^{-\theta/2}-\frac{2}{27}\,e^{-\theta}+O(e^{-3\theta/2}).
+\]
+\end{proposition}
+
+\begin{proof}
+由定理 \ref{thm:real-input-40-arity-charge-det-closed}，$\lambda(q)$ 是代数方程 $P_7(\Lambda,q)=0$ 的最大正实根分支。
+令 $t:=q^{-1/2}\to 0^+$，并作 Puiseux 级数代入
+\[
+\lambda(q)=\frac{\sqrt3}{t}+a_0+a_1t+a_2t^2+a_3t^3+\cdots.
+\]
+将其代回 $P_7(\lambda(q),t^{-2})=0$ 并逐次比较 $t$ 的幂次系数，得到 $a_0=\frac23,\ a_1=0,\ a_2=\frac{56}{81}$，
+于是 $\lambda(q)=\sqrt{3q}+\frac23+\frac{56}{81}q^{-1}+O(q^{-3/2})$。
+再由
+\(
+P_\chi(\theta)=\log\lambda(e^\theta)
+\)
+对 $\lambda(e^\theta)=\sqrt{3}\,e^{\theta/2}\bigl(1+\frac{2}{3\sqrt3}e^{-\theta/2}+O(e^{-\theta})\bigr)$ 作对数展开即可得到所示压力渐近式。证毕。
 \end{proof}
