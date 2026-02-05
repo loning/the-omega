@@ -4,7 +4,7 @@
 
 ## 编译
 
-日常迭代建议默认使用 `main_fast.tex`（快速编译：跳过外部图像读取等）：
+非主动要求请勿自动编译
 
 ```bash
 latexmk -pdfxe -interaction=nonstopmode -halt-on-error -file-line-error main_fast.tex
