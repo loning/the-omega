@@ -526,6 +526,34 @@ D_m^{1/m}\ \le\ S_q(m)^{1/(mq)}\ \le\ D_m^{1/m}\,|X_m|^{1/(mq)}.
 证毕。
 \end{proof}
 
+\begin{remark}[由碰撞谱自洽重建 \texorpdfstring{$\varphi$}{phi}（无需 Fibonacci 输入）]\label{rem:pom-recover-phi-from-collision-spectrum}
+表 \ref{tab:fold_collision_renyi_spectrum}（以及其更高阶扩展表）给出经 DP/递推审计的 \(r_q\)（从而 \(h_q=\log(2^q/r_q)\)）。
+令
+\[
+s_q:=\frac{h_q}{q}=\log 2-\frac{1}{q}\log r_q,
+\qquad
+g_q:=e^{s_q}=\frac{2}{r_q^{1/q}}.
+\]
+由端点极限 \(\lim_{q\to\infty}s_q=\log(2/\sqrt{\varphi})\) 可得一个完全内部的“反解常数”恒等式：
+\[
+\boxed{\;
+\varphi
+=4e^{-2\lim_{q\to\infty}s_q}
+=\left(\lim_{q\to\infty}r_q^{1/q}\right)^2\; }.
+\]
+工程上，为避免 \(q\)-方向收敛偏慢，可对序列 \(s_q\) 做 Aitken \(\Delta^2\) 加速（与我们在 \(m\)-比值上使用的加速完全平行）：
+\[
+s_q^{(\infty)}
+\approx
+s_{q+2}-\frac{(s_{q+2}-s_{q+1})^2}{s_{q+2}-2s_{q+1}+s_q},
+\qquad
+\widehat\varphi_q:=4e^{-2s_q^{(\infty)}}.
+\]
+表 \ref{tab:fold_collision_phi_reconstruction_from_renyi} 给出仅用已审计 \(\{r_q\}\) 反演得到的 \(\widehat\varphi_q\) 的收敛示例（脚本 \texttt{scripts/exp\_fold\_collision\_phi\_reconstruction\_from\_renyi.py} 一键生成）。
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_phi_reconstruction_from_renyi}
+
 \begin{proposition}[压力的凸性与指纹的凹性]\label{prop:pom-pressure-convexity}
 对任意 \(m\ge 2\)，函数 \(q\mapsto \log S_q(m)\) 在 \(q\ge 0\) 上为凸函数。
 因此在 \(S_q(m)=\Theta(r_q^m)\)（例如由命题 \ref{prop:pom-moment-kernel-exists} 的 Perron 主尺度保证）时，压力
@@ -566,6 +594,51 @@ S_{q_1}(m)=\sum_{x\in X_m}d_m(x)^{q_1}
 \]
 即 \(P\) 的离散凸性。最后 \(h_q=q\log 2-P(q)\) 为线性函数减去凸函数，从而在整数点上为凹。证毕。
 \end{proof}
+
+\begin{proposition}[跨 \texorpdfstring{$q$}{q} 不等式：\texorpdfstring{$g(q)$}{g(q)} 的单调性]\label{prop:pom-crossq-g-monotone}
+对任意整数 \(m\ge 2\) 与 \(2\le p<q\)，令 \(d_m=(d_m(x))_{x\in X_m}\) 并记 \(S_k(m)=\sum_x d_m(x)^k=\|d_m\|_k^k\)。
+则有限维范数不等式给出
+\[
+\|d_m\|_p\ \le\ |X_m|^{\frac{1}{p}-\frac{1}{q}}\ \|d_m\|_q,
+\]
+从而
+\[
+S_q(m)\ \ge\ S_p(m)^{q/p}\,|X_m|^{1-q/p}.
+\]
+若存在 \(r_k\) 使 \(S_k(m)=\Theta(r_k^m)\)，并且 \(|X_m|\sim \varphi^m\)，则有跨阶约束
+\[
+\boxed{\;
+\log r_q \ \ge\ \frac{q}{p}\log r_p + \left(1-\frac{q}{p}\right)\log\varphi\; }.
+\]
+等价地，定义
+\[
+g(q):=\frac{\log r_q-\log\varphi}{q},
+\]
+则 \(g(q)\) 在 \(q\ge 2\) 上单调不减。
+表 \ref{tab:fold_collision_crossq_g_profile_q2_23} 给出 \(q=2,\dots,23\) 的可复算读数，可作为后续扩展/重实现的回归一致性检查（脚本 \texttt{scripts/exp\_fold\_collision\_crossq\_g\_profile\_q2\_23.py} 一键生成）。
+\end{proposition}
+\begin{proof}
+对长度 \(n=|X_m|\) 的非负向量 \(d_m\)，当 \(2\le p<q\) 时有 \(\|d_m\|_p\le n^{1/p-1/q}\|d_m\|_q\)。
+两边取 \(q\) 次幂得到
+\(
+\|d_m\|_q^q \ge \|d_m\|_p^q\,n^{1-q/p}
+\)，
+即
+\(
+S_q(m)\ge S_p(m)^{q/p}|X_m|^{1-q/p}
+\)。
+对两边取 \(\frac{1}{m}\log\) 并令 \(m\to\infty\)，利用
+\(
+\lim_{m\to\infty}\frac{1}{m}\log S_k(m)=\log r_k
+\)
+与
+\(
+\lim_{m\to\infty}\frac{1}{m}\log|X_m|=\log\varphi
+\)
+即得第一式；再代回定义得到 \(g(q)\) 的单调性。证毕。
+\end{proof}
+
+\input{sections/generated/tab_fold_collision_crossq_g_profile_q2_23}
 
 \begin{remark}[更高阶碰撞矩的精确递推与阶数规律（可审计）]\label{rem:pom-moment-rec}
 二阶与三阶碰撞矩分别由三态核 \(A_2,A_3\) 实现（命题 \ref{prop:pom-s2-recurrence} 与 \ref{prop:pom-s3-recurrence}）。更高阶 \(q\) 下，序列 \(\{S_q(m)\}\) 仍呈现出\textbf{小阶整数线性递推}的现象：对 \(q=4,5,6,7,8\) 可验证存在阶数分别为 \(5,5,7,7,9\) 的精确递推（从某个 \(m\) 起对所有 \(m\) 成立），其系数见表 \ref{tab:fold_collision_moment_recursions}。这些递推等价于“存在有限维的 \(q\)-阶碰撞核/矩阵 realization”，从而 \(S_q(m)=\Theta(r_q^m)\) 的指数尺度由对应特征多项式的 Perron 根 \(r_q\) 控制。
