@@ -89,12 +89,44 @@ V_c
 因此当 \(((3,3,5))\) 的第三轴慢变量由碰撞 cocycle 主导时，常数张量在 \(c\)-轴上的有效自由度自然被压缩到极低维子空间；\(\varepsilon_{\mathrm{extra}}\) 可被视为“超出三态碰撞 realization 之外”的剩余耦合信息量的无量纲度量。
 \end{remark}
 
-\begin{remark}[near-coboundary 二次律：对更高模数的可检验预测]\label{rem:arity-335-near-coboundary-scaling}
-由二级摘要输出的缺口 $1-\rho_{3,3,5}/\lambda$ 可估计一个“近共边界强度”常数 $\kappa$，并给出
+\begin{remark}[纯碰撞通道的 near-1 pole：扩散律、四阶外推与样本外素数点]\label{rem:arity-335-near-coboundary-scaling}
+在 \(((3,3,p))\) 的第三轴取纯碰撞扭曲（\(\xi=\mathbf{1}_{\{d=2\}}\)）时，
+最慢模态在 \(p\to\infty\) 极限中必然进入 near-coboundary 小角 regime：
+令
+\(
+r_p:=\rho_{3,3,p}/\lambda
+\)
+与 \(\alpha:=2\pi/p\)，则由压力展开（命题 \ref{prop:arity-collision-quadratic-closed}）有
 \[
-\rho_{3,3,p}/\lambda\approx 1-\kappa(2\pi/p)^2
+\log r_p=-\kappa_\infty\,\alpha^2+\beta\,\alpha^4+O(\alpha^6),
+\qquad
+\kappa_\infty=\frac{\sigma_\xi^2}{2}\approx 0.03366563146,
+\quad
+\beta=\frac{P_\xi^{(4)}(0)}{24}\approx 8.088750861\times 10^{-4}.
 \]
-的可检验预测（例如 $p\in\{7,11,13\}$）。该二次律是“简单 PF 本征值的解析微扰”在小角扭曲下的标准形状；若后续计算显示 $p=5$ 明显偏离该曲线，则可把它视为真正的特异共振模数。
+因此最直接、最稳定的四阶外推是
+\[
+\boxed{\ r_p\ \approx\ \exp(-\kappa_\infty\alpha^2+\beta\alpha^4)\ }.
+\]
+把该 near-1 pole 映回 \(s\)-平面（\(z=\lambda^{-s}\)）时，对应的主极点实部为
+\[
+s_p:=\frac{\log\rho_{3,3,p}}{\log\lambda}
+\;=\;
+1+\frac{\log r_p}{\log\lambda},
+\]
+即以 \(p^{-2}\) 的扩散律速度从 \(1\) 的左侧逼近。
+\par
+作为样本外（out-of-sample）的数值锚点（亦可视作“外推预测的必检点”），纯三次方程通道给出（表 \ref{tab:arity_pure_collision_cubic_primes}）：
+\[
+\begin{aligned}
+p=17:&\ r_p\approx 0.995427056029,\quad \Re(s_p)\approx 0.995237615093,\\
+p=19:&\ r_p\approx 0.996334946425,\quad \Re(s_p)\approx 0.996184854416,\\
+p=23:&\ r_p\approx 0.997495286896,\quad \Re(s_p)\approx 0.997394229511,\\
+p=29:&\ r_p\approx 0.998422700625,\quad \Re(s_p)\approx 0.998359823534,\\
+p=31:&\ r_p\approx 0.998619324725,\quad \Re(s_p)\approx 0.998564427126.
+\end{aligned}
+\]
+以上常数与素数点可由最小闭环脚本 \texttt{scripts/exp\_arity\_pure\_collision\_near1\_pole\_closed\_loop.py} 一键复算并导出 JSON（便于审计与回归）。
 \end{remark}
 
 \begin{remark}[单位圆扭曲的偶性与无三次项]\label{lem:unit-circle-evenness}
@@ -191,6 +223,20 @@ $$
 =\kappa_\infty\,\theta^2+c_4\,\theta^4+O(\theta^6),
 \qquad \theta\to 0.
 \]
+另一方面，若采用更标准的“对数压力”口径写作
+\[
+\log\frac{\rho(\theta)}{\lambda}
+=-\kappa_\infty\,\theta^2+\beta\,\theta^4+O(\theta^6),
+\]
+则两种系数满足确定关系
+\[
+\boxed{\ c_4=-(\beta+\kappa_\infty^2/2)\ }.
+\]
+对纯碰撞三次压力族（命题 \ref{prop:arity-collision-quadratic-closed}，表 \ref{tab:arity_pure_collision_cubic_asymp_coeffs}）该关系给出闭式数值
+\(
+c_4\approx -1.3755624569\times 10^{-3}<0
+\)，
+可用于将“拟合的四阶修正”与理论常数对齐，避免把 \(\log r\) 的四阶系数与 \(1-r\) 的四阶系数混用。
 对奇素数 $p$ 令 $\theta_p:=2\pi/p$，并记
 \[
 A(p):=\frac{1-\rho_{3,3,p}/\lambda}{(2\pi/p)^2},
@@ -281,6 +327,27 @@ $$
 $$
 并且 \(D(p)=\kappa_\infty+O(p^{-2})\)。
 \end{remark}
+
+\begin{corollary}[阿贝尔模轴的一致谱隙 no-go（固定核）]\label{cor:arity-335-abelian-uniform-gap-nogo}
+沿用注记 \ref{thm:arity-335-limit-law} 的记号，并设 \(\kappa_\infty>0\)。
+则
+\[
+\frac{\rho_{3,3,p}}{\lambda}
+=
+1-\kappa_\infty\left(\frac{2\pi}{p}\right)^2+O(p^{-4})
+\xrightarrow[p\to\infty]{}1.
+\]
+因此对任意常数 \(c\in(0,1)\)，存在奇素数 \(p\) 使 \(\rho_{3,3,p}/\lambda>c\)；
+特别地取 \(c=\lambda^{-1/2}\) 得：在固定有限核与固定局部 cocycle 下，不可能对所有模数 \(p\) 同时满足核版 GRH 的平方根界
+\[
+\rho_{3,3,p}\ \le\ \sqrt{\lambda}
+\qquad(\text{更不可能有 }\ \rho_{3,3,p}\le \lambda^{1/2-\varepsilon}\ \text{的统一改进}).
+\]
+换言之，阿贝尔 profinite 轴更像“扩散显微镜”：near-1 pole 不是偶然噪声，而是小角频率在固定步长下的机制性二次退化。
+\end{corollary}
+\begin{proof}
+由上式极限与 \(\lambda^{-1/2}<1\) 直接推出。
+\end{proof}
 
 \begin{remark}[扩散标度：混合时间 \texorpdfstring{$\tau_{\mathrm{mix}}(p)$}{tau_mix(p)} 为 \texorpdfstring{$O(p^2)$}{O(p^2)}]\label{cor:arity-335-diffusive-mixing}
 设 $\rho_{3,3,p}$ 为 $((3,3,p))$ 体系的最坏扭曲谱半径，$\lambda=\rho(M)$。

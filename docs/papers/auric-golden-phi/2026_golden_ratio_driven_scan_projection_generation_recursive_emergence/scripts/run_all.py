@@ -656,6 +656,18 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_rotation_polytope_exact",
+            script="exp_real_input_40_rotation_polytope_exact.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_rotation_polytope_exact.json",
+                "sections/generated/eq_real_input_40_rotation_polytope_vertices.tex",
+                "sections/generated/eq_real_input_40_rotation_polytope_facets.tex",
+                "sections/generated/eq_real_input_40_rotation_polytope_zero_temp_support.tex",
+                "sections/generated/tab_real_input_40_rotation_polytope_vertices.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_arity",
             script="exp_sync_kernel_real_input_40_arity.py",
             args=[],

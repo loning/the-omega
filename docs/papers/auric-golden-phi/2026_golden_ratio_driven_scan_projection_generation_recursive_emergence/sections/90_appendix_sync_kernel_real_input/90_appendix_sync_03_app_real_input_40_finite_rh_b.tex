@@ -106,6 +106,24 @@ u=\exp(-\beta)\,\omega_p^k
 核版 (G)RH 的平方根界是一个谱半径不等式。除直接对角化/求特征值外，还可用“构造内积”的方式给出可审计证书：
 对任意矩阵 $A$ 与阈值 $r$，$\rho(A)<r$ 等价于存在正定矩阵 $H\succ 0$ 使 $A^\ast H A\prec r^2 H$（命题 \ref{prop:lyapunov-spectral-radius-certificate}）。
 因此在扭曲分量 $A=M_{K,\rho}(u)$ 上，若能显式给出证书矩阵 $H_{\rho,u}$，就可把平方根界写成一条可复核的不等式，而不依赖数值特征值排序的稳健性。
+\par
+更重要的是：不等式
+\(
+A^\ast H A\prec r^2 H
+\)
+是关于未知量 \(H\) 的线性矩阵不等式（LMI），因此可以被直接转写为半正定可行性问题（SDP）。
+这给出一条“可审计 + 可自动搜索”的研究回路：
+\begin{enumerate}
+  \item 固定一个 lift/标记骨架（例如置换 lift；参见命题 \ref{prop:kernel-artin-factorization} 的 Artin 因子化框架）并把其自由参数（生成元、置换、cocycle）视为待优化变量；
+  \item 对每个不可约通道 \(\rho\neq\mathbf{1}\)，构造相应的扭曲块矩阵 \(M_{K,\rho}(u)\)；
+  \item 对每个通道解 SDP 寻找 \(H_{\rho,u}\succ 0\) 使
+  \[
+  M_{K,\rho}(u)^\ast H_{\rho,u} M_{K,\rho}(u)\prec \lambda_1(u)\,H_{\rho,u}
+  \qquad(\text{即 }r=\sqrt{\lambda_1(u)}),
+  \]
+  若全部非平凡通道均可行，则得到核版 GRH 的一个\textbf{可审计证书对象}（\(H\) 矩阵本身即可独立复核）。
+\end{enumerate}
+该“证书-可行性”视角把“零点/极点在临界线”的断言转写为有限个 SDP 的可行性检验，从而特别适合做系统性搜索与结构归纳：先用计算找到满足（或逼近）平方根界的 lift，再从证书形状中抽象出一般定理。
 \end{remark}
 
 \paragraph{primitive 轨道计数曲线与 \texorpdfstring{$x/\log x$}{x/log x} 的常数因子}
