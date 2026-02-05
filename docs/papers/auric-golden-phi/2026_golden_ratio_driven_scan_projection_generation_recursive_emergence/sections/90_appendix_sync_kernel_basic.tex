@@ -20,6 +20,58 @@ Q=\{000,001,002,010,100,101,0\overline{1}2,1\overline{1}2,01\overline{1},11\over
 第 9.1 节把黄金均值约束（禁止相邻 $11$）的移位空间视为 SFT，并用邻接矩阵把 $\zeta$ 写成行列式。这里做的是同一件事：只是把"语法 SFT"换成"机制 SFT（同步核）"。
 \end{remark}
 
+\subsubsection{同步自动机结构：最短复位词长度与目标分层}\label{app:sync-kernel-reset-automaton}
+把上述 Mealy 机\emph{忘掉输出}后，可视为输入字母表 $\{0,1,2\}$ 上的确定自动机
+\(
+\delta:Q\times\{0,1,2\}\to Q
+\)。
+称词 $w\in\{0,1,2\}^\ast$ 为\textbf{同步复位词 / reset word}，若 $\delta(q,w)$ 与初态 $q\in Q$ 无关（等价地 $\delta(Q,w)$ 为单点集）。
+
+\begin{proposition}[10 态同步核的最短同步长度恰为 $5$]\label{prop:sync10-reset-length-5}
+存在长度 $5$ 的复位词；例如
+\[
+\delta(Q,00000)=\{000\}.
+\]
+并且不存在任何长度 $<5$ 的复位词。
+\end{proposition}
+
+\begin{remark}[阈值 $5$ 的结构原因：$0000$ 先压缩到两态]\label{rem:sync10-reset-mechanism}
+该“恰为 $5$”并非偶然枚举结果：直接计算得
+\[
+\delta(Q,0000)=\{000,100\},
+\]
+而由转移表可见对任意输入 $d\in\{0,1,2\}$，
+\(
+\delta(000,d)=\delta(100,d)=00d
+\)，
+故对任意 $d$ 都有
+\(
+\delta(Q,0000d)=\{00d\}
+\)。
+因此 $00000$（以及一般的 $0000d$）在最后一步把两态合并为单态，从而解释了最短同步长度的“$4+1$”结构。
+\end{remark}
+
+进一步地，若固定目标态 $t\in Q$，定义其\textbf{复位深度}
+\[
+\ell(t):=\min\{|w|:\ \delta(Q,w)=\{t\}\}.
+\]
+表 \ref{tab:sync-kernel-reset-target-depth} 给出所有目标态的 $\ell(t)$ 与一个最短 witness 词。
+特别地并非所有目标态都能在长度 $5$ 达到：仅有两个目标态 $0\overline{1}2$ 与 $11\overline{1}$ 满足 $\ell(t)=6$，其最短 witness 分别为 \texttt{000102} 与 \texttt{000020}。
+这些结论由脚本 \texttt{scripts/exp\_sync\_kernel\_10\_state\_automaton\_invariants.py} 一键复现。
+
+\input{sections/generated/tab_sync_kernel_reset_targets}
+
+\subsubsection{变换半群不变量：大小、单位群与局部 \texorpdfstring{$\mathbb{Z}_2$}{Z2} 周期}\label{app:sync-kernel-semigroup}
+把每个输入字母 $d\in\{0,1,2\}$ 视为对 $Q$ 的函数 $f_d:q\mapsto\delta(q,d)$，考虑其生成的变换幺半群
+\[
+\mathcal{S}:=\langle f_0,f_1,f_2\rangle\subseteq Q^Q.
+\]
+表 \ref{tab:sync-kernel-transition-semigroup-invariants} 汇总了 $\mathcal{S}$ 的可复现不变量（大小、rank 分布、单位元个数等）。
+注意：虽然全局可逆元（置换）只有恒等一个，但 $\mathcal{S}$ 中确实出现 $2$-周期（局部 $\mathbb{Z}_2$ 子群），因此该变换半群\emph{并非} aperiodic（“无群”）情形。
+同样由脚本 \texttt{scripts/exp\_sync\_kernel\_10\_state\_automaton\_invariants.py} 自动生成可审计表格与 witness。
+
+\input{sections/generated/tab_sync_kernel_transition_semigroup_invariants}
+
 \subsubsection{邻接矩阵 B 与同步核移位 (X\_B, sigma)}\label{app:sync-kernel-basic}
 固定状态顺序
 \[

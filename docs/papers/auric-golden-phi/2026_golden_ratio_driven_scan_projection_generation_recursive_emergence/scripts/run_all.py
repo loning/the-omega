@@ -771,6 +771,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_10_state_automaton_invariants",
+            script="exp_sync_kernel_10_state_automaton_invariants.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_10_state_automaton_invariants.json",
+                "sections/generated/tab_sync_kernel_reset_targets.tex",
+                "sections/generated/tab_sync_kernel_transition_semigroup_invariants.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_cyclotomic_elimination",
             script="exp_sync_kernel_cyclotomic_elimination.py",
             args=[],
@@ -860,6 +870,15 @@ def build_steps() -> List[Step]:
                 "sections/generated/tab_real_input_40_bf_ktheory.tex",
                 "sections/generated/tab_real_input_40_parry_internal_distribution.tex",
                 "sections/generated/tab_real_input_40_nilpotent_jordan.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_sync_time_absorbing_chain",
+            script="exp_real_input_40_sync_time_absorbing_chain.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_sync_time_absorbing_chain.json",
+                "sections/generated/tab_real_input_40_sync_time_absorbing_chain.tex",
             ],
         ),
         Step(
