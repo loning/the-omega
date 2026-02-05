@@ -1121,6 +1121,38 @@ M_q(m):=\bigl(M_{q,-h}(m),\ldots,M_{q,h}(m)\bigr)\in\RR^{2h+1}
 
 \input{sections/generated/tab_fold_collision_resonance_nullmodes_q9_17}
 
+\begin{remark}[Hankel-null 的递推向量与共振约束签名：\texorpdfstring{$\Delta(q)-1$}{Delta(q)-1} 条额外约束（可自动抽取）]\label{rem:pom-nullmodes-recurrence-plus-signature}
+在共振窗口 \(\Delta(q)>0\) 下，表 \ref{tab:fold_collision_resonance_nullmodes_q9_17} 给出的
+\(
+\mathrm{NullModes}(q)\subset\ZZ^{2\lfloor q/2\rfloor+1}
+\)
+是一组 Hankel-null 证书的整数基，其维数为 \(\Delta(q)\)。
+其中存在一个天然可识别的“递推向量”方向：将最小递推的特征多项式
+\[
+P_q(\lambda)=p_0+p_1\lambda+\cdots+p_{d_q}\lambda^{d_q}\qquad(p_{d_q}=1)
+\]
+的系数按低次到高次排列，并补零嵌入到长度 \(2\lfloor q/2\rfloor+1\) 的坐标中，
+\[
+\alpha^{\mathrm{rec}}_q:=(p_0,p_1,\ldots,p_{d_q},0,\ldots,0),
+\]
+则该向量必落在 Hankel-null 中（其代数机制与多项式倍乘结构见注 \ref{rem:pom-nullmodes-q14-poly-alignment}）。
+在已审计输出里，这一对齐甚至可直接\emph{逐项对照}：例如 \(q=9\) 时，定理 \ref{thm:pom-moment-resonance} 给出
+\(
+P_9(\lambda)=\lambda^7-2\lambda^6-\cdots-900\lambda+450
+\)，而表 \ref{tab:fold_collision_resonance_nullmodes_q9_17} 的首条证书向量正是
+\(
+\alpha^{(1)}=(450,-900,-62,-2819,-386,-62,-2,1,0)
+\)
+（即 \(\alpha^{\mathrm{rec}}_9\)）。
+\par
+因此，若把 Hankel-null 的基分解为“递推向量 + 其余向量”，则“其余向量”的条数恰为
+\[
+\boxed{\ \Delta(q)-1\ }.
+\]
+例如 \(\Delta(q)=2\) 意味着除递推向量外还有 \(1\) 条额外共振约束；而 \(\Delta(q)=4\) 意味着除递推向量外还有 \(3\) 条额外约束。
+这给出一个立即可用的算法含义：从 \(\mathrm{NullModes}(q)\) 中自动剥离 \(\alpha^{\mathrm{rec}}_q\) 后，剩余 \(\Delta(q)-1\) 条证书向量可被视为“共振约束签名”，适用于跨实现/跨版本的回归一致性对比。
+\end{remark}
+
 \begin{remark}[Hankel-null 与特征多项式的对齐：以 \texorpdfstring{$q=14$}{q=14} 为例]\label{rem:pom-nullmodes-q14-poly-alignment}
 对任一满足整系数线性递推的序列 \(a_n\)，若其特征多项式写成
 \[
