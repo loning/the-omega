@@ -790,7 +790,10 @@ D_{2k+1}^{(2)} = 2F_{k+1}-F_{k-4}.
 \end{theorem}
 \begin{proof}
 证明思路与定理 \ref{thm:pom-max-fiber} 完全同构：最大值来自“满链独立集计数” \(I_k=F_{k+2}\)（偶数）或 \(2I_{k-1}=2F_{k+1}\)（奇数）。
-当离开最大达到者的满链相位核时，最小可能的退化不是简单地缩短链（那会造成 \(\Theta(F_{k-1})\) 级别的下降），而是出现一对固定间距的二阶干涉：它等价于在候选链的独立集选择中额外禁止一个最小禁配对。
+\par
+更机制化地说：在干涉图独立集 DP（引理 \ref{lem:pom-independence-dp-radius2}）中，满链相位对应于所有局部步都落在 \(p(t)=t-2\) 的分支，从而由引理 \ref{lem:pom-ind-local-recurrence}(1) 得到纯 Fibonacci 递推 \(a_t=a_{t-1}+a_{t-2}\)，并在末端给出 \(a_k=I_k=F_{k+2}\)。
+当离开最大达到者的满链相位核时，最小可能的退化不是简单地缩短链（那会造成 \(\Theta(F_{k-1})\) 级别的下降），而是出现一次“半径 2 冲突”导致 \(p(t)\) 发生一次跳跃（引理 \ref{lem:pom-ind-local-recurrence}(2)：某一步由 \(a_t=a_{t-1}+a_{t-2}\) 变为 \(a_t=a_{t-1}+a_{t-3}\)）。
+在路径图 \(P_k\) 的口径下，这等价于在满链独立集选择中额外禁止某一对距离 \(3\) 的顶点同时出现；最早的非端点缺陷对应的正是禁配对 \(\{2,5\}\)。
 由引理 \ref{lem:pom-forbidden-pair-fib-gap}(1)，禁止配对 \(\{2,5\}\) 从满链计数中精确削去 \(F_{k-4}\)，于是得到
 \(
 D_{2k}^{(2)}=F_{k+2}-F_{k-4}
@@ -809,7 +812,7 @@ D_{2k+1}^{(2)}=2F_{k+1}-F_{k-4}
 \qquad
 \lim_{k\to\infty}\frac{D_{2k+1}^{(2)}}{D_{2k+1}}=1-\frac12\varphi^{-5}.
 \]
-特别地，存在统一常数
+记 \(\theta_{\mathrm{even}}:=1-\varphi^{-6}\)、\(\theta_{\mathrm{odd}}:=1-\frac12\varphi^{-5}\) 为偶/奇分支的极限比值。特别地，由于 \(\theta_{\mathrm{odd}}>\theta_{\mathrm{even}}\)，存在统一常数
 \[
 \theta_{\mathrm{gap}}:=1-\frac12\varphi^{-5}\approx 0.954915\ldots < 1
 \]
@@ -838,6 +841,11 @@ D_{2k}-D_{2k}^{(3)}=F_{k-3}\qquad(k\ge 6),
 以及
 \[
 D_{2k+1}-D_{2k+1}^{(2)}=F_{k-4}\qquad(k\ge 5).
+\]
+等价地，对所有 \(m\ge 10\)（即 \(\lfloor m/2\rfloor\ge 5\)）有统一式
+\[
+\boxed{\;
+D_m^{(2)}=D_m-F_{\lfloor m/2\rfloor-4}\; }.
 \]
 换言之，离开最大纤维态的最小“空间损失”被 Fibonacci 递推锁定为离散能级。
 \end{remark}

@@ -59,6 +59,20 @@ def D_closed(m: int) -> int:
     return int(2 * F[k + 1])
 
 
+def D2_closed(m: int) -> int | None:
+    """
+    Closed form for the second-largest multiplicity D_m^{(2)}.
+
+    Valid for m>=10 (equivalently k=floor(m/2)>=5), matching the paper's theorem:
+      D_m^{(2)} = D_m - F_{floor(m/2)-4}.
+    """
+    if m < 10:
+        return None
+    k = m // 2
+    F = fib_upto(k + 2)
+    return int(D_closed(m) - F[k - 4])
+
+
 def counts_mod_fib(m: int, prog: Progress | None = None) -> np.ndarray:
     """Compute residue counts c_m(r) for modulus F_{m+2}."""
     if m < 0:
@@ -199,6 +213,10 @@ def main() -> None:
         Dc = D_closed(m)
         if Ddp != Dc:
             raise ValueError(f"D mismatch at m={m}: DP={Ddp}, closed={Dc}")
+
+        D2c = D2_closed(m)
+        if D2c is not None and D2 != D2c:
+            raise ValueError(f"D2 mismatch at m={m}: DP={D2}, closed={D2c}")
 
         # Representative words (by smallest residues)
         residues_sorted = sorted(residues)[: args.show_words]
