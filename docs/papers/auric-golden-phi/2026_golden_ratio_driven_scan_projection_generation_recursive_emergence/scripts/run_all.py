@@ -634,6 +634,17 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_real_input_40_arity_charge_closed_form",
+            script="exp_sync_kernel_real_input_40_arity_charge_closed_form.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_real_input_40_arity_charge_closed_form.json",
+                "sections/generated/eq_real_input_40_arity_charge_det_closed.tex",
+                "sections/generated/eq_real_input_40_arity_charge_zero_charge_zeta.tex",
+                "sections/generated/eq_real_input_40_arity_charge_cumulants_closed.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_arity_2d",
             script="exp_sync_kernel_real_input_40_arity_2d.py",
             args=[],
