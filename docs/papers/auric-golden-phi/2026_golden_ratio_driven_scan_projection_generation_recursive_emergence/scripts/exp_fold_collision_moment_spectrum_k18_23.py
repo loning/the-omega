@@ -185,11 +185,9 @@ def dominant_root(coeffs: List[int], dps: int = 120) -> float:
     """Return dominant root of x^d - c1 x^{d-1} - ... - cd with high precision."""
     d = len(coeffs)
     x = sp.Symbol("x")
-    poly = x**d
-    for i, c in enumerate(coeffs, start=1):
-        poly -= int(c) * x ** (d - i)
+    poly = sp.Poly.from_list([1] + [-int(c) for c in coeffs], gens=x, domain=sp.ZZ).as_expr()
     roots = sp.nroots(poly, n=int(dps), maxsteps=500)
-    roots_c = [complex(sp.re(r).evalf(dps), sp.im(r).evalf(dps)) for r in roots]
+    roots_c = [complex(r) for r in roots]
     r = max(roots_c, key=lambda z: abs(z))
     if abs(r.imag) > 1e-12:
         raise RuntimeError(f"dominant root is not (numerically) real: {r}")

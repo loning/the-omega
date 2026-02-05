@@ -188,15 +188,14 @@ RECS_18_23: List[Rec] = [
 def _poly_from_coeffs(coeffs: List[int]) -> sp.Expr:
     d = len(coeffs)
     x = sp.Symbol("x")
-    poly = x**d
-    for i, c in enumerate(coeffs, start=1):
-        poly -= int(c) * x ** (d - i)
-    return sp.expand(poly)
+    # Coefficients for x^d - c1 x^{d-1} - ... - cd.
+    cs = [1] + [-int(c) for c in coeffs]
+    return sp.Poly.from_list(cs, gens=x, domain=sp.ZZ).as_expr()
 
 
 def _roots(poly: sp.Expr, *, dps: int) -> List[complex]:
     roots = sp.nroots(poly, n=int(dps), maxsteps=700)
-    return [complex(sp.re(r).evalf(dps), sp.im(r).evalf(dps)) for r in roots]
+    return [complex(r) for r in roots]
 
 
 def _perron_and_subdominant(roots: List[complex]) -> Tuple[float, float, complex, List[complex]]:

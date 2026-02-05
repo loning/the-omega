@@ -35,28 +35,9 @@ from typing import Dict, List
 
 import numpy as np
 
+from common_mod_fib_dp import counts_mod_fib
 from common_paths import export_dir, generated_dir
-from common_phi_fold import Progress, fib_upto
-
-
-def counts_mod_fib(m: int, prog: Progress) -> np.ndarray:
-    """Return residue counts c_m(r) for modulus F_{m+2} as uint64 array."""
-    if m < 0:
-        raise ValueError("m must be >= 0")
-    if m == 0:
-        return np.array([1], dtype=np.uint64)
-
-    # common_phi_fold.fib_upto returns F_1..F_n with F_1=F_2=1.
-    fib = fib_upto(m + 2)  # length m+2, fib[j]=F_{j+1}
-    mod = int(fib[m + 1])  # F_{m+2}
-
-    c = np.zeros(mod, dtype=np.uint64)
-    c[0] = 1
-    for i in range(1, m + 1):
-        w = int(fib[i])  # F_{i+1} < mod
-        c = c + np.roll(c, w)
-        prog.tick(f"moddp m={m} step={i}/{m} mod={mod}")
-    return c
+from common_phi_fold import Progress
 
 
 @dataclass(frozen=True)
