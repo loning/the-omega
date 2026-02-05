@@ -238,6 +238,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="boundary_uplift_m10_b3c3_dictionary",
+            script="exp_boundary_uplift_m10_b3c3_dictionary.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/boundary_uplift_m10_b3c3_dictionary.json",
+                "sections/generated/eq_boundary_uplift_m10_isomorphism.tex",
+                "sections/generated/tab_boundary_uplift_m10_dictionary.tex",
+            ],
+        ),
+        Step(
             name="window6_c6_orbit_patisalam_seed",
             script="exp_window6_c6_orbit_patisalam_seed.py",
             args=[],
@@ -250,6 +260,15 @@ def build_steps() -> List[Step]:
                 "sections/generated/tab_fold6_bin_uplift_choice_collapse.tex",
                 "sections/generated/tab_fold6_boundary_sheet_pairs.tex",
                 "sections/generated/tab_foldbin_boundary_lift_m6_m8.tex",
+            ],
+        ),
+        Step(
+            name="fold_bin_gauge_m6_invariants",
+            script="exp_fold_bin_gauge_m6_invariants.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_bin_gauge_m6_invariants.json",
+                "sections/generated/tab_fold_bin_gauge_m6_invariants.tex",
             ],
         ),
         Step(
@@ -756,6 +775,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/sync_kernel_weighted_sp6_isotropy_scan.json",
                 "sections/generated/tab_sync_kernel_weighted_sp6_isotropy_scan.tex",
+            ],
+        ),
+        Step(
+            name="sp6_isotropy_root_split_ratio",
+            script="exp_sp6_isotropy_root_split_ratio.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sp6_isotropy_root_split_ratio.json",
+                "sections/generated/tab_sp6_isotropy_root_split_ratio.tex",
             ],
         ),
         Step(
