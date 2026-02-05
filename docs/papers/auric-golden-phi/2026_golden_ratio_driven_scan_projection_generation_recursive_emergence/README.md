@@ -6,6 +6,8 @@
 
 非主动要求请勿自动编译
 
+先run_all.py 然后 build, 如果脚本不在run_all 加进去
+
 ```bash
 latexmk -pdfxe -interaction=nonstopmode -halt-on-error -file-line-error main_fast.tex
 ```
