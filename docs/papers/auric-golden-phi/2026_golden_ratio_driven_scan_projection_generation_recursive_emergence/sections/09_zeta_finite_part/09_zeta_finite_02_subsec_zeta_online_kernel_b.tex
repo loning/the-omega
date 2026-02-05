@@ -143,6 +143,39 @@ s_m=2\cos(\pi/m)=2-\pi^2/m^2+\pi^4/(12m^4)+O(m^{-6})
 \input{sections/generated/tab_sync_kernel_hatdelta_branch_points}
 \end{remark}
 
+\begin{remark}[真实解析半径：最近复分岔点钉死 \texorpdfstring{$t=0$}{t=0} 的收敛盘]\label{rem:sync-hatdelta-analytic-radius-complex}
+表 \ref{tab:sync_kernel_hatdelta_branch_points} 给出了 \(\mathrm{Disc}_w(\widehat\Delta)(s)=0\) 在实轴 \(s\in(0,2]\) 上的三条分歧角。
+为避免与注 \ref{rem:sync-rho-pressure-asymp} 中压力展开的变量 \(\theta\) 混淆，本注用 \(t\) 表示单位圆扭曲角（\(u=e^{it}\)，亦即表 \ref{tab:sync_kernel_hatdelta_branch_points} 的角坐标 \(\theta\)）。
+对 \(t=0\) 周围的任意局部展开（包括注 \ref{rem:sync-rho-pressure-asymp} 中取 \(\theta=it\) 的小角延拓），真正决定收敛半径的是\emph{复域}最近的解析障碍。
+\par
+由于 \eqref{eq:sync_kernel_hatdelta_discriminant} 仅含 \(s\) 的偶次幂，可置 \(x:=s^2\) 将判别式降为 \(10\) 次多项式并在复平面求根；将最近的一对共轭根再经
+\(
+s=\sqrt{x},\ 
+t=2\arccos(s/2)
+\)
+（主值支）拉回角平面，得到距离 \(t=0\) 最近的复分岔点 \(t_\star,\overline{t_\star}\) 与真实解析半径
+\[
+\boxed{\;R_t:=|t_\star|\approx 1.070953\;}
+\]
+（见表 \ref{tab:sync_kernel_hatdelta_nearest_complex_branch_point}；其中角坐标仍记为 \(\theta_\star\equiv t_\star\)）。
+注意 \(R_t\) 严格小于表 \ref{tab:sync_kernel_hatdelta_branch_points} 的最小实角（\(\approx 2.03063\)），因此任意以 \(t=0\) 为中心的 Taylor/cumulant/continuation 展开，其收敛域首先被该复分岔点截断，而非被最小实分歧角截断。
+\par
+这给出一条完全内部、可审计的“模数选择律”：单位根扭曲角为 \(t_m:=2\pi/m\) 时，
+\[
+t_m<R_t\ \Longrightarrow\ \text{局部展开严格收敛}\quad(\text{特别地 }m\ge 6),
+\]
+其中 \(m=6\) 贴边慢收敛，而 \(m=5\) 已落在收敛盘外。
+并且最近复分岔点在 \(s\)-平面上的实部几乎贴着 \(s_6=2\cos(\pi/6)=\sqrt3\)（表 \ref{tab:sync_kernel_hatdelta_nearest_complex_branch_point} 的 \(\Re(s_\star)-\sqrt3\) 极小），从而解释了 \(m=6\) 在数值上天然表现为“临界缓慢”位置。
+\par
+因此在计算 \(\rho_m\)（或由其导出的 residue/Dirichlet--Mertens 常数）时，可以把“用局部展开还是用全局剥离”写成一条可审计策略分叉：
+\begin{itemize}
+  \item \textbf{\(m\le 5\)：} \(t_m>R_t\)，局部幂级数不收敛，宜直接走全局路径（例如注 \ref{rem:sync-cyclotomic-elimination-table} 的 cyclotomic resultant 求根/剥离）。
+  \item \textbf{\(m=6\)：} \(t_6/R_t\approx 0.978\) 贴边，局部展开虽在收敛盘内但会慢，宜配合加速（Pad\'e、分支剥离）或直接回退到全局求根。
+  \item \textbf{\(m\ge 7\)：} 进入稳健区间；此时局部截断误差的主控因子可按几何比 \((t_m/R_t)^K\) 做预算（见注 \ref{rem:sync-rho-pressure-asymp} 的小角预测接口）。
+ \end{itemize}
+\input{sections/generated/tab_sync_kernel_hatdelta_nearest_complex_branch_point}
+\end{remark}
+
 \begin{remark}[可复现输出：\texorpdfstring{$m=3,\dots,12$}{m=3..12} 的 \texorpdfstring{$R_m$}{Rm} 与 \texorpdfstring{$\rho_m$}{rhom}]\label{rem:sync-cyclotomic-elimination-table}
 脚本 \texttt{scripts/exp\_sync\_kernel\_cyclotomic\_elimination.py} 由附录 \ref{app:pressure-analytic} 的 $F(\lambda,u)$ 构造 $\widehat{\Delta}(w,s)$，并对 $m=3,\dots,12$ 计算 $R_m(w)$ 与 $\rho_m$；输出见表 \ref{tab:sync_kernel_cyclotomic_elimination_summary} 与多项式块 \texttt{tab\_sync\_kernel\_cyclotomic\_elimination\_polys.tex}（可直接回归测试）。
 \end{remark}
@@ -185,6 +218,7 @@ P(\theta)=\log 3+\frac12\theta+\frac{11}{204}\theta^2+\frac{1559}{1414944}\theta
 \frac{|\rho_{10}^{\mathrm{pred}}-\rho_{10}|}{\rho_{10}}\approx 1.03\times 10^{-10},\qquad
 \frac{|\rho_{20}^{\mathrm{pred}}-\rho_{20}|}{\rho_{20}}\approx 2.55\times 10^{-14}.
 \]
+但需要强调：该小角展开作为 \(\theta=0\) 处的幂级数，其真实收敛半径（以单位圆角 \(t\) 计）由注 \ref{rem:sync-hatdelta-analytic-radius-complex} 的最近复分岔点钉死（\(R_t\approx 1.070953\)），因此 \(m=5\)（\(t=2\pi/5\)）的高精度应理解为\emph{有限阶截断的数值外推}，而非可由几何尾界直接认证的收敛求值；若需可审计误差预算，宜按该注的策略分叉处理。
 \end{remark}
 
 \begin{corollary}[\texorpdfstring{$m^{-2}$}{m^-2} 间隙定律：\texorpdfstring{$3-\rho_m$}{3-rho_m} 的闭式常数]\label{cor:sync-rho-gap-m2}

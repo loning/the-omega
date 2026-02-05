@@ -673,6 +673,46 @@ P(q)\approx q(\tfrac12\log\varphi-\log2)
 表 \ref{tab:fold_collision_renyi_spectrum} 的 \(r_q\) 直接提供核验口径：对离散 \(q\) 计算 \(\Delta P(q)\) 与 \(\Delta^2P(q)\) 并观察其在 \(q\) 方向的收敛/衰减，即可把“冻结段/折点”从叙事转换为可审计判据。
 \end{remark}
 
+\begin{remark}[双极限尺度 $q=\alpha m$：立即冻结与可审计判据]\label{rem:pom-q-alpha-m-freeze}
+本节的压力/矩谱口径默认先取 $m\to\infty$、再取固定阶 $q$（或 $q\to\infty$）。若改取新的双极限尺度
+\[
+q_m:=\lfloor \alpha m\rfloor\qquad(\alpha>0\ \text{固定}),
+\]
+则碰撞矩
+\(
+S_{q_m}(m)=\sum_x d_m(x)^{q_m}
+\)
+进入“零温”区：任何与最大纤维 \(D_m\) 相比在\emph{指数密度}上有正差距的类型都会被超指数压制。
+把最大项因子提出：
+\[
+S_{q_m}(m)
+=D_m^{q_m}\sum_{x\in X_m}\Bigl(\frac{d_m(x)}{D_m}\Bigr)^{q_m}.
+\]
+因此真正可能产生非平凡竞争的，只有那些满足 \(d_m(x)/D_m=\Theta(1)\) 且达到者数在指数尺度上不稀薄的“近最大带”。
+\par
+在 Fold 的顶层谱上，已由推论 \ref{cor:pom-second-max-gap-constant} 得到显式间隙常数 \(\theta_\star<1\) 使
+\(
+D_m^{(2)}\le \theta_\star D_m
+\)，且由定理 \ref{thm:pom-max-achievers-phase-stabilization} 得到 \(\kappa_m^{\mathrm{max}}=O(1)\)。
+于是对任意 \(m,q\) 有粗上界
+\[
+S_q(m)\le \kappa_m^{\mathrm{max}}D_m^q+|X_m|\,(D_m^{(2)})^q
+\le D_m^q\Bigl(\kappa_m^{\mathrm{max}}+|X_m|\theta_\star^{\,q}\Bigr),
+\]
+从而当 \(\alpha>\alpha_{\mathrm{gap}}:=\log\varphi/(-\log\theta_\star)\) 时有
+\[
+\frac{S_{q_m}(m)}{\kappa_m^{\mathrm{max}}D_m^{q_m}}=1+O\!\left(\exp\!\bigl(m(\log\varphi+\alpha\log\theta_\star)\bigr)\right),
+\]
+即非最大纤维贡献在指数尺度上消失，$S_{q_m}$ 必由最大纤维族主导。
+\par
+更强的断言“任意 \(\alpha>0\) 都立即冻结”并不由上述粗界自动推出：它等价于近最大尾部在 $\theta\uparrow 1$ 时的达到者数仍为亚指数。
+这提供一个直接的可审计实验协议：在可计算窗口内用 residue DP 计算尾计数
+\(
+\#\{x:\ d_m(x)\ge \theta D_m\}
+\)
+的指数率，并检验其在 $\theta$ 接近 $1$ 的区间是否稳定为 $0$；若是，则双极限尺度下不存在非平凡的 \(\alpha_\ast>0\) 相变点（“冻结”在任何正斜率上立刻发生）。
+\end{remark}
+
 \begin{proposition}[矩谱给出的多重分形上包络（Legendre--Fenchel 口径）]\label{prop:pom-fold-multifractal-envelope}
 设 $P$ 仅在整数 $q\ge 2$ 上给定。令 $\widetilde P:\RR_{\ge 2}\to\RR\cup\{+\infty\}$ 为集合点 $\{(q,P(q)):\ q\in\ZZ_{\ge 2}\}$ 的\emph{下闭包凸延拓}（即最小的下半连续凸函数，使得 $\widetilde P(q)\le P(q)$ 对所有整数 $q\ge2$ 成立）。
 定义
