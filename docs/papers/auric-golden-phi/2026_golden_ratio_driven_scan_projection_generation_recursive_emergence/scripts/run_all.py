@@ -247,6 +247,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="gut_crt_235_m58_collision_gap",
+            script="exp_gut_crt_235_m58_collision_gap.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/gut_crt_235_m58_collision_gap.json",
+                "sections/generated/eq_gut_crt_235_m58_collision_gap.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_weighted_delta_completed",
             script="exp_sync_kernel_weighted_delta_completed.py",
             args=[],
