@@ -234,6 +234,11 @@ t=\frac{y^5-2y^4-2y+2}{y^3}
 更一般地，对已核验的高阶递推（表 \ref{tab:fold_collision_moment_recursions}），直接对特征多项式做根扫描即可得到
 \(\Lambda_q/\sqrt{r_q}\) 与 \(\beta_q\) 随 \(q\) 的快速劣化：从 \(q=4\) 起跨过临界线，且 \(q\ge 5\) 迅速增强（表 \ref{tab:fold_collision_kernel_rh_scan_q2_8}）。
 此外，在 \(q\le 8\) 的扫描中，达成 \(\Lambda_q\) 的最大非 Perron 根在数值上始终为负实根（反相模态），因此越线首先由实轴模态触发。
+\par
+\textbf{可检验预测。} 由于 \(q=4\) 已处于 near-RH 贴线且主导次模态为负实根，预期在更高阶 \(q\) 的 moment-kernel/递推中，
+（i）递推系数尾块更接近交替边界型（例如 \(\pm 2^k\) 量级的饱和模式）；
+（ii）Hankel 证书中的素因子指数（尤其 2-进与 5-进）更早出现高估值。
+该预测可直接通过 \(A_5\) 及以上的递推系数与 Hankel 证书扫描核验。
 \end{remark}
 
 \input{sections/generated/eq_collision_kernel_A4_rh_breaking}
@@ -270,6 +275,21 @@ $$
 该比值提供一个\textbf{独立于指数主尺度 \(r_q\)} 的细结构指纹：当把碰撞从三重提升到四重时，
 除了 Perron 根 \(r_q\) 的指数尺度改变之外，primitive 主项的常数级漂移（Mertens 常数）也显著收缩。
 并且表中 \texttt{tail proxy} 极小，说明该 finite-part 常数的抽取在数值上高度稳定、适合作为跨阶稀有性刻度。
+\end{remark}
+
+\begin{remark}[有限部常数的步长加速（\(A_2\to A_4\)）]\label{rem:pom-collision-mertens-accel}
+由表 \ref{tab:collision_kernel_A2_finite_part}--\ref{tab:collision_kernel_A4_finite_part}，
+\(
+\mathsf{M}(A_2)\approx 0.2325880,\,
+\mathsf{M}(A_3)\approx 0.1560083,\,
+\mathsf{M}(A_4)\approx 0.0730980
+\)。
+因此
+\[
+\Delta_3:=\mathsf{M}(A_2)-\mathsf{M}(A_3)\approx 0.07658,\qquad
+\Delta_4:=\mathsf{M}(A_3)-\mathsf{M}(A_4)\approx 0.08291.
+\]
+可见在 \(q=2,3,4\) 处有限部常数的衰减步长呈增大趋势，提供一个与 near-RH 贴线并行出现的细结构指纹。
 \end{remark}
 
 \subsubsection{五阶碰撞矩与 \texorpdfstring{$\mathrm{R\acute{e}nyi}$}{Renyi}--5 投影熵率}\label{subsec:pom-s5}
@@ -866,6 +886,24 @@ R_q:=\frac{\Lambda_q}{\sqrt{r_q}},
 此外，在 \(q\le 17\) 的范围内达到 \(\Lambda_q\) 的主导非 Perron 根恒为负实根，从而存在稳定的反相慢模态主导越线。
 \end{remark}
 
+\begin{remark}[高阶 \texorpdfstring{$\delta_q$}{deltaq} 的近线性律（\(q=18,\dots,23\)）]\label{rem:pom-collision-kernel-rh-linear}
+由表 \ref{tab:fold_collision_kernel_rh_scan_q18_23} 的 \(\delta_q\) 可见，在 \(q=18,\dots,23\) 上增量
+\(\delta_{q+1}-\delta_q\) 近似为常数（约 \(0.26\) 且缓慢递减）。
+用端点拟合得到平均斜率
+\[
+s:=\frac{\delta_{23}-\delta_{18}}{23-18}\approx 0.263701,
+\qquad
+\delta_q\approx \delta_{18}+s\,(q-18).
+\]
+等价地，
+\[
+\frac{\Lambda_{q+1}^2/r_{q+1}}{\Lambda_q^2/r_q}\approx e^{s}\approx 1.30174,
+\qquad
+\frac{R_{q+1}}{R_q}\approx e^{s/2}\approx 1.14094,
+\]
+即“超越线强度”在该高阶区间内呈近似固定倍率增长。
+\end{remark}
+
 \input{sections/08_projection_ontology_mathematics/08_projection_ontology_mathematics_part03c_shadow_spectral_packet_q9_17.tex}
 
 \begin{remark}[高阶递推的最短初值（\(q=9,10,11,12\)）]\label{rem:pom-moment-init-9-12}
@@ -956,6 +994,19 @@ E^{a_q}(E+1)^{b_q}S_q\equiv 0\pmod 2.
 把差分算子记为 \(\mathsf{D}:=E+1\)（特征 \(2\) 下等同于前向差分），即得一个“内生的奇偶选择定则”：对每个 \(q=9,\dots,17\)，都有
 \[
 \mathsf{D}^{b_q}S_q(m+a_q)\equiv 0\pmod 2.
+\]
+\par
+\textbf{推论（奇偶序列的有限阶差分多项式与周期上界）.}
+在 \(\mathbb{F}_2\) 上，\(\mathsf{D}^{b_q}f\equiv 0\) 等价于 \(f(m)\) 是阶 \(<b_q\) 的离散多项式（以 \(\binom{m}{k}\) 为基底），因此 \(S_q(m+a_q)\bmod 2\) 由前 \(b_q\) 个值完全确定。
+又由 Lucas 定理可知 \(\binom{m}{k}\bmod 2\) 仅依赖 \(m\) 的低位二进制位，故
+\[
+S_q(m+a_q)\bmod 2\ \text{的周期}\ \mid\ T_q:=2^{\lceil\log_2 b_q\rceil}.
+\]
+由表 \ref{tab:fold_collision_charpoly_mod2_shadow_q9_17} 得到
+\[
+T_q\mid 4\ (q=9,10),\qquad
+T_q\mid 8\ (q=11,\dots,16),\qquad
+T_q\mid 16\ (q=17).
 \]
 \end{remark}
 
