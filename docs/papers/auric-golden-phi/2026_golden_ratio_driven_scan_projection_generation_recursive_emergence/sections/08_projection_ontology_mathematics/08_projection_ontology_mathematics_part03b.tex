@@ -562,6 +562,49 @@ p_n(A_2)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,t_{n/d}.
 即二阶碰撞核在核版 RH 不等式上严格留有裕量：非主谱严格落在平方根圆盘内。
 \end{remark}
 
+\begin{remark}[差值链扭曲核：三态 \texorpdfstring{$A_2$}{A2} 的“最小可审计”角色扭曲试验]\label{rem:pom-a2-diffchain-twist}
+命题 \ref{prop:pom-s2-recurrence} 给出的 \(A_2\) 是一个\emph{无标签}的非负 realization；若要定义角色扭曲 \(A_{2,\chi}\)，需要先在边上放置一个可加的“差值荷”标签。一个最小的、完全可审计的选取是从成对窗口的差值
+\(
+D_m:=N(\omega)-N(\omega')\in\ZZ
+\)
+出发，令一步增量 \(\delta_k:=\omega_k-\omega'_k\in\{-1,0,1\}\)，并注意 \(\delta_k=0\) 有两种实现 \((0,0),(1,1)\) 而 \(\delta_k=\pm 1\) 各只有一种实现。
+\par
+引入差值生成函数
+\[
+P_m(z):=\prod_{k=1}^m\Bigl(2+z^{F_{k+1}}+z^{-F_{k+1}}\Bigr)=\sum_{D\in\ZZ}a_m(D)\,z^D,
+\]
+则 \(a_m(D)\) 计数满足 \(D_m=D\) 的窗口对数。追踪三系数向量
+\(
+v_m:=(a_m(0),a_m(F_{m+1}),a_m(F_{m+2}))^{\mathsf T}
+\)
+可得到一个三态整数转移 \(v_{m+1}=Mv_m\)，其中
+\[
+M=
+\begin{pmatrix}
+2&0&2\\
+1&0&2\\
+0&1&0
+\end{pmatrix},
+\qquad
+\det(\lambda I-M)=\lambda^3-2\lambda^2-2\lambda+2.
+\]
+因此 \(\rho(M)=\rho(A_2)=r_2\)，且其非主谱也与注 \ref{rem:pom-collision-rh-margin} 一致（同一特征多项式）。
+\par
+进一步把每步增量 \(\delta_k\) 作为边标签并对角色 \(\chi(1)=u\) 做扭曲，可得一个显式的复矩阵族
+\[
+M(u)=M_0+uM_++u^{-1}M_-=
+\begin{pmatrix}
+2&0&u+u^{-1}\\
+u&0&2\\
+0&u&0
+\end{pmatrix},
+\]
+注意此处 \(\chi\) 是对一步差值荷 \(\delta_k\in\{-1,0,1\}\) 的\emph{局部}扭曲，并不等同于命题 \ref{prop:pom-s2-plancherel} 中定义在 \(G_m=\ZZ/F_{m+2}\ZZ\) 上的\emph{全局}角色 \(\chi_j\)。因此它更适合作为“可控的最小扭曲平台”，用于测试 worst-mode 扫描与 \(\zeta\) 行列式分解的数值接口。
+可用根单位 \(u=e^{2\pi i r/n}\) 做直接谱半径扫描，从而数值定位“最坏扭曲模态”（通常对应 \(u\) 近 \(1\) 的低频模态）。同时该例也提醒：\textbf{并非任意边标签扭曲都满足平方根圆盘界}；在此差值链扭曲下，存在大量非平凡 \(u\) 使 \(\rho(M(u))>\sqrt{r_2}\)，见表 \ref{tab:fold_collision_a2_twist_difference_chain_scan}（可复现脚本 \texttt{scripts/exp\_fold\_collision\_a2\_twist\_difference\_chain\_scan.py}）。
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_a2_twist_difference_chain_scan}
+
 \begin{remark}[与时间—空间交换图的同型位置：二阶矩 \texorpdfstring{$\leftrightarrow$}{<->} 纤维积核]\label{rem:pom-collision-diagram}
 第 \ref{subsec:pom-time-space-diagram} 小节把“时间迹 \(\mathrm{Tr}(T^n)\)”与“primitive 原子谱”用 \(\zeta\) 行列式统一（命题 \ref{prop:time-space-commuting-diagram}）。碰撞核 \(A_2\) 给出一个同型接口：它不是对原核的逐步时间迹，而是对 Fold 的“二阶矩/碰撞统计”所诱导的纤维积核。其 Perron 根 \(r_2\) 与 \(\zeta_{A_2}\) 的主极点控制 Rényi-2 投影熵率 \(h_2=\log(4/r_2)\)（推论 \ref{cor:pom-s2-asymptotic}），从而把“窗口层的纤维缺陷泛函”提升为一个可审计的谱指纹对象，与第 9 节的 \(\zeta\)/primitive/有限部常数接口处于同一范式。
 \end{remark}
