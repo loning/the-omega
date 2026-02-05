@@ -1107,6 +1107,63 @@ D_m^{(2)}=D_m-F_{\lfloor m/2\rfloor-4}\; }.
 换言之，离开最大纤维态的最小“空间损失”被 Fibonacci 递推锁定为离散能级。
 \end{remark}
 
+\begin{remark}[谱间距比的奇偶双常数：\texorpdfstring{$(D_m^{(2)},D_m^{(3)})$}{(D2,D3)} 的簇化指纹]\label{rem:pom-spectrum-gap-ratio-fingerprint}
+定义顶端三层谱间距
+\[
+g_{1}(m):=D_m-D_m^{(2)},
+\qquad
+g_{2}(m):=D_m^{(2)}-D_m^{(3)}.
+\]
+并定义“二阶缺陷比”（谱簇化指纹）
+\[
+\Psi(m):=\frac{g_2(m)}{g_1(m)}
+=\frac{D_m^{(2)}-D_m^{(3)}}{D_m-D_m^{(2)}}.
+\]
+它只依赖表 \ref{tab:fold_max_fiber_achievers_phase} 中三项整数，因而可作为几乎零成本的结构审计：任何把第二/第三层谱顺序或代表 maximizer 类识别错误的实现偏差，往往会在 \(\Psi(m)\) 上被放大（因为它是“二阶差分的比率”）。
+\par
+在偶数支 \(m=2k\) 且 \(k\ge 6\) 的可证闭式下（定理 \ref{thm:pom-second-max-fiber-closed-form} 与定理 \ref{thm:pom-third-max-fiber-even-closed-form}），有
+\[
+g_1(2k)=F_{k-4},\qquad g_2(2k)=F_{k-5},
+\qquad
+\Psi(2k)=\frac{F_{k-5}}{F_{k-4}}
+\longrightarrow \varphi^{-1}\approx 0.618034.
+\]
+在奇数支第三层稳定闭式（注 \ref{rem:pom-third-max-fiber-odd-closed-form}）下，对 \(m=2k+1\) 且 \(k\ge 9\) 有
+\[
+g_1(2k+1)=F_{k-4},\qquad g_2(2k+1)=F_{k-8},
+\qquad
+\Psi(2k+1)=\frac{F_{k-8}}{F_{k-4}}
+\longrightarrow \varphi^{-4}\approx 0.145898.
+\]
+因此顶端三层谱并非“均匀掉落”，而是出现稳定的奇偶簇化选择律：在奇数窗上 \((D_m^{(2)},D_m^{(3)})\) 形成紧簇（\(g_2\ll g_1\)），而在偶数窗上两层仍保持同阶分离（\(g_2\asymp g_1\)）。
+例如在窗口顶端，
+\[
+\Psi(30)=\frac{1508-1453}{1597-1508}=\frac{55}{89}\approx 0.61798,\qquad
+\Psi(31)=\frac{1885-1872}{1974-1885}=\frac{13}{89}\approx 0.14607,
+\]
+奇偶分裂一目了然。
+\par
+该簇化直接决定了高阶矩里“第三层相对第二层可忽略”的阈值尺度。令
+\[
+\left(\frac{D_m^{(3)}}{D_m^{(2)}}\right)^q\approx e^{-1}
+\quad\Longleftrightarrow\quad
+q_{2\to3}(m):=\frac{1}{-\log\!\bigl(D_m^{(3)}/D_m^{(2)}\bigr)}
+\approx \frac{D_m^{(2)}}{g_2(m)},
+\]
+其中近似用到 \(g_2\ll D_m^{(2)}\) 时的 \(\log(1-x)\approx -x\)。
+于是
+\[
+q_{2\to3}(2k)\approx \frac{F_{k+2}-F_{k-4}}{F_{k-5}}
+\longrightarrow \varphi^7-\varphi=14+6\sqrt5\approx 27.416,
+\]
+而
+\[
+q_{2\to3}(2k+1)\approx \frac{2F_{k+1}-F_{k-4}}{F_{k-8}}
+\longrightarrow 2\varphi^9-\varphi^4=\frac{145+65\sqrt5}{2}\approx 145.171.
+\]
+这给出一个可证伪的二阶段时间表：随 \(q\) 增大，偶数窗更早发生“簇内凝聚”（第三层先于第二层被压下），而奇数窗该效应被推迟到高一个数量级的 \(q\) 才出现；因此奇数窗上即便处在“最大层支配”的高 \(q\) 区间，第二、第三层也会在较长区间内以两相簇的形式共同参与。
+\end{remark}
+
 \begin{remark}[第三层谱缺口平台与 \(q\)-阈值（奇偶分离）]\label{rem:pom-third-max-gap-parity}
 定义第三层抑制因子
 \[
