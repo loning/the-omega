@@ -163,6 +163,17 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold6_b3c3_seed",
+            script="exp_fold6_b3c3_seed.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold6_b3c3_seed.json",
+                "sections/generated/eq_fold6_b3c3_seed.tex",
+                "sections/generated/tab_fold6_b3c3_root_dictionary_B3.tex",
+                "sections/generated/tab_fold6_b3c3_root_dictionary_C3.tex",
+            ],
+        ),
+        Step(
             name="prime_shadow_window_mi",
             script="exp_prime_shadow_window_mi.py",
             args=[],

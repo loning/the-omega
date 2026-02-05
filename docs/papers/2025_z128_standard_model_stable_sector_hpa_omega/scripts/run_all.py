@@ -365,6 +365,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="Fold6 B3/C3 root-seed dictionary (audit)",
+            script="exp_fold6_b3c3_seed.py",
+            expected_outputs=[
+                "sections/generated/fold6_b3c3_seed.json",
+                "sections/generated/eq_fold6_b3c3_seed.tex",
+                "sections/generated/tab_fold6_b3c3_root_dictionary_B3.tex",
+                "sections/generated/tab_fold6_b3c3_root_dictionary_C3.tex",
+            ],
+        ),
+        Step(
             name="Fold6 21-type Hilbert panels (figure)",
             script="fig_fold6_21_types_hilbert_panels.py",
             expected_outputs=[
