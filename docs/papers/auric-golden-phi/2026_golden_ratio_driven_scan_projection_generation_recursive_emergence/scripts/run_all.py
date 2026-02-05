@@ -154,6 +154,33 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_pressure",
+            script="exp_fold_gauge_anomaly_pressure.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_pressure.json",
+                "sections/generated/eq_fold_gauge_anomaly_pressure.tex",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_rate_curve_elimination",
+            script="exp_fold_gauge_anomaly_rate_curve_elimination.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_rate_curve_resultant.json",
+                "sections/generated/tab_fold_gauge_anomaly_rate_curve_resultant_degree.tex",
+                "sections/generated/eq_fold_gauge_anomaly_rate_curve_resultant_structure.tex",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_ldp_rate",
+            script="exp_fold_gauge_anomaly_ldp_rate.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_fold_gauge_anomaly_ldp_rate.tex",
+            ],
+        ),
+        Step(
             name="iid_sources_fold_vs_parry",
             script="exp_iid_sources_fold_vs_parry.py",
             args=[],
