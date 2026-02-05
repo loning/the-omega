@@ -343,6 +343,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_kernel_A4_edge_weight_threshold",
+            script="exp_collision_kernel_A4_edge_weight_threshold.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_edge_weight_threshold.json",
+                "sections/generated/eq_collision_kernel_A4_edge_weight_threshold.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_renyi_spectrum",
             script="exp_fold_collision_renyi_spectrum.py",
             args=[],
