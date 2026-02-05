@@ -86,6 +86,99 @@ W(m):=\frac{\log|G_m|}{\Delta_m}=\log|G_m|\cdot\tau_{\mathrm{mix}}(m)
 
 \input{sections/generated/tab_real_input_40_spectral_tax_workload}
 
+\begin{remark}[最大模数控制律：乘法空间、平方时间（near-coboundary + 可证伪选择律）]\label{rem:pom-max-modulus-control-law}
+本段把表 \ref{tab:pom-space-time-duality-prime-register} 的“空间乘法预算”与“时间谱隙税”进一步拼成一条可检验的工程律：在可分离的 residue 直积轴上，prime-register 的\emph{空间容量}由乘积 \(P=|G|\) 决定，但\emph{时间扩散}主阶由“最坏小角/最大模数”决定，而非由 \(P\) 本身决定。
+\par
+\medskip\noindent\textbf{设定（直积 residue 轴）}
+取两两互素的模数组 \(\{p_1,\dots,p_k\}\) 并令
+\[
+G:=\prod_{i=1}^k\ZZ/p_i\ZZ,
+\qquad
+P:=|G|=\prod_{i=1}^k p_i,
+\qquad
+L:=\max_i p_i.
+\]
+把“cylinder 同余等分布”的最坏扭曲比值记为
+\(
+r_G:=\max_{\chi\neq\chi_0}\rho(M_\chi)/\lambda
+\)
+并令谱隙税率
+\(
+\Delta_G:=-\log r_G
+\)
+（与注 \ref{rem:pom-spectral-tax-workload} 记号一致）。
+\par
+\medskip\noindent\textbf{（小角二次律）}
+在 near-coboundary 小角 regime 下，扭曲缺口由方差密度控制：对任意一维方向 \(F\) 与最小非平凡角 \(2\pi/m\)，有
+\[
+\log\frac{\rho(M_{it_mF})}{\lambda}
+=-\frac{\sigma_F^2}{2}\left(\frac{2\pi}{m}\right)^2+O(m^{-4})
+\]
+（推论 \ref{cor:dirichlet-modulus-diffusion-barrier}；其中 \(\sigma_F^2=a^{\mathsf T}\Sigma a\)，\(\Sigma=\nabla^2P(0)\)）。
+因此沿第 \(i\) 轴的“纯轴扭曲”（仅在 \(\ZZ/p_i\) 上取 \(j=\pm1\)）的谱隙主阶为
+\[
+\Delta_i\ \approx\ 2\pi^2\,\sigma_i^2/p_i^2
+=4\pi^2\,\kappa_i/p_i^2,
+\qquad \kappa_i:=\sigma_i^2/2.
+\]
+\par
+\medskip\noindent\textbf{（可证伪选择律 \(\Rightarrow\) 最大模数控制）}
+若在该直积轴上满足“单轴慢模选择律”：
+\[
+\arg\max_{\chi\neq\chi_0}\frac{\rho(M_\chi)}{\lambda}
+\ \text{由某个纯轴字符达到（仅一轴非平凡），并且发生在最大模数 }p_{i^\star}=L,
+\]
+则 \(\Delta_G\) 的主阶由该最坏小角锁定，因而
+\[
+n\ \gtrsim\ \frac{\log|G|+\log(1/\delta)}{\Delta_G}
+\ \approx\
+\frac{L^2}{4\pi^2\,\kappa_{i^\star}}\Bigl(\log P+\log\tfrac{1}{\delta}\Bigr).
+\]
+这表明：在上述可审计前提下，\textbf{prime-register 的空间预算是乘法 \(P\)，但时间预算主阶是平方 \(L^2\)，且仅以 \(\log P\) 进入}。
+\par
+该“单轴慢模选择律”本身是可证伪/可审计的：例如在真实输入 40 状态核的 \(((3,3,p))\) 纯碰撞轴扫描中，最坏角色索引稳定为 \((0,0,\pm1)\)（表 \ref{tab:real_input_40_arity_335_n2_selection_law_primes}），与 near-coboundary 小角机制一致；更一般的选择律在二次近似下等价于一个带度量的最短向量问题（定理 \ref{thm:real-input-40-near-coboundary-svp}）。
+\end{remark}
+
+\begin{remark}[primorial 选模与 \texorpdfstring{$\mathrm{poly}(\log P)$}{poly(log P)} 时间闭环（外部数论事实）]\label{rem:pom-primorial-polylog-time}
+在推论 \ref{cor:pom-prime-register-quantile-budget} 给定的空间约束
+\(
+P>2B_m(\varepsilon)=2\exp(m\gamma_m(\varepsilon))
+\)
+下，容量主尺度满足 \(\log P\asymp m\gamma_m(\varepsilon)\)。
+\par
+若希望在满足 \(\prod_i p_i\ge P\) 的同时尽量压低最大模数 \(L=\max_i p_i\)，经典数论（Chebyshev \(\vartheta\) 函数的线性阶增长）表明：在给定截断 \(L\) 时，乘积 \(\prod_{p\le L}p\) 最大；并且
+\[
+\log\!\left(\prod_{p\le L}p\right)=\vartheta(L)=\Theta(L).
+\]
+因此当采用“取尽所有 \(\le L\) 的素数”的 primorial 方案时，有
+\[
+L\ =\ \Theta(\log P)\ =\ \Theta(m\gamma_m(\varepsilon)).
+\]
+将其代回注 \ref{rem:pom-max-modulus-control-law} 的时间预算（并把 \(\kappa_{i^\star}\) 视为由谱扫描/Poisson 方程接口可抽取的常数；见注记 \ref{rem:arity-335-kappa-poisson}），得到主阶复杂度律
+\[
+n\ \gtrsim\ \frac{(\log P)^2}{4\pi^2\kappa_{i^\star}}\Bigl(\log P+\log\tfrac{1}{\delta}\Bigr).
+\]
+特别地，当 \(\delta\) 为常数级（或多项式级）目标精度时，时间成本呈现一个显式的 \(\,O\big((\log P)^3\big)\,\) 量级：\textbf{空间指数（Euler 乘积），时间仅多项式于 \(\log P\)}。
+\end{remark}
+
+\begin{remark}[方差匹配的模数分配：把 \texorpdfstring{$\Sigma$}{Sigma} 变成寄存器设计律]\label{rem:pom-variance-matched-moduli}
+near-coboundary 二次律把“选哪些模数”转化为一个带度量的离散几何问题。
+在推论 \ref{cor:dirichlet-modulus-diffusion-barrier} 的记号下，对每条可独立扭曲的轴（或读出方向）\(F_i\) 记其方差密度为 \(\sigma_i^2=\mathrm{Var}_\infty(F_i)\)（更一般为 \(\sigma_F^2=a^{\mathsf T}\Sigma a\)，其中 \(\Sigma=\nabla^2P(0)\)）。
+则在纯轴小角 regime 中，第 \(i\) 轴模数 \(p_i\) 的缺口主阶为 \(\Delta_i\approx 2\pi^2\sigma_i^2/p_i^2\)。
+\par
+因此若整体慢模由“最坏轴”主导（单轴选择律成立），则混合时间的主控因子为
+\[
+\max_i\frac{p_i^2}{\sigma_i^2}.
+\]
+在给定容量约束 \(\prod_i p_i\ge P\) 的连续近似下，一个 minimax 的阻抗匹配原则是令各轴缺口同阶：
+\[
+\frac{\sigma_1^2}{p_1^2}\ \approx\ \frac{\sigma_2^2}{p_2^2}\ \approx\ \cdots\ \approx\ \frac{\sigma_k^2}{p_k^2},
+\qquad\text{即}\qquad
+p_i\ \propto\ \sigma_i.
+\]
+该分配律把压力 Hessian/协方差密度 \(\Sigma\) 直接耦合进 prime-register 的离散选模问题：把更大的模数分配给“更硬”（方差密度更大）的方向，以压低最坏轴带来的扩散时间上界。
+\end{remark}
+
 \begin{remark}[预算指数的三项分解：几何必然损失 + R\'enyi 非均匀惩罚 + 置信项]\label{rem:pom-quantile-budget-three-term}
 本小节的 Chernoff 证书既可看作“谱/矩侧 \(\Rightarrow\) prime-register 空间预算”的显式变换，也可进一步拆成三个\emph{可计算}项，从而把“空间/时间”权衡量化为一条加法律。
 
