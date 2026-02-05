@@ -258,6 +258,24 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_moment_spectrum_k9_17",
+            script="exp_fold_collision_moment_spectrum_k9_17.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_moment_spectrum_k9_17.json",
+                "sections/generated/tab_fold_collision_moment_spectrum_k9_17.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_kernel_rh_scan_q2_17",
+            script="exp_fold_collision_kernel_rh_scan_q2_17.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_kernel_rh_scan_q2_17.json",
+                "sections/generated/tab_fold_collision_kernel_rh_scan_q2_17.tex",
+            ],
+        ),
+        Step(
             name="fold_fiber_log_moments_mu_sigma",
             script="exp_fold_fiber_log_moments_mu_sigma.py",
             args=["--m-min", "8", "--m-max", "30", "--m-step", "2"],

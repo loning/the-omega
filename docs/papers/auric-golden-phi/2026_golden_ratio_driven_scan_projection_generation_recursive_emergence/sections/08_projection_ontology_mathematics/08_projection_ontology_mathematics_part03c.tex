@@ -139,6 +139,39 @@ $$
 代入渐近即得 \(h_4=\log(16/r_4)\)。证毕。
 \end{proof}
 
+\begin{remark}[四阶碰撞核的贴线 RH 破缺（\texorpdfstring{$A_4$}{A4}）]\label{rem:pom-collision-rh-break-a4}
+记 \(r_4=\rho(A_4)\approx 3.846059041178\)。
+直接求谱（等价地，对 \(\det(\lambda I-A_4)=\lambda^5-2\lambda^4-7\lambda^3-2\lambda+2\) 求根）得到非 Perron 特征值近似为
+\[
+\mu_2\approx -1.963592213449,\qquad
+\mu_3\approx 0.503913309522,\qquad
+\mu_{4,5}\approx -0.193190068626\pm 0.698726683936\,\mathrm{i}.
+\]
+因此次谱半径
+\[
+\Lambda_4:=\max_{\mu\in\sigma(A_4)\setminus\{r_4\}}|\mu|
+=|\mu_2|
+\approx 1.963592213449,
+\]
+而
+\(
+\sqrt{r_4}\approx 1.961137180612
+\)，从而核版 RH 的平方根界（定义 \ref{def:kernel-rh} 的同型条件）在四阶碰撞核上出现严格越线：
+\[
+\Lambda_4>\sqrt{r_4},\qquad
+R_4:=\frac{\Lambda_4}{\sqrt{r_4}}\approx 1.001251841463.
+\]
+用“极点实部指数”口径可写为
+\[
+\beta_4:=\frac{\log \Lambda_4}{\log r_4}\approx 0.500928740205=\frac12+9.2874\times 10^{-4},
+\]
+并可引入贴线偏移量
+\[
+\delta_4:=\log\!\left(\frac{\Lambda_4^2}{r_4}\right)=2\log R_4\approx 0.002502117125.
+\]
+该越线由一个稳定的负实模态主导（\(\mu_2<0\)），从而对应一条不可消去的反相振荡慢模。
+\end{remark}
+
 \begin{definition}[四阶碰撞核的 \texorpdfstring{$\zeta$}{zeta} 与有限部常数]\label{def:pom-collision-zeta-a4}
 对五态核 \(A_4\) 定义
 $$
@@ -467,6 +500,25 @@ h_q=\log(2^q/r_q)
 （定义 \ref{def:pom-moment-pressure}）。
 下表汇总 \(q=9,\dots,17\) 的 \(r_q\)、\(r_q^{1/q}\) 与 \(h_q\)：
 \input{sections/generated/tab_fold_collision_moment_spectrum_k9_17}
+
+进一步，把核版 RH/GRH 的平方根界（定义 \ref{def:kernel-rh}）移植到碰撞核 \(A_q\)：令
+\[
+\Lambda_q:=\max_{\mu\in\sigma(A_q)\setminus\{r_q\}}|\mu|,
+\qquad
+R_q:=\frac{\Lambda_q}{\sqrt{r_q}},
+\qquad
+\beta_q:=\frac{\log \Lambda_q}{\log r_q},
+\qquad
+\delta_q:=\log\!\left(\frac{\Lambda_q^2}{r_q}\right)=2\log R_q.
+\]
+表 \ref{tab:fold_collision_kernel_rh_scan_q2_17} 给出 \(q=2,\dots,17\) 的可复算输出（脚本 \texttt{scripts/exp\_fold\_collision\_kernel\_rh\_scan\_q2\_17.py} 一键生成）。
+\input{sections/generated/tab_fold_collision_kernel_rh_scan_q2_17}
+
+\begin{remark}[从 \texorpdfstring{$q=4$}{q=4} 起的系统性越线与快速劣化]\label{rem:pom-collision-kernel-rh-phase}
+由表 \ref{tab:fold_collision_kernel_rh_scan_q2_17} 可见：在已核验范围内，\(\delta_q<0\) 仅发生在 \(q=2,3\)，而从 \(q=4\) 起即出现严格越线 \(\delta_q>0\)（其中 \(q=4\) 为贴线量级）。
+并且 \(\beta_q\) 与 \(\delta_q\) 随 \(q\) 单调上升，表现为“误差指数”从平方根相（\(\beta\le\frac12\)）向主项同阶（\(\beta\to 1\)）快速劣化的谱相变。
+此外，在该范围内达到 \(\Lambda_q\) 的主导非 Perron 根恒为负实根，从而存在稳定的反相慢模态主导越线。
+\end{remark}
 
 \begin{remark}[高阶递推的最短初值（\(q=9,10,11,12\)）]\label{rem:pom-moment-init-9-12}
 为便于复核，列出最短初值（\(S_q(2),\dots,S_q(1+d_q)\)）：
