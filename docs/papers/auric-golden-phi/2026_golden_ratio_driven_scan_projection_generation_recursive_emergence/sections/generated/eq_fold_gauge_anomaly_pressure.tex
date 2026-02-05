@@ -20,11 +20,19 @@ e^\theta & 2 & 0 & 0\\
 \]
 因此 $P_G(\theta)=\log(\mu(e^\theta)/2)$。并且在 $\theta=0$ 处可由隐式微分闭式读出：
 \[
-\boxed{\ P_G'(0)=\frac{4}{9},\qquad P_G''(0)=\frac{118}{243}\ }.
+\boxed{\ P_G'(0)=\frac{4}{9},\qquad P_G''(0)=\frac{118}{243},\qquad P_G^{(3)}(0)=- \frac{1174}{2187}\ }.
 \]
 \end{proposition}
 
 \begin{proof}[证明要点（可审计）]
 矩阵 $A_\theta$ 来自 Berstel 的 $4$ 状态不歧义 Zeckendorf 归一化换能器（\cite{ITA_2001__35_6_491_0}，Figure~1）：对每条边赋权 $w_\theta=e^{\theta\,\mathbf 1\{X\neq Y\}}\cdot\mathbb P(X)$（均匀输入下 $\mathbb P(X=0)=\mathbb P(X=1)=1/2$），得到加权邻接矩阵 $A_\theta$。由有限状态边移位的热力学形式主义，压力 $P_G(\theta)$ 等于 $\log\rho(A_\theta)$，并且 $\mu(u)=2\rho(A_\theta)$ 满足特征方程 $\det(\mu I-2A_\theta)=0$，即上式四次多项式。
-在 $(u,\mu)=(1,2)$ 处对该代数关系做隐式微分，可得 $\mu'(1),\mu''(1)$，从而由 $P_G(\theta)=\log(\mu(e^\theta)/2)$ 得到 $P_G'(0)$ 与 $P_G''(0)$ 的闭式。上述推导与代数运算可由脚本 \texttt{scripts/exp\_fold\_gauge\_anomaly\_pressure.py} 一键复算。
+在 $(u,\mu)=(1,2)$ 处对该代数关系做隐式微分，可得 $\mu'(1),\mu''(1),\mu'''(1)$，从而由 $P_G(\theta)=\log(\mu(e^\theta)/2)$ 得到 $P_G'(0),P_G''(0),P_G^{(3)}(0)$ 的闭式。上述推导与代数运算可由脚本 \texttt{scripts/exp\_fold\_gauge\_anomaly\_pressure.py} 一键复算。
 \end{proof}
+
+\begin{corollary}[三阶累积量密度（偏斜审计常数）]\label{cor:fold-gauge-anomaly-cumulant3}
+在同一均匀基线下，规范差和 $G_m=\sum_{t=1}^{m}g_t$ 的三阶累积量满足$\mathrm{cum}_3(G_m)=P_G^{(3)}(0)\,m+o(m)$。相应的“每步偏斜强度”（标准化偏斜系数）为
+\[
+\boxed{\ \gamma_1^{(G)}:=\frac{P_G^{(3)}(0)}{(P_G''(0))^{3/2}}\approx -1.59\ }.
+\]
+其中 $P_G^{(3)}(0)<0$ 表明规范差涨落具有稳定的负偏斜（超出二次高斯近似可见范围）。
+\end{corollary}
