@@ -215,6 +215,42 @@ g_\ast:=\lim_{m\to\infty}\frac{\bar G_m}{m}=\frac49,
 
 \input{sections/generated/eq_fold_gauge_anomaly_density_49}
 
+\begin{corollary}[“规范差很大”但“信息很小”：互信息常数与常数 Bayes 预测]\label{cor:fold-gauge-anomaly-mi}
+在定理 \ref{thm:fold-gauge-anomaly-density} 的典型内点联合律下，
+\[
+\mathbb P(X=1)=\frac12,\qquad \mathbb P(Y=1)=\frac{5}{18}.
+\]
+互信息为
+\[
+I(X;Y):=\sum_{x,y\in\{0,1\}}\mathbb P(x,y)\log\frac{\mathbb P(x,y)}{\mathbb P(x)\mathbb P(y)}
+=\frac{7}{18}\log\frac{14}{13}+\frac{1}{9}\log\frac{4}{5}+\frac{1}{3}\log\frac{12}{13}+\frac{1}{6}\log\frac{6}{5}
+\approx 7.7321\times 10^{-3}\ \text{nats}\approx 1.1155\times 10^{-2}\ \text{bits}.
+\]
+此外，
+\[
+\mathbb P(Y=1\mid X=0)=\frac{2}{9},\qquad \mathbb P(Y=1\mid X=1)=\frac{1}{3},
+\]
+因此 Bayes 最优预测器退化为常数预测 \(\widehat Y\equiv 0\)，其最小错误率为
+\[
+\mathbb P(\widehat Y\neq Y)=\mathbb P(Y=1)=\frac{5}{18}.
+\]
+\end{corollary}
+
+\begin{remark}[量化的“近 Parry”：一步 KL 率约 \(10^{-5}\) nats/step]\label{rem:fold-gauge-anomaly-parry-kl}
+由注 \ref{rem:fold-gauge-anomaly-near-parry} 的一阶马尔可夫近似转移 \(P\)，其平稳分布为 \(\pi_0=\frac{13}{18},\pi_1=\frac{5}{18}\)。
+黄金均值 shift 的 Parry 链（同一禁词结构下的最大熵基线）满足
+\[
+Q(1\mid 0)=\varphi^{-2},\qquad Q(0\mid 0)=\varphi^{-1},\qquad Q(0\mid 1)=1.
+\]
+以每步相对熵率度量两链偏差，
+\[
+\mathcal D(P\|Q):=\sum_{i\in\{0,1\}}\pi_i\sum_j P_{ij}\log\frac{P_{ij}}{Q_{ij}}
+=\frac{13}{18}\!\left(\frac{8}{13}\log\frac{8/13}{\varphi^{-1}}+\frac{5}{13}\log\frac{5/13}{\varphi^{-2}}\right)
+\approx 1.0728\times 10^{-5}\ \text{nats/step}.
+\]
+因此在二元组（order-1）统计层面，均匀基线折叠输出几乎已等同于 Parry 最大熵链；若存在系统性偏差，其主要承载必须出现在更长程依赖（order \(\ge 2\)）上。
+\end{remark}
+
 \input{sections/generated/tab_fold_gauge_anomaly_mc}
 \input{sections/generated/eq_fold_gauge_anomaly_clt_variance}
 \input{sections/generated/eq_fold_gauge_anomaly_pressure}

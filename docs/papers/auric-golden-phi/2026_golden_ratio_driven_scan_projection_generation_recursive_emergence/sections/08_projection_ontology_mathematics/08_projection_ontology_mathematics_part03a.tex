@@ -502,6 +502,42 @@ D_{\mathrm{KL}}(\mu\|u_{\Omega_m})-D_{\mathrm{KL}}(\mu^e\|u_{\Omega_m})
 再对 $\mu=\mu^e$ 代入同一分解，因 $P_m\mu^e=\pi$ 得其宏观项相同，二式相减即得结论。证毕。
 \end{proof}
 
+\begin{corollary}[固定宏观直方图下的“微观滑移窗”（显式区间律）]\label{cor:pom-micro-slip-window}
+在固定分辨率 $m$ 下，给定宏观直方图 $\pi\in\Delta(X_m)$，定义其\textbf{不可见容量}（纤维体积预算）
+\[
+\mathcal{W}^{\mathrm{inv}}(\pi):=\mathbb{E}_\pi[\log d_m(X)].
+\]
+则对任意满足 $P_m\mu=\pi$ 的微观分布 $\mu\in\Delta(\Omega_m)$，有显式夹逼
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\pi\|w_m)\ \le\ D_{\mathrm{KL}}(\mu\|u_{\Omega_m})\ \le\ D_{\mathrm{KL}}(\pi\|w_m)+\mathcal{W}^{\mathrm{inv}}(\pi)
+\;}
+\]
+等价地，
+\[
+0\le D_{\mathrm{KL}}(\mu\|\mu^e)\le \mathcal{W}^{\mathrm{inv}}(\pi).
+\]
+因此同一个宏观直方图 $\pi$ 下，“离均匀微态基线有多远”并非单值，而是在长度为 $\mathcal{W}^{\mathrm{inv}}(\pi)$ 的可审计区间内滑移；该区间长度完全由宏观 $\pi$ 与纤维多重度 $d_m$ 决定。
+\end{corollary}
+\begin{proof}
+左端下界由定理 \ref{thm:pom-kl-pythagoras-uniform} 与 $D_{\mathrm{KL}}(\mu\|\mu^e)\ge 0$ 立得。
+\par
+对右端上界，由引理 \ref{lem:pom-fiberwise-kl}，
+\(
+D_{\mathrm{KL}}(\mu\|\mu^e)=\sum_x \pi(x)\,D_{\mathrm{KL}}(\mu_x\|u_x)
+\)。
+而对任意有限集合大小为 $d$ 的纤维，分布到均匀分布的 KL 散度满足
+\(
+D_{\mathrm{KL}}(\nu\|u)\le \log d
+\)
+（最大值在点质量取到）。
+因此
+\[
+D_{\mathrm{KL}}(\mu\|\mu^e)\le \sum_x \pi(x)\log d_m(x)=\mathbb{E}_\pi[\log d_m(X)]=\mathcal{W}^{\mathrm{inv}}(\pi).
+\]
+代回定理 \ref{thm:pom-kl-pythagoras-uniform} 即得所示区间律。证毕。
+\end{proof}
+
 \begin{theorem}[规范的粗粒化动力学：先提升—再演化—再读出]\label{thm:pom-coarse-grained-kernel}
 设 $K:\Delta(\Omega_m)\to\Delta(\Omega_m)$ 为任意 Markov 核（窗口层动力学）。
 定义稳定层的粗粒化核

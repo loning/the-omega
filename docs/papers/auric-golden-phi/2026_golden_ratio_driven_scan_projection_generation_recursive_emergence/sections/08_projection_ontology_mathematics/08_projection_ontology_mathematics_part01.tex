@@ -240,6 +240,39 @@ r_{\mathsf S}(\omega)(p)=0\ \text{对其余 }p.
 因此“信息丢失”不是不可控的湮灭，而是被编译为一份可寻址、可回放的外置证书；其空间占用由残差支撑大小（原子事件条数）计数，而其可回放性由唯一分解与确定性策略保证。
 \end{remark}
 
+\begin{corollary}[可逆化不免费：prime-register 残差的线性下界（均匀基线）]\label{cor:pom-prime-residual-linear-lb}
+沿用定义 \ref{def:pom-fold-prime-lift}：对输入 $\omega\in\Omega_{m+1}$，令 $T_{m+1}^{\mathsf S}(\omega)$ 为策略 $\mathsf S$ 产生的原子重写事件步数，并令 $r_{\mathsf S}(\omega)\in\mathcal P$ 为对应 prime-register 残差向量。
+则在定义 \ref{def:fold-word} 的局部重写规则下，每一步最多改动 $3$ 个坐标，因此对任意 $\omega\in\Omega_{m+1}$ 都有纯组合下界
+\[
+T_{m+1}^{\mathsf S}(\omega)\ \ge\ \left\lceil \frac{G_m(\omega)}{3}\right\rceil ,
+\]
+其中 $G_m(\omega)$ 为规范差（定义 \ref{def:fold-gauge-anomaly}）。
+从而在均匀基线 $\omega\sim\mathrm{Unif}(\Omega_{m+1})$ 下，
+\[
+\liminf_{m\to\infty}\frac{1}{m}\,\mathbb E\!\left[T_{m+1}^{\mathsf S}(\omega)\right]\ \ge\ \frac{4}{27}.
+\]
+特别地，为把折叠通过 prime-register 残差提升为可逆门，残差向量的非零坐标数（其值等于 $T_{m+1}^{\mathsf S}(\omega)$）在无结构输入基线下必须是 $\Theta(m)$，不可能是 $o(m)$。
+\end{corollary}
+\begin{proof}
+由定义 \ref{def:fold-word}，每条原子重写规则至多触及 $3$ 个坐标（例如 (R\_adj) 触及 $(k,k{+}1,k{+}2)$，(R\_k) 触及 $(k{-}2,k,k{+}1)$）。
+因此任意重写轨迹 $a_0\to a_1\to\cdots\to a_T$ 满足
+\(
+\#\{k\le m:\ (a_0)_k\neq (a_T)_k\}\le 3T
+\)。
+对 $a_0=\iota_{m+1}(\omega)$ 与 $a_T=\mathrm{NF}(a_0)$，左端正是
+\(
+|r_{m+1\to m}(\omega)\oplus \widetilde r_{m+1\to m}(\omega)|_0=G_m(\omega)
+\)，
+从而 $G_m(\omega)\le 3T_{m+1}^{\mathsf S}(\omega)$，得到所示下界。
+\par
+取期望并除以 $m$，再用定理 \ref{thm:fold-gauge-anomaly-density} 的
+\(
+\lim_{m\to\infty}\mathbb E[G_m(\omega)]/m=4/9
+\)，
+得 $\liminf_{m\to\infty}\mathbb E[T_{m+1}^{\mathsf S}(\omega)]/m\ge 4/27$。
+最后，由定义 \ref{def:pom-fold-prime-lift}，对 $1\le t\le T$ 有 $r_{\mathsf S}(\omega)(p_t)=\mathrm{code}(e_t(\omega))\in\NN_{\ge 1}$，因此残差向量的非零坐标数恰为 $T_{m+1}^{\mathsf S}(\omega)$。证毕。
+\end{proof}
+
 \begin{remark}[生长但不丢信息：保守细化与残差外置]\label{rem:pom-growth-no-loss}
 本文中“体系在生长”的严格对应物不是“永远不做投影”，而是把信息损失从不可控的丢弃改写为\emph{可计数、可搬运、可回收}的残差坐标，同时把生长落实为分辨率与语义的保守细化。其要点可由三条规范化接口约束固定：
 \begin{enumerate}
