@@ -339,3 +339,45 @@ h_{\mathrm{top}}(Z)=\lim_{n\to\infty}\frac{1}{n}\log N_Z(n)
 \par
 另一方面，\(h_{\mathrm{top}}(Y_m)=\log 2\) 等价于 \(Y_m\) 的块增长率至少为 \(2^n\)（例如取熵定义的下极限即可），故比值满足所示指数衰减，其中 \(\varepsilon_m>0\) 由推论 \ref{cor:Ym-ambiguity-shell-low-entropy} 给出。证毕。
 \end{proof}
+
+\begin{remark}[\texorpdfstring{$\eta_m$}{eta_m} 的可观测解释：最大熵层“可逆性”的谱级证书]\label{rem:eta_m_as_reversibility_certificate}
+命题 \ref{prop:Ym-zeta-residue-ratio} 引入的 \(\eta_m\) 是 cover-\(\zeta\) 与内禀-\(\zeta\) 在共同主极点处的留数比。
+它不改变指数尺度（熵/主极点模长），但以常数级方式量化“cover 上的周期结构在因子映射 \(\pi_m:X_{A_m}\to Y_m\) 下被合并”的强度。
+\par
+另一方面，在右解析确定化表示 \(H_m^{\mathrm{det}}\) 中，子集状态 \(S_t\subset V_m\) 记录“给定过去输出时可能的内部后缀集合”；
+\(|S_t|=1\) 表示已进入可右解码（局部一一）的熵层，而 \(|S_t|>1\) 则是歧义壳的非单点记忆。
+因此可把 \(\eta_m\) 视为“最大熵层可逆性”的\textbf{谱级指纹}：\(\eta_m\) 越接近 \(1\)，越接近“在熵主项上几乎不发生合并”的一一因子；
+\(\eta_m<1\) 则提示仍存在不可忽略的常数级合并（尽管该合并不会造成指数级丢熵；见命题 \ref{prop:periodic-count-sandwich} 与推论 \ref{cor:Ym-periodic-compression-ratio}）。
+\end{remark}
+
+\begin{definition}[单点态占比的在线估计器（无需行列式）]\label{def:eta_m_hat_singleton_rate}
+对任意输出序列 \(y=(y_t)_{t\in\ZZ}\in Y_m\)，从初始候选集 \(S_0:=V_m\) 出发递推
+\[
+S_{t+1}:=\delta_m(S_t,y_t)\qquad (t\ge 0),
+\]
+其中 \(\delta_m\) 由定义 \ref{def:Phi_m-right-resolving} 给出。
+定义长度 \(N\) 的单点态占比
+\[
+\widehat\eta_m(N;y):=\frac{1}{N}\#\{\,0\le t<N:\ |S_t|=1\,\}.
+\]
+\end{definition}
+
+\begin{proposition}[单点态占比的极限：最大熵测度下的可逆性常数]\label{prop:eta_m_hat_ergodic_limit}
+设 \(Y_m\) 不可约，从而其最大熵测度 \(\nu_m\) 存在且由命题 \ref{prop:Phi_m-parry-pushforward} 给出。则存在常数 \(\eta_m^{\mathrm{obs}}\in(0,1]\) 使得对 \(\nu_m\)-几乎处处的 \(y\in Y_m\)，定义 \ref{def:eta_m_hat_singleton_rate} 的在线统计量满足
+\[
+\widehat\eta_m(N;y)\ \xrightarrow[N\to\infty]{}\ \eta_m^{\mathrm{obs}}.
+\]
+在推论 \ref{cor:Ym-singleton-essential-finite-delay} 的“单点本质态”条件下，且把 \(\nu_m\) 限制在最大熵本质分量上时有 \(\eta_m^{\mathrm{obs}}=1\)；偏离 \(1\) 的程度可被视为“在最大熵层仍发生右解码歧义”的可观测强度。
+\end{proposition}
+\begin{proof}
+令 \(H_m^{\mathrm{det}}\) 为定义 \ref{def:Phi_m-right-resolving} 的确定化右解析表示；其状态集有限，且更新 \(S_{t+1}=\delta_m(S_t,y_t)\) 给出一个有限状态的确定性滤波过程。
+把该滤波过程写成扩展系统 \((y_t,S_t)_{t\in\ZZ}\) 的移位不变子移位（有限状态约束只依赖相邻时刻），则对 \(\nu_m\) 的自然提升测度在该扩展系统上仍为不变且遍历（最大熵测度在不可约情形下为遍历是标准事实；亦可通过覆盖 SFT 的 Parry 测度推前得到）。
+对可观测函数 \(f(y,S):=\mathbf{1}\{|S|=1\}\) 应用 Birkhoff 遍历定理即得
+\(
+\frac{1}{N}\sum_{t=0}^{N-1}f(\sigma^t(y,S))\to \int f\,d\bar\nu_m
+\)
+几乎处处成立，其中 \(\bar\nu_m\) 为提升测度。
+而左侧正是 \(\widehat\eta_m(N;y)\)，故极限存在并等于常数 \(\eta_m^{\mathrm{obs}}:=\int f\,d\bar\nu_m\in(0,1]\)。
+\par
+若满足推论 \ref{cor:Ym-singleton-essential-finite-delay} 的“单点本质态”条件，则最大熵本质分量由单点态承载且在其上右解码无歧义；把测度限制在该分量上，几乎处处都保持 \(|S_t|=1\)，从而 \(\eta_m^{\mathrm{obs}}=1\)。证毕。
+\end{proof}

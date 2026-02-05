@@ -162,6 +162,69 @@ h_Z(2)-h_Z(1)=\log\!\left(\frac{3}{1+\sqrt2}\cdot\frac{1+\sqrt5}{4}\right)
 因此“反共振最优性”与“投影压缩最优性”在金属平均族上不可兼得：它们对应两条不同的可审计泛函，且极值点分离。
 \end{remark}
 
+\begin{proposition}[金属平均族的两目标帕累托前沿：\texorpdfstring{$\lambda$}{lambda} 一参数闭式刻画]\label{prop:metallic-pareto-frontier-lambda}
+令 \(\lambda:=\lambda_A\) 为命题 \ref{prop:metallic-two-state-sft} 的 Perron 根。由特征方程
+\(\lambda^2-A\lambda-1=0\) 得到参数变换
+\[
+A=\lambda-\lambda^{-1},\qquad \lambda\ge \varphi.
+\]
+于是两条可审计目标函数 \(h_Z\) 与 \(\kappa\) 可写成一维闭式曲线
+\[
+h_Z(\lambda)=\log\!\left(1+\lambda^{-1}-\lambda^{-2}\right),
+\qquad
+\kappa(\lambda)=\frac{\lambda-\lambda^{-1}}{\log\lambda}.
+\]
+在连续参数 \(A\ge 1\)（等价于 \(\lambda\ge\varphi\)）下，以“\textbf{最大化} \(h_Z\)”与“\textbf{最小化} \(\kappa\)”为准则的连续帕累托前沿
+恰为区间 \(\lambda\in[\varphi,2]\)（等价于 \(A\in[1,3/2]\)）的像 \(\lambda\mapsto(\kappa(\lambda),h_Z(\lambda))\)；
+而对 \(\lambda>2\)（等价于 \(A>3/2\)）的分支，两目标同时变差，从而被前沿严格支配。
+\end{proposition}
+\begin{proof}
+由 \(\lambda^2-A\lambda-1=0\) 直接解出 \(A=\lambda-\lambda^{-1}\)。把该关系代回
+\(
+h_Z(A)=\log\bigl((A+1)/\lambda_A\bigr)
+\)
+与
+\(
+\kappa(A)=A/\log\lambda_A
+\)
+即可得到所示闭式表达。
+\par
+另一方面，命题 \ref{prop:metallic-compression-extremum} 表明 \(h_Z(A)\) 在 \([1,3/2]\) 上严格增、在 \([3/2,\infty)\) 上严格减，而 \(\kappa(A)\) 在 \(A\ge 1\) 上严格递增。
+因此当 \(A>3/2\) 时，取 \(A_\star=3/2\) 有 \(\kappa(A_\star)<\kappa(A)\) 且 \(h_Z(A_\star)>h_Z(A)\)，故该分支被严格支配；而 \(A\in[1,3/2]\) 上任意两点一增一减，互不支配，从而构成帕累托前沿。证毕。
+\end{proof}
+
+\begin{corollary}[最大投影压缩的“语法熵锁定”：\texorpdfstring{$\lambda=2$}{lambda=2}]\label{cor:metallic-compression-locking-lambda2}
+命题 \ref{prop:metallic-compression-extremum} 的连续极大点 \(A_\star=3/2\) 等价于
+\[
+\lambda_{A_\star}=2.
+\]
+此时最大压缩斜率为闭式常数
+\[
+h_Z(A_\star)=h_Z(\lambda=2)=\log\!\left(\frac{5}{4}\right).
+\]
+\end{corollary}
+\begin{proof}
+由 \(\lambda_A=(A+\sqrt{A^2+4})/2\)，代入 \(A_\star=3/2\) 得 \(\lambda_{A_\star}=2\)。
+再由 \(h_Z(A)=\log((A+1)/\lambda_A)\) 得
+\(
+h_Z(A_\star)=\log((5/2)/2)=\log(5/4)
+\)。证毕。
+\end{proof}
+
+\begin{remark}[设计律：黄金 \texorpdfstring{$A=1$}{A=1} $\to$ 白银 \texorpdfstring{$A=2$}{A=2} 属于“低回报-高代价”段]\label{rem:metallic-design-law-low-return}
+在 \(A\in[1,2]\)（等价于 \(\lambda\in[\varphi,1+\sqrt2]\)）上，压缩斜率的增益很小而反共振证书单调变差：
+\[
+0<h_Z(2)-h_Z(1)
+=\log\!\left(\frac{3}{1+\sqrt2}\cdot\frac{1+\sqrt5}{4}\right)\approx 5.2\times 10^{-3},
+\]
+而
+\[
+\kappa(2)-\kappa(1)=\frac{2}{\log(1+\sqrt2)}-\frac{1}{\log\varphi}>0.
+\]
+因此若主目标是“有限样本稳定性/可审计证书”，黄金端点 \(A=1\) 是性价比最优的帕累托端点；
+若主目标是“最大投影压缩”，则应在连续最优 \(\lambda=2\)（或整数最优 \(A=2\)）附近选取参数。
+\end{remark}
+
 \subsubsection{一般折叠算子 \texorpdfstring{$\Fold_m^{(\alpha)}$}{Fold\_m(alpha)}}
 
 为了与本文的“折叠 = 取值 + 取规范形”机制保持一致，我们把一般 Ostrowski 折叠定义为：先将“未规范数字”（允许违反相邻最大值约束）赋一个可审计整数值，再取 Ostrowski 规范形并截断。
