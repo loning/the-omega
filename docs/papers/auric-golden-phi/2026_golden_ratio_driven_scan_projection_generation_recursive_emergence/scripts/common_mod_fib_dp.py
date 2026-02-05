@@ -23,9 +23,13 @@ All output is English-only by repository convention.
 
 from __future__ import annotations
 
+import os
+from pathlib import Path
 from typing import List, Protocol, Tuple
 
 import numpy as np
+
+from common_paths import artifacts_dir
 
 
 class ProgressLike(Protocol):
@@ -64,9 +68,24 @@ def counts_mod_fib(m: int, prog: ProgressLike | None = None) -> np.ndarray:
     """
     if m < 0:
         raise ValueError("m must be >= 0")
+
+    # Optional on-disk cache to avoid repeated O(m*F_{m+2}) DP across scripts.
+    # Disable with OMEGA_MODFIB_NO_CACHE=1.
+    no_cache = os.environ.get("OMEGA_MODFIB_NO_CACHE", "").strip() in {"1", "true", "TRUE", "yes", "YES"}
+
     # Need weights F_{i+1} for i=1..m, and modulus F_{m+2}.
     F = fib_upto(m + 2)
     mod = int(F[m + 2])
+
+    cache_dir = artifacts_dir() / "cache" / "modfib_counts"
+    cache_path = cache_dir / f"counts_mod_fib_m{m}_mod{mod}.npy"
+    if (not no_cache) and cache_path.is_file():
+        try:
+            return np.load(cache_path)
+        except Exception:
+            # Corrupted cache; fall back to recomputation.
+            pass
+
     c = np.zeros(mod, dtype=np.uint64)
     c[0] = 1
     tmp = np.empty_like(c)
@@ -77,6 +96,20 @@ def counts_mod_fib(m: int, prog: ProgressLike | None = None) -> np.ndarray:
         c += tmp
         if prog is not None:
             prog.tick(f"moddp m={m} step={i}/{m} mod={mod}")
+
+    if not no_cache:
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        tmp_path = cache_path.with_suffix(".tmp.npy")
+        try:
+            np.save(tmp_path, c)
+            tmp_path.replace(cache_path)
+        except Exception:
+            # Cache write failures must never break reproducibility.
+            try:
+                if tmp_path.exists():
+                    tmp_path.unlink()
+            except Exception:
+                pass
     return c
 
 

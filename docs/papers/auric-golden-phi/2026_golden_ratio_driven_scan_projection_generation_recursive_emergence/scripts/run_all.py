@@ -9,6 +9,7 @@ import hashlib
 import json
 import subprocess
 import sys
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Sequence, Tuple
@@ -1462,6 +1463,9 @@ def main() -> None:
     cache = _load_cache()
     steps_cache: Dict[str, object] = dict(cache.get("steps", {}))  # type: ignore[assignment]
 
+    t0_all = time.time()
+    step_times: Dict[str, float] = {}
+
     for st in steps:
         script_path = scripts_dir() / st.script
         if not script_path.is_file():
@@ -1497,20 +1501,42 @@ def main() -> None:
 
         cmd = [sys.executable, str(script_path), *list(st.args)]
         print(f"[run_all] RUN {st.name}: {' '.join(cmd)}", flush=True)
+        t0 = time.time()
         subprocess.check_call(cmd, cwd=str(paper_root()))
+        dt = time.time() - t0
 
         for rel in st.expected_outputs:
             p = paper_root() / rel
             if not _nonempty(p):
                 raise SystemExit(f"[run_all] expected output missing/empty: {p}")
-        print(f"[run_all] OK {st.name}", flush=True)
+        step_times[st.name] = float(dt)
+        print(f"[run_all] OK {st.name} elapsed_s={dt:.3f}", flush=True)
 
         # Update cache after a successful step.
         steps_cache[st.name] = sig
         cache["steps"] = steps_cache
         _write_cache(cache)
 
-    print("[run_all] ALL DONE", flush=True)
+    dt_all = time.time() - t0_all
+    print(f"[run_all] ALL DONE elapsed_s={dt_all:.3f}", flush=True)
+
+    # Write a small timing audit (useful for performance regressions).
+    timing_path = paper_root() / "artifacts" / "export" / "run_all_timing.json"
+    timing_path.parent.mkdir(parents=True, exist_ok=True)
+    timing_path.write_text(
+        json.dumps(
+            {
+                "elapsed_s": float(dt_all),
+                "step_elapsed_s": {k: float(v) for k, v in sorted(step_times.items())},
+                "generated_at_unix_s": time.time(),
+                "python": sys.executable,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
 
 
 if __name__ == "__main__":

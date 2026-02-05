@@ -26,30 +26,17 @@ from pathlib import Path
 from typing import Dict, List
 
 from common_paths import export_dir, paper_root
-from common_phi_fold import Progress, fold_m
+from common_fold_map_cache import fold_map_packed
+from common_phi_fold import Progress
 
 
 ROOT = paper_root()
 GEN = ROOT / "sections" / "generated"
 
 
-def _int_to_bits(x: int, m: int) -> List[int]:
-    return [(x >> (m - 1 - i)) & 1 for i in range(m)]
-
-
-def build_fold_map(m: int, prog: Progress) -> List[int]:
+def build_fold_map(m: int, prog: Progress) -> object:
     """Map w in [0,2^m) to packed Fold_m(word(w)) in [0,2^m)."""
-    size = 1 << m
-    out = [0] * size
-    for w in range(size):
-        bits = _int_to_bits(w, m)
-        folded = fold_m(bits)
-        y = 0
-        for b in folded:
-            y = (y << 1) | (1 if b else 0)
-        out[w] = y
-        prog.tick(f"build_fold_map m={m} w={w}/{size}")
-    return out
+    return fold_map_packed(m, prog=prog)
 
 
 @dataclass
@@ -99,7 +86,7 @@ def main() -> None:
     m_max = 20
 
     # Prebuild fold maps for lengths 1..(m_max+1).
-    fold_maps: Dict[int, List[int]] = {}
+    fold_maps: Dict[int, object] = {}
     for L in range(1, m_max + 2):
         fold_maps[L] = build_fold_map(L, prog)
 
@@ -119,10 +106,10 @@ def main() -> None:
 
         for w in range(size):
             prefix_m = w >> 1  # tau_{m+1->m}(omega) packed as m bits
-            a = fold_map_m[prefix_m]  # Fold_m(tau(omega)) packed
-            folded_L = fold_map_L[w]  # Fold_{m+1}(omega) packed length L
+            a = int(fold_map_m[prefix_m])  # Fold_m(tau(omega)) packed
+            folded_L = int(fold_map_L[w])  # Fold_{m+1}(omega) packed length L
             b = folded_L >> 1  # pi_{m+1->m}(Fold_{m+1}(omega)) packed
-            h = (a ^ b).bit_count()
+            h = int(a ^ b).bit_count()
             total_h += h
             if h > 0:
                 count_curv += 1
@@ -151,8 +138,8 @@ def main() -> None:
             return "".join("1" if ((x >> (n - 1 - i)) & 1) else "0" for i in range(n))
 
         prefix_m = argmax_w >> 1
-        a = fold_map_m[prefix_m]
-        b = fold_map_L[argmax_w] >> 1
+        a = int(fold_map_m[prefix_m])
+        b = int(fold_map_L[argmax_w]) >> 1
         audit[str(m)] = {
             "argmax_omega": _bits_str(argmax_w, L),
             "Fold_m(tau)_packed": str(a),

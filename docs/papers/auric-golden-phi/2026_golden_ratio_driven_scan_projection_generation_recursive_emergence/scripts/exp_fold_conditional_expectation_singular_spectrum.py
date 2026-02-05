@@ -33,6 +33,7 @@ from typing import List
 
 import numpy as np
 
+from common_mod_fib_dp import hist_from_counts
 from common_paths import export_dir, generated_dir
 from common_phi_fold import Progress
 from exp_fold_collision_moment_recursions_mod_dp import counts_mod_fib
@@ -122,7 +123,7 @@ def main() -> None:
         op = float(1.0 / math.sqrt(float(d_min)))
 
         # Dual positive second moment (collision strength), exact integer via histogram on uint64.
-        vals, freq = np.unique(c_uint, return_counts=True)
+        vals, freq = hist_from_counts(c_uint)
         S2 = 0
         for v, f in zip(vals.tolist(), freq.tolist(), strict=True):
             vv = int(v)
