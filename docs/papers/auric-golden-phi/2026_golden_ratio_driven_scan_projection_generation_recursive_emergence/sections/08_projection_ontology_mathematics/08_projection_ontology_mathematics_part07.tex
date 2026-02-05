@@ -60,7 +60,6 @@ E_m\circ \mathrm{LIFT}_G
 在仅由 \(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G\) 生成的子片段中，令
 \[
 \mathcal{A}_G:=\RR^{\widehat G\setminus\{\chi_0\}}
-\]
 并以分量加法为群运算。
 对任意重写证书（\(2\)-态射） \(\alpha:w\Rightarrow w'\)，定义其\textbf{异常累积}
 \(\mathrm{anom}(\alpha)\in\mathcal{A}_G\)
@@ -70,14 +69,12 @@ E_m\circ \mathrm{LIFT}_G
 给定一个正规形选择算子 \(N\) 及其规范化证书族 \(\eta_w:w\Rightarrow N(w)\)，定义词的\textbf{规范化异常}为
 \[
 \mathrm{Anom}(w):=\mathrm{anom}(\eta_w).
-\]
 \end{definition}
 
 \begin{proposition}[加法复合律与边界项]\label{prop:pom-anom-additive-up-to-boundary}
 在定义 \ref{def:pom-anom-accumulation} 的设定下，\(\mathrm{anom}\) 对 \(2\)-态射的纵向复合严格可加：若 \(\alpha:w\Rightarrow w'\) 与 \(\beta:w'\Rightarrow w''\) 可复合，则
 \[
 \mathrm{anom}(\beta\circ\alpha)=\mathrm{anom}(\beta)+\mathrm{anom}(\alpha).
-\]
 进一步地，对任意可复合的 \(1\)-态射 \(w_1,w_2\)，存在一个仅依赖于正规形选择的 \(2\)-cochain \(B(w_2,w_1)\in\mathcal{A}_G\)，使得
 \[
 \mathrm{Anom}(w_2\circ w_1)
@@ -106,7 +103,7 @@ E_m\circ \mathrm{LIFT}_G\ \Rightarrow\ \mathrm{LIFT}_G\circ E_m
 \end{remark}
 
 \begin{remark}[面向 completion：critical pairs 决定新增异常生成元]\label{rem:pom-anom-completion}
-推论 \ref{cor:pom-anom-cohomology-class} 的工程含义是：当把投影词片段扩展（例如加入 \(\mathrm{MOM}_q\) 或更一般的 lift/cocycle）时，只需枚举新旧生成元之间的临界对（critical pairs）并对重写系统做 completion，新增的“不可严格交换”将自动表现为 \(\mathcal{A}\)-值标签；异常签名因此成为一个可组合的残差簇，而非逐条规则的临时补丁。
+推论 \ref{cor:pom-anom-cohomology-class} 的工程含义是：当把投影词片段扩展（例如加入 \(\mathrm{MOM}_q\) 或更一般的 lift/cocycle）时，只需枚举新旧生成元之间的临界对（critical pairs）并对重写系统做 completion，新增的“不可严格交换”将自动表现为 \(\mathcal{A}\)-值标签；异常签名因此成为一个可组合的残差簇，而非逐条规则的临时补丁。三生成元片段上的有界临界对枚举与 completion 审计见注 \ref{rem:pom-threegen-kb-completion-audit}。
 \end{remark}
 
 \begin{remark}[可复现：holonomy/路径差异的自动核验]\label{rem:pom-holonomy-cocycle-audit}
@@ -120,6 +117,21 @@ E_m\circ \mathrm{LIFT}_G\ \Rightarrow\ \mathrm{LIFT}_G\circ E_m
 当检测到差异时，脚本会把反例词、两条规约轨迹及其 holonomy 统计写入
 \texttt{artifacts/export/pom\_holonomy\_cocycle\_audit.json}，
 用于定位 completion 所需的关键临界对/边界修正（命题 \ref{prop:pom-anom-additive-up-to-boundary}）。
+\end{remark}
+
+\begin{remark}[可复现：三生成元片段的临界对枚举与 completion 审计]\label{rem:pom-threegen-kb-completion-audit}
+注 \ref{rem:pom-holonomy-cocycle-audit} 给出的是“随机词 + 两种规约优先级”的路径差异核验。
+为得到一个更接近 Knuth--Bendix completion 的\emph{穷举式}审计，我们提供脚本
+\texttt{scripts/exp\_pom\_projword\_three\_gen\_kb\_completion\_audit.py}：
+在固定复杂度上界（限制 \(m\)、限制 lift 的群列表、限制温度参数采样集合）下枚举所有长度 \(3\) 的 overlap 语境，
+并对每个临界对比较两条局部规约分支的接口正规形与残差计数。
+脚本输出 JSON 摘要与若干反例轨迹到
+\texttt{artifacts/export/pom\_projword\_three\_gen\_kb\_completion\_audit.json}，
+并生成表 \ref{tab:pom_projword_three_gen_kb_completion_audit} 作为可复现见证：
+\input{sections/generated/tab_pom_projword_three_gen_kb_completion_audit}
+\noindent 表中 \(\#\)NF mismatch 为零意味着该有界片段在词法层通过了局部合流审计；
+而 residual mismatch 的出现对应于命题 \ref{prop:pom-anom-additive-up-to-boundary} 中的边界项，
+脚本在 JSON 中给出按临界对类型聚类的 completion 候选修正。
 \end{remark}
 
 \begin{corollary}[含 \texorpdfstring{$(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)$}{(PROJ,Em,LIFT)} 的正规形与有限签名判等]\label{cor:pom-three-gen-normal-form-decidable}
@@ -774,4 +786,60 @@ P_{\le}= \mathrm{CRT}_{\{p_i\}}\circ P_{\chi,\{p_i\}}
 （作为可见读出）。
 因此按定义 \ref{def:pom-eps-sound-rewrite}，上述重写在失败概率至多为 \(\varepsilon\) 的意义下成立。证毕。
 \end{proof}
-\input{sections/08_projection_ontology_mathematics/08_projection_ontology_mathematics_part07_tail.tex}
+\begin{remark}[两条硬化路径与 \texorpdfstring{$(u,q,\varepsilon)$}{(u,q,eps)} 调度]\label{rem:pom-hardening-u-vs-q}
+序门的“硬化”在本文接口里至少有两条可执行路径：
+\begin{itemize}
+  \item \textbf{温度路径：}降低 \(u\)（注 \ref{rem:pom-order-as-zero-temp}）使软序门 \(\mathrm{PROJ}_u\) 硬化到 \(P_{\le}\)，其时间侧代价主要体现在扭曲谱隙/混合尺度 \(\tau_{\mathrm{mix}}(u)\)（命题 \ref{prop:pom-rewrite-audit-loop}）。
+  \item \textbf{moment-分位路径：}固定（或不极端降低）\(u\)，通过提高 \(q\) 并用 moment-kernel（\(\mathrm{MOM}_q\)）给出尾部证书，从而触发 \((\mathrm{RCRT}_\varepsilon)\)（命题 \ref{prop:pom-rcrt-epsilon}）把序门编译为空间化的 residue+CRT 读出；其空间侧代价主要体现在 prime-register 配额 \(\log P\)（推论 \ref{cor:pom-prime-register-quantile-budget} 与注 \ref{rem:pom-quantile-budget-computable} 的 \(\gamma\)-证书）。
+\end{itemize}
+因此编译器可以把 \((u,q,\varepsilon)\) 作为三旋钮：\(u\) 主控时间尺度、\(q\) 主控尾部放大与空间配额、\(\varepsilon\) 主控风险预算；并用命题 \ref{prop:pom-eps-sound-compose} 的加法律对多次近似消序门的总体失败概率做账。
+二维压力曲面 \(P(q,u)\) 提供把两条路径放入同一“谱相图”的统一坐标（\S\ref{subsec:pom-pressure-surface-qu}）。
+\end{remark}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\caption{空间—时间对偶图：同一 prime-register 容量变量在两类读出任务上的闭式预算。第一行给出“纤维标签唯一重建”的空间配额（由碰撞矩谱 \(\{r_q\}\) 控制）；第二行给出“cylinder 同余等分布”的时间预算（由 profinite Chebotarev 的最坏扭曲谱隙 \(\Lambda_m/\lambda_m\) 控制；见推论 \ref{cor:pom-profinite-cylinder-effective-n} 与反解推论 \ref{cor:pom-profinite-cylinder-capacity}）。}
+\label{tab:pom-space-time-duality-prime-register}
+\begin{tabular}{p{0.25\linewidth} p{0.60\linewidth} p{0.12\linewidth}}
+\toprule
+读出任务 & 足够预算（闭式不等式族） & 指纹输入\\
+\midrule
+Quantile-CRT（纤维标签超界失败 \(\le\varepsilon\)） &
+\(
+P_m>2B_m^{(q)}(\varepsilon),
+\ \ 
+B_m^{(q)}(\varepsilon)=\varepsilon^{-1/(q-1)}(r_q/2)^{m/(q-1)}
+\)
+（推论 \ref{cor:pom-prime-register-q-quota-family}；有限尺度版用 \(S_q(m)\) 得 \(B_{m,q}^{\mathrm{fin}}\)） &
+\(\{r_q\}\)\\
+
+Chebotarev cylinder（相对误差 \(\le\delta\)） &
+若 \(\Lambda_m\le \lambda_m^{1/2-\varepsilon_{\mathrm{gap}}}\)，则
+\(
+n\gtrsim \log(|G_m|/\delta)/((1/2+\varepsilon_{\mathrm{gap}})\log\lambda_m)
+\)
+（推论 \ref{cor:pom-profinite-cylinder-effective-n}），等价地
+\(
+\log|G_m|\lesssim (1/2+\varepsilon_{\mathrm{gap}})n\log\lambda_m-\log(1/\delta)
+\)
+（推论 \ref{cor:pom-profinite-cylinder-capacity}） &
+\(\Lambda_m/\lambda_m\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{拼接为同一“空间—时间直线带”}
+在 prime-register 轴取 \(G_m=\ZZ/P_m\ZZ\)（因此 \(|G_m|=P_m\)）。
+则表 \ref{tab:pom-space-time-duality-prime-register} 的两行预算通过同一容量变量 \(\log P_m\) 直接拼接：空间侧给出
+\(
+\log P_m\gtrsim \log 2+m\beta_q+\frac{1}{q-1}\log(1/\varepsilon)
+\)
+（推论 \ref{cor:pom-prime-register-q-quota-family}），时间侧给出
+\(
+\log P_m\lesssim (1/2+\varepsilon_{\mathrm{gap}})n\log\lambda_m-\log(1/\delta)
+\)；
+从而在 \((n,\log P_m)\) 平面形成一条可审计的可行带：同一寄存器同时被 \(\{r_q\}\) 与 \(\Lambda_m/\lambda_m\) 这两类谱指纹约束。
+
+\input{sections/08_projection_ontology_mathematics/08_projection_ontology_mathematics_part07b.tex}

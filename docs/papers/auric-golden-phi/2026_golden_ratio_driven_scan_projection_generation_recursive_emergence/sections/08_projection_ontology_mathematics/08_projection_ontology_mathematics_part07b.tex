@@ -1,0 +1,128 @@
+\begin{remark}[预算指数的三项分解：几何必然损失 + R\'enyi 非均匀惩罚 + 置信项]\label{rem:pom-quantile-budget-three-term}
+本小节的 Chernoff 证书既可看作“谱/矩侧 \(\Rightarrow\) prime-register 空间预算”的显式变换，也可进一步拆成三个\emph{可计算}项，从而把“空间/时间”权衡量化为一条加法律。
+
+\medskip\noindent\textbf{(i) 精确有限尺度恒等式（无需渐近假设）}
+令 \(u_m\) 为 \(X_m\) 上均匀分布：\(u_m(x)=1/|X_m|\)。
+对任意 \(q\ge 2\)，记 \(\mathrm{D}_q(\pi_m\Vert u_m)\) 为 R\'enyi-\(q\) 散度：
+\[
+\mathrm{D}_q(\pi_m\Vert u_m)
+:=\frac{1}{q-1}\log\Big(\sum_{x\in X_m}\pi_m(x)^q\cdot |X_m|^{q-1}\Big)
+\ \ge\ 0.
+\]
+则对任意 \(\varepsilon\in(0,1)\) 与任意 \(q\ge 2\)，命题 \ref{prop:pom-quantile-chernoff} 的有限尺度证书
+\[
+\gamma^{\mathrm{cert,fin}}_{m,q}(\varepsilon)
+:=\frac{\frac{1}{m}\log S_q(m)-\log 2+\frac{1}{m}\log(1/\varepsilon)}{q-1}
+\]
+满足如下\textbf{精确分解}：
+\[
+\boxed{\;
+\gamma^{\mathrm{cert,fin}}_{m,q}(\varepsilon)
+=
+\underbrace{\frac{1}{m}\log\Big(\frac{2^m}{|X_m|}\Big)}_{\text{几何必然损失（平均纤维指数）}}
+\;+\;
+\underbrace{\frac{1}{m}\mathrm{D}_q(\pi_m\Vert u_m)}_{\text{非均匀惩罚（输出分布偏离均匀）}}
+\;+\;
+\underbrace{\frac{1}{q-1}\cdot\frac{1}{m}\log(1/\varepsilon)}_{\text{置信项（尾部可靠性成本）}}
+\;}
+\]
+其证明仅为代数恒等式：由 \(\sum_x\pi_m(x)^q=S_q(m)/2^{qm}\) 代入 \(\mathrm{D}_q\) 并整理即可。
+
+\medskip\noindent\textbf{(ii) 渐近三项分解（与 \(\{r_q\}\) 的桥包对齐）}
+当 \(S_q(m)=\Theta(r_q^m)\) 且 \(|X_m|=F_{m+2}\sim\varphi^m\) 时，上式在指数尺度上收敛为
+\[
+\gamma(q,\alpha)
+=
+\log\frac{2}{\varphi}
+\;+\;
+\Delta_q
+\;+\;
+\frac{\alpha}{q-1},
+\qquad
+\Delta_q:=\lim_{m\to\infty}\frac{1}{m}\mathrm{D}_q(\pi_m\Vert u_m)
+:=\frac{\log r_q-q\log 2+(q-1)\log\varphi}{q-1},
+\]
+其中 \(\alpha:=\lim_{m\to\infty}\frac{1}{m}\log(1/\varepsilon_m)\) 表示指数级可靠性要求 \(\varepsilon_m\approx e^{-\alpha m}\)。
+特别地，\(q=2\) 时
+\(
+\Delta_2=\log(\varphi r_2/4)
+\)
+正是本文多处出现的二阶偏离指数常数（见推论 \ref{cor:pom-shannon-entropy-squeeze} 的常数项口径）。
+\end{remark}
+
+\subsubsection{可实现接口：异常签名与 moment 证书的最小流水线}\label{subsec:pom-implementable-interfaces}
+
+为把“重写证书/异常签名/谱判等”真正落到可复现执行层面，本段给出与仓库脚本一一对应的最小流水线。
+核心原则是：本文所有签名均来自同一条闭环
+$$
+\text{有限核/矩阵族}\ \Longrightarrow\ \zeta(z)=\det(I-zM)^{-1}\ \Longrightarrow\ (\text{twist})\ \Longrightarrow\ \log\mathfrak{M}\ \Longrightarrow\ \text{签名}.
+$$
+
+\paragraph{接口 A：\texorpdfstring{$\mathsf{Anom}_G$}{Anom}（扭曲有限部异常签名）}
+对定义 \ref{def:pom-anom-signature}，工程上只需两步：枚举非平凡角色并计算对应的 \(\log\mathfrak{M}_\chi(\theta)\)。
+本文已有脚本在 \(\chi\)-切片上实现了 \(\theta=(t,0,-t)\) 的一维族（即把 arity-charge 作为势注入）并输出 \((P_\chi(t),\log\mathfrak{M}_\chi(t))\)：
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_logM\_chi.py}。
+其内部实现直接使用命题 \ref{prop:abel-finite-part-mobius-zeta} 的闭式（Möbius 尾截断）并由矩阵特征值计算留数常数（见脚本头部说明）。
+
+\begin{remark}[异常签名的最小可执行流程（伪代码）]\label{rem:pom-anom-pseudocode}
+给定核 \(K\)、lift 群 \(G\)、势参数 \(\theta\)（或温度切片 \(t\)），输出 \(\mathsf{Anom}_G(K;\theta)\)：
+\begin{verbatim}
+Input: kernel K (weighted matrix builder M_theta), finite abelian label group G,
+       parameter theta, mobius tail cutoff k_max
+Output: Anom := { logM_chi(theta) : chi in G^ \ {chi0} }
+
+for chi in characters(G) excluding trivial:
+    build twisted weighted matrix M_theta,chi  (character-twist on edges/labels)
+    lambda := spectral_radius(M_theta,chi)
+    z_star := 1/lambda
+    logC := log residue constant at z_star (eigenvalue product formula)
+    logM_chi := logC + sum_{k=2..k_max} mu(k)/k * log zeta_theta,chi(z_star^k)
+return Anom
+\end{verbatim}
+其中 \(\log\zeta=-\log\det(I-zM)\) 可用 \texttt{slogdet} 数值稳定计算（脚本实现即如此）。
+若需要仅做“判等/判零”，可在少量采样点 \(\theta\in\Theta_{\mathrm{grid}}\) 上比较 \(\log\mathfrak{M}_\chi(\theta)\) 向量（推论 \ref{cor:pom-three-gen-normal-form-decidable}）。
+\end{remark}
+
+\paragraph{接口 B：扭曲谱半径比与最坏角色（慢模证书）}
+异常签名是常数级残差；指数级慢模证书可由 \(\rho_\chi/\lambda\) 给出。
+本文对真实输入 40 状态核的某些势（例如 output potential）已经提供“单位根扭曲”的全表与最坏角色输出：
+\texttt{scripts/exp\_real\_input\_40\_output\_potential\_dirichlet\_twists.py}，
+其输出表 \texttt{sections/generated/tab\_real\_input\_40\_output\_potential\_dirichlet\_twists.tex}
+报告了每个模数 \(m\) 的最坏 \(j\) 与 \(\rho_m/\lambda\)。
+该接口与 \(\mathsf{Anom}\) 可并列使用：前者给指数缺口，后者给常数漂移。
+
+\paragraph{接口 C：moment 递推证书（\texorpdfstring{$r_q$}{rq} 与尾部预算）}
+对碰撞矩 \(S_q(m)\) 的“可审计证书”本文采用两种等价口径：
+\begin{itemize}
+  \item \textbf{递推证书：}用整数递推系数核验 \(S_q\)（表 \ref{tab:fold_collision_moment_recursions}）。
+  对应脚本为 \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py}（枚举 \(d_m\) 并验证递推，输出 JSON 与 LaTeX 表）。
+  \item \textbf{谱证书：}由递推的伴随矩阵或 moment-kernel realization 得 Perron 根 \(r_q\)，并据此给出压力/尾部上界（命题 \ref{prop:pom-quantile-chernoff} 与注 \ref{rem:pom-quantile-budget-computable}）。
+  \item \textbf{秩证书：}Hankel 秩下界核验最小 realization 维数（脚本 \texttt{scripts/exp\_fold\_collision\_moment\_hankel\_rank.py}；表 \ref{tab:fold_collision_moment_hankel_rank}）。
+  \end{itemize}
+
+以上三类脚本输出共同构成“\(r_q\) 可计算 \(\Rightarrow\) 尾部分位预算可计算”的闭环：将 \(r_q\) 代入注 \ref{rem:pom-quantile-budget-computable} 的显式不等式即可得到 prime-register 的可审计配额上界（推论 \ref{cor:pom-prime-register-quantile-budget}）。
+
+\paragraph{接口 D：Bridge-Kit（严格化交换图的二级回归测试包）}
+前述接口 A/B/C 分别给出：常数级残差（异常签名）、指数级慢模证书（最坏扭曲谱半径比）、以及 tail/prime-register 预算证书（由 \(r_q\) 控制）。
+但在工程实践中，真正需要的是一个“\emph{可作为验收标准的一键桥包}”：任何对核实现、截断策略、角色分解或数值线性代数优化的改动，都必须保持一组低维可审计输出不漂移。
+\par
+为此我们把
+\[
+\bigl(\mathsf{Anom},\ C_r,\ \delta_{\mathrm{spec}},\ \mathcal{E}_1,\ \eta_{\mathrm{tail}},\ \text{SVD 指纹}\bigr)
+\]
+组织为一个独立的 Bridge-Kit 接口，并以脚本
+\texttt{scripts/exp\_bridge\_kit.py}
+输出统一的 JSON 二级摘要（\texttt{artifacts/export/bridge\_kit\_real\_input\_40\_arity\_335\_N2.json}）。
+其中 \(C_r\) 可与小节 \ref{subsec:arity-dirichlet-mertens-tensor} 中的 Dirichlet--Mertens 常数张量完全对齐；而 \(\delta_{\mathrm{spec}},\mathcal{E}_1,\eta_{\mathrm{tail}}\) 与 SVD 能量占比则给出一个极低维的回归指纹（见同一脚本生成的可 \verb|\input| 片段）：
+\input{sections/generated/eq_bridge_kit_real_input_40_arity_335_N2}
+
+\begin{remark}[中心扩张口径的 strictification 与常数级 counterterm]\label{rem:pom-bridge-kit-strictification}
+本文在 \ref{subsec:pom-anom-cohomology} 已将异常签名 \(\mathsf{Anom}\) 组织为 \(\mathbf{PW}\) 的 \(2\)-上同调类（基本方块的曲率 \(2\)-胞腔）。等价地，可把其视为一个中心扩张
+\(
+\widetilde{\mathbf{PW}}=\mathbf{PW}\ltimes \mathcal{A}_G
+\)
+（\(\mathcal{A}_G\cong\RR^{\widehat G\setminus\{\chi_0\}}\) 为“非平凡角色常数漂移”的加法群）上的显式 \(2\)-态射标签：于是 \(E_m\) 与 \(\mathrm{LIFT}_G\) 的“交换失败”不再是等号破缺，而是可加的 coherence 数据。
+\par
+进一步地，由于 \(\mathsf{Anom}\) 在本文口径下只发生在有限部/常数层（\(\log\mathfrak{M}_\chi-\log\mathfrak{M}_{\chi_0}\)），因此可用一个纯常数 counterterm 把该残差在有限部接口上严格消去（anomaly cancellation）：它只带来常数级 padding（例如 prime-register 预算中的 \(e^{A_\infty}\)），而不改变主指数斜率。
+\end{remark}
+
