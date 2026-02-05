@@ -67,6 +67,151 @@ class DeterministicTransducer:
         return len(self.states)
 
 
+def collision_count_lumping_partition(
+    transducer: DeterministicTransducer,
+    *,
+    output_symbols: Sequence[OutSym] | None = None,
+) -> Tuple[int, ...]:
+    """Compute a coarsest "collision counting" lumping of states.
+
+    This is the repository's executable form of the paper-side idea:
+    states s,t are equivalent if they are indistinguishable by *counts* of
+    output-consistent transitions into future equivalence classes.
+
+    Concretely, let Π be a partition of Q. We refine Π until stable under:
+        sig_Π(s)[b, B] := #{ a ∈ A_in : out(tau(s,a)) = b  and  next(tau(s,a)) ∈ B }.
+
+    Two states are placed in the same block iff their signatures match for all
+    output symbols b (restricted to `output_symbols` if provided).
+
+    Returns:
+        block_of_state: a tuple of length |Q| mapping each state index to a block id.
+    """
+    Q = transducer.n_states()
+    if Q <= 0:
+        return ()
+
+    out_syms = tuple(output_symbols) if output_symbols is not None else tuple(transducer.output_symbols)
+    out_set = set(out_syms)
+    if not out_syms:
+        raise ValueError("output_symbols must be non-empty")
+    out_idx: Dict[OutSym, int] = {b: i for i, b in enumerate(out_syms)}
+
+    # Start from the coarsest partition and refine to a fixpoint.
+    block: List[int] = [0] * Q
+    while True:
+        n_blocks = 1 + max(block) if block else 0
+
+        sig_to_bid: Dict[Tuple[Tuple[int, ...], ...], int] = {}
+        new_block: List[int] = [0] * Q
+
+        for s in range(Q):
+            # counts[b_idx][bid] where b_idx indexes out_syms.
+            counts = [[0] * n_blocks for _ in range(len(out_syms))]
+            for a in transducer.input_symbols:
+                s2, b = transducer.trans[(s, a)]
+                if b not in out_set:
+                    continue
+                bi = out_idx[b]
+                counts[bi][block[s2]] += 1
+
+            sig = tuple(tuple(row) for row in counts)
+            if sig not in sig_to_bid:
+                sig_to_bid[sig] = len(sig_to_bid)
+            new_block[s] = sig_to_bid[sig]
+
+        if new_block == block:
+            return tuple(new_block)
+        block = new_block
+
+
+def lump_transducer_by_partition(
+    transducer: DeterministicTransducer,
+    block_of_state: Sequence[int],
+) -> DeterministicTransducer:
+    """Build a deterministic transducer on block states preserving transition *counts*.
+
+    The lumped machine keeps the same input alphabet size, but input labels are
+    treated as abstract atoms: we only preserve, for each block B and each output
+    symbol b, how many inputs go to each next block.
+
+    This is sufficient for the histogram-DP construction of collision moment-kernels,
+    which depends only on these multiplicities.
+    """
+    Q = transducer.n_states()
+    if len(block_of_state) != Q:
+        raise ValueError("block_of_state length mismatch")
+    if Q == 0:
+        return transducer
+
+    r = 1 + max(int(x) for x in block_of_state)
+    if r <= 0:
+        return transducer
+
+    # Choose a deterministic representative for each block.
+    reps: List[int] = [-1] * r
+    for s, bid in enumerate(block_of_state):
+        ib = int(bid)
+        if reps[ib] < 0:
+            reps[ib] = int(s)
+    if any(x < 0 for x in reps):
+        raise RuntimeError("internal error: missing representative for some block")
+
+    new_states = tuple(f"B{j}" for j in range(r))
+    in_syms = tuple(transducer.input_symbols)
+    out_syms = tuple(transducer.output_symbols)
+
+    # For each block state, build an arbitrary deterministic assignment of input labels
+    # that realizes the required multiplicities (counts) into next blocks with output b.
+    new_trans: Dict[Tuple[int, InSym], Tuple[int, OutSym]] = {}
+
+    for bsrc in range(r):
+        rep = reps[bsrc]
+
+        # Count (output symbol, next block) multiplicities from the representative.
+        counts: Dict[Tuple[OutSym, int], int] = {}
+        for a in in_syms:
+            s2, b = transducer.trans[(rep, a)]
+            bdst = int(block_of_state[s2])
+            counts[(b, bdst)] = counts.get((b, bdst), 0) + 1
+
+        # Expand to a length-|A_in| list of (next_block, output_symbol) pairs.
+        pairs: List[Tuple[int, OutSym]] = []
+        for b in out_syms:
+            for bdst in range(r):
+                w = int(counts.get((b, bdst), 0))
+                if w:
+                    pairs.extend([(bdst, b)] * w)
+
+        if len(pairs) != len(in_syms):
+            raise RuntimeError(
+                f"lumping failed to realize a total transition function: got {len(pairs)} pairs, need {len(in_syms)}"
+            )
+
+        for a, (bdst, b) in zip(in_syms, pairs, strict=True):
+            new_trans[(bsrc, a)] = (int(bdst), b)
+
+    return DeterministicTransducer(
+        states=new_states,
+        input_symbols=in_syms,
+        output_symbols=out_syms,
+        trans=new_trans,
+    )
+
+
+def lump_transducer_by_collision_counts(
+    transducer: DeterministicTransducer,
+    *,
+    output_symbols: Sequence[OutSym] | None = None,
+) -> Tuple[DeterministicTransducer, Tuple[int, ...]]:
+    """Convenience wrapper: compute partition then build lumped transducer."""
+    part = collision_count_lumping_partition(transducer, output_symbols=output_symbols)
+    r = (1 + max(part)) if part else 0
+    if r == 0 or r == transducer.n_states():
+        return transducer, part
+    return lump_transducer_by_partition(transducer, part), part
+
+
 def build_transducer_from_edges(
     *,
     states: Sequence[str],
@@ -173,6 +318,7 @@ def build_collision_moment_kernel_sparse(
     *,
     output_symbols: Sequence[OutSym] | None = None,
     progress_every: int = 0,
+    lump_by_collision_counts: bool = False,
 ) -> Tuple[List[Histogram], List[SparseRow]]:
     """Build sparse rows of the histogram collision kernel A_k.
 
@@ -183,6 +329,9 @@ def build_collision_moment_kernel_sparse(
     """
     if k < 1:
         raise ValueError("k must be >= 1")
+
+    if lump_by_collision_counts:
+        transducer, _part = lump_transducer_by_collision_counts(transducer, output_symbols=output_symbols)
 
     Q = transducer.n_states()
     out_syms = list(output_symbols) if output_symbols is not None else list(transducer.output_symbols)

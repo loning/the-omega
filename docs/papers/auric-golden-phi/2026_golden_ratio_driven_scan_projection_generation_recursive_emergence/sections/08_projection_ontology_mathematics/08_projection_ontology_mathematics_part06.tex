@@ -88,6 +88,18 @@ $$
 \input{sections/generated/tab_pom_projword_full_normalizer_demo}
 \end{remark}
 
+\begin{remark}[可复现：把 \texorpdfstring{$\mathrm{MOM}_q$}{MOMq} 纳入重写闭包（含外提与合并）]\label{rem:pom-projword-mom-twist-normalizer-demo}
+为把“空间谱读取门” \(\mathrm{MOM}_q\) 从语义侧计算提升为词法侧可重写的一等生成元，
+脚本 \texttt{scripts/exp\_pom\_projword\_mom\_twist\_normalizer\_demo.py} 在合并正规化器（注 \ref{rem:pom-projword-full-normalizer-demo}）之上加入两类扩展 token：
+\(\texttt{MOM[q]}\)（\(q\ge 2\)）与 \(\texttt{TWIST[}\chi\texttt{]}\)。
+其定向规则包含：
+(i) \(\mathrm{MOM}\) 的乘法合并（把相邻的 \(\mathrm{MOM}_{q_1}\circ\mathrm{MOM}_{q_2}\) 归并为 \(\mathrm{MOM}_{q_1q_2}\)），
+(ii) 把 \(\mathrm{MOM}_q\) 逐步外提（bubble）到投影词最左端作为前缀结构门（必要时输出一条可核对的“交换失败/类型提升”占位证书），
+(iii) 把 \(\mathrm{TWIST}(\chi)\) 与相邻读出门融合为带角色参数的 \(\mathrm{PROJ}_{u,\chi}\)。
+该脚本输出若干输入投影词的正规形、重写步数与证书条数，见表 \ref{tab:pom_projword_mom_twist_normalizer_demo}。
+\input{sections/generated/tab_pom_projword_mom_twist_normalizer_demo}
+\end{remark}
+
 \subsubsection{标量语义：纤维缺陷由 \texorpdfstring{$E_m$}{Em} 唯一决定}
 \begin{corollary}[空间损失的可推演性：\texorpdfstring{$\kappa_m$}{kappa} 作为投影词语义]\label{cor:pom-kappa-derivable}
 令 \(d_m(x)=|\Fold_m^{-1}(x)|\)，对任意 \(\pi\in\Delta(X_m)\) 定义纤维缺陷泛函

@@ -27,6 +27,7 @@ from typing import Dict, List, Tuple
 from common_moment_kernel_hist import (
     build_collision_moment_kernel_sparse,
     build_transducer_from_edges,
+    collision_count_lumping_partition,
     histogram_state_count,
     estimate_spectral_radius_sparse,
     pressure_from_rho,
@@ -38,13 +39,15 @@ from common_paths import export_dir
 class Summary:
     kernel: str
     k: int
-    n_states: int
+    n_states_base: int
+    n_states_effective: int
     dim_Hk: int
     dim_formula: str
     rho_est: float
     pressure: float
     seconds_build: float
     seconds_power_iter: float
+    lump_by_collision_counts: bool
 
 
 def _sync10_transducer():
@@ -71,6 +74,11 @@ def main() -> None:
     ap = argparse.ArgumentParser(description="Demo: histogram-DP construction of collision moment-kernel A_k.")
     ap.add_argument("--kernel", type=str, default="sync10", choices=["sync10"], help="Base deterministic transducer.")
     ap.add_argument("--k", type=int, default=6, help="Moment order k (>=1).")
+    ap.add_argument(
+        "--lump-col",
+        action="store_true",
+        help="Pre-quotient Q by collision-count lumping (~col) before building H_k and A_k.",
+    )
     ap.add_argument("--iters", type=int, default=2500, help="Power-iteration max iterations.")
     ap.add_argument("--tol", type=float, default=1e-13, help="Relative tolerance for power iteration.")
     ap.add_argument(
@@ -97,10 +105,17 @@ def main() -> None:
     else:
         raise SystemExit(f"Unknown kernel {args.kernel!r}")
 
-    dim = histogram_state_count(k, T.n_states())
-    dim_formula = f"C({k}+{T.n_states()}-1,{T.n_states()}-1)=C({k + T.n_states() - 1},{T.n_states() - 1})"
+    n_base = int(T.n_states())
+    n_eff = n_base
+    if bool(args.lump_col):
+        part = collision_count_lumping_partition(T)
+        n_eff = int((1 + max(part)) if part else 0)
+    dim = histogram_state_count(k, n_eff)
+    dim_formula = f"C({k}+{n_eff}-1,{n_eff}-1)=C({k + n_eff - 1},{n_eff - 1})"
     print(
-        f"[moment-kernel-hist-demo] kernel={args.kernel} k={k} |Q|={T.n_states()} |H_k|={dim} ({dim_formula})",
+        f"[moment-kernel-hist-demo] kernel={args.kernel} k={k} |Q|={n_base}"
+        + (f" -> |Q/~col|={n_eff}" if bool(args.lump_col) else "")
+        + f"  |H_k|={dim} ({dim_formula})",
         flush=True,
     )
 
@@ -113,9 +128,11 @@ def main() -> None:
         payload = {
             "kernel": str(args.kernel),
             "k": k,
-            "n_states": int(T.n_states()),
+            "n_states_base": int(n_base),
+            "n_states_effective": int(n_eff),
             "dim_Hk": int(dim),
             "dim_formula": dim_formula,
+            "lump_by_collision_counts": bool(args.lump_col),
             "note": "Skipped build due to safety cap; rerun with --force to compute rho(A_k).",
         }
         out = Path(str(args.json_out))
@@ -125,7 +142,7 @@ def main() -> None:
         return
 
     t0 = time.time()
-    _states, rows = build_collision_moment_kernel_sparse(T, k=k, progress_every=0)
+    _states, rows = build_collision_moment_kernel_sparse(T, k=k, progress_every=0, lump_by_collision_counts=bool(args.lump_col))
     t1 = time.time()
     rho = estimate_spectral_radius_sparse(rows, iters=int(args.iters), tol=float(args.tol))
     t2 = time.time()
@@ -134,13 +151,15 @@ def main() -> None:
     summary = Summary(
         kernel=str(args.kernel),
         k=k,
-        n_states=int(T.n_states()),
+        n_states_base=int(n_base),
+        n_states_effective=int(n_eff),
         dim_Hk=int(dim),
         dim_formula=dim_formula,
         rho_est=float(rho),
         pressure=float(P),
         seconds_build=float(t1 - t0),
         seconds_power_iter=float(t2 - t1),
+        lump_by_collision_counts=bool(args.lump_col),
     )
 
     payload: Dict[str, object] = {
