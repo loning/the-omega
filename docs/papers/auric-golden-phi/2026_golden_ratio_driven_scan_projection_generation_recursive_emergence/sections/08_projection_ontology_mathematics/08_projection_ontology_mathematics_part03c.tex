@@ -350,6 +350,32 @@ S_q(m)=\sum_{r\in\ZZ/F_{m+2}\ZZ}c_m(r)^q
 \end{remark}
 \input{sections/generated/tab_fold_collision_renyi_endpoint_convergence_q60}
 
+\begin{remark}[自由能超额 \texorpdfstring{$g_q$}{gq} 的快速衰减（可复核数值律）]\label{rem:pom-free-energy-excess-gq}
+为定量刻画 \(r_q\) 到端点尺度 \(\varphi^{q/2}\) 的收敛速度，引入“自由能超额”（free-energy excess）
+\[
+g_q:=\log r_q-\frac{q}{2}\log\varphi
+= q\Bigl(\log\!\left(\frac{2}{\sqrt{\varphi}}\right)-\frac{h_q}{q}\Bigr).
+\]
+注意表 \ref{tab:fold_collision_renyi_endpoint_convergence_q60} 的 \texttt{gap} 列正是 \(g_q/q\)。
+因此在已核验窗口 \(m\in[24,30]\) 上可直接得到
+\[
+g_{20}\approx 0.1724,\quad g_{30}\approx 0.0939,\quad g_{40}\approx 0.0444,\quad g_{60}\approx 0.00834.
+\]
+特别地，
+\[
+\frac{r_{60}}{\varphi^{30}}=\exp(g_{60})\approx 1.0084,
+\]
+即到 \(q=60\) 时相对端点尺度的乘性误差已在 \(1\%\) 内。
+这远强于命题 \ref{prop:pom-rq-qinfty-endpoint} 给出的普适包络 \(g_q\le \log\varphi\)（例如只会给出 \(g_{60}\le\log\varphi\approx 0.48\)）。
+\par
+在目前四个审计点上，\(g_q\) 的衰减呈现出明显快于 \(1/q\) 的趋势。
+一个保守的指数包络（仅用这四点即可验证覆盖）为
+\[
+g_q\ \le\ 0.1724\,e^{-0.06(q-20)}\qquad(q\ge 20).
+\]
+该现象在本文中不作为定理使用，而应被视为一个带审计 provenance 的可追踪数值律：随着更大 \(q\) 的端点表扩展，可以直接复核/证伪其衰减型态。
+\end{remark}
+
 \begin{proposition}[普适夹逼：高阶碰撞主指数与投影熵率仅由 \texorpdfstring{$|X_m|$}{|Xm|} 与最大纤维锁定]\label{prop:pom-rq-universal-bounds}
 对整数 \(q\ge 2\)，令
 $$
@@ -677,6 +703,33 @@ $$
 最后一段直接由表中的递推系数写出特征多项式并比较阶数即可。证毕。
 \end{proof}
 
+\begin{remark}[最小递推的端点刚性：首系数 \(2\) 与偶阶的 \texorpdfstring{$\pm 8$}{±8} 尾差分块]\label{rem:pom-recurrence-endpoint-rigidity}
+在已核验的最小整系数递推中（表 \ref{tab:fold_collision_moment_recursions}、\ref{tab:fold_collision_moment_recursions_9_17}、\ref{tab:fold_collision_moment_recursions_18_23}），始终有
+\[
+c_1=2,
+\qquad\text{即}\qquad
+P_q(\lambda)=\lambda^{d_q}-2\lambda^{d_q-1}+\cdots.
+\]
+这表明“向后一步”的系数在做完 fiber-product 约束与最小化之后仍保持一个刚性的二元步进结构。
+\par
+更进一步地，在定理 \ref{thm:pom-moment-resonance} 列出的偶阶多项式 \(P_{12},P_{14}\) 中（以及表 \ref{tab:fold_collision_moment_recursions_9_17} 的 \(q=16\) 最小递推系数中），末端两项的系数固定为
+\[
+(c_{d_q-1},c_{d_q})=(8,-8),
+\qquad\text{等价地}\qquad
+P_q(\lambda)=\cdots+(\cdots)\lambda^2-8\lambda+8.
+\]
+因此最深滞后只以一个“尾差分块”的形式出现：
+\[
+8\bigl(S_q(m-d_q+1)-S_q(m-d_q)\bigr).
+\]
+若令后向差分 \(T_q(m):=S_q(m)-S_q(m-1)\)，则上述偶阶递推可改写为
+\[
+S_q(m)=\sum_{i=1}^{d_q-2}c_i\,S_q(m-i)\ +\ 8\,T_q(m-d_q+1),
+\]
+把最深一层历史的进入方式压缩为差分信道。
+该端点块在一般线性递推中并非必然，因而可作为后续重写 realization/提取隐藏模态约束的一个结构把手。
+\end{remark}
+
 \begin{proposition}[奇滞后中性（odd-lag neutrality；可审计）]\label{prop:pom-moment-odd-lag-neutrality}
 在已核验范围 \(q=2,\dots,23\) 内（表 \ref{tab:fold_collision_moment_recursions}、表 \ref{tab:fold_collision_moment_recursions_9_17} 与表 \ref{tab:fold_collision_moment_recursions_18_23}），\(S_q(m)\) 的最小整系数递推可写为
 \[
@@ -824,6 +877,38 @@ $$
 
 \input{sections/generated/tab_fold_collision_resonance_nullmodes_q9_17}
 
+\begin{remark}[Hankel-null 与特征多项式的对齐：以 \texorpdfstring{$q=14$}{q=14} 为例]\label{rem:pom-nullmodes-q14-poly-alignment}
+对任一满足整系数线性递推的序列 \(a_n\)，若其特征多项式写成
+\[
+P(\lambda)=p_0+p_1\lambda+\cdots+p_d\lambda^d\qquad(p_d=1),
+\]
+则对所有可用平移 \(t\) 都有线性关系
+\(
+\sum_{j=0}^{d} p_j\,a_{t+j}=0
+\)。
+因此当 Hankel 块的行数 \(\ge d+1\) 时，系数向量 \((p_0,\dots,p_d,0,\dots,0)\) 必属于 \(\ker(H^{\mathsf T})\)；
+更一般地，任意低次多项式倍乘 \(Q(\lambda)P(\lambda)\) 也会给出额外的 Hankel-null 向量（只要行数允许）。
+\par
+在共振例 \(q=14\) 中，名义行数 \(2h+1=15\) 而最小阶 \(d_{14}=13\)，故 \(\Delta(14)=2\)。
+写
+\(
+P_{14}(\lambda)=\sum_{j=0}^{13}p_j\lambda^j
+\)
+与
+\(
+(\lambda+2)P_{14}(\lambda)=\sum_{j=0}^{14}\widetilde p_j\lambda^j
+\)。
+则表 \ref{tab:fold_collision_resonance_nullmodes_q9_17} 给出的两条 \(\mathrm{NullModes}(14)\) 可直接对齐为
+\[
+\alpha^{(1)}=(p_0,p_1,\ldots,p_{13},0),
+\qquad
+\alpha^{(2)}=(\widetilde p_0,\widetilde p_1,\ldots,\widetilde p_{14}),
+\]
+从而提供一个极便宜的审计一致性检查：只要把定理 \ref{thm:pom-moment-resonance} 中的 \(P_{14}\) 系数与表向量逐项对照即可。
+同时它也提示：\(\mathrm{NullModes}(q)\) 的某些“形状特征”往往更多反映了最小递推多项式的系数剖面，而不应被过早解释为差分模态索引 \(\ell\) 上的局部化效应；
+若要研究 \(\ell\)-方向的支撑/集中性，需要回到具体的模态 realization 上直接求解约束。
+\end{remark}
+
 \begin{remark}[算术节拍标注：\texorpdfstring{$m+2\equiv 0\pmod 3$}{m+2=0 mod 3} 点与 Hankel 证书对齐（可证伪）]\label{rem:pom-mod3-beat-alignment}
 附录 \ref{app:fold-multiplicity} 中定理 \ref{thm:fold-spectrum-parity-zero} 表明：当 \(m+2\equiv 0\pmod 3\)（等价于 \(F_{m+2}\) 为偶数）时，折叠多重度谱存在严格 Fourier 零点（从而零点集合 \(\mathcal{Z}_m\) 非空）。
 这给出一个无需拟合的、纯算术驱动的“节拍点集”。
@@ -862,6 +947,23 @@ d_q=\dim V_q^{\mathrm{vis}}\ \le\ 2\lfloor q/2\rfloor+1,
 \end{corollary}
 
 \input{sections/generated/tab_fold_collision_moment_hankel_rank}
+
+\begin{remark}[\texorpdfstring{$p$}{p}-进刚性指纹：\texorpdfstring{$p=5$}{p=5} 在 \texorpdfstring{$k=5$}{k=5} 的 Hankel 证书中首次显性出现]\label{rem:pom-hankel-stiffness-p5}
+表 \ref{tab:fold_collision_moment_hankel_rank} 的非零 Hankel 主子式行列式不仅给出秩下界，也携带一个完全内部的算术刚性信号。
+对素数 \(p\) 定义“刚性指数”
+\[
+\mathsf{Stiff}_p(k):=v_p(\det(H_k)),
+\]
+其中 \(v_p\) 为 \(p\)-进赋值，\(H_k\) 为表中用于 \(S_k\) 的 Hankel 见证块。
+在最小的两个可手工分解的例子里：
+\[
+\det(H_{k=4})=1179648=2^{17}\cdot 3^2,
+\qquad
+\det(H_{k=5})=155520000000=2^{13}\cdot 3^5\cdot 5^7.
+\]
+因此 \(\mathsf{Stiff}_5(4)=0\) 而 \(\mathsf{Stiff}_5(5)=7\)：第一个携带高 \(5\)-进赋值的 Hankel 刚性证书恰好出现在 \(k=5\)。
+这一跳变为后续追踪“模 \(5\)”类算术效应提供了一个可复核的起点指标（例如随 \(k\) 增大继续记录 \(\mathsf{Stiff}_5(k)\) 的增长与共振缺口 \(\Delta(k)\) 的对照）。
+\end{remark}
 
 \subsubsection{任意阶碰撞矩的 moment-kernel 构造与多重分形谱}\label{subsec:pom-moment-general}
 

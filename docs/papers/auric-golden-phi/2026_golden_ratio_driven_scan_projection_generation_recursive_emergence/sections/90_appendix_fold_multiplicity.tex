@@ -393,6 +393,31 @@ g_j=\gcd(F_{j+1},F_{m+2})=F_{\gcd(j+1,m+2)}.
 最后一式由 \(\gcd(F_a,F_b)=F_{\gcd(a,b)}\) 取 \(a=j+1\)、\(b=m+2\) 得到。证毕。
 \end{proof}
 
+\begin{corollary}[约数驱动的谱零点下界（算术调制的可审计来源）]\label{cor:fold-zero-divisor-lb}
+令 \(M:=F_{m+2}\)。若 \(M\) 为偶数，则对任意满足 \(g_j\mid M/2\) 的指标 \(j\in\{1,\dots,m\}\)，都有
+\[
+\card{\mathcal{Z}_m}\ \ge\ \card{S_{g_j}(M)}\ =\ g_j.
+\]
+进一步，若存在真约数 \(d\mid(m+2)\)、\(d<m+2\) 满足
+\[
+F_d\ \mid\ \frac{F_{m+2}}{2},
+\]
+则必有
+\[
+\boxed{\;\card{\mathcal{Z}_m}\ \ge\ F_d.\;}
+\]
+特别地，当 \(m+2\equiv 0\pmod 3\) 时 \(F_{m+2}\) 为偶数（定理 \ref{thm:fold-spectrum-parity-zero}），从而 \(\card{\mathcal{Z}_m}\ge 1\)；而当这些整除条件在某些 \(d\) 上被触发时，\(\card{\mathcal{Z}_m}\) 会出现由 \((m+2)\) 的约数格驱动的确定性“增量”。
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:fold-zero-coset-union}，当 \(g_j\mid M/2\) 时有 \(S_{g_j}(M)\subseteq \mathcal{Z}_m\)。又 \(\card{S_g(M)}=g\)，因此 \(\card{\mathcal{Z}_m}\ge g_j\)。
+\par
+对第二段，取 \(j=d-1\)。则由推论 \ref{cor:fold-zero-coset-union} 中的恒等式
+\(
+g_{d-1}=\gcd(F_d,F_{m+2})=F_{\gcd(d,m+2)}=F_d
+\)。
+若再假设 \(F_d\mid F_{m+2}/2\)，则 \(g_{d-1}\mid M/2\)，从而 \(S_{F_d}(M)\subseteq \mathcal{Z}_m\)，即 \(\card{\mathcal{Z}_m}\ge F_d\)。证毕。
+\end{proof}
+
 \begin{lemma}[余类交集判据与交集大小]\label{lem:fold-zero-coset-intersection}
 设 \(M\) 为偶数且 \(g,h\mid M/2\)。
 则
@@ -592,6 +617,70 @@ d_m(r)\ge \overline d_m+\frac{S_m}{F_{m+2}}
 \textbf{证明：}
 左侧不等式由定理 \ref{thm:fold-collision-max-fiber} 直接给出。
 右侧不等式由定理 \ref{thm:fold-collision-zero-reduction} 得到。证毕。
+
+\begin{theorem}[零点--均匀性--信息缺口的不确定性链]\label{thm:fold-zero-uncertainty}
+令 \(M:=F_{m+2}\)，并定义归一化折叠分布
+\[
+p_m(r):=\frac{d_m(r)}{2^m}\in[0,1],\qquad r\in\ZZ/(M\ZZ),
+\qquad
+u(r):=\frac{1}{M}.
+\]
+则有：
+\begin{enumerate}
+  \item \textbf{（碰撞缺口 = \(\ell^2\) 距离）}
+  \[
+  \boxed{\;\sum_{r}\bigl(p_m(r)-u(r)\bigr)^2=\mathsf{Col}_m-\frac{1}{M}.\;}
+  \]
+  \item \textbf{（最大纤维超额由碰撞缺口控制）}
+  \[
+  \max_r\left|p_m(r)-\frac1M\right|
+  \le \sqrt{\mathsf{Col}_m-\frac{1}{M}},
+  \qquad
+  \boxed{\;
+  M_m-\overline d_m\ \le\ 2^m\sqrt{\mathsf{Col}_m-\frac{1}{M}}.\;}
+  \]
+  结合定理 \ref{thm:fold-collision-sandwich} 的右侧上界，进一步得到仅用零点集合控制的结构上界
+  \[
+  \boxed{\;
+  M_m-\overline d_m\ \le\ 2^m\sqrt{\frac{M-1-|\mathcal{Z}_m|}{M}}. \;}
+  \]
+  \item \textbf{（熵缺口上界：collision \(\Rightarrow\) KL）}
+  若以自然对数定义 Shannon 熵 \(H(p_m):=-\sum_r p_m(r)\log p_m(r)\)，则到均匀的 KL 缺口满足
+  \[
+  D_{\mathrm{KL}}(p_m\|u)=\log M-H(p_m)\ \le\ \log\!\bigl(M\,\mathsf{Col}_m\bigr)\ \le\ \log\!\bigl(M-|\mathcal{Z}_m|\bigr).
+  \]
+  \item \textbf{（非平凡 Fourier 峰值的上界：由碰撞能量给出）}
+  记 \(S_m=\max_{k\ne 0}|\widehat d_m(k)|\)（定理 \ref{thm:fold-max-fiber-fourier}），则
+  \[
+  \boxed{\;
+  S_m\ \le\ 2^m\sqrt{M\left(\mathsf{Col}_m-\frac{1}{M}\right)}\ \le\ 2^m\sqrt{M-1-|\mathcal{Z}_m|}. \;}
+  \]
+\end{enumerate}
+因此当 \(|\mathcal{Z}_m|\) 在某些同余类/约数结构上出现确定性增量（例如定理 \ref{thm:fold-spectrum-parity-zero} 的 \(m+2\equiv 0\pmod 3\) 情形，以及推论 \ref{cor:fold-zero-divisor-lb} 的更一般整除触发情形）时，上述对最大纤维超额与信息缺口的上界也会出现相应的确定性“下压”，给出可直接用 DP/Fourier 管线审计的算术调制预测。
+\end{theorem}
+\begin{proof}
+(1) 由定义 \(p_m=d_m/2^m\) 与 \(\mathsf{Col}_m=\sum_r p_m(r)^2\)，并用 \(\sum_r p_m(r)=1\)，直接计算
+\[
+\sum_r\left(p_m(r)-\frac{1}{M}\right)^2
+=\sum_r p_m(r)^2-\frac{2}{M}\sum_r p_m(r)+\sum_r\frac{1}{M^2}
+=\mathsf{Col}_m-\frac{1}{M}.
+\]
+(2) 由 \(\ell^\infty\le \ell^2\) 有 \(\max_r|p_m(r)-1/M|\le \sqrt{\sum_r(p_m(r)-1/M)^2}\)，再用 (1) 得第一条不等式。
+乘以 \(2^m\) 并注意 \(M_m=\max_r d_m(r)=2^m\max_r p_m(r)\)、\(\overline d_m=2^m/M\) 即得关于 \(M_m-\overline d_m\) 的界。最后一条由定理 \ref{thm:fold-collision-sandwich} 的右侧上界代入得到。
+\par
+(3) Rényi 熵的单调性给出 \(H(p_m)\ge H_2(p_m):=-\log\sum_r p_m(r)^2=-\log \mathsf{Col}_m\)，故
+\(
+D_{\mathrm{KL}}(p_m\|u)=\log M-H(p_m)\le \log M-H_2(p_m)=\log(M\mathsf{Col}_m)
+\)。
+再用定理 \ref{thm:fold-collision-zero-reduction} 的 \(\mathsf{Col}_m\le 1-|\mathcal{Z}_m|/M\) 得到 \(\log(M\mathsf{Col}_m)\le \log(M-|\mathcal{Z}_m|)\)。
+\par
+(4) 由定理 \ref{thm:fold-collision-spectrum}，
+\(
+\mathsf{Col}_m-\frac{1}{M}=\frac{1}{2^{2m}M}\sum_{k\ne 0}|\widehat d_m(k)|^2
+\)。
+因此 \(S_m^2\le \sum_{k\ne 0}|\widehat d_m(k)|^2=2^{2m}M(\mathsf{Col}_m-1/M)\)，取平方根得第一条不等式；
+再用定理 \ref{thm:fold-collision-sandwich} 的右侧上界 \(\mathsf{Col}_m-1/M\le (M-1-|\mathcal{Z}_m|)/M\) 得到最后一条。证毕。
+\end{proof}
 
 \begin{corollary}[零点削减项的相对指数小量]
 \label{cor:fold-collision-zero-sparsity-impact}
