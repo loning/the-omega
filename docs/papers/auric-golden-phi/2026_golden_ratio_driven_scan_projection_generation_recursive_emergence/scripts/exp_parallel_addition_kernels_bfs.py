@@ -27,6 +27,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Deque, Dict, Iterable, List, Mapping, Tuple
 
+import numpy as np
+
 from common_paths import export_dir, generated_dir
 from common_phi_fold import Progress
 
@@ -102,6 +104,38 @@ def _power_iteration(
             return lam_new
         lam = lam_new
         x = y
+        if it % 200 == 0:
+            prog.tick(f"{label} power it={it} lam~{lam_new:.12g}")
+    return lam
+
+
+def _power_iteration_nonneg_inplace(
+    n: int,
+    mul_inplace,
+    *,
+    itmax: int,
+    tol: float,
+    prog: Progress,
+    label: str,
+) -> float:
+    """Power iteration with reusable NumPy buffers (nonnegative operator)."""
+    if n <= 0:
+        return 0.0
+    x = np.full(n, 1.0 / n, dtype=float)
+    y = np.empty_like(x)
+    lam = 0.0
+    for it in range(1, itmax + 1):
+        mul_inplace(x, y)
+        s = float(np.sum(y))
+        if not (s > 0.0):
+            return 0.0
+        y *= 1.0 / s
+        lam_new = s
+        if it > 50 and abs(lam_new - lam) / max(1.0, abs(lam_new)) < tol:
+            prog.tick(f"{label} power it={it} lam~{lam_new:.12g}")
+            return lam_new
+        lam = lam_new
+        x, y = y, x
         if it % 200 == 0:
             prog.tick(f"{label} power it={it} lam~{lam_new:.12g}")
     return lam
@@ -184,6 +218,41 @@ def _stationary_uniform_inputs(
     return pi
 
 
+def _stationary_uniform_inputs_from_arrays(
+    *,
+    n_states: int,
+    src: np.ndarray,
+    dst: np.ndarray,
+    b: int,
+    prog: Progress,
+    label: str,
+) -> np.ndarray:
+    """Stationary distribution under uniform IID inputs, using sparse scatter-add."""
+    if n_states <= 0:
+        return np.zeros(0, dtype=float)
+    inv_b = 1.0 / float(b)
+    pi = np.full(n_states, inv_b * (float(b) / float(n_states)), dtype=float)
+    new = np.empty_like(pi)
+    tmp = np.empty(src.shape[0], dtype=float)
+    for it in range(1, 20000 + 1):
+        # new[dst] += pi[src] / b
+        np.take(pi, src, out=tmp)
+        new.fill(0.0)
+        np.add.at(new, dst, tmp)
+        new *= inv_b
+        s = float(np.sum(new))
+        if s > 0.0:
+            new *= 1.0 / s
+        diff = float(np.sum(np.abs(new - pi)))
+        pi, new = new, pi
+        if diff < 1e-13 and it > 200:
+            prog.tick(f"{label} stationary it={it} diff={diff:.3e}")
+            break
+        if it % 1000 == 0:
+            prog.tick(f"{label} stationary it={it} diff={diff:.3e}")
+    return pi
+
+
 def _kappa_dist(
     edges: List[Tuple[int, int, int, int, int]],
     pi: List[float],
@@ -200,6 +269,31 @@ def _kappa_dist(
     return {k: v / s for k, v in sorted(d.items())}
 
 
+def _kappa_dist_from_arrays(
+    *,
+    src: np.ndarray,
+    kappa: np.ndarray,
+    pi: np.ndarray,
+    b: int,
+) -> Dict[int, float]:
+    inv_b = 1.0 / float(b)
+    tmp = np.empty(src.shape[0], dtype=float)
+    np.take(pi, src, out=tmp)
+    tmp *= inv_b
+    k_int = kappa.astype(np.int64, copy=False)
+    max_k = int(np.max(k_int)) if k_int.size else 0
+    hist = np.bincount(k_int, weights=tmp, minlength=max_k + 1)
+    s = float(np.sum(hist))
+    if not (s > 0.0):
+        return {}
+    hist = hist / s
+    out: Dict[int, float] = {}
+    for k, p in enumerate(hist.tolist()):
+        if p:
+            out[int(k)] = float(p)
+    return out
+
+
 def _kappa_split_probs(
     edges: List[Tuple[int, int, int, int, int]],
     pi: List[float],
@@ -214,6 +308,23 @@ def _kappa_split_probs(
             pA += w
         if kB:
             pB += w
+    return pA, pB
+
+
+def _kappa_split_probs_from_arrays(
+    *,
+    src: np.ndarray,
+    kA: np.ndarray,
+    kB: np.ndarray,
+    pi: np.ndarray,
+    b: int,
+) -> Tuple[float, float]:
+    inv_b = 1.0 / float(b)
+    tmp = np.empty(src.shape[0], dtype=float)
+    np.take(pi, src, out=tmp)
+    tmp *= inv_b
+    pA = float(np.sum(tmp[kA != 0]))
+    pB = float(np.sum(tmp[kB != 0]))
     return pA, pB
 
 
@@ -250,6 +361,55 @@ def _lambda_u(
         return y
 
     return _power_iteration(n_states, mul, itmax=8000, tol=1e-12, prog=prog, label=f"{label} u={u}")
+
+
+def _lambda_u_from_arrays(
+    *,
+    n_states: int,
+    src: np.ndarray,
+    dst: np.ndarray,
+    kappa: np.ndarray,
+    u: float,
+    prog: Progress,
+    label: str,
+) -> float:
+    """Spectral radius of weighted adjacency M(u), computed by power iteration."""
+    if n_states <= 0:
+        return 0.0
+
+    k_int = kappa.astype(np.int64, copy=False)
+    if u == 0.0:
+        mask = k_int == 0
+        src0 = src[mask]
+        dst0 = dst[mask]
+
+        def mul_inplace(x: np.ndarray, y: np.ndarray) -> None:
+            y.fill(0.0)
+            np.add.at(y, dst0, x[src0])
+
+        return _power_iteration_nonneg_inplace(
+            n_states, mul_inplace, itmax=8000, tol=1e-12, prog=prog, label=f"{label} u={u}"
+        )
+
+    # Precompute edge weights w_e = u^{kappa_e}.
+    k_max = int(np.max(k_int)) if k_int.size else 0
+    pow_u = np.empty(k_max + 1, dtype=float)
+    pow_u[0] = 1.0
+    for k in range(1, k_max + 1):
+        pow_u[k] = pow_u[k - 1] * float(u)
+    w_edge = pow_u[k_int]  # shape: (n_edges,)
+
+    tmp = np.empty(src.shape[0], dtype=float)
+
+    def mul_inplace(x: np.ndarray, y: np.ndarray) -> None:
+        y.fill(0.0)
+        np.take(x, src, out=tmp)
+        tmp[:] *= w_edge
+        np.add.at(y, dst, tmp)
+
+    return _power_iteration_nonneg_inplace(
+        n_states, mul_inplace, itmax=8000, tol=1e-12, prog=prog, label=f"{label} u={u}"
+    )
 
 
 # -----------------------------
@@ -570,15 +730,29 @@ def main() -> None:
         n_states = len(idx)
         b = len(spec.alphabet)
 
-        pi = _stationary_uniform_inputs(n_states, edges, b=b, prog=prog, label=spec.name)
-        kdist = _kappa_dist(edges, pi, b=b)
+        # Convert edges to compact numeric arrays once (used by multiple computations).
+        e_arr = np.asarray([(i, j, kA, kB) for (i, j, _a, kA, kB) in edges], dtype=np.int64)
+        src = e_arr[:, 0]
+        dst = e_arr[:, 1]
+        kA = e_arr[:, 2]
+        kB = e_arr[:, 3]
+        kappa = kA + kB
+
+        pi_np = _stationary_uniform_inputs_from_arrays(
+            n_states=n_states, src=src, dst=dst, b=b, prog=prog, label=spec.name
+        )
+        pi = [float(x) for x in pi_np.tolist()]
+
+        kdist = _kappa_dist_from_arrays(src=src, kappa=kappa, pi=pi_np, b=b)
         kmean = sum(k * p for k, p in kdist.items())
-        pA, pB = _kappa_split_probs(edges, pi, b=b)
+        pA, pB = _kappa_split_probs_from_arrays(src=src, kA=kA, kB=kB, pi=pi_np, b=b)
 
         # spectral radius of weighted adjacency for u grid
         lams = {}
         for u in u_grid:
-            lams[str(u)] = _lambda_u(n_states, edges, u=u, prog=prog, label=spec.name)
+            lams[str(u)] = _lambda_u_from_arrays(
+                n_states=n_states, src=src, dst=dst, kappa=kappa, u=u, prog=prog, label=spec.name
+            )
         lam0 = lams.get("0.0", lams.get("0", None))
         lam1 = lams.get("1.0", lams.get("1", None))
 

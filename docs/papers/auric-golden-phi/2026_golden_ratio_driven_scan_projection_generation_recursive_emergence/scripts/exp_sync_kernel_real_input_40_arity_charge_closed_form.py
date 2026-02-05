@@ -489,13 +489,25 @@ def main() -> None:
         f"coboundary OK: edges={audit.edges_in_core} g0={audit.edges_g0} g1={audit.edges_g1}"
     )
 
-    # Zero-charge subgraph determinant (exact, in z only).
+    # Convert once to SymPy matrices (avoid repeated construction in checks).
+    M0_sp = sp.Matrix(M0)
+    M1_sp = sp.Matrix(M1)
+    I = sp.eye(M0_sp.rows)
+
+    # Determinant identities are polynomials in z of degree <= n (n=20).
+    # Instead of computing symbolic det(I - z M) (slow), we certify equality by
+    # evaluating at enough integer z points (exact integer arithmetic).
     z = sp.Symbol("z")
-    det0 = _det_poly_z(sp.Matrix(M0), z)
-    det0_fact = sp.factor(det0)
+    z_values = list(range(0, 21))  # 21 points certify degree <= 20
+
+    # Zero-charge subgraph determinant (exact in z only).
     det0_target = sp.expand((1 - z**2) * (1 - z - z**4))
-    if sp.expand(det0 - det0_target) != 0:
-        raise RuntimeError(f"det(I-zM0) mismatch: got={det0_fact}, target={sp.factor(det0_target)}")
+    for zv in z_values:
+        det_eval = (I - sp.Integer(zv) * M0_sp).det(method="bareiss")
+        rhs_eval = det0_target.subs(z, sp.Integer(zv))
+        if det_eval != rhs_eval:
+            raise RuntimeError(f"det(I-zM0) mismatch at z={zv}: got={det_eval}, target={rhs_eval}")
+    det0_fact = sp.factor(det0_target)
     # Perron root kappa from x^4-x^3-1=0.
     x = sp.Symbol("x")
     kappa_roots = [r for r in sp.nroots(x**4 - x**3 - 1) if abs(sp.im(r)) < 1e-20]
@@ -504,15 +516,17 @@ def main() -> None:
     kappa = float(max(float(sp.re(r)) for r in kappa_roots))
     prog.tick(f"zero-charge det OK, kappa~{kappa:.6g}")
 
-    # Closed-form determinant identity check at several integer q values (exact polynomial in z).
+    # Closed-form determinant identity check at several integer q values.
+    # We certify polynomial equality in z by integer evaluation (exact).
     q_sym = sp.Symbol("q")
     Delta_closed = _delta_closed(z, q_sym)
     for idx, qv in enumerate([1, 2, 3, 4, 5], start=1):
-        A = sp.Matrix(M0) + int(qv) * sp.Matrix(M1)
-        det_q = _det_poly_z(A, z)
-        diff = sp.expand(det_q - Delta_closed.subs(q_sym, int(qv)))
-        if diff != 0:
-            raise RuntimeError(f"Delta closed-form mismatch at q={qv}")
+        A = M0_sp + int(qv) * M1_sp
+        for zv in z_values:
+            det_eval = (I - sp.Integer(zv) * A).det(method="bareiss")
+            rhs_eval = Delta_closed.subs({q_sym: int(qv), z: sp.Integer(zv)})
+            if det_eval != rhs_eval:
+                raise RuntimeError(f"Delta(z,q) mismatch at q={qv} z={zv}: got={det_eval}, target={rhs_eval}")
         prog.tick(f"Delta(z,q) exact check {idx}/5 (q={qv})")
 
     # Closed-form cumulants at theta=0.

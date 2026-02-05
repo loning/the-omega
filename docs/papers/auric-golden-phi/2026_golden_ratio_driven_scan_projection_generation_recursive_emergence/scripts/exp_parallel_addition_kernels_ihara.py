@@ -73,6 +73,39 @@ def _power_iteration_nonneg(
     return lam
 
 
+def _power_iteration_nonneg_inplace(
+    n: int,
+    mul_inplace,
+    *,
+    itmax: int,
+    tol: float,
+    prog: Progress,
+    label: str,
+) -> float:
+    """Power iteration for nonnegative operators with reusable buffers.
+
+    mul_inplace(x, y) must write y := M x (no allocation required).
+    """
+    x = np.full(n, 1.0 / n, dtype=float)
+    y = np.empty_like(x)
+    lam = 0.0
+    for it in range(1, itmax + 1):
+        mul_inplace(x, y)
+        s = float(np.sum(y))
+        if not (s > 0.0):
+            return 0.0
+        y *= 1.0 / s
+        lam_new = s
+        if it > 50 and abs(lam_new - lam) / max(1.0, abs(lam_new)) < tol:
+            prog.tick(f"{label} it={it} lam~{lam_new:.12g}")
+            return lam_new
+        lam = lam_new
+        x, y = y, x
+        if it % 300 == 0:
+            prog.tick(f"{label} it={it} lam~{lam_new:.12g}")
+    return lam
+
+
 @dataclass(frozen=True)
 class IharaFingerprint:
     name: str
@@ -108,56 +141,58 @@ def count_undirected_edges(nbrs: List[List[int]]) -> int:
 
 def spectral_radius_adjacency(nbrs: List[List[int]], prog: Progress, label: str) -> float:
     n = len(nbrs)
+    if n == 0:
+        return 0.0
 
-    def mul(x: np.ndarray) -> np.ndarray:
-        y = np.zeros(n, dtype=float)
-        for i in range(n):
-            xi = x[i]
-            if xi == 0.0:
-                continue
-            for j in nbrs[i]:
-                y[j] += xi
-        return y
+    # Build oriented adjacency edges once: (src -> dst) for every neighbor link.
+    src: List[int] = []
+    dst: List[int] = []
+    for i, ns in enumerate(nbrs):
+        for j in ns:
+            src.append(i)
+            dst.append(j)
+    src_a = np.asarray(src, dtype=np.int64)
+    dst_a = np.asarray(dst, dtype=np.int64)
 
-    return _power_iteration_nonneg(n, mul, itmax=8000, tol=1e-12, prog=prog, label=label)
+    def mul_inplace(x: np.ndarray, y: np.ndarray) -> None:
+        y.fill(0.0)
+        np.add.at(y, dst_a, x[src_a])
+
+    return _power_iteration_nonneg_inplace(n, mul_inplace, itmax=8000, tol=1e-12, prog=prog, label=label)
 
 
 def spectral_radius_hashimoto(nbrs: List[List[int]], prog: Progress, label: str) -> float:
     # Oriented edges: for each undirected {u,v} include (u->v) and (v->u).
+    n = len(nbrs)
     oriented: List[Tuple[int, int]] = []
     for u, ns in enumerate(nbrs):
         for v in ns:
             oriented.append((u, v))
     m_or = len(oriented)
-    if m_or == 0:
+    if m_or == 0 or n == 0:
         return 0.0
 
     idx: Dict[Tuple[int, int], int] = {e: i for i, e in enumerate(oriented)}
-    out_sum_nodes: List[List[int]] = [[] for _ in range(len(nbrs))]
+    src = np.empty(m_or, dtype=np.int64)
+    dst = np.empty(m_or, dtype=np.int64)
+    rev = np.empty(m_or, dtype=np.int64)
     for i, (u, v) in enumerate(oriented):
-        out_sum_nodes[u].append(i)
+        src[i] = int(u)
+        dst[i] = int(v)
+        rev[i] = int(idx[(v, u)])  # undirected graph => reverse always exists
 
-    # Precompute reverse-edge index rev[i] = idx[(v,u)].
-    rev = np.zeros(m_or, dtype=np.int64)
-    for i, (u, v) in enumerate(oriented):
-        rev[i] = idx.get((v, u), -1)
+    out_sum = np.empty(n, dtype=float)
 
-    def mul(x: np.ndarray) -> np.ndarray:
-        # Compute out_sum[u] = sum_{u->w} x(u->w)
-        out_sum = np.zeros(len(nbrs), dtype=float)
-        for u in range(len(nbrs)):
-            s = 0.0
-            for ei in out_sum_nodes[u]:
-                s += x[ei]
-            out_sum[u] = s
-        # (Bx)_{u->v} = out_sum[v] - x_{v->u} (if reverse exists).
-        y = np.zeros(m_or, dtype=float)
-        for i, (_u, v) in enumerate(oriented):
-            r = int(rev[i])
-            y[i] = out_sum[v] - (x[r] if r >= 0 else 0.0)
-        return y
+    def mul_inplace(x: np.ndarray, y: np.ndarray) -> None:
+        # out_sum[u] = sum_{u->w} x_{u->w}
+        out_sum.fill(0.0)
+        np.add.at(out_sum, src, x)
+        # (Bx)_{u->v} = out_sum[v] - x_{v->u}
+        y[:] = out_sum[dst] - x[rev]
 
-    return _power_iteration_nonneg(m_or, mul, itmax=12000, tol=1e-12, prog=prog, label=label)
+    return _power_iteration_nonneg_inplace(
+        m_or, mul_inplace, itmax=12000, tol=1e-12, prog=prog, label=label
+    )
 
 
 def make_table(rows: List[IharaFingerprint]) -> str:
