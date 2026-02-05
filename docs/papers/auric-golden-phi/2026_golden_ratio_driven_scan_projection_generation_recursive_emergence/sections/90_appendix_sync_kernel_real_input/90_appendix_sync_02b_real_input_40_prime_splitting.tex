@@ -104,6 +104,21 @@ p_n(M)-r_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,b_{n/d}.
 合并两种情形，即得对偶数 \(n\ge 4\) 的结论。最后把 \(n=1,2\) 的低阶修正单独列出即可。证毕。
 \end{proof}
 
+\begin{corollary}[素数长度的乘积律（可审计的加乘统一）]\label{cor:real-input-40-prime-length-product}
+设 \(p\) 为奇素数，记 Lucas 数 \(L_p=\Tr(F^p)\) 与 \(\pi_p=p_p(F)\)。则真实输入核在素数长度上满足
+\[
+\boxed{\;
+p_p(M)=\frac{L_p(L_p-1)}{p}=L_p\cdot \pi_p\; }.
+\]
+\end{corollary}
+\begin{proof}
+对奇素数 \(p\)，由 \(a_p(M)=L_p^2- (L_p+1)+2=L_p^2-L_p+1\) 与 \(a_1(M)=1\) 得
+\[
+p_p(M)=\frac{1}{p}\bigl(a_p(M)-a_1(M)\bigr)=\frac{L_p^2-L_p}{p}=\frac{L_p(L_p-1)}{p}.
+\]
+另一方面 \(\pi_p=\frac{1}{p}(L_p-L_1)=\frac{L_p-1}{p}\)，故 \(p_p(M)=L_p\pi_p\)。证毕。
+\end{proof}
+
 \begin{corollary}[primitive 生成函数的闭式恒等式]\label{cor:real-input-40-prime-genfun-identity}
 令
 \[
@@ -164,4 +179,55 @@ P_F\!\left(\frac{1}{\lambda^2}\right)-P_F\!\left(-\frac{1}{\lambda^2}\right)
 其绝对收敛由 \(p_n(M)-r_n=O(\varphi^n/n)\) 与 \(\lambda=\varphi^2\) 给出。
 将推论 \ref{cor:real-input-40-prime-genfun-identity} 的右端在 \(z=z_\star=\lambda^{-1}\) 处代入，即得三点值公式。证毕。
 \end{proof}
+
+\begin{remark}[端到端可审计算法：仅用 Lucas 迹样本]\label{rem:real-input-40-lucas-pipeline}
+定理 \ref{thm:real-input-40-prime-artin-splitting} 与推论 \ref{cor:real-input-40-logM-fast-prime} 可组合为一条“最小数据依赖”的端到端编译管线：输入仅为 Lucas 迹样本 \(L_n=\Tr(F^n)\)（由递推 \(L_1=1,L_2=3,L_n=L_{n-1}+L_{n-2}\) 生成），即可在不显式枚举 primitive 轨道的前提下重建真实核 primitive 谱与 Abel 常数差。
+\begin{enumerate}
+  \item \textbf{(ghost\(\to\)Witt)} 用 Möbius/Witt 反演计算
+  \[
+  \pi_n=p_n(F)=\frac1n\sum_{d\mid n}\mu(d)\,L_{n/d},
+  \qquad
+  r_n=p_n(F\otimes F)=\frac1n\sum_{d\mid n}\mu(d)\,L_{n/d}^2.
+  \]
+  \item \textbf{(mod 4 选择律)} 用定理 \ref{thm:real-input-40-prime-artin-splitting} 计算 \(p_n(M)\)。
+  \item \textbf{(三点取值)} 用推论 \ref{cor:real-input-40-logM-fast-prime} 计算
+  \(\log\mathfrak{M}_M-\log\mathfrak{M}_{\mathrm{in}}\)。
+\end{enumerate}
+\par
+\textbf{误差预算（显式尾项界）} 三点值公式只涉及 \(P_F(z)=\sum_{n\ge 1}\pi_n z^n\) 在
+\(z\in\{-\lambda^{-1},\pm\lambda^{-2}\}\) 的取值。由于对任意 \(n\ge 1\) 有
+\(
+n\pi_n\le a_n(F)=L_n\le \varphi^n+1
+\),
+故 \(|z|<\varphi^{-1}\) 时成立可审计上界
+\[
+\sum_{n>N}\pi_n|z|^n
+\le \sum_{n>N}\frac{(\varphi|z|)^n}{n}+\sum_{n>N}\frac{|z|^n}{n}
+\le \frac{(\varphi|z|)^{N+1}}{(N+1)(1-\varphi|z|)}+\frac{|z|^{N+1}}{(N+1)(1-|z|)}.
+\]
+据此定义
+\[
+\mathrm{Tail}(N;|z|):=\frac{(\varphi|z|)^{N+1}}{(N+1)(1-\varphi|z|)}+\frac{|z|^{N+1}}{(N+1)(1-|z|)}.
+\]
+则把 \(P_F\) 在上述三点都截断到 \(N\) 项时，总误差满足
+\[
+\bigl|\mathrm{Err}_N\bigr|
+\le \mathrm{Tail}(N;\lambda^{-1})+\mathrm{Tail}(N;\lambda^{-2}).
+\]
+由 \(\varphi\lambda^{-1}=\varphi^{-1}\)、\(\varphi\lambda^{-2}=\varphi^{-3}\) 得到
+\(
+N(\varepsilon)=O(\log(1/\varepsilon))
+\)
+的最小样本长度结论（因此只需 \(L_1,\dots,L_{N(\varepsilon)}\)）。
+\par
+\textbf{计算复杂度（筛实现）} 对给定 \(N\)，Möbius 反演可用 \(\mu(1),\dots,\mu(N)\) 的线性筛与除数卷积实现（逐 \(d\) 累加到倍数），从而生成 \(\{\pi_n\}_{n\le N}\)、\(\{r_n\}_{n\le N}\) 的时间复杂度为 \(O(N\log N)\)，空间为 \(O(N)\)；随后模 \(4\) 选择律与三点取值为线性时间。
+\par
+\textbf{可复现实现：}脚本 \texttt{scripts/exp\_real\_input\_40\_lucas\_pipeline.py} 实现上述管线，并同时审计：
+(i) 模 \(4\) 选择律与 Möbius(trace) 计算的一致性；
+(ii) 素数长度乘积律 \(p_p(M)=L_p\pi_p\)（奇素数 \(p\)）；
+(iii) 三点值公式与级数 \(\sum_{n\ge 1}(p_n(M)-r_n)\lambda^{-n}\) 在尾项界内的一致性。
+\end{remark}
+
+\paragraph{可复现实例输出（脚本生成）}
+\input{sections/generated/eq_real_input_40_lucas_pipeline.tex}
 
