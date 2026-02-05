@@ -136,6 +136,30 @@ F_{m+2}\,\mathsf{Col}_m-1=\frac{1}{4^m}\sum_{t\ne 0}\bigl|\widehat c_m(t)\bigr|^
 这正是本文所需的可检验桥包：给定带势转移核 \(M_K(u)\)，既可在迹侧计算 \(a_n(u)=\Tr(M_K(u)^n)\)，也可经 \eqref{eq:zetaK-primitive-from-trace} 严格提取 primitive 分层谱 \(B_n(u)\)，再由 \eqref{eq:zetaK-euler} 复原 Euler 乘积。
 \end{remark}
 
+\begin{corollary}[primitive 层的代价矩：\texorpdfstring{$B_n^{(k)}(1)$}{Bn(k)(1)} 的直接读出]\label{cor:zetaK-primitive-moments}
+对每个 \(n\ge 1\)，令
+\(
+B_n(u)=\sum_{\gamma\in\mathcal{P}_K,\ |\gamma|=n} u^{\kappa(\gamma)}
+\)
+如 \eqref{eq:zetaK-Bn}。
+则有逐项恒等式
+\[
+\boxed{\;
+B_n'(1)=\sum_{\gamma\in\mathcal{P}_K,\ |\gamma|=n}\kappa(\gamma),\qquad
+B_n''(1)=\sum_{\gamma\in\mathcal{P}_K,\ |\gamma|=n}\kappa(\gamma)\bigl(\kappa(\gamma)-1\bigr).\;}
+\]
+因此在 \(u=1\) 处对 \(B_n(u)\) 求导即可得到长度 \(n\) 的 primitive 原子上“串行代价事件数”的一阶/二阶矩统计；这在 \(\kappa\) 取为 carry/delay 触发计数时给出可比较的复杂度指纹。
+\end{corollary}
+\begin{proof}
+对每条 primitive 轨道项 \(u^{\kappa(\gamma)}\) 逐项求导并在 \(u=1\) 代入即可。证毕。
+\end{proof}
+
+\begin{remark}[以顶端溢出比特为最小势的校准基准]\label{rem:zetaK-overflow-calibration}
+在 Fold 窗口层，隐藏位 \(b(\omega)\)（引理 \ref{lem:pom-one-bit}）可视为“最高权重进位是否穿透”的最小不可并行影子；
+其全局计数 \(|B_m|=\lfloor 2^m/3\rfloor\) 及其无取整闭式见定理 \ref{thm:pom-hidden-bit-count} 与注 \ref{rem:pom-hidden-bit-dyadic-trunc}。
+因此当 \(\kappa\) 选为更细的 carry/delay 事件计数时，可用“将 \(\kappa\) 粗化到顶端进位指示”这一投影来回收上述闭式，作为 \(u\)-势与实现管线的最小审计基准。
+\end{remark}
+
 \begin{remark}[从 toy-RH 到 RH：有限维极点格点的结构性门槛]\label{rem:finite-pole-lattice-barrier}
 本文大量使用的有限维口径（邻接矩阵/有限状态核）在审计性与可计算性上有决定性优势；但在 \(s\)-平面“临界线几何”的层面，它也携带一个不可回避的结构性限制。
 
