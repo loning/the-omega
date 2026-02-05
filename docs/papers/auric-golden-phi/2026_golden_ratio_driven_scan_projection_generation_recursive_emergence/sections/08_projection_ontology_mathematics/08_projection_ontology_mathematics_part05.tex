@@ -40,7 +40,7 @@ n\ \gtrsim\ \frac{\log(1/\varepsilon)}{\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)
 \end{remark}
 
 \begin{remark}[有限核的素数影子与算术素数的分界]
-在有限核框架中，Euler 乘积与 Möbius 反演给出的 prime-like 对象为 primitive 轨道谱（命题 \ref{prop:time-space-commuting-diagram}）。这类素性与整数素数不同（见注 \ref{rem:prime-shadow-vs-primes}），其差异提示了“序投影/新增纤维”作为结构分界的必然性：若要在本体层表达算术素数，需要引入额外的轴束或新的投影机制。
+在有限核框架中，Euler 乘积与 Möbius 反演给出的 prime-like 对象为 primitive 轨道谱（命题 \ref{prop:time-space-commuting-diagram}）。这类素性与整数素数不同（见注 \ref{rem:prime-shadow-vs-primes}），其差异提示了“序投影/新增纤维”作为结构分界的必然性：若要在本体层表达\emph{算术素数}，需要引入额外的轴束或新的投影机制。一个极端但干净的例子是 Conway 的 FRACTRAN：它把“素数=寄存器”字面化，并以 first-fit 的序门控实现确定性演化；见小节 \ref{subsec:pom-fractran}。
 \end{remark}
 
 \subsection{序投影的空间化}\label{subsec:pom-order-spatialization}
@@ -92,6 +92,7 @@ n\ \gtrsim\ \frac{\log(1/\varepsilon)}{\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)
   \item \texttt{ZNORM rd,rs}：显式 $P_Z$，$W=(1,0)$。
   \item \texttt{ZRESCALE rd,rs}：显式 $\mathrm{RESCALE}\downarrow$，$W=(0,0)$ 但 $k_{\downarrow}=1$。
   \item \texttt{ZPRIM rs}：原子层读出，$W^{\mathrm{full}}=(0,1,0)$。
+  \item \texttt{FSTEP rs,prog}（FRACTRAN 一步）：$W=(0,1)$（prime-core first-fit 更新；见小节 \ref{subsec:pom-fractran}）。
 \end{itemize}
 
 \paragraph{微码原语（英文标签，用于可审计性）}
@@ -119,6 +120,71 @@ T_{\downarrow}(m)\ \asymp\ \frac{4}{9}m,
 \]
 它刻画的是\emph{要写回多少寄存器位}，并在统一成本模型中以 $k_{\downarrow}(I)\,T_{\downarrow}(m)$ 作为独立空间项计入（定义 \ref{def:pom-cost}）；该项与在线延迟常数（例如 \(\delta_{\min}(\Fold_\infty)=3\)，命题 \ref{prop:pom-delay-min}）正交。
 \end{remark}
+
+\subsubsection{FRACTRAN 兼容层：素数寄存器的 first-fit 零温序门}\label{subsec:pom-fractran}
+Conway 的 FRACTRAN 语言把“素数=寄存器”做到字面意义上的等价：机器配置是一整数 \(N\)，其素因子分解指数向量 \((v_p(N))_{p\in\mathbb{P}}\) 正是素数寄存器纤维 \(\mathcal{P}\) 的坐标（定义 \ref{def:pom-prime-fiber}；注 \ref{rem:two-coordinate-monoids}）。其执行规则是：给定一串有序分数，永远取\emph{第一个}能使 \(N\cdot f\) 仍为整数的分数去乘 \cite{Conway1987FRACTRAN}。
+
+\begin{definition}[FRACTRAN 程序与一步语义]\label{def:pom-fractran}
+一个 FRACTRAN 程序是一个约分后的正分数序列
+\(
+f_1,\dots,f_k
+ \)
+（\(f_i=a_i/b_i\)，\(\gcd(a_i,b_i)=1\)）。
+给定状态整数 \(N\in\NN_{\ge 1}\)，若存在最小 \(i\) 使得 \(Nf_i\in\NN_{\ge 1}\)，则更新 \(N\leftarrow Nf_i\)；若不存在则停机。
+\end{definition}
+
+\begin{proposition}[FRACTRAN = \texorpdfstring{$\mathcal{P}$}{P} 上的受序门控平移]\label{prop:pom-fractran-prime-translation}
+令 \(r=v(N)\in\mathcal{P}\) 表示 \(N\) 的素数指数向量（即 \(r(p)=v_p(N)\)）。
+对每条指令 \(f_i=a_i/b_i\) 定义
+\[
+\beta_i:=v(b_i)\in\mathcal{P},\qquad
+\Delta_i:=v(a_i)-v(b_i)\in \ZZ^{(\mathbb{P})}.
+\]
+则 \(Nf_i\in\NN_{\ge 1}\) 当且仅当 \(r\ge \beta_i\)（逐素数坐标的偏序），且该步更新等价于
+\[
+r\ \longleftarrow\ r+\Delta_i.
+\]
+令
+\[
+i^\*(r):=\min\{\,i:\ r\ge \beta_i\,\},
+\]
+若集合为空则停机；否则 FRACTRAN 一步等价于确定性转移
+\[
+T(r)=r+\Delta_{i^\*(r)}.
+\]
+\end{proposition}
+\begin{proof}
+由 \(\gcd(a_i,b_i)=1\)，有 \(Nf_i\in\NN\iff b_i\mid N\)。在指数向量口径下，这等价于对所有 \(p\) 有 \(v_p(N)\ge v_p(b_i)\)，即 \(r\ge \beta_i\)。在可执行时，
+\(
+v_p(Nf_i)=v_p(N)+v_p(a_i)-v_p(b_i)
+\)
+逐坐标成立，从而 \(r\leftarrow r+\Delta_i\)。first-fit 的“取最小 \(i\)”即对应 \(i^\*(r)\) 的定义。证毕。
+\end{proof}
+
+\begin{remark}[first-fit 是 \texorpdfstring{$u\to 0$}{u->0} 的零温硬化极限]\label{rem:pom-fractran-zero-temp}
+对固定 \(r\)，令可行集合 \(I(r):=\{i:\ r\ge \beta_i\}\)。定义一个“软 first-fit”分布
+\[
+\Pr_u(i\mid r)\ \propto\ u^{i}\,\ind\!\left[i\in I(r)\right],\qquad u\in(0,1].
+\]
+则当 \(u\to 0\) 时，质量集中到 \(\min I(r)\)，并恢复定义 \ref{def:pom-fractran} 的硬 first-fit 规则（确定性选择 \(i^\*(r)\)）。
+这给出一个最小例子：确定性优先级选择可视为温度化序投影 \(\mathrm{PROJ}_u\) 的零温硬化（定义 \ref{def:pom-proj-temp}，注 \ref{rem:pom-order-as-zero-temp}）。
+\end{remark}
+
+\begin{remark}[成本下界：扫描深度 \texorpdfstring{$\times$}{x} 支撑规模]\label{rem:pom-fractran-cost}
+在 prime-core 内部，\(r\mapsto r+\Delta_i\) 是 \(\mathcal{P}\) 上的线性更新，因此演化深度 \(D_U\) 可视为常数量级；不可并行项完全来自序门。
+把一条 \texttt{FSTEP} 实现为一次“优先级选择”型的 \texttt{PROJ\_ORDER(first-fit)} 调用，则其投影词可取 \(W=(0,1)\)，但其一次序投影聚合深度 \(T_{\le}\) 至少包含对指令表的优先级扫描（最坏为 \(k\)）。
+同时，可行性测试仅触及分母 \(b_i\) 的素数支撑 \(|\mathrm{supp}(b_i)|\) 个坐标（逐素数比较），从而“每步要读多少寄存器轴”与“要扫多深”在结构上正交。
+若要求把结果显式写回外表 \(X_\infty\)，则需额外一次 \texttt{PROJ\_NORM}，对应 \(k_Z\) 增加 \(1\)（定义 \ref{def:pom-cost}）。
+\end{remark}
+
+\paragraph{Prime-core 微码原语（FRACTRAN 兼容层）}
+在本文 ISA 抽象层中，可把 FRACTRAN 的核心一步封装为三个 prime-core 原语（它们不引入新数学结构，只是把 \(\mathcal{P}\)+\(P_{\le}\) 的组合写成可审计接口）：
+\begin{itemize}
+  \item \texttt{PTEST(b)}：输入 \(b\in\NN_{\ge 1}\)，返回证书 \(\ind\!\left[r\ge v(b)\right]\)（逐素数坐标比较）。
+  \item \texttt{PUPD($\Delta$)}：执行指数更新 \(r\leftarrow r+\Delta\)（其中 \(\Delta\in\ZZ^{(\mathbb{P})}\) 且在 \texttt{PTEST} 可行时保持 \(r\in\mathcal{P}\)）。
+  \item \texttt{FIRSTFIT($\{(b_i,\Delta_i)\}_{i=1}^k$)}：返回 \(i^\*(r)=\min\{i:\ r\ge v(b_i)\}\) 并执行 \(r\leftarrow r+\Delta_{i^\*(r)}\)；若不存在则停机。
+\end{itemize}
+其中 \texttt{FIRSTFIT} 的确定性正来自序投影（优先级选择），而非来自 \(\mathcal{P}\) 上的线性更新；这正是“增长分界在序投影”的一个可执行示例。
 
 \paragraph{机制审计接口}
 规范投影 $P_Z$ 的实现核可用 $\zeta$、$\log\mathfrak{M}$、Dirichlet--Mertens 常数张量与 $\rho/\lambda$ 作为审计指纹（见第 \ref{sec:zeta-finite-part} 节）。原子投影 $P_{\mathrm{prim}}$ 与扭曲读出 \texttt{TWIST} 把 prime-like 轨道谱与 Chebotarev 型偏差转化为可计算指纹。序投影 $P_{\le,b}$ 与角色投影 $P_\chi$ 亦可按相同流程编译为有限同步核并抽取同类指纹，从而实现跨核对比。
@@ -206,6 +272,7 @@ w\ \Rightarrow^\ast\ \widetilde w\cdot \texttt{PROJ\_NORM},
   \item \texttt{ZSUB}：\texttt{PROJ\_ORDER(cmp); EVOLVE(sub); PROJ\_NORM; CLEAN}.
   \item \texttt{ZSUBR}：\texttt{LIFT\_SCALE; EVOLVE(signed-digit-sub); PROJ\_NORM(strong); CLEAN}.
   \item \texttt{ZDIVMOD}（reciprocal-route）：\texttt{EVOLVE(recip-iterate); PROJ\_ORDER(q); EVOLVE(r=a-bq); PROJ\_ORDER(fix); PROJ\_NORM(q); PROJ\_NORM(r); CLEAN}.
+  \item \texttt{FSTEP}（FRACTRAN-step）：\texttt{LIFT\_PRIME; PROJ\_ORDER(first-fit); EVOLVE(fractran-update); CLEAN}.（若需写回外表，再追加 \texttt{PROJ\_NORM}；见小节 \ref{subsec:pom-fractran}。）
   \item \texttt{ZPRIM}：\texttt{EVOLVE(trace); PROJ\_PRIM; CLEAN}.
 \end{itemize}
 
