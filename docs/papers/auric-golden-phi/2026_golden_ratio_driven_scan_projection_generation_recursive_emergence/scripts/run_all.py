@@ -842,6 +842,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_rate_curve_duality_reduction",
+            script="exp_sync_kernel_rate_curve_duality_reduction.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_rate_curve_duality_reduction.json",
+                "sections/generated/eq_sync_kernel_rate_curve_duality_reduction.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_rate_curve_curvature_bounds",
             script="exp_sync_kernel_rate_curve_curvature_bounds.py",
             args=[],
