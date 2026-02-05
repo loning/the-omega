@@ -513,20 +513,20 @@ S_{q_1}(m)=\sum_{x\in X_m}d_m(x)^{q_1}
 
 \begin{corollary}[闭合维数外推在 \texorpdfstring{$q\ge 9$}{q>=9} 处失效（反例族）]\label{cor:pom-moment-dim-collapse}
 令 \(d_q\) 表示 \(S_q(m)\) 的最小整系数递推阶数（等价地最小线性 realization 维数；亦即 Hankel 最小实现维数，见定理 \ref{thm:hankel-rank-minimal}）。
-则在已核验范围 \(q=9,\dots,17\) 内，有严格不等式
+则在已核验范围 \(q=9,\dots,23\) 内，有严格不等式
 \[
 \boxed{\;
 d_q\ <\ 2\lfloor q/2\rfloor+1\; }.
 \]
 更具体地，
 \[
-(d_9,d_{10},d_{11},d_{12},d_{13},d_{14},d_{15},d_{16},d_{17})=(7,9,9,13,11,13,11,13,13),
+(d_9,\dots,d_{23})=(7,9,9,13,11,13,11,13,13,17,15,17,15,17,17),
 \]
-见表 \ref{tab:fold_collision_moment_recursions_9_17}。
+见表 \ref{tab:fold_collision_moment_recursions_9_17} 与表 \ref{tab:fold_collision_moment_recursions_18_23}。
 因此任何将 \(2\lfloor q/2\rfloor+1\) 视作对所有 \(q\) 的“最小闭合维数规律”的强形式陈述均不成立；该维数律仅描述了非共振典型情形下的上界饱和模式（注 \ref{rem:pom-closure-dim-mode-trunc}）。
 \end{corollary}
 \begin{proof}
-由表 \ref{tab:fold_collision_moment_recursions_9_17} 的已核验最小递推阶数直接比较即可。证毕。
+由表 \ref{tab:fold_collision_moment_recursions_9_17} 与表 \ref{tab:fold_collision_moment_recursions_18_23} 的已核验最小递推阶数直接比较即可。证毕。
 \end{proof}
 
 \begin{remark}[闭合维数 \texorpdfstring{$2\lfloor q/2\rfloor+1$}{2 floor(q/2)+1} 的结构来源：同余角色模态的有限截断]\label{rem:pom-closure-dim-mode-trunc}
@@ -548,15 +548,31 @@ S_2(m)=\sum_r c_m(r)^2
 
 \input{sections/generated/tab_fold_collision_moment_recursions_9_17}
 
-\paragraph{更高阶矩谱常数（\texorpdfstring{$q=9,\dots,17$}{q=9..17}）：Perron 根与熵率}
-表 \ref{tab:fold_collision_moment_recursions_9_17} 给出 \(q=9,\dots,17\) 的已核验最小递推。
+\input{sections/generated/tab_fold_collision_moment_recursions_18_23}
+
+\paragraph{更高阶矩谱常数（\texorpdfstring{$q=9,\dots,23$}{q=9..23}）：Perron 根与熵率}
+表 \ref{tab:fold_collision_moment_recursions_9_17} 与表 \ref{tab:fold_collision_moment_recursions_18_23} 给出 \(q=9,\dots,23\) 的已核验最小递推。
 由递推特征多项式的 Perron 根可抽取指数尺度 \(r_q\) 及相应的（非归一化）Rényi 指纹率
 \(
 h_q=\log(2^q/r_q)
 \)
 （定义 \ref{def:pom-moment-pressure}）。
-下表汇总 \(q=9,\dots,17\) 的 \(r_q\)、\(r_q^{1/q}\) 与 \(h_q\)：
+下表汇总 \(q=9,\dots,23\) 的 \(r_q\)、\(r_q^{1/q}\) 与 \(h_q\)：
 \input{sections/generated/tab_fold_collision_moment_spectrum_k9_17}
+\input{sections/generated/tab_fold_collision_moment_spectrum_k18_23}
+
+\begin{remark}[更高阶 DP 端点指纹（\(q=24,25\)）]\label{rem:pom-renyi-endpoint-q24-25}
+在更高的 Rényi 阶上，可通过 residue DP 直接计算 \(S_q(m)\)，并用比值收敛与 Aitken \(\Delta^2\) 加速在固定窗口上估计 \(r_q\)。
+例如在 \(m\in\{34,35,36,37\}\) 的窗口上得到稳定估计：
+\[
+\widehat r_{24}\approx 369.478420314,\quad \widehat h_{24}^{\mathrm R}\approx 0.4662365216;\qquad
+\widehat r_{25}\approx 466.281715009,\quad \widehat h_{25}^{\mathrm R}\approx 0.4659953968.
+\]
+这些数值继续支持高阶 \(h_q^{\mathrm R}\) 的窄带收敛现象；相应的 DP 端点估计可由脚本
+\texttt{scripts/exp\_fold\_collision\_renyi\_spectrum\_mod\_dp\_q20.py --q-max 25 --m-max 37}
+一键生成。
+但在当前窗口 \(m\le 37\) 下，尚未拟合到可全窗核验的低阶整系数递推（因此暂未进入全谱根扫描/ \(\beta_q,\delta_q\) 的“精确”口径）。
+\end{remark}
 
 进一步，把核版 RH/GRH 的平方根界（定义 \ref{def:kernel-rh}）移植到碰撞核 \(A_q\)：令
 \[
@@ -569,12 +585,14 @@ R_q:=\frac{\Lambda_q}{\sqrt{r_q}},
 \delta_q:=\log\!\left(\frac{\Lambda_q^2}{r_q}\right)=2\log R_q.
 \]
 表 \ref{tab:fold_collision_kernel_rh_scan_q2_17} 给出 \(q=2,\dots,17\) 的可复算输出（脚本 \texttt{scripts/exp\_fold\_collision\_kernel\_rh\_scan\_q2\_17.py} 一键生成）。
+表 \ref{tab:fold_collision_kernel_rh_scan_q18_23} 给出 \(q=18,\dots,23\) 的扩展输出（数据可由脚本 \texttt{scripts/exp\_fold\_collision\_moment\_signature\_q18\_25.py} 导出）。
 \input{sections/generated/tab_fold_collision_kernel_rh_scan_q2_17}
+\input{sections/generated/tab_fold_collision_kernel_rh_scan_q18_23}
 
 \begin{remark}[从 \texorpdfstring{$q=4$}{q=4} 起的系统性越线与快速劣化]\label{rem:pom-collision-kernel-rh-phase}
-由表 \ref{tab:fold_collision_kernel_rh_scan_q2_17} 可见：在已核验范围内，\(\delta_q<0\) 仅发生在 \(q=2,3\)，而从 \(q=4\) 起即出现严格越线 \(\delta_q>0\)（其中 \(q=4\) 为贴线量级）。
-并且 \(\beta_q\) 与 \(\delta_q\) 随 \(q\) 单调上升，表现为“误差指数”从平方根相（\(\beta\le\frac12\)）向主项同阶（\(\beta\to 1\)）快速劣化的谱相变。
-此外，在该范围内达到 \(\Lambda_q\) 的主导非 Perron 根恒为负实根，从而存在稳定的反相慢模态主导越线。
+由表 \ref{tab:fold_collision_kernel_rh_scan_q2_17} 与表 \ref{tab:fold_collision_kernel_rh_scan_q18_23} 可见：在已核验范围内，\(\delta_q<0\) 仅发生在 \(q=2,3\)，而从 \(q=4\) 起即出现严格越线 \(\delta_q>0\)（其中 \(q=4\) 为贴线量级）。
+并且 \(\beta_q\) 与 \(\delta_q\) 在 \(q\le 23\) 的已核验范围内随 \(q\) 单调上升，表现为“误差指数”从平方根相（\(\beta\le\frac12\)）向主项同阶（\(\beta\to 1\)）快速劣化的谱相变。
+此外，在 \(q\le 17\) 的范围内达到 \(\Lambda_q\) 的主导非 Perron 根恒为负实根，从而存在稳定的反相慢模态主导越线。
 \end{remark}
 
 \input{sections/08_projection_ontology_mathematics/08_projection_ontology_mathematics_part03c_shadow_spectral_packet_q9_17.tex}
