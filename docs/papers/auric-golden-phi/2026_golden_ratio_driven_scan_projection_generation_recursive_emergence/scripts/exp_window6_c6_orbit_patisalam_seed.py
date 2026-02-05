@@ -23,7 +23,9 @@ Outputs:
   - artifacts/export/window6_c6_orbit_patisalam_seed.json
   - sections/generated/eq_window6_c6_orbit_decomposition.tex
   - sections/generated/tab_window6_c6_orbit_decomposition.tex
+  - sections/generated/tab_window6_patisalam_9633_partition.tex
   - sections/generated/eq_fold6_bin_uplift_delta_set.tex
+  - sections/generated/tab_fold6_bin_uplift_choice_collapse.tex
   - sections/generated/tab_fold6_boundary_sheet_pairs.tex
   - sections/generated/tab_foldbin_boundary_lift_m6_m8.tex
 """
@@ -150,7 +152,9 @@ def write_outputs(
     json_out: Path,
     tex_eq_orbit: Path,
     tex_tab_orbit: Path,
+    tex_tab_partition: Path,
     tex_eq_delta: Path,
+    tex_tab_choice_collapse: Path,
     tex_tab_bdry: Path,
     tex_tab_bdry_stability: Path,
 ) -> None:
@@ -168,6 +172,16 @@ def write_outputs(
     orbit_sizes = sorted([o.size for o in orbits])
     if orbit_sizes != [1, 2, 3, 6, 6]:
         raise AssertionError(f"Unexpected orbit size multiset: {orbit_sizes}")
+
+    # --- Rigid 9+6+3+3 four-block partition (weight-layered + boundary) ---
+    cyc_wt1 = sorted([w for w in cyc if _hamming_weight(w) == 1])
+    cyc_wt2 = sorted([w for w in cyc if _hamming_weight(w) == 2])
+    cyc_wt0_or_3 = sorted([w for w in cyc if _hamming_weight(w) in (0, 3)])
+    if (len(cyc_wt2), len(cyc_wt1), len(cyc_wt0_or_3), len(bdry)) != (9, 6, 3, 3):
+        raise AssertionError(
+            "Unexpected 9+6+3+3 partition sizes: "
+            f"(wt2,wt1,wt0or3,bdry)=({len(cyc_wt2)},{len(cyc_wt1)},{len(cyc_wt0_or_3)},{len(bdry)})"
+        )
 
     # --- Fold^{bin}_6 preimages and uplift deltas ---
     m = 6
@@ -195,6 +209,34 @@ def write_outputs(
         raise AssertionError(f"Unexpected global delta set: {sorted(delta_global)}")
     if delta_w6_1 != {0, 34}:
         raise AssertionError(f"Unexpected delta set for w6=1: {sorted(delta_w6_1)}")
+
+    # --- Uplift-choice collapse: Xi(w) in {2,3,4} with a hard V-threshold ---
+    # Delta set per word and its cardinality Xi(w).
+    delta_by_word: Dict[str, List[int]] = {}
+    Xi_by_word: Dict[str, int] = {}
+    for w, ns in pre.items():
+        V = _V_m(w)
+        ds_sorted = sorted({int(n - V) for n in ns})
+        delta_by_word[w] = ds_sorted
+        Xi_by_word[w] = int(len(ds_sorted))
+
+    # For m=6 and domain {0..63}, the truncation boundary is V<=8 iff V+55<=63.
+    V_threshold = 8
+    words_w6_1 = sorted([w for w in X6 if w[-1] == "1"])
+    words_w6_0_V_le = sorted([w for w in X6 if w[-1] == "0" and _V_m(w) <= V_threshold])
+    words_w6_0_V_gt = sorted([w for w in X6 if w[-1] == "0" and _V_m(w) > V_threshold])
+    if len(words_w6_1) + len(words_w6_0_V_le) + len(words_w6_0_V_gt) != len(X6):
+        raise AssertionError("Uplift-choice collapse partition did not cover X6.")
+    # Certify constant delta patterns on each region.
+    pat_w6_1 = sorted({tuple(delta_by_word[w]) for w in words_w6_1})
+    pat_w6_0_V_le = sorted({tuple(delta_by_word[w]) for w in words_w6_0_V_le})
+    pat_w6_0_V_gt = sorted({tuple(delta_by_word[w]) for w in words_w6_0_V_gt})
+    if pat_w6_1 != [(0, 34)]:
+        raise AssertionError(f"Unexpected delta pattern for w6=1: {pat_w6_1}")
+    if pat_w6_0_V_gt != [(0, 21, 34)]:
+        raise AssertionError(f"Unexpected delta pattern for w6=0 and V>8: {pat_w6_0_V_gt}")
+    if pat_w6_0_V_le != [(0, 21, 34, 55)]:
+        raise AssertionError(f"Unexpected delta pattern for w6=0 and V<=8: {pat_w6_0_V_le}")
 
     bdry_pairs: List[Dict[str, object]] = []
     for w in bdry:
@@ -247,11 +289,37 @@ def write_outputs(
                 "C6_orbits_cyc": [
                     {"rep": o.rep, "size": o.size, "weight": o.weight, "words": o.words} for o in orbits
                 ],
+                "window6_patisalam_9633_partition": {
+                    "X6_wt2_cyc_9": cyc_wt2,
+                    "X6_wt1_cyc_6": cyc_wt1,
+                    "X6_wt0_or_3_cyc_3": cyc_wt0_or_3,
+                    "X6_bdry_3": bdry,
+                },
                 "Fold_bin": {
                     "domain": [0, (1 << m) - 1],
                     "K_of_m": K,
                     "delta_global": sorted(list(delta_global)),
                     "delta_w6_eq_1": sorted(list(delta_w6_1)),
+                    "delta_by_word": {w: delta_by_word[w] for w in X6},
+                    "Xi_by_word": {w: Xi_by_word[w] for w in X6},
+                    "uplift_choice_collapse": {
+                        "V_threshold": V_threshold,
+                        "w6_eq_1": {
+                            "Xi": 2,
+                            "delta": [0, 34],
+                            "words": words_w6_1,
+                        },
+                        "w6_eq_0_V_gt_threshold": {
+                            "Xi": 3,
+                            "delta": [0, 21, 34],
+                            "words": words_w6_0_V_gt,
+                        },
+                        "w6_eq_0_V_le_threshold": {
+                            "Xi": 4,
+                            "delta": [0, 21, 34, 55],
+                            "words": words_w6_0_V_le,
+                        },
+                    },
                     "boundary_sheet_pairs": bdry_pairs,
                     "boundary_lift_scan_m6_m8": bdry_lift_scan,
                 },
@@ -302,6 +370,44 @@ def write_outputs(
     tex_tab_orbit.parent.mkdir(parents=True, exist_ok=True)
     tex_tab_orbit.write_text("\n".join(tab_lines), encoding="utf-8")
 
+    # --- LaTeX: 9+6+3+3 partition table (weight-layered + boundary) ---
+    part_lines: List[str] = []
+    part_lines.append("% AUTO-GENERATED by scripts/exp_window6_c6_orbit_patisalam_seed.py")
+    part_lines.append("\\begin{table}[H]")
+    part_lines.append("\\centering")
+    part_lines.append("\\small")
+    part_lines.append("\\setlength{\\tabcolsep}{7pt}")
+    part_lines.append("\\renewcommand{\\arraystretch}{1.10}")
+    part_lines.append(
+        "\\caption{Rigid four-block partition of $X_6$ induced by the cyclic/boundary split and Hamming-weight layers of $X_6^{\\mathrm{cyc}}$.}"
+    )
+    part_lines.append("\\label{tab:window6_patisalam_9633_partition}")
+    part_lines.append("\\begin{tabular}{l r p{0.68\\linewidth}}")
+    part_lines.append("\\toprule")
+    part_lines.append("block & size & words\\\\")
+    part_lines.append("\\midrule")
+    part_lines.append(
+        r"$X^{(2)}_6:=\{w\in X_6^{\mathrm{cyc}}:\ \mathrm{wt}(w)=2\}$"
+        + f" & {len(cyc_wt2)} & ${_tex_tt_set(cyc_wt2)}$\\\\"
+    )
+    part_lines.append(
+        r"$X^{(1)}_6:=\{w\in X_6^{\mathrm{cyc}}:\ \mathrm{wt}(w)=1\}$"
+        + f" & {len(cyc_wt1)} & ${_tex_tt_set(cyc_wt1)}$\\\\"
+    )
+    part_lines.append(
+        r"$X^{(L)}_6:=\{w\in X_6^{\mathrm{cyc}}:\ \mathrm{wt}(w)\in\{0,3\}\}$"
+        + f" & {len(cyc_wt0_or_3)} & ${_tex_tt_set(cyc_wt0_or_3)}$\\\\"
+    )
+    part_lines.append(
+        r"$X^{(R)}_6:=X_6^{\mathrm{bdry}}$" + f" & {len(bdry)} & ${_tex_tt_set(bdry)}$\\\\"
+    )
+    part_lines.append("\\bottomrule")
+    part_lines.append("\\end{tabular}")
+    part_lines.append("\\end{table}")
+    part_lines.append("")
+    tex_tab_partition.parent.mkdir(parents=True, exist_ok=True)
+    tex_tab_partition.write_text("\n".join(part_lines), encoding="utf-8")
+
     # --- LaTeX: uplift delta set equation (dyadic fold) ---
     delta_tex = ",\\ ".join(str(x) for x in sorted(delta_global))
     delta_w6_1_tex = ",\\ ".join(str(x) for x in sorted(delta_w6_1))
@@ -316,6 +422,48 @@ def write_outputs(
     eqd_lines.append("")
     tex_eq_delta.parent.mkdir(parents=True, exist_ok=True)
     tex_eq_delta.write_text("\n".join(eqd_lines), encoding="utf-8")
+
+    # --- LaTeX: uplift-choice collapse table (dyadic fold, m=6) ---
+    def _tt_words(words: Sequence[str]) -> str:
+        # Use \texttt{...} with commas, no surrounding braces (table cell).
+        return ",\\ ".join([f"\\texttt{{{w}}}" for w in words])
+
+    tabc_lines: List[str] = []
+    tabc_lines.append("% AUTO-GENERATED by scripts/exp_window6_c6_orbit_patisalam_seed.py")
+    tabc_lines.append("\\begin{table}[H]")
+    tabc_lines.append("\\centering")
+    tabc_lines.append("\\small")
+    tabc_lines.append("\\setlength{\\tabcolsep}{7pt}")
+    tabc_lines.append("\\renewcommand{\\arraystretch}{1.10}")
+    tabc_lines.append(
+        "\\caption{Dyadic uplift-choice collapse at $m=6$ for $\\mathrm{Fold}^{\\mathrm{bin}}_6$: "
+        "the uplift-delta set $\\Delta(w)=\\{n-V_6(w): n\\in (\\mathrm{Fold}^{\\mathrm{bin}}_6)^{-1}(w)\\}$ "
+        "has cardinality $\\Xi(w)\\in\\{2,3,4\\}$, with a hard threshold at $V_6(w)\\le 8$ imposed by the finite domain $\\{0,\\dots,63\\}$.}"
+    )
+    tabc_lines.append("\\label{tab:fold6_bin_uplift_choice_collapse}")
+    tabc_lines.append("\\begin{tabular}{l r l p{0.54\\linewidth}}")
+    tabc_lines.append("\\toprule")
+    tabc_lines.append("condition & $\\Xi(w)$ & $\\Delta(w)$ & words\\\\")
+    tabc_lines.append("\\midrule")
+    tabc_lines.append(
+        r"$w_6=0,\ V_6(w)\le 8$"
+        + " & 4 & $\\{0,21,34,55\\}$ & "
+        + _tt_words(words_w6_0_V_le)
+        + "\\\\"
+    )
+    tabc_lines.append(
+        r"$w_6=0,\ V_6(w)> 8$"
+        + " & 3 & $\\{0,21,34\\}$ & "
+        + _tt_words(words_w6_0_V_gt)
+        + "\\\\"
+    )
+    tabc_lines.append(r"$w_6=1$" + " & 2 & $\\{0,34\\}$ & " + _tt_words(words_w6_1) + "\\\\")
+    tabc_lines.append("\\bottomrule")
+    tabc_lines.append("\\end{tabular}")
+    tabc_lines.append("\\end{table}")
+    tabc_lines.append("")
+    tex_tab_choice_collapse.parent.mkdir(parents=True, exist_ok=True)
+    tex_tab_choice_collapse.write_text("\n".join(tabc_lines), encoding="utf-8")
 
     # --- LaTeX: boundary sheet pairs table ---
     tab2_lines: List[str] = []
@@ -411,10 +559,22 @@ def main() -> None:
         help="Output LaTeX table fragment path (orbit decomposition).",
     )
     parser.add_argument(
+        "--tex-tab-partition",
+        type=str,
+        default=str(generated_dir() / "tab_window6_patisalam_9633_partition.tex"),
+        help="Output LaTeX table fragment path (rigid 9+6+3+3 partition of X6).",
+    )
+    parser.add_argument(
         "--tex-eq-delta",
         type=str,
         default=str(generated_dir() / "eq_fold6_bin_uplift_delta_set.tex"),
         help="Output LaTeX equation fragment path (dyadic uplift delta set).",
+    )
+    parser.add_argument(
+        "--tex-tab-choice-collapse",
+        type=str,
+        default=str(generated_dir() / "tab_fold6_bin_uplift_choice_collapse.tex"),
+        help="Output LaTeX table fragment path (dyadic uplift-choice collapse at m=6).",
     )
     parser.add_argument(
         "--tex-tab-bdry",
@@ -434,14 +594,18 @@ def main() -> None:
         json_out=Path(args.json_out),
         tex_eq_orbit=Path(args.tex_eq_orbit),
         tex_tab_orbit=Path(args.tex_tab_orbit),
+        tex_tab_partition=Path(args.tex_tab_partition),
         tex_eq_delta=Path(args.tex_eq_delta),
+        tex_tab_choice_collapse=Path(args.tex_tab_choice_collapse),
         tex_tab_bdry=Path(args.tex_tab_bdry),
         tex_tab_bdry_stability=Path(args.tex_tab_bdry_stability),
     )
     print(f"[window6-c6-orbit] wrote {args.json_out}", flush=True)
     print(f"[window6-c6-orbit] wrote {args.tex_eq_orbit}", flush=True)
     print(f"[window6-c6-orbit] wrote {args.tex_tab_orbit}", flush=True)
+    print(f"[window6-c6-orbit] wrote {args.tex_tab_partition}", flush=True)
     print(f"[window6-c6-orbit] wrote {args.tex_eq_delta}", flush=True)
+    print(f"[window6-c6-orbit] wrote {args.tex_tab_choice_collapse}", flush=True)
     print(f"[window6-c6-orbit] wrote {args.tex_tab_bdry}", flush=True)
     print(f"[window6-c6-orbit] wrote {args.tex_tab_bdry_stability}", flush=True)
     print("[window6-c6-orbit] done", flush=True)
