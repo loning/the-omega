@@ -1,0 +1,40 @@
+\begin{remark}[共振区的影子谱包：\texorpdfstring{$q\mapsto q-2$}{q->q-2} 的谱回声与 Dirichlet 坐标坏谱带（可复算）]\label{rem:pom-shadow-spectral-packet-q9-17}
+对共振区 \(q=9,\dots,17\)，令 \(P_q(\lambda)\) 为表 \ref{tab:fold_collision_moment_recursions_9_17} 递推所诱导的特征多项式（定理 \ref{thm:pom-moment-resonance}），令 \(r_q\) 为其 Perron 根。
+记
+\[
+\lambda_q^-<0:\ \text{最外负实根（在该范围内亦给出 }\Lambda_q=|\lambda_q^-|\text{）},
+\qquad
+\mu_q:\ \text{模长最大的非实根（取 }\Im(\mu_q)\le 0\text{）}.
+\]
+以 \(r_{q-2}\) 为参照尺度，对 \(P_q\) 的高精度根扫描给出一个稳定的“影子谱包”指纹（表 \ref{tab:fold_collision_shadow_spectral_packet_q9_17}；脚本 \texttt{scripts/exp\_fold\_collision\_shadow\_spectral\_packet\_q9\_17.py} 一键生成）：
+\[
+|\mu_q|\ <\ r_{q-2}\ <\ |\lambda_q^-|,
+\]
+并且 \(|\mu_q|/r_{q-2}\) 单调逼近 \(1\)（约从 \(0.77\) 增至 \(0.996\)），而 \(|\lambda_q^-|/r_{q-2}\) 单调上升并跨过 \(1\)（约从 \(0.94\) 增至 \(1.14\)）。
+这把“Hankel 秩缺口/模态约束”（定理 \ref{thm:pom-moment-resonance}）翻译为一个复根几何的可观测后果：在共振区里，非主谱会稳定地“回忆”两阶之前的主尺度 \(r_{q-2}\)，形成随 \(q\) 平移两步的谱回声包络。
+\par
+进一步，沿用 \(s\)-平面极点字典（注 \ref{prop:s-plane-spectrum-poles}），对任一根 \(\xi\) 定义 Dirichlet 实部坐标
+\[
+\sigma_q(\xi):=\frac{\log|\xi|}{\log r_q}=\Re(s_\xi).
+\]
+表 \ref{tab:fold_collision_shadow_spectral_packet_q9_17} 中 \(\sigma_q(\mu_q)\) 在 \(q=9,\dots,17\) 内显著大于 \(1/2\)，并随 \(q\) 增大朝 \(1\) 漂移，从而在 Dirichlet 语言中表现为一条向 \(\Re(s)=1\) 逼近的非平凡极点条带。
+在 kernel-(G)RH 语义下，这意味着：若试图把共振区的原始高阶 moment 的 Hankel 最小实现当作“平方根谱界 \(\Rightarrow\) 平方根误差”的候选对象，则其可见谱结构已系统性地产生 \(\sigma\gg 1/2\) 的慢模态，天然违背平方根界的设计目标。
+\par
+此外，\(\arg(\mu_q)\) 在该范围内稳定在约 \(-1.83\) rad 附近，表明影子谱包携带一个近乎固定的复振荡角频率：次主项中将出现具有准周期频率的衰减振荡叠加（总和仍为正，源于多模贡献的合成）。
+\par
+\paragraph{面向 kernel-GRH 的反向设计约束（协议）}
+影子谱包的越线首先由实轴通道触发（负实根主导 \(\Lambda_q\)；见表 \ref{tab:fold_collision_kernel_rh_scan_q2_17} 与注 \ref{rem:pom-collision-kernel-rh-phase}），这与经典 GRH 中“实角色/自共轭通道更易产生 near-\(1\) 障碍”的经验同型。
+因此在构造更接近平方根谱界的核族时，应把“实扭曲通道”的谱半径作为首要压制对象。
+一个可落地的编译协议是：从对称压缩后的等价计数核 \(A_{\mathrm{eq}}^{(q)}\)（命题 \ref{prop:pom-ak-symmetric-compression} 的同型对象）出发，附加一个最小的实角色寄存器以显式分离“平凡/实扭曲”两类通道，记
+\(
+\rho_1(u)=\rho(\text{平凡通道}),\ \rho_{\mathrm{real}}(u)=\rho(\text{实扭曲通道})
+\)；
+再引入局部可调权参数 \(u\)（对触发共振的局部退化边做温度化加权），并定义阈值
+\[
+u_q^\star:=\inf\{u:\ \rho_{\mathrm{real}}(u)\le \rho_1(u)^{1/2}\}.
+\]
+该阈值把“压制实扭曲坏谱 \(\Rightarrow\) 进入平方根区间”的目标转写为一个可数值追踪的相变参数，其意义与核版 Newman 阈值（定义 \ref{def:kernel-newman-threshold}）同型；并可用 Hankel/递推证书对有限窗口输出作可审计回归测试。
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_shadow_spectral_packet_q9_17}
+
