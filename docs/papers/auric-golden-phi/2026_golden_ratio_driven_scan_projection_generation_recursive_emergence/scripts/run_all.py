@@ -1498,6 +1498,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_pn_sharp",
+            script="exp_real_input_40_pn_sharp.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_pn_sharp.json",
+                "sections/generated/tab_real_input_40_pn_sharp.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_abel_mertens_two_series_split",
             script="exp_real_input_40_abel_mertens_two_series_split.py",
             args=["--N", "160", "--dps", "80"],
