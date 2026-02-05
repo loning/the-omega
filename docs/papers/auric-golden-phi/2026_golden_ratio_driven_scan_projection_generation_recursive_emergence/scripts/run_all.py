@@ -208,6 +208,17 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="m11_boundary_z34_fourier_certificate",
+            script="exp_m11_boundary_z34_fourier_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/m11_boundary_z34_fourier_certificate.json",
+                "sections/generated/eq_m11_boundary_z34_fourier_split.tex",
+                "sections/generated/tab_m11_boundary_words_fold7.tex",
+                "sections/generated/tab_m11_z34_cycle_adjacency_spectrum.tex",
+            ],
+        ),
+        Step(
             name="fold6_b3c3_seed",
             script="exp_fold6_b3c3_seed.py",
             args=[],
