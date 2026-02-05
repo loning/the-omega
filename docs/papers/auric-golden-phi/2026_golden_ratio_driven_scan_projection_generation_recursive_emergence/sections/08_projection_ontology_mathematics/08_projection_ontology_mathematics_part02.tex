@@ -288,6 +288,39 @@ T_I(n;m)\ \approx\ k_Z(I)\,\delta_Z\ +\ k_\chi(I)\,\tau_{\mathrm{mix}}\ +\ k_{\d
 将这些 $2$-态射视为“可证明等价/可交换的编译变换”，即可在 $\mathbf{PW}$ 中进行带证书的重写。
 \end{definition}
 
+\begin{definition}[\texorpdfstring{$\varepsilon$}{eps}-sound 的近似重写证书（误差预算）]\label{def:pom-eps-sound-rewrite}
+固定对象 \(\mathcal{I}(m;K;\kappa)\)，并约定其携带一份参考抽样分布 \(\mathbb{P}_{\mathcal I}\)
+（典型例子：折叠输出基线 \(X\sim\pi_m\)；温度门口径下由 Gibbs/Parry 平衡态诱导的推前分布）。
+对任意同型的投影词 \(w,w'\)（同源同靶），把它们在该接口与抽样分布下诱导的可见读出记为随机变量
+\(
+Y_w,Y_{w'}.
+\)
+若存在坏事件 \(E\) 满足 \(\mathbb{P}_{\mathcal I}[E]\le \varepsilon\)，并且在 \(E^c\) 上有 \(Y_w=Y_{w'}\) 几乎处处成立，
+则称存在一个 \textbf{\(\varepsilon\)-sound} 的近似重写证书，记为
+$$
+w\ \Longrightarrow_{\varepsilon}\ w'.
+$$
+当 \(\varepsilon=0\) 时，该定义退化为通常的 exact 重写证书。
+\end{definition}
+
+\begin{proposition}[误差预算的可加复合律]\label{prop:pom-eps-sound-compose}
+若 \(w\Longrightarrow_{\varepsilon}w'\) 且 \(w'\Longrightarrow_{\delta}w''\)，则 \(w\Longrightarrow_{\varepsilon+\delta}w''\)。
+因此沿任意有限重写轨迹 \(w=w_0\Rightarrow w_1\Rightarrow\cdots\Rightarrow w_r=w'\)，若第 \(i\) 步的预算为 \(\varepsilon_i\)，则整体失败概率满足
+\[
+\varepsilon_{\mathrm{tot}}\ \le\ \sum_{i=1}^{r}\varepsilon_i.
+\]
+\end{proposition}
+\begin{proof}
+取对应坏事件 \(E_1,E_2\)。
+在 \(E_1^c\cap E_2^c\) 上有 \(Y_w=Y_{w'}=Y_{w''}\)，故坏事件可取 \(E_1\cup E_2\)，其概率不超过 \(\varepsilon+\delta\)。证毕。
+\end{proof}
+
+\begin{remark}[编译输出作为 \texorpdfstring{$(w',\varepsilon)$}{(w',eps)}]\label{rem:pom-compile-output-word-eps}
+在工程口径下，一个“带证书”的编译过程往往输出一条正规化后的词 \(w'\) 以及其相对于原词 \(w\) 的总误差预算 \(\varepsilon\)：
+这正对应于在 \(\mathbf{PW}\) 中构造一条 \(2\)-态射证书 \(w\Longrightarrow_{\varepsilon} w'\)。
+本文后续的分位预算与 prime-register 设计正是为“从 side condition 生成 \(\varepsilon\)-sound 证书”服务（见 \S\ref{subsec:pom-quantile-budget-law}）。
+\end{remark}
+
 \paragraph{局部可终止/可合流的重写片段（读出冗余的正规形）}
 \begin{definition}[读出塔重写系统]\label{def:pom-rewrite-E-tower}
 在 $\mathbf{PW}$ 的生成元中，取仅由条件期望门与规范投影门生成的局部子片段

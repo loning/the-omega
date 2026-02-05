@@ -476,6 +476,49 @@ B^{\mathrm{cert}}_m(\varepsilon):=\exp\!\bigl(m\,\gamma^{\mathrm{cert}}_m(\varep
 脚本 \texttt{scripts/exp\_fold\_tail\_budget\_gamma\_cert.py} 进一步用 residue-DP 直方图对 \(\pi_m\) 下的真实尾部质量做核验并输出 JSON 证书。
 \end{remark}
 
+\begin{proposition}[Quantile-CRT 编译律：\texorpdfstring{$\varepsilon$}{eps}-sound 的序投影消元]\label{prop:pom-rcrt-epsilon}
+固定分辨率 \(m\) 与误差预算 \(\varepsilon\in(0,1)\)，在折叠读出口径下令 \(X\sim\pi_m\)。
+设序投影门 \(P_{\le}\) 作用的内部整数标签为随机变量 \(Y\)，并满足粗界
+\[
+|Y|\ \le\ d_m(X)
+\qquad(\text{例如：prime-register 承载的 fiber-index，或任何以纤维规模为上界的寄存器值}).
+\]
+取任意 \(B\ge 1\) 使得
+\[
+\mathbb{P}_{\pi_m}\big[d_m(X)>B\big]\ \le\ \varepsilon,
+\]
+并选择两两互素模数 \(p_1,\dots,p_r\) 使得其乘积 \(P=\prod_i p_i\) 满足 \(P>2B\)。
+则在误差富集口径（定义 \ref{def:pom-eps-sound-rewrite}）下存在 \(\varepsilon\)-sound 重写证书
+\[
+(\mathrm{RCRT}_\varepsilon)\qquad
+P_{\le}\ \Longrightarrow_{\varepsilon}\ \mathrm{CRT}_{\{p_i\}}\circ P_{\chi,\{p_i\}}.
+\]
+其中右端正是硬阈值版 (RCRT)（定义 \ref{def:pom-order-elimination-rewrite}）的空间化实现：先按模轴并行读出 residue（\(P_{\chi,\{p_i\}}\)），再用 CRT 重建（\(\mathrm{CRT}_{\{p_i\}}\)）。
+\end{proposition}
+\begin{proof}
+令坏事件 \(E:=\{|Y|>B\}\)。
+由假设 \(|Y|\le d_m(X)\) 得 \(E\subseteq\{d_m(X)>B\}\)，从而
+\(
+\mathbb{P}_{\pi_m}[E]\le \varepsilon
+\)。
+在好事件 \(E^c\) 上，\(Y\in[-B,B]\)，因此 \(P_{\le}\) 的序/区间判定可视为受限门 \(P_{\le,[-B,B]}\)。
+而在 \(P>2B\) 的侧条件下，硬阈值版 (RCRT) 对 \([-B,B]\) 上的整数读出保持正确（命题 \ref{prop:pom-order-elimination-correct}），故在 \(E^c\) 上有
+\(
+P_{\le}= \mathrm{CRT}_{\{p_i\}}\circ P_{\chi,\{p_i\}}
+\)
+（作为可见读出）。
+因此按定义 \ref{def:pom-eps-sound-rewrite}，上述重写在失败概率至多为 \(\varepsilon\) 的意义下成立。证毕。
+\end{proof}
+
+\begin{remark}[两条硬化路径与 \texorpdfstring{$(u,q,\varepsilon)$}{(u,q,eps)} 调度]\label{rem:pom-hardening-u-vs-q}
+序门的“硬化”在本文接口里至少有两条可执行路径：
+\begin{itemize}
+  \item \textbf{温度路径：}降低 \(u\)（注 \ref{rem:pom-order-as-zero-temp}）使软序门 \(\mathrm{PROJ}_u\) 硬化到 \(P_{\le}\)，其时间侧代价主要体现在扭曲谱隙/混合尺度 \(\tau_{\mathrm{mix}}(u)\)（命题 \ref{prop:pom-rewrite-audit-loop}）。
+  \item \textbf{moment-分位路径：}固定（或不极端降低）\(u\)，通过提高 \(q\) 并用 moment-kernel（\(\mathrm{MOM}_q\)）给出尾部证书，从而触发 \((\mathrm{RCRT}_\varepsilon)\)（命题 \ref{prop:pom-rcrt-epsilon}）把序门编译为空间化的 residue+CRT 读出；其空间侧代价主要体现在 prime-register 配额 \(\log P\)（推论 \ref{cor:pom-prime-register-quantile-budget} 与注 \ref{rem:pom-quantile-budget-computable} 的 \(\gamma\)-证书）。
+\end{itemize}
+因此编译器可以把 \((u,q,\varepsilon)\) 作为三旋钮：\(u\) 主控时间尺度、\(q\) 主控尾部放大与空间配额、\(\varepsilon\) 主控风险预算；并用命题 \ref{prop:pom-eps-sound-compose} 的加法律对多次近似消序门的总体失败概率做账。
+\end{remark}
+
 \subsubsection{可实现接口：异常签名与 moment 证书的最小流水线}\label{subsec:pom-implementable-interfaces}
 
 为把“重写证书/异常签名/谱判等”真正落到可复现执行层面，本段给出与仓库脚本一一对应的最小流水线。
