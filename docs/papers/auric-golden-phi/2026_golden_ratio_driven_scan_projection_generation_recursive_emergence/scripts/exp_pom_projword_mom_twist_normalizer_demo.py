@@ -191,7 +191,17 @@ def rewrite_once(w: List[Tok]) -> Tuple[List[Tok], bool, str, Optional[Dict[str,
     # (RBC) swap: E[m] LIFT[G] -> LIFT[G] E[m]
     for i in range(len(w) - 1):
         if w[i].kind == "E" and w[i + 1].kind == "LIFT":
-            return w[:i] + [w[i + 1], w[i]] + w[i + 2 :], True, "RBC", None
+            m = int(w[i].arg or "0")
+            group = w[i + 1].arg or "G"
+            cert = {
+                "kind": "HolonomySwap",
+                "swap": "E<->LIFT",
+                "m": m,
+                "group": group,
+                "anom": None,
+                "basis": f"E{m}<->LIFT[{group}]",
+            }
+            return w[:i] + [w[i + 1], w[i]] + w[i + 2 :], True, "RBC", cert
 
     # (RA) Artin/character factorization witness: PROJ[u] LIFT[Cn] -> PROD[...]
     for i in range(len(w) - 1):

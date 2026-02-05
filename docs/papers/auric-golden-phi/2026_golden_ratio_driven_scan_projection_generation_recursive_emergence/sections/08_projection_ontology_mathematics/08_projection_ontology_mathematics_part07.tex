@@ -96,6 +96,19 @@ E_m\circ \mathrm{LIFT}_G
 推论 \ref{cor:pom-anom-cohomology-class} 的工程含义是：当把投影词片段扩展（例如加入 \(\mathrm{MOM}_q\) 或更一般的 lift/cocycle）时，只需枚举新旧生成元之间的临界对（critical pairs）并对重写系统做 completion，新增的“不可严格交换”将自动表现为 \(\mathcal{A}\)-值标签；异常签名因此成为一个可组合的残差簇，而非逐条规则的临时补丁。
 \end{remark}
 
+\begin{remark}[可复现：holonomy/路径差异的自动核验]\label{rem:pom-holonomy-cocycle-audit}
+为把“异常作为 \(2\)-上同调类”的口径落到可执行证书，我们提供一个最小的 holonomy 核验脚本：
+\texttt{scripts/exp\_pom\_holonomy\_cocycle\_audit.py}。
+该脚本随机生成若干含 \(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G\) 的投影词，并用两种不同的重写优先级分别规约到同一正规形候选；
+随后比较
+(i) 词法正规形是否一致，
+以及
+(ii) 在所选证书规范（gauge）下，交换证书（每次 \(E_m\)--\(\mathrm{LIFT}_G\) 的 swap）累积得到的 holonomy 计数是否一致。
+当检测到差异时，脚本会把反例词、两条规约轨迹及其 holonomy 统计写入
+\texttt{artifacts/export/pom\_holonomy\_cocycle\_audit.json}，
+用于定位 completion 所需的关键临界对/边界修正（命题 \ref{prop:pom-anom-additive-up-to-boundary}）。
+\end{remark}
+
 \begin{corollary}[含 \texorpdfstring{$(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)$}{(PROJ,Em,LIFT)} 的正规形与有限签名判等]\label{cor:pom-three-gen-normal-form-decidable}
 固定词复杂度上界（例如限制 \(m\)、限制 lift 的群大小、限制温度参数采样集合）。
 则任何仅由 \(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G\) 生成的投影词，都可归约到一类接口正规形（参见注 \ref{rem:pom-zeta-normal-form} 的编译顺序）并附带有限异常签名
@@ -394,6 +407,26 @@ m\gamma+\log 2
 \)
 的可计算配额上界（对固定 \(q\) 为线性函数）。
 这把“prime-register 的空间预算”从“最坏纤维”替换为“用 \(r_q\) 控制的尾部分位”，并与注 \ref{rem:pom-prime-carry} 的“残差素数承载”语义完全对齐。
+
+\paragraph{最优化封装（把 \(q\) 作为可调 knob）}
+把上式对 \(q\ge 2\) 取下包络，可定义一个\emph{可证书}的尾部分位上界（以已核验的 \(r_q\) 为输入）：
+\[
+\gamma^{\mathrm{cert}}_m(\varepsilon)
+:=\inf_{q\in\ZZ_{\ge 2}}
+\frac{\log r_q-\log 2+\frac{1}{m}\log(1/\varepsilon)}{q-1},
+\qquad
+B^{\mathrm{cert}}_m(\varepsilon):=\exp\!\bigl(m\,\gamma^{\mathrm{cert}}_m(\varepsilon)\bigr).
+\]
+取达到极小值的 \(q^\star\) 即给出“最省预算”的 Chernoff 证书。
+进一步地，若用有限 \(m\) 的精确矩 \(S_q(m)\) 代替渐近主尺度 \(r_q\)，则可得到完全有限尺度的证书形式
+\[
+\gamma^{\mathrm{cert,fin}}_m(\varepsilon)
+:=\inf_{q\in\ZZ_{\ge 2}}
+\frac{\frac{1}{m}\log S_q(m)-\log 2+\frac{1}{m}\log(1/\varepsilon)}{q-1},
+\]
+其正确性由命题 \ref{prop:pom-quantile-chernoff} 直接保证（无需渐近假设）。
+脚本模块 \texttt{scripts/common\_tail\_budget.py} 实现了上述两种 \(\gamma\)-证书的扫描最优化；
+脚本 \texttt{scripts/exp\_fold\_tail\_budget\_gamma\_cert.py} 进一步用 residue-DP 直方图对 \(\pi_m\) 下的真实尾部质量做核验并输出 JSON 证书。
 \end{remark}
 
 \subsubsection{可实现接口：异常签名与 moment 证书的最小流水线}\label{subsec:pom-implementable-interfaces}

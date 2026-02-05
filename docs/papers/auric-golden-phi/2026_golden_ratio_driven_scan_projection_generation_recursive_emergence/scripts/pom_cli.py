@@ -265,6 +265,80 @@ def cmd_fold_spectrum(args: argparse.Namespace) -> None:
         print(f"[pom-cli] wrote {args.json_out}", flush=True)
 
 
+def _fold_rq_by_q(q_max: int) -> Dict[int, float]:
+    """Return the paper-canonical r_q table for q=2..q_max (q_max<=17)."""
+    import exp_fold_collision_renyi_spectrum as rs
+
+    if q_max < 2:
+        raise ValueError("q_max must be >= 2")
+    if q_max > 17:
+        raise ValueError("Missing r_q beyond q=17 in this CLI. Use the pressure/multifractal scripts to export r_q up to 60.")
+
+    r2 = float(rs.perron_root_r2())
+    r3 = float(rs.perron_root_r3())
+    r4 = float(rs.perron_root_r4())
+    out: Dict[int, float] = {}
+    for q in range(2, q_max + 1):
+        if q == 2:
+            out[q] = r2
+        elif q == 3:
+            out[q] = r3
+        elif q == 4:
+            out[q] = r4
+        elif q in rs.PRECOMPUTED_RQ:
+            out[q] = float(rs.PRECOMPUTED_RQ[q])
+        else:
+            raise ValueError(f"Missing r_q for q={q}")
+    return out
+
+
+def cmd_tail_budget(args: argparse.Namespace) -> None:
+    from common_tail_budget import B_from_logB, gamma_cert_from_rq, logB_from_gamma, prime_list_for_log_target
+
+    m = int(args.m)
+    eps = float(args.eps)
+    q_max = int(args.q_max)
+    if m <= 0:
+        raise SystemExit("Require --m >= 1")
+    if not (0.0 < eps < 1.0):
+        raise SystemExit("Require --eps in (0,1)")
+
+    rq_by_q = _fold_rq_by_q(q_max=q_max)
+    cert = gamma_cert_from_rq(m=m, eps=eps, rq_by_q=rq_by_q, out_alphabet_size=2)
+    logB = logB_from_gamma(m=m, gamma=cert.gamma)
+    B = B_from_logB(logB)
+
+    primes = None
+    logP = None
+    if not args.no_primes:
+        primes, logP = prime_list_for_log_target(math.log(2.0) + float(logB))
+
+    payload: Dict[str, Any] = {
+        "m": m,
+        "eps": eps,
+        "q_max": q_max,
+        "q_star": int(cert.q_star),
+        "gamma_cert": float(cert.gamma),
+        "logB_cert": float(logB),
+        "B_cert": B,
+        "gamma_by_q": {str(k): float(v) for k, v in sorted(cert.gamma_by_q.items())},
+        "primes": primes,
+        "logP": float(logP) if logP is not None else None,
+        "condition_P_gt_2B": (bool(logP is not None and logP > math.log(2.0) + float(logB))),
+    }
+
+    print(
+        f"[pom-cli] tail-budget Fold_m: m={m} eps={eps:g} q*={cert.q_star} gamma={cert.gamma:.6g} logB={logB:.6g}",
+        flush=True,
+    )
+    if primes is not None and logP is not None:
+        print(f"[pom-cli] prime-register suggestion: n_primes={len(primes)} logP~{float(logP):.6g}", flush=True)
+
+    if args.json_out:
+        _write_json(args.json_out, payload)
+        print(f"[pom-cli] wrote {args.json_out}", flush=True)
+
+
 def _sync10_transducer():
     import exp_sync_kernel_10_state_uniform_input_fingerprint as sync10
     from common_moment_kernel_hist import build_transducer_from_edges
@@ -354,6 +428,14 @@ def build_parser() -> argparse.ArgumentParser:
     p_spec.add_argument("--q-max", type=int, default=17)
     p_spec.add_argument("--json-out", type=str, default=None)
     p_spec.set_defaults(func=cmd_fold_spectrum)
+
+    p_tb = sub.add_parser("tail-budget", help="Optimize gamma_cert_m(eps) over q (Fold_m tail budget).")
+    p_tb.add_argument("--m", type=int, default=24, help="Resolution parameter m.")
+    p_tb.add_argument("--eps", type=float, default=1e-6, help="Target tail failure probability epsilon in (0,1).")
+    p_tb.add_argument("--q-max", type=int, default=17, help="Max q to scan (requires q<=17 in this CLI).")
+    p_tb.add_argument("--no-primes", action="store_true", help="Skip prime-register suggestion.")
+    p_tb.add_argument("--json-out", type=str, default=None)
+    p_tb.set_defaults(func=cmd_tail_budget)
 
     p_mk = sub.add_parser(
         "moment-kernel",

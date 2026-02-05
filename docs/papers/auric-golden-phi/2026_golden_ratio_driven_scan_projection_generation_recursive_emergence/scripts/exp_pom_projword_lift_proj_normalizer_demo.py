@@ -37,9 +37,10 @@ from __future__ import annotations
 import argparse
 import json
 import re
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from common_paths import export_dir, generated_dir
 
@@ -102,36 +103,87 @@ def _lift_chars(group: str) -> List[str]:
     return [f"chi{i}" for i in range(n)]
 
 
+def _holonomy_key(*, m: int, group: str) -> str:
+    return f"E{m}<->LIFT[{group}]"
+
+
+def rewrite_once_cert(
+    w: List[Tok],
+    *,
+    strategy: str = "tower_first",
+) -> Tuple[List[Tok], bool, str, Optional[Dict[str, object]]]:
+    """Apply a single rewrite step.
+
+    Returns:
+        (new_word, changed, rule_name, certificate_or_None)
+
+    Notes:
+    - `strategy` only changes rewrite *priority*, not the rule set.
+    - The (RBC) swap can emit a holonomy/anomaly certificate stub, matching the
+      paper's "swap failure -> residual -> signature" interface.
+    """
+    if strategy not in ("tower_first", "swap_first"):
+        raise ValueError(f"Unknown strategy: {strategy!r}")
+
+    def rule_RZ(cur: List[Tok]) -> Optional[Tuple[List[Tok], str, Optional[Dict[str, object]]]]:
+        for i in range(len(cur) - 1):
+            if cur[i].kind == "PZ" and cur[i + 1].kind == "PZ":
+                return cur[:i] + [Tok("PZ")] + cur[i + 2 :], "RZ", None
+        return None
+
+    def rule_RE(cur: List[Tok]) -> Optional[Tuple[List[Tok], str, Optional[Dict[str, object]]]]:
+        for i in range(len(cur) - 1):
+            if cur[i].kind == "E" and cur[i + 1].kind == "E":
+                m1 = int(cur[i].arg or "0")
+                m2 = int(cur[i + 1].arg or "0")
+                return cur[:i] + [Tok("E", str(min(m1, m2)))] + cur[i + 2 :], "RE", None
+        return None
+
+    def rule_RBC(cur: List[Tok]) -> Optional[Tuple[List[Tok], str, Optional[Dict[str, object]]]]:
+        for i in range(len(cur) - 1):
+            if cur[i].kind == "E" and cur[i + 1].kind == "LIFT":
+                m = int(cur[i].arg or "0")
+                group = cur[i + 1].arg or "G"
+                cert: Dict[str, object] = {
+                    "kind": "HolonomySwap",
+                    "swap": "E<->LIFT",
+                    "m": m,
+                    "group": group,
+                    # The executable pipeline can fill this with a numerical vector:
+                    #   Anom_G(K;theta) = (log M_chi(theta))_{chi!=chi0}.
+                    "anom": None,
+                    "basis": _holonomy_key(m=m, group=group),
+                }
+                return cur[:i] + [cur[i + 1], cur[i]] + cur[i + 2 :], "RBC", cert
+        return None
+
+    def rule_RA(cur: List[Tok]) -> Optional[Tuple[List[Tok], str, Optional[Dict[str, object]]]]:
+        for i in range(len(cur) - 1):
+            if cur[i].kind == "PROJ" and cur[i + 1].kind == "LIFT":
+                u = cur[i].arg or "u"
+                group = cur[i + 1].arg or "C1"
+                chis = _lift_chars(group)
+                parts = [f"PROJ[{u},{chi}]" for chi in chis]
+                # Keep ASCII-only in artifacts/tex for portability.
+                prod = Tok("PROD", " OTIMES ".join(parts))
+                return cur[:i] + [prod] + cur[i + 2 :], "RA", None
+        return None
+
+    priority = ("RZ", "RE", "RBC", "RA") if strategy == "tower_first" else ("RZ", "RBC", "RE", "RA")
+    rules = {"RZ": rule_RZ, "RE": rule_RE, "RBC": rule_RBC, "RA": rule_RA}
+    for name in priority:
+        out = rules[name](w)
+        if out is None:
+            continue
+        nw, rule, cert = out
+        return nw, True, rule, cert
+
+    return w, False, "", None
+
+
 def rewrite_once(w: List[Tok]) -> Tuple[List[Tok], bool, str]:
-    # (RZ) local contraction: PZ PZ -> PZ
-    for i in range(len(w) - 1):
-        if w[i].kind == "PZ" and w[i + 1].kind == "PZ":
-            return w[:i] + [Tok("PZ")] + w[i + 2 :], True, "RZ"
-
-    # (RE) tower: E[m1] E[m2] -> E[min(m1,m2)]
-    for i in range(len(w) - 1):
-        if w[i].kind == "E" and w[i + 1].kind == "E":
-            m1 = int(w[i].arg or "0")
-            m2 = int(w[i + 1].arg or "0")
-            return w[:i] + [Tok("E", str(min(m1, m2)))] + w[i + 2 :], True, "RE"
-
-    # (RBC) swap: E[m] LIFT[G] -> LIFT[G] E[m]
-    for i in range(len(w) - 1):
-        if w[i].kind == "E" and w[i + 1].kind == "LIFT":
-            return w[:i] + [w[i + 1], w[i]] + w[i + 2 :], True, "RBC"
-
-    # (RA) Artin/character factorization: PROJ[u] LIFT[Cn] -> PROD[...]
-    for i in range(len(w) - 1):
-        if w[i].kind == "PROJ" and w[i + 1].kind == "LIFT":
-            u = w[i].arg or "u"
-            group = w[i + 1].arg or "C1"
-            chis = _lift_chars(group)
-            parts = [f"PROJ[{u},{chi}]" for chi in chis]
-            # Keep ASCII-only in artifacts/tex for portability.
-            prod = Tok("PROD", " OTIMES ".join(parts))
-            return w[:i] + [prod] + w[i + 2 :], True, "RA"
-
-    return w, False, ""
+    nw, changed, rule, _cert = rewrite_once_cert(w, strategy="tower_first")
+    return nw, changed, rule
 
 
 def normalize(w: List[Tok], step_cap: int = 100_000) -> Tuple[List[Tok], List[str]]:
@@ -142,6 +194,31 @@ def normalize(w: List[Tok], step_cap: int = 100_000) -> Tuple[List[Tok], List[st
         if not changed:
             return cur, trace
         trace.append(rule)
+    raise RuntimeError("rewrite did not terminate within cap (unexpected)")
+
+
+def normalize_with_holonomy(
+    w: List[Tok],
+    *,
+    strategy: str = "tower_first",
+    step_cap: int = 100_000,
+) -> Tuple[List[Tok], List[str], Dict[str, int], List[Dict[str, object]]]:
+    """Normalize and accumulate holonomy from (RBC) swap certificates."""
+    cur = list(w)
+    trace: List[str] = []
+    certs: List[Dict[str, object]] = []
+    hol = Counter()
+    for _ in range(step_cap):
+        cur, changed, rule, cert = rewrite_once_cert(cur, strategy=strategy)
+        if not changed:
+            return cur, trace, dict(hol), certs
+        trace.append(rule)
+        if cert is not None:
+            certs.append(cert)
+            if cert.get("kind") == "HolonomySwap":
+                key = str(cert.get("basis", ""))
+                if key:
+                    hol[key] += 1
     raise RuntimeError("rewrite did not terminate within cap (unexpected)")
 
 
