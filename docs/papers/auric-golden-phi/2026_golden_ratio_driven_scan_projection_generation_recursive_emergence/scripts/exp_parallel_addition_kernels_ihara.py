@@ -85,6 +85,7 @@ class IharaFingerprint:
     rho_A: float
     rho_B: float
     delta_reg: float
+    eps_reg: float
     pi_bt: float
 
 
@@ -165,21 +166,21 @@ def make_table(rows: List[IharaFingerprint]) -> str:
     lines.append("\\begin{table}[H]")
     lines.append("\\centering")
     lines.append("\\small")
-    lines.append("\\begin{tabular}{@{}lrrrrrrrrrr@{}}")
+    lines.append("\\begin{tabular}{@{}lrrrrrrrrrrr@{}}")
     lines.append("\\toprule")
     lines.append(
-        "核 & $|V|$ & $|E|$ & $g$ & $\\min\\deg$ & $\\max\\deg$ & $\\overline{\\deg}$ & $\\rho(A)$ & $\\rho(B)$ & $\\Delta_{\\mathrm{reg}}$ & $\\pi_{\\mathrm{bt}}$\\\\"
+        "核 & $|V|$ & $|E|$ & $g$ & $\\min\\deg$ & $\\max\\deg$ & $\\overline{\\deg}$ & $\\rho(A)$ & $\\rho(B)$ & $\\Delta_{\\mathrm{reg}}$ & $\\varepsilon_{\\mathrm{reg}}$ & $\\pi_{\\mathrm{bt}}$\\\\"
     )
     lines.append("\\midrule")
     for r in rows:
         lines.append(
-            f"{r.name} & {r.n} & {r.m} & {r.g} & {r.deg_min} & {r.deg_max} & {_fmt(r.deg_mean,6)} & {_fmt(r.rho_A,8)} & {_fmt(r.rho_B,8)} & {_fmt(r.delta_reg,8)} & {_fmt(r.pi_bt,6)}\\\\"
+            f"{r.name} & {r.n} & {r.m} & {r.g} & {r.deg_min} & {r.deg_max} & {_fmt(r.deg_mean,6)} & {_fmt(r.rho_A,8)} & {_fmt(r.rho_B,8)} & {_fmt(r.delta_reg,8)} & {_fmt(r.eps_reg,8)} & {_fmt(r.pi_bt,6)}\\\\"
         )
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
     lines.append(
         "\\caption{Ihara--Bass--Hashimoto 无回溯素回路指纹（单流：由在线机状态图生成无向骨架，并在其上计算邻接谱半径 $\\rho(A)$ 与无回溯算子（Hashimoto）谱半径 $\\rho(B)$。"
-        "并定义近正则缺陷 $\\Delta_{\\mathrm{reg}}:=\\rho(A)-\\rho(B)-1$ 与回溯惩罚 $\\pi_{\\mathrm{bt}}:=1-\\rho(B)/\\rho(A)$，用于量化 ordinary walk 与 non-backtracking walk 的增长率脱钩程度）。}"
+        "并定义近正则缺陷 $\\Delta_{\\mathrm{reg}}:=\\rho(A)-\\rho(B)-1$、归一化近正则缺陷 $\\varepsilon_{\\mathrm{reg}}:=\\Delta_{\\mathrm{reg}}/(\\rho(A)-1)$ 与回溯惩罚 $\\pi_{\\mathrm{bt}}:=1-\\rho(B)/\\rho(A)$，用于量化 ordinary walk 与 non-backtracking walk 的增长率脱钩程度）。}"
     )
     lines.append("\\label{tab:parallel-addition-kernels-ihara-fingerprint}")
     lines.append("\\end{table}")
@@ -218,6 +219,7 @@ def main() -> None:
         rho_A = spectral_radius_adjacency(nbrs, prog=prog, label=f"{name} rho(A)")
         rho_B = spectral_radius_hashimoto(nbrs, prog=prog, label=f"{name} rho(B)")
         delta_reg = float(rho_A - rho_B - 1.0)
+        eps_reg = float(delta_reg / (rho_A - 1.0)) if rho_A > 1.0 else 0.0
         pi_bt = float(1.0 - (rho_B / rho_A)) if rho_A > 0 else 0.0
 
         out_rows.append(
@@ -232,6 +234,7 @@ def main() -> None:
                 rho_A=rho_A,
                 rho_B=rho_B,
                 delta_reg=delta_reg,
+                eps_reg=eps_reg,
                 pi_bt=pi_bt,
             )
         )
@@ -247,6 +250,7 @@ def main() -> None:
                 "rho_A": rho_A,
                 "rho_B": rho_B,
                 "delta_reg": delta_reg,
+                "eps_reg": eps_reg,
                 "pi_bt": pi_bt,
             }
         )

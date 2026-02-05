@@ -548,6 +548,17 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_xi_cubic_cos_polynomial",
+            script="exp_sync_kernel_xi_cubic_cos_polynomial.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_xi_cubic_criterion.json",
+                "sections/generated/eq_sync_kernel_xi_cubic_cos_polynomial.tex",
+                "sections/generated/eq_sync_kernel_xi_off_critical_shift.tex",
+                "sections/generated/tab_sync_kernel_xi_cubic_roots.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_3d_conditional_covariance",
             script="exp_sync_kernel_3d_conditional_covariance.py",
             args=[],
@@ -1158,6 +1169,17 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/parallel_addition_kernels_backtracking_entropy_gap.json",
                 "sections/generated/tab_parallel_addition_kernels_backtracking_entropy_gap.tex",
+            ],
+        ),
+        Step(
+            name="parallel_addition_kernels_ihara_phase",
+            script="exp_parallel_addition_kernels_ihara_phase.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/parallel_addition_kernels_ihara_phase.json",
+                "artifacts/export/parallel_addition_kernels_ihara_phase.png",
+                "sections/generated/tab_parallel_addition_kernels_ihara_rh_scan.tex",
+                "sections/generated/fig_parallel_addition_kernels_ihara_phase.tex",
             ],
         ),
         Step(

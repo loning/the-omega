@@ -69,6 +69,79 @@ d_j(u):=u^{-j/2}c_j(u).
 因此对该 \(\Xi_{\Delta,L}\) 而言，“临界线”并非额外结构，而是自对偶对称在参数侧的固定几何：单位圆切片。
 \end{remark}
 
+\paragraph{自对偶截面上的完成化常数：\texorpdfstring{$w$}{w} 固定，\texorpdfstring{$\Xi$}{Xi} 退化为余弦多项式}
+为避免与复变量 \(s\) 混淆，本段把 completion 的迹坐标记为 \(S\)。
+若自对偶 \(\Delta(z,u)\) 还可写成某个完成化行列式
+\(\widehat\Delta(w,S)\) 的形式
+\[
+\Delta(z,u)=\widehat\Delta\!\left(z\sqrt{u},\ \sqrt{u}+\frac{1}{\sqrt{u}}\right)
+\qquad
+(\widehat\Delta\ \text{在自对偶核上由不变量子环强制存在；例如同步核加权情形见命题 \ref{prop:sync-kernel-weighted-hat-delta}}),
+\]
+则沿自对偶 Dirichlet 截面 \(z=L^{-s},\ u=L^{2s-1}\) 有
+\[
+w:=z\sqrt{u}=L^{-s}\cdot L^{s-1/2}=L^{-1/2}\quad(\text{常数}),
+\qquad
+S_L(s):=\sqrt{u}+\frac{1}{\sqrt{u}}=L^{s-1/2}+L^{1/2-s},
+\]
+从而得到一维压缩恒等式
+\[
+\boxed{\ \Xi_{\Delta,L}(s)=\widehat\Delta\!\bigl(L^{-1/2},\,S_L(s)\bigr)\ }.
+\]
+特别地在临界线 \(s=\tfrac12+it\) 上，
+\[
+S_L\!\left(\tfrac12+it\right)=L^{it}+L^{-it}=2\cos(t\log L),
+\]
+因此 Hardy 型截面 \(\Xi_{\Delta,L}(\tfrac12+it)\) 是一个“余弦的实多项式”。
+
+\begin{proposition}[零点临界线版的纯代数判据：\texorpdfstring{$\Xi$}{Xi}-RH \(\Longleftrightarrow\) 根区间]\label{prop:xi-rh-interval-criterion}
+在上述完成化表示下，令
+\[
+P_L(S):=\widehat\Delta\!\bigl(L^{-1/2},S\bigr)\in\RR[S].
+\]
+则下述两条陈述等价：
+\begin{enumerate}
+  \item \(\Xi_{\Delta,L}\) 的全部零点都满足 \(\Re(s)=\tfrac12\)；
+  \item \(P_L(S)\) 的全部根都落在实区间 \([-2,2]\) 内。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+令 \(y:=L^{s-1/2}\in\CC^\times\)。则 \(S_L(s)=y+y^{-1}\)，从而
+\[
+\Xi_{\Delta,L}(s)=\widehat\Delta\!\bigl(L^{-1/2},\,y+y^{-1}\bigr)=P_L(y+y^{-1}).
+\]
+因此 \(\Xi_{\Delta,L}(s)=0\) 当且仅当 \(S_0:=y+y^{-1}\) 为 \(P_L\) 的某个根。
+\par
+另一方面，
+\[
+|y|=|L^{s-1/2}|=L^{\Re(s)-1/2},
+\]
+故 \(\Re(s)=\tfrac12\) 当且仅当 \(|y|=1\)。
+而 \(|y|=1\) 当且仅当 \(y=e^{i\theta}\)（某个 \(\theta\in\RR\)），此时
+\(
+y+y^{-1}=2\cos\theta\in[-2,2]
+\) 为实数。
+反之，若 \(S_0\in[-2,2]\) 为实数，则方程 \(y+y^{-1}=S_0\) 的解满足 \(|y|=1\)。
+因此 “所有零点都满足 \(\Re(s)=\tfrac12\)” 等价于 “\(P_L\) 的所有根都在 \([-2,2]\)”。
+\end{proof}
+
+\begin{remark}[同步核加权情形的三次余弦多项式与离线零点列]\label{rem:sync-kernel-xi-cubic}
+对同步核加权情形有 \(\lambda=3\)，并且完成化行列式 \(\widehat\Delta(w,S)\) 具有整系数闭式（命题 \ref{prop:sync-kernel-weighted-hat-delta}）。
+沿自对偶截面 \(z=3^{-s},u=3^{2s-1}\) 得 \(w=3^{-1/2}\)，于是临界线上的 Hardy 截面塌缩为一个三次余弦多项式（可复算输出）：
+\input{sections/generated/eq_sync_kernel_xi_cubic_cos_polynomial}
+其三根见表 \ref{tab:sync_kernel_xi_cubic_roots}：
+\input{sections/generated/tab_sync_kernel_xi_cubic_roots}
+由于存在根 \(S_0>2\)，由命题 \ref{prop:xi-rh-interval-criterion} 立刻得到：该 \(\Xi_{\Delta,3}\) 的零点并非全落在临界线。
+对应的两条离线竖线可写成
+\[
+\Re(s)=\tfrac12\pm\sigma_0,\qquad
+\sigma_0:=\frac{\log\bigl((S_0+\sqrt{S_0^2-4})/2\bigr)}{\log 3},
+\]
+其数值（以及虚部步长 \(\Delta_t=2\pi/\log 3\)）见可复现输出：
+\input{sections/generated/eq_sync_kernel_xi_off_critical_shift}
+并且虚部步长恒为 \(\Delta_t=2\pi/\log 3\)（由 \(y=L^{s-1/2}\) 的对数多值性给出）。
+\end{remark}
+
 \paragraph{尺度化观点：最坏扭曲慢模的扩散尺度}
 在有限模数 \(m\) 的扭曲（例如 \(u=\omega_m^r=e^{2\pi ir/m}\)）中，记最坏非平凡谱半径比为
 \[

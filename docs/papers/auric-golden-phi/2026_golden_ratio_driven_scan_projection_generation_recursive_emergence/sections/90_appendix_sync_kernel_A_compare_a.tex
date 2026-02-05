@@ -387,6 +387,14 @@ $$
 $$
 作为“近正则缺陷”：\(\Delta_{\mathrm{reg}}\) 越小，表示 ordinary walk 与 non-backtracking walk 的增长率关系越接近正则情形（差值锁定为 \(1\)）；\(\Delta_{\mathrm{reg}}\) 越大则表示度分布与局部结构更不均匀，non-backtracking 的增长率相对 ordinary walk 更受抑制。
 
+为消去“差一个常数 \(1\)”的标尺并便于跨规模直接比较，可进一步定义归一化近正则缺陷
+\[
+\varepsilon_{\mathrm{reg}}
+:=\frac{\Delta_{\mathrm{reg}}}{\rho(A)-1}
+=1-\frac{\rho(B)}{\rho(A)-1}.
+\]
+它在正则极限中同样为 \(0\)，且对 \(\rho(A)\) 量级不同的骨架更稳定可比（见表 \ref{tab:parallel-addition-kernels-ihara-fingerprint}）。
+
 该量与核版 RH/Ramanujan 指标 \(R_K(u)=\lambda_\star(u)/\sqrt{\lambda_1(u)}\) 互补：前者是骨架几何的“先验不变量”，后者是带权 Hashimoto 算子的“谱隙质量”指标；两者共同决定无回溯 prime cycle 口径下的可达误差尺度。
 \end{remark}
 
@@ -398,7 +406,7 @@ $$
 它直接量化“禁止回溯”带来的指数增长率损失比例。表 \ref{tab:parallel-addition-kernels-ihara-fingerprint} 的输出显示：在三核中 \(21\)-local 的 \(\pi_{\mathrm{bt}}\) 显著更大，表明其原子操作骨架中“可逆撤销/短回溯”结构占比更高，因此以 Ihara primes（无回溯）对素数影子做正规化的必要性也更强。
 \end{remark}
 
-\begin{remark}[回溯熵缺口 \texorpdfstring{$\Delta h$}{Delta h}：Table 18 的定量推论]\label{rem:ihara-entropy-gap}
+\begin{remark}[回溯熵缺口 \texorpdfstring{$\Delta h$}{Delta h}：由 \texorpdfstring{$(\rho(A),\rho(B))$}{rhoA,rhoB} 导出的指数缺口]\label{rem:ihara-entropy-gap}
 进一步把 \((\rho(A),\rho(B))\) 转成“指数尺度”的缺口：
 \[
 \Delta h_K:=\log\rho(A)-\log\rho(B)=\log\!\left(\frac{\rho(A)}{\rho(B)}\right)\ge 0.
@@ -409,7 +417,21 @@ $$
 \]
 表 \ref{tab:parallel_addition_kernels_backtracking_entropy_gap} 给出 \(n=50\) 的放大量级；其中 \(21\)-local 的放大已达 \(\sim 10^2\) 量级，说明在最小字母表 regime 下，“primitive cycle”统计更容易被立即回溯的伪周期污染，因此 Ihara primes 的正规化不仅是叙事更自然，而是量化上更必要。
 \input{sections/generated/tab_parallel_addition_kernels_backtracking_entropy_gap}
+
+值得注意的是：在表 \ref{tab:parallel-addition-kernels-ihara-fingerprint} 中 \(K_{13}\) 与 \(K_{21}\) 的 \(\varepsilon_{\mathrm{reg}}\) 同为 \(\sim 10^{-2}\)（均匀性缺陷同量级），但表 \ref{tab:parallel_addition_kernels_backtracking_entropy_gap} 的 \(\Delta h\) 相差约 \(2.6\times\)。因此 \(\varepsilon_{\mathrm{reg}}\) 与 \(\Delta h\) 给出两条基本正交的几何分类轴：前者主要测“近正则均匀性”，后者主要测“无回溯剪枝的相对熵损失”。
 \end{remark}
+
+\paragraph{二轴相图：\texorpdfstring{$\varepsilon_{\mathrm{reg}}$}{eps_reg}—\texorpdfstring{$R_K(1)$}{RK(1)} 的可计算分类学}
+把表 \ref{tab:parallel-addition-kernels-ihara-fingerprint} 的几何先验（\(\varepsilon_{\mathrm{reg}}\)）与核版 RH/Ramanujan 的谱隙质量轴对齐，可得到一个可直接比较的二维坐标系。
+在无权骨架 \(u=1\) 下，令 \(B\) 为 Hashimoto 算子，并记
+\[
+\Lambda(B):=\max_{\mu\in\mathrm{spec}(B)\setminus\{\rho(B)\}}|\mu|,
+\qquad
+R_K(1):=\frac{\Lambda(B)}{\sqrt{\rho(B)}}.
+\]
+则表 \ref{tab:parallel_addition_kernels_ihara_rh_scan} 给出 \(R_K(1)\) 的可审计数值扫描，而图 \ref{fig:parallel-addition-kernels-ihara-phase} 则把三核投影到 \((\varepsilon_{\mathrm{reg}},R_K(1))\) 平面，从而把“骨架均匀性—谱隙质量”升级为一张真正的可计算相图。
+\input{sections/generated/tab_parallel_addition_kernels_ihara_rh_scan}
+\input{sections/generated/fig_parallel_addition_kernels_ihara_phase}
 
 \paragraph{Ihara primes：无回溯原子环的规范化素数}
 在“原子操作图”（边为原子操作、反向边为其逆）上，把 prime-like 对象定义为\textbf{无回溯、无尾（tailless）的 primitive 环}：即闭环 $p=e_1\cdots e_\ell$ 满足 $e_{i+1}\neq e_i^{-1}$ 且 $e_1\neq e_\ell^{-1}$，并且不为更短环的幂；此外按循环平移视为同一环。其 Euler 乘积为
