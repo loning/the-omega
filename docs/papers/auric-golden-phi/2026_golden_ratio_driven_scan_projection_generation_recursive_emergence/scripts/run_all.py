@@ -858,6 +858,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="arity_335_n2_poisson_richardson_validate",
+            script="exp_arity_335_n2_poisson_richardson_validate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/arity_335_n2_poisson_richardson_validate.json",
+                "sections/generated/tab_real_input_40_arity_335_n2_poisson_richardson_validate.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_logM_theta",
             script="exp_sync_kernel_real_input_40_logM_theta.py",
             args=[
