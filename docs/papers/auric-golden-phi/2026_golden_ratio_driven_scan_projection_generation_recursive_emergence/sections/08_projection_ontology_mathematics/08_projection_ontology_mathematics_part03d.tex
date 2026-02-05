@@ -492,6 +492,55 @@ $$
 $$
 \end{corollary}
 
+\begin{corollary}[全局分支质量守恒与子集偏置约束]\label{cor:pom-branch-mass-law}
+对每个 \(x\in X_m\) 与 \(b\in\{0,1\}\)，定义纤维内的隐藏位分裂计数
+\[
+d_{m,b}(x):=\#\{\omega\in\Omega_m:\ \Fold_m(\omega)=x,\ b(\omega)=b\},
+\]
+并记纤维总多重度 \(d_m(x)=d_{m,0}(x)+d_{m,1}(x)\) 以及纤维内的分支-\(1\) 质量比例
+\[
+p_1(x):=\frac{d_{m,1}(x)}{d_m(x)}\in[0,1].
+\]
+令 \(\omega\sim\mathrm{Unif}(\Omega_m)\)、\(X:=\Fold_m(\omega)\)，并写输出分布为 \(\pi_m(x):=\mathbb{P}(X=x)=d_m(x)/2^m\)。
+则有精确平均恒等式
+\[
+\boxed{\;
+\mathbb{E}_{X\sim\pi_m}\bigl[p_1(X)\bigr]
+=\mathbb{P}[b(\omega)=1]
+=\frac{|B_m|}{2^m}
+=\frac{\lfloor 2^m/3\rfloor}{2^m}. \;}
+\]
+因此
+\[
+\left|\mathbb{E}_{\pi_m}[p_1]-\frac13\right|\le 2^{-m}.
+\]
+并且对任意子集 \(S\subseteq X_m\) 满足 \(\pi_m(S)>0\)，有\emph{守恒型}约束（严格恒等式）
+\[
+\boxed{\;
+\mathbb{E}_{\pi_m}[p_1\mid X\in S]-\mathbb{P}[b=1]
+=-\frac{\pi_m(S^c)}{\pi_m(S)}
+\left(\mathbb{E}_{\pi_m}[p_1\mid X\in S^c]-\mathbb{P}[b=1]\right). \;}
+\]
+即任何“特殊集合”内部的系统性偏置只能以跨集合的重分配形式出现，不能在全局上净产生/净消去隐藏位质量。
+\end{corollary}
+\begin{proof}
+对任意 \(x\in X_m\)，在事件 \(\{X=x\}\) 上 \(\omega\) 在纤维 \(\Fold_m^{-1}(x)\) 内条件均匀，故
+\(
+\mathbb{P}[b=1\mid X=x]=d_{m,1}(x)/d_m(x)=p_1(x)
+\)。
+由全期望公式得
+\[
+\mathbb{E}_{X\sim\pi_m}[p_1(X)]=\mathbb{P}[b=1]=|B_m|/2^m,
+\]
+再用定理 \ref{thm:pom-hidden-bit-count}（以及 \(|\lfloor 2^m/3\rfloor-2^m/3|\le 1\)）得到误差界。
+\par
+对任意 \(S\subseteq X_m\)，再用全期望公式
+\(
+\mathbb{P}[b=1]=\pi_m(S)\mathbb{E}[p_1\mid X\in S]+\pi_m(S^c)\mathbb{E}[p_1\mid X\in S^c]
+\)，
+移项并除以 \(\pi_m(S)\) 即得守恒恒等式。证毕。
+\end{proof}
+
 \begin{theorem}[一步可判别与右解析性]\label{thm:pom-right-resolving}
 对任意 $m\ge 2$ 与任意 $v\in V_m=\{0,1\}^{m-1}$，有
 \[
@@ -676,6 +725,76 @@ D_{\mathrm{KL}}(w_m\|U_m)\ \le\ m\log\!\left(\frac{\varphi^{3/2}}{2}\right)+O(1)
 D_{\mathrm{KL}}(P\|Q)\le \log \sup_x \frac{P(x)}{Q(x)}
 \)
 立得第一式；第二式由注 \ref{rem:pom-defect-gap} 的 $D_m/\overline d_m=\Theta((\varphi^{3/2}/2)^m)$ 取对数得到。证毕。
+\end{proof}
+
+\begin{theorem}[谱--信息夹逼：熵缺口由 \texorpdfstring{$(D_m,\mathsf{Col}_m,\mathcal Z_m)$}{(D,Col,Z)} 控制]\label{thm:pom-spectral-information-sandwich}
+令 \(w_m=(\Fold_m)_*u_{\Omega_m}\) 为均匀微态的折叠推前（定义 \ref{def:pom-wm-baseline}），令 \(U_m\) 为 \(X_m\) 上的均匀分布（命题 \ref{prop:pom-wm-kl-to-uniform}）。
+定义到均匀的熵缺口（自然对数，单位 nats）
+\[
+\mathrm{gap}_m^{(\mathrm{nat})}
+:=\log|X_m|-H(w_m)
+=D_{\mathrm{KL}}(w_m\|U_m),
+\qquad |X_m|=F_{m+2}.
+\]
+再定义折叠碰撞概率
+\[
+\mathsf{Col}_m:=\sum_{x\in X_m}w_m(x)^2
+=\mathbb{P}\bigl(\Fold_m(\omega)=\Fold_m(\eta)\bigr),
+\qquad \omega,\eta\stackrel{\mathrm{iid}}{\sim}\mathrm{Unif}(\Omega_m).
+\]
+则有如下\emph{可审计}的双向夹逼：
+\[
+\boxed{\;
+2\left(\frac{D_m}{2^m}-\frac{1}{F_{m+2}}\right)^2
+\ \le\
+\mathrm{gap}_m^{(\mathrm{nat})}
+\ \le\
+\log\!\bigl(F_{m+2}\,\mathsf{Col}_m\bigr)
+\ \le\
+\log\!\bigl(F_{m+2}-|\mathcal Z_m|\bigr).\;}
+\]
+其中 \(D_m=\max_{x\in X_m}d_m(x)\) 为最大纤维多重度（见小节 \ref{subsec:pom-max-fiber}），\(\mathcal Z_m\) 为附录 \ref{app:fold-multiplicity} 中定义 \ref{def:fold-spectrum-zero-set} 的谱零点集合。
+把上式除以 \(\log 2\) 即得到比特单位的缺口 \(\mathrm{gap}_m^{(2)}=\mathrm{gap}_m^{(\mathrm{nat})}/\log 2\)。
+\end{theorem}
+\begin{proof}
+\textbf{(1) 下界（Pinsker + 最大点差）.}
+令 \(F:=F_{m+2}\)。
+由 Pinsker 不等式（自然对数口径）
+\(
+D_{\mathrm{KL}}(w_m\|U_m)\ge 2\,D_{\mathrm{TV}}(w_m,U_m)^2
+\)，
+其中
+\(
+D_{\mathrm{TV}}(P,Q):=\frac12\sum_x|P(x)-Q(x)|
+\)。
+又因为
+\[
+D_{\mathrm{TV}}(w_m,U_m)
+=\sum_{x:\,w_m(x)>1/F}\bigl(w_m(x)-1/F\bigr)
+\ge \max_x\bigl(w_m(x)-1/F\bigr),
+\]
+而 \(\max_x w_m(x)=D_m/2^m\)，故得到
+\(
+D_{\mathrm{KL}}(w_m\|U_m)\ge 2(D_m/2^m-1/F)^2
+\)。
+\par
+\textbf{(2) 上界（Rényi-2/碰撞上界）.}
+二阶 Rényi 熵（collision entropy）满足
+\(
+H(w_m)\ge H_2(w_m):=-\log\sum_x w_m(x)^2=-\log \mathsf{Col}_m
+\)，
+因此
+\[
+\mathrm{gap}_m^{(\mathrm{nat})}
+=\log F-H(w_m)
+\le \log F-H_2(w_m)
+=\log\bigl(F\,\mathsf{Col}_m\bigr).
+\]
+最后由附录 \ref{app:fold-multiplicity} 的定理 \ref{thm:fold-collision-zero-reduction}，
+\(
+\mathsf{Col}_m\le 1-|\mathcal Z_m|/F
+\)，
+从而 \(F\mathsf{Col}_m\le F-|\mathcal Z_m|\)，得到最右端上界。证毕。
 \end{proof}
 
 \begin{corollary}[最大纤维达到者的指数稀有性（均匀基线）]\label{cor:pom-maxfiber-rare-uniform}
