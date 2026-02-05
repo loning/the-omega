@@ -228,6 +228,46 @@ def write_tex(*, out_path: Path) -> None:
     lines.append(r"$$")
     lines.append(r"\end{theorem}")
     lines.append("")
+
+    # Include the (audit-based) proof stub in the generated TeX fragment.
+    # Without this, the manuscript's fallback proof is skipped when this file exists.
+    lines.append(r"\begin{proof}[证明要点与审计口径（摘要）]")
+    lines.append(r"由定义 \ref{def:fold-gauge-anomaly}，有")
+    lines.append(r"$$")
+    lines.append(
+        r"G_m(\omega)=\sum_{k=1}^{m}\mathbf 1\{(r_{m+1\to m}(\omega))_k\neq(\widetilde r_{m+1\to m}(\omega))_k\}."
+    )
+    lines.append(r"$$")
+    lines.append(r"若取独立的随机指标 $I\sim\mathrm{Unif}(\{1,\dots,m\})$，并记")
+    lines.append(r"$$")
+    lines.append(
+        r"X:=(r_{m+1\to m}(\omega))_I=\omega_I,\qquad Y:=(\widetilde r_{m+1\to m}(\omega))_I,"
+    )
+    lines.append(r"$$")
+    lines.append(r"则由交换求和与线性期望得到严格恒等式")
+    lines.append(r"$$")
+    lines.append(
+        r"\frac{\bar G_m}{m}"
+        r"=\mathbb P\!\left((r_{m+1\to m}(\omega))_I\neq(\widetilde r_{m+1\to m}(\omega))_I\right)"
+        r"=\mathbb P(X\oplus Y=1)."
+    )
+    lines.append(r"$$")
+    lines.append(
+        r"因此一旦典型内点处的联合律 $\mathbb P(X,Y)$ 在 $m\to\infty$ 时收敛到定理所列的有理表，"
+        r"立刻推出 $\bar G_m/m\to 4/9$。"
+    )
+    lines.append(r"\par")
+    lines.append(
+        r"本文采用“可复算审计 + 有理重构”口径固定该极限联合律："
+        r"在完全遵循定义 \ref{def:fold-word} 与定义 \ref{def:fold-gauge-anomaly} 的实现上，"
+        r"对大 $m$ 的均匀样本统计典型内点处 $(X,Y)$ 与 $YY$ 二元组边缘，"
+        r"并对极限作有理重构，稳定锁定为上表。"
+        r"相应审计脚本见 \texttt{scripts/exp\_fold\_gauge\_anomaly\_limit\_law.py} 与"
+        r"\texttt{scripts/exp\_fold\_gauge\_anomaly\_density\_49.py}。"
+    )
+    lines.append(r"\end{proof}")
+    lines.append("")
+
     lines.append(r"\begin{remark}[二元组统计与近 Parry 的马尔可夫近似]\label{rem:fold-gauge-anomaly-near-parry}")
     lines.append(r"同一均匀基线下，输出过程 $Y_t$ 的相邻二元组边缘在极限中满足：")
     lines.append(r"$$")

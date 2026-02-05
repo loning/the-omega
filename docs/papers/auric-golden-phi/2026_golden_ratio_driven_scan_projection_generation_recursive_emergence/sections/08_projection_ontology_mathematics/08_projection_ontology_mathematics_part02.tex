@@ -158,6 +158,14 @@ W_\chi(I)=(k_Z(I),k_\chi(I))
 此时 $k_\chi$ 仅统计角色/同余投影的调用次数，作为 $k_{\le}$ 的具体化版本。
 \end{remark}
 
+\begin{definition}[跨分辨率降阶计数]\label{def:pom-rescale-count}
+除投影词中的读出门 $P_Z,P_{\le}$ 外，若指令/微码 $I$ 显式调用分辨率降阶投影门
+\(
+\mathrm{RESCALE}\downarrow:\Omega_{m+1}\to X_m
+\)
+（见注 \ref{rem:pom-rescale-gauge-anomaly}），则记其调用次数为 $k_{\downarrow}(I)$；若不涉及跨分辨率读出，则取 $k_{\downarrow}(I)=0$。
+\end{definition}
+
 \begin{definition}[纤维选择与核选择]\label{def:pom-fiber-kernel-choice}
 对任意指令/微码 $I$，记其在实现过程中被激活的先验纤维族为
 $$
@@ -170,9 +178,9 @@ $$
 \begin{definition}[指令签名：投影词 $\times$ 核指纹 $\times$ 纤维选择]\label{def:pom-instruction-signature}
 令 $\mathfrak{F}(K)$ 为核的谱指纹（定义 \ref{def:kernel-spectral-fingerprint}）。对任意指令/微码 $I$，定义其（审计）指令签名为
 $$
-\Sigma(I):=\Bigl(W(I),\ \mathfrak{F}\bigl(K_Z(I)\bigr),\ \mathfrak{F}\bigl(K_{\le}(I)\bigr),\ \mathcal{F}(I)\Bigr),
+\Sigma(I):=\Bigl(W(I),\ k_{\downarrow}(I),\ \mathfrak{F}\bigl(K_Z(I)\bigr),\ \mathfrak{F}\bigl(K_{\le}(I)\bigr),\ \mathcal{F}(I)\Bigr),
 $$
-其中 $W(I)$ 为投影词（定义 \ref{def:pom-projection-word}），$\mathcal{F}(I)$ 为纤维选择（定义 \ref{def:pom-fiber-kernel-choice}）。当序读出由 $P_\chi$ 实现时，可将 $\mathfrak{F}(K_{\le}(I))$ 替换为 $\mathfrak{F}(K_{\chi}(I))$。
+其中 $W(I)$ 为投影词（定义 \ref{def:pom-projection-word}），$k_{\downarrow}(I)$ 为跨分辨率降阶调用次数（定义 \ref{def:pom-rescale-count}），$\mathcal{F}(I)$ 为纤维选择（定义 \ref{def:pom-fiber-kernel-choice}）。当序读出由 $P_\chi$ 实现时，可将 $\mathfrak{F}(K_{\le}(I))$ 替换为 $\mathfrak{F}(K_{\chi}(I))$。
 \end{definition}
 
 \begin{remark}[为什么 $W$ 不够：核几何进入指纹]\label{rem:pom-signature-why}
@@ -183,20 +191,20 @@ $$
 设两条指令/微码 $I,J$ 满足 $\Sigma(I)=\Sigma(J)$。则：
 \begin{enumerate}
   \item \textbf{投影审计不变量一致：}两者在同一核指纹口径下给出相同的 $\zeta$、primitive 原子谱（含其加权分层）、压力曲线端点与扭曲谱隙等可审计指纹（由 $\mathfrak{F}(K_Z),\mathfrak{F}(K_{\le})$ 完全决定）。
-  \item \textbf{成本模型同型：}在定义 \ref{def:pom-cost} 的口径下，两者具有相同的投影词系数 $(k_Z,k_{\le})$，并且其常数项（如 $\delta_Z$）与混合尺度（如 $\tau_{\mathrm{mix}}$）由核指纹相同而一致，因此成本模型的结构分解一致：
+  \item \textbf{成本模型同型：}在定义 \ref{def:pom-cost} 的口径下，两者具有相同的投影词系数 $(k_Z,k_{\le})$ 以及相同的跨分辨率降阶次数 $k_{\downarrow}$，并且其常数项（如 $\delta_Z$）与混合尺度（如 $\tau_{\mathrm{mix}}$）由核指纹相同而一致，因此成本模型的结构分解一致：
   $$
-  T_I(n)=k_Z\,\delta_Z+k_{\le}\,T_{\le}(n)+D_U(n),
+  T_I(n;m)=k_Z\,\delta_Z+k_{\le}\,T_{\le}(n)+k_{\downarrow}\,T_{\downarrow}(m)+D_U(n),
   \qquad
-  T_J(n)=k_Z\,\delta_Z+k_{\le}\,T_{\le}(n)+D_U'(n),
+  T_J(n;m)=k_Z\,\delta_Z+k_{\le}\,T_{\le}(n)+k_{\downarrow}\,T_{\downarrow}(m)+D_U'(n),
   $$
   其中差异仅可能出现在“线性化深度/演化深度”项 $D_U$ 上，而该项正由纤维选择 $\mathcal{F}$ 与具体演化编排决定（定义 \ref{def:pom-space-time}）。
 \end{enumerate}
 \end{proposition}
 
 \begin{definition}[成本模型]\label{def:pom-cost}
-令 $\delta_Z$ 为一次规范投影的基准读出深度（例如在线归一化的固定延迟，见定理 \ref{thm:online-delay-fold}），令 $T_{\le}(n)$ 为一次序投影的聚合深度，令 $D_U(n)$ 为在本体演化中完成线性化所需的深度。则定义
+令 $\delta_Z$ 为一次规范投影的基准读出深度（例如在线归一化的固定延迟，见定理 \ref{thm:online-delay-fold}），令 $T_{\le}(n)$ 为一次序投影的聚合深度，令 $T_{\downarrow}(m)$ 为一次跨分辨率降阶门 $\mathrm{RESCALE}\downarrow$ 的典型写回支持规模（注 \ref{rem:pom-rescale-gauge-anomaly}），令 $D_U(n)$ 为在本体演化中完成线性化所需的深度。则定义
 \[
-T_I(n)=k_Z(I)\,\delta_Z+k_{\le}(I)\,T_{\le}(n)+D_U(n).
+T_I(n;m)=k_Z(I)\,\delta_Z+k_{\le}(I)\,T_{\le}(n)+k_{\downarrow}(I)\,T_{\downarrow}(m)+D_U(n).
 \]
 该模型把投影读出与演化深度分离，用于比较不同实现把“混合”置于时间还是空间的策略差异。
 \end{definition}
@@ -217,21 +225,21 @@ $$
 $$
 当作一个原语投影门来计入成本。
 \par
-更关键的是：该门的“时间投影支持规模”在最坏情形下是线性的。定义规范差 \(G_m(\omega)\) 为
+更关键的是：该门的\emph{空间}投影支持规模在最坏情形下是线性的。定义规范差 \(G_m(\omega)\) 为
 \(
 |r_{m+1\to m}(\omega)\oplus \widetilde r_{m+1\to m}(\omega)|_0
 \)
 （定义 \ref{def:fold-gauge-anomaly}），则定理 \ref{thm:fold-gauge-anomaly-max} 给出最坏下界 \(G_m^{\max}=m\)。
-\IfFileExists{sections/generated/eq_fold_gauge_anomaly_density_transducer.tex}{%
-另一方面，在均匀输入基线下该支持规模在\emph{典型}意义上同样线性：平均规范差满足
-(
-\mathbb{E}[G_m]/m\to g_\ast
-)
-且闭式 \(g_\ast=4/9\)（命题 \ref{prop:fold-gauge-anomaly-density-49}）。因此平均需要触及约 \((4/9)m\) 个外表位。
-若把这一"支持重写量"作为独立的非并行开销项记为 \(T_{\mathrm{space}}(m)\)，则典型情形下
+并且在均匀微态基线下，其\emph{典型}支持规模同样为线性且具有闭式常数密度：
+\(
+\lim_{m\to\infty}\bar G_m/m=4/9
+\)
+（定理 \ref{thm:fold-gauge-anomaly-density}），因此平均需要触及约 \((4/9)m\) 个外表位。
+若把这一"支持重写量"作为独立的非并行开销项记为 \(T_{\downarrow}(m)\)，则典型情形下
 \[
-T_{\mathrm{space}}(m)\ \asymp\ \frac{4}{9}m.
+T_{\downarrow}(m)\ \asymp\ \frac{4}{9}m.
 \]
+这说明"在线延迟为常数"（因果锥长度）并不排除"降一阶分辨率需要触及整条外表寄存器"的最坏情形：两者刻画的是正交的复杂度分量（延迟 vs.\ 总体支持规模）。
 }{}%这说明“在线延迟为常数”（因果锥长度）并不排除“降一阶分辨率需要触及整条外表寄存器”的最坏情形：两者刻画的是正交的复杂度分量（延迟 vs.\ 总体支持规模）。
 \end{remark}
 
@@ -246,7 +254,7 @@ k_{\mathrm{prim}}(I)\,T_{\mathrm{prim}}(n),
 \begin{remark}[角色投影门下的时间上界]\label{rem:pom-cost-chi}
 当序读出由 $P_\chi$ 实现时，可用 $\tau_{\mathrm{mix}}$ 作为 $T_{\le}$ 的有效尺度（见注 \ref{rem:pom-chi-mixing}），从而得到
 \[
-T_I(n)\ \approx\ k_Z(I)\,\delta_Z\ +\ k_\chi(I)\,\tau_{\mathrm{mix}}\ +\ D_U(n).
+T_I(n;m)\ \approx\ k_Z(I)\,\delta_Z\ +\ k_\chi(I)\,\tau_{\mathrm{mix}}\ +\ k_{\downarrow}(I)\,T_{\downarrow}(m)\ +\ D_U(n).
 \]
 这给出“投影词 $\Rightarrow$ 非并行开销”的直接量化接口。
 \end{remark}

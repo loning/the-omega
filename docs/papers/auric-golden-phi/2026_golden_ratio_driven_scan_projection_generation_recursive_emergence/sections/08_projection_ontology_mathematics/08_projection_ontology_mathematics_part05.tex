@@ -90,6 +90,7 @@ n\ \gtrsim\ \frac{\log(1/\varepsilon)}{\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)
   \item \texttt{ZCMP rt,ra,rb}：$W=(0,1)$。
   \item \texttt{ZDIVMOD rq,rr,ra,rb}：依实现可取 $W\approx(2,\Theta(n))$ 或 $W\approx(2,2)$。
   \item \texttt{ZNORM rd,rs}：显式 $P_Z$，$W=(1,0)$。
+  \item \texttt{ZRESCALE rd,rs}：显式 $\mathrm{RESCALE}\downarrow$，$W=(0,0)$ 但 $k_{\downarrow}=1$。
   \item \texttt{ZPRIM rs}：原子层读出，$W^{\mathrm{full}}=(0,1,0)$。
 \end{itemize}
 
@@ -100,6 +101,7 @@ n\ \gtrsim\ \frac{\log(1/\varepsilon)}{\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)
   \item \texttt{LIFT\_PRIME}：进入 $\mathcal{P}$；
   \item \texttt{EVOLVE(op)}：执行一步本体演化 $U$；
   \item \texttt{PROJ\_NORM}：执行 $P_Z$；
+  \item \texttt{PROJ\_RESCALE\_DOWN}：执行跨分辨率降阶门 $\mathrm{RESCALE}\downarrow$；
   \item \texttt{PROJ\_PRIM}：执行 $P_{\mathrm{prim}}$（trace $\Rightarrow$ primitive）；
   \item \texttt{PROJ\_ORDER}：执行 $P_{\le}$；
   \item \texttt{PROJ\_TEMP($u$)}：执行温度化序投影 $\mathrm{PROJ}_u$（定义 \ref{def:pom-proj-temp}；$u\to 0$ 为零温硬化极限）；
@@ -113,9 +115,9 @@ n\ \gtrsim\ \frac{\log(1/\varepsilon)}{\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)
 此时从朴素截断纠偏到 \(\widetilde r_{m+1\to m}\) 的最小外表改动支持由规范差 \(G_m\) 精确刻画（定义 \ref{def:fold-gauge-anomaly}）。
 在均匀微态基线下，其典型密度存在并锁定为 \(4/9\)（定理 \ref{thm:fold-gauge-anomaly-density}），因此任何频繁执行 \texttt{RESCALE}$\downarrow$ 的微码都不可避免地出现一个新的不可约空间项
 \[
-T_{\mathrm{space}}(m)\ \asymp\ \frac{4}{9}m,
+T_{\downarrow}(m)\ \asymp\ \frac{4}{9}m,
 \]
-它刻画的是\emph{要写回多少寄存器位}，与在线延迟常数（例如 \(\delta_{\min}(\Fold_\infty)=3\)，命题 \ref{prop:pom-delay-min}）正交。
+它刻画的是\emph{要写回多少寄存器位}，并在统一成本模型中以 $k_{\downarrow}(I)\,T_{\downarrow}(m)$ 作为独立空间项计入（定义 \ref{def:pom-cost}）；该项与在线延迟常数（例如 \(\delta_{\min}(\Fold_\infty)=3\)，命题 \ref{prop:pom-delay-min}）正交。
 \end{remark}
 
 \paragraph{机制审计接口}
@@ -124,9 +126,9 @@ T_{\mathrm{space}}(m)\ \asymp\ \frac{4}{9}m,
 \paragraph{指令签名与审计等价}
 在该抽象层中，一条指令/微码 $I$ 的可审计分类对象不是单独的投影词 $W(I)$，而是其指令签名
 $$
-\Sigma(I)=\bigl(W(I),\ \mathfrak{F}(K_Z(I)),\ \mathfrak{F}(K_{\le}(I)),\ \mathcal{F}(I)\bigr)
+\Sigma(I)=\bigl(W(I),\ k_{\downarrow}(I),\ \mathfrak{F}(K_Z(I)),\ \mathfrak{F}(K_{\le}(I)),\ \mathcal{F}(I)\bigr)
 $$
-（定义 \ref{def:pom-instruction-signature}）。其中 $K_Z(I),K_{\le}(I)$ 是投影门的具体核选择，$\mathcal{F}(I)$ 是纤维选择。命题 \ref{prop:pom-signature-audit} 给出签名一致的直接后果：若 $\Sigma(I)=\Sigma(J)$，则两者的 $\zeta$/primitive/有限部常数/扭曲谱隙等指纹一致，且成本模型的投影门部分同型；差异只能体现在由纤维选择与演化编排承担的 $D_U$ 项上。
+（定义 \ref{def:pom-instruction-signature}）。其中 $K_Z(I),K_{\le}(I)$ 是投影门的具体核选择，$\mathcal{F}(I)$ 是纤维选择，$k_{\downarrow}(I)$ 记录跨分辨率降阶门的调用次数（定义 \ref{def:pom-rescale-count}）。命题 \ref{prop:pom-signature-audit} 给出签名一致的直接后果：若 $\Sigma(I)=\Sigma(J)$，则两者的 $\zeta$/primitive/有限部常数/扭曲谱隙等指纹一致，且成本模型的投影门部分同型；差异只能体现在由纤维选择与演化编排承担的 $D_U$ 项上。
 
 \begin{remark}[投影词范畴与“算法等价 = 自然同构”的口径]\label{rem:pom-word-category}
 把微码原语集合
