@@ -10,10 +10,12 @@ We extend the combined normalizer (PZ, E[m], P[m], Q[m], K[m], LIFT[G], PROJ[u])
 by adding:
   - MOM[q]      : moment/collision lift operator (syntactic proxy for Lift_q)
   - TWIST[chi]  : character twist operator (kept symbolic here; can be fused into PROJ)
+  - MOML[q;G]   : symbolic placeholder produced by the RMOML (Fourier distribution) rewrite
 
 Normalization intent (oriented rules):
   - bubble MOM[q] leftwards to a prefix position (structural operator),
   - fuse PROJ[u] with an adjacent TWIST[chi] into PROJ[u,chi],
+  - optionally reduce an adjacent MOM[q]∘LIFT[G] via RMOML into a MOML[...] token,
   - keep the existing audited fragment rules (tower, split-epi, Beck--Chevalley swap,
     Artin/character factorization witness).
 
@@ -42,7 +44,7 @@ from common_paths import export_dir, generated_dir
 
 @dataclass(frozen=True)
 class Tok:
-    kind: str  # PZ, E, P, Q, K, LIFT, PROJ, PROD, MOM, TWIST
+    kind: str  # PZ, E, P, Q, K, LIFT, PROJ, PROD, MOM, MOML, TWIST
     arg: str | None = None
 
     def render(self) -> str:
@@ -54,6 +56,8 @@ class Tok:
             return f"{self.kind}{self.arg}"
         if self.kind == "MOM":
             return f"MOM[{self.arg}]"
+        if self.kind == "MOML":
+            return f"MOML[{self.arg}]"
         return f"{self.kind}[{self.arg}]"
 
 
@@ -145,6 +149,60 @@ def _group_power(group: str, q: int) -> str:
     if re.fullmatch(r"[A-Za-z0-9_]+", group):
         return f"{group}^{q}"
     return f"({group})^{q}"
+
+
+def _group_order(group: str) -> int | None:
+    """
+    Best-effort parse of a (syntactic) finite abelian group descriptor used in demo tokens.
+
+    Supported (non-exhaustive):
+      - Cn
+      - Cn^k
+      - direct products like C2xC3xC5^2 (order multiplies)
+    """
+
+    g = str(group).strip()
+    if not g:
+        return None
+
+    # Split direct products.
+    parts = re.split(r"[x×]", g)
+    if len(parts) > 1:
+        ord_prod = 1
+        for p in parts:
+            p = p.strip()
+            if not p:
+                continue
+            o = _group_order(p)
+            if o is None:
+                return None
+            ord_prod *= int(o)
+        return int(ord_prod)
+
+    # Single factor.
+    m = re.fullmatch(r"C(\d+)(?:\^(\d+))?", g)
+    if not m:
+        return None
+    n = int(m.group(1))
+    if n <= 0:
+        return None
+    k = int(m.group(2)) if (m.group(2) is not None and m.group(2) != "") else 1
+    if k <= 0:
+        return None
+    return int(n**k)
+
+
+def _pow_compact_str(base: int, exp: int, *, max_digits: int = 48) -> str:
+    if exp < 0:
+        return f"{base}^{exp}"
+    try:
+        v = pow(int(base), int(exp))
+    except Exception:
+        return f"{base}^{exp}"
+    s = str(v)
+    if len(s) > int(max_digits):
+        return f"{base}^{exp}"
+    return s
 
 
 def rewrite_once(w: List[Tok]) -> Tuple[List[Tok], bool, str, Optional[Dict[str, object]]]:
@@ -258,6 +316,29 @@ def rewrite_once(w: List[Tok]) -> Tuple[List[Tok], bool, str, Optional[Dict[str,
 
         # Default: strict swap (no certificate).
         return w[:i] + [Tok("MOM", str(q)), X] + w[i + 2 :], True, "RMOM_SWAP", None
+
+    # (RMOML) Fourier distribution law (symbolic): MOM[q] LIFT[G] -> MOML[q;G]
+    # This is a certificate-producing rewrite that "evaluates" the adjacent MOM∘LIFT coupling
+    # into a character-domain expansion placeholder (paper: Anom_G^(q) tower).
+    for i in range(len(w) - 1):
+        if w[i].kind == "MOM" and w[i + 1].kind == "LIFT":
+            q = int(w[i].arg or "1")
+            group = w[i + 1].arg or "G"
+            g_order = _group_order(group)
+            cert: Dict[str, object] = {
+                "kind": "FourierDistribution",
+                "rule": "RMOML",
+                "q": q,
+                "group": group,
+                "basis": f"MOM[{q}]∘LIFT[{group}]",
+                "anom_signature_tower": f"Anom^({q})_{group}(K;theta)",
+                "channel_count": None,
+            }
+            if g_order is not None and q >= 2:
+                cert["group_order"] = int(g_order)
+                cert["channel_count"] = _pow_compact_str(int(g_order), int(q - 1))
+                cert["channel_count_formula"] = f"|G|^{q-1}"
+            return w[:i] + [Tok("MOML", f"{q};{group}")] + w[i + 2 :], True, "RMOML", cert
 
     return w, False, "", None
 

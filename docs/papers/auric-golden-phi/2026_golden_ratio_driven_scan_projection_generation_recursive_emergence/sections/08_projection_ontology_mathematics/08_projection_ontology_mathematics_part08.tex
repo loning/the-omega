@@ -286,6 +286,42 @@ $$
 从而“异常/混合”不仅可被全局有限部签名 \(\mathsf{Anom}_G\) 检测（定义 \ref{def:pom-anom-signature}），也可在纤维内以可逆局部统计被定位：哪些标签在同一纤维内混合、混合的强度与结构，均由 \(\{\mu_\chi(x)\}_{\chi}\) 的局部谱确定。
 \end{corollary}
 
+\begin{proposition}[Fourier 分配律：lift 后的 \(q\)-moment 的严格角色分解]\label{prop:pom-mom-lift-fourier-distribution}
+沿用定义 \ref{def:pom-fiber-fourier-coeff} 的 lift 标签 \(\ell:\Omega_m\to G\)。
+对每个 \(x\in X_m\) 与 \(g\in G\)，记
+\[
+d_m(x,g):=\bigl|\{a\in\Omega_m:\ \Fold_m(a)=x,\ \ell(a)=g\}\bigr|,
+\qquad
+d_m(x)=\sum_{g\in G}d_m(x,g).
+\]
+对每个角色 \(\chi\in\widehat G\) 定义纤维计数的 Fourier 变换
+\[
+\widehat d_m(x,\chi):=\sum_{g\in G} d_m(x,g)\,\overline{\chi(g)}.
+\]
+则对任意整数 \(q\ge 2\) 有严格恒等式
+\[
+\boxed{\;
+\sum_{x\in X_m}\sum_{g\in G} d_m(x,g)^q
+\;=\;
+\frac{1}{|G|^{q-1}}
+\sum_{\substack{\chi_1,\dots,\chi_q\in\widehat G\\ \chi_1\cdots\chi_q=\chi_0}}
+\ \sum_{x\in X_m}\ \prod_{i=1}^q \widehat d_m(x,\chi_i)\;}
+\]
+其中 \(\chi_0\) 为平凡角色。
+\end{proposition}
+\begin{proof}
+对每个固定 \(x\)，由 Fourier 反演
+\(
+d_m(x,g)=\frac{1}{|G|}\sum_{\chi\in\widehat G}\widehat d_m(x,\chi)\chi(g)
+\)。
+将其代入 \(d_m(x,g)^q\) 并对 \(g\in G\) 求和，展开后用角色正交性
+\(
+\sum_{g\in G}\chi_1(g)\cdots\chi_q(g)
+=|G|\cdot \mathbf{1}_{\chi_1\cdots\chi_q=\chi_0}
+\)
+筛出约束 \(\chi_1\cdots\chi_q=\chi_0\)，得到所示恒等式。证毕。
+\end{proof}
+
 \begin{remark}[从全局签名到局部调试补丁]\label{rem:pom-anom-localization-bridge}
 定义 \ref{def:pom-anom-signature} 的 \(\mathsf{Anom}_G(K;\theta)\) 是“交换失败”的常数级全局签名，适用于重写证书的可组合核验与 completion（注 \ref{rem:pom-anom-completion}）。
 推论 \ref{cor:pom-fiber-label-distribution-inversion} 则给出一个更细粒度的局部句法接口：当在某些纤维 \(x\) 上观测到 \(p_x\) 的显著非单点性时，可把“需要分裂/重标的 lift 通道”具体化为对 \(\ell\) 的局部重写（把混合的标签簇拆成独立桶），从而把异常从“签名”升级为“可生成补丁的结构定位量”。

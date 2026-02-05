@@ -92,6 +92,12 @@ E_m\circ \mathrm{LIFT}_G
 等价地，\(\mathrm{Anom}\) 定义了一个可计算的（\(2\)-）上同调类，其消失刻画了交换失败是否可被重写完全消去。
 \end{corollary}
 
+\begin{remark}[带残差的 \(2\)-合流：把“不可交换”内化为中心标签]\label{rem:pom-residual-2confluence}
+在三生成元片段上，我们不要求 \(E_m\) 与 \(\mathrm{LIFT}_G\) \emph{严格}交换，而是要求其交换失败被一个可加的中心标签群 \(\mathcal{A}_G\) 完全承载（定义 \ref{def:pom-anom-accumulation}）。
+于是“合流”应被理解为一种带残差的 \(2\)-合流口径：在固定复杂度上界内，任意两条重写路径都可并到同一个接口正规形（命题 \ref{prop:pom-three-gen-interface-normal-form}），而其残差差异（若出现）必落在命题 \ref{prop:pom-anom-additive-up-to-boundary} 的边界项上；因此 \(\bigl(\mathrm{NF}(w),[\mathrm{Anom}(w)]\bigr)\)（正规形 + 异常上同调类）成为路径不变量。
+这正是推论 \ref{cor:pom-three-gen-normal-form-decidable} 的“正规形判等 + 有限签名核对”在演算学层面的封装：不可交换性不再破坏可推演性，而被提升为可组合、可审计的 \(2\)-态射数据。
+\end{remark}
+
 \begin{remark}[离散联络观点：异常即曲率（闭层规范场强）]\label{rem:pom-anom-as-curvature}
 把对象 \(\mathcal{I}(m;K;\kappa)\) 的参数对 \((m,G)\) 视为一个离散“基底平面”的两条轴：
 分辨率/模数轴 \(m\)（由条件期望 \(E_m\) 给出 coarse-graining 的平行移动），以及内部标签轴 \(G\)（由 \(\mathrm{LIFT}_G\) 给出标签提升的平行移动）。
@@ -106,7 +112,9 @@ E_m\circ \mathrm{LIFT}_G\ \Rightarrow\ \mathrm{LIFT}_G\circ E_m
 \end{remark}
 
 \begin{remark}[面向 completion：critical pairs 决定新增异常生成元]\label{rem:pom-anom-completion}
-推论 \ref{cor:pom-anom-cohomology-class} 的工程含义是：当把投影词片段扩展（例如加入 \(\mathrm{MOM}_q\) 或更一般的 lift/cocycle）时，只需枚举新旧生成元之间的临界对（critical pairs）并对重写系统做 completion，新增的“不可严格交换”将自动表现为 \(\mathcal{A}\)-值标签；异常签名因此成为一个可组合的残差簇，而非逐条规则的临时补丁。三生成元片段上的有界临界对枚举与 completion 审计见注 \ref{rem:pom-threegen-kb-completion-audit}。
+推论 \ref{cor:pom-anom-cohomology-class} 的工程含义是：当把投影词片段扩展（例如加入 \(\mathrm{MOM}_q\) 或更一般的 lift/cocycle）时，只需枚举新旧生成元之间的临界对（critical pairs）并对重写系统做 completion，新增的“不可严格交换”将自动表现为 \(\mathcal{A}\)-值标签；异常签名因此成为一个可组合的残差簇，而非逐条规则的临时补丁。
+例如在四生成元扩展中，\(\mathrm{MOM}_q\) 与 \(\mathrm{LIFT}_G\) 的新耦合由 \((\mathrm{RMOML})\)（命题 \ref{prop:pom-rmoml-sound}）统一归约，而其常数层可核对指纹由高阶异常签名塔 \(\mathsf{Anom}^{(q)}_G\)（定义 \ref{def:pom-anom-signature-tower}）组织。
+三生成元片段上的有界临界对枚举与 completion 审计见注 \ref{rem:pom-threegen-kb-completion-audit}。
 \end{remark}
 
 \begin{remark}[可复现：holonomy/路径差异的自动核验]\label{rem:pom-holonomy-cocycle-audit}
@@ -270,8 +278,32 @@ $$
   在涉及 lift 轴并置时，\(X'=\mathrm{LIFT}_{G^{\times q}}\) 反映“\(q\) 份拷贝的并置提升”；
   在涉及 \(E_m\) 的情形，交换证书允许输出一个可核对的标量残差标签
   \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}(K;\theta)\)（定义 \ref{def:pom-moment-anom-signature}），以承载 \(E_m\) 与 moment 编译在一般情形下的非严格交换。
+  \item \textbf{Moment--Lift 的 Fourier 分配律（高阶扭曲通道展开）：}
+  当正规化后出现相邻复合 \(\mathrm{MOM}_q\circ \mathrm{LIFT}_G\) 时，引入一条把该复合归约到“角色域上的 \(q\)-线性卷积”的分配律证书
+  \[
+  (\mathrm{RMOML})\quad
+  \mathrm{MOM}_q\circ \mathrm{LIFT}_G
+  \ \Rightarrow\
+  \frac{1}{|G|^{q-1}}
+  \bigoplus_{\substack{\chi_1,\dots,\chi_q\in\widehat G\\ \chi_1\cdots\chi_q=\chi_0}}
+  \mathrm{MOM}_{\chi_1,\dots,\chi_q},
+  \]
+  其中右端 \(\mathrm{MOM}_{\chi_1,\dots,\chi_q}\) 表示“在 \(q\) 份拷贝上分别施加 \(\mathrm{TWIST}(\chi_i)\) 后的多扭曲 moment-kernel”（其有限 \(m\) 读出满足命题 \ref{prop:pom-mom-lift-fourier-distribution} 的严格恒等式）。
+  该分配律的可核对输出由高阶异常签名塔 \(\mathsf{Anom}^{(q)}_G(K;\theta)\) 组织（定义 \ref{def:pom-anom-signature-tower}）。
 \end{enumerate}
 \end{definition}
+
+\begin{remark}[可复现：四生成元片段的临界对枚举与 completion 审计]\label{rem:pom-fourgen-kb-completion-audit}
+为把注 \ref{rem:pom-threegen-kb-completion-audit} 的“有界 overlap 穷举审计”推进到含 \(\mathrm{MOM}_q\) 的扩展规则族 \ref{def:pom-four-gen-rewrite-rules}，
+我们提供脚本
+\texttt{scripts/exp\_pom\_projword\_four\_gen\_kb\_completion\_audit.py}：
+在固定复杂度上界（限制 \(m\)、限制 lift 的群列表、限制 moment 阶列表、限制温度参数采样集合）下枚举所有长度 \(3\) 的 overlap 语境，
+并比较两条局部规约分支是否可并（joinable）到同一个接口正规形，同时核对残差计数的一致性（包括 \(E\)--lift 的异常签名与 \((\mathrm{RMOML})\) 导出的高阶异常签名塔占位）。
+脚本输出 JSON 摘要与若干反例轨迹到
+\texttt{artifacts/export/pom\_projword\_four\_gen\_kb\_completion\_audit.json}，
+并生成表 \ref{tab:pom_projword_four_gen_kb_completion_audit} 作为可复现见证：
+\input{sections/generated/tab_pom_projword_four_gen_kb_completion_audit}
+\end{remark}
 
 \begin{proposition}[指数律 \texorpdfstring{$(\mathrm{RMOM})$}{RMOM} 的语义正确性（fiber-product 结合律）]\label{prop:pom-rmom-sound}
 在定义 \ref{def:pom-projword-2cat} 的 \(\mathrm{MOM}_q\) 语义下，规则
@@ -308,6 +340,27 @@ R_m^{(pq)}=\Bigl\{(\omega^{(1)},\dots,\omega^{(pq)})\in\Omega_m^{pq}:\ \Fold_m(\
 随后施加 \(\mathrm{MOM}_q\) 的 \(q\)-重同步积时，状态空间自然为 \((Q\times G)^q\cong Q^q\times G^q\)，并且“逐位同输出”的筛选只约束输出符号，不耦合各份群坐标。
 因此该复合等价于：先在底层做 \(q\)-重同步积得到 \(Q^q\)，再一次性把标签轴提升为 \(G^q\)（即 \(\mathrm{LIFT}_{G^{\times q}}\)），最后再施加同型的输出一致筛选；这正对应于右侧 \(\mathrm{MOM}_q\circ \mathrm{LIFT}_{G^{\times q}}\) 的语义。证毕。
 \end{proof}
+
+\begin{proposition}[Moment--Lift 的 Fourier 分配律证书（\texorpdfstring{$\mathrm{RMOML}$}{RMOML}）]\label{prop:pom-rmoml-sound}
+对任意有限阿贝尔群 \(G\) 与整数 \(q\ge 2\)，复合 \(\mathrm{MOM}_q\circ \mathrm{LIFT}_G\) 的有限尺度 \(q\)-moment 读出满足命题 \ref{prop:pom-mom-lift-fourier-distribution} 的严格恒等式。
+因此 \((\mathrm{RMOML})\)（定义 \ref{def:pom-four-gen-rewrite-rules}）可被视为 \(\mathbf{PW}\) 的一条可组合 \(2\)-态射证书：它把“lift 后再做碰撞”归约为“角色域上的 \(q\)-线性卷积”，并为后续 completion 提供一个有限维、可审计的扭曲通道展开。
+\end{proposition}
+\begin{proof}
+这是把命题 \ref{prop:pom-mom-lift-fourier-distribution} 视为投影词语法层证书的直接翻译。证毕。
+\end{proof}
+
+\begin{definition}[高阶异常签名塔：\texorpdfstring{$\mathsf{Anom}^{(q)}_G$}{AnomGq}]\label{def:pom-anom-signature-tower}
+固定一个带势核 \(K\)（或等价的加权矩阵族 \(M_\theta\)）、一个有限阿贝尔标签群 \(G\) 及整数 \(q\ge 2\)。
+对每个满足 \(\chi_1\cdots\chi_q=\chi_0\) 的 \(q\)-元角色组 \((\chi_1,\dots,\chi_q)\in\widehat G^q\)，令
+\(\zeta^{(q)}_{\theta,\chi_1,\dots,\chi_q}\)
+表示 \((\mathrm{RMOML})\) 右端所对应的“多扭曲 moment-kernel”通道的 \(\zeta\) 接口，并按定义 \ref{def:abel-finite-part} 抽取其 Abel/Hadamard 有限部常数，记为 \(\log\mathfrak{M}_{\chi_1,\dots,\chi_q}(\theta)\)。
+定义\textbf{高阶异常签名塔}为
+\[
+\mathsf{Anom}^{(q)}_{G}(K;\theta)
+:=\Bigl(\log\mathfrak{M}_{\chi_1,\dots,\chi_q}(\theta)\Bigr)_{\substack{\chi_1\cdots\chi_q=\chi_0\\ (\chi_1,\dots,\chi_q)\neq(\chi_0,\dots,\chi_0)}}.
+\]
+它把 lift 与 \(q\)-moment 的耦合从“一阶扭曲通道”（\(\mathsf{Anom}_G\)，定义 \ref{def:pom-anom-signature}）提升为全阶的多扭曲混合项族；并作为 \((\mathrm{RMOML})\) 在常数层的可核对指纹输出进入重写—证书—指纹闭环。
+\end{definition}
 
 \begin{remark}[素因子 moment 编译器：把大阶 \texorpdfstring{$q$}{q} 拆成小阶链并逐步最小化]\label{rem:pom-mom-prime-factor-compiler}
 由 \((\mathrm{RMOM})\) 可将任意 \(q=\prod_i p_i\)（素因子分解）等价实现为一条可审计的 moment 链：
@@ -379,12 +432,13 @@ E_m\circ \mathrm{MOM}_q
 \end{proof}
 
 \begin{remark}[与异常上同调的统一：扩展标签群]\label{rem:pom-anom-cohomology-mom}
-在带 \(\mathrm{MOM}\) 的片段上，可把 \(\mathsf{Anom}_G\) 与 \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}\) 一并视为 \(\mathbf{PW}\) 的 \(2\)-态射标签：
+在带 \(\mathrm{MOM}\) 的片段上，可把 \(\mathsf{Anom}_G\)、\(\mathsf{Anom}^{(q)}_{G}\)（定义 \ref{def:pom-anom-signature-tower}）与 \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}\) 一并视为 \(\mathbf{PW}\) 的 \(2\)-态射标签：
 把标签群从 \(\mathcal{A}_G\) 扩展为
 \(
-\mathcal{A}_G\oplus\mathcal{A}_{\mathrm{mom}}
+\mathcal{A}_G\oplus\mathcal{A}^{(q)}_{G}\oplus\mathcal{A}_{\mathrm{mom}}
 \)
-（固定矩阶时 \(\mathcal{A}_{\mathrm{mom}}:=\RR\)，或对一组矩阶取 \(\RR^{\mathcal{Q}}\)），并令每一次 \(E_m\)--\(\mathrm{MOM}_q\) 的交换步标签取 \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}\)。
+其中 \(\mathcal{A}^{(q)}_{G}\) 可取为按 \(\{(\chi_1,\dots,\chi_q):\chi_1\cdots\chi_q=\chi_0,\ (\chi_1,\dots,\chi_q)\neq(\chi_0,\dots,\chi_0)\}\) 维度标号的有限维实向量空间；固定矩阶时 \(\mathcal{A}_{\mathrm{mom}}:=\RR\)（或对一组矩阶取 \(\RR^{\mathcal{Q}}\)）。
+并令每一次 \((\mathrm{RMOML})\) 的展开步标签取 \(\mathsf{Anom}^{(q)}_{G}\)，每一次 \(E_m\)--\(\mathrm{MOM}_q\) 的交换步标签取 \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}\)。
 则定义 \ref{def:pom-anom-accumulation} 与命题 \ref{prop:pom-anom-additive-up-to-boundary} 的 holonomy/coboundary 口径在形式上原封不动地推广：改变规约优先级只改变边界项，而“残差是否为零”仍是路径不变量。
 \end{remark}
 
@@ -404,10 +458,12 @@ $$
 \mathrm{MOM}_Q\ \circ\ \mathrm{LIFT}_{G'}\ \circ\ \mathrm{PROJ}_{u'}\ \circ\ E_{m'}
 \;}
 $$
-并伴随两类可核对输出：
+并伴随三类可核对输出：
 (i) 来自 \(E_m\)--lift 交换的异常签名 \(\mathsf{Anom}_{G'}(K;\theta)\)，
+（在需要时）
+(ii) 若选择对前缀 \(\mathrm{MOM}_Q\circ \mathrm{LIFT}_{G'}\) 施加 \((\mathrm{RMOML})\) 做角色域展开，则得到高阶异常签名塔 \(\mathsf{Anom}^{(Q)}_{G'}(K;\theta)\)（定义 \ref{def:pom-anom-signature-tower}），
 以及（在需要时）
-(ii) 来自 \(E_m\)--\(\mathrm{MOM}\) 外提交换的 moment-anomaly 标签 \(\mathsf{Anom}^{(Q)}_{\mathrm{mom}}(K;\theta)\)（定义 \ref{def:pom-moment-anom-signature}）。
+(iii) 来自 \(E_m\)--\(\mathrm{MOM}\) 外提交换的 moment-anomaly 标签 \(\mathsf{Anom}^{(Q)}_{\mathrm{mom}}(K;\theta)\)（定义 \ref{def:pom-moment-anom-signature}）。
 其中 \(Q\) 由 \((\mathrm{RMOM})\) 合并得到，\((G',u',m')\) 由三生成元正规化确定（并按外提中的类型提升对 lift 参数作一致更新）。
 \end{proposition}
 
@@ -634,6 +690,21 @@ moment-kernel 的一步转移计数只依赖于：每个轨道当前所处的内
 因此更推荐的工程路径是：\(\widetilde A_q\) 提供“从第一性原理可生成的后端核”，而最小阶递推/最小 realization 作为“前端压缩与证书”。
 \end{remark}
 
+\begin{remark}[对称幂函子观点：\texorpdfstring{$\widetilde A_q$}{Aq} 是替换算子在 \texorpdfstring{$\mathrm{Sym}^q$}{Symq} 上的表示]\label{rem:pom-moment-symmetric-power-substitution-operator}
+沿用注 \ref{rem:pom-moment-symmetric-power-coefficient-extraction} 的转移多项式 \(T^{(b)}_s(\mathbf{x})\)。
+令 \(R:=\RR_{\ge 0}[\,x_s:\ s\in Q\,]\) 为多项式半环，并对每个输出符号 \(b\in A_{\mathrm{out}}\) 定义一个\textbf{替换算子}
+\[
+\mathcal{T}_b:R\to R,\qquad
+x_s\longmapsto T^{(b)}_s(\mathbf{x}),
+\]
+并按半环结构延拓为代数自同态；再令 \(\mathcal{T}:=\sum_{b\in A_{\mathrm{out}}}\mathcal{T}_b\)（按系数加法求和）。
+则对每个 \(q\ge 2\)，\(\mathcal{T}\) 在齐次次数 \(q\) 的子空间 \(R_q\)（基取 \(x^\nu=\prod_s x_s^{\nu(s)}\)，\(\nu\in\mathcal{N}_q\)）上的矩阵表示恰为命题 \ref{prop:pom-moment-symmetric-power} 的对称幂商核 \(\widetilde A_q\)：
+\[
+\mathcal{T}(x^\nu)=\sum_{\nu'\in\mathcal{N}_q}\widetilde A_q(\nu,\nu')\,x^{\nu'}.
+\]
+因此在“门”的语言里，\(\mathrm{MOM}_q\) 可视为对底层确定性核施加 \(\mathrm{Sym}^q\)（对称幂）函子后得到的可组合算子，而 \(\widetilde A_q\) 只是该算子在单项式基下的一个实现表示。
+\end{remark}
+
 \subsubsection{谱资源类型：\texorpdfstring{$\Sigma_{\mathrm{space}}$}{Sigma_space} 与 \texorpdfstring{$\mathbf{Conv}$}{Conv} 的凸闭包单子}\label{subsec:pom-spectral-resource-type}
 
 上文已把加权碰撞 moment-kernel 的 Perron 根 \(r_q(u)\) 组织为二维压力曲面
@@ -688,6 +759,18 @@ b\le b'\ \Longrightarrow\ \mathbb{T}(b)\le \mathbb{T}(b').
 \mathbf{PW}\xrightarrow{\ \Sigma_{\mathrm{space}}(-;\chi,u)\ }\mathbf{Bud}\xrightarrow{\ \mathbb{T}\ }\mathbf{Conv},
 \]
 其中 \(\mathbb{T}\dashv J\) 给出的幂等闭包单子提供一个规范的“类型正规化器”（type normalizer）。
+
+\begin{remark}[常数级异常 vs.\ 指数级异常：\texorpdfstring{$\mathsf{Anom}_G$}{AnomG} 与 \texorpdfstring{$r^{(w)}_{q,\chi}$}{rqchi} 的互补核验]\label{rem:pom-constant-vs-exponential-anom}
+异常签名 \(\mathsf{Anom}_G(K;\theta)\)（定义 \ref{def:pom-anom-signature}）记录的是扭曲通道在 \(\zeta\) 的 Abel/Hadamard 有限部上的\emph{常数级漂移}；
+而 \(\Sigma_{\mathrm{space}}(w)(q;\chi,u)=\log r^{(w)}_{q,\chi}(u)-q\log|A_{\mathrm{out}}|\) 记录的是 \(q\)-碰撞谱的\emph{指数级主尺度}。
+因此可定义一个与角色通道相关的指数级“谱异常”（在同一温度 \(u\) 下比较非平凡扭曲与平凡通道）：
+\[
+\Delta^{\mathrm{exp}}_{\chi}(w;q,u)
+:=\log r^{(w)}_{q,\chi}(u)-\log r^{(w)}_{q,\chi_0}(u).
+\]
+当 \(\Delta^{\mathrm{exp}}_{\chi}\equiv 0\)（在可审计的 \(q\)-窗口/网格上）时，表示该扭曲通道对碰撞谱的指数级增长不产生影响；而 \(\mathsf{Anom}_G\) 是否为零则进一步刻画常数级残差是否可被重写消去。
+这为“交换失败”的诊断提供一条二维交叉核验：同一角色族既可在常数层通过 \(\mathsf{Anom}\) 核对，也可在指数层通过 \(\Delta^{\mathrm{exp}}_{\chi}\) 核对。
+\end{remark}
 
 \begin{remark}[用类型定向重写：把“优化”提升为正规形选择]\label{rem:pom-type-directed-normalization}
 当同一读出任务存在多条可审计编译路径（例如序门硬化的两条路径：温度硬化 vs.\ moment-分位-CRT 空间化，注 \ref{rem:pom-hardening-u-vs-q}），往往会得到一族在可见输出口径下等价（或 \(\varepsilon\)-sound 等价，定义 \ref{def:pom-eps-sound-rewrite}）的候选投影词 \(\{w_i\}\)。

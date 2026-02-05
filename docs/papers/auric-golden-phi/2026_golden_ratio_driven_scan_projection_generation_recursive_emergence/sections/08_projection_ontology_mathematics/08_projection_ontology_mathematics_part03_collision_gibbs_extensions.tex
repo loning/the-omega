@@ -37,11 +37,11 @@ A_q=P^{-1}AP,\qquad P\in\mathrm{GL}_d(\ZZ),
 
 \begin{corollary}[常数成本自由能求值器：由 Hankel 最小实现锁定 \texorpdfstring{$r_q$}{rq}]\label{cor:pom-hankel-free-energy-evaluator}
 在命题 \ref{prop:pom-hankel-realization-protocol} 的设定下，记最小维数为 \(d\)。
-则仅由 \(2d\) 个样本点
+则存在一个可审计偏移 \(\ell_q\ge 0\)（例如定义 \ref{def:pom-hankel-normal-form} 中使 Hankel 块可逆的最小偏移）使得仅由 \(2d\) 个样本点
 \(
-S_q(2),S_q(3),\dots,S_q(2d+1)
+S_q(\ell_q+2),S_q(\ell_q+3),\dots,S_q(\ell_q+2d+1)
 \)
-即可构造 \(H_0,H_1\)，从而得到最小实现矩阵 \(A=H_0^{-1}H_1\)。
+即可构造 \(H_0^{(\ell_q)},H_1^{(\ell_q)}\)，从而得到最小实现矩阵 \(A=(H_0^{(\ell_q)})^{-1}H_1^{(\ell_q)}\)。
 其特征值集合给出递推特征多项式的根，因此指数增长主尺度满足
 \[
 r_q=\rho(A),
@@ -53,6 +53,47 @@ r_q=\rho(A),
 \)
 （见命题 \ref{prop:pom-fiber-index-cgf} 与注 \ref{rem:pom-lambda-tau-shift}）都可在 \(O(d^3)\) 的矩阵代数成本内读出，而无需把 \(m\) 推至很大再拟合斜率。
 \end{corollary}
+
+\begin{definition}[Hankel-正规形：\texorpdfstring{$\mathrm{HANKELNF}_q$}{HANKELNFq}]\label{def:pom-hankel-normal-form}
+固定 \(q\ge 2\)，令 \(a_n:=S_q(n+2)\)（\(n\ge 0\)），并令 \(d:=\mathrm{rank}(H)\) 为其 Hankel 秩（等价于最小递推阶数/最小线性实现维数）。
+由于 \(\mathrm{rank}(H)=d\)，存在某个偏移 \(\ell\ge 0\) 使得 \(d\times d\) Hankel 块
+\[
+H_0^{(\ell)}:=(a_{\ell+i+j})_{0\le i,j\le d-1},
+\qquad
+H_1^{(\ell)}:=(a_{\ell+i+j+1})_{0\le i,j\le d-1},
+\]
+可逆。
+令 \(\ell_q\) 为使 \(\det(H_0^{(\ell)})\neq 0\) 的最小偏移（一个可审计的整数证书；在实践中可由 Hankel-minor 搜索脚本输出）。
+并定义 Hankel shift realization
+\[
+A:=(H_0^{(\ell_q)})^{-1}H_1^{(\ell_q)},
+\qquad
+\alpha^{\mathsf T}:=(a_{\ell_q},a_{\ell_q+1},\dots,a_{\ell_q+d-1}),
+\qquad
+\beta:=e_0.
+\]
+称
+\[
+\boxed{\;
+\mathrm{HANKELNF}_q:=\bigl(d,\ell_q;\ H_0^{(\ell_q)},H_1^{(\ell_q)};\ A,\alpha,\beta\bigr)\;}
+\]
+为 \(q\)-moment 的\textbf{Hankel-正规形}：它是从有限段 \(a_{\ell_q},\dots,a_{\ell_q+2d-1}\) 直接、确定地构造出的最小 realization（命题 \ref{prop:pom-hankel-realization-protocol}）。
+\end{definition}
+
+\begin{proposition}[moment 的有限采样判等：\texorpdfstring{$2d$}{2d} 点决定全序列]\label{prop:pom-moment-finite-sampling-decidable}
+在定义 \ref{def:pom-hankel-normal-form} 的设定下，设两条实现路径（例如两种编译/状态编码）给出两条 \(q\)-moment 序列 \(S_q,S'_q\)，并且二者的 Hankel 秩同为 \(d\)。
+若
+\[
+S_q(m)=S'_q(m)\qquad(m=\ell_q+2,\ \ell_q+3,\ \dots,\ \ell_q+2d+1),
+\]
+则它们具有同一个 Hankel-正规形 \(\mathrm{HANKELNF}_q\)，从而对所有 \(m\ge 2\) 都有 \(S_q(m)=S'_q(m)\)；并且由该正规形导出的全部指纹（递推、特征多项式、Perron 根 \(r_q\)、以及后续的压力/预算读出等）完全一致。
+\end{proposition}
+\begin{proof}
+将条件改写为 \(a_n=a'_n\) 对所有 \(\ell_q\le n\le \ell_q+2d-1\) 成立。
+因此两侧由该长度 \(2d\) 的窗口构造出的 \(H_0^{(\ell_q)},H_1^{(\ell_q)}\)（以及 \(A=(H_0^{(\ell_q)})^{-1}H_1^{(\ell_q)}\)、\(\alpha,\beta\)）逐项相同，故 \(\mathrm{HANKELNF}_q=\mathrm{HANKELNF}'_q\)。
+由 \(a_n=\alpha^{\mathsf T}A^n\beta\) 的最小 realization 表达（命题 \ref{prop:pom-hankel-realization-protocol}）立得对所有 \(n\ge 0\) 有 \(a_n=a'_n\)，即对所有 \(m\ge 2\) 有 \(S_q(m)=S'_q(m)\)。
+其余指纹一致性由同一正规形共享同一 \(A\) 与同一特征多项式直接推出。证毕。
+\end{proof}
 
 \begin{remark}[双路一致性审计：residue-DP 拟合 vs.\ realization Perron 根]\label{rem:pom-dp-vs-realization-audit}
 对每个固定 \(q\)，可并行输出两条可复核读出：
