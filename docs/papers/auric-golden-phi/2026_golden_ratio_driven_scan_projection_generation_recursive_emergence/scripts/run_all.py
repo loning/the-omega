@@ -692,6 +692,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="phi_m_sync_theory",
+            script="exp_phi_m_sync_theory.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/phi_m_sync_theory.json",
+                "sections/generated/tab_phi_m_sync_theory.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_primitive_spectrum",
             script="exp_sync_kernel_primitive_spectrum.py",
             args=[],

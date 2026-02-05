@@ -97,8 +97,24 @@ D_{\mathrm{sync}}(m):=\max\{\,t\ge 0:\exists\,y\in Y_m\ \text{s.t. }|S_t|>1\,\}.
 \begin{remark}[歧义壳作为子系统在 \texorpdfstring{$m\ge 3$}{m>=3} 时为空]\label{rem:Ym-amb-empty}
 在推论 \ref{cor:Ym-ambiguity-shell-low-entropy} 中，我们把“完全不进入单点本质分量”的点集记为歧义壳子系统 \(Y_m^{\mathrm{amb}}\)。
 而定理 \ref{thm:Ym-ambiguity-shell-dag} 的结论 (2) 表明：当 \(m\ge 3\) 时，从任意输出 \(y\in Y_m\) 出发的确定化滤波在至多 \(m\) 步内必进入并永远停留在单点态。
-因此在本文的 Zeckendorf 折叠模型里，\(Y_m^{\mathrm{amb}}=\varnothing\)（两边移位意义下不存在“永远保持歧义”的轨道）；所谓“歧义壳”表征的是一个\emph{有限步同步延迟层}，其最坏延迟由推论 \ref{cor:Ym-sync-delay} 精确给出。
+因此在本文的 Zeckendorf 折叠模型里，\(Y_m^{\mathrm{amb}}=\varnothing\)（两边移位意义下不存在“永远保持歧义”的轨道）；所谓“歧义壳”真正表达的是一个\emph{有限步同步延迟层}，其最坏延迟由推论 \ref{cor:Ym-sync-delay} 精确给出。
+\par
+更一般地，条件 \(Y_m^{\mathrm{amb}}=\varnothing\) 可在确定化状态图上提升为一个\textbf{可计算的同步延迟定理}：
+若在 $H_m^{\mathrm{det}}$ 中把所有单点态及其出边删去、得到非单点态诱导子图 $H_m^{\mathrm{amb}}$，则
+\[
+Y_m^{\mathrm{amb}}=\varnothing
+\quad\Longleftrightarrow\quad
+H_m^{\mathrm{amb}}\ \text{不含任何有向环}.
+\]
+事实上，若 $H_m^{\mathrm{amb}}$ 含有向环，则从初始状态可达性出发，沿该环可生成一条永不进入单点态的双边标记序列，从而得到 \(Y_m^{\mathrm{amb}}\neq\varnothing\)，矛盾；反向蕴含由定义即得。
+因此在 \(Y_m^{\mathrm{amb}}=\varnothing\) 时，$H_m^{\mathrm{amb}}$ 为 DAG，从而存在统一有限同步步数
+\[
+L_m:=D_{\mathrm{sync}}(m)+1<\infty,
+\]
+使得任意 \(y\in Y_m\) 的确定化滤波轨道在不超过 \(L_m\) 步内进入单点态并从此保持单点。并且 $L_m$ 可在有限图上直接审计：对 DAG 做最长路径 DP 即得最小的 \(D_{\mathrm{sync}}(m)\)（从而得到 \(L_m\)）。脚本 \texttt{scripts/exp\_phi\_m\_sync\_theory.py} 输出该计算的可复现证书（表 \ref{tab:phi_m_sync_theory}）。
 \end{remark}
+
+\input{sections/generated/tab_phi_m_sync_theory}
 
 \begin{proposition}[主极点留数比作为常数级核指纹：一个可审计的新不变量]\label{prop:Ym-zeta-residue-ratio}
 设 cover 的 \(\zeta\) 与内禀 \(\zeta\) 在共同的主极点模长 \(z_\star=\rho_m^{-1}\)（其中 \(\rho_m:=\rho(A_m)=\rho(B_m)\)）处均为一阶极点。将其 Laurent 主部写为
@@ -422,6 +438,95 @@ h_{\mathrm{top}}(Z)=\lim_{n\to\infty}\frac{1}{n}\log N_Z(n)
 \par
 另一方面，\(h_{\mathrm{top}}(Y_m)=\log 2\) 等价于 \(Y_m\) 的块增长率至少为 \(2^n\)（例如取熵定义的下极限即可），故比值满足所示指数衰减，其中 \(\varepsilon_m>0\) 由推论 \ref{cor:Ym-ambiguity-shell-low-entropy} 给出。证毕。
 \end{proof}
+
+\begin{definition}[同步时间与同步尾]\label{def:Ym-sync-time}
+对任意 \(y\in Y_m\)，从初始候选集 \(S_0:=V_m\) 出发递推
+\[
+S_{t+1}:=\delta_m(S_t,y_t)\qquad (t\ge 0).
+\]
+定义\textbf{同步时间}（第一次进入单点态的时刻）
+\[
+T_m(y):=\inf\{\,t\ge 0:\ |S_t|=1\,\}\in\NN\cup\{\infty\}.
+\]
+若 \(T_m(y)=\infty\)，则称 \(y\) 永不同步（对应歧义壳轨道）。
+\end{definition}
+
+\begin{theorem}[同步尾界：最大熵测度下的指数型同步时间预算]\label{thm:Ym-sync-tail}
+设 \(Y_m\) 的最大熵测度为 \(\nu_m\)（命题 \ref{prop:Phi_m-parry-pushforward}）。若歧义壳子系统 \(Y_m^{\mathrm{amb}}\neq\varnothing\)，令
+\[
+\varepsilon_m:=\log 2-h_{\mathrm{top}}(Y_m^{\mathrm{amb}})>0
+\]
+为推论 \ref{cor:Ym-ambiguity-shell-exponentially-thin} 给出的熵缺口。则存在常数 \(C_m>0\) 与 \(n_0\in\NN\)，使得对所有 \(n\ge n_0\) 有
+\[
+\boxed{\ \nu_m(T_m>n)\ \le\ C_m\,e^{-\varepsilon_m n}\ }.
+\]
+从而：
+\begin{enumerate}
+  \item \textbf{期望同步时间有限：}\(\mathbb{E}_{\nu_m}[T_m]<\infty\)，并且通常规模为 \(O(1/\varepsilon_m)\)。
+  \item \textbf{同步时间预算：}对任意 \(0<\delta<1\)，若
+  \[
+  n\ \ge\ \frac{1}{\varepsilon_m}\log\frac{C_m}{\delta},
+  \]
+  则 \(\nu_m(T_m>n)\le \delta\)。
+\end{enumerate}
+当 \(Y_m^{\mathrm{amb}}=\varnothing\) 时，\(T_m(y)\le L_m\) 对所有 \(y\in Y_m\) 成立，其中 \(L_m<\infty\) 由备注 \ref{rem:Ym-amb-empty} 给出，因此同步尾在有限处截断。
+\end{theorem}
+
+\begin{proof}
+记 \(H_m^{\mathrm{det}}\) 为确定化右解析表示（定义 \ref{def:Phi_m-right-resolving}），并以 \(S_t\) 表示其状态轨道。
+由命题 \ref{prop:det-candidate-set-monotone} 的单点态前向封闭性，一旦 \(|S_t|=1\) 则对所有 \(s\ge t\) 都有 \(|S_s|=1\)。因此事件 \(\{T_m>n\}\) 等价于“读入前 \(n\) 步后仍处于非单点态”，并可写成长度-\(n\) 柱集的并：
+\[
+\{T_m>n\}=\bigcup_{w\in\mathcal{W}_{m}^{\mathrm{unsync}}(n)}[w],
+\]
+其中 \(\mathcal{W}_{m}^{\mathrm{unsync}}(n)\subset X_m^n\) 为那些使得从初始状态 \(S_0=V_m\) 出发读入 \(w\) 后得到 \(|S_n|>1\) 的输出块集合。
+\par
+\textbf{(i) 柱集概率的统一上界。}
+由命题 \ref{prop:Phi_m-parry-pushforward}，\(\nu_m\) 是覆盖 SFT 上 Parry 测度的推前。Parry 测度对任意长度-\(n\) lift 柱集具有 \(\asymp e^{-h_{\mathrm{top}}(Y_m)n}=2^{-n}\) 的 Gibbs 型界；推前至 \(Y_m\) 后仍得到统一上界：存在常数 \(C_m^{\mathrm{cyl}}>0\) 与 \(n_1\in\NN\)，使得对所有允许的长度-\(n\) 输出柱集 \([w]\)（\(n\ge n_1\)）有
+\[
+\nu_m([w])\le C_m^{\mathrm{cyl}}\,2^{-n}.
+\]
+\par
+\textbf{(ii) 未同步前缀数目的指数界。}
+集合 \(\mathcal{W}_{m}^{\mathrm{unsync}}(n)\) 正是 $H_m^{\mathrm{det}}$ 的非单点态子图 $H_m^{\mathrm{amb}}$ 中、从初始状态出发长度为 \(n\) 的标记路径的标记集合。
+由于 $H_m^{\mathrm{amb}}$ 为有限图，其长度-\(n\) 标记数满足
+\[
+|\mathcal{W}_{m}^{\mathrm{unsync}}(n)|
+\ \le\
+C_m^{\mathrm{lang}}\exp\!\bigl(h_{\mathrm{top}}(Y_m^{\mathrm{amb}})\,n\bigr)
+\]
+对某个常数 \(C_m^{\mathrm{lang}}>0\) 与所有充分大 \(n\) 成立（指数率由歧义壳本质分量的谱半径给出，等于 \(h_{\mathrm{top}}(Y_m^{\mathrm{amb}})\)）。
+\par
+将 (i)(ii) 代入并用并集上界，得对充分大 \(n\)
+\[
+\nu_m(T_m>n)
+\le
+\sum_{w\in\mathcal{W}_{m}^{\mathrm{unsync}}(n)}\nu_m([w])
+\le
+|\mathcal{W}_{m}^{\mathrm{unsync}}(n)|\cdot C_m^{\mathrm{cyl}}2^{-n}
+\le
+(C_m^{\mathrm{cyl}}C_m^{\mathrm{lang}})\exp\!\bigl(-(\log 2-h_{\mathrm{top}}(Y_m^{\mathrm{amb}}))n\bigr),
+\]
+即所示尾界，其中 \(\varepsilon_m=\log 2-h_{\mathrm{top}}(Y_m^{\mathrm{amb}})\)。
+\par
+期望界由
+\(
+\mathbb{E}[T_m]=\sum_{n\ge 0}\nu_m(T_m>n)
+\)
+与指数尾收敛得到；同步预算由解不等式 \(C_m e^{-\varepsilon_m n}\le\delta\) 得到。证毕。
+\end{proof}
+
+\begin{corollary}[时间层右可逆性的二分律：有限延迟或指数稀薄壳]\label{cor:Ym-time-layer-dichotomy}
+在推论 \ref{cor:Ym-singleton-essential-finite-delay} 的“单点本质态”假设下，窗口层的多对一（即 \(\Fold_m\) 在单窗上的非单射）在时间层的右可逆性上只可能表现为以下二者之一：
+\begin{enumerate}
+  \item \textbf{强可逆（有限延迟同步）：}若 \(Y_m^{\mathrm{amb}}=\varnothing\)，则存在统一有限同步步数 \(L_m<\infty\)（备注 \ref{rem:Ym-amb-empty}），并在延迟 \(L_m\) 之后右解码在线成立。
+  \item \textbf{弱不可逆（指数稀薄壳）：}若 \(Y_m^{\mathrm{amb}}\neq\varnothing\)，则歧义仅能长期驻留在严格低熵子系统上；对最大熵测度 \(\nu_m\)，同步时间 \(T_m\) 具有指数尾界
+  \(
+  \nu_m(T_m>n)\le C_m e^{-\varepsilon_m n}
+  \)
+（定理 \ref{thm:Ym-sync-tail}），从而“长期不可逆”在最大熵部分上以指数小概率出现。
+\end{enumerate}
+因此，“窗口多对一”与“时间多对一”在本模型中被严格区分：时间层的右不可逆要么根本不存在（有限延迟后必同步），要么仅存在于指数稀薄的歧义壳层中。
+\end{corollary}
 
 \begin{remark}[\texorpdfstring{$\eta_m$}{eta_m} 的可观测解释：最大熵层“可逆性”的谱级证书]\label{rem:eta_m_as_reversibility_certificate}
 命题 \ref{prop:Ym-zeta-residue-ratio} 引入的 \(\eta_m\) 是 cover-\(\zeta\) 与内禀-\(\zeta\) 在共同主极点处的留数比。
