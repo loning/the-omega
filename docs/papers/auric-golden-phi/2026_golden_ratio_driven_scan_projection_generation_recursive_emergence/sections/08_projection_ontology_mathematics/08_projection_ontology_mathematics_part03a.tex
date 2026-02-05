@@ -972,6 +972,17 @@ D_{2k}^{(3)}=F_{k+2}-F_{k-3}.
 与定理 \ref{thm:pom-second-max-fiber-closed-form} 相同，把“最小缺陷”替换为第二小的端点禁配对即可。由引理 \ref{lem:pom-forbidden-pair-fib-gap}(2)，禁止配对 \(\{1,4\}\) 会削去 \(I_{k-5}=F_{k-3}\)，从而从 \(D_{2k}=I_k=F_{k+2}\) 得到 \(D_{2k}^{(3)}=F_{k+2}-F_{k-3}\)。证毕。
 \end{proof}
 
+\begin{remark}[奇数支第三大纤维的稳定闭式（可审计）]\label{rem:pom-third-max-fiber-odd-closed-form}
+表 \ref{tab:fold_max_fiber_achievers_phase} 的可审计窗口 \(m\le 32\) 已给出第三大纤维多重度 \(D_m^{(3)}\) 的 DP 输出。
+从该表可直接读出：奇数分支从 \(m=19\) 起进入稳定相。
+写 \(m=2k+1\)，则对所有 \(k\ge 9\)（即 \(m\ge 19\)）逐项满足精确闭式
+\[
+\boxed{\;
+D_{2k+1}^{(3)}=2F_{k+1}-\bigl(F_{k-4}+F_{k-8}\bigr).\;}
+\]
+该闭式与偶数支定理 \ref{thm:pom-third-max-fiber-even-closed-form} 一起，把顶端三层谱缺口锁定为显式 Fibonacci 尾项，从而可在不引入任何新假设的前提下继续推进“谱缺口 \(\Rightarrow\) 高阶矩选择”类的定量推断（见注 \ref{rem:pom-third-max-gap-parity}）。
+\end{remark}
+
 \begin{remark}[顶层纤维谱的 Fibonacci 梯级缺口]\label{rem:pom-top-fiber-spectrum-ladder}
 定理 \ref{thm:pom-second-max-fiber-closed-form} 与定理 \ref{thm:pom-third-max-fiber-even-closed-form} 表明顶层纤维谱并非“连续散布”，而是在顶端出现刚性的 Fibonacci 梯级缺口：
 \[
@@ -982,12 +993,57 @@ D_{2k}-D_{2k}^{(3)}=F_{k-3}\qquad(k\ge 6),
 \[
 D_{2k+1}-D_{2k+1}^{(2)}=F_{k-4}\qquad(k\ge 5).
 \]
+并且在奇数支第三层稳定相（注 \ref{rem:pom-third-max-fiber-odd-closed-form}）上还有
+\[
+D_{2k+1}-D_{2k+1}^{(3)}=F_{k-4}+F_{k-8}\qquad(k\ge 9).
+\]
 等价地，对所有 \(m\ge 10\)（即 \(\lfloor m/2\rfloor\ge 5\)）有统一式
 \[
 \boxed{\;
 D_m^{(2)}=D_m-F_{\lfloor m/2\rfloor-4}\; }.
 \]
 换言之，离开最大纤维态的最小“空间损失”被 Fibonacci 递推锁定为离散能级。
+\end{remark}
+
+\begin{remark}[第三层谱缺口平台与 \(q\)-阈值（奇偶分离）]\label{rem:pom-third-max-gap-parity}
+定义第三层抑制因子
+\[
+\gamma_m^{(3)}:=\frac{D_m^{(3)}}{D_m}\in(0,1).
+\]
+偶数支由定理 \ref{thm:pom-max-fiber} 与定理 \ref{thm:pom-third-max-fiber-even-closed-form} 给出精确比值
+\[
+\frac{D_{2k}^{(3)}}{D_{2k}}
+=1-\frac{F_{k-3}}{F_{k+2}}
+\longrightarrow
+1-\varphi^{-5}
+\approx 0.9098300563.
+\]
+奇数支在第三层稳定闭式（注 \ref{rem:pom-third-max-fiber-odd-closed-form}）下，亦有精确比值
+\[
+\frac{D_{2k+1}^{(3)}}{D_{2k+1}}
+=1-\frac{F_{k-4}+F_{k-8}}{2F_{k+1}}
+\longrightarrow
+1-\tfrac12(\varphi^{-5}+\varphi^{-9})
+\approx 0.9483372194.
+\]
+因此第三层在奇数窗上渐近地\textbf{更贴近最大层}，奇偶分离在顶端三层谱中首次显性出现。
+\par
+进一步，若用
+\[
+\left(\gamma_m^{(3)}\right)^q\approx e^{-1}
+\qquad\Longleftrightarrow\qquad
+q\approx \frac{1}{-\log \gamma_m^{(3)}}
+\]
+作为“第三层在 \(q\)-阶矩里变得可忽略”的粗阈值，则由上述两条平台常数可得到两种特征尺度：
+\[
+q_{\mathrm{even}}\approx \frac{1}{-\log(1-\varphi^{-5})}\approx 10.58,
+\qquad
+q_{\mathrm{odd}}\approx \frac{1}{-\log\bigl(1-\tfrac12(\varphi^{-5}+\varphi^{-9})\bigr)}\approx 18.85.
+\]
+这预测了一个新的、无需额外假设的效应：随 \(q\) 增大，“第三层变得不可见”的发生会在偶数窗上显著更早，从而给高阶选择/坍缩现象提供一个可直接对照的奇偶指纹。
+\par
+机制上，该分离可在同一干涉图独立集 DP 框架内解释：最大层对应“缺陷自由”的步长 \(2\) 链（引理 \ref{lem:pom-independence-dp-radius2} 中 \(p(t)=t-2\) 全程成立）因而给出 Fibonacci；第二/第三层对应于最早可触发的 \(p(t)\) 跳跃（禁配对）所剥离的 Fibonacci 尾项（见引理 \ref{lem:pom-forbidden-pair-fib-gap}）。
+奇数窗叠加引理 \ref{lem:pom-one-bit} 的隐藏位端点约束，使第三层缺陷以“配对缺陷”形式在两端耦合地传播，从而出现两段尾损失 \(F_{k-4}+F_{k-8}\) 的叠加。
 \end{remark}
 
 \begin{remark}[常数级的相位/缺陷资源标尺]\label{rem:pom-phase-defect-resource-meters}
