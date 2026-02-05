@@ -1077,6 +1077,68 @@ M_q(m):=\bigl(M_{q,-h}(m),\ldots,M_{q,h}(m)\bigr)\in\RR^{2h+1}
 将 \(\psi_i\) 解释为新增的独立线性可观测/读出轴（或本体语义下的新增纤维坐标）即得结论。
 \end{proof}
 
+\begin{definition}[共振 syndrome（校验子）]\label{def:pom-resonance-syndrome}
+沿用推论 \ref{cor:pom-delta-min-extra-readouts} 的模态向量
+\(
+M_q(m)\in\RR^{2h+1}
+\)。
+在共振假设下，存在一个维数至多为 \(d_q\) 的可见子空间 \(V_q^{\mathrm{vis}}\subseteq\RR^{2h+1}\)，使得对所有 \(m\ge m_0\) 有 \(M_q(m)\in V_q^{\mathrm{vis}}\)，并且其余维数缺口为 \(\Delta(q)=2h+1-d_q\)（定义 \ref{def:pom-resonance-gap-delta}）。
+\par
+取一组\textbf{线性无关}的线性泛函 \(L_{q,1},\dots,L_{q,\Delta(q)}\in(\RR^{2h+1})^\ast\)，它们均在 \(V_q^{\mathrm{vis}}\) 上消失（即对任意 \(v\in V_q^{\mathrm{vis}}\) 都有 \(L_{q,j}(v)=0\)），并定义线性映射
+\[
+L_q:\RR^{2h+1}\to\RR^{\Delta(q)},\qquad
+L_q(v):=\bigl(L_{q,1}(v),\dots,L_{q,\Delta(q)}(v)\bigr).
+\]
+定义\textbf{syndrome} 为向量值序列
+\[
+R_q(m):=L_q\bigl(M_q(m)\bigr)\in\RR^{\Delta(q)},
+\qquad
+R_{q,j}(m):=\bigl(R_q(m)\bigr)_j.
+\]
+\end{definition}
+
+\begin{corollary}[syndrome 的自洽零律与可证伪审计]\label{cor:pom-resonance-syndrome-audit}
+在定义 \ref{def:pom-resonance-syndrome} 的设定下，对所有 \(m\ge m_0\) 都有
+\[
+\boxed{\;R_q(m)\equiv 0\;}
+\qquad\text{（即 }R_{q,j}(m)=0,\ j=1,\dots,\Delta(q)\text{）}.
+\]
+因此：对任意来自模拟或真实输入的模态观测 \(\widehat M_q(m)\in\RR^{2h+1}\)，若存在某个 \(m\) 使 \(L_q(\widehat M_q(m))\neq 0\)，则该观测不满足共振窗口内的模态约束（定理 \ref{thm:pom-moment-resonance} 与命题 \ref{prop:pom-delta-counts-constraints} 的口径），从而在严格意义下不可由同一投影门实现的可见 realization 产生。
+\end{corollary}
+\begin{proof}
+由 \(M_q(m)\in V_q^{\mathrm{vis}}\) 以及 \(L_{q,j}|_{V_q^{\mathrm{vis}}}\equiv 0\)，立得 \(R_q(m)=L_q(M_q(m))=0\)。
+反向的“可证伪”陈述只是该零律的逆否命题表述。证毕。
+\end{proof}
+
+\begin{corollary}[寄存器意义：共振缺口 \texorpdfstring{$\Delta(q)$}{Delta(q)} 等于可省寄存器数]\label{cor:pom-resonance-register-savings}
+在共振假设下，存在一个可逆线性变换 \(T_q\in\mathrm{GL}_{2h+1}(\RR)\)，使得对所有 \(m\ge m_0\) 都有
+\[
+\boxed{\;
+T_q\,M_q(m)=\bigl(\widetilde M_q(m),\,0_{\Delta(q)}\bigr),\qquad
+\widetilde M_q(m)\in\RR^{d_q}\; }.
+\]
+因此：
+\begin{itemize}
+  \item 若非共振（\(d_q=2h+1\)），推进/存储模态向量一般需要 \(2h+1\) 个自由寄存器；
+  \item 若共振且 \(d_q<2h+1\)，则可将模态推进压缩到 \(d_q\) 维，名义坐标中多出的 \(\Delta(q)=2h+1-d_q\) 个寄存器在严格模型下被强制为零（可用作 syndrome 校验子）。
+\end{itemize}
+\end{corollary}
+\begin{proof}
+由定义 \ref{def:pom-resonance-syndrome}，存在线性映射 \(L_q:\RR^{2h+1}\to\RR^{\Delta(q)}\) 使得 \(\ker(L_q)\supseteq V_q^{\mathrm{vis}}\) 且 \(\mathrm{rank}(L_q)=\Delta(q)\)。
+取 \(\Delta(q)\) 个线性无关的行向量作为 \(L_q\) 的行，并再补上 \(d_q\) 个线性无关的行向量，使得合起来构成 \((\RR^{2h+1})^\ast\) 的一组基；将这 \(2h+1=d_q+\Delta(q)\) 个行向量堆叠成矩阵即得可逆的 \(T_q\in\mathrm{GL}_{2h+1}(\RR)\)。
+由于对所有 \(m\ge m_0\) 有 \(M_q(m)\in V_q^{\mathrm{vis}}\subseteq\ker(L_q)\)，故
+\(
+L_q(M_q(m))=0
+\)，等价于 \(T_q M_q(m)\) 的最后 \(\Delta(q)\) 个坐标恒为零；前 \(d_q\) 个坐标记为 \(\widetilde M_q(m)\) 即得所示形式。
+寄存器表述只是该坐标压缩的直接翻译。证毕。
+\end{proof}
+
+\begin{remark}[共振作为资源：约束缺口 \texorpdfstring{$\Delta(q)$}{Delta(q)} 增强审计性]\label{rem:pom-resonance-as-resource}
+当 \(\Delta(q)>0\) 时，共振不仅意味着“名义模态数过多”，更意味着存在 \(\Delta(q)\) 条独立的线性校验律可用于一致性审计：syndrome \(R_q(m)=L_q(M_q(m))\) 在严格模型下恒为零（推论 \ref{cor:pom-resonance-syndrome-audit}）。
+因此在已知最小递推/最小 realization 的口径下，高阶矩并不必然更“昂贵”：一方面其推进可由低维递推完成（维数 \(d_q\)），另一方面其额外的缺口 \(\Delta(q)\) 反而提供更多可证伪的自洽约束方向。
+这把共振从“观察现象”转写为“可用校验码”：缺口越大，可用的 syndrome 方程越多。
+\end{remark}
+
 \begin{remark}[已核验窗口内的 \texorpdfstring{$\Delta(q)$}{Delta(q)} 读数（\(q=9,\dots,17\)）]\label{rem:pom-delta-q9-17}
 在已核验的最小递推阶数 \(d_q\)（表 \ref{tab:fold_collision_moment_recursions_9_17}）下，可直接计算 \(\Delta(q)\) 并得到一个可跨版本对比的整数指纹序列。
 下表由脚本 \texttt{scripts/exp\_fold\_collision\_resonance\_nullmodes\_hankel.py} 一键生成：

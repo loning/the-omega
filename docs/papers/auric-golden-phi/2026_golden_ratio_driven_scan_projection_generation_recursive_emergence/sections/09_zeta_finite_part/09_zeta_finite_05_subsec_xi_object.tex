@@ -495,6 +495,62 @@ n\ \approx\
 因此在固定 \((m,\delta)\) 下，所需读出深度 \(n\) 仅随 \(|G_m|\) 以对数增长，而样本量 \(N\) 沿 \(\lambda^{(1/2+\varepsilon)n}\) 呈二次放大。
 \end{corollary}
 
+\begin{corollary}[确定性三预算定律：差异度 \texorpdfstring{$\Rightarrow$}{=>} TV \texorpdfstring{$\Rightarrow$}{=>} Chebotarev]\label{cor:auditable-profinite-chebotarev-three-budget-deterministic}
+在定理 \ref{thm:auditable-profinite-chebotarev-finite} 的统一谱隙假设下，若折叠直方图 \(\hat{\pi}_{m,N}\) 来自旋转扫描（Sturmian）模型（相位样本 \(x_t=\{x_0+t\alpha\}\)）在分辨率 \(m\) 上的折叠推前，则对任意 cylinder \(C\subseteq G_m\) 与任意 \(n,N\ge 1\) 都有完全确定性的三预算上界
+\[
+\boxed{\;
+\left|\Pi_{n,m}(C)-\frac{|C|}{|G_m|}\right|
+\ \le\
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}
+\ +\
+K_2\,(m+1)\,D_N^*(\alpha;x_0)\;}
+\]
+其中 \(D_N^*(\alpha;x_0)\) 为星差异度（第 \ref{sec:statistical-stability} 节），\(K_1=K_1(m)\) 与 \(K_2\) 的含义同定理 \ref{thm:auditable-profinite-chebotarev-finite}。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:auditable-profinite-chebotarev-finite} 的误差分解（尾项 \(+\) TV 项）有
+\[
+\left|\Pi_{n,m}(C)-\frac{|C|}{|G_m|}\right|
+\ \le\
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}
+\ +\
+K_2\cdot D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}}).
+\]
+另一方面，对旋转扫描模型，定理 \ref{thm:fold-suite} 的第 (7) 条给出推前不等式
+\(
+D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\le (m+1)D_N^*(\alpha;x_0)
+\)。
+代入即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$(n,N)$}{(n,N)} 平衡律与三角可见域]\label{cor:auditable-profinite-chebotarev-balance-triangle}
+在推论 \ref{cor:auditable-profinite-chebotarev-three-budget-deterministic} 的设定下，给定目标误差 \(\tau>0\)。若选取 \((n,N)\) 使得
+\[
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}\ \le\ \frac{\tau}{2},
+\qquad
+(m+1)D_N^*(\alpha;x_0)\ \le\ \frac{\tau}{2K_2},
+\]
+则对任意 cylinder \(C\subseteq G_m\) 都有
+\(
+\left|\Pi_{n,m}(C)-\frac{|C|}{|G_m|}\right|\le \tau
+\)。
+在“最省分配”意义下，可将两项误差取同阶平衡
+\[
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}
+\ \approx\
+K_2\,(m+1)\,D_N^*(\alpha;x_0),
+\]
+从而把时间轴 \(n\) 与相位样本轴 \(N\) 组织为同一条可审计预算律：\(n\) 的主阶由 \(\log|G_m|\) 与 \(\log(1/\tau)\) 控制，而 \(N\) 的主阶由差异度衰减律与系数 \((m+1)\) 控制。
+\par
+若进一步采用尺度化扩散口径的可见域（猜想 \ref{conj:scaled-kernel-grh-diffusive} 给出：对任意固定 \(\varepsilon_0>0\)，在区域 \(m\le n^{1/2-\varepsilon_0}\) 内存在一致主项），则上述两条预算可同时写成一个“可见三角域”：
+\[
+\boxed{\;
+m\ \lesssim\ n^{1/2-\varepsilon_0},
+\qquad
+(m+1)D_N^*(\alpha;x_0)\ \lesssim\ \tau\; }.
+\]
+\end{corollary}
+
 \begin{theorem}[热力学缺陷的“可见极限”：纤维歧义的 TV/KL 上界]\label{thm:defect-limited-audit}
 固定层 \(m\) 与任意边缘分布 \(\pi\in\Delta(X_m)\)，令 \(\widetilde\pi\) 为其纤维均匀最大熵提升（定义 \ref{def:pom-maxent-lift}）。
 则对任意 lift \(\mu\in\Delta(\Omega_m)\) 满足 \((\Fold_m)_*\mu=\pi\)，有显式 KL 上界
