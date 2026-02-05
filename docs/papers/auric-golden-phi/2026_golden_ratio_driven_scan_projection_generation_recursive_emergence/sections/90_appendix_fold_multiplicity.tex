@@ -751,6 +751,110 @@ d^{\mathrm{bin}}_m(w):=\bigl|\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\bigr|
 只依赖于 \((V_m(w),w_m)\)。
 \end{proposition}
 
+\begin{corollary}[\texorpdfstring{$m=6$}{m=6} 的显式纤维分类与刚性直方图]\label{cor:fold-bin-m6-fiber-hist}
+取 \(m=6\)，则 \(K(6)=9\)。对任意 \(w\in X_6\)，令 \(V:=V_6(w)\)。
+则二进制区间折叠 \(\mathrm{Fold}^{\mathrm{bin}}_6:\{0,\dots,63\}\to X_6\) 的纤维满足：
+\[
+\mathrm{Fold}^{\mathrm{bin}}_6{}^{-1}(w)=
+\begin{cases}
+\{V,\ V+F_{9}\}, & w_6=1,\\[4pt]
+\{V,\ V+F_{8},\ V+F_{9},\ V+F_{10}\}, & w_6=0\ \text{且}\ V\le 8,\\[4pt]
+\{V,\ V+F_{8},\ V+F_{9}\}, & w_6=0\ \text{且}\ V> 8.
+\end{cases}
+\]
+因此 \(d^{\mathrm{bin}}_6(w):=\bigl|\mathrm{Fold}^{\mathrm{bin}}_6{}^{-1}(w)\bigr|\in\{2,3,4\}\)，并且尺寸直方图为
+\[
+\#\{w\in X_6:\ d^{\mathrm{bin}}_6(w)=2\}=8,\qquad
+\#\{w\in X_6:\ d^{\mathrm{bin}}_6(w)=3\}=4,\qquad
+\#\{w\in X_6:\ d^{\mathrm{bin}}_6(w)=4\}=9.
+\]
+\end{corollary}
+\begin{proof}
+由 \eqref{eq:K-of-m} 与 \(2^6-1=63\) 知 \(F_{10}=55\le 63<F_{11}=89\)，故 \(K(6)=9\)，尾部只可能涉及 \((c_7,c_8,c_9)\) 三位（权重 \(F_8,F_9,F_{10}\)）。
+由命题 \ref{prop:fold-bin-fiber-tail}，
+\[
+n=V+F_8c_7+F_9c_8+F_{10}c_9
+=V+21c_7+34c_8+55c_9,
+\]
+并满足相邻约束 \(c_7c_8=0\)、\(c_8c_9=0\) 与边界约束 \(w_6c_7=0\)，且 \(n\le 63\)。
+\par
+\noindent\textbf{(1) 若 \(w_6=1\)。} 则 \(c_7=0\)。
+允许的 \((c_8,c_9)\) 为 \((0,0),(1,0),(0,1)\)，但此时 \(V\ge F_7=13\)，故 \(V+55>63\) 排除 \(c_9=1\)。
+于是仅剩 \(n\in\{V,V+34\}=\{V,V+F_9\}\)。
+\par
+\noindent\textbf{(2) 若 \(w_6=0\)。} 此时允许 \(c_7=1\)（但仍需 \(c_7c_8=0\)）。
+若 \(c_9=1\)，则 \(c_8=0\) 且 \(n\ge V+55\le 63\) 强制 \(V\le 8\)，并且同余量级下 \(c_7=1\) 会导致 \(V+21+55>63\) 不可行，故必须 \(c_7=0\)。
+因此当 \(V\le 8\) 时四个偏移 \(0,F_8,F_9,F_{10}\) 均可行，得到大小为 \(4\) 的纤维；
+当 \(V>8\) 时偏移 \(F_{10}\) 不可行，得到大小为 \(3\) 的纤维 \(\{V,V+F_8,V+F_9\}\)。
+\par
+\noindent\textbf{(3) 直方图计数。}
+当 \(w_6=1\) 时必有 \(w_5=0\)，其前缀 \(w_1\cdots w_4\) 可为任意 \(X_4\) 元素，故此类输出数为 \(|X_4|=F_6=8\)，对应 \(d^{\mathrm{bin}}_6=2\)。
+当 \(w_6=0\) 且 \(V>8\) 时，等价于 \(w_5=1\) 且 \((w_1,w_2,w_3)\in X_3\setminus\{000\}\)（因为 \(w_4=0\) 由合法性强制），故恰有 \(|X_3|-1=F_5-1=4\) 个输出，对应 \(d^{\mathrm{bin}}_6=3\)。
+剩余 \(21-8-4=9\) 个输出对应 \(V\le 8\)，故 \(d^{\mathrm{bin}}_6=4\)。
+\end{proof}
+
+\begin{definition}[二进制区间折叠的 fold-gauge 群]\label{def:fold-bin-gauge-group}
+固定 \(m\ge 1\)。定义二进制区间折叠的纤维自同构群
+\[
+\mathcal{G}^{\mathrm{bin}}_m
+:=
+\mathrm{Aut}\!\bigl(\mathrm{Fold}^{\mathrm{bin}}_m\bigr)
+:=
+\left\{\sigma\in \mathrm{Sym}(\{0,\dots,2^m-1\}):\ \mathrm{Fold}^{\mathrm{bin}}_m\circ\sigma=\mathrm{Fold}^{\mathrm{bin}}_m\right\}.
+\]
+等价地，\(\sigma\) 可在每条纤维 \(\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\) 内任意置换，但不改变稳定类型标签 \(w\in X_m\)。
+\end{definition}
+
+\begin{proposition}[纤维置换分解]\label{prop:fold-bin-gauge-decomposition}
+令 \(d^{\mathrm{bin}}_m(w):=\bigl|\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\bigr|\)。
+则有自然同构
+\[
+\mathcal{G}^{\mathrm{bin}}_m\ \cong\ \prod_{w\in X_m} S_{d^{\mathrm{bin}}_m(w)}.
+\]
+\end{proposition}
+\begin{proof}
+\(\mathrm{Fold}^{\mathrm{bin}}_m\) 的纤维 \(\{\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\}_{w\in X_m}\) 给出 \(\{0,\dots,2^m-1\}\) 的一个不交分割。
+对任意 \(\sigma\in\mathrm{Aut}(\mathrm{Fold}^{\mathrm{bin}}_m)\) 与任意 \(n\in \mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\)，都有
+\(\mathrm{Fold}^{\mathrm{bin}}_m(\sigma(n))=\mathrm{Fold}^{\mathrm{bin}}_m(n)=w\)，故 \(\sigma\) 必在每条纤维内部置换。
+反过来，若对每个 \(w\in X_m\) 任取一个纤维内置换 \(\sigma_w\in S_{d^{\mathrm{bin}}_m(w)}\)，把它们拼成对全体 \(\{0,\dots,2^m-1\}\) 的置换 \(\sigma=\prod_w\sigma_w\)，则显然满足 \(\mathrm{Fold}^{\mathrm{bin}}_m\circ\sigma=\mathrm{Fold}^{\mathrm{bin}}_m\)。
+由此得到所示直积分解同构。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$m=6$}{m=6} 的 gauge 群与 \texorpdfstring{$(\ZZ_2)^{21}$}{(Z2)^21} 电荷格]\label{cor:fold-bin-gauge-m6}
+在 \(m=6\) 的二进制区间折叠口径下，
+\[
+\mathcal{G}^{\mathrm{bin}}_6
+\ \cong\
+S_{2}^{\,8}\times S_{3}^{\,4}\times S_{4}^{\,9}.
+\]
+并且其 Abel 化为
+\[
+\bigl(\mathcal{G}^{\mathrm{bin}}_6\bigr)^{\mathrm{ab}}
+\ \cong\
+(\ZZ_2)^{21}.
+\]
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:fold-bin-m6-fiber-hist}，在 \(m=6\) 时纤维尺寸直方图为
+\(
+2:8,\ 3:4,\ 4:9
+\)。
+代入命题 \ref{prop:fold-bin-gauge-decomposition} 得到
+\(
+\mathcal{G}^{\mathrm{bin}}_6\cong S_2^{8}\times S_3^{4}\times S_4^{9}
+\)。
+\par
+对 \(n\ge 2\)，对称群 \(S_n\) 的 Abel 化由符号映射给出：
+\(
+S_n^{\mathrm{ab}}\cong \ZZ_2
+\)。
+因此
+\[
+\bigl(\mathcal{G}^{\mathrm{bin}}_6\bigr)^{\mathrm{ab}}
+\cong (\ZZ_2)^{8+4+9}=(\ZZ_2)^{21}.
+\]
+\end{proof}
+
 \begin{corollary}[最大纤维、组合上界与饱和判别]\label{cor:fold-bin-saturation}
 对任意 \(m\ge 1\)，最大纤维由 \(w=0^m\) 取得，并满足组合上界
 \begin{equation}\label{eq:fold-bin-upper}
