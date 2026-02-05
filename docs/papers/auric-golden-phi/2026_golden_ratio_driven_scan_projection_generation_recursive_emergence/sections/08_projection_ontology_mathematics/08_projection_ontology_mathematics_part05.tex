@@ -11,12 +11,23 @@ n\ \gtrsim\ \frac{\log(1/\varepsilon)}{\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)
 因此序投影的时间代价可由扭曲谱隙显式量化。
 \end{corollary}
 
-\begin{remark}[序投影的谱量刻度]
-该结论表明：$P_{\le}$ 的时间代价不应仅以输入规模刻画，而应以谱量
+\begin{remark}[序投影的谱量刻度（谱隙=本体时间尺度）]\label{rem:pom-order-mixing-scale}
+该结论表明：$P_{\le}$ 的时间代价不应仅以输入规模刻画，而应以“最坏扭曲比”
+\[
+\eta_\infty(u):=\frac{\Lambda(u)}{\lambda_1(u)}
+=\sup_{\chi\neq 1}\frac{\rho(M_\chi(u))}{\rho(M_1(u))}
+\in(0,1)
+\]
+为基本尺度（定理 \ref{thm:kernel-chebotarev-exp} 的扭曲块口径；或命题 \ref{prop:pom-profinite-artin-hilbert} 的 profinite 角色对角化形式）。
+等价地，可取
+\[
+\tau_{\mathrm{mix}}(u):=\frac{1}{-\log \eta_\infty(u)}=\frac{1}{\log(\lambda_1(u)/\Lambda(u))}
+\]
+作为序投影门的内禀时间单位，并随误差门槛 $\varepsilon$ 作对数放大：
 \(
-\tau_{\mathrm{mix}}=1/\log(\lambda_1/\Lambda)
+n\gtrsim \tau_{\mathrm{mix}}(u)\log(1/\varepsilon)
 \)
-为基本尺度，并随误差门槛 $\varepsilon$ 作对数放大。它是“序投影门”的本体时间刻度。
+（由推论 \ref{cor:pom-order-mixing}）。
 \end{remark}
 
 \begin{remark}[角色投影的混合尺度与数值锚点]\label{rem:pom-chi-mixing}
@@ -56,6 +67,19 @@ n\ \gtrsim\ \frac{\log(1/\varepsilon)}{\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)
 定理 \ref{thm:pom-order-spatialization} 表明：序投影的时间瓶颈可通过增加模轴束转移为可并行的空间代价。在并行 CRT 口径下，序判定的深度由重建电路决定，而非随位长线性增长；因此 $P_{\le}$ 的“不可并行增长”可被视为\emph{未激活足够模轴时}的结构性症状。
 \end{remark}
 
+\begin{remark}[素数支持计数：模寄存器占用的自然分解]\label{rem:pom-mod-support-count}
+令 \(m=\prod_{p\mid m}p^{k_p}\)。
+把同余轴 \(\widehat{\ZZ}\cong\prod_p\ZZ_p\)（定义 \ref{def:pom-profinite}）截断到模 \(m\) 等价于：只触及有限多条 \(p\)-轴，并在每条轴上只需 \(k_p\) 位的 \(p\)-进深度。
+因此可把“模寄存器占用”分解为两项可审计计数：
+\[
+S_{\mathrm{mod}}(m):=\#\{p:\ p\mid m\},\qquad
+R_{\mathrm{mod}}(m):=\sum_{p\mid m}k_p.
+\]
+前者刻画并行需要激活多少条素数轴，后者刻画在这些轴上需要多少总深度（与 prime-fiber 的有限支撑口径同构；定义 \ref{def:pom-prime-fiber}）。
+在 ISA 资源口径下，\(P_\chi(\bmod m)\) 的空间开销天然受 \((S_{\mathrm{mod}}(m),R_{\mathrm{mod}}(m))\) 控制；
+而一旦需要从同余类中选取\emph{规范代表}（如最小非负余数），问题即回到序投影 \(P_{\le}\) 的不可约读出（推论 \ref{cor:pom-order-bottleneck}）。
+\end{remark}
+
 \subsection{熵—延迟互补的结构猜想}\label{subsec:pom-entropy-delay}
 \begin{conjecture}[延迟与 carry-free 复杂度的互补]\label{conj:pom-entropy-delay}
 对固定基数与同一值不变量模板（零式 $+$ $q$-场），若在线归一化核的延迟 $\delta_Z$ 被压低，则其 carry-free 骨架的分支复杂度（例如 $\rho(A_0)$ 或对应 $\zeta$ 的谱指纹）必须上升；反之，若要求 carry-free 骨架更紧（低熵），则必须付出更长的延迟。该趋势与 $9/13/21$-local 三核的 carry-free $\zeta$ 三分分类一致（定理 \ref{thm:carry-free-zeta-trichotomy}）。
@@ -75,6 +99,20 @@ n\ \gtrsim\ \frac{\log(1/\varepsilon)}{\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)
 \paragraph{一句话结构定理}
 数学的本体结构是“局部演化 $U$ + 三个投影门”：$P_Z$ 把值纤维群胚轨道投影到 Zeckendorf 横截面，其空间缺陷由 $d_m$ 与 $E_m$ 描述并在 primitive 循环尺度上重整化为 $\log\mathfrak{M}$ 与 Dirichlet--Mertens 常数张量；$P_{\mathrm{prim}}$ 把时间迹投影到 primitive 原子层并与 $Z=E\circ M\circ T$ 的交换图严格对齐；$P_{\le,b}$ 把平移纤维轨道投影到基本域横截面并给出商余，角色/同余读出则由 $P_\chi$（扭曲矩阵与常数张量实现）统一编码，其时间尺度由 $\rho/\lambda$ 给出。加减乘除商余的差异只体现在投影词组合方式与线性化深度（素数纤维或相位纤维路线）的选择上。
 
+\paragraph{统一结论簇：加减乘除商余的非并行开销是同一类投影门的不可约成本}
+在成本模型
+\(
+T_I(n;m)=k_Z\delta_Z+k_{\le}T_{\le}(n)+k_{\downarrow}T_{\downarrow}(m)+D_U(n)
+\)
+（定义 \ref{def:pom-cost}）下，“六种算术”的差异并不来自新的本体原语，而来自两点：
+\begin{enumerate}
+  \item \textbf{线性化放在哪条先验纤维：}同一语义可选择在尺度纤维/相位纤维/素数寄存器/同余轴上完成线性化（\(\mathcal{S}_\varphi,\mathcal{T},\mathcal{P},\widehat{\ZZ}\)；定义 \ref{def:pom-fiber-kernel-choice}），从而把增长项留在演化深度 \(D_U\) 中，或外置为轴束的空间占用（例如 \((S_{\mathrm{mod}},R_{\mathrm{mod}})\)，注 \ref{rem:pom-mod-support-count}）。
+  \item \textbf{投影词中是否不可避免地出现序门：}一旦语义包含最小性/唯一性/不等式等全局约束，序投影 \(P_{\le}\)（或其软化 \(\mathrm{PROJ}_u\)）不可约地出现（推论 \ref{cor:pom-order-bottleneck}），并引入由最坏扭曲谱隙控制的本体时间尺度 \(\tau_{\mathrm{mix}}(u)\)（推论 \ref{cor:pom-order-mixing} 与注 \ref{rem:pom-order-mixing-scale}）。
+\end{enumerate}
+特别地：若 \(k_{\le}=0\)，则非并行延迟只含常数级的 \(\delta_Z\)（规范投影门），与输入规模无关；若 \(k_{\le}>0\)，则必须付出由 \(\tau_{\mathrm{mix}}(u)\) 刻度的时间成本，并可按定理 \ref{thm:pom-order-spatialization} 用模轴束把该时间瓶颈空间化转移。
+素数轴在此处扮演公共索引：它既是乘法线性化的坐标轴（素数寄存器纤维 \(\mathcal{P}\)，定义 \ref{def:pom-prime-fiber}），也是同余/角色读出的完备化轴（\(\widehat{\ZZ}\cong\prod_p\ZZ_p\)，定义 \ref{def:pom-profinite}）；相位/角色坐标化则必然引入 \(u=e^\theta\) 的指数权重与 \(e^{2\pi i\langle k,x\rangle}\) 的归一化常数（注 \ref{rem:pom-congruence-invlimit}）。
+表 \ref{tab:pom-isa-minsig} 将这一原则落实为一张 ISA 级最小签名表：只要出现 \(P_{\le}\)，就必然出现由谱隙刻度的非并行时间；否则均为常数延迟门。
+
 \subsection{ISA 与微码：投影词的抽象层实现}\label{subsec:pom-isa}
 \paragraph{可见寄存器（外表）}
 抽象层可取可数无限寄存器 $\{Z_i\}_{i\in\mathbb N}$；具体实现可截断为有限集合（例如 $Z_0,\dots,Z_{31}$）。可见寄存器内容始终保持在 $X_\infty$ 的规范地址上；写回时默认触发 $P_Z$。
@@ -89,12 +127,35 @@ n\ \gtrsim\ \frac{\log(1/\varepsilon)}{\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)
   \item \texttt{ZSUB rd,ra,rb}（比较路线）：$W=(1,1)$。
   \item \texttt{ZSUBR rd,ra,rb}（符号内化路线）：$W=(1,0)$ 但 $\delta_Z$ 增大。
   \item \texttt{ZCMP rt,ra,rb}：$W=(0,1)$。
+  \item \texttt{ZMOD rt,ra,m}（纯 residue 读出）：$W=(0,0)$，但激活 $\widehat{\ZZ}$；其空间占用由 $(S_{\mathrm{mod}}(m),R_{\mathrm{mod}}(m))$ 计数（注 \ref{rem:pom-mod-support-count}）。
+  \item \texttt{ZMODN rd,ra,m}（规范代表/最小非负余数）：$W=(0,1)$（需要 $P_{\le}$）。
   \item \texttt{ZDIVMOD rq,rr,ra,rb}：依实现可取 $W\approx(2,\Theta(n))$ 或 $W\approx(2,2)$。
   \item \texttt{ZNORM rd,rs}：显式 $P_Z$，$W=(1,0)$。
   \item \texttt{ZRESCALE rd,rs}：显式 $\mathrm{RESCALE}\downarrow$，$W=(0,0)$ 但 $k_{\downarrow}=1$。
   \item \texttt{ZPRIM rs}：原子层读出，$W^{\mathrm{full}}=(0,1,0)$。
   \item \texttt{FSTEP rs,prog}（FRACTRAN 一步）：$W=(0,1)$（prime-core first-fit 更新；见小节 \ref{subsec:pom-fractran}）。
 \end{itemize}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\caption{算术 ISA 的最小投影门签名：非并行开销由投影词中的 $P_Z$ 与 $P_{\le}$ 决定（定义 \ref{def:pom-cost}）。当 $k_{\le}>0$ 时，其时间尺度由混合量 $\tau_{\mathrm{mix}}(u)$ 控制（推论 \ref{cor:pom-order-mixing}）。}
+\label{tab:pom-isa-minsig}
+\begin{tabular}{p{0.18\linewidth} p{0.20\linewidth} p{0.12\linewidth} p{0.18\linewidth} p{0.26\linewidth}}
+\toprule
+语义指令 & 典型纤维路线 & $W_{\min}=(k_Z,k_{\le})$ & 激活纤维 $\mathcal{F}$ & 不可约时间标尺（非并行）\\
+\midrule
+\texttt{ZADD}（ADD） & scale-route & $(1,0)$ & $\{\mathcal{S}_\varphi\}$ & $\delta_Z$\\
+\texttt{ZSUB}（SUB, cmp） & chi/CRT-route & $(1,1)$ & $\{\widehat{\ZZ}\}$ & $\delta_Z+\tau_{\mathrm{mix}}(u)\log(1/\varepsilon)$\\
+\texttt{ZSUBR}（SUB, signed） & scale-route & $(1,0)$ & $\{\mathcal{S}_\varphi\}$ & 常数（较大 $\delta_Z$，以表示换序门）\\
+\texttt{ZMUL}（MUL） & phase/prime-route & $(1,0)$ & $\{\mathcal{T}\}$ 或 $\{\mathcal{P}\}$ & $\delta_Z + D_U(n)$（增长项留在 $D_U$）\\
+\texttt{ZDIVMOD}（DIVMOD） & order-hard/退火 & $(2,1)$ & 依实现（常含 $\widehat{\ZZ}$） & $\ge 2\delta_Z+\tau_{\mathrm{mix}}(u)\log(1/\varepsilon)$\\
+\texttt{ZMOD}（MOD, residue） & profinite readout & $(0,0)$ & $\{\widehat{\ZZ}\}$ & 时间常数；空间占用 $(S_{\mathrm{mod}},R_{\mathrm{mod}})$\\
+\texttt{ZMODN}（MOD, norm） & canonical rep & $(0,1)$ & $\{\widehat{\ZZ}\}$ & $\tau_{\mathrm{mix}}(u)\log(1/\varepsilon)$\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \paragraph{共振/碰撞读出指令：\texttt{MOM} 协处理器}
 除“加减乘除商余”的值层指令外，本文的高阶碰撞矩 \(S_q(m)\)（定理 \ref{thm:pom-moment-resonance}）提供了一类\textbf{独立的可审计读出运算}：其接口由“已核验最小递推 + Hankel 证书抽取”完全确定，可作为共振机制的可执行后端。
