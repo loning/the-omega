@@ -24,6 +24,7 @@
 \midrule
 组合计数核对 & \path{python3 scripts/exp_counts_check.py --m-max 16} & \path{sections/generated/counts_check.tex}\\
 第一层纤维谱/熵（截断族对照） & \path{python3 scripts/exp_fiber_spectrum.py --m 16 --truncation <name>} & \path{sections/generated/fiber_entropy_summary_compare.tex}\\
+Fold 碰撞矩的 Fourier 角色扫描（不枚举） & \path{python3 scripts/exp_fold_collision_fourier_scan.py --ms 12,14,16,18,20,22,24,26 --topk 10} & \path{sections/generated/fold_collision_fourier_scan_summary.tex}\\
 Hilbert 尺度压缩（2D/3D/2D$\wedge$3D，对照，多 seed） & \path{python3 scripts/exp_hilbert_scale_truncation.py --m-from 12 --m-to 6 --seeds 0,...,7} & \path{sections/generated/hilbert_scale_truncation_m12_to_m6_compare.tex}\\
 Hilbert 分块局域性（值无关的 sanity check） & \path{python3 scripts/exp_hilbert_partition_locality.py --m-from 12 --m-to 6} & \path{sections/generated/hilbert_partition_locality_m12_to_m6.tex}\\
 Hilbert 块压缩算法对照（多 seed） & \path{python3 scripts/exp_hilbert_block_compress_compare.py --m-from 12 --m-to 6 --seeds 0,...,7} & \path{sections/generated/hilbert_block_compress_compare_m12_to_m6.tex}\\
@@ -84,6 +85,19 @@ $$
 \input{sections/generated/fiber_entropy_summary_compare}
 \paragraph{误差预算与失败点检查。}
 \AuditTag 本实验为确定性遍历（枚举 $\Omega_m$ 的全部 $2^m$ 个微态），统计误差为 $0$。失败点来自折叠实现不一致或计数错误；脚本生成的熵与分布摘要可与组合计数核对（例如总质量归一性）进行一致性检查。
+
+\subsection{碰撞矩的 Fourier 角色扫描（不枚举 \texorpdfstring{$\Omega_m$}{Omega m}）}
+\MathTag
+第 5 节把“同像/碰撞”严格归约到模 $F_{m+2}$ 的同余计数（命题 \ref{prop:fold_congruence_characterization}），并给出碰撞矩
+$$
+S_2(m)=\sum_{x\in X_m}\abs{\mathcal F_m(x)}^2
+$$
+的 Fourier--Parseval 表达（推论 \ref{cor:S2_parseval}）。
+因此，即使不枚举 $\Omega_m$ 的全部 $2^m$ 个微态，也可以通过对全部角色 $j\in\ZZ/F_{m+2}\ZZ$ 扫描 $\abs{\widehat c_m(j)}$ 来得到 $S_2(m)$ 与“最坏扭曲”候选（见第 16 节猜想 \ref{conj:max_fourier_at_fib_resonance}）。
+
+\input{sections/generated/fold_collision_fourier_scan_summary}
+\paragraph{误差预算与失败点检查。}
+\AuditTag 本实验为确定性数值计算（复杂度约为 $O(mF_{m+2})$），统计误差为 $0$；误差来源主要是浮点舍入。脚本以对称性（例如 $j$ 与 $-j$ 的同值性）与若干已知恒等式做一致性断言，并在不一致时报错退出。
 
 \subsection{Hilbert 递归尺度压缩：从 $m'=12$ 到 $m=6$ 的时间纤维对照}
 为把第 10--11 节讨论的“Hilbert 自相似驱动的尺度压缩”落实为可复现实例，本小节固定尺度压缩 $m'=12\to m=6$，并在“空间输出必须遵循 Zeckendorf 稳定语言 $X_6$”的约束下，对三类压缩规则做确定性对照：

@@ -35,14 +35,14 @@ $$
 $$
 N(b)=\sum_{i=1}^{m} b_i F_{i+1}.
 $$
-则 $0\le N(b)\le F_{m+3}-1$。因此其 Zeckendorf 规范形系数 $(z_k)_{k\ge 2}$ 至多在 $k=m+2$ 处出现非零项：对所有 $k\ge m+3$，必有 $z_k=0$。
+则 $0\le N(b)\le F_{m+3}-2$。因此其 Zeckendorf 规范形系数 $(z_k)_{k\ge 2}$ 至多在 $k=m+2$ 处出现非零项：对所有 $k\ge m+3$，必有 $z_k=0$。
 \end{lemma}
 
 \begin{proof}
 \MathTag
 由 $b_i\in\{0,1\}$ 得
 $$
-N(b)\le \sum_{i=1}^{m} F_{i+1}=\sum_{k=2}^{m+1}F_k=F_{m+3}-1,
+N(b)\le \sum_{i=1}^{m} F_{i+1}=\sum_{k=2}^{m+1}F_k=F_{m+3}-2,
 $$
 其中最后一步为标准 Fibonacci 求和恒等式。若 $k\ge m+3$ 且 $z_k=1$，则 $N(b)\ge F_k\ge F_{m+3}$，与上界矛盾。证毕。
 \end{proof}
@@ -254,3 +254,185 @@ $$
 \varphi=\frac{1+\sqrt 5}{2}.
 $$
 该估计表明：在固定折叠规则下，第一层时间纤维的平均规模随 $m$ 指数增长，因而观测压缩的“信息缺失量”在一般情况下随分辨率提高而增加。Fibonacci 渐近与相关数论统计性质参照 Zeckendorf 分解研究。\cite{kkmw_zeckendorf_summands}
+
+\subsection{同余计数：碰撞/多重度问题的模 \texorpdfstring{$F_{m+2}$}{F(m+2)} 归约}
+\MathTag
+本小节把第一层纤维的“碰撞/多重度”严格落到一个同余计数框架中。记模数
+$$
+M:=F_{m+2}.
+$$
+
+\begin{proposition}[同像 $\Leftrightarrow$ 同余]\label{prop:fold_congruence_characterization}
+\MathTag
+对任意 $b,b'\in\Omega_m$，成立等价：
+$$
+\Fold_m(b)=\Fold_m(b')
+\quad\Longleftrightarrow\quad
+N(b)\equiv N(b')\pmod{F_{m+2}}.
+$$
+\end{proposition}
+
+\begin{proof}
+\MathTag
+令 $N(b)$ 的 Zeckendorf 规范形为
+$$
+N(b)=\sum_{k=2}^{m+1} z_k F_k\;+\;z_{m+2}F_{m+2},
+$$
+其中 $(z_k)$ 无相邻 $1$，且由引理 \ref{lem:zeckendorf_one_overflow_bit} 知 $z_k=0$ 对所有 $k\ge m+3$ 成立。
+按定义 \ref{def:Fold}，
+$$
+\Fold_m(b)=(z_2,\dots,z_{m+1})=:x\in X_m.
+$$
+于是
+$$
+N(b)\equiv \sum_{k=2}^{m+1} z_k F_k = N(x)\pmod{F_{m+2}}.
+$$
+对 $b'$ 同理得到 $N(b')\equiv N(x')\pmod{F_{m+2}}$，其中 $x'=\Fold_m(b')$。
+
+\smallskip
+\noindent
+若 $\Fold_m(b)=\Fold_m(b')$，则 $x=x'$，从而 $N(b)\equiv N(b')\pmod{F_{m+2}}$。
+
+\smallskip
+\noindent
+反之，若 $N(b)\equiv N(b')\pmod{F_{m+2}}$，则 $N(x)\equiv N(x')\pmod{F_{m+2}}$。
+但由 Zeckendorf 唯一性与 $\abs{X_m}=F_{m+2}$，映射 $x\mapsto N(x)$ 给出 $X_m$ 与 $\{0,1,\dots,F_{m+2}-1\}$ 的双射，
+故 $N(x),N(x')\in\{0,\dots,F_{m+2}-1\}$ 时同余只能意味着相等：$N(x)=N(x')$，进而 $x=x'$。证毕。
+\end{proof}
+
+\begin{definition}[同余计数与二阶碰撞矩]\label{def:cm_S2}
+\MathTag
+定义同余计数函数
+$$
+c_m(r):=\#\bigl\{b\in\Omega_m:\ N(b)\equiv r\ (\mathrm{mod}\ M)\bigr\},
+\qquad r\in\ZZ/M\ZZ.
+$$
+并定义二阶碰撞矩（第二矩）
+$$
+S_2(m):=\sum_{x\in X_m}\abs{\mathcal F_m(x)}^2.
+$$
+\end{definition}
+
+\begin{corollary}[纤维谱的同余重标记]\label{cor:fiber_spectrum_as_congruence_counts}
+\MathTag
+对任意 $x\in X_m$，有
+$$
+\abs{\mathcal F_m(x)}=c_m\bigl(N(x)\bigr).
+$$
+从而
+$$
+S_2(m)=\sum_{r\in\ZZ/M\ZZ} c_m(r)^2.
+$$
+\end{corollary}
+
+\begin{proof}
+\MathTag
+由命题 \ref{prop:fold_congruence_characterization}，$\mathcal F_m(x)$ 恰由满足 $N(b)\equiv N(x)\ (\mathrm{mod}\ M)$ 的微态 $b$ 组成，
+故 $\abs{\mathcal F_m(x)}=c_m(N(x))$。
+又因 $x\mapsto N(x)$ 是 $X_m$ 到 $\ZZ/M\ZZ$ 的双射（见命题 \ref{prop:fold_congruence_characterization} 的证明末段），
+故对 $x$ 求和可改写为对 $r$ 求和，得结论。证毕。
+\end{proof}
+
+\subsection{全 Fourier 因子化与 Parseval 表达}
+\MathTag
+同余计数 $c_m$ 的 Fourier 变换不仅给出 $S_2(m)$ 的 Parseval 表达，还具有完全闭式的乘积因子化。
+
+\begin{definition}[离散 Fourier 系数]\label{def:cm_fourier}
+\MathTag
+令单位根
+$$
+\zeta:=e^{2\pi i/M}.
+$$
+对任意 $j\in\{0,1,\dots,M-1\}$，定义离散 Fourier 系数
+$$
+\widehat c_m(j):=\sum_{r=0}^{M-1} c_m(r)\,\zeta^{jr}.
+$$
+\end{definition}
+
+\begin{lemma}[Fourier 因子化]\label{lem:cm_fourier_factorization}
+\MathTag
+对任意 $j\in\{0,1,\dots,M-1\}$，有严格恒等式
+$$
+\widehat c_m(j)=\sum_{b\in\Omega_m}\zeta^{jN(b)}
+=\prod_{k=1}^{m}\left(1+\zeta^{jF_{k+1}}\right).
+$$
+\end{lemma}
+
+\begin{proof}
+\MathTag
+由定义 \ref{def:cm_fourier} 与 $c_m$ 的定义（定义 \ref{def:cm_S2}），可交换求和得到
+$$
+\widehat c_m(j)=\sum_{b\in\Omega_m}\zeta^{jN(b)}.
+$$
+而
+$
+N(b)=\sum_{k=1}^{m} b_k F_{k+1}
+$
+且每一位 $b_k\in\{0,1\}$ 独立枚举，从而
+$$
+\sum_{b\in\Omega_m}\zeta^{jN(b)}
+=\prod_{k=1}^{m}\left(\sum_{b_k\in\{0,1\}}\zeta^{j b_k F_{k+1}}\right)
+=\prod_{k=1}^{m}\left(1+\zeta^{jF_{k+1}}\right).
+$$
+证毕。
+\end{proof}
+
+\begin{corollary}[Fourier--Parseval 公式]\label{cor:S2_parseval}
+\MathTag
+二阶碰撞矩满足 Parseval 恒等式
+$$
+S_2(m)=\frac{1}{M}\sum_{j=0}^{M-1}\abs{\widehat c_m(j)}^2
+=\frac{1}{M}\sum_{j=0}^{M-1}\prod_{k=1}^{m}\left|1+\zeta^{jF_{k+1}}\right|^2.
+$$
+\end{corollary}
+
+\begin{proof}
+\MathTag
+由推论 \ref{cor:fiber_spectrum_as_congruence_counts}，$S_2(m)=\sum_r c_m(r)^2$。
+对有限阿贝尔群 $\ZZ/M\ZZ$ 上的离散 Fourier 变换，Plancherel/Parseval 恒等式给出
+$
+\sum_r c_m(r)^2=\frac{1}{M}\sum_j |\widehat c_m(j)|^2
+$
+（此处 $c_m$ 为实值函数，故无需额外共轭记号）。
+再代入引理 \ref{lem:cm_fourier_factorization} 的乘积表达式即得结论。证毕。
+\end{proof}
+
+\subsection{Fibonacci 共振角色：\texorpdfstring{$j_\star=F_{m+1}$}{j*=F(m+1)} 的镜像同余}
+\MathTag
+在推论 \ref{cor:S2_parseval} 中，误差项的大小由非平凡角色 $j\neq 0$ 的 Fourier 质量 $\abs{\widehat c_m(j)}$ 控制。
+下面给出一个完全显式的“共振角色”，它把相位序列强制变为反向 Fibonacci 余数。
+
+\begin{lemma}[镜像共振同余]\label{lem:fib_resonant_congruence}
+\MathTag
+令 $M=F_{m+2}$，并取
+$$
+j_\star:=F_{m+1}\in\ZZ/M\ZZ.
+$$
+则对所有 $k\in\{1,2,\dots,m\}$，成立同余
+$$
+F_{m+1}F_{k+1}\equiv (-1)^k F_{m-k+1}\pmod{F_{m+2}}.
+$$
+\end{lemma}
+
+\begin{proof}
+\MathTag
+使用 Fibonacci 的 d'Ocagne 恒等式
+$$
+F_{m+1}F_{k+1}-F_{m+2}F_k = (-1)^k F_{m-k+1}.
+$$
+两边对 $F_{m+2}$ 取模即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[共振角色的闭式相位表达]\label{cor:resonant_phase_reversal}
+\MathTag
+令 $\zeta=e^{2\pi i/M}$。则
+$$
+\widehat c_m(j_\star)
+=\prod_{k=1}^{m}\left(1+\zeta^{(-1)^kF_{m-k+1}}\right).
+$$
+特别地，因 $\abs{1+\zeta^{-a}}=\abs{1+\zeta^{a}}$，有
+$$
+\abs{\widehat c_m(j_\star)}^2=\prod_{t=1}^{m}\left|1+\zeta^{F_t}\right|^2,
+$$
+其中用重标记 $t=m-k+1$。
+\end{corollary}

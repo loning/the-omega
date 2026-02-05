@@ -80,6 +80,8 @@ def main() -> None:
     fiber_m = 16
     loop_m = 12
     loop_l = 6
+    fourier_ms = "12,14,16,18,20,22,24,26"
+    fourier_topk = 10
     scale_m_from = 12
     scale_m_to = 6
     scale_seeds = "0,1,2,3,4,5,6,7"
@@ -154,6 +156,19 @@ def main() -> None:
     lines.append(r"\end{tabular}")
     lines.append(r"\end{center}")
     fiber_compare.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+    # Fold collision moment Fourier scan (no Omega_m enumeration).
+    want_fourier = [
+        generated_dir() / "fold_collision_fourier_scan_summary.tex",
+        generated_dir() / "fold_collision_fourier_scan_summary.json",
+    ]
+    if force or (not _have_all(want_fourier)):
+        _run(
+            "exp_fold_collision_fourier_scan.py",
+            ["--ms", str(fourier_ms), "--topk", str(fourier_topk), *([] if not force else ["--force"])],
+        )
+    else:
+        print("[run_all] cached: exp_fold_collision_fourier_scan.py", flush=True)
 
     # Hilbert recursive scale truncation (m_from -> m_to), comparing 2D/3D/2D∧3D constraint families.
     want_scale = [generated_dir() / f"hilbert_scale_truncation_m{scale_m_from}_to_m{scale_m_to}_compare.tex"]
