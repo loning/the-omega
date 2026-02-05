@@ -56,7 +56,7 @@ A=\{-1,0,1\}\quad\text{或}\quad A=\{0,1,2\}
 \]
 上完成，且两者均为\textbf{最小}字母表（$|A|=3$）。此外，针对 $A=\{-1,0,1\}$ 的一个显式并行算法（Algorithm~G）在讲义中给出，并注明该加法在该字母表上为 \textbf{21-local}（因此在在线口径下粗对应 $\delta\approx 10$；见 \cite{FrougnyHellerPelantovaSvobodovaParallelAlgorithmsSlides}，以及 Leiden 讲稿中的 21/13/9-local 对照 \cite{Frougny2012NumbersAsStreamsLeiden}）。
 
-这些并行核一旦被编译为确定性在线转导器，其同步图同样给出 $\zeta$ 与 primitive 谱，从而与表 \ref{tab:sync-kernel-A-compare} 的“机制核”完全共享同一比较接口；本文把它作为后续可直接对接的外部基准，而不在当前版本中展开完整同步图编译。
+这些并行核一旦被编译为确定性在线转导器，其同步图同样给出 $\zeta$ 与 primitive 谱，从而与表 \ref{tab:sync-kernel-A-compare} 的“机制核”完全共享同一比较接口；本文把它作为后续可对接的外部基准，而不在当前版本中展开完整同步图编译。
 \par
 另一方面，\cite{Frougny1999OnlineAddition} 证明：黄金比例基下的加法可由在线有限自动机实现，但在非冗余表示口径下并不满足并行（$(p)$-local）可计算性；这为本文的 “在线核 vs.\ 并行核” 提供一个外部参照边界。
 
@@ -111,13 +111,13 @@ $$
 \end{itemize}
 
 \paragraph{把三类并行核编译到可 BFS 的在线机（单流）}
-为把“核的局部规则”落实到可计算对象，我们按 stencil 的同余类解耦，把核限制到单一同余流（$\pm 4$ stencil 对应模 $4$ 的 4 条流，$\pm 2$ stencil 对应模 $2$ 的 2 条流）。在单流上，核成为一个确定性在线机：每一步读取一个输入符号 $v_n$（逐位和/中间字母表符号），更新有限状态并输出固定延迟后的输出符号。由此可直接用 BFS 枚举全部可达状态，得到单流同步图 $\Gamma^{\mathrm{flow}}_K$。
+为把“核的局部规则”落实到可计算对象，我们按 stencil 的同余类解耦，把核限制到单一同余流（$\pm 4$ stencil 对应模 $4$ 的 4 条流，$\pm 2$ stencil 对应模 $2$ 的 2 条流）。在单流上，核成为一个确定性在线机：每一步读取一个输入符号 $v_n$（逐位和/中间字母表符号），更新有限状态并输出固定延迟后的输出符号。由此可用 BFS 枚举全部可达状态，得到单流同步图 $\Gamma^{\mathrm{flow}}_K$。
 
 在比较层面，\textbf{无权计数}会退化：确定性完备读入使得每状态出边数固定为 $|B|$，从而 $\zeta$ 只反映 $|B|$。因此我们引入边势
 \[
 \kappa(e):=\#\{\text{本步新决定的非零 }q\text{ 事件}\},
 \]
-并以 $u^{\kappa(e)}$ 加权得到带权邻接矩阵族 $M_K(u)$，其谱半径 $\lambda_K(u)=\rho(M_K(u))$ 形成“carry 活跃度”的可比曲线。进一步取 $u=0$ 得到 carry-free 骨架（仅保留 $\kappa=0$ 的边），其 $\zeta$ 与 primitive 谱给出一个极硬的结构指纹。
+并以 $u^{\kappa(e)}$ 加权得到带权邻接矩阵族 $M_K(u)$，其谱半径 $\lambda_K(u)=\rho(M_K(u))$ 形成“carry 活跃度”的可比曲线。进一步取 $u=0$ 得到 carry-free 骨架（仅保留 $\kappa=0$ 的边），其 $\zeta$ 与 primitive 谱给出一个严格的结构指纹。
 
 \paragraph{两变量 \texorpdfstring{$\zeta_K(z,u)$}{zeta(z,u)} 与 primitive 分层谱 \texorpdfstring{$B_{K,n}(u)$}{B\_{K,n}(u)}（严格定义）}
 令 $\Gamma_K$ 为单流同步图，其顶点集为状态集 $Q_K$，边集记为 $E_K$。对每条边 $e:i\to j$ 的活动度沿用上式 $\kappa(e)\in\ZZ_{\ge 0}$。定义带权邻接矩阵族（把同一对端点的多条边按权重累加）
@@ -293,7 +293,7 @@ $$
 \qquad\text{或等价地}\qquad
 \bigl(\delta_{\mathrm{digits}},\ h_0,\ \chi_0\bigr).
 $$
-其机制直觉是：压低 \(\delta\) 往往意味着更早做决定，从而更容易产生 \(\kappa=1\) 的边（\(c_1\) 上升）；而若强行把 carry-free 骨架收紧（小 \(\rho(A_0)\)），则常迫使更长的串行消元链（\(\delta\) 上升），并伴随较低的一阶激活斜率（\(c_1\) 下降）。
+其机制解释是：压低 \(\delta\) 往往意味着更早做决定，从而更可能产生 \(\kappa=1\) 的边（\(c_1\) 上升）；而若强行把 carry-free 骨架收紧（小 \(\rho(A_0)\)），则常迫使更长的串行消元链（\(\delta\) 上升），并伴随较低的一阶激活斜率（\(c_1\) 下降）。
 \end{remark}
 
 \input{sections/generated/tab_parallel_addition_kernels_zero_temp_scales}
@@ -335,10 +335,10 @@ B_{21,n}(1)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,5^{n/d}.
 \input{sections/generated/tab_parallel_addition_kernels_weighted_primitive}
 
 \paragraph{端点谱表：\texorpdfstring{$u=0$}{u=0}（carry-free）与 \texorpdfstring{$u=1$}{u=1}（无权）}
-为了把三核差异压缩成最硬、零误差且可跨实现核对的基准，我们进一步在端点 $u\in\{0,1\}$ 给出 primitive 轨道计数 $p_n$ 到 $n\le 20$（单流与全局块级，闭式 Möbius 反演）。该端点谱表见表 \ref{tab:parallel-addition-kernels-endpoint-primitive}（正文 \S\ref{subsec:kernel-endpoint-primitive}），此处不再重复插入以避免重复标签。
+为了把三核差异压缩成最严格、零误差且可跨实现核对的基准，我们进一步在端点 $u\in\{0,1\}$ 给出 primitive 轨道计数 $p_n$ 到 $n\le 20$（单流与全局块级，闭式 Möbius 反演）。该端点谱表见表 \ref{tab:parallel-addition-kernels-endpoint-primitive}（正文 \S\ref{subsec:kernel-endpoint-primitive}），此处不再重复插入以避免重复标签。
 
 \paragraph{两变量 \texorpdfstring{$\zeta_K(z,u)$}{zeta(z,u)} 的截断级数系数（单流）}
-为了把 $\zeta_K(z,u)$ 作为可直接“表格化”的实验指纹，我们计算其在 $z=0$ 附近的截断展开：
+为了把 $\zeta_K(z,u)$ 作为可表格化的实验指纹，我们计算其在 $z=0$ 附近的截断展开：
 \[
 \zeta_K(z,u)=\sum_{m=0}^{N}c_m(u)z^m+O(z^{N+1}),
 \qquad c_m(u)\in\ZZ[u],
@@ -395,7 +395,7 @@ $$
 :=\frac{\Delta_{\mathrm{reg}}}{\rho(A)-1}
 =1-\frac{\rho(B)}{\rho(A)-1}.
 \]
-它在正则极限中同样为 \(0\)，且对 \(\rho(A)\) 量级不同的骨架更稳定可比（见表 \ref{tab:parallel-addition-kernels-ihara-fingerprint}）。
+它在正则极限中同样为 \(0\)，且对 \(\rho(A)\) 量级不同的骨架具有更一致的可比性（见表 \ref{tab:parallel-addition-kernels-ihara-fingerprint}）。
 
 该量与核版 RH/Ramanujan 指标 \(R_K(u)=\lambda_\star(u)/\sqrt{\lambda_1(u)}\) 互补：前者是骨架几何的“先验不变量”，后者是带权 Hashimoto 算子的“谱隙质量”指标；两者共同决定无回溯 prime cycle 口径下的可达误差尺度。
 \end{remark}
@@ -405,7 +405,7 @@ $$
 $$
 \pi_{\mathrm{bt}}:=1-\frac{\rho(B)}{\rho(A)}\in[0,1).
 $$
-它直接量化“禁止回溯”带来的指数增长率损失比例。表 \ref{tab:parallel-addition-kernels-ihara-fingerprint} 的输出显示：在三核中 \(21\)-local 的 \(\pi_{\mathrm{bt}}\) 显著更大，表明其原子操作骨架中“可逆撤销/短回溯”结构占比更高，因此以 Ihara primes（无回溯）对素数影子做正规化的必要性也更强。
+它直接量化“禁止回溯”带来的指数增长率损失比例。表 \ref{tab:parallel-addition-kernels-ihara-fingerprint} 的输出显示：在三核中 \(21\)-local 的 \(\pi_{\mathrm{bt}}\) 较大，指示其原子操作骨架中“可逆撤销/短回溯”结构占比更高，因此以 Ihara primes（无回溯）对素数影子做正规化在量化层面更为必要。
 \end{remark}
 
 \begin{remark}[回溯熵缺口 \texorpdfstring{$\Delta h$}{Delta h}：由 \texorpdfstring{$(\rho(A),\rho(B))$}{rhoA,rhoB} 导出的指数缺口]\label{rem:ihara-entropy-gap}
@@ -417,14 +417,14 @@ $$
 \[
 \left(\frac{\rho(A)}{\rho(B)}\right)^n=e^{n\Delta h_K}.
 \]
-表 \ref{tab:parallel_addition_kernels_backtracking_entropy_gap} 给出 \(n=50\) 的放大量级；其中 \(21\)-local 的放大已达 \(\sim 10^2\) 量级，说明在最小字母表 regime 下，“primitive cycle”统计更容易被立即回溯的伪周期污染，因此 Ihara primes 的正规化不仅是叙事更自然，而是量化上更必要。
+表 \ref{tab:parallel_addition_kernels_backtracking_entropy_gap} 给出 \(n=50\) 的放大量级；其中 \(21\)-local 的放大已达 \(\sim 10^2\) 量级，这表明在最小字母表情形下，“primitive cycle”统计更易被立即回溯的伪周期污染，因此 Ihara primes 的正规化在量化层面更为必要。
 \input{sections/generated/tab_parallel_addition_kernels_backtracking_entropy_gap}
 
-值得注意的是：在表 \ref{tab:parallel-addition-kernels-ihara-fingerprint} 中 \(K_{13}\) 与 \(K_{21}\) 的 \(\varepsilon_{\mathrm{reg}}\) 同为 \(\sim 10^{-2}\)（均匀性缺陷同量级），但表 \ref{tab:parallel_addition_kernels_backtracking_entropy_gap} 的 \(\Delta h\) 相差约 \(2.6\times\)。因此 \(\varepsilon_{\mathrm{reg}}\) 与 \(\Delta h\) 给出两条基本正交的几何分类轴：前者主要测“近正则均匀性”，后者主要测“无回溯剪枝的相对熵损失”。
+需要指出：在表 \ref{tab:parallel-addition-kernels-ihara-fingerprint} 中 \(K_{13}\) 与 \(K_{21}\) 的 \(\varepsilon_{\mathrm{reg}}\) 同为 \(\sim 10^{-2}\)（均匀性缺陷同量级），但表 \ref{tab:parallel_addition_kernels_backtracking_entropy_gap} 的 \(\Delta h\) 相差约 \(2.6\times\)。因此 \(\varepsilon_{\mathrm{reg}}\) 与 \(\Delta h\) 给出两条近似正交的几何分类轴：前者主要测“近正则均匀性”，后者主要测“无回溯剪枝的相对熵损失”。
 \end{remark}
 
 \paragraph{二轴相图：\texorpdfstring{$\varepsilon_{\mathrm{reg}}$}{eps_reg}—\texorpdfstring{$R_K(1)$}{RK(1)} 的可计算分类学}
-把表 \ref{tab:parallel-addition-kernels-ihara-fingerprint} 的几何先验（\(\varepsilon_{\mathrm{reg}}\)）与核版 RH/Ramanujan 的谱隙质量轴对齐，可得到一个可直接比较的二维坐标系。
+把表 \ref{tab:parallel-addition-kernels-ihara-fingerprint} 的几何先验（\(\varepsilon_{\mathrm{reg}}\)）与核版 RH/Ramanujan 的谱隙质量轴对齐，可得到一个可比较的二维坐标系。
 在无权骨架 \(u=1\) 下，令 \(B\) 为 Hashimoto 算子，并记
 \[
 \Lambda(B):=\max_{\mu\in\mathrm{spec}(B)\setminus\{\rho(B)\}}|\mu|,
