@@ -179,9 +179,41 @@ E_m\circ \mathrm{LIFT}_G\ \Rightarrow\ \mathrm{LIFT}_G\circ E_m
 \end{enumerate}
 \end{definition}
 
+\begin{remark}[可复现：三生成元正规化器与异常占位证书]\label{rem:pom-projword-threegen-anom-normalizer-demo}
+脚本 \texttt{scripts/exp\_pom\_projword\_three\_gen\_anom\_normalizer.py} 实现定义 \ref{def:pom-three-gen-rewrite-rules} 的最小三生成元重写片段：
+它把任意由 \texttt{E[m]}, \texttt{PROJ[u]}, \texttt{LIFT[G]} 生成的投影词规约到接口正规形
+\(\mathrm{LIFT}\circ\mathrm{PROJ}\circ E\)（命题 \ref{prop:pom-three-gen-interface-normal-form}），
+并在每一次 \(E_m\)--\(\mathrm{LIFT}_G\) 交换处输出一条带残差占位的交换证书
+（接口为 \(\mathsf{Anom}_G(K;\theta)\)，定义 \ref{def:pom-anom-signature}）。
+该脚本写出正规形、重写轨迹与证书列表到
+\texttt{artifacts/export/pom\_projword\_three\_gen\_anom\_normalizer\_demo.json}，
+作为“异常签名进入规约轨迹”的可执行见证。
+\end{remark}
+
 \begin{remark}[关于 \texorpdfstring{$(\mathrm{RLIFT})$}{RLIFT} 的适用范围]\label{rem:pom-rlift-scope}
 规则 \((\mathrm{RLIFT})\) 反映“独立轴的并置提升”：把两次相互独立的有限标签提升合并为一次到直积群的提升。
 在更一般的群扩张（例如非平凡半直积或 cocycle 扭曲）中，对应的合并律应以扩张数据的纤维积/合成取代直积；本文在可审计实现中主要使用有限阿贝尔标签与其角色分解，因此以上写法足以覆盖本文的数值接口与重写示例。
+\end{remark}
+
+\begin{remark}[交叉异常：\texorpdfstring{$(\mathrm{RLIFT})$}{RLIFT} 独立性的一条可计算审计条件]\label{rem:pom-rlift-cross-anom-test}
+设 \(G,H\) 为有限阿贝尔群，则 \(\widehat{G\times H}\cong\widehat G\times\widehat H\)。
+对任意 \((\chi,\psi)\in\widehat G\times\widehat H\)，记 \(\chi\otimes\psi\) 为 \(G\times H\) 上的乘积角色
+\((g,h)\mapsto \chi(g)\psi(h)\)，并记 \(\chi_0,\psi_0\) 为平凡角色。
+在异常签名口径（定义 \ref{def:pom-anom-signature}）下，定义\textbf{交叉异常}为
+\[
+\Delta^{\mathrm{sep}}_{\chi,\psi}(\theta)
+:=
+\log\mathfrak{M}_{\chi\otimes\psi}(\theta)
+-\log\mathfrak{M}_{\chi\otimes\psi_0}(\theta)
+-\log\mathfrak{M}_{\chi_0\otimes\psi}(\theta),
+\qquad
+\chi\neq\chi_0,\ \psi\neq\psi_0.
+\]
+若两次 lift 的语义确为独立轴并置（对应 \((\mathrm{RLIFT})\) 的直积提升），则对每个取样参数 \(\theta\) 均应有
+\(\Delta^{\mathrm{sep}}_{\chi,\psi}(\theta)=0\)：其等价表述是在扭曲通道上存在可核对的分解
+\(\zeta_{\theta,\chi\otimes\psi}=\zeta_{\theta,\chi\otimes\psi_0}\cdot \zeta_{\theta,\chi_0\otimes\psi}\)，
+从而有限部常数层面严格可加。
+因此 \(\Delta^{\mathrm{sep}}\) 的非零给出一条可审计的“跨轴耦合指纹”，提示 lift 的合并不应被简化为直积，而需引入扩张数据（例如 cocycle/半直积）或把耦合显式留在残差项中。
 \end{remark}
 
 \begin{proposition}[接口正规形：\texorpdfstring{$(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)$}{(PROJ,Em,LIFT)} 的可归约顺序]\label{prop:pom-three-gen-interface-normal-form}
@@ -617,6 +649,19 @@ B^{\mathrm{cert}}_m(\varepsilon):=\exp\!\bigl(m\,\gamma^{\mathrm{cert}}_m(\varep
 \frac{\frac{1}{m}\log S_q(m)-\log 2+\frac{1}{m}\log(1/\varepsilon)}{q-1},
 \]
 其正确性由命题 \ref{prop:pom-quantile-chernoff} 直接保证（无需渐近假设）。
+
+\medskip\noindent\textbf{数值例（用已核验的精确 \texorpdfstring{$r_q$}{rq} 截断到 \(q\le 17\)，表 \ref{tab:fold_collision_renyi_spectrum}）}
+以 \(\varepsilon=10^{-6}\) 为例：
+\begin{itemize}
+  \item 当 \(m=512\) 时，最优证书出现在 \(q^\star=8\)，得到 \(\gamma^{\mathrm{cert}}_{512}(10^{-6})\approx 0.224915\)。
+  因而 \(\log B^{\mathrm{cert}}\approx 115.156\)，从条件 \(P>2B\) 得到最小预算阈值
+  \(\log_2 P\gtrsim (\log 2+\log B^{\mathrm{cert}})/\log 2\approx 167.1\) bits。
+  \item 当 \(m=4096\) 时，最优证书出现在 \(q^\star=3\)，得到 \(\gamma^{\mathrm{cert}}_{4096}(10^{-6})\approx 0.218572\)。
+  因而 \(\log B^{\mathrm{cert}}\approx 895.27\)，并得到 \(\log_2 P\gtrsim 1292.6\) bits 量级。
+\end{itemize}
+同一对偶也给出尾部稀有度的可读尺度：例如取 \(\gamma=0.23\)，在 \(q\le 17\) 的离散上确界下得到
+\(I(0.23)\approx 0.08059\)（最优在 \(q=17\) 处达到），从而 \(m=512\) 时有上界量级
+\(\mathbb{P}_{\pi_m}[\gamma_m(X)\ge 0.23]\lesssim e^{-m I(0.23)}\approx 10^{-18}\)。
 脚本模块 \texttt{scripts/common\_tail\_budget.py} 实现了上述两种 \(\gamma\)-证书的扫描最优化；
 脚本 \texttt{scripts/exp\_fold\_tail\_budget\_gamma\_cert.py} 进一步用 residue-DP 直方图对 \(\pi_m\) 下的真实尾部质量做核验并输出 JSON 证书。
 \par
