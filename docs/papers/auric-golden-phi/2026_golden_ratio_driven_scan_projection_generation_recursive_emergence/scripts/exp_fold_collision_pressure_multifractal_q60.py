@@ -44,35 +44,9 @@ from typing import Dict, List, Tuple
 import matplotlib.pyplot as plt
 import numpy as np
 
+from common_mod_fib_dp import counts_mod_fib_hist
 from common_paths import export_dir, generated_dir
 from common_phi_fold import PHI, Progress
-
-
-def fib_upto(n: int) -> List[int]:
-    """Return Fibonacci numbers F_0..F_n with F_0=0,F_1=1."""
-    if n < 0:
-        raise ValueError("n must be >= 0")
-    F = [0, 1]
-    for _ in range(2, n + 1):
-        F.append(F[-1] + F[-2])
-    return F[: n + 1]
-
-
-def counts_mod_fib_hist(m: int, prog: Progress | None = None) -> Tuple[np.ndarray, np.ndarray]:
-    """Return (vals, freq) histogram for residue counts c_m(r) mod F_{m+2}."""
-    if m < 0:
-        raise ValueError("m must be >= 0")
-    F = fib_upto(m + 2)
-    mod = F[m + 2]
-    c = np.zeros(mod, dtype=np.uint64)
-    c[0] = 1
-    for i in range(1, m + 1):
-        w = F[i + 1]
-        c = c + np.roll(c, w)
-        if prog is not None:
-            prog.tick(f"moddp-hist m={m} step={i}/{m} mod={mod}")
-    vals, freq = np.unique(c, return_counts=True)
-    return vals.astype(np.uint64), freq.astype(np.uint64)
 
 
 def log_moments_from_hist(vals: np.ndarray, freq: np.ndarray, q_max: int) -> Dict[int, float]:
