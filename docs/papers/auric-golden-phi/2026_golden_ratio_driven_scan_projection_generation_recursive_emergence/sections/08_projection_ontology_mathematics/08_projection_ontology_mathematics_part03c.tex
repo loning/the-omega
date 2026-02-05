@@ -1183,7 +1183,9 @@ L_q(M_q(m))=0
 
 \input{sections/generated/tab_fold_collision_resonance_nullmodes_q9_17}
 
-\begin{remark}[Hankel-null 的递推向量与共振约束签名：\texorpdfstring{$\Delta(q)-1$}{Delta(q)-1} 条额外约束（可自动抽取）]\label{rem:pom-nullmodes-recurrence-plus-signature}
+\input{sections/generated/tab_fold_collision_resonance_nullmodes_primitive_quotient_q9_17}
+
+\begin{remark}[Hankel-null 的递推向量与倍乘冗余：\texorpdfstring{$\Delta_{\mathrm{prim}}(q)$}{Delta_prim(q)} 的原始商空间（可复算）]\label{rem:pom-nullmodes-recurrence-plus-signature}
 在共振窗口 \(\Delta(q)>0\) 下，表 \ref{tab:fold_collision_resonance_nullmodes_q9_17} 给出的
 \(
 \mathrm{NullModes}(q)\subset\ZZ^{2\lfloor q/2\rfloor+1}
@@ -1207,12 +1209,20 @@ P_9(\lambda)=\lambda^7-2\lambda^6-\cdots-900\lambda+450
 \)
 （即 \(\alpha^{\mathrm{rec}}_9\)）。
 \par
-因此，若把 Hankel-null 的基分解为“递推向量 + 其余向量”，则“其余向量”的条数恰为
+然而，除 \(\alpha^{\mathrm{rec}}_q\) 外的其余 Hankel-null 向量往往并不对应新的“不可激发模态”物理约束：如注 \ref{rem:pom-nullmodes-q14-poly-alignment} 所述，低次倍乘 \(Q(\lambda)P_q(\lambda)\) 会自动生成额外的 Hankel-null 证书（只要窗口行数允许）。
+因此若要把 Hankel-null 的“额外向量”解释为结构信息，需要先剥离这一倍乘冗余。
+令 \(\mathcal{M}(P_q)\subseteq\ker(H^{\mathsf T})\) 表示由所有可容纳于窗口长度（即满足 \(\deg(QP_q)\le 2\lfloor q/2\rfloor\)）的倍乘 \(Q(\lambda)P_q(\lambda)\) 的系数向量生成的子空间，并定义原始缺口（primitive quotient）
 \[
-\boxed{\ \Delta(q)-1\ }.
+\boxed{
+\Delta_{\mathrm{prim}}(q):=\dim\Bigl(\ker(H^{\mathsf T})\ \big/\ \mathcal{M}(P_q)\Bigr).
+}
 \]
-例如 \(\Delta(q)=2\) 意味着除递推向量外还有 \(1\) 条额外共振约束；而 \(\Delta(q)=4\) 意味着除递推向量外还有 \(3\) 条额外约束。
-这给出一个立即可用的算法含义：从 \(\mathrm{NullModes}(q)\) 中自动剥离 \(\alpha^{\mathrm{rec}}_q\) 后，剩余 \(\Delta(q)-1\) 条证书向量可被视为“共振约束签名”，适用于跨实现/跨版本的回归一致性对比。
+在当前已审计的共振窗口 \(q=9,\dots,17\) 内，我们得到 \(\Delta_{\mathrm{prim}}(q)=0\)，并且表 \ref{tab:fold_collision_resonance_nullmodes_q9_17} 的每条 NullMode 都可显式分解为
+\(
+A^{(j)}(\lambda)=Q^{(j)}(\lambda)P_q(\lambda)
+\)；
+其乘子 \(Q^{(j)}\) 的系数向量列于表 \ref{tab:fold_collision_resonance_nullmodes_primitive_quotient_q9_17}。
+因此在该窗口内，Hankel-null 的多条“额外向量”应理解为同一最小递推在固定长度下的倍乘展开证书，而非额外独立的物理约束。
 \end{remark}
 
 \begin{remark}[Hankel-null 与特征多项式的对齐：以 \texorpdfstring{$q=14$}{q=14} 为例]\label{rem:pom-nullmodes-q14-poly-alignment}

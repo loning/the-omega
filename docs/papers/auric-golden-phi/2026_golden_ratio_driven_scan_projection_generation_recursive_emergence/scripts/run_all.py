@@ -458,6 +458,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_resonance_nullmodes_primitive_quotient_q9_17",
+            script="exp_fold_collision_resonance_nullmodes_primitive_quotient_q9_17.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_resonance_nullmodes_primitive_quotient_q9_17.json",
+                "sections/generated/tab_fold_collision_resonance_nullmodes_primitive_quotient_q9_17.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_col_hankel_mod3_alignment_q9",
             script="exp_fold_collision_col_hankel_mod3_alignment.py",
             args=[],
@@ -546,6 +555,16 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_collision_shadow_spectral_packet_q9_17.json",
                 "sections/generated/tab_fold_collision_shadow_spectral_packet_q9_17.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_shadow_spectral_packet_new_conclusions_q9_17",
+            script="exp_fold_collision_shadow_spectral_packet_new_conclusions_q9_17.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_shadow_spectral_packet_new_conclusions_q9_17.json",
+                "sections/generated/tab_fold_collision_shadow_spectral_packet_algebraic_phase_residual_q9_17.tex",
+                "sections/generated/tab_fold_collision_shadow_spectral_packet_two_step_renormalization_q9_17.tex",
             ],
         ),
         Step(

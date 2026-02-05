@@ -1056,6 +1056,56 @@ H(w_m)\ge H_2(w_m):=-\log\sum_x w_m(x)^2=-\log \mathsf{Col}_m
 从而 \(F\mathsf{Col}_m\le F-|\mathcal Z_m|\)，得到最右端上界。证毕。
 \end{proof}
 
+\begin{definition}[碰撞膨胀系数（可审计的二阶指纹）]\label{def:pom-collision-inflation}
+沿用定理 \ref{thm:pom-spectral-information-sandwich} 的记号，定义
+\[
+C_{\mathrm{col}}(m)
+:=F_{m+2}\,\mathsf{Col}_m
+:=F_{m+2}\sum_{x\in X_m} w_m(x)^2.
+\]
+其对数即二阶 Rényi 散度：
+\(
+D_2(w_m\|U_m)=\log C_{\mathrm{col}}(m)
+\)
+（自然对数口径），并且
+\[
+\chi^2(w_m\|U_m)
+:=\sum_{x\in X_m}\frac{(w_m(x)-U_m(x))^2}{U_m(x)}
+=C_{\mathrm{col}}(m)-1.
+\]
+由 \(w_m(x)=d_m(x)/2^m\) 可得完全可枚举的纤维表达式
+\[
+C_{\mathrm{col}}(m)
+=\frac{F_{m+2}}{2^{2m}}\sum_{x\in X_m} d_m(x)^2
+=\frac{F_{m+2}}{2^{2m}}\sum_{d\ge 1}\#\{x\in X_m:\ d_m(x)=d\}\,d^2.
+\]
+\end{definition}
+
+\begin{remark}[从“最大纤维尾部”到“整体二阶偏离”的机制判别]\label{rem:pom-gap-bulk-vs-tail}
+定理 \ref{thm:pom-spectral-information-sandwich} 的左端下界仅依赖最大纤维 \(D_m\) 的单点偏离项
+\(
+D_m/2^m-1/F_{m+2}
+\)；
+而对 Fold 而言 \(D_m/2^m\) 指数级趋零（见小节 \ref{subsec:pom-max-fiber}），故该下界在窗口上很快变得极小。
+与之相对，表 \ref{tab:fold_multiplicity_histogram} 的比特缺口 \(\mathrm{gap}_m^{(2)}=\log_2|X_m|-H(w_m)\) 在已审计窗口内已达常数量级并呈缓慢漂移；
+这提示“隐藏/可见比特预算”的主导证据不来自极端尾部，而来自整体二阶偏离（定义 \ref{def:pom-collision-inflation} 的 \(C_{\mathrm{col}}(m)\)）所反映的 bulk 频谱能量分布。
+\par
+另一方面，把缺口写成
+\[
+\mathrm{gap}_m^{(2)}
+=\log_2 F_{m+2}-m+\mathbb{E}_{w_m}[\log_2 d_m(X)],
+\]
+并用 Binet 渐近 \(\log_2 F_{m+2}=(m+2)\log_2\varphi-\log_2\sqrt5+o(1)\)，得到可审计的“常数分解”
+\[
+\mathrm{gap}_m^{(2)}
+=\underbrace{2\log_2\varphi-\log_2\sqrt5}_{\text{语法常数}}
+\;+\;
+\underbrace{\Bigl(\mathbb{E}_{w_m}[\log_2 d_m(X)]-m\log_2(2/\varphi)\Bigr)}_{\text{纤维漂移项}}
+\;+\;o(1),
+\]
+其中纤维漂移项可由表 \ref{tab:fold_fiber_log_moments_mu_sigma}（或表 \ref{tab:fold_multiplicity_histogram}）直接读出与追踪。
+\end{remark}
+
 \begin{corollary}[最大纤维达到者的指数稀有性（均匀基线）]\label{cor:pom-maxfiber-rare-uniform}
 在 $U_m$（$X_m$ 上均匀分布）下，有
 \[

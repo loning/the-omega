@@ -8,16 +8,46 @@
 \]
 以 \(r_{q-2}\) 为参照尺度，对 \(P_q\) 的高精度根扫描给出一个稳定的“影子谱包”指纹（表 \ref{tab:fold_collision_shadow_spectral_packet_q9_17}；脚本 \texttt{scripts/exp\_fold\_collision\_shadow\_spectral\_packet\_q9\_17.py} 一键生成）：
 \[
-|\mu_q|\ <\ r_{q-2}\ <\ |\lambda_q^-|,
+|\mu_q|\ <\ r_{q-2},
+\qquad
+|\lambda_q^-|<r_{q-2}\ \ (q=9,10,11),
+\qquad
+|\lambda_q^-|>r_{q-2}\ \ (q=12,\dots,17),
 \]
 并且 \(|\mu_q|/r_{q-2}\) 单调逼近 \(1\)（约从 \(0.77\) 增至 \(0.996\)），而 \(|\lambda_q^-|/r_{q-2}\) 单调上升并跨过 \(1\)（约从 \(0.94\) 增至 \(1.14\)）。
 这把“Hankel 秩缺口/模态约束”（定理 \ref{thm:pom-moment-resonance}）翻译为一个复根几何的可观测后果：在共振区里，非主谱会稳定地“回忆”两阶之前的主尺度 \(r_{q-2}\)，形成随 \(q\) 平移两步的谱回声包络。
+\par
+表 \ref{tab:fold_collision_shadow_spectral_packet_q9_17} 的两列比值
+\(
+|\mu_q|/r_{q-2}
+\)
+与
+\(
+|\lambda_q^-|/r_{q-2}
+\)
+还允许把同一尺度 \(r_{q-2}\) 用两种方式\textbf{双重反演}出来：
+\[
+r_{q-2}^{(\mu)}:=\frac{|\mu_q|}{|\mu_q|/r_{q-2}},
+\qquad
+r_{q-2}^{(-)}:=\frac{|\lambda_q^-|}{|\lambda_q^-|/r_{q-2}}.
+\]
+反演一致性（一个新的审计自洽检查）以及由此导出的二步重整化比
+\[
+\boxed{\ R_q:=\frac{r_q}{r_{q-2}}\ }
+\]
+的读数见表 \ref{tab:fold_collision_shadow_spectral_packet_two_step_renormalization_q9_17}。
 \par
 进一步，沿用 \(s\)-平面极点字典（注 \ref{prop:s-plane-spectrum-poles}），对任一根 \(\xi\) 定义 Dirichlet 实部坐标
 \[
 \sigma_q(\xi):=\frac{\log|\xi|}{\log r_q}=\Re(s_\xi).
 \]
 表 \ref{tab:fold_collision_shadow_spectral_packet_q9_17} 中 \(\sigma_q(\mu_q)\) 在 \(q=9,\dots,17\) 内显著大于 \(1/2\)，并随 \(q\) 增大朝 \(1\) 漂移，从而在 Dirichlet 语言中表现为一条向 \(\Re(s)=1\) 逼近的非平凡极点条带。
+其趋向 \(1\) 的漂移还可以用表中同一参照尺度 \(r_{q-2}\) 直接分解为
+\[
+\sigma_q(\mu_q)=\frac{\log|\mu_q|}{\log r_q}
+=\frac{\log r_{q-2}+\log(|\mu_q|/r_{q-2})}{\log r_q}.
+\]
+当 \(q\) 增大时，\(\log(|\mu_q|/r_{q-2})\to 0^{-}\)（因为 \(|\mu_q|/r_{q-2}\to 1^{-}\)），而 \(\log r_{q-2}\) 同时增大，于是 \(\sigma_q(\mu_q)\) 被结构性推向 \(1\)（而非偶然的“变慢”）。
 在 kernel-(G)RH 语义下，这意味着：若试图把共振区的原始高阶 moment 的 Hankel 最小实现当作“平方根谱界 \(\Rightarrow\) 平方根误差”的候选对象，则其可见谱结构已系统性地产生 \(\sigma\gg 1/2\) 的慢模态，天然违背平方根界的设计目标。
 \par
 此外，\(\arg(\mu_q)\) 在该范围内稳定在约 \(-1.83\) rad 附近，表明影子谱包携带一个近乎固定的复振荡角频率：次主项中将出现具有准周期频率的衰减振荡叠加（总和仍为正，源于多模贡献的合成）。
@@ -38,6 +68,8 @@ u_q^\star:=\inf\{u:\ \rho_{\mathrm{real}}(u)\le \rho_1(u)^{1/2}\}.
 
 \input{sections/generated/tab_fold_collision_shadow_spectral_packet_q9_17}
 
+\input{sections/generated/tab_fold_collision_shadow_spectral_packet_two_step_renormalization_q9_17}
+
 \begin{remark}[三模态包与复相位锁定：复模态缺口指数 \texorpdfstring{$g_q^{(c)}$}{gq(c)}（可复算/可证伪预测）]\label{rem:pom-resonance-trimodal-phase-lock}
 在表 \ref{tab:fold_collision_shadow_spectral_packet_q9_17} 的共振窗口 \(q=9,\dots,17\) 中，除 Perron 主根 \(r_q\) 之外，外侧非主谱在数值上稳定由三模态包
 \[
@@ -51,6 +83,22 @@ u_q^\star:=\inf\{u:\ \rho_{\mathrm{real}}(u)\le \rho_1(u)^{1/2}\}.
 \mathrm{width}\approx 0.0323\ \mathrm{rad}\approx 1.85^\circ,
 \]
 因此由 \(\mu_q^m\) 诱导的振荡项在 \(q\) 变化时主要改变的是\textbf{衰减速率}而非频率。
+\par
+更进一步，把单位复相位写成
+\[
+\zeta_q:=\frac{\mu_q}{|\mu_q|}\in\mathbb{S}^1.
+\]
+在该窗口内，\(\zeta_q\) 的中心角几乎命中单位圆上的二次代数根
+\[
+z_\ast:=\frac{-1-\mathrm{i}\sqrt{15}}{4},
+\qquad
+2z_\ast^2+z_\ast+2=0.
+\]
+这把“近恒定相位”提升为一个可证伪的代数候选：直接计算残差证书
+\[
+\rho_q:=\bigl|2\zeta_q^2+\zeta_q+2\bigr|
+\]
+应在小量级内波动。其可复算读数见表 \ref{tab:fold_collision_shadow_spectral_packet_algebraic_phase_residual_q9_17}。
 \par
 为量化复模态的衰减，引入“复模态缺口指数”
 \[
@@ -70,6 +118,8 @@ S_q(m)=C_1 r_q^m + C_- (\lambda_q^-)^m + 2|C_c|\,|\mu_q|^m\cos\!\bigl(m\arg(\mu_
 \]
 因此若先用二周期消去器（例如对比值/残差做 Aitken \(\Delta^2\)；推论 \ref{cor:pom-aitken-cancels-two-cycle}）压低由 \((\lambda_q^-)^m\) 触发的主交替误差，再把剩余残差按 \(r_q^{-\sigma_q(\mu_q)m}\) 归一化，则应出现一个频率几乎固定的余弦波形；并且当 \(q\) 增大时，该波形的衰减包络会随 \(g_q^{(c)}\) 的下降而显著变慢。
 \end{remark}
+
+\input{sections/generated/tab_fold_collision_shadow_spectral_packet_algebraic_phase_residual_q9_17}
 
 \begin{remark}[整数缺口与连续指纹的阈值耦合：\texorpdfstring{$\Delta(q)$}{Delta(q)} vs \texorpdfstring{$c_q$}{cq}（可复算/可证伪预测）]\label{rem:pom-delta-cq-threshold}
 定义一个完全内部的连续谱指纹
