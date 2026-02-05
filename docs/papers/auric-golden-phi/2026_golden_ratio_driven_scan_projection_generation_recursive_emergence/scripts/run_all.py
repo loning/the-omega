@@ -161,6 +161,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fib_prime_resolution_windows",
+            script="exp_fib_prime_resolution_windows.py",
+            args=["--m-min", "6", "--m-max", "40"],
+            expected_outputs=[
+                "artifacts/export/fib_prime_resolution_windows.json",
+                "sections/generated/tab_fib_prime_resolution_windows.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_weighted_delta_completed",
             script="exp_sync_kernel_weighted_delta_completed.py",
             args=[],
