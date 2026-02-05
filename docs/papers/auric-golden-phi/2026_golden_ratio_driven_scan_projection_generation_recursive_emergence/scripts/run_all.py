@@ -309,6 +309,26 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_resonance_nullmodes_hankel_q9_17",
+            script="exp_fold_collision_resonance_nullmodes_hankel.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_resonance_nullmodes_hankel_q9_17.json",
+                "sections/generated/tab_fold_collision_resonance_gap_delta_q_9_17.tex",
+                "sections/generated/tab_fold_collision_resonance_nullmodes_q9_17.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_col_hankel_mod3_alignment_q9",
+            script="exp_fold_collision_col_hankel_mod3_alignment.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_col_hankel_mod3_alignment_q9.json",
+                "artifacts/export/fold_collision_col_hankel_mod3_alignment_q9.png",
+                "sections/generated/fig_fold_collision_col_hankel_mod3_alignment_q9.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_moment_spectrum_k2_8",
             script="exp_fold_collision_moment_spectrum_k2_8.py",
             args=[],
