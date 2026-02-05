@@ -162,6 +162,8 @@ class Row:
     m: int
     det_states: int
     det_edges: int
+    Rm1_states: int
+    non_singleton_ends_m1: int
     Rm_states: int
     non_singleton_ends: int
     periodic_formula: str
@@ -177,19 +179,20 @@ def write_table_tex(path: Path, rows: List[Row]) -> None:
     lines.append(
         "\\caption{Conjugacy threshold certificate for the sliding-block factor $\\Phi_m$. "
         "We build the subset-filter automaton from the labeled graph $G_m$ and compute "
-        "$R_m$, the set of reachable filter states after exactly $m$ output symbols. "
+        "$R_{m-1}$ and $R_m$, the sets of reachable filter states after exactly $m-1$ and $m$ output symbols. "
         "If all states in $R_m$ are singletons, then each length-$m$ output word has a unique "
         "length-$(2m-1)$ preimage block, yielding a finite-window inverse (memory $m-1$). "
+        "The non-singleton count in $R_{m-1}$ provides a sharpness witness for the sync delay. "
         "We also sanity-check periodic-point counts up to a small $n$.}"
     )
     lines.append("\\label{tab:phi_m_conjugacy_threshold}")
-    lines.append("\\begin{tabular}{r r r r r l r}")
+    lines.append("\\begin{tabular}{r r r r r r r l r}")
     lines.append("\\toprule")
-    lines.append("$m$ & det states & det edges & $|R_m|$ & non-singleton ends & periodic $\\#\\mathrm{Fix}_n$ & checked $n$\\\\")
+    lines.append("$m$ & det states & det edges & $|R_{m-1}|$ & non-singleton ends $(m-1)$ & $|R_m|$ & non-singleton ends $(m)$ & periodic $\\#\\mathrm{Fix}_n$ & checked $n$\\\\")
     lines.append("\\midrule")
     for r in rows:
         lines.append(
-            f"{r.m} & {r.det_states} & {r.det_edges} & {r.Rm_states} & {r.non_singleton_ends} & {r.periodic_formula} & {r.periodic_ok_up_to_n}\\\\"
+            f"{r.m} & {r.det_states} & {r.det_edges} & {r.Rm1_states} & {r.non_singleton_ends_m1} & {r.Rm_states} & {r.non_singleton_ends} & {r.periodic_formula} & {r.periodic_ok_up_to_n}\\\\"
         )
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
@@ -235,6 +238,8 @@ def main() -> None:
         masks, det = determinize(nV, trans, prog)
 
         det_edges = sum(len(d) for d in det)
+        Rm1 = reachable_exact(det, steps=m - 1)
+        non_single_m1 = sum(1 for sid in Rm1 if not _is_singleton_mask(masks[sid]))
         Rm = reachable_exact(det, steps=m)
         non_single = sum(1 for sid in Rm if not _is_singleton_mask(masks[sid]))
 
@@ -258,6 +263,8 @@ def main() -> None:
                 m=m,
                 det_states=len(det),
                 det_edges=det_edges,
+                Rm1_states=len(Rm1),
+                non_singleton_ends_m1=non_single_m1,
                 Rm_states=len(Rm),
                 non_singleton_ends=non_single,
                 periodic_formula=formula,
