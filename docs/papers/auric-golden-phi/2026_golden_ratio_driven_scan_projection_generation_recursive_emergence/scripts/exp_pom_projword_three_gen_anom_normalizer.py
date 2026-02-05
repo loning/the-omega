@@ -129,6 +129,40 @@ def _group_product(g1: str, g2: str) -> str:
     return "x".join(f_sorted)
 
 
+def extract_interface_params(nf: List[Tok]) -> Dict[str, object]:
+    """Extract (u,m,G) from a three-generator interface normal form.
+
+    The interface normal form is (possibly with missing identities):
+      LIFT[G] ∘ PROJ[u] ∘ E[m]
+    """
+    u: str | None = None
+    m: int | None = None
+    group: str | None = None
+    for t in nf:
+        if t.kind == "PROJ":
+            u = str(t.arg)
+        elif t.kind == "E":
+            m = int(t.arg)
+        elif t.kind == "LIFT":
+            group = str(t.arg)
+    return {"u": u, "m": m, "group": group}
+
+
+def holonomy_counter_from_certs(certs: List[Dict[str, object]]) -> Dict[str, int]:
+    """Count E<->LIFT residual swaps by basis label (holonomy counter)."""
+    hol = Counter()
+    for cert in certs:
+        if cert.get("kind") != "ResidualSwap":
+            continue
+        basis = cert.get("basis")
+        if basis is None or str(basis).strip() == "":
+            m = cert.get("m")
+            group = cert.get("group")
+            basis = f"E{m}<->LIFT[{group}]"
+        hol[str(basis)] += 1
+    return dict(hol)
+
+
 def rewrite_once_cert(
     w: List[Tok],
     *,
@@ -177,6 +211,7 @@ def rewrite_once_cert(
                     "swap": "E<->LIFT",
                     "m": int(m),
                     "group": str(group),
+                    "basis": f"E{int(m)}<->LIFT[{str(group)}]",
                     # Symbolic placeholder for the paper's anomaly signature:
                     #   Anom_G(K;theta) = (log Mfrak_chi(theta))_{chi != chi0}.
                     "anom_signature": f"Anom_{group}(K;theta)",
@@ -266,12 +301,16 @@ def main() -> None:
     for ws in word_strs:
         toks = parse_word(ws)
         nf, trace, anom, certs = normalize_with_anom(toks, strategy=str(args.strategy))
+        params = extract_interface_params(nf)
+        hol = holonomy_counter_from_certs(certs)
         rows.append(
             {
                 "input": word_to_str(toks),
                 "normal_form": word_to_str(nf),
+                "interface_params": params,
                 "rewrite_trace": trace,
                 "anom_counter": anom,
+                "holonomy_counter": hol,
                 "certificates": certs,
                 "steps": len(trace),
             }

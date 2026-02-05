@@ -134,6 +134,54 @@ K_2(m+1)D_N^*(\alpha;x_0).
 \paragraph{可见寄存器（外表）}
 抽象层可取可数无限寄存器 $\{Z_i\}_{i\in\mathbb N}$；具体实现可截断为有限集合（例如 $Z_0,\dots,Z_{31}$）。可见寄存器内容始终保持在 $X_\infty$ 的规范地址上；写回时默认触发 $P_Z$。
 
+\begin{remark}[可复现：32-bit ISA/微码参考模拟器]\label{rem:pom-isa-sim}
+为把本节的 ISA/微码口径落到\emph{可执行}层面，仓库在本文论文目录下提供脚本
+\texttt{scripts/pom\_isa\_sim\_v2.py}（实验层版本；最小版本为 \texttt{scripts/pom\_isa\_sim.py}）：
+它实现 32 个可见寄存器 $Z0\ldots Z31$（写回默认触发 $P_Z\equiv\Fold_\infty$，并计入 $k_Z$），并给出两类程序不可见的微态寄存器：
+窗口寄存器 $W0\ldots W31$（保存 $\Omega_m$ 原始比特串，用于 $\Fold_m$、fold-aware restriction
+\(\widetilde r_{m+1\to m}=\pi_{m+1\to m}\circ \Fold_{m+1}\)
+与规范差 \(G_m=|r_{m+1\to m}\oplus \widetilde r_{m+1\to m}|_0\)）
+以及素数指数寄存器 $P0\ldots P31$（可选，用于把乘除线性化为指数向量的逐坐标加减；与 \(\mathcal P\) 纤维口径对齐）。
+\par
+脚本采用固定的 32-bit 编码，并在执行时维护成本计数器
+\((k_Z,k_{\le},k_\chi,D_U)\)
+以及跨分辨率降阶的写回支持预算
+\(\mathrm{support}:=\sum G_m\)
+（对应成本模型中的 \(k_{\downarrow}T_{\downarrow}(m)\) 这一独立空间项）。
+\par
+编码格式与运行示例如下：
+\begin{verbatim}
+32-bit formats:
+  R: opcode(6) | rd(5) | rs1(5) | rs2(5) | imm11(11)
+  I: opcode(6) | rd(5) | rs1(5) | imm16(16)
+  J: opcode(6) | imm26(26)
+
+python3 scripts/pom_isa_sim_v2.py --demo --capbits 32
+python3 scripts/pom_isa_sim_v2.py --gauge --m 10 --trials 20000
+python3 scripts/pom_isa_sim_v2.py --workload --len 6000 --seed 7 --capbits 32 --divmode mixed
+python3 scripts/pom_isa_sim_v2.py --workload --len 6000 --seed 7 --capbits 32 --divmode ld
+python3 scripts/pom_isa_sim_v2.py --workload --len 6000 --seed 7 --capbits 32 --divmode rec
+python3 scripts/pom_isa_sim_v2.py --chi-bench 5000 --tauMix 200
+python3 scripts/pom_isa_sim_v2.py --support-bench 1000 --m-support 15 --capbits 32
+\end{verbatim}
+其中 \texttt{--gauge} 采样 \(\omega\sim\mathrm{Unif}(\Omega_{m+1})\) 并估计 \(\mathbb{E}[G_m]/m\)，用于核验
+定理 \ref{thm:fold-gauge-anomaly-density} 的 \(4/9\) 密度常数（亦可与表 \ref{tab:fold_gauge_anomaly_mc} 的 Monte Carlo 审计对照）。
+\par
+在 v2 中，\texttt{ZDIVMOD\_LD} 与 \texttt{ZDIVMOD\_REC} 提供同一 DIVMOD 语义的两条微码路线，用于做“增长分界在序投影”的可复现对照：
+前者把增长留在 \(k_{\le}\)（长除式代理），后者把增长转移到 \(D_U\)（倒数/迭代代理），并可按
+\[
+T\;=\;k_Z\delta_Z\;+\;k_{\le}T_{\le}\;+\;k_\chi\,\tau_{\mathrm{mix}}\;+\;D_U\;+\;w_{\mathrm{sup}}\cdot \mathrm{support}
+\]
+输出一条可审计的成本分解（各标尺参数可由命令行覆盖）。
+\par
+在该可执行口径下，正文中的三条结构判断都可被直接“跑出来核对”：
+\begin{itemize}
+  \item \textbf{DIVMOD 的增长分界在 \(P_{\le}\)：}长除式路线使 \(k_{\le}T_{\le}\) 主导；倒数/迭代路线把增长转移到 \(D_U\)。
+  \item \textbf{RESCALE↓ 支持规模是正交成本轴：}当 \texttt{WGAUGE}/\texttt{WREM} 中等频率出现时，\(\mathrm{support}=\sum G_m\)（因此 \(w_{\mathrm{sup}}\cdot\mathrm{support}\)）可压过 \(\delta_Z\) 与 \(D_U\)。
+  \item \textbf{\(P_\chi\) 的时间标尺独立：}仅改变 \(\tau_{\mathrm{mix}}\) 即可线性放大 \(k_\chi\,\tau_{\mathrm{mix}}\)，并在低频读出时仍可能主导总成本。
+\end{itemize}
+\end{remark}
+
 \paragraph{隐纤维（程序不可见）}
 隐纤维包含尺度纤维 $\mathcal{S}_\varphi$、相位纤维 $\mathcal{T}$、素数纤维 $\mathcal{P}$，以及同步核状态与余量（例如 $|\Sigma|=40$ 的真实输入核，见附录关于真实输入核的构造）。
 

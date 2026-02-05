@@ -121,12 +121,16 @@ def _normalize_fragment(fragment: str, raw: Sequence[str], word: Optional[str]) 
             raise SystemExit("Empty word. Provide tokens or --word.")
         toks = tg.parse_word(word)
         nf, trace, anom, certs = tg.normalize_with_anom(toks)
+        params = tg.extract_interface_params(nf)
+        hol = tg.holonomy_counter_from_certs(certs)
         return {
             "fragment": fragment,
             "input": tg.word_to_str(toks),
             "normal_form": tg.word_to_str(nf),
+            "interface_params": params,
             "rewrite_trace": trace,
             "anom_counter": anom,
+            "holonomy_counter": hol,
             "certificates": certs,
         }
 
@@ -154,10 +158,18 @@ def cmd_normalize(args: argparse.Namespace) -> None:
     print(f"[pom-cli] fragment={payload['fragment']}", flush=True)
     print(f"[pom-cli] in:  {payload['input']}", flush=True)
     print(f"[pom-cli] nf:  {payload['normal_form']}", flush=True)
+    if "interface_params" in payload and isinstance(payload["interface_params"], dict):
+        p = payload["interface_params"]
+        print(
+            f"[pom-cli] params: u={p.get('u')} m={p.get('m')} group={p.get('group')}",
+            flush=True,
+        )
     if payload["rewrite_trace"]:
         print(f"[pom-cli] trace: {' '.join(payload['rewrite_trace'])}", flush=True)
     if "anom_counter" in payload and payload["anom_counter"]:
         print(f"[pom-cli] anom: {json.dumps(payload['anom_counter'], sort_keys=True)}", flush=True)
+    if "holonomy_counter" in payload and payload["holonomy_counter"]:
+        print(f"[pom-cli] hol: {json.dumps(payload['holonomy_counter'], sort_keys=True)}", flush=True)
     if args.json_out:
         _write_json(args.json_out, payload)
         print(f"[pom-cli] wrote {args.json_out}", flush=True)
