@@ -745,6 +745,7 @@ D_2=2,\quad D_3=2,\quad D_4=3,\quad D_5=4.
 
 \input{sections/generated/tab_fold_max_fiber_achievers_phase}
 \input{sections/generated/tab_fold_max_fiber_achievers_bsplit}
+\input{sections/generated/tab_fold_max_fiber_achievers_hiddenbit_metrics}
 
 \begin{definition}[顶层纤维谱与达到者数]\label{def:pom-top-fiber-spectrum}
 固定 \(m\ge 2\)。令
@@ -791,6 +792,12 @@ c_m(r)=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\ (\mathrm{mod}\ F_{m+2})\}
 \kappa_{2k}^{\mathrm{max}}=2\quad(k\ge 5),
 \qquad
 \kappa_{2k+1}^{\mathrm{max}}=4\quad(k\ge 6).
+\]
+等价地（阈值版）：
+\[
+m\ge 10\ \text{且}\ m\ \text{偶}\ \Rightarrow\ \kappa_m^{\mathrm{max}}=2,
+\qquad
+m\ge 13\ \text{且}\ m\ \text{奇}\ \Rightarrow\ \kappa_m^{\mathrm{max}}=4.
 \]
 \end{theorem}
 \begin{proof}
@@ -987,6 +994,100 @@ d_{m,1}(x)=\#\{\omega:\ N(\omega)=r+F_{m+2}\}.
 \end{itemize}
 该分裂结构把“最大纤维计数 = 链上独立集计数”（注 \ref{rem:pom-overflow-rec}）进一步细分为“端点约束下的两类独立集计数”，从而在达到者层面强制出现相邻 Fibonacci 数的交换分裂。
 \end{remark}
+
+\begin{corollary}[最大纤维达到者的隐藏位概率谱：三种普适极限]\label{cor:pom-max-fiber-achievers-hidden-bit-prob-spectrum}
+对最大纤维达到者 \(x\in X_m\)（即 \(d_m(x)=D_m\)），定义隐藏位 \(1\) 的相对频率
+\[
+p_1(x):=\frac{d_{m,1}(x)}{D_m}.
+\]
+则在稳定阈值区间（注 \ref{rem:pom-max-fiber-achievers-bsplit}）：
+\begin{itemize}
+  \item \textbf{偶数 \(m=2k\ge 10\)：}
+  \[
+  p_1(x)\in\left\{\frac{F_k}{F_{k+2}},\ \frac{F_{k+1}}{F_{k+2}}\right\}
+  \xrightarrow[k\to\infty]{}\left\{\varphi^{-2},\ \varphi^{-1}\right\}.
+  \]
+  \item \textbf{奇数 \(m=2k+1\ge 13\)：}
+  \[
+  p_1(x)\in\left\{\frac12,\ \frac12\pm\frac{F_{k-2}}{2F_{k+1}}\right\}
+  \xrightarrow[k\to\infty]{}\left\{\frac12,\ \frac12\pm\frac{\varphi^{-3}}{2}\right\}
+  =
+  \left\{\frac12,\ \varphi^{-2},\ \varphi^{-1}\right\}.
+  \]
+\end{itemize}
+因此在“极限意义”下，最大纤维达到者的隐藏位概率谱只出现三种普适常数：
+\[
+\boxed{\;
+p_1\in\left\{\frac12,\ \varphi^{-1},\ \varphi^{-2}\right\}\quad(\text{聚点集合}).
+\;}
+\]
+\end{corollary}
+\begin{proof}
+由注 \ref{rem:pom-max-fiber-achievers-bsplit} 的闭式分裂对直接相除即可得到上述有限 \(k\) 的取值集合。
+用 Binet 渐近 \(F_{n+a}/F_{n+b}\to \varphi^{a-b}\) 得到
+\(
+F_k/F_{k+2}\to\varphi^{-2}
+\),
+\(
+F_{k+1}/F_{k+2}\to\varphi^{-1}
+\),
+以及
+\(
+F_{k-2}/F_{k+1}\to\varphi^{-3}
+\)；
+代回即可得奇数支的极限等式
+\(
+\tfrac12\pm\tfrac12\varphi^{-3}=\{\varphi^{-1},\varphi^{-2}\}
+\)。
+证毕。
+\end{proof}
+
+\begin{corollary}[最大达到者的隐藏位相对不平衡度：奇偶一致的普适极限常数]\label{cor:pom-max-fiber-achievers-hidden-bit-imbalance}
+定义最大达到者的隐藏位相对不平衡度
+\[
+\Delta_m^{(b)}:=\max_{x:\ d_m(x)=D_m}\frac{|d_{m,0}(x)-d_{m,1}(x)|}{D_m}.
+\]
+则在稳定阈值区间（注 \ref{rem:pom-max-fiber-achievers-bsplit}）有闭式
+\[
+\Delta_{2k}^{(b)}=\frac{F_{k-1}}{F_{k+2}},
+\qquad
+\Delta_{2k+1}^{(b)}=\frac{F_{k-2}}{F_{k+1}},
+\]
+从而得到与奇偶无关的普适极限：
+\[
+\boxed{\;
+\lim_{m\to\infty}\Delta_m^{(b)}=\varphi^{-3}=\sqrt5-2\approx 0.236068.
+\;}
+\]
+\end{corollary}
+\begin{proof}
+偶数 \(m=2k\)：注 \ref{rem:pom-max-fiber-achievers-bsplit} 给出分裂对为 \((F_{k+1},F_k)\) 与 \((F_k,F_{k+1})\)，故最大差为 \(|F_{k+1}-F_k|=F_{k-1}\)，再除以 \(D_{2k}=F_{k+2}\) 得 \(\Delta_{2k}^{(b)}=F_{k-1}/F_{k+2}\)。
+\par
+奇数 \(m=2k+1\)：偏置分裂对相差 \(2F_{k-2}\)，而 \(D_{2k+1}=2F_{k+1}\)，故 \(\Delta_{2k+1}^{(b)}=F_{k-2}/F_{k+1}\)。
+两式用 Binet 渐近即得极限为 \(\varphi^{-3}\)。
+恒等式 \(\varphi^{-3}=\sqrt5-2\) 由 \(\varphi=\frac{1+\sqrt5}{2}\) 直接化简得到。证毕。
+\end{proof}
+
+\begin{corollary}[最大达到者的隐藏位熵：两种极限常数（偶/奇相结构不同）]\label{cor:pom-max-fiber-achievers-hidden-bit-entropy}
+对最大纤维达到者 \(x\) 定义隐藏位二元熵（bits）
+\[
+H_b(x):=-p_1(x)\log_2 p_1(x)-(1-p_1(x))\log_2(1-p_1(x)).
+\]
+令
+\[
+H_\varphi:=H_b(\varphi^{-1})=H_b(\varphi^{-2})\approx 0.9594187\ \text{bits}.
+\]
+则在稳定阈值区间内：
+\begin{itemize}
+  \item \textbf{偶数 \(m\ge 10\)：}两相位最大达到者均为黄金偏置相，且 \(H_b(x)\to H_\varphi\)（不出现 \(1\) bit 的平衡相）；
+  \item \textbf{奇数 \(m\ge 13\)：}四相位中恰有两相位为平衡分裂（\(p_1=1/2\)，故 \(H_b\to 1\) bit），另两相位为黄金偏置分裂（\(H_b\to H_\varphi\)）。
+\end{itemize}
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:pom-max-fiber-achievers-hidden-bit-prob-spectrum}，达到者的 \(p_1\) 只收敛到 \(\{1/2,\varphi^{-1},\varphi^{-2}\}\)。
+二元熵满足 \(H_b(p)=H_b(1-p)\)，故偏置极限 \(\varphi^{-1}\) 与 \(\varphi^{-2}\) 给出同一常数 \(H_\varphi\)，而 \(p=1/2\) 给出 \(H_b=1\)。
+奇偶相位结构来自注 \ref{rem:pom-max-fiber-achievers-bsplit} 的分裂类型计数。证毕。
+\end{proof}
 
 \begin{corollary}[相位配对导致的隐藏位精确无偏（最大纤维族；偶数支）]\label{cor:pom-max-fiber-hidden-bit-unbiased}
 设 \(m=2k\ge 10\)。由定理 \ref{thm:pom-max-achievers-phase-stabilization}，最大纤维达到者恰有两相位，记为 \(x^{(1)},x^{(2)}\in X_{2k}\)。
