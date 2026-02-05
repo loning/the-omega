@@ -48,7 +48,6 @@ class CurvatureBounds:
     theta_at_min_I2: float
     max_I2: str
     theta_at_max_I2: float
-    elapsed_sec: float
 
 
 def _build_F(lam: sp.Symbol, u: sp.Symbol) -> sp.Expr:
@@ -202,7 +201,6 @@ def main() -> None:
         theta_at_min_I2=thetas[j_minI],
         max_I2=mp.nstr(max_I2, 30),
         theta_at_max_I2=thetas[j_maxI],
-        elapsed_sec=time.time() - t0,
     )
 
     jout = Path(args.json_out)
@@ -231,7 +229,7 @@ def main() -> None:
     lines.append(f"$P''_{{\\max}}$ & ${summary.max_P2}$ at $\\theta={summary.theta_at_max_P2:.3f}$\\\\")
     lines.append(f"$I''_{{\\min}}$ & ${summary.min_I2}$ at $\\theta={summary.theta_at_min_I2:.3f}$\\\\")
     lines.append(f"$I''_{{\\max}}$ & ${summary.max_I2}$ at $\\theta={summary.theta_at_max_I2:.3f}$\\\\")
-    lines.append(f"mp.dps & ${summary.mp_dps}$; elapsed (sec) $={summary.elapsed_sec:.3f}$\\\\")
+    lines.append(f"mp.dps & ${summary.mp_dps}$\\\\")
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
     lines.append("\\end{table}")

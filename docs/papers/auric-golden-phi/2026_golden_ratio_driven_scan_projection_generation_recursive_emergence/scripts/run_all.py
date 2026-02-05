@@ -100,14 +100,6 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="rotation_multiscale_residual_summary",
-            script="exp_rotation_multiscale_residual_summary.py",
-            args=[],
-            expected_outputs=[
-                "sections/generated/tab_rotation_multiscale_residual_summary.tex",
-            ],
-        ),
-        Step(
             name="fold_gauge_anomaly",
             script="exp_fold_gauge_anomaly.py",
             args=[],
@@ -870,6 +862,24 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_rho_ppp_prime_scan",
+            script="exp_real_input_40_rho_ppp_prime_scan.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_rho_ppp_prime_scan.json",
+                "sections/generated/tab_real_input_40_rho_ppp_prime_scan.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_lapse_modulated_tau_mix",
+            script="exp_real_input_40_lapse_modulated_tau_mix.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_lapse_modulated_tau_mix.json",
+                "sections/generated/tab_real_input_40_lapse_modulated_tau_mix.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_covariance_worst_character",
             script="exp_real_input_40_covariance_predict_worst_character.py",
             args=["--triple", "3x3x5", "--third-axis", "N2", "--h", "0.0002"],
@@ -1445,6 +1455,7 @@ def build_steps() -> List[Step]:
                 "sections/generated/fig_arity_class_density.tex",
                 "sections/generated/fig_arity_class_logM.tex",
                 "sections/generated/tab_rotation_fold_vs_parry_summary.tex",
+                "sections/generated/tab_rotation_multiscale_residual_summary.tex",
                 "sections/generated/tab_iid_sources_fold_vs_parry_ci.tex",
                 "sections/generated/tab_phi_m_sofic_entropy.tex",
             ],

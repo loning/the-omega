@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Generate a small multiscale residual summary table (rotation scan).
+"""Generate a small multiscale residual audit table (rotation scan).
 
 This script is English-only by repository convention.
 
@@ -9,7 +9,7 @@ It computes the cross-resolution projective TV residual
   E_{m,N} = TV( p_m , (prefix)_* p_{m+1} )
 
 for a small (m,N) grid under a fixed irrational rotation scan, and writes a
-LaTeX table snippet used by sections/12_experiments.tex.
+LaTeX table snippet for local audit (not the main experiment summary table).
 """
 
 from __future__ import annotations
@@ -147,7 +147,7 @@ def write_tex(rows: List[Tuple[int, int, float, float]], out_path: Path) -> None
     lines.append(
         "\\caption{Cross-resolution projective residual $E_{m,N}$ and the boundary perturbation rate $\\hat\\mu_{m+1,N}(\\mathcal{B}_{m+1})$ in the rotation scan model (small audit grid).}"
     )
-    lines.append("\\label{tab:rotation_multiscale_residual_summary}")
+    lines.append("\\label{tab:rotation_multiscale_residual_audit_grid}")
     lines.append("\\end{table}")
     lines.append("")
     out_path.write_text("\n".join(lines), encoding="utf-8")
@@ -194,7 +194,7 @@ def main() -> None:
             rows.append((m, N, e, b))
             prog.tick(f"done m={m} N={N} E={e:.6g} B={b:.6g}")
 
-    out = GEN / "tab_rotation_multiscale_residual_summary.tex"
+    out = GEN / "tab_rotation_multiscale_residual_audit_grid.tex"
     write_tex(rows, out)
     dt = time.time() - t0
     print(

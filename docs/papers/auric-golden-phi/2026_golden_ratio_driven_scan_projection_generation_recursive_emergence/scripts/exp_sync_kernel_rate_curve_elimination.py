@@ -47,7 +47,6 @@ class ResultantSummary:
     leading_monomial: str
     leading_coeff: str
     u_adic_valuation: int
-    elapsed_sec: float
 
 
 def _build_F(lam: sp.Symbol, u: sp.Symbol) -> sp.Expr:
@@ -108,8 +107,6 @@ def _tex_table(summary: ResultantSummary) -> str:
                  % summary.leading_coeff.replace("_", "\\_"))
     lines.append("$v_u(R_{\\mathrm{raw}})$ & $%d$\\\\"
                  % summary.u_adic_valuation)
-    lines.append("elapsed (sec) & %.3f\\\\"
-                 % summary.elapsed_sec)
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
     lines.append("\\end{table}")
@@ -246,7 +243,6 @@ def main() -> None:
         leading_monomial=leading_monomial,
         leading_coeff=leading_coeff,
         u_adic_valuation=int(v_u),
-        elapsed_sec=time.time() - t0,
     )
 
     jout = Path(args.json_out)

@@ -236,7 +236,6 @@ def main() -> None:
                 "tv_eps_95",
                 "tv_bound_95",
                 "unique_types",
-                "elapsed_s",
             ],
         )
         wr.writeheader()
@@ -276,7 +275,6 @@ def main() -> None:
                         prog.tick(f"fold blocks model={case.model} seed={seed} m={m} i={i}/{Nmax}")
 
                     for N in Ns:
-                        t1 = time.time()
                         vals = folded[:N]
                         counts: Dict[int, int] = {}
                         for x in vals:
@@ -296,7 +294,6 @@ def main() -> None:
                         kl_eps = weissman_kl_eps(N, k, delta=delta)
                         kl_bound = min(1.0, kl_eps)
 
-                        elapsed = time.time() - t1
                         wr.writerow(
                             {
                                 "model": case.model,
@@ -313,7 +310,6 @@ def main() -> None:
                                 "tv_eps_95": f"{tv_eps:.12g}",
                                 "tv_bound_95": f"{tv_bound:.12g}",
                                 "unique_types": len(counts),
-                                "elapsed_s": f"{elapsed:.6g}",
                             }
                         )
                         prog.tick(

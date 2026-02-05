@@ -615,7 +615,6 @@ def main() -> None:
         "meta": {
             "script": Path(__file__).name,
             "generated_at_unix_s": time.time(),
-            "elapsed_s": time.time() - t0,
         },
         "result": {
             "g_exact": f"{g.numerator}/{g.denominator}",

@@ -316,7 +316,6 @@ def main() -> None:
                 "DN_star_upper_bound",
                 "DN_star_exact",
                 "tv_multiscale_residual",
-                "elapsed_s",
             ],
         )
         wr.writeheader()
@@ -383,7 +382,6 @@ def main() -> None:
                 counts_m1 = np.zeros(1 << (m + 1), dtype=np.int64) if folded_m1 is not None else None
                 prev = 0
                 for N in Ns:
-                    t0 = time.time()
                     counts += np.bincount(folded_m[prev:N], minlength=(1 << m))
                     if counts_m1 is not None and folded_m1 is not None:
                         counts_m1 += np.bincount(folded_m1[prev:N], minlength=(1 << (m + 1)))
@@ -414,7 +412,6 @@ def main() -> None:
                             0.5 * float(np.sum(np.abs((counts - push_counts)[legal]))) / float(N)
                         )
 
-                    elapsed = time.time() - t0
                     wr.writerow(
                         {
                             "model": "rotation_scan",
@@ -431,7 +428,6 @@ def main() -> None:
                             "DN_star_upper_bound": f"{dn_star_ub_by_N[N]:.12g}",
                             "DN_star_exact": f"{dn_star_exact_by_N[N]:.12g}",
                             "tv_multiscale_residual": f"{tv_multiscale:.12g}" if tv_multiscale is not None else "",
-                            "elapsed_s": f"{elapsed:.6g}",
                         }
                     )
                     prog.tick(f"done cfg={cfg.alpha_name} m={m} N={N} tv={tv:.4g} kl={kl:.4g}")

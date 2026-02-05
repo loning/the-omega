@@ -161,7 +161,6 @@ def main() -> None:
         "rows": [r.__dict__ for r in rows],
         "audit": audit,
         "generated_at_unix_s": time.time(),
-        "elapsed_s": time.time() - t0,
     }
     export_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     print(f"[fold_truncation_curvature] wrote {export_path}", flush=True)
