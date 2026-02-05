@@ -310,6 +310,28 @@ a_m(k)=\prod_{j=1}^m|\cos(\pi kF_{j+1}/F_{m+2})|
 \]
 当 $m+2\equiv 0\pmod 3$ 时，$F_{m+2}$ 为偶数，$k=F_{m+2}/2$ 为整数。又 Fibonacci 数奇偶性以 3 为周期，存在 $j$ 使 $F_{j+1}$ 为奇数，故因子 $1+(-1)^{F_{j+1}}=0$，从而乘积为零。证毕。
 
+\begin{corollary}[严格奇偶平衡律]\label{cor:fold-even-odd-balance}
+当 $m+2\equiv 0\pmod 3$ 时，
+\[
+\#\{\omega\in\Omega_m:\ \pi_m(\omega)\equiv 0\ (\mathrm{mod}\ 2)\}
+=
+\#\{\omega\in\Omega_m:\ \pi_m(\omega)\equiv 1\ (\mathrm{mod}\ 2)\}
+=2^{m-1}.
+\]
+\end{corollary}
+
+\textbf{证明：}
+记 $M=F_{m+2}$。当 $M$ 为偶数时，频率 $k=M/2$ 的角色为
+\(
+\chi_{M/2}(r)=e^{-2\pi i (M/2)r/M}=(-1)^r
+\)。
+因此
+\[
+\widehat d_m(M/2)=\sum_{r=0}^{M-1} d_m(r)(-1)^r
+=E_m-O_m,
+\]
+其中 $E_m$（resp.\ $O_m$）为偶（resp.\ 奇）余类的总计数。由定理 \ref{thm:fold-spectrum-parity-zero} 得 $\widehat d_m(M/2)=0$，再用 $E_m+O_m=|\Omega_m|=2^m$ 即得结论。证毕。
+
 \begin{theorem}[谱零点的同余判别]
 \label{thm:fold-spectrum-zero-criterion}
 对任意 $k\in\ZZ/(F_{m+2}\ZZ)$，有
@@ -332,6 +354,30 @@ e^{-2\pi i k F_{j+1}/F_{m+2}}=-1
 e^{-2\pi i k F_{j+1}/F_{m+2}}=-1
 \)。
 将其改写为同余条件得到结论。证毕。
+
+\begin{corollary}[谱零点的配对抵消 involution]\label{cor:fold-spectrum-zero-involution}
+设 $M=F_{m+2}$。若存在 $j$ 使 $e^{-2\pi i k F_{j+1}/M}=-1$，则映射
+\[
+\iota_j:\Omega_m\to\Omega_m,\qquad \iota_j(\omega)=\omega\oplus e_j
+\]
+为无固定点的对合，并满足
+\[
+e^{-2\pi i k N(\omega)/M}+e^{-2\pi i k N(\iota_j(\omega))/M}=0.
+\]
+因此 $\widehat d_m(k)=0$ 可由该配对抵消逐点见证。
+\end{corollary}
+
+\textbf{证明：}
+其中 $e_j$ 为第 $j$ 位为 $1$ 的标准基向量，$\oplus$ 表示逐位异或（翻转第 $j$ 位）。对任意 $\omega$ 有
+\[
+N(\iota_j(\omega))=N(\omega)+(-1)^{\omega_j}F_{j+1},
+\]
+从而
+\[
+e^{-2\pi i k N(\iota_j(\omega))/M}
+=e^{-2\pi i k N(\omega)/M}\cdot e^{-2\pi i k(-1)^{\omega_j}F_{j+1}/M}.
+\]
+由假设 $e^{-2\pi i k F_{j+1}/M}=-1$，两种符号均给出乘子 $-1$，故两项相消；再对 $\Omega_m$ 求和得到 $\widehat d_m(k)=0$。证毕。
 
 \begin{definition}[谱零点集合]\label{def:fold-spectrum-zero-set}
 记 \(M:=F_{m+2}\)，并定义谱零点集合
