@@ -1020,6 +1020,76 @@ S_n^{\mathrm{ab}}\cong \ZZ_2
 \]
 \end{proof}
 
+\begin{definition}[纤维奇偶荷与符号映射]\label{def:fold-bin-gauge-sign}
+对任意 \(m\ge 1\)，在命题 \ref{prop:fold-bin-gauge-decomposition} 的直积分解下，记
+\[
+\mathrm{sgn}_m:\ \mathcal{G}^{\mathrm{bin}}_m\to (\ZZ_2)^{X_m},
+\qquad
+\mathrm{sgn}_m\bigl((\sigma_w)_{w\in X_m}\bigr):=\bigl(\mathrm{sgn}(\sigma_w)\bigr)_{w\in X_m}.
+\]
+该映射把每条纤维的置换仅记录其奇偶性，可视为“纤维奇偶荷”。
+\end{definition}
+
+\begin{corollary}[纤维奇偶荷的规范性与 \texorpdfstring{$m=6$}{m=6} 的 \(21\) 比特签名]\label{cor:fold-bin-gauge-sign}
+\(\mathrm{sgn}_m\) 是一个规范的群同态，其像等于 Abel 化
+\(
+(\mathcal{G}^{\mathrm{bin}}_m)^{\mathrm{ab}}
+\)
+（对 \(d^{\mathrm{bin}}_m(w)\ge 2\) 的纤维给出一个 \(\ZZ_2\) 因子）。
+当 \(m=6\) 时所有纤维尺寸均在 \(\{2,3,4\}\)，因此
+\[
+\mathrm{Im}(\mathrm{sgn}_6)\cong (\ZZ_2)^{21},
+\]
+从而任何“只在交换子商上可见”的规范异常/标签都等价于一个 \(21\) 比特向量。
+\end{corollary}
+
+\begin{proposition}[规范体积密度与 \texorpdfstring{$\kappa_m$}{kappa} 夹逼]\label{prop:fold-bin-gauge-volume}
+由命题 \ref{prop:fold-bin-gauge-decomposition}，
+\[
+|\mathcal{G}^{\mathrm{bin}}_m|
+=\prod_{w\in X_m}\bigl(d^{\mathrm{bin}}_m(w)!\bigr).
+\]
+定义规范体积密度
+\[
+g_m:=\frac{1}{2^m}\log|\mathcal{G}^{\mathrm{bin}}_m|,
+\]
+并令
+\[
+\kappa_m:=\frac{1}{2^m}\sum_{w\in X_m}d^{\mathrm{bin}}_m(w)\log d^{\mathrm{bin}}_m(w)
+=\mathbb{E}_{\pi_m}[\log d^{\mathrm{bin}}_m(X)],
+\qquad
+\pi_m(w):=\frac{d^{\mathrm{bin}}_m(w)}{2^m}.
+\]
+则对所有 \(m\ge 1\) 有
+\[
+\boxed{\ \kappa_m-1\ \le\ g_m\ \le\ \kappa_m\ },
+\]
+其中不等式来自阶乘的初等夹逼
+\(
+d\log d-d\le \log(d!)\le d\log d
+\)
+与 \(\sum_w d^{\mathrm{bin}}_m(w)=2^m\)。
+\end{proposition}
+
+\begin{remark}[\texorpdfstring{$m=6$}{m=6} 的 gauge 体积数值锚点]\label{rem:fold-bin-gauge-volume-m6}
+对 \(m=6\) 的直方图 \(2:8,3:4,4:9\)，有
+\(
+|\mathcal{G}^{\mathrm{bin}}_6|=(2!)^{8}(3!)^{4}(4!)^{9}
+\)。
+脚本 \texttt{\detokenize{scripts/exp_fold_bin_gauge_m6_invariants.py}} 输出
+\(\log|\mathcal{G}^{\mathrm{bin}}_6|\)、\(g_6\)、\(\kappa_6\) 的精确数值与夹逼核验（表 \ref{tab:fold_bin_gauge_m6_invariants}）：
+\input{sections/generated/tab_fold_bin_gauge_m6_invariants}
+从而把“规范体积密度 \(\leftrightarrow\) 折叠缺陷 \(\kappa_m\)”的夹逼关系落到可复核的数值对象上。
+\end{remark}
+
+\begin{remark}[异常签名维数的不可压缩性（\texorpdfstring{$m=6$}{m=6}）]\label{rem:fold-bin-gauge-rigidity}
+在 \(m=6\) 下每条纤维均满足 \(d^{\mathrm{bin}}_6(w)\ge 2\)，
+因此 \((\mathcal{G}^{\mathrm{bin}}_6)^{\mathrm{ab}}\) 的维数恰等于纤维数 \(|X_6|=21\)。
+若保持 fold-gauge 的“纤维独立置换”定义不变，则任何把可观测异常压缩到少于 \(21\) 个独立比特的方案
+都必须引入跨纤维关系，从而破坏直积结构；
+因此 \((\ZZ_2)^{21}\) 是该口径下异常签名空间的最小完备维数。
+\end{remark}
+
 \begin{corollary}[最大纤维、组合上界与饱和判别]\label{cor:fold-bin-saturation}
 对任意 \(m\ge 1\)，最大纤维由 \(w=0^m\) 取得，并满足组合上界
 \begin{equation}\label{eq:fold-bin-upper}

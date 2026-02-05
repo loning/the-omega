@@ -52,6 +52,67 @@ W(B_3)\cong W(C_3)\cong (\ZZ_2)^3\rtimes S_3,\qquad |W|=48,
 \par
 为避免“手工配对”，脚本 \texttt{scripts/exp\_fold6\_b3c3\_seed.py} 输出两种规范化（长短根互换）的根字典表（表 \ref{tab:fold6_b3c3_root_dictionary_b3} 与表 \ref{tab:fold6_b3c3_root_dictionary_c3}；见附录），并写出 JSON 证书 \texttt{artifacts/export/fold6\_b3c3\_seed.json}。
 
+\paragraph{新结论 D1（四步平移的规范 uplift 同构）}
+对任意 \(n\ge 2\)，定义映射
+\[
+\iota_n: X_n\to X^{\mathrm{bdry}}_{n+4},\qquad \iota_n(v)=10\,v\,01.
+\]
+则 \(\iota_n\) 是一个规范的双射，其逆映射为“删去首两位与末两位”。证明要点完全构造性：边界词满足首尾为 \(1\)，而在“无相邻 \(11\)”约束下首尾的相邻位必须为 \(0\)，故任意边界词必形如 \(1,0,(\cdots),0,1\)；中间那段自然落在 \(X_n\)。因此计数恒等式
+\(|X_{n+4}^{\mathrm{bdry}}|=|X_n|\) 被提升为可计算的结构同构。
+\par
+在 \(n=6\) 的实例上，这给出
+\input{sections/generated/eq_boundary_uplift_m10_isomorphism}
+并把 \(m=10\) 的 \(21\) 个边界模态逐一标号为 “\(18\) 个 \(B_3/C_3\) 根方向 + \(3\) 个 Cartan 方向”：对 \(b\in X^{\mathrm{bdry}}_{10}\)，取 \(v=\iota_6^{-1}(b)\in X_6\)，若 \(v\in X_6^{\mathrm{cyc}}\) 则用表 \ref{tab:fold6_b3c3_root_dictionary_b3} 赋根向量，若 \(v\in X_6^{\mathrm{bdry}}\) 则记为 Cartan 方向。该字典由脚本 \texttt{\detokenize{scripts/exp_boundary_uplift_m10_b3c3_dictionary.py}} 自动生成，完整 \(21\) 词清单见表 \ref{tab:boundary_uplift_m10_dictionary}。
+\input{sections/generated/tab_boundary_uplift_m10_dictionary}
+
+\paragraph{新结论 E1（\texorpdfstring{$B_3/C_3$}{B3/C3} 根方向的 \texorpdfstring{$6+6+6$}{6+6+6} 刚性分裂）}
+表 \ref{tab:fold6_b3c3_root_dictionary_b3} 给出的 \(B_3\) 根向量不仅呈现粗分裂 \(6+12\)（短根/长根），其 \(12\) 个长根还进一步刚性分解为两套互不相交的 \(A_2\) 根系：
+\[
+\Phi_{\mathrm{long}}=\Phi_{A_2(+)}\sqcup\Phi_{A_2(-)},\qquad
+\Phi_{A_2(+)}=\{\pm(e_1+e_2),\pm(e_1+e_3),\pm(e_2+e_3)\},
+\]
+\[
+\Phi_{A_2(-)}=\{\pm(e_1-e_2),\pm(e_1-e_3),\pm(e_2-e_3)\}.
+\]
+其中 \(A_2(+)\) 与 \(A_2(-)\) 的区分仅依赖“两个非零分量同号/异号”的符号结构，因而不依赖额外选择；这把 \(X_6^{\mathrm{cyc}}\) 进一步刚性分裂为
+\[
+X_6^{\mathrm{cyc}}=X_6^{\mathrm{short}}\ \sqcup\ X_6^{A_2(+)}\ \sqcup\ X_6^{A_2(-)},
+\qquad 18=6+6+6,
+\]
+其显式词表与根向量对应已经并入表 \ref{tab:boundary_uplift_m10_dictionary} 的 uplift 字典中（由上述脚本自动生成）。
+结合新结论 D1，这一分裂把 \(m=10\) 的边界接口固定为
+\(
+6\ (\text{short})\ +\ 6\ (A_2(+))\ +\ 6\ (A_2(-))\ +\ 3\ (\text{Cartan})
+\)
+的四块结构，为后续谱隙对齐或分块耦合分析提供硬指标。
+
+\paragraph{新结论 F1（各向同性点的统一判据与 CAP-II 常数组合标定）}
+注 \ref{rem:sp6-minimal-continuous-envelope} 已将 \(\Sigma(\theta)=\nabla^2P(\theta)\) 的各向同性扫描作为 \(C_3=\mathrm{Sp}(6)\) 连续包络的可审计入口。
+将新结论 D1/E1 的根字典与该扫描联立，可给出一个更强的统一判据：在某个“统一点” \(\theta^*\) 上，根向量的有效长度应只依赖根型（短/长），而不依赖具体方向；因此在 \(\theta^*\) 附近，\(m=10\) 的 \(21\) 个边界模态应呈现最简分裂
+\[
+12\ (\text{长根，含 }A_2(+)\oplus A_2(-))\ \oplus\ 6\ (\text{短根})\ \oplus\ 3\ (\text{Cartan}),
+\]
+并且在度量 \(g=\Sigma(\theta)^{-1}\) 下满足
+\[
+R_{ls}(\theta):=\sqrt{\frac{\langle\|\alpha\|^2_g\rangle_{\alpha\in\Phi_{\mathrm{long}}}}{\langle\|\alpha\|^2_g\rangle_{\alpha\in\Phi_{\mathrm{short}}}}}
+\approx \sqrt{2},\qquad
+R_{pm}(\theta):=\sqrt{\frac{\langle\|\alpha\|^2_g\rangle_{\alpha\in\Phi_{A_2(+)}}}{\langle\|\alpha\|^2_g\rangle_{\alpha\in\Phi_{A_2(-)}}}}
+\approx 1.
+\]
+脚本 \texttt{\detokenize{scripts/exp_sp6_isotropy_root_split_ratio.py}} 直接读取各向同性扫描输出
+\texttt{\detokenize{artifacts/export/sync_kernel_weighted_sp6_isotropy_scan.json}} 并计算 \(R_{ls},R_{pm}\)，从而把上述判据落到可复核的数值输出上。
+\par
+进一步，结合附录定义 \ref{def:appH0-lapse-proxy} 的主标量 \(u=\log(\kappa/\kappa_0)\) 与 CAP-II 的 Fisher-amplitude 场（为避免与本文的 arity-charge \(\chi\) 混淆，记为 \(\chi_F\)），
+若取 \(\rho=\rho_0 e^{p u}\) 与 \(\chi_F=\sqrt{\rho}\)，则
+\[
+|\nabla\chi_F|^2=\rho_0\,\frac{p^2}{4}\,e^{p u}\,|\nabla u|^2.
+\]
+在各向同性点 \(\Sigma(\theta^*)\simeq\sigma^2 I\) 时，二阶涨落给出的二次型规模即由 \(\sigma^2\) 读出，从而提供一个可计算的常数组合标定：
+\(
+\lambda_F\,\rho_0\,\frac{p^2}{4}\ \approx\ \sigma^2
+\)
+（\(\sigma^2\) 由 \(\Sigma(\theta^*)\) 的特征值给出）。这把“统一判据”与 CAP-II 的有效标度直接绑定为同一个可审计对象。
+
 \paragraph{新结论 D（\texorpdfstring{$C_6$}{C6} 轨道刚性：从内禀环旋转分块到 Pati--Salam 型 Levi 骨架候选）}
 上段使用 \(\,X_6=X_6^{\mathrm{cyc}}\sqcup X_6^{\mathrm{bdry}}\) 的 \(18\oplus 3\) 计数接口来锁定 rank-\(3\) 的简单李型种子。
 同一窗口 \(m=6\) 还携带一个与“根长短”无关、而仅由\emph{环结构}诱导的内禀对称动作：令
