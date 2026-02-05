@@ -963,6 +963,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_output_potential_spectral_collisions",
+            script="exp_real_input_40_output_potential_spectral_collisions.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_output_potential_spectral_collisions.json",
+                "sections/generated/eq_real_input_40_output_potential_spectral_collision_identities.tex",
+                "sections/generated/tab_real_input_40_output_potential_spectral_collision_roots.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_event_time_dilation",
             script="exp_real_input_40_event_time_dilation.py",
             args=[],

@@ -40,7 +40,8 @@ def _format_sci_tex(x: float, sig: int = 4) -> str:
     exp_i = int(exp)
     # Strip trailing zeros in mantissa, keep at least one decimal place.
     mantissa = mantissa.rstrip("0").rstrip(".")
-    return f"{mantissa}\\\\times 10^{{{exp_i}}}"
+    # TeX command is \times; write a single backslash to the output file.
+    return f"{mantissa}\\times 10^{{{exp_i}}}"
 
 
 def write_table(rows: List[Row], m_min: int, m_max: int, out_path: Path) -> None:
