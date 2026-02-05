@@ -253,9 +253,79 @@ $$
   $$
   其中 \(X'\) 为同型的（可能带参数更新的）门：在严格可交换情形取 \(X'=X\)；
   在涉及 lift 轴并置时，\(X'=\mathrm{LIFT}_{G^{\times q}}\) 反映“\(q\) 份拷贝的并置提升”；
-  在涉及 \(E_m\) 的情形，允许输出一个可核对的残差标签（类比定义 \ref{def:pom-anom-signature} 的异常签名口径），以承载 \(E_m\) 与 moment 编译在一般情形下的非严格交换。
+  在涉及 \(E_m\) 的情形，交换证书允许输出一个可核对的标量残差标签
+  \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}(K;\theta)\)（定义 \ref{def:pom-moment-anom-signature}），以承载 \(E_m\) 与 moment 编译在一般情形下的非严格交换。
 \end{enumerate}
 \end{definition}
+
+\paragraph{moment 残差：\texorpdfstring{$E_m$}{Em} 与 \texorpdfstring{$\mathrm{MOM}_q$}{MOMq} 的不交换}
+把 \(\mathrm{MOM}_q\) 加入重写闭包后，最小的新临界对来自
+\(
+E_m\circ \mathrm{MOM}_q
+\)
+vs.\
+\(
+\mathrm{MOM}_q\circ E_m
+\)：
+直觉上这对应于“先做条件期望再取 \(q\) 次”与“先进入 \(q\)-重 fiber-product moment 世界再平均”的结构差异。
+为了把该差异像 \(\mathsf{Anom}_G\) 一样压缩为可审计签名，我们引入一个标量型的 moment-anomaly。
+
+\begin{definition}[moment 有限部常数与 moment-anomaly 签名]\label{def:pom-moment-anom-signature}
+固定一个带势核 \(K\)（或等价的加权矩阵族 \(M_\theta\)），以及一个矩阶 \(q\ge 2\)。
+令 \(\mathrm{MOM}_q\) 生成的 \(q\)-重碰撞 moment-kernel（定义 \ref{def:pom-projword-2cat}）在有限状态上的一个 realization 记为矩阵 \(A^{(q)}_\theta\)
+（例如对称幂商核 \(\widetilde A_q(u)\)，见命题 \ref{prop:pom-moment-symmetric-power} 与 \S\ref{subsec:pom-pressure-surface-qu}）。
+记其 \(\zeta\)-接口为
+\[
+\zeta^{(q)}_\theta(z):=\det(I-zA^{(q)}_\theta)^{-1},
+\]
+并按定义 \ref{def:abel-finite-part} 取其在主 pole \(z_\star^{(q)}=1/\rho(A^{(q)}_\theta)\) 的 Abel/Hadamard 有限部常数，记为 \(\log\mathfrak{M}^{(q)}(\theta)\)。
+令 \(\log\mathfrak{M}^{(1)}(\theta)\) 表示 \(q=1\) 的基线常数（即 \(A^{(1)}_\theta=M_\theta\) 的同型接口）。
+定义 \textbf{moment-anomaly} 为标量残差
+\[
+\boxed{\;
+\mathsf{Anom}^{(q)}_{\mathrm{mom}}(K;\theta)
+:=
+\log\mathfrak{M}^{(q)}(\theta)
+- q\,\log\mathfrak{M}^{(1)}(\theta)\;}.
+\]
+\end{definition}
+
+\begin{proposition}[带 moment-anomaly 的 \texorpdfstring{$E_m$}{Em}--\texorpdfstring{$\mathrm{MOM}_q$}{MOMq} 交换证书]\label{prop:pom-em-mom-residual-swap}
+在投影词 $2$-范畴 \(\mathbf{PW}\)（定义 \ref{def:pom-projword-2cat}）中，存在一类交换证书把复合
+\(
+E_m\circ \mathrm{MOM}_q
+\)
+改写为
+\(
+\mathrm{MOM}_q\circ E_m
+\)
+并附带一个可核对的标量残差标签 \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}(K;\theta)\)（定义 \ref{def:pom-moment-anom-signature}）。
+当 \(q\)-重 moment 编译在该折叠层上与条件期望满足相对独立/拉回型（moment Beck--Chevalley）条件时，
+\(\zeta^{(q)}_\theta=\bigl(\zeta^{(1)}_\theta\bigr)^q\)
+从而 \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}(K;\theta)=0\)；
+一般情形下，\(E_m\) 与 \(\mathrm{MOM}_q\) 的“可观测不交换性”在本文指纹口径下完全由该有限部常数差承载。
+\end{proposition}
+
+\begin{proof}
+与命题 \ref{prop:pom-em-lift-residual-swap} 同型，这是一个接口级封装：
+两条编译路径都被同一闭环
+\(
+\text{有限核/矩阵族}\Rightarrow \zeta\Rightarrow \log\mathfrak{M}
+\)
+约束（\S\ref{subsec:pom-implementable-interfaces}）。
+若 moment Beck--Chevalley 条件成立，则 \(q\)-重 moment-kernel 的 \(\zeta\) 在主 pole 处严格分解为 \(q\) 份独立拷贝，从而有限部常数严格可加、残差为零；
+否则两条路径的差异可在 finite-part 层以一个标量常数最小压缩，即定义 \ref{def:pom-moment-anom-signature} 的 \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}\)。证毕。
+\end{proof}
+
+\begin{remark}[与异常上同调的统一：扩展标签群]\label{rem:pom-anom-cohomology-mom}
+在带 \(\mathrm{MOM}\) 的片段上，可把 \(\mathsf{Anom}_G\) 与 \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}\) 一并视为 \(\mathbf{PW}\) 的 \(2\)-态射标签：
+把标签群从 \(\mathcal{A}_G\) 扩展为
+\(
+\mathcal{A}_G\oplus\mathcal{A}_{\mathrm{mom}}
+\)
+（固定矩阶时 \(\mathcal{A}_{\mathrm{mom}}:=\RR\)，或对一组矩阶取 \(\RR^{\mathcal{Q}}\)），并令每一次 \(E_m\)--\(\mathrm{MOM}_q\) 的交换步标签取 \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}\)。
+则定义 \ref{def:pom-anom-accumulation} 与命题 \ref{prop:pom-anom-additive-up-to-boundary} 的 holonomy/coboundary 口径在形式上原封不动地推广：改变规约优先级只改变边界项，而“残差是否为零”仍是路径不变量。
+\end{remark}
 
 \begin{remark}[正规化策略：先合并，再外提]\label{rem:pom-mom-normalize-strategy}
 在规则族 \ref{def:pom-four-gen-rewrite-rules} 下，一条可实现的含 \(\mathrm{MOM}\) 的归一化策略是：
@@ -276,7 +346,7 @@ $$
 并伴随两类可核对输出：
 (i) 来自 \(E_m\)--lift 交换的异常签名 \(\mathsf{Anom}_{G'}(K;\theta)\)，
 以及（在需要时）
-(ii) 来自 moment 外提交换的残差标签（例如 \(E_m\) 与 moment 编译的 Beck--Chevalley 失败项）。
+(ii) 来自 \(E_m\)--\(\mathrm{MOM}\) 外提交换的 moment-anomaly 标签 \(\mathsf{Anom}^{(Q)}_{\mathrm{mom}}(K;\theta)\)（定义 \ref{def:pom-moment-anom-signature}）。
 其中 \(Q\) 由 \((\mathrm{RMOM})\) 合并得到，\((G',u',m')\) 由三生成元正规化确定（并按外提中的类型提升对 lift 参数作一致更新）。
 \end{proposition}
 

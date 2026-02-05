@@ -153,6 +153,11 @@ return Anom
   \item \textbf{递推证书：}用整数递推系数核验 \(S_q\)（表 \ref{tab:fold_collision_moment_recursions}）。
   对应脚本为 \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py}（枚举 \(d_m\) 并验证递推，输出 JSON 与 LaTeX 表）。
   \item \textbf{谱证书：}由递推的伴随矩阵或 moment-kernel realization 得 Perron 根 \(r_q\)，并据此给出压力/尾部上界（命题 \ref{prop:pom-quantile-chernoff} 与注 \ref{rem:pom-quantile-budget-computable}）。
+  \item \textbf{有限部/ moment-anomaly 证书：}在 \(q\)-重 moment-kernel 的 \(\zeta\)-接口上复用定义 \ref{def:abel-finite-part} 的 Abel/Hadamard 有限部闭式（Möbius 尾截断），得到 \(\log\mathfrak{M}^{(q)}(\theta)\) 及标量残差
+  \[
+  \mathsf{Anom}^{(q)}_{\mathrm{mom}}(K;\theta)=\log\mathfrak{M}^{(q)}(\theta)-q\log\mathfrak{M}^{(1)}(\theta)
+  \]
+  （定义 \ref{def:pom-moment-anom-signature}；它正是 \(E_m\) 与 \(\mathrm{MOM}_q\) 外提交换的残差标签，命题 \ref{prop:pom-em-mom-residual-swap}）。
   \item \textbf{秩证书：}Hankel 秩下界核验最小 realization 维数（脚本 \texttt{scripts/exp\_fold\_collision\_moment\_hankel\_rank.py}；表 \ref{tab:fold_collision_moment_hankel_rank}）。
   \end{itemize}
 
@@ -166,7 +171,7 @@ return Anom
 \[
 \bigl(\mathsf{Anom},\ C_r,\ \delta_{\mathrm{spec}},\ \mathcal{E}_1,\ \eta_{\mathrm{tail}},\ \text{SVD 指纹}\bigr)
 \]
-组织为一个独立的 Bridge-Kit 接口，并以脚本
+组织为一个独立的 Bridge-Kit 接口（并可按需要追加 moment 外提交换的标量残差 \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}\)，定义 \ref{def:pom-moment-anom-signature}），并以脚本
 \texttt{scripts/exp\_bridge\_kit.py}
 输出统一的 JSON 二级摘要（\texttt{artifacts/export/bridge\_kit\_real\_input\_40\_arity\_335\_N2.json}）。
 其中 \(C_r\) 可与小节 \ref{subsec:arity-dirichlet-mertens-tensor} 中的 Dirichlet--Mertens 常数张量完全对齐；而 \(\delta_{\mathrm{spec}},\mathcal{E}_1,\eta_{\mathrm{tail}}\) 与 SVD 能量占比则给出一个极低维的回归指纹（见同一脚本生成的可 \verb|\input| 片段）：
