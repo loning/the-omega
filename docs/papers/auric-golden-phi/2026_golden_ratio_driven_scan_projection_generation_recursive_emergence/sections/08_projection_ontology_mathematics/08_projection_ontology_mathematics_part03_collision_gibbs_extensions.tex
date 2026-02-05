@@ -1,0 +1,65 @@
+\subsubsection{碰撞核谱系：从递推到非负整数 realization（可审计协议）}\label{subsubsec:pom-collision-kernel-family}
+上文已经给出一条“从折叠纤维到碰撞谱”的统一入口：
+对任意整数 \(q\ge 2\)，
+\[
+S_q(m):=\sum_{x\in X_m}d_m(x)^q
+=\#\{(\omega^{(1)},\dots,\omega^{(q)})\in\Omega_m^q:\ \Fold_m(\omega^{(1)})=\cdots=\Fold_m(\omega^{(q)})\}.
+\]
+其中 \(q=2\) 是成对碰撞，\(q=3\) 是三元碰撞，依此类推；\(S_q(m)\) 因而描述的是一个“\(q\)-重纤维积”上的计数对象，而非对某个固定核的简单幂函数。
+\par
+在 \(q=2,3,4\) 的情形，本文已经构造出低维的非负整数碰撞核 \(A_q\)，并把其 Perron 根 \(r_q=\rho(A_q)\) 与投影熵率 \(h_q=\log(2^q/r_q)\) 纳入同一 \(\zeta\)/primitive/有限部接口（见 \S\ref{subsec:pom-s2}--\S\ref{subsec:pom-s4} 及表 \ref{tab:fold_collision_renyi_spectrum}）。
+另一方面，对 \(q\ge 5\) 已经核验存在小阶整系数递推（表 \ref{tab:fold_collision_moment_recursions}），从而 \(r_q\) 与 \(h_q\) 可精确抽取，但递推本身并不自动给出“非负整数图核”的 realization。
+这引出一个自然的升级研究线：把“已知递推”进一步提升为“可解释的有限状态碰撞核谱系”。
+
+\begin{proposition}[从递推到最小线性实现：Hankel realization]\label{prop:pom-hankel-realization-protocol}
+固定 \(q\ge 2\)，设序列 \(S_q(m)\) 满足某个最小阶的常系数线性递推（等价于其 Hankel 秩有限）。
+令 \(a_n:=S_q(n+2)\)（\(n\ge 0\)）。
+则存在一个维数等于 Hankel 秩的最小线性实现
+\[
+a_n=\alpha^{\mathsf T}A^n\beta\qquad(n\ge 0),
+\]
+其中 \(A\in M_d(\ZZ)\) 可由 Hankel 矩阵 \(H_0=(a_{i+j})_{0\le i,j\le d-1}\) 与 \(H_1=(a_{i+j+1})_{0\le i,j\le d-1}\) 的闭式
+\(
+A=H_0^{-1}H_1
+\)
+直接构造。
+\end{proposition}
+
+\begin{remark}[非负整数碰撞核的搜索口径（建议作为新实验协议）]\label{rem:pom-nonneg-kernel-search-protocol}
+命题 \ref{prop:pom-hankel-realization-protocol} 给出的 \(A\) 一般带有符号（或出现负条目），但它携带“最小线性实现”的确定结构。
+为得到可解释的“有限状态碰撞核”\(A_q\)，可在 \(\mathrm{GL}_d(\ZZ)\) 上做可审计的相似变换搜索：
+\[
+A_q=P^{-1}AP,\qquad P\in\mathrm{GL}_d(\ZZ),
+\]
+目标是使 \(A_q\) 具有非负整数条目（从而可视为某个有限图/SFT 的邻接矩阵），并同步变换读出向量 \((\alpha,\beta)\) 得到同型的计数公式。
+这一路径在 \(q=4\) 的五态核上已被脚本 \texttt{scripts/exp\_fold\_collision\_hankel\_realization\_q4.py} 以完全可复现方式实现；对更高阶 \(q\) 可按同一范式推进，并以“最小维数、最小最大条目、最小拓扑熵”等作为搜索准则，形成一个可无限上推的碰撞核谱系实验线路。
+\end{remark}
+
+\subsubsection{内生 Gibbs 权重：由纤维体积诱导的输出平衡态与 transfer matrix}\label{subsubsec:pom-gibbs-pi}
+本文已将折叠输出分布定义为
+\[
+\pi_m(x):=\frac{d_m(x)}{2^m}\qquad(x\in X_m),
+\]
+其中 \(d_m(x)=|\Fold_m^{-1}(x)|\) 是纤维体积。
+这一形式可以被理解为一个完全内生的 Gibbs 权重：令能量
+\[
+E_m(x):=-\log d_m(x),
+\]
+则
+\[
+\pi_m(x)=\frac{e^{-E_m(x)}}{Z_m},
+\qquad
+Z_m:=\sum_{x\in X_m}e^{-E_m(x)}=\sum_{x\in X_m}d_m(x)=|\Omega_m|=2^m.
+\]
+因此 \(\pi_m\) 不是外加的基准分布，而是折叠映射作为“粗粒化”在稳定语法空间上诱导的自然平衡态：纤维越大（预像自由度越高），其输出质量越大。
+\par
+进一步，若希望把该 Gibbs 权重提升为一个可计算的 transfer matrix（以替代仅用 Parry/PF 作为外部基线的口径），一个可审计路线是：从 \(\pi_m\) 的加权块频率出发，构造一个有限阶 Markov（等价地：有限程 Gibbs）近似，并以 Perron--Frobenius 抽取其稳定态。
+
+\begin{remark}[可复现协议：由 \texorpdfstring{$\pi_m$}{pi_m} 拟合有限阶 transfer matrix]\label{rem:pom-gibbs-markov-fit}
+固定 \(m\)（取中等分辨率，如 \(m=18\)），枚举得到 \(\pi_m\) 后，对某个小块长 \(\ell\ge 2\) 计算 \(\pi_m\)-加权的 \(\ell\)-块频率，
+并由最大似然得到一个 \((\ell-1)\)-阶 Markov 链（其状态为空间 \(X_{\ell-1}\) 的合法块）。
+该链即为一个有限状态 transfer matrix 的概率规范化版本；其诱导的 1-步转移可与 Parry 基线作定量对照，从而得到“内生势函数偏离最大熵基线”的可审计证书。
+表 \ref{tab:fold_output_gibbs_markov_fit} 给出一个代表性输出（脚本 \texttt{scripts/exp\_fold\_output\_gibbs\_markov\_fit.py} 一键生成）。
+\end{remark}
+\input{sections/generated/tab_fold_output_gibbs_markov_fit}
+

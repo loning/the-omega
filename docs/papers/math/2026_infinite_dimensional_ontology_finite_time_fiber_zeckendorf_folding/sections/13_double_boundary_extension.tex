@@ -1,0 +1,100 @@
+\section{双边界扩展：终端一致性、前向--后向合成与纤维边缘化}
+
+\subsection{终端一致性约束作为扩展输入}
+
+在第 7--12 节的基模型中，系统演化由局部更新与有限邻域一致性传播决定，且预测以初始条件与局部规则为输入。为形式化“终端一致性”对中间切片分布的影响，引入终端约束类 $\mathcal F_T$ 作为扩展输入。终端约束可取为以下任一形式：
+\begin{enumerate}
+  \item 终端可达集合 $\mathcal F_T\subseteq \bigsqcup_{x\in X_m}(\{x\}\times R_m(x))$；
+  \item 终端权重函数 $\Phi:E_m\to \RR_{\ge 0}$；
+  \item 终端相位权重函数 $\Phi:E_m\to \CC$（用于相位敏感的合成模式）。
+\end{enumerate}
+该扩展不改变第 6 节的有限残差充分性公理，而是在给定 $(X_m,R_m,\mathsf T)$ 的前提下追加末端边界条件。
+
+\subsection{扩展态空间上的前向权重与后向权重}
+
+\begin{assumption}[一步转移核]\label{ass:one_step_kernel}
+\InterfaceTag
+在满足局部性与有限记忆的条件下，存在一步转移核 $K_t(z\to z')$（允许为非齐次），其由局部规则、邻域状态与分辨率调度诱导。
+\end{assumption}
+
+定义扩展态 $z_t=(x_t,r_t)\in E_m$，并定义前向权重 $O_t$ 与后向权重 $C_t$：
+
+\begin{itemize}
+  \item 前向递推（传播）
+  $$
+  O_{t+1}(z')=\sum_{z\in E_m} O_t(z)\,K_t(z\to z').
+  $$
+  \item 后向递推（回推）
+  $$
+  C_t(z)=\sum_{z'\in E_m} K_t(z\to z')\,C_{t+1}(z').
+  $$
+  \item 终端条件
+  $$
+  C_T(z)\propto
+  \begin{cases}
+  \mathbf 1_{\mathcal F_T}(z), & \mathcal F_T\subseteq E_m\ \text{为集合约束},\\
+  \Phi(z), & \Phi:E_m\to\RR_{\ge 0}\ \text{为权重},\\
+  \Phi(z), & \Phi:E_m\to\CC\ \text{为相位权重}.
+  \end{cases}
+  $$
+\end{itemize}
+
+上述结构在非负权重情形下与隐马尔可夫模型（HMM）的平滑（smoothing）同构；其数值稳定化可直接复用 forward--backward 的缩放与对数域技术。\cite{rabiner_hmm_tutorial}
+
+\begin{algorithm}[Forward--backward 合成（平滑）]\label{alg:forward_backward}
+\InterfaceTag 本算法把“终端一致性约束”作为输入，给出中间切片的合成分布；它是计算协议对象，不作为数学层证明前提。
+\begin{enumerate}
+  \item 给定一步转移核 $K_t(z\to z')$（假设 \ref{ass:one_step_kernel}）与终端约束（集合 $\mathcal F_T$ 或权重 $\Phi$）。
+  \item 前向递推：初始化 $O_0$，并对 $t=0,\dots,T-1$ 计算
+  $$
+  O_{t+1}(z')=\sum_{z\in E_m} O_t(z)\,K_t(z\to z').
+  $$
+  \item 后向递推：由终端条件确定 $C_T$，并对 $t=T-1,\dots,0$ 计算
+  $$
+  C_t(z)=\sum_{z'\in E_m} K_t(z\to z')\,C_{t+1}(z').
+  $$
+  \item 合成：对每个 $t$ 定义
+  $$
+  P_t(z)=\frac{O_t(z)C_t(z)}{\sum_{z'\in E_m}O_t(z')C_t(z')},
+  \qquad
+  P_t(x)=\sum_{r\in R_m(x)}P_t(x,r).
+  $$
+\end{enumerate}
+\end{algorithm}
+
+\subsection{中间切片合成与纤维边缘化}
+
+在非负权重情形，定义扩展态的平滑分布为
+$$
+P_t(z)=\frac{O_t(z)C_t(z)}{\sum_{z'\in E_m}O_t(z')C_t(z')}.
+$$
+进一步的宏态边缘化给出
+$$
+P_t(x)=\sum_{r\in R_m(x)}P_t(x,r)
+=\frac{\sum_{r\in R_m(x)}O_t(x,r)C_t(x,r)}{\sum_{x'\in X_m}\sum_{r'\in R_m(x')}O_t(x',r')C_t(x',r')}.
+$$
+
+在相位敏感情形（例如将 $O_t,C_t$ 视为复权重），可定义幅度型或模长型合成。\AuditTag 为避免在本体上引入未经证明的量子测度公理，本文仅将
+$$
+P_t(z)\propto \abs{O_t(z)C_t(z)}
+$$
+作为结构对应的候选形式，并将其作为可选模型族的一员，而不将其视为由第 7--12 节必然推出的结论。
+
+\subsection{与时间对称量子形式主义的结构对应（非等价断言）}
+
+\AuditTag 交易诠释（TI）与两态向量形式（TSVF）均以“前向态与后向态共同确定中间时刻的描述”为核心结构：TI 引入“offer/confirmation”的一致性闭合，TSVF 以一对态向量描述特定时刻的系统。\cite{cramer_transactional_1986,vaidman_tsvf}
+Wheeler--Feynman 吸收体理论在经典电动力学中亦使用时间对称解并通过吸收边界条件解释辐射反作用。\cite{wheeler_feynman_1945}
+本文仅主张上述理论与式 $P_t(z)\propto O_t(z)C_t(z)$ 在“边界条件—中间合成”的结构层面同型，而不主张物理等价。
+
+\paragraph{非等价声明（边界清单）。}
+\AuditTag 本文\textbf{不}主张以下结论由上述结构同型推出：
+\begin{itemize}
+  \item 量子测量公设、波函数坍缩或 Born 规则；
+  \item 任意意义下的超光速信号或对过去的可控回传；
+  \item 任意特定量子态空间、哈密顿算符或幺正演化的物理同一性。
+\end{itemize}
+本文的立场是：结构同型仅提供一种可审计的形式参照，用于组织“终端一致性约束如何改变中间切片分布”的计算语言；其物理解释若要成立，必须额外给出独立的接口字典与可检验预测。
+
+\subsection{无可控回传之充分条件（形式化版本）}
+
+为避免将后向权重误解为可编程的“向过去发送消息”，引入充分条件：终端约束类 $\mathcal F_T$（或 $\Phi$）不得由中间主体以任意比特序列自由编码。形式上，可要求终端约束仅由系统外部不可控的测量/吸收/边界环境给定，或仅属于预先固定的有限类 $\mathfrak F$ 且不承载可自由选择的信息载荷。该条件使得后向项仅表现为对可行路径集合的后验再加权，而不构成可控通信信道。

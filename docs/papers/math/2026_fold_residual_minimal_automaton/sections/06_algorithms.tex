@@ -1,0 +1,41 @@
+% 6 Algorithms
+\section{算法与实现}\label{sec:alg}
+
+\subsection{\texorpdfstring{折叠 $\Fold_m$ 的枚举计算}{折叠 Foldm 的枚举计算}}
+对每个 $m$，直接枚举 $\Omega_m$ 的 $2^m$ 个元素，按第 \ref{sec:fold} 节定义计算 $N(b)$ 并求
+Zeckendorf 规范形，从而得到 $\Fold_m(b)\in X_m$。据此可得到：
+\begin{itemize}
+  \item 纤维计数：对每个 $x\in X_m$ 的原像数 $|F_m(x)|$；
+  \item 推前分布 $p_m$ 以及熵量（作为基线统计）。
+\end{itemize}
+
+\subsection{右等价类的自底向上构造}
+令 $f=\Fold_m$，并把 $f$ 视为对完整长度 $m$ 输入的标签函数。对每个深度 $k$，前缀集合 $\Sigma^k$
+形成一棵完全二叉树。可使用如下自底向上的“子树合并”策略构造右等价类：
+\begin{itemize}
+  \item 深度 $m$（叶）：以输出词 $f(b)$ 作为叶标签；相同标签的叶合并。
+  \item 深度 $k<m$：对每个前缀 $u\in\Sigma^k$，其两个子前缀 $u0,u1$ 在深度 $k+1$ 已各自归入某个
+  等价类。以有序对 $(\mathrm{id}(u0),\mathrm{id}(u1))$ 作为 $u$ 的签名；相同签名合并。
+\end{itemize}
+该算法输出每个深度 $k$ 的等价类数 $|U_{m,k}|$，并可导出代表元与转换表（用于生成论文表格）。
+
+\subsection{基于主定理的 \texorpdfstring{$O(m)$}{O(m)} 计算（无需枚举）}
+由定理 \ref{thm:residual_closed_form} 与推论 \ref{cor:explicit_state}，当目标仅为计算残差态与其更新，
+无需枚举 $2^m$ 个输入。对深度 $k<m$，残差态可用整数
+\[
+r_k:=N_k(u)=\sum_{i=1}^{k} u_i F_{i+1}\in\{0,1,\dots,F_{k+3}-2\}
+\]
+表示，并在追加一位 $a\in\{0,1\}$ 时按
+\[
+r_{k+1}=r_k+aF_{k+2}
+\]
+更新。该表示给出一个显式的最小残差自动机实现：状态空间与转移均为闭式，复杂度线性于 $m$。
+
+\subsection{实现与产物}
+正文的表格产物仍采用枚举核对，用于审计与复现；而在实际使用中，上述闭式状态更新可作为
+更高效的残差实现基线。
+
+\subsection{实现与产物}
+对应脚本见 \verb|scripts/exp_minimal_transducer_states.py| 与 \verb|scripts/run_all.py|。
+生成的表格与摘要段落写入 \verb|sections/generated/| 并被正文包含。
+

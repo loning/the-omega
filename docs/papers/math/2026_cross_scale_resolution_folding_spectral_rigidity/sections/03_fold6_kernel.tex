@@ -1,0 +1,75 @@
+\section{基例：$m=6$ 的分辨率折叠核}\label{sec:fold6}
+
+\subsection{微态空间与稳定型集合}
+令
+\[
+  \Omega_6:=\{0,1\}^6,\qquad \abs{\Omega_6}=64.
+\]
+定义稳定型集合
+\[
+  X_6:=\{w\in\{0,1\}^6:\ w_iw_{i+1}=0\ (1\le i\le 5)\}.
+\]
+
+\begin{theorem}[$64\to 21$]\label{thm:64to21}
+有 $\abs{X_6}=F_8=21$。
+\end{theorem}
+\begin{proof}
+标准 Fibonacci 递推计数。
+\end{proof}
+
+\subsection{$\pi$-通道：环闭/边界分裂}
+定义 wrap-around 缺陷
+\[
+  D_\pi(w):=\Ind\{w_1=w_6=1\}.
+\]
+令
+\[
+  X^{\mathrm{bdry}}_6:=\{w\in X_6:\ D_\pi(w)=1\},\qquad
+  X^{\mathrm{cyc}}_6:=X_6\setminus X^{\mathrm{bdry}}_6.
+\]
+
+\begin{proposition}[$18\oplus 3$]\label{prop:18plus3}
+有 $\abs{X^{\mathrm{cyc}}_6}=18$、$\abs{X^{\mathrm{bdry}}_6}=3$，并且
+\[
+  X^{\mathrm{bdry}}_6=\{100001,100101,101001\}.
+\]
+\end{proposition}
+\begin{proof}
+直接枚举；亦可由一般计数得到。
+\end{proof}
+
+\subsection{$\Fold_6$ 与 Zeckendorf 值}
+取 Fibonacci 权重 $F_2=1,F_3=2,F_4=3,F_5=5,F_6=8,F_7=13$，定义
+\[
+  V(w):=\sum_{k=1}^6 w_kF_{k+1}.
+\]
+对 $N\in\{0,\dots,63\}$，令其 Zeckendorf 展开为 $N=\sum_{k\ge 1} c_kF_{k+1}$（贪心且禁止相邻 $1$）。定义
+\[
+  \Fold_6(N):=(c_1,\dots,c_6)\in X_6.
+\]
+
+\begin{theorem}[$\Fold_6$ 退化谱]\label{thm:fold6-degeneracy}
+$\Fold_6$ 为满射；每个 $w\in X_6$ 的预像基数只可能为 $2,3,4$。并且（由脚本枚举得到）直方图为：
+\[
+  \#\{w:\abs{\Fold_6^{-1}(w)}=2\}=8,\qquad
+  \#\{w:\abs{\Fold_6^{-1}(w)}=3\}=4,\qquad
+  \#\{w:\abs{\Fold_6^{-1}(w)}=4\}=9.
+\]
+边界态预像对为：
+\[
+  \Fold_6^{-1}(100001)=\{14,48\},\quad
+  \Fold_6^{-1}(100101)=\{19,53\},\quad
+  \Fold_6^{-1}(101001)=\{17,51\}.
+\]
+\end{theorem}
+\begin{proof}
+满射与退化集合有限可枚举；本节所有有限表与统计均由 \texttt{scripts/run\_all.py} 自动生成。附录 \ref{app:fold6-tables} 给出核心表的 \LaTeX{} 片段与哈希登记。
+\end{proof}
+
+\paragraph{生成表格（脚本输出）}
+退化谱直方图与边界预像表由脚本生成并在附录中直接 \texttt{\textbackslash input}：
+\begin{itemize}
+  \item 直方图表：\texttt{sections/generated/fold6\_preimage\_histogram\_table.tex}
+  \item 边界预像表：\texttt{sections/generated/fold6\_boundary\_preimages\_table.tex}
+\end{itemize}
+

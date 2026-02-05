@@ -1,0 +1,160 @@
+\section{第二层时间纤维：有限残差纤维与可观测态充分性（默认三维显示）}
+
+\subsection{由原像纤维到残差纤维：相关信息的再压缩}
+
+第一层时间纤维 $\mathcal F_m(x)$ 刻画了“同一观测态 $x$”对应的全部窗口微态集合。然而，对于给定的动力学类与可观测代数，并非 $\mathcal F_m(x)$ 内的全部差异都会影响未来可观测量。由此引入第二层时间纤维：将 $\mathcal F_m(x)$ 进一步按“未来可观测行为等价”进行商化。\par
+
+\AuditTag 回忆第 5 节：本文把“截断/折叠”统一为“空间投影 $\mathrm{Space}_m$ + 时间残差 $\mathrm{Time}_m$”的协议接口（定义 \ref{def:truncation_schema}），并在默认截断族（窗口 Zeckendorf）下给出最小残差分量 $u_m(b)=z_{m+2}$（定义 \ref{def:Fold}）。该 $u_m$ 只是\emph{被截断信息}的一个最小可审计分量；本节的 $R_m(x)$ 则是\emph{对未来可观测量仍相关}的信息压缩，其定义独立于具体实现性残差载体的选择。
+
+\InterfaceTag 为把“未来可观测行为等价”写成可审计对象，我们把两类外加输入显式化：可观测代数 $\mathcal O_m$ 与允许动力学类 $\mathcal D$。
+
+\begin{definition}[可观测代数与允许动力学类]\label{def:observable_algebra_and_dynamics_class}
+\InterfaceTag 固定分辨率 $m$。设 $\mathcal O_m$ 为一族可观测量（随机变量或可测函数）的集合；典型地，可取为由有限窗口读出与有限阶组合生成的函数族，使得对任意 $O\in\mathcal O_m$，其取值空间为有限集合或可数集合（以便统计复核）。
+
+\InterfaceTag 设 $\mathcal D$ 为允许动力学类：其元素 $D\in\mathcal D$ 规定了在给定初始本体态（或其在 $\mathcal F_m(x)$ 内的微观代表）下，未来演化与输出的条件分布。记 $\mathbb P_D(\,\cdot\,\mid\cdot)$ 为由 $D$ 诱导的条件概率记号。
+
+\AuditTag $\mathcal O_m$ 与 $\mathcal D$ 是建模/接口层输入：它们的选择影响“哪些隐藏自由度被认为与未来相关”，但不改变第 4 节的组合计数定理本身。
+\end{definition}
+
+对固定 $x\in X_m$，在原像纤维 $\mathcal F_m(x)$ 上定义等价关系：若对任意 $O\in \mathcal O_m$ 与任意允许动力学 $D\in\mathcal D$，二者诱导的未来可观测条件分布相同，则视为等价。形式上，可写为
+$$
+b\approx b'
+\quad\Longleftrightarrow\quad
+\forall D\in\mathcal D,\ \forall O\in\mathcal O_m,\
+\mathbb{P}_D\left(O\mid b\right)=\mathbb{P}_D\left(O\mid b'\right).
+$$
+定义残差纤维为商集
+$$
+R_m(x)=\mathcal F_m(x)/{\approx}.
+$$
+该定义将“与未来相关的隐藏自由度”从第一层纤维中抽取出来，并为“有限时间纤维”提供可检验对象。
+
+\begin{remark}[原始残差载体与有效残差的关系]\label{rem:U_to_R}
+\AuditTag
+对给定截断族，协议接口给出一个原始时间残差载体 $U_m(x)$（定义 \ref{def:truncation_schema}），它可以是有限溢出/进位状态、tail 信息，或有限状态机内部状态等（第 14 节）。
+本节的 $R_m(x)$ 则由“对未来可观测量的不可区分性”定义，是在接口输入 $(\mathcal O_m,\mathcal D)$ 固定后得到的最小化对象。\par
+
+在实现层面，若 $U_m(x)$ 的定义意在支撑预测，则应存在一个自然的压缩映射（或后处理规则）
+$$
+\pi^{U\to R}_x:U_m(x)\twoheadrightarrow R_m(x),
+$$
+使得“携带 $u$ 足以恢复关于未来可观测量的 $r$”。本文不把 $\pi^{U\to R}_x$ 的存在当作定理层必然，而将其作为可检验的实现目标：通过第 15 节“状态规模 vs 预测误差”的协议对候选 $U_m$ 进行比较，经验逼近最小有效残差。
+\end{remark}
+
+\subsection{操作半群视角：Myhill--Nerode 型等价（可选强化）}
+
+上面的 $\approx$ 以“对任意允许动力学与任意可观测量未来分布一致”定义，概念上清晰但较抽象。为把该结构进一步群化/代数化，可将“实验流程”组织为对微观态施加的一类可复合操作序列，并把 $\approx$ 表述为这些操作序列在观测上的不可区分性。
+
+\begin{definition}[观测算子与实验词]\label{def:experiment-words}
+取一个（有限或可数）观测算子族 $\mathcal Q_m$，其元素为从微观态到输出的映射
+$$
+q:\mathcal F_m(x)\to Y_q,
+$$
+其中 $Y_q$ 为有限集合（例如有限阶局部窗口读出及其组合）。取一个（有限或可数）演化算子族 $\mathcal U_m$，其元素为从纤维到纤维的映射
+$$
+u:\mathcal F_m(x)\to \mathcal F_m(x),
+$$
+表示在固定观测输出 $x$ 的条件下对“隐藏自由度”的一步更新。\par
+
+定义实验词集合 $\mathcal W$ 为由字母表 $\mathcal U_m\cup \mathcal Q_m$ 生成的有限词集合，并将其解释为按词序依次作用得到的输出（若词含多个观测算子，则输出为相应的有限元组）。
+\end{definition}
+
+\begin{definition}[Myhill--Nerode 型不可区分]\label{def:mn-equivalence}
+对 $b,b'\in\mathcal F_m(x)$，定义
+$$
+b\sim_{\mathcal W} b'
+\quad\Longleftrightarrow\quad
+\forall w\in\mathcal W,\ \mathrm{Out}_w(b)=\mathrm{Out}_w(b'),
+$$
+其中 $\mathrm{Out}_w(\cdot)$ 为实验词 $w$ 诱导的输出。
+\end{definition}
+
+\begin{proposition}[右不变性与商结构]\label{prop:mn-right-congruence}
+若 $\mathcal U_m$ 对复合封闭（从而生成一个半群 $\langle\mathcal U_m\rangle$），则 $\sim_{\mathcal W}$ 是关于演化的右不变关系：对任意 $b\sim_{\mathcal W} b'$ 与任意 $u\in\langle\mathcal U_m\rangle$，有 $u(b)\sim_{\mathcal W} u(b')$。因此商集 $\mathcal F_m(x)/{\sim_{\mathcal W}}$ 自然承载由 $\langle\mathcal U_m\rangle$ 诱导的作用。
+\end{proposition}
+
+\begin{proof}
+\MathTag 依赖：定义 \ref{def:experiment-words} 与定义 \ref{def:mn-equivalence}；以及复合封闭性假设 $\mathcal U_m$ 生成半群 $\langle\mathcal U_m\rangle$。
+对任意实验词 $w$，将其左侧预先复合 $u$ 得到新词 $w\circ u$，仍属于由 $\mathcal U_m$ 与 $\mathcal Q_m$ 生成的实验词集合。由 $b\sim_{\mathcal W} b'$ 得 $\mathrm{Out}_{w\circ u}(b)=\mathrm{Out}_{w\circ u}(b')$，即 $\mathrm{Out}_{w}(u(b))=\mathrm{Out}_{w}(u(b'))$。证毕。
+\end{proof}
+
+\begin{remark}[与本节 $\approx$ 的关系]
+当把“未来可观测条件分布一致”具体化为一族有限实验词的输出一致性（例如把随机性通过外加随机种子提升为确定性演化，或把输出改为条件分布的有限表），则可取 $\approx$ 为某个 $\sim_{\mathcal W}$ 的实例。此时 $R_m(x)$ 即为一类 Myhill--Nerode 型最小状态空间：它把“所有未来实验可区分的信息”压缩为等价类标签。\par
+
+若进一步要求演化算子皆为双射，则 $\langle\mathcal U_m\rangle$ 升级为群，上一命题中的“半群作用”随之升级为群作用，从而与第 5 节的可逆群化层直接衔接。
+\end{remark}
+
+\subsection{有限残差充分性公理}
+
+“在给定的空间显示字典（本文默认三维显示）内，仅需有限时间纤维即可确定分辨率 $m$ 下的可观测态”可表述为如下公理。
+
+\begin{axiom}[有限残差充分性]\label{ax:finite_residual_sufficiency}
+\InterfaceTag
+\AuditTag 台账编号：\texttt{L-res-01}。
+对每个 $m$，存在有限集合族 $\{R_m(x)\}_{x\in X_m}$，使得对任意基点 $p\in M$，定义
+$$
+x_m(p)=\pi_m(\psi(p))\in X_m,\qquad r_m(p)\in R_m(x_m(p)),
+$$
+并对任意允许动力学 $D\in\mathcal D$ 与未来可观测量 $O\in \mathcal O_m$ 有
+$$
+\mathbb{P}_D\left(O\mid \psi(p)\right)=\mathbb{P}_D\left(O\mid x_m(p),r_m(p)\right).
+$$
+亦即 $(x_m(p),r_m(p))$ 为 $\mathcal O_m$ 下关于 $\psi(p)$ 的充分统计量。
+\end{axiom}
+
+该公理强调“可观测等价类态”的确定性，而非对本体态 $\psi(p)$ 的唯一恢复。该区分在无限维本体设定下是必要的。
+
+\subsection{第二层时间纤维丛与可观测态截面}
+
+定义离散总空间
+$$
+E_m=\bigsqcup_{x\in X_m}\bigl(\{x\}\times R_m(x)\bigr),
+$$
+并定义投影
+$$
+\pi_m^{E}:E_m\to X_m,\qquad \pi_m^{E}(x,r)=x.
+$$
+则分辨率 $m$ 下的可观测态由截面
+$$
+s_m:M\to E_m,\qquad s_m(p)=(x_m(p),r_m(p)),
+$$
+确定。此处的“态”指在给定 $\mathcal O_m$ 与 $\mathcal D$ 之下可用于预测的有限数据，而非本体态本身。纤维丛的投影与局部平凡化语言参照标准定义。\cite{cohen_fiber_bundles}
+
+\subsection{残差纤维的群化选择：有限群载体与可逆平行移动}
+
+为把“残差更新/路径依赖”完全纳入群论语言，可对残差纤维施加一个额外的结构假设：让每条纤维不仅是有限集合，而且携带一个可用于计算的群结构。
+
+\begin{assumption}[有限群残差载体（可选）]\label{ass:finite_group_residual_carrier}
+存在一个固定有限群 $(R,\cdot,e)$（例如 $R\cong \ZZ_q$），使得对每个 $x\in X_m$ 的残差纤维 $R_m(x)$ 选定一个双射
+$$
+\phi_x:R_m(x)\xrightarrow{\ \sim\ }R.
+$$
+由此在 $R_m(x)$ 上诱导群结构：对 $r_1,r_2\in R_m(x)$ 定义
+$$
+r_1\cdot_x r_2:=\phi_x^{-1}\bigl(\phi_x(r_1)\cdot \phi_x(r_2)\bigr),
+\qquad
+e_x:=\phi_x^{-1}(e),
+\qquad
+r^{-1_x}:=\phi_x^{-1}\bigl(\phi_x(r)^{-1}\bigr),
+$$
+从而 $(R_m(x),\cdot_x,e_x)$ 与 $R$ 群同构。该同构选择 $\{\phi_x\}$ 不是规范的，但一经固定即可把残差更新与路径依赖一致地表述在同一群载体上。
+\end{assumption}
+
+\begin{remark}[与第 15 节玩具连接的对应]
+在第 15 节 holonomy 最小实例中，取 $R\cong \ZZ_q$ 且将平行移动实现为 $\ZZ_q$ 上的仿射映射；这些映射在 $q$ 与参数互素时为双射，从而自然落在 $\mathrm{Sym}(R)$ 或更小的自同构/仿射群中。该设定正是上面“残差群化选择”的一个可复现实现。
+\end{remark}
+
+\subsection{有限性来源与可实现性：有限记忆结构的参照}
+
+公理 \ref{ax:finite_residual_sufficiency} 的可实现性与两类标准事实相协调：
+
+\begin{enumerate}
+  \item \textbf{SFT 的有限记忆性。} 禁止词为有限集合的子移位可由有限有向图生成，其局部约束具有有限记忆表示。黄金均值移位即为典型例子。\cite{scholarpedia_symbolic_dynamics}
+  \item \textbf{Fibonacci 表示的有限状态规范化。} 将“非法 Fibonacci 表示”转换为“合法（无相邻 $1$）表示”的过程可由有限状态转导器实现；文献中给出了小状态数转导器构造。\cite{shallit_robbins_ardila_berstel}
+\end{enumerate}
+
+上述参照并不直接推出公理 6.1，但为“有限残差纤维能够承载未来相关信息”的建模假设提供了可操作背景：当允许动力学与可观测代数均为局部且有限记忆时，商关系 $\approx$ 的等价类数目具有在理论上受控的可能性。
+
+\subsection{\texorpdfstring{与 $m=6$ 的结构锚点的关系（预告）}{与 m=6 的结构锚点的关系（预告）}}
+
+在 $m=6$ 最小核中，分解 $X_6=C_6\sqcup B_6$ 给出 $18$ 个循环稳定类与 $3$ 个边界缺陷类。该 $3$ 维边界集合在后续章节中将作为“跨窗一致性端口”的最小实例，用于构造接口耦合项、离散连接与路径依赖结构。其在本文前 6 节中仅作为残差纤维可能具有低维结构的经验锚点。

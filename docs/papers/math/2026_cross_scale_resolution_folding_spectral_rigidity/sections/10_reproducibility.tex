@@ -1,0 +1,20 @@
+\section{可复现实验与工程管线}\label{sec:reproducibility}
+
+\subsection{一键复现入口}
+本文采用 paper-local 的可复现脚本体系：实验输出写入 \texttt{artifacts/}（内容寻址目录，含 \texttt{manifest.json}），并生成可被 \LaTeX{} 直接引用的片段到 \texttt{sections/generated/}。
+
+\paragraph{运行方式}
+在论文根目录（\texttt{docs/papers/math/2026\_cross\_scale\_resolution\_folding\_spectral\_rigidity/}）执行：
+\begin{verbatim}
+python3 -m pip install -r requirements.txt
+python3 scripts/run_all.py
+\end{verbatim}
+即可生成本文引用的所有 \texttt{sections/generated/*.tex} 以及哈希登记。
+
+\subsection{最小复现实验集（本论文覆盖）}
+\begin{itemize}
+  \item \textbf{Fold6 全表与退化谱直方图}：枚举 $N=0,\dots,63$，输出 $\Fold_6(N)$、$V$、$\Delta$、预像大小与边界态预像对。
+  \item \textbf{单图覆盖 $\widetilde G_6$ 的统计}：以节点 $(w,\Delta)$ 构造 shift 边并对称化得到无向图，输出顶点/边数、度分布摘要、随机游走谱隙估计与混合时间下界示例。
+  \item \textbf{哈希登记}：扫描 \texttt{artifacts/} 下所有实验 \texttt{manifest.json}，生成 \texttt{artifact\_hash\_registry.json} 与对应 \LaTeX{} 摘要表。
+\end{itemize}
+

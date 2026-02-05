@@ -1,0 +1,133 @@
+\section{附录}
+
+\subsection{附录 A：记号与分层约定}
+\label{app:notation}
+
+\begin{itemize}
+  \item $\mathcal{L}=\ZZ^6$：六维晶格；$\sigma:\mathcal{L}\to\mathcal{A}$：有限信息着色。
+  \item $E_{\parallel}\oplus E_{\perp}$：三三分解；$\pi_{\parallel},\pi_{\perp}$：正交投影。
+  \item $W\subset E_{\perp}$：窗口；$u$：内部相位；$\Lambda(W,u)$：模型集。
+  \item $K_{\varepsilon}$：内部核；$\phi_{\delta}$：物理核；$\Psi_{\varepsilon,u}$、$\psi_{\varepsilon,u}$、$I_{\varepsilon,u}$：幅度/强度读出。
+  \item $\theta_t$：环因子相位；$\omega_t$：二值读出；$\omega_t^{(m)}$：长度 $m$ 窗口词。
+  \item $X_m$：Zeckendorf 合法语言；$\Fold_m$：稳定化核；$\mathcal{F}_m(x)$：时间纤维。
+  \item （D/T/H/I）分别为定义/定理/假设/语义映射标签。
+\end{itemize}
+
+\subsection{附录 B：模型集的一般位置与统计不变量（纲要）}
+\label{app:general-position}
+
+\begin{enumerate}
+  \item \textbf{一般位置。}窗口边界零测度与投影非退化可保证对几乎处处 $u$，满足窗口约束的格点集合上 $\pi_{\parallel}$ 的重合为零测现象，从而诱导标记良定。
+  \item \textbf{补丁频率。}在壳空间（hull）上平移作用满足唯一遍历的条件下，补丁频率对典型 $u$ 不变，时间平均与空间平均一致。
+  \item \textbf{可复现性接口。}以补丁频率、两点相关与衍射谱峰作为统计量，可建立观测可复现的零假设与置信区间。
+\end{enumerate}
+
+\subsection{附录 C：黄金分支的差异度与回归尺度（可操作模板）}
+\label{app:golden-branch}
+
+设一维旋转 $\theta_{t+1}=\theta_t+\alpha\ (\mathrm{mod}\ 1)$。
+\begin{enumerate}
+  \item 连分数收敛分母 $q_k$ 控制近回归尺度：$\abs{q_k\alpha-p_k}$ 最小。
+  \item 黄金分支对应部分系数恒为 $1$，$q_k$ 为 Fibonacci 数列，从而近回归尺度自然落在 Fibonacci 级数上。
+  \item 对数值检验，建议以 $q_k$ 为分段尺度计算自相关峰与差异度上界，并与随机/周期对照比较。
+\end{enumerate}
+
+\subsection{附录 D：Sturmian 词的复杂度检验流程}
+\label{app:sturmian-test}
+
+给定样本序列 $\omega_0,\dots,\omega_{N-1}$，对 $1\le n\le n_{\max}$：
+\begin{enumerate}
+  \item 枚举所有长度 $n$ 子词集合；
+  \item 计算基数 $p(n)$；
+  \item 以 $p(n)-(n+1)$ 的偏差曲线作为检验统计；
+  \item 以周期序列与 Bernoulli 序列为零模型对照，比较全尺度偏差结构。
+\end{enumerate}
+
+\subsection{附录 E：Zeckendorf 合法语言计数与 \texorpdfstring{$\Fold_m$}{Fold\_m} 的构造}
+\label{app:zeckendorf-fold}
+
+\paragraph{E.1 计数定理证明}
+令 $a_m=|X_m|$。按最高位分解：
+\begin{itemize}
+  \item 若首位为 $0$，则余下为任意合法词：$a_{m-1}$；
+  \item 若首位为 $1$，则次位必须为 $0$，余下为任意合法词：$a_{m-2}$。
+\end{itemize}
+故递推 $a_m=a_{m-1}+a_{m-2}$，且 $a_1=2,a_2=3$，从而 $a_m=F_{m+2}$。
+
+\paragraph{E.2 $\Fold_m$ 的局域重写系统（示意）}
+将 $w\in\{0,1\}^m$ 视为 Fibonacci 权重上的非规范表示。采用局域规则集合 $\mathcal{R}$：
+\begin{itemize}
+  \item 核心规则：出现子词 $011$ 时重写为 $100$（对应 Fibonacci 进位）；
+  \item 边界规则：对窗口端点的溢出可引入外部寄存器或采用截断并将溢出计入退化度统计。
+\end{itemize}
+取势函数为“相邻 $1$ 的计数”
+\[
+\Psi(w)=\#\{i: w_iw_{i+1}=1\}.
+\]
+每次重写严格降低 $\Psi$，故终止。终止态无相邻 $1$，属于 $X_m$。若存在两个不同终止态对应同一权重值，则违反 Zeckendorf 唯一表示，故规范形唯一。
+
+\subsection{附录 F：时间纤维闭包固定点定理证明}
+\label{app:closure-proof}
+
+对 $S\subseteq\{0,1\}^m$，记 $\Fold_m(S)=\{\Fold_m(w):w\in S\}\subseteq X_m$。
+\begin{enumerate}
+  \item 扩张性：任意 $w\in S$ 满足 $w\in \Fold_m^{-1}(\Fold_m(w))\subseteq \Phi(S)$，故 $S\subseteq\Phi(S)$。
+  \item 单调性：若 $S\subseteq T$，则 $\Fold_m(S)\subseteq\Fold_m(T)$，取预像得 $\Phi(S)\subseteq\Phi(T)$。
+  \item 幂等性：$\Phi(\Phi(S))=\Fold_m^{-1}(\Fold_m(\Phi(S)))=\Fold_m^{-1}(\Fold_m(S))=\Phi(S)$。
+  \item 固定点刻画：若 $\Phi(S)=S$，令 $A=\Fold_m(S)$，则对任意 $x\in A$，$\mathcal{F}_m(x)\subseteq S$，从而 $S=\bigcup_{x\in A}\mathcal{F}_m(x)$。反向显然。
+\end{enumerate}
+
+\subsection{附录 G：SMB 模板在本框架中的对应}
+\label{app:smb}
+
+设 $(X,\mathcal{B},\mu,T)$ 为遍历系统，$\xi$ 为有限生成分割。柱集
+\[
+\xi^{(n)}=\bigvee_{k=0}^{n-1}T^{-k}\xi
+\]
+对应长度 $n$ 的历史约束。SMB 给出：对 $\mu$-几乎处处 $x$，
+\[
+-\frac1n\log\mu(\xi^{(n)}(x))\to h_{\mu}(T,\xi)=h_{\mu}(T).
+\]
+在本文中，若稳定化输出 $(x_t)$ 由某生成分割诱导，则“历史一致集合”的测度衰减率与熵率对齐，从而可将时间箭头定义为后验柱集的指数收缩方向。
+
+\subsection{附录 H：自适应更新的一个可审计收敛模板}
+\label{app:adaptive}
+
+取目标为在线预测误差
+\[
+\widehat J_t(\theta)=\abs{Y_t-\widehat Y_t(\theta)}^2.
+\]
+采用投影梯度更新
+\[
+\theta_{t+1}=\Pi_{\Theta}\big(\theta_t-\gamma_t\nabla_{\theta}\widehat J_t(\theta_t)\big).
+\]
+在 Lipschitz 梯度与 Robbins--Monro 步长条件下，$\theta_t$ 可在均方意义下收敛至稳定集邻域。该模板为“观察者参数可塑性”提供审计接口：给定记录可检验误差是否单调降低或是否维持可行域约束。
+
+\subsection{附录 I：可逆微观更新的 Feistel 构造（用于离散原型）}
+\label{app:feistel}
+
+令 $Y_m=\{0,1\}^m$，选任意轮函数 $f:Y_m\to Y_m$。定义局域变换
+\[
+(h,c)\mapsto(h',c')=(c,\ h\oplus f(c)),
+\]
+其中 $\oplus$ 为按位异或。该映射可逆，逆变换为
+\[
+(c=h',\ h=c'\oplus f(h')).
+\]
+因此由局域 Feistel 与位置置换组成的全局更新为置换，从而保持均匀分布。该性质支撑第 8 节的退化谱频率律作为可穷举验证的零模型结论。
+
+\subsection{附录 J：统计检验的实施细则（建议）}
+\label{app:tests}
+
+\begin{enumerate}
+  \item \textbf{复杂度预算。}所有“低复杂度刚性”或“最小参数”主张需固定搜索域（窗口长度、核族、整数系数范围等），并报告在该域内的唯一性或最优性。
+  \item \textbf{对照零模型。}至少包含周期近似体（有理旋转数）、Bernoulli 序列、以及同边缘分布的置换模型三类对照。
+  \item \textbf{可识别性。}对核宽 $\varepsilon$、响应核 $G$、分割 $\mathcal{P}$ 等参数，需给出从数据到参数的可识别性分析或不可识别区间。
+  \item \textbf{误差预算。}将有限样本误差、核截断误差与模型偏差分离报告，避免以单一拟合误差替代结构性检验。
+\end{enumerate}
+
+\subsection{附录 K：参考文献（供期刊格式化使用）}
+\label{app:refs}
+
+本论文引用的书目条目见文末参考文献表（Bib\TeX{}）。
+

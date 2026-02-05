@@ -1,0 +1,367 @@
+\section{算子代数表述（投影作为概念，读出作为 \texorpdfstring{$0/1$}{0/1}）}
+\label{app:op-algebra}
+
+令 $\mathcal{H}$ 为 Hilbert 空间，$U$ 为幺正算子表示扫描步（群作用生成元的表示），$P$ 为投影算子表示窗口读出。则时间平移后的读出算子为
+\[
+P_t=U^{-t}PU^t.
+\]
+长度 $m$ 的地址 $a=a_0\cdots a_{m-1}\in\{0,1\}^m$ 可对应投影乘积
+\[
+P_a=\prod_{j=0}^{m-1} Q_{j}(a_j),\quad
+Q_{j}(1)=P_j,\quad Q_{j}(0)=I-P_j,
+\]
+在可交换情形下 $P_a$ 即柱集指示投影；对给定态 $\rho$（密度算子），其读出概率为 $\Tr(\rho P_a)$。
+在该表述中，“概念由地址确定”即为投影 $P_a$ 的定义依赖于地址；而“概念值为 $0/1$”对应在纯态 $\lvert\psi\rangle$ 的精确测量极限下，结果为投影谱 $\{0,1\}$。
+
+\subsubsection{折叠诱导的稳定子代数（可审计的 coarse-graining）}\label{app:op-algebra-fold-subalgebra}
+
+对固定分辨率 $m$，$\{P_a\}_{a\in\Omega_m}$ 在可交换情形下给出一个有限分割（互斥且和为单位）：$P_aP_b=0$（$a\neq b$）且 $\sum_{a\in\Omega_m}P_a=I$。因此它们生成一个有限维交换 C*-代数
+\[
+\mathcal{A}_m:=\mathrm{span}\{P_a:\ a\in\Omega_m\}\ \cong\ \CC^{|\Omega_m|}.
+\]
+
+折叠 $\Fold_m:\Omega_m\to X_m$ 给出一个等价关系：$a\sim b$ 当且仅当 $\Fold_m(a)=\Fold_m(b)$。相应地，定义对每个稳定类型 $x\in X_m$ 的\textbf{折叠投影}
+\[
+\widetilde P_x:=\sum_{\substack{a\in\Omega_m\\ \Fold_m(a)=x}} P_a.
+\]
+
+\begin{proposition}[折叠不变量子代数]\label{prop:fold-invariant-subalgebra}
+族 $\{\widetilde P_x\}_{x\in X_m}$ 是一族两两正交投影且 $\sum_{x\in X_m}\widetilde P_x=I$。它们生成的子代数
+\[
+\mathcal{B}_m:=\mathrm{span}\{\widetilde P_x:\ x\in X_m\}\ \subset\ \mathcal{A}_m
+\]
+同构于 $\CC^{|X_m|}$，并且可解释为 $\mathcal{A}_m$ 中“对折叠等价关系不变”的可观测量：$A\in\mathcal{B}_m$ 当且仅当 $A$ 在每个纤维 $\Fold_m^{-1}(x)$ 上取常值。
+\end{proposition}
+
+\begin{proof}
+由 $P_a$ 的互斥性立得 $\widetilde P_x\widetilde P_{x'}=0$（$x\neq x'$）且每个 $\widetilde P_x$ 为投影。又因为 $\Fold_m$ 满射且纤维分割 $\Omega_m$，求和得 $\sum_{x}\widetilde P_x=\sum_{a}P_a=I$。因此 $\{\widetilde P_x\}$ 给出一个有限分割，生成的代数与 $\CC^{|X_m|}$ 同构。最后，“在纤维上常值”的刻画是交换代数 $\CC^{|\Omega_m|}$ 的直接等价描述：由极小投影 $P_a$ 的坐标表示即可验证。
+\end{proof}
+
+\begin{remark}[折叠直方图作为态的限制]
+对任意态 $\rho$，$x\mapsto \Tr(\rho\,\widetilde P_x)$ 给出 $\mathcal{B}_m$ 上的一个概率向量；在本文的实验设置中，它正是折叠后稳定类型直方图的理论对象，而经验直方图则由样本频率估计得到（见第 \ref{sec:experiments} 节）。
+\end{remark}
+
+\begin{proposition}[折叠诱导的条件期望（纤维平均算子）]\label{prop:fold-conditional-expectation}
+对每个 $m$，定义纤维多重度
+\[
+d_m(x):=\bigl|\Fold_m^{-1}(x)\bigr|\qquad(x\in X_m),
+\]
+并定义线性映射 $E_m:\mathcal{A}_m\to \mathcal{B}_m$ 在极小投影基上为
+\[
+E_m(P_a):=\frac{1}{d_m(\Fold_m(a))}\,\widetilde P_{\Fold_m(a)}\qquad(a\in\Omega_m),
+\]
+再线性延拓到 $\mathcal{A}_m$。则：
+\begin{enumerate}
+  \item $E_m$ 是一个正的、保持单位元的幂等映射（即条件期望的有限维交换代数版本）；
+  \item $E_m$ 在 $\mathcal{B}_m$ 上为恒等：对任意 $B\in\mathcal{B}_m$，$E_m(B)=B$；
+  \item $E_m$ 是 $\mathcal{B}_m$-双模映射：对任意 $B_1,B_2\in\mathcal{B}_m$ 与 $A\in\mathcal{A}_m$，
+  \[
+  E_m(B_1AB_2)=B_1\,E_m(A)\,B_2.
+  \]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+由于 $\mathcal{A}_m$ 与 $\mathcal{B}_m$ 都是由互斥极小投影张成的有限维交换 C*-代数，验证只需在基 $\{P_a\}$ 与 $\{\widetilde P_x\}$ 上进行。
+
+\textbf{(2)} 对任意 $x\in X_m$，
+\[
+E_m(\widetilde P_x)=E_m\!\left(\sum_{\Fold_m(a)=x}P_a\right)
+=\sum_{\Fold_m(a)=x}\frac{1}{d_m(x)}\,\widetilde P_x
+=\widetilde P_x,
+\]
+故对 $\mathcal{B}_m$ 上的任意线性组合 $B$ 亦有 $E_m(B)=B$。
+
+\textbf{(1)} 由 (2) 与 $E_m(\mathcal{A}_m)\subset\mathcal{B}_m$ 立得幂等性：$E_m(E_m(A))=E_m(A)$。又因为
+\[
+E_m(I)=E_m\!\left(\sum_{a\in\Omega_m}P_a\right)
+=\sum_{x\in X_m}\sum_{\Fold_m(a)=x}\frac{1}{d_m(x)}\widetilde P_x
+=\sum_{x\in X_m}\widetilde P_x
+=I,
+\]
+故 $E_m$ 保单位元。正性可由坐标描述看出：在同构 $\mathcal{A}_m\cong\CC^{|\Omega_m|}$ 下，正元等价于各坐标非负；而 $E_m$ 的作用是对每条纤维做算术平均后复制到该纤维对应的块上，故保持非负性。
+
+\textbf{(3)} 对 $B_1=\widetilde P_{x_1}$、$B_2=\widetilde P_{x_2}$ 与基元 $A=P_a$，有
+\[
+\widetilde P_{x_1}P_a\widetilde P_{x_2}
+=
+\begin{cases}
+P_a,& \Fold_m(a)=x_1=x_2,\\
+0,& \text{否则}.
+\end{cases}
+\]
+若 $\Fold_m(a)=x_1=x_2=x$，则
+\[
+E_m(\widetilde P_xP_a\widetilde P_x)=E_m(P_a)=\frac{1}{d_m(x)}\widetilde P_x
+=\widetilde P_x\,E_m(P_a)\,\widetilde P_x.
+\]
+若不满足 $\Fold_m(a)=x_1=x_2$，则两边同为 $0$。线性扩张到一般 $A\in\mathcal{A}_m$ 与一般 $B_1,B_2\in\mathcal{B}_m$ 即得。
+\end{proof}
+
+\begin{remark}[折叠专属的可审计“信息丢失接口”]
+\label{rem:fold-expectation-interface}
+命题 \ref{prop:fold-conditional-expectation} 给出的 $E_m$ 是一个完全显式的“纤维平均”算子：它把微态层可观测量 $A\in\mathcal{A}_m$ 压缩为对折叠纤维常值的部分 $E_m(A)\in\mathcal{B}_m$。其系数仅依赖于折叠多重度 $d_m(x)$（见附录 \ref{app:fold-multiplicity}），因此可作为折叠诱导的一个结构性不变量接口：不同折叠/不同归一化规则会改变纤维结构，从而改变 $E_m$ 的块平均方式。
+\end{remark}
+
+\begin{proposition}[条件期望的奇异值谱：完全由纤维多重度决定]\label{prop:fold-conditional-expectation-singular-spectrum}
+将 $E_m$ 识别为线性算子
+\[
+E_m:\ell^2(\Omega_m)\to \ell^2(X_m),
+\qquad
+(E_m f)(x):=\frac{1}{d_m(x)}\sum_{\Fold_m(a)=x} f(a),
+\]
+其中两侧的内积均取计数测度下的标准内积。则其伴随算子满足
+\[
+(E_m^\ast g)(a)=\frac{1}{d_m(\Fold_m(a))}\,g(\Fold_m(a)),
+\]
+并且 \(E_mE_m^\ast\) 在 \(\ell^2(X_m)\) 上为对角算子：
+\[
+(E_mE_m^\ast g)(x)=\frac{1}{d_m(x)}\,g(x).
+\]
+因此 \(E_m\) 的全部奇异值为
+\[
+\boxed{\ \sigma_x(E_m)=d_m(x)^{-1/2}\qquad(x\in X_m).\ }
+\]
+\end{proposition}
+\begin{proof}
+由定义对任意 \(f\in\ell^2(\Omega_m)\)、\(g\in\ell^2(X_m)\) 计算配对：
+\[
+\langle E_m f,\ g\rangle_{\ell^2(X_m)}
+=\sum_{x\in X_m}\left(\frac{1}{d_m(x)}\sum_{\Fold_m(a)=x} f(a)\right)\overline{g(x)}
+=\sum_{a\in\Omega_m} f(a)\,\overline{\left(\frac{1}{d_m(\Fold_m(a))}g(\Fold_m(a))\right)},
+\]
+故得到 \(E_m^\ast\) 的坐标公式。再代入
+\[
+(E_mE_m^\ast g)(x)
+=\frac{1}{d_m(x)}\sum_{\Fold_m(a)=x}(E_m^\ast g)(a)
+=\frac{1}{d_m(x)}\sum_{\Fold_m(a)=x}\frac{1}{d_m(x)}\,g(x)
+=\frac{1}{d_m(x)}\,g(x).
+\]
+于是 \(E_mE_m^\ast\) 的本征值为 \(\{1/d_m(x)\}_{x\in X_m}\)，从而奇异值为其平方根。证毕。
+\end{proof}
+
+\begin{corollary}[Schatten 范数族：负矩阶“投影成本谱”]\label{cor:fold-conditional-expectation-schatten}
+对任意 \(p\ge 1\)，Schatten 范数满足
+\[
+\boxed{\ \|E_m\|_{S_p}^p=\sum_{x\in X_m} d_m(x)^{-p/2}\ }.
+\]
+特别地
+\[
+\|E_m\|_{HS}^2=\sum_{x\in X_m}\frac{1}{d_m(x)},
+\qquad
+\|E_m\|_{op}=\max_{x\in X_m} d_m(x)^{-1/2}=d_{\min}^{-1/2}.
+\]
+表 \ref{tab:fold_conditional_expectation_singular_spectrum} 给出若干 \(m\) 的可复现数值输出。
+\input{sections/generated/tab_fold_conditional_expectation_singular_spectrum}
+\end{corollary}
+
+\begin{proposition}[折叠的推前与提升：概率单纯形上的 Markov 核对偶]\label{prop:fold-pushforward-lift}
+在交换情形下，可将 $\mathcal{A}_m$ 与 $\mathcal{B}_m$ 分别识别为有限集上的复值函数代数：
+\[
+\mathcal{A}_m\cong \CC^{\Omega_m},\qquad
+\mathcal{B}_m\cong \CC^{X_m}.
+\]
+在该识别下，任意态 $\rho$ 在 $\mathcal{A}_m$ 上对应一个概率向量
+\(
+\mu_\rho(a):=\Tr(\rho P_a)
+\)
+（$a\in\Omega_m$），在 $\mathcal{B}_m$ 上对应
+\(
+\pi_\rho(x):=\Tr(\rho \widetilde P_x)
+\)
+（$x\in X_m$）。则：
+\begin{enumerate}
+  \item \textbf{（推前）}折叠的推前分布满足显式公式
+  \[
+  \pi_\rho(x)=\sum_{\substack{a\in\Omega_m\\ \Fold_m(a)=x}}\mu_\rho(a),
+  \qquad x\in X_m,
+  \]
+  即 $\pi_\rho=(\Fold_m)_*\mu_\rho$。
+  \item \textbf{（均匀提升）}定义从 $X_m$ 到 $\Omega_m$ 的 Markov 核（在每条纤维上均匀分配）：
+  \[
+  Q_m:\ \Delta(X_m)\to\Delta(\Omega_m),\qquad
+  (Q_m\pi)(a):=\frac{\pi(\Fold_m(a))}{d_m(\Fold_m(a))},
+  \]
+  其中 $\Delta(\cdot)$ 表示概率单纯形。则 $(\Fold_m)_*\circ Q_m=\mathrm{id}_{\Delta(X_m)}$。
+  \item \textbf{（对偶性）}令 $P_m=(\Fold_m)_*:\Delta(\Omega_m)\to\Delta(X_m)$，则对任意可观测量 $f\in \CC^{\Omega_m}$ 与分布 $\mu\in\Delta(\Omega_m)$，
+  \[
+  \langle E_m f,\mu\rangle\ =\ \langle f,(Q_m\circ P_m)\mu\rangle,
+  \]
+  其中 $\langle f,\mu\rangle:=\sum_{a\in\Omega_m} f(a)\mu(a)$ 是期望配对。换言之，$E_m$ 在观测量层面与 “先推前到 $X_m$ 再在纤维上均匀提升回 $\Omega_m$” 的 Markov 核 $Q_m\circ P_m$ 互为伴随。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(1)} 由定义 \(\widetilde P_x=\sum_{\Fold_m(a)=x}P_a\) 得
+\(
+\pi_\rho(x)=\Tr(\rho\widetilde P_x)=\sum_{\Fold_m(a)=x}\Tr(\rho P_a)=\sum_{\Fold_m(a)=x}\mu_\rho(a)
+\)。
+
+\textbf{(2)} 对任意 $x\in X_m$，
+\[
+((\Fold_m)_*(Q_m\pi))(x)=\sum_{\Fold_m(a)=x}\frac{\pi(x)}{d_m(x)}=\pi(x).
+\]
+
+\textbf{(3)} 在函数代数识别 $\mathcal{A}_m\cong \CC^{\Omega_m}$ 下，$E_m$ 正是“对纤维做算术平均再复制回纤维”的算子：
+\[
+(E_m f)(a)=\frac{1}{d_m(\Fold_m(a))}\sum_{\Fold_m(b)=\Fold_m(a)} f(b).
+\]
+因此
+\[
+\langle E_m f,\mu\rangle
+=\sum_{a\in\Omega_m}\mu(a)\frac{1}{d_m(\Fold_m(a))}\sum_{\Fold_m(b)=\Fold_m(a)} f(b)
+=\sum_{x\in X_m}\frac{\sum_{\Fold_m(a)=x}\mu(a)}{d_m(x)}\sum_{\Fold_m(b)=x}f(b).
+\]
+而 $(P_m\mu)(x)=\sum_{\Fold_m(a)=x}\mu(a)$，并且 $(Q_m(P_m\mu))(b)=(P_m\mu)(\Fold_m(b))/d_m(\Fold_m(b))$，代入得
+\[
+\langle f,(Q_m\circ P_m)\mu\rangle
+=\sum_{b\in\Omega_m} f(b)\frac{(P_m\mu)(\Fold_m(b))}{d_m(\Fold_m(b))}
+=\sum_{x\in X_m}\frac{(P_m\mu)(x)}{d_m(x)}\sum_{\Fold_m(b)=x}f(b),
+\]
+与上式一致。
+\end{proof}
+
+\subsubsection{投影词范畴：可组合、可重写、可判等价}\label{app:op-algebra-projection-word}
+本附录前两节已经给出三类硬接口：折叠不变量子代数 \(\mathcal{B}_m\subset\mathcal{A}_m\)（命题 \ref{prop:fold-invariant-subalgebra}）、条件期望 \(E_m:\mathcal{A}_m\to\mathcal{B}_m\)（命题 \ref{prop:fold-conditional-expectation}），以及概率单纯形上的推前 \(P_m=(\Fold_m)_*\) 与纤维均匀提升 \(Q_m\)（命题 \ref{prop:fold-pushforward-lift}）。
+本小节把它们收紧为一套“投影词演算”：允许把这些接口作为生成元自由复合，并给出可终止的消去规则与正规形，从而把“算法等价”提升为“投影词等价”的可判定问题（在固定分辨率 \(m\) 的语义层面）。
+
+\paragraph{两侧对象：观测量侧与分布侧}
+为避免把态与可观测量混写，我们对固定 \(m\) 引入两条并行的对象层：
+\begin{itemize}
+  \item \textbf{观测量侧：}\(\mathcal{A}_m\simeq \CC^{\Omega_m}\)、\(\mathcal{B}_m\simeq \CC^{X_m}\)，以及可见化算子 \(E_m:\mathcal{A}_m\to\mathcal{B}_m\)；
+  \item \textbf{分布侧：}\(\Delta(\Omega_m)\)、\(\Delta(X_m)\)，以及推前 \(P_m:\Delta(\Omega_m)\to\Delta(X_m)\) 与最大熵/纤维均匀提升 \(Q_m:\Delta(X_m)\to\Delta(\Omega_m)\)。
+\end{itemize}
+二者以自然配对
+\(
+\langle f,\mu\rangle:=\sum_{a\in\Omega_m} f(a)\mu(a)
+\)
+连接，命题 \ref{prop:fold-pushforward-lift} (3) 给出 \(E_m\) 与 \(Q_m\circ P_m\) 的伴随关系。
+
+\begin{definition}[投影词范畴（固定分辨率）]\label{def:projection-word-category}
+固定 \(m\)。定义两端点集合
+\[
+\mathrm{Obj}_{\mathrm{obs}}(m):=\{\mathcal{A}_m,\mathcal{B}_m\},\qquad
+\mathrm{Obj}_{\mathrm{mea}}(m):=\{\Delta(\Omega_m),\Delta(X_m)\}.
+\]
+并定义两类基本态射：
+\begin{enumerate}
+  \item \textbf{观测量侧生成元：}包含 \(E_m:\mathcal{A}_m\to\mathcal{B}_m\) 与折叠拉回（包含）算子
+  \[
+  \iota_m:\mathcal{B}_m\to\mathcal{A}_m,\qquad
+  (\iota_m b)(a):=b(\Fold_m(a)).
+  \]
+  \item \textbf{分布侧生成元：}包含推前 \(P_m:\Delta(\Omega_m)\to\Delta(X_m)\) 与提升 \(Q_m:\Delta(X_m)\to\Delta(\Omega_m)\)（式 \eqref{eq:pom-fiber-uniform-lift} 与命题 \ref{prop:fold-pushforward-lift}）。
+\end{enumerate}
+允许上述生成元做有限复合，得到的复合词称为分辨率 \(m\) 的\emph{投影词}。
+\end{definition}
+
+\begin{proposition}[基本消去规则与幂等投影]\label{prop:projection-word-rewrite}
+在定义 \ref{def:projection-word-category} 下，存在两条严格消去恒等式
+\[
+\boxed{\ E_m\circ \iota_m=\mathrm{id}_{\mathcal{B}_m}\ },\qquad
+\boxed{\ P_m\circ Q_m=\mathrm{id}_{\Delta(X_m)}\ }.
+\]
+并且由此定义的两条“投影闭包”都是幂等的：
+\[
+\Pi_m:=\iota_m\circ E_m:\mathcal{A}_m\to\mathcal{A}_m,\qquad
+K_m:=Q_m\circ P_m:\Delta(\Omega_m)\to\Delta(\Omega_m),
+\]
+满足 \(\Pi_m^2=\Pi_m\)、\(K_m^2=K_m\)；且 \(\Pi_m\)（分别 \(K_m\)）的像恰为“纤维常值观测量”（分别“纤维均匀分布”）子空间。
+\end{proposition}
+\begin{proof}
+恒等式 \(E_m\circ\iota_m=\mathrm{id}\) 直接由命题 \ref{prop:fold-conditional-expectation} 的 (2)（\(E_m\) 在 \(\mathcal{B}_m\) 上为恒等）与 \(\iota_m(\widetilde P_x)=\widetilde P_x\) 给出。
+恒等式 \(P_m\circ Q_m=\mathrm{id}\) 由命题 \ref{prop:fold-pushforward-lift} (2) 给出。
+\par
+幂等性由消去恒等式立得：\(\Pi_m^2=\iota_m(E_m\iota_m)E_m=\iota_mE_m=\Pi_m\)，\(K_m^2=Q_m(P_mQ_m)P_m=Q_mP_m=K_m\)。
+像空间刻画来自 \(\Pi_m\)（\(K_m\)）的定义：\(\Pi_m f\) 在每条纤维上取其平均值并复制回纤维，故像为纤维常值子空间；同理 \(K_m\mu\) 在每条纤维上变为均匀分配，故像为纤维均匀分布子空间。证毕。
+\end{proof}
+
+\begin{proposition}[投影词正规形与可判等价]\label{prop:projection-word-normal-form}
+固定 \(m\)。在观测量侧，任意投影词 \(w:\mathcal{A}_m\to\mathcal{A}_m\) 在等式意义下都可约化为三种正规形之一：
+\[
+\mathrm{id}_{\mathcal{A}_m},\qquad
+\Pi_m=\iota_m\circ E_m,\qquad
+\iota_m\circ \beta\circ E_m\ \ (\beta\in\mathrm{End}(\mathcal{B}_m)).
+\]
+在分布侧，任意投影词 \(w:\Delta(\Omega_m)\to\Delta(\Omega_m)\) 可约化为
+\[
+\mathrm{id}_{\Delta(\Omega_m)},\qquad
+K_m=Q_m\circ P_m,\qquad
+Q_m\circ \alpha\circ P_m\ \ (\alpha\in\mathrm{End}(\Delta(X_m))).
+\]
+因此在固定 \(m\) 的纯“投影词语言”中，词等价可通过消去规则 \(E_m\iota_m\Rightarrow \mathrm{id}\)、\(P_mQ_m\Rightarrow \mathrm{id}\) 的有限归约判定。
+\end{proposition}
+\begin{proof}
+观测量侧：任意复合词由 \(\iota_m\) 与 \(E_m\) 交替出现构成。使用消去规则 \(E_m\circ\iota_m=\mathrm{id}_{\mathcal{B}_m}\) 可消去所有相邻的 \(E_m\iota_m\) 子词，最终得到“无可进一步消去”的交替形态；其两端点若同为 \(\mathcal{A}_m\)，则必为 \(\mathrm{id}\) 或 \(\iota_m(\cdot)E_m\) 夹着一个 \(\mathcal{B}_m\) 自同态的形式。
+分布侧同理，使用 \(P_m\circ Q_m=\mathrm{id}_{\Delta(X_m)}\) 即得。
+由于每次消去严格缩短词长，归约必终止，从而得到可判等价性。证毕。
+\end{proof}
+
+\begin{remark}[熵增作为投影词的标量语义]\label{rem:projection-word-entropy-defect}
+对分布侧的提升 \(Q_m\)，正文定理 \ref{thm:pom-maxent-lift} 给出严格“最大熵提升”的唯一性，并定义纤维缺陷泛函
+\[
+\kappa_m(\pi):=\mathbb{E}_{\pi}\bigl[\log d_m(X)\bigr]\qquad(\pi\in\Delta(X_m)).
+\]
+它可视为投影词 \(Q_m\) 的一条\textbf{标量语义}：对任意 \(\pi\)，提升后的熵满足
+\(
+H(Q_m\pi)=H(\pi)+\kappa_m(\pi)
+\)。
+因此在“投影词演算”的语义层，除了谱指纹（\(\rho,\log\mathfrak{M},\) Dirichlet--Mertens 张量等）之外，\(\kappa_m\) 提供了一个与分辨率 \(m\) 强绑定的可审计标量不变量接口。
+\end{remark}
+
+\subsubsection{谱半径的可审计证书：Lyapunov 不等式与半正定可行性}\label{app:op-algebra-lyapunov}
+在正文的核版 RH/GRH 判据中，“平方根界”与“最坏扭曲谱半径界”都以谱半径不等式表述。
+本段给出一个在有限维上完全严格、且可作为\textbf{可审计证书}输出的等价刻画：把谱半径上界转写为一个 Lyapunov 型矩阵不等式的可行性。
+
+\begin{proposition}[谱半径界 \texorpdfstring{$\Leftrightarrow$}{<->} Lyapunov 不等式]\label{prop:lyapunov-spectral-radius-certificate}
+令 $A\in\CC^{n\times n}$，$r>0$。则以下条件等价：
+\begin{enumerate}
+  \item $\rho(A)<r$；
+  \item 存在 Hermitian 正定矩阵 $H\succ 0$ 使得
+  \[
+  \boxed{\;
+  A^\ast H A\ \prec\ r^2 H.
+  \;}
+  \]
+\end{enumerate}
+特别地，对任意带参数扭曲矩阵族 $M_{K,\rho}(u)$，若取 $r=\lambda_1(u)^{1/2}$，则“核版 (G)RH 的平方根界”
+\(
+\rho(M_{K,\rho}(u))<\lambda_1(u)^{1/2}
+\)
+等价于存在证书矩阵 $H_{\rho,u}\succ 0$ 使
+\[
+M_{K,\rho}(u)^\ast H_{\rho,u} M_{K,\rho}(u)\ \prec\ \lambda_1(u)\,H_{\rho,u}.
+\]
+\end{proposition}
+\begin{proof}
+\textbf{(1)$\Rightarrow$(2)} 令 $B:=A/r$，则 $\rho(B)<1$。取
+\[
+H:=\sum_{k\ge 0}(B^\ast)^k B^k.
+\]
+由于 $\rho(B^\ast B)<1$，上式收敛并给出 $H\succ 0$。并且直接计算得
+\[
+B^\ast H B
+=\sum_{k\ge 0}(B^\ast)^{k+1}B^{k+1}
+=H-I\ \prec\ H,
+\]
+从而 $A^\ast H A=r^2 B^\ast H B\prec r^2 H$。
+
+\textbf{(2)$\Rightarrow$(1)} 若 $A^\ast H A\prec r^2 H$，对任意特征对 $Av=\lambda v$（$v\neq 0$），有
+\[
+v^\ast A^\ast H A v=|\lambda|^2 v^\ast H v\ <\ r^2 v^\ast H v,
+\]
+因此 $|\lambda|<r$，从而 $\rho(A)<r$。证毕。
+\end{proof}
+
+\begin{remark}[半正定规划口径：把谱界变成可计算的证书]\label{rem:lyapunov-sdp}
+命题 \ref{prop:lyapunov-spectral-radius-certificate} 把谱半径不等式转化为线性矩阵不等式（LMI）：
+\(
+A^\ast H A\preceq r^2 H
+\)
+在变量 $H$ 上是凸可行性问题。因而在有限维可计算口径下，可将“核版 (G)RH”组织为一组可审计的证书输出：
+对每个非平凡扭曲分量（角色/表示）给出一份 $H_{\rho,u}\succ 0$，并同时输出残差矩阵
+\(
+r^2H_{\rho,u}-A^\ast H_{\rho,u}A
+\)
+以供复核。
+\end{remark}

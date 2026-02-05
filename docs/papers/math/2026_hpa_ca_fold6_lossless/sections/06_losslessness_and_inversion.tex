@@ -1,0 +1,38 @@
+
+\section{无损性与可逆性：时间不是读取，而是边搜索}
+
+\subsection{“无损”的精确定义}
+
+在单步层面，映射 $s_t\mapsto s_{t+1}$ 不是单射，因为 $\Fold_6$ 多对一。但如果把 $u_t$ 作为“时间边标签”记录下来，则块级信息恢复是确定的，从而在全系统层面亦可逆。
+
+\subsection{块级逆演化}
+
+给定某个块输出 $w^{\mathrm{out}}\in X_6$ 与 uplift $u\in U$，定义对应的微观索引
+$$
+N:=V(w^{\mathrm{out}})+u,
+$$
+再取二进制 $6$ 比特词 $w^{\mathrm{in}}=\intbin_6^{-1}(N)\in\Omega_6$。由于 $V$ 是双射，$w^{\mathrm{out}}$ 与 $u$ 唯一确定 $N$，故块级逆映射确定；并行施加于所有块即可得到全局逆一步。
+
+\begin{proposition}[扩展态下一步可逆性]
+记一步更新算子为
+$$
+\mathcal{T}:\{0,1\}^L\to\{0,1\}^L\times U^{L/6},\qquad \mathcal{T}(s_t)=(s_{t+1},u_t),
+$$
+则存在显式逆算子 $\mathcal{T}^{-1}$ 使得对所有 $s_t$，
+$$
+\mathcal{T}^{-1}(s_{t+1},u_t)=s_t.
+$$
+因此，HPA-CA 在“可见空间层 + uplift 时间边层”的意义下是严格无损、可逆的。
+\end{proposition}
+
+\subsection{“可逆 $\neq$ 直接读取时间向量”：逆向重建即搜索}
+
+需要区分两个层次。
+\begin{itemize}
+  \item \textbf{本体层（ontic）。} 若把 uplift 边标签视为系统真实生成并保存的时空结构，则演化可逆是“沿边读回即可”。
+  \item \textbf{观察层（epistemic）。} 若观察者只看到 $21$ 态空间层（即只看到折叠后的 $s_t$），而不直接读取 uplift，那么“回到过去”变为一个受约束的逆问题：
+  $$\text{给定 }s_{t+1}\text{，求某个与之相容的 }(s_t,u_t).$$
+\end{itemize}
+
+这正是本文后续所形式化的核心：逆过程不是读取“时间向量”，而是通过一致性约束把时间向量“搜索出来”。
+

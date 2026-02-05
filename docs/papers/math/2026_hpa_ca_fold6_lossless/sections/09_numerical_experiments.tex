@@ -1,0 +1,80 @@
+
+\section{数值实验：纹理、密度平台、幂律谱与分形维数}
+
+\subsection{实现与数据产物（可复现材料）}
+
+我们实现了可运行的无损 HPA-CA 原型（含 uplift 记录与可逆回放）。实现与最小复现入口见附录~\ref{app:reproducibility}，核心脚本位于本论文目录的 \texttt{scripts/hpa\_ca\_lossless.py}，其输出包括：
+\begin{itemize}
+  \item 可见层时空图（$T\times L$ 的 $0/1$ 占据矩阵渲染）；
+  \item uplift 日志图（$T\times (L/6)$ 的离散 uplift 码）；
+  \item 密度曲线与密度功率谱；
+  \item 盒计数曲线与估计分形维数；
+  \item 原始数组数据（用于再分析）。
+\end{itemize}
+
+为便于“可缓存、可复现”的实验组织，本论文采用内容寻址的产物目录与自动生成的 \LaTeX\ 片段。运行 \texttt{scripts/run\_all.py} 将生成 \texttt{artifacts/} 下的带 \texttt{manifest.json} 的运行目录，并在 \texttt{sections/generated/} 下生成可直接 \texttt{\textbackslash input} 的表格片段，例如：
+$$
+\texttt{\textbackslash input\{sections/generated/hpa\_ca\_example\_run\_summary\}}
+$$
+
+\subsection{实验设置}
+
+实验使用周期边界的一维环形链。典型设置如下：
+\begin{itemize}
+  \item 空间长度：$L=300$（$L$ 为 $6$ 的倍数）
+  \item 时间步数：$T=200$
+  \item 初态：
+  \begin{itemize}
+    \item 随机 Bernoulli$(p)$（扫描 $p\in\{0.1,\dots,0.9\}$，多随机种子）
+    \item 单激发（仅一位为 $1$）用于可视化“波传播/纹理生成”
+  \end{itemize}
+\end{itemize}
+
+度量指标包括：
+\begin{itemize}
+  \item 密度：$\rho_t=\frac{1}{L}\sum_{i=1}^L s_t(i)$；
+  \item uplift 比例：$\mathrm{frac}(u=\delta)$（$\delta\in U$）；
+  \item 密度时间序列功率谱幂律拟合斜率 $\alpha$（log-log 线性拟合）；
+  \item 时空占据图的盒计数分形维数 $D$（简单 box-counting 估计）。
+\end{itemize}
+
+\subsection{观测量定义与估计方法（可审计）}
+
+本节中关于 $\alpha$ 与 $D$ 的讨论严格视为\textbf{数值观测}，并配套可复现的估计器与误差指标（以便审计与复核），而不将其表述为已证定理。
+
+\paragraph{功率谱幂律斜率（$\alpha$）。}
+对密度序列 $\rho_t$ 去均值，取离散 Fourier 变换得到 periodogram 形式的功率谱估计 $\mathrm{PSD}(f)$。在某个频带 $f\in[f_{\min},f_{\max}]$ 内做 log-log 线性回归：
+$$
+\log \mathrm{PSD}(f)\approx -\alpha\log f + c,
+$$
+并将回归斜率的标准误作为 $\alpha$ 的不确定性指标（该误差反映拟合残差，而不等同于严格的统计置信界）。
+
+\paragraph{盒计数维数（$D$）。}
+把可见层时空图视为二值图像 $I(t,i)=s_t(i)$。对盒尺度 $\varepsilon$（取若干 $2^k$）计算占用盒数 $N(\varepsilon)$，在 log-log 坐标做线性回归：
+$$
+\log N(\varepsilon)\approx D\log(1/\varepsilon)+c,
+$$
+并同样记录回归斜率的标准误与 $R^2$。必要时可引入 burn-in（丢弃早期时间步）以隔离初始化影响。
+
+\paragraph{误差条（跨 seed）。}
+对固定 $p$ 的多随机种子样本，采用样本均值与正态近似的 $95\%$ 置信区间（$1.96\cdot \mathrm{SE}$）作为误差条；其目的在于提供可比较的粗粒度稳定性指标，而非宣称严格分布结论。
+
+\subsection{边界情形与一致性检查}
+
+作为最低门槛的一致性审计，我们对若干边界/极端初态进行：\textbf{(i) uplift 回放的逐步可逆性检查}，以及 \textbf{(ii) 尾段周期性检测}（若末段严格满足周期 $p$，记录 $p$；否则记为 $0$）。结果片段由脚本自动生成如下：
+
+\input{sections/generated/hpa_ca_boundary_cases_rows}
+
+\subsection{随机初态参数扫描（带误差条）}
+
+对随机 Bernoulli$(p)$ 初态做 $p\times \text{seed}$ 扫描，并汇总 $\bar\rho,\bar\alpha,\bar D$ 的样本均值与 $95\%$ 置信区间（由脚本自动生成）：
+
+\input{sections/generated/hpa_ca_scan_fractal_psd_summary}
+
+\subsection{代表性运行（自动生成片段）}
+
+我们用一个代表性运行展示产物的组织方式与主要统计量。下表由脚本自动生成，包含运行参数、密度与盒计数维数等元数据：
+
+\input{sections/generated/hpa_ca_example_run_summary}
+
+

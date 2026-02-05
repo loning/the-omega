@@ -1,0 +1,73 @@
+\section{算法与实现细节}
+
+\subsection{Fold-with-residual：规范化与残差输出接口}
+
+本节给出一类可实现的“折叠 + 残差”接口（Fold-with-residual）。其目标是：输入窗口微态 $b\in\Omega_m$，输出稳定词 $x\in X_m$ 与残差标签 $u\in U_m$（或内部状态 $r\in R_m(x)$ 的候选实现），使得在扩展态上可逆或近似可逆。
+
+\begin{remark}
+本文在第 5 节将“截断/折叠”统一为协议接口（定义 \ref{def:truncation_schema}）：空间投影 $\mathrm{Space}_m$ 给出空间信息，时间残差 $\mathrm{Time}_m$ 携带被截断的信息。正文默认截断族（窗口 Zeckendorf）下，$\Fold_m$ 取为 $\mathrm{Space}_m$，并给出一个最小可审计残差分量 $u_m=z_{m+2}$（定义 \ref{def:Fold}）。\par
+
+将其实现为有限状态转导器时，时间残差 $u$ 可选为：转导器内部状态、有限进位/溢出状态（包含上述 $z_{m+2}$ 这类最小分量），或二者的组合。有效时间残差 $r\in R_m(x)$ 则由“对未来可观测量的不可区分性”定义（第 6 节），其与实现性残差载体 $U_m$ 的关系可通过第 15 节的比较协议检验（状态规模 vs 预测误差）。
+\end{remark}
+
+\subsection{代码结构与可复现产物布局}
+
+本文的可复现实验脚本位于 \texttt{scripts/}，并采用内容寻址产物目录以保证“代码/参数变化 $\Rightarrow$ 产物指纹变化”。约定布局为：
+\begin{itemize}
+  \item \texttt{artifacts/<experiment>/<run\_id>/}：实验产物（JSON/PNG）与 \texttt{manifest.json}；
+  \item \texttt{sections/generated/*.tex}：供正文直接 \texttt{\\input} 的表格/数值片段。
+\end{itemize}
+一键复现入口为 \texttt{python3 scripts/run\_all.py}。
+
+\subsection{残差更新算子 Update 的候选族}
+
+给定扩展态 $z=(x,r)\in E_m$ 与局部约束输入 $\mathcal N_t$，残差更新算子可抽象写为
+$$
+z_{t+1}=\mathrm{Update}(z_t;\mathcal N_t).
+$$
+候选实现族包括：
+\begin{enumerate}
+  \item \textbf{有限溢出/进位状态}：用有限集合记录局部规范化过程的“未闭合进位”与端点携带。
+  \item \textbf{有限状态机内部状态}：把规范化/预测规则编译为 DFA/Mealy 机，将其内部状态作为残差载体。
+\end{enumerate}
+其有效性通过“状态规模 vs 预测误差”的实验权衡进行检验（第 15 节）。
+
+\subsection{回路枚举与 holonomy 计算流程}
+
+为计算 holonomy，需要给定允许边集 $\mathcal E_m$ 与平行移动 $\mathcal P$。对长度不超过 $\ell$ 的回路族 $\Gamma_\ell$，对每条回路
+$$
+\gamma=(x_0\to x_1\to\cdots\to x_k=x_0)
+$$
+计算
+$$
+\mathrm{Hol}(\gamma)=\mathcal P_{x_{k-1}\to x_k}\circ\cdots\circ\mathcal P_{x_0\to x_1}.
+$$
+并从 $\mathrm{Hol}(\gamma)$ 提取复杂度指标（循环结构、不动点比例、谱半径等），用于检验接口曲率集中假设（第 12 节与第 15 节）。
+
+在实现上，本文提供了一个最小可运行的 holonomy 计算协议（\path{scripts/exp_holonomy_spectrum.py}）：将残差纤维取为有限集 $R\\cong\\mathbb Z_q$，并把平行移动实现为 $R$ 上的仿射映射。这样 holonomy 可由有限复合得到，且可直接计算恒等率与不动点比例等指标。
+
+\subsection{forward--backward 的缩放/对数域稳定化}
+
+第 13 节的双边界合成与 HMM smoothing 同构。为避免数值下溢，常用两类稳定化：
+\begin{enumerate}
+  \item \textbf{缩放（scaling）}：每一步对 $O_t$ 或 $C_t$ 做归一化并累积缩放因子。
+  \item \textbf{对数域（log-domain）}：在 $\log O_t$、$\log C_t$ 上进行 $\mathrm{logsumexp}$ 运算。
+\end{enumerate}
+其具体实现细节可直接复用 Rabiner 的标准方案。\cite{rabiner_hmm_tutorial}
+
+\subsection{受控连接与可达性优化（控制接口）}
+
+在第 12 节离散连接语义下，平行移动 $\mathcal P_{x\to x'}$ 与允许边集 $\mathcal E_m$ 决定提升路径族。将“编织/选择”形式化为控制输入序列 $\{u_t\}$，其作用可取两类等价形式：
+\begin{enumerate}
+  \item \textbf{受控允许边：} $\mathcal E_m(u_t)\subseteq X_m\times X_m$；
+  \item \textbf{受控转移核：} $K_t^{u_t}(z\to z')$。
+\end{enumerate}
+于是演化写为
+$$
+z_{t+1}\sim K_t^{u_t}(z_t,\cdot),\qquad z_t=(x_t,r_t)\in E_m.
+$$
+给定目标一致性 $\mathcal G$ 或终端约束 $\mathcal F_T$，可定义代价泛函
+$$
+J(\pi)=\mathbb E^{\pi}\left[\sum_{t=0}^{T-1} c(z_t,u_t)+\lambda\,\Phi_T(z_T)\right],
+$$
+从而把“选择/编织”归约为可检验的控制优化问题。

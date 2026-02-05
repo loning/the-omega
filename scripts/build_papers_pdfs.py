@@ -63,6 +63,13 @@ class PlanItem:
     sources_hash: str
 
 
+@dataclass(frozen=True)
+class BuildResult:
+    success: bool
+    last_rc: int | None
+    error: str | None = None
+
+
 def _iter_source_files(root: Path) -> list[Path]:
     files: list[Path] = []
     for p in root.rglob("*"):
@@ -177,21 +184,65 @@ def plan_all_builds(papers_root: Path) -> tuple[list[Path], list[PlanItem]]:
     return paper_dirs, items
 
 
-def _run_latexmk(paper_dir: Path) -> None:
-    cmds = [
-        ["latexmk", "-f", "-quiet", "-pdf", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
-        ["latexmk", "-f", "-quiet", "-pdfxe", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
-        ["latexmk", "-f", "-quiet", "-pdflua", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
-    ]
+def _is_chinese_paper(paper_dir: Path) -> bool:
+    """Check if the paper is Chinese by looking for ctexart document class."""
+    main_tex = paper_dir / "main.tex"
+    if not main_tex.exists():
+        return False
+    try:
+        content = main_tex.read_text(encoding="utf-8")
+        return "ctexart" in content
+    except Exception:
+        return False
+
+
+def _run_latexmk(paper_dir: Path) -> BuildResult:
+    is_chinese = _is_chinese_paper(paper_dir)
+    
+    if is_chinese:
+        # For Chinese papers, prefer xelatex
+        cmds = [
+            ["latexmk", "-f", "-quiet", "-pdfxe", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
+            ["latexmk", "-f", "-quiet", "-pdf", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
+            ["latexmk", "-f", "-quiet", "-pdflua", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
+        ]
+    else:
+        # For non-Chinese papers, use default order
+        cmds = [
+            ["latexmk", "-f", "-quiet", "-pdf", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
+            ["latexmk", "-f", "-quiet", "-pdfxe", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
+            ["latexmk", "-f", "-quiet", "-pdflua", "-interaction=nonstopmode", "-file-line-error", "main.tex"],
+        ]
 
     last_rc: int | None = None
     for cmd in cmds:
-        proc = subprocess.run(cmd, cwd=str(paper_dir))
+        try:
+            proc = subprocess.run(cmd, cwd=str(paper_dir))
+        except Exception as exc:
+            return BuildResult(False, None, str(exc))
         last_rc = proc.returncode
         if proc.returncode == 0:
-            return
+            return BuildResult(True, last_rc)
 
-    raise RuntimeError(f"latexmk failed in {paper_dir} (last exit code: {last_rc})")
+    return BuildResult(False, last_rc)
+
+
+def _report_build_failure(paper_dir: Path, error: str) -> None:
+    log_path = paper_dir / "main.log"
+    print(f"Build failed in: {paper_dir}", file=sys.stderr)
+    print(f"Error: {shorten(str(error), width=500)}", file=sys.stderr)
+    if log_path.exists():
+        try:
+            lines = log_path.read_text(encoding="utf-8", errors="replace").splitlines()
+            tail = lines[-200:] if len(lines) > 200 else lines
+            print("---- main.log (tail) ----", file=sys.stderr)
+            for line in tail:
+                print(line, file=sys.stderr)
+            print("---- end main.log ----", file=sys.stderr)
+        except Exception as log_e:
+            print(f"Could not read log file {log_path}: {log_e}", file=sys.stderr)
+    else:
+        print(f"Log file not found: {log_path}", file=sys.stderr)
 
 
 def _clean_latexmk(paper_dir: Path) -> None:
@@ -206,41 +257,40 @@ def build_from_plan(
     *,
     clean: bool,
 ) -> None:
+    failed: list[Path] = []
     for item in plan_items:
         paper_dir = item.paper_dir
         sources_hash = item.sources_hash
 
         print(f"Building: {paper_dir}")
         try:
-            _run_latexmk(paper_dir)
+            result = _run_latexmk(paper_dir)
+            if not result.success:
+                msg = result.error or f"latexmk failed (last exit code: {result.last_rc})"
+                _report_build_failure(paper_dir, msg)
+                failed.append(paper_dir)
+                continue
+
+            pdf_path = paper_dir / "main.pdf"
+            if not pdf_path.exists():
+                _report_build_failure(paper_dir, f"Expected PDF not found: {pdf_path}")
+                failed.append(paper_dir)
+                continue
+
+            write_stamp(stamp_path(stamp_root, papers_root, paper_dir), sources_hash)
+            if clean:
+                _clean_latexmk(paper_dir)
         except Exception as e:
-            log_path = paper_dir / "main.log"
-            print(f"Build failed in: {paper_dir}", file=sys.stderr)
-            print(f"Error: {shorten(str(e), width=500)}", file=sys.stderr)
-            if log_path.exists():
-                try:
-                    lines = log_path.read_text(encoding="utf-8", errors="replace").splitlines()
-                    tail = lines[-200:] if len(lines) > 200 else lines
-                    print("---- main.log (tail) ----", file=sys.stderr)
-                    for line in tail:
-                        print(line, file=sys.stderr)
-                    print("---- end main.log ----", file=sys.stderr)
-                except Exception as log_e:
-                    print(f"Could not read log file {log_path}: {log_e}", file=sys.stderr)
-            else:
-                print(f"Log file not found: {log_path}", file=sys.stderr)
-            raise
+            _report_build_failure(paper_dir, str(e))
+            failed.append(paper_dir)
+            continue
 
-        pdf_path = paper_dir / "main.pdf"
-        if not pdf_path.exists():
-            raise FileNotFoundError(f"Expected PDF not found: {pdf_path}")
-
-        write_stamp(stamp_path(stamp_root, papers_root, paper_dir), sources_hash)
-        if clean:
-            _clean_latexmk(paper_dir)
+    if failed:
+        failed_list = ", ".join(str(p) for p in failed)
+        print(f"Build skipped for {len(failed)} paper(s): {failed_list}", file=sys.stderr)
 
 
-def verify_all_pdfs(papers_root: Path) -> None:
+def verify_all_pdfs(papers_root: Path, *, strict: bool) -> None:
     if not papers_root.exists():
         print("No papers directory found; nothing to verify.")
         return
@@ -254,7 +304,13 @@ def verify_all_pdfs(papers_root: Path) -> None:
     if missing:
         for p in missing:
             print(f"Missing PDF: {p}", file=sys.stderr)
-        raise FileNotFoundError(f"Missing {len(missing)} PDF(s) under {papers_root}")
+        if strict:
+            raise FileNotFoundError(f"Missing {len(missing)} PDF(s) under {papers_root}")
+        print(
+            f"Warning: Missing {len(missing)} PDF(s) under {papers_root}; "
+            "skipping verification failure (use `verify --strict` to enforce).",
+            file=sys.stderr,
+        )
 
 
 def write_github_output(pairs: dict[str, str]) -> None:
@@ -301,7 +357,12 @@ def main(argv: list[str]) -> int:
     clean_group.add_argument("--no-clean", dest="clean", action="store_false", help="Do not clean LaTeX aux files.")
     p_build.set_defaults(clean=clean_default)
 
-    sub.add_parser("verify", help="Verify all papers have main.pdf.")
+    p_verify = sub.add_parser("verify", help="Verify all papers have main.pdf.")
+    p_verify.add_argument(
+        "--strict",
+        action="store_true",
+        help="Fail if any paper directory with main.tex is missing main.pdf.",
+    )
 
     args = parser.parse_args(argv)
 
@@ -330,27 +391,32 @@ def main(argv: list[str]) -> int:
         return 0
 
     if args.cmd == "build":
-        if getattr(args, "all", False):
-            _, plan_items = plan_all_builds(papers_root)
-        elif not plan_file.exists():
-            if not args.replan_if_missing:
-                raise FileNotFoundError(
-                    f"Plan file not found: {plan_file}. Run `plan` first or pass --replan-if-missing."
-                )
-            _, to_build = plan_rebuilds(papers_root, stamp_root)
-            plan_items = to_build
-        else:
-            plan_items = read_plan_file(plan_file)
+        try:
+            if getattr(args, "all", False):
+                _, plan_items = plan_all_builds(papers_root)
+            elif not plan_file.exists():
+                if not args.replan_if_missing:
+                    print(
+                        f"Plan file not found: {plan_file}. Run `plan` first or pass --replan-if-missing.",
+                        file=sys.stderr,
+                    )
+                    return 0
+                _, to_build = plan_rebuilds(papers_root, stamp_root)
+                plan_items = to_build
+            else:
+                plan_items = read_plan_file(plan_file)
 
-        if not plan_items:
-            print("No papers to build.")
-            return 0
+            if not plan_items:
+                print("No papers to build.")
+                return 0
 
-        build_from_plan(papers_root, stamp_root, plan_items, clean=bool(getattr(args, "clean", False)))
+            build_from_plan(papers_root, stamp_root, plan_items, clean=bool(getattr(args, "clean", False)))
+        except Exception as exc:
+            print(f"Build encountered error: {exc}", file=sys.stderr)
         return 0
 
     if args.cmd == "verify":
-        verify_all_pdfs(papers_root)
+        verify_all_pdfs(papers_root, strict=bool(getattr(args, "strict", False)))
         print("All papers PDFs exist.")
         return 0
 

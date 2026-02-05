@@ -1,0 +1,49 @@
+
+\section{等价翻译定理：时空结构同构 \texorpdfstring{$\Leftrightarrow$}{<->} 编码图同构}
+
+本节把定义 \ref{def:spacetime_object} 的时空结构对象编码为一张带颜色图，并证明同构问题等价。
+
+\subsection{编码：闭包图/trellis 的统一形式}
+
+\begin{definition}[编码闭包图]\label{def:encoding_graph}
+给定 $\mathsf S=(X,Z; f, R_{\mathrm{space}}, R_{\mathrm{time}})$，定义带类型的有向图（或带多类边的图）$\Clo(\mathsf S)$ 如下：
+\begin{itemize}
+  \item 顶点集：$V:=X\sqcup Z$（不交并）；
+  \item 空间边：对每个 $(x,x')\in R_{\mathrm{space}}$ 加边 $x\to x'$；
+  \item 时间边：对每个 $(x,x')\in R_{\mathrm{time}}$ 加边 $x\to x'$；
+  \item 折叠边：对每个 $x\in X$ 加边 $x\to f(x)\in Z$；
+  \item 颜色：$X$ 中所有点给同一初始颜色；$Z$ 中每个点给唯一初始颜色（或更一般的宏观颜色方案）。
+\end{itemize}
+若需要区分空间/时间/折叠三类边，可将其编码为边颜色或通过引入中间节点把关系二分化。
+\end{definition}
+
+\begin{remark}
+本文在理论层允许“多类边/有向边”的编码描述；若需要严格归约为标准的（无向）带颜色简单图，可用常见的 gadget 把边类型与方向编码为局部结构，且该归约保持同构问题等价。这是 \GI{} 文献中的标准操作，因此本文后续默认使用定义 \ref{def:encoding_graph} 的抽象表述。
+\end{remark}
+
+\subsection{GI 等价翻译}
+
+\begin{theorem}[时空结构 \GI{} 的等价翻译]\label{thm:gi_translation_spacetime}
+设 $\mathsf S,\mathsf S'$ 为两个时空结构对象，并构造编码图 $\Clo(\mathsf S),\Clo(\mathsf S')$（定义 \ref{def:encoding_graph}）。假设在两张编码图中，宏观端点集合 $Z,Z'$ 的顶点被赋予\emph{两两不同的颜色}（即每个宏观点颜色唯一）。则以下命题等价：
+\begin{enumerate}
+  \item $\Clo(\mathsf S)$ 与 $\Clo(\mathsf S')$ 作为带颜色图同构；
+  \item 存在双射 $(\pi_X,\pi_Z)$ 给出定义 \ref{def:spacetime_iso} 的时空结构同构，其中 $\pi_Z$ 由宏观端点颜色匹配唯一决定。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+$(2)\Rightarrow(1)$：令 $\pi:=\pi_X\sqcup\pi_Z: X\sqcup Z\to X'\sqcup Z'$。由于 $(\pi_X,\pi_Z)$ 同时保持空间关系、时间关系与折叠相容性，$\pi$ 保持编码图的三类边；又因为 $\pi_Z$ 按颜色匹配宏观点，故整体颜色被保持，从而得到编码图同构。
+
+$(1)\Rightarrow(2)$：设 $\pi$ 为编码图同构。由于宏观点颜色两两不同，$\pi$ 在 $Z$ 上诱导出唯一的双射 $\pi_Z:Z\to Z'$；并且 $\pi$ 必将 $X$ 映到 $X'$，从而得到 $\pi_X:X\to X'$。折叠边 $x\to f(x)$ 的邻接关系被保持，推出 $f'(\pi_X(x))=\pi_Z(f(x))$。同时空间边与时间边分别被保持，故 $(\pi_X,\pi_Z)$ 满足定义 \ref{def:spacetime_iso}。
+\end{proof}
+
+\subsection{\WL{} 稳定化与相干配置落点}
+
+\begin{proposition}\label{prop:wl_to_cc}
+对编码图 $\Clo(\mathsf S)$ 运行 $1$-\WL{} 或 $\WLTWO$ 得到的稳定关系类可组织为（或诱导）一个相干配置，其关系类由“颜色对”的邻接计数闭合给出。该对象是 Babai 框架中处理残余对称与分支控制的标准输入之一 \cite{babai2016gi,ivanov2013coherent,wl2018symmetryvsregularity}。
+\end{proposition}
+
+\begin{remark}
+本文将 \WL{} 稳定后的残余未分解类与纤维 $f^{-1}(z)$ 的内部自由度对齐：当空间/时间关系使得局部计数信息能快速穿透纤维，\WL{} 深度较小；反之，残余轨道规模可作为“时间信息不可见”的可计算指标。
+\end{remark}
+

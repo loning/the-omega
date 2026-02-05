@@ -1,0 +1,39 @@
+\section{单头扫描微观动力学 \texorpdfstring{$U$}{U}：Feistel 可逆与环扫描}
+\label{sec:single-head}
+
+\subsection{微观态与扫描步}
+
+固定 $L\in\NN$，微观态
+\[
+s=(i,h,C),
+\]
+其中 $i\in\ZZ/L\ZZ$，$h\in Y_6$，$C:\ZZ/L\ZZ\to Y_6$。选步长 $\delta$ 使 $\gcd(\delta,L)=1$，定义扫描 $i\leftarrow i+\delta\ (\mathrm{mod}\ L)$。
+
+\subsection{局域更新（Feistel 形）}
+
+令 $c=C(i)$，取任意轮函数 $f:Y_6\to Y_6$，定义
+\[
+h'=c,\qquad c'=h\oplus f(c),
+\]
+写回 $C(i)\leftarrow c'$，并执行位置更新。
+
+\begin{theorem}[可逆性]\label{thm:feistel-permutation}
+对任意轮函数 $f$，全局更新 $U$ 为置换。
+\end{theorem}
+
+\begin{proof}
+局部映射 $(h,c)\mapsto (c,h\oplus f(c))$ 可逆，逆为 $c=h'$，$h=c'\oplus f(h')$，与位置置换合成仍为置换。证毕。
+\end{proof}
+
+\subsection{可见读出与宏观多值性}
+
+定义可见序列
+\[
+x_t=\mathrm{Fold}_6(h_t)\in X_6.
+\]
+由于 $\mathrm{Fold}_6$ 非单射，宏观动力学一般不为函数；其一阶经验转移可用关系
+\[
+R\subseteq X_6\times X_6,\quad (a,b)\in R\iff \exists t:\ x_t=a,\ x_{t+1}=b
+\]
+描述。该结构等价于“确定性微观置换 + 非单射观测”的隐状态投影。
+

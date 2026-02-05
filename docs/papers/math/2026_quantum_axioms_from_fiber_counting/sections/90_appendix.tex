@@ -1,0 +1,23 @@
+\section{附录：一种构造性的 $\Fold_m$（用于复现脚本）}
+
+本附录记录脚本所用的一种构造性折叠定义，用于保证本文的数值实验可复现。
+
+\subsection{Fibonacci 权重与数值解释}
+
+令 Fibonacci 数列满足 $F_0=0,F_1=1,F_{k+2}=F_{k+1}+F_k$。
+对 $b=(b_1,\dots,b_m)\in\Omega_m$，定义其数值
+$$
+N(b)=\sum_{i=1}^{m} b_i F_{i+1}.
+$$
+
+\subsection{Zeckendorf 规范形与输出}
+
+Zeckendorf 定理保证：对每个正整数 $n$，存在唯一的无相邻表示
+$
+n=\sum_{k\ge 2} z_k F_k,\ z_k\in\{0,1\},\ z_k z_{k+1}=0.
+$
+脚本采用标准贪心算法在有限截断 $k\le m+1$ 内求得 $z_2,\dots,z_{m+1}$，并定义
+$$
+\Fold_m(b):=(z_2,\dots,z_{m+1})\in X_m.
+$$
+由构造可知输出满足无相邻约束，从而 $\Fold_m$ 的像包含于 $X_m$。

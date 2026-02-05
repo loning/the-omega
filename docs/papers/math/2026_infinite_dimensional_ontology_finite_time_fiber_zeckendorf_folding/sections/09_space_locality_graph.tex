@@ -1,0 +1,242 @@
+\section{空间：局部依赖图与关系化距离}
+
+\subsection{局部依赖图公理}
+
+\begin{definition}[局部依赖图]\label{def:local_dependency_graph}
+空间由局部依赖图 $(V,\mathrm{Nbr})$ 给出。节点 $v\in V$ 表示基本单元（体素或其抽象等价类），邻域算子 $\mathrm{Nbr}(v)\subset V$ 给出允许依赖的有限集合。系统状态更新满足
+$$
+\mathrm{State}_{t+1}(v)=\mathsf T\bigl(\mathrm{State}_t(v),\mathrm{State}_t(\mathrm{Nbr}(v))\bigr),
+$$
+从而“空间结构”由依赖关系定义而非先验坐标。
+\end{definition}
+
+\subsection{显示维数与三维字典（CAP 闭包输出）}
+
+\paragraph{为何需要“显示”。}
+\InterfaceTag
+局部依赖图给出“哪些地方相互依赖”，但并不要求把 $V$ 先验嵌入到某个欧氏维数中。另一方面，若要在有限协议中执行空间诊断（例如：定义局部回路族、统计 plaquette holonomy、评测传播半径与局部调度成本），则需要一个可计算的“显示字典”：把 $V$ 的元素组织为一个有限度数的显示图（或网格）并给出地址/索引实现（第 10 节）。
+
+\paragraph{CAP 选择规则（摘要）。}
+\AuditTag
+我们把“显示维数/显示字典”的确定视为 CAP 闭包（定义 \ref{def:cap_closure}）的一个实例：在显式有限候选族 $\mathcal F_{\mathrm{disp}}$ 上，选择一个默认显示作为接口输入。关键点是：为了让该闭包选择具有可审计的目标函数，我们将“显示维数”转化为一个确定性可计算的观察者时间代理量（由闭包图上的 WL1 细化迭代给出；定义见下文）。\par
+
+候选族可以取为有限清单，例如
+$$
+\mathcal F_{\mathrm{disp}}=\{(d,\mathsf{Disp}_d): d\in\{1,2,3,4\}\},
+$$
+其中 $\mathsf{Disp}_d$ 表示一种 $d$ 维局部显示方案（网格邻接与地址实现均在协议中给定，且度数有界）。CAP 的可行性门槛与目标函数口径取为：
+\begin{itemize}
+  \item \textbf{可行性门槛（回路诊断）：}若某显示不支持基本回路族（例如 $d=1$ 的链式显示无 plaquette），则在需要 holonomy/曲率诊断的任务中判为不可行；
+  \item \textbf{目标函数（传播/收敛代价）：}在一个基准一致性目标 $\mathcal G_{\mathrm{base}}$ 与固定更新规则族下，以观察者演化时间成本 $T(\mathcal G_{\mathrm{base}})$（定义 \ref{def:time_cost}）或其可计算代理量（例如解析/塌缩步数、信息距离分布的统计量）作为主要代价，并可加入“跨越式通信/跳跃”的惩罚项；
+  \item \textbf{tie-break：}在代价并列时，优先较小 $d$ 与较低描述复杂度（更短的显示字典描述与更简单的地址实现）。
+\end{itemize}
+\AuditTag 在本文的默认设定中，上述闭包选择的输出为三维显示：它是满足回路诊断需求的最小可行维数族中，使观察者时间代理量进入“近似常数”区间的最小维数。该结论由本文内置的维数扫描协议给出（第 15 节，生成物 \texttt{cap\_display\_dim\_scan\_*}）。\par
+
+\begin{definition}[显示闭包键（定量口径：稳健聚合）]\label{def:cap_disp_key}
+\AuditTag
+为把“显示维数/显示字典”的选择与本文已有的时间概念对齐，我们将闭包键 $K_{\mathrm{disp}}$ 明确化。固定一个有限的分辨率集合 $\mathcal M\subset\NN$（例如本文扫描用的 $\{6,9,12,15\}$），并对每个候选显示 $u=(d,\mathsf{Disp}_d)\in\mathcal F_{\mathrm{disp}}$ 定义
+$$
+K_{\mathrm{disp}}(u)=\Bigl(K_1(u),K_2(u),K_3(u)\Bigr)\in\RR^3,
+$$
+其中按字典序比较（lex order）：
+\begin{itemize}
+  \item \textbf{可行性坐标 $K_1$（门槛）：}
+  $K_1(u)=0$ 当且仅当该显示支持本文所需的基本回路族/plaquette，从而可执行 holonomy 诊断；否则 $K_1(u)=1$。
+  \item \textbf{时间坐标 $K_2$（主目标，稳健聚合）：}
+  $K_2(u)$ 取为一个“基准解析目标”的时间成本（定义 \ref{def:time_cost} 的口径），并在实现中用确定性 WL1 代理量计算。令 $\mathcal G_{\mathrm{WL}}(m,d)$ 表示“在闭包图 $\mathrm{Clo}_{m,d}$ 上，微观点被 WL1 颜色细化完全解析为单点颜色类”的目标；对每个 $m$ 令
+  $$
+  T_u(\mathcal G_{\mathrm{WL}}(m,d)):=\min\{t\in\NN:\mathcal G_{\mathrm{WL}}(m,d)\text{ 在第 }t\text{ 步成立}\}.
+  $$
+  在该 WL1 协议中，这一定义与 $t_{\mathrm{resolve}}(m,d)$ 的脚本输出是同一对象（即“解析所需最小迭代步数”）。为了避免单点分辨率的偶然劣化主导闭包结果，本文默认用稳健聚合替代 $\sup$：给定分位数参数 $p\in(0,1)$（默认 $p=0.95$），定义
+  $$
+  K_2(u):=\mathrm{Q}_{p}\bigl(\{t_{\mathrm{resolve}}(m,d):m\in\mathcal M\}\bigr),
+  $$
+  其中若某 $m$ 在预设上限内未解析，则将对应项视作 $+\infty$（从而自动惩罚不可解析显示）。
+  \item \textbf{稳定性坐标 $K_3$（次级目标，稳健聚合）：}
+  同理定义
+  $$
+  K_3(u):=\mathrm{Q}_{p}\bigl(\{t_{\mathrm{stable}}(m,d):m\in\mathcal M\}\bigr),
+  $$
+  作为“收敛/稳定”代价的补充代理量；必要时也可附加均值项作为审计参考（脚本输出中同时给出）。
+\end{itemize}
+当 $K_{\mathrm{disp}}$ 并列时，以“更低维数、更低描述复杂度”的全序 tie-break（定义 \ref{def:cap_closure} 的 $\prec$）选取唯一默认输出。
+\end{definition}
+
+\paragraph{闭包图与 WL1：把“显示维数”转化为观察者时间代理量。}
+\AuditTag
+为得到一个确定、可复核且不引入连续自由参数的目标函数，我们定义如下闭包图协议。该协议只使用“空间投影 $\mathrm{Space}_m$”所定义的折叠边，而不把任何审计/解释性叙述反向注入数学层。\par
+
+\AuditTag 固定窗口长度 $m$。在本文默认截断族中，微观域取为 $\Omega_m=\{0,1\}^m$，空间态集合取为稳定语言 $X_m\subset\{0,1\}^m$，并以第 5 节定义的空间投影 $\Fold_m=\mathrm{Space}_m:\Omega_m\twoheadrightarrow X_m$ 给出折叠边（定义 \ref{def:truncation_schema}、定义 \ref{def:Fold}）。给定一个显示 $\mathsf{Disp}_d$，它诱导微观邻接图 $G^{(d)}_m$（例如 bit-split 的 $d$ 维格邻接）。定义闭包图
+$$
+\mathrm{Clo}_{m,d}:=(\Omega_m\sqcup X_m,\ E^{\mu}_{m,d}\ \cup\ E^{\mathrm{Space}}_m),
+$$
+其中 $E^{\mu}_{m,d}$ 为 $\Omega_m$ 上的微观邻接边，$E^{\mathrm{Space}}_m=\{(b,\Fold_m(b)):\ b\in\Omega_m\}$ 为折叠边（视作无向边）。在该图上运行确定性 $1\text{-}\mathrm{WL}$（颜色细化）：初始时令所有微观点同色，而令每个宏观点 $x\in X_m$ 具有唯一颜色标签；随后按
+$$
+\kappa_{t+1}(v)=\mathrm{Hash}\Bigl(\kappa_t(v),\ \mathrm{MultiSet}\{\kappa_t(u):u\in N(v)\}\Bigr)
+$$
+迭代直至稳定。由此得到两个时间代理量：
+\begin{itemize}
+  \item \textbf{稳定步数 $t_{\mathrm{stable}}$：}颜色分割首次不再变化的迭代步数；
+  \item \textbf{解析步数 $t_{\mathrm{resolve}}$：}首次使全部微观点在颜色上两两不同（即微观端完全分解为单点颜色类）的迭代步数；若在预设上限内未发生，则记为未解析。
+\end{itemize}
+
+\begin{remark}[对多种截断族的泛化]\label{rem:closure_graph_general_truncation}
+\AuditTag
+上述闭包图构造可直接推广到任意截断协议（定义 \ref{def:truncation_schema}）：将微观域 $\Omega_m$ 替换为一般微观域 $S_m$，将折叠边定义为
+$$
+E^{\mathrm{Space}}_m=\{(s,\mathrm{Space}_m(s)):\ s\in S_m\},
+$$
+并以候选显示字典在 $S_m$ 上诱导邻接图。本文为保证默认结果可复现，正文与第 15 节的基准扫描采用 $\Omega_m$ 与窗口 Zeckendorf 截断；其他截断族在实现层按同一协议注入（第 14--15 节）。
+\end{remark}
+
+\begin{lemma}[WL1 的局部性（半径下界）]\label{lem:wl_locality}
+\MathTag
+对任意带初始颜色的有限图，顶点 $v$ 在第 $t$ 步的 $1\text{-}\mathrm{WL}$ 颜色 $\kappa_t(v)$ 仅依赖于以 $v$ 为根、半径 $t$ 的带颜色根邻域同构类型。因而若两点 $v,w$ 的半径 $t$ 根邻域同构，则对所有 $s\le t$ 有 $\kappa_s(v)=\kappa_s(w)$，从而在第 $t$ 步之前无法区分。
+\end{lemma}
+
+\begin{proof}
+\MathTag
+对 $t$ 作归纳。$t=0$ 时结论由初始颜色定义成立。若 $t$ 时成立，则第 $t+1$ 步颜色由 $(\kappa_t(v),\{\kappa_t(u):u\in N(v)\})$ 的同构不变量决定，而邻域同构把相邻点的半径 $t$ 根邻域一一对应，从而保持该多重集；故 $\kappa_{t+1}$ 亦由半径 $t+1$ 根邻域同构类型唯一决定。证毕。
+\end{proof}
+
+\begin{lemma}[WL1 指标对图同构不变]\label{lem:wl_iso_invariant}
+\MathTag
+设 $\varphi:G\to G'$ 是有限图同构，并且初始颜色在 $\varphi$ 下保持（即对任意顶点 $v$ 有 $\kappa_0(v)=\kappa'_0(\varphi(v))$）。则对所有 $t\ge 0$，
+$$
+\kappa_t(v)=\kappa'_t(\varphi(v)).
+$$
+特别地，$t_{\mathrm{stable}}$ 与 $t_{\mathrm{resolve}}$（以“微观点集合”为解析对象时）在同构下不变。
+\end{lemma}
+
+\begin{proof}
+\MathTag
+对 $t$ 归纳。$t=0$ 由假设成立。若对 $t$ 成立，则 $\varphi$ 把 $N(v)$ 双射到 $N'(\varphi(v))$，从而邻域颜色多重集在 $\varphi$ 下保持；而 WL1 的更新签名由 $(\kappa_t(v),\mathrm{MultiSet}\{\kappa_t(u):u\in N(v)\})$ 决定，故 $\kappa_{t+1}$ 亦在同构下保持。稳定步数与解析步数仅由颜色序列与“是否稳定/是否把指定集合解析为单点颜色类”的判据决定，因此同构不变。
+\end{proof}
+
+\paragraph{为何 $d=3$ 成为 CAP 输出（机制与数据口径）。}
+\AuditTag
+由引理 \ref{lem:wl_locality}，若某显示几何使大量微观点具有长半径的邻域同构（“薄几何/低维显示”更易出现此现象），则 $t_{\mathrm{resolve}}$ 必然被推迟，从而在 CAP 的时间目标下劣化。本文在固定折叠 $\Fold_m$ 与 bit-split 显示族下，对 $m\in\{6,9,12,15\}$ 的 $d$ 维显示进行确定性扫描，并将 $(t_{\mathrm{stable}},t_{\mathrm{resolve}},u,s_{\max})$ 作为审计输出（第 15 节）。结果显示：$d=1$ 的 $t_{\mathrm{resolve}}$ 随 $m$ 急剧增长且在给定上限内可能无法解析；$d=2$ 虽可解析但更敏感；而 $d\ge 3$ 进入近似常数区。结合“需要回路诊断”的可行性门槛与最小维数 tie-break，CAP 的默认输出为三维显示。
+
+\subsection{空间子群：依赖图自同构与配置的可逆重标记}
+
+本节把“空间运算”群化为对节点集合的可逆重标记（置换）。这些变换本身不改变局部规则 $\mathsf T$ 的形式，但会重标记“哪里是哪里”，从而提供空间对称与空间运算的最小可逆实现。
+
+\begin{definition}[依赖图自同构群与空间作用]\label{def:space-automorphism-group}
+定义局部依赖图的自同构群
+$$
+\mathrm{Aut}(V,\mathrm{Nbr})=\left\{\sigma\in \mathrm{Sym}(V):\forall v\in V,\ \sigma(\mathrm{Nbr}(v))=\mathrm{Nbr}(\sigma(v))\right\}.
+$$
+对任意配置 $s:V\to E_m$（或 $s:V\to \widetilde{\Omega}_m$），定义 $\sigma$ 对配置的作用为
+$$
+(\sigma\cdot s)(v)=s\bigl(\sigma^{-1}(v)\bigr).
+$$
+该作用给出一个表示同态
+$$
+\rho:\mathrm{Aut}(V,\mathrm{Nbr})\to \mathrm{Sym}(E_m^V),
+\qquad
+\rho(\sigma)(s)=\sigma\cdot s,
+$$
+并令空间子群为其像
+$$
+S_{m,V}:=\rho\bigl(\mathrm{Aut}(V,\mathrm{Nbr})\bigr)\le \mathrm{Sym}(E_m^V)
+$$
+（或在 $\widetilde{\Omega}_m^V$ 上的对应表示）。
+\end{definition}
+
+\begin{remark}[局部生成元：相邻换位]
+在实际计算中可不必使用全体 $\mathrm{Aut}(V,\mathrm{Nbr})$。常见做法是选取一组局部置换生成元（例如图边上的相邻换位），生成一个更小但可计算的空间运算群。该选择与第 15 节把对象运动定义为“支撑集合在邻接结构上的迁移”相匹配。
+\end{remark}
+
+\begin{remark}[CAP 的群论/群胚化口径：商空间上的规范代表]\label{rem:cap_groupoid}
+\AuditTag
+在许多实现中，“显示字典”存在平凡的重标记/同构自由度：不同的地址实现可能诱导同构的邻接结构与等价的诊断能力。为避免 CAP 结果依赖于记号选择，可引入一组对称变换（例如 $\mathrm{Aut}(V,\mathrm{Nbr})$ 的作用，或更一般的“显示同构”）在候选族 $\mathcal F_{\mathrm{disp}}$ 上的作用，并把候选按轨道（等价类）分组。\par
+
+在该口径下，可把 CAP 理解为两步闭包：
+\begin{itemize}
+  \item \textbf{先取商：}在轨道集合 $\mathcal F_{\mathrm{disp}}/\!\sim$ 上比较闭包键 $K_{\mathrm{disp}}$（定义 \ref{def:cap_disp_key}）；为保证可审计性，$K_{\mathrm{disp}}$ 应取同构不变量或在轨道上取聚合（例如最小/均值）。由引理 \ref{lem:wl_iso_invariant}，基于闭包图的 WL1 时间指标是图同构不变量，因此适合作为该键的核心坐标。
+  \item \textbf{再选规范代表：}在最优轨道内，用决定性 tie-break $\prec$ 选取一个规范代表元（canonical representative）作为默认显示字典输出。
+\end{itemize}
+当把“不同显示之间的同构”组织为可复合的同构族时，更自然的整体对象是作用群胚（action groupoid）：对象为候选显示，态射为显示同构；CAP 则对应于在该群胚的等价类上做闭包并选取一条规范截面。
+\end{remark}
+
+\subsection{两种距离：拓扑距离与信息距离}
+
+在上述框架下定义两类距离：拓扑距离
+$$
+d_{\mathrm{top}}(u,v)=\text{图最短路长度},
+$$
+信息距离
+$$
+d_{\mathrm{inf}}(u,v)=\text{约束传播从 }u\text{ 推导 }v\text{ 所需最少步数}.
+$$
+
+\subsection{时间—空间复合与正规形（半直积型）}
+
+为把“任意时间与空间运算”变为可计算的代数对象，取一个可逆的全局一步更新算子 $\tau\in\mathrm{Sym}(E_m^V)$ 作为离散时间生成元（参见定义 \ref{def:time-subgroup} 的思想：由单步更新生成循环时间群），并与空间子群 $S_{m,V}$ 生成时空运算群。
+
+\begin{assumption}[空间齐性与正规化规则]\label{ass:space_homogeneity}
+\InterfaceTag \textbf{建模约定：} 本假设用于把“时空运算群”的代数化简写成可计算正规形，并服务于后续算法实现；它不作为第 4--7 节组合定理的前提。
+假设全局更新算子 $\tau$ 规范化空间子群 $S_{m,V}$：对任意 $\sigma\in S_{m,V}$，
+$$
+\tau\,\sigma\,\tau^{-1}\in S_{m,V}.
+$$
+从而共轭给出一个群自同构
+$$
+\alpha_\tau:S_{m,V}\to S_{m,V},\qquad \alpha_\tau(\sigma)=\tau\,\sigma\,\tau^{-1}.
+$$
+进一步地，由共轭作用可得到一个同态（作用）
+$$
+\langle\tau\rangle\to \mathrm{Aut}(S_{m,V}),\qquad \tau^k\mapsto \alpha_\tau^k.
+$$
+在常见的“同一局部规则在各点平移不变”设定下，上式可取 $\alpha_\tau=\mathrm{id}$（即 $\tau$ 与 $S_{m,V}$ 交换）。
+\end{assumption}
+
+\begin{proposition}[时空运算的正规形]\label{prop:ts-normal-form}
+在假设 \ref{ass:space_homogeneity} 下，设
+$$
+G_{m,V}^{\mathrm{ts}}=\langle \tau,\, S_{m,V}\rangle \le \mathrm{Sym}(E_m^V).
+$$
+则任意 $g\in G_{m,V}^{\mathrm{ts}}$ 都可写为
+$$
+g=\tau^k s,\qquad k\in\ZZ,\ s\in S_{m,V},
+$$
+并且该表示在给定 $\alpha_\tau$ 的化简规则下是可算法化的：通过反复使用
+$$
+\tau\, s=\alpha_\tau(s)\,\tau,\qquad s\in S_{m,V},
+$$
+可将任意交错词移动为“时间块在左、空间块在右”的形式。若 $\tau$ 为有限阶 $n$，则可进一步将 $k$ 约化到 $0,1,\dots,n-1$；若 $\tau$ 为无限阶，则 $k\in\ZZ$ 的取值对应离散时间步数。
+\end{proposition}
+
+\begin{proof}
+\MathTag 依赖：假设 \ref{ass:space_homogeneity}；以及群的生成与重写规则的标准归纳化简。
+由 $G_{m,V}^{\mathrm{ts}}=\langle \tau, S_{m,V}\rangle$ 的定义，任意 $g\in G_{m,V}^{\mathrm{ts}}$ 可写为关于生成元集合 $\{\tau\}\cup S_{m,V}$ 的有限长度交错乘积（词）：
+$$
+g = a_1 a_2 \cdots a_L,\qquad a_i\in \{\tau,\tau^{-1}\}\cup S_{m,V}.
+$$
+在假设 \ref{ass:space_homogeneity} 下，$\alpha_\tau(s)=\tau s\tau^{-1}\in S_{m,V}$，从而对任意 $s\in S_{m,V}$ 有重写规则
+$$
+\tau s = \alpha_\tau(s)\tau,\qquad
+s\tau^{-1}=\tau^{-1}\alpha_\tau(s).
+$$
+对给定的词反复应用上述规则，把所有 $\tau,\tau^{-1}$ 逐步交换到左侧，则可将 $g$ 化简为
+$$
+g=\tau^k s,\qquad k\in\ZZ,\ s\in S_{m,V}.
+$$
+若 $\tau$ 的阶为有限 $n$，则 $\tau^n=\mathrm{id}$，因此可将 $k$ 在 $\ZZ/n\ZZ$ 中约化到 $0,1,\dots,n-1$。证毕。
+\end{proof}
+
+\begin{remark}[生成元、关系与可计算化简]\label{rem:generators-relations}
+为得到“任意时间与空间运算”的具体运算系统，可固定一组空间生成元 $\Sigma\subset S_{m,V}$（例如若干条边上的相邻换位）并令
+$$
+S_{m,V}=\langle \Sigma\rangle.
+$$
+则 $G_{m,V}^{\mathrm{ts}}$ 由生成元集合 $\{\tau\}\cup\Sigma$ 给出；其关键化简规则可写为
+$$
+\tau\,\sigma=\alpha_\tau(\sigma)\,\tau,\qquad \sigma\in \Sigma,
+$$
+以及 $\Sigma$ 内部的群关系（例如换位的阶为 $2$、以及图上相邻换位满足的 braid 关系等）。在此表示下，任意交错运算串都可通过局部替换规则化简至命题 \ref{prop:ts-normal-form} 的正规形。
+\end{remark}
+
+\subsection{与时间成本的耦合：传播步数作为时间贡献}
+
+信息距离直接给出约束传播最少步数的下界，因此可作为时间成本 $T(\mathcal G)$ 的局部贡献代理量：若目标 $\mathcal G$ 的满足需要从一组源点集合向外传播一致性约束，则任何可行轨道的收敛时间均受相应 $d_{\mathrm{inf}}$ 的下界控制。该耦合在第 \ref{tab:audit-deps} 的审计链中被用作“空间—时间成本”接口，并在第 15 节实验中通过统计相关性进行检验。

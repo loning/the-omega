@@ -1,0 +1,23 @@
+
+\section{实验与数据复现说明}
+
+为保证可复核性，本文的图构造与 $\WL$ 统计均由脚本自动生成。论文目录下提供：
+\begin{itemize}
+  \item trellis 图与宏观加权图的构造与导出；
+  \item $G_n$ 上 $\WL$-1 的稳定步数与最终颜色类数统计（$n\le 12$）；
+  \item $G_n$ 上 $\WLTWO$ 的统计（全量计算范围默认 $n\le 8$）；
+  \item $Q_n$ 上（带权/压缩）$\WLTWO$ 的统计（默认 $n\le 12$）。
+\end{itemize}
+
+\paragraph{运行方式。}
+在本仓库根目录执行：
+\begin{verbatim}
+python3
+docs/papers/math/2026_hpa_64to21_slack_product_trellis_wl/
+scripts/run_all.py
+\end{verbatim}
+该入口会运行本论文的全部生成步骤，并在 \texttt{sections/generated/} 下生成用于正文引用的统计汇总（JSON/CSV）与可直接 \texttt{\textbackslash input} 的 \texttt{.tex} 片段。脚本同时对生成物做非空校验，并生成 \texttt{wl\_experiments\_manifest.json} 以记录指纹与环境版本信息。缓存位于 \texttt{scripts/\_cache/}，可通过环境变量 \texttt{HPA\_NO\_CACHE=1} 禁用。
+
+\paragraph{实现约定。}
+脚本采用与正文 \S\ref{sec:wl_experiments_convention}（见 \S6）一致的初色与更新规则：顶点初色区分微观/宏观类型；邻域聚合同时使用入边与出边，并将边类型 fold/time 纳入键值。带权图 $Q_n$ 的 $\WLTWO$ 采用“多重边展开等价”的加权实现。
+

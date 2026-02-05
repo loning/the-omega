@@ -1,0 +1,150 @@
+\subsection{从语法到算子：转移算子、C*-代数与 \texorpdfstring{$\zeta$}{zeta}（精确口径）}\label{subsec:operator-zeta-interface}
+
+本小节把“语法—谱—$\zeta$”的联系写成可评估的算子论陈述，并明确本文真正使用的对象是什么。核心点是：在黄金均值 SFT 上，Perron--Frobenius（有限矩阵）与 Ruelle 转移算子（无穷维算子）在柱函数空间上一致；相应的 C*-代数框架（如 Cuntz--Krieger 代数/群胚 C*-代数）提供了把柱投影、最大熵态（Parry 测度）与谱/$\zeta$ 统一表述的标准工具。
+
+\subsubsection{转移算子与 \texorpdfstring{$\zeta$}{zeta} 的 Fredholm 行列式口径}
+
+令 $X_A^+\subset\{0,1\}^{\NN}$ 为由邻接矩阵 $A$ 定义的一侧 SFT（黄金均值约束），令 $\sigma:X_A^+\to X_A^+$ 为左移位。定义零势（计数势）下的 Ruelle 转移算子（对有界函数）
+\[
+(\mathcal{L}f)(x):=\sum_{\sigma y=x} f(y).
+\]
+在 SFT 情形，该求和是有限的。令 $\mathcal{C}_m$ 为由长度-$m$ 柱集指示函数张成的有限维子空间，则 $\mathcal{L}$ 在 $\mathcal{C}_1$ 上等价于矩阵 $A^{\mathsf T}$ 的作用，并由柱函数闭包可追踪到所有有限 $m$。
+
+\begin{definition}[Fredholm 行列式（可审计口径）]\label{def:fredholm-determinant}
+若 $T$ 为迹类算子（在本文使用的有限维/有限秩情形自动成立），定义其 Fredholm 行列式为
+\[
+\det(I-zT):=\exp\left(-\sum_{n\ge 1}\frac{\mathrm{Tr}(T^n)}{n}z^n\right),
+\quad |z|\ \text{充分小}.
+\]
+在有限维情形该定义与通常矩阵行列式一致，并由解析延拓得到有理函数恒等式（参见 \cite{Ruelle1976ZetaExpanding,ParryPollicott1990Zeta}）。
+\end{definition}
+
+对有限型子移位（SFT），动力学 $\zeta$ 的标准恒等式为
+\[
+\zeta_\sigma(z)=\frac{1}{\det(I-zA)},
+\]
+并可由周期点计数与 Fredholm 行列式口径一致地给出（参见 \cite{LindMarcus1995,Ruelle1976ZetaExpanding,Ruelle1978Thermodynamic,ParryPollicott1990Zeta}）。
+
+\subsubsection{带“复杂度势”的二变量 \texorpdfstring{$\zeta$}{zeta} 指纹：Euler 乘积与迹序列的严格对齐}\label{subsec:zeta-two-variable-kappa}
+
+本节给出一个对本文“prime-like（Euler 乘积/显式公式）侧”与“谱/迹（trace）侧”都兼容、并可直接用于数值审计的统一对象：\textbf{带势的两变量 \(\zeta_K(z,u)\)}。其中 \(z\) 计时间步数（迹的幂次），\(u\) 计一类局部可加的“复杂度/串行代价势” \(\kappa\)（例如不可并行的 delay/carry 事件数），从而把“时间代价”以乘法权重的形式嵌入 Euler 乘积的 primitive 因子。
+
+\begin{definition}[带势的两变量 \texorpdfstring{$\zeta_K(z,u)$}{zetaK(z,u)}]\label{def:zetaK-zu}
+给定一个有限有向图（或有限状态同步系统）\(\Gamma_K\)，并对每条边 \(e\) 赋一个非负整数势
+\[
+\kappa(e)\in\ZZ_{\ge 0}.
+\]
+定义带权邻接矩阵族 \(M_K(u)\in \Mat_{|V|\times |V|}(\ZZ[u])\) 为
+\[
+\bigl(M_K(u)\bigr)_{ij}:=\sum_{e:i\to j} u^{\kappa(e)}.
+\]
+定义两变量 \(\zeta\) 为形式幂级数（或在 \(|z|\) 充分小时的解析函数）
+\begin{equation}\label{eq:zetaK-trace-exp}
+\zeta_K(z,u)
+:=\exp\!\Bigl(\sum_{n\ge 1}\frac{a_n(u)}{n}z^n\Bigr),
+\qquad
+a_n(u):=\Tr\bigl(M_K(u)^n\bigr),
+\end{equation}
+从而在有限维情形严格有
+\begin{equation}\label{eq:zetaK-det}
+\zeta_K(z,u)=\frac{1}{\det(I-zM_K(u))}.
+\end{equation}
+\end{definition}
+
+\begin{remark}[Euler 乘积与 primitive 分层谱]\label{rem:zetaK-euler-product}
+记 \(\mathcal{P}_K\) 为 \(\Gamma_K\) 的 primitive 有向闭轨道集合；对 \(\gamma\in\mathcal{P}_K\) 记其长度为 \(|\gamma|\)，并定义轨道势为边势的轨道和
+\[
+\kappa(\gamma):=\sum_{e\in\gamma}\kappa(e).
+\]
+则由标准的“周期点/闭路”展开（参见 \cite{ParryPollicott1990Zeta,LindMarcus1995}）得到严格的形式乘积恒等式
+\begin{equation}\label{eq:zetaK-euler}
+\zeta_K(z,u)=\prod_{\gamma\in\mathcal{P}_K}\bigl(1-z^{|\gamma|}u^{\kappa(\gamma)}\bigr)^{-1}.
+\end{equation}
+引入 primitive 分层谱多项式
+\begin{equation}\label{eq:zetaK-Bn}
+B_n(u):=\sum_{\gamma\in\mathcal{P}_K,\ |\gamma|=n} u^{\kappa(\gamma)}\in\ZZ[u],
+\end{equation}
+则 \(\{B_n(u)\}_{n\ge 1}\) 与迹序列 \(\{a_n(u)\}_{n\ge 1}\) 之间存在严格的 Möbius/Witt 互换（见下命题）。
+\end{remark}
+
+\begin{proposition}[Witt/Möbius 反演：由迹序列提取 primitive 分层谱]\label{prop:zetaK-mobius-primitive}
+沿用定义 \ref{def:zetaK-zu}--\ref{rem:zetaK-euler-product} 的记号。则对任意 \(n\ge 1\)：
+\begin{equation}\label{eq:zetaK-trace-from-primitive}
+a_n(u)=\sum_{d\mid n} d\,B_d\!\bigl(u^{n/d}\bigr),
+\end{equation}
+并且由 Möbius 反演可严格恢复
+\begin{equation}\label{eq:zetaK-primitive-from-trace}
+\boxed{\;
+B_n(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}\!\bigl(u^{d}\bigr)\; }.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+把 Euler 乘积 \eqref{eq:zetaK-euler} 取对数并展开为几何级数，得
+\[
+\log\zeta_K(z,u)
+=\sum_{\gamma\in\mathcal{P}_K}\sum_{k\ge 1}\frac{1}{k}z^{k|\gamma|}u^{k\kappa(\gamma)}.
+\]
+将右侧按 \(n=k|\gamma|\) 分组，并注意每个 primitive 轨道 \(\gamma\) 的 \(k\) 次幂产生 \( |\gamma| \) 条不同起点的长度 \(n\) 闭路，从而长度 \(n\) 的迹计数满足 \eqref{eq:zetaK-trace-from-primitive}。再对 \eqref{eq:zetaK-trace-from-primitive} 作 Möbius 反演即得 \eqref{eq:zetaK-primitive-from-trace}。证毕。
+\end{proof}
+
+\begin{remark}[\texorpdfstring{$u$}{u} 的解释：把“不可并行 delay/串行代价”乘法化]\label{rem:zetaK-u-delay}
+在本文的核/扫描算子语境中，\(\kappa(e)\) 可取为每一步不可并行的代价事件数（例如 carry 触发次数、固定延迟事件数等）。则 \eqref{eq:zetaK-euler} 表明：沿 primitive 轨道 \(\gamma\) 的总代价 \(\kappa(\gamma)\) 以乘法权重 \(u^{\kappa(\gamma)}\) 进入 primitive 因子
+\[
+\bigl(1-z^{|\gamma|}u^{\kappa(\gamma)}\bigr)^{-1},
+\]
+从而“时间侧的串行代价”在 prime-like 侧被\emph{自动转译}为 Euler 乘积的乘法指数。
+这正是本文所需的可检验桥包：给定带势转移核 \(M_K(u)\)，既可在迹侧计算 \(a_n(u)=\Tr(M_K(u)^n)\)，也可经 \eqref{eq:zetaK-primitive-from-trace} 严格提取 primitive 分层谱 \(B_n(u)\)，再由 \eqref{eq:zetaK-euler} 复原 Euler 乘积。
+\end{remark}
+
+\begin{remark}[从 toy-RH 到 RH：有限维极点格点的结构性门槛]\label{rem:finite-pole-lattice-barrier}
+本文大量使用的有限维口径（邻接矩阵/有限状态核）在审计性与可计算性上有决定性优势；但在 \(s\)-平面“临界线几何”的层面，它也携带一个不可回避的结构性限制。
+
+对任意有限维矩阵核 \(M\) 与 \(\lambda=\rho(M)\)，令
+\(
+\widehat{\zeta}(s)=\det(I-\lambda^{-s}M)^{-1}
+\)。
+命题 \ref{prop:finite-rh-triangle-dict} 给出极点的完全字典：每个非零特征值 \(\mu\) 产生一条竖直直线
+\(
+\Re(s)=\log|\mu|/\log\lambda
+\)
+上的等差格点族（公差 \(2\pi/\log\lambda\)），因此在任意有限维模型中，临界带内的“非平凡极点几何”只能由\textbf{有限条竖直直线 + 有限相位的等差梳齿}组成。
+这解释了为何 40 状态核的 toy-RH（命题 \ref{prop:finite-rh-40}）虽能把极点压到 \(\Re(s)=\tfrac12\)，但临界线上的虚部结构仍是高度刚性的（由有限多个相位决定）。
+
+因此，若希望出现更丰富的“临界线几何/统计”，需要引入极限过程（状态数增长的 sofic/SFT 逼近序列）或直接进入无穷维转移算子的 Fredholm 行列式口径；后者允许出现超出有限维“相位梳齿”的奇点结构（\cite{Ruelle1976ZetaExpanding,Ruelle1978Thermodynamic,ParryPollicott1990Zeta}）。
+\end{remark}
+
+\subsubsection{柱投影与最大熵态：C*-代数口径}
+
+与附录 \ref{app:op-algebra} 的“投影读出”语言相呼应：在 SFT 上，柱事件对应一族两两正交投影，它们生成一个交换子代数；最大熵态（Parry 测度）给出其上的规范态。更进一步，Cuntz--Krieger 代数 $\mathcal{O}_A$ 为该 SFT 提供一个非交换的普适 C*-代数封装，其对角子代数与柱投影自然同构。
+
+\begin{remark}[柱投影的 C*-代数封装（标准事实）]\label{prop:ck-diagonal-cylinders}
+令 $A$ 为不可约的 $0$--$1$ 矩阵，$X_A^+$ 为一侧 SFT。设 $\mathcal{O}_A$ 为 Cuntz--Krieger 代数（\cite{CuntzKrieger1980}），并记其标准部分等距元为 $(S_i)_{i\in\mathcal{A}}$（字母表 $\mathcal{A}$ 的索引）。对任意允许词 $\mu=\mu_1\cdots\mu_m$，记 $S_\mu:=S_{\mu_1}\cdots S_{\mu_m}$ 并定义
+\[
+P_\mu:=S_\mu S_\mu^*.
+\]
+则：
+\begin{enumerate}
+  \item \(P_\mu\) 族生成一个交换 C*-子代数 \(\mathcal{D}_A\subset\mathcal{O}_A\)（称为对角子代数）；
+  \item 存在自然同构 \(\mathcal{D}_A\cong C(X_A^+)\)，在该同构下 \(P_\mu\) 对应于长度 \(m\) 柱集 \([\mu]\subset X_A^+\) 的指示函数；
+  \item 因而任何 SFT 上的概率测度（特别是 Parry 最大熵测度）都诱导 \(\mathcal{D}_A\) 上的一个态。
+\end{enumerate}
+\end{remark}
+
+\subsubsection{本文的新颖桥接点：分辨率折叠作为可审计的子代数选择}
+
+附录 \ref{app:op-algebra-fold-subalgebra} 给出一个对本文尤为关键、但在标准 PF/热力学形式叙述中并不自动出现的结构：对任意分辨率 $m$，由全部窗口微态投影生成的有限维交换代数 $\mathcal{A}_m$，以及由折叠不变性挑出的子代数 $\mathcal{B}_m$。该子代数选择正是“分辨率压缩/稳定类型化”的算子代数版本：它把可观测量限制为对折叠纤维常值的部分，从而把微态层的巨大自由度压缩为 $|X_m|=F_{m+2}$ 个稳定类型坐标。\par
+在此意义下，本文的算子论新信息不是重新证明 PF/Parry/$\zeta$ 的经典结论，而是给出一条\textbf{从扫描投影读出到语法层算子接口的可计算桥接链}：\[
+\text{扫描-投影二元读出}\ \Rightarrow\ \text{窗口微态投影代数 }\mathcal{A}_m\ \Rightarrow\ \text{折叠不变子代数 }\mathcal{B}_m\ \Rightarrow\ \text{语法层（SFT/sofic）与 }\zeta\text{ 接口}.
+\]
+
+\begin{remark}[折叠专属的新接口：纤维条件期望与多重度]\label{rem:fold-new-invariants}
+在标准的 SFT/\(\zeta\) 叙述中，“对角子代数/柱投影”通常是给定语法后自然出现的；而在本文生成链中，\(\mathcal{B}_m\subset\mathcal{A}_m\) 的出现是由折叠 \(\Fold_m\) 强制的 coarse-graining。更进一步，附录 \ref{prop:fold-conditional-expectation} 给出一个完全显式的条件期望
+\[
+E_m:\mathcal{A}_m\to\mathcal{B}_m,\qquad
+E_m(P_a)=\frac{1}{d_m(\Fold_m(a))}\widetilde P_{\Fold_m(a)},
+\]
+其系数由折叠纤维多重度 \(d_m(x)=|\Fold_m^{-1}(x)|\) 给出。该 \(E_m\) 可视为“信息丢失接口”：它把微态层可观测量压缩为对折叠纤维常值的部分，并将多重度作为一个可审计输入。
+
+在核/同步图层面，本文进一步把“折叠/归一化机制”编码为有限图移位，从而引入一组可比较的不变量族：例如 Abel/Hadamard 有限部常数 \(\log\mathfrak{M}\)、orbit--Mertens 常数 \(\mathsf{M}\)、以及 Dirichlet--Mertens 常数张量与最坏扭曲谱半径比 \(\rho/\lambda\)。这些对象在形式上仍由 \(\zeta=1/\det(I-zA)\) 的解析结构导出，但其\emph{输入矩阵}来自归一化核的同步图（而非仅来自语法本身），因此可作为“折叠专属的谱指纹”用于跨核对比。
+\end{remark}

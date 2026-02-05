@@ -1,0 +1,184 @@
+\section{统一对象：从读出到纤维再到时间}
+
+\subsection{底系统与观测（对象层）}
+
+\begin{definition}[底系统]\label{def:base-system}
+底系统为测度保持动力系统 $(X,\mathcal{B},\mu,T)$，其中 $T:X\to X$ 可测且 $\mu$-保持。
+在紧群情形可取 $X=G$、$T=T_a$ 为平移，$\mu$ 为 Haar 测度。
+\end{definition}
+
+\begin{definition}[有限窗口读出]\label{def:finite-readout}
+给定有限字母表 $\mathcal{A}$（在本目录里通常为 $\{0,1\}$），给定读出核（或观测）函数
+\[
+\rho:X\to\mathcal{A},
+\]
+定义长度 $m$ 的滑动窗口词
+\[
+\omega_t^{(m)}=(\rho(T^t x),\rho(T^{t+1}x),\dots,\rho(T^{t+m-1}x))\in\mathcal{A}^m.
+\]
+\end{definition}
+
+\subsection{稳定化核与稳定语言}
+
+\begin{definition}[稳定语言（Zeckendorf 合法语言）]\label{def:XmZ}
+典型稳定语言取 Zeckendorf 合法集合
+\[
+X_m^{\mathrm Z}=\{w\in\{0,1\}^m:\ w\ \text{不含子词 }11\}.
+\]
+其计数满足 $\card{X_m^{\mathrm Z}}=F_{m+2}$。
+\end{definition}
+
+\subsection{多尺度一致性：逆系统与逆极限（分辨率无关对象）}
+
+为严格表达“本体与读出分辨率 $m$ 无关；不同 $m$ 的结果仅在精细程度上不同”，需要把各尺度的稳定类型空间组织为同一对象的有限限制（restriction）。
+
+\begin{definition}[位号标记的稳定类型空间]\label{def:XmZ-indexed}
+为避免不同文稿对“高位在左/右”的约定差异，本文在涉及跨尺度比较时将长度 $m$ 的 Zeckendorf 稳定类型写为带位号的向量
+\[
+X_m^{\mathrm Z,\#}:=\Bigl\{(x_k)_{2\le k\le m+1}\in\{0,1\}^{\{2,3,\dots,m+1\}}:\ x_kx_{k+1}=0\ \text{对所有}\ 2\le k\le m\Bigr\}.
+\]
+若需与“长度 $m$ 的词”一致，可取同构 $X_m^{\mathrm Z,\#}\cong X_m^{\mathrm Z}$，例如映射 $(x_k)_{2\le k\le m+1}\mapsto (x_{m+1},x_m,\dots,x_2)\in\{0,1\}^m$。
+\end{definition}
+
+\begin{definition}[尺度投影（restriction）]\label{def:pi-m2-m1}
+对任意 $m_2\ge m_1$，定义尺度投影
+\[
+\pi_{m_2\to m_1}:X_{m_2}^{\mathrm Z,\#}\to X_{m_1}^{\mathrm Z,\#},\qquad
+\bigl(\pi_{m_2\to m_1}(x)\bigr)_k:=x_k\ \ (2\le k\le m_1+1).
+\]
+\end{definition}
+
+\begin{lemma}[良定性、满射性与一致性]\label{lem:pi-well-defined-surj}
+映射 $\pi_{m_2\to m_1}$ 良定义且为满射，并满足函子一致性
+\[
+\pi_{m_3\to m_1}=\pi_{m_2\to m_1}\circ \pi_{m_3\to m_2}\qquad (m_3\ge m_2\ge m_1).
+\]
+\end{lemma}
+
+\begin{proof}
+禁词约束 $x_kx_{k+1}=0$ 为局部约束，restriction 保持约束，故良定义；任取 $x\in X_{m_1}^{\mathrm Z,\#}$，令其扩展 $\\tilde x\in X_{m_2}^{\mathrm Z,\#}$ 为 $\\tilde x_k=x_k$（$2\le k\le m_1+1$）且 $\\tilde x_k=0$（$m_1+2\le k\le m_2+1$），则 $\pi_{m_2\to m_1}(\\tilde x)=x$，故满射；一致性由逐坐标定义直接得到。
+\end{proof}
+
+由 $\{X_m^{\mathrm Z,\#},\pi_{m_2\to m_1}\}$ 构成一逆系统，可定义其逆极限。
+
+\begin{definition}[无穷 Zeckendorf 子移位]\label{def:XinfZ}
+定义分辨率无关的无穷稳定类型对象
+\[
+X_\infty^{\mathrm Z}:=\Bigl\{(x_k)_{k\ge 2}\in\{0,1\}^{\{2,3,\dots\}}:\ x_kx_{k+1}=0\ \text{对所有}\ k\ge 2\Bigr\}.
+\]
+并定义自然投影 $\pi_m^\infty:X_\infty^{\mathrm Z}\to X_m^{\mathrm Z,\#}$ 为 restriction：
+\[
+(\pi_m^\infty(x))_k:=x_k\ \ (2\le k\le m+1).
+\]
+\end{definition}
+
+\begin{theorem}[逆极限同构（尺度一致性）]\label{thm:inverse-limit-Xinf}
+存在自然同构
+\[
+X_\infty^{\mathrm Z}\ \cong\ \varprojlim X_m^{\mathrm Z,\#},
+\]
+并且对任意 $m_2\ge m_1$ 有交换关系
+\[
+\pi_{m_2\to m_1}\circ \pi_{m_2}^\infty=\pi_{m_1}^\infty.
+\]
+\end{theorem}
+
+\begin{proof}
+对任意 $x\in X_\infty^{\mathrm Z}$，其 restriction 族 $(\pi_m^\infty(x))_{m\ge 1}$ 满足一致性条件，故给出逆极限元素。反向，若给定一致族 $(x^{(m)})_{m\ge 1}$，由一致性可定义无穷序列 $x_k:=x^{(m)}_k$（取任意 $m\ge k-1$），定义与一致性保证良定，并保留禁词约束。两构造互逆且自然。
+\end{proof}
+
+该定理把“不同 $m$ 的结果一致”严格化为：所有有限分辨率稳定类型空间 $X_m^{\mathrm Z}$（或 $X_m^{\mathrm Z,\#}$）都是同一分辨率无关对象 $X_\infty^{\mathrm Z}$ 的有限 restriction；$m$ 仅控制“可见前缀/有限位号范围”，而不改变对象本身。
+
+\begin{definition}[稳定化核]\label{def:fold}
+稳定化核为可计算满射
+\[
+\Fold_m:\{0,1\}^m\twoheadrightarrow X_m^{\mathrm Z},
+\]
+并满足规范形性质（幂等与固定点刻画在“词级”意义下成立）。
+在整数标签模型中也常用 $\Fold_m:Y_m\to X_m^{\mathrm Z}$（$Y_m=\{0,\dots,2^m-1\}$）。
+\end{definition}
+
+\subsection{预像纤维与“不可见自由度”}
+
+\begin{definition}[纤维]\label{def:fiber}
+对 $x\in X_m^{\mathrm Z}$，定义纤维（预像）
+\[
+\mathcal{F}_m(x)=\Fold_m^{-1}(x).
+\]
+纤维是“不可见自由度”的最小对象化：在固定分辨率 $m$ 下，所有落入同一规范形的微态集合。
+\end{definition}
+
+\subsection{信息论时间（定理层模板）}
+
+\begin{definition}[柱集与后验测度]\label{def:cyl}
+把稳定化后的可见过程记为 $x_t=\Fold_m(\omega_t^{(m)})\in X_m^{\mathrm Z}$。
+给定历史 $x_0^t=(x_0,\dots,x_t)$，定义柱集
+\[
+C_t(x_0^t)=\{x\in X:\ x_k(x)=x_k\ \text{对}\ k=0,1,\dots,t\}.
+\]
+定义后验信息量（信息论“时间刻度”候选）
+\[
+H_t=-\log\mu(C_t(x_0^t)).
+\]
+\end{definition}
+
+\subsection{观察者—时空对偶（算子—像接口）}
+
+\begin{definition}[观察者作为读出协议参数]\label{def:observer-protocol-spec}
+观察者定义为读出协议参数元组
+$$
+O=(\mathcal{S},u,\alpha,\mathcal{P},m,\Fold_m),
+$$
+其中 $\mathcal{S}$ 为几何选择，$u$ 为内部相位，$\alpha$ 与 $\mathcal{P}$ 给出环扫描与二值分割，$m$ 为有限窗口长度。
+\end{definition}
+
+\begin{definition}[读出算子与时空像]\label{def:readout-and-image-spec}
+令 $\Pi_O$ 表示由 $(\mathcal{S},u,\alpha,\mathcal{P})$ 诱导的几何—符号因子映射，$q_m$ 为长度 $m$ 的有限窗口读出。定义
+$$
+\mathcal{R}_{O,m}=\Fold_m\circ q_m\circ \Pi_O.
+$$
+定义时空像为 $\mathsf{ST}(O,m)=\mathrm{Im}(\mathcal{R}_{O,m})$ 及其诱导结构（转移核、可达图、柱集条件结构）。
+\end{definition}
+
+\begin{assumption}[尺度相容（读出因子化）]\label{assump:readout-factorization}
+对任意 $m_2\ge m_1$，存在自然的粗粒化（restriction）使得
+\[
+\pi_{m_2\to m_1}\circ \mathcal{R}_{O,m_2}=\mathcal{R}_{O,m_1}\qquad (\mu\text{-a.e. 或逐点，按具体协议定义}).
+\]
+该条件的含义是：高分辨率输出在投影到低分辨率后与低分辨率输出一致；从而“结果一致”应理解为跨尺度相容性，而非不同 $m$ 的原始输出空间完全相同。
+\end{assumption}
+
+\subsection{固定带宽递归观测（\texorpdfstring{$m=6$}{m=6} 模板）}
+
+\begin{definition}[递归输出序列]\label{def:recursive-output-seq-spec}
+固定 $m=6$。递归深度为 $K$ 的递归输出定义为
+$$
+(x^{(0)},x^{(1)},\dots,x^{(K)})\in (X_6^{\mathrm Z})^{K+1}.
+$$
+\end{definition}
+
+\begin{definition}[嵌套纤维链]\label{def:nested-fiber-chain-spec}
+递归观测诱导嵌套链
+$$
+\mathcal{F}^{(0)}\supseteq \mathcal{F}^{(1)}\supseteq \cdots \supseteq \mathcal{F}^{(K)}.
+$$
+\end{definition}
+
+\subsection{内部规范纤维（\texorpdfstring{$\mathrm{SU}(3)$}{SU(3)} 端口）}
+
+\begin{definition}[规范纤维扩展]\label{def:su3-fiber-port}
+保持几何秩 $6$ 不变，引入内部纤维 $\mathcal{V}\cong\CC^3$，令 $G=\mathrm{SU}(3)$ 作用于 $\mathcal{V}$。规定读出协议对规范等价类因子化：存在
+$$
+(\Sigma_{\mathrm{geo}}\times\mathcal{V})/G\to X_6^{\mathrm Z},
+$$
+从而输出仅依赖 $G$-不变信息。
+\end{definition}
+
+\begin{theorem}[SMB/KS 时间箭头模板（调用口径）]\label{thm:smb-template}
+若底系统遍历且观测来自生成分割（或满足等价条件），则对几乎处处轨道
+\[
+\lim_{t\to\infty}\frac{1}{t}H_t=h_\mu(T),
+\]
+其中 $h_\mu(T)$ 为 KS 熵。该结论把“时间箭头”协议化为柱集后验测度的指数收缩率。
+\end{theorem}
+

@@ -1,0 +1,81 @@
+\section{六维切投影本体与观察者参数化}
+
+\subsection{切投影方案的本体对象}
+
+\begin{definition}[切投影数据]\label{def:cap-data}
+给定晶格 $L=\ZZ^6\subset\RR^6$，选取直和分解
+\[
+\RR^6=E_{\parallel}\oplus E_{\perp},\qquad \dim E_{\parallel}=\dim E_{\perp}=3,
+\]
+并令 $\pi_{\parallel},\pi_{\perp}$ 分别为到 $E_{\parallel},E_{\perp}$ 的线性投影。取紧致窗口（接受域）
+\[
+W\subset E_{\perp},
+\]
+并取内部相位（窗口平移）
+\[
+u\in E_{\perp}.
+\]
+定义点集
+\[
+\Lambda(u):=\Bigl\{\pi_{\parallel}(n):\ n\in L,\ \pi_{\perp}(n)+u\in W\Bigr\}\subset E_{\parallel}.
+\]
+\end{definition}
+
+\begin{remark}
+若 $\pi_{\parallel}(L)$ 在 $E_{\parallel}$ 中稠密、$\partial W$ 满足适度正则性（例如边界测度为零），则 $\Lambda(u)$ 为典型的三维准周期 Delone 集，且不同 $u$ 对应不同局部实现。
+\end{remark}
+
+\subsection{“黄金”结构的实现方式（模型类）}
+
+\begin{assumption}[黄金域参数化]\label{assump:golden-field}
+取数域 $K=\QQ(\varph)$（$\varph$ 为黄金比），要求 $\pi_{\parallel},\pi_{\perp}$ 的矩阵系数属于 $K$，并在 Galois 共轭 $\sigma:\varph\mapsto \varph'=-1/\varph$ 下满足
+\[
+\pi_{\perp}=\sigma(\pi_{\parallel})
+\]
+（或等价的共轭一致性）。此假设保证：物理子空间与内部子空间在代数上互为共轭，黄金比作为投影斜率与窗口几何的控制参数进入模型。
+\end{assumption}
+
+\begin{remark}
+该假设属于“模型类”而非必需公理；本文后续关于 Sturmian/Zeckendorf/信息率的闭层结论只需要“紧致阿贝尔群上的平移/旋转动力系统 + 二值读出 + 稳定化核”，并不依赖具体的六维坐标表达。
+\end{remark}
+
+\subsection{观察者的严格定义}
+
+\begin{definition}[观察者作为实现参数]\label{def:observer}
+一个观察者定义为四元组
+\[
+\mathcal{O}:=(E_{\parallel},E_{\perp},W,u),
+\]
+其中 $(E_{\parallel},E_{\perp},W)$ 固定描述同一“本体方案”，而 $u\in E_{\perp}$ 描述同一本体的不同实现（不同截面相位/窗口平移）。由 $\mathcal{O}$ 决定的物理点集为 $\Lambda(u)$。
+\end{definition}
+
+\subsection{观察者—时空对偶：读出算子与像（接口）}
+
+将“观察者”提升为读出协议参数。令
+$$
+O=(\mathcal{S},u,\alpha,\mathcal{P},m,\mathrm{Fold}),
+$$
+其中 $\mathcal{S}$ 表示几何选择（例如 $E_{\parallel},E_{\perp},W$ 等），$u$ 为内部相位，$\alpha$ 与 $\mathcal{P}$ 给出环扫描与二值分割，$m$ 为窗口长度，$\mathrm{Fold}=\mathrm{Fold}_m$ 为稳定化核。
+
+\begin{assumption}[主文固定带宽]\label{assump:m6-fixed-main-chain}
+除非另行说明，主文固定 $m=6$ 且 $\mathrm{Fold}=\mathrm{Fold}_6$。
+\end{assumption}
+
+令 $\Pi_O$ 表示由 $(\mathcal{S},u,\alpha,\mathcal{P})$ 诱导的几何—符号因子映射，$q_m$ 为长度 $m$ 的有限窗口读出。定义读出算子
+$$
+\mathcal{R}_{O,m}=\mathrm{Fold}_m\circ q_m\circ \Pi_O.
+$$
+对轨道 $s_{t+1}=T(s_t)$，定义可见序列 $x_t=\mathcal{R}_{O,m}(s_t)\in X_m^{\mathrm Z}$。由此将“时空像”对象化为 $\mathrm{Im}(\mathcal{R}_{O,m})$ 及其诱导结构（转移核、可达图与柱集条件结构）。
+
+\begin{definition}[局部补丁与补丁频率]\label{def:patch-frequency}
+对 $R>0$，令 $B_R\subset E_{\parallel}$ 为半径 $R$ 的球。定义以 $x\in\Lambda(u)$ 为中心的 $R$-补丁
+\[
+P_R(x;u):=(\Lambda(u)-x)\cap B_R.
+\]
+对给定补丁类型 $P$，若存在极限
+\[
+\mathrm{freq}(P;u):=\lim_{R\to\infty}\frac{\card{\{x\in\Lambda(u)\cap B_R:\ P_R(x;u)\cong P\}}}{\card{\Lambda(u)\cap B_R}},
+\]
+则称其为补丁频率。
+\end{definition}
+

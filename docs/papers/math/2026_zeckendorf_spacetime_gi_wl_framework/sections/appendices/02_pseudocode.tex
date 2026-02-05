@@ -1,0 +1,32 @@
+\section{伪代码（实验流水线摘要）}
+
+\subsection{Zeckendorf 截断与尾部投影}
+
+\begin{verbatim}
+Input: micro word x in {0,1}^m
+N <- sum_{i=0}^{m-1} x_i 2^i
+Compute Zeckendorf digits c_1..c_{K(m)} of N
+Fold: y <- (c_1..c_m)
+Tail: t <- (c_{m+1}..c_{K(m)})
+Time update: Tail(t) = shift-left(t) with trailing 0
+\end{verbatim}
+
+\subsection{编码图与 WL-1 指标}
+
+\begin{verbatim}
+Build graph with vertices: X_m (micro) + Y_m (macro) + T_m (tail)
+Add edges:
+  - micro adjacency edges (hypercube)
+  - fold edges x -> f_m(x)
+  - tail pointer edges x -> tau_m(x)
+  - tail time edges t -> Tail(t)
+Coloring:
+  - all micro nodes same initial color
+  - all tail nodes same initial color
+  - each macro node has unique color
+Run WL-1 refinement until stable:
+  record stable_t
+  record resolve_t (first t such that all micro colors distinct; 0 if never)
+  record unresolved_micro_final
+\end{verbatim}
+

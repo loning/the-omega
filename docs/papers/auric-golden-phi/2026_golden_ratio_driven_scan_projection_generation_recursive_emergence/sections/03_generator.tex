@@ -1,0 +1,41 @@
+\section{扫描—投影生成器：群作用与二元读出}
+
+\subsection{单生成群作用}
+
+设 $\Gamma=\langle g\rangle$ 为单生成群或半群。其元素可写为 $g^t$（$t\in\ZZ$ 或 $t\in\NN$），其中 $t$ 仅作为迭代次数的记号。给定一相空间 $X$ 与作用
+\[
+T^t:X\to X,\quad T^t(x)=g^t\cdot x,
+\]
+则“时间”被定义为作用的迭代计数，而非额外原语。
+
+\subsection{投影读出与二元记录}
+
+给定可测集 $W\subseteq X$，定义二元读出（事件指示函数）
+\[
+s_t(x)=\ind_W(T^t x)\in\{0,1\}.
+\]
+对固定初值 $x$，长度 $m$ 的局部读出窗口产生微态词
+\[
+\omega_m(x;t)=s_t(x)s_{t+1}(x)\cdots s_{t+m-1}(x)\in \Omega_m:=\{0,1\}^m.
+\]
+$\Omega_m$ 是分辨率 $m$ 下可观测的全部微态集合，其基数为 $\abs{\Omega_m}=2^m$。
+
+该“扫描—投影”接口也可在紧群与算子代数语言中等价表述：例如令相空间为紧群（或其齐性空间），以平移/旋转给出保测变换 $T$，以窗集指示函数给出读出 $s_t$；在 Hilbert 空间表示中则以幺正算子 $U$ 与投影 $P$ 表述读出算子族 $P_t=U^{-t}PU^t$（见附录 A）。
+
+\subsection{概念的“null—投影”范式}
+
+在此框架中，概念不被视为先验对象，而被视为“可寻址事件”。
+\begin{itemize}
+  \item \textbf{地址（address）：}任意有限词 $a\in\{0,1\}^k$ 作为索引。
+  \item \textbf{概念（concept）：}由地址 $a$ 指定的事件
+  \[
+  C_a=\{x\in X:\omega_k(x;0)=a\}.
+  \]
+  \item \textbf{时间平移的柱事件：}对任意 $t\in\ZZ$ 定义 $C_{a,t}:=\{x\in X:\omega_k(x;t)=a\}=T^{-t}C_a$。
+  \item \textbf{读出（evaluation）：}对给定 $x$，概念值为二元投影 $\ind_{C_a}(x)\in\{0,1\}$。
+  \item \textbf{null：}在未给定地址 $a$ 之前，$\ind_{C_a}$ 不定义；该“不定义”并非取值为 $0$，而是缺乏指称。
+\end{itemize}
+
+此处的关键是：\textbf{地址先于概念值}。并且在递归机制中，新概念的地址将由旧概念的读出序列构造（见第 \ref{sec:recursive-addressing} 节）。
+
+柱事件的可测性与平移关系 $C_{a,t}=T^{-t}C_a$ 均由定义直接给出。

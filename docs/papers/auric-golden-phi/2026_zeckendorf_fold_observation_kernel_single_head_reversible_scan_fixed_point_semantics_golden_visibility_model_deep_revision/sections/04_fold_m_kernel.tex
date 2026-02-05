@@ -1,0 +1,75 @@
+\section{Zeckendorf 窗口读出 \texorpdfstring{$\mathrm{Fold}_m$}{Fold\_m}：稳定态计数与固定点结构}
+
+\subsection{定义：窗口读出映射 \texorpdfstring{$\mathrm{Fold}_m$}{Fold\_m}}
+
+对 $n\in Y_m$，取其 Zeckendorf 数字 $(z_k(n))_{k\ge 2}$。定义窗口读出
+\[
+\mathrm{Fold}_m(n)=(z_{m+1}(n),z_m(n),\dots,z_2(n))\in\{0,1\}^m.
+\]
+由全局约束 $z_k(n)\,z_{k+1}(n)=0$，立得 $\mathrm{Fold}_m(n)\in X_m$，从而
+\[
+\mathrm{Fold}_m:Y_m\to X_m.
+\]
+将尾部数字
+\[
+\mathrm{Tail}_m(n)=(z_{m+2}(n),z_{m+3}(n),\dots)
+\]
+视为观测层不可见信息。
+
+\subsection{跨窗口长度的相容性：restriction 映射与逆极限}\label{subsec:foldm-compat-inverse}
+
+“分辨率 $m$”在本文中对应 Zeckendorf 窗口长度：$\mathrm{Fold}_m$ 仅输出位号 $2,\dots,m+1$ 的有限段。不同 $m$ 的“结果一致”应理解为：高分辨率输出在 restriction 到低分辨率后复现低分辨率输出。
+
+\begin{definition}[restriction 投影]\label{def:foldm-pi}
+对 $m_2\ge m_1$，定义 restriction 投影
+\[
+\pi_{m_2\to m_1}:X_{m_2}\to X_{m_1},\qquad
+\pi_{m_2\to m_1}(x_{m_2+1},x_{m_2},\dots,x_2):=(x_{m_1+1},x_{m_1},\dots,x_2).
+\]
+\end{definition}
+
+\begin{lemma}[逐点相容性]\label{lem:foldm-pointwise-compat}
+对任意 $n\in Y_{m_2}$ 与 $m_2\ge m_1$，成立
+\[
+\pi_{m_2\to m_1}\bigl(\mathrm{Fold}_{m_2}(n)\bigr)=\mathrm{Fold}_{m_1}(n).
+\]
+\end{lemma}
+
+\begin{proof}
+由定义 $\mathrm{Fold}_{m_2}(n)=(z_{m_2+1}(n),\dots,z_2(n))$。restriction 投影仅保留其中的子段 $(z_{m_1+1}(n),\dots,z_2(n))$，而这正是 $\mathrm{Fold}_{m_1}(n)$。证毕。
+\end{proof}
+
+由 $\{X_m,\pi_{m_2\to m_1}\}$ 构成逆系统，可定义逆极限对象作为“分辨率无关”的统一载体；其与无穷 Zeckendorf 合法序列空间自然同构（同构由“取有限 restriction 前缀族/由一致族拼接”给出）。
+
+\subsection{定理：稳定态计数}
+
+\begin{theorem}\label{thm:Xm-count}
+\[
+\card{X_m}=F_{m+2}.
+\]
+\end{theorem}
+
+\begin{proof}
+令 $a_m=\card{X_m}$。按最高位分解：若 $w_m=0$，余下为任意 $X_{m-1}$ 词；若 $w_m=1$，则 $w_{m-1}=0$，余下为任意 $X_{m-2}$ 词。故 $a_m=a_{m-1}+a_{m-2}$，初值 $a_0=1,a_1=2$，从而 $a_m=F_{m+2}$。证毕。
+\end{proof}
+
+\subsection{幂等性与固定点刻画}
+
+为将“稳定可见态”精确对应为固定点，定义一个词级折叠算子 $\mathrm{Fold}_m^\sharp:\{0,1\}^m\to X_m$，其作用为把任意长度 $m$ 的二进制词规约为无相邻 $1$ 的规范形（该规约与 Zeckendorf 规范化在窗口内一致）。在本文的 $Y_m\to X_m$ 语义中，$\mathrm{Fold}_m$ 已保证落在 $X_m$，因此固定点刻画主要对 $\mathrm{Fold}_m^\sharp$ 给出；两者共同表达“规范形的自洽性”。
+
+\begin{theorem}\label{thm:fold-sharp-fix}
+$\mathrm{Fold}_m^\sharp$ 幂等且 $\mathrm{Fix}(\mathrm{Fold}_m^\sharp)=X_m$，即
+\[
+\mathrm{Fold}_m^\sharp(\mathrm{Fold}_m^\sharp(w))=\mathrm{Fold}_m^\sharp(w),\qquad
+\mathrm{Fold}_m^\sharp(w)=w\iff w\in X_m.
+\]
+\end{theorem}
+
+\begin{proof}[证明要点]
+$\mathrm{Fold}_m^\sharp(w)\in X_m$ 为规范形，二次规约不变；若规约后不变则原词必已无相邻 $1$。证毕。
+\end{proof}
+
+\begin{remark}
+本文后续关于纤维、退化度与实验均以 $Y_m\to X_m$ 的 $\mathrm{Fold}_m$ 为观测映射；固定点语义的“稳定集合”由词级投影 $\mathrm{Fold}_m^\sharp$ 给出，从而避免“$Y_m\to X_m$ 映射无法自我复合”的类型不匹配。
+\end{remark}
+

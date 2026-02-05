@@ -1,0 +1,45 @@
+\section{数值实验：Hilbert 尺子对观察者时间的影响}
+
+本节所有表格与摘要均由脚本生成并写入 `sections/generated/`，正文仅通过 \verb|\input| 引用。
+
+\subsection{固定几何：1D/2D/3D Hilbert 对比}
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\input{sections/generated/tab_observer_hilbert_compare.tex}
+\caption{不同 Hilbert 维度（固定几何）与自适应切换策略的对比。这里把 WL1 的解析时间（resolve\_t）作为观察者成本 \(\kappaobs\) 的一个 proxy；在最小假设下可等价地理解为负信息时间 \(\tautime\) 的 proxy。当 resolve\_t 为空时，表示在给定最大迭代轮数内未解析到唯一微观区分。}
+\label{tab:observer_hilbert_compare}
+\end{table}
+
+\input{sections/generated/fig_observer_resolve_t_vs_dimension.tex}
+
+\subsection{自适应切换：维度切换策略}
+
+\input{sections/generated/observer_hilbert_summary.tex}
+
+\subsection{HPA-CA：守恒双向固定点求解 vs DFS 搜索}
+
+\begin{figure}[H]
+\centering
+\input{sections/generated/fig_hpa_ca_fixed_point_energy_curve.tex}
+\caption{HPA-CA/Fold6 观测切片上的固定点式求解过程：以“总不确定性”（\(\sum_i(|D_i|-1)\)）作为 \(\mathcal E\) 的离散代理，并对比 greedy 与有限深度回溯（bounded backtracking）两种有限观察者策略。}
+\label{fig:hpa_ca_fixed_point_energy_curve}
+\end{figure}
+
+\paragraph{DFS 截断说明}
+为保证可复现与可终止性，DFS 逆向搜索在实验中设置节点访问上限（max\_nodes）。当到达上限仍未找到一致前像时，记为 \textbf{DFS truncated}，该样本的 \textbf{nodes} 仅代表“触顶”而非真实完成成本。
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\resizebox{\linewidth}{!}{\input{sections/generated/tab_hpa_ca_bidirectional_fixed_point.tex}}
+\caption{HPA-CA/Fold6：固定点求解器（greedy 与 bounded backtracking）与 DFS 基线的对比摘要（成功率与成本）。所有数字由脚本生成并可一键复现。}
+\label{tab:hpa_ca_bidirectional_fixed_point}
+\end{table}
+
+\paragraph{\texorpdfstring{\(\tau\)}{tau} 的实验口径}
+在该表中，我们给出一个可计算的负信息时间 proxy：将“需要显式承诺（commit）的次数”乘以 \(\log_2|\mathcal A|\)（\(|\mathcal A|=21\) 为字母表大小），得到估计的 uplift 胶带比特长度（单位：bits）。该 proxy 仅用于把“时间作为负信息胶带”落到可审计的数值列，并不替代本体层 uplift 的精确定义。
+

@@ -1,0 +1,100 @@
+\section{稳定扇区、类型折叠与协议层表征}
+
+\subsection{局域窗口与微态空间}
+
+对任一时刻 $t$，在三维可观测集 $\Sigma_t$ 上考虑局域读出窗口（例如一个有限邻域或有限长度的比特窗口）。将其抽象为长度为 $m$ 的二元微态字
+\[
+\Omega_m:=\{0,1\}^{m},\qquad |\Omega_m|=2^{m}.
+\]
+该 $\Omega_m$ 不必被理解为真实粒子态，而是“有限分辨率读出后可记录的局域符号微态”。
+
+\subsection{约束通道与稳定类型集}
+
+引入一组可检验的“稳定性约束通道”，用以选择在协议读出下保持语法稳定的类型集合。为给出可计算原型，本文采用经典的“禁字语法”范式：设稳定类型集
+\[
+X_m^{\mathrm Z}:=\Big\{w\in\{0,1\}^{m}:\ \text{不含子串 }11\Big\}.
+\]
+这是符号动力系统中的有限型子移位原型。其计数满足 Fibonacci 递推：
+\[
+|X_m^{\mathrm Z}|=F_{m+2},
+\]
+其中 $F_{n}$ 为 Fibonacci 数列（$F_1=F_2=1$）。该计数可作为“在局域约束下可长期保持稳定的类型容量”的定量指标。
+
+\subsection{折叠映射：从微态到稳定类型}
+
+定义一个从微态到稳定类型的折叠算子
+\[
+\Fold_m:\Omega_m \twoheadrightarrow X_m^{\mathrm Z},
+\]
+其作用是将不满足稳定语法的微态按某种规范化规则映射到最接近的稳定类型。为确保可审计，本文在附录中给出一类基于 Ostrowski/Zeckendorf 表示的规范折叠方案，使 $\Fold_m$ 可计算且具有明确的退化结构（不同微态可折叠到同一稳定类型）。退化结构可被理解为“读出分辨率不足导致的等价类”。
+
+\subsection{多尺度一致性（逆系统/逆极限）：分辨率无关的统一对象}
+
+本节严格化“本体与分辨率 $m$ 无关；不同 $m$ 的结果一致仅精度不同”的含义：$m$ 不改变本体层对象（本体在 $\Sigma$ 上），而仅改变协议层读出/折叠的粗粒化程度；跨 $m$ 的“同一性”应理解为\textbf{相容性/因子化}，而非不同 $m$ 的输出空间完全相同。
+
+\begin{definition}[尺度投影（截断）]\label{def:static-pi}
+对任意 $m_2\ge m_1$，定义截断映射
+\[
+\pi_{m_2\to m_1}:X_{m_2}^{\mathrm Z}\to X_{m_1}^{\mathrm Z},\qquad
+\pi_{m_2\to m_1}(x_1,\dots,x_{m_2})=(x_1,\dots,x_{m_1}).
+\]
+\end{definition}
+
+\begin{lemma}[良定性与一致性]\label{lem:static-pi-basic}
+映射 $\pi_{m_2\to m_1}$ 良定义、满射，并满足
+\[
+\pi_{m_3\to m_1}=\pi_{m_2\to m_1}\circ \pi_{m_3\to m_2}\qquad (m_3\ge m_2\ge m_1).
+\]
+\end{lemma}
+
+\begin{proof}
+禁字约束为局部约束，截断保持合法性，故良定义；任意 $X_{m_1}^{\mathrm Z}$ 元素可通过尾部补零扩展为 $X_{m_2}^{\mathrm Z}$ 元素，故满射；一致性由截断定义直接得到。
+\end{proof}
+
+\begin{definition}[无穷 Zeckendorf 子移位]\label{def:static-XinfZ}
+定义分辨率无关对象
+\[
+X_\infty^{\mathrm Z}:=\{(x_i)_{i\ge 1}\in\{0,1\}^{\mathbb{N}}:\ x_ix_{i+1}=0\ \text{对所有}\ i\ge 1\},
+\]
+并定义自然投影 $\pi_m^\infty:X_\infty^{\mathrm Z}\to X_m^{\mathrm Z}$ 为 $\pi_m^\infty((x_i)_{i\ge 1})=(x_1,\dots,x_m)$。
+\end{definition}
+
+\begin{theorem}[逆极限同构（尺度一致性）]\label{thm:static-inverse-limit}
+存在自然同构
+\[
+X_\infty^{\mathrm Z}\ \cong\ \varprojlim X_m^{\mathrm Z},
+\]
+并满足交换关系 $\pi_{m_2\to m_1}\circ \pi_{m_2}^\infty=\pi_{m_1}^\infty$（$m_2\ge m_1$）。
+\end{theorem}
+
+\begin{proof}
+无穷合法序列的前缀族给出一致族；一致族由前缀兼容性唯一拼接为无穷序列；两构造互逆且自然。
+\end{proof}
+
+\begin{assumption}[读出因子化（尺度相容）]\label{assump:static-readout-factorization}
+当比较不同 $m$ 的折叠输出时，要求折叠映射在截断下相容：对原始窗口读出 $\omega^{(m)}$，取 $m_2\ge m_1$ 时的截断 $\omega^{(m_1)}$，并要求
+\[
+\pi_{m_2\to m_1}\bigl(\Fold_{m_2}(\omega^{(m_2)})\bigr)=\Fold_{m_1}(\omega^{(m_1)}).
+\]
+\end{assumption}
+
+\subsection{稳定类型、预像纤维与协议层表征}
+
+在给定分辨率与约束通道下，稳定类型 $x\in X_m^{\mathrm Z}$ 是可见输出；其预像纤维
+\[
+\mathcal{F}_m(x)=\Fold_m^{-1}(x)\subseteq\Omega_m
+\]
+对象化了在该分辨率下不可区分的残余差异集合。协议层表征的“持久性/可再识别性”可通过稳定类型在扫描迭代下的统计稳定性（例如出现频率、邻接统计或缺陷预算受控）刻画。相应地：
+\begin{itemize}
+  \item “物质性”在本文不作为本体层基本实体陈述，而作为协议层上\textbf{稳定类型统计的持久性与可复现性}；
+  \item “相互作用”在本文仅作为协议层的可检验接口：维持跨位置/跨尺度一致性所需的补偿规则或连接结构（例如约束一致性条件）。
+\end{itemize}
+
+\subsection{“未来”的对象化：条件不确定性与后验收缩}
+
+对稳定化后的可见过程 $(x_t)$，将“未来”严格对象化为条件分布的不确定性规模，例如条件熵
+\[
+H(x_{t+1}\mid x_{\le t}),
+\]
+或更一般的后验柱集测度的收缩程度。该口径把“未来”置于观测论构造（条件化/精化）而非把不可恢复余项实体化为新的本体对象。
+

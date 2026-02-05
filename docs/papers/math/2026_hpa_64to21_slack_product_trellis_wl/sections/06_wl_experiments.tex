@@ -1,0 +1,36 @@
+
+\section{$\WL$ 实验：稳定步数与“时间深度/搜索复杂度”}
+
+本节讨论 $\WL$ 细化在 trellis 图 $G_n$ 与宏观加权图 $Q_n$ 上的经验现象，并给出与时间深度、纤维复杂度之间的对应。为保证可复核性，本文所有统计量均由同目录下的脚本自动生成（附录给出运行方式）。
+
+\subsection{$\WL$ 版本约定}\label{sec:wl_experiments_convention}
+
+本文对有向边着色图采用如下约定：
+\begin{itemize}
+  \item 顶点初色至少区分顶点类型：微观顶点（$\Xn$）与宏观顶点（$\Zn$）。
+  \item $\WL$ 更新时同时使用入边与出边信息，并将边类型（fold/time）纳入邻域多重集键值。
+\end{itemize}
+该约定与 trellis 图的“二类边”语义保持一致。
+
+\subsection{$n=6$ 的 trellis 规模与基础统计}
+
+当 $n=6$ 时，$\abs{\Xn}=64$，$\abs{\Zn}=21$，trellis 顶点总数
+$$
+\abs{V_6}=\abs{\Xn}+\abs{\Zn}=85.
+$$
+
+\subsection{$\WL$ 稳定统计（由脚本生成）}
+
+我们对 $n\le 12$ 构造 $G_n$ 并运行 $\WL$-1，记录稳定迭代数与最终颜色类数；对 $Q_n$ 运行带权（等价于多重边展开）的 $\WLTWO$ 并记录稳定迭代数与最终 pair-color 数；并在 $n=6,7,8$ 的 trellis 上做全量 $\WLTWO$ 计算。脚本输出写入 \texttt{sections/generated/}，其中包含 \texttt{wl\_summary.json} 与 \texttt{wl\_experiments\_manifest.json}。
+\begin{itemize}
+  \item 在 trellis 图 $G_n$ 上，$\WL$-1 的稳定迭代数随 $n$ 增长呈近线性；在 $n=6,\ldots,12$ 的样本中稳定步数恰为 $n$。最终颜色类数非常接近顶点总数（近乎个体化），例如 $n=6$ 时 $85$ 个点分为 $80$ 类。
+  \item 在宏观加权图 $Q_n$ 上，带权 $\WLTWO$ 在 $n=4,\ldots,12$ 的样本中稳定步数恒为 $2$。
+  \item 在完整 trellis $G_n$ 上（全量计算 $n=6,7,8$），$\WLTWO$ 稳定步数恒为 $1$；并且稳定后 $V^2$ 的颜色类数接近有序对总数（例如 $n=6$ 时 $85^2=7225$ 个有序对产生 $6413$ 类）。
+\end{itemize}
+
+\input{sections/generated/wl_table_summary}
+
+\begin{remark}
+由于 $\WLTWO$ 在完整 trellis 上的复杂度随 $\abs{V_n}$ 急剧增长，本文仅对可枚举规模进行全量计算，并把更大 $n$ 的结构分析留作后续工作。
+\end{remark}
+

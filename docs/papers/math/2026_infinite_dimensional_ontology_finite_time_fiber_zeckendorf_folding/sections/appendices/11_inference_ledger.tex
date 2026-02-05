@@ -1,0 +1,83 @@
+\subsection{推理台账（Inference Ledger）}
+\label{app:inference_ledger}
+
+\subsubsection{读者说明与状态标签}
+
+\AuditTag 本附录用于\emph{依赖审计}与\emph{可复核定位}：每一条关键输入（定义/假设/公理）、关键输出（引理/定理/命题/推论）、以及关键实现/实验主张，都分配一个台账编号并记录其依赖与复核路径。
+
+\paragraph{台账状态（仅用于本附录，不是正文层标签）。}
+我们使用五类状态标签：\textsf{[Math]}（定理层数学陈述）、\textsf{[Prot]}（有限协议/算法构造）、\textsf{[Iface]}（接口/字典映射陈述）、\textsf{[CAP]}（有限候选族 + 目标函数 + 决定性 tie-break 的闭包选择；与定义 \ref{def:cap_closure} 一致）、\textsf{[Open]}（明确记录的开放问题/未闭合依赖）。
+
+\paragraph{编号规则。}
+编号采用 \texttt{L-<module>-<index>}，其中 \texttt{module} 与图 \ref{fig:audit_dependency_map} 的模块名一致；\texttt{index} 为两位数。
+
+\subsubsection{台账总表（精简版）}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.13\linewidth} >{\raggedright\arraybackslash}p{0.10\linewidth} >{\raggedright\arraybackslash}p{0.53\linewidth} >{\raggedright\arraybackslash}p{0.18\linewidth}@{}}
+\toprule
+\textbf{ID} & \textbf{状态} & \textbf{陈述（摘要）} & \textbf{定位/复核}\\
+\midrule
+\endhead
+
+L-lang-01 & \textsf{[Math]} & 稳定语言 $X_m$ 的计数：$\abs{X_m}=F_{m+2}$。 & 定理 \ref{thm:Xm_count}；附录A\\
+L-lang-02 & \textsf{[Math]} & 循环词与边界词的计数：$\abs{C_m}=L_m$，$\abs{B_m}=F_{m-2}$。 & 命题/推论 \ref{prop:Cm_Lm}；附录B\\
+
+L-obs-01 & \textsf{[Iface]} & 观测底空间与纤维（Hilbert bundle）的建模输入。 & 假设 \ref{ass:hilbert_bundle}；第 3 节\\
+L-obs-02 & \textsf{[Iface]} & 观测投影 $\pi_m$ 的合法性：输出必须落在稳定语言 $X_m$。 & 假设 \ref{ass:observation_projection}；第 3 节\\
+
+L-fold-01 & \textsf{[Prot]} & 折叠算子 $\Fold_m:\Omega_m\twoheadrightarrow X_m$ 的构造与基本性质。 & 定义/命题 \ref{def:Fold}；第 5 节\\
+L-fold-02 & \textsf{[Prot]} & 原像纤维谱 $\abs{\mathcal F_m(x)}$、熵指标的定义与可计算性。 & 第 5 节；脚本 \path{scripts/exp_fiber_spectrum.py}\\
+
+L-iface-01 & \textsf{[Math]} & 接口亏损不变量：$\abs{X_{2m}}=\abs{X_m}^2-F_m^2$。 & 定理 \ref{thm:interface_loss}；附录C\\
+L-iface-02 & \textsf{[Iface]} & “接口事件集/触发集”作为拼接约束的字典对象（不作为数学层前提）。 & 第 7 节（标注 \InterfaceTag）\\
+
+L-res-01 & \textsf{[CAP]} & 残差充分性（Axiom 6.1）：有限残差承载未来相关自由度。 & 公理 \ref{ax:finite_residual_sufficiency}；第 6 节\\
+L-res-02 & \textsf{[Iface]} & 有限群残差载体（可选输入）：用有限群对象组织残差类别。 & 假设 \ref{ass:finite_group_residual_carrier}；第 6 节\\
+L-time-01 & \textsf{[Math]} & 时间成本 $T(\mathcal G)$ 的定义（与残差态分解）。 & 定义 \ref{def:time_cost}；第 8 节\\
+
+L-space-01 & \textsf{[Math]} & 局部性依赖图 $(V,\mathrm{Nbr})$ 的定义与两个距离 $d_{\mathrm{top}},d_{\mathrm{inf}}$。 & 定义 \ref{def:local_dependency_graph}；第 9 节\\
+L-space-02 & \textsf{[Iface]} & 空间均匀性/归一化约定（建模便利，不作为数学层前提）。 & 假设 \ref{ass:space_homogeneity}；第 9 节\\
+
+L-ms-01 & \textsf{[Prot]} & 多尺度塔与动态分辨率 $m(\cdot)$ 的协议构造。 & 第 11 节；算法 \ref{alg:amr_rule}\\
+L-ms-02 & \textsf{[Iface]} & 误差驱动细分/合并阈值的统计/工程解释（不反哺数学层）。 & 第 11 节（标注 \AuditTag）\\
+L-ms-03 & \textsf{[Iface]} & 分辨率--时间成本标度假设（统计口径需量化）。 & 假设 \ref{ass:resolution_time_scaling}；第 11 节\\
+
+L-conn-01 & \textsf{[Prot]} & 离散连接与平行移动规则（允许边集）。 & 第 12 节；定义 \ref{def:discrete_connection}\\
+L-conn-02 & \textsf{[Iface]} & 结构性下界假设（需给出量化形式与适用域）。 & 假设 \ref{ass:structural_lower_bound}；第 12 节\\
+L-conn-03 & \textsf{[Iface]} & 曲率集中假设的可检验描述与测量口径。 & 假设 \ref{ass:curvature_concentration}；第 12 节\\
+
+L-db-01 & \textsf{[Prot]} & 双边界前后向合成（forward--backward）计算框架。 & 第 13 节；算法 \ref{alg:forward_backward}\\
+L-db-02 & \textsf{[Audit]} & 与 TSVF/Transactional Interpretation 的\emph{结构同型}参照与非等价声明。 & 第 13 节（标注 \AuditTag）\\
+L-db-03 & \textsf{[Iface]} & 一步转移核/权重更新的建模假设。 & 假设 \ref{ass:one_step_kernel}；第 13 节\\
+
+L-exp-01 & \textsf{[Prot]} & 复现实验总入口：一键生成 \path{sections/generated/} 与图表。 & 第 15 节；\path{scripts/run_all.py}\\
+L-exp-02 & \textsf{[Prot]} & 计数定理的枚举核对（输出 \path{sections/generated/counts_check.tex}）。 & 第 15 节；\path{scripts/exp_counts_check.py}\\
+L-exp-03 & \textsf{[Prot]} & 纤维谱/熵与时间残差统计（按截断族对照；输出 \path{sections/generated/fiber_entropy_summary_compare.tex}，以及每族的 \path{sections/generated/fiber_entropy_summary_<trunc>.tex}）。 & 第 15 节；\path{scripts/exp_fiber_spectrum.py}\\
+L-exp-04 & \textsf{[Prot]} & holonomy 频谱与界面/体区对比（输出 \path{sections/generated/holonomy_interface_vs_bulk.tex}）。 & 第 15 节；\path{scripts/exp_holonomy_spectrum.py}\\
+L-exp-05 & \textsf{[Prot]} & 空间 plaquette holonomy 统计与诱导连接对照（输出 \path{sections/generated/emergence_space_holonomy_summary.tex}、\path{sections/generated/emergence_space_holonomy_induced_summary.tex}）。 & 第 15 节；\path{scripts/exp_emergence_space_holonomy*.py}\\
+
+L-exp-06 & \textsf{[Prot]} & 显示维数扫描（CAP：闭包图 WL1，按截断族对照；输出 \path{sections/generated/cap_display_dim_scan_compare.tex}，以及每族的 \path{sections/generated/cap_display_dim_scan_summary_<trunc>.tex}、\path{sections/generated/cap_display_dim_key_table_<trunc>.tex} 与图形片段）。 & 第 15 节；\path{scripts/exp_cap_display_dim_scan.py}\\
+
+L-open-01 & \textsf{[Open]} & “残差最小化/转导器内部状态选择”的闭包准则。 & 第 16 节\\
+
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsubsection{最小外加输入集合（台账视角摘要）}
+\AuditTag
+为便于“最小输入原则”的快速复核，我们在台账口径下给出核心必需输入（其余条目可视为扩展模块的可选输入）：
+\begin{itemize}
+  \item \textbf{观测接口：} \texttt{L-obs-02}（假设 \ref{ass:observation_projection}）。
+  \item \textbf{折叠与有限窗协议：} \texttt{L-fold-01}（定义 \ref{def:Fold}；以及 $\Omega_m,X_m$ 的定义链）。
+  \item \textbf{有限残差充分性：} \texttt{L-res-01}（公理 \ref{ax:finite_residual_sufficiency}）。
+  \item \textbf{CAP 显示闭包：} 定义 \ref{def:cap_closure} + 定义 \ref{def:cap_disp_key}（显示候选族与闭包键口径），以及其对应的复现实验条目 \texttt{L-exp-06}（若启用第 9、15 节的 3D 默认显示输出）。
+\end{itemize}
+
+\subsubsection{最小失败点（与模板的绑定）}
+
+\AuditTag 对每条台账编号，我们使用统一的“Trigger/Check/Impact/Fallback”记录其最小失败点；模板见附录 \ref{app:minimal_failure_point_templates}。本稿先对关键输入（假设/公理）与关键接口同型段落给出最小失败点，后续可按需扩展到每个实验主张。 
+

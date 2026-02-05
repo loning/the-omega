@@ -1,0 +1,57 @@
+
+\section{边界态动力学与有限换能器（transducer）}
+
+\subsection{边界窗口态}
+
+定义
+$$
+\sigma_m^{(L)}=\big(c_{m-L+1}(B_m),\dots,c_m(B_m)\big),\qquad B_m=2^m-1.
+$$
+本文关注 $m$ 方向的推进动力学：$\sigma_m^{(L)}\to\sigma_{m+1}^{(L)}$。
+
+\subsection{实验设置与“样本确定性”定义}
+
+本节的换能器结论均属于\textbf{计算级}：我们在有限样本区间上，从序列数据中导出规则，并将“确定性”理解为\textbf{在该样本内}的单值性（而非对所有 $m$ 的理论断言）。默认样本区间取
+$$
+m\in[m_{\min},m_{\max}]=[100,2000],
+$$
+并由脚本一键生成映射表与统计摘要（附录给出产物路径规范）。
+
+\begin{definition}[样本确定性与歧义上下文]\label{def:sample-determinism}
+固定窗口 $L$ 与 order（上下文长度）$k$。在样本区间 $m\in[m_{\min},m_{\max}]$ 上，考虑所有上下文
+$$
+\mathrm{ctx}_m^{(L,k)}:=\big(\sigma_{m-k+1}^{(L)},\dots,\sigma_m^{(L)}\big)
+$$
+及其后继 $\sigma_{m+1}^{(L)}$。若对样本中出现的每个上下文值 $\mathrm{ctx}$，对应的后继值在样本中\emph{唯一}，则称该对 $(L,k)$ 在该样本上是\textbf{确定的}；否则称为\textbf{非确定的}，并称出现多个后继的上下文为\textbf{歧义上下文}。
+\end{definition}
+
+\subsection{固定阶确定 transducer 的 trade-off 与 Pareto 前沿}
+
+对 $L\in[10,30]$ 扫描“最小 order $k$ 使得 $(L,k)$ 在定义 \ref{def:sample-determinism} 的意义下在样本区间上确定”。该扫描产生显著的 trade-off 曲线与 Pareto 点；例如在该样本区间内，$L=27$ 时 order$=1$ 已足以确定。
+
+\begin{table}[H]
+\centering
+\input{sections/generated/transducers_order_table}
+\caption{固定窗口 $L=10..30$ 的最小确定阶数扫描表（由脚本自动生成）。}
+\end{table}
+
+\begin{table}[H]
+\centering
+\input{sections/generated/transducers_pareto_table}
+\caption{Pareto 点（由脚本自动生成）。}
+\end{table}
+
+\subsection{\texorpdfstring{$L=20$}{L=20} 的确定 transducer：order\texorpdfstring{$=8$}{=8} 完全消歧}
+
+在 $L=20$ 上，样本内 order$=5$ 仅剩 $1$ 个歧义上下文；随着 order 增加，歧义上下文数降为 $0$，并在 order$=8$ 首次达到 $0$。据此可导出样本内的映射表（context $\mapsto$ next state），从而得到一个在该样本区间上确定的换能器。
+
+\subsection{可变长确定 transducer：最大深度 \texorpdfstring{$8$}{8}，且深度尾部极短}
+
+进一步构造可变长规则系统：对每一步选取\textbf{样本内最短}可确定上下文；只在歧义处加深历史。以 $L=20$ 为例，样本内最大深度为 $8$。可统计“使用深度”的分布：绝大多数转移在深度 $1$ 即可确定，极少数转移需要深度 $5$ 或 $8$。该结构给出了一个可复现的、以“时间维度搜索深度”为观测量的有限实验平台。
+
+\begin{table}[H]
+\centering
+\input{sections/generated/transducers_depth_fraction_table}
+\caption{可变长换能器在不同深度下的使用频率（由脚本自动生成）。}
+\end{table}
+

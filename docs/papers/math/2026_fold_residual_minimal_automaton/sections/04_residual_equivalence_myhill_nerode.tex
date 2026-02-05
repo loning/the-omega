@@ -1,0 +1,75 @@
+% 4 Residual equivalence (Myhill--Nerode)
+\section{残差等价与 Myhill--Nerode 最小性}\label{sec:mn}
+
+\subsection{\texorpdfstring{深度 $k$ 的右等价与残差态}{深度 k 的右等价与残差态}}
+固定 $m$，设 $f=\Fold_m:\{0,1\}^m\to X_m$。
+对任意 $0\le k\le m$，定义前缀集合 $\Sigma^k=\{0,1\}^k$。
+
+\begin{definition}[深度 $k$ 的右等价]\label{def:right_equiv}
+对 $u,v\in\Sigma^k$，若对任意后缀 $s\in\{0,1\}^{m-k}$ 都有
+\[
+f(us)=f(vs),
+\]
+则称 $u\sim_k v$。
+\end{definition}
+
+\begin{definition}[残差态集合]\label{def:residual_states}
+令
+\[
+U_{m,k}=\Sigma^k/\!\sim_k
+\]
+为深度 $k$ 的右等价类集合。称其元素为\emph{残差态}。特别地，$U_{m,0}$ 为根残差态集合。
+\end{definition}
+
+\subsection{层级残差自动机（占位）}
+对每个 $k<m$，前缀拼接给出映射 $\delta_{m,k}:U_{m,k}\times\{0,1\}\to U_{m,k+1}$：
+对任意代表元 $u\in\Sigma^k$ 与 $a\in\{0,1\}$，定义
+\[
+\delta_{m,k}([u]_{\sim_k},a)=[ua]_{\sim_{k+1}}.
+\]
+该定义与代表元选择无关（可由定义 \ref{def:right_equiv} 验证），从而得到一个深度分层的确定性有限状态结构
+（本稿将其称为残差自动机）。
+
+\subsection{最小性（陈述模板）}
+\begin{theorem}[Myhill--Nerode 最小性：有限长度版本（占位）]\label{thm:mn_minimality}
+对固定 $m$ 与映射 $f:\Sigma^m\to Y$（$Y$ 为有限集合），右等价类集合 $U_{m,k}$ 具有如下性质：
+\begin{itemize}
+  \item (充分性) 任意输入 $b\in\Sigma^m$ 的前缀 $b_{1:k}$ 的等价类 $[b_{1:k}]_{\sim_k}$ 足以确定
+  对任意后缀 $s$ 的输出 $f(b_{1:k}s)$。
+  \item (最小性) 若某一有限状态结构希望在读取 $k$ 位后对所有可能后缀的输出行为作出完全区分，
+  则其可区分状态数至少为 $|U_{m,k}|$。
+\end{itemize}
+\end{theorem}
+
+\begin{proof}[证明要点]
+“充分性”由定义 \ref{def:right_equiv} 直接得到：若 $u\sim_k v$，则对任意后缀 $s$ 有 $f(us)=f(vs)$，
+因此在给定等价类 $[u]_{\sim_k}$ 后，后续任意输入的输出行为与具体代表元无关。
+
+“最小性”的证明可采用区分后缀（distinguishing suffix）证人法：若 $u\not\sim_k v$，则存在某个后缀
+$s$ 使得 $f(us)\ne f(vs)$。任何在深度 $k$ 之后仍希望对所有后缀的输出行为完全正确的有限状态结构，
+必须把 $u$ 与 $v$ 映射到可区分的内部状态，否则在读入同一后缀 $s$ 时将产生同一输出，矛盾。
+因此可区分状态数至少为等价类数 $|U_{m,k}|$。该论证与标准 Myhill--Nerode 定理的有限长度变体一致。
+\end{proof}
+
+\begin{proposition}[单调性]\label{prop:residual_monotone}
+对固定 $m$，序列 $k\mapsto |U_{m,k}|$ 随 $k$ 单调不减，且满足
+\[
+1=|U_{m,0}|\le |U_{m,1}|\le\cdots\le |U_{m,m}|=|f(\Sigma^m)|.
+\]
+\end{proposition}
+
+\subsection{从残差态到 Fold-with-residual}
+在本稿的设定下，可取最终残差集合为某个深度的残差态集合，例如 $U_m:=U_{m,k_\star}$，并定义
+\[
+u_m(b):=[b_{1:k_\star}]_{\sim_{k_\star}}.
+\]
+如何选择 $k_\star$ 取决于目标接口：\emph{越大的 $k_\star$ 通常意味着更强的区分能力与更大的残差规模}。
+
+\subsection{状态复杂度视角（与最小自动机对齐）}
+对固定长度 $m$ 的函数 $f=\Fold_m:\Sigma^m\to X_m$，族 $\{U_{m,k}\}_{k=0}^{m}$ 可视为 $f$ 的
+“分层右商”（layered right quotient）对象：它刻画了在读取 $k$ 位后，为了对任意剩余输入后缀给出正确输出，
+内部状态至少需要区分多少类历史。\cite{Myhill1957FiniteAutomata,Nerode1958Automata,Sipser2012TOC}
+
+第 \ref{sec:theorems} 节将给出一个完全显式的状态刻画与闭式计数，从而把“残差最小化”从抽象等价关系
+落实为可计算的整数状态更新。
+

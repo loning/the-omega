@@ -1,0 +1,94 @@
+\section{二值稳定窗口上的诱导旋转数与 Möbius 更新}
+
+在定理 \ref{thm:two-value-criterion} 的两值退化条件下，给出诱导旋转数的显式读出与分式线性表示，并据此构造窗口诱导重整化算子。
+
+\subsection{诱导步长与旋转数读出}
+
+固定两值稳定窗口 $E=(0,b)$。取满足定理 \ref{thm:two-value-criterion} 的指标 $i$ 与 $c$。定义
+\[
+\rho(E)=\frac{\delta_i}{b}.
+\]
+
+\begin{proposition}[诱导步长为 $\delta_i$]\label{prop:induced-step}
+在两值退化情形下，诱导映射 $T_{\theta,E}$ 在某一返回层上等价于平移 $\pm\delta_i$，从而将 $E$ 线性缩放到长度 $1$ 后，与旋转数为 $\rho(E)$ 的无理旋转测度共轭。
+\end{proposition}
+
+\begin{proof}
+在返回时间为 $q_i$ 的分段上，
+\[
+T_\theta^{q_i}(x)=x+q_i\theta \equiv x+(q_i\theta-p_i)\pmod 1,
+\]
+而 $q_i\theta-p_i=(-1)^i\delta_i$。在缩放坐标 $x\mapsto x/b$ 下位移比例为 $\delta_i/b$。方向差异对应反演共轭，故共轭类由 $\rho(E)$ 决定。证毕。
+\end{proof}
+
+\subsection{分式线性表达}
+
+令
+\[
+\Delta_i(\theta)=q_i\theta-p_i,\qquad \Delta_{i-1}(\theta)=q_{i-1}\theta-p_{i-1}.
+\]
+两值退化下可取一致符号约定使
+\[
+\delta_i=\abs{\Delta_i(\theta)},\qquad \delta_{i-1}=\abs{\Delta_{i-1}(\theta)}.
+\]
+又 $b=\delta_{i-1}-c\delta_i$ 可在交错符号下写为
+\[
+b=\abs{\Delta_{i-1}(\theta)+c\Delta_i(\theta)}.
+\]
+因此
+\[
+\rho(E)=\abs{\frac{\Delta_i(\theta)}{\Delta_{i-1}(\theta)+c\Delta_i(\theta)}}
+=\abs{\frac{q_i\theta-p_i}{(c q_i+q_{i-1})\theta-(c p_i+p_{i-1})}}.
+\]
+
+\begin{theorem}[诱导旋转数的整数 Möbius 形式]\label{thm:mobius}
+存在 $M_{i,c}\in \mathrm{GL}_2(\ZZ)$ 使
+\[
+\rho(E)=\left|\frac{a\theta+b}{c'\theta+d}\right|,
+\qquad
+M_{i,c}=\begin{pmatrix}a&b\\c'&d\end{pmatrix},
+\]
+且可显式取
+\[
+M_{i,c}=
+\begin{pmatrix}
+q_i & -p_i\\
+c q_i+q_{i-1} & -(c p_i+p_{i-1})
+\end{pmatrix}.
+\]
+\end{theorem}
+
+\begin{proof}
+由上一式直接读出系数。绝对值用于消除端点约定与交错符号，不影响共轭类的判定。证毕。
+\end{proof}
+
+\subsection{连分数尾部更新与窗口重整化算子}
+
+令 $\theta=[0;a_1,a_2,\dots]$。两值稳定窗口给出一个“尾部更新”现象：在适当约定下，诱导旋转数的连分数展开可由 $\theta$ 的尾部与一个有限数字修正组成。
+
+\begin{theorem}[尾部读出公式]\label{thm:tail}
+若 $E=(0,b)$ 满足两值退化且 $b=\delta_{i-1}-c\delta_i$（$0\le c<a_{i+1}$），则存在方向选择 $\rho\in\{\rho(E),1-\rho(E)\}$ 使
+\[
+\rho=[0;\ a_{i+1}-c,\ a_{i+2},\ a_{i+3},\dots].
+\]
+\end{theorem}
+
+\begin{proof}[证明纲要]
+由 $\delta_{i-1}=a_{i+1}\delta_i+\delta_{i+1}$ 得
+\[
+b=(a_{i+1}-c)\delta_i+\delta_{i+1},
+\]
+从而
+\[
+\rho(E)=\frac{\delta_i}{(a_{i+1}-c)\delta_i+\delta_{i+1}}
+=\frac{1}{(a_{i+1}-c)+\delta_{i+1}/\delta_i}.
+\]
+另一方面，$\delta_{i+1}/\delta_i$ 与连分数尾部 $[0;a_{i+2},a_{i+3},\dots]$ 等价；方向选择产生 $\rho$ 与 $1-\rho$ 的二择一。证毕。
+\end{proof}
+
+据此定义二值稳定窗口族上的重整化算子：在参数 $\theta$ 与窗口数据 $(i,c)$ 上定义
+\[
+\mathcal{R}(\theta;i,c)=[0;\ a_{i+1}-c,\ a_{i+2},a_{i+3},\dots],
+\]
+并以此表述“诱导—缩放”在参数层的动力学。
+

@@ -1,0 +1,43 @@
+\section{路线 B1：单图结构（branched cover）——把每个 $(w,u)$ 当作节点}\label{sec:cover}
+
+\subsection{两张图与覆盖投影}
+我们构造两层图：
+\begin{itemize}
+  \item \textbf{总空间图（微态图）}：
+  \[
+    \widetilde G_6=(\widetilde V_6,\widetilde E_6),\qquad \widetilde V_6:=S_6=\{(w,\delta): (w,\delta)=\Enc_6(N),\ N\in[0,63]\}.
+  \]
+  由定理 \ref{thm:lossless}，$\widetilde V_6\cong \{0,\dots,63\}$。
+  \item \textbf{基底图（稳定型图）}：
+  \[
+    G_6=(V_6,E_6),\qquad V_6:=X_6.
+  \]
+\end{itemize}
+定义投影
+\[
+  \pi:\widetilde V_6\to V_6,\qquad \pi(w,\delta)=w.
+\]
+其纤维大小即 $\abs{\Fold_6^{-1}(w)}$ 的退化谱（$2/3/4$），因此 $\pi$ 在自然边关系下表现为分支覆盖：分支点对应纤维度数改变与边界态。
+
+\subsection{自然边关系：滑窗移位与 uplift 生成}
+给定 $6$-bit 微态词 $s=b_1\cdots b_6\in\Omega_6$，定义滑窗移位（向前读入比特 $x\in\{0,1\}$）
+\[
+  \Shift_x(b_1\cdots b_6):=b_2\cdots b_6x.
+\]
+这在 $\Omega_6$ 上诱导出度为 $2$ 的有向图；通过 $\Enc_6$ 将顶点重标到 $\widetilde V_6$，得到 $\widetilde E_6$ 中的 ``shift'' 边。
+
+与此同时，uplift 作为“纤维方向”的离散移动，可在每个纤维 $\pi^{-1}(w)$ 内定义允许的 uplift 边（例如按 $u$ 的循环加法连接存在的 uplift 层）。
+
+\begin{proposition}[无损性以带标签覆盖表达]\label{prop:cover-lossless}
+若在 $\widetilde G_6$ 的 shift 边上附加标签 $x\in\{0,1\}$（读入位），并在 uplift 边上附加标签（uplift 步长），则任意长度 $T$ 的路径从起点 $(w_0,\delta_0)$ 可唯一复原对应的微态轨迹，从而不同初始数据只改变起点。
+\end{proposition}
+\begin{proof}
+shift 边由微态移位决定，且 $\Enc_6$ 在 $\widetilde V_6$ 上为双射；因此带标签路径逐步确定唯一的微态路径。uplift 边仅在纤维内移动并保留 $(w,\delta)$ 的可逆标签信息。
+\end{proof}
+
+\paragraph{生成统计（脚本输出）}
+覆盖图的顶点数、shift/uplift 边数、以及 shift-随机游走的谱统计由脚本生成并写入：
+\[
+  \texttt{sections/generated/cover\_graph\_summary.tex}.
+\]
+

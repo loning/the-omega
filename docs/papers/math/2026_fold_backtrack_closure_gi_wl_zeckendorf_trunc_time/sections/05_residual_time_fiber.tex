@@ -1,0 +1,57 @@
+
+\section{时间作为“不可恢复的正交纤维”：残余对称与正交信息位}
+
+我们用“\WL{} 在闭包图上仍无法细分的轨道方向”形式化“不可恢复的正交信息位”，即残余自同构（或残余等价类）。
+
+\subsection{正交时间位：由 \WL{} 残余不确定性定义}
+
+\begin{definition}[\WL{} 残余不确定性]
+在 $\Clo_m$ 上运行 $1$-\WL{} 至稳定后，微观顶点 $X_m$ 被划分为颜色类分割 $\mathcal{P}$。若存在大小大于 $1$ 的颜色类，则称其内部差异为\textbf{不可由闭包图局部不变量恢复的正交分量}。当最大类大小为 $2$ 时，对应一个残余 $\ZZ_2$ 时间位。
+\end{definition}
+
+\subsection{唯一宏观着色下的第一步细化：纤维先于几何}
+
+\begin{lemma}[第 1 步按折叠纤维分组]\label{lem:wl-fiber-step1}
+在闭包图 $\Clo_m$ 的初始着色中，令所有微观顶点共享同一颜色，而每个宏观顶点 $y\in Y_m$ 具有唯一颜色标签。则对任意 $x,x'\in X_m$：
+\[
+f_m(x)\ne f_m(x')\ \Longrightarrow\ \kappa_1(x)\ne \kappa_1(x'),
+\]
+即 $1$-\WL{} 的第 $1$ 步已经把微观端至少细化到折叠纤维的层级（不同纤维必被区分）。
+\end{lemma}
+
+\begin{proof}
+在 $\Clo_m$ 中，每个微观顶点 $x$ 都有一个宏观邻居 $f_m(x)\in Y_m$，且该宏观顶点在初始时带唯一颜色。$1$-\WL{} 的第 $1$ 步颜色签名包含“自身颜色 + 邻居颜色多重集”，其中邻居多重集中必包含宏观颜色 $\kappa_0(f_m(x))$。若 $f_m(x)\ne f_m(x')$，则两者的宏观邻居颜色不同，从而第 $1$ 步颜色不同。
+\end{proof}
+
+\begin{remark}
+引理 \ref{lem:wl-fiber-step1} 给出一个重要的分层：在“宏观端唯一着色”的口径下，$\WL{}$ 的后续工作主要发生在\emph{同一纤维内部}，即在固定 $f_m(x)$ 的条件下，用微观几何与更远处宏观标签传播来消除回溯不确定性。
+\end{remark}
+
+\subsection{Z2 纤维残余：从局部邻域同构到可审计判据}
+
+设 $G_m^{\mu}$ 为 hypercube 邻接，令 $\delta\in\{0,1\}^{m}$ 表示按位异或平移 $x\mapsto x\oplus \delta$。
+
+\begin{lemma}[Z2 残余的可审计充分条件]\label{lem:z2-sufficient}
+设在 $\Clo_m$ 上运行 $1$-\WL{}，稳定步数为 $t_{\mathrm{stable}}$。若存在非零 $\delta$ 与集合 $S\subseteq X_m$，使得对所有 $x\in S$：
+\begin{enumerate}
+  \item （同纤维）$f_m(x)=f_m(x\oplus \delta)$；
+  \item （局部同构）根邻域在半径 $t_{\mathrm{stable}}$ 上同构：
+  \[
+  (B_{t_{\mathrm{stable}}}(\Clo_m,x),x)\ \cong\ (B_{t_{\mathrm{stable}}}(\Clo_m,x\oplus\delta),x\oplus\delta),
+  \]
+  其中初始颜色为“微观同色 + 宏观唯一着色”。
+\end{enumerate}
+则对所有 $x\in S$，有 $\kappa_{t_{\mathrm{stable}}}(x)=\kappa_{t_{\mathrm{stable}}}(x\oplus\delta)$，因此稳定后 $1$-\WL{} 无法区分这些配对点，它们落在同一最终颜色类中（残余 $\ZZ_2$ 时间位）。
+\end{lemma}
+
+\begin{proof}
+条件 (1) 确保两点在第 $1$ 步不被宏观标签直接分开（见引理 \ref{lem:wl-fiber-step1}）。条件 (2) 与引理 \ref{lem:wl-locality} 直接推出在第 $t_{\mathrm{stable}}$ 轮时两点颜色相同；由于此时已稳定，最终颜色也相同。
+\end{proof}
+
+\begin{remark}
+该引理给出“信息被存入时间维度”的严格版本：$\delta$ 方向是闭包图局部统计不变量无法破坏的轨道。
+\end{remark}
+
+\paragraph{验证流程（与脚本产物一致）。}
+在给定 $m$ 的实验中，我们先由 $1$-\WL{} 的稳定输出抽取微观端的配对列表（见 \path{artifacts/export/m6_hypercube_ambiguous_pairs.txt} 等），并据此得到候选 $\delta$（例如 $m=6$ 时 $\delta=34$）。随后只需对这些候选配对检验半径 $t_{\mathrm{stable}}$ 的根邻域同构，即可审计式地确认残余 \(\ZZ_2\) 的存在；在本文扫描中，出现残余的情形往往具有很小的 $t_{\mathrm{stable}}$（见表格片段 \path{sections/generated/tab_hypercube_residual_unresolved_only.tex}）。
+

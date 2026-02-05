@@ -1,0 +1,14 @@
+
+\section{$\Fold_6$ 的原像判据（实现用公式）}
+
+对任意 $w\in X_6$，记 $v=V(w)\in\{0,\dots,20\}$。由 Zeckendorf 高位只可能出现在 $F_8,F_9,F_{10}$ 且至多一个为 $1$ 可知，候选原像必形如
+$$
+N=v+\delta,\qquad \delta\in U=\{0,21,34,55\},
+$$
+并须满足 $0\le N\le 63$ 且其 Zeckendorf 归一化截断确实给出 $w$。等价地，可以用以下可实现判据描述：
+$$
+\Fold_6^{-1}(w)=\{v+\delta:\delta\in U,\ v+\delta\le 63,\ \proj_6(\Zeck(v+\delta))=w\}.
+$$
+
+在实现层面，这一定义直接给出常数规模的枚举：对每个 $w$ 只需测试最多四个候选 $v+\delta$，因此可在 $O(|X_6|)$ 时间内构造完整原像表与 uplift 表。
+

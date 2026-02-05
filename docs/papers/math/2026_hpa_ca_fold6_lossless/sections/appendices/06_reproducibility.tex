@@ -1,0 +1,40 @@
+
+\section{可复现性说明}\label{app:reproducibility}
+
+\subsection{代码位置与运行方式}
+
+本论文提供一个最小可复现实验脚本（无损 HPA-CA 原型），位于：
+
+\begin{itemize}
+  \item \texttt{scripts/hpa\_ca\_lossless.py}
+  \item \texttt{requirements.txt}
+\end{itemize}
+
+在论文目录下执行（示例）：
+\begin{verbatim}
+python3 scripts/hpa_ca_lossless.py --L 300 --T 200 --p 0.5 --seed 1 --check_invert
+\end{verbatim}
+
+脚本将生成 \texttt{out\_hpa\_ca\_lossless/}，其中包含时空图、uplift 图、密度曲线、功率谱、盒计数曲线与原始数组数据（\texttt{data.npz}）。\texttt{-{}-check\_invert} 会对记录的 uplift 日志做逐步回放验证，以确认严格可逆性。
+
+\subsection{一键生成论文引用片段（推荐）}
+
+为确保正文中出现的表格片段均可由脚本自动再生，本论文提供一键流水线：
+\begin{verbatim}
+python3 -m pip install -r requirements.txt
+python3 scripts/run_all.py
+\end{verbatim}
+该命令将生成：
+\begin{itemize}
+  \item \texttt{artifacts/}：内容寻址的产物目录（每次运行附带 \texttt{manifest.json}）
+  \item \texttt{sections/generated/}：可直接被 \texttt{\textbackslash input} 的 \LaTeX\ 片段（例如边界情形表、$p\times$seed 扫描汇总表等）
+\end{itemize}
+
+\subsection{实现要点}
+
+\begin{itemize}
+  \item $\Fold_6$：使用 Zeckendorf 贪心归一化，截取窗口对应的 $F_7,\dots,F_2$ 数位，得到 $X_6$ 中的允许词。
+  \item uplift：按定义 $\Delta(N)=N-V(\Fold_6(N))$ 计算，并用 $\{0,21,34,55\}$ 的离散码记录。
+  \item 两相分块：偶时刻 offset $0$，奇时刻 offset $3$，并行更新所有块。
+\end{itemize}
+

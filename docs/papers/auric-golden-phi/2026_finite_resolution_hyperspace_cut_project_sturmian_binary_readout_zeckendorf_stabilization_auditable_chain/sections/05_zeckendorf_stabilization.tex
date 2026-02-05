@@ -1,0 +1,72 @@
+\section{Zeckendorf 稳定态：合法语言与稳定化核}
+
+\subsection{Zeckendorf 表示与合法语言}
+
+\begin{definition}[Zeckendorf 表示]\label{def:zeckendorf}
+令 Fibonacci 数列 $F_1=F_2=1$，$F_{n+1}=F_n+F_{n-1}$。对任意正整数 $N$，存在唯一序列 $(c_k)_{k\ge 1}\subset\{0,1\}$ 使得
+\[
+N=\sum_{k\ge 1} c_k F_{k+1},\qquad c_k c_{k+1}=0.
+\]
+称 $(c_k)$ 为 $N$ 的 Zeckendorf 数字。
+\end{definition}
+
+\begin{definition}[长度 $m$ 的 Zeckendorf 合法语言]\label{def:zeckendorf-language}
+令
+\[
+X_m^{\mathrm Z}:=\{x\in\{0,1\}^m:\ x\ \text{不含子词}\ 11\}.
+\]
+称 $X_m^{\mathrm Z}$ 为黄金均值合法集合（golden-mean admissible set）。
+\end{definition}
+
+\begin{theorem}[计数]\label{thm:zeckendorf-count}
+\[
+\card{X_m^{\mathrm Z}}=F_{m+2}.
+\]
+\end{theorem}
+
+\begin{remark}
+证明要点见附录 \ref{app:zeckendorf-fold}（递推来自末位为 $0/1$ 的分解与无相邻约束）。
+\end{remark}
+
+\subsection{稳定化核的定义与性质}
+
+为将原始二值窗口读出压缩到稳定态空间，需要一个从 $\{0,1\}^m$ 到 $X_m^{\mathrm Z}$ 的规范化映射。
+
+\begin{definition}[稳定化核 $\mathrm{Fold}_m$]\label{def:fold}
+对任意 $\omega=(\omega_1,\dots,\omega_m)\in\{0,1\}^m$，定义其 Fibonacci 加权值
+\[
+N(\omega):=\sum_{k=1}^{m}\omega_k F_{k+1}.
+\]
+令 $(c_k)_{k\ge 1}$ 为 $N(\omega)$ 的 Zeckendorf 数字。定义
+\[
+\mathrm{Fold}_m(\omega):=(c_1,\dots,c_m)\in X_m^{\mathrm Z}.
+\]
+\end{definition}
+
+\begin{theorem}[良定义、终止性与规范性]\label{thm:fold-properties}
+映射 $\mathrm{Fold}_m$ 良定义且满足：
+\begin{enumerate}
+  \item \textbf{（规范性）} $\mathrm{Fold}_m(\omega)\in X_m^{\mathrm Z}$；
+  \item \textbf{（幂等性）} 对所有 $x\in X_m^{\mathrm Z}$，有 $\mathrm{Fold}_m(x)=x$；
+  \item \textbf{（满射性）} $\mathrm{Fold}_m$ 作为 $\{0,1\}^m\twoheadrightarrow X_m^{\mathrm Z}$ 的映射是满射。
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}
+证明要点见附录 \ref{app:zeckendorf-fold}。第 1--2 条由 Zeckendorf 唯一性直接推出；第 3 条对给定 $x\in X_m^{\mathrm Z}$ 取
+$N=\sum_{k=1}^m x_k F_{k+1}$ 即可。
+\end{remark}
+
+\subsection{观测过程的稳定化输出}
+
+\begin{definition}[滑动窗口稳定化读出]\label{def:sliding-fold}
+给定二值序列 $w=(w_t)$，定义长度 $m$ 的窗口词
+\[
+\omega_t^{(m)}:=(w_t,w_{t+1},\dots,w_{t+m-1})\in\{0,1\}^m.
+\]
+定义稳定化输出过程
+\[
+x_t:=\mathrm{Fold}_m(\omega_t^{(m)})\in X_m^{\mathrm Z}.
+\]
+\end{definition}
+

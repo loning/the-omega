@@ -1,0 +1,104 @@
+\section{时间作为残差迭代复杂度：信息分解与过程可逆化}
+
+\subsection{两类时间：演化时间与纤维时间}
+
+\begin{definition}[演化时间与纤维时间]\label{def:two_times}
+\InterfaceTag
+本文将“时间”分为两类，分别服务于不同层次的结构：
+\begin{itemize}
+  \item \textbf{演化时间（external / iteration time）}：指更新序号 $t\in\NN$（或其有限/双向扩展），用于标记动力学迭代步与算法运行步；本文的 $(x_t,r_t)$、时间成本 $T(\mathcal G)$ 都以该 $t$ 为索引。
+  \item \textbf{纤维时间（fiber / residual time）}：指残差坐标 $r\in R_m(x)$ 所承载的内部历史自由度（“同一可观测输出下仍需区分的提升信息”）。其核心现象是路径依赖：在第 12 节中由 holonomy 的非平凡性刻画为“回路输运不平凡 $\Rightarrow$ 历史不可消去”。
+\end{itemize}
+\end{definition}
+
+\begin{remark}[演化时间与“经历的纤维时间序列”】【]\label{rem:evolution_as_fiber_experience}
+\InterfaceTag
+当观察者协议在每一步演化时间 $t$ 都实际携带（或可确定）一个具体残差坐标 $r_t$ 时，演化时间可理解为观察者经历的纤维时间的序列索引：观察者的内部历史以
+$$
+r_0,r_1,r_2,\dots
+$$
+的形式随 $t$ 演化。相反，若观察者仅能维持一个关于残差的后验分布（例如仅知 $x_t$ 或仅知 $(x_t,\text{某种统计摘要})$），则其“经历”的对象更准确地说是纤维不确定性/后验的更新序列，而非单一确定的纤维轨道。
+\end{remark}
+
+\begin{remark}[群化口径：哪些对象应群化，哪些保持为半群/群胚]\label{rem:groupification_scope}
+\InterfaceTag
+为把“时间/历史/路径依赖”纳入统一的代数语言，本文采用如下群化口径（与第 5、6、9、12 节的群化对象一致）：
+\begin{itemize}
+  \item \textbf{演化时间：半群作用优先，必要时升级为群作用。}
+  若演化由一步更新算子 $\tau$ 生成，则自然得到 $\NN$ 在状态空间上的作用 $t\mapsto \tau^t$；只有在明确假设更新可逆（信息守恒）时，才把其升级为 $\ZZ$ 作用（允许 $\tau^{-1}$）。
+  \item \textbf{纤维时间：残差的群化是可选输入。}
+  残差坐标 $r\in R_m(x)$ 的“可逆组合”并非定理层必然；当需要把内部历史自由度组织为可计算的不变量与输运（尤其是 holonomy）时，可采用第 6 节的有限群残差载体作为可选结构输入，从而把输运映射限制到 $\mathrm{Sym}(R)$、$\mathrm{Aut}(R)$ 或其仿射子群中讨论。
+  \item \textbf{路径/holonomy：天然对象是群胚。}
+  由于不同基点 $x$ 的纤维一般不同，沿边平行移动给出的是“从 $R_m(x)$ 到 $R_m(x')$ 的同构/映射”的可复合体系；因此更自然的整体对象是路径群胚（而非单个群）。在固定基点并选定纤维同构后，才可退化为 holonomy 群（第 12 节）。
+  \item \textbf{后验更新：一般不群化。}
+  若观察者只维护关于 $(x_t,r_t)$ 的分布或权重，则演化由核/算子驱动（例如第 13 节的前向--后向权重递推），其组合律一般形成半群而非群；强行群化等价于额外假设“可逆推断/无信息损失”，不作为本文默认口径。
+\end{itemize}
+\end{remark}
+
+\subsection{残差更新动力学与目标一致性}
+
+第 6 节给出第二层时间纤维 $R_m(x)$ 与离散丛 $E_m=\bigsqcup_{x\in X_m}(\{x\}\times R_m(x))$。在给定局部规则族与可观测代数 $\mathcal O_m$ 下，设系统演化由局部更新构成
+$$
+(x_{t+1},r_{t+1})=\mathsf T(x_t,r_t;\mathcal N_t),
+$$
+其中 $\mathcal N_t$ 表示来自邻域、接口一致性与外部边界条件的局部约束信息。
+
+对一致性目标 $\mathcal G$（例如“满足一组跨窗口接口约束”“达到指定重建误差阈值”“实现某类终端可达条件”）定义时间成本。
+
+\begin{definition}[时间成本]\label{def:time_cost}
+给定目标 $\mathcal G$，定义
+$$
+T(\mathcal G)=\inf\{t\in\NN:\mathcal G(x_{0:t},r_{0:t})\ \text{成立}\}\in\NN\cup\{+\infty\},
+$$
+\MathTag 其中对空集取 $\inf\varnothing:=+\infty$（即目标不可达时，时间成本记为无穷大）。
+\end{definition}
+
+该定义将“时间”表述为过程可逆化所需的最小迭代复杂度，并使得不同分辨率 $m$、不同接口耦合强度与不同控制策略下的时间标度可被直接比较。
+
+\subsection{信息分解：观测熵与时间纤维条件熵}
+
+在有限窗模型中，$\Omega_m$ 上均匀先验推前到 $X_m$ 得分布 $p_m(x)=\abs{\mathcal F_m(x)}/2^m$，并定义输出熵
+$$
+H(X_m)=-\sum_{x\in X_m}p_m(x)\log_2 p_m(x),
+$$
+条件熵
+$$
+H(\Omega_m\mid X_m)=m-H(X_m).
+$$
+条件熵刻画了在仅观测到 $x$ 的情况下仍需补足的平均信息量。要把该“缺失信息量”与“时间信息”对齐，必须区分两类残差对象：
+\begin{itemize}
+  \item \textbf{审计口径的原始时间残差 $u$：}由截断协议给出（定义 \ref{def:truncation_schema}），其作用是把被截断的信息以显式坐标形式补回；
+  \item \textbf{预测口径的有效时间残差 $r$：}由未来可观测充分性公理给出（公理 \ref{ax:finite_residual_sufficiency}），其作用是仅保留对未来可观测量仍相关的那部分隐藏自由度。
+\end{itemize}
+
+\paragraph{（A）审计口径：时间残差作为可逆提升坐标。}
+若对给定截断族存在一个可审计的提升
+$$
+\Phi_m:\Omega_m\to \bigsqcup_{x\in X_m}(\{x\}\times U_m(x)),\qquad \Phi_m(b)=(x,u),
+$$
+并且 $\Phi_m$ 为双射（或在忽略零测集/离散异常点意义下近似双射），则 $(x,u)$ 在信息论意义上“补回了被截断的信息”，因此应满足
+$$
+H(\Omega_m\mid X_m,U_m)=0,
+\qquad
+H(\Omega_m\mid X_m)=H(U_m\mid X_m),
+$$
+其中 $U_m$ 表示由 $u$ 诱导的随机变量（以 $\Omega_m$ 上的先验分布推前）。这一口径对应第 5 节“Fold-with-residual”的可逆化目标：时间信息就是被截断部分的显式坐标。
+
+\paragraph{（B）预测口径：充分统计量不等于可恢复微态。}
+公理 \ref{ax:finite_residual_sufficiency} 中的 $r\in R_m(x)$ 是关于未来可观测量族 $\mathcal O_m$ 的充分统计量：它保证对任意 $D\in\mathcal D$ 与 $O\in\mathcal O_m$，
+$$
+\mathbb P_D(O\mid \psi)=\mathbb P_D(O\mid x_m,r_m),
+$$
+但一般\emph{不能}推出 $H(\Omega_m\mid X_m,R_m)=0$（除非额外假设“可观测代数分离微态”等强条件）。该区分保证本文的“时间=历史依赖”叙述只在给定 $\mathcal O_m,\mathcal D$ 与连接/holonomy 的可检验口径下成立，而不把“可预测”误写成“可反演微态”。
+
+\subsection{观测积分与连续性输出}
+
+定义观测输出为时间窗积分
+$$
+\bar x_t=\sum_{k=0}^{K-1}w_k x_{t-k},\qquad \sum_{k=0}^{K-1}w_k=1,\ w_k\ge 0.
+$$
+该算子将离散序列映射为可控平滑序列，并使“有限带宽观测”与“微观跳变”之间的关系可被参数 $K$ 显式控制。
+
+\subsection{并行性、因果偏序与贪心策略}
+
+设局部依赖图为 $(V,\mathrm{Nbr})$，并以偏序 $\preceq$ 表示因果可达关系：若节点 $u$ 的更新在某步依赖于节点 $v$ 的先前状态，则 $v\preceq u$。在任一时间步内，所有互不可比（即彼此不依赖）的节点集合可并行更新。由此，存在并行调度问题：在保持局部一致性的前提下最小化 $T(\mathcal G)$ 的期望值。对有限观察者（资源受限）情形，可引入贪心调度作为基线：优先更新局部误差或接口缺陷密度最大的区域，从而将计算资源集中于“时间纤维曲率较高”的子图（第 9 节将以 holonomy 谱形式刻画该曲率）。

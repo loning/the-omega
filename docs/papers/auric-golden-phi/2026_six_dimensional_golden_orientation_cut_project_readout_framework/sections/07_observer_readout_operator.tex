@@ -1,0 +1,63 @@
+\section{观察者作为参数化读出算子与自适应更新}
+
+\subsection{读出算子族（D7.1）}
+
+将观测者建模为参数 $\theta\in\Theta$ 的读出算子族
+\[
+\mathcal{R}_{\theta}:\ (\sigma,u_t)\mapsto Y_t,
+\]
+其中 $\theta$ 可包含：窗口核 $K_{\varepsilon}$、物理空间核 $\phi_{\delta}$、分割 $\mathcal{P}$、窗口长度 $m$、以及采样机制等。稳定化输出 $x_t$ 视为 $Y_t$ 的一类规范化坐标。
+
+\begin{assumption}[主文固定带宽]\label{assump:m6-fixed-framework}
+除非另行说明，主文固定 $m=6$ 且 $\Fold=\Fold_6$。
+\end{assumption}
+
+在固定带宽口径下，将“观察者—时空对偶”严格化为算子—像对应：令 $q_6$ 为长度 $6$ 的有限窗口读出，$\Pi_{\theta}$ 为由几何选择、内部相位与环扫描/二分割所诱导的因子映射，则可写
+$$
+\mathcal{R}_{\theta,6}=\Fold_6\circ q_6\circ \Pi_{\theta},
+$$
+并将可见“时空像”对象化为 $\mathrm{Im}(\mathcal{R}_{\theta,6})$ 及其诱导结构（转移核、可达图与柱集条件结构）。
+
+\subsection{多尺度一致性：读出因子化与相容性口径（D7.1$^\ast$）}
+
+当需要比较不同窗口长度 $m$ 的输出时，“一致”必须被精确定义为跨尺度相容性，而非不同 $m$ 的原始输出相等。设 $X_m^{\mathrm Z}$ 为长度 $m$ 的 Zeckendorf 稳定类型空间。对 $m_2\ge m_1$，取自然的 restriction 投影
+\[
+\pi_{m_2\to m_1}:X_{m_2}^{\mathrm Z}\to X_{m_1}^{\mathrm Z},
+\]
+其作用是截取稳定类型的低分辨率部分（有限位号范围/有限前缀）。
+
+\begin{assumption}[尺度相容（读出因子化）]\label{assump:framework-scale-factorization}
+对任意 $m_2\ge m_1$，读出算子族满足
+\[
+\pi_{m_2\to m_1}\circ \mathcal{R}_{\theta,m_2}=\mathcal{R}_{\theta,m_1}\qquad (\mu\text{-a.e. 或逐点}).
+\]
+\end{assumption}
+
+在该口径下，更大 $m$ 的输出在投影到较小 $m$ 后复现较小 $m$ 的输出；差异仅体现为更长前缀与由此诱导的更细条件结构。
+
+\subsection{自适应更新与闭环（H7.2）}
+
+为刻画观测协议随数据反馈更新，采用可替换假设：
+\[
+\theta_{t+1}=\mathcal{U}(\theta_t,Y_t),
+\]
+其中 $\mathcal{U}$ 可由最小化预测误差、最小化不一致度或约束投影等规则定义。若目标函数满足标准收敛条件，则参数序列可收敛至稳定点或吸引子（相应技术条件与常见形式见附录 \ref{app:adaptive}）。
+
+\subsection{扫描非局域核与相关上界（D7.3，T7.3）}
+
+若读出在协议时间上具有非局域响应，可写为
+\[
+Y_t=\sum_{\tau\in\ZZ} G_{\theta_t}(\tau)\,\mathcal{S}(\sigma,u_{t+\tau}),
+\]
+其中 $G_{\theta_t}$ 为响应核。定义“前向权重”
+\[
+\Gamma_+(t):=\sum_{\tau>0}\abs{G_{\theta_t}(\tau)}.
+\]
+则任何两时刻条件相关的“后设定影响前统计”的强度，至多在范数意义上受 $\Gamma_+(t)$ 控制，并随核的局域化而衰减。该结论为一般线性系统不等式模板，其可检验性在于：改变装置响应函数应系统性调制相关强度（第 \ref{sec:falsifiable} 节）。
+
+\subsection{内部规范纤维（\texorpdfstring{$\mathrm{SU}(3)$}{SU(3)}）的扩展端口}
+六维超空间维数在本文仅用于秩 $6$ 的几何闭合表示；内部规范自由度通过纤维扩展并入，而不通过提高超空间秩解决。设几何态空间为 $\Sigma_{\mathrm{geo}}$，引入内部纤维 $\mathcal{V}\cong\CC^3$，并取扩展态空间 $\Sigma\subseteq\Sigma_{\mathrm{geo}}\times\mathcal{V}$。令 $G=\mathrm{SU}(3)$ 作用于 $\mathcal{V}$，规定读出协议对规范等价类因子化：存在
+$$
+(\Sigma_{\mathrm{geo}}\times\mathcal{V})/G\to X_6^{\mathrm Z},
+$$
+从而任何可观测输出仅依赖规范不变信息。

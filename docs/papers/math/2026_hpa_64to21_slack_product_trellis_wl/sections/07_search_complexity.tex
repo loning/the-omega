@@ -1,0 +1,83 @@
+
+\section{搜索复杂度的严格化：从纤维、slack 与时间信息量出发}
+
+本节把“折叠后的逆向不确定性”形式化为一组只依赖宏观态 slack 向量的函数族，并给出平均与最坏尺度的可计算估计。
+
+\subsection{三个互补的复杂度函数}
+
+\begin{definition}[纤维大小、时间信息量、最坏时间深度]\label{def:complexity_triple}
+对宏观态 $z\in\Zn$ 定义：
+\begin{enumerate}
+  \item 纤维大小（歧义度）
+  $$
+  K(z):=\abs{\Head^{-1}(z)}=\prod_{j=1}^k s_j.
+  $$
+  \item 时间信息量（搜索比特数）
+  $$
+  \mathsf{H}(z):=\log K(z)=\sum_{j=1}^k \log s_j.
+  $$
+  \item 最坏时间深度
+  $$
+  D(z):=\max_{x\in \Head^{-1}(z)} \tau(x)=\max_{1\le j\le k} s_j.
+  $$
+\end{enumerate}
+\end{definition}
+
+\begin{remark}
+定义 \ref{def:complexity_triple} 中的 $K(z)$ 由定理 \ref{thm:slack_decomposition} 直接给出。对固定 $z$，时间坐标 $t_j=\ell_j-1\in\{0,\ldots,s_j-1\}$，因此 $\max_j t_j = D(z)-1$，并有
+$$
+\tau(x)=1+\max_j t_j.
+$$
+\end{remark}
+
+\subsection{平均尺度：平均纤维大小}
+
+由于
+$$
+\sum_{z\in\Zn} \abs{\Head^{-1}(z)}=\abs{\Xn}=2^n,
+$$
+对 $z\sim \mathrm{Unif}(\Zn)$，
+$$
+\mathbb{E}\,K(z)=\frac{2^n}{\abs{\Zn}}=\frac{2^n}{F_{n+2}}.
+$$
+用经典渐近 $F_{n+2}\sim \varphi^{n+2}/\sqrt{5}$（其中 $\varphi=(1+\sqrt5)/2$）可见平均歧义度随 $n$ 指数增长，但增长率为 $(2/\varphi)^n$，显著小于 $2^n$。
+
+\subsection{最坏尺度：最大纤维的信息量线性上界}
+
+\begin{proposition}[最坏时间信息量的线性上界]\label{prop:worst_entropy_linear}
+令
+$$
+\alpha:=\max_{m\ge 2}(m-1)^{1/m}=4^{1/5}.
+$$
+则对任意 $n$，
+$$
+\max_{z\in\Zn} \mathsf{H}(z)\le (n+1)\log\alpha.
+$$
+\end{proposition}
+
+\begin{proof}
+对任意整数 $s\ge 1$，令 $m=s+1\ge 2$，则由 $\alpha$ 的定义有 $m-1\le \alpha^m$，即
+$$
+s\le \alpha^{s+1}.
+$$
+对任意 $z$ 的 slack 分量 $(s_1,\ldots,s_k)$，于是
+$$
+K(z)=\prod_{j=1}^k s_j\le \prod_{j=1}^k \alpha^{s_j+1}=\alpha^{\sum_{j=1}^k (s_j+1)}.
+$$
+另一方面，若 $z$ 的段首位置为 $i_1<\cdots<i_k$，则由定义 \ref{def:slack_vector} 可得
+$$
+\sum_{j=1}^k s_j
+=(i_2-i_1-1)+\cdots+(i_k-i_{k-1}-1)+(n-i_k+1)
+=n-i_1-k+2.
+$$
+从而
+$$
+\sum_{j=1}^k (s_j+1)=(n-i_1-k+2)+k=n-i_1+2\le n+1.
+$$
+代回 $K(z)\le \alpha^{\sum_j(s_j+1)}$ 即得 $K(z)\le \alpha^{n+1}$，因此 $\mathsf{H}(z)=\log K(z)\le (n+1)\log\alpha$。
+\end{proof}
+
+\begin{remark}
+命题 \ref{prop:worst_entropy_linear} 的要点是：最坏搜索信息量与 $n$ 线性正比，而系数显著小于 $1$。数值上 $\log_2 \alpha\approx 0.399$。
+\end{remark}
+

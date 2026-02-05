@@ -1,0 +1,215 @@
+
+\section{三值纤维定理：两阈值三段阶梯结构}
+
+本节先给出对一般上界 $B$ 的有限值结构（每侧至多一次跳变，因此取值至多四个），再在 dyadic 特例 $B_m=2^m-1$ 上得到三值性与显式阈值。
+
+\subsection{一般上界 \texorpdfstring{$B$}{B}：每侧至多一次跳变与至多四值}
+
+对一般上界 $B\in\NN$，定义
+$$
+S_{m,B}(V):=s_{m,B}\big(V_m^{-1}(V)\big)
+=\#\Big\{t\in\mathcal{T}_{w_m(V)}:\ t\le B-V\Big\},
+$$
+其中 $w_m(V):=\big(V_m^{-1}(V)\big)_m$。
+
+\begin{proposition}[一般上界的单跳变结构]\label{prop:general-B-one-jump}
+固定 $m$ 与 $B\in\NN$。则 $S_{m,B}(V)$ 仅依赖 $V$，并且在两侧 $V\in[0,F_{m+1}-1]$ 与 $V\in[F_{m+1},F_{m+2}-1]$ 上分别至多发生一次从 $q$ 到 $q-1$ 的跳变。因此 $S_{m,B}$（从而 $s_{m,B}$）在整个 $V$ 轴上至多取四个值。
+\end{proposition}
+
+\begin{proof}
+由第 3 节的 tail 计数表达式，
+$$
+S_{m,B}(V)=\#\{t\in\mathcal{T}_{w_m(V)}:\ t\le B-V\},
+$$
+其中 $w_m(V)$ 由 $V$ 通过阈值 $b_F=F_{m+1}$ 决定（见下方“末位阈值”引理），故 $S_{m,B}$ 仅依赖 $V$。
+
+在固定侧上，$w_m(V)$ 固定，因此 $S_{m,B}(V)$ 随 $V$ 单调不增。若某一侧上存在两次不同跳变，则存在 $t_1<t_2$（同属该侧对应的 $\mathcal{T}_0$ 或 $\mathcal{T}_1$）使得当 $V$ 增加时阈值 $B-V$ 依次跨过 $t_2,t_1$，从而两次跳变对应的 $V$ 之差满足 $\Delta V=t_2-t_1$。然而由引理“tail 最小差”，在 $w_m=0$ 侧有 $t_2-t_1\ge F_{m+1}$，而该侧的 $V$ 变化幅度至多为 $F_{m+1}-1$；在 $w_m=1$ 侧有 $t_2-t_1\ge F_{m+2}$，而该侧的 $V$ 变化幅度为 $F_m-1<F_{m+2}$。两侧均矛盾，故每侧至多一次跳变，从而整体至多四值。
+\end{proof}
+
+\subsection{阈值 \texorpdfstring{$b_F=F_{m+1}$}{b\_F=F\_{m+1}}：末位由值坐标决定}
+
+\begin{lemma}[末位阈值]
+对任意 $w\in X_m$，
+$$
+w_m=1\quad\Longleftrightarrow\quad V_m(w)\ge F_{m+1}.
+$$
+因此 $V$ 轴自然分为两段：
+$$
+V\in[0,F_{m+1}-1]\iff w_m=0,\qquad
+V\in[F_{m+1},F_{m+2}-1]\iff w_m=1.
+$$
+记该阈值为 $b_F=F_{m+1}$。
+\end{lemma}
+
+\begin{proof}
+先证 $\Rightarrow$。若 $w_m=1$，则因 $w\in X_m$ 禁止相邻 $11$，必有 $w_{m-1}=0$，于是
+$$
+V_m(w)=w_mF_{m+1}+\sum_{k=1}^{m-2} w_kF_{k+1}\ \ge\ F_{m+1}.
+$$
+再证 $\Leftarrow$。若 $w_m=0$，则
+$$
+V_m(w)=\sum_{k=1}^{m-1} w_kF_{k+1}\le \max_{u\in X_{m-1}} V_{m-1}(u)=F_{m+1}-1,
+$$
+其中最后一步使用 $V_{m-1}$ 将 $X_{m-1}$ 双射到 $\{0,\dots,F_{m+1}-1\}$。故 $V_m(w)\ge F_{m+1}$ 不可能发生在 $w_m=0$ 上，必有 $w_m=1$。
+\end{proof}
+
+\subsection{tail 最小间隙与“每侧最多一次跳变”}
+
+沿用第 3 节中两类 tail 和集合 $\mathcal{T}_0,\mathcal{T}_1$。
+
+\begin{lemma}[tail 最小差]
+对任意不同的 $t,t'\in\mathcal{T}_0$，有 $\abs{t-t'}\ge F_{m+1}$，并且存在 $t,t'$ 使得 $\abs{t-t'}=F_{m+1}$。\\
+对任意不同的 $t,t'\in\mathcal{T}_1$，有 $\abs{t-t'}\ge F_{m+2}$，并且存在 $t,t'$ 使得 $\abs{t-t'}=F_{m+2}$。
+\end{lemma}
+
+\begin{proof}
+只证 $t>t'$ 的情形，另一方向同理。
+
+\textbf{（1）$\mathcal{T}_0$ 的下界.}
+取 $t,t'\in\mathcal{T}_0$ 的一组 admissible tail 数码表示
+$$
+t=\sum_{k\ge m+1} d_kF_{k+1},\qquad
+t'=\sum_{k\ge m+1} d_k'F_{k+1},\qquad d_kd_{k+1}=d_k'd'_{k+1}=0.
+$$
+令
+$$
+j=\max\{k\ge m+1:\ d_k\ne d'_k\}
+$$
+为最高差异位。由于 $t>t'$，必有 $d_j=1,d'_j=0$，从而
+$$
+t-t'=F_{j+1}+\sum_{k=m+1}^{j-1}(d_k-d'_k)F_{k+1}
+\ \ge\ F_{j+1}-\sum_{k=m+1}^{j-1} d'_kF_{k+1}.
+$$
+因此只需上界化 $t'$ 在 $j$ 以下的可达和。由于 $d'_k\in\{0,1\}$ 且禁止相邻 $11$，在固定最高允许位 $j-1$ 的条件下，$\sum_{k=m+1}^{j-1} d'_kF_{k+1}$ 的最大值由“交错取 $1$”实现，即
+$$
+\sum_{k=m+1}^{j-1} d'_kF_{k+1}\le F_j+F_{j-2}+F_{j-4}+\cdots.
+$$
+利用标准恒等式（可由归纳推出）
+$$
+F_n+F_{n-2}+\cdots+F_{n-2r}=F_{n+1}-F_{n-2r-1},
+$$
+并注意上式最末项指标 $\ge m+2$，得到
+$$
+F_j+F_{j-2}+F_{j-4}+\cdots \ \le\ F_{j+1}-F_{m+1}.
+$$
+于是
+$$
+t-t'\ \ge\ F_{j+1}-\big(F_{j+1}-F_{m+1}\big)=F_{m+1}.
+$$
+
+\textbf{（2）$\mathcal{T}_0$ 的可达等号例子.}
+取 $t=F_{m+3}$（对应 $d_{m+2}=1$）与 $t'=F_{m+2}$（对应 $d_{m+1}=1$），二者均属于 $\mathcal{T}_0$，且
+$$
+t-t'=F_{m+3}-F_{m+2}=F_{m+1}.
+$$
+
+\textbf{（3）$\mathcal{T}_1$ 的下界与等号例子.}
+对 $t,t'\in\mathcal{T}_1$，额外满足 $d'_{m+1}=0$。重复上述论证时，可将“交错取 $1$”的最小可用指标提高到 $m+2$，从而得到更强的上界
+$$
+\sum_{k=m+1}^{j-1} d'_kF_{k+1}\le F_{j+1}-F_{m+2},
+$$
+进而
+$$
+t-t'\ge F_{m+2}.
+$$
+等号可由 $t=F_{m+4}$ 与 $t'=F_{m+3}$（均满足 $d_{m+1}=0$）实现，因为
+$$
+F_{m+4}-F_{m+3}=F_{m+2}.
+$$
+\end{proof}
+
+将纤维计数视为值坐标 $V$ 的函数，记
+$$
+S_m(V)=s_m\big(V_m^{-1}(V)\big)
+=\#\Big\{t\in\mathcal{T}_{w_m(V)}:\ t\le B_m-V\Big\}.
+$$
+
+\begin{corollary}[每侧最多一次跳变]
+在固定侧上，$S_m(V)$ 随 $V$ 单调不增，且当 $V$ 在该侧区间内移动时最多跨过一个 tail 值，因此每侧 $S_m$ 至多发生一次从 $q$ 到 $q-1$ 的跳变。
+\end{corollary}
+
+\begin{proof}
+在固定侧上（即 $w_m(V)$ 固定），有
+$$
+S_m(V)=\#\{t\in\mathcal{T}_{w_m}:\ t\le B_m-V\},
+$$
+右侧阈值 $B_m-V$ 随 $V$ 增大而减小，因此 $S_m(V)$ 单调不增。
+
+若同一侧上存在两次不同的跳变，则存在 $t_1<t_2$（均在该侧对应的 $\mathcal{T}_{w_m}$ 中）使得当 $V$ 增加时阈值 $B_m-V$ 依次跨过 $t_2$ 与 $t_1$，从而两次跳变对应的 $V$ 之差满足
+$$
+\Delta V=t_2-t_1.
+$$
+然而在 $w_m=0$ 侧，$V\in[0,F_{m+1}-1]$，其可变幅度满足 $\Delta V\le F_{m+1}-1$，而由上引理对 $\mathcal{T}_0$ 有 $t_2-t_1\ge F_{m+1}$，矛盾；在 $w_m=1$ 侧，$V\in[F_{m+1},F_{m+2}-1]$，其可变幅度为 $F_m-1<F_{m+2}$，而由上引理对 $\mathcal{T}_1$ 有 $t_2-t_1\ge F_{m+2}$，同样矛盾。故每侧至多一次跳变。
+\end{proof}
+
+\subsection{第二阈值 \texorpdfstring{$b_Q$}{b\_Q}：由边界前缀精确定位唯一跳变}
+
+定义边界前缀
+$$
+p_m=\Fold_m(B_m),\qquad V_m^{\max}=V_m(p_m),\qquad b_Q=V_m^{\max}+1,\qquad B_m=2^m-1.
+$$
+由于 $B_m$ 本身有 Zeckendorf 展开 $B_m=V_m^{\max}+T^{\max}$，且 $T^{\max}\in\mathcal{T}_{(p_m)_m}$，当 $V\le V_m^{\max}$ 时该 tail 可行，而当 $V\ge V_m^{\max}+1$ 时不可行。结合“每侧最多一次跳变”，该处即为唯一跳变位置。
+
+\begin{remark}
+命题 \ref{prop:general-B-one-jump} 给出了对一般上界 $B$ 的“每侧至多一次跳变”结构；dyadic 上界 $B_m=2^m-1$ 额外具有一个边界 tail 直接达到上界的特征，从而可将跳变点显式写成 $b_Q=V_m(\Fold_m(B_m))+1$，并进一步压缩为三值性（而非一般情形的至多四值）。
+\end{remark}
+
+\subsection{主定理：三值纤维与两阈值三段分解}
+
+\begin{theorem}[三值纤维定理]
+存在整数 $a_m,b_m$，使得对所有 $w\in X_m$，
+$$
+s_m(w)\in\{a_m,\ b_m,\ b_m-1\}.
+$$
+并且在 $V$ 坐标上，$S_m(V)$ 是两阈值三段阶梯函数，阈值仅为
+$$
+b_F=F_{m+1},\qquad b_Q=V_m(\Fold_m(2^m-1))+1.
+$$
+具体分段由 $b_Q$ 落在 $b_F$ 的哪一侧决定：跳变发生在包含 $p_m$ 的那一侧。
+\end{theorem}
+
+\begin{proof}
+由第 \ref{def:tail-sets} 定义与 tail 计数表达式，
+$$
+S_m(V)=\#\{t\in\mathcal{T}_{w_m(V)}:\ t\le B_m-V\},\qquad w_m(V):=\big(V_m^{-1}(V)\big)_m.
+$$
+结合“末位阈值”引理可知 $w_m(V)$ 完全由 $V$ 通过阈值 $b_F=F_{m+1}$ 决定，因此 $S_m$（从而 $s_m$）仅依赖 $V$。
+
+由上一推论，$S_m(V)$ 在 $w_m=0$ 与 $w_m=1$ 两侧分别至多发生一次 $1$ 的跳变，因此每一侧至多取两种相邻整数值。下面说明总共只会出现三值，并且第二阈值为 $b_Q$。
+
+设 $p_m=\Fold_m(B_m)$，并记 $V_m^{\max}=V_m(p_m)$。将 $B_m$ 的 Zeckendorf 展开写为
+$$
+B_m=\sum_{k=1}^{m} (p_m)_kF_{k+1}+\sum_{k\ge m+1} c_k(B_m)F_{k+1}
+=V_m^{\max}+T^{\max},
+$$
+其中
+$$
+T^{\max}:=\sum_{k\ge m+1} c_k(B_m)F_{k+1}\in\mathcal{T}_{(p_m)_m}
+$$
+（因为若 $(p_m)_m=1$ 则相邻禁邻迫使 $c_{m+1}(B_m)=0$，从而 tail 数码属于 $\mathcal{D}_1$；若 $(p_m)_m=0$ 则属于 $\mathcal{D}_0$）。
+于是对任意 $V\le V_m^{\max}$ 有 $B_m-V\ge T^{\max}$，故 $T^{\max}$ 被计入 $S_m(V)$；而对任意 $V\ge V_m^{\max}+1$ 有 $B_m-V\le T^{\max}-1$，故 $T^{\max}$ 不再被计入。由此可知在包含 $p_m$ 的那一侧，$S_m(V)$ 必在
+$$
+b_Q:=V_m^{\max}+1
+$$
+处发生一次从 $q$ 到 $q-1$ 的跳变。由于每侧至多一次跳变，$b_Q$ 即为该侧唯一跳变点；另一侧无跳变，故其值恒定。
+
+因此，令 $b_m$ 为发生跳变一侧在跳变前的常值，令 $a_m$ 为另一侧的常值，则整体上 $S_m(V)$ 的取值包含于 $\{a_m,b_m,b_m-1\}$，并且它在 $V$ 轴上以 $b_F$ 切分两侧、以 $b_Q$ 标定唯一跳变，形成两阈值三段阶梯结构。
+\end{proof}
+
+\subsection{刚性推论：分裂侧等价于边界数码最后一位}
+
+\begin{corollary}[分裂侧判别的完全等价]
+$$
+\Ind[b_Q>b_F]=(p_m)_m=c_m(2^m-1).
+$$
+因此分裂发生在哪一侧由 $\Fold_m(2^m-1)$ 的最后一位完全决定。
+\end{corollary}
+
+\begin{proof}
+由定义 $b_Q=V_m(p_m)+1$ 且 $b_F=F_{m+1}$。另一方面，由“末位阈值”引理，
+$$
+(p_m)_m=1\ \Longleftrightarrow\ V_m(p_m)\ge F_{m+1}\ \Longleftrightarrow\ b_Q>b_F.
+$$
+而 $p_m=\Fold_m(2^m-1)$ 的第 $m$ 位恰为 $c_m(2^m-1)$，即 $(p_m)_m=c_m(2^m-1)$。合并即得结论。
+\end{proof}
+

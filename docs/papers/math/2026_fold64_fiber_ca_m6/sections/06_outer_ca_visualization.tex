@@ -1,0 +1,48 @@
+\section{外层可视化元胞自动机：微态演化与三层投影}
+
+\subsection{外层 CA 定义}
+
+构造长度 $L$ 的一维环形 CA，格点状态取 $\M_6\simeq\{0,\dots,63\}$。
+给出一个最简局域相互作用：
+$$
+x_i(t+1)=x_{i-1}(t)\oplus x_{i+1}(t),
+$$
+其中 $\oplus$ 为第 4 节所定义的闭合运算（值语义为模加 $(\cdot+\cdot)\bmod 64$）。
+
+该外层 CA 的每次更新既可直接用整数模加实现，也可进一步“下沉”为第 5 节内核 CA 的局域重写过程（形成层级 CA：外层格点调用内核计算带）。
+
+\subsection{三层时空图可视化}
+
+我们提供三种投影并生成对应的时空图：
+\begin{enumerate}
+  \item \textbf{微态层}：直接显示 $x_i(t)\in\{0,\dots,63\}$。
+  \item \textbf{空间态层}：对每个 $x_i(t)$ 取 $w=\pi(x_i(t))\in\X_6$ 并以 $0..20$ 的索引着色。
+  \item \textbf{纤维层}：取 $u(x_i(t))\in\{0,21,34,55\}$ 并以 $0..3$ 的索引着色。
+\end{enumerate}
+
+可视化脚本与图像文件约定如下（文件将由对应脚本生成或提供）：
+\begin{itemize}
+  \item 脚本：\verb|scripts/visualize_fold_unfold_ca.py|
+  \item 图像：\verb|artifacts/ca_microstate.png|、\verb|artifacts/ca_space_state.png|、\verb|artifacts/ca_fiber.png|
+\end{itemize}
+
+为保证论文在未放置图像文件时亦可编译，我们使用条件插图：当图像文件存在时插入，否则显示占位文本。
+
+\begin{figure}[H]
+  \centering
+  \IfFileExists{artifacts/ca_microstate.png}{\includegraphics[width=0.95\linewidth]{artifacts/ca_microstate.png}}{\textit{Missing: artifacts/ca\_microstate.png}}
+  \caption{CA spacetime（微态层，0--63）。}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \IfFileExists{artifacts/ca_space_state.png}{\includegraphics[width=0.95\linewidth]{artifacts/ca_space_state.png}}{\textit{Missing: artifacts/ca\_space\_state.png}}
+  \caption{CA spacetime（空间态索引层，0--20）。}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \IfFileExists{artifacts/ca_fiber.png}{\includegraphics[width=0.95\linewidth]{artifacts/ca_fiber.png}}{\textit{Missing: artifacts/ca\_fiber.png}}
+  \caption{CA spacetime（纤维索引层，0--3）。}
+\end{figure}
+

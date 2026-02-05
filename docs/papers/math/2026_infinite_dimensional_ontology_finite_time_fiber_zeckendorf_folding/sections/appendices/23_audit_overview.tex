@@ -1,0 +1,67 @@
+\subsection{审计总览：依赖图、图例与约束注册表}
+\label{app:audit_overview}
+
+\subsubsection{读者合同的摘要}
+
+\AuditTag 本文在正文中使用四类内联层标签：\MathTag（数学层证明与可核查推导）、\InterfaceTag（接口/字典映射与操作性解释）、\MatchTag（外部对齐约定：单位、对照目标、比较口径）、\AuditTag（审计性陈述：候选族/目标函数/tie-break、失败点、复现口径等）。
+我们遵循\textbf{不可逆依赖纪律}：\MathTag 的证明链不得以 \InterfaceTag/\MatchTag/\AuditTag 语句为前提；后者仅提供解释、对齐、或复现/审计信息。
+
+\subsubsection{依赖图（主模块单调链）}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  node distance=7mm,
+  box/.style={draw, rounded corners, inner sep=3pt, align=center},
+  arr/.style={-Latex, thick},
+]
+\node[box] (lang) {\texttt{Combinatorial\_language}};
+\node[box, below=of lang] (fold) {\texttt{Folding\_kernel}};
+\node[box, below=of fold] (iface) {\texttt{Interface\_loss}};
+\node[box, below=of iface] (time) {\texttt{Residual\_time\_cost}};
+\node[box, below=of time] (space) {\texttt{Space\_locality}};
+\node[box, below=of space] (ms) {\texttt{Multiscale\_tower}};
+\node[box, below=of ms] (conn) {\texttt{Discrete\_connection\_holonomy}};
+\node[box, below=of conn] (db) {\texttt{Double\_boundary\_synthesis}};
+
+\draw[arr] (lang) -- (fold);
+\draw[arr] (fold) -- (iface);
+\draw[arr] (iface) -- (time);
+\draw[arr] (time) -- (space);
+\draw[arr] (space) -- (ms);
+\draw[arr] (ms) -- (conn);
+\draw[arr] (conn) -- (db);
+\end{tikzpicture}
+\caption{模块依赖图（结构单调链）。}
+\label{fig:audit_dependency_map}
+\end{figure}
+
+\paragraph{图例（依赖类型）。}
+\AuditTag 图 \ref{fig:audit_dependency_map} 展示的是\emph{模块级}单调链。更细粒度的依赖（定理/假设/算法/实验条目）统一记录在推理台账（附录 \ref{app:inference_ledger}）中。其依赖类型按如下纪律理解：
+\begin{itemize}
+  \item \textbf{固边（数学/协议依赖）}：定义/引理/定理/算法的逻辑依赖，属于 \MathTag 或 \textsf{[Prot]}。
+  \item \textbf{虚边（接口字典）}：操作性解释、字典映射、可观测口径，属于 \InterfaceTag 或 \textsf{[Iface]}，不得反向进入数学证明链。
+  \item \textbf{点边（审计叠加）}：候选族/目标函数/tie-break、失败点模板、复现参数与误差预算，属于 \AuditTag 或 \textsf{[CAP]}，同样不得反向进入数学证明链。
+\end{itemize}
+
+\subsubsection{跨模块隐含约束注册表（当前稿）}
+
+\AuditTag 下列约束在文中被使用或被默认维持；它们的地位应被视为\emph{建模/接口层输入}，并在涉及处明确标注为假设、约定或审计口径（而非数学层定理的隐含前提）。
+
+\begin{table}[H]
+\centering
+\begin{tabular}{p{0.28\linewidth} p{0.62\linewidth}}
+\toprule
+\textbf{约束/约定} & \textbf{作用范围与说明}\\
+\midrule
+禁邻约束（稳定语言） & 定义稳定语言 $X_m$ 的合法性条件；支撑组合计数与接口亏损推导。\\
+观测投影的合法性 & 观测投影 $\pi_m$ 的输出必须落在 $X_m$（否则折叠/接口语句失效）。\\
+残差充分性（Axiom 6.1） & 将“未来相关自由度”压缩为有限残差承载；影响时间成本与双边界合成的建模闭包。\\
+空间均匀性/归一化（Assumption 9.1） & 规范化空间局部结构以便定义可计算的局部图与算法实现；不应作为组合定理的前提。\\
+分辨率--时间成本标度（Assumption 11.1） & 为 AMR/动态分辨率提供可操作的代价模型；需要量化误差/置信口径。\\
+曲率集中可检验口径（Assumption 12.2） & 将 holonomy/曲率“界面局部化”转写为可统计的实验指标；必须给出口径与误差预算。\\
+\bottomrule
+\end{tabular}
+\caption{跨模块隐含约束注册表（摘要）。}
+\end{table}
+

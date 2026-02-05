@@ -1,0 +1,66 @@
+\section{区间窗口首返时间的三值结构与二值退化}
+
+固定窗口 $E=(0,b)\subset\TT$，$b\in(0,1)$。端点约定差异仅影响零测集，以下均按“几乎处处”理解。
+
+\subsection{三值分段定理}
+
+\begin{theorem}[三值返回谱与分段常值性]\label{thm:three-value}
+取 $i\ge 0$ 使
+\[
+\delta_i<b\le \delta_{i-1},
+\]
+并定义
+\[
+K=\max\{k\ge 0:\ k\delta_i+\delta_{i+1}<b\}.
+\]
+则首返时间函数 $r_E$ 在 $E$ 上至多取三个值，且存在至多三段区间分割使 $r_E$ 在每段上常值。其可能取值集合可表示为
+\[
+\mathrm{Spec}(E)\subseteq \left\{q_i,\ q_{i+1}-(K-1)q_i,\ q_{i+1}-Kq_i\right\},
+\]
+并且满足 $0\le K\le a_{i+1}-1$。此外在合适排列下满足加法闭包关系，即中间值等于两侧值之和。
+\end{theorem}
+
+\begin{proof}[证明（略）]
+见附录 \ref{app:proof-thm31}。证明以返回塔分解为主：通过比较 $b$ 与误差层级 $(\delta_i,\delta_{i+1})$ 确定可能的塔高，利用旋转等距性与窗口连通性证明每个塔高对应的返回域为区间，从而给出分段常值性与三值上界。
+\end{proof}
+
+\subsection{二值退化的充要条件}
+
+\begin{theorem}[两值退化判别]\label{thm:two-value-criterion}
+在定理 \ref{thm:three-value} 的记号下，以下条件等价：
+\begin{enumerate}
+  \item $r_E$ 在 $E$ 上恰取两值；
+  \item 中间分段退化为零长度；
+  \item $b$ 满足线性等式
+  \[
+  b=(K+1)\delta_i+\delta_{i+1};
+  \]
+  \item 存在整数 $c$ 满足
+  \[
+  b=\delta_{i-1}-c\delta_i,\qquad 0\le c<a_{i+1}.
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+由定理 \ref{thm:three-value} 的三段结构，中间段退化当且仅当端点重合，等价于 $b=(K+1)\delta_i+\delta_{i+1}$。再用 $\delta_{i-1}=a_{i+1}\delta_i+\delta_{i+1}$ 改写即可得到
+$b=\delta_{i-1}-c\delta_i$，其中 $c=a_{i+1}-(K+1)$，并自动满足 $0\le c<a_{i+1}$。证毕。
+\end{proof}
+
+\subsection{二值退化与诱导保持旋转}
+
+\begin{theorem}[两值退化的动力学等价性]\label{thm:two-value-iet}
+对区间窗口 $E=(0,b)$，以下命题等价：
+\begin{enumerate}
+  \item $r_E$ 在 $E$ 上仅取两值；
+  \item 诱导映射 $T_{\theta,E}$ 为 $2$-IET；
+  \item $(E,m_E,T_{\theta,E})$ 与某个无理旋转系统测度共轭。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1)$\Rightarrow$(2)：两值返回时间意味着 $E$ 可分为两段，在每段上 $T_{\theta,E}$ 为一次平移，故为 $2$-IET。\\
+(2)$\Rightarrow$(3)：$2$-IET 与圆周旋转经端点识别与线性共轭等价。\\
+(3)$\Rightarrow$(1)：旋转的两段截面诱导对应两层返回塔，故仅两值。证毕。
+\end{proof}
+

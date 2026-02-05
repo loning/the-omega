@@ -1,0 +1,82 @@
+\section{固定带宽递归读出与分割细化（\texorpdfstring{$m=6$}{m=6}）}
+
+本章在主文固定带宽 $m=6$ 的前提下，将“递归观测”严格表述为协议层的分割细化过程：不通过增大 $m$，而通过对同一底系统施加逐级条件化读出，形成嵌套纤维链，从而提升有效分辨率。
+
+\subsection{对象层定义}
+
+\begin{definition}[第一级输出]\label{def:rec-level0}
+主文固定 $m=6$。记稳定化输出为
+$$
+x^{(0)}_t:=\mathrm{Fold}_6(\omega_t^{(6)})\in X_6^{\mathrm Z},
+$$
+其中 $\omega_t^{(6)}\in\{0,1\}^6$ 为长度 $6$ 的滑动窗口词（见定义 \ref{def:sliding-fold}）。
+\end{definition}
+
+\begin{definition}[第 $k$ 级条件读出与输出]\label{def:rec-levelk}
+给定历史输出
+$$
+x^{(0:k-1)}=(x^{(0)},x^{(1)},\dots,x^{(k-1)})\in (X_6^{\mathrm Z})^{k},
+$$
+定义第 $k$ 级条件读出协议为在该历史条件下的可测读出
+$$
+q_6^{(k)}:\Omega\to \{0,1\}^6,
+$$
+并定义第 $k$ 级输出
+$$
+x^{(k)}=\mathrm{Fold}_6\!\left(q_6^{(k)}(\cdot)\right)\in X_6^{\mathrm Z}.
+$$
+\end{definition}
+
+\begin{definition}[嵌套纤维链]\label{def:rec-nested-fibers}
+递归观测诱导嵌套链
+$$
+\mathcal{F}^{(0)}\supseteq \mathcal{F}^{(1)}\supseteq \cdots \supseteq \mathcal{F}^{(K)},
+$$
+其中 $\mathcal{F}^{(0)}=\mathcal{F}_6(x^{(0)})=\mathrm{Fold}_6^{-1}(x^{(0)})$，而 $\mathcal{F}^{(k)}$ 表示在前级条件化下的可见等价类预像集合。
+\end{definition}
+
+\subsection{可核查命题}
+
+\begin{proposition}[R1：递归读出等价于分割的逐级细化]\label{prop:rec-R1}
+在固定底系统与固定 $m=6$ 下，递归读出产生的历史条件化等价于对可观测 $\sigma$-代数施加逐级细化：递归深度 $K$ 对应一个嵌套分割族，其柱集族随 $K$ 单调细化。
+\end{proposition}
+
+\begin{proposition}[R2：条件不确定性的单调性]\label{prop:rec-R2}
+令 $G$ 为目标细节量（可测函数或有限值观测量）。则条件不确定性（例如条件熵）
+$$
+H(G\mid x^{(0:K)})
+$$
+随递归深度 $K$ 非增。
+\end{proposition}
+
+\begin{proposition}[R3：与增大 $m$ 的关系（仅信息量对照）]\label{prop:rec-R3}
+递归深度增加与一次性增大窗口长度 $m$ 均可提升可区分信息量。本文仅将二者作为实证对照：比较给定目标量 $G$ 时 $H(G\mid x^{(0:K)})$ 的下降效率，不在一般性上宣称严格等价。
+\end{proposition}
+
+\begin{proposition}[R4：Zeckendorf 语义下的块协议严格等价]\label{prop:rec-R4-block-equivalence}
+在 Zeckendorf 稳定语言下，若递归条件读出满足“块协议”：存在一条同一原始无限串 $\omega^{(\infty)}=(\omega_1,\omega_2,\dots)\in\{0,1\}^{\mathbb{N}}$，使得第 $k$ 级读出读取其第 $k$ 个连续 6-块
+\[
+q_6^{(k)}=\bigl(\omega_{6k+1},\omega_{6k+2},\dots,\omega_{6k+6}\bigr),
+\]
+并以 $\mathrm{Fold}_6$ 规范化得到 $x^{(k)}\in X_6^{\mathrm Z}$，则深度 $K$ 的递归输出
+\[
+(x^{(0)},x^{(1)},\dots,x^{(K-1)})
+\]
+与一次性窗口长度 $m=6K$ 的稳定输出 $\mathrm{Fold}_{6K}(\omega^{(6K)})\in X_{6K}^{\mathrm Z}$ 在信息内容上等价：二者通过块编码存在自然双射对应，并由块间边界兼容条件刻画。
+\end{proposition}
+
+\begin{proof}[证明要点]
+将 $X_6^{\mathrm Z}$ 视为 6-块空间 $B$。对 $b=(b_1,\dots,b_6)\in B$ 定义 $\mathrm{fst}(b)=b_1$、$\mathrm{lst}(b)=b_6$，并定义块兼容关系
+\[
+b\to b'\iff \mathrm{lst}(b)\,\mathrm{fst}(b')\neq 11.
+\]
+则 $X_{6K}^{\mathrm Z}$ 中的合法长度 $6K$ 串与兼容路径集合
+\[
+\{(b_0,\dots,b_{K-1})\in B^K:\ b_i\to b_{i+1}\ \text{对所有}\ 0\le i<K-1\}
+\]
+由“按 6 位切分/按块拼接”给出自然双射。块协议下，递归输出正对应此路径表示，从而与一次性 $m=6K$ 输出等价。
+\end{proof}
+
+\subsection{固定 \texorpdfstring{$m=6$}{m=6} 的协议层动机（对象层表述）}
+固定 $m=6$ 的选择在本文仅作为协议层约定，其动机为：\textbf{(i)} 与秩 $6$ 的超空间闭合模型类对齐；\textbf{(ii)} 与 $(3+3)$ 分解并行；\textbf{(iii)} 最小闭合可验证性（$2^6\to F_8$ 的全枚举平台）。
+

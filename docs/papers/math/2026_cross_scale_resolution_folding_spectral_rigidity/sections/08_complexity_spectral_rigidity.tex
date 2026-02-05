@@ -1,0 +1,35 @@
+\section{复杂性—谱刚性：不依赖 RH 的强结论链}\label{sec:complexity}
+
+\subsection{谱隙坍缩 $\Rightarrow$ 混合时间下界恶化}
+令 $G$ 为 $d$-正则连通图，随机游走转移矩阵 $P=\tfrac1dA$，谱隙 $\gamma=1-\lambda_2(P)$。记 $\tau_{\mathrm{mix}}(\varepsilon)$ 为总变差距离 $\varepsilon$ 的混合时间。
+
+\begin{theorem}[谱隙—混合时间基本界]\label{thm:mixing-gap}
+存在常数 $c_1,c_2>0$（依赖于采用的规范与定义）使得
+\[
+  c_1\,\gamma^{-1}\log(\varepsilon^{-1})\ \le\ \tau_{\mathrm{mix}}(\varepsilon)\ \le\ c_2\,\gamma^{-1}\log\bigl(\abs{V}\,\varepsilon^{-1}\bigr).
+\]
+\end{theorem}
+\begin{proof}
+标准谱方法与马尔可夫链混合理论结论，见 \cite{levinpereswilmer,lovasz1993randomwalks}。
+\end{proof}
+
+\subsection{Cheeger：谱隙坍缩 $\Rightarrow$ 出现瓶颈}
+记 conductance $\Phi(G)$。Cheeger 型不等式给出
+\[
+  \frac{\Phi(G)^2}{2}\ \le\ \gamma\ \le\ 2\Phi(G),
+\]
+从而 $\gamma$ 很小将迫使图存在稀疏割与长时间滞留现象，导致基于局部采样/随机游走的流程出现可量化的代价恶化（见 \cite{lmspectralsgapnotes}）。
+
+\subsection{可审计的“算法代价函数”}
+对任何基于局部采样/随机游走的结构识别算法（包括许多 GI 子程序、谱聚类、局部证书流程），其资源下界可写成
+\[
+  T_{\mathrm{alg}}(\varepsilon)\ \gtrsim\ \tau_{\mathrm{mix}}(\varepsilon),
+\]
+从而一旦谱隙坍缩，代价下界按 $\gamma^{-1}$ 放大。本文将此类由硬不等式串联出的结论称为“复杂性—谱刚性”：\emph{谱隙是可计算性的最低门槛之一。}
+
+\paragraph{覆盖图的一个可复现谱例子}
+对本文的 $\widetilde G_6$，我们在脚本中构造由 shift 边诱导的（对称化）无向图，并输出其随机游走谱隙估计与相应的混合时间下界示例；见
+\[
+  \texttt{sections/generated/cover\_graph\_summary.tex}.
+\]
+

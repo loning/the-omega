@@ -1,0 +1,105 @@
+\section{多尺度一致性、可见性投影与有效维数（扩展层）}
+
+本章分为闭层可定义结构与解释层命题两部分，二者严格区分。
+
+\subsection{多尺度稳定化与逆系统（模型类假设）}
+
+为将“本体与分辨率 $m$ 无关；不同 $m$ 的结果一致仅差精细程度”严格化，需要给出跨尺度的自然映射，并将各尺度稳定类型组织为逆系统。
+
+\begin{definition}[位号标记的 Zeckendorf 稳定类型]\label{def:XmZ-indexed-multiscale}
+为避免“高位/低位在左或右”的书写约定差异，本文在多尺度语义下将长度 $m$ 的稳定类型写为带位号的向量
+\[
+X_m^{\mathrm Z,\#}:=\Bigl\{(x_k)_{2\le k\le m+1}\in\{0,1\}^{\{2,3,\dots,m+1\}}:\ x_kx_{k+1}=0\ \text{对所有}\ 2\le k\le m\Bigr\}.
+\]
+若需与 $X_m^{\mathrm Z}\subset\{0,1\}^m$ 的表示一致，可取同构 $(x_k)_{2\le k\le m+1}\mapsto (x_{m+1},x_m,\dots,x_2)$。
+\end{definition}
+
+\begin{definition}[尺度投影（restriction）]\label{def:pi-m2-m1-multiscale}
+对任意 $m_2\ge m_1$，定义 restriction 投影
+\[
+\pi_{m_2\to m_1}:X_{m_2}^{\mathrm Z,\#}\to X_{m_1}^{\mathrm Z,\#},\qquad
+\bigl(\pi_{m_2\to m_1}(x)\bigr)_k:=x_k\ \ (2\le k\le m_1+1).
+\]
+\end{definition}
+
+\begin{lemma}[投影良定、满射与一致性]\label{lem:multiscale-pi-basic}
+映射 $\pi_{m_2\to m_1}$ 良定义且为满射，并满足
+\[
+\pi_{m_3\to m_1}=\pi_{m_2\to m_1}\circ \pi_{m_3\to m_2}\qquad (m_3\ge m_2\ge m_1).
+\]
+\end{lemma}
+
+\begin{proof}
+restriction 保持局部禁词约束，故良定义；任意 $X_{m_1}^{\mathrm Z,\#}$ 元素可通过尾部补零扩展到 $X_{m_2}^{\mathrm Z,\#}$，故满射；一致性由逐坐标定义直接得到。
+\end{proof}
+
+由 $\{X_m^{\mathrm Z,\#},\pi_{m_2\to m_1}\}$ 构成逆系统，因而可定义逆极限对象。
+
+\begin{definition}[无穷 Zeckendorf 子移位]\label{def:XinfZ-multiscale}
+定义分辨率无关对象
+\[
+X_\infty^{\mathrm Z}:=\Bigl\{(x_k)_{k\ge 2}\in\{0,1\}^{\{2,3,\dots\}}:\ x_kx_{k+1}=0\ \text{对所有}\ k\ge 2\Bigr\},
+\]
+并定义自然 restriction 投影 $\pi_m^\infty:X_\infty^{\mathrm Z}\to X_m^{\mathrm Z,\#}$ 为 $(\pi_m^\infty(x))_k:=x_k$（$2\le k\le m+1$）。
+\end{definition}
+
+\begin{theorem}[逆极限同构（尺度一致性）]\label{thm:multiscale-inverse-limit}
+存在自然同构
+\[
+X_\infty^{\mathrm Z}\ \cong\ \varprojlim X_m^{\mathrm Z,\#},
+\]
+并满足交换关系
+\[
+\pi_{m_2\to m_1}\circ \pi_{m_2}^\infty=\pi_{m_1}^\infty\qquad(m_2\ge m_1).
+\]
+\end{theorem}
+
+\begin{proof}
+无穷序列的 restriction 前缀族给出一致族；一致族由逐位号拼接为无穷序列；两构造互逆且自然。
+\end{proof}
+
+\begin{assumption}[尺度相容图（读出因子化）]\label{assump:scale-compatibility}
+对原始窗口读出 $\omega^{(m)}$，取 $m_2\ge m_1$ 时的 restriction（或等价截断）$\omega^{(m_1)}$，并要求稳定化核满足交换关系
+\[
+\pi_{m_2\to m_1}\bigl(\mathrm{Fold}_{m_2}(\omega^{(m_2)})\bigr)=\mathrm{Fold}_{m_1}(\omega^{(m_1)}).
+\]
+该条件将“高分辨率投影到低分辨率后一致”严格化；它并不宣称不同 $m$ 的原始输出空间相同，而是给出跨尺度相容性口径。
+\end{assumption}
+
+\subsection{有效维数（定理层定义 + 解释层讨论）}
+
+\begin{definition}[符号可见空间的熵维数]\label{def:entropy-dimension}
+对长度尺度 $m$，全二值空间大小为 $2^m$，稳定态空间大小为 $\card{X_m^{\mathrm Z}}=F_{m+2}$。定义熵维数
+\[
+d_{\mathrm{ent}}:=\lim_{m\to\infty}\frac{\log \card{X_m^{\mathrm Z}}}{\log 2^m}
+=\lim_{m\to\infty}\frac{\log F_{m+2}}{m\log 2}
+=\frac{\log\varph}{\log 2}.
+\]
+该极限存在，且由 Fibonacci 渐近 $F_{m}\sim \varph^m/\sqrt{5}$ 得到。
+\end{definition}
+
+\begin{remark}[解释层命题：非整数资源维的候选解释]
+若将“可区分状态数随分辨率增长的指数”视为协议意义下的“有效维”，则 $d_{\mathrm{ent}}$ 提供一个非整数维度指标；其取值由黄金比控制。这一命题仅说明协议层的可见性压缩可呈现分形标度，不构成关于几何流形维数的定理结论。
+\end{remark}
+
+\subsection{可见性投影与黄金比存在态（解释层命题）}
+
+为避免形而上表述，以下以算子固定点语言给出可检验的形式化框架。
+
+\begin{definition}[可见性投影]\label{def:visibility-projection}
+在有限窗口长度 $m$ 上，定义可见子空间为
+\[
+\mathcal{H}^{(m)}_{\mathrm{vis}}:=\ell^2(X_m^{\mathrm Z}),\qquad
+\mathcal{H}^{(m)}_{\mathrm{raw}}:=\ell^2(\{0,1\}^m),
+\]
+并由稳定化核诱导线性映射（推前算子）
+\[
+(\mathcal{P}_m f)(x):=\sum_{\omega\in \mathcal{F}_m(x)} f(\omega).
+\]
+将“可见性”定义为经过 $\mathcal{P}_m$ 后仍可在稳定态空间分辨的分量。
+\end{definition}
+
+\begin{remark}[解释层命题：黄金比存在态作为 Perron--Frobenius 固定点]
+将 $X_m^{\mathrm Z}$ 看作由禁词 $11$ 定义的有限状态图（黄金均值移位），其转移邻接矩阵的主特征值趋于 $\varph$，对应主特征向量给出符号频率的稳定锥。若将“存在/不可见”二元范畴视为该转移图的两类基元（例如以 $1/0$ 作为最小区分单元），则主特征向量分量比收敛到黄金比，从而给出一种“固定点权重比”意义下的黄金比存在态。该命题为解释层语言：其数学部分是 Perron--Frobenius 定理与黄金均值移位的主特征结构；“存在”语义不进入闭层推理。
+\end{remark}
+

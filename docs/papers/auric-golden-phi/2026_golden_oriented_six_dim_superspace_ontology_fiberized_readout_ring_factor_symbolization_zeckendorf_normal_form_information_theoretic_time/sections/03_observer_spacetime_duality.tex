@@ -1,0 +1,67 @@
+\section{观察者—时空对偶：算子—像表述}
+
+\subsection{观察者参数空间}
+
+\begin{definition}[观察者参数]\label{def:observer}
+定义观察者为参数元组
+\[
+O=(\mathcal{S},u,\alpha,\mathcal{P},m,\mathrm{Fold}),
+\]
+其中：$\mathcal{S}$ 为几何选择（物理子空间取向、窗口/strip 规则），$u\in E_{\perp}^{3}$ 为内部相位，$\alpha\in\RR/\ZZ$ 为环扫描参数，$\mathcal{P}=\{I_0,I_1\}$ 为圆周二分割（符号化分割），$m\in\NN$ 为有限窗口长度，$\mathrm{Fold}=\mathrm{Fold}_m$ 为稳定化核。
+\end{definition}
+
+\begin{assumption}[主文固定带宽]\label{assump:m6-fixed-main}
+除非另行说明，主文固定 $m=6$ 且 $\mathrm{Fold}=\mathrm{Fold}_6$。
+\end{assumption}
+
+\begin{proposition}[局部实现差异]\label{prop:patch-difference}
+在固定 $\mathcal{S}$ 下，若 $u\neq u'$，则 $\Lambda(W,u)$ 与 $\Lambda(W,u')$ 的局部补丁族一般不同。该差异性来自 cut-and-project 定义对窗口平移的依赖。
+\end{proposition}
+
+\begin{remark}
+接受域/窗口的平移改变哪些格点落入管道，从而改变物理投影点集的局部实现；参见 \cite{IUCRAcceptanceDomain} 的相关条目表述。
+\end{remark}
+
+\subsection{读出算子与“时空像”}
+
+令 $(\Sigma,\mathcal{B},\mu,T)$ 为离散时间测度保持动力系统。取分辨率 $m\in\NN$，定义有限窗口读出 $q_m:\Sigma\to\Omega_m$，其中 $\Omega_m=\{0,1\}^{m}$。
+
+定义“观察者依赖的几何—符号因子映射” $\Pi_O$（由 $\mathcal{S},u,\alpha,\mathcal{P}$ 决定），并引入稳定化核 $\mathrm{Fold}_m$（见第 \ref{sec:zeckendorf} 节）。定义复合读出算子
+\[
+\mathcal{R}_{O,m}=\mathrm{Fold}_m\circ q_m\circ \Pi_O.
+\]
+
+\begin{definition}[时空像]\label{def:spacetime-image}
+给定 $(O,m)$ 与轨道 $s_{t+1}=T(s_t)$，定义可见序列
+\[
+x_t=\mathcal{R}_{O,m}(s_t)\in X_m^{\mathrm Z}.
+\]
+在本文语义下，“时空”定义为序列 $(x_t)_{t\ge 0}$ 及其诱导的转移核、可达图与柱集条件结构（见第 \ref{sec:information-time}--\ref{sec:fiber-observables} 节）。
+\end{definition}
+
+\subsection{多尺度一致性：逆系统与读出因子化（比较不同 \texorpdfstring{$m$}{m} 的必要接口）}
+
+当需要比较不同窗口长度 $m$ 的输出时，“一致”必须被精确定义为跨尺度相容性，而非不同 $m$ 的原始输出相等。为此引入尺度接口：对 $m_2\ge m_1$，取自然的 restriction 投影
+\[
+\pi_{m_2\to m_1}:X_{m_2}^{\mathrm Z}\to X_{m_1}^{\mathrm Z},
+\]
+其作用是保留有限位号范围内的稳定部分（等价地：保留有限前缀信息）。
+
+\begin{assumption}[尺度相容（读出因子化）]\label{assump:ontology-scale-factorization}
+对任意 $m_2\ge m_1$，读出算子族满足
+\[
+\pi_{m_2\to m_1}\circ \mathcal{R}_{O,m_2}=\mathcal{R}_{O,m_1}\qquad (\mu\text{-a.e. 或逐点}).
+\]
+\end{assumption}
+
+在该口径下，更大 $m$ 的输出在投影到较小 $m$ 后复现较小 $m$ 的输出；差异仅体现为更长前缀与由此诱导的更细条件结构。进一步，$\{X_m^{\mathrm Z},\pi_{m_2\to m_1}\}$ 可被组织为逆系统，其逆极限给出分辨率无关的统一对象（详见附录 \ref{app:zeckendorf-fold} 的补充证明）。
+
+\subsection{“无理/有理”的层级归属}
+
+本文不将“有理/无理”归属于物理坐标本身，而归属于：
+\begin{itemize}
+  \item \textbf{参数域：}无理 strip 取向与无理 $\alpha$ 决定非周期/稠密结构；
+  \item \textbf{输出域：}对固定 $m$，输出像 $X_m$ 为有限可编码对象，并在有限时间窗内呈现周期近似层级。
+\end{itemize}
+该表述避免将数论属性误置于物理时空坐标域。
+

@@ -1,0 +1,48 @@
+% 2 Preliminaries
+\section{预备知识与记号}\label{sec:prelim}
+
+\subsection{Fibonacci 数列与 Zeckendorf 约束}
+设 Fibonacci 数列 $\{F_n\}_{n\ge 0}$ 满足 $F_0=0,F_1=1,F_{n+2}=F_{n+1}+F_n$。
+我们采用权重集合 $\{F_2,F_3,\dots\}$，并将长度 $m$ 的二进制词 $w=(w_1,\dots,w_m)$ 解释为数值
+\[
+N(w)=\sum_{i=1}^{m} w_i F_{i+1}.
+\]
+Zeckendorf 表示要求系数向量不含相邻 $1$，其对应的规范形存在唯一。\cite{zeckendorf1972representation}
+
+\subsection{禁词语言与长度切片}
+定义长度切片
+\[
+X_m=\{w\in\{0,1\}^m:\forall i\in\{1,\dots,m-1\},\ (w_i,w_{i+1})\neq(1,1)\}.
+\]
+该集合等价于黄金均值移位的长度 $m$ 允许词集合。
+\cite{lind1995symbolic}
+
+\begin{theorem}[计数]\label{thm:Xm_count}
+有
+\[
+|X_m|=F_{m+2}.
+\]
+\end{theorem}
+\begin{proof}
+设 $a_m=|X_m|$。按首位 $w_1$ 分类：若 $w_1=0$，余下 $m-1$ 位可为任意 $X_{m-1}$ 中元素，计数为 $a_{m-1}$；
+若 $w_1=1$，则必须有 $w_2=0$，余下 $m-2$ 位可为任意 $X_{m-2}$ 中元素，计数为 $a_{m-2}$。
+因此 $a_m=a_{m-1}+a_{m-2}$，并由初值 $a_1=2$、$a_2=3$ 得 $a_m=F_{m+2}$。
+\end{proof}
+
+\subsection{有限状态与右等价（Myhill--Nerode 视角）}
+本文将“残差”建立在如下范式上：给定一个有限长度的确定性映射
+\[
+f:\{0,1\}^m\to X_m,
+\]
+对任意前缀 $u\in\{0,1\}^k$（$0\le k\le m$），考虑其对后续输入的\emph{右作用}：
+对任意后缀 $s\in\{0,1\}^{m-k}$，有 $f(us)$。若两前缀 $u,v$ 满足对所有后缀 $s$ 都有
+\[
+f(us)=f(vs),
+\]
+则称它们在深度 $k$ 上右等价。右等价类的集合构成一个有限状态对象，并可用于刻画“对未来输入的反应”
+所需的最小信息量。\cite{Myhill1957FiniteAutomata,Nerode1958Automata,HopcroftUllman1979Automata,Kozen1997Automata,Sipser2012TOC}
+
+\subsection{本文的工程化约定}
+本文所有脚本使用 \verb|python3|；长循环每分钟至少输出一次进度信息；所有表格/摘要段落由脚本生成并写入
+\verb|sections/generated/|。
+
