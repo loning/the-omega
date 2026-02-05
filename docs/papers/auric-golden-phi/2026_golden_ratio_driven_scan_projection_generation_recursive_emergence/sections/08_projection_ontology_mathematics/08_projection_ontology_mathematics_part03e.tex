@@ -28,6 +28,42 @@
 加法与乘法由定理 \ref{thm:composition-two-layer} 与 \ref{thm:arith-composition} 的过程层读出实现，并由 $\Fold_\infty$ 落回稳定地址。商余由定理 \ref{thm:pom-division-section} 作为平移群胚横截面投影给出。其余运算由上述原语的组合闭包得到。证毕。
 \end{proof}
 
+\begin{theorem}[双横截面正规形：值纤维 $\times$ 同余类]\label{thm:pom-double-transversal-normal-form}
+对任意配置对象 $a\in\mathcal D$ 与任意整数 $b>0$，存在唯一三元组
+\[
+\boxed{(x,q,r)\in X_\infty\times\mathbb{Z}\times\mathcal F_b}
+\]
+使得
+\[
+x=\Fold_\infty(a),\qquad
+r=\Pi_b(\mathrm{Val}(a)),\qquad
+q=\frac{\mathrm{Val}(a)-r}{b},
+\]
+并且 \(\mathrm{Val}(a)=\mathrm{Val}(x)=qb+r\)。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:zeckendorf-transversal}（或等价的定义 \(\Fold_\infty(a)=Z(\mathrm{Val}(a))\)）得 \(x\) 唯一且满足 \(\mathrm{Val}(x)=\mathrm{Val}(a)\)。
+由定理 \ref{thm:pom-division-section} 得 \((q,r)\) 唯一且满足 \(r=\Pi_b(\mathrm{Val}(a))\) 与 \(\mathrm{Val}(a)=qb+r\)。
+合并两部分即得所示三元组的存在唯一性。证毕。
+\end{proof}
+
+\begin{corollary}[投影调用的常数预算：末端正规化]\label{cor:pom-projection-budget}
+设 \(t\) 为任意由配置层运算 \(\oplus,\otimes,\mathrm{div},\mathrm{quo},\mathrm{rem}\) 复合得到的表达式（深度任意），并假设其\emph{外部可见输出}仅为一次稳定地址读出（落在 \(X_\infty\)）以及可选的一次商余读出（落在 \(\mathbb Z\times\mathcal F_b\)）。
+则存在一个等价的过程层实现，使得整条求值链中
+\begin{itemize}
+  \item 值横截面投影 \(\Fold_\infty\) 至多调用一次（仅在末端把结果落回 \(X_\infty\)）；
+  \item 序横截面投影 \(\Pi_b\) 至多调用一次（仅当需要输出唯一余数代表时，于末端对 \(\mathrm{Val}\) 应用）。
+\end{itemize}
+并且：若输出类型要求唯一稳定地址（或要求唯一余数代表），则对应末端投影在该意义下不可省略。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-extended-primitives}，过程层求值可改写为群胚内的可逆演化与末端横截面投影的复合。
+而 \(\Fold_\infty\) 是 \(\mathrm{Val}\) 的规范截面：\(\mathrm{Val}(\Fold_\infty(a))=\mathrm{Val}(a)\)，且 \(\Fold_\infty(a)\) 仅依赖于 \(\mathrm{Val}(a)\)。
+因此任何中间步骤对同一值纤维反复“先落回再继续演化”的正规化，都不会改变末端按最终值落回 \(X_\infty\) 的结果，可统一推迟为末端一次。
+同理，\(\Pi_b\) 仅依赖于整数值 \(\mathrm{Val}(\cdot)\)，且 \(\mathrm{Val}\) 可在末端一次性读出，故若只需一次商余读出，则 \(\Pi_b\) 亦可推迟到末端一次。
+最后，“不可省略性”来自轨道代表的非唯一性：不施加对应横截面投影，则输出仍停留在轨道上而非唯一点。证毕。
+\end{proof}
+
 \subsection{逆极限自然性与纤维不变量判别}\label{subsec:pom-new-results}
 \subsubsection{跨分辨率一致性的 Gauge 原理：fold-aware restriction}\label{subsubsec:pom-gauge}
 有限窗口微态空间 $\Omega_m=\{0,1\}^m$ 与稳定类型空间 $X_m$ 的角色并不对称：$X_m$ 在截断映射 $\pi_{m+1\to m}$ 下形成逆系统，而 $\Omega_m$ 在朴素截断下并不携带与折叠兼容的逆系统结构。该差异正是“跨分辨率一致性必须先规范化”的结构来源。
@@ -82,6 +118,64 @@ $$
 \begin{proof}
 第一式为定义 \ref{def:pom-fold-aware-restriction} 的直接展开。兼容性由稳定层的逆系统映射满足的泛性质给出（定理 \ref{thm:pom-inverse-limit}），而折叠后的坐标才是逆系统对象。证毕。
 \end{proof}
+
+\begin{definition}[Gauge 曲率（2-cocycle obstruction）]\label{def:pom-gauge-curvature}
+对给定的分辨率降阶 \((m{+}1\to m)\) 与顶层微态 \(\omega\in\Omega_{m+1}\)，定义曲率指示量
+\[
+\mathcal{K}_{m+1\to m}(\omega)
+:=
+\mathbf 1\!\left[\,
+\Fold_m(\tau_{m+1\to m}(\omega))
+\neq
+\pi_{m+1\to m}(\Fold_{m+1}(\omega))
+\,\right].
+\]
+它刻画“先截断再折叠”与“先折叠再限制”在该微态上的不交换障碍。
+\end{definition}
+
+\begin{proposition}[伪不变量的可测误差条：由曲率概率控制]\label{prop:pom-gauge-curvature-shadow-bound}
+令 \(\mu\) 为 \(\Omega_{m+1}\) 上任意分布，令 \(f:X_m\to\mathbb{R}\) 为任意有界可观测量。
+则有可审计的不等式
+\[
+\boxed{\;
+\left|\mathbb E_{\omega\sim\mu}\,f(\Fold_m(\tau_{m+1\to m}(\omega)))
+-\mathbb E_{\omega\sim\mu}\,f(\pi_{m+1\to m}(\Fold_{m+1}(\omega)))\right|
+\le
+2\|f\|_\infty\cdot \mathbb P_{\omega\sim\mu}\!\left[\mathcal{K}_{m+1\to m}(\omega)=1\right].\;}
+\]
+特别地，在采用 fold-aware restriction 的 Gauge 口径下（命题 \ref{prop:pom-gauge-natural} 的严格交换图表），上述误差条塌缩为 \(0\)。
+\end{proposition}
+\begin{proof}
+对每个 \(\omega\)，记
+\(
+x=\Fold_m(\tau_{m+1\to m}(\omega))
+\)
+与
+\(
+y=\pi_{m+1\to m}(\Fold_{m+1}(\omega))
+\)。
+则逐点有
+\[
+|f(x)-f(y)|
+\le
+2\|f\|_\infty\,\mathbf 1[x\neq y]
+=
+2\|f\|_\infty\,\mathcal{K}_{m+1\to m}(\omega).
+\]
+取 \(\omega\sim\mu\) 的期望即得所示不等式；最后一段由命题 \ref{prop:pom-gauge-natural} 直接推出。证毕。
+\end{proof}
+
+\begin{remark}[可复现审计：曲率概率的枚举/抽样]\label{rem:pom-gauge-curvature-audit}
+右端的曲率概率
+\(\mathbb P[\mathcal{K}_{m+1\to m}=1]\)
+可直接由实现同时计算两条路径的输出并统计失配频率得到。
+脚本 \texttt{scripts/exp\_fold\_truncation\_curvature.py} 在均匀微态基线下对 \(m\le 20\) 做精确枚举并生成表格片段；对一般数据源亦可按同一定义以抽样估计。
+例如，正文中用来定义 prime shadow 的计数函数、或任意 cylinder 指示函数 \(f\)，都是稳定类型的有界可观测量，因此不等式 \ref{prop:pom-gauge-curvature-shadow-bound} 给出一条可审计的“伪影误差条”。
+\end{remark}
+
+\IfFileExists{sections/generated/tab_fold_truncation_curvature_stats.tex}{%
+\input{sections/generated/tab_fold_truncation_curvature_stats}%
+}{}
 
 \begin{definition}[分辨率反射子（跨分辨率纤维均匀化）]\label{def:pom-resolution-reflector}
 固定顶层分辨率 $M$，并把微态空间取为 $\Omega_M$。

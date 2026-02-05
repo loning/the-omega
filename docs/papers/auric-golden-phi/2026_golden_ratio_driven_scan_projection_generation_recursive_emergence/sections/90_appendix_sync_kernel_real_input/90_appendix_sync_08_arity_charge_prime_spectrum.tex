@@ -83,6 +83,20 @@ P_{11}(q)&=324q^5+1000q^4+1444q^3+698q^2+113q+3,\\
 P_{12}(q)&=125q^6+1220q^5+2946q^4+3002q^3+1181q^2+158q+3.
 \end{aligned}
 \]
+同样可由脚本继续计算得到 $P_{13}\sim P_{20}$（亦可由后文定理 \ref{thm:real-input-40-arity-charge-det-closed} 的 $z$-分母次数为 $10$ 推出对 $c_n(q)$ 的线性递推，从而无需再枚举即可恢复全部 $P_n(q)$）：
+\[
+\begin{aligned}
+P_{13}(q)&=972q^6+4064q^5+7680q^4+5926q^3+1976q^2+217q+5,\\
+P_{14}(q)&=330q^7+4258q^6+13034q^5+18163q^4+11498q^3+3172q^2+301q+6,\\
+P_{15}(q)&=2916q^7+15900q^6+37524q^5+40566q^4+21582q^3+5019q^2+419q+8,\\
+P_{16}(q)&=840q^8+14708q^7+55064q^6+98698q^5+87496q^4+39216q^3+7811q^2+582q+10,\\
+P_{17}(q)&=8748q^8+60464q^7+173008q^6+243394q^5+182100q^4+69271q^3+12107q^2+804q+14,\\
+P_{18}(q)&=2240q^9+49774q^8+225610q^7+496962q^6+575156q^5+365310q^4+120040q^3+18505q^2+1110q+17,\\
+P_{19}(q)&=26244q^9+224608q^8+764008q^7+1334990q^6+1304974q^5+710658q^4+204589q^3+28079q^2+1534q+24,\\
+P_{20}(q)&=5979q^{10}+166724q^9+899324q^8+2370202q^7+3413073q^6+2850282q^5\\
+&\qquad\qquad+1348139q^4+343237q^3+42187q^2+2121q+30.
+\end{aligned}
+\]
 代入 $q=1$ 即回到未分层的 primitive 轨道数 $p_n=P_n(1)$。数值复现见脚本
 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity.py}。
 
@@ -135,6 +149,30 @@ D(q):=\mathrm{diag}\bigl(q^{V(\cdot)}\bigr)
 其中 $Q_7(z,q)\in\ZZ[z,q]$。因此当 $q>0$ 时，Perron 根 $\lambda(q)=\rho(M(q))$ 为 $P_7(\Lambda,q)=0$ 的最大正实根，
 从而压力函数 $\log\lambda(q)$ 是一条解析的代数曲线分支（次数 $7$）。
 \end{theorem}
+
+\begin{remark}[由 primitive 谱反推分母的 Newton 递推（数据闭合）]\label{rem:real-input-40-arity-charge-newton}
+令
+\(
+D(z,q):=\det(I-zM(q))=\sum_{n\ge 0}d_n(q)z^n
+\)（$d_0(q)=1$）。
+由
+\(
+\log D(z,q)=-\sum_{n\ge 1}\frac{c_n(q)}{n}z^n
+\)
+得 Newton 型恒等式
+\[
+n\,d_n(q)=-\sum_{k=1}^n c_k(q)\,d_{n-k}(q)\qquad(n\ge 1),
+\]
+其中 $c_n(q)=\mathrm{tr}(M(q)^n)$ 可由 primitive 多项式经
+\(
+c_n(q)=\sum_{d\mid n} d\,P_d\!\left(q^{n/d}\right)
+\)
+恢复。
+因此仅由枚举得到的 $P_1,\dots,P_{12}$ 即可反推出 $d_1,\dots,d_{12}$，
+并观测到 $d_{11}(q)\equiv d_{12}(q)\equiv 0$ 且 $d_{10}(q)=q^2(q-1)\neq 0$，
+提示分母在 $z$ 方向的有效次数为 $10$（而在 $q=1$ 处退化回 $9$ 次）。
+定理 \ref{thm:real-input-40-arity-charge-det-closed} 给出了这一闭合的严格闭式与因子分解。
+\end{remark}
 
 \begin{corollary}[显式谱支 \texorpdfstring{$\pm\sqrt q$}{±sqrt(q)} 与偶奇振荡项]\label{cor:real-input-40-arity-charge-sqrtq}
 由定理 \ref{thm:real-input-40-arity-charge-det-closed} 的因子 $(1-qz^2)$，矩阵 $M(q)$ 的谱中对一切 $q$ 都包含两条显式特征值
@@ -335,7 +373,8 @@ N_{n,4}^{(5)}=(0,0,0,0,0,0,0,21,108,334).
 \[
 P_\chi(\theta):=\log\rho(M(e^\theta)),
 \]
-则 $P_\chi'(0)=\mathbb{E}[\chi]$ 与 $P_\chi''(0)=\mathrm{Var}_\infty(\chi)$。
+则 $P_\chi^{(k)}(0)$ 给出 $\chi$ 的 $k$ 阶累积量密度（$k\ge 1$）；特别地
+$P_\chi'(0)=\mathbb{E}[\chi]$ 与 $P_\chi''(0)=\mathrm{Var}_\infty(\chi)$。
 由定理 \ref{thm:real-input-40-arity-charge-det-closed} 的代数方程 $P_7(\Lambda,q)=0$ 在 $q=1$ 处作隐式求导，可得闭式累积量密度（脚本生成）：
 \input{sections/generated/eq_real_input_40_arity_charge_cumulants_closed}
 其中 $\mathrm{Var}_\infty(\chi)=P_\chi''(0)$。
@@ -346,3 +385,32 @@ I_\chi(\alpha)\approx \frac{(\alpha-\mathbb{E}[\chi])^2}{2\,\mathrm{Var}_\infty(
 \]
 数值复现见脚本 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity.py} 与
 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_charge\_closed\_form.py}。
+
+\paragraph{端点热力学（$\theta\to\pm\infty$）}
+\begin{proposition}[端点压力与极端电荷密度]\label{prop:real-input-40-arity-charge-endpoints}
+当 $\theta\to-\infty$（即 $q=e^\theta\to 0^+$）时，有
+\[
+P_\chi(\theta)\to \log\kappa,
+\]
+其中 $\kappa>1$ 为 $\kappa^4-\kappa^3-1=0$ 的 Perron 根（同命题 \ref{prop:real-input-40-arity-charge-zero-zeta}）。
+当 $\theta\to+\infty$（即 $q\to+\infty$）时，
+\[
+P_\chi(\theta)=\frac12\,\theta+\frac12\log 3+o(1),
+\]
+从而
+\[
+\sup_\mu\int\chi\,d\mu=\lim_{\theta\to+\infty}P_\chi'(\theta)=\frac12.
+\]
+\end{proposition}
+
+\begin{proof}
+令 $q=e^\theta$。当 $\theta\to-\infty$ 时 $M(q)=M_0+qM_1\to M_0$，由谱半径的连续性得
+$\rho(M(q))\to\rho(M_0)=\kappa$。
+当 $\theta\to+\infty$ 时，Perron 根 $\lambda(q)=\rho(M(q))$ 满足定理 \ref{thm:real-input-40-arity-charge-det-closed} 的代数方程
+$P_7(\lambda(q),q)=0$。
+令 $\lambda(q)=s\sqrt q$ 并将方程按 $q^{7/2}$ 归一化，主阶平衡给出
+$s^3(s^4-5s^2+6)=0$，故极限分支满足 $s\in\{\sqrt2,\sqrt3\}$。
+由于 Perron 根选择最大正实根分支，得到 $s\to\sqrt3$，即 $\lambda(q)\sim \sqrt{3q}$，
+从而 $P_\chi(\theta)=\log\lambda(e^\theta)=\frac12\theta+\frac12\log 3+o(1)$。
+最后一式由端点斜率给出。
+\end{proof}
