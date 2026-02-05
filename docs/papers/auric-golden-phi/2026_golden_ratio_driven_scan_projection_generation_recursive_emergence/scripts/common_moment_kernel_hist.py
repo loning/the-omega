@@ -40,7 +40,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 from functools import lru_cache
-from typing import Dict, Hashable, Iterable, List, Mapping, Sequence, Tuple
+from typing import Callable, Dict, Hashable, Iterable, List, Mapping, Sequence, Tuple
 
 try:
     import numpy as np
@@ -51,6 +51,7 @@ InSym = Hashable
 OutSym = Hashable
 Histogram = Tuple[int, ...]
 SparseRow = List[Tuple[int, float]]
+WeightFn = Callable[[int, InSym], float]
 
 
 @dataclass(frozen=True)
@@ -436,6 +437,143 @@ def build_collision_moment_kernel_sparse(
 
         if progress_every and (i + 1) % int(progress_every) == 0:
             print(f"[moment-kernel-hist] built {i+1}/{len(states)} rows", flush=True)
+
+    return states, rows
+
+
+def build_collision_moment_kernel_sparse_weighted(
+    transducer: DeterministicTransducer,
+    k: int,
+    *,
+    weight_fn: WeightFn,
+    output_symbols: Sequence[OutSym] | None = None,
+    progress_every: int = 0,
+) -> Tuple[List[Histogram], List[SparseRow]]:
+    """Build sparse rows of a *weighted* histogram collision kernel A_k(u,theta,...).
+
+    This is the weighted analog of `build_collision_moment_kernel_sparse`, matching the
+    paper-side coefficient-extraction interface where edges carry nonnegative weights:
+
+      F_{q,b}(z) := Σ_{a: out(tau(q,a))=b} w(q,a) · z_{next(tau(q,a))}
+      A_k(ν,ν')  := Σ_b  [z^{ν'}]  Π_q F_{q,b}(z)^{ν(q)}.
+
+    Notes:
+    - `weight_fn(state_idx, input_symbol)` must return a finite nonnegative float.
+    - We do NOT apply collision-count lumping here: the existing lumping routine is
+      count-based (integer multiplicities) and is not sound for general real weights.
+    """
+    if k < 1:
+        raise ValueError("k must be >= 1")
+
+    Q = transducer.n_states()
+    out_syms = list(output_symbols) if output_symbols is not None else list(transducer.output_symbols)
+    if not out_syms:
+        raise ValueError("empty output_symbols")
+
+    out_idx: Dict[OutSym, int] = {b: i for i, b in enumerate(out_syms)}
+    n_out = len(out_syms)
+
+    # Precompute dest weight-sums:
+    #   dests[q_idx][b_idx] = list[(next_state_idx, weight_sum)]
+    dests: List[List[List[Tuple[int, float]]]] = [[[] for _ in range(n_out)] for _ in range(Q)]
+    accum: List[List[Dict[int, float]]] = [[{} for _ in range(n_out)] for _ in range(Q)]
+    for q in range(Q):
+        for a in transducer.input_symbols:
+            q2, b = transducer.trans[(q, a)]
+            if b not in out_idx:
+                continue
+            w = float(weight_fn(int(q), a))
+            if not (w >= 0.0) or (not math.isfinite(w)):
+                raise ValueError(f"weight_fn returned invalid weight {w} for (state={q}, input={a!r})")
+            if w == 0.0:
+                continue
+            bi = out_idx[b]
+            acc = accum[q][bi]
+            acc[q2] = acc.get(q2, 0.0) + w
+    for q in range(Q):
+        for bi in range(n_out):
+            items = sorted(accum[q][bi].items(), key=lambda t: t[0])
+            dests[q][bi] = [(int(q2), float(w)) for (q2, w) in items if w != 0.0]
+
+    fact = _fact_upto(k)
+    zero: Histogram = (0,) * Q
+
+    @lru_cache(maxsize=None)
+    def local_terms(q_idx: int, b_idx: int, n: int) -> Tuple[Tuple[Histogram, float], ...]:
+        """Return the sparse multinomial expansion of (Σ_s w_s z_s)^n with real weights."""
+        if n == 0:
+            return ((zero, 1.0),)
+        opts = dests[q_idx][b_idx]
+        if not opts:
+            return ()
+        if len(opts) == 1:
+            s, w = opts[0]
+            delta = [0] * Q
+            delta[s] = n
+            return ((tuple(delta), float(w**n)),)
+
+        # General (small) multinomial expansion.
+        dest_list = [s for (s, _w) in opts]
+        w_list = [float(w) for (_s, w) in opts]
+        d = len(dest_list)
+        out: List[Tuple[Histogram, float]] = []
+        for parts in _compositions(n, d):
+            coeff = float(_multinomial(fact, n, parts))
+            for wi, ci in zip(w_list, parts, strict=True):
+                if ci:
+                    coeff *= float(wi**ci)
+            if coeff == 0.0:
+                continue
+            delta = [0] * Q
+            for s, ci in zip(dest_list, parts, strict=True):
+                if ci:
+                    delta[s] += int(ci)
+            out.append((tuple(delta), float(coeff)))
+        return tuple(out)
+
+    def convolve(dist: Dict[Histogram, float], terms: Sequence[Tuple[Histogram, float]]) -> Dict[Histogram, float]:
+        out: Dict[Histogram, float] = {}
+        for h, c1 in dist.items():
+            for dh, c2 in terms:
+                nh = tuple(h[i] + dh[i] for i in range(Q))
+                out[nh] = out.get(nh, 0.0) + float(c1) * float(c2)
+        return out
+
+    states = histogram_states(k, Q)
+    index = {st: i for i, st in enumerate(states)}
+
+    rows: List[SparseRow] = []
+    for i, nu in enumerate(states):
+        row_accum: Dict[Histogram, float] = {}
+        for b_idx in range(n_out):
+            dist: Dict[Histogram, float] = {zero: 1.0}
+            ok = True
+            for q_idx, n_tracks in enumerate(nu):
+                if n_tracks == 0:
+                    continue
+                terms = local_terms(q_idx, b_idx, int(n_tracks))
+                if not terms:
+                    ok = False
+                    break
+                dist = convolve(dist, terms)
+                if not dist:
+                    ok = False
+                    break
+            if not ok:
+                continue
+            for nu2, w in dist.items():
+                row_accum[nu2] = row_accum.get(nu2, 0.0) + float(w)
+
+        # Deterministic order: by target index.
+        row: SparseRow = [
+            (index[nu2], float(w))
+            for nu2, w in sorted(row_accum.items(), key=lambda t: index[t[0]])
+            if w > 0.0
+        ]
+        rows.append(row)
+
+        if progress_every and (i + 1) % int(progress_every) == 0:
+            print(f"[moment-kernel-hist-weighted] built {i+1}/{len(states)} rows", flush=True)
 
     return states, rows
 

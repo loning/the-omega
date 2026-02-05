@@ -542,6 +542,24 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="moment_pressure_surface_sync10",
+            script="exp_moment_kernel_pressure_surface_sync10.py",
+            args=[
+                "--k-list",
+                "2,3,4,5",
+                "--u-grid",
+                "1,0.8,0.6,0.4,0.2",
+                "--energy",
+                "output",
+                "--plot",
+            ],
+            expected_outputs=[
+                "artifacts/export/moment_pressure_surface_sync10.json",
+                "artifacts/export/moment_pressure_surface_sync10.png",
+                "sections/generated/fig_moment_pressure_surface_sync10.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_weighted_3d_exact_audits",
             script="exp_sync_kernel_weighted_3d_exact_audits.py",
             args=[],
