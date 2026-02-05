@@ -2,22 +2,22 @@
 
 \subsection{自指比例与重整化不动点}
 
-黄金比例
+设黄金比例
 \[
-\varphi=\frac{1+\sqrt5}{2}
+\varphi=\frac{1+\sqrt5}{2}.
 \]
-满足自指方程 $\varphi=1+\varphi^{-1}$，亦即 $\varphi^{-1}$ 是映射 $x\mapsto (1+x)^{-1}$ 的不动点。本文仅采用其\textbf{严格可用的数学含义}：该不动点关系提供最简的自相似尺度常数示例，并在后续的斐波那契递推、增长率与编码语法中反复出现。关于“概念/意义”的解释性叙述不作为任何定理的前提（见引言小节 \ref{subsec:reading-guide}）。
+其满足 $\varphi=1+\varphi^{-1}$，等价地，$\varphi^{-1}$ 为自映射 $x\mapsto (1+x)^{-1}$ 的不动点。本文将该关系视为一个\textbf{尺度自相似的最小代数原型}：它在斐波那契递推、增长率与 Zeckendorf/Ostrowski 语法的重整化实现中反复出现。解释性叙述仅用于动机，不作为后续推导前提（见小节 \ref{subsec:reading-guide}）。
 
 \subsection{反共振最优性原则}
 
-在从连续/高维结构生成离散读出序列时，有理近似诱导的周期性共振会放大有限样本偏差。本文不将相关数论极值性质视为原创结论，而将其作为外部标准输入：在 Hurwitz/Markov（最坏有理逼近）尺度下，黄金分支可作为规范代表，用于固定可审计的反共振基线（\cite{Cassels1957,KuipersNiederreiter1974}）。
+在从连续（或高维）生成结构导出离散读出序列时，有理近似诱导的低分母周期性可放大有限样本偏差。本文在\emph{Hurwitz/Markov}（最坏有理逼近）尺度下引入一个外部可审计的基线，并将其作为后续稳定性证书的参照标准：黄金分支对应的常数为该尺度下的最强反共振代表（\cite{Cassels1957,KuipersNiederreiter1974}）。
 
 \begin{definition}[共振强度]\label{def:resonance-strength}
 对 $\alpha\in\RR\setminus\QQ$，定义其有理近似共振强度为
 \[
 R(\alpha):=\sup_{(p,q)\in\ZZ\times\NN}\frac{1}{q^2\abs{\alpha-p/q}} \in (0,\infty].
 \]
-该量越小，表示越难以出现低分母的强共振近似。
+该量越小，表示在最坏情形口径下越难出现低分母的强共振近似。
 \end{definition}
 
 量 $R(\alpha)$ 是连分数理论中的 \emph{Lagrange 常数}（亦即 Markov/Lagrange 谱的基本不变量）。并且 $R(\alpha)<\infty$ 当且仅当 $\alpha$ \emph{badly approximable}（等价于其连分数部分商有界）；此时
@@ -31,12 +31,24 @@ R(\alpha)=\limsup_{n\to\infty}\frac{1}{q_n^2\abs{\alpha-p_n/q_n}},
 \[
 c(\alpha):=\inf_{(p,q)\in\ZZ\times\NN} q^2\left|\alpha-\frac{p}{q}\right|\in[0,\infty).
 \]
-若 $c(\alpha)>0$（等价于 $\alpha$ badly approximable），则 $R(\alpha)=1/c(\alpha)$。
+若 $c(\alpha)>0$（等价于 $\alpha$ badly approximable），则 $R(\alpha)=1/c(\alpha)$；若 $c(\alpha)=0$，则必有 $R(\alpha)=\infty$。
 \end{definition}
+
+\begin{theorem}[Hurwitz 定理与最优常数]\label{thm:hurwitz-optimal}
+对任意 $\alpha\in\RR\setminus\QQ$，存在无穷多个 $(p,q)\in\ZZ\times\NN$ 使得
+\[
+\left|\alpha-\frac{p}{q}\right|<\frac{1}{\sqrt5\,q^2}.
+\]
+因此对所有无理数皆有 $c(\alpha)\le 1/\sqrt5$，等价地 $R(\alpha)\ge \sqrt5$。常数 $\sqrt5$ 为最优：存在无理数使得对一切 $(p,q)$ 皆有 $\left|\alpha-p/q\right|\ge 1/(\sqrt5\,q^2)$；例如 $\alpha=\varphi$（及其在 $\mathrm{SL}_2(\ZZ)$ 作用下的等价类）达到该最优界。
+\end{theorem}
+
+\begin{corollary}[反共振基线的规范化]\label{cor:anti-resonant-baseline}
+在最坏有理逼近口径下，以 $R(\alpha)$ 作为“共振强度”指标时，黄金分支（及其模群等价类）实现 $\inf_{\alpha\in\RR\setminus\QQ} R(\alpha)=\sqrt5$。本文后续所有“反共振选择”均以该基线作为可审计参照。
+\end{corollary}
 
 \subsection{从反共振到有限样本稳定性：一个可审计的优化问题}
 
-上面的 Hurwitz 极值性质本身是数论陈述。为了把它转译为扫描—投影读出中“可审计的稳定性证书”，我们在最基本的一维扫描模型上给出一个与正文第 4 节一致的量化指标，并明确本文所解决的优化问题。
+定理 \ref{thm:hurwitz-optimal} 与推论 \ref{cor:anti-resonant-baseline} 属于经典数论结论。为了将其转译为扫描—投影读出中的可审计稳定性证书，本文在最基本的一维 Kronecker 扫描模型上引入一类与第 \ref{sec:statistical-stability} 节一致的量化指标，并明确本文所使用的优化口径。
 
 \begin{definition}[共振诱导不稳定性（Kronecker 扫描的可审计证书）]\label{def:instability-envelope}
 对无理 $\alpha\in\RR\setminus\QQ$ 与初相位 $x_0\in[0,1)$，考虑 Kronecker 序列
@@ -47,14 +59,14 @@ x_t=\{x_0+t\alpha\}\in[0,1),\qquad t=0,1,\dots
 \[
 D_N^*(\alpha;x_0):=\sup_{0\le a\le 1}\left|\frac1N\sum_{t=0}^{N-1}\ind_{[0,a)}(x_t)-a\right|.
 \]
-我们将 $D_N^*(\alpha;x_0)$ 视为样本量 $N$ 下、在\textbf{全部区间窗二元读出}意义下的“共振诱导不稳定性”证书：它同时给出最坏窗集频率误差，并可由排序在有限样本上直接计算（参见 \cite{KuipersNiederreiter1974}）。
+我们将 $D_N^*(\alpha;x_0)$ 视为样本量 $N$ 下、在\textbf{全体区间窗二元读出}意义下的“共振诱导不稳定性”证书：它控制最坏窗集频率误差，且可由有限样本的排序结构直接计算（参见 \cite{KuipersNiederreiter1974}）。
 \end{definition}
 
 由定义 \ref{def:instability-envelope} 立得：对任意区间窗 $W=[0,a)$ 的指示读出 $s_t=\ind_W(x_t)$，有
 \[
 \left|\frac1N\sum_{t=0}^{N-1}s_t-a\right|\le D_N^*(\alpha;x_0).
 \]
-此外，当 $\alpha$ badly approximable 时，$D_N^*(\alpha;x_0)$ 存在显式的 $O((\log N)/N)$ 型上界（例如由连分数部分商控制的差异度上界给出；参见 \cite{KuipersNiederreiter1974}）。
+此外，当 $\alpha$ badly approximable 时，$D_N^*(\alpha;x_0)$ 存在显式的 $O((\log N)/N)$ 型上界（例如由连分数部分商上界导出的差异度估计；参见 \cite{KuipersNiederreiter1974}）。
 
 \begin{remark}[本文所解决与未解决的“最优性”问题]\label{rem:what-is-optimized}
 本文在二元区间窗读出约束下采用黄金分支，对应于外部可审计目标的引用点：在 Hurwitz/Markov 的最坏逼近尺度上固定反共振基线（\cite{Cassels1957,KuipersNiederreiter1974}），并与旋转二分割的经典符号化结果相容（\cite{MorseHedlund1940,LindMarcus1995}）。

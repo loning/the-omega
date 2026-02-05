@@ -309,6 +309,153 @@ e=\Bigl\lfloor \varphi R(s)+d\varphi^{-3}\Bigr\rfloor\in\{0,1\},
 这提供了一个最小可执行的升级接口：保留可审计的有限矩阵层，同时允许在 \(m\to\infty\) 的极限中进入真正的无穷维 Fredholm 行列式框架。
 \end{remark}
 
+\subsubsection{HTF 的降格、NonCancel 证书与留数环审计：从“逻辑屏障”到“可执行审计/构造目标”}\label{subsec:htf-downgrade-audit-constructive}
+本段把“单位圆盘内全纯（闭层）$\Rightarrow$ 内部极点不可出现（极点刚性）”这一逻辑屏障进一步压成三类可复用组件：
+\begin{itemize}
+  \item \textbf{更弱的验证假设}：HTF（或任意“几何侧=谱侧”的桥）不必在复参数全盘匹配；只要在真实协议路径 \(r\uparrow 1\) 的实轴区间 \((0,1)\) 上逐点成立，就能由解析刚性推出全盘恒等。
+  \item \textbf{更强的 NonCancel 审计}：把“同点主部消去不发生”从额外假设升级为\emph{正性/整数重数证书}（可作为构造目标）。
+  \item \textbf{可执行的 falsification 通道}：用有限个圆周采样直接估计候选点留数，并用显式界给出离散误差上界，从而把“留数必须为 \(0\)”变成可审计测试。
+\end{itemize}
+
+\begin{proposition}[实轴协议路径的充分性：只需在 \texorpdfstring{$(0,1)$}{(0,1)} 上匹配即可推出单位圆盘全盘恒等]\label{prop:real-arc-sufficiency-unit-disk}
+设 \(G(r)\) 在单位圆盘 \(\{\,|r|<1\,\}\) 上全纯。
+设谱侧写为
+\[
+G(r)=S(r)+A_\infty(r),
+\]
+其中 \(A_\infty(r)\) 在 \(|r|<1\) 上全纯，而 \(S(r)\) 在 \(|r|<1\) 上亚纯（允许有孤立极点）。
+若上述等式对所有实数 \(r\in(0,1)\) 成立，则该恒等式自动作为亚纯恒等延拓到整个单位圆盘 \(|r|<1\)；
+并且 \(S(r)\) 在 \(|r|<1\) 内的全部极点都必须是可去奇点（从而 \(S\) 实际上也在 \(|r|<1\) 上全纯）。
+\end{proposition}
+\begin{proof}
+令 \(F(r):=G(r)-A_\infty(r)-S(r)\)。则 \(F\) 在 \(|r|<1\) 上亚纯，并在 \((0,1)\) 上恒为 \(0\)。
+但非零亚纯函数的零点集在域内必为离散集；而 \((0,1)\) 在 \(|r|<1\) 内有聚点。
+故 \(F\equiv 0\)（作为亚纯函数恒等为零），从而恒等式在 \(|r|<1\) 上成立。
+由于 \(G-A_\infty\) 全纯，\(S=G-A_\infty\) 的全部极点只能是可去奇点，结论成立。
+\end{proof}
+
+\begin{proposition}[resolvent-trace 的整数留数证书：正性重数 \texorpdfstring{$\Rightarrow$}{=>} NonCancel]\label{prop:resolvent-trace-integer-residue-noncancel}
+令 \(F\) 为有限秩（或更一般为迹类）算子，并令
+\[
+S(r):=\Tr\bigl((I-rF)^{-1}\bigr)
+\]
+在 \(|r|\) 充分小时由幂级数定义，并按解析延拓视为其在 \(|r|<1\) 内的亚纯延拓（若存在）。
+则对每个非零特征值 \(\lambda\in\mathrm{spec}(F)\setminus\{0\}\)，在 \(r_0:=1/\lambda\) 处 \(S(r)\) 至多有一阶极点，并且其主部系数为对应 Riesz 投影 \(P_\lambda\) 的迹：
+\[
+S(r)=\frac{\Tr(P_\lambda)}{1-r\lambda}+(\text{在 }r_0\text{ 处解析的项}),
+\qquad
+\mathrm{Res}(S;r_0)=-\frac{\Tr(P_\lambda)}{\lambda}.
+\]
+特别地，\(\Tr(P_\lambda)=\mathrm{rank}(P_\lambda)\in\NN\) 是正整数（代数重数），因此同点主部不可能“自发消掉”；任意声称在 \(|r|<1\) 内出现的极点都会携带一个不可为零的留数证书。
+\end{proposition}
+\begin{proof}
+取一条绕 \(\lambda\) 的小闭曲线 \(\Gamma\) 不包围其它谱点，Riesz 投影
+\[
+P_\lambda=\frac{1}{2\pi i}\oint_\Gamma (zI-F)^{-1}\,\dd z
+\]
+为有限秩投影，且 \(\Tr(P_\lambda)=\mathrm{rank}(P_\lambda)\)。
+由谱分解的标准 resolvent 主部（或有限维 Jordan 形的直接计算）知，
+\((I-rF)^{-1}\) 在 \(r_0=1/\lambda\) 附近的主部为
+\(
+\frac{1}{1-r\lambda}P_\lambda
+\)
+（更高阶的 \((1-r\lambda)^{-k}\) 项均来自 nilpotent 部分，但其迹为 \(0\)）。
+对其取迹即得所示展开与留数公式。
+\end{proof}
+
+\begin{algorithm}[留数环审计协议（Residue-ring test；可执行 falsification 通道）]\label{alg:residue-ring-test}
+给定一个候选点 \(r_0\)（例如由外部零表/谱表预测的内部极点位置）与一个在 \(|r|<1\) 内可数值评估的函数 \(G(r)\)，取任意 \(\varepsilon>0\) 使得闭圆 \(\overline{D}(r_0,\varepsilon)\subset\{|r|<1\}\)，并取整数采样数 \(K\ge 1\)。
+令 \(\theta_k:=2\pi k/K\) 并定义离散留数估计
+\[
+\boxed{\;
+\widehat{\mathrm{Res}}(G;r_0)
+\ :=\ \frac{\varepsilon}{K}\sum_{k=0}^{K-1} e^{i\theta_k}\,G\!\bigl(r_0+\varepsilon e^{i\theta_k}\bigr)\; }.
+\]
+若 \(G\) 在 \(|r|<1\) 内全纯，则理论上 \(\mathrm{Res}(G;r_0)=0\)；因此任何显著偏离 \(0\) 的数值结果都可作为“HTF 失败 / NonCancel 失败 / 或候选谱点假设不成立”的 falsification 信号。
+\end{algorithm}
+
+\begin{proposition}[离散留数估计的显式误差界（由 \texorpdfstring{$|G(r)|\le C/(1-|r|)$}{|G(r)|<=C/(1-|r|)} 给出）]\label{prop:residue-ring-explicit-error-bound}
+设 \(G\) 在 \(|r|<1\) 上全纯，且满足显式上界
+\[
+|G(r)|\le \frac{C}{1-|r|}\qquad(|r|<1)
+\]
+（例如当 \(G(r)=\sum_{t\ge 0}a_t r^t\) 且 \(|a_t|\le C\) 时成立）。
+取 \(r_0\in\{|r|<1\}\)、\(\varepsilon>0\) 使得 \(|r_0|+\varepsilon<1\)，并按算法 \ref{alg:residue-ring-test} 定义 \(\widehat{\mathrm{Res}}(G;r_0)\)。
+则真实留数满足 Cauchy 公式
+\[
+\mathrm{Res}(G;r_0)=\frac{1}{2\pi i}\oint_{|r-r_0|=\varepsilon}G(r)\,\dd r
+=\frac{\varepsilon}{2\pi}\int_0^{2\pi} e^{i\theta}\,G\!\bigl(r_0+\varepsilon e^{i\theta}\bigr)\,\dd\theta,
+\]
+并且离散误差可按下述方式显式控制：对任意 \(a>0\) 满足 \(|r_0|+\varepsilon e^{a}<1\)，都有
+\[
+\boxed{\;
+\bigl|\widehat{\mathrm{Res}}(G;r_0)-\mathrm{Res}(G;r_0)\bigr|
+\le
+\varepsilon\cdot
+\frac{2\,e^{a}}{e^{aK}-1}\cdot
+\frac{C}{1-|r_0|-\varepsilon e^{a}}\; }.
+\]
+特别地，由于 \(G\) 全纯时 \(\mathrm{Res}(G;r_0)=0\)，上式直接给出
+\(
+|\widehat{\mathrm{Res}}(G;r_0)|
+\)
+的可审计上界。
+\end{proposition}
+\begin{proof}
+令 \(g(\theta):=e^{i\theta}G(r_0+\varepsilon e^{i\theta})\)。
+则 \(\mathrm{Res}(G;r_0)=\varepsilon\cdot \frac{1}{2\pi}\int_0^{2\pi}g(\theta)\,\dd\theta\)，而 \(\widehat{\mathrm{Res}}(G;r_0)=\varepsilon\cdot \frac{1}{K}\sum_{k=0}^{K-1}g(\theta_k)\)。
+\par
+当 \(|\Im\theta|\le a\) 时有 \(|e^{i\theta}|=e^{-\Im\theta}\le e^{a}\) 且
+\(
+|r_0+\varepsilon e^{i\theta}|
+\le
+|r_0|+\varepsilon e^{a}
+<1
+\)，
+故由给定上界得
+\[
+|g(\theta)|\le e^{a}\cdot \frac{C}{1-|r_0|-\varepsilon e^{a}}
+ =: M_a.
+\]
+因此 \(g\) 作为 \(2\pi\)-周期函数在条带 \(|\Im\theta|\le a\) 内全纯且有界。
+写其 Fourier 系数 \(\widehat g_n=\frac{1}{2\pi}\int_0^{2\pi} g(\theta)\,e^{-in\theta}\,\dd\theta\)，则由移线积分得
+\(
+|\widehat g_n|\le M_a e^{-a|n|}
+\)。
+而离散平均只采样到频率为 \(K\) 的倍数项：\(\frac{1}{K}\sum_{k=0}^{K-1} g(\theta_k)=\sum_{m\in\ZZ}\widehat g_{mK}\)。
+故误差满足
+\[
+\left|
+\frac{1}{K}\sum_{k=0}^{K-1} g(\theta_k)-\frac{1}{2\pi}\int_0^{2\pi}g(\theta)\,\dd\theta
+\right|
+\le
+\sum_{m\ne 0} |\widehat g_{mK}|
+\le
+2M_a\sum_{m\ge 1} e^{-amK}
+\ =\ \frac{2M_a}{e^{aK}-1}.
+\]
+两边乘 \(\varepsilon\) 即得所示不等式。
+\end{proof}
+
+\begin{remark}[正性 Fredholm-HTF：把有限核模板升级为可承载无限谱的可执行规格（构造目标）]\label{rem:positive-fredholm-htf}
+注 \ref{rem:finite-pole-lattice-barrier}--\ref{rem:remainder-map-transfer-operator-refinement} 已指出：要摆脱有限维“相位梳齿”的极点几何，必须进入无穷维转移算子/核算子与 Fredholm 行列式范式。
+在此基础上，可把“HTF（prime-like/几何侧 \(\leftrightarrow\) 谱/迹侧）”进一步规格化为一个\textbf{同时继承全纯性、NonCancel 与 Abel-first 正则化}的构造目标：
+\begin{enumerate}
+  \item \textbf{（闭层全纯性）} 构造一族迹类核算子 \((\mathcal{L}_u)\)（可视为扫描协议下的转移/读出算子），使得
+  \[
+  G(r):=\Tr\bigl((I-r\mathcal{L}_1)^{-1}\bigr)
+  \]
+  在 \(|r|<1\) 内可定义并满足类似命题 \ref{prop:residue-ring-explicit-error-bound} 的一致上界（从而在闭层给出单位圆盘全纯性与可审计控制）。
+  \item \textbf{（正性/整数重数证书，NonCancel 自动）} 要求 \(\mathcal{L}_u\) 的离散谱点具有有限代数重数 \(m_\lambda=\Tr(P_\lambda)\in\NN\)，并使得所关心通道的主部系数由 \(\Tr(P_\lambda)\) 或更一般的 \(\Tr(WP_\lambda)\ge 0\)（某个正算子 \(W\)）给出；于是任意极点都携带不可为零的留数证书（命题 \ref{prop:resolvent-trace-integer-residue-noncancel}），同点消去被结构性排除。
+  \item \textbf{（Abel-first 与有限部兼容）} 要求 Fredholm 行列式（定义 \ref{def:fredholm-determinant}）
+  \[
+  \log\det(I-r\mathcal{L}_u)=-\sum_{n\ge 1}\frac{r^n}{n}\Tr(\mathcal{L}_u^n)
+  \]
+  的 Abel 正则化与本文“先用 \(\zeta/\det\) 组织误差项，再做 primitive/有限部规约”的接口兼容：即先在 \(|r|<1\) 的全纯域内完成组织与证书化，再沿 \(r\uparrow 1\) 取有限部/常数项读出。
+\end{enumerate}
+该三条把“全纯（闭层）+ 正性（NonCancel 自动）+ Fredholm 行列式（无限谱承载）”锁死成同一个可执行规格，从而把“去做 Hilbert--P{\'o}lya”落成一份可审计的算子构造清单。
+\end{remark}
+
 \subsubsection{柱投影与最大熵态：C*-代数口径}
 
 与附录 \ref{app:op-algebra} 的“投影读出”语言相呼应：在 SFT 上，柱事件对应一族两两正交投影，它们生成一个交换子代数；最大熵态（Parry 测度）给出其上的规范态。更进一步，Cuntz--Krieger 代数 $\mathcal{O}_A$ 为该 SFT 提供一个非交换的普适 C*-代数封装，其对角子代数与柱投影自然同构。
