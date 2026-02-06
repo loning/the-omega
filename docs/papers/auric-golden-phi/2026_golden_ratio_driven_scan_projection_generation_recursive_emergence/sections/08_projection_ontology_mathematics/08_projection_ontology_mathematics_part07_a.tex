@@ -112,6 +112,19 @@ E_m\ \text{与}\ \mathrm{LIFT}_G\ \text{在所有扭曲通道上严格交换（�
 等价地，\(\mathrm{Anom}\) 定义了一个可计算的（\(2\)-）上同调类，其消失刻画了交换失败是否可被重写完全消去。
 \end{corollary}
 
+\begin{corollary}[异常类的严格加法性（水平复合）]\label{cor:pom-anom-class-additive}
+在命题 \ref{prop:pom-anom-additive-up-to-boundary} 的记号下，对任意可复合的 \(1\)-态射 \(w_1,w_2\)，其异常上同调类满足严格加法律
+\[
+\boxed{\;
+[\mathrm{Anom}(w_2\circ w_1)]
+=
+[\mathrm{Anom}(w_2)]
++
+[\mathrm{Anom}(w_1)]\;}
+\]
+（因为边界项 \(\partial B(w_2,w_1)\) 在取上同调类后消失）。
+\end{corollary}
+
 \begin{remark}[带残差的 \(2\)-合流：把“不可交换”内化为中心标签]\label{rem:pom-residual-2confluence}
 在三生成元片段上，我们不要求 \(E_m\) 与 \(\mathrm{LIFT}_G\) \emph{严格}交换，而是要求其交换失败被一个可加的中心标签群 \(\mathcal{A}_G\) 完全承载（定义 \ref{def:pom-anom-accumulation}）。
 于是“合流”应被理解为一种带残差的 \(2\)-合流口径：在固定复杂度上界内，任意两条重写路径都可并到同一个接口正规形（命题 \ref{prop:pom-three-gen-interface-normal-form}），而其残差差异（若出现）必落在命题 \ref{prop:pom-anom-additive-up-to-boundary} 的边界项上；因此 \(\bigl(\mathrm{NF}(w),[\mathrm{Anom}(w)]\bigr)\)（正规形 + 异常上同调类）成为路径不变量。
@@ -136,6 +149,24 @@ E_m\circ \mathrm{LIFT}_G\ \Rightarrow\ \mathrm{LIFT}_G\circ E_m
 例如在四生成元扩展中，\(\mathrm{MOM}_q\) 与 \(\mathrm{LIFT}_G\) 的新耦合由 \((\mathrm{RMOML})\)（命题 \ref{prop:pom-rmoml-sound}）统一归约，而其常数层可核对指纹由高阶异常签名塔 \(\mathsf{Anom}^{(q)}_G\)（定义 \ref{def:pom-anom-signature-tower}）组织。
 三生成元片段上的有界临界对枚举与 completion 审计见注 \ref{rem:pom-threegen-kb-completion-audit}。
 \end{remark}
+
+\begin{proposition}[Moment 的异常放大律（\texorpdfstring{$q$}{q} 倍 gap amplification）]\label{prop:pom-anom-moment-amplification}
+在四生成元扩展片段（定义 \ref{def:pom-four-gen-rewrite-rules}）中，取任意三生成元投影词 \(w\)。
+把定义 \ref{def:pom-anom-accumulation} 的“中心标签累积”口径按同一规约证书规范延拓到含 \(\mathrm{MOM}_q\) 的规约轨迹上（即仍只对每一次 \(E_m\)--\(\mathrm{LIFT}_G\) 的残差交换步累积 \(\mathsf{Anom}_G\) 标签，并按 coboundary 取商）。
+则对任意整数 \(q\ge 2\)，有异常上同调类的线性放大律：
+\[
+\boxed{\;
+[\mathrm{Anom}(\mathrm{MOM}_q\circ w)]
+=
+q\cdot [\mathrm{Anom}(w)].\;}
+\]
+因此，一旦两词的异常类差异在常数层过小而不易数值核验，可通过选择更高阶 moment 门将该差异按 \(q\) 线性放大，并仍停留在有限核可编译/可审计的语义域内。
+\end{proposition}
+
+\begin{proof}[证明思路]
+按 \(\mathrm{MOM}_q\) 的 fiber-product 语义，它把底层轨道约束提升为 \(q\) 份并置的同步世界；因此任意一条针对 \(w\) 的规约证书轨迹，在 \(\mathrm{MOM}_q\circ w\) 上对应为“逐份提升”的 \(q\) 份平行证书轨迹。
+由于异常标签群 \(\mathcal{A}_G\) 在定义 \ref{def:pom-anom-accumulation} 中以分量加法为中心运算，且 \(\mathrm{anom}\) 对纵向复合严格可加（命题 \ref{prop:pom-anom-additive-up-to-boundary}），故累积标签随并置份数线性增长，得到所示 \(q\) 倍放大；取上同调类后边界项消失，结论不依赖规约路径选择。证毕。
+\end{proof}
 
 \begin{remark}[可复现：holonomy/路径差异的自动核验]\label{rem:pom-holonomy-cocycle-audit}
 为把“异常作为 \(2\)-上同调类”的口径落到可执行证书，我们提供一个最小的 holonomy 核验脚本：
@@ -197,6 +228,42 @@ w_1\sim w_2
 因此在该复杂度类上，“算法等价”（自然性意义下的可交换/可同构）可归结为：
 比较正规形参数 \((u,m,G)\) 以及比较有限个采样点上的异常签名是否一致。
 \end{corollary}
+
+\begin{definition}[保守语义函子 \texorpdfstring{$\mathsf{Sem}$}{Sem}（有界复杂度切片）]\label{def:pom-conservative-sem-functor}
+令 \(\Theta\) 表示本文接口参数的一个\emph{有限审计切片}：例如固定分辨率上界 \(m\le m_{\max}\)、固定 lift 群列表 \(\mathcal{G}_{\max}\)（从而 \(|G|\le G_{\max}\)）、固定 moment 阶窗口 \(q\le q_{\max}\)，并对温度 \(u\in(0,1]\) 与势参数 \(\theta\) 取一组有限采样网格。
+把各生成元视为 \(\Theta\)-族后，得到参数化的投影词 \(2\)-范畴记作 \(\mathbf{PW}*\Theta\)。
+\par
+在该切片上，定义两个可计算的语义输出域：
+\begin{enumerate}
+  \item \textbf{签名域 \(\mathbf{Sig}*\Theta\)：}记录常数层与正规形层的可核对指纹。对词 \(w\) 取
+  \[
+  \mathsf{Sig}(w):=\Bigl(\mathrm{NF}(w),\ [\mathrm{Anom}(w)],\ \{\mathsf{Anom}_{G}(K;\theta)\}_{\theta\in\Theta}\Bigr),
+  \]
+  其中 \(\mathrm{NF}(w)\) 为接口正规形代表（命题 \ref{prop:pom-three-gen-interface-normal-form}），\([\mathrm{Anom}(w)]\) 为异常的 \(2\)-上同调类（命题 \ref{prop:pom-anom-additive-up-to-boundary}），而 \(\{\mathsf{Anom}_{G}(K;\theta)\}_{\theta\in\Theta}\) 是有限采样签名族（定义 \ref{def:pom-anom-signature}）。
+  \item \textbf{谱域 \(\mathbf{Spec}*\Theta\)：}记录指数主尺度的谱资源读出。典型选择是：对每个通道参数 \((\chi,u)\) 与整数 \(q\) 输出加权碰撞 moment-kernel 的 Perron 根
+  \(r^{(w)}_{q,\chi}(u)\)，或等价的压力/预算曲线 \(\Sigma_{\mathrm{space}}(w)(q;\chi,u)\) 与其离散凸闭包类型正规形 \(\mathrm{Ty}_{\mathrm{space}}(w;\chi,u)\)（\S\ref{subsec:pom-spectral-resource-type}）。
+\end{enumerate}
+于是得到组合语义赋值（在切片上为可计算函子）
+\[
+\boxed{\;
+\mathsf{Sem}:\mathbf{PW}*\Theta\longrightarrow \mathbf{Sig}*\Theta\times \mathbf{Spec}*\Theta,\qquad
+\mathsf{Sem}(w):=(\mathsf{Sig}(w),\mathsf{Spec}(w)).\;}
+\]
+\end{definition}
+
+\begin{theorem}[有界切片上的语义保守性（自然同构的可判定核心）]\label{thm:pom-sem-conservative-on-slice}
+在与推论 \ref{cor:pom-three-gen-normal-form-decidable} 相同的复杂度上界内，\(\mathsf{Sem}\) 是保守的：若两词 \(w_1,w_2\) 满足
+\(
+\mathsf{Sem}(w_1)=\mathsf{Sem}(w_2)
+\)，
+则存在可逆 \(2\)-态射（自然同构）使 \(w_1\simeq w_2\)；等价地 \(w_1\sim w_2\)（定义 \ref{def:pom-algorithmic-equivalence-nf-anom}）。
+\end{theorem}
+
+\begin{proof}
+\(\mathsf{Sem}(w_1)=\mathsf{Sem}(w_2)\) 蕴含签名分量相等，特别是 \(\mathrm{NF}(w_1)=\mathrm{NF}(w_2)\) 且 \([\mathrm{Anom}(w_1)]=[\mathrm{Anom}(w_2)]\)。
+由定义 \ref{def:pom-algorithmic-equivalence-nf-anom} 得 \(w_1\sim w_2\)，并由推论 \ref{cor:pom-three-gen-normal-form-decidable} 的可判定性口径得到对应的可逆证书。
+谱分量在该结论中可视为冗余核验（但在后续的类型定向重写与多尺度预算比较中提供额外判别力）。证毕。
+\end{proof}
 
 \begin{remark}[符号证书升级：用扭曲特征多项式替代有限采样]\label{rem:pom-anom-symbolic-certificate}
 推论 \ref{cor:pom-three-gen-normal-form-decidable} 的“有限采样签名”是工程友好的可审计口径；
@@ -353,6 +420,18 @@ $$
   \]
   其中右端 \(\mathrm{MOM}_{\chi_1,\dots,\chi_q}\) 表示“在 \(q\) 份拷贝上分别施加 \(\mathrm{TWIST}(\chi_i)\) 后的多扭曲 moment-kernel”（其有限 \(m\) 读出满足命题 \ref{prop:pom-mom-lift-fourier-distribution} 的严格恒等式）。
   该分配律的可核对输出由高阶异常签名塔 \(\mathsf{Anom}^{(q)}_G(K;\theta)\) 组织（定义 \ref{def:pom-anom-signature-tower}）。
+  \item \textbf{Moment--Lift 的花环交换（复制 + 置换对称的类型正确交换）：}
+  当希望把 \(\mathrm{LIFT}_G\) 外提为 \(\mathrm{MOM}_q\) 的左前缀时，存在一个类型正确的自然同构证书
+  \[
+  (\mathrm{RMOM\text{-}WREATH})\quad
+  \mathrm{MOM}_q\circ \mathrm{LIFT}_G
+  \ \simeq\
+  \mathrm{LIFT}_{G\wr S_q}\circ \mathrm{MOM}_q,
+  \]
+  其中
+  \(G\wr S_q:=G^{\times q}\rtimes S_q\)
+  为花环积（半直积由 \(S_q\) 对 \(G^{\times q}\) 的置换作用给出）。
+  该交换刻画“\(q\)-重碰撞语义先将 \(q\) 份拷贝无标号化（对 \(S_q\) 取轨道）”，因此 lift 轴的正确对称对象应同时携带 \(G^{\times q}\) 的标签与 \(S_q\) 的置换对称。
 \end{enumerate}
 \end{definition}
 
@@ -402,6 +481,23 @@ R_m^{(pq)}=\Bigl\{(\omega^{(1)},\dots,\omega^{(pq)})\in\Omega_m^{pq}:\ \Fold_m(\
 \(\mathrm{LIFT}_G\) 把底层状态扩张为“原状态 \(\times\) 群坐标”，每一步在群坐标上累积 cocycle（第 \ref{sec:zeta-finite-part} 节的群扩张接口）。
 随后施加 \(\mathrm{MOM}_q\) 的 \(q\)-重同步积时，状态空间自然为 \((Q\times G)^q\cong Q^q\times G^q\)，并且“逐位同输出”的筛选只约束输出符号，不耦合各份群坐标。
 因此该复合等价于：先在底层做 \(q\)-重同步积得到 \(Q^q\)，再一次性把标签轴提升为 \(G^q\)（即 \(\mathrm{LIFT}_{G^{\times q}}\)），最后再施加同型的输出一致筛选；这正对应于右侧 \(\mathrm{MOM}_q\circ \mathrm{LIFT}_{G^{\times q}}\) 的语义。证毕。
+\end{proof}
+
+\begin{proposition}[Moment--Lift 的花环交换律（无标号 \texorpdfstring{$q$}{q} 重复制 + 置换对称）]\label{prop:pom-mom-lift-wreath}
+对任意有限群 \(G\) 与整数 \(q\ge 2\)，在 \(\mathrm{MOM}_q\) 的语义被实现为 \(q\)-重同步积的 \(S_q\)-轨道（或等价的对称幂商 realization，命题 \ref{prop:pom-moment-symmetric-power}）的口径下，存在规范自然同构：
+\[
+\boxed{\;
+\mathrm{MOM}_q\circ \mathrm{LIFT}_G\ \simeq\ \mathrm{LIFT}_{G\wr S_q}\circ \mathrm{MOM}_q\;},
+\qquad
+G\wr S_q:=G^{\times q}\rtimes S_q.
+\]
+\end{proposition}
+
+\begin{proof}[证明思路]
+\(\mathrm{MOM}_q\) 的编译把 \(q\) 份拷贝的同步积状态从 \(Q^q\) 收紧到“无标号”的轨道空间 \(Q^q/S_q\)（或其等价的对称幂商核）；因此在该 realization 上，任何“给每份拷贝携带一份 lift 标签”的数据都必须与 \(S_q\) 的置换对称兼容。
+一方面，先 lift 再取 moment 的无标号化过程把标签轴从 \(G^{\times q}\) 自动扩张为包含置换信息的半直积 \(G^{\times q}\rtimes S_q\)；
+另一方面，先取 moment（取轨道）再 lift 等价于直接在轨道对象上 lift 该半直积。
+两侧得到同一“轨道化的标签提升”编译对象，从而给出所述自然同构。证毕。
 \end{proof}
 
 \begin{proposition}[Moment--Lift 的 Fourier 分配律证书（\texorpdfstring{$\mathrm{RMOML}$}{RMOML}）]\label{prop:pom-rmoml-sound}
