@@ -1364,6 +1364,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="arity_pure_collision_cubic_beta_asymptotic_rate",
+            script="exp_arity_pure_collision_cubic_beta_asymptotic_rate.py",
+            args=["--dps", "80"],
+            expected_outputs=[
+                "artifacts/export/arity_pure_collision_cubic_beta_asymptotic_rate.json",
+                "sections/generated/tab_arity_pure_collision_cubic_beta_asymptotic_rate.tex",
+            ],
+        ),
+        Step(
             name="arity_335_N2_selection_law_primes",
             script="exp_arity_335_n2_selection_law_primes.py",
             args=[],
