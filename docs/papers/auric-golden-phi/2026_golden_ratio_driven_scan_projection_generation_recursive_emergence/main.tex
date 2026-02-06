@@ -40,6 +40,8 @@
 \usepackage{placeins}
 \usepackage{booktabs}
 \usepackage{array}
+\usepackage{adjustbox}
+\usepackage{etoolbox}
 \usepackage{fvextra}
 \usepackage{verbatim}
 \usepackage{url}
@@ -58,18 +60,27 @@
 \g@addto@macro\UrlBreaks{\do\_}
 \makeatother
 
+% Scale tabular blocks to fit line width (avoid overfull boxes for wide tables).
+% NOTE: Use *Before/After* hooks to wrap the whole environment; using AtBegin/AtEnd
+% would inject code *inside* tabular and can break alignments (including \maketitle).
+\BeforeBeginEnvironment{tabular}{\begin{adjustbox}{max width=\linewidth}}%
+\AfterEndEnvironment{tabular}{\end{adjustbox}}%
+
 % Theorem environments (Chinese)
+\theoremstyle{plain}
 \newtheorem{theorem}{定理}[section]
 \newtheorem{lemma}[theorem]{引理}
 \newtheorem{proposition}[theorem]{命题}
 \newtheorem{corollary}[theorem]{推论}
-\newtheorem{definition}[theorem]{定义}
-\newtheorem{remark}[theorem]{注}
 \newtheorem{axiom}[theorem]{公理}
 \newtheorem{assumption}[theorem]{假设}
+\newtheorem{conjecture}[theorem]{猜想}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{定义}
 \newtheorem{example}[theorem]{例}
 \newtheorem{algorithm}[theorem]{算法}
-\newtheorem{conjecture}[theorem]{猜想}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{注}
 
 % Common commands
 \newcommand{\dd}{\mathrm{d}}
@@ -92,6 +103,11 @@
 
 % Code listings (fvextra / fancyvrb)
 \fvset{breaklines=true,breakanywhere=true,fontsize=\small}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines=true,breakanywhere=true,fontsize=\small}
+
+% Silence underfull box warnings (layout remains visible in PDF).
+\hbadness=10000\relax
+\vbadness=10000\relax
 
 \title{黄金比例驱动的扫描—投影生成：\\\large 由群作用与统计稳定性递归涌现的算术与概念层级}
 \author{马昊伯\\CHRONOAI PTE. LTD.\\\#14-02, Marina Bay Financial Centre Tower 1\\8 Marina Blvd, Singapore 018981}
