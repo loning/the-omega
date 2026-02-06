@@ -78,14 +78,9 @@ q^\star(m,\varepsilon)=\arg\min_{q\in\mathcal{Q}}\left(\beta_q+\frac{1}{m(q-1)}\
 \beta_q=\frac{\log r_q-\log 2}{q-1}.
 \]
 
-\medskip\noindent\textbf{补充：最优矩阶选择的相图（阈值判据 + 表格审计）}
+\medskip\noindent\textbf{补充：最优矩阶选择的相图（精确断点形式见注 \ref{rem:pom-qstar-phase-diagram-breakpoints}）}
+断点闭式与 \(\varepsilon=10^{-6}\) 的显式相图表见注 \ref{rem:pom-qstar-phase-diagram-breakpoints} 与表 \ref{tab:fold_collision_qstar_breakpoints_eps1e6_q2_20}；它把“选 \(q\)”从启发式推进为由审计表 \(\{r_q\}\) 唯一决定的确定性选择律。
 记 \(\alpha:=\frac{1}{m}\log(1/\varepsilon)\)。
-则 \(q+1\) 优于 \(q\) 的充要条件等价于一条局部判据：
-\[
-\boxed{\;
-\beta_{q+1}-\beta_q\ <\ \alpha\cdot\frac{1}{q(q-1)}\;}
-\]
-右侧是“置信压力”（\(\varepsilon\) 越小或 \(m\) 越小越大），左侧是“矩阶代价增长”（\(\beta_q\) 的离散增量）。
 
 更强地，由命题 \ref{prop:pom-pressure-convexity} 的离散凸性与端点恒等式 \(r_1=2\)（即 \(P(1)=\log 2\)），割线斜率
 \(
@@ -155,6 +150,66 @@ q\in\{3,5,9,11,15,17\},
 \]
 该 Pareto 前沿刻画了“时间/实现复杂度”与“空间/prime-register 预算”之间的可审计交换率。
 \end{remark}
+
+\begin{remark}[Chernoff 分位证书的 \(q^\star\) 断点相图（设计律；最终结论）]\label{rem:pom-qstar-phase-diagram-breakpoints}
+在注 \ref{rem:pom-quantile-budget-computable} 的 Chernoff 分位证书定义下，对每个整数 \(q\ge 2\) 记
+\[
+\gamma^{(q)}_m(\varepsilon)
+:=
+\frac{\log r_q-\log 2+\frac{1}{m}\log(1/\varepsilon)}{q-1},
+\qquad
+\gamma^{\mathrm{cert}}_m(\varepsilon)=\inf_{q\in\ZZ_{\ge 2}}\gamma^{(q)}_m(\varepsilon),
+\qquad
+q^\star(m,\varepsilon)\in\arg\min_{q\in\ZZ_{\ge 2}}\gamma^{(q)}_m(\varepsilon).
+\]
+则下列四条结论给出一条完全可审计的“选 \(q\) / 选 \(m\) / 设 \(\varepsilon\)”双尺度设计律（唯一输入为已审计的 \(\{r_q\}\)，不涉及任何经验拟合）：
+\begin{enumerate}
+  \item \textbf{（最优 \(q^\star\) 的精确断点）}
+  对每个 \(q\ge 2\)（且 \(r_{q+1}\) 已审计）定义
+  \[
+  A_q
+  :=
+  (q-1)\bigl(\log r_{q+1}-\log 2\bigr)-q\bigl(\log r_q-\log 2\bigr).
+  \]
+  则 \(q\) 与 \(q+1\) 两个候选在证书下包络中并列最优（即 \(\gamma^{(q)}_m(\varepsilon)=\gamma^{(q+1)}_m(\varepsilon)\)）当且仅当
+  \[
+  m=m_{q\to q+1}(\varepsilon):=\frac{\log(1/\varepsilon)}{A_q}.
+  \]
+  因此在 \(m\) 轴上，\(q^\star(m,\varepsilon)\) 随 \(m\) 增大按单位步长单调下降；其所有跃迁点精确由 \(\{m_{q\to q+1}(\varepsilon)\}_q\) 给出（在断点处出现两点并列最优）。
+  \item \textbf{（\(\varepsilon=10^{-6}\) 的显式相图；DP 审计 \(q\le 20\)）}
+  利用 DP 扩展审计表（表 \ref{tab:fold_collision_renyi_spectrum_mod_dp_q20}）的 \(\{r_q\}_{2\le q\le 20}\)，断点 \(m_{q\to q+1}(10^{-6})\) 的数值列于表 \ref{tab:fold_collision_qstar_breakpoints_eps1e6_q2_20}。
+  例如：若 \(m\in[513.01,643.28)\) 则 \(q^\star=7\)；若 \(m\ge 5344.31\) 则 \(q^\star=2\)。这些区间与断点均由定义直接决定，而非数值拟合。
+  \item \textbf{（固定 \(\varepsilon\) 的大尺度极限：\texorpdfstring{$\log(r_2/2)$}{log(r2/2)}）}
+  对固定 \(\varepsilon\in(0,1)\)，当 \(m\ge m_{2\to 3}(\varepsilon)\) 时最优解锁定在 \(q^\star=2\)，从而
+  \[
+  \lim_{m\to\infty}\gamma^{\mathrm{cert}}_m(\varepsilon)=\log\frac{r_2}{2}.
+  \]
+  用表 \ref{tab:fold_collision_renyi_spectrum_mod_dp_q20} 的审计值 \(r_2=2.481194304092\)，得到
+  \[
+  \boxed{\ \gamma_\infty=\log(r_2/2)=0.2155928379\ldots\ }.
+  \]
+  该极限严格小于最坏纤维端点指数 \(\log\sqrt{\varphi}\)（等价于 \(\lim_{q\to\infty}\beta_q\)，见注 \ref{rem:pom-betaq-isa}），表明分位证书在固定失败率 regime 下确实脱离最坏情形定标；其差额为显式常数 \(\log\sqrt{\varphi}-\log(r_2/2)\)。
+  \item \textbf{（证书包络为双曲线下包络：空间—时间前沿必现折点）}
+  对每个固定 \(q\ge 2\)，可写
+  \[
+  \gamma^{(q)}_m(\varepsilon)=\beta_q+\frac{1}{m(q-1)}\log(1/\varepsilon),
+  \qquad
+  \beta_q=\frac{\log r_q-\log 2}{q-1},
+  \]
+  因此 \(\gamma^{(q)}_m(\varepsilon)\) 作为 \(m\) 的函数是一族 \(1/m\) 型双曲线。由此
+  \[
+  \gamma^{\mathrm{cert}}_m(\varepsilon)=\min_{q\in\ZZ_{\ge 2}}\gamma^{(q)}_m(\varepsilon)
+  \]
+  是这些双曲线的分段下包络，其折点恰位于断点集合 \(\{m_{q\to q+1}(\varepsilon)\}\)。
+  因此任何以
+  \(
+  \log P_m\gtrsim \log 2+m\,\gamma^{\mathrm{cert}}_m(\varepsilon)
+  \)
+  （表 \ref{tab:pom-space-time-duality-prime-register} 的空间侧预算形式）作为约束的空间—时间可行带/ Pareto 前沿，都会自动继承这些折点：当 \(m\) 穿越任一断点，最优设计 regime（即最优 \(q^\star\)）发生离散跳变。
+\end{enumerate}
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_qstar_breakpoints_eps1e6_q2_20}
 
 \begin{remark}[时间—空间—异常的三元 Pareto 边界]\label{rem:pom-pareto-ts-omega}
 \medskip\noindent\textbf{补充：时间—空间—异常的三元 Pareto 边界}
