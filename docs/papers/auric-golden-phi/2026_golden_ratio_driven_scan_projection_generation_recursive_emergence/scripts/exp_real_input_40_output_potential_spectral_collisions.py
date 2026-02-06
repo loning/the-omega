@@ -234,7 +234,7 @@ def _tex_identities(path: Path, *, Q: sp.Expr, z: sp.Symbol, u: sp.Symbol, D: sp
     lines.append("  \\[")
     lines.append("  \\begin{aligned}")
     lines.append("  \\mathrm{Res}_z(Q,Q_z)&=4u^{15}(u-1)^3\\,D(u),\\\\")
-    d_lines = _poly_multiline_tex(D, u, max_line_len=105)
+    d_lines = _poly_multiline_tex(D, u, max_line_len=75)
     if len(d_lines) == 1:
         lines.append("  D(u)&=" + d_lines[0] + ",")
     else:
