@@ -1,0 +1,91 @@
+\subsubsection{反例崩塌：径向模式在 \texorpdfstring{$\mathbf{PW}$}{PW} 正规化闭包中不可类型化}\label{subsec:xi-radial-counterexample-collapse}
+本章的 \(\Xi_{\Delta,L}\) 机制把“临界线几何”内化为参数侧的 unitary slice：\(\Re(s)=\tfrac12\Longleftrightarrow |u_L(s)|=1\)（注 \ref{rem:xi-critical-line-unit-circle}），并在该切片上提供两类完全内部的审计/拒绝接口：
+\begin{enumerate}
+  \item \textbf{根区间检查器：}完成化压缩后，\(\Xi\)-RH 等价于 \(P_L(S)\) 的根全落在 \([-2,2]\)（命题 \ref{prop:xi-rh-interval-criterion}）。
+  \item \textbf{常数层 strictification 检查器：}在 \(\mathbf{PW}\) 的中心扩张口径下，异常签名只发生在有限部/常数层，并可由纯常数 counterterm 门 \(\mathrm{CT}_\eta\) 严格消去；且该 strictification 不改变任何指数级主尺度（定义 \ref{def:pom-finite-part-counterterm-gate}；命题 \ref{prop:pom-counterterm-anom-cancel}）。
+\end{enumerate}
+本小节构造一个“语法上可写、仍呈自对偶 completion 形态，但强制需要径向自由度”的伪 \(\Xi\) 对象，并展示其在上述两类检查器上同时崩塌：拒绝点并非来自“写不出来”，而来自“必须引入 \(|u|\neq 1\) 的径向模式”，从而在本文既定闭包内不可类型化（亦即读出为 \(\mathsf{NULL}\)，定理 \ref{thm:xi-offset-null-type-safety}）。
+
+\paragraph{(i) 构造：在完成化端植入越界根}
+沿自对偶 Dirichlet 截面（\S\ref{subsec:xi-from-self-dual}）令
+\[
+w=L^{-1/2},\qquad S_L(s)=L^{s-\tfrac12}+L^{\tfrac12-s}.
+\]
+在完成化表示下定义
+\[
+P_L(S):=\widehat\Delta\!\bigl(L^{-1/2},S\bigr)\in\RR[S],
+\qquad
+\Xi_{\Delta,L}(s)=P_L\!\bigl(S_L(s)\bigr)
+\]
+（命题 \ref{prop:xi-rh-interval-criterion}）。
+取任意实数 \(S_0>2\)，并在完成化端定义伪多项式与伪 \(\Xi\)：
+\[
+P^{\mathrm{fake}}_L(S):=P_L(S)\cdot (S-S_0),
+\qquad
+\Xi^{\mathrm{fake}}_{\Delta,L}(s):=P^{\mathrm{fake}}_L\!\bigl(S_L(s)\bigr)
+=\Xi_{\Delta,L}(s)\cdot\bigl(S_L(s)-S_0\bigr).
+\]
+由于 \(S_L(1-s)=S_L(s)\)，故该构造仍满足严格函数方程
+\[
+\Xi^{\mathrm{fake}}_{\Delta,L}(s)=\Xi^{\mathrm{fake}}_{\Delta,L}(1-s),
+\]
+即在形式上保持“自对偶 completion 形态”。
+
+\paragraph{(ii) 径向自由度的强制性：越界根 \texorpdfstring{$S_0>2$}{S0>2} 只能由离线点实现}
+令 \(y:=L^{s-\tfrac12}\)，则 \(S_L(s)=y+y^{-1}\)（命题 \ref{prop:xi-rh-interval-criterion} 的证明）。
+当 \(s=\tfrac12+it\) 时有 \(|y|=1\) 且 \(S_L(\tfrac12+it)\in[-2,2]\)。
+因此方程
+\(
+S_L(s)=S_0>2
+\)
+不可能在临界线上成立；任何满足 \(\Xi^{\mathrm{fake}}_{\Delta,L}(s)=0\) 且来源于因子 \((S_L(s)-S_0)\) 的零点都必须满足
+\[
+|y|\neq 1
+\quad\Longleftrightarrow\quad
+\Re(s)\neq\tfrac12
+\quad\Longleftrightarrow\quad
+|u_L(s)|\neq 1,
+\]
+从而强制进入非单位圆半径（径向）通道。
+
+\paragraph{(iii) 编译/归约：为何该伪对象“语法上可写”}
+上述构造仅在完成化端追加一个一次因子；在行列式接口中，这对应于对核对象追加一个与原核解耦的有限维块，使得整体行列式乘上该因子（命题 \ref{prop:xi-unitary-slice-spectral-crossing} 的 \(\det(I-zB(u))\) 口径）。
+在投影词侧，这一“解耦追加”属于独立轴并置的情形：一旦将该一次因子以某个独立块实现并纳入同一编译目标，则其词法仍落在既有生成元闭包中，并可由三生成元正规化器归约到接口正规形
+\[
+\mathrm{LIFT}_G\circ \mathrm{PROJ}_u\circ E_m
+\]
+并伴随异常签名输出（命题 \ref{prop:pom-three-gen-interface-normal-form} 与定义 \ref{def:pom-anom-signature}）。
+因此该模板的关键点不在“构造不可写”，而在后续类型检查的结构性拒绝。
+
+\paragraph{(iv) 类型检查崩塌 A：根区间检查器（完成化端的立即拒绝）}
+由于 \(P^{\mathrm{fake}}_L\) 含有根 \(S_0>2\)，其根集不包含于 \([-2,2]\)。
+因此根区间检查器（命题 \ref{prop:xi-rh-interval-criterion}）立即判定：
+\[
+\mathrm{Roots}\bigl(P^{\mathrm{fake}}_L\bigr)\not\subseteq [-2,2]
+\quad\Longrightarrow\quad
+\Xi^{\mathrm{fake}}_{\Delta,L}\ \text{不满足临界线性（存在离线零点）}.
+\]
+若将该拒绝写成工程化的 type-checker 输出，可取规范形式
+\begin{verbatim}
+TypeError[RootInterval]: root S0>2 detected; requires |u|!=1 (radial mode).
+\end{verbatim}
+其数学内容即为上式：越界根等价于强制进入 \(|u|\neq 1\) 的径向通道。
+
+\paragraph{(v) 类型检查崩塌 B：常数层 strictification 的边界（径向依赖不可被 \texorpdfstring{$\mathrm{CT}_\eta$}{CT} 吸收）}
+在本文的中心扩张/strictification 口径中，\(\mathrm{CT}_\eta\) 被定义为\emph{纯常数}门：它保持所有扭曲通道 pole \(\rho_\chi(\theta)\) 不变，仅对有限部漂移 \(\log\mathfrak{M}_\chi(\theta)\) 做加性平移（定义 \ref{def:pom-finite-part-counterterm-gate}）。
+因此（命题 \ref{prop:pom-counterterm-anom-cancel}）所有可 strictify 的残差，必须在“有限部/常数层”闭合，且 strictification 不改变任何指数级主尺度。
+\par
+写 \(u=re^{i\theta}\) 并令径向参数 \(\varrho:=\log r\)。
+径向模式 \(|u|\neq 1\) 即 \(\varrho\neq 0\)，其进入并非常数层扰动：它改变 \(u\) 的模长，从而把 unitary slice 上的 \(\theta\)-单参接口扩张为 \((\theta,\varrho)\)-双参对象（命题 \ref{prop:xi-unitary-slice-spectral-crossing}），并在一般情形下改变扭曲通道的 pole/指数主尺度（例如谱半径 \(\rho_\chi\) 的取值域不再局限于 \(|u|=1\) 的切片）。
+因此任何试图把“径向自由度”解释为可由 \(\mathrm{CT}_\eta\) 消去的残差，都会与“\(\mathrm{CT}_\eta\) 不改变 pole/主尺度”的定义性约束矛盾：该自由度不属于 \(\mathcal{A}_G\) 的常数层标签，而必须以新增参数/新增寄存器显式承载。
+可将该拒绝写成第二类工程化输出：
+\begin{verbatim}
+TypeError[Strictification]: residual depends on radial parameter (|u|!=1);
+no constant CT_eta cancels it without changing poles.
+\end{verbatim}
+
+\paragraph{(vi) 可选加码：最小实现接口将“径向模式”显化为维数超界}
+若进一步把该伪对象编译为序列/核对象并接入“最小实现”接口，则径向模式的引入可被视为新增可见自由度。
+在本文框架中，这类“额外自由度是否必须新增状态/寄存器”可由 Hankel 秩与最小 realization 维数给出硬证书（定理 \ref{thm:hankel-rank-minimal}、\ref{thm:pom-moment-hankel}；并参见注 \ref{rem:two_layer_bridge_package_completed_minH} 的二层桥包组织方式）。
+该路径为上述两类类型拒绝提供一个额外的、完全数值可审计的后端诊断端口。
+

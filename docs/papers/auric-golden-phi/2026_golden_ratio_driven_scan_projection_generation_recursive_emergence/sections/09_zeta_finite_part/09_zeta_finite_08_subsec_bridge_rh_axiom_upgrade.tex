@@ -1,0 +1,46 @@
+\subsubsection{桥公理升级：\texorpdfstring{$\mathbf{Bridge^{RH}}$}{BridgeRH} 与经典 RH 的编译}\label{subsec:bridge-rh-axiom-upgrade}
+注 \ref{rem:zetaK-commuting-diagram} 与注 \ref{rem:two_layer_bridge_package_completed_minH} 已将本文的“桥”压缩为两层可审计的硬接口：第一层把 trace/ghost、primitive 与 Euler 乘积锁成严格交换图；第二层把完成化后的临界线几何锁成 unitary slice 上的谱穿越问题，并与 Hankel 最小实现一并形成可回归的桥包指纹。
+本小节给出一组最小但闭合的“桥公理升级版”\(\mathbf{Bridge^{RH}}\)，其目标不是在有限核口径内复述 toy-(G)RH，而是把“经典 RH（黎曼 \(\zeta\) 的非平凡零点全在 \(\Re(s)=\tfrac12\)）”编译为本文体系内的一个条件定理，并将你所点名的升级点——“每一个真实零点都是 \(\mathbf{PW}\)-可寻址（不为 \(\mathsf{NULL}\)）”——显式写入桥合同。
+
+\paragraph{经典完成化对象}
+记经典完成化函数
+\[
+\Xi_{\zeta}(s)
+:=\frac12\,s(s-1)\,\pi^{-s/2}\Gamma\!\left(\frac{s}{2}\right)\zeta(s),
+\]
+其零点集恰为黎曼 \(\zeta\) 的非平凡零点（含重数）。经典 RH 可表述为：
+\[
+\Xi_{\zeta}(s_0)=0,\ 0<\Re(s_0)<1\quad\Longrightarrow\quad \Re(s_0)=\tfrac12.
+\]
+
+\begin{assumption}[\texorpdfstring{$\mathbf{Bridge^{RH}}$}{BridgeRH}：经典零点的可寻址桥接合同]\label{assump:bridge-rh}
+存在一个由本文 SPG/\(\mathbf{PW}\) 管线诱导的二变量行列式对象与其极限规格，使得：
+\begin{enumerate}
+  \item \textbf{（经典目标桥接）}
+  存在 \(L>1\) 以及一族（有限层可审计、极限可进入无穷维的）核对象，使其二变量行列式
+  \(\Delta(z,u)=\det(I-zB(u))\)（有限维或 Fredholm 口径，定义 \ref{def:fredholm-determinant}）
+  满足自对偶 \(\Delta(z,u)=\Delta(uz,1/u)\)，并且其完成化截面
+  \(\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})\)
+  在整个复平面上与经典 \(\Xi_{\zeta}(s)\) 一致（或至少具有相同零点集与重数）。
+  桥接核验可按命题 \ref{prop:real-arc-sufficiency-unit-disk} 降维：只需在真实协议路径 \(r\uparrow 1\) 的实轴区间 \((0,1)\) 上逐点匹配即可推出单位圆盘内的全盘恒等（从而为极限规格提供解析刚性护栏）。
+  \item \textbf{（零点可寻址桥接）}
+  对任意满足 \(\Xi_{\zeta}(s_0)=0\) 且 \(0<\Re(s_0)<1\) 的零点 \(s_0\)，存在一个投影词地址 \(W(s_0)\in\mathbf{PW}\)，使其在本文可审计片段内可规约到接口正规形并给出非空值读出（不为 \(\mathsf{NULL}\)，见第 \ref{sec:recursive-addressing} 节），且该读出在闭环接口上验证 \(\Xi_{\Delta,L}(s_0)=0\)（从而把“经典零点事件”接入地址系统）。
+  \item \textbf{（unitary-slice 类型锁定）}
+  任意“零点事件”的可核对读出必须走 unitary slice 的审计接口：即其核验可归约为命题 \ref{prop:xi-unitary-slice-spectral-crossing} 的谱穿越口径（\(\theta\)-扫描），从而零点地址的参数必满足 \(|u_L(s_0)|=1\)。
+  \item \textbf{（NonCancel/Fredholm-HTF 规格）}
+  桥接对象满足注 \ref{rem:positive-fredholm-htf} 的正性 Fredholm-HTF 规格：闭层全纯性、正性/整数重数证书（命题 \ref{prop:resolvent-trace-integer-residue-noncancel}，从而 NonCancel 自动）以及 Abel-first/有限部接口兼容性，从而“零点/极点实体”携带可审计的重数/留数证书并可回归到桥包指纹。
+\end{enumerate}
+\end{assumption}
+
+\begin{theorem}[\texorpdfstring{$\mathbf{Bridge^{RH}}$}{BridgeRH} \(\Rightarrow\) 经典 RH（条件版）]\label{thm:bridge-rh-implies-classical-rh}
+在假设 \ref{assump:bridge-rh} 下，经典 RH 成立：任意满足 \(\Xi_{\zeta}(s_0)=0\) 且 \(0<\Re(s_0)<1\) 的零点 \(s_0\) 必满足 \(\Re(s_0)=\tfrac12\)。
+\end{theorem}
+
+\begin{proof}
+取任意满足 \(\Xi_{\zeta}(s_0)=0\) 且 \(0<\Re(s_0)<1\) 的零点 \(s_0\)。
+由假设 \ref{assump:bridge-rh}-(1)，有 \(\Xi_{\Delta,L}(s_0)=0\)。
+由假设 \ref{assump:bridge-rh}-(2)，\(s_0\) 在 \(\mathbf{PW}\) 中可寻址且读出非空值。
+因此 \(s_0\) 不可能满足 \(\Re(s_0)\neq \tfrac12\)，否则按 \(\mathbf{PW}\) 类型安全定理 \ref{thm:xi-offset-null-type-safety}（等价地也可用假设 \ref{assump:bridge-rh}-(3) 的 \(|u_L(s_0)|=1\) 约束）将导致其在闭包内无地址、读出为 \(\mathsf{NULL}\)，与非空值读出矛盾。
+故必有 \(\Re(s_0)=\tfrac12\)。证毕。
+\end{proof}
+

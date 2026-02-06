@@ -1,0 +1,77 @@
+\subsubsection{\texorpdfstring{$\mathbf{PW}$}{PW} 类型安全：unitary slice 的可寻址性与空值（NULL）}\label{subsec:xi-pw-type-safety-null}
+本章的 \(\Xi_{\Delta,L}\) 零点审计口径建立在 unitary slice（\(|u|=1\)）的固定几何之上（注 \ref{rem:xi-critical-line-unit-circle}），并以 \(\theta\)-轴上的谱穿越作为可复核接口（命题 \ref{prop:xi-unitary-slice-spectral-crossing} 与注 \ref{rem:xi-unitary-slice-operator-audit}）。
+另一方面，在投影本体语义中，概念以\emph{地址}为先（第 \ref{sec:recursive-addressing} 节）：无地址则读出不定义（空值），有地址则读出为可核对的投影/证书。
+本小节把“偏离 \(\Re(s)=\tfrac12\) 的点读出为 NULL（无地址）”编译为一条体系内的 \(\mathbf{PW}\) 类型安全（soundness）命题，并显式区分其与“经典 RH”所需的完备性桥梁。
+
+\paragraph{相位型参数域（unitary slice）}
+记
+\[
+\mathsf{Phase}:=\{u\in\CC:\ |u|=1\}=\{e^{i\theta}:\ \theta\in\RR\}.
+\]
+对任意 \(L>1\)，由定义 \(u_L(s)=L^{2s-1}\) 得到
+\[
+\Re(s)=\tfrac12\quad\Longleftrightarrow\quad |u_L(s)|=1\quad\Longleftrightarrow\quad u_L(s)\in \mathsf{Phase}
+\]
+（注 \ref{rem:xi-critical-line-unit-circle}）。
+
+\paragraph{\(\mathbf{PW}\) 闭包与接口参数的“可见”形态}
+在三生成元片段 \((\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)\) 上，任意投影词都可规约到接口正规形
+\(\mathrm{LIFT}_G\circ\mathrm{PROJ}_u\circ E_m\)，并将不可交换残差完全收束为异常签名 \(\mathsf{Anom}_G(K;\theta)\)（命题 \ref{prop:pom-three-gen-interface-normal-form} 与定义 \ref{def:pom-anom-signature}）。
+当把该正规形接入本章的 \(\Xi\)-审计接口时，可复核的连续参数轴是 unitary slice 的相位 \(\theta\)（即 \(u=e^{i\theta}\)），而非一般的径向--相位分解 \(u=re^{i\theta}\)。
+因此，“可寻址的 \(\Xi\) 零点证书”在本文闭包中只能以 \(\theta\)-口径呈现。
+
+\begin{theorem}[\(\mathbf{PW}\) 类型安全：偏移点的不可寻址性（unitary slice 口径）]\label{thm:xi-offset-null-type-safety}
+固定 \(L>1\) 并考虑 \(\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})\)（定义见 \S\ref{subsec:xi-from-self-dual}）。
+在本文采用的 “三生成元正规化器 + 异常签名接口 + unitary slice 零点审计” 闭包中，若 \(s_0\in\CC\) 满足
+\(\Re(s_0)\neq \tfrac12\)，
+则 \(s_0\) 在该闭包下不可寻址；等价地，对应读出为空值（记作 \(\mathsf{NULL}\)）。
+特别地，任何在该闭包内可寻址并可核对的 \(\Xi_{\Delta,L}\) 零点 \(s\) 必满足 \(\Re(s)=\tfrac12\)。
+\end{theorem}
+
+\begin{proof}
+由 \(u_L(s)=L^{2s-1}\) 得
+\[
+|u_L(s_0)|=L^{2\Re(s_0)-1}\neq 1,
+\]
+故 \(u_L(s_0)\notin\mathsf{Phase}\)。
+\par
+另一方面，本章的零点审计接口在 unitary slice 上以 \(u=e^{i\theta}\)（\(\theta\in\RR\)）参数化（命题 \ref{prop:xi-unitary-slice-spectral-crossing}），并据此把零点检测转写为可审计的谱穿越判据（注 \ref{rem:xi-unitary-slice-operator-audit}）。
+在投影词侧，三生成元正规化把任意候选编译词收束到接口正规形并将残差压缩为 \(\theta\)-参数化的异常签名（命题 \ref{prop:pom-three-gen-interface-normal-form} 与定义 \ref{def:pom-anom-signature}），从而“可核对证书”的可见连续参数轴与上述 unitary slice 的 \(\theta\)-口径对齐。
+\par
+因此，在本文闭包内，若某点 \(s_0\) 可被当作 \(\Xi\) 审计对象寻址，则其参数 \(u_L(s_0)\) 必须落在可见参数域 \(\mathsf{Phase}\) 中；但上式表明 \(u_L(s_0)\notin\mathsf{Phase}\)，矛盾。
+故 \(s_0\) 在该闭包下无地址，按第 \ref{sec:recursive-addressing} 节的空值语义其读出不定义，即为空值 \(\mathsf{NULL}\)。
+\par
+最后，“可寻址零点必在临界线”由逆否命题立得：若 \(s\) 在闭包内可寻址为零点，则不可能满足 \(\Re(s)\neq\tfrac12\)，从而 \(\Re(s)=\tfrac12\)。证毕。
+\end{proof}
+
+\begin{corollary}[可见零点的临界线性（\(\Xi\) 的内部 RH）]\label{cor:xi-visible-zeros-on-critical-line}
+在定理 \ref{thm:xi-offset-null-type-safety} 的闭包设定下，所有在 \(\mathbf{PW}\) 内可寻址并可核对的 \(\Xi_{\Delta,L}\) 零点均满足 \(\Re(s)=\tfrac12\)。
+\end{corollary}
+
+\begin{remark}[soundness 与 completeness 的区分]\label{rem:xi-soundness-vs-completeness}
+定理 \ref{thm:xi-offset-null-type-safety} 属于类型安全的 soundness 方向：\emph{可寻址/可审计} \(\Rightarrow\) \emph{临界线性}。
+而命题
+\[
+\Xi_{\Delta,L}(s)=0\ \Longrightarrow\ s\ \text{在}\ \mathbf{PW}\ \text{中可寻址（非}\ \mathsf{NULL}\text{）}
+\]
+是 completeness 方向，其内容并不等同于“所有可见概念皆非空值”（后者在第 \ref{sec:recursive-addressing} 节的语义中是定义性陈述）。
+在需要把内部口径提升为“经典意义的 \(\Xi\)-RH”时，必须显式引入这一桥接假设。
+\end{remark}
+
+\begin{assumption}[\(\Xi\)-接口的地址完备性（桥接假设）]\label{assump:xi-address-completeness}
+对固定的 \(L>1\)，\(\Xi_{\Delta,L}\) 的每一个零点 \(s\in\CC\) 都在本文的 \(\mathbf{PW}\) 闭包下可寻址并可核对；等价地，不存在零点在该闭包下读出为 \(\mathsf{NULL}\)。
+\end{assumption}
+
+\begin{corollary}[地址完备性 \(\Rightarrow\) 经典 \(\Xi\)-RH]\label{cor:xi-classical-rh-from-address-completeness}
+在假设 \ref{assump:xi-address-completeness} 下，\(\Xi_{\Delta,L}\) 的全部零点都满足 \(\Re(s)=\tfrac12\)。
+\end{corollary}
+
+\begin{proof}
+由假设 \ref{assump:xi-address-completeness}，任意零点均可在本文闭包内寻址；再由定理 \ref{thm:xi-offset-null-type-safety}，任意可寻址零点必满足 \(\Re(s)=\tfrac12\)。
+故全部零点均在临界线上。证毕。
+\end{proof}
+
+\begin{remark}[反例崩塌模板：径向模式的双检查器拒绝]\label{rem:xi-radial-collapse-template}
+小节 \ref{subsec:xi-radial-counterexample-collapse} 给出一个“仍呈自对偶 completion 形态但强制需要 \(|u|\neq 1\) 径向模式”的伪对象，并展示其在根区间检查器（命题 \ref{prop:xi-rh-interval-criterion}）与常数层 strictification 检查器（定义 \ref{def:pom-finite-part-counterterm-gate}；命题 \ref{prop:pom-counterterm-anom-cancel}）上同时失败，从而把“不可类型化 \(\Rightarrow\ \mathsf{NULL}\)”的拒绝链显式化为可复核的审计流程。
+\end{remark}
+
