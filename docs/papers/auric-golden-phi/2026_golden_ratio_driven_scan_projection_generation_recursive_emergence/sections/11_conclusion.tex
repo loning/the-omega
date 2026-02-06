@@ -227,6 +227,68 @@ G_m(\omega^\star)=m,
   \log(\rho/\lambda)=-\frac12\sigma_\gamma^2(2\pi/m)^2+O(m^{-4})
   \)，从而主阶常数 \(c_{\mathrm{diff}}=2\pi^2\sigma_\gamma^2\)（与上式等价）。
   \emph{可检验含义：}该式把“慢模/扩散阈值”的常数完全锁定到一个可审计的二阶不变量（\(\sigma_\gamma^2\)）；在实现层面可通过压力 Hessian 或 Poisson 方程接口抽取，从而将 \(m,n,\delta\) 的选取从经验曲线提升为可复核的指纹常数。
+
+  \item \textbf{（新结论 5：Big-Witt 桥包强制的 \texorpdfstring{$p$}{p}-典型通道——“素数索引”并非外加）}
+  Big-Witt/necklace 的严格交换桥包把迹 ghost \(a_n(u)\) 与 primitive Witt 坐标互换（注 \ref{rem:zetaK-commuting-diagram}；附录 \ref{app:witt-bridge-package}）。
+  在 \(p\)-幂子塔上，该桥包自动诱导出 \(p\)-典型指数因子
+  \[
+  Z_p(T;u):=\exp\!\Bigl(\sum_{k\ge 0}\frac{a_{p^k}(u)}{p^k}T^{p^k}\Bigr),
+  \]
+  并由 Dwork 型同余 \(a_{p^k}(u)\equiv a_{p^{k-1}}(u^p)\ (\mathrm{mod}\ p^k)\) 锁定其 \(p\)-整性 \(Z_p(T;u)\in 1+T\,\ZZ_p[u][[T]]\)（定理 \ref{thm:witt-dwork-zp-integrality}）。
+  因而 prime-like/primitive 侧出现的“按素数索引的通道化分解”不是额外引入 Euler 乘积所致，而是 Big-Witt 的自然坐标系统在 \(p\)-进完备意义下被迫给出的可审计投影。
+  \emph{可检验含义：}逐素数 \(p\) 审计 Frobenius 缺陷多项式
+  \(\Delta_{p,k}(u)=a_{p^k}(u)-a_{p^{k-1}}(u^p)\in p^k\ZZ[u]\)（定义 \ref{def:witt-frobenius-defect} 与命题 \ref{prop:witt-frobenius-defect-divisibility}）
+  等价于审计 \(Z_p\) 的 \(p\)-整性，并在 \(p\)-幂方向上固定 primitive 坐标
+  \(p_{p^k}(u)=\bigl(a_{p^k}(u)-a_{p^{k-1}}(u^p)\bigr)/p^k\in\ZZ[u]\)（命题 \ref{prop:witt-ppower-primitive-coordinate}），从而为 primitive/Euler 侧提供逐 \(p\) 的一票否决护栏。
+
+  \item \textbf{（新结论 6：时空对偶的 \texorpdfstring{$L^2$}{L2} 能量守恒式——同余偏差 \texorpdfstring{$\Leftrightarrow$}{<->} 扭曲迹平方和）}
+  对任意有限阿贝尔群 \(G\)（同余层），令 \(p_{n,g}\) 表示长度 \(n\) 的 primitive（或 periodic）对象落在 \(g\in G\) 的计数，并记 \(p_n=\sum_{g\in G}p_{n,g}\)。
+  定义 Fourier 系数（扭曲分量）
+  \[
+  \widehat p_n(\chi):=\sum_{g\in G} p_{n,g}\,\overline{\chi(g)}\qquad(\chi\in\widehat G).
+  \]
+  则由角色正交（Plancherel）得到精确恒等式
+  \[
+  \sum_{g\in G}\Bigl|p_{n,g}-\frac{p_n}{|G|}\Bigr|^2
+  =\frac{1}{|G|}\sum_{\chi\neq \chi_0}\bigl|\widehat p_n(\chi)\bigr|^2,
+  \]
+  其中 \(\chi_0\) 为平凡角色。结合本文“角色扭曲的交换立方图”（注 \ref{rem:twist-commuting-cube}），\(\widehat p_n(\chi)\) 等价于 \(\chi\)-扭曲通道的 \(n\)-步 trace/primitive 信息，因此该恒等式把“空间侧同余分布偏差”与“时间侧扭曲迹能量”严格对齐。
+  \emph{可检验含义：}由上式立得一数证书
+  \[
+  \max_{\chi\neq \chi_0}|\widehat p_n(\chi)|
+  \le \sqrt{|G|}\Bigl(\sum_{g\in G}|p_{n,g}-p_n/|G||^2\Bigr)^{1/2},
+  \]
+  从而无需逐 \(\chi\) 穷举即可同时上界控制全部非平凡扭曲强度（参见 \(((3,3,5))\) 的实例化能量分解：定理 \ref{thm:arity-335-character-energy} 与注 \ref{rem:arity-335-parseval-bias}）。
+
+  \item \textbf{（新结论 7：\texorpdfstring{$m^2$}{m^2} 扩散障碍的硬 no-go——固定有限核不可能 uniform-\texorpdfstring{$\sqrt{\lambda}$}{sqrt(lambda)} 界）}
+  near-coboundary 小角二次律（推论 \ref{cor:dirichlet-modulus-diffusion-barrier}）给出：对任一非平凡整数值 cocycle \(F\)（方差密度 \(\sigma_F^2>0\)）与最小角 \(t_m=2\pi/m\)，当 \(m\to\infty\) 时
+  \[
+  \log\frac{\rho(M_{it_mF})}{\lambda}
+  =-\frac{\sigma_F^2}{2}\Bigl(\frac{2\pi}{m}\Bigr)^2+O(m^{-4}),
+  \]
+  因而 \(\rho(M_{it_mF})/\lambda\uparrow 1\)。这与任何固定的平方根级目标界
+  \(
+  \rho(M_{it_mF})\le \sqrt{\lambda}
+  \)
+  （等价于 \(\rho/\lambda\le \lambda^{-1/2}\)）直接对撞：对任意固定有限核，总存在 \(m\) 足够大使该界失败（亦见推论 \ref{cor:abelian-tower-no-go} 的逆极限表述）。
+  \emph{定量含义（主阶阈值）：}若仅在主阶近似层面要求 \(\rho\le\sqrt{\lambda}\)，则必须满足数量级约束
+  \[
+  \boxed{\ m^2\ \lesssim\ \frac{4\pi^2\sigma_F^2}{\log\lambda}\ }.
+  \]
+  \emph{可检验含义：}任何声称“固定有限核给出统一平方根界”的实现，都可通过增大模数并审计最小角角色通道（新结论 3 的 \(j=\pm 1\)）的谱比迅速证伪；若目标是逼近真实 GRH/RH 口径，则必须令核随模数重整化（状态/记忆复杂度随 \(m\) 增长，以改变 \(\sigma_F^2\) 的尺度律）。
+
+  \item \textbf{（新结论 8：桥包的范畴定位——Witt-log 在解析范畴中不闭合，prime-like 侧必出现自然边界）}
+  Witt/Möbius 反演在形式范畴中可逆（注 \ref{rem:zetaK-commuting-diagram}），但将其视为复解析操作时会系统性产生对数分支奇点并导致自然边界：例如真实输入 \(40\) 状态核的 primitive 生成函数 \(P(z)\) 在 \(|z|=1\) 处有自然边界（定理 \ref{thm:primitive-natural-boundary-unit-circle}），primitive--Dirichlet 级数 \(\mathcal{P}(s)\) 在 \(\Re(s)=0\) 上有自然边界（定理 \ref{thm:real-input-40-primedirichlet-dense-branch}；注 \ref{rem:primedirichlet-natural-boundary-universal} 给出普适机制）。
+  因而“prime-like/primitive 侧”在解析意义上不宜作为 RH 推进的首选解析对象；严格交换图应理解为 Big-Witt/\(\lambda\)-环的形式闭合对象，而复解析可延拓与谱半径证书则应优先在行列式/迹侧（\(\zeta=\det(I-zT)^{-1}\) 及其完成化）组织与推进。
+  \emph{可检验含义：}任何直接以 primitive 级数的解析延拓作为推理输入的路径，都必须首先面对自然边界所提供的硬阻碍；相反，本文的“闭层全纯性 + NonCancel + Fredholm 行列式规格”可作为可执行替代路线（见注 \ref{rem:positive-fredholm-htf}）。
+
+  \item \textbf{（新结论 9：RH-sharp 的内生机制——一个 \texorpdfstring{$\mathbb{Z}/2$}{Z/2} 谱配对/符号通道结构）}
+  本文已构造出一类可系统生成的 RH-sharp 核（定理 \ref{thm:fib-tensor-rhsharp-closure}），并在真实输入 \(40\) 状态核中出现唯一达界特征值 \(-\sqrt{\lambda}\) 所携带的平方根级振荡与奇偶层抵消（推论 \ref{cor:finite-rh-explicit-formula} 及相关注记）。
+  在自对偶 completion 框架下，这一“达界”并不依赖随机性：它可由一个 \(\ZZ/2\) 的符号/奇偶结构强制——符号角色扭曲满足带符号的函数方程且在 \(u=1\) 处只读 \(\Pi\)-奇分量（推论 \ref{cor:kernel-self-dual-sign-twist}），从而在 primitive 提取（Witt-log）时产生可审计的谱配对与平方根级抵消。
+  \emph{可检验含义：}给定候选核，(i) 在谱侧检查是否存在模长恰为 \(\sqrt{\lambda}\) 的非主本征值且与符号通道相容；(ii) 在 prime-like 侧检查 Witt/Möbius 提取后 \(p_n\) 的奇偶层分裂/抵消是否达到 RH-sharp 级别；两者应一致。结合新结论 7 的扩散 no-go，这为“随模数增长的重整化族”提供一个明确设计目标：在提升状态复杂度以推高可见模数阈值的同时，保持（或模块化拼接）该 \(\ZZ/2\) 谱配对机制以获得最强平方根级抵消。
 \end{enumerate}
+
+\paragraph{压缩总结（\texorpdfstring{$p$}{p}-典型通道 \(\times\) \texorpdfstring{$L^2$}{L2} 能量恒等式 \(\times\) \texorpdfstring{$m^2$}{m^2} 扩散障碍）}
+新结论 5--7 可被组织为一个三轴立方：\(p\)-典型通道分解提供按素数逐通道的 \(p\)-进整性护栏；\(L^2\) 能量恒等式把空间同余偏差与时间扭曲迹能量严格等同；而 \(m^2\) 扩散障碍给出固定有限核无法 uniform-\(\sqrt{\lambda}\) 的结构性不可行性，从而迫使研究路线转向“随模数增长的核重整化/状态增殖”。新结论 8 与 9 分别给出该立方的范畴定位（形式闭合、解析不闭合）与达界机制（\(\ZZ/2\) 谱配对）。
 
 最后指出：本文中的术语“涌现”仅用于组织动机与解释性叙事；任何后续推理均以编号结果为前提。关于黄金分支的“最优性”讨论亦严格限定在文中显式给出的数论证书链条之内，且不外推到更强的统计泛函最优性（见注 \ref{rem:what-is-optimized}）。

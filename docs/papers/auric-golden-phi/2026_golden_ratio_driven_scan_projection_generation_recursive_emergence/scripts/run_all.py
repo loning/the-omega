@@ -218,6 +218,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="gut_information_cost_selector",
+            script="exp_gut_information_cost_selector.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/gut_information_cost_selector.json",
+                "sections/generated/tab_gut_information_cost_selector.tex",
+            ],
+        ),
+        Step(
             name="m11_boundary_z34_fourier_decomposition",
             script="exp_m11_boundary_z34_fourier_decomposition.py",
             args=[],
@@ -260,6 +269,16 @@ def build_steps() -> List[Step]:
                 "sections/generated/tab_fold6_bin_uplift_choice_collapse.tex",
                 "sections/generated/tab_fold6_boundary_sheet_pairs.tex",
                 "sections/generated/tab_foldbin_boundary_lift_m6_m8.tex",
+            ],
+        ),
+        Step(
+            name="window6_family_uplift_lock",
+            script="exp_window6_family_uplift_lock.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_family_uplift_lock.json",
+                "sections/generated/tab_window6_family_uplift_lock.tex",
+                "sections/generated/eq_window6_family_singlet_completion.tex",
             ],
         ),
         Step(
