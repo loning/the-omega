@@ -1847,6 +1847,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_critical_resonance_constant",
+            script="exp_fold_critical_resonance_constant.py",
+            args=["--n-max", "200"],
+            expected_outputs=[
+                "artifacts/export/fold_critical_resonance_constant.json",
+                "sections/generated/eq_fold_critical_resonance_constant_numeric.tex",
+            ],
+        ),
+        Step(
             name="fold_multiplicity_histogram",
             script="exp_fold_multiplicity_histogram.py",
             args=[],

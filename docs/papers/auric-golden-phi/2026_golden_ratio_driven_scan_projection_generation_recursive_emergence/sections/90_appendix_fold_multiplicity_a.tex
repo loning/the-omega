@@ -164,6 +164,56 @@ g_{\mathrm{col}}^2(m):=\mathsf{Col}_m-\frac{1}{F_{m+2}}.
 \]
 \end{corollary}
 
+\begin{proposition}[循环子集和计数与群环生成函数恒等式]\label{prop:fold-multiplicity-group-algebra}
+令 \(M:=F_{m+2}\)，并在群环
+\(
+\CC[\ZZ/(M\ZZ)]\cong \CC[x]/(x^{M}-1)
+\)
+中定义生成函数
+\[
+D_m(x):=\sum_{r=0}^{M-1} d_m(r)\,x^r.
+\]
+则有严格恒等式
+\[
+\boxed{\;
+D_m(x)\ \equiv\ \prod_{j=1}^{m}\left(1+x^{F_{j+1}}\right)\qquad(\mathrm{mod}\ x^{M}-1).\;}
+\]
+从而 \(d_m(r)\) 可解释为集合 \(\{F_{2},F_{3},\dots,F_{m+1}\}\) 的子集和在模 \(M\) 意义下落于余类 \(r\) 的计数。
+\end{proposition}
+
+\begin{proof}
+在 \(\CC[x]/(x^{M}-1)\) 中展开乘积得
+\[
+\prod_{j=1}^{m}\left(1+x^{F_{j+1}}\right)
+=\sum_{\omega\in\{0,1\}^m}x^{\sum_{j=1}^m \omega_jF_{j+1}}.
+\]
+按指数在模 \(M\) 下的余类 \(r\in\ZZ/(M\ZZ)\) 分组，系数恰为
+\(
+\#\{\omega\in\Omega_m:\ \sum_j \omega_jF_{j+1}\equiv r\ (\mathrm{mod}\ M)\}
+=d_m(r)
+\)
+（定义 \ref{thm:fold-congruence-mod-semirings}--定义“多重度剖面”）。因此该乘积等于 \(\sum_r d_m(r)x^r=D_m(x)\) 在 \(\CC[x]/(x^M-1)\) 中的像，结论成立。证毕。
+\end{proof}
+
+\begin{algorithm}[全向量 FFT：一次性计算 \(d_m(\cdot)\) 与 \(\widehat d_m(\cdot)\)]\label{alg:fold-multiplicity-fft}
+输入分辨率 \(m\)。令 \(M:=F_{m+2}\)，并记 \(\omega:=e^{-2\pi i/M}\)。
+\begin{enumerate}
+  \item 初始化频域向量 \(H(k)\equiv 1\)（\(k=0,1,\dots,M-1\)）。
+  \item 对 \(j=1,2,\dots,m\) 逐步更新：
+  \[
+  H(k)\leftarrow H(k)\cdot \bigl(1+\omega^{kF_{j+1}}\bigr),\qquad k=0,1,\dots,M-1.
+  \]
+  \item 输出 \(\widehat d_m(k):=H(k)\)（于是 \(\widehat d_m(k)=D_m(\omega^k)\)，与定理 \ref{thm:fold-spectrum-factorization} 一致）。
+  \item 以逆离散傅里叶变换复原剖面：
+  \[
+  d_m(r)=\frac{1}{M}\sum_{k=0}^{M-1}\widehat d_m(k)\,\omega^{-kr},
+  \qquad r=0,1,\dots,M-1,
+  \]
+  即可一次性得到全向量 \(d_m(\cdot)\)（可用 FFT 在 \(O(M\log M)\) 时间实现该逆变换）。
+\end{enumerate}
+该实现把“逐频率 \(k\) 扫描乘积”（每个 \(k\) 代价 \(O(m)\)，若取全频则总代价 \(O(mM^2)\)）压缩为“全向量点乘链 \(O(mM)\) + 一次逆 FFT \(O(M\log M)\)”。
+\end{algorithm}
+
 \subsubsection{临界共振角色与黄金比常数}
 \label{subsubsec:fold-critical-resonance}
 
@@ -223,7 +273,6 @@ C_\varphi:=\prod_{n=2}^{\infty}\bigl|\cos(\pi \varphi^{-n})\bigr|.
 \[
 \lim_{m\to\infty}a_m(F_m)=\lim_{m\to\infty}a_m(F_{m+1})=C_\varphi.
 \]
-数值上 \(C_\varphi\approx 0.22441782740472943\)。
 \end{theorem}
 
 \textbf{证明：}
@@ -266,10 +315,19 @@ a_m(F_m)=\prod_{j=1}^m\Bigl|\cos\Bigl(\pi \frac{F_{m+1-j}}{F_{m+2}}\Bigr)\Bigr|.
 \mathsf{Col}_m-\frac{1}{F_{m+2}}
 \ge \frac{2C_\varphi^2+o(1)}{F_{m+2}}.
 \]
-特别地，基线 \(1/F_{m+2}\) 的相对因子至少为
-\(
-1+2C_\varphi^2\approx 1.100728\ldots
-\)。
+因此
+\[
+\boxed{\;
+\liminf_{m\to\infty}F_{m+2}\!\left(\mathsf{Col}_m-\frac{1}{F_{m+2}}\right)\ \ge\ 2C_\varphi^2\; }.
+\]
+数值近似可由脚本 \texttt{scripts/exp\_fold\_critical\_resonance\_constant.py} 复现：
+\input{sections/generated/eq_fold_critical_resonance_constant_numeric}
+从而 \(\mathsf{Col}_m\) 相对于基线 \(1/F_{m+2}\) 的相对因子至少为 \(1+2C_\varphi^2\)。
+进一步，因 \(F_{m+1}=F_{m+2}-F_m\)（即 \(F_{m+1}\equiv -F_m\ (\mathrm{mod}\ F_{m+2})\)），该常数级缺口由一对共轭的 bulk 共振频率 \(k=F_m\) 与 \(k=F_{m+1}\) 共同产生；其归一化频率分别满足
+\[
+\frac{F_m}{F_{m+2}}\to \varphi^{-2},\qquad
+\frac{F_{m+1}}{F_{m+2}}\to 1-\varphi^{-2}=\varphi^{-1}.
+\]
 \end{corollary}
 
 \textbf{证明：}
