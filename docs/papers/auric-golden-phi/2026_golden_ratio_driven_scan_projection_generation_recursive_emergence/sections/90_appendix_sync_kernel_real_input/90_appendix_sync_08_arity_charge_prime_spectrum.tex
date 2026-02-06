@@ -1,6 +1,15 @@
-\subsubsection{真实输入下的 arity-charge 素数谱}\label{app:real-input-40-arity-charge}
-\paragraph{定义（arity-charge 素数谱）}
-定义 arity-charge
+\subsubsection{Arity-charge 的同调非负化、密度上界与零荷子系统}\label{app:real-input-40-arity-charge}
+\paragraph{概述}
+本小节在命题 \ref{prop:real-input-40-essential-20} 的真实输入 essential $20$ 状态核心上研究 arity-charge 观测量 $\chi$。
+核心结论为：(\textup{i}) $\chi$ 在同调意义下可规范为逐边的 $0/1$ 指标，从而闭轨上 $\chi(\gamma)\ge 0$ 且 primitive 生成函数 $P_n(q)$ 不含 Laurent 负幂；
+(\textup{ii}) 任意 primitive 轨道满足密度上界 $\chi(\gamma)\le \lfloor|\gamma|/2\rfloor$，且上界尖；
+(\textup{iii}) 零荷层（$\chi(\gamma)=0$）诱导一个新的 SFT 子系统，其 $\zeta$ 与熵具有低阶代数闭式；
+(\textup{iv}) $\chi$-加权压力在 $\theta\to+\infty$ 具有精确渐近直线 $P_\chi(\theta)=\frac12\theta+\frac12\log 3+o(1)$，从而端点斜率显式为 $1/2$，截距为 $\frac12\log 3$。
+
+\paragraph{定义（arity-charge 分层与生成函数）}
+在真实输入核的图表示中，每条允许边对应一步合法输入 $(x,y)\in\{0,1\}^2$（受一步记忆约束），并携带边标记 $(d,e)$：
+其中 $d=x+y\in\{0,1,2\}$，$e\in\{0,1\}$ 为同步核输出位。
+定义一步 arity-charge
 \[
 \chi(s,d):=e-\mathbf{1}_{\{d=2\}}\in\{-1,0,1\},
 \]
@@ -43,6 +52,10 @@ g(e):=\chi(e)+V(v)-V(u)\in\{0,1\}.
 (s,p_x,p_y)\in\{(1\overline{1}2,1,1),(101,1,1),(002,1,1),(11\overline{1},0,0)\},
 \]
 其余核心状态取 $V=0$。
+等价地，若令 $\widehat V:=1-V$，则 $\widehat V$ 在上述 $4$ 个核心状态取 $0$、其余 $16$ 个取 $1$，并且
+\(
+g(e)=\chi(e)+\widehat V(u)-\widehat V(v)\in\{0,1\}
+\)（完全符合“逐边非负化”的有限证书口径）。
 因此对任意周期轨道（尤其 primitive）$\gamma$ 有
 \[
 \chi(\gamma)=\sum_{e\in\gamma}\chi(e)=\sum_{e\in\gamma}g(e)\ge 0.
@@ -60,7 +73,7 @@ g(e):=\chi(e)+V(v)-V(u)\in\{0,1\}.
 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_charge\_closed\_form.py}。
 \end{proof}
 
-\begin{remark}[Conjecture B.211 的证明]\label{rem:real-input-40-arity-charge-conjecture-b211}
+\begin{remark}[（原稿编号为 Conjecture B.211）闭轨 arity-charge 非负性]\label{rem:real-input-40-arity-charge-conjecture-b211}
 定理 \ref{thm:real-input-40-arity-charge-coboundary} 给出了 arity-charge 在闭轨上的非负性，
 从而证实 Conjecture B.211；更强的是它提供了逐边的 $0/1$ 共边界证书。
 \end{remark}
@@ -105,7 +118,7 @@ P_n(q)\in\ZZ_{\ge 0}[q].
 \[
 w(e):=1-2g(e)\in\{+1,-1\}.
 \]
-存在势函数
+可取势函数
 \[
 h:\Sigma_{\mathrm{ess}}\to\{-2,-1,0\}
 \]
@@ -113,9 +126,25 @@ h:\Sigma_{\mathrm{ess}}\to\{-2,-1,0\}
 \[
 w(e)+h(u)-h(v)\ge 0.
 \]
+例如，可取 $h$ 在 $20$ 个核心状态上的显式赋值为：
+\[
+\begin{aligned}
+h=-2&\quad\Longleftrightarrow\quad (s,m)\in\{(000,00),(001,01),(001,10)\},\\
+h=-1&\quad\Longleftrightarrow\quad (s,m)\in\{(000,01),(000,10),(010,00),(100,01),(100,10),(002,11),(11\overline{1},00)\},\\
+h=0&\quad\Longleftrightarrow\quad \text{其余核心状态}.
+\end{aligned}
+\]
+逐边核验上述不等式（核心内共 $48$ 条边）即得到一个有限证书。
 沿闭轨求和得到 $\sum_{e\in\gamma}w(e)\ge 0$，即 $\sum_{e\in\gamma}g(e)\le n/2$，从而得到上界。
 长度 $2$ 的可达性见表 \ref{tab:real-input-40-rotation-polytope-vertices} 中 $\bar\chi=1/2$ 的见证轨道。
 \end{proof}
+
+\begin{remark}[有限证书（密度上界势函数的逐边核验表）]\label{rem:real-input-40-arity-charge-density-audit}
+定理 \ref{thm:real-input-40-arity-charge-density-bound} 的证明等价于一个有限不等式系统：
+在 essential $20$ 状态核心上逐边核验 $w(e)+h(u)-h(v)\ge 0$（其中 $w=1-2g$，$g\in\{0,1\}$）。
+表 \ref{tab:real-input-40-arity-charge-density-audit} 给出全部 $48$ 条核心边的逐行核验值，因此构成一个可审计的有限证书。
+\end{remark}
+\input{sections/generated/tab_real_input_40_arity_charge_density_audit}
 
 \begin{corollary}[primitive arity-charge 多项式的次数上界]\label{cor:real-input-40-arity-charge-degree-bound}
 对任意 $n\ge 1$，有
@@ -268,7 +297,7 @@ c_n(q)=\sum_{d\mid n} d\,P_d\!\left(q^{n/d}\right)
 恢复。
 因此仅由枚举得到的 $P_1,\dots,P_{12}$ 即可反推出 $d_1,\dots,d_{12}$，
 并观测到 $d_{11}(q)\equiv d_{12}(q)\equiv 0$ 且 $d_{10}(q)=q^2(q-1)\neq 0$，
-提示分母在 $z$ 方向的有效次数为 $10$（而在 $q=1$ 处退化回 $9$ 次）。
+表明分母在 $z$ 方向的有效次数为 $10$（而在 $q=1$ 处退化回 $9$ 次）。
 定理 \ref{thm:real-input-40-arity-charge-det-closed} 给出了这一闭合的严格闭式与因子分解。
 \end{remark}
 
@@ -552,7 +581,9 @@ $s^3(s^4-5s^2+6)=0$，故极限分支满足 $s\in\{\sqrt2,\sqrt3\}$。
 \[
 B:=M_0M_1+M_1M_0,
 \]
-直接有限计算得到 $\rho(B)=3$。因此
+其特征多项式在本核上出现完全因子分解（脚本生成）：
+\input{sections/generated/eq_real_input_40_arity_charge_B_charpoly}
+从而 $\rho(B)=3$，因此
 \[
 \rho(M(q))\sim\sqrt{q\,\rho(B)}=\sqrt{3q},
 \]

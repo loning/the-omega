@@ -1109,6 +1109,17 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_addition_collision_spectrum",
+            script="exp_sync_kernel_addition_collision_spectrum.py",
+            args=[
+                "--dense-eig",
+            ],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_addition_collision_spectrum.json",
+                "sections/generated/tab_sync_kernel_addition_collision_spectrum.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_arity_charge_closed_form",
             script="exp_sync_kernel_real_input_40_arity_charge_closed_form.py",
             args=[],
@@ -1118,6 +1129,9 @@ def build_steps() -> List[Step]:
                 "sections/generated/eq_real_input_40_arity_charge_det_q_cubic.tex",
                 "sections/generated/eq_real_input_40_arity_charge_zero_charge_zeta.tex",
                 "sections/generated/eq_real_input_40_arity_charge_cumulants_closed.tex",
+                "sections/generated/tab_real_input_40_arity_charge_coboundary_audit.tex",
+                "sections/generated/tab_real_input_40_arity_charge_density_audit.tex",
+                "sections/generated/eq_real_input_40_arity_charge_B_charpoly.tex",
             ],
         ),
         Step(
@@ -1971,6 +1985,8 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "sections/generated/tab_real_input_40_arity_charge_coboundary_audit.tex",
+                "sections/generated/tab_real_input_40_arity_charge_density_audit.tex",
+                "sections/generated/eq_real_input_40_arity_charge_B_charpoly.tex",
             ],
         ),
         Step(
