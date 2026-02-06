@@ -1080,6 +1080,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_geodesic_prime_shadow",
+            script="exp_real_input_40_geodesic_prime_shadow.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_geodesic_prime_shadow.json",
+            ],
+        ),
+        Step(
             name="real_input_40_output_potential_zero_temp_ground_sft",
             script="exp_real_input_40_output_potential_zero_temp_ground_sft.py",
             args=[],
