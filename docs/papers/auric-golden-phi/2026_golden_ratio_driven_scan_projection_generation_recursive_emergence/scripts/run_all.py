@@ -418,6 +418,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_qstar_breakpoints_eps1e6_q2_20",
+            script="exp_fold_collision_qstar_breakpoints_eps1e6_q2_20.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_qstar_breakpoints_eps1e6_q2_20.json",
+                "sections/generated/tab_fold_collision_qstar_breakpoints_eps1e6_q2_20.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_multifractal_envelope_pz_q10",
             script="exp_fold_collision_multifractal_envelope_pz_q10.py",
             args=[],
