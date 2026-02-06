@@ -119,6 +119,101 @@ Zeckendorf 坐标适配加法的规范化，素数指数坐标适配乘法的线
 (iv) 加入 \(P_{\mathrm{prim}},P_\chi\) 得到 primitive/角色层与解析接口（交换图与扭曲通道）；
 (v) 证明系统落在投影词 \(2\)-范畴的重写证书上（正规形、可判等价）。
 
+\subsection{POM 的最小公理化版本（\texorpdfstring{$\mathrm{POM}_{\min}$}{POMmin}）}\label{subsec:pom-min}
+本节前述图景在本文中被实现为一组可计算接口（折叠、\(\zeta\)-行列式、primitive 提取、投影词重写与证书等）。
+为把后续讨论中反复出现的“地址/空值、折叠规范代表、残差外置、投影词证书”抽取为一个最小基线，我们给出 \(\mathrm{POM}_{\min}\) 的公理化版本：
+它不替代 ZFC，也不引入新的集合论闭包，而是把本文实际使用的\emph{接口合同}以最少原语与最少断言写死。
+
+\paragraph{原语（最少数据）}
+\(\mathrm{POM}_{\min}\)-结构由以下数据给定：
+\begin{itemize}
+  \item \textbf{（读出核）}一个可测动力读出核 \((X,\mathcal{B},T,W)\)，其中 \(T:\ZZ\curvearrowright X\) 为可测作用，\(W\in\mathcal{B}\) 为窗集；
+  \item \textbf{（稳定类型与折叠）}对每个 \(m\ge 1\)，一个稳定类型集合 \(X_m\subseteq\{0,1\}^m\) 与折叠算子 \(\Fold_m:\Omega_m\to X_m\)（其中 \(\Omega_m:=\{0,1\}^m\)）；
+  \item \textbf{（素数寄存器轴）}素数寄存器纤维 \(\mathcal{P}\) 及其值映射 \(N:\mathcal{P}\to\NN_{\ge 1}\)（定义 \ref{def:pom-prime-fiber}）；
+  \item \textbf{（最小门集与证书演算）}至少包含 \(P_Z,P_{\mathrm{prim}},P_{\le}\) 的投影门族及其投影词证书演算（投影词、正规形、可判等价片段；见定义 \ref{def:pom-projword-2cat} 与定理 \ref{thm:pom-rewrite-termination-confluence}）。
+\end{itemize}
+
+\begin{axiom}[\(\mathrm{POM}_{\min}\)-A1：读出与微态窗口]\label{ax:pommin-readout-window}
+定义二元读出
+\[
+s_t(x):=\ind_W(T^t x)\in\{0,1\}\qquad(t\in\ZZ),
+\]
+并对任意 \(m\ge 1\) 定义窗口微态词
+\[
+\omega_m(x;t):=s_t(x)s_{t+1}(x)\cdots s_{t+m-1}(x)\in\Omega_m:=\{0,1\}^m.
+\]
+\end{axiom}
+
+\begin{axiom}[\(\mathrm{POM}_{\min}\)-A2：地址先于概念值与 \texorpdfstring{$\mathsf{NULL}$}{NULL} 语义]\label{ax:pommin-address-null}
+任意有限二元词 \(a\in\{0,1\}^k\) 称为地址，并定义柱事件
+\[
+C_a:=\{x\in X:\omega_k(x;0)=a\}\in\mathcal{B},
+\qquad
+C_{a,t}:=T^{-t}C_a.
+\]
+对给定 \(x\)，概念值为二元投影 \(\ind_{C_a}(x)\in\{0,1\}\)。
+并规定：若地址 \(a\) 未给定，则相应概念值不定义，记为 \(\mathsf{NULL}\)；该“不定义”不等同于取值 \(0\)（参见第 \ref{sec:recursive-addressing} 节的空值语义）。
+\end{axiom}
+
+\begin{axiom}[\(\mathrm{POM}_{\min}\)-A3：稳定语法（黄金均值约束）]\label{ax:pommin-stable-syntax}
+对每个 \(m\ge 1\)，稳定类型集合取为黄金均值语法
+\[
+X_m:=\{w\in\{0,1\}^m:\ \text{不含子词 }11\}.
+\]
+\end{axiom}
+
+\begin{axiom}[\(\mathrm{POM}_{\min}\)-A4：折叠的规范代表（幂等与满射）]\label{ax:pommin-fold-basic}
+对每个 \(m\ge 1\)，存在折叠算子 \(\Fold_m:\Omega_m\twoheadrightarrow X_m\) 满足：
+\begin{enumerate}
+  \item \textbf{规范性：}\(\Fold_m(\omega)\in X_m\)；
+  \item \textbf{幂等性：}若 \(\omega\in X_m\)，则 \(\Fold_m(\omega)=\omega\)；
+  \item \textbf{满射性：}\(\Fold_m\) 为满射。
+\end{enumerate}
+\end{axiom}
+
+\begin{axiom}[\(\mathrm{POM}_{\min}\)-A5：折叠的可审计实现（强终止与合流）]\label{ax:pommin-fold-auditable}
+存在一个有限局部重写系统实现 \(\Fold_m\)，使得重写强终止且合流；因此每个输入存在唯一不可约正规形，且折叠输出与归约顺序无关。
+\end{axiom}
+
+\begin{axiom}[\(\mathrm{POM}_{\min}\)-A6：跨分辨率相容（restriction 逆系统）]\label{ax:pommin-inverse-system}
+对任意 \(n\le m\)，令 \(\pi_{m\to n}:\{0,1\}^m\to\{0,1\}^n\) 为取前 \(n\) 位的截断，并令 \(\rho_{m\to n}:X_m\to X_n\) 为相同的前缀限制。
+要求对任意 \(\omega\in\Omega_m\) 有相容性
+\[
+\rho_{m\to n}\!\bigl(\Fold_m(\omega)\bigr)=\Fold_n\!\bigl(\pi_{m\to n}(\omega)\bigr),
+\]
+从而 \((X_m,\rho_{m\to n})\) 构成逆系统并具有逆极限 \(X_\infty\cong\varprojlim_m X_m\)（与第 \ref{sec:folding} 节的跨分辨率相容口径一致）。
+\end{axiom}
+
+\begin{axiom}[\(\mathrm{POM}_{\min}\)-A7：素数寄存器纤维与无损提升（残差外置可寻址）]\label{ax:pommin-prime-register-lossless}
+令 \(\mathcal{P}=\NN^{(\mathbb{P})}\) 为素数寄存器纤维，\(N:\mathcal{P}\to\NN_{\ge 1}\) 为值映射（定义 \ref{def:pom-prime-fiber}）。
+要求对每个 \(m\) 存在一个无损提升
+\[
+\widetilde{\Fold}_m:\Omega_m\hookrightarrow X_m\times\mathcal{P},
+\qquad
+\mathrm{pr}_{X_m}\circ \widetilde{\Fold}_m=\Fold_m,
+\]
+从而折叠的多对一差异可被外置为可寻址残差并可回放（参见注 \ref{rem:pom-fold-lossless} 与定义 \ref{def:pom-fold-prime-lift}）。
+\end{axiom}
+
+\begin{axiom}[\(\mathrm{POM}_{\min}\)-A8：最小门集与投影词证书演算]\label{ax:pommin-gates-projwords}
+存在至少包含规范投影 \(P_Z\)、原子投影 \(P_{\mathrm{prim}}\) 与序投影 \(P_{\le}\) 的读出门集。
+并要求存在投影词证书演算：以门复合词为 \(1\)-态射，以可核对重写证书为 \(2\)-态射；在至少一个可计算片段上存在正规形与可判等价机制（参见定义 \ref{def:pom-projword-2cat}、定理 \ref{thm:pom-rewrite-termination-confluence} 与命题 \ref{prop:pom-projword-decidable}）。
+\end{axiom}
+
+\begin{remark}[由 \texorpdfstring{$\mathrm{POM}_{\min}$}{POMmin} 直接给出的最小语义]\label{rem:pommin-minimal-semantics}
+\(\mathrm{POM}_{\min}\) 的核心语义可直接总结为三点：
+\begin{enumerate}
+  \item \textbf{存在性语义：}对象是否“存在”以其是否可被地址化/可寻址为准；无地址则读出为 \(\mathsf{NULL}\)（公理 \ref{ax:pommin-address-null}）。
+  \item \textbf{稳定对象语义：}稳定对象由折叠给出的规范代表表述；微态差异通过素数寄存器残差外置为可寻址证书，从而“不可见差异”被解释为纤维内同类而非对象缺失（公理 \ref{ax:pommin-fold-basic} 与 \ref{ax:pommin-prime-register-lossless}）。
+  \item \textbf{证明语义：}证明最小化为投影词的证书等价：在可审计片段上，规约到正规形并比较即可完成判等（公理 \ref{ax:pommin-gates-projwords}）。
+\end{enumerate}
+\end{remark}
+
+\begin{remark}[ZFC 内的形式化位置（仅作定位）]\label{rem:pommin-zfc-position}
+\(\mathrm{POM}_{\min}\) 的全部原语均为标准集合论对象（集合、\(\sigma\)-代数、可测映射、有限词、有限重写系统、有限矩阵与行列式/迹等），因此可在 ZFC 内部直接形式化。
+本文使用 \(\mathrm{POM}_{\min}\) 作为“生成—规约—审计”的接口基线，而非作为集合论层面的替代公理体系。
+\end{remark}
+
 \subsection{扫描—投影生成器（SPG）}\label{subsec:pom-spg}
 \begin{definition}[扫描—投影生成器]\label{def:pom-spg}
 设 $\Gamma$ 为作用在配置空间上的群或半群，$S$ 为由局部规则驱动的扫描算子，$P$ 为每步执行的二值投影（规范/抑制、保留/丢弃）。定义扫描—投影生成器
