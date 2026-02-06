@@ -974,11 +974,15 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     lines.append("$$")
     lines.append("而在该共振胞元处")
     lines.append("$$")
+    lines.append("\\begin{aligned}")
+    lines.append(f"\\Delta_{{(b,a)=(0,1)}}(0)&\\approx {delta_res:.8f},\\\\")
     lines.append(
-        f"\\Delta_{{(b,a)=(0,1)}}(0)\\approx {delta_res:.8f},\\qquad "
-        f"2\\bigl(\\|A^{{(1)}}\\|_\\infty+\\|A^{{(2)}}\\|_\\infty\\bigr)\\approx {bound_universal:.9f},\\qquad "
-        f"\\frac{{\\Delta_{{(0,1)}}(0)}}{{2(\\|A^{{(1)}}\\|_\\infty+\\|A^{{(2)}}\\|_\\infty)}}\\approx {ratio_extremal:.9f}."
+        f"2\\bigl(\\|A^{{(1)}}\\|_\\infty+\\|A^{{(2)}}\\|_\\infty\\bigr)&\\approx {bound_universal:.9f},\\\\"
     )
+    lines.append(
+        f"\\frac{{\\Delta_{{(0,1)}}(0)}}{{2(\\|A^{{(1)}}\\|_\\infty+\\|A^{{(2)}}\\|_\\infty)}}&\\approx {ratio_extremal:.9f}."
+    )
+    lines.append("\\end{aligned}")
     lines.append("$$")
     lines.append("并且两条谐波的条目最大值同在该胞元（以 $(b,a)$ 坐标计）：")
     lines.append("$$")

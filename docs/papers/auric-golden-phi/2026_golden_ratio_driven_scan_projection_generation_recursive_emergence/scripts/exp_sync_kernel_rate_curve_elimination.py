@@ -206,14 +206,10 @@ def _tex_structure_block(
         "R(\\alpha,u)&=u^{%d}\\,R(1-\\alpha,1/u),\\\\"
         % deg_u
     )
-    lines.append(
-        "r_0(\\alpha)&=%s,\\qquad r_{%d}(\\alpha)=%s,\\\\"
-        % (sp.latex(r0), deg_u, sp.latex(rd))
-    )
-    lines.append(
-        "r_1(\\alpha)&=%s,\\qquad r_{%d}(\\alpha)=%s,\\\\"
-        % (sp.latex(r1), deg_u - 1, sp.latex(rd1))
-    )
+    lines.append("r_0(\\alpha)&=%s,\\\\" % sp.latex(r0))
+    lines.append("r_{%d}(\\alpha)&=%s,\\\\" % (deg_u, sp.latex(rd)))
+    lines.append("r_1(\\alpha)&=%s,\\\\" % sp.latex(r1))
+    lines.append("r_{%d}(\\alpha)&=%s,\\\\" % (deg_u - 1, sp.latex(rd1)))
     lines.append("R\\!\\left(\\tfrac12,u\\right)&=-\\frac{(u-1)^6}{64}\\,Q(u),\\\\")
     q_lines = _poly_multiline_tex(QZ, u, max_line_len=75)
     if len(q_lines) == 1:
