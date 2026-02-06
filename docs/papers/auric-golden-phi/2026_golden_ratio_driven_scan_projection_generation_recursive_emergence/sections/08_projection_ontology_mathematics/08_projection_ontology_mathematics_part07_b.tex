@@ -167,35 +167,24 @@ I(\gamma):=\sup_{q\in\ZZ_{\ge 2}}\bigl((q-1)\gamma-\Phi(q)\bigr).
 把尾部控制完全组织为可计算的 moment 主尺度族 \(\{r_q\}_{q\ge 2}\) 的凸对偶。
 \end{corollary}
 
-\begin{corollary}[仅用有限整数 moments 的最强可计算尾指数界（以及信息论最优性）]\label{cor:pom-best-computable-tail-bound-integer-moments}
-固定一个整数窗口 \(K\ge 2\)，并假设只掌握有限集合的整数 moment 增长信息 \(\{\tau(q)\}_{q=2}^{K}\)（或等价地，在 \(S_q(m)=\Theta(r_q^m)\) 口径下只掌握 \(\{\log r_q\}_{q=2}^{K}\)）。
+\begin{corollary}[整数谱的最强可计算尾界（有限阶截断）]\label{cor:pom-integer-moment-strongest-tail-bound}
+在实际计算中往往只能得到有限个整数矩阶的信息：给定 \(K\ge 2\)，只掌握 \(\{\Phi(q)\}_{2\le q\le K}\)（等价地：只掌握 \(\{\tau(q)\}_{2\le q\le K}\) 或 \(\{r_q\}_{2\le q\le K}\)）。
 定义截断对偶
 \[
-\Phi_K(q):=\tau(q)-\log 2\qquad(q=2,\dots,K),
-\qquad
-I_K(\gamma):=\sup_{2\le q\le K}\bigl((q-1)\gamma-\Phi_K(q)\bigr).
+I_{\le K}(\gamma):=\sup_{2\le q\le K}\bigl((q-1)\gamma-\Phi(q)\bigr).
 \]
-则无需任何实参数延拓，仅由该有限整数谱信息即可得到\textbf{最强可计算}的上尾指数证书：
+则仍有指数尺度上界
 \[
-\boxed{\;
 \limsup_{m\to\infty}\frac{1}{m}\log \mathbb{P}_{w_m}\big[\gamma_m(X)\ge \gamma\big]
-\ \le\ -\,I_K(\gamma).\;}
+\ \le\ -\,I_{\le K}(\gamma).
 \]
-并且该证书在“只允许依赖 \(\{\tau(q)\}_{q=2}^{K}\) 这组信息”的意义下是\textbf{信息论最优}的：任何只以该有限 moments 集合作为输入、并对所有与之相容的输出分布族给出统一指数上界的函数 \(J(\gamma)\)，都必须满足
-\[
-J(\gamma)\le I_K(\gamma)\qquad(\forall \gamma\ge 0),
-\]
-否则将与某个 \(q\in\{2,\dots,K\}\) 的 Markov/Chernoff 约束（命题 \ref{prop:pom-quantile-chernoff}）相矛盾。
 \end{corollary}
 
-\begin{proof}[证明思路]
-对每个固定整数 \(q\in\{2,\dots,K\}\)，命题 \ref{prop:pom-quantile-chernoff} 给出指数上界
-\(
-\limsup\frac1m\log\mathbb{P}[\gamma_m\ge \gamma]\le \Phi_K(q)-(q-1)\gamma
-\)；
-对 \(q\) 取上确界即得 \(-I_K(\gamma)\)。
-“最强可计算/最优性”是同一对偶结构的直接后果：在只允许使用这有限组线性约束（每个 \(q\) 对应一条仿射上界）的信息模型中，\(I_K\) 作为这些仿射函数的上包络是点态最大的可行证书（任何更强的 \(J>I_K\) 必将违反至少一条 \(q\)-约束）。证毕。
-\end{proof}
+\begin{remark}[信息论最优性（在“仅知道这些整数矩”条件下）]\label{rem:pom-integer-moment-tail-optimality}
+推论 \ref{cor:pom-integer-moment-strongest-tail-bound} 给出的 \(I_{\le K}\) 不只是“一个可计算上界”，而是在“只掌握 \(\{\Phi(q)\}_{2\le q\le K}\)”这一信息集下的\textbf{最强统一指数尾界}：
+若试图把尾指数界在某个 \(\gamma\) 处严格加强（即给出 \(J(\gamma)>I_{\le K}(\gamma)\) 并宣称对所有与该矩信息一致的候选分布都成立），则在一般情形下无法同时保持对全部 \(q\le K\) 的矩约束一致。
+这可理解为经典“矩信息 \(\leftrightarrow\) 尾界”的凸对偶/对偶线性规划现象：整数矩谱给出一族线性（仿射）证书，取上包络即得到在该信息集内无法被统一改进的最强指数证书。
+\end{remark}
 
 \begin{corollary}[prime-register 的分位预算（把最坏值替换为尾部）]\label{cor:pom-prime-register-quantile-budget}
 取 \(\varepsilon\in(0,1)\)，并令 \(B_m(\varepsilon):=\exp(m\,\gamma_m(\varepsilon))\)。

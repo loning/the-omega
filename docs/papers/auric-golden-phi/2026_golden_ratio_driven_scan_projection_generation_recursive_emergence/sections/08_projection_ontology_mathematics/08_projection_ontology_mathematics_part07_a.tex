@@ -483,22 +483,60 @@ R_m^{(pq)}=\Bigl\{(\omega^{(1)},\dots,\omega^{(pq)})\in\Omega_m^{pq}:\ \Fold_m(\
 因此该复合等价于：先在底层做 \(q\)-重同步积得到 \(Q^q\)，再一次性把标签轴提升为 \(G^q\)（即 \(\mathrm{LIFT}_{G^{\times q}}\)），最后再施加同型的输出一致筛选；这正对应于右侧 \(\mathrm{MOM}_q\circ \mathrm{LIFT}_{G^{\times q}}\) 的语义。证毕。
 \end{proof}
 
-\begin{proposition}[Moment--Lift 的花环交换律（无标号 \texorpdfstring{$q$}{q} 重复制 + 置换对称）]\label{prop:pom-mom-lift-wreath}
-对任意有限群 \(G\) 与整数 \(q\ge 2\)，在 \(\mathrm{MOM}_q\) 的语义被实现为 \(q\)-重同步积的 \(S_q\)-轨道（或等价的对称幂商 realization，命题 \ref{prop:pom-moment-symmetric-power}）的口径下，存在规范自然同构：
+\begin{definition}[花环积与无标号复制]\label{def:pom-wreath-product}
+对任意群 \(G\) 与整数 \(q\ge 2\)，定义花环积（wreath product）
+\[
+G\wr S_q\ :=\ G^{\times q}\rtimes S_q,
+\]
+其中 \(S_q\) 通过置换 \(q\) 个因子作用在 \(G^{\times q}\) 上。
+在本文的 moment-kernel 语义中，\(\mathrm{MOM}_q\) 的“对称幂商核”实现（命题 \ref{prop:pom-moment-symmetric-power}）把 \(q\) 份拷贝从\emph{有标号}直积 \(Q^q\) 压到\emph{无标号}的占据向量空间；
+因此当 lift 标签也被带入该无标号复制时，正确的标签对称群必然包含置换对称 \(S_q\)，从而自然落在 \(G\wr S_q\)。
+\end{definition}
+
+\begin{proposition}[Moment--Lift 的花环交换律（类型正确的交换对象）]\label{prop:pom-mom-lift-wreath-exchange}
+对任意有限群 \(G\) 与整数 \(q\ge 2\)，在 \(\mathbf{PW}\) 的自然同构意义下存在规范同构
 \[
 \boxed{\;
-\mathrm{MOM}_q\circ \mathrm{LIFT}_G\ \simeq\ \mathrm{LIFT}_{G\wr S_q}\circ \mathrm{MOM}_q\;},
-\qquad
-G\wr S_q:=G^{\times q}\rtimes S_q.
+\mathrm{MOM}_q\circ \mathrm{LIFT}_G
+\ \simeq\
+\mathrm{LIFT}_{G\wr S_q}\circ \mathrm{MOM}_q\; }.
 \]
+直观上：\(\mathrm{MOM}_q\) 的“无标号复制 + 置换对称”把 lift 的 \(q\) 份标签轴从 \(G^{\times q}\) 升格为 \(G^{\times q}\rtimes S_q\)，即花环积。
 \end{proposition}
 
-\begin{proof}[证明思路]
-\(\mathrm{MOM}_q\) 的编译把 \(q\) 份拷贝的同步积状态从 \(Q^q\) 收紧到“无标号”的轨道空间 \(Q^q/S_q\)（或其等价的对称幂商核）；因此在该 realization 上，任何“给每份拷贝携带一份 lift 标签”的数据都必须与 \(S_q\) 的置换对称兼容。
-一方面，先 lift 再取 moment 的无标号化过程把标签轴从 \(G^{\times q}\) 自动扩张为包含置换信息的半直积 \(G^{\times q}\rtimes S_q\)；
-另一方面，先取 moment（取轨道）再 lift 等价于直接在轨道对象上 lift 该半直积。
-两侧得到同一“轨道化的标签提升”编译对象，从而给出所述自然同构。证毕。
+\begin{proof}
+将 \(\mathrm{MOM}_q\) 视为“\(q\) 份并行拷贝 + 输出一致筛选 + 对称幂商压缩”的编译算子（定义 \ref{def:pom-projword-2cat} 与命题 \ref{prop:pom-moment-symmetric-power}）。
+若先 lift，再取 moment，则每份拷贝携带一份 \(G\)-坐标，得到标签轴 \(G^{\times q}\)；随后对称幂商压缩把“交换 \(q\) 份拷贝不改变语义”的置换对称内化为结构数据。
+因此 lift 的正确类型不再是单纯直积 \(G^{\times q}\)，而是其与置换对称生成的半直积 \(G^{\times q}\rtimes S_q\)，即 \(G\wr S_q\)。
+等价地，这给出从“先 lift 再 moment”的编译到“先 moment 再 lift（花环积）”的规范自然同构。
 \end{proof}
+
+\begin{remark}[与 \texorpdfstring{$(\mathrm{RMOML})$}{RMOML} 的关系：Fourier 规则是 wreath 的可计算阴影]\label{rem:pom-wreath-shadow-rmoml}
+命题 \ref{prop:pom-mom-lift-wreath-exchange} 给出类型正确的交换对象。
+当 \(G\) 为有限阿贝尔群且只取一维角色通道时，花环积的标签轴可在“角色域”上做可计算展开，
+并退化为本文采用的 Fourier 分配律 \((\mathrm{RMOML})\)（命题 \ref{prop:pom-rmoml-sound}）：它把 \(\mathrm{MOM}_q\circ \mathrm{LIFT}_G\) 的读出写成 \(\widehat G^q\) 上满足 \(\chi_1\cdots\chi_q=\chi_0\) 约束的 \(q\)-线性卷积。
+一般 \(G\wr S_q\) 的不可约表示分类不在本文范围内；但对“可审计实现”而言，\((\mathrm{RMOML})\) 已足以把 moment 谱与扭曲谱统一进同一套可执行重写/指纹接口。
+\end{remark}
+
+\begin{proposition}[异常放大律：moment 化线性放大残差标签]\label{prop:pom-anom-gap-amplification}
+沿用定义 \ref{def:pom-anom-accumulation} 的异常累积 \(\mathrm{anom}(\cdot)\in\mathcal{A}_G\)。
+对任意 \(2\)-态射证书 \(\alpha:w\Rightarrow w'\)，令 \(\alpha^{\boxtimes q}\) 表示其在 \(q\)-重 fiber-product/对称幂商编译口径下的逐份复制（即：在 \(q\) 份拷贝上并行施加同一证书，并把置换对称识别为同构数据；此操作与 \(\mathrm{MOM}_q\) 的编译语义一致）。
+则有严格放大律
+\[
+\boxed{\;\mathrm{anom}(\alpha^{\boxtimes q})=q\cdot \mathrm{anom}(\alpha).\;}
+\]
+从而对任意词 \(w\) 的规范化异常（定义 \ref{def:pom-anom-accumulation}）满足
+\[
+\boxed{\;[\mathrm{Anom}(w^{\boxtimes q})]=q\cdot [\mathrm{Anom}(w)]\;}
+\]
+（按 coboundary 取商，命题 \ref{prop:pom-anom-additive-up-to-boundary}）。
+\end{proposition}
+
+\begin{remark}[用途：可控的 gap amplification]\label{rem:pom-anom-gap-amplification-meaning}
+命题 \ref{prop:pom-anom-gap-amplification} 使“异常太小导致数值证据不稳”的情形可被内部放大：
+在不更改底层核与抽样口径的前提下，通过提高 \(q\) 将差异线性放大到可审计区间。
+在本文实现中，异常作为中心标签进入重写轨迹（注 \ref{rem:pom-projword-threegen-anom-normalizer-demo}、注 \ref{rem:pom-projword-mom-twist-normalizer-demo}），并可与 holonomy/cocycle 审计脚本联用（注 \ref{rem:pom-holonomy-cocycle-audit}）。
+\end{remark}
 
 \begin{proposition}[Moment--Lift 的 Fourier 分配律证书（\texorpdfstring{$\mathrm{RMOML}$}{RMOML}）]\label{prop:pom-rmoml-sound}
 对任意有限阿贝尔群 \(G\) 与整数 \(q\ge 2\)，复合 \(\mathrm{MOM}_q\circ \mathrm{LIFT}_G\) 的有限尺度 \(q\)-moment 读出满足命题 \ref{prop:pom-mom-lift-fourier-distribution} 的严格恒等式。
