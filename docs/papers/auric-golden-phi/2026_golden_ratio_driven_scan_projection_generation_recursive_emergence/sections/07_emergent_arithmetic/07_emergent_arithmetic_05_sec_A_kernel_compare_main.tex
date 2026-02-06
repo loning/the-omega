@@ -406,6 +406,120 @@ B_{n,c}(u)=\frac{1}{|G|}\sum_{\chi\in\widehat G}\overline{\chi(c)}\,B_n(\chi;u).
 逐项展开即可。
 \end{proof}
 
+\begin{proposition}[扭曲 primitive 谱的 Möbius--Adams 抽取：\texorpdfstring{$(\chi,u)\mapsto (\chi^d,u^d)$}{(chi,u)->(chi^d,u^d)}]\label{prop:kernel-chebotarev-mobius-adams}
+沿用定义 \ref{def:kernel-group-twist} 的记号，并额外假设 \(G\) 为有限阿贝尔群。
+对任意角色 \(\chi\in\widehat G\) 与 \(u\in(0,1]\)，定义扭曲迹序列
+\[
+a_n(\chi;u):=\Tr\!\left(M_{K,\chi}(u)^n\right)\qquad(n\ge 1).
+\]
+则定义 \ref{def:kernel-chebotarev-spectrum} 的扭曲 primitive 谱满足严格恒等式
+\[
+\boxed{\ 
+B_n(\chi;u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}\!\bigl(\chi^{d};u^{d}\bigr)
+=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\Tr\!\left(M_{K,\chi^{d}}(u^{d})^{\,n/d}\right)\ }.
+\]
+\end{proposition}
+\begin{proof}
+对固定 \((\chi,u)\)，设
+\(
+\zeta_{K,\chi}(z,u):=\det(I-zM_{K,\chi}(u))^{-1}
+\)。
+由行列式对数展开有
+\[
+\log\zeta_{K,\chi}(z,u)
+=\sum_{n\ge 1}\frac{a_n(\chi;u)}{n}z^n.
+\]
+另一方面，按 primitive 轨道分解（幂重复）有严格恒等式
+\[
+\log\zeta_{K,\chi}(z,u)
+=\sum_{\gamma\in\mathcal{P}}\sum_{r\ge 1}\frac{1}{r}\Bigl(z^{|\gamma|}\chi(g(\gamma))u^{\kappa(\gamma)}\Bigr)^r
+=\sum_{r\ge 1}\frac{1}{r}\sum_{n\ge 1}B_n(\chi^r;u^r)\,z^{nr}.
+\]
+比较 \(z^n\) 系数并对除子作变元替换得
+\[
+a_n(\chi;u)=\sum_{d\mid n} d\,B_d(\chi^{n/d};u^{n/d}).
+\]
+对该关系作 Möbius 反演即得所示公式：
+\(
+B_n(\chi;u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(\chi^d;u^d)
+\)。
+证毕。
+\end{proof}
+
+\begin{remark}[结构含义：Möbius/Witt 抽取是带 Adams 伸缩的端操作]\label{rem:kernel-chebotarev-mobius-adams-meaning}
+命题 \ref{prop:kernel-chebotarev-mobius-adams} 表明：在带角色轴的扭曲语境中，primitive 抽取并非对每个 \((\chi,u)\) 逐点地对 \(n\) 作 Möbius 反演；
+相反，它必然同步引入 \(d\)-次 Adams 伸缩
+\[
+(\chi,u)\longmapsto(\chi^d,u^d),
+\]
+其中 \(\chi\mapsto\chi^d\) 来自幂重复下的标签幂律 \(\chi(g(\gamma^d))=\chi(g(\gamma))^d\)，而 \(u\mapsto u^d\) 来自能量的可加性 \(\kappa(\gamma^d)=d\,\kappa(\gamma)\)。
+该“时间除子 \(d\)”与“角色/能量伸缩”的同步性，是后续把 Chebotarev（空间侧）与 Witt（时间侧）拼成严格交换图的核心机制。
+\end{remark}
+
+\begin{corollary}[Chebotarev--Plancherel 能量恒等式：空间侧均方偏差 \texorpdfstring{$=$}{=} 角色侧能量和]\label{cor:kernel-chebotarev-plancherel-energy}
+在命题 \ref{prop:kernel-chebotarev-fourier} 的设定下，仍假设 \(G\) 为有限阿贝尔群。
+令
+\[
+\overline{B}_n(u):=\frac{1}{|G|}\sum_{c\in G}B_{n,c}(u)=\frac{1}{|G|}B_n(\mathbf{1};u),
+\qquad
+\varepsilon_n(c;u):=B_{n,c}(u)-\overline{B}_n(u).
+\]
+则对任意 \(n\ge 1\) 有精确恒等式
+\[
+\boxed{\;
+\sum_{c\in G}\bigl|\varepsilon_n(c;u)\bigr|^2
+=\frac{1}{|G|}\sum_{\chi\in\widehat G\setminus\{\mathbf{1}\}}\bigl|B_n(\chi;u)\bigr|^2\; }.
+\]
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:kernel-chebotarev-fourier} 得
+\[
+\varepsilon_n(c;u)
+=\frac{1}{|G|}\sum_{\chi\ne \mathbf{1}}\overline{\chi(c)}\,B_n(\chi;u).
+\]
+对有限阿贝尔群 \(G\) 上的角色基应用 Parseval/Plancherel 恒等式即得
+\(
+\sum_{c\in G}|\varepsilon_n(c;u)|^2=\frac{1}{|G|}\sum_{\chi\ne\mathbf{1}}|B_n(\chi;u)|^2
+\)。
+证毕。
+\end{proof}
+
+\begin{corollary}[商映射下的 \texorpdfstring{$L^2$}{L2} 偏差单调：模数细化只会暴露更多非平凡角色能量]\label{cor:kernel-chebotarev-L2-monotone}
+设 \(\pi:G_2\twoheadrightarrow G_1\) 为有限阿贝尔群的满同态，并在两层上分别构造同余分层 primitive 谱 \(B^{(i)}_{n,c}(u)\)（\(i\in\{1,2\}\)）。
+令粗层分层谱由细层推前给出
+\[
+B^{(1)}_{n,c_1}(u):=\sum_{c_2\in \pi^{-1}(c_1)}B^{(2)}_{n,c_2}(u),
+\qquad c_1\in G_1,
+\]
+并定义相对 Haar 密度（均值为 \(1\)）
+\[
+r^{(i)}_{n}(c;u):=\frac{|G_i|\,B^{(i)}_{n,c}(u)}{B^{(i)}_{n}(\mathbf{1};u)},
+\qquad
+\frac{1}{|G_i|}\sum_{c\in G_i}r^{(i)}_{n}(c;u)=1.
+\]
+则在 \(L^2(G_i)\)（按 Haar/均匀测度归一化）意义下有单调性：
+\[
+\boxed{\;
+\bigl\|r^{(1)}_{n}(\cdot;u)-1\bigr\|_{L^2(G_1)}
+\le
+\bigl\|r^{(2)}_{n}(\cdot;u)-1\bigr\|_{L^2(G_2)}\; }.
+\]
+等价地：细化群标签（例如细化模数）只会增加（或保持）可见的非平凡角色能量总和。
+\end{corollary}
+\begin{proof}
+由推前定义与 \(|G_2|=|G_1|\cdot|\ker\pi|\) 可知，对任意 \(c_1\in G_1\) 有
+\[
+r^{(1)}_{n}(c_1;u)
+=\frac{1}{|\ker\pi|}\sum_{c_2\in\pi^{-1}(c_1)}r^{(2)}_{n}(c_2;u),
+\]
+即 \(r^{(1)}_{n}\) 正是 \(r^{(2)}_{n}\) 沿 \(\pi\) 的纤维条件期望（纤维平均）。
+而条件期望作为 \(L^2\) 正交投影是收缩算子，故
+\(
+\|r^{(1)}_{n}-1\|_{2}\le \|r^{(2)}_{n}-1\|_{2}
+\)。
+证毕。
+\end{proof}
+
 \begin{theorem}[核的 Chebotarev 型主项与指数误差（完全可计算）]\label{thm:kernel-chebotarev-exp}
 设 $u\in(0,1]$ 且 $M_K(u)$ 原始，记 $\lambda_1(u)=\rho(M_K(u))$，并令
 \[
@@ -426,7 +540,7 @@ B_{n,c}(u)=\frac{1}{|G|}\cdot\frac{\lambda_1(u)^n}{n}+O\!\left(\frac{\Lambda(u)^
 B_{n,c}(u)=|G|^{-1}\sum_{\chi}\overline{\chi(c)}B_n(\chi;u).
 \)
 当 $\chi=\mathbf{1}$ 时，$B_n(\mathbf{1};u)=B_n(u)$，由定理 \ref{thm:kernel-weighted-prime-orbit} 得到主项与误差 $O(|\lambda_2(u)|^n/n)$。
-当 $\chi\ne\mathbf{1}$ 时，$B_n(\chi;u)$ 由同一 Möbius 反演公式
+当 $\chi\ne\mathbf{1}$ 时，由命题 \ref{prop:kernel-chebotarev-mobius-adams}，
 \(
 B_n(\chi;u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\Tr(M_{K,\chi^d}(u^d)^{\,n/d})
 \)

@@ -641,6 +641,87 @@ d_{2k,0}(x^{(1)})+d_{2k,0}(x^{(2)})=F_{k+1}+F_k=D_{2k},
 极限由 \(F_{n-3}/F_n\to \varphi^{-3}\) 给出；闭式 \(\varphi^{-3}=\sqrt5-2\) 由 \(\varphi^3=2+\sqrt5\) 立得。证毕。
 \end{proof}
 
+\begin{corollary}[最大相位对隐藏位的信息量：互信息的两条极限常数]\label{cor:pom-max-fiber-phase-hidden-bit-mi}
+令 \(\mathcal{M}_m:=\{x\in X_m:\ d_m(x)=D_m\}\) 为最大纤维达到者集合（相位集合），并取随机变量
+\[
+X\sim\mathrm{Unif}(\mathcal{M}_m).
+\]
+在条件 \(X=x\) 下取
+\(
+\omega\sim\mathrm{Unif}(\Fold_m^{-1}(x))
+\)，并令隐藏位 \(B:=b(\omega)\in\{0,1\}\)。
+则对任意 \(x\in\mathcal{M}_m\) 有
+\[
+\mathbb{P}(B=1\mid X=x)=p_1(x)=\frac{d_{m,1}(x)}{D_m},
+\qquad
+H(B\mid X=x)=H_b(x),
+\]
+其中 \(H_b(x)\) 为推论 \ref{cor:pom-max-fiber-achievers-hidden-bit-entropy} 的二元熵（bits）。
+从而互信息（bits）
+\[
+I(X;B):=H(B)-\mathbb{E}\!\bigl[H(B\mid X)\bigr]
+\]
+在稳定阈值区间（注 \ref{rem:pom-max-fiber-achievers-bsplit}）满足：
+\begin{itemize}
+  \item \textbf{偶数 \(m=2k\ge 10\)：}由推论 \ref{cor:pom-max-fiber-hidden-bit-unbiased}（相位均匀平均下隐藏位精确无偏）得 \(H(B)=1\)。
+  又由推论 \ref{cor:pom-max-fiber-achievers-hidden-bit-prob-spectrum} 的两相位互补性 \(p_1\in\{F_k/F_{k+2},F_{k+1}/F_{k+2}\}\) 以及 \(H_b(p)=H_b(1-p)\)，有
+  \[
+  \boxed{\;
+  I(X;B)=1-H_b\!\left(\frac{F_k}{F_{k+2}}\right)
+  \xrightarrow[k\to\infty]{}
+  1-H_\varphi\;\approx\;0.0405813\ \mathrm{bits}\; }.
+  \]
+  \item \textbf{奇数 \(m=2k+1\ge 13\)：}由注 \ref{rem:pom-max-fiber-achievers-bsplit}，四相位中两相位满足 \(p_1=1/2\)，另两相位满足 \(p_1=\tfrac12\pm \tfrac{F_{k-2}}{2F_{k+1}}\)（互补）；故无论相位均匀平均还是按纤维大小平均（此处两者一致），都有 \(\mathbb{P}(B=1)=1/2\) 从而 \(H(B)=1\)。
+  并且
+  \[
+  \boxed{\;
+  I(X;B)=1-\frac{1}{2}\left(1+H_b\!\left(\frac12+\frac{F_{k-2}}{2F_{k+1}}\right)\right)
+  \xrightarrow[k\to\infty]{}
+  \frac{1-H_\varphi}{2}\;\approx\;0.0202907\ \mathrm{bits}\; }.
+  \]
+\end{itemize}
+\end{corollary}
+
+\begin{remark}[黄金偏置熵常数的闭式与“泄露常数”]\label{rem:pom-max-fiber-hidden-bit-leakage-constants}
+由 \(\varphi^{-1}+\varphi^{-2}=1\)（且 \(\log_2(\varphi^{-a})=-a\log_2\varphi\)）可把推论 \ref{cor:pom-max-fiber-achievers-hidden-bit-entropy} 中的常数 \(H_\varphi\) 化为闭式：
+\[
+H_\varphi
+=-\varphi^{-1}\log_2(\varphi^{-1})-\varphi^{-2}\log_2(\varphi^{-2})
+=\bigl(\varphi^{-1}+2\varphi^{-2}\bigr)\log_2\varphi
+=(3-\varphi)\log_2\varphi.
+\]
+因此由推论 \ref{cor:pom-max-fiber-phase-hidden-bit-mi} 得到两条可审计的“相位 \(\Rightarrow\) 隐藏位”互信息极限常数：
+\[
+I_{\mathrm{even}}
+:=1-(3-\varphi)\log_2\varphi,
+\qquad
+I_{\mathrm{odd}}
+:=\frac{1-(3-\varphi)\log_2\varphi}{2}.
+\]
+即使最大纤维闭式 \(D_m\) 保持不变，任意修改折叠/归一化规则若改变了最大相位的 \(p_1\)-谱（从而改变 \(H_\varphi\)），上述两条常数应是最先漂移的“信息论指纹”之一。
+\end{remark}
+
+\begin{corollary}[最大相位的隐藏位熵异质性：奇数支的两点混合]\label{cor:pom-max-fiber-phase-hidden-bit-entropy-spread}
+沿用推论 \ref{cor:pom-max-fiber-phase-hidden-bit-mi} 的随机化设定，并定义相位熵随机变量
+\[
+H_X:=H(B\mid X)=H_b\!\bigl(p_1(X)\bigr)\quad(\text{bits}).
+\]
+则在稳定阈值区间内：
+\begin{itemize}
+  \item \textbf{偶数 \(m\ge 10\)：}\(H_X\) 在两相位上取同一值，故 \(\mathrm{Var}(H_X)=0\)；
+  \item \textbf{奇数 \(m\ge 13\)：}\(H_X\) 为两点混合：以权重 \(1/2\) 取值 \(1\)（平衡两相），以权重 \(1/2\) 取值 \(H_b(\tfrac12+\tfrac{F_{k-2}}{2F_{k+1}})\)（黄金偏置两相）。
+  因而
+  \[
+  \mathrm{Std}(H_X)
+  =\frac12\left|1-H_b\!\left(\frac12+\frac{F_{k-2}}{2F_{k+1}}\right)\right|
+  \xrightarrow[k\to\infty]{}
+  \frac{1-H_\varphi}{2}
+  \approx 0.0202907\ \mathrm{bits}.
+  \]
+\end{itemize}
+换言之：奇数支在最大相位族内部引入了一个\emph{不消失的}熵异质性，而偶数支无此现象。
+\end{corollary}
+
 \begin{remark}[相内选择：\texorpdfstring{$b$}{b}-分裂精细矩在奇数最大相位上向偏置两相坍缩]\label{rem:pom-max-fiber-bsplit-phase-selection}
 标准碰撞矩 \(S_q(m)=\sum_x d_m(x)^q\) 在最大纤维族内部\emph{不会}产生“相内选择”，因为所有最大达到者都有同一 \(d_m(x)=D_m\)。
 但若考虑对隐藏位敏感的精细矩，例如
