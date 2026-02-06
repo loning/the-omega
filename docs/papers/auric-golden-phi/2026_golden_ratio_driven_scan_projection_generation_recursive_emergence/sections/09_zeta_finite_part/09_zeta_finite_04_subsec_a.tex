@@ -291,12 +291,144 @@ $$
 
 \begin{remark}[对齐：同一三次压力方程（碰撞势）]\label{rem:arity-collision-cubic-align}
 命题 \ref{prop:arity-collision-cubic} 的三次方程与附录中“碰撞势”的压力方程严格同型。
-事实上，若把记忆态按 \(00,01,10,11\) 排列，则
-\(
-A_\xi(u)=D(u)\,(F\otimes F)
-\)
-（其中 \(D(u)=\mathrm{diag}(1,1,1,u)\)），这正是附录命题 \ref{prop:real-input-40-collision-pressure} 所定义的 \(W(u)\)；其 Perron 根 \(\rho(u)\) 因而满足相同的三次代数方程，并给出压力 \(P_2(\theta)=\log\rho(e^\theta)\)。
+事实上，令
+\[
+F=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix},\qquad
+A:=F\otimes F,\qquad
+D(u):=\mathrm{diag}(1,1,1,u),
+\]
+其中 \(A\) 按记忆态 \(00,01,10,11\) 排列。
+由定义 \ref{def:arity-collision-twist-skeleton} 的显式矩阵可见
+\[
+A_\xi(u)=A\,D(u).
+\]
+而附录命题 \ref{prop:real-input-40-collision-pressure} 采用 \(W(u):=D(u)A\)。
+由于对同阶方阵总有 \(\det(\lambda I-AB)=\det(\lambda I-BA)\)，故 \(A_\xi(u)\) 与 \(W(u)\) 具有相同的特征多项式，从而
+\[
+\rho\bigl(A_\xi(u)\bigr)=\rho\bigl(W(u)\bigr)=:\rho(u),
+\qquad
+P_2(\theta)=\log\rho(e^\theta).
+\]
 因此本小节把 \(((3,3,p))\) 的“纯碰撞慢模”与附录 B 的“碰撞势”在同一三次压力方程上实现了严格对齐：只是 \(u\) 的取值从实参 \(u=e^\theta\) 推广到单位根扭曲 \(u=\omega_p^{j_3}\)。
+\end{remark}
+
+\paragraph{新增：碰撞位势的热力学形式全解（Legendre 反演 + Gibbs 平衡态闭式）}
+除去“三次方程给出压力”外，碰撞位势在输入层的热力学形式可进一步做到全域闭式：可以显式反演 Legendre 映射、给出率函数/微正则熵曲线，并把平衡态的一步边缘与“同步信息量”（互信息）写成代数闭式。
+
+\begin{proposition}[碰撞位势的 Legendre 映射可显式反演]\label{prop:collision-legendre-explicit-inversion}
+令 \(u=e^{\theta_2}>0\)，\(\rho=\rho(u)=\rho(A_\xi(u))\) 为 Perron 根，并定义压力
+\[
+P_2(\theta_2):=\log\rho(e^{\theta_2}),\qquad P_2(0)=\log\lambda,\quad \lambda=\varphi^2.
+\]
+令 \(\alpha(\theta_2):=P_2'(\theta_2)\) 为碰撞密度（即 Gibbs 平衡态下 \(\mathbf{1}_{\{11\}}\) 的期望）。
+记
+\[
+D(\rho):=2\rho^3-5\rho^2+4\rho+1.
+\]
+则对任意 \(\rho>1\)（Perron 分支）有：
+\begin{enumerate}
+  \item \textbf{（消参反演）} 三次压力方程可直接解出 \(u\) 为 \(\rho\) 的有理函数：
+  \[
+  \boxed{\ u=\frac{\rho(\rho^2-2\rho-1)}{\rho-1}\ }.
+  \]
+  \item \textbf{（密度闭式）} 碰撞密度可写成仅依赖 \(\rho\) 的有理函数：
+  \[
+  \boxed{\ \alpha(\rho)=\frac{\rho^3-3\rho^2+\rho+1}{D(\rho)}\ }.
+  \]
+  因而 \((\alpha,\rho)\) 之间满足可消元的代数约束
+  \[
+  \boxed{\ (2\alpha-1)\rho^3+(3-5\alpha)\rho^2+(4\alpha-1)\rho+(\alpha-1)=0,\qquad \rho>1\ }.
+  \]
+  因此对任意 \(\alpha\in[0,\tfrac12)\)，该方程在 \(\rho>1\) 上有唯一实根 \(\rho(\alpha)\)，并可由此恢复 \(u(\alpha)=u(\rho(\alpha))\)。
+  \item \textbf{（率函数/微正则熵）} 令 \(I_2\) 表示在基准 \(\theta_2=0\)（即 \(u=1\)）下经验碰撞密度的 LDP 率函数（以 \(P_2(\theta)-P_2(0)\) 做 Legendre--Fenchel 对偶）。
+  则沿 \(\rho\)-参数有闭式表示
+  \[
+  \boxed{\ I_2(\alpha(\rho))=\alpha(\rho)\log u(\rho)-\log\rho+\log\lambda\ }.
+  \]
+  相应微正则熵密度 \(h_2(\alpha):=\log\lambda-I_2(\alpha)\) 为
+  \[
+  \boxed{\ h_2(\alpha(\rho))=\log\rho-\alpha(\rho)\log u(\rho)\ }.
+  \]
+\end{enumerate}
+此外，端点可显式读出：当 \(\alpha\to 0\)（即 \(u\to 0\)）时 \(\rho\to 1+\sqrt2\)，从而 \(h_2(0)=\log(1+\sqrt2)\)，亦即 \(I_2(0)=\log\lambda-\log(1+\sqrt2)\)；当 \(\alpha\to \tfrac12\)（即 \(u\to\infty\)）时 \(h_2(\alpha)\to 0\)（等价地 \(I_2(\alpha)\to\log\lambda\)）。
+\end{proposition}
+
+\begin{proposition}[碰撞位势的 Gibbs 平衡态：单点分布、边际密度与互信息]\label{prop:collision-gibbs-one-site-mi}
+在命题 \ref{prop:collision-legendre-explicit-inversion} 的记号下，令 \(\mu_u\) 表示输入层 \(4\times4\) 骨架在参数 \(u>0\) 下的 Gibbs 平衡态。
+则其一步（单点）分布 \(\pi=\pi(u)\) 在四个记忆态 \(\{00,01,10,11\}\) 上满足
+\[
+\boxed{
+\pi_{00}=\frac{\rho(\rho-1)^2}{D(\rho)},\qquad
+\pi_{01}=\pi_{10}=\frac{\rho}{D(\rho)},\qquad
+\pi_{11}=\frac{\rho^3-3\rho^2+\rho+1}{D(\rho)}=\alpha(\rho).
+}
+\]
+从而两坐标的一维边际密度相同，并可闭式写成
+\[
+\boxed{\ p_1:=\mathbb P_{\mu_u}(x=1)=\mathbb P_{\mu_u}(y=1)=\pi_{10}+\pi_{11}
+=\frac{\rho^3-3\rho^2+2\rho+1}{D(\rho)}\ }.
+\]
+并且“独立性”在该可解耦合族中等价于参数端点：
+\[
+\pi_{11}=p_1^2\quad\Longleftrightarrow\quad u=1.
+\]
+进一步地，同步信息量可取互信息
+\[
+\mathcal I(u):=\sum_{a,b\in\{0,1\}}\pi_{ab}\log\frac{\pi_{ab}}{\pi_{a\ast}\pi_{\ast b}},
+\]
+由于两坐标边际相同（均为 \(p_1\)），该互信息可写成等价的显式闭式
+\[
+\boxed{
+\mathcal I(u)=
+\pi_{00}\log\frac{\pi_{00}}{(1-p_1)^2}
+2\pi_{01}\log\frac{\pi_{01}}{p_1(1-p_1)}
+\pi_{11}\log\frac{\pi_{11}}{p_1^2}.
+}
+\]
+因此 \(\mathcal I(u)\) 亦是 \(\rho\) 的代数可计算函数（只含 \(\rho\) 的有理函数与对数）。
+特别地，\(u=1\) 时 \(\mathcal I(u)=0\)；而当 \(u\to\infty\) 时 \(\pi\Rightarrow \tfrac12(\delta_{00}+\delta_{11})\)，从而 \(\mathcal I(u)\to \log 2\)（单点层面的完全同步极限）。
+\end{proposition}
+
+\begin{proposition}[输入层三参数 Gibbs 扭曲族：统一四次方程]\label{prop:collision-input-3param-quartic}
+在输入层骨架 \(A=F\otimes F\) 上，同时扭曲三类一步可加观测量：\(x=1\)、\(y=1\) 与碰撞 \(xy=1\)。
+令
+\[
+a:=e^{\theta_x},\qquad b:=e^{\theta_y},\qquad c:=e^{\theta_2},
+\qquad
+D(a,b,c):=\mathrm{diag}(1,b,a,abc),
+\]
+并定义三参数加权矩阵族
+\[
+W(a,b,c):=A\,D(a,b,c).
+\]
+记 \(\Lambda(a,b,c):=\rho(W(a,b,c))\)。
+则 \(\Lambda\) 恒满足极简四次方程
+\[
+\boxed{\ \Lambda^4-\Lambda^3-(a+b+ab+abc)\Lambda^2-ab\,\Lambda+a^2b^2c=0\ }.
+\]
+因此三参数压力函数在输入层完全闭式化：
+\[
+P(\theta_x,\theta_y,\theta_2)=\log \Lambda(e^{\theta_x},e^{\theta_y},e^{\theta_2}).
+\]
+并且在切片 \(a=b=1\) 上，上述四次方程严格分解为 \((\Lambda+1)\) 与命题 \ref{prop:arity-collision-cubic} 的三次因子，从而回到碰撞轴的三次压力结构。
+\end{proposition}
+
+\begin{remark}[三条直接推论：混合累积量代数性、Legendre 消元与碰撞轴退化]\label{rem:collision-input-3param-corollaries}
+命题 \ref{prop:collision-input-3param-quartic} 的四次方程直接给出三个结构性结论：
+\begin{enumerate}
+  \item \textbf{（混合累积量代数性）} 任意混合累积量 \(\partial_{\theta_x}^{k}\partial_{\theta_y}^{\ell}\partial_{\theta_2}^{m}P\) 可由对四次方程做隐函数微分得到，最终落在代数函数域 \(\QQ(a,b,c,\Lambda)\) 中；
+  \item \textbf{（Legendre 可消元）} 由 \(\alpha_x=\partial_{\theta_x}P,\ \alpha_y=\partial_{\theta_y}P,\ \alpha_{11}=\partial_{\theta_2}P\) 与四次方程组成的多项式系统在消去 \(\Lambda\) 后给出 \((\alpha_x,\alpha_y,\alpha_{11})\) 的代数约束，从而输入层三维大偏差几何在代数意义下可审计（可归约为整系数一元消元多项式求根问题）；
+  \item \textbf{（碰撞轴退化）} 切片 \(a=b=1\) 上出现额外因子 \((\Lambda+1)\)，四次退化回碰撞轴三次压力方程，体现“可解三维族 \(\Rightarrow\) 可解一维截面”的一致性。
+\end{enumerate}
+\end{remark}
+
+\begin{remark}[可审计核验：闭式分布/消参/四次方程]\label{rem:collision-input-4x4-gibbs-audit}
+脚本 \texttt{scripts/exp\_collision\_input\_4x4\_gibbs\_closed\_form\_audit.py} 在若干 \(u\) 与 \((a,b,c)\) 采样点上核验：
+（i）\(\pi_{ab}\) 的有理闭式与数值 PF 平衡态一致，
+（ii）\(u(\rho)\) 与 \((\alpha,\rho)\) 消元三次方程的残差为数值零，
+（iii）三参数 Perron 根满足统一四次方程。
+输出表如下：
+\input{sections/generated/tab_collision_input_4x4_gibbs_closed_form_audit}
 \end{remark}
 
 \begin{remark}[\texorpdfstring{$((3,3,5))$}{(3,3,5)} 最坏谱半径比的代数复算]\label{cor:arity-335-rho-closed-form}

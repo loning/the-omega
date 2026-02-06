@@ -1404,6 +1404,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_input_4x4_gibbs_closed_form_audit",
+            script="exp_collision_input_4x4_gibbs_closed_form_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_input_4x4_gibbs_closed_form_audit.json",
+                "sections/generated/tab_collision_input_4x4_gibbs_closed_form_audit.tex",
+            ],
+        ),
+        Step(
             name="arity_335_n2_master_curve",
             script="exp_arity_335_n2_master_curve.py",
             args=["--p-list", "7,11,13", "--k-max", "1", "--diff-h", "0.0002"],
