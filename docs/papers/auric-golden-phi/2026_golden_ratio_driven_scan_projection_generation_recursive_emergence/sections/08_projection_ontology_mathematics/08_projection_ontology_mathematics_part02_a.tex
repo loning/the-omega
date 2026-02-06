@@ -1,16 +1,16 @@
 \subsection{本体态空间与局部演化}\label{subsec:pom-state-evolution}
 \begin{definition}[分辨率态空间]\label{def:pom-state-space}
-对分辨率 $n$，定义本体态空间
+对分辨率 $m$，定义本体态空间
 \[
-\mathcal{H}_n:=\mathcal{X}_n\times \mathcal{M}_n,
+\mathcal{H}_m:=\mathcal{X}_m\times \mathcal{M}_m,
 \]
-其中 $\mathcal{X}_n$ 为外表坐标（如 $X_n$ 或 $X_\infty$ 的截断），$\mathcal{M}_n$ 为隐纤维（可包含 $\mathcal{S}_\varphi,\mathcal{T},\mathcal{P}$ 的局部激活块、同步核状态与余量等）。
+其中 $\mathcal{X}_m$ 为外表坐标（如 $X_m$ 或 $X_\infty$ 的截断），$\mathcal{M}_m$ 为隐纤维（可包含 $\mathcal{S}_\varphi,\mathcal{T},\mathcal{P}$ 的局部激活块、同步核状态与余量等）。
 \end{definition}
 
 \begin{axiom}[局部性与有限传播]\label{ax:pom-locality}
 存在本体一步演化算子
 \[
-U:\mathcal{H}_n\to\mathcal{H}_n
+U:\mathcal{H}_m\to\mathcal{H}_m
 \]
 使得每一步仅依赖有限窗口并只更新有限半径的局部块。该公理与第 \ref{sec:A-kernel-compare-main} 节的局部核/在线归一化口径一致。
 \end{axiom}
@@ -258,15 +258,28 @@ T_I(n;m)\ \approx\ k_Z(I)\,\delta_Z\ +\ k_\chi(I)\,\tau_{\mathrm{mix}}\ +\ k_{\d
 这给出“投影词 $\Rightarrow$ 非并行开销”的直接量化接口。
 \end{remark}
 
-\begin{remark}[非并行开销的三分量口径（延迟/触及规模/碰撞谱）]\label{rem:pom-nonparallel-three-meters}
-定义 \ref{def:pom-cost} 的成本分解把“常数延迟门 \(P_Z\)”与“序门 \(P_{\le}\)”以及演化深度 \(D_U\) 分离开。
-若进一步希望把不同指令/运算的“不可并行开销”统一为一个可审计对象，则仅用一个标量时间并不足够；更自然的最小口径是一个三分量资源向量：
+\begin{remark}[不可并行开销的三正交指纹（延迟/支持/混合）]\label{rem:pom-nonparallel-three-meters}
+定义 \ref{def:pom-cost} 给出总成本。
+若采取“先验纤维内线性化（尺度/相位/素数寄存器等）为本体结构、可并行展开”的口径，则 $D_U(n)$ 可视为可并行项而不计入\emph{不可并行}开销。
+于是与规模相关且不可通过并行化消去的部分可由下述三项互不替代的指纹刻画：
 \begin{itemize}
-  \item \textbf{在线延迟 \(\delta\)：}由规范门的因果锥长度给出（在 ISA 抽象下对应 \(\delta_Z\) 的标尺）；
-  \item \textbf{投影支持规模：}跨分辨率写回触及的外表位数（由规范差 \(G_m\) 及其典型密度控制；注 \ref{rem:pom-rescale-gauge-anomaly}）；
-  \item \textbf{空间损失谱：}由碰撞 moment-kernel 的 Perron 根 \(\{r_q\}_{q\ge 2}\)（或其压力曲线）刻画的“同像碰撞强度”（见定理 \ref{thm:pom-collision-kernel-ak} 与 \S\ref{subsec:pom-spectral-resource-type} 的资源曲线/类型口径）。
+  \item \textbf{延迟指纹 \(\delta\)：}规范投影门 \(P_Z\) 的最小在线延迟（因果锥长度）。对 Zeckendorf 归一化有
+  \(\delta_{\min}(\Fold_\infty)=3\)（命题 \ref{prop:pom-delay-min}），且增大空间不能将其压到 \(2\)（注 \ref{rem:pom-space-time-orth}）。
+  \item \textbf{支持指纹 \(G_m\)：}跨分辨率降阶/写回纠偏所需触及的外表位数。其最坏情形 \(G_m^{\max}=m\)（定理 \ref{thm:fold-gauge-anomaly-max}），均匀基线下的典型密度极限为
+  \(\lim_{m\to\infty}\bar G_m/m=4/9\)（定理 \ref{thm:fold-gauge-anomaly-density}），从而 \(T_{\downarrow}(m)\asymp (4/9)m\)（注 \ref{rem:pom-rescale-gauge-anomaly}）。
+  \item \textbf{混合指纹 \(\tau_{\mathrm{mix}}\)：}序/同余/角色读出门（\(P_{\le}\) 或其角色化版本 \(P_\chi\)）的收敛尺度。达到误差阈值 \(\varepsilon\) 的必要深度满足
+  \[
+  n\ \gtrsim\ \tau_{\mathrm{mix}}(u)\,\log(1/\varepsilon),
+  \qquad
+  \tau_{\mathrm{mix}}(u)=\frac{1}{\log(\lambda_1(u)/\Lambda(u))}
+  \]
+  （推论 \ref{cor:pom-order-mixing}；注 \ref{rem:pom-order-mixing-scale} 与注 \ref{rem:pom-chi-mixing}）。
 \end{itemize}
-对不涉及序约束的运算（如加法、乘法与多项式复合），上述三项即可区分“同一语义的不同编译路线”；而一旦语义必须包含最小性/区间约束（如商余），则序投影 \(P_{\le}\) 不可约地出现并引入由扭曲谱隙刻度的时间尺度 \(\tau_{\mathrm{mix}}\)（推论 \ref{cor:pom-order-mixing}，注 \ref{rem:pom-order-mixing-scale}），从而把资源签名提升到更高维。
+在该口径下，“四则与商余”的不可并行差异只表现为投影词中的序门是否出现：若 \(k_{\le}=0\)，则不可并行延迟主项仅为常数 \(\delta_Z\)；
+若语义包含规范解选择（符号、最小非负余数、商余约束 \(0\le r<b\) 等），则必有 \(k_{\le}\ge 1\) 并引入由 \(\tau_{\mathrm{mix}}\) 刻度的增长项。
+若指令显式调用 \(\mathrm{RESCALE}\downarrow\)，则支持指纹 \(G_m\) 给出独立且线性尺度的写回预算。
+\par
+此外，规范投影门 \(P_Z\) 的\emph{空间}非单射性仍可由碰撞 moment-kernel 的 Perron 根 \(\{r_q\}_{q\ge 2}\)（或压力曲线）作谱级量化（定理 \ref{thm:pom-collision-kernel-ak}）：该谱指纹决定尾部分位与 prime-register 预算证书，但它刻画的是“同像碰撞强度”，不应与上述三类不可并行读出指纹混同。
 一个直接的、可复算的例子是：把输入合法性约束提升为 40 状态真实输入核后，“加法作为一次投影”的空间侧碰撞常数发生显著变化（附录 \S\ref{app:add-collision-spectrum}）。
 \end{remark}
 

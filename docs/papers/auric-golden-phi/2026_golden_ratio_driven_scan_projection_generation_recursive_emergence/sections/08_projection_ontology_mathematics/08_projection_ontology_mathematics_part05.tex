@@ -128,7 +128,7 @@ K_2(m+1)D_N^*(\alpha;x_0).
 因此当语义必须包含序门（如除法/商余的 \(0\le r<b\) 约束）时，非并行开销不可约地同时受 \(n\)（时间尾项）与 \(N\)（采样投影项）约束，二者在结构上不可互替。
 \end{remark}
 素数轴在此处扮演公共索引：它既是乘法线性化的坐标轴（素数寄存器纤维 \(\mathcal{P}\)，定义 \ref{def:pom-prime-fiber}），也是同余/角色读出的完备化轴（\(\widehat{\ZZ}\cong\prod_p\ZZ_p\)，定义 \ref{def:pom-profinite}）；相位/角色坐标化则必然引入 \(u=e^\theta\) 的指数权重与 \(e^{2\pi i\langle k,x\rangle}\) 的归一化常数（注 \ref{rem:pom-congruence-invlimit}）。
-表 \ref{tab:pom-isa-minsig} 将这一原则落实为一张 ISA 级最小签名表：只要出现 \(P_{\le}\)，就必然出现由谱隙刻度的非并行时间；否则均为常数延迟门。
+表 \ref{tab:pom-isa-minsig} 将这一原则落实为一张 ISA 级最小签名表：只要出现 \(P_{\le}\)，就必然出现由谱隙刻度的混合时间；只要显式调用 \(\mathrm{RESCALE}\downarrow\)，就必然出现由规范差 \(G_m\) 刻度的支持写回预算；其余不可并行项均为规范投影门的常数在线延迟。
 
 \subsection{ISA 与微码：投影词的抽象层实现}\label{subsec:pom-isa}
 \paragraph{可见寄存器（外表）}
@@ -196,6 +196,8 @@ T\;=\;k_Z\delta_Z\;+\;k_{\le}T_{\le}\;+\;k_\chi\,\tau_{\mathrm{mix}}\;+\;D_U\;+\
 
 \paragraph{隐纤维（程序不可见）}
 隐纤维包含尺度纤维 $\mathcal{S}_\varphi$、相位纤维 $\mathcal{T}$、素数纤维 $\mathcal{P}$，以及同步核状态与余量（例如 $|\Sigma|=40$ 的真实输入核，见附录关于真实输入核的构造）。
+其中实现规范投影 \(P_Z\) 的单趟在线归一化核携带一个有限状态同步变量（定理 \ref{thm:online-delay-fold}），可抽象为程序不可见的同步寄存器 \(Q\)；其最小在线延迟刚性为 \(\delta_{\min}(\Fold_\infty)=3\)（命题 \ref{prop:pom-delay-min}）。
+在抽象 ISA 层，亦可把先验纤维的“坐标账本”显式化为两组可选寄存器文件：素数指数寄存器 \texttt{P[i]}（\(\mathcal{P}\) 上的有限支撑指数向量，用于把乘除线性化为逐坐标加减），以及相位/角色寄存器 \texttt{T[i]}（\(\mathcal{T}\) 上的相位/字符坐标，用于对角化线性部分与相位/角色读出）。在本文口径下，它们仅改变空间预算 \(S(n)\) 与线性化深度 \(D_U(n)\) 的分配，而不引入新的不可并行读出门：不可并行开销仍由 \(P_Z,P_{\le}\) 与 \(\mathrm{RESCALE}\downarrow\) 的三指纹完全锁定。
 
 \paragraph{指令层（投影词标注）}
 \begin{itemize}
@@ -217,7 +219,7 @@ T\;=\;k_Z\delta_Z\;+\;k_{\le}T_{\le}\;+\;k_\chi\,\tau_{\mathrm{mix}}\;+\;D_U\;+\
 \centering
 \scriptsize
 \setlength{\tabcolsep}{6pt}
-\caption{算术 ISA 的最小投影门签名：非并行开销由投影词中的 $P_Z$ 与 $P_{\le}$ 决定（定义 \ref{def:pom-cost}）。当 $k_{\le}>0$ 时，其时间尺度由混合量 $\tau_{\mathrm{mix}}(u)$ 控制（推论 \ref{cor:pom-order-mixing}）。}
+\caption{算术 ISA 的最小投影门签名：在“纤维内线性化可并行展开”的口径下，规模相关且不可并行化的读出开销仅来自投影门本身，可由三类正交指纹审计（注 \ref{rem:pom-nonparallel-three-meters}）：规范门 \(P_Z\) 的常数在线延迟 \(\delta_Z\)，序门 \(P_{\le}\) 的混合尺度 \(\tau_{\mathrm{mix}}(u)\log(1/\varepsilon)\)（推论 \ref{cor:pom-order-mixing}），以及跨分辨率降阶门 \(\mathrm{RESCALE}\downarrow\) 的支持尺度 \(T_{\downarrow}(m)\asymp (4/9)m\)（注 \ref{rem:pom-rescale-space-constant}）。表中以 \(W_{\min}=(k_Z,k_{\le})\) 记录前两类门的最小调用次数；若指令显式涉及 \(\mathrm{RESCALE}\downarrow\)，则需另记 \(k_{\downarrow}\) 与支持预算 \(\sum G_m\)。}
 \label{tab:pom-isa-minsig}
 \begin{tabular}{p{0.18\linewidth} p{0.20\linewidth} p{0.12\linewidth} p{0.18\linewidth} p{0.26\linewidth}}
 \toprule
@@ -230,6 +232,7 @@ T\;=\;k_Z\delta_Z\;+\;k_{\le}T_{\le}\;+\;k_\chi\,\tau_{\mathrm{mix}}\;+\;D_U\;+\
 \texttt{ZDIVMOD}（DIVMOD） & order-hard/退火 & $(2,1)$ & 依实现（常含 $\widehat{\ZZ}$） & $\ge 2\delta_Z+\tau_{\mathrm{mix}}(u)\log(1/\varepsilon)$\\
 \texttt{ZMOD}（MOD, residue） & profinite readout & $(0,0)$ & $\{\widehat{\ZZ}\}$ & 时间常数；空间占用 $(S_{\mathrm{mod}},R_{\mathrm{mod}})$\\
 \texttt{ZMODN}（MOD, norm） & canonical rep & $(0,1)$ & $\{\widehat{\ZZ}\}$ & $\tau_{\mathrm{mix}}(u)\log(1/\varepsilon)$\\
+\texttt{ZRESCALE}（RESCALE$\downarrow$） & fold-aware restriction & $(0,0)$；$k_{\downarrow}=1$ & $\emptyset$ & 支持尺度 $T_{\downarrow}(m)\asymp (4/9)m$\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -258,10 +261,10 @@ T\;=\;k_Z\delta_Z\;+\;k_{\le}T_{\le}\;+\;k_\chi\,\tau_{\mathrm{mix}}\;+\;D_U\;+\
   \item \texttt{LIFT\_PRIME\_TRACE}：把 $P_Z$ 的重写残差轨迹外置到 $\mathcal{P}$（无损规范投影门；定义 \ref{def:pom-fold-prime-lift} 与命题 \ref{prop:pom-fold-prime-lift-injective}）；
   \item \texttt{UNLIFT\_PRIME\_TRACE}：从 $(x,r)\in X_m\times\mathcal{P}$ 回放逆重写以恢复输入微态（命题 \ref{prop:pom-fold-prime-lift-injective}）；
   \item \texttt{EVOLVE(op)}：执行一步本体演化 $U$；
-  \item \texttt{PROJ\_NORM}：执行 $P_Z$；
+  \item \texttt{PROJ\_NORM}（亦记 \texttt{FOLDZ}）：执行 $P_Z$；
   \item \texttt{PROJ\_RESCALE\_DOWN}：执行跨分辨率降阶门 $\mathrm{RESCALE}\downarrow$；
   \item \texttt{PROJ\_PRIM}：执行 $P_{\mathrm{prim}}$（trace $\Rightarrow$ primitive）；
-  \item \texttt{PROJ\_ORDER}：执行 $P_{\le}$；
+  \item \texttt{PROJ\_ORDER}（亦记 \texttt{ORDER}）：执行 $P_{\le}$；
   \item \texttt{PROJ\_TEMP($u$)}：执行温度化序投影 $\mathrm{PROJ}_u$（定义 \ref{def:pom-proj-temp}；$u\to 0$ 为零温硬化极限）；
   \item \texttt{PROJ\_CHI}：执行 $P_\chi$（同余/角色分层投影）；
   \item \texttt{TWIST($\chi$)}：对角色/同余类做扭曲读出；
@@ -325,6 +328,12 @@ v_p(Nf_i)=v_p(N)+v_p(a_i)-v_p(b_i)
 \]
 则当 \(u\to 0\) 时，质量集中到 \(\min I(r)\)，并恢复定义 \ref{def:pom-fractran} 的硬 first-fit 规则（确定性选择 \(i^\ast(r)\)）。
 这给出一个最小例子：确定性优先级选择可视为温度化序投影 \(\mathrm{PROJ}_u\) 的零温硬化（定义 \ref{def:pom-proj-temp}，注 \ref{rem:pom-order-as-zero-temp}）。
+\end{remark}
+
+\begin{remark}[控制流外置：状态机即序投影的选择]\label{rem:pom-fractran-controlflow}
+在 FRACTRAN 中，“状态机”不必额外理解为图论对象：可行性谓词 \(r\ge \beta_i\) 给出一族分段线性可达区域，而 first-fit 规则正是对该分解上的\emph{选择投影}（把 \(r\) 映射到索引 \(i^\ast(r)\) 并据此选取更新）。
+经典 FRACTRAN 还可通过引入若干专用素数轴把程序计数器与有限控制态外置到 \(\mathcal{P}\) 的坐标账本中（以这些素数的指数承载当前指令段/分支状态），从而把控制流也编译为素数寄存器的可寻址坐标。
+在 POM 语言中，这等价于把投影词的控制结构搬运到 \(\mathcal{P}\) 纤维，而不可并行开销仍由序门的选择深度支配。
 \end{remark}
 
 \begin{remark}[成本下界：扫描深度 \texorpdfstring{$\times$}{x} 支撑规模]\label{rem:pom-fractran-cost}
