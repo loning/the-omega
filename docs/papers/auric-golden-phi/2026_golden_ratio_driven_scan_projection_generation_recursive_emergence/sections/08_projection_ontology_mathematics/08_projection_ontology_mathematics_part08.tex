@@ -135,7 +135,7 @@ $$
 \end{definition}
 
 \begin{remark}[负矩由 \texorpdfstring{$E_m$}{Em} 的 Schatten 谱直接读出]\label{rem:pom-negative-moment-from-schatten}
-由附录算子代数口径（推论 \ref{cor:fold-conditional-expectation-schatten}）对任意 \(t>0\) 有精确恒等式
+由附录算子代数口径（推论 \ref{cor:fold-conditional-expectation-schatten}）当 \(t\ge \frac12\)（即 \(2t\ge 1\)）时，有精确恒等式
 $$
 \boxed{\;
 S^{-}_{t}(m)=\sum_{x\in X_m}d_m(x)^{-t}=\|E_m\|_{S_{2t}}^{2t}\;}.
@@ -163,6 +163,59 @@ $$
 \)。
 再取对数并除以 \(m\)，注意 \(|X_m|=F_{m+2}=\Theta(\varphi^m)\)，得第二式。证毕。
 \end{proof}
+
+\begin{remark}[双管线交叉审计不等式]\label{rem:pom-positive-negative-cross-audit}
+对任意 \(t\ge \frac12\)，由注 \ref{rem:pom-negative-moment-from-schatten} 可将命题 \ref{prop:pom-positive-negative-coupling} 改写为
+$$
+\boxed{\;
+S^{+}_{t}(m)\,\|E_m\|_{S_{2t}}^{2t}\ \ge\ |X_m|^2\; }.
+$$
+其中 \(S_t^{+}(m)\) 通常由 moment-kernel/残差 DP 路线计算（正矩管线），而 \(\|E_m\|_{S_{2t}}\) 则可直接由纤维直方图 \(d_m(\cdot)\) 或表 \ref{tab:fold_conditional_expectation_singular_spectrum} 的谱指纹读出（算子管线）。
+因此该不等式为两条互相独立的审计子系统提供一个确定性的一致性约束。
+\end{remark}
+
+\begin{corollary}[纤维离散度指数：算术/调和均值比]\label{cor:pom-fiber-dispersion-index}
+令 \(\overline d_m:=2^m/|X_m|\) 为纤维尺寸在均匀 \(X_m\) 取样下的算术均值，并令
+\[
+d_m^{\mathrm{harm}}
+:=
+\frac{|X_m|}{\sum_{x\in X_m} d_m(x)^{-1}}
+=
+\frac{|X_m|}{\|E_m\|_{HS}^2}
+\]
+为对应的调和均值（推论 \ref{cor:fold-conditional-expectation-schatten}）。
+定义\textbf{纤维离散度指数}
+\[
+\boxed{\;
+\mathfrak{D}_m
+:=
+\frac{\overline d_m}{d_m^{\mathrm{harm}}}
+=
+\frac{2^m}{|X_m|^2}\sum_{x\in X_m}\frac{1}{d_m(x)}
+=
+\frac{2^m}{|X_m|^2}\|E_m\|_{HS}^2\; }.
+\]
+则对所有 \(m\ge 1\) 有确定性下界
+\[
+\boxed{\;\mathfrak{D}_m\ge 1\;}
+\]
+且等号当且仅当所有纤维尺寸 \(d_m(x)\) 处处相等（完全均匀纤维）。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:pom-positive-negative-coupling} 取 \(t=1\)，并注意 \(S_1^+(m)=\sum_x d_m(x)=|\Omega_m|=2^m\)，得到
+\[
+2^m\sum_{x\in X_m}\frac{1}{d_m(x)}\ \ge\ |X_m|^2,
+\]
+两边同除以 \(|X_m|^2\) 即得 \(\mathfrak{D}_m\ge 1\)。
+等号条件由 Cauchy--Schwarz 取等号的充要性给出：\(\bigl(d_m(x)^{1/2}\bigr)_x\) 与 \(\bigl(d_m(x)^{-1/2}\bigr)_x\) 成比例当且仅当 \(d_m(x)\) 为常数。
+\end{proof}
+\input{sections/generated/tab_fold_fiber_dispersion_index}
+
+\begin{remark}[审计窗口内的异质性趋势]\label{rem:pom-fiber-dispersion-trend}
+表 \ref{tab:fold_fiber_dispersion_index} 给出若干 \(m\) 的 \(\mathfrak{D}_m\) 可复现输出；在审计窗口 \(m=8,10,\dots,24\) 内，\(\mathfrak{D}_m\) 由约 \(1.2367\) 缓慢上升至约 \(1.3781\)，表明折叠纤维的异质性随分辨率增长而增强。
+该标量既不同于最大纤维统计，也不同于正矩谱 \(S_t^+(m)\)；
+它以均值比的形式度量“典型纤维”与“尖锐纤维”之间的异质性，并受下界 \(\mathfrak{D}_m\ge 1\) 的硬约束。
+\end{remark}
 
 \begin{remark}[与正矩压力 \texorpdfstring{$P(q)$}{P(q)} 的桥接]\label{rem:pom-negative-pressure-bridge-to-positive}
 当 \(t=q\in\ZZ_{\ge 2}\) 时，\(S_q^+(m)=S_q(m)\) 并由 moment-kernel 给出 \(\tau^{+}(q)=\log r_q\)（定理 \ref{thm:pom-collision-kernel-ak}）。
