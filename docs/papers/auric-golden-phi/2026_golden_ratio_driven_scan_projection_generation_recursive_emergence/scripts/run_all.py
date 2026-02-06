@@ -657,6 +657,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_delta_linear_fit_q18_23",
+            script="exp_fold_collision_delta_linear_fit_q18_23.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_delta_linear_fit_q18_23.json",
+                "sections/generated/eq_fold_collision_delta_linear_fit_q18_23.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_shadow_spectral_packet_q9_17",
             script="exp_fold_collision_shadow_spectral_packet_q9_17.py",
             args=[],

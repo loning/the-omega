@@ -204,6 +204,58 @@ y+y^{-1}=2\cos\theta\in[-2,2]
 因此 “\(P_L\) 的根全在 \([-2,2]\)” 等价于 “\(\Phi_L\) 的根全在单位圆”，再与命题 \ref{prop:xi-rh-interval-criterion} 合并即得 (i)\(\Leftrightarrow\)(ii)\(\Leftrightarrow\)(iii)。
 \end{proof}
 
+\begin{proposition}[Cohn 型导数盘内性判别：单位圆根的等价证书]\label{prop:xi-rh-cohn-derivative}
+在推论 \ref{cor:xi-rh-unit-circle-reciprocal} 的记号下，\(\Phi_L\in\RR[y]\) 为自倒数多项式且 \(\Phi_L(0)=\mathrm{lc}(P_L)\neq 0\)。
+则下列陈述等价：
+\begin{enumerate}
+  \item \(\Phi_L\) 的全部复根满足 \(|y|=1\)；
+  \item \(\Phi_L\) 为 self-inversive，并且其导数 \(\Phi_L'(y)\) 的全部复根满足 \(|y|\le 1\)。
+\end{enumerate}
+因此 \(\Xi\)-RH 条件（命题 \ref{prop:xi-rh-interval-criterion} / 推论 \ref{cor:xi-rh-unit-circle-reciprocal} 的任一等价形式）可在 \(|y|\le 1\) 的\textbf{导数盘内性}上给出。
+\end{proposition}
+\begin{proof}
+自倒数与实系数蕴含
+\(
+\Phi_L(y)=y^{D}\overline{\Phi_L(1/\overline{y})}
+\)
+（其中 \(D=\deg\Phi_L\)），即 \(\Phi_L\) 为 self-inversive。
+由 Cohn 定理：多项式的全部零点在单位圆上当且仅当其为 self-inversive 且其导数的全部零点落在闭单位圆盘内；参见 \cite{LalinSmyth2012UnimodularitySelfInversive}（其中回顾并推广了 Cohn 的原始判别）。
+\end{proof}
+
+\begin{remark}[Schur--Cohn 半正定证书接口：把“单位圆根/区间根”转写为可审计 LMI]\label{rem:xi-schur-cohn-sdp-interface}
+令 \(p(y)=a_0+a_1y+\cdots+a_n y^n\in\CC[y]\)（\(a_0\neq 0\)）。
+定义下三角 Toeplitz 矩阵
+\[
+X(p):=\begin{pmatrix}
+a_0 & 0 & \cdots & 0\\
+a_1 & a_0 & \ddots & \vdots\\
+\vdots & \ddots & \ddots & 0\\
+a_{n-1} & \cdots & a_1 & a_0
+\end{pmatrix},
+\qquad
+Y(p):=\begin{pmatrix}
+\overline{a_n} & 0 & \cdots & 0\\
+\overline{a_{n-1}} & \overline{a_n} & \ddots & \vdots\\
+\vdots & \ddots & \ddots & 0\\
+\overline{a_1} & \cdots & \overline{a_{n-1}} & \overline{a_n}
+\end{pmatrix},
+\]
+并令 Schur--Cohn Hermitian 形式矩阵
+\[
+H(p):=X(p)X(p)^\ast-Y(p)Y(p)^\ast\in\Mat_n(\CC)_{\mathrm{Herm}}.
+\]
+经典 Schur--Cohn 理论给出：若 \(p\) 在单位圆上无零点，则 \(p\) 的全部零点落在开单位圆盘 \(|y|<1\) 当且仅当 \(H(p)\succ 0\)；并且更一般地，\(H(p)\) 的惯性指数给出单位圆内/外零点计数（标量情形的综述见 \cite{DymYoung1990SchurCohnMatrixPolynomials}）。
+\par
+结合命题 \ref{prop:xi-rh-cohn-derivative}，在典型非退化情形（例如 \(\Phi_L\) 的单位圆根均为单根）下，\(\Xi\)-RH 等价于 \(H(\Phi_L')\succ 0\)；
+而在允许重根的边界情形，可将 \(|y|\le 1\) 的闭盘条件替换为严格版 \(|y|<1\)，或将 \(H(\Phi_L')\succ 0\) 放松为半正定 \(H(\Phi_L')\succeq 0\) 并配合边界根的有限审计。
+\par
+当 \(\Phi_L\)（或更一般的通道多项式 \(\Phi_{L,\rho}\)）的系数落在不变量子环 \(\QQ[u+u^{-1}]\) 中时，沿单位圆 \(u=e^{it}\) 可把系数视为 \(x=2\cos t\in[-2,2]\) 的多项式；于是 \(H(\Phi_{L,\rho}')\) 成为一个\textbf{一元多项式矩阵} \(H(x)\)，从而“全角度”核版 (G)RH 可压缩为区间半正定约束
+\[
+H(x)\succeq 0\qquad(x\in[-2,2]).
+\]
+该区间半正定性进一步可通过 SOS/半定规划给出可审计证书。
+\end{remark}
+
 \begin{remark}[Joukowski 压缩与有限维 toy-RH 字典的对齐]\label{rem:xi-joukowski-toy-rh-alignment}
 命题 \ref{prop:xi-rh-interval-criterion} 的变量替换
 \(
@@ -271,6 +323,14 @@ D:=\deg \Phi_L=2d.
 第一条为谱分解的直接构造：取 \(\widetilde\Phi_L\) 的根写作 \(e^{i\theta_j}\)，则 \(\det(yI-U_L^{\mathrm{diag}})=\prod_{j=1}^{D}(y-e^{i\theta_j})=\widetilde\Phi_L(y)\)。
 第二条为 CMV-like 伴随矩阵的标准结果：任意首一多项式都可被实现为某个 CMV-like Hessenberg/五对角伴随矩阵的特征多项式，并且该伴随矩阵可用 Schur（Verblunsky）参数显式参数化；在该参数化下，酉性等价于参数落在单位圆盘/单位圆的约束，从而等价于特征多项式根分布在单位圆上（参见 \cite{CanteroMoralVelazquez2003CMV,Simon2005OPUC1,BevilacquaDelCorsoGemignani2015CMVCompanion}）。证毕。
 \end{proof}
+
+\begin{remark}[逆谱接口：从临界线相位到 CMV/Schur 参数]\label{rem:xi-cmv-inverse-spectral}
+命题 \ref{prop:xi-hilbert-polya-cmv} 的意义不仅在于把“单位圆根”解释为“酉谱”，还在于提供一组可计算的\textbf{参数化坐标系}：
+CMV-like 伴随矩阵 \(U_L^{\mathrm{CMV}}\) 的自由度可由 Verblunsky/Schur 参数 \((\alpha_k)\) 递归编码，且酉性等价于 \(|\alpha_k|<1\)（末项落在单位圆）这一组显式约束。
+因此，将 \(\Xi_{\Delta,L}\) 的临界线零点结构规定为某种目标相位集合（或相位分布）的任务，可转写为一个有限维\textbf{酉矩阵逆谱/参数拟合问题}：
+先在 \((\alpha_k)\) 坐标中构造（或拟合）满足酉性约束的参数序列，再由 Schur 递归恢复 \(\widetilde\Phi_L\) 及其相位零点。
+该接口与附录 \ref{app:real-input-40-finite-rh} 中 toy-explicit-formula 的有限窗零点设计任务在结构上同型。
+\end{remark}
 
 \begin{remark}[证书化验零：从 \texorpdfstring{$P_L$}{PL} 或 \texorpdfstring{$\Phi_L$}{PhiL} 到 Hardy 截面零点区间]\label{rem:xi-hard-zero-certificate}
 在完成化表示下，
