@@ -73,6 +73,38 @@ g(e)=\chi(e)+\widehat V(u)-\widehat V(v)\in\{0,1\}
 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_charge\_closed\_form.py}。
 \end{proof}
 
+\begin{corollary}[前缀欠账深度为 $1$（任意有限路径）]\label{cor:real-input-40-arity-charge-prefix-debt}
+对 essential core 上任意有限允许路径 \(\pi:u\leadsto v\)，有
+\[
+\sum_{e\in\pi}\chi(e)\ge -1.
+\]
+等价地，若沿一条合法轨道记录部分和 \(S_n:=\sum_{k=0}^{n-1}\chi(e_k)\)，则对任意 \(n\) 均有 \(S_n\ge -1\)：
+arity 欠账在任何时刻至多积累一个单位。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:real-input-40-arity-charge-coboundary}，对每条边 \(e:u\to v\) 有
+\(
+\chi(e)=g(e)-V(v)+V(u)
+\)
+且 \(g(e)\in\{0,1\}\)。
+沿路径 \(\pi\) 求和得
+\[
+\sum_{e\in\pi}\chi(e)
+=\sum_{e\in\pi}g(e)+V(u)-V(v)\ \ge\ -1,
+\]
+其中 \(\sum g(e)\ge 0\)，而 \(V(u)-V(v)\ge -1\) 因为 \(V\) 仅取 \(0/1\)。
+\end{proof}
+
+\begin{remark}[记号对齐：\texorpdfstring{$\widetilde\chi$}{chi-tilde} 的 $0/1$ 二值化]\label{rem:real-input-40-arity-charge-chi-tilde}
+令 \(H:=V\)，并对每条边 \(e:u\to v\) 定义
+\[
+\widetilde\chi(e):=\chi(e)+H(v)-H(u).
+\]
+则由定理 \ref{thm:real-input-40-arity-charge-coboundary} 得 \(\widetilde\chi(e)=g(e)\in\{0,1\}\)。
+该表述与“逐边二值化的共边界正规形”完全等价：闭轨上 \(\sum\chi=\sum\widetilde\chi\ge 0\)，而有限路径上由 \(H\) 的取值范围直接给出推论 \ref{cor:real-input-40-arity-charge-prefix-debt} 的欠账深度界。
+\end{remark}
+
 \begin{remark}[（原稿编号为 Conjecture B.211）闭轨 arity-charge 非负性]\label{rem:real-input-40-arity-charge-conjecture-b211}
 定理 \ref{thm:real-input-40-arity-charge-coboundary} 给出了 arity-charge 在闭轨上的非负性，
 从而证实 Conjecture B.211；更强的是它提供了逐边的 $0/1$ 共边界证书。
@@ -269,6 +301,28 @@ C_0\approx 0.604848,\quad
 其中 $Q_7(z,q)\in\ZZ[z,q]$。因此当 $q>0$ 时，Perron 根 $\lambda(q)=\rho(M(q))$ 为 $P_7(\Lambda,q)=0$ 的最大正实根，
 从而压力函数 $\log\lambda(q)$ 是一条解析的代数曲线分支（次数 $7$）。
 \end{theorem}
+
+\begin{remark}[与 \texorpdfstring{$(z+1)(qz^2-1)\Delta_\chi$}{(z+1)(qz^2-1)Delta} 记号的一致化]\label{rem:real-input-40-arity-charge-delta-chi}
+定理 \ref{thm:real-input-40-arity-charge-det-closed} 的分解等价于如下符号约定：令
+\[
+\Delta_\chi(z,q):=-Q_7(z,q),
+\]
+则
+\[
+\boxed{\ \det(I-zM(q))=(z+1)(qz^2-1)\,\Delta_\chi(z,q)\ }.
+\]
+并且 \(\Delta_\chi\) 的显式展开可写为
+\[
+\boxed{
+\begin{aligned}
+\Delta_\chi(z,q)
+={}&q^2z^7-4q^2z^6+4q^2z^5-6q^2z^4\\
+&-qz^7+3qz^6+qz^5+3qz^4-6qz^3+5qz^2\\
+&-z^5+z^4-z^2+2z-1.
+\end{aligned}}
+\]
+因此除去平凡因子 \((z+1)(qz^2-1)\) 后，所有非平凡本征值（非零部分）均由一个 \(7\) 次代数方程控制，并且分母在 \(q\) 上不含 Laurent 负幂（\(\Delta_\chi\in\ZZ[z,q]\)）。
+\end{remark}
 
 \begin{remark}[显式的 \texorpdfstring{$q$}{q}-三次分母]\label{rem:real-input-40-arity-charge-det-q-cubic}
 令 $\Delta(z,q):=\det(I-zM(q))$。由定理 \ref{thm:real-input-40-arity-charge-det-closed} 可知 $\Delta$ 在 $z$ 方向次数为 $10$，且作为 $q$ 的多项式次数恰为 $3$。
@@ -589,6 +643,11 @@ B:=M_0M_1+M_1M_0,
 \]
 等价于 $P_\chi(\theta)=\frac12\theta+\frac12\log 3+o(1)$。
 这给出命题 \ref{prop:real-input-40-arity-charge-endpoints} 的结构性解释，并与密度上界 \ref{thm:real-input-40-arity-charge-density-bound} 一致。
+此外，同一分解还显示 \(B\) 的次大正本征值为 \(2\)（重数 \(3\)），因此代数方程 \(P_7(\Lambda,q)=0\) 还存在一条正实分支
+\[
+\lambda_{\mathrm{sub}}(q)=\sqrt{2q}+O(1)\qquad(q\to+\infty),
+\]
+对应零温极限下的次大增长率（次优相）。
 \end{remark}
 
 \begin{proposition}[零温展开：\texorpdfstring{$q\to+\infty$}{q->+infty} 的两项闭式]\label{prop:real-input-40-arity-charge-zero-temp-expansion}
