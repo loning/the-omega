@@ -273,6 +273,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_bin_degeneracy_spectrum_m6_m12",
+            script="exp_fold_bin_degeneracy_spectrum_m6_m12.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_bin_degeneracy_spectrum_m6_m12.json",
+                "sections/generated/tab_fold_bin_degeneracy_spectrum_m6_m12.tex",
+            ],
+        ),
+        Step(
             name="fibonacci_lie_resonance_ladder",
             script="exp_fibonacci_lie_resonance_ladder.py",
             args=["--m-min", "1", "--m-max", "500"],

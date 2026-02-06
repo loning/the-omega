@@ -144,6 +144,61 @@ G_m(\omega^\star)=m,
   \emph{(ii)}~全角色族口径（单位寄存器 \(\widehat{\ZZ}^{\,\times}\) 上的 \(\sup_{\chi\neq 1}\) 谱界；推论 \ref{cor:pom-dirichlet-grh-twisted-radius}）；
   \emph{(iii)}~同源慢模诊断（碰撞核常数 \(r_q\) 与最坏扭曲常数 \(\rho\) 的跨层贴合；注 \ref{rem:arity-335-r2-vs-rho}）。
   \emph{可检验含义：}Bridge-Kit 一键脚本 \texttt{scripts/exp\_bridge\_kit.py} 将上述三类输出压缩为常数级指纹 JSON/片段，用作后续实现改动的强一致性回归测试接口。
+
+  \item \textbf{（新结论 1：分辨率平方根律）}
+  在循环层 \(G_m=\ZZ/m\ZZ\) 上，令 \(\lambda_m=\rho(B_{\mathbf 1,m})\) 为平凡通道 Perron 根，\(\Lambda_m=\max_{\chi\neq \chi_0}\rho(B_{\chi,m})\) 为最坏扭曲谱半径（定理 \ref{thm:pom-profinite-axis} 的记号；阿贝尔情形 \(\rho\) 退化为角色 \(\chi\)）。
+  在 near-coboundary 小角律支配下（推论 \ref{cor:dirichlet-modulus-diffusion-barrier} 的二次扩散标度口径），存在扩散常数 \(c_{\mathrm{diff}}>0\) 使最坏比值满足
+  \[
+  \boxed{\ \frac{\Lambda_m}{\lambda_m}
+  =\exp\!\left(-\frac{c_{\mathrm{diff}}+o(1)}{m^2}\right)\qquad(m\to\infty)\ }.
+  \]
+  因而对任意层级为 \(m\) 的 cylinder \(U=\pi_m^{-1}(A)\subseteq G_\infty\)（\(A\subseteq G_m,\ A\neq\varnothing\)），要把 Chebotarev 主项的相对误差压到 \(\le\delta\)，所需 primitive 长度的最小量级为
+  \[
+  \boxed{\ n_{\min}(m,\delta,U)\ \asymp\ \frac{m^2}{c_{\mathrm{diff}}}\Bigl(\log\frac{|G_m|}{|A|}+\log\frac{1}{\delta}\Bigr)\ }.
+  \]
+  反解地，在固定长度预算 \(n\) 下，对“最细分辨率”事件（例如 \(|A|=1\)）可承载的最大模数满足
+  \[
+  \boxed{\ m_{\max}(n,\delta)\ \asymp\ \sqrt{\frac{c_{\mathrm{diff}}\,n}{\log n}}\qquad(\text{忽略 }\log(1/\delta)\text{ 的次级项})\ }.
+  \]
+  \emph{可检验含义：}该律把“可分辨模数”与“可用轨道长度”锁定在平方根关系上；并且 \(m^2\cdot\bigl(-\log(\Lambda_m/\lambda_m)\bigr)\) 应在 \(m\to\infty\) 时趋于常数 \(c_{\mathrm{diff}}\)（可由单位根扭曲谱扫描表直接审计）。
+
+  \item \textbf{（新结论 2：全 cylinder 同时均匀化的额外 \texorpdfstring{$\log m$}{log m} 审计税）}
+  在同一层 \(m\) 上，若目标不是单个 cylinder，而是对全部共轭类（阿贝尔情形即全部单点 residue）所生成的 cylinder 族 \(\mathcal{U}_m\) 同时给出相对误差 \(\le\delta\) 的保证，则在 \(|\mathcal{U}_m|=\Theta(|G_m|)\) 的规模下，union bound 强制出现额外的 \(\log|G_m|\) 代价。
+  在新结论 1 的扩散标度下，
+  \[
+  \boxed{\ n_{\min}^{\mathrm{all}}(m,\delta)\ \asymp\ \frac{m^2}{c_{\mathrm{diff}}}\Bigl(\log |G_m|+\log\frac{1}{\delta}\Bigr)\ }.
+  \]
+  对循环层 \(G_m=\ZZ/m\ZZ\)，该式化为
+  \[
+  \boxed{\ n_{\min}^{\mathrm{all}}(m,\delta)\ \asymp\ \frac{m^2}{c_{\mathrm{diff}}}\Bigl(\log m+\log\frac{1}{\delta}\Bigr)\ }.
+  \]
+  \emph{可检验含义：}把同一模数层的全部 residue 分布“并行审计”到精度 \(\delta\)，相比于只审计一个宏观 cylinder（\(|A|\asymp |G_m|\)）必然多支付一个 \(\log m\) 因子；该因子源自事件族规模，而非来自动力学尾项本身。
+
+  \item \textbf{（新结论 3：最坏角色选择律——循环层上恒为 \texorpdfstring{$j=\pm 1$}{j=±1}）}
+  对 \(G_m=\ZZ/m\ZZ\)，令角色 \(\chi_j(k)=e^{2\pi i jk/m}\)。
+  在 near-coboundary 小角二次律下，存在同一扩散常数 \(c_{\mathrm{diff}}>0\) 使得对 \(j\ll m\) 有
+  \[
+  \boxed{\ \log\frac{\lambda_m}{\rho(B_{\chi_j,m})}
+  =\frac{c_{\mathrm{diff}}+o(1)}{m^2}\,j^2\qquad(m\to\infty)\ }.
+  \]
+  因而在所有非平凡角色中，使 \(\rho(B_{\chi_j,m})\) 取最大者（亦即使 \(\Lambda_m\) 取得者）必为最小非零 \(j\)：
+  \[
+  \boxed{\ \arg\max_{1\le j\le m-1}\rho(B_{\chi_j,m})\in\{1,m-1\}\ }.
+  \]
+  \emph{可检验含义：}在循环层的 profinite Chebotarev 口径下，“最坏扭曲”由最小非平凡角角色锁定；因此在审计 \(\Lambda_m/\lambda_m\) 时，只需扫描 \(j=\pm 1\) 即可捕获瓶颈通道。
+
+  \item \textbf{（新结论 4：扩散常数 \texorpdfstring{$c_{\mathrm{diff}}$}{c_diff} 的内生计算式）}
+  上述三条的核心常数 \(c_{\mathrm{diff}}\) 不是拟合参数：它等价于平衡测度下“寄存器增量 cocycle”的方差密度（局部压力的二阶导）。
+  设寄存器增量为 \(\gamma(e)\in\ZZ\)（边标记；见 \S\ref{subsec:profinite-operator-l2}），并令中心化变量 \(\tilde\gamma:=\gamma-\mathbb{E}[\gamma]\)。
+  定义方差密度
+  \[
+  \sigma_\gamma^2:=\lim_{n\to\infty}\frac{1}{n}\mathrm{Var}\!\left(\sum_{t=0}^{n-1}\tilde\gamma(e_t)\right),
+  \]
+  则有内生恒等式
+  \[
+  \boxed{\ c_{\mathrm{diff}}=\frac{(2\pi)^2}{2}\,\sigma_\gamma^2\ }.
+  \]
+  \emph{可检验含义：}该式把“慢模/扩散阈值”的常数完全锁定到一个可审计的二阶不变量（\(\sigma_\gamma^2\)）；在实现层面可通过压力 Hessian 或 Poisson 方程接口抽取，从而将 \(m,n,\delta\) 的选取从经验曲线提升为可复核的指纹常数。
 \end{enumerate}
 
 最后指出：本文中的术语“涌现”仅用于组织动机与解释性叙事；任何后续推理均以编号结果为前提。关于黄金分支的“最优性”讨论亦严格限定在文中显式给出的数论证书链条之内，且不外推到更强的统计泛函最优性（见注 \ref{rem:what-is-optimized}）。
