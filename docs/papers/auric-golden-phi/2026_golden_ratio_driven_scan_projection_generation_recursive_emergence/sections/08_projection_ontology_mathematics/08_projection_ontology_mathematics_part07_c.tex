@@ -2,7 +2,7 @@
 \begin{remark}[可计算形式：用已核验的 \texorpdfstring{$r_q$}{rq} 给出显式预算上界]\label{rem:pom-quantile-budget-computable}
 在已核验范围内 \(S_q(m)=\Theta(r_q^m)\)（表 \ref{tab:fold_collision_moment_recursions}），从命题 \ref{prop:pom-quantile-chernoff} 直接得到
 $$
-\mathbb{P}_{\pi_m}\big[\gamma_m(X)\ge\gamma\big]\ \lesssim\
+\mathbb{P}_{w_m}\big[\gamma_m(X)\ge\gamma\big]\ \lesssim\
 \exp\!\Bigl(m\bigl(\log r_q-\log 2-(q-1)\gamma\bigr)\Bigr).
 $$
 因此当取
@@ -47,9 +47,9 @@ B^{\mathrm{cert}}_m(\varepsilon):=\exp\!\bigl(m\,\gamma^{\mathrm{cert}}_m(\varep
 \end{itemize}
 同一对偶也给出尾部稀有度的可读尺度：例如取 \(\gamma=0.23\)，在 \(q\le 17\) 的离散上确界下得到
 \(I(0.23)\approx 0.08059\)（最优在 \(q=17\) 处达到），从而 \(m=512\) 时有上界量级
-\(\mathbb{P}_{\pi_m}[\gamma_m(X)\ge 0.23]\lesssim e^{-m I(0.23)}\approx 10^{-18}\)。
+\(\mathbb{P}_{w_m}[\gamma_m(X)\ge 0.23]\lesssim e^{-m I(0.23)}\approx 10^{-18}\)。
 脚本模块 \texttt{scripts/common\_tail\_budget.py} 实现了上述两种 \(\gamma\)-证书的扫描最优化；
-脚本 \texttt{scripts/exp\_fold\_tail\_budget\_gamma\_cert.py} 进一步用 residue-DP 直方图对 \(\pi_m\) 下的真实尾部质量做核验并输出 JSON 证书。
+脚本 \texttt{scripts/exp\_fold\_tail\_budget\_gamma\_cert.py} 进一步用 residue-DP 直方图对 \(w_m\) 下的真实尾部质量做核验并输出 JSON 证书。
 \par
 \medskip\noindent\textbf{单峰选择（为何最优 \(q^\star\) 可审计地“可搜索”）}
 由命题 \ref{prop:pom-pressure-convexity}，\(q\mapsto \log r_q\) 在整数点离散凸。
@@ -65,7 +65,7 @@ q\ \longmapsto\ \gamma^{(q)}_{m}(\varepsilon)
 右端是 \(q\) 的仿射函数；而“离散凸函数 \(-\) 仿射函数”的子水平集在整数上必为区间。
 因此最优 \(q^\star\) 的集合是一个（通常很短的）连续整数区间，既可全表扫描，也可用单峰搜索在 \(O(\log q_{\max})\) 次评估中定位。
 
-\medskip\noindent\textbf{新结论 1：prime-register 总预算的显式闭式（对 \(q\) 可优化）}
+\medskip\noindent\textbf{补充：prime-register 总预算的显式闭式（对 \(q\) 可优化）}
 由推论 \ref{cor:pom-prime-register-q-quota-family} 的 \(B_m^{(q)}(\varepsilon)\) 形式与 CRT 侧条件 \(P_m>2B\)，对任意 \(q\ge 2\) 得到一条完全显式、可审计的充分预算：
 \[
 \boxed{\;
@@ -78,7 +78,7 @@ q^\star(m,\varepsilon)=\arg\min_{q\in\mathcal{Q}}\left(\beta_q+\frac{1}{m(q-1)}\
 \beta_q=\frac{\log r_q-\log 2}{q-1}.
 \]
 
-\medskip\noindent\textbf{新结论 2：最优矩阶选择的相图（阈值判据 + 表格审计）}
+\medskip\noindent\textbf{补充：最优矩阶选择的相图（阈值判据 + 表格审计）}
 记 \(\alpha:=\frac{1}{m}\log(1/\varepsilon)\)。
 则 \(q+1\) 优于 \(q\) 的充要条件等价于一条局部判据：
 \[
@@ -117,7 +117,7 @@ P(q)\ \le\ \frac{1}{q}P(1)+\frac{q-1}{q}P(q+1)
 \]
 等价于逐步逼近“按最大纤维 provisioning”的端点指数：当误差容忍趋于 0 时，分位替代最坏值的收益将不可避免地消失。
 
-\medskip\noindent\textbf{新结论 3：可审计样例（\(m=30,\ \varepsilon=10^{-6}\)）}
+\medskip\noindent\textbf{补充：可审计样例（\(m=30,\ \varepsilon=10^{-6}\)）}
 在精确指纹范围 \(q\le 17\)（表 \ref{tab:fold_collision_renyi_spectrum}）内，全表扫描得到最优矩阶 \(q^\star(30,10^{-6})=17\)，对应
 \[
 \gamma^{\mathrm{cert}}_{30}(10^{-6})\approx 0.253745,\qquad
@@ -129,7 +129,7 @@ B^{\mathrm{cert}}_{30}(10^{-6})\approx 2.02\times 10^3,
 若允许把可审计范围推进到 DP 扩展指纹 \(q\le 20\)（表 \ref{tab:fold_collision_renyi_spectrum_mod_dp_q20}），则同一工作点的最优矩阶会推到 \(q^\star=20\)，并把预算进一步压到 \(B\approx 1.81\times 10^3\)（同一组素数仍足够）。
 作为对比，仅用二阶证书 \(q=2\) 时会得到 \(B\sim 6\times 10^8\) 这一达到 $10^8$ 量级的预算，清晰体现了“高阶矩主要改善极小 \(\varepsilon\) 的可靠性项”这一结构性结论。
 
-\medskip\noindent\textbf{新结论 4：空间/时间对偶的 Pareto 前沿（可审计定义）}
+\medskip\noindent\textbf{补充：空间/时间对偶的 Pareto 前沿（可审计定义）}
 把证书侧的“时间成本”用可审计的 realization 规模代理量化：例如取
 \[
 T(q):=\text{实现/递推的阶数代理}\ d_q
@@ -157,7 +157,7 @@ q\in\{3,5,9,11,15,17\},
 \end{remark}
 
 \begin{remark}[时间—空间—异常的三元 Pareto 边界]\label{rem:pom-pareto-ts-omega}
-\medskip\noindent\textbf{新结论 5：时间—空间—异常的三元 Pareto 边界}
+\medskip\noindent\textbf{补充：时间—空间—异常的三元 Pareto 边界}
 对同一语义目标的投影词 \(w\)，令
 \[
 \mathsf T(w):=\text{接口正规形中不可并行的层数/门计数},
@@ -172,7 +172,7 @@ q\in\{3,5,9,11,15,17\},
 \end{remark}
 
 \begin{proposition}[Quantile-CRT 编译律：\texorpdfstring{$\varepsilon$}{eps}-sound 的序投影消元]\label{prop:pom-rcrt-epsilon}
-固定分辨率 \(m\) 与误差预算 \(\varepsilon\in(0,1)\)，在折叠读出口径下令 \(X\sim\pi_m\)。
+固定分辨率 \(m\) 与误差预算 \(\varepsilon\in(0,1)\)，在折叠读出口径下令 \(X\sim w_m\)。
 设序投影门 \(P_{\le}\) 作用的内部整数标签为随机变量 \(Y\)，并满足粗界
 \[
 |Y|\ \le\ d_m(X)
@@ -180,7 +180,7 @@ q\in\{3,5,9,11,15,17\},
 \]
 取任意 \(B\ge 1\) 使得
 \[
-\mathbb{P}_{\pi_m}\big[d_m(X)>B\big]\ \le\ \varepsilon,
+\mathbb{P}_{w_m}\big[d_m(X)>B\big]\ \le\ \varepsilon,
 \]
 并选择两两互素模数 \(p_1,\dots,p_r\) 使得其乘积 \(P=\prod_i p_i\) 满足 \(P>2B\)。
 则在误差富集口径（定义 \ref{def:pom-eps-sound-rewrite}）下存在 \(\varepsilon\)-sound 重写证书
@@ -194,7 +194,7 @@ P_{\le}\ \Longrightarrow_{\varepsilon}\ \mathrm{CRT}_{\{p_i\}}\circ P_{\chi,\{p_
 令坏事件 \(E:=\{|Y|>B\}\)。
 由假设 \(|Y|\le d_m(X)\) 得 \(E\subseteq\{d_m(X)>B\}\)，从而
 \(
-\mathbb{P}_{\pi_m}[E]\le \varepsilon
+\mathbb{P}_{w_m}[E]\le \varepsilon
 \)。
 在好事件 \(E^c\) 上，\(Y\in[-B,B]\)，因此 \(P_{\le}\) 的序/区间判定可视为受限门 \(P_{\le,[-B,B]}\)。
 而在 \(P>2B\) 的侧条件下，硬阈值版 (RCRT) 对 \([-B,B]\) 上的整数读出保持正确（命题 \ref{prop:pom-order-elimination-correct}），故在 \(E^c\) 上有

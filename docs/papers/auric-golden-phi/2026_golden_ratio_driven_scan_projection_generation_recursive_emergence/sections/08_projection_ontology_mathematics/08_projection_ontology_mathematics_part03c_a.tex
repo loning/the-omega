@@ -179,6 +179,46 @@ $$
 \input{sections/generated/tab_collision_kernel_A4_primitive}
 \input{sections/generated/tab_collision_kernel_A4_finite_part}
 
+\par
+\medskip\noindent\textbf{审计结论（主极点留数常数 \(C\) 的导数公式与代数证书：\(A_2,A_3,A_4\)）}
+令 \(A\) 为有限状态碰撞核（SFT 邻接矩阵），其特征多项式取首项为 \(1\) 的
+\[
+\chi_A(\lambda):=\det(\lambda I-A),\qquad d:=\deg\chi_A,
+\]
+并设 Perron 根 \(r=\rho(A)\) 为单根。记
+\(
+\zeta_A(z)=\det(I-zA)^{-1}
+\)、\(z_\star=1/r\)，并按表 \ref{tab:collision_kernel_A2_finite_part}--\ref{tab:collision_kernel_A4_finite_part} 的口径定义主极点留数常数
+\[
+C(A):=\lim_{z\to z_\star}(1-rz)\,\zeta_A(z).
+\]
+则该常数仅由 \((\chi_A,r)\) 决定，并满足闭式恒等式
+\[
+\boxed{\;
+C(A)=\frac{r^{d-1}}{\chi_A'(r)}
+\;=\;
+\prod_{\lambda_j\in\sigma(A)\setminus\{r\}}\left(1-\frac{\lambda_j}{r}\right)^{-1}\; }.
+\]
+因此，一旦 \(\chi_A\) 与 \(r\) 已被独立审计（例如由递推分母/特征多项式与 Perron 根证书给出），则 \(C(A)\) 可在不做留数极限、亦无需显式求全谱的前提下被精确重建；并且任何保持同一 \(\chi_A\) 的非负整数 realization（见注 \ref{rem:pom-a3-alternative-realization}）都必须给出同一 \(C(A)\)。
+\par
+进一步地，对本文三枚已给出特征多项式的碰撞核
+\[
+\chi_{A_2}(\lambda)=\lambda^3-2\lambda^2-2\lambda+2,\qquad
+\chi_{A_3}(\lambda)=\lambda^3-2\lambda^2-4\lambda+2,\qquad
+\chi_{A_4}(\lambda)=\lambda^5-2\lambda^4-7\lambda^3-2\lambda+2,
+\]
+由上式与消元可将表 \ref{tab:collision_kernel_A2_finite_part}--\ref{tab:collision_kernel_A4_finite_part} 中的三枚十进制常数 \(C(A_q)\) 升格为整系数方程级审计证书：它们分别满足如下最小多项式（且在 \((0,1)\) 上各有唯一实根）：
+\[
+\boxed{\;
+37C^3-37C^2+C+1=0\quad(C=C(A_2)),\qquad
+141C^3-141C^2+23C+1=0\quad(C=C(A_3)),}
+\]
+\[
+\boxed{\;
+3940876C^5-3940876C^4+920083C^3-33522C^2+168C+4=0\quad(C=C(A_4)).}
+\]
+由此得到一个无需小数对齐的强审计协议：对每个 \(A_q\)，只需公开（i）\(\chi_{A_q}\in\ZZ[\lambda]\)，（ii）\(C(A_q)\) 的最小多项式 \(P_{C_q}\in\ZZ[C]\)；并配合表中 \texttt{tail proxy} 作为 \(\log\mathfrak{M}\) 尾截断误差的数值证书，即可把“可复现性”提升为整系数方程级约束。
+
 \begin{remark}[常数层稀有性尺度：\texorpdfstring{$\mathsf{M}(A_4)/\mathsf{M}(A_3)$}{M(A4)/M(A3)} 的近减半]\label{rem:pom-collision-mertens-halving}
 表 \ref{tab:collision_kernel_A3_finite_part} 与表 \ref{tab:collision_kernel_A4_finite_part} 给出
 \(
