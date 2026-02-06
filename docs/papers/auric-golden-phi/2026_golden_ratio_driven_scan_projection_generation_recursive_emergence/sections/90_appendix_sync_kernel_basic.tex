@@ -51,6 +51,63 @@ Q=\{000,001,002,010,100,101,0\overline{1}2,1\overline{1}2,01\overline{1},11\over
 因此 $00000$（以及一般的 $0000d$）在最后一步把两态合并为单态，从而解释了最短同步长度的“$4+1$”结构。
 \end{remark}
 
+\begin{proposition}[复位词诱导的严格再生点：同步状态在 \texorpdfstring{$00000$}{00000} 处完全忘却]\label{prop:sync10-regeneration}
+固定任意输入序列 \(\mathbf d=(d_t)_{t\ge 0}\in\{0,1,2\}^{\NN}\)。
+对任意初态 \(q\in Q\)，定义同步核的状态演化
+\[
+q^{(q)}_0:=q,\qquad q^{(q)}_{t+1}:=\delta\!\bigl(q^{(q)}_t,d_t\bigr)\qquad(t\ge 0).
+\]
+若对某个时刻 \(t\ge 0\) 有 \(d_t d_{t+1}\cdots d_{t+4}=00000\)，则对任意初态 \(q\in Q\) 都有
+\[
+q^{(q)}_{t+5}=000,
+\]
+从而时刻 \(t+5\) 的同步状态与初态及此前全部输入 \((d_0,\dots,d_{t-1})\) 无关。
+更一般地，若 \(d_t\cdots d_{t+3}d_{t+4}=0000d\)（\(d\in\{0,1,2\}\)），则对任意 \(q\in Q\) 有 \(q^{(q)}_{t+5}=00d\)。
+\par
+因此可定义由复位词诱导的再生点集合（以片段起点计）
+\[
+\mathcal T(\mathbf d):=\{t\ge 0:\ d_t\cdots d_{t+4}=00000\}.
+\]
+对任意 \(t\in\mathcal T(\mathbf d)\)，时刻 \(t+5\) 起的同步状态轨道仅由未来输入 \((d_{t+5},d_{t+6},\dots)\) 决定，而与过去完全切断。
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:sync10-reset-length-5} 有 \(\delta(Q,00000)=\{000\}\)，故对任意状态 \(q_t\in Q\)，读入词 \(00000\) 后到达状态恒为 \(000\)，即 \(q^{(q)}_{t+5}=000\)。
+“\(0000d\)”的结论由注 \ref{rem:sync10-reset-mechanism} 的 \(\delta(Q,0000d)=\{00d\}\) 直接推出。
+最后一段是上述两条结论的语义重述。证毕。
+\end{proof}
+
+\begin{corollary}[相关/混合的再生上界：把“相关长度”替换为可审计的等待时间量]\label{cor:sync10-regeneration-correlation-bound}
+设 \((D_t)_{t\ge 0}\) 为取值于 \(\{0,1,2\}\) 的随机输入序列（不要求独立同分布）。
+对任意初态 \(q\in Q\)，记 \((Q^{(q)}_t)_{t\ge 0}\) 为由同一输入序列 \((D_t)\) 驱动的同步状态轨道：
+\[
+Q^{(q)}_0:=q,\qquad Q^{(q)}_{t+1}:=\delta\!\bigl(Q^{(q)}_t,D_t\bigr)\qquad(t\ge 0).
+\]
+令
+\[
+T:=\inf\{t\ge 0:\ D_t\cdots D_{t+4}=00000\}\in\NN\cup\{\infty\}
+\]
+为第一次出现复位词 \(\texttt{00000}\) 的起点等待时间。
+则对任意两个初态 \(q,q'\in Q\) 与任意 \(n\ge 0\)，在事件 \(\{T\le n-5\}\) 上必有 \(Q^{(q)}_n=Q^{(q')}_n\)。
+等价地，
+\[
+\{T\le n-5\}\subseteq \{Q^{(q)}_n=Q^{(q')}_n\},
+\]
+从而得到概率上界
+\[
+\mathbb{P}\!\left(Q^{(q)}_n\neq Q^{(q')}_n\right)\ \le\ \mathbb{P}(T>n-5).
+\]
+特别地，任何由同步状态\emph{确定性生成}的可观测量（例如输出位、带权累加势等）的滞后 \(n\) 相关都只能来自事件 \(\{T>n-5\}\)；
+因此可将“相关长度/混合速度”的上界替换为等待时间尾分布 \(n\mapsto \mathbb{P}(T>n)\)，而该尾分布仅由输入模型对片段 \(\texttt{00000}\) 的出现统计所决定（无需谱估计或数值拟合）。
+\end{corollary}
+\begin{proof}
+取两条轨道共用同一输入序列 \((D_t)\)，但初态分别为 \(q,q'\)。
+在事件 \(\{T\le n-5\}\) 上，存在 \(t\le n-5\) 使得 \(D_t\cdots D_{t+4}=00000\)；
+由命题 \ref{prop:sync10-regeneration} 得两条轨道在时刻 \(t+5\) 被同时复位到同一确定状态 \(000\)，并因随后输入完全相同而在所有后续时刻保持相同，故 \(Q^{(q)}_n=Q^{(q')}_n\)。
+因此 \(\{T\le n-5\}\subseteq \{Q^{(q)}_n=Q^{(q')}_n\}\)。对两边取概率并取补集即得所示不等式。
+最后一段为命题 \ref{prop:sync10-regeneration} 的“忘却”语义：任意只依赖于同步状态的可观测量在 \(\{T\le n-5\}\) 上与初态无关，其滞后相关只能来自 \(\{T>n-5\}\)。
+证毕。
+\end{proof}
+
 进一步地，若固定目标态 $t\in Q$，定义其\textbf{复位深度}
 \[
 \ell(t):=\min\{|w|:\ \delta(Q,w)=\{t\}\}.

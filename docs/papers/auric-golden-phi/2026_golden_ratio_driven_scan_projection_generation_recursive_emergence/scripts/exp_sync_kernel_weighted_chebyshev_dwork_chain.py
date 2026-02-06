@@ -206,7 +206,7 @@ class Row:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Verify Chebyshev–Dwork congruence chain for the weighted sync-kernel.")
-    parser.add_argument("--k-max", type=int, default=5, help="Compute n=2^k up to k-max (k>=2 checked).")
+    parser.add_argument("--k-max", type=int, default=6, help="Compute n=2^k up to k-max (k>=2 checked).")
     parser.add_argument(
         "--json-out",
         type=str,

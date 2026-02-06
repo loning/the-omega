@@ -88,6 +88,17 @@ A_{2^k}(t)\equiv A_{2^{k-1}}(t^2-2)\ (\mathrm{mod}\ 2^k)
 证毕。
 \end{proof}
 
+\begin{corollary}[二幂塔上的矩阵自由同余递推：单变量代入替代 \texorpdfstring{$B(u)^{2^k}$}{B(u)^{2^k}}]\label{cor:chebyshev-dwork-matrixfree}
+沿用定理 \ref{thm:chebyshev-dwork-congruence-chain} 的记号。对任意 \(k\ge 2\)，在环 \((\ZZ/2^k\ZZ)[t]\) 中有
+\[
+\boxed{\ A_{2^k}(t)\equiv A_{2^{k-1}}(t^2-2)\ }.
+\]
+因此，对固定层级 \(2^k\) 的“模 \(2^k\)”计算，可将对象从 \emph{10×10 多项式矩阵幂} \(B(u)^{2^k}\) 归约为 \emph{单变量}代入 \(t\mapsto t^2-2\) 与取模运算；并且该归约在二幂塔上具有对数深度（以周期长度 \(n=2^k\) 为尺度，递推步数为 \(k\)）。
+\end{corollary}
+\begin{proof}
+该结论是定理 \ref{thm:chebyshev-dwork-congruence-chain} 在模 \(2^k\) 商环中的直接重述。证毕。
+\end{proof}
+
 \begin{remark}[可复现审计：\texorpdfstring{$A_{2^k}(t)$}{A_{2^k}(t)} 的同余链逐级通过]\label{rem:chebyshev-dwork-audit}
 脚本 \texttt{scripts/exp\_sync\_kernel\_weighted\_chebyshev\_dwork\_chain.py} 直接从矩阵幂计算
 \(
@@ -97,7 +108,7 @@ a_{2^k}(u)=\Tr(B(u)^{2^k})
 \(
 A_{2^k}(t)-A_{2^{k-1}}(t^2-2)\in 2^k\ZZ[t]
 \)
-（\(k\ge 2\)）。其通过/失败结果汇总于表 \ref{tab:sync_kernel_weighted_chebyshev_dwork_chain}（可作为管线自审计护栏）。
+（\(k\ge 2\)）。本稿取 \(k=2,\dots,6\)（即模 \(4\) 到模 \(64\)）逐级审计；其通过/失败结果汇总于表 \ref{tab:sync_kernel_weighted_chebyshev_dwork_chain}（可作为管线自审计护栏）。
 \end{remark}
 \input{sections/generated/tab_sync_kernel_weighted_chebyshev_dwork_chain}
 
@@ -192,6 +203,35 @@ p^{-(k-r)}A_{p^k}^{(r)}=p^{-(k-1-r)}A_{p^{k-1}}^{(r)}+p^{r}t.
 p^{-(k-r)}A_{p^k}^{(r)}\equiv p^{-(k-1-r)}A_{p^{k-1}}^{(r)}\pmod p
 \)。
 迭代即得 \(\alpha_{p,r}\) 在 \(k>r\) 区间内稳定。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$p=2$}{p=2} 的稳定奇偶指纹：由 \texorpdfstring{$\theta$}{theta}-导数生成一族无限二进制不变量]\label{cor:witt-theta-binary-fingerprint}
+取 \(p=2\) 并固定阶 \(r\ge 1\)。对任意 \(k\ge r+1\)，由命题 \ref{prop:witt-theta-derivative-filter} 的估值下界 \(2^{k-r}\mid A_{2^k}^{(r)}\) 可定义整数
+\[
+B_k^{(r)}:=2^{-(k-r)}A_{2^k}^{(r)}\in\ZZ.
+\]
+则其奇偶性从层级 \(k=r+1\) 起永久稳定：
+\[
+\boxed{\ B_{k+1}^{(r)}\equiv B_{k}^{(r)}\pmod 2\qquad(\forall k\ge r+1)\ }.
+\]
+因此得到一族可审计的二进制指纹
+\[
+\varepsilon_r:=B_{k}^{(r)}\bmod 2\in\{0,1\}\qquad(r\ge 1),
+\]
+其与 \(k\) 的选择无关（只要 \(k\ge r+1\)）。
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:witt-theta-stable-residue}，当 \(k>r\) 时
+\(
+\alpha_{2,r}\equiv 2^{-(k-r)}A_{2^k}^{(r)}\pmod 2
+\)
+且右端与 \(k\) 无关。
+令 \(\varepsilon_r:=\alpha_{2,r}\in\mathbb{F}_2\cong\{0,1\}\)，并把
+\(
+B_k^{(r)}:=2^{-(k-r)}A_{2^k}^{(r)}
+\)
+作为其整数代表，即得所示稳定性与定义。
+证毕。
 \end{proof}
 
 \begin{corollary}[\texorpdfstring{$p$}{p}-进平坦球：\texorpdfstring{$u=e^\theta$}{u=exp(theta)} 在 \texorpdfstring{$u=1$}{u=1} 附近的 \texorpdfstring{$p^k$}{p^k}-不敏感性]\label{cor:witt-padic-flatness-ball}
