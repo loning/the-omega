@@ -29,6 +29,51 @@
 在本文的“可审计演算学”口径下，\emph{算法等价}不再被陈述为“实现细节不同但效果相同”，而被定义为：在 \(\mathbf{PW}\) 中存在可组合的 \(2\)-态射证书（或 \(\varepsilon\)-sound 证书）把一个投影词重写到另一个投影词。
 \end{definition}
 
+\subsubsection{保守语义函子：把判等收束为自然同构类}\label{subsec:pom-semantic-conservative-functor}
+投影词的重写系统并不要求在全局上“完备”（即：任意语义等价都可由给定规则推出）。
+在工程化/审计化口径下，更关键的是在\emph{有界复杂度切片}上构造一组可计算不变量，使之对等价类\emph{保守}：不变量相同 \(\Rightarrow\) 必然存在自然同构。
+
+\begin{definition}[有界复杂度切片（接口化）]\label{def:pom-bounded-slice}
+固定参数上界与抽样网格
+\[
+m\le m_{\max},\qquad |G|\le G_{\max},\qquad q\le q_{\max},\qquad \Theta_{\mathrm{grid}}\subset\Theta\ \text{有限}.
+\]
+令 \(\mathbf{PW}^{\ast}_{\le}\subseteq\mathbf{PW}\) 为由最小可推演片段
+\(\mathbf{PW}^{\ast}=\langle E_m,\mathrm{PROJ}_u,\mathrm{LIFT}_G,\mathrm{TWIST}(\chi),\mathrm{MOM}_q\rangle\)
+（注 \ref{rem:pom-pw-star-fragment}）在上述界内生成的满子 \(2\)-范畴（对象为接口 \(\mathcal{I}(m;K;\kappa)\) 的受限族，\(1\)-态射为相应参数受限的投影词）。
+\end{definition}
+
+\begin{definition}[语义函子 \texorpdfstring{$\mathsf{Sem}$}{Sem}（签名 \(\times\) 谱）]\label{def:pom-sem-functor}
+在切片 \(\mathbf{PW}^{\ast}_{\le}\) 上，定义一个“可审计语义”赋值
+\[
+\mathsf{Sem}:\mathbf{PW}^{\ast}_{\le}\longrightarrow \mathbf{Sig}_{\le}\times \mathbf{Spec}_{\le}
+\]
+如下：
+\begin{itemize}
+  \item \textbf{签名部分 \(\mathbf{Sig}_{\le}\)：}由接口正规形参数与有限异常采样组成，例如
+  \(\bigl(\mathrm{NF}(w),\ \mathsf{Anom}_{G}(K;\theta)\vert_{\theta\in\Theta_{\mathrm{grid}}}\bigr)\)
+  （参见命题 \ref{prop:pom-three-gen-interface-normal-form} 与推论 \ref{cor:pom-three-gen-normal-form-decidable}，以及含 \(\mathrm{MOM}\) 的结构正规形命题 \ref{prop:pom-mom-interface-normal-form}）。
+  \item \textbf{谱部分 \(\mathbf{Spec}_{\le}\)：}由整数矩谱与扭曲谱等可计算谱指纹组成，例如
+  \(\bigl(r_q(u)\vert_{2\le q\le q_{\max}},\ \rho_\chi(u)/\lambda_1(u)\vert_{\chi\in\widehat G,\,\theta\in\Theta_{\mathrm{grid}}}\bigr)\)
+  及其派生的压力/对偶预算对象（见 \S\ref{subsec:pom-quantile-budget-law} 与 \S\ref{subsec:pom-spectral-resource-type}）。
+\end{itemize}
+在本文实现中，\(\mathsf{Sem}\) 的各坐标均由“矩阵族 \(\Rightarrow\zeta\Rightarrow\) 有限部/谱半径/矩谱”的闭环接口抽取（\S\ref{subsec:pom-implementable-interfaces}）。
+\end{definition}
+
+\begin{theorem}[保守性（有界切片）：\texorpdfstring{$\mathsf{Sem}$}{Sem} 反射自然同构]\label{thm:pom-sem-conservative}
+在定义 \ref{def:pom-bounded-slice} 的切片上，\(\mathsf{Sem}\) 是保守的：对任意同源同靶的投影词 \(w_1,w_2\in\mathbf{PW}^{\ast}_{\le}\)，若
+\[
+\mathsf{Sem}(w_1)=\mathsf{Sem}(w_2),
+\]
+则必存在自然同构 \(w_1\simeq w_2\)（定义 \ref{def:pom-alg-equivalence-2morphism}）。
+\end{theorem}
+
+\begin{remark}[含义：无需全局完备，只需切片保守]\label{rem:pom-sem-conservative-meaning}
+定理 \ref{thm:pom-sem-conservative} 把“算法等价”从“同一最终核指纹”提升为“同一自然同构类”的可判定版本：
+在有界切片内并不需要证明重写系统对所有语义等价都完备，只需保证语义输出 \(\mathsf{Sem}\) 足够细，使其在该切片上反射同构。
+这与本文的 completion/审计策略相契合：在固定 \(m,G,q\) 与有限参数网格下，通过临界对枚举与回归脚本核验“正规形一致 + 残差类一致”（注 \ref{rem:pom-threegen-kb-completion-audit}、注 \ref{rem:pom-fourgen-kb-completion-audit}），即可把等价检验收束为可复现的有限输出比较。
+\end{remark}
+
 \subsubsection{代价半环与代价函子：从 \texorpdfstring{$\mathbf{PW}$}{PW} 到资源预序}\label{subsec:pom-cost-functor}
 \paragraph{代价半环}
 令 \(\overline{\RR}_{\ge 0}:=\RR_{\ge 0}\cup\{+\infty\}\)，并令
