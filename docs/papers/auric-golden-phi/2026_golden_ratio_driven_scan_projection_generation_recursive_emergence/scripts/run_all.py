@@ -852,6 +852,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_weighted_self_dual_bridge",
+            script="exp_sync_kernel_weighted_self_dual_bridge.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_weighted_self_dual_bridge.json",
+            ],
+        ),
+        Step(
             name="sync_kernel_weighted_padic_unit_root",
             script="exp_sync_kernel_weighted_padic_unit_root.py",
             args=["--p", "5", "--N", "12", "--k-max", "6", "--u", "minus1"],
