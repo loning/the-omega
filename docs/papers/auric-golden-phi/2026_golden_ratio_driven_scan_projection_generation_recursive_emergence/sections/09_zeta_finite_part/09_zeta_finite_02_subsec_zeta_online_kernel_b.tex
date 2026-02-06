@@ -136,6 +136,61 @@ s_m=2\cos(\pi/m)=2-\pi^2/m^2+\pi^4/(12m^4)+O(m^{-6})
 与推论 \ref{cor:sync-rho-gap-m2} 与推论 \ref{cor:sync-rho-gap-m8-diffusive} 的常数一致。
 \end{remark}
 
+\begin{proposition}[端点导数的扩散字典：\texorpdfstring{$\Lambda'(2)$}{Lambda'(2)} 锁定单位圆扭曲的二次耗散与 near-\texorpdfstring{$1$}{1} 主奇点轨迹]\label{prop:completion-endpoint-jet-diffusion}
+假设某个完成化/单位圆扭曲通道满足严格相位--幅度分离：存在在 \(s=2\) 的某邻域解析的实函数 \(g(s)=\log\Lambda(s)\)（其中 \(\Lambda(2)>1\)）使得对 \(u=e^{it}\) 有
+\[
+P(it)=\log\lambda(e^{it})=\frac{it}{2}+g\!\left(S(t)\right),
+\qquad
+S(t):=2\cos(t/2).
+\]
+记 \(\lambda:=\Lambda(2)\)，并定义单位圆谱比
+\[
+\eta(t):=\frac{|\lambda(e^{it})|}{\lambda}
+=\exp\!\bigl(\Re P(it)-\log\lambda\bigr)
+=\frac{\Lambda(S(t))}{\Lambda(2)}.
+\]
+则当 \(t\to 0\) 时有端点 jet 展开
+\[
+\boxed{\;
+\log\eta(t)
+=-\frac{g'(2)}{4}\,t^{2}
++\left(\frac{g'(2)}{192}+\frac{g''(2)}{32}\right)t^{4}
++O(t^{6})\;}
+\]
+从而二次“扩散方差”与耗散常数由端点导数闭式给出
+\[
+\boxed{\;
+\Re P(it)=\log\lambda-\frac{\sigma^{2}}{2}t^{2}+O(t^{4}),\qquad
+\sigma^{2}=\frac{g'(2)}{2}=\frac{\Lambda'(2)}{2\Lambda(2)},\qquad
+\kappa_\infty:=\frac{\sigma^{2}}{2}=\frac{\Lambda'(2)}{4\Lambda(2)}\; }.
+\]
+进一步定义把单位圆扭曲的主奇点拉回 \(s\)-平面的归一化轨迹
+\[
+s_{\mathrm{pole}}(t):=\frac{P(it)}{\log\lambda},
+\]
+则
+\[
+\boxed{\;
+s_{\mathrm{pole}}(t)
+=1+i\,\frac{t}{2\log\lambda}-\frac{\kappa_\infty}{\log\lambda}\,t^{2}+O(t^{4})\;}
+\]
+其中漂移项系数 \(1/2\) 为相位--幅度分离的普适输出，而耗散项完全由端点导数 \(\Lambda'(2)\) 决定。
+\end{proposition}
+\begin{proof}
+由 \(S(t)=2\cos(t/2)=2-\frac{t^{2}}{4}+\frac{t^{4}}{192}+O(t^{6})\) 与 \(g\) 在 \(2\) 处 Taylor 展开即得。
+由于 \(|e^{it/2}|=1\)，有 \(\Re P(it)=g(S(t))\)，从而 \(\eta(t)=\exp(g(S(t))-g(2))\)。
+最后 \(s_{\mathrm{pole}}(t)=1+\frac{it}{2\log\lambda}+\frac{g(S(t))-g(2)}{\log\lambda}\) 并代入上式即可。证毕。
+\end{proof}
+
+\begin{remark}[自校验：同步核端点导数 \texorpdfstring{$\rho'(2)$}{rho'(2)} 立即给出 \texorpdfstring{$11/204$}{11/204}]\label{rem:sync-endpoint-diffusion-check}
+在同步核情形，可取 \(\Lambda(s)=\rho(s)\)、\(\lambda=\rho(2)=3\)，且注 \ref{rem:sync-rho-derivative-fingerprint} 给出 \(\rho'(2)=11/17\)。
+由命题 \ref{prop:completion-endpoint-jet-diffusion} 得
+\[
+\kappa_\infty=\frac{\rho'(2)}{4\rho(2)}=\frac{11/17}{12}=\frac{11}{204},
+\]
+与注 \ref{rem:sync-rho-pressure-asymp} 的二次项系数及推论 \ref{cor:sync-rho-gap-m2} 完全一致。
+\end{remark}
+
 \begin{remark}[谱分歧点的代数证书：\texorpdfstring{$\mathrm{Disc}_w(\widehat\Delta)$}{Disc} 的实根]\label{rem:sync-hatdelta-discriminant-branch}
 对 \(w\) 的六次多项式 \(\widehat\Delta(w,s)\)，其判别式 \(\mathrm{Disc}_w(\widehat\Delta)(s)\in\ZZ[s]\) 的零点刻画了“存在重根”的参数值 \(s\)，即谱分支在 \(s\) 方向上发生碰撞/交换的候选位置。
 下式与相应的正实根（限制在 \(s\in(0,2]\)，对应单位圆扭曲 \(s=2\cos(\theta/2)\)）由脚本 \texttt{scripts/exp\_sync\_kernel\_hatdelta\_discriminant.py} 一键导出：

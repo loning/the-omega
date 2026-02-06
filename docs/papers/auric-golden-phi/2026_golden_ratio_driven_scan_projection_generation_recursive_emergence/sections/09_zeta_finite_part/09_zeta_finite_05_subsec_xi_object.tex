@@ -204,6 +204,7 @@ y+y^{-1}=2\cos\theta\in[-2,2]
 因此 “\(P_L\) 的根全在 \([-2,2]\)” 等价于 “\(\Phi_L\) 的根全在单位圆”，再与命题 \ref{prop:xi-rh-interval-criterion} 合并即得 (i)\(\Leftrightarrow\)(ii)\(\Leftrightarrow\)(iii)。
 \end{proof}
 
+<<<<<<< Current (Your changes)
 \begin{remark}[Joukowski 压缩与有限维 toy-RH 字典的对齐]\label{rem:xi-joukowski-toy-rh-alignment}
 命题 \ref{prop:xi-rh-interval-criterion} 的变量替换
 \(
@@ -237,6 +238,41 @@ y:=\mu/\sqrt{\lambda}
 特别地，真实输入 \(40\) 状态核的唯一达界特征值为 \(-\sqrt{\lambda}\)（注 \ref{rem:finite-rh-40-ramanujan}），对应 \(y=-1\) 与 \(S=-2\)，从而“单频临界振荡”可被理解为该 Joukowski 压缩在端点的饱和（并见注 \ref{rem:finite-rh-40-hidden-minusA0} 对其结构来源的进一步分解）。
 \end{remark}
 
+\begin{proposition}[有限型 Hilbert--P{\'o}lya：\texorpdfstring{$\Phi_L$}{PhiL} 的酉谱实现与 CMV 规范型]\label{prop:xi-hilbert-polya-cmv}
+在推论 \ref{cor:xi-rh-unit-circle-reciprocal} 的记号下，令 \(d:=\deg P_L\) 并记
+\[
+\Phi_L(y)=y^dP_L(y+y^{-1})\in\RR[y],
+\qquad
+D:=\deg \Phi_L=2d.
+\]
+令 \(\widetilde\Phi_L(y):=\Phi_L(y)/\mathrm{lc}(\Phi_L)\) 为首一化（monic）版本（不改变零点集合）。
+则：
+\begin{enumerate}
+  \item 若 \(\widetilde\Phi_L\) 的全部根为 \(\{e^{i\theta_j}\}_{j=1}^{D}\subset\TT\)，则存在显式酉矩阵
+  \[
+  U_L^{\mathrm{diag}}:=\mathrm{diag}(e^{i\theta_1},\dots,e^{i\theta_D})
+  \]
+  使得
+  \[
+  \boxed{\ \widetilde\Phi_L(y)=\det(yI-U_L^{\mathrm{diag}})\ }.
+  \]
+  因而 \(\Xi\)-RH（等价于 \(\Phi_L\) 的根全落在 \(|y|=1\)）可被表述为一个\textbf{酉算子谱问题}：零点相位即为酉谱。
+  \item 更进一步，存在一个五对角 CMV-like 伴随矩阵 \(U_L^{\mathrm{CMV}}\in\CC^{D\times D}\) 使得
+  \[
+  \boxed{\ \widetilde\Phi_L(y)=\det(yI-U_L^{\mathrm{CMV}})\ }.
+  \]
+  且该伴随矩阵满足如下“酉性 \(\Leftrightarrow\) 单位圆根”判别：\(U_L^{\mathrm{CMV}}\) 为酉当且仅当 \(\widetilde\Phi_L\) 的全部根满足 \(|y|=1\)。
+  在此构造中，\(U_L^{\mathrm{CMV}}\) 可由一列 Verblunsky/Schur 参数 \(\alpha_0(L),\dots,\alpha_{D-1}(L)\) 表达；这些参数可由 \(\widetilde\Phi_L\) 的系数经 Schur 递归（反射系数算法）显式得到，并满足酉性的等价约束
+  \[
+  \boxed{\ |\alpha_k(L)|<1\ (0\le k\le D-2),\qquad |\alpha_{D-1}(L)|=1\ }.
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+第一条为谱分解的直接构造：取 \(\widetilde\Phi_L\) 的根写作 \(e^{i\theta_j}\)，则 \(\det(yI-U_L^{\mathrm{diag}})=\prod_{j=1}^{D}(y-e^{i\theta_j})=\widetilde\Phi_L(y)\)。
+第二条为 CMV-like 伴随矩阵的标准结果：任意首一多项式都可被实现为某个 CMV-like Hessenberg/五对角伴随矩阵的特征多项式，并且该伴随矩阵可用 Schur（Verblunsky）参数显式参数化；在该参数化下，酉性等价于参数落在单位圆盘/单位圆的约束，从而等价于特征多项式根分布在单位圆上（参见 \cite{CanteroMoralVelazquez2003CMV,Simon2005OPUC1,BevilacquaDelCorsoGemignani2015CMVCompanion}）。证毕。
+\end{proof}
+
 \begin{remark}[证书化验零：从 \texorpdfstring{$P_L$}{PL} 或 \texorpdfstring{$\Phi_L$}{PhiL} 到 Hardy 截面零点区间]\label{rem:xi-hard-zero-certificate}
 在完成化表示下，
 \[
@@ -246,6 +282,36 @@ y:=\mu/\sqrt{\lambda}
 例如可采用如下“可机核验”的有限流程：先用 Sturm 序列（或等价的有理区间算术）把 \(P_L\) 在 \([-2,2]\) 内的实根隔离成互不相交的有理区间；再把每个根区间通过单调的 \(\arccos(\cdot/2)\) 映射为一个 \(t\)-零点区间并按周期 \(2\pi/\log L\) 平移复制；最后用三角多项式的显式导数界在每个区间内给出“至多一个零点”的唯一性证书。
 同步核加权例子中，脚本 \texttt{scripts/exp\_sync\_kernel\_xi\_cubic\_cos\_polynomial.py} 已直接输出 \(P_L\) 的根与对应离线竖线参数，可作为该证书流程的最小可审计实例。
 \end{remark}
+
+\begin{proposition}[Sturm--Jacobi 规范化：\texorpdfstring{$P_L$}{PL} 的自伴三对角实现]\label{prop:xi-hilbert-polya-jacobi}
+沿用命题 \ref{prop:xi-rh-interval-criterion} 的记号，令 \(P_L(S)\in\RR[S]\) 并记其首一化版本
+\[
+\widetilde P_L(S):=\frac{P_L(S)}{\mathrm{lc}(P_L)}\qquad(\text{首项系数归一化为 }1).
+\]
+若 \(\widetilde P_L\) 的全部根均为实数（特别地，若 \(\Xi\)-RH 成立则必然如此），则存在一个实对称三对角矩阵
+\[
+J_L=\begin{pmatrix}
+b_1 & a_1 \\
+a_1 & b_2 & a_2\\
+& a_2 & \ddots & \ddots\\
+& & \ddots & b_{d-1} & a_{d-1}\\
+& & & a_{d-1} & b_d
+\end{pmatrix},\qquad a_k>0,\ b_k\in\RR,\ d:=\deg P_L,
+\]
+使得
+\[
+\boxed{\ \widetilde P_L(S)=\det(SI-J_L)\ }.
+\]
+并且“根区间判据”可改写为自伴谱条件
+\[
+\boxed{\ \mathrm{Roots}(P_L)\subseteq[-2,2]\quad\Longleftrightarrow\quad \mathrm{Spec}(J_L)\subseteq[-2,2]\quad\Longleftrightarrow\quad \|J_L\|_{\mathrm{op}}\le 2\ }.
+\]
+此外，\(J_L\) 可由 \(P_L\) 的 Euclid--Sturm 链（或等价的 Stieltjes 连分式数据）构造得到：换言之，Sturm 序列不仅给出“根落在区间”的判定，也同时给出一个\textbf{规范化的有限维 Hilbert--P{\'o}lya 自伴算子候选}。
+\end{proposition}
+\begin{proof}
+对首一化实根多项式，存在实对称三对角（Jacobi）矩阵实现其为特征多项式的构造性结论是标准事实；并且可在不预先求根的前提下由多项式本身的欧几里得算法/连分式数据生成一份三对角行列式表示（见 \cite{Fiedler1990SymmetricCharpoly,Schmeisser1993TridiagonalGivenCharpoly}）。
+三条等价性来自：\(\mathrm{Spec}(J_L)\) 恰为 \(\det(SI-J_L)\) 的根集，而 \(J_L\) 自伴使得 \(\mathrm{Spec}(J_L)\subset[-2,2]\iff \|J_L\|_{\mathrm{op}}\le 2\)。
+\end{proof}
 
 \begin{remark}[Artin 通道化的完成化判据：把核版 (G)RH 拆成有限个单位圆/区间根检验]\label{rem:xi-artin-channel-pipeline}
 第 \ref{sec:A-kernel-compare-main} 节的定义 \ref{def:kernel-group-twist} 引入了带有限群标签的通道矩阵族 \(M_{K,\rho}(u)\) 与通道因子
@@ -424,6 +490,113 @@ s=\frac{-\log z_j+2\pi i k}{\log L},\qquad k\in\ZZ,
 这是一个以 \(x\) 为对数尺度、以 \(t\) 为频率的振荡积分；其可调旋钮是 \(w\) 的尾部（决定叠加了多大的频率窗）。
 这为“从有限晶格到可能的非晶格零点集”的跃迁提供了一个结构上自然的通道。
 \end{remark}
+
+\begin{proposition}[有限频带/有限尺度的零点密度上界：\texorpdfstring{$N(T)=O(T)$}{N(T)=O(T)}]\label{prop:xi-scale-mellin-zero-density-upper}
+设 \(\Delta(z,u)\) 在 unitary slice 上具有有限带宽：存在整数 \(N,K\ge 0\) 以及系数 \(a_{j,k}\in\CC\)，使得
+\[
+\Delta(z,u)=\sum_{j=0}^{N}\sum_{k=-K}^{K} a_{j,k}\,z^j u^k
+\qquad(\text{有限和}).
+\]
+再设权函数 \(w\) 具有紧支集 \(\mathrm{supp}(w)\subseteq [0,X]\)（某个 \(X<\infty\)）。
+令
+\[
+F(t):=\mathcal X_{\Delta,w}\!\left(\tfrac12+it\right)\qquad(t\in\RR),
+\]
+并令 \(N_F(T)\) 表示区间 \([-T,T]\) 上 \(F(t)\) 的实零点数（按重数计）。
+则：
+\begin{enumerate}
+  \item \(F\) 作为 \(t\)-变量的函数可延拓为一个指数类型有界的整函数（其类型由 \(X\) 与带宽 \(N,K\) 控制）。
+  \item 因而零点计数满足线性上界
+  \[
+  \boxed{\ N_F(T)=O(T)\qquad(T\to\infty)\ }.
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+在假设下，取 \(s=\tfrac12+it\) 并写 \(u=e^{2itx}\)、\(z=e^{-x/2}e^{-itx}\)，则
+\[
+F(t)=\int_0^X w(x)\sum_{j=0}^{N}\sum_{k=-K}^{K} a_{j,k}\,e^{-jx/2}\,e^{i(2k-j)tx}\,dx
+=\sum_{j,k}a_{j,k}\,\widehat g_{j}( (2k-j)t),
+\]
+其中 \(g_j(x):=w(x)e^{-jx/2}\,\mathbf{1}_{[0,X]}(x)\in L^1(\RR)\)，而 \(\widehat g_j(\xi):=\int_{\RR} g_j(x)e^{i\xi x}\,dx\) 为其 Fourier 变换。
+由 \(\mathrm{supp}(g_j)\subseteq[0,X]\)，Paley--Wiener 型结论给出 \(\widehat g_j\) 为指数类型 \(\le X\) 的整函数，从而 \(F\) 亦为指数类型有限的整函数（类型可被 \(X\max_{j,k}|2k-j|\le X(2K+N)\) 控制）。
+指数类型整函数的零点分布满足线性密度上界，故 \(N_F(T)=O(T)\)。
+\end{proof}
+
+\begin{remark}[密度门槛：逼近 \texorpdfstring{$T\log T$}{T log T} 必须打破“有限频带”]\label{rem:xi-scale-mellin-density-threshold}
+命题 \ref{prop:xi-scale-mellin-zero-density-upper} 表明：若 \(\Delta\) 的 \(u\)-带宽固定且 \(w\) 在对数尺度上具有有效截断（紧支集或同阶意义下的硬截断），则即便引入连续尺度混合，临界线零点计数仍至多为 \(O(T)\)。
+因此，若目标是逼近经典 \(\zeta\) 的零点计数增长阶（\(N_\zeta(T)\asymp T\log T\)），则必须至少引入一条硬升级机制：
+\begin{enumerate}
+  \item \textbf{无界尺度尾部}：使得对频率 \(T\) 的“有效尺度上界” \(X(T)\) 随 \(T\) 增长（例如 \(X(T)\asymp \log T\) 的尺度律）；或
+  \item \textbf{随尺度增长的复杂度}：让 \(\Delta\) 的带宽/状态数（例如 \(N,K\)）随尺度参数增长，而非固定为有限常数。
+\end{enumerate}
+该门槛把“打破竖向晶格”进一步细化为“打破有限频带”：仅靠有限尺度混合并不足以在密度阶上模拟 \(\zeta\)-型零点集合。
+\end{remark}
+
+\begin{remark}[\texorpdfstring{$\log T$}{log T} 预算：尺度尾窗宽 \texorpdfstring{$X(T)$}{X(T)} 与相位模态数 \texorpdfstring{$B(T)$}{B(T)} 的同阶门槛]\label{rem:xi-scale-mellin-logT-budget}
+命题 \ref{prop:xi-scale-mellin-zero-density-upper} 的证明实际上给出一条更定量的结论：对任意 \(X<\infty\)，若把尺度积分硬截断为
+\[
+\mathcal X_{\Delta,w}^{(\le X)}(s):=\int_{0}^{X} w(x)\,\Delta\!\bigl(e^{-sx},e^{(2s-1)x}\bigr)\,dx,
+\]
+则 \(t\mapsto \mathcal X_{\Delta,w}^{(\le X)}(\tfrac12+it)\) 的指数类型至多为 \(O_\Delta(X)\)，从而其高度窗零点数满足
+\[
+\boxed{\;N^{(\le X)}(T)=O_\Delta(X\,T)\; }.
+\]
+因此，若对给定高度 \(T\) 而言，\(\mathcal X_{\Delta,w}(\tfrac12+it)\) 的“有效尺度窗宽”必须增长到 \(X=X(T)\)（例如：忽略 \(x>X(T)\) 的尾项会在该高度窗内造成不可接受的误差），则想要达到黎曼型密度 \(N(T)\asymp T\log T\) 就强迫
+\[
+\boxed{\;X(T)\asymp \log T\; }.
+\]
+\par
+同一 \(\log T\) 预算也出现在“相位/角色轴”的最小无限机制中：在有限维临界线梳齿框架内，若试图通过引入随尺度增长的临界圆模态数 \(B=B(T)\)（例如通过循环 lift 的 Artin 因子化把单位根相位注入并令 \(q=q(T)\to\infty\)）来实现 \(N(T)\asymp T\log T\)，则必要地需有 \(B(T)\asymp (\log T)/(\log\lambda)\)（推论 \ref{cor:critical-circle-mode-growth}）。
+因此在本文框架下，任何“逼近 \(\zeta\) 型零点密度”的最小无限来源，本质上都需要在某个方向注入 \(\Theta(\log T)\) 的自由度：要么在尺度尾部释放 \(\log T\) 级的窗宽，要么在相位/角色方向释放 \(\log T\) 级的模态数；命题 \ref{prop:xi-scale-mellin-bessel-kernel} 给出的 Bessel--cosh 核提供了一个显式可校准的实现样例。
+\end{remark}
+
+\begin{proposition}[Bessel--cosh 尺度核给出 \texorpdfstring{$T\log T$}{T log T} 临界线零点密度与 \texorpdfstring{$2\pi$}{2pi} 常数锚点]\label{prop:xi-scale-mellin-bessel-kernel}
+取参数 \(x_0>0\)，并定义偶权核
+\[
+w_{x_0}(t):=\exp\!\bigl(-x_0\cosh t\bigr)\qquad(t\ge 0).
+\]
+则 Paris 的积分表示给出（\(\nu\in\RR\)）
+\[
+\boxed{\;
+K_{i\nu}(x_0)=\int_{0}^{\infty}e^{-x_0\cosh t}\cos(\nu t)\,dt
+\;} \qquad\text{\cite{Paris2022KiNuZeros}},
+\]
+从而沿临界线的“Bessel 完成模块”
+\[
+\Xi_{\mathrm{Bessel},x_0}(s):=K_{\frac{s-\frac12}{2}}(x_0)
+\]
+满足严格对称性与 Hardy 实值性
+\[
+\boxed{\ \Xi_{\mathrm{Bessel},x_0}(s)=\Xi_{\mathrm{Bessel},x_0}(1-s)\ },\qquad
+\boxed{\ \Xi_{\mathrm{Bessel},x_0}\!\left(\tfrac12+it\right)\in\RR\ }.
+\]
+并且其临界线零点由 \(K_{i\nu}(x_0)\) 的 \(\nu\)-零点给出：若 \(K_{i\nu}(x_0)=0\) 且 \(\nu>0\)，则
+\(\Xi_{\mathrm{Bessel},x_0}(\tfrac12+2i\nu)=0\)。
+记
+\[
+N_{\mathrm{Bessel},x_0}(T):=\#\Bigl\{\,0<\gamma\le T:\ \Xi_{\mathrm{Bessel},x_0}\!\left(\tfrac12+i\gamma\right)=0\,\Bigr\},
+\]
+则 Paris 的大阶渐近方程 \cite{Paris2022KiNuZeros} 推出
+\[
+\boxed{\;
+N_{\mathrm{Bessel},x_0}(T)
+=\frac{T}{2\pi}\log\!\Bigl(\frac{T}{e\,x_0}\Bigr)+O(1)\qquad(T\to\infty).\;}
+\]
+特别地，当取 \(\boxed{x_0=2\pi}\) 时，
+\[
+\boxed{\;
+N_{\mathrm{Bessel},2\pi}(T)
+=\frac{T}{2\pi}\log\!\Bigl(\frac{T}{2\pi}\Bigr)-\frac{T}{2\pi}+O(1),\;}
+\]
+其前两项常数与黎曼--冯\,曼戈尔特零点计数主项完全同型。
+\end{proposition}
+\begin{proof}
+积分表示与 \(K_\nu(x)=K_{-\nu}(x)\) 给出对称性；当 \(s=\tfrac12+it\) 时阶数为纯虚 \(i t/2\)，故 \(K_{i(t/2)}(x_0)\in\RR\)（\(x_0>0\)），得 Hardy 实值性。
+令 \(K_{i\nu}(x_0)\) 的正零点按大小记为 \(\nu_n(x_0)\)；Paris 的零点渐近式给出计数
+\(\#\{\nu_n(x_0)\le V\}=\frac{V}{\pi}\log\!\bigl(\frac{2V}{e x_0}\bigr)+O(1)\)。
+取 \(V=T/2\) 即得 \(N_{\mathrm{Bessel},x_0}(T)=\#\{\nu_n(x_0)\le T/2\}\) 的结论；令 \(x_0=2\pi\) 立得常数对齐。
+\end{proof}
 
 \paragraph{尺度化观点：最坏扭曲慢模的扩散尺度}
 在有限模数 \(m\) 的扭曲（例如 \(u=\omega_m^r=e^{2\pi ir/m}\)）中，记最坏非平凡谱半径比为
