@@ -156,7 +156,10 @@ def main() -> None:
     lines.append("\\\\")
     lines.append(
         f"\\log\\Bigl(C\\,z_\\star(1+z_\\star)^3 e^{{z_\\star^3}}\\Bigr)\\approx {mp.nstr(log_triv, nd)},"
-        f"\\qquad \\log\\mathfrak{{M}}_{{\\mathrm{{carry}}}}\\approx {mp.nstr(log_carry, nd)}."
+    )
+    lines.append("\\\\")
+    lines.append(
+        f"\\log\\mathfrak{{M}}_{{\\mathrm{{carry}}}}\\approx {mp.nstr(log_carry, nd)}."
     )
     lines.append("\\\\")
     lines.append(f"\\log\\mathfrak{{M}}\\approx {mp.nstr(log_M, nd)}.")

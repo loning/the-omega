@@ -119,6 +119,46 @@ def _tex_structure_block(
     u: sp.Symbol,
 ) -> str:
     """Write the auditable structural facts about R(alpha,u) as TeX equations."""
+    def _poly_multiline_tex(P: sp.Poly, var: sp.Symbol, *, max_line_len: int = 110) -> list[str]:
+        """Format a univariate integer polynomial as multiple TeX lines.
+
+        Output lines are meant to be used inside an amsmath aligned environment.
+        """
+        terms = []
+        for (e,), coeff in sorted(P.as_dict().items(), key=lambda kv: -int(kv[0][0])):
+            coeff = sp.Integer(coeff)
+            if coeff == 0:
+                continue
+            if e == 0:
+                terms.append(coeff)
+            else:
+                terms.append(coeff * (var ** int(e)))
+
+        if not terms:
+            return ["0"]
+
+        parts: list[str] = []
+        for idx, t in enumerate(terms):
+            t = sp.expand(t)
+            sign = -1 if t.could_extract_minus_sign() else 1
+            t_abs = -t if sign < 0 else t
+            tex = sp.latex(t_abs)
+            if idx == 0:
+                parts.append(("- " + tex) if sign < 0 else tex)
+            else:
+                parts.append(("- " + tex) if sign < 0 else ("+ " + tex))
+
+        lines_out: list[str] = []
+        cur = parts[0]
+        for p in parts[1:]:
+            if len(cur) + 1 + len(p) > max_line_len:
+                lines_out.append(cur)
+                cur = p
+            else:
+                cur = cur + " " + p
+        lines_out.append(cur)
+        return lines_out
+
     # Work as a polynomial in u with coefficients in Z[alpha].
     Pu = sp.Poly(R_norm.as_expr(), u, domain=sp.ZZ[alpha])
     deg_u = int(Pu.degree())
@@ -175,9 +215,15 @@ def _tex_structure_block(
         % (sp.latex(r1), deg_u - 1, sp.latex(rd1))
     )
     lines.append(
-        "R\\!\\left(\\tfrac12,u\\right)&=-\\frac{(u-1)^6}{64}\\,Q(u),\\qquad Q(u)=%s."
-        % sp.latex(QZ.as_expr())
+        "R\\!\\left(\\tfrac12,u\\right)&=-\\frac{(u-1)^6}{64}\\,Q(u),\\qquad Q(u)=\\begin{aligned}[t]"
     )
+    q_lines = _poly_multiline_tex(QZ, u, max_line_len=105)
+    for j, ln in enumerate(q_lines):
+        if j < len(q_lines) - 1:
+            lines.append(f"& {ln}\\\\")
+        else:
+            lines.append(f"& {ln}")
+    lines.append("\\end{aligned}.")
     lines.append("\\end{align}")
     return "\n".join(lines) + "\n"
 

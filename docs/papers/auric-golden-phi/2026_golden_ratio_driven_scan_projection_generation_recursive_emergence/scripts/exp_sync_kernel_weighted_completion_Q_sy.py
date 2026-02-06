@@ -131,11 +131,48 @@ def main() -> None:
 
     tout = Path(args.tex_out)
     tout.parent.mkdir(parents=True, exist_ok=True)
+
+    def _latex_multiline(tex: str, *, max_line_len: int = 95) -> List[str]:
+        """Split a TeX polynomial string into multiple lines (greedy by length)."""
+        s = tex.strip()
+        # Turn binary '-' into an additive signed term to split on ' + ' safely.
+        s = s.replace(" - ", " + - ")
+        raw = [p.strip() for p in s.split(" + ") if p.strip()]
+        if not raw:
+            return ["0"]
+        terms: List[str] = []
+        for i, p in enumerate(raw):
+            if i == 0:
+                terms.append(p)
+                continue
+            if p.startswith("-"):
+                terms.append("- " + p[1:].lstrip())
+            else:
+                terms.append("+ " + p)
+
+        out_lines: List[str] = []
+        cur = terms[0]
+        for t in terms[1:]:
+            if len(cur) + 1 + len(t) > max_line_len:
+                out_lines.append(cur)
+                cur = t
+            else:
+                cur = cur + " " + t
+        out_lines.append(cur)
+        return out_lines
+
     lines: List[str] = []
     lines.append("% Auto-generated; do not edit by hand.")
     lines.append("\\begin{equation}")
     lines.append("\\boxed{")
-    lines.append(Q_latex + "=0")
+    lines.append("\\begin{aligned}")
+    poly_lines = _latex_multiline(Q_latex, max_line_len=70)
+    for i, ln in enumerate(poly_lines):
+        if i < len(poly_lines) - 1:
+            lines.append(f"& {ln}\\\\")
+        else:
+            lines.append(f"& {ln}=0")
+    lines.append("\\end{aligned}")
     lines.append("}")
     lines.append("\\end{equation}")
     tout.write_text("\n".join(lines) + "\n", encoding="utf-8")

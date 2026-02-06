@@ -250,11 +250,62 @@ def main() -> None:
     # LaTeX equation block.
     eq = Path(args.tex_eq_out)
     eq.parent.mkdir(parents=True, exist_ok=True)
+
+    def _poly_multiline_tex(expr: sp.Expr, var: sp.Symbol, *, max_line_len: int = 110) -> List[str]:
+        """Format a univariate integer polynomial as multiple TeX lines.
+
+        Output lines are meant to be used inside an amsmath aligned environment.
+        """
+        P1 = sp.Poly(sp.expand(expr), var, domain=sp.ZZ)
+        terms = []
+        for (e,), coeff in sorted(P1.as_dict().items(), key=lambda kv: -int(kv[0][0])):
+            coeff = sp.Integer(coeff)
+            if coeff == 0:
+                continue
+            if e == 0:
+                terms.append(coeff)
+            else:
+                terms.append(coeff * (var ** int(e)))
+
+        if not terms:
+            return ["0"]
+
+        parts: List[str] = []
+        for idx, t in enumerate(terms):
+            t = sp.expand(t)
+            sign = -1 if t.could_extract_minus_sign() else 1
+            t_abs = -t if sign < 0 else t
+            tex = sp.latex(t_abs)
+            if idx == 0:
+                parts.append(("- " + tex) if sign < 0 else tex)
+            else:
+                parts.append(("- " + tex) if sign < 0 else ("+ " + tex))
+
+        lines_out: List[str] = []
+        cur = parts[0]
+        for p in parts[1:]:
+            if len(cur) + 1 + len(p) > max_line_len:
+                lines_out.append(cur)
+                cur = p
+            else:
+                cur = cur + " " + p
+        lines_out.append(cur)
+        return lines_out
+
+    disc_lines = _poly_multiline_tex(disc_norm, s, max_line_len=95)
     eq_lines: List[str] = []
     eq_lines.append("% Auto-generated; do not edit by hand.")
     eq_lines.append("\\begin{equation}\\label{eq:sync_kernel_hatdelta_discriminant}")
     eq_lines.append("\\boxed{")
-    eq_lines.append("\\mathrm{Disc}_w\\bigl(\\widehat\\Delta(w,s)\\bigr)=" + sp.latex(disc_norm))
+    eq_lines.append("\\begin{aligned}")
+    if len(disc_lines) == 1:
+        eq_lines.append("\\mathrm{Disc}_w\\bigl(\\widehat\\Delta(w,s)\\bigr)&=" + disc_lines[0])
+    else:
+        eq_lines.append("\\mathrm{Disc}_w\\bigl(\\widehat\\Delta(w,s)\\bigr)&=" + disc_lines[0] + "\\\\")
+        for ln in disc_lines[1:-1]:
+            eq_lines.append("&" + ln + "\\\\")
+        eq_lines.append("&" + disc_lines[-1])
+    eq_lines.append("\\end{aligned}")
     eq_lines.append("}")
     eq_lines.append("\\end{equation}")
     eq.write_text("\n".join(eq_lines) + "\n", encoding="utf-8")

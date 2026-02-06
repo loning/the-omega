@@ -156,6 +156,47 @@ def _double_root_for_u(
 
 
 def _tex_identities(path: Path, *, Q: sp.Expr, z: sp.Symbol, u: sp.Symbol, D: sp.Expr) -> None:
+    def _poly_multiline_tex(expr: sp.Expr, var: sp.Symbol, *, max_line_len: int = 110) -> List[str]:
+        """Format a univariate integer polynomial as multiple TeX lines.
+
+        Output lines are meant to be used inside an amsmath aligned environment.
+        """
+        P = sp.Poly(sp.expand(expr), var)
+        terms = []
+        for (e,), coeff in sorted(P.as_dict().items(), key=lambda kv: -int(kv[0][0])):
+            coeff = sp.Integer(coeff)
+            if coeff == 0:
+                continue
+            if e == 0:
+                terms.append(coeff)
+            else:
+                terms.append(coeff * (var ** int(e)))
+
+        if not terms:
+            return ["0"]
+
+        parts: List[str] = []
+        for idx, t in enumerate(terms):
+            t = sp.expand(t)
+            sign = -1 if t.could_extract_minus_sign() else 1
+            t_abs = -t if sign < 0 else t
+            tex = sp.latex(t_abs)
+            if idx == 0:
+                parts.append(("- " + tex) if sign < 0 else tex)
+            else:
+                parts.append(("- " + tex) if sign < 0 else ("+ " + tex))
+
+        lines_out: List[str] = []
+        cur = parts[0]
+        for p in parts[1:]:
+            if len(cur) + 1 + len(p) > max_line_len:
+                lines_out.append(cur)
+                cur = p
+            else:
+                cur = cur + " " + p
+        lines_out.append(cur)
+        return lines_out
+
     r = sp.Symbol("r")
     Q_pos = sp.factor(Q.subs({u: r**2, z: 1 / r})).subs(r, sp.sqrt(u))
     Q_neg = sp.factor(Q.subs({u: r**2, z: -1 / r})).subs(r, sp.sqrt(u))
@@ -191,8 +232,17 @@ def _tex_identities(path: Path, *, Q: sp.Expr, z: sp.Symbol, u: sp.Symbol, D: sp
     lines.append("")
     lines.append("  \\item \\textbf{$Q$ 的谱退化（重根）判别式：}令 $Q_z=\\partial Q/\\partial z$。则结式满足")
     lines.append("  \\[")
-    lines.append("  \\mathrm{Res}_z(Q,Q_z)=4u^{15}(u-1)^3\\,D(u),\\qquad")
-    lines.append("  D(u)=" + sp.latex(D) + ",")
+    lines.append("  \\begin{aligned}")
+    lines.append("  \\mathrm{Res}_z(Q,Q_z)&=4u^{15}(u-1)^3\\,D(u),\\\\")
+    d_lines = _poly_multiline_tex(D, u, max_line_len=105)
+    if len(d_lines) == 1:
+        lines.append("  D(u)&=" + d_lines[0] + ",")
+    else:
+        lines.append("  D(u)&=" + d_lines[0] + "\\\\")
+        for ln in d_lines[1:-1]:
+            lines.append("  &" + ln + "\\\\")
+        lines.append("  &" + d_lines[-1] + ",")
+    lines.append("  \\end{aligned}")
     lines.append("  \\]")
     lines.append("  其中 $D(u)\\in\\mathbb{Z}[u]$ 为次数 $" + str(sp.degree(D, u)) + "$ 的不可约多项式。")
     lines.append("  因而在 $u>0$ 上，除 $u=1$ 外，$Q$ 出现重根当且仅当 $D(u)=0$。")

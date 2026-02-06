@@ -520,15 +520,56 @@ def main() -> None:
         jout.write_text(json.dumps(asdict(payload), indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
         # Build TeX snippet (Chinese, for the paper).
+        def _poly_multiline_tex(expr: sp.Expr, var: sp.Symbol, *, max_line_len: int = 110) -> List[str]:
+            """Format an integer polynomial as multiple TeX lines.
+
+            The returned list is intended to be used inside an amsmath aligned block.
+            """
+            P = sp.Poly(sp.expand(expr), var, domain=sp.ZZ)
+            terms = []
+            for (e,), coeff in sorted(P.as_dict().items(), key=lambda kv: -int(kv[0][0])):
+                coeff = sp.Integer(coeff)
+                if coeff == 0:
+                    continue
+                if e == 0:
+                    terms.append(coeff)
+                else:
+                    terms.append(coeff * (var ** int(e)))
+
+            if not terms:
+                return ["0"]
+
+            parts: List[str] = []
+            for idx, t in enumerate(terms):
+                t = sp.expand(t)
+                sign = -1 if t.could_extract_minus_sign() else 1
+                t_abs = -t if sign < 0 else t
+                tex = sp.latex(t_abs)
+                if idx == 0:
+                    parts.append(("- " + tex) if sign < 0 else tex)
+                else:
+                    parts.append(("- " + tex) if sign < 0 else ("+ " + tex))
+
+            lines_out: List[str] = []
+            cur = parts[0]
+            for p in parts[1:]:
+                if len(cur) + 1 + len(p) > max_line_len:
+                    lines_out.append(cur)
+                    cur = p
+                else:
+                    cur = cur + " " + p
+            lines_out.append(cur)
+            return lines_out
+
         u_tex = sp.Symbol("u")
         D_expr = sp.Poly(D, u_tex, domain=sp.ZZ).as_expr()
-        # Present D(u) as a full polynomial (auditable).
-        D_latex = sp.latex(D_expr)
-        disc_latex = sp.latex(sp.Poly(disc, u_tex, domain=sp.ZZ).as_expr())
+        disc_expr = sp.Poly(disc, u_tex, domain=sp.ZZ).as_expr()
+        disc_lines = _poly_multiline_tex(disc_expr, u_tex)
+        D_lines = _poly_multiline_tex(D_expr, u_tex)
 
         x_tex = sp.Symbol("x")
         Dinv_expr = sp.Poly(Dinv_poly.as_expr(), x_tex, domain=sp.ZZ).as_expr()
-        Dinv_latex = sp.latex(Dinv_expr)
+        Dinv_lines = _poly_multiline_tex(Dinv_expr, x_tex)
 
         disc2_expr = sp.Poly(disc2, u_tex, domain=sp.ZZ).as_expr()
         disc2_latex = sp.latex(disc2_expr)
@@ -570,11 +611,26 @@ def main() -> None:
         tex_lines.append("$$")
         tex_lines.append("等价地，分歧点的 $u$-集合由关于 $\\lambda$ 的判别式零点给出；对本附录的六次 $F$，有完全显式分解")
         tex_lines.append("$$")
-        tex_lines.append("\\mathrm{Disc}_{\\lambda}(F)(u)=" + disc_latex + "=-u^{5}\\,D(u),")
+        tex_lines.append("\\begin{aligned}")
+        if disc_lines:
+            tex_lines.append("\\mathrm{Disc}_{\\lambda}(F)(u)&=" + disc_lines[0] + "\\\\")
+            for ln in disc_lines[1:]:
+                tex_lines.append("&" + ln + "\\\\")
+        tex_lines.append("&=-u^{5}\\,D(u),")
+        tex_lines.append("\\end{aligned}")
         tex_lines.append("$$")
         tex_lines.append("其中 $D(u)\\in\\ZZ[u]$ 为 $20$ 次回文多项式：")
         tex_lines.append("$$")
-        tex_lines.append("D(u)=" + D_latex + ".")
+        tex_lines.append("\\begin{aligned}")
+        if D_lines:
+            if len(D_lines) == 1:
+                tex_lines.append("D(u)&=" + D_lines[0] + ".")
+            else:
+                tex_lines.append("D(u)&=" + D_lines[0] + "\\\\")
+                for ln in D_lines[1:-1]:
+                    tex_lines.append("&" + ln + "\\\\")
+                tex_lines.append("&" + D_lines[-1] + ".")
+        tex_lines.append("\\end{aligned}")
         tex_lines.append("$$")
         tex_lines.append("\\end{proposition}")
         tex_lines.append("")
@@ -590,7 +646,16 @@ def main() -> None:
         tex_lines.append("因此除去平凡因子 $u^5$ 外，Perron 分支的有限分歧点由一元 $10$ 次方程 $D_{\\mathrm{inv}}(2\\cosh\\theta)=0$ 完全刻画；求最近分歧点可先解 $D_{\\mathrm{inv}}(x)=0$ 再用 $2\\cosh\\theta=x$ 的反双曲余弦映射选取 $|\\theta|$ 最小的 $2\\pi i\\ZZ$-lift。")
         tex_lines.append("对本核有完全显式的整数多项式")
         tex_lines.append("$$")
-        tex_lines.append("D_{\\mathrm{inv}}(x)=" + Dinv_latex + ".")
+        tex_lines.append("\\begin{aligned}")
+        if Dinv_lines:
+            if len(Dinv_lines) == 1:
+                tex_lines.append("D_{\\mathrm{inv}}(x)&=" + Dinv_lines[0] + ".")
+            else:
+                tex_lines.append("D_{\\mathrm{inv}}(x)&=" + Dinv_lines[0] + "\\\\")
+                for ln in Dinv_lines[1:-1]:
+                    tex_lines.append("&" + ln + "\\\\")
+                tex_lines.append("&" + Dinv_lines[-1] + ".")
+        tex_lines.append("\\end{aligned}")
         tex_lines.append("$$")
         tex_lines.append("并且若取完成化变量 $u=r^2,\\ s=r+r^{-1}$（命题 \\ref{prop:weighted-completion-Q}），则 $u+u^{-1}=s^2-2$，从而")
         tex_lines.append("$$")
@@ -620,10 +685,14 @@ def main() -> None:
         )
         tex_lines.append("数值上可取")
         tex_lines.append("$$")
+        tex_lines.append("\\begin{aligned}")
         tex_lines.append(
-            f"u_\\pm\\approx {u_small_pair}\\quad(|u_\\pm|\\approx {u_small_abs_str}),\\qquad "
-            f"u_\\pm^{{-1}}\\approx {u_large_pair}\\quad(|u_\\pm^{{-1}}|\\approx {u_large_abs_str}),"
+            f"u_\\pm&\\approx {u_small_pair}\\quad(|u_\\pm|\\approx {u_small_abs_str}),\\\\"
         )
+        tex_lines.append(
+            f"u_\\pm^{{-1}}&\\approx {u_large_pair}\\quad(|u_\\pm^{{-1}}|\\approx {u_large_abs_str}),"
+        )
+        tex_lines.append("\\end{aligned}")
         tex_lines.append("$$")
         tex_lines.append("并且相应的最近分歧点可取")
         tex_lines.append("$$")

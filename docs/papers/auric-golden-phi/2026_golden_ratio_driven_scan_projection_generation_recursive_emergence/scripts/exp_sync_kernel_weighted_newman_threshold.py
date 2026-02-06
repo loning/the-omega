@@ -225,7 +225,7 @@ def _write_tex(
     nd_lam = 16
     nd_check = 24
 
-    Q_lines = _tex_poly_Q(u_sym, Q, max_terms_per_line=6)
+    Q_lines = _tex_poly_Q(u_sym, Q, max_terms_per_line=4)
 
     lines: List[str] = []
     lines.append("% Auto-generated; do not edit by hand.")
@@ -233,9 +233,10 @@ def _write_tex(
     lines.append(r"\label{prop:sync-kernel-weighted-newman-threshold}")
     lines.append(r"令 $B(u)=B_0+uB_1$ 为附录中的在线归一化同步核，并令其非零谱特征多项式为")
     lines.append(r"\[")
-    lines.append(
-        r"P(\mu,u)=\mu^6-(1+u)\mu^5-5u\mu^4+3u(1+u)\mu^3-u(u^2-3u+1)\mu^2+u(u^3-3u^2-3u+1)\mu+u^2(u^2+u+1)."
-    )
+    lines.append(r"\begin{aligned}")
+    lines.append(r"P(\mu,u)&=\mu^6-(1+u)\mu^5-5u\mu^4+3u(1+u)\mu^3\\")
+    lines.append(r"&-u(u^2-3u+1)\mu^2+u(u^3-3u^2-3u+1)\mu+u^2(u^2+u+1).")
+    lines.append(r"\end{aligned}")
     lines.append(r"\]")
     lines.append(
         r"设 $\lambda_1(u)$ 为 Perron 根，$\Lambda(u)=\max_{i\ge2}|\lambda_i(u)|$。"

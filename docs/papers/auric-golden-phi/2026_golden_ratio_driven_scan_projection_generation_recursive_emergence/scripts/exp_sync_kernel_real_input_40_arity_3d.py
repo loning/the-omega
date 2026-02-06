@@ -791,16 +791,21 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
         lines.append("$$")
     lines.append("由此定义主相关长度尺度（指数衰减的时间常数）与半衰期：")
     lines.append("$$")
+    lines.append("\\begin{aligned}")
     lines.append(
-        f"\\tau_{{\\mathrm{{mix}}}}:=\\frac{{1}}{{-\\log(\\rho_{{3,3,5}}/\\lambda)}}\\approx {fmt(tau_mix)},\\qquad "
-        f"t_{{1/2}}:=\\frac{{\\log 2}}{{-\\log(\\rho_{{3,3,5}}/\\lambda)}}\\approx {fmt(t_half)}."
+        f"\\tau_{{\\mathrm{{mix}}}}:=\\frac{{1}}{{-\\log(\\rho_{{3,3,5}}/\\lambda)}}&\\approx {fmt(tau_mix)},\\\\"
     )
+    lines.append(
+        f"t_{{1/2}}:=\\frac{{\\log 2}}{{-\\log(\\rho_{{3,3,5}}/\\lambda)}}&\\approx {fmt(t_half)}."
+    )
+    lines.append("\\end{aligned}")
     lines.append("$$")
     lines.append("并定义偏置易感度（Abel 累积的自然尺度）")
     lines.append("$$")
-    lines.append(
-        f"\\chi:=\\frac{{1}}{{1-\\rho_{{3,3,5}}/\\lambda}}\\approx {fmt(susceptibility)},\\qquad \\log\\chi\\approx {fmt(log_susceptibility)}."
-    )
+    lines.append("\\begin{aligned}")
+    lines.append(f"\\chi:=\\frac{{1}}{{1-\\rho_{{3,3,5}}/\\lambda}}&\\approx {fmt(susceptibility)},\\\\")
+    lines.append(f"\\log\\chi&\\approx {fmt(log_susceptibility)}.")
+    lines.append("\\end{aligned}")
     lines.append("$$")
 
     lines.append("\\paragraph{（ii）碰撞同余类 $c$ 的常数漂移（总偏置）}")
@@ -820,11 +825,11 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     lines.append("\\paragraph{（iii$''$）$c$-方向变分能量的局域共振（胞元/行/列贡献）}")
     lines.append("对每个胞元 $(a,b)$ 定义 $c$-方向方差能量 $\\mathrm{var}_{a,b}:=\\frac15\\sum_{c=0}^4\\bigl(C_{a,b,c}-\\frac15\\sum_{c'}C_{a,b,c'}\\bigr)^2$，并令总能量 $\\mathrm{Var}:=\\sum_{a,b}\\mathrm{var}_{a,b}$。数值上")
     lines.append("$$")
-    lines.append(
-        f"\\frac{{\\sum_a\\mathrm{{var}}_{{a,0}}}}{{\\mathrm{{Var}}}}\\approx {frac_row_b0:.6f},\\qquad "
-        f"\\frac{{\\sum_b\\mathrm{{var}}_{{1,b}}}}{{\\mathrm{{Var}}}}\\approx {frac_col_a1:.6f},\\qquad "
-        f"\\frac{{\\mathrm{{var}}_{{1,0}}}}{{\\mathrm{{Var}}}}\\approx {frac_cell_a1b0:.6f}."
-    )
+    lines.append("\\begin{aligned}")
+    lines.append(f"\\frac{{\\sum_a\\mathrm{{var}}_{{a,0}}}}{{\\mathrm{{Var}}}}&\\approx {frac_row_b0:.6f},\\\\")
+    lines.append(f"\\frac{{\\sum_b\\mathrm{{var}}_{{1,b}}}}{{\\mathrm{{Var}}}}&\\approx {frac_col_a1:.6f},\\\\")
+    lines.append(f"\\frac{{\\mathrm{{var}}_{{1,0}}}}{{\\mathrm{{Var}}}}&\\approx {frac_cell_a1b0:.6f}.")
+    lines.append("\\end{aligned}")
     lines.append("$$")
 
     lines.append("\\paragraph{（iii$'$）近因子化诊断：切片到 rank-0 的偏离}")
@@ -873,23 +878,28 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     lines.append("\\paragraph{（v）$S_c$ 的 $\\ZZ/5$-傅里叶结构（聚合漂移）}")
     lines.append("令 $\\widehat S(j):=\\frac15\\sum_{c=0}^{4}S_c\\,\\omega_5^{-jc}$。则")
     lines.append("$$")
-    lines.append(
-        f"\\widehat S(0)\\approx {Shat[0].real:.12f},\\qquad |\\widehat S(1)|=|\\widehat S(4)|\\approx {abs(Shat[1]):.12f},\\qquad |\\widehat S(2)|=|\\widehat S(3)|\\approx {abs(Shat[2]):.12f}."
-    )
+    lines.append("\\begin{aligned}")
+    lines.append(f"\\widehat S(0)&\\approx {Shat[0].real:.12f},\\\\")
+    lines.append(f"|\\widehat S(1)|=|\\widehat S(4)|&\\approx {abs(Shat[1]):.12f},\\\\")
+    lines.append(f"|\\widehat S(2)|=|\\widehat S(3)|&\\approx {abs(Shat[2]):.12f}.")
+    lines.append("\\end{aligned}")
     lines.append("$$")
 
     lines.append("\\paragraph{（iv）$\\mathbb{{Z}}/5$ 轴的傅里叶压缩指纹（均值 + 两个复模）}")
     lines.append("对每个固定的 $(a,b)$，令 $f_{a,b}(c):=C^{(3,3,5)}_{a,b,c}$（$c\\in\\ZZ/5$）。其离散傅里叶系数为")
     lines.append("$$")
-    lines.append(
-        "\\widehat f_{a,b}(j):=\\frac15\\sum_{c=0}^{4} f_{a,b}(c)\\,\\omega_5^{-jc},\\qquad \\omega_5=e^{2\\pi i/5}."
-    )
+    lines.append("\\begin{aligned}")
+    lines.append("\\widehat f_{a,b}(j)&:=\\frac15\\sum_{c=0}^{4} f_{a,b}(c)\\,\\omega_5^{-jc},\\\\")
+    lines.append("\\omega_5&:=e^{2\\pi i/5}.")
+    lines.append("\\end{aligned}")
     lines.append("$$")
     lines.append("从而有恒等分解（对所有 $c$ 精确成立）")
     lines.append("$$")
-    lines.append(
-        "f_{a,b}(c)=\\widehat f_{a,b}(0)+2\\Re\\bigl(\\widehat f_{a,b}(1)\\,\\omega_5^{c}\\bigr)+2\\Re\\bigl(\\widehat f_{a,b}(2)\\,\\omega_5^{2c}\\bigr)."
-    )
+    lines.append("\\begin{aligned}")
+    lines.append("f_{a,b}(c)=\\widehat f_{a,b}(0)")
+    lines.append("&+2\\Re\\bigl(\\widehat f_{a,b}(1)\\,\\omega_5^{c}\\bigr)\\\\")
+    lines.append("&+2\\Re\\bigl(\\widehat f_{a,b}(2)\\,\\omega_5^{2c}\\bigr).")
+    lines.append("\\end{aligned}")
     lines.append("$$")
     lines.append("记 $\\overline C_{b,a}:=\\widehat f_{a,b}(0)$（行 $b$、列 $a$）与两张复矩阵 $A^{(1)}_{b,a}:=\\widehat f_{a,b}(1)$、$A^{(2)}_{b,a}:=\\widehat f_{a,b}(2)$。则：")
     lines.append("$$")

@@ -126,11 +126,11 @@ def write_tex(out_path: Path) -> None:
         "=\\log\\mathfrak{M}_{\\mathrm{even}}+K_{-F}+P_{\\mathrm{triv}}(z_\\star),"
     )
     lines.append("\\\\")
-    lines.append(
-        f"K_{{-F}}\\approx {mp.nstr(K_minus_F, 18)},\\qquad"
-        f"\\log\\mathfrak{{M}}_{{\\mathrm{{even}}}}\\approx {mp.nstr(logM_even_num, 18)},\\qquad"
-        f"\\log\\mathfrak{{M}}\\approx {mp.nstr(logM, 18)}."
-    )
+    lines.append(f"K_{{-F}}\\approx {mp.nstr(K_minus_F, 18)},")
+    lines.append("\\\\")
+    lines.append(f"\\log\\mathfrak{{M}}_{{\\mathrm{{even}}}}\\approx {mp.nstr(logM_even_num, 18)},")
+    lines.append("\\\\")
+    lines.append(f"\\log\\mathfrak{{M}}\\approx {mp.nstr(logM, 18)}.")
     lines.append("\\end{aligned}")
     lines.append("\\]")
 
