@@ -1071,6 +1071,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_reset_regeneration_constants",
+            script="exp_real_input_40_reset_regeneration_constants.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_reset_regeneration_constants.json",
+                "sections/generated/eq_real_input_40_reset_regeneration_constants.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_kernel_newman_threshold",
             script="exp_real_input_40_kernel_newman_threshold.py",
             args=[],
