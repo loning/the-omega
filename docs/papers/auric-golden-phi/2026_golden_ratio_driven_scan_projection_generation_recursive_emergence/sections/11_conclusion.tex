@@ -92,37 +92,58 @@ G_m(\omega^\star)=m,
 \end{enumerate}
 在这一解释框架下，可将本文的折叠/投影机制理解为一种由观测稳定性约束诱导的最稳定“可读出”横截面选择：观测者在有限分辨率下所见的对象—运算—概念层级，更接近于该动力系统的投影像，而非其全部微观自由度（此段为解释性语言）。
 
-\subsection{桥包升级：三条可证伪预测（可复现接口）}
-以下三条并非“复述正文已有结论”，而是把共振缺口 \(\Delta(q)\)、profinite Chebotarev 的对数预算、以及二维慢模指纹 \(\mathbf{R}_{m,2}\) 拼接后自然得到的\textbf{下一步可证伪命题}：
+\subsection{统一图景：同一本体数（桥包化的可检验结论；2026-02-06）}\label{subsec:bridgepack-2026-02-06}
+本小节不再复述前文推导，仅沿“信息守恒/时空对偶/迹--prime-shadow--Euler 乘积严格交换”（注 \ref{rem:zetaK-commuting-diagram}）
+与 prime-register/角色对角化两条可审计接口（推论 \ref{cor:pom-prime-register-quantile-budget}、\ref{cor:pom-dirichlet-grh-twisted-radius}；命题 \ref{prop:pom-profinite-artin-hilbert}）
+将正文中已出现的接口拼接为一组更硬的\textbf{桥包式终点结论}。每条结论仅给最终断言及其可检验含义。
 \begin{enumerate}
-  \item \textbf{（P1：共振缺口与边界慢模主导的耦合）}
-  若 Hankel 共振的不可见核主要来自“碰撞/边界残差”机制（而非输入骨架的 bulk 混合），则在同余/角色分层的二维指纹上更易观察到 boundary 通道主导：
-  \[
-  \frac{\rho^{\mathrm{bd}}_{m,2}}{\lambda}\ \gtrsim\ \frac{\rho^{\mathrm{in}}_{m,2}}{\lambda}.
-  \]
-  该命题的可复现读数可由表 \ref{tab:real-input-40-rho-m2-fingerprint} 给出；更强的统计检验需要把 \(m\) 轴扩展到更宽模数窗并与共振/算术节拍点集做对齐回归（与猜想 \ref{conj:pom-fourier-zero-driven-resonance} 的检验口径同型）。
-  \item \textbf{（P2：最优“加轴”非单调；由谱隙税工作量 \(W\) 决定）}
-  在 Chebotarev 对数预算的最坏情形口径下，空间分层规模与时间步长的折中可被压缩为谱隙税率
+  \item \textbf{（有限窗口素数性信息量的硬上界）}
+  对任意只读 Zeckendorf 低位窗口 \(W_m\) 的判别器 \(\widehat Y=f(W_m)\)，其对素数性 \(Y=\mathbf{1}_{\mathrm{prime}}\) 的可用信息增益满足
+  \(I(Y;\widehat Y)\le I(Y;W_m)\)（注 \ref{rem:prime-shadow-window-mi-algorithmic-lb}）。
+  \emph{可检验含义：}表 \ref{tab:prime_shadow_window_mi} 显示当 \(m=6\)（\(|X_m|=21\)）时互信息仅为 \(8\times 10^{-3}\) bits 量级；
+  因而任何“固定小窗口”机制不可能在该口径下等价恢复整数素数集合。
+  复现脚本与数据口径见小节 \ref{subsec:prime-shadow-window-mi}。
+
+  \item \textbf{（prime-register 的最小可逆侧信息；并天然按素数分解）}
+  在区间读出/重建口径下，若希望把折叠的多对一压缩提升为“以概率 \(\ge 1-\varepsilon\) 近似可逆”，则外置侧信息必须覆盖纤维尾分位：
+  取 \(B_m(\varepsilon)=\exp(m\gamma_m(\varepsilon))\)，任何满足 \(P_m>2B_m(\varepsilon)\) 的 CRT 寄存器即可把失败概率压至 \(\le\varepsilon\)（推论 \ref{cor:pom-prime-register-quantile-budget}），
+  从而比特预算主尺度为 \(\log_2 B_m(\varepsilon)=\Theta(m\gamma_m(\varepsilon))\)。
+  在逆极限语义下，该寄存器轴的结构坐标为
   \(
-  \Delta_m=-\log(\Lambda_m/\lambda_m)
+  \widehat{\ZZ}=\varprojlim_m \ZZ/m\ZZ\cong \prod_{p}\ZZ_p
   \)
-  与工作量
+  （单位版本为 \(\widehat{\ZZ}^{\,\times}\cong\prod_p\ZZ_p^{\times}\)），从而“按素数分解”的坐标轴并非额外装饰，而是可逆性侧信息在结构上被迫采用的不可约分解。
+  \emph{可检验含义：}脚本 \texttt{scripts/exp\_fold\_tail\_budget\_gamma\_cert.py} 给出 \(\gamma_m(\varepsilon)\) 的可复现证书输出；
+  Bridge-Kit 接口（\S\ref{subsec:pom-implementable-interfaces}）把该预算与异常常数项一并固化为回归测试指纹。
+
+  \item \textbf{（单位寄存器口径下 prime-like 侧与谱/迹侧的严格对齐）}
+  将寄存器轴从 \(G_\infty=\widehat{\ZZ}\) 收缩到单位部分 \(G_\infty=\widehat{\ZZ}^{\,\times}\) 后，Dirichlet 角色族就是 \(L^2(G_\infty)\) 的 Fourier 基；
+  “全角色平方根谱界”
   \(
-  W(m)=\log|G_m|/\Delta_m
+  \sup_{\chi\neq 1}\rho(M_{m,\chi}(u))\le \lambda_1(u)^{1/2}
   \)
-  （注 \ref{rem:pom-spectral-tax-workload}）。
-  因此“加轴是否加速”不是单调命题，而是一个\textbf{规模 \(\log|G_m|\) 与谱隙 \(\Delta_m\) 的折中最小化}问题；表 \ref{tab:real-input-40-spectral-tax-workload} 给出真实输入 \(40\) 状态核在离散素数模轴上的可复现例证。
-  \item \textbf{（P3：低延迟设计的瓶颈主要体现在 \(\chi_0\)，而非仅体现在 \(h_0\)）}
-  在零温极限下，把在线延迟对齐到数字尺度 \(\delta_{\mathrm{digits}}\) 后，carry-free 骨架熵率
-  \(
-  h_0=\log\rho(A_0)
-  \)
-  与一阶激活斜率
-  \(
-  \chi_0=c_1/\lambda_0
-  \)
-  给出两条基本正交的资源轴（注 \ref{rem:entropy-delay-complement-c1}）。
-  表 \ref{tab:parallel-addition-kernels-zero-temp-scales} 用 BFS 编译图直接抽取并列读数，提供一个可审计的“低延迟 \(\Rightarrow\) 边通道更易激活”代理检验口径。
+  与“全部非平凡 Fourier 模态的统一衰减”在算子化口径下等价（推论 \ref{cor:pom-dirichlet-grh-twisted-radius}；命题 \ref{prop:pom-profinite-artin-hilbert}）。
+  \emph{可检验含义：}对给定核与 \(m\)，扫描 \(\sup_{\chi\neq 1}\rho(M_{m,\chi}(u))/\lambda_1(u)^{1/2}\) 即可对 GRH-型断言作直接证伪；
+  代表性复现接口为 \texttt{scripts/exp\_real\_input\_40\_output\_potential\_dirichlet\_twists.py} 及其生成表格片段（表 \ref{tab:real_input_40_output_potential_dirichlet_twists}）。
+
+  \item \textbf{（逆极限硬门槛：固定有限轴束不自动升级为 GRH/RH 口径）}
+  “增加模轴不是重标记”在核层面可被刚性审计：注 \ref{prop:arity-335-n2-nondegenerate} 表明第三轴 \(N_2(\gamma)\bmod 5\) 不可由前两轴消去，
+  因而逆极限中不断出现的新自由度必须被显式控制。
+  \emph{可检验含义：}脚本 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py} 输出 \(c=N_2(\gamma)\bmod 5\) 的切片张量（正文对应 \verb|\input| 片段），并同时生成三维 DFT 头部模式表 \ref{tab:real_input_40_arity_335_n2_fourier_top}
+  与选择律扫描表 \ref{tab:real_input_40_arity_335_n2_selection_law_primes}；
+  任何“仅在固定有限轴束上成立”的良好谱现象都必须通过更高模数/更大角色自由度的扫描才能提升为逆极限口径的证据。
+
+  \item \textbf{（空间/时间同源信号：碰撞结构同时控制纤维多重度与最坏慢模）}
+  折叠窗层的二阶碰撞核 Perron 常数 \(r_2\) 与轨道层最坏扭曲谱半径 \(\rho_{3,3,5}\) 在数值上高度贴合（注 \ref{rem:arity-335-r2-vs-rho}），提示“最慢模态”更可能由碰撞纤维积结构主导而非由输出细节主导。
+  \emph{可检验含义：}跨层诊断量（注 \ref{rem:arity-335-cross-layer-diagnostics}）把 \((r_2,\rho_{3,3,5})\)、SVD 压缩与协方差预测并列为可审计指纹；
+  若在更换模轴/权重/核族后仍持续观察到 \(\rho_{\mathrm{worst}}\) 与低阶碰撞常数 \(r_q\) 的稳定贴合，则“时空对偶=信息守恒”的同源性得到数值支持；否则该贴合可被直接证伪。
+
+  \item \textbf{（三件套闭环：把“信息守恒路线”压缩为可回归的硬指标）}
+  上述桥包可被压缩为三条互相锁定、且均可由仓库脚本输出的审计闭环：
+  \emph{(i)}~可逆性侧信息闭环（\(\gamma_m(\varepsilon)\Rightarrow B_m(\varepsilon)\Rightarrow P_m\) 预算；推论 \ref{cor:pom-prime-register-quantile-budget}）；
+  \emph{(ii)}~全角色族口径（单位寄存器 \(\widehat{\ZZ}^{\,\times}\) 上的 \(\sup_{\chi\neq 1}\) 谱界；推论 \ref{cor:pom-dirichlet-grh-twisted-radius}）；
+  \emph{(iii)}~同源慢模诊断（碰撞核常数 \(r_q\) 与最坏扭曲常数 \(\rho\) 的跨层贴合；注 \ref{rem:arity-335-r2-vs-rho}）。
+  \emph{可检验含义：}Bridge-Kit 一键脚本 \texttt{scripts/exp\_bridge\_kit.py} 将上述三类输出压缩为常数级指纹 JSON/片段，用作后续实现改动的强一致性回归测试接口。
 \end{enumerate}
 
 最后指出：本文中的术语“涌现”仅用于组织动机与解释性叙事；任何后续推理均以编号结果为前提。关于黄金分支的“最优性”讨论亦严格限定在文中显式给出的数论证书链条之内，且不外推到更强的统计泛函最优性（见注 \ref{rem:what-is-optimized}）。

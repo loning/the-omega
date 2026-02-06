@@ -499,6 +499,27 @@ I(\mathbf{1}_{\mathrm{prime}};W_m)
 
 \input{sections/generated/tab_prime_shadow_window_mi}
 
+\begin{remark}[信息论下界：有限窗口判别素数性的算法约束]\label{rem:prime-shadow-window-mi-algorithmic-lb}
+令随机变量 \(Y:=\mathbf{1}_{\mathrm{prime}}(n)\in\{0,1\}\)，\(X:=W_m\) 为 Zeckendorf 低位窗口（本小节实验口径）。
+对任意仅依赖 \(X\) 的（可随机化）判别器 \(\widehat Y=f(X)\)，数据处理不等式给出
+\[
+I(Y;\widehat Y)\ \le\ I(Y;X).
+\]
+因此“有限窗口机制”对素数性的\textbf{可用信息增益}存在硬上界：任意算法至多减少
+\(
+I(\mathbf{1}_{\mathrm{prime}};W_m)
+\)
+比特量级的 Shannon 不确定性。
+进一步地，在二元判别情形下，Fano 不等式简化为
+\[
+h_b(P_e)\ \ge\ H(Y)-I(Y;X),
+\]
+其中 \(P_e=\mathbb{P}[\widehat Y\neq Y]\)，且 \(h_b(p):=-p\log_2 p-(1-p)\log_2(1-p)\)。
+在表 \ref{tab:prime_shadow_window_mi} 的审计切片（\(n\le 1000\)）里，当 \(m=6\) 时 \(I(Y;X)\approx 8\times 10^{-3}\) bits，
+故任何只读 \(W_6\) 的判别器在该口径下都不可能把 \(H(Y)\) 显著压缩为“近确定”；
+若观测到远超此量级的区分度提升，则其信息来源必然包含超出固定低位窗口的全局通道（例如更高分辨率、寄存器侧信息或逆极限轴束的补充坐标）。
+\end{remark}
+
 \subsection{谱指纹实验协议：并行加法三核的统一对比（不爆内存）}\label{sec:exp-kernel-fingerprint}
 本小节给出一条可复现的“核对比”实验协议：把黄金比例基 $\beta=\varphi$ 上的三类并行加法核（$9/13/21$-local；AAMP VIII 总结为 Algorithm I/II/III，细节规则为 Algorithm S/W/G 与 A/B 触发条件，见 \cite{SvobodovaAAMPVIIIParallelAddition,FrougnyHellerPelantovaSvobodovaParallelAlgorithmsSlides}）统一压到同一组对象
 \[
