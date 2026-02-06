@@ -451,29 +451,91 @@ s\leftrightarrow 1-s
 \)
 型对称，则需要一个独立于参数自对偶的谱互反结构。
 
-\begin{remark}[谱互反闭包 $\Rightarrow$ 完成化后 \texorpdfstring{$s\leftrightarrow 1-s$}{s<->1-s}]\label{prop:reciprocal-spectrum-functional-equation}
+\begin{proposition}[\texorpdfstring{$\lambda$}{lambda}-互反（谱互反闭包）\texorpdfstring{$\Longleftrightarrow$}{<->} 完成化函数方程]\label{prop:reciprocal-spectrum-functional-equation}
 设 $M$ 为有限维矩阵，$\lambda:=\rho(M)>0$ 为其 Perron 根。令
 \[
 \Delta_M(z):=\det(I-zM),\qquad
-Z_M(s):=\Delta_M(\lambda^{-s})^{-1}.
+Z_M(s):=\Delta_M(\lambda^{-s})^{-1},
+\qquad
+r:=\deg_z\Delta_M(z).
 \]
-记 $r:=\deg_z\Delta_M(z)$（等价于 $M$ 的非零特征值按代数重数计的个数）。
-若 $M$ 的非零谱满足\textbf{互反闭包}
+并定义完成化函数
 \[
-\mu\in\mathrm{spec}(M)\setminus\{0\}
-\ \Longrightarrow\
-\frac{\lambda}{\mu}\in\mathrm{spec}(M)\setminus\{0\}
-\qquad(\text{重数相同}),
+\Xi_M(s):=\lambda^{-rs/2}\,Z_M(s).
 \]
-则存在常数 $C\neq 0$ 使得完成化函数
+则下述三条陈述等价：
+\begin{enumerate}
+  \item \textbf{（谱互反闭包）}对任意 \(\mu\in\mathrm{spec}(M)\setminus\{0\}\)，都有
+  \[
+  \frac{\lambda}{\mu}\in\mathrm{spec}(M)\setminus\{0\}
+  \qquad(\text{按代数重数计}).
+  \]
+  \item \textbf{（\(\Delta_M\) 的 \(\lambda\)-互反）}存在常数 \(C'\neq 0\) 使得对所有复数 \(z\) 成立
+  \[
+  \lambda^{r}z^{r}\Delta_M\!\left(\frac{1}{\lambda z}\right)=C'\Delta_M(z).
+  \]
+  \item \textbf{（完成化函数方程）}存在常数 \(C\neq 0\) 使得
+  \[
+  \Xi_M(s)=C\,\Xi_M(1-s),
+  \qquad C=C'\lambda^{-r/2}.
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+首先证明 (1)\(\Rightarrow\)(2)。记 \(M\) 的全部非零特征值（按代数重数计）为 \(\mu_1,\dots,\mu_r\)，则
 \[
-\Xi_M(s):=\lambda^{-rs/2}\,Z_M(s)
+\Delta_M(z)=\prod_{j=1}^{r}(1-\mu_j z).
 \]
-满足函数方程
+从而
 \[
-\Xi_M(s)=C\,\Xi_M(1-s).
+\begin{aligned}
+\lambda^r z^r\Delta_M\!\left(\frac{1}{\lambda z}\right)
+&=\lambda^r z^r\prod_{j=1}^r\left(1-\frac{\mu_j}{\lambda z}\right)
+\\
+&=\lambda^r z^r\prod_{j=1}^r\left(-\frac{\mu_j}{\lambda z}\right)\prod_{j=1}^r\left(1-\frac{\lambda}{\mu_j}z\right)
+\\
+&=(-1)^r\Bigl(\prod_{j=1}^r\mu_j\Bigr)\prod_{j=1}^r\left(1-\frac{\lambda}{\mu_j}z\right).
+\end{aligned}
 \]
-\end{remark}
+由 (1) 的互反闭包，\(\{\lambda/\mu_j\}_{j=1}^r\) 与 \(\{\mu_j\}_{j=1}^r\) 作为多重集合相同，故
+\[
+\prod_{j=1}^r\left(1-\frac{\lambda}{\mu_j}z\right)=\prod_{j=1}^r(1-\mu_j z)=\Delta_M(z).
+\]
+因此 (2) 成立，且可取 \(C'=(-1)^r\prod_{j=1}^r\mu_j\neq 0\)。
+\par
+下面证明 (2)\(\Rightarrow\)(3)。把 (2) 中的 \(z\) 取为 \(z=\lambda^{-s}\)，注意到
+\(
+(\lambda z)^{-1}=\lambda^{-(1-s)}
+\)，得到
+\[
+\lambda^{r(1-s)}\,\Delta_M\!\bigl(\lambda^{-(1-s)}\bigr)=C'\,\Delta_M(\lambda^{-s}).
+\]
+两边取倒数并整理可得
+\[
+Z_M(1-s)=\Delta_M\!\bigl(\lambda^{-(1-s)}\bigr)^{-1}=\frac{\lambda^{r(1-s)}}{C'}\,\Delta_M(\lambda^{-s})^{-1}=\frac{\lambda^{r(1-s)}}{C'}\,Z_M(s).
+\]
+于是
+\[
+\Xi_M(1-s)
+=\lambda^{-r(1-s)/2}Z_M(1-s)
+=\frac{\lambda^{r(1-s)/2}}{C'}\,Z_M(s),
+\]
+而
+\(
+\Xi_M(s)=\lambda^{-rs/2}Z_M(s)
+\)。
+故
+\(
+\Xi_M(s)=C'\lambda^{-r/2}\,\Xi_M(1-s)
+\)，即 (3) 成立，且 \(C=C'\lambda^{-r/2}\)。
+\par
+最后证明 (3)\(\Rightarrow\)(1)。由于 \(\Xi_M(s)=\lambda^{-rs/2}Z_M(s)\)，两者具有相同的极点集合与极点阶数。
+若 \(s_0\) 为 \(Z_M\) 的一个极点，则由 (3) 得 \(1-s_0\) 亦为极点，且阶数相同。
+由命题 \ref{prop:s-plane-spectrum-poles} 的“谱 \(\leftrightarrow\) 极点”字典，
+极点 \(s_0\) 对应某个 \(\mu\in\mathrm{spec}(M)\setminus\{0\}\) 使 \(\lambda^{-s_0}\mu=1\)，从而 \(\lambda^{-(1-s_0)}=\mu/\lambda\)。
+而 \(1-s_0\) 为极点意味着存在 \(\mu'\in\mathrm{spec}(M)\setminus\{0\}\) 使 \(\lambda^{-(1-s_0)}\mu'=1\)，即 \((\mu/\lambda)\mu'=1\)，从而 \(\mu'=\lambda/\mu\)。
+极点阶数相同给出代数重数一致性，故 (1) 成立。
+\end{proof}
 
 \begin{remark}[等价的 \texorpdfstring{$\Delta_M$}{Delta}-互反多项式判据]\label{rem:delta-reciprocal-polynomial}
 命题 \ref{prop:reciprocal-spectrum-functional-equation} 的谱条件等价于 $z$-根集合在
@@ -486,6 +548,34 @@ z\mapsto (\lambda z)^{-1}
 \]
 因此当 $\Delta_M$ 的系数可精确计算（例如整系数矩阵）时，上式提供一个逐项可审计的判别式。
 \end{remark}
+
+\begin{proposition}[互反闭包 \texorpdfstring{$+$}{+} kernel RH \texorpdfstring{$\Rightarrow$}{=>} toy-RH]\label{prop:reciprocal-plus-kernel-rh-implies-toy-rh}
+设 \(M\) 为有限维矩阵，\(\lambda=\rho(M)>1\)，并令
+\(
+Z_M(s)=\det(I-\lambda^{-s}M)^{-1}
+\)。
+若 \(M\) 满足命题 \ref{prop:reciprocal-spectrum-functional-equation} 的互反闭包（等价地：\(\Delta_M\) 为 \(\lambda\)-互反多项式），并且满足 kernel RH（Ramanujan 半径界）
+\[
+\max_{\mu\in\mathrm{spec}(M),\,\mu\neq \lambda}|\mu|\le \sqrt{\lambda},
+\]
+则 \(Z_M\) 满足 toy-RH：开带 \(0<\Re(s)<1\) 内的全部非平凡极点都落在 \(\Re(s)=\tfrac12\)。
+等价地，
+\[
+(\forall\,\mu\ \text{满足}\ 1<|\mu|<\lambda)\qquad |\mu|=\sqrt{\lambda}.
+\]
+从而在互反闭包成立时，kernel RH 与 toy-RH 等价。
+\end{proposition}
+\begin{proof}
+设 \(\mu\in\mathrm{spec}(M)\) 满足 \(1<|\mu|<\lambda\)。由 kernel RH 得 \(|\mu|\le \sqrt{\lambda}\)。
+若 \(|\mu|<\sqrt{\lambda}\)，则由互反闭包 \(\lambda/\mu\in\mathrm{spec}(M)\)，并且
+\(
+|\lambda/\mu|>\sqrt{\lambda}
+\)，这与 kernel RH 矛盾。
+故对所有满足 \(1<|\mu|<\lambda\) 的特征值必有 \(|\mu|=\sqrt{\lambda}\)，等价于 toy-RH（命题 \ref{prop:s-plane-spectrum-poles} 的字典给出 \(\Re(s)=\log|\mu|/\log\lambda\)）。
+\par
+反向地，toy-RH 意味着不存在 \(\sqrt{\lambda}<|\mu|<\lambda\) 的特征值，否则将产生 \(\tfrac12<\Re(s)<1\) 的离线极点；而 \(|\mu|\le \lambda\) 总成立（\(\lambda=\rho(M)\)），故 toy-RH \(\Rightarrow\) kernel RH。
+因此在互反闭包条件下二者等价。
+\end{proof}
 
 \begin{proposition}[有限维行列式的竖向晶格障碍]\label{prop:finite-kernel-lattice-obstruction}
 设 \(M\) 为有限维矩阵，\(\lambda:=\rho(M)>1\)，并定义

@@ -367,6 +367,73 @@ T\asymp \lambda^q
 由于 \(\zeta\) 在块对角下乘性分解，其临界线极点集合为各通道梳齿的并；
 当 \(\log\lambda_a\) 之间缺乏有理相关时，不同通道的周期 \(2\pi/\log\lambda_a\) 产生拍频，从而打破单一晶格的重复性。
 
+\begin{proposition}[有限窗零点集的 \texorpdfstring{$\varepsilon$}{eps}-逼近（单尺度梳齿）]\label{prop:finite-rh-zero-engineering-eps}
+固定一个满足 RH-sharp 的基核 \(M\)，记 \(\lambda=\rho(M)>1\)，并取其某个达界特征值 \(\mu=\sqrt{\lambda}\,e^{i\theta}\)（\(\theta\in\RR\)）。
+令 \(M^{\langle q\rangle}=M\otimes P_q\) 为循环提升（命题 \ref{prop:finite-rh-phase-lift}），并记由该达界模态在临界线 \(\Re(s)=\tfrac12\) 上生成的虚部梳齿为
+\[
+\gamma_{k,m}^{(q)}:=\frac{\theta+2\pi(\frac{k}{q}+m)}{\log\lambda},
+\qquad k\in\{0,\dots,q-1\},\ m\in\ZZ.
+\]
+则对任意 \(\varepsilon>0\) 与任意有限集合 \(\Gamma=\{\gamma_1,\dots,\gamma_N\}\subset\RR\)，只要选取整数
+\[
+q\ \ge\ \frac{\pi}{\varepsilon\log\lambda},
+\]
+就存在整数对 \(\{(k_j,m_j)\}_{j=1}^N\) 使得对每个 \(j\) 都有
+\[
+\left|\gamma_j-\gamma_{k_j,m_j}^{(q)}\right|\le \varepsilon.
+\]
+\end{proposition}
+\begin{proof}
+对固定 \(q\)，上述集合满足
+\[
+\left\{\gamma_{k,m}^{(q)}:\ k=0,\dots,q-1,\ m\in\ZZ\right\}
+=\left\{\frac{\theta+2\pi n/q}{\log\lambda}:\ n\in\ZZ\right\},
+\]
+其在实轴上构成等差晶格，步长为 \(\Delta\gamma_{\mathrm{toy}}=2\pi/(q\log\lambda)\)（注 \ref{rem:finite-rh-height-scale-calibration}）。
+因此对任意 \(\gamma\in\RR\)，取
+\[
+\text{某个 }n\in\ZZ\text{ 使得 }\left|\gamma-\frac{\theta+2\pi n/q}{\log\lambda}\right|
+\text{ 达到 }\min_{n'\in\ZZ}\left|\gamma-\frac{\theta+2\pi n'/q}{\log\lambda}\right|
+\]
+即可保证
+\[
+\min_{n'\in\ZZ}\left|\gamma-\frac{\theta+2\pi n'/q}{\log\lambda}\right|
+\le \frac{1}{2}\Delta\gamma_{\mathrm{toy}}
+=\frac{\pi}{q\log\lambda}.
+\]
+把所选 \(n\) 写成 \(n=k+qm\)（其中 \(k\in\{0,\dots,q-1\},\,m\in\ZZ\)），则得到对应的 \((k,m)\)。
+对每个 \(\gamma_j\) 重复该选择，并令 \(q\ge \pi/(\varepsilon\log\lambda)\)，即得所示 \(\varepsilon\)-逼近。
+\end{proof}
+
+\begin{proposition}[拍频去晶格的必要条件：\texorpdfstring{$\log\lambda$}{loglambda} 的无理相关]\label{prop:finite-rh-beat-irrational-log}
+设有两个 RH-sharp 通道 \((M^{(a)},\lambda_a)\)、\((M^{(b)},\lambda_b)\)，其中 \(\lambda_a,\lambda_b>1\)，并分别取循环提升阶 \(q_a,q_b\ge 1\)（允许 \(q_a=q_b=1\)）。
+假设这两个通道在临界线 \(\Re(s)=\tfrac12\) 上各自产生的虚部点集包含至少一条完整等差梳齿列，其基本步长分别为
+\[
+\Delta_a=\frac{2\pi}{q_a\log\lambda_a},\qquad
+\Delta_b=\frac{2\pi}{q_b\log\lambda_b}.
+\]
+若 \(\log\lambda_a/\log\lambda_b\in\QQ\)（等价地 \(\Delta_a/\Delta_b\in\QQ\)），则存在 \(\Delta>0\) 使得两通道的临界线虚部点集在 \(\Delta\) 下同时周期化；从而它们的并集仍是有限条算术晶格（等差竖线梳齿）的有限并，无法在任何有限尺度上摆脱周期锁相。
+因此，若希望通过多通道并联获得\emph{无共同虚周期}的临界线相位结构（即“拍频去晶格”），必要地必须有
+\[
+\boxed{\ \frac{\log\lambda_a}{\log\lambda_b}\notin\QQ\ }.
+\]
+\end{proposition}
+\begin{proof}
+若 \(\log\lambda_a/\log\lambda_b=p/q\in\QQ\)（\(p,q\in\NN\)），则
+\[
+\frac{\Delta_a}{\Delta_b}
+=\frac{q_b\log\lambda_b}{q_a\log\lambda_a}
+=\frac{q_b q}{q_a p}\in\QQ.
+\]
+故存在整数 \(u,v\ge 1\) 使 \(u\Delta_a=v\Delta_b\)。取 \(\Delta:=u\Delta_a=v\Delta_b\)，则对任意形如 \(t_0+\Delta_a\ZZ\) 的梳齿列有
+\[
+(t_0+\Delta_a\ZZ)+\Delta=t_0+\Delta_a(\ZZ+u)=t_0+\Delta_a\ZZ,
+\]
+即其在平移 \(\Delta\) 下保持不变；同理对步长 \(\Delta_b\) 的梳齿列亦然。
+由于每个通道的临界线点集是有限条梳齿列的并，故二者的并集在 \(\Delta\) 下周期化，从而仍属于有限条算术晶格的有限并。
+最后一段为其逆否命题表述：若要排除任何非零共同虚周期，则必须有 \(\Delta_a/\Delta_b\notin\QQ\)，等价于 \(\log\lambda_a/\log\lambda_b\notin\QQ\)。
+\end{proof}
+
 \begin{proposition}[临界带中的非平凡极点都在 \texorpdfstring{$\Re(s)=\tfrac12$}{Re(s)=1/2}]\label{prop:finite-rh-40}
 设 $\lambda=\rho(M)=\varphi^2$。则在开带 $0<\Re(s)<1$ 中，$\widehat{\zeta}(s)$ 的全部极点均严格落在直线
 \[
