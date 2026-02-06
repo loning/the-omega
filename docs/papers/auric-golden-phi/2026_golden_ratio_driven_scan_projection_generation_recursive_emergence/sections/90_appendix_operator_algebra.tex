@@ -206,6 +206,109 @@ E_m:\ell^2(\Omega_m)\to \ell^2(X_m),
 \input{sections/generated/tab_fold_conditional_expectation_singular_spectrum}
 \end{corollary}
 
+\subsubsection{负矩谱的三类直接派生结论：左尾自由能、可见有效支撑与左尾证书}\label{app:op-algebra-negative-moment-consequences}
+
+推论 \ref{cor:fold-conditional-expectation-schatten} 与表 \ref{tab:fold_conditional_expectation_singular_spectrum} 给出的并非仅是一串范数值。
+由于 \(\|E_m\|_{S_p}^p\) 精确等于折叠纤维多重度 \(d_m\) 的负矩和，它们可被直接提升为三类可审计的派生结论：刻画小多重度层增长的“左尾自由能”、把奇异值能量分布转化为可解释的“有效支撑规模”、以及对中等/低多重度类型数量的显式下界证书。
+
+\begin{definition}[负矩和与左尾自由能密度]\label{def:fold-negative-moment-sum-left-tail}
+对任意 \(s>0\) 定义负矩和
+\[
+T_s(m):=\sum_{x\in X_m} d_m(x)^{-s}.
+\]
+由推论 \ref{cor:fold-conditional-expectation-schatten} 立即得到
+\[
+\boxed{\ T_s(m)=\|E_m\|_{S_{2s}}^{2s}\ }.
+\]
+定义其指数尺度（左尾自由能密度）为
+\[
+t_s:=\limsup_{m\to\infty}\frac{1}{m}\log T_s(m).
+\]
+\end{definition}
+
+\begin{remark}[左尾指数率族的经验稳定：每增加 \(1\) 个 \(m\) 的底数]\label{rem:fold-negative-moment-free-energy-bases}
+在偶数分辨率网格 \(m=8,10,\dots,24\) 上，可用相邻步长 \(2\) 的比值给出“每增加 \(1\) 个 \(m\)”的经验底数
+\[
+b_s(m):=\Bigl(\frac{T_s(m)}{T_s(m-2)}\Bigr)^{1/2}\qquad(m\ge 10).
+\]
+由表 \ref{tab:fold_conditional_expectation_singular_spectrum} 的数值可直接审计地观察到 \(b_s(m)\) 很快趋于稳定：
+特别地，对 \(s=\tfrac12,1,2\)（分别对应 \(\|E_m\|_{S_1}\)、\(\|E_m\|_{HS}^2\)、\(\|E_m\|_{S_4}^4\)），在 \(m=24\) 时有
+\[
+b_{1/2}(24)\approx 1.4582,\qquad
+b_{1}(24)\approx 1.3167,\qquad
+b_{2}(24)\approx 1.0924,
+\]
+其中 \(s=2\) 的底数仍在缓慢下降。
+若进一步存在极限 \(b_s:=\lim_{m\to\infty}b_s(m)\)，则 \(t_s=\log b_s\)，从而 \(\{t_s\}_{s>0}\) 给出一族与正文正矩谱（刻画高多重度右尾）正交的左尾指数率接口。
+\end{remark}
+
+\input{sections/generated/tab_fold_conditional_expectation_left_tail_bases}
+
+\begin{definition}[奇异值能量分布与可见有效支撑规模]\label{def:fold-Em-effective-support}
+记命题 \ref{prop:fold-conditional-expectation-singular-spectrum} 的奇异值为
+\(\sigma_x(E_m)=d_m(x)^{-1/2}\)（\(x\in X_m\)）。
+定义奇异值“能量”分布（平方归一化）为
+\[
+p_x:=\frac{\sigma_x(E_m)^2}{\sum_{y\in X_m}\sigma_y(E_m)^2}
+=\frac{d_m(x)^{-1}}{\sum_{y\in X_m}d_m(y)^{-1}}
+=\frac{d_m(x)^{-1}}{\|E_m\|_{HS}^2},
+\qquad x\in X_m.
+\]
+由此定义两种完全可审计的有效支撑规模：
+\[
+N_2(m):=\frac{1}{\sum_x p_x^2}
+\quad(\text{Rényi-2 / collision 有效规模}),
+\qquad
+N_{1/2}(m):=\Bigl(\sum_x\sqrt{p_x}\Bigr)^2
+\quad(\text{Rényi-}\tfrac12\text{ 有效规模}).
+\]
+\end{definition}
+
+\begin{proposition}[有效支撑的 Schatten 闭式读出]\label{prop:fold-Em-effective-support-schatten}
+在定义 \ref{def:fold-Em-effective-support} 下，
+\[
+\boxed{\;
+N_2(m)=\frac{\bigl(\sum_x d_m(x)^{-1}\bigr)^2}{\sum_x d_m(x)^{-2}}
+=\frac{\|E_m\|_{HS}^4}{\|E_m\|_{S_4}^4}\;},
+\qquad
+\boxed{\;
+N_{1/2}(m)=\frac{\bigl(\sum_x d_m(x)^{-1/2}\bigr)^2}{\sum_x d_m(x)^{-1}}
+=\left(\frac{\|E_m\|_{S_1}}{\|E_m\|_{S_2}}\right)^2\;}.
+\]
+\end{proposition}
+
+\input{sections/generated/tab_fold_conditional_expectation_effective_support}
+
+\begin{proposition}[负矩的 Paley--Zygmund 左尾证书]\label{prop:fold-negative-moment-left-tail-certificate}
+令 \(X\sim \mathrm{Unif}(X_m)\)，取任意 \(s>0\)，并令非负随机变量
+\[
+Y:=d_m(X)^{-s}.
+\]
+取阈值 \(\theta=\tfrac12\) 的 Paley--Zygmund 不等式给出
+\[
+\mathbb P\!\left(Y\ge \tfrac12\,\mathbb EY\right)
+\ \ge\
+\frac{1}{4}\frac{(\mathbb EY)^2}{\mathbb E[Y^2]}
+\ =\
+\frac{1}{4}\frac{T_s(m)^2}{|X_m|\,T_{2s}(m)}.
+\]
+并且事件 \(Y\ge \tfrac12\mathbb EY\) 等价于一个显式的低多重度阈值
+\[
+d_m(X)\ \le\ \left(\frac{2|X_m|}{T_s(m)}\right)^{1/s}.
+\]
+因此得到完全可审计的计数下界：
+\[
+\boxed{
+\frac{\#\left\{x\in X_m:\ d_m(x)\le \left(\frac{2|X_m|}{T_s(m)}\right)^{1/s}\right\}}{|X_m|}
+\ \ge\
+\frac{1}{4}\frac{T_s(m)^2}{|X_m|\,T_{2s}(m)}.
+}
+\]
+该证书仅依赖负矩（等价于 \(E_m\) 的 Schatten 谱），从而对正文主要由正矩谱约束的高多重度右尾给出一个正交的、面向中等/低多重度区间的比例下界补齐。
+\end{proposition}
+
+\input{sections/generated/eq_fold_conditional_expectation_left_tail_m24}
+
 \begin{proposition}[折叠的推前与提升：概率单纯形上的 Markov 核对偶]\label{prop:fold-pushforward-lift}
 在交换情形下，可将 $\mathcal{A}_m$ 与 $\mathcal{B}_m$ 分别识别为有限集上的复值函数代数：
 \[

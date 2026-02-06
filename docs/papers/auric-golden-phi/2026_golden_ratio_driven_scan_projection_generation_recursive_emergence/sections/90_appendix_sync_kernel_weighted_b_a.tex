@@ -575,6 +575,19 @@ u^7\,\alpha(\alpha-1)(4\alpha-1)^4
 
 \input{sections/generated/eq_sync_kernel_rate_curve_center_slice_audit}
 
+\begin{remark}[最终型算法规范：模数阈值 \texorpdfstring{$p_\star=6$}{p*=6}、三次化剥离与端点审计常数]\label{rem:unit-root-final-spec}
+由同步核输出位势的最近分歧点给出的 \(\theta\)-解析半径（推论 \ref{cor:pressure-analytic-radius}）可得单位根扭曲的整模数阈值 \(p_\star=6\)（推论 \ref{cor:pressure-unit-root-modulus-threshold}）；中心截面根盘阈值给出一条独立一致的审计链（推论 \ref{cor:rate-center-omega-threshold}）。
+与该阈值配套的几何最简化为两条刚性规格：中心六重聚合必按 \(6=3\times 2\) 降为 \(X=(2\alpha-1)^2\) 坐标下的三重（推论 \ref{cor:rate-duality-center-6-3x2}，故中心病态的最小剥离目标是\textbf{三次化}而非直接处理六次奇点）；端点簇在 jet 层锁定全域审计常数 \(K_{\mathrm{end}}=\tfrac38\)（注 \ref{rem:rate-algebraic-elimination-structure}）。
+\par
+另一方面，真实输入核的单位根扭曲表显示：最坏模态在核验窗内恒由 \(j=1\) 通道主导，且四阶累积修正在该通道上把误差压到 \(O(m^{-6})\) 的余项并呈现约 \(m^{-5}\) 的经验阶（推论 \ref{cor:real-input-40-output-dirichlet-cumulant-bridge} 与注 \ref{rem:real-input-40-dirichlet-cumulant-error-order}）。
+因此得到一个可直接写入实现章节的最终分叉规则：
+\begin{itemize}
+  \item 若 \(p\le 5\)，则单位根角 \(2\pi/p\) 超出局部展开域：应直接使用全局求根/消元/判别式口径；
+  \item 若 \(p=6\)，则处于贴边区：应优先做分支剥离（例如先剥离激活分支，注 \ref{rem:real-input-40-deflate-activated-branch}），再用 Pad\'e/更高阶累积修正稳定重求和，并以少量点检作审计；
+  \item 若 \(p\ge 7\)，则进入稳健区：四阶累积修正可作为主算法，并仅需少量抽样核验最坏模态是否仍为 \(j=1\)。
+\end{itemize}
+\end{remark}
+
 端点值为
 \[
 I(0)=I(1)=\log 3.

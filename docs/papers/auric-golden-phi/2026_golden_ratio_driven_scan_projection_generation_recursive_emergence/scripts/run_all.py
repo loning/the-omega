@@ -505,6 +505,57 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_charpoly_mod7_selection_q13_15",
+            script="exp_fold_collision_charpoly_modp_factorization.py",
+            args=[
+                "--p",
+                "7",
+                "--q-list",
+                "13,14,15",
+                "--name",
+                "fold_collision_charpoly_mod7_selection_q13_15",
+                "--pull-out-a2",
+            ],
+            expected_outputs=[
+                "artifacts/export/fold_collision_charpoly_mod7_selection_q13_15.json",
+                "sections/generated/tab_fold_collision_charpoly_mod7_selection_q13_15.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_charpoly_mod11_fingerprint_q12_15",
+            script="exp_fold_collision_charpoly_modp_factorization.py",
+            args=[
+                "--p",
+                "11",
+                "--q-list",
+                "12,13,15",
+                "--name",
+                "fold_collision_charpoly_mod11_fingerprint_q12_15",
+                "--pull-out-a2",
+            ],
+            expected_outputs=[
+                "artifacts/export/fold_collision_charpoly_mod11_fingerprint_q12_15.json",
+                "sections/generated/tab_fold_collision_charpoly_mod11_fingerprint_q12_15.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_charpoly_mod13_fingerprint_q13",
+            script="exp_fold_collision_charpoly_modp_factorization.py",
+            args=[
+                "--p",
+                "13",
+                "--q-list",
+                "13",
+                "--name",
+                "fold_collision_charpoly_mod13_fingerprint_q13",
+                "--pull-out-a2",
+            ],
+            expected_outputs=[
+                "artifacts/export/fold_collision_charpoly_mod13_fingerprint_q13.json",
+                "sections/generated/tab_fold_collision_charpoly_mod13_fingerprint_q13.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_resonance_nullmodes_hankel_q9_17",
             script="exp_fold_collision_resonance_nullmodes_hankel.py",
             args=[],
@@ -1906,6 +1957,17 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_fiber_dispersion_index.json",
                 "sections/generated/tab_fold_fiber_dispersion_index.tex",
+            ],
+        ),
+        Step(
+            name="fold_conditional_expectation_left_tail_conclusions",
+            script="exp_fold_conditional_expectation_left_tail_conclusions.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_conditional_expectation_left_tail_conclusions.json",
+                "sections/generated/tab_fold_conditional_expectation_left_tail_bases.tex",
+                "sections/generated/tab_fold_conditional_expectation_effective_support.tex",
+                "sections/generated/eq_fold_conditional_expectation_left_tail_m24.tex",
             ],
         ),
         Step(

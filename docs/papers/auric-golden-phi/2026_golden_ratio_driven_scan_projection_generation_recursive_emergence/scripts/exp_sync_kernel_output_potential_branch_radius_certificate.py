@@ -237,6 +237,7 @@ class BranchRadiusPayload:
     nearest_u_inv: str
     theta_star: str
     R_theta: float
+    p_star: int
     arg_theta_star: float
     arg_theta_star_over_pi: float
     near_period_9_delta_rad: float
@@ -255,6 +256,20 @@ class BranchRadiusPayload:
 def _is_palindromic(P: sp.Poly) -> bool:
     coeffs = [int(c) for c in P.all_coeffs()]
     return coeffs == list(reversed(coeffs))
+
+
+def _p_star_from_R_theta(R_theta: float, p_max: int = 2000) -> int:
+    """
+    Smallest integer p>=2 such that 2π/p < R_theta.
+
+    This is the sharp modulus threshold for using the local Taylor/cumulant
+    expansion in theta at the p-th root of unity u=exp(2π i/p).
+    """
+    R = float(R_theta)
+    for p in range(2, int(p_max) + 1):
+        if (2.0 * math.pi / float(p)) < R:
+            return int(p)
+    raise RuntimeError(f"Failed to find p_star within p<= {p_max}.")
 
 
 def _palindromic_invariant_reduction_degree10(Dpoly: sp.Poly) -> sp.Poly:
@@ -484,6 +499,7 @@ def main() -> None:
             nearest_u_inv=f"{u_inv.real:.10f}{u_inv.imag:+.10f}i",
             theta_star=f"{theta_star.real:.10f}{theta_star.imag:+.10f}i",
             R_theta=float(R_theta),
+            p_star=int(_p_star_from_R_theta(R_theta)),
             arg_theta_star=float(arg_theta),
             arg_theta_star_over_pi=float(arg_over_pi),
             near_period_9_delta_rad=float(delta9),
@@ -619,6 +635,34 @@ def main() -> None:
         tex_lines.append(f"\\boxed{{\\ R_\\theta:=|\\theta_\\star|\\approx {R_str}\\ }}.")
         tex_lines.append("$$")
         tex_lines.append("因此在 $|\\theta|<R_\\theta$ 内，$\\lambda(e^{\\theta})$ 与 $P(\\theta)=\\log\\lambda(e^{\\theta})$ 可作为单值解析函数延拓；并且在 $|\\theta|=R_\\theta$ 处发生代数分歧（分支点）。")
+        tex_lines.append("\\end{corollary}")
+        tex_lines.append("")
+        two_pi_5 = 2.0 * math.pi / 5.0
+        two_pi_6 = 2.0 * math.pi / 6.0
+        two_pi_7 = 2.0 * math.pi / 7.0
+        ratio6 = two_pi_6 / float(payload.R_theta)
+        ratio7 = two_pi_7 / float(payload.R_theta)
+        tex_lines.append("\\begin{corollary}[单位根扭曲的模数阈值（$p_\\star=6$）]\\label{cor:pressure-unit-root-modulus-threshold}")
+        tex_lines.append(
+            "对单位根扭曲 $u=\\omega_p=e^{2\\pi i/p}$，取 $\\theta=\\log u$ 的最小模 $2\\pi i\\ZZ$-lift，则 $|\\theta|=2\\pi/p$。"
+            "因此以 $\\theta=0$ 为中心的局部 Taylor/累积展开在 $u=\\omega_p$ 处可作为收敛算法使用的必要条件是"
+        )
+        tex_lines.append("$$")
+        tex_lines.append("\\frac{2\\pi}{p}<R_\\theta.")
+        tex_lines.append("$$")
+        tex_lines.append("由数值比较")
+        tex_lines.append("$$")
+        tex_lines.append(
+            f"\\frac{{2\\pi}}{{5}}\\approx {two_pi_5:.12f}>R_\\theta,\\qquad "
+            f"\\frac{{2\\pi}}{{6}}\\approx {two_pi_6:.12f}<R_\\theta,\\qquad "
+            f"\\frac{{2\\pi}}{{7}}\\approx {two_pi_7:.12f}<R_\\theta,"
+        )
+        tex_lines.append("$$")
+        tex_lines.append(
+            f"并利用 $2\\pi/p$ 随 $p$ 单调递减，可得模数阈值 $p_\\star={payload.p_star}$："
+            "$p\\le 5$ 必在解析域外，$p=6$ 处于贴边收敛区（$(2\\pi/6)/R_\\theta\\approx "
+            f"{ratio6:.6f}$），而 $p\\ge 7$ 进入稳健收敛区（例如 $(2\\pi/7)/R_\\theta\\approx {ratio7:.6f}$）。"
+        )
         tex_lines.append("\\end{corollary}")
         tex_lines.append("")
         tex_lines.append("\\begin{corollary}[Taylor 截断余项的 Cauchy 证书]\\label{cor:pressure-taylor-remainder-cauchy}")

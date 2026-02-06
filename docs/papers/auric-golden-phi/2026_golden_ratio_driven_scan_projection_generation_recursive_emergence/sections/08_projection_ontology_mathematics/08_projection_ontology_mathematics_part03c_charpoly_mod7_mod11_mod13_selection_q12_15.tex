@@ -1,0 +1,68 @@
+\begin{proposition}[有限域嵌入指纹：二阶碰撞核的三次特征式在高阶矩递推中显化（可审计）]\label{prop:pom-charpoly-modp-a2-embedding}
+记二阶碰撞核 \(A_2\) 的特征三次式（命题 \ref{prop:pom-collision-det}）
+\[
+\chi_{A_2}(\lambda):=\lambda^3-2\lambda^2-2\lambda+2.
+\]
+在共振窗内的最小整系数递推特征多项式 \(P_q(\lambda)\)（定理 \ref{thm:pom-moment-resonance}）上，存在可审计的有限域“嵌入”现象：
+\[
+\boxed{\;
+\chi_{A_2}(\lambda)\mid P_{14}(\lambda)\ \ (\mathrm{mod}\ 7),
+\qquad
+\chi_{A_2}(\lambda)\mid P_{12}(\lambda)\ \ (\mathrm{mod}\ 11).\;}
+\]
+对应的显式分解见表 \ref{tab:fold_collision_charpoly_mod7_selection_q13_15} 与表 \ref{tab:fold_collision_charpoly_mod11_fingerprint_q12_15}。
+上述有限域分解由脚本 \texttt{scripts/exp\_fold\_collision\_charpoly\_modp\_factorization.py} 直接从定理 \ref{thm:pom-moment-resonance} 中列出的 \(P_q\) 系数约化并因式分解生成，不需要新的 DP 数据。
+\end{proposition}
+
+\begin{remark}[模 \texorpdfstring{$7$}{7} 的选择律：域内短周期与扩域长周期的一眼分界（可审计）]\label{rem:pom-charpoly-mod7-selection}
+由表 \ref{tab:fold_collision_charpoly_mod7_selection_q13_15} 的 \(\mathbb{F}_7[\lambda]\) 分解可见：
+\begin{itemize}
+  \item 对 \(q=13\)，非零本征相位全部落在 \(\mathbb{F}_7^\ast\) 内（最大不可约次数为 \(1\)），并且存在重根（例如 \((\lambda-2)^3\)）。
+  因而在对齐有限瞬态（来自 \(\lambda^2\)）后，模 \(7\) 的递推动力学被迫落在一个“短周期 + 多项式调制”的可审计类中；表中给出的粗上界为
+  \[
+  \mathrm{Per}_7(q=13)\ \mid\ 42.
+  \]
+  \item 对 \(q=15\)，出现不可约二次与不可约三次因子（最大不可约次数为 \(3\)），从而相位必进入扩域 \(\mathbb{F}_{7^2}\) 与 \(\mathbb{F}_{7^3}\)；
+  同时 \((\lambda\pm 1)^2\) 的平方因子强制出现广义特征调制。
+  因而在同一粗界口径下，表中读出的统一上界为
+  \[
+  \mathrm{Per}_7(q=15)\ \mid\ 19152.
+  \]
+\end{itemize}
+上述结论完全由 \(P_q(\lambda)\) 的有限域分解读出，不依赖新的 DP 计算；它把同一共振窗内的奇阶 \(q\) 在模 \(7\) 上分裂为两类可直接审计的动力学复杂度。
+\end{remark}
+
+\begin{remark}[平方因子 \texorpdfstring{$\Rightarrow$}{=>} 多项式调制：模 \texorpdfstring{$11$}{11} 的递推审计抓手]\label{rem:pom-charpoly-mod11-modulation}
+表 \ref{tab:fold_collision_charpoly_mod11_fingerprint_q12_15} 显示：在模 \(11\) 的切片中，\(q=12\) 出现二次因子的平方 \((\lambda^2\pm 4\lambda-3)^2\)，而 \(q=13,15\) 出现线性因子的平方 \((\lambda\pm 1)^2\)（并且三者的 \(\mathrm{repeat?}=1\)）。
+这意味着对应的有限域递推算子在该素数影子下具有非平凡 Jordan 块，从而其解空间包含“多项式调制的指数相位”（广义本征模态）分量。
+\par
+因此模 \(11\) 的一个可审计一致性检查是：在将递推约化到 \(\mathbb{F}_{11}\) 后，若观测到的序列行为被假设为“仅由半简单相位给出的纯周期”（即不需要 \(\times 11\) 的调制因子），则必须进一步验证该具体序列在 \(\mathbb{F}_{11}\) 上的最小湮灭多项式是否已经把平方因子消去（例如用有限域 Hankel 秩/最小递推再拟合一次即可审计）。
+\end{remark}
+
+\begin{remark}[模 \texorpdfstring{$13$}{13} 的低复杂度指纹：\texorpdfstring{$q=13$}{q=13} 的纯周期上界]\label{rem:pom-charpoly-mod13-small-period}
+表 \ref{tab:fold_collision_charpoly_mod13_fingerprint_q13} 给出：在模 \(13\) 下，\(P_{13}(\lambda)\) 的非零不可约因子次数至多为 \(2\)（最大不可约次数为 \(2\)），并且除瞬态因子 \(\lambda^2\) 外不含平方因子（\(\mathrm{repeat?}=0\)）。
+因此在对齐有限瞬态后，模 \(13\) 的递推动力学为纯周期类，其粗周期上界可取
+\[
+\mathrm{Per}_{13}(q=13)\ \mid\ 13^2-1=168,
+\]
+与表中读出的上界一致。
+\end{remark}
+
+\begin{remark}[跨素数审计法：由 \texorpdfstring{$P_q(\lambda)\bmod p$}{Pq mod p} 自动生成模 \texorpdfstring{$p$}{p} 递推指纹]\label{rem:pom-charpoly-modp-audit-method}
+对任意给定 \((q,p)\)，将 \(P_q(\lambda)\) 在 \(\mathbb{F}_p[\lambda]\) 上分解为
+\(
+P_q(\lambda)\equiv \prod_i f_i(\lambda)^{e_i}
+ \)。
+则该分解直接给出一组可审计指纹：
+\begin{itemize}
+  \item 是否出现平方因子（某个 \(e_i\ge 2\) 且 \(f_i\neq \lambda\)）：对应“广义相位/多项式调制”通道是否存在；
+  \item 最大不可约次数 \(\max_i \deg f_i\)：给出必须进入的最小扩域阶数，从而给出相位阶数上界因子 \((p^{\deg f_i}-1)\)；
+  \item 若所有非零因子均线性：则相位集合完全落在 \(\mathbb{F}_p^\ast\) 内，可直接给出极小周期上界（再乘以可能的调制因子 \(p\)）。
+\end{itemize}
+与仅使用递推阶数 \(d_q\) 的审计相比，该“有限域分解指纹”同时提供解释性（何处出现扩域模态、何处出现 Jordan 调制）与可计算上界（例如表 \ref{tab:fold_collision_charpoly_mod7_selection_q13_15}--\ref{tab:fold_collision_charpoly_mod13_fingerprint_q13} 的 period bound 列）。
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_charpoly_mod7_selection_q13_15}
+\input{sections/generated/tab_fold_collision_charpoly_mod11_fingerprint_q12_15}
+\input{sections/generated/tab_fold_collision_charpoly_mod13_fingerprint_q13}
+
