@@ -1126,11 +1126,11 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     lines.append("并进一步给出与平衡态一致的加权缺陷（用无扭曲 PF 平衡边测度加权）：")
     lines.append("$$")
     if not (math.isnan(eps_pi) or math.isnan(eps2_pi) or math.isnan(kappa_bound)):
-        lines.append(
-            f"\\varepsilon_\\pi:=\\mathbb{{P}}_\\pi[\\text{{violated}}]\\approx {fmt(eps_pi)},\\qquad "
-            f"\\varepsilon_\\pi^{{(2)}}:=\\mathbb{{E}}_\\pi[r(e)^2]\\approx {fmt(eps2_pi)},\\qquad "
-            f"\\kappa_\\mathrm{{var}}\\ \\le\\ \\varepsilon_\\pi^{{(2)}}/2\\approx {fmt(kappa_bound)}."
-        )
+        lines.append("\\begin{aligned}")
+        lines.append(f"\\varepsilon_\\pi&:=\\mathbb{{P}}_\\pi[\\text{{violated}}]\\approx {fmt(eps_pi)},\\\\")
+        lines.append(f"\\varepsilon_\\pi^{{(2)}}&:=\\mathbb{{E}}_\\pi[r(e)^2]\\approx {fmt(eps2_pi)},\\\\")
+        lines.append(f"\\kappa_\\mathrm{{var}}&\\le\\ \\varepsilon_\\pi^{{(2)}}/2\\approx {fmt(kappa_bound)}.")
+        lines.append("\\end{aligned}")
     else:
         lines.append("\\varepsilon_\\pi,\\ \\varepsilon_\\pi^{(2)}\\ \\text{undefined}.")
     lines.append("$$")

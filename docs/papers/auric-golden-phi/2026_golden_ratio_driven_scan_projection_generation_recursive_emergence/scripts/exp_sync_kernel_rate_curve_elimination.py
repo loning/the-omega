@@ -214,16 +214,15 @@ def _tex_structure_block(
         "r_1(\\alpha)&=%s,\\qquad r_{%d}(\\alpha)=%s,\\\\"
         % (sp.latex(r1), deg_u - 1, sp.latex(rd1))
     )
-    lines.append(
-        "R\\!\\left(\\tfrac12,u\\right)&=-\\frac{(u-1)^6}{64}\\,Q(u),\\qquad Q(u)=\\begin{aligned}[t]"
-    )
-    q_lines = _poly_multiline_tex(QZ, u, max_line_len=105)
-    for j, ln in enumerate(q_lines):
-        if j < len(q_lines) - 1:
-            lines.append(f"& {ln}\\\\")
-        else:
-            lines.append(f"& {ln}")
-    lines.append("\\end{aligned}.")
+    lines.append("R\\!\\left(\\tfrac12,u\\right)&=-\\frac{(u-1)^6}{64}\\,Q(u),\\\\")
+    q_lines = _poly_multiline_tex(QZ, u, max_line_len=75)
+    if len(q_lines) == 1:
+        lines.append(f"Q(u)&={q_lines[0]}.")
+    else:
+        lines.append(f"Q(u)&={q_lines[0]}\\\\")
+        for ln in q_lines[1:-1]:
+            lines.append(f"&{ln}\\\\")
+        lines.append(f"&{q_lines[-1]}.")
     lines.append("\\end{align}")
     return "\n".join(lines) + "\n"
 

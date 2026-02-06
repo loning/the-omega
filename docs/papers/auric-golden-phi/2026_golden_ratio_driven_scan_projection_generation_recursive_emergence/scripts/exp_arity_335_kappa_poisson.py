@@ -212,11 +212,15 @@ def write_eq_tex(path: Path, payload: dict) -> None:
     lines.append("$$")
     lines.append("并以 $p=5$ 的离散角 $\\theta_5=2\\pi/5$ 的最坏扭曲比值 $\\rho_{3,3,5}/\\lambda$ 作小角二次律对照：")
     lines.append("$$")
+    lines.append("\\begin{aligned}")
+    lines.append(rf"\rho_{{3,3,5}}/\lambda&\approx {payload['rho_ratio_p5']:.12f},\\\\")
     lines.append(
-        rf"\rho_{{3,3,5}}/\lambda\approx {payload['rho_ratio_p5']:.12f},\qquad "
-        rf"\kappa\_5^{{(\mathrm{{lin}})}}:=\frac{{1-\rho/\lambda}}{{\theta_5^2}}\approx {payload['kappa_p5_lin']:.12f},\qquad "
-        rf"\kappa\_5^{{(\mathrm{{log}})}}:=-\frac{{\log(\rho/\lambda)}}{{\theta_5^2}}\approx {payload['kappa_p5_log']:.12f}."
+        rf"\kappa\_5^{{(\mathrm{{lin}})}}&:=\frac{{1-\rho/\lambda}}{{\theta_5^2}}\approx {payload['kappa_p5_lin']:.12f},\\\\"
     )
+    lines.append(
+        rf"\kappa\_5^{{(\mathrm{{log}})}}&:=-\frac{{\log(\rho/\lambda)}}{{\theta_5^2}}\approx {payload['kappa_p5_log']:.12f}."
+    )
+    lines.append("\\end{aligned}")
     lines.append("$$")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
