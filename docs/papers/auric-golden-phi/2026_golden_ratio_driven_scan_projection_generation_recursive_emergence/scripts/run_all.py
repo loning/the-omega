@@ -269,6 +269,7 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_bin_gauge_m6_invariants.json",
                 "sections/generated/tab_fold_bin_gauge_m6_invariants.tex",
+                "sections/generated/tab_fold_bin_gauge_m6_fibers.tex",
             ],
         ),
         Step(

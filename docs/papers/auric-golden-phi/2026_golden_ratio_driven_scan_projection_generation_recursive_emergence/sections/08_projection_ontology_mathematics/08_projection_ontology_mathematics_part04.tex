@@ -305,9 +305,47 @@ $$
 \)，因此 \(L_p\equiv 1\pmod p\)。证毕。
 \end{proof}
 
+\begin{definition}[素长 Wieferich 指纹（\texorpdfstring{$\nu_p$}{nu_p}）]\label{def:pom-lucas-nu-p}
+对奇素数 \(p\)，定义
+\[
+\nu_p:=v_p(L_p-1)\in\ZZ_{\ge 1},
+\]
+其中 \(v_p(\cdot)\) 为 \(p\)-进赋值。
+\end{definition}
+
+\begin{corollary}[素长 primitive 退化的完全整数判据]\label{cor:pom-lucas-nu-p-criterion}
+令 \(p\) 为奇素数，并沿用命题 \ref{prop:pom-primitive-prime-lucas} 的记号。
+则
+\[
+v_p(p_p)=\nu_p-1.
+\]
+因此素长层的“退化强度”由单一整数 \(\nu_p\) 完全控制：对任意 \(k\ge 1\)，
+\[
+p^{k}\mid p_p
+\qquad\Longleftrightarrow\qquad
+\nu_p\ge k+1.
+\]
+特别地，\(p\mid p_p\) 当且仅当 \(\nu_p\ge 2\)，等价于 \(p^2\mid(L_p-1)\)。
+\end{corollary}
+\begin{proof}
+由引理 \ref{lem:pom-lucas-modp} 得 \(L_p\equiv 1\pmod p\)，从而 \(v_p(L_p)=0\) 且 \(\nu_p\ge 1\)。
+另一方面，命题 \ref{prop:pom-primitive-prime-lucas} 给出
+\(
+p_p=L_p(L_p-1)/p
+\)，因此
+\[
+v_p(p_p)=v_p(L_p)+v_p(L_p-1)-1=\nu_p-1.
+\]
+从而 \(p^k\mid p_p\) 等价于 \(v_p(p_p)\ge k\)，再由上式得到 \(p^k\mid p_p\Longleftrightarrow \nu_p\ge k+1\)。
+\end{proof}
+
 \begin{remark}[整数性与 Wieferich 型稀有事件]\label{rem:pom-lucas-wieferich}
-由命题 \ref{prop:pom-primitive-prime-lucas} 与引理 \ref{lem:pom-lucas-modp} 可见 \(L_p-1\) 总被 \(p\) 整除，从而 \(p_p\in\mathbb{Z}\) 的整数性在素长层自动成立。
-更强的条件 \(p\mid p_p\) 等价于 \(p^2\mid(L_p-1)\)，对应 Lucas 序列的 Wieferich 型现象；这给出一个把“素长 primitive 退化”与经典数论稀有事件对接的接口。
+由推论 \ref{cor:pom-lucas-nu-p-criterion}，素长层的整数性与稀有退化可由
+\(
+\nu_p=v_p(L_p-1)
+\)
+统一分级：\(\nu_p\ge 1\) 恒成立，而 \(\nu_p\ge 2\)（等价于 \(p\mid p_p\)）对应 Lucas 序列的 Wieferich 型稀有事件接口。
+因此可将 \(\nu_p\) 视为“素长 primitive 算术退化”的可审计指纹，并以 \(\nu_p=2,3,\dots\) 作为异常强度的自然分级。
 \end{remark}
 
 \begin{corollary}[primitive 奇偶分裂]\label{cor:pom-prim-odd-even}
@@ -317,9 +355,15 @@ p_n=\frac{\lambda^n}{n}+\frac{\bigl((-1)^n-\mathbf{1}_{2\mid n}\bigr)\lambda^{n/
 +O\!\left(\frac{\lambda^{n/3}}{n}\right).
 \]
 其中偶数情形的 $\lambda^{n/2}$ 级项在 Möbius 反演的 $d=1,2$ 两项间精确抵消（见附录 \ref{app:real-input-40-finite-rh}）。
+\par
+特别地，当 \(n\) 为奇数时，上式化为
+\[
+p_n=\frac{\lambda^n}{n}-\frac{\lambda^{n/2}}{n}+O\!\left(\frac{\lambda^{n/3}}{n}\right),
+\]
+而当 \(n\) 为偶数时，\(\lambda^{n/2}\) 级显式振荡项完全消失；与达界特征值 \(-\sqrt{\lambda}\) 相关的更低阶振荡项见注 \ref{rem:pom-prim-even-lower-osc}。
 \end{corollary}
 
-\begin{remark}[偶长轨道的更低阶振荡]
+\begin{remark}[偶长轨道的更低阶振荡]\label{rem:pom-prim-even-lower-osc}
 写 $n=2m$，利用 $a_{m}=\lambda^{m}+(-\sqrt{\lambda})^{m}+O(1)$ 可进一步得到
 \[
 p_{2m}=\frac{\lambda^{2m}}{2m}-\frac{(-\sqrt{\lambda})^{m}}{2m}
@@ -327,6 +371,34 @@ p_{2m}=\frac{\lambda^{2m}}{2m}-\frac{(-\sqrt{\lambda})^{m}}{2m}
 \]
 表明偶长 primitive 的首个显式次项规模为 $\lambda^{n/4}$。
 \end{remark}
+
+\begin{lemma}[Dirichlet 对数坐标下的竖直晶格]\label{lem:pom-dirichlet-vertical-lattice}
+取 \(\lambda>1\)，并令 \(z=\lambda^{-s}\)、\(r=\lambda z=\lambda^{1-s}\)。
+给定 \(r_0\in\CC^\times\)，方程 \(r=r_0\) 的解在 \(s\)-平面上构成一条竖直晶格：
+\[
+s=1-\frac{\log|r_0|}{\log\lambda}-\,\mathrm{i}\,\frac{\arg(r_0)+2\pi k}{\log\lambda},
+\qquad k\in\ZZ,
+\]
+其中 \(\arg(r_0)\in(-\pi,\pi]\)。
+因此虚部间距为常数
+\[
+\boxed{\ \Delta\Im(s)=\frac{2\pi}{\log\lambda}\ }.
+\]
+在特别情形 \(r_0<0\) 下，\(\arg(r_0)=\pi\)，上式化为
+\[
+s=1-\frac{\log|r_0|}{\log\lambda}-\,\mathrm{i}\,\frac{(2k+1)\pi}{\log\lambda},
+\qquad k\in\ZZ.
+\]
+\end{lemma}
+\begin{proof}
+由 \(r=\lambda^{1-s}\) 得
+\(
+(1-s)\log\lambda=\log r_0
+\)，并将多值对数写为
+\(
+\log r_0=\log|r_0|+\mathrm{i}\,(\arg(r_0)+2\pi k)
+\)（\(k\in\ZZ\)），解出 \(s\) 即得。
+\end{proof}
 
 \begin{theorem}[Dirichlet 极点晶格与 toy RH]\label{thm:pom-toy-rh}
 取 Dirichlet 变量 $z=\lambda^{-s}$ 与 $r=\lambda z=\lambda^{1-s}$。则 $\widehat{\zeta}(s)=\zeta_M(\lambda^{-s})$ 的全部极点由
@@ -343,6 +415,17 @@ s=\tfrac12+\frac{(2k+1)\pi i}{\log\lambda}
 \),
 是开带 $0<\Re(s)<1$ 内的唯一极点列（见附录 \ref{app:real-input-40-finite-rh}）。
 \end{theorem}
+
+\begin{remark}[临界线的对数像机制（toy RH）]\label{rem:pom-toy-rh-critical-line-log}
+由引理 \ref{lem:pom-dirichlet-vertical-lattice}，任一负极点 \(r_0<0\) 在 Dirichlet 对数坐标下生成一条固定实部的竖直晶格线
+\(
+\Re(s)=1-\frac{\log|r_0|}{\log\lambda}
+\)。
+在本文的标准归一化 \(\lambda=\varphi^2\) 下，取 \(r_0=-\varphi=-\sqrt{\lambda}\) 即得到
+\(
+\Re(s)=\tfrac12
+\)，从而“临界线”可视为负极点在对数映射下的代数比值像；其结构来源的核分解解释见注 \ref{rem:pom-minusA-factor-critical-line}。
+\end{remark}
 
 \begin{proposition}[输出压力的二、三阶累积量闭式]\label{prop:pom-pressure-cumulants}
 令 $u=e^{\theta}$，$\lambda(u)=\rho(M(u))$，$P(\theta)=\log\lambda(e^\theta)$，并以
