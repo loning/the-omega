@@ -342,6 +342,85 @@ a_{p^k}(u)=u\,a_{p^k}(1/u).
 \[
 \Pi^{-1}B(u)\Pi=uB(1/u).
 \]
+\begin{lemma}[\texorpdfstring{$\Pi$}{Pi}-偶/奇分量与 \texorpdfstring{$B(u)$}{B(u)} 的唯一分解]\label{lem:sync-kernel-even-odd-splitting}
+定义
+\[
+B_{\mathrm{sym}}:=\frac{B_0+B_1}{2},\qquad
+B_{\mathrm{asym}}:=\frac{B_1-B_0}{2}.
+\]
+则对一切 \(u\in\CC\) 有
+\[
+\boxed{\ B(u)=(1+u)\,B_{\mathrm{sym}}+(u-1)\,B_{\mathrm{asym}}\ }.
+\]
+并且在自对偶交换关系 \(\Pi^{-1}B_0\Pi=B_1,\ \Pi^{-1}B_1\Pi=B_0\) 下，
+\[
+\boxed{\ \Pi^{-1}B_{\mathrm{sym}}\Pi=B_{\mathrm{sym}},\qquad
+\Pi^{-1}B_{\mathrm{asym}}\Pi=-B_{\mathrm{asym}}\ }.
+\]
+此外，上述 \((1+u)\)--\((u-1)\) 分解在 \(\QQ\)-线性意义下是唯一的：若存在 \(S,A\) 使得
+\(
+B(u)=(1+u)S+(u-1)A
+\)，则必有 \(S=B_{\mathrm{sym}}\) 且 \(A=B_{\mathrm{asym}}\)。
+\end{lemma}
+
+\begin{proof}
+由定义直接展开
+\[
+(1+u)B_{\mathrm{sym}}+(u-1)B_{\mathrm{asym}}
+=\frac12\Bigl((1+u)(B_0+B_1)+(u-1)(B_1-B_0)\Bigr)
+=B_0+uB_1
+=B(u).
+\]
+再由 \(\Pi\) 交换 \(B_0,B_1\) 得
+\[
+\Pi^{-1}B_{\mathrm{sym}}\Pi
+=\frac{1}{2}\bigl(\Pi^{-1}B_0\Pi+\Pi^{-1}B_1\Pi\bigr)
+=\frac{B_1+B_0}{2}
+=B_{\mathrm{sym}},
+\]
+\[
+\Pi^{-1}B_{\mathrm{asym}}\Pi
+=\frac{1}{2}\bigl(\Pi^{-1}B_1\Pi-\Pi^{-1}B_0\Pi\bigr)
+=\frac{B_0-B_1}{2}
+=-B_{\mathrm{asym}}.
+\]
+唯一性由比较 \(u=0,1\) 两点给出：若 \(B(u)=(1+u)S+(u-1)A\)，则
+\(
+B(0)=S-A=B_0
+\)
+与
+\(
+B(1)=2S=B_0+B_1
+\)
+联立解得 \(S=(B_0+B_1)/2=B_{\mathrm{sym}}\)，再代回得 \(A=(B_1-B_0)/2=B_{\mathrm{asym}}\)。
+证毕。
+\end{proof}
+
+\begin{remark}[可计算桥包：结论 \ref{lem:sync-kernel-even-odd-splitting} 的矩阵级核验清单]\label{rem:sync-kernel-even-odd-bridge}
+给定整数矩阵 \((B_0,B_1)\) 与置换矩阵 \(\Pi\)，可按以下等式逐条核验：
+\begin{enumerate}
+  \item \textbf{自对偶交换：}验证 \(\Pi^{-1}B_0\Pi=B_1\) 与 \(\Pi^{-1}B_1\Pi=B_0\)（置换矩阵下等价于 \(\Pi^\top B_0\Pi=B_1\)）。
+  \item \textbf{偶/奇分量：}计算 \(2B_{\mathrm{sym}}=B_0+B_1\)、\(2B_{\mathrm{asym}}=B_1-B_0\)，并验证
+  \[
+  \Pi^{-1}(2B_{\mathrm{sym}})\Pi=2B_{\mathrm{sym}},\qquad
+  \Pi^{-1}(2B_{\mathrm{asym}})\Pi=-2B_{\mathrm{asym}}.
+  \]
+  \item \textbf{\(u\)-依赖重构：}对任意采样 \(u\)（如随机复数），验证
+  \(
+  B(u)=B_0+uB_1=(1+u)B_{\mathrm{sym}}+(u-1)B_{\mathrm{asym}}
+  \)。
+\end{enumerate}
+在命题 \ref{prop:self-dual-normal-form-1pmu} 的 \(\Pi\) 本征分解基下，上述分量分别对应
+\(
+B_{\mathrm{sym}}=\bigl(\begin{smallmatrix}X&0\\0&W\end{smallmatrix}\bigr)
+\)
+与
+\(
+B_{\mathrm{asym}}=\bigl(\begin{smallmatrix}0&-Y\\-Z&0\end{smallmatrix}\bigr)
+\)。
+对应的一键审计脚本见 \texttt{scripts/exp\_sync\_kernel\_weighted\_self\_dual\_bridge.py}。
+\end{remark}
+
 \begin{definition}[完成化矩阵]\label{def:completed-matrix}
 令 \(u=e^{\theta}\)（\(\theta\in\CC\)），并定义完成化矩阵
 \[
@@ -368,6 +447,56 @@ a_{p^k}(u)=u\,a_{p^k}(1/u).
 \)。
 相似性推出特征多项式相同，故 \(\det(\lambda I-\widetilde B(\theta))=\det(\lambda I-\widetilde B(-\theta))\)，即为 \(\theta\) 的偶函数。证毕。
 \end{proof}
+
+\begin{lemma}[Ward 恒等式：\texorpdfstring{$B_{\mathrm{asym}}$}{B_asym} 对一切时间迹一阶正交]\label{lem:sync-kernel-ward-traces}
+沿用引理 \ref{lem:sync-kernel-even-odd-splitting} 的记号，并令
+\(
+\widetilde B(\theta)=e^{-\theta/2}B(e^{\theta})
+\)。
+则对任意整数 \(n\ge 1\) 有严格恒等式
+\[
+\boxed{\ \Tr\!\bigl(B(1)^{n-1}\,B_{\mathrm{asym}}\bigr)=0\ }.
+\]
+\end{lemma}
+
+\begin{proof}
+由引理 \ref{lem:completed-similarity}，\(\widetilde B(\theta)\) 与 \(\widetilde B(-\theta)\) 相似，故
+\(
+\Tr(\widetilde B(\theta)^n)
+\)
+为 \(\theta\) 的偶函数，因而其在 \(\theta=0\) 处的一阶导数为零：
+\[
+0=\left.\frac{d}{d\theta}\Tr(\widetilde B(\theta)^n)\right|_{\theta=0}.
+\]
+另一方面，对解析矩阵族 \(A(\theta)\) 有
+\(
+\frac{d}{d\theta}\Tr(A(\theta)^n)
+=\sum_{j=0}^{n-1}\Tr\!\bigl(A(\theta)^j A'(\theta)A(\theta)^{n-1-j}\bigr)
+=n\,\Tr\!\bigl(A(\theta)^{n-1}A'(\theta)\bigr)
+\)
+（最后一步用迹的循环性）。
+取 \(A(\theta)=\widetilde B(\theta)\) 并在 \(\theta=0\) 处代入得
+\[
+0=n\,\Tr\!\bigl(\widetilde B(0)^{n-1}\widetilde B'(0)\bigr).
+\]
+注意到 \(\widetilde B(0)=B(1)\)，且由
+\(
+\widetilde B(\theta)=e^{-\theta/2}(B_0+e^\theta B_1)
+\)
+直接计算
+\[
+\widetilde B'(0)=-\frac12(B_0+B_1)+B_1=\frac{B_1-B_0}{2}=B_{\mathrm{asym}}.
+\]
+于是得到所示恒等式。证毕。
+\end{proof}
+
+\begin{remark}[可计算桥包：引理 \ref{lem:sync-kernel-ward-traces} 的迹核验]\label{rem:sync-kernel-ward-traces-bridge}
+对给定 \((B_0,B_1,\Pi)\)，先由引理 \ref{lem:sync-kernel-even-odd-splitting} 计算 \(B_{\mathrm{asym}}\) 与 \(B(1)=B_0+B_1\)，再对一组长度上界 \(1\le n\le N\)（例如 \(N=30\)）逐项核验
+\[
+\Tr\!\bigl(B(1)^{n-1}B_{\mathrm{asym}}\bigr)=0.
+\]
+该恒等式为整数（或有理数）级的精确等式，因此适合做独立审计（不依赖浮点谱排序）。一键核验脚本见 \texttt{scripts/exp\_sync\_kernel\_weighted\_self\_dual\_bridge.py}。
+\end{remark}
 
 \begin{theorem}[谱切线锁定：\texorpdfstring{$u=1$}{u=1} 处全谱对数斜率恒为 \texorpdfstring{$1/2$}{1/2}]\label{thm:sync-spectral-tangent-lock}
 令 \(\widetilde B(\theta)\) 如定义 \ref{def:completed-matrix}。
@@ -461,6 +590,42 @@ B(u)=B_0+u\Pi^{-1}B_0\Pi
 \]
 因此跨子空间耦合项仅通过系数 \((1-u)\) 出现并在 \(u=1\) 处被强制抑制。
 \end{corollary}
+
+\begin{corollary}[\texorpdfstring{$u=1$}{u=1} 的两通道 \texorpdfstring{$\Delta/\zeta$}{Delta/zeta} 分解]\label{cor:self-dual-u1-two-channel-zeta}
+沿用命题 \ref{prop:self-dual-normal-form-1pmu} 的分块记号。则在 \(u=1\) 处有严格因子分解
+\[
+\boxed{\ \Delta(z,1)=\det(I-zB(1))=\det(I-2zX)\cdot\det(I-2zW)\ }.
+\]
+因此若定义两条“通道 \(\zeta\)”为
+\[
+\zeta_{V_+}(z):=\det(I-2zX)^{-1},\qquad
+\zeta_{V_-}(z):=\det(I-2zW)^{-1},
+\]
+则满足
+\[
+\boxed{\ \zeta(z,1)=\Delta(z,1)^{-1}=\zeta_{V_+}(z)\,\zeta_{V_-}(z)\ }.
+\]
+\end{corollary}
+
+\begin{proof}
+由推论 \ref{cor:self-dual-u1-decouple}，\(B(1)\) 在分解 \(V_+\oplus V_-\) 下为块对角矩阵 \(\mathrm{diag}(2X,2W)\)。
+对块对角矩阵取 \(\det(I-z\cdot)\) 即得
+\(
+\det(I-zB(1))=\det(I-2zX)\det(I-2zW)
+\)。
+\(\zeta\) 的分解由取倒数得到。证毕。
+\end{proof}
+
+\begin{remark}[可计算桥包：推论 \ref{cor:self-dual-u1-two-channel-zeta} 的分块验算]\label{rem:sync-kernel-u1-two-channel-bridge}
+对给定 \((B_0,B_1,\Pi)\)，先把 \(\Pi\) 对角化（取 \(V_+\oplus V_-\) 的任意基，等价地把状态按 \(\Pi\) 的 \(2\)-轮换配对并取 \(\pm\) 组合），据此把 \(B(1)\) 写成块对角 \(\mathrm{diag}(2X,2W)\)。
+随后：
+\begin{enumerate}
+  \item \textbf{矩阵级：}核验 \(B(1)\) 的 off-diagonal 块为零；
+  \item \textbf{行列式级：}对一组采样 \(z\) 验证 \(\det(I-zB(1))=\det(I-2zX)\det(I-2zW)\)；
+  \item \textbf{通道 \(\zeta\)：}分别计算 \(\zeta_{V_\pm}\) 并核验 \(\zeta(z,1)=\zeta_{V_+}(z)\zeta_{V_-}(z)\)。
+\end{enumerate}
+一键核验脚本见 \texttt{scripts/exp\_sync\_kernel\_weighted\_self\_dual\_bridge.py}。
+\end{remark}
 
 \begin{corollary}[\texorpdfstring{$\Delta(z,u)$}{Delta(z,u)} 的 \texorpdfstring{$(1-u)^2$}{(1-u)^2} 依赖压缩]\label{cor:self-dual-delta-even-in-1mu}
 在命题 \ref{prop:self-dual-normal-form-1pmu} 的正常形下，对每个固定的 \(z\)，
@@ -614,6 +779,50 @@ B_\chi(u)=B_0+u\,\chi(g_1)\,B_1.
 \]
 对两边取 \(\det(I-z\,\cdot)\) 并用 \(\det(I-z\alpha A)=\det(I-(\alpha z)A)\) 即得所示行列式函数方程；\(\zeta\) 版本由取倒数得到。证毕。
 \end{proof}
+
+\begin{corollary}[符号扭曲 \texorpdfstring{$\chi(g_1)=-1$}{chi(g1)=-1} 的自对偶函数方程与 \texorpdfstring{$u=1$}{u=1} 的“纯奇部”读出]\label{cor:kernel-self-dual-sign-twist}
+在命题 \ref{prop:kernel-self-dual-character} 的设定下，取 \(G=\ZZ/2\ZZ\) 且令 \(\chi(g_1)=-1\)。
+记相应的符号扭曲矩阵为
+\[
+B_{-}(u):=B_0-uB_1.
+\]
+则有相似恒等式
+\[
+\boxed{\ \Pi^{-1}B_{-}(u)\Pi=-u\,B_{-}(1/u)\ },
+\]
+从而行列式与 \(\zeta\)-函数满足带符号的函数方程
+\[
+\boxed{\ \Delta_{-}(z,u):=\det(I-zB_{-}(u))=\Delta_{-}(-uz,1/u)\ },
+\]
+\[
+\boxed{\ \zeta_{-}(z,u):=\Delta_{-}(z,u)^{-1}=\zeta_{-}(-uz,1/u)\ }.
+\]
+并且在 \(u=1\) 处有
+\[
+\boxed{\ B_{-}(1)=B_0-B_1=-2B_{\mathrm{asym}}\ },
+\]
+因此该符号扭曲在无偏切片上仅测量 \(\Pi\)-奇分量 \(B_{\mathrm{asym}}\)。
+\end{corollary}
+
+\begin{proof}
+由命题 \ref{prop:kernel-self-dual-character} 取 \(\chi=\chi^{-1}\) 且 \(\chi(g_1)=-1\) 立得
+\(
+\Pi^{-1}B_{-}(u)\Pi=u\chi(g_1)B_{-}(1/u)=-uB_{-}(1/u)
+\)
+与对应的行列式函数方程。
+最后一式由引理 \ref{lem:sync-kernel-even-odd-splitting} 的定义 \(B_{\mathrm{asym}}=(B_1-B_0)/2\) 直接得到。证毕。
+\end{proof}
+
+\begin{remark}[可计算桥包：推论 \ref{cor:kernel-self-dual-sign-twist} 的核验清单]\label{rem:kernel-self-dual-sign-twist-bridge}
+对给定 \((B_0,B_1,\Pi)\)：
+\begin{enumerate}
+  \item \textbf{构造符号扭曲：}计算 \(B_{-}(u)=B_0-uB_1\)；
+  \item \textbf{相似恒等式：}数值采样 \(u\) 核验 \(\Pi^{-1}B_{-}(u)\Pi=-uB_{-}(1/u)\)；
+  \item \textbf{函数方程：}对一组采样 \((z,u)\) 核验 \(\Delta_{-}(z,u)=\Delta_{-}(-uz,1/u)\)；
+  \item \textbf{无偏切片：}在 \(u=1\) 处核验 \(B_{-}(1)=-2B_{\mathrm{asym}}\)。
+\end{enumerate}
+一键核验脚本见 \texttt{scripts/exp\_sync\_kernel\_weighted\_self\_dual\_bridge.py}。
+\end{remark}
 
 \begin{proposition}[周期迹多项式的回文对称]\label{prop:trace-palindrome}
 记

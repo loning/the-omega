@@ -852,6 +852,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_weighted_self_dual_bridge",
+            script="exp_sync_kernel_weighted_self_dual_bridge.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_weighted_self_dual_bridge.json",
+            ],
+        ),
+        Step(
             name="sync_kernel_weighted_padic_unit_root",
             script="exp_sync_kernel_weighted_padic_unit_root.py",
             args=["--p", "5", "--N", "12", "--k-max", "6", "--u", "minus1"],
@@ -1853,6 +1861,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_conditional_expectation_pythagoras.json",
                 "sections/generated/tab_fold_conditional_expectation_pythagoras.tex",
+            ],
+        ),
+        Step(
+            name="fold_critical_resonance_constant",
+            script="exp_fold_critical_resonance_constant.py",
+            args=["--n-max", "200"],
+            expected_outputs=[
+                "artifacts/export/fold_critical_resonance_constant.json",
+                "sections/generated/eq_fold_critical_resonance_constant_numeric.tex",
             ],
         ),
         Step(

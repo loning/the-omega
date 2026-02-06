@@ -52,6 +52,42 @@ W(B_3)\cong W(C_3)\cong (\ZZ_2)^3\rtimes S_3,\qquad |W|=48,
 \par
 为避免“手工配对”，脚本 \texttt{scripts/exp\_fold6\_b3c3\_seed.py} 输出两种规范化（长短根互换）的根字典表（表 \ref{tab:fold6_b3c3_root_dictionary_b3} 与表 \ref{tab:fold6_b3c3_root_dictionary_c3}；见附录），并写出 JSON 证书 \texttt{artifacts/export/fold6\_b3c3\_seed.json}。
 
+\begin{corollary}[Weyl 刚性二轨道压缩律：任意 Weyl-不变统计坍缩为两标量]\label{cor:fold6-weyl-two-orbit-compression}
+取表 \ref{tab:fold6_b3c3_root_dictionary_b3} 给出的 \(B_3\) 规范化根字典
+\(\psi_B:X_6^{\mathrm{cyc}}\to \Phi(B_3)\)。
+令 \(\Phi_{\mathrm{short}},\Phi_{\mathrm{long}}\subset\Phi(B_3)\) 分别为短根与长根集合，并定义其在 cyclic 扇区中的逆像分块
+\[
+X_6^{\mathrm{short}}:=\psi_B^{-1}(\Phi_{\mathrm{short}}),\qquad
+X_6^{\mathrm{long}}:=\psi_B^{-1}(\Phi_{\mathrm{long}}),
+\qquad
+X_6^{\mathrm{cyc}}=X_6^{\mathrm{short}}\sqcup X_6^{\mathrm{long}}.
+\]
+则该分块与 \(\mathrm{wt}=1\) 与 \(\mathrm{wt}\neq 1\) 的指纹分层一致，并满足
+\(|X_6^{\mathrm{short}}|=6\)、\(|X_6^{\mathrm{long}}|=12\)（见表 \ref{tab:fold6_b3c3_root_dictionary_b3} 与片段 \texttt{\detokenize{sections/generated/eq_fold6_b3c3_seed.tex}}）。
+\par
+设 \(f:X_6^{\mathrm{cyc}}\to\RR\) 为一个 \textbf{Weyl-不变}可观测量：对任意 \(u,v\in X_6^{\mathrm{cyc}}\)，若存在 \(w\in W(B_3)\) 使
+\(\psi_B(v)=w\cdot \psi_B(u)\)，则 \(f(u)=f(v)\)。
+则 \(f\) 在两条 Weyl 轨道上取常值，记
+\[
+f_{\mathrm{short}}:=f(u)\ (u\in X_6^{\mathrm{short}}),\qquad
+f_{\mathrm{long}}:=f(u)\ (u\in X_6^{\mathrm{long}}),
+\]
+并且 cyclic 平均满足严格恒等式
+\[
+\frac{1}{|X_6^{\mathrm{cyc}}|}\sum_{u\in X_6^{\mathrm{cyc}}} f(u)
+=
+\frac{6}{18}\,f_{\mathrm{short}}+\frac{12}{18}\,f_{\mathrm{long}}
+=
+\frac13 f_{\mathrm{short}}+\frac23 f_{\mathrm{long}}.
+\]
+\end{corollary}
+
+\begin{proof}
+在 \(B_3\) 的标准根系模型中，Weyl 群 \(W(B_3)\cong (\ZZ_2)^3\rtimes S_3\) 作为“带符号的坐标置换”作用于 \(\RR^3\)，从而对短根集合 \(\{\pm e_i\}\) 与长根集合 \(\{\pm e_i\pm e_j\}\) 分别传递；因此 \(\Phi(B_3)\) 恰分解为两条 Weyl 轨道 \(\Phi_{\mathrm{short}}\) 与 \(\Phi_{\mathrm{long}}\)，其基数分别为 \(6\) 与 \(12\)。
+由字典 \(\psi_B\) 的双射性，将该两轨道分解拉回 \(X_6^{\mathrm{cyc}}\) 即得 \(X_6^{\mathrm{cyc}}=X_6^{\mathrm{short}}\sqcup X_6^{\mathrm{long}}\)，并有相同的轨道大小。
+Weyl-不变性即意味着 \(f\) 在每条轨道上取常值，故求和可按两块分拆，得到所示平均公式。证毕。
+\end{proof}
+
 \paragraph{新结论 D1（四步平移的规范 uplift 同构）}
 对任意 \(n\ge 2\)，定义映射
 \[
