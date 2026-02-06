@@ -560,11 +560,11 @@ B_{K,n}(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\Tr\!\left(M_K(u^d)^{\,n/d}\right).
 本稿将该谱表作为后续中间 $u\in(0,1)$ 近似指纹的基准底座，其单流与全局块级版本见表 \ref{tab:parallel-addition-kernels-endpoint-primitive}（由脚本 \texttt{scripts/exp\_parallel\_addition\_kernels\_endpoints\_primitive.py} 再生成）。
 
 \subsubsection{中间权重 u in (0,1)：矩阵自由的随机迹估计 + Möbius 反演}
-当 $u\in(0,1)$ 时，$M_K(u)^n$ 很快变得致密，显式形成 $M^n$ 会导致不可承受的时间/内存代价。为保证可扩展性，我们只做\textbf{稀疏矩阵-向量乘}，用随机迹估计近似
+当 $u\in(0,1)$ 时，$M_K(u)^n$ 随 $n$ 增大迅速趋于稠密，显式构造 $M_K(u)^n$ 导致计算与存储代价随之增长而难以扩展。为保证可扩展性，我们采用\textbf{稀疏矩阵-向量乘}与随机迹估计来近似
 \(
-t_n(u):=\Tr(M_K(u)^n)
+t_n(u):=\Tr(M_K(u)^n),
 \)
-并再做 Möbius 反演得到 $\widehat B_{K,n}(u)$。
+再通过 Möbius 反演提取 $\widehat B_{K,n}(u)$。
 
 \paragraph{Hutchinson 迹估计（无偏）}
 取 Rademacher 随机向量 $\mathbf r\in\{\pm1\}^N$（坐标独立同分布），则

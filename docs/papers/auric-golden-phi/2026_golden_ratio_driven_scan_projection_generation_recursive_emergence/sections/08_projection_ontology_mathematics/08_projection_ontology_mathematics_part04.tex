@@ -504,6 +504,63 @@ g:E(K)\to G_\infty
 因此 \(\mathcal{M}_u\) 在 \(L^2(G_\infty)\) 的 Fourier 基下逐角色约化为有限维块 \(M_\chi(u)\)，从而得到直和分解。谱半径恒等式由直和算子的谱为各块谱的并集给出。证毕。
 \end{proof}
 
+\begin{definition}[有限层提升系统与纤维测度]\label{def:pom-lifted-system-m}
+对于模 $m$ 的有限同余轴 $G_m$，定义其\textbf{有限层提升系统}为乘积动力系统 $(\Sigma \times G_m, \sigma_m)$，其中 $\Sigma$ 为基状态空间，$\sigma_m$ 为由核 $K$ 与同余 cocycle $g$ 诱导的提升转移。
+定义其平稳测度为\textbf{提升 Parry 测度}：
+\[
+\widetilde\mu_m := \mu_{\mathrm{Parry}} \otimes \mathrm{Haar}_{G_m},
+\]
+其中 $\mu_{\mathrm{Parry}}$ 为基系统上的 Parry 测度，$G_m$ 上取归一化 Haar 测度。
+定义\textbf{零均值纤维可观测量空间}为
+\[
+L^2_0(G_m) := \left\{ f \in L^2(G_m) : \int_{G_m} f(g) \, d\mathrm{Haar}(g) = 0 \right\},
+\]
+并将其自然嵌入为提升系统上的函数 $F(x, g) = f(g)$。
+\end{definition}
+
+\begin{theorem}[同余纤维相关衰减率 = 最坏扭曲比]\label{thm:pom-fiber-corr-decay}
+固定 $u>0$。设 $f \in L^2_0(G_m)$ 为零均值纤维可观测量。定义其时间相关函数为
+\[
+C_f(n) := \mathbb{E}_{\widetilde\mu_m} [f(g_0) \overline{f(g_n)}],
+\]
+其中 $g_n$ 为 $n$ 步转移后的纤维坐标。记 $\lambda_1(u) := \rho(M_{m,1}(u))$ 为基系统主特征值。则：
+\begin{enumerate}
+    \item \textbf{（指数衰减界）} 相关函数满足
+    \[
+    |C_f(n)| \le \|f\|_2^2 \cdot \eta_m(u)^n,
+    \]
+    其中 $\eta_m(u)$ 为\textbf{最坏扭曲比值}：
+    \[
+    \eta_m(u) := \max_{\chi \in \widehat{G_m},\, \chi \neq 1} \frac{\rho(M_{m,\chi}(u))}{\rho(M_{m,1}(u))}.
+    \]
+    \item \textbf{（角色分解公式）} 设 $f = \sum_{\chi \neq 1} \hat{f}(\chi) \chi$ 为 $f$ 的 Fourier 展开。令 $\mathcal{L}_\chi$ 为归一化扭曲转移算子，其矩阵元为 $(\mathcal{L}_\chi)_{ij} = \sum_{e:i\to j} \frac{h_j}{\lambda_1(u) h_i} \chi(g(e))$，其中 $h$ 为 $M_{m,1}(u)$ 的右正特征向量。则相关函数具有精确的角色叠加表示：
+    \[
+    C_f(n) = \sum_{\chi \neq 1} |\hat{f}(\chi)|^2 \langle \pi, \mathcal{L}_\chi^n \mathbf{1} \rangle,
+    \]
+    其中 $\pi$ 为基系统的平稳分布（满足 $\pi \mathcal{L}_1 = \pi$），$\mathbf{1}$ 为全 $1$ 向量。
+    \item \textbf{（尺度区分：水平 vs 垂直）} 
+    状态层相关衰减（命题 \ref{prop:pom-time-corr-gap}）由基矩阵的谱隙 $\rho = \Lambda/\lambda_1$ 决定，刻画了基空间混合速度；
+    而纤维层相关衰减由扭曲比 $\eta_m(u)$ 决定，刻画了同余标签在路径演化中的“去相关”速度。
+    两者是相互独立的结构对象：前者来自 $M_1(u)$ 的内部谱结构，后者来自 $M_\chi(u)$ 与 $M_1(u)$ 的相对模量比。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+记路径 cocycle 为 $g(e_1 \dots e_n) := g(e_1) \cdots g(e_n)$，其乘法顺序与右平移 $h \mapsto h \cdot g(e)$ 一致。
+由于提升测度 $\widetilde\mu_m = \mu_{\mathrm{Parry}} \otimes \mathrm{Haar}_{G_m}$ 是乘积测度，且纤维转移 $g_n = g_0 \cdot g(e_1 \dots e_n)$ 仅依赖于基路径，相关函数可写为：
+\[
+C_f(n) = \int_{G_m} \int_{\Sigma} f(g_0) \overline{f(g_0 \cdot g(e_1 \dots e_n))} \, d\mu_{\mathrm{Parry}} \, d\mathrm{Haar}(g_0).
+\]
+利用 Haar 测度的平移不变性与角色的正交性 $\int \chi(g) \overline{\chi'(g)} dg = \delta_{\chi,\chi'}$，代入 $f = \sum \hat{f}(\chi) \chi$ 得：
+\[
+C_f(n) = \sum_{\chi \neq 1} |\hat{f}(\chi)|^2 \int_{\Sigma} \overline{\chi(g(e_1 \dots e_n))} \, d\mu_{\mathrm{Parry}}.
+\]
+积分项恰为归一化扭曲算子 $\mathcal{L}_\chi$ 的 $n$ 步转移期望 $\langle \pi, \mathcal{L}_\chi^n \mathbf{1} \rangle$。
+由于 $\rho(\mathcal{L}_\chi) = \rho(M_{m,\chi}(u))/\lambda_1(u)$，由谱半径公式得 $|\langle \pi, \mathcal{L}_\chi^n \mathbf{1} \rangle| \le \rho(\mathcal{L}_\chi)^n$。
+取 $\eta_m(u) = \max_{\chi \neq 1} \rho(\mathcal{L}_\chi)$ 并利用 Parseval 恒等式 $\sum |\hat{f}(\chi)|^2 = \|f\|_2^2$，即得指数衰减界。
+由于 $f \in L^2_0(G_m)$，平凡角色 $\chi=1$ 的系数 $\hat{f}(1) = 0$，故相关性完全由非平凡扭曲通道决定。
+\end{proof}
+
 \begin{remark}[对照：Ihara--Ramanujan 机制的同构版]\label{rem:pom-profinite-ihara-ramanujan}
 命题 \ref{prop:pom-profinite-artin-hilbert} 的结构与图论 Ihara-\(\zeta\) 的“图版 RH \(\Leftrightarrow\) Ramanujan 谱界”完全同型：
 角色分解把覆盖/轴束上的算子对角化为扭曲块，而“平方根界”就是对全部非平凡块的统一谱半径控制。
@@ -515,7 +572,7 @@ g:E(K)\to G_\infty
 \[
 p_\ell^{\mathrm{glob}}(u)=\frac{1}{\ell}\Bigl(a_\ell^{\mathrm{flow}}(u)^m-a_1^{\mathrm{flow}}(u^\ell)^m\Bigr),
 \]
-从而素数长度的 primitive 项直接隔离了“不可约循环”与“幂重复循环”的差异。该差异对并行张量化极其敏感，可作为隐藏并行度与结构分解的无偏探针。
+从而素数长度的 primitive 项直接隔离了“不可约循环”与“幂重复循环”的差异。该差异对并行张量化高度敏感，可作为隐藏并行度与结构分解的无偏探针。
 \end{remark}
 
 \subsection{投影词正规形与读出层级塔}\label{subsec:pom-normal-form}

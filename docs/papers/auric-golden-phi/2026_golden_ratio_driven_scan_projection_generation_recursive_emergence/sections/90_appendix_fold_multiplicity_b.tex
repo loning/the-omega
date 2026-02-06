@@ -1,0 +1,576 @@
+\begin{remark}[从“零点几何”转向“振幅分布”的必要性]\label{rem:fold-zero-sparse-necessity}
+定理 \ref{thm:fold-zero-density-sparse} 表明当 \(m\to\infty\) 时，零点频率在全频率空间 \(\ZZ/(F_{m+2}\ZZ)\) 中的相对密度指数衰减。
+因此任何以频率平均为核心的极限量（例如定理 \ref{thm:fold-collision-spectrum} 中的非平凡频谱能量平均）都不可能由“零点数量级”主导；
+要获得真正的渐近信息，必须理解非零频率处
+\(
+|\widehat d_m(k)|=2^m\prod_{j=1}^m\bigl|\cos(\pi kF_{j+1}/F_{m+2})\bigr|
+\)
+的乘积型振幅分布。等价地，
+\[
+\frac{|\widehat d_m(k)|^2}{2^{2m}}
+=\prod_{j=1}^m\cos^2\Bigl(\pi k\,F_{j+1}/F_{m+2}\Bigr)
+=2^{-m}\prod_{j=1}^m\Bigl(1+\cos\Bigl(2\pi k\,F_{j+1}/F_{m+2}\Bigr)\Bigr),
+\]
+从而该归一化能量剖面可以视为一类由 Fibonacci 频率驱动的有限 Riesz 乘积；其极值与大偏差控制正是进一步把“零点几何”推进到“振荡统计”的入口。
+\end{remark}
+
+\begin{theorem}[零点削减的碰撞上界]
+\label{thm:fold-collision-zero-reduction}
+记 $\mathcal{Z}_m$ 如定义 \ref{def:fold-spectrum-zero-set}，则
+\[
+\mathsf{Col}_m\le 1-\frac{|\mathcal{Z}_m|}{F_{m+2}}.
+\]
+特别地，当 $|\mathcal{Z}_m|\ge 1$ 时，
+\[
+\mathsf{Col}_m\le 1-\frac{1}{F_{m+2}}.
+\]
+\end{theorem}
+
+\textbf{证明：}
+由定理 \ref{thm:fold-collision-spectrum}，
+\(
+\mathsf{Col}_m-\frac{1}{F_{m+2}}=\frac{1}{2^{2m}F_{m+2}}\sum_{k\ne 0}|\widehat d_m(k)|^2
+\)。
+而 $|\widehat d_m(k)|\le\sum_r d_m(r)=2^m$，且对 $k\in\mathcal{Z}_m$ 取值为 0，故
+\(
+\sum_{k\ne 0}|\widehat d_m(k)|^2\le (F_{m+2}-1-|\mathcal{Z}_m|)\,2^{2m}
+\)。
+代入得到
+\[
+\mathsf{Col}_m
+\le
+\frac{1}{F_{m+2}}+\frac{F_{m+2}-1-|\mathcal{Z}_m|}{F_{m+2}}
+=1-\frac{|\mathcal{Z}_m|}{F_{m+2}}.
+\]
+证毕。
+
+\begin{remark}[用约数结构精确计算 \texorpdfstring{$\card{\mathcal{Z}_m}$}{|Z_m|} 的可实现方案]\label{rem:fold-zero-coset-algorithm}
+当 \(F_{m+2}\) 为偶数时，推论 \ref{cor:fold-zero-coset-union} 将 \(\mathcal{Z}_m\) 表示为若干等差余类 \(S_g(F_{m+2})\) 的并。
+因此可以不扫描全部频率 \(k\)，而仅在“约数尺度”上完成精确计数：
+\begin{enumerate}
+  \item 枚举 \(d\mid(m+2)\) 且 \(d<m+2\)，令 \(g=F_d\)，并筛去不满足 \(g\mid F_{m+2}/2\) 的项；
+  \item 对保留下来的 \(g\) 构造同余 \(k\equiv F_{m+2}/(2g)\pmod{F_{m+2}/g}\)，并用引理 \ref{lem:fold-zero-coset-intersection}（更一般地，可用多同余兼容性判据）计算任意有限交集的大小；
+  \item 用 inclusion--exclusion 或其等价的并集计数实现得到 \(\card{\mathcal{Z}_m}\) 的精确值。
+\end{enumerate}
+该流程把“扫 \(k\)”降为“扫 \(m+2\) 的少量约数 + 有限次 \(\gcd\)/整除判定”，可直接接入数值审计管线。
+可复现脚本见 \texttt{scripts/exp\_fold\_zero\_coset\_union\_count.py}。
+\end{remark}
+
+\begin{theorem}[最大纤维与谱能量]
+\label{thm:fold-max-fiber-spectrum}
+记
+\[
+M_m:=\max_{r\in\ZZ/(F_{m+2}\ZZ)} d_m(r).
+\]
+则有下界
+\[
+M_m\ge \overline d_m+\frac{1}{F_{m+2}}\Biggl(\sum_{k\ne 0}|\widehat d_m(k)|^2\Biggr)^{1/2}.
+\]
+亦即最大折叠纤维由非平凡频谱能量定量驱动。
+\end{theorem}
+
+\textbf{证明：}
+由方差恒等式
+\(
+\frac{1}{F_{m+2}}\sum_r(d_m(r)-\overline d_m)^2=\frac{1}{F_{m+2}^2}\sum_{k\ne 0}|\widehat d_m(k)|^2
+\)。
+取达到最大值的 $r_*$，有
+\(
+\sum_r(d_m(r)-\overline d_m)^2\ge (M_m-\overline d_m)^2
+\)。
+合并即得结论。证毕。
+
+\begin{theorem}[最大纤维给出的碰撞下界]
+\label{thm:fold-collision-max-fiber}
+记 $M_m:=\max_r d_m(r)$，则折叠碰撞概率满足
+\[
+\mathsf{Col}_m\ge \frac{M_m^2}{2^{2m}}.
+\]
+因此任何非均匀纤维集中必然导致碰撞缺口的显式下界。
+\end{theorem}
+
+\textbf{证明：}
+由定义
+\(
+\mathsf{Col}_m=2^{-2m}\sum_r d_m(r)^2
+\)。
+由于 $\sum_r d_m(r)^2\ge M_m^2$，代入即得结论。证毕。
+
+\begin{theorem}[最大纤维的 Fourier 下界]
+\label{thm:fold-max-fiber-fourier}
+设
+\(
+S_m:=\max_{k\ne 0}|\widehat d_m(k)|
+\)。
+则
+\[
+M_m\ge \overline d_m+\frac{S_m}{F_{m+2}}.
+\]
+特别地，任何非平凡频谱幅度都会以线性比例推高最大纤维。
+\end{theorem}
+
+\textbf{证明：}
+由 Fourier 反演公式
+\(
+d_m(r)=\frac{1}{F_{m+2}}\sum_k \widehat d_m(k)\,e^{2\pi i kr/F_{m+2}}
+\)。
+取 $k_*$ 使 $|\widehat d_m(k_*)|=S_m$，并选取 $r$ 使相位对齐，则
+\(
+d_m(r)\ge \overline d_m+\frac{S_m}{F_{m+2}}
+\)。
+由最大值定义得到结论。证毕。
+
+\begin{corollary}[最大纤维的常数级 \(L^\infty\) 偏置下界]\label{cor:fold-max-fiber-constant-bias}
+对任意 \(m\ge 1\)，有确定性下界
+\[
+M_m\ge \overline d_m+\frac{|\widehat d_m(F_m)|}{F_{m+2}}
+=\overline d_m\bigl(1+a_m(F_m)\bigr).
+\]
+因此由定理 \ref{thm:fold-critical-resonance-constant}，
+\[
+\liminf_{m\to\infty}\frac{M_m}{\overline d_m}\ \ge\ 1+C_\varphi
+\approx 1.2244178274047294.
+\]
+换言之，分辨率趋于无穷时，最大纤维至少比均值大约 \(22.44\%\)。
+\end{corollary}
+
+\textbf{证明：}
+由定理 \ref{thm:fold-max-fiber-fourier} 与 \(S_m\ge |\widehat d_m(F_m)|\) 得第一条不等式。
+再用 \(\overline d_m=2^m/F_{m+2}\) 与 \(a_m(F_m)=|\widehat d_m(F_m)|/2^m\) 化简即可得到乘性形式。
+极限下界由定理 \ref{thm:fold-critical-resonance-constant} 的 \(a_m(F_m)\to C_\varphi\) 得到。证毕。
+
+\begin{conjecture}[Fibonacci 极值模（可检验）]\label{conj:fold-fourier-fibonacci-extremizer}
+对所有 \(m\ge 4\)，非平凡最大频谱幅度
+\(
+S_m=\max_{k\ne 0}|\widehat d_m(k)|
+\)
+总由 Fibonacci 补频对达到：
+\[
+S_m=|\widehat d_m(F_m)|=|\widehat d_m(F_{m+1})|.
+\]
+等价地，最强非平凡模总出现在同一共轭轨道
+\(
+k\equiv\pm F_m\pmod{F_{m+2}}
+\)
+上（其中 \(F_{m+1}\equiv -F_m\ (\mathrm{mod}\ F_{m+2})\)）。
+从而
+\[
+\frac{S_m}{2^m}=a_m(F_m)\longrightarrow C_\varphi.
+\]
+该猜想已在全频扫描 \(m\le 29\) 上数值核验（脚本 \texttt{scripts/exp\_fold\_multiplicity\_fourier\_extremal\_mode\_scan.py}）。
+\end{conjecture}
+
+\begin{theorem}[碰撞缺口的双向夹逼]
+\label{thm:fold-collision-sandwich}
+设 $M_m:=\max_r d_m(r)$ 与零点集合 $\mathcal{Z}_m$ 如前，则
+\[
+\frac{M_m^2}{2^{2m}}-\frac{1}{F_{m+2}}
+\le
+\mathsf{Col}_m-\frac{1}{F_{m+2}}
+\le
+\frac{F_{m+2}-1-|\mathcal{Z}_m|}{F_{m+2}}.
+\]
+从而折叠均匀性缺口同时受最大纤维与谱零点数量的双向控制。
+\end{theorem}
+
+\textbf{证明：}
+左侧不等式由定理 \ref{thm:fold-collision-max-fiber} 直接给出。
+右侧不等式由定理 \ref{thm:fold-collision-zero-reduction} 得到。证毕。
+
+\begin{theorem}[零点--均匀性--信息缺口的不确定性链]\label{thm:fold-zero-uncertainty}
+令 \(M:=F_{m+2}\)，并定义归一化折叠分布
+\[
+p_m(r):=\frac{d_m(r)}{2^m}\in[0,1],\qquad r\in\ZZ/(M\ZZ),
+\qquad
+u(r):=\frac{1}{M}.
+\]
+则有：
+\begin{enumerate}
+  \item \textbf{（碰撞缺口 = \(\ell^2\) 距离）}
+  \[
+  \boxed{\;\sum_{r}\bigl(p_m(r)-u(r)\bigr)^2=\mathsf{Col}_m-\frac{1}{M}.\;}
+  \]
+  \item \textbf{（最大纤维超额由碰撞缺口控制）}
+  \[
+  \max_r\left|p_m(r)-\frac1M\right|
+  \le \sqrt{\mathsf{Col}_m-\frac{1}{M}},
+  \qquad
+  \boxed{\;
+  M_m-\overline d_m\ \le\ 2^m\sqrt{\mathsf{Col}_m-\frac{1}{M}}.\;}
+  \]
+  结合定理 \ref{thm:fold-collision-sandwich} 的右侧上界，进一步得到仅用零点集合控制的结构上界
+  \[
+  \boxed{\;
+  M_m-\overline d_m\ \le\ 2^m\sqrt{\frac{M-1-|\mathcal{Z}_m|}{M}}. \;}
+  \]
+  \item \textbf{（熵缺口上界：collision \(\Rightarrow\) KL）}
+  若以自然对数定义 Shannon 熵 \(H(p_m):=-\sum_r p_m(r)\log p_m(r)\)，则到均匀的 KL 缺口满足
+  \[
+  D_{\mathrm{KL}}(p_m\|u)=\log M-H(p_m)\ \le\ \log\!\bigl(M\,\mathsf{Col}_m\bigr)\ \le\ \log\!\bigl(M-|\mathcal{Z}_m|\bigr).
+  \]
+  \item \textbf{（非平凡 Fourier 峰值的上界：由碰撞能量给出）}
+  记 \(S_m=\max_{k\ne 0}|\widehat d_m(k)|\)（定理 \ref{thm:fold-max-fiber-fourier}），则
+  \[
+  \boxed{\;
+  S_m\ \le\ 2^m\sqrt{M\left(\mathsf{Col}_m-\frac{1}{M}\right)}\ \le\ 2^m\sqrt{M-1-|\mathcal{Z}_m|}. \;}
+  \]
+\end{enumerate}
+因此当 \(|\mathcal{Z}_m|\) 在某些同余类/约数结构上出现确定性增量（例如定理 \ref{thm:fold-spectrum-parity-zero} 的 \(m+2\equiv 0\pmod 3\) 情形，以及推论 \ref{cor:fold-zero-divisor-lb} 的更一般整除触发情形）时，上述对最大纤维超额与信息缺口的上界也会出现相应的确定性“下压”，给出可直接用 DP/Fourier 管线审计的算术调制预测。
+\end{theorem}
+\begin{proof}
+(1) 由定义 \(p_m=d_m/2^m\) 与 \(\mathsf{Col}_m=\sum_r p_m(r)^2\)，并用 \(\sum_r p_m(r)=1\)，直接计算
+\[
+\sum_r\left(p_m(r)-\frac{1}{M}\right)^2
+=\sum_r p_m(r)^2-\frac{2}{M}\sum_r p_m(r)+\sum_r\frac{1}{M^2}
+=\mathsf{Col}_m-\frac{1}{M}.
+\]
+(2) 由 \(\ell^\infty\le \ell^2\) 有 \(\max_r|p_m(r)-1/M|\le \sqrt{\sum_r(p_m(r)-1/M)^2}\)，再用 (1) 得第一条不等式。
+乘以 \(2^m\) 并注意 \(M_m=\max_r d_m(r)=2^m\max_r p_m(r)\)、\(\overline d_m=2^m/M\) 即得关于 \(M_m-\overline d_m\) 的界。最后一条由定理 \ref{thm:fold-collision-sandwich} 的右侧上界代入得到。
+\par
+(3) Rényi 熵的单调性给出 \(H(p_m)\ge H_2(p_m):=-\log\sum_r p_m(r)^2=-\log \mathsf{Col}_m\)，故
+\(
+D_{\mathrm{KL}}(p_m\|u)=\log M-H(p_m)\le \log M-H_2(p_m)=\log(M\mathsf{Col}_m)
+\)。
+再用定理 \ref{thm:fold-collision-zero-reduction} 的 \(\mathsf{Col}_m\le 1-|\mathcal{Z}_m|/M\) 得到 \(\log(M\mathsf{Col}_m)\le \log(M-|\mathcal{Z}_m|)\)。
+\par
+(4) 由定理 \ref{thm:fold-collision-spectrum}，
+\(
+\mathsf{Col}_m-\frac{1}{M}=\frac{1}{2^{2m}M}\sum_{k\ne 0}|\widehat d_m(k)|^2
+\)。
+因此 \(S_m^2\le \sum_{k\ne 0}|\widehat d_m(k)|^2=2^{2m}M(\mathsf{Col}_m-1/M)\)，取平方根得第一条不等式；
+再用定理 \ref{thm:fold-collision-sandwich} 的右侧上界 \(\mathsf{Col}_m-1/M\le (M-1-|\mathcal{Z}_m|)/M\) 得到最后一条。证毕。
+\end{proof}
+
+\begin{corollary}[零点削减项的相对指数小量]
+\label{cor:fold-collision-zero-sparsity-impact}
+令 \(M:=F_{m+2}\)。若 \(M\) 为偶数，则定理 \ref{thm:fold-collision-zero-reduction} 的“零点削减”改进量满足
+\[
+0\le \frac{\card{\mathcal{Z}_m}}{M}
+\le
+\tau(m+2)\,\frac{F_{\lfloor (m+2)/2\rfloor}}{F_{m+2}}
+=\tau(m+2)\,O(\varphi^{-m/2}).
+\]
+因此在 \(m\to\infty\) 的尺度上，零点只能把平凡上界 \(\mathsf{Col}_m\le 1\) 改进一个指数级小量；要获得碰撞缺口的真实 \(O(1/M)\) 尺度与精细渐近，关键在于控制非零频率处的乘积振幅分布（见注 \ref{rem:fold-zero-sparse-necessity} 与本节的共振常数 \(C_\varphi\)）。
+\end{corollary}
+
+\textbf{证明：}
+由定理 \ref{thm:fold-zero-density-sparse} 有 \(\card{\mathcal{Z}_m}\le \tau(m+2)\,F_{\lfloor (m+2)/2\rfloor}\)，两边同除以 \(M=F_{m+2}\) 并用 \(F_{\lfloor (m+2)/2\rfloor}/F_{m+2}=O(\varphi^{-m/2})\) 即得。证毕。
+
+\input{sections/generated/tab_fold_multiplicity_histogram}
+
+\subsection{二进制区间到 Zeckendorf 前缀的折叠：最大纤维与饱和判别}\label{app:fold-binary-prefix}
+
+前文主要讨论 \(\Fold_m:\Omega_m=\{0,1\}^m\to X_m\)（Fibonacci 权重口径）诱导的折叠多重度。
+为刻画“\(\,2^m\) 个二进制地址在 Zeckendorf（\(\varphi\)-基）分层中的投影压缩”，这里引入一个与 \(|\Omega_m|=2^m\) 同规模、但以\emph{整数区间}为输入的折叠投影。
+
+\begin{definition}[二进制区间折叠 \(\mathrm{Fold}^{\mathrm{bin}}_m\)]\label{def:fold-bin}
+设 \(Z:\ZZ_{\ge 0}\to\{0,1\}^{\NN}\) 为 Zeckendorf 编码：对每个 \(n\ge 0\)，存在唯一的合法位串
+\[
+Z(n)=(z_1,z_2,\dots),\qquad z_k\in\{0,1\},\quad z_k z_{k+1}=0,
+\]
+使得
+\[
+n=\sum_{k\ge 1} z_k F_{k+1}.
+\]
+记截断算子 \(\pi_m(z_1,z_2,\dots):=(z_1,\dots,z_m)\in X_m\)。定义
+\[
+\mathrm{Fold}^{\mathrm{bin}}_m:\{0,1,\dots,2^m-1\}\to X_m,\qquad
+\mathrm{Fold}^{\mathrm{bin}}_m(n):=\pi_m(Z(n)).
+\]
+\end{definition}
+
+\begin{definition}[\(K(m)\) 与 Zeckendorf 值]\label{def:K-of-m}
+令 \(K(m)\) 为满足
+\begin{equation}\label{eq:K-of-m}
+F_{K(m)+1}\le 2^m-1 < F_{K(m)+2}
+\end{equation}
+的唯一整数。对 \(w=(w_1,\dots,w_m)\in X_m\) 定义其 Zeckendorf 值
+\[
+V_m(w):=\sum_{k=1}^m w_k F_{k+1}.
+\]
+\end{definition}
+
+\begin{proposition}[纤维的尾部表示]\label{prop:fold-bin-fiber-tail}
+设 \(m\ge 1\)，\(w\in X_m\)，并令 \(K=K(m)\)。记尾部长度 \(L:=K-m\ge 0\)。
+则 \(\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\) 与满足下列约束的尾部位串 \((c_{m+1},\dots,c_K)\in\{0,1\}^{L}\) 一一对应：
+\[
+n
+=V_m(w)+\sum_{k=m+1}^{K} c_k F_{k+1},
+\]
+其中
+\begin{enumerate}
+  \item \textbf{相邻约束：}\quad \(c_k c_{k+1}=0\)（对 \(m+1\le k\le K-1\)）；
+  \item \textbf{边界约束：}\quad \(w_m\,c_{m+1}=0\)；
+  \item \textbf{阈值约束：}\quad \(V_m(w)+\sum_{k=m+1}^{K} c_k F_{k+1}\le 2^m-1\)。
+\end{enumerate}
+从而纤维多重度
+\(
+d^{\mathrm{bin}}_m(w):=\bigl|\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\bigr|
+\)
+只依赖于 \((V_m(w),w_m)\)。
+\end{proposition}
+
+\begin{corollary}[\texorpdfstring{$m=6$}{m=6} 的显式纤维分类与刚性直方图]\label{cor:fold-bin-m6-fiber-hist}
+取 \(m=6\)，则 \(K(6)=9\)。对任意 \(w\in X_6\)，令 \(V:=V_6(w)\)。
+则二进制区间折叠 \(\mathrm{Fold}^{\mathrm{bin}}_6:\{0,\dots,63\}\to X_6\) 的纤维满足：
+\[
+\mathrm{Fold}^{\mathrm{bin}}_6{}^{-1}(w)=
+\begin{cases}
+\{V,\ V+F_{9}\}, & w_6=1,\\[4pt]
+\{V,\ V+F_{8},\ V+F_{9},\ V+F_{10}\}, & w_6=0\ \text{且}\ V\le 8,\\[4pt]
+\{V,\ V+F_{8},\ V+F_{9}\}, & w_6=0\ \text{且}\ V> 8.
+\end{cases}
+\]
+因此 \(d^{\mathrm{bin}}_6(w):=\bigl|\mathrm{Fold}^{\mathrm{bin}}_6{}^{-1}(w)\bigr|\in\{2,3,4\}\)，并且尺寸直方图为
+\[
+\#\{w\in X_6:\ d^{\mathrm{bin}}_6(w)=2\}=8,\qquad
+\#\{w\in X_6:\ d^{\mathrm{bin}}_6(w)=3\}=4,\qquad
+\#\{w\in X_6:\ d^{\mathrm{bin}}_6(w)=4\}=9.
+\]
+\end{corollary}
+\begin{proof}
+由 \eqref{eq:K-of-m} 与 \(2^6-1=63\) 知 \(F_{10}=55\le 63<F_{11}=89\)，故 \(K(6)=9\)，尾部只可能涉及 \((c_7,c_8,c_9)\) 三位（权重 \(F_8,F_9,F_{10}\)）。
+由命题 \ref{prop:fold-bin-fiber-tail}，
+\[
+n=V+F_8c_7+F_9c_8+F_{10}c_9
+=V+21c_7+34c_8+55c_9,
+\]
+并满足相邻约束 \(c_7c_8=0\)、\(c_8c_9=0\) 与边界约束 \(w_6c_7=0\)，且 \(n\le 63\)。
+\par
+\noindent\textbf{(1) 若 \(w_6=1\)。} 则 \(c_7=0\)。
+允许的 \((c_8,c_9)\) 为 \((0,0),(1,0),(0,1)\)，但此时 \(V\ge F_7=13\)，故 \(V+55>63\) 排除 \(c_9=1\)。
+于是仅剩 \(n\in\{V,V+34\}=\{V,V+F_9\}\)。
+\par
+\noindent\textbf{(2) 若 \(w_6=0\)。} 此时允许 \(c_7=1\)（但仍需 \(c_7c_8=0\)）。
+若 \(c_9=1\)，则 \(c_8=0\) 且 \(n\ge V+55\le 63\) 强制 \(V\le 8\)，并且同余量级下 \(c_7=1\) 会导致 \(V+21+55>63\) 不可行，故必须 \(c_7=0\)。
+因此当 \(V\le 8\) 时四个偏移 \(0,F_8,F_9,F_{10}\) 均可行，得到大小为 \(4\) 的纤维；
+当 \(V>8\) 时偏移 \(F_{10}\) 不可行，得到大小为 \(3\) 的纤维 \(\{V,V+F_8,V+F_9\}\)。
+\par
+\noindent\textbf{(3) 直方图计数。}
+当 \(w_6=1\) 时必有 \(w_5=0\)，其前缀 \(w_1\cdots w_4\) 可为任意 \(X_4\) 元素，故此类输出数为 \(|X_4|=F_6=8\)，对应 \(d^{\mathrm{bin}}_6=2\)。
+当 \(w_6=0\) 且 \(V>8\) 时，等价于 \(w_5=1\) 且 \((w_1,w_2,w_3)\in X_3\setminus\{000\}\)（因为 \(w_4=0\) 由合法性强制），故恰有 \(|X_3|-1=F_5-1=4\) 个输出，对应 \(d^{\mathrm{bin}}_6=3\)。
+剩余 \(21-8-4=9\) 个输出对应 \(V\le 8\)，故 \(d^{\mathrm{bin}}_6=4\)。
+\end{proof}
+
+\begin{remark}[\texorpdfstring{$m=6$}{m=6} 的均匀性缺口数值锚点（bin-fold）]\label{rem:fold-bin-m6-col-gap}
+对二进制区间折叠 \(\mathrm{Fold}^{\mathrm{bin}}_m:\{0,\dots,2^m-1\}\to X_m\)，同样可定义碰撞概率
+\[
+\mathsf{Col}^{\mathrm{bin}}_m:=\mathbb{P}\bigl(\mathrm{Fold}^{\mathrm{bin}}_m(U)=\mathrm{Fold}^{\mathrm{bin}}_m(V)\bigr)
+=\frac{1}{2^{2m}}\sum_{w\in X_m}\bigl(d^{\mathrm{bin}}_m(w)\bigr)^2,
+\]
+以及均匀性缺口
+\(
+g_{\mathrm{col}}^{2,\mathrm{bin}}(m):=\mathsf{Col}^{\mathrm{bin}}_m-1/|X_m|
+\)。
+由推论 \ref{cor:fold-bin-m6-fiber-hist} 的直方图（\(2:8,3:4,4:9\)），有
+\[
+\sum_{w\in X_6}\bigl(d^{\mathrm{bin}}_6(w)\bigr)^2
+=8\cdot 2^2+4\cdot 3^2+9\cdot 4^2
+=212,
+\qquad
+\mathsf{Col}^{\mathrm{bin}}_6=\frac{212}{2^{12}}=\frac{53}{1024}.
+\]
+又 \(|X_6|=F_8=21\)，故
+\[
+\boxed{\;
+g_{\mathrm{col}}^{2,\mathrm{bin}}(6)=\frac{53}{1024}-\frac{1}{21}
+=\frac{89}{21504}\approx 0.0041388\; }.
+\]
+\end{remark}
+
+\begin{definition}[二进制区间折叠的 fold-gauge 群]\label{def:fold-bin-gauge-group}
+固定 \(m\ge 1\)。定义二进制区间折叠的纤维自同构群
+\[
+\mathcal{G}^{\mathrm{bin}}_m
+:=
+\mathrm{Aut}\!\bigl(\mathrm{Fold}^{\mathrm{bin}}_m\bigr)
+:=
+\left\{\sigma\in \mathrm{Sym}(\{0,\dots,2^m-1\}):\ \mathrm{Fold}^{\mathrm{bin}}_m\circ\sigma=\mathrm{Fold}^{\mathrm{bin}}_m\right\}.
+\]
+等价地，\(\sigma\) 可在每条纤维 \(\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\) 内任意置换，但不改变稳定类型标签 \(w\in X_m\)。
+\end{definition}
+
+\begin{proposition}[纤维置换分解]\label{prop:fold-bin-gauge-decomposition}
+令 \(d^{\mathrm{bin}}_m(w):=\bigl|\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\bigr|\)。
+则有自然同构
+\[
+\mathcal{G}^{\mathrm{bin}}_m\ \cong\ \prod_{w\in X_m} S_{d^{\mathrm{bin}}_m(w)}.
+\]
+\end{proposition}
+\begin{proof}
+\(\mathrm{Fold}^{\mathrm{bin}}_m\) 的纤维 \(\{\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\}_{w\in X_m}\) 给出 \(\{0,\dots,2^m-1\}\) 的一个不交分割。
+对任意 \(\sigma\in\mathrm{Aut}(\mathrm{Fold}^{\mathrm{bin}}_m)\) 与任意 \(n\in \mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\)，都有
+\(\mathrm{Fold}^{\mathrm{bin}}_m(\sigma(n))=\mathrm{Fold}^{\mathrm{bin}}_m(n)=w\)，故 \(\sigma\) 必在每条纤维内部置换。
+反过来，若对每个 \(w\in X_m\) 任取一个纤维内置换 \(\sigma_w\in S_{d^{\mathrm{bin}}_m(w)}\)，把它们拼成对全体 \(\{0,\dots,2^m-1\}\) 的置换 \(\sigma=\prod_w\sigma_w\)，则由构造对任意 \(n\) 有 \(\mathrm{Fold}^{\mathrm{bin}}_m(\sigma(n))=\mathrm{Fold}^{\mathrm{bin}}_m(n)\)，从而 \(\mathrm{Fold}^{\mathrm{bin}}_m\circ\sigma=\mathrm{Fold}^{\mathrm{bin}}_m\)。
+由此得到所示直积分解同构。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$m=6$}{m=6} 的 gauge 群与 \texorpdfstring{$(\ZZ_2)^{21}$}{(Z2)^21} 电荷格]\label{cor:fold-bin-gauge-m6}
+在 \(m=6\) 的二进制区间折叠口径下，
+\[
+\mathcal{G}^{\mathrm{bin}}_6
+\ \cong\
+S_{2}^{\,8}\times S_{3}^{\,4}\times S_{4}^{\,9}.
+\]
+并且其 Abel 化为
+\[
+\bigl(\mathcal{G}^{\mathrm{bin}}_6\bigr)^{\mathrm{ab}}
+\ \cong\
+(\ZZ_2)^{21}.
+\]
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:fold-bin-m6-fiber-hist}，在 \(m=6\) 时纤维尺寸直方图为
+\(
+2:8,\ 3:4,\ 4:9
+\)。
+代入命题 \ref{prop:fold-bin-gauge-decomposition} 得到
+\(
+\mathcal{G}^{\mathrm{bin}}_6\cong S_2^{8}\times S_3^{4}\times S_4^{9}
+\)。
+\par
+对 \(n\ge 2\)，对称群 \(S_n\) 的 Abel 化由符号映射给出：
+\(
+S_n^{\mathrm{ab}}\cong \ZZ_2
+\)。
+因此
+\[
+\bigl(\mathcal{G}^{\mathrm{bin}}_6\bigr)^{\mathrm{ab}}
+\cong (\ZZ_2)^{8+4+9}=(\ZZ_2)^{21}.
+\]
+\end{proof}
+
+\begin{definition}[纤维奇偶荷与符号映射]\label{def:fold-bin-gauge-sign}
+对任意 \(m\ge 1\)，在命题 \ref{prop:fold-bin-gauge-decomposition} 的直积分解下，记
+\[
+\mathrm{sgn}_m:\ \mathcal{G}^{\mathrm{bin}}_m\to (\ZZ_2)^{X_m},
+\qquad
+\mathrm{sgn}_m\bigl((\sigma_w)_{w\in X_m}\bigr):=\bigl(\mathrm{sgn}(\sigma_w)\bigr)_{w\in X_m}.
+\]
+该映射把每条纤维的置换仅记录其奇偶性，可视为“纤维奇偶荷”。
+\end{definition}
+
+\begin{corollary}[纤维奇偶荷的规范性与 \texorpdfstring{$m=6$}{m=6} 的 \(21\) 比特签名]\label{cor:fold-bin-gauge-sign}
+\(\mathrm{sgn}_m\) 是一个规范的群同态，其像等于 Abel 化
+\(
+(\mathcal{G}^{\mathrm{bin}}_m)^{\mathrm{ab}}
+\)
+（对 \(d^{\mathrm{bin}}_m(w)\ge 2\) 的纤维给出一个 \(\ZZ_2\) 因子）。
+当 \(m=6\) 时所有纤维尺寸均在 \(\{2,3,4\}\)，因此
+\[
+\mathrm{Im}(\mathrm{sgn}_6)\cong (\ZZ_2)^{21},
+\]
+从而任何“只在交换子商上可见”的规范异常/标签都等价于一个 \(21\) 比特向量。
+\end{corollary}
+
+\begin{proposition}[规范体积密度与 \texorpdfstring{$\kappa_m$}{kappa} 夹逼]\label{prop:fold-bin-gauge-volume}
+由命题 \ref{prop:fold-bin-gauge-decomposition}，
+\[
+|\mathcal{G}^{\mathrm{bin}}_m|
+=\prod_{w\in X_m}\bigl(d^{\mathrm{bin}}_m(w)!\bigr).
+\]
+定义规范体积密度
+\[
+g_m:=\frac{1}{2^m}\log|\mathcal{G}^{\mathrm{bin}}_m|,
+\]
+并令
+\[
+\kappa_m:=\frac{1}{2^m}\sum_{w\in X_m}d^{\mathrm{bin}}_m(w)\log d^{\mathrm{bin}}_m(w)
+=\mathbb{E}_{\pi_m}[\log d^{\mathrm{bin}}_m(X)],
+\qquad
+\pi_m(w):=\frac{d^{\mathrm{bin}}_m(w)}{2^m}.
+\]
+则对所有 \(m\ge 1\) 有
+\[
+\boxed{\ \kappa_m-1\ \le\ g_m\ \le\ \kappa_m\ },
+\]
+其中不等式来自阶乘的初等夹逼
+\(
+d\log d-d\le \log(d!)\le d\log d
+\)
+与 \(\sum_w d^{\mathrm{bin}}_m(w)=2^m\)。
+\end{proposition}
+
+\begin{remark}[\texorpdfstring{$m=6$}{m=6} 的 gauge 体积数值锚点]\label{rem:fold-bin-gauge-volume-m6}
+对 \(m=6\) 的直方图 \(2:8,3:4,4:9\)，有
+\(
+|\mathcal{G}^{\mathrm{bin}}_6|=(2!)^{8}(3!)^{4}(4!)^{9}
+\)。
+脚本 \texttt{\detokenize{scripts/exp_fold_bin_gauge_m6_invariants.py}} 输出
+\(\log|\mathcal{G}^{\mathrm{bin}}_6|\)、\(g_6\)、\(\kappa_6\) 的精确数值与夹逼核验（表 \ref{tab:fold_bin_gauge_m6_invariants}）：
+\input{sections/generated/tab_fold_bin_gauge_m6_invariants}
+从而把“规范体积密度 \(\leftrightarrow\) 折叠缺陷 \(\kappa_m\)”的夹逼关系落到可复核的数值对象上。
+\end{remark}
+
+\begin{remark}[异常签名维数的不可压缩性（\texorpdfstring{$m=6$}{m=6}）]\label{rem:fold-bin-gauge-rigidity}
+在 \(m=6\) 下每条纤维均满足 \(d^{\mathrm{bin}}_6(w)\ge 2\)，
+因此 \((\mathcal{G}^{\mathrm{bin}}_6)^{\mathrm{ab}}\) 的维数恰等于纤维数 \(|X_6|=21\)。
+若保持 fold-gauge 的“纤维独立置换”定义不变，则任何把可观测异常压缩到少于 \(21\) 个独立比特的方案
+都必须引入跨纤维关系，从而破坏直积结构；
+因此 \((\ZZ_2)^{21}\) 是该口径下异常签名空间的最小完备维数。
+\end{remark}
+
+\begin{corollary}[最大纤维、组合上界与饱和判别]\label{cor:fold-bin-saturation}
+对任意 \(m\ge 1\)，最大纤维由 \(w=0^m\) 取得，并满足组合上界
+\begin{equation}\label{eq:fold-bin-upper}
+d^{\mathrm{bin}}_{\max}(m):=d^{\mathrm{bin}}_m(0^m)\le |X_{K(m)-m}|=F_{K(m)-m+2}.
+\end{equation}
+记 \(K=K(m)\)、\(L=K-m\)，并定义在相邻约束下的\emph{最大尾和}
+\[
+S_{\max}(m):=\max\Bigl\{\sum_{k=m+1}^{K} c_k F_{k+1}:\ (c_{m+1},\dots,c_K)\in\{0,1\}^{L},\ c_k c_{k+1}=0\Bigr\}.
+\]
+则对 \(w=0^m\)，上界 \eqref{eq:fold-bin-upper} 饱和当且仅当阈值约束对所有合法尾部都是冗余的，即
+\begin{equation}\label{eq:fold-bin-sat-iff}
+d^{\mathrm{bin}}_{\max}(m)=F_{K(m)-m+2}\quad\Longleftrightarrow\quad 2^m-1\ge S_{\max}(m).
+\end{equation}
+并且 \(S_{\max}(m)\) 具有完全显式的闭式（由“1010\(\cdots\)”极大尾部取得）：
+\begin{equation}\label{eq:fold-bin-Smax-closed}
+S_{\max}(m)=
+\begin{cases}
+F_{K(m)+2}-F_{m+1}, & L=K(m)-m\ \text{为奇数},\\
+F_{K(m)+2}-F_{m+2}, & L=K(m)-m\ \text{为偶数}.
+\end{cases}
+\end{equation}
+等价地，饱和判别可改写为
+\[
+F_{K(m)+2}-2^m\le
+\begin{cases}
+F_{m+1}-1,& L\ \text{奇},\\
+F_{m+2}-1,& L\ \text{偶}.
+\end{cases}
+\]
+\end{corollary}
+
+\begin{remark}[指数级 Diophantine 近似与“仅有限次饱和”]\label{rem:fold-bin-finite}
+由 \eqref{eq:fold-bin-Smax-closed} 可见，饱和条件强迫 \(2^m\) 与某个 Fibonacci 数 \(F_{K(m)+2}\) \emph{异常接近}。
+用 Binet 公式 \(F_n=\varphi^n/\sqrt5+O(\varphi^{-n})\) 将其改写，可导出一个指数级小的线性对数形式约束：
+\[
+\Bigl|(K(m)+2)\log\varphi - m\log 2 - \log\sqrt5\Bigr|
+\ \lesssim\ \Bigl(\frac{\varphi}{2}\Bigr)^m.
+\]
+由于 \(\varphi\) 为代数数而 \(2\) 为有理数，上式左侧是非零的对数线性形式；而 Baker 型下界（例如 Matveev 的显式形式）给出其\emph{至多多项式级}的小下界（见 \cite{Matveev2000LinearFormsLogs,BakerWustholz2007LogarithmicForms}），从而与右侧的指数级小量矛盾，推出：
+\[
+\text{上界饱和只能发生有限次。}
+\]
+本结论在本文的可复现管线中可直接数值审计（见表 \ref{tab:fold_binary_saturation_points}）。
+\end{remark}
+
+\begin{proposition}[计算 \(\boldsymbol{d^{\mathrm{bin}}_m(w)}\) 的 \(O(m)\) Fibonacci-digit DP]\label{prop:fold-bin-digit-dp}
+给定 \(m\ge 1\) 与 \(w\in X_m\)。令 \(K=K(m)\) 并记 \(V=V_m(w)\)，再令 \(\mathrm{slack}:=2^m-1-V\)。
+将 \(\mathrm{slack}\) 写为 Zeckendorf 位串 \(Z(\mathrm{slack})=(b_1,\dots,b_K)\)（合法，无相邻 \(11\)）。
+则 \(d^{\mathrm{bin}}_m(w)\) 可由如下 digit DP 在 \(O(K-m)=O(m)\) 时间内精确计算：
+\[
+\mathrm{DP}(k,\mathrm{prev},\mathrm{tight})
+\quad(k=K,K-1,\dots,m+1),
+\]
+其中 \(\mathrm{prev}\in\{0,1\}\) 记录上一个（更高位）是否取 \(1\)，\(\mathrm{tight}\in\{0,1\}\) 表示当前前缀是否仍与 \((b_k,\dots,b_K)\) 相同；
+转移时允许选择 \(c_k\in\{0,1\}\)，满足
+\[
+c_k c_{k+1}=0,\qquad
+\mathrm{tight}=1\Rightarrow c_k\le b_k,\qquad
+w_m=1\Rightarrow c_{m+1}=0,
+\]
+并按是否保持等号更新 \(\mathrm{tight}\)。该 DP 的输出即为满足 \(\sum_{k=m+1}^K c_k F_{k+1}\le \mathrm{slack}\) 的尾部数目，从而等于 \(d^{\mathrm{bin}}_m(w)\)。
+\end{proposition}
+
+\input{sections/generated/tab_fold_binary_saturation_points}

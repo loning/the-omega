@@ -319,6 +319,38 @@ N_{n,r}^{(m)}:=\sum_{k\equiv r\ (\mathrm{mod}\ m)}[q^k]P_n(q),
 N_{n,r}^{(m)}=\frac{1}{m}\sum_{j=0}^{m-1}\zeta_m^{-jr}P_n(\zeta_m^j),
 \qquad \zeta_m=e^{2\pi i/m}.
 \]
+\begin{theorem}[同余类均方偏差的 Parseval 能量恒等式]\label{thm:real-input-40-arity-charge-parseval-energy}
+令 \(p_n:=P_n(1)=\sum_{r=0}^{m-1}N_{n,r}^{(m)}\)。则有精确恒等式
+\[
+\sum_{r=0}^{m-1}\left|N_{n,r}^{(m)}-\frac{p_n}{m}\right|^2
+=\frac{1}{m}\sum_{j=1}^{m-1}\left|P_n(\zeta_m^j)\right|^2.
+\]
+等价地，归一化后
+\[
+\sum_{r=0}^{m-1}\left(\frac{N_{n,r}^{(m)}}{p_n}-\frac{1}{m}\right)^2
+=\frac{1}{m\,p_n^2}\sum_{j=1}^{m-1}\left|P_n(\zeta_m^j)\right|^2.
+\]
+\end{theorem}
+\begin{proof}
+令 \(f(r):=N_{n,r}^{(m)}\)（\(r=0,1,\dots,m-1\)），并定义其离散 Fourier 变换
+\[
+\widehat f(j):=\sum_{r=0}^{m-1} f(r)\,\zeta_m^{jr}\qquad (j=0,1,\dots,m-1).
+\]
+由 \(P_n(q)=\sum_k [q^k]P_n(q)\,q^k\) 与 \(f(r)\) 的定义可知
+\[
+\widehat f(j)=\sum_{r=0}^{m-1}\sum_{k\equiv r\ (\mathrm{mod}\ m)}[q^k]P_n(q)\,\zeta_m^{jr}
+=\sum_k [q^k]P_n(q)\,\zeta_m^{jk}
+=P_n(\zeta_m^j).
+\]
+又 \(p_n=\sum_r f(r)=\widehat f(0)\)。令 \(\overline f:=p_n/m\) 且 \(g(r):=f(r)-\overline f\)。
+当 \(j\neq 0\) 时，\(\sum_{r=0}^{m-1}\overline f\,\zeta_m^{jr}=0\)，故 \(\widehat g(j)=\widehat f(j)=P_n(\zeta_m^j)\)（\(j=1,\dots,m-1\)），而 \(\widehat g(0)=0\)。
+对 \(g\) 应用离散 Parseval 恒等式得到
+\[
+\sum_{r=0}^{m-1}|g(r)|^2=\frac{1}{m}\sum_{j=0}^{m-1}|\widehat g(j)|^2
+=\frac{1}{m}\sum_{j=1}^{m-1}|P_n(\zeta_m^j)|^2,
+\]
+即第一条式子。两边同除以 \(p_n^2\) 得到归一化形式。证毕。
+\end{proof}
 例如模 $2$（偶/奇）有
 \[
 N_{n,0}^{(2)}=\frac{P_n(1)+P_n(-1)}{2},\qquad
