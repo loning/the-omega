@@ -1,6 +1,19 @@
 \subsubsection{秩缺口与表示可见性}\label{subsec:pom-moment-visibility}
 从同余计数口径 \(c_m(r)\) 出发，\(S_q(m)=\sum_r c_m(r)^q\) 可理解为模 \(F_{m+2}\) 上的 \(L^q\) 量；其傅里叶展开等价于对角色空间做 \(q\)-重张量提升后再施加共轭对称与“输出一致”的投影。差分模态截断给出上界 \(2\lfloor q/2\rfloor+1\)，而表 \ref{tab:fold_collision_moment_recursions_9_17} 的秩缺口说明：在某些 \(q\) 上存在不可见的表示分量，使得可观测子空间维数下降，从而触发共振。
 
+\begin{remark}[Hankel 最小实现函子：把序列提升为最小线性表示]\label{rem:pom-minh-functor}
+为把“秩缺口 = 表示不可见性”写成可组合接口，可将 \(R\)-值序列视为对象范畴 \(\mathbf{Seq}(R)\)，并将线性表示对象取为三元组 \((u,A,v)\)（\(u,v\) 为向量，\(A\) 为有限维矩阵），其语义为
+\(
+a_n=u^{\mathsf T}A^n v
+\)。
+在该口径下，Hankel 方法定义一个（在同构意义下）规范的最小实现赋值
+\[
+\mathsf{MinH}:\mathbf{Seq}(R)\to \mathbf{LinRep}_{\min}(R),
+\]
+把序列送到其最小维数 realization（可由可观测/可达分解或伴随矩阵实现显式构造）。
+定理 \ref{thm:hankel-rank-minimal} 表明：该最小维数恰等于 Hankel 秩，从而 Hankel 秩下降可被解释为“序列语义所能看到的表示维数”小于名义模态空间维数。
+\end{remark}
+
 \begin{conjecture}[模态可见性与闭合维数]\label{conj:pom-moment-visible}
 设 \(V_q\) 为由同余角色张量提升并施加共轭对称与输出一致约束得到的模态空间，令 \(V_q^{\mathrm{vis}}\) 表示对碰撞读出可见的子空间。则
 \[
@@ -93,6 +106,21 @@ $$
 \((n_1,n_2,n_3)\)（满足 \(n_1+n_2+n_3=q-1\)）并把维度降至
 \(\binom{q+1}{2}\)。
 脚本 \texttt{scripts/exp\_fold\_collision\_star\_kernel\_sympress\_demo.py} 给出该“轨道压缩 \(\Rightarrow\) \(\widetilde A_q\) \(\Rightarrow\) Perron 根估计”的可执行转移计数接口（输入为分解矩阵 \(B_0,B_1\)）。
+\end{remark}
+
+\begin{remark}[两段压缩律：对称幂商核 \texorpdfstring{$+$}{+} Hankel 最小化]\label{rem:pom-sympower-then-minh}
+对固定的 \(q\)，moment-kernel 编译把 \(q\)-重碰撞约束落为有限核 \(A_q\)（命题 \ref{prop:pom-moment-kernel-exists}），其最朴素实现对应 \(q\)-份同步直积的指数态空间。
+注 \ref{rem:pom-star-sympress}（以及更一般的对称幂/轨道压缩观点，注 \ref{rem:pom-moment-symmetric-power-substitution-operator}）表明：当计数目标具有完全的叶子置换对称时，可先取对称群作用的商，把指数态空间压缩为多项式维度的“对称幂商核” \(\widetilde A_q\)。
+\par
+随后在序列侧对 \(S_q(m)\) 应用 Hankel 最小实现函子 \(\mathsf{MinH}\)（注 \ref{rem:pom-minh-functor}），得到真实可见的最小维数 \(d_q\)（表 \ref{tab:fold_collision_moment_recursions_9_17}）。
+因此得到一个可执行的两段式压缩接口：
+\[
+\boxed{\;
+\text{指数直积核}\ \Longrightarrow\ \text{对称幂商核 }\widetilde A_q\ \Longrightarrow\ \mathsf{MinH}(S_q)\ \text{的最小维数 }d_q\; }.
+\]
+当出现 \(\Delta(q)=(2\lfloor q/2\rfloor+1)-d_q>0\)（表 \ref{tab:fold_collision_resonance_gap_delta_q_9_17}）时，
+该缺口可被视为“对称幂商核的名义模态维数”与“序列语义真实可见维数”之间的不可约差异：
+它对应于一组由 Hankel 秩下降强制出现的共振线性约束（见表 \ref{tab:fold_collision_resonance_nullmodes_q9_17}），从而把“乘法式的 \(q\)-重交互”在可审计层面压缩为一个整数缺口证书与一组显式约束向量。
 \end{remark}
 
 \paragraph{从 \texorpdfstring{$r_q$}{r\_q} 到压力与“纤维多重度谱”：凸共轭上界（严格）}

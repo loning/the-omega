@@ -69,6 +69,54 @@ d_j(u):=u^{-j/2}c_j(u).
 因此对该 \(\Xi_{\Delta,L}\) 而言，“临界线”并非额外结构，而是自对偶对称在参数侧的固定几何：单位圆切片。
 \end{remark}
 
+\begin{proposition}[unitary slice 的行列式重写与谱穿越判据]\label{prop:xi-unitary-slice-spectral-crossing}
+在自对偶假设下，进一步假设
+\(
+\Delta(z,u)=\det(I-zB(u))
+\)
+来自某个有限维（可审计）矩阵族 \(B(u)\)（例如同步核加权情形，见 \S\ref{subsec:zeta-online-kernel} 与附录 \ref{app:kernel-self-dual}）。
+固定 \(L>1\)，令 \(\theta:=2t\log L\)。
+则对任意 \(t\in\RR\) 有严格恒等式
+\[
+\boxed{\;
+\Xi_{\Delta,L}\!\left(\tfrac12+it\right)
+=
+\det\!\Bigl(I-U_L(\theta)\Bigr),\qquad
+U_L(\theta):=L^{-1/2}e^{-i\theta/2}\,B(e^{i\theta})\; }.
+\]
+因此临界线零点满足等价判据
+\[
+\boxed{\;
+\Xi_{\Delta,L}\!\left(\tfrac12+it\right)=0
+\quad\Longleftrightarrow\quad
+1\in\mathrm{Spec}\bigl(U_L(\theta)\bigr),\ \ \theta=2t\log L\; }.
+\]
+\end{proposition}
+\begin{proof}
+取 \(s=\tfrac12+it\)。则
+\(
+u_L(s)=L^{2it}=e^{i\theta}
+\)
+其中 \(\theta=2t\log L\)，并且
+\(
+z_L(s)=L^{-s}=L^{-1/2}e^{-it\log L}=L^{-1/2}e^{-i\theta/2}
+\)。
+由 \(\Xi_{\Delta,L}(s)=\Delta(z_L(s),u_L(s))=\det(I-z_L(s)B(u_L(s)))\) 得到所示重写。
+零点判据由行列式为零当且仅当 \(1\) 为 \(U_L(\theta)\) 的特征值立得。证毕。
+\end{proof}
+
+\begin{remark}[可审计的谱穿越口径：从多项式根到特征值轨道]\label{rem:xi-unitary-slice-operator-audit}
+命题 \ref{prop:xi-unitary-slice-spectral-crossing} 把 Hardy 截面上的零点检测从
+“一元多项式 \(P_L(S)\) 的根”（命题 \ref{prop:xi-rh-interval-criterion}）
+等价转写为
+“unitary 参数 \(\theta\) 下归一化核 \(U_L(\theta)\) 的谱是否穿过 \(1\)”。
+这一口径的意义在于：它把“临界线几何”从 \(s\)-平面的隐式条件，转化为 \(|u|=1\) 上的显式算子族谱问题，从而允许直接以数值线性代数在 \(\theta\)-轴上进行独立审计。
+\par
+同步核加权例子中，脚本 \texttt{scripts/exp\_sync\_kernel\_unitary\_slice\_spectral\_crossing.py} 在离散网格上同时计算
+\(\det(I-U_L(\theta))\) 与 \(\min_{\lambda\in\mathrm{Spec}(U_L(\theta))}|\lambda-1|\)，并输出为可复现表格：
+\input{sections/generated/tab_sync_kernel_unitary_slice_spectral_crossing}
+\end{remark}
+
 \paragraph{自对偶截面上的完成化常数：\texorpdfstring{$w$}{w} 固定，\texorpdfstring{$\Xi$}{Xi} 退化为余弦多项式}
 为避免与复变量 \(s\) 混淆，本段把 completion 的迹坐标记为 \(S\)。
 若自对偶 \(\Delta(z,u)\) 还可写成某个完成化行列式

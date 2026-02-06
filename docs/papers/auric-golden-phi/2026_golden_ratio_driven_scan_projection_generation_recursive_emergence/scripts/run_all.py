@@ -993,6 +993,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_unitary_slice_spectral_crossing",
+            script="exp_sync_kernel_unitary_slice_spectral_crossing.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_unitary_slice_spectral_crossing.json",
+                "sections/generated/tab_sync_kernel_unitary_slice_spectral_crossing.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_3d_conditional_covariance",
             script="exp_sync_kernel_3d_conditional_covariance.py",
             args=[],
@@ -1831,6 +1840,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_conditional_expectation_singular_spectrum.json",
                 "sections/generated/tab_fold_conditional_expectation_singular_spectrum.tex",
+            ],
+        ),
+        Step(
+            name="fold_fiber_dispersion_index",
+            script="exp_fold_fiber_dispersion_index.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_fiber_dispersion_index.json",
+                "sections/generated/tab_fold_fiber_dispersion_index.tex",
             ],
         ),
         Step(
