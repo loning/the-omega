@@ -1425,6 +1425,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="alignment_cos_vs_sqrt5_phi2",
+            script="exp_alignment_cos_vs_sqrt5_phi2.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/alignment_cos_vs_sqrt5_phi2.json",
+                "sections/generated/eq_alignment_cos_vs_sqrt5_phi2.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_time_correlation",
             script="exp_real_input_40_time_correlation.py",
             args=[],
@@ -1655,6 +1664,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/sync_kernel_A_compare.json",
                 "sections/generated/tab_sync_kernel_A_compare.tex",
+            ],
+        ),
+        Step(
+            name="add_collision_spectrum_10_vs_40",
+            script="exp_add_collision_spectrum_10_vs_40.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/add_collision_spectrum_10_vs_40.json",
+                "sections/generated/tab_add_collision_spectrum_10_vs_40.tex",
             ],
         ),
         Step(

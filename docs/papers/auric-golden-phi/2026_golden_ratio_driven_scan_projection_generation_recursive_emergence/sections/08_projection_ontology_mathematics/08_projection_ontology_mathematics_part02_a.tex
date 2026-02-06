@@ -258,6 +258,18 @@ T_I(n;m)\ \approx\ k_Z(I)\,\delta_Z\ +\ k_\chi(I)\,\tau_{\mathrm{mix}}\ +\ k_{\d
 这给出“投影词 $\Rightarrow$ 非并行开销”的直接量化接口。
 \end{remark}
 
+\begin{remark}[非并行开销的三分量口径（延迟/触及规模/碰撞谱）]\label{rem:pom-nonparallel-three-meters}
+定义 \ref{def:pom-cost} 的成本分解把“常数延迟门 \(P_Z\)”与“序门 \(P_{\le}\)”以及演化深度 \(D_U\) 分离开。
+若进一步希望把不同指令/运算的“不可并行开销”统一为一个可审计对象，则仅用一个标量时间并不足够；更自然的最小口径是一个三分量资源向量：
+\begin{itemize}
+  \item \textbf{在线延迟 \(\delta\)：}由规范门的因果锥长度给出（在 ISA 抽象下对应 \(\delta_Z\) 的标尺）；
+  \item \textbf{投影支持规模：}跨分辨率写回触及的外表位数（由规范差 \(G_m\) 及其典型密度控制；注 \ref{rem:pom-rescale-gauge-anomaly}）；
+  \item \textbf{空间损失谱：}由碰撞 moment-kernel 的 Perron 根 \(\{r_q\}_{q\ge 2}\)（或其压力曲线）刻画的“同像碰撞强度”（见定理 \ref{thm:pom-collision-kernel-ak} 与 \S\ref{subsec:pom-spectral-resource-type} 的资源曲线/类型口径）。
+\end{itemize}
+对不涉及序约束的运算（如加法、乘法与多项式复合），上述三项即可区分“同一语义的不同编译路线”；而一旦语义必须包含最小性/区间约束（如商余），则序投影 \(P_{\le}\) 不可约地出现并引入由扭曲谱隙刻度的时间尺度 \(\tau_{\mathrm{mix}}\)（推论 \ref{cor:pom-order-mixing}，注 \ref{rem:pom-order-mixing-scale}），从而把资源签名提升到更高维。
+一个直接的、可复算的例子是：把输入合法性约束提升为 40 状态真实输入核后，“加法作为一次投影”的空间侧碰撞常数发生显著变化（附录 \S\ref{app:add-collision-spectrum}）。
+\end{remark}
+
 \subsection{带参数的投影词 \texorpdfstring{$2$}{2}-范畴与可审计重写}\label{subsec:pom-2cat-rewrite}
 \paragraph{目标}
 投影词半群 $\mathcal W$（定义 \ref{def:pom-projection-word}）提供了“词法计数”，指令签名 $\Sigma$（定义 \ref{def:pom-instruction-signature}）提供了“可审计不变量”。
@@ -275,7 +287,7 @@ T_I(n;m)\ \approx\ k_Z(I)\,\delta_Z\ +\ k_\chi(I)\,\tau_{\mathrm{mix}}\ +\ k_{\d
   \[
   \{\ P_Z,\ P_{\le},\ P_\chi,\ P_{\mathrm{prim}},\ E_m,\ \mathrm{PROJ}_u,\ \mathrm{LIFT}_G,\ \mathrm{MOM}_q,\ \mathrm{TWIST}(\chi),\ U\ \}
   \]
-  其中 $E_m$ 为条件期望接口（定义 \ref{def:pom-proj-norm}），$\mathrm{PROJ}_u$ 为软序门（定义 \ref{def:pom-proj-temp}），$\mathrm{LIFT}_G$ 为群扩张/标记提升门（见第 \ref{sec:zeta-finite-part} 节的群扩张接口），$\mathrm{MOM}_q$（$q\ge2$）为 $q$-重碰撞/矩提升门：把一个折叠/读出核编译为其 $q$-重 fiber-product moment-kernel，从而读出高阶碰撞矩 \(S_q(m)=\sum_x d_m(x)^q\) 的线性递推与 Perron 主尺度（见定理 \ref{thm:pom-collision-kernel-ak}）。其余为本文的投影门族（定义 \ref{def:pom-proj-norm}--\ref{def:pom-proj-chi}）。
+  其中 $E_m$ 为条件期望接口（定义 \ref{def:pom-proj-norm}），$\mathrm{PROJ}_u$ 为软序门（定义 \ref{def:pom-proj-temp}），$\mathrm{LIFT}_G$ 为群扩张/标记提升门（见第 \ref{sec:zeta-finite-part} 节的群扩张接口），$\mathrm{MOM}_q$（$q\ge2$）为 $q$-重碰撞/矩提升门：把一个折叠/读出核编译为其 $q$-重 fiber-product moment-kernel，从而读出高阶碰撞矩 \(S_q(m)=\sum_x d_m(x)^q\) 的线性递推与 Perron 主尺度（见定理 \ref{thm:pom-collision-kernel-ak}）。与 \(\mathrm{TWIST}(\chi)\) 一起，\(\mathrm{MOM}_q\) 构成把“词法重写”推进到“可计算谱指纹/资源预算”的最小谱门接口。其余为本文的投影门族（定义 \ref{def:pom-proj-norm}--\ref{def:pom-proj-chi}）。
   \item \textbf{$2$-态射：}由“可审计结构事实”给出的重写证书（等式/同构），包括但不限于：
   \begin{enumerate}
     \item 幂等与塔式关系：$P_Z\circ P_Z=P_Z$，以及 $E_{m_1}\circ E_{m_2}=E_{m_1}$（条件期望塔性质）；
@@ -287,6 +299,16 @@ T_I(n;m)\ \approx\ k_Z(I)\,\delta_Z\ +\ k_\chi(I)\,\tau_{\mathrm{mix}}\ +\ k_{\d
 \end{itemize}
 将这些 $2$-态射视为“可证明等价/可交换的编译变换”，即可在 $\mathbf{PW}$ 中进行带证书的重写。
 \end{definition}
+
+\begin{remark}[三门 + 两谱门：最小可推演片段]\label{rem:pom-pw-star-fragment}
+在本文后续的“正规形—异常—空间谱—零温证书”闭环中，反复出现的最小生成片段可记为
+\[
+\mathbf{PW}^{\ast}:=\langle E_m,\ \mathrm{PROJ}_u,\ \mathrm{LIFT}_G,\ \mathrm{TWIST}(\chi),\ \mathrm{MOM}_q\rangle\subseteq \mathbf{PW}.
+\]
+其中 \(E_m,\mathrm{PROJ}_u,\mathrm{LIFT}_G\) 给出分辨率读出、温度化序门与群扩张三条接口轴；
+而 \(\mathrm{TWIST}(\chi)\) 与 \(\mathrm{MOM}_q\) 则把交换失败/尾部放大等“残差”对象化为可计算谱指纹（\(\log\mathfrak{M}_\chi\)、\(\rho_\chi/\lambda\)、\(r_q(u)\)、\(P(q,u)\)）。
+因此在 \(\mathbf{PW}^{\ast}\) 上，一个“算法等价”既可在词法层以正规形与 \(2\)-态射证书呈现，也可在谱层以异常签名与资源曲线交叉核验（见 \S\ref{subsec:pom-three-generator-residual-closure}、\S\ref{subsec:pom-spectral-resource-type}、\S\ref{subsec:pom-proj-tropicalization}）。
+\end{remark}
 
 \begin{definition}[\texorpdfstring{$\varepsilon$}{eps}-sound 的近似重写证书（误差预算）]\label{def:pom-eps-sound-rewrite}
 固定对象 \(\mathcal{I}(m;K;\kappa)\)，并约定其携带一份参考抽样分布 \(\mathbb{P}_{\mathcal I}\)
