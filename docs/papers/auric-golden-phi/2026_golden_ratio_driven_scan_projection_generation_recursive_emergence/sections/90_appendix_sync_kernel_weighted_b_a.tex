@@ -448,7 +448,7 @@ R\!\left(\tfrac14+\delta,u\right)
 \qquad
 \boxed{\ \alpha(u)=\frac14\pm K_{\mathrm{end}}\sqrt{u}+O(u^{3/4}),\quad K_{\mathrm{end}}:=\frac{3}{8}\ }.
 \]
-这条“端点常数”是零成本强审计项：若未来重新生成 \(R\) 或更换参数族，端点处 \(r_0,r_1\) 的形状先锁定指数 \(1/2\)，再由 \(r_2(\tfrac14)\) 的有理值检验 jet 是否仍为完全平方，从而直接否决大量潜在的消元/实现错误。
+这条“端点常数”是无需额外计算开销且可直接复算的强审计项：若未来重新生成 \(R\) 或更换参数族，端点处 \(r_0,r_1\) 的形状先锁定指数 \(1/2\)，再由 \(r_2(\tfrac14)\) 的有理值检验 jet 是否仍为完全平方，从而直接否决大量潜在的消元/实现错误。
 \par
 \noindent\textbf{（四分支与统一化变量必须取 \(u^{1/4}\)）}
 由于最低阶项为完全平方，侧翼端点的\emph{正确统一化变量}不是 \(t=\sqrt{u}\) 而是
@@ -460,7 +460,7 @@ R\!\left(\tfrac14+\delta,u\right)
 \boxed{\ \alpha(s)=\frac14+\frac38 s^2+\frac{3}{16}s^3-\frac54 s^4+\frac{115}{64}s^5+O(s^6)\ }.
 \]
 于是局部上形成四页覆盖：对同一 \(u>0\)，四个取值 \(s\in\{\pm u^{1/4},\ \pm i\,u^{1/4}\}\) 给出两条实分支与一对共轭复分支。
-这对数值求根是致命信息：若直接在 \((\alpha,u)\) 平面用 Newton 迭代，端点簇附近的误差步长很容易把迭代抛入复分支；而以 \(s=u^{1/4}\) 做 continuation/homotopy 则可把四张分支稳定分离，并把端点从“几何分歧点”统一化为普通解析展开。
+上述分支特性对数值求根算法的稳定性具有关键影响：在 \((\alpha,u)\) 平面直接应用 Newton 迭代时，端点簇附近的奇异性易导致迭代轨迹偏离实分支并进入复分支区域；而引入变量替换 \(s=u^{1/4}\) 并结合 continuation/homotopy 策略，则可实现四张分支的稳定分离，从而将端点从几何分歧点描述统一为解析展开口径。
 \par
 \noindent\textbf{（相对条件数恒等律）}
 尽管 \(\alpha'(u)\sim \pm \tfrac{K_{\mathrm{end}}}{2}\,u^{-1/2}\) 在 \(u\to0\) 发散，但相对条件数
@@ -479,7 +479,7 @@ R\!\left(\tfrac14+\delta,u\right)
 \[
 \boxed{\ \alpha(u)=\frac34-\frac38\,u^{-1/2}\ \mp\ \frac{3}{16}\,u^{-3/4}\ +\ \frac54\,u^{-1}+O(u^{-5/4})\ }.
 \]
-因此在 \(u\to0\) 端 \(\alpha\) 必须以系数 \(K_{\mathrm{end}}=\tfrac38\) 以 \(\sqrt{u}\) 速度离开 \(\tfrac14\)，而在 \(u\to\infty\) 端必须以\emph{同一系数} \(K_{\mathrm{end}}\) 以 \(u^{-1/2}\) 速度离开 \(\tfrac34\)；这两端同时构成对 \(R\) 的“零成本、极强约束”审计对照。
+因此在 \(u\to0\) 端 \(\alpha\) 必须以系数 \(K_{\mathrm{end}}=\tfrac38\) 以 \(\sqrt{u}\) 速度离开 \(\tfrac14\)，而在 \(u\to\infty\) 端必须以\emph{同一系数} \(K_{\mathrm{end}}\) 以 \(u^{-1/2}\) 速度离开 \(\tfrac34\)；这两端同时构成对 \(R\) 的“无需额外计算开销且可直接复算、极强约束”审计对照。
 \par
 \noindent\textbf{中心聚合诱导的 \emph{order-6 singular inversion}。}
 由 \(R(\tfrac12,u)=-(u-1)^6Q(u)/64\) 且 \(Q(1)\neq0\) 可知 \(u=1\) 在 \(\alpha=\tfrac12\) 截面上为恰 \(6\) 重根，从而

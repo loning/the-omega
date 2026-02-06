@@ -411,7 +411,16 @@ def build_steps() -> List[Step]:
         Step(
             name="fold_collision_pressure_multifractal_q60",
             script="exp_fold_collision_pressure_multifractal_q60.py",
-            args=["--m-min", "24", "--m-max", "30", "--q-max", "60", "--use-exact-up-to", "17"],
+            args=[
+                "--m-min",
+                "24",
+                "--m-max",
+                "30",
+                "--q-max",
+                "60",
+                "--use-exact-up-to",
+                "17",
+            ],
             expected_outputs=[
                 "artifacts/export/fold_collision_pressure_multifractal_q60.json",
                 "artifacts/export/fold_collision_pressure_multifractal_q60_rq.png",
@@ -1552,6 +1561,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_lifted_chain_correlation",
+            script="exp_real_input_40_lifted_chain_correlation.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_lifted_chain_correlation.json",
+                "sections/generated/tab_real_input_40_lifted_chain_eta_envelope.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_tau_corr_vs_tau_mix",
             script="exp_real_input_40_tau_corr_vs_tau_mix.py",
             args=[],
@@ -1821,6 +1839,157 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_pinsker_residual_bridge.json",
                 "sections/generated/tab_fold_pinsker_residual_bridge.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_kernel_rh_scan_q2_8",
+            script="exp_fold_collision_kernel_rh_scan_q2_8.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_fold_collision_kernel_rh_scan_q2_8.tex",
+                "sections/generated/eq_collision_kernel_A4_rh_breaking.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_atomic_2cycle_locator",
+            script="exp_real_input_40_atomic_2cycle_locator.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_real_input_40_atomic_2cycle_states.tex",
+            ],
+        ),
+        Step(
+            name="relative_zeta_sync_vs_grammar",
+            script="exp_relative_zeta_sync_vs_grammar.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_relative_zeta_sync_vs_grammar.tex",
+            ],
+        ),
+        Step(
+            name="relative_zeta_sync_vs_real_input",
+            script="exp_relative_zeta_sync_vs_real_input.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_relative_zeta_sync_vs_real_input.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_rate_curve_center_slice_audit",
+            script="exp_sync_kernel_rate_curve_center_slice_audit.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_sync_kernel_rate_curve_center_slice_audit.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_weighted_pressure_2d_exact_mixed_derivatives",
+            script="exp_sync_kernel_weighted_pressure_2d_exact_mixed_derivatives.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_sync_kernel_weighted_pressure_2d_exact_mixed_derivatives.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_finite_part",
+            script="exp_collision_kernel_A4_finite_part.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_collision_kernel_A4_finite_part.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_primitive",
+            script="exp_collision_kernel_A4_primitive.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_collision_kernel_A4_primitive.tex",
+            ],
+        ),
+        Step(
+            name="fold_binary_saturation",
+            script="exp_fold_binary_saturation.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_fold_binary_saturation_points.tex",
+            ],
+        ),
+        Step(
+            name="fold_output_gibbs_markov_fit",
+            script="exp_fold_output_gibbs_markov_fit.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_fold_output_gibbs_markov_fit.tex",
+            ],
+        ),
+        Step(
+            name="parallel_addition_kernels_tunneling_action",
+            script="exp_parallel_addition_kernels_tunneling_action.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_parallel_addition_kernels_tunneling_action.tex",
+            ],
+        ),
+        Step(
+            name="phi_m_conjugacy_threshold",
+            script="exp_phi_m_conjugacy_threshold.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_phi_m_conjugacy_threshold.tex",
+            ],
+        ),
+        Step(
+            name="pom_projword_four_gen_kb_completion_audit",
+            script="exp_pom_projword_four_gen_kb_completion_audit.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_pom_projword_four_gen_kb_completion_audit.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_real_input_40_arity_charge_closed_form",
+            script="exp_sync_kernel_real_input_40_arity_charge_closed_form.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_real_input_40_arity_charge_coboundary_audit.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_real_input_40_arity_3d_335_N2",
+            script="exp_sync_kernel_real_input_40_arity_3d.py",
+            args=[
+                "--third-axis",
+                "N2",
+                "--triple-values",
+                "3x3x5",
+            ],
+            expected_outputs=[
+                "sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2_fourier_top.tex",
+                "sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2_summary.tex",
+            ],
+        ),
+        Step(
+            name="arity_335_n2_limit_law_table",
+            script="exp_arity_335_n2_limit_law_table.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2_summary.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_artin_sign_mertens",
+            script="exp_real_input_40_artin_sign_mertens.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_real_input_40_artin_sign_mertens.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_collision_near1_pole_predictions",
+            script="exp_real_input_40_collision_near1_pole_predictions.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_real_input_40_collision_near1_pole_predictions.tex",
             ],
         ),
         Step(
