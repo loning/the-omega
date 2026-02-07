@@ -1,0 +1,54 @@
+\section{completion \texorpdfstring{$\to$}{->} cyclotomic resultant：root-of-unity 扭曲谱半径的整系数证书}\label{app:cyclotomic-resultant-certificate}
+
+本附录给出一条把“单位圆扭曲（Dirichlet 角色）”压缩为\textbf{整系数一元多项式证书}的通用接口。
+其目的并非替代 Lyapunov--LMI，而是提供另一条完全离线可核对的口径：对每个固定模数层 \(m\)，把扭曲行列式/特征方程中出现的根单位参数消去，输出 \(R_m(w)\in\ZZ[w]\)，从而把“扭曲谱半径/最小模零点”变成一个可复算的代数对象。
+
+\subsection{完成化不变量子环：\texorpdfstring{$u=r^2,\ s=r+r^{-1},\ w=zr$}{u=r^2, s=r+r^{-1}, w=zr}}\label{subsec:completion-invariant-ring-bridge}
+
+设 \(\Delta(z,u)\in\ZZ[u][z]\) 为某个有限核/有限矩阵族的行列式对象（例如 \(\Delta(z,u)=\det(I-zM(u))\)）。
+若 \(\Delta\) 满足自对偶/完成化对称
+$$
+\Delta(z,u)=\Delta(uz,1/u),
+$$
+则在变量替换
+$$
+u=r^2,\qquad s:=r+r^{-1},\qquad w:=zr
+$$
+下，\(w\) 与 \(s\) 为对合 \(r\mapsto r^{-1}\) 的不变量，且存在
+$$
+\widehat{\Delta}(w,s)\in\ZZ[s][w]
+$$
+使得对所有可逆 \(r\) 成立恒等式
+$$
+\widehat{\Delta}(w,r+r^{-1})=\Delta(w/r,r^2).
+$$
+该完成化把“乘法扭曲参数 \(u\)”压缩为“加法迹坐标 \(s\in[-2,2]\)”。
+
+\subsection{cyclotomic resultant：消去 \texorpdfstring{$s=2\cos(\pi/m)$}{s=2cos(pi/m)} 得到一元证书}\label{subsec:cyclotomic-resultant}
+
+\begin{proposition}[completion \texorpdfstring{$\to$}{->} cyclotomic resultant 证书]\label{prop:completion-to-cyclotomic-resultant}
+沿用上节记号。对每个 \(m\ge 2\)，令
+$$
+s_m:=2\cos(\pi/m)\in[-2,2],
+$$
+并令 \(\Phi_m^{+}(s)\in\ZZ[s]\) 为代数数 \(s_m\) 的最小多项式（整系数、首一）。定义 resultant
+$$
+R_m(w):=\operatorname{Res}_s\bigl(\widehat{\Delta}(w,s),\Phi_m^{+}(s)\bigr)\in\ZZ[w].
+$$
+则当 \(u=e^{2\pi i/m}\)（取 \(r=e^{\pi i/m}\) 使 \(s=r+r^{-1}=s_m\)）时，若 \(z\) 满足 \(\Delta(z,u)=0\)，则对应的
+$$
+w:=zr
+$$
+必满足 \(R_m(w)=0\)。特别地，在单位圆扭曲 \(|u|=1\) 的谱半径/最小模零点口径下，有
+$$
+\boxed{\;
+\rho_m=\frac{1}{\min\{|w|:\ R_m(w)=0\}}\; }.
+$$
+\end{proposition}
+
+\begin{remark}[与区间根证书的兼容：把“扭曲谱半径”转写为 \texorpdfstring{$\ZZ$}{Z}-可核验的根半径问题]\label{rem:resultant-to-interval-audit}
+命题 \ref{prop:completion-to-cyclotomic-resultant} 将每个模数层 \(m\) 的 root-of-unity 扭曲压缩为 \(R_m(w)\in\ZZ[w]\)。
+因此“\(\rho_m\) 的上界/下界”可通过对 \(R_m\) 的根半径作区间审计而实现：例如以 Sturm/Jacobi 的区间根证书（附录 \ref{app:xi-certificate-layer}）或 Rouch{\'e}/WSOS 的有限区域证书（附录 \ref{app:godel-wsos-rouche}）输出完全离线可核对的界。
+在 BridgeRH 的语义中，这为附录 \ref{app:diffusion-barrier-spectral-tax} 的谱隙税率 \(\Delta_m(u)\) 提供一条“代数证书化”的获取路径。
+\end{remark}
+

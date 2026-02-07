@@ -46,6 +46,79 @@ $
 只含 \(u^{p\ell}\) 项。逐幂次比较系数即得两条同余。证毕。
 \end{proof}
 
+\subsection{\texorpdfstring{$p=2$}{p=2} 的 Chebyshev--Dwork 同余链：不变量坐标 \texorpdfstring{$t=u+u^{-1}$}{t=u+u^{-1}}}\label{subsec:chebyshev-dwork-chain}
+本节指出：当偶次迹多项式在 \(u\mapsto 1/u\) 下满足回文对称时，Dwork 同余在不变量坐标 \(t=u+u^{-1}\) 上闭合，并在二幂塔上给出一个完全\textbf{矩阵自由}的模 \(2^k\) 递推护栏。
+
+\begin{lemma}[偶次回文迹的 \texorpdfstring{$t=u+u^{-1}$}{t=u+u^{-1}} 不变量分解]\label{lem:trace-palindrome-even-invariant-bridge}
+设 \(n\ge 2\) 为偶数，且 \(a_n(u)\in\ZZ[u]\) 满足回文对称
+$$
+a_n(u)=u^n a_n(1/u)
+$$
+（作为 \(\ZZ[u,u^{-1}]\) 中的恒等式）。
+令 \(t:=u+u^{-1}\)。则存在唯一多项式 \(A_n(t)\in\ZZ[t]\) 使得在 Laurent 环 \(\ZZ[u,u^{-1}]\) 中成立
+$$
+\boxed{\ a_n(u)=u^{n/2}\,A_n(t)\ }.
+$$
+\end{lemma}
+\begin{proof}
+回文对称等价于 \(u^{-n/2}a_n(u)\) 在 involution \(u\mapsto 1/u\) 下不变，因此
+$$
+u^{-n/2}a_n(u)\in \ZZ[u,u^{-1}]^{\,u\mapsto 1/u}=\ZZ[u+u^{-1}]=\ZZ[t].
+$$
+于是存在 \(A_n(t)\in\ZZ[t]\) 使 \(u^{-n/2}a_n(u)=A_n(t)\)，即得所示分解。唯一性来自嵌入 \(\ZZ[t]\hookrightarrow \ZZ[u,u^{-1}]\) 的单射性（把 \(t\) 视为 \(u\) 的代数不变量）。证毕。
+\end{proof}
+
+\begin{theorem}[Chebyshev--Dwork 同余链：\texorpdfstring{$p=2$}{p=2} 的 Frobenius 在不变量坐标上闭合]\label{thm:chebyshev-dwork-congruence-chain-bridge}
+令 \(a_n(u)\in\ZZ[u]\) 为迹多项式序列，并令 \(t:=u+u^{-1}\)。
+对每个 \(k\ge 1\)，假设偶次迹 \(a_{2^k}(u)\) 满足引理 \ref{lem:trace-palindrome-even-invariant-bridge} 的回文对称，从而存在 \(A_{2^k}(t)\in\ZZ[t]\) 使
+$$
+a_{2^k}(u)=u^{2^{k-1}}A_{2^k}(t).
+$$
+则对所有 \(k\ge 2\)，由 Dwork 型同余（\(p=2\)）
+$$
+a_{2^k}(u)\equiv a_{2^{k-1}}(u^2)\pmod{2^k}
+$$
+推出在 \(\ZZ[t]\) 内闭合的同余递推：
+$$
+\boxed{\ A_{2^k}(t)\equiv A_{2^{k-1}}(t^2-2)\pmod{2^k}\qquad\text{于 }\ZZ[t]\ }.
+$$
+\end{theorem}
+\begin{proof}
+由 Dwork 同余（命题 \ref{prop:big-witt-guardrails} 在 \(p=2\) 的特例）知
+$
+a_{2^k}(u)\equiv a_{2^{k-1}}(u^2)\pmod{2^k}
+$ 于 \(\ZZ[u]\)，亦可视为在 \(\ZZ[u,u^{-1}]\) 中成立。
+对偶次 \(2^k\) 与 \(2^{k-1}\) 应用引理 \ref{lem:trace-palindrome-even-invariant-bridge}，写成
+$$
+a_{2^k}(u)=u^{2^{k-1}}A_{2^k}(t),\qquad
+a_{2^{k-1}}(u^2)=(u^2)^{2^{k-2}}A_{2^{k-1}}(u^2+u^{-2}).
+$$
+注意恒等式
+$
+u^2+u^{-2}=(u+u^{-1})^2-2=t^2-2
+$，
+故
+$
+a_{2^{k-1}}(u^2)=u^{2^{k-1}}A_{2^{k-1}}(t^2-2)
+$。
+将其代入 Dwork 同余并在 \(\ZZ[u,u^{-1}]\) 中消去共同因子 \(u^{2^{k-1}}\)（\(u\) 为单位），得到
+$
+A_{2^k}(t)\equiv A_{2^{k-1}}(t^2-2)\pmod{2^k}
+$
+于 \(\ZZ[t]\)。证毕。
+\end{proof}
+
+\begin{corollary}[二幂塔上的矩阵自由同余递推：单变量代入替代 \texorpdfstring{$a_{2^k}(u)$}{a_{2^k}(u)}]\label{cor:chebyshev-dwork-matrixfree-bridge}
+沿用定理 \ref{thm:chebyshev-dwork-congruence-chain-bridge} 的记号。对任意 \(k\ge 2\)，在环 \((\ZZ/2^k\ZZ)[t]\) 中有
+$$
+\boxed{\ A_{2^k}(t)\equiv A_{2^{k-1}}(t^2-2)\ }.
+$$
+因此，对固定层级 \(2^k\) 的“模 \(2^k\)”计算，可将对象从“矩阵幂读出迹多项式”归约为单变量代入 \(t\mapsto t^2-2\) 与取模运算；并且该归约在二幂塔上具有对数深度（以周期长度 \(n=2^k\) 为尺度，递推步数为 \(k\)）。
+\end{corollary}
+\begin{proof}
+该结论是定理 \ref{thm:chebyshev-dwork-congruence-chain-bridge} 在模 \(2^k\) 商环中的直接重述。证毕。
+\end{proof}
+
 \subsection{\texorpdfstring{$\theta$}{theta}-导数的 \texorpdfstring{$p$}{p}-进滤波：逐阶可审计缩放律}\label{subsec:theta-derivative-filter}
 
 \begin{proposition}[\texorpdfstring{$\theta$}{theta}-导数的 \(p\)-进滤波：逐阶可审计缩放律]\label{prop:witt-theta-derivative-filter-bridge}

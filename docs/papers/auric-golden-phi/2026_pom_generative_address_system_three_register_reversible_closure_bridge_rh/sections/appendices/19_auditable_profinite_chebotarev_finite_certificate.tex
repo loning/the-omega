@@ -84,6 +84,64 @@ $。
 因此，Chebotarev 证书可被压缩为“有限个矩阵不等式证书 + 有限样本 TV 包络”两部分，天然可并行生成与并行复算。
 \end{remark}
 
+\begin{remark}[扩散障碍：统一谱隙假设的逆极限门槛]\label{rem:chebotarev-diffusion-barrier}
+定理 \ref{thm:auditable-profinite-chebotarev-finite-bridge} 的统一谱隙假设是一个\emph{跨模数层}的强规格。
+在 Dirichlet 模轴的 near-coboundary 小角二次律下，最坏扭曲比值 \(\eta_m(u)\) 以 \(1-\Theta(m^{-2})\) 贴近 \(1\)，从而混合尺度为 \(\Theta(m^2)\)，并导出 fixed finite kernel 的 uniform-\(\sqrt{\lambda}\) no-go（附录 \ref{app:diffusion-barrier-spectral-tax}）。
+因此在 inverse-limit 语义中，更自然的可审计口径往往是“模数 \(m\) 与长度 \(n\) 的双极限可见域”，或显式引入随 \(m\) 增长的核重整化族。
+\end{remark}
+
+\subsection{Plancherel 能量恒等式：同余偏差的 \texorpdfstring{$\ell^2$}{l2} 标尺}\label{subsec:chebotarev-plancherel}
+除 TV 误差外，同余分层还存在一个完全确定、且与角色扭曲通道严格对齐的 \(\ell^2\) 能量标尺：它把“均方偏差”写成“非平凡角色能量和”。
+
+\begin{proposition}[Chebotarev--Plancherel 能量恒等式]\label{prop:chebotarev-plancherel-energy}
+固定层 \(m\)、长度 \(n\) 与协议可达的 \(u\)。定义点质量分布
+$$
+\pi_{n,m}(g;u):=\frac{p_{n,g}(u)}{p_n(u)}\qquad(g\in G_m),
+$$
+并令其中心化偏差为
+$$
+f_{n,m}(g;u):=\pi_{n,m}(g;u)-\frac{1}{|G_m|}.
+$$
+对任意角色 \(\chi\in\widehat{G_m}\) 定义 Fourier 系数（非归一化 DFT）
+$$
+\widehat f_{n,m}(\chi;u):=\sum_{g\in G_m} f_{n,m}(g;u)\,\overline{\chi(g)}.
+$$
+则成立 Parseval/Plancherel 恒等式
+$$
+\boxed{\;
+\sum_{g\in G_m}\left|f_{n,m}(g;u)\right|^2
+\ =\ 
+\frac{1}{|G_m|}\sum_{\chi\in\widehat{G_m}}\left|\widehat f_{n,m}(\chi;u)\right|^2
+\ =\ 
+\frac{1}{|G_m|}\sum_{\chi\neq\chi_0}\left|\widehat \pi_{n,m}(\chi;u)\right|^2\; },
+$$
+其中 \(\widehat \pi_{n,m}(\chi;u):=\sum_{g}\pi_{n,m}(g;u)\,\overline{\chi(g)}\) 且 \(\widehat f_{n,m}(\chi_0;u)=0\)。
+\end{proposition}
+\begin{proof}
+有限阿贝尔群上的角色基正交给出 Parseval 恒等式：
+对任意函数 \(h:G_m\to\CC\)，有
+$$
+\sum_{g\in G_m}|h(g)|^2=\frac{1}{|G_m|}\sum_{\chi\in\widehat{G_m}}|\widehat h(\chi)|^2,
+$$
+其中 \(\widehat h(\chi)=\sum_{g}h(g)\overline{\chi(g)}\)。
+将 \(h=f_{n,m}(\cdot;u)\) 代入得第一等号。
+另一方面，由 \(\sum_g\pi_{n,m}(g;u)=1\) 得 \(\sum_g f_{n,m}(g;u)=0\)，从而 \(\widehat f_{n,m}(\chi_0;u)=0\)。
+并且对 \(\chi\neq\chi_0\)，常数项的 Fourier 系数为 \(0\)，故
+$$
+\widehat f_{n,m}(\chi;u)=\widehat \pi_{n,m}(\chi;u).
+$$
+代入 Parseval 得第二等号。证毕。
+\end{proof}
+
+\begin{remark}[可审计用途：由 \texorpdfstring{$\ell^2$}{l2} 偏差反推出瓶颈扭曲模态]\label{rem:chebotarev-plancherel-use}
+命题 \ref{prop:chebotarev-plancherel-energy} 提供一条与 TV 上界正交的“能量护栏”：
+\begin{itemize}
+  \item 若观测到 \(\sum_g|f_{n,m}(g;u)|^2\) 在某个尺度上无法继续降低，则至少存在一个非平凡角色 \(\chi\neq\chi_0\) 使得 \(|\widehat \pi_{n,m}(\chi;u)|\) 仍然显著，从而定位出瓶颈扭曲模态；
+  \item 若同时输出 Lyapunov--LMI 的扭曲谱隙证书（注 \ref{rem:chebotarev-lyapunov}），则该能量应与谱隙指数衰减相容；任何不相容都可作为可否证信号。
+\end{itemize}
+因此，在 (B1.b) 的同余分层审计中，建议把“TV/区间误差上界”与“\(\ell^2\) 能量守恒式”并联作为回归指纹。
+\end{remark}
+
 \subsection{缺陷极限：仅凭折叠边缘无法突破的 TV/KL 下界}\label{subsec:defect-limit}
 
 \begin{definition}[纤维缺陷标量]\label{def:fiber-defect-varkappa}

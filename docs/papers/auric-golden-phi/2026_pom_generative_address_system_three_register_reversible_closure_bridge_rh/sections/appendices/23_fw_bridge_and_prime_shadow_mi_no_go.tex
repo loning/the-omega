@@ -1,0 +1,50 @@
+\section{FW-Bridge 与 prime-shadow 否证护栏：Fourier--Parseval 双幽灵桥与有限窗口互信息上界}\label{app:fw-bridge-and-prime-shadow}
+
+本附录迁移两条对 BridgeRH 尤其有用的“否证/回归”护栏：
+\textbf{(i)}~FW-Bridge（Fourier--Witt 双幽灵桥）：把 Fold 支路的 Fourier--Parseval 严格交换与核侧的 Witt/Euler 严格交换并联，并共享同一个“碰撞缺口/非平凡频谱能量”标尺；
+\textbf{(ii)}~prime-shadow 互信息否证：证明（并以可复现实验作锚点）固定有限窗口对素数性的信息量存在硬上界，从而任何只读固定低位窗口的局域机制不可能等价恢复素数集合。
+
+\subsection{FW-Bridge：同一标尺钉死 Fourier 侧与 Witt 侧}\label{subsec:fw-bridge}
+
+\paragraph{Fold--Fourier--Parseval 桥包（最小口径）}
+在有限循环群 \(G_m\) 上，把同余计数 \(c_m\) 视为群代数函数。离散 Fourier 变换将卷积对角化为点乘，并由 Parseval 将空间 \(\ell^2\) 质量与频域能量严格对齐。其核心可压缩为一个“共同标尺”恒等式：
+若记
+$$
+S_2(m):=\sum_{r\in G_m} c_m(r)^2,\qquad
+\mathsf{Col}_m:=\frac{S_2(m)}{4^m},
+$$
+并记 Fourier 系数为 \(\widehat c_m(t)\)，则存在严格恒等式
+$$
+\boxed{\;
+|G_m|\,\mathsf{Col}_m-1=\frac{1}{4^m}\sum_{t\ne 0}\bigl|\widehat c_m(t)\bigr|^2\; }.
+$$
+左端是“碰撞缺口”，右端是“非平凡频谱能量”；二者因此是同一个可审计标尺的两种读出。
+
+\paragraph{Witt/Euler 桥包（对照）}
+附录 \ref{app:bridge-rh-obligations} 已给出迹序列 \(a_n=\Tr(T^n)\) 经 Möbius/Witt 反演得到 primitive 系数，再经 Euler 组装复原 \(\zeta_T=\det(I-zT)^{-1}\) 的严格交换桥包（注 \ref{rem:trace-primitive-euler-commuting}）。
+因此在 BridgeRH 的审计体系中，可把 “Fourier 侧的碰撞缺口标尺” 与 “Witt 侧的 trace/primitive/Euler 标尺” 并联作为回归一致性检查：若某个候选实现使二者在可审计切片上产生系统性失配，则该实现不应被提升为极限规格的桥接候选。
+
+\subsection{prime-shadow 互信息否证：固定有限窗口不足以恢复素数性}\label{subsec:prime-shadow-mi}
+
+\paragraph{设置}
+令随机变量 \(Y:=\mathbf{1}_{\mathrm{prime}}(n)\in\{0,1\}\) 表示素数性指示函数（按某固定有限审计切片采样 \(n\)），并令 \(X:=W_m\) 为 Zeckendorf 表示的最低 \(m\) 位窗口（固定有限局部观察）。
+
+\begin{proposition}[数据处理不等式给出的信息上界]\label{prop:prime-shadow-mi-dpi}
+对任意仅依赖 \(X\) 的（可随机化）判别器 \(\widehat Y=f(X)\)，有
+$$
+\boxed{\ I(Y;\widehat Y)\le I(Y;X)\ }.
+$$
+\end{proposition}
+\begin{proof}
+由数据处理不等式：\(Y\to X\to \widehat Y\) 构成 Markov 链，故 \(I(Y;\widehat Y)\le I(Y;X)\)。证毕。
+\end{proof}
+
+\begin{remark}[可复现锚点：低位窗口互信息的数量级]\label{rem:prime-shadow-mi-audit-anchor}
+参考体系在切片 \(n\le 1000\) 上对 \(m\in\{6,10,12\}\) 计算了 \(I(\mathbf{1}_{\mathrm{prime}};W_m)\)（bits）并得到典型数量级：当 \(m=6\)（\(|X_m|=21\)）时互信息约为 \(8\times 10^{-3}\) bits。该结果的意义在于：任何只读固定低位窗口 \(W_6\) 的局域机制，其对素数性的可用信息增益被结构性限制在近零量级；若观测到显著区分度提升，则信息来源必包含超出固定窗口的全局通道（更高分辨率、额外寄存器侧信息或逆极限轴束）。
+\end{remark}
+
+\begin{remark}[对 BridgeRH 的含义：约束 (B2) 的局域编译幻想]\label{rem:prime-shadow-to-b2}
+BridgeRH 的 (B2) 要求把经典零点事件编译为闭包内可核对读出。若某条编译路线试图仅用固定有限窗口/固定有限状态的“局域素数影子”替代真实素数集合，则上述互信息上界给出一个可否证护栏：在该口径下不可能获得与真实素数集合等价的判别能力。
+因此 (B2) 的可审计推进必须显式引入：随高度增长的模数轴/寄存器容量、或可证书化的扭曲通道族（如附录 \ref{app:auditable-profinite-chebotarev} 的有限 \((m,n,N)\) 证书），而不能停留在固定有限窗口的局部读出上。
+\end{remark}
+
