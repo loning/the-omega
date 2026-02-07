@@ -1,0 +1,147 @@
+\paragraph{端点三态压缩原理：\texorpdfstring{$\mathcal S_{\star}=\{0,2,-2\}$}{S*={0,2,-2}} 与模 \texorpdfstring{$4$}{4} 三通道}
+为把命题 \ref{prop:half-angle-z4-residue} 的 \(\ZZ/4\) 残差进一步压缩为“有限状态”模板，引入端点三态集合。
+
+\begin{definition}[端点三态集合与端点态函数]\label{def:endpoint-tristate-set}
+在端点 \(w=-1\)（等价于 \(u=-1\)，且 \(s=0\)）处，记
+\[
+\boxed{\ \mathcal S_{\star}:=\{0,2,-2\}\ }.
+\]
+并称映射
+\[
+d\ \longmapsto\ C_d(0)\in\mathcal S_{\star}\qquad(d\ge 1)
+\]
+为幂伸缩指数 \(d\) 的\textbf{端点态函数}。
+\end{definition}
+
+\begin{corollary}[端点三态压缩原理（\texorpdfstring{$\bmod 4$}{mod 4} 三通道退化）]\label{cor:endpoint-tristate-compression}
+对一切整数 \(d\ge 1\)，端点取值满足
+\begin{equation}\label{eq:endpoint-tristate-values}
+\boxed{\;
+C_d(0)=\mathrm{i}^{d}+\mathrm{i}^{-d}=2\cos(d\pi/2)\in\mathcal S_{\star},\qquad
+C_d(0)=
+\begin{cases}
+0, & d\ \text{为奇数},\\
+2, & d\equiv 0\ (\mathrm{mod}\ 4),\\
+-2,& d\equiv 2\ (\mathrm{mod}\ 4).
+\end{cases}\;}
+\end{equation}
+因此，任意由幂替换半群 \(\{u\mapsto u^d\}_{d\ge 1}\) 诱导的完成化动力学 \(s\mapsto C_d(s)\) 在端点 \(s=0\) 的 \(0\)-喷射上必然退化为一个模 \(4\) 的三态系统。
+\end{corollary}
+\begin{proof}
+式 \eqref{eq:endpoint-tristate-values} 即命题 \ref{prop:half-angle-z4-residue} 的端点恒等式 \eqref{eq:chebyshev-endpoint-values} 在三类剩余 \(d\bmod 4\) 下的展开写法。证毕。
+\end{proof}
+
+\paragraph{Witt--Chebyshev 端点喷射分解：primitive 的三态模板}
+令 \(p_n(u)\in\ZZ[u]\) 为 primitive 多项式，并在完成化坐标 \(u=r^2,\ s=r+r^{-1}\) 下定义
+\(\widehat p_n(s):=r^{-n}p_n(r^2)\in\ZZ[s]\)；
+同时对任意 \(d\ge 1\) 记 \(C_d(s):=r^d+r^{-d}\in\ZZ[s]\)。
+则有严格倍角律 \(r^{-dn}p_n(r^{2d})=\widehat p_n(C_d(s))\)（见推论 \ref{cor:primitive-completion-hatp}）。
+据此引入端点三态值
+\begin{equation}\label{eq:primitive-endpoint-tristate-values}
+\boxed{\;
+A_n:=\widehat p_n(0),\qquad
+B_n^{+}:=\widehat p_n(2),\qquad
+B_n^{-}:=\widehat p_n(-2)\; }.
+\end{equation}
+
+\begin{proposition}[primitive 的端点三态退化：\texorpdfstring{$\widehat p_n(C_d(0))$}{hat p_n(C_d(0))} 的模 \texorpdfstring{$4$}{4} 通道分裂]\label{prop:primitive-endpoint-tristate-degeneration}
+对任意 \(n\ge 1\) 与 \(d\ge 1\)，在端点 \(s=0\) 有严格退化
+\begin{equation}\label{eq:primitive-endpoint-tristate-degeneration}
+\boxed{\;
+\widehat p_n\!\bigl(C_d(0)\bigr)=
+\begin{cases}
+A_n, & d \text{ 奇},\\
+B_n^{+}, & d\equiv 0\ (\mathrm{mod}\ 4),\\
+B_n^{-}, & d\equiv 2\ (\mathrm{mod}\ 4).
+\end{cases}\;}
+\end{equation}
+并且端点两侧 \(\pm 2\) 与 \(u=1\) 的关系给出
+\begin{equation}\label{eq:primitive-endpoint-Bpm-identification}
+\boxed{\ B_n^{+}=p_n(1),\qquad B_n^{-}=(-1)^n p_n(1)\ }.
+\end{equation}
+\end{proposition}
+\begin{proof}
+由推论 \ref{cor:endpoint-tristate-compression}，端点态 \(C_d(0)\) 仅取三值 \(\{0,2,-2\}\)，且其取值由 \(d\bmod 4\) 决定；代入 \(\widehat p_n\) 即得 \eqref{eq:primitive-endpoint-tristate-degeneration}。
+\par
+另一方面，由定义 \(\widehat p_n(s)=r^{-n}p_n(r^2)\)，当 \(s=2\) 时取 \(r=1\) 得 \(\widehat p_n(2)=p_n(1)\)。
+当 \(s=-2\) 时取 \(r=-1\) 得 \(\widehat p_n(-2)=(-1)^{-n}p_n(1)=(-1)^n p_n(1)\)。
+从而得到 \eqref{eq:primitive-endpoint-Bpm-identification}。证毕。
+\end{proof}
+
+\paragraph{端点 WITT 分解模板：三通道权重核与对数主尺度}
+对在包含区间 \([-2,2]\) 的某开邻域上解析的函数 \(g\)，定义截断的完成化幂链算子
+\begin{equation}\label{eq:completed-witt-pow-operator-trunc}
+\boxed{\;
+(W_{\mathrm{pow}}^{\le M}g)(s):=\sum_{d=1}^{M}\frac{1}{d}\,g\!\bigl(C_d(s)\bigr)\qquad(M\ge 1)\; }.
+\end{equation}
+则端点 \(s=0\) 的 \(0\)-喷射满足严格的模类通道分解：
+
+\begin{proposition}[端点三通道分解：截断幂链在 \texorpdfstring{$s=0$}{s=0} 的模 \texorpdfstring{$4$}{4} 分组恒等式]\label{prop:endpoint-mod4-channel-decomposition}
+令
+\[
+H_M^{(1)}:=\sum_{\substack{1\le d\le M\\ d\ \mathrm{odd}}}\frac1d,\qquad
+H_M^{(0)}:=\sum_{\substack{1\le d\le M\\ d\equiv 0\ (\mathrm{mod}\ 4)}}\frac1d,\qquad
+H_M^{(2)}:=\sum_{\substack{1\le d\le M\\ d\equiv 2\ (\mathrm{mod}\ 4)}}\frac1d.
+\]
+则对任意解析 \(g\) 有恒等式
+\begin{equation}\label{eq:endpoint-mod4-channel-decomposition}
+\boxed{\;
+(W_{\mathrm{pow}}^{\le M}g)(0)
+=
+H_M^{(1)}\,g(0)
++H_M^{(0)}\,g(2)
++H_M^{(2)}\,g(-2)\; }.
+\end{equation}
+因此端点处的幂链叠加在 \(0\)-喷射层面退化为三个互不耦合的模类通道，权重完全由 \(\sum_{d\equiv a\ (\mathrm{mod}\ 4)}\frac1d\) 型核决定。
+\end{proposition}
+\begin{proof}
+由定义 \eqref{eq:completed-witt-pow-operator-trunc} 与端点三态压缩 \eqref{eq:endpoint-tristate-values}，
+对每一项 \(g(C_d(0))\) 按 \(d\bmod 4\) 分类并合并即可得到 \eqref{eq:endpoint-mod4-channel-decomposition}。证毕。
+\end{proof}
+
+\begin{remark}[端点对数主尺度与相位精度解耦：\texorpdfstring{$u=-1$}{u=-1} 下偶幂通道的计数控制]\label{rem:endpoint-logscale-parity-decouple}
+在 twist 层 \(u=-1\) 上，偶幂满足 \(u^{2k}=1\)，故任何 Witt 型伸缩叠加
+\(
+\sum_{m\ge 1}\frac1m f(u^m)
+\)
+都包含一个由偶幂子链 \(\sum_{k\ge 1}\frac{1}{2k}f(1)\) 诱导的对数主尺度。
+对 primitive 输入 \(f=p_n\) 而言，该主尺度的系数为
+\(
+f(1)=p_n(1)=B_n^{+}
+\)
+（见 \eqref{eq:primitive-endpoint-Bpm-identification}），其与端点差分轴
+\(
+A_n=\widehat p_n(0)
+\)
+所编码的半角分支信息在定义上分离。
+特别地，当 \(n\) 为奇数时 \(\widehat p_n\) 为奇多项式（推论 \ref{cor:primitive-completion-hatp}），从而 \(A_n=\widehat p_n(0)=0\)；而当 \(n\ge 3\) 为奇数时还满足 \(p_n(-1)=0\)（推论 \ref{cor:primitive-odd-vanish-u-minus1}），端点奇偶差分轴在奇长 primitive 上完全消失。
+\end{remark}
+
+\paragraph{Frobenius--Adams 整数层相位证书：\texorpdfstring{$\Delta_{p,k}$}{Delta} 在端点三态上的分层审计}
+定义 \ref{def:witt-frobenius-defect} 给出 Frobenius 缺陷多项式
+\(
+\Delta_{p,k}(u):=a_{p^k}(u)-a_{p^{k-1}}(u^p)\in\ZZ[u]
+\)，
+并由命题 \ref{prop:witt-frobenius-defect-divisibility} 得到整除深度
+\(
+\Delta_{p,k}(u)\in p^k\ZZ[u]
+\)。
+将其与端点三态压缩并置，可定义一个可直接审计实现链路的整数证书族。
+
+\begin{definition}[端点三态上的 Frobenius 整数证书]\label{def:endpoint-frobenius-integer-certificate}
+对任意素数 \(p\)、整数 \(k\ge 1\) 与端点态 \(\sigma\in\mathcal S_{\star}\)，取 \(r_\sigma\in\{\,\mathrm{i},1,-1\,\}\) 使 \(r_\sigma+r_\sigma^{-1}=\sigma\)，并令 \(u_\sigma:=r_\sigma^{2}\in\{-1,1\}\)。
+定义
+\begin{equation}\label{eq:endpoint-frobenius-integer-certificate}
+\boxed{\ \mathfrak I_{p,k}(\sigma):=\frac{\Delta_{p,k}(u_{\sigma})}{p^{k}}\in\ZZ\ }.
+\end{equation}
+\end{definition}
+
+\begin{proposition}[整数层先验护栏：端点证书的可审计性]\label{prop:endpoint-frobenius-integer-certificate-auditable}
+对任意 \((p,k)\) 与 \(\sigma\in\mathcal S_{\star}\)，证书 \(\mathfrak I_{p,k}(\sigma)\) 为良定义的整数。
+若在任一实现中出现 \(\mathfrak I_{p,k}(\sigma)\notin\ZZ\)（等价于 \(\Delta_{p,k}(u_\sigma)\notin p^k\ZZ\)），则必违反 Frobenius 缺陷整除深度 \(\Delta_{p,k}(u)\in p^k\ZZ[u]\)，从而可在整数层先行定位错误，再进入单位圆谱半径等连续谱层讨论。
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:witt-frobenius-defect-divisibility}，\(\Delta_{p,k}(u)\) 的各系数都被 \(p^k\) 整除；因此对任意 \(u_\sigma\in\ZZ\) 有 \(\Delta_{p,k}(u_\sigma)\in p^k\ZZ\)，从而 \(\mathfrak I_{p,k}(\sigma)\in\ZZ\)。
+若出现反例，则与“系数级整除”矛盾。证毕。
+\end{proof}
+
