@@ -246,6 +246,38 @@ a=d=m+1,\ b=c=1-m
 \end{equation}
 其展开系数的唯一性来自算术基本定理：对每个 \(m=\prod p^{\nu_p(m)}\) 的素因子分解，\(\prod_p (p^{-1}U_p)^{\nu_p(m)}\) 恰贡献项 \(\frac{1}{m}U_m\)。
 
+\paragraph{角色扭转的伸缩算子与相位--深度谱定理}
+在深度线 \(y=-\log|\mathfrak{w}|\in\RR\) 上，记平移表示 \((T_{\tau}g)(y):=g(y+\tau)\)。
+对任意 Dirichlet 角色 \(\chi\)（可取模 \(q\) 的角色，或更一般的完全乘法系数 \(|\chi|\le 1\)）以及 \(\sigma>0\)，定义\textbf{角色--伸缩}算子
+\begin{equation}\label{eq:scale-K-sigma-chi}
+\boxed{\;
+\mathcal{K}_{\sigma,\chi}:=\sum_{m\ge 1}\frac{\chi(m)}{m^{1+\sigma}}\,T_{\log m},
+\qquad\text{作用于 }L^2(\RR,\dd y)\; }.
+\end{equation}
+
+\begin{theorem}[相位--深度谱定理：频域乘子即 Dirichlet \(L\)-函数]\label{thm:phase-depth-spectrum-L}
+令 \(\mathcal{F}\) 为 \(y\)-变量的傅里叶变换 \((\mathcal{F}g)(\xi)=\int_{\RR}g(y)e^{-\mathrm{i}\xi y}\dd y\)。
+则对一切 \(g\in L^2(\RR)\) 有
+\begin{equation}\label{eq:phase-depth-fourier-diagonalization}
+\boxed{\;
+\mathcal{F}(\mathcal{K}_{\sigma,\chi}g)(\xi)
+=L(1+\sigma+\mathrm{i}\xi,\chi)\cdot(\mathcal{F}g)(\xi)\; },
+\end{equation}
+其中 \(L(s,\chi)=\sum_{m\ge 1}\chi(m)m^{-s}\) 为 Dirichlet \(L\)-级数。
+特别地，\(\mathcal{K}_{\sigma,\chi}\) 在 \(L^2\) 上的谱阻塞（不可逆点）与 \(L(1+\sigma+\mathrm{i}\xi,\chi)=0\) 的零点严格等价。
+\end{theorem}
+\begin{proof}
+由 \(\mathcal{K}_{\sigma,\chi}\) 的定义与平移算子的傅里叶表示 \(T_{\log m}g\mapsto e^{\mathrm{i}\xi\log m}\widehat g(\xi)\)，
+\[
+\mathcal{F}(\mathcal{K}_{\sigma,\chi}g)(\xi)
+=\sum_{m\ge 1}\frac{\chi(m)}{m^{1+\sigma}}\,e^{\mathrm{i}\xi\log m}\,\widehat g(\xi)
+=\Bigl(\sum_{m\ge 1}\frac{\chi(m)}{m^{1+\sigma+\mathrm{i}\xi}}\Bigr)\,\widehat g(\xi)
+=L(1+\sigma+\mathrm{i}\xi,\chi)\,(\mathcal{F}g)(\xi).
+\]
+谱阻塞等价于乘子取零，故得结论。证毕。
+\end{proof}
+该结论给出“无穷伸缩链”的一个封闭重述：伸缩不再被视为无穷远处的复杂结构，而被视为深度线上的平移卷积；其全部算术内容在频域完全收敛为 \(L\)-函数乘子。与附录 \ref{app:real-input-40-dirichlet} 的 Dirichlet--Witt 伸缩桥包 \((Wf)(s)=\sum_{m\ge 1}\frac{1}{m}f(ms)\)、\(\log\mathcal{Z}(s)=(W\mathcal{P})(s)\) 及 Möbius 反演 \(\mathcal{P}(s)=\sum_{m\ge 1}\frac{\mu(m)}{m}\log\mathcal{Z}(ms)\) 的严格交换结构一致，此处对伸缩核引入角色扭转。
+
 \paragraph{端点化的“无穷”重述（坐标层面）}
 在本附录的相位紧化门下，临界线参数（高度轴）可在坐标层面被严格端点化：\(x\to\infty\) 等价于 \(\mathfrak{w}(u)\to 0\)（式 \eqref{eq:scale-linearization-w-vs-x}）。
 命题 \ref{prop:scale-linearization-identity-multipliers}--\eqref{eq:endpoint-busemann-addition-law} 表明：尺度链的非线性动力学在端点坐标 \(\mathfrak{w}\) 上完全对角化为纯乘法缩放，并在精度势 \(y=-\log|\mathfrak{w}|\) 上退化为加性时间推进。
@@ -567,6 +599,34 @@ Y_{t}(mt)=\log|mt|=Y_{t}(t)+\log m
 \)
 可被理解为对“深度平移族”的加权叠加：其结构作用集中在 \(\log m\) 的一维累积，而不生成额外的连续参数轴。
 \end{remark}
+
+\subsection{黎曼无穷的双边界正规形：\texorpdfstring{$(s\to 1^{+})$}{(s->1+)} 与 \texorpdfstring{$(t\to\infty)$}{(t->infty)} 的同伦压缩}\label{subsec:riemann-infinity-dual-boundary}
+附录 \ref{app:real-input-40-dirichlet} 给出 Abel--Dirichlet 的完全等价闭式接口 \(z=\lambda^{-s}\)、\(r=\lambda^{1-s}\in(0,1)\)（\(s>1\)），并将 Abel 口径对数奇性 \(\mathcal{P}(r)=-\log(1-r)+\log\mathfrak{M}+o(1)\) 严格转写为 Dirichlet 口径
+\[
+\mathcal{P}(s)=-\log(s-1)-\log\log\lambda+\log\mathfrak{M}+o(1)\qquad(s\to 1^{+}),
+\]
+从而 \(s=1\) 的极点信息被压缩为圆盘边界 \(r\to 1^{-}\) 的有限部常数。
+另一方面，相位压缩 \(\iota(x)=\frac{1+\mathrm{i}x}{1-\mathrm{i}x}\) 将 \(x\to\pm\infty\) 压缩为单位圆端点 \(w=-1\)，并由 Koenigs 变量 \(\mathfrak{w}(u)=\frac{1+u}{1-u}\) 将端点邻域线性化为 \(\mathfrak{w}\to 0\)，其深度为 \(Y_x:=-\log|\mathfrak{w}|=\log|x|+O(1)\)（式 \eqref{eq:endpoint-busemann-potential}）。
+据此引入二维边界深度坐标
+\begin{equation}\label{eq:dual-boundary-depth-coords}
+\boxed{\ Y_r:=-\log(1-r),\qquad Y_t:=-\log|\mathfrak{w}|\ }.
+\end{equation}
+
+\begin{theorem}[双边界正规形与正交不变量]\label{thm:dual-boundary-normal-form}
+在角域 \((r,u)\in(0,1)\times(\TT\setminus\{-1\})\) 上，任何同时满足（i）Abel 口径对数极点正规形（由 \(\mathcal{P}(r)\) 的展开给出）与（ii）相位压缩伸缩线性化（由 \(\mathfrak{w}(\psi_m(u))=\mathfrak{w}(u)/m\)，式 \eqref{eq:scale-linearization-identity} 给出）的可审计对象，其“无穷”结构在 \((Y_r,Y_t)\) 上分解为一条深度推进方向与一条正交不变量方向：
+\begin{enumerate}
+  \item \textbf{（深度推进）} 由 \(Y_r\) 与 \(Y_t\) 的加性增长承载，分别对应 \(r\to 1^{-}\) 与 \(u\to -1\) 的边界层；
+  \item \textbf{（正交不变量）} 可取
+  \[
+  \mathcal{I}:=Y_r-Y_t,
+  \]
+  其表征“极点深度”与“高度深度”之间的相对相位负载；对任何仅在尺度推进上加权的 Witt 型伸缩（文稿的 \(s\mapsto ms\)、\(z\mapsto z^{m}\) 链路）及相位伸缩（\(x\mapsto mx\)、\(u\mapsto\psi_m(u)\) 链路），\(\mathcal{I}\) 为自然的守恒坐标。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由 \eqref{eq:dual-boundary-depth-coords} 与 Witt 伸缩链在 \(r\) 与 \(\mathfrak{w}\) 上的分别作用（\(r\mapsto r^{m}\) 与 \(\mathfrak{w}\mapsto \mathfrak{w}/m\)），\(Y_r\) 与 \(Y_t\) 各自以加性时间 \(\log m\) 推进；故 \(\mathcal{I}=Y_r-Y_t\) 在两类伸缩下不变。证毕。
+\end{proof}
+该定理给出封闭重述：黎曼体系的两类无穷（极点与高度）在压缩后成为一对横截边界的正规交叉，而“信息迁移到精度”在该正规形中体现为 \(\mathcal{I}\) 的不可消去性——若拒绝引入正交轴（角色轴或整数层审计轴），则 \(\mathcal{I}\) 的变化只能以边界层精度（深度喷射）形式回流。该观点与文稿的整数层审计分层原则一致：Frobenius 缺陷的整除深度 \(\Delta_{p,k}(u)\in p^k\ZZ[u]\)（定义 \ref{def:witt-frobenius-defect}）为正交轴的离散证书，一旦失效则谱层边界解释不具结构意义。
 
 \subsection{圆盘完成化与 RH 的圆盘零点禁入等价：把 \texorpdfstring{$t\to\infty$}{t->infty} 压到边界点 \texorpdfstring{$w=-1$}{w=-1}}\label{subsec:unit-disk-rh-equivalence}
 本小节给出一个与正文 unitary slice 口径互补的\textbf{无参圆盘化重述}：把经典完成化 \(\Xi_{\zeta}\)（其零点与 \(\zeta\) 的非平凡零点一致）通过 Cayley 变换搬运为单位圆盘内的解析函数，从而把 RH 等价改写为“盘内零点禁入”与“边界有限圆周平均缺陷为零”两类判据。
