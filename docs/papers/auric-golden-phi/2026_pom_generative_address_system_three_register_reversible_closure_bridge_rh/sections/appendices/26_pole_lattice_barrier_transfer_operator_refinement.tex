@@ -1,0 +1,69 @@
+\section{有限维极点格点屏障与转移算子细化：从有限核到 Fredholm 行列式的升级接口}\label{app:pole-lattice-transfer-operator-upgrade}
+
+本附录补入一条与 BridgeRH 的 (B1.c)/(B4) 直接相关的结构性诊断：
+若桥接对象长期停留在有限维矩阵/有限状态核口径，则其 \(s\)-平面奇点几何必退化为“有限条竖直直线上的等差梳齿”，无法承载经典 \(\Xi_\zeta\) 所需的更丰富统计结构。
+因此在推进路径上，必须显式引入一种可执行的升级接口：在保持有限层可审计性的同时，允许极限中进入无穷维转移算子与 Fredholm 行列式范式（见 \cite{Ruelle1976ZetaExpanding,Ruelle1978Thermodynamic,ParryPollicott1990Zeta} 的标准框架；符号动力学背景见 \cite{LindMarcus1995}）。
+
+\subsection{有限维极点格点屏障：竖直直线 \texorpdfstring{$+$}{+} 有限相位梳齿}\label{subsec:finite-pole-lattice-barrier-bridge}
+
+\begin{proposition}[有限维行列式 \texorpdfstring{$\Rightarrow$}{=>} 极点格点几何]\label{prop:finite-pole-lattice-geometry}
+令 \(M\) 为 \(d\times d\) 复矩阵，\(\lambda:=\rho(M)>0\)。
+定义
+$$
+\widehat{\zeta}_M(s):=\det(I-\lambda^{-s}M)^{-1}.
+$$
+则 \(\widehat{\zeta}_M\) 的全部极点由 \(M\) 的非零特征值 \(\mu\in\mathrm{spec}(M)\setminus\{0\}\) 给出：对每个 \(\mu\) 存在一族极点
+$$
+s_{\mu,k}
+=\frac{\log|\mu|}{\log\lambda}
+\ i\,\frac{\arg(\mu)+2\pi k}{\log\lambda},
+\qquad k\in\ZZ,
+$$
+其中 \(\arg(\mu)\in(-\pi,\pi]\) 取主值。
+因此任意有限维模型的“临界带内奇点几何”只能由\textbf{有限条竖直直线} \(\Re(s)=\log|\mu|/\log\lambda\) 上的\textbf{等差格点}（公差 \(2\pi/\log\lambda\)）组成。
+\end{proposition}
+\begin{proof}
+极点条件为 \(\det(I-\lambda^{-s}M)=0\)，等价于存在特征值 \(\mu\neq 0\) 使 \(1-\lambda^{-s}\mu=0\)。
+写 \(\lambda^{-s}=e^{-s\log\lambda}\) 并取复对数，得
+$$
+-s\log\lambda=\log|\mu|+i(\arg(\mu)+2\pi k),\qquad k\in\ZZ,
+$$
+整理即得所示表达式。证毕。
+\end{proof}
+
+\begin{remark}[对 toy-RH 与 BridgeRH 的含义]\label{rem:finite-pole-lattice-meaning}
+命题 \ref{prop:finite-pole-lattice-geometry} 解释了有限维口径的两面性：
+\textbf{(i)}~它允许在极其强的审计语义下枚举与证书化（行列式/迹/primitive 的严格交换）；
+\textbf{(ii)}~但其 \(s\)-平面几何必为“有限相位梳齿”。
+因此若某个有限核出现 toy-RH 现象（例如把若干非平凡模态压到 \(\Re(s)=\tfrac12\)），它首先是对“骨架因子/对称结构未被破坏”的 sanity check；要把该现象提升为经典 RH 的桥接证据，必须同时给出：随规格增长的状态复杂度增长机制（或进入 Fredholm 口径）与相应的 (B4) 规格证书。
+\end{remark}
+
+\subsection{可迭代细化：从粗 Markov 分割到 Fredholm 行列式}\label{subsec:transfer-operator-refinement-bridge}
+
+\begin{remark}[转移算子细化的最小可执行接口]\label{rem:transfer-operator-refinement-interface}
+许多来自“余量/取整”的同步动力学可被视为区间 \(X=[0,1)\) 上的多分支扩张系统：给定有限个允许分支 \(\{\tau_a\}_{a\in\mathcal{A}}\)（仿射收缩的逆支），及其权函数 \(w_a(\cdot;s)\)（例如长度势、carry/delay 势或 completion 诱导的解析权），可定义转移算子族
+$$
+(\mathcal{L}_s f)(x):=\sum_{a\in\mathcal{A}} \mathbf{1}_{I_a}(x)\,w_a(x;s)\,f(\tau_a(x)).
+$$
+在适当的 Banach 空间上，\(\mathcal{L}_s\) 往往具有核算子/迹类（或更强的 nuclear）性质，从而其 Fredholm 行列式
+$$
+\det(I-z\mathcal{L}_s)
+$$
+成为 \(\zeta\) 的自然承载对象（Ruelle/Selberg 型框架）。
+\par
+关键的“升级接口”是：\textbf{粗分割时它退化为有限核}。
+具体地，取一个 Markov 分割 \(\Pi_0=\{J_q\}_{q\in Q}\) 并考虑分段常值子空间 \(\mathcal{C}_{Q}:=\mathrm{span}\{\mathbf{1}_{J_q}\}\)，则 \(\mathcal{L}_s|_{\mathcal{C}_{Q}}\) 由一个有限矩阵刻画；在更细分割 \(\Pi_m\)（由分支不连续点及其原像递推生成）上取 \(\mathcal{C}_m\) 即得到一串可审计的有限秩逼近 \(\mathcal{L}_s|_{\mathcal{C}_m}\)。
+因此可在保留“有限矩阵层可证书化”的同时，引入 \(m\to\infty\) 的极限以摆脱小节 \ref{subsec:finite-pole-lattice-barrier-bridge} 的有限相位梳齿屏障。
+\end{remark}
+
+\begin{remark}[sofic 因子下 \texorpdfstring{$\zeta$}{zeta} 的非不变性与 Fischer cover 口径]\label{rem:sofic-zeta-noninvariance}
+在符号动力学中，sofic shift 的内禀 Artin--Mazur \(\zeta\) 虽为有理函数，但一般\textbf{不}在有限对一因子映射下保持不变；
+因此当把某个有限自动机/邻接矩阵 \(A\) 的 \(\det(I-zA)^{-1}\) 作为“可计算 \(\zeta\) 接口”时，其自然对应对象通常是某个覆盖 SFT（例如 Fischer cover）的 \(\zeta\)，而非任意粗化后因子系统的内禀 \(\zeta\)。
+在 BridgeRH 的审计语义中，这提示：若对可见系统做了进一步投影/粗化（例如把多通道压到单通道的可观测输出），则必须显式声明所用 \(\zeta\) 的覆盖口径，并给出从覆盖 \(\zeta\) 向因子可观测读出的可审计接口（参见 \cite{LindMarcus1995} 中关于 cover 与 sofic 的标准背景）。
+\end{remark}
+
+\begin{remark}[与 BridgeRH 义务的衔接]\label{rem:pole-lattice-to-bridge}
+在 (B1.c) 的“协议路径 + 解析刚性”中，有限维极点格点屏障提供了一个最小失败点的可诊断解释；
+在 (B4) 的正性 Fredholm-HTF/NonCancel 规格中，转移算子细化提供了一个可执行的构造方向：把有限核模板提升为可承载无限谱的 Fredholm 行列式对象，并要求其携带整数重数/留数证书与 Abel-first/有限部接口。
+\end{remark}
+

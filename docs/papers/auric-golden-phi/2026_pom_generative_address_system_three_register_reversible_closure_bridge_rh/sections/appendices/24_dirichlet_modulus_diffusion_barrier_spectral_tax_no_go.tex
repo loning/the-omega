@@ -75,6 +75,64 @@ $$
 它把“空间容量 \(|G_m|\)”与“时间扩散 \(\tau_{\mathrm{mix}}\)”绑定为同一条可审计预算：\textbf{加深模轴/加大寄存器并不必然加速}，因为 \(|G_m|\) 变大往往伴随 \(\eta_m(u)\to 1\)（谱隙变小、扩散更慢），从而 \(W(m,u)\) 可能上升。
 \end{remark}
 
+\subsection{模轴设计律：最大模数控制、primorial 选模与方差匹配分配}\label{subsec:moduli-design-laws}
+
+扩散障碍并不否定 prime-register 的并行价值；它提供的是一条\textbf{可审计的设计律}：在给定容量 \(P\) 的前提下，如何选择/分配模数以压低谱隙税工作量。
+
+\begin{remark}[最大模数控制律：乘法空间、平方时间（小角二次律 + 可证伪选择律）]\label{rem:tax-max-modulus-control-law}
+取两两互素的模数组 \(\{p_1,\dots,p_k\}\) 并令
+$$
+G:=\prod_{i=1}^k\ZZ/p_i\ZZ,\qquad
+P:=|G|=\prod_{i=1}^k p_i,\qquad
+L:=\max_i p_i.
+$$
+在 near-coboundary 小角 regime 中，沿第 \(i\) 轴的纯轴扭曲（仅在 \(\ZZ/p_i\ZZ\) 上取最小非平凡角）满足
+$$
+\Delta_i\ \approx\ 2\pi^2\,\sigma_i^2/p_i^2
+:=4\pi^2\,\kappa_i/p_i^2,\qquad \kappa_i:=\sigma_i^2/2.
+$$
+若进一步满足一个\textbf{可证伪/可审计}的“单轴慢模选择律”：最坏非平凡角色由某个纯轴字符达到，并且发生在最大模数轴 \(p_{i^\star}=L\)，则谱隙税率 \(\Delta_G\) 的主阶由该最坏小角锁定，从而有工作量主阶
+$$
+n\ \gtrsim\ \frac{\log|G|+\log(1/\delta)}{\Delta_G}
+\ \approx\
+\frac{L^2}{4\pi^2\,\kappa_{i^\star}}\Bigl(\log P+\log\tfrac{1}{\delta}\Bigr).
+$$
+该式给出一个可审计结论：\textbf{prime-register 的空间容量是乘法 \(P\)，但时间预算主阶是平方 \(L^2\)，且仅以 \(\log P\) 进入}。
+\end{remark}
+
+\begin{remark}[primorial 选模与 \texorpdfstring{$\mathrm{poly}(\log P)$}{poly(log P)} 时间闭环（外部数论事实）]\label{rem:tax-primorial-polylog-time}
+在容量约束 \(\prod_i p_i\ge P\) 下，若希望尽量压低最大模数 \(L\)，经典数论表明：在给定截断 \(L\) 时，乘积 \(\prod_{p\le L}p\) 最大，并且
+$$
+\log\!\left(\prod_{p\le L}p\right)=\vartheta(L)=\Theta(L),
+$$
+其中 \(\vartheta\) 为 Chebyshev 函数（见例如 \cite{Apostol1976} 的标准叙述）。
+因此采用 primorial 方案（取尽所有 \(p\le L\)）时，有
+$$
+L=\Theta(\log P).
+$$
+将其代回注 \ref{rem:tax-max-modulus-control-law} 的时间预算（并把 \(\kappa_{i^\star}\) 视为由压力 Hessian/Poisson 方程接口可抽取的常数），得到主阶复杂度律
+$$
+n\ \gtrsim\ \frac{(\log P)^2}{4\pi^2\,\kappa_{i^\star}}\Bigl(\log P+\log\tfrac{1}{\delta}\Bigr),
+$$
+从而当 \(\delta\) 为常数级（或多项式级）目标精度时，时间成本呈 \(O\big((\log P)^3\big)\) 的显式量级：\textbf{空间指数（Euler 乘积），时间仅多项式于 \(\log P\)}。
+\end{remark}
+
+\begin{remark}[方差匹配的模数分配：把 \texorpdfstring{$\Sigma$}{Sigma} 变成寄存器设计律]\label{rem:tax-variance-matched-moduli}
+near-coboundary 二次律把“选哪些模数”转化为一个带度量的离散几何问题。
+记每条可独立扭曲的轴（或读出方向）\(F_i\) 的方差密度为 \(\sigma_i^2=\mathrm{Var}_\infty(F_i)\)；在纯轴小角 regime 中第 \(i\) 轴缺口主阶为 \(\Delta_i\approx 2\pi^2\sigma_i^2/p_i^2\)。
+若整体慢模由最坏轴主导（单轴选择律成立），则混合时间的主控因子为
+$$
+\max_i\frac{p_i^2}{\sigma_i^2}.
+$$
+在给定容量约束 \(\prod_i p_i\ge P\) 的连续近似下，一个 minimax 的阻抗匹配原则是令各轴缺口同阶：
+$$
+\frac{\sigma_1^2}{p_1^2}\ \approx\ \frac{\sigma_2^2}{p_2^2}\ \approx\ \cdots\ \approx\ \frac{\sigma_k^2}{p_k^2},
+\qquad\text{即}\qquad
+p_i\ \propto\ \sigma_i.
+$$
+该分配律把压力 Hessian/协方差密度 \(\Sigma\)（见附录 \ref{app:auditable-profinite-chebotarev} 的扭曲小角二次律口径）直接耦合进 prime-register 的离散选模问题：把更大的模数分配给“更硬”（方差密度更大）的方向，以压低最坏轴带来的扩散时间上界。
+\end{remark}
+
 \subsection{硬 no-go：固定有限核不可能 uniform-\texorpdfstring{$\sqrt{\lambda}$}{sqrt(lambda)}}\label{subsec:uniform-sqrt-no-go}
 
 \begin{corollary}[Abelian 模塔的 no-go：统一平方根界不成立]\label{cor:abelian-tower-no-go-bridge}
