@@ -246,22 +246,27 @@ def main() -> None:
     for k, item in enumerate(payload.orbits, start=1):
         s1 = item["step1"]
         s2 = item["step2"]
+
+        lines.append(f"&\\textbf{{(\\#{k})}}\\quad\\begin{{aligned}}[t]")
         lines.append(
-            f"&\\textbf{{(\\#{k})}}\\ \\ v_0=\\text{{{fmt_state(tuple(s1['src_state']))}}}\\ (\\# {s1['src_idx']})"
-            + "\\xrightarrow{(x,y)="
+            "v_0&="
+            + f"\\text{{{fmt_state(tuple(s1['src_state']))}}}\\ (\\# {s1['src_idx']})\\\\"
+        )
+        lines.append(
+            "&\\xrightarrow{(x,y)="
             + f"({s1['x']},{s1['y']}),\\ d={s1['d']},\\ e={s1['e']}"
-            + "}"
-            + f" v_1=\\text{{{fmt_state(tuple(s1['dst_state']))}}}\\ (\\# {s1['dst_idx']})"
-            + "\\\\"
+            + "} "
+            + "v_1="
+            + f"\\text{{{fmt_state(tuple(s1['dst_state']))}}}\\ (\\# {s1['dst_idx']})\\\\"
         )
         lines.append(
-            f"&\\phantom{{\\textbf{{(\\#{k})}}\\ }}\\ \\ v_1=\\text{{{fmt_state(tuple(s2['src_state']))}}}\\ (\\# {s2['src_idx']})"
-            + "\\xrightarrow{(x,y)="
+            "&\\xrightarrow{(x,y)="
             + f"({s2['x']},{s2['y']}),\\ d={s2['d']},\\ e={s2['e']}"
-            + "}"
-            + f" v_0=\\text{{{fmt_state(tuple(s2['dst_state']))}}}\\ (\\# {s2['dst_idx']})"
-            + ",\\ \\ E=1.\\\\[2pt]"
+            + "} "
+            + "v_0="
+            + f"\\text{{{fmt_state(tuple(s2['dst_state']))}}}\\ (\\# {s2['dst_idx']}),\\ \\ E=1."
         )
+        lines.append("\\end{aligned}\\\\[4pt]")
     lines.append("\\end{align*}")
     lines.append("")
 
