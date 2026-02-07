@@ -290,6 +290,7 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/window6_c6_orbit_patisalam_seed.json",
                 "sections/generated/eq_window6_c6_orbit_decomposition.tex",
+                "sections/generated/eq_window6_c6_character_decomposition.tex",
                 "sections/generated/tab_window6_c6_orbit_decomposition.tex",
                 "sections/generated/tab_window6_patisalam_9633_partition.tex",
                 "sections/generated/eq_fold6_bin_uplift_delta_set.tex",
