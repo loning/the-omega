@@ -69,6 +69,51 @@
 在此口径下，单位圆扭曲不再是外参扫描，而是相位坐标化后的内禀位置变量（命题 \ref{prop:phase-intrinsic-twist}）；相位–幅度分离因而成为“紧相位读出/残差外置”的普适输出形式。
 压缩发生在相位投影门，守恒发生在残差外置轴，RH 型谱几何发生在紧相位上的酉化判据（命题 \ref{prop:phase-unitary-reduction}）。
 
+\subsubsection{单位圆面积相位算术下的“无穷压缩”与零点可寻址性：两组补充结论}\label{subsubsec:unit-circle-phase-infty-compression-addressability}
+本小节不引入新的对象：它仅把附录 \ref{app:unit-circle-phase-gate} 的端点压缩定量律与正文跨分辨率降阶的规范差统计律并置，以解释 \(\mathbf{PW}\) 类型安全口径中的 \(\mathsf{NULL}\) 结构来源，并明确推进到经典 RH 仍需补齐的剩余缺口。
+
+\paragraph{1. 端点压缩把“偏离临界线”推到二阶径向通道}
+令 Cayley 紧化 \(\iota(x)=\frac{1+\mathrm{i}x}{1-\mathrm{i}x}=e^{2\mathrm{i}\arctan(x)}\) 与面积相位坐标 \(\upsilon(x)=\pi^{-1}\arctan(x)\)，并记 \(\vartheta(x)=2\pi\upsilon(x)=2\arctan(x)\)（见附录 \ref{app:unit-circle-phase-gate}）。
+在 Cayley 圆盘化完成化接口下，任一离临界线零点 \(\rho=\beta+\mathrm{i}\gamma\)（可取 \(\beta<\tfrac12\)）对应一个盘内零点 \(w_\rho\in\mathbb{D}\)，其圆盘半径满足完全闭式（命题 \ref{prop:app-offcritical-radius-compression}）
+\[
+|w_\rho|^{2}=\frac{(\beta+\tfrac12)^{2}+\gamma^{2}}{(\tfrac32-\beta)^{2}+\gamma^{2}},
+\qquad
+1-|w_\rho|^2=\frac{4(\tfrac12-\beta)}{(\tfrac32-\beta)^2+\gamma^2}.
+\]
+进一步地，在面积相位端点深度 \(\delta_\gamma=\tfrac12-\pi^{-1}\arctan|\gamma|\downarrow 0\) 下，径向缺口被压缩为二阶项（推论 \ref{cor:app-offcritical-radius-second-order-radial-channel}）：
+\[
+1-|w_\rho|^2
+=4\pi^2\Bigl(\tfrac12-\beta\Bigr)\delta_\gamma^2\bigl(1+o(1)\bigr).
+\]
+该二阶性意味着：在端点紧化语义中，“偏离临界线”的信息并不以一阶相位扰动出现，而被结构性推入径向自由度。
+
+\paragraph{2. 分辨率降阶的规范差：任意有限“超前位数”下的同一常数密度}
+在 Zeckendorf 折叠的跨分辨率降阶中，朴素截断 \(r_{m+k\to m}\) 与折叠感知 restriction \(\widetilde r_{m+k\to m}\) 的失配规模由 \(k\)-步规范差 \(G_m^{(k)}\) 给出（定理 \ref{thm:fold-gauge-anomaly-kstep-invariance}）。
+该定理表明：对任意固定超前位数 \(k\)，均匀基线下的失配密度与涨落常数不随 \(k\) 改变，并与 \(k=1\) 情形共享同一压力函数 \(P_G(\theta)=\log\rho(A_\theta)\)（命题 \ref{prop:fold-gauge-anomaly-pressure}）。
+因此，“多步降阶”并不生成新的体积密度常数；其全部影响被收束为边界条件对有限状态同步核的指数衰减修正。
+
+\paragraph{3. \texorpdfstring{$\mathsf{NULL}$}{NULL} 与信息守恒的硬瓶颈：相位可寻址 vs. 径向需新增寄存器}
+在 \(\mathbf{PW}\) 的 unitary slice 闭包中，可核对的连续参数轴被类型锁定为相位 \(\theta\)；任何需要 \(|u|\neq 1\)（等价的径向自由度）的点在闭包内不可寻址，其读出按空值语义退化为 \(\mathsf{NULL}\)（定理 \ref{thm:xi-offset-null-type-safety}）。
+而端点压缩的二阶径向律（上段第 1 点）给出一个更精细的结构解释：离临界线偏移在端点深度尺度上被压到 \(\delta_\gamma^2\) 的径向通道，因而在“只允许相位轴”的纯相位制度中被结构性抹除并表现为 \(\mathsf{NULL}\)（推论 \ref{cor:xi-null-second-order-radial-channel}）。
+若要求信息守恒，则必须按“扩展保存”外置径向/残差寄存器，使扩展读出恢复单射（公理 \ref{axiom:unit-circle-phase-extension-preserving}；亦见命题 \ref{prop:phase-residual-axis}）。
+
+\paragraph{进一步推进到“经典 RH 证明”的剩余硬缺口（非中间结论）}
+以上结论仅说明：在端点紧化与类型系统口径下，“离线事件”如何被压缩为径向残差并在纯相位制度中退化为 \(\mathsf{NULL}\)；它们并不构成经典 RH 的中间证明步骤。
+若要把上述框架编译为经典 RH 证明，至少仍需补齐以下缺口：
+\begin{enumerate}
+  \item \textbf{地址完备性（completeness）缺口：}
+  类型安全给出 \(\text{可寻址}\Rightarrow \Re(s)=\tfrac12\) 的 soundness（定理 \ref{thm:xi-offset-null-type-safety}），
+  但要编译到经典 RH 仍需证明 \(\Xi(s)=0\Rightarrow \text{可寻址（非 }\mathsf{NULL}\text{）}\)，其在本文中被显式抽象为桥接假设（假设 \ref{assump:xi-address-completeness} 与 \ref{assump:bridge-rh}-(2)）。
+  \item \textbf{径向二阶通道的消除：}
+  端点压缩表明离线信息被压到径向二阶项；要从“相位可见”推出“径向为零”，必须给出一种在不引入额外寄存器的前提下排除所有非平凡盘内零点数据（等价地排除 Blaschke/内因子数据）的机制（参见附录 \S\ref{subsec:unit-disk-inner-outer}）。
+  \item \textbf{从有限核 toy-(G)RH 到经典对象的统一性：}
+  在固定有限维核上，单位圆根证书可由 Schur--Cohn/LMI 等完全代数化接口实现审计；
+  但将该证书链提升到 \(F_\zeta\) 或 \(\Xi_\zeta\) 需要一个在尺度极限下保持稳定的核选择、收敛与误差控制链，而非仅在单个有限维对象上成立（假设 \ref{assump:bridge-rh}-(1) 的“经典目标桥接”正是对此的合同化抽象）。
+  \item \textbf{“信息守恒 \(\Rightarrow\) 无新增寄存器”的严格化：}
+  prime-register 残差提供一种将多对一投影提升为可逆门的通用外置通道，并在均匀基线下具有线性预算下界（例如写回支持下界 \(4/27\)，见推论 \ref{cor:pom-prime-residual-linear-lb}）。
+  若要以此否证“存在径向自由度”，需证明任何实现径向可寻址性的编译都强制引入独立于相位轴的残差预算，从而与目标规格（仅相位、无额外寄存器）不相容。
+\end{enumerate}
+
 \subsubsection{可审计输出：双残差预算、分位证书与端点常数}\label{subsubsec:unit-circle-phase-auditable-outputs}
 本段给出三条把相位端点线性化（附录 \ref{app:unit-circle-phase-gate}）、折叠多重度尾部证书（\S\ref{subsec:pom-quantile-budget-law}）与跨分辨率规范差接口（命题 \ref{prop:fold-gauge-anomaly-ldp}）同时闭合的终点断言；其全部输入量均来自既有可审计表格或闭式接口。
 

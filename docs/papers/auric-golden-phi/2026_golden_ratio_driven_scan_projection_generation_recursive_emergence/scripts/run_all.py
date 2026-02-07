@@ -145,6 +145,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_kstep_mc",
+            script="exp_fold_gauge_anomaly_kstep_mc.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_kstep_mc.json",
+                "sections/generated/tab_fold_gauge_anomaly_kstep_mc.tex",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly_clt_variance",
             script="exp_fold_gauge_anomaly_clt_variance.py",
             args=[],

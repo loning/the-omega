@@ -38,14 +38,42 @@
 \end{cases}
 \]
 其中 \(\mathrm{read}(\omega)=\mathsf{NULL}\) 表示读出不定义（不可寻址）。
-该“否则”可分解为两类结构性来源：
+该“否则”可分解为三类结构性来源（均发生在\emph{指称/类型层}而非数值层）：
 \begin{enumerate}
-  \item \textbf{语义域外（自由度缺失）：}对象的解释需要超出 \(X_{\mathrm{vis}}\) 的自由度（例如需要 \(|u|\neq 1\) 的径向模式，而可见域仅允许 unitary slice）；
-  \item \textbf{类型失败（无地址）：}对象在既定闭包/检查器下不可类型化，因而不产生地址（公理 \ref{ax:pommin-address-null}）。
+  \item \textbf{语义空值（地址缺失）：}地址先于取值；若地址未给定，则相应概念值不定义，记为 \(\mathsf{NULL}\)，且不等同于数值 \(0\)（公理 \ref{ax:pommin-address-null}；亦见第 \ref{sec:recursive-addressing} 节）。
+  \item \textbf{协议空值（类型系统禁止）：}对象的解释需要超出 \(X_{\mathrm{vis}}\) 的自由度，或需要被接口协议明确禁止的坐标轴（典型地：需要 \(|u|\neq 1\) 的径向模式，而可见域仅允许 unitary slice），因而在既定闭包/检查器下不可类型化并被拒绝。
+  \item \textbf{碰撞空值（侧信息不足）：}当 \(\operatorname{obs}\) 为多对一压缩且希望以给定置信口径把读出提升为（近似）可逆时，必须外置使扩展读出成为单射的记录轴；若记录轴预算不足，则不同前像在协议允许的误差/置信意义下不可唯一重建，从而读出仍等价退化为 \(\mathsf{NULL}\)（见命题 \ref{prop:xi-null-three-way}）。
 \end{enumerate}
 在本小节的 \(\Xi\)-接口中，可取 \(\Omega=\CC\)、\(\operatorname{obs}(s)=u_L(s)=L^{2s-1}\)，并令 \(X_{\mathrm{vis}}=\mathsf{Phase}\)；
 从而 \(\Re(s)\neq\tfrac12\Rightarrow \operatorname{obs}(s)\notin X_{\mathrm{vis}}\)，其读出按定义直接退化为 \(\mathsf{NULL}\)。
 \end{definition}
+
+\begin{proposition}[结论 A：\texorpdfstring{$\mathsf{NULL}$}{NULL} 的三分解与单射化原则]\label{prop:xi-null-three-way}
+设 \(\pi:\Omega\to Y\) 为一个读出（允许为多对一压缩），并按“地址先于取值”的约定将“可核对的单值读出”作为类型层的定义性前提（公理 \ref{ax:pommin-address-null}）。
+若未提供使扩展读出
+\(
+\pi^{\mathrm e}=(\pi,r):\Omega\to Y\times R
+\)
+成为单射的记录轴 \(r\)，则读出在类型层退化为 \(\mathsf{NULL}\)。
+并且该 \(\mathsf{NULL}\) 可按记录轴 \(r\) 的状态分解为三类来源：
+\begin{enumerate}
+  \item \textbf{语义空值：}记录轴为空（地址未给定），因此读出不定义；
+  \item \textbf{协议空值：}记录轴被接口协议/类型系统禁止（例如 unitary slice 口径下拒绝 \(|u|\neq 1\) 的径向模式），因此对象不可类型化；
+  \item \textbf{碰撞空值：}记录轴存在但预算不足以实现单射化；在区间读出/CRT 外置协议（定义 \ref{def:pom-order-elimination-rewrite}）下，若希望把折叠的多对一压缩在失败概率 \(\le\varepsilon\) 的意义下提升为近似可逆，则 prime-register 的模积预算必须满足
+  \[
+  P_m>2B_m(\varepsilon),
+  \qquad
+  B_m(\varepsilon):=\exp(m\gamma_m(\varepsilon)),
+  \]
+  其中 \(\gamma_m(\varepsilon)\) 为纤维指数的尾部分位（定义 \ref{def:pom-gamma-quantile}）。
+  当 \(P_m>2B_m(\varepsilon)\) 时，“标签超界导致不可唯一重建”的失败概率可压到 \(\le\varepsilon\)；并且该阈值在该协议意义下为锐的（推论 \ref{cor:pom-prime-register-quantile-budget}）。
+\end{enumerate}
+\end{proposition}
+
+\begin{remark}[结论 B：寄存器最小性与“末端补丁”不完备]\label{rem:xi-register-minimality-no-tail-patch}
+碰撞空值的修复并非“在末端追加少量位”的局部补丁即可完成：在分辨率降阶中，朴素截断与折叠感知 restriction 的差异在最坏输入下可达满长翻转（定理 \ref{thm:fold-gauge-anomaly-max}），并且任意“只修末端常数位”的补丁都不完备（推论 \ref{cor:fold-tail-patch-incomplete}）。
+因此，一旦某类信息确需作为侧信息被外置以保证可逆性或可核验性，则其记录轴在结构上必然是\emph{全局非局部}的：它只能落到 prime-register（以及与折叠一致的有限状态记忆）所承载的 residue/逆极限轴上，而不可能作为一个与相位 \(\theta\) 解耦的额外连续坐标寄存器，在本文的 \(\mathbf{PW}\) 闭包接口内出现。
+\end{remark}
 
 \paragraph{\(\mathbf{PW}\) 闭包与接口参数的“可见”形态}
 在三生成元片段 \((\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)\) 上，任意投影词都可规约到接口正规形
@@ -107,6 +135,172 @@
 因此，经典 RH 所需的 completeness 缺口可被定位为：\emph{是否存在必须引入径向通道（或其它新增可见自由度，如最小实现维数超界）方能解释的零点事件}；若存在，则在纯相位制度下它必读出为 \(\mathsf{NULL}\)，而在扩展制度下则要求额外记录轴显式承载其径向残差。
 \end{remark}
 
+\begin{remark}[completeness 缺口的可审计拆解：跨分辨率补丁与时间层右解码]\label{rem:xi-completeness-auditable-decomposition}
+假设 \ref{assump:xi-address-completeness} 将 completeness 表述为“零点事件不触发 \(\mathsf{NULL}\)”的全局断言。
+在本文的投影门语义中，该断言可进一步拆解为若干可审计的子条件，使 \(\mathsf{NULL}\) 的来源被逐层隔离。
+\begin{enumerate}
+  \item \textbf{跨分辨率：有限尾补丁不完备（不可局部消除）。}
+  微态直接截断 \(r_{m+1\to m}\) 与折叠感知 restriction \(\widetilde r_{m+1\to m}\) 一般不相容，规范差 \(G_m\)（定义 \ref{def:fold-gauge-anomaly}）量化其最小修正规模；
+  并且任意“只修末端常数位”的补丁都不可能在所有输入上复现 \(\widetilde r_{m+1\to m}\)（推论 \ref{cor:fold-tail-patch-incomplete}；并见注 \ref{rem:fold-tail-patch-null-nonlocal}）。
+  因而若协议同时拒绝非局部访问与正交记录轴，则某些输入族必无法获得折叠一致的地址，其读出按空值语义退化为 \(\mathsf{NULL}\)。
+
+  \item \textbf{时间层：右可逆性二分律与同步预算。}
+  将 \(\Fold_m\) 沿滑动窗口提升为 sofic 因子 \(\Phi_m\) 后，时间层的统计型 \(\mathsf{NULL}\) 可被刻画为确定化滤波状态非单点（\(|S_t|>1\)；注 \ref{rem:Ym-stat-null-unsync}）。
+  其行为满足右可逆性二分律：要么在统一有限延迟后完全同步（\(Y_m^{\mathrm{amb}}=\varnothing\)，推论 \ref{cor:Ym-time-layer-dichotomy}；在 Zeckendorf 折叠中 \(m\ge 3\) 时由定理 \ref{thm:Ym-ambiguity-shell-dag} 给出强形式），要么长期歧义仅能驻留在严格低熵壳上，并在最大熵测度下具有指数型同步尾界 \(\nu_m(T_m>n)\le C_m e^{-\varepsilon_m n}\)（定理 \ref{thm:Ym-sync-tail}，其中 \(\varepsilon_m=\log 2-h_{\mathrm{top}}(Y_m^{\mathrm{amb}})>0\)）。
+
+  \item \textbf{常数级封口：周期合并与在线风险表。}
+  cover 与内禀 \(\zeta\) 的主极点留数比 \(\eta_m\in(0,1]\)（命题 \ref{prop:Ym-zeta-residue-ratio}）与周期压缩缺陷 \(\delta_m\in[0,\log|\mathcal{S}_m|]\)（推论 \ref{cor:Ym-periodic-compression-ratio}）量化“合并但不改指数尺度”的常数级信息缺口；
+  单点态占比极限 \(\eta_m^{\mathrm{obs}}\in(0,1]\)（命题 \ref{prop:eta_m_hat_ergodic_limit}）则给出无需行列式的在线可观测风险表。
+\end{enumerate}
+\par
+因此，可将 completeness 的“无 \(\mathsf{NULL}\)”目标替换为一族可审计判据：
+一旦时间层满足有限延迟同步（或同步尾预算达标）且常数级合并被控制（例如 \(\eta_m^{\mathrm{obs}}\approx 1\) 且 \(\eta_m\approx 1\)），则系统性 \(\mathsf{NULL}\) 若仍出现，其来源应优先被定位到几何域外（\(|u|\neq 1\) 的径向自由度）或维数门槛（最小 realization 超界）等更高层机制，而非时间层歧义或跨分辨率有限尾补丁不足。
+\end{remark}
+
+\paragraph{记号与语义门：折叠纤维、最大熵提升与不可见容量}\label{par:xi-null-notation-semantic-gate}
+以下记号用于把 unitary slice 上的“可寻址/空值”与窗口折叠的纤维信息缺口统一到同一账本语言中（参见小节 \ref{subsec:pom-information-ledger} 与定义 \ref{def:pom-kappa}）。
+固定分辨率 \(m\ge 1\)，取微观相空间 \(\Omega_m:=\{0,1\}^m\) 与稳定类型集合 \(X_m\)。
+令折叠投影为 \(\Fold_m:\Omega_m\to X_m\)，纤维多重度为
+\[
+d_m(x):=\card{\Fold_m^{-1}(x)}\qquad(x\in X_m).
+\]
+对任意宏观边缘分布 \(\pi\in\Delta(X_m)\)，定义其\textbf{纤维均匀提升}（最大熵 lift）
+\begin{equation}\label{eq:xi-null-maxent-lift}
+\pi^{\mathrm{e}}(a):=\frac{\pi(\Fold_m(a))}{d_m(\Fold_m(a))},\qquad a\in\Omega_m,
+\end{equation}
+从而 \((\Fold_m)_*\pi^{\mathrm{e}}=\pi\)；它与正文定义 \ref{def:pom-maxent-lift} 的 \(\widetilde\pi\) 同一（记号在此仅作语义强调）。
+并定义\textbf{热力学缺陷/不可见容量}
+\[
+\kappa_m(\pi):=\mathbb{E}_{\pi}\bigl[\log d_m(X)\bigr]
+\]
+（定义 \ref{def:pom-kappa}）。
+在本小节的 unitary slice 闭包中，“可寻址”的连续域固定为 \(\mathsf{Phase}\)，并额外受 \(\mathbf{PW}\) 类型闭包约束（定义 \ref{def:xi-visible-read-null}）；
+因此，若拒绝外置额外记录轴，则折叠纤维的内部标签在可见语义中没有地址，其“读出”在语义层面被等价处理为 \(\mathsf{NULL}\)（不可寻址）。
+
+\begin{theorem}[固定宏观 \texorpdfstring{$\pi$}{pi} 下的微观熵窗与端点实现]\label{thm:xi-null-fiber-entropy-window}
+固定分辨率 \(m\ge 1\) 与宏观边缘 \(\pi\in\Delta(X_m)\)，并令 \(\pi^{\mathrm{e}}\in\Delta(\Omega_m)\) 为其纤维均匀提升 \eqref{eq:xi-null-maxent-lift}。
+则对任意 lift \(\mu\in\Delta(\Omega_m)\) 满足 \((\Fold_m)_*\mu=\pi\)，成立严格账本恒等式
+\[
+\boxed{\;
+H(\mu)=H(\pi)+\kappa_m(\pi)-D_{\mathrm{KL}}(\mu\|\pi^{\mathrm{e}})\; }.
+\]
+并且：
+\begin{enumerate}
+  \item \(\pi^{\mathrm{e}}\) 在所有 lift 中\textbf{唯一}实现最大熵，且
+  \[
+  H(\pi^{\mathrm{e}})=H(\pi)+\kappa_m(\pi).
+  \]
+  \item 存在“纤维点质量 lift” \(\mu^\star\) 使 \(H(\mu^\star)=H(\pi)\) 且
+  \[
+  D_{\mathrm{KL}}(\mu^\star\|\pi^{\mathrm{e}})=\kappa_m(\pi).
+  \]
+  因而在固定 \(\pi\) 下，微观熵满足\textbf{精确窗宽}
+  \[
+  H(\mu)\in\bigl[H(\pi),\ H(\pi)+\kappa_m(\pi)\bigr],
+  \qquad
+  \mathrm{width}=\kappa_m(\pi).
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+账本恒等式是定理 \ref{thm:pom-kl-ledger} 的“固定 \(\pi\)”版本（将其中 \(\mu^e\) 记作 \(\pi^{\mathrm{e}}\)）。
+最大熵端点与唯一性由定理 \ref{thm:pom-maxent-lift} 给出。
+\par
+对点质量端点：任取一个截面 \(s:X_m\to\Omega_m\) 满足 \(\Fold_m(s(x))=x\)（对每条纤维任选一点即可）。
+定义
+\(
+\mu^\star(s(x)):=\pi(x)
+\)
+且对其余 \(a\notin s(X_m)\) 取 \(\mu^\star(a)=0\)。
+则 \((\Fold_m)_*\mu^\star=\pi\)，并且
+\[
+H(\mu^\star)=-\sum_{x\in X_m}\pi(x)\log\pi(x)=H(\pi).
+\]
+又由 \(\pi^{\mathrm{e}}(s(x))=\pi(x)/d_m(x)\)，得
+\[
+D_{\mathrm{KL}}(\mu^\star\|\pi^{\mathrm{e}})
+=\sum_{x\in X_m}\pi(x)\log\frac{\pi(x)}{\pi(x)/d_m(x)}
+=\sum_{x\in X_m}\pi(x)\log d_m(x)
+=\kappa_m(\pi).
+\]
+证毕。
+\end{proof}
+
+\begin{remark}[语义解释：unitary slice 下 \texorpdfstring{$\mathsf{NULL}$}{NULL} 的三类来源]\label{rem:xi-null-three-kinds}
+在 unitary slice 审计语义中，若拒绝外置正交记录轴，则“不可寻址/空值”可分解为三类互相正交的结构来源：
+\begin{itemize}
+  \item \textbf{几何型 \(\mathsf{NULL}\).} 参数域约束为 \(\mathsf{Phase}\)：任何需要 \(|u|\neq 1\) 的径向自由度的对象在闭包内无地址，按定义 \ref{def:xi-visible-read-null} 读出为 \(\mathsf{NULL}\)。
+  \item \textbf{分支型 \(\mathsf{NULL}\).} 即便限制在 \(|u|=1\) 内，若进一步把半角层 \(\mathfrak r\) 压到唯一角度层 \(u=\mathfrak r^2\)，则二重覆盖 \(\mathfrak r\mapsto-\mathfrak r\) 的离散分支被抹去；该分支信息对 \(u\)-层不可见（参见附录 \S\ref{subsec:unit-disk-witt-chebyshev} 与命题 \ref{prop:completion-subring-unique-angle}）。
+  \item \textbf{统计型 \(\mathsf{NULL}\).} 固定宏观边缘 \(\pi\) 时 lift 不唯一；若不外置纤维形状记录，则微观差异在可见语义中无地址。
+  定理 \ref{thm:xi-null-fiber-entropy-window} 给出其不可见窗宽 \(\kappa_m(\pi)\)，并把任意具体 lift 的“纤维形状残差”精确承载为 \(D_{\mathrm{KL}}(\mu\|\pi^{\mathrm{e}})\)。
+\end{itemize}
+\end{remark}
+
+\begin{corollary}[纤维残差分解与“统计型 \texorpdfstring{$\mathsf{NULL}$}{NULL} 半径”]\label{cor:xi-null-statistical-radius}
+沿用定理 \ref{thm:xi-null-fiber-entropy-window} 的记号，并写纤维条件分布 \(\mu_x(\cdot):=\mu(\cdot\mid x)\)（\(x\in X_m\)）以及纤维均匀分布 \(u_x(a):=1/d_m(x)\)（\(a\in\Fold_m^{-1}(x)\)）。
+则有纤维正交分解
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\mu\|\pi^{\mathrm{e}})
+=\sum_{x\in X_m}\pi(x)\,D_{\mathrm{KL}}(\mu_x\|u_x)\; }.
+\]
+从而对所有 lift 都有显式上界
+\[
+0\le D_{\mathrm{KL}}(\mu\|\pi^{\mathrm{e}})\le \kappa_m(\pi),
+\qquad
+D_{\mathrm{TV}}(\mu,\pi^{\mathrm{e}})\le \sqrt{\frac{\kappa_m(\pi)}{2}}.
+\]
+并且对任意有界可观测 \(f:\Omega_m\to\RR\)，所有与 \(\pi\) 相容的 lift 在 \(f\) 上相对于 \(\pi^{\mathrm{e}}\) 的系统性偏差满足
+\[
+\bigl|\mathbb{E}_\mu[f]-\mathbb{E}_{\pi^{\mathrm{e}}}[f]\bigr|
+\le 2\|f\|_\infty\sqrt{\frac{\kappa_m(\pi)}{2}}.
+\]
+\end{corollary}
+
+\begin{proof}
+第一式是引理 \ref{lem:pom-fiberwise-kl} 的直接重述（将其中 \(\mu^e\) 记作 \(\pi^{\mathrm{e}}\)）。
+其余不等式由定理 \ref{thm:defect-limited-audit}（及 Pinsker 不等式）立得。证毕。
+\end{proof}
+
+\begin{corollary}[微观滑移窗：同一宏观下的 KL 区间律]\label{cor:xi-null-micro-kl-window}
+令 \(u_{\Omega_m}\) 为 \(\Omega_m\) 上的均匀分布，并令
+\(
+w_m:=(\Fold_m)_*u_{\Omega_m}
+\)
+为其折叠推前（定义 \ref{def:pom-wm-baseline}）。
+固定任意 \(\pi\in\Delta(X_m)\)。
+则对所有满足 \((\Fold_m)_*\mu=\pi\) 的 lift \(\mu\in\Delta(\Omega_m)\)，成立显式夹逼
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\pi\|w_m)
+\le D_{\mathrm{KL}}(\mu\|u_{\Omega_m})
+\le D_{\mathrm{KL}}(\pi\|w_m)+\kappa_m(\pi)\; }.
+\]
+等价地，
+\(
+0\le D_{\mathrm{KL}}(\mu\|\pi^{\mathrm{e}})\le \kappa_m(\pi)
+\)。
+\end{corollary}
+
+\begin{proof}
+由恒等式 \(D_{\mathrm{KL}}(\mu\|u_{\Omega_m})=m\log 2-H(\mu)\)，并将定理 \ref{thm:xi-null-fiber-entropy-window} 代入得
+\[
+D_{\mathrm{KL}}(\mu\|u_{\Omega_m})
+=m\log 2-H(\pi)-\kappa_m(\pi)+D_{\mathrm{KL}}(\mu\|\pi^{\mathrm{e}}).
+\]
+再由命题 \ref{prop:pom-kappa-kl-decomposition} 的
+\(
+\kappa_m(\pi)=m\log 2-H(\pi)-D_{\mathrm{KL}}(\pi\|w_m)
+\)
+得出分解
+\(
+D_{\mathrm{KL}}(\mu\|u_{\Omega_m})
+=D_{\mathrm{KL}}(\pi\|w_m)+D_{\mathrm{KL}}(\mu\|\pi^{\mathrm{e}})
+\)。
+最后对 \(D_{\mathrm{KL}}(\mu\|\pi^{\mathrm{e}})\) 应用推论 \ref{cor:xi-null-statistical-radius} 的界即可。证毕。
+\end{proof}
+
 \begin{assumption}[\(\Xi\)-接口的地址完备性（桥接假设）]\label{assump:xi-address-completeness}
 对固定的 \(L>1\)，\(\Xi_{\Delta,L}\) 的每一个零点 \(s\in\CC\) 都在本文的 \(\mathbf{PW}\) 闭包下可寻址并可核对；等价地，不存在零点在该闭包下读出为 \(\mathsf{NULL}\)。
 \end{assumption}
@@ -121,6 +315,42 @@
 因此，当精度预算不足以区分端点邻域的不同前像时，“读出”将不再具备可核对的单值性：它要么退化为多值/不可核验，要么在本文语义中被等价处理为不可寻址（读出不定义，即 \(\mathsf{NULL}\)）。
 在“扩展保存”语言中，这对应于外置记录轴（或精度寄存器）不足以使扩展观测达到单射，从而地址必然缺失。
 \end{remark}
+
+\begin{remark}[unitary slice 的整数层校准格：根单位点与 Frobenius 缺陷]\label{rem:xi-null-frobenius-calibration}
+注 \ref{rem:xi-null-finite-precision} 表明：端点紧化在有限精度下会将"无穷高度"的差异压入末位精度，从而诱发实现层面的空值/不可核验。
+为把这类实现误差与真实的谱穿越证据解耦，unitary slice 上可引入一组\textbf{离散锚点}作为整数层护栏。
+\par
+取素数 \(p\) 并在单位圆上取根单位点网格
+\(
+u=e^{2\pi i j/p}
+\)（\(j=0,\dots,p-1\)，满足 \(u^p=1\)）。
+则由推论 \ref{cor:witt-root-of-unity-tower-lock}，在 \(p\)-幂塔上存在模 \(p^k\) 的塔式锁定：
+\[
+a_{p^k}(u)\equiv a_{p^{k-1}}(1)\pmod{p^k}.
+\]
+进一步，由定义 \ref{def:witt-frobenius-defect} 与命题 \ref{prop:witt-frobenius-defect-divisibility}，Frobenius 缺陷多项式
+\(
+\Delta_{p,k}(u):=a_{p^k}(u)-a_{p^{k-1}}(u^p)
+\)
+满足整除深度
+\(
+\Delta_{p,k}(u)\in p^k\ZZ[u]
+\)。
+\par
+上述离散锚点给出一条"无 \(\mathsf{NULL}\) 校准格"：一旦在这些根单位点上出现与整除/同余护栏不相容的偏离，则应优先判定为实现或数据管线失败（而非谱穿越、几何型 \(\mathsf{NULL}\) 或统计型残差的物理含义）；其作为加速律亦见注 \ref{rem:witt-root-of-unity-acceleration}。
+\end{remark}
+
+\begin{corollary}[径向通道的"二阶性"与 \texorpdfstring{\(\mathsf{NULL}\)}{NULL} 的结构来源]\label{cor:xi-null-second-order-radial-channel}
+附录 \ref{app:unit-circle-phase-gate} 的圆盘化接口把经典完成化 \(\Xi_\zeta\) 的离线零点事件等价搬运为盘内零点事件：若存在零点 \(\rho=\beta+\mathrm{i}\gamma\) 满足 \(0<\beta<\tfrac12\)，则对应 \(w_\rho\in\mathbb{D}\) 使 \(F_\zeta(w_\rho)=0\)（定理 \ref{thm:app-rh-iff-disk-zero-free} 与命题 \ref{prop:app-offcritical-radius-compression}）。
+并且在面积相位端点深度 \(\delta_\gamma:=\tfrac12-\pi^{-1}\arctan|\gamma|\downarrow 0\) 下，径向深度满足二阶压缩律（推论 \ref{cor:app-offcritical-radius-second-order-radial-channel}）：
+\[
+1-|w_\rho|^{2}=4\pi^{2}\Bigl(\tfrac12-\beta\Bigr)\delta_\gamma^{2}\bigl(1+o(1)\bigr).
+\]
+因此，在\emph{纯相位制度}（unitary slice）中，\(\beta-\tfrac12\) 的偏离并不表现为一阶可见相位扰动，而被结构性压入二阶径向通道；
+若闭包拒绝引入任何径向记录轴（\(|u|\neq 1\) 或等价的 \(|w|\neq 1\)），则该通道被类型系统抹除，离线零点事件只能在可见读出中退化为"不可寻址"（\(\mathsf{NULL}\)）。
+相反，若按"扩展保存"外置径向寄存器（见注 \ref{rem:xi-soundness-vs-completeness} 的 \(\operatorname{proj}^{\mathrm e}\)），则上述二阶通道可被恢复为"相位读出 + 径向残差"的非退化扩展读出。
+\end{corollary}
+
 
 \begin{remark}[可审计替代：Hankel-秩稳定性给出的地址完备性充分判据（ACC-Rank）]\label{rem:xi-acc-rank}
 假设 \ref{assump:xi-address-completeness} 将“内部 \(\Xi\)-RH \(\Rightarrow\) 经典 \(\Xi\)-RH”的 completeness 缺口显式化。
@@ -137,7 +367,24 @@ d^{(\ell)}_{\min}(\theta):=\mathrm{rank}\,H\!\bigl(a^{(\ell)}_\bullet(\theta)\bi
 若存在常数 \(d_\ast\) 使得对所有足够大层级 \(\ell\) 与所有相位采样 \(\theta\) 都有 \(d^{(\ell)}_{\min}(\theta)\le d_\ast\)，并且该界在加密 \(\theta\) 网格与提升层级时保持稳定，则可将“零点 \(\neq\mathsf{NULL}\)”的地址完备性视为被证书化满足。
 \par
 该路线把 completeness 从纯存在性陈述替换为一条可审计的“维数稳定性”检查；Hankel-rank 的实现口径与脚本组织方式见注 \ref{rem:two_layer_bridge_package_completed_minH}，并可参考表 \ref{tab:fold_collision_moment_hankel_rank}（脚本 \texttt{scripts/exp\_fold\_collision\_moment\_hankel\_rank.py}）作为后端维数证书的基准模板。
+\par
+从 \(\mathsf{NULL}\) 语义看，上述检查对应一条与“几何型/分支型/统计型”正交的缺口：若将可见审计限制在固定有限维状态空间中实现 trace/primitive 的交换图，则 Hankel 秩（定理 \ref{thm:hankel-rank-minimal}）给出\emph{最小记录轴维数}的硬下界；任何试图将实现维数压到 \(<\mathrm{rank}(H)\) 的策略都会在某些可见观测上出现不可消去的歧义，其语义后果即为“维数型 \(\mathsf{NULL}\)”（地址必须外置到更高维轴）。
+该缺口可由 Hankel 正规形 \(A=(H_0^{(\ell)})^{-1}H_1^{(\ell)}\)（注 \ref{rem:pom-s2-hankel}）在多项式时间内证书化，并与 \(\theta\)-扫描的稳定性测试对齐。
 \end{remark}
+
+\begin{proposition}[结论 D：completeness 的可审计分解（维数稳定证书 \(\times\) 配额证书）]\label{prop:xi-completeness-auditable-decomposition}
+在本文的 unitary-slice 零点审计口径下，“零点事件读出为 \(\mathsf{NULL}\)”的结构性来源可归并为两类：\emph{新增可见自由度}（协议空值）与\emph{同像碰撞/标签超界}（碰撞空值，命题 \ref{prop:xi-null-three-way}）。
+因此，若同时满足下述两条可审计约束：
+\begin{enumerate}
+  \item \textbf{可见自由度稳定（ACC-Rank）：}存在常数 \(d_\ast\) 使得对所有足够大层级 \(\ell\) 与所有相位采样 \(\theta\) 都有 \(d^{(\ell)}_{\min}(\theta)\le d_\ast\)，并且该界在加密 \(\theta\) 网格与提升层级时保持稳定（注 \ref{rem:xi-acc-rank}）；
+  \item \textbf{侧信息预算充足（分位配额）：}对任意给定的 \(\varepsilon\in(0,1)\)，存在一组 prime-register 模积预算 \(P_m\) 使得
+  \(
+  P_m>2B_m(\varepsilon)=2\exp(m\gamma_m(\varepsilon))
+  \)
+  （定义 \ref{def:pom-gamma-quantile}），从而“标签超界导致不可唯一重建”的失败概率可压到 \(\le\varepsilon\)（推论 \ref{cor:pom-prime-register-quantile-budget}）；
+\end{enumerate}
+则在该置信口径下，零点事件读出为 \(\mathsf{NULL}\) 的两类唯一来源（自由度失稳或标签碰撞）均被排除，从而假设 \ref{assump:xi-address-completeness} 的地址完备性可被上述两类证书在体系内替代性满足；与定理 \ref{thm:xi-offset-null-type-safety}（soundness）合并，即把“经典 \(\Xi\)-RH”所需的 completeness 缺口压缩为\emph{两类后端证书的核验任务}：维数稳定证书（ACC-Rank）与 prime-register 配额证书（分位阈值）。
+\end{proposition}
 
 \begin{corollary}[地址完备性 \(\Rightarrow\) 经典 \(\Xi\)-RH]\label{cor:xi-classical-rh-from-address-completeness}
 在假设 \ref{assump:xi-address-completeness} 下，\(\Xi_{\Delta,L}\) 的全部零点都满足 \(\Re(s)=\tfrac12\)。
@@ -150,5 +397,17 @@ d^{(\ell)}_{\min}(\theta):=\mathrm{rank}\,H\!\bigl(a^{(\ell)}_\bullet(\theta)\bi
 
 \begin{remark}[反例崩塌模板：径向模式的双检查器拒绝]\label{rem:xi-radial-collapse-template}
 小节 \ref{subsec:xi-radial-counterexample-collapse} 给出一个“仍呈自对偶 completion 形态但强制需要 \(|u|\neq 1\) 径向模式”的伪对象，并展示其在根区间检查器（命题 \ref{prop:xi-rh-interval-criterion}）与常数层 strictification 检查器（定义 \ref{def:pom-finite-part-counterterm-gate}；命题 \ref{prop:pom-counterterm-anom-cancel}）上同时失败，从而把“不可类型化 \(\Rightarrow\ \mathsf{NULL}\)”的拒绝链显式化为可复核的审计流程。
+\end{remark}
+
+\begin{remark}[统一封口：unitary slice 口径下的 \texorpdfstring{$\mathsf{NULL}$}{NULL}—守恒闭环]\label{rem:xi-null-conservation-closure}
+在 unitary slice 语义中，“信息守恒”不等价于“永不出现 \(\mathsf{NULL}\)”；
+它等价于把每一种空值来源都编译为可审计的门条件与缺陷账本，并在必要时外置正交记录轴以恢复可逆性。
+在本文口径下可归结为如下闭环：
+\begin{enumerate}
+  \item \textbf{几何域外拒绝.} 若 \(|u|\neq 1\)（即 \(u\notin\mathsf{Phase}\)），则按可见域约束直接读出为 \(\mathsf{NULL}\)（定义 \ref{def:xi-visible-read-null}）。
+  \item \textbf{域内歧义的缺陷量化.} 固定宏观边缘 \(\pi\) 时，lift 的不可见窗宽由 \(\kappa_m(\pi)\) 精确定量；任意 lift 的纤维形状残差由 \(D_{\mathrm{KL}}(\mu\|\pi^{\mathrm{e}})\) 承载（定理 \ref{thm:xi-null-fiber-entropy-window} 与推论 \ref{cor:xi-null-statistical-radius}）。
+  \item \textbf{有限维闭包的维数门槛.} 若可见审计要求在固定有限维状态空间内闭合，则 Hankel 秩给出最小实现维数下界；违背该下界即触发维数型 \(\mathsf{NULL}\)（注 \ref{rem:xi-acc-rank}）。
+  \item \textbf{整数层校准格的优先护栏.} 根单位点上的 Frobenius 缺陷整除深度提供离散锚点，使大量由有限精度引起的伪 \(\mathsf{NULL}\) 可在整数层被优先定位为实现失败（注 \ref{rem:xi-null-frobenius-calibration}）。
+\end{enumerate}
 \end{remark}
 

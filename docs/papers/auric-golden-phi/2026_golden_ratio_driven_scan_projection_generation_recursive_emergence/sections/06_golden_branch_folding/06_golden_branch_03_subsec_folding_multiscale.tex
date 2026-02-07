@@ -194,6 +194,15 @@ $$
 由于 \(r_{m+1\to m}(\omega^\star)\) 与 \(\widetilde r_{m+1\to m}(\omega^\star)\) 在前 \(m\) 位逐位全异，而 \(T_{m,R}\) 最多只能改动末端 \(R\) 位，故 \(T_{m,R}(\omega^\star)\) 至少在前 \(m-R\) 位与 \(\widetilde r_{m+1\to m}(\omega^\star)\) 不同，从而不可能相等。证毕。
 \end{proof}
 
+\begin{remark}[有限尾补丁不完备与不可局部消除的 \texorpdfstring{$\mathsf{NULL}$}{NULL} 范式]\label{rem:fold-tail-patch-null-nonlocal}
+推论 \ref{cor:fold-tail-patch-incomplete} 表明：在跨分辨率降阶中，折叠一致的 restriction \(\widetilde r_{m+1\to m}\) 不能由“直接截断 \(r_{m+1\to m}\) + 仅修末端常数位”的协议恢复。
+更精确地，规范差 \(G_m(\omega)\)（定义 \ref{def:fold-gauge-anomaly}）给出从 \(r_{m+1\to m}(\omega)\) 到 \(\widetilde r_{m+1\to m}(\omega)\) 的最小汉明修正规模；当只允许触及末端 \(R\) 位时，\(m>R\) 即保证存在输入使该修正\emph{必然}越界，从而与折叠相容性检查器（命题 \ref{prop:fold-omega-commute}）冲突。
+\par
+在“地址先于概念值”的语义（公理 \ref{ax:pommin-address-null}）下，这给出一个严格的不可局部修补范式：
+若拒绝引入足够的正交记录轴（例如把降阶所需的非局部信息外置为残差账本），且同时将“折叠一致/值保持”作为审计语义的硬约束，则任何只允许有限尾补丁的实现都必在某些输入族上失去可寻址性；
+按本文约定，这类“无地址/读出不定义”即被等价处理为 \(\mathsf{NULL}\)。
+\end{remark}
+
 \begin{remark}[统计现象：均匀输入下的平均规范差（可复现枚举）]\label{rem:fold-gauge-anomaly-typical}
 除最坏情形外，均匀输入基线下的平均规范差同样呈线性尺度。
 令
@@ -261,3 +270,42 @@ Q(1\mid 0)=\varphi^{-2},\qquad Q(0\mid 0)=\varphi^{-1},\qquad Q(0\mid 1)=1.
 \input{sections/generated/tab_fold_gauge_anomaly_rate_curve_resultant_degree}
 \input{sections/generated/eq_fold_gauge_anomaly_rate_curve_resultant_structure}
 \input{sections/generated/eq_fold_gauge_anomaly_ldp_rate}
+
+\begin{theorem}[多步降阶的规范差密度不变性]\label{thm:fold-gauge-anomaly-kstep-invariance}
+固定整数 \(k\ge 1\)。
+对任意 \(\omega\in\Omega_{m+k}=\{0,1\}^{m+k}\)，定义多步直接截断与折叠感知 restriction
+\[
+r_{m+k\to m}(\omega):=\omega_{1}\cdots\omega_{m},
+\qquad
+\widetilde r_{m+k\to m}(\omega):=\pi_{m+k\to m}\bigl(\Fold_{m+k}(\omega)\bigr)\in X_m,
+\]
+并定义 \(k\)-步规范差
+\[
+G_m^{(k)}(\omega):=\bigl|\,r_{m+k\to m}(\omega)\ \oplus\ \widetilde r_{m+k\to m}(\omega)\,\bigr|_0,
+\]
+其中 \(\oplus\) 为逐位异或、\(|\cdot|_0\) 为汉明重量。
+在均匀基线 \(\omega\sim\mathrm{Unif}(\Omega_{m+k})\) 下，有
+\[
+\boxed{\ \lim_{m\to\infty}\frac{1}{m}\,\mathbb E\!\left[G_m^{(k)}\right]=\frac49\ },
+\qquad
+\boxed{\ \frac{G_m^{(k)}-\frac49 m}{\sqrt m}\Rightarrow \mathcal N\!\left(0,\frac{118}{243}\right)\ }.
+\]
+并且对任意 \(\theta\in\RR\)，其每步对数矩母函数极限与 \(k=1\) 情形相同：存在与 \(k\) 无关的压力函数 \(P_G(\theta)\) 使得
+\[
+\lim_{m\to\infty}\frac{1}{m}\log\mathbb E\exp\!\bigl(\theta\,G_m^{(k)}\bigr)=P_G(\theta)=\log\rho(A_\theta)
+\]
+其中 \(A_\theta\) 为命题 \ref{prop:fold-gauge-anomaly-pressure} 的同一 \(4\times 4\) 加权邻接矩阵。
+因此由命题 \ref{prop:fold-gauge-anomaly-ldp}，\(G_m^{(k)}/m\) 的大偏差率函数端点闭式 \(I(0)=\log(2/\varphi), I(1)=\log 2\) 亦不随 \(k\) 改变。
+\end{theorem}
+
+\begin{proof}[证明要点（结构性）]
+折叠 \(\Fold_\infty\) 具有有限状态的在线实现：在 IID Bernoulli\((1/2)\) 输入下，输出与逐位失配指示可被表示为一个原始有限状态 Markov 链上的可加观测量（定理 \ref{thm:fold-gauge-anomaly-clt} 与命题 \ref{prop:fold-gauge-anomaly-pressure} 的证明要点）。
+对固定 \(k\)，有限词 \(\omega\in\Omega_{m+k}\) 仅改变该双向同步实现的右边界条件；由于链的原始性，右边界条件对内点统计的影响沿距离指数衰减，故其对总和 \(G_m^{(k)}\) 的期望、方差与指数矩仅造成 \(O(1)\) 的边界修正。
+将该边界修正除以 \(m\)（或以 \(\sqrt m\) 归一化）即消失，从而密度极限、CLT 常数以及压力函数 \(P_G\)（因此 LDP 率函数）均与 \(k=1\) 情形一致。证毕。
+\end{proof}
+
+\begin{remark}[数值审计：固定超前位数下的常数密度与方差率]\label{rem:fold-gauge-anomaly-kstep-mc}
+为补充上述“边界影响指数衰减”的结构论证，表 \ref{tab:fold_gauge_anomaly_kstep_mc} 对若干固定 \(k\) 与较大 \(m\) 给出 Monte Carlo 审计，显示 \(\mathbb E[G_m^{(k)}]/m\) 与 \(\mathrm{Var}(G_m^{(k)})/m\) 均稳定对齐于 \(\frac49\) 与 \(\frac{118}{243}\)。
+\end{remark}
+
+\input{sections/generated/tab_fold_gauge_anomaly_kstep_mc}

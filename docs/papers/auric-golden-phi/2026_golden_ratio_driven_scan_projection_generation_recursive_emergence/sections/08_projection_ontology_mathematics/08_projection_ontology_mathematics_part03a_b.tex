@@ -166,6 +166,13 @@ c_m(r)=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\ (\mathrm{mod}\ F_{m+2})\}
 =\#\{x\in X_m:\ d_m(x)=D_m\}.
 \]
 在可审计窗口 \(m\le 32\) 内，\(\kappa_m^{\mathrm{max}}\) 呈现出稳定的“有限相位”行为（见表 \ref{tab:fold_max_fiber_achievers_phase}）：偶数 \(m\) 两相位达到、奇数 \(m\) 四相位达到；代表稳定词表现出近周期核 \(\texttt{0001}\) 的相位截断。
+由定理 \ref{thm:pom-max-achievers-phase-stabilization}，该有限相位行为在阈值之后被解析地封口（\(\kappa_{2k}^{\mathrm{max}}=2,\ \kappa_{2k+1}^{\mathrm{max}}=4\)）。
+因此达到者族的规模不发生指数增长：
+\[
+\limsup_{m\to\infty}\frac{1}{m}\log \kappa_m^{\mathrm{max}}=0,
+\]
+可视为一个零熵的极值相位子系统（其“语言复杂度”在指数尺度上为零）。
+并且在两种自然采样测度——类型均匀 \(U_m\) 与微态均匀推前 \(w_m\)——下，该极值族的命中率给出两条互异的指数稀薄率（推论 \ref{cor:pom-maxfiber-rarity-two-measures}）。
 同一表还给出次大多重度 \(D_m^{(2)}\) 与第三大多重度 \(D_m^{(3)}\)（定义 \ref{def:pom-top-fiber-spectrum}），以及比值 \(D_m^{(2)}/D_m\) 的奇偶交错。下述定理 \ref{thm:pom-max-achievers-phase-stabilization}、定理 \ref{thm:pom-second-max-fiber-closed-form} 与定理 \ref{thm:pom-third-max-fiber-even-closed-form} 给出该相位数与顶层谱缺口的解析封口（并给出显式最坏常数 \(\theta_{\mathrm{gap}}\)，见推论 \ref{cor:pom-second-max-gap-constant}）。
 \end{remark}
 
@@ -186,6 +193,36 @@ m\ge 13\ \text{且}\ m\ \text{奇}\ \Rightarrow\ \kappa_m^{\mathrm{max}}=4.
 \begin{proof}
 由定理 \ref{thm:pom-max-fiber} 的证明可知：达到最大纤维 \(D_m\) 的必要条件是“逆代换可选位点链被做满”，即在长度 \(k=\lfloor m/2\rfloor\) 的候选链上，每个独立集都必须可实现且给出互异的前像；这强制正规形 \(x\in X_m\) 具有一个近周期核（见定理 \ref{thm:pom-max-fiber} 中构造的 \((0001)\) 截断族），并且端点约束只允许有限多个相位。
 偶数端点约束恰保留两种相位；奇数情形还叠加引理 \ref{lem:pom-one-bit} 的隐藏位分裂 \(b\in\{0,1\}\)，从而把相位数翻倍为四。上述相位数与达到者的代表词在表 \ref{tab:fold_max_fiber_achievers_phase}（\(m\le 32\) 的可审计窗口）中可直接核验。
+\end{proof}
+
+\begin{corollary}[最大纤维达到者在两种自然测度下的指数稀薄率]\label{cor:pom-maxfiber-rarity-two-measures}
+令
+\[
+\mathcal{M}_m:=\{x\in X_m:\ d_m(x)=D_m\},
+\qquad
+U_m:=\mathrm{Unif}(X_m),
+\qquad
+w_m(x):=\frac{d_m(x)}{2^m}\ \ (x\in X_m).
+\]
+则有两条\emph{精确}命中率公式：
+\[
+U_m(\mathcal{M}_m)=\frac{\kappa_m^{\mathrm{max}}}{|X_m|}
+=\frac{\kappa_m^{\mathrm{max}}}{F_{m+2}},
+\qquad
+w_m(\mathcal{M}_m)=\sum_{x\in\mathcal{M}_m}\frac{d_m(x)}{2^m}
+=\frac{\kappa_m^{\mathrm{max}}\,D_m}{2^m}.
+\]
+并且在稳定阈值区间（定理 \ref{thm:pom-max-achievers-phase-stabilization} 给出 \(\kappa_m^{\mathrm{max}}\in\{2,4\}\)），两者分别满足指数尺度渐近：
+\[
+U_m(\mathcal{M}_m)=\Theta(\varphi^{-m}),
+\qquad
+w_m(\mathcal{M}_m)=\Theta\!\left(\left(\frac{\sqrt{\varphi}}{2}\right)^m\right).
+\]
+\end{corollary}
+\begin{proof}
+第一条等式由计数恒等式 \(U_m(\mathcal{M}_m)=|\mathcal{M}_m|/|X_m|\) 与 \(|X_m|=F_{m+2}\) 得到；第二条等式由 \(w_m\) 的定义与 \(\mathcal{M}_m\) 上 \(d_m(x)\equiv D_m\) 得到。
+\par
+渐近方面，\(F_{m+2}=\Theta(\varphi^m)\)（Binet 公式），且由定理 \ref{thm:pom-max-fiber} 有 \(D_m=\Theta(\varphi^{m/2})\)，并结合定理 \ref{thm:pom-max-achievers-phase-stabilization} 的 \(\kappa_m^{\mathrm{max}}=O(1)\)，得到所述两条指数率。
 \end{proof}
 
 \begin{lemma}[禁配对导致的 Fibonacci 缺口]\label{lem:pom-forbidden-pair-fib-gap}
@@ -302,6 +339,17 @@ F_{n+7}=F_{n+6}+F_{n+5}\le 13F_{n+1}+13F_n=13F_{n+2}
 \]
 对 \(m<10\) 的有限个初值情形可由表 \ref{tab:fold_max_fiber_achievers_phase} 直接审计。证毕。
 \end{proof}
+
+\begin{remark}[极值—近极值隔离带（顶层谱的稳定分离）]\label{rem:pom-maxfiber-isolation-band}
+令 \(\mathcal{M}_m=\{x\in X_m:\ d_m(x)=D_m\}\) 为最大纤维达到者集合。
+则对任意 \(x\notin\mathcal{M}_m\) 恒有 \(d_m(x)\le D_m^{(2)}\)。
+由推论 \ref{cor:pom-second-max-gap-constant}，存在显式常数 \(\theta<1\)（例如全局一刀切 \(\theta=\tfrac{25}{26}\)，或渐近最坏常数 \(\theta_\star\approx 0.954915\)）使得对充分大的 \(m\) 有
+\[
+d_m(x)\le D_m^{(2)}\le \theta\,D_m\qquad(x\notin\mathcal{M}_m).
+\]
+因此顶层谱在比例意义下与近极值层之间存在稳定隔离带：极值层由有限相位 \(\kappa_m^{\mathrm{max}}=O(1)\) 承载（定理 \ref{thm:pom-max-achievers-phase-stabilization}），而所有非达到者的纤维多重度被统一压至 \(\theta D_m\) 之下。
+该隔离带为后续任何以高阶矩/压力函数强化尾部贡献的推断提供了一个无需额外假设的结构性输入。
+\end{remark}
 
 \begin{theorem}[偶数支第三大纤维闭式]\label{thm:pom-third-max-fiber-even-closed-form}
 当 \(k\ge 6\) 时，偶数分支的第三大纤维多重度满足
@@ -479,9 +527,9 @@ d_{m,1}(x)=\#\{\omega:\ N(\omega)=r+F_{m+2}\}.
   \[
   (d_{2k,0},d_{2k,1})\in\{(F_{k+1},F_k),(F_k,F_{k+1})\},\qquad d_{2k,0}+d_{2k,1}=F_{k+2}=D_{2k}.
   \]
-  \item \textbf{奇数 \(m=2k+1\)：}当 \(m\ge 13\) 时，达到者恰有四相位，其中两者为平衡分裂、两者为偏置分裂（互为交换）：
+  \item \textbf{奇数 \(m=2k+1\)：}当 \(m\ge 13\) 时，达到者恰有四相位。记交换作用 \(\tau(a,b):=(b,a)\)，则达到者分裂对的多重集合在 \(\tau\) 下分解为一个交换轨道（偏置相）与一个固定点对（平衡相）：
   \[
-  (d_{2k+1,0},d_{2k+1,1})=(F_{k+1},F_{k+1})\ \text{出现两次},
+  (d_{2k+1,0},d_{2k+1,1})=(F_{k+1},F_{k+1})\ \text{出现两次}\quad(\tau\text{-固定点，重数 }2),
   \]
   \[
   (d_{2k+1,0},d_{2k+1,1})\in\{(F_{k+1}-F_{k-2},F_{k+1}+F_{k-2}),(F_{k+1}+F_{k-2},F_{k+1}-F_{k-2})\},
