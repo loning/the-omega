@@ -1,27 +1,313 @@
 \section{BridgeRH 的最小化义务清单与自对偶矩阵桥示例}\label{app:bridge-rh-obligations}
 
-\subsection{BridgeRH 的可验证义务（Proof Obligations）}
-BridgeRH 的作用是把“经典完成化对象”的零点事件编译/注入到 PW 可审计闭包中，使得类型安全（unitary slice 约束）可以作用于经典零点集合。其可验证义务可分解为四组：
+\subsection{两类轨道与寄存器词典：纤维轨道、primitive 轨道与 prime-register}
+\label{subsec:bridge-orbit-dictionary}
+BridgeRH 的核心困难并不在于“临界线约束如何推出”，而在于“经典零点事件如何被编译为可审计闭包内的可核对读出”。为使该编译具有最小输入、可并行的局域实现，本附录首先固定两类轨道口径，并给出其与素数寄存器纤维的统一词典。
+
+\paragraph{(A) 纤维侧轨道：折叠重写的值保持轨道}
+在附录 \ref{app:fold-rewriting} 中，折叠 $\Fold$ 由一族局部值保持重写规则 $\mathcal{R}_{\Fold}$ 实现；其终止性与（局部）合流性保证每个配置存在唯一正规形 $\mathrm{NF}(a)\in X_\infty$，并给出 $\Fold_\infty(a)=\mathrm{NF}(a)$。
+
+\begin{definition}[折叠轨道与轨道残差]\label{def:fold-orbit-residual}
+在配置空间 $D$（附录 \ref{app:fold-rewriting}）上，定义关系 $a\leftrightsquigarrow b$：当且仅当存在一条有限链
+$$
+a=a_0\to a_1\to\cdots\to a_T=b
+$$
+其中每一步 $a_{t-1}\to a_t$ 为某条原子重写规则或其逆规则（即允许沿值保持轨道双向移动）。定义 $a$ 的\textbf{折叠轨道}为其等价类
+$$
+\mathcal{O}_{\Fold}(a):=\{b\in D:\ b\leftrightsquigarrow a\}.
+$$
+若固定一个确定性的正规化策略 $S$（附录 \ref{app:prime-uplift}），则对输入 $\omega$ 可得到一条定向轨迹
+$
+a_0\to\cdots\to a_T=\mathrm{NF}(a_0)
+$，
+其原子事件序列 $(e_1(\omega),\dots,e_T(\omega))$ 称为\textbf{轨道残差}（或加法轨道寄存器的内容）。
+\end{definition}
+
+\begin{proposition}[值保持轨道的横截面：折叠是沿轨道投影]\label{prop:fold-orbit-transversal}
+对任意 $a\in D$，折叠轨道与值纤维一致：
+$$
+\mathcal{O}_{\Fold}(a)=\{b\in D:\ \mathrm{Val}(b)=\mathrm{Val}(a)\}.
+$$
+并且该轨道与 $X_\infty$ 恰在一点相交，交点为 $\Fold_\infty(a)$。
+\end{proposition}
+\begin{proof}
+附录 \ref{app:fold-rewriting} 的每条原子规则保持 $\mathrm{Val}$，故轨道包含于值纤维。反向包含由“终止/合流 $\Rightarrow$ 正规形唯一”与 Zeckendorf 唯一性（附录 \ref{app:zeckendorf-ostrowski}）给出：值纤维中落在 $X_\infty$ 的元素至多一个，而该唯一元素即为 $\mathrm{NF}(a)=\Fold_\infty(a)$。从而任意同值 $b$ 与 $a$ 必可通过若干原子规则与其逆连接。证毕。
+\end{proof}
+
+\paragraph{(B) 核侧轨道：有限核/同步图上的 primitive 闭轨道}
+与 (A) 的“值保持轨道”不同，核侧轨道来自一个有限状态核（或有限图移位）的内禀动力学：闭轨道对应周期点计数与行列式/$\zeta$ 接口中的 Euler 乘积因子。为桥接 RH-like 对象，我们将其组织为二变量行列式对象的可审计输入（见下节的 $\zeta$–行列式桥包）。
+
+\begin{definition}[primitive 轨道]\label{def:primitive-orbit}
+给定有限有向图 $\Gamma$ 及其边移位动力学。称一个有向闭路 $\gamma$ 为\textbf{primitive}，若它不等于更短闭路的幂；记 $\mathcal{P}_\Gamma$ 为全部 primitive 闭轨道集合，$|\gamma|$ 为其长度。
+\end{definition}
+
+\paragraph{(C) prime-register：把轨道残差外置为可寻址乘法坐标}
+折叠轨道残差本质上是一条“局部事件”链；局域并行要求其在独立窗口上的更新可交换、可并行写入。素数寄存器纤维（正文定义 \ref{def:prime-register-fiber}，附录 \ref{app:prime-uplift}）提供了最小的可审计承载轴：以唯一分解把加法轨道残差编译为素数轴上的稀疏坐标，从而把“加法的轨道寄存器”转写为“乘法的素数寄存器”。
+
+\begin{remark}[轨道残差与 Gödel 编码]\label{rem:orbit-residual-godel}
+附录 \ref{app:prime-uplift} 与附录 \ref{app:inject-code-audit} 的构造等价于：把事件序列 $(e_1,\dots,e_T)$ 通过可判定注入编码 $\mathrm{code}$ 写为整数序列 $(n_1,\dots,n_T)$，并以素数序列 $(p_t)$ 作 Gödel 编码
+$
+\prod_{t=1}^{T}p_t^{n_t}
+$；
+其可逆回放由 $p$-进赋值 $v_{p_t}$ 的可判定读出实现。该机制将“轨道（加法）”的组成律外置为“素数（乘法）”的唯一分解律，是后续局域并行与审计复现的统一接口。
+\end{remark}
+
+\begin{proposition}[局域并行口径下：加法轨道寄存器 $\simeq$ 乘法素数寄存器]\label{prop:orbit-register-eq-prime-register}
+令 $\mathcal{E}$ 为可数的“局部原子事件标签”集合（例如规则类型与位置、或进一步带上线程/时间索引以保证注入性），并令
+$$
+\mathrm{Orb}(\mathcal{E}):=\NN^{(\mathcal{E})}
+$$
+表示有限支撑计数向量空间（坐标加法作为寄存器合成律）。取一个注入
+$
+\iota:\mathcal{E}\hookrightarrow \mathcal{P}
+$
+（把事件标签嵌入素数集合 $\mathcal{P}$），并定义嵌入
+$$
+\Phi_\iota:\mathrm{Orb}(\mathcal{E})\hookrightarrow P,\qquad
+\bigl(\Phi_\iota(r)\bigr)\bigl(\iota(e)\bigr):=r(e),\quad
+\bigl(\Phi_\iota(r)\bigr)(p)=0\ (p\notin \iota(\mathcal{E})).
+$$
+则：
 \begin{enumerate}
-  \item \textbf{义务组 \ref{bridge:b1}（经典目标桥接）：}存在 $L>1$ 与一族核对象，使其二变量行列式
+  \item $\Phi_\iota$ 是交换幺半群同态（坐标加法保持）：$\Phi_\iota(r+r')=\Phi_\iota(r)+\Phi_\iota(r')$；
+  \item 记素数寄存器的值映射 $N:P\to\NN_{\ge 1}$（定义 \ref{def:prime-register-fiber}），则复合编码
   $$
-  \Delta(z,u)=\det(I-zB(u))
+  \mathrm{Enc}_\iota:=N\circ \Phi_\iota:\mathrm{Orb}(\mathcal{E})\to \NN_{\ge 1},
+  \qquad
+  \mathrm{Enc}_\iota(r)=\prod_{e\in\mathcal{E}} \iota(e)^{r(e)}
   $$
-  满足自对偶关系 $\Delta(z,u)=\Delta(uz,1/u)$，并且其完成化截面
-  $$
-  \Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})
-  $$
-  在整个复平面上与经典 $\Xi_\zeta(s)$ 一致（或至少具有相同零点集与重数）。
+  将“加法合成”严格转写为“乘法合成”：
+  $
+  \mathrm{Enc}_\iota(r+r')=\mathrm{Enc}_\iota(r)\,\mathrm{Enc}_\iota(r')
+  $；
+  \item 由算术基本定理，$\mathrm{Enc}_\iota$ 为单射，且其逆读出由各素数轴的 $p$-进赋值 $v_p$ 给出，从而在可审计意义下“加法轨道寄存器的作用”等价于“乘法素数寄存器的作用”。
+\end{enumerate}
+特别地，若取 $\mathcal{E}=\{1,\dots,T\}$ 并令 $\iota(t)=p_t$，则该命题退化为附录 \ref{app:inject-code-audit} 的 Gödel（素数幂）编码口径；若进一步把 $\mathcal{E}$ 分解为互不干扰的局部子集（并行线程），则 $\mathrm{Enc}_\iota$ 的乘法分解可并行计算，满足局域性并行要求。
+\end{proposition}
+\begin{proof}
+前两条由定义直接验证；第三条由唯一分解保证：若 $\prod \iota(e)^{r(e)}=\prod \iota(e)^{r'(e)}$，则对每个 $e$ 取 $v_{\iota(e)}$ 得 $r(e)=r'(e)$。证毕。
+\end{proof}
 
-  \item \textbf{义务组 \ref{bridge:b2}（零点可寻址桥接）：}对任意满足 $\Xi_\zeta(s_0)=0$ 且 $0<\Re(s_0)<1$ 的零点 $s_0$，存在投影词地址 $W(s_0)\in\mathrm{PW}$，使其在可审计片段内可规约到接口正规形并给出非 $\NULL$ 的可核对读出，且读出验证 $\Xi_{\Delta,L}(s_0)=0$。
+\subsection{轨道侧 \texorpdfstring{$\zeta$}{zeta}–行列式桥包：trace/primitive/Euler 的严格交换}\label{subsec:zeta-det-bridge}
+本节给出 BridgeRH 所需的最小 $\zeta$ 桥包口径：它把核侧 primitive 轨道谱（Euler 乘积）与迹序列（trace）严格对齐，并将二者压缩为一个二变量行列式对象 $\Delta(z,u)$。
 
-  \item \textbf{义务组 \ref{bridge:b3}（unitary slice 类型锁定）：}任意“零点事件”的可核对读出必须走 unitary slice 的审计接口（$\theta$-扫描），从而零点地址参数必须满足 $\abs{u_L(s_0)}=1$。
+\begin{definition}[带势的两变量 $\zeta$ 与行列式对象]\label{def:zetaK-two-variable}
+给定有限有向图 $\Gamma_K$，并对每条边 $e$ 赋一个非负整数势（局域串行代价）
+$
+\kappa(e)\in\ZZ_{\ge 0}
+$。
+定义带权邻接矩阵族 $M_K(u)\in\Mat_{|V|\times|V|}(\ZZ[u])$：
+$$
+\bigl(M_K(u)\bigr)_{ij}:=\sum_{e:i\to j}u^{\kappa(e)}.
+$$
+定义二变量 $\zeta$ 为
+$$
+\zeta_K(z,u):=\exp\!\Bigl(\sum_{n\ge 1}\frac{a_{K,n}(u)}{n}z^n\Bigr),
+\qquad
+a_{K,n}(u):=\Tr\bigl(M_K(u)^n\bigr),
+$$
+从而在有限维情形严格有
+$$
+\zeta_K(z,u)=\frac{1}{\det(I-zM_K(u))}.
+$$
+记对应的二变量行列式对象为
+$$
+\Delta_K(z,u):=\det(I-zM_K(u)).
+$$
+\end{definition}
 
-  \item \textbf{义务组 \ref{bridge:b4}（规格与重数证书）：}桥接对象需满足正性 Fredholm-HTF 规格：闭层全纯性、正性/整数重数证书以及 Abel-first/有限部接口兼容性，使得零点/极点实体携带可审计的重数/留数证书并可回归到桥包指纹。
+\begin{remark}[\texorpdfstring{$u$}{u} 的作用：把可加代价乘法化]\label{rem:u-as-multiplicative-weight}
+势 $\kappa$ 是沿轨道可加的局域量：$\kappa(\gamma)=\sum_{e\in\gamma}\kappa(e)$。引入权重 $u^{\kappa(e)}$ 的直接后果是：轨道总代价以乘法方式进入 primitive 因子
+$
+(1-z^{|\gamma|}u^{\kappa(\gamma)})^{-1}
+$。
+因此在轨道侧，“加法事件数/代价”被系统性转写为“乘法权重”的指数；这与命题 \ref{prop:orbit-register-eq-prime-register} 的“加法寄存器 $\leftrightarrow$ 乘法寄存器”同构口径一致。
+\end{remark}
+
+\begin{definition}[primitive 分层谱]\label{def:primitive-layer-spectrum}
+记 $\mathcal{P}_K$ 为 $\Gamma_K$ 的 primitive 闭轨道集合。对 $\gamma\in\mathcal{P}_K$，定义轨道势
+$$
+\kappa(\gamma):=\sum_{e\in\gamma}\kappa(e).
+$$
+定义 primitive 分层谱多项式
+$$
+B_{K,n}(u):=\sum_{\gamma\in\mathcal{P}_K,\ |\gamma|=n}u^{\kappa(\gamma)}\in\ZZ[u].
+$$
+\end{definition}
+
+\begin{proposition}[Euler 乘积与 Witt/Möbius 反演]\label{prop:zeta-euler-mobius}
+沿用定义 \ref{def:zetaK-two-variable}--\ref{def:primitive-layer-spectrum} 的记号。则成立严格恒等式：
+\begin{align*}
+\zeta_K(z,u)
+&=\prod_{\gamma\in\mathcal{P}_K}\bigl(1-z^{|\gamma|}u^{\kappa(\gamma)}\bigr)^{-1},\\
+a_{K,n}(u)
+&=\sum_{d\mid n} d\,B_{K,d}\!\bigl(u^{n/d}\bigr),\\
+B_{K,n}(u)
+&=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{K,n/d}\!\bigl(u^d\bigr),
+\end{align*}
+其中 $\mu$ 为 Möbius 函数。
+\end{proposition}
+\begin{proof}
+对 Euler 乘积取对数并按长度分组得到 $a_{K,n}$ 与 $B_{K,d}$ 的关系；再作 Möbius 反演即得逆公式。证毕。
+\end{proof}
+
+\begin{remark}[严格交换桥包（迹 $\to$ primitive $\to$ Euler）]\label{rem:trace-primitive-euler-commuting}
+命题 \ref{prop:zeta-euler-mobius} 把“核侧轨道计数”压缩为一个严格交换桥包：有限核（有限矩阵）$T$ 的迹序列 $a_n(T)=\Tr(T^n)$ 经 Möbius/Witt 变换得到 primitive 系数，再经 Euler 变换复原 $\zeta_T(z)=\det(I-zT)^{-1}$；因此 prime-like 侧与 trace 侧在可审计意义下被锁定为同一对象的两种读出。
+\[
+\begin{CD}
+T @>\mathrm{TrSeq}>> \bigl(a_n(T)\bigr)_{n\ge 1} @>\mathrm{Mob}>> \bigl(B_n(T)\bigr)_{n\ge 1} @>\mathrm{Euler}>> \zeta_T(z)=\det(I-zT)^{-1}\\
+@V\mathrm{Det}VV @. @. @. @VV=V\\
+\det(I-zT)^{-1} @. @. @. \det(I-zT)^{-1}
+\end{CD}
+\]
+\noindent 其中 $\mathrm{Mob}$ 表示 Möbius 反演（命题 \ref{prop:zeta-euler-mobius}），而 $\mathrm{Euler}$ 表示由 primitive 系数组装 Euler 乘积的算子。
+\end{remark}
+
+\subsubsection{局域并行装配：分流直积与张量积核}\label{subsubsec:parallel-tensor}
+当核由若干互不干扰的局部流（同余类/分块窗口）并行装配时，全局一步为局部一步的直积；在有限核口径下，这对应于带权邻接矩阵的 Kronecker 张量积结构。
+
+\begin{proposition}[张量积装配的谱半径与迹因子化]\label{prop:tensor-assembly-trace}
+设全局核由 $m$ 个同构局部流装配而成，使得
+$
+M_{\mathrm{glob}}(u)=\bigotimes_{r=1}^{m}M_{\mathrm{flow}}(u)
+$。
+则对任意 $n\ge 1$ 有
+$$
+\Tr\!\bigl(M_{\mathrm{glob}}(u)^n\bigr)=\Tr\!\bigl(M_{\mathrm{flow}}(u)^n\bigr)^m,
+\qquad
+\rho\bigl(M_{\mathrm{glob}}(u)\bigr)=\rho\bigl(M_{\mathrm{flow}}(u)\bigr)^m.
+$$
+\end{proposition}
+\begin{proof}
+由 Kronecker 积的基本恒等式 $(A\otimes B)^n=A^n\otimes B^n$ 与 $\Tr(A\otimes B)=\Tr(A)\Tr(B)$ 得到迹因子化；谱半径可乘性 $\rho(A\otimes B)=\rho(A)\rho(B)$ 给出第二式。证毕。
+\end{proof}
+
+\begin{corollary}[并行审计的可复算分解：全局指纹由局部指纹装配]\label{cor:parallel-audit-factorization}
+在命题 \ref{prop:tensor-assembly-trace} 的设定下，全局迹序列 $a^{\mathrm{glob}}_n(u):=\Tr(M_{\mathrm{glob}}(u)^n)$ 逐项由局部迹序列 $a^{\mathrm{flow}}_n(u):=\Tr(M_{\mathrm{flow}}(u)^n)$ 给出：
+$$
+a^{\mathrm{glob}}_n(u)=\bigl(a^{\mathrm{flow}}_n(u)\bigr)^m.
+$$
+因此对任意截断阶 $N$，$\zeta_{\mathrm{glob}}(z,u)$ 的迹展开系数与由 Möbius/Witt 反演得到的 primitive 分层谱 $\{B^{\mathrm{glob}}_n(u)\}_{n\le N}$ 均可从 $\{a^{\mathrm{flow}}_n(u)\}_{n\le N}$ 以纯代数方式生成；该生成仅含交换运算（加法、乘法与有限求和），从而满足局域性并行审计的可复算要求。
+\end{corollary}
+
+\subsection{BridgeRH 的可验证义务（Proof Obligations）：从合同到可审计规格}\label{subsec:bridge-rh-obligations}
+BridgeRH 的目标是把“经典完成化对象”的零点事件编译/注入到 PW 可审计闭包中，使得类型安全（unitary slice 约束）可以作用于经典零点集合。为降低不可审计强假设，本节把 BridgeRH 的四条合同条件拆解为可核验的子义务（构造、协议路径、解析刚性与证书接口）。
+
+\paragraph{义务组 (B1)（经典目标桥接，降格后的可审计规格）}
+\begin{itemize}
+  \item[(B1.a)] \textbf{核与行列式对象：}由 SPG/PW 管线诱导一个可审计核族（有限矩阵或迹类算子族）$B(u)$，并定义
+  $$
+  \Delta(z,u)=\det(I-zB(u)),\qquad \zeta(z,u)=\Delta(z,u)^{-1}.
+  $$
+  要求对协议可达的 $u$，$\Delta$ 的计算可被归约为有限证书（线性代数或可复算数值证书），并与定义 \ref{def:zetaK-two-variable} 的迹展开兼容。
+
+  \item[(B1.b)] \textbf{轨道侧一致性：}对每个协议可达的 $u$，primitive 轨道谱与迹序列满足命题 \ref{prop:zeta-euler-mobius} 的严格交换（或给出等价的可审计替代口径），从而 Euler 乘积侧与 trace/行列式侧一致。
+
+  \item[(B1.c)] \textbf{经典目标识别（协议路径 + 解析刚性）：}固定 $L>1$ 并定义完成化截面
+  $$
+  \Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1}).
+  $$
+  指定一条\textbf{可审计协议路径}（例如 $z\in(0,1)$ 的实轴协议、或 unitary slice 上的 $\theta$-扫描协议）以及其上可核对的匹配准则，使得在该路径上一致性可被证书核验：
+  $$
+  \Xi_{\Delta,L}(s)\equiv \Xi_\zeta(s)\quad\text{（或至少同零点集/同重数）}.
+  $$
+  随后以解析延拓唯一性把“协议路径上一致”提升为“相应域内恒等/同零点集”结论；若该提升失败，则必须给出最小失败点（例如有限维极点格点屏障、需极限逼近/sofic 细化等）的可否证诊断。
+\end{itemize}
+
+\paragraph{义务组 (B2)（零点可寻址桥接：编译器义务）}
+对任意外部给定的经典零点事件证书（例如输入 $s_0$ 及其 $\Xi_\zeta(s_0)=0$ 的外部证明/可核对证明片段），编译器必须输出一条投影词地址 $W(s_0)\in\mathrm{PW}$，使其在可审计片段内规约到接口正规形并产生非 $\NULL$ 的可核对读出；该读出在 (B1.c) 的识别口径下验证 $\Xi_{\Delta,L}(s_0)=0$。其局域并行实现依赖于“轨道残差外置到 prime-register”的机制（见附录 \ref{app:prime-uplift} 与附录 \ref{app:inject-code-audit}）。
+
+\paragraph{义务组 (B3)（unitary slice 类型锁定）}
+任意“零点事件”的可核对读出必须走 unitary slice 的审计接口（$\theta$-扫描），从而零点地址参数必须满足 $\abs{u_L(s_0)}=1$。该义务在正文命题 \ref{prop:critical-line-unitary-slice} 与附录 \ref{app:unitary-slice} 的接口正规化链条中被固定为可审计拒绝规则，并被类型安全定理 \ref{thm:type-safety-offcritical} 使用。
+
+\paragraph{义务组 (B4)（规格与重数证书：NonCancel 与有限部接口）}
+桥接对象需满足正性 Fredholm-HTF 规格：闭层全纯性、正性/整数重数证书以及 Abel-first/有限部接口兼容性，使得零点/极点实体携带可审计的重数/留数证书并可回归到桥包指纹。以下给出两条最小可核对的证书模板：
+\begin{enumerate}
+  \item \textbf{（整数重数/留数证书）} 对有限维或迹类算子 $F$，考虑 resolvent-trace
+  $$
+  S(r):=\Tr\!\bigl((I-rF)^{-1}\bigr).
+  $$
+  则每个非零特征值 $\lambda$ 在 $r_0=1/\lambda$ 处产生至多一阶主部，其系数为对应 Riesz 投影 $P_\lambda$ 的迹 $\Tr(P_\lambda)\in\NN$，从而同点主部不可能自发抵消；该“整数留数”可作为可复算的 NonCancel 证书随审计输出。
+  \item \textbf{（Abel-first/有限部接口）} 对有限核 $\zeta_A(z)=\det(I-zA)^{-1}$，primitive 对数接口给出
+  $
+  P(z)=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_A(z^k)
+  $。
+  当 $\zeta_A$ 在主极点 $z_\star=1/\rho(A)$ 处为简单极点时，存在 Abel/Hadamard 有限部常数 $\log\mathfrak{M}$ 使
+  $$
+  P(z)=-\log(1-\rho(A)z)+\log\mathfrak{M}+o(1)\qquad (z\to z_\star),
+  $$
+  且常数项可分解为“主留数常数 + Möbius 尾项”之和；该有限部常数给出 primitive 轨道侧的可审计指纹，并与“先 $\zeta$/行列式组织，再做有限部读出”的 Abel-first 约定兼容。
 \end{enumerate}
 
+\begin{proposition}[resolvent-trace 的整数留数证书（NonCancel 模板）]\label{prop:resolvent-trace-integer-residue}
+设 $F$ 为有限维矩阵或更一般的迹类算子。令
+$$
+S(r):=\Tr\!\bigl((I-rF)^{-1}\bigr).
+$$
+则对每个非零特征值 $\lambda\in\mathrm{spec}(F)\setminus\{0\}$，$S(r)$ 在 $r_0:=1/\lambda$ 处至多有一阶极点，并且其主部系数为对应 Riesz 投影 $P_\lambda$ 的迹：
+$$
+S(r)=\frac{\Tr(P_\lambda)}{1-r\lambda}+(\text{在 }r_0\text{ 处解析的项}),
+\qquad
+\Tr(P_\lambda)=\mathrm{rank}(P_\lambda)\in\NN.
+$$
+特别地，$\Tr(P_\lambda)$ 为正整数，因此同点主部不可能“自发消去”；该整数可作为可复算的重数/留数证书随审计输出。
+\end{proposition}
+\begin{proof}
+有限维情形可由 Jordan 分解直接计算；迹类情形可用 Riesz 投影公式
+$
+P_\lambda=\frac{1}{2\pi i}\oint_\Gamma (zI-F)^{-1}\,\dd z
+$
+（$\Gamma$ 为绕 $\lambda$ 的小圈）得到。标准 resolvent 主部给出
+$
+(I-rF)^{-1}=\frac{1}{1-r\lambda}P_\lambda+(\text{在 }r_0\text{ 处解析的项})
+$，
+对其取迹即得。证毕。
+\end{proof}
+
+\begin{theorem}[primitive 对数接口与 Abel 有限部常数（通用闭式）]\label{thm:abel-mertens-universal-bridge}
+令 $A$ 为有限矩阵（例如有限核/同步图的邻接矩阵），并记
+$$
+a_n:=\Tr(A^n),\qquad
+\zeta_A(z):=\exp\!\left(\sum_{n\ge 1}\frac{a_n}{n}z^n\right)=\frac{1}{\det(I-zA)}.
+$$
+令 $p_n$ 表示长度为 $n$ 的 primitive 闭轨道数（按轨道计），并定义 primitive 生成函数
+$$
+P(z):=\sum_{n\ge 1}p_n z^n.
+$$
+则当 $|z|$ 充分小时有恒等式
+$$
+P(z)=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_A(z^k).
+$$
+进一步假设 $\zeta_A(z)$ 在 $z_\star$ 处有唯一主极点且为简单极点，并记
+$$
+\lambda:=\rho(A)=\frac{1}{z_\star},\qquad
+C:=\lim_{z\to z_\star}(1-\lambda z)\zeta_A(z).
+$$
+则存在 Abel/Hadamard 有限部常数 $\log\mathfrak{M}$ 使得
+$$
+P(z)=-\log(1-\lambda z)+\log\mathfrak{M}+o(1)\qquad(z\to z_\star),
+$$
+并且常数项满足闭式分解
+$$
+\boxed{\;
+\log\mathfrak{M}
+=\log C+\sum_{k\ge 2}\frac{\mu(k)}{k}\log\zeta_A(z_\star^{\,k})\; }.
+$$
+若写 $\Delta_A(z):=\det(I-zA)$，且 $z_\star$ 为 $\Delta_A$ 的简单零点，则还有
+$$
+C=\frac{1}{-z_\star\,\Delta_A'(z_\star)}=-\frac{\lambda}{\Delta_A'(z_\star)}.
+$$
+\end{theorem}
+\begin{proof}
+由 Euler 乘积（primitive 轨道展开）取对数并展开几何级数，可得
+$
+\log\zeta_A(z)=\sum_{m\ge 1}P(z^m)/m
+$，
+对其作 Möbius 反演即得 $P(z)=\sum_{k\ge 1}\mu(k)\log\zeta_A(z^k)/k$。当 $z\to z_\star$ 时，$\zeta_A(z)=\frac{C}{1-\lambda z}+O(1)$，故 $\log\zeta_A(z)=-\log(1-\lambda z)+\log C+o(1)$。将 $k=1$ 项单独提出，并注意对 $k\ge 2$ 有 $|z_\star^k|<|z_\star|$，从而 $\log\zeta_A(z^k)$ 在 $z=z_\star$ 处解析并收敛到 $\log\zeta_A(z_\star^k)$，即可得到所示有限部常数分解。最后一式由 $\zeta_A=1/\Delta_A$ 在简单零点处线性化得到。证毕。
+\end{proof}
+
 \subsection{可控 \texorpdfstring{$\Delta(z,u)$}{Delta(z,u)} 的最小示例：有限维矩阵自对偶桥}
-以下给出一个“最小可控实现”，用于演示义务组 \ref{bridge:b1}/\ref{bridge:b3} 的代数核验与 \ref{bridge:b2} 的地址样式；该例不宣称与 $\Xi_\zeta$ 一致，而是提供一个可完全核对的 $\Delta(z,u)$ 原型。
+以下给出一个“最小可控实现”，用于演示 (B1.a) 的代数核验、(B3) 的 unitary slice 结构护栏以及 (B2) 的地址样式；该例不宣称与 $\Xi_\zeta$ 一致，而是提供一个可完全核对的 $\Delta(z,u)$ 原型。
 
 \paragraph{构造：交换对称的线性 $u$-矩阵族}
 取整数矩阵 $B_0\in\ZZ^{n\times n}$ 与置换矩阵 $\Pi$（满足 $\Pi^{-1}=\Pi^\top$），令
@@ -63,12 +349,12 @@ $$
 $$
 从而 $\det(\lambda I-\widetilde{B}(\theta))$ 作为 $\theta$ 的解析函数为偶函数。这一性质给出 unitary slice 的结构护栏：在 $\theta=i\vartheta$（$\vartheta\in\RR$）上，$u=e^{i\vartheta}$ 落在单位圆，连续可见自由度仅为相位 $\vartheta$。
 
-\subsection{在可控模型中实现 \texorpdfstring{\ref{bridge:b2}}{B2}（“零点地址”的最小样式）}
+\subsection{在可控模型中实现 (B2)（“零点地址”的最小样式）}
 对固定 $L>1$，完成化截面为 $\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})$。在三生成元接口正规形语法下，可取最小地址样式为
 $$
 W(s)=\mathrm{LIFT}_G\circ\mathrm{PROJ}_{u_L(s)}\circ E_m,\qquad u_L(s)=L^{2s-1}.
 $$
-该地址已经处于接口正规形，且其核验应通过 unitary slice 审计接口（$\theta$-扫描）实现，从而要求 $\abs{u_L(s)}=1$（义务组 \ref{bridge:b3}）。
+该地址已经处于接口正规形，且其核验应通过 unitary slice 审计接口（$\theta$-扫描）实现，从而要求 $\abs{u_L(s)}=1$（义务组 (B3)）。
 
 在该可控模型下，“可核对零点证书”的最小实现可以取为：给定 $\theta$（即 $u=e^{i\theta}$）计算 $\Delta(z,u)$ 并验证 $\Delta(z,u)=0$。由于 $\Delta$ 为有限维行列式，其零点核验可完全归约为线性代数的可审计输出（精确行列式或带误差界的数值证书）。
 
