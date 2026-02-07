@@ -25,6 +25,7 @@
 它给出一个从 \(\RR\) 到 \(\TT\setminus\{-1\}\) 的解析同胚，并满足基点归一化 \(\iota(0)=1\)。
 当 \(x\to\pm\infty\) 时 \(\vartheta(x)\to\pm\pi\) 且 \(\iota(x)\to-1\)，从而把“无穷远”统一压到单位圆边界的单点。
 若以 \(\widehat{\RR}:=\RR\cup\{\infty\}\) 作一维射影紧化并约定 \(\iota(\infty):=-1\)，则 \(\iota:\widehat{\RR}\to\TT\) 成为同胚；在此意义下，“无界变量”被无参压缩为单位圆上的一个边界端点。
+上述 Möbius 同胚与边界延拓属于标准复分析事实（参见 \cite{Ahlfors1979ComplexAnalysis}）。
 其显式反投影为
 \begin{equation}\label{eq:unit-circle-phase-inverse}
 \boxed{\ \upsilon^{-1}(u)=\tan(\pi u),\qquad x=\tan\!\Bigl(\frac{\vartheta}{2}\Bigr)=\tan(\pi u),\qquad
@@ -428,6 +429,51 @@ f_U(u)=f_X(x)\left|\frac{\dd x}{\dd u}\right|
 在两种口径中，“可逆压缩”并不消灭信息，而是把不可见自由度迁移为一个可审计的代价项：离散情形为纤维对数体积，连续情形为 Jacobian 的负对数。
 \end{remark}
 
+\begin{proposition}[相位算术的对数条件数恒等式（雅可比账本）]\label{prop:unit-circle-phase-log-condition-numbers}
+取 \(u,v\in\mathbb{U}\)，并记
+\[
+x:=\tan(\pi u),\qquad y:=\tan(\pi v).
+\]
+则相位加法 \(u\boxplus v=\upsilon(x+y)\) 与相位乘法 \(u\boxtimes v=\upsilon(xy)\) 的输入端导数满足
+\begin{align}
+\left|\frac{\partial(u\boxplus v)}{\partial u}\right|
+&=\frac{1+x^2}{1+(x+y)^2},
+&
+\left|\frac{\partial(u\boxplus v)}{\partial v}\right|
+&=\frac{1+y^2}{1+(x+y)^2},\label{eq:unit-circle-phase-addition-jacobian}\\[4pt]
+\left|\frac{\partial(u\boxtimes v)}{\partial u}\right|
+&=\frac{|y|\,(1+x^2)}{1+x^2y^2},
+&
+\left|\frac{\partial(u\boxtimes v)}{\partial v}\right|
+&=\frac{|x|\,(1+y^2)}{1+x^2y^2}.\label{eq:unit-circle-phase-multiplication-jacobian}
+\end{align}
+若以定义 \ref{def:unit-circle-phase-precision-potential} 的精度势 \(\mathcal{P}(t)=\log\pi+\log(1+t^2)\) 表示对数账本，则有严格恒等式
+\begin{align}
+\log\left|\frac{\partial(u\boxplus v)}{\partial u}\right|
+&=\mathcal{P}(x)-\mathcal{P}(x+y),
+&
+\log\left|\frac{\partial(u\boxplus v)}{\partial v}\right|
+&=\mathcal{P}(y)-\mathcal{P}(x+y),\label{eq:unit-circle-phase-addition-log-ledger}\\[4pt]
+\log\left|\frac{\partial(u\boxtimes v)}{\partial u}\right|
+&=\log|y|+\mathcal{P}(x)-\mathcal{P}(xy),
+&
+\log\left|\frac{\partial(u\boxtimes v)}{\partial v}\right|
+&=\log|x|+\mathcal{P}(y)-\mathcal{P}(xy).\label{eq:unit-circle-phase-mul-log-ledger}
+\end{align}
+\end{proposition}
+\begin{proof}
+由定义 \ref{def:unit-circle-phase-transport-arith}，
+\(
+u\boxplus v=\upsilon(x+y)
+\)
+与
+\(
+u\boxtimes v=\upsilon(xy)
+\)。
+又由 \(\upsilon'(t)=\bigl(\pi(1+t^2)\bigr)^{-1}\) 及 \(x=\tan(\pi u)\Rightarrow \frac{\dd x}{\dd u}=\pi(1+x^2)\)，链式法则立得 \eqref{eq:unit-circle-phase-addition-jacobian}--\eqref{eq:unit-circle-phase-multiplication-jacobian}。
+将 \(\mathcal{P}(t)=\log\pi+\log(1+t^2)\) 代入并取对数可得 \eqref{eq:unit-circle-phase-addition-log-ledger}--\eqref{eq:unit-circle-phase-mul-log-ledger}；其中常数 \(\log\pi\) 在势差中消去。证毕。
+\end{proof}
+
 \subsection{圆上的谐波分析接口：相位 Fourier 与有理基函数}\label{subsec:unit-circle-phase-fourier}
 把 \(\mathbb{U}\) 视作 \(\RR/\ZZ\) 的基本区间，并用标准角色基 \(e^{2\pi\mathrm{i}ku}\)（\(k\in\ZZ\)）。
 对 \(f\in L^2(\RR,\dd\mu)\) 定义其相位 Fourier 系数
@@ -447,6 +493,39 @@ f\bigl(\tan(\pi u)\bigr)\sim \sum_{k\in\ZZ}\widehat f(k)\,e^{2\pi\mathrm{i}ku}.
 \iota(x)^k=\bigl(\tfrac{1+\mathrm{i}x}{1-\mathrm{i}x}\bigr)^k
 \)
 为 \(x\) 的有理函数，\eqref{eq:unit-circle-phase-fourier-coeff} 给出一个把“实轴上的函数（在自然权重下）”转写为“单位圆上的 Fourier 数据”的模板；其基函数族在代数上可直接操作，从而适合作为“分析问题 \(\to\) 有理结构”接口层的可审计基底。
+
+\begin{proposition}[有限模态 Hardy 投影的显式有理核]\label{prop:unit-circle-phase-hardy-kernel-rational}
+令
+\(
+w(x):=\iota(x)=\frac{1+\mathrm{i}x}{1-\mathrm{i}x}
+\)。
+对整数 \(N\ge 1\)，定义截断核
+\begin{equation}\label{eq:unit-circle-phase-hardy-kernel}
+\boxed{\;
+K_N(x,y):=\sum_{k=0}^{N-1} w(x)^k\,\overline{w(y)}^{\,k}
+=\frac{1-\bigl(w(x)\overline{w(y)}\bigr)^N}{1-w(x)\overline{w(y)}}\;}
+\end{equation}
+（在 \(x=y\) 处具有可去奇点，且 \(K_N(x,x)=N\)）。
+则 \(K_N(x,y)\) 关于 \((x,y)\) 为显式有理函数，并且分母满足闭式化简
+\begin{equation}\label{eq:unit-circle-phase-hardy-kernel-denominator}
+\boxed{\;
+\frac{1}{1-w(x)\overline{w(y)}}
+=\frac{(1-\mathrm{i}x)(1+\mathrm{i}y)}{2\mathrm{i}(y-x)}
+=\frac12+\frac{1+xy}{2\mathrm{i}(y-x)}\;}
+\end{equation}
+（\(x\neq y\)；在 \(x=y\) 处取极限即可）。
+在自然权重 \(\dd\mu(x)=\frac{1}{\pi(1+x^2)}\dd x\) 下，\(L^2(\RR,\dd\mu)\) 上“前 \(N\) 个非负模态”正交投影可写为
+\[
+(\Pi_N f)(x)=\int_{\RR} K_N(x,y)\,f(y)\,\dd\mu(y),
+\qquad f\in L^2(\RR,\dd\mu).
+\]
+\end{proposition}
+\begin{proof}
+在相位坐标 \(u=\upsilon(x)\in\mathbb{U}\) 下，基函数满足 \(w(x)^k=e^{2\pi\mathrm{i}ku}\)，因此 \(\{w(\cdot)^k\}_{k\in\ZZ}\) 为 \(L^2(\RR,\dd\mu)\) 的正交角色基。
+由有限几何级数得到 \eqref{eq:unit-circle-phase-hardy-kernel}，而投影核表示式由正交展开的标准计算得到。
+对 \eqref{eq:unit-circle-phase-hardy-kernel-denominator}，直接在 \(y\in\RR\) 下用 \(\overline{w(y)}=\frac{1-\mathrm{i}y}{1+\mathrm{i}y}\) 代入并通分化简即可。
+当 \(x\to y\) 时，分式右端为可去奇点，对应极限与 \(K_N(x,x)=N\) 一致。证毕。
+\end{proof}
 
 \subsection{部分观测与扩展保存：把不可逆性外置为记录轴}\label{subsec:unit-circle-phase-information}
 上述 \(\upsilon\) 与 \(\iota\) 在 \(\RR\) 上为双射（边界点仅以极限方式出现），故“提升—投影”本身不引入信息损失。
@@ -468,6 +547,78 @@ f\bigl(\tan(\pi u)\bigr)\sim \sum_{k\in\ZZ}\widehat f(k)\,e^{2\pi\mathrm{i}ku}.
 在附录 \ref{app:op-algebra} 中，折叠 \(\Fold_m\) 的信息压缩可由条件期望 \(E_m:\mathcal{A}_m\to\mathcal{B}_m\)（纤维平均）精确刻画（命题 \ref{prop:fold-conditional-expectation}）。
 上述“扩展保存”原则可视为同一思想的门语言版本：不可逆压缩的缺口由外置记录轴承载，并可进一步被编译为可审计残差/证书（参见 \S\ref{subsec:pom-cost-functorial-calculus} 的 \(2\)-态射证书口径）。
 \end{remark}
+
+\subsection{unitary-slice 的二整数证书与可重复空值判定}\label{subsec:unitary-two-integer-certificate}
+本小节给出一个纯代数的 unitary 证书协议：其输出为二整数对 \((p,q)\)，并以此构造精确落在单位圆上的证书点；同时给出一个以“舍入前像区间”为基础的可重复接受/拒绝规则，当证书与输入浮点位串不相容时读出按空值语义退化为 \(\mathsf{NULL}\)。
+
+\paragraph{二整数表示与整数闭包}
+\begin{definition}[二整数 unitary 证书]\label{def:unitary-two-integer-certificate}
+对任意 \((p,q)\in\ZZ^{2}\)（不全为零），定义
+\begin{equation}\label{eq:unitary-two-integer-map}
+\boxed{\;
+r(p,q):=\frac{q+\mathrm{i}p}{q-\mathrm{i}p}\in\TT\; }.
+\end{equation}
+并约定规范化形式为
+\(
+\gcd(p,q)=1,\ q\ge 0
+\)，且端点 \(r=-1\) 取唯一代表 \((p,q)=(1,0)\)。
+\end{definition}
+
+\begin{proposition}[单位圆乘法在二整数表示下闭合]\label{prop:unitary-two-integer-closure}
+对任意 \((p,q),(p',q')\in\ZZ^{2}\)（不全为零），记
+\[
+(p'',q''):=\bigl(pq'+qp',\ qq'-pp'\bigr)\in\ZZ^{2}.
+\]
+则有严格恒等式
+\[
+r(p,q)\,r(p',q')=r(p'',q''),
+\qquad
+r(p,q)^{-1}=r(-p,q).
+\]
+\end{proposition}
+\begin{proof}
+直接展开
+\(
+\frac{q+\mathrm{i}p}{q-\mathrm{i}p}\cdot\frac{q'+\mathrm{i}p'}{q'-\mathrm{i}p'}
+\)
+并配成共轭分式即可得到乘法闭式；求逆由共轭对称性立得。证毕。
+\end{proof}
+
+\paragraph{从浮点输入到证书输出的确定性协议}
+\begin{algorithm}[unitary 证书的确定性生成与 \texorpdfstring{$\mathsf{NULL}$}{NULL} 判定]\label{alg:unitary-two-integer-deterministic}
+输入：浮点复数 \(\widehat u\in\CC\)（位串给定）、最大分母 \(Q_{\max}\in\NN\)、容许误差预算 \(\delta>0\)。
+
+\smallskip
+\noindent 输出：证书 \((p,q)\)（从而 \(u_{\mathrm{cert}}:=r(p,q)\in\TT\)）或空值 \(\mathsf{NULL}\)。
+\begin{enumerate}
+  \item 由位串构造舍入前像区间 \(\mathcal{I}(\widehat u)\subset\CC\)：它由实部与虚部的 ulp 区间直积给出，完全由舍入模式与位串决定。
+  \item 以半角公式在 \(\Re(\widehat u)\neq-1\) 时定义
+  \[
+  \widehat x:=\frac{\Im(\widehat u)}{1+\Re(\widehat u)}.
+  \]
+  若 \(1+\Re(\widehat u)=0\)（端点邻域），则改用对称公式
+  \(
+  \widehat x:=\frac{1-\Re(\widehat u)}{\Im(\widehat u)}
+  \)
+  并以固定分支规则记录符号。
+  \item 对 \(\widehat x\) 作确定性连分数截断（固定截断规则与最大分母 \(Q_{\max}\)），得到最简分数 \(p/q\)。
+  \item 置 \(u_{\mathrm{cert}}:=r(p,q)\) 并判定
+  \[
+  \mathrm{ACCEPT}(p,q)\Longleftrightarrow
+  \mathrm{dist}\bigl(u_{\mathrm{cert}},\mathcal{I}(\widehat u)\bigr)\le\delta,
+  \]
+  其中 \(\mathrm{dist}\) 取任一固定的可复算范数（例如在 \((\Re,\Im)\) 平面上的 \(\ell_{\infty}\) 距离，并以有理上界实现）。
+  若 \(\mathrm{ACCEPT}(p,q)\) 成立则输出 \((p,q)\)，否则输出 \(\mathsf{NULL}\)。
+\end{enumerate}
+\end{algorithm}
+
+\begin{proposition}[可重复性：同一位串给出唯一证书或空值]\label{prop:unitary-two-integer-reproducible}
+在固定舍入模式、固定 \(Q_{\max}\)、固定连分数截断规则与固定 \(\mathrm{dist}\) 的前提下，算法 \ref{alg:unitary-two-integer-deterministic} 对同一输入位串 \(\widehat u\) 产生唯一输出（证书或 \(\mathsf{NULL}\)）。
+并且第三方仅依赖位串与输出即可复核 \(\mathrm{ACCEPT}(p,q)\) 的真值，从而满足可回放性与跨平台一致性要求。
+\end{proposition}
+\begin{proof}
+舍入前像区间 \(\mathcal{I}(\widehat u)\) 由位串唯一确定；连分数截断在固定规则下确定 \(p/q\)；接受判据仅依赖 \((p,q)\)、\(\mathcal{I}(\widehat u)\)、\(\delta\) 与固定范数上界计算，故输出唯一且可复核。证毕。
+\end{proof}
 
 \subsection{与 Abel--Dirichlet 口径对齐：盘内极坐标的无参角变量}\label{subsec:unit-circle-phase-abel-dirichlet}
 在附录 \ref{app:real-input-40-dirichlet} 中，Abel 单位圆盘变量由
@@ -1210,8 +1361,8 @@ t(\varrho,\theta)
 
 \begin{remark}[端点分解的优先奇通道原则（与 Chebyshev--Adams 桥对齐）]\label{rem:app-jensen-odd-channel-priority}
 推论 \ref{cor:app-jensen-endpoint-localization} 表明：\(\varrho\uparrow 1\) 的主要困难局部化于端点 \(w\approx-1\)。
-在完成化坐标 \(s=\mathfrak{r}+\mathfrak{r}^{-1}\) 下，幂半群 \(w\mapsto w^m\) 对应 \(s\mapsto C_m(s)\)（\S\ref{subsec:unit-disk-witt-chebyshev}）。
-由端点导数律（命题 \ref{prop:chebyshev-endpoint-derivative-splitting}）可知：奇 \(m\) 通道在 \(s=0\) 附近保留线性主尺度，而偶 \(m\) 通道的一阶喷射退化，贡献仅进入高阶残差。
+在完成化坐标 \(S=\mathfrak{r}+\mathfrak{r}^{-1}\) 下，幂半群 \(w\mapsto w^m\) 对应 \(S\mapsto C_m(S)\)（\S\ref{subsec:unit-disk-witt-chebyshev}）。
+由端点导数律（命题 \ref{prop:chebyshev-endpoint-derivative-splitting}）可知：奇 \(m\) 通道在 \(S=0\) 附近保留线性主尺度，而偶 \(m\) 通道的一阶喷射退化，贡献仅进入高阶残差。
 因此任何针对端点邻域的多尺度剥离在结构上必然以奇通道为主项、偶通道为高阶修正。
 \end{remark}
 
@@ -1249,15 +1400,91 @@ F_{\zeta}(w)=B(w)\,S(w)\,O(w),
 \paragraph{边界倍角与 Chebyshev 多项式}
 当 \(w=e^{\mathrm{i}\theta}\in\TT\) 时，令
 \[
-\mathfrak{r}:=e^{\mathrm{i}\theta/2},\qquad s:=\mathfrak{r}+\mathfrak{r}^{-1}=2\cos(\theta/2)\in[-2,2].
+\mathfrak{r}:=e^{\mathrm{i}\theta/2},\qquad S:=\mathfrak{r}+\mathfrak{r}^{-1}=2\cos(\theta/2)\in[-2,2].
 \]
 则对任意整数 \(m\ge 1\)，有
 \[
 w^m=e^{\mathrm{i}m\theta},\qquad
-\mathfrak{r}^m+\mathfrak{r}^{-m}=2\cos(m\theta/2)=:C_m(s),
+\mathfrak{r}^m+\mathfrak{r}^{-m}=2\cos(m\theta/2)=:C_m(S),
 \]
-其中 \(C_m\in\ZZ[s]\) 为 Chebyshev--Adams 多项式表示。
-因此幂半群 \(w\mapsto w^m\) 在 \(s\)-坐标中恰对应 \(s\mapsto C_m(s)\) 的代数化倍角运算。
+其中 \(C_m\in\ZZ[S]\) 为 Chebyshev--Adams 多项式表示（参见 \cite{MasonHandscomb2003Chebyshev}）。
+因此幂半群 \(w\mapsto w^m\) 在 \(S\)-坐标中恰对应 \(S\mapsto C_m(S)\) 的代数化倍角运算。
+
+\subsubsection{相位坐标与完成化迹坐标的全有理交换图}\label{subsubsec:phase-completion-rational-exchange}
+本段给出一个对 unitary-slice 接口尤为关键的“全有理”事实：若以 Cayley 紧化坐标 \(x\in\overline{\RR}\) 参数化半角变量 \(\mathfrak{r}\)，则完成化迹坐标 \(S=\mathfrak{r}+\mathfrak{r}^{-1}\) 与 Chebyshev--Adams 动力学 \(S\mapsto C_d(S)\) 都可被实现为纯有理/整系数运算。
+
+\paragraph{完成化迹坐标的 Cayley 有理参数化}
+取 \(\mathfrak{r}\in\TT\) 并用 Cayley 形式 \(\mathfrak{r}=\iota(x)=\frac{1+\mathrm{i}x}{1-\mathrm{i}x}\)（式 \eqref{eq:unit-circle-cayley-embed}）参数化。
+则完成化迹坐标在 \(x\)-坐标下具有全有理闭式
+\begin{equation}\label{eq:phase-completion-trace-rational}
+\boxed{\;
+S(x):=\iota(x)+\iota(x)^{-1}
+=\frac{2(1-x^2)}{1+x^2}\in[-2,2]\; }.
+\end{equation}
+因此，任何仅以 \(S\in[-2,2]\) 为连续参数的 unitary-slice 审计接口，都可等价改写为以 \(x\in\overline{\RR}\) 为连续参数的接口，且改写不引入根式或三角函数。
+
+\paragraph{Chebyshev--Adams 的有理提升}
+幂半群在半角变量上的作用为 \(\mathfrak{r}\mapsto \mathfrak{r}^{d}\)（\(d\ge 1\)），其在迹坐标上压缩为 \(S\mapsto C_d(S)\)，其中 \(C_d\in\ZZ[S]\) 且满足
+\[
+C_d(S)=\mathfrak{r}^{d}+\mathfrak{r}^{-d}\qquad\text{当}\qquad S=\mathfrak{r}+\mathfrak{r}^{-1}.
+\]
+更强地，在 Cayley 坐标 \(x\) 上存在有理函数 \(\tau_d\in\QQ(x)\) 使得 \(\mathfrak{r}^d=\iota(\tau_d(x))\)，从而交换图严格成立：
+\[
+\begin{CD}
+x @>\iota>> \mathfrak{r} @>>> S=\mathfrak{r}+\mathfrak{r}^{-1}\\
+@V\tau_d VV @VV(\cdot)^d V @VV C_d V\\
+\tau_d(x) @>\iota>> \mathfrak{r}^d @>>> C_d(S)
+\end{CD}
+\]
+其中 \(C_d(S(x))=S(\tau_d(x))\)。
+
+\begin{proposition}[Chebyshev--Adams 作用的全有理实现]\label{prop:chebyshev-adams-fully-rational}
+对任意整数 \(d\ge 1\)，存在 \(A_d,B_d\in\ZZ[x]\) 使
+\begin{equation}\label{eq:adams-Ab-polynomials}
+\boxed{\;
+(1+\mathrm{i}x)^d=A_d(x)+\mathrm{i}B_d(x),\qquad
+(1-\mathrm{i}x)^d=A_d(x)-\mathrm{i}B_d(x)\; }.
+\end{equation}
+并令
+\begin{equation}\label{eq:adams-tau-d}
+\boxed{\;\tau_d(x):=\frac{B_d(x)}{A_d(x)}\in\QQ(x)\; }.
+\end{equation}
+则有
+\begin{equation}\label{eq:adams-cayley-lift}
+\boxed{\;
+\iota(x)^d=\iota\!\bigl(\tau_d(x)\bigr)\; }.
+\end{equation}
+从而在迹坐标上满足严格一致性
+\begin{equation}\label{eq:adams-trace-commute}
+\boxed{\;
+C_d\!\bigl(S(x)\bigr)=S\!\bigl(\tau_d(x)\bigr)
+=\frac{2\bigl(1-\tau_d(x)^2\bigr)}{1+\tau_d(x)^2}\; }.
+\end{equation}
+此外，\((A_d,B_d)\) 可由纯乘加递推在 \(\ZZ[x]\) 中计算：
+\[
+A_0=1,\ B_0=0,\qquad
+A_{d+1}=A_d-xB_d,\quad
+B_{d+1}=B_d+xA_d.
+\]
+因此任何依赖 \(S\mapsto C_d(S)\) 的 unitary-slice 审计或证书构造，都可在不调用三角函数与代数根式的前提下，以整系数多项式的乘加运算实现。
+\end{proposition}
+\begin{proof}
+由二项式展开，\((1+\mathrm{i}x)^d\) 的实部与虚部分别为整系数多项式，故存在 \(A_d,B_d\in\ZZ[x]\) 使 \eqref{eq:adams-Ab-polynomials} 成立。
+由 \(\iota(x)=\frac{1+\mathrm{i}x}{1-\mathrm{i}x}\) 得
+\[
+\iota(x)^d=\frac{(1+\mathrm{i}x)^d}{(1-\mathrm{i}x)^d}
+=\frac{A_d(x)+\mathrm{i}B_d(x)}{A_d(x)-\mathrm{i}B_d(x)}
+=\frac{1+\mathrm{i}\tau_d(x)}{1-\mathrm{i}\tau_d(x)}
+=\iota\!\bigl(\tau_d(x)\bigr),
+\]
+得到 \eqref{eq:adams-cayley-lift}。
+再将 \(S(t)=\iota(t)+\iota(t)^{-1}=\frac{2(1-t^2)}{1+t^2}\) 代入 \(\tau_d(x)\) 得 \eqref{eq:adams-trace-commute}。
+递推式由
+\(
+(1+\mathrm{i}x)^{d+1}=(1+\mathrm{i}x)(A_d+\mathrm{i}B_d)
+\)
+展开并对实/虚部分别比较得到。证毕。
+\end{proof}
 
 \paragraph{半角提升作为最小不可见轴：从 \(w\) 到 \(\mathfrak{r}\) 的分支信息}
 映射
@@ -1266,13 +1493,13 @@ q:\TT\to\TT,\qquad q(\mathfrak{r})=\mathfrak{r}^{2}=w
 \]
 为二重覆盖，其核为 \(\{\pm 1\}\cong \ZZ/2\ZZ\)。
 因此在 \(w\)-层（亦即正文的 unitary twist 变量 \(u\) 层）不可见的最小离散自由度正是半角分支 \(\mathfrak{r}\mapsto-\mathfrak{r}\)。
-在完成化坐标 \(s=\mathfrak{r}+\mathfrak{r}^{-1}\) 中，该分支体现为
+在完成化坐标 \(S=\mathfrak{r}+\mathfrak{r}^{-1}\) 中，该分支体现为
 \(
-s\mapsto -s
-\)，从而可被 \(s\)-轴上的奇偶喷射结构显式激活。
+S\mapsto -S
+\)，从而可被 \(S\)-轴上的奇偶喷射结构显式激活。
 
 \begin{proposition}[端点 \texorpdfstring{$w=-1$}{w=-1} 的半角残差与 \texorpdfstring{$\ZZ/4$}{Z/4} 型取值]\label{prop:half-angle-z4-residue}
-在端点 \(w=-1\)（等价于 \(\theta=\pi\)）处，完成化坐标满足 \(s=0\)。
+在端点 \(w=-1\)（等价于 \(\theta=\pi\)）处，完成化坐标满足 \(S=0\)。
 并且对任意 \(m\ge 1\)，Chebyshev--Adams 多项式在端点的取值为
 \begin{equation}\label{eq:chebyshev-endpoint-values}
 \boxed{\;
@@ -1281,15 +1508,15 @@ C_m(0)=\mathfrak{r}^{m}+\mathfrak{r}^{-m}=2\cos(m\pi/2)\in\{0,\pm 2\}\; }.
 特别地，\(C_m(0)\) 仅由 \(m\bmod 4\) 决定，从而端点处的幂半群作用携带一个 \(\ZZ/4\) 型离散残差。
 \end{proposition}
 \begin{proof}
-端点 \(w=-1=e^{i\pi}\) 的半角满足 \(\mathfrak{r}^{2}=-1\)，故 \(\mathfrak{r}=\pm i=e^{\pm i\pi/2}\)，于是 \(s=\mathfrak{r}+\mathfrak{r}^{-1}=0\)。
-又由于 \(C_m(s)=\mathfrak{r}^m+\mathfrak{r}^{-m}=2\cos(m\theta/2)\)，在 \(\theta=\pi\) 处得
+端点 \(w=-1=e^{i\pi}\) 的半角满足 \(\mathfrak{r}^{2}=-1\)，故 \(\mathfrak{r}=\pm i=e^{\pm i\pi/2}\)，于是 \(S=\mathfrak{r}+\mathfrak{r}^{-1}=0\)。
+又由于 \(C_m(S)=\mathfrak{r}^m+\mathfrak{r}^{-m}=2\cos(m\theta/2)\)，在 \(\theta=\pi\) 处得
 \(
 C_m(0)=2\cos(m\pi/2)
 \)，其取值仅依赖 \(m\bmod 4\)。证毕。
 \end{proof}
 
 \begin{proposition}[端点正交分解：\texorpdfstring{$\ZZ/4$}{Z/4} 离散载荷与 \texorpdfstring{$\RR_{+}$}{R+} 精度载荷]\label{prop:endpoint-orthogonal-decomposition-z4-Rplus}
-在端点 \(w=-1\)（完成化坐标 \(s=0\)）的邻域内，伸缩半群 \(m\in\NN_{\ge 1}\) 的作用可分解为两条互不耦合的载荷：
+在端点 \(w=-1\)（完成化坐标 \(S=0\)）的邻域内，伸缩半群 \(m\in\NN_{\ge 1}\) 的作用可分解为两条互不耦合的载荷：
 \begin{enumerate}
   \item \textbf{离散端点载荷：}端点态 \(C_m(0)\in\{0,\pm 2\}\) 仅由 \(m\bmod 4\) 决定（命题 \ref{prop:half-angle-z4-residue}）。
   \item \textbf{连续精度载荷：}取 Cayley 相位轴 \(u_{\mathrm C}(t)=\frac{1+\mathrm{i}t}{1-\mathrm{i}t}\) 并令半平面线性化坐标 \(\mathfrak{w}(u)=\frac{1+u}{1-u}\)。
@@ -1311,8 +1538,8 @@ C_m(0)=2\cos(m\pi/2)
 \end{proof}
 
 \begin{proposition}[端点导数律：奇伸缩线性放大，偶伸缩二阶退化]\label{prop:chebyshev-endpoint-derivative-splitting}
-令 \(m\ge 1\) 且 \(C_m(s)=2T_m(s/2)\)（\(T_m\) 为第一类 Chebyshev 多项式）。
-则在 \(s=0\) 处有
+令 \(m\ge 1\) 且 \(C_m(S)=2T_m(S/2)\)（\(T_m\) 为第一类 Chebyshev 多项式）。
+则在 \(S=0\) 处有
 \begin{equation}\label{eq:chebyshev-endpoint-derivative}
 \boxed{\;
 C_m'(0)=m\sin(m\pi/2)\; }.
@@ -1324,29 +1551,29 @@ C_m'(0)=m\sin(m\pi/2)\; }.
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-由恒等式 \(C_m(s)=2T_m(s/2)\) 与导数公式 \(T_m'(x)=mU_{m-1}(x)\)（\(U_{m-1}\) 为第二类 Chebyshev 多项式），得
+由恒等式 \(C_m(S)=2T_m(S/2)\) 与导数公式 \(T_m'(x)=mU_{m-1}(x)\)（\(U_{m-1}\) 为第二类 Chebyshev 多项式），得
 \[
 C_m'(0)=2\cdot T_m'(0)\cdot \frac12=T_m'(0)=mU_{m-1}(0).
 \]
 又 \(U_{m-1}(\cos\phi)=\frac{\sin(m\phi)}{\sin\phi}\)，取 \(\cos\phi=0\Rightarrow \phi=\pi/2\) 得 \(U_{m-1}(0)=\sin(m\pi/2)\)，从而得到 \eqref{eq:chebyshev-endpoint-derivative}。
-奇偶分裂由 \(\sin(m\pi/2)\in\{0,\pm 1\}\) 立得；并且由 \(C_m(-s)=(-1)^m C_m(s)\)（对应半角分支 \(\mathfrak{r}\mapsto-\mathfrak{r}\)）可知偶 \(m\) 时 \(C_m\) 为偶多项式、奇 \(m\) 时为奇多项式。证毕。
+奇偶分裂由 \(\sin(m\pi/2)\in\{0,\pm 1\}\) 立得；并且由 \(C_m(-S)=(-1)^m C_m(S)\)（对应半角分支 \(\mathfrak{r}\mapsto-\mathfrak{r}\)）可知偶 \(m\) 时 \(C_m\) 为偶多项式、奇 \(m\) 时为奇多项式。证毕。
 \end{proof}
 
 \begin{corollary}[端点喷射的两类正则化：奇通道控制一阶，偶通道进入高阶]\label{cor:chebyshev-endpoint-jet-regularization}
 设 \(g\) 在包含区间 \([-2,2]\) 的某个开邻域上解析。
-则当 \(s\to 0\) 时有展开
+则当 \(S\to 0\) 时有展开
 \[
-g(C_m(s))=
+g(C_m(S))=
 \begin{cases}
-g(C_m(0)) + O(s^2), & m\ \text{为偶数},\\[4pt]
-g(0) + g'(0)\,C_m'(0)\,s+O(s^2), & m\ \text{为奇数}.
+g(C_m(0)) + O(S^2), & m\ \text{为偶数},\\[4pt]
+g(0) + g'(0)\,C_m'(0)\,S+O(S^2), & m\ \text{为奇数}.
 \end{cases}
 \]
 因此在端点邻域，奇 \(m\) 通道保留线性主尺度，而偶 \(m\) 通道不产生一阶项，只能改变高阶喷射与有限部常数。
 \end{corollary}
 \begin{proof}
-偶 \(m\) 时 \(C_m'(0)=0\) 且 \(C_m(0)\in\{\pm 2\}\)，故 \(C_m(s)=C_m(0)+O(s^2)\)，在 \(C_m(0)\) 处对 \(g\) 作 Taylor 展开得到 \(g(C_m(s))=g(C_m(0))+O(s^2)\)。
-奇 \(m\) 时 \(C_m(0)=0\) 且 \(C_m'(0)\neq 0\)，故 \(C_m(s)=C_m'(0)s+O(s^3)\)，在 \(0\) 处对 \(g\) 作 Taylor 展开即得第二行。证毕。
+偶 \(m\) 时 \(C_m'(0)=0\) 且 \(C_m(0)\in\{\pm 2\}\)，故 \(C_m(S)=C_m(0)+O(S^2)\)，在 \(C_m(0)\) 处对 \(g\) 作 Taylor 展开得到 \(g(C_m(S))=g(C_m(0))+O(S^2)\)。
+奇 \(m\) 时 \(C_m(0)=0\) 且 \(C_m'(0)\neq 0\)，故 \(C_m(S)=C_m'(0)S+O(S^3)\)，在 \(0\) 处对 \(g\) 作 Taylor 展开即得第二行。证毕。
 \end{proof}
 
 \paragraph{primitive 奇偶扇区的端点消失：主奇性由偶长度独占}
@@ -1366,14 +1593,14 @@ P_{\mathrm{even}}(z,u):=\sum_{n\ \mathrm{even}}p_n(u)z^n,
 \end{corollary}
 
 \begin{proposition}[完成化子环与“唯一角度”的代数刻画]\label{prop:completion-subring-unique-angle}
-令 \(\mathfrak{r}\) 为半角变量并记 \(s=\mathfrak{r}+\mathfrak{r}^{-1}\)。
+令 \(\mathfrak{r}\) 为半角变量并记 \(S=\mathfrak{r}+\mathfrak{r}^{-1}\)。
 则反演作用 \(\mathfrak{r}\mapsto \mathfrak{r}^{-1}\) 的不变量子环满足
 \[
 \boxed{\;\ZZ[\mathfrak{r},\mathfrak{r}^{-1}]^{\mathfrak{r}\mapsto \mathfrak{r}^{-1}}
 =\ZZ[\mathfrak{r}+\mathfrak{r}^{-1}]
-=\ZZ[s]\; }.
+=\ZZ[S]\; }.
 \]
-因此，“从半角层下降到唯一角度”在代数上等价于取反演不变子环；任何超出 \(\ZZ[s]\) 的自由度都等价于半角分支（以及端点喷射）所携带的不可见信息轴。
+因此，“从半角层下降到唯一角度”在代数上等价于取反演不变子环；任何超出 \(\ZZ[S]\) 的自由度都等价于半角分支（以及端点喷射）所携带的不可见信息轴。
 \end{proposition}
 \begin{proof}
 \(\ZZ[\mathfrak{r},\mathfrak{r}^{-1}]\) 在 \(\ZZ\)-模意义下由 \(\{\,\mathfrak{r}^k:k\in\ZZ\,\}\) 张成。
@@ -1381,17 +1608,17 @@ P_{\mathrm{even}}(z,u):=\sum_{n\ \mathrm{even}}p_n(u)z^n,
 \(
 f(\mathfrak{r})=\sum_{k\ge 0}a_k(\mathfrak{r}^k+\mathfrak{r}^{-k})
 \)。
-而 \(\mathfrak{r}^k+\mathfrak{r}^{-k}\) 是 \(s=\mathfrak{r}+\mathfrak{r}^{-1}\) 的整系数多项式（正是 \(C_k(s)\) 的定义性实现），故 \(f\in\ZZ[s]\)。
+而 \(\mathfrak{r}^k+\mathfrak{r}^{-k}\) 是 \(S=\mathfrak{r}+\mathfrak{r}^{-1}\) 的整系数多项式（正是 \(C_k(S)\) 的定义性实现），故 \(f\in\ZZ[S]\)。
 反向包含显然成立。证毕。
 \end{proof}
 
 \begin{proposition}[端点分解范式：Witt 伸缩链的奇/偶通道与 primitive 奇/偶扇区]\label{prop:endpoint-decomposition-paradigm}
-在完成化坐标 \((w,\mathfrak{r},s)\) 下（\(w=\mathfrak{r}^2,\ s=\mathfrak{r}+\mathfrak{r}^{-1}\)），幂半群 \(w\mapsto w^m\) 对应的完成化动作为 \(s\mapsto C_m(s)\)。
-于是端点 \(w=-1\)（\(s=0\)）处，“无穷伸缩链”的局部结构满足：
+在完成化坐标 \((w,\mathfrak{r},S)\) 下（\(w=\mathfrak{r}^2,\ S=\mathfrak{r}+\mathfrak{r}^{-1}\)），幂半群 \(w\mapsto w^m\) 对应的完成化动作为 \(S\mapsto C_m(S)\)。
+于是端点 \(w=-1\)（\(S=0\)）处，“无穷伸缩链”的局部结构满足：
 \begin{enumerate}
   \item \textbf{（伸缩通道分裂）}端点喷射按 \(m\) 的奇偶严格分裂：奇 \(m\) 通道控制线性主尺度，而偶 \(m\) 通道只进入高阶喷射与有限部（命题 \ref{prop:chebyshev-endpoint-derivative-splitting} 与推论 \ref{cor:chebyshev-endpoint-jet-regularization}）。
   \item \textbf{（primitive 扇区分裂）}在 primitive 多项式序列中，奇长度 \(n\ge 3\) 的扇区在 \(u=-1\) 处严格消失（推论 \ref{cor:primitive-odd-vanish-u-minus1}），因此端点主奇性完全由偶长度扇区控制。
-  \item \textbf{（完成化子环与不可见轴）}所有可见代数结构严格下降到反演不变子环 \(\ZZ[s]\)（命题 \ref{prop:completion-subring-unique-angle}）；被投影压扁的信息以半角分支（\(\ZZ/2\)）与端点离散残差（\(\ZZ/4\)，命题 \ref{prop:half-angle-z4-residue}）以及高阶喷射精度的形式出现。
+  \item \textbf{（完成化子环与不可见轴）}所有可见代数结构严格下降到反演不变子环 \(\ZZ[S]\)（命题 \ref{prop:completion-subring-unique-angle}）；被投影压扁的信息以半角分支（\(\ZZ/2\)）与端点离散残差（\(\ZZ/4\)，命题 \ref{prop:half-angle-z4-residue}）以及高阶喷射精度的形式出现。
 \end{enumerate}
 \end{proposition}
 
