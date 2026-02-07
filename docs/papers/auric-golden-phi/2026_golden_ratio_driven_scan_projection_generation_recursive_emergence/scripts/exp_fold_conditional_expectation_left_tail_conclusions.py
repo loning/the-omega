@@ -162,7 +162,7 @@ def _write_eq_m24(path: Path, m24: Dict[str, float]) -> None:
     )
     lines.append(
         "将表 \\ref{tab:fold_conditional_expectation_singular_spectrum} 的 $m=24$ 行代入命题 "
-        "\\ref{prop:fold-Em-effective-support-schatten} 与命题 "
+        "\\ref{prop:fold-Em-effective-support-schatten} 与定理 "
         "\\ref{prop:fold-negative-moment-left-tail-certificate}，得到"
     )
     lines.append("\\[")

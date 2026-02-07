@@ -357,8 +357,11 @@ def write_tex(*, out_path: Path) -> None:
         + r"+6\log" + _tex_frac(r10)
         + r"+3\log" + _tex_frac(r11)
         + r"\Bigr)"
-        + r"\approx %.4g\ \mathrm{nats}\approx %.4g\ \mathrm{bits}\ }."
-        % (float(I_xy_nats), float(I_xy_bits))
+        + r"\approx "
+        + _tex_sci(float(I_xy_nats), sig=4)
+        + r"\ \mathrm{nats}\approx "
+        + _tex_sci(float(I_xy_bits), sig=4)
+        + r"\ \mathrm{bits}\ }."
     )
     lines.append(r"\]")
     lines.append(
@@ -396,6 +399,11 @@ def write_tex(*, out_path: Path) -> None:
         + r"\ \mathrm{nats/step}\ }."
     )
     lines.append(r"\]")
+    lines.append(
+        r"因此在 $order\text{-}1$ 统计层面（由相邻二元组边缘决定），"
+        r"均匀输入驱动下的折叠输出与最大熵 Parry 基线在每步相对熵率口径下几乎不可区分；"
+        r"任何系统性偏差若可被稳定检出，其主要承载应出现在更长程依赖（$order\ge 2$）的统计量上。"
+    )
     lines.append(r"\end{corollary}")
     lines.append("")
 

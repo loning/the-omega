@@ -226,7 +226,7 @@ def main() -> None:
     tex.append(r"\end{proof}")
     tex.append("")
 
-    tex.append(r"\begin{corollary}[三阶累积量密度（偏斜审计常数）]\label{cor:fold-gauge-anomaly-cumulant3}")
+    tex.append(r"\begin{corollary}[三阶偏斜审计常数与“非自对偶”指纹]\label{cor:fold-gauge-anomaly-cumulant3}")
     tex.append(
         r"在同一均匀基线下，规范差和 $G_m=\sum_{t=1}^{m}g_t$ 的三阶累积量满足"
         r"$\mathrm{cum}_3(G_m)=P_G^{(3)}(0)\,m+o(m)$。"
@@ -240,6 +240,19 @@ def main() -> None:
     tex.append(r"\]")
     tex.append(r"其中 $P_G^{(3)}(0)<0$ 表明规范差涨落具有稳定的负偏斜（超出二次高斯近似可见范围）。")
     tex.append(r"\end{corollary}")
+    tex.append("")
+    tex.append(r"\begin{remark}[对照：自对偶完成化的 Gallavotti--Cohen 偶性与最低阶指纹]\label{rem:fold-gauge-anomaly-non-self-dual-fingerprint}")
+    tex.append(
+        r"对照自对偶完成化通道，定理 \ref{thm:sync-kernel-gallavotti-cohen} 给出"
+        r"$\Lambda(\theta):=P(\theta)-\theta/2$ 的偶性 $\Lambda(\theta)=\Lambda(-\theta)$，"
+        r"等价于 $P(\theta)=\theta+P(-\theta)$。"
+        r"因此在自对偶类中，中心化累积母函数的所有奇阶导数严格为零，尤其有 $P^{(3)}(0)=0$。"
+    )
+    tex.append(
+        r"相比之下，本节规范差压力满足 $P_G^{(3)}(0)=-1174/2187\neq 0$，"
+        r"从而偏斜审计常数 $\gamma_1^{(G)}\neq 0$ 可被视为“非自对偶”类的最低阶可核对指纹。"
+    )
+    tex.append(r"\end{remark}")
     tex.append("")
 
     out_tex = generated_dir() / "eq_fold_gauge_anomaly_pressure.tex"
