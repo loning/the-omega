@@ -163,6 +163,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_jordan_correlations",
+            script="exp_fold_gauge_anomaly_jordan_correlations.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_jordan_correlations.json",
+                "sections/generated/eq_fold_gauge_anomaly_jordan_correlations.tex",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly_rate_curve_elimination",
             script="exp_fold_gauge_anomaly_rate_curve_elimination.py",
             args=[],
