@@ -1,0 +1,231 @@
+\section{后续研究补充：阿德尔局部--整体闭合、层论粘合障碍与缺陷见证}\label{app:adelic-sheaf-null-witness}
+本附录引入两条外部框架：阿德尔/乘积公式的局部--整体几何，以及层论上同调的粘合障碍语义；其目标不在于重述正文推导链条，而在于把“寄存器最小性—合同可闭合性—$\NULL$ 语义”三者组织为\textbf{可寻址—可审计—可证书化}接口上的结构性不变量，并给出可执行的工作分解与缺陷见证格式。
+
+\subsection{三寄存器的阿德尔可见化与“第四寄存器”的无穷位径向解释}\label{subsubsec:future-adelic-fourth}
+工具性事实：令
+$$
+\mathbb{A}_\QQ:=\prod\nolimits_v' \QQ_v
+$$
+为 $\QQ$ 的阿德尔环，$\mathbb{A}_\QQ^\times$ 为其 idele 群；对角嵌入 $\QQ^\times\hookrightarrow \mathbb{A}_\QQ^\times$ 的像满足乘积公式
+$$
+\prod\nolimits_v \abs{x}_v=1
+\quad\Longleftrightarrow\quad
+\sum\nolimits_v \log\abs{x}_v=0,\qquad x\in\QQ^\times
+$$
+\cite{Sutherland2017AdelesStrongApprox,Conrad2005CompactIdele}。该局部--整体约束把有限素数位与无穷位绑定为同一“赋值账本”。
+\par
+将该坐标系编译回三寄存器语义：有限位信息由素数寄存器纤维 $P$ 的有限支撑坐标承载（正文定义 \ref{def:prime-register-fiber}）；无穷位信息在本文完成化接口中由复参数 $u\in\CC^\times$ 的极分解承载（第 \ref{sec:fourth-register} 节）
+$$
+u=e^{\rho+i\theta},\qquad \rho=\log\abs{u}\in\RR,\quad \theta\in\RR/(2\pi\ZZ).
+$$
+其中 unitary slice 为 $\rho=0$。在三寄存器闭包中，可审计的连续可见轴仅为 $\theta$（定义 \ref{def:phase-fiber}），从而无穷位的径向分量 $\rho$ 不在可见类型内。
+\par
+尺度纤维 $S_\varphi$（定义 \ref{def:scale-fiber}）负责为外表地址选择离散规范代表，并支撑“可寻址对象”的正规形读出；但其本质上覆盖的是离散尺度层，而不承载无穷位模长的连续自由度。记
+$$
+\mathsf{Reg}_3:=S_\varphi\times T\times P.
+$$
+则三寄存器的阿德尔可见化可抽象为一个“把无穷位径向商掉”的可见化映射
+$$
+\mathsf{Reg}_3\ \longrightarrow\ \mathbb{A}_\QQ^\times/\RR_{>0},
+$$
+其中被商去的 $\RR_{>0}$ 正对应无穷位的径向自由度（即 $\rho$）。
+
+\begin{theorem}[无穷位径向缺失等价（第四寄存器）]\label{thm:future-missing-infty-radial}
+在不引入额外连续寄存器的三寄存器闭包中，任何可审计对象的无穷位信息在证书类型意义上只能落在 unitary slice（$\rho=0$）上。若某断言在同一相位输入 $\theta$ 下对径向参数 $\rho\neq 0$ 发生可观测分歧，则该断言在三寄存器类型系统中必然不可证书化，并在读出接口上表现为 $\NULL$。因此，“第四寄存器”可被严格识别为无穷位的径向坐标
+$$
+\boxed{\ \rho=\log\abs{u}\in\RR\ }.
+$$
+\end{theorem}
+
+\begin{proof}
+该结论是正文第 \ref{sec:fourth-register} 节命题 \ref{prop:fourth-register-need} 与第 \ref{sec:conclusion-cluster} 节定理 \ref{thm:cc-fourth-register-certs} 的直接重述：三寄存器证书类型仅携带单参 $\theta$，无法区分同一 $\theta$ 下不同 $\rho$ 的断言真值，从而不可保证可验证正确性并被读出为 $\NULL$。阿德尔表述仅用于把该“缺口”定位为无穷位的径向分量。
+\end{proof}
+
+\subsection{乘积公式与赋值账本的全局守恒量}\label{subsubsec:future-product-ledger}
+乘积公式把有限位与无穷位绑定为一条全局闭合约束，其在 POM 的“可审计账本”上可实现为与信息熵无关的纯算术守恒量。
+
+\begin{proposition}[乘积公式型全局不变量]\label{prop:future-product-formula-invariant}
+对 $x\in\QQ^\times$，记 $v_p(x)\in\ZZ$ 为 $p$-进赋值，并取归一化 $\abs{x}_p=p^{-v_p(x)}$。定义无穷位径向读出
+$$
+\rho_\infty(x):=\log\abs{x}_\infty,
+$$
+并定义全局不变量
+$$
+\Lambda(x):=\rho_\infty(x)-\sum\nolimits_{p\in\mathcal{P}} v_p(x)\log p,
+$$
+其中求和仅在有限多个 $p$ 上非零。则对所有 $x\in\QQ^\times$ 有 $\Lambda(x)=0$。
+\end{proposition}
+
+\begin{proof}
+由归一化 $\abs{x}_p=p^{-v_p(x)}$，得 $\log\abs{x}_p=-v_p(x)\log p$，故
+$$
+\sum\nolimits_v \log\abs{x}_v
+:=\log\abs{x}_\infty+\sum\nolimits_{p\in\mathcal{P}}\log\abs{x}_p
+:=\rho_\infty(x)-\sum\nolimits_{p\in\mathcal{P}} v_p(x)\log p
+:=\Lambda(x).
+$$
+乘积公式给出 $\sum_v \log\abs{x}_v=0$ \cite{Sutherland2017AdelesStrongApprox,Conrad2005CompactIdele}，从而 $\Lambda(x)=0$。
+\end{proof}
+
+\begin{remark}[对三寄存器闭包的含义]
+在三寄存器实现中，离散读出 $\{v_p(x)\}$ 可由 prime-register 审计得到（见附录 \ref{app:bridge-rh-obligations} 的 $v_p$-读出与 Gödel 编码口径），但缺失 $\rho_\infty$ 意味着无法表达 $\Lambda(x)=0$ 的闭合项；因此该守恒律只能在引入第四寄存器（承载 $\rho$）后被证书化核验。
+\end{remark}
+
+\subsection{\texorpdfstring{$\NULL$}{NULL} 的层论语义：可寻址性与可粘合的全局截面}\label{subsubsec:future-null-sheaf}
+层论上同调把“局部可证书化”与“全局可寻址”之间的差异转写为粘合障碍；当粘合失败时，上同调类提供一个可复核的障碍见证 \cite{Wiggins2026SheafCohomology,StacksProject2026CohomologySites}。
+\par
+为将其编译回 POM 接口，构造一个\textbf{地址站点} $(\Addr,J)$：对象 $U$ 表示一组可审计的局部协议环境（分辨率窗口、预算阈值、证书核验规则与门复合次序等），态射 $U'\to U$ 表示协议细化；覆盖族 $\{U_i\to U\}$ 由“可审计的局部归一化/重写协议、分辨率限制、证书化门复合”生成，并要求其在协议意义上共同覆盖同一全局地址查询。
+
+\begin{definition}[非空值证书层]\label{def:future-sheaf}
+对地址站点上的任一对象 $U$，令 $\mathcal{S}(U)$ 为在协议 $U$ 上可被离线核验的证书化局部读出集合；并令
+$$
+\mathcal{S}^\times(U)\subseteq \mathcal{S}(U)
+$$
+为其中\textbf{读出非 $\NULL$} 的子集。把限制映射定义为“在细化协议下的证书重写与再核验”，则可得一个自然的（可计算呈示的）预层 $\mathcal{S}^\times$；其层化（sheafification）记为同一符号。
+\end{definition}
+
+\begin{theorem}[\texorpdfstring{$\NULL$}{NULL} 的上同调刻画]\label{thm:future-null-cohomology}
+固定一个目标断言/对象 $q$。则“$q$ 在全局可寻址（存在全局证书读出）”当且仅当存在一个覆盖 $\{U_i\to \Addr\}$ 与局部截面族 $s_i\in\mathcal{S}^\times(U_i)$，使其在交叠上满足 Čech 一致性条件并可粘合为全局截面 $s\in\mathcal{S}^\times(\Addr)$。反之，若对所有覆盖上述粘合均失败，则相应的 Čech 障碍类非零，从而任何尝试在全局生成证书的过程必失败并读出 $\NULL$。
+\end{theorem}
+
+\begin{proof}
+若存在可粘合的局部截面族，则由层的粘合公理得到唯一全局截面 $s\in\mathcal{S}^\times(\Addr)$；该截面即为可离线核验的全局证书读出，因而 $q$ 全局可寻址。反向，若 $q$ 全局可寻址，则存在全局证书 $s\in\mathcal{S}^\times(\Addr)$；对任意覆盖取限制即得满足 Čech 条件的局部截面族。粘合失败的障碍可由 Čech 上同调表示（工具性事实：Čech 复形与上同调作为粘合障碍的刻画，见 \cite{StacksProject2026CohomologySites}），其非零性即意味着全局截面不存在，从而按“存在 $\Leftrightarrow$ 可寻址 $\Leftrightarrow$ 读出非 $\NULL$”语义全局读出为 $\NULL$。
+\end{proof}
+
+\begin{remark}[与正文的 $\NULL$ 可重复性一致]
+定理 \ref{thm:future-null-cohomology} 将 $\NULL$ 从“数值不稳定”提升为“全局截面不存在”的语义事实；其与正文第 \ref{sec:conclusion-cluster} 节定理 \ref{thm:cc-null-repro} 的“$\NULL$ 是证书缺失的逻辑结果且可重复”完全一致，只是把证书缺失进一步结构化为站点上的粘合障碍。
+\end{remark}
+
+\subsection{异常扭结类与寄存器扩展的最小性判别}\label{subsubsec:future-min-extension}
+当局部协议之间的等价转换在三重交上不满足一致性时，会出现 $H^2$ 型扭结类（例如 gerbe/2-余边界不可消去）；其消失等价于对粘合数据作一次扩维平坦化 \cite{StacksProject2026CohomologySites}。在本文体系中，这一机制与附录 \ref{app:anom-cohomology-asc} 的“异常签名上同调化”相呼应：异常类正是协议切换的粘合扭结在可审计残差值域中的表示。
+
+\begin{proposition}[ASC 异常类的粘合扭结呈示]\label{prop:future-asc-torsion}
+沿用附录 \ref{app:anom-cohomology-asc} 的设置，令 $\mathcal{A}$ 为异常标签的阿贝尔群值域，并令 $\underline{\mathcal{A}}$ 为其在地址站点 $(\Addr,J)$ 上的常值系数层。取一组覆盖 $\{U_i\to\Addr\}$ 表示可审计协议族与其切换区域，并假设在每个交叠 $U_{ij}$ 上给定“协议切换证书”（对应正文的可审计重写/严格化数据）。则由交叠上的异常签名差异可自然构造一个 Čech $2$-余闭链
+$$
+\alpha\in \check Z^2(\{U_i\},\underline{\mathcal{A}}),
+$$
+其上同调类 $[\alpha]\in H^2(\Addr,\underline{\mathcal{A}})$ 在改变局部规范化/规约基准时仅改变一个余边界项，因而为不变量。并且：
+\begin{enumerate}
+  \item $[\alpha]=0$ 当且仅当存在一个 $1$-余链 $b\in \check C^1(\{U_i\},\underline{\mathcal{A}})$ 使 $\alpha=\delta b$，此时可用该 $b$ 对局部切换数据作一次可审计的“counterterm”修正，使局部证书满足三重交一致性并可粘合；
+  \item $[\alpha]\neq 0$ 时，不存在任何此类修正使全局粘合成立；对应的全局读出必在存在性语义下退化为 $\NULL$（与定理 \ref{thm:future-null-cohomology} 一致）。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+交叠上的协议切换给出局部“同一化/重写”数据；其在三重交 $U_{ijk}$ 上的相容性失败正对应 Čech 边界算子 $\delta$ 的不为零，从而得到 $2$-余闭链 $\alpha$。改变规约基准导致的异常变化为一个余边界项，这正是附录 \ref{app:anom-cohomology-asc} 命题 \ref{prop:anom-coboundary} 的站点化表述。$[\alpha]=0$ 等价于存在 $b$ 消去该扭结（$\alpha=\delta b$），此时可把 $b$ 解释为可审计的 counterterm 修正并恢复粘合；反之 $[\alpha]\neq 0$ 时不存在此类 $b$，全局截面不存在。该“$H^2$ 扭结 $\leftrightarrow$ 粘合障碍”的基本事实见 \cite{StacksProject2026CohomologySites}。
+\end{proof}
+
+\begin{theorem}[寄存器扩展的最小化判别]\label{thm:future-register-minimality}
+设某类审计断言在每个局部协议覆盖上均可证书化，但在协议间切换时产生不可消去的扭结类 $[\alpha]\neq 0$（可视为某个系数层上的 Čech $2$-类；在具体实现中可取为附录 \ref{app:anom-cohomology-asc} 的异常上同调类的提升）。定义
+$$
+d_{\min}([\alpha])
+:=\min\Bigl\{d\in\NN:\ \pi_d^\ast[\alpha]=0\ \text{于扩展站点 }\Addr\times\RR^d\Bigr\},
+$$
+其中 $\pi_d:\Addr\times\RR^d\to\Addr$ 为投影（把 $d$ 个新增连续寄存器视为参数空间）。则任何保持“证书核验可判定”的扩展中，使该断言全局可寻址所需的最小连续扩维维数至少为 $d_{\min}([\alpha])$；并且存在一类扩展在维数正好为 $d_{\min}([\alpha])$ 时实现扭结消失与全局粘合。
+\par
+特别地，当扭结仅来自无穷位径向自由度（同一角变量下断言随 $\rho$ 改变）时，有 $d_{\min}=1$，且最小扩维可由第四寄存器 $\rho$ 实现（定理 \ref{thm:future-missing-infty-radial}）。
+\end{theorem}
+
+\begin{proof}
+必要性由定义直接给出：若扩展后全局可寻址，则在扩展站点上存在全局截面，从而粘合障碍类必须为零，故扩展维数 $d$ 必满足 $\pi_d^\ast[\alpha]=0$，即 $d\ge d_{\min}([\alpha])$。充分性由 $d_{\min}$ 的定义保证：当 $\pi_{d_{\min}}^\ast[\alpha]=0$ 时，可选取消去扭结的提升数据并构造满足 Čech 一致性的局部证书过渡，从而得到可粘合的局部截面族并产出全局证书。
+\end{proof}
+
+\subsection{BridgeRH 的阿德尔局部--整体合同分解}\label{subsubsec:future-bridge-adelic}
+阿德尔方法的结构特征是：全局性质常可分解为“几乎处处局部条件 + 有限处条件 + 互反/乘积公式闭合约束” \cite{Sutherland2017AdelesStrongApprox,Conrad2005CompactIdele}。据此可将 BridgeRH 的合同义务重构为三块正交的可审计接口：
+
+\begin{definition}[阿德尔式义务分解]\label{def:future-bridge-adelic}
+定义三块义务族：
+\begin{enumerate}
+  \item $\mathrm{BR}_{\mathrm{fin}}$：仅涉及有限素数位（prime-register）的同余、扭曲通道、局部谱护栏等可审计约束；
+  \item $\mathrm{BR}_{\infty}$：仅涉及无穷位的解析性与 unitary slice 审计接口（相位轴上的可证书化零点/非零；参见第 \ref{sec:conclusion-cluster} 节 \S\ref{subsec:cc-us-cert}）；
+  \item $\mathrm{BR}_{\mathrm{PF}}$：乘积公式/互反律型全局闭合义务，其核心为对主对象核验 $\Lambda=0$（命题 \ref{prop:future-product-formula-invariant}）并输出可离线核验的闭合证书。
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}[合同分解与第四寄存器缺口]\label{thm:future-bridge-decomposition}
+在“可审计对象域”的语义下，BridgeRH 的整体合同可被等价替换为
+$$
+\mathrm{BridgeRH}\ \Longleftrightarrow\ \mathrm{BR}_{\mathrm{fin}}\ \wedge\ \mathrm{BR}_{\infty}\ \wedge\ \mathrm{BR}_{\mathrm{PF}}.
+$$
+其中 $\mathrm{BR}_{\mathrm{PF}}$ 的可审计实现要求显式承载无穷位径向参数 $\rho$（第四寄存器）；若拒绝引入，则 $\mathrm{BR}_{\mathrm{PF}}$ 在三寄存器证书类型中不可表达，整体合同只能退化为 unitary slice 上的局部健全性（soundness），而无法升级为全局完备性（completeness）。
+\end{theorem}
+
+\begin{proof}
+该等价是合同层面的结构重写：$\mathrm{BR}_{\mathrm{fin}}$ 与 $\mathrm{BR}_{\infty}$ 分别对应有限位与无穷位的局部核验接口，而 $\mathrm{BR}_{\mathrm{PF}}$ 强制二者在主对象上满足乘积公式型闭合（以 $\Lambda=0$ 表达）。在三寄存器闭包中，$\rho$ 不可见（定理 \ref{thm:future-missing-infty-radial}），故闭合项不可被证书化，从而无法把“局部正确性”提升为“全局完备性”。
+\end{proof}
+
+\subsection{阿德尔缺陷见证提取：从 \texorpdfstring{$\NULL$}{NULL} 失败到可归因反例}\label{subsubsec:future-adelic-witness}
+为把不可寻址（$\NULL$）失败从不可解释输出转写为可复算的结构性反例，可引入一类“阿德尔缺陷见证”证书。
+
+\begin{definition}[阿德尔缺陷见证]\label{def:future-adelic-defect}
+定义缺陷见证为二元组
+$$
+\mathsf{Wit}_{\mathbb{A}}(q):=(S,\rho_{\mathrm{def}}),
+$$
+其中 $S\subset\mathcal{P}$ 为有限素数集合，$\rho_{\mathrm{def}}\in\RR$ 为\textbf{径向闭合残差}。更具体地：对一个乘法型可审计查询 $q$，令 $v_p(q)\in\ZZ$ 表示从 prime-register 可复算抽取的 $p$-坐标差分读出（分子/分母的赋值差），令 $\rho_{\mathrm{vis}}(q)$ 表示无穷位径向的\textbf{可见}读出（若第四寄存器可用则为实际读出；若系统坚持 unitary slice 则强制 $\rho_{\mathrm{vis}}(q)=0$）。定义
+$$
+\rho_{\mathrm{def}}(q):=\rho_{\mathrm{vis}}(q)-\sum\nolimits_{p\in\mathcal{P}} v_p(q)\log p,
+$$
+并令 $S$ 为 $v_p(q)$ 的有限支撑（即 $v_p(q)\neq 0$ 的素数集合）。该二元组把失败从 $\NULL$ 重写为“有限位账本 + 无穷位径向闭合残差”的可归因反例格式。
+\end{definition}
+
+\begin{example}[最小缺陷例：单素数对象]\label{ex:future-prime-defect}
+设目标主对象在有限位仅激活一个素数坐标 $p$，即 $v_p(q)=1$ 且 $v_\ell(q)=0$（$\ell\neq p$）。若系统坚持 unitary slice（拒绝第四寄存器），则 $\rho_{\mathrm{vis}}(q)=0$，从而
+$$
+\rho_{\mathrm{def}}(q)=-\log p\neq 0,
+$$
+故乘积公式闭合义务失败并可由 $\mathsf{Wit}_{\mathbb{A}}(q)=(\{p\},-\log p)$ 见证。相反，若允许第四寄存器，则可取 $\rho_{\mathrm{vis}}(q)=\log p$ 使 $\rho_{\mathrm{def}}(q)=0$，从而实现全局闭合。
+\end{example}
+
+\begin{proposition}[缺陷见证可提取性]\label{prop:future-witness-extract}
+在满足 $\mathrm{BR}_{\mathrm{fin}}$ 与 $\mathrm{BR}_{\infty}$ 的前提下，若某目标断言仍不可全局证书化（读出 $\NULL$），则存在一个可审计算法输出 $\mathsf{Wit}_{\mathbb{A}}(q)=(S,\rho_{\mathrm{def}})$ 使得：
+\begin{enumerate}
+  \item 对所有 $p\notin S$，有限位一致性核验通过；
+  \item 全局闭合残差满足
+  $$
+  \rho_{\mathrm{def}}(q)=\rho_{\mathrm{vis}}(q)-\sum\nolimits_{p\in S} v_p(q)\log p\neq 0,
+  $$
+  从而 $\mathrm{BR}_{\mathrm{PF}}$ 失败；
+  \item 若系统拒绝第四寄存器，则 $\rho_{\mathrm{vis}}(q)=0$ 被强制，且 $\rho_{\mathrm{def}}(q)$ 仅由有限位账本确定；只要 $\sum_{p\in S} v_p(q)\log p\neq 0$，就出现不可消去的结构性缺陷，从而 $\NULL$ 具有不可消去的原因（对应定理 \ref{thm:future-missing-infty-radial} 的径向缺口）。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+prime-register 读出具有有限支撑，故可将失败归因到有限素数集合 $S$；在 $\mathrm{BR}_{\infty}$ 通过的前提下，剩余失败只能来自全局闭合项。将闭合条件以命题 \ref{prop:future-product-formula-invariant} 的乘积公式闭合重写为径向残差 $\rho_{\mathrm{def}}$，即得（2）。当系统拒绝第四寄存器时，$\rho_{\mathrm{vis}}(q)$ 被强制为 $0$，从而 $\rho_{\mathrm{def}}(q)$ 无法在三寄存器类型内被消去；因此该缺陷不可被内部抵消，读出保持为 $\NULL$。
+\end{proof}
+
+\begin{algorithm}[阿德尔缺陷见证提取（协议化；可重复）]\label{alg:future-adelic-witness}
+\textbf{目标：}把“全局不可证书化（$\NULL$）”的失败原因转写为可离线核验的二元见证 $\mathsf{Wit}_{\mathbb{A}}(q)=(S,\rho_{\mathrm{def}})$。\\
+\textbf{输入：}乘法型可审计查询 $q$；有限位证书包（输出有限支撑的整数差分读出 $v_p(q)$）；无穷位证书包（输出 $\rho_{\mathrm{vis}}(q)$，若拒绝第四寄存器则固定为 $0$）；精度参数 $k\in\NN$（dyadic）。\\
+\textbf{输出：}有限集合 $S$ 与一个\emph{区间化}的闭合残差证书 $[L_{\mathrm{def}},U_{\mathrm{def}}]\ni\rho_{\mathrm{def}}(q)$，满足 $0\notin[L_{\mathrm{def}},U_{\mathrm{def}}]$ 时判定 $\mathrm{BR}_{\mathrm{PF}}$ 失败。\\
+\begin{enumerate}
+  \item \textbf{抽取有限位支撑：}令
+  $$
+  S:=\{p\in\mathcal{P}:v_p(q)\neq 0\},
+  $$
+  并把 $\{(p,v_p(q))\}_{p\in S}$ 作为可审计离散输出写入账本。
+  \item \textbf{对 $\log p$ 生成可核验区间界：}对每个 $p\in S$，生成一个有理区间
+  $
+  [\underline{\ell}(p),\overline{\ell}(p)]
+  $
+  （依赖精度参数 $k$），满足 $\log p\in[\underline{\ell}(p),\overline{\ell}(p)]$，并输出其验证材料（可采用单调级数截断/连分数界等确定性上界机制；其实现细节可独立封装为“对数界证书模块”）。
+  \item \textbf{区间求和：}用外向舍入规则计算
+  $$
+  [L_\Sigma,U_\Sigma]
+  :=\sum\nolimits_{p\in S} v_p(q)\,[\underline{\ell}(p),\overline{\ell}(p)]
+  $$
+  使得 $\sum_{p\in S}v_p(q)\log p\in[L_\Sigma,U_\Sigma]$。
+  \item \textbf{无穷位径向读出：}以同一精度参数输出（或固定）区间 $[L_\rho,U_\rho]\ni\rho_{\mathrm{vis}}(q)$；若系统坚持 unitary slice，则取 $[L_\rho,U_\rho]=[0,0]$。
+  \item \textbf{闭合残差：}输出
+  $$
+  [L_{\mathrm{def}},U_{\mathrm{def}}]
+  :=[L_\rho-U_\Sigma,\ U_\rho-L_\Sigma],
+  $$
+  其保证 $\rho_{\mathrm{def}}(q)\in[L_{\mathrm{def}},U_{\mathrm{def}}]$。
+  \item \textbf{判定与见证：}若 $0\notin[L_{\mathrm{def}},U_{\mathrm{def}}]$，则返回 $\mathsf{Wit}_{\mathbb{A}}(q)=(S,[L_{\mathrm{def}},U_{\mathrm{def}}])$ 作为 $\mathrm{BR}_{\mathrm{PF}}$ 的失败见证；否则提高精度参数并重复（在“真实残差非零”的情形下，该过程以有限步把 $0$ 排除出区间，从而得到可重复的失败证书）。
+\end{enumerate}
+\end{algorithm}
+
+\paragraph{统一意义}
+以上结构化刻画完成三条接口层闭合：其一，阿德尔局部--整体几何把“第四寄存器”严格识别为无穷位径向缺口，并把乘积公式编译为可审计的闭合义务（命题 \ref{prop:future-product-formula-invariant}）；其二，层论上同调把 $\NULL$ 升格为“全局截面不存在”的粘合障碍，并把寄存器扩展最小性转写为扭结类消失所需的最小连续扩维（定理 \ref{thm:future-register-minimality}）；其三，上述两条框架共同诱导 BridgeRH 的局部--整体合同分解（定理 \ref{thm:future-bridge-decomposition}）与可归因的缺陷见证格式（命题 \ref{prop:future-witness-extract}），从而为后续研究提供可执行的分解路线与可否证输出。
+
