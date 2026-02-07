@@ -354,6 +354,100 @@ $$
 这把“空间损失不是一个数而是一条谱”的口径推进为可核验不等式：正矩尾部（大纤维）越重，负矩尾部（小纤维/尖锐纤维）越被迫增大。
 \end{remark}
 
+\paragraph{负矩—Schatten 左尾通道的终结式输出（审计接口）}\label{par:pom-left-tail-schatten-terminal}
+在正文的正矩碰撞谱 \(\{S_q(m)\}_{q\ge 2}\)（moment-kernel 管线）之外，附录 \ref{app:op-algebra} 以折叠条件期望 \(E_m\) 的奇异值谱为直接接口，给出一条与之正交的\textbf{负矩—Schatten 左尾通道}（注 \ref{rem:pom-negative-moment-from-schatten}）。
+该通道把“低多重度层”的经验描述推进为可复算证书体系：所有量均可由表 \ref{tab:fold_conditional_expectation_singular_spectrum} 及其派生表 \ref{tab:fold_conditional_expectation_left_tail_bases}、\ref{tab:fold_conditional_expectation_effective_support} 直接核验。
+
+\medskip\noindent\textbf{结论（LT-1）：左尾自由能密度常数族在审计窗口内呈现稳定底数。}
+令
+\[
+T_s(m):=S_s^{-}(m)=\sum_{x\in X_m} d_m(x)^{-s},
+\qquad
+t_s:=\limsup_{m\to\infty}\frac{1}{m}\log T_s(m)=\tau^{-}(s).
+\]
+在 2026-02-07 审计快照所覆盖的偶数网格 \(m=8,10,\dots,24\) 上取经验底数
+\[
+b_s(m):=\Bigl(\frac{T_s(m)}{T_s(m-2)}\Bigr)^{1/2}\qquad(m\ge 10),
+\]
+则表 \ref{tab:fold_conditional_expectation_left_tail_bases} 显示其在 \(s=\tfrac12,1,2\) 处快速趋稳；在 \(m=24\) 的审计点，
+\[
+b_{1/2}(24)\approx 1.458200,\qquad b_1(24)\approx 1.316686,\qquad b_2(24)\approx 1.092366,
+\]
+相应给出候选指数率（自然对数）
+\[
+t_{1/2}\approx 0.3772,\qquad t_1\approx 0.2751,\qquad t_2\approx 0.0884.
+\]
+
+\medskip\noindent\textbf{结论（LT-2）：负矩通道无需 moment-kernel 编译；其信息可由 \(E_m\) 的 Schatten 谱直接读出。}
+在算子接口 \(\mathcal{F}_m=(E_mE_m^\ast)^{-1}\) 下，
+\[
+T_s(m)=\Tr(\mathcal{F}_m^{-s}),
+\qquad
+\text{且当 }s\ge \tfrac12\text{ 时 }T_s(m)=\|E_m\|_{S_{2s}}^{2s}
+\]
+（附录命题 \ref{prop:fold-fiber-multiplicity-trace-moments}）。
+因此左尾负矩谱是生成元 \(E_m\) 的直接语义输出，不依赖任何高阶碰撞核的额外构造。
+
+\medskip\noindent\textbf{结论（LT-3）：两类有效支撑规模给出奇异值能量的双尺度浓缩，并在 \(m=24\) 出现稳定分离。}
+令奇异值能量分布 \(p_x\propto d_m(x)^{-1}\)，并定义
+\[
+N_2(m):=\frac{1}{\sum_x p_x^2},
+\qquad
+N_{1/2}(m):=\Bigl(\sum_x\sqrt{p_x}\Bigr)^2
+\]
+（表 \ref{tab:fold_conditional_expectation_effective_support} 由 Schatten 范数闭式读出）。
+在审计窗口 \(m=8,10,\dots,24\) 内，\(\frac{N_2(m)}{|X_m|}\) 单调下降，而 \(\frac{N_{1/2}(m)}{|X_m|}\) 始终保持在接近 \(1\) 的区间（表 \ref{tab:fold_conditional_expectation_effective_support}）。
+在 \(m=24\) 的审计点，
+\[
+\frac{N_2(24)}{|X_{24}|}\approx 0.455665,\qquad
+\frac{N_{1/2}(24)}{|X_{24}|}\approx 0.895533,\qquad
+\frac{N_{1/2}(24)}{N_2(24)}\approx 1.9653.
+\]
+这表明：在 Rényi-2（collision）意义下能量仅覆盖约 \(0.46|X_m|\) 的有效规模，而在 Rényi-\(\tfrac12\)（Bhattacharyya）意义下仍覆盖约 \(0.90|X_m|\) 的有效规模；该双尺度分离构成一个可复算的谱指纹。
+
+\medskip\noindent\textbf{结论（LT-4）：低多重度层存在无参数左尾证书，且在 \(m=24\) 可给出数值级下界。}
+令 \(X\sim \mathrm{Unif}(X_m)\)。
+对任意 \(s>0\) 记
+\[
+d_{-}(m,s):=\Bigl(\frac{2|X_m|}{T_s(m)}\Bigr)^{1/s}.
+\]
+则由负矩 Paley--Zygmund 证书（附录命题 \ref{prop:fold-negative-moment-left-tail-certificate}）有
+\[
+\mathbb{P}\bigl(d_m(X)\le d_{-}(m,s)\bigr)\ \ge\ \frac14\,\frac{T_s(m)^2}{|X_m|\,T_{2s}(m)}.
+\]
+在 \(m=24\) 的可复算 Schatten 输出（表 \ref{tab:fold_conditional_expectation_singular_spectrum}、\ref{tab:fold_conditional_expectation_effective_support}）上直接得到两条数值级证书：
+\[
+\mathbb{P}\bigl(d_{24}(X)\le 200.57\bigr)\ge 11.39\% \quad(s=1),
+\qquad
+\mathbb{P}\bigl(d_{24}(X)\le 447.94\bigr)\ge 22.39\% \quad(s=\tfrac12).
+\]
+其中所需输入仅为表 \ref{tab:fold_conditional_expectation_singular_spectrum} 的 \(\|E_m\|_{S_1}\)、\(\|E_m\|_{HS}^2\)、\(\|E_m\|_{S_4}\)（从而得到 \(T_{1/2},T_1,T_2\)），以及表 \ref{tab:fold_conditional_expectation_effective_support} 的有效支撑规模读出。
+
+\medskip\noindent\textbf{结论（LT-5）：空间谱不确定性下界把右尾压缩与左尾稀薄绑定为不可兼得约束。}
+命题 \ref{prop:pom-positive-negative-coupling} 给出
+\(
+S_t^+(m)\,S_t^-(m)\ge |X_m|^2
+\)
+以及指数尺度耦合
+\(
+\tau^{+}(t)+\tau^{-}(t)\ge 2\log\varphi
+\)。
+因此任何通过增大正矩压力以强化右尾证书的策略，必然以同量级推高左尾压力为代价，从而放大低多重度层的指数规模；该约束在证书层面不可规避。
+
+\medskip\noindent\textbf{结论（LT-6）：双尾证书在同一审计接口上闭合为分位夹逼带，并可与 prime-register 预算并置。}
+将右尾的正矩 Markov/Chernoff 上界与左尾的负矩 Paley--Zygmund 下界并置，可得到显式阈值函数：
+对任意整数 \(q\ge 1\)、\(\varepsilon\in(0,1)\)，令
+\[
+d_{+}(m,q,\varepsilon):=\Bigl(\frac{S_q(m)}{\varepsilon\,|X_m|}\Bigr)^{1/q}.
+\]
+则在 \(X\sim \mathrm{Unif}(X_m)\) 下有
+\[
+\mathbb{P}\bigl(d_m(X)\le d_{-}(m,s)\bigr)\ \text{有显式下界（由 LT-4）},
+\qquad
+\mathbb{P}\bigl(d_m(X)\ge d_{+}(m,q,\varepsilon)\bigr)\le \varepsilon.
+\]
+这意味着在同一分辨率 \(m\) 上，左尾比例下界（Schatten 负矩接口）与右尾尾部上界（moment-kernel 正矩接口）可被独立审计并并置，从而为 prime-register 的尾部预算约束提供一个与低多重度结构正交、但在数据接口层面闭合的附加控制面。
+
 \subsubsection{RCRT 空间化的压力削减律：纤维按 residue 细分必然打散碰撞}\label{subsec:pom-rcrt-pressure-reduction}
 \begin{definition}[residue 细分后的碰撞矩]\label{def:pom-residue-refined-moment}
 固定模数乘积 \(P\)（prime-register 容量），并把每条纤维按 residue 类细分：对每个 \(x\in X_m\)，令
