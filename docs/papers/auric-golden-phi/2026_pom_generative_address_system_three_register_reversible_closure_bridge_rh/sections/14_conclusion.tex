@@ -9,7 +9,7 @@
 在不复述既有编号结论的前提下，本节给出一组新的\textbf{终结式综合结论}（均可直接作为“可审计输出/可证伪接口”插入体系），围绕“地址—信息守恒—寄存器—纤维—单位圆面积相位”五者的最深耦合结构展开。
 
 \subsubsection{结论 I：扩展保存下“最小记录轴”的规范四因子分解}
-在“部分观测 $\pi$ 非单射、若要求信息不丢失则须外置记录轴 $r$ 使扩展读出 $\pi^{\mathrm e}=(\pi,r)$ 成为单射”的制度下，“最小记录轴”并非任意对象。
+在“部分观测 $\Pi$ 非单射、若要求信息不丢失则须外置记录轴 $r$ 使扩展读出 $\Pi^{\mathrm e}=(\Pi,r)$ 成为单射”的制度下，“最小记录轴”并非任意对象。
 当观测链同时包含：\textbf{(A)} 折叠/跨分辨率投影、\textbf{(B)} unitary slice 的强类型单参审计、\textbf{(C)} 面积相位紧化与端点读出，则任何满足扩展保存的记录轴 $r$ 都可规范分解为四个互不耦合的因子：
 $$
 r\ \cong\ r_{\mathrm{fin}}\times r_{\widehat{\ZZ}}\times r_{\mathrm{wind}}\times r_{\mathrm{end}}.
@@ -96,4 +96,136 @@ $$
   \item solenoid 统一封装与端点深度账本给出尺度稳定地址的不变量分类，从而把“推进伸缩链是否必触发 $\NULL$”化为可审计结构问题（结论 IV）。
   \item 异常签名与谱读出形成双通道审计闭环：以谱流绕数作为独立的整数审计物，与 strictification/协议拒绝互为交叉核验（结论 VI）。
 \end{enumerate}
+
+\subsection{扩展保存下的“可寻址性”判据：规范差相图与记录轴信息率}
+根据 2026-02-07 版本的接口链条（递归地址化的 $\sigma$-代数细化、扩展保存、素数寄存器/同余轴与相位纤维的紧群封装、以及单位圆面积相位门的端点压缩），可将“可寻址且非 $\NULL$”的失败机制从抽象 completeness 缺口推进为一组可核对的统计/协议判据。以下给出与正文既有编号结果互补的一组终结式结论，聚焦于“地址缺失/记录轴不足”的统一刻画及其资源相图。
+
+\subsubsection{扩展保存下的可寻址性判据：地址缺失与记录轴不足的统一刻画}
+在部分观测语义中，观测映射一般多对一。为严格表达“信息不丢失”，引入记录映射并要求扩展观测单射。
+\par
+设 $\Pi:\Omega\to X$ 为观测映射（例如固定分辨率 $m$ 的折叠 $\Fold_m:\Omega_m\twoheadrightarrow X_m$）。称 $r:\Omega\to R$ 为一个记录轴，若扩展观测
+$$
+\Pi_{\mathrm e}(\omega):=\bigl(\Pi(\omega),r(\omega)\bigr)\in X\times R
+$$
+为单射。此时“扩展保存”即为：在扩展空间 $X\times R$ 上存在可逆回放器恢复 $\omega$。
+\par
+在“地址先于取值”的类型约束下，若未提供使 $\Pi_{\mathrm e}$ 单射的记录轴，则读出退化为 $\NULL$；并且该 $\NULL$ 可分解为三类机制：
+\begin{itemize}
+  \item \textbf{语义空值（地址缺失）：}对象在当前地址闭包下不可呈现，因此不存在可核对读出；
+  \item \textbf{协议空值（类型系统禁止）：}输入不属于被允许的强类型接口域（例如 unitary slice 仅允许 $(L,\theta,p)$），从而被拒绝；
+  \item \textbf{碰撞空值（侧信息预算不足）：}即使语义允许且协议放行，但记录轴容量不足以将多对一观测提升为近似单射，导致不可唯一重建。
+\end{itemize}
+该三分解把“地址完备性失败”的抽象缺口细化为可审计的失败类型：前两类为类型层/闭包层缺口，第三类为资源不足的统计缺口。
+
+\subsubsection{偏置输入下的规范差相图：从窗口不相容到记录轴速率曲线}
+在跨分辨率降阶时，朴素截断位与折叠感知 restriction 位一般不相容。令 $G_m(\omega)$ 为分辨率 $m$ 下两种读出在 $m$ 位窗口上的逐位失配总数（规范差），即
+$$
+G_m(\omega):=\sum_{i=1}^{m}\mathbf{1}\{X_i(\omega)\neq Y_i(\omega)\}.
+$$
+在 IID Bernoulli($p$) 基线下（$\PP(X_i=1)=p$），规范差的指数矩母函数可由一个有限维加权邻接矩阵表示，进而得到可审计的压力接口。
+
+\begin{theorem}[Bernoulli($p$) 基线的规范差压力矩阵]\label{thm:conclusion-normdiff-pressure-matrix}
+对任意 $p\in(0,1)$，定义 $4\times 4$ 矩阵族
+$$
+A_\theta(p)=
+\begin{pmatrix}
+1-p & p e^{\theta} & 0 & p\\
+0 & 0 & p e^{\theta} & 0\\
+(1-p)e^{\theta} & 1 & 0 & 0\\
+1-p & 0 & 0 & 0
+\end{pmatrix},
+$$
+并记谱半径为 $\rho(\cdot)$。定义规范差压力函数
+$$
+P_G(\theta;p):=\log\rho\!\bigl(A_\theta(p)\bigr).
+$$
+则 $P_G(\theta;p)$ 给出规范差的可审计压力接口：其一阶/二阶/三阶导数分别对应极限均值、方差密度与三阶累积密度（见下述定理）。
+\end{theorem}
+
+\begin{theorem}[规范差密度曲线的闭式表达]\label{thm:conclusion-normdiff-density-closedform}
+令
+$$
+g(p):=\lim_{m\to\infty}\frac{\EE[G_m]}{m}.
+$$
+则有闭式
+$$
+g(p)=\frac{p^{2}(3-2p)}{1+p^{3}}.
+$$
+并且 $g$ 在 $p\in(0,1)$ 上存在唯一内点极大值点 $p_\star$，其由方程
+$$
+p_\star^{3}+2p_\star-2=0
+$$
+确定。
+\end{theorem}
+
+\begin{theorem}[内点二元联合律的 $p$-闭式化]\label{thm:conclusion-normdiff-jointlaw}
+在内点极限口径下，朴素截断位 $X\in\{0,1\}$ 与折叠感知位 $Y\in\{0,1\}$ 的联合分布为
+$$
+\PP(X=0,Y=0)=\frac{1-p-p^{2}+2p^{3}-p^{4}}{1+p^{3}},\qquad
+\PP(X=0,Y=1)=\frac{p^{2}(1-p)}{1+p^{3}},
+$$
+$$
+\PP(X=1,Y=0)=\frac{p^{2}(2-p)}{1+p^{3}},\qquad
+\PP(X=1,Y=1)=\frac{p\bigl(p^{3}+(1-p)^{2}\bigr)}{1+p^{3}}.
+$$
+因此边缘律严格保留输入偏置 $\PP(X=1)=p$，并且单点失配概率满足
+$$
+\PP(X\neq Y)=g(p).
+$$
+\end{theorem}
+
+\subsubsection{规范差的涨落常数族：CLT 方差密度与三阶累积密度的 $p$-闭式}
+压力函数 $\theta\mapsto P_G(\theta;p)$ 的高阶导数给出规范差的涨落指纹族；其中二阶导数对应 CLT 方差密度，三阶导数对应最低阶“非自对偶”偏斜指纹。
+
+\begin{theorem}[CLT 方差密度]\label{thm:conclusion-normdiff-clt-variance}
+存在方差密度 $\sigma^{2}(p)>0$ 使得
+$$
+\frac{G_m-g(p)m}{\sqrt m}\Longrightarrow \mathcal N\bigl(0,\sigma^{2}(p)\bigr),
+$$
+并且
+$$
+\sigma^{2}(p)=
+\frac{p^{2}\bigl(-21p^{6}+27p^{5}-20p^{4}+50p^{3}-43p^{2}-2p+9\bigr)}{(1+p^{3})^{3}}.
+$$
+\end{theorem}
+
+\begin{theorem}[三阶累积密度]\label{thm:conclusion-normdiff-third-cumulant}
+记 $P_G^{(3)}(0;p)$ 为 $\theta\mapsto P_G(\theta;p)$ 在 $\theta=0$ 处的三阶导数，则
+$$
+P_G^{(3)}(0;p)=
+\frac{p^{2}\bigl(117p^{12}-567p^{11}+692p^{10}-1602p^{9}+3897p^{8}-3370p^{7}+1134p^{6}-1377p^{5}+1264p^{4}+156p^{3}-381p^{2}+10p+27\bigr)}{(1+p^{3})^{5}}.
+$$
+\end{theorem}
+
+\subsubsection{从规范差到“记录轴最小信息率”：条件熵的闭式接口}
+由扩展保存，若希望把多对一观测提升为单射或近似单射，则必须外置记录轴。对于二元极限口径，可将“每步所需记录轴的最小平均信息率”定义为条件熵
+$$
+H(X\mid Y):=-\sum_{x,y\in\{0,1\}}\PP(X=x,Y=y)\log \PP(X=x\mid Y=y),
+$$
+它刻画：仅观察 $Y$ 而要无损恢复 $X$ 时，记录轴的最小平均信息开销。由定理 \ref{thm:conclusion-normdiff-jointlaw} 的联合律，$H(X\mid Y)$ 在 Bernoulli($p$) 基线下成为显式可计算函数；当记录轴预算不足以覆盖该信息率时，即发生“碰撞空值”型 $\NULL$。
+
+\subsubsection{与单位圆面积相位门的统一：连续端点精度记录轴与离散规范差同构}
+面积相位门由
+$$
+\vartheta(x):=2\arctan(x),\qquad \iota(x):=e^{i\vartheta(x)}=\frac{1+ix}{1-ix}\in\TT
+$$
+给出：它把无穷远压缩到单位圆边界点 $-1$，并将 Cauchy 权重严格推前为单位圆 Haar 测度。更精确地，有换元恒等式
+$$
+\frac{1}{\pi}\frac{\dd x}{1+x^2}=\frac{1}{2\pi}\,\dd\vartheta,
+$$
+从而 $\iota$ 将 $\frac{1}{\pi}(1+x^2)^{-1}\dd x$ 推前为 $\TT$ 上的均匀测度。
+\par
+在该门语言下，实轴上的“相位相加”在射影紧化上诱导交换群律
+$$
+x\oplus y=\frac{x+y}{1-xy},
+$$
+并满足群同态 $\iota(x\oplus y)=\iota(x)\iota(y)$，从而把相位纤维的可逆运算实现为单位圆乘法。
+\par
+更关键的是：紧化把动态范围压入末位精度。若取紧化坐标 $u=\upsilon(x)=(\pi^{-1})\arctan(x)$，则
+$$
+\frac{\dd x}{\dd u}=\pi(1+x^{2}),
+$$
+因此当 $|x|$ 增大时，读出精度必须通过额外末位记录（更细的 $u$-分辨率）来补偿；这与离散折叠中的“规范差必须外置为记录轴”属于同一扩展保存范式。
+\par
+最后，离散侧的折叠门给出信息账本恒等式（定理 \ref{thm:ledger-identity}），把可见熵、纤维体积与残差信息严格分解；连续侧的面积相位门给出微分熵恒等式 $h(X)=h(u)+\EE[P(X)]$，将无穷端点转换为精度势/末位预算的可审计接口。两者共同提供了一个统一的“记录轴预算”语言：离散侧的纤维缺陷与连续侧的精度势在同一账本上以可加方式出现，从而把 $\NULL$ 的资源机制压缩为可核验的预算不等式。
 
