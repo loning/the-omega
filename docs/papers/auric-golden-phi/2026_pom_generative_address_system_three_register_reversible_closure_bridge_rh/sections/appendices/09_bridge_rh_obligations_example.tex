@@ -361,9 +361,9 @@ $
 \begin{enumerate}
   \item \textbf{（整数重数/留数证书）} 对有限维或迹类算子 $F$，考虑 resolvent-trace
   $$
-  S(r):=\Tr\!\bigl((I-rF)^{-1}\bigr).
+  S(r):=\frac{\dd}{\dd r}\log\det(I-rF)=-\Tr\!\bigl(F(I-rF)^{-1}\bigr),
   $$
-  则每个非零特征值 $\lambda$ 在 $r_0=1/\lambda$ 处产生至多一阶主部，其系数为对应 Riesz 投影 $P_\lambda$ 的迹 $\Tr(P_\lambda)\in\NN$，从而同点主部不可能自发抵消；该“整数留数”可作为可复算的 NonCancel 证书随审计输出。
+  其中迹类口径下的 $\det$ 取 Fredholm 行列式（定义 \ref{def:fredholm-determinant-bridge}）。则每个非零特征值 $\lambda$ 在 $r_0=1/\lambda$ 处产生至多一阶极点，其留数为对应 Riesz 投影 $P_\lambda$ 的迹 $\Tr(P_\lambda)\in\NN$，从而同点极点不可能自发抵消；该“整数留数”可作为可复算的 NonCancel 证书随审计输出。
   \item \textbf{（Abel-first/有限部接口）} 对有限核 $\zeta_A(z)=\det(I-zA)^{-1}$，primitive 对数接口给出
   $
   P(z)=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_A(z^k)
@@ -387,11 +387,11 @@ $
 \begin{proposition}[resolvent-trace 的整数留数证书（NonCancel 模板）]\label{prop:resolvent-trace-integer-residue}
 设 $F$ 为有限维矩阵或更一般的迹类算子。令
 $$
-S(r):=\Tr\!\bigl((I-rF)^{-1}\bigr).
+S(r):=\frac{\dd}{\dd r}\log\det(I-rF)=-\Tr\!\bigl(F(I-rF)^{-1}\bigr).
 $$
-则对每个非零特征值 $\lambda\in\mathrm{spec}(F)\setminus\{0\}$，$S(r)$ 在 $r_0:=1/\lambda$ 处至多有一阶极点，并且其主部系数为对应 Riesz 投影 $P_\lambda$ 的迹：
+则对每个非零特征值 $\lambda\in\mathrm{spec}(F)\setminus\{0\}$，$S(r)$ 在 $r_0:=1/\lambda$ 处至多有一阶极点，并且其留数为对应 Riesz 投影 $P_\lambda$ 的迹：
 $$
-S(r)=\frac{\Tr(P_\lambda)}{1-r\lambda}+(\text{在 }r_0\text{ 处解析的项}),
+\boxed{\ S(r)=\frac{\Tr(P_\lambda)}{r-r_0}+(\text{在 }r_0\text{ 处解析的项})\ },
 \qquad
 \Tr(P_\lambda)=\mathrm{rank}(P_\lambda)\in\NN.
 $$
@@ -406,7 +406,15 @@ $
 $
 (I-rF)^{-1}=\frac{1}{1-r\lambda}P_\lambda+(\text{在 }r_0\text{ 处解析的项})
 $，
-对其取迹即得。证毕。
+从而
+$
+F(I-rF)^{-1}=\frac{\lambda}{1-r\lambda}P_\lambda+(\text{在 }r_0\text{ 处解析的项})
+$。
+对其取迹并注意
+$
+\frac{\lambda}{1-r\lambda}=-\frac{1}{r-r_0}
+$
+即得所示主部与留数结论。证毕。
 \end{proof}
 
 \begin{algorithm}[留数环审计协议（Residue-ring test；可执行 falsification 通道）]\label{alg:residue-ring-test}

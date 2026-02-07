@@ -3,6 +3,17 @@
 另一方面，在投影本体语义中，概念以\emph{地址}为先（第 \ref{sec:recursive-addressing} 节）：无地址则读出不定义（空值），有地址则读出为可核对的投影/证书。
 本小节把“偏离 \(\Re(s)=\tfrac12\) 的点读出为 NULL（无地址）”编译为一条体系内的 \(\mathbf{PW}\) 类型安全（soundness）命题，并显式区分其与“经典 RH”所需的完备性桥梁。
 
+\paragraph{设定：单位圆面积相位算术中的“可见域”与“投影门”}
+附录 \ref{app:unit-circle-phase-gate} 给出的无参紧化门
+\(\upsilon(x)=\pi^{-1}\arctan(x)\in(-\tfrac12,\tfrac12)\)
+及其单位圆等价嵌入
+\(\iota(x)=\frac{1+\mathrm{i}x}{1-\mathrm{i}x}\in\TT\)
+在射影紧化 \(\widehat{\RR}:=\RR\cup\{\infty\}\) 上可延拓为同胚 \(\iota:\widehat{\RR}\to\TT\)（\S\ref{subsec:unit-circle-phase-lift}）。
+因此，\emph{仅在坐标门层面}并不必然出现空值：紧化门本身为全定义可逆映射，任何不可逆性均来自其后的“部分观测/投影读出”（附录 \S\ref{subsec:unit-circle-phase-information}）及地址语义的\(\mathsf{NULL}\) 约定（公理 \ref{ax:pommin-address-null}）。
+\par
+本节的关键在于：当把 \(\Xi\) 的核验接口固定为 unitary slice 时，可核对的连续参数轴被进一步压缩为一个\emph{可见切片}；
+偏离该切片的对象即便在解析层面可形式化写出，也在本文闭包下无地址，其读出按空值语义退化为 \(\mathsf{NULL}\)。
+
 \paragraph{相位型参数域（unitary slice）}
 记
 \[
@@ -13,6 +24,28 @@
 \Re(s)=\tfrac12\quad\Longleftrightarrow\quad |u_L(s)|=1\quad\Longleftrightarrow\quad u_L(s)\in \mathsf{Phase}
 \]
 （注 \ref{rem:xi-critical-line-unit-circle}）。
+
+\begin{definition}[可见域约束下的读出与 \texorpdfstring{$\mathsf{NULL}$}{NULL}]\label{def:xi-visible-read-null}
+给定状态空间 \(\Omega\)、观测映射 \(\operatorname{obs}:\Omega\rightharpoonup X\)（允许为部分映射）、以及一个可见域 \(X_{\mathrm{vis}}\subseteq X\)。
+并固定一个闭包/检查器 \(\mathrm{Chk}\)（在本文语境中可取为“\(\mathbf{PW}\) 正规化闭包 + unitary-slice 审计接口”的组合：其输出为 \(\mathsf{pass}/\mathsf{fail}\)）。
+定义带可见域约束的可见读出
+\[
+\mathrm{read}(\omega)=
+\begin{cases}
+\operatorname{obs}(\omega), &
+\omega\in\mathrm{Dom}(\operatorname{obs}),\ \operatorname{obs}(\omega)\in X_{\mathrm{vis}},\ \mathrm{Chk}(\omega)=\mathsf{pass},\\
+\mathsf{NULL}, & \text{否则}.
+\end{cases}
+\]
+其中 \(\mathrm{read}(\omega)=\mathsf{NULL}\) 表示读出不定义（不可寻址）。
+该“否则”可分解为两类结构性来源：
+\begin{enumerate}
+  \item \textbf{语义域外（自由度缺失）：}对象的解释需要超出 \(X_{\mathrm{vis}}\) 的自由度（例如需要 \(|u|\neq 1\) 的径向模式，而可见域仅允许 unitary slice）；
+  \item \textbf{类型失败（无地址）：}对象在既定闭包/检查器下不可类型化，因而不产生地址（公理 \ref{ax:pommin-address-null}）。
+\end{enumerate}
+在本小节的 \(\Xi\)-接口中，可取 \(\Omega=\CC\)、\(\operatorname{obs}(s)=u_L(s)=L^{2s-1}\)，并令 \(X_{\mathrm{vis}}=\mathsf{Phase}\)；
+从而 \(\Re(s)\neq\tfrac12\Rightarrow \operatorname{obs}(s)\notin X_{\mathrm{vis}}\)，其读出按定义直接退化为 \(\mathsf{NULL}\)。
+\end{definition}
 
 \paragraph{\(\mathbf{PW}\) 闭包与接口参数的“可见”形态}
 在三生成元片段 \((\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)\) 上，任意投影词都可规约到接口正规形
@@ -56,11 +89,38 @@
 \]
 是 completeness 方向，其内容并不等同于“所有可见概念皆非空值”（后者在第 \ref{sec:recursive-addressing} 节的语义中是定义性陈述）。
 在需要把内部口径提升为“经典意义的 \(\Xi\)-RH”时，必须显式引入这一桥接假设。
+\par
+在单位圆相位语义下，上述二者亦可理解为两种“\(\mathsf{NULL}\)---守恒”制度的区分。
+\emph{纯相位制度}取 \(X_{\mathrm{vis}}=\mathsf{Phase}\) 并以 \(\mathsf{NULL}\) 维护类型安全：任何需要 \(|u|\neq 1\) 径向自由度的对象被判为不可寻址，从而在可见语义内被拒绝（对应本节 soundness）。
+若将减少 \(\mathsf{NULL}\) 的出现作为目标，则须按“扩展保存”原则外置被压扁的自由度（公理 \ref{axiom:unit-circle-phase-extension-preserving}；亦见命题 \ref{prop:phase-residual-axis}）：
+写 \(u=re^{i\theta}\) 并取
+\[
+\operatorname{proj}_{\mathsf{Phase}}(u)=\frac{u}{|u|}=e^{i\theta}\in\mathsf{Phase},
+\qquad
+\varrho(u)=\log|u|\in\RR,
+\qquad
+\operatorname{proj}^{\mathrm{e}}(u):=\bigl(\operatorname{proj}_{\mathsf{Phase}}(u),\varrho(u)\bigr).
+\]
+则 \(\operatorname{proj}^{\mathrm{e}}\) 在 \(\CC^\times\) 上为单射，unitary slice 仅为截面 \(\varrho(u)=0\)；
+此时 \(|u|\neq 1\) 不再必然触发 \(\mathsf{NULL}\)，而表现为“相位读出 + 径向记录”的非退化扩展读出。
+当允许记录轴无上界增长时，上述外置自由度可在“紧相位塔”的极限表示中由可分 Hilbert 空间的新增正交模态承载（命题 \ref{prop:compact-phase-tower}）。
+因此，经典 RH 所需的 completeness 缺口可被定位为：\emph{是否存在必须引入径向通道（或其它新增可见自由度，如最小实现维数超界）方能解释的零点事件}；若存在，则在纯相位制度下它必读出为 \(\mathsf{NULL}\)，而在扩展制度下则要求额外记录轴显式承载其径向残差。
 \end{remark}
 
 \begin{assumption}[\(\Xi\)-接口的地址完备性（桥接假设）]\label{assump:xi-address-completeness}
 对固定的 \(L>1\)，\(\Xi_{\Delta,L}\) 的每一个零点 \(s\in\CC\) 都在本文的 \(\mathbf{PW}\) 闭包下可寻址并可核对；等价地，不存在零点在该闭包下读出为 \(\mathsf{NULL}\)。
 \end{assumption}
+
+\begin{remark}[端点压缩、有限精度与第二类 \texorpdfstring{$\mathsf{NULL}$}{NULL}]\label{rem:xi-null-finite-precision}
+单位圆面积相位门把非紧尺度压缩到边界层：例如高度参数 \(t\in\RR\) 在 Cayley 轴上被压到 \(u_{\mathrm C}(t)=\frac{1+\mathrm{i}t}{1-\mathrm{i}t}\in\TT\setminus\{-1\}\)，且 \(t\to\pm\infty\) 合并为端点 \(u_{\mathrm C}\to-1\)（附录 \ref{app:unit-circle-phase-gate}）。
+在严格数学层面，该门可逆且不产生空值；但在有限精度实现中，端点邻域的反投影存在强误差放大：
+\[
+\frac{\dd x}{\dd u}=\pi(1+x^2)
+\qquad\text{（式 \eqref{eq:app-precision-amplification}）}.
+\]
+因此，当精度预算不足以区分端点邻域的不同前像时，“读出”将不再具备可核对的单值性：它要么退化为多值/不可核验，要么在本文语义中被等价处理为不可寻址（读出不定义，即 \(\mathsf{NULL}\)）。
+在“扩展保存”语言中，这对应于外置记录轴（或精度寄存器）不足以使扩展观测达到单射，从而地址必然缺失。
+\end{remark}
 
 \begin{remark}[可审计替代：Hankel-秩稳定性给出的地址完备性充分判据（ACC-Rank）]\label{rem:xi-acc-rank}
 假设 \ref{assump:xi-address-completeness} 将“内部 \(\Xi\)-RH \(\Rightarrow\) 经典 \(\Xi\)-RH”的 completeness 缺口显式化。

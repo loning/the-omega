@@ -47,3 +47,60 @@ BridgeRH 的可验证义务清单与一个可控的有限维最小示例实现�
 设存在 $s_0$ 满足 $\Xi_\zeta(s_0)=0$、$0<\Re(s_0)<1$ 且 $\Re(s_0)\neq \tfrac12$。由 (\ref{bridge:b2})，该零点事件在 PW 内存在可寻址地址并产生非 $\NULL$ 的可核对读出。由 (\ref{bridge:b3})，核验必须经由 unitary slice，因而零点地址参数需满足 $\abs{u_L(s_0)}=1$。另一方面，因 $u_L(s)=L^{2s-1}$，$\Re(s_0)\neq\tfrac12$ 蕴含 $\abs{u_L(s_0)}\neq 1$，与类型锁定矛盾；等价地，由定理 \ref{thm:type-safety-offcritical}，偏移点在该闭包下不可寻址并读出为 $\NULL$，与“非空值读出”矛盾。故不存在此类 $s_0$，从而经典 RH 成立。
 \end{proof}
 
+\subsection{Abel--Weil 圆盘协议：把经典 RH 归约为闭层全纯性义务}
+附录 \ref{app:discrete-abel-weil} 给出一个与 \(\Xi\)-截面互补的经典侧桥包：对任意 \(b>1\)，由素数端 Chebyshev 函数的对数采样误差 \(E_b(n)\) 生成 Abel 幂级数
+$$
+\mathcal A_b(r)=\sum_{n\ge 0}E_b(n)\,r^n,
+$$
+并证明经典 RH 等价于 \(\mathcal A_b\) 在单位圆盘 \(|r|<1\) 内全纯（定理 \ref{thm:radius-captures-sigma-star-bridge}）。
+\par
+该桥包的优势在于：它把“无穷高度零点分布”的几何问题压缩为一个\textbf{圆盘内全纯性}规格，因此可与本文的闭层审计接口（留数环测试、NonCancel、Abel-first）直接拼接。
+
+\begin{theorem}[Abel--Weil 圆盘桥接 \texorpdfstring{$\Rightarrow$}{=>} 经典 RH]\label{thm:abel-weil-disk-bridge-implies-rh}
+固定 \(b>1\)。设存在核侧对象 \(G(r)\)，满足：
+\begin{enumerate}[label=(A\arabic*), ref=A\arabic*]
+  \item \label{aw:a1} \(G\) 在单位圆盘 \(|r|<1\) 上全纯；
+  \item \label{aw:a2} 在实轴协议路径上逐点匹配：对一切 \(r\in(0,1)\) 有 \(G(r)=\mathcal A_b(r)\)。
+\end{enumerate}
+则经典 RH 成立。
+\end{theorem}
+
+\begin{proof}
+由 \ref{aw:a1} 与命题 \ref{prop:real-arc-sufficiency-unit-disk-bridge}，\ref{aw:a2} 的逐点匹配可提升为 \(|r|<1\) 内的亚纯恒等；由于 \(G\) 在 \(|r|<1\) 全纯，故 \(\mathcal A_b\) 在 \(|r|<1\) 亦全纯。再由附录 \ref{app:discrete-abel-weil} 的定理 \ref{thm:radius-captures-sigma-star-bridge}，得到 RH 成立。证毕。
+\end{proof}
+
+\begin{remark}[如何把 \ref{thm:abel-weil-disk-bridge-implies-rh} 变成可执行义务]\label{rem:abel-weil-disk-bridge-executable}
+定理 \ref{thm:abel-weil-disk-bridge-implies-rh} 把经典 RH 归约为“构造 \(G\) 并给出两类可核对证书”：
+\textbf{(i)}~闭层全纯性（\ref{aw:a1}）可由 Fredholm-HTF 规格推进：例如以迹类核算子 \(\mathcal{L}\) 的 Fredholm 行列式组织
+$$
+G(r):=-\frac{\dd}{\dd r}\log\det(I-r\mathcal{L})=\Tr\!\bigl(\mathcal{L}(I-r\mathcal{L})^{-1}\bigr).
+$$
+若进一步满足谱半径界 \(\rho(\mathcal{L})<1\)，则对 \(|r|<1\) 上述 resolvent 展开绝对收敛并给出全纯 \(G\)；谱半径界可通过 Lyapunov--LMI 输出可复算 PSD 证书（命题 \ref{prop:lyapunov-spectral-radius-certificate}）。
+\textbf{(ii)}~协议路径匹配（\ref{aw:a2}）可取 \(r\uparrow 1\) 的实轴或边界角扫描 \(r=e^{i\theta}\)，并用“逐点匹配 \(\Rightarrow\) 圆盘内恒等”的解析刚性护栏（命题 \ref{prop:real-arc-sufficiency-unit-disk-bridge}）完成降维。
+\par
+此外，为避免有限维极点格点屏障（附录 \ref{app:pole-lattice-transfer-operator-upgrade} 的命题 \ref{prop:finite-pole-lattice-geometry}），(B1.c) 的可执行推进应显式采用“有限层可审计 + 极限进入 Fredholm”的细化接口；其在迹范数意义下的稳定性由命题 \ref{prop:fredholm-det-trace-norm-continuity} 给出，从而把“toy-RH 的有限层对齐”升级为可在紧域上一致收敛的极限对象。
+\end{remark}
+
+\begin{remark}[无参圆盘化等价式：Cayley 变换与 Jensen 缺陷]\label{rem:rh-disk-jensen}
+除附录 \ref{app:discrete-abel-weil} 的素数端圆盘化桥包外，还可对经典完成化对象作一条无参的圆盘化重述。令
+$$
+w=\frac{1+\mathrm{i}t}{1-\mathrm{i}t}\qquad(t\in\RR),
+$$
+并定义单位圆盘内的解析函数
+$$
+F_\zeta(w):=\Xi_\zeta\!\left(\tfrac12+\frac{w-1}{w+1}\right)\qquad(|w|<1).
+$$
+注意当 \(w=\frac{1+\mathrm{i}t}{1-\mathrm{i}t}\in\TT\) 时有 \(\frac{w-1}{w+1}=\mathrm{i}t\)，从而 \(F_\zeta\) 的边界值即为临界线截面 \(\Xi_\zeta(\tfrac12+\mathrm{i}t)\)。
+由 Cayley 变换把单位圆盘映到左半平面，经典 RH 等价于：\(F_\zeta\) 在开单位圆盘内无零点。
+\par
+进一步地，对任意 \(\varrho\in(0,1)\) 定义 Jensen 缺陷
+$$
+D_\zeta(\varrho):=\frac{1}{2\pi}\int_{0}^{2\pi}\log\bigl|F_\zeta(\varrho e^{\mathrm{i}\theta})\bigr|\,\dd\theta-\log|F_\zeta(0)|.
+$$
+由 Jensen 公式，\(D_\zeta(\varrho)\) 精确等于 \(|w|<\varrho\) 内零点的对数径向数据之和；因此
+$$
+\mathrm{RH}\ \Longleftrightarrow\ \forall\varrho\in(0,1),\ D_\zeta(\varrho)=0.
+$$
+该无参圆盘化把“无穷高度”问题压缩为盘内零点禁入与外因子控制，从而为 (B1.c) 提供另一条以圆盘内零点数据为核心的协议化读出路径。
+\end{remark}
+

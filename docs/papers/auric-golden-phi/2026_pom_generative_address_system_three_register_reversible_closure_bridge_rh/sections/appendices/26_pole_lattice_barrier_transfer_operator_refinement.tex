@@ -49,6 +49,33 @@ $$
 其在 \(z\) 的某邻域内收敛并给出全纯函数；在有限维情形该定义与通常的矩阵行列式一致。
 \end{definition}
 
+\begin{definition}[迹范数]\label{def:trace-norm-bridge}
+对迹类算子 \(A\)，定义其迹范数
+$$
+\|A\|_1:=\Tr\!\bigl((A^\ast A)^{1/2}\bigr).
+$$
+\end{definition}
+
+\begin{proposition}[Fredholm 行列式对迹范数的连续性（可执行升级护栏）]\label{prop:fredholm-det-trace-norm-continuity}
+设 \(\mathcal{L}\) 与 \(\mathcal{L}_m\) 均为迹类算子，且满足
+$$
+\|\mathcal{L}_m-\mathcal{L}\|_1\to 0\qquad(m\to\infty).
+$$
+则：
+\begin{enumerate}
+  \item 对任意紧集 \(K\subset\CC\)，有一致收敛
+  $$
+  \sup_{z\in K}\bigl|\det(I-z\mathcal{L}_m)-\det(I-z\mathcal{L})\bigr|\to 0;
+  $$
+  \item 对每个固定 \(n\ge 1\)，有 \(\Tr(\mathcal{L}_m^n)\to \Tr(\mathcal{L}^n)\)。
+\end{enumerate}
+因此，“有限秩/有限核层”的行列式对象若在迹范数意义下可执行地细化收敛到某一极限核算子，则其 Fredholm 行列式与迹展开在任意固定紧域内可审计地稳定，足以作为 BridgeRH 的 (B1.c) 解析刚性升级接口（参见 \cite{Simon2005TraceIdeals}）。
+\end{proposition}
+
+\begin{proof}
+这是 Fredholm 行列式在迹类上的标准连续性结论：\(\mathcal{L}_m\to\mathcal{L}\) 于迹范数蕴含 \(\det(I-z\mathcal{L}_m)\to \det(I-z\mathcal{L})\) 在任意紧域上一致，且幂迹 \(\Tr(\mathcal{L}_m^n)\) 逐阶收敛；可用 Fredholm 行列式的 Lipschitz 型不等式与 \(\Tr\) 的连续性得到。细节见 \cite[Chapter~3]{Simon2005TraceIdeals}。证毕。
+\end{proof}
+
 \begin{remark}[转移算子细化的最小可执行接口]\label{rem:transfer-operator-refinement-interface}
 许多来自“余量/取整”的同步动力学可被视为区间 \(X=[0,1)\) 上的多分支扩张系统：给定有限个允许分支 \(\{\tau_a\}_{a\in\mathcal{A}}\)（仿射收缩的逆支），及其权函数 \(w_a(\cdot;s)\)（例如长度势、carry/delay 势或 completion 诱导的解析权），可定义转移算子族
 $$
@@ -71,7 +98,7 @@ $$
 \begin{enumerate}
   \item \textbf{（闭层全纯性）} 构造一族迹类核算子 \((\mathcal{L}_u)\)（可视为扫描协议下的转移/读出算子），使得
   $$
-  G(r):=\Tr\!\bigl((I-r\mathcal{L}_1)^{-1}\bigr)
+  G(r):=\frac{\dd}{\dd r}\log\det(I-r\mathcal{L}_1)=-\Tr\!\bigl(\mathcal{L}_1(I-r\mathcal{L}_1)^{-1}\bigr)
   $$
   在 \(|r|<1\) 内全纯，并可在闭层上给出一致上界，从而允许用离散留数估计与显式误差界实施可执行审计（参见附录 \ref{app:bridge-rh-obligations} 的算法 \ref{alg:residue-ring-test} 与命题 \ref{prop:residue-ring-explicit-error-bound}）。
   \item \textbf{（正性/整数重数证书，NonCancel 自动）} 要求 \(\mathcal{L}_u\) 的离散谱点具有有限代数重数 \(m_\lambda=\Tr(P_\lambda)\in\NN\)，并使得所关心通道的主部系数可由 \(\Tr(P_\lambda)\) 或更一般的 \(\Tr(WP_\lambda)\ge 0\)（某个正算子 \(W\)）给出；于是任意内部极点都携带不可为零的留数证书，同点消去被结构性排除（附录 \ref{app:bridge-rh-obligations} 的命题 \ref{prop:resolvent-trace-integer-residue}）。
