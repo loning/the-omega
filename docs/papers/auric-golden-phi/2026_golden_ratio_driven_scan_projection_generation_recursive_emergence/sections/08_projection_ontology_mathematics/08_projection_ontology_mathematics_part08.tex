@@ -51,7 +51,8 @@ m\le m_{\max},\qquad |G|\le G_{\max},\qquad q\le q_{\max},\qquad \Theta_{\mathrm
 如下：
 \begin{itemize}
   \item \textbf{签名部分 \(\mathbf{Sig}_{\le}\)：}由接口正规形参数与有限异常采样组成，例如
-  \(\bigl(\mathrm{NF}(w),\ \mathsf{Anom}_{G}(K;\theta)\vert_{\theta\in\Theta_{\mathrm{grid}}}\bigr)\)
+  \(\bigl(\mathrm{NF}(w),\ G^{\mathrm{BC}}_m(w),\ \mathsf{Anom}_{G}(K;\theta)\vert_{\theta\in\Theta_{\mathrm{grid}}}\bigr)\)
+  （其中 \(G^{\mathrm{BC}}_m(w)\) 为定义 \ref{def:pom-bc-quotient} 的普适可交换化商：由 \(w\) 中的折叠层 \(E_m\) 与 lift 轴 \(\mathrm{LIFT}_G\) 的标签耦合关系可计算抽取）。
   （参见命题 \ref{prop:pom-three-gen-interface-normal-form} 与推论 \ref{cor:pom-three-gen-normal-form-decidable}，以及含 \(\mathrm{MOM}\) 的结构正规形命题 \ref{prop:pom-mom-interface-normal-form}）。
   \item \textbf{谱部分 \(\mathbf{Spec}_{\le}\)：}由整数矩谱与扭曲谱等可计算谱指纹组成，例如
   \(\bigl(r_q(u)\vert_{2\le q\le q_{\max}},\ \rho_\chi(u)/\lambda_1(u)\vert_{\chi\in\widehat G,\,\theta\in\Theta_{\mathrm{grid}}}\bigr)\)
@@ -72,6 +73,22 @@ m\le m_{\max},\qquad |G|\le G_{\max},\qquad q\le q_{\max},\qquad \Theta_{\mathrm
 定理 \ref{thm:pom-sem-conservative} 把“算法等价”从“同一最终核指纹”提升为“同一自然同构类”的可判定版本：
 在有界切片内并不需要证明重写系统对所有语义等价都完备，只需保证语义输出 \(\mathsf{Sem}\) 足够细，使其在该切片上反射同构。
 这与本文的 completion/审计策略相契合：在固定 \(m,G,q\) 与有限参数网格下，通过临界对枚举与回归脚本核验“正规形一致 + 残差类一致”（注 \ref{rem:pom-threegen-kb-completion-audit}、注 \ref{rem:pom-fourgen-kb-completion-audit}），即可把等价检验收束为可复现的有限输出比较。
+\end{remark}
+
+\begin{remark}[有限签名化：把“等价 + 优化”统一为同一组可核对输出]\label{rem:pom-finite-signature-sigmam}
+在有界切片内，可把 \(\mathsf{Sem}\) 的关键坐标压缩为一个更接近“演算学级验收标准”的有限签名族：
+对任一投影词 \(w\)（其分辨率、lift 群与温度/势参数均受切片约束），定义
+\[
+\Sigma_m(w)
+:=
+\Bigl(
+G^{\mathrm{BC}}_m(w),\
+\{\mathsf{Anom}_{G}(K;\theta)\}_{\theta\in\Theta_{\mathrm{grid}}},\
+\{r_q(u)\}_{(q,u)\in\mathcal{G}_{\mathrm{grid}}}
+\Bigr),
+\]
+其中 \(G^{\mathrm{BC}}_m(w)\) 为普适可交换化商（定义 \ref{def:pom-bc-quotient}），\(\Theta_{\mathrm{grid}}\) 与 \(\mathcal{G}_{\mathrm{grid}}\subseteq\{2,\dots,q_{\max}\}\times(0,1]\) 为有限测试网格。
+则“判等”与“优化”可统一理解为：在满足 \(\Sigma_m\) 一致的候选实现中，借助代价函子在 \(\mathbb{T}^{(2)}\) 中取帕累托极小元（见命题 \ref{prop:pom-cost-optimization-decidable}）。
 \end{remark}
 
 \subsubsection{代价半环与代价函子：从 \texorpdfstring{$\mathbf{PW}$}{PW} 到资源预序}\label{subsec:pom-cost-functor}
@@ -128,6 +145,37 @@ $$
 定义 \ref{def:pom-cost-functor} 允许把“重写”分成两类：一类为 strict 等价（应在语义与代价上都不变），另一类为编译型改写（允许改变代价，但要求在所选预序上单调）。
 本文的典型用法是：把 exact 判等交给 \(\Sigma/\zeta/\)有限部等指纹函子（定义 \ref{def:pom-sigma-functor} 与注 \ref{rem:pom-zeta-normal-form}），而把“空间换时间/时间换空间”的编译律写成 \(\mathbb{T}^{(2)}\) 中的单调证书（例如 \((\mathrm{RCRT}_\varepsilon)\) 的失败概率账本与 prime-register 配额）。
 \end{remark}
+
+\begin{definition}[代价富集的投影词演算 \texorpdfstring{$\mathbf{PW}^{\mathrm{cost}}$}{PWcost}]\label{def:pom-pw-cost}
+给定一个代价函子 \(\mathcal{C}:\mathbf{PW}\to\mathbf{Res}\)（定义 \ref{def:pom-cost-functor}），称二元组
+\[
+\mathbf{PW}^{\mathrm{cost}}:=\bigl(\mathbf{PW},\mathcal{C}\bigr)
+\]
+为\textbf{代价富集的投影词演算}。
+在该结构中，“语义等价”由 \(\mathbf{PW}\) 的 \(2\)-同构（或 \(\varepsilon\)-sound 证书）给出，而“编译优化”被理解为：在固定语义等价类内，于资源预序 \((\mathbb{T}^{(2)},\preceq)\) 下寻找帕累托最小的代价实现。
+\end{definition}
+
+\begin{proposition}[有界切片上的编译优化可判定（有限前沿）]\label{prop:pom-cost-optimization-decidable}
+在定义 \ref{def:pom-bounded-slice} 的有界切片上，固定一个可审计片段 \(\mathbf{PW}^{\ast}_{\le}\subseteq\mathbf{PW}\) 与一个可计算的代价函子 \(\mathcal{C}\)。
+则对任一投影词 \(w\in\mathbf{PW}^{\ast}_{\le}\)，其语义等价类
+\[
+[w]:=\{\,w'\in\mathbf{PW}^{\ast}_{\le}:\ w'\simeq w\,\}
+\]
+在代价域中的像
+\(
+\mathcal{C}([w])\subseteq \mathbb{T}^{(2)}
+\)
+具有下述性质：
+\begin{enumerate}
+  \item \textbf{（前沿有限）} \(\mathcal{C}([w])\) 的帕累托极小元集合是有限集；
+  \item \textbf{（可判定/可构造）} 该帕累托前沿可由有限枚举计算得到：在切片给定的参数网格与复杂度上界内，枚举候选接口正规形并以 \(\mathsf{Sem}\)（定理 \ref{thm:pom-sem-conservative}）做判等分桶，再在每个桶内取 \(\preceq\)-极小元即得。
+\end{enumerate}
+\end{proposition}
+\begin{proof}[证明要点]
+在有界切片上，生成元参数取自有限网格，且本文的关键片段均提供了终止的正规化策略，把任意词规约到有限长度的接口正规形族（例如三/四生成元正规形，命题 \ref{prop:pom-three-gen-interface-normal-form} 与 \ref{prop:pom-mom-interface-normal-form}）。
+因此在该切片内可出现的接口正规形参数组合仅有有限多个；从而“候选实现”的语义签名桶也只有有限多个。
+对每个桶，代价函子 \(\mathcal{C}\) 在生成元与复合下可计算，故可对有限候选集合直接取 \(\preceq\)-极小元并得到帕累托前沿。证毕。
+\end{proof}
 
 \subsubsection{温度门的热带化：从 PF 主谱到 min-plus 本征值}\label{subsec:pom-proj-tropicalization}
 \begin{definition}[温度门的热带化代价]\label{def:pom-proj-tropical-cost}

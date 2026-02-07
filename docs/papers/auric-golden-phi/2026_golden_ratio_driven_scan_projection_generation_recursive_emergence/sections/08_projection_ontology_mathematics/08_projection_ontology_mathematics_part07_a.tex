@@ -72,6 +72,117 @@ E_m\ \text{与}\ \mathrm{LIFT}_G\ \text{在所有扭曲通道上严格交换（�
 因此“残差为零”与“闭环接口上严格交换”互为充要条件。
 \end{proof}
 
+\subsubsection{普适可交换化群商：把残差从“数值签名”提升为“被折叠抹掉的群方向”}\label{subsec:pom-bc-quotient}
+命题 \ref{prop:pom-em-lift-residual-swap} 与推论 \ref{cor:pom-zero-anom-pullback-exactness} 把 \(E_m\) 与 \(\mathrm{LIFT}_G\) 的交换失败压缩为常数级异常签名 \(\mathsf{Anom}_G(K;\theta)\)。
+在“可推演的演算学”层面，仅有数值残差仍不足以构成可计算的结构对象：还需要把“交换失败来自哪一部分群信息”本体化为一个可构造对象。
+\par
+本段给出一个纯群论的 strictification：对固定分辨率 \(m\)，构造一个\textbf{普适群商} \(G\twoheadrightarrow G^{\mathrm{BC}}_m\)，使得在 \(G^{\mathrm{BC}}_m\) 上交换在接口意义下\emph{严格}成立；并且该群商是最大的（普适的），因此它刻画了“在 \(E_m\) 视角下仍可见的最大群寄存器”，而其核即为“被折叠抹掉的群方向”。
+
+\begin{definition}[纤维可见等价与 Beck--Chevalley 可交换化商]\label{def:pom-bc-quotient}
+固定对象 \(\mathcal{I}(m;K;\kappa)\) 与分辨率 \(m\)。
+设折叠为 \(\Fold_m:\Omega_m\to X_m\)，并以 \(E_m\) 表示其诱导的条件期望/纤维平均接口（命题 \ref{prop:fold-conditional-expectation}）。
+设 lift 语义由一个有限阿贝尔群 \(G\) 与一个（一步或长度 \(m\) 的）群标签函数
+\[
+\ell:\Omega_m\to G
+\]
+给出（其来源可以是核边上的 cocycle 沿长度 \(m\) 路径的积累；在纤维内 Fourier 口径中同样写作 \(\ell\)，见定义 \ref{def:pom-fiber-fourier-coeff}）。
+\par
+定义“纤维不可分辨”关系为
+\[
+a\sim_m b\quad\Longleftrightarrow\quad \Fold_m(a)=\Fold_m(b)\qquad(a,b\in\Omega_m),
+\]
+并定义\textbf{纤维不变子群}（被折叠抹掉的群方向）为
+\[
+N^{\mathrm{BC}}_m
+:=\left\langle\ \ell(a)\ell(b)^{-1}\ :\ a,b\in\Omega_m,\ a\sim_m b\ \right\rangle\ \le\ G.
+\]
+令 \(\pi_m:G\twoheadrightarrow G^{\mathrm{BC}}_m:=G/N^{\mathrm{BC}}_m\) 为商映射，并记 \(\bar\ell_m:=\pi_m\circ \ell:\Omega_m\to G^{\mathrm{BC}}_m\)。
+则 \(\bar\ell_m\) 在每条折叠纤维上常值，从而诱导一个良定义的\textbf{可见标签}
+\[
+\ell^{\mathrm{vis}}_m:X_m\to G^{\mathrm{BC}}_m,
+\qquad
+\ell^{\mathrm{vis}}_m\bigl(\Fold_m(a)\bigr)=\bar\ell_m(a).
+\]
+\end{definition}
+
+\begin{proposition}[严格可交换化：在 \(G^{\mathrm{BC}}_m\) 上异常为零]\label{prop:pom-bc-quotient-strictify}
+沿用定义 \ref{def:pom-bc-quotient} 的记号。
+将 \(\mathrm{LIFT}_G\) 的群轴替换为 \(G^{\mathrm{BC}}_m\)（即以 \(\bar\ell_m\) 作为 lift 标签），则 \(E_m\) 与 \(\mathrm{LIFT}_{G^{\mathrm{BC}}_m}\) 在闭环接口意义下严格交换；等价地，
+\[
+\mathsf{Anom}_{G^{\mathrm{BC}}_m}(K;\theta)=0
+\]
+（对所有被考虑的势参数 \(\theta\) 与所有非平凡扭曲通道）成立。
+\end{proposition}
+\begin{proof}
+由构造，\(\bar\ell_m\) 仅依赖于 \(\Fold_m(a)\)，即存在 \(\ell^{\mathrm{vis}}_m\) 使得 \(\bar\ell_m=\ell^{\mathrm{vis}}_m\circ \Fold_m\)。
+因此对任意角色 \(\overline\chi\in\widehat{G^{\mathrm{BC}}_m}\)，函数
+\(
+f_{\overline\chi}:=\overline\chi\circ \bar\ell_m
+=
+\overline\chi\circ \ell^{\mathrm{vis}}_m\circ \Fold_m
+\)
+是 \(\sigma(\Fold_m)\)-可测，故满足 \(E_m f_{\overline\chi}=f_{\overline\chi}\)。
+这正是 Beck--Chevalley 型“标签与折叠纤维解耦”的严格版本：在每个可见扭曲通道上，条件期望不再引入通道间混合，因此 \(E_m\) 与 \(\mathrm{LIFT}_{G^{\mathrm{BC}}_m}\) 的交换方块在闭环接口上严格闭合。
+由推论 \ref{cor:pom-zero-anom-pullback-exactness} 得 \(\mathsf{Anom}_{G^{\mathrm{BC}}_m}(K;\theta)=0\)。证毕。
+\end{proof}
+
+\begin{proposition}[普适性（最大性）：任何严格交换的群商必因子化]\label{prop:pom-bc-quotient-universal}
+沿用定义 \ref{def:pom-bc-quotient} 的设定。
+设 \(\phi:G\twoheadrightarrow H\) 为任意满同态。
+若 \(\phi\circ \ell\) 在折叠纤维上不变（等价地：存在 \(\ell_H^{\mathrm{vis}}:X_m\to H\) 使得 \(\phi\circ\ell=\ell_H^{\mathrm{vis}}\circ\Fold_m\)，亦等价于 \(E_m\) 与 \(\mathrm{LIFT}_H\) 在闭环接口意义下严格交换），则必有
+\[
+N^{\mathrm{BC}}_m\ \le\ \ker(\phi),
+\]
+从而存在唯一满同态 \(\bar\phi:G^{\mathrm{BC}}_m\twoheadrightarrow H\) 使得 \(\phi=\bar\phi\circ \pi_m\)。
+\end{proposition}
+\begin{proof}
+对任意 \(a\sim_m b\)，由假设 \(\phi\circ\ell\) 在纤维上不变得 \(\phi(\ell(a))=\phi(\ell(b))\)，即 \(\phi(\ell(a)\ell(b)^{-1})=1\)。
+因此 \(\ell(a)\ell(b)^{-1}\in\ker(\phi)\)。
+由 \(N^{\mathrm{BC}}_m\) 的生成定义，得 \(N^{\mathrm{BC}}_m\le \ker(\phi)\)。
+于是 \(\phi\) 在商群 \(G/N^{\mathrm{BC}}_m\) 上诱导出唯一的 \(\bar\phi\)，并满足 \(\phi=\bar\phi\circ\pi_m\)。证毕。
+\end{proof}
+
+\begin{remark}[可计算性：从纤维枚举到商群的标准形]\label{rem:pom-bc-quotient-computable}
+定义 \ref{def:pom-bc-quotient} 的构造在有限分辨率上是直接可计算的：给定可计算的折叠 \(\Fold_m:\Omega_m\to X_m\) 与可计算的标签 \(\ell:\Omega_m\to G\)，枚举每条纤维 \(\Fold_m^{-1}(x)\) 并收集生成元
+\(
+\ell(a)\ell(b)^{-1}
+\)
+即可得到 \(N^{\mathrm{BC}}_m\) 的一个有限生成集合。
+当 \(G\) 为有限阿贝尔群时，可将 \(G\) 表示为有限个循环群的直积，并对生成元矩阵做 Smith 标准形，从而在多项式时间内得到商群 \(G^{\mathrm{BC}}_m=G/N^{\mathrm{BC}}_m\) 的不变量分解与角色域 \(\widehat{G^{\mathrm{BC}}_m}\)。
+因此“严格可交换化商”不仅存在，而且可作为审计流水线的一项离散输出直接核对。
+\end{remark}
+
+\begin{corollary}[异常的支撑：仅来自 \texorpdfstring{$\widehat{N^{\mathrm{BC}}_m}$}{N^BC_m}-方向]\label{cor:pom-anom-supported-on-bc-kernel}
+沿用定义 \ref{def:pom-bc-quotient} 的设定。
+将 \(\widehat{G^{\mathrm{BC}}_m}\) 视为 \(\widehat G\) 的子群（即：\(\widehat{G^{\mathrm{BC}}_m}\cong\{\chi\in\widehat G:\chi|_{N^{\mathrm{BC}}_m}=1\}\)）。
+则对任意 \(\chi\in\widehat G\)，若 \(\chi|_{N^{\mathrm{BC}}_m}=1\)，则对应扭曲通道的交换残差为零：
+\[
+\chi|_{N^{\mathrm{BC}}_m}=1
+\quad\Longrightarrow\quad
+\bigl(\mathsf{Anom}_G(K;\theta)\bigr)_{\chi}=0.
+\]
+因此任何非零异常坐标只能出现在 \(\widehat G\setminus \widehat{G^{\mathrm{BC}}_m}\)（即对 \(N^{\mathrm{BC}}_m\) 非平凡的角色）方向上。
+\end{corollary}
+\begin{proof}
+若 \(\chi|_{N^{\mathrm{BC}}_m}=1\)，则 \(\chi\) 因子化为某个 \(\overline\chi\in\widehat{G^{\mathrm{BC}}_m}\) 与商映射 \(\pi_m\) 的复合。
+因此 \(\chi\)-扭曲通道等价于在 \(G^{\mathrm{BC}}_m\) 上的可见扭曲通道。
+由命题 \ref{prop:pom-bc-quotient-strictify}，所有可见扭曲通道的异常为零，从而对应坐标 \(\bigl(\mathsf{Anom}_G(K;\theta)\bigr)_{\chi}=0\)。证毕。
+\end{proof}
+
+\begin{corollary}[分辨率塔上的可见寄存器逆系统]\label{cor:pom-bc-inverse-system}
+对任意 \(m_2\ge m_1\)，由于折叠条件期望满足塔性质 \(E_{m_1}\circ E_{m_2}=E_{m_1}\)（见 \S\ref{subsec:pom-conditional-expectation}），\(m_2\) 层的纤维不可分辨关系细化 \(m_1\) 层，因而
+\[
+N^{\mathrm{BC}}_{m_2}\ \le\ N^{\mathrm{BC}}_{m_1},
+\qquad\text{从而}\qquad
+G^{\mathrm{BC}}_{m_2}\twoheadrightarrow G^{\mathrm{BC}}_{m_1}.
+\]
+因此 \(\{G^{\mathrm{BC}}_m\}_{m\ge 1}\) 构成一个逆系统，并可定义其逆极限
+\[
+G^{\mathrm{BC}}_\infty:=\varprojlim_m G^{\mathrm{BC}}_m.
+\]
+该极限对象可被解释为：在“无限分辨率读出”下仍与折叠严格相容的群寄存器可见骨架。
+\end{corollary}
+
 \subsubsection{异常签名的可组合律：作为 \texorpdfstring{$\mathbf{PW}$}{PW} 的 \texorpdfstring{$2$}{2}-上同调类}\label{subsec:pom-anom-cohomology}
 把命题 \ref{prop:pom-em-lift-residual-swap} 的“带标签交换证书”视为 \(\mathbf{PW}\) 的一个 \(2\)-态射生成元，其关键收益是：异常不再是事后补丁，而是一个可在重写层面组合、并在改变规约路径时只发生边界变换的残差类。
 
@@ -237,9 +348,12 @@ w_1\sim w_2
 \begin{enumerate}
   \item \textbf{签名域 \(\mathbf{Sig}*\Theta\)：}记录常数层与正规形层的可核对指纹。对词 \(w\) 取
   \[
-  \mathsf{Sig}(w):=\Bigl(\mathrm{NF}(w),\ [\mathrm{Anom}(w)],\ \{\mathsf{Anom}_{G}(K;\theta)\}_{\theta\in\Theta}\Bigr),
+  \mathsf{Sig}(w):=\Bigl(\mathrm{NF}(w),\ G^{\mathrm{BC}}_m(w),\ [\mathrm{Anom}(w)],\ \{\mathsf{Anom}_{G}(K;\theta)\}_{\theta\in\Theta}\Bigr),
   \]
-  其中 \(\mathrm{NF}(w)\) 为接口正规形代表（命题 \ref{prop:pom-three-gen-interface-normal-form}），\([\mathrm{Anom}(w)]\) 为异常的 \(2\)-上同调类（命题 \ref{prop:pom-anom-additive-up-to-boundary}），而 \(\{\mathsf{Anom}_{G}(K;\theta)\}_{\theta\in\Theta}\) 是有限采样签名族（定义 \ref{def:pom-anom-signature}）。
+  其中 \(\mathrm{NF}(w)\) 为接口正规形代表（命题 \ref{prop:pom-three-gen-interface-normal-form}），
+  \(G^{\mathrm{BC}}_m(w)\) 为定义 \ref{def:pom-bc-quotient} 的普适可交换化商（记录“在 \(E_m\) 视角下仍可见的最大群寄存器”），
+  \([\mathrm{Anom}(w)]\) 为异常的 \(2\)-上同调类（命题 \ref{prop:pom-anom-additive-up-to-boundary}），
+  而 \(\{\mathsf{Anom}_{G}(K;\theta)\}_{\theta\in\Theta}\) 是有限采样签名族（定义 \ref{def:pom-anom-signature}）。
   \item \textbf{谱域 \(\mathbf{Spec}*\Theta\)：}记录指数主尺度的谱资源读出。典型选择是：对每个通道参数 \((\chi,u)\) 与整数 \(q\) 输出加权碰撞 moment-kernel 的 Perron 根
   \(r^{(w)}_{q,\chi}(u)\)，或等价的压力/预算曲线 \(\Sigma_{\mathrm{space}}(w)(q;\chi,u)\) 与其离散凸闭包类型正规形 \(\mathrm{Ty}_{\mathrm{space}}(w;\chi,u)\)（\S\ref{subsec:pom-spectral-resource-type}）。
 \end{enumerate}
@@ -786,6 +900,14 @@ r_q(u):=\rho\!\bigl(\widetilde A_q(u)\bigr).
 \boxed{\;
 P(q,u):=\log r_q(u)-q\log|A_{\mathrm{out}}|\;}.
 \]
+\begin{remark}[温度参数的重参数化：\texorpdfstring{$u=e^{-\beta}$}{u=exp(-beta)} 与压力面 \texorpdfstring{$P(q,\beta)$}{P(q,beta)}]\label{rem:pom-pressure-beta-reparam}
+令 \(\beta:=-\log u\in[0,\infty)\)，并定义
+\[
+P(q,\beta):=P\!\bigl(q,e^{-\beta}\bigr)=\log r_q(e^{-\beta})-q\log|A_{\mathrm{out}}|.
+\]
+在本文的二元读出口径 \(|A_{\mathrm{out}}|=2\) 下，即得 \(P(q,\beta)=\log r_q(e^{-\beta})-q\log 2\)。
+该记号仅为坐标重写：它把“温度轴”从 \(u\in(0,1]\) 等价改写为 \(\beta\ge 0\) 的序代价强度，并与注 \ref{rem:pom-psi-2d-legendre-front} 的二维凸对偶写法兼容。
+\end{remark}
 它在两个极限方向上与本文既有一维指纹兼容：
 \begin{enumerate}
   \item \textbf{（空间端点）} \(P(q,1)=\log r_q-q\log|A_{\mathrm{out}}|=P(q)\)（本文的 moment 压力曲线）；

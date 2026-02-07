@@ -1203,6 +1203,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_real_input_40_zeta_uv",
+            script="exp_sync_kernel_real_input_40_zeta_uv.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_real_input_40_zeta_uv.json",
+            ],
+        ),
+        Step(
             name="real_input_40_geodesic_prime_shadow",
             script="exp_real_input_40_geodesic_prime_shadow.py",
             args=[],
