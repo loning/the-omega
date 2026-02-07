@@ -1,13 +1,13 @@
-\section{补充结果：自描述编码闭包、统一编译与可重复的 unitary slice 数值证书协议}\label{sec:conclusion-cluster}
+\section{补充结果：自描述编码、统一构造与 unitary slice 数值证书的可重复性}\label{sec:conclusion-cluster}
 
-本章在既定的“对象存在 $\Leftrightarrow$ 可寻址 $\Leftrightarrow$ 读出非 $\NULL$”语义与三寄存器闭包（尺度/素数/相位）之上，集中给出三类补充结果（定义—定理—证明），并将其组织为同一条“可审计—可重复—可回放”的统一接口链条：
+本章在既定的“对象存在 $\Leftrightarrow$ 可寻址 $\Leftrightarrow$ 读出非 $\NULL$”语义与三寄存器闭包（尺度/素数/相位）之上，给出三类补充结果（定义—定理—证明），并将其表述为“有限数据证书 $+$ 确定性验证程序”下的可核验命题族：
 \begin{enumerate}
   \item \textbf{注入/编码的完全形式化：}给出具体的 $\mathrm{code}/\mathrm{decode}$（配对函数与自描述序列 Gödel 化），并证明其可判定互逆性；由此得到“有限结构 $\Leftrightarrow$ 单一自然数”的严格地址化。
-  \item \textbf{全运算涌现的一次性闭包：}在同一编译框架下同时覆盖四则、商余、布尔表达式与（在可寻址语义域内的）ZFC 风格集合运算，并证明其在三寄存器闭包内的\textbf{可审计可逆求值}（存在可回放残差账本）。
-  \item \textbf{unitary slice 审计接口的数值证书协议：}给出误差界、舍入模型与 $\NULL$ 判定的可重复性（reproducibility）定义与实现，使“可寻址零点”成为\textbf{可验证的证书对象}；并给出“连续自由度扩张 $\Rightarrow$ 证书类型最小外延 $\Rightarrow$ 第四寄存器”的纯形式化定理。
+  \item \textbf{运算族的统一构造：}在同一构造框架下同时覆盖四则、商余、布尔表达式与（在可寻址语义域内的）ZFC 风格集合运算，并证明其在三寄存器闭包内的\textbf{可核验的可逆求值}（残差信息允许回放重构）。
+  \item \textbf{unitary slice 上的数值证书：}给出误差界、舍入模型与 $\NULL$ 判定的可重复性（reproducibility）定义与构造，使“可寻址零点”成为\textbf{可核验的证书对象}；并给出“连续自由度扩张 $\Rightarrow$ 证书类型外延 $\Rightarrow$ 第四寄存器”的形式化定理。
 \end{enumerate}
 
-根据 2026-02-07 版本所固定的“二变量自对偶行列式—完成化—unitary slice 审计—可寻址零点桥接合同（BridgeRH）”框架，本章进一步补齐一组面向审计实现的\textbf{新增结论与可核对协议}：其目标不是复述既有结构，而是把“第四寄存器”障碍从定性叙述推进为\textbf{可度量、可证书化、可重复验证}的对象（紧化坐标与比特下界），并将 unitary slice 的数值核验提升为可回放的确定性证书流程；同时把局域轨迹的 Gödel 化与全语言运算（四则、商余、布尔与集合术语）的统一编译闭包纳入同一条“地址—残差—证书”的可审计链条。
+在上述框架下，本章进一步给出与第四寄存器障碍相关的若干定量结论（紧化坐标与比特下界），并将 unitary slice 上的数值核验写为可重复的确定性证书验证过程；同时给出局部事件轨迹的 Gödel 编码与运算术语的统一编码表述，使其与“地址—残差—证书”的存在性语义相容。
 
 \subsection{可判定互逆的 Gödel 编码：从有限结构到单一自然数}\label{subsec:cc-godel}
 
@@ -89,7 +89,7 @@ $$
 由定理 \ref{thm:cc-seq-bijection} 可判定恢复自然数序列 $(\iota_{\mathcal{E}}(e_1),\dots,\iota_{\mathcal{E}}(e_T))$；再逐项应用 $\iota_{\mathcal{E}}^{-1}$ 得到事件序列。证毕。
 \end{proof}
 
-\begin{remark}[与 prime-register 的 $\mathrm{code}/\mathrm{decode}$ 接口]
+\begin{remark}[与 prime-register 的 $\mathrm{code}/\mathrm{decode}$ 对接]
 在本文实现中，事件编码常以 $\mathrm{code}/\mathrm{decode}$ 的形式写入 prime-register（附录 \ref{app:inject-code-audit}）；其本质正是对事件序列的可判定注入编码，再配合可判定解码以支持回放。命题 \ref{prop:cc-event-trace-invertible} 给出与“单一自然数残差”兼容的统一表述。
 \end{remark}
 
@@ -98,7 +98,7 @@ $$
 \subsubsection{两种残差表示}
 本论文的素数寄存器纤维 $P$（正文定义 \ref{def:prime-residual}）提供一种稀疏素数向量表示：残差为有限支撑向量 $r:\mathcal{P}\to\NN$。在逻辑层面，该残差也可被压缩为单一自然数：
 \begin{definition}[单码残差]\label{def:cc-singlecode-residual}
-设某一可审计求值过程在输入微态 $\omega$ 上产生输出值 $x$ 与事件序列 $e_{1:T}(\omega)\in\mathcal{E}^{<\omega}$。定义单码残差
+设某一可核验求值过程在输入微态 $\omega$ 上产生输出值 $x$ 与事件序列 $e_{1:T}(\omega)\in\mathcal{E}^{<\omega}$。定义单码残差
 $$
 R(\omega):=\mathrm{G}_{\mathcal{E}}\bigl(e_{1:T}(\omega)\bigr)\in\NN,
 $$
@@ -122,11 +122,11 @@ $$
 \end{proof}
 
 \begin{corollary}[寄存器配额的结构性极小化]\label{cor:cc-register-min}
-在不改变可逆性的前提下，残差账本可被压缩为单一自然数残差 $R$。因此“残差必须分散在多素数坐标”并非逻辑必需，而是为了\textbf{流式审计、局域并行与局部化读写}的工程最优选择（参见附录 \ref{app:prime-uplift} 与附录 \ref{app:bridge-rh-obligations} 的局域并行词典）。
+在不改变可逆性的前提下，残差账本可被压缩为单一自然数残差 $R$。因此“残差必须分散在多素数坐标”并非逻辑必需；采用多素数支撑主要是为了便于局域并行与局部化读写（参见附录 \ref{app:prime-uplift} 与附录 \ref{app:bridge-rh-obligations} 的并行词典表述）。
 \end{corollary}
 
-\subsubsection{局域 Gödel 化：一步一素数的流式轨迹编码（新定理 4）}\label{subsubsec:cc-local-godel-prime-step}
-为使“局域重写—残差外置—可逆回放”完全落到可判定对象，可将原子事件轨迹直接 Gödel 化为单一自然数，并使其支持一步一素数的流式更新。
+\subsubsection{局域 Gödel 化：一步一素数的轨迹编码}\label{subsubsec:cc-local-godel-prime-step}
+为使“局域重写—残差外置—可逆回放”完全落到可判定对象，可将原子事件轨迹直接 Gödel 化为单一自然数，并使其支持一步一素数的逐步更新。
 
 \begin{definition}[事件编号与一步一素数编码]\label{def:cc-stepwise-prime-godel}
 设 $\Sigma_m$ 为某一固定分辨率 $m$ 下的原子事件字母表（例如 Fold$_m$ 的规则编号与局部位置的有限对）。将每个事件写为
@@ -143,7 +143,7 @@ $$
 $$
 \end{definition}
 
-\begin{theorem}[code/decode 的可判定互逆性与流式更新（新定理 4）]\label{thm:cc-stepwise-prime-godel}
+\begin{theorem}[code/decode 的可判定互逆性与逐步更新]\label{thm:cc-stepwise-prime-godel}
 沿用定义 \ref{def:cc-stepwise-prime-godel}。则：
 \begin{enumerate}
   \item $\mathrm{Code}:\Sigma_m^\ast\to\NN_{\ge 1}$ 为单射；
@@ -174,7 +174,7 @@ $$
 由 prime-register 的值映射 $N:P\to\NN_{\ge 1}$（唯一分解），可将任意 $R\in\NN$ 嵌入为“单质因子”残差：选定素数 $p_\star$，令 $r_\star(p_\star)=R+1$ 且其余坐标为 $0$，则 $N(r_\star)=p_\star^{R+1}$。由 $p_\star$-进赋值可判定恢复 $R$，再由定理 \ref{thm:cc-singlecode-replay} 回放。该嵌入说明：多素数支撑是并行与局域性的代价优化，而非可逆性的逻辑前提。
 \end{remark}
 
-\subsection{全运算涌现的统一编译：四则、商余、布尔与集合运算的一次性闭包}\label{subsec:cc-unified-ops}
+\subsection{运算族的统一构造：四则、商余、布尔与集合运算}\label{subsec:cc-unified-ops}
 
 为避免重复正文第 \ref{sec:emergent-arithmetic} 节的自然数半环涌现，本节以其作为已给定结构出发：令
 $$
@@ -231,7 +231,7 @@ $$
 \end{definition}
 
 \begin{theorem}[有理域与除法的涌现（正规形一致）]\label{thm:cc-q-field}
-在商余（除法算法）可审计实现的前提下，$\QQ_{\POM}$ 构成域并与经典有理数域 $(\QQ,+,\cdot)$ 同构；并存在可判定的正规化过程，把任意表示归约到唯一正规形（例如以 $\gcd$ 约分并约定分母为正），从而对象层除法与实现层一致。
+在商余（除法算法）可判定实现的前提下，$\QQ_{\POM}$ 构成域并与经典有理数域 $(\QQ,+,\cdot)$ 同构；并存在可判定的正规化过程，把任意表示归约到唯一正规形（例如以 $\gcd$ 约分并约定分母为正），从而对象层除法与实现层一致。
 \end{theorem}
 
 \begin{proof}
@@ -239,7 +239,7 @@ $$
 $
 \gcd(a,0)=a,\ \gcd(a,b)=\gcd(b,a\bmod b)
 $
-在商余可用时为可判定过程，且余数严格下降保证终止；约分保持等价类不变并给出唯一既约形式。证毕（细节与可审计实现路径见附录 \ref{app:ops-zfc} 与附录 \ref{app:unified-compiler}）。
+在商余可用时为可判定过程，且余数严格下降保证终止；约分保持等价类不变并给出唯一既约形式。证毕（细节与实现路径见附录 \ref{app:ops-zfc} 与附录 \ref{app:unified-compiler}）。
 \end{proof}
 
 \subsubsection{布尔表达式：可寻址闭包与可判定规范化}\label{subsubsec:cc-bool}
@@ -271,47 +271,47 @@ $\varphi$ 的语法树有限，每一步仅调用有限次原子读出与 $\{0,1
 $\mathrm{HF}$ 的每个对象皆为有限良基树结构；上述运算均可化为有限树的组合与有限枚举，故为可判定过程。由于编码/解码可由第 \ref{subsec:cc-godel} 节的配对与序列 Gödel 化实现，故输出可寻址且仍落在同一编码域。证毕。
 \end{proof}
 
-\subsubsection{可逆编译的统一定理}\label{subsubsec:cc-compiler}
+\subsubsection{可逆构造的统一定理}\label{subsubsec:cc-compiler}
 \begin{theorem}[全语言可逆求值的统一实现]\label{thm:cc-unified-reversible-compiler}
-令 $\mathcal{L}_{\mathrm{arith+bool+HF}}$ 为由算术项（$\NN_{\POM},\ZZ_{\POM},\QQ_{\POM}$）、布尔项与 $\mathrm{HF}_{\POM}$ 集合项组成的多排序语言（允许互相嵌套）。则存在统一编译器 $\mathcal{C}$，把任意封闭项 $t\in\mathcal{L}_{\mathrm{arith+bool+HF}}$ 编译为三寄存器闭包内的可审计程序，输出
+令 $\mathcal{L}_{\mathrm{arith+bool+HF}}$ 为由算术项（$\NN_{\POM},\ZZ_{\POM},\QQ_{\POM}$）、布尔项与 $\mathrm{HF}_{\POM}$ 集合项组成的多排序语言（允许互相嵌套）。则存在统一构造映射 $\mathcal{C}$，把任意封闭项 $t\in\mathcal{L}_{\mathrm{arith+bool+HF}}$ 归约为三寄存器闭包内的可核验求值过程，输出
 $$
 \mathcal{C}(t)\Downarrow \bigl(\mathrm{Val}(t),\,R(t)\bigr),
 $$
 其中 $\mathrm{Val}(t)$ 为值对象、$R(t)\in\NN$ 为单码残差（定义 \ref{def:cc-singlecode-residual}）。并且存在可判定回放器 $\mathrm{Replay}$，使得在给定输入编码时可回放整个求值轨迹与所有分支选择，满足“信息不丢失”的强可逆性。\par
-在证明携带（proof-carrying）口径下，上述编译器可进一步输出可离线核验的证书包，并与“地址—残差—证书统一 Gödel 化”接口兼容（见附录 \ref{app:godel-wsos-rouche} 的定理 \ref{thm:unified-compilation} 与定理 \ref{thm:arc-godel-invertible}）。
+在证明携带（proof-carrying）表述下，上述构造映射可进一步输出可离线核验的证书包，并与“地址—残差—证书统一 Gödel 化”的编码层相容（见附录 \ref{app:godel-wsos-rouche} 的定理 \ref{thm:unified-compilation} 与定理 \ref{thm:arc-godel-invertible}）。
 \end{theorem}
 
 \begin{proof}
 对语法树作结构递归。每个构造子（算术/布尔/集合运算）均为有限可判定步骤组合；分支选择与归约路径通过事件序列记录，并由第 \ref{subsec:cc-godel} 节编码为单码残差；回放按解码后的事件序列逐步逆执行（定理 \ref{thm:cc-singlecode-replay}）。证毕。
 \end{proof}
 
-\begin{theorem}[ZFC 术语的可判定编译闭包（\texorpdfstring{$\NULL$}{NULL} 截断版；新定理 5）]\label{thm:cc-zfc-term-null-closure}
+\begin{theorem}[ZFC 术语的可判定构造闭包（\texorpdfstring{$\NULL$}{NULL} 截断）]\label{thm:cc-zfc-term-null-closure}
 设 $\mathsf{Term}_{\mathrm{HF}}$ 为在遗传有限集合宇宙 $\mathrm{HF}_{\POM}$（定理 \ref{thm:cc-hf-closure}）中生成的集合\textbf{术语}类：其构造仅使用空集、配对、并/交/差、集合并、幂集以及有限枚举/有限递归等可判定算子；并约定任何落在 PW 不可判定片段之外的判定子句一律回落为 $\NULL$。
-则存在编译器
+则存在构造映射
 $$
 \mathcal{C}:\mathsf{Term}_{\mathrm{HF}}\to \mathrm{PW}_{\mathrm{dec}}
 $$
 使得对任意输入地址参数：
 \begin{enumerate}
   \item 若术语在 $\mathrm{HF}_{\POM}$ 中可证书化定义，则 $\mathcal{C}(t)$ 输出一个非 $\NULL$ 的地址，并附带可离线核验的证书材料，验证其与语义值一致；
-  \item 若术语触及不可判定/不可预算的自由度，则 $\mathcal{C}(t)$ 输出 $\NULL$，且该 $\NULL$ 判定在固定协议参数下可重复（定理 \ref{thm:cc-null-repro}）。
+  \item 若术语触及不可判定/不可预算的自由度，则 $\mathcal{C}(t)$ 输出 $\NULL$，且该 $\NULL$ 判定在固定验证规则与参数下可重复（定理 \ref{thm:cc-null-repro}）。
 \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-在 $\mathrm{HF}_{\POM}$ 内，上述术语构造均可归约为有限树结构的组合与有限枚举，因而可被编译为可判定片段并输出证书（定理 \ref{thm:cc-hf-closure}，以及统一编译定理 \ref{thm:cc-unified-reversible-compiler}）。对不可判定子句的回落规则，由定义 \ref{def:cc-read-null} 的证书语义与定理 \ref{thm:cc-null-repro} 直接给出可重复性。证毕。
+在 $\mathrm{HF}_{\POM}$ 内，上述术语构造均可归约为有限树结构的组合与有限枚举，因而可归约到可判定片段并输出证书（定理 \ref{thm:cc-hf-closure} 与定理 \ref{thm:cc-unified-reversible-compiler}）。对不可判定子句的回落规则，由定义 \ref{def:cc-read-null} 的证书语义与定理 \ref{thm:cc-null-repro} 直接给出可重复性。证毕。
 \end{proof}
 
-\subsection{unitary slice 审计接口的数值证书协议：误差界、舍入模型与 \texorpdfstring{$\NULL$}{NULL} 可重复性}\label{subsec:cc-us-cert}
+\subsection{unitary slice 核验下的数值证书：误差界、舍入模型与 \texorpdfstring{$\NULL$}{NULL} 可重复性}\label{subsec:cc-us-cert}
 
-\paragraph{谱穿越重写（可控矩阵族口径）}
-在自对偶且矩阵族可审计的可控口径下，完成化截面在临界线可被重写为一个确定性的行列式读出：令 $\theta:=2t\log L$，则
+\paragraph{谱穿越重写（可控矩阵族设定）}
+在自对偶且矩阵族可核验的可控设定下，完成化截面在临界线可被重写为一个确定性的行列式读出：令 $\theta:=2t\log L$，则
 $$
 \Xi_{\Delta,L}\!\left(\frac12+it\right)=\det\!\bigl(I-U_L(\theta)\bigr),
 \qquad
 U_L(\theta)=L^{-1/2}e^{-i\theta/2}B(e^{i\theta}),
 $$
-从而零点事件等价于 $1\in\mathrm{Spec}(U_L(\theta))$。该重写与其审计接口合同见附录 \ref{app:inject-code-audit}；本节仅抽取其“证书对象化与可重复性”口径。
+从而零点事件等价于 $1\in\mathrm{Spec}(U_L(\theta))$。该重写与其在 unitary slice 上的核验对应关系见附录 \ref{app:inject-code-audit}；本节仅抽取与证书对象化及可重复性直接相关的表述。
 
 \subsubsection{舍入模型与确定性区间算术基底}
 \begin{definition}[dyadic 网格与可重复性]\label{def:cc-repro}
@@ -319,12 +319,12 @@ $$
 $$
 \mathbb{D}_p := \left\{\frac{k}{2^p}:k\in\ZZ\right\}.
 $$
-称一个数值证书协议在精度参数 $p$ 下\textbf{可重复}，若证书验证仅依赖有限整数/有理运算与确定性规则，且同一证书在任意平台上验证结果一致。
+称一个数值证书验证程序在精度参数 $p$ 下\textbf{可重复}，若证书验证仅依赖有限整数/有理运算与确定性规则，且同一证书在任意平台上验证结果一致。
 \end{definition}
 
 \subsubsection{unitary slice 上的零点/非零证书}
 \begin{definition}[两类区间证书]\label{def:cc-interval-certs}
-设 $F:\RR\to\RR$ 为 unitary slice 上的可审计实值接口函数。对输入 $(\theta,p)$，区间评估器输出一个包含性区间
+设 $F:\RR\to\RR$ 为 unitary slice 上的可核验实值函数。对输入 $(\theta,p)$，区间评估器输出一个包含性区间
 $
 \mathrm{Eval}_p(F;\theta)\rightsquigarrow [L,U]
 $。
@@ -334,8 +334,8 @@ $。
 \end{enumerate}
 \end{definition}
 
-\begin{definition}[协议化证书对象（存在零点/输出 \texorpdfstring{$\NULL$}{NULL}）]\label{def:cc-us-protocol-certs}
-为使审计结果完全由证书决定（与实现环境无关），可将“区间证书”进一步协议化为两类可传输对象（记 $\theta=2t\log L$）：
+\begin{definition}[规范化证书对象（存在零点/输出 \texorpdfstring{$\NULL$}{NULL}）]\label{def:cc-us-protocol-certs}
+为使核验结果完全由证书决定（与实现环境无关），可将“区间证书”进一步规范化为两类可传输对象（记 $\theta=2t\log L$）：
 \begin{enumerate}
   \item \textbf{存在零点证书}（可选增强）：
   $$
@@ -381,25 +381,25 @@ $$
 \end{theorem}
 
 \begin{proof}
-在固定协议版本与固定外向舍入规则下，证书验证为确定性整数计算；因此“存在通过验证的证书”与否为确定性事实，从而输出可重复。证毕（协议层实现与细节见附录 \ref{app:inject-code-audit} 的定理 \ref{thm:audit-us-reproducibility}）。
+在固定验证规则与参数、并采用固定外向舍入规则下，证书验证为确定性整数计算；因此“存在通过验证的证书”与否为确定性事实，从而输出可重复。证毕（细节见附录 \ref{app:inject-code-audit} 的定理 \ref{thm:audit-us-reproducibility}）。
 \end{proof}
 
-\begin{theorem}[\texorpdfstring{$\NULL$}{NULL} 判定的可重复性（协议化版本；新定理 3）]\label{thm:cc-null-repro-protocol}
+\begin{theorem}[\texorpdfstring{$\NULL$}{NULL} 判定的可重复性（规范化表述）]\label{thm:cc-null-repro-protocol}
 在定义 \ref{def:cc-us-protocol-certs} 的二元有理区间算术与固定余项上界算法下，$\mathsf{Cert}_\exists$ 与 $\mathsf{Cert}_{\NULL}$ 的验证结果为完全确定的判定过程：对同一证书输入，任意实现（不同硬件/不同语言）给出相同输出；特别地，$\NULL$ 判定是可重复事实。
 \end{theorem}
 
 \begin{proof}
-验证过程仅依赖有限整数/有理运算、确定性的区间外向舍入规则与证书内给定的有限数据；因此其判定结果与实现环境无关。该结论亦可视为定理 \ref{thm:cc-null-repro} 在协议化证书对象口径下的直接推论。证毕。
+验证过程仅依赖有限整数/有理运算、确定性的区间外向舍入规则与证书内给定的有限数据；因此其判定结果与实现环境无关。该结论亦可视为定理 \ref{thm:cc-null-repro} 在规范化证书对象表述下的直接推论。证毕。
 \end{proof}
 
 \subsubsection{连续自由度扩张 \texorpdfstring{$\Rightarrow$}{=>} 证书类型外延 \texorpdfstring{$\Rightarrow$}{=>} 第四寄存器}\label{subsubsec:cc-fourth}
 \begin{theorem}[连续自由度扩张的证书外延]\label{thm:cc-fourth-register-certs}
 在 unitary slice 上，连续可见参数为单参 $\theta$。若考虑一般点 $u=re^{i\theta}$，则出现第二连续参量 $\rho:=\log r$。\par
-在仅允许 $\theta$ 作为连续可见参数的证书类型系统中，任何需要显式依赖 $\rho\neq 0$ 的审计断言均无法以现有证书格式表达；要使其可证书化，必须扩展证书类型以承载 $\rho$。在寄存器语义中，该外延等价于引入额外连续寄存器（“第四寄存器”）。
+在仅允许 $\theta$ 作为连续可见参数的证书类型系统中，任何需要显式依赖 $\rho\neq 0$ 的核验断言均无法以现有证书格式表达；要使其可证书化，必须扩展证书类型以承载 $\rho$。在寄存器语义中，该外延等价于引入额外连续寄存器（“第四寄存器”）。
 \end{theorem}
 
 \begin{proof}
-现有证书类型仅携带一维输入 $\theta$ 的编码；若某断言在同一 $\theta$ 下随 $\rho$ 变化而变化，则任何仅以 $\theta$ 编码的证书无法区分不同 $\rho$，从而无法保证可验证正确性。故证书类型必须外延以显式携带 $\rho$；在三寄存器闭包中这等价于新增连续寄存器以承载该自由度。证毕。
+现有证书类型仅携带一维输入 $\theta$ 的编码；若某断言在同一 $\theta$ 下随 $\rho$ 变化而变化，则任何仅以 $\theta$ 编码的证书无法区分不同 $\rho$，从而无法保证可验证正确性。故证书类型必须外延以显式携带 $\rho$；在三寄存器闭包中这等价于额外连续寄存器以承载该自由度。证毕。
 \end{proof}
 
 \subsubsection{双相位紧化与精度势：第四寄存器的定量下界}\label{subsubsec:cc-dual-phase-compactification}
@@ -441,7 +441,7 @@ $$
 P(x):=-\log\Bigl|\frac{\dd\upsilon}{\dd x}\Bigr|=\log\pi+\log(1+x^2).
 $$
 
-\begin{theorem}[紧化坐标下的径向证书容量下界（新定理 1）]\label{thm:cc-radial-bit-lowerbound}
+\begin{theorem}[紧化坐标下的径向证书容量下界]\label{thm:cc-radial-bit-lowerbound}
 设需要以绝对误差不超过 $\epsilon\in(0,1]$ 的方式证书化一个径向参数 $x\in\RR$（例如 $x=\varrho=\log|u|$），且证书仅允许提供紧化值 $\upsilon(x)$ 的二进制近似 $\tilde u$，满足
 $$
 |\tilde u-\upsilon(x)|\le 2^{-n}.
@@ -508,15 +508,15 @@ $$
 因此存在 $\widehat\Delta(w,s)\in\ZZ[w,s]$ 使 $F(w,r)=\widehat\Delta(w,r+r^{-1})$，即得结论。
 \end{proof}
 
-\begin{assumption}[径向偶次耦合（审计正常形）]\label{ass:cc-even-radial-coupling}
-在可审计的分块正常形口径下，$\Delta(z,u)$ 关于 $(1-u)$ 仅以偶次出现，即
+\begin{assumption}[径向偶次耦合（规范形假设）]\label{ass:cc-even-radial-coupling}
+在分块规范形设定下，$\Delta(z,u)$ 关于 $(1-u)$ 仅以偶次出现，即
 $$
 \Delta(z,u)\in \ZZ[z]\bigl[(1+u),(1-u)^2\bigr].
 $$
 \end{assumption}
 
-\begin{theorem}[径向不可消去与 \texorpdfstring{$\NULL$}{NULL} 退化（新定理 2）]\label{thm:cc-radial-null}
-在仅允许 unitary slice 单参 $\theta$ 作为连续可见输入的证书类型系统中，任何对 $\varrho=\log|u|$ 的非平凡依赖均必须通过额外证书通道显式呈现；否则在可重复审计意义下，该事件不可证书化并被读出为 $\NULL$。此外，若以紧化坐标 $\upsilon(\varrho)$ 的 $n$ 比特近似承载该额外通道，则为证书化 $|\varrho|$ 的绝对误差不超过 $\epsilon$，其 $n$ 必满足定理 \ref{thm:cc-radial-bit-lowerbound} 的下界（取 $x=\varrho$）。
+\begin{theorem}[径向不可消去与 \texorpdfstring{$\NULL$}{NULL} 退化]\label{thm:cc-radial-null}
+在仅允许 unitary slice 单参 $\theta$ 作为连续可见输入的证书类型系统中，任何对 $\varrho=\log|u|$ 的非平凡依赖均必须通过额外证书通道显式呈现；否则在可重复核验意义下，该事件不可证书化并被读出为 $\NULL$。此外，若以紧化坐标 $\upsilon(\varrho)$ 的 $n$ 比特近似承载该额外通道，则为证书化 $|\varrho|$ 的绝对误差不超过 $\epsilon$，其 $n$ 必满足定理 \ref{thm:cc-radial-bit-lowerbound} 的下界（取 $x=\varrho$）。
 \end{theorem}
 
 \begin{proof}
@@ -525,38 +525,38 @@ $$
 
 \subsection{BridgeRH 的可验证义务与 unitary-root 判据：可控模型的最小示例}\label{subsec:cc-bridge}
 
-\subsubsection{BridgeRH 义务清单（可验证版本）}\label{subsubsec:cc-bridge-obligations}
-给定桥接对象 $\Delta(z,u)$ 与完成化切片 $\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})$，将 BridgeRH 组织为以下可验证义务族（每一项均应给出可判定证书对象；与正文假设 \ref{ass:bridge-rh} 的 (B1)--(B4) 口径一致，细化清单见附录 \ref{app:bridge-rh-obligations}）：\par
+\subsubsection{BridgeRH 条件清单（可验证表述）}\label{subsubsec:cc-bridge-obligations}
+给定桥接对象 $\Delta(z,u)$ 与完成化切片 $\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})$，将 BridgeRH 组织为以下可验证条件（每一项均应给出可判定证书对象；与正文假设 \ref{ass:bridge-rh} 的 (B1)--(B4) 表述一致，细化清单见附录 \ref{app:bridge-rh-obligations}）：\par
 \noindent\textbf{(O1) 解析义务：} $\Xi_{\Delta,L}$ 在目标域内解析（可控模型可用多项式/有理函数/有限维行列式直接保证）。\par
 \noindent\textbf{(O2) 自对偶义务：} $\Delta$ 满足 $\Delta(z,u)=\Delta(uz,1/u)$（或等价的可检查代数恒等式），从而 $\Xi_{\Delta,L}(s)=\Xi_{\Delta,L}(1-s)$（参见附录 \ref{app:xi-certificate-layer} 的命题 \ref{prop:xi-functional-equation-self-dual}）。\par
-\noindent\textbf{(O3) unitary slice 实值义务：} 对 $s=\frac12+it$，$\Xi_{\Delta,L}(s)\in\RR$，使第 \ref{subsec:cc-us-cert} 节的区间证书协议适用。\par
-\noindent\textbf{(O4) 地址化义务：} 存在可判定编译器把候选零点索引/描述映射到证书搜索任务，使“零点存在/非零”可被证书对象化。\par
+\noindent\textbf{(O3) unitary slice 实值条件：} 对 $s=\frac12+it$，$\Xi_{\Delta,L}(s)\in\RR$，使第 \ref{subsec:cc-us-cert} 节的区间证书验证程序适用。\par
+\noindent\textbf{(O4) 地址化条件：} 存在可判定构造映射把候选零点索引/描述映射到证书搜索任务，使“零点存在/非零”可被证书对象化。\par
 \noindent\textbf{(O5) 一致性义务：} 证书对象可被 Gödel 编码并在可判定片段内核验（见附录 \ref{app:godel-wsos-rouche} 的统一编码层）。
 
-\subsubsection{最小可验证义务集 \texorpdfstring{$\mathsf{Obl}_{\min}$}{Obl\_min}（新增）}\label{subsubsec:cc-oblmin}
-为将 BridgeRH 的“内核可核验”与“目标对齐”边界进一步显式化，可引入一个更偏协议化的最小义务集。
+\subsubsection{最小可验证条件集 \texorpdfstring{$\mathsf{Obl}_{\min}$}{Obl\_min}}\label{subsubsec:cc-oblmin}
+为将 BridgeRH 的“内核可核验”与“目标对齐”边界进一步显式化，可引入一个更偏形式化的最小条件集。
 
 \begin{definition}[最小可验证义务集 \texorpdfstring{$\mathsf{Obl}_{\min}$}{Obl\_min}]\label{def:cc-oblmin}
-定义 $\mathsf{Obl}_{\min}$ 为以下五项义务：
+定义 $\mathsf{Obl}_{\min}$ 为以下五项条件：
 \begin{enumerate}
   \item \textbf{状态级自对偶：}存在置换矩阵 $\Pi$ 使
   $$
   \Pi^{-1}B(u)\Pi=uB(1/u),
   $$
   从而 $\Delta(z,u)=\det(I-zB(u))$ 满足 $\Delta(z,u)=\Delta(uz,1/u)$；
-  \item \textbf{完成化不变量可计算：}自对偶完成化可被组织为不变量表达（例如 \(\Delta(w/r,r^2)=\widehat\Delta(w,r+r^{-1})\)，命题 \ref{prop:cc-self-dual-ws-invariants}），使变量替换与一致性检查可审计；
-  \item \textbf{unitary slice 归约与实值化：}对任意 $L>1$，临界线值可严格写为 $\det(I-U_L(\theta))$，并且在协议域内具有 Hardy 型实值化，使区间证书可用（见附录 \ref{app:inject-code-audit} 与 \S\ref{subsec:cc-us-cert}）；
-  \item \textbf{证书协议封闭：}存在可重复的证书对象格式（如定义 \ref{def:cc-us-protocol-certs} 的 $\mathsf{Cert}_\exists/\mathsf{Cert}_{\NULL}$），使“零点事件/证书缺失（$\NULL$）”成为离线可核验对象；
-  \item \textbf{可寻址注入（目标侧）：}给定目标零点事件类 $\mathcal{Z}_{\mathrm{target}}$，存在编译器将每个事件注入 PW 地址空间并通过 unitary slice 审计接口核验（对应 BridgeRH 的“零点可寻址桥接”义务）。
+  \item \textbf{完成化不变量可计算：}自对偶完成化可被组织为不变量表达（例如 \(\Delta(w/r,r^2)=\widehat\Delta(w,r+r^{-1})\)，命题 \ref{prop:cc-self-dual-ws-invariants}），使变量替换与一致性检查可核验；
+  \item \textbf{unitary slice 归约与实值化：}对任意 $L>1$，临界线值可严格写为 $\det(I-U_L(\theta))$，并且在固定验证规则下具有 Hardy 型实值化，使区间证书可用（见附录 \ref{app:inject-code-audit} 与 \S\ref{subsec:cc-us-cert}）；
+  \item \textbf{证书验证程序封闭：}存在可重复的证书对象格式（如定义 \ref{def:cc-us-protocol-certs} 的 $\mathsf{Cert}_\exists/\mathsf{Cert}_{\NULL}$），使“零点事件/证书缺失（$\NULL$）”成为离线可核验对象；
+  \item \textbf{可寻址注入（目标侧）：}给定目标零点事件类 $\mathcal{Z}_{\mathrm{target}}$，存在构造映射将每个事件注入 PW 地址空间并通过 unitary slice 核验接口核验（对应 BridgeRH 的“零点可寻址桥接”条件）。
 \end{enumerate}
 \end{definition}
 
-\begin{theorem}[义务最小化的充分性（新定理 6）]\label{thm:cc-oblmin-sufficient}
+\begin{theorem}[义务最小化的充分性]\label{thm:cc-oblmin-sufficient}
 在 $\mathsf{Obl}_{\min}$ 成立时，任何被注入并通过核验的“目标零点事件”在类型意义上自动满足 unitary slice 约束（\(\abs{u_L(s)}=1\)），因而在本文类型安全语义中被锁定在临界线。若进一步满足“目标侧注入完备性”（即对所有目标零点事件均存在可寻址地址并可核验通过），则得到与 BridgeRH 同型的条件性结论链：目标侧的偏移零点事件不可能在三寄存器闭包内被证书化。
 \end{theorem}
 
 \begin{proof}
-由 $\mathsf{Obl}_{\min}$-(3)(4)，核验路径被强类型化为 unitary slice 审计接口并输出可核验证书；故一切通过核验的事件都落在 $\Re(s)=\tfrac12$ 的类型域内，与正文类型安全拒绝链一致。若目标侧注入完备性成立，则任何偏移零点事件都会要求一个通过核验的证书对象，但这与“偏移依赖需外延证书类型（定理 \ref{thm:cc-fourth-register-certs}）”矛盾，从而偏移事件在闭包内不可证书化。证毕。
+由 $\mathsf{Obl}_{\min}$-(3)(4)，核验路径被强类型化为 unitary slice 核验接口并输出可核验证书；故一切通过核验的事件都落在 $\Re(s)=\tfrac12$ 的类型域内，与正文类型安全拒绝链一致。若目标侧注入完备性成立，则任何偏移零点事件都会要求一个通过核验的证书对象，但这与“偏移依赖需外延证书类型（定理 \ref{thm:cc-fourth-register-certs}）”矛盾，从而偏移事件在闭包内不可证书化。证毕。
 \end{proof}
 
 \subsubsection{最小可控模型：$2\times 2$ 自对偶桥接核}\label{subsubsec:cc-bridge-minimal}
@@ -654,11 +654,11 @@ $$
 \subsection{小结：本章的补充结果}\label{subsec:cc-summary}
 \begin{enumerate}
   \item 给出了可判定互逆的 $\mathrm{code}/\mathrm{decode}$ 体系（Cantor 配对与自描述序列 Gödel 编码），并由此得到“有限结构 $\Leftrightarrow$ 单一自然数”的严格地址化（定理 \ref{thm:cc-seq-bijection}、命题 \ref{prop:cc-event-trace-invertible}）。
-  \item 证明了残差账本可在不损失可逆回放性的前提下压缩为单一自然数残差，并给出一步一素数的流式轨迹 Gödel 化，从而把“信息守恒 + 局域更新”同时提升为编码层结构定理（定理 \ref{thm:cc-singlecode-replay}、推论 \ref{cor:cc-register-min}、定理 \ref{thm:cc-stepwise-prime-godel}）。
-  \item 给出了统一编译闭包：四则/商余/布尔/（HF 上的）集合术语可在同一可逆求值机制下同时涌现，并给出 $\NULL$ 截断版的 ZFC 术语编译闭包，从而把不可判定部分显式推入可重复审计的空值边界（定理 \ref{thm:cc-unified-reversible-compiler}、定理 \ref{thm:cc-zfc-term-null-closure}）。
-  \item 构造了 unitary slice 数值证书协议，并将其协议化为可传输的证书对象格式，使 $\NULL$ 判定成为可重复事实（定理 \ref{thm:cc-null-repro}、定理 \ref{thm:cc-null-repro-protocol}），并给出“连续自由度扩张 $\Rightarrow$ 证书类型外延 $\Rightarrow$ 第四寄存器”的纯形式化定理（定理 \ref{thm:cc-fourth-register-certs}）。
-  \item 给出了双相位紧化与精度势，从而把径向自由度的证书容量写成可度量的比特下界，并将“径向依赖 $\Rightarrow$ $\NULL$ 退化”形式化为可审计结论（定理 \ref{thm:cc-radial-bit-lowerbound}、命题 \ref{prop:cc-self-dual-ws-invariants}、定理 \ref{thm:cc-radial-null}）。
-  \item 给出了 BridgeRH 的可验证义务清单与最小化义务集 $\mathsf{Obl}_{\min}$，并给出其充分性结论以及两个维数 $2$ 的自对偶模型族（定义 \ref{def:cc-oblmin}、定理 \ref{thm:cc-oblmin-sufficient}、命题 \ref{prop:cc-bridge-2x2}、命题 \ref{prop:cc-bridge-2x2-swap}）。
+  \item 证明了残差账本可在不损失可逆回放性的前提下压缩为单一自然数残差，并给出一步一素数的轨迹 Gödel 化，从而把“信息守恒 $+$ 局域更新”同时提升为编码层结构定理（定理 \ref{thm:cc-singlecode-replay}、推论 \ref{cor:cc-register-min}、定理 \ref{thm:cc-stepwise-prime-godel}）。
+  \item 给出了运算族的统一构造：四则/商余/布尔/（HF 上的）集合术语可在同一可逆求值机制下同时涌现，并给出 $\NULL$ 截断版的 ZFC 术语构造闭包，从而把不可判定部分显式落在可重复核验的空值边界（定理 \ref{thm:cc-unified-reversible-compiler}、定理 \ref{thm:cc-zfc-term-null-closure}）。
+  \item 给出了 unitary slice 数值证书构造，并给出可传输的规范化证书对象格式，使 $\NULL$ 判定成为可重复事实（定理 \ref{thm:cc-null-repro}、定理 \ref{thm:cc-null-repro-protocol}）；并证明“连续自由度扩张 $\Rightarrow$ 证书类型外延 $\Rightarrow$ 第四寄存器”的形式化定理（定理 \ref{thm:cc-fourth-register-certs}）。
+  \item 给出了双相位紧化与精度势，从而把径向自由度的证书容量写成可度量的比特下界，并将“径向依赖 $\Rightarrow$ $\NULL$ 退化”形式化为可核验结论（定理 \ref{thm:cc-radial-bit-lowerbound}、命题 \ref{prop:cc-self-dual-ws-invariants}、定理 \ref{thm:cc-radial-null}）。
+  \item 给出了 BridgeRH 的可验证条件清单与最小化条件集 $\mathsf{Obl}_{\min}$，并给出其充分性结论以及两个维数 $2$ 的自对偶模型族（定义 \ref{def:cc-oblmin}、定理 \ref{thm:cc-oblmin-sufficient}、命题 \ref{prop:cc-bridge-2x2}、命题 \ref{prop:cc-bridge-2x2-swap}）。
   \item 给出了可验证的 RH 充分条件模板（unitary-root 判据，定理 \ref{thm:cc-unitary-root}）。
 \end{enumerate}
 

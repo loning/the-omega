@@ -1,38 +1,17 @@
 \section{引言}
 
-\subsection{问题背景与目标}
-经典公理化数学通常将“对象存在性”外置为元理论或集合论层面的承诺；而在可计算与可审计语义中，“对象可被引用/可被验证/可被复现”与“对象存在”之间存在结构性张力。POM 的基本策略是将对象存在性内化为读出语义：对象以地址为先，地址触发可核对读出；若无地址则读出不定义，记为 $\NULL$，并约定 $\NULL\neq 0$。在该语义下，“存在”被定义为“可寻址且可核对”。
+经典公理化数学中，“对象存在”通常由元理论或集合论承诺给出；在强调可计算与可核验的语义中，能够被引用、被验证并可重复复核的对象与“被宣称存在”的对象之间并不必然一致。投影本体数学（Projection Ontological Mathematics, POM）以内化的读出语义回应这一张力：以地址触发读出作为存在性判据，若无地址则读出不定义，记为 $\NULL$，并约定 $\NULL\neq 0$。
 
-本文目标可分为六项：
+\subsection{主要结果}
+在最小公理体系 POMmin（第 \ref{sec:pommin} 节）下，本文得到以下主要结论：
 \begin{enumerate}
-  \item 给出从二元微态读出生成稳定对象域的最小公理接口 POMmin，并以可审计归一化（折叠）构造稳定地址空间；
-  \item 在稳定地址空间中定义并证明算术半环结构的涌现同构，从而在体系内部生成 $(\NN,+,\times)$；
-  \item 以三寄存器（尺度、相位、素数）闭包实现可逆提升与信息守恒，并给出信息账本恒等式作为可核对的守恒分解；
-  \item 构造投影词（PW）证书演算的可判定片段，建立正规形与判等机制；
-  \item 在 unitary slice 审计接口下证明类型安全：任何可寻址且可核对的零点证书只能出现在 $\Re(s)=\tfrac12$；
-  \item 通过桥接合同 BridgeRH 将经典完成化零点事件编译进可寻址对象域，导出条件版黎曼猜想，并以“第四寄存器”需求刻画离线零点在三寄存器闭包中的退化机制。
+  \item \textbf{自然数半环的涌现：}稳定地址空间上的运算 $(\oplus,\otimes)$ 与经典半环 $(\NN,+,\times)$ 同构（定理 \ref{thm:emergent-N}）。
+  \item \textbf{无损提升与信息账本：}素数寄存器外置残差实现无损提升与可逆回放，并给出信息账本恒等式（定理 \ref{thm:ledger-identity}）。
+  \item \textbf{PW 证书片段的可判定性：}读出塔重写终止且（局部）合流，从而正规形唯一；并且判等问题可判定（定理 \ref{thm:pw-ze-termination-confluence} 与推论 \ref{cor:pw-word-problem-decidable}）。
+  \item \textbf{临界线约束的健全性：}在 unitary slice 核验接口下，任何可寻址且可核验的零点证书必满足 $\Re(s)=\tfrac12$（定理 \ref{thm:type-safety-offcritical}）。
+  \item \textbf{BridgeRH 的条件推论与第四寄存器障碍：}在桥接假设 BridgeRH（假设 \ref{ass:bridge-rh}）及必要的地址完备性前提（假设 \ref{ass:xi-address-completeness}）下，BridgeRH 推出经典 RH（定理 \ref{thm:bridge-rh-implies-rh}）；同时离开 unitary slice 的径向模式要求额外连续自由度，其在证书类型意义上表现为第四寄存器需求（命题 \ref{prop:fourth-register-need}）。
 \end{enumerate}
 
-\subsection{与既有方向的关系}
-本文涉及的技术构件与多条传统脉络存在交叉：
-\begin{enumerate}
-  \item 符号动力系统与 SFT（subshift of finite type）中的规范化与计数；
-  \item Zeckendorf/Ostrowski 计数体系与规范代表；
-  \item 可逆计算与信息外置（以残差承载不可逆映射的纤维差异）；
-  \item 证书化重写系统与正规形判等；
-  \item 行列式/$\zeta$ 函数接口与谱穿越审计。
-\end{enumerate}
-POM 的差异在于：上述构件并非作为独立工具拼接，而是由“地址—投影—纤维”这一统一语义把对象生成、算术涌现、信息守恒与证书审计组织为同一闭包内的推理链条。
-
-\subsection{主要结果概述}
-本文主要结果可概括为四组定理链：
-\begin{itemize}
-  \item \textbf{算术涌现链：}通过 Zeckendorf 合法序列作为规范代表，把有限支撑数字配置的商幺半群同构到 $\NN$，并在 $X_\infty$ 上定义 $(\oplus,\otimes)$ 得到与 $(\NN,+,\times)$ 的半环同构。
-
-  \item \textbf{信息守恒链：}折叠 $\Fold_m$ 为多对一投影；通过纤维均匀提升 $Q_m$ 与推前 $P_m$ 构造信息账本恒等式，将微观熵分解为宏观熵、纤维体积项与 KL 残差项；并以素数寄存器纤维承载残差实现无损提升与可逆回放。
-
-  \item \textbf{证明语义链：}在投影词片段 $\mathrm{PW}_{Z,E}$ 上建立终止与（局部）合流，得到正规形唯一与词问题可判定；并引入 $\varepsilon$-sound 证书用于可审计近似重写的误差预算闭包。
-
-  \item \textbf{黎曼框架链（条件式）：}在“三生成元正规化器 + 异常签名接口 + unitary slice 零点审计”闭包内，证明类型安全：任何满足 $\Re(s)\neq\tfrac12$ 的点不可寻址且读出为 $\NULL$。在引入地址完备性假设或更强的 BridgeRH 桥接合同后，得到内部 $\Xi_{\Delta,L}$-RH 与经典 RH 的条件推论；离线零点等价于径向模式 $\abs{u}\neq 1$，该模式要求额外连续自由度，表现为“第四寄存器”需求并被双检查器拒绝。
-\end{itemize}
+\subsection{文章结构}
+第 \ref{sec:pommin} 节给出 POMmin 的最小公理与存在性语义。随后给出扫描—投影生成器与三寄存器纤维结构，并在稳定地址空间上建立算术涌现（第 \ref{sec:emergent-arithmetic} 节）与信息账本恒等式（第 \ref{sec:ledger} 节）。之后讨论投影词证书语义、unitary slice 约束与类型安全，并在桥接假设下给出从内部 $\Xi$-陈述到经典 RH 的条件推论（第 \ref{sec:bridge-rh} 节）；第四寄存器障碍见第 \ref{sec:fourth-register} 节。第 \ref{sec:conclusion-cluster} 节集中陈述若干补充结果；讨论与结论分别见后两节，附录汇集证明携带构造与补充材料。
 
