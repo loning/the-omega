@@ -2,33 +2,25 @@
 
 \subsection{自指比例与重整化不动点}
 
-本文固定黄金比例
-\[
-\varphi=\frac{1+\sqrt5}{2}.
-\]
-并以黄金分支 $\varphi^{-1}\in(0,1)$ 作为后续构造中的规范参数。它满足固定点关系
-\[
-\varphi^{-1}=(1+\varphi^{-1})^{-1}\quad(\Leftrightarrow\ \varphi=1+\varphi^{-1}),
-\]
-该关系仅作为“尺度自相似/重整化”的最小代数原型；与 Fibonacci/Zeckendorf/Ostrowski 的经典联系在本文中只作为引用点使用，不在此展开。
+本文固定黄金比例 \(\varphi=\frac{1+\sqrt5}{2}\)，并以黄金分支 \(\alpha=\varphi^{-1}\in(0,1)\) 作为后续构造中的规范参数（仅作尺度基线记号）。
 
-\subsection{反共振最优性原则}
+\subsection{反共振基线}
 
-在从连续（或高维）生成结构导出离散读出序列时，有理近似诱导的低分母周期性会放大有限样本偏差。本文以 Hurwitz/Markov 的最坏有理逼近尺度给出一个外部可审计的反共振基线（\cite{Cassels1957,KuipersNiederreiter1974}），并将其作为后续稳定性证书的参照标准。
+在扫描参数选择中，本文以 Hurwitz/Markov 的最坏有理逼近尺度作为外部可审计的反共振基线（\cite{Cassels1957,KuipersNiederreiter1974}）。
 
 \begin{definition}[Markov 常数（最坏逼近下界）]\label{def:markov-constant}
 对 $\alpha\in\RR\setminus\QQ$，定义
 \[
 c(\alpha):=\inf_{(p,q)\in\ZZ\times\NN} q^2\left|\alpha-\frac{p}{q}\right|\in[0,\infty).
 \]
-若 $c(\alpha)>0$，称 $\alpha$ 为 badly approximable（等价于其连分数部分商有界；参见 \cite{Cassels1957,KuipersNiederreiter1974}）。
+若 $c(\alpha)>0$，称 $\alpha$ 为 badly approximable（参见 \cite{Cassels1957,KuipersNiederreiter1974}）。
 \end{definition}
 
-经典 Hurwitz 定理给出对任意无理 $\alpha$ 有 $c(\alpha)\le 1/\sqrt5$，且该上界由黄金分支（$\alpha=\varphi$ 或 $\varphi^{-1}$ 及其 $\mathrm{SL}_2(\ZZ)$ 等价类）达到（\cite{Cassels1957,KuipersNiederreiter1974}）。因此本文后续所有涉及扫描参数的“反共振选择”均以 $\alpha=\varphi^{-1}$ 作为可审计的规范化基线与对照参照。
+Hurwitz 定理给出对任意无理 $\alpha$ 有 $c(\alpha)\le 1/\sqrt5$，且该上界由黄金分支（$\alpha=\varphi$ 或 $\varphi^{-1}$ 及其 $\mathrm{SL}_2(\ZZ)$ 等价类）达到（\cite{Cassels1957,KuipersNiederreiter1974}）。因此本文固定 $\alpha=\varphi^{-1}$ 作为反共振规范基线。
 
-\subsection{从反共振到有限样本稳定性：一个可审计的优化问题}
+\subsection{有限样本稳定性证书}
 
-Hurwitz/Markov 的最坏逼近界属于经典数论结论。为了将其转译为扫描—投影读出中的可审计稳定性证书，本文在最基本的一维 Kronecker 扫描模型上引入一类与第 \ref{sec:statistical-stability} 节一致的量化指标，并明确本文所使用的优化口径。
+为将上述基线与读出稳定性连接，本文在一维 Kronecker 扫描模型上引入与第 \ref{sec:statistical-stability} 节一致的量化指标。
 
 \begin{definition}[共振诱导不稳定性（Kronecker 扫描的可审计证书）]\label{def:instability-envelope}
 对无理 $\alpha\in\RR\setminus\QQ$ 与初相位 $x_0\in[0,1)$，考虑 Kronecker 序列
@@ -39,7 +31,7 @@ x_t=\{x_0+t\alpha\}\in[0,1),\qquad t=0,1,\dots
 \[
 D_N^*(\alpha;x_0):=\sup_{0\le a\le 1}\left|\frac1N\sum_{t=0}^{N-1}\ind_{[0,a)}(x_t)-a\right|.
 \]
-我们将 $D_N^*(\alpha;x_0)$ 视为样本量 $N$ 下、在\textbf{全体区间窗二元读出}意义下的“共振诱导不稳定性”证书：它控制最坏窗集频率误差，且可由有限样本的排序结构直接计算（参见 \cite{KuipersNiederreiter1974}）。
+我们将 $D_N^*(\alpha;x_0)$ 视为样本量 $N$ 下、在区间窗二元读出意义下的“共振诱导不稳定性”证书（参见 \cite{KuipersNiederreiter1974}）。
 \end{definition}
 
 由定义 \ref{def:instability-envelope} 立得：对任意区间窗 $W=[0,a)$ 的指示读出 $s_t=\ind_W(x_t)$，有
@@ -49,7 +41,5 @@ D_N^*(\alpha;x_0):=\sup_{0\le a\le 1}\left|\frac1N\sum_{t=0}^{N-1}\ind_{[0,a)}(x
 此外，当 $\alpha$ badly approximable 时，$D_N^*(\alpha;x_0)$ 存在显式的 $O((\log N)/N)$ 型上界（例如由连分数部分商上界导出的差异度估计；参见 \cite{KuipersNiederreiter1974}）。
 
 \begin{remark}[本文所解决与未解决的“最优性”问题]\label{rem:what-is-optimized}
-本文在二元区间窗读出约束下采用黄金分支，对应于外部可审计目标的引用点：在 Hurwitz/Markov 的最坏逼近尺度上固定反共振基线（\cite{Cassels1957,KuipersNiederreiter1974}），并与旋转二分割的经典符号化结果相容（\cite{MorseHedlund1940,LindMarcus1995}）。
-
-需要强调的是：上述数论尺度的极值并不自动推出对更强的统计泛函（例如折叠后的类型分布、或与 Parry 基线的距离）亦具有全局最优性。本文在此类陈述上保持保守口径：仅在能够闭合到本文内部编号结果或外部标准定理引用点时才使用之；其余不作结论。
+本文对“最优性”的使用仅限于 Hurwitz/Markov 口径与相应差异度证书链条。对折叠类型分布、或相对 Parry 基线距离等更强统计泛函，本文不主张全局最优或唯一性。
 \end{remark}

@@ -1,28 +1,14 @@
 \section{引言}
 
-数学体系通常以公理化方式将“对象—关系—运算”并列为起点原语。本文采取互补方案：以单一生成机制替代多元原语，并将对象、运算与更高层概念视为该机制在有限分辨率读出下的统计稳定结构。本文的目标是给出一条严格可检验的生成链，而非重述既有公理体系：
+本文目标是构造一条可审计的生成链：从群作用迭代与二元投影读出出发，经统计稳定性与递归地址化，得到稳定语法、归一化规则与算术结构。核心设置如下：
 \begin{enumerate}
-  \item 基础数据由迭代（群作用）与二元投影（$0/1$ 读出）构成；当讨论频率与稳定性时，引入标准的 $T$-不变概率测度，并在遍历/唯一遍历条件下给出可审计结论（\cite{WaltersErgodicTheory}）。
-  \item 将概念定义为“可寻址事件”，其地址由旧概念读出的有限序列给出。
-  \item 以统计稳定性（极限频率/不变状态）区分可忽略噪声与不可忽略结构。
-  \item 以黄金分支 $\varphi^{-1}$ 作为\textbf{在 Hurwitz/Markov（最坏有理逼近/反共振）口径下的规范代表}，给出自相似重整化的最简示例、最坏情形的反共振界限，并与 Zeckendorf/Ostrowski 语法一致的递归编码保持相容（更一般“稳定性指标”下的唯一性不在本文主张范围内）。
-  \item 证明自然数、加法、乘法可作为稳定地址上的归一化运算而涌现。
+  \item 基础数据为迭代作用与 $0/1$ 投影读出；在频率与稳定性讨论中使用 $T$-不变测度与遍历工具（\cite{WaltersErgodicTheory}）。
+  \item 地址由旧概念读出的有限序列给出，概念定义为可寻址事件。
+  \item 黄金分支 $\varphi^{-1}$ 作为 Hurwitz/Markov 最坏逼近口径下的反共振规范代表。
+  \item 自然数、加法与乘法在稳定地址上通过可终止规范化过程实现。
 \end{enumerate}
 
-本文强调以下两点原则：
-\begin{itemize}
-  \item “从无到有”不指绝对空集意义的无，而指\textbf{在不给定地址之前概念值不定义}；仅当地址由旧概念读出指派时，概念值才作为二元投影出现。
-  \item “运算涌现”不作心理学或经验主义陈述，而指：在稳定地址空间上存在\textbf{可计算、可终止}的规范化过程（例如 Zeckendorf 贪心规范化），其诱导运算与经典算术同构。
-\end{itemize}
-
-\subsection{阅读指南：数学结果与解释性框架的分层}\label{subsec:reading-guide}
-本手稿包含两类文本，它们在逻辑地位上严格不同：
-\begin{itemize}
-  \item \textbf{可证结果（以定义/引理/定理/命题呈现）}：这些结论只依赖明确给出的数学对象与引用的标准定理；任何后续使用都以编号引用为准。
-  \item \textbf{解释性叙事（以 remark/讨论段落呈现）}：例如“概念/运算的涌现”等表述，仅用于动机与启发性说明，不作为后续证明的前提。为避免遮蔽数学贡献，本文尽量将这类语言放入注（remark）或结论讨论，而不混入定理陈述。
-\end{itemize}
-
-\subsection{贡献清单与非主张（scope control）}\label{subsec:contrib-scope}
+\subsection{贡献清单（可审计接口）}\label{subsec:contrib-scope}
 \textbf{本文的数学贡献}集中在一组可独立审计的结构性结论上，可概括为以下几条“可审计接口”：
 \begin{itemize}
   \item \textbf{递归地址化的极简性：}证明递归地址化仅对应于可测柱事件族的 $\sigma$-代数细化，不引入外加结构（命题 \ref{prop:recursive-addressing-refinement}）。
@@ -33,10 +19,10 @@
   \item \textbf{profinite 轴上的 Chebotarev 提升：}在核版 GRH 的平方根界假设下，沿素数寄存器的逆极限轴提升有限层 Chebotarev 计数，并对任意 cylinder 集合给出平方根级等分布误差（定理 \ref{thm:pom-profinite-axis}）。
 \end{itemize}
 
-\textbf{本文明确不主张}下列更强陈述（除非额外假设另行给出）：
+\textbf{范围边界：}
 \begin{itemize}
   \item \textbf{旋转（Sturmian）下折叠极限等于 Parry：}一般不成立；本文将 Parry 分布作为最大熵基线，并用误差分解定位“有限样本误差”与“模型差异项”（第 \ref{sec:experiments} 节）。
-  \item \textbf{哲学性用语具有证明效力：}诸如“概念涌现/时间涌现”等仅作解释性语言，不参与推导链（见小节 \ref{subsec:reading-guide}）。
+  \item \textbf{解释性术语不参与证明链：}所有推导以前文编号结果与外部标准定理为准。
 \end{itemize}
 
 \subsection{本文的可检验输出（定量）}
@@ -46,6 +32,3 @@
   \item \textbf{共振判别：}对高阶碰撞矩给出递推阶数与 Hankel 秩下降的充分判别，从而把共振定位为模态约束的可检验机制（第 8 节，定理 \ref{thm:pom-moment-resonance}）。
   \item \textbf{谱级投影熵率指纹：}给出 \(q=2,\dots,23\) 的 \(r_q\) 与 \(h_q=\log(2^q/r_q)\)（其中 \(q=2,3,4\) 来自有限状态碰撞核，\(q\ge 5\) 来自已核验整系数递推），见表 \ref{tab:fold_collision_renyi_spectrum}、\ref{tab:fold_collision_moment_spectrum_k9_17} 与 \ref{tab:fold_collision_moment_spectrum_k18_23}。
 \end{itemize}
-
-\subsection{与既有结果的关系（仅列引用点）}
-本文复用三条成熟工具链：符号动力系统与有限型子移位 \cite{LindMarcus1995}、遍历理论的频率极限定理 \cite{WaltersErgodicTheory}、以及 Zeckendorf 表示的存在唯一性 \cite{Zeckendorf1972}。黄金比例的“最难有理逼近”性质将作为反共振选择的严格形式（第 2 节，参见 \cite{Cassels1957,KuipersNiederreiter1974}）。
