@@ -117,6 +117,57 @@ x\to\pm\infty\qquad\Longleftrightarrow\qquad \upsilon(x)\to\pm\tfrac12
 \end{enumerate}
 式 \eqref{eq:unit-circle-phase-weighted-integral} 将无界积分严格转写为相位盒上的有限积分；式 \eqref{eq:unit-circle-phase-lebesgue-integral} 则给出与该紧化兼容的标准换元口径。
 
+\subsection{精度势与微分熵账本：精度作为纤维代价}\label{subsec:unit-circle-phase-precision-ledger}
+本小节把 \eqref{eq:unit-circle-phase-derivative} 的 Jacobian 解释为一个\textbf{精度势}，并给出一个与正文“信息账本”同型的连续版恒等式：在可逆紧化下，原变量的尾部尺度以“精度负载”的期望形式进入账本。
+
+\begin{definition}[精度势]\label{def:unit-circle-phase-precision-potential}
+定义无参紧化门 \(\upsilon(x)=\frac{1}{\pi}\arctan(x)\) 的精度势为
+\begin{equation}\label{eq:unit-circle-phase-precision-potential}
+\boxed{\;
+\mathcal{P}(x):=-\log\left|\frac{\dd \upsilon}{\dd x}\right|
+=\log\pi+\log(1+x^2)\; }.
+\end{equation}
+\end{definition}
+
+\begin{proposition}[微分熵账本恒等式：压缩 \(\Leftrightarrow\) 精度负载]\label{prop:unit-circle-phase-diff-entropy-ledger}
+设 \(X\) 为 \(\RR\) 上具有密度的随机变量，定义 \(U=\upsilon(X)\in(-\tfrac12,\tfrac12)\)。
+记微分熵为
+\[
+h_{\mathrm{diff}}(X):=-\int_{\RR} f_X(x)\log f_X(x)\,\dd x,\qquad
+h_{\mathrm{diff}}(U):=-\int_{\mathbb{U}} f_U(u)\log f_U(u)\,\dd u.
+\]
+则有严格恒等式
+\begin{equation}\label{eq:unit-circle-phase-diff-entropy-ledger}
+\boxed{\;
+h_{\mathrm{diff}}(X)=h_{\mathrm{diff}}(U)+\mathbb{E}\bigl[\mathcal{P}(X)\bigr]\; }.
+\end{equation}
+\end{proposition}
+\begin{proof}
+由 \(u=\upsilon(x)\) 的可逆性与密度换元公式，
+\(
+f_U(u)=f_X(x)\left|\frac{\dd x}{\dd u}\right|
+\)
+其中 \(x=\upsilon^{-1}(u)\)。
+故
+\[
+\log f_U(u)=\log f_X(x)-\log\left|\frac{\dd \upsilon}{\dd x}\right|
+=\log f_X(x)+\mathcal{P}(x).
+\]
+两侧乘以 \(f_U(u)\dd u=f_X(x)\dd x\) 并积分，得到
+\[
+-h_{\mathrm{diff}}(U)
+=\int_{\RR} f_X(x)\log f_X(x)\,\dd x+\mathbb{E}[\mathcal{P}(X)]
+=-h_{\mathrm{diff}}(X)+\mathbb{E}[\mathcal{P}(X)],
+\]
+移项即得 \eqref{eq:unit-circle-phase-diff-entropy-ledger}。证毕。
+\end{proof}
+
+\begin{remark}[与正文信息账本的同型关系]\label{rem:unit-circle-phase-precision-ledger-vs-pom}
+命题 \ref{prop:unit-circle-phase-diff-entropy-ledger} 的结构与正文“折叠信息账本”同型：在窗口层，粗粒化 \(\Fold_m\) 的纤维体积缺陷以 \(\kappa_m(\pi)=\mathbb{E}_\pi[\log d_m(X)]\) 进入熵分解（定理 \ref{thm:pom-kl-ledger}）；
+在连续紧化门 \(\upsilon\) 下，对应的缺陷项由精度势 \(\mathcal{P}(x)=\log\pi+\log(1+x^2)\) 给出。
+在两种口径中，“可逆压缩”并不消灭信息，而是把不可见自由度迁移为一个可审计的代价项：离散情形为纤维对数体积，连续情形为 Jacobian 的负对数。
+\end{remark}
+
 \subsection{圆上的谐波分析接口：相位 Fourier 与有理基函数}\label{subsec:unit-circle-phase-fourier}
 把 \(\mathbb{U}\) 视作 \(\RR/\ZZ\) 的基本区间，并用标准角色基 \(e^{2\pi\mathrm{i}ku}\)（\(k\in\ZZ\)）。
 对 \(f\in L^2(\RR,\dd\mu)\) 定义其相位 Fourier 系数
@@ -173,3 +224,455 @@ e^{\mathrm{i}\vartheta(x)}=\iota(x)=\frac{1+\mathrm{i}x}{1-\mathrm{i}x}\in\TT.
 \boxed{\ w=r\,e^{\mathrm{i}\vartheta(x)}\in\mathbb{D},\qquad r\in(0,1),\ x\in\RR\ }.
 \end{equation}
 其中径向参数 \(r\) 继续由 Abel--Dirichlet 接口控制，而角变量由 \(\vartheta(x)=2\arctan(x)\) 无参生成；当限制到 unitary slice（\(r=1\)）时，上式退化为单位圆边界的无参参数化 \(w=\iota(x)\)。
+
+\subsection{圆盘完成化与 RH 的圆盘零点禁入等价：把 \texorpdfstring{$t\to\infty$}{t->infty} 压到边界点 \texorpdfstring{$w=-1$}{w=-1}}\label{subsec:unit-disk-rh-equivalence}
+本小节给出一个与正文 unitary slice 口径互补的\textbf{无参圆盘化重述}：把经典完成化 \(\Xi_{\zeta}\)（其零点与 \(\zeta\) 的非平凡零点一致）通过 Cayley 变换搬运为单位圆盘内的解析函数，从而把 RH 等价改写为“盘内零点禁入”与“边界有限圆周平均缺陷为零”两类判据。
+与之对照，正文 \S\ref{subsec:xi-from-self-dual} 通过 Dirichlet 截面 \(u_L(s)=L^{2s-1}\) 将临界线识别为参数侧的单位圆切片（注 \ref{rem:xi-critical-line-unit-circle}）；而此处进一步把临界线参数 \(t\in\RR\) 自身紧化为单位圆上一条单弧，使 \(\pm\infty\) 合并为同一边界点 \(w=-1\)。
+
+\paragraph{经典完成化对象}
+记
+\begin{equation}\label{eq:app-xi-classical}
+\Xi_{\zeta}(s):=\frac12\,s(s-1)\,\pi^{-s/2}\Gamma\!\left(\frac{s}{2}\right)\zeta(s),
+\end{equation}
+则 \(\Xi_{\zeta}\) 为整函数且满足严格函数方程 \(\Xi_{\zeta}(s)=\Xi_{\zeta}(1-s)\)，其零点集恰为黎曼 \(\zeta\) 的非平凡零点（含重数）（参见 \cite{Apostol1976}）。
+
+\paragraph{上半平面 \texorpdfstring{$\leftrightarrow$}{<->} 圆盘：无参 Cayley 紧化}
+令上半平面
+\[
+\mathbb{H}:=\{t\in\CC:\Im(t)>0\},
+\qquad
+\mathbb{D}:=\{w\in\CC:|w|<1\}.
+\]
+定义 Möbius 变换（与 \eqref{eq:unit-circle-cayley-embed} 在实轴上一致）
+\begin{equation}\label{eq:app-cayley-disk}
+\boxed{\;
+w=\mathcal{C}(t):=\frac{1+\mathrm{i}t}{1-\mathrm{i}t},
+\qquad
+t=\mathcal{C}^{-1}(w):=-\mathrm{i}\,\frac{w-1}{w+1}\; }.
+\end{equation}
+
+\begin{proposition}[Cayley 紧化的圆盘几何]\label{prop:app-cayley-upperhalf-disk}
+\(\mathcal{C}\) 给出双全纯同构 \(\mathcal{C}:\mathbb{H}\to\mathbb{D}\)，其逆映射为 \eqref{eq:app-cayley-disk} 的 \(\mathcal{C}^{-1}\)。
+并且当 \(t\in\RR\) 时有 \(|\mathcal{C}(t)|=1\)，当 \(t\to\pm\infty\) 时有 \(\mathcal{C}(t)\to-1\)。
+\end{proposition}
+\begin{proof}
+直接计算
+\[
+|\mathcal{C}(t)|^2
+=\frac{|1+\mathrm{i}t|^2}{|1-\mathrm{i}t|^2}
+=\frac{(1+\mathrm{i}t)(1-\mathrm{i}\overline t)}{(1-\mathrm{i}t)(1+\mathrm{i}\overline t)}
+=\frac{1+|t|^2-2\Im(t)}{1+|t|^2+2\Im(t)}.
+\]
+故 \(\Im(t)>0\Rightarrow |\mathcal{C}(t)|<1\)，\(\Im(t)=0\Rightarrow |\mathcal{C}(t)|=1\)。
+逆映射由代数求解得到，并可验证其把 \(|w|<1\) 映到 \(\Im(t)>0\)。
+最后，当 \(t\in\RR\) 时 \(|\mathcal{C}(t)|=1\)，而 \(t\to\pm\infty\) 时 \(\mathcal{C}(t)=\frac{1+\mathrm{i}t}{1-\mathrm{i}t}\to-1\)。证毕。
+\end{proof}
+
+\paragraph{圆盘化完成化函数}
+令
+\begin{equation}\label{eq:app-s-of-w}
+\boxed{\;
+s(w):=\frac12+\mathrm{i}\,\mathcal{C}^{-1}(w)
+=\frac12+\frac{w-1}{w+1}\; },
+\qquad (|w|<1),
+\end{equation}
+并定义圆盘内解析函数
+\begin{equation}\label{eq:app-Fzeta-disk}
+\boxed{\;
+F_{\zeta}(w):=\Xi_{\zeta}\!\bigl(s(w)\bigr)\qquad(|w|<1)\; }.
+\end{equation}
+由于 \(\Xi_{\zeta}\) 整且 \(s(w)\) 在 \(|w|<1\) 内全纯（唯一极点 \(w=-1\) 位于边界），故 \(F_{\zeta}\) 在开单位圆盘内解析。
+当 \(w=e^{\mathrm{i}\theta}\in\TT\setminus\{-1\}\) 时由 \eqref{eq:app-cayley-disk} 得 \(\mathcal{C}^{-1}(e^{\mathrm{i}\theta})=\tan(\theta/2)\in\RR\)，从而
+\begin{equation}\label{eq:app-Fzeta-boundary}
+F_{\zeta}(e^{\mathrm{i}\theta})=\Xi_{\zeta}\!\left(\tfrac12+\mathrm{i}\tan(\theta/2)\right),
+\end{equation}
+即把“临界线上取值”改写为“单位圆边界的相位参数化”。
+
+\begin{theorem}[RH 的圆盘等价式：盘内零点禁入]\label{thm:app-rh-iff-disk-zero-free}
+经典 RH 等价于
+\[
+\boxed{\ \forall\,w\in\mathbb{D},\quad F_{\zeta}(w)\neq 0\ }.
+\]
+\end{theorem}
+\begin{proof}
+(\(\Rightarrow\)) 若 RH 不成立，则存在 \(\Xi_{\zeta}\) 的零点 \(\rho=\beta+\mathrm{i}\gamma\) 满足 \(\beta\neq \tfrac12\) 且 \(0<\beta<1\)。
+由对称性 \(\Xi_{\zeta}(s)=\Xi_{\zeta}(1-s)\)，可不失一般性取 \(\beta<\tfrac12\)。
+令
+\[
+t_{\rho}:=\gamma-\mathrm{i}\left(\beta-\tfrac12\right),
+\qquad
+\Im(t_{\rho})=\tfrac12-\beta>0,
+\]
+则 \(t_{\rho}\in\mathbb{H}\) 且 \( \tfrac12+\mathrm{i}t_{\rho}=\rho\)。
+由命题 \ref{prop:app-cayley-upperhalf-disk}，取 \(w_{\rho}:=\mathcal{C}(t_{\rho})\in\mathbb{D}\) 并有 \(\mathcal{C}^{-1}(w_{\rho})=t_{\rho}\)。
+因此
+\[
+F_{\zeta}(w_{\rho})
+=\Xi_{\zeta}\!\left(\tfrac12+\mathrm{i}\,\mathcal{C}^{-1}(w_{\rho})\right)
+=\Xi_{\zeta}\!\left(\tfrac12+\mathrm{i}t_{\rho}\right)
+=\Xi_{\zeta}(\rho)
+=0,
+\]
+从而盘内出现零点。
+
+(\(\Leftarrow\)) 反之，若存在 \(w_0\in\mathbb{D}\) 使 \(F_{\zeta}(w_0)=0\)，令 \(t_0:=\mathcal{C}^{-1}(w_0)\in\mathbb{H}\) 并置 \(s_0:=\tfrac12+\mathrm{i}t_0\)。
+由于 \(\Im(t_0)>0\)，有 \(\Re(s_0)=\tfrac12-\Im(t_0)<\tfrac12\)，且
+\(
+\Xi_{\zeta}(s_0)=F_{\zeta}(w_0)=0
+\)。
+由函数方程与共轭对称性立刻推出存在偏离临界线的零点，故 RH 不成立。证毕。
+\end{proof}
+
+\begin{remark}[端点层的普适常数：\texorpdfstring{$T\log T$}{T log T} 密度在相位紧化下的对数弱发散]\label{rem:app-rvm-endpoint-constant}
+令 \(N(T)\) 为 \(\zeta\) 非平凡零点在高度窗 \(0<\Im(\rho)\le T\) 内的计数函数。
+黎曼--冯\,曼戈尔特公式给出主项
+\[
+N(T)=\frac{T}{2\pi}\log\!\Bigl(\frac{T}{2\pi}\Bigr)-\frac{T}{2\pi}+O(\log T)\qquad(T\to\infty)
+\]
+（参见 \cite{Apostol1976}）。
+记其主项为
+\(
+M(T):=\frac{T}{2\pi}\log(\frac{T}{2\pi})-\frac{T}{2\pi}
+\)，并用无参紧化 \(u=\upsilon(T)=\frac{1}{\pi}\arctan(T)\) 定义端点压缩主项
+\(
+M_{\Phi}(u):=M(\tan(\pi u))
+\)。
+则当 \(\delta:=\tfrac12-u\downarrow 0\) 时有极限
+\begin{equation}\label{eq:app-rvm-endpoint-constant}
+\boxed{\;
+\lim_{\delta\downarrow 0}\;
+\frac{\delta^{2}}{\log(1/\delta)}\,
+\frac{\dd}{\dd u}M_{\Phi}\!\left(\tfrac12-\delta\right)
+\;=\;\frac{1}{2\pi^{2}}\; }.
+\end{equation}
+该常数表明：在相位紧化坐标中，“无穷高度”的 \(T\log T\) 增长被重写为端点层 \(\delta\downarrow 0\) 的对数弱发散，并且其主尺度被剥离为一个与次阶振荡无关的普适常数。
+几何上，\(\delta\downarrow 0\) 等价于 \(\vartheta(T)\to\pi\)，亦即边界点 \(w=e^{\mathrm{i}\vartheta(T)}\to-1\)（命题 \ref{prop:app-cayley-upperhalf-disk}）。
+\end{remark}
+\begin{proof}
+由 \(M'(T)=\frac{1}{2\pi}\log(\frac{T}{2\pi})\) 与 \(\frac{\dd}{\dd u}\tan(\pi u)=\pi(1+\tan^2(\pi u))\)，得
+\[
+\frac{\dd}{\dd u}M_{\Phi}(u)
+=\frac{1}{2\pi}\log\!\Bigl(\frac{\tan(\pi u)}{2\pi}\Bigr)\cdot \pi\bigl(1+\tan^2(\pi u)\bigr).
+\]
+取 \(u=\tfrac12-\delta\) 并用渐近 \(\tan(\pi(\tfrac12-\delta))=\cot(\pi\delta)\sim \frac{1}{\pi\delta}\)，则
+\(
+1+\tan^2(\pi u)\sim \frac{1}{\pi^2\delta^2}
+\)
+且
+\(
+\log(\tan(\pi u))=\log(1/\delta)+O(1)
+\)。
+代回即得
+\(
+\frac{\dd}{\dd u}M_{\Phi}(\tfrac12-\delta)
+=\frac{1}{2\pi^{2}\delta^{2}}\log(1/\delta)\,(1+o(1))
+\)，从而 \eqref{eq:app-rvm-endpoint-constant} 成立。证毕。
+\end{proof}
+
+\subsection{Jensen 缺陷：把盘内零点计数压缩为一族有限圆周平均}\label{subsec:unit-disk-jensen-defect}
+定理 \ref{thm:app-rh-iff-disk-zero-free} 把 RH 转写为“开圆盘内无零点”。
+这一条件可进一步完全有限化：零点信息被 Jensen 公式压缩为一族半径 \(\varrho\in(0,1)\) 的\textbf{有限圆周积分缺陷}。
+
+\begin{definition}[Jensen 缺陷]\label{def:app-jensen-defect}
+令 \(F_{\zeta}\) 如 \eqref{eq:app-Fzeta-disk}。
+对任意 \(0<\varrho<1\) 定义 Jensen 缺陷
+\begin{equation}\label{eq:app-jensen-defect}
+\boxed{\;
+D_{\zeta}(\varrho)
+:=\frac{1}{2\pi}\int_{0}^{2\pi}\log\bigl|F_{\zeta}(\varrho e^{\mathrm{i}\theta})\bigr|\,\dd\theta
+-\log|F_{\zeta}(0)|\; }.
+\end{equation}
+\end{definition}
+
+\begin{proposition}[Jensen 公式与非负缺陷]\label{prop:app-jensen-formula-defect}
+设 \(0<\varrho<1\)。
+令 \(\{a_k\}\) 为 \(F_{\zeta}\) 在 \(|w|<\varrho\) 内的零点（按重数计）。
+则 Jensen 公式给出
+\begin{equation}\label{eq:app-jensen-sum}
+\boxed{\;
+D_{\zeta}(\varrho)
+=\sum_{|a_k|<\varrho}\log\!\Bigl(\frac{\varrho}{|a_k|}\Bigr)\ \ge\ 0\; }.
+\end{equation}
+从而 \(D_{\zeta}(\varrho)=0\) 当且仅当 \(F_{\zeta}\) 在 \(|w|<\varrho\) 内无零点。
+\end{proposition}
+\begin{proof}
+由于 \(F_{\zeta}\) 在 \(|w|<1\) 内解析且 \(F_{\zeta}(0)=\Xi_{\zeta}(-\tfrac12)\neq 0\)，可对任意 \(\varrho<1\) 在圆盘 \(|w|<\varrho\) 上应用 Jensen 公式。
+结论 \eqref{eq:app-jensen-sum} 以及非负性是标准推论（参见 \cite{Duren1970TheoryHp}）。证毕。
+\end{proof}
+
+\begin{corollary}[RH 的完全有限化判据：缺陷恒零]\label{cor:app-rh-iff-jensen-defect-zero}
+经典 RH 等价于
+\[
+\boxed{\ \forall\,\varrho\in(0,1),\quad D_{\zeta}(\varrho)=0\ }.
+\]
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:app-jensen-formula-defect}，对每个固定 \(\varrho\)，有 \(D_{\zeta}(\varrho)=0\iff F_{\zeta}\) 在 \(|w|<\varrho\) 内无零点。
+令 \(\varrho\uparrow 1\) 即得 “对一切 \(\varrho\in(0,1)\) 缺陷恒零” 等价于 “\(F_{\zeta}\) 在 \(|w|<1\) 内无零点”，再与定理 \ref{thm:app-rh-iff-disk-zero-free} 合并即得。证毕。
+\end{proof}
+
+\subsection{Blaschke 数据与正交轴：边界模长与盘内零点的因子分解（条件口径）}\label{subsec:unit-disk-inner-outer}
+上小节的 Jensen 缺陷把“盘内零点”压缩为一族有限积分；在 Hardy/Smirnov 类中，零点信息还可被提升为一个更结构化的对象：\textbf{内因子}。
+
+\begin{remark}[内外因子分解与“隐藏相位”]
+若 \(F_{\zeta}\)（或对其作显式增长剥离后的归一化版本）属于某个 Hardy 类 \(H^p(\mathbb{D})\)（\(p>0\)）或 Smirnov 类 \(N^+(\mathbb{D})\)，则存在标准因子分解
+\[
+F_{\zeta}(w)=B(w)\,S(w)\,O(w),
+\]
+其中 \(B\) 为 Blaschke 乘积（编码全部盘内零点），\(S\) 为奇异内因子，而 \(O\) 为外因子；并且在边界上几乎处处满足 \(|B(e^{\mathrm{i}\theta})S(e^{\mathrm{i}\theta})|=1\)，而 \(|O(e^{\mathrm{i}\theta})|\) 由 \(|F_{\zeta}(e^{\mathrm{i}\theta})|\) 决定（参见 \cite{Duren1970TheoryHp,Garnett2007BoundedAnalyticFunctions}）。
+\par
+因此，在该条件口径下：
+\begin{itemize}
+  \item \textbf{边界可见量：} \(|F_{\zeta}(e^{\mathrm{i}\theta})|\)，等价于 \(|\Xi_{\zeta}(\tfrac12+\mathrm{i}\tan(\theta/2))|\)；
+  \item \textbf{盘内隐藏量：} 由 \(B\)（以及可能的 \(S\)）携带的内因子数据；其中 \(B\) 的零点集合 \(\{a_k\}\) 恰为“偏离临界线”的等价编码。
+\end{itemize}
+在该意义下，RH 等价于“内因子在盘内无零点数据”（\(B\equiv 1\)，且在更强的无奇异内因子条件下 \(S\equiv 1\)）。
+\end{remark}
+
+\subsection{与 Witt--Chebyshev--Adams 桥包的对齐：幂半群 \texorpdfstring{$w\mapsto w^m$}{w->w^m} 与对数主尺度}\label{subsec:unit-disk-witt-chebyshev}
+本文在 unitary slice 上已反复使用“倍角/幂映射 \(\leftrightarrow\) Chebyshev--Adams”桥（见 \S\ref{subsec:xi-from-self-dual} 与注 \ref{rem:xi-joukowski-toy-rh-alignment} 的 \(y\mapsto y+y^{-1}\) 压缩）。
+在本附录的圆盘参数 \(w\) 下，该桥可以以完全无参形式写出。
+
+\paragraph{边界倍角与 Chebyshev 多项式}
+当 \(w=e^{\mathrm{i}\theta}\in\TT\) 时，令
+\[
+\mathfrak{r}:=e^{\mathrm{i}\theta/2},\qquad s:=\mathfrak{r}+\mathfrak{r}^{-1}=2\cos(\theta/2)\in[-2,2].
+\]
+则对任意整数 \(m\ge 1\)，有
+\[
+w^m=e^{\mathrm{i}m\theta},\qquad
+\mathfrak{r}^m+\mathfrak{r}^{-m}=2\cos(m\theta/2)=:C_m(s),
+\]
+其中 \(C_m\in\ZZ[s]\) 为 Chebyshev--Adams 多项式表示。
+因此幂半群 \(w\mapsto w^m\) 在 \(s\)-坐标中恰对应 \(s\mapsto C_m(s)\) 的代数化倍角运算。
+
+\paragraph{半角提升作为最小不可见轴：从 \(w\) 到 \(\mathfrak{r}\) 的分支信息}
+映射
+\[
+q:\TT\to\TT,\qquad q(\mathfrak{r})=\mathfrak{r}^{2}=w
+\]
+为二重覆盖，其核为 \(\{\pm 1\}\cong \ZZ/2\ZZ\)。
+因此在 \(w\)-层（亦即正文的 unitary twist 变量 \(u\) 层）不可见的最小离散自由度正是半角分支 \(\mathfrak{r}\mapsto-\mathfrak{r}\)。
+在完成化坐标 \(s=\mathfrak{r}+\mathfrak{r}^{-1}\) 中，该分支体现为
+\(
+s\mapsto -s
+\)，从而可被 \(s\)-轴上的奇偶喷射结构显式激活。
+
+\begin{proposition}[端点 \texorpdfstring{$w=-1$}{w=-1} 的半角残差与 \texorpdfstring{$\ZZ/4$}{Z/4} 型取值]\label{prop:half-angle-z4-residue}
+在端点 \(w=-1\)（等价于 \(\theta=\pi\)）处，完成化坐标满足 \(s=0\)。
+并且对任意 \(m\ge 1\)，Chebyshev--Adams 多项式在端点的取值为
+\begin{equation}\label{eq:chebyshev-endpoint-values}
+\boxed{\;
+C_m(0)=\mathfrak{r}^{m}+\mathfrak{r}^{-m}=2\cos(m\pi/2)\in\{0,\pm 2\}\; }.
+\end{equation}
+特别地，\(C_m(0)\) 仅由 \(m\bmod 4\) 决定，从而端点处的幂半群作用携带一个 \(\ZZ/4\) 型离散残差。
+\end{proposition}
+\begin{proof}
+端点 \(w=-1=e^{i\pi}\) 的半角满足 \(\mathfrak{r}^{2}=-1\)，故 \(\mathfrak{r}=\pm i=e^{\pm i\pi/2}\)，于是 \(s=\mathfrak{r}+\mathfrak{r}^{-1}=0\)。
+又由于 \(C_m(s)=\mathfrak{r}^m+\mathfrak{r}^{-m}=2\cos(m\theta/2)\)，在 \(\theta=\pi\) 处得
+\(
+C_m(0)=2\cos(m\pi/2)
+\)，其取值仅依赖 \(m\bmod 4\)。证毕。
+\end{proof}
+
+\begin{proposition}[端点导数律：奇伸缩线性放大，偶伸缩二阶退化]\label{prop:chebyshev-endpoint-derivative-splitting}
+令 \(m\ge 1\) 且 \(C_m(s)=2T_m(s/2)\)（\(T_m\) 为第一类 Chebyshev 多项式）。
+则在 \(s=0\) 处有
+\begin{equation}\label{eq:chebyshev-endpoint-derivative}
+\boxed{\;
+C_m'(0)=m\sin(m\pi/2)\; }.
+\end{equation}
+从而：
+\begin{enumerate}
+  \item 若 \(m\) 为偶数，则 \(C_m'(0)=0\)，且 \(C_m\) 为偶多项式，端点喷射至少二阶起跳；
+  \item 若 \(m\) 为奇数，则 \(C_m(0)=0\) 且 \(|C_m'(0)|=m\)，端点喷射为线性主导。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+由恒等式 \(C_m(s)=2T_m(s/2)\) 与导数公式 \(T_m'(x)=mU_{m-1}(x)\)（\(U_{m-1}\) 为第二类 Chebyshev 多项式），得
+\[
+C_m'(0)=2\cdot T_m'(0)\cdot \frac12=T_m'(0)=mU_{m-1}(0).
+\]
+又 \(U_{m-1}(\cos\phi)=\frac{\sin(m\phi)}{\sin\phi}\)，取 \(\cos\phi=0\Rightarrow \phi=\pi/2\) 得 \(U_{m-1}(0)=\sin(m\pi/2)\)，从而得到 \eqref{eq:chebyshev-endpoint-derivative}。
+奇偶分裂由 \(\sin(m\pi/2)\in\{0,\pm 1\}\) 立得；并且由 \(C_m(-s)=(-1)^m C_m(s)\)（对应半角分支 \(\mathfrak{r}\mapsto-\mathfrak{r}\)）可知偶 \(m\) 时 \(C_m\) 为偶多项式、奇 \(m\) 时为奇多项式。证毕。
+\end{proof}
+
+\begin{corollary}[端点喷射的两类正则化：奇通道控制一阶，偶通道进入高阶]\label{cor:chebyshev-endpoint-jet-regularization}
+设 \(g\) 在包含区间 \([-2,2]\) 的某个开邻域上解析。
+则当 \(s\to 0\) 时有展开
+\[
+g(C_m(s))=
+\begin{cases}
+g(C_m(0)) + O(s^2), & m\ \text{为偶数},\\[4pt]
+g(0) + g'(0)\,C_m'(0)\,s+O(s^2), & m\ \text{为奇数}.
+\end{cases}
+\]
+因此在端点邻域，奇 \(m\) 通道保留线性主尺度，而偶 \(m\) 通道不产生一阶项，只能改变高阶喷射与有限部常数。
+\end{corollary}
+\begin{proof}
+偶 \(m\) 时 \(C_m'(0)=0\) 且 \(C_m(0)\in\{\pm 2\}\)，故 \(C_m(s)=C_m(0)+O(s^2)\)，在 \(C_m(0)\) 处对 \(g\) 作 Taylor 展开得到 \(g(C_m(s))=g(C_m(0))+O(s^2)\)。
+奇 \(m\) 时 \(C_m(0)=0\) 且 \(C_m'(0)\neq 0\)，故 \(C_m(s)=C_m'(0)s+O(s^3)\)，在 \(0\) 处对 \(g\) 作 Taylor 展开即得第二行。证毕。
+\end{proof}
+
+\paragraph{primitive 奇偶扇区的端点消失：主奇性由偶长度独占}
+令 \(p_n(u)\in\ZZ[u]\) 为 Witt/Möbius 反演得到的 primitive 多项式（例如 \S\ref{subsec:operator-zeta-interface} 的 \(\mathrm{Mob}\) 输出；并见附录 \ref{app:kernel-completion} 及其后的 primitive 接口）。
+在大量核族中，primitive 系列满足有限长度镜像对称 \(p_n(u)=u^n p_n(1/u)\)（见推论 \ref{cor:primitive-finite-sym}），并对奇长度出现更强的整除律：
+
+\begin{corollary}[奇长度 primitive 的端点消失]\label{cor:primitive-odd-vanish-u-minus1}
+若 \(n\ge 3\) 为奇数，则 \(u(u+1)\mid p_n(u)\)（推论 \ref{cor:primitive-odd-div}）。
+特别地 \(p_n(-1)=0\)。
+因此把 primitive 生成函数 \(P(z,u)=\sum_{n\ge 1}p_n(u)z^n\) 分解为
+\[
+P_{\mathrm{odd}}(z,u):=\sum_{n\ \mathrm{odd}}p_n(u)z^n,\qquad
+P_{\mathrm{even}}(z,u):=\sum_{n\ \mathrm{even}}p_n(u)z^n,
+\]
+则除去有限个低长项（至多 \(n=1\)）后，\(P_{\mathrm{odd}}(z,u)\) 在 \(u=-1\) 处至少一阶消失；
+从而端点 \(u=-1\) 的任何不可去主奇性只能由偶长度扇区 \(P_{\mathrm{even}}(z,u)\) 控制。
+\end{corollary}
+
+\begin{proposition}[完成化子环与“唯一角度”的代数刻画]\label{prop:completion-subring-unique-angle}
+令 \(\mathfrak{r}\) 为半角变量并记 \(s=\mathfrak{r}+\mathfrak{r}^{-1}\)。
+则反演作用 \(\mathfrak{r}\mapsto \mathfrak{r}^{-1}\) 的不变量子环满足
+\[
+\boxed{\;\ZZ[\mathfrak{r},\mathfrak{r}^{-1}]^{\mathfrak{r}\mapsto \mathfrak{r}^{-1}}
+=\ZZ[\mathfrak{r}+\mathfrak{r}^{-1}]
+=\ZZ[s]\; }.
+\]
+因此，“从半角层下降到唯一角度”在代数上等价于取反演不变子环；任何超出 \(\ZZ[s]\) 的自由度都等价于半角分支（以及端点喷射）所携带的不可见信息轴。
+\end{proposition}
+\begin{proof}
+\(\ZZ[\mathfrak{r},\mathfrak{r}^{-1}]\) 在 \(\ZZ\)-模意义下由 \(\{\,\mathfrak{r}^k:k\in\ZZ\,\}\) 张成。
+对不变量 \(f(\mathfrak{r})=f(\mathfrak{r}^{-1})\)，将系数按 \(k\) 与 \(-k\) 配对，可写成有限和
+\(
+f(\mathfrak{r})=\sum_{k\ge 0}a_k(\mathfrak{r}^k+\mathfrak{r}^{-k})
+\)。
+而 \(\mathfrak{r}^k+\mathfrak{r}^{-k}\) 是 \(s=\mathfrak{r}+\mathfrak{r}^{-1}\) 的整系数多项式（正是 \(C_k(s)\) 的定义性实现），故 \(f\in\ZZ[s]\)。
+反向包含显然成立。证毕。
+\end{proof}
+
+\begin{proposition}[端点分解范式：Witt 伸缩链的奇/偶通道与 primitive 奇/偶扇区]\label{prop:endpoint-decomposition-paradigm}
+在完成化坐标 \((w,\mathfrak{r},s)\) 下（\(w=\mathfrak{r}^2,\ s=\mathfrak{r}+\mathfrak{r}^{-1}\)），幂半群 \(w\mapsto w^m\) 对应的完成化动作为 \(s\mapsto C_m(s)\)。
+于是端点 \(w=-1\)（\(s=0\)）处，“无穷伸缩链”的局部结构满足：
+\begin{enumerate}
+  \item \textbf{（伸缩通道分裂）}端点喷射按 \(m\) 的奇偶严格分裂：奇 \(m\) 通道控制线性主尺度，而偶 \(m\) 通道只进入高阶喷射与有限部（命题 \ref{prop:chebyshev-endpoint-derivative-splitting} 与推论 \ref{cor:chebyshev-endpoint-jet-regularization}）。
+  \item \textbf{（primitive 扇区分裂）}在 primitive 多项式序列中，奇长度 \(n\ge 3\) 的扇区在 \(u=-1\) 处严格消失（推论 \ref{cor:primitive-odd-vanish-u-minus1}），因此端点主奇性完全由偶长度扇区控制。
+  \item \textbf{（完成化子环与不可见轴）}所有可见代数结构严格下降到反演不变子环 \(\ZZ[s]\)（命题 \ref{prop:completion-subring-unique-angle}）；被投影压扁的信息以半角分支（\(\ZZ/2\)）与端点离散残差（\(\ZZ/4\)，命题 \ref{prop:half-angle-z4-residue}）以及高阶喷射精度的形式出现。
+\end{enumerate}
+\end{proposition}
+
+\paragraph{圆盘内的 Witt 幂和算子与对数主尺度}
+对任意在 \(\mathbb{D}\) 内解析的函数 \(f\)，定义
+\begin{equation}\label{eq:app-witt-pow-operator}
+\boxed{\;
+(W_{\mathrm{pow}}f)(w):=\sum_{m\ge 1}\frac{1}{m}f(w^m),\qquad |w|<1\; }.
+\end{equation}
+由于 \(|w|<1\Rightarrow |w^m|\to 0\)，上式在 \(|w|<1\) 内绝对收敛并定义一个解析函数。
+作为最小测试例，取 \(f(w)=w\) 得
+\[
+(W_{\mathrm{pow}}f)(w)=\sum_{m\ge 1}\frac{w^m}{m}=-\log(1-w),
+\]
+从而“幂链叠加”的主奇性以边界对数尺度出现。
+该现象与本文 Witt/Möbius 反演桥包（命题 \ref{prop:zetaK-mobius-primitive}）在结构上同型：在形式层面，\(\log Z\) 的展开天然产生 \(\sum_{m\ge 1}\frac{1}{m}(\cdot)\circ[m]\) 的幂链算子；而在圆盘解析口径下，该幂链算子具有直接的收敛域与边界奇性。
+
+\subsection{相位塔几何接口：主 \texorpdfstring{$U(1)$}{U(1)} 束、面积权重与精度放大律}\label{subsec:unit-disk-phase-tower}
+本附录的“相位紧化门”可被置于一个更一般的几何接口中：每一次“提升”在结构上表现为一个主 \(U(1)\) 束（相位纤维），而“近零加权”则由均匀测度的 Jacobian 拉回自动产生。
+本小节仅给出与本文门语言可直接拼接的最小形式。
+
+\begin{remark}[标准链：射影化 \(\to\) Hopf 主 \texorpdfstring{$U(1)$}{U(1)} 束 \(\to\) 立体投影体积元拉回]\label{rem:phase-tower-standard-chain}
+将状态空间置于 \(\CC^{n+1}\setminus\{0\}\) 后，对全局缩放 \(z\sim \lambda z\)（\(\lambda\in\CC^\times\)）取商得到复射影空间 \(\mathbb{CP}^{n}\)；在单位球面 \(S^{2n+1}=\{z\in\CC^{n+1}:\|z\|=1\}\) 上，将缩放限制为相位群 \(U(1)\) 即得到典范投影
+\(
+S^{2n+1}\twoheadrightarrow \mathbb{CP}^{n}
+\)，其纤维是全局相位 \(S^{1}\)。
+进一步，当把 \(\mathbb{CP}^{1}\cong S^{2}\) 用立体投影参数化为平面坐标时，均匀球面面积/体积测度的拉回密度必呈 \((1+|x|^{2})^{-n}\) 型衰减，从而“近零更重、远处更轻”是由几何测度唯一诱导的结构性结果。
+该三段链条使“相位塔 + 面积权重 + 精度承载”成为标准几何对象，而非隐喻。
+\end{remark}
+
+\paragraph{相位塔：主 \texorpdfstring{$U(1)$}{U(1)} 束与 Hopf 纤维化}
+Hopf 纤维化给出标准例子
+\[
+S^{1}\hookrightarrow S^{3}\twoheadrightarrow S^{2},
+\]
+并更一般地对任意 \(n\ge 1\) 给出
+\[
+S^{1}\hookrightarrow S^{2n+1}\twoheadrightarrow \mathbb{CP}^{n}.
+\]
+该形式表达“提升一次，多出一个全局相位纤维”的结构原语（参见 \cite{Husemoller1994FiberBundles}）。
+在本文语境中，\(\upsilon\) 与 \(\iota\) 所提供的相位门可以被视为把无界坐标压到一个紧相位纤维上的最小实例。
+
+\begin{proposition}[射影化与主 \texorpdfstring{$U(1)$}{U(1)} 束（相位塔原语）]\label{prop:phase-tower-principal-u1}
+对任意 \(n\ge 1\)，令
+\(
+S^{2n+1}=\{z\in\CC^{n+1}:\|z\|=1\}
+\)，并定义投影
+\[
+p:S^{2n+1}\to \mathbb{CP}^{n},\qquad p(z):=[z]
+\]
+（\([z]\) 表示由 \(z\) 张成的复直线）。
+则 \(U(1)\) 通过 \(e^{\mathrm{i}\phi}\cdot z:=e^{\mathrm{i}\phi}z\) 自由作用在 \(S^{2n+1}\) 上，且 \(p\) 是商映射；因此 \(p\) 构成一个主 \(U(1)\) 束。
+当 \(n=1\) 时，\(p:S^{3}\twoheadrightarrow\mathbb{CP}^{1}\cong S^{2}\) 即 Hopf 纤维化。
+\end{proposition}
+\begin{proof}
+相位群 \(U(1)\) 的作用保持范数，且 \(e^{\mathrm{i}\phi}z=z\Rightarrow e^{\mathrm{i}\phi}=1\)（自由性）。
+两点 \(z,z'\in S^{2n+1}\) 具有相同射影像当且仅当 \(z'=\lambda z\)（\(\lambda\in\CC^\times\)）；由 \(\|z\|=\|z'\|=1\) 得 \(|\lambda|=1\)，故 \(\lambda\in U(1)\)。
+因此 \(p\) 的纤维恰为 \(U(1)\)-轨道，\(p\) 为主 \(U(1)\) 束的标准模型（参见 \cite{Husemoller1994FiberBundles}）。证毕。
+\end{proof}
+
+\paragraph{局部相位与全局相位：射影化与 \texorpdfstring{$\det:U(n)\to U(1)$}{det}}
+将多轴信息编码为复向量 \(z\in\CC^{n+1}\) 时，可对每个坐标写极坐标分解 \(z_k=r_k e^{\mathrm{i}\theta_k}\)，从而每一轴均携带一个\textbf{局部相位} \(\theta_k\)。
+与此同时存在一个共同的\textbf{全局相位}作用 \(z\mapsto e^{\mathrm{i}\phi}z\)（\(\phi\in\RR\)），其商空间即为复射影空间：
+\[
+\mathbb{CP}^{n}\ \cong\ (\CC^{n+1}\setminus\{0\})/U(1).
+\]
+因此，“合并后只有一个角度”的硬化版本可以表述为：全局相位是主 \(U(1)\) 束的纤维坐标，而相对结构落在基空间 \(\mathbb{CP}^{n}\) 上。
+在矩阵层面，任意 \(U\in U(n)\) 的行列式 \(\det(U)\in U(1)\) 给出一个唯一的“总体相位读出”，且其核为 \(SU(n)\)；因此 \(\det:U(n)\to U(1)\) 提供了一个代数化的全局相位抽取口径。
+
+\paragraph{面积权重与 Jacobian：近零加权的结构来源}
+在一维情形中，\(\upsilon(x)=\frac{1}{\pi}\arctan(x)\) 的导数给出自然权重 \(\dd\mu(x)=\frac{1}{\pi(1+x^2)}\dd x\)（见 \eqref{eq:unit-circle-phase-derivative}--\eqref{eq:unit-circle-phase-cauchy-measure}）。
+该权重并非外加规则，而是紧化换元的 Jacobian。
+在二维/更高维中，类似的现象由“均匀面积元/体积元在投影坐标下的密度因子”给出。
+例如在 Riemann 球面 \(S^{2}\) 的立体投影坐标 \(z=X+\mathrm{i}Y\in\CC\) 下，圆度量满足
+\[
+ds^{2}=\frac{4}{(1+|z|^{2})^{2}}\,(\dd X^{2}+\dd Y^{2})
+=\frac{4}{(1+|z|^{2})^{2}}\,|\,\dd z\,|^{2},
+\]
+从而球面均匀面积元的拉回密度为
+\[
+\boxed{\ \dd A_{S^{2}}=\frac{4}{(1+|z|^{2})^{2}}\,\dd A_{\RR^{2}}\ }.
+\]
+因此在平面坐标中，\(|z|\) 越大对应的球面面积越小；“近零加权”由 Jacobian 自动产生，而非额外规定。
+
+\begin{proposition}[立体投影的体积元拉回（一般维度）]\label{prop:stereographic-volume-form}
+令 \(\sigma:S^{n}\setminus\{N\}\to\RR^{n}\) 为从北极 \(N\) 出发的立体投影，并以 \(x\in\RR^{n}\) 为像空间坐标。
+令 \(\sigma^{-1}:\RR^{n}\to S^{n}\setminus\{N\}\) 为其逆映射。
+则由 \(\sigma^{-1}\) 拉回的球面度量满足共形缩放
+\[
+(\sigma^{-1})^{\ast}g_{S^{n}}=\left(\frac{2}{1+\|x\|^{2}}\right)^{2}g_{\mathrm{Euc}},
+\]
+从而球面体积形式的拉回满足
+\begin{equation}\label{eq:stereographic-volume-general}
+\boxed{\;
+(\sigma^{-1})^{\ast}\dd V_{S^{n}}
+ =\left(\frac{2}{1+\|x\|^{2}}\right)^{n}\dd V_{\RR^{n}}
+=\frac{2^{n}}{(1+\|x\|^{2})^{n}}\,\dd x_{1}\cdots \dd x_{n}\; }.
+\end{equation}
+特别地，\(n=1\) 时该密度与 \(\dd\mu(x)=\frac{1}{\pi(1+x^{2})}\dd x\) 仅差一个归一化常数，而 \(n=2\) 时退化为上式的 \(\frac{4}{(1+\|x\|^{2})^{2}}\)。
+\end{proposition}
+\begin{proof}
+立体投影给出球面在 \(\RR^{n}\) 上的标准共形坐标；共形因子为 \(\Omega(x)=\frac{2}{1+\|x\|^{2}}\)，即 \((\sigma^{-1})^{\ast}g_{S^{n}}=\Omega(x)^{2}g_{\mathrm{Euc}}\)。
+体积形式在共形缩放下按 \(\Omega^{n}\) 缩放，因此
+\(
+(\sigma^{-1})^{\ast}\dd V_{S^{n}}=\Omega(x)^{n}\dd V_{\RR^{n}}
+\)，得到 \eqref{eq:stereographic-volume-general}。证毕。
+\end{proof}
+
+\paragraph{精度放大律：降维紧化把动态范围压入末位精度}
+由 \(\upsilon^{-1}(u)=\tan(\pi u)\)（式 \eqref{eq:unit-circle-phase-inverse}）得误差放大
+\begin{equation}\label{eq:app-precision-amplification}
+\boxed{\ \frac{\dd x}{\dd u}=\pi(1+x^2)\ }.
+\end{equation}
+因此当 \(|x|\) 大时，微小的相位误差 \(\Delta u\) 将被放大为 \(\Delta x\approx \pi x^2\Delta u\) 的巨大读出误差；换言之，降维/紧化把“远离零点的大数信息”强制搬运到 \(u\) 的末位精度中。
+粗略地，若 \(u\) 的量化精度为 \(\Delta u\)，则可分辨到的最大量级满足
+\[
+|x|_{\max}\approx \cot(\pi\Delta u)\approx \frac{1}{\pi\Delta u}\qquad(\Delta u\to 0).
+\]
+这为“信息被压到精度上”的门语言给出一条可核验的解析尺度律。
