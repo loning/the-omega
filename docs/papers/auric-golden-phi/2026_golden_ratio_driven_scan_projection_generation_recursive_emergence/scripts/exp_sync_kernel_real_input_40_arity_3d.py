@@ -1046,10 +1046,13 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     lines.append("\\paragraph{（iv$'$）强抵消残差与稳健标量指纹}")
     lines.append("统计全部 $45$ 个条目，记 $M:=\\sum_{a,b,c}C_{a,b,c}$，以及正项/负项之和 $\\sum_{C>0}C$ 与 $\\sum_{C<0}C$。数值上")
     lines.append("$$")
-    lines.append(
-        f"\\#\\{{C>0\\}}={cnt_pos},\\quad \\#\\{{C<0\\}}={cnt_neg},\\qquad "
-        f"\\sum_{{C>0}}C\\approx {sum_pos:.6f},\\qquad \\sum_{{C<0}}C\\approx {sum_neg:.6f},\\qquad M\\approx {total_sum:.12f}."
-    )
+    lines.append("\\begin{aligned}")
+    lines.append(f"\\#\\{{C>0\\}}&={cnt_pos},\\\\")
+    lines.append(f"\\#\\{{C<0\\}}&={cnt_neg},\\\\")
+    lines.append(f"\\sum_{{C>0}}C&\\approx {sum_pos:.6f},\\\\")
+    lines.append(f"\\sum_{{C<0}}C&\\approx {sum_neg:.6f},\\\\")
+    lines.append(f"M&\\approx {total_sum:.12f}.")
+    lines.append("\\end{aligned}")
     lines.append("$$")
     lines.append("并定义抵消指纹")
     lines.append("$$")
