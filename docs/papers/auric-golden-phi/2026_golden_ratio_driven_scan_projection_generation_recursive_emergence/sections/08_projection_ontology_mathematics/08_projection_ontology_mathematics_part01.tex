@@ -25,39 +25,6 @@
 \(\mathrm{PROJ}\) 选择读出门族（如 \(P_Z,P_{\mathrm{prim}},P_{\le},P_\chi\)；见定义 \ref{def:pom-proj-norm}--\ref{def:pom-proj-chi}），
 而 \(U\) 是同一本体一步演化（定义 \ref{def:pom-state-space}，公理 \ref{ax:pom-locality}）。
 
-\begin{remark}[标准表述：可逆演化—部分观测—扩展保存（不增设假设）]\label{rem:pom-reversible-partial-observation}
-下述表述给出一套完全标准的“可逆演化—部分观测—扩展保存”框架，用以把“空间/时间/寄存器”等直觉压缩为可审计对象；其本身不引入额外公理。
-\begin{enumerate}
-  \item \textbf{两套算术坐标（加法 vs.\ 乘法）}
-  整数（或有理数）既可用加法坐标（例如 \(n\in\ZZ\)、\(x\in\QQ\)）直接描述，也可用乘法坐标线性化乘法结构：对任意 \(n\in\ZZ\setminus\{0\}\) 有唯一分解
-  \[
-  n=\mathrm{sgn}(n)\prod_{p\in\mathbb{P}}p^{v_p(n)},
-  \]
-  其中 \(v_p(n)\in\NN\) 且仅有限多项非零；于是指数向量 \(v(n):=(v_p(n))_{p\in\mathbb{P}}\in\bigoplus_{p\in\mathbb{P}}\NN\) 将乘法转为坐标加法 \(v_p(mn)=v_p(m)+v_p(n)\)。
-
-  \item \textbf{可逆演化}
-  设 \(\Omega\) 为完整状态空间。经典情形中，可逆演化由双射 \(U:\Omega\to\Omega\) 给出；量子情形中，可逆演化由幺正算符 \(U:\mathcal{H}\to\mathcal{H}\) 给出。该步骤在全局层面不丢失信息。
-
-  \item \textbf{部分观测（投影读出）}
-  设 \(\pi:\Omega\to X\) 为观测映射；一般 \(\pi\) 非单射，因此观测对观测者而言是信息压缩（其压缩强度由纤维多重度刻画）。量子情形下对应于投影测量/POVM 或对环境自由度取部分迹的读出。
-
-  \item \textbf{扩展保存（使观测可逆）}
-  若要求总体信息不丢失，则必须把“纤维标签”外置为额外记录：存在 \(r:\Omega\to R\) 使得
-  \(
-  \widetilde\pi(\omega):=(\pi(\omega),r(\omega))
-  \)
-  为单射，从而把“信息守恒”严格化为扩展空间上的可逆性。
-  经典可逆计算语境中，这对应于把任意计算 \(f\) 嵌入到一个更大空间上的可逆过程：保留输入并把输出写入额外寄存器，使得整体映射对其像为双射（从而可反算）；量子语境中，任意量子信道亦可通过扩张到系统\(\otimes\)环境的幺正演化并在末端对环境取部分迹得到。
-
-  \item \textbf{无上界记录与 Hilbert 表示}
-  当记录/标签不受先验维数上界约束时，标准做法是构造扩张塔（归纳系统或逆系统）并取其极限对象；在可分情形下可用可分 Hilbert 空间的正交自由度/张量因子承载无界记录，从而把“无穷”落实为不断增加的互相独立自由度，而非在固定有限维空间内实施不可逆压缩。
-
-  \item \textbf{互补通道的乘积/张量分解}
-  在可逆化的扩张空间中，外显输出、结构坐标（例如乘法坐标的指数向量）与可逆化所需的记录可被组织为互补的自由度通道；在经典口径下体现为乘积空间分解，在量子口径下体现为张量因子分解。该分解把“哪些信息可见、哪些信息被外置保存”落实为可核对的结构约束，而非比喻性描述。
-\end{enumerate}
-\paragraph{与本文对象的对照（仅作定位）}
-以上六点在本文并非额外公理，而由已构造对象给出具体实例：乘法坐标由素数指数纤维定义 \ref{def:pom-prime-fiber} 实现；典型“部分观测”由折叠 \(\Fold_m\) 及其在可观测层面的条件期望/纤维平均接口 \(E_m\) 给出（命题 \ref{prop:fold-conditional-expectation}）；“扩展保存”的显式可逆化由定义 \ref{def:pom-fold-prime-lift} 与命题 \ref{prop:pom-fold-prime-lift-injective} 给出；无上界标签轴的 \(L^2\) 统一表示见命题 \ref{prop:pom-profinite-artin-hilbert}。
-\end{remark}
 
 \paragraph{对象—运算—定理—证明（POM 口径）}
 \begin{itemize}
@@ -209,10 +176,6 @@ X_m:=\{w\in\{0,1\}^m:\ \text{不含子词 }11\}.
 \end{enumerate}
 \end{remark}
 
-\begin{remark}[ZFC 内的形式化位置（仅作定位）]\label{rem:pommin-zfc-position}
-\(\mathrm{POM}_{\min}\) 的全部原语均为标准集合论对象（集合、\(\sigma\)-代数、可测映射、有限词、有限重写系统、有限矩阵与行列式/迹等），因此可在 ZFC 内部直接形式化。
-本文使用 \(\mathrm{POM}_{\min}\) 作为“生成—规约—审计”的接口基线，而非作为集合论层面的替代公理体系。
-\end{remark}
 
 \subsection{扫描—投影生成器（SPG）}\label{subsec:pom-spg}
 \begin{definition}[扫描—投影生成器]\label{def:pom-spg}

@@ -97,7 +97,7 @@ def write_table(rows: List[Resonance], *, m_min: int, m_max: int, out_path: Path
     lines.append("\\setlength{\\tabcolsep}{6pt}")
     lines.append(
         (
-            "\\caption{Fibonacci--Lie 共振梯：稳定类型维数 $|X_m|=F_{m+2}$ 在小窗口上出现对经典紧李代数维数的精确共振。"
+            "\\caption{Fibonacci--Lie 共振梯：稳定类型维数 $|X_m|=F_{m+2}$ 在小窗口上出现对紧李代数维数的精确共振。"
             "本表列出在 $m\\in[%d,%d]$ 的穷举扫描里出现的全部精确共振点（其余 $m$ 不满足等号）。}"
         )
         % (m_min, m_max)
@@ -238,4 +238,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

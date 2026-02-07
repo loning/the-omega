@@ -1,110 +1,24 @@
-\subsubsection{桥公理升级：\texorpdfstring{$\mathbf{Bridge^{RH}}$}{BridgeRH} 与经典 RH 的编译}\label{subsec:bridge-rh-axiom-upgrade}
-注 \ref{rem:zetaK-commuting-diagram} 与注 \ref{rem:two_layer_bridge_package_completed_minH} 已在有限核口径内把 prime-like（primitive/Euler product）侧与 trace/谱侧锁成严格交换图，并把完成化后的临界线几何压缩为 unitary slice 上的谱穿越问题（并联 Hankel 最小实现的回归指纹）。与此同时，投影本体数学（POM）的异常签名接口进一步把“不能严格交换”的部分最小压缩为 \(\mathbf{PW}\) 的可组合残差类（定义 \ref{def:pom-anom-signature}；小节 \ref{subsec:pom-anom-cohomology}）：异常在改变规约路径时只变一个 coboundary，其 \(2\)-上同调类可取商并成为路径不变量。综上，本文关于 prime-like \(\leftrightarrow\) trace 的对齐现已具备三块“硬接口”：有限核严格交换图、异常签名（\(2\)-上同调类）以及本小节的 \(\mathbf{Bridge^{RH}}\) 合同接口。
-本小节给出一组最小但闭合的“桥公理升级版”\(\mathbf{Bridge^{RH}}\)，其目标不是在有限核口径内复述 toy-(G)RH，而是把“经典 RH（黎曼 \(\zeta\) 的非平凡零点全在 \(\Re(s)=\tfrac12\)）”编译为本文体系内的一个条件定理，并将一个关键升级点——“每一个真实零点都是 \(\mathbf{PW}\)-可寻址（不为 \(\mathsf{NULL}\)）”——显式写入桥合同。
+\subsubsection{桥公理升级：\texorpdfstring{$\mathbf{Bridge^{RH}}$}{BridgeRH} 与 RH 的编译}\label{subsec:bridge-rh-axiom-upgrade}
+本小节给出 \(\mathbf{Bridge^{RH}}\) 的最小闭合合同：把 RH 目标编译为体系内条件定理，并将“零点事件必须在 \(\mathbf{PW}\) 中可寻址且非 \(\mathsf{NULL}\)”作为显式条款写入桥接接口。
 
-\paragraph{经典完成化对象}
-记经典完成化函数
+\paragraph{完成化对象}
+记完成化函数
 \[
 \Xi_{\zeta}(s)
 :=\frac12\,s(s-1)\,\pi^{-s/2}\Gamma\!\left(\frac{s}{2}\right)\zeta(s),
 \]
-其零点集恰为黎曼 \(\zeta\) 的非平凡零点（含重数）。经典 RH 可表述为：
+其零点集恰为黎曼 \(\zeta\) 的非平凡零点（含重数）。RH 可表述为：
 \[
 \Xi_{\zeta}(s_0)=0,\ 0<\Re(s_0)<1\quad\Longrightarrow\quad \Re(s_0)=\tfrac12.
 \]
 
-\begin{remark}[黎曼猜想的完全去无穷化等价式：坐标门、圆盘零点禁入与 Jensen 缺陷]\label{rem:bridge-rh-disk-jensen}
-除正文 \S\ref{subsec:xi-from-self-dual} 的 Dirichlet 截面/unitary slice 口径外，附录 \ref{app:unit-circle-phase-gate} 还给出一条把“无穷高度 \(t\to\pm\infty\)”严格压缩为边界端点的无参坐标门。为便于在正文直接调用，此处将与经典 RH 等价相关的接口组织为四段闭式链路（细节与证明见附录 \ref{app:unit-circle-phase-gate} 的 \S\ref{subsec:unit-circle-phase-lift}、\S\ref{subsec:unit-disk-rh-equivalence}--\S\ref{subsec:unit-disk-inner-outer} 与 \S\ref{subsec:unit-circle-scale-linearization}）：
-\par\noindent\textbf{(1.1 去无穷化的坐标门：单位圆面积相位门).}
-定义
-\[
-\vartheta(t):=2\arctan(t)\in(-\pi,\pi),
-\qquad
-\upsilon(t):=\frac{\vartheta(t)}{2\pi}=\frac{1}{\pi}\arctan(t)\in\Bigl(-\tfrac12,\tfrac12\Bigr),
-\qquad
-\iota(t):=e^{\mathrm{i}\vartheta(t)}=\frac{1+\mathrm{i}t}{1-\mathrm{i}t}\in\TT.
-\]
-则 \(t\to\pm\infty\Rightarrow \iota(t)\to-1\)，从而把“无穷远”压缩为单位圆边界端点 \(w=-1\)，且反投影为
-\(
-t=\tan(\pi\upsilon)=\tan(\vartheta/2)
-\)。
-并且 Haar 圆周平均与 Cauchy 权重实轴积分严格对应：
-\[
-\frac{\dd\vartheta}{2\pi}=\dd\upsilon=\frac{1}{\pi}\frac{\dd t}{1+t^2}
-\qquad(\text{附录 \S\ref{subsec:unit-circle-phase-lift}}).
-\]
-
-\par\noindent\textbf{(1.2 去无穷化的目标函数：圆盘化完成化 \(\Xi_{\zeta}\)).}
-令 Cayley 变换
-\(
-w=\mathcal{C}(t):=\frac{1+\mathrm{i}t}{1-\mathrm{i}t}
-\)
-把 \(t\in\RR\) 压到单位圆（\(t\to\pm\infty\Rightarrow w\to-1\)），其逆映射为
-\(
-t=\mathcal{C}^{-1}(w):=-\mathrm{i}\frac{w-1}{w+1}
-\)。
-在圆盘坐标中令
-\[
-s(w):=\tfrac12+\mathrm{i}\mathcal{C}^{-1}(w)=\tfrac12+\frac{w-1}{w+1},
-\qquad
-F_{\zeta}(w):=\Xi_{\zeta}\!\bigl(s(w)\bigr)\qquad(|w|<1).
-\]
-由于 \(s(w)\) 在 \(|w|<1\) 内全纯且唯一极点 \(w=-1\) 位于边界，故 \(F_{\zeta}\) 在开圆盘内解析；并且当 \(w=e^{\mathrm{i}\theta}\neq-1\) 时有 \(\mathcal{C}^{-1}(e^{\mathrm{i}\theta})=\tan(\theta/2)\)，从而
-\(
-F_{\zeta}(e^{\mathrm{i}\theta})=\Xi_{\zeta}(\tfrac12+\mathrm{i}\tan(\theta/2))
-\)。
-\par\noindent\textbf{(1.3 去无穷化后的等价命题：盘内零点禁入、Jensen 缺陷恒零与内因子平凡化（条件口径）).}
-则经典 RH 等价于 \(F_{\zeta}\) 在开单位圆盘内无零点（定理 \ref{thm:app-rh-iff-disk-zero-free}）。
-进一步，对任意 \(\varrho\in(0,1)\) 定义 Jensen 缺陷
+\begin{remark}[去无穷化等价接口：圆盘零点禁入与 Jensen 缺陷]\label{rem:bridge-rh-disk-jensen}
+附录 \ref{app:unit-circle-phase-gate} 给出完整细节；本节仅调用结论接口：通过 Cayley 坐标可把 \(\Xi_\zeta\) 搬运为开圆盘内解析函数 \(F_\zeta\)，并把 RH 判据转写为“盘内无零点”（定理 \ref{thm:app-rh-iff-disk-zero-free}）。等价地，可用 Jensen 缺陷
 \[
 D_{\zeta}(\varrho)
-=\frac{1}{2\pi}\int_{0}^{2\pi}\log|F_{\zeta}(\varrho e^{\mathrm{i}\theta})|\,\dd\theta-\log|F_{\zeta}(0)|,
+=\frac{1}{2\pi}\int_{0}^{2\pi}\log|F_{\zeta}(\varrho e^{\mathrm{i}\theta})|\,\dd\theta-\log|F_{\zeta}(0)|
 \]
-则 RH 等价于对一切 \(\varrho\in(0,1)\) 有 \(D_{\zeta}(\varrho)=0\)（推论 \ref{cor:app-rh-iff-jensen-defect-zero}）。
-并且若 \(\{a_k\}\) 为 \(F_{\zeta}\) 在 \(|w|<\varrho\) 内的零点（按重数），则 Jensen 公式给出
-\[
-D_{\zeta}(\varrho)=\sum_{|a_k|<\varrho}\log\!\Bigl(\frac{\varrho}{|a_k|}\Bigr)\ge 0
-\qquad(\text{命题 \ref{prop:app-jensen-formula-defect}}),
-\]
-且 \(D_{\zeta}(\varrho)=0\) 当且仅当 \(|w|<\varrho\) 内无零点。
-在 Hardy/Smirnov 条件口径下（附录 \S\ref{subsec:unit-disk-inner-outer}），\(F_{\zeta}\)（或其归一化版本）可作内外因子分解
-\(
-F_{\zeta}=B\cdot S\cdot O
-\)；
-从而 RH 等价于 \(B\equiv 1\)（并在排除奇异内因子时进一步等价于 \(S\equiv 1\)）。
-该等价式把 “\(t\to\infty\)” 的无穷高度问题，转写为边界点 \(w=-1\) 邻域的外因子控制与盘内零点数据是否为空的判定。
-\par
-在 Hardy/Smirnov 的标准正则性口径下（此处仅作结构对照），\(F_{\zeta}\) 还可被组织为典型的内外因子分解
-\[
-F_{\zeta}=B\cdot S\cdot O,
-\]
-其中 \(B\) 为由盘内零点集合 \(\{a_k\}\subset\mathbb{D}\) 生成的 Blaschke 内因子，\(S\) 为由边界奇异测度生成的奇异内因子，\(O\) 为外因子（由边界模长给出）。
-于是“盘内零点数据为空”可等价重述为 \(B\equiv 1\)；在更强正则性假设下还可进一步要求 \(S\equiv 1\)。
-在本文语言中，这一分解强调了一个刚性障碍：内因子（零点数据）并不由边界模长决定，因而若希望在 \(\mathbf{PW}\)/unitary-slice 的可见轴上核验“盘内零点禁入”，就必须通过正交记录轴把该隐藏数据外置为可审计对象；假设 \ref{assump:bridge-rh} 即是对该外置桥接的合同化编译。
-
-\par\noindent\textbf{(1.4 分辨率无穷的去无穷化：端点精度势与尺度链线性化).}
-“分辨率增长”在端点邻域等价于尺度链的递归细化。附录 \S\ref{subsec:unit-circle-scale-linearization} 给出其严格线性化：引入右半平面坐标
-\(
-\mathfrak{w}(u)=\frac{1+u}{1-u}
-\)
-与伸缩诱导的 Möbius 自同构 \(\psi_m\)，则
-\(
-\mathfrak{w}(\psi_m(u))=\mathfrak{w}(u)/m
-\)
-并定义端点精度势 \(y(u)=-\log|\mathfrak{w}(u)|\) 得到加法律
-\(
-y(\psi_m(u))=y(u)+\log m
-\)。
-在该线性化坐标上，尺度转移算子
-\(
-(\mathcal{T}G)(\mathfrak{w})=\sum_{m\ge 1}\frac{1}{m}G(\mathfrak{w}/m)
-\)
-在 Mellin 频域满足对角化
-\(
-\mathcal{M}(\mathcal{T}G)(s)=\zeta(s)\,\mathcal{M}G(s)
-\)
-并可进一步写出 Euler 乘积的算子分解（式 \eqref{eq:scale-euler-operator-product}）。
-因此，“无限细化/无限尺度链”不再作为外部极限过程出现，而被封装为端点时间 \(y\) 与其频域符号 \(\zeta\) 的结构对象。
+在 \(\varrho\in(0,1)\) 上恒为 \(0\) 来表述（推论 \ref{cor:app-rh-iff-jensen-defect-zero}）。在 Hardy/Smirnov 口径下，内外因子分解 \(F_\zeta=B\cdot S\cdot O\) 将该判据归结为内因子平凡性；这正是桥合同中“隐藏零点数据需外置为可审计轴”的来源。
 \end{remark}
 
 \paragraph{当前仍然存在的问题（阻断闭合的关键缺口）}
@@ -116,7 +30,7 @@ y(\psi_m(u))=y(u)+\log m
   具有严格正项结构；任何盘内零点都会在边界层留下不可消去的正下界（命题 \ref{prop:app-jensen-single-zero-lower-bound}）。因此证明目标必须是排除盘内零点数据本身，而非诉诸某种均值抵消机制。
   \item \textbf{(2.3 内外因子分解属于条件口径，且内因子对边界模长不可见)} Hardy/Smirnov 类下的分解 \(F_{\zeta}=B\cdot S\cdot O\) 依赖函数类假设，且边界上几乎处处 \(|BS|=1\) 使内因子数据无法由 \(|F_{\zeta}|\) 直接读取（附录 \S\ref{subsec:unit-disk-inner-outer}）。因此存在两层缺口：其一是证明 \(F_{\zeta}\)（或其归一化版本）确属该类；其二是即便属该类，仍需额外刚性输入以强迫 \(B\equiv 1\)（并进一步排除 \(S\)）。
   \item \textbf{(2.4 尺度链符号已封装，但与缺陷恒零之间缺少闭合推导桥)} 端点精度势 \(y\) 的加法律与尺度转移算子 \(\mathcal{T}\) 的 Mellin 对角化，确实把无限尺度链封装为 \(\zeta\) 的乘子符号；但仍缺少一条闭合论证：将“尺度链的符号结构”转化为“Jensen 缺陷恒零”或“内因子平凡”的刚性结论。具体而言，需要构造一个与 \(D_{\zeta}\) 或 Blaschke 数据同构的可审计对象，使其在 \(\mathcal{T}/\mathcal{K}\) 作用下满足足够强的正性/可逆性/单调性，从而推出盘内零点不可能存在。
-  \item \textbf{(2.5 最强去无穷化路线仍是条件性的)} 文稿提出 \(\mathbf{Bridge^{RH}}\) 合同，把经典 RH 编译为体系内条件定理，并把“每个真实零点 PW-可寻址（不为 \(\mathsf{NULL}\)）”写入桥公理（假设 \ref{assump:bridge-rh}）。在自对偶并进一步假设 \(\Delta(z,u)=\det(I-zB(u))\) 来自有限维矩阵族时，临界线零点可转写为谱穿越判据（命题 \ref{prop:xi-unitary-slice-spectral-crossing}）。该路线在形式上实现极致有限化，但核心困难转移为：如何构造并核验满足桥合同的 \(B(u)\)（以及与经典 \(\Xi_{\zeta}\) 的严格一致性），从而闭合该编译链路。
+  \item \textbf{(2.5 最强去无穷化路线仍是条件性的)} 文稿提出 \(\mathbf{Bridge^{RH}}\) 合同，把 RH 编译为体系内条件定理，并把“每个真实零点 PW-可寻址（不为 \(\mathsf{NULL}\)）”写入桥公理（假设 \ref{assump:bridge-rh}）。在自对偶并进一步假设 \(\Delta(z,u)=\det(I-zB(u))\) 来自有限维矩阵族时，临界线零点可转写为谱穿越判据（命题 \ref{prop:xi-unitary-slice-spectral-crossing}）。该路线在形式上实现极致有限化，但核心困难转移为：如何构造并核验满足桥合同的 \(B(u)\)（以及与 \(\Xi_{\zeta}\) 的严格一致性），从而闭合该编译链路。
 \end{itemize}
 
 \begin{remark}[unitary slice 的实化：单位圆判据 \(\Longleftrightarrow\) Cayley 超双曲判据]\label{rem:bridge-rh-cayley-hyperbolicity}
@@ -141,18 +55,18 @@ C_d\!\bigl(S(x)\bigr)=S\!\bigl(\tau_d(x)\bigr)
 配合附录 \ref{subsec:unitary-two-integer-certificate} 的二整数 unitary 证书协议，\(\mathbf{Bridge^{RH}}\) 的可验证负担可从“连续三角参数域”降为“有理参数域 + 可回放证书”的机械化核验任务。
 \end{remark}
 
-\begin{assumption}[\texorpdfstring{$\mathbf{Bridge^{RH}}$}{BridgeRH}：经典零点的可寻址桥接合同]\label{assump:bridge-rh}
+\begin{assumption}[\texorpdfstring{$\mathbf{Bridge^{RH}}$}{BridgeRH}：零点的可寻址桥接合同]\label{assump:bridge-rh}
 存在一个由本文 SPG/\(\mathbf{PW}\) 管线诱导的二变量行列式对象与其极限规格，使得：
 \begin{enumerate}
-  \item \textbf{（经典目标桥接）}
+  \item \textbf{（目标桥接）}
   存在 \(L>1\) 以及一族（有限层可审计、极限可进入无穷维的）核对象，使其二变量行列式
   \(\Delta(z,u)=\det(I-zB(u))\)（有限维或 Fredholm 口径，定义 \ref{def:fredholm-determinant}）
   满足自对偶 \(\Delta(z,u)=\Delta(uz,1/u)\)，并且其完成化截面
   \(\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})\)
-  在整个复平面上与经典 \(\Xi_{\zeta}(s)\) 一致（或至少具有相同零点集与重数）。
+  在整个复平面上与 \(\Xi_{\zeta}(s)\) 一致（或至少具有相同零点集与重数）。
   桥接核验可按命题 \ref{prop:real-arc-sufficiency-unit-disk} 降维：只需在真实协议路径 \(r\uparrow 1\) 的实轴区间 \((0,1)\) 上逐点匹配即可推出单位圆盘内的全盘恒等（从而为极限规格提供解析刚性护栏）。
   \item \textbf{（零点可寻址桥接）}
-  对任意满足 \(\Xi_{\zeta}(s_0)=0\) 且 \(0<\Re(s_0)<1\) 的零点 \(s_0\)，存在一个投影词地址 \(W(s_0)\in\mathbf{PW}\)，使其在本文可审计片段内可规约到接口正规形并给出非空值读出（不为 \(\mathsf{NULL}\)，见第 \ref{sec:recursive-addressing} 节），且该读出在闭环接口上验证 \(\Xi_{\Delta,L}(s_0)=0\)（从而把“经典零点事件”接入地址系统）。
+  对任意满足 \(\Xi_{\zeta}(s_0)=0\) 且 \(0<\Re(s_0)<1\) 的零点 \(s_0\)，存在一个投影词地址 \(W(s_0)\in\mathbf{PW}\)，使其在本文可审计片段内可规约到接口正规形并给出非空值读出（不为 \(\mathsf{NULL}\)，见第 \ref{sec:recursive-addressing} 节），且该读出在闭环接口上验证 \(\Xi_{\Delta,L}(s_0)=0\)（从而把“零点事件”接入地址系统）。
   \item \textbf{（unitary-slice 类型锁定）}
   任意“零点事件”的可核对读出必须走 unitary slice 的审计接口：即其核验可归约为命题 \ref{prop:xi-unitary-slice-spectral-crossing} 的谱穿越口径（\(\theta\)-扫描），从而零点地址的参数必满足 \(|u_L(s_0)|=1\)。
   \item \textbf{（NonCancel/Fredholm-HTF 规格）}
@@ -160,8 +74,8 @@ C_d\!\bigl(S(x)\bigr)=S\!\bigl(\tau_d(x)\bigr)
 \end{enumerate}
 \end{assumption}
 
-\begin{theorem}[\texorpdfstring{$\mathbf{Bridge^{RH}}$}{BridgeRH} \(\Rightarrow\) 经典 RH（条件版）]\label{thm:bridge-rh-implies-classical-rh}
-在假设 \ref{assump:bridge-rh} 下，经典 RH 成立：任意满足 \(\Xi_{\zeta}(s_0)=0\) 且 \(0<\Re(s_0)<1\) 的零点 \(s_0\) 必满足 \(\Re(s_0)=\tfrac12\)。
+\begin{theorem}[\texorpdfstring{$\mathbf{Bridge^{RH}}$}{BridgeRH} \(\Rightarrow\) RH（条件版）]\label{thm:bridge-rh-implies-classical-rh}
+在假设 \ref{assump:bridge-rh} 下，RH 成立：任意满足 \(\Xi_{\zeta}(s_0)=0\) 且 \(0<\Re(s_0)<1\) 的零点 \(s_0\) 必满足 \(\Re(s_0)=\tfrac12\)。
 \end{theorem}
 
 \begin{proof}
@@ -182,4 +96,3 @@ C_d\!\bigl(S(x)\bigr)=S\!\bigl(\tau_d(x)\bigr)
   \item \textbf{寄存器最小性与径向模式排除仍需严格化：}推论 \ref{cor:fold-tail-patch-incomplete} 与定理 \ref{thm:fold-gauge-anomaly-max} 已给出“局部末端补丁不可能补足跨分辨率一致性”的硬下界，并在命题 \ref{prop:xi-null-three-way}--注 \ref{rem:xi-register-minimality-no-tail-patch} 中将其解释为记录轴的非局部强迫；要将其提升为“\(\mathbf{PW}\) 闭包内不允许出现与 \(\theta\) 解耦的连续径向寄存器”的严格定理，还需把 \(\mathbf{PW}\) 的资源预序/代价函子与该全域下界在同一逻辑层面拼接。
 \end{enumerate}
 \end{remark}
-
