@@ -158,21 +158,27 @@ def write_outputs(
     lines.append("\\begin{aligned}")
     lines.append(
         "\\frac{\\rho_{3,2,2}}{\\lambda}"
-        f"&\\approx {_tex_float(ratio['3x2x2'], 12)},\\qquad "
+        f"&\\approx {_tex_float(ratio['3x2x2'], 12)},\\\\"
+    )
+    lines.append(
         "-\\log\\!\\left(\\rho_{3,2,2}/\\lambda\\right)"
-        f"\\approx {_tex_float(gap['3x2x2'], 12)},\\\\"
+        f"&\\approx {_tex_float(gap['3x2x2'], 12)},\\\\"
     )
     lines.append(
         "\\frac{\\rho_{3,3,3}}{\\lambda}"
-        f"&\\approx {_tex_float(ratio['3x3x3'], 12)},\\qquad "
+        f"&\\approx {_tex_float(ratio['3x3x3'], 12)},\\\\"
+    )
+    lines.append(
         "-\\log\\!\\left(\\rho_{3,3,3}/\\lambda\\right)"
-        f"\\approx {_tex_float(gap['3x3x3'], 12)},\\\\"
+        f"&\\approx {_tex_float(gap['3x3x3'], 12)},\\\\"
     )
     lines.append(
         "\\frac{\\rho_{3,3,5}}{\\lambda}"
-        f"&\\approx {_tex_float(ratio['3x3x5'], 12)},\\qquad "
+        f"&\\approx {_tex_float(ratio['3x3x5'], 12)},\\\\"
+    )
+    lines.append(
         "-\\log\\!\\left(\\rho_{3,3,5}/\\lambda\\right)"
-        f"\\approx {_tex_float(gap['3x3x5'], 12)},\\\\"
+        f"&\\approx {_tex_float(gap['3x3x5'], 12)},\\\\"
     )
     lines.append(
         "h_2"
@@ -184,17 +190,21 @@ def write_outputs(
         "2h_2"
         f"&\\approx {_tex_float(two_h2, 12)},\\qquad "
         "h_3-2h_2"
-        f"\\approx {_tex_float(diff_h, 12)},\\qquad "
+        f"\\approx {_tex_float(diff_h, 12)},\\\\"
+    )
+    lines.append(
         "\\frac{|h_3-2h_2|}{2h_2}"
-        f"\\approx {_tex_float(rel_h, 12)},\\\\"
+        f"&\\approx {_tex_float(rel_h, 12)},\\\\"
     )
     lines.append(
         "d_2:=\\frac{4}{r_2}"
         f"&\\approx {_tex_float(d2, 12)},\\qquad "
         "d_3:=\\frac{8}{r_3}"
-        f"\\approx {_tex_float(d3, 12)},\\qquad "
+        f"\\approx {_tex_float(d3, 12)},\\\\"
+    )
+    lines.append(
         "\\frac{d_3}{d_2^2}"
-        f"\\approx {_tex_float(ratio_d, 12)},\\\\"
+        f"&\\approx {_tex_float(ratio_d, 12)},\\\\"
     )
     lines.append(
         "D_2:=\\frac{h_2}{\\log\\varphi}"

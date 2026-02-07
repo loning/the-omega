@@ -362,7 +362,7 @@ def write_outputs(
     tab_lines.append("$|\\mathcal{O}|$ & representative & $\\mathrm{wt}$ & orbit $\\mathcal{O}$\\\\")
     tab_lines.append("\\midrule")
     for o in orbits:
-        tab_lines.append(f"{o.size} & \\texttt{{{o.rep}}} & {o.weight} & ${_tex_tt_set(o.words)}$\\\\")
+        tab_lines.append(f"{o.size} & \\texttt{{{o.rep}}} & {o.weight} & {_tex_tt_set(o.words)}\\\\")
     tab_lines.append("\\bottomrule")
     tab_lines.append("\\end{tabular}")
     tab_lines.append("\\end{table}")
@@ -388,18 +388,18 @@ def write_outputs(
     part_lines.append("\\midrule")
     part_lines.append(
         r"$X^{(2)}_6:=\{w\in X_6^{\mathrm{cyc}}:\ \mathrm{wt}(w)=2\}$"
-        + f" & {len(cyc_wt2)} & ${_tex_tt_set(cyc_wt2)}$\\\\"
+        + f" & {len(cyc_wt2)} & {_tex_tt_set(cyc_wt2)}\\\\"
     )
     part_lines.append(
         r"$X^{(1)}_6:=\{w\in X_6^{\mathrm{cyc}}:\ \mathrm{wt}(w)=1\}$"
-        + f" & {len(cyc_wt1)} & ${_tex_tt_set(cyc_wt1)}$\\\\"
+        + f" & {len(cyc_wt1)} & {_tex_tt_set(cyc_wt1)}\\\\"
     )
     part_lines.append(
         r"$X^{(L)}_6:=\{w\in X_6^{\mathrm{cyc}}:\ \mathrm{wt}(w)\in\{0,3\}\}$"
-        + f" & {len(cyc_wt0_or_3)} & ${_tex_tt_set(cyc_wt0_or_3)}$\\\\"
+        + f" & {len(cyc_wt0_or_3)} & {_tex_tt_set(cyc_wt0_or_3)}\\\\"
     )
     part_lines.append(
-        r"$X^{(R)}_6:=X_6^{\mathrm{bdry}}$" + f" & {len(bdry)} & ${_tex_tt_set(bdry)}$\\\\"
+        r"$X^{(R)}_6:=X_6^{\mathrm{bdry}}$" + f" & {len(bdry)} & {_tex_tt_set(bdry)}\\\\"
     )
     part_lines.append("\\bottomrule")
     part_lines.append("\\end{tabular}")

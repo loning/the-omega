@@ -259,9 +259,9 @@ def _write_eq_tex(path: Path) -> None:
     lines.append("\\Sigma_{SO(10)}&=\\Sigma_{\\mathrm{SM}}\\setminus\\{4\\}\\cup\\{11\\},\\\\")
     lines.append(
         "|X_{11}^{\\mathrm{bdry}}|-|X_{4}^{\\mathrm{bdry}}|"
-        "=F_9-F_2=34-1=33"
-        "=45-12."
+        "&=F_9-F_2=34-1=33\\\\"
     )
+    lines.append("&=45-12.")
     lines.append("\\end{aligned}")
     lines.append("\\]")
     lines.append("")

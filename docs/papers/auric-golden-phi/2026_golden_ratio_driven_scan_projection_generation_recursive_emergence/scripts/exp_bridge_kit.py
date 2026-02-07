@@ -124,10 +124,13 @@ def _write_bridgekit_fingerprint_tex(
         "\\displaystyle "
         "\\eta^{\\mathrm{raw}}_3"
         ":=\\frac{s_1^2+s_2^2+s_3^2}{\\sum_i s_i^2}"
-        f"&\\approx {eta3_raw:.12g},\\qquad "
+        f"&\\approx {eta3_raw:.12g},\\\\"
+    )
+    lines.append(
+        "\\displaystyle "
         "\\eta^{\\mathrm{cen}}_3"
         ":=\\frac{(s^{\\mathrm{cen}}_1)^2+(s^{\\mathrm{cen}}_2)^2+(s^{\\mathrm{cen}}_3)^2}{\\sum_i (s^{\\mathrm{cen}}_i)^2}"
-        f"\\approx {eta3_centered:.12g}.\\\\"
+        f"&\\approx {eta3_centered:.12g}.\\\\"
     )
     lines.append("\\end{aligned}")
     lines.append("\\]")

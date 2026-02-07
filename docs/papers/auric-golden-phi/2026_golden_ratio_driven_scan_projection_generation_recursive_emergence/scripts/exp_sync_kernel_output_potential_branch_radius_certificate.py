@@ -520,7 +520,7 @@ def main() -> None:
         jout.write_text(json.dumps(asdict(payload), indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
         # Build TeX snippet (Chinese, for the paper).
-        def _poly_multiline_tex(expr: sp.Expr, var: sp.Symbol, *, max_line_len: int = 110) -> List[str]:
+        def _poly_multiline_tex(expr: sp.Expr, var: sp.Symbol, *, max_line_len: int = 75) -> List[str]:
             """Format an integer polynomial as multiple TeX lines.
 
             The returned list is intended to be used inside an amsmath aligned block.

@@ -259,7 +259,7 @@ def _write_tex(path: Path, *, c: float, d: float, e: float, f: float, rho_roots:
     lines.append("\\]")
     lines.append("结合显式因子 $(1-uz^2)$ 诱导的两条特征值 $\\pm\\sqrt u$（推论~\\ref{cor:real-input-40-factor-sqrtu-eigs}），得到非零谱的 $\\sqrt u$ 归一化谱像为 $\\{\\pm1\\}\\cup\\{\\rho_j\\}_{j=1}^8$。")
     lines.append("")
-    lines.append("\\noindent\\emph{可复现性：}常数与根集合由脚本 \\texttt{scripts/exp\\_real\\_input\\_40\\_output\\_potential\\_puiseux\\_asymptotics.py} 从 $G(\\lambda,u)$ 的显式形式逐阶比较系数并数值核验导出。")
+    lines.append("\\noindent\\emph{可复现性：}常数与根集合由脚本 \\path{scripts/exp_real_input_40_output_potential_puiseux_asymptotics.py} 从 $G(\\lambda,u)$ 的显式形式逐阶比较系数并数值核验导出。")
 
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
