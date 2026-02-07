@@ -1,7 +1,7 @@
-\section{Hankel 最小实现与复杂度护栏：迹/primitive 序列的可审计维数证书}\label{app:hankel-minreal-guardrails}
+\section{Hankel 最小实现与复杂度护栏：迹/primitive 序列的可核验维数证书}\label{app:hankel-minreal-guardrails}
 
 本附录补充一条与 BridgeRH 的 (B1)(B4) 兼容、且在有限数据上即可输出的“复杂度护栏”：
-对任何由核侧读出得到的序列对象（例如迹序列、primitive 分层谱、或其派生的可观测序列），Hankel 秩等于其最小线性 realization 维数；因此它既是\textbf{去骨架/残差}的回归指纹，也是“有限维模型无法承载经典尺度密度”的可审计否证通道。
+对任何由核侧读出得到的序列对象（例如迹序列、primitive 分层谱、或其派生的可观测序列），Hankel 秩等于其最小线性 realization 维数；因此它既是\textbf{去骨架/残差}的回归指纹，也是“有限维模型无法承载经典尺度密度”的可核验否证通道。
 
 \subsection{Hankel 秩定理：序列的最小线性 realization}\label{subsec:hankel-rank-minimal}
 设 $k$ 为域（例如 $\QQ$ 或 $\RR$）。给定序列 $a=(a_n)_{n\ge 0}\subset k$，定义 Hankel 矩阵
@@ -53,8 +53,8 @@ $$
 上下界合并得结论。证毕。
 \end{proof}
 
-\subsection{从有限样本恢复最小 realization（可复算协议）}\label{subsec:hankel-realization-protocol}
-定理 \ref{thm:hankel-rank-minimal} 的构造性部分可被组织为一个完全可复算的协议：给出有限段样本，即可恢复一个最小 realization 矩阵 $A$ 并作为审计物输出。
+\subsection{从有限样本恢复最小 realization（可复算程序）}\label{subsec:hankel-realization-protocol}
+定理 \ref{thm:hankel-rank-minimal} 的构造性部分可被组织为一个完全可复算的程序：给出有限段样本，即可恢复一个最小 realization 矩阵 $A$ 并作为可核验输出给出。
 
 \begin{algorithm}[Hankel 最小 realization 提取（最小模板）]\label{alg:hankel-minreal-extract}
 \textbf{输入：}序列样本 $(a_0,a_1,\dots,a_{M})\subset k$。\\
@@ -81,20 +81,20 @@ $$
 对有限维核 $T$，其迹序列 $a_n=\Tr(T^n)$ 是有限个指数项的线性组合，因此 $a$ 的 Hankel 秩被 $\dim(T)$ 上界控制。
 因此，若某条“桥接实现”在提升分辨率/高度/通道复杂度时仍输出\textbf{有界}的 Hankel 最小维数，则其可承载的谱自由度被结构性限制，无法在极限规格中复现经典 $\Xi_\zeta$ 所需的尺度密度与细结构。
 \par
-在 BridgeRH 义务组 (B1.c) 的识别口径中，可将 Hankel 最小实现作为一个与“Rouch{\'e} 有限高度证书/Abel--Weil 刚性”正交的回归指纹：
-先用有限区域证书锁定零点计数一致性（附录 \ref{app:godel-wsos-rouche}），再用 Hankel 维数增长排除“有限骨架强迫的伪一致”，从而把“逼近经典对象”从数值拟合提升为可审计的结构性约束链。
+在 BridgeRH 条件组 (B1.c) 的识别设定中，可将 Hankel 最小实现作为一个与“Rouch{\'e} 有限高度证书/Abel--Weil 刚性”正交的回归指纹：
+先用有限区域证书锁定零点计数一致性（附录 \ref{app:godel-wsos-rouche}），再用 Hankel 维数增长排除“有限骨架强迫的伪一致”，从而把“逼近经典对象”从数值拟合提升为可核验的结构性约束链。
 \end{remark}
 
-\begin{remark}[可审计替代：Hankel-秩稳定性给出的地址完备性充分判据（ACC-Rank）]\label{rem:acc-rank-address-completeness}
-在 BridgeRH 的语义中，“健全性（soundness，可寻址 \(\Rightarrow\) 类型正确）”可由 unitary slice 类型安全与拒绝链给出；而“完备性（completeness，所有目标事件都可寻址且非 \(\NULL\)）”通常是最难以审计的部分。
+\begin{remark}[可核验替代：Hankel-秩稳定性给出的地址完备性充分判据（ACC-Rank）]\label{rem:acc-rank-address-completeness}
+在 BridgeRH 的语义中，“健全性（soundness，可寻址 \(\Rightarrow\) 类型正确）”可由 unitary slice 类型安全与拒绝链给出；而“完备性（completeness，所有目标事件都可寻址且非 \(\NULL\)）”通常是最难以核验的部分。
 \par
-在可执行实现口径中，可把这一缺口降格为一个可回归测试的后端稳定性判据：沿 unitary slice 的 \(\theta\)-扫描与层级/分辨率提升 \(\ell\uparrow\infty\)，对每个 \((\ell,\theta)\) 计算某个闭层读出序列（例如迹序列 \(a^{(\ell)}_n(\theta)=\Tr(U_{\ell}(\theta)^n)\)，或等价的 resolvent-trace 片段），并定义其最小 realization 维数
+在可执行实现设定中，可把这一缺口降格为一个可回归测试的后端稳定性判据：沿 unitary slice 的 \(\theta\)-扫描与层级/分辨率提升 \(\ell\uparrow\infty\)，对每个 \((\ell,\theta)\) 计算某个闭层读出序列（例如迹序列 \(a^{(\ell)}_n(\theta)=\Tr(U_{\ell}(\theta)^n)\)，或等价的 resolvent-trace 片段），并定义其最小 realization 维数
 $$
 d^{(\ell)}_{\min}(\theta):=\mathrm{rank}\,H\!\bigl(a^{(\ell)}_\bullet(\theta)\bigr)
 $$
 （定理 \ref{thm:hankel-rank-minimal}）。
 若存在常数 \(d_\ast\) 使得对所有足够大层级 \(\ell\) 与所有相位采样 \(\theta\) 都有 \(d^{(\ell)}_{\min}(\theta)\le d_\ast\)，并且该上界在加密 \(\theta\) 网格与继续提升层级时保持稳定，则可将“地址层不再需要引入新的可见自由度”的完备性要求视为被证书化满足：任何目标零点事件若仍读出为 \(\NULL\)，将迫使后端 realization 维数在更高规格下继续增长，从而与稳定性假设相冲突。
 \par
-该路线把完备性（completeness）从纯存在性陈述替换为一条可审计的“维数稳定性”检查；其审计对象为有限数据证书（Hankel 主子块秩与提取的 \((u,A,v)\)），并与本附录的算法 \ref{alg:hankel-minreal-extract} 直接兼容。
+该路线把完备性（completeness）从纯存在性陈述替换为一条可核验的“维数稳定性”检查；其核验对象为有限数据证书（Hankel 主子块秩与提取的 \((u,A,v)\)），并与本附录的算法 \ref{alg:hankel-minreal-extract} 直接兼容。
 \end{remark}
 

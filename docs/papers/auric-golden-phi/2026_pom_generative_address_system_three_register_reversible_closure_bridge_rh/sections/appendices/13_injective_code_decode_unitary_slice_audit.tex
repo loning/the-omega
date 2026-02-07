@@ -1,9 +1,9 @@
-\section{注入/编码的完全形式化（code/decode）与 unitary slice 审计接口的数值证书协议}\label{app:inject-code-audit}
+\section{注入/编码的完全形式化（code/decode）与 unitary slice 核验下的数值证书构造}\label{app:inject-code-audit}
 
-本附录给出两类“可审计注入”的完全形式化：
+本附录给出两类“可核验注入”的完全形式化：
 \begin{itemize}
   \item (i) 用于 prime-register 残差承载的事件编码（$\mathrm{code}/\mathrm{decode}$，可判定互逆）；
-  \item (ii) 用于 unitary slice（$\abs{u}=1$）零点审计的数值证书协议（误差界、舍入模型与 $\NULL$ 判定的可重复性）。
+  \item (ii) 用于 unitary slice（$\abs{u}=1$）零点核验的数值证书验证程序（误差界、舍入模型与 $\NULL$ 判定的可重复性）。
 \end{itemize}
 
 \subsection{预备：基础可判定编码器（整数、配对、有限序列）}
@@ -87,7 +87,7 @@ $$
 该解码在可计算意义上是可判定的：对任意固定输入 $N$，可用试除或一般分解算法计算各 $v_{p_t}(N)$（复杂度不作承诺，但可判定性成立）。
 
 \paragraph{注}
-本文 prime-register 残差向量采用“时间轴 $\leftrightarrow$ 素数轴”的构造：第 $t$ 步事件写入 $p_t$ 轴，形式上等价于对事件序列作 Gödel 编码。其“注入且可回放”的语义要求与结构性动机见附录 \ref{app:prime-uplift}，并与正文命题 \ref{prop:lossless-uplift} 的无损提升口径一致。
+本文 prime-register 残差向量采用“时间轴 $\leftrightarrow$ 素数轴”的构造：第 $t$ 步事件写入 $p_t$ 轴，形式上等价于对事件序列作 Gödel 编码。其“注入且可回放”的语义要求与结构性动机见附录 \ref{app:prime-uplift}，并与正文命题 \ref{prop:lossless-uplift} 的无损提升表述一致。
 
 \subsection{原子事件的编码：\texorpdfstring{$\mathrm{code}/\mathrm{decode}$}{code/decode} 的可判定互逆性}
 
@@ -96,7 +96,7 @@ $$
 $$
 a_0\to a_1\to\cdots\to a_T=\mathrm{NF}(a_0),
 $$
-并把第 $t$ 步原子事件记为 $e_t(\omega)$。本文要求存在一个“可审计的注入编码”
+并把第 $t$ 步原子事件记为 $e_t(\omega)$。本文要求存在一个“可核验的注入编码”
 $$
 \mathrm{code}:\mathcal E_m\hookrightarrow \NN_{\ge 1},
 $$
@@ -174,7 +174,7 @@ $$
 
 此处 $P$ 为有限支撑指数向量空间（素数寄存器纤维）并带值映射 $N(r)=\prod_p p^{r(p)}$，由算术基本定理与 $\NN_{\ge 1}$ 同构。该“素数幂坐标承载残差”的动机与结构性说明见注 7.30（正文）与附录 \ref{app:prime-uplift}。
 
-\paragraph{形式化回放算法 \texorpdfstring{$\mathrm{UNLIFT}_m^{\,S}$}{UNLIFT\_m^S}（部分函数口径）}
+\paragraph{形式化回放算法 \texorpdfstring{$\mathrm{UNLIFT}_m^{\,S}$}{UNLIFT\_m^S}（部分函数表述）}
 \textbf{输入：}$(x,r)\in X_m\times P$。\\
 \textbf{输出：}若可回放则输出唯一 $\omega\in\Omega_m$，否则输出 $\NULL$。
 
@@ -201,7 +201,7 @@ $$
 $$
 \mathrm{UNLIFT}_m^{\,S}\!\left(\widehat{\Fold}_m^{\,S}(\omega)\right)=\omega.
 $$
-因此 $\widehat{\Fold}_m^{\,S}$ 为单射，且 $\mathrm{UNLIFT}_m^{\,S}$ 给出其可构造逆过程；这与正文命题 \ref{prop:lossless-uplift} 以及命题 \ref{prop:uplift-injective}（附录 \ref{app:prime-uplift}）的“无损提升/可逆回放”口径一致。
+因此 $\widehat{\Fold}_m^{\,S}$ 为单射，且 $\mathrm{UNLIFT}_m^{\,S}$ 给出其可构造逆过程；这与正文命题 \ref{prop:lossless-uplift} 以及命题 \ref{prop:uplift-injective}（附录 \ref{app:prime-uplift}）的“无损提升/可逆回放”表述一致。
 \end{proposition}
 
 \begin{proof}
@@ -210,10 +210,10 @@ $$
 (3) 从 $\iota_m(x)$ 出发逆序回放唯一恢复 $\iota_m(\omega)$，从而恢复 $\omega$。
 \end{proof}
 
-\subsection{unitary slice 审计接口：数值证书协议、舍入模型与 \texorpdfstring{$\NULL$}{NULL} 判定的可重复性}
+\subsection{unitary slice 核验机制：数值证书验证程序、舍入模型与 \texorpdfstring{$\NULL$}{NULL} 判定的可重复性}
 
-\paragraph{类型化域：unitary slice 的“可见参数轴”与 \texorpdfstring{$\NULL$}{NULL} 语义接口}
-在 $\Xi_{\Delta,L}$ 的审计口径中，定义
+\paragraph{类型化域：unitary slice 的“可见参数轴”与 \texorpdfstring{$\NULL$}{NULL} 语义判别}
+在 $\Xi_{\Delta,L}$ 的核验设定中，定义
 $$
 u_L(s)=L^{2s-1}.
 $$
@@ -229,12 +229,12 @@ $$
 \end{aligned}
 $$
 
-在三生成元片段 $(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)$ 的正规化闭包中，可复核的连续参数轴被限制为 unitary slice 的相位 $\theta$，而非一般分解 $u=re^{i\theta}$ 的径向参数 $r$。因此，“可寻址的零点证书”只能以 $\theta$-口径呈现（亦见附录 \ref{app:unitary-slice}）。
+在三生成元片段 $(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)$ 的正规化闭包中，可复核的连续参数轴被限制为 unitary slice 的相位 $\theta$，而非一般分解 $u=re^{i\theta}$ 的径向参数 $r$。因此，“可寻址的零点证书”只能以 $\theta$ 的单参表述呈现（亦见附录 \ref{app:unitary-slice}）。
 
-POM 的空值语义规定：无地址则读出不定义，记为 $\NULL$。在 unitary slice 类型安全陈述中，“偏离 $\Re(s)=\frac12$ 的点读出为 $\NULL$”被编译为体系内健全性（soundness）结论；本附录在协议层将其落实为类型化地址域与证书生成约束（见下文“$\NULL$ 判定规则与可重复性定理（协议层）”与“与 PW 类型安全的接口对齐（语义层）”两段）。
+POM 的空值语义规定：无地址则读出不定义，记为 $\NULL$。在 unitary slice 类型安全陈述中，“偏离 $\Re(s)=\frac12$ 的点读出为 $\NULL$”被归约为体系内健全性（soundness）结论；本附录在验证程序层将其落实为类型化地址域与证书生成约束（见下文“$\NULL$ 判定规则与可重复性定理（验证程序层）”与“与 PW 类型安全的一致性对接（语义层）”两段）。
 
-\paragraph{数值表示与舍入模型（可审计、可复现）}
-为使数值审计具有平台无关的可重复性，采用“外向舍入的区间算术”作为证书后端。固定精度参数 $p\in\NN$，定义可表示实数集合（dyadic 网格）
+\paragraph{数值表示与舍入模型（可核验、可复现）}
+为使数值核验具有平台无关的可重复性，采用“外向舍入的区间算术”作为证书后端。固定精度参数 $p\in\NN$，定义可表示实数集合（dyadic 网格）
 $$
 \mathbb D_p=\left\{k\cdot 2^{-p}:k\in\ZZ\right\}.
 $$
@@ -257,19 +257,19 @@ $$
 $$
 x\in I\ \Longrightarrow\ f(x)\in \mathrm{F}_p^{\mathrm{int}}(I).
 $$
-该假设可由“正确舍入的高精度库 + 余项界”实现；其在本文中仅作为证书后端协议的接口合同，不参与前端数学推理。
+该假设可由“正确舍入的高精度库 $+$ 余项界”实现；其在本文中仅作为证书后端验证程序的规格条件，不参与前端数学推理。
 
 \paragraph{可重复性约束}
-协议要求所有输入参数（如 $L$、$\theta$、网格索引、迭代深度上界）以规范化的有理/ dyadic 形式给出；所有区间端点以 $\mathbb D_p$ 的标准表示输出；所有区间运算的舍入方向固定。由此保证同一输入在同一协议参数 $(p,\text{算法版本})$ 下输出完全一致（字节级一致），从而 $\NULL$ 判定可复现。
+验证程序要求所有输入参数（如 $L$、$\theta$、网格索引、迭代深度上界）以规范化的有理/ dyadic 形式给出；所有区间端点以 $\mathbb D_p$ 的标准表示输出；所有区间运算的舍入方向固定。由此保证同一输入在同一参数 $(p,\text{算法标识})$ 下输出完全一致（字节级一致），从而 $\NULL$ 判定可复现。
 
-\paragraph{审计接口对象与证书类型}
+\paragraph{核验对象与证书类型}
 考虑由二变量对象 $\Delta(z,u)$ 诱导的一变量截面
 $$
 \Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1}),
 $$
 并在自对偶与完成化条件下，临界线 $s=\frac12+it$ 上具有 Hardy 型实值化性质。
 
-在可审计矩阵族模型下，若
+在可核验矩阵族模型下，若
 $$
 \Delta(z,u)=\det(I-zB(u)),
 $$
@@ -291,7 +291,7 @@ $$
   $$
   \Addr_{\mathrm{US}}=\bigl\{(L,\theta,p):L\in\QQ_{>1},\ \theta\in\QQ,\ p\in\NN\bigr\},
   $$
-  并约定审计点由
+  并约定核验点由
   $$
   s(L,\theta)=\frac12+i\frac{\theta}{2\log L}
   $$
@@ -313,11 +313,11 @@ $$
   若存在 $\theta_-<\theta_+$ 使得区间 $J(\theta_-)$、$J(\theta_+)$ 均不含 $0$ 且符号相反，则由连续性可构造 \textbf{RootInterval} 证书，并可用区间二分法输出包含零点的相位区间 $[\theta_-,\theta_+]$；可记为
   $
   \mathsf{RootInterval}(L,[\theta_-,\theta_+],p;J(\theta_-),J(\theta_+))
-  $。该证书对外仅需披露：端点 dyadic 值、端点评估区间及其符号、迭代深度与精度 $p$。上述两类证书与正文第 \ref{subsec:cc-us-cert} 节的 NonZero/RootInterval 口径一致。
+  $。该证书对外仅需披露：端点 dyadic 值、端点评估区间及其符号、迭代深度与精度 $p$。上述两类证书与正文第 \ref{subsec:cc-us-cert} 节的 NonZero/RootInterval 表述一致。
 \end{enumerate}
 
-\paragraph{\texorpdfstring{$\NULL$}{NULL} 判定规则与可重复性定理（协议层）}
-定义审计接口输出为部分函数
+\paragraph{\texorpdfstring{$\NULL$}{NULL} 判定规则与可重复性定理（验证程序层）}
+定义核验输出为部分函数
 $$
 \mathsf{Audit}_{\mathrm{US}}:\Addr\rightharpoonup \mathsf{Cert}\ \cup\ \{\NULL\}.
 $$
@@ -328,10 +328,10 @@ $$
   \item 若输入属于 $\Addr_{\mathrm{US}}$ 但在精度 $p$ 下无法生成所需的“端点不含零且符号确定”的区间证书（例如区间始终包含 $0$ 且达到预设最大精度/迭代阈值），则输出 $\NULL$。
   \item 若证书生成成功，则输出对应证书对象。
 \end{itemize}
-该 $\NULL$ 规则与“闭包内只允许 $\theta$-口径零点审计”一致，并与类型安全陈述的“偏移点不可寻址 $\Leftrightarrow$ 读出为 $\NULL$”相协调。
+该 $\NULL$ 规则与“闭包内只允许 $\theta$ 的单参表述进行零点核验”一致，并与类型安全陈述的“偏移点不可寻址 $\Leftrightarrow$ 读出为 $\NULL$”相协调。
 
 \paragraph{\texorpdfstring{$\Read$}{Read}：证书存在性读出（与正文一致）}
-在协议层，可将 $\mathsf{Audit}_{\mathrm{US}}$ 的输出投影为一个三值读出（仅表示“断言已被证书化/证书缺失”，而不与数值混同）：
+在验证程序层，可将 $\mathsf{Audit}_{\mathrm{US}}$ 的输出投影为一个三值读出（仅表示“断言已被证书化/证书缺失”，而不与数值混同）：
 $$
 \Read_{\mathrm{US}}(L,\theta,p)=
 \begin{cases}
@@ -342,22 +342,22 @@ $$
 $$
 该定义与正文定义 \ref{def:cc-read-null} 的“$\NULL$ 作为证书缺失”的语义一致。
 
-\begin{theorem}[协议层可重复性]\label{thm:audit-us-reproducibility}
-在固定算法版本、固定精度参数 $p$ 与固定外向舍入规则下，$\mathsf{Audit}_{\mathrm{US}}$ 对任一规范化输入地址给出确定输出；因此由其诱导的 $\Read_{\mathrm{US}}$ 亦为确定性的三值读出。特别地，输出为 $\NULL$ 的判定在同一输入与同一参数下可重复（运行间无差异）。
+\begin{theorem}[验证程序层可重复性]\label{thm:audit-us-reproducibility}
+在固定算法标识、固定精度参数 $p$ 与固定外向舍入规则下，$\mathsf{Audit}_{\mathrm{US}}$ 对任一规范化输入地址给出确定输出；因此由其诱导的 $\Read_{\mathrm{US}}$ 亦为确定性的三值读出。特别地，输出为 $\NULL$ 的判定在同一输入与同一参数下可重复（运行间无差异）。
 \end{theorem}
 
 \begin{proof}
 地址规范化使输入序列唯一；区间算术在固定舍入方向下为确定性计算；证书生成过程（如二分路径）在固定停止条件下为确定性迭代。因而输出为完全函数式决定。
 \end{proof}
 
-\paragraph{与 PW 类型安全的接口对齐（语义层）}
-在“三生成元正规化器 + 异常签名接口 + unitary slice 零点审计”的闭包内，类型安全结论给出：若 $\Re(s_0)\neq \frac12$，则 $s_0$ 在闭包下不可寻址，等价地读出为 $\NULL$。
-本附录的协议把该“不可寻址性”落实为类型化地址域与证书生成的可计算约束：任何偏离 unitary slice 的输入不进入可审计地址域，因而统一返回 $\NULL$。这使 $\NULL$ 判定既具有逻辑含义（无地址）亦具有工程可复现性（固定协议即固定输出）。
+\paragraph{与 PW 类型安全的一致性对接（语义层）}
+在“三生成元正规化器 $+$ 异常签名机制 $+$ unitary slice 零点核验”的闭包内，类型安全结论给出：若 $\Re(s_0)\neq \frac12$，则 $s_0$ 在闭包下不可寻址，等价地读出为 $\NULL$。
+本附录的验证程序把该“不可寻址性”落实为类型化地址域与证书生成的可计算约束：任何偏离 unitary slice 的输入不进入可核验地址域，因而统一返回 $\NULL$。这使 $\NULL$ 判定既具有逻辑含义（无地址），亦具有实现无关的可重复性（固定规则与参数即固定输出）。
 
 \subsection{小结：与正文结构的对接点}
 \begin{enumerate}
-  \item \textbf{事件编码层：}通过 Cantor 配对与有限枚举，给出满足“可审计注入编码”接口合同的显式注入 $\mathrm{code}:\mathcal E_m\hookrightarrow\NN_{\ge 1}$，并给出可判定互逆的 $\mathrm{decode}$（命题 \ref{prop:code-decode-invertible}）。此外给出自描述序列编码 $\mathrm{Seq}/\mathrm{Unseq}$（命题 \ref{prop:seq-unseq-invertible}），用于把有限轨迹/证书材料压缩为单一自然数并可判定反解。
+  \item \textbf{事件编码层：}通过 Cantor 配对与有限枚举，给出满足“可核验注入编码”规格条件的显式注入 $\mathrm{code}:\mathcal E_m\hookrightarrow\NN_{\ge 1}$，并给出可判定互逆的 $\mathrm{decode}$（命题 \ref{prop:code-decode-invertible}）。此外给出自描述序列编码 $\mathrm{Seq}/\mathrm{Unseq}$（命题 \ref{prop:seq-unseq-invertible}），用于把有限轨迹/证书材料压缩为单一自然数并可判定反解。
   \item \textbf{残差回放层：}prime-register 残差向量 $r^S(\omega)$ 实现对原子事件序列的可回放承载，从而使无损折叠提升可逆并给出单射性（命题 \ref{prop:unlift-correctness}；亦与正文命题 \ref{prop:lossless-uplift} 及命题 \ref{prop:uplift-injective}（附录 \ref{app:prime-uplift}）一致）。
-  \item \textbf{unitary slice 数值审计层：}把“可见参数轴仅为 $\theta$”落实为类型化地址域 $\Addr_{\mathrm{US}}$，并以外向舍入区间证书协议输出 NonZero/RootInterval 两类证书；$\NULL$ 作为“证书缺失”的逻辑结果可重复（定理 \ref{thm:audit-us-reproducibility}），与类型安全陈述一致。
+  \item \textbf{unitary slice 数值核验层：}把“可见参数轴仅为 $\theta$”落实为类型化地址域 $\Addr_{\mathrm{US}}$，并以外向舍入区间证书验证程序输出 NonZero/RootInterval 两类证书；$\NULL$ 作为“证书缺失”的逻辑结果可重复（定理 \ref{thm:audit-us-reproducibility}），与类型安全陈述一致。
 \end{enumerate}
 
