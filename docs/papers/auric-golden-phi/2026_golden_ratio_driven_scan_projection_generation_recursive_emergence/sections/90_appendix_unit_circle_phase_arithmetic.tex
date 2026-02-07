@@ -5,7 +5,7 @@
 (iii) 给出由该提升诱导的自然权重与换元公式，把无界积分改写为单位圆上的有限表达。
 该门本身是可逆的；任何不可逆性均来自后续的投影/截断/离散化，并可按“扩展保存”原则外置为可审计残差寄存器（与附录 \ref{app:op-algebra} 的折叠条件期望口径一致）。
 
-\subsection{无参面积相位坐标与 Cayley 单位圆嵌入}\label{subsec:unit-circle-phase-lift}
+\subsection{单位圆面积相位压缩的无参实现：Cayley 紧化与扇形面积坐标}\label{subsec:unit-circle-phase-lift}
 对任意角变量 \(\vartheta\in(-\pi,\pi)\)，其对应的单位圆扇形面积为 \(\vartheta/2\)，整圆面积为 \(\pi\)，故扇形面积占比为 \(\vartheta/(2\pi)\in(-\tfrac12,\tfrac12)\)。
 由此对实轴 \(x\in\RR\) 定义\textbf{面积相位坐标}（无参紧化）
 \begin{equation}\label{eq:unit-circle-phase-upsilon}
@@ -22,12 +22,170 @@
 \begin{equation}\label{eq:unit-circle-cayley-embed}
 \boxed{\ \iota(x):=e^{\mathrm{i}\vartheta(x)}=e^{2\mathrm{i}\arctan(x)}=\frac{1+\mathrm{i}x}{1-\mathrm{i}x}\in\TT\ }.
 \end{equation}
-它给出一个从 \(\RR\) 到 \(\TT\setminus\{-1\}\) 的解析同胚；当 \(x\to\pm\infty\) 时 \(\vartheta(x)\to\pm\pi\) 且 \(\iota(x)\to-1\)，从而把“无穷远”统一压到单位圆边界的单点。
+它给出一个从 \(\RR\) 到 \(\TT\setminus\{-1\}\) 的解析同胚，并满足基点归一化 \(\iota(0)=1\)。
+当 \(x\to\pm\infty\) 时 \(\vartheta(x)\to\pm\pi\) 且 \(\iota(x)\to-1\)，从而把“无穷远”统一压到单位圆边界的单点。
+若以 \(\widehat{\RR}:=\RR\cup\{\infty\}\) 作一维射影紧化并约定 \(\iota(\infty):=-1\)，则 \(\iota:\widehat{\RR}\to\TT\) 成为同胚；在此意义下，“无界变量”被无参压缩为单位圆上的一个边界端点。
 其显式反投影为
 \begin{equation}\label{eq:unit-circle-phase-inverse}
 \boxed{\ \upsilon^{-1}(u)=\tan(\pi u),\qquad x=\tan\!\Bigl(\frac{\vartheta}{2}\Bigr)=\tan(\pi u),\qquad
-x=-\mathrm{i}\,\frac{w-1}{w+1}\ (w\in\TT,\ w\neq-1)\ }.
+x=\mathrm{i}\,\frac{1-w}{1+w}=-\mathrm{i}\,\frac{w-1}{w+1}\ (w\in\TT,\ w\neq-1)\ }.
 \end{equation}
+
+\paragraph{Cauchy 权重的推前均匀化（单位圆 Haar 测度的拉回）}
+由 \(\vartheta(x)=2\arctan(x)\) 直接计算得
+\[
+\frac{\dd\vartheta}{\dd x}=\frac{2}{1+x^{2}},
+\qquad\Longrightarrow\qquad
+\boxed{\ \frac{\dd\vartheta}{2\pi}=\dd\upsilon=\frac{1}{\pi}\frac{\dd x}{1+x^{2}}\ }.
+\]
+因此，以 Cauchy 权重 \(\frac{1}{\pi(1+x^{2})}\) 加权的实轴积分与单位圆上的均匀圆周平均严格等价；“近零加权、远端抑制”并非外加规则，而是紧化门的 Jacobian 所唯一诱导的结构性结果。
+
+\subsection{伸缩半群的端点线性化：半平面坐标、精度势与 Mellin 对角化}\label{subsec:unit-circle-scale-linearization}
+本小节把“尺度伸缩 \(x\mapsto mx\)”在单位圆/圆盘相位变量上的非线性作用完全线性化，并由此给出一个以端点精度势为载体的对角化坐标系。
+该坐标系与附录 \ref{app:real-input-40-dirichlet} 的 Dirichlet--Witt 伸缩算子口径相互对齐：前者把伸缩写成单位圆盘的 Möbius 自同构，后者把伸缩写成 Dirichlet 变量的 \(s\mapsto ms\)。
+
+\paragraph{伸缩半群的完全线性化坐标}
+令 \(u\in\mathbb{D}\) 为单位圆盘变量（边界 \(u\in\partial\mathbb{D}\) 对应 unitary slice），定义 Cayley 半平面坐标（右半平面模型）
+\begin{equation}\label{eq:scale-linearization-halfplane-coordinate}
+\boxed{\;
+\mathfrak{w}(u):=\frac{1+u}{1-u}\in\mathbb{H}_{\mathrm{R}}:=\{\,\mathfrak{w}\in\CC:\Re(\mathfrak{w})>0\,\}\; }.
+\end{equation}
+它把端点 \(u=-1\) 压到 \(\mathfrak{w}=0\)，并把 \(u=1\) 送到无穷远；其反变换为
+\begin{equation}\label{eq:scale-linearization-halfplane-inverse}
+\boxed{\;u(\mathfrak{w})=\frac{\mathfrak{w}-1}{\mathfrak{w}+1}\; }.
+\end{equation}
+并且由 \eqref{eq:unit-circle-phase-inverse} 可读出（在 \(u\neq-1\) 处）实轴坐标与半平面坐标的关系
+\begin{equation}\label{eq:scale-linearization-w-vs-x}
+\boxed{\;
+x(u)=\mathrm{i}\,\frac{1-u}{1+u},
+\qquad
+\mathfrak{w}(u)=\frac{\mathrm{i}}{x(u)}\; }.
+\end{equation}
+因此“高度无穷 \(x\to\infty\)”在 \(\mathfrak{w}\)-坐标中等价为端点 \(\mathfrak{w}\to 0\)。
+
+\medskip
+对任意尺度参数 \(m>0\)，令 \(\psi_m\) 为由伸缩 \(x\mapsto mx\) 在 \(u\)-域上诱导的 Möbius 自同构，给出显式公式
+\begin{equation}\label{eq:scale-psi-m}
+\boxed{\;
+\psi_m(u):=\frac{(m+1)u+(1-m)}{(1-m)u+(m+1)}\; }.
+\end{equation}
+该族保持 \(\{\pm 1\}\) 为不动点，并满足严格线性化共轭恒等式。
+
+\begin{proposition}[严格线性化恒等式与端点乘子]\label{prop:scale-linearization-identity-multipliers}
+对任意 \(m>0\) 与任意 \(u\neq 1\)，有
+\begin{equation}\label{eq:scale-linearization-identity}
+\boxed{\;\mathfrak{w}\!\bigl(\psi_m(u)\bigr)=\frac{1}{m}\,\mathfrak{w}(u)\; }.
+\end{equation}
+并且在不动点处的乘子为
+\begin{equation}\label{eq:scale-psi-m-multipliers}
+\boxed{\;\psi_m'(1)=m,\qquad \psi_m'(-1)=\frac{1}{m}\; }.
+\end{equation}
+特别地，当 \(m>1\) 时，\(u=-1\) 为尺度链的吸引端点，且端点邻域的线性化收缩率严格为 \(m^{-1}\)。
+\end{proposition}
+\begin{proof}
+由 \eqref{eq:scale-psi-m} 直接计算
+\[
+1+\psi_m(u)=\frac{2(1+u)}{(1-m)u+(m+1)},
+\qquad
+1-\psi_m(u)=\frac{2m(1-u)}{(1-m)u+(m+1)}.
+\]
+两式相除得
+\(
+\frac{1+\psi_m(u)}{1-\psi_m(u)}=\frac{1}{m}\frac{1+u}{1-u}
+\)，即 \eqref{eq:scale-linearization-identity}。
+又将 \eqref{eq:scale-psi-m} 写作 Möbius 形式 \(\psi_m(u)=(au+b)/(cu+d)\)，其中
+\(
+a=d=m+1,\ b=c=1-m
+\)，故 \(ad-bc=(m+1)^2-(1-m)^2=4m\)，从而
+\[
+\psi_m'(u)=\frac{ad-bc}{(cu+d)^2}=\frac{4m}{\bigl((1-m)u+(m+1)\bigr)^2}.
+\]
+代入 \(u=\pm 1\) 立得 \eqref{eq:scale-psi-m-multipliers}。证毕。
+\end{proof}
+
+\paragraph{端点精度势的加法律与双曲几何时间}
+定义端点精度势（Busemann 型尺度坐标）
+\begin{equation}\label{eq:endpoint-busemann-potential}
+\boxed{\;y(u):=-\log|\mathfrak{w}(u)|\; }.
+\end{equation}
+由 \eqref{eq:scale-linearization-identity} 立即得到严格尺度加法律
+\begin{equation}\label{eq:endpoint-busemann-addition-law}
+\boxed{\;y\!\bigl(\psi_m(u)\bigr)=y(u)+\log m\; }.
+\end{equation}
+因此尺度伸缩在端点精度势上转化为纯粹的加性时间推进；无穷尺度链的累积复杂度被收束为 \(\sum\log m\) 的一维加法账本。
+
+\medskip
+右半平面模型携带 Poincar{\'e} 双曲度量
+\begin{equation}\label{eq:poincare-right-halfplane-metric}
+\boxed{\;\dd s^{2}=\frac{|\dd \mathfrak{w}|^{2}}{\Re(\mathfrak{w})^{2}}\; }.
+\end{equation}
+对任意常数 \(a>0\)，缩放 \(\mathfrak{w}\mapsto a\mathfrak{w}\) 保持 \eqref{eq:poincare-right-halfplane-metric} 不变，从而为双曲等距变换。
+特别地，\(\mathfrak{w}\mapsto \mathfrak{w}/m\) 的“时间参数”恰为 \(\log m\)，并与 \eqref{eq:endpoint-busemann-addition-law} 的加法时间完全一致。
+
+\paragraph{相位--Witt 转移算子的 Mellin 谱对角化}
+在完全线性化坐标 \(\mathfrak{w}\) 上引入离散尺度转移算子
+\begin{equation}\label{eq:scale-transfer-operator}
+\boxed{\;
+(\mathcal{T}G)(\mathfrak{w})
+:=\sum_{m\ge 1}\frac{1}{m}\,G\!\left(\frac{\mathfrak{w}}{m}\right)\; }.
+\end{equation}
+对幂函数 \(G_{\alpha}(\mathfrak{w})=\mathfrak{w}^{\alpha}\)（\(\Re(\alpha)>0\)）有逐点本征关系
+\begin{equation}\label{eq:scale-transfer-eigen-monomial}
+\boxed{\;
+\mathcal{T}(\mathfrak{w}^{\alpha})=\zeta(1+\alpha)\,\mathfrak{w}^{\alpha}\; }.
+\end{equation}
+更一般地，令 \(\mathcal{M}\) 为（带乘法 Haar 测度的）Mellin 变换
+\begin{equation}\label{eq:scale-mellin-transform}
+\boxed{\;
+(\mathcal{M}G)(s):=\int_{0}^{\infty} G(\mathfrak{w})\,\mathfrak{w}^{\,1-s}\,\frac{\dd \mathfrak{w}}{\mathfrak{w}}\; }.
+\end{equation}
+在 \(\Re(s)>1\) 且允许交换求和与积分的条件下，有严格谱对角化恒等式
+\begin{equation}\label{eq:scale-mellin-diagonalization}
+\boxed{\;\mathcal{M}(\mathcal{T}G)(s)=\zeta(s)\,\mathcal{M}G(s)\; }.
+\end{equation}
+\begin{proof}
+在可交换条件下，
+\[
+\mathcal{M}(\mathcal{T}G)(s)
+=\sum_{m\ge 1}\frac{1}{m}\int_{0}^{\infty}G(\mathfrak{w}/m)\,\mathfrak{w}^{\,1-s}\,\frac{\dd\mathfrak{w}}{\mathfrak{w}}.
+\]
+作代换 \(\mathfrak{w}=m\xi\) 得 \(\dd\mathfrak{w}/\mathfrak{w}=\dd\xi/\xi\)，并且 \(\mathfrak{w}^{1-s}=m^{1-s}\xi^{1-s}\)，从而
+\[
+\int_{0}^{\infty}G(\mathfrak{w}/m)\,\mathfrak{w}^{\,1-s}\,\frac{\dd\mathfrak{w}}{\mathfrak{w}}
+=m^{1-s}\int_{0}^{\infty}G(\xi)\,\xi^{\,1-s}\,\frac{\dd\xi}{\xi}
+=m^{1-s}\,\mathcal{M}G(s).
+\]
+代回并求和得
+\[
+\mathcal{M}(\mathcal{T}G)(s)
+=\Bigl(\sum_{m\ge 1}m^{-s}\Bigr)\mathcal{M}G(s)
+=\zeta(s)\,\mathcal{M}G(s),
+\]
+其中 \(\Re(s)>1\) 确保 \(\sum_{m\ge 1}m^{-s}\) 绝对收敛。证毕。
+\end{proof}
+该结论给出一条结构性等价：经典 \(\zeta\) 的 Dirichlet 级数在此口径下成为尺度链算子 \(\mathcal{T}\) 的 Mellin 频域乘子；其解析性质可被视作转移算子在频域上的“符号结构”。
+
+\paragraph{Euler 乘积的算子分解：素数作为尺度生成元}
+当沿端点轴线取 \(\mathfrak{w}>0\) 并令加性尺度坐标 \(y:=-\log \mathfrak{w}\) 时，\(\mathfrak{w}\mapsto \mathfrak{w}/m\) 等价于 \(y\mapsto y+\log m\)。
+对平移算子
+\begin{equation}\label{eq:scale-shift-operator}
+\boxed{\;(U_{a}f)(y):=f(y+\log a)\; }
+\end{equation}
+定义
+\begin{equation}\label{eq:scale-K-operator}
+\boxed{\;(\mathcal{K}f)(y):=\sum_{m\ge 1}\frac{1}{m}\,f(y+\log m)=\sum_{m\ge 1}\frac{1}{m}\,(U_m f)(y)\; }.
+\end{equation}
+在 \(U_aU_b=U_{ab}\) 的交换半群结构下，Euler 乘积给出如下算子化分解（在满足收敛的函数类/算子拓扑下成立；亦可视作形式恒等式）：
+\begin{equation}\label{eq:scale-euler-operator-product}
+\boxed{\;\mathcal{K}=\prod_{p}\left(I-\frac{1}{p}U_{p}\right)^{-1}\; }.
+\end{equation}
+其展开系数的唯一性来自算术基本定理：对每个 \(m=\prod p^{\nu_p(m)}\) 的素因子分解，\(\prod_p (p^{-1}U_p)^{\nu_p(m)}\) 恰贡献项 \(\frac{1}{m}U_m\)。
+
+\paragraph{端点化的“无穷”重述（坐标层面）}
+在本附录的相位紧化门下，临界线参数（高度轴）可在坐标层面被严格端点化：\(x\to\infty\) 等价于 \(\mathfrak{w}(u)\to 0\)（式 \eqref{eq:scale-linearization-w-vs-x}）。
+命题 \ref{prop:scale-linearization-identity-multipliers}--\eqref{eq:endpoint-busemann-addition-law} 表明：尺度链的非线性动力学在端点坐标 \(\mathfrak{w}\) 上完全对角化为纯乘法缩放，并在精度势 \(y=-\log|\mathfrak{w}|\) 上退化为加性时间推进。
+进一步地，尺度叠加算子 \(\mathcal{T}\) 在 Mellin 频域中由 \(\zeta(s)\) 完全对角化（式 \eqref{eq:scale-mellin-diagonalization}），而素数结构则在算子层面实现为 \eqref{eq:scale-euler-operator-product} 的不可约生成分解。
+因此，“无穷高度/素数/Euler 乘积”的三类非紧性可在同一端点动力系统中被统一组织：几何上表现为端点 \(\mathfrak{w}=0\) 的精度负载，算术上表现为尺度转移算子的频域乘子与素数生成元分解。
 
 \subsection{相位盒上的算术：结构搬运（提升—运算—读出）}\label{subsec:unit-circle-phase-arithmetic}
 记相位盒
