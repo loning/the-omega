@@ -183,6 +183,14 @@ $
 即得。证毕。
 \end{proof}
 
+\begin{remark}[\texorpdfstring{$p$}{p}-进细化护栏：系数稀疏化与二进制指纹]\label{rem:padic-dwork-guardrails}
+命题 \ref{prop:big-witt-guardrails} 的 \(p\)-幂同余不仅可作为“通过/失败”的粗验收条件；它还可被细化为更强的系数级与导数级审计对象：
+\textbf{(i)}~模 \(p^k\) 下只保留 \(u^p\)-子环的稀疏化结构（系数整除与系数回推），
+\textbf{(ii)}~\(\theta\)-导数矩的逐阶 \(p\)-进滤波缩放律，
+\textbf{(iii)}~在 \(p=2\) 下产生稳定二进制指纹族。
+这些对象均可在不求谱、不枚举轨道的口径下由迹多项式直接计算并核验，见附录 \ref{app:padic-dwork-guardrails}。
+\end{remark}
+
 \begin{algorithm}[自审计协议：不算谱、不枚举轨道的同余一致性检查]\label{alg:self-audit-witt-bridge}
 给定一个核的带权邻接矩阵族 $M_K(u)$（系数环 $R=\ZZ[u]$），以及要审计的整数集合 $\mathcal N$ 与素数幂集合 $\mathcal P=\{(p,k)\}$：
 \begin{enumerate}[label=(\arabic*), ref=\arabic*]
@@ -303,7 +311,7 @@ $
 \end{remark}
 
 \paragraph{义务组 (B2)（零点可寻址桥接：编译器义务）}
-对任意外部给定的经典零点事件证书（例如输入 $s_0$ 及其 $\Xi_\zeta(s_0)=0$ 的外部证明/可核对证明片段），编译器必须输出一条投影词地址 $W(s_0)\in\mathrm{PW}$，使其在可审计片段内规约到接口正规形并产生非 $\NULL$ 的可核对读出；该读出在 (B1.c) 的识别口径下验证 $\Xi_{\Delta,L}(s_0)=0$。其局域并行实现依赖于“轨道残差外置到 prime-register”的机制（见附录 \ref{app:prime-uplift} 与附录 \ref{app:inject-code-audit}）。
+对任意外部给定的经典零点事件证书（例如输入 $s_0$ 及其 $\Xi_\zeta(s_0)=0$ 的外部证明/可核对证明片段），编译器必须输出一条投影词地址 $W(s_0)\in\mathrm{PW}$，使其在可审计片段内规约到接口正规形并产生非 $\NULL$ 的可核对读出；该读出在 (B1.c) 的识别口径下验证 $\Xi_{\Delta,L}(s_0)=0$。其局域并行实现依赖于“轨道残差外置到 prime-register”的机制（见附录 \ref{app:prime-uplift} 与附录 \ref{app:inject-code-audit}）。进一步地，prime-register 的 residue 轴还能在统计层面提供一条可核验的“碰撞压力削减律”：把每条折叠纤维按 residue 桶细分为 \(P\) 份，会使任意 \(q>1\) 的纤维 \(q\)-矩满足显式削减带，从而把“空间换时间”的并行收益写成可审计不等式（附录 \ref{app:rcrt-pressure-reduction}）。
 
 \paragraph{义务组 (B3)（unitary slice 类型锁定）}
 任意“零点事件”的可核对读出必须走 unitary slice 的审计接口（$\theta$-扫描），从而零点地址参数必须满足 $\abs{u_L(s_0)}=1$。该义务在正文命题 \ref{prop:critical-line-unitary-slice} 与附录 \ref{app:unitary-slice} 的接口正规化链条中被固定为可审计拒绝规则，并被类型安全定理 \ref{thm:type-safety-offcritical} 使用。在可控模型族中，该核验可进一步代数化为自倒数多项式与区间根约束（附录 \ref{app:xi-certificate-layer}），并可在证明携带语义下通过 WSOS/Schur--Cohn 与 Rouché 模板输出离线可核对证书（附录 \ref{app:godel-wsos-rouche}）。
