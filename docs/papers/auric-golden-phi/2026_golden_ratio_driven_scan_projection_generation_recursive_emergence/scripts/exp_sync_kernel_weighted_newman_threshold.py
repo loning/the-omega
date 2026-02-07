@@ -225,7 +225,7 @@ def _write_tex(
     nd_lam = 16
     nd_check = 24
 
-    Q_lines = _tex_poly_Q(u_sym, Q, max_terms_per_line=4)
+    Q_lines = _tex_poly_Q(u_sym, Q, max_terms_per_line=3)
 
     lines: List[str] = []
     lines.append("% Auto-generated; do not edit by hand.")
