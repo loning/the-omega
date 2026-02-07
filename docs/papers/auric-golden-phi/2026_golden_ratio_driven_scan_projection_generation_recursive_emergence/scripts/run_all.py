@@ -1079,6 +1079,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_hatdelta_nearest_complex_branch_point_tan_half_angle",
+            script="exp_sync_kernel_hatdelta_nearest_complex_branch_point_tan_half_angle.py",
+            args=["--dps", "80"],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_hatdelta_nearest_complex_branch_point_tan_half_angle.json",
+                "sections/generated/tab_sync_kernel_hatdelta_nearest_complex_branch_point_tan_half_angle.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_output_potential_branch_radius_certificate",
             script="exp_sync_kernel_output_potential_branch_radius_certificate.py",
             args=["--dps", "80", "--nphi", "512", "--radial-steps", "120"],

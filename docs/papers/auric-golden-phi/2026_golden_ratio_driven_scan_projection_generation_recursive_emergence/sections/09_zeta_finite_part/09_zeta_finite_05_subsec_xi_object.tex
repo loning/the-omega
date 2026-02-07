@@ -203,6 +203,46 @@ y+y^{-1}=2\cos\theta\in[-2,2]
 因此 “\(P_L\) 的根全在 \([-2,2]\)” 等价于 “\(\Phi_L\) 的根全在单位圆”，再与命题 \ref{prop:xi-rh-interval-criterion} 合并即得 (i)\(\Leftrightarrow\)(ii)\(\Leftrightarrow\)(iii)。
 \end{proof}
 
+\begin{proposition}[Cayley 超双曲化：单位圆根判据的实轴等价]\label{prop:xi-rh-cayley-hyperbolicity}
+在推论 \ref{cor:xi-rh-unit-circle-reciprocal} 的记号下，令 \(D:=\deg\Phi_L=2d\)。
+定义 Cayley 变换
+\begin{equation}\label{eq:xi-cayley-y-from-x}
+\boxed{\;
+y=\mathcal{C}(x):=\frac{x-\mathrm{i}}{x+\mathrm{i}},
+\qquad
+x=\mathcal{C}^{-1}(y)=\mathrm{i}\,\frac{1+y}{1-y}\;}
+\end{equation}
+（它把 \(\overline{\RR}=\RR\cup\{\infty\}\) 双射到单位圆 \(\TT\)，并满足 \(\mathcal{C}(\infty)=1\)）。
+并定义一元多项式
+\begin{equation}\label{eq:xi-cayley-psi}
+\boxed{\;
+\Psi_L(x):=(x+\mathrm{i})^{D}\,\Phi_L\!\left(\frac{x-\mathrm{i}}{x+\mathrm{i}}\right)\; }.
+\end{equation}
+则下列条件等价：
+\begin{enumerate}
+  \item \(\Phi_L(y)\) 的全部复根都满足 \(|y|=1\)；
+  \item \(\Psi_L(x)\) 的全部复根都落在 \(\RR\cup\{\infty\}\)（按射影意义计入 \(x=\infty\) 的根）。
+\end{enumerate}
+当 \(\Phi_L\in\RR[y]\) 为自倒数多项式时，\(\Psi_L\) 的系数经归一化可取为实数，因此上述条件可表述为 \(\Psi_L\) 的一元实\textbf{超双曲性}（全实根）。
+\end{proposition}
+\begin{proof}
+由 \eqref{eq:xi-cayley-y-from-x} 可直接验证：对 \(x\in\RR\)，有 \(|\mathcal{C}(x)|=1\)；反之对 \(|y|=1\) 且 \(y\neq 1\)，有 \(x=\mathrm{i}(1+y)/(1-y)\in\RR\)，并且 \(y=1\) 对应 \(x=\infty\)。
+因此 Cayley 变换在根集合层面给出双射
+\(
+\mathrm{Roots}(\Phi_L)\subseteq\TT
+\Longleftrightarrow
+\mathrm{Roots}(\Psi_L)\subseteq\overline{\RR}
+\)：
+若 \(\Phi_L(y_0)=0\) 且 \(y_0=\mathcal{C}(x_0)\)（\(x_0\in\RR\) 或 \(x_0=\infty\)），则清分母得 \(\Psi_L(x_0)=0\)（对 \(x_0=\infty\) 以射影根计入）；反之若 \(\Psi_L(x_0)=0\) 则 \(y_0=\mathcal{C}(x_0)\) 为 \(\Phi_L\) 的根且 \(|y_0|=1\)。
+\par
+若 \(\Phi_L\) 为自倒数且实系数，写 \(\Phi_L(y)=\sum_{k=0}^{D}a_k y^k\) 且 \(a_k=a_{D-k}\in\RR\)。
+由 \eqref{eq:xi-cayley-psi} 展开得
+\[
+\Psi_L(x)=\sum_{k=0}^{D} a_k\,(x+\mathrm{i})^{D-k}(x-\mathrm{i})^{k}.
+\]
+利用对称性 \(a_k=a_{D-k}\) 成对合并 \(k\) 与 \(D-k\) 项即可把右端写成 \(\sum_k 2a_k\,\Re\bigl((x+\mathrm{i})^{D-k}(x-\mathrm{i})^{k}\bigr)\)，从而 \(\Psi_L\)（经整体常数归一化）具有实系数。证毕。
+\end{proof}
+
 \begin{proposition}[Cohn 型导数盘内性判别：单位圆根的等价证书]\label{prop:xi-rh-cohn-derivative}
 在推论 \ref{cor:xi-rh-unit-circle-reciprocal} 的记号下，\(\Phi_L\in\RR[y]\) 为自倒数多项式且 \(\Phi_L(0)=\mathrm{lc}(P_L)\neq 0\)。
 则下列陈述等价：
@@ -328,6 +368,22 @@ D:=\deg \Phi_L=2d.
 第一条为谱分解的直接构造：取 \(\widetilde\Phi_L\) 的根写作 \(e^{i\theta_j}\)，则 \(\det(yI-U_L^{\mathrm{diag}})=\prod_{j=1}^{D}(y-e^{i\theta_j})=\widetilde\Phi_L(y)\)。
 第二条为 CMV-like 伴随矩阵的标准结果：任意首一多项式都可被实现为某个 CMV-like Hessenberg/五对角伴随矩阵的特征多项式，并且该伴随矩阵可用 Schur（Verblunsky）参数显式参数化；在该参数化下，酉性等价于参数落在单位圆盘/单位圆的约束，从而等价于特征多项式根分布在单位圆上（参见 \cite{CanteroMoralVelazquez2003CMV,Simon2005OPUC1,BevilacquaDelCorsoGemignani2015CMVCompanion}）。证毕。
 \end{proof}
+
+\begin{remark}[Cayley--Hilbert--P{\'o}lya 合并：酉谱与自伴谱的同一对象]\label{rem:xi-cayley-hilbert-polya-unify}
+命题 \ref{prop:xi-rh-cayley-hyperbolicity} 把“单位圆根条件”完全转译为“实轴全实根条件”。
+与之配套，若 \(U\) 为酉矩阵且 \(1\notin\mathrm{Spec}(U)\)，则 Cayley 变换
+\[
+\boxed{\ H:=\mathrm{i}(I+U)(I-U)^{-1}\ }
+\]
+给出自伴矩阵（且 \(\mathrm{Spec}(H)\subset\RR\)）。
+更具体地，若 \(Uv=yv\) 且 \(|y|=1\)（\(y\neq 1\)），则同一特征向量满足
+\[
+Hv=xv,\qquad x=\mathrm{i}\,\frac{1+y}{1-y}=\mathcal{C}^{-1}(y)\in\RR,
+\]
+这与 \eqref{eq:xi-cayley-y-from-x} 的根坐标变换一致。
+因此在 Cayley 坐标下，命题 \ref{prop:xi-hilbert-polya-cmv} 的酉谱实现可等价地理解为一套自伴谱实现：酉 Hilbert--P{\'o}lya 与自伴 Hilbert--P{\'o}lya 在此并非并行接口，而是同一对象的两种坐标读出（\(y\in\TT\) 与 \(x\in\overline{\RR}\)）。
+当 \(\widetilde\Phi_L\) 在 \(y=1\) 处出现零点时，对应 \(x=\infty\) 的射影根，等价地表现为 \(I-U\) 的退化；此时可用射影紧化语言把上述对应关系无歧义延拓。
+\end{remark}
 
 \begin{remark}[逆谱接口：从临界线相位到 CMV/Schur 参数]\label{rem:xi-cmv-inverse-spectral}
 命题 \ref{prop:xi-hilbert-polya-cmv} 的意义不仅在于把“单位圆根”解释为“酉谱”，还在于提供一组可计算的\textbf{参数化坐标系}：

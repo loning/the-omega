@@ -40,6 +40,71 @@ x=\mathrm{i}\,\frac{1-w}{1+w}=-\mathrm{i}\,\frac{w-1}{w+1}\ (w\in\TT,\ w\neq-1)\
 \]
 因此，以 Cauchy 权重 \(\frac{1}{\pi(1+x^{2})}\) 加权的实轴积分与单位圆上的均匀圆周平均严格等价；“近零加权、远端抑制”并非外加规则，而是紧化门的 Jacobian 所唯一诱导的结构性结果。
 
+\paragraph{实轴上的相位相加：射影紧化上的 Möbius 群律（溢出免疫）}
+记射影紧化 \(\overline{\RR}:=\RR\cup\{\infty\}\)，并把 \(\iota\) 按极限 \(x\to\infty\) 延拓为 \(\iota(\infty):=-1\)。
+\begin{proposition}[半角切线参数的 Möbius 群律]\label{prop:unit-circle-phase-mobius-law}
+在 \(\overline{\RR}\) 上定义二元运算
+\begin{equation}\label{eq:unit-circle-phase-mobius-law}
+\boxed{\;
+x\oplus y:=
+\begin{cases}
+\dfrac{x+y}{1-xy}, & x,y\in\RR,\ 1-xy\neq 0,\\[6pt]
+\infty, & x,y\in\RR,\ 1-xy=0,
+\end{cases}
+}
+\end{equation}
+并按连续延拓规定
+\(
+x\oplus \infty=\infty\oplus x:=-\frac{1}{x}
+\)
+（约定 \(1/0=\infty,\ 1/\infty=0\)）。
+则 \((\overline{\RR},\oplus)\) 为交换群，零元为 \(0\)、逆元为 \(x\mapsto -x\)，且 \(\iota:(\overline{\RR},\oplus)\to(\TT,\cdot)\) 为群同态：
+\begin{equation}\label{eq:unit-circle-phase-mobius-hom}
+\boxed{\ \iota(x\oplus y)=\iota(x)\cdot\iota(y)\ }.
+\end{equation}
+特别地，\(\infty\) 在该群中是合法边界元素并满足
+\begin{equation}\label{eq:unit-circle-phase-inversion-as-translation}
+\boxed{\ x\oplus\infty=-\frac1x\ },
+\end{equation}
+从而“反演”可被内化为一次与边界元素的群运算。
+\end{proposition}
+\begin{proof}
+对 \(x\in\RR\) 记 \(\vartheta(x)=2\arctan(x)\)。
+由三角恒等式
+\(
+\tan\!\bigl(\frac{\alpha+\beta}{2}\bigr)=\frac{\tan(\alpha/2)+\tan(\beta/2)}{1-\tan(\alpha/2)\tan(\beta/2)}
+\)
+并取 \(\alpha=\vartheta(x),\beta=\vartheta(y)\)，得到当 \(x,y\in\RR\) 且 \(1-xy\neq 0\) 时
+\(
+\tan\!\bigl((\vartheta(x)+\vartheta(y))/2\bigr)=\frac{x+y}{1-xy}
+\)，即 \eqref{eq:unit-circle-phase-mobius-law}。
+当 \(1-xy=0\) 时 \((\vartheta(x)+\vartheta(y))/2\) 命中 \(\pm\pi/2\) 的主值，因此对应 \(x\oplus y=\infty\)。
+对含 \(\infty\) 的情形按 \(y\to\infty\) 极限延拓即得 \(x\oplus\infty=-1/x\) 及 \(\infty\oplus\infty=0\)。
+最后由
+\(
+\iota(x)=e^{\mathrm{i}\vartheta(x)}
+\)
+可知
+\(
+\iota(x)\iota(y)=e^{\mathrm{i}(\vartheta(x)+\vartheta(y))}=e^{\mathrm{i}\vartheta(x\oplus y)}=\iota(x\oplus y)
+\)，得到 \eqref{eq:unit-circle-phase-mobius-hom}；交换律与结合律由单位圆乘法的交换/结合性传递。证毕。
+\end{proof}
+
+\begin{remark}[completion 的半角相位项与相位算术坐标同一]\label{rem:unit-circle-phase-completion-half-angle}
+若完成化/单位圆扭曲通道满足严格相位--幅度分离（命题 \ref{prop:completion-endpoint-jet-diffusion}），即对 \(u=e^{it}\) 有
+\(
+P(it)=\frac{it}{2}+g(S(t)),\ S(t)=2\cos(t/2)
+\)，
+则以半角切线参数 \(x=\tan(t/2)\)（式 \eqref{eq:unit-circle-phase-inverse}）重写得到
+\[
+\boxed{\;
+P\!\bigl(it(x)\bigr)
+=\mathrm{i}\arctan(x)\ +\ g\!\left(\frac{2}{\sqrt{1+x^2}}\right)\;},
+\qquad t(x)=2\arctan(x).
+\]
+因此 completion 所强制出现的“半角相位项” \(\frac{it}{2}\) 与相位算术变量严格同一（\(\frac{it}{2}=\mathrm{i}\arctan x\)）；而幅度仅经由不变量 \((1+x^2)^{-1/2}\) 进入。
+\end{remark}
+
 \subsection{伸缩半群的端点线性化：半平面坐标、精度势与 Mellin 对角化}\label{subsec:unit-circle-scale-linearization}
 本小节把“尺度伸缩 \(x\mapsto mx\)”在单位圆/圆盘相位变量上的非线性作用完全线性化，并由此给出一个以端点精度势为载体的对角化坐标系。
 该坐标系与附录 \ref{app:real-input-40-dirichlet} 的 Dirichlet--Witt 伸缩算子口径相互对齐：前者把伸缩写成单位圆盘的 Möbius 自同构，后者把伸缩写成 Dirichlet 变量的 \(s\mapsto ms\)。
@@ -262,6 +327,11 @@ x\to\pm\infty\qquad\Longleftrightarrow\qquad \upsilon(x)\to\pm\tfrac12
 \boxed{\ \dd\mu(x):=\frac{1}{\pi(1+x^2)}\,\dd x\ }.
 \end{equation}
 则 \(\upsilon\) 把 \((\RR,\mu)\) 推前到 \((\mathbb{U},\mathrm{Leb})\)（Lebesgue 测度）。
+\begin{remark}[Haar 回拉诱导的内禀信息权重]\label{rem:unit-circle-phase-haar-pullback-weight}
+把 \(\mathbb{U}\) 视为角坐标 \(\vartheta/(2\pi)\) 的规范化相位盒，则 \(\mathrm{Leb}\) 正对应单位圆 \(\TT\) 的归一化 Haar 测度。
+因此 \eqref{eq:unit-circle-phase-cauchy-measure} 给出的 \(\mu\) 可解释为该 Haar 测度经 \(x=\tan(\vartheta/2)\) 的回拉，并在归一化意义下由此\textbf{唯一确定}。
+其尾部按 \(x^{-2}\) 衰减，从而把“无穷远处携带无穷信息”的非紧致病态在该坐标门下结构性排除：无穷远仅对应相位边界的单点 \(\iota(\infty)=-1\)。
+\end{remark}
 因此对任意可积函数 \(f\) 有两类基本公式：
 \begin{enumerate}
   \item \textbf{按自然权重的有限化：}
