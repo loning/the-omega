@@ -1,0 +1,102 @@
+% 根单位点完成化轨道模与角色谱分解；规范差压力代数谱曲线；伸缩链双残差正交张量化
+% 与附录 \ref{app:unit-circle-phase-gate}、命题 \ref{prop:fold-gauge-anomaly-pressure}、
+% \S\ref{app:real-input-40-dirichlet} 对齐
+
+\section{根单位点完成化轨道、压力代数谱曲线与伸缩链的角色--精度张量化}\label{app:root-unit-character-pressure-tensor}
+
+本附录在既有“折叠投影/多重度谱---稳定类型”数据结构之上，针对统一图景给出三条结构性结论：根单位点完成化轨道在 Chebyshev--Adams 运算下的角色对角化、规范差压力函数的四次代数谱曲线、以及伸缩链在角色轴与精度轴上的正交张量化闭环。所用折叠直方图与最大纤维谱均来自现有可审计表格数据。
+
+\subsection{根单位点完成化轨道模与角色谱分解}\label{subsec:root-unit-completion-orbit-character}
+
+取单位圆扭曲 \(u=e^{\mathrm{i}\theta}\)、半角变量 \(r=e^{\mathrm{i}\theta/2}\)、完成化坐标
+\(s=r+r^{-1}=2\cos(\theta/2)\in[-2,2]\)，并令
+\begin{equation}\label{eq:chebyshev-adams-Cm}
+C_m(s):=r^m+r^{-m}=2\cos(m\theta/2)\in\ZZ[s],
+\end{equation}
+即 Chebyshev--Adams 运算（与 \S\ref{subsec:unit-disk-witt-chebyshev} 及推论 \ref{cor:primitive-completion-hatp} 一致）。
+
+对任意整数 \(q\ge 3\)，定义有限\textbf{根单位点完成化轨道}
+\begin{equation}\label{eq:root-unit-orbit-Sq}
+\mathcal{S}_q:=\Bigl\{\, s_a:=2\cos\!\Bigl(\frac{\pi a}{q}\Bigr) : a=1,2,\dots,q-1 \Bigr\}\subset[-2,2].
+\end{equation}
+则 \(\mathcal{S}_q\) 在所有 \(s\mapsto C_m(s)\) 下封闭，并满足置换律
+\begin{equation}\label{eq:root-unit-Cm-permutation}
+C_m(s_a)=2\cos\!\Bigl(\frac{\pi m a}{q}\Bigr)=s_{\langle ma\rangle},
+\end{equation}
+其中 \(\langle ma\rangle\) 表示在同值识别 \(a\sim 2q-a\)（余弦偶性）下的唯一代表元。
+
+令 \(\CC^{\mathcal{S}_q}\) 为在 \(\mathcal{S}_q\) 上的函数空间，并定义有限维表示
+\begin{equation}\label{eq:root-unit-Rm}
+(\mathsf{R}_m F)(s):=F(C_m(s)),\qquad F\in\CC^{\mathcal{S}_q}.
+\end{equation}
+则 \(\{\mathsf{R}_m\}_{m\ge 1}\) 为由乘法半群作用诱导的有限维表示，其不可约分解由模 \(2q\) 的偶 Dirichlet 角色（满足 \(\chi(-1)=1\)）对角化。
+
+\begin{theorem}[根单位点角色对角化]\label{thm:root-unit-character-diagonalization}
+对任意 \(\sigma>0\)，定义“完成化--Witt 伸缩”在 \(\CC^{\mathcal{S}_q}\) 上的正则化算子
+\begin{equation}\label{eq:root-unit-W-sigma}
+(\mathsf{W}_{\sigma,q}F)(s):=\sum_{m\ge 1}\frac{1}{m^{1+\sigma}}\,F(C_m(s)).
+\end{equation}
+则对每个模 \(2q\) 的偶 Dirichlet 角色 \(\chi\) 存在非零向量 \(v_\chi\in\CC^{\mathcal{S}_q}\) 使得
+\[
+\mathsf{W}_{\sigma,q}v_\chi=L(1+\sigma,\chi)\,v_\chi,
+\]
+其中 \(L(1+\sigma,\chi)=\sum_{m\ge 1}\chi(m)m^{-(1+\sigma)}\) 为 Dirichlet \(L\)-级数。并且 \(\CC^{\mathcal{S}_q}\) 分解为这些偶角色本征子空间的直和（按 \(a\sim -a\) 识别后的等变子空间）。
+\end{theorem}
+
+该结果在体系内部给出一条“离散正交轴”的系统生成律：当把连续相位压缩到根单位点集合时，伸缩链不再以端点三态退化出现（附录 \ref{app:unit-circle-phase-gate} 的 \(\mathcal{S}_\star=\{0,2,-2\}\)），而自动提升为完整的角色谱，随 \(q\) 增大出现可控的有限维正交通道。
+
+\subsection{规范差压力函数的代数谱曲线}\label{subsec:gauge-pressure-algebraic-curve}
+
+文稿将规范差逐位失配的指数矩母函数写成有限维加权邻接矩阵的谱半径（命题 \ref{prop:fold-gauge-anomaly-pressure}）：存在矩阵 \(A_\theta\) 使压力函数满足
+\[
+P_G(\theta)=\log\rho(A_\theta),
+\]
+其中 \(A_\theta\) 在文中给出显式形式。
+
+\begin{theorem}[压力谱曲线的四次代数方程]\label{thm:gauge-pressure-quartic}
+设 \(x=e^\theta>0\)，令 \(y=\rho(A_\theta)\)。则 \(y\) 为以下四次方程的最大正实根：
+\begin{equation}\label{eq:gauge-pressure-quartic}
+8y^4-4y^3-(4x+2)y^2+(2x-x^3)y+x=0.
+\end{equation}
+从而 \(P_G(\theta)\) 为代数函数分支的对数；其全局正则性与凸性可在该代数曲线层面以判别式与分支点结构进行判定。
+\end{theorem}
+
+\begin{corollary}[倾斜平均失配率的闭式表达]\label{cor:gauge-pressure-tilt-derivative}
+令 \(F(y,x)=8y^4-4y^3-(4x+2)y^2+(2x-x^3)y+x\)。则
+\begin{equation}\label{eq:gauge-pressure-P-prime}
+P_G'(\theta)=-\frac{x\,\partial_x F(y,x)}{y\,\partial_y F(y,x)}
+=\frac{x\bigl(4y^2-(2-3x^2)y-1\bigr)}{y\bigl(32y^3-12y^2-(8x+4)y+(2x-x^3)\bigr)}.
+\end{equation}
+该式将“规范差的倾斜平均”完全还原为 \((x,y)\) 的代数函数，从而把规范差的统计学输出（均值、方差、偏差律）统一纳入可审计的代数谱曲线机制之中。
+\end{corollary}
+
+\subsection{伸缩链的双残差正交分解：角色轴与精度轴的张量化闭环}\label{subsec:dilation-character-precision-tensor}
+
+文稿在 Dirichlet 变量上引入 Witt--dilation（伸缩）算子（\S\ref{app:real-input-40-dirichlet}）
+\[
+(Wf)(s):=\sum_{m\ge 1}\frac{1}{m}\,f(ms),
+\]
+并给出严格恒等式 \(\log\mathcal{Z}(s)=(W\mathcal{P})(s)\) 及 Möbius 反演
+\(\mathcal{P}(s)=\sum_{m\ge 1}\frac{\mu(m)}{m}\,\log\mathcal{Z}(ms)\)。
+
+将“尺度链”解释为深度线上的平移卷积，并与 \ref{subsec:root-unit-completion-orbit-character} 的角色表示合并，可得到无需额外结构的张量化闭环。
+
+\begin{theorem}[角色--精度的正交张量化]\label{thm:character-precision-tensor}
+取深度坐标 \(y\in\RR\) 的平移表示 \(T_{\log m}g(y)=g(y+\log m)\)，并取根单位点轨道模上的角色表示 \(\mathsf{R}_m\)（定理 \ref{thm:root-unit-character-diagonalization}）。对 \(\sigma>0\) 定义联合伸缩算子
+\[
+\mathcal{K}_{\sigma,q}:=\sum_{m\ge 1}\frac{1}{m^{1+\sigma}}\,T_{\log m}\otimes \mathsf{R}_m
+\quad\text{作用于}\quad L^2(\RR,\dd y)\otimes \CC^{\mathcal{S}_q}.
+\]
+则在定理 \ref{thm:root-unit-character-diagonalization} 的角色直和分解下，\(\mathcal{K}_{\sigma,q}\) 分解为标量卷积算子族的直和：
+\[
+\mathcal{K}_{\sigma,q}\ \simeq\ \bigoplus_{\chi(-1)=1}\ \Bigl(\sum_{m\ge 1}\frac{\chi(m)}{m^{1+\sigma}}\,T_{\log m}\Bigr),
+\]
+并且对每个偶角色分量，其“零频”本征值为 \(L(1+\sigma,\chi)\)。
+
+因此，伸缩链的残差空间在体系内部具有可检验的正交二分：
+\begin{enumerate}
+  \item \textbf{角色轴}（有限维）：由 \(q\) 控制，产生 \(L(1+\sigma,\chi)\) 的离散谱；
+  \item \textbf{精度轴}（无限维）：深度平移的连续轴，承载压缩后的精度预算。
+\end{enumerate}
+该正交分解与文稿的“整数层审计先行、谱层指标后置”的分层原则一致：整数层（如 Frobenius 缺陷与 Adams 结构）锁定可实现性与一致性，谱层的伸缩残差再通过角色轴与精度轴分离进入可核对的通道化分析。
+\end{theorem}

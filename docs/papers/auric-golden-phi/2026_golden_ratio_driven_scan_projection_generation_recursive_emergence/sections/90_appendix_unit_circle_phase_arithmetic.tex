@@ -453,9 +453,175 @@ e^{\mathrm{i}\vartheta(x)}=\iota(x)=\frac{1+\mathrm{i}x}{1-\mathrm{i}x}\in\TT.
 \end{equation}
 其中径向参数 \(r\) 继续由 Abel--Dirichlet 接口控制，而角变量由 \(\vartheta(x)=2\arctan(x)\) 无参生成；当限制到 unitary slice（\(r=1\)）时，上式退化为单位圆边界的无参参数化 \(w=\iota(x)\)。
 
+\paragraph{三纤维注入坐标：用“相位轴”补全 Dirichlet 口径的周期折叠}
+在 Dirichlet--Witt 接口中，幂替换 \(z\mapsto z^{m}\) 等价翻译为伸缩 \(s\mapsto ms\)，并由 Witt--dilation
+\(
+(Wf)(s)=\sum_{m\ge 1}\frac{1}{m}f(ms)
+\)
+给出严格恒等式 \(\log\mathcal{Z}(s)=(W\mathcal{P})(s)\) 以及对 \(\mathcal{P}\) 的 Möbius 剥离（见附录 \ref{app:real-input-40-dirichlet}）。
+本段把“虚方向周期折叠”落实为一个坐标学事实：\(z=\lambda^{-s}\) 的角变量只记录 \(t\log\lambda\) 的 \(2\pi\)-同余类；若要求信息守恒，则必须外置一个整数轴作为绕数证书。
+
+\medskip
+令 \(s=\sigma+\mathrm{i}t\in\CC\) 且 \(\lambda>1\)，并记
+\begin{equation}\label{eq:dirichlet-z-polar-decomposition}
+\boxed{\;
+z=\lambda^{-s}=\lambda^{-\sigma}\,e^{-\mathrm{i}t\log\lambda},
+\qquad |z|=\lambda^{-\sigma}\in(0,1)\; }.
+\end{equation}
+取主值辐角 \(\mathrm{Arg}:\CC^{\times}\to(-\pi,\pi]\)。
+则 \(\mathrm{Arg}(z)\equiv -t\log\lambda\ (\mathrm{mod}\ 2\pi)\)，从而观测 \(\mathrm{Arg}(z)\) 只决定 \(t\) 在商群
+\(\RR/(2\pi/\log\lambda)\ZZ\) 中的类。
+
+\medskip
+定义无参相位轴（Cayley 紧化；与 \eqref{eq:unit-circle-cayley-embed} 的 \(\iota\) 在边界上一致）
+\begin{equation}\label{eq:dirichlet-cayley-phase-axis}
+\boxed{\;
+u_{\mathrm C}(t):=\frac{1+\mathrm{i}t}{1-\mathrm{i}t}\in\TT,
+\qquad
+t(u_{\mathrm C})=-\mathrm{i}\,\frac{u_{\mathrm C}-1}{u_{\mathrm C}+1}
+=\mathrm{i}\,\frac{1-u_{\mathrm C}}{1+u_{\mathrm C}}\; }.
+\end{equation}
+并定义绕数证书为满足主值约束的唯一整数：
+\begin{equation}\label{eq:dirichlet-winding-certificate}
+\boxed{\;
+\kappa_{\lambda}(s)\in\ZZ
+\ \text{由}\ 
+\mathrm{Arg}(z)=-t\log\lambda+2\pi\,\kappa_{\lambda}(s)
+\ \text{唯一确定；等价地}\ 
+\kappa_{\lambda}(s)=\frac{t\log\lambda+\mathrm{Arg}(z)}{2\pi}\; }.
+\end{equation}
+
+\begin{definition}[三纤维注入映射（Dirichlet--Cayley 扩展）]\label{def:dirichlet-trifiber-injection}
+对 \(\sigma>0,t\in\RR\)，令 \(z=\lambda^{-(\sigma+\mathrm{i}t)}\) 并取 \(\kappa_{\lambda}\) 如 \eqref{eq:dirichlet-winding-certificate}。
+定义
+\begin{equation}\label{eq:dirichlet-trifiber-injection-map}
+\boxed{\;
+\mathcal{E}_{\lambda}:\{\sigma>0\}\times\RR\to (0,1)\times(\TT\setminus\{-1\})\times\ZZ,\qquad
+(\sigma,t)\longmapsto \bigl(|z|,\ u_{\mathrm C}(t),\ \kappa_{\lambda}(\sigma+\mathrm{i}t)\bigr)\; }.
+\end{equation}
+\end{definition}
+
+\begin{proposition}[单射性与一致性约束：周期折叠的外置证书]\label{prop:dirichlet-trifiber-injection-audit}
+映射 \(\mathcal{E}_{\lambda}\) 为单射。
+并且 \(\kappa_{\lambda}\) 给出一条可审计的一致性约束：
+若以主值 \(\mathrm{Arg}(z)\) 记录 Dirichlet 角变量，同时以 \(u_{\mathrm C}\) 记录非周期高度，则二者必须满足
+\begin{equation}\label{eq:dirichlet-arg-consistency}
+\boxed{\;t\log\lambda+\mathrm{Arg}(z)=2\pi\,\kappa_{\lambda}(s)\in 2\pi\ZZ\; }.
+\end{equation}
+\end{proposition}
+\begin{proof}
+由 \(|z|=\lambda^{-\sigma}\) 可恢复 \(\sigma=-\log|z|/\log\lambda\)。
+由 \eqref{eq:dirichlet-cayley-phase-axis} 的反变换可由 \(u_{\mathrm C}\) 恢复 \(t=t(u_{\mathrm C})\)。
+故 \((|z|,u_{\mathrm C})\) 已确定 \((\sigma,t)\)，从而 \(\mathcal{E}_{\lambda}\) 单射。
+一致性约束 \eqref{eq:dirichlet-arg-consistency} 由 \eqref{eq:dirichlet-winding-certificate} 直接改写得到。证毕。
+\end{proof}
+
+\begin{remark}[最小扩展的意义：从折叠角变量到可逆坐标]
+由 \eqref{eq:dirichlet-z-polar-decomposition} 可见：\((\sigma,t)\mapsto z=\lambda^{-s}\) 在虚方向必然因 \(2\pi\)-周期而折叠。
+命题 \ref{prop:dirichlet-trifiber-injection-audit} 表明：一旦在扩展空间中外置整数证书 \(\kappa_{\lambda}\)，则该折叠可被提升为可逆坐标；
+这正是“扩展保存”（公理 \ref{axiom:unit-circle-phase-extension-preserving}）在 Dirichlet 口径下的实现。
+\end{remark}
+
+\paragraph{双深度对角化：Witt 伸缩在两条“无穷端点”上同时化为平移}
+在 \(\sigma\)-端（径向端点）与 \(t\)-端（高度端点）分别引入对数深度坐标
+\begin{equation}\label{eq:dirichlet-double-depth-coordinates}
+\boxed{\;
+Y_{\sigma}:=\log\!\bigl(-\log|z|\bigr)=\log(\sigma\log\lambda),
+\qquad
+Y_{t}:=-\log\left|\frac{1+u_{\mathrm C}(t)}{1-u_{\mathrm C}(t)}\right|=\log|t|\; }
+\qquad(\sigma>0,\ t\neq 0),
+\end{equation}
+其中 \(\frac{1+u_{\mathrm C}}{1-u_{\mathrm C}}=\mathfrak{w}(u_{\mathrm C})=\mathrm{i}/t\) 是 Cayley 轴的线性化变量（见 \eqref{eq:scale-linearization-halfplane-coordinate}--\eqref{eq:scale-linearization-w-vs-x}）。
+
+\begin{theorem}[双深度平移律与射线不变量]\label{thm:dirichlet-double-depth-translation}
+对任意整数 \(m\ge 1\)，伸缩 \(s\mapsto ms\)（即 \((\sigma,t)\mapsto(m\sigma,mt)\)）在坐标 \((Y_{\sigma},Y_{t})\) 上满足严格加性：
+\begin{equation}\label{eq:dirichlet-double-depth-translation}
+\boxed{\;
+Y_{\sigma}(m\sigma)=Y_{\sigma}(\sigma)+\log m,
+\qquad
+Y_{t}(mt)=Y_{t}(t)+\log m\; }.
+\end{equation}
+因此差值
+\begin{equation}\label{eq:dirichlet-ray-invariant}
+\boxed{\;\mathcal{I}:=Y_{\sigma}-Y_{t}=\log\!\Bigl(\frac{\sigma\log\lambda}{|t|}\Bigr)\;}
+\end{equation}
+在伸缩半群作用下不变。
+\end{theorem}
+\begin{proof}
+由 \(|z|=\lambda^{-\sigma}\) 得 \(-\log|z|=\sigma\log\lambda\)，于是
+\(
+Y_{\sigma}(m\sigma)=\log(m\sigma\log\lambda)=Y_{\sigma}(\sigma)+\log m
+\)。
+另一方面，由 \(\frac{1+u_{\mathrm C}(t)}{1-u_{\mathrm C}(t)}=\mathrm{i}/t\) 得 \(Y_t(t)=\log|t|\)，从而
+\(
+Y_{t}(mt)=\log|mt|=Y_{t}(t)+\log m
+\)。
+差值不变性由两式相减得到。证毕。
+\end{proof}
+
+\begin{remark}[与 Witt--dilation 的对齐：只推进“深度账本”而不引入新连续自由度]
+定理 \ref{thm:dirichlet-double-depth-translation} 表明：伸缩半群在 \((Y_{\sigma},Y_t)\) 上等价于沿对角方向的平移，并严格保持射线不变量 \(\mathcal{I}\)。
+因此在 Dirichlet--Witt 口径下，算子
+\(
+(Wf)(s)=\sum_{m\ge 1}\frac{1}{m}f(ms)
+\)
+可被理解为对“深度平移族”的加权叠加：其结构作用集中在 \(\log m\) 的一维累积，而不生成额外的连续参数轴。
+\end{remark}
+
 \subsection{圆盘完成化与 RH 的圆盘零点禁入等价：把 \texorpdfstring{$t\to\infty$}{t->infty} 压到边界点 \texorpdfstring{$w=-1$}{w=-1}}\label{subsec:unit-disk-rh-equivalence}
 本小节给出一个与正文 unitary slice 口径互补的\textbf{无参圆盘化重述}：把经典完成化 \(\Xi_{\zeta}\)（其零点与 \(\zeta\) 的非平凡零点一致）通过 Cayley 变换搬运为单位圆盘内的解析函数，从而把 RH 等价改写为“盘内零点禁入”与“边界有限圆周平均缺陷为零”两类判据。
 与之对照，正文 \S\ref{subsec:xi-from-self-dual} 通过 Dirichlet 截面 \(u_L(s)=L^{2s-1}\) 将临界线识别为参数侧的单位圆切片（注 \ref{rem:xi-critical-line-unit-circle}）；而此处进一步把临界线参数 \(t\in\RR\) 自身紧化为单位圆上一条单弧，使 \(\pm\infty\) 合并为同一边界点 \(w=-1\)。
+
+\paragraph{自对偶一变量 \texorpdfstring{$\Xi$}{Xi} 的非周期相位化：临界线的“单点无穷”重写}
+令 \(\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})\) 如 \S\ref{subsec:xi-from-self-dual}。
+在完成化条件下，临界线实值性
+\(
+\Xi_{\Delta,L}(\tfrac12+\mathrm{i}t)\in\RR
+\)
+由命题 \ref{prop:xi-delta-L-critical-line-real} 给出。
+据此可引入一个与 \eqref{eq:dirichlet-cayley-phase-axis} 一致的\textbf{非周期临界线参数化}：用 Cayley 相位轴把 \(t\in\RR\) 紧化为 \(\TT\setminus\{-1\}\) 上的单位圆参数，并把 \(t\to\pm\infty\) 合并为端点 \(-1\)。
+
+\begin{definition}[非周期临界线相位化]\label{def:xi-nonperiodic-phase}
+定义
+\begin{equation}\label{eq:xi-nonperiodic-phase}
+\boxed{\;
+\widetilde{\Xi}_{\Delta,L}(u_{\mathrm C})
+:=\Xi_{\Delta,L}\!\Bigl(\frac12+\mathrm{i}\,t(u_{\mathrm C})\Bigr),
+\qquad
+t(u_{\mathrm C})=-\mathrm{i}\,\frac{u_{\mathrm C}-1}{u_{\mathrm C}+1}
+\qquad
+(u_{\mathrm C}\in\TT\setminus\{-1\})\; }.
+\end{equation}
+\end{definition}
+
+\begin{proposition}[单位圆对称性：函数方程在 \texorpdfstring{$\TT$}{T} 上的重写]\label{prop:xi-nonperiodic-phase-symmetry}
+在命题 \ref{prop:xi-delta-L-critical-line-real} 的条件下，\(\widetilde{\Xi}_{\Delta,L}\) 是定义在 \(\TT\setminus\{-1\}\) 上的实值函数。
+并且满足纯单位圆对称性
+\begin{equation}\label{eq:xi-unit-circle-inversion-symmetry}
+\boxed{\;
+\widetilde{\Xi}_{\Delta,L}(u_{\mathrm C})
+=\widetilde{\Xi}_{\Delta,L}(1/u_{\mathrm C})\; }.
+\end{equation}
+其中端点极限 \(u_{\mathrm C}\to-1\) 对应 \(t(u_{\mathrm C})\to\pm\infty\)，从而临界线的无穷高度被严格重写为单位圆上的单点边界层。
+\end{proposition}
+\begin{proof}
+当 \(u_{\mathrm C}\in\TT\setminus\{-1\}\) 时，\(t(u_{\mathrm C})\in\RR\)，故由命题 \ref{prop:xi-delta-L-critical-line-real} 得 \(\widetilde{\Xi}_{\Delta,L}(u_{\mathrm C})\in\RR\)。
+又由函数方程 \(\Xi_{\Delta,L}(s)=\Xi_{\Delta,L}(1-s)\)（命题 \ref{prop:xi-delta-L-functional-equation}）在临界线上的等价式
+\(
+\Xi_{\Delta,L}(\tfrac12+\mathrm{i}t)=\Xi_{\Delta,L}(\tfrac12-\mathrm{i}t)
+\)
+可知 \(\Xi_{\Delta,L}\) 在临界线上为偶函数。
+而 Cayley 反变换满足 \(t(1/u_{\mathrm C})=-t(u_{\mathrm C})\)（例如取 \(u_{\mathrm C}=e^{\mathrm{i}\theta}\) 时 \(t(u_{\mathrm C})=\tan(\theta/2)\)），
+于是
+\[
+\widetilde{\Xi}_{\Delta,L}(1/u_{\mathrm C})
+=\Xi_{\Delta,L}\!\Bigl(\tfrac12+\mathrm{i}\,t(1/u_{\mathrm C})\Bigr)
+=\Xi_{\Delta,L}\!\Bigl(\tfrac12-\mathrm{i}\,t(u_{\mathrm C})\Bigr)
+=\widetilde{\Xi}_{\Delta,L}(u_{\mathrm C}),
+\]
+得到 \eqref{eq:xi-unit-circle-inversion-symmetry}。
+端点对应关系由 \(\mathcal{C}(t)=\frac{1+\mathrm{i}t}{1-\mathrm{i}t}\to-1\ (t\to\pm\infty)\)（命题 \ref{prop:app-cayley-upperhalf-disk}）立即得到。证毕。
+\end{proof}
 
 \paragraph{经典完成化对象}
 记
@@ -701,6 +867,28 @@ C_m(0)=\mathfrak{r}^{m}+\mathfrak{r}^{-m}=2\cos(m\pi/2)\in\{0,\pm 2\}\; }.
 \(
 C_m(0)=2\cos(m\pi/2)
 \)，其取值仅依赖 \(m\bmod 4\)。证毕。
+\end{proof}
+
+\begin{proposition}[端点正交分解：\texorpdfstring{$\ZZ/4$}{Z/4} 离散载荷与 \texorpdfstring{$\RR_{+}$}{R+} 精度载荷]\label{prop:endpoint-orthogonal-decomposition-z4-Rplus}
+在端点 \(w=-1\)（完成化坐标 \(s=0\)）的邻域内，伸缩半群 \(m\in\NN_{\ge 1}\) 的作用可分解为两条互不耦合的载荷：
+\begin{enumerate}
+  \item \textbf{离散端点载荷：}端点态 \(C_m(0)\in\{0,\pm 2\}\) 仅由 \(m\bmod 4\) 决定（命题 \ref{prop:half-angle-z4-residue}）。
+  \item \textbf{连续精度载荷：}取 Cayley 相位轴 \(u_{\mathrm C}(t)=\frac{1+\mathrm{i}t}{1-\mathrm{i}t}\) 并令半平面线性化坐标 \(\mathfrak{w}(u)=\frac{1+u}{1-u}\)。
+  则在 \(t\neq 0\) 时有 \(\mathfrak{w}(u_{\mathrm C}(t))=\mathrm{i}/t\)，并且在伸缩 \(t\mapsto mt\) 下满足
+  \[
+  \mathfrak{w}\!\bigl(u_{\mathrm C}(mt)\bigr)=\frac{1}{m}\,\mathfrak{w}\!\bigl(u_{\mathrm C}(t)\bigr),
+  \qquad
+  y\!\bigl(u_{\mathrm C}(mt)\bigr)=y\!\bigl(u_{\mathrm C}(t)\bigr)+\log m,
+  \]
+  其中 \(y(u):=-\log|\mathfrak{w}(u)|\) 为端点精度势 \eqref{eq:endpoint-busemann-potential}。
+\end{enumerate}
+因此，端点处的非紧性沿精度势 \(y\) 轴累积为 \(\log m\) 的平移账本，而端点的“半角分支记忆”由有限离散残差 \(m\bmod 4\) 完全承载。
+\end{proposition}
+\begin{proof}
+第一条即命题 \ref{prop:half-angle-z4-residue}。
+第二条由 \eqref{eq:scale-linearization-halfplane-coordinate}--\eqref{eq:scale-linearization-w-vs-x} 得出：当 \(u=u_{\mathrm C}(t)\) 时 \(x(u)=t\) 且 \(\mathfrak{w}(u)=\mathrm{i}/x(u)=\mathrm{i}/t\)。
+伸缩 \(t\mapsto mt\) 在 \(u\)-变量上对应于 \(u\mapsto\psi_m(u)\)，且由命题 \ref{prop:scale-linearization-identity-multipliers} 有 \(\mathfrak{w}(\psi_m(u))=\mathfrak{w}(u)/m\)，从而 \(\mathfrak{w}(u_{\mathrm C}(mt))=\mathfrak{w}(u_{\mathrm C}(t))/m\)。
+最后由定义 \(y=-\log|\mathfrak{w}|\)（式 \eqref{eq:endpoint-busemann-potential}）即得加法律，亦可直接视为 \eqref{eq:endpoint-busemann-addition-law} 在 unitary Cayley 轴上的限制。证毕。
 \end{proof}
 
 \begin{proposition}[端点导数律：奇伸缩线性放大，偶伸缩二阶退化]\label{prop:chebyshev-endpoint-derivative-splitting}
