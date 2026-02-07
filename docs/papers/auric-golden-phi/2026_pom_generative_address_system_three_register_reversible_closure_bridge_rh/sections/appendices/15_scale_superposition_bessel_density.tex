@@ -1,0 +1,159 @@
+\section{尺度叠加完成化与零点密度门槛：从 \texorpdfstring{$O(T)$}{O(T)} 到 \texorpdfstring{$T\log T$}{TlogT} 的最小无限机制}\label{app:scale-superposition-density}
+本附录在 BridgeRH 的“极限规格”层面固定一个不可回避的结构门槛：对固定底 $L$ 的有限维/有限频带 Dirichlet 化对象，其零点（或极点）密度至多为 $O(T)$，无法与经典 $\zeta$ 的 $T\log T$ 密度阶相容。因此若希望在 (B1.c) 的识别义务中逼近经典零点统计，必须在某一方向注入随高度增长的自由度（例如尺度尾部、状态数、或相位通道数的增长）。本附录给出一条可审计的“尺度叠加”接口与一个显式模板：Bessel--cosh 尺度核在临界线产生 $T\log T$ 密度，并出现 $2\pi$ 常数锚点。
+
+\subsection{尺度叠加完成化：定义与函数方程保持}\label{subsec:scale-superposition}
+
+\begin{definition}[尺度叠加完成化]\label{def:xi-scale-superposition}
+取一个实值权函数 $w:[0,\infty)\to\RR$，使得下述积分对所关心的 $s$ 收敛（例如 $w\in L^1(0,\infty)$ 且具有足够衰减）。
+对任意二变量行列式对象 $\Delta(z,u)$ 与任意 $L>1$，记
+$$
+\Xi_{\Delta,L}(s):=\Delta(L^{-s},L^{2s-1}).
+$$
+定义尺度叠加完成化为
+$$
+\mathcal X_{\Delta,w}(s):=\int_{1}^{\infty} w(\log L)\,\Xi_{\Delta,L}(s)\,\frac{\dd L}{L}.
+$$
+作变量代换 $x=\log L$ 得等价形式
+$$
+\mathcal X_{\Delta,w}(s)=\int_0^\infty w(x)\,\Delta\!\bigl(e^{-sx},e^{(2s-1)x}\bigr)\,\dd x.
+$$
+\end{definition}
+
+\begin{proposition}[尺度叠加保持函数方程]\label{prop:xi-scale-superposition-fe}
+设 $\Delta(z,u)$ 满足自对偶
+$$
+\Delta(z,u)=\Delta(uz,1/u).
+$$
+则对任意 $L>1$ 有严格函数方程
+$$
+\Xi_{\Delta,L}(s)=\Xi_{\Delta,L}(1-s).
+$$
+因此对任意满足定义 \ref{def:xi-scale-superposition} 的权函数 $w$，尺度叠加对象同样满足
+$$
+\boxed{\ \mathcal X_{\Delta,w}(s)=\mathcal X_{\Delta,w}(1-s)\ }.
+$$
+\end{proposition}
+\begin{proof}
+由自对偶恒等式，
+$$
+\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})
+=\Delta(L^{2s-1}L^{-s},L^{1-2s})
+=\Delta(L^{s-1},L^{1-2s}).
+$$
+而 $L^{s-1}=L^{-(1-s)}$、$L^{1-2s}=L^{2(1-s)-1}$，故 $\Xi_{\Delta,L}(s)=\Xi_{\Delta,L}(1-s)$。
+将该等式逐点代入定义 \ref{def:xi-scale-superposition} 的积分即得 $\mathcal X_{\Delta,w}(s)=\mathcal X_{\Delta,w}(1-s)$。证毕。
+\end{proof}
+
+\begin{remark}[unitary slice 与尺度叠加]\label{rem:scale-superposition-unitary}
+当 $s=\tfrac12+it$ 时，对每个 $L>1$ 有
+$
+u_L(s)=L^{2it}\in\{u\in\CC:|u|=1\}
+$，
+因此尺度叠加并不引入径向自由度；它仅在同一 unitary slice 上叠加不同尺度的相位频率。
+\end{remark}
+
+\subsection{有限频带 + 有限尺度窗 $\Rightarrow$ 线性零点密度上界}\label{subsec:scale-superposition-zero-density}
+
+\begin{proposition}[有限频带/有限尺度的零点密度上界：\texorpdfstring{$N(T)=O(T)$}{N(T)=O(T)}]\label{prop:scale-superposition-zero-density-upper}
+假设 $\Delta(z,u)$ 在 unitary slice 上具有有限带宽：存在整数 $N,K\ge 0$ 以及系数 $a_{j,k}\in\CC$，使得
+$$
+\Delta(z,u)=\sum_{j=0}^{N}\sum_{k=-K}^{K} a_{j,k}\,z^j u^k
+\qquad(\text{有限和}).
+$$
+再假设权函数 $w$ 具有紧支集 $\mathrm{supp}(w)\subseteq [0,X]$（某个 $X<\infty$）。
+令
+$$
+F(t):=\mathcal X_{\Delta,w}\!\left(\tfrac12+it\right)\qquad(t\in\RR),
+$$
+并令 $N_F(T)$ 表示区间 $[-T,T]$ 上 $F(t)$ 的实零点数（按重数计）。
+则：
+\begin{enumerate}[label=(\arabic*), ref=\arabic*]
+  \item $F$（作为 $t$ 的函数）可延拓为指数类型有界的整函数，其指数类型由 $X$ 与带宽 $N,K$ 控制；
+  \item 因而零点计数满足线性上界
+  $$
+  \boxed{\ N_F(T)=O(T)\qquad(T\to\infty)\ }.
+  $$
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+取 $s=\tfrac12+it$ 并将定义 \ref{def:xi-scale-superposition} 写成 $x$-变量形式。此时
+$$
+z=e^{-sx}=e^{-x/2}e^{-itx},
+\qquad
+u=e^{(2s-1)x}=e^{2itx}.
+$$
+代入有限带宽展开得
+$$
+F(t)=\int_0^{X} w(x)\sum_{j=0}^{N}\sum_{k=-K}^{K} a_{j,k}\,e^{-jx/2}\,e^{i(2k-j)tx}\,\dd x.
+$$
+令 $g_j(x):=w(x)e^{-jx/2}\mathbf{1}_{[0,X]}(x)\in L^1(\RR)$，并记其 Fourier 变换
+$$
+\widehat g_j(\xi):=\int_{\RR} g_j(x)e^{i\xi x}\,\dd x.
+$$
+则
+$$
+F(t)=\sum_{j=0}^{N}\sum_{k=-K}^{K} a_{j,k}\,\widehat g_j\!\bigl((2k-j)t\bigr).
+$$
+由于 $\mathrm{supp}(g_j)\subseteq[0,X]$，$\widehat g_j$ 为指数类型 $\le X$ 的整函数；因此 $F$ 也是指数类型有限的整函数（类型可由 $X\max_{j,k}|2k-j|\le X(2K+N)$ 控制）。
+指数类型整函数的零点分布满足线性密度上界，故 $N_F(T)=O(T)$。证毕。
+\end{proof}
+
+\begin{remark}[密度门槛：逼近 \texorpdfstring{$T\log T$}{TlogT} 必须打破“有限频带”或“有限尺度窗”]\label{rem:scale-superposition-density-threshold}
+命题 \ref{prop:scale-superposition-zero-density-upper} 表明：若 $\Delta$ 的 $u$-带宽固定且 $w$ 在对数尺度上具有有效截断（紧支集或同阶意义下的硬截断），则即便引入连续尺度混合，临界线零点计数仍至多为 $O(T)$。
+因此若目标是逼近经典 $\zeta$ 的零点计数增长阶 $N_\zeta(T)\asymp T\log T$，则必须至少引入一条硬升级机制：
+\begin{itemize}
+  \item \textbf{无界尺度尾部}：使得对频率 $T$ 的“有效尺度上界” $X(T)$ 随 $T$ 增长（典型阈值为 $X(T)\asymp \log T$）；或
+  \item \textbf{随尺度增长的复杂度}：让 $\Delta$ 的带宽/状态数（例如 $N,K$）随尺度参数增长，而非固定为有限常数。
+\end{itemize}
+该门槛为 BridgeRH 的 (B1.c) 极限规格提供一个不可回避的验收标准：任何“识别为 $\Xi_\zeta$”的候选对象必须在某一方向释放 $\Theta(\log T)$ 的自由度预算。
+\end{remark}
+
+\subsection{显式模板：Bessel--cosh 尺度核的 \texorpdfstring{$T\log T$}{TlogT} 密度与 \texorpdfstring{$2\pi$}{2pi} 常数锚点}\label{subsec:bessel-template}
+
+\begin{proposition}[Bessel--cosh 尺度核给出 \texorpdfstring{$T\log T$}{TlogT} 临界线零点密度与 \texorpdfstring{$2\pi$}{2pi} 常数锚点]\label{prop:bessel-cosh-kernel-density}
+取参数 $x_0>0$，并定义偶权核
+$$
+w_{x_0}(t):=\exp\!\bigl(-x_0\cosh t\bigr)\qquad(t\ge 0).
+$$
+则存在积分表示（$\nu\in\RR$）
+$$
+K_{i\nu}(x_0)=\int_{0}^{\infty}e^{-x_0\cosh t}\cos(\nu t)\,\dd t
+$$
+（参见 \cite{Paris2022KiNuZeros}），从而沿临界线的“Bessel 完成模块”
+$$
+\Xi_{\mathrm{Bessel},x_0}(s):=K_{\frac{s-\frac12}{2}}(x_0)
+$$
+满足对称性与 Hardy 实值化：
+$$
+\Xi_{\mathrm{Bessel},x_0}(s)=\Xi_{\mathrm{Bessel},x_0}(1-s),
+\qquad
+\Xi_{\mathrm{Bessel},x_0}\!\left(\tfrac12+it\right)\in\RR.
+$$
+并且其临界线零点由 $K_{i\nu}(x_0)$ 的 $\nu$-零点给出：若 $K_{i\nu}(x_0)=0$ 且 $\nu>0$，则
+$
+\Xi_{\mathrm{Bessel},x_0}(\tfrac12+2i\nu)=0
+$。
+记
+$$
+N_{\mathrm{Bessel},x_0}(T):=\#\Bigl\{\,0<\gamma\le T:\ \Xi_{\mathrm{Bessel},x_0}\!\left(\tfrac12+i\gamma\right)=0\,\Bigr\},
+$$
+则 \cite{Paris2022KiNuZeros} 给出的零点渐近方程推出
+$$
+\boxed{\;
+N_{\mathrm{Bessel},x_0}(T)
+=\frac{T}{2\pi}\log\!\Bigl(\frac{T}{e\,x_0}\Bigr)+O(1)\qquad(T\to\infty).\;}
+$$
+特别地，当取 $x_0=2\pi$ 时，
+$$
+\boxed{\;
+N_{\mathrm{Bessel},2\pi}(T)
+=\frac{T}{2\pi}\log\!\Bigl(\frac{T}{2\pi}\Bigr)-\frac{T}{2\pi}+O(1),\;}
+$$
+其前两项常数与黎曼--冯\,曼戈尔特零点计数主项同型。
+\end{proposition}
+
+\begin{remark}[对 BridgeRH 的启发：\texorpdfstring{$2\pi$}{2pi} 常数与最小无限机制]\label{rem:bessel-template-bridge}
+命题 \ref{prop:bessel-cosh-kernel-density} 提供一个完全显式、可复核的模板：仅通过尺度核的无界尾部（$\cosh$ 权重对应的有效尺度窗随频率增长），即可在 unitary slice 的 Hardy 截面上得到 $T\log T$ 级零点密度，并出现 $2\pi$ 常数锚点。
+因此在 BridgeRH 的极限规格中，若目标是与 $\Xi_\zeta$ 的零点统计对齐，则必须在某一方向实现同阶的“对数预算”；尺度叠加与角色/通道数增长是两条结构上自然的候选路径。
+\end{remark}
+

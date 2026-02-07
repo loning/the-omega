@@ -151,6 +151,48 @@ B_{K,n}(u)
 对 Euler 乘积取对数并按长度分组得到 $a_{K,n}$ 与 $B_{K,d}$ 的关系；再作 Möbius 反演即得逆公式。证毕。
 \end{proof}
 
+\begin{proposition}[Big-Witt 整除律与 \texorpdfstring{$p$}{p}-幂同余护栏（可审计验收）]\label{prop:big-witt-guardrails}
+在定义 \ref{def:zetaK-two-variable} 的设定下，令系数环 $R=\ZZ[u]$，并记迹序列 $a_n(u)=\Tr(M_K(u)^n)\in R$。定义
+$$
+S_n(u):=\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d)\in R.
+$$
+则对任意 $n\ge 1$ 有严格整除约束
+$$
+\boxed{\ S_n(u)\in nR\ } \qquad(\text{即每个系数都能被 }n\text{ 整除}),
+$$
+从而 primitive 分层谱
+$
+B_{K,n}(u)=\frac{1}{n}S_n(u)
+$
+确实落在 $R$（而非仅在 $\QQ[u]$）。
+此外，对任意素数 $p$ 与 $k\ge 1$ 还满足 $p$-幂同余
+$$
+\boxed{\ a_{p^k}(u)\equiv a_{p^{k-1}}(u^p)\pmod{p^k} }.
+$$
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:zeta-euler-mobius} 的 Möbius/Witt 反演，
+$
+B_{K,n}(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d)
+$，
+而 $B_{K,n}(u)$ 的定义 \eqref{def:primitive-layer-spectrum} 是对 primitive 轨道的有限求和，系数为非负整数，故 $B_{K,n}(u)\in\ZZ[u]$。于是 $S_n(u)=nB_{K,n}(u)\in nR$。
+$p$-幂同余是上述整除律在 $n=p^k$ 的一族必要条件：将 $S_{p^k}(u)\in p^kR$ 展开为
+$
+a_{p^k}(u)-a_{p^{k-1}}(u^p)\in p^kR
+$
+即得。证毕。
+\end{proof}
+
+\begin{algorithm}[自审计协议：不算谱、不枚举轨道的同余一致性检查]\label{alg:self-audit-witt-bridge}
+给定一个核的带权邻接矩阵族 $M_K(u)$（系数环 $R=\ZZ[u]$），以及要审计的整数集合 $\mathcal N$ 与素数幂集合 $\mathcal P=\{(p,k)\}$：
+\begin{enumerate}[label=(\arabic*), ref=\arabic*]
+  \item 计算周期迹多项式 $a_n(u)=\Tr(M_K(u)^n)\in R$（可用精确矩阵幂/递推完成）。
+  \item 对每个 $n\in\mathcal N$，构造 $S_n(u)=\sum_{d\mid n}\mu(d)a_{n/d}(u^d)$ 并检查 $S_n(u)\in nR$（系数逐项可被 $n$ 整除）。
+  \item 对每个 $(p,k)\in\mathcal P$，检查 $a_{p^k}(u)-a_{p^{k-1}}(u^p)\in p^kR$。
+\end{enumerate}
+任何一次失败都意味着：该迹序列不可能来自命题 \ref{prop:zeta-euler-mobius} 的 primitive/Euler 桥包（实现或模型层面断裂），因此可作为零成本的桥包验收拒绝证书。
+\end{algorithm}
+
 \begin{remark}[严格交换桥包（迹 $\to$ primitive $\to$ Euler）]\label{rem:trace-primitive-euler-commuting}
 命题 \ref{prop:zeta-euler-mobius} 把“核侧轨道计数”压缩为一个严格交换桥包：有限核（有限矩阵）$T$ 的迹序列 $a_n(T)=\Tr(T^n)$ 经 Möbius/Witt 变换得到 primitive 系数，再经 Euler 变换复原 $\zeta_T(z)=\det(I-zT)^{-1}$；因此 prime-like 侧与 trace 侧在可审计意义下被锁定为同一对象的两种读出。
 \[
@@ -214,6 +256,27 @@ BridgeRH 的目标是把“经典完成化对象”的零点事件编译/注入�
   随后以解析延拓唯一性把“协议路径上一致”提升为“相应域内恒等/同零点集”结论；若该提升失败，则必须给出最小失败点（例如有限维极点格点屏障、需极限逼近/sofic 细化等）的可否证诊断。
 \end{itemize}
 
+\begin{proposition}[实轴协议足够：在 \texorpdfstring{$(0,1)$}{(0,1)} 上匹配即可推出单位圆盘内恒等]\label{prop:real-arc-sufficiency-unit-disk-bridge}
+设 $G(r)$ 在单位圆盘 $|r|<1$ 上全纯。设谱侧写为
+$$
+G(r)=S(r)+A_\infty(r),
+$$
+其中 $A_\infty(r)$ 在 $|r|<1$ 上全纯，而 $S(r)$ 在 $|r|<1$ 上亚纯（允许孤立极点）。
+若上述等式对所有实数 $r\in(0,1)$ 成立，则该恒等式作为亚纯恒等自动延拓到整个单位圆盘 $|r|<1$；
+并且 $S(r)$ 在 $|r|<1$ 内的全部极点都必须是可去奇点（从而 $S$ 实际上也在 $|r|<1$ 上全纯）。
+\end{proposition}
+\begin{proof}
+令 $F(r):=G(r)-A_\infty(r)-S(r)$。则 $F$ 在 $|r|<1$ 上亚纯，并在 $(0,1)$ 上恒为 $0$。但非零亚纯函数的零点集在域内必为离散集，而 $(0,1)$ 在 $|r|<1$ 内有聚点，故 $F\equiv 0$。又因 $G-A_\infty$ 全纯，$S=G-A_\infty$ 的全部极点只能为可去奇点。证毕。
+\end{proof}
+
+\begin{remark}[离散 Abel--Weil 极点刚性作为 (B1.c) 的候选协议路径]\label{rem:abel-weil-protocol-path}
+附录 \ref{app:discrete-abel-weil} 给出一个完全经典的 $r$-平面桥包：它把 $\zeta$ 的零点严格编码为 $|r|<1$ 的极点位置，并给出
+$
+\mathrm{RH}\Longleftrightarrow \text{在 }|r|<1\text{ 内全纯}
+$
+的等价判别。因而在 BridgeRH 的识别义务中，可取 $r\uparrow 1$ 的实轴作为协议路径，并以命题 \ref{prop:real-arc-sufficiency-unit-disk-bridge} 将“实轴逐点匹配”提升为圆盘内的全盘恒等；这为 (B1.c) 提供一条以全纯性/留数证书为核心的可审计路线。
+\end{remark}
+
 \paragraph{义务组 (B2)（零点可寻址桥接：编译器义务）}
 对任意外部给定的经典零点事件证书（例如输入 $s_0$ 及其 $\Xi_\zeta(s_0)=0$ 的外部证明/可核对证明片段），编译器必须输出一条投影词地址 $W(s_0)\in\mathrm{PW}$，使其在可审计片段内规约到接口正规形并产生非 $\NULL$ 的可核对读出；该读出在 (B1.c) 的识别口径下验证 $\Xi_{\Delta,L}(s_0)=0$。其局域并行实现依赖于“轨道残差外置到 prime-register”的机制（见附录 \ref{app:prime-uplift} 与附录 \ref{app:inject-code-audit}）。
 
@@ -262,6 +325,75 @@ $
 (I-rF)^{-1}=\frac{1}{1-r\lambda}P_\lambda+(\text{在 }r_0\text{ 处解析的项})
 $，
 对其取迹即得。证毕。
+\end{proof}
+
+\begin{algorithm}[留数环审计协议（Residue-ring test；可执行 falsification 通道）]\label{alg:residue-ring-test}
+给定一个候选点 $r_0$（例如由外部零表/谱表预测的内部极点位置）与一个在 $|r|<1$ 内可数值评估的函数 $G(r)$。
+取任意 $\varepsilon>0$ 使得闭圆 $\overline{D}(r_0,\varepsilon)\subset\{|r|<1\}$，并取整数采样数 $K\ge 1$。
+令 $\theta_k:=2\pi k/K$，并定义离散留数估计
+$$
+\widehat{\mathrm{Res}}(G;r_0)
+:=\frac{\varepsilon}{K}\sum_{k=0}^{K-1} e^{i\theta_k}\,G\!\bigl(r_0+\varepsilon e^{i\theta_k}\bigr).
+$$
+若 $G$ 在 $|r|<1$ 内全纯，则理论上 $\mathrm{Res}(G;r_0)=0$；因此任何显著偏离 $0$ 的数值结果都可作为“闭层全纯性失败 / NonCancel 失败 / 或候选谱点假设不成立”的 falsification 信号。
+\end{algorithm}
+
+\begin{proposition}[离散留数估计的显式误差界]\label{prop:residue-ring-explicit-error-bound}
+设 $G$ 在 $|r|<1$ 上全纯，且满足显式上界
+$$
+|G(r)|\le \frac{C}{1-|r|}\qquad(|r|<1)
+$$
+（例如当 $G(r)=\sum_{t\ge 0}a_t r^t$ 且 $|a_t|\le C$ 时成立）。
+取 $r_0\in\{|r|<1\}$、$\varepsilon>0$ 使得 $|r_0|+\varepsilon<1$，并按算法 \ref{alg:residue-ring-test} 定义 $\widehat{\mathrm{Res}}(G;r_0)$。
+则真实留数满足 Cauchy 公式
+$$
+\mathrm{Res}(G;r_0)=\frac{1}{2\pi i}\oint_{|r-r_0|=\varepsilon}G(r)\,\dd r
+=\frac{\varepsilon}{2\pi}\int_0^{2\pi} e^{i\theta}\,G\!\bigl(r_0+\varepsilon e^{i\theta}\bigr)\,\dd\theta,
+$$
+并且离散误差可按下述方式显式控制：对任意 $a>0$ 满足 $|r_0|+\varepsilon e^{a}<1$，都有
+$$
+\bigl|\widehat{\mathrm{Res}}(G;r_0)-\mathrm{Res}(G;r_0)\bigr|
+\le
+\varepsilon\cdot
+\frac{2\,e^{a}}{e^{aK}-1}\cdot
+\frac{C}{1-|r_0|-\varepsilon e^{a}}.
+$$
+特别地，由于 $G$ 全纯时 $\mathrm{Res}(G;r_0)=0$，上式直接给出 $|\widehat{\mathrm{Res}}(G;r_0)|$ 的可审计上界。
+\end{proposition}
+\begin{proof}
+令 $g(\theta):=e^{i\theta}G(r_0+\varepsilon e^{i\theta})$。则
+$$
+\mathrm{Res}(G;r_0)=\varepsilon\cdot \frac{1}{2\pi}\int_0^{2\pi}g(\theta)\,\dd\theta,
+\qquad
+\widehat{\mathrm{Res}}(G;r_0)=\varepsilon\cdot \frac{1}{K}\sum_{k=0}^{K-1}g(\theta_k).
+$$
+当 $|\Im\theta|\le a$ 时有 $|e^{i\theta}|\le e^{a}$ 且
+$
+|r_0+\varepsilon e^{i\theta}|\le |r_0|+\varepsilon e^{a}<1
+$，
+故由给定上界得
+$$
+|g(\theta)|\le e^{a}\cdot \frac{C}{1-|r_0|-\varepsilon e^{a}}=:M_a.
+$$
+因此 $g$ 作为 $2\pi$-周期函数在条带 $|\Im\theta|\le a$ 内全纯且有界。
+记其 Fourier 系数为 $\widehat g_n=\frac{1}{2\pi}\int_0^{2\pi} g(\theta)e^{-in\theta}\,\dd\theta$，由移线积分得
+$
+|\widehat g_n|\le M_a e^{-a|n|}
+$。
+而离散平均只采样到频率为 $K$ 的倍数项：$\frac{1}{K}\sum_{k=0}^{K-1} g(\theta_k)=\sum_{m\in\ZZ}\widehat g_{mK}$。
+故误差满足
+$$
+\left|
+\frac{1}{K}\sum_{k=0}^{K-1} g(\theta_k)
+-\frac{1}{2\pi}\int_0^{2\pi}g(\theta)\,\dd\theta
+\right|
+\le
+\sum_{m\ne 0}|\widehat g_{mK}|
+\le
+2M_a\sum_{m\ge 1}e^{-amK}
+=\frac{2M_a}{e^{aK}-1}.
+$$
+两边乘以 $\varepsilon$ 即得所示不等式。证毕。
 \end{proof}
 
 \begin{theorem}[primitive 对数接口与 Abel 有限部常数（通用闭式）]\label{thm:abel-mertens-universal-bridge}

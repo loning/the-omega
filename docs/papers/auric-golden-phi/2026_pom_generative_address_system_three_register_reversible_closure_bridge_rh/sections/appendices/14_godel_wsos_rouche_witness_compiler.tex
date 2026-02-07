@@ -1,0 +1,334 @@
+\section[统一编码与证明携带审计]{地址—残差—证书的统一 Gödel 化编码与证明携带审计：WSOS 证书、Rouché 模板、见证提取与统一编译}\label{app:godel-wsos-rouche}
+
+本附录补齐并推进两类此前缺口：\textbf{(i)} 地址/残差/证书材料的统一自然数编码层（Gödel 化、可判定互逆）；\textbf{(ii)} unitary slice 审计接口的\textbf{证明携带化}与\textbf{可复现}数值证书协议，并在此基础上给出一个可执行的 BridgeRH \textbf{有限区域零点计数证书模板}以及“第四寄存器需求”的\textbf{可判定见证提取机制}。最后给出统一的“运算涌现编译定理”，覆盖四则、商余、布尔运算与（在可计算语义域内的）ZFC 构造性运算族。
+
+\subsection{统一 Gödel 编码层：\texorpdfstring{$\Addr$}{Addr} 的可判定注入与可判定反解}\label{app:godel-addr-enc}
+
+附录 \ref{app:inject-code-audit} 已给出 prime-register 残差承载所需的 $\mathrm{code}/\mathrm{decode}$ 与 Gödel（素数幂）编码。本节进一步给出一个\textbf{统一的注入/编码层}，把“对象—残差—证书（含数值审计材料）”压缩为单个自然数，以便在离线审计、跨系统传输与 PW 可判定核验片段中统一处理。
+
+\subsubsection{偶奇配对：无需平方根的原子配对与可判定互逆性}
+
+\begin{definition}[偶奇配对与反配对]\label{def:eo-pair}
+对 $a,b\in\NN$ 定义偶奇配对
+$$
+\langle a,b\rangle_{2}:=2^a(2b+1)-1.
+$$
+对 $n\in\NN$ 令 $n':=n+1$，定义 $2$-进赋值
+$$
+v_2(n'):=\max\{k\in\NN:2^k\mid n'\},
+$$
+以及奇部
+$$
+\mathrm{odd}(n'):=\frac{n'}{2^{v_2(n')}}\quad(\text{因此 $\mathrm{odd}(n')$ 为奇数}).
+$$
+定义反配对
+$$
+\mathrm{unpair}_{2}(n):=(a,b),\qquad a:=v_2(n'),\quad b:=\frac{\mathrm{odd}(n')-1}{2}.
+$$
+\end{definition}
+
+\begin{lemma}[可判定互逆性]\label{lem:eo-pair-invertible}
+对任意 $a,b\in\NN$ 有 $\mathrm{unpair}_2(\langle a,b\rangle_2)=(a,b)$。对任意 $n\in\NN$ 若 $\mathrm{unpair}_2(n)=(a,b)$，则 $\langle a,b\rangle_2=n$。并且 $\langle\cdot,\cdot\rangle_2$ 与 $\mathrm{unpair}_2$ 均为可判定函数（仅用到整数运算、整除判定与 $v_2$ 计算）。
+\end{lemma}
+
+\begin{proof}
+由定义 $n'+1=2^a(2b+1)$ 的 $2$-进赋值为 $a$，奇部为 $2b+1$，从而反配对恢复 $b$。反向恒等式由 $n'=2^{v_2(n')}\mathrm{odd}(n')$ 的唯一分解给出。可判定性来自：$v_2$ 可由反复整除 $2$ 计算，$\mathrm{odd}$ 由整除得到。
+\end{proof}
+
+\begin{remark}[与 Cantor 配对的关系]
+附录 \ref{app:inject-code-audit} 使用 Cantor 配对 $\pi$ 及其逆算法，其逆过程依赖整数平方根。定义 \ref{def:eo-pair} 的偶奇配对提供一种不涉及平方根的替代；两者均给出 $\NN^2\simeq\NN$ 的可判定双射，本文后续编码层可任选其一。为突出“纯整除/赋值”的核验口径，本附录在统一编码中优先使用 $\langle\cdot,\cdot\rangle_2$。
+\end{remark}
+
+\subsubsection{有限序列与结构化有限数据的 Gödel 化}
+
+沿用附录 \ref{app:inject-code-audit} 的素数序列 $p_1<p_2<\cdots$ 与 Gödel（素数幂）编码。对有限序列 $\mathbf{x}=(x_1,\dots,x_k)\in\NN^k$ 定义
+$$
+\mathrm{gcode}(\mathbf{x}) := \prod_{i=1}^{k} p_i^{x_i+1}\in\NN_{\ge 1}.
+$$
+其解码由 $p$-进赋值 $v_{p_i}$ 给出：对输入 $N\ge 1$，依次剥离 $p_1,p_2,\dots$ 的指数，直到剩余为 $1$ 即停机，返回 $(x_1,\dots,x_k)$。该解码过程对每个固定输入仅需有限次整除判定与有限次试除，因此为可判定过程（复杂度不作承诺）。
+
+\paragraph{有理数/多项式/矩阵的有限数据编码（证书材料接口）}
+在本文“证明携带”语境中，证书材料最终需落在\textbf{整数或有理数}上。为此，固定以下标准编码（均为可判定互逆）：
+\begin{itemize}
+  \item \textbf{整数编码：}沿用附录 \ref{app:inject-code-audit} 的双射 $\eta_{\ZZ}:\ZZ\to\NN$。
+  \item \textbf{有理数编码：}对 $q\in\QQ$ 取规范表示 $q=a/b$（$a\in\ZZ$，$b\in\ZZ_{>0}$，$\gcd(a,b)=1$），定义
+  $$
+  \eta_{\QQ}(q):=\langle \eta_{\ZZ}(a),\eta_{\ZZ}(b)\rangle_2\in\NN.
+  $$
+  解码时先反配对得到 $(\eta_{\ZZ}(a),\eta_{\ZZ}(b))$ 并还原 $(a,b)$，再验证 $b>0$ 且 $\gcd(a,b)=1$，否则输出 $\NULL$。
+  \item \textbf{整系数多项式编码：}对 $f(x)=\sum_{j=0}^{d} c_j x^j\in\ZZ[x]$，编码其系数向量 $\bigl(\eta_{\ZZ}(c_0),\dots,\eta_{\ZZ}(c_d)\bigr)$ 为 $\mathrm{gcode}$，并用一次配对把次数 $d$ 与编码打包。
+  \item \textbf{多项式矩阵编码：}对 $\widetilde{A}(x)\in\ZZ[x]^{m\times n}$，按行优先列出的条目顺序编码为有限序列，再用 $\mathrm{gcode}$ 与迭代配对打包维数 $(m,n)$ 与条目列表。对有理系数矩阵则先清分母变为整系数矩阵（见下节 WSOS 证书格式）。
+\end{itemize}
+以上仅是一个最小接口：\emph{任何在 PW 证书、prime-register 残差与数值审计协议中出现的“有限数据对象”均可归约为有限整数/有理数/多项式/矩阵，从而统一编码进 $\NN$。}
+
+\subsubsection{地址—残差—证书（ARC）四元组与统一编码}
+
+为把“对象—残差—证明—审计”统一压缩到自然数层，本节把可审计地址对象抽象为四元组记录。
+
+\begin{definition}[ARC 地址子域（记录形呈现）]\label{def:arc-record}
+定义一个用于审计与证书协议的\textbf{可审计地址子域} $\Addr_{\mathrm{ARC}}\subseteq\Addr$：其元素可被呈现为四元组记录
+$$
+A=(m,x,r,c)\in\NN^4,
+$$
+其中：
+\begin{itemize}
+  \item $m$ 为分辨率/尺度索引；
+  \item $x$ 为稳定对象（规范形）在某固定有限字母表上的编码（因此 $x\in\NN$）；
+  \item $r$ 为 prime-register 残差的编码（例如：事件序列经 $\mathrm{code}$ 后用 $\mathrm{gcode}$ 编码，或等价的有限支撑指数向量编码）；
+  \item $c$ 为证书包（PW 证书、审计协议头、区间/有理证书材料等）的统一有限数据编码。
+\end{itemize}
+为叙述简洁，本附录将 $\Addr_{\mathrm{ARC}}$ 与其记录形表示等同视之。
+\end{definition}
+
+\begin{definition}[统一编码与解码]\label{def:arc-enc-dec}
+定义统一编码
+$$
+\mathrm{Enc}:\Addr_{\mathrm{ARC}}\to\NN,\qquad
+\mathrm{Enc}(m,x,r,c):=\langle m,\langle x,\langle r,c\rangle_2\rangle_2\rangle_2.
+$$
+并定义可判定部分函数
+$$
+\mathrm{Dec}:\NN\rightharpoonup \Addr_{\mathrm{ARC}}
+$$
+为三次反配对复合：若
+$$
+\mathrm{unpair}_2(n)=(m,n_1),\quad
+\mathrm{unpair}_2(n_1)=(x,n_2),\quad
+\mathrm{unpair}_2(n_2)=(r,c),
+$$
+则置 $\mathrm{Dec}(n)=(m,x,r,c)$；否则输出 $\NULL$。
+\end{definition}
+
+\begin{theorem}[统一 Gödel 化与可判定互逆]\label{thm:arc-godel-invertible}
+对任意 $A\in\Addr_{\mathrm{ARC}}$ 有
+$$
+\mathrm{Dec}(\mathrm{Enc}(A))=A.
+$$
+并且 $\mathrm{Dec}$ 的定义域恰为 $\mathrm{Enc}(\Addr_{\mathrm{ARC}})$。因此 $\mathrm{Enc}$ 给出一个\textbf{完全形式化、可判定互逆}的自然数编码层，可作为后续“证明携带化数值协议”与 PW 证书包的统一承载接口。
+\end{theorem}
+
+\begin{proof}
+由引理 \ref{lem:eo-pair-invertible} 的互逆性，迭代配对/反配对给出四元组 $\NN^4\simeq\NN$ 的可判定互逆。故对每个 $A=(m,x,r,c)$ 有 $\mathrm{Dec}(\mathrm{Enc}(A))=A$，并且 $\mathrm{Dec}$ 仅在像上有定义且返回值必为 ARC 记录。证毕。
+\end{proof}
+
+\begin{remark}[从抽象 $\Addr$ 到可审计编码层]
+POMmin（附录 \ref{app:pommin-formal}）仅要求 $\Addr$ 可数；本文的审计协议实际使用的地址均具备\textbf{有限语法表示}（例如有限门复合词与有限参数），因而可按定义 \ref{def:arc-record} 的“有限数据记录形”实现。定理 \ref{thm:arc-godel-invertible} 提供的并非新的数学公理，而是把既有“对象—残差—证书”的有限信息压缩到 $\NN$ 的\textbf{可回放审计层}：任何可核对证书均可编码为自然数并在可判定片段中核验其一致性。
+\end{remark}
+
+\subsection{unitary slice 审计的证明携带化：从稳定性判据到 WSOS 证书}\label{app:wsos-proof-carrying}
+
+正文第 \ref{sec:fourth-register} 节已指出：在 unitary slice 类型锁定下，“临界线零点”可被编译为某个代数判据（例如单位圆内根、或 $[-2,2]$ 上根约束），从而可由根区间检查器核验。本节给出一种\textbf{完全离线可核对}的路线：把稳定性判据进一步转写为区间上的半正定性，并以\textbf{有理 WSOS（加权 SOS）证书}作为证明携带载体。
+
+\subsubsection{从单位圆稳定性到区间半正定：Schur--Cohn 型归约（接口化陈述）}
+
+在可控模型族中，unitary slice 上常见的结构是：对 $u\in\mathrm{Phase}$ 的重参数化 $x=u+u^{-1}\in[-2,2]$，得到一族关于 $z$ 的多项式
+$$
+\Phi(z;x)\in\QQ[x][z].
+$$
+记 $\Phi(\cdot;x)$ 的“Schur 稳定性”（全部根满足 $\abs{z}<1$）为 $\mathsf{SchurStable}(\Phi(\cdot;x))$。经典 Schur--Cohn 判据给出如下接口化归约（对具体矩阵形式不作展开）：
+
+\begin{assumption}[Schur--Cohn 归约接口]\label{ass:schur-cohn-reduction}
+存在一个由 $\Phi$ 的系数以有理运算构造的\textbf{对称矩阵多项式}
+$$
+H(x)\in\QQ[x]^{n\times n},\qquad H(x)^\top=H(x),
+$$
+使得对每个 $x\in[-2,2]$，
+$$
+\mathsf{SchurStable}(\Phi(\cdot;x))\quad\Longleftrightarrow\quad H(x)\succeq 0.
+$$
+\end{assumption}
+
+该接口把“单位圆内根”转写为\textbf{一维紧区间上的半正定性}，从而可引入 WSOS 证书实现证明携带核验。
+
+\subsubsection{WSOS 证书格式与纯代数核验器}
+
+\begin{definition}[WSOS（加权 SOS）证书]\label{def:wsos-cert}
+给定对称矩阵多项式 $H(x)\in\QQ[x]^{n\times n}$。称三元组
+$$
+\mathcal{C}_{\mathrm{WSOS}}=(D,\widetilde{A}(x),\widetilde{B}(x))
+$$
+为 $H(x)\succeq 0$ 于 $[-2,2]$ 上成立的一个 \textbf{WSOS 证书}，若满足：
+\begin{itemize}
+  \item $D\in\NN_{\ge 1}$；
+  \item $\widetilde{A}(x),\widetilde{B}(x)$ 为整系数多项式矩阵（维数允许与 $H$ 兼容的任意矩形形状）；
+  \item 在 $\ZZ[x]^{n\times n}$ 中成立恒等式
+  $$
+  D^2 H(x)=\widetilde{A}(x)^\top\widetilde{A}(x)+(4-x^2)\,\widetilde{B}(x)^\top\widetilde{B}(x).
+  $$
+\end{itemize}
+（等价地，写 $A=\widetilde{A}/D$、$B=\widetilde{B}/D$ 得到 $H=A^\top A+(4-x^2)B^\top B$。）
+\end{definition}
+
+\begin{algorithm}[纯代数核验器 $\mathrm{CheckWSOS}$]\label{alg:check-wsos}
+\textbf{输入：}对称矩阵多项式 $H(x)\in\QQ[x]^{n\times n}$（以清分母后的整系数形式给出）与证书 $\mathcal{C}_{\mathrm{WSOS}}=(D,\widetilde{A},\widetilde{B})$。\\
+\textbf{输出：}$\mathrm{true/false}$。
+\begin{enumerate}
+  \item 检查维数与对称性：$H^\top=H$，且 $\widetilde{A}^\top\widetilde{A}$、$\widetilde{B}^\top\widetilde{B}$ 的结果维数为 $n\times n$。
+  \item 计算多项式矩阵
+  $$
+  R(x):=D^2H(x)-\widetilde{A}(x)^\top\widetilde{A}(x)-(4-x^2)\widetilde{B}(x)^\top\widetilde{B}(x)\in\ZZ[x]^{n\times n},
+  $$
+  并逐项检查 $R(x)$ 的全部系数为 $0$。
+  \item 若全部通过则输出 $\mathrm{true}$，否则输出 $\mathrm{false}$。
+\end{enumerate}
+\end{algorithm}
+
+\begin{proposition}[WSOS 证书的正确性（可核对蕴含半正定）]\label{prop:wsos-soundness}
+若 $\mathrm{CheckWSOS}(H,\mathcal{C}_{\mathrm{WSOS}})=\mathrm{true}$，则对任意 $x\in[-2,2]$ 有 $H(x)\succeq 0$。
+\end{proposition}
+
+\begin{proof}
+由证书恒等式，对任意实数 $x$，
+$
+D^2H(x)=\widetilde{A}(x)^\top\widetilde{A}(x)+(4-x^2)\widetilde{B}(x)^\top\widetilde{B}(x)
+$。
+当 $x\in[-2,2]$ 时 $(4-x^2)\ge 0$，且 $M^\top M$ 总为半正定，因此右端为半正定矩阵。故 $D^2H(x)\succeq 0$，进而 $H(x)\succeq 0$。证毕。
+\end{proof}
+
+\begin{theorem}[unitary slice 审计的证明携带化（WSOS 版本）]\label{thm:unitary-slice-wsos}
+在假设 \ref{ass:schur-cohn-reduction} 下，若存在 $\mathcal{C}_{\mathrm{WSOS}}$ 使得 $\mathrm{CheckWSOS}(H,\mathcal{C}_{\mathrm{WSOS}})=\mathrm{true}$，则对所有 $x\in[-2,2]$ 有 $\mathsf{SchurStable}(\Phi(\cdot;x))$ 成立；因此 unitary slice 上的稳定性成为一个\textbf{完全离线可核对}的结论。并且核验器 $\mathrm{CheckWSOS}$ 仅用到整数多项式加乘与相等判定，故可被编译为本文可判定核验层的一部分（例如在附录 \ref{app:pw-fragment} 的检查器框架上添加整数/多项式编码运算）。
+\end{theorem}
+
+\begin{remark}[证书生成与有理恢复]
+定理 \ref{thm:unitary-slice-wsos} 的关键是“\emph{验证完全代数化}”：生成 WSOS 证书可借助数值 SDP 与有理恢复，但一旦得到 $(D,\widetilde{A},\widetilde{B})$，核验仅是恒等式检查。关于有理对偶证书与可界定位宽的生成机制，参见 \cite{DavisPapp2023}.
+\end{remark}
+
+\subsection{BridgeRH 的有限区域零点计数证书模板：Rouché--同伦不等式的可审计化}\label{app:rouche-certificate}
+
+BridgeRH 的核心难点之一是把“经典对象与模型对象的零点一致性/包含性”降格为可核对的有限任务。本节给出一个可执行的模板：在指定矩形区域内，用可复现的边界上界/下界证书验证 Rouché 不等式，从而获得零点计数一致性；进一步可在区域分割后得到局部匹配（位置证书）。
+
+\subsubsection{证书化的 Rouché 引理}
+
+\begin{lemma}[Rouché 边界不等式]\label{lem:rouche}
+令 $R\subset\CC$ 为矩形区域，$F,G$ 为包含 $\overline{R}$ 的邻域上的全纯函数。若
+$$
+\sup_{s\in\partial R}\abs{F(s)-G(s)}\ <\ \inf_{s\in\partial R}\abs{F(s)},
+$$
+则 $F$ 与 $G$ 在 $R$ 内零点数（按重数计）相同。
+\end{lemma}
+
+\subsubsection{证书对象与核验器（协议化定义）}
+
+\begin{definition}[Rouché 证书对象]\label{def:rouche-cert}
+称三元组
+$$
+\mathcal{C}_{\mathrm{Rou}}(F,G;R)=(\mathcal{M},\mathcal{B}_{\mathrm{err}},\mathcal{B}_{\min})
+$$
+为区域 $R$ 上的一个 \textbf{Rouché 证书}，其中：
+\begin{itemize}
+  \item $\mathcal{M}$：边界网格（四条边的分段）、舍入模型头（精度 $p$、外向舍入方向、算法版本等）与可用的导数/Lipschitz 上界记录，用于把离散采样提升为连续边界的上/下界；
+  \item $\mathcal{B}_{\mathrm{err}}$：对 $\abs{F-G}$ 在 $\partial R$ 上的上界证书；
+  \item $\mathcal{B}_{\min}$：对 $\abs{F}$ 在 $\partial R$ 上的下界证书。
+\end{itemize}
+证书的数值后端可取附录 \ref{app:inject-code-audit} 的外向舍入区间协议：对每个边界小段输出包含真值的复区间盒并据此给出模长上/下界（参见 \cite{DaumasLesterMunoz2007} 的形式化区间算术路径）。
+\end{definition}
+
+\begin{algorithm}[核验器 $\mathrm{CheckRou}$（最小模板）]\label{alg:check-rou}
+\textbf{输入：}$F,G,R$ 与 $\mathcal{C}_{\mathrm{Rou}}(F,G;R)$。\\
+\textbf{输出：}$\mathrm{true/false}$。
+\begin{enumerate}
+  \item 解析证书头 $\mathcal{M}$，并验证网格覆盖 $\partial R$、舍入模型与停止条件固定（从而输出可复现）。
+  \item 在 $\mathcal{M}$ 指定的区间后端下，重算或核验 $\mathcal{B}_{\mathrm{err}}$ 给出的上界 $E$ 满足
+  $$
+  \sup_{s\in\partial R}\abs{F(s)-G(s)}\le E.
+  $$
+  \item 同理重算或核验 $\mathcal{B}_{\min}$ 给出的下界 $M$ 满足
+  $$
+  M\le \inf_{s\in\partial R}\abs{F(s)}.
+  $$
+  \item 检查严格不等式 $E<M$。若成立输出 $\mathrm{true}$，否则输出 $\mathrm{false}$。
+\end{enumerate}
+\end{algorithm}
+
+\begin{theorem}[有限区域零点计数的证书化]\label{thm:rouche-certified}
+若 $\mathrm{CheckRou}(F,G,R;\mathcal{C}_{\mathrm{Rou}})=\mathrm{true}$，则
+$$
+Z(F;R)=Z(G;R),
+$$
+其中 $Z(\cdot;R)$ 表示 $R$ 内零点数（按重数计）。
+\end{theorem}
+
+\begin{proof}
+$\mathrm{CheckRou}$ 的通过条件蕴含引理 \ref{lem:rouche} 的边界严格不等式，从而零点计数一致。证毕。
+\end{proof}
+
+\begin{corollary}[BridgeRH 的“有限高度可证书化”归约模板]\label{cor:bridge-finite-height-template}
+令 $G=\Xi_\zeta$，$F=\Xi_{\Delta,L}$。若对矩形区域 $R_T$（例如 $0\le\Re(s)\le 1$，$0\le\Im(s)\le T$ 或其对称扩张）存在 Rouché 证书 $\mathcal{C}_{\mathrm{Rou}}(F,G;R_T)$ 且核验通过，则
+$$
+Z(\Xi_{\Delta,L};R_T)=Z(\Xi_\zeta;R_T).
+$$
+进一步，若能以 unitary slice 审计协议在 $\Re(s)=\tfrac12$ 上给出 $\Xi_\zeta$ 的零点下界计数证书，并与上式总数相等，则推出 $R_T$ 内全部经典零点均位于临界线（即有限高度 RH 的证书化版本）。
+\end{corollary}
+
+\begin{remark}[位置证书（可选强化）]
+若将 $R_T$ 进一步划分为一族小矩形/小圆盘 $\{R_j\}$，并分别给出 $\mathcal{C}_{\mathrm{Rou}}(F,G;R_j)$，则可把“零点计数一致”细化为“每个子区域内零点重数一致”，从而得到零点位置的可审计定位（以区域盒作为精度）。
+\end{remark}
+
+\subsection{第四寄存器需求的可判定见证提取：从 PSD 失败到径向自由度}\label{app:witness-fourth-register}
+
+第 \ref{sec:fourth-register} 节与附录 \ref{app:strictification} 给出了“径向模式必须引入第四寄存器”的结构性论证。本节把该论断提升为\textbf{可判定见证提取}：一旦三寄存器闭包下的 unitary slice soundness 失败，即可提取一个有限的有理反例见证，作为迫使扩张接口/寄存器的可核对材料。
+
+\begin{theorem}[PSD 失败的有理见证]\label{thm:psd-failure-witness}
+设 $H(x)\in\QQ[x]^{n\times n}$ 为对称矩阵多项式。若存在 $x_\star\in[-2,2]$ 使得 $H(x_\star)\not\succeq 0$，则存在
+$$
+x_0\in[-2,2]\cap\QQ,\qquad v\in\QQ^n\setminus\{0\},
+$$
+使得
+$$
+v^\top H(x_0)v<0.
+$$
+该不等式为纯有理不等式，因而其核验可在整数/有理算术中完成；并且见证 $(x_0,v)$ 可被编码进统一自然数编码层（定理 \ref{thm:arc-godel-invertible}）。
+\end{theorem}
+
+\begin{proof}
+取 $x_\star$ 处的负方向向量 $w\in\RR^n\setminus\{0\}$ 使 $w^\top H(x_\star)w<0$。由于 $x\mapsto w^\top H(x)w$ 连续，存在邻域 $U$ 使对 $x\in U\cap[-2,2]$ 仍为负。由 $\QQ$ 在 $\RR$ 中稠密，取 $x_0\in U\cap[-2,2]\cap\QQ$，则 $w^\top H(x_0)w<0$。再用 $\QQ^n$ 在 $\RR^n$ 中稠密，取 $v\in\QQ^n$ 充分接近 $w$，保持 $v^\top H(x_0)v<0$。证毕。
+\end{proof}
+
+\begin{remark}[与 WSOS 证书的互补关系]
+命题 \ref{prop:wsos-soundness} 给出“存在 WSOS 证书 $\Rightarrow$ 半正定成立”的充分条件；定理 \ref{thm:psd-failure-witness} 给出“半正定失败 $\Rightarrow$ 存在可核对反例见证”的必要条件。二者合并为一个\textbf{证明携带的判别接口}：检查器要么接受并输出 WSOS 证书，要么拒绝并输出有理见证；两种输出均可离线核验，且均可被统一编码进 $\NN$。
+\end{remark}
+
+\subsection{运算涌现的统一编译定理：算术、布尔与构造性 ZFC}\label{app:unified-compiler}
+
+附录 \ref{app:ops-zfc} 给出了“运算涌现”的可审计定义链与 ZFC 可定义运算的生成模板。本节给出一个统一的\textbf{编译定理}：在已实现基本算术门与证书核验的前提下，可把广泛的运算族统一编译为“地址化程序 + 证书包”，并在可判定核验层中离线验证。
+
+\subsubsection{语义域：总函数与部分函数的分离}
+
+对 $\NN$ 上的算术与布尔运算，语义为总函数/总谓词；对集合论运算，若要求覆盖任意外延集合则不可避免出现不可计算性。因此我们采用附录 \ref{app:ops-zfc} 的口径：以 \textbf{构造性语义域}（例如 hereditarily finite 集合 HF，或“由代码表示的可构造对象族”）为承载对象，把集合运算视为对\textbf{代码}的运算，从而回到 $\NN$ 上的可计算函数。
+
+\subsubsection{统一编译与证书化}
+
+令 $\mathcal{L}_{\mathrm{arith}}$ 为含常元、后继、投影、合成与原始递归的标准语法域（原始递归函数系统）。对闭项/闭谓词 $t,\varphi$，记其经典语义值分别为
+$$
+\mathrm{Sem}(t)\in\NN,\qquad \mathrm{Sem}(\varphi)\in\{0,1\}.
+$$
+
+\begin{theorem}[统一运算涌现编译（证书携带版）]\label{thm:unified-compilation}
+在以下前提下：
+\begin{itemize}
+  \item 稳定算术层已实现并可审计（正文第 \ref{sec:emergent-arithmetic} 节）；
+  \item PW 证书系统提供可判定核验片段（附录 \ref{app:pw-fragment}），并可扩张以核验有限整数/有理数据的等式与不等式；
+  \item 地址—残差—证书可统一编码为自然数并可判定反解（定理 \ref{thm:arc-godel-invertible}）；
+\end{itemize}
+则存在一个编译映射
+$$
+\mathcal{C}:\mathcal{L}_{\mathrm{arith}}\longrightarrow \Addr
+$$
+满足：对每个闭项/闭谓词 $t,\varphi$，地址求值器在非 $\NULL$ 的情况下输出其语义值，并附带一个可离线核验的证书包；该证书包可被统一编码为自然数并可判定反解。作为推论：
+\begin{enumerate}
+  \item 四则、整除、商余、最大最小、比较谓词与布尔联结均在同一编译框架下涌现；
+  \item 在 HF（或等价的构造性编码域）上，配对、并、差、笛卡尔积、有限幂集与有限替换等集合运算可被化为 $\NN$ 上的（原始递归）可计算函数，从而同样可被编译并证书化；
+  \item 对超出该构造性语义域的对象，求值器以 $\NULL$ 表示“不可在当前可审计地址体系内定义/核验”的严格边界（与 POM 的空值语义一致）。
+\end{enumerate}
+\end{theorem}
+
+\subsection{不确定性压缩：剩余困难归约为单一可证书化门槛}\label{app:uncertainty-compression}
+
+结合本附录的统一编码层（定理 \ref{thm:arc-godel-invertible}）、unitary slice 的 WSOS 证明携带化（定理 \ref{thm:unitary-slice-wsos}）、Rouché 有限区域零点计数证书模板（定理 \ref{thm:rouche-certified}）以及第四寄存器的见证提取（定理 \ref{thm:psd-failure-witness}），BridgeRH 的核心困难可被压缩为一个单一门槛：
+
+\begin{quote}
+\textbf{构造一族可控模型 $\{\Delta_n\}$ 及其误差证书，使得对任意有限区域 $R_T$ 都能生成并核验 $\mathcal{C}_{\mathrm{Rou}}(\Xi_{\Delta_n,L},\Xi_\zeta;R_T)$。}
+\end{quote}
+
+一旦该门槛以统一方式通过，则“有限高度零点一致性”可被完全证书化；并在极限意义上为全局结论提供清晰可分解的 proof obligations 结构。
+

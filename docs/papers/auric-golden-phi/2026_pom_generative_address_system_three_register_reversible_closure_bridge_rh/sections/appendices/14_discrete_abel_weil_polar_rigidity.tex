@@ -1,0 +1,192 @@
+\section{离散 Abel--Weil 显式公式与极点刚性：由素数端生成函数刻画 RH}\label{app:discrete-abel-weil}
+本附录给出一条与 BridgeRH 互补的“经典侧可审计桥包”：从素数端的 Chebyshev 函数出发，经对数采样与离散 Abel 变换构造一个单位圆盘内的解析/亚纯生成函数；其在 $r$-平面的极点位置与 $\zeta$ 的非平凡零点严格一一对应，从而得到一个
+$$
+\text{单位圆盘全纯}\ \Longleftrightarrow\ \text{RH}
+$$
+的等价判别，并把“零点虚部”编码为单位圆边界的角频率。该桥包的意义在于：它把“经典零点事件”转写为一个在 $|r|<1$ 上可逐项审计的幂级数对象，从而为 BridgeRH 的 (B1.c) 提供一个显式可审计的协议路径候选（实轴 $r\uparrow 1$ 或边界 $r=e^{i\theta}$）。
+
+\subsection{Chebyshev 函数、对数采样与 Abel 生成函数}
+\label{subsec:abel-weil-setup}
+
+\paragraph{von Mangoldt 与 Chebyshev}
+记 von Mangoldt 函数 $\Lambda(n)$（$n=p^k$ 时取 $\log p$，否则取 $0$），并定义 Chebyshev 函数
+$$
+\psi(x):=\sum_{n\le x}\Lambda(n).
+$$
+为避免跳跃点的技术细节，取常用的半权重版本 $\psi_0(x)$（在素数幂处取左右极限平均）；它与 $\psi(x)$ 的差仅发生在离散点集上，不影响下述“解析域/极点位置”的结论。
+
+\paragraph{对数采样误差序列}
+固定任意底数 $b>1$。定义对数采样并作 $1/2$ 归一化的误差序列
+$$
+E_b(n):=b^{-n/2}\bigl(\psi_0(b^n)-b^n\bigr),\qquad n=0,1,2,\dots.
+$$
+并定义其 Abel 生成函数（幂级数）
+$$
+\mathcal A_b(r):=\sum_{n\ge 0}E_b(n)\,r^n.
+$$
+
+\subsection{显式公式输入与 Abel--Weil 分解}
+\label{subsec:abel-weil-decomposition}
+
+\paragraph{外部输入（显式公式的最小结构形式）}
+本附录仅使用经典显式公式的如下结构分解：存在一个由平凡零点与常数项组成的函数 $G(x)$，使得对所有 $x>1$ 有
+\begin{equation}\label{eq:psi0-explicit-schematic-bridge}
+\boxed{\ \psi_0(x)=x-\sum_{\rho}\frac{x^\rho}{\rho}+G(x)\ },
+\end{equation}
+其中 $\rho$ 遍历 $\zeta(s)$ 的全部非平凡零点（按重数计数并与共轭配对），并且 $G(x)=O(1)$（更精确地 $G(x)=-\log(2\pi)+O(x^{-2})$）。
+
+\begin{theorem}[离散 Abel--Weil 展开：零点 $\to$ $r$-平面极点]\label{thm:discrete-abel-weil-expansion-bridge}
+在 $|r|$ 足够小从而交换求和合法时，有分解
+\begin{equation}\label{eq:abel-weil-decomposition-bridge}
+\boxed{\ \mathcal A_b(r)
+=-\sum_{\rho}\frac{1}{\rho}\cdot\frac{1}{1-r\,b^{\rho-\frac12}}
+\;+\;H_b(r)\ },
+\end{equation}
+其中余项
+$$
+H_b(r):=\sum_{n\ge 0}b^{-n/2}G(b^n)\,r^n
+$$
+至少在圆盘 $|r|<b^{1/2}$ 内解析。
+因此每个非平凡零点 $\rho$ 诱导一条极点轨道
+$$
+1-r\,b^{\rho-\frac12}=0
+\quad\Longleftrightarrow\quad
+\boxed{\ r_\rho=b^{-(\rho-\frac12)}\ },
+$$
+其模长满足
+$$
+\boxed{\ |r_\rho|=b^{-(\Re\rho-\frac12)}\ }.
+$$
+\end{theorem}
+\begin{proof}
+由 \eqref{eq:psi0-explicit-schematic-bridge} 取 $x=b^n$ 并乘 $b^{-n/2}$，得
+$$
+E_b(n)=-\sum_\rho \frac{b^{(\rho-\frac12)n}}{\rho}+b^{-n/2}G(b^n).
+$$
+在 $|r|$ 充分小的圆盘内，可对 $n$ 与 $\rho$ 的求和做局部一致交换（先对零点集合作截断，再移去截断），于是
+$$
+\sum_{n\ge 0}E_b(n)r^n
+=-\sum_\rho \frac{1}{\rho}\sum_{n\ge 0}\bigl(r\,b^{\rho-\frac12}\bigr)^n
+\;+\;\sum_{n\ge 0}b^{-n/2}G(b^n)r^n.
+$$
+第一项内层为几何级数 $\sum_{n\ge 0}(r\,b^{\rho-\frac12})^n=1/(1-r\,b^{\rho-\frac12})$，得到 \eqref{eq:abel-weil-decomposition-bridge}。余项由 $G(b^n)=O(1)$ 知系数 $O(b^{-n/2})$，故在 $|r|<b^{1/2}$ 内解析。证毕。
+\end{proof}
+
+\subsection{极点刚性：解析半径刻画最右零点实部（RH 等价判别）}
+\label{subsec:abel-weil-polar-rigidity}
+
+\paragraph{最右零点实部与解析半径}
+令
+$$
+\sigma_*:=\sup_{\rho}\Re\rho
+$$
+为非平凡零点实部的上确界（RH 等价于 $\sigma_*=\tfrac12$）。
+
+\begin{theorem}[解析半径刻画最右零点实部]\label{thm:radius-captures-sigma-star-bridge}
+令 $\mathcal A_b(r)$ 在 $r=0$ 处展开所对应的“无极点圆盘”的最大半径为 $R_b$，则
+$$
+\boxed{\ R_b=b^{-(\sigma_*-\frac12)}\ }.
+$$
+特别地，
+$$
+\boxed{\ \mathrm{RH}\ \Longleftrightarrow\ \mathcal A_b(r)\ \text{在}\ |r|<1\ \text{内全纯}.\ }
+$$
+并且对任意 $\delta\ge 0$ 有量化版本：
+$$
+\boxed{\ \bigl(\forall\rho,\ \Re\rho\le\tfrac12+\delta\bigr)
+\Longleftrightarrow
+\mathcal A_b(r)\ \text{在}\ |r|<b^{-\delta}\ \text{内全纯}.\ }
+$$
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:discrete-abel-weil-expansion-bridge}，非平凡零点 $\rho$ 诱导极点 $r_\rho=b^{-(\rho-\frac12)}$，故极点模长集合为
+$
+\{|r_\rho|\}_\rho=\{b^{-(\Re\rho-\frac12)}\}_\rho
+$。
+从而 $0$ 点处幂级数可延拓穿过的最大“无极点圆盘”半径，恰为极点模长的下确界：
+$$
+R_b=\inf_\rho |r_\rho|
+=\inf_\rho b^{-(\Re\rho-\frac12)}
+=b^{-(\sup_\rho \Re\rho-\frac12)}
+=b^{-(\sigma_*-\frac12)}.
+$$
+令 $\delta=0$ 得 RH 等价式；一般 $\delta$ 情形同理。证毕。
+\end{proof}
+
+\subsection{阻尼 Abel 生成函数与 Hardy 正则化判别}
+\label{subsec:abel-damped-hardy}
+
+\begin{definition}[阻尼 Abel 生成函数]\label{def:abel-damped-bridge}
+对任意 $\delta\ge 0$，定义
+$$
+\mathcal A_{b,\delta}(r):=\mathcal A_b(b^{-\delta}r)
+=\sum_{n\ge 0}E_b(n)\,b^{-\delta n}\,r^n.
+$$
+\end{definition}
+
+\begin{proposition}[阻尼后的极点位置]\label{prop:damped-poles-bridge}
+有分解
+$$
+\mathcal A_{b,\delta}(r)
+=-\sum_{\rho}\frac{1}{\rho}\cdot\frac{1}{1-r\,b^{\rho-(\frac12+\delta)}}\;+\;H_{b,\delta}(r),
+$$
+其中 $H_{b,\delta}(r)=H_b(b^{-\delta}r)$ 至少在 $|r|<b^{1/2+\delta}$ 内解析；相应极点为
+$$
+\boxed{\ r_{\rho,\delta}=b^{\delta}r_\rho=b^{-(\rho-(\frac12+\delta))}\ },
+\qquad
+|r_{\rho,\delta}|=b^{-(\Re\rho-(\frac12+\delta))}.
+$$
+因此
+$$
+\bigl(\forall\rho,\ \Re\rho\le\tfrac12+\delta\bigr)
+\Longleftrightarrow
+\mathcal A_{b,\delta}\ \text{在}\ |r|<1\ \text{内全纯}.
+$$
+\end{proposition}
+\begin{proof}
+将 $r$ 替换为 $b^{-\delta}r$ 代入 \eqref{eq:abel-weil-decomposition-bridge} 立得；极点模长与等价性由同一计算得到。证毕。
+\end{proof}
+
+\begin{theorem}[Hardy 能量判别 $\Leftrightarrow$ 右零点严格余量]\label{thm:hardy-criterion-delta-bridge}
+固定 $\delta\ge 0$。以下两条严格等价：
+\begin{enumerate}
+  \item 存在 $\varepsilon>0$ 使得 $\forall\rho,\ \Re\rho\le \tfrac12+\delta-\varepsilon$；
+  \item $\mathcal A_{b,\delta}$ 在某个 $|r|<1+\eta$（$\eta>0$）的圆盘内全纯（等价地，它在单位圆周附近无极点），从而 $\mathcal A_{b,\delta}\in H^2(\mathbb D)$ 并且其径向极限在 $\TT$ 上属于 $L^2$。
+\end{enumerate}
+特别地，RH 可等价改写为“任意小阻尼的 Hardy 有限能量”判别：
+$$
+\boxed{\ \mathrm{RH}\ \Longleftrightarrow\ \forall\delta>0,\ \mathcal A_{b,\delta}\in H^2(\mathbb D).\ }
+$$
+\end{theorem}
+\begin{proof}
+$(1)\Rightarrow(2)$：由命题 \ref{prop:damped-poles-bridge}，若 $\Re\rho\le\tfrac12+\delta-\varepsilon$，则
+$
+|r_{\rho,\delta}|=b^{-(\Re\rho-(\frac12+\delta))}\ge b^{\varepsilon}>1
+$，
+故存在 $\eta>0$ 使所有极点落在 $|r|\ge 1+\eta$ 之外，从而 $\mathcal A_{b,\delta}$ 在 $|r|<1+\eta$ 内全纯，进而 $\mathcal A_{b,\delta}\in H^2(\mathbb D)$。
+
+$(2)\Rightarrow(1)$：若存在零点满足 $\Re\rho\ge \tfrac12+\delta$，则命题 \ref{prop:damped-poles-bridge} 给出 $\mathcal A_{b,\delta}$ 在 $|r|\le 1$ 的闭圆盘内出现极点；但 $H^2(\mathbb D)$ 函数必须在开圆盘全纯并排除单位圆上的一阶极点型奇异（否则能量发散），矛盾。故必有严格余量 $\varepsilon>0$。证毕。
+\end{proof}
+
+\subsection{边界角频率与零点虚部编码（scan 读出）}
+\label{subsec:abel-boundary-frequency}
+
+在 RH 下若 $\rho=\tfrac12+i\gamma$，则
+$$
+b^{\rho-\frac12}=b^{i\gamma}=e^{i\gamma\log b},
+\qquad
+r_\rho=e^{-i\gamma\log b}\in\TT,
+$$
+并且极点角位置满足
+$$
+\boxed{\ \theta\equiv -\gamma\log b\pmod{2\pi}\ }.
+$$
+因此“零点虚部 $\gamma$”被严格编码为单位圆边界的角频率，从而把“scan readout”化为 Hardy 型边界谱问题。
+
+\begin{remark}[与 BridgeRH 的接口关系]\label{rem:abel-weil-to-bridge}
+本附录将经典 RH 改写为一个单位圆盘全纯性/边界能量的判别。若能在 BridgeRH 的核侧构造一个对象 $G(r)$，使其在 $|r|<1$ 上可审计地满足
+$
+G(r)=\mathcal A_b(r)
+$（或在协议路径上匹配并由解析刚性提升），则经典 RH 可被编译为“核侧对象在 $|r|<1$ 内无极点”的可审计规格；其偏移极点将以可复算留数证书（整数重数/NonCancel）形式出现，从而与 BridgeRH 的 (B4) 规格天然兼容。
+\end{remark}
+
